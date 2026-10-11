@@ -9,6 +9,9 @@ import { formatDate } from "@/lib/format";
 import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, type KNode } from "@/lib/knowledge";
 import { extractToc } from "@/lib/markdown";
 
+// Only the pages generated at build time exist; anything else is a real 404.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllNodes().map((n) => ({ slug: n.slug }));
 }

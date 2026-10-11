@@ -6,6 +6,9 @@ import SiteFooter from "@/components/SiteFooter";
 import { editUrl, getAllBooks, getBook, STATUS_LABEL } from "@/lib/books";
 import { formatDate } from "@/lib/format";
 
+// Only the pages generated at build time exist; anything else is a real 404.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllBooks().map((b) => ({ slug: b.slug }));
 }

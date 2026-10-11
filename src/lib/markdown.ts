@@ -26,7 +26,6 @@ const processor = unified()
   .use(rehypeStringify);
 
 export async function renderMarkdown(markdown: string): Promise<string> {
-  "use cache";
   return String(await processor.process(markdown));
 }
 

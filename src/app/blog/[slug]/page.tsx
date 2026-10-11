@@ -8,6 +8,9 @@ import { getAllPosts, getPost } from "@/lib/blog";
 import { formatDate } from "@/lib/format";
 import { extractToc } from "@/lib/markdown";
 
+// Only the pages generated at build time exist; anything else is a real 404.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
 }

@@ -18,7 +18,7 @@ source: notion
 4. **고수준에서 저수준으로 내려간다.** 요구사항을 만족하는지 → 구조·설계 → 세부 구현 → 스타일 순서로 본다.
 5. **예시 코드에 관대하다.** "이렇게 바꾸면 어떨까요?"와 함께 코드 조각을 주면 의도가 정확히 전달된다.
 
-리뷰 코멘트를 쓰는 요령은 [리뷰 코멘트와 PR 소통](/knowledge/dictionary/career/code-review/review-communication)에 따로 정리했다.
+리뷰 코멘트를 쓰는 요령은 [리뷰 코멘트와 PR 소통](/knowledge/dictionary/tools/code-review/review-communication)에 따로 정리했다.
 
 ## 체크리스트
 
