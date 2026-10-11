@@ -70,8 +70,31 @@ function prettyFolder(name: string, depth: number): string {
   return name.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
 }
 
+/**
+ * Rewrites note-to-note links written as file paths into dictionary URLs.
+ * Accepts paths relative to the note (`Blender/basics.md`) or to content/knowledge (`Backend/Django/admin`).
+ */
+function resolveRelativeLinks(markdown: string, file: string): string {
+  const fromDir = path.posix.dirname(path.relative(ROOT, file).split(path.sep).join("/"));
+  const exists = (rel: string) =>
+    !rel.startsWith("..") && (fs.existsSync(path.join(ROOT, `${rel}.md`)) || fs.existsSync(path.join(ROOT, rel)));
+  return markdown.replace(/\]\((?!https?:|\/|#|mailto:)([^)\s#{}]+?)(#[^)\s]*)?\)/g, (m, target: string, hash = "") => {
+    let decoded = target;
+    try {
+      decoded = decodeURIComponent(target);
+    } catch {}
+    const bare = decoded.replace(/\.md$/, "").replace(/\/$/, "");
+    const candidates = [path.posix.normalize(path.posix.join(fromDir === "." ? "" : fromDir, bare)), path.posix.normalize(bare)];
+    const hit = candidates.find(exists);
+    if (!hit) return m;
+    return `](${KNOWLEDGE_BASE}/${hit.split("/").map(slugify).join("/")}${hash})`;
+  });
+}
+
 function readDoc(file: string): KDoc {
-  const { data, content } = matter(fs.readFileSync(file, "utf8"));
+  const parsed = matter(fs.readFileSync(file, "utf8"));
+  const data = parsed.data;
+  const content = resolveRelativeLinks(parsed.content, file);
   const source = ["til", "notion", "mixed"].includes(data.source) ? data.source : "other";
   const sources = Array.isArray(data.sources) ? data.sources.map(String) : data.sourceUrl ? [String(data.sourceUrl)] : [];
   return {
