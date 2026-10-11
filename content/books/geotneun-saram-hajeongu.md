@@ -1,6 +1,6 @@
 ---
 title: "걷는 사람, 하정우"
-author: ""
+author: "하정우"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

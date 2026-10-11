@@ -1,6 +1,6 @@
 ---
 title: "주식회사 대한민국"
-author: ""
+author: "박노자"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

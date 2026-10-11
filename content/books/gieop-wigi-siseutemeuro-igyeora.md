@@ -1,6 +1,6 @@
 ---
 title: "기업 위기 시스템으로 이겨라"
-author: ""
+author: "정용민"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

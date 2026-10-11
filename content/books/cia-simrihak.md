@@ -1,6 +1,6 @@
 ---
 title: "CIA 심리학"
-author: ""
+author: "리처즈 휴어 주니어"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

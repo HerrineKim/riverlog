@@ -1,6 +1,6 @@
 ---
 title: "신뢰의 속도"
-author: ""
+author: "스티븐 M. R. 코비"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

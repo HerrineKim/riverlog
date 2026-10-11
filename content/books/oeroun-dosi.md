@@ -1,6 +1,6 @@
 ---
 title: "외로운 도시"
-author: ""
+author: "올리비아 랭"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

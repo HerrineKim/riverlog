@@ -1,6 +1,6 @@
 ---
 title: "나이 없는 시간: 나이 듦과 자기의 민족지"
-author: ""
+author: "마르크 오제"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "요즘 개발자"
-author: ""
+author: "임동준, 고예슬"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

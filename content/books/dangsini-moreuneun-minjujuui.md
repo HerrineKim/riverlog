@@ -1,6 +1,6 @@
 ---
 title: "당신이 모르는 민주주의"
-author: ""
+author: "마이클 샌델"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

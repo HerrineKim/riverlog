@@ -1,6 +1,6 @@
 ---
 title: "칼의 노래"
-author: ""
+author: "김훈"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

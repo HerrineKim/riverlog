@@ -1,6 +1,6 @@
 ---
 title: "정치적 평등에 관하여"
-author: ""
+author: "로버트 달"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

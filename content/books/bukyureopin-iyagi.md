@@ -1,6 +1,6 @@
 ---
 title: "북유럽인 이야기"
-author: ""
+author: "로버트 퍼거슨"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

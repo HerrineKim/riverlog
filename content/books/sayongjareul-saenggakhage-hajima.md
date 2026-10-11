@@ -1,6 +1,6 @@
 ---
 title: "사용자를 생각하게 하지마!"
-author: ""
+author: "스티브 크룩"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "FE"]

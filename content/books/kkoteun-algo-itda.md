@@ -1,6 +1,6 @@
 ---
 title: "꽃은 알고 있다"
-author: ""
+author: "퍼트리샤 윌트셔"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

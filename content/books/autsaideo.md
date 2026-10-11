@@ -1,6 +1,6 @@
 ---
 title: "아웃사이더"
-author: ""
+author: "S. E. 힌튼"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

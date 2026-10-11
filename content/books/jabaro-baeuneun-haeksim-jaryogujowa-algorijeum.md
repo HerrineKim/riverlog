@@ -1,6 +1,6 @@
 ---
 title: "자바로 배우는 핵심 자료구조와 알고리즘"
-author: ""
+author: "앨런 B. 다우니"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

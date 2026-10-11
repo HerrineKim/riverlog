@@ -1,6 +1,6 @@
 ---
 title: "희망은 과거에서 온다"
-author: ""
+author: "김진영"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

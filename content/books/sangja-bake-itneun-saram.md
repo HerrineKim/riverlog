@@ -1,6 +1,6 @@
 ---
 title: "상자 밖에 있는 사람"
-author: ""
+author: "아빈저연구소"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

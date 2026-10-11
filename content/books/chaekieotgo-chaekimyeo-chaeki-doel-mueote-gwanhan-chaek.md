@@ -1,6 +1,6 @@
 ---
 title: "책이었고 책이며 책이 될 무엇에 관한, 책"
-author: ""
+author: "애머런스 보서크"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

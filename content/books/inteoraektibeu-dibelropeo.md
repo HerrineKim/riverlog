@@ -1,6 +1,6 @@
 ---
 title: "인터랙티브 디벨로퍼"
-author: ""
+author: "김종민"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

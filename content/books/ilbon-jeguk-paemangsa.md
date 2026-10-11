@@ -1,6 +1,6 @@
 ---
 title: "일본 제국 패망사"
-author: ""
+author: "존 톨랜드"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

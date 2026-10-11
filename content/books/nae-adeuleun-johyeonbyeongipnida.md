@@ -1,6 +1,6 @@
 ---
 title: "내 아들은 조현병입니다"
-author: ""
+author: "론 파워스"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

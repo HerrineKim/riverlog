@@ -1,6 +1,6 @@
 ---
 title: "마음 가면"
-author: ""
+author: "브레네 브라운"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

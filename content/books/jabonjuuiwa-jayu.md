@@ -1,6 +1,6 @@
 ---
 title: "자본주의와 자유"
-author: ""
+author: "밀턴 프리드먼"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

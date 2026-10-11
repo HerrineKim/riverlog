@@ -1,6 +1,6 @@
 ---
 title: "엘리어트 파동이론"
-author: ""
+author: "A. J. 프로스트, 로버트 R. 프렉터 주니어"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

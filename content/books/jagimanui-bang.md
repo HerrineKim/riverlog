@@ -1,6 +1,6 @@
 ---
 title: "자기만의 방"
-author: ""
+author: "버지니아 울프"
 category: "인문·사회"
 status: "read"
 tags: ["인문"]

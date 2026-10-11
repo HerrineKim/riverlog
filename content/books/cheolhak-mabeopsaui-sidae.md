@@ -1,6 +1,6 @@
 ---
 title: "철학, 마법사의 시대"
-author: ""
+author: "볼프람 아일렌베르거"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

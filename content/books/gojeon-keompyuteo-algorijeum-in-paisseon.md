@@ -1,6 +1,6 @@
 ---
 title: "고전 컴퓨터 알고리즘 인 파이썬"
-author: ""
+author: "데이비드 코펙"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

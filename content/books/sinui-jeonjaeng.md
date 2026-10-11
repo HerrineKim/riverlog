@@ -1,6 +1,6 @@
 ---
 title: "신의 전쟁"
-author: ""
+author: "카렌 암스트롱"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

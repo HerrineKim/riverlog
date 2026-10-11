@@ -1,6 +1,6 @@
 ---
 title: "내 문장이 그렇게 이상한가요?"
-author: ""
+author: "김정선"
 category: "기타"
 status: "want"
 tags: ["글쓰기"]

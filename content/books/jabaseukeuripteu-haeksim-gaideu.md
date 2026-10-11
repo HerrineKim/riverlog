@@ -1,6 +1,6 @@
 ---
 title: "자바스크립트 핵심 가이드"
-author: ""
+author: "David Flanagan"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "FE"]

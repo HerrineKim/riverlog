@@ -1,6 +1,6 @@
 ---
 title: "실존주의는 휴머니즘이다"
-author: ""
+author: "장 폴 사르트르"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

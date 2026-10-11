@@ -1,6 +1,6 @@
 ---
 title: "불멸의 산책"
-author: ""
+author: "장 크리스토프 뤼팽"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "수축사회"
-author: ""
+author: "홍성국"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

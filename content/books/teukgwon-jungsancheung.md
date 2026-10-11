@@ -1,6 +1,6 @@
 ---
 title: "특권 중산층"
-author: ""
+author: "구해근"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

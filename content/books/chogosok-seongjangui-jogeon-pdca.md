@@ -1,6 +1,6 @@
 ---
 title: "초고속 성장의 조건 PDCA"
-author: ""
+author: "미키 다케노부"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

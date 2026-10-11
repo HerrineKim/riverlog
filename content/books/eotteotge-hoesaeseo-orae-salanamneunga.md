@@ -1,6 +1,6 @@
 ---
 title: "어떻게 회사에서 오래 살아남는가"
-author: ""
+author: "필 포터"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

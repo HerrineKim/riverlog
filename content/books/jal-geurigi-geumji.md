@@ -1,6 +1,6 @@
 ---
 title: "잘 그리기 금지"
-author: ""
+author: "사이토 나오키"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

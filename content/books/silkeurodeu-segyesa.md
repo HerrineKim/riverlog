@@ -1,6 +1,6 @@
 ---
 title: "실크로드 세계사"
-author: ""
+author: "모리야스 타카오"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

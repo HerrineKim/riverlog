@@ -1,6 +1,6 @@
 ---
 title: "창작의 블랙홀을 건너는 크리에이터 라이언 홀리데이"
-author: ""
+author: "라이언 홀리데이"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

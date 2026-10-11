@@ -1,6 +1,6 @@
 ---
 title: "패러데이와 맥스웰"
-author: ""
+author: "낸시 포브스, 배질 마혼"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

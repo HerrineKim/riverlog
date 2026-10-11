@@ -1,6 +1,6 @@
 ---
 title: "살아남기 위하여"
-author: ""
+author: "김세실"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

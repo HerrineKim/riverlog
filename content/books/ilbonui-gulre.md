@@ -1,6 +1,6 @@
 ---
 title: "일본의 굴레"
-author: ""
+author: "R. 태가트 머피"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

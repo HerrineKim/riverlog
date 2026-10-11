@@ -1,6 +1,6 @@
 ---
 title: "무타협 미식가"
-author: ""
+author: "기타오지 로산진"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

@@ -1,6 +1,6 @@
 ---
 title: "깡패단의 방문"
-author: ""
+author: "제니퍼 이건"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

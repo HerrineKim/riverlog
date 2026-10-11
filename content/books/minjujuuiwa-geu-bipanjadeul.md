@@ -1,6 +1,6 @@
 ---
 title: "민주주의와 그 비판자들"
-author: ""
+author: "로버트 달"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

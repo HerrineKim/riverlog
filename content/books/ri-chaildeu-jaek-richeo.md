@@ -1,6 +1,6 @@
 ---
 title: "리 차일드 잭 리처"
-author: ""
+author: "리 차일드"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

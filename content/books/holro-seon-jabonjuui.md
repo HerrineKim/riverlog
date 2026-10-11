@@ -1,6 +1,6 @@
 ---
 title: "홀로 선 자본주의"
-author: ""
+author: "브랑코 밀라노비치"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

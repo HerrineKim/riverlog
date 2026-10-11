@@ -1,6 +1,6 @@
 ---
 title: "레거시 코드 활용 전략"
-author: ""
+author: "마이클 C. 페더스"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

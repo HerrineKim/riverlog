@@ -1,6 +1,6 @@
 ---
 title: "실용주의 프로그래머"
-author: ""
+author: "데이비드 토머스, 앤드류 헌트"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

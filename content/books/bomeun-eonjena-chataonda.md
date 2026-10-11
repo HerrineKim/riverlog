@@ -1,6 +1,6 @@
 ---
 title: "봄은 언제나 찾아온다"
-author: ""
+author: "데이비드 호크니, 마틴 게이퍼드"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

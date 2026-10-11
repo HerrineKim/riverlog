@@ -1,6 +1,6 @@
 ---
 title: "지적 허영을 위한 퇴근길 철학툰"
-author: ""
+author: "이즐라"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

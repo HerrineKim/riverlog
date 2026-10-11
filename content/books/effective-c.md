@@ -1,6 +1,6 @@
 ---
 title: "Effective C#"
-author: ""
+author: "로버트 C. 시코드"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "언어·기술"]

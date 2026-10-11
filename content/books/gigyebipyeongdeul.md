@@ -1,6 +1,6 @@
 ---
 title: "기계비평들"
-author: ""
+author: "전치형, 김성은, 임태훈, 김성원, 장병극, 강부원, 언메이크랩"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "행동하는 용기"
-author: ""
+author: "벤 S. 버냉키"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

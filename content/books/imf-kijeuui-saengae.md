@@ -1,6 +1,6 @@
 ---
 title: "IMF 키즈의 생애"
-author: ""
+author: "안은별"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

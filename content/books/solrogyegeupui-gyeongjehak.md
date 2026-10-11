@@ -1,6 +1,6 @@
 ---
 title: "솔로계급의 경제학"
-author: ""
+author: "우석훈"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

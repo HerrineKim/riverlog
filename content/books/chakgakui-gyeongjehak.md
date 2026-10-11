@@ -1,6 +1,6 @@
 ---
 title: "착각의 경제학"
-author: ""
+author: "세일러"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

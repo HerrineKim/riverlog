@@ -1,6 +1,6 @@
 ---
 title: "그로잉업"
-author: ""
+author: "홍성태"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

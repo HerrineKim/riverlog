@@ -1,6 +1,6 @@
 ---
 title: "실리콘 밸리의 팀장들"
-author: ""
+author: "킴 스콧"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

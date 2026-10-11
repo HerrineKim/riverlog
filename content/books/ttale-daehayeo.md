@@ -1,6 +1,6 @@
 ---
 title: "딸에 대하여"
-author: ""
+author: "김혜진"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

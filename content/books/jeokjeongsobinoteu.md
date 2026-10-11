@@ -1,6 +1,6 @@
 ---
 title: "적정소비노트"
-author: ""
+author: "박미정"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

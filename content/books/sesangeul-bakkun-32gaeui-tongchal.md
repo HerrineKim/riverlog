@@ -1,6 +1,6 @@
 ---
 title: "세상을 바꾼 32개의 통찰"
-author: ""
+author: "제시카 리빙스턴"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

@@ -1,6 +1,6 @@
 ---
 title: "빈 서판"
-author: ""
+author: "스티븐 핑커"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

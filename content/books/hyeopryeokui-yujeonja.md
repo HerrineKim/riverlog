@@ -1,6 +1,6 @@
 ---
 title: "협력의 유전자"
-author: ""
+author: "니컬라 라이하니"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

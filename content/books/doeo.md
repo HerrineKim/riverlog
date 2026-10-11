@@ -1,6 +1,6 @@
 ---
 title: "도어"
-author: ""
+author: "서보 머그더"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

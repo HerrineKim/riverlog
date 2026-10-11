@@ -1,6 +1,6 @@
 ---
 title: "원더보이"
-author: ""
+author: "김연수"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

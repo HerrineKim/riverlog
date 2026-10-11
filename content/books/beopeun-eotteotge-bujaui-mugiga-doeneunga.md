@@ -1,6 +1,6 @@
 ---
 title: "법은 어떻게 부자의 무기가 되는가"
-author: ""
+author: "천준범"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

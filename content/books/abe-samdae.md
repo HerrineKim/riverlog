@@ -1,6 +1,6 @@
 ---
 title: "아베 삼대"
-author: ""
+author: "아오키 오사무"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

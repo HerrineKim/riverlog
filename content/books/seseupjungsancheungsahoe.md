@@ -1,6 +1,6 @@
 ---
 title: "세습중산층사회"
-author: ""
+author: "조귀동"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "증권 분석"
-author: ""
+author: "벤저민 그레이엄, 데이비드 도드"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

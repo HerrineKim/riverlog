@@ -1,6 +1,6 @@
 ---
 title: "이것은 어느 늑대 이야기다"
-author: ""
+author: "닉 잰스"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

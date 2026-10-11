@@ -1,6 +1,6 @@
 ---
 title: "나도 그렇게 생각한다: 공감의 두 얼굴"
-author: ""
+author: "프리츠 브라이트하우프트"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

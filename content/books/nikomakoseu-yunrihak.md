@@ -1,6 +1,6 @@
 ---
 title: "니코마코스 윤리학"
-author: ""
+author: "아리스토텔레스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

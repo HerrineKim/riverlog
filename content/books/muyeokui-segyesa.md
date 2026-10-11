@@ -1,6 +1,6 @@
 ---
 title: "무역의 세계사"
-author: ""
+author: "윌리엄 번스타인"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

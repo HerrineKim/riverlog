@@ -1,6 +1,6 @@
 ---
 title: "한국 주택 유전자"
-author: ""
+author: "박철수"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

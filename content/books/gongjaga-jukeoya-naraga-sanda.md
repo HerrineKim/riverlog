@@ -1,6 +1,6 @@
 ---
 title: "공자가 죽어야 나라가 산다"
-author: ""
+author: "김경일"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

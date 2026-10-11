@@ -1,6 +1,6 @@
 ---
 title: "승진의 정석"
-author: ""
+author: "박소연"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

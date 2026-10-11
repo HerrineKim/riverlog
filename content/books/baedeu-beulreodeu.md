@@ -1,6 +1,6 @@
 ---
 title: "배드 블러드"
-author: ""
+author: "존 캐리루"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

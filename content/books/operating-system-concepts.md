@@ -1,6 +1,6 @@
 ---
 title: "Operating System Concepts"
-author: ""
+author: "Abraham Silberschatz, Peter B. Galvin, Greg Gagne"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

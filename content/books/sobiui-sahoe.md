@@ -1,6 +1,6 @@
 ---
 title: "소비의 사회"
-author: ""
+author: "장 보드리야르"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

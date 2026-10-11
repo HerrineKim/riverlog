@@ -1,6 +1,6 @@
 ---
 title: "가짜 민주주의가 온다"
-author: ""
+author: "티머시 스나이더"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

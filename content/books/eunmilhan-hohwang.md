@@ -1,6 +1,6 @@
 ---
 title: "은밀한 호황"
-author: ""
+author: "하어영, 김기태"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

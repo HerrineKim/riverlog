@@ -1,6 +1,6 @@
 ---
 title: "개소리는 어떻게 세상을 정복했는가"
-author: ""
+author: "제임스 볼"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

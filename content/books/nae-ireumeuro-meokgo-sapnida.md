@@ -1,6 +1,6 @@
 ---
 title: "내 이름으로 먹고 삽니다"
-author: ""
+author: "장은진"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

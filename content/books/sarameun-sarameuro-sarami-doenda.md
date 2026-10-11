@@ -1,6 +1,6 @@
 ---
 title: "사람은 사람으로 사람이 된다"
-author: ""
+author: "나쓰카리 이쿠코"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "자유론"
-author: ""
+author: "존 스튜어트 밀"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

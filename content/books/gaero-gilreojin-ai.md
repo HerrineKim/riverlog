@@ -1,6 +1,6 @@
 ---
 title: "개로 길러진 아이"
-author: ""
+author: "브루스 D. 페리, 마이아 샬라비츠"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

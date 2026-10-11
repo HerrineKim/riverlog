@@ -1,6 +1,6 @@
 ---
 title: "나는 왜 그에게 휘둘리는가"
-author: ""
+author: "크리스텔 프티콜랭"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

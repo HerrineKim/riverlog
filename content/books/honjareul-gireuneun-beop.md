@@ -1,6 +1,6 @@
 ---
 title: "혼자를 기르는 법"
-author: ""
+author: "김정연"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

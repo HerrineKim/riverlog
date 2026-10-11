@@ -1,6 +1,6 @@
 ---
 title: "발 밑의 미생물 몸 속의 미생물"
-author: ""
+author: "데이비드 몽고메리, 앤 비클레"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

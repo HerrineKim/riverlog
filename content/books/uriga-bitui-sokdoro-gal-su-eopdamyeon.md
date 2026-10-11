@@ -1,6 +1,6 @@
 ---
 title: "우리가 빛의 속도로 갈 수 없다면"
-author: ""
+author: "김초엽"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

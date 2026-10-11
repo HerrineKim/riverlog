@@ -1,6 +1,6 @@
 ---
 title: "우주의 구조"
-author: ""
+author: "브라이언 그린"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

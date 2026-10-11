@@ -1,6 +1,6 @@
 ---
 title: "감정은 패턴이다"
-author: ""
+author: "랜디 타란"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

@@ -1,6 +1,6 @@
 ---
 title: "디지털 인문학 입문"
-author: ""
+author: "김현, 임영상, 김바로"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

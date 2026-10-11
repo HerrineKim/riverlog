@@ -1,6 +1,6 @@
 ---
 title: "부자의 그릇"
-author: ""
+author: "이즈미 마사토"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

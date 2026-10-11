@@ -1,6 +1,6 @@
 ---
 title: "컴퓨터 과학이 여는 세계"
-author: ""
+author: "이광근"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC.", "객체지향"]

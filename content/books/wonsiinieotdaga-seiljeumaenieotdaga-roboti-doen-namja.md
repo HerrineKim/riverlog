@@ -1,6 +1,6 @@
 ---
 title: "원시인이었다가 세일즈맨이었다가 로봇이 된 남자"
-author: ""
+author: "김영현"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

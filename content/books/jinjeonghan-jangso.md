@@ -1,6 +1,6 @@
 ---
 title: "진정한 장소"
-author: ""
+author: "아니 에르노, 미셸 포르트"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "괜찮아지는 심리학"
-author: ""
+author: "팀 보노"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

@@ -1,6 +1,6 @@
 ---
 title: "정의란 무엇인가"
-author: ""
+author: "마이클 샌델"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

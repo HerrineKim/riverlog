@@ -1,6 +1,6 @@
 ---
 title: "오래된 미래"
-author: ""
+author: "헬레나 노르베리-호지"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

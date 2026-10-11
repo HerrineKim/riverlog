@@ -1,6 +1,6 @@
 ---
 title: "팀장이 직면하는 27가지 난감한 순간"
-author: ""
+author: "브루스 툴간"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

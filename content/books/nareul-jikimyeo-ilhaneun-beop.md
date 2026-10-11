@@ -1,6 +1,6 @@
 ---
 title: "나를 지키며 일하는 법"
-author: ""
+author: "강상중"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

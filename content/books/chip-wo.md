@@ -1,6 +1,6 @@
 ---
 title: "칩 워"
-author: ""
+author: "크리스 밀러"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

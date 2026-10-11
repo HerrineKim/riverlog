@@ -1,6 +1,6 @@
 ---
 title: "생각한다는 착각"
-author: ""
+author: "닉 채터"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

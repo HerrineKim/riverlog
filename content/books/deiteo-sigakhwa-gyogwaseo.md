@@ -1,6 +1,6 @@
 ---
 title: "데이터 시각화 교과서"
-author: ""
+author: "클라우스 윌케"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

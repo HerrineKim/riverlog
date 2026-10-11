@@ -1,6 +1,6 @@
 ---
 title: "Modern Operating Systems"
-author: ""
+author: "Andrew S. Tanenbaum"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "운영체제"]

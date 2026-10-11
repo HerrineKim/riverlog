@@ -1,6 +1,6 @@
 ---
 title: "벌거벗은 통계학"
-author: ""
+author: "찰스 윌런"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

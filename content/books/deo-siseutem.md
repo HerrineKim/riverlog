@@ -1,6 +1,6 @@
 ---
 title: "더 시스템"
-author: ""
+author: "스콧 애덤스"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

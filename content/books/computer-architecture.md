@@ -1,6 +1,6 @@
 ---
 title: "Computer Architecture"
-author: ""
+author: "오상엽"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "클린 코드·아키텍처"]

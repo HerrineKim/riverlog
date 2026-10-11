@@ -1,6 +1,6 @@
 ---
 title: "월드 와이드: 웹 당신이 꿈꾸는 인터넷 세상"
-author: ""
+author: "팀 버너스리"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

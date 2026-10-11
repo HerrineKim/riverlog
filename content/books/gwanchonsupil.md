@@ -1,6 +1,6 @@
 ---
 title: "관촌수필"
-author: ""
+author: "이문구"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

@@ -1,6 +1,6 @@
 ---
 title: "야코프의 천 번의 가을"
-author: ""
+author: "데이비드 미첼"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

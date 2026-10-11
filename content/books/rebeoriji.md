@@ -1,6 +1,6 @@
 ---
 title: "레버리지"
-author: ""
+author: "롭 무어"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

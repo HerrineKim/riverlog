@@ -1,6 +1,6 @@
 ---
 title: "도넛 경제학"
-author: ""
+author: "케이트 레이워스"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

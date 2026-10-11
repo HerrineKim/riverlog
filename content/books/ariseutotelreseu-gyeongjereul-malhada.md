@@ -1,6 +1,6 @@
 ---
 title: "아리스토텔레스 경제를 말하다"
-author: ""
+author: "홍기빈"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

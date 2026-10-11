@@ -1,6 +1,6 @@
 ---
 title: "Creative Selection"
-author: ""
+author: "Ken Kocienda"
 category: "기타"
 status: "want"
 tags: ["컴퓨터", "UI·UX·디자인"]

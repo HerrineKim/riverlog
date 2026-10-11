@@ -1,6 +1,6 @@
 ---
 title: "빛의 과거"
-author: ""
+author: "은희경"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

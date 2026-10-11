@@ -1,6 +1,6 @@
 ---
 title: "현대물리학과 동양사상"
-author: ""
+author: "프리초프 카프라"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

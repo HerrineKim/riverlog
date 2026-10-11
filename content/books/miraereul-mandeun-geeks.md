@@ -1,6 +1,6 @@
 ---
 title: "미래를 만든 Geeks"
-author: ""
+author: "앤디 허츠펠드"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

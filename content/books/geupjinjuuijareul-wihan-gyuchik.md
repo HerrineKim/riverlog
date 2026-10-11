@@ -1,6 +1,6 @@
 ---
 title: "급진주의자를 위한 규칙"
-author: ""
+author: "사울 D. 알린스키"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

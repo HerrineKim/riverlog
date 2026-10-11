@@ -1,6 +1,6 @@
 ---
 title: "주식은 모르겠고 투자는 하고 싶어"
-author: ""
+author: "구혜영"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

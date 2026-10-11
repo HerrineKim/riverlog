@@ -1,6 +1,6 @@
 ---
 title: "일의 기쁨과 슬픔"
-author: ""
+author: "장류진"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

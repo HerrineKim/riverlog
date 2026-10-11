@@ -1,6 +1,6 @@
 ---
 title: "맹자(오늘을 읽는)"
-author: ""
+author: "맹자"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "위험한 책 읽기"
-author: ""
+author: "허윤"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

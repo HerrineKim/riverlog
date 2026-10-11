@@ -1,6 +1,6 @@
 ---
 title: "대량살상 수학무기"
-author: ""
+author: "캐시 오닐"
 category: "인문·사회"
 status: "read"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "틀리지 않는 법"
-author: ""
+author: "조던 엘렌버그"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

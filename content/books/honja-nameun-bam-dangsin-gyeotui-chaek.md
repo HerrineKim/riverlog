@@ -1,6 +1,6 @@
 ---
 title: "혼자 남은 밤, 당신 곁의 책"
-author: ""
+author: "표정훈"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

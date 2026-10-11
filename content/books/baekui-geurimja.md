@@ -1,6 +1,6 @@
 ---
 title: "백의 그림자"
-author: ""
+author: "황정은"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

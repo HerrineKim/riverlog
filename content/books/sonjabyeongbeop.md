@@ -1,6 +1,6 @@
 ---
 title: "손자병법"
-author: ""
+author: "손무"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

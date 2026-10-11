@@ -1,6 +1,6 @@
 ---
 title: "후불제 민주주의"
-author: ""
+author: "유시민"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

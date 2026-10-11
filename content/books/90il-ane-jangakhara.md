@@ -1,6 +1,6 @@
 ---
 title: "90일 안에 장악하라"
-author: ""
+author: "마이클 왓킨스"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

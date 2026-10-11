@@ -1,6 +1,6 @@
 ---
 title: "The software Engineer's Guidebook"
-author: ""
+author: "Gergely Orosz"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

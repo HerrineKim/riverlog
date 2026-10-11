@@ -1,6 +1,6 @@
 ---
 title: "퇴사하겠습니다"
-author: ""
+author: "이나가키 에미코"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

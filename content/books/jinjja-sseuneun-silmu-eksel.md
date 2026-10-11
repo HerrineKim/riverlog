@@ -1,6 +1,6 @@
 ---
 title: "진짜 쓰는 실무 엑셀"
-author: ""
+author: "오빠두(전진권)"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

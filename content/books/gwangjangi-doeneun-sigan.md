@@ -1,6 +1,6 @@
 ---
 title: "광장이 되는 시간"
-author: ""
+author: "윤여일"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

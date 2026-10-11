@@ -1,6 +1,6 @@
 ---
 title: "철학적 분석은 어떻게 하는가"
-author: ""
+author: "존 호스퍼스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

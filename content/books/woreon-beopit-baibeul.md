@@ -1,6 +1,6 @@
 ---
 title: "워런 버핏 바이블"
-author: ""
+author: "워런 버핏, 리처드 코너스"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "오디세이 세미나"
-author: ""
+author: "대니얼 멘델슨"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

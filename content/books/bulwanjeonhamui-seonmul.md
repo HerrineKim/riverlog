@@ -1,6 +1,6 @@
 ---
 title: "불완전함의 선물"
-author: ""
+author: "브렌 브라운"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

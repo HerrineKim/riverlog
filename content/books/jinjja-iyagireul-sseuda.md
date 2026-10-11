@@ -1,6 +1,6 @@
 ---
 title: "진짜 이야기를 쓰다"
-author: ""
+author: "마크 크레이머, 웬디 콜"
 category: "기타"
 status: "want"
 tags: ["글쓰기"]

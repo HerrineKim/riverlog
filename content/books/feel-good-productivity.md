@@ -1,6 +1,6 @@
 ---
 title: "Feel Good Productivity"
-author: ""
+author: "Ali Abdaal"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

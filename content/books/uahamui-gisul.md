@@ -1,6 +1,6 @@
 ---
 title: "우아함의 기술"
-author: ""
+author: "사라 카우프먼"
 category: "자기계발"
 status: "want"
 tags: ["자기계발", "인문"]

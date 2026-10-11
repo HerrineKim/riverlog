@@ -1,6 +1,6 @@
 ---
 title: "우리는 맞고 너희는 틀렸다"
-author: ""
+author: "마이클 린치"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

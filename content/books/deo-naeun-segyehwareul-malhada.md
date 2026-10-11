@@ -1,6 +1,6 @@
 ---
 title: "더 나은 세계화를 말하다"
-author: ""
+author: "대니 로드릭"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

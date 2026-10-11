@@ -1,6 +1,6 @@
 ---
 title: "오늘날 우리는 컴퓨터라 부른다"
-author: ""
+author: "마틴 데이비스"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

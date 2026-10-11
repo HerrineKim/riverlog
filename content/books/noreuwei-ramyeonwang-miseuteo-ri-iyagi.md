@@ -1,6 +1,6 @@
 ---
 title: "노르웨이 라면왕 미스터 리 이야기"
-author: ""
+author: "이 인"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "제가 좀 별나긴 합니다만…"
-author: ""
+author: "쥘리 다셰, 마드무아젤 카롤린"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

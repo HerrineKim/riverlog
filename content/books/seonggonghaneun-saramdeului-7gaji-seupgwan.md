@@ -1,6 +1,6 @@
 ---
 title: "성공하는 사람들의 7가지 습관"
-author: ""
+author: "스티븐 코비"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

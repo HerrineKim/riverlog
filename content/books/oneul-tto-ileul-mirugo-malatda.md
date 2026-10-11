@@ -1,6 +1,6 @@
 ---
 title: "오늘, 또 일을 미루고 말았다"
-author: ""
+author: "나카지마 사토시"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

@@ -1,6 +1,6 @@
 ---
 title: "국가"
-author: ""
+author: "플라톤"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

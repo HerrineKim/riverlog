@@ -1,6 +1,6 @@
 ---
 title: "향수"
-author: ""
+author: "파트리크 쥐스킨트"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

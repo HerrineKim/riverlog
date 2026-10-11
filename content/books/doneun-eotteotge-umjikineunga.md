@@ -1,6 +1,6 @@
 ---
 title: "돈은 어떻게 움직이는가?"
-author: ""
+author: "임경, 권준석"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

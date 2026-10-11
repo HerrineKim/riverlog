@@ -1,6 +1,6 @@
 ---
 title: "철학콘서트"
-author: ""
+author: "황광우"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

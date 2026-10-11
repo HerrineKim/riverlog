@@ -1,6 +1,6 @@
 ---
 title: "밑바닥부터 만드는 컴퓨팅 시스템"
-author: ""
+author: "노암 니산, 시몬 쇼켄"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

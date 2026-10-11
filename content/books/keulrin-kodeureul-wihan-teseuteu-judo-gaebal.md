@@ -1,6 +1,6 @@
 ---
 title: "클린 코드를 위한 테스트 주도 개발"
-author: ""
+author: "해리 J.W. 퍼시벌"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "테스트 주도 개발(TDD)"]

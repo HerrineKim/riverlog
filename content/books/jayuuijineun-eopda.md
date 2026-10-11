@@ -1,6 +1,6 @@
 ---
 title: "자유의지는 없다"
-author: ""
+author: "샘 해리스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

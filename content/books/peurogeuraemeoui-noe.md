@@ -1,6 +1,6 @@
 ---
 title: "프로그래머의 뇌"
-author: ""
+author: "펠리너 헤르만스"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

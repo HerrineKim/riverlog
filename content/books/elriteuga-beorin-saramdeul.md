@@ -1,6 +1,6 @@
 ---
 title: "엘리트가 버린 사람들"
-author: ""
+author: "데이비드 굿하트"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

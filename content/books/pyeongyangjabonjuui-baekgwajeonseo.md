@@ -1,6 +1,6 @@
 ---
 title: "평양자본주의 백과전서"
-author: ""
+author: "주성하"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

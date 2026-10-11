@@ -1,6 +1,6 @@
 ---
 title: "레시피보다 중요한 100가지 요리 비결"
-author: ""
+author: "쿠아야마 케이토"
 category: "기타"
 status: "want"
 tags: ["건강/요리"]

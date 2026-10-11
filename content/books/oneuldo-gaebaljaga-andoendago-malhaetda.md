@@ -1,6 +1,6 @@
 ---
 title: "오늘도 개발자가 안된다고 말했다"
-author: ""
+author: "김중철, 김수지"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

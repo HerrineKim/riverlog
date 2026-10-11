@@ -1,6 +1,6 @@
 ---
 title: "나는 내가 죽었다고 생각했습니다"
-author: ""
+author: "질 볼트 테일러"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

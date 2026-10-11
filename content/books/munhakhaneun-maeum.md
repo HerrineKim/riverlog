@@ -1,6 +1,6 @@
 ---
 title: "문학하는 마음"
-author: ""
+author: "김필균"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

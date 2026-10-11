@@ -1,6 +1,6 @@
 ---
 title: "최선의 고통"
-author: ""
+author: "폴 블룸"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

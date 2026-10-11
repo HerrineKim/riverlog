@@ -1,6 +1,6 @@
 ---
 title: "돈 버는 사람은 분명 따로 있다"
-author: ""
+author: "이상건"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "공부의 미래"
-author: ""
+author: "구본권"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

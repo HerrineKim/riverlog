@@ -1,6 +1,6 @@
 ---
 title: "원씽 THE ONE THING"
-author: ""
+author: "게리 켈러, 제이 파파산"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

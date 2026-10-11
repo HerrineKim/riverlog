@@ -1,6 +1,6 @@
 ---
 title: "일상기술연구소"
-author: ""
+author: "제현주, 금정연"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

@@ -1,6 +1,6 @@
 ---
 title: "오리지널스"
-author: ""
+author: "애덤 그랜트"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

@@ -1,6 +1,6 @@
 ---
 title: "마케터의 일"
-author: ""
+author: "장인성"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

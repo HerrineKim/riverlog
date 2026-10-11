@@ -1,6 +1,6 @@
 ---
 title: "세포의 노래"
-author: ""
+author: "싯다르타 무케르지, 이한음"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

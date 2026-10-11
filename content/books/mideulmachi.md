@@ -1,6 +1,6 @@
 ---
 title: "미들마치"
-author: ""
+author: "조지 엘리엇"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

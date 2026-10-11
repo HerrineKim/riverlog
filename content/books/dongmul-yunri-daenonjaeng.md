@@ -1,6 +1,6 @@
 ---
 title: "동물 윤리 대논쟁"
-author: ""
+author: "최훈"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

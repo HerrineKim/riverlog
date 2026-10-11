@@ -1,6 +1,6 @@
 ---
 title: "아주 작은 습관의 힘"
-author: ""
+author: "제임스 클리어"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

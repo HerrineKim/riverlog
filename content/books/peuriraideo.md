@@ -1,6 +1,6 @@
 ---
 title: "프리라이더"
-author: ""
+author: "선대인"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "부모와 다른 아이들"
-author: ""
+author: "앤드류 솔로몬"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

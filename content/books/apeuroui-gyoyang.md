@@ -1,6 +1,6 @@
 ---
 title: "앞으로의 교양"
-author: ""
+author: "스가쓰케 마사노부"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

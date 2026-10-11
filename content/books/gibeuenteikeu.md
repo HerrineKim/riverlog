@@ -1,6 +1,6 @@
 ---
 title: "기브엔테이크"
-author: ""
+author: "애덤 그랜트"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

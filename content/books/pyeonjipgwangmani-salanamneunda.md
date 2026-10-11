@@ -1,6 +1,6 @@
 ---
 title: "편집광만이 살아남는다"
-author: ""
+author: "앤드류 그로브"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

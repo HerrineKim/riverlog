@@ -1,6 +1,6 @@
 ---
 title: "아웃라이어"
-author: ""
+author: "말콤 글래드웰"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

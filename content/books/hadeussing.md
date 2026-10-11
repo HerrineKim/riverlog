@@ -1,6 +1,6 @@
 ---
 title: "하드씽"
-author: ""
+author: "벤 호로위츠"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅", "컴퓨터", "객체지향"]

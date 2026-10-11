@@ -1,6 +1,6 @@
 ---
 title: "주켄 사람들"
-author: ""
+author: "마츠우라 모토오"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

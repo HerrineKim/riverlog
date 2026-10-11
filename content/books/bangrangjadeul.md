@@ -1,6 +1,6 @@
 ---
 title: "방랑자들"
-author: ""
+author: "올가 토카르추크"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

@@ -1,6 +1,6 @@
 ---
 title: "더 나은 세상"
-author: ""
+author: "가브리엘 파체코"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

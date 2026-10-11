@@ -1,6 +1,6 @@
 ---
 title: "파생상품 세일즈맨의 고백"
-author: ""
+author: "프랭크 파트노이"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

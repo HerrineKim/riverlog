@@ -1,6 +1,6 @@
 ---
 title: "직업으로서의 정치"
-author: ""
+author: "막스 베버"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

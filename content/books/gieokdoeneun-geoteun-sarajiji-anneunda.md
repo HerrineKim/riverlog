@@ -1,6 +1,6 @@
 ---
 title: "기억되는 것은 사라지지 않는다"
-author: ""
+author: "진용주"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

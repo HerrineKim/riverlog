@@ -1,6 +1,6 @@
 ---
 title: "에데올로기의 종언"
-author: ""
+author: "다니엘 벨"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

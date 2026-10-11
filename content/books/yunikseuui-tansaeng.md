@@ -1,6 +1,6 @@
 ---
 title: "유닉스의 탄생"
-author: ""
+author: "브라이언 커니핸"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "언어·기술"]

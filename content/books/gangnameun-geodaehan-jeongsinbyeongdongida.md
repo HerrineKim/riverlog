@@ -1,6 +1,6 @@
 ---
 title: "강남은 거대한 정신병동이다"
-author: ""
+author: "김정일"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

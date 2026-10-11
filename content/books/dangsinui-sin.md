@@ -1,6 +1,6 @@
 ---
 title: "당신의 신"
-author: ""
+author: "김숨"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

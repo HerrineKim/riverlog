@@ -1,6 +1,6 @@
 ---
 title: "현금의 재발견"
-author: ""
+author: "윌리엄 손다이크"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

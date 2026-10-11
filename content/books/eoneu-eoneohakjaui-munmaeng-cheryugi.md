@@ -1,6 +1,6 @@
 ---
 title: "어느 언어학자의 문맹 체류기"
-author: ""
+author: "백승주"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

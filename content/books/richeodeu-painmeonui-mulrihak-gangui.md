@@ -1,6 +1,6 @@
 ---
 title: "리처드 파인먼의 물리학 강의"
-author: ""
+author: "리처드 파인먼"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

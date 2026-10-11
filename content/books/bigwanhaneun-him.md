@@ -1,6 +1,6 @@
 ---
 title: "비관하는 힘"
-author: ""
+author: "모리 히로시"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "이런 사원들이 문제사원들이다"
-author: ""
+author: "김문경"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

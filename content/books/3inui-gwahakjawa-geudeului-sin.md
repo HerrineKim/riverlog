@@ -1,6 +1,6 @@
 ---
 title: "3인의 과학자와 그들의 신"
-author: ""
+author: "로버트 라이트"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

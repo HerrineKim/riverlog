@@ -1,6 +1,6 @@
 ---
 title: "월스트리트저널 인포그래픽 가이드"
-author: ""
+author: "도나 M. 웡"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

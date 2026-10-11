@@ -1,6 +1,6 @@
 ---
 title: "우리말 어감 사전"
-author: ""
+author: "안상순"
 category: "기타"
 status: "want"
 tags: ["글쓰기"]

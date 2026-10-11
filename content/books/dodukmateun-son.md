@@ -1,6 +1,6 @@
 ---
 title: "도둑맞은 손"
-author: ""
+author: "장 피에르 보"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

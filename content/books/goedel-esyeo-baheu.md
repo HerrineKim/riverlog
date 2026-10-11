@@ -1,6 +1,6 @@
 ---
 title: "괴델, 에셔, 바흐"
-author: ""
+author: "더글러스 호프스태터"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

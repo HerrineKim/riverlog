@@ -1,6 +1,6 @@
 ---
 title: "프로그래밍은 상상이다"
-author: ""
+author: "임백준"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

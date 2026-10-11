@@ -1,6 +1,6 @@
 ---
 title: "채식주의자"
-author: ""
+author: "한강"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

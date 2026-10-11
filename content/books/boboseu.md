@@ -1,6 +1,6 @@
 ---
 title: "보보스"
-author: ""
+author: "데이비드 브룩스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

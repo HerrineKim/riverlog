@@ -1,6 +1,6 @@
 ---
 title: "세상과 나 사이"
-author: ""
+author: "타네히시 코츠"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

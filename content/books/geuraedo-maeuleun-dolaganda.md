@@ -1,6 +1,6 @@
 ---
 title: "그래도 마을은 돌아간다"
-author: ""
+author: "이시구로 마사카즈"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

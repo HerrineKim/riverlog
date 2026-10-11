@@ -1,6 +1,6 @@
 ---
 title: "문학과 예술의 사회사"
-author: ""
+author: "아르놀트 하우저"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

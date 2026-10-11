@@ -1,6 +1,6 @@
 ---
 title: "플랫폼 레볼루션"
-author: ""
+author: "마셜 밴 앨스타인, 상지트 폴 초더리, 제프리 파커"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

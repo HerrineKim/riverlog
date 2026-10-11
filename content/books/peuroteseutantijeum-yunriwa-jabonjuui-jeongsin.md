@@ -1,6 +1,6 @@
 ---
 title: "프로테스탄티즘 윤리와 자본주의 정신"
-author: ""
+author: "막스 베버"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "아키텍트 이야기"
-author: ""
+author: "야마모토 케이지"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

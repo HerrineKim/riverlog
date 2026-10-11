@@ -1,6 +1,6 @@
 ---
 title: "운명과 분노"
-author: ""
+author: "로런 그로프"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

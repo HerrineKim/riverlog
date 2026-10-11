@@ -1,6 +1,6 @@
 ---
 title: "읽기 좋은 코드가 좋은 코드다"
-author: ""
+author: "더스틴 보즈웰, 트레버 파우커"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "클린 코드·아키텍처"]

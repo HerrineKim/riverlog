@@ -1,6 +1,6 @@
 ---
 title: "심플 플랜"
-author: ""
+author: "스콧 스미스"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

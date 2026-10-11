@@ -1,6 +1,6 @@
 ---
 title: "0과 1로 세상을 바꾸는 구글, 그 모든 이야기"
-author: ""
+author: "스티븐 레비"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

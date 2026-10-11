@@ -1,6 +1,6 @@
 ---
 title: "공룡책"
-author: ""
+author: "에이브러햄 실버샤츠, 피터 갈빈, 그렉 가그너"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "운영체제"]

@@ -1,6 +1,6 @@
 ---
 title: "유혹하는 글쓰기"
-author: ""
+author: "스티븐 킹"
 category: "기타"
 status: "want"
 tags: ["글쓰기"]

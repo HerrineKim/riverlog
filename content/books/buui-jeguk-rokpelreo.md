@@ -1,6 +1,6 @@
 ---
 title: "부의 제국 록펠러"
-author: ""
+author: "론 처노"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

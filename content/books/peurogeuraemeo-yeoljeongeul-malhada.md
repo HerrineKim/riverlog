@@ -1,6 +1,6 @@
 ---
 title: "프로그래머, 열정을 말하다"
-author: ""
+author: "채드 파울러"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

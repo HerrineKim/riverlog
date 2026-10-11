@@ -1,6 +1,6 @@
 ---
 title: "설득의 심리학"
-author: ""
+author: "로버트 치알디니"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

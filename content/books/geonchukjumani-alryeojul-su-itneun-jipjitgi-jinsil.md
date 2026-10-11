@@ -1,6 +1,6 @@
 ---
 title: "건축주만이 알려줄 수 있는 집짓기 진실"
-author: ""
+author: "손창완"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

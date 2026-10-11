@@ -1,6 +1,6 @@
 ---
 title: "작가는 어떻게 생각을 시작하는가"
-author: ""
+author: "이응준"
 category: "기타"
 status: "want"
 tags: ["글쓰기"]

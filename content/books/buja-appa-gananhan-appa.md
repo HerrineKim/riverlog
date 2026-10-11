@@ -1,6 +1,6 @@
 ---
 title: "부자 아빠 가난한 아빠"
-author: ""
+author: "로버트 기요사키"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

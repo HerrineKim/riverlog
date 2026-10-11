@@ -1,6 +1,6 @@
 ---
 title: "이희호 평전"
-author: ""
+author: "고명섭"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

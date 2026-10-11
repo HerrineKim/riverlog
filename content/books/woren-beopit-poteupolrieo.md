@@ -1,6 +1,6 @@
 ---
 title: "워렌 버핏 포트폴리어"
-author: ""
+author: "로버트 해그스트롬"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

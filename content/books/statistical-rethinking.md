@@ -1,6 +1,6 @@
 ---
 title: "statistical rethinking"
-author: ""
+author: "Richard McElreath"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

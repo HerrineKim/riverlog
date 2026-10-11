@@ -1,6 +1,6 @@
 ---
 title: "C로 쓴 자료구조론"
-author: ""
+author: "Ellis Horowitz"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "자료구조"]

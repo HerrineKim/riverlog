@@ -1,6 +1,6 @@
 ---
 title: "오늘은 잘 모르겠어"
-author: ""
+author: "심보선"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

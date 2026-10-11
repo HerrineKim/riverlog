@@ -1,6 +1,6 @@
 ---
 title: "안나와디의 아이들"
-author: ""
+author: "캐서린 부"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

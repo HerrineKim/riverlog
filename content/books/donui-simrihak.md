@@ -1,6 +1,6 @@
 ---
 title: "돈의 심리학"
-author: ""
+author: "모건 하우절"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

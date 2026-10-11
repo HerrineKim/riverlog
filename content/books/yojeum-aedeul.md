@@ -1,6 +1,6 @@
 ---
 title: "요즘 애들"
-author: ""
+author: "앤 헬렌 피터슨"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

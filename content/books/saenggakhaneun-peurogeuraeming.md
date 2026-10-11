@@ -1,6 +1,6 @@
 ---
 title: "생각하는 프로그래밍"
-author: ""
+author: "존 벤틀리"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

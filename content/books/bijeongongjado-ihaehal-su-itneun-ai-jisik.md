@@ -1,6 +1,6 @@
 ---
 title: "비전공자도 이해할 수 있는 AI 지식"
-author: ""
+author: "박상길"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

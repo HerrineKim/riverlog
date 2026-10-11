@@ -1,6 +1,6 @@
 ---
 title: "로켓 드림"
-author: ""
+author: "크리스천 데이븐포트"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

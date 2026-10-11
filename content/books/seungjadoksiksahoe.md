@@ -1,6 +1,6 @@
 ---
 title: "승자독식사회"
-author: ""
+author: "로버트 H. 프랭크, 필립 쿡"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

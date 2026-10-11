@@ -1,6 +1,6 @@
 ---
 title: "상어와 함께 수영하되 잡아먹히지 않고 살아남는 법"
-author: ""
+author: "하비 맥케이"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

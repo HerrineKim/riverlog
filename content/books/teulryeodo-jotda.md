@@ -1,6 +1,6 @@
 ---
 title: "틀려도 좋다"
-author: ""
+author: "헤닝 백"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

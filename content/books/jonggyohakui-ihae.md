@@ -1,6 +1,6 @@
 ---
 title: "종교학의 이해"
-author: ""
+author: "유요한"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

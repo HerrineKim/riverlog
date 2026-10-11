@@ -1,6 +1,6 @@
 ---
 title: "The truthful art"
-author: ""
+author: "Alberto Cairo"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

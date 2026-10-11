@@ -1,6 +1,6 @@
 ---
 title: "슈퍼 인텔리전스"
-author: ""
+author: "닉 보스트롬"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

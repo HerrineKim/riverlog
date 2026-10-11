@@ -1,6 +1,6 @@
 ---
 title: "통근하는 삶"
-author: ""
+author: "데이비드 비셀"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "백종원의 장사 이야기"
-author: ""
+author: "백종원"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

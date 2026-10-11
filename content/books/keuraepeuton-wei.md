@@ -1,6 +1,6 @@
 ---
 title: "크래프톤 웨이"
-author: ""
+author: "이기문"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

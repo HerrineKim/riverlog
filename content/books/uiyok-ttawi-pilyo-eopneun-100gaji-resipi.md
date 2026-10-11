@@ -1,6 +1,6 @@
 ---
 title: "의욕 따위 필요 없는 100가지 레시피"
-author: ""
+author: "하라페코 그리즐리"
 category: "기타"
 status: "want"
 tags: ["건강/요리"]

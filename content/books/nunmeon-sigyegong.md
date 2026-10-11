@@ -1,6 +1,6 @@
 ---
 title: "눈먼 시계공"
-author: ""
+author: "리처드 도킨스"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

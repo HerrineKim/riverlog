@@ -1,6 +1,6 @@
 ---
 title: "윤성우의 열혈 자료구조"
-author: ""
+author: "윤성우"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "자료구조"]

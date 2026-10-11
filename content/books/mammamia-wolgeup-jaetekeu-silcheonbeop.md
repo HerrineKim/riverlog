@@ -1,6 +1,6 @@
 ---
 title: "맘마미아 월급 재테크 실천법"
-author: ""
+author: "맘마미아"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

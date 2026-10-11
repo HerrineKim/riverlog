@@ -1,6 +1,6 @@
 ---
 title: "플레인 센스"
-author: ""
+author: "김동현"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

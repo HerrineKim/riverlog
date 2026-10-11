@@ -1,6 +1,6 @@
 ---
 title: "빛의 호위"
-author: ""
+author: "조해진"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

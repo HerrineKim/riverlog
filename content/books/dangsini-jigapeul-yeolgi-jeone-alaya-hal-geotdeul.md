@@ -1,6 +1,6 @@
 ---
 title: "당신이 지갑을 열기 전에 알아야 할 것들"
-author: ""
+author: "엘리자베스 던, 마이클 노튼"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

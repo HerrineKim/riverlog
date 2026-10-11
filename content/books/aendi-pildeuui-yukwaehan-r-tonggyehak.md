@@ -1,6 +1,6 @@
 ---
 title: "(앤디 필드의) 유쾌한 R 통계학"
-author: ""
+author: "앤디 필드"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

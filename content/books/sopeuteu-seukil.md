@@ -1,6 +1,6 @@
 ---
 title: "소프트 스킬"
-author: ""
+author: "존 손메즈"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

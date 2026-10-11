@@ -1,6 +1,6 @@
 ---
 title: "C로 구현한 알고리즘"
-author: ""
+author: "Kyle Loudon"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

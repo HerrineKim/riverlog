@@ -1,6 +1,6 @@
 ---
 title: "슈독"
-author: ""
+author: "필 나이트"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

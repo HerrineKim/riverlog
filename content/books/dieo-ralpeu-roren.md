@@ -1,6 +1,6 @@
 ---
 title: "디어 랄프 로렌"
-author: ""
+author: "손보미"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

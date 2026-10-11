@@ -1,6 +1,6 @@
 ---
 title: "시노다 과장의 삼시세끼"
-author: ""
+author: "시노다 나오키"
 category: "기타"
 status: "want"
 tags: ["건강/요리"]

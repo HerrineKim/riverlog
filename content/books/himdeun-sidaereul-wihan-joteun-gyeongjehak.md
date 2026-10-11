@@ -1,6 +1,6 @@
 ---
 title: "힘든 시대를 위한 좋은 경제학"
-author: ""
+author: "아비지트 배너지, 에스테르 뒤플로"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "소유냐 존재냐"
-author: ""
+author: "에리히 프롬"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "노화학사전"
-author: ""
+author: "최현석"
 category: "기타"
 status: "want"
 tags: ["건강/요리"]

@@ -1,6 +1,6 @@
 ---
 title: "똑똑한 코드 작성을 위한 실전 알고리즘"
-author: ""
+author: "조지 하이네만"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

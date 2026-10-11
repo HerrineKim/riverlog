@@ -1,6 +1,6 @@
 ---
 title: "거의 모든 것의 역사"
-author: ""
+author: "빌 브라이슨"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

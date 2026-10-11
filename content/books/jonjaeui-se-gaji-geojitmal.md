@@ -1,6 +1,6 @@
 ---
 title: "존재의 세 가지 거짓말"
-author: ""
+author: "아고타 크리스토프"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

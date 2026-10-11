@@ -1,6 +1,6 @@
 ---
 title: "우리는 책 앞에서 가장 솔직해진다"
-author: ""
+author: "안드레아 게르크"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

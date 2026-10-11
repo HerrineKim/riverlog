@@ -1,6 +1,6 @@
 ---
 title: "1인 가구 돈 관리"
-author: ""
+author: "공아연"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

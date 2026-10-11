@@ -1,6 +1,6 @@
 ---
 title: "맥스 테그마크의 라이프 3.0"
-author: ""
+author: "맥스 테그마크"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

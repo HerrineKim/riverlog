@@ -1,6 +1,6 @@
 ---
 title: "우리가 우리를 우리라고 부를 때"
-author: ""
+author: "추적단 불꽃"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

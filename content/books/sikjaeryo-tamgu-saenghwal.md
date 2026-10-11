@@ -1,6 +1,6 @@
 ---
 title: "식재료 탐구 생활"
-author: ""
+author: "노자키 히로미쓰"
 category: "기타"
 status: "want"
 tags: ["건강/요리"]

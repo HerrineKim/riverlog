@@ -1,6 +1,6 @@
 ---
 title: "TCP/IP 완벽 가이드"
-author: ""
+author: "Charles M. Kozierok"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "네트워크"]

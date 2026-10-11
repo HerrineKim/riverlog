@@ -1,6 +1,6 @@
 ---
 title: "성과 향상을 위한 코칭 리더십"
-author: ""
+author: "존 휘트모어, 티파니 개스켈"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

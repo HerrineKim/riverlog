@@ -1,6 +1,6 @@
 ---
 title: "함수형 자바스크립트"
-author: ""
+author: "루이스 아텐시오"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "FE"]

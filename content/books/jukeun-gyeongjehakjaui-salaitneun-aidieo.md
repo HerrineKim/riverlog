@@ -1,6 +1,6 @@
 ---
 title: "죽은 경제학자의 살아있는 아이디어"
-author: ""
+author: "토드 부크홀츠"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

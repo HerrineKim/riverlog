@@ -1,6 +1,6 @@
 ---
 title: "우아한 관찰주의자"
-author: ""
+author: "에이미 E. 허먼"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

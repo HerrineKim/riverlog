@@ -1,6 +1,6 @@
 ---
 title: "로마인 이야기"
-author: ""
+author: "시오노 나나미"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

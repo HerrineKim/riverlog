@@ -1,6 +1,6 @@
 ---
 title: "철학자 김진영의 전복적 소설 읽기"
-author: ""
+author: "김진영"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

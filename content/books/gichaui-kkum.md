@@ -1,6 +1,6 @@
 ---
 title: "기차의 꿈"
-author: ""
+author: "데니스 존슨"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

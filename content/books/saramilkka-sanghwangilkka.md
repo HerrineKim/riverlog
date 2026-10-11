@@ -1,6 +1,6 @@
 ---
 title: "사람일까 상황일까"
-author: ""
+author: "리처드 니스벳, 리 로스"
 category: "인문·사회"
 status: "read"
 tags: ["인문"]

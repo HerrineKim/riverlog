@@ -1,6 +1,6 @@
 ---
 title: "자본론"
-author: ""
+author: "카를 마르크스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

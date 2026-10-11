@@ -1,6 +1,6 @@
 ---
 title: "인플레이션"
-author: ""
+author: "하노 벡, 우르반 바허, 마르코 헤르만"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

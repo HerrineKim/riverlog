@@ -1,6 +1,6 @@
 ---
 title: "Compilers: Principles, Techniques, and Tools"
-author: ""
+author: "Alfred V. Aho"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

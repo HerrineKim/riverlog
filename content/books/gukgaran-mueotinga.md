@@ -1,6 +1,6 @@
 ---
 title: "국가란 무엇인가"
-author: ""
+author: "유시민"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

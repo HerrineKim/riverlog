@@ -1,6 +1,6 @@
 ---
 title: "곱게 지지 말기로 해"
-author: ""
+author: "김진아"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

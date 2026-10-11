@@ -1,6 +1,6 @@
 ---
 title: "스피노자 매뉴얼"
-author: ""
+author: "피에르-프랑수아 모로"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

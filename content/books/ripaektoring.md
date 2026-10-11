@@ -1,6 +1,6 @@
 ---
 title: "리팩토링"
-author: ""
+author: "마틴 파울러"
 category: "개발"
 status: "read"
 tags: ["컴퓨터", "클린 코드·아키텍처"]

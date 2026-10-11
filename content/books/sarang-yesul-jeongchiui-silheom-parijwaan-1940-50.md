@@ -1,6 +1,6 @@
 ---
 title: "사랑, 예술, 정치의 실험: 파리좌안 1940-50"
-author: ""
+author: "아녜스 푸아리에"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

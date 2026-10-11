@@ -1,6 +1,6 @@
 ---
 title: "별을 보여 드립니다"
-author: ""
+author: "이청준"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

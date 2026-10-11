@@ -1,6 +1,6 @@
 ---
 title: "선을 넘는 한국인 선을 긋는 일본인"
-author: ""
+author: "한민"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

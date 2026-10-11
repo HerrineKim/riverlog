@@ -1,6 +1,6 @@
 ---
 title: "딥 심플리시티"
-author: ""
+author: "존 그리빈"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

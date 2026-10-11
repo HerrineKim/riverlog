@@ -1,6 +1,6 @@
 ---
 title: "예일대 지성사 강의"
-author: ""
+author: "프랭크 터너"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

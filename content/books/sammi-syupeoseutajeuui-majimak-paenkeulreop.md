@@ -1,6 +1,6 @@
 ---
 title: "삼미 슈퍼스타즈의 마지막 팬클럽"
-author: ""
+author: "박민규"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

@@ -1,6 +1,6 @@
 ---
 title: "린마케팅"
-author: ""
+author: "앨런 딥"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

@@ -1,6 +1,6 @@
 ---
 title: "빵과 장미"
-author: ""
+author: "브루스 왓슨"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

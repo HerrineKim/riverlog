@@ -1,6 +1,6 @@
 ---
 title: "The Positive Power of Negative Thinking"
-author: ""
+author: "Julie K. Norem"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

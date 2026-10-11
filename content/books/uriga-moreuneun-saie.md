@@ -1,6 +1,6 @@
 ---
 title: "우리가 모르는 사이에"
-author: ""
+author: "존 바그"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

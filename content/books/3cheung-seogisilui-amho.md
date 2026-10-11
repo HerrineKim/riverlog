@@ -1,6 +1,6 @@
 ---
 title: "3층 서기실의 암호"
-author: ""
+author: "태영호"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

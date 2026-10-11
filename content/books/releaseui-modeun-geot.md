@@ -1,6 +1,6 @@
 ---
 title: "Release의 모든 것"
-author: ""
+author: "마이클 나이가드"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

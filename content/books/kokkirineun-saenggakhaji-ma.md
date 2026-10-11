@@ -1,6 +1,6 @@
 ---
 title: "코끼리는 생각하지 마"
-author: ""
+author: "조지 레이코프"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치", "심리/감정"]

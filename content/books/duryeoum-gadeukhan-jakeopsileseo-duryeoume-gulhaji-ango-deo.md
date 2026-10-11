@@ -1,6 +1,6 @@
 ---
 title: "두려움 가득한 작업실에서 두려움에 굴하지 않고-더 패치"
-author: ""
+author: "존 맥피"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

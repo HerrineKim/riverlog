@@ -1,6 +1,6 @@
 ---
 title: "수집가의 철학"
-author: ""
+author: "이병철"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

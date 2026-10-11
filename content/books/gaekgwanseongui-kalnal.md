@@ -1,6 +1,6 @@
 ---
 title: "객관성의 칼날"
-author: ""
+author: "찰스 길리스피"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

@@ -1,6 +1,6 @@
 ---
 title: "대한민국 부동산 지난 10년 앞으로 10년"
-author: ""
+author: "채상욱"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

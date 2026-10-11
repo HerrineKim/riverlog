@@ -1,6 +1,6 @@
 ---
 title: "글로벌 포드주의 총력전 - 나치 독일, 소비에트 러시아 그리고 산업화를 향한 경쟁"
-author: ""
+author: "스테판 링크"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

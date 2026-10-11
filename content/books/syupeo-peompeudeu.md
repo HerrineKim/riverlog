@@ -1,6 +1,6 @@
 ---
 title: "슈퍼 펌프드"
-author: ""
+author: "마이크 아이작"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

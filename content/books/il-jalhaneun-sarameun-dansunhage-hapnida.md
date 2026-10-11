@@ -1,6 +1,6 @@
 ---
 title: "일 잘하는 사람은 단순하게 합니다"
-author: ""
+author: "박소연"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

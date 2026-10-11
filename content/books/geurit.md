@@ -1,6 +1,6 @@
 ---
 title: "그릿"
-author: ""
+author: "앤절라 더크워스"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

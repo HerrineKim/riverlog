@@ -1,6 +1,6 @@
 ---
 title: "호모데우스"
-author: ""
+author: "유발 하라리"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "태평양 전쟁사"
-author: ""
+author: "일본역사학연구회"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

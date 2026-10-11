@@ -1,6 +1,6 @@
 ---
 title: "클로드 코드 마스터"
-author: ""
+author: "이남희, 백승현"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

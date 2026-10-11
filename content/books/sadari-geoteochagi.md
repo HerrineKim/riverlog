@@ -1,6 +1,6 @@
 ---
 title: "사다리 걷어차기"
-author: ""
+author: "장하준"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

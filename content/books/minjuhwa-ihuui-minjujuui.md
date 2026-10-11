@@ -1,6 +1,6 @@
 ---
 title: "민주화 이후의 민주주의"
-author: ""
+author: "최장집"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

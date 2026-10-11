@@ -1,6 +1,6 @@
 ---
 title: "모든 것은 그 자리에"
-author: ""
+author: "올리버 색스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

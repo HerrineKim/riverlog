@@ -1,6 +1,6 @@
 ---
 title: "이웃집 백만장자"
-author: ""
+author: "토머스 J. 스탠리, 윌리엄 D. 댄코"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

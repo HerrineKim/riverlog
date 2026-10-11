@@ -1,6 +1,6 @@
 ---
 title: "20대 남자"
-author: ""
+author: "천관율, 정한울"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

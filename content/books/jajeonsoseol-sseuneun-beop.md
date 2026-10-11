@@ -1,6 +1,6 @@
 ---
 title: "자전소설 쓰는 법"
-author: ""
+author: "알렉산더 지"
 category: "기타"
 status: "want"
 tags: ["글쓰기"]

@@ -1,6 +1,6 @@
 ---
 title: "육각형 개발자"
-author: ""
+author: "최범균"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

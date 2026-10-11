@@ -1,6 +1,6 @@
 ---
 title: "뜻으로 본 한국역사"
-author: ""
+author: "함석헌"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

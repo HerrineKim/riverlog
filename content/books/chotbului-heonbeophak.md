@@ -1,6 +1,6 @@
 ---
 title: "촛불의 헌법학"
-author: ""
+author: "이준일"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

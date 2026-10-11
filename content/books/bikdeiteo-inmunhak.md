@@ -1,6 +1,6 @@
 ---
 title: "빅데이터 인문학"
-author: ""
+author: "에레즈 에이든, 장바티스트 미셸"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

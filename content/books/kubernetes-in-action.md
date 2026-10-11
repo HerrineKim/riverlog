@@ -1,6 +1,6 @@
 ---
 title: "Kubernetes in Action"
-author: ""
+author: "Marko Lukša"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "언어·기술"]

@@ -1,6 +1,6 @@
 ---
 title: "보이지 않는 중국"
-author: ""
+author: "스콧 로젤, 내털리 헬"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

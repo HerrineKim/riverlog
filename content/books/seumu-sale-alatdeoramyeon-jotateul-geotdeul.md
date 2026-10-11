@@ -1,6 +1,6 @@
 ---
 title: "스무 살에 알았더라면 좋았을 것들"
-author: ""
+author: "티나 실리그"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

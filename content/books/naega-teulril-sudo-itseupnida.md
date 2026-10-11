@@ -1,6 +1,6 @@
 ---
 title: "내가 틀릴 수도 있습니다"
-author: ""
+author: "비욘 나티코 린데블라드"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

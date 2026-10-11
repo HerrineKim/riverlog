@@ -1,6 +1,6 @@
 ---
 title: "머더리스 브루클린"
-author: ""
+author: "조나단 레덤"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

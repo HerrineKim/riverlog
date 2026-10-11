@@ -1,6 +1,6 @@
 ---
 title: "7일 공부법"
-author: ""
+author: "스즈키 히데아키"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

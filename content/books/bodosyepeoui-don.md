@@ -1,6 +1,6 @@
 ---
 title: "보도셰퍼의 돈"
-author: ""
+author: "보도 섀퍼"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

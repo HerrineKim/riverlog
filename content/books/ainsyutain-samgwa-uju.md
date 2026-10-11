@@ -1,6 +1,6 @@
 ---
 title: "아인슈타인 삶과 우주"
-author: ""
+author: "월터 아이작슨"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

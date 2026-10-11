@@ -1,6 +1,6 @@
 ---
 title: "20 VS 80의 사회"
-author: ""
+author: "리처드 리브스"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "알고리즘이 보이는 그림책"
-author: ""
+author: "ANK Co., Ltd."
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

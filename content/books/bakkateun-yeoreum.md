@@ -1,6 +1,6 @@
 ---
 title: "바깥은 여름"
-author: ""
+author: "김애란"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

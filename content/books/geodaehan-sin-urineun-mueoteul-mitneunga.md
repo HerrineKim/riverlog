@@ -1,6 +1,6 @@
 ---
 title: "거대한 신 우리는 무엇을 믿는가"
-author: ""
+author: "아라 노렌자얀"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

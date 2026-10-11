@@ -33,7 +33,7 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
           <div className="min-w-0">
             <p className="text-sm text-muted">{book.category}</p>
             <h1 className="mt-2 text-3xl leading-tight font-bold text-balance text-fg-strong sm:text-4xl">{book.title}</h1>
-            <p className="mt-2 text-lg text-muted">{book.author || "저자 미상"}</p>
+            <p className="mt-2 text-lg text-muted">{book.author || "저자 정보 없음"}</p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
               <span className="rounded-full bg-accent-soft px-3 py-1 text-accent">{STATUS_LABEL[book.status]}</span>
               {book.rating && <span className="tracking-tight text-accent">{"★".repeat(book.rating) + "☆".repeat(5 - book.rating)}</span>}

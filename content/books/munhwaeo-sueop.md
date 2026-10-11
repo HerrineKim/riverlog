@@ -1,6 +1,6 @@
 ---
 title: "문화어 수업"
-author: ""
+author: "한성우, 설송아"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

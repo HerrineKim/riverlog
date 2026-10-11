@@ -1,6 +1,6 @@
 ---
 title: "여기가 달이 아니라면"
-author: ""
+author: "강인선"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

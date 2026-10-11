@@ -1,6 +1,6 @@
 ---
 title: "스피노자의 거미"
-author: ""
+author: "박지형"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

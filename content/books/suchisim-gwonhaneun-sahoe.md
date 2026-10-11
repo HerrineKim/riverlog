@@ -1,6 +1,6 @@
 ---
 title: "수치심 권하는 사회"
-author: ""
+author: "브레네 브라운"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

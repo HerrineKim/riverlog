@@ -1,6 +1,6 @@
 ---
 title: "셰일혁명과 미국 없는 세계"
-author: ""
+author: "피터 자이한"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "하이 아웃풋 매니지먼트"
-author: ""
+author: "앤드류 그로브"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

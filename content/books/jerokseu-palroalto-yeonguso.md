@@ -1,6 +1,6 @@
 ---
 title: "제록스 팔로알토 연구소"
-author: ""
+author: "마이클 A. 힐트직"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

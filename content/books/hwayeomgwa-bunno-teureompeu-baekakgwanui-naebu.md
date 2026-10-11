@@ -1,6 +1,6 @@
 ---
 title: "화염과 분노 : 트럼프 백악관의 내부"
-author: ""
+author: "마이클 월프"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

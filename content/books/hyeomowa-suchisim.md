@@ -1,6 +1,6 @@
 ---
 title: "혐오와 수치심"
-author: ""
+author: "마사 C. 누스바움"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

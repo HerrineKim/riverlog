@@ -1,6 +1,6 @@
 ---
 title: "정부론"
-author: ""
+author: "존 로크"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "함께 자라기 - 애자일로 가는 길"
-author: ""
+author: "김창준"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

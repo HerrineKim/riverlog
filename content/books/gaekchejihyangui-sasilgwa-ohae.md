@@ -1,6 +1,6 @@
 ---
 title: "객체지향의 사실과 오해"
-author: ""
+author: "조영호"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

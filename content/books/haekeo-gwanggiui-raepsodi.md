@@ -1,6 +1,6 @@
 ---
 title: "해커, 광기의 랩소디"
-author: ""
+author: "스티븐 레비"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

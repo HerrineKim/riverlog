@@ -1,6 +1,6 @@
 ---
 title: "GoF의 디자인 패턴"
-author: ""
+author: "에릭 감마"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "디자인 패턴"]

@@ -1,6 +1,6 @@
 ---
 title: "클린코드"
-author: ""
+author: "로버트 C. 마틴"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "클린 코드·아키텍처"]

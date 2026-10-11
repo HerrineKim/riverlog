@@ -1,6 +1,6 @@
 ---
 title: "A philosophy of Software Design"
-author: ""
+author: "John Ousterhout"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "디자인 패턴"]

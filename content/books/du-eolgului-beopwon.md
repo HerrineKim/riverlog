@@ -1,6 +1,6 @@
 ---
 title: "두 얼굴의 법원"
-author: ""
+author: "권석천"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

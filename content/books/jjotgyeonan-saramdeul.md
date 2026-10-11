@@ -1,6 +1,6 @@
 ---
 title: "쫓겨난 사람들"
-author: ""
+author: "매튜 데스몬드"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

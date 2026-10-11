@@ -1,6 +1,6 @@
 ---
 title: "보호받고 있다는 착각"
-author: ""
+author: "질리안 요크"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

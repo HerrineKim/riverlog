@@ -1,6 +1,6 @@
 ---
 title: "조엘 온 소프트웨어"
-author: ""
+author: "조엘 스폴스키"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

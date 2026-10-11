@@ -1,6 +1,6 @@
 ---
 title: "당당한 디자인 결정을 위한 9가지 방법"
-author: ""
+author: "톰 그리버"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "디자인 패턴"]

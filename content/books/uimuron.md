@@ -1,6 +1,6 @@
 ---
 title: "의무론"
-author: ""
+author: "마르쿠스 툴리우스 키케로"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

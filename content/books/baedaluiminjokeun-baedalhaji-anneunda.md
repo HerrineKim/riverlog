@@ -1,6 +1,6 @@
 ---
 title: "배달의민족은 배달하지 않는다"
-author: ""
+author: "박정훈"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "도덕계보학"
-author: ""
+author: "프리드리히 니체"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

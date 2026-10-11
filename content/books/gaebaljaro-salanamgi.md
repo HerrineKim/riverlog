@@ -1,6 +1,6 @@
 ---
 title: "개발자로 살아남기"
-author: ""
+author: "박종천"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

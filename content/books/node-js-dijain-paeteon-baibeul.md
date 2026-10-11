@@ -1,6 +1,6 @@
 ---
 title: "Node.js 디자인 패턴 바이블"
-author: ""
+author: "Mario Casciaro, Luciano Mammino"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "언어·기술"]

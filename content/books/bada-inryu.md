@@ -1,6 +1,6 @@
 ---
 title: "바다 인류"
-author: ""
+author: "주경철"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

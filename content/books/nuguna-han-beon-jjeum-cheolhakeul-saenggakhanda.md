@@ -1,6 +1,6 @@
 ---
 title: "누구나 한 번 쯤 철학을 생각한다"
-author: ""
+author: "남경태"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

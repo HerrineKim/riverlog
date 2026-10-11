@@ -1,6 +1,6 @@
 ---
 title: "돈 버는 경제 상식 BEST 10"
-author: ""
+author: "권순우"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "암 만병의 황제의 역사"
-author: ""
+author: "싯다르타 무케르지"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

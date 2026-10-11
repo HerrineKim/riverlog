@@ -1,6 +1,6 @@
 ---
 title: "인간 본성의 법칙"
-author: ""
+author: "로버트 그린"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

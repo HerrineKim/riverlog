@@ -1,6 +1,6 @@
 ---
 title: "장자, 차이를 횡단하는 즐거운 모험"
-author: ""
+author: "강신주"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

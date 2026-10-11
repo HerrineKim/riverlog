@@ -1,6 +1,6 @@
 ---
 title: "전세 지옥"
-author: ""
+author: "최지수"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

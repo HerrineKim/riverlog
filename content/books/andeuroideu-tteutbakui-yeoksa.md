@@ -1,6 +1,6 @@
 ---
 title: "안드로이드 뜻밖의 역사"
-author: ""
+author: "쳇 하스"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

@@ -1,6 +1,6 @@
 ---
 title: "최재천의 공부"
-author: ""
+author: "최재천, 안희경"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

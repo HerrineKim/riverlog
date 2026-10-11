@@ -1,6 +1,6 @@
 ---
 title: "그늘까지도 인생이니까"
-author: ""
+author: "박용만"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

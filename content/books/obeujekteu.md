@@ -1,6 +1,6 @@
 ---
 title: "오브젝트"
-author: ""
+author: "조영호"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

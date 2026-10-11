@@ -1,6 +1,6 @@
 ---
 title: "나는 희망의 증거가 되고 싶다"
-author: ""
+author: "서진규"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

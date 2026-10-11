@@ -1,6 +1,6 @@
 ---
 title: "춤추는 세계"
-author: ""
+author: "허유미"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

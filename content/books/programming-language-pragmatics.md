@@ -1,6 +1,6 @@
 ---
 title: "Programming Language Pragmatics"
-author: ""
+author: "Michael L. Scott"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

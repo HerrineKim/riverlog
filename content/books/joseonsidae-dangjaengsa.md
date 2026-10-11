@@ -1,6 +1,6 @@
 ---
 title: "조선시대 당쟁사"
-author: ""
+author: "이성무"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

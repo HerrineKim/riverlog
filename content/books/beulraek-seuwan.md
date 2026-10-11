@@ -1,6 +1,6 @@
 ---
 title: "블랙 스완"
-author: ""
+author: "나심 니콜라스 탈레브"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

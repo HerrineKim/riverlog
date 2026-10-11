@@ -1,6 +1,6 @@
 ---
 title: "호킹의 빅 퀘스천에 대한 간결한 대답"
-author: ""
+author: "스티븐 호킹"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

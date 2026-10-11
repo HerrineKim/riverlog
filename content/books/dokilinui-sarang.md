@@ -1,6 +1,6 @@
 ---
 title: "독일인의 사랑"
-author: ""
+author: "프리드리히 막스 뮐러"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

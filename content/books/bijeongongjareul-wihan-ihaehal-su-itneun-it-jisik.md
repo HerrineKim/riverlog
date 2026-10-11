@@ -1,6 +1,6 @@
 ---
 title: "비전공자를 위한 이해할 수 있는 IT 지식"
-author: ""
+author: "최원영"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

@@ -1,6 +1,6 @@
 ---
 title: "나만의 연설문을 써라"
-author: ""
+author: "윤범기"
 category: "기타"
 status: "want"
 tags: ["글쓰기"]

@@ -1,6 +1,6 @@
 ---
 title: "군주론"
-author: ""
+author: "니콜로 마키아벨리"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

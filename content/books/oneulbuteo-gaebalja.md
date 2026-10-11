@@ -1,6 +1,6 @@
 ---
 title: "오늘부터 개발자"
-author: ""
+author: "김병욱"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

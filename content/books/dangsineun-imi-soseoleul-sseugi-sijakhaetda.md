@@ -1,6 +1,6 @@
 ---
 title: "당신은 이미 소설을 쓰기 시작했다"
-author: ""
+author: "이승우"
 category: "기타"
 status: "want"
 tags: ["글쓰기"]

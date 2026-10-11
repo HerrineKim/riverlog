@@ -1,6 +1,6 @@
 ---
 title: "좋은 기업을 넘어 위대한 기업으로"
-author: ""
+author: "짐 콜린스"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

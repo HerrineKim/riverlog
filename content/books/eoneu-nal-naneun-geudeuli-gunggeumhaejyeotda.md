@@ -1,6 +1,6 @@
 ---
 title: "어느 날 나는 그들이 궁금해졌다"
-author: ""
+author: "로버트 U. 아케렛"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

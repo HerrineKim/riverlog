@@ -1,6 +1,6 @@
 ---
 title: "프로그래머로 사는 법"
-author: ""
+author: "샘 라이트스톤"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

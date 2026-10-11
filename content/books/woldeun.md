@@ -1,6 +1,6 @@
 ---
 title: "월든"
-author: ""
+author: "헨리 데이비드 소로"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

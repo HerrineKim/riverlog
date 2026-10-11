@@ -1,6 +1,6 @@
 ---
 title: "실험철학"
-author: ""
+author: "니킬 무커지"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

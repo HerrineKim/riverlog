@@ -1,6 +1,6 @@
 ---
 title: "언제나 일요일처럼"
-author: ""
+author: "톰 호지킨슨"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

@@ -1,6 +1,6 @@
 ---
 title: "법률가들"
-author: ""
+author: "김두식"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

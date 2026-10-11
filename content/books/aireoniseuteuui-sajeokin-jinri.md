@@ -1,6 +1,6 @@
 ---
 title: "아이러니스트의 사적인 진리"
-author: ""
+author: "이유선"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

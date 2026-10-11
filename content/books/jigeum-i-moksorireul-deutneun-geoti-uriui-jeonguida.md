@@ -1,6 +1,6 @@
 ---
 title: "지금 이 목소리를 듣는 것이 우리의 정의다"
-author: ""
+author: "이문현"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "정신의 고귀함"
-author: ""
+author: "롭 리멘"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

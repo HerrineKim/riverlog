@@ -1,6 +1,6 @@
 ---
 title: "다시, 헤겔을 읽다"
-author: ""
+author: "이광모"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

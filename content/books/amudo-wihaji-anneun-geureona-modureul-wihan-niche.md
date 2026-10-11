@@ -1,6 +1,6 @@
 ---
 title: "아무도 위하지 않는, 그러나 모두를 위한 니체"
-author: ""
+author: "김동국"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

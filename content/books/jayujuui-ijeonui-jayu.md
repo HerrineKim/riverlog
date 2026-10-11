@@ -1,6 +1,6 @@
 ---
 title: "자유주의 이전의 자유"
-author: ""
+author: "퀜틴 스키너"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "모든 것이 F가 된다"
-author: ""
+author: "모리 히로시"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

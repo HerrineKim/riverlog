@@ -1,6 +1,6 @@
 ---
 title: "붉은여왕"
-author: ""
+author: "매트 리들리"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

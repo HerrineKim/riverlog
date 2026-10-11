@@ -1,6 +1,6 @@
 ---
 title: "해커와 화가"
-author: ""
+author: "폴 그레이엄"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

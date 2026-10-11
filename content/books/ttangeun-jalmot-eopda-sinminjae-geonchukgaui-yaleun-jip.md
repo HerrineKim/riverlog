@@ -1,6 +1,6 @@
 ---
 title: "땅은 잘못 없다: 신민재 건축가의 얇은 집 탐사"
-author: ""
+author: "신민재"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

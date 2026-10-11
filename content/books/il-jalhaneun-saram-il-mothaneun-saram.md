@@ -1,6 +1,6 @@
 ---
 title: "일 잘하는 사람 일 못하는 사람"
-author: ""
+author: "호리바 마사오"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

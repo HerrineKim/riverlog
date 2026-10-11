@@ -1,6 +1,6 @@
 ---
 title: "인생이 빛나는 정리의 마법"
-author: ""
+author: "곤도 마리에"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

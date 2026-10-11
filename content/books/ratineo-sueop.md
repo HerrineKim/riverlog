@@ -1,6 +1,6 @@
 ---
 title: "라틴어 수업"
-author: ""
+author: "한동일"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

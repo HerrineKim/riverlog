@@ -1,6 +1,6 @@
 ---
 title: "피플웨어"
-author: ""
+author: "톰 드마르코, 티모시 리스터"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC.", "객체지향"]

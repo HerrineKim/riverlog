@@ -1,6 +1,6 @@
 ---
 title: "날치기 국회사"
-author: ""
+author: "김예찬"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

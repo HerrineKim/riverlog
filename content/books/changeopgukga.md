@@ -1,6 +1,6 @@
 ---
 title: "창업국가"
-author: ""
+author: "댄 세노르, 사울 싱어"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "모르는 사람들"
-author: ""
+author: "이승우"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

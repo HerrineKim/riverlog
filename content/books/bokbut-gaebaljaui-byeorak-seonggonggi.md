@@ -1,6 +1,6 @@
 ---
 title: "복붙 개발자의 벼락 성공기"
-author: ""
+author: "아이리스 클라슨"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

@@ -1,6 +1,6 @@
 ---
 title: "100년 통장"
-author: ""
+author: "하나금융그룹 100년행복연구센터"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "전설로 떠나는 월가의 영웅"
-author: ""
+author: "피터 린치, 존 로스차일드"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

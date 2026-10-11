@@ -1,6 +1,6 @@
 ---
 title: "죽는 것보다 늙는 게 걱정인"
-author: ""
+author: "도널드 홀"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

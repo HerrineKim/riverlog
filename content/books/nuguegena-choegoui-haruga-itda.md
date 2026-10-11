@@ -1,6 +1,6 @@
 ---
 title: "누구에게나 최고의 하루가 있다"
-author: ""
+author: "조 지라드"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

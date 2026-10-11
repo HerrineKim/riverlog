@@ -1,6 +1,6 @@
 ---
 title: "리바이어던"
-author: ""
+author: "토마스 홉스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

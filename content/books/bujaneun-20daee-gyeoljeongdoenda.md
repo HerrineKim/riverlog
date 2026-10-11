@@ -1,6 +1,6 @@
 ---
 title: "부자는 20대에 결정된다"
-author: ""
+author: "요코다 하마오"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

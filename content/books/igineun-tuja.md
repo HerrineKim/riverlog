@@ -1,6 +1,6 @@
 ---
 title: "이기는 투자"
-author: ""
+author: "피터 린치"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

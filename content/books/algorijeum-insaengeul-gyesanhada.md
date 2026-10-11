@@ -1,6 +1,6 @@
 ---
 title: "알고리즘, 인생을 계산하다"
-author: ""
+author: "브라이언 크리스천, 톰 그리피스"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

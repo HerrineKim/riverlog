@@ -1,6 +1,6 @@
 ---
 title: "정상에서 만납시다"
-author: ""
+author: "지그 지글러"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

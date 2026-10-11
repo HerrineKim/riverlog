@@ -1,6 +1,6 @@
 ---
 title: "모두의 네트워크"
-author: ""
+author: "미즈구치 카츠야"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "네트워크"]

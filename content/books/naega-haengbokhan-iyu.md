@@ -1,6 +1,6 @@
 ---
 title: "내가 행복한 이유"
-author: ""
+author: "그렉 이건"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

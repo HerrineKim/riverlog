@@ -1,6 +1,6 @@
 ---
 title: "아르테미스"
-author: ""
+author: "앤디 위어"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

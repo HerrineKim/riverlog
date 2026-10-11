@@ -1,6 +1,6 @@
 ---
 title: "데이터 분석가의 숫자유감"
-author: ""
+author: "권정민"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

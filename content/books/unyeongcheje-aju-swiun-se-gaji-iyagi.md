@@ -1,6 +1,6 @@
 ---
 title: "운영체제 아주 쉬운 세 가지 이야기"
-author: ""
+author: "Andrea C. Arpaci-dusseau, Remzi H. Arpaci-Dusseau"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "운영체제"]

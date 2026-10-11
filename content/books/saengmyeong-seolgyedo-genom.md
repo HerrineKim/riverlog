@@ -1,6 +1,6 @@
 ---
 title: "생명 설계도, 게놈"
-author: ""
+author: "매트 리들리"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

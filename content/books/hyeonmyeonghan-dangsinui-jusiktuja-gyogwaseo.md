@@ -1,6 +1,6 @@
 ---
 title: "현명한 당신의 주식투자 교과서"
-author: ""
+author: "박병창"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "말하기를 말하기"
-author: ""
+author: "김하나"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

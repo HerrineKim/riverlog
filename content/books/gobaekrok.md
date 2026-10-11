@@ -1,6 +1,6 @@
 ---
 title: "고백록"
-author: ""
+author: "아우구스티누스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

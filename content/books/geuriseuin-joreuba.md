@@ -1,6 +1,6 @@
 ---
 title: "그리스인 조르바"
-author: ""
+author: "니코스 카잔자키스"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

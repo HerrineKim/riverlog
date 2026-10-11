@@ -1,6 +1,6 @@
 ---
 title: "신경 끄기의 기술"
-author: ""
+author: "마크 맨슨"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

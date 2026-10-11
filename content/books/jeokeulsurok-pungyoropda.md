@@ -1,6 +1,6 @@
 ---
 title: "적을수록 풍요롭다"
-author: ""
+author: "제이슨 히켈"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

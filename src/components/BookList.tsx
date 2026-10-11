@@ -89,7 +89,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
                     </span>
                   )}
                 </p>
-                <p className="truncate text-sm text-muted">{b.author || "저자 미상"}</p>
+                <p className="truncate text-sm text-muted">{b.author || "저자 정보 없음"}</p>
               </div>
               <span className="hidden truncate text-sm text-muted sm:block">{b.category}</span>
               <span className="hidden text-sm tracking-tight text-accent sm:block" aria-label={b.rating ? `별점 ${b.rating}점` : "별점 없음"}>

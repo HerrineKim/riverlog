@@ -1,6 +1,6 @@
 ---
 title: "그리고 나는 스토아주의자가 되었다"
-author: ""
+author: "마시모 피글리우치"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "코드 컴플리트2"
-author: ""
+author: "스티브 맥코넬"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

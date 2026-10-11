@@ -1,6 +1,6 @@
 ---
 title: "도둑맞은 집중력"
-author: ""
+author: "요한 하리"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

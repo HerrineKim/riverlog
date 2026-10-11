@@ -1,6 +1,6 @@
 ---
 title: "일리아스"
-author: ""
+author: "니콜라 친퀘티"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

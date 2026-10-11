@@ -1,6 +1,6 @@
 ---
 title: "디자인 오브 디자인"
-author: ""
+author: "프레더릭 브룩스"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "디자인 패턴"]

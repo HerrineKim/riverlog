@@ -1,6 +1,6 @@
 ---
 title: "익스트림 프로그래밍"
-author: ""
+author: "켄트 벡, 신시아 안드레스"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

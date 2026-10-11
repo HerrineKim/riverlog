@@ -1,6 +1,6 @@
 ---
 title: "테스트 주도 개발"
-author: ""
+author: "켄트 벡"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "테스트 주도 개발(TDD)"]

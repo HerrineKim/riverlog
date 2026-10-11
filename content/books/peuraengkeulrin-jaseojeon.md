@@ -1,6 +1,6 @@
 ---
 title: "프랭클린 자서전"
-author: ""
+author: "벤자민 프랭클린"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

@@ -1,6 +1,6 @@
 ---
 title: "삼성 라이징"
-author: ""
+author: "제프리 케인"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

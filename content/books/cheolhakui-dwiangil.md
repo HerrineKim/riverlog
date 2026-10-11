@@ -1,6 +1,6 @@
 ---
 title: "철학의 뒤안길"
-author: ""
+author: "빌헬름 바이셰델"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

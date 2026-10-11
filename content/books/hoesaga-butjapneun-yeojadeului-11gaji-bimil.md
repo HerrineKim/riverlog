@@ -1,6 +1,6 @@
 ---
 title: "회사가 붙잡는 여자들의 11가지 비밀"
-author: ""
+author: "아키야마 유카리"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

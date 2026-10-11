@@ -1,6 +1,6 @@
 ---
 title: "인간관계론"
-author: ""
+author: "데일 카네기"
 category: "자기계발"
 status: "read"
 tags: ["자기계발"]

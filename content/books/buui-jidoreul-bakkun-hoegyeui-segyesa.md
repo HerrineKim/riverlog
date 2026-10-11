@@ -1,6 +1,6 @@
 ---
 title: "부의 지도를 바꾼 회계의 세계사"
-author: ""
+author: "다나카 야스히로"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

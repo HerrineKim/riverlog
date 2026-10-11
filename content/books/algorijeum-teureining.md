@@ -1,6 +1,6 @@
 ---
 title: "알고리즘 트레이닝"
-author: ""
+author: "안티 라크소넨"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

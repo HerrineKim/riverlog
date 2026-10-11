@@ -1,6 +1,6 @@
 ---
 title: "도덕철학사 강의"
-author: ""
+author: "존 롤스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

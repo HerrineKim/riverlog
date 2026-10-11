@@ -1,6 +1,6 @@
 ---
 title: "마음에게 말 걸기"
-author: ""
+author: "대니얼 고틀립"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

@@ -1,6 +1,6 @@
 ---
 title: "프로그래머를 위한 파이썬"
-author: ""
+author: "데인 힐라드"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "언어·기술"]

@@ -1,6 +1,6 @@
 ---
 title: "아픔이 길이 되려면"
-author: ""
+author: "김승섭"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

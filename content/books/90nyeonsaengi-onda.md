@@ -1,6 +1,6 @@
 ---
 title: "90년생이 온다"
-author: ""
+author: "임홍택"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

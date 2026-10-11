@@ -1,6 +1,6 @@
 ---
 title: "현질의 탄생"
-author: ""
+author: "이경혁"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "실전 대비 C 알고리즘 인터뷰"
-author: ""
+author: "헤먼 자인"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

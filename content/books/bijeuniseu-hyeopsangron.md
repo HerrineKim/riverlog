@@ -1,6 +1,6 @@
 ---
 title: "비즈니스 협상론"
-author: ""
+author: "김병국"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

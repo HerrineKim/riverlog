@@ -1,6 +1,6 @@
 ---
 title: "추측과 논박"
-author: ""
+author: "칼 포퍼"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

@@ -1,6 +1,6 @@
 ---
 title: "주식의 역사"
-author: ""
+author: "장진모"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "현대성과 홀로코스트"
-author: ""
+author: "지그문트 바우만"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

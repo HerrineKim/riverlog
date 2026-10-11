@@ -1,6 +1,6 @@
 ---
 title: "천 개의 파도"
-author: ""
+author: "소날리 데라냐갈라"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

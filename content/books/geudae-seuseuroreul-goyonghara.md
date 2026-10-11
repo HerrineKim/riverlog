@@ -1,6 +1,6 @@
 ---
 title: "그대, 스스로를 고용하라"
-author: ""
+author: "구본형"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

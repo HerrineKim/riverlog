@@ -1,6 +1,6 @@
 ---
 title: "블랙박스 시크릿"
-author: ""
+author: "매슈 사이드"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

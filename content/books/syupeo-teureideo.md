@@ -1,6 +1,6 @@
 ---
 title: "슈퍼 트레이더"
-author: ""
+author: "반 K. 타프"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "투자의 여왕"
-author: ""
+author: "성선화"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

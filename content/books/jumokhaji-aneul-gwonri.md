@@ -1,6 +1,6 @@
 ---
 title: "주목하지 않을 권리"
-author: ""
+author: "팀 우"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

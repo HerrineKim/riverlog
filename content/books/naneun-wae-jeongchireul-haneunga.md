@@ -1,6 +1,6 @@
 ---
 title: "나는 왜 정치를 하는가"
-author: ""
+author: "유승민"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

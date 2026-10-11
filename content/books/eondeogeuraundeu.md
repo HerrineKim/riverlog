@@ -1,6 +1,6 @@
 ---
 title: "언더그라운드"
-author: ""
+author: "무라카미 하루키"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "죽을 때까지 코딩하며 사는 법"
-author: ""
+author: "홍전일"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

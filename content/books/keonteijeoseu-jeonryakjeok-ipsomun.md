@@ -1,6 +1,6 @@
 ---
 title: "컨테이저스:전략적 입소문"
-author: ""
+author: "조나 버거"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅", "마케팅"]

@@ -1,6 +1,6 @@
 ---
 title: "왜 자유주의는 실패했는가"
-author: ""
+author: "패트릭 J. 드닌"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

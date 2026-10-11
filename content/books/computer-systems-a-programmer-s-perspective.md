@@ -1,6 +1,6 @@
 ---
 title: "Computer Systems: a Programmer’s Perspective"
-author: ""
+author: "Randal E. Bryant, David R. O'Hallaron"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

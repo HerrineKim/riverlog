@@ -1,6 +1,6 @@
 ---
 title: "대구경북의 사회학"
-author: ""
+author: "최종희"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

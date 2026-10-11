@@ -1,6 +1,6 @@
 ---
 title: "운다고 달라지는 일은 아무것도 없겠지만"
-author: ""
+author: "박준"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

@@ -1,6 +1,6 @@
 ---
 title: "나를 믿고 일한다는 것"
-author: ""
+author: "우미영"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

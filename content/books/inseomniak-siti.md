@@ -1,6 +1,6 @@
 ---
 title: "인섬니악 시티"
-author: ""
+author: "빌 헤이스"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

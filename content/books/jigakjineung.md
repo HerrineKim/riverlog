@@ -1,6 +1,6 @@
 ---
 title: "지각지능"
-author: ""
+author: "브라이언 박서 와클러"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

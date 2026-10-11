@@ -1,6 +1,6 @@
 ---
 title: "문제로 풀어보는 알고리즘"
-author: ""
+author: "김용혁, 황인욱"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

@@ -1,6 +1,6 @@
 ---
 title: "왜 나는 너를 사랑하는가"
-author: ""
+author: "알랭 드 보통"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

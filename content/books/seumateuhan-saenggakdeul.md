@@ -1,6 +1,6 @@
 ---
 title: "스마트한 생각들"
-author: ""
+author: "롤프 도벨리"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

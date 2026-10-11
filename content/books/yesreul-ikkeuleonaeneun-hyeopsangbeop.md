@@ -1,6 +1,6 @@
 ---
 title: "YES를 이끌어내는 협상법"
-author: ""
+author: "윌리엄 유리, 브루스 패튼, 로저 피셔"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

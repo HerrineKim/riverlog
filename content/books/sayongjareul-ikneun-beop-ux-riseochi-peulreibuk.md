@@ -1,6 +1,6 @@
 ---
 title: "사용자를 읽는 법 UX 리서치 플레이북"
-author: ""
+author: "백원희"
 category: "기타"
 status: "want"
 tags: ["컴퓨터", "UI·UX·디자인"]

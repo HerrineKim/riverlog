@@ -1,6 +1,6 @@
 ---
 title: "탐험적 테스팅"
-author: ""
+author: "엘리자베스 헨드릭슨"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

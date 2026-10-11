@@ -1,6 +1,6 @@
 ---
 title: "미래를 바꾼 아홉 가지 알고리즘"
-author: ""
+author: "존 맥코믹"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

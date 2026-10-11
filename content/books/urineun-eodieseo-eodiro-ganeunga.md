@@ -1,6 +1,6 @@
 ---
 title: "우리는 어디에서 어디로 가는가"
-author: ""
+author: "조지 월드"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

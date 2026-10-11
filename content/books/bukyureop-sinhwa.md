@@ -1,6 +1,6 @@
 ---
 title: "북유럽 신화"
-author: ""
+author: "케빈 크로슬리-홀랜드"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

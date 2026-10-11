@@ -1,6 +1,6 @@
 ---
 title: "행복의 조건"
-author: ""
+author: "조지 베일런트"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

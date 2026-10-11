@@ -1,6 +1,6 @@
 ---
 title: "팀장의 탄생"
-author: ""
+author: "줄리 주오"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

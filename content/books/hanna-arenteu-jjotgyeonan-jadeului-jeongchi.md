@@ -1,6 +1,6 @@
 ---
 title: "한나 아렌트, 쫓겨난 자들의 정치"
-author: ""
+author: "양창아"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

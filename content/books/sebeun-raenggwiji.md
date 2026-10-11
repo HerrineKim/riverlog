@@ -1,6 +1,6 @@
 ---
 title: "세븐 랭귀지"
-author: ""
+author: "브루스 테이트"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

@@ -1,6 +1,6 @@
 ---
 title: "고독이라는 무기"
-author: ""
+author: "에노모토 히로아키"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "이것이 취업을 위한 코딩테스트다 with 파이썬"
-author: ""
+author: "나동빈"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

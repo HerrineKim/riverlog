@@ -1,6 +1,6 @@
 ---
 title: "리눅스 그냥 재미로"
-author: ""
+author: "리누스 토발즈, 데이비드 다이아몬드"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "언어·기술"]

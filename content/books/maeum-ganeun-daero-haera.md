@@ -1,6 +1,6 @@
 ---
 title: "마음 가는 대로 해라"
-author: ""
+author: "앤드류 매튜스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

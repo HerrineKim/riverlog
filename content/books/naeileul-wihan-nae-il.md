@@ -1,6 +1,6 @@
 ---
 title: "내일을 위한 내 일"
-author: ""
+author: "이다혜"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

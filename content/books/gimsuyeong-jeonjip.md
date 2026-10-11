@@ -1,6 +1,6 @@
 ---
 title: "김수영 전집"
-author: ""
+author: "김수영"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

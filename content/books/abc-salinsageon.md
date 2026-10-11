@@ -1,6 +1,6 @@
 ---
 title: "ABC 살인사건"
-author: ""
+author: "애거사 크리스티"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

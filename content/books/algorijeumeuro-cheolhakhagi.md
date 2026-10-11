@@ -1,6 +1,6 @@
 ---
 title: "알고리즘으로 철학하기"
-author: ""
+author: "변정수"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

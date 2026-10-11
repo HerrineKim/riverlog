@@ -1,6 +1,6 @@
 ---
 title: "슈퍼 팩트"
-author: ""
+author: "팀 하포드"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

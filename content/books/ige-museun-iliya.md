@@ -1,6 +1,6 @@
 ---
 title: "이게 무슨 일이야!"
-author: ""
+author: "(주)우아한형제들"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

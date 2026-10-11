@@ -1,6 +1,6 @@
 ---
 title: "얼마나 있어야 충분한가"
-author: ""
+author: "로버트 스키델스키, 에드워드 스키델스키"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

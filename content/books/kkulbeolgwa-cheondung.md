@@ -1,6 +1,6 @@
 ---
 title: "꿀벌과 천둥"
-author: ""
+author: "온다 리쿠"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

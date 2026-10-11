@@ -1,6 +1,6 @@
 ---
 title: "매혹적인 스토리텔링의 탄생"
-author: ""
+author: "김태원"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

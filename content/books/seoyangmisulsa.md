@@ -1,6 +1,6 @@
 ---
 title: "서양미술사"
-author: ""
+author: "에른스트 H. 곰브리치"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

@@ -1,6 +1,6 @@
 ---
 title: "어떤 양형 이유"
-author: ""
+author: "박주영"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

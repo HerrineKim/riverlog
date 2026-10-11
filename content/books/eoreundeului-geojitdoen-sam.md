@@ -1,6 +1,6 @@
 ---
 title: "어른들의 거짓된 삶"
-author: ""
+author: "엘레나 페란테"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

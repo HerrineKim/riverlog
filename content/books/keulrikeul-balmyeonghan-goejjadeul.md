@@ -1,6 +1,6 @@
 ---
 title: "클릭을 발명한 괴짜들"
-author: ""
+author: "강태훈"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

@@ -1,6 +1,6 @@
 ---
 title: "해킹, 파괴의 광학"
-author: ""
+author: "김성우"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

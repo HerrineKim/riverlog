@@ -1,6 +1,6 @@
 ---
 title: "리드 개발자로 가는 길"
-author: ""
+author: "셸리 벤호프"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

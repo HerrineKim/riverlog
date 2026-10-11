@@ -1,6 +1,6 @@
 ---
 title: "제 7의 인간"
-author: ""
+author: "존 버거"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "맨먼스 미신"
-author: ""
+author: "프레더릭 브룩스"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

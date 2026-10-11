@@ -1,6 +1,6 @@
 ---
 title: "사라진 책들"
-author: ""
+author: "조르지오 반 스트라텐"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

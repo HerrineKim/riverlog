@@ -1,6 +1,6 @@
 ---
 title: "판단과 결정"
-author: ""
+author: "맥스 베이저만"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

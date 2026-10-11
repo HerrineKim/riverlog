@@ -1,6 +1,6 @@
 ---
 title: "6개월에 천만원 모으기"
-author: ""
+author: "이대표, 성선화, 김유라, 서영아"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

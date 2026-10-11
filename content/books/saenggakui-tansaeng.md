@@ -1,6 +1,6 @@
 ---
 title: "생각의 탄생"
-author: ""
+author: "윌리엄 H. 캘빈"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

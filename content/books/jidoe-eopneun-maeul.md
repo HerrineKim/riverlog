@@ -1,6 +1,6 @@
 ---
 title: "지도에 없는 마을"
-author: ""
+author: "최양선"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

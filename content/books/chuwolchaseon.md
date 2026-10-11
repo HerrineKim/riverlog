@@ -1,6 +1,6 @@
 ---
 title: "추월차선"
-author: ""
+author: "엠제이 드마코"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

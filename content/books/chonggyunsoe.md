@@ -1,6 +1,6 @@
 ---
 title: "총균쇠"
-author: ""
+author: "재레드 다이아몬드"
 category: "인문·사회"
 status: "want"
 tags: ["인문", "사회/정치"]

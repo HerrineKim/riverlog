@@ -1,6 +1,6 @@
 ---
 title: "문명과 전쟁"
-author: ""
+author: "아자 가트"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

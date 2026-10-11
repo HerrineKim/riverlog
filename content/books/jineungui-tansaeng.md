@@ -1,6 +1,6 @@
 ---
 title: "지능의 탄생"
-author: ""
+author: "이대열"
 category: "인문·사회"
 status: "want"
 tags: ["인문", "과학/기술/자연"]

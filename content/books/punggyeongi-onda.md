@@ -1,6 +1,6 @@
 ---
 title: "풍경이 온다"
-author: ""
+author: "서영채"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

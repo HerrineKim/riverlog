@@ -1,6 +1,6 @@
 ---
 title: "다시, 책으로"
-author: ""
+author: "매리언 울프"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

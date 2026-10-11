@@ -1,6 +1,6 @@
 ---
 title: "카라마조프 가의 형제들"
-author: ""
+author: "표도르 도스토옙스키"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

@@ -1,6 +1,6 @@
 ---
 title: "모든 주식을 소유하라"
-author: ""
+author: "존 보글"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

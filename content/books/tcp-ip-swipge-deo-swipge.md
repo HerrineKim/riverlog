@@ -1,6 +1,6 @@
 ---
 title: "TCP/IP 쉽게, 더 쉽게"
-author: ""
+author: "리브로웍스"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "네트워크"]

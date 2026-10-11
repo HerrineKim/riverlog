@@ -1,6 +1,6 @@
 ---
 title: "일잘러의 비밀, 구글 스프레드시트 제대로 파헤치기"
-author: ""
+author: "강남석"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

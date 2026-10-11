@@ -1,6 +1,6 @@
 ---
 title: "대변동"
-author: ""
+author: "재레드 다이아몬드"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

@@ -1,6 +1,6 @@
 ---
 title: "바빌론 부자들의 돈 버는 지혜"
-author: ""
+author: "조지 S. 클레이슨"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

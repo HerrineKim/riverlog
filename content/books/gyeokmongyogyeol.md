@@ -1,6 +1,6 @@
 ---
 title: "격몽요결"
-author: ""
+author: "이이"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

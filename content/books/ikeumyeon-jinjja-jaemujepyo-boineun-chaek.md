@@ -1,6 +1,6 @@
 ---
 title: "읽으면 진짜 재무제표 보이는 책"
-author: ""
+author: "유흥관"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

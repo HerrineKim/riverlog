@@ -1,6 +1,6 @@
 ---
 title: "쉽게 배우는 운영체제"
-author: ""
+author: "조성호"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "운영체제"]

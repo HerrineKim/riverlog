@@ -1,6 +1,6 @@
 ---
 title: "소설을 살다"
-author: ""
+author: "이승우"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

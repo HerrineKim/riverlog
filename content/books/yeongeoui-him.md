@@ -1,6 +1,6 @@
 ---
 title: "영어의 힘"
-author: ""
+author: "멜빈 브래그"
 category: "자기계발"
 status: "want"
 tags: ["자기계발"]

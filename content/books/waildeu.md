@@ -1,6 +1,6 @@
 ---
 title: "와일드"
-author: ""
+author: "셰릴 스트레이드"
 category: "소설·문학"
 status: "read"
 tags: ["수필/자서전/평전"]

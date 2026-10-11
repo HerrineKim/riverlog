@@ -1,6 +1,6 @@
 ---
 title: "에리식톤 콤플렉스"
-author: ""
+author: "김덕영"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

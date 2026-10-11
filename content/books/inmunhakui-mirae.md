@@ -1,6 +1,6 @@
 ---
 title: "인문학의 미래"
-author: ""
+author: "월터 카우프만"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

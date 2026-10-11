@@ -1,6 +1,6 @@
 ---
 title: "어떻게 늙을까"
-author: ""
+author: "다이애나 애실"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

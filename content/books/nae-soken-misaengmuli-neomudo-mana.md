@@ -1,6 +1,6 @@
 ---
 title: "내 속엔 미생물이 너무도 많아"
-author: ""
+author: "에드 용"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

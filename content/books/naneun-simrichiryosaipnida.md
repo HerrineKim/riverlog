@@ -1,6 +1,6 @@
 ---
 title: "나는 심리치료사입니다"
-author: ""
+author: "메리 파이퍼"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

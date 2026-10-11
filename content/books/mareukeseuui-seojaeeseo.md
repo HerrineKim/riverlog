@@ -1,6 +1,6 @@
 ---
 title: "마르케스의 서재에서"
-author: ""
+author: "탕누어"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

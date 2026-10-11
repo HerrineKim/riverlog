@@ -1,6 +1,6 @@
 ---
 title: "나는 아무개지만 그렇다고 아무나는 아니다"
-author: ""
+author: "김한승"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

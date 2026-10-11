@@ -1,6 +1,6 @@
 ---
 title: "랩 걸"
-author: ""
+author: "호프 자런"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

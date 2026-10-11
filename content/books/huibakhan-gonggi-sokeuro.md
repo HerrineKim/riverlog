@@ -1,6 +1,6 @@
 ---
 title: "희박한 공기 속으로"
-author: ""
+author: "존 크라카우어"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

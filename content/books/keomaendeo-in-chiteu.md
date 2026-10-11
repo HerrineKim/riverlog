@@ -1,6 +1,6 @@
 ---
 title: "커맨더 인 치트"
-author: ""
+author: "릭 라일리"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

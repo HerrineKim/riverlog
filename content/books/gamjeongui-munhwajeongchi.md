@@ -1,6 +1,6 @@
 ---
 title: "감정의 문화정치"
-author: ""
+author: "사라 아메드"
 category: "인문·사회"
 status: "want"
 tags: ["심리/감정"]

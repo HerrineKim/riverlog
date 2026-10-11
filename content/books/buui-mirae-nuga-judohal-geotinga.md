@@ -1,6 +1,6 @@
 ---
 title: "부의 미래 누가 주도할 것인가"
-author: ""
+author: "인호, 오준호"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

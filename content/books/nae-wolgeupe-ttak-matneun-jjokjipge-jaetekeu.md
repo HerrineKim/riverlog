@@ -1,6 +1,6 @@
 ---
 title: "내 월급에 딱 맞는 쪽집게 재테크"
-author: ""
+author: "서혁노"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "회사에서 나만 그래?"
-author: ""
+author: "언니들의 슬기로운 조직생활"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

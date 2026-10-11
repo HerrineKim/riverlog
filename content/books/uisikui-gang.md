@@ -1,6 +1,6 @@
 ---
 title: "의식의 강"
-author: ""
+author: "올리버 색스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

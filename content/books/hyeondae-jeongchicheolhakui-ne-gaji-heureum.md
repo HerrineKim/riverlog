@@ -1,6 +1,6 @@
 ---
 title: "현대 정치철학의 네 가지 흐름"
-author: ""
+author: "한국철학사상연구회"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

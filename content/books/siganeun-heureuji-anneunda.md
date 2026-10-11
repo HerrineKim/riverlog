@@ -1,6 +1,6 @@
 ---
 title: "시간은 흐르지 않는다"
-author: ""
+author: "카를로 로벨리"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

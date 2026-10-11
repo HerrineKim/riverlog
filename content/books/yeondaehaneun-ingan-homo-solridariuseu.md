@@ -1,6 +1,6 @@
 ---
 title: "연대하는 인간, 호모 솔리다리우스"
-author: ""
+author: "강수택"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

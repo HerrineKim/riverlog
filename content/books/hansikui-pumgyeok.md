@@ -1,6 +1,6 @@
 ---
 title: "한식의 품격"
-author: ""
+author: "이용재"
 category: "기타"
 status: "want"
 tags: ["건강/요리"]

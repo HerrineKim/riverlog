@@ -1,6 +1,6 @@
 ---
 title: "정해진 미래 시장의 기회"
-author: ""
+author: "조영태"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "한석준의 말하기 수업"
-author: ""
+author: "한석준"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

@@ -1,6 +1,6 @@
 ---
 title: "성찰"
-author: ""
+author: "르네 데카르트"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

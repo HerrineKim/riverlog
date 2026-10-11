@@ -1,6 +1,6 @@
 ---
 title: "디지털적 대상의 존재에 대하여"
-author: ""
+author: "육휘(허욱)"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

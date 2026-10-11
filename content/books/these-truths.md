@@ -1,6 +1,6 @@
 ---
 title: "These Truths"
-author: ""
+author: "Jill Lepore"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

@@ -1,6 +1,6 @@
 ---
 title: "프로그래밍 심리학"
-author: ""
+author: "제럴드 M. 와인버그"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

@@ -1,6 +1,6 @@
 ---
 title: "현명한 투자자"
-author: ""
+author: "벤저민 그레이엄"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

@@ -1,6 +1,6 @@
 ---
 title: "최강록의 요리노트"
-author: ""
+author: "최강록"
 category: "기타"
 status: "want"
 tags: ["건강/요리"]

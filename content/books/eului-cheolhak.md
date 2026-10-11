@@ -1,6 +1,6 @@
 ---
 title: "을의 철학"
-author: ""
+author: "송수진"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

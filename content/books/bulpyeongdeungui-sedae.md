@@ -1,6 +1,6 @@
 ---
 title: "불평등의 세대"
-author: ""
+author: "이철승"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

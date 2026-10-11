@@ -1,6 +1,6 @@
 ---
 title: "한일 관계 50년, 갈등과 협력의 발자취"
-author: ""
+author: "조세영"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

@@ -1,6 +1,6 @@
 ---
 title: "파이썬 알고리즘 인터뷰"
-author: ""
+author: "박상길"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

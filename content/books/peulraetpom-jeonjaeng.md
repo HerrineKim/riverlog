@@ -1,6 +1,6 @@
 ---
 title: "플랫폼 전쟁"
-author: ""
+author: "김조한"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

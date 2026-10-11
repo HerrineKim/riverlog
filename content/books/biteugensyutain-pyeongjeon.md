@@ -1,6 +1,6 @@
 ---
 title: "비트겐슈타인 평전"
-author: ""
+author: "레이 몽크"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

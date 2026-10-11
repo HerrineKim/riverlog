@@ -1,6 +1,6 @@
 ---
 title: "가난의 문법"
-author: ""
+author: "소준철"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

@@ -1,6 +1,6 @@
 ---
 title: "라이프 해커"
-author: ""
+author: "아담 패시, 지나 트라파니"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

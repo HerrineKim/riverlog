@@ -1,6 +1,6 @@
 ---
 title: "만들어진 신"
-author: ""
+author: "리처드 도킨스"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

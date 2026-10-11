@@ -1,6 +1,6 @@
 ---
 title: "픽션들"
-author: ""
+author: "호르헤 루이스 보르헤스"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

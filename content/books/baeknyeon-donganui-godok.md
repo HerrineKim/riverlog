@@ -1,6 +1,6 @@
 ---
 title: "백년 동안의 고독"
-author: ""
+author: "가브리엘 가르시아 마르케스"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

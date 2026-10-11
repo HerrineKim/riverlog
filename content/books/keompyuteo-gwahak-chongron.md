@@ -1,6 +1,6 @@
 ---
 title: "컴퓨터 과학 총론"
-author: ""
+author: "J.Glenn Brookshear"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

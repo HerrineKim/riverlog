@@ -1,6 +1,6 @@
 ---
 title: "냉정한 이타주의자"
-author: ""
+author: "윌리엄 맥어스킬"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

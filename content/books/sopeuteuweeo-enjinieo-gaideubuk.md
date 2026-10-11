@@ -1,6 +1,6 @@
 ---
 title: "소프트웨어 엔지니어 가이드북"
-author: ""
+author: "게르겔리 오로스"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

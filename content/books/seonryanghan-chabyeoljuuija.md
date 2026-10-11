@@ -1,6 +1,6 @@
 ---
 title: "선량한 차별주의자"
-author: ""
+author: "김지혜"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

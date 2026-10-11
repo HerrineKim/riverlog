@@ -1,6 +1,6 @@
 ---
 title: "개발자의 글쓰기"
-author: ""
+author: "김철수"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "ETC."]

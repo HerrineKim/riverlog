@@ -1,6 +1,6 @@
 ---
 title: "에밀"
-author: ""
+author: "장 자크 루소"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

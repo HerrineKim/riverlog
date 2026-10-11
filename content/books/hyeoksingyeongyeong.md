@@ -1,6 +1,6 @@
 ---
 title: "혁신경영"
-author: ""
+author: "박주홍"
 category: "경제·경영"
 status: "want"
 tags: ["커리어/경영/마케팅"]

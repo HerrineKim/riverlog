@@ -1,6 +1,6 @@
 ---
 title: "1일1로그100일완성IT지식(교e)"
-author: ""
+author: "브라이언 W. 커니핸"
 category: "커리어·일"
 status: "want"
 tags: ["컴퓨터", "회사 생활·방법론·커리어"]

@@ -1,6 +1,6 @@
 ---
 title: "하류사회"
-author: ""
+author: "미우라 아츠시"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

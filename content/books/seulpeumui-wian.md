@@ -1,6 +1,6 @@
 ---
 title: "슬픔의 위안"
-author: ""
+author: "론 마라스코, 브라이언 셔프"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

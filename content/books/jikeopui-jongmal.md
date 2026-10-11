@@ -1,6 +1,6 @@
 ---
 title: "직업의 종말"
-author: ""
+author: "테일러 피어슨"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

@@ -1,6 +1,6 @@
 ---
 title: "배움의 발견 - 나의 특별한 가족, 교육, 그리고 자유의 이야기"
-author: ""
+author: "타라 웨스트오버"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

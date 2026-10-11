@@ -1,6 +1,6 @@
 ---
 title: "거인의 포트폴리오"
-author: ""
+author: "강환국"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

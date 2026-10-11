@@ -1,6 +1,6 @@
 ---
 title: "왜 동양철학인가?"
-author: ""
+author: "한형조"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

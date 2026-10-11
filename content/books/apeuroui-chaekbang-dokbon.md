@@ -1,6 +1,6 @@
 ---
 title: "앞으로의 책방 독본"
-author: ""
+author: "우치누마 신타로"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

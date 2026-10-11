@@ -1,6 +1,6 @@
 ---
 title: "생각이란 무엇인가"
-author: ""
+author: "대니얼 C. 데닛"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

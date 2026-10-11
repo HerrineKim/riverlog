@@ -1,6 +1,6 @@
 ---
 title: "서울특별시 전도 (영진문화사)"
-author: ""
+author: "성지문화사 편집부"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

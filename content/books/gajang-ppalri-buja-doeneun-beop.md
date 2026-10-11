@@ -1,6 +1,6 @@
 ---
 title: "가장 빨리 부자 되는 법"
-author: ""
+author: "알렉스 베커"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

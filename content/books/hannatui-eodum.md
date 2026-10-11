@@ -1,6 +1,6 @@
 ---
 title: "한낮의 어둠"
-author: ""
+author: "아서 쾨슬러"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

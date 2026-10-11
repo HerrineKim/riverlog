@@ -1,6 +1,6 @@
 ---
 title: "죽여 마땅한 사람들"
-author: ""
+author: "피터 스완슨"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

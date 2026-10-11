@@ -1,6 +1,6 @@
 ---
 title: "말하기 힘든 것에 대해 말하기"
-author: ""
+author: "우치다 타츠루"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

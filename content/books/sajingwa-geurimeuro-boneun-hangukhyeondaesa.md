@@ -1,6 +1,6 @@
 ---
 title: "사진과 그림으로 보는 한국현대사"
-author: ""
+author: "서중석"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

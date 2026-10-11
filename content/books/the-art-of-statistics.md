@@ -1,6 +1,6 @@
 ---
 title: "the art of statistics"
-author: ""
+author: "David Spiegelhalter"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

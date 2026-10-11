@@ -1,6 +1,6 @@
 ---
 title: "문명의 충돌"
-author: ""
+author: "새뮤얼 헌팅턴"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "Computer Networks: A Top-down Approach"
-author: ""
+author: "James F. Kurose, Keith W. Ross"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

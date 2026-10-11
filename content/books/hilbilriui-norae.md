@@ -1,6 +1,6 @@
 ---
 title: "힐빌리의 노래"
-author: ""
+author: "J. D. 밴스"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

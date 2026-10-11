@@ -1,6 +1,6 @@
 ---
 title: "어느 외계인의 인류학 보고서: 경제 편"
-author: ""
+author: "이경덕"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

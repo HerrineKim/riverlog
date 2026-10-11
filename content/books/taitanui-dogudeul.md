@@ -1,6 +1,6 @@
 ---
 title: "타이탄의 도구들"
-author: ""
+author: "팀 페리스"
 category: "커리어·일"
 status: "want"
 tags: ["커리어/경영/마케팅"]

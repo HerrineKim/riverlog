@@ -1,6 +1,6 @@
 ---
 title: "채권쟁이 서준식의 다시 쓰는 주식 투자 교과서"
-author: ""
+author: "서준식"
 category: "경제·경영"
 status: "want"
 tags: ["경제/재테크"]

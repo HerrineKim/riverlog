@@ -1,6 +1,6 @@
 ---
 title: "동물을 사랑하면 철학자가 된다"
-author: ""
+author: "이원영"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

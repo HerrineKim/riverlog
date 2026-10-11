@@ -1,6 +1,6 @@
 ---
 title: "여자와 소인배가 논어를 읽는다고"
-author: ""
+author: "서한겸"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

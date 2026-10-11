@@ -1,6 +1,6 @@
 ---
 title: "오멜라스를 떠나는 사람들"
-author: ""
+author: "어슐러 K. 르 귄"
 category: "소설·문학"
 status: "want"
 tags: ["문학"]

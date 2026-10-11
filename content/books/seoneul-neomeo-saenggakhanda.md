@@ -1,6 +1,6 @@
 ---
 title: "선을 넘어 생각한다"
-author: ""
+author: "박한식, 강국진"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "혼자 아리랑"
-author: ""
+author: "남도현"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

@@ -1,6 +1,6 @@
 ---
 title: "나, 건축가 안도 다다오"
-author: ""
+author: "안도 다다오"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "소크라테스적 성찰"
-author: ""
+author: "엄정식"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

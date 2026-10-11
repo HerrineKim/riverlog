@@ -1,6 +1,6 @@
 ---
 title: "파시즘의 대중심리"
-author: ""
+author: "빌헬름 라이히"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

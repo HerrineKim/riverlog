@@ -1,6 +1,6 @@
 ---
 title: "우리는 여전히 삶을 사랑하는가"
-author: ""
+author: "에리히 프롬"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

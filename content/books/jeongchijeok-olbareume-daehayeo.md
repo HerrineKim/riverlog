@@ -1,6 +1,6 @@
 ---
 title: "정치적 올바름에 대하여"
-author: ""
+author: "조던 B. 피터슨, 스티븐 프라이, 마이클 에릭 다이슨, 미셸 골드버그"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

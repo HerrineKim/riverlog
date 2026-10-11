@@ -1,6 +1,6 @@
 ---
 title: "존버씨의 죽음"
-author: ""
+author: "김영선"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "자기배려의 책읽기"
-author: ""
+author: "강민혁"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

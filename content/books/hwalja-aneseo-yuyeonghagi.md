@@ -1,6 +1,6 @@
 ---
 title: "활자 안에서 유영하기"
-author: ""
+author: "김겨울"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

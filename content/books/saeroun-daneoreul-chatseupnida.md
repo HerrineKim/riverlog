@@ -1,6 +1,6 @@
 ---
 title: "새로운 단어를 찾습니다"
-author: ""
+author: "사사키 겐이치"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

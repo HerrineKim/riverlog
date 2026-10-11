@@ -1,6 +1,6 @@
 ---
 title: "아날로그의 반격"
-author: ""
+author: "데이비드 색스"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

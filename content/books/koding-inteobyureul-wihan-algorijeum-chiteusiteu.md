@@ -1,6 +1,6 @@
 ---
 title: "코딩 인터뷰를 위한 알고리즘 치트시트"
-author: ""
+author: "푸둥라이"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

@@ -1,6 +1,6 @@
 ---
 title: "문학의 맛, 소설 속 요리들"
-author: ""
+author: "다이나 프라이드"
 category: "기타"
 status: "want"
 tags: ["건강/요리"]

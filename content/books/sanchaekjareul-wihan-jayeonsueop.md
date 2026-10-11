@@ -1,6 +1,6 @@
 ---
 title: "산책자를 위한 자연수업"
-author: ""
+author: "트리스탄 굴리"
 category: "기타"
 status: "want"
 tags: ["과학/기술/자연"]

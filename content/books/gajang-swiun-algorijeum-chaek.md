@@ -1,6 +1,6 @@
 ---
 title: "가장 쉬운 알고리즘 책"
-author: ""
+author: "미와 요시코"
 category: "컴퓨터 과학"
 status: "want"
 tags: ["컴퓨터", "알고리즘"]

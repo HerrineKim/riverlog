@@ -1,6 +1,6 @@
 ---
 title: "쉽게 믿는 자들의 민주주의"
-author: ""
+author: "제랄드 브로네르"
 category: "인문·사회"
 status: "want"
 tags: ["사회/정치"]

@@ -1,6 +1,6 @@
 ---
 title: "공감의 배신"
-author: ""
+author: "폴 블룸"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

@@ -1,6 +1,6 @@
 ---
 title: "깨달음 그리고 지혜"
-author: ""
+author: "레스터 레븐슨"
 category: "소설·문학"
 status: "want"
 tags: ["수필/자서전/평전"]

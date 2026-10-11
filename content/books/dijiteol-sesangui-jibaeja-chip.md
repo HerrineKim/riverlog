@@ -1,6 +1,6 @@
 ---
 title: "디지털 세상의 지배자 칩"
-author: ""
+author: "T.R.리드"
 category: "개발"
 status: "want"
 tags: ["컴퓨터", "객체지향"]

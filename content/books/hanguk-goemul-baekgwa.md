@@ -1,6 +1,6 @@
 ---
 title: "한국 괴물 백과"
-author: ""
+author: "곽재식"
 category: "인문·사회"
 status: "want"
 tags: ["역사"]

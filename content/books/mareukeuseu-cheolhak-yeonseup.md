@@ -1,6 +1,6 @@
 ---
 title: "마르크스 철학 연습"
-author: ""
+author: "한형식"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]

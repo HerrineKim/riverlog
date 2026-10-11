@@ -1,6 +1,6 @@
 ---
 title: "서점의 일생"
-author: ""
+author: "야마시타 겐지"
 category: "인문·사회"
 status: "want"
 tags: ["인문"]
