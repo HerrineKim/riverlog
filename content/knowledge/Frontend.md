@@ -12,13 +12,14 @@ source: mixed
 
 | 주제 | 내용 |
 | --- | --- |
-| [Web](/knowledge/dictionary/frontend/web) | HTML, DOM, SPA와 CSR/SSR, 쿠키·세션, CSRF·XSS 같은 웹 보안 |
+| [Web](/knowledge/dictionary/frontend/web) | HTML, DOM, SPA와 CSR/SSR, 쿠키·세션, CSRF·XSS 같은 웹 보안, 이전 페이지 URL 알아내기 |
 | [CSS](/knowledge/dictionary/frontend/css) | 문법과 단위, 선택자와 우선순위, 박스 모델, position, Flexbox |
-| [JavaScript](/knowledge/dictionary/frontend/javascript) | 변수·타입, 연산자·제어문, 함수와 this, 배열·객체, DOM 조작과 이벤트, 비동기(콜백·Promise·async/await), AJAX |
-| [React](/knowledge/dictionary/frontend/react) | JSX, 컴포넌트·Props, State·생명주기, Hooks, 폼·리스트·조건부 렌더링, Context, 스타일링, SWR, 실전 예제 |
+| [JavaScript](/knowledge/dictionary/frontend/javascript) | 변수·타입, 연산자·제어문, 함수와 this, 배열·객체, 템플릿 리터럴, class, DOM 조작과 이벤트, 비동기(콜백·Promise·async/await), AJAX, 날짜 라이브러리 |
+| [React](/knowledge/dictionary/frontend/react) | JSX, 컴포넌트·Props, State·생명주기, Hooks, 폼·리스트·조건부 렌더링, Context, 스타일링, SWR, 리렌더링 추적, react-hook-form·react-router·MUI 실무 패턴 |
 | [Next.js](/knowledge/dictionary/frontend/nextjs) | React 기반 프레임워크, SSR·SSG와 SEO |
-| [Mobile](/knowledge/dictionary/frontend/mobile) | 네이티브·하이브리드·크로스 플랫폼 비교, React Native 핵심 |
+| [Mobile](/knowledge/dictionary/frontend/mobile) | 네이티브·하이브리드·크로스 플랫폼 비교, React Native 핵심, CodePush OTA 업데이트 |
 | [Testing](/knowledge/dictionary/frontend/testing) | 프론트엔드에서의 TDD, Jest·React Testing Library |
-| [UI Design](/knowledge/dictionary/frontend/ui-design) | AI 모델로 완성도 높은 프론트엔드 디자인을 이끌어 내는 프롬프트 기법 |
+| [UI Design](/knowledge/dictionary/frontend/ui-design/ai-frontend-design-prompting) | AI 모델로 완성도 높은 프론트엔드 디자인을 이끌어 내는 프롬프트 기법, [디자인 시스템과 공용 스킬 배포](/knowledge/dictionary/frontend/ui-design/design-system) |
+| [Graphics](/knowledge/dictionary/frontend/graphics/threejs) | WebGL과 Three.js로 웹에서 3D 그리기 |
 
 학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/roadmap)에 정리했다.

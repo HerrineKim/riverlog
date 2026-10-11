@@ -26,8 +26,20 @@ source: notion
 | Smurfing | 출발지를 피해자 IP로 위조한 ICMP Echo를 **브로드캐스트** → 수많은 응답이 피해자에게 몰림 |
 | Ping of Death | 허용 크기를 넘는 ICMP 패킷을 보내 잘게 쪼개진 조각을 대량으로 처리하게 함 |
 | HTTP GET Flooding | 과도한 GET 요청으로 웹 서버를 과부하시키는 응용 계층 DDoS |
+| SYN Flooding | TCP 3-way handshake의 구조를 악용해 SYN만 대량으로 보내 연결 대기열을 가득 채움 |
+| UDP Flooding | 대량의 UDP 패킷을 임의의 포트로 보내 응답(ICMP Unreachable) 처리로 자원 고갈 |
+| Teardrop | IP 단편(fragment)의 Offset 정보를 조작해 재조합 과정에서 오류를 일으킴 |
+| Bonk / Boink | 단편의 시퀀스 번호를 조작: Bonk는 같은 번호를 반복, Boink는 중간에 빈 공간을 만듦 |
 
 > 편지 비유: 랜드 어택은 보내는 주소와 받는 주소를 모두 피해자로 써서 혼자 주고받다 지치게 하는 것, 스머핑은 보내는 주소만 피해자로 써서 여러 사람에게 보내 답장이 피해자에게 쏟아지게 하는 것.
+
+**DDoS 공격 도구**: 여러 대의 좀비 PC(에이전트)를 조종해 한 대상에 동시에 공격을 퍼붓는다.
+
+| 도구 | 특징 |
+| --- | --- |
+| Trinoo | 여러 소스에서 통합된 UDP Flood 공격 |
+| TFN (Tribe Flood Network) | Trinoo와 비슷한 분산 도구. UDP·SYN·ICMP Flood, 스머핑 등 여러 공격 지원 |
+| Stacheldraht | Trinoo와 TFN의 특징을 합치고 통신을 암호화한 도구 |
 
 ### 네트워크 엿보기·위장
 

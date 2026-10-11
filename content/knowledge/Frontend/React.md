@@ -31,7 +31,11 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 - [SWR로 데이터 가져오기](/knowledge/dictionary/frontend/react/swr): fetcher, mutate, useSWRInfinite
 - [회원가입·로그인 구현](/knowledge/dictionary/frontend/react/auth-flow): useInput 훅, axios, 로그인 상태에 따른 리다이렉트
 - [실시간 채팅 앱 구조](/knowledge/dictionary/frontend/react/realtime-chat-app): 폴더 구조, REST + WebSocket 설계, optimistic UI, 무한 스크롤
+- [리렌더링 원인 추적하기](/knowledge/dictionary/frontend/react/re-rendering): memo가 안 먹힐 때, useQuery의 렌더링, DevTools 하이라이트·Profiler
+- [react-hook-form과 MUI Select](/knowledge/dictionary/frontend/react/react-hook-form): Controller, 빈 값 처리, 수정 폼 초기값
+- [react-router로 레이아웃과 Breadcrumbs 만들기](/knowledge/dictionary/frontend/react/react-router-layout): URL 규칙, Outlet, 경로 기반 Breadcrumbs
+- [MUI Dialog로 삭제 확인 창 만들기](/knowledge/dictionary/frontend/react/confirm-dialog): 재사용 다이얼로그, 위험한 버튼 디자인
 
 ## 학습 출처
 
-여러 강의의 내용을 개념별로 합쳤다: 「처음 만나는 리액트」(인프런), 「ReactJS로 영화 웹 서비스 만들기」(노마드코더), 「Slack 클론 코딩」(인프런), React 공식 문서.
+여러 강의의 내용을 개념별로 합쳤다: 「처음 만나는 리액트」(인프런), 「ReactJS로 영화 웹 서비스 만들기」(노마드코더), 「Slack 클론 코딩」(인프런), 생활코딩 React(2022), React 공식 문서. 스터디에서는 개념 강의 → 실습 강의 → 클론 코딩 순서로 한 달 남짓 진행하고, 배운 내용을 GitHub에 정리한 뒤 회고를 남기는 것을 결과물로 삼았다. 실무 노트(리렌더링, react-hook-form, react-router, MUI)는 업무 중 해결한 문제에서 뽑았다.

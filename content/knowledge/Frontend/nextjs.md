@@ -40,6 +40,30 @@ pages/posts/[id].js   → /posts/1, /posts/2 ...
 
 참고: Next.js 13부터 도입된 **App Router**에서는 `app/` 디렉터리를 쓰고, `app/about/page.tsx`처럼 폴더가 경로, `page` 파일이 화면이 된다. 기본이 React Server Component이고 레이아웃(`layout.tsx`)을 중첩할 수 있다. 새 프로젝트는 App Router가 기본이다.
 
+### App Router의 데이터 가져오기: 확장된 `fetch`
+
+Next.js 13의 App Router에서는 Pages Router의 `getServerSideProps`·`getStaticProps` 같은 `get~` 데이터 함수가 없어졌다. 대신 **서버 컴포넌트를 `async` 함수로 만들고 그 안에서 바로 `fetch`** 한다. Next.js는 브라우저 표준 `fetch`를 확장해 캐싱·재검증 옵션을 붙였다.
+
+```tsx
+// app/posts/page.tsx — 서버 컴포넌트
+export default async function PostsPage() {
+  const res = await fetch('https://api.example.com/posts', {
+    next: { revalidate: 60 }, // 60초마다 다시 가져오기 (ISR과 비슷)
+  })
+  const posts = await res.json()
+  return <PostList posts={posts} />
+}
+```
+
+| 옵션 | 의미 |
+| --- | --- |
+| `cache: 'force-cache'` | 결과를 캐시해 재사용(SSG처럼) |
+| `cache: 'no-store'` | 요청마다 새로 가져오기(SSR처럼) |
+| `next: { revalidate: n }` | n초 동안 캐시 후 다시 가져오기 |
+
+- 캐싱 기본값은 버전에 따라 바뀌었다. 13~14는 기본이 캐시였고, **15부터는 기본이 캐시하지 않음**이다. 원하는 동작을 옵션으로 명시하는 것이 안전하다.
+- 데이터는 가능하면 서버 컴포넌트에서 가져오는 것이 권장된다. 클라이언트 컴포넌트에서도 `fetch`는 쓸 수 있지만 캐싱 확장은 적용되지 않으므로, 사용자 이벤트에 따라 가져오는 데이터는 [SWR](/knowledge/dictionary/frontend/react/swr)이나 TanStack Query 같은 라이브러리로 다룬다.
+
 ### 자동 코드 스플리팅
 
 번들(여러 파일·모듈을 합쳐 요청 수를 줄인 결과물)을 페이지 단위로 자동으로 나눈다. 각 페이지는 자기에게 필요한 코드만 받으므로 첫 로딩 시간이 줄어든다.
@@ -61,3 +85,4 @@ pages/posts/[id].js   → /posts/1, /posts/2 ...
 - SSR은 요청마다 서버에서, SSG는 빌드 때 미리 HTML을 만든다. 둘 다 SEO에 유리하다.
 - SSR 페이지도 브라우저에서 hydration을 거쳐야 상호작용이 가능해진다.
 - 라우팅은 파일 구조 기반(`pages/` 또는 13+의 `app/`).
+- App Router에서는 서버 컴포넌트에서 `fetch`하고, 캐시 동작은 `cache`/`revalidate` 옵션으로 명시한다.

@@ -15,6 +15,8 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [연산자와 제어문](/knowledge/dictionary/frontend/javascript/operators-and-control-flow): `==` vs `===`, 논리·삼항 연산자, if·switch, for·for...in·for...of
 - [함수와 this](/knowledge/dictionary/frontend/javascript/functions): 선언식·표현식, 화살표 함수, rest·spread, this와 bind
 - [배열·객체·문자열](/knowledge/dictionary/frontend/javascript/arrays-and-objects): 주요 메서드, map·filter·reduce, ES6 객체 문법, 구조 분해, 옵셔널 체이닝, JSON
+- [템플릿 리터럴](/knowledge/dictionary/frontend/javascript/template-literals): 여러 줄·표현식 삽입·중첩, 태그드 템플릿과 styled-components의 원리
+- [class 문법](/knowledge/dictionary/frontend/javascript/class): constructor, static, extends, getter·setter, private 필드
 
 ### 브라우저와 함께
 - [DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·생성·삽입·삭제·속성 변경, innerText vs innerHTML
@@ -25,7 +27,11 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [async/await](/knowledge/dictionary/frontend/javascript/async-await): 동기 코드처럼 쓰는 비동기, try/catch 에러 처리, 코드 리뷰에서 배운 점
 - [AJAX와 HTTP 요청](/knowledge/dictionary/frontend/javascript/ajax): XMLHttpRequest, fetch, axios, CORS
 
+### 라이브러리
+- [날짜 라이브러리](/knowledge/dictionary/frontend/javascript/date-libraries): Moment.js 이후의 대안, date-fns와 Day.js 비교
+
 ## 코딩 스타일
 
 - 세미콜론은 선택 사항이다. 생략하면 ASI(Automatic Semicolon Insertion) 규칙에 따라 자동으로 삽입된다. 어느 쪽이든 팀 안에서 일관되게 쓰는 것이 중요하다.
+- 코드 리뷰에서 반복해서 나온 스타일 지적(const, else, 기본값, 불리언 이름 등)은 [코드 리뷰에서 자주 나온 지적](/knowledge/dictionary/career/code-review/review-patterns)에 모았다.
 - 스타일의 핵심은 "합의된 원칙과 일관성"이다. 참고할 만한 가이드: [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript), [Google JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html), [standardjs](https://standardjs.com/). 실무에서는 ESLint와 Prettier로 자동화한다.

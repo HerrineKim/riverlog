@@ -82,7 +82,7 @@ function Reservation() {
 }
 ```
 
-입력이 많고 반복되면 [커스텀 훅 useInput](/knowledge/dictionary/frontend/react/hooks)으로 state와 핸들러 쌍을 뽑아내는 방법도 있다.
+입력이 많고 반복되면 [커스텀 훅 useInput](/knowledge/dictionary/frontend/react/hooks)으로 state와 핸들러 쌍을 뽑아내는 방법도 있다. 검증까지 필요한 실무 폼에서는 입력마다 리렌더링하지 않는 [react-hook-form](/knowledge/dictionary/frontend/react/react-hook-form) 같은 라이브러리를 많이 쓴다.
 
 ## 실습: 분·시간 변환기
 

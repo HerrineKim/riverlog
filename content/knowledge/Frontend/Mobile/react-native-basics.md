@@ -3,7 +3,7 @@ title: "React Native 기초와 스타일링"
 concept: "React Native"
 summary: "React 코드를 네이티브 UI로 바꿔 주는 React Native의 동작 원리, Expo로 시작하기, 코어 컴포넌트, StyleSheet와 Flexbox 레이아웃."
 tags: ["react-native", "mobile", "react", "css"]
-source: til
+source: mixed
 ---
 
 **React Native**는 React 문법으로 Android·iOS **네이티브 앱**을 만드는 크로스 플랫폼 프레임워크다. React의 컴포넌트·props·state·Hooks를 그대로 쓰되, `<div>`, `<p>` 같은 HTML 대신 네이티브 UI로 변환되는 **코어 컴포넌트**를 쓴다.
@@ -61,6 +61,31 @@ npm start
 | `Pressable`, `Modal` | 터치 감지, 모달 | — |
 
 웹보다 문법이 엄격하다. 예를 들어 문자열은 반드시 `<Text>` 안에 있어야 하며, `<View>` 안에 문자열을 바로 넣으면 에러가 난다. 이 코어 컴포넌트들을 조합해 UI를 만든다.
+
+### 주의: 기본 `Button`은 스타일을 받지 않는다
+
+`StyleSheet`로 크기·배경·테두리를 만들어 `<Button style={...}>`에 넘겨도 **아무것도 반영되지 않는다.** 기본 `Button`은 `style` prop이 없고 `title`, `color`, `disabled` 정도만 지원하는 플랫폼 기본 버튼이기 때문이다. 모양을 직접 꾸미려면 `Pressable`(또는 `TouchableOpacity`)로 `Text`를 감싸 버튼을 만든다.
+
+```jsx
+<Pressable style={styles.button} onPress={onPress}>
+  <Text style={styles.buttonText}>확인</Text>
+</Pressable>
+
+const styles = StyleSheet.create({
+  button: {
+    width: '100%',
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  buttonText: { fontSize: 32, fontWeight: '400' },
+})
+```
+
+컴포넌트가 어떤 props를 받는지는 문서를 열지 않아도 에디터에서 `Ctrl`(macOS `Cmd`) + 클릭으로 타입 정의를 열어 확인할 수 있다. 스타일이 안 먹을 때는 import한 스타일 객체를 `console.log`로 찍어 보는 것도 원인을 좁히는 데 도움이 된다.
 
 ## 스타일링
 
@@ -148,4 +173,5 @@ const styles = StyleSheet.create({
 - React Native = React 문법 + 네이티브 UI. 로직은 JS 스레드에서 실행된다.
 - 입문은 Expo + Expo Go로 시작한다.
 - HTML 대신 코어 컴포넌트(`View`, `Text`, `TextInput`…), 문자열은 반드시 `Text` 안에.
+- 기본 `Button`은 꾸밀 수 없다. 커스텀 버튼은 `Pressable` + `Text`.
 - CSS 대신 `StyleSheet.create` 객체, 레이아웃은 Flexbox(기본 방향 `column`).

@@ -13,3 +13,4 @@ source: mixed
 - [모바일 앱 프레임워크 비교](/knowledge/dictionary/frontend/mobile/mobile-frameworks): 네이티브 vs 하이브리드 vs 크로스 플랫폼
 - [React Native 기초와 스타일링](/knowledge/dictionary/frontend/mobile/react-native-basics): 동작 원리, Expo, 코어 컴포넌트, StyleSheet와 Flexbox
 - [React Native 상호작용과 리스트](/knowledge/dictionary/frontend/mobile/react-native-interaction): 이벤트, ScrollView vs FlatList, 컴포넌트 분리, Pressable, Modal, StatusBar
+- [CodePush로 React Native 앱 업데이트하기](/knowledge/dictionary/frontend/mobile/codepush): 스토어 심사 없는 OTA 업데이트, Staging → Production 배포 절차

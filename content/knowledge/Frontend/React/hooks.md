@@ -172,6 +172,8 @@ Hook 자체는 가볍지만, 메모이제이션은 비교와 저장에 비용이
 
 React DevTools의 Profiler로 실제로 느린 컴포넌트를 찾은 뒤 적용하는 것이 좋다(예: 채팅 목록의 각 `Chat` 항목에 `memo` 적용). 참고로 React 19와 함께 나온 React Compiler는 이런 메모이제이션을 자동으로 해 준다.
 
+`React.memo`를 씌웠는데도 렌더링이 줄지 않는다면 렌더링을 일으키는 원인이 다른 곳에 있다는 뜻이다. 원인을 추적하는 과정은 [리렌더링 원인 추적하기](/knowledge/dictionary/frontend/react/re-rendering)에 정리했다.
+
 ## 커스텀 훅
 
 여러 컴포넌트에서 반복되는 **상태 로직**을 `use`로 시작하는 함수로 뽑아낸 것이다. 훅 안에서 다른 훅을 호출할 수 있는 유일한 장소이며, HOC나 render props 없이 로직을 재사용할 수 있다.
