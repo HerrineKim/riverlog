@@ -1,0 +1,7 @@
+{
+  "tool_name": "mcp__claude_ai_Notion__notion-query-data-sources",
+  "tool_input_preview": "{\"data\":{\"mode\":\"rows\",\"data_source_url\":\"collection://81b3c3ba-6dfa-4838-ac9c-214a20d99fd8\",\"filter\":{\"type\":\"group\",\"operator\":\"and\",\"filters\":[{\"type\":\"property\",\"property\":\"태그\",\"propertyType\":\"sel...",
+  "error": "Your workspace has reached the usage limit for Query Data Source. You can try again later, or learn more about full Notion MCP access and what else it unlocks: https://app.notion.com/notion-mcp-claude?source=mcp_tool_upsell_claude-code&tool=query_data_sources&product=business&mcpRequestId=532bb259-0fff-4b05-8866-a7b57692bb2c&mcpUpsellOpportunityId=cb9525f0-bfcb-4c10-81f2-01b69cbf449e&mcpClickSource=markdown_link&spaceId=3afe4aa7-f682-4fc8-a572-4e4fbebdee91&notionAccountId=9ab684dc-951e-4f55-a7d6...",
+  "timestamp": "2026-10-11T13:16:26.894Z",
+  "retry_count": 1
+}

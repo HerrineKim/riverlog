@@ -1,0 +1,439 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1791723840583,
+  "projectRoot": "/Users/hyerin/Projects/riverlog",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "next",
+        "version": "16.4.0",
+        "category": "fullstack"
+      },
+      {
+        "name": "react",
+        "version": "19.3.0",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "19.3.0",
+        "category": "frontend"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": null,
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "eslint"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "public",
+      "src"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "content": {
+      "path": "content",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1791723840567,
+      "keyFiles": [
+        "about.md"
+      ]
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 5,
+      "lastAccessed": 1791723840568,
+      "keyFiles": [
+        "file.svg",
+        "globe.svg",
+        "next.svg",
+        "vercel.svg",
+        "window.svg"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 0,
+      "lastAccessed": 1791723840569,
+      "keyFiles": []
+    },
+    "src/app": {
+      "path": "src/app",
+      "purpose": "Application code",
+      "fileCount": 4,
+      "lastAccessed": 1791723840569,
+      "keyFiles": [
+        "favicon.ico",
+        "globals.css",
+        "layout.tsx"
+      ]
+    },
+    "src/components": {
+      "path": "src/components",
+      "purpose": "UI components",
+      "fileCount": 7,
+      "lastAccessed": 1791723840569,
+      "keyFiles": [
+        "NavLinks.tsx",
+        "Prose.tsx",
+        "SiteFooter.tsx"
+      ]
+    },
+    "src/lib": {
+      "path": "src/lib",
+      "purpose": "Library code",
+      "fileCount": 6,
+      "lastAccessed": 1791723840569,
+      "keyFiles": [
+        "blog.ts",
+        "format.ts",
+        "knowledge-lite.ts"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "content/knowledge/Computer-Science/Operating-System/process-scheduling.md",
+      "accessCount": 2,
+      "lastAccessed": 1791724182479,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Git.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724007396,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Career.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724013231,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Git/basics.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724025441,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724025465,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Career/Work/growing-at-work.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724025582,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Career/Work/decision-making.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724032993,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend/roadmap.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724034380,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend/Web.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724038965,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Career/Work/phone-etiquette.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724039875,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Git/branch.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724042813,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Career/Product/product-owner.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724047550,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Career/Product/project-process.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724055908,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Git/merge.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724063760,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Career/Talks/developer-leadership.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724069456,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Git/remote-github.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724077880,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend/Web/html.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724078162,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Career/Talks/career-in-ai-era.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724082543,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/markdown.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724089431,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend/Web/dom.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724093545,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Jira/issues-and-jql.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724105057,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Career/Reading/tech-reading-list.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724105668,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Computer-Science/Operating-System.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724105913,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend/Web/spa-csr-ssr.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724106922,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/General.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724110010,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Jira/workflow.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724118212,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend/Web/cookie-session.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724118587,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Computer-Science/roadmap.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724119003,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/General/Writing/persuasive-writing.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724124012,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Computer-Science/Computer-Architecture.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724124100,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Computer-Science/Operating-System/os-overview.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724124194,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Analytics/ga4-setup.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724128292,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/General/Writing/sentence-craft.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724132087,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend/Web/web-security.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724133124,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Computer-Science/Operating-System/kernel-types.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724134527,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Office/google-sheets-vs-excel.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724137847,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend/CSS.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724141336,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Computer-Science/Computer-Architecture/computer-system-basics.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724143368,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/General/Writing/online-writing.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724144680,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Blender.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724150634,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend/CSS/css-basics.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724154625,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Computer-Science/Operating-System/system-structure.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724159426,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Computer-Science/Computer-Architecture/data-representation.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724163433,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/General/Journalism/data-journalism.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724166306,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Blender/basics-isometric-room.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724169770,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/General/Journalism/news-values.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724173678,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Frontend/CSS/selectors.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724174943,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/General/Design/presentation-design.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724183493,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Computer-Science/Computer-Architecture/digital-components.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724184174,
+      "type": "file"
+    },
+    {
+      "path": "content/knowledge/Tools/Blender/furniture-modeling.md",
+      "accessCount": 1,
+      "lastAccessed": 1791724187808,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

@@ -1,0 +1,31 @@
+---
+title: "JavaScript"
+concept: "JavaScript"
+summary: "브라우저를 조작할 수 있는 유일한 언어이자, ECMAScript 표준을 따르는 동적 타입 언어."
+tags: ["javascript", "frontend", "browser"]
+source: mixed
+---
+
+JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이며, 브라우저(BOM)와 그 안의 문서(DOM)를 조작할 수 있는 유일한 언어다. 언어의 핵심 문법은 **ECMAScript** 표준으로 정의된다. ECMA International이 ECMA-262 규격으로 정의한 언어가 ECMAScript이고, 2015년에 발표된 6번째 판(ES6, ES2015)부터 `let`/`const`, 화살표 함수, Promise, 클래스 같은 현대적 문법이 대거 들어왔다.
+
+## 노트
+
+### 언어 기초
+- [변수와 데이터 타입](/knowledge/dictionary/frontend/javascript/variables-and-types): 식별자 규칙, let·const·var, 호이스팅, 원시·참조 타입, null과 undefined
+- [연산자와 제어문](/knowledge/dictionary/frontend/javascript/operators-and-control-flow): `==` vs `===`, 논리·삼항 연산자, if·switch, for·for...in·for...of
+- [함수와 this](/knowledge/dictionary/frontend/javascript/functions): 선언식·표현식, 화살표 함수, rest·spread, this와 bind
+- [배열·객체·문자열](/knowledge/dictionary/frontend/javascript/arrays-and-objects): 주요 메서드, map·filter·reduce, ES6 객체 문법, 구조 분해, 옵셔널 체이닝, JSON
+
+### 브라우저와 함께
+- [DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·생성·삽입·삭제·속성 변경, innerText vs innerHTML
+- [이벤트](/knowledge/dictionary/frontend/javascript/events): addEventListener, 이벤트 객체, preventDefault
+
+### 비동기
+- [콜백과 Promise](/knowledge/dictionary/frontend/javascript/callback-and-promise): 비동기의 문제, 콜백 지옥, Promise 상태와 체이닝, Promise.all
+- [async/await](/knowledge/dictionary/frontend/javascript/async-await): 동기 코드처럼 쓰는 비동기, try/catch 에러 처리, 코드 리뷰에서 배운 점
+- [AJAX와 HTTP 요청](/knowledge/dictionary/frontend/javascript/ajax): XMLHttpRequest, fetch, axios, CORS
+
+## 코딩 스타일
+
+- 세미콜론은 선택 사항이다. 생략하면 ASI(Automatic Semicolon Insertion) 규칙에 따라 자동으로 삽입된다. 어느 쪽이든 팀 안에서 일관되게 쓰는 것이 중요하다.
+- 스타일의 핵심은 "합의된 원칙과 일관성"이다. 참고할 만한 가이드: [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript), [Google JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html), [standardjs](https://standardjs.com/). 실무에서는 ESLint와 Prettier로 자동화한다.

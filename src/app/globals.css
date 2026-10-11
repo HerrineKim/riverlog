@@ -1,26 +1,167 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root,
+[data-theme="dark"] {
+  --bg: #0a0e13;
+  --bg-elev: #10161e;
+  --bg-sunken: #070a0e;
+  --border: #1d2733;
+  --fg: #e4ebf2;
+  --fg-strong: #f8fafc;
+  --muted: #8a9aad;
+  --accent: #5eead4;
+  --accent-ink: #042f2e;
+  --accent-soft: rgb(94 234 212 / 0.12);
+  --code-bg: #0d1218;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #f6f7f4;
+  --bg-elev: #ffffff;
+  --bg-sunken: #eceee9;
+  --border: #dfe2dc;
+  --fg: #1f2933;
+  --fg-strong: #0b1219;
+  --muted: #5f6b78;
+  --accent: #0f766e;
+  --accent-ink: #f0fdfa;
+  --accent-soft: rgb(15 118 110 / 0.1);
+  --code-bg: #f1f3ef;
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-bg-sunken: var(--bg-sunken);
+  --color-line: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-strong: var(--fg-strong);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-body), "Apple SD Gothic Neo", system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-body), serif;
+  --font-mono: var(--font-code), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg);
+  scroll-padding-top: 5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---------- Markdown prose ---------- */
+.prose-river {
+  --tw-prose-body: var(--fg);
+  --tw-prose-headings: var(--fg-strong);
+  --tw-prose-lead: var(--muted);
+  --tw-prose-links: var(--accent);
+  --tw-prose-bold: var(--fg-strong);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--muted);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--fg);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-captions: var(--muted);
+  --tw-prose-code: var(--fg-strong);
+  --tw-prose-pre-code: var(--fg);
+  --tw-prose-pre-bg: var(--code-bg);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+  max-width: none;
+  line-height: 1.85;
+}
+.prose-river :where(h1, h2, h3, h4) a {
+  color: inherit;
+  text-decoration: none;
+}
+.prose-river :where(h2) {
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid var(--border);
+}
+.prose-river :where(a) {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.prose-river :where(:not(pre) > code) {
+  background: var(--accent-soft);
+  padding: 0.15em 0.4em;
+  border-radius: 0.35em;
+  font-weight: 500;
+}
+.prose-river :where(:not(pre) > code)::before,
+.prose-river :where(:not(pre) > code)::after {
+  content: none;
+}
+.prose-river :where(pre) {
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  font-size: 0.85em;
+  line-height: 1.7;
+}
+.prose-river :where(img) {
+  border-radius: 0.6rem;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+.prose-river :where(table) {
+  display: block;
+  overflow-x: auto;
+}
+.prose-river :where(details) {
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-elev);
+}
+.prose-river :where(summary) {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* shiki dual themes (rehype-pretty-code) */
+[data-theme="dark"] .prose-river code[data-theme] span,
+:root:not([data-theme="light"]) .prose-river code[data-theme] span {
+  color: var(--shiki-dark);
+}
+[data-theme="light"] .prose-river code[data-theme] span {
+  color: var(--shiki-light);
+}
+.prose-river figure[data-rehype-pretty-code-figure] {
+  margin: 1.5em 0;
+}
+.prose-river pre code[data-line-numbers] > [data-line]::before {
+  color: var(--muted);
+}
+
+/* ---------- Decorative ---------- */
+.river-grain {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, var(--accent-soft), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgb(125 211 252 / 0.06), transparent 70%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }

@@ -1,0 +1,8 @@
+---
+title: "두려움 가득한 작업실에서 두려움에 굴하지 않고-더 패치"
+author: ""
+category: "소설·문학"
+status: "want"
+tags: ["수필/자서전/평전"]
+notionUrl: "https://app.notion.com/p/e0d168672b274d1d8b9af5637edf263c"
+---

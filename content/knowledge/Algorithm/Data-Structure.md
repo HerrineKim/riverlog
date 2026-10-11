@@ -1,0 +1,14 @@
+---
+title: "자료구조"
+concept: "Data Structure"
+summary: "알고리즘 문제에서 데이터를 담고 꺼내는 방식을 정하는 기본 자료구조 모음."
+tags: ["algorithm", "data-structure"]
+source: til
+---
+
+어떤 자료구조를 고르느냐에 따라 같은 알고리즘의 속도가 크게 달라진다. 이 주제에는 코딩 테스트에서 가장 자주 쓰이는 자료구조와 파이썬에서의 구현 방법을 정리했다.
+
+- **stack** — 후입선출(LIFO), DFS·괄호 검사·되돌리기
+- **queue-deque** — 선입선출(FIFO) 큐와 양쪽에서 넣고 빼는 덱, BFS의 기반
+- **heap-priority-queue** — 우선순위가 가장 높은 원소를 빠르게 꺼내는 힙
+- **disjoint-set** — 원소들을 서로소 집합으로 묶는 Union-Find

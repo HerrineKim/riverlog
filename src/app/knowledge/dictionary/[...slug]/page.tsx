@@ -1,0 +1,181 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import Prose from "@/components/Prose";
+import SiteFooter from "@/components/SiteFooter";
+import Toc from "@/components/Toc";
+import TreeNav from "@/components/knowledge/TreeNav";
+import { formatDate } from "@/lib/format";
+import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, type KNode } from "@/lib/knowledge";
+import { extractToc } from "@/lib/markdown";
+
+export function generateStaticParams() {
+  return getAllNodes().map((n) => ({ slug: n.slug }));
+}
+
+export async function generateMetadata({ params }: PageProps<"/knowledge/dictionary/[...slug]">): Promise<Metadata> {
+  const node = getNode((await params).slug);
+  if (!node) return {};
+  return { title: node.doc?.title ?? node.name, description: node.doc?.excerpt };
+}
+
+const SOURCE_LABEL = { til: "GitHub TIL", notion: "Notion", mixed: "GitHub TIL + Notion", other: "직접 작성" } as const;
+
+function sourceName(url: string) {
+  if (url.includes("notion")) return "Notion 원문";
+  if (url.includes("github.com")) return "GitHub 원문";
+  return "원문";
+}
+
+export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/dictionary/[...slug]">) {
+  const node = getNode((await params).slug);
+  if (!node) notFound();
+  const tree = getKnowledgeTree();
+  const trail = getTrail(node);
+  const doc = node.doc;
+  const toc = doc ? extractToc(doc.body) : [];
+  const color = categoryColor(node.category);
+  const siblings = trail.length > 1 ? trail[trail.length - 2].children : tree.children;
+  const idx = siblings.findIndex((s) => s.id === node.id);
+  const prev = idx > 0 ? siblings[idx - 1] : undefined;
+  const next = idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : undefined;
+
+  return (
+    <>
+      <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 pt-8 pb-24 sm:px-6 lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[15rem_minmax(0,1fr)_13rem]">
+        <aside className="hidden lg:block">
+          <div className="sticky top-20 max-h-[calc(100dvh-6rem)] overflow-y-auto pr-2 pb-8">
+            <Link href={KNOWLEDGE_BASE} className="mb-4 flex items-center gap-2 text-sm text-muted hover:text-accent">
+              ← 사전 전체
+            </Link>
+            <TreeNav tree={tree} currentId={node.id} />
+          </div>
+        </aside>
+
+        <main className="min-w-0">
+          <nav aria-label="경로" className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
+            <Link href={KNOWLEDGE_BASE} className="hover:text-accent">
+              사전
+            </Link>
+            {trail.slice(0, -1).map((t) => (
+              <span key={t.id} className="flex items-center gap-1.5">
+                <span aria-hidden>/</span>
+                <Link href={t.href} className="hover:text-accent">
+                  {t.name}
+                </Link>
+              </span>
+            ))}
+          </nav>
+
+          <header className="mt-5 border-b border-line pb-7">
+            <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.16em] uppercase" style={{ color }}>
+              <span className="size-2 rounded-full" style={{ background: color, boxShadow: `0 0 10px ${color}` }} />
+              {trail[0]?.name}
+            </div>
+            <h1 className="mt-3 text-3xl leading-tight font-bold text-balance text-fg-strong sm:text-4xl">
+              {doc?.title ?? node.name}
+            </h1>
+            {doc && (
+              <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted">
+                <span className="rounded-full border border-line px-2.5 py-1">{SOURCE_LABEL[doc.source]}</span>
+                {doc.date && <span className="rounded-full border border-line px-2.5 py-1">{formatDate(doc.date)}</span>}
+                {doc.tags.map((t) => (
+                  <span key={t} className="rounded-full bg-accent-soft px-2.5 py-1 text-accent">
+                    #{t}
+                  </span>
+                ))}
+              </div>
+            )}
+          </header>
+
+          {doc && (
+            <article className="mt-8">
+              <Prose markdown={doc.body} />
+              {doc.sources.length > 0 && (
+                <div className="mt-14 rounded-xl border border-line bg-bg-elev p-4 text-sm text-muted">
+                  <p className="font-medium text-fg">원본 기록</p>
+                  <ul className="mt-2 space-y-1">
+                    {doc.sources.map((s) => (
+                      <li key={s} className="truncate">
+                        <a href={s} className="hover:text-accent" target="_blank" rel="noreferrer">
+                          {sourceName(s)} ↗ <span className="opacity-60">{decodeSafe(s).replace(/^https?:\/\//, "")}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </article>
+          )}
+
+          {node.children.length > 0 && <ChildList node={node} hasDoc={!!doc} />}
+
+          {(prev || next) && (
+            <nav className="mt-16 grid gap-3 sm:grid-cols-2">
+              {prev ? <Pager node={prev} dir="prev" /> : <span />}
+              {next && <Pager node={next} dir="next" />}
+            </nav>
+          )}
+        </main>
+
+        <aside className="hidden xl:block">
+          <div className="sticky top-20">
+            <Toc items={toc} />
+          </div>
+        </aside>
+      </div>
+      <SiteFooter />
+    </>
+  );
+}
+
+function decodeSafe(s: string) {
+  try {
+    return decodeURI(s);
+  } catch {
+    return s;
+  }
+}
+
+function ChildList({ node, hasDoc }: { node: KNode; hasDoc: boolean }) {
+  return (
+    <section className={hasDoc ? "mt-16" : "mt-8"}>
+      <h2 className="text-sm font-semibold tracking-[0.16em] text-muted uppercase">
+        이 주제의 항목 · {node.docCount - (hasDoc ? 1 : 0)}
+      </h2>
+      <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+        {node.children.map((c) => (
+          <li key={c.id}>
+            <Link
+              href={c.href}
+              className="group flex h-full flex-col rounded-xl border border-line bg-bg-elev p-4 transition hover:-translate-y-0.5 hover:border-accent"
+            >
+              <span className="flex items-center gap-2 font-medium text-fg-strong group-hover:text-accent">
+                {c.children.length > 0 && (
+                  <svg viewBox="0 0 24 24" className="size-4 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  </svg>
+                )}
+                {c.children.length ? c.name : (c.doc?.title ?? c.name)}
+                {c.children.length > 0 && <span className="ml-auto text-xs text-muted tabular-nums">{c.docCount}</span>}
+              </span>
+              {c.doc?.excerpt && <span className="mt-1.5 line-clamp-2 text-sm text-muted">{c.doc.excerpt}</span>}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function Pager({ node, dir }: { node: KNode; dir: "prev" | "next" }) {
+  return (
+    <Link
+      href={node.href}
+      className={`rounded-xl border border-line p-4 transition hover:border-accent ${dir === "next" ? "text-right sm:col-start-2" : ""}`}
+    >
+      <span className="text-xs text-muted">{dir === "prev" ? "← 이전" : "다음 →"}</span>
+      <span className="mt-1 block truncate font-medium text-fg-strong">{node.doc?.title ?? node.name}</span>
+    </Link>
+  );
+}
