@@ -19,5 +19,6 @@ source: mixed
 | [Next.js](/knowledge/dictionary/frontend/nextjs) | React 기반 프레임워크, SSR·SSG와 SEO |
 | [Mobile](/knowledge/dictionary/frontend/mobile) | 네이티브·하이브리드·크로스 플랫폼 비교, React Native 핵심 |
 | [Testing](/knowledge/dictionary/frontend/testing) | 프론트엔드에서의 TDD, Jest·React Testing Library |
+| [UI Design](/knowledge/dictionary/frontend/ui-design) | AI 모델로 완성도 높은 프론트엔드 디자인을 이끌어 내는 프롬프트 기법 |
 
 학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/roadmap)에 정리했다.
