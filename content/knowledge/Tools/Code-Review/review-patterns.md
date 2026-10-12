@@ -80,6 +80,8 @@ class Gun {
 
 모달·드롭다운처럼 **보임 여부**를 정하는 값도 문자열이나 숫자 대신 `isOpen` 같은 불리언 state로 둔다.
 
+형태별 영어 문법과 `is` + 동사원형 같은 흔한 실수는 [[boolean-naming|불리언 변수 이름 짓기]]에 따로 정리했다.
+
 ## 5. 빈 문자열 검사는 의도대로
 
 `value !== ''`는 "빈 문자열이 아니다"만 확인한다. `null`·`undefined`도 `''`와 **다르므로** 통과해 버린다. (`!=`도 마찬가지로 `null != ''`는 `true`다. 느슨한 비교에서 `null`은 `undefined`와만 같다.)
@@ -213,4 +215,4 @@ function SignUpForm() {
 | state 직접 수정 | `map` + spread로 새 객체 |
 | props 과다 | 데이터 + 콜백 한두 개로 |
 
-관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[forms|폼과 제어 컴포넌트]], [[principles|코드 리뷰 원칙]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]]
+관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[forms|폼과 제어 컴포넌트]], [[principles|코드 리뷰 원칙]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[boolean-naming|불리언 변수 이름 짓기]]
