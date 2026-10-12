@@ -69,150 +69,43 @@ bfs(graph, 1, visited)  # 1 2 3 8 4 5 6 7
 
 노드 V개, 간선 E개일 때 인접 리스트 기준 시간 복잡도는 **O(V + E)**다. 메모리는 큐에 한 "층(level)"의 노드가 한꺼번에 들어가므로 그래프의 **너비**에 비례한다.
 
-## BFS로 최단 거리 구하기
+## 격자(미로) BFS 패턴
 
 방문 여부 대신 **거리**를 기록하면 바로 최단 거리 표가 된다. 다음 칸의 거리 = 현재 칸의 거리 + 1이다.
 
-## 격자(미로) BFS 패턴
-
-코딩 테스트에서 가장 흔한 형태는 N×M 격자에서 상하좌우로 이동하는 문제다. 좌표를 노드로, 인접한 칸을 간선으로 본다.
-
-### 패턴 1: 출발지에서 도착지까지의 최단 칸 수
-
-> 예: 미로(0 통로, 1 벽)에서 출발 칸(2)부터 도착 칸(3)까지 지나야 하는 최소 칸 수를 구하고, 경로가 없으면 0 (SWEA 5105 미로의 거리)
+코딩 테스트에서 가장 흔한 형태는 N×M 격자에서 상하좌우로 이동하는 문제다. 좌표를 노드로, 인접한 칸을 간선으로 본다. 미로(`0` 통로, `1` 벽)에서 출발 칸부터 도착 칸까지 지나야 하는 최소 칸 수를 구하는 문제로 핵심 루프를 보자.
 
 ```python
 from collections import deque
 
-def maze_distance(board, n):
-    # 출발/도착 위치 찾기
-    for i in range(n):
-        for j in range(n):
-            if board[i][j] == '2':
-                si, sj = i, j
-            elif board[i][j] == '3':
-                ei, ej = i, j
-
-    dist = [[-1] * n for _ in range(n)]   # -1 = 미방문
-    dist[si][sj] = 0
-    queue = deque([(si, sj)])
+def shortest_cells(board, n, start, goal):
+    dist = [[-1] * n for _ in range(n)]      # -1 = 미방문, 그 외 = 출발점에서의 거리
+    dist[start[0]][start[1]] = 0
+    queue = deque([start])
     while queue:
         ci, cj = queue.popleft()
-        if (ci, cj) == (ei, ej):
-            return dist[ci][cj] - 1        # 출발·도착 칸을 제외한 '지나는 칸' 수
+        if (ci, cj) == goal:
+            return dist[ci][cj] - 1          # 출발·도착 칸을 뺀 '지나는 칸' 수
         for di, dj in ((-1, 0), (1, 0), (0, -1), (0, 1)):
             ni, nj = ci + di, cj + dj
             if 0 <= ni < n and 0 <= nj < n and dist[ni][nj] == -1 and board[ni][nj] != '1':
                 dist[ni][nj] = dist[ci][cj] + 1
                 queue.append((ni, nj))
-    return 0
+    return 0                                 # 도달 불가
 ```
 
-원래 풀이에는 방문 조건을 `visited[ni][nj]`(이미 방문한 칸만 통과)로 잘못 써서 탐색이 진행되지 않는 버그가 있었다. **방문하지 않은 칸**(`not visited`, 여기서는 `dist == -1`)이어야 한다.
+- `dist` 배열 하나가 방문 표시와 거리 기록을 겸한다. 통과 조건은 **아직 방문하지 않은 칸**(`dist == -1`)이다. 실수로 "이미 방문한 칸만 통과"로 쓰면 탐색이 한 발도 나가지 못한다.
+- 방향 배열 `(di, dj)`, 범위 검사, 벽 검사, 방문 검사 네 가지를 한 조건문에 묶는 것이 격자 BFS의 기본형이다.
 
-### 패턴 2: 레벨 단위로 퍼지기 — 가장 마지막에 도달하는 노드
+### 상황별 변형 포인트
 
-> 예: 방향 그래프 형태의 비상연락망에서 시작 당번으로부터 연락이 동시에 퍼질 때, 가장 늦게 연락받는 사람들 중 번호가 가장 큰 사람 찾기 (SWEA 1238 Contact)
+같은 루프를 두고 문제가 묻는 것에 따라 어디를 바꾸는지만 알면 된다.
 
-BFS의 거리 = 연락을 받는 "시각"이다. 거리가 가장 크고, 같으면 번호가 큰 노드를 고른다.
-
-```python
-from collections import deque
-
-def last_contact(edges, start):
-    graph = [set() for _ in range(101)]        # 중복 간선은 set으로 제거
-    for a, b in zip(edges[::2], edges[1::2]):
-        graph[a].add(b)
-
-    dist = [0] * 101
-    dist[start] = 1
-    queue = deque([start])
-    best = start
-    while queue:
-        cur = queue.popleft()
-        if (dist[cur], cur) > (dist[best], best):
-            best = cur
-        for nxt in graph[cur]:
-            if not dist[nxt]:
-                dist[nxt] = dist[cur] + 1
-                queue.append(nxt)
-    return best
-```
-
-### 패턴 3: 정해진 시간(단계) 안에 도달 가능한 칸 세기
-
-> 예: 터널 지도에서 칸마다 연결된 방향이 정해져 있을 때, 맨홀 위치에서 L시간 안에 갈 수 있는 칸의 수 (SWEA 1953 탈주범 검거)
-
-이동하려면 **현재 칸이 그 방향으로 열려 있고, 다음 칸도 반대 방향으로 열려 있어야** 한다. 거리가 L - 1 이하인 칸이 답이다.
-
-```python
-from collections import deque
-
-UP, DOWN, LEFT, RIGHT = (-1, 0), (1, 0), (0, -1), (0, 1)
-PIPES = {
-    1: (UP, DOWN, LEFT, RIGHT),
-    2: (UP, DOWN),
-    3: (LEFT, RIGHT),
-    4: (UP, RIGHT),
-    5: (DOWN, RIGHT),
-    6: (DOWN, LEFT),
-    7: (UP, LEFT),
-}
-
-def reachable(tunnel, n, m, r, c, hours):
-    dist = [[-1] * m for _ in range(n)]
-    dist[r][c] = 1                      # 맨홀에 들어간 시점 = 1시간
-    queue = deque([(r, c)])
-    count = 1
-    while queue:
-        cr, cc = queue.popleft()
-        if dist[cr][cc] == hours:       # 더 퍼질 시간이 없다
-            continue
-        for dr, dc in PIPES[tunnel[cr][cc]]:
-            nr, nc = cr + dr, cc + dc
-            if not (0 <= nr < n and 0 <= nc < m) or dist[nr][nc] != -1:
-                continue
-            nxt = tunnel[nr][nc]
-            if nxt and (-dr, -dc) in PIPES[nxt]:   # 반대쪽도 뚫려 있어야 연결
-                dist[nr][nc] = dist[cr][cc] + 1
-                count += 1
-                queue.append((nr, nc))
-    return count
-```
-
-### 패턴 4: 연결 요소마다 BFS 돌리기
-
-> 예: N×N 방마다 서로 다른 수가 적혀 있고, 정확히 1 큰 수가 적힌 인접 방으로만 이동할 수 있을 때, 가장 많은 방을 지나는 출발 방 번호와 그 개수 구하기 (SWEA 1861 정사각형 방)
-
-모든 칸을 돌면서 아직 방문하지 않은 칸에서 BFS를 시작해 하나의 **연결 요소**(값 차이가 1인 인접 칸들의 묶음)를 통째로 구한다. 묶음의 최솟값이 출발 방, 크기가 이동 가능한 방 수다.
-
-```python
-from collections import deque
-
-def best_room(arr, n):
-    visited = [[False] * n for _ in range(n)]
-    best_start, best_cnt = n * n + 1, 0
-    for i in range(n):
-        for j in range(n):
-            if visited[i][j]:
-                continue
-            visited[i][j] = True
-            queue = deque([(i, j)])
-            values = [arr[i][j]]
-            while queue:
-                ci, cj = queue.popleft()
-                for di, dj in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-                    ni, nj = ci + di, cj + dj
-                    if (0 <= ni < n and 0 <= nj < n and not visited[ni][nj]
-                            and abs(arr[ci][cj] - arr[ni][nj]) == 1):
-                        visited[ni][nj] = True
-                        values.append(arr[ni][nj])
-                        queue.append((ni, nj))
-            start, cnt = min(values), len(values)
-            if cnt > best_cnt or (cnt == best_cnt and start < best_start):
-                best_start, best_cnt = start, cnt
-    return best_start, best_cnt
-```
+| 상황 | BFS 변형 포인트 |
+| --- | --- |
+| 가장 늦게 도달하는 노드 찾기 (동시에 퍼지는 연락망·전염) | 거리 = 도달 "시각"이다. 큐에서 꺼낼 때마다 `(dist, 번호)`를 비교해 최댓값을 갱신한다. 방향 그래프의 중복 간선은 `set`으로 걸러 둔다 |
+| 정해진 시간(단계) 안에 도달 가능한 칸 세기 | 거리가 한도에 닿은 칸은 꺼낸 뒤 확장하지 않고 `continue`한다. 칸마다 열린 방향이 다르면 **현재 칸이 그 방향으로 열려 있고 다음 칸도 반대 방향으로 열려 있는지** 둘 다 확인한다 |
+| 연결 요소마다 따로 계산 (값 차이가 1인 칸들의 묶음 크기 등) | 전체 칸을 순회하며 미방문 칸을 만날 때마다 BFS를 새로 시작한다. 한 번의 BFS가 끝나면 그 묶음의 크기·최솟값을 모아 최선값과 비교한다 |
 
 ## BFS와 DFS, 언제 무엇을 쓸까
 

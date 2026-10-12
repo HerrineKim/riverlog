@@ -135,6 +135,6 @@ DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한�
 - 디스크 접근 시간은 탐색 시간이 지배한다.
 - RAID는 스트라이핑(성능), 미러링·패리티(안정성)의 조합이다.
 
-관련 노트: [[cache-and-virtual-memory|캐시와 가상 메모리]](계층 사이를 잇는 캐시와 가상 메모리), [[disk-scheduling|디스크 관리와 스케줄링]](운영체제가 디스크 요청을 처리하는 방법)
+관련 노트: [[cache-and-virtual-memory|캐시 메모리와 MMU]] (계층 사이를 잇는 캐시와 주소 변환 하드웨어), [[disk-scheduling|디스크 관리와 스케줄링]] (운영체제가 디스크 요청을 처리하는 방법)
 
 참고 강의: [컴퓨터시스템구조 12장](https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc)

@@ -13,6 +13,7 @@ sources: ["https://app.notion.com/p/dd5877ac8ce54e5da39958409239a563", "https://
 
 - [부스트코스 CS50 강의](https://www.boostcourse.org/cs112) (무료)
 - C 언어로 메모리, 포인터, 자료구조, 알고리즘의 기초를 한 번에 훑을 수 있다. 이후 과목들을 이해하는 바탕이 된다.
+- 정리한 노트: [[c-basics|C 기초]], [[pointers-and-memory|포인터와 메모리]], [[file-io|C 입력과 파일 입출력]], [[data-structures|기초 자료구조]]
 
 ## 1. 컴퓨터 구조
 
@@ -20,9 +21,13 @@ sources: ["https://app.notion.com/p/dd5877ac8ce54e5da39958409239a563", "https://
 
 **학습 주제**
 
-- 현대 컴퓨터에 이르기까지의 역사와 시스템 구성 요소
-- CPU, RAM, I/O의 구성과 내부 동작
-- 명령어 집합, 주소 지정 방식, 데이터 경로, 파이프라이닝과 해저드, 캐시, 가상 메모리와 TLB, 폴링과 DMA
+- 현대 컴퓨터에 이르기까지의 역사와 시스템 구성 요소 — [[computer-system-basics|컴퓨터 시스템의 기본 구성]]
+- 논리 회로와 디지털 부품, 데이터 표현과 산술 — [[digital-logic-circuits|디지털 논리 회로]], [[digital-components|디지털 부품]], [[data-representation|데이터의 표현]], [[computer-arithmetic|컴퓨터 산술 연산]]
+- CPU의 구성과 내부 동작, 데이터 경로 — [[register-transfer|레지스터 전송과 마이크로 연산]], [[basic-computer-design|기본 컴퓨터의 구조와 설계]], [[basic-computer-programming|기본 컴퓨터 프로그래밍]]
+- 명령어 집합과 주소 지정 방식 — [[cpu-instructions|CPU와 명령어 구조]]
+- 파이프라이닝과 해저드 — [[pipeline-and-parallelism|파이프라인과 병렬 처리]]
+- 메모리 계층, 캐시, MMU와 TLB — [[memory-hierarchy|메모리 계층 구조]], [[cache-and-virtual-memory|캐시 메모리와 MMU]]
+- 폴링·인터럽트·DMA 입출력 — [[io-organization|입출력 구조]]
 
 **자료**
 
@@ -38,8 +43,12 @@ sources: ["https://app.notion.com/p/dd5877ac8ce54e5da39958409239a563", "https://
 
 **학습 주제**
 
-- 운영체제와 컴퓨터 시스템의 구조, 프로그램 실행 과정
-- CPU 스케줄링, 프로세스 관리(동기화, 데드락), 메모리·가상 메모리 관리, 파일 시스템과 디스크 관리
+- 운영체제의 역할과 커널 — [[os-overview|운영체제 개요]], [[kernel-types|커널의 종류]]
+- 컴퓨터 시스템의 구조와 프로그램 실행 과정 — [[system-structure|컴퓨터 시스템 구조와 인터럽트]]
+- 프로세스와 스레드, CPU 스케줄링 — [[process-and-thread|프로세스와 스레드]], [[process-scheduling|프로세스 상태와 CPU 스케줄링]]
+- 동기화와 데드락 — [[process-synchronization|프로세스 동기화]], [[deadlock|교착 상태]]
+- 메모리·가상 메모리 관리 — [[memory-management|메모리 관리]], [[virtual-memory|가상 메모리]]
+- 파일 시스템과 디스크 관리 — [[file-system|파일 시스템]], [[file-system-implementation|파일 시스템 구현]], [[disk-scheduling|디스크 관리와 스케줄링]]
 
 **자료**
 
@@ -52,10 +61,10 @@ sources: ["https://app.notion.com/p/dd5877ac8ce54e5da39958409239a563", "https://
 
 **학습 주제**
 
-- 네트워크 기초 용어(노드, 호스트, 링크, 홉, 경로, 프로토콜)와 OSI 7계층
-- 네트워크 계층: IP, 서브넷, NAT, ARP, ICMP, 라우팅 알고리즘
-- 전송 계층: TCP(연결 지향)·UDP(비연결), 다중화, 연결·흐름·혼잡 제어
-- 응용 계층: HTTP
+- 네트워크 기초 용어(노드, 호스트, 링크, 홉, 경로, 프로토콜)와 OSI 7계층 — [[network-basics|네트워크 기초]], [[osi-7-layer|OSI 7계층]]
+- 네트워크 계층: IP, 서브넷, NAT, ARP, ICMP, 라우팅 알고리즘 — [[network-layer|네트워크 계층 프로토콜]]
+- 전송 계층: TCP(연결 지향)·UDP(비연결), 다중화, 연결·흐름·혼잡 제어 — [[transport-layer|전송 계층, 포트, UDP]], [[tcp|TCP]]
+- 응용 계층: HTTP와 그 위의 기술 — [[http|HTTP 프로토콜]], [[https|HTTPS와 TLS]], [[dns|DNS]], [[url-to-page|브라우저에 URL을 입력하면 일어나는 일]]
 
 **자료**
 

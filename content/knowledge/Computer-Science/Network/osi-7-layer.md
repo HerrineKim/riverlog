@@ -32,7 +32,7 @@ OSI(Open Systems Interconnection) 모델은 네트워크 통신 과정을 일곱
 - **전송 계층**: 호스트 안의 **어느 프로세스**에게 줄지 포트 번호로 구분하고, TCP라면 신뢰성을 보장한다.
 - **세션·표현·응용 계층**: 실제 인터넷(TCP/IP 모델)에서는 보통 하나의 응용 계층으로 묶어서 다룬다.
 
-계층별 자세한 내용: [[network-basics|네트워크 기초]](2계층, 캡슐화), [[network-layer|네트워크 계층]](IP·ARP·ICMP), [[transport-layer|전송 계층]]과 [[tcp|TCP]], [[http|HTTP]](응용 계층)
+계층별 자세한 내용: 2계층과 캡슐화는 [[network-basics|네트워크 기초]], IP·ARP·ICMP는 [[network-layer|네트워크 계층]], 4계층은 [[transport-layer|전송 계층]]과 [[tcp|TCP]], 응용 계층은 [[http|HTTP]]
 
 ## TCP/IP 4계층과의 대응
 

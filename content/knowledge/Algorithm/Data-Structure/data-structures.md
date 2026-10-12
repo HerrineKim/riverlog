@@ -1,6 +1,6 @@
 ---
 title: "기초 자료구조: 배열에서 트라이까지"
-concept: "Data Structure"
+concept: "Basic Data Structures"
 summary: "CS50 자료구조 강의 정리: 배열과 realloc 크기 조정 비용, 연결 리스트(C 구조체·Kotlin 예제), 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 스택·큐·딕셔너리, 얕은 복사와 깊은 복사."
 tags: ["data-structure", "cs50", "linked-list", "hash-table", "tree"]
 source: notion

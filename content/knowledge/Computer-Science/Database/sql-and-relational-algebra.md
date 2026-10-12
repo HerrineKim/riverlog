@@ -1,6 +1,6 @@
 ---
 title: "SQL과 관계대수"
-concept: "SQL"
+concept: "Relational Algebra"
 summary: "DDL·DML·DCL 분류와 자주 쓰는 SQL 문법, 관계대수 연산자, DB 설계 단계와 스키마·인덱스 개념."
 tags: ["database", "sql", "relational-algebra", "certificate"]
 source: notion
@@ -46,9 +46,8 @@ CREATE INDEX idx_name ON student(name);
 헷갈리기 쉬운 점
 
 - `SELECT 학과 FROM 학생`은 행 수만큼, `SELECT DISTINCT 학과`는 서로 다른 학과 수만큼 나온다.
-- `LIKE`의 `%`는 0글자 이상, `_`는 정확히 한 글자.
 - **CROSS JOIN**은 두 테이블의 모든 행 조합(카티션 곱)을 만든다. 행이 m개, n개면 결과는 m × n개.
-- **WHERE vs HAVING**: `WHERE`는 그룹을 만들기 **전에** 행을 거르고, `HAVING`은 `GROUP BY`로 만든 **그룹을** 집계 결과로 거른다. 그룹 기준이 여러 개면 `GROUP BY` 뒤에 나열한다.
+- `LIKE` 와일드카드와 `WHERE`·`HAVING`의 구분은 [[sql-basics|SQL 기초]]에 있다. 시험에서는 아래처럼 **행 조건은 WHERE, 집계 후 그룹 조건은 HAVING**에 두는 문제가 반복해서 나온다. 그룹 기준이 여러 개면 `GROUP BY` 뒤에 나열한다.
 
 ```sql
 -- 팀·직급별 성과급 합계

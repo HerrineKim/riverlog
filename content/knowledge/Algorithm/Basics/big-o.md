@@ -125,4 +125,4 @@ O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!) 순으로 느려�
 - 시간뿐 아니라 공간 복잡도도 같은 방식으로 따진다.
 - 문제의 N 범위를 보고 허용되는 복잡도를 먼저 정하면 풀이 방향이 좁혀진다.
 
-관련 노트: [[elementary-sorts|기본 정렬]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[binary-search|이분 탐색]], [[approach|코딩 테스트 접근법]]
+관련 노트: [[elementary-sorts|기본 정렬]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[binary-search|이분 탐색]], [[coding-test|코딩 테스트 접근법]]

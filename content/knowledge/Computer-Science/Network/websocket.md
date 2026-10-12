@@ -72,4 +72,4 @@ ws.addEventListener("error", () => console.log("error"));
 - 서버 → 클라 단방향이면 SSE, 양방향이면 WebSocket, P2P면 WebRTC.
 - 재연결, 하트비트, 다중 서버 브로드캐스트를 함께 설계해야 실서비스에서 버틴다.
 
-관련 노트: [[realtime-chat-app|실시간 채팅 앱의 프론트엔드 구조]], [[webrtc|WebRTC]], [[tcp|TCP]], [[Computer-Science/Network/http|HTTP 프로토콜]]
+관련 노트: [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름]], [[webrtc|WebRTC]], [[tcp|TCP]], [[Computer-Science/Network/http|HTTP 프로토콜]]

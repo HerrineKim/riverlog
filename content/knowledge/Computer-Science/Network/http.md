@@ -7,7 +7,9 @@ source: notion
 sources: ["https://app.notion.com/p/49200e54fe6d461ab1ebc5180b35337b"]
 ---
 
-HTTP(HyperText Transfer Protocol)는 웹 통신을 위한 응용 계층 프로토콜이다. 이름은 HTML 문서 전송에서 왔지만, 이미지·JSON 등 웹 표준으로 정의된 여러 종류의 데이터를 주고받을 수 있다. 동작은 단순하게 **"요청하면 응답한다"**. 웹 서비스 관점의 기본 흐름은 [[http-web-architecture|HTTP와 웹 구조]]에도 정리되어 있다.
+HTTP(HyperText Transfer Protocol)는 웹 통신을 위한 응용 계층 프로토콜이다. 이름은 HTML 문서 전송에서 왔지만, 이미지·JSON 등 웹 표준으로 정의된 여러 종류의 데이터를 주고받을 수 있다. 동작은 단순하게 **"요청하면 응답한다"**. 브라우저·프론트엔드·백엔드가 이 규약 위에서 어떻게 대화하는지는 [[http-web-architecture|웹 앱의 요청·응답 구조]]에 정리했다.
+
+HTTP는 **Stateless**다. 각 요청은 이전 요청과 무관하게 독립적으로 처리되므로, 로그인 상태 같은 정보는 서버가 기억해 주지 않는다. 그래서 쿠키·세션·토큰으로 상태를 따로 이어 붙인다([[cookie-session|쿠키와 세션]]).
 
 ## 요청 메시지
 
@@ -26,12 +28,15 @@ Accept: text/html
 
 ### 주요 메서드
 
-| 메서드 | 용도 |
-| --- | --- |
-| GET | 서버의 문서(리소스)를 읽을 때 |
-| POST | 정보를 전송할 때 |
-| PUT | 자원을 변경할 때 |
-| DELETE | 문서를 제거할 때 |
+| 메서드 | 용도 | 데이터 전달 |
+| --- | --- | --- |
+| GET | 리소스 조회. 데이터를 가져올 때만 사용 | Query String (`?key=value&key2=value2`) |
+| POST | 리소스 생성, 정보 전송 | 요청 바디 |
+| PUT | 리소스 전체 교체 | 요청 바디 |
+| PATCH | 리소스 일부 수정 | 요청 바디 |
+| DELETE | 리소스 삭제 | 보통 URL로 대상 지정 |
+
+HTML `<form>`도 결국 HTTP 요청을 만드는 도구다. `action`에 보낼 URL을, `method`에 메서드를 지정하면 각 `<input>`의 `name`이 key, 입력값이 value가 되어 서버로 전달된다. 단, `<form>`의 `method`는 GET과 POST만 지원하므로 PUT·PATCH·DELETE는 JavaScript(`fetch`)로 보내야 한다.
 
 ## 응답 메시지
 
@@ -87,11 +92,12 @@ scheme://host[:port][/path][?query]
 | HTTP/2 (RFC 9113) | TCP | 바이너리 프레임, 한 연결에서 여러 요청을 동시에 주고받는 멀티플렉싱, 헤더 압축(HPACK) |
 | HTTP/3 (RFC 9114, 2022) | QUIC(UDP 기반) | TLS 1.3이 내장된 QUIC 위에서 동작. 패킷 손실이 다른 스트림을 막지 않고 연결 수립이 빠르다 |
 
-HTTPS는 HTTP를 TLS로 암호화한 것이다([[https|HTTPS와 TLS]]). 응답 재사용은 [[http-cache|HTTP 캐시]]에 정리했다. 아래에서 받쳐 주는 전송 계층은 [[tcp|TCP]]와 [[transport-layer|전송 계층과 UDP]]에 정리했다. 웹 서비스 관점의 요청 흐름과 API 설계는 [[rest-api|REST API 설계]], 상태를 유지하는 방법은 [[cookie-session|쿠키와 세션]]을 참고한다.
+HTTPS는 HTTP를 TLS로 암호화한 것이다([[https|HTTPS와 TLS]]). 응답 재사용은 [[http-cache|HTTP 캐시]]에 정리했다. 아래에서 받쳐 주는 전송 계층은 [[tcp|TCP]]와 [[transport-layer|전송 계층, 포트, UDP]]에 정리했다. 웹 서비스 관점의 요청 흐름과 API 설계는 [[rest-api|REST API 설계]], 상태를 유지하는 방법은 [[cookie-session|쿠키와 세션]]을 참고한다.
 
 ## 핵심 정리
 
 - 요청 = Request Line + Headers + 빈 줄 + Body, 응답 = Status Line + Headers + 빈 줄 + Body.
+- HTTP는 Stateless다. 상태는 쿠키·세션·토큰으로 따로 유지한다.
 - 상태 코드 앞자리: 1 정보, 2 성공, 3 리다이렉트, 4 클라이언트 잘못, 5 서버 잘못.
 - URI ⊃ URL(위치), URN(이름).
 - HTTP/1.1·HTTP/2는 TCP 위에서, HTTP/3는 UDP 기반 QUIC 위에서 동작한다.

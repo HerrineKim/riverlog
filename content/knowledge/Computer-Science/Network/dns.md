@@ -66,4 +66,4 @@ DNS(Domain Name System)는 `example.com` 같은 **도메인 이름을 IP 주소�
 - A·CNAME 레코드로 도메인을 서버·호스팅에 연결한다.
 - TTL만큼 캐시되므로 변경이 즉시 반영되지 않는다.
 
-관련 노트: [[transport-layer|전송 계층과 UDP]], [[cdn|CDN]], [[http-web-architecture|HTTP와 웹 구조]]
+관련 노트: [[transport-layer|전송 계층과 UDP]], [[cdn|CDN]], [[http-web-architecture|웹 앱의 요청·응답 구조]]
