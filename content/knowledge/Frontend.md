@@ -25,4 +25,4 @@ source: mixed
 
 학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/frontend-roadmap)에 정리했다.
 
-폴더 구조를 비즈니스 기준으로 나누는 아키텍처 방법론은 [Feature-Sliced Design](Frontend/feature-sliced-design.md)에 정리했다.
+폴더 구조가 역할 기반에서 기능 중심으로 진화해 온 과정은 [프론트엔드 폴더 구조의 진화](Frontend/frontend-folder-structure.md)에, 그 끝에 있는 아키텍처 방법론은 [Feature-Sliced Design](Frontend/feature-sliced-design.md)에 정리했다.

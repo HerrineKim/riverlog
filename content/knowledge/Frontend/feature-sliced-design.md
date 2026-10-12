@@ -136,4 +136,4 @@ App Router에서는 `app/` 폴더가 라우팅을 맡으므로 FSD의 `app` 레�
 - 작은 프로젝트·MVP에는 과하고, 오래 유지할 중간 이상 규모에서 값을 한다. 팀이 규칙을 함께 지켜야 효과가 난다.
 - "The Best"라는 제목은 글쓴이의 주장이다. 도입 전에는 팀 규모와 프로젝트 수명에 맞는지부터 따진다.
 
-관련 노트: [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]]
+관련 노트: [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]]
