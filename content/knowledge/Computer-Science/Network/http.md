@@ -87,7 +87,7 @@ scheme://host[:port][/path][?query]
 | HTTP/2 (RFC 9113) | TCP | 바이너리 프레임, 한 연결에서 여러 요청을 동시에 주고받는 멀티플렉싱, 헤더 압축(HPACK) |
 | HTTP/3 (RFC 9114, 2022) | QUIC(UDP 기반) | TLS 1.3이 내장된 QUIC 위에서 동작. 패킷 손실이 다른 스트림을 막지 않고 연결 수립이 빠르다 |
 
-HTTPS는 HTTP를 TLS로 암호화한 것이다. 아래에서 받쳐 주는 전송 계층은 [[tcp|TCP]]와 [[transport-layer|전송 계층과 UDP]]에 정리했다. 웹 서비스 관점의 요청 흐름과 API 설계는 [[rest-api|REST API 설계]], 상태를 유지하는 방법은 [[cookie-session|쿠키와 세션]]을 참고한다.
+HTTPS는 HTTP를 TLS로 암호화한 것이다([[https|HTTPS와 TLS]]). 응답 재사용은 [[http-cache|HTTP 캐시]]에 정리했다. 아래에서 받쳐 주는 전송 계층은 [[tcp|TCP]]와 [[transport-layer|전송 계층과 UDP]]에 정리했다. 웹 서비스 관점의 요청 흐름과 API 설계는 [[rest-api|REST API 설계]], 상태를 유지하는 방법은 [[cookie-session|쿠키와 세션]]을 참고한다.
 
 ## 핵심 정리
 

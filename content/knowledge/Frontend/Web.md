@@ -17,4 +17,5 @@ source: mixed
 - [웹 아키텍처의 다음 전환](/knowledge/dictionary/frontend/web/webs-next-transition): MPA → PEMPA → SPA → PESPA, 코드가 어디에 사는지로 본 아키텍처 변화
 - [쿠키와 세션](/knowledge/dictionary/frontend/web/cookie-session): 상태 없는 HTTP에서 사용자를 기억하는 방법
 - [웹 보안: CSRF와 XSS](/knowledge/dictionary/frontend/web/web-security): 대표적인 두 공격과 방어 방법
+- [OAuth 2.0](/knowledge/dictionary/frontend/web/oauth2): 비밀번호 없이 권한을 위임하는 흐름(Authorization Code + PKCE), 토큰, OIDC와의 차이
 - [이전 페이지 URL 알아내기](/knowledge/dictionary/frontend/web/previous-url): document.referrer, 라우터 state, 쿠키·sessionStorage

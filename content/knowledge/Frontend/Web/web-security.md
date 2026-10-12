@@ -64,4 +64,4 @@ Django는 CSRF 방어를 위해 미들웨어(`CsrfViewMiddleware`)와 템플릿 
 - CSRF는 "사용자가 원치 않은 요청"을, XSS는 "사이트가 원치 않은 스크립트"를 실행시킨다.
 - CSRF는 서버가 발급한 토큰으로, XSS는 입력을 HTML로 해석하지 않는 것으로 막는다.
 
-관련 노트: [[security|정보 시스템 보안(공격 기법과 암호)]], [[cookie-session|쿠키와 세션]]
+관련 노트: [[security|정보 시스템 보안(공격 기법과 암호)]], [[cookie-session|쿠키와 세션]], [[cors|CORS]], [[oauth2|OAuth 2.0]], [[https|HTTPS와 TLS]]

@@ -149,4 +149,4 @@ function Workspace({ children }) {
 - 쿠키 기반 인증에서는 `withCredentials: true`가 필수.
 - 로그인 여부에 따른 리다이렉트는 모든 Hook 호출 **뒤에** 둔다.
 
-관련 노트: [[cookie-session|쿠키와 세션]], [[auth-jwt-passport|NestJS JWT 인증(토큰 기반 백엔드)]]
+관련 노트: [[cookie-session|쿠키와 세션]], [[oauth2|OAuth 2.0]], [[auth-jwt-passport|NestJS JWT 인증(토큰 기반 백엔드)]]

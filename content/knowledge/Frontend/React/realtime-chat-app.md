@@ -126,4 +126,4 @@ useEffect(() => {
 - 소켓은 워크스페이스당 하나만 유지하고, 리스너는 effect cleanup에서 반드시 해제한다.
 - 긴 메시지 목록은 날짜 섹션 + 무한 스크롤 + `memo`로 다룬다.
 
-관련 노트: [[rest-api|REST API]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]]
+관련 노트: [[rest-api|REST API]], [[websocket|WebSocket]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]]

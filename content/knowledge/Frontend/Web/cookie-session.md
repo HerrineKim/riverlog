@@ -52,4 +52,4 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 - 세션 = 상태는 서버에, 식별자(세션 ID)만 쿠키에 두는 방식.
 - 쿠키가 "자동으로 전송된다"는 성질 때문에 [CSRF](/knowledge/dictionary/frontend/web/web-security) 같은 공격이 가능해진다.
 
-관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[auth-user|Django User와 인증]], [[auth-jwt-passport|NestJS JWT 인증(토큰 방식)]], [[auth-flow|React로 회원가입·로그인 구현하기]]
+관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[auth-user|Django User와 인증]], [[auth-jwt-passport|NestJS JWT 인증(토큰 방식)]], [[auth-flow|React로 회원가입·로그인 구현하기]], [[oauth2|OAuth 2.0]]

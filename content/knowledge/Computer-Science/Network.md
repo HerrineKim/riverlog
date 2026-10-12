@@ -1,7 +1,7 @@
 ---
 title: "네트워크"
 concept: "Network"
-summary: "네트워크 기초와 OSI 계층 모델부터 IP·TCP·UDP·HTTP, 그리고 브라우저 간 실시간 통신 WebRTC까지 네트워크 노트 모음."
+summary: "네트워크 기초와 OSI 계층 모델부터 IP·TCP·UDP·HTTP·HTTPS, DNS·CDN·HTTP 캐시, WebSocket과 브라우저 간 실시간 통신 WebRTC까지 네트워크 노트 모음."
 tags: ["network", "tcp", "udp", "ip", "http"]
 source: mixed
 ---
@@ -14,4 +14,9 @@ source: mixed
 - **transport-layer** — 전송 계층의 역할, 포트 번호, UDP, TCP와 UDP 비교
 - **tcp** — TCP 헤더와 플래그, 3-way handshake, 순서 번호와 상태 전이
 - **http** — HTTP 요청·응답 형식, 메서드, 상태 코드, URI·URL·URN, HTTP/1.1·2·3 비교
+- **https** — HTTP를 TLS로 암호화하는 HTTPS, 인증서와 TLS 핸드셰이크, Mixed Content·HSTS
+- **http-cache** — Cache-Control과 ETag로 응답을 재사용하는 HTTP 캐시, 자산별 캐시 전략
+- **dns** — 도메인을 IP로 바꾸는 조회 흐름, 레코드 종류, TTL, dns-prefetch·preconnect
+- **cdn** — 엣지 서버에 콘텐츠를 캐시해 가까운 곳에서 응답하는 CDN과 캐시 무효화
+- **websocket** — HTTP Upgrade로 시작하는 양방향 실시간 통신, 폴링·SSE·WebRTC와 비교
 - **webrtc** — 브라우저끼리 P2P로 오디오·비디오·데이터를 주고받는 WebRTC의 구조
