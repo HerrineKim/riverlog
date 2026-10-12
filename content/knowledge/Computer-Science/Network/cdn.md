@@ -57,4 +57,4 @@ CDN(Content Delivery Network)은 **여러 지역에 흩어진 엣지 서버(PoP)
 - 보관 정책은 결국 HTTP 캐시 헤더로 정해진다.
 - **해시 붙은 정적 파일은 길게, HTML은 짧게**가 기본 전략이다.
 
-관련 노트: [[http-cache|HTTP 캐시]], [[dns|DNS]], [[nextjs|Next.js]], [[spa-csr-ssr|SPA와 CSR·SSR]]
+관련 노트: [[http-cache|HTTP 캐시]], [[dns|DNS]], [[nextjs|Next.js]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]]
