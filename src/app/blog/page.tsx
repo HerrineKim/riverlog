@@ -13,7 +13,7 @@ export default function BlogIndex() {
       <main className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6 sm:py-20">
         <p className="text-xs font-semibold tracking-[0.2em] text-accent uppercase">Blog</p>
         <h1 className="mt-3 font-display text-5xl text-fg-strong sm:text-6xl">글</h1>
-        <p className="mt-4 text-muted">생각, 회고, 그리고 만들면서 배운 것들.</p>
+        <p className="mt-4 text-muted">생각과 회고, 만들면서 배운 것들.</p>
 
         <ul className="mt-12 divide-y divide-line border-y border-line">
           {posts.map((p) => (

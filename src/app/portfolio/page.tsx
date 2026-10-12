@@ -7,7 +7,7 @@ import { getAllWorks, type Work } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
   title: "Portfolio",
-  description: "에이전시의 고객사 웹·앱부터 미국 핀테크의 성장 팀, 건설사 AX팀까지 — 회사마다 풀었던 문제와 바뀐 숫자.",
+  description: "에이전시의 고객사 웹·앱부터 미국 핀테크의 성장 팀, 건설사 AX팀까지. 회사마다 풀었던 문제와 바뀐 숫자.",
 };
 
 export default function PortfolioIndex() {

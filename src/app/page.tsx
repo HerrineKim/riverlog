@@ -92,7 +92,7 @@ export default function AboutPage() {
                   </Link>
                 </li>
               ))}
-              {posts.length === 0 && <li className="py-8 text-sm text-muted">아직 글이 없어요. 곧 첫 글로 찾아올게요.</li>}
+              {posts.length === 0 && <li className="py-8 text-sm text-muted">아직 글이 없어요.</li>}
             </ul>
           </div>
 
@@ -107,7 +107,7 @@ export default function AboutPage() {
               <Link href="/knowledge" className="group rounded-2xl border border-line bg-bg-elev p-5 transition hover:border-accent">
                 <Constellation />
                 <p className="text-lg font-semibold text-fg-strong group-hover:text-accent">마인드맵 <span aria-hidden>→</span></p>
-                <p className="mt-1 text-sm text-muted">개념들의 연결을 한눈에 탐색</p>
+                <p className="mt-1 text-sm text-muted">개념 사이의 연결을 한눈에 탐색</p>
               </Link>
               <Link href="/knowledge/dictionary" className="group rounded-2xl border border-line bg-bg-elev p-5 transition hover:border-accent">
                 <div className="mb-5 space-y-1.5 font-mono text-xs text-muted">
