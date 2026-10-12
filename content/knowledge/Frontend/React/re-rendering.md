@@ -6,7 +6,7 @@ tags: ["react", "rendering", "performance", "debugging", "frontend"]
 source: notion
 ---
 
-React 컴포넌트는 **state가 바뀌거나, 부모가 렌더링되거나, 구독한 Context·외부 스토어 값이 바뀌면** 다시 렌더링된다. 리렌더링 자체는 나쁜 것이 아니지만, 값이 그대로인데 여러 번 다시 그려진다면 원인을 찾아 줄일 수 있다. 핵심은 `React.memo`를 여기저기 씌우는 것이 아니라 **렌더링을 일으키는 원인을 먼저 찾는 것**이다. 메모이제이션 API 자체는 [Hooks](/knowledge/dictionary/frontend/react/hooks)의 메모이제이션 절 참고.
+React 컴포넌트는 **state가 바뀌거나, 부모가 렌더링되거나, 구독한 Context·외부 스토어 값이 바뀌면** 다시 렌더링된다. 리렌더링 자체는 나쁜 것이 아니지만, 값이 그대로인데 여러 번 다시 그려진다면 원인을 찾아 줄일 수 있다. `React.memo`를 여기저기 씌우기보다 **렌더링을 일으키는 원인을 먼저 찾는다**. 메모이제이션 API 자체는 [Hooks](/knowledge/dictionary/frontend/react/hooks)의 메모이제이션 절 참고.
 
 ## React.memo가 효과 없는 경우
 

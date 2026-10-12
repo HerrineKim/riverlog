@@ -33,7 +33,7 @@ sources: ["https://tech.wonderwall.kr/articles/a11ydriventestautomation/"]
 
 ## 접근성 정보로 요소 찾기
 
-스크린 리더는 화면을 읽어 주려면 요소의 **의미**를 알아야 한다. 이 의미를 표준화한 것이 **ARIA(Accessible Rich Internet Applications)**다. `<button>구매하기</button>`는 스크린 리더가 "구매하기, 버튼"으로 읽는다.
+스크린 리더는 화면을 읽어 주려면 요소의 의미를 알아야 한다. 이 의미를 표준화한 것이 **ARIA(Accessible Rich Internet Applications)다**. `<button>구매하기</button>`는 스크린 리더가 "구매하기, 버튼"으로 읽는다.
 
 **스크린 리더가 읽기 쉬운 코드는 테스트 도구도 찾기 쉽다.** Testing Library가 처음 이 방식을 만들었고 Playwright도 받아들였다.
 
@@ -158,7 +158,7 @@ await expect(page.getByRole('heading', { name: '로그인' })).toBeVisible();
 
 원문 팀의 "정렬할 수 있다" e2e 테스트는 상품 목록을 inline-block에서 grid로, CSR에서 SSG로, `img`에서 Next.js `Image`로 바꾸는 동안 한 번도 깨지지 않았다. 사용자 동작이 그대로였기 때문이다. 반대로 헤더를 고치다 `useEffect` 의존성 배열에 참조가 바뀌는 `cancel` 함수를 넣어 정렬 요청이 취소되는 버그는, 코드 리뷰는 통과했지만 머지 직전 e2e가 잡았다.
 
-이 방식에서 e2e가 깨지는 경우는 대부분 **진짜 버그**이거나 **잘못된 접근성을 바로잡은 경우**였다.
+이 방식에서 e2e가 깨지는 경우는 대부분 진짜 버그이거나 잘못된 접근성을 바로잡은 경우였다.
 
 ## 정리
 

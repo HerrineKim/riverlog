@@ -47,7 +47,7 @@ class Article(models.Model):              # django.db.models.Model 상속
 
 ## Migration
 
-Migration은 **모델의 변경 사항을 DB 스키마에 반영하는 방법**이다. 모델을 "설계도"로 만든 뒤 실제 DB에 적용하는 두 단계로 진행된다.
+Migration은 **모델의 변경 사항을 DB 스키마에 반영하는 방법**이다. 모델을 "설계도"로 만든 뒤 실제 DB에 적용하는 두 단계를 거친다.
 
 ```bash
 python manage.py makemigrations      # 모델 변경 → 설계도(migrations/0001_initial.py) 생성

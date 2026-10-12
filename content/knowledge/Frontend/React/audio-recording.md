@@ -10,7 +10,7 @@ sources: ["https://riverkim.kr/110", "https://riverkim.kr/113"]
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
 
-브라우저에서 음성을 녹음하려면 별도 플러그인 없이 웹 표준 API 두 개면 된다. **`navigator.mediaDevices.getUserMedia()`** 로 마이크 스트림을 얻고, **`MediaRecorder`** 로 그 스트림을 녹음해 **Blob**(파일처럼 다룰 수 있는 바이너리 데이터)으로 받는다. 받은 Blob은 다운로드 링크로 저장하거나 `FormData`에 담아 서버로 보낸다.
+브라우저에서 음성을 녹음하려면 별도 플러그인 없이 웹 표준 API 두 개면 된다. `navigator.mediaDevices.getUserMedia()`로 마이크 스트림을 얻고, `MediaRecorder`로 그 스트림을 녹음해 **Blob**(파일처럼 다룰 수 있는 바이너리 데이터)으로 받는다. 받은 Blob은 다운로드 링크로 저장하거나 `FormData`에 담아 서버로 보낸다.
 
 ## 흐름
 

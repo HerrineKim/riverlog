@@ -33,7 +33,7 @@ React 코드는 그대로 브라우저에서 돌지 않는다. JSX와 최신 문
 
 ## Create React App은 역사가 되었다
 
-**CRA**(`npx create-react-app`)는 webpack·Babel·ESLint 설정을 내장해 명령 하나로 React 프로젝트를 만들어 주던 스캐폴딩 도구였다. 설정을 바꾸려면 되돌릴 수 없는 `eject`를 해야 해서 실무에서는 잘 쓰이지 않았고, **2025년 공식적으로 지원이 종료**되었다. 새 프로젝트는 **Vite**(`npm create vite@latest`)나 Next.js로 시작한다. CRA 시절 코드를 읽을 때 `npm start`·`npm run build`·`REACT_APP_` 접두사가 나오면 이 도구의 흔적이다.
+**CRA**(`npx create-react-app`)는 webpack·Babel·ESLint 설정을 내장해 명령 하나로 React 프로젝트를 만들어 주던 스캐폴딩 도구였다. 설정을 바꾸려면 되돌릴 수 없는 `eject`를 해야 해서 실무에서는 잘 쓰이지 않았고, 2025년 공식적으로 지원이 종료되었다. 새 프로젝트는 Vite(`npm create vite@latest`)나 Next.js로 시작한다. CRA 시절 코드를 읽을 때 `npm start`·`npm run build`·`REACT_APP_` 접두사가 나오면 이 도구의 흔적이다.
 
 ## 직접 구성하기: webpack + Babel + TypeScript
 
@@ -56,7 +56,7 @@ entry(시작 파일) ──▶ module.rules(로더로 변환) ──▶ output(�
 
 - `entry`: `{ app: './client' }` → `output.filename: '[name].js'`이면 `[name]`이 `app`으로 바뀌어 `dist/app.js`가 생성된다.
 - loader: ts/tsx는 `babel-loader`, css는 `style-loader` + `css-loader`로 JS 안에 넣는다.
-- `devServer`: 개발 서버(포트, `historyApiFallback`으로 SPA 라우팅 지원, `proxy`로 API 요청 전달 — [AJAX와 CORS](/knowledge/dictionary/frontend/javascript/ajax) 참고).
+- `devServer`: 개발 서버(포트, `historyApiFallback`으로 SPA 라우팅 지원, `proxy`로 API 요청 전달, [AJAX와 CORS](/knowledge/dictionary/frontend/javascript/ajax) 참고).
 - Hot reloading: `@pmmmwh/react-refresh-webpack-plugin` + `react-refresh`로 저장 시 state를 유지한 채 화면만 갱신.
 - `fork-ts-checker-webpack-plugin`: 타입 검사를 별도 프로세스에서 병렬로 돌려 빌드를 빠르게 한다.
 
@@ -70,7 +70,7 @@ entry(시작 파일) ──▶ module.rules(로더로 변환) ──▶ output(�
 
 ## 라우팅과 코드 스플리팅
 
-- `react-router-dom`으로 URL과 페이지 컴포넌트를 연결한다. 앱을 `BrowserRouter`로 감싸고 경로를 정의한다. (참고: v6부터 `Switch` → `Routes`, `Redirect` → `Navigate`, `component={X}` → `element={<X />}`로 바뀌었다. v7부터는 `react-router` 패키지 하나로 합쳐져 `react-router-dom`은 호환용으로만 남았다 — [react-router 레이아웃](/knowledge/dictionary/frontend/react/react-router-layout) 참고.)
+- `react-router-dom`으로 URL과 페이지 컴포넌트를 연결한다. 앱을 `BrowserRouter`로 감싸고 경로를 정의한다. (참고: v6부터 `Switch` → `Routes`, `Redirect` → `Navigate`, `component={X}` → `element={<X />}`로 바뀌었다. v7부터는 `react-router` 패키지 하나로 합쳐져 `react-router-dom`은 호환용으로만 남았다. [react-router 레이아웃](/knowledge/dictionary/frontend/react/react-router-layout) 참고.)
 - 코드 스플리팅: 페이지별로 번들을 나눠, 회원가입 페이지에 들어온 사람은 회원가입에 필요한 JS만 받게 한다. `React.lazy` + `Suspense` 또는 `@loadable/component`를 쓴다. 첫 화면이 3초 안에 떠야 사용자가 떠나지 않는다는 점을 기억해 둔다.
 
 ## 환경 변수 트러블슈팅

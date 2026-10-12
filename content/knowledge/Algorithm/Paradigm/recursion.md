@@ -18,7 +18,7 @@ def recursive_function():
 recursive_function()  # 끝없이 호출되다가 RecursionError 발생
 ```
 
-멈추는 조건이 없으면 함수가 무한히 호출된다. 파이썬은 기본 재귀 깊이 한도(약 1000)를 넘으면 `RecursionError: maximum recursion depth exceeded`를 낸다. 그래서 재귀 함수에는 **종료 조건(base case)**을 반드시 명시한다.
+멈추는 조건이 없으면 함수가 무한히 호출된다. 파이썬은 기본 재귀 깊이 한도(약 1000)를 넘으면 `RecursionError: maximum recursion depth exceeded`를 낸다. 그래서 재귀 함수에는 **종료 조건(base case)을** 반드시 명시한다.
 
 ```python
 def recursive_function(i):

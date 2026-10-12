@@ -10,13 +10,13 @@ sources: ["https://riverkim.kr/251", "https://riverkim.kr/252"]
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
 
-**Redux**는 JavaScript 앱의 상태 관리 라이브러리다. 여러 컴포넌트가 같은 state를 쓰면 props를 몇 단계씩 내려보내야 하고, 누가 언제 state를 바꿨는지 추적하기도 어렵다. Redux는 공유 state를 **store 한 곳**에 모으고, state를 바꾸는 방법을 **reducer**에 미리 정해 둔다. 컴포넌트는 store를 직접 고치지 못하고 "이렇게 바꿔 달라"는 **요청(action)** 만 보낼 수 있다.
+**Redux**는 JavaScript 앱의 상태 관리 라이브러리다. 여러 컴포넌트가 같은 state를 쓰면 props를 몇 단계씩 내려보내야 하고, 누가 언제 state를 바꿨는지 추적하기도 어렵다. Redux는 공유 state를 store 한 곳에 모으고, state를 바꾸는 방법을 reducer에 미리 정해 둔다. 컴포넌트는 store를 직접 고치지 못하고 "이렇게 바꿔 달라"는 요청(action)만 보낼 수 있다.
 
 **react-redux**는 Redux store를 React 컴포넌트에 연결해 주는 바인딩 라이브러리다.
 
 ## Flux 패턴: 데이터는 한 방향으로만
 
-Redux는 Facebook이 제안한 **Flux 패턴**의 대표 구현이다. Flux의 핵심은 데이터가 **한 방향으로만** 흐른다는 것이다. 어디서 누가 상태를 바꿨는지 추적하기 쉬워진다.
+Redux는 Facebook이 제안한 **Flux 패턴**의 대표 구현이다. Flux에서 데이터는 **한 방향으로만** 흐른다. 그래서 어디서 누가 상태를 바꿨는지 추적하기 쉽다.
 
 ```text
 Action → Dispatcher → Store → View → (사용자 입력) → Action → ...

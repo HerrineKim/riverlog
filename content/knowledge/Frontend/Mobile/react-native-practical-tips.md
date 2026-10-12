@@ -51,7 +51,7 @@ ScrollView child layout (["alignItems"]) must be applied through the contentCont
 
 ## 2. 로컬 저장소: AsyncStorage
 
-앱을 껐다 켜도 남아야 하는 작은 데이터(토큰, 설정, 마지막 화면)는 **AsyncStorage**에 둔다. 웹의 `localStorage`에 해당하는 **비동기·영구·키-값 저장소**이며, 앱 전체에서 공유되고 **암호화되지 않는다**.
+앱을 껐다 켜도 남아야 하는 작은 데이터(토큰, 설정, 마지막 화면)는 **AsyncStorage**에 둔다. 웹의 `localStorage`에 해당하는 비동기·영구·키-값 저장소이며, 앱 전체에서 공유되고 **암호화되지 않는다**.
 
 > React Native 코어에 있던 `import { AsyncStorage } from 'react-native'`는 제거되었다. 커뮤니티 패키지 `@react-native-async-storage/async-storage`를 쓴다.
 

@@ -6,7 +6,7 @@ tags: ["react", "form", "state", "frontend"]
 source: til
 ---
 
-HTML의 `<input>`, `<textarea>`, `<select>`는 원래 **스스로** 값을 기억한다. React에서는 보통 이 값을 state로 옮겨, **React가 값을 통제**하게 만든다. 이렇게 값이 React의 통제를 받는 폼 요소를 **제어 컴포넌트(Controlled Component)** 라고 한다.
+HTML의 `<input>`, `<textarea>`, `<select>`는 원래 스스로 값을 기억한다. React에서는 보통 이 값을 state로 옮겨, React가 값을 통제하게 만든다. 이렇게 값이 React의 통제를 받는 폼 요소를 **제어 컴포넌트(Controlled Component)** 라고 한다.
 
 ## 제어 컴포넌트
 

@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://riverkim.kr/175"]
 ---
 
-데이터베이스는 데이터의 집합(저장소)이고, 이를 저장·관리하는 소프트웨어를 **DBMS(Database Management System)**라고 한다. DBMS는 데이터를 어떤 모델로 저장하고 다루느냐에 따라 크게 둘로 나뉜다.
+데이터베이스는 데이터의 집합(저장소)이고, 이를 저장·관리하는 소프트웨어를 **DBMS(Database Management System)라고** 한다. DBMS는 데이터를 어떤 모델로 저장하고 다루느냐에 따라 크게 둘로 나뉜다.
 
 ## 비교
 
@@ -30,7 +30,7 @@ sources: ["https://riverkim.kr/175"]
 
 ## PostgreSQL
 
-PostgreSQL은 오픈소스 RDBMS로, 객체 지향 기능(사용자 정의 타입, 상속, 배열·JSON 컬럼 등)을 함께 갖춘 **객체관계형 DBMS(ORDBMS)**로 분류된다. 다만 지금은 대부분의 RDBMS가 객체 지향 기능을 받아들여 ORDBMS와 RDBMS를 굳이 구분하는 의미는 작다.
+PostgreSQL은 오픈소스 RDBMS로, 객체 지향 기능(사용자 정의 타입, 상속, 배열·JSON 컬럼 등)을 함께 갖춘 **객체관계형 DBMS(ORDBMS)로** 분류된다. 다만 지금은 대부분의 RDBMS가 객체 지향 기능을 받아들여 ORDBMS와 RDBMS를 굳이 구분하는 의미는 작다.
 
 | | PostgreSQL | MySQL |
 | --- | --- | --- |

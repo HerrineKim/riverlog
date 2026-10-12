@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
 })
 ```
 
-`StyleSheet.create`를 쓰면 스타일 속성 **자동 완성**과 **유효성 검사**를 받을 수 있어 인라인보다 권장된다.
+`StyleSheet.create`를 쓰면 스타일 속성 자동 완성과 유효성 검사를 받을 수 있어 인라인보다 권장된다.
 
 ### Flexbox 레이아웃
 

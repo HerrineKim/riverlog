@@ -6,7 +6,7 @@ tags: ["nestjs", "mongodb", "database", "typescript"]
 source: til
 ---
 
-Mongoose는 MongoDB 문서를 JavaScript 객체로 다루게 해 주는 **ODM(Object Document Mapper)**이다. `@nestjs/mongoose`를 쓰면 스키마를 TypeScript 클래스와 데코레이터로 정의할 수 있다.
+Mongoose는 MongoDB 문서를 JavaScript 객체로 다루게 해 주는 **ODM(Object Document Mapper)이다**. `@nestjs/mongoose`를 쓰면 스키마를 TypeScript 클래스와 데코레이터로 정의할 수 있다.
 
 ## 스키마 정의 순서
 

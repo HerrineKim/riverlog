@@ -153,7 +153,7 @@ return (
 
 ## React 엘리먼트와 렌더링
 
-JSX가 만들어 내는 결과물은 **React 엘리먼트** — 화면에 무엇을 그릴지 설명하는 가벼운 JavaScript 객체다. React 앱을 이루는 가장 작은 단위이며, 실제 DOM 요소보다 훨씬 가볍다.
+JSX가 만들어 내는 결과물은 **React 엘리먼트**로, 화면에 무엇을 그릴지 설명하는 가벼운 JavaScript 객체다. React 앱을 이루는 가장 작은 단위이며, 실제 DOM 요소보다 훨씬 가볍다.
 
 ```javascript
 React.createElement(type, [props], [...children])

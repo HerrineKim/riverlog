@@ -82,7 +82,7 @@ app.useGlobalFilters(new HttpExceptionFilter());
 
 ## Pipe
 
-파이프는 **클라이언트 요청 데이터를 변환(transformation)하거나 검증(validation)**해서 핸들러가 원하는 형태의 값을 받게 해 준다. 이름은 "앞 단계의 출력이 다음 단계의 입력이 되는" Pipes and Filters 패턴에서 왔다.
+파이프는 **클라이언트 요청 데이터를 변환(transformation)하거나 검증(validation)해서** 핸들러가 원하는 형태의 값을 받게 해 준다. 이름은 "앞 단계의 출력이 다음 단계의 입력이 되는" Pipes and Filters 패턴에서 왔다.
 
 ### 변환 + 검증: `ParseIntPipe`
 

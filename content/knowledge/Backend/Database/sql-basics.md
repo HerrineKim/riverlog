@@ -52,7 +52,7 @@ UPDATE users_user SET first_name = '철수' WHERE id = 101;
 DELETE FROM users_user WHERE id = 102;
 ```
 
-- 열 이름을 생략하고 `VALUES`만 쓰면 **모든 열의 값(id 포함)**을 순서대로 줘야 한다. 개수가 맞지 않으면 `table has 7 columns but 6 values were supplied` 에러가 난다. 열 이름을 명시하면 id는 자동 증가에 맡길 수 있다.
+- 열 이름을 생략하고 `VALUES`만 쓰면 **모든 열의 값(id 포함)을** 순서대로 줘야 한다. 개수가 맞지 않으면 `table has 7 columns but 6 values were supplied` 에러가 난다. 열 이름을 명시하면 id는 자동 증가에 맡길 수 있다.
 - 이미 존재하는 PK로 insert하면 `UNIQUE constraint failed`.
 - `UPDATE`·`DELETE`에서 `WHERE`를 빠뜨리면 **모든 행**이 바뀌거나 지워진다.
 

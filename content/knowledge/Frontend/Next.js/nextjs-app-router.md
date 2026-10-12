@@ -10,7 +10,7 @@ sources: ["https://riverkim.kr/207", "https://riverkim.kr/214"]
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트입니다. 원글은 2023년 Next.js 13 베타 문서를 읽고 썼습니다. 개념은 그대로지만 캐싱 기본값 등 세부 동작은 버전마다 바뀌었으니, 바뀐 부분은 따로 표시했습니다.
 
-Next.js 13에서 도입된 **App Router**(`app/` 디렉터리)는 Pages Router와 사고방식이 다르다. 핵심은 두 가지다. **라우팅은 서버 중심**이고, **내비게이션은 클라이언트 사이드**다. 그리고 데이터는 `getServerSideProps` 같은 페이지 단위 함수 대신 **서버 컴포넌트 안에서 바로 `fetch`** 한다. 렌더링 방식(SSR·SSG)과 `fetch` 캐시 옵션은 [Next.js를 쓰는 이유](/knowledge/dictionary/frontend/next-js/nextjs)에 정리했다.
+Next.js 13에서 도입된 **App Router**(`app/` 디렉터리)는 Pages Router와 사고방식이 다르다. **라우팅은 서버 중심이고, 내비게이션은 클라이언트 사이드다.** 데이터는 `getServerSideProps` 같은 페이지 단위 함수 대신 서버 컴포넌트 안에서 바로 `fetch`한다. 렌더링 방식(SSR·SSG)과 `fetch` 캐시 옵션은 [Next.js를 쓰는 이유](/knowledge/dictionary/frontend/next-js/nextjs)에 정리했다.
 
 ## 서버 컴포넌트가 기본
 

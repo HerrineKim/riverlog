@@ -167,7 +167,7 @@ export default function List({ tasks, onClickDelete }) {
 
 ### 상태 관리와 TDD
 
-React의 관심사는 **상태를 화면에 반영하는 것(state reflection)** 이다. Hooks 이전의 Redux 생태계에서는 컴포넌트를 둘로 나누는 패턴이 널리 권장되었다(레거시 패턴 — 아래 참고).
+React의 관심사는 **상태를 화면에 반영하는 것(state reflection)** 이다. Hooks 이전의 Redux 생태계에서는 컴포넌트를 둘로 나누는 패턴이 널리 권장되었다(레거시 패턴, 아래 참고).
 
 - **Presentational 컴포넌트**: props를 받아 보여 주기만 한다(`List`, `Item`).
 - **Container 컴포넌트**: store에서 상태를 가져와 Presentational에 넘긴다(`ListContainer`).

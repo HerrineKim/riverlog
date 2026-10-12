@@ -68,7 +68,7 @@ path.resolve('content', 'blog');             // 오른쪽부터 붙여 절대 �
 path.extname('cover.png');                   // '.png'
 ```
 
-Next.js 프로젝트를 Vercel에 배포할 때 경로 관련 오류가 난다면, 문자열로 이어 붙인 경로를 `path.join(process.cwd(), ...)`처럼 path 모듈로 바꿔 보는 것이 첫 번째 확인 사항이다. 실행 위치와 OS에 상관없이 같은 파일을 가리키게 된다.
+Next.js 프로젝트를 Vercel에 배포할 때 경로 관련 오류가 난다면, 먼저 문자열로 이어 붙인 경로를 `path.join(process.cwd(), ...)`처럼 path 모듈로 바꿔 본다. 그러면 실행 위치와 OS에 상관없이 같은 파일을 가리킨다.
 
 ## 정리
 

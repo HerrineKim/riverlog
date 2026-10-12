@@ -95,7 +95,7 @@ export async function getUptime() {
 }
 ```
 
-`'use server'` 함수를 클라이언트에서 import하면 실제 구현 대신 **참조(액션 ID + 디스패처)**만 번들에 들어가고, 호출하면 서버로 `POST` 요청이 간다. 서버 컴포넌트가 클라이언트 컴포넌트에 prop으로 넘길 수도 있다(일반 함수는 못 넘기지만 Server Function은 참조로 넘어간다). 폼 `action`이나 버튼 `formAction`에 넘기면 Server Action이라 부르고, 결과 데이터와 갱신된 UI가 한 번의 왕복으로 온다.
+`'use server'` 함수를 클라이언트에서 import하면 실제 구현 대신 **참조(액션 ID + 디스패처)만** 번들에 들어가고, 호출하면 서버로 `POST` 요청이 간다. 서버 컴포넌트가 클라이언트 컴포넌트에 prop으로 넘길 수도 있다(일반 함수는 못 넘기지만 Server Function은 참조로 넘어간다). 폼 `action`이나 버튼 `formAction`에 넘기면 Server Action이라 부르고, 결과 데이터와 갱신된 UI가 한 번의 왕복으로 온다.
 
 ### 7. 클라이언트 데이터를 서버로 보내 결과 받기 — 조회에는 주의
 

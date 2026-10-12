@@ -141,7 +141,7 @@ function Calculator() {
 }
 ```
 
-포인트는 두 입력창이 각자 state를 가지던 것을 **부모로 끌어올리고**, 자식은 `value`와 변경 함수만 props로 받는 구조로 바꾼 것이다. 데이터의 출처(single source of truth)가 하나가 되어 두 값이 어긋날 수 없다.
+두 입력창이 각자 가지던 state를 **부모로 끌어올리고**, 자식은 `value`와 변경 함수만 props로 받는 구조로 바꿨다. 데이터의 출처(single source of truth)가 하나가 되어 두 값이 어긋날 수 없다.
 
 ## 핵심 정리
 

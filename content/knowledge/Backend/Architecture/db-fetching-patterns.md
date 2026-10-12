@@ -117,7 +117,7 @@ async function buildPostSummary(post) {
 
 ## 핵심: 지역적 추론
 
-모든 기법의 목적은 하나, **지역적 추론(local reasoning)**이다. 시스템 전체를 머리에 담지 않고 코드 한 부분만 보고 고칠 수 있어야 한다.
+모든 기법의 목적은 하나, **지역적 추론(local reasoning)이다**. 시스템 전체를 머리에 담지 않고 코드 한 부분만 보고 고칠 수 있어야 한다.
 
 - `fetchAuthorName`, `fetchViewCount`, `fetchViewCountFunFact`는 서로 신경 쓰지 않고 따로 고칠 수 있다.
 - 함수를 부를 때 그 함수가 가져오는 데이터가 다른 함수와 겹치는지 걱정하지 않아도 된다.

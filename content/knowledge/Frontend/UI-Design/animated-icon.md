@@ -14,7 +14,7 @@ sources: ["https://github.com/AlexStrNik/OpenLava", "https://github.com/Mathvdia
 
 정지 이미지 대신 짧게 움직이는 아이콘이다. 탭 전환, 빈 화면, 온보딩처럼 **눈길을 한 번 끌어야 하는 자리**에 쓴다.
 
-핵심은 **배경이 투명해야 한다**는 점이다. 일반 MP4는 알파 채널이 없어서 흰 배경이 같이 찍힌다. 다크 모드나 색 있는 카드 위에 올리면 네모난 박스가 그대로 보인다. 그래서 투명 배경 영상(Transparent background video)을 지원하는 포맷이 필요하다.
+**배경이 투명해야 한다.** 일반 MP4는 알파 채널이 없어서 흰 배경이 같이 찍힌다. 다크 모드나 색 있는 카드 위에 올리면 네모난 박스가 그대로 보인다. 그래서 투명 배경 영상(Transparent background video)을 지원하는 포맷이 필요하다.
 
 ## Airbnb의 Lava 포맷
 
@@ -92,6 +92,6 @@ ffmpeg -framerate 30 -i frames/frame_%03d.png -c:v libvpx-vp9 -pix_fmt yuva420p 
 - 웹에서 바로 쓰려면 WebM(VP9 알파) + Safari용 HEVC 알파가 현실적이고, 앱에서는 OpenLava 계열 렌더러를 쓸 수 있다.
 - AI로 이미지 → 영상 → 배경 제거 → 인코딩까지 이으면 디자이너 없이도 움직이는 아이콘을 만들 수 있다.
 
-**결국 Animated Icon은 "예쁜 영상"보다 "투명하게, 가볍게, 끊김 없이 반복되는 영상"을 만드는 문제다.**
+**결국 Animated Icon은 예쁜 영상보다 투명하게, 가볍게, 끊김 없이 반복되는 영상을 만드는 문제다.**
 
 관련 노트: [[design-system|디자인 시스템을 패키지로 배포하기]], [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]]

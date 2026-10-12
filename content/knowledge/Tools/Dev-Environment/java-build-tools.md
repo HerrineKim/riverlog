@@ -12,7 +12,7 @@ sources: ["https://riverkim.kr/56", "https://riverkim.kr/145", "https://riverkim
 
 ## 빌드와 빌드 도구
 
-**빌드(build)**는 소스 코드 파일을 컴퓨터나 휴대폰에서 실행할 수 있는 독립(standalone) 결과물로 바꾸는 과정, 또는 그 결과물이다. 핵심 단계는 소스 코드를 실행 코드로 바꾸는 **컴파일**이고, 의존성 내려받기·테스트·패키징까지 이어지는 이 과정을 관리하는 프로그램이 **빌드 도구**다.
+**빌드(build)는** 소스 코드 파일을 컴퓨터나 휴대폰에서 실행할 수 있는 독립(standalone) 결과물로 바꾸는 과정, 또는 그 결과물이다. 핵심 단계는 소스 코드를 실행 코드로 바꾸는 컴파일이고, 의존성 내려받기·테스트·패키징까지 이어지는 이 과정을 관리하는 프로그램이 **빌드 도구**다.
 
 | 도구 | 특징 |
 | --- | --- |
@@ -21,7 +21,7 @@ sources: ["https://riverkim.kr/56", "https://riverkim.kr/145", "https://riverkim
 | Gradle | Ant·Maven의 단점을 보완한 오픈소스 빌드 도구. XML 대신 Groovy(이후 Kotlin도 지원) 스크립트로 설정해 간결하고 유연하다. Android와 Spring 프로젝트의 기본 빌드 도구다 |
 | Buck | Meta(Facebook)가 만든 빌드 도구. 큰 저장소에서 iOS·Android 앱을 빠르게 빌드하는 데 쓰인다 |
 
-Java로 개발하려면 먼저 **JDK(Java Development Kit)**를 설치하고, 필요하면 `JAVA_HOME` 환경 변수와 `PATH`에 JDK 경로를 등록한다. 프로젝트마다 요구하는 Java 버전이 다를 수 있으니 IDE의 프로젝트 SDK 설정도 함께 맞춘다.
+Java로 개발하려면 먼저 **JDK(Java Development Kit)를** 설치하고, 필요하면 `JAVA_HOME` 환경 변수와 `PATH`에 JDK 경로를 등록한다. 프로젝트마다 요구하는 Java 버전이 다를 수 있으니 IDE의 프로젝트 SDK 설정도 함께 맞춘다.
 
 ## IntelliJ가 실행조차 되지 않을 때
 
@@ -31,7 +31,7 @@ Java로 개발하려면 먼저 **JDK(Java Development Kit)**를 설치하고, �
 | --- | --- | --- |
 | IntelliJ IDEA를 업데이트한 뒤 앱이 아예 뜨지 않고, 오류 창도 나오지 않는다 | VM 옵션의 최소 힙 크기(`-Xms`)가 최대 힙 크기(`-Xmx`)보다 크게 잡혀 JVM이 시작되지 못한다. 오류 메시지는 `Initial heap size set to a larger value than the maximum heap size` | `idea.vmoptions`에서 `-Xms`를 `-Xmx` 이하(보통 더 작게)로 고친다 |
 
-**힙(heap)**은 프로그램이 실행 중에 필요한 만큼 할당하고 해제하는 메모리 영역이다(함수 호출이 끝나면 자동으로 정리되는 스택과 대비된다, [[process-and-thread|프로세스와 스레드]]). IntelliJ 같은 JVM 기반 프로그램은 실행할 때 힙의 최소·최대 크기를 정하는데, 최대 힙이 너무 작으면 IDE가 느려지고 크게 잡으면 그만큼 메모리를 많이 쓴다. 내 PC의 메모리에 맞춰 정하면 된다.
+**힙(heap)은** 프로그램이 실행 중에 필요한 만큼 할당하고 해제하는 메모리 영역이다(함수 호출이 끝나면 자동으로 정리되는 스택과 대비된다, [[process-and-thread|프로세스와 스레드]]). IntelliJ 같은 JVM 기반 프로그램은 실행할 때 힙의 최소·최대 크기를 정하는데, 최대 힙이 너무 작으면 IDE가 느려지고 크게 잡으면 그만큼 메모리를 많이 쓴다. 내 PC의 메모리에 맞춰 정하면 된다.
 
 ```text
 # macOS 기준 설정 파일 위치

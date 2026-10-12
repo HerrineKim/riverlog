@@ -51,7 +51,7 @@ source: til
 
 - X축: `left`, `right`
 - Y축: `top`, `bottom`
-- Z축: `z-index` — 값이 클수록 위에 쌓인다. `position`이 `static`이 아닌 요소(또는 flex/grid 아이템)에서 동작한다.
+- Z축: `z-index`. 값이 클수록 위에 쌓인다. `position`이 `static`이 아닌 요소(또는 flex/grid 아이템)에서 동작한다.
 
 z-index는 관리하지 않으면 어느새 엉뚱한 요소가 위로 올라와 있다. 팀 안에서 규칙을 정해 두는 것이 좋다.
 

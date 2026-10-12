@@ -47,7 +47,7 @@ def make_genre_list(genres):
 <p>Genre: {{ movie.genres.all|make_genre_list }}</p>
 ```
 
-- 모듈은 위치와 무관하게 **파일 이름으로 `{% load %}`**되므로 다른 앱의 모듈과 이름이 겹치지 않게 짓는다.
+- 모듈은 위치와 무관하게 **파일 이름으로** `{% load %}`되므로 다른 앱의 모듈과 이름이 겹치지 않게 짓는다.
 - 처음 만든 뒤에는 개발 서버를 재시작해야 인식된다.
 
 ## 템플릿 상속
@@ -123,7 +123,7 @@ def catch(request):
 
 1. `django.contrib.staticfiles`가 `INSTALLED_APPS`에 있는지 확인
 2. `settings.py`에 `STATIC_URL` 정의
-3. 앱의 `static/` 폴더에 파일 저장 (`articles/static/articles/sample.png` — 템플릿처럼 앱 이름 폴더를 한 번 더)
+3. 앱의 `static/` 폴더에 파일 저장 (예: `articles/static/articles/sample.png`. 템플릿처럼 앱 이름 폴더를 한 번 더 둔다)
 4. 템플릿에서 `{% load static %}` 후 `{% static '경로' %}`로 URL 생성
 
 ```django

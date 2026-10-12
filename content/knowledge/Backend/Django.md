@@ -6,7 +6,7 @@ tags: ["django", "python", "backend", "mtv"]
 source: til
 ---
 
-Django는 "배터리 포함(batteries included)"을 내세우는 Python 웹 프레임워크다. ORM, 템플릿 엔진, 폼 검증, 사용자 인증, 관리자 페이지가 기본으로 들어 있어 별도 라이브러리 없이도 완성된 웹 서비스를 빠르게 만들 수 있다. 구조는 MVC를 따르되 이름을 **MTV(Model-Template-View)**라고 부른다.
+Django는 "배터리 포함(batteries included)"을 내세우는 Python 웹 프레임워크다. ORM, 템플릿 엔진, 폼 검증, 사용자 인증, 관리자 페이지가 기본으로 들어 있어 별도 라이브러리 없이도 완성된 웹 서비스를 빠르게 만들 수 있다. 구조는 MVC를 따르되 이름을 **MTV(Model-Template-View)라고** 부른다.
 
 > 필기는 Django 3.2 LTS 기준이다. 이후 4.x·5.x·6.x에서도 핵심 개념은 같으며, 바뀐 설정은 각 노트에 보충했다. 2026년 10월 기준 최신 버전은 6.1, 장기 지원(LTS) 버전은 5.2다. ([Django 다운로드](https://www.djangoproject.com/download/))
 

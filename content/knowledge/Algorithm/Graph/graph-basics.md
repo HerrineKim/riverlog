@@ -6,7 +6,7 @@ tags: ["algorithm", "graph", "data-structure"]
 source: til
 ---
 
-그래프(Graph)는 **정점(vertex, node)**과 정점을 잇는 **간선(edge)**으로 이루어진 자료구조다. 간선에 방향이 있으면 **방향(단방향) 그래프**, 없으면 **무방향(양방향) 그래프**다.
+그래프(Graph)는 **정점(vertex, node)과** 정점을 잇는 **간선(edge)으로** 이루어진 자료구조다. 간선에 방향이 있으면 **방향(단방향) 그래프**, 없으면 **무방향(양방향) 그래프**다.
 
 ![방향 그래프와 무방향 그래프](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/13-%EA%B7%B8%EB%9E%98%ED%94%84-%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC-BFS-DFS-.assets/image_6319709181485828897310.jpg)
 

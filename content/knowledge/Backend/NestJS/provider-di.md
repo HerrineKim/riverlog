@@ -6,7 +6,7 @@ tags: ["nestjs", "design-pattern", "typescript", "oop"]
 source: til
 ---
 
-NestJS의 핵심은 **의존성 주입(Dependency Injection)**이다. 컨트롤러가 서비스를 직접 `new`로 만들지 않고, 생성자에 "이게 필요하다"고 선언만 하면 Nest가 알맞은 인스턴스를 넣어 준다.
+NestJS의 핵심은 **의존성 주입(Dependency Injection)이다**. 컨트롤러가 서비스를 직접 `new`로 만들지 않고, 생성자에 "이게 필요하다"고 선언만 하면 Nest가 알맞은 인스턴스를 넣어 준다.
 
 ## 비유: 소비자 · 제품 · 공급자
 

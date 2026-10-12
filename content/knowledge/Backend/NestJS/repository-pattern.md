@@ -6,7 +6,7 @@ tags: ["nestjs", "design-pattern", "architecture", "database"]
 source: til
 ---
 
-기존 구조는 `Controller → Service → DB`였다. 리포지토리 패턴은 서비스와 DB 사이에 **데이터 접근만 담당하는 중개자(Repository)**를 둔다.
+기존 구조는 `Controller → Service → DB`였다. 리포지토리 패턴은 서비스와 DB 사이에 **데이터 접근만 담당하는 중개자(Repository)를** 둔다.
 
 ```text
 Controller → Service (비즈니스 로직) → Repository (데이터 접근) → DB

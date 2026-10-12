@@ -70,7 +70,7 @@ class BookAuthor(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
 ```
 
-Book–BookAuthor가 1:N, Author–BookAuthor가 1:N이 되어 결과적으로 M:N이 된다. 하지만 조회가 번거롭다.
+Book과 BookAuthor가 1:N, Author와 BookAuthor가 1:N이 되어 결과적으로 M:N이 된다. 하지만 조회가 번거롭다.
 
 ### 2) `ManyToManyField` — 중개 테이블 자동 생성
 
@@ -131,7 +131,7 @@ else:
 
 ### `related_name`이 필요한 경우
 
-같은 두 모델 사이에 관계 필드가 둘 이상이면(예: User–Article 사이 `author` FK와 `like_users` M2M) 기본 역참조 이름 `article_set`이 충돌하므로 `related_name`을 반드시 지정해야 한다.
+같은 두 모델 사이에 관계 필드가 둘 이상이면(예: User와 Article 사이 `author` FK와 `like_users` M2M) 기본 역참조 이름 `article_set`이 충돌하므로 `related_name`을 반드시 지정해야 한다.
 
 ## 핵심 정리
 

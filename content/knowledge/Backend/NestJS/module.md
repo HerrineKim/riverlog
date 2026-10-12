@@ -50,7 +50,7 @@ export class AppModule {}
 모듈은 기본적으로 프로바이더를 **캡슐화**한다. 현재 모듈에 직접 등록했거나, import한 모듈이 **export한** 프로바이더만 주입할 수 있다.
 
 - `CatsModule`이 `exports: [CatsService]`를 하지 않으면, `AppModule`이 `CatsModule`을 import해도 `AppController`에서 `CatsService`를 주입받을 수 없다.
-- 또한 다른 모듈의 서비스를 쓰고 싶다고 그 서비스를 내 모듈 `providers`에 다시 등록하면 **별도의 인스턴스**가 생긴다. 공유하려면 반드시 export/import로 가져온다.
+- 다른 모듈의 서비스를 쓰고 싶다고 그 서비스를 내 모듈 `providers`에 다시 등록하면 **별도의 인스턴스**가 생긴다. 공유하려면 반드시 export/import로 가져온다.
 
 캡슐화(encapsulation)란 객체의 속성과 행위를 하나로 묶고 내부 구현을 감추는 것이다. 모듈 단위로 공개 범위를 통제해 의존 관계를 명확히 한다.
 

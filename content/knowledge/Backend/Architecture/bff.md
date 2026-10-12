@@ -32,7 +32,7 @@ API를 직접 의존하면 생기는 문제도 있다.
 
 ## BFF란
 
-**BFF(Backend For Frontend)**는 말 그대로 **프론트엔드를 위한 중간 서버**다. 위 문제들을 BFF가 받아 낸다.
+**BFF(Backend For Frontend)는** 말 그대로 **프론트엔드를 위한 중간 서버**다. 위 문제들을 BFF가 받아 낸다.
 
 ```text
 일반 구조                       BFF 구조

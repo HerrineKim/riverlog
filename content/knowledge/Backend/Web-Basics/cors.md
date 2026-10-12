@@ -19,7 +19,7 @@ sources: ["https://riverkim.kr/111", "https://riverkim.kr/112"]
 
 ### Preflight와 OPTIONS 메서드
 
-`GET`·`POST` 중 단순한 형태가 아닌 요청(예: `PUT`·`DELETE`, `Content-Type: application/json`, `Authorization` 같은 커스텀 헤더)을 보내기 전에, 브라우저는 먼저 **`OPTIONS` 메서드로 예비 요청(preflight)**을 보내 "이 출처에서 이 메서드·헤더로 요청해도 되는지" 묻는다. 서버가 `Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, `Access-Control-Allow-Headers`로 허용한다고 답해야 본 요청이 나간다.
+`GET`·`POST` 중 단순한 형태가 아닌 요청(예: `PUT`·`DELETE`, `Content-Type: application/json`, `Authorization` 같은 커스텀 헤더)을 보내기 전에, 브라우저는 먼저 **`OPTIONS` 메서드로 예비 요청(preflight)을** 보내 "이 출처에서 이 메서드·헤더로 요청해도 되는지" 묻는다. 서버가 `Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`, `Access-Control-Allow-Headers`로 허용한다고 답해야 본 요청이 나간다.
 
 | 콘솔 메시지 | 의미 |
 | --- | --- |

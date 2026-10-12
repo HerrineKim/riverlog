@@ -102,7 +102,7 @@ User.objects.aggregate(Sum('balance'))                      # SELECT SUM(balance
 
 ## 그룹별 계산: `annotate()`
 
-QuerySet의 **각 항목(그룹)**에 계산한 값을 컬럼처럼 붙인다. `values()`와 함께 쓰면 SQL의 `GROUP BY`가 된다. DB를 바꾸는 것이 아니라 조회 결과에 컬럼을 하나 덧붙이는 것이다.
+QuerySet의 **각 항목(그룹)에** 계산한 값을 컬럼처럼 붙인다. `values()`와 함께 쓰면 SQL의 `GROUP BY`가 된다. DB를 바꾸는 것이 아니라 조회 결과에 컬럼을 하나 덧붙이는 것이다.
 
 ```python
 User.objects.values('country').annotate(Count('country'))

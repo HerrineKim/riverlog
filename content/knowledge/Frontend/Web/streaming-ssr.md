@@ -28,7 +28,7 @@ React에서는 **`<Suspense>` 경계가 조각을 나누는 단위**다. 경계 
 | React 19.2 (2025.10) | 부분 사전 렌더링(`prerender` → `resume`). Suspense 경계 공개를 묶어서 처리 |
 | Next.js 16 Cache Components | 정적 껍데기는 빌드 때 만들어 CDN에서, 동적 부분은 요청 때 스트리밍 |
 
-지금 React 문서는 `renderToString`·`renderToStaticMarkup`을 **레거시(Legacy)** 로 분류하고, 스트리밍 API보다 기능이 제한된다고 적는다. 2022년 무렵 글에서 말하는 핵심 원리(Suspense 경계, 선택적 hydration, HTTP 상태 코드 제약)는 그대로 맞다. 달라진 점은 **"요청마다 처음부터 렌더링하고 스트리밍"하던 것이 "정적 부분은 미리 만들고 동적 부분만 이어서 스트리밍"하는 방식으로 진화했다**는 것이다.
+지금 React 문서는 `renderToString`·`renderToStaticMarkup`을 **레거시(Legacy)** 로 분류하고, 스트리밍 API보다 기능이 제한된다고 적는다. 2022년 무렵 글에서 말하는 핵심 원리(Suspense 경계, 선택적 hydration, HTTP 상태 코드 제약)는 그대로 맞다. 달라진 점은 렌더링 방식이다. 요청마다 처음부터 렌더링하고 스트리밍하던 것이 **정적 부분은 미리 만들고 동적 부분만 이어서 스트리밍하는 방식**으로 진화했다.
 
 ## 동작 흐름
 

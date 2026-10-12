@@ -76,6 +76,6 @@ function Form() {
 
 ## 핵심 정리
 
-- `onClick={handler}` — camelCase 속성에 **함수 참조**를 넘긴다(호출하지 않는다).
+- `onClick={handler}`: camelCase 속성에 **함수 참조**를 넘긴다(호출하지 않는다).
 - 인자가 필요하면 화살표 함수로 감싸거나 bind.
 - 기본 동작은 `e.preventDefault()`로 막는다.

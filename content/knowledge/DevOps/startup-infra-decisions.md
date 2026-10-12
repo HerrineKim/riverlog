@@ -12,7 +12,7 @@ sources: ["https://cep.dev/posts/every-infrastructure-decision-i-endorse-or-regr
 
 ## 어떤 글인가
 
-빠르게 커진 AI 스타트업에서 인프라를 4년 동안 맡은 사람이, 초기에 내린 결정 하나하나에 **지지(Endorse)** 또는 **후회(Regret)**를 매긴 목록이다. 개별 도구 평가보다 그 밑에 깔린 판단 기준이 더 쓸모 있다.
+빠르게 커진 AI 스타트업에서 인프라를 4년 동안 맡은 사람이, 초기에 내린 결정 하나하나에 **지지(Endorse)** 또는 **후회(Regret)를** 매긴 목록이다. 개별 도구 평가보다 그 밑에 깔린 판단 기준이 더 쓸모 있다.
 
 ## 판단 기준
 
