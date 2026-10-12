@@ -49,5 +49,5 @@ next-env.d.ts
 # Obsidian: per-device state (shared settings in content/.obsidian are committed)
 content/.obsidian/workspace*.json
 content/.obsidian/cache
-content/.obsidian/plugins/*/data.json
+content/.obsidian/plugins/
 content/.trash/
