@@ -94,4 +94,4 @@ Output format: 일반 텍스트로 답한다.
 - 원본의 도구·플러그인 목록(Midjourney, Copy AI, Replit AI, ChatGPT 플러그인 등)은 빠르게 바뀌는 정보라 노트에서 뺐다. ChatGPT 플러그인은 이후 GPTs로 대체됐다.
 - 결국 **AI는 마음을 읽지 못한다**. 원하는 것을 말로 꺼내 놓는 만큼 답이 좋아진다.
 
-관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[copilot-leaked-prompt|코파일럿 유출 프롬프트]], [[claude-code-guide|Claude Code 활용 가이드]]
+관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[copilot-leaked-prompt|유출된 AI 시스템 프롬프트]], [[claude-code-guide|Claude Code 활용 가이드]]
