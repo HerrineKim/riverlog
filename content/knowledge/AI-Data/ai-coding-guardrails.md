@@ -160,4 +160,4 @@ SPEC.md를 사람이 쓰고, "auth 모듈부터, 구현 전에 계획을 보여 
 - 프롬프트에는 맥락을 아끼지 말고, 작업마다 새 세션을 연다.
 - 실수의 비용에 맞춰 가드레일을 세운다.
 
-관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[loop-engineering|루프 엔지니어링]], [[vibe-coding-beautiful-ui|바이브 코딩으로 예쁜 UI 만들기]], [[tdd|프론트엔드에서의 TDD]]
+관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[loop-engineering|루프 엔지니어링]], [[tdd|프론트엔드에서의 TDD]]

@@ -31,7 +31,7 @@ Jupyter Notebook은 **"실행되는 문서"** 입니다. 하나의 노트북 안
 | 설치형 | Docker | 재현 가능한 환경 |
 | 서비스형 | Google Colab | 설치 없이 브라우저에서, 무료 GPU |
 | 서비스형 | **Kaggle Notebooks** | 데이터셋·대회와 바로 연결 |
-| 서비스형 | AWS / GCP / Azure | 클라우드 노트북 서비스 |
+| 서비스형 | AWS SageMaker, GCP Vertex AI(구 AI Platform), Azure ML | 클라우드 노트북 서비스. 데이터·모델 인프라와 같은 계정 안에서 쓴다 |
 
 ## 알아 두면 좋은 기능
 
@@ -41,8 +41,16 @@ Jupyter Notebook은 **"실행되는 문서"** 입니다. 하나의 노트북 안
 %prun my_function()            # 함수별 실행 시간 프로파일
 ```
 
-- `%`로 시작하는 **매직 명령**으로 시간 측정, 프로파일링, 셸 명령 실행(`!pip install ...`) 등을 할 수 있다.
+- `%`로 시작하는 **매직 명령**으로 시간 측정, 프로파일링, 셸 명령 실행(`!pip install ...`) 등을 할 수 있다. 분석이 느릴 때는 이것으로 병목을 먼저 잰다.
 - 차세대 인터페이스인 **JupyterLab**은 파일 브라우저·터미널·여러 탭을 갖춘 IDE 형태다.
 - VS Code, PyCharm 등에서도 `.ipynb` 파일을 직접 열고 실행할 수 있다. (JetBrains의 데이터 과학 전용 IDE였던 DataSpell은 2026년 신규 판매가 중단되고 기능이 PyCharm으로 통합되었다.)
 
-관련 노트: [파이썬 데이터 분석 프로세스](python-data-analysis.md)
+## 공유와 배포
+
+| 도구 | 하는 일 |
+| --- | --- |
+| nbconvert | 노트북을 HTML·PDF·스크립트 등 다른 형식으로 변환 |
+| nbviewer | 노트북 파일을 웹에서 정적으로 보여 줌 (실행은 안 됨) |
+| Binder | 저장소를 그대로 실행 가능한 환경으로 띄워 공유 |
+
+관련 노트: [[python-data-analysis|파이썬 데이터 분석 프로세스]]

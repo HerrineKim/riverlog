@@ -1,87 +1,79 @@
 {
  "AI-Data.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:19:27+09:00"
+  "updated": "2026-10-13T00:28:42+09:00"
+ },
+ "AI-Data/ai-coding-guardrails.md": {
+  "created": "2026-10-12T23:56:47+09:00",
+  "updated": "2026-10-13T00:22:07+09:00"
  },
  "AI-Data/ai-frontend-design-prompting.md": {
   "created": "2026-10-11T23:03:06+09:00",
-  "updated": "2026-10-12T14:11:17+09:00"
+  "updated": "2026-10-13T00:21:51+09:00"
  },
  "AI-Data/chatgpt-prompt-cheat-sheet.md": {
   "created": "2026-10-12T21:06:55+09:00",
-  "updated": "2026-10-12T21:06:55+09:00"
+  "updated": "2026-10-13T00:23:25+09:00"
  },
  "AI-Data/claude-code-guide.md": {
   "created": "2026-10-12T14:11:17+09:00",
-  "updated": "2026-10-12T20:35:49+09:00"
+  "updated": "2026-10-13T00:23:06+09:00"
  },
  "AI-Data/claude-skill-building-guide.md": {
   "created": "2026-10-12T20:35:49+09:00",
-  "updated": "2026-10-12T21:16:45+09:00"
+  "updated": "2026-10-13T00:28:42+09:00"
  },
  "AI-Data/copilot-leaked-prompt.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T21:06:55+09:00"
+  "updated": "2026-10-13T00:29:45+09:00"
  },
  "AI-Data/design-system-agent-harness.md": {
   "created": "2026-10-12T14:11:17+09:00",
-  "updated": "2026-10-12T14:11:17+09:00"
+  "updated": "2026-10-13T00:28:42+09:00"
  },
  "AI-Data/jupyter-notebook.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:24:15+09:00"
  },
  "AI-Data/loop-engineering.md": {
   "created": "2026-10-12T20:35:49+09:00",
   "updated": "2026-10-12T20:35:49+09:00"
  },
  "AI-Data/multi-agent.md": {
-  "created": "2026-10-12T21:16:37+09:00",
-  "updated": "2026-10-12T21:16:37+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-13T00:30:07+09:00"
  },
  "AI-Data/python-data-analysis.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T20:52:25+09:00"
+  "updated": "2026-10-13T00:23:58+09:00"
  },
  "AI-Data/text-similarity.md": {
-  "created": "2026-10-12T21:17:10+09:00",
-  "updated": "2026-10-12T21:17:10+09:00"
- },
- "AI-Data/vibe-coding-beautiful-ui.md": {
-  "created": "2026-10-12T17:23:42+09:00",
-  "updated": "2026-10-12T17:23:42+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Algorithm.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-13T00:24:22+09:00"
  },
  "Algorithm/Basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Algorithm/Basics/big-o.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Algorithm/Basics/prefix-sum.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
- "Algorithm/Coding-Test.md": {
-  "created": "2026-10-12T20:52:25+09:00",
-  "updated": "2026-10-12T20:52:25+09:00"
- },
- "Algorithm/Coding-Test/approach.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:22:25+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Algorithm/Data-Structure.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Algorithm/Data-Structure/data-structures.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T20:56:03+09:00"
+  "updated": "2026-10-13T00:23:31+09:00"
  },
  "Algorithm/Data-Structure/disjoint-set.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -101,7 +93,7 @@
  },
  "Algorithm/Graph.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Algorithm/Graph/dijkstra.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -113,11 +105,11 @@
  },
  "Algorithm/Paradigm.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Algorithm/Paradigm/divide-and-conquer.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:21:47+09:00"
  },
  "Algorithm/Paradigm/dynamic-programming.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -133,11 +125,11 @@
  },
  "Algorithm/Search.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Algorithm/Search/bfs.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:22:28+09:00"
  },
  "Algorithm/Search/binary-search.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -153,11 +145,11 @@
  },
  "Algorithm/Sorting.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Algorithm/Sorting/elementary-sorts.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:21:47+09:00"
  },
  "Algorithm/Sorting/merge-quick-sort.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -165,19 +157,23 @@
  },
  "Backend.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:24:55+09:00"
+  "updated": "2026-10-13T00:27:42+09:00"
+ },
+ "Backend/Architecture/bff.md": {
+  "created": "2026-10-13T00:00:40+09:00",
+  "updated": "2026-10-13T00:00:40+09:00"
  },
  "Backend/Architecture/data-flow.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:21:39+09:00"
  },
- "Backend/Auth/telegram-mini-app-auth.md": {
-  "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+ "Backend/Architecture/db-fetching-patterns.md": {
+  "created": "2026-10-12T23:54:57+09:00",
+  "updated": "2026-10-12T23:54:57+09:00"
  },
  "Backend/Database/flyway.md": {
-  "created": "2026-10-12T21:21:28+09:00",
-  "updated": "2026-10-12T21:21:28+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Backend/Database/mongodb.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -185,11 +181,11 @@
  },
  "Backend/Database/prisma.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:26:29+09:00"
  },
  "Backend/Database/rdbms-vs-nosql.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Backend/Database/sql-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -244,12 +240,12 @@
   "updated": "2026-10-12T12:22:51+09:00"
  },
  "Backend/Express/nodejs-runtime.md": {
-  "created": "2026-10-12T21:23:27+09:00",
-  "updated": "2026-10-12T21:23:27+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Backend/Express/routing-crud.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:27:42+09:00"
  },
  "Backend/Express/singleton-service-pattern.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -265,11 +261,11 @@
  },
  "Backend/NestJS/config-env.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:21:55+09:00"
  },
  "Backend/NestJS/controller.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Backend/NestJS/dto-validation.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -297,7 +293,7 @@
  },
  "Backend/NestJS/nestjs-middleware.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:21:55+09:00"
  },
  "Backend/NestJS/project-structure.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -320,28 +316,32 @@
   "updated": "2026-10-12T21:23:39+09:00"
  },
  "Backend/Web-Basics/base64-encoding.md": {
-  "created": "2026-10-12T21:21:28+09:00",
-  "updated": "2026-10-12T21:21:28+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-13T00:27:42+09:00"
  },
  "Backend/Web-Basics/cors.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Backend/Web-Basics/http-web-architecture.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Backend/Web-Basics/rest-api.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
+ },
+ "Backend/Web-Basics/telegram-mini-app-auth.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Backend/Web-Basics/web-server-and-nginx.md": {
-  "created": "2026-10-12T21:21:28+09:00",
-  "updated": "2026-10-12T21:21:28+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-13T00:27:42+09:00"
  },
  "Career.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:10:41+09:00"
+  "updated": "2026-10-13T00:25:25+09:00"
  },
  "Career/Job-Search/behavioral-interview-questions.md": {
   "created": "2026-10-12T21:10:41+09:00",
@@ -353,39 +353,31 @@
  },
  "Career/Job-Search/resume-writing.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T21:10:41+09:00"
+  "updated": "2026-10-13T00:27:37+09:00"
  },
  "Career/Job-Search/tech-interview-tips.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T21:10:41+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
+ },
+ "Career/Product/developer-leadership.md": {
+  "created": "2026-10-13T00:25:06+09:00",
+  "updated": "2026-10-13T00:25:06+09:00"
  },
  "Career/Product/product-minded-engineer.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T21:20:00+09:00"
- },
- "Career/Product/product-owner.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:24:53+09:00"
  },
  "Career/Product/project-process.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:28:33+09:00"
  },
- "Career/Reading/tech-reading-list.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
- },
- "Career/Talks/career-in-ai-era.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
- "Career/Talks/developer-leadership.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+ "Career/Work/career-in-ai-era.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Career/Work/decision-making.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:24:53+09:00"
  },
  "Career/Work/growing-at-work.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -397,15 +389,19 @@
  },
  "Career/Work/work-habits.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:26:22+09:00"
+ },
+ "Career/tech-reading-list.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Computer-Science.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T20:52:25+09:00"
+  "updated": "2026-10-13T00:24:22+09:00"
  },
  "Computer-Science/C-Programming.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Computer-Science/C-Programming/c-basics.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -421,7 +417,7 @@
  },
  "Computer-Science/Computer-Architecture.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:00:52+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Computer-Science/Computer-Architecture/basic-computer-design.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -433,7 +429,7 @@
  },
  "Computer-Science/Computer-Architecture/cache-and-virtual-memory.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:26+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Computer-Science/Computer-Architecture/computer-arithmetic.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -441,15 +437,15 @@
  },
  "Computer-Science/Computer-Architecture/computer-system-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Computer-Science/Computer-Architecture/cpu-instructions.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-13T00:21:11+09:00"
  },
  "Computer-Science/Computer-Architecture/data-representation.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Computer-Science/Computer-Architecture/digital-components.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -461,15 +457,15 @@
  },
  "Computer-Science/Computer-Architecture/io-organization.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Computer-Science/Computer-Architecture/memory-hierarchy.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-13T00:23:31+09:00"
  },
  "Computer-Science/Computer-Architecture/pipeline-and-parallelism.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Computer-Science/Computer-Architecture/register-transfer.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -477,7 +473,7 @@
  },
  "Computer-Science/Database.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Computer-Science/Database/database-models.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -489,7 +485,7 @@
  },
  "Computer-Science/Database/sql-and-relational-algebra.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:23:31+09:00"
  },
  "Computer-Science/Database/transaction.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -497,7 +493,7 @@
  },
  "Computer-Science/Engineer-Information-Processing.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Computer-Science/Engineer-Information-Processing/programming-language.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -505,7 +501,7 @@
  },
  "Computer-Science/Engineer-Information-Processing/security.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Computer-Science/Engineer-Information-Processing/software-engineering.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -521,7 +517,7 @@
  },
  "Computer-Science/Network.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:24:55+09:00"
+  "updated": "2026-10-13T00:24:22+09:00"
  },
  "Computer-Science/Network/cdn.md": {
   "created": "2026-10-12T21:06:09+09:00",
@@ -529,15 +525,15 @@
  },
  "Computer-Science/Network/dns.md": {
   "created": "2026-10-12T21:06:09+09:00",
-  "updated": "2026-10-12T21:06:09+09:00"
+  "updated": "2026-10-13T00:28:33+09:00"
  },
  "Computer-Science/Network/http-cache.md": {
   "created": "2026-10-12T21:06:09+09:00",
-  "updated": "2026-10-12T21:06:09+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Computer-Science/Network/http.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T21:06:09+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Computer-Science/Network/https.md": {
   "created": "2026-10-12T21:06:09+09:00",
@@ -553,7 +549,7 @@
  },
  "Computer-Science/Network/osi-7-layer.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:23:31+09:00"
  },
  "Computer-Science/Network/tcp.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -564,8 +560,8 @@
   "updated": "2026-10-12T12:22:51+09:00"
  },
  "Computer-Science/Network/url-to-page.md": {
-  "created": "2026-10-12T21:21:28+09:00",
-  "updated": "2026-10-12T21:21:28+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Computer-Science/Network/webrtc.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -573,15 +569,15 @@
  },
  "Computer-Science/Network/websocket.md": {
   "created": "2026-10-12T21:06:09+09:00",
-  "updated": "2026-10-12T21:06:09+09:00"
+  "updated": "2026-10-13T00:29:59+09:00"
  },
  "Computer-Science/Operating-System.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:23:55+09:00"
  },
  "Computer-Science/Operating-System/deadlock.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Computer-Science/Operating-System/disk-scheduling.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -601,63 +597,87 @@
  },
  "Computer-Science/Operating-System/memory-management.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Computer-Science/Operating-System/os-overview.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Computer-Science/Operating-System/process-and-thread.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-13T00:21:47+09:00"
  },
  "Computer-Science/Operating-System/process-scheduling.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-13T00:21:47+09:00"
  },
  "Computer-Science/Operating-System/process-synchronization.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Computer-Science/Operating-System/system-structure.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:21:11+09:00"
  },
  "Computer-Science/Operating-System/virtual-memory.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Computer-Science/cs-roadmap.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T20:52:25+09:00"
+  "updated": "2026-10-13T00:23:31+09:00"
  },
  "Computer-Science/developer-traps.md": {
   "created": "2026-10-12T20:48:44+09:00",
-  "updated": "2026-10-12T20:48:44+09:00"
+  "updated": "2026-10-12T23:54:57+09:00"
  },
  "DevOps.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T23:36:27+09:00"
- },
- "DevOps/AWS/rds-security-group.md": {
-  "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "DevOps/ci-cd.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T21:39:27+09:00"
+ },
+ "DevOps/rds-security-group.md": {
+  "created": "2026-10-13T00:27:42+09:00",
+  "updated": "2026-10-13T00:27:42+09:00"
+ },
+ "DevOps/startup-infra-decisions.md": {
+  "created": "2026-10-12T21:39:27+09:00",
+  "updated": "2026-10-12T21:39:27+09:00"
  },
  "DevOps/vm-vs-container.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+  "updated": "2026-10-13T00:21:39+09:00"
  },
  "Frontend.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:19:43+09:00"
+  "updated": "2026-10-13T00:21:47+09:00"
+ },
+ "Frontend/Architecture.md": {
+  "created": "2026-10-13T00:21:13+09:00",
+  "updated": "2026-10-13T00:21:13+09:00"
+ },
+ "Frontend/Architecture/feature-sliced-design.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
+ },
+ "Frontend/Architecture/frontend-dependency.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
+ },
+ "Frontend/Architecture/frontend-folder-structure.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
+ },
+ "Frontend/Architecture/frontend-solid.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Frontend/CSS.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:17:52+09:00"
+  "updated": "2026-10-12T21:32:52+09:00"
  },
  "Frontend/CSS/box-model.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -665,11 +685,11 @@
  },
  "Frontend/CSS/css-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:18:04+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/CSS/flexbox.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-12T21:32:52+09:00"
  },
  "Frontend/CSS/position.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -680,48 +700,44 @@
   "updated": "2026-10-11T22:24:49+09:00"
  },
  "Frontend/CSS/transform.md": {
-  "created": "2026-10-12T21:16:08+09:00",
-  "updated": "2026-10-12T21:16:08+09:00"
- },
- "Frontend/Graphics/threejs.md": {
-  "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-11T23:36:27+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/JavaScript.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:17:57+09:00"
+  "updated": "2026-10-13T00:26:40+09:00"
  },
  "Frontend/JavaScript/ajax.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T20:52:25+09:00"
+  "updated": "2026-10-13T00:28:15+09:00"
  },
  "Frontend/JavaScript/arrays-and-objects.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:18:04+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/JavaScript/async-await.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Frontend/JavaScript/callback-and-promise.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:18:04+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/JavaScript/class.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T21:18:04+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/JavaScript/date-libraries.md": {
   "created": "2026-10-11T23:36:27+09:00",
   "updated": "2026-10-12T12:22:51+09:00"
  },
  "Frontend/JavaScript/date-object.md": {
-  "created": "2026-10-12T21:15:33+09:00",
-  "updated": "2026-10-12T21:15:33+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-13T00:28:21+09:00"
  },
  "Frontend/JavaScript/debounce-throttle.md": {
-  "created": "2026-10-12T21:14:34+09:00",
-  "updated": "2026-10-12T21:14:34+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/JavaScript/dom-events.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -732,52 +748,68 @@
   "updated": "2026-10-11T22:24:49+09:00"
  },
  "Frontend/JavaScript/es-modules.md": {
-  "created": "2026-10-12T21:14:51+09:00",
-  "updated": "2026-10-12T21:14:51+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
+ },
+ "Frontend/JavaScript/eslint-prettier.md": {
+  "created": "2026-10-13T00:25:28+09:00",
+  "updated": "2026-10-13T00:25:28+09:00"
  },
  "Frontend/JavaScript/event-loop.md": {
-  "created": "2026-10-12T21:14:18+09:00",
-  "updated": "2026-10-12T21:14:18+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:44:42+09:00"
  },
  "Frontend/JavaScript/frontend-frameworks.md": {
-  "created": "2026-10-12T21:26:12+09:00",
-  "updated": "2026-10-12T21:26:12+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/JavaScript/functions.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:18:04+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
+ },
+ "Frontend/JavaScript/js-comments.md": {
+  "created": "2026-10-13T00:04:01+09:00",
+  "updated": "2026-10-13T00:04:01+09:00"
  },
  "Frontend/JavaScript/js-design-patterns.md": {
-  "created": "2026-10-12T21:15:14+09:00",
-  "updated": "2026-10-12T21:15:14+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
+ },
+ "Frontend/JavaScript/js-engine-v8.md": {
+  "created": "2026-10-12T21:44:42+09:00",
+  "updated": "2026-10-12T21:44:42+09:00"
  },
  "Frontend/JavaScript/operators-and-control-flow.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:18:04+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/JavaScript/package-managers.md": {
-  "created": "2026-10-12T21:17:57+09:00",
-  "updated": "2026-10-12T21:17:57+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/JavaScript/template-literals.md": {
   "created": "2026-10-11T23:36:27+09:00",
   "updated": "2026-10-11T23:36:27+09:00"
  },
+ "Frontend/JavaScript/timezone.md": {
+  "created": "2026-10-12T21:46:33+09:00",
+  "updated": "2026-10-12T21:46:33+09:00"
+ },
  "Frontend/JavaScript/typescript-coding-convention.md": {
   "created": "2026-10-12T21:02:24+09:00",
-  "updated": "2026-10-12T21:02:24+09:00"
+  "updated": "2026-10-13T00:26:57+09:00"
  },
  "Frontend/JavaScript/variables-and-types.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:18:04+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/Mobile.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:19:43+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/Mobile/codepush.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/Mobile/mobile-frameworks.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -785,23 +817,39 @@
  },
  "Frontend/Mobile/react-native-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/Mobile/react-native-interaction.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-11T22:24:49+09:00"
  },
  "Frontend/Mobile/react-native-practical-tips.md": {
-  "created": "2026-10-12T21:17:21+09:00",
-  "updated": "2026-10-12T21:17:21+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
+ },
+ "Frontend/Next.js.md": {
+  "created": "2026-10-13T00:20:56+09:00",
+  "updated": "2026-10-13T00:20:56+09:00"
+ },
+ "Frontend/Next.js/nextjs-app-router.md": {
+  "created": "2026-10-13T00:24:18+09:00",
+  "updated": "2026-10-13T00:24:18+09:00"
+ },
+ "Frontend/Next.js/nextjs.md": {
+  "created": "2026-10-13T00:30:03+09:00",
+  "updated": "2026-10-13T00:30:03+09:00"
+ },
+ "Frontend/Next.js/server-client-components.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Frontend/React.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:21:37+09:00"
+  "updated": "2026-10-13T00:29:04+09:00"
  },
  "Frontend/React/audio-recording.md": {
-  "created": "2026-10-12T21:16:43+09:00",
-  "updated": "2026-10-12T21:16:43+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/React/auth-flow.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -809,11 +857,11 @@
  },
  "Frontend/React/components-and-props.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/React/composition.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/React/conditional-rendering.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -825,15 +873,11 @@
  },
  "Frontend/React/context.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-13T00:28:36+09:00"
  },
  "Frontend/React/forms.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-12T12:22:51+09:00"
- },
- "Frontend/React/frontend-solid.md": {
-  "created": "2026-10-12T21:21:37+09:00",
-  "updated": "2026-10-12T21:21:37+09:00"
  },
  "Frontend/React/hooks.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -841,7 +885,7 @@
  },
  "Frontend/React/jsx.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/React/lifecycle.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -849,7 +893,7 @@
  },
  "Frontend/React/lists-and-keys.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-12T23:55:45+09:00"
  },
  "Frontend/React/re-rendering.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -861,11 +905,11 @@
  },
  "Frontend/React/react-hook-form.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/React/react-router-layout.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/React/react-use-hook.md": {
   "created": "2026-10-12T21:19:51+09:00",
@@ -873,11 +917,11 @@
  },
  "Frontend/React/realtime-chat-app.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:06:09+09:00"
+  "updated": "2026-10-13T00:29:29+09:00"
  },
  "Frontend/React/redux.md": {
-  "created": "2026-10-12T21:14:32+09:00",
-  "updated": "2026-10-12T21:14:32+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-13T00:28:44+09:00"
  },
  "Frontend/React/state.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -889,47 +933,59 @@
  },
  "Frontend/React/swr.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/React/tanstack-query.md": {
-  "created": "2026-10-12T21:14:59+09:00",
-  "updated": "2026-10-12T21:14:59+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/React/tooling.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-13T00:26:17+09:00"
  },
  "Frontend/Testing.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:18:24+09:00"
+  "updated": "2026-10-12T23:51:46+09:00"
+ },
+ "Frontend/Testing/a11y-driven-testing.md": {
+  "created": "2026-10-12T23:51:46+09:00",
+  "updated": "2026-10-13T00:31:02+09:00"
  },
  "Frontend/Testing/jest-practices.md": {
-  "created": "2026-10-12T21:18:22+09:00",
-  "updated": "2026-10-12T21:18:22+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T23:51:46+09:00"
  },
  "Frontend/Testing/tdd.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-12T20:56:03+09:00"
  },
+ "Frontend/UI-Design.md": {
+  "created": "2026-10-13T00:31:07+09:00",
+  "updated": "2026-10-13T00:31:07+09:00"
+ },
  "Frontend/UI-Design/animated-icon.md": {
   "created": "2026-10-12T20:52:25+09:00",
-  "updated": "2026-10-12T20:52:25+09:00"
+  "updated": "2026-10-13T00:31:02+09:00"
  },
  "Frontend/UI-Design/design-system.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T20:52:25+09:00"
+  "updated": "2026-10-13T00:28:42+09:00"
+ },
+ "Frontend/UI-Design/threejs.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
  },
  "Frontend/Vue/quasar.md": {
-  "created": "2026-10-12T21:16:17+09:00",
-  "updated": "2026-10-12T21:16:17+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/Vue/vuex.md": {
   "created": "2026-10-12T20:52:25+09:00",
-  "updated": "2026-10-12T21:19:03+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/Web.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:29+09:00"
+  "updated": "2026-10-12T21:48:31+09:00"
  },
  "Frontend/Web/browser-rendering.md": {
   "created": "2026-10-12T21:21:37+09:00",
@@ -939,9 +995,21 @@
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-12T21:06:09+09:00"
  },
+ "Frontend/Web/devtools-time-savers.md": {
+  "created": "2026-10-12T21:48:31+09:00",
+  "updated": "2026-10-12T21:48:31+09:00"
+ },
  "Frontend/Web/dom.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:18:05+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
+ },
+ "Frontend/Web/form-usability.md": {
+  "created": "2026-10-12T21:32:52+09:00",
+  "updated": "2026-10-12T21:32:52+09:00"
+ },
+ "Frontend/Web/frontend-history.md": {
+  "created": "2026-10-12T21:45:38+09:00",
+  "updated": "2026-10-12T21:45:38+09:00"
  },
  "Frontend/Web/frontend-latency-numbers.md": {
   "created": "2026-10-12T21:16:01+09:00",
@@ -949,15 +1017,15 @@
  },
  "Frontend/Web/html-input-types.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-12T12:00:52+09:00"
+  "updated": "2026-10-12T21:32:52+09:00"
  },
  "Frontend/Web/html.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:18:04+09:00"
+  "updated": "2026-10-13T00:28:09+09:00"
  },
  "Frontend/Web/oauth2.md": {
   "created": "2026-10-12T21:06:09+09:00",
-  "updated": "2026-10-12T21:24:41+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Frontend/Web/previous-url.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -965,7 +1033,11 @@
  },
  "Frontend/Web/spa-csr-ssr.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
+  "updated": "2026-10-13T00:28:26+09:00"
+ },
+ "Frontend/Web/streaming-ssr.md": {
+  "created": "2026-10-12T21:28:56+09:00",
+  "updated": "2026-10-13T00:24:40+09:00"
  },
  "Frontend/Web/web-security.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -973,23 +1045,15 @@
  },
  "Frontend/Web/webs-next-transition.md": {
   "created": "2026-10-12T20:38:56+09:00",
-  "updated": "2026-10-12T20:38:56+09:00"
+  "updated": "2026-10-12T21:45:38+09:00"
  },
  "Frontend/frontend-roadmap.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-11T22:24:49+09:00"
  },
- "Frontend/nextjs-app-router.md": {
-  "created": "2026-10-12T21:26:12+09:00",
-  "updated": "2026-10-12T21:26:12+09:00"
- },
- "Frontend/nextjs.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:07+09:00"
- },
  "Life-and-Learning.md": {
   "created": "2026-10-12T12:22:51+09:00",
-  "updated": "2026-10-12T21:19:22+09:00"
+  "updated": "2026-10-13T00:30:32+09:00"
  },
  "Life-and-Learning/Design/free-fonts.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1001,7 +1065,7 @@
  },
  "Life-and-Learning/English/business-expressions.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:00+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Life-and-Learning/English/opic.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1017,11 +1081,11 @@
  },
  "Life-and-Learning/Journalism/data-journalism.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:20:00+09:00"
+  "updated": "2026-10-13T00:27:37+09:00"
  },
- "Life-and-Learning/Journalism/media-industry-2021.md": {
-  "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+ "Life-and-Learning/Journalism/media-digital-transformation.md": {
+  "created": "2026-10-13T00:27:37+09:00",
+  "updated": "2026-10-13T00:27:37+09:00"
  },
  "Life-and-Learning/Journalism/news-values.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1032,8 +1096,8 @@
   "updated": "2026-10-12T12:22:51+09:00"
  },
  "Life-and-Learning/Life/architecture-vs-civil-engineering.md": {
-  "created": "2026-10-12T21:19:17+09:00",
-  "updated": "2026-10-12T21:19:17+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Life-and-Learning/Life/cleaning.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -1065,7 +1129,7 @@
  },
  "Life-and-Learning/Tax/housing-tax-capital-gains.md": {
   "created": "2026-10-12T20:59:29+09:00",
-  "updated": "2026-10-12T20:59:29+09:00"
+  "updated": "2026-10-13T00:30:07+09:00"
  },
  "Life-and-Learning/Tax/housing-tax-gift.md": {
   "created": "2026-10-12T20:59:29+09:00",
@@ -1097,19 +1161,15 @@
  },
  "Life-and-Learning/Writing/online-writing.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:26:22+09:00"
  },
  "Life-and-Learning/Writing/persuasive-writing.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:00:52+09:00"
- },
- "Life-and-Learning/Writing/sentence-craft.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:26:21+09:00"
  },
  "Tools.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:24:55+09:00"
+  "updated": "2026-10-13T00:26:29+09:00"
  },
  "Tools/Analytics/ga4-setup.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1135,13 +1195,17 @@
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-11T22:24:49+09:00"
  },
+ "Tools/Code-Review/boolean-naming.md": {
+  "created": "2026-10-12T23:50:50+09:00",
+  "updated": "2026-10-12T23:50:50+09:00"
+ },
  "Tools/Code-Review/principles.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T21:19:59+09:00"
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Tools/Code-Review/refactoring-principles.md": {
-  "created": "2026-10-12T21:23:27+09:00",
-  "updated": "2026-10-12T21:23:27+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T23:48:32+09:00"
  },
  "Tools/Code-Review/review-communication.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -1149,15 +1213,35 @@
  },
  "Tools/Code-Review/review-patterns.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T21:02:24+09:00"
+  "updated": "2026-10-13T00:25:05+09:00"
  },
- "Tools/Database/dbeaver.md": {
-  "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T21:25:15+09:00"
+ "Tools/Code-Review/simple-design.md": {
+  "created": "2026-10-12T23:48:32+09:00",
+  "updated": "2026-10-12T23:48:32+09:00"
+ },
+ "Tools/Dev-Environment.md": {
+  "created": "2026-10-13T00:25:05+09:00",
+  "updated": "2026-10-13T00:25:05+09:00"
+ },
+ "Tools/Dev-Environment/java-build-tools.md": {
+  "created": "2026-10-13T00:28:51+09:00",
+  "updated": "2026-10-13T00:28:51+09:00"
+ },
+ "Tools/Dev-Environment/local-https-mkcert.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
+ },
+ "Tools/Dev-Environment/python-pyenv-setup.md": {
+  "created": "2026-10-13T00:28:51+09:00",
+  "updated": "2026-10-13T00:28:51+09:00"
+ },
+ "Tools/Dev-Environment/windows-dev-environment.md": {
+  "created": "2026-10-13T00:23:26+09:00",
+  "updated": "2026-10-13T00:23:26+09:00"
  },
  "Tools/Git.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:15:33+09:00"
+  "updated": "2026-10-13T00:23:26+09:00"
  },
  "Tools/Git/branch.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1165,58 +1249,54 @@
  },
  "Tools/Git/commit-convention.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:23:26+09:00"
  },
  "Tools/Git/git-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:23:26+09:00"
+ },
+ "Tools/Git/git-config-options.md": {
+  "created": "2026-10-12T21:32:52+09:00",
+  "updated": "2026-10-12T21:32:52+09:00"
  },
  "Tools/Git/git-undo-and-rewrite.md": {
-  "created": "2026-10-12T21:15:16+09:00",
-  "updated": "2026-10-12T21:15:16+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  },
  "Tools/Git/github-collaboration.md": {
   "created": "2026-10-11T23:36:27+09:00",
   "updated": "2026-10-12T20:56:03+09:00"
  },
+ "Tools/Git/merge-squash-rebase.md": {
+  "created": "2026-10-12T23:59:49+09:00",
+  "updated": "2026-10-12T23:59:49+09:00"
+ },
  "Tools/Git/merge.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-13T00:23:26+09:00"
  },
  "Tools/Git/remote-github.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T21:19:59+09:00"
+  "updated": "2026-10-13T00:23:26+09:00"
  },
- "Tools/Jira/issues-and-jql.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+ "Tools/dbeaver.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
  },
- "Tools/Jira/workflow.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+ "Tools/google-sheets-vs-excel.md": {
+  "created": "2026-10-13T00:21:06+09:00",
+  "updated": "2026-10-13T00:21:06+09:00"
  },
- "Tools/Office/google-sheets-vs-excel.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
- "Tools/local-dev-environment.md": {
-  "created": "2026-10-12T21:23:27+09:00",
-  "updated": "2026-10-12T21:23:27+09:00"
- },
- "Tools/local-https-mkcert.md": {
-  "created": "2026-10-12T21:19:51+09:00",
-  "updated": "2026-10-12T21:19:51+09:00"
+ "Tools/jira.md": {
+  "created": "2026-10-13T00:26:14+09:00",
+  "updated": "2026-10-13T00:26:14+09:00"
  },
  "Tools/markdown.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-11T23:36:27+09:00"
  },
  "Tools/retool.md": {
-  "created": "2026-10-12T21:19:03+09:00",
-  "updated": "2026-10-12T21:19:03+09:00"
- },
- "Tools/windows-dev-environment.md": {
-  "created": "2026-10-12T21:15:58+09:00",
-  "updated": "2026-10-12T21:15:58+09:00"
+  "created": "2026-10-12T21:27:28+09:00",
+  "updated": "2026-10-12T21:27:28+09:00"
  }
 }

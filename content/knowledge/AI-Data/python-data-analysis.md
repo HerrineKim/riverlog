@@ -92,16 +92,14 @@ top5 = sorted(movies, key=lambda m: m["vote_average"], reverse=True)[:5]   # 내
 
 ### 성능
 
-- **프로파일링**: Jupyter 매직 명령 `%time`(한 번 실행 시간), `%timeit`(반복 측정 평균), `%prun`(함수별 프로파일)
+- **프로파일링**: 어디가 느린지 먼저 재고 고친다. 측정 방법은 Jupyter 매직 명령 정리([[jupyter-notebook#알아 두면 좋은 기능|Jupyter Notebook]])에 있다.
 - **GPU 가속**: CUDA, cuDF(GPU 기반 DataFrame)
 - **병렬·분산 처리**: Dask, Vaex (메모리보다 큰 데이터 처리)
 - **JIT 컴파일**: PyPy, Numba
 
 ### 협업과 환경
 
-- 노트북 공유·배포: nbconvert(다른 형식으로 변환), nbviewer(웹에서 보기), Binder(실행 가능한 환경으로 공유)
-- 클라우드 노트북: AWS SageMaker, GCP Vertex AI(구 AI Platform), Azure ML
-- 대체 도구: JupyterLab, VS Code 노트북, PyCharm(Jupyter 지원. 예전의 JetBrains DataSpell은 2026년 PyCharm으로 통합)
+노트북을 공유·배포하는 도구(nbconvert, nbviewer, Binder), 클라우드 노트북 서비스, JupyterLab·VS Code·PyCharm 같은 대체 환경은 [[jupyter-notebook|Jupyter Notebook]] 노트에서 다룬다.
 
 ## 더 공부하기
 

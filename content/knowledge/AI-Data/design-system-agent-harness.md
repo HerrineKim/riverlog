@@ -135,7 +135,7 @@ async function runCodingAgent(spec: DesignSpec) {
 | design-principles | 디자인 시스템의 핵심 원칙 |
 | self-check | 코드 작성 후 7개 영역 셀프 점검 체크리스트 |
 
-폼 화면을 설계할 땐 레이아웃·간격 스킬만, 카피를 정할 때 비로소 카피 스킬을 로드하는 식이다. **규칙이 바뀌면 스킬 파일만 고치면 된다.** (→ Claude Code의 `SKILL.md`, [[design-system|디자인 시스템과 공용 스킬 배포하기]]와 같은 구조)
+폼 화면을 설계할 땐 레이아웃·간격 스킬만, 카피를 정할 때 비로소 카피 스킬을 로드하는 식이다. **규칙이 바뀌면 스킬 파일만 고치면 된다.** (→ Claude Code의 `SKILL.md`를 팀에 배포하는 방법은 [[claude-skill-building-guide#팀 공용 스킬을 패키지로 배포하기|Claude 스킬 만들기 가이드]])
 
 설계 도구(코드를 쓰지 않고 "무엇을"을 결정)와 코딩 도구("어떻게"를 실행)를 분리하되, 맥락은 하네스 하나에 유지하는 것이 포인트다.
 
@@ -183,4 +183,4 @@ async function runCodingAgent(spec: DesignSpec) {
 - **구체화 → 기억 → 참고 → 생성 → 검증 → 축적** 루프가 "한 번에 잘 만들어줘"를 대체한다.
 - 중간 표현(스펙), 온디맨드 스킬, 자동 채점기, 결정 메모리는 화면 생성뿐 아니라 **모든 에이전틱 코딩 작업**에 그대로 옮겨 쓸 수 있는 패턴이다.
 
-관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[design-system|디자인 시스템과 공용 스킬 배포하기]], [[copilot-leaked-prompt|유출된 AI 시스템 프롬프트]]
+관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[design-system|디자인 시스템을 패키지로 배포하기]], [[copilot-leaked-prompt|유출된 AI 시스템 프롬프트]]

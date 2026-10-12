@@ -1,14 +1,16 @@
 ---
 title: "데이터 저널리즘 실무"
 concept: "Data Journalism"
-summary: "주제 설정부터 수집·정제·분석·시각화·기사화까지 데이터 기자들이 일하는 방식, 무료 도구로 시작하는 첫 시각화, 컨퍼런스에서 들은 공유·수익 모델 이야기."
+summary: "주제 설정부터 수집·정제·분석·시각화·기사화까지 데이터 기자들이 일하는 방식, 무료 도구로 시작하는 첫 시각화, 읽히는 데이터 기사와 탐사 매체의 펀딩 모델에 관한 논점."
 tags: ["journalism", "data-analysis", "visualization", "statistics", "content-marketing"]
 source: notion
 date: "2026-10-11"
 sources: ["https://riverkim.kr/72", "https://riverkim.kr/73", "https://journalismcourses.org/course/dataviz/"]
 ---
 
-데이터 저널리즘은 데이터를 수집·분석·시각화해 기사의 근거이자 소재로 삼는 보도 방식이다. 한 탐사보도 매체 데이터팀과의 질의응답을 바탕으로 실무 흐름을 재구성하고, 무료 도구 강좌(Knight Center MOOC "Data Journalism and Visualization with Free Tools")와 2019 데이터 저널리즘 코리아 컨퍼런스에서 얻은 내용을 덧붙였다.
+> 한 탐사보도 매체 데이터팀과의 질의응답, Knight Center MOOC 「Data Journalism and Visualization with Free Tools」, 데이터 저널리즘 코리아 컨퍼런스(2019)에서 들은 내용을 함께 요약·재구성한 노트입니다. 뉴스룸의 AI 활용 현황 같은 대목은 그 시점 기준이라 지금은 바뀌었을 수 있습니다.
+
+데이터 저널리즘은 데이터를 수집·분석·시각화해 기사의 근거이자 소재로 삼는 보도 방식이다. 실무 흐름을 단계별로 정리하고, 무료 도구로 첫 시각화를 만드는 법과 공유·수익 모델에 관한 논점을 덧붙였다.
 
 ## 현황과 직무
 
@@ -88,11 +90,11 @@ sources: ["https://riverkim.kr/72", "https://riverkim.kr/73", "https://journalis
 
 > 남이 공개한 데이터보다 **내가 생산하거나 나만 접근할 수 있는 데이터**로 작업해야 시간에 쫓기지 않고 깊이 있게 보도할 수 있다.
 
-## 현장에서 들은 이야기 (2019 데이터 저널리즘 코리아)
+## 공유·수익 모델에 관한 논점
 
 ### 뉴스룸의 AI
 
-- 해외 뉴스 기관의 절반가량이 이미 AI를 쓰고 있었다. 수천 건의 문서를 스스로 분류·분석해 어디에 주제가 있는지 알려 주는 등, 기자의 "막노동"을 AI가 돕는 방향이다.
+- 해외 뉴스 기관의 절반가량이 이미 AI를 쓰고 있다는 조사가 있었다. 수천 건의 문서를 스스로 분류·분석해 어디에 주제가 있는지 알려 주는 등, 기자의 "막노동"을 AI가 돕는 방향이다.
 - 텍스트 분석은 BERT 이후 크게 발전했고, OCR도 쓸 만해지고 있다. 기사를 자동으로 쓰는 로봇 저널리즘도 협업 형태로 시도되고 있다.
 
 ### 읽히고 공유되는 데이터 기사
@@ -127,4 +129,4 @@ sources: ["https://riverkim.kr/72", "https://riverkim.kr/73", "https://journalis
 
 대부분 여러 펀딩 소스를 함께 쓰며, 돈을 받으면서 편집권 독립을 보장받기는 쉽지 않다. 국내에서도 해외에서 접근하기 쉬운 주제(접경 지역, 위성사진·드론 취재, 디아스포라 커뮤니티)로 작은 "가상 해외 지국" 프로젝트를 꾸릴 수 있다는 제안이 있었다.
 
-관련 노트: [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[online-writing|온라인 글쓰기]]
+관련 노트: [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[online-writing|온라인 글쓰기]], [[media-digital-transformation|언론사의 디지털 전환 과제]]

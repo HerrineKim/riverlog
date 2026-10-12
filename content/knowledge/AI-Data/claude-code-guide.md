@@ -1,7 +1,7 @@
 ---
 title: "Claude Code 활용 가이드"
 concept: "Claude Code"
-summary: "채팅형 AI와 무엇이 다른지부터 설치, 슬래시 명령·단축키, MCP 연결, Skills와 CLAUDE.md, 프롬프트 기법, 요금제까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
+summary: "채팅형 AI와 무엇이 다른지부터 설치, 슬래시 명령·단축키, MCP 연결, Skills와 CLAUDE.md, Claude Code에 맞는 프롬프트 습관까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
 tags: ["ai", "llm", "claude-code", "agentic-coding", "prompting", "mcp"]
 source: other
 date: "2026-10-12"
@@ -152,14 +152,14 @@ claude mcp add --transport http notion https://mcp.notion.com/mcp
 
 ## 프롬프트 기법
 
-| 기법 | 언제 쓰나 | 예시 |
+구체적인 지시, 예시, 단계 연결, 제약, 역할 부여 같은 일반 원칙은 어떤 모델에나 같다. [[chatgpt-prompt-cheat-sheet|프롬프트 작성법 치트시트]]에 정리해 두었고, 여기서는 **Claude Code에서만 통하는 것**만 적는다.
+
+| 기법 | 언제 쓰나 | 왜 |
 | --- | --- | --- |
-| **구체적으로** | 항상 | "이 CSV 정리해 줘" 대신 "B열이 비어 있는 행을 지우고, 이메일 기준으로 중복 제거해 줘" |
-| **예시 주기** | 출력 형식이 중요할 때 | 원하는 결과를 1~2개 보여 준다 |
-| **단계 연결** | 복잡한 작업 | "먼저 분석하고, 그다음 요약하고, 그다음 실행 항목을 만들어 줘" |
-| **제약 걸기** | 품질 관리 | "500단어 이내", "2024년 데이터만" |
-| **역할 부여** | 전문성이 필요할 때 | "이 데이터셋을 검토하는 데이터 분석가처럼 행동해 줘" |
+| **맥락은 `@`로 직접 준다** | 파일·폴더를 다룰 때 | 내용을 설명하지 말고 `@report.csv`, `@data/`처럼 붙이면 Claude가 직접 읽는다 |
 | **`/clear` 자주 쓰기** | 관련 없는 작업 사이 | 이전 맥락이 새 작업을 오염시키지 않게 한다 |
+| **반복되는 지시는 CLAUDE.md로** | 세션마다 같은 말을 하고 있을 때 | 매 세션 자동으로 읽히므로 프롬프트가 짧아진다 |
+| **계획 → 검토 → 실행** | 파일을 여러 개 고치는 작업 | 실행 전에 계획을 받아 보면 되돌릴 일이 줄어든다 |
 
 ### 프로 패턴: 체크포인트 + 반복
 
@@ -171,14 +171,9 @@ claude mcp add --transport http notion https://mcp.notion.com/mcp
 
 에이전트에게 맡길 때 결과를 일관되게 만드는 방법은 [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]]에서 더 깊이 다뤘다.
 
-## 요금제 (2026년 1월 기준)
+## 요금제
 
-| 플랜 | 월 요금 | 적합한 경우 |
-| --- | --- | --- |
-| Pro | $20 | 가벼운 사용, 짧은 작업 |
-| Max 5x | $100 | 매일 쓰는 경우, 큰 프로젝트 |
-| Max 20x | $200 | 파워 유저, 많은 자동화 |
-| API | 사용량 과금 | CI/CD, 기업 파이프라인 |
+Claude Pro·Max 구독으로 쓰거나, CI/CD·파이프라인처럼 자동화 용도면 API 사용량 과금으로 쓴다. 플랜별 요금과 한도는 자주 바뀌므로 [공식 요금 안내](https://claude.com/pricing)에서 확인한다.
 
 ## 공식 문서
 
@@ -186,4 +181,4 @@ claude mcp add --transport http notion https://mcp.notion.com/mcp
 - [MCP 레퍼런스](https://code.claude.com/docs/en/mcp)
 - [Claude Code 베스트 프랙티스](https://www.anthropic.com/engineering/claude-code-best-practices)
 
-관련 노트: [[ai-coding-guardrails|AI 코딩 실무 가드레일]]
+관련 노트: [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[chatgpt-prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]]

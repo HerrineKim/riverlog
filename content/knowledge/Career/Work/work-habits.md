@@ -64,4 +64,4 @@ source: notion
 - 중요한 결과물은 출력·재확인·거꾸로 읽기로 검수.
 - 질문은 스스로 찾아본 뒤 좁혀서.
 
-관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[persuasive-writing|설득력 있는 글쓰기]]
+관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[persuasive-writing|글쓰기 원칙: 구조, 설득, 문장력]]

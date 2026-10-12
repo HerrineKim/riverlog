@@ -1,7 +1,7 @@
 ---
 title: "Claude 스킬 만들기 가이드"
 concept: "Claude Skills"
-summary: "Anthropic의 스킬 제작 가이드 요점: 3단계 프로그레시브 디스클로저, 트리거를 담은 description, 폴더·이름 규칙, 테스트와 반복 개선, 배포 방식, 실전 패턴 5가지, 트러블슈팅."
+summary: "Anthropic의 스킬 제작 가이드 요점: 3단계 프로그레시브 디스클로저, 트리거를 담은 description, 폴더·이름 규칙, 테스트와 반복 개선, 배포 방식과 팀 공용 스킬 패키지화, 실전 패턴 5가지, 트러블슈팅."
 tags: ["ai", "llm", "claude-code", "skills", "mcp", "agent"]
 source: other
 date: "2026-10-12"
@@ -120,6 +120,30 @@ your-skill/
 - 권장 공유 방식: GitHub 공개 저장소에 올리고, MCP 문서에서 스킬로 링크하고, 설치 가이드를 붙인다.
 - 소개할 땐 기능보다 결과를 말한다. "YAML 프론트매터와 마크다운이 담긴 폴더"보다 "팀 워크스페이스를 몇 초 만에 세팅"이 낫다.
 
+### 팀 공용 스킬을 패키지로 배포하기
+
+코딩 컨벤션, 커밋 규칙, 디자인 시스템 사용법처럼 **여러 저장소가 같이 지켜야 하는 규칙**을 저장소마다 `.claude/skills/`에 복사해 두면 금방 어긋난다. 디자인 시스템을 패키지로 배포하는 것과 같은 구조([[design-system|디자인 시스템을 패키지로 배포하기]])를 스킬에도 적용한다. **중앙에서 한 번 수정하고, 각 저장소는 설치·업데이트만 한다.**
+
+```text
+skill-installer/
+├── package.json
+├── bin/
+│   └── install.js        # skills/ 아래 파일을 대상 저장소의 .claude/skills/로 복사
+└── skills/
+    └── team-dev-guide/
+        └── SKILL.md
+```
+
+```bash
+npx @my-org/skill-installer install team-dev-guide
+```
+
+| 요소 | 역할 |
+| --- | --- |
+| 중앙 스킬 저장소 | 스킬의 유일한 원본. 수정은 여기서만 한다 |
+| npm 패키지 + 설치 명령 | 버전이 추적되고, 각 저장소는 명령 한 줄로 `.claude/skills/<skill-name>/SKILL.md`를 받는다 |
+| 자동 업데이트 PR | Renovate, Dependabot, GitHub Actions 스케줄 작업이 새 버전을 감지해 PR을 만든다. 사람이 저장소를 돌며 복사하지 않고, 변경 내역은 PR 리뷰로 확인한다 |
+
 ## 5. 실전 패턴 다섯 가지
 
 1. **순차 워크플로**: 단계마다 검증 게이트를 둔다. 단계 간 의존성과 실패 시 롤백 방법을 명시한다.
@@ -160,4 +184,4 @@ your-skill/
 - [클로드코드 스킬 개념 1 (Claude Code, Skill.md, 필드)](https://ios-development.tistory.com/1838)
 - [클로드코드 스킬 개념 2 - 활용하기 (동적 문자열, 참조, 프론트매터, 자동화 패턴)](https://ios-development.tistory.com/1837)
 
-관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]]
+관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[design-system|디자인 시스템을 패키지로 배포하기]]

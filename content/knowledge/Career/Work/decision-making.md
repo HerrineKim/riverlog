@@ -25,4 +25,4 @@ source: notion
 - 기한이 없는 결정은 대체로 미뤄진다. 2번을 빠뜨리지 않는다.
 - 6번을 놓치면 "왜 나만 몰랐냐"는 불만이 생긴다. 결정만큼 공유도 일의 일부다.
 
-관련 노트: [[developer-leadership|개발자에게 필요한 리더십]], [[product-owner|프로덕트 오너의 사고방식]]
+관련 노트: [[developer-leadership|개발자의 리더십과 PO의 사고방식]]
