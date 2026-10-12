@@ -185,3 +185,5 @@ claude mcp add --transport http notion https://mcp.notion.com/mcp
 - [설치 가이드](https://code.claude.com/docs/en/setup)
 - [MCP 레퍼런스](https://code.claude.com/docs/en/mcp)
 - [Claude Code 베스트 프랙티스](https://www.anthropic.com/engineering/claude-code-best-practices)
+
+관련 노트: [[ai-coding-guardrails|AI 코딩 실무 가드레일]]
