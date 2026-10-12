@@ -127,4 +127,4 @@ DB 테이블에 `deletedAt`이 있다고 프론트의 `Post`에 미리 넣으면
 - 타입: 자주 바뀌는 API 응답 대신 잘 바뀌지 않는 도메인 타입에 기대고, props 타입은 컴포넌트가 스스로 정한다.
 - 어디까지 공용으로 두고 어디부터 각자 관리할지는 정답이 없다. 상황과 팀의 합의로 정한다.
 
-관련 노트: [[frontend-solid|프론트엔드와 SOLID 원칙]], [[hooks|Hooks]], [[composition|합성]], [[provider-di|NestJS Provider와 DI]]
+관련 노트: [[frontend-solid|프론트엔드와 SOLID 원칙]], [[hooks|Hooks]], [[composition|합성]], [[provider-di|NestJS Provider와 DI]], [[feature-sliced-design|Feature-Sliced Design]]

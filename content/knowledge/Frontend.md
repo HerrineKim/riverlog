@@ -24,3 +24,5 @@ source: mixed
 | [Graphics](/knowledge/dictionary/frontend/graphics/threejs) | WebGL과 Three.js로 웹에서 3D 그리기 |
 
 학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/frontend-roadmap)에 정리했다.
+
+폴더 구조를 비즈니스 기준으로 나누는 아키텍처 방법론은 [Feature-Sliced Design](Frontend/feature-sliced-design.md)에 정리했다.
