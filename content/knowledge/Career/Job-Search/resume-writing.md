@@ -1,13 +1,15 @@
 ---
 title: "합격하는 영문 레주메 작성법"
 concept: "Resume"
-summary: "외국계 취업용 레주메를 한 장으로, 성과 중심으로 쓰는 법: 섹션 순서, 학력 표기, 2~3문장 Summary, 액션 동사와 숫자로 쓰는 경력."
+summary: "외국계 취업용 레주메를 한 장으로, 성과 중심으로 쓰는 법: 섹션 순서, 학력 표기, 2~3문장 Summary, 액션 동사와 숫자로 쓰는 경력, 커버레터 구조와 템플릿."
 tags: ["career", "job-search", "resume", "english"]
 source: other
 date: "2026-10-12"
 ---
 
-> 외국계 취업 컨설턴트 마차카피(matchacopy)가 Flitto와 함께 진행한 웨비나 「합격하는 레주메 & 커버레터의 모든 것」을 듣고 정리한 노트다. 웨비나의 4번 항목과 커버레터 부분은 메모에 남아 있지 않다.
+> 외국계 취업 컨설턴트 마차카피(matchacopy)가 Flitto와 함께 진행한 웨비나 「합격하는 레주메 & 커버레터의 모든 것」을 듣고 정리한 노트다. 웨비나의 4번 항목은 메모에 남아 있지 않다.
+
+📎 웨비나에서 받은 레주메·커버레터 템플릿: [[resume_cover_letter_template.docx|resume_cover_letter_template.docx]] (Word)
 
 국문 이력서와 가장 큰 차이는 **직무 설명과 성과를 함께** 써야 한다는 점이다. "무슨 일을 했다"에서 끝내지 않고 "그래서 어떤 결과가 나왔다"까지 쓴다.
 
@@ -74,6 +76,26 @@ EDUCATION   Flitto University, Seoul, Korea            May 2020
 | 관리·리더십 | administered, analyzed, assigned, coordinated, delegated, developed, directed, supervised |
 | 커뮤니케이션 | addressed, articulated, authored, clarified, collaborated, communicated, convinced, negotiated |
 | 리서치 | analyzed, clarified, collected, conducted, critiqued, evaluated, investigated |
+
+## 커버레터
+
+템플릿의 커버레터는 한 장, 네 덩어리로 되어 있다.
+
+1. **머리글**: 내 이름·주소·연락처 → 날짜 → 회사 이름·주소 → `Dear Hiring Manager:`
+2. **자기소개 + 지원 포지션**: "[근무 회사]에서 [직책]을 맡고 있는 / [대학]에서 [전공]을 전공한 [이름]입니다. [지원 회사]의 [포지션]에 필요한 역량을 갖췄다고 확신해 지원했습니다."
+3. **지원 동기 + 성과 사례**
+   - 회사의 **미션**과 나의 **커리어 목표**가 어떻게 맞닿는지 구체적으로 쓴다.
+   - 성과를 낸 경험 하나를 **기승전결**로 풀어 쓴다.
+   - Job Description에 적힌 요구 조건을 내 경험·능력과 **하나씩 연결**한다.
+   - 성과는 **수치화**한다.
+4. **마무리**: 내 경험이 회사에 자산이 될 것이라는 말, 인터뷰에서 더 이야기 나누고 싶다는 요청, 감사 인사 → `Best Regards,` + 이름
+
+템플릿의 레주메 부분에도 같은 원칙이 주석으로 달려 있다.
+
+- 불릿은 **액션 동사로 시작해 성과로 끝낸다.**
+- 지원 회사가 요구하는 스킬 중 **이미 가진 것**을 강조한다.
+- 재학생·최근 졸업생은 교내 활동을 Experience에 써도 된다. 리더십 포지션이었다면 더 좋다.
+- Education에는 졸업(예정)일, 학위, 관련 수강 과목(Course Highlights)을, 그 아래 Awards와 Skills & Activities를 둔다.
 
 ## 체크리스트
 

@@ -8,6 +8,24 @@ import SpriteText from "three-spritetext";
 import type { GraphLink, GraphNode } from "@/lib/knowledge";
 
 type Node = GraphNode & { x?: number; y?: number; z?: number };
+type Link = GraphLink & { source: string | Node; target: string | Node };
+
+// Zoom bar maps camera distance on a log scale: 0 = farthest, 1 = closest
+const MIN_DIST = 25;
+const MAX_DIST = 4000;
+const LOG_SPAN = Math.log(MAX_DIST) - Math.log(MIN_DIST);
+const distToZoom = (d: number) => Math.min(1, Math.max(0, (Math.log(MAX_DIST) - Math.log(d)) / LOG_SPAN));
+const zoomToDist = (z: number) => Math.exp(Math.log(MAX_DIST) - z * LOG_SPAN);
+
+type OrbitControls = THREE.EventDispatcher<{ change: object }> & {
+  target: THREE.Vector3;
+  autoRotate?: boolean;
+  autoRotateSpeed?: number;
+  enableDamping?: boolean;
+  minDistance?: number;
+  maxDistance?: number;
+  update?: () => void;
+};
 type Category = { id: string; name: string; color: string; count: number };
 
 function useTheme() {
@@ -34,6 +52,8 @@ function useSize(ref: React.RefObject<HTMLElement | null>) {
   }, [ref]);
   return size;
 }
+
+const REFERENCE_COLOR = { dark: "#f5c26b", light: "#b7791f" } as const;
 
 export default function MindMapCanvas({
   data,
@@ -68,6 +88,23 @@ export default function MindMapCanvas({
     return m;
   }, [data]);
 
+  // Note-to-note connections for the info card: explicit links first, then shared tags
+  const connectionsOf = useMemo(() => {
+    const byId = new Map(graphData.nodes.map((n) => [n.id, n]));
+    const m = new Map<string, { node: Node; kind: "reference" | "related" }[]>();
+    const add = (a: string, b: string, kind: "reference" | "related") => {
+      const node = byId.get(b);
+      if (node) m.set(a, [...(m.get(a) ?? []), { node, kind }]);
+    };
+    for (const l of data.links)
+      if (l.kind === "reference" || l.kind === "related") {
+        add(l.source, l.target, l.kind);
+        add(l.target, l.source, l.kind);
+      }
+    for (const list of m.values()) list.sort((x, y) => (x.kind === y.kind ? 0 : x.kind === "reference" ? -1 : 1));
+    return m;
+  }, [data, graphData]);
+
   const childrenOf = useMemo(() => {
     const byId = new Map(graphData.nodes.map((n) => [n.id, n]));
     const m = new Map<string, Node[]>();
@@ -89,15 +126,52 @@ export default function MindMapCanvas({
     const link = fg.d3Force("link") as unknown as { distance?: (fn: (l: { target: Node }) => number) => void } | undefined;
     link?.distance?.((l) => {
       const kind = (l as unknown as GraphLink).kind;
-      return kind === "hub" ? 150 : kind === "related" ? 60 : 38;
+      return kind === "hub" ? 150 : kind === "related" ? 60 : kind === "reference" ? 50 : 38;
     });
     const charge = fg.d3Force("charge") as unknown as { strength?: (n: number) => void } | undefined;
     charge?.strength?.(-45);
-    const controls = fg.controls() as { autoRotate?: boolean; autoRotateSpeed?: number; enableDamping?: boolean };
+    const controls = fg.controls() as OrbitControls;
     controls.autoRotate = true;
     controls.autoRotateSpeed = 0.45;
     controls.enableDamping = true;
+    controls.minDistance = MIN_DIST;
+    controls.maxDistance = MAX_DIST;
   }, [width]);
+
+  // Keep the zoom bar in sync with wheel/pinch zoom and camera flights
+  const [zoom, setZoom] = useState(0.5);
+  useEffect(() => {
+    const fg = fgRef.current;
+    if (!fg || !width) return;
+    const controls = fg.controls() as OrbitControls;
+    let frame = 0;
+    const sync = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const d = fg.camera().position.distanceTo(controls.target);
+        setZoom(Math.round(distToZoom(d) * 1000) / 1000);
+      });
+    };
+    controls.addEventListener("change", sync);
+    sync();
+    return () => {
+      cancelAnimationFrame(frame);
+      controls.removeEventListener("change", sync);
+    };
+  }, [width]);
+
+  const zoomTo = useCallback((z: number) => {
+    const fg = fgRef.current;
+    if (!fg) return;
+    const controls = fg.controls() as OrbitControls;
+    controls.autoRotate = false;
+    const camera = fg.camera();
+    const dir = camera.position.clone().sub(controls.target);
+    if (dir.lengthSq() === 0) dir.set(0, 0, 1);
+    camera.position.copy(controls.target).add(dir.normalize().multiplyScalar(zoomToDist(Math.min(1, Math.max(0, z)))));
+    controls.update?.();
+    setZoom(z);
+  }, []);
 
   // Depth fog: far nodes fade into the background instead of competing for attention
   useEffect(() => {
@@ -197,15 +271,28 @@ export default function MindMapCanvas({
           showNavInfo={false}
           nodeThreeObject={nodeObject}
           linkColor={(l) => {
-            const t = l.target as Node;
-            const s = l.source as Node;
-            if ((l as unknown as GraphLink).kind === "related") return dark ? "#5b6b7d" : "#9aa39a";
+            const link = l as unknown as Link;
+            const t = link.target as Node;
+            const s = link.source as Node;
+            const lit = !focus || (isLit(t.id) && isLit(s.id) && (focus.id === t.id || focus.id === s.id || link.kind === "member"));
+            if (link.kind === "reference") return lit ? REFERENCE_COLOR[theme] : dark ? "#2a2416" : "#ece3d2";
+            if (link.kind === "related") return lit ? (dark ? "#5b6b7d" : "#9aa39a") : dark ? "#161d26" : "#e6e8e2";
             if (!focus) return dark ? "#3a4a5a" : "#b9c0b5";
-            return isLit(t.id) && isLit(s.id) ? t.color : dark ? "#1a222c" : "#e1e4dd";
+            return lit ? t.color : dark ? "#1a222c" : "#e1e4dd";
           }}
-          linkVisibility={(l) => (l as unknown as GraphLink).kind !== "hub"}
-          linkOpacity={dark ? 0.28 : 0.5}
-          linkWidth={0}
+          linkVisibility={(l) => (l as unknown as Link).kind !== "hub"}
+          linkOpacity={dark ? 0.35 : 0.55}
+          linkWidth={(l) => ((l as unknown as Link).kind === "reference" ? 0.7 : 0)}
+          linkCurvature={(l) => ((l as unknown as Link).kind === "reference" ? 0.18 : 0)}
+          linkDirectionalParticles={(l) => {
+            const link = l as unknown as Link;
+            if (link.kind !== "reference") return 0;
+            if (!focus) return 1;
+            return (link.source as Node).id === focus.id || (link.target as Node).id === focus.id ? 3 : 0;
+          }}
+          linkDirectionalParticleWidth={1.6}
+          linkDirectionalParticleSpeed={0.006}
+          linkDirectionalParticleColor={() => REFERENCE_COLOR[theme]}
           onNodeHover={(n) => {
             setHovered((n as Node) ?? null);
             if (wrapRef.current) wrapRef.current.style.cursor = n ? "pointer" : "grab";
@@ -300,6 +387,30 @@ export default function MindMapCanvas({
                       ))}
                     </ul>
                   )}
+                  {selected && n.kind === "doc" && (connectionsOf.get(n.id)?.length ?? 0) > 0 && (
+                    <div className="mt-3 border-t border-line pt-2">
+                      <p className="mb-1 text-xs font-semibold tracking-wide text-muted">연결된 노트</p>
+                      <ul className="max-h-40 space-y-0.5 overflow-y-auto text-sm">
+                        {connectionsOf.get(n.id)!.map(({ node: c, kind }) => (
+                          <li key={c.id}>
+                            <button
+                              onClick={() => select(c)}
+                              className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent"
+                            >
+                              <span className="size-1.5 shrink-0 rounded-full" style={{ background: c.color }} />
+                              <span className="truncate">{c.name}</span>
+                              <span
+                                className="ml-auto shrink-0 text-[0.7rem]"
+                                style={{ color: kind === "reference" ? REFERENCE_COLOR[theme] : undefined }}
+                              >
+                                {kind === "reference" ? "링크" : "같은 태그"}
+                              </span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   <div className="mt-3 flex gap-2">
                     {n.href && (
                       <Link href={n.href} className="rounded-full bg-accent px-3.5 py-1.5 text-sm font-medium text-accent-ink hover:opacity-90">
@@ -319,9 +430,42 @@ export default function MindMapCanvas({
         </div>
       )}
 
+      {/* Zoom bar */}
+      <div className="absolute right-4 bottom-20 flex flex-col items-center gap-1 rounded-full border border-line bg-bg-elev/85 p-1.5 shadow-lg backdrop-blur sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2">
+        <button
+          onClick={() => zoomTo(zoom + 0.08)}
+          aria-label="확대"
+          className="grid size-8 place-items-center rounded-full text-lg leading-none text-fg-strong hover:bg-accent-soft hover:text-accent"
+        >
+          +
+        </button>
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.005}
+          value={zoom}
+          onChange={(e) => zoomTo(Number(e.target.value))}
+          aria-label="확대·축소"
+          className="h-32 w-6 cursor-grab accent-[var(--accent)] active:cursor-grabbing sm:h-40"
+          style={{ writingMode: "vertical-lr", direction: "rtl" }}
+        />
+        <button
+          onClick={() => zoomTo(zoom - 0.08)}
+          aria-label="축소"
+          className="grid size-8 place-items-center rounded-full text-lg leading-none text-fg-strong hover:bg-accent-soft hover:text-accent"
+        >
+          −
+        </button>
+      </div>
+
       {!selected && !hovered && (
-        <p className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-bg-elev/70 px-3 py-1 text-xs whitespace-nowrap text-muted backdrop-blur">
-          드래그해서 회전 · 스크롤로 확대 · 노드를 클릭해 이동
+        <p className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-bg-elev/70 px-3 py-1 text-xs whitespace-nowrap text-muted backdrop-blur">
+          <span className="hidden sm:inline">드래그해서 회전 · 스크롤이나 오른쪽 바로 확대 · 노드를 클릭해 이동 ·</span>
+          <span className="inline-block h-0.5 w-4 rounded" style={{ background: REFERENCE_COLOR[theme] }} />
+          노트 간 링크
+          <span className="inline-block h-px w-4 bg-muted" />
+          같은 태그
         </p>
       )}
     </div>

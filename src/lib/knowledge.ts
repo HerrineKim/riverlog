@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { excerptOf } from "./markdown";
-import { isHiddenName, isPublished, KNOWLEDGE_BASE, slugify } from "./vault";
+import { isHiddenName, isPublished, KNOWLEDGE_BASE, resolveNote, slugify } from "./vault";
 
 export { KNOWLEDGE_BASE, slugify };
 
@@ -225,7 +225,8 @@ export type GraphNode = {
   path: string;
   size: number;
 };
-export type GraphLink = { source: string; target: string; kind: "member" | "related" | "hub" };
+/** member: hub → note · hub: invisible hub springs · reference: one note links to another · related: notes share 2+ tags */
+export type GraphLink = { source: string; target: string; kind: "member" | "related" | "hub" | "reference" };
 
 /** Concept-map label: "01 정렬(sorting)" → "정렬", "[Udemy] 빅오 소개" → "빅오 소개". */
 export function conceptLabel(title: string): string {
@@ -238,12 +239,24 @@ export function conceptLabel(title: string): string {
   return cleaned || title;
 }
 
-/** Flat map: every note hangs directly off its category hub; notes sharing tags are cross-linked. */
+/** Ids of knowledge notes a note body links to, via dictionary URLs or [[wikilinks]]. */
+function referencedIds(body: string): string[] {
+  const prefix = `${KNOWLEDGE_BASE}/`;
+  const hrefs: string[] = [];
+  for (const m of body.matchAll(/\]\((\/knowledge\/dictionary\/[^)\s#]+)/g)) hrefs.push(m[1]);
+  for (const m of body.matchAll(/!?\[\[([^\]|#\n]+)(?:#[^\]|\n]*)?(?:\\?\|[^\]\n]+)?\]\]/g)) {
+    const href = resolveNote(m[1].trim())?.href;
+    if (href) hrefs.push(href);
+  }
+  return hrefs.filter((h) => h.startsWith(prefix)).map((h) => decodeURIComponent(h.slice(prefix.length)));
+}
+
+/** Flat map: every note hangs directly off its category hub; notes that link to each other or share tags are cross-linked. */
 export function getGraphData(): { nodes: GraphNode[]; links: GraphLink[] } {
   const tree = getKnowledgeTree();
   const nodes: GraphNode[] = [];
   const links: GraphLink[] = [];
-  const docs: { id: string; tags: string[] }[] = [];
+  const docs: { id: string; tags: string[]; refs: string[] }[] = [];
 
   for (const cat of tree.children) {
     const color = categoryColor(cat.category);
@@ -272,7 +285,7 @@ export function getGraphData(): { nodes: GraphNode[]; links: GraphLink[] } {
           size: 2.2,
         });
         links.push({ source: cat.id, target: n.id, kind: "member" });
-        docs.push({ id: n.id, tags: n.doc.tags.map((t) => t.toLowerCase()) });
+        docs.push({ id: n.id, tags: n.doc.tags.map((t) => t.toLowerCase()), refs: referencedIds(n.doc.body) });
       }
       const nextTrail = n.depth > 1 && n.children.length ? [...trail, n.name] : trail;
       n.children.forEach((c) => visit(c, nextTrail));
@@ -285,8 +298,21 @@ export function getGraphData(): { nodes: GraphNode[]; links: GraphLink[] } {
   for (let i = 0; i < hubs.length; i++)
     for (let j = i + 1; j < hubs.length; j++) links.push({ source: hubs[i], target: hubs[j], kind: "hub" });
 
+  // Explicit links between notes win over tag similarity; each pair is linked at most once
+  const docIds = new Set(docs.map((d) => d.id));
+  const linked = new Set<string>();
+  const pair = (a: string, b: string) => (a < b ? `${a}|${b}` : `${b}|${a}`);
+  for (const d of docs)
+    for (const ref of d.refs) {
+      if (ref === d.id || !docIds.has(ref) || linked.has(pair(d.id, ref))) continue;
+      // A folder overview listing its own notes repeats the tree, not a conceptual link
+      if (ref.startsWith(`${d.id}/`) || d.id.startsWith(`${ref}/`)) continue;
+      linked.add(pair(d.id, ref));
+      links.push({ source: d.id, target: ref, kind: "reference" });
+    }
   for (let i = 0; i < docs.length; i++) {
     for (let j = i + 1; j < docs.length; j++) {
+      if (linked.has(pair(docs[i].id, docs[j].id))) continue;
       const shared = docs[i].tags.filter((t) => docs[j].tags.includes(t)).length;
       if (shared >= 2) links.push({ source: docs[i].id, target: docs[j].id, kind: "related" });
     }
