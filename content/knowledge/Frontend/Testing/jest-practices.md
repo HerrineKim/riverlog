@@ -66,4 +66,4 @@ module.exports = {
 - `--coverage --collectCoverageFrom=<파일>`로 한 파일의 커버리지만 본다.
 - `testPathIgnorePatterns`로 테스트 파일을 뺄 수 있지만, 환경 의존 테스트는 결국 고쳐야 한다.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[principles|코드 리뷰 원칙과 체크리스트]]
+관련 노트: [[tdd|프론트엔드에서의 TDD]], [[principles|코드 리뷰 원칙과 체크리스트]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]
