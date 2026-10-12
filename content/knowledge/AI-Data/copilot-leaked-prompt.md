@@ -160,4 +160,4 @@ DO NOT include any brackets 'f' in the output.
 6. **강조는 대문자로.** `MUST`, `DO NOT`처럼 꼭 지켜야 할 규칙에 무게를 준다.
 7. **환경을 설명한다.** VS Code의 활성 문서, 대화 시작 시각과 사용자 위치처럼 모델이 스스로 알 수 없는 맥락을 프롬프트로 넣어 준다.
 
-관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]]
+관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[chatgpt-prompt-cheat-sheet|ChatGPT 프롬프트 치트시트]]

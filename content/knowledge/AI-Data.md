@@ -13,6 +13,7 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [파이썬 데이터 분석 프로세스](AI-Data/python-data-analysis.md): 데이터 수집 → 처리 → EDA·시각화 → 성능 개선
 - [Jupyter Notebook](AI-Data/jupyter-notebook.md): 코드·문서·시각화를 한데 담는 "실행되는 문서"
 - [코파일럿 유출 프롬프트](AI-Data/copilot-leaked-prompt.md): GitHub Copilot Chat·Bing Chat(Sydney)·M365 Copilot 시스템 프롬프트와 공통 설계 패턴
+- [ChatGPT 프롬프트 치트시트](AI-Data/chatgpt-prompt-cheat-sheet.md): 역할 부여, 프롬프트 7단계, 어조·문체·형식 목록과 제약 템플릿
 - [AI 모델로 완성도 높은 프론트엔드 디자인 뽑기](AI-Data/ai-frontend-design-prompting.md): 디자인 품질을 끌어올리는 프롬프트 기법
 - [바이브 코딩으로 예쁜 UI 만들기](AI-Data/vibe-coding-beautiful-ui.md): 와이어프레임·스크린샷·무드보드로 보여 주고 폰트·아이콘 기본값 바꾸기
 - [디자인 시스템을 아는 화면 생성 에이전트 설계하기](AI-Data/design-system-agent-harness.md): 구체화·검증·메모리 루프로 일관된 결과를 내는 에이전틱 코딩 하네스
