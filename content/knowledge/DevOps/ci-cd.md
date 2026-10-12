@@ -38,17 +38,17 @@ stages:
 
 test:
   stage: test
-  image: node:20
+  image: node:24   # LTS 버전 사용 (Node 20은 지원 종료)
   script:
     - npm ci
     - npm test
 
 build:
   stage: build
-  image: docker:24
-  services: [docker:24-dind]
+  image: docker:24.0.5-cli
+  services: [docker:24.0.5-dind]
   script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
     - docker build -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA" .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
 
@@ -60,7 +60,7 @@ deploy:
     - if: $CI_COMMIT_BRANCH == "main"
 ```
 
-비밀번호·토큰은 파일에 쓰지 않고 GitLab의 CI/CD Variables에 저장해 `$변수`로 참조한다.
+비밀번호·토큰은 파일에 쓰지 않고 GitLab의 CI/CD Variables에 저장해 `$변수`로 참조한다. `docker login -p 비밀번호`처럼 인자로 넘기면 프로세스 목록·로그에 남을 수 있어, 공식 예시처럼 `--password-stdin`으로 넘긴다. ([GitLab: 컨테이너 이미지 빌드·푸시](https://docs.gitlab.com/user/packages/container_registry/build_and_push_images/))
 
 ## 대표 CI/CD 도구
 
@@ -76,3 +76,5 @@ deploy:
 - CI = 합칠 때마다 자동 빌드·테스트, CD = 검증된 결과물을 자동으로 배포 가능/배포.
 - Docker 이미지를 파이프라인의 산출물로 삼으면 테스트한 환경 그대로 배포된다.
 - 비밀 값은 CI 변수로 관리한다.
+
+관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[tdd|프론트엔드에서의 TDD]]

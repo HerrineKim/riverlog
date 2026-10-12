@@ -105,4 +105,6 @@ LRU를 하드웨어로 구현하는 한 가지 방법은 페이지마다 카운�
 - 가상 메모리: 페이지 테이블로 주소를 변환하고, 없으면 페이지 폴트 후 FIFO·LRU 등으로 교체한다.
 - MMU는 재배치·공유·보호를 맡고, TLB로 주소 변환을 빠르게 한다.
 
+운영체제 쪽에서 본 같은 주제는 [[memory-management|메모리 관리]](페이징·세그멘테이션·TLB)와 [[virtual-memory|가상 메모리]](요구 페이징, 페이지 교체 알고리즘, 스래싱)에 더 자세히 정리했다. 캐시가 놓인 위치는 [[memory-hierarchy|메모리 계층 구조]]를 참고한다.
+
 참고 강의: [컴퓨터시스템구조 12장](https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc)

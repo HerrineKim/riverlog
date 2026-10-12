@@ -53,7 +53,9 @@ def fib(n):
 
 ```python
 def fib_tab(n):
-    dp = [0] * (n + 1)
+    if n <= 1:
+        return 1
+    dp = [0] * (n + 1)              # n = 0이면 dp[1]이 없으므로 위에서 먼저 처리
     dp[0] = dp[1] = 1
     for i in range(2, n + 1):
         dp[i] = dp[i - 1] + dp[i - 2]
@@ -105,3 +107,5 @@ def fib_tab2(n):
 - DP = 겹치는 부분 문제 + 최적 부분 구조, 답을 저장해 재사용
 - Top-Down(메모이제이션, 재귀)과 Bottom-Up(타뷸레이션, 반복문) 두 방식
 - 핵심은 `dp[i]`의 정의와 점화식
+
+관련 노트: [[recursion|재귀 함수]], [[divide-and-conquer|분할 정복]], [[greedy|그리디]]

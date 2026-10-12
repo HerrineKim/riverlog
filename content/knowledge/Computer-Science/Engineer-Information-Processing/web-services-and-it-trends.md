@@ -26,7 +26,7 @@ source: notion
 | WSDL | 웹 서비스의 이름, 위치, 메시지 형식, 프로토콜을 **XML로 기술**한 문서. 클라이언트가 이를 읽고 사용할 수 있는 기능을 파악 |
 | UDDI | WSDL로 기술된 웹 서비스를 등록·검색하는 저장소 |
 
-SOAP은 무겁기 때문에 최근에는 REST로 대체하는 경우가 많다.
+SOAP은 무겁기 때문에 최근에는 REST로 대체하는 경우가 많다. 실무 관점의 REST 설계 규칙은 [[rest-api|REST API 설계]], AJAX 요청 방법(fetch·axios)은 [[ajax|AJAX와 HTTP 요청]]을 참고한다.
 
 ### REST
 

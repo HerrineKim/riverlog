@@ -58,3 +58,5 @@ source: notion
 - 반론은 항상 **동의 → 단서 → 근거** 순서로 쌓는다. `I take your point` 다음에 바로 `but`을 붙이기보다 `The caveat I'd add is…`처럼 부드럽게 잇는다.
 - `would`, `I'd`를 섞으면 단정이 누그러진다. (`I would argue…`, `I'd frame it differently.`)
 - 재구성 표현(`What I'm hearing is…`)은 오해를 막는 동시에 논의 주도권을 가져오는 효과가 있다.
+
+관련 노트: [[recruiter-outreach-email|리크루터에게 보내는 영문 이메일]], [[review-communication|리뷰 코멘트와 PR 소통]]

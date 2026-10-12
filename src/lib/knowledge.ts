@@ -42,7 +42,7 @@ const CATEGORIES: { id: string; label: string; color: string }[] = [
   { id: "Tools", label: "Tools", color: "#7dd3fc" },
   { id: "Projects", label: "Projects", color: "#fb923c" },
   { id: "Career", label: "Career", color: "#c4b5fd" },
-  { id: "General", label: "General", color: "#cbd5e1" },
+  { id: "Life-and-Learning", label: "Life & Learning", color: "#cbd5e1" },
 ];
 const CATEGORY_LABELS = Object.fromEntries(CATEGORIES.map((c) => [c.id, c.label]));
 const CATEGORY_COLORS = Object.fromEntries(CATEGORIES.map((c) => [c.id, c.color]));
@@ -245,7 +245,7 @@ function referencedIds(body: string): string[] {
   const hrefs: string[] = [];
   for (const m of body.matchAll(/\]\((\/knowledge\/dictionary\/[^)\s#]+)/g)) hrefs.push(m[1]);
   for (const m of body.matchAll(/!?\[\[([^\]|#\n]+)(?:#[^\]|\n]*)?(?:\\?\|[^\]\n]+)?\]\]/g)) {
-    const href = resolveNote(m[1].trim())?.href;
+    const href = resolveNote(m[1].replace(/\\$/, "").trim())?.href;
     if (href) hrefs.push(href);
   }
   return hrefs.filter((h) => h.startsWith(prefix)).map((h) => decodeURIComponent(h.slice(prefix.length)));

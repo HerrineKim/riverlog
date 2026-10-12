@@ -69,6 +69,16 @@ TDD는 오류 없는 완벽한 프로그램을 보장하는 도구가 아니다.
 | `jest.fn()` | 호출 여부·횟수를 기록하는 가짜 함수 |
 | `render`, `screen.getByText`, `fireEvent` | 렌더링, 요소 찾기, 이벤트 발생 |
 
+- `toHaveTextContent` 같은 DOM 전용 matcher는 `@testing-library/jest-dom`을 설정해야 쓸 수 있다.
+- 아래 예제는 `fireEvent`로 이벤트를 직접 발생시키지만, Testing Library 문서는 실제 사용자 동작(포커스 이동, 키 입력 순서 등)을 흉내 내는 **`@testing-library/user-event`** 를 우선 쓰고, user-event가 지원하지 않는 경우에만 `fireEvent`를 쓰라고 권한다.
+
+```jsx
+import userEvent from '@testing-library/user-event'
+
+const user = userEvent.setup()
+await user.click(screen.getByText('완료'))
+```
+
 ## 예제: Todo 앱
 
 ### Item: 할 일 하나
@@ -157,7 +167,7 @@ export default function List({ tasks, onClickDelete }) {
 
 ### 상태 관리와 TDD
 
-React의 관심사는 **상태를 화면에 반영하는 것(state reflection)** 이다. Redux 문서는 컴포넌트를 둘로 나누라고 권한다.
+React의 관심사는 **상태를 화면에 반영하는 것(state reflection)** 이다. Hooks 이전의 Redux 생태계에서는 컴포넌트를 둘로 나누는 패턴이 널리 권장되었다(레거시 패턴 — 아래 참고).
 
 - **Presentational 컴포넌트**: props를 받아 보여 주기만 한다(`List`, `Item`).
 - **Container 컴포넌트**: store에서 상태를 가져와 Presentational에 넘긴다(`ListContainer`).
@@ -178,6 +188,8 @@ describe('reducer', () => {
 ```
 
 Container 테스트에서는 실제 store 대신 가짜 상태(fixture)와 모킹한 `useSelector`/`useDispatch`를 넣어 테스트한다.
+
+> 참고: Presentational/Container 분리는 이 패턴을 알린 Dan Abramov 본인이 2019년에 "더 이상 컴포넌트를 이렇게 나누라고 권하지 않는다(자연스럽게 맞는 코드베이스라면 쓸 만하다)"고 덧붙인 패턴이다. Hooks가 래퍼 컴포넌트 없이 같은 관심사 분리를 해 주기 때문이다. 지금은 컴포넌트 안에서 `useSelector`/커스텀 훅으로 상태를 읽고, Redux 공식 문서는 훅 모킹 대신 실제 store를 넣어 렌더링하는 통합 테스트를 권한다. "보여 주는 로직과 상태 로직을 분리하면 테스트가 쉬워진다"는 원리는 그대로 유효하다.
 
 ## No Silver Bullet
 
@@ -206,5 +218,8 @@ TDD는 만능이 아니다. 테스트를 통과하면서도 좋은 설계 원칙
 - TDD = Red(실패하는 테스트) → Green(통과) → Refactor, 목표는 작동하는 깔끔한 코드.
 - 핵심은 테스트 가능한 코드: 관심사의 분리와 단일 책임 원칙.
 - Jest(`describe`/`it`/`expect`/`jest.fn`) + React Testing Library(`render`/`fireEvent`)로 컴포넌트를 테스트한다.
-- Presentational / Container 분리, 순수 함수 reducer로 상태 로직을 테스트하기 쉽게 만든다.
+- 보여 주는 로직과 상태 로직을 분리하고(예전엔 Presentational / Container, 지금은 커스텀 훅), 순수 함수 reducer로 상태 로직을 테스트하기 쉽게 만든다.
+- 상호작용은 `fireEvent`보다 `user-event`, Redux 연결 컴포넌트는 훅 모킹 대신 실제 store로 통합 테스트한다.
 - 만능은 아니다. 설계 습관부터 들이고 상황에 맞게 점진적으로 도입한다.
+
+관련 노트: [[software-testing|소프트웨어 테스트(테스트 레벨과 기법)]]

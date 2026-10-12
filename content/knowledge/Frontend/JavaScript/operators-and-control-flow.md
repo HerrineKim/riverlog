@@ -151,3 +151,5 @@ for (const fruit of fruits) {
 - 논리 연산자는 단축 평가를 한다.
 - switch는 break를 잊으면 fall through.
 - 객체는 `for...in`(키), 배열·iterable은 `for...of`(값).
+
+관련 노트: [[conditional-rendering|React 조건부 렌더링(&&·삼항 연산자 활용)]]

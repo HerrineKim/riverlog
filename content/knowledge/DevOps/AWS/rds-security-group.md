@@ -23,4 +23,4 @@ MySQL이면 유형을 `MySQL/Aurora`(3306)로 고른다.
 - **소스를 `0.0.0.0/0`(모든 IP)으로 열지 않는다.** DB 포트를 인터넷 전체에 노출하는 것은 무차별 대입 공격의 표적이 된다.
 - 집·카페처럼 IP가 바뀌는 곳에서는 접속이 다시 막힐 수 있다. 규칙에 설명(누구의 어떤 IP인지)을 적어 두고, 쓰지 않는 규칙은 지운다.
 
-관련 노트: [DBeaver에서 SQL로 데이터 다루기](/knowledge/dictionary/tools/database/dbeaver)
+관련 노트: [DBeaver에서 SQL로 데이터 다루기](/knowledge/dictionary/tools/database/dbeaver), [[http-web-architecture|웹 앱 아키텍처와 HTTP(포트)]]

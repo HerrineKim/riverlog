@@ -140,4 +140,6 @@ export default router;
 - `app.get/post/put/patch/delete(path, handler)`로 메서드별 라우트를 정의한다.
 - `Router()`로 도메인별 라우트를 분리하고 `app.use(router)`로 연결한다.
 - POST/PUT/PATCH 바디를 읽으려면 `express.json()` 미들웨어가 먼저 등록되어 있어야 한다.
-- 이어서 볼 노트: [미들웨어](Backend/Express/middleware), [싱글톤·서비스 패턴](Backend/Express/singleton-service-pattern)
+- 이어서 볼 노트: [미들웨어](Backend/Express/express-middleware), [싱글톤·서비스 패턴](Backend/Express/singleton-service-pattern)
+
+관련 노트: [[rest-api|REST API 설계]], [[http-web-architecture|웹 앱 아키텍처와 HTTP]]

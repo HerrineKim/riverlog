@@ -110,3 +110,5 @@ int main(int argc, char *argv[])
 - `scanf`에는 저장할 주소를 넘긴다. 문자열은 폭 제한(`%4s`)으로 오버플로우를 막는다.
 - 파일은 `fopen` → 읽기/쓰기 → `fclose` 순서로 다루고, `NULL` 검사를 잊지 않는다.
 - 바이너리 데이터는 `unsigned char` 배열과 `fread`로 읽는다.
+
+`fopen`·`fread` 아래에서 운영체제가 `open()`·`read()` 시스템 콜과 파일 디스크립터로 파일을 다루는 방식은 [[file-system|파일 시스템]]에 정리했다.

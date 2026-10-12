@@ -41,4 +41,4 @@ source: notion
 - 트레이드오프를 엔지니어링과 제품 양쪽에서 동시에 본다.
 - 출시 후 데이터 확인까지가 일이다.
 
-관련 노트: [프로덕트 오너의 사고방식](/knowledge/dictionary/career/product/product-owner), [프로젝트 진행 순서](/knowledge/dictionary/career/product/project-process)
+관련 노트: [[product-owner|프로덕트 오너의 사고방식]], [[project-process|프로젝트 진행 순서]], [[developer-leadership|개발자에게 필요한 리더십]]

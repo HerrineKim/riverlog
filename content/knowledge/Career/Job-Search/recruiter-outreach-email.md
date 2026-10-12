@@ -45,4 +45,4 @@ Best regards,
 - **짧게**: 모바일 화면 한 번에 읽히는 분량(150~200단어)이 적당하다.
 - **답이 없으면 한 번만 후속 메일**: 1주쯤 뒤에 짧게 리마인드한다. 예: *I wanted to follow up on my previous email regarding the [Job Title] role.*
 
-관련 노트: [[business-expressions|비즈니스 영어 표현]], [[tech-interview-tips|기술면접 잘 보는 법]]
+관련 노트: [[business-expressions|비즈니스 미팅 쿠션 표현]], [[resume-writing|합격하는 영문 레주메 작성법]], [[tech-interview-tips|기술면접 잘 보는 법]]

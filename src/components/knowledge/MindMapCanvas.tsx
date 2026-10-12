@@ -282,7 +282,7 @@ export default function MindMapCanvas({
           }}
           linkVisibility={(l) => (l as unknown as Link).kind !== "hub"}
           linkOpacity={dark ? 0.35 : 0.55}
-          linkWidth={(l) => ((l as unknown as Link).kind === "reference" ? 0.7 : 0)}
+          linkWidth={(l) => ((l as unknown as Link).kind === "reference" ? 1.6 : 0)}
           linkCurvature={(l) => ((l as unknown as Link).kind === "reference" ? 0.18 : 0)}
           linkDirectionalParticles={(l) => {
             const link = l as unknown as Link;
@@ -290,7 +290,7 @@ export default function MindMapCanvas({
             if (!focus) return 1;
             return (link.source as Node).id === focus.id || (link.target as Node).id === focus.id ? 3 : 0;
           }}
-          linkDirectionalParticleWidth={1.6}
+          linkDirectionalParticleWidth={2.4}
           linkDirectionalParticleSpeed={0.006}
           linkDirectionalParticleColor={() => REFERENCE_COLOR[theme]}
           onNodeHover={(n) => {

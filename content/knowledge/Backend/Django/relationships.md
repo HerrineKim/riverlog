@@ -118,3 +118,5 @@ class Reservation(models.Model):
 - 1:N은 N쪽에 `ForeignKey`, 역참조는 `모델명_set` 또는 `related_name`.
 - M:N은 `ManyToManyField`. 관계에 추가 데이터가 필요하면 `through` 중개 모델.
 - `on_delete`로 참조 무결성 정책을 정한다.
+
+관련 노트: [[normalization|정규화와 반정규화]], [[database-models|데이터베이스 모델]]

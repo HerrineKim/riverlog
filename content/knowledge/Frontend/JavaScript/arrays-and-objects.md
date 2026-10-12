@@ -169,3 +169,5 @@ const data = JSON.parse(jsonText)         // JSON 문자열 → 객체
 - `push`/`pop`/`reverse` 등은 원본을 바꾸고, 헬퍼 메서드와 spread는 새 배열을 만든다.
 - 구조 분해·spread·옵셔널 체이닝은 현대 JS(특히 React)의 기본 문법이다.
 - JSON은 문자열이다. `JSON.parse` / `JSON.stringify`로 변환한다.
+
+관련 노트: [[state|State와 불변 업데이트]], [[lists-and-keys|리스트와 Key(map으로 렌더링)]]

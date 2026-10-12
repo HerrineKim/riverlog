@@ -103,4 +103,6 @@ methods: {
 - 컴포넌트를 잘게 나누고 props로 내려 주면, 카드 하나의 모양만 고쳐도 전체 목록에 반영된다.
 - 상태를 한 곳(스토어)에 모으는 이유를 직접 느꼈다. 여러 화면이 같은 데이터를 쓰기 시작하면 props로만 전달하기는 금방 복잡해진다.
 
-> 참고: 현재 Vue 3 공식 상태 관리 라이브러리는 Vuex 대신 **Pinia**이며, mutations 없이 actions에서 state를 직접 바꿀 수 있습니다.
+> 참고: 이 프로젝트에 쓴 Vue 2는 2023년 12월 31일 지원이 종료(EOL)되었습니다([Vue 2 LTS 안내](https://v2.vuejs.org/lts/)). 현재 Vue 3의 공식 상태 관리 라이브러리는 Vuex 대신 **Pinia**이며, mutations 없이 actions에서 state를 직접 바꿀 수 있습니다.
+
+관련 개념 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[ajax|AJAX와 HTTP 요청]]

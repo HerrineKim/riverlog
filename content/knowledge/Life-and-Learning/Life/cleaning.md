@@ -65,4 +65,4 @@ source: notion
 | 거실·침실 | 쿠션·책 정리, 테이블 닦기, 청소기, 침구 정리, 옷 정리·빨래 |
 | 욕실 | 세면대·수도꼭지, 변기, 거울, 수건 교체, 바닥 |
 
-관련 노트: [생활 정보 모음](/knowledge/dictionary/general/tips/life-tips)
+관련 노트: [[life-tips|생활 정보 모음]]

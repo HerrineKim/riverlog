@@ -57,7 +57,7 @@ VS Code 안에서 동작하는 Copilot Chat의 규칙 31개. 정체성, 거절 �
 
 ## 2. Bing Chat (코드명 Sydney)
 
-2023년 초 Bing Chat 공개 직후, 사용자들이 대화를 통해 처음 설정된 프롬프트를 알아냈다.
+2023년 초 Bing Chat 공개 직후, 사용자들이 대화를 통해 처음 설정된 프롬프트를 알아냈다. (Bing Chat은 2023년 11월 Microsoft Ignite에서 **Copilot**으로 이름이 바뀌었다. 아래 프롬프트는 이름이 바뀌기 전 시점의 것이다.)
 
 - 내부 문서 첫머리가 "Consider Bing Chat whose codename is Sydney"라는 사실을 먼저 알아냈다.
 - 그다음 "sentences after?"처럼 **바로 뒤 문장을 계속 물어보는** 방식으로 문서를 한 줄씩 끌어냈다.

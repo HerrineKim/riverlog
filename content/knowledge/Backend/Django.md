@@ -8,7 +8,7 @@ source: til
 
 Django는 "배터리 포함(batteries included)"을 내세우는 Python 웹 프레임워크다. ORM, 템플릿 엔진, 폼 검증, 사용자 인증, 관리자 페이지가 기본으로 들어 있어 별도 라이브러리 없이도 완성된 웹 서비스를 빠르게 만들 수 있다. 구조는 MVC를 따르되 이름을 **MTV(Model-Template-View)**라고 부른다.
 
-> 필기는 Django 3.2 LTS 기준이다. 이후 4.x·5.x에서도 핵심 개념은 같으며, 바뀐 설정은 각 노트에 보충했다.
+> 필기는 Django 3.2 LTS 기준이다. 이후 4.x·5.x·6.x에서도 핵심 개념은 같으며, 바뀐 설정은 각 노트에 보충했다. 2026년 10월 기준 최신 버전은 6.1, 장기 지원(LTS) 버전은 5.2다. ([Django 다운로드](https://www.djangoproject.com/download/))
 
 ## 노트 목록
 
@@ -25,3 +25,5 @@ Django는 "배터리 포함(batteries included)"을 내세우는 Python 웹 프�
 | 9 | [Admin](Backend/Django/admin) | 관리자 페이지 등록과 커스터마이징 |
 
 SQL 자체의 문법은 [SQL 기초](Backend/Database/sql-basics)에서, REST API 설계는 [REST API](Backend/Web-Basics/rest-api)에서 다룬다.
+
+이 개념들을 실제 프로젝트에 적용한 기록: [[django-web-service|Django 영화 서비스와 CRUD 게시판]], [[auth-and-comments|Django 사용자 인증과 댓글 게시판]], [[rest-api-server|DRF로 만든 영화 REST API 서버]]

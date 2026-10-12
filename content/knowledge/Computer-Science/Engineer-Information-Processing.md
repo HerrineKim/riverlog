@@ -15,3 +15,5 @@ source: notion
 - **web-services-and-it-trends** — XML·SOAP·WSDL·REST, EAI, 데이터 마이닝과 각종 신기술 용어
 
 데이터베이스(트랜잭션, 정규화, SQL), 운영체제(프로세스 스케줄링), 네트워크(OSI 7계층, IP·ARP·ICMP, 라우팅) 관련 출제 개념은 각각 Database, Operating-System, Network 주제의 노트에 통합했다.
+
+> 이 노트들은 2020~2021년 시험을 기준으로 정리했다. 출제기준은 몇 년마다 개정되므로, 응시 전에 큐넷(Q-Net)에서 현재 적용 중인 출제기준과 시험 일정을 확인한다. 기술 용어 중 시간이 지나 바뀐 내용(예: TLS 버전 현황)은 각 노트에 현재 기준으로 보충해 두었다.

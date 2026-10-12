@@ -54,3 +54,5 @@ source: til
 - SPA = 한 페이지에서 필요한 부분만 다시 그리는 앱, 보통 CSR로 동작한다.
 - 렌더링 주체가 **서버면 SSR, 클라이언트면 CSR**.
 - CSR은 UX와 트래픽에, SSR은 초기 로딩과 SEO에 강하다.
+
+관련 노트: [[templates-static|Django 템플릿(서버 렌더링)]], [[vue-spa|Vue와 Vuex로 만든 영화 SPA]]

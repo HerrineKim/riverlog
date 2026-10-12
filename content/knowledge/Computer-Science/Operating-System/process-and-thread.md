@@ -1,7 +1,7 @@
 ---
 title: "프로세스와 스레드"
 concept: "Process"
-summary: "프로세스의 문맥과 PCB, 문맥 교환, 스케줄링 큐와 세 가지 스케줄러, 스레드의 구조와 장점, fork·exec·wait·exit와 프로세스 간 협력."
+summary: "프로세스의 문맥과 PCB, 문맥 교환, 스케줄링 큐와 세 가지 스케줄러, 스레드의 구조와 장점, fork·exec·wait·exit, 프로세스 간 협력과 IPC 수단."
 tags: ["os", "process", "thread", "pcb", "system-call"]
 source: notion
 sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee"]
@@ -16,6 +16,8 @@ sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://
 | CPU 수행 상태 | PC(Program Counter), 각종 레지스터 값 |
 | 프로세스의 주소 공간 | Code(실행할 명령어), Data(전역·static 변수), Stack(함수 호출 정보) |
 | 커널이 가진 프로세스 정보 | PCB, 커널 스택 |
+
+C 프로그램 관점에서 본 주소 공간(힙 포함)은 [[pointers-and-memory|포인터와 메모리]]의 메모리 영역 표와 같은 이야기다.
 
 프로세스 상태(new, ready, running, blocked, suspended, terminated)와 전이는 [[process-scheduling|CPU 스케줄링]] 노트에 정리했다. `suspended`는 `blocked`와 달리 스와퍼 같은 **외부 요인**으로 정지된 상태라서, 외부에서 재개해 줘야 다시 active 상태가 된다.
 
@@ -155,7 +157,17 @@ int main(void)
 | └ Indirect Communication | mailbox(또는 port)를 통해 간접 전달 |
 | Shared Memory | 서로 다른 프로세스의 주소 공간 일부를 공유 매핑 |
 
-파이프, 소켓, 메시지 큐 등 구체적인 IPC 수단은 [[process-scheduling|CPU 스케줄링]] 노트의 IPC 표를 참고한다.
+구체적인 IPC 수단은 다음과 같다.
+
+| 방법 | 설명 |
+| --- | --- |
+| Shared Memory | 여러 프로세스가 함께 접근하는 메모리 영역을 만들어 통신 |
+| Pipe / Named Pipe | FIFO 형태의 버퍼를 공유해 한 방향으로 데이터 전달 |
+| Message Queue | 메시지 단위로 큐에 넣고 꺼내 전달 |
+| Socket | 네트워크 소켓으로 통신 (다른 컴퓨터의 프로세스와도 가능) |
+| Semaphore | 데이터 전달보다는 공유 자원 접근을 제어하는 동기화 수단 |
+
+Shared Memory처럼 같은 데이터를 함께 쓰거나, 한 프로세스 안의 스레드들이 data 영역을 공유하면 경쟁 상태가 생길 수 있다. 이를 막는 방법은 [[process-synchronization|프로세스 동기화]]에서 다룬다.
 
 ## 핵심 정리
 

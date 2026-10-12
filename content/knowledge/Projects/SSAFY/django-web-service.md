@@ -214,3 +214,5 @@ urlpatterns = [
 - 처음엔 백엔드는 절대 못 할 줄 알았는데, Django는 정해진 구조를 따르면 정해진 결과가 나오는 "친절한" 프레임워크였다.
 - 작은 디테일(쉼표 하나, `csrf_token` 누락, `request.FILES` 누락) 때문에 에러를 정말 많이 만났다. 프로젝트를 거듭하면서 에러를 만나도 차분히 읽고 해결하는 참을성이 생겼다.
 - 배울수록 더 배울 것이 늘어난다. 웹 요청이 실제로 어떻게 오가는지 이해하려면 네트워크 등 CS 공부가 필요하다는 것을 느꼈다.
+
+관련 개념 노트: [[getting-started-mtv|Django 시작하기와 MTV 패턴]], [[urls-views|Django URL과 View]], [[templates-static|Django Template과 Static 파일]], [[model-migration|Django Model과 Migration]], [[orm-queryset|Django ORM과 QuerySet]], [[forms-modelform|Django Form과 ModelForm]], [[Backend/Django/admin|Django Admin]]

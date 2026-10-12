@@ -1,7 +1,7 @@
 ---
 title: "GA4 시작하기"
 concept: "Google Analytics"
-summary: "GA4 계정·속성을 만들고 gtag.js 또는 Google Tag Manager로 웹사이트에 추적 태그를 설치하는 과정."
+summary: "GA4 계정·속성을 만들고 gtag.js 또는 Google Tag Manager(Google 태그)로 웹사이트에 추적 태그를 설치하는 과정."
 tags: ["analytics", "ga4", "marketing", "web"]
 source: notion
 ---
@@ -38,10 +38,14 @@ Tag Manager를 쓸 수 없는 환경이라면, 측정 ID(`G-XXXXXXXXXX`)가 들�
 
 1. GTM에서 **컨테이너**를 만든다.
 2. 안내되는 스니펫 두 개를 사이트의 `<head>`와 `<body>` 시작 부분에 각각 설치한다.
-3. GTM 안에서 GA4 구성 태그(측정 ID)를 추가하고 게시한다.
+3. GTM 안에서 **Google 태그**(태그 유형 "Google 태그", 태그 ID에 측정 ID `G-…` 입력)를 추가하고, 모든 페이지에서 실행되도록 트리거를 지정한 뒤 게시한다.
+
+> 예전 자료에 나오는 "GA4 구성(Configuration) 태그"는 2023년 9월부터 **Google 태그**로 대체되었고, 기존 태그는 자동으로 전환되었다. ([Tag Manager 도움말](https://support.google.com/tagmanager/answer/13543899))
 
 이후 이벤트 추적을 추가할 때 사이트 코드를 고치지 않고 GTM 화면에서 태그·트리거만 관리하면 되므로, GA4를 제대로 쓰려면 GTM은 사실상 필수입니다.
 
 ## 연습용 데이터: 데모 계정
 
 Google이 제공하는 **Google Merchandise Store 데모 계정**을 내 GA 계정에 연결하면, 실제 쇼핑몰 데이터로 보고서·탐색 기능을 바로 연습할 수 있습니다.
+
+관련 노트: [[segment|Segment로 사용자 데이터 수집하기]]

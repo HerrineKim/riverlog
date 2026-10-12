@@ -52,7 +52,7 @@ form.addEventListener('submit', (event) => {
 
 ## React와의 비교
 
-React에서는 `addEventListener` 대신 JSX 속성으로 핸들러를 넘긴다(`onClick={handleClick}`). 이름이 camelCase이고 문자열이 아닌 함수를 넘긴다는 점이 HTML의 `onclick="..."`과 다르다. 자세한 내용은 [React 이벤트 처리](/knowledge/dictionary/frontend/react/events) 참고.
+React에서는 `addEventListener` 대신 JSX 속성으로 핸들러를 넘긴다(`onClick={handleClick}`). 이름이 camelCase이고 문자열이 아닌 함수를 넘긴다는 점이 HTML의 `onclick="..."`과 다르다. 자세한 내용은 [React 이벤트 처리](/knowledge/dictionary/frontend/react/react-events) 참고.
 
 ## 핵심 정리
 

@@ -98,6 +98,8 @@ useEffect(() => {
 }, [socket])
 ```
 
+> 참고: 위 코드의 `SocketIOClient.Socket` 타입과 `import io from 'socket.io-client'`는 socket.io-client 2.x(+`@types/socket.io-client`) 시절 방식이다. 3.x 이후로는 라이브러리가 타입을 직접 제공하므로 `import { io, type Socket } from 'socket.io-client'`로 가져오고 `Record<string, Socket>`처럼 쓴다.
+
 리스너를 등록한 effect에서는 반드시 cleanup으로 `off`해야 한다. 그렇지 않으면 리렌더링마다 리스너가 쌓여 같은 메시지가 여러 번 처리된다.
 
 ## 데이터 흐름
@@ -123,3 +125,5 @@ useEffect(() => {
 - 쓰기는 REST로 하고, 서버가 저장 성공 시 소켓으로 브로드캐스트한다.
 - 소켓은 워크스페이스당 하나만 유지하고, 리스너는 effect cleanup에서 반드시 해제한다.
 - 긴 메시지 목록은 날짜 섹션 + 무한 스크롤 + `memo`로 다룬다.
+
+관련 노트: [[rest-api|REST API]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]]

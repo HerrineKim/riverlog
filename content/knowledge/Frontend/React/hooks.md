@@ -54,6 +54,7 @@ function Form() {
 | `useRef` | DOM 요소 참조, 또는 리렌더링을 일으키지 않는 값 보관 |
 | `useLayoutEffect` | DOM 변경 후 화면에 그리기 **전** 동기 실행(레이아웃 측정) |
 | `useImperativeHandle`, `useDebugValue` | ref로 노출할 값 지정, DevTools 라벨 |
+| `useActionState`, `useOptimistic`, `use` (React 19) | 폼 액션의 결과·대기 상태 관리, 요청 중 낙관적 UI, Promise·Context 읽기 |
 
 ## useEffect
 
@@ -170,7 +171,7 @@ Hook 자체는 가볍지만, 메모이제이션은 비교와 저장에 비용이
 2. 렌더링될 때 꼭 필요한 값·함수만 새로 만들어지는가?
 3. 1·2를 지키지 않아도 될 만큼 렌더링이 드문가?
 
-React DevTools의 Profiler로 실제로 느린 컴포넌트를 찾은 뒤 적용하는 것이 좋다(예: 채팅 목록의 각 `Chat` 항목에 `memo` 적용). 참고로 React 19와 함께 나온 React Compiler는 이런 메모이제이션을 자동으로 해 준다.
+React DevTools의 Profiler로 실제로 느린 컴포넌트를 찾은 뒤 적용하는 것이 좋다(예: 채팅 목록의 각 `Chat` 항목에 `memo` 적용). 참고로 **React Compiler**는 빌드 단계에서 이런 메모이제이션을 자동으로 넣어 준다. 2025년 10월 첫 안정 버전(1.0)이 나왔고 React 17·18·19 코드베이스에서 쓸 수 있으며, Expo·Vite·Next.js 새 프로젝트에서 바로 켤 수 있다. 컴파일러를 쓰는 프로젝트라면 `useMemo`·`useCallback`을 손으로 넣을 일이 크게 줄어든다.
 
 `React.memo`를 씌웠는데도 렌더링이 줄지 않는다면 렌더링을 일으키는 원인이 다른 곳에 있다는 뜻이다. 원인을 추적하는 과정은 [리렌더링 원인 추적하기](/knowledge/dictionary/frontend/react/re-rendering)에 정리했다.
 

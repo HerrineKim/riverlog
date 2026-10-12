@@ -40,7 +40,7 @@ export class AppModule {}
 
 ## 무엇이 Provider가 될 수 있나
 
-서비스뿐 아니라 리포지토리, 팩토리, 헬퍼 등 Nest 클래스 대부분이 Provider가 될 수 있다. `@Injectable()`이 붙은 [미들웨어](Backend/NestJS/middleware), [인터셉터](Backend/NestJS/interceptor-aop), [리포지토리](Backend/NestJS/repository-pattern), JWT Strategy 모두 같은 방식으로 주입된다.
+서비스뿐 아니라 리포지토리, 팩토리, 헬퍼 등 Nest 클래스 대부분이 Provider가 될 수 있다. `@Injectable()`이 붙은 [미들웨어](Backend/NestJS/nestjs-middleware), [인터셉터](Backend/NestJS/interceptor-aop), [리포지토리](Backend/NestJS/repository-pattern), JWT Strategy 모두 같은 방식으로 주입된다.
 
 ## 왜 DI를 쓰는가
 

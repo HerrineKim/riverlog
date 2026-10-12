@@ -73,3 +73,5 @@ s = input().rstrip()                # readline은 줄바꿈 문자를 포함하�
 - 주석 설계 → TC 작성 → 구현 → 정리 순서로 푼다.
 - N의 범위에서 허용 복잡도를 역산해 알고리즘을 고른다.
 - `sys.stdin.readline`, `deque`, `heapq`, `setrecursionlimit`은 기본 장비다.
+
+관련 노트: [[big-o|빅오 표기법]], [[bfs|BFS]], [[dijkstra|다익스트라]], [[dynamic-programming|동적 계획법]], [[greedy|그리디]], [[binary-search|이분 탐색]], [[prefix-sum|접두사 합]], [[tech-interview-tips|기술면접 잘 보는 법]]

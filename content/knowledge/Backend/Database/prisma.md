@@ -68,9 +68,11 @@ return { ...item, nextKey: next?.key, prevKey: prev?.key }
 | 명령 | 용도 |
 | --- | --- |
 | `npx prisma studio` | 브라우저에서 DB를 보고 편집하는 GUI 실행 |
-| `npx prisma generate` | 스키마 변경 후 Prisma Client(타입 포함) 재생성 |
+| `npx prisma generate` | 스키마 변경 후 Prisma Client(타입 포함) 재생성. Prisma 7부터는 `migrate dev` 뒤에도 직접 실행해야 한다 |
 | `npx prisma migrate dev` | 스키마 변경을 마이그레이션 파일로 만들고 개발 DB에 적용 |
 | `npx prisma migrate deploy` | 운영 DB에 마이그레이션 적용 |
 | `npx prisma db pull` | 기존 DB 구조를 읽어 스키마 파일 생성 |
 
-관련 노트: [SQL 기초](/knowledge/dictionary/backend/database/sql-basics), [NestJS Repository 패턴](/knowledge/dictionary/backend/nestjs/repository-pattern)
+> 최신 버전에서는: Prisma 7부터 `migrate dev`·`db push`가 `prisma generate`를 자동 실행하지 않고, `migrate dev`가 seed도 자동 실행하지 않는다(`prisma db seed`로 따로 실행). DB 연결 설정은 프로젝트 루트의 `prisma.config.ts`로 옮겨졌고 `.env`도 자동으로 읽지 않는다. 클라이언트를 만들 때는 DB별 드라이버 어댑터가 필요하다. 위 커서 쿼리 API는 그대로다. ([Prisma 7 업그레이드 가이드](https://www.prisma.io/docs/orm/more/upgrade-guides/upgrading-versions/upgrading-to-prisma-7))
+
+관련 노트: [SQL 기초](/knowledge/dictionary/backend/database/sql-basics), [NestJS Repository 패턴](/knowledge/dictionary/backend/nestjs/repository-pattern), [[orm-queryset|Django ORM과 QuerySet]]

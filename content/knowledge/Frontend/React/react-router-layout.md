@@ -109,6 +109,8 @@ export default function PathBreadcrumbs({ labels }: Props) {
 
 결과 예: `/user/edit/368` → `Home / 회원 목록 / 회원 상세 / 회원 수정`
 
+> 참고: 위 코드는 v6 기준이다. **react-router v7**부터는 패키지가 `react-router` 하나로 합쳐졌고, `react-router-dom`은 v6 앱의 업그레이드를 돕기 위해 `react-router`를 그대로 다시 내보내는 호환용 패키지로 남았다. 새 코드에서는 `import { Link, useLocation } from "react-router"`처럼 가져온다.
+
 > 참고: react-router v6.4+의 데이터 라우터(`createBrowserRouter`)를 쓴다면 각 라우트의 `handle`에 라벨을 넣고 `useMatches()`로 꺼내는 방식이 공식 권장 패턴이다. URL 문자열을 직접 파싱하지 않아도 된다.
 
 ## 핵심 정리

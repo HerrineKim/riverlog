@@ -79,7 +79,9 @@ function Sample() {
 - `styled.태그명`으로 만들고, 템플릿 안에서 `${(props) => ...}`로 props에 따라 스타일을 바꾼다.
 - `styled(컴포넌트)`로 기존 스타일을 확장한다.
 - `&:hover`, `&:focus`, `& > span`처럼 SCSS 스타일의 중첩 선택자를 쓸 수 있다.
-- 런타임에 `<style>` 태그를 만들어 삽입하는 방식이다([CSS 기초](/knowledge/dictionary/frontend/css/css-basics)의 내부 참조 방식).
+- 런타임에 `<style>` 태그를 만들어 삽입하는 방식이다([CSS 기초](/knowledge/dictionary/frontend/css/css-basics)의 내부 참조 방식). 원리는 [[template-literals|태그드 템플릿]] 참고.
+
+> 참고(2025~): styled-components 메인테이너는 2025년 3월 프로젝트를 **유지보수 모드**로 전환한다고 밝히며 새 프로젝트에는 권하지 않는다고 했다. 런타임 CSS-in-JS는 React Server Components에서 `'use client'` 없이 쓸 수 없다는 한계도 있다. 이후 RSC 대응 릴리스가 다시 나오고 있지만, 새 프로젝트라면 CSS Modules나 빌드 타임에 CSS를 뽑아내는 방식(Tailwind CSS 등)도 함께 검토한다. 기존 코드는 그대로 동작한다.
 
 ### 자주 쓰는 상태 가상 클래스
 

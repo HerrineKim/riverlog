@@ -30,7 +30,7 @@ Staging Area와 Repository는 `.git` 폴더 안에서 관리되는 논리적 공
 
 ![파일 상태 변화](/images/til/ETC/Git/git.assets/image-20220113101938077.png)
 
-커밋된 내용은 언제든 되살릴 수 있지만, 한 번도 커밋되지 않은 변경은 Git이 복구해 줄 수 없습니다.
+커밋된 내용은 언제든 되살릴 수 있지만, 한 번도 커밋되지 않은 변경은 Git이 복구해 줄 수 없습니다. (`git restore <file>`로 작업 내용을 되돌리면 그 변경은 영영 사라지니 주의합니다.)
 
 ## 기본 명령어
 
@@ -43,7 +43,7 @@ Initialized empty Git repository in /Users/me/first/.git/
 
 현재 폴더에 `.git` 디렉터리가 생기고, 터미널 프롬프트에 `(master)` 처럼 현재 브랜치가 표시됩니다.
 
-> 참고: 최신 Git과 GitHub는 기본 브랜치 이름으로 `main`을 많이 사용합니다. `git config --global init.defaultBranch main` 으로 바꿀 수 있습니다.
+> 참고: GitHub는 2020년 10월부터 새 저장소의 기본 브랜치를 `main`으로 만듭니다([GitHub Changelog](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/)). 반면 Git 2.x의 `git init`은 설정이 없으면 여전히 `master`를 만들고 힌트 메시지를 띄우며, 다음 메이저 버전인 Git 3.0부터 `main`이 기본이 될 예정입니다(출시일 미정, [Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)). 지금 바로 맞추려면 `git config --global init.defaultBranch main` (Git 2.28+)으로 설정합니다. 이 노트의 예시는 `master`로 실습한 기록이므로, `main`을 쓰는 저장소라면 이름만 바꿔 읽으면 됩니다.
 
 ### 스테이징: `git add`
 
@@ -110,3 +110,5 @@ $ rm -rf dir        # 폴더와 하위 파일 모두 삭제 (주의)
 - 버전 기록 = `add`로 고르고 `commit`으로 남긴다.
 - `git status`의 세 구역(staged / not staged / untracked)은 Staging Area · Working Directory · 미추적 파일에 대응한다.
 - `.git` 폴더가 곧 저장소다. 지우면 이력이 사라진다.
+
+관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]]

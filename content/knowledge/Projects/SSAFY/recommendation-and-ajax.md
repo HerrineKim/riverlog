@@ -182,3 +182,5 @@ document.querySelector('#followings-count').innerText = followings_count
 
 - 참고 코드에서 `event.preventDefault()` 한 줄을 빠뜨려 한참 헤맸다. 코드를 외워서 쓰면 이런 일이 생긴다. 각 줄이 **왜** 필요한지 알고 써야 한다.
 - 새로고침 없이 일부만 바뀌는 화면을 직접 만들어 보니, 평소 쓰는 웹사이트들이 어떻게 동작하는지 감이 오기 시작했다. 이 경험이 다음 프로젝트인 [Vue SPA](vue-spa.md)로 이어졌다.
+
+관련 개념 노트: [[ajax|AJAX와 HTTP 요청]], [[Frontend/JavaScript/dom-events|DOM 이벤트와 addEventListener]], [[relationships|Django 모델 관계 (1:1, 1:N, M:N)]], [[web-security|웹 보안: CSRF와 XSS]]

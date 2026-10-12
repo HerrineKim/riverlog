@@ -69,9 +69,11 @@ print(soup.select_one("h1").text)
 
 - 노트북 공유·배포: nbconvert(다른 형식으로 변환), nbviewer(웹에서 보기), Binder(실행 가능한 환경으로 공유)
 - 클라우드 노트북: AWS SageMaker, GCP Vertex AI(구 AI Platform), Azure ML
-- 대체 도구: JupyterLab, VS Code 노트북, JetBrains DataSpell
+- 대체 도구: JupyterLab, VS Code 노트북, PyCharm(Jupyter 지원. 예전의 JetBrains DataSpell은 2026년 PyCharm으로 통합)
 
 ## 더 공부하기
 
 - 커뮤니티: PyCon, PyData, JupyterCon
 - 책: 『파이썬 라이브러리를 활용한 데이터 분석』, 『파이썬 데이터 사이언스 핸드북』, 『밑바닥부터 시작하는 데이터 과학』
+
+관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-collection|파이썬 데이터 수집·가공 (SSAFY)]], [[data-journalism|데이터 저널리즘 실무]]

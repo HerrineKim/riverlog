@@ -1,7 +1,7 @@
 ---
 title: "Next.js를 쓰는 이유"
 concept: "Next.js"
-summary: "SSR·SSG·파일 기반 라우팅·자동 코드 스플리팅을 제공해 React 앱의 초기 로딩과 SEO를 개선하는 프레임워크."
+summary: "SSR·SSG·파일 기반 라우팅·자동 코드 스플리팅을 제공해 React 앱의 초기 로딩과 SEO를 개선하는 프레임워크. App Router의 fetch 캐싱과 Next.js 16의 'use cache'까지."
 tags: ["nextjs", "react", "rendering", "seo", "frontend"]
 source: mixed
 ---
@@ -42,7 +42,7 @@ pages/posts/[id].js   → /posts/1, /posts/2 ...
 
 ### App Router의 데이터 가져오기: 확장된 `fetch`
 
-Next.js 13의 App Router에서는 Pages Router의 `getServerSideProps`·`getStaticProps` 같은 `get~` 데이터 함수가 없어졌다. 대신 **서버 컴포넌트를 `async` 함수로 만들고 그 안에서 바로 `fetch`** 한다. Next.js는 브라우저 표준 `fetch`를 확장해 캐싱·재검증 옵션을 붙였다.
+Next.js 13의 App Router에서는 Pages Router의 `getServerSideProps`·`getStaticProps` 같은 `get~` 데이터 함수를 쓰지 않는다(Pages Router에서는 여전히 동작한다). 대신 **서버 컴포넌트를 `async` 함수로 만들고 그 안에서 바로 `fetch`** 한다. Next.js는 브라우저 표준 `fetch`를 확장해 캐싱·재검증 옵션을 붙였다.
 
 ```tsx
 // app/posts/page.tsx — 서버 컴포넌트
@@ -61,8 +61,29 @@ export default async function PostsPage() {
 | `cache: 'no-store'` | 요청마다 새로 가져오기(SSR처럼) |
 | `next: { revalidate: n }` | n초 동안 캐시 후 다시 가져오기 |
 
-- 캐싱 기본값은 버전에 따라 바뀌었다. 13~14는 기본이 캐시였고, **15부터는 기본이 캐시하지 않음**이다. 원하는 동작을 옵션으로 명시하는 것이 안전하다.
+- 캐싱 기본값은 버전에 따라 바뀌었다. 13~14는 기본이 캐시였고, **15부터는 기본이 캐시하지 않음**이다(캐시는 옵트인). 원하는 동작을 옵션으로 명시하는 것이 안전하다.
 - 데이터는 가능하면 서버 컴포넌트에서 가져오는 것이 권장된다. 클라이언트 컴포넌트에서도 `fetch`는 쓸 수 있지만 캐싱 확장은 적용되지 않으므로, 사용자 이벤트에 따라 가져오는 데이터는 [SWR](/knowledge/dictionary/frontend/react/swr)이나 TanStack Query 같은 라이브러리로 다룬다.
+
+### Next.js 16: Cache Components와 `'use cache'`
+
+위의 `fetch` 옵션 방식은 공식 문서에서 **"이전 모델(Previous Model)"** 로 분류된다. Next.js 16에서는 `next.config.ts`에 `cacheComponents: true`를 켜는 **Cache Components** 모델이 도입되었고, `create-next-app` 기본값으로 만든 새 App Router 앱에는 이미 켜져 있다. 이 모델에서는 `fetch` 옵션 대신 **`'use cache'` 지시어**로 함수나 컴포넌트의 결과를 캐시하고, `cacheLife`로 수명을 정한다.
+
+```tsx
+// app/lib/data.ts — 데이터 단위 캐시
+import { cacheLife } from 'next/cache'
+
+export async function getPosts() {
+  'use cache'
+  cacheLife('hours') // 캐시 수명 프로필
+  const res = await fetch('https://api.example.com/posts')
+  return res.json()
+}
+```
+
+- 함수 인자와 바깥 스코프에서 캡처한 값이 자동으로 캐시 키가 된다.
+- 컴포넌트·페이지 맨 위에 `'use cache'`를 쓰면 UI 단위로 캐시된다.
+- 요청마다 새로 가져와야 하는 데이터는 캐시하지 않고 `<Suspense>`로 감싸, 미리 렌더링된 정적 껍데기(shell)를 먼저 보내고 데이터는 스트리밍한다.
+- `fetch`의 `cache`·`next.revalidate` 옵션도 계속 동작하므로, 기존 코드를 읽을 때는 위의 표가 그대로 유효하다.
 
 ### 자동 코드 스플리팅
 
@@ -85,4 +106,4 @@ export default async function PostsPage() {
 - SSR은 요청마다 서버에서, SSG는 빌드 때 미리 HTML을 만든다. 둘 다 SEO에 유리하다.
 - SSR 페이지도 브라우저에서 hydration을 거쳐야 상호작용이 가능해진다.
 - 라우팅은 파일 구조 기반(`pages/` 또는 13+의 `app/`).
-- App Router에서는 서버 컴포넌트에서 `fetch`하고, 캐시 동작은 `cache`/`revalidate` 옵션으로 명시한다.
+- App Router에서는 서버 컴포넌트에서 `fetch`한다. 캐시는 옵트인이며, 이전 모델은 `cache`/`revalidate` 옵션, Next.js 16의 Cache Components 모델은 `'use cache'` + `cacheLife`로 지정한다.

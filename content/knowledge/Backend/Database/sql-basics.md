@@ -98,4 +98,6 @@ SELECT country, COUNT(*) FROM users_user GROUP BY country;   -- 지역별 인원
 - `ORDER BY … LIMIT … OFFSET`으로 정렬·페이지네이션, `GROUP BY` + 집계 함수로 요약.
 - 같은 쿼리를 Django ORM으로 쓰는 법은 [ORM과 QuerySet](Backend/Django/orm-queryset).
 
+관련 노트: [[sql-and-relational-algebra|SQL과 관계대수]], [[dbeaver|DBeaver에서 SQL로 데이터 다루기]]
+
 참고: [W3Schools SQL](https://www.w3schools.com/sql/)

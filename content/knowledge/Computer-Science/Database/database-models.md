@@ -72,3 +72,5 @@ RDB의 **ACID와 SQL**을 유지하면서 NoSQL 수준의 **수평 확장성과 
 - 분산 환경에서의 동시성 제어
 - 복제(replication)와 장애 복구(crash recovery)
 - 예: CockroachDB, NuoDB (Google Spanner도 이 계열로 분류된다)
+
+실제 프로젝트에서 RDB와 NoSQL 중 무엇을 고를지는 [[rdbms-vs-nosql|RDBMS와 NoSQL]], 문서형 DB 사용법은 [[mongodb|MongoDB]]를 참고한다.

@@ -78,4 +78,6 @@ if form.is_valid():
 - `UserCreationForm`·`AuthenticationForm`으로 회원가입·로그인을 빠르게 구현한다.
 - 템플릿의 `user` 변수는 auth context processor가 자동 제공한다.
 
+관련 노트: [[cookie-session|쿠키와 세션]], [[auth-and-comments|Django 사용자 인증과 댓글 게시판]]
+
 참고: [Django 인증 문서](https://docs.djangoproject.com/en/stable/topics/auth/default/)

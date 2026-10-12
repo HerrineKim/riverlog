@@ -80,3 +80,5 @@ export default { extends: ['@commitlint/config-conventional'] }
 - 형식: `type(scope): subject` + 빈 줄 + body + 빈 줄 + footer.
 - 제목은 명령형 현재 시제, 이슈는 `Closes #번호`.
 - 커밋 템플릿으로 안내하고, husky + commitlint로 강제한다.
+
+관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[principles|코드 리뷰 원칙]], [[ci-cd|CI/CD]]

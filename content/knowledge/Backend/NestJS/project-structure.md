@@ -19,7 +19,7 @@ nest new project-name
 npm run start        # 일반 실행
 npm run start:dev    # watch 모드 (코드 변경 시 자동 재시작)
 npm run start:prod   # 빌드 결과(dist/main.js) 실행
-npm run test         # 단위 테스트 (Jest)
+npm run test         # 단위 테스트 (CommonJS 템플릿은 Jest, NestJS 12의 ESM 템플릿은 Vitest)
 npm run test:e2e     # e2e 테스트
 npm run test:cov     # 커버리지
 ```
@@ -98,7 +98,7 @@ rules: {
 },
 ```
 
-> 참고: 최신 Nest CLI는 ESLint 9의 flat config(`eslint.config.mjs`)를 생성한다. 규칙 내용은 같고 파일 형식만 다르다.
+> 참고: NestJS 11 CLI는 ESLint 9의 flat config(`eslint.config.mjs`)를 생성한다. 규칙 내용은 같고 파일 형식만 다르다. NestJS 12부터는 새 ESM 프로젝트가 기본으로 Vitest와 oxlint를 쓰고, CommonJS 템플릿은 계속 Jest와 ESLint를 쓴다. ([NestJS 마이그레이션 가이드](https://docs.nestjs.com/migration-guide))
 
 ## 핵심 정리
 

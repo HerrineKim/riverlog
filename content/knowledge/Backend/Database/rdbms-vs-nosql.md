@@ -38,3 +38,5 @@ source: til
 - RDBMS = 테이블 + SQL + 고정 스키마, NoSQL = 다양한 모델 + 유연한 스키마.
 - 프로젝트의 데이터 구조와 정합성 요구에 맞춰 고른다.
 - 이어서: [SQL 기초](Backend/Database/sql-basics), [MongoDB](Backend/Database/mongodb)
+
+관련 노트: [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[transaction|트랜잭션과 회복]]

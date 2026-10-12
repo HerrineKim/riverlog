@@ -1,7 +1,7 @@
 ---
 title: "HTTP 프로토콜"
 concept: "HTTP"
-summary: "웹 통신 규약 HTTP의 요청·응답 메시지 형식, 메서드, 상태 코드, 헤더 종류와 URI·URL·URN의 차이."
+summary: "웹 통신 규약 HTTP의 요청·응답 메시지 형식, 메서드, 상태 코드, 헤더 종류, URI·URL·URN의 차이와 HTTP/1.1·2·3 비교."
 tags: ["network", "http", "web", "application-layer"]
 source: notion
 sources: ["https://app.notion.com/p/49200e54fe6d461ab1ebc5180b35337b"]
@@ -48,6 +48,7 @@ Content-Type: text/html             ← Headers
 
 | 범위 | 의미 | 예 |
 | --- | --- | --- |
+| 1xx | 정보(처리 중) | 100 Continue, 101 Switching Protocols |
 | 2xx | 요청 성공 | 200 OK |
 | 3xx | 리다이렉트 | 301, 302 |
 | 4xx | 클라이언트 에러 | 400 Bad Request, 404 Not Found |
@@ -76,8 +77,21 @@ scheme://host[:port][/path][?query]
 
 정리하면 **URI는 식별하고, URL은 위치를 가리킨다.** AWS는 URN 개념을 확장해 리소스를 ARN(Amazon Resource Name)으로 명명·관리한다.
 
+## HTTP 버전
+
+위의 텍스트 메시지 형식은 HTTP/1.1 기준이다. 메서드·상태 코드·헤더의 의미는 버전과 상관없이 같고, 메시지를 실어 나르는 방식만 다르다.
+
+| 버전 | 전송 계층 | 특징 |
+| --- | --- | --- |
+| HTTP/1.1 | TCP | 텍스트 메시지, 연결 재사용(keep-alive). 한 연결에서 요청을 순서대로 처리해 앞 응답이 늦으면 뒤도 밀린다(HOL blocking) |
+| HTTP/2 (RFC 9113) | TCP | 바이너리 프레임, 한 연결에서 여러 요청을 동시에 주고받는 멀티플렉싱, 헤더 압축(HPACK) |
+| HTTP/3 (RFC 9114, 2022) | QUIC(UDP 기반) | TLS 1.3이 내장된 QUIC 위에서 동작. 패킷 손실이 다른 스트림을 막지 않고 연결 수립이 빠르다 |
+
+HTTPS는 HTTP를 TLS로 암호화한 것이다. 아래에서 받쳐 주는 전송 계층은 [[tcp|TCP]]와 [[transport-layer|전송 계층과 UDP]]에 정리했다. 웹 서비스 관점의 요청 흐름과 API 설계는 [[rest-api|REST API 설계]], 상태를 유지하는 방법은 [[cookie-session|쿠키와 세션]]을 참고한다.
+
 ## 핵심 정리
 
 - 요청 = Request Line + Headers + 빈 줄 + Body, 응답 = Status Line + Headers + 빈 줄 + Body.
-- 상태 코드 앞자리: 2 성공, 3 리다이렉트, 4 클라이언트 잘못, 5 서버 잘못.
+- 상태 코드 앞자리: 1 정보, 2 성공, 3 리다이렉트, 4 클라이언트 잘못, 5 서버 잘못.
 - URI ⊃ URL(위치), URN(이름).
+- HTTP/1.1·HTTP/2는 TCP 위에서, HTTP/3는 UDP 기반 QUIC 위에서 동작한다.

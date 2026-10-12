@@ -16,10 +16,10 @@ source: mixed
 | [CSS](/knowledge/dictionary/frontend/css) | 문법과 단위, 선택자와 우선순위, 박스 모델, position, Flexbox |
 | [JavaScript](/knowledge/dictionary/frontend/javascript) | 변수·타입, 연산자·제어문, 함수와 this, 배열·객체, 템플릿 리터럴, class, DOM 조작과 이벤트, 비동기(콜백·Promise·async/await), AJAX, 날짜 라이브러리 |
 | [React](/knowledge/dictionary/frontend/react) | JSX, 컴포넌트·Props, State·생명주기, Hooks, 폼·리스트·조건부 렌더링, Context, 스타일링, SWR, 리렌더링 추적, react-hook-form·react-router·MUI 실무 패턴 |
-| [Next.js](/knowledge/dictionary/frontend/nextjs) | React 기반 프레임워크, SSR·SSG와 SEO |
+| [Next.js](/knowledge/dictionary/frontend/nextjs) | React 기반 프레임워크, SSR·SSG와 SEO, App Router 데이터 캐싱(`use cache`) |
 | [Mobile](/knowledge/dictionary/frontend/mobile) | 네이티브·하이브리드·크로스 플랫폼 비교, React Native 핵심, CodePush OTA 업데이트 |
 | [Testing](/knowledge/dictionary/frontend/testing) | 프론트엔드에서의 TDD, Jest·React Testing Library |
-| [UI Design](/knowledge/dictionary/frontend/ui-design/ai-frontend-design-prompting) | AI 모델로 완성도 높은 프론트엔드 디자인을 이끌어 내는 프롬프트 기법, [디자인 시스템과 공용 스킬 배포](/knowledge/dictionary/frontend/ui-design/design-system) |
+| [UI Design](/knowledge/dictionary/frontend/ui-design/design-system) | 디자인 시스템과 공용 스킬 배포 (AI로 디자인을 뽑는 프롬프트 기법은 [[ai-frontend-design-prompting|AI & Data]] 분야로 옮겼다) |
 | [Graphics](/knowledge/dictionary/frontend/graphics/threejs) | WebGL과 Three.js로 웹에서 3D 그리기 |
 
-학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/roadmap)에 정리했다.
+학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/frontend-roadmap)에 정리했다.

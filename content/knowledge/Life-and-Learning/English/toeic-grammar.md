@@ -6,7 +6,7 @@ tags: ["english", "toeic", "grammar"]
 source: notion
 ---
 
-TOEIC Part 5·6에서 반복적으로 나오는 문법 포인트를 시험 직전에 훑어보기 좋게 정리했다. 어휘는 영어 어휘 노트에 따로 모았다.
+TOEIC Part 5·6에서 반복적으로 나오는 문법 포인트를 시험 직전에 훑어보기 좋게 정리했다. 어휘는 [[vocabulary|영어 어휘 노트]]에 따로 모았다.
 
 ## 동사
 

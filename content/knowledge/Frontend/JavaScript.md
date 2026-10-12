@@ -20,7 +20,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 
 ### 브라우저와 함께
 - [DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·생성·삽입·삭제·속성 변경, innerText vs innerHTML
-- [이벤트](/knowledge/dictionary/frontend/javascript/events): addEventListener, 이벤트 객체, preventDefault
+- [이벤트](/knowledge/dictionary/frontend/javascript/dom-events): addEventListener, 이벤트 객체, preventDefault
 
 ### 비동기
 - [콜백과 Promise](/knowledge/dictionary/frontend/javascript/callback-and-promise): 비동기의 문제, 콜백 지옥, Promise 상태와 체이닝, Promise.all

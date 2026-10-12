@@ -18,7 +18,7 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 - [Hooks](/knowledge/dictionary/frontend/react/hooks): 규칙, useEffect, useCallback·useMemo·React.memo, 커스텀 훅
 
 ### 화면 구성
-- [이벤트 처리](/knowledge/dictionary/frontend/react/events)
+- [이벤트 처리](/knowledge/dictionary/frontend/react/react-events)
 - [조건부 렌더링](/knowledge/dictionary/frontend/react/conditional-rendering)
 - [리스트와 Key](/knowledge/dictionary/frontend/react/lists-and-keys)
 - [폼](/knowledge/dictionary/frontend/react/forms): 제어 컴포넌트, 여러 input, 단위 변환기 예제

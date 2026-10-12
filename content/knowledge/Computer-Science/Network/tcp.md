@@ -64,6 +64,8 @@ TCP(Transmission Control Protocol)는 서로 다른 호스트의 프로그램이
 
 ACK를 받지 못하면 송신 측은 해당 데이터를 재전송한다. 이것이 TCP 신뢰성의 기본이다.
 
+> handshake 구조를 악용해 SYN만 대량으로 보내 연결 대기열을 채우는 공격이 SYN Flooding이다([[security|정보 시스템 보안]]).
+
 ## 연결 상태 전이
 
 | 상태 | 의미 |
@@ -89,3 +91,5 @@ ACK를 받지 못하면 송신 측은 해당 데이터를 재전송한다. 이�
 - 연결 수립 = SYN → SYN+ACK → ACK.
 - 응답의 SEQ는 받은 ACK, 응답의 ACK는 받은 SEQ + 데이터 크기.
 - 중요 플래그는 SYN, ACK, FIN, RST. 중요 상태는 LISTEN, ESTABLISHED.
+
+관련 노트: [[transport-layer|전송 계층과 UDP]], [[http|HTTP]]

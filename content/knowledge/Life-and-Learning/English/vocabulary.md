@@ -139,3 +139,5 @@ source: notion
 | hot air | 허풍 |
 
 공부 팁: 새 단어는 뜻만 외우지 말고 기사 속 문장째로 기록해 두면 문맥적 의미까지 함께 익힐 수 있다.
+
+관련 노트: [[toeic-grammar|TOEIC 핵심 문법 정리]], [[business-expressions|비즈니스 미팅 쿠션 표현]]

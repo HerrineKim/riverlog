@@ -113,3 +113,5 @@ print(list(d))  # [3, 10, 0, 1, 2]
 - 큐 = FIFO, 덱 = 양쪽 끝에서 삽입·삭제
 - 파이썬에서 큐는 `list.pop(0)`(O(n)) 대신 `deque.popleft()`(O(1))를 쓴다.
 - `deque`는 양 끝 연산이 O(1)이지만 중간 접근은 O(n)이다.
+
+관련 노트: [[bfs|BFS]], [[stack|스택]], [[heap-priority-queue|힙과 우선순위 큐]], [[data-structures|기초 자료구조(CS50)]]

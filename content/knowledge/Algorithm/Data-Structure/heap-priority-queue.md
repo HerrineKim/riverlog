@@ -89,6 +89,17 @@ heapq.heappush(tasks, (1, "read"))
 print(heapq.heappop(tasks))  # (1, 'read')
 ```
 
+> **Python 3.14부터**는 `heapq`에 최대 힙 함수(`heapify_max`, `heappush_max`, `heappop_max`, `heappushpop_max`, `heapreplace_max`)가 추가되어 부호를 뒤집지 않아도 된다. 다만 코딩 테스트 채점 환경은 대개 이보다 낮은 버전이라, 음수로 넣는 방법이 여전히 가장 안전하다. ([Python 문서: heapq](https://docs.python.org/3/library/heapq.html))
+>
+> ```python
+> import heapq  # Python 3.14+
+>
+> max_heap = []
+> for v in [3, 10, 5]:
+>     heapq.heappush_max(max_heap, v)
+> print(heapq.heappop_max(max_heap))  # 10
+> ```
+
 ### `queue.PriorityQueue`
 
 `queue.PriorityQueue`도 있지만, 스레드 간 동기화(락)를 위한 클래스라 단일 스레드인 코딩 테스트에서는 `heapq`보다 느리다.
@@ -105,5 +116,7 @@ print(q.get()[1])  # apple
 ## 핵심 정리
 
 - 우선순위 큐는 힙으로 구현하며 삽입·삭제 O(log n), 최솟값 확인 O(1)
-- 파이썬 `heapq`는 최소 힙. 최대 힙은 음수로 바꿔 넣는다.
+- 파이썬 `heapq`는 기본이 최소 힙. 최대 힙은 음수로 바꿔 넣는다(3.14+는 `heappush_max` 등도 가능).
 - 다익스트라 최단 경로, 상위 K개 구하기, 작업 스케줄링 등에 쓰인다.
+
+관련 노트: [[dijkstra|다익스트라]], [[queue-deque|큐와 덱]], [[merge-quick-sort|정렬 알고리즘 비교(힙 정렬)]]

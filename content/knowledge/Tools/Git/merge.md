@@ -69,7 +69,7 @@ $ git log --oneline --all --graph
 * 43fab3e master test 1
 ```
 
-> 참고: Git 2.33 이전에는 기본 전략이 `recursive`여서 `Merge made by the 'recursive' strategy.`로 표시됩니다. 2.34부터는 `ort`가 기본입니다.
+> 참고: Git 2.33까지는 기본 전략이 `recursive`여서 `Merge made by the 'recursive' strategy.`로 표시됩니다. 2.34부터는 `ort`가 기본입니다.
 
 ## 3. Merge Conflict
 
@@ -140,3 +140,5 @@ $ git log --oneline --all --graph
 | Merge Conflict | 같은 파일의 같은 부분을 양쪽에서 수정 | 수동 해결 → `add` → `commit` |
 
 > 참고: 병합 외에 `git rebase`로 한 브랜치의 커밋들을 다른 브랜치 끝으로 옮겨 이력을 일직선으로 만드는 방법도 있습니다. 이력이 깔끔해지는 대신 커밋이 새로 만들어지므로, 이미 원격에 공유한 브랜치에는 쓰지 않는 것이 원칙입니다.
+
+관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]]

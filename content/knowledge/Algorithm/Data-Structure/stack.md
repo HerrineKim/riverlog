@@ -85,3 +85,5 @@ print(len(s))    # 1
 - 스택 = 후입선출, top에서만 삽입·삭제, 모두 O(1)
 - 파이썬에서는 리스트의 `append()`와 `pop()`(맨 끝)을 사용
 - 중간 원소에 직접 접근하는 용도로는 쓰지 않는다.
+
+관련 노트: [[dfs|DFS]], [[recursion|재귀 함수]], [[queue-deque|큐와 덱]], [[data-structures|기초 자료구조(CS50)]]

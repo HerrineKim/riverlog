@@ -148,3 +148,5 @@ function Workspace({ children }) {
 - 로그인 성공 → `mutate()`로 내 정보 재요청, 로그아웃 → `mutate(false, false)`로 즉시 비로그인 처리.
 - 쿠키 기반 인증에서는 `withCredentials: true`가 필수.
 - 로그인 여부에 따른 리다이렉트는 모든 Hook 호출 **뒤에** 둔다.
+
+관련 노트: [[cookie-session|쿠키와 세션]], [[auth-jwt-passport|NestJS JWT 인증(토큰 기반 백엔드)]]

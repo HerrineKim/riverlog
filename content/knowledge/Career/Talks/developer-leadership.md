@@ -60,4 +60,4 @@ ATDD·DDD·TDD의 본질은 테스트 코드를 넣는 행위가 아니라 **만
 
 어느 쪽이든, 장기적으로 의미 있는 일을 하는 팀이 되려면 모두가 Why와 What을 깊이 고민해야 한다.
 
-관련: 「프로덕트 오너의 사고방식」 노트
+관련 노트: [[product-owner|프로덕트 오너의 사고방식]], [[product-minded-engineer|제품 중심 개발자]], [[decision-making|의사결정 체크리스트]]

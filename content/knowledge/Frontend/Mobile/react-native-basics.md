@@ -1,7 +1,7 @@
 ---
 title: "React Native 기초와 스타일링"
 concept: "React Native"
-summary: "React 코드를 네이티브 UI로 바꿔 주는 React Native의 동작 원리, Expo로 시작하기, 코어 컴포넌트, StyleSheet와 Flexbox 레이아웃."
+summary: "React 코드를 네이티브 UI로 바꿔 주는 React Native의 동작 원리(브리지에서 New Architecture로), Expo로 시작하기, 코어 컴포넌트, StyleSheet와 Flexbox 레이아웃."
 tags: ["react-native", "mobile", "react", "css"]
 source: mixed
 ---
@@ -15,6 +15,8 @@ source: mixed
 - React Native는 React 코드와 각 플랫폼의 **Native API를 연결**하는 다리 역할을 한다.
 - `<View>`, `<Text>` 같은 컴포넌트는 Android·iOS 각각의 네이티브 뷰로 그려진다(웹뷰가 아니다).
 - JavaScript로 작성한 로직은 네이티브 코드로 컴파일되지 않고, 앱 안에서 React Native가 관리하는 **JavaScript 스레드**에서 따로 실행된다.
+- (레거시 아키텍처) 예전에는 JS와 네이티브가 **브리지(Bridge)** 를 통해 메시지를 비동기로 직렬화해 주고받았다.
+- (현재) React Native 0.76부터 **New Architecture**가 기본이고, 0.82부터는 New Architecture만 쓸 수 있다(이전 아키텍처를 끄는 설정이 무시됨). JS가 JSI로 네이티브 객체를 직접 호출하고, 새 렌더러(Fabric)와 Turbo Modules가 브리지를 대신한다.
 
 ![컴포넌트가 각 플랫폼 네이티브 뷰로 변환된다](/images/til/FRONTEND/React-Native/-YouTube-React-Native-Crash-Course/00_Intro.assets/image-20220904212351135.png)
 
@@ -26,10 +28,10 @@ source: mixed
 | 네이티브 코드(Swift, Kotlin) 통합 | 제한적이었으나 현재는 dev build로 가능 | 쉽다 |
 | 전환 | 필요하면 CLI 방식으로 전환 가능 | — |
 
-입문에는 **Expo**를 추천한다.
+입문에는 **Expo**를 추천한다. React Native 공식 문서도 새 앱은 Expo 같은 **프레임워크**로 시작하라고 권하고, 프레임워크 없이 Android Studio·Xcode로 직접 구성하는 방식은 특별한 제약이 있을 때의 선택지로 둔다.
 
 ```bash
-npx create-expo-app RNCourse   # (예전 방식: npm i -g expo-cli && expo init RNCourse)
+npx create-expo-app@latest RNCourse   # (예전 방식: npm i -g expo-cli && expo init RNCourse)
 cd RNCourse
 npm start
 ```

@@ -12,13 +12,14 @@ Django 프로젝트는 여러 **앱(app)**의 묶음이고, 각 앱은 MTV 패�
 
 ```bash
 python -m venv venv && source venv/bin/activate   # 가상환경 권장
-pip install django                 # 특정 버전: pip install django==4.2
+pip install django                 # 특정 버전: pip install "django==5.2.*" (LTS)
 python -m django --version
 
 django-admin startproject firstpjt .   # 현재 폴더에 프로젝트 생성
 python manage.py runserver             # http://127.0.0.1:8000
 ```
 
+- Django 6.x는 Python 3.12 이상이 필요하다. Python 3.10·3.11 환경이라면 5.2 LTS를 쓴다.
 - 프로젝트 이름에 `django`, `test`, `class`처럼 Python·Django가 쓰는 이름이나 하이픈(`-`)은 쓸 수 없다.
 - 개발 서버는 코드를 저장하면 자동으로 다시 로드된다. 단, 새 파일 추가 등 일부 변경은 재시작이 필요할 수 있다.
 - 가상환경 폴더나 `db.sqlite3`, `__pycache__` 등은 `.gitignore`로 버전 관리에서 제외한다.

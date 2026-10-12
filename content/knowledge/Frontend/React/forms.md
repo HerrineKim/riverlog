@@ -155,3 +155,5 @@ function App() {
 - `textarea`, `select`도 `value`로 통일해서 다룬다. 파일 입력만 비제어.
 - 여러 입력은 객체 state + `name` + 계산된 속성명으로 한 핸들러에서 처리.
 - 화면에 보이는 파생 값은 state로 따로 두지 말고 렌더링 중에 계산한다.
+
+관련 노트: [[html-input-types|HTML 입력 요소 치트시트]]

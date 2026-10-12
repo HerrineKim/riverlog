@@ -20,7 +20,7 @@ Jira에서 모든 업무는 **이슈(issue)** 단위로 관리됩니다. 이슈�
 | Component | 기능·모듈·화면 단위 분류 (예: UX, 사용자 관리, 인프라) |
 | Labels | 해시태그처럼 자유롭게 붙이는 분류 |
 | Fix Version | 이슈가 반영될 릴리스 버전 |
-| Epic Link | 이 이슈가 속한 에픽 |
+| Parent (구 Epic Link) | 이 이슈의 상위 이슈(에픽 등). Jira Cloud에서는 2024년 Epic Link·Parent Link 필드가 **Parent** 하나로 통합되었다. Server·Data Center에는 Epic Link가 남아 있다 |
 | Linked Issues | 연관 이슈 |
 | Sprint | 스크럼에서 이 이슈를 처리할 스프린트 |
 
@@ -58,6 +58,9 @@ JQL은 이슈를 구조적으로 검색하기 위한 SQL 비슷한 질의 언어
 -- DP 프로젝트의 에픽 목록
 project = DP AND issuetype = Epic
 
+-- 에픽 DP-12에 속한 이슈 (Jira Cloud. 예전 문법은 "Epic Link" = DP-12)
+parent = DP-12
+
 -- 오늘 업데이트된 내 이슈
 project = DP AND assignee = currentUser() AND updated > startOfDay()
 
@@ -72,4 +75,4 @@ project = DP AND issuetype = Bug AND assignee is EMPTY ORDER BY priority DESC
 - Jira 이슈를 Git 저장소와 연결하면 커밋·브랜치·PR이 어떤 이슈와 관련 있는지 이슈 화면에서 확인할 수 있다 (커밋 메시지에 이슈 키 포함).
 - 마켓플레이스 앱으로 폴더 정리 같은 추가 기능을 붙일 수 있다.
 
-관련 노트: [Jira 워크플로와 팀 운영](workflow.md)
+관련 노트: [Jira 워크플로와 팀 운영](workflow.md), [[commit-convention|커밋 컨벤션]]

@@ -24,7 +24,7 @@ Jira는 애자일 팀에서 널리 쓰는 이슈·프로젝트 관리 도구입�
 ## Board · Sprint · Project
 
 - Board와 Sprint는 Project에 종속되지 않는다. 하나의 보드가 여러 프로젝트의 이슈를 보여줄 수도 있다.
-- 그래서 이슈에서 Sprint나 Epic Link를 고를 때 **다른 프로젝트의 것을 잘못 선택하지 않도록** 주의한다.
+- 그래서 이슈에서 Sprint나 상위 에픽(Jira Cloud의 Parent 필드, 예전 이름 Epic Link)을 고를 때 **다른 프로젝트의 것을 잘못 선택하지 않도록** 주의한다.
 
 ## 스토리 포인트
 

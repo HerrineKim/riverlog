@@ -1,7 +1,7 @@
 ---
 title: "기초 자료구조: 배열에서 트라이까지"
 concept: "Data Structure"
-summary: "CS50 자료구조 강의 정리: 배열과 크기 조정 비용, 연결 리스트, 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 스택·큐·딕셔너리, 얕은 복사와 깊은 복사."
+summary: "CS50 자료구조 강의 정리: 배열과 realloc 크기 조정 비용, 연결 리스트(C 구조체·Kotlin 예제), 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 스택·큐·딕셔너리, 얕은 복사와 깊은 복사."
 tags: ["data-structure", "cs50", "linked-list", "hash-table", "tree"]
 source: notion
 sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d"]
@@ -13,13 +13,8 @@ sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d"]
 
 - **고정된 크기의 메모리 덩어리**다. 원소들이 **이웃한 공간(contiguous memory)** 에 할당된다.
 - 배열의 시작 주소(base address)는 첫 번째 원소가 있는 주소다. 인덱스로 위치를 바로 계산할 수 있어 **임의 접근(random access)** 이 O(1)이다.
-- 정렬되어 있다면 이진 탐색으로 O(log n)에 찾을 수 있다.
-- JVM에서 배열은 참조 타입이며 힙 영역에 할당된다. 선언과 메모리 할당이 분리된다.
-
-```java
-int intArray[];           // 선언
-intArray = new int[10];   // 메모리 할당
-```
+- 정렬되어 있다면 [[binary-search|이진 탐색]]으로 O(log n)에 찾을 수 있다.
+- C에서 `int arr[10];`처럼 선언한 배열은 한 번 만들면 크기를 바꿀 수 없다. 크기를 키우려면 `malloc`·`realloc`으로 힙에 공간을 잡아야 한다.
 
 ### 크기를 늘리면 무슨 일이 생기나
 
@@ -30,9 +25,36 @@ intArray = new int[10];   // 메모리 할당
 
 원소 n개를 읽고 쓰는 작업이 필요하므로 **O(n)** 이다.
 
+```c
+int *list = malloc(3 * sizeof(int));
+// ... list[0] ~ list[2] 사용
+
+int *tmp = realloc(list, 4 * sizeof(int)); // 더 큰 공간을 잡고 기존 값을 옮겨 줌
+if (tmp == NULL)
+{
+    free(list);
+    return 1;
+}
+list = tmp;
+list[3] = 4;
+free(list);
+```
+
+`realloc`이 복사를 대신해 줄 뿐, 뒤 공간이 비어 있지 않으면 새 공간을 잡고 원소를 모두 옮기는 비용은 그대로다.
+
 ## 연결 리스트 (Linked List)
 
-원소를 연속된 곳에 두지 않고 **아무 빈 공간에 할당한 뒤, 다음 원소의 주소를 가리키게** 연결한다. 각 노드는 값과 다음 노드를 가리키는 포인터를 가진다.
+원소를 연속된 곳에 두지 않고 **아무 빈 공간에 할당한 뒤, 다음 원소의 주소를 가리키게** 연결한다. 각 노드는 값과 다음 노드를 가리키는 포인터를 가진다. C에서는 구조체와 포인터로 노드를 만든다.
+
+```c
+typedef struct node
+{
+    int number;
+    struct node *next;
+} node;
+```
+
+아래는 스터디에서 같은 구조를 Kotlin으로 옮겨 본 예제다. Kotlin의 객체 참조가 C의 포인터 역할을 한다.
 
 ```kotlin
 class Node(val value: String, var next: Node? = null)
@@ -141,10 +163,10 @@ println(a === b)        // true  (===는 참조 비교)
 println(a.name)         // SUGA
 ```
 
-Kotlin에서 깊은 복사를 하는 방법:
+Kotlin에서 복사본을 만드는 방법:
 
-- **data class의 `copy()`**: data class는 `toString()`, `hashCode()`, `equals()`, `copy()`를 자동으로 가진다. `copy()`는 새 객체를 만든다.
-- **`Cloneable` 구현**: `clone()`을 오버라이드한다. 단, `super.clone()`은 필드를 그대로 복사하므로 **필드가 리스트 같은 참조 타입이면 그 리스트는 여전히 공유된다.** 이런 필드는 `clone()` 안에서 새 리스트로 복사해 줘야 진짜 깊은 복사가 된다.
+- **data class의 `copy()`**: data class는 `toString()`, `hashCode()`, `equals()`, `copy()`를 자동으로 가진다. `copy()`는 새 객체를 만들지만 **얕은 복사**다. 프로퍼티가 리스트 같은 참조 타입이면 원본과 복사본이 같은 리스트를 공유한다. 프로퍼티가 모두 불변(`val`, 불변 타입)이라면 이것만으로 충분하다.
+- **`Cloneable` 구현**: `clone()`을 오버라이드한다. `super.clone()`도 필드를 그대로 복사하므로 **참조 타입 필드는 여전히 공유된다.** 이런 필드는 `clone()` 안에서 새 리스트로 복사해 줘야 진짜 깊은 복사가 된다.
 
 ```kotlin
 class AnyObject(var name: String, var list: MutableList<Int>) : Cloneable {
@@ -156,16 +178,6 @@ class AnyObject(var name: String, var list: MutableList<Int>) : Cloneable {
 }
 ```
 
-## 참고: JVM 메모리 영역
-
-| 영역 | 내용 |
-| --- | --- |
-| Heap | 객체(배열 포함)가 저장되는 곳. JVM 시작 시 생성되어 실행 중 커지거나 줄고, 쓰지 않는 객체는 GC가 회수 |
-| Stack | 스레드마다 있는 LIFO 구조. 메서드 호출 정보와 지역 변수 저장 |
-| PC Register | 현재 실행 중인 명령어의 위치를 추적 |
-| Native Method Stack | C 같은 자바 외 언어로 구현된 네이티브 메서드를 호출할 때 사용 |
-| Execution Engine | 바이트코드를 실제로 실행하는 JVM의 핵심 구성 요소 |
-
 ## 핵심 정리
 
 | 자료구조 | 탐색 | 삽입 | 특징 |
@@ -175,3 +187,5 @@ class AnyObject(var name: String, var list: MutableList<Int>) : Cloneable {
 | 이진 탐색 트리 | 평균 O(log n), 편향 시 O(n) | 평균 O(log n) | 균형 유지가 관건 |
 | 해시 테이블 | 평균 O(1), 최악 O(n) | 평균 O(1) | 해시 함수 + 충돌 처리 |
 | 트라이 | O(k) ≈ O(1) | O(k) | 메모리를 많이 씀 |
+
+복잡도 표기 자체는 [[big-o|빅오 표기법과 시간 복잡도]]에 정리했다.

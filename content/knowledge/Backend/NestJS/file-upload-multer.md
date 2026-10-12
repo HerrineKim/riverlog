@@ -69,6 +69,8 @@ const app = await NestFactory.create<NestExpressApplication>(AppModule);
 app.useStaticAssets(path.join(__dirname, '..', 'uploads'), { prefix: '/media' });
 ```
 
+> ESM 프로젝트(NestJS 12의 `"type": "module"`)에는 `__dirname`이 없으므로 `import.meta.dirname`을 쓴다.
+
 운영 환경에서는 서버 디스크 대신 S3 같은 오브젝트 스토리지에 올리고 URL만 DB에 저장하는 방식이 일반적이다.
 
 ## 핵심 정리

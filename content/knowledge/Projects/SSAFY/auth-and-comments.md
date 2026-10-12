@@ -146,3 +146,5 @@ def comment_create(request, pk):
 - 앱이 두 개라는 게 처음엔 부담이었지만, 앱은 기능별 의미상의 구분일 뿐이다. 결국 할 일은 **URL 작성 → View·Form 작성 → Template에서 사용** 의 반복이었다.
 - URL–View–Template 순서를 지키며 개발하니 오류가 줄고 속도가 빨라졌다.
 - 페어 프로그래밍에서 기능을 번갈아 구현하다 보니, 상대가 쓴 코드를 읽고 이어 쓰는 능력도 함께 늘었다.
+
+관련 개념 노트: [[auth-user|Django User와 인증]], [[relationships|Django 모델 관계 (1:1, 1:N, M:N)]], [[cookie-session|쿠키와 세션]], [[web-security|웹 보안: CSRF와 XSS]]

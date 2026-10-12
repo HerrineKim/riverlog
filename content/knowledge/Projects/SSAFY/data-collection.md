@@ -97,4 +97,4 @@ print(kospi.text)
 - 자료형(list 안의 dict 안의 list …)에 따라 접근 방법을 정확히 알고 있어야 한다. 구조를 먼저 출력해 보고 접근하는 습관이 생겼다.
 - 길어 보이는 문제도 결국 기본 문법의 조합이다. 이전 문제와 **같은 방법으로 풀 수 있는 문제임을 알아보는 것**이 중요하다.
 
-관련 노트: [파이썬 데이터 분석 프로세스](../../AI-Data/python-data-analysis.md)
+관련 노트: [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[rest-api|REST API 설계]]

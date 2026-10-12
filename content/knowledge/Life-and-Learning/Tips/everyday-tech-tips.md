@@ -6,14 +6,14 @@ tags: ["tips", "productivity", "windows", "google-drive"]
 source: notion
 ---
 
-자주 찾아보게 되는 소소한 IT 문제 해결법 모음.
+자주 찾아보게 되는 소소한 IT 문제 해결법 모음. 서비스 화면과 메뉴 이름은 업데이트로 바뀔 수 있다.
 
 ## 구글 드라이브 "다운로드 한도 초과" 우회
 
 공유 파일은 다운로드가 몰리면 한도에 걸린다. **내 드라이브에 사본을 만들면** 사본은 별도 파일이라 받을 수 있다.
 
 1. 공유 링크를 열고 구글 계정으로 로그인한다.
-2. drive.google.com → **공유 문서함**에서 해당 파일을 찾는다. (또는 링크 화면에서 바로 '내 드라이브에 추가')
+2. drive.google.com → **공유 문서함**에서 해당 파일을 찾는다. (링크 화면의 '내 드라이브에 추가'는 **바로가기**만 만들기 때문에 그대로는 한도에 계속 걸린다. 반드시 다음 단계의 사본을 만든다)
 3. 파일 우클릭 → **사본 만들기**
 4. 내 드라이브에 생긴 사본을 우클릭 → 다운로드
 5. 파일명 앞의 "~의 사본"을 지운다.
@@ -27,7 +27,7 @@ taskkill /f /im OneDrive.exe
 %SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall
 ```
 
-32비트 Windows이거나 위 경로에 파일이 없다면 `%SystemRoot%\System32\OneDriveSetup.exe /uninstall`을 쓴다. Windows 10/11에서는 **설정 → 앱 → 설치된 앱**에서 Microsoft OneDrive를 제거하는 방법이 가장 간단하다.
+32비트 Windows이거나 위 경로에 파일이 없다면 `%SystemRoot%\System32\OneDriveSetup.exe /uninstall`을 쓴다. Windows 11에서는 **설정 → 앱 → 설치된 앱**(Windows 10은 **앱 및 기능**)에서 Microsoft OneDrive를 제거하는 방법이 가장 간단하다.
 
 ## 휴대폰으로 별 사진 찍기
 

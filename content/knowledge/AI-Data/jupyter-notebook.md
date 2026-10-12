@@ -43,6 +43,6 @@ Jupyter Notebook은 **"실행되는 문서"** 입니다. 하나의 노트북 안
 
 - `%`로 시작하는 **매직 명령**으로 시간 측정, 프로파일링, 셸 명령 실행(`!pip install ...`) 등을 할 수 있다.
 - 차세대 인터페이스인 **JupyterLab**은 파일 브라우저·터미널·여러 탭을 갖춘 IDE 형태다.
-- VS Code, JetBrains DataSpell 등에서도 `.ipynb` 파일을 직접 열고 실행할 수 있다.
+- VS Code, PyCharm 등에서도 `.ipynb` 파일을 직접 열고 실행할 수 있다. (JetBrains의 데이터 과학 전용 IDE였던 DataSpell은 2026년 신규 판매가 중단되고 기능이 PyCharm으로 통합되었다.)
 
 관련 노트: [파이썬 데이터 분석 프로세스](python-data-analysis.md)

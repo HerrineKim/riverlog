@@ -49,3 +49,5 @@ source: notion
 | 진화 | 운영 지표, 개선 기획 |
 
 참고: okdevtv의 "개발 프로젝트 진행 순서" 정리, 『오늘도 개발자가 안 된다고 말했다』
+
+관련 노트: [[ci-cd|CI/CD]], [[github-collaboration|GitHub 협업 저장소 설정]], [[workflow|Jira 워크플로와 팀 운영]], [[ga4-setup|GA4 시작하기]]

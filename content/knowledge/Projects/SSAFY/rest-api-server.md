@@ -155,3 +155,5 @@ def review_detail(request, review_pk):
 
 - 외래키, 1:N, M:N 같은 **DB 관계를 처음에 잘 정립하는 것**이 API 응답 구조까지 결정한다는 것을 제대로 느꼈다.
 - 정참조(`movie.actors`)와 역참조(`actor.movies` — `related_name`, `movie.review_set`)를 구분해야 Serializer 필드 이름을 맞게 쓸 수 있다.
+
+관련 개념 노트: [[rest-api|REST API 설계]], [[relationships|Django 모델 관계 (1:1, 1:N, M:N)]], [[orm-queryset|Django ORM과 QuerySet]]

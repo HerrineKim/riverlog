@@ -6,7 +6,7 @@ tags: ["nestjs", "middleware", "logging", "backend"]
 source: til
 ---
 
-NestJS의 미들웨어는 **라우트 핸들러보다 먼저 호출되는 함수**로, 요청·응답 객체와 `next()`에 접근할 수 있다. 개념은 [Express 미들웨어](Backend/Express/middleware)와 같고, 차이는 `@Injectable()` 클래스로 만들어 DI를 받을 수 있다는 점이다.
+NestJS의 미들웨어는 **라우트 핸들러보다 먼저 호출되는 함수**로, 요청·응답 객체와 `next()`에 접근할 수 있다. 개념은 [Express 미들웨어](Backend/Express/express-middleware)와 같고, 차이는 `@Injectable()` 클래스로 만들어 DI를 받을 수 있다는 점이다.
 
 ## 만들기
 

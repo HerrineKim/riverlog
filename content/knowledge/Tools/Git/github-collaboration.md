@@ -31,11 +31,11 @@ git remote add origin <내 원격 저장소 주소>
 **Settings → Branches**에서 설정한다. 보호는 feature 브랜치가 아니라 **머지 대상 브랜치**(`main`, `develop` 등)에 건다.
 
 - **Require a pull request before merging**: 직접 push 금지, PR로만 머지
-- **Required approvals**: 지정한 수만큼 승인이 있어야 머지 가능
-- **Require status checks**: CI(테스트·린트)가 통과해야 머지 가능
+- **Require approvals**: 지정한 수(Required number of approvals before merging)만큼 승인이 있어야 머지 가능
+- **Require status checks to pass before merging**: CI(테스트·린트)가 통과해야 머지 가능
 - 관리자는 기본적으로 규칙을 우회할 수 있다. **Do not allow bypassing the above settings**를 켜야 관리자도 보호 브랜치에 직접 push하지 못한다.
 
-> 최근 GitHub에서는 같은 기능을 더 유연하게 설정하는 **Rulesets**도 제공한다.
+> GitHub 문서는 브랜치 보호 규칙의 대안으로 **Rulesets**(Settings → Rules → Rulesets)를 안내한다. 여러 규칙을 한 번에 여러 브랜치·태그에 적용하고 우회 가능한 사람을 따로 지정할 수 있으며, 기존 보호 규칙을 Ruleset으로 옮기는 기능도 있다. 새 저장소라면 Rulesets로 시작하는 것도 좋다. ([GitHub Docs](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule))
 
 ## CODEOWNERS
 
@@ -80,3 +80,5 @@ npx github-label-sync --access-token <TOKEN> --labels ./labels.json <owner>/<rep
 - 보호 규칙은 머지 대상 브랜치에: PR 필수, 승인 수, CI 통과, 관리자 우회 금지.
 - CODEOWNERS로 리뷰어 자동 지정, 템플릿·라벨로 이슈·PR 형식 통일.
 - 기능마다 브랜치를 나눠야 부분 머지가 쉽다.
+
+관련 노트: [[ci-cd|CI/CD]], [[review-communication|리뷰 코멘트와 PR 소통]]

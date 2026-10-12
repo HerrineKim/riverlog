@@ -12,3 +12,4 @@ source: til
 - **queue-deque** — 선입선출(FIFO) 큐와 양쪽에서 넣고 빼는 덱, BFS의 기반
 - **heap-priority-queue** — 우선순위가 가장 높은 원소를 빠르게 꺼내는 힙
 - **disjoint-set** — 원소들을 서로소 집합으로 묶는 Union-Find
+- **data-structures** — 배열·연결 리스트·이진 탐색 트리·해시 테이블·트라이의 구조와 C 구현 (CS50)

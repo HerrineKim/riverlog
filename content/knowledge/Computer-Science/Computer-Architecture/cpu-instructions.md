@@ -130,6 +130,8 @@ SP ← SP + 1
 | 내부 인터럽트(트랩) | 잘못된 명령·데이터: 오버플로우, 0으로 나누기, 세그멘테이션 폴트 |
 | 소프트웨어 인터럽트 | 명령어 실행으로 발생: 시스템 콜(supervisor call) |
 
+운영체제가 이 인터럽트들로 모드를 바꾸고 시스템 콜을 처리하는 과정은 [[system-structure|컴퓨터 시스템 구조와 인터럽트]]를 참고한다.
+
 ## RISC와 CISC
 
 RISC(Reduced Instruction Set Computer)는 1980년경 UC 버클리의 데이비드 패터슨 등이 제안한 설계 철학이다. 대표 아키텍처로 MIPS, SPARC, PowerPC, Alpha, 그리고 오늘날의 ARM, RISC-V가 있다.

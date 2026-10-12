@@ -56,4 +56,6 @@ IP 주소가 "어느 컴퓨터인지"를 가리킨다면, 포트는 그 컴퓨�
 - HTTP 요청은 메서드·URL·헤더·바디, 응답은 상태 코드·헤더·바디로 이루어진다.
 - 포트는 한 컴퓨터 안의 프로세스를 구분하며 1024 미만은 시스템 예약 영역이다.
 
+관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[tcp|TCP]], [[cookie-session|쿠키와 세션]]
+
 참고: [MDN HTTP 문서](https://developer.mozilla.org/ko/docs/Web/HTTP)

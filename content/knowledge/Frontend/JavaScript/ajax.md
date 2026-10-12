@@ -91,3 +91,5 @@ devServer: {
 - 현대 코드에서는 `fetch` 또는 `axios`를 Promise/async-await와 함께 쓴다.
 - fetch는 HTTP 에러에서 reject되지 않으니 `response.ok`를 확인한다.
 - CORS는 브라우저 정책이다. 해결은 서버 설정, 개발 중 우회는 프록시.
+
+관련 노트: [[cors|CORS(서버 설정 관점)]], [[rest-api|REST API]], [[recommendation-and-ajax|axios로 비동기 좋아요·팔로우 구현]]

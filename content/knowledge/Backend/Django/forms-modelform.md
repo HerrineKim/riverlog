@@ -114,4 +114,6 @@ class RecordForm(forms.ModelForm):
 - view는 `if POST → is_valid → save → redirect / else → 빈 폼 → render` 패턴.
 - 검증 실패 시 입력값·에러가 담긴 폼을 그대로 다시 렌더링한다.
 
+관련 노트: [[web-security|웹 보안: CSRF와 XSS]] — `{% csrf_token %}`이 막는 공격, [[django-web-service|Django 영화 서비스와 CRUD 게시판]]
+
 참고: [Django Forms 문서](https://docs.djangoproject.com/en/stable/topics/forms/)

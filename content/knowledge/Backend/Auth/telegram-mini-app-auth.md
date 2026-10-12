@@ -90,6 +90,11 @@ export function validateTelegramInitData(telegramInitData: string, botToken: str
 - 분석한 원본 코드는 `hash`까지 포함해 data-check-string을 만들고 있었는데, 그러면 해시가 **절대 일치하지 않는다.** `hash`는 반드시 빼야 한다.
 - 해시 비교는 `===` 대신 `crypto.timingSafeEqual`로 해 응답 시간 차이로 값을 추측하는 타이밍 공격을 막는다.
 - 봇 토큰이 설정되지 않았으면 검증을 진행하지 말고 서버 설정 오류로 처리한다.
+- 최근 `initData`에는 `hash` 외에 `signature` 필드도 들어 있다. 위 HMAC 검증에서는 `hash`만 빼고 `signature`를 포함한 나머지 필드를 그대로 쓴다.
+
+### 봇 토큰 없이 검증하기 (서드파티용)
+
+봇 토큰을 공유할 수 없는 외부 서비스는 `signature`(Ed25519 서명, base64url)를 텔레그램이 공개한 공개키로 검증할 수 있다. 이때 data-check-string은 첫 줄에 `<bot_id>:WebAppData`를 두고, 그 아래에 `hash`와 `signature`를 **둘 다 뺀** 필드를 정렬해 이어 붙인다. `auth_date` 만료 확인은 똑같이 한다. ([Telegram Mini Apps: Validating data](https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app))
 
 ## 3. API 라우트: 결과 처리
 
@@ -132,4 +137,4 @@ export async function POST(req: Request) {
 - 서버는 `hash`를 뺀 정렬된 data-check-string을 봇 토큰 기반 HMAC-SHA256으로 검증하고, `auth_date`로 만료를 확인한다.
 - 실패하면 403. 개발용 우회 플래그는 서버 전용·운영 차단.
 
-관련 노트: [NestJS JWT 인증](/knowledge/dictionary/backend/nestjs/auth-jwt-passport), [쿠키와 세션](/knowledge/dictionary/frontend/web/cookie-session)
+관련 노트: [NestJS JWT 인증](/knowledge/dictionary/backend/nestjs/auth-jwt-passport), [쿠키와 세션](/knowledge/dictionary/frontend/web/cookie-session), [[nextjs|Next.js를 쓰는 이유]], [[security|정보 시스템 보안(해시·암호 알고리즘)]]

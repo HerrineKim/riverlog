@@ -15,7 +15,7 @@ Git은 **분산 버전 관리 시스템(DVCS)** 입니다. 모든 작업자가 �
 
 | 노트 | 내용 |
 | --- | --- |
-| [기본 명령과 파일 상태](/knowledge/dictionary/tools/git/basics) | `init`, `add`, `commit`, `status`, `log` 와 Working Directory → Staging Area → Repository 흐름 |
+| [기본 명령과 파일 상태](/knowledge/dictionary/tools/git/git-basics) | `init`, `add`, `commit`, `status`, `log` 와 Working Directory → Staging Area → Repository 흐름 |
 | [브랜치](/knowledge/dictionary/tools/git/branch) | 브랜치·HEAD 개념, `git branch`, `git switch`, 브랜치 이동 시 주의점 |
 | [브랜치 병합](/knowledge/dictionary/tools/git/merge) | Fast-Forward, 3-Way Merge, Merge Conflict 해결 |
 | [원격 저장소와 GitHub](/knowledge/dictionary/tools/git/remote-github) | `remote`, `push`, `pull`, `fetch`, `clone`, 커밋 메시지 습관 |

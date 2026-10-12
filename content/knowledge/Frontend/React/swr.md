@@ -72,6 +72,15 @@ axios.post('/api/users/logout', null, { withCredentials: true })
 
 참고: 옛 버전(0.x)에는 재요청용 `revalidate()`가 따로 있었고, 1.0부터는 인자 없는 `mutate()`가 그 역할을 한다. 다른 컴포넌트의 캐시는 `import { mutate } from 'swr'`의 전역 `mutate(key)`로 갱신한다.
 
+SWR 2.x 공식 문서는 두 번째 인자에 불리언 대신 **옵션 객체**를 넘기는 형태로 설명한다. 위의 `mutate(newData, false)`는 `mutate(newData, { revalidate: false })`와 같은 의미다.
+
+| 옵션 | 기본값 | 의미 |
+| --- | --- | --- |
+| `revalidate` | `true` | 갱신이 끝난 뒤 서버에 재검증할지 |
+| `populateCache` | `true` | 원격 변경 결과를 캐시에 쓸지 |
+| `optimisticData` | — | 요청 결과를 기다리지 않고 캐시에 먼저 넣을 값(또는 함수) |
+| `rollbackOnError` | `true` | 원격 변경이 실패하면 캐시를 되돌릴지 |
+
 ### Optimistic UI
 
 서버 응답을 기다리지 않고 **화면을 먼저 바꾸는** 기법이다. 채팅 전송처럼 성공할 가능성이 높은 동작을 즉각적으로 느끼게 해 준다.
@@ -92,6 +101,17 @@ const onSubmitForm = async (e) => {
     toast.error('전송에 실패했습니다.')
   }
 }
+```
+
+SWR 2.x에서는 이 "먼저 반영 → 요청 → 실패 시 되돌리기" 흐름을 옵션으로 줄여 쓸 수 있다.
+
+```tsx
+await mutate(sendChat(newChat), {           // 원격 변경을 일으키는 Promise
+  optimisticData: (prev) => [[newChat, ...prev[0]], ...prev.slice(1)], // 먼저 화면에 반영
+  rollbackOnError: true,                      // 실패하면 자동으로 되돌림
+  populateCache: false,                       // 응답으로 캐시를 덮어쓰지 않고
+  revalidate: true,                           // 끝나면 서버 데이터로 재검증
+})
 ```
 
 ## useSWRInfinite: 페이지 단위 로딩

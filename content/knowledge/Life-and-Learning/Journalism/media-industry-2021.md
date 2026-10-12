@@ -51,4 +51,4 @@ source: notion
 - 독자 후원·구독 모델, AI 활용, 콘텐츠 IP 사업처럼 지금은 익숙해진 시도들이 이때 본격적으로 등장했다.
 - 매체가 많아질수록 "왜 우리 콘텐츠여야 하는가"라는 차별성 질문이 모든 신년사의 바탕에 깔려 있었다.
 
-관련 노트: [뉴스 가치와 기자의 역할](/knowledge/dictionary/general/journalism/news-values), [데이터 저널리즘 실무](/knowledge/dictionary/general/journalism/data-journalism)
+관련 노트: [[news-values|뉴스 가치와 기자의 역할]], [[data-journalism|데이터 저널리즘 실무]]

@@ -55,10 +55,12 @@ app.use((err, req, res, next) => {
 });
 ```
 
+> 최신 버전에서는: Express 5부터 `async` 핸들러·미들웨어가 예외를 던지거나 반환한 Promise가 reject되면 Express가 자동으로 `next(err)`를 호출한다. Express 4(레거시)에서는 `try/catch`로 잡아 직접 `next(err)`를 불러야 했다. ([Express 에러 처리 가이드](https://expressjs.com/en/guide/error-handling.html))
+
 ## 핵심 정리
 
 - 미들웨어 = `(req, res, next)` 함수. `app.use()`로 등록한다.
 - 등록 순서대로 실행되므로 공통 처리 → 라우터 → 404 순으로 배치한다.
-- NestJS의 [Middleware](Backend/NestJS/middleware)도 같은 개념을 클래스와 DI로 감싼 것이다.
+- NestJS의 [Middleware](Backend/NestJS/nestjs-middleware)도 같은 개념을 클래스와 DI로 감싼 것이다.
 
 참고: [Express 미들웨어 작성 가이드](https://expressjs.com/ko/guide/writing-middleware.html)

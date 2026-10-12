@@ -35,12 +35,22 @@ $ git branch -D <이름>        # 강제 삭제 (병합 안 된 브랜치도 삭
 
 ### `git switch`: 브랜치 이동
 
-Git 2.23(2019)에서 추가된 명령으로, 예전에 `git checkout`이 하던 일 중 "브랜치 전환" 기능만 분리한 것입니다.
+Git 2.23(2019)에서 추가된 명령으로, 예전에 `git checkout`이 하던 일 중 "브랜치 전환" 기능만 분리한 것입니다. 파일을 되돌리는 기능은 `git restore`로 분리되었습니다.
 
 ```bash
 $ git switch <브랜치>         # 다른 브랜치로 이동
 $ git switch -c <브랜치>      # 새로 만들면서 바로 이동
+$ git switch -               # 직전 브랜치로 돌아가기
 ```
+
+| 예전 방식 (`checkout`) | 새 방식 |
+| --- | --- |
+| `git checkout <브랜치>` | `git switch <브랜치>` |
+| `git checkout -b <브랜치>` | `git switch -c <브랜치>` |
+| `git checkout -- <파일>` | `git restore <파일>` |
+| `git reset HEAD <파일>` (스테이징 취소) | `git restore --staged <파일>` |
+
+`git checkout`은 지금도 동작하고 Git 프로젝트도 없앨 계획이 없다고 밝혔지만([Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)), 한 명령이 브랜치 이동과 파일 덮어쓰기를 함께 맡아 실수하기 쉽습니다. 새로 배운다면 `switch`/`restore`를 쓰고, 오래된 문서에서 `checkout`을 보면 위 표처럼 바꿔 읽으면 됩니다.
 
 ## 예시: 갈라지는 브랜치
 
@@ -93,3 +103,5 @@ $ git log --oneline --graph --all
 - 브랜치 = 커밋을 가리키는 가벼운 포인터, HEAD = 현재 브랜치를 가리키는 포인터.
 - `git switch -c`로 만들고 이동, 작업 후 병합, 병합한 브랜치는 `-d`로 삭제.
 - 이동 전에는 untracked/modified 파일이 없는지 확인한다.
+
+관련 노트: [[merge|브랜치 병합]], [[github-collaboration|GitHub 협업 저장소 설정]]

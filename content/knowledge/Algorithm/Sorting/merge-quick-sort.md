@@ -98,7 +98,7 @@ def quick_sort_inplace(arr, start=0, end=None):
 
 ## 실전에서는
 
-파이썬의 `sorted()`와 `list.sort()`는 병합 정렬과 삽입 정렬을 섞은 **Timsort**로, 최악에도 O(n log n)이고 안정 정렬이다. 코딩 테스트에서는 직접 구현하기보다 내장 정렬에 `key`를 주어 쓰는 경우가 대부분이다.
+파이썬의 `sorted()`와 `list.sort()`는 병합 정렬과 삽입 정렬을 섞은 **Timsort** 계열 알고리즘으로, 최악에도 O(n log n)이고 안정 정렬이다. (Python 3.11부터는 run을 합치는 순서를 정하는 규칙만 Powersort 방식으로 바뀌었고, 기본 구조는 같다.) 코딩 테스트에서는 직접 구현하기보다 내장 정렬에 `key`를 주어 쓰는 경우가 대부분이다.
 
 ```python
 students = [("kim", 90), ("lee", 85), ("park", 90)]
@@ -110,3 +110,5 @@ students.sort(key=lambda s: (-s[1], s[0]))  # 점수 내림차순, 이름 오름
 - 병합 정렬: 나누고 합치며 정렬, 항상 O(n log n), 추가 메모리 O(n), 안정
 - 퀵 정렬: 피벗으로 나누며 정렬, 평균 O(n log n)·최악 O(n²), 불안정
 - 실전은 내장 정렬(Timsort) + `key` 함수
+
+관련 노트: [[divide-and-conquer|분할 정복]], [[heap-priority-queue|힙(힙 정렬)]], [[elementary-sorts|기본 정렬]], [[big-o|빅오 표기법]]

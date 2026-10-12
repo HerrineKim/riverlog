@@ -57,7 +57,7 @@ function init() {
 init();
 ```
 
-> 엄밀한 싱글톤은 생성자를 `private`으로 막고 `static getInstance()`로만 인스턴스를 얻게 한다. 위 코드는 "서버 객체를 하나만 만들어 쓰는 구조"를 보여 주는 단순한 형태다.
+> 엄밀한 싱글톤([[software-engineering|디자인 패턴]] 참고)은 생성자를 `private`으로 막고 `static getInstance()`로만 인스턴스를 얻게 한다. 위 코드는 "서버 객체를 하나만 만들어 쓰는 구조"를 보여 주는 단순한 형태다.
 
 ## 서비스 패턴
 

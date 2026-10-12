@@ -1,7 +1,7 @@
 ---
 title: "정보 시스템 보안"
 concept: "Security"
-summary: "보안 3요소, 주요 공격 기법, 대칭·비대칭·해시 암호 알고리즘, 접근 통제와 AAA, IPSec, DB 암호화 정리."
+summary: "보안 3요소, 주요 공격 기법, 대칭·비대칭·해시 암호 알고리즘, TLS 버전 현황, 접근 통제와 AAA, IPSec, DB 암호화 정리."
 tags: ["certificate", "security", "network", "cryptography"]
 source: notion
 ---
@@ -49,6 +49,8 @@ source: notion
 | Spoofing | 신뢰된 대상으로 위장 (IP·ARP·DNS 스푸핑). ARP 스푸핑은 MAC 주소를 위조해 트래픽을 가로챔 |
 | Session Hijacking | 정상 연결을 RST로 끊고 재연결 시 공격자와 연결되게 해 세션을 가로챔 |
 
+SYN Flooding·Session Hijacking이 악용하는 TCP 연결 과정은 [[tcp|TCP]], ARP 스푸핑의 대상인 ARP는 [[network-layer|네트워크 계층]]에 정리했다.
+
 ### 애플리케이션·사용자 대상
 
 | 공격 | 방식 |
@@ -59,6 +61,8 @@ source: notion
 | Spear Phishing | 특정 개인·조직을 겨냥한 맞춤형 피싱 |
 | Key Logger | 키 입력을 가로채 ID·비밀번호 탈취 |
 | Zero-day | 취약점 패치가 나오기 전에 이루어지는 공격 |
+
+XSS와 CSRF의 원리와 실제 방어법은 [[web-security|웹 보안: CSRF와 XSS]]를 참고한다.
 
 ### 악성 소프트웨어
 
@@ -75,7 +79,7 @@ source: notion
 | DES | IBM 개발, 64비트 블록, 56비트 키, 16라운드. 지금은 안전하지 않음 |
 | AES | DES를 대체한 NIST 표준, 128비트 블록, 128/192/256비트 키 |
 | SEED | KISA 개발, 128비트 블록 |
-| RC4 | 스트림 암호 |
+| RC4 | 스트림 암호. 취약점이 밝혀져 TLS에서는 사용이 금지되었다(RFC 7465) |
 
 ### 비대칭 키 (공개키 / 개인키)
 
@@ -86,11 +90,11 @@ source: notion
 
 - 원문을 고정 길이 값으로 바꾸며 **복호화가 불가능**하다. 무결성 검사, 비밀번호 저장에 사용.
 - **MD5**: 128비트, MD4 대체용으로 설계 (현재는 충돌 문제로 보안 용도에 부적합)
-- **SHA 계열**: 미국 NSA가 설계한 표준 (SHA-256 등)
+- **SHA 계열**: 미국 NIST 표준. SHA-1·SHA-2(SHA-256 등)는 NSA가 설계했고, SHA-3는 공개 공모로 선정된 Keccak 알고리즘이다. SHA-1은 실제 충돌 공격이 발표되어 보안 용도로 쓰지 않는다.
 
 ### 보안 프로토콜
 
-- **SSL/TLS**: 응용 계층과 TCP 사이에서 웹 통신을 암호화하는 공개키 기반 프로토콜 (SSL은 TLS로 대체됨)
+- **SSL/TLS**: 응용 계층과 TCP 사이에서 웹 통신을 암호화하는 공개키 기반 프로토콜. SSL은 모두 폐기되어 TLS로 대체되었고, TLS 1.0·1.1도 2021년 RFC 8996으로 공식 폐기되었다. 현재는 TLS 1.2와 TLS 1.3(RFC 8446)을 쓴다.
 - **IPSec**: 네트워크 계층(3계층)의 IP 보안 프로토콜. **AH**로 무결성·인증, **ESP**로 기밀성(암호화) 제공
 
 ## 접근 통제

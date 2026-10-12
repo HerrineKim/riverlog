@@ -17,10 +17,10 @@ source: til
 ```typescript
 throw new HttpException('api is broken', 401);
 throw new HttpException({ success: false, message: 'api is broken' }, 401);
-throw new UnauthorizedException('이미 존재하는 고양이입니다.'); // 401 내장 예외
+throw new UnauthorizedException('로그인이 필요합니다.'); // 401 내장 예외
 ```
 
-`BadRequestException`(400), `UnauthorizedException`(401), `ForbiddenException`(403), `NotFoundException`(404) 같은 내장 예외 클래스를 쓰면 상태 코드를 외울 필요가 없다.
+`BadRequestException`(400), `UnauthorizedException`(401), `ForbiddenException`(403), `NotFoundException`(404), `ConflictException`(409) 같은 내장 예외 클래스를 쓰면 상태 코드를 외울 필요가 없다.
 
 ### 커스텀 필터로 응답 형식 통일하기
 

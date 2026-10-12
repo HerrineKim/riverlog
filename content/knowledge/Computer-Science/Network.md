@@ -13,5 +13,5 @@ source: mixed
 - **network-layer** — IP 주소 체계, ARP, ICMP, IPv6, NAT·포트 포워딩, 라우팅 프로토콜, 데이터 교환 방식
 - **transport-layer** — 전송 계층의 역할, 포트 번호, UDP, TCP와 UDP 비교
 - **tcp** — TCP 헤더와 플래그, 3-way handshake, 순서 번호와 상태 전이
-- **http** — HTTP 요청·응답 형식, 메서드, 상태 코드, URI·URL·URN
+- **http** — HTTP 요청·응답 형식, 메서드, 상태 코드, URI·URL·URN, HTTP/1.1·2·3 비교
 - **webrtc** — 브라우저끼리 P2P로 오디오·비디오·데이터를 주고받는 WebRTC의 구조

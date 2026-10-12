@@ -55,4 +55,6 @@ REST(Representational State Transfer)는 **자원(Resource)을 이름(URI)으로
 - PUT은 전체 교체, PATCH는 부분 수정이다.
 - 응답에는 적절한 상태 코드(200, 201, 400, 401, 404 …)를 함께 돌려준다.
 
+관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[web-services-and-it-trends|웹 서비스 기술(SOAP·REST)]], [[rest-api-server|DRF로 만든 영화 REST API 서버]]
+
 참고: [Microsoft REST API 디자인 가이드](https://learn.microsoft.com/ko-kr/azure/architecture/best-practices/api-design)

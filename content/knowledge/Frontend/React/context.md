@@ -35,6 +35,7 @@ function App() {
 }
 ```
 
+- React 19부터는 `.Provider` 없이 Context 자체를 Provider로 렌더링할 수 있다: `<ThemeContext value={theme}>...</ThemeContext>`. 공식 문서는 `<ThemeContext.Provider>`를 React 19 이전의 레거시 방식으로 소개한다(기존 코드에서는 계속 동작).
 - Provider로 감싼 하위 트리 전체에서 `value`를 읽을 수 있다.
 - `value`가 바뀌면 그 Context를 구독하는 **모든 컴포넌트가 리렌더링**된다. 변경 여부는 `Object.is`로 비교한다.
 - 그래서 `value={{ theme, setTheme }}`처럼 렌더링마다 **새 객체**를 만들어 넘기면, 실제 값이 같아도 매번 모든 구독자가 리렌더링된다. 객체는 state로 두거나 `useMemo`로 감싼다.
@@ -75,7 +76,8 @@ React에서는 `useReducer` + Context 조합으로 작은 규모의 Flux를 직�
 
 ## 핵심 정리
 
-- Context = `createContext` → `Provider value` → `useContext`.
+- Context = `createContext` → `Provider value`(React 19+는 `<Ctx value>`) → `useContext`.
+- Context 값 변경은 리렌더링의 주요 원인 중 하나다. 추적 방법은 [[re-rendering|리렌더링 원인 추적하기]] 참고.
 - 값이 바뀌면 모든 구독자가 리렌더링된다. Provider value에 매번 새 객체를 넘기지 않는다.
 - 얕은 전달은 props, 깊은 전달은 합성 먼저, 여러 곳이 공유하는 값은 Context.
 - 복잡한 전역 상태는 Flux(단방향 데이터 흐름) 기반 라이브러리를 고려한다.
