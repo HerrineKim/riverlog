@@ -4,6 +4,8 @@ concept: "Variables"
 summary: "let·const·var의 차이와 호이스팅, 원시 타입과 참조 타입, null과 undefined의 구분."
 tags: ["javascript", "frontend"]
 source: til
+date: "2026-10-12"
+sources: ["https://riverkim.kr/118"]
 ---
 
 변수를 어떻게 선언하느냐는 스코프와 재할당 가능 여부를 결정하고, 값의 타입이 원시 타입이냐 참조 타입이냐는 복사·비교 방식을 결정한다. JavaScript 버그의 상당수가 이 두 가지를 헷갈려서 생긴다.
@@ -94,6 +96,23 @@ console.log(a.n) // 2 — 같은 객체를 가리킨다
 | 의미 | 값이 아직 없음 | 값이 없음을 의도적으로 표시 |
 | 누가 넣나 | 선언만 하면 JavaScript가 자동 할당 | 개발자가 직접 할당 |
 | `typeof` | `'undefined'` | `'object'` |
+
+| 상황 | undefined가 되는 예 |
+| --- | --- |
+| 값을 할당하지 않은 변수 | `let a; a // undefined` |
+| 전달되지 않은 인자 | `function f(x) { return x }; f()` |
+| 없는 속성에 접근 | `({}).foo` |
+| `return`이 없는 함수의 반환값 | `(function () {})()` |
+
+비교와 연산에서도 차이가 난다.
+
+```javascript
+null === undefined // false — 타입이 다르다
+null == undefined  // true — 동등 비교에서는 서로만 같다
+!null              // true — 둘 다 falsy
+1 + null           // 1 — null은 숫자 연산에서 0으로 변환
+1 + undefined      // NaN
+```
 
 `typeof null`이 `'object'`인 것은 언어 초기 구현의 버그다. 초기 JavaScript는 값을 타입 태그와 값으로 표현했는데, 객체의 타입 태그가 0이었고 null은 널 포인터(0x00)로 표현되어 타입 태그가 0으로 읽혔다. 명세상 null은 원시 타입이다.
 

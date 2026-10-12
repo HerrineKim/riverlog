@@ -1,9 +1,11 @@
 ---
 title: "React 개발 환경과 빌드 도구"
 concept: "Build Tools"
-summary: "CRA로 시작하는 법과, webpack·Babel·TypeScript·ESLint·Prettier로 React 개발 환경을 직접 구성하는 방법."
+summary: "CRA로 시작하는 법과, webpack·Babel·TypeScript·ESLint·Prettier로 React 개발 환경을 직접 구성하는 방법. ESLint·Prettier 에디터 연동과 Vite 환경 변수까지."
 tags: ["react", "tooling", "typescript", "webpack", "frontend"]
 source: mixed
+date: "2026-10-12"
+sources: ["https://riverkim.kr/45", "https://riverkim.kr/84", "https://riverkim.kr/157"]
 ---
 
 React 코드는 그대로 브라우저에서 돌지 않는다. JSX와 최신 문법은 **Babel**이 변환하고, 흩어진 파일들은 **webpack** 같은 번들러가 하나로 합친다. Create React App(CRA)은 이 설정을 모두 숨겨 둔 도구이고, 직접 구성하면 각 도구의 역할을 이해할 수 있다.
@@ -87,6 +89,58 @@ entry(시작 파일) ──▶ module.rules(로더로 변환) ──▶ output(�
 | `utils` | 기타 함수(fetcher 등) |
 | `typings` | 공용 타입 정의 |
 
+## ESLint와 Prettier 설정하기
+
+**ESLint**는 코드를 분석해 문법 오류·안티 패턴을 찾아 주는 린터(linter)이고, **Prettier**는 줄바꿈·따옴표·들여쓰기 같은 모양만 일관되게 맞추는 포매터다. 둘의 규칙이 겹치면 서로 고치기를 반복하므로, 모양은 Prettier에 맡기고 ESLint는 코드 품질만 보게 연결한다. 확장 프로그램만 설치하고 설정 파일을 만들지 않으면 아무 규칙도 적용되지 않는다는 점에 주의한다. React·Vue·React Native 모두 절차가 같다.
+
+1. 패키지 설치
+
+   ```bash
+   npm install -D eslint prettier eslint-config-prettier eslint-plugin-prettier
+   ```
+
+2. VS Code 확장 프로그램 **ESLint**(오류는 빨간 줄, 경고는 노란 줄로 표시)와 **Prettier - Code formatter**를 설치한다.
+
+3. VS Code `settings.json`에서 저장할 때 자동으로 고치게 한다.
+
+   ```json
+   {
+     "editor.defaultFormatter": "esbenp.prettier-vscode",
+     "editor.formatOnSave": true,
+     "editor.codeActionsOnSave": { "source.fixAll.eslint": "explicit" },
+     "eslint.workingDirectories": [{ "mode": "auto" }]
+   }
+   ```
+
+   `defaultFormatter`는 프로젝트에 `.prettierrc`가 없을 때도 Prettier를 기본 포매터로 쓰겠다는 뜻이다.
+
+4. ESLint 설정 파일을 만든다(아래 표).
+
+5. VS Code를 다시 시작한다. 이후에는 저장할 때마다 검사·수정된다.
+
+| 설정 | 의미 |
+| --- | --- |
+| `root: true` | ESLint는 파일이 있는 폴더부터 상위로 올라가며 설정 파일을 찾는다. `root: true`를 만나면 거기서 멈춘다. 모노레포에서 저장소 공통 설정과 프로젝트별 설정을 나눌 때 쓴다 |
+| `extends` | 공개된 규칙 묶음을 가져온다. 예: `eslint:recommended`, `plugin:vue/vue3-essential`, Prettier와 겹치는 규칙을 끄는 `prettier` |
+| `rules` | `extends`로 가져온 규칙을 하나씩 덮어쓴다 |
+| `env` | `browser`, `node`처럼 전역 변수가 정의된 실행 환경 |
+
+```js
+// .eslintrc.js (ESLint 8까지의 형식)
+module.exports = {
+  root: true,
+  env: { browser: true, node: true },
+  extends: ['eslint:recommended', 'plugin:vue/vue3-essential', 'prettier'],
+  rules: {
+    // 개발 중에는 console.log를 허용하고, 프로덕션 빌드에서만 막는다
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+  },
+}
+```
+
+> 참고: ESLint 9(2024)부터는 `.eslintrc.*` 대신 **flat config**(`eslint.config.js`, 설정 객체 배열을 export)가 기본이다. `root`·`env`는 없어지고 `languageOptions.globals`로 대신한다. Vite·Next.js 템플릿은 이미 flat config로 만들어 준다. 위 표의 개념(규칙 묶음 가져오기 → 덮어쓰기)은 그대로다.
+
 ## 라우팅과 코드 스플리팅
 
 - `react-router-dom`으로 URL과 페이지 컴포넌트를 연결한다. 앱을 `BrowserRouter`로 감싸고 경로를 정의한다. (참고: v6부터 `Switch` → `Routes`, `Redirect` → `Navigate`, `component={X}` → `element={<X />}`로 바뀌었다. v7부터는 `react-router` 패키지 하나로 합쳐져 `react-router-dom`은 호환용으로만 남았다 — [react-router 레이아웃](/knowledge/dictionary/frontend/react/react-router-layout) 참고.)
@@ -95,6 +149,16 @@ entry(시작 파일) ──▶ module.rules(로더로 변환) ──▶ output(�
 ## 환경 변수 트러블슈팅
 
 - CRA에서는 `REACT_APP_` 접두사가 붙은 변수만 클라이언트 코드에 노출된다(Vite는 `VITE_`, Next.js는 `NEXT_PUBLIC_`). `.env`는 프로젝트 루트에 두고, 바꾼 뒤에는 개발 서버를 재시작한다.
+- Vite는 `process.env` 대신 **`import.meta.env`** 객체로 환경 변수를 읽는다. `VITE_` 접두사가 없는 변수는 `import.meta.env`에 들어가지 않는다. 예를 들어 `.env`에 `VITE_API_URL`이 빠져 있으면 API 주소가 `undefined`가 되어 요청이 엉뚱한 경로로 가고 404가 난다.
+
+  | 내장 변수 | 값 |
+  | --- | --- |
+  | `import.meta.env.MODE` | 현재 모드(`development`, `production` 등) |
+  | `import.meta.env.BASE_URL` | 앱이 제공되는 기본 URL(`base` 설정) |
+  | `import.meta.env.PROD` / `DEV` | 프로덕션 / 개발 환경 여부(항상 서로 반대) |
+  | `import.meta.env.SSR` | 서버에서 실행 중인지 |
+
+  모드별로 `.env.development`, `.env.production` 파일을 나눠 두면 `vite build --mode staging`처럼 모드에 맞는 파일(`.env.staging`)이 함께 로드된다.
 - "환경 변수가 인식되지 않는다"는 문제의 상당수는 **값 자체를 잘못 넣은 경우**다. 예를 들어 Firebase 설정에서 `projectId` 자리에 스토리지 버킷 주소를 넣는 실수.
 - 하이픈 같은 특수문자가 들어간 값은 따옴표로 감싸 본다.
 - 클라이언트에 노출되는 환경 변수는 비밀이 아니다. 진짜 비밀 키는 서버에만 둔다.
@@ -103,5 +167,5 @@ entry(시작 파일) ──▶ module.rules(로더로 변환) ──▶ output(�
 
 - Babel = 문법 변환(JSX, TS, 최신 JS), webpack = 파일들을 번들로 합치기.
 - 새 프로젝트는 CRA 대신 Vite나 Next.js로 시작한다.
-- ESLint(검사) + Prettier(포맷) + TypeScript `strict`가 기본 세트.
+- ESLint(검사) + Prettier(포맷) + TypeScript `strict`가 기본 세트. 확장 프로그램만으로는 안 되고 설정 파일과 저장 시 자동 수정을 켜야 한다.
 - 클라이언트 환경 변수는 도구별 접두사가 필요하고, 공개된다는 것을 전제로 쓴다.

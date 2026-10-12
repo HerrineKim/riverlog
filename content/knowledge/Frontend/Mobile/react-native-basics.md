@@ -4,6 +4,7 @@ concept: "React Native"
 summary: "React 코드를 네이티브 UI로 바꿔 주는 React Native의 동작 원리(브리지에서 New Architecture로), Expo로 시작하기, 코어 컴포넌트, StyleSheet와 Flexbox 레이아웃."
 tags: ["react-native", "mobile", "react", "css"]
 source: mixed
+date: "2026-10-12"
 ---
 
 **React Native**는 React 문법으로 Android·iOS **네이티브 앱**을 만드는 크로스 플랫폼 프레임워크다. React의 컴포넌트·props·state·Hooks를 그대로 쓰되, `<div>`, `<p>` 같은 HTML 대신 네이티브 UI로 변환되는 **코어 컴포넌트**를 쓴다.
@@ -177,3 +178,6 @@ const styles = StyleSheet.create({
 - HTML 대신 코어 컴포넌트(`View`, `Text`, `TextInput`…), 문자열은 반드시 `Text` 안에.
 - 기본 `Button`은 꾸밀 수 없다. 커스텀 버튼은 `Pressable` + `Text`.
 - CSS 대신 `StyleSheet.create` 객체, 레이아웃은 Flexbox(기본 방향 `column`).
+
+
+관련 노트: [[react-native-practical-tips|React Native 실무 팁]]

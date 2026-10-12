@@ -1,9 +1,11 @@
 ---
 title: "원격 저장소와 GitHub"
 concept: "Remote Repository"
-summary: "remote·push·pull·fetch·clone으로 로컬 저장소를 GitHub 같은 원격 저장소와 동기화하는 방법."
+summary: "remote·push·pull·fetch·clone으로 로컬 저장소를 GitHub 같은 원격 저장소와 동기화하는 방법과, 이력을 유지한 채 다른 서비스로 옮기는 미러링."
 tags: ["git", "github", "collaboration"]
 source: til
+date: "2026-10-11"
+sources: ["https://riverkim.kr/94", "https://riverkim.kr/162"]
 ---
 
 로컬 저장소는 내 컴퓨터에만 있습니다. **원격 저장소(remote repository)** 를 연결하면 작업을 백업하고, 다른 사람과 같은 저장소를 공유하며 협업할 수 있습니다. 가장 널리 쓰이는 원격 저장소 서비스가 GitHub입니다.
@@ -65,6 +67,23 @@ $ git log      # 원격의 이력이 그대로 들어 있다
 - 로컬 저장소를 시작하는 방법은 두 가지: **새로 만들거나(`init`) 복제하거나(`clone`)**.
 - clone한 저장소에서 커밋은 자유롭게 할 수 있지만, push는 그 저장소에 **쓰기 권한(collaborator 초대 등)** 이 있어야 가능하다.
 - 모든 사람이 전체 이력을 가진다는 점이 바로 *분산* 버전 관리의 의미다.
+
+## 다른 서비스로 옮기기: 미러링
+
+GitLab에서 GitHub로 저장소를 옮길 때처럼 **커밋 이력·브랜치·태그를 모두 유지한 채** 복사하려면 `--mirror` 옵션을 씁니다.
+
+```bash
+$ git clone --mirror https://gitlab.com/username/project.git   # 모든 ref를 담은 bare 저장소
+$ cd project.git
+$ git push --mirror https://github.com/username/project.git    # 빈 새 저장소에 그대로 올림
+```
+
+| 막히는 지점 | 원인 | 해결 |
+| --- | --- | --- |
+| push가 크기 제한으로 거절됨 | 이력 어딘가에 대용량 파일(빌드 결과물, 데이터 등)이 커밋되어 있음 | Git LFS로 옮기거나 BFG Repo-Cleaner로 이력에서 큰 파일을 지운 뒤 push |
+| 기본 브랜치가 엉뚱하게 잡힘 | 두 저장소의 기본 브랜치 이름이 다름(`master` vs `main`) | 옮기기 전에 이름을 맞추거나, 옮긴 뒤 저장소 설정에서 기본 브랜치를 바꿈 |
+
+대용량 저장소를 옮기는 전체 과정은 [GitLab → GitHub 대용량 프로젝트 이동 (lfs, bfg)](https://coding-nurse.tistory.com/431), 기본 흐름은 [Gitlab에서 Github으로 저장소 옮기기](https://jennnn.tistory.com/86)에 잘 정리되어 있습니다.
 
 ## 커밋 해시
 

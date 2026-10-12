@@ -4,7 +4,8 @@ concept: "Virtual Memory"
 summary: "요구 페이징과 페이지 폴트 처리, OPT·FIFO·LRU·LFU·Clock 페이지 교체 알고리즘, 다양한 캐싱 환경, 프레임 할당과 스래싱, Working Set·PFF, 페이지 크기."
 tags: ["os", "memory", "virtual-memory", "paging", "cache"]
 source: notion
-sources: ["https://app.notion.com/p/1d87bf214b924a63a303d3f8f4b9eca4"]
+date: "2026-10-12"
+sources: ["https://app.notion.com/p/1d87bf214b924a63a303d3f8f4b9eca4", "https://riverkim.kr/216"]
 ---
 
 가상 메모리는 물리 메모리 크기의 한계를 넘기 위한 기법이다. 예를 들어 100MB 메모리에서 200MB짜리 프로세스를 실행할 수 있게 해 준다. 프로세스의 주소 공간 전체를 올리지 않고 **당장 필요한 부분만** 메모리에 두고, 나머지는 디스크(backing store, swap area)에 둔다. 대부분의 시스템이 페이징을 쓰므로 여기서도 페이징을 전제로 정리한다. 페이징의 기본 구조는 [[memory-management|메모리 관리]]를, 같은 내용을 하드웨어(MMU·연관 메모리) 쪽에서 본 정리는 [[cache-and-virtual-memory|캐시와 가상 메모리]]를 참고한다.
@@ -113,6 +114,8 @@ LFU를 리스트로 구현하면 참조될 때마다 자리를 찾느라 O(n)이
 즉 페이징 시스템에서 OS가 가진 정보는 반쪽이라, 참조 시각·횟수가 필요한 LRU·LFU를 그대로 구현할 수 없다. 반면 버퍼 캐시·웹 캐시는 모든 요청이 시스템 콜·소프트웨어를 거치므로 LRU·LFU를 자유롭게 쓸 수 있다([[file-system-implementation|파일 시스템 구현]]).
 
 ## Clock 알고리즘
+
+FIFO에 참조 비트를 더해 "오래 머물렀어도 최근에 한 번 쓰인 페이지는 한 번 더 기회를 주는" 알고리즘이라 **2차 기회(Second Chance) 페이지 교체**라고도 한다.
 
 = Second Chance 알고리즘, NUR(Not Used Recently), NRU(Not Recently Used)
 

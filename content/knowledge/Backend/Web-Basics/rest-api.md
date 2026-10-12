@@ -4,6 +4,8 @@ concept: "REST API"
 summary: "자원을 URI로 표현하고 HTTP 메서드로 행위를 나타내는 API 설계 방식과 그 규칙."
 tags: ["http", "api", "rest", "backend"]
 source: til
+date: "2026-10-12"
+sources: ["https://riverkim.kr/308"]
 ---
 
 REST(Representational State Transfer)는 **자원(Resource)을 이름(URI)으로 구분하고, 그 자원의 상태를 HTTP로 주고받는** 아키텍처 스타일이다. REST 원칙을 따르는 API를 REST API(또는 RESTful API)라 부른다. 프론트엔드와 백엔드가 같은 규칙으로 대화하므로 API를 보지 않고도 의도를 짐작할 수 있다는 것이 가장 큰 장점이다.
@@ -25,6 +27,18 @@ REST(Representational State Transfer)는 **자원(Resource)을 이름(URI)으로
 | Update(전체) | `PUT` | `PUT /cats/:id` — 전체 교체 |
 | Update(부분) | `PATCH` | `PATCH /cats/:id` — 일부 필드만 수정 |
 | Delete | `DELETE` | `DELETE /cats/:id` |
+
+### POST, PUT, PATCH의 차이와 멱등성
+
+같은 요청을 여러 번(또는 동시에) 보내도 리소스가 손상되지 않고 결과가 항상 같으면 **멱등(idempotent)**하다고 한다. 재시도해도 안전한지가 여기서 갈린다.
+
+| 메서드 | 할 수 있는 일 | URI | 멱등성 |
+| --- | --- | --- | --- |
+| POST | 리소스 생성, 또는 서버가 정의한 다양한 작업 | 컬렉션 URI면 된다 (`POST /cats`) | 보장되지 않음. 두 번 보내면 두 개가 생길 수 있다 |
+| PUT | 리소스를 **통째로** 교체하거나, 없으면 그 URI로 생성 | 대상 URI를 정확히 알아야 한다 (`PUT /cats/3`) | 멱등. 같은 내용으로 몇 번을 덮어써도 결과가 같다 |
+| PATCH | 리소스의 **일부**만 수정. 생성은 하지 않는다 | 대상 URI를 정확히 알아야 한다 | 보장되지 않음. "나이 +1"처럼 상대적 변경이면 보낼 때마다 결과가 달라진다 |
+
+PUT으로 일부 필드만 보내면 빠진 필드가 비워질 수 있다. 필드 몇 개만 고치는 화면이라면 PATCH가 의도에 맞다. ([POST, PUT, PATCH의 차이점, 토스페이먼츠 개발자센터](https://docs.tosspayments.com/blog/rest-api-post-put-patch))
 
 ## REST의 특징
 
@@ -77,7 +91,7 @@ Django에서 이 설계를 구현하는 방법은 [[drf-serializer|DRF Serialize
 ## 핵심 정리
 
 - URI는 **무엇을**(자원), 메서드는 **어떻게**(행위)를 나타낸다.
-- PUT은 전체 교체, PATCH는 부분 수정이다.
+- PUT은 전체 교체(멱등), PATCH는 부분 수정(멱등 보장 안 됨), POST는 생성·기타 작업(멱등 아님)이다.
 - 응답에는 적절한 상태 코드(200, 201, 400, 401, 404 …)를 함께 돌려준다.
 
 관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[web-services-and-it-trends|웹 서비스 기술(SOAP·REST)]], [[drf-serializer|DRF Serializer와 관계 표현]]

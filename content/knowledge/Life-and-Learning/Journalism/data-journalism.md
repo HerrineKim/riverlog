@@ -4,6 +4,8 @@ concept: "Data Journalism"
 summary: "주제 설정부터 수집·정제·분석·시각화·기사화까지 데이터 기자들이 일하는 방식, 무료 도구로 시작하는 첫 시각화, 컨퍼런스에서 들은 공유·수익 모델 이야기."
 tags: ["journalism", "data-analysis", "visualization", "statistics", "content-marketing"]
 source: notion
+date: "2026-10-11"
+sources: ["https://riverkim.kr/72", "https://riverkim.kr/73", "https://journalismcourses.org/course/dataviz/"]
 ---
 
 데이터 저널리즘은 데이터를 수집·분석·시각화해 기사의 근거이자 소재로 삼는 보도 방식이다. 한 탐사보도 매체 데이터팀과의 질의응답을 바탕으로 실무 흐름을 재구성하고, 무료 도구 강좌(Knight Center MOOC "Data Journalism and Visualization with Free Tools")와 2019 데이터 저널리즘 코리아 컨퍼런스에서 얻은 내용을 덧붙였다.

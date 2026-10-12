@@ -4,6 +4,7 @@ concept: "Context"
 summary: "props를 일일이 내려주지 않고 컴포넌트 트리 전체에 값을 공유하는 Context API와, 전역 상태 관리의 Flux 패턴."
 tags: ["react", "state", "hooks", "frontend"]
 source: mixed
+date: "2026-10-12"
 ---
 
 **Context**는 props를 거치지 않고 컴포넌트 트리 깊숙한 곳까지 값을 전달하는 방법이다. 로그인 사용자, 테마, 언어 설정처럼 **여러 컴포넌트가 함께 쓰는 값**을 한곳에서 관리할 때 쓴다. 중간 컴포넌트들이 쓰지도 않는 props를 계속 넘기는 **props drilling**을 피할 수 있다.
@@ -72,7 +73,7 @@ Action → Dispatcher → Store → View → (사용자 입력) → Action → .
 | Store | 데이터(상태)를 관리하는 곳. 보통 비즈니스 도메인별로 나눈다 |
 | View | Store의 데이터를 UI로 보여 준다(MVC의 View) |
 
-React에서는 `useReducer` + Context 조합으로 작은 규모의 Flux를 직접 구현할 수도 있다. 서버에서 받아 온 데이터는 전역 state 대신 [SWR](/knowledge/dictionary/frontend/react/swr) 같은 데이터 패칭 라이브러리의 캐시로 관리하는 방법도 많이 쓴다.
+Redux의 실제 사용법은 [[redux|Redux와 react-redux]]에 정리했다. React에서는 `useReducer` + Context 조합으로 작은 규모의 Flux를 직접 구현할 수도 있다. 서버에서 받아 온 데이터는 전역 state 대신 [SWR](/knowledge/dictionary/frontend/react/swr) 같은 데이터 패칭 라이브러리의 캐시로 관리하는 방법도 많이 쓴다.
 
 ## 핵심 정리
 

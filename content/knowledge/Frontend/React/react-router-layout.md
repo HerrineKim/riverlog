@@ -4,9 +4,37 @@ concept: "React Router"
 summary: "일관된 URL 규칙을 정하고, 레이아웃에서 경로별 버튼과 현재 경로 기반 Breadcrumbs를 렌더링하는 react-router 패턴."
 tags: ["react", "routing", "mui", "frontend"]
 source: notion
+date: "2026-10-12"
+sources: ["https://riverkim.kr/182"]
 ---
 
 관리자 화면처럼 목록·상세·수정·등록 페이지가 반복되는 서비스는 **URL 규칙을 먼저 통일**해 두면, 레이아웃 한 곳에서 경로만 보고 버튼이나 Breadcrumbs(현재 위치 표시)를 자동으로 만들 수 있다. react-router v6의 `<Outlet />`, `useLocation()`을 활용한다.
+
+## 기본: Routes, Route, Outlet
+
+react-router는 새 페이지를 서버에서 불러오지 않고, URL에 따라 한 페이지 안에서 다른 컴포넌트를 그려 주는 SPA용 라우팅 라이브러리다.
+
+| 컴포넌트 | 역할 |
+| --- | --- |
+| `<Routes>` | 안에 있는 `Route`들 중 현재 URL과 가장 잘 맞는 **하나만** 렌더링한다 |
+| `<Route path element>` | `path`에 맞으면 `element`를 그린다. `path="/product/*"`처럼 `*`를 붙이면 하위 경로까지 매칭한다 |
+| `<Outlet />` | 중첩 라우트에서 부모 컴포넌트 안에 **자식 라우트가 그려질 자리**. 예전에는 `children` props로 직접 넘겼다 |
+
+```tsx
+<BrowserRouter>
+  <Header />
+  <Routes>
+    <Route path="/" element={<Main />} />
+    <Route path="/product/*" element={<Product />} />
+    <Route path="/admin" element={<AdminLayout />}>   {/* 부모: 안에 <Outlet /> */}
+      <Route path="notice/list" element={<NoticeList />} />
+    </Route>
+    <Route path="*" element={<NotFound />} />          {/* 어디에도 맞지 않을 때 */}
+  </Routes>
+</BrowserRouter>
+```
+
+`path="*"`는 다른 어떤 경로와도 맞지 않을 때만 선택되므로 404 페이지에 쓴다.
 
 ## URL 규칙
 

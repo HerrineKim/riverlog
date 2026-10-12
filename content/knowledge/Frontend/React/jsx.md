@@ -4,6 +4,8 @@ concept: "JSX"
 summary: "JavaScript 안에서 HTML처럼 UI를 선언하는 JSX 문법과, 그 결과물인 불변 React 엘리먼트의 렌더링."
 tags: ["react", "jsx", "javascript", "frontend"]
 source: til
+date: "2026-10-12"
+sources: ["https://riverkim.kr/134", "https://riverkim.kr/299"]
 ---
 
 **JSX(JavaScript XML)** 는 JavaScript 안에 HTML과 비슷한 마크업을 쓸 수 있게 한 확장 문법이다. 공식 JavaScript 문법이 아니라서 브라우저가 직접 이해하지 못하고, **Babel**이 일반 JavaScript(`React.createElement` 호출)로 변환한다. 마크업과 로직을 한 파일에서 함께 다룰 수 있어 읽고 쓰기 쉽다.
@@ -69,6 +71,19 @@ return (
 
 Fragment는 실제 DOM 노드를 만들지 않으므로 불필요한 래퍼 div가 싫을 때 쓴다. 리스트에서 key가 필요하면 축약형 대신 `<Fragment key={...}>`를 쓴다.
 
+의미 없는 `div`로 감싸면 DOM 트리에 노드가 하나 늘어날 뿐 아니라 **HTML 구조 규칙을 깨기도 한다**. 예를 들어 `<tr>` 안에 `<td>` 여러 개를 돌려주는 `Columns` 컴포넌트를 `div`로 감싸면 `<tr><div><td>…`가 되어 `table > tr > td` 구조가 무너진다. `ul > li`도 마찬가지다. 이럴 때는 반드시 Fragment를 쓴다.
+
+```jsx
+function Columns() {
+  return (
+    <>
+      <td>Hello</td>
+      <td>World</td>
+    </>
+  )
+}
+```
+
 ### 2. 중괄호 `{}` 안에는 JavaScript 표현식
 
 ```jsx
@@ -101,6 +116,25 @@ function App() {
   )
 }
 ```
+
+#### SVG를 JSX로 옮길 때: 네임스페이스 속성
+
+Figma 등에서 내보낸 SVG 코드를 컴포넌트에 그대로 붙이면 이런 에러가 날 수 있다.
+
+```text
+SyntaxError: unknown: Namespace tags are not supported by default
+```
+
+SVG는 XML 기반이라 `xmlns:xlink`, `xlink:href`, `xml:space`처럼 **콜론(`:`)이 들어간 네임스페이스 속성**을 쓴다. 네임스페이스는 같은 XML을 쓰는 다른 언어와 이름이 겹치지 않도록 "이 속성은 SVG(xlink) 소속"이라고 밝혀 두는 표시다. JSX는 속성 이름에 콜론을 기본으로 허용하지 않으므로 camelCase로 바꿔야 한다.
+
+| SVG | JSX |
+| --- | --- |
+| `xmlns:xlink` | `xmlnsXlink` |
+| `xlink:href` | `xlinkHref` (또는 그냥 `href` — SVG 2에서는 `xlink:` 없이 쓴다) |
+| `xml:space` | `xmlSpace` |
+| `stroke-width`, `fill-rule` | `strokeWidth`, `fillRule` |
+
+HTML 문서 안의 인라인 SVG에는 네임스페이스 선언이 사실상 필요 없다. 디자인 도구가 붙인 불필요한 속성은 [SVGO](https://github.com/svg/svgo)나 ImageOptim 같은 최적화 도구로 SVG를 한 번 정리하면 대부분 사라진다. SVG를 파일로 두고 SVGR(`*.svg?react` 등)로 컴포넌트로 불러오면 변환을 도구가 대신 해 준다.
 
 ### 4. 주석
 
@@ -155,4 +189,6 @@ root.render(<App />)
 
 - JSX는 Babel이 `createElement` 호출로 바꿔 주는 문법이다.
 - 최상위는 하나(필요하면 Fragment), `{}`에는 표현식만, 속성은 `className`·`htmlFor`·camelCase.
+- 표 행·리스트 항목을 묶을 때는 `div` 대신 Fragment를 써야 HTML 구조가 깨지지 않는다.
+- SVG의 `xmlns:xlink` 같은 콜론 속성은 JSX에서 `xmlnsXlink`처럼 camelCase로 바꾼다.
 - 엘리먼트는 불변이다. React는 새 엘리먼트와 비교해 바뀐 부분만 DOM에 반영한다.

@@ -4,6 +4,7 @@ concept: "Next.js"
 summary: "SSR·SSG·파일 기반 라우팅·자동 코드 스플리팅을 제공해 React 앱의 초기 로딩과 SEO를 개선하는 프레임워크. App Router의 fetch 캐싱과 Next.js 16의 'use cache'까지."
 tags: ["nextjs", "react", "rendering", "seo", "frontend"]
 source: mixed
+date: "2026-10-12"
 ---
 
 **Next.js**는 React 기반 웹 애플리케이션 **프레임워크**다. React가 UI 라이브러리라면, Next.js는 라우팅·렌더링 전략·빌드 최적화까지 정해진 틀을 제공한다. 가장 큰 장점은 React의 기본 방식인 CSR의 약점, 즉 **검색 엔진이 내용을 읽기 어렵다는 점**을 SSR·SSG로 보완해 준다는 것이다. Node.js(브라우저 밖에서 JavaScript를 실행하는 Chrome V8 기반 런타임) 위에서 동작한다.
@@ -107,3 +108,5 @@ export async function getPosts() {
 - SSR 페이지도 브라우저에서 hydration을 거쳐야 상호작용이 가능해진다.
 - 라우팅은 파일 구조 기반(`pages/` 또는 13+의 `app/`).
 - App Router에서는 서버 컴포넌트에서 `fetch`한다. 캐시는 옵트인이며, 이전 모델은 `cache`/`revalidate` 옵션, Next.js 16의 Cache Components 모델은 `'use cache'` + `cacheLife`로 지정한다.
+
+관련 노트: [[nextjs-app-router|App Router의 내비게이션과 데이터 가져오기]], [[spa-csr-ssr|SPA와 CSR·SSR]]

@@ -4,6 +4,8 @@ concept: "CodePush"
 summary: "스토어 심사 없이 React Native 앱의 JavaScript 번들만 교체하는 OTA 업데이트의 원리와, App Center CodePush 배포 절차."
 tags: ["react-native", "mobile", "deployment", "ci-cd"]
 source: notion
+date: "2026-10-12"
+sources: ["https://riverkim.kr/218"]
 ---
 
 React Native 앱은 네이티브 코드(앱 바이너리)와 **JavaScript 번들**로 나뉜다. JavaScript만 바뀌었다면 스토어에 새 버전을 올리지 않고 번들만 교체해 사용자 앱을 갱신할 수 있는데, 이런 방식을 **OTA(Over-The-Air) 업데이트**라고 한다. Microsoft의 **CodePush**(Visual Studio App Center)가 대표적인 OTA 서비스였다.
@@ -28,12 +30,22 @@ OTA로 보낸 번들은 **같은 네이티브 바이너리 버전**에서만 동
    appcenter login   # 브라우저에 뜬 인증 토큰을 터미널에 붙여 넣는다
    ```
 
+   처음 세팅할 때는 앱을 플랫폼별로 따로 등록하고, 앱에 CodePush 클라이언트 SDK(`react-native-code-push`)를 넣어 iOS·Android 배포 키를 설정한다. 한 번만 하면 된다.
+
+   ```bash
+   appcenter apps create -d MyApp-Android -o Android -p React-Native
+   appcenter apps create -d MyApp-iOS -o iOS -p React-Native
+   ```
+
 2. **Staging**에 배포
 
    ```bash
    # package.json에 appcenter codepush release-react 래퍼 스크립트를 정의해 두고 사용
    yarn push-android -t "1.0.4"   # -t: 대상 바이너리 버전(범위 지정도 가능)
    yarn push-ios -t "1.0.4"
+
+   # 래퍼 스크립트 없이 직접 부를 때 (기본 배포 대상이 Staging)
+   appcenter codepush release-react -a <owner>/MyApp-Android -t "1.0.0 - 1.0.4"
    ```
 
 3. 테스트용 빌드(Staging 키를 쓰는 앱)에서 변경 사항을 확인한다.
@@ -41,6 +53,8 @@ OTA로 보낸 번들은 **같은 네이티브 바이너리 버전**에서만 동
 4. **Production으로 승격(promote)**
    - App Center 웹의 **Distribute → CodePush**에서 Staging 릴리스를 Production으로 승격한다(CLI의 `appcenter codepush promote`로도 가능).
    - 꼭 받아야 하는 수정이면 **필수 업데이트(mandatory)** 로 표시한다.
+   - **점진적 배포(rollout)** 비율을 정하면 일부 사용자(예: 20%)에게만 먼저 내보내고 문제가 없을 때 넓힐 수 있다.
+   - Production 승격은 실제 사용자 앱에 바로 반영되므로 가장 신중하게 누른다.
 
 5. 앱이 업데이트를 내려받고 재시작되면 반영된 것을 확인한다.
 

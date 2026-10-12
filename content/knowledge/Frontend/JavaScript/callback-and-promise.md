@@ -4,6 +4,8 @@ concept: "Promise"
 summary: "언제 끝날지 모르는 비동기 작업의 결과를 다루는 방법으로서의 콜백 함수와 Promise."
 tags: ["javascript", "async", "promise", "frontend"]
 source: til
+date: "2026-10-12"
+sources: ["https://riverkim.kr/220"]
 ---
 
 서버 요청, 타이머처럼 **언제 끝날지 모르는 작업**은 비동기로 실행된다. 비동기 작업을 기다리지 않고 다음 코드가 먼저 실행되기 때문에, 결과를 받아 쓰려면 별도의 방법이 필요하다. JavaScript는 이를 위해 **콜백 → Promise → async/await** 순서로 발전해 왔다. 이 노트는 앞의 두 가지를 다루고, async/await는 [다음 노트](/knowledge/dictionary/frontend/javascript/async-await)에서 다룬다.
@@ -151,6 +153,14 @@ Promise.all([one, two, three]).then((values) => console.log(values))
 - 결과 배열의 순서는 **완료 순서가 아니라 전달한 순서**를 따른다.
 - 배열에 Promise가 아닌 값이 섞여 있어도 된다(그대로 결과에 들어감).
 - 하나라도 reject되면 **즉시** 그 사유로 reject된다. 일부 실패해도 나머지 결과가 필요하면 `Promise.allSettled`를 쓴다.
+
+언제 쓰면 좋은가:
+
+| 상황 | 이유 |
+| --- | --- |
+| 여러 요청 중 하나라도 실패하면 전체가 의미 없을 때 | 하나가 실패하면 전체가 reject된다. 코드만 봐도 "이 요청들은 함께 성공해야 한다"는 의도가 드러난다 |
+| 서로 의존하지 않는 요청을 빨리 끝내고 싶을 때 | 요청을 한꺼번에 보내 병렬로 처리하므로, 전체 시간이 가장 느린 요청 하나의 시간에 가까워진다 |
+| 실패를 빨리 알고 싶을 때 | 순서대로 보내면 뒤쪽 요청의 실패는 앞 요청이 끝나야 드러난다. 동시에 보내면 가장 먼저 실패한 요청의 에러를 바로 받는다 |
 
 ## Promise의 진짜 의미
 

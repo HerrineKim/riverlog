@@ -4,6 +4,7 @@ concept: "SWR"
 summary: "캐시를 먼저 보여 주고 백그라운드에서 재검증하는 데이터 패칭 훅 SWR의 사용 패턴."
 tags: ["react", "hooks", "http", "cache", "frontend"]
 source: til
+date: "2026-10-12"
 ---
 
 **SWR**은 Next.js를 만든 Vercel이 만든 데이터 패칭용 React Hooks 라이브러리다. 이름은 HTTP 캐시 전략인 **stale-while-revalidate**에서 왔다. 캐시된(stale) 데이터를 먼저 화면에 보여 주고, 그동안 백그라운드에서 서버에 다시 요청해(revalidate) 최신 데이터로 바꾼다. 같은 키로 요청하는 컴포넌트들이 캐시를 공유하므로, 서버 데이터를 **전역 상태처럼** 쓸 수 있다.
@@ -149,3 +150,6 @@ const onScroll = (values) => {
 - fetcher는 직접 만든다. 쿠키 기반 인증이면 `withCredentials: true`.
 - `mutate()`는 재요청, `mutate(data, false)`는 요청 없이 캐시만 변경 → optimistic UI.
 - 무한 스크롤은 `useSWRInfinite`(key 함수, 2차원 결과, `setSize`).
+
+
+관련 노트: [[tanstack-query|TanStack Query(React Query)]]

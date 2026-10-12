@@ -4,7 +4,8 @@ concept: "CPU Scheduling"
 summary: "프로세스 상태 전이, CPU burst와 성능 척도, 선점·비선점 스케줄링 알고리즘(FCFS·SJF·HRN·RR·MLFQ), 다중 프로세서·실시간·스레드 스케줄링, 문맥 교환 비용 정리."
 tags: ["os", "process", "scheduling", "certificate"]
 source: notion
-sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee"]
+date: "2026-10-12"
+sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/206"]
 ---
 
 여러 프로세스가 하나의 CPU를 나눠 쓰려면 "지금 누구에게 CPU를 줄 것인가"를 정하는 규칙이 필요하다. 이것이 CPU 스케줄링이며, 프로세스의 상태 변화를 이해해야 스케줄링이 언제 일어나는지도 이해할 수 있다. 프로세스의 구조와 PCB, 스레드는 [[process-and-thread|프로세스와 스레드]]에 따로 정리했다.

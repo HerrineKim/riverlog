@@ -4,6 +4,8 @@ concept: "React Hook Form"
 summary: "react-hook-form의 Controller로 MUI Select 같은 외부 UI 컴포넌트를 연결하고, 빈 값·placeholder·수정 폼 초기값을 다루는 방법."
 tags: ["react", "form", "mui", "state", "frontend"]
 source: notion
+date: "2026-10-12"
+sources: ["https://riverkim.kr/163", "https://riverkim.kr/160"]
 ---
 
 **react-hook-form**은 입력값을 React state 대신 ref와 내부 스토어로 관리해, 입력할 때마다 폼 전체가 리렌더링되지 않게 해 주는 폼 라이브러리다. 기본 `<input>`은 `register`로 바로 연결하지만, MUI `Select`처럼 자체적으로 값을 다루는 **제어 컴포넌트**는 `Controller`로 감싸서 연결한다. 제어 컴포넌트의 개념은 [폼과 제어 컴포넌트](/knowledge/dictionary/frontend/react/forms) 참고.
@@ -106,3 +108,10 @@ useEffect(() => {
 - 외부 UI 컴포넌트는 `Controller` + `field` 펼치기로 연결한다.
 - MUI `Select`는 빈 문자열을 "값 없음"으로 본다. '전체'에는 `"all"` 같은 값을 주고 요청 직전에 변환하거나, `displayEmpty`를 쓴다.
 - 수정 폼 초기값은 `reset`(여러 필드·기본값 갱신) 또는 `setValue`(한 필드)로 채운다.
+
+## 참고 자료
+
+react-hook-form을 왜 고르는지(입력마다 리렌더링하지 않는 비제어 방식, 적은 코드량)는 실제 도입기를 읽어 보면 감이 온다.
+
+- 인프랩, 「[react-hook-form을 선택한 이유와 적용 과정](https://tech.inflab.com/202207-rallit-form-refactoring/react-hook-form/)」(2022)
+- 딜리셔스, 「[깔끔한 폼 개발과 정시퇴근을 위하여 react-hook-form](https://dealicious-inc.github.io/2022/07/25/ss-studio.html)」(2022)

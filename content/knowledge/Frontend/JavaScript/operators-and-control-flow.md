@@ -4,6 +4,8 @@ concept: "Control Flow"
 summary: "할당·비교·논리·삼항 연산자와 if·switch 조건문, while·for·for...in·for...of 반복문."
 tags: ["javascript", "frontend"]
 source: til
+date: "2026-10-12"
+sources: ["https://riverkim.kr/166", "https://riverkim.kr/104"]
 ---
 
 연산자와 제어문은 대부분의 언어와 비슷하지만, JavaScript에는 **암묵적 타입 변환**을 하는 `==`, 객체용 `for...in`과 iterable용 `for...of`의 구분처럼 헷갈리기 쉬운 지점이 있다.
@@ -57,6 +59,48 @@ console.log('a' > 'z') // false
 false && anything // false (anything은 평가되지 않음)
 true || anything  // true
 ```
+
+### 단축 평가(short-circuit evaluation)
+
+`&&`와 `||`는 true/false가 아니라 **결과를 결정한 피연산자를 타입 변환 없이 그대로** 반환한다. 결과가 확정되는 순간 나머지는 평가하지 않는데, 이를 단축 평가라고 한다.
+
+```javascript
+'Cat' && 'Dog' // 'Dog' — 좌항이 truthy라 우항까지 봐야 결과가 정해진다
+'Cat' || 'Dog' // 'Cat' — 좌항이 truthy면 바로 결정된다
+
+true || anything  // true
+false || anything // anything
+true && anything  // anything
+false && anything // false
+```
+
+| 쓰임 | 단축 평가 | 대신하는 코드 |
+| --- | --- | --- |
+| 조건이 truthy일 때만 값 | `message = done && '완료'` | `if (done) message = '완료'` |
+| 조건이 falsy일 때 대체값 | `message = done \|\| '미완료'` | `if (!done) message = '미완료'` |
+| null일 수 있는 객체의 속성 참조 | `const value = elem && elem.value` | `elem`이 null이면 `elem.value`에서 TypeError |
+| 매개변수 기본값(ES6 이전) | `str = str \|\| ''` | 지금은 `function f(str = '')` |
+
+### 옵셔널 체이닝 `?.`와 null 병합 `??` (ES2020)
+
+`&&`와 `||`는 **falsy 전체**(`false`, `0`, `-0`, `NaN`, `''`, `null`, `undefined`)에 반응한다. `0`이나 `''`가 정상 값인 경우에는 의도와 다르게 동작한다. ES2020에서 들어온 두 연산자는 **`null`과 `undefined`에만** 반응한다.
+
+| 연산자 | 동작 | 대체하던 코드 |
+| --- | --- | --- |
+| `a?.b` | `a`가 null/undefined면 `undefined`, 아니면 `a.b` | `a && a.b` |
+| `a ?? b` | `a`가 null/undefined면 `b`, 아니면 `a` | `a \|\| b` |
+
+```javascript
+const str = ''
+str && str.length // '' — 빈 문자열이 falsy라 길이를 못 읽는다
+str?.length       // 0
+
+'' || 'default'   // 'default' — 빈 문자열이 유효한 값이어도 덮어쓴다
+'' ?? 'default'   // ''
+null ?? 'default' // 'default'
+```
+
+기본값을 줄 때 `0`·`''`·`false`도 유효한 값이면 `??`를, 객체 속성에 안전하게 접근할 때는 `?.`를 쓴다.
 
 ### 삼항 연산자
 
@@ -148,7 +192,8 @@ for (const fruit of fruits) {
 ## 핵심 정리
 
 - 비교는 항상 `===`. `==`의 자동 형변환은 예측하기 어렵다.
-- 논리 연산자는 단축 평가를 한다.
+- 논리 연산자는 단축 평가를 하고, 결정한 피연산자를 그대로 반환한다.
+- null/undefined만 걸러야 하면 `&&`·`||` 대신 `?.`·`??`.
 - switch는 break를 잊으면 fall through.
 - 객체는 `for...in`(키), 배열·iterable은 `for...of`(값).
 

@@ -4,6 +4,8 @@ concept: "Composition"
 summary: "children과 props로 컴포넌트를 조합해 재사용하는 React의 방식과, 상속을 권장하지 않는 이유."
 tags: ["react", "component", "frontend"]
 source: til
+date: "2026-10-12"
+sources: ["https://riverkim.kr/255"]
 ---
 
 **합성(Composition)** 은 여러 컴포넌트를 조합해 새로운 컴포넌트를 만드는 것이다. React는 강력한 합성 모델을 가지고 있어서, 컴포넌트 사이의 코드 재사용을 **상속 대신 합성**으로 해결하라고 권장한다.
@@ -105,8 +107,39 @@ function Page({ user }) {
 
 대신 상위 컴포넌트가 복잡해지는 단점이 있다.
 
+## `as` prop: 렌더링할 요소를 바꾸는 컴포넌트
+
+UI 라이브러리 컴포넌트 중에는 `as`(MUI는 `component`)라는 prop을 받는 것이 많다. **컴포넌트의 스타일과 동작은 그대로 두고, 실제로 그릴 HTML 요소나 컴포넌트만 바꾸는** 방법이다. 이런 컴포넌트를 다형(polymorphic) 컴포넌트라고 한다. JSX 기본 문법이 아니라 라이브러리가 정한 관례다(styled-components, react-bootstrap, Chakra UI 등은 `as`, MUI는 `component`).
+
+```jsx
+// react-bootstrap: Form.Control을 textarea로 그린다
+<Form.Control as="textarea" rows={3} />
+
+// 직접 만든 컴포넌트를 넘기면 Form.Control이 받은 props가 그대로 전달된다
+<Form.Control name="studentName" placeholder="name" as={StudentInputText} />
+
+// styled-components: Button 스타일을 유지한 채 <a>로 렌더링
+<Button as="a" href="/home">Home</Button>
+```
+
+직접 만들 때는 `as`로 받은 값을 대문자 변수에 담아 렌더링하면 된다.
+
+```tsx
+type TextProps = { as?: React.ElementType; children: React.ReactNode }
+
+function Text({ as: Component = 'p', children, ...rest }: TextProps) {
+  return <Component className="text" {...rest}>{children}</Component>
+}
+
+<Text as="h2">제목</Text> // <h2 class="text">제목</h2>
+```
+
+- 같은 스타일을 시맨틱에 맞는 다른 태그(`h2`, `label`, `a`)에 쓸 수 있다.
+- 조건이 많거나 내부 로직이 복잡한 입력 부분을 별도 파일의 컴포넌트로 빼서 `as`로 넘기면 부모 파일이 짧아진다.
+
 ## 핵심 정리
 
 - 내용을 모르는 박스는 `children`, 구멍이 여럿이면 이름 있는 props로 엘리먼트를 받는다.
 - 특수한 컴포넌트는 범용 컴포넌트를 렌더링하며 props로 구체화한다.
 - React에서 상속은 쓰지 않는다. 로직 재사용은 모듈이나 커스텀 훅으로.
+- `as`(MUI는 `component`) prop은 스타일·동작을 유지한 채 그릴 요소만 바꾼다.

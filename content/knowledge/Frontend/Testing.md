@@ -11,3 +11,4 @@ source: til
 ## 노트
 
 - [프론트엔드에서의 TDD](/knowledge/dictionary/frontend/testing/tdd): TDD의 목표와 사이클, 관심사의 분리, Jest·React Testing Library 예제, 도입 전략
+- [JavaScript 테스트 원칙과 Jest 실행 팁](/knowledge/dictionary/frontend/testing/jest-practices): 이름·AAA·블랙박스 등 테스트 작성 원칙, 파일별 커버리지와 테스트 제외 옵션

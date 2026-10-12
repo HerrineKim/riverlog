@@ -20,3 +20,4 @@ source: mixed
 - **cdn** — 엣지 서버에 콘텐츠를 캐시해 가까운 곳에서 응답하는 CDN과 캐시 무효화
 - **websocket** — HTTP Upgrade로 시작하는 양방향 실시간 통신, 폴링·SSE·WebRTC와 비교
 - **webrtc** — 브라우저끼리 P2P로 오디오·비디오·데이터를 주고받는 WebRTC의 구조
+- **[[url-to-page|url-to-page]]** — 주소창에 URL을 입력한 뒤 DNS·TCP·TLS·HTTP·렌더링을 거쳐 화면이 뜨기까지의 흐름

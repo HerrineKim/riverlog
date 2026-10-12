@@ -4,6 +4,8 @@ concept: "Code Review"
 summary: "코드 리뷰를 왜 하고 무엇을 봐야 하는지: 자동화할 것과 사람이 볼 것을 나누는 원칙, 가독성·부작용·경계 조건·보안·성능·테스트 체크리스트."
 tags: ["code-review", "collaboration", "clean-code", "career"]
 source: notion
+date: "2026-10-11"
+sources: ["https://riverkim.kr/194", "https://riverkim.kr/184"]
 ---
 
 코드 리뷰는 내가 쓴 코드의 문제를 혼자서는 다 찾을 수 없기 때문에 하는 일이다. 최고의 농구 선수도 슛을 놓치듯, 누구의 코드든 다른 사람의 눈을 거치면 사용자에게 닿기 전에 더 많은 버그를 잡을 수 있다. 완벽한 단 하나의 프로세스는 없으니 팀에 맞는 방식을 찾되, **정기적으로** 하는 것이 가장 중요하다.
@@ -128,6 +130,7 @@ const isUserMentioned = (user) => mentionedUsers.has(user)
 - [효과적인 코드리뷰를 위한 리뷰어의 자세 (카카오테크)](https://tech.kakao.com/2022/03/17/2022-newkrew-onboarding-codereview/)
 - [다른 사람의 코드를 리뷰하는 방법](https://jbee.io/essay/how-to-code-review/)
 - [clean-code-javascript](https://github.com/ryanmcdermott/clean-code-javascript), [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+- [『클린 코드』 4장 주석 정리](https://hirlawldo.tistory.com/135) — 주석이 많다고 좋은 코드가 아니다. 이름과 구조로 의도를 드러내고, 그래도 설명이 안 되는 "왜"만 주석으로 남긴다
 - 책: 『클린 코드』, 『리팩터링』, 『클린 아키텍처』, 『오브젝트』, 『함수형 사고』
 
 ## 핵심 정리

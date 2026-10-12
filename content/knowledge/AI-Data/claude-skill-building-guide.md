@@ -5,6 +5,7 @@ summary: "Anthropic의 스킬 제작 가이드 요점: 3단계 프로그레시�
 tags: ["ai", "llm", "claude-code", "skills", "mcp", "agent"]
 source: other
 date: "2026-10-12"
+sources: ["https://riverkim.kr/328"]
 ---
 
 > baho.dev의 글 「[Anthropic의 스킬 가이드를 읽혔다 — 챕터별 핵심 정리](https://baho.dev/blog/anthropic-skill-guide/)」(Jihye Song, 2026.02)를 요약·재구성한 노트입니다. 원 자료는 Anthropic이 공개한 30쪽짜리 PDF 「The Complete Guide to Building Skills for Claude」이고, 공식 예제는 [anthropics/skills](https://github.com/anthropics/skills) 저장소에 있습니다.
@@ -153,5 +154,10 @@ your-skill/
 - [ ] 에러 처리 지침 포함
 - [ ] 관련·무관 질문 양쪽으로 트리거 테스트
 - [ ] 다른 스킬과 함께 로딩돼도 충돌하지 않는지 확인
+
+## 더 읽을거리
+
+- [클로드코드 스킬 개념 1 (Claude Code, Skill.md, 필드)](https://ios-development.tistory.com/1838)
+- [클로드코드 스킬 개념 2 - 활용하기 (동적 문자열, 참조, 프론트매터, 자동화 패턴)](https://ios-development.tistory.com/1837)
 
 관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]]

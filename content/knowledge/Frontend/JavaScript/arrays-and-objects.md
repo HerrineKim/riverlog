@@ -4,6 +4,8 @@ concept: "Array Methods"
 summary: "문자열·배열의 주요 메서드, 콜백을 받는 배열 헬퍼 메서드, ES6 객체 문법과 구조 분해, 옵셔널 체이닝, JSON."
 tags: ["javascript", "data-structure", "frontend"]
 source: mixed
+date: "2026-10-12"
+sources: ["https://riverkim.kr/74", "https://riverkim.kr/164", "https://riverkim.kr/177", "https://riverkim.kr/183", "https://riverkim.kr/176", "https://riverkim.kr/104"]
 ---
 
 데이터를 가공하는 코드의 대부분은 배열과 객체를 다루는 코드다. 특히 `map`, `filter`, `reduce` 같은 **배열 헬퍼 메서드**와 ES6 객체 문법은 React 코드에서 매일 쓰인다.
@@ -87,6 +89,30 @@ const hasEven = [1, 3, 5].some((n) => n % 2 === 0)  // false
 const allOdd = [1, 3, 5].every((n) => n % 2 === 1)  // true
 ```
 
+`map`·`filter`는 원본 배열을 바꾸지 않고 새 배열을 만든다. `find`는 조건을 만족하는 요소가 없으면 `undefined`를 반환한다.
+
+#### reduce와 리듀서 함수
+
+```javascript
+arr.reduce(callback[, initialValue])
+```
+
+`reduce`에 넘기는 콜백을 **리듀서(reducer)** 라고 하며 네 인자를 받는다.
+
+| 인자 | 의미 |
+| --- | --- |
+| `acc` (누산기) | 지금까지 누적된 값. 리듀서의 반환값이 다음 호출의 `acc`가 된다 |
+| `cur` | 현재 요소 |
+| `idx` | 현재 인덱스 |
+| `src` | 원본 배열 |
+
+누산기가 순회 내내 유지되므로 결과는 하나의 값이 된다. 요소마다 결과가 하나씩 필요하면 `map`, 여러 조각을 **하나로 합쳐야** 하면 `reduce`를 쓴다. 예를 들어 흩어진 URL 조각을 하나의 문자열로 이어 붙일 때다.
+
+```javascript
+const parts = ['https://example.com', 'users', '42']
+const url = parts.reduce((acc, cur) => `${acc}/${cur}`) // 'https://example.com/users/42'
+```
+
 `reduce`의 두 번째 인자 `initialValue`는 첫 호출 때 `acc`에 들어가는 값이다. 생략하면 첫 요소가 쓰이고, **빈 배열에 initialValue 없이 호출하면 에러**가 난다.
 
 ### 배열 spread
@@ -127,6 +153,14 @@ const [firstName, surname] = ['Bora', 'Lee']
 console.log(firstName, surname) // 'Bora' 'Lee'
 
 const { title, author = '작자 미상' } = { title: '데미안' } // 기본값 지정 가능
+
+// 나머지(rest)를 한 변수에 모으기
+const [a, b, ...rest] = [10, 20, 30, 40, 50] // rest: [30, 40, 50]
+const { p, ...others } = { p: 1, q: 2, r: 3 } // others: { q: 2, r: 3 }
+
+// 이미 선언한 변수에 객체 구조 분해로 할당할 때는 괄호로 감싼다
+let x, y
+;({ x, y } = { x: 1, y: 2 })
 
 // 함수 매개변수에서도 자주 쓴다 (React props)
 function Btn({ buttonName }) { /* ... */ }

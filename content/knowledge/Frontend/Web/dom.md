@@ -4,6 +4,8 @@ concept: "DOM"
 summary: "브라우저가 HTML 문서를 파싱해 메모리에 올린 객체 트리와, 이를 다루는 API."
 tags: ["dom", "browser", "web", "javascript"]
 source: til
+date: "2026-10-12"
+sources: ["https://riverkim.kr/223", "https://riverkim.kr/185", "https://riverkim.kr/77"]
 ---
 
 텍스트 파일인 HTML을 화면에 그리려면 브라우저가 이해할 수 있는 구조로 메모리에 올려야 한다. 브라우저의 렌더링 엔진은 문서를 **파싱(parsing)** 해 모든 요소·속성·텍스트를 객체로 만들고, 이 객체들을 부모-자식 관계의 트리로 구성한다. 이것이 **DOM(Document Object Model)** 이다. JavaScript로 DOM을 바꾸면 그 변경이 곧바로 화면에 반영된다.
@@ -50,6 +52,29 @@ EventTarget → Node → Element → HTMLElement
 
 - 최상위 객체는 `window`(브라우저 탭)이며, 작성 시 생략할 수 있다. `document`도 사실 `window.document`다.
 - `navigator`(브라우저 정보), `location`(URL), `history`(방문 기록), `screen`(화면 정보), `XMLHttpRequest` 등이 있다.
+
+### 자주 쓰는 BOM 기능
+
+**페이지 이동: `location.href`.** `location`은 현재 페이지의 URL을 나타내는 객체이고, `href`는 전체 주소 문자열이다. 읽으면 현재 주소, 값을 넣으면 그 주소로 이동한다. 프레임워크 없는 HTML에서 버튼으로 페이지를 옮길 때 간단히 쓴다.
+
+```html
+<button onclick="location.href='https://example.com'">메인으로</button>
+```
+
+단순 이동이라면 `<a href>`가 접근성과 SEO에 더 낫다. 버튼은 동작(제출, 열기)에, 링크는 이동에 쓰는 것이 원칙이다.
+
+**스크롤 제어: `window.scrollTo()`.** 문서의 특정 좌표(px)로 스크롤한다. `behavior: 'smooth'`로 부드럽게 움직일 수 있다. 맨 위로 가기 버튼이 대표적인 예다.
+
+```javascript
+const scrollToTop = () => {
+  if (!window.scrollY) return // 이미 맨 위면 무시
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+```
+
+옵션 객체 형태와 `smooth`는 IE에서 지원되지 않았다. IE 지원이 끝난 지금은 대부분 신경 쓰지 않아도 된다.
+
+**디자인 모드: `document.designMode`.** 개발자 도구 콘솔에서 `document.designMode = 'on'`을 실행하면 페이지 전체를 문서 편집기처럼 클릭해 텍스트를 고칠 수 있다. 코드를 건드리지 않고 문구 길이나 줄바꿈이 레이아웃에 주는 영향을 빠르게 확인할 때 쓴다. `'off'`로 끄며, 새로고침하면 원래대로 돌아간다.
 
 ## 브라우저에서 JavaScript로 할 수 있는 일
 

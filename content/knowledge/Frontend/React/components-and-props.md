@@ -4,6 +4,8 @@ concept: "Props"
 summary: "UI를 재사용 가능한 조각으로 나누는 컴포넌트와, 부모가 자식에게 값을 넘기는 읽기 전용 입력값 props."
 tags: ["react", "component", "frontend"]
 source: til
+date: "2026-10-12"
+sources: ["https://riverkim.kr/102"]
 ---
 
 **컴포넌트**는 화면을 독립적이고 재사용 가능한 조각으로 나눈 단위다. 개념적으로는 함수와 같아서, **props**라는 입력을 받아 화면에 무엇을 그릴지(React 엘리먼트)를 반환한다. 컴포넌트 하나당 파일 하나를 두면 모듈화도 쉬워진다.
@@ -118,8 +120,42 @@ function Btn({ buttonName, fontSize = 14 }: BtnProps) {
 }
 ```
 
+### setState 함수를 props로 넘길 때
+
+자식이 부모의 state를 바꾸게 하려면 setter 함수를 props로 넘긴다. TypeScript에서 자식의 props 타입을 정하지 않으면 다음과 같은 에러가 난다.
+
+```text
+Type '{ setOpen: Dispatch<SetStateAction<boolean>>; }' is not assignable to type 'IntrinsicAttributes'.
+```
+
+"이 컴포넌트는 그런 prop을 받는다고 선언된 적이 없다"는 뜻이다. 자식의 props 타입에 setter의 타입 `Dispatch<SetStateAction<T>>`를 적어 주면 해결된다.
+
+```tsx
+// 부모
+function CalendarPage() {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>열기</button>
+      {open && <CalendarDetail setOpen={setOpen} />}
+    </>
+  )
+}
+
+// 자식
+type CalendarDetailProps = {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+function CalendarDetail({ setOpen }: CalendarDetailProps) {
+  return <div onClick={() => setOpen(false)}>닫기</div>
+}
+```
+
+setter를 그대로 넘기면 자식이 `setOpen(prev => !prev)`처럼 무엇이든 할 수 있다. 자식이 할 일이 "닫기" 하나뿐이라면 `onClose: () => void`처럼 **의도를 드러내는 콜백**을 넘기는 편이 타입도 단순하고 컴포넌트 재사용도 쉽다.
+
 ## 핵심 정리
 
 - 컴포넌트 = props를 받아 엘리먼트를 반환하는 함수. 이름은 대문자로 시작.
 - props는 부모 → 자식 단방향, 읽기 전용. 바뀌는 값은 state로.
-- props 타입은 PropTypes 대신 TypeScript로 정의한다.
+- props 타입은 PropTypes 대신 TypeScript로 정의한다. setter를 넘길 때 타입은 `Dispatch<SetStateAction<T>>`.

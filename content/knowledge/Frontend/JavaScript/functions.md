@@ -4,6 +4,8 @@ concept: "Function"
 summary: "함수 선언식과 표현식, 화살표 함수, rest·spread 연산자, 호출 방식에 따라 달라지는 this와 bind."
 tags: ["javascript", "function", "frontend"]
 source: til
+date: "2026-10-12"
+sources: ["https://riverkim.kr/209", "https://riverkim.kr/116"]
 ---
 
 JavaScript의 함수는 **일급 객체(first-class citizen)** 다. 변수에 할당할 수 있고, 다른 함수의 인자로 넘길 수 있고, 함수의 반환값이 될 수 있다. 이 성질 덕분에 콜백, 고차 함수, React 컴포넌트 같은 패턴이 가능하다. 함수 안의 `this`는 함수를 **어떻게 호출했는지**에 따라 달라진다.
@@ -89,7 +91,33 @@ const double3 = num => num * 2               // 매개변수가 하나면 () 생
 const makeObj = () => ({ key: 'value' })     // 객체를 바로 반환할 때는 ()로 감싼다
 ```
 
+- 인수가 없으면 빈 괄호 `()`를 쓴다. 이때 괄호는 생략할 수 없다.
+- 본문이 여러 줄이면 중괄호와 `return`을 직접 써야 한다.
+
+```javascript
+const sayHi = () => alert('안녕하세요!')
+
+const sum = (a, b) => {
+  const result = a + b
+  return result
+}
+```
+
 화살표 함수는 자기만의 `this`를 가지지 않고, **바깥 스코프의 this**를 그대로 쓴다. 그래서 콜백 안에서 this가 바뀌는 문제를 피할 때 유용하지만, 객체의 메서드로 쓰면 this가 그 객체를 가리키지 않는다.
+
+```javascript
+const group = {
+  title: '1모둠',
+  students: ['보라', '호진', '지민'],
+  showList() {
+    // forEach 콜백이 화살표 함수라 this는 showList의 this(group)다
+    this.students.forEach((student) => alert(`${this.title}: ${student}`))
+  },
+}
+group.showList() // '1모둠: 보라', '1모둠: 호진', '1모둠: 지민'
+```
+
+콜백을 `function (student) { ... }`로 쓰면 그 안의 `this`는 group이 아니게 되어 `this.title`이 `undefined`가 된다.
 
 ## this
 
