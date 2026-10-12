@@ -3,7 +3,9 @@ title: "Float와 Flexbox 레이아웃"
 concept: "Flexbox"
 summary: "Normal Flow를 벗어나 요소를 배치하는 float와, 축을 기준으로 아이템을 정렬하는 1차원 레이아웃 모델 Flexbox."
 tags: ["css", "layout", "flexbox", "frontend"]
-source: til
+source: mixed
+sources: ["https://heewon26.tistory.com/298"]
+date: "2026-10-12"
 ---
 
 블록은 위에서 아래로, 인라인은 왼쪽에서 오른쪽으로 쌓이는 Normal Flow만으로는 "옆으로 나란히", "가운데 정렬", "남은 공간 나눠 갖기" 같은 레이아웃을 만들기 어렵다. 예전에는 `float`로 이를 해결했고, 지금은 대부분 **Flexbox**와 **Grid**로 처리한다.
@@ -121,6 +123,44 @@ float된 요소는 Normal Flow에서 벗어나 떠 있기 때문에, 이후 요�
 }
 ```
 
+## 함정: flex 아이템이 컨테이너를 넘칠 때
+
+> 곽빵의 「[flexbox에서 가변요소의 자식 width가 부모 width를 넘을 때](https://heewon26.tistory.com/298)」(2021.09)를 요약·재구성한 내용입니다.
+
+`flex: 1`인 아이템 안에 긴 한 줄 텍스트를 넣고 말줄임(`…`)을 걸었는데, 말줄임은 안 되고 텍스트가 컨테이너 밖으로 삐져나오는 경우가 있다.
+
+```css
+.container { display: flex; width: 540px; }
+.col-1 { width: 200px; }
+.col-2 { flex: 1; }            /* 남은 340px을 차지해야 하는데… */
+.col-2 p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;     /* 동작하지 않는다 */
+}
+```
+
+| 증상 | 원인 | 해결 |
+| --- | --- | --- |
+| `overflow: hidden`·`text-overflow: ellipsis`가 안 먹고 아이템이 컨테이너보다 넓어진다 | flex 아이템의 `min-width` 기본값이 `0`이 아니라 **`auto`**다. `auto`는 "콘텐츠 최소 크기보다 작아지지 않는다"는 뜻이라, 줄바꿈 없는 긴 텍스트만큼 아이템이 늘어난다. 이 최소 크기 제약이 `flex-basis`보다 우선한다 | 아이템에 **`min-width: 0`** |
+
+```css
+.col-2 {
+  flex: 1;
+  min-width: 0; /* 콘텐츠 크기 대신 flex-basis 기준으로 줄어들 수 있게 */
+}
+```
+
+**말줄임이 안 된다 = 요소 너비가 제한되지 않았다**는 신호다. 다른 해법과 비교하면 다음과 같다.
+
+| 방법 | 평가 |
+| --- | --- |
+| 아이템에 `min-width: 0` | 권장. 원인을 직접 고친다 |
+| 컨테이너에 `overflow: hidden` | 넘친 부분을 잘라 숨길 뿐이라 의도와 다른 결과가 나올 수 있다 |
+| 아이템에 `max-width: calc(100vw - 고정폭)` | 레이아웃 수치에 묶여 깨지기 쉽다. 비추천 |
+
+`flex-direction: column`이면 같은 문제가 높이에서 생기므로 `min-height: 0`을 준다.
+
 ## Flexbox와 Grid
 
 Flexbox는 **한 방향**(행 또는 열)의 배치에, Grid는 행과 열을 **동시에** 다루는 2차원 배치에 적합하다. 두 가지로 대부분의 레이아웃을 구성할 수 있다. React Native의 레이아웃도 Flexbox 기반이다([React Native 스타일링](/knowledge/dictionary/frontend/mobile/react-native-basics) 참고).
@@ -130,3 +170,4 @@ Flexbox는 **한 방향**(행 또는 열)의 배치에, Grid는 행과 열을 **
 - float는 Normal Flow를 벗어나므로 부모에 clearfix가 필요하다. 레이아웃 용도로는 거의 쓰지 않는다.
 - Flexbox: 부모에 `display: flex`, 주축은 `justify-content`, 교차축은 `align-items`.
 - `align-self`, `flex-grow`, `order`는 **아이템**에 주는 속성이다.
+- flex 아이템의 `min-width` 기본값은 `auto`다. 긴 텍스트 때문에 아이템이 넘치면 `min-width: 0`을 준다.
