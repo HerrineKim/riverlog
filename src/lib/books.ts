@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { site } from "./site";
-import { isPublished, resolveAttachment } from "./vault";
+import { isFresh, isPublished, resolveAttachment } from "./vault";
 
 const BOOKS_DIR = path.join(process.cwd(), "content/books");
 
@@ -24,7 +24,15 @@ export type Book = {
 export const STATUS_LABEL: Record<BookStatus, string> = { reading: "읽는 중", read: "다 읽음", want: "읽고 싶음" };
 const STATUS_ORDER: BookStatus[] = ["reading", "read", "want"];
 
+let cached: { list: Book[]; at: number } | undefined;
+
 export function getAllBooks(): Book[] {
+  if (cached && isFresh(cached.at)) return cached.list;
+  cached = { list: readBooks(), at: Date.now() };
+  return cached.list;
+}
+
+function readBooks(): Book[] {
   if (!fs.existsSync(BOOKS_DIR)) return [];
   const collator = new Intl.Collator("ko", { numeric: true });
   return fs

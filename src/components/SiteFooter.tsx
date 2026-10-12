@@ -6,7 +6,7 @@ export default function SiteFooter() {
     <footer className="mt-auto border-t border-line/70">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-8 text-sm text-muted sm:px-6">
         <p>
-          © 2026 {site.author} · 흐르며 배우고, 남기는 기록
+          © 2026 {site.author}
         </p>
         <ul className="flex items-center gap-1">
           {SOCIAL_LINKS.map((l) => (

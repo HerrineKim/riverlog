@@ -2,6 +2,7 @@ import GithubSlugger from "github-slugger";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeRaw from "rehype-raw";
+import rehypeSanitize, { defaultSchema, type Options as Schema } from "rehype-sanitize";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
@@ -15,12 +16,27 @@ const WIKILINK_TEXT = /\[\[([^\]|\n]+?)(?:\\?\|([^\]\n]+))?\]\]/g;
 
 export type TocItem = { id: string; text: string; depth: 2 | 3 };
 
+// GitHub's schema, minus the `user-content-` id prefix (rehype-slug adds heading ids afterwards anyway),
+// plus free `class` on every element: per-element rules override "*", so it is added to each list
+const sanitizeSchema: Schema = {
+  ...defaultSchema,
+  clobberPrefix: "",
+  attributes: Object.fromEntries(
+    Object.entries({ "*": [], ...defaultSchema.attributes }).map(([tag, attrs]) => [
+      tag,
+      [...attrs.filter((a) => (Array.isArray(a) ? a[0] : a) !== "className"), "className"],
+    ]),
+  ),
+};
+
 const processor = unified()
   .use(remarkParse)
   .use(remarkGfm)
   .use(remarkObsidian)
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(rehypeRaw)
+  // Notes come from imported TIL/Notion pages; raw HTML keeps its markup but loses scripts, handlers and js: URLs
+  .use(rehypeSanitize, sanitizeSchema)
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, { behavior: "wrap" })
   .use(rehypePrettyCode, {

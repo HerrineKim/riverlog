@@ -53,6 +53,8 @@ function useSize(ref: React.RefObject<HTMLElement | null>) {
   return size;
 }
 
+const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 const REFERENCE_COLOR = { dark: "#f5c26b", light: "#b7791f" } as const;
 
 export default function MindMapCanvas({
@@ -68,7 +70,6 @@ export default function MindMapCanvas({
   const theme = useTheme();
   const dark = theme === "dark";
   const [selected, setSelected] = useState<Node | null>(null);
-  const [hovered, setHovered] = useState<Node | null>(null);
   const [query, setQuery] = useState("");
 
   // react-force-graph mutates nodes/links; give it its own copy once.
@@ -113,7 +114,7 @@ export default function MindMapCanvas({
     return m;
   }, [data, graphData]);
 
-  const focus = selected ?? hovered;
+  const focus = selected;
   const isLit = useCallback(
     (id: string) => !focus || focus.id === id || !!neighbors.get(focus.id)?.has(id),
     [focus, neighbors],
@@ -131,7 +132,7 @@ export default function MindMapCanvas({
     const charge = fg.d3Force("charge") as unknown as { strength?: (n: number) => void } | undefined;
     charge?.strength?.(-45);
     const controls = fg.controls() as OrbitControls;
-    controls.autoRotate = true;
+    controls.autoRotate = !reducedMotion();
     controls.autoRotateSpeed = 0.45;
     controls.enableDamping = true;
     controls.minDistance = MIN_DIST;
@@ -211,7 +212,7 @@ export default function MindMapCanvas({
     const fg = fgRef.current;
     if (!fg) return;
     fg.zoomToFit(1000, 60);
-    (fg.controls() as { autoRotate?: boolean }).autoRotate = true;
+    (fg.controls() as { autoRotate?: boolean }).autoRotate = !reducedMotion();
   };
 
   const results = useMemo(() => {
@@ -220,22 +221,43 @@ export default function MindMapCanvas({
     return graphData.nodes.filter((n) => n.name.toLowerCase().includes(q)).slice(0, 8);
   }, [query, graphData]);
 
+  // Spheres are rebuilt on every focus change; share a handful of geometries/materials instead of one per node.
+  // (three-forcegraph disposes them on rebuild, and three.js re-uploads them on the next draw.)
+  const geometriesRef = useRef(new Map<number, THREE.SphereGeometry>());
+  const materialsRef = useRef(new Map<string, THREE.MeshLambertMaterial>());
+  useEffect(() => {
+    const geometries = geometriesRef.current;
+    const materials = materialsRef.current;
+    return () => {
+      geometries.forEach((g) => g.dispose());
+      materials.forEach((m) => m.dispose());
+    };
+  }, []);
+
   const nodeObject = useCallback(
     (n: Node) => {
       const lit = isLit(n.id);
       const group = new THREE.Group();
       const radius = n.size;
-      const sphere = new THREE.Mesh(
-        new THREE.SphereGeometry(radius, 24, 24),
-        new THREE.MeshLambertMaterial({
-          color: n.color,
-          emissive: n.color,
-          emissiveIntensity: dark ? 0.45 : 0.08,
-          transparent: true,
-          opacity: lit ? (n.kind === "doc" ? 0.85 : 0.95) : 0.12,
-        }),
-      );
-      group.add(sphere);
+      const geometries = geometriesRef.current;
+      const materials = materialsRef.current;
+      let geometry = geometries.get(radius);
+      if (!geometry) geometries.set(radius, (geometry = new THREE.SphereGeometry(radius, 20, 16)));
+      const opacity = lit ? (n.kind === "doc" ? 0.85 : 0.95) : 0.12;
+      const key = `${n.color}|${opacity}|${dark}`;
+      let material = materials.get(key);
+      if (!material)
+        materials.set(
+          key,
+          (material = new THREE.MeshLambertMaterial({
+            color: n.color,
+            emissive: n.color,
+            emissiveIntensity: dark ? 0.45 : 0.08,
+            transparent: true,
+            opacity,
+          })),
+        );
+      group.add(new THREE.Mesh(geometry, material));
       const showLabel = n.kind === "category" || (focus && lit);
       if (showLabel) {
         const label = new SpriteText(n.name);
@@ -257,6 +279,15 @@ export default function MindMapCanvas({
     },
     [dark, focus, isLit],
   );
+
+  // Escape clears the selection, like clicking the background
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !(e.target instanceof HTMLInputElement)) setSelected(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <div ref={wrapRef} className="relative h-full w-full overflow-hidden">
@@ -284,17 +315,7 @@ export default function MindMapCanvas({
           linkOpacity={dark ? 0.35 : 0.55}
           linkWidth={(l) => ((l as unknown as Link).kind === "reference" ? 1.6 : 0)}
           linkCurvature={(l) => ((l as unknown as Link).kind === "reference" ? 0.18 : 0)}
-          linkDirectionalParticles={(l) => {
-            const link = l as unknown as Link;
-            if (link.kind !== "reference") return 0;
-            if (!focus) return 1;
-            return (link.source as Node).id === focus.id || (link.target as Node).id === focus.id ? 3 : 0;
-          }}
-          linkDirectionalParticleWidth={2.4}
-          linkDirectionalParticleSpeed={0.006}
-          linkDirectionalParticleColor={() => REFERENCE_COLOR[theme]}
           onNodeHover={(n) => {
-            setHovered((n as Node) ?? null);
             if (wrapRef.current) wrapRef.current.style.cursor = n ? "pointer" : "grab";
           }}
           onNodeClick={(n) => select(n as Node)}
@@ -313,6 +334,13 @@ export default function MindMapCanvas({
               type="search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") setQuery("");
+                if (e.key === "Enter" && results[0]) {
+                  select(results[0]);
+                  setQuery("");
+                }
+              }}
               placeholder="노드 찾기…"
               aria-label="마인드맵에서 노드 찾기"
               className="w-full rounded-full border border-line bg-bg-elev/85 px-4 py-2 text-sm text-fg-strong outline-none backdrop-blur placeholder:text-muted focus:border-accent"
@@ -322,6 +350,7 @@ export default function MindMapCanvas({
                 {results.map((r) => (
                   <li key={r.id}>
                     <button
+                      type="button"
                       onClick={() => {
                         select(r);
                         setQuery("");
@@ -357,12 +386,12 @@ export default function MindMapCanvas({
         </ul>
       </div>
 
-      {/* Selected / hovered node card */}
-      {(selected ?? hovered) && (
+      {/* Selected node card */}
+      {selected && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-4 sm:justify-start">
           <div className="pointer-events-auto w-full max-w-sm rounded-2xl border border-line bg-bg-elev/90 p-4 shadow-2xl backdrop-blur-md">
             {(() => {
-              const n = (selected ?? hovered)!;
+              const n = selected;
               return (
                 <>
                   <p className="flex items-center gap-2 text-xs text-muted">
@@ -459,7 +488,7 @@ export default function MindMapCanvas({
         </button>
       </div>
 
-      {!selected && !hovered && (
+      {!selected && (
         <p className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-bg-elev/70 px-3 py-1 text-xs whitespace-nowrap text-muted backdrop-blur">
           <span className="hidden sm:inline">드래그해서 회전 · 스크롤이나 오른쪽 바로 확대 · 노드를 클릭해 이동 ·</span>
           <span className="inline-block h-0.5 w-4 rounded" style={{ background: REFERENCE_COLOR[theme] }} />

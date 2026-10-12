@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { excerptOf } from "./markdown";
-import { isHiddenName, isPublished, KNOWLEDGE_BASE, resolveNote, slugify } from "./vault";
+import { isFresh, isHiddenName, isPublished, KNOWLEDGE_BASE, resolveNote, slugify } from "./vault";
 
 export { KNOWLEDGE_BASE, slugify };
 
@@ -66,8 +66,14 @@ function prettyFolder(name: string, depth: number): string {
  */
 function resolveRelativeLinks(markdown: string, file: string): string {
   const fromDir = path.posix.dirname(path.relative(ROOT, file).split(path.sep).join("/"));
-  const exists = (rel: string) =>
-    !rel.startsWith("..") && (fs.existsSync(path.join(ROOT, `${rel}.md`)) || fs.existsSync(path.join(ROOT, rel)));
+  // Only published notes resolve, so a link never points at a draft's 404 or leaks its file name
+  const noteHref = (rel: string) => {
+    // resolveNote also matches bare file names; a file-path link must name the exact note
+    const href = resolveNote(rel)?.href;
+    return href === `${KNOWLEDGE_BASE}/${rel.split("/").map(slugify).join("/")}` ? href : undefined;
+  };
+  const isFolder = (rel: string) => fs.existsSync(path.join(ROOT, rel)) && fs.statSync(path.join(ROOT, rel)).isDirectory();
+  const exists = (rel: string) => !rel.startsWith("..") && (!!noteHref(rel) || isFolder(rel));
   return markdown.replace(/\]\((?!https?:|\/|#|mailto:)([^)\s#{}]+?)(#[^)\s]*)?\)/g, (m, target: string, hash = "") => {
     let decoded = target;
     try {
@@ -77,7 +83,7 @@ function resolveRelativeLinks(markdown: string, file: string): string {
     const candidates = [path.posix.normalize(path.posix.join(fromDir === "." ? "" : fromDir, bare)), path.posix.normalize(bare)];
     const hit = candidates.find(exists);
     if (!hit) return m;
-    return `](${KNOWLEDGE_BASE}/${hit.split("/").map(slugify).join("/")}${hash})`;
+    return `](${noteHref(hit) ?? `${KNOWLEDGE_BASE}/${hit.split("/").map(slugify).join("/")}`}${hash})`;
   });
 }
 
@@ -88,7 +94,9 @@ function readDoc(file: string): KDoc | undefined {
   if (!isPublished(data)) return undefined;
   const content = resolveRelativeLinks(parsed.content, file);
   const source = ["til", "notion", "mixed"].includes(data.source) ? data.source : "other";
-  const sources = Array.isArray(data.sources) ? data.sources.map(String) : data.sourceUrl ? [String(data.sourceUrl)] : [];
+  const sources = (Array.isArray(data.sources) ? data.sources.map(String) : data.sourceUrl ? [String(data.sourceUrl)] : []).filter(
+    (u) => /^https?:\/\//i.test(u),
+  );
   return {
     title: String(data.title ?? path.basename(file, ".md")).normalize("NFC"),
     concept: data.concept ? String(data.concept) : undefined,
@@ -156,10 +164,10 @@ function buildNode(dir: string, slug: string[], name: string, category: string, 
   };
 }
 
-let cached: { tree: KNode; byId: Map<string, KNode> } | undefined;
+let cached: { tree: KNode; byId: Map<string, KNode>; at: number } | undefined;
 
 function load() {
-  if (cached && process.env.NODE_ENV === "production") return cached;
+  if (cached && isFresh(cached.at)) return cached;
   const tree = buildNode(ROOT, [], "Knowledge", "");
   const byId = new Map<string, KNode>();
   const visit = (n: KNode) => {
@@ -167,7 +175,7 @@ function load() {
     n.children.forEach(visit);
   };
   visit(tree);
-  cached = { tree, byId };
+  cached = { tree, byId, at: Date.now() };
   return cached;
 }
 
@@ -212,6 +220,50 @@ export function knowledgeStats() {
     fromTil: all.filter((n) => n.doc && n.doc.source !== "notion").length,
     fromNotion: all.filter((n) => n.doc && n.doc.source !== "til").length,
   };
+}
+
+export const TAGS_BASE = "/knowledge/tags";
+export const tagHref = (tag: string) => `${TAGS_BASE}/${encodeURIComponent(tag.toLowerCase())}`;
+
+export type TagEntry = { tag: string; notes: KNode[]; related: { tag: string; count: number }[] };
+
+/** Every tag (lowercased) with its notes in tree order and the tags that most often appear alongside it. */
+let tagsCache: { tree: KNode; tags: TagEntry[] } | undefined;
+
+export function getTags(): TagEntry[] {
+  const tree = getKnowledgeTree();
+  if (tagsCache?.tree !== tree) tagsCache = { tree, tags: buildTags() };
+  return tagsCache.tags;
+}
+
+function buildTags(): TagEntry[] {
+  const byTag = new Map<string, KNode[]>();
+  for (const n of getAllNodes())
+    for (const t of new Set(n.doc?.tags.map((t) => t.toLowerCase()) ?? [])) {
+      if (!byTag.has(t)) byTag.set(t, []);
+      byTag.get(t)!.push(n);
+    }
+
+  return [...byTag.entries()]
+    .map(([tag, notes]) => {
+      const co = new Map<string, number>();
+      for (const n of notes)
+        for (const t of new Set(n.doc!.tags.map((t) => t.toLowerCase()))) if (t !== tag) co.set(t, (co.get(t) ?? 0) + 1);
+      const related = [...co.entries()]
+        .map(([tag, count]) => ({ tag, count }))
+        .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag))
+        .slice(0, 12);
+      return { tag, notes, related };
+    })
+    .sort((a, b) => b.notes.length - a.notes.length || a.tag.localeCompare(b.tag));
+}
+
+export function getTag(param: string): TagEntry | undefined {
+  let tag = param;
+  try {
+    tag = decodeURIComponent(param);
+  } catch {}
+  return getTags().find((t) => t.tag === tag.toLowerCase());
 }
 
 export type GraphNode = {

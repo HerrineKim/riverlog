@@ -19,7 +19,7 @@ export default function BooksPage() {
         </p>
         <div className="mt-10">
           <BookList
-            books={books.map(({ review, cover, tags, ...b }) => ({ ...b, hasReview: review.length > 0 }))}
+            books={books.map(({ review, cover, tags, pdf, ...b }) => ({ ...b, hasReview: review.length > 0 }))}
           />
         </div>
       </main>

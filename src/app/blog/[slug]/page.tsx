@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
-import Toc from "@/components/Toc";
+import Toc, { MobileToc } from "@/components/Toc";
 import { getAllPosts, getPost } from "@/lib/blog";
 import { formatDate } from "@/lib/format";
 import { extractToc } from "@/lib/markdown";
@@ -49,6 +49,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
       </div>
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-4 pb-24 sm:px-6 lg:grid-cols-[minmax(0,1fr)_14rem]">
         <article className="mx-auto w-full max-w-3xl min-w-0 lg:mr-0">
+          <MobileToc items={toc} className="mb-8 lg:hidden" />
           <Prose markdown={post.body} />
         </article>
         <aside className="hidden lg:block">

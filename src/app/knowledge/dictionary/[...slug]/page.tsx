@@ -3,10 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
-import Toc from "@/components/Toc";
+import Toc, { MobileToc } from "@/components/Toc";
 import TreeNav from "@/components/knowledge/TreeNav";
 import { formatDate } from "@/lib/format";
-import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, type KNode } from "@/lib/knowledge";
+import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, tagHref, type KNode } from "@/lib/knowledge";
 import { extractToc } from "@/lib/markdown";
 
 // Only the pages generated at build time exist; anything else is a real 404.
@@ -83,9 +83,13 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
                 <span className="rounded-full border border-line px-2.5 py-1">{SOURCE_LABEL[doc.source]}</span>
                 {doc.date && <span className="rounded-full border border-line px-2.5 py-1">{formatDate(doc.date)}</span>}
                 {doc.tags.map((t) => (
-                  <span key={t} className="rounded-full bg-accent-soft px-2.5 py-1 text-accent">
+                  <Link
+                    key={t}
+                    href={tagHref(t)}
+                    className="rounded-full bg-accent-soft px-2.5 py-1 text-accent transition hover:bg-accent hover:text-accent-ink"
+                  >
                     #{t}
-                  </span>
+                  </Link>
                 ))}
               </div>
             )}
@@ -93,6 +97,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
 
           {doc && (
             <article className="mt-8">
+              <MobileToc items={toc} className="mb-8 xl:hidden" />
               <Prose markdown={doc.body} />
               {doc.sources.length > 0 && (
                 <div className="mt-14 rounded-xl border border-line bg-bg-elev p-4 text-sm text-muted">

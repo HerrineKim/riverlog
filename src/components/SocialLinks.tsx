@@ -36,21 +36,20 @@ export function SocialIcon({ name, className = "size-4" }: { name: keyof typeof 
 
 export default function SocialLinks() {
   return (
-    <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+    <ul className="flex flex-wrap gap-2 lg:flex-col">
       {SOCIAL_LINKS.map((l) => (
         <li key={l.key}>
           <a
             href={l.href}
+            title={l.value}
             {...(l.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
-            className="group flex items-center gap-3 rounded-xl border border-line bg-bg-elev px-4 py-3 transition hover:border-accent"
+            className="group flex items-center gap-2.5 rounded-full border border-line bg-bg-elev py-1.5 pr-4 pl-1.5 text-sm text-fg transition hover:border-accent hover:text-accent lg:w-full"
           >
-            <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-accent-soft text-accent">
-              <SocialIcon name={l.key} />
+            <span className="grid size-7 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
+              <SocialIcon name={l.key} className="size-3.5" />
             </span>
-            <span className="min-w-0">
-              <span className="block text-xs text-muted">{l.label}</span>
-              <span className="block truncate text-sm font-medium text-fg-strong group-hover:text-accent">{l.value}</span>
-            </span>
+            <span className="truncate">{l.label}</span>
+            <span className="ml-auto hidden truncate pl-2 text-xs text-muted lg:inline">{l.value}</span>
           </a>
         </li>
       ))}

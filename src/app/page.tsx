@@ -33,38 +33,39 @@ export default function AboutPage() {
       <main>
         <section className="river-grain relative overflow-hidden border-b border-line/70">
           <RiverMark className="pointer-events-none absolute -right-24 -bottom-28 size-[28rem] text-accent opacity-[0.06]" />
-          <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-end">
-            <div>
-              <p className="text-xs font-semibold tracking-[0.24em] text-accent uppercase">About · {site.author}</p>
-              <h1 className="mt-5 font-display text-5xl leading-[1.02] text-fg-strong sm:text-7xl">
-                {about.headline}
-              </h1>
-              <div className="mt-8 max-w-2xl">
-                <Prose markdown={about.body} />
+          <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+            <div className="flex items-center gap-4">
+              {about.photo && (
+                <Image
+                  src={about.photo}
+                  alt={`${site.nickname}(${site.author}) 프로필 사진`}
+                  width={160}
+                  height={160}
+                  priority
+                  sizes="4rem"
+                  className="size-14 shrink-0 rounded-full border border-line object-cover object-[50%_18%] sm:size-16"
+                />
+              )}
+              <div className="min-w-0">
+                <p className="font-semibold text-fg-strong">
+                  {site.nickname} <span className="font-normal text-muted">· {site.author}</span>
+                </p>
+                {about.role && <p className="text-sm text-muted">{about.role}</p>}
               </div>
             </div>
-            <div className="lg:pb-2">
-              {about.photo && (
-                <figure className="mb-8 flex items-center gap-4 lg:block">
-                  <Image
-                    src={about.photo}
-                    alt={`${site.nickname}(${site.author}) 프로필 사진`}
-                    width={900}
-                    height={1200}
-                    priority
-                    sizes="(min-width: 1024px) 18rem, 6rem"
-                    className="aspect-[3/4] w-24 shrink-0 rounded-2xl border border-line object-cover object-top lg:w-72"
-                  />
-                  {about.role && (
-                    <figcaption className="text-sm text-muted lg:mt-4">
-                      <span className="block text-base font-semibold text-fg-strong">{site.author}</span>
-                      {about.role}
-                    </figcaption>
-                  )}
-                </figure>
-              )}
-              <p className="mb-3 text-xs font-semibold tracking-[0.18em] text-muted uppercase">Contact & Subscribe</p>
-              <SocialLinks />
+
+            <h1 className="mt-8 max-w-3xl font-display text-4xl leading-[1.08] text-fg-strong sm:text-6xl">
+              {about.headline}
+            </h1>
+
+            <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-16">
+              <div className="max-w-2xl">
+                <Prose markdown={about.body} />
+              </div>
+              <aside className="lg:pt-1">
+                <p className="mb-3 text-xs font-semibold tracking-[0.18em] text-muted uppercase">Contact & Subscribe</p>
+                <SocialLinks />
+              </aside>
             </div>
           </div>
         </section>
@@ -89,6 +90,7 @@ export default function AboutPage() {
                   </Link>
                 </li>
               ))}
+              {posts.length === 0 && <li className="py-8 text-sm text-muted">아직 글이 없어요. 곧 첫 글로 찾아올게요.</li>}
             </ul>
           </div>
 
@@ -125,6 +127,11 @@ export default function AboutPage() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link href="/knowledge/tags" className="flex items-center gap-1 rounded-full border border-dashed border-line px-3 py-1.5 text-sm text-muted transition hover:border-accent hover:text-accent">
+                  # 태그로 찾기
+                </Link>
+              </li>
             </ul>
           </div>
         </section>

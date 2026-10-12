@@ -34,10 +34,15 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
   const all = useMemo(() => flatten(tree, [], []), [tree]);
   const matches = useMemo(() => {
     if (!q) return null;
+    // "#react" matches the tag exactly; anything else searches title, summary, tags and path
+    const tag = q.startsWith("#") ? q.slice(1) : undefined;
+    if (tag === "") return null;
     return new Set(
       all
         .filter(({ node, trail }) =>
-          [node.name, node.excerpt ?? "", node.tags.join(" "), trail.join(" ")].join(" ").toLowerCase().includes(q),
+          tag !== undefined
+            ? node.tags.some((t) => t.toLowerCase() === tag)
+            : [node.name, node.excerpt ?? "", node.tags.join(" "), trail.join(" ")].join(" ").toLowerCase().includes(q),
         )
         .map((f) => f.node.id),
     );
@@ -74,11 +79,12 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="용어, 주제, 태그로 찾기…"
+            onKeyDown={(e) => e.key === "Escape" && setQuery("")}
+            placeholder="용어, 주제로 찾기 · #태그"
             className="w-full rounded-full border border-line bg-bg-elev py-2 pr-4 pl-9 text-sm text-fg-strong outline-none placeholder:text-muted focus:border-accent"
           />
         </label>
-        <div className="inline-flex rounded-full border border-line p-0.5 text-sm" role="tablist">
+        <div className="inline-flex rounded-full border border-line p-0.5 text-sm" role="group" aria-label="보기 방식">
           {(
             [
               ["tree", "분야별"],
@@ -87,8 +93,8 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
           ).map(([k, label]) => (
             <button
               key={k}
-              role="tab"
-              aria-selected={mode === k}
+              type="button"
+              aria-pressed={mode === k}
               onClick={() => setMode(k)}
               className={`rounded-full px-3 py-1 transition ${mode === k ? "bg-bg-elev text-fg-strong shadow-sm ring-1 ring-line" : "text-muted hover:text-fg"}`}
             >
@@ -96,7 +102,9 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
             </button>
           ))}
         </div>
-        <span className="text-xs text-muted tabular-nums">{resultCount}개 항목</span>
+        <span className="text-xs text-muted tabular-nums" aria-live="polite">
+          {resultCount}개 항목
+        </span>
       </div>
 
       {resultCount === 0 && <p className="py-16 text-center text-muted">“{query}”에 해당하는 노트가 없어요.</p>}

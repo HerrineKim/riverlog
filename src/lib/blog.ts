@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { excerptOf } from "./markdown";
-import { isPublished } from "./vault";
+import { isFresh, isPublished } from "./vault";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
 
@@ -16,7 +16,15 @@ export type Post = {
   readingMinutes: number;
 };
 
+let cached: { list: Post[]; at: number } | undefined;
+
 export function getAllPosts(): Post[] {
+  if (cached && isFresh(cached.at)) return cached.list;
+  cached = { list: readPosts(), at: Date.now() };
+  return cached.list;
+}
+
+function readPosts(): Post[] {
   if (!fs.existsSync(BLOG_DIR)) return [];
   return fs
     .readdirSync(BLOG_DIR)

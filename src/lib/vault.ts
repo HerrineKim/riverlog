@@ -44,10 +44,17 @@ function walk(dir: string, onFile: (file: string, rel: string) => void, rel = ""
 export type NoteRef = { href: string; title: string };
 type Index = { notes: Map<string, NoteRef>; attachments: Map<string, string> };
 let cached: Index | undefined;
+let cachedAt = 0;
+
+/**
+ * Production builds read the vault once. In dev the cache lives for a moment, so one render reuses it
+ * but an edit in Obsidian shows up on the next refresh.
+ */
+export const isFresh = (at: number) => process.env.NODE_ENV === "production" || Date.now() - at < 2000;
 
 /** Note name/path → site URL, and attachment name/path → public URL. First match wins, like Obsidian's shortest-path links. */
 function index(): Index {
-  if (cached && process.env.NODE_ENV === "production") return cached;
+  if (cached && isFresh(cachedAt)) return cached;
   const notes = new Map<string, NoteRef>();
   const add = (keys: string[], ref: NoteRef) => keys.forEach((k) => notes.has(key(k)) || notes.set(key(k), ref));
   /** Title of a published note, undefined for non-notes and `publish: false`. */
@@ -82,6 +89,7 @@ function index(): Index {
   });
 
   cached = { notes, attachments };
+  cachedAt = Date.now();
   return cached;
 }
 
