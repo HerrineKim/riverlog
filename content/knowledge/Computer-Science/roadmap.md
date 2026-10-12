@@ -4,6 +4,7 @@ concept: "CS Roadmap"
 summary: "CS50으로 시작해 컴퓨터 구조, 운영체제, 네트워크 순서로 공부하기 위한 주제와 자료 모음."
 tags: ["computer-science", "roadmap", "career", "os", "network"]
 source: notion
+sources: ["https://app.notion.com/p/dd5877ac8ce54e5da39958409239a563", "https://app.notion.com/p/579891559f614dfda8c952a2c12d23a2"]
 ---
 
 비전공자나 실무 위주로 개발을 배운 사람이 CS 기초를 다지려면 어디서부터 시작해야 할지 막막하다. 이 노트는 **CS50 → 컴퓨터 구조 → 운영체제 → 네트워크** 순서로 공부할 때 각 과목에서 무엇을 배우고, 왜 필요한지, 어떤 자료가 좋은지를 정리한 로드맵이다.

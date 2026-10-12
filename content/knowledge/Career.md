@@ -12,5 +12,6 @@ source: notion
 - **Product** — PO(프로덕트 오너)의 사고방식, 새 서비스를 만드는 프로젝트 진행 순서, [제품 중심 개발자](/knowledge/dictionary/career/product/product-minded-engineer)
 - **Talks** — 개발자 리더십, AI 시대의 커리어에 관한 강연 정리
 - **Reading** — 분야별로 정리한 개발 서적 목록
+- **Job Search** — [합격하는 영문 레주메 작성법](/knowledge/dictionary/career/job-search/resume-writing), [리크루터에게 보내는 영문 이메일](/knowledge/dictionary/career/job-search/recruiter-outreach-email), [기술면접 잘 보는 법](/knowledge/dictionary/career/job-search/tech-interview-tips)
 
 코드 리뷰 원칙과 리뷰 코멘트 쓰는 법은 [Tools › Code Review](/knowledge/dictionary/tools/code-review/principles)에서 다룬다.

@@ -12,5 +12,6 @@ source: notion
 
 - [파이썬 데이터 분석 프로세스](AI-Data/python-data-analysis.md): 데이터 수집 → 처리 → EDA·시각화 → 성능 개선
 - [Jupyter Notebook](AI-Data/jupyter-notebook.md): 코드·문서·시각화를 한데 담는 "실행되는 문서"
+- [코파일럿 유출 프롬프트](AI-Data/copilot-leaked-prompt.md): GitHub Copilot Chat·Bing Chat(Sydney)·M365 Copilot 시스템 프롬프트와 공통 설계 패턴
 
 관련 프로젝트: [SSAFY 데이터 수집·가공 프로젝트](Projects/SSAFY/data-collection.md)

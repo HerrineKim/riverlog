@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import Image from "next/image";
 import Link from "next/link";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
@@ -13,7 +14,12 @@ import { site } from "@/lib/site";
 
 function getAbout() {
   const { data, content } = matter(fs.readFileSync(path.join(process.cwd(), "content/about.md"), "utf8"));
-  return { headline: String(data.headline ?? ""), body: content };
+  return {
+    headline: String(data.headline ?? ""),
+    role: data.role ? String(data.role) : undefined,
+    photo: typeof data.photo === "string" && data.photo.startsWith("/") ? data.photo : undefined,
+    body: content,
+  };
 }
 
 export default function AboutPage() {
@@ -38,6 +44,25 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="lg:pb-2">
+              {about.photo && (
+                <figure className="mb-8 flex items-center gap-4 lg:block">
+                  <Image
+                    src={about.photo}
+                    alt={`${site.nickname}(${site.author}) 프로필 사진`}
+                    width={900}
+                    height={1200}
+                    priority
+                    sizes="(min-width: 1024px) 18rem, 6rem"
+                    className="aspect-[3/4] w-24 shrink-0 rounded-2xl border border-line object-cover object-top lg:w-72"
+                  />
+                  {about.role && (
+                    <figcaption className="text-sm text-muted lg:mt-4">
+                      <span className="block text-base font-semibold text-fg-strong">{site.author}</span>
+                      {about.role}
+                    </figcaption>
+                  )}
+                </figure>
+              )}
               <p className="mb-3 text-xs font-semibold tracking-[0.18em] text-muted uppercase">Contact & Subscribe</p>
               <SocialLinks />
             </div>

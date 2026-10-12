@@ -128,6 +128,7 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 - 일반 입력: `text`, `password`(입력값을 가림), `email`(형식이 아니면 제출 불가), `number`(`min`·`max`·`step`), `file`(`accept`로 파일 형식 지정)
 - 항목 선택: `checkbox`(다중 선택), `radio`(단일 선택). 같은 그룹은 같은 `name`을 주고 항목마다 `value`를 지정한다.
 - 기타: `color`, `date` 같은 picker, 사용자에게 보이지 않고 값만 전송하는 `hidden`
+- type별 용도와 `select`·`textarea`·`fieldset`·`datalist`는 [[html-input-types|HTML 입력 요소 치트시트]]에 정리했다.
 
 ### label
 
