@@ -77,4 +77,4 @@ deploy:
 - Docker 이미지를 파이프라인의 산출물로 삼으면 테스트한 환경 그대로 배포된다.
 - 비밀 값은 CI 변수로 관리한다.
 
-관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[tdd|프론트엔드에서의 TDD]]
+관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[tdd|프론트엔드에서의 TDD]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]]

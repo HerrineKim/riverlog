@@ -57,4 +57,4 @@ MSA(Micro Service Architecture)는 모놀리식과 반대로 기능을 여러 �
 - Docker는 Dockerfile → 이미지 → 컨테이너 순으로 실행 환경을 통째로 포장해, 어디서나 같은 환경을 띄우게 한다.
 - 오토 스케일링으로 부하에 맞춰 컨테이너·인스턴스 수를 조절하고, 많아지면 오케스트레이션 도구로 관리한다.
 
-관련 노트: [[kernel-types|커널의 종류]], [[ci-cd|CI/CD]]
+관련 노트: [[kernel-types|커널의 종류]], [[ci-cd|CI/CD]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]]
