@@ -38,6 +38,6 @@ bootstrap();
 - CORS 에러는 브라우저가 내는 것이며, 해결은 **서버에서 허용 출처를 설정**하는 것이다.
 - 운영 환경에서는 허용할 프론트엔드 출처를 구체적으로 적는다.
 
-관련 노트: [[ajax|AJAX와 HTTP 요청]], [[web-security|웹 보안: CSRF와 XSS]]
+관련 노트: [[ajax|AJAX와 HTTP 요청]], [[web-security|웹 보안: CSRF와 XSS]], [[api-security|API 보안 체크리스트]]
 
 참고: [NestJS CORS 문서](https://docs.nestjs.com/security/cors)

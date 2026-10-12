@@ -12,7 +12,7 @@ source: mixed
 
 | 주제 | 내용 |
 | --- | --- |
-| [Web-Basics](/knowledge/dictionary/backend/web-basics/http-web-architecture) | 웹 앱의 요청·응답 흐름과 HTTP, REST API 설계 원칙, CORS |
+| [Web-Basics](/knowledge/dictionary/backend/web-basics/http-web-architecture) | 웹 앱의 요청·응답 흐름과 HTTP, REST API 설계 원칙, CORS, [API 보안 체크리스트](/knowledge/dictionary/backend/web-basics/api-security) |
 | [Express](/knowledge/dictionary/backend/express/routing-crud) | Node.js 최소 프레임워크. 라우팅·CRUD, 미들웨어, 싱글톤·서비스 패턴 |
 | [NestJS](/knowledge/dictionary/backend/nestjs) | TypeScript 기반 구조화 프레임워크. Controller·Provider·Module, 요청 생명주기(미들웨어·파이프·인터셉터·필터), DTO, Repository, JWT 인증, Swagger, 파일 업로드 |
 | [Django](/knowledge/dictionary/backend/django) | Python 풀스택 프레임워크. MTV, URL·템플릿, Model·ORM, 관계, Form, 인증, Admin |
