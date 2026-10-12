@@ -3,7 +3,9 @@ title: "박스 모델과 display"
 concept: "Box Model"
 summary: "모든 요소를 content·padding·border·margin의 네모로 다루는 박스 모델과, 배치 방식을 결정하는 display."
 tags: ["css", "layout", "frontend"]
-source: til
+source: mixed
+date: "2026-10-12"
+sources: ["https://mytory.net/archives/16246"]
 ---
 
 CSS의 첫 번째 원칙은 **모든 요소는 네모(박스)** 라는 것이다. 요소의 실제 크기와 요소 사이 간격은 박스 모델로 계산되고, 그 박스가 한 줄을 차지할지 옆으로 나란히 놓일지는 `display`가 결정한다.
@@ -34,10 +36,26 @@ margin: 10px 20px 30px 40px; /* 상 | 우 | 하 | 좌 (시계 방향) */
 
 ### margin collapse
 
-Normal Flow에 있는 블록 요소의 **세로** margin은 더해지지 않고 큰 쪽 하나로 합쳐진다.
+> margin collapse 규칙은 mytory 웹개발의 「[마진 병합 기능 이해하기](https://mytory.net/archives/16246)」(2024.04)를 참고해 보강했습니다.
 
-1. **형제 요소끼리**: 위 요소의 `margin-bottom`과 아래 요소의 `margin-top`이 겹친다(대개 의도된 동작).
-2. **부모와 첫/마지막 자식끼리**: 자식의 margin이 부모 바깥으로 삐져나온 것처럼 보인다(의도치 않게 자주 생김). 부모에 `padding`이나 `border`가 있으면 일어나지 않는다.
+Normal Flow에 있는 블록 요소의 **세로** margin은 더해지지 않고 **큰 쪽 하나로 합쳐진다**(margin collapsing). 가로 margin은 언제나 그대로 더해진다. `float`나 `position: absolute`로 흐름에서 빠진 요소의 margin도 합쳐지지 않는다.
+
+병합은 다음 경우에 일어난다.
+
+| 경우 | 무엇이 합쳐지나 | 막는 방법 |
+| --- | --- | --- |
+| 인접 형제 | 위 요소의 `margin-bottom`과 아래 요소의 `margin-top` | 대개 의도된 동작이라 막을 일이 드물다 |
+| 부모와 첫 자식 | 자식의 `margin-top`이 부모 바깥으로 빠져나와 부모의 위 margin과 합쳐진다 | 부모에 `border`·`padding`·인라인 내용·BFC 생성·`clear` 중 하나 |
+| 부모와 마지막 자식 | 자식의 `margin-bottom`이 부모 바깥으로 빠져나온다 | 부모에 `border`·`padding`·인라인 내용·`height`(`min-height`) 중 하나 |
+| 빈 블록 | 자기 자신의 위·아래 margin끼리 | `border`·`padding`·인라인 내용·높이 중 하나 |
+
+부모-자식 병합은 의도치 않게 자주 생긴다. 자식에게 준 `margin-top`이 부모 박스 안이 아니라 부모 위쪽 공백으로 나타나면 이 경우다.
+
+```css
+/* 자식 margin이 부모 밖으로 새지 않게 막는 흔한 방법 */
+.parent { padding-top: 1px; }      /* 또는 border-top */
+.parent { display: flow-root; }    /* 새 BFC를 만든다 */
+```
 
 ### overflow
 
@@ -86,7 +104,7 @@ CSS의 두 번째 원칙: **display에 따라 크기와 배치가 달라진다.*
 
 ## 핵심 정리
 
-- 박스 = content + padding + border + margin. 세로 margin은 겹치면 합쳐진다.
+- 박스 = content + padding + border + margin. 세로 margin은 형제·부모-자식·빈 블록에서 큰 쪽 하나로 합쳐지고, 가로 margin은 합쳐지지 않는다.
 - `box-sizing: border-box`를 전역으로 적용하면 크기 계산이 단순해진다.
 - `inline`은 width/height와 상하 margin을 무시한다. 필요하면 `inline-block`.
 - `display: none`은 공간까지 제거, `visibility: hidden`은 공간은 유지.
