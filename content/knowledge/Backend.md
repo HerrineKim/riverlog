@@ -18,6 +18,6 @@ source: mixed
 | [Django](/knowledge/dictionary/backend/django) | Python 풀스택 프레임워크. MTV, URL·템플릿, Model·ORM, 관계, Form, 인증, Admin |
 | [Database](/knowledge/dictionary/backend/database/rdbms-vs-nosql) | RDBMS와 NoSQL, SQL 기초, MongoDB, [Prisma 커서 페이지네이션](/knowledge/dictionary/backend/database/prisma), [Flyway 마이그레이션](/knowledge/dictionary/backend/database/flyway) |
 | [Auth](/knowledge/dictionary/backend/auth/telegram-mini-app-auth) | 텔레그램 미니앱 initData의 HMAC 서명 검증 흐름 |
-| [Architecture](/knowledge/dictionary/backend/architecture/data-flow) | 3-Tier·MSA로 보는 데이터 흐름과 아키텍트의 역할, [빠르고 유지보수하기 좋은 DB 조회 패턴](/knowledge/dictionary/backend/architecture/db-fetching-patterns) |
+| [Architecture](/knowledge/dictionary/backend/architecture/data-flow) | 3-Tier·MSA로 보는 데이터 흐름과 아키텍트의 역할, [빠르고 유지보수하기 좋은 DB 조회 패턴](/knowledge/dictionary/backend/architecture/db-fetching-patterns), [BFF](/knowledge/dictionary/backend/architecture/bff) |
 
 배포·운영 자동화는 [DevOps](/knowledge/dictionary/devops)에서 다룬다. 이론적 배경은 [[Computer-Science/Network|네트워크]]와 [[Computer-Science/Database|데이터베이스]] 노트에 있다.

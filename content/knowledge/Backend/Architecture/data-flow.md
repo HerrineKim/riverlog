@@ -65,4 +65,4 @@ source: notion
 - MSA는 서비스별 DB, BFF, 메시지 큐로 흐름이 복잡해지는 대신 독립 배포가 가능해진다.
 - 전송(TLS)·저장(해시·암호화)·인증(JWT) 각 구간의 보안을 함께 설계한다.
 
-관련 노트: [[vm-vs-container|VM과 컨테이너]], [[security|정보 시스템 보안]], [[spa-csr-ssr|SPA와 CSR·SSR]]
+관련 노트: [[vm-vs-container|VM과 컨테이너]], [[security|정보 시스템 보안]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[bff|BFF (Backend For Frontend)]]
