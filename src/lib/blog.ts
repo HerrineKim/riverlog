@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { excerptOf } from "./markdown";
+import { isPublished } from "./vault";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
 
@@ -20,8 +21,9 @@ export function getAllPosts(): Post[] {
   return fs
     .readdirSync(BLOG_DIR)
     .filter((f) => f.endsWith(".md"))
-    .map((file) => {
+    .map((file): Post | undefined => {
       const { data, content } = matter(fs.readFileSync(path.join(BLOG_DIR, file), "utf8"));
+      if (!isPublished(data)) return undefined;
       return {
         slug: file.replace(/\.md$/, ""),
         title: String(data.title ?? file),
@@ -32,7 +34,7 @@ export function getAllPosts(): Post[] {
         readingMinutes: Math.max(1, Math.round(content.length / 600)),
       };
     })
-    .filter((p) => !p.slug.startsWith("_"))
+    .filter((p): p is Post => !!p && !p.slug.startsWith("_"))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
 

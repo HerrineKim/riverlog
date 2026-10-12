@@ -13,6 +13,14 @@ River(Hyerin Kim)의 블로그이자 지식 창고. Next.js App Router로 만든
 
 ## 글 쓰기
 
+`content/` 폴더가 곧 **Obsidian vault**입니다. Obsidian에서 「Open folder as vault」로 `content/`를 열고 쓰면 됩니다.
+
+- **링크**: `[[노트]]`, `[[노트|보일 이름]]`, `[[노트#헤딩]]` 모두 사이트에서 해당 페이지 링크로 바뀝니다. 지식 노트·책·블로그 어디로든 연결돼요. 없거나 비공개인 노트로 가는 링크는 글자만 남습니다.
+- **첨부 파일**: 이미지·PDF는 `content/attachments/`에 저장됩니다(Obsidian 설정에 지정됨). `![[그림.png]]`는 이미지로, `![[파일.pdf]]`는 링크로 보입니다. dev/build 전에 `public/attachments/`로 복사돼요.
+- **비공개**: frontmatter에 `publish: false`를 넣거나, 이름이 `_`로 시작하는 파일·폴더는 사이트에 나오지 않습니다.
+- **템플릿**: `content/_templates/`의 「책」「지식 노트」「블로그 글」을 Obsidian의 Templates 명령(⌘P → Templates: Insert template)으로 넣습니다.
+- **배포**: 커밋하고 푸시하면 Vercel이 다시 배포합니다. Obsidian Git 플러그인을 쓰면 Obsidian 안에서 커밋·푸시까지 할 수 있어요.
+
 ### 블로그
 
 `content/blog/<slug>.md`
@@ -44,7 +52,7 @@ source: til               # til | notion | mixed
 
 ### 책 / 독후감
 
-`content/books/<slug>.md` — 형식은 `content/books/_TEMPLATE.md` 참고. 본문이 곧 독후감입니다.
+`content/books/<slug>.md` — 형식은 `content/_templates/책.md` 참고. 본문이 곧 독후감이고, `pdf: "[[파일.pdf]]"`를 넣으면 책 페이지에 「PDF 보기」 버튼이 생깁니다.
 사이트의 책 페이지에서 「독후감 쓰기」를 누르면 GitHub 웹 에디터에서 해당 파일이 열리고, 커밋하면 Vercel이 다시 배포합니다.
 
 ### About

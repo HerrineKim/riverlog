@@ -42,3 +42,12 @@ next-env.d.ts
 
 # local agent state
 .omc/
+
+# copied from content/attachments by scripts/sync-attachments.mjs
+/public/attachments/
+
+# Obsidian: per-device state (shared settings in content/.obsidian are committed)
+content/.obsidian/workspace*.json
+content/.obsidian/cache
+content/.obsidian/plugins/*/data.json
+content/.trash/

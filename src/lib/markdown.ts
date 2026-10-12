@@ -8,12 +8,17 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
+import { remarkObsidian } from "./wikilinks";
+
+/** [[target|alias]] in plain-text contexts (TOC, excerpts); group 1 is the target, group 2 the alias. */
+const WIKILINK_TEXT = /\[\[([^\]|\n]+?)(?:\\?\|([^\]\n]+))?\]\]/g;
 
 export type TocItem = { id: string; text: string; depth: 2 | 3 };
 
 const processor = unified()
   .use(remarkParse)
   .use(remarkGfm)
+  .use(remarkObsidian)
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(rehypeRaw)
   .use(rehypeSlug)
@@ -51,6 +56,7 @@ function stripInline(s: string) {
     .replace(/<[^>]+>/g, "")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(WIKILINK_TEXT, (_, t: string, a?: string) => a ?? t.split("#")[0].split("/").pop()!)
     .replace(/[`*_~]/g, "")
     .trim();
 }
@@ -60,7 +66,9 @@ export function excerptOf(markdown: string, length = 140): string {
     .replace(/```[\s\S]*?```/g, " ")
     .replace(/<[^>]+>/g, " ")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/!\[\[[^\]]*\]\]/g, " ")
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(WIKILINK_TEXT, (_, t: string, a?: string) => a ?? t.split("#")[0].split("/").pop()!)
     .replace(/^\s*(#{1,6}|>|[-*+]|\d+\.|\|)\s?/gm, "")
     .replace(/[`*_~|]/g, "")
     .replace(/-{3,}/g, " ")

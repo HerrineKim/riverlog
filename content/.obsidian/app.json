@@ -1,0 +1,10 @@
+{
+  "attachmentFolderPath": "attachments",
+  "newLinkFormat": "shortest",
+  "useMarkdownLinks": false,
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "current",
+  "showFrontmatter": true,
+  "propertiesInDocument": "visible",
+  "trashOption": "local"
+}

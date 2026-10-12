@@ -2,9 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { excerptOf } from "./markdown";
+import { isHiddenName, isPublished, KNOWLEDGE_BASE, slugify } from "./vault";
+
+export { KNOWLEDGE_BASE, slugify };
 
 const ROOT = path.join(process.cwd(), "content/knowledge");
-export const KNOWLEDGE_BASE = "/knowledge/dictionary";
 
 export type KDoc = {
   title: string;
@@ -53,18 +55,6 @@ export function categoryColor(category: string): string {
   return FALLBACK_COLORS[n % FALLBACK_COLORS.length];
 }
 
-export function slugify(segment: string): string {
-  return segment
-    .normalize("NFC")
-    .replace(/\.md$/, "")
-    .replace(/[[\]()&!,+'"?#%:;{}<>|^`=@$*\\/]/g, " ")
-    .trim()
-    .replace(/[\s_.]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "")
-    .toLowerCase();
-}
-
 function prettyFolder(name: string, depth: number): string {
   if (depth === 1 && CATEGORY_LABELS[name]) return CATEGORY_LABELS[name];
   return name.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
@@ -91,9 +81,11 @@ function resolveRelativeLinks(markdown: string, file: string): string {
   });
 }
 
-function readDoc(file: string): KDoc {
+/** Undefined when the note has `publish: false`. */
+function readDoc(file: string): KDoc | undefined {
   const parsed = matter(fs.readFileSync(file, "utf8"));
   const data = parsed.data;
+  if (!isPublished(data)) return undefined;
   const content = resolveRelativeLinks(parsed.content, file);
   const source = ["til", "notion", "mixed"].includes(data.source) ? data.source : "other";
   const sources = Array.isArray(data.sources) ? data.sources.map(String) : data.sourceUrl ? [String(data.sourceUrl)] : [];
@@ -113,7 +105,7 @@ const collator = new Intl.Collator("ko", { numeric: true, sensitivity: "base" })
 
 function buildNode(dir: string, slug: string[], name: string, category: string, doc?: KDoc): KNode {
   const depth = slug.length;
-  const entries = fs.readdirSync(dir, { withFileTypes: true }).filter((e) => !e.name.startsWith("."));
+  const entries = fs.readdirSync(dir, { withFileTypes: true }).filter((e) => !isHiddenName(e.name));
   const dirNames = new Set(entries.filter((e) => e.isDirectory()).map((e) => e.name.normalize("NFC")));
   const children: KNode[] = [];
 
@@ -123,9 +115,11 @@ function buildNode(dir: string, slug: string[], name: string, category: string, 
     if (e.isDirectory()) {
       const indexFile = path.join(dir, `${e.name}.md`);
       const indexDoc = fs.existsSync(indexFile) ? readDoc(indexFile) : undefined;
-      children.push(buildNode(full, [...slug, slugify(raw)], prettyFolder(raw, depth + 1), category || raw, indexDoc));
+      const node = buildNode(full, [...slug, slugify(raw)], prettyFolder(raw, depth + 1), category || raw, indexDoc);
+      if (node.docCount > 0) children.push(node);
     } else if (raw.endsWith(".md") && !dirNames.has(raw.replace(/\.md$/, ""))) {
       const d = readDoc(full);
+      if (!d) continue;
       const childSlug = [...slug, slugify(raw)];
       children.push({
         id: childSlug.join("/"),

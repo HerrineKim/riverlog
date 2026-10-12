@@ -4,7 +4,7 @@ author: "세이노"
 category: "자기계발"
 status: "read"
 tags: ["경제/재테크", "자기계발"]
-pdf: "/books/seinoui-gareuchim.pdf"
+pdf: "[[seinoui-gareuchim.pdf]]"
 ---
 
 > 필명 '세이노(Say No)'는 지금까지 믿어 온 것들에 대해 No라고 말하라는 뜻이다.

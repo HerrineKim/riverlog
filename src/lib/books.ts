@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { site } from "./site";
+import { isPublished, resolveAttachment } from "./vault";
 
 const BOOKS_DIR = path.join(process.cwd(), "content/books");
 
@@ -15,7 +16,7 @@ export type Book = {
   rating?: number;
   finished?: string;
   cover?: string;
-  pdf?: string; // path under public/, e.g. "/books/foo.pdf"
+  pdf?: string; // public URL of a PDF in content/attachments
   tags: string[];
   review: string; // markdown 독후감, may be empty
 };
@@ -29,8 +30,9 @@ export function getAllBooks(): Book[] {
   return fs
     .readdirSync(BOOKS_DIR)
     .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
-    .map((file) => {
+    .map((file): Book | undefined => {
       const { data, content } = matter(fs.readFileSync(path.join(BOOKS_DIR, file), "utf8"));
+      if (!isPublished(data)) return undefined;
       const status: BookStatus = ["read", "reading", "want"].includes(data.status) ? data.status : "want";
       const rating = Number(data.rating);
       return {
@@ -42,11 +44,12 @@ export function getAllBooks(): Book[] {
         rating: rating >= 1 && rating <= 5 ? Math.round(rating) : undefined,
         finished: data.finished ? String(data.finished) : undefined,
         cover: typeof data.cover === "string" && data.cover.startsWith("https://") ? data.cover : undefined,
-        pdf: typeof data.pdf === "string" && data.pdf.startsWith("/books/") ? data.pdf : undefined,
+        pdf: typeof data.pdf === "string" ? resolveAttachment(data.pdf) : undefined, // "[[file.pdf]]" or "file.pdf"
         tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
         review: content.trim(),
       };
     })
+    .filter((b): b is Book => !!b)
     .sort(
       (a, b) =>
         STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status) ||
