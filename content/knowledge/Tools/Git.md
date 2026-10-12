@@ -20,6 +20,7 @@ Git은 **분산 버전 관리 시스템(DVCS)** 입니다. 모든 작업자가 �
 | [브랜치 병합](/knowledge/dictionary/tools/git/merge) | Fast-Forward, 3-Way Merge, Merge Conflict 해결, Merge Commit의 함정(부모 순서, `--remerge-diff`) |
 | [원격 저장소와 GitHub](/knowledge/dictionary/tools/git/remote-github) | `remote`, `push`, `pull`, `fetch`, `clone`, 미러링(GitLab → GitHub), 커밋 메시지 습관 |
 | [되돌리기와 이력 다루기](/knowledge/dictionary/tools/git/git-undo-and-rewrite) | `reset`(soft·mixed·hard), `revert`, `rebase`, `cherry-pick`, `--abort` |
+| [merge·squash·rebase 언제 쓰나](/knowledge/dictionary/tools/git/merge-squash-rebase) | PR 통합 전략 고르기: merge 커밋과 bisect, squash 메시지, 인터랙티브 rebase |
 | [커밋 컨벤션과 자동 검사](/knowledge/dictionary/tools/git/commit-convention) | `type(scope): subject` 형식, 커밋 템플릿, husky·commitlint |
 | [GitHub 협업 저장소 설정](/knowledge/dictionary/tools/git/github-collaboration) | 브랜치 보호 규칙, CODEOWNERS, 이슈·PR 템플릿, 라벨, 알림 도구 |
 | [자주 쓰는 Git 설정 옵션](/knowledge/dictionary/tools/git/git-config-options) | `pull.ff`, `zdiff3`, `rebase.autosquash`, `diff.algorithm histogram`, `includeIf` 등 git config 추천 옵션 |
