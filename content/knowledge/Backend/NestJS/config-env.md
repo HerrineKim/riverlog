@@ -72,8 +72,7 @@ import * as mongoose from 'mongoose';
 
 export class AppModule implements NestModule {
   private readonly isDev = process.env.MODE === 'dev';
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*'); // NestJS 11+(Express 5)에서는 '{*splat}'
+  configure() {
     mongoose.set('debug', this.isDev); // dev일 때만 쿼리 로그 출력
   }
 }

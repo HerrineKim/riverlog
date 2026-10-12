@@ -54,4 +54,4 @@ SELECT id, status FROM orders WHERE created_at < '2023-01-01' AND status = 'PEND
 UPDATE orders SET status = 'CANCELLED' WHERE created_at < '2023-01-01' AND status = 'PENDING';
 ```
 
-외부 PC에서 클라우드 DB에 접속이 안 된다면 보안 그룹 설정을 확인한다: [AWS RDS 외부 접속 허용](/knowledge/dictionary/devops/aws/rds-security-group). SQL 문법은 [SQL 기초](/knowledge/dictionary/backend/database/sql-basics) 참고.
+외부 PC에서 클라우드 DB에 접속이 안 된다면 보안 그룹 설정을 확인한다: [AWS RDS 외부 접속 허용](/knowledge/dictionary/devops/rds-security-group). SQL 문법은 [SQL 기초](/knowledge/dictionary/backend/database/sql-basics) 참고.

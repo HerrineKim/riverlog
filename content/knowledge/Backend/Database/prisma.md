@@ -1,5 +1,5 @@
 ---
-title: "Prisma 커서로 이전·다음 항목 찾기"
+title: "Prisma: 커서로 이전·다음 항목 찾기와 CLI"
 concept: "Prisma"
 summary: "Node.js ORM Prisma의 cursor·skip·take로 상세 화면의 이전/다음 항목 키를 조회하는 방법과, 자주 쓰는 Prisma CLI 명령."
 tags: ["database", "orm", "nodejs", "pagination", "backend"]

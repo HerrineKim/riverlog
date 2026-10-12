@@ -72,4 +72,4 @@ await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`, {
 - 크기가 약 33% 늘어나는 대신, 텍스트 전용 채널에서도 데이터가 깨지지 않는다.
 - 작은 이미지·토큰에는 편하지만 큰 파일은 바이너리 업로드 방식이 낫다.
 
-관련 노트: [[data-representation|데이터의 표현]], [[auth-jwt-passport|NestJS JWT 인증과 Passport]], [[http-web-architecture|웹 앱 아키텍처와 HTTP]]
+관련 노트: [[data-representation|데이터의 표현]], [[auth-jwt-passport|NestJS JWT 인증과 Passport]], [[http-web-architecture|웹 앱의 요청·응답 구조]]

@@ -52,13 +52,7 @@ await getList({ ...DEFAULT_PARAMS, ...value, yearMonth })
 
 ## 4. 불리언 변수 이름은 질문처럼
 
-| 형태 | 뜻 | 예 |
-| --- | --- | --- |
-| `is` + 명사 | ~인가? | `isEmployee`, `isAdmin` |
-| `is` + 현재진행형 | ~하는 중인가? | `isLoading`, `isSubmitting` |
-| `is` + 형용사·과거분사 | ~한 상태인가? | `isVisible`, `isOpen`, `isSelected`, `isHidden` |
-| 조동사 | ~해야/할 수 있는가? | `shouldReload`, `canEdit` |
-| `has` | ~를 가지고 있는가? | `hasError`, `hasChildren` |
+`isOpen`, `shouldReload`, `hasError`처럼 읽으면 예/아니오로 답할 수 있는 이름을 붙인다. 아래처럼 "재장전해야 하는가?"가 변수 이름에 그대로 드러나면 조건문이 문장처럼 읽힌다.
 
 ```typescript
 class Gun {
@@ -80,7 +74,7 @@ class Gun {
 
 모달·드롭다운처럼 **보임 여부**를 정하는 값도 문자열이나 숫자 대신 `isOpen` 같은 불리언 state로 둔다.
 
-형태별 영어 문법과 `is` + 동사원형 같은 흔한 실수는 [[boolean-naming|불리언 변수 이름 짓기]]에 따로 정리했다.
+`is`·`has`·조동사별 형태 표와 `is` + 동사원형 같은 흔한 실수는 [[boolean-naming|불리언 변수 이름 짓기]]에 정리했다.
 
 ## 5. 빈 문자열 검사는 의도대로
 

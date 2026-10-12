@@ -53,7 +53,7 @@ git config --global user.email "메일 주소"
 
 ### 왜 master 대신 main인가
 
-2020년 무렵 컴퓨터 업계에서 master/slave 같은 용어가 노예제를 떠올리게 한다는 문제가 제기됐다. GitHub는 이런 **문화적 민감성(cultural sensitivity)** 을 고려해 새 저장소의 기본 브랜치 이름을 `main`으로 바꿨다. 다만 저장소를 다른 서비스로 미러링할 계획이 있다면 양쪽의 기본 브랜치 이름을 맞춰 두는 편이 안전하다([[remote-github|원격 저장소와 GitHub]]의 미러링 참고).
+2020년 무렵 컴퓨터 업계에서 master/slave 같은 용어가 노예제를 떠올리게 한다는 문제가 제기됐다. GitHub는 이런 **문화적 민감성(cultural sensitivity)** 을 고려해 새 저장소의 기본 브랜치 이름을 `main`으로 바꿨다. Git 자체의 기본값은 아직 `master`이고 `init.defaultBranch`로 맞추는 방법은 [[git-basics|Git 기본 명령과 파일 상태]]에 있다. 다만 저장소를 다른 서비스로 미러링할 계획이 있다면 양쪽의 기본 브랜치 이름을 맞춰 두는 편이 안전하다([[remote-github|원격 저장소와 GitHub]]의 미러링 참고).
 
 ## 줄바꿈 문제: `Delete ␍` 오류
 

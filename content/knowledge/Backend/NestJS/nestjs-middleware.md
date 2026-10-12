@@ -62,7 +62,7 @@ export class AppModule implements NestModule {
 
 ## Interceptor와의 차이
 
-미들웨어는 요청 생명주기의 **가장 앞**에서 실행되고, 어떤 핸들러가 실행될지 모른다. 핸들러 실행 전후를 모두 감싸거나 반환값을 가공하려면 [Interceptor](Backend/NestJS/interceptor-aop)를 쓴다.
+미들웨어는 생명주기의 가장 앞에서 실행되고 어떤 핸들러가 실행될지 모른다. 핸들러 전후를 감싸거나 반환값을 가공하는 Interceptor와의 비교표는 [[interceptor-aop|NestJS Interceptor와 AOP]]에 있다.
 
 ## 핵심 정리
 

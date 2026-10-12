@@ -49,7 +49,7 @@ sources: ["https://riverkim.kr/313"]
 
 ## MSA와의 관계
 
-MSA(Micro Service Architecture)는 모놀리식과 반대로 기능을 여러 서비스(서버)로 분산하는 구조다. 서비스마다 컨테이너로 포장해 독립적으로 배포·확장할 수 있어 컨테이너와 궁합이 좋다. 다만 운영 복잡도가 커서, 실제로는 과장되거나 불완전하게 도입되는 경우도 많다. ([Data Flow 아키텍처](Backend/Architecture/data-flow))
+MSA는 기능을 독립적으로 배포 가능한 서비스들로 쪼갠 구조라서, 서비스마다 컨테이너로 포장해 따로 배포·확장하기에 알맞다. MSA의 구성 요소와 도입 시 주의점은 [[data-flow|Data Flow로 보는 웹 아키텍처]]에 정리했다.
 
 ## 핵심 정리
 

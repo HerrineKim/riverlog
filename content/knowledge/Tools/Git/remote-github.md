@@ -52,7 +52,7 @@ Fast-forward
 
 병합 과정이므로 [Fast-Forward나 충돌](merge.md)이 똑같이 발생할 수 있습니다.
 
-> 주의: 예전 Git의 `git pull`은 내 브랜치와 원격 브랜치가 갈라져 있으면 자동으로 merge 커밋을 만들었지만, 최신 Git은 통합 방법이 설정되어 있지 않으면 **fast-forward만 시도하고, 갈라진 경우에는 실패**합니다. 이때는 `git pull --rebase`(내 커밋을 원격 끝으로 옮김)나 `git pull --no-rebase`(merge 커밋 생성) 중 하나를 고르거나, `git config --global pull.rebase false`(또는 `true`)로 기본값을 정해 둡니다. ([git-pull 문서](https://git-scm.com/docs/git-pull))
+> 주의: 최신 Git의 `git pull`은 내 브랜치와 원격 브랜치가 갈라져 있으면 통합 방법을 정해 달라며 멈춥니다. 그때마다 `--rebase`나 `--no-rebase`를 붙이거나, `pull.rebase`·`pull.ff` 설정으로 기본값을 정해 둡니다([[git-config-options|자주 쓰는 Git 설정 옵션]]).
 
 ## 복제: `git clone`
 
@@ -85,18 +85,4 @@ $ git push --mirror https://github.com/username/project.git    # 빈 새 저장�
 
 대용량 저장소를 옮기는 전체 과정은 [GitLab → GitHub 대용량 프로젝트 이동 (lfs, bfg)](https://coding-nurse.tistory.com/431), 기본 흐름은 [Gitlab에서 Github으로 저장소 옮기기](https://jennnn.tistory.com/86)에 잘 정리되어 있습니다.
 
-## 커밋 해시
-
-각 커밋은 SHA-1 해시(40자리 16진수)로 식별됩니다. (Git은 SHA-256 저장소도 지원하며, Git 3.0부터는 새 저장소의 기본 해시를 SHA-256(64자리)으로 바꿀 예정입니다. [Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)) 충돌 가능성이 사실상 없을 만큼 큰 값이라 전 세계 어디서 만든 커밋이든 고유하게 구분할 수 있고, 평소에는 앞 7자리 정도(`git log --oneline`)만 써도 충분합니다.
-
-## 좋은 커밋 메시지
-
-협업에서는 커밋 메시지가 곧 문서입니다. 자주 언급되는 규칙은 다음과 같습니다.
-
-- 제목은 50자 이내로, 마침표 없이, 명령문으로 (`Add`, `Fix`, `Update` …)
-- 제목과 본문 사이에 빈 줄
-- 본문에는 **무엇을, 왜** 바꿨는지
-
-참고 글: [좋은 git 커밋 메시지를 작성하기 위한 7가지 약속](https://meetup.toast.com/posts/106), [좋은 git commit 메시지를 위한 영어 사전](https://blog.ull.im/engineering/2019/03/10/logs-on-git.html)
-
-관련 노트: [[merge|브랜치 병합]], [[commit-convention|커밋 컨벤션]]
+관련 노트: [[git-basics|Git 기본 명령과 파일 상태]], [[merge|브랜치 병합]], [[commit-convention|커밋 컨벤션과 자동 검사]], [[git-config-options|자주 쓰는 Git 설정 옵션]]

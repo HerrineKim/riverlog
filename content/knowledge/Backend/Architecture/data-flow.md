@@ -40,29 +40,18 @@ source: notion
 개발에 집중하다 보면 놓치기 쉽지만 현업에서는 보안을 매우 엄격하게 따진다.
 
 - **전송 구간 암호화**: TLS(구 SSL)로 데이터 중간 탈취를 막는다. Let's Encrypt 인증서를 발급·갱신해 주는 **Certbot**이 대표 도구다.
-- **포트**: 0~1023번은 운영체제가 관리하는 well-known 포트 영역이다. ([HTTP와 포트](Backend/Web-Basics/http-web-architecture))
+- **포트**: 0~1023번은 운영체제가 관리하는 well-known 포트 영역이다. ([웹 앱의 요청·응답 구조](Backend/Web-Basics/http-web-architecture))
 - **저장 데이터 보호**: 비밀번호는 **bcrypt** 같은 단방향 해시로, 복호화가 필요한 민감 데이터는 **AES-256** 같은 대칭키 암호로 저장한다.
 - **인증 방식의 변화**: 세션·DB 토큰 방식은 요청마다 서버가 DB·세션 저장소를 오가며 유효한 사용자인지 확인해야 해 부담이 컸다. Stateless한 REST가 확산되면서, 서명으로 자체 검증되는 **JWT**를 한 번 발급해 쓰는 방식이 널리 쓰이게 되었다. ([JWT 인증](Backend/NestJS/auth-jwt-passport))
 
-## Web Architecture 101
+## 더 세밀한 그림
 
-3-Tier를 더 세밀하게 추상화한 그림으로, DNS → 로드밸런서 → 웹 서버 → 캐시·DB·검색 엔진·작업 큐 → CDN 등이 어떻게 연결되는지 보여 준다. 풀스택을 다 아는 것이 목표가 아니라, 이 지도를 머리에 두면 "지금 이걸 아니까 다음엔 저걸 배우면 되겠다"는 식으로 학습 방향을 스스로 정할 수 있다는 점이 중요하다.
-
-## 부록: 아키텍트의 종류
-
-| 구분 | 역할 |
-| --- | --- |
-| EA (Enterprise Architect) | 전사 IT 전략 수립 |
-| CA/GA (Chief Architect) | 프로젝트 전체 아키텍처 총괄 |
-| AA (Application Architect) | 애플리케이션 구조 설계. 현업에서 가장 자주 만난다 |
-| DA (Data Architect) | 데이터 구조와 흐름 설계. Data Flow를 이야기하는 이유 |
-| TA (Technical Architect) | 시스템·인프라 설계 |
-| SA (Software Architect) | 오픈소스 등 소프트웨어 구성 |
+3-Tier를 DNS → 로드밸런서 → 웹 서버·WAS → 캐시·DB·작업 큐 → CDN으로 더 쪼개어 그리면 학습 지도가 된다. 웹 서버와 WAS를 나누는 기준은 [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]]에 있다.
 
 ## 핵심 정리
 
 - Presentation → Application → Data 티어로 데이터 흐름을 그려 보는 습관을 들인다.
-- MSA는 서비스별 DB, BFF, 메시지 큐로 흐름이 복잡해지는 대신 독립 배포가 가능해진다.
+- MSA는 서비스별 DB, BFF, 메시지 큐로 흐름이 복잡해지는 대신 독립 배포가 가능해진다. 배포 단위인 컨테이너와의 궁합은 [[vm-vs-container|VM과 컨테이너]] 참고.
 - 전송(TLS)·저장(해시·암호화)·인증(JWT) 각 구간의 보안을 함께 설계한다.
 
 관련 노트: [[vm-vs-container|VM과 컨테이너]], [[security|정보 시스템 보안]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[bff|BFF (Backend For Frontend)]]

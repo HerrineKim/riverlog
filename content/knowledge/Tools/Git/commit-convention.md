@@ -1,12 +1,22 @@
 ---
 title: "커밋 컨벤션과 자동 검사"
 concept: "Commit Convention"
-summary: "type(scope): subject 형식의 커밋 메시지 규칙, 커밋 템플릿 설정, husky와 commitlint로 규칙을 자동 검사하는 방법."
+summary: "좋은 커밋 메시지의 일반 원칙과 type(scope): subject 형식의 컨벤션, 커밋 템플릿 설정, husky와 commitlint로 규칙을 자동 검사하는 방법."
 tags: ["git", "collaboration", "convention", "automation"]
 source: notion
 ---
 
-커밋 메시지는 나중에 변경 이력을 찾는 사람이 읽는 **문서**다. 팀원마다 형식이 다르면 이력을 훑어보기 어렵기 때문에, 형식을 정하고(컨벤션) 커밋할 때 자동으로 검사하게 만든다. 좋은 메시지의 일반 원칙은 [원격 저장소와 GitHub](/knowledge/dictionary/tools/git/remote-github)의 "좋은 커밋 메시지" 절 참고.
+커밋 메시지는 나중에 변경 이력을 찾는 사람이 읽는 **문서**다. 팀원마다 형식이 다르면 이력을 훑어보기 어렵기 때문에, 형식을 정하고(컨벤션) 커밋할 때 자동으로 검사하게 만든다.
+
+## 좋은 커밋 메시지의 일반 원칙
+
+어떤 컨벤션을 고르든 밑바탕이 되는 규칙은 같다.
+
+- 제목은 50자 안에서, 마침표 없이, 명령문으로 쓴다(`Add`, `Fix`, `Update` …).
+- 제목과 본문 사이에 빈 줄을 둔다.
+- 본문에는 **무엇을, 왜** 바꿨는지 쓴다. 어떻게 바꿨는지는 diff가 말해 준다.
+
+참고 글: [좋은 git 커밋 메시지를 작성하기 위한 7가지 약속](https://meetup.toast.com/posts/106), [좋은 git commit 메시지를 위한 영어 사전](https://blog.ull.im/engineering/2019/03/10/logs-on-git.html)
 
 ## 메시지 형식: Udacity 스타일
 
@@ -20,7 +30,7 @@ source: notion
 <footer>                         ← 꼬리말: 큰 변경 사항, 관련 이슈
 ```
 
-- **subject**: 변경 내용을 짧게. 명령형 현재 시제로 쓴다(`changed` ✗ → `change` ✓).
+- **subject**: 변경 내용을 짧게. 위 일반 원칙대로 명령형 현재 시제(`changed` ✗ → `change` ✓).
 - **body**: 수정 이유와 전후 비교.
 - **footer**: 하위 호환이 깨지는 변경(BREAKING CHANGE)은 상세 설명과 함께 적고, 처리한 이슈는 `Closes #123, #124`처럼 표기하면 GitHub가 이슈를 자동으로 닫는다.
 - scope는 선택. 이슈 번호를 제목에 붙이는 팀도 있다: `feat(login): #42 - 소셜 로그인 추가`
@@ -81,4 +91,4 @@ export default { extends: ['@commitlint/config-conventional'] }
 - 제목은 명령형 현재 시제, 이슈는 `Closes #번호`.
 - 커밋 템플릿으로 안내하고, husky + commitlint로 강제한다.
 
-관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[principles|코드 리뷰 원칙]], [[ci-cd|CI/CD]]
+관련 노트: [[remote-github|원격 저장소와 GitHub]], [[github-collaboration|GitHub 협업 저장소 설정]], [[principles|코드 리뷰 원칙]], [[ci-cd|CI/CD]]

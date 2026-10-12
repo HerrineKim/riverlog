@@ -1,7 +1,7 @@
 ---
 title: "Git 기본 명령과 파일 상태"
 concept: "Git Basics"
-summary: "저장소를 만들고 add·commit으로 버전을 기록하며, 파일이 untracked·modified·staged·committed 상태를 오가는 흐름."
+summary: "저장소를 만들고 add·commit으로 버전을 기록하며, 파일이 untracked·modified·staged·committed 상태를 오가는 흐름. 커밋을 식별하는 해시도 함께 다룬다."
 tags: ["git", "version-control", "cli"]
 source: til
 ---
@@ -43,7 +43,7 @@ Initialized empty Git repository in /Users/me/first/.git/
 
 현재 폴더에 `.git` 디렉터리가 생기고, 터미널 프롬프트에 `(master)` 처럼 현재 브랜치가 표시됩니다.
 
-> 참고: GitHub는 2020년 10월부터 새 저장소의 기본 브랜치를 `main`으로 만듭니다([GitHub Changelog](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/)). 반면 Git 2.x의 `git init`은 설정이 없으면 여전히 `master`를 만들고 힌트 메시지를 띄우며, 다음 메이저 버전인 Git 3.0부터 `main`이 기본이 될 예정입니다(출시일 미정, [Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)). 지금 바로 맞추려면 `git config --global init.defaultBranch main` (Git 2.28+)으로 설정합니다. 이 노트의 예시는 `master`로 실습한 기록이므로, `main`을 쓰는 저장소라면 이름만 바꿔 읽으면 됩니다.
+> 참고: GitHub는 2020년 10월부터 새 저장소의 기본 브랜치를 `main`으로 만듭니다([GitHub Changelog](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/)). 반면 Git 2.x의 `git init`은 설정이 없으면 여전히 `master`를 만들고 힌트 메시지를 띄우며, 다음 메이저 버전인 Git 3.0부터 `main`이 기본이 될 예정입니다(출시일 미정, [Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)). 지금 바로 맞추려면 `git config --global init.defaultBranch main` (Git 2.28+)으로 설정합니다. 이름이 바뀐 배경은 [[windows-dev-environment|Windows 개발 환경]]의 「왜 master 대신 main인가」에 있습니다. 이 노트의 예시는 `master`로 실습한 기록이므로, `main`을 쓰는 저장소라면 이름만 바꿔 읽으면 됩니다.
 
 ### 스테이징: `git add`
 
@@ -91,6 +91,10 @@ $ git log                       # 전체 이력
 $ git log --oneline             # 한 줄 요약
 $ git log --oneline --all --graph   # 모든 브랜치를 그래프로
 ```
+
+#### 커밋 해시
+
+로그의 각 커밋 앞에 붙는 40자리 16진수가 **커밋 해시(SHA-1)** 입니다. 전 세계 어디서 만든 커밋이든 충돌 없이 구분할 만큼 큰 값이라서, 평소에는 `git log --oneline`에 보이는 앞 7자리 정도만 써도 충분합니다. Git은 SHA-256 저장소도 지원하며, Git 3.0부터는 새 저장소의 기본 해시를 SHA-256(64자리)으로 바꿀 예정입니다([Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)).
 
 ## 자주 쓰는 셸 명령
 
