@@ -15,3 +15,4 @@ source: mixed
 - **Database** — 데이터 모델, 트랜잭션, 정규화, SQL
 - **C-Programming** — C 기초와 컴파일 과정, 포인터와 메모리, 파일 입출력 (CS50)
 - **Engineer-Information-Processing** — 정보처리기사 실기의 반복 출제 개념 정리
+- **[개발자가 빠지는 함정 모음](Computer-Science/developer-traps.md)** — CSS·유니코드·부동소수점·시간·SQL·동시성·Git 등에서 직관과 다르게 동작하는 지점
