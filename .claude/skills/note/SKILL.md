@@ -115,7 +115,7 @@ grep -rl -E "/<slug>\)|\[\[<slug>[|#\]]|<slug>\.md" content/knowledge           
 1. 살릴 노트(B)와 사라질 노트(A)를 정한다. B의 frontmatter(`summary`, `tags`, `sources`, `date`)에 A의 것을 합친다.
 2. A의 고유 내용만 B의 알맞은 섹션에 **다시 써서** 넣는다. 통째로 붙이지 않는다. 합친 뒤에도 190줄 안팎을 넘지 않게 줄인다.
 3. A로 들어오는 링크를 모두 B로 바꾼다. 위키링크 `[[A|…]]`, 절대 경로 `/knowledge/dictionary/…/A`, 상대 경로 `…/A.md`, 인덱스 노트의 목록 줄까지 전부다.
-4. A를 지우고 인덱스 노트에서 A 줄을 삭제·수정한다.
+4. A를 지우고 인덱스 노트에서 A 줄을 삭제·수정한다. 공개 URL이 바뀌거나 사라지므로 `next.config.ts`의 `movedNotes`에 `옛 URL → 새 URL(병합이면 B의 URL)` 한 줄을 추가한다. 노트를 다른 폴더로 옮길 때도 같다.
 5. 영향받은 모든 파일에 `check-note.mjs`를 돌린다. 깨진 링크 0, 인덱스 미등록 0이어야 끝이다.
 6. 커밋 메시지: `Merge knowledge notes: A → B`, 쪼개어 옮기면 `Move knowledge section: A#섹션 → B`, 삭제만이면 `Remove knowledge note: A`, 여러 건이면 `Reorganize knowledge notes: <분야>`.
 
