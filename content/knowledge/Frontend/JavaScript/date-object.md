@@ -75,4 +75,4 @@ GMT(그리니치 평균시)와 UTC(협정 세계시)는 초 단위 이하에서�
 - 월이 0부터인 이유는 Java 1.0의 `Date`를 급하게 옮겨 왔기 때문이다.
 - `Date`의 getter는 실행 환경의 시간대를 따른다. 서버 코드에서 "한국 시간"이 필요하면 UTC에서 +9시간을 직접 계산하거나 `timeZone`을 지정한다.
 
-관련 노트: [[date-libraries|날짜 라이브러리: date-fns와 Day.js]]
+관련 노트: [[date-libraries|날짜 라이브러리: date-fns와 Day.js]], [[timezone|자바스크립트에서 타임존 다루기]]
