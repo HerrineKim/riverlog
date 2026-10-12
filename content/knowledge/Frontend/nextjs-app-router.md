@@ -216,4 +216,4 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 - 같은 GET `fetch`는 자동으로 중복 제거되고, `fetch`가 아닌 데이터는 `cache()`로 감싼다.
 - 캐싱 기본값은 버전마다 바뀌었으므로, 원하는 동작은 옵션으로 명시한다.
 
-관련 노트: [[nextjs|Next.js를 쓰는 이유]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[tanstack-query|TanStack Query]]
+관련 노트: [[nextjs|Next.js를 쓰는 이유]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[tanstack-query|TanStack Query]], [[streaming-ssr|스트리밍 SSR]]
