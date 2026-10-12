@@ -1,7 +1,7 @@
 ---
 title: "Life & Learning"
 concept: "Life & Learning"
-summary: "글쓰기, 저널리즘, 디자인, 영어, 공부법, IT 실용 팁, 생활·살림 노하우처럼 개발 밖에서 모은 교양·실용 지식."
+summary: "글쓰기, 저널리즘, 디자인, 영어, 공부법, IT 실용 팁, 주택 세금, 생활·살림 노하우처럼 개발 밖에서 모은 교양·실용 지식."
 tags: ["writing", "english", "design", "tips"]
 source: notion
 ---
@@ -14,4 +14,5 @@ source: notion
 - **English** — 비즈니스 쿠션 표현, 어휘, TOEIC 문법, OPIc 전략
 - **Learning** — 단계별 암기법
 - **Tips** — 온라인·IT 실용 팁: [블로그 수익화](/knowledge/dictionary/life-and-learning/tips/blog-monetization), [생활 속 IT 팁](/knowledge/dictionary/life-and-learning/tips/everyday-tech-tips), [절판 도서 구하기](/knowledge/dictionary/life-and-learning/tips/out-of-print-books)
+- **Tax** — [주택과 세금](/knowledge/dictionary/life-and-learning/tax) 개요와 단계별 노트: [취득세](/knowledge/dictionary/life-and-learning/tax/housing-tax-acquisition), [재산세·종부세](/knowledge/dictionary/life-and-learning/tax/housing-tax-holding), [주택임대소득세](/knowledge/dictionary/life-and-learning/tax/housing-tax-rental-income), [양도소득세·1세대 1주택 비과세](/knowledge/dictionary/life-and-learning/tax/housing-tax-capital-gains), [양도세 감면·특례·중과](/knowledge/dictionary/life-and-learning/tax/housing-tax-capital-gains-special), [증여세](/knowledge/dictionary/life-and-learning/tax/housing-tax-gift), [상속세](/knowledge/dictionary/life-and-learning/tax/housing-tax-inheritance)
 - **Life** — 생활·살림과 삶의 태도: [생활 정보 모음](/knowledge/dictionary/life-and-learning/life/life-tips), [세탁과 청소 노하우](/knowledge/dictionary/life-and-learning/life/cleaning), [와인과 칵테일 추천](/knowledge/dictionary/life-and-learning/life/drinks), [케빈 켈리의 68가지 조언](/knowledge/dictionary/life-and-learning/life/kevin-kelly-68-advice)
