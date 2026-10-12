@@ -7,7 +7,7 @@ source: notion
 sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d"]
 ---
 
-자료구조는 데이터를 메모리에 어떻게 배치하고 연결하느냐의 문제다. 배열처럼 연속된 공간을 쓰면 접근은 빠르지만 크기를 바꾸기 어렵고, [[pointers-and-memory|포인터]]로 흩어진 공간을 이으면 크기는 자유롭지만 접근이 느려진다. CS50의 자료구조 강의를 바탕으로, 스터디에서 Kotlin 예제로 정리한 내용을 함께 담았다.
+자료구조는 데이터를 메모리에 어떻게 배치하고 연결하느냐의 문제다. 배열처럼 연속된 공간을 쓰면 접근은 빠르지만 크기를 바꾸기 어렵고, [[pointers-and-memory|포인터]]로 흩어진 공간을 이으면 크기는 자유롭지만 접근이 느려진다. CS50의 자료구조 강의를 바탕으로 정리하고, Kotlin 예제를 함께 담았다.
 
 ## 배열 (Array)
 
@@ -54,7 +54,7 @@ typedef struct node
 } node;
 ```
 
-아래는 스터디에서 같은 구조를 Kotlin으로 옮겨 본 예제다. Kotlin의 객체 참조가 C의 포인터 역할을 한다.
+아래는 같은 구조를 Kotlin으로 옮긴 예제다. Kotlin의 객체 참조가 C의 포인터 역할을 한다.
 
 ```kotlin
 class Node(val value: String, var next: Node? = null)

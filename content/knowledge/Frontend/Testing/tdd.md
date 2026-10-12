@@ -6,7 +6,7 @@ tags: ["testing", "tdd", "react", "jest"]
 source: til
 ---
 
-**TDD(Test Driven Development, 테스트 주도 개발)** 는 기능 코드보다 **테스트를 먼저 작성**하고, 그 테스트를 통과하는 코드를 만드는 방식으로 개발하는 것이다(Test First Programming). 스터디에서 프론트엔드 TDD를 주제로 발표하며, React Todo 앱을 TDD로 구현해 보고 정리한 내용이다.
+**TDD(Test Driven Development, 테스트 주도 개발)** 는 기능 코드보다 **테스트를 먼저 작성**하고, 그 테스트를 통과하는 코드를 만드는 방식으로 개발하는 것이다(Test First Programming). 아래에서는 React Todo 앱을 예로 프론트엔드에서 TDD를 적용하는 방법을 정리한다.
 
 ## 왜 테스트를 안 쓰게 될까
 

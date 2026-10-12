@@ -8,7 +8,7 @@ source: notion
 
 코드 리뷰는 내가 쓴 코드의 문제를 혼자서는 다 찾을 수 없기 때문에 하는 일이다. 최고의 농구 선수도 슛을 놓치듯, 누구의 코드든 다른 사람의 눈을 거치면 사용자에게 닿기 전에 더 많은 버그를 잡을 수 있다. 완벽한 단 하나의 프로세스는 없으니 팀에 맞는 방식을 찾되, **정기적으로** 하는 것이 가장 중요하다.
 
-이 노트는 코드 리뷰 스터디에서 번역·토론한 [code-review-tips](https://github.com/ryanmcdermott/code-review-tips)(Ryan McDermott)를 중심으로, 리뷰할 때 보는 관점을 체크리스트로 재구성한 것이다.
+이 노트는 [code-review-tips](https://github.com/ryanmcdermott/code-review-tips)(Ryan McDermott)를 중심으로, 리뷰할 때 보는 관점을 체크리스트로 재구성한 것이다.
 
 ## 기본 원칙
 
