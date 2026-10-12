@@ -106,4 +106,4 @@ EDUCATION   Flitto University, Seoul, Korea            May 2020
 - [ ] Skills는 지원 포지션과 관련된 것만 남겼는가?
 - [ ] Summary가 2~3문장 안에 과거·현재·미래를 담고 있는가?
 
-관련 노트: [[recruiter-outreach-email|리크루터에게 보내는 영문 이메일]], [[tech-interview-tips|기술면접 잘 보는 법]]
+관련 노트: [[recruiter-outreach-email|리크루터에게 보내는 영문 이메일]], [[tech-interview-tips|기술면접 잘 보는 법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]]
