@@ -123,7 +123,7 @@ claude mcp add --transport http notion https://mcp.notion.com/mcp
     └── SKILL.md
 ```
 
-기본 제공 스킬로 Word(`docx`), 스프레드시트(`xlsx`), 프레젠테이션(`pptx`), PDF(`pdf`) 처리가 있다.
+기본 제공 스킬로 Word(`docx`), 스프레드시트(`xlsx`), 프레젠테이션(`pptx`), PDF(`pdf`) 처리가 있다. 스킬을 직접 만드는 방법은 [[claude-skill-building-guide|Claude 스킬 만들기 가이드]]에 따로 정리했다.
 
 ### CLAUDE.md: 프로젝트 메모리
 
