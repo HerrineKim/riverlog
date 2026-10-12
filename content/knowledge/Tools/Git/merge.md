@@ -141,4 +141,4 @@ $ git log --oneline --all --graph
 
 > 참고: 병합 외에 `git rebase`로 한 브랜치의 커밋들을 다른 브랜치 끝으로 옮겨 이력을 일직선으로 만드는 방법도 있습니다. 이력이 깔끔해지는 대신 커밋이 새로 만들어지므로, 이미 원격에 공유한 브랜치에는 쓰지 않는 것이 원칙입니다.
 
-관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]]
+관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]]

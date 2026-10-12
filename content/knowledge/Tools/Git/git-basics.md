@@ -111,4 +111,4 @@ $ rm -rf dir        # 폴더와 하위 파일 모두 삭제 (주의)
 - `git status`의 세 구역(staged / not staged / untracked)은 Staging Area · Working Directory · 미추적 파일에 대응한다.
 - `.git` 폴더가 곧 저장소다. 지우면 이력이 사라진다.
 
-관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]]
+관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]]
