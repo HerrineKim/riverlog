@@ -23,6 +23,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [Date 객체](/knowledge/dictionary/frontend/javascript/date-object): 0부터 시작하는 getMonth()의 유래, 서버 시간대와 관계없이 한국 시간 구하기
 - [자바스크립트에서 타임존 다루기](/knowledge/dictionary/frontend/javascript/timezone): 타임존 ≠ 오프셋, 서머타임, IANA tz database, Date와 서버 간 시간 주고받기, 오프셋 계산의 한계
 - [TypeScript 코딩 컨벤션](/knowledge/dictionary/frontend/javascript/typescript-coding-convention): 이름 짓기, 타입, 클래스, 배열 메서드, 에러 처리, 모듈 규칙을 필수·권장 등급과 이유로 정리
+- [ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md): 품질은 ESLint, 모양은 Prettier로 역할 나누기, 저장 시 자동 수정 에디터 설정, `.eslintrc` 항목의 뜻과 ESLint 9 flat config
 
 ### 브라우저와 함께
 - [DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·생성·삽입·삭제·속성 변경, innerText vs innerHTML
@@ -47,4 +48,4 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 
 - 세미콜론은 선택 사항이다. 생략하면 ASI(Automatic Semicolon Insertion) 규칙에 따라 자동으로 삽입된다. 어느 쪽이든 팀 안에서 일관되게 쓰는 것이 중요하다.
 - 코드 리뷰에서 반복해서 나온 스타일 지적(const, else, 기본값, 불리언 이름 등)은 [코드 리뷰에서 자주 나온 지적](/knowledge/dictionary/tools/code-review/review-patterns)에 모았다.
-- 스타일의 핵심은 "합의된 원칙과 일관성"이다. 참고할 만한 가이드: [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript), [Google JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html), [standardjs](https://standardjs.com/). 실무에서는 ESLint와 Prettier로 자동화한다.
+- 스타일의 핵심은 "합의된 원칙과 일관성"이다. 참고할 만한 가이드: [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript), [Google JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html), [standardjs](https://standardjs.com/). 실무에서는 ESLint와 Prettier로 자동화한다([ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md)).

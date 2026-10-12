@@ -105,7 +105,7 @@ export default function Dashboard() {
 ```
 
 - `loading.js`는 페이지 전체를 감싸는 Suspense다. 데이터 없이는 아무것도 그릴 수 없는 페이지에 쓴다. 나머지는 경계를 데이터를 쓰는 곳 가까이 둔다.
-- `cookies()`·`params`·`fetch`를 레이아웃 꼭대기에서 `await`하면 그 아래 전체가 동적이 된다. **Promise를 그대로 내려 보내고 필요한 컴포넌트가 경계 안에서 푼다**(클라이언트 컴포넌트라면 [[react-use-hook|use 훅]]).
+- `cookies()`·`params`·`fetch`를 레이아웃 꼭대기에서 `await`하면 그 아래 전체가 동적이 된다. **Promise를 그대로 내려 보내고 필요한 컴포넌트가 경계 안에서 푼다**(클라이언트 컴포넌트라면 [[react-use-hook|use 훅]]). 레이아웃에서 기다리면 왜 하위 구획이 모두 막히는지는 [[nextjs-app-router|App Router 노트]]의 「렌더링을 막는 위치」에 있다.
 - Cache Components를 쓰면 경계 없이 동적 데이터에 접근할 때 빌드 오류(blocking route)가 난다. 경계를 강제하는 셈이다.
 
 ## 정리

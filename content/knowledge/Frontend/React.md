@@ -23,24 +23,24 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 - [리스트와 Key](/knowledge/dictionary/frontend/react/lists-and-keys): map 렌더링, key의 역할, key 값에 따른 리렌더링·리마운트 차이
 - [폼](/knowledge/dictionary/frontend/react/forms): 제어 컴포넌트, 여러 input, 단위 변환기 예제
 - [합성](/knowledge/dictionary/frontend/react/composition): children, 특수화, 상속 대신 합성
-- [Context](/knowledge/dictionary/frontend/react/context): props drilling 없이 값 공유, Flux 패턴
+- [Context](/knowledge/dictionary/frontend/react/context): props drilling 없이 값 공유, 언제 전역 상태 라이브러리로 넘어가나
 - [스타일링](/knowledge/dictionary/frontend/react/styling): CSS Modules, styled-components, emotion, 인라인 스타일
 
 ### 실전
-- [개발 환경과 빌드 도구](/knowledge/dictionary/frontend/react/tooling): CRA, webpack, Babel, TypeScript, ESLint·Prettier, 환경 변수
+- [React 빌드 환경 직접 구성하기: webpack·Babel·TypeScript](Frontend/React/tooling.md): CDN 실습, CRA 종료 이후의 선택, webpack·Babel·tsconfig 역할, 라우팅·코드 스플리팅, 도구별 환경 변수 접두사
 - [SWR로 데이터 가져오기](/knowledge/dictionary/frontend/react/swr): fetcher, mutate, useSWRInfinite
 - [TanStack Query(React Query)](/knowledge/dictionary/frontend/react/tanstack-query): QueryClientProvider, query key, useQuery·useMutation, v5 변경점
-- [Redux와 react-redux](/knowledge/dictionary/frontend/react/redux): store·reducer·dispatch, useSelector·useDispatch, Redux Toolkit
+- [Redux와 react-redux](/knowledge/dictionary/frontend/react/redux): Flux 패턴, store·reducer·dispatch, useSelector·useDispatch, Redux Toolkit
 - [use 훅과 리액트 비동기 처리](/knowledge/dictionary/frontend/react/react-use-hook): Promise를 직접 읽는 use, 캐싱·프리페치로 무한 루프와 워터폴 막기, 컴포넌트·훅 안에서만 부르는 이유
-- [프론트엔드와 SOLID 원칙](/knowledge/dictionary/frontend/react/frontend-solid): SRP·OCP·LSP·ISP·DIP를 컴포넌트 설계에 옮기기
-- [프론트엔드에서 의존성 관리하기](/knowledge/dictionary/frontend/react/frontend-dependency): 변수 캡슐화, 공용 함수의 의존성 역전, 도메인 타입으로 타입 의존성 줄이기
 - [회원가입·로그인 구현](/knowledge/dictionary/frontend/react/auth-flow): useInput 훅, axios, 로그인 상태에 따른 리다이렉트
-- [실시간 채팅 앱 구조](/knowledge/dictionary/frontend/react/realtime-chat-app): 폴더 구조, REST + WebSocket 설계, optimistic UI, 무한 스크롤
+- [실시간 채팅 앱의 데이터 흐름: REST와 WebSocket 역할 나누기](Frontend/React/realtime-chat-app.md): 쓰기는 REST·알림은 소켓, 리소스 계층이 드러나는 URL, 소켓 연결 수명, optimistic UI와 중복 방지, 긴 목록 최적화
 - [리렌더링 원인 추적하기](/knowledge/dictionary/frontend/react/re-rendering): memo가 안 먹힐 때, useQuery의 렌더링, DevTools 하이라이트·Profiler
 - [react-hook-form과 MUI Select](/knowledge/dictionary/frontend/react/react-hook-form): Controller, 빈 값 처리, 수정 폼 초기값
 - [react-router로 레이아웃과 Breadcrumbs 만들기](/knowledge/dictionary/frontend/react/react-router-layout): URL 규칙, Outlet, 경로 기반 Breadcrumbs
 - [MUI Dialog로 삭제 확인 창 만들기](/knowledge/dictionary/frontend/react/confirm-dialog): 재사용 다이얼로그, 위험한 버튼 디자인
 - [음성 녹음하고 파일로 보내기](/knowledge/dictionary/frontend/react/audio-recording): getUserMedia·MediaRecorder, Blob 다운로드, FormData 업로드
+
+관련: 컴포넌트 설계 원칙(SOLID)과 의존성 관리, 폴더 구조와 Feature-Sliced Design은 [Architecture](Frontend/Architecture.md) 주제에 모았다.
 
 ## 참고 자료
 

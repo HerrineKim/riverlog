@@ -10,14 +10,11 @@ sources: ["https://riverkim.kr/207", "https://riverkim.kr/214"]
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트입니다. 원글은 2023년 Next.js 13 베타 문서를 읽고 썼습니다. 개념은 그대로지만 캐싱 기본값 등 세부 동작은 버전마다 바뀌었으니, 바뀐 부분은 따로 표시했습니다.
 
-Next.js 13에서 도입된 **App Router**(`app/` 디렉터리)는 Pages Router와 사고방식이 다르다. 핵심은 두 가지다. **라우팅은 서버 중심**이고, **내비게이션은 클라이언트 사이드**다. 그리고 데이터는 `getServerSideProps` 같은 페이지 단위 함수 대신 **서버 컴포넌트 안에서 바로 `fetch`** 한다. 렌더링 방식(SSR·SSG)과 `fetch` 캐시 옵션은 [Next.js를 쓰는 이유](/knowledge/dictionary/frontend/nextjs)에 정리했다.
+Next.js 13에서 도입된 **App Router**(`app/` 디렉터리)는 Pages Router와 사고방식이 다르다. 핵심은 두 가지다. **라우팅은 서버 중심**이고, **내비게이션은 클라이언트 사이드**다. 그리고 데이터는 `getServerSideProps` 같은 페이지 단위 함수 대신 **서버 컴포넌트 안에서 바로 `fetch`** 한다. 렌더링 방식(SSR·SSG)과 `fetch` 캐시 옵션은 [Next.js를 쓰는 이유](/knowledge/dictionary/frontend/next-js/nextjs)에 정리했다.
 
 ## 서버 컴포넌트가 기본
 
-- `app/` 아래 컴포넌트는 기본이 **React Server Component(RSC)** 다. 서버에서만 실행되므로 `useState`·`useEffect`·이벤트 핸들러를 쓰면 에러가 난다.
-- 상호작용이 필요한 컴포넌트만 파일 첫 줄에 `'use client'`를 써서 **클라이언트 컴포넌트**로 만든다.
-- 클라이언트 컴포넌트를 서버 컴포넌트 사이에 끼워 넣으면(interleave), 상호작용이 필요한 부분만 브라우저에서 다시 렌더링된다.
-- 라우터 지도 전체를 클라이언트가 내려받을 필요가 없다. 서버가 경로를 해석하고 결과(RSC payload)를 보낸다.
+`app/` 아래 컴포넌트는 기본이 **React Server Component(RSC)** 다. 상호작용이 필요한 곳만 `'use client'`로 클라이언트 컴포넌트를 만들고, 서버가 경로를 해석해 그 결과(RSC payload)를 내려보내므로 클라이언트가 라우터 지도 전체를 받을 필요가 없다. 두 종류의 컴포넌트를 어떻게 섞을 수 있고 무엇이 안 되는지는 [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]에 정리했다.
 
 ![[riverkim/207-1.jpg]]
 
@@ -151,6 +148,8 @@ async function Albums({ promise }: { promise: Promise<Album[]> }) {
 - `loading.js`를 두어 기다리는 동안 그 구획의 로딩 UI를 스트리밍한다.
 - 데이터 요청을 트리의 **아래쪽**(실제로 쓰는 컴포넌트)으로 내려, 막히는 범위를 줄인다.
 
+HTML을 Suspense 경계 단위로 나눠 보내는 원리와 상태 코드·버퍼링 같은 제약은 [[streaming-ssr|스트리밍 SSR]]에 있다.
+
 ## 중복 제거와 캐시
 
 ### 요청 중복 제거
@@ -194,19 +193,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
 조건을 확인하는 동안 필요할 것 같은 데이터를 미리 요청해 둔다. `preload`는 API가 아니라 이름 붙인 패턴일 뿐이다.
 
-### 정적 데이터와 재검증
+### 데이터 캐시와 재검증
 
-| 데이터 | 예 | 처리 |
-| --- | --- | --- |
-| 정적 | 블로그 글 | 빌드 때 가져와 캐시하고 재사용 |
-| 동적 | 장바구니, 사용자별 데이터 | 요청마다 새로 가져옴 |
-
-캐시된 데이터를 새로 고치는 **재검증(revalidation)** 은 두 가지다.
-
-- **시간 기반**: 일정 시간이 지나면 다시 가져온다. `fetch`의 `next: { revalidate: 60 }` 또는 구획 단위로 `export const revalidate = 60`. 페이지·레이아웃·`fetch`에 서로 다른 값을 주면 **가장 짧은 값**이 쓰인다.
-- **요청 기반(on-demand)**: 데이터가 바뀌었을 때 `revalidatePath`·`revalidateTag`로 바로 무효화한다.
-
-> 버전 차이: 원글 시점(13)에는 `fetch`가 기본으로 캐시되었다. 15부터는 기본이 캐시하지 않음이고, 16에서는 `'use cache'` 기반의 Cache Components 모델이 도입되었다. 자세한 내용은 [Next.js를 쓰는 이유](/knowledge/dictionary/frontend/nextjs)의 캐싱 절 참고.
+여기까지는 **한 번의 렌더링 안에서** 요청을 아끼는 이야기다. 렌더링을 넘어 결과를 보관하는 데이터 캐시, 시간·요청 기반 재검증(`revalidate`, `revalidatePath`·`revalidateTag`), 버전별 기본값 변화와 Next.js 16의 `'use cache'`는 [[nextjs|Next.js를 쓰는 이유]]의 「데이터 캐싱과 재검증」 절에 모았다.
 
 ## 정리
 
@@ -214,6 +203,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 - 이동은 `<Link>`(prefetch 포함)나 `next/navigation`의 `useRouter`로 한다. 캐시가 있으면 soft navigation으로 바뀐 부분만 그린다.
 - 데이터는 서버 컴포넌트에서, 쓰는 곳 가까이에서, 가능하면 병렬로 가져온다. 느린 부분은 `<Suspense>`로 감싼다.
 - 같은 GET `fetch`는 자동으로 중복 제거되고, `fetch`가 아닌 데이터는 `cache()`로 감싼다.
-- 캐싱 기본값은 버전마다 바뀌었으므로, 원하는 동작은 옵션으로 명시한다.
+- 캐싱 기본값은 버전마다 바뀌었으므로 원하는 동작은 옵션으로 명시한다([[nextjs|Next.js를 쓰는 이유]]의 캐싱 절 참고).
 
 관련 노트: [[nextjs|Next.js를 쓰는 이유]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[tanstack-query|TanStack Query]], [[streaming-ssr|스트리밍 SSR]], [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]

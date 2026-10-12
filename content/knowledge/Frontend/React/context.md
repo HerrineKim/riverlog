@@ -60,20 +60,7 @@ function ThemedButton() {
 
 ## 전역 상태 관리와 Flux 패턴
 
-앱이 커지면 Context만으로 관리하기 어려운 복잡한 전역 상태가 생기고, Redux·Vuex 같은 상태 관리 라이브러리를 쓴다. 이들이 따르는 **Flux 패턴**은 데이터가 **한 방향으로만** 흐르게 한다.
-
-```text
-Action → Dispatcher → Store → View → (사용자 입력) → Action → ...
-```
-
-| 구성 | 역할 |
-| --- | --- |
-| Action | "무엇이 일어났는지"를 담은 객체. 종류(type)와 데이터를 Dispatcher에 전달 |
-| Dispatcher | Action 종류에 따라 Store를 업데이트 |
-| Store | 데이터(상태)를 관리하는 곳. 보통 비즈니스 도메인별로 나눈다 |
-| View | Store의 데이터를 UI로 보여 준다(MVC의 View) |
-
-Redux의 실제 사용법은 [[redux|Redux와 react-redux]]에 정리했다. React에서는 `useReducer` + Context 조합으로 작은 규모의 Flux를 직접 구현할 수도 있다. 서버에서 받아 온 데이터는 전역 state 대신 [SWR](/knowledge/dictionary/frontend/react/swr) 같은 데이터 패칭 라이브러리의 캐시로 관리하는 방법도 많이 쓴다.
+앱이 커지면 Context만으로 관리하기 어려운 복잡한 전역 상태가 생기고, Redux·Vuex 같은 상태 관리 라이브러리를 쓴다. 이들이 따르는 **Flux 패턴**(Action → Dispatcher → Store → View의 단방향 흐름)과 Redux의 사용법은 [[redux|Redux와 react-redux]]에 정리했다. React에서는 `useReducer` + Context 조합으로 작은 규모의 Flux를 직접 구현할 수도 있다. 서버에서 받아 온 데이터는 전역 state 대신 [SWR](/knowledge/dictionary/frontend/react/swr) 같은 데이터 패칭 라이브러리의 캐시로 관리하는 방법도 많이 쓴다.
 
 ## 핵심 정리
 

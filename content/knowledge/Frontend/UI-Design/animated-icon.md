@@ -94,4 +94,4 @@ ffmpeg -framerate 30 -i frames/frame_%03d.png -c:v libvpx-vp9 -pix_fmt yuva420p 
 
 **결국 Animated Icon은 "예쁜 영상"보다 "투명하게, 가볍게, 끊김 없이 반복되는 영상"을 만드는 문제다.**
 
-관련 노트: [[design-system|디자인 시스템과 공용 스킬 배포하기]], [[vibe-coding-beautiful-ui|바이브 코딩으로 예쁜 UI 만들기]]
+관련 노트: [[design-system|디자인 시스템을 패키지로 배포하기]], [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]]

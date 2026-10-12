@@ -132,14 +132,7 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 - 기타: `color`, `date` 같은 picker, 사용자에게 보이지 않고 값만 전송하는 `hidden`
 - type별 용도와 `select`·`textarea`·`fieldset`·`datalist`는 [[html-input-types|HTML 입력 요소 치트시트]]에 정리했다.
 
-### label
-
-`<label for="id">`와 `<input id="id">`를 연결하면 label을 눌러도 input이 활성화된다. 터치 영역이 넓어지고, 스크린 리더가 label을 읽어 주어 **접근성**도 좋아진다.
-
-```html
-<label for="agreement">개인정보 수집에 동의합니다.</label>
-<input type="checkbox" name="agreement" id="agreement" />
-```
+모든 input에는 `<label for>`를 연결해 터치 영역과 접근성을 확보한다. 연결 방법과 예시는 [[html-input-types|HTML 입력 요소 치트시트]]의 label 절에 있다.
 
 ## 링크의 target과 rel
 

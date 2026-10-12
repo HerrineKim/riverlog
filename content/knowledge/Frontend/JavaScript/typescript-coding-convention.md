@@ -178,8 +178,8 @@ try {
 
 - 대부분의 규칙은 **"코드가 의도와 다르게 조용히 동작하는 경우"를 막는다.** 래퍼 객체 비교, 스프레드 덮어쓰기, `forEach` 안의 `await`가 그런 예다.
 - 타입 규칙의 중심은 **느슨한 타입(`Object`, `any`성 `catch`, `null`이 섞인 별칭)을 줄이는 것**이다.
-- `no-var`, `default-case`처럼 ESLint로 자동화할 수 있는 규칙은 사람이 리뷰할 것이 아니라 린터에 맡긴다.
+- `no-var`, `default-case`처럼 ESLint로 자동화할 수 있는 규칙은 사람이 리뷰할 것이 아니라 린터에 맡긴다. 린터와 포매터를 연결하는 방법은 [[eslint-prettier|ESLint와 Prettier 설정]]에 있다.
 - 권장 규칙은 팀이 합의하면 예외를 둘 수 있다. 한글 식별자와 `switch (true)`가 그렇다.
 - 결국 컨벤션은 정답 목록이 아니라 **팀이 같은 코드를 같은 뜻으로 읽기 위한 합의**다.
 
-관련 노트: [[variables-and-types|변수와 데이터 타입]], [[arrays-and-objects|배열·객체·문자열]], [[class|class 문법]], [[review-patterns|코드 리뷰에서 자주 나온 지적]]
+관련 노트: [[variables-and-types|변수와 데이터 타입]], [[arrays-and-objects|배열·객체·문자열]], [[class|class 문법]], [[eslint-prettier|ESLint와 Prettier 설정]], [[review-patterns|코드 리뷰에서 자주 나온 지적]]

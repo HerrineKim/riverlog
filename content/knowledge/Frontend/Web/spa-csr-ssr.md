@@ -16,6 +16,8 @@ sources: ["https://riverkim.kr/257", "https://riverkim.kr/321"]
 2. 스마트폰 보급으로 트래픽 절감, 빠른 반응성 같은 모바일 최적화가 중요해졌다.
 3. React, Vue.js 같은 프론트엔드 프레임워크가 등장하며 CSR 기반의 SPA가 보편화되었다.
 
+MPA에서 SPA로, 다시 서버와 클라이언트가 역할을 나누는 구조로 이어지는 흐름은 [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]]에서 "코드가 어디에 사는지"로 설명한다.
+
 ## CSR (Client Side Rendering)
 
 ![CSR](/images/til/FRONTEND/Web/SPA.assets/CSR.png)
@@ -76,7 +78,7 @@ SSG의 "바뀔 때마다 재배포" 문제를 줄이려고 Next.js가 만든 방
 | 서버 부담 | 적음 | 큼 | 적음 | 적음 |
 | SEO | 불리 | 유리 | 유리 | 유리 |
 
-이 방식들은 "어느 쪽이 더 좋다"가 아니라 서비스 특성에 맞게 고르는 것이다. 예를 들어 Django 템플릿으로 페이지를 그리면서 좋아요·팔로우만 axios로 비동기 처리하는 구조는 SSR을 기본으로 일부만 CSR을 섞은 형태다. Next.js처럼 SSR·SSG와 CSR을 페이지 단위로 섞어 쓰는 프레임워크도 있다([Next.js](/knowledge/dictionary/frontend/nextjs) 참고).
+이 방식들은 "어느 쪽이 더 좋다"가 아니라 서비스 특성에 맞게 고르는 것이다. 예를 들어 Django 템플릿으로 페이지를 그리면서 좋아요·팔로우만 axios로 비동기 처리하는 구조는 SSR을 기본으로 일부만 CSR을 섞은 형태다. Next.js처럼 SSR·SSG와 CSR을 페이지 단위로 섞어 쓰는 프레임워크도 있다([Next.js](/knowledge/dictionary/frontend/next-js/nextjs) 참고).
 
 ## 핵심 정리
 

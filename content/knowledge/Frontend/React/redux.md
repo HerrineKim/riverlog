@@ -10,9 +10,26 @@ sources: ["https://riverkim.kr/251", "https://riverkim.kr/252"]
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
 
-**Redux**는 JavaScript 앱의 상태 관리 라이브러리다. 여러 컴포넌트가 같은 state를 쓰면 props를 몇 단계씩 내려보내야 하고, 누가 언제 state를 바꿨는지 추적하기도 어렵다. Redux는 공유 state를 **store 한 곳**에 모으고, state를 바꾸는 방법을 **reducer**에 미리 정해 둔다. 컴포넌트는 store를 직접 고치지 못하고 "이렇게 바꿔 달라"는 **요청(action)** 만 보낼 수 있다. Flux 패턴(단방향 데이터 흐름)의 대표 구현이다([Context와 Flux 패턴](/knowledge/dictionary/frontend/react/context) 참고).
+**Redux**는 JavaScript 앱의 상태 관리 라이브러리다. 여러 컴포넌트가 같은 state를 쓰면 props를 몇 단계씩 내려보내야 하고, 누가 언제 state를 바꿨는지 추적하기도 어렵다. Redux는 공유 state를 **store 한 곳**에 모으고, state를 바꾸는 방법을 **reducer**에 미리 정해 둔다. 컴포넌트는 store를 직접 고치지 못하고 "이렇게 바꿔 달라"는 **요청(action)** 만 보낼 수 있다.
 
 **react-redux**는 Redux store를 React 컴포넌트에 연결해 주는 바인딩 라이브러리다.
+
+## Flux 패턴: 데이터는 한 방향으로만
+
+Redux는 Facebook이 제안한 **Flux 패턴**의 대표 구현이다. Flux의 핵심은 데이터가 **한 방향으로만** 흐른다는 것이다. 어디서 누가 상태를 바꿨는지 추적하기 쉬워진다.
+
+```text
+Action → Dispatcher → Store → View → (사용자 입력) → Action → ...
+```
+
+| 구성 | 역할 | Redux에서는 |
+| --- | --- | --- |
+| Action | "무엇이 일어났는지"를 담은 객체. 종류(type)와 데이터를 전달 | action 객체 |
+| Dispatcher | Action 종류에 따라 Store를 업데이트 | `dispatch` + reducer |
+| Store | 데이터(상태)를 관리하는 곳. 보통 비즈니스 도메인별로 나눈다 | store 하나(슬라이스로 나눔) |
+| View | Store의 데이터를 UI로 보여 준다(MVC의 View) | React 컴포넌트 |
+
+작은 규모라면 라이브러리 없이 `useReducer` + [Context](/knowledge/dictionary/frontend/react/context)로 같은 흐름을 만들 수 있다.
 
 ## 구성 요소
 
