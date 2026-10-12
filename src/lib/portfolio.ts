@@ -5,8 +5,10 @@ import { extractToc } from "./markdown";
 import { isFresh, isPublished, resolveAttachment } from "./vault";
 
 const PORTFOLIO_DIR = path.join(process.cwd(), "content/portfolio");
+/** Closing sections that are not projects, so the index card leaves them out. */
+const NON_PROJECT_HEADINGS = new Set(["돌아보며"]);
 
-/** One company (or client engagement); each `##` heading in the body is a project. */
+/** One company (or client engagement); each `##` heading in the body is a project, except a closing "돌아보며". */
 export type Work = {
   slug: string;
   company: string;
@@ -57,7 +59,7 @@ function readWorks(): Work[] {
           : [],
         cover: typeof data.cover === "string" ? resolveAttachment(data.cover) : undefined,
         projects: extractToc(content)
-          .filter((t) => t.depth === 2)
+          .filter((t) => t.depth === 2 && !NON_PROJECT_HEADINGS.has(t.text))
           .map((t) => t.text),
         body: content,
       };

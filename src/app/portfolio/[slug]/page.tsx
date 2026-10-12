@@ -50,10 +50,9 @@ export default async function WorkPage({ params }: PageProps<"/portfolio/[slug]"
             {work.highlights.length > 0 && (
               <dl className="mt-8 grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-4">
                 {work.highlights.map((h) => (
-                  <div key={h.label} className="rounded-xl border border-line bg-bg-elev px-4 py-3">
-                    <dt className="sr-only">{h.label}</dt>
+                  <div key={h.label} className="flex flex-col-reverse rounded-xl border border-line bg-bg-elev px-4 py-3">
+                    <dt className="mt-0.5 text-xs leading-snug text-muted">{h.label}</dt>
                     <dd className="text-2xl font-semibold text-accent tabular-nums">{h.value}</dd>
-                    <dd className="mt-0.5 text-xs leading-snug text-muted">{h.label}</dd>
                   </div>
                 ))}
               </dl>

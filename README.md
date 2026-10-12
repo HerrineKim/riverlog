@@ -58,7 +58,7 @@ source: til               # til | notion | mixed
 
 ### 포트폴리오
 
-`content/portfolio/<회사>.md` — 회사 하나가 파일 하나이고, 본문의 `##` 헤딩 하나가 프로젝트 하나입니다(목록 카드에 헤딩 제목이 그대로 나옵니다). 최신 경력이 위로 오도록 `start`로 정렬하고, 스크린샷은 `content/attachments/portfolio/<회사>/`에 둡니다.
+`content/portfolio/<회사>.md` — 회사 하나가 파일 하나이고, 본문의 `##` 헤딩 하나가 프로젝트 하나입니다(목록 카드에 헤딩 제목이 그대로 나오고, 마무리용 `## 돌아보며`는 빠집니다). 최신 경력이 위로 오도록 `start`로 정렬하고, 스크린샷은 `content/attachments/portfolio/<회사>/`에 둡니다.
 
 ```md
 ---

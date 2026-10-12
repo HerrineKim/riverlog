@@ -41,10 +41,9 @@ export default function PortfolioIndex() {
                 {w.highlights.length > 0 && (
                   <dl className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
                     {w.highlights.slice(0, 4).map((h) => (
-                      <div key={h.label} className="rounded-xl bg-bg-sunken px-3 py-2.5">
-                        <dt className="sr-only">{h.label}</dt>
+                      <div key={h.label} className="flex flex-col-reverse rounded-xl bg-bg-sunken px-3 py-2.5">
+                        <dt className="text-xs leading-snug text-muted">{h.label}</dt>
                         <dd className="text-lg font-semibold text-accent tabular-nums">{h.value}</dd>
-                        <dd className="text-xs leading-snug text-muted">{h.label}</dd>
                       </div>
                     ))}
                   </dl>

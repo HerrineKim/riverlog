@@ -15,7 +15,7 @@ export function RiverMark({ className = "" }: { className?: string }) {
 export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/80 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 px-4 min-[400px]:gap-4 sm:px-6">
         <Link href="/" className="group flex shrink-0 items-center gap-2 text-fg-strong" aria-label="riverlog 홈">
           <RiverMark className="size-6 text-accent transition group-hover:translate-x-0.5" />
           <span className="hidden font-display text-2xl leading-none tracking-tight min-[480px]:inline">riverlog</span>
