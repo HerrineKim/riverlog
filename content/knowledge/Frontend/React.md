@@ -29,12 +29,16 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 ### 실전
 - [개발 환경과 빌드 도구](/knowledge/dictionary/frontend/react/tooling): CRA, webpack, Babel, TypeScript, ESLint·Prettier, 환경 변수
 - [SWR로 데이터 가져오기](/knowledge/dictionary/frontend/react/swr): fetcher, mutate, useSWRInfinite
+- [TanStack Query(React Query)](/knowledge/dictionary/frontend/react/tanstack-query): QueryClientProvider, query key, useQuery·useMutation, v5 변경점
+- [Redux와 react-redux](/knowledge/dictionary/frontend/react/redux): store·reducer·dispatch, useSelector·useDispatch, Redux Toolkit
+- [use 훅과 리액트 비동기 처리](/knowledge/dictionary/frontend/react/react-use-hook): Promise를 직접 읽는 use, 캐싱·프리페치로 무한 루프와 워터폴 막기, 컴포넌트·훅 안에서만 부르는 이유
 - [회원가입·로그인 구현](/knowledge/dictionary/frontend/react/auth-flow): useInput 훅, axios, 로그인 상태에 따른 리다이렉트
 - [실시간 채팅 앱 구조](/knowledge/dictionary/frontend/react/realtime-chat-app): 폴더 구조, REST + WebSocket 설계, optimistic UI, 무한 스크롤
 - [리렌더링 원인 추적하기](/knowledge/dictionary/frontend/react/re-rendering): memo가 안 먹힐 때, useQuery의 렌더링, DevTools 하이라이트·Profiler
 - [react-hook-form과 MUI Select](/knowledge/dictionary/frontend/react/react-hook-form): Controller, 빈 값 처리, 수정 폼 초기값
 - [react-router로 레이아웃과 Breadcrumbs 만들기](/knowledge/dictionary/frontend/react/react-router-layout): URL 규칙, Outlet, 경로 기반 Breadcrumbs
 - [MUI Dialog로 삭제 확인 창 만들기](/knowledge/dictionary/frontend/react/confirm-dialog): 재사용 다이얼로그, 위험한 버튼 디자인
+- [음성 녹음하고 파일로 보내기](/knowledge/dictionary/frontend/react/audio-recording): getUserMedia·MediaRecorder, Blob 다운로드, FormData 업로드
 
 ## 참고 자료
 
