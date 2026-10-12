@@ -16,15 +16,19 @@ export type Work = {
   role: string;
   period: string; // display text, e.g. "2023.06 – 2026.02"
   start: string; // YYYY-MM, newest first
+  end: string; // YYYY-MM; the timeline sizes each company by start → end
   location?: string;
   summary: string;
   about?: string; // what the company does
   stack: string[];
   highlights: { value: string; label: string }[];
   cover?: string; // public URL of an image in content/attachments
-  projects: string[];
+  projects: Project[];
   body: string;
 };
+
+/** A `##` section; `summary` is the `> one-liner` right under its heading. */
+export type Project = { id: string; title: string; summary?: string };
 
 let cached: { list: Work[]; at: number } | undefined;
 
@@ -50,6 +54,7 @@ function readWorks(): Work[] {
         role: String(data.role ?? ""),
         period: String(data.period ?? ""),
         start: String(data.start ?? ""),
+        end: String(data.end ?? data.start ?? ""),
         location: data.location ? String(data.location) : undefined,
         summary: String(data.summary ?? ""),
         about: data.about ? String(data.about) : undefined,
@@ -58,14 +63,38 @@ function readWorks(): Work[] {
           ? data.highlights.map((h: Record<string, unknown>) => ({ value: String(h.value ?? ""), label: String(h.label ?? "") }))
           : [],
         cover: typeof data.cover === "string" ? resolveAttachment(data.cover) : undefined,
-        projects: extractToc(content)
-          .filter((t) => t.depth === 2 && !NON_PROJECT_HEADINGS.has(t.text))
-          .map((t) => t.text),
+        projects: readProjects(content),
         body: content,
       };
     })
     .filter((w): w is Work => !!w)
     .sort((a, b) => b.start.localeCompare(a.start));
+}
+
+function readProjects(markdown: string): Project[] {
+  const headings = extractToc(markdown).filter((t) => t.depth === 2);
+  // Pair each `## ` line (outside code fences) with the toc entry of the same index
+  const lines = markdown.split("\n");
+  const starts: number[] = [];
+  let inFence = false;
+  lines.forEach((line, i) => {
+    if (/^\s*(```|~~~)/.test(line)) inFence = !inFence;
+    if (!inFence && /^##\s/.test(line)) starts.push(i);
+  });
+  return headings
+    .map((h, i) => {
+      const next = lines.slice(starts[i] + 1).find((l) => l.trim());
+      const summary = next?.startsWith(">") ? next.replace(/^>\s*/, "").trim() : undefined;
+      return { id: h.id, title: h.text, summary };
+    })
+    .filter((p) => !NON_PROJECT_HEADINGS.has(p.title));
+}
+
+/** Months between two YYYY-MM values, counting both ends. */
+export function monthSpan(start: string, end: string): number {
+  const [sy, sm] = start.split("-").map(Number);
+  const [ey, em] = end.split("-").map(Number);
+  return Math.max(1, (ey - sy) * 12 + (em - sm) + 1);
 }
 
 export function getWork(slug: string): Work | undefined {

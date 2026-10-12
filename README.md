@@ -58,7 +58,7 @@ source: til               # til | notion | mixed
 
 ### 포트폴리오
 
-`content/portfolio/<회사>.md` — 회사 하나가 파일 하나이고, 본문의 `##` 헤딩 하나가 프로젝트 하나입니다(목록 카드에 헤딩 제목이 그대로 나오고, 마무리용 `## 돌아보며`는 빠집니다). 최신 경력이 위로 오도록 `start`로 정렬하고, 스크린샷은 `content/attachments/portfolio/<회사>/`에 둡니다.
+`content/portfolio/<회사>.md` — 회사 하나가 파일 하나이고, 본문의 `##` 헤딩 하나가 프로젝트 하나입니다. 헤딩 바로 아래 `> 한 줄 요약`은 목록에 프로젝트 설명으로 나오고, 마무리용 `## 돌아보며`는 목록에서 빠집니다. 이미지만 있는 줄은 alt 텍스트가 캡션이 됩니다. 최신 경력이 위로 오도록 `start`로 정렬하고, 스크린샷은 `content/attachments/portfolio/<회사>/`에 둡니다.
 
 ```md
 ---
@@ -67,6 +67,7 @@ companyEn: "Company"
 role: "직무 · 직급"
 period: "2023.06 – 2026.02"
 start: "2023-06"
+end: "2026-02"          # 타임라인 막대 길이(start → end)
 location: "서울 · 대면"
 summary: "카드와 상단에 보일 한 줄 요약"
 about: "회사 소개 한두 문장"

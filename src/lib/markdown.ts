@@ -8,7 +8,9 @@ import rehypeStringify from "rehype-stringify";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
+import type { Element, Root as HastRoot } from "hast";
 import { unified } from "unified";
+import { visit } from "unist-util-visit";
 import { remarkObsidian } from "./wikilinks";
 
 /** [[target|alias]] in plain-text contexts (TOC, excerpts); group 1 is the target, group 2 the alias. */
@@ -29,6 +31,21 @@ const sanitizeSchema: Schema = {
   ),
 };
 
+/** A paragraph holding only an image becomes <figure> with its alt text as the caption. */
+function rehypeFigures() {
+  return (tree: HastRoot) => {
+    visit(tree, "element", (node: Element) => {
+      if (node.tagName !== "p") return;
+      const kids = node.children.filter((c) => !(c.type === "text" && !c.value.trim()));
+      const img = kids[0];
+      if (kids.length !== 1 || img.type !== "element" || img.tagName !== "img") return;
+      const alt = String(img.properties.alt ?? "").trim();
+      node.tagName = "figure";
+      node.children = alt ? [img, { type: "element", tagName: "figcaption", properties: {}, children: [{ type: "text", value: alt }] }] : [img];
+    });
+  };
+}
+
 const processor = unified()
   .use(remarkParse)
   .use(remarkGfm)
@@ -47,8 +64,11 @@ const processor = unified()
   })
   .use(rehypeStringify);
 
-export async function renderMarkdown(markdown: string): Promise<string> {
-  return String(await processor.process(markdown));
+// Same pipeline plus captions; runs after sanitize, so the figure markup is our own
+const figureProcessor = processor().use(rehypeFigures);
+
+export async function renderMarkdown(markdown: string, { figures = false }: { figures?: boolean } = {}): Promise<string> {
+  return String(await (figures ? figureProcessor : processor).process(markdown));
 }
 
 /** h2/h3 headings with the same ids rehype-slug generates. */

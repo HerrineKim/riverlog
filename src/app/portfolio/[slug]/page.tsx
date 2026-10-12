@@ -30,76 +30,83 @@ export default async function WorkPage({ params }: PageProps<"/portfolio/[slug]"
   return (
     <>
       <main>
-        <div className="river-grain border-b border-line/70">
-          <header className="mx-auto max-w-6xl px-4 pt-14 pb-12 sm:px-6 sm:pt-20">
-            <Link href="/portfolio" className="text-sm text-muted hover:text-accent">
-              <span aria-hidden>←</span> 포트폴리오
+        <header className="river-grain border-b border-line/70">
+          <div className="mx-auto max-w-6xl px-4 pt-14 pb-14 sm:px-6 sm:pt-20">
+            <Link href={`/portfolio#${work.slug}`} className="text-sm text-muted hover:text-accent">
+              포트폴리오로 돌아가기
             </Link>
-            <p className="mt-6 text-sm text-muted tabular-nums">
-              {work.period}
-              {work.location && <> · {work.location}</>}
-            </p>
-            <h1 className="mt-2 text-4xl leading-tight font-bold text-balance text-fg-strong sm:text-5xl">
-              {work.company}
-              {work.companyEn && <span className="ml-3 text-xl font-normal text-muted sm:text-2xl">{work.companyEn}</span>}
-            </h1>
-            <p className="mt-3 text-lg text-accent">{work.role}</p>
-            <p className="mt-5 max-w-3xl text-lg text-fg">{work.summary}</p>
-            {work.about && <p className="mt-3 max-w-3xl text-sm text-muted">{work.about}</p>}
+            <div className="mt-10 grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1fr)_17rem]">
+              <div>
+                <h1 className="text-5xl font-bold tracking-tight text-fg-strong sm:text-7xl">{work.company}</h1>
+                <p className="mt-4 text-lg text-accent">{work.role}</p>
+                <p className="mt-8 max-w-2xl text-xl leading-relaxed text-fg">{work.summary}</p>
+              </div>
+              <dl className="grid content-start gap-4 border-line text-sm lg:border-l lg:pl-8">
+                <div>
+                  <dt className="text-muted">기간</dt>
+                  <dd className="mt-0.5 text-fg tabular-nums">{work.period}</dd>
+                </div>
+                {work.location && (
+                  <div>
+                    <dt className="text-muted">근무 형태</dt>
+                    <dd className="mt-0.5 text-fg">{work.location}</dd>
+                  </div>
+                )}
+                {work.about && (
+                  <div>
+                    <dt className="text-muted">회사</dt>
+                    <dd className="mt-0.5 leading-relaxed text-fg">{work.about}</dd>
+                  </div>
+                )}
+                <div>
+                  <dt className="text-muted">기술</dt>
+                  <dd className="mt-0.5 leading-relaxed text-fg">{work.stack.join(", ")}</dd>
+                </div>
+              </dl>
+            </div>
 
             {work.highlights.length > 0 && (
-              <dl className="mt-8 grid max-w-4xl grid-cols-2 gap-3 sm:grid-cols-4">
+              <dl className="mt-14 grid grid-cols-2 gap-x-8 gap-y-8 border-t border-line pt-10 sm:grid-cols-4">
                 {work.highlights.map((h) => (
-                  <div key={h.label} className="flex flex-col-reverse rounded-xl border border-line bg-bg-elev px-4 py-3">
-                    <dt className="mt-0.5 text-xs leading-snug text-muted">{h.label}</dt>
-                    <dd className="text-2xl font-semibold text-accent tabular-nums">{h.value}</dd>
+                  <div key={h.label} className="flex flex-col-reverse">
+                    <dt className="mt-2 text-sm leading-snug text-muted">{h.label}</dt>
+                    <dd className="font-display text-4xl leading-none text-accent tabular-nums sm:text-5xl">{h.value}</dd>
                   </div>
                 ))}
               </dl>
             )}
-            <ul className="mt-6 flex flex-wrap gap-1.5" aria-label="기술 스택">
-              {work.stack.map((s) => (
-                <li key={s} className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs text-accent">
-                  {s}
-                </li>
-              ))}
-            </ul>
-          </header>
-        </div>
+          </div>
+        </header>
 
-        <div className="mx-auto grid w-full max-w-6xl gap-12 px-4 py-12 pb-24 sm:px-6 lg:grid-cols-[minmax(0,1fr)_14rem]">
+        <div className="mx-auto grid w-full max-w-6xl gap-12 px-4 pt-14 pb-24 sm:px-6 lg:grid-cols-[minmax(0,1fr)_14rem]">
           <article className="mx-auto w-full max-w-3xl min-w-0 lg:mr-0">
             {work.cover && (
               <Image
                 src={work.cover}
-                alt={`${work.company} 대표 화면`}
+                alt={`${work.company}에서 만든 서비스 화면`}
                 width={1600}
                 height={1000}
                 sizes="(min-width: 1024px) 48rem, 100vw"
                 priority
-                className="mb-10 h-auto w-full rounded-2xl border border-line"
+                className="mb-12 h-auto w-full rounded-2xl border border-line"
               />
             )}
             <MobileToc items={toc} className="mb-8 lg:hidden" />
-            <Prose markdown={work.body} />
+            <Prose markdown={work.body} figures className="prose-portfolio" />
 
-            <nav aria-label="다른 회사" className="mt-16 grid gap-3 border-t border-line pt-8 sm:grid-cols-2">
+            <nav aria-label="다른 경력" className="mt-20 grid gap-3 border-t border-line pt-8 sm:grid-cols-2">
               {older ? (
-                <Link href={`/portfolio/${older.slug}`} className="group rounded-xl border border-line p-4 transition hover:border-accent">
-                  <p className="text-xs text-muted">
-                    <span aria-hidden>←</span> 이전 경력
-                  </p>
-                  <p className="mt-1 font-semibold text-fg-strong group-hover:text-accent">{older.company}</p>
+                <Link href={`/portfolio/${older.slug}`} className="group rounded-2xl border border-line p-5 transition hover:border-accent">
+                  <p className="text-xs text-muted">이전 경력 · {older.period}</p>
+                  <p className="mt-1 text-lg font-semibold text-fg-strong group-hover:text-accent">{older.company}</p>
                 </Link>
               ) : (
                 <span />
               )}
               {newer && (
-                <Link href={`/portfolio/${newer.slug}`} className="group rounded-xl border border-line p-4 text-right transition hover:border-accent">
-                  <p className="text-xs text-muted">
-                    다음 경력 <span aria-hidden>→</span>
-                  </p>
-                  <p className="mt-1 font-semibold text-fg-strong group-hover:text-accent">{newer.company}</p>
+                <Link href={`/portfolio/${newer.slug}`} className="group rounded-2xl border border-line p-5 text-right transition hover:border-accent">
+                  <p className="text-xs text-muted">다음 경력 · {newer.period}</p>
+                  <p className="mt-1 text-lg font-semibold text-fg-strong group-hover:text-accent">{newer.company}</p>
                 </Link>
               )}
             </nav>
