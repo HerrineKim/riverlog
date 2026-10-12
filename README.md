@@ -8,6 +8,7 @@ River(Hyerin Kim)의 블로그이자 지식 창고. Next.js App Router로 만든
   - `/knowledge` — 개념 지도 (분야 허브 ↔ 개념 노트, 같은 태그끼리 연결)
   - `/knowledge/dictionary` — 계층형 사전 (분야 → 주제 → 노트, 가나다·ABC 색인, 검색)
 - **Books** (`/books`) — 책장 목록과 책별 독후감
+- **Portfolio** (`/portfolio`) — 회사별 경력과 프로젝트
 
 기본 테마는 다크 모드이고, 헤더의 버튼으로 라이트 모드로 바꿀 수 있습니다.
 
@@ -54,6 +55,27 @@ source: til               # til | notion | mixed
 
 `content/books/<slug>.md` — 형식은 `content/_templates/책.md` 참고. 본문이 곧 독후감이고, `pdf: "[[파일.pdf]]"`를 넣으면 책 페이지에 「PDF 보기」 버튼이 생깁니다.
 사이트의 책 페이지에서 「독후감 쓰기」를 누르면 GitHub 웹 에디터에서 해당 파일이 열리고, 커밋하면 Vercel이 다시 배포합니다.
+
+### 포트폴리오
+
+`content/portfolio/<회사>.md` — 회사 하나가 파일 하나이고, 본문의 `##` 헤딩 하나가 프로젝트 하나입니다(목록 카드에 헤딩 제목이 그대로 나옵니다). 최신 경력이 위로 오도록 `start`로 정렬하고, 스크린샷은 `content/attachments/portfolio/<회사>/`에 둡니다.
+
+```md
+---
+company: "회사명"
+companyEn: "Company"
+role: "직무 · 직급"
+period: "2023.06 – 2026.02"
+start: "2023-06"
+location: "서울 · 대면"
+summary: "카드와 상단에 보일 한 줄 요약"
+about: "회사 소개 한두 문장"
+stack: ["Next.js", "FastAPI"]
+highlights:
+  - { value: "+220%", label: "오가닉 검색 클릭" }
+cover: "portfolio/회사/cover.png"
+---
+```
 
 ### About
 

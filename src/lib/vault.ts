@@ -73,6 +73,7 @@ function index(): Index {
   for (const [section, base] of [
     ["books", "/books"],
     ["blog", "/blog"],
+    ["portfolio", "/portfolio"],
   ]) {
     walk(path.join(CONTENT_DIR, section), (file, rel) => {
       const title = published(file);

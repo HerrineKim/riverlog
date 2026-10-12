@@ -36,7 +36,7 @@ const FONT = "IBM Plex Sans KR, Apple SD Gothic Neo, sans-serif";
 const DOC_LABEL_SCALE = 2.2;
 
 const linkVisibility = (l: object) => (l as Link).kind !== "hub";
-const linkWidth = (l: object) => ((l as Link).kind === "reference" ? 1.6 : 0.6);
+const linkWidth = (l: object) => ((l as Link).kind === "reference" ? 0.9 : 0.6);
 const linkCurvature = (l: object) => ((l as Link).kind === "reference" ? 0.18 : 0);
 const nodePointerArea = (n: Node, color: string, ctx: CanvasRenderingContext2D) => {
   ctx.fillStyle = color;
@@ -201,7 +201,9 @@ export default function MindMapCanvas({
       const t = link.target as Node;
       const s = link.source as Node;
       const lit = !focus || (isLit(t.id) && isLit(s.id) && (focus.id === t.id || focus.id === s.id || link.kind === "member"));
-      if (link.kind === "reference") return lit ? REFERENCE_COLOR[theme] : dark ? "#2a2416" : "#ece3d2";
+      // Quiet in the overview; full strength only on the selected note's own links
+      if (link.kind === "reference")
+        return !focus ? `${REFERENCE_COLOR[theme]}66` : lit ? REFERENCE_COLOR[theme] : dark ? "#2a2416" : "#ece3d2";
       if (link.kind === "related") return lit ? (dark ? "#5b6b7d88" : "#9aa39a88") : dark ? "#161d26" : "#e6e8e2";
       if (!focus) return dark ? "#3a4a5a" : "#b9c0b5";
       return lit ? `${t.color}aa` : dark ? "#1a222c" : "#e1e4dd";
@@ -442,7 +444,7 @@ export default function MindMapCanvas({
       {!selected && (
         <p className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-bg-elev/70 px-3 py-1 text-xs whitespace-nowrap text-muted backdrop-blur">
           <span className="hidden sm:inline">드래그해서 이동 · 스크롤이나 오른쪽 바로 확대 · 노드를 클릭해 초점 ·</span>
-          <span className="inline-block h-0.5 w-4 rounded" style={{ background: REFERENCE_COLOR[theme] }} />
+          <span className="inline-block h-px w-4 opacity-70" style={{ background: REFERENCE_COLOR[theme] }} />
           노트 간 링크
           <span className="inline-block h-px w-4 bg-muted" />
           같은 태그

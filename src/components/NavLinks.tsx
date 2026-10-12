@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/blog", label: "Blog" },
   { href: "/knowledge", label: "Knowledge" },
   { href: "/books", label: "Books" },
+  { href: "/portfolio", label: "Portfolio" },
 ];
 
 export default function NavLinks() {
