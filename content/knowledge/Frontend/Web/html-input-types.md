@@ -151,3 +151,5 @@ input의 `list` 속성과 datalist의 `id`를 연결하면, 자유롭게 입력�
 - `<button>`의 기본 type은 `submit`이다.
 - hidden 값은 숨겨질 뿐 안전하지 않다.
 - 모든 입력에는 `label`을 연결하고, 관련 입력은 `fieldset`으로 묶는다.
+
+관련 노트: [[form-usability|더 나은 폼을 만드는 팁]], [[html|HTML 기초와 HTML5]]

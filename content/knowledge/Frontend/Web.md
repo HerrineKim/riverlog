@@ -12,6 +12,7 @@ source: mixed
 
 - [HTML](/knowledge/dictionary/frontend/web/html): 문서 구조, 요소와 속성, 시맨틱 태그, 표, 폼과 input, HTML5
 - [HTML 입력 요소 치트시트](/knowledge/dictionary/frontend/web/html-input-types): input의 22가지 type, label·select·textarea·fieldset·datalist
+- [더 나은 폼을 만드는 팁](/knowledge/dictionary/frontend/web/form-usability): 브라우저 기본 동작 존중, inputmode, 보이는 검증 메시지, 커서·포커스를 빼앗지 않는 입력 처리
 - [DOM](/knowledge/dictionary/frontend/web/dom): 브라우저가 문서를 객체 트리로 표현하는 방식, DOM tree와 노드 종류, BOM
 - [브라우저 렌더링 과정](/knowledge/dictionary/frontend/web/browser-rendering): DOM·CSSOM → 렌더 트리 → 레이아웃(리플로우) → 페인팅, 스크립트의 파싱 차단, 리렌더링 비용
 - [SPA와 CSR·SSR](/knowledge/dictionary/frontend/web/spa-csr-ssr): 단일 페이지 애플리케이션과 렌더링 주체·시점에 따른 차이(CSR·SSR·SSG·ISR)
