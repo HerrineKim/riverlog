@@ -133,4 +133,4 @@ sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers"]
 - 운영 환경의 DB 마이그레이션, 비밀값 푸시, 타임아웃 없는 호출은 되돌리기 어렵다. 실행 전에 한 번 더 확인할 목록으로 둔다.
 - 전부 외울 필요는 없다. 이상한 버그를 만났을 때 이 목록부터 훑어보는 체크리스트로 쓰면 된다.
 
-관련 노트: [[data-representation|데이터 표현]], [[process-synchronization|프로세스 동기화]], [[principles|코드 리뷰 원칙과 체크리스트]]
+관련 노트: [[data-representation|데이터 표현]], [[process-synchronization|프로세스 동기화]], [[principles|코드 리뷰 원칙과 체크리스트]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]]
