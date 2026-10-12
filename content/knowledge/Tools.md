@@ -11,11 +11,14 @@ source: mixed
 ## 하위 주제
 
 - Code Review: [코드 리뷰 원칙과 체크리스트](/knowledge/dictionary/tools/code-review/principles), [리뷰 코멘트와 PR 소통](/knowledge/dictionary/tools/code-review/review-communication), [코드 리뷰에서 자주 나온 지적](/knowledge/dictionary/tools/code-review/review-patterns)
-- [Git](/knowledge/dictionary/tools/git): 버전 관리 기본, 브랜치와 병합, 원격 저장소, 커밋 컨벤션, GitHub 협업 설정
+- [Git](/knowledge/dictionary/tools/git): 버전 관리 기본, 브랜치와 병합, 원격 저장소·미러링, 되돌리기와 이력 다루기, 커밋 컨벤션, GitHub 협업 설정
 - [Markdown](/knowledge/dictionary/tools/markdown): 문서 작성용 마크업 문법, markdownlint
+- [로컬 개발 환경에 HTTPS 적용하기](/knowledge/dictionary/tools/local-https-mkcert): mkcert로 로컬 CA·인증서 만들기, 웹 서버·Node·Next.js·Nuxt에 붙이기
 - Jira: [이슈 구성과 JQL](/knowledge/dictionary/tools/jira/issues-and-jql), [워크플로와 팀 운영](/knowledge/dictionary/tools/jira/workflow)
 - Analytics: [GA4 시작하기](/knowledge/dictionary/tools/analytics/ga4-setup), [Segment로 사용자 데이터 수집하기](/knowledge/dictionary/tools/analytics/segment)
 - Database: [DBeaver에서 SQL로 데이터 다루기](/knowledge/dictionary/tools/database/dbeaver)
 - Office: [Google Sheets vs Excel](/knowledge/dictionary/tools/office/google-sheets-vs-excel)
 - [Blender](/knowledge/dictionary/tools/blender): 3D 모델링, 재질·UV, 리깅
+- [Windows 개발 환경](/knowledge/dictionary/tools/windows-dev-environment): 터미널·셸(CMD·PowerShell·Git Bash), Git 설치 옵션, CRLF 줄바꿈 오류
+- [Retool](/knowledge/dictionary/tools/retool): 어드민·대시보드 같은 내부 도구를 만드는 로우 코드 플랫폼
 
