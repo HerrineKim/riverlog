@@ -49,4 +49,4 @@ sources: ["https://riverkim.kr/240", "https://riverkim.kr/274"]
 - 기능 추가 전에 구조부터 정리하고, 같은 일을 세 번째 할 때 리팩터링한다.
 - 성능은 깨끗한 코드 위에서 측정한 뒤 개선한다.
 
-관련 노트: [[principles|코드 리뷰 원칙과 체크리스트]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[tdd|프론트엔드에서의 TDD]]
+관련 노트: [[principles|코드 리뷰 원칙과 체크리스트]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[tdd|프론트엔드에서의 TDD]], [[simple-design|Simple Design]]
