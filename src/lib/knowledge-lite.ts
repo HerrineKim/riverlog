@@ -11,6 +11,8 @@ export function toLite(n: KNode): LiteNode {
     depth: n.depth,
     excerpt: n.doc?.excerpt,
     tags: n.doc?.tags ?? [],
+    created: n.doc?.created,
+    updated: n.doc?.updated,
     isDoc: !!n.doc,
     docCount: n.docCount,
     children: n.children.map(toLite),

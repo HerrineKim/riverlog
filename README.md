@@ -6,7 +6,7 @@ River(Hyerin Kim)의 블로그이자 지식 창고. Next.js App Router로 만든
 - **Blog** (`/blog`) — 마크다운 글, RSS 피드 `/rss.xml`
 - **Knowledge** — 같은 노트를 두 가지 방식으로 탐색
   - `/knowledge` — 개념 지도 (분야 허브 ↔ 개념 노트, 같은 태그끼리 연결)
-  - `/knowledge/dictionary` — 계층형 사전 (분야 → 주제 → 노트, 가나다·ABC 색인, 검색)
+  - `/knowledge/dictionary` — 계층형 사전 (분야 → 주제 → 노트, 가나다·ABC 색인, 추가일·수정일 기준 최신순·오래된순, 검색)
 - **Books** (`/books`) — 책장 목록과 책별 독후감
 - **Portfolio** (`/portfolio`) — 회사별 경력과 프로젝트
 
@@ -40,6 +40,7 @@ tags: ["회고"]
 
 `content/knowledge/<분야>/<주제>/<노트>.md` — 폴더 구조가 곧 사전의 계층입니다.
 폴더와 같은 이름의 `.md` 파일(`React.md` + `React/`)은 그 주제의 개요 페이지가 됩니다.
+노트를 처음 추가한 날짜와 마지막으로 수정한 날짜는 git 이력에서 자동으로 뽑아 `content/.knowledge-dates.json`에 저장합니다(`npm run dev`/`build` 전에 갱신). 배포 환경에 git 이력이 없으면 커밋된 이 파일을 그대로 쓰므로, 노트를 고친 뒤에는 로컬에서 dev나 build를 한 번 돌리고 함께 커밋하세요.
 
 ```md
 ---

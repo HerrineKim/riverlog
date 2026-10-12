@@ -19,6 +19,9 @@ function initialOf(title: string): string {
 }
 
 type Flat = { node: LiteNode; trail: string[] };
+type DateKey = "created" | "updated";
+
+const dateLabel = (iso?: string) => (iso ? iso.slice(0, 10).replaceAll("-", ".") : "");
 
 function flatten(n: LiteNode, trail: string[], out: Flat[]) {
   if (n.isDoc && n.depth > 0) out.push({ node: n, trail });
@@ -28,7 +31,9 @@ function flatten(n: LiteNode, trail: string[], out: Flat[]) {
 
 export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
   const [query, setQuery] = useState("");
-  const [mode, setMode] = useState<"tree" | "index">("tree");
+  const [mode, setMode] = useState<"tree" | "index" | "date">("tree");
+  const [dateKey, setDateKey] = useState<DateKey>("created");
+  const [newestFirst, setNewestFirst] = useState(true);
   const q = useDeferredValue(query.trim().toLowerCase());
 
   const all = useMemo(() => flatten(tree, [], []), [tree]);
@@ -64,12 +69,24 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
       .map(([k, v]) => [k, v.sort((x, y) => x.node.name.localeCompare(y.node.name, "ko", { numeric: true }))] as const);
   }, [all, matches]);
 
+  const byDate = useMemo(() => {
+    const at = (f: Flat) => f.node[dateKey] ?? "";
+    return all
+      .filter((f) => !matches || matches.has(f.node.id))
+      .sort((x, y) => {
+        // Undated notes go last either way
+        if (!at(x) !== !at(y)) return at(x) ? -1 : 1;
+        const c = at(x).localeCompare(at(y));
+        return (newestFirst ? -c : c) || x.node.name.localeCompare(y.node.name, "ko", { numeric: true });
+      });
+  }, [all, matches, dateKey, newestFirst]);
+
   const resultCount = matches ? matches.size : all.length;
 
   return (
     <div>
       <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center gap-3 border-b border-line/70 bg-bg/85 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
-        <label className="relative min-w-0 flex-1">
+        <label className="relative min-w-0 flex-1 basis-full sm:basis-auto">
           <span className="sr-only">노트 검색</span>
           <svg viewBox="0 0 24 24" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="7" />
@@ -84,24 +101,38 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
             className="w-full rounded-full border border-line bg-bg-elev py-2 pr-4 pl-9 text-sm text-fg-strong outline-none placeholder:text-muted focus:border-accent"
           />
         </label>
-        <div className="inline-flex rounded-full border border-line p-0.5 text-sm" role="group" aria-label="보기 방식">
-          {(
-            [
-              ["tree", "분야별"],
-              ["index", "가나다·ABC"],
-            ] as const
-          ).map(([k, label]) => (
-            <button
-              key={k}
-              type="button"
-              aria-pressed={mode === k}
-              onClick={() => setMode(k)}
-              className={`rounded-full px-3 py-1 transition ${mode === k ? "bg-bg-elev text-fg-strong shadow-sm ring-1 ring-line" : "text-muted hover:text-fg"}`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        <Segmented
+          label="보기 방식"
+          value={mode}
+          onChange={setMode}
+          options={[
+            ["tree", "분야별"],
+            ["index", "가나다·ABC"],
+            ["date", "날짜순"],
+          ]}
+        />
+        {mode === "date" && (
+          <>
+            <Segmented
+              label="날짜 기준"
+              value={dateKey}
+              onChange={setDateKey}
+              options={[
+                ["created", "추가일"],
+                ["updated", "수정일"],
+              ]}
+            />
+            <Segmented
+              label="정렬 순서"
+              value={newestFirst ? "new" : "old"}
+              onChange={(v) => setNewestFirst(v === "new")}
+              options={[
+                ["new", "최신순"],
+                ["old", "오래된순"],
+              ]}
+            />
+          </>
+        )}
         <span className="text-xs text-muted tabular-nums" aria-live="polite">
           {resultCount}개 항목
         </span>
@@ -127,6 +158,29 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
             </section>
           ))}
         </div>
+      ) : mode === "date" ? (
+        <ol className="mt-8 divide-y divide-line/60">
+          {byDate.map(({ node, trail }) => (
+            <li key={node.id} className="grid gap-1 py-3 sm:grid-cols-[6.5rem_minmax(0,16rem)_1fr] sm:gap-6">
+              <p className="text-sm text-muted tabular-nums">
+                <time dateTime={node[dateKey]}>{dateLabel(node[dateKey]) || "—"}</time>
+                {dateKey === "updated" && node.created && node.updated?.slice(0, 10) === node.created.slice(0, 10) && (
+                  <span className="ml-1.5 text-xs text-accent">새 노트</span>
+                )}
+              </p>
+              <div>
+                <Link href={node.href} className="font-medium text-fg-strong hover:text-accent">
+                  {node.name}
+                </Link>
+                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted">
+                  <span className="size-1.5 rounded-full" style={{ background: node.color }} />
+                  {trail.join(" › ")}
+                </p>
+              </div>
+              <p className="line-clamp-2 text-sm text-muted">{node.excerpt}</p>
+            </li>
+          ))}
+        </ol>
       ) : (
         <div className="mt-8">
           <nav aria-label="색인 바로가기" className="mb-8 flex flex-wrap gap-1.5">
@@ -195,6 +249,34 @@ function Entries({ nodes, visible, level }: { nodes: LiteNode[]; visible: (n: Li
           {g.excerpt && <p className="mt-1 line-clamp-2 text-sm text-muted">{g.excerpt}</p>}
           <Entries nodes={g.children} visible={visible} level={level + 1} />
         </div>
+      ))}
+    </div>
+  );
+}
+
+function Segmented<T extends string>({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: T;
+  onChange: (v: T) => void;
+  options: readonly (readonly [T, string])[];
+}) {
+  return (
+    <div className="inline-flex rounded-full border border-line p-0.5 text-sm" role="group" aria-label={label}>
+      {options.map(([k, text]) => (
+        <button
+          key={k}
+          type="button"
+          aria-pressed={value === k}
+          onClick={() => onChange(k)}
+          className={`rounded-full px-3 py-1 transition ${value === k ? "bg-bg-elev text-fg-strong shadow-sm ring-1 ring-line" : "text-muted hover:text-fg"}`}
+        >
+          {text}
+        </button>
       ))}
     </div>
   );

@@ -82,7 +82,19 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
             {doc && (
               <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted">
                 <span className="rounded-full border border-line px-2.5 py-1">{SOURCE_LABEL[doc.source]}</span>
-                {doc.date && <span className="rounded-full border border-line px-2.5 py-1">{formatDate(doc.date)}</span>}
+                {doc.date && doc.date.slice(0, 10) !== doc.created?.slice(0, 10) && (
+                  <span className="rounded-full border border-line px-2.5 py-1">작성 {formatDate(doc.date)}</span>
+                )}
+                {doc.created && (
+                  <span className="rounded-full border border-line px-2.5 py-1">
+                    추가 <time dateTime={doc.created}>{formatDate(doc.created)}</time>
+                  </span>
+                )}
+                {doc.updated && doc.updated.slice(0, 10) !== doc.created?.slice(0, 10) && (
+                  <span className="rounded-full border border-line px-2.5 py-1">
+                    수정 <time dateTime={doc.updated}>{formatDate(doc.updated)}</time>
+                  </span>
+                )}
                 {doc.tags.map((t) => (
                   <Link
                     key={t}

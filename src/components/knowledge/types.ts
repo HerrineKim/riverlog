@@ -7,6 +7,8 @@ export type LiteNode = {
   depth: number;
   excerpt?: string;
   tags: string[];
+  created?: string;
+  updated?: string;
   isDoc: boolean; // has its own note body
   docCount: number;
   children: LiteNode[];

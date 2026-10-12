@@ -7,6 +7,21 @@ import { isFresh, isHiddenName, isPublished, KNOWLEDGE_BASE, resolveNote, slugif
 export { KNOWLEDGE_BASE, slugify };
 
 const ROOT = path.join(process.cwd(), "content/knowledge");
+const DATES_FILE = path.join(process.cwd(), "content/.knowledge-dates.json"); // written by scripts/knowledge-dates.mjs
+
+type NoteDates = { created: string; updated: string };
+let datesCache: { map: Record<string, NoteDates>; at: number } | undefined;
+
+/** When a note was first added to the knowledge base and last changed, keyed by path under content/knowledge. */
+function noteDates(): Record<string, NoteDates> {
+  if (datesCache && isFresh(datesCache.at)) return datesCache.map;
+  let map: Record<string, NoteDates> = {};
+  try {
+    map = JSON.parse(fs.readFileSync(DATES_FILE, "utf8"));
+  } catch {}
+  datesCache = { map, at: Date.now() };
+  return map;
+}
 
 export type KDoc = {
   title: string;
@@ -14,6 +29,8 @@ export type KDoc = {
   source: "til" | "notion" | "mixed" | "other";
   sources: string[]; // original note URLs (GitHub TIL / Notion)
   date?: string;
+  created?: string; // first added to the knowledge base (ISO)
+  updated?: string; // last changed (ISO)
   tags: string[];
   excerpt: string;
   body: string;
@@ -94,6 +111,7 @@ function readDoc(file: string): KDoc | undefined {
   if (!isPublished(data)) return undefined;
   const content = resolveRelativeLinks(parsed.content, file);
   const source = ["til", "notion", "mixed"].includes(data.source) ? data.source : "other";
+  const added = noteDates()[path.relative(ROOT, file).split(path.sep).join("/").normalize("NFC")];
   const sources = (Array.isArray(data.sources) ? data.sources.map(String) : data.sourceUrl ? [String(data.sourceUrl)] : []).filter(
     (u) => /^https?:\/\//i.test(u),
   );
@@ -103,6 +121,8 @@ function readDoc(file: string): KDoc | undefined {
     source,
     sources,
     date: data.date ? String(data.date) : undefined,
+    created: added?.created,
+    updated: added?.updated,
     tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
     excerpt: data.summary ? String(data.summary) : excerptOf(content),
     body: content,

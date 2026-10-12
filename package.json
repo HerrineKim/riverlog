@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/sync-attachments.mjs",
+    "predev": "node scripts/sync-attachments.mjs && node scripts/knowledge-dates.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/sync-attachments.mjs",
+    "prebuild": "node scripts/sync-attachments.mjs && node scripts/knowledge-dates.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
