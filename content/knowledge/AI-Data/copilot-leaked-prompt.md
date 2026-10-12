@@ -1,14 +1,14 @@
 ---
 title: "유출된 AI 시스템 프롬프트"
 concept: "System Prompt"
-summary: "GitHub Copilot Chat, Bing Chat(Sydney), Microsoft 365 Copilot, ChatGPT(GPT-4)에서 유출된 것으로 알려진 시스템 프롬프트와 그 안에 반복되는 설계 패턴."
+summary: "GitHub Copilot Chat, Bing Chat(Sydney), Microsoft 365 Copilot, ChatGPT(GPT-4), Vercel v0에서 유출된 것으로 알려진 시스템 프롬프트와 그 안에 반복되는 설계 패턴."
 tags: ["ai", "prompting", "llm", "copilot", "security"]
 source: other
 date: "2026-10-12"
-sources: ["https://news.hada.io/topic?id=13326"]
+sources: ["https://news.hada.io/topic?id=13326", "https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools"]
 ---
 
-> 2023년 전후로 Microsoft 계열 AI 제품과 ChatGPT에서 유출된 것으로 알려진 시스템 프롬프트들입니다. ChatGPT 부분은 GeekNews의 「[최신 GPT-4 시스템 프롬프트 (유출)](https://news.hada.io/topic?id=13326)」(2024.02)를 요약·재구성했습니다. 대부분 사용자가 대화로 모델을 꾀어(프롬프트 인젝션) 알아낸 것이라 공식 문서가 아니며, 실제 프롬프트와 다를 수 있습니다.
+> 2023년 전후로 Microsoft 계열 AI 제품과 ChatGPT에서 유출된 것으로 알려진 시스템 프롬프트들입니다. ChatGPT 부분은 GeekNews의 「[최신 GPT-4 시스템 프롬프트 (유출)](https://news.hada.io/topic?id=13326)」(2024.02)를, v0 부분은 Reddit r/nextjs 글(2025.03)과 그 GitHub 저장소를 요약·재구성했습니다. 대부분 사용자가 대화로 모델을 꾀어(프롬프트 인젝션) 알아낸 것이라 공식 문서가 아니며, 실제 프롬프트와 다를 수 있습니다.
 
 ## 1. GitHub Copilot Chat
 
@@ -185,6 +185,32 @@ Sydney 때처럼 숨은 문서의 **첫 문장을 알고 있으면 이어서 읊
 - **최소 3–4개 출처**를 찾고, 처음 검색에서 못 찾으면 다시 검색하라고 한다.
 - 가져온 페이지를 통째로 옮기거나 바꿔 쓰지 말고, **요약은 80단어 이내**로 한다. 가사·레시피는 반복하지 않는다. 저작권 보호를 위한 규칙이다.
 
+## 5. Vercel v0
+
+UI·웹앱을 만들어 주는 Vercel의 v0에서 나왔다는 시스템 프롬프트. 2025년 3월 Reddit r/nextjs에 「FULL LEAKED v0 by Vercel System Prompts」라는 글로 퍼졌고, 2,200줄이 넘는 프롬프트와 모델 정보를 [GitHub 저장소](https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools)에 올렸다. 글쓴이는 당시 기본 모델이 GPT-4o이고 추론에는 DeepSeek를 쓴다고 했지만, 모델 정보는 **환각이 없다고 장담할 수 없다**고 스스로 밝혔다.
+
+저장소는 이후 Cursor·Devin·Lovable 같은 여러 AI 도구의 프롬프트 모음으로 커졌고 v0 프롬프트도 계속 갱신됐다. 아래는 2026년 5월 갱신본 기준이다. 앞의 챗봇들과 달리 **파일을 읽고 쓰고 명령을 실행하는 코딩 에이전트**의 프롬프트다.
+
+| 구역 | 내용 |
+| --- | --- |
+| 정체성 | "You are v0, Vercel's highly skilled AI-powered assistant" 한 줄 |
+| 작업 방식 | 모호하면 질문 도구로 묻는다(병렬 호출 금지, 선택지에 소요 시간 쓰지 않기), 디버깅은 `console.log("[v0] ...")`로 하고 끝나면 지운다 |
+| 맥락 관리 | 이전 도구 결과가 요약·생략될 수 있으니 필요하면 다시 읽는다 |
+| 코딩 지침 | 기본은 Next.js App Router, 컴포넌트 분리, `useEffect` 안에서 fetch 금지(RSC나 SWR), 시맨틱 HTML·ARIA·`sr-only`, 지도는 직접 SVG를 그리지 말고 라이브러리 |
+| 데이터·인증 | localStorage·가짜 인증 금지, 실제 DB 연동, 기본 추천은 Supabase + Vercel Blob, bcrypt·HTTP-only 쿠키·RLS·파라미터 쿼리 |
+| AI 앱 | AI SDK + AI Gateway, 모델은 문자열로 지정 |
+| 맥락 수집 | 첫 검색 결과에서 멈추지 말 것, 부모·래퍼·전역 스타일부터 확인, 독립된 도구 호출은 병렬로 |
+| 디자인 | 색은 3–5개, 보라색과 그라디언트는 요청 없으면 피하기, 폰트 2개 이하, 모바일 우선, Flexbox → Grid 순, 임의 값 대신 Tailwind 스케일, 디자인 토큰만 사용, 이모지 아이콘·장식용 블롭 금지 |
+| 거절 | 정해진 문장 하나("I'm not able to assist with that."), 사과·설명 없이 |
+| 답변 길이 | 코드 뒤 설명은 2–4문장 |
+| 메모리 | `MEMORY.md`는 항상 로드되는 짧은 인덱스(약 200줄), 자세한 내용은 주제 파일로. 비밀값·일회성 정보는 저장하지 않는다 |
+
+눈여겨볼 점:
+
+- **자사 제품으로 기본값을 정한다.** AI SDK, AI Gateway, Vercel Blob, 배포 버튼처럼 Vercel 생태계를 먼저 추천하게 짜여 있다. 시스템 프롬프트가 제품 전략을 담는 자리이기도 하다.
+- **디자인 취향을 숫자로 못 박는다.** "예쁘게"가 아니라 색 개수, 폰트 개수, 줄 간격(1.4–1.6), 금지 패턴(보라색, 그라디언트, 블롭)으로 쓴다. AI가 만든 UI가 비슷비슷해 보이는 흔한 패턴을 일부러 막는 규칙이다.
+- **사용자 환경의 한계를 알려 준다.** "사용자는 터미널이 없다. 명령어 실행을 제안하지 말라"처럼 모델이 할 수 있는 제안의 범위를 UI에 맞춘다.
+
 ## 프롬프트들에서 보이는 패턴
 
 1. **정체성부터 고정한다.** 이름과 역할을 첫 줄에 두고, 내부 코드명(Sydney)은 밝히지 말라고 따로 적는다.
@@ -197,4 +223,6 @@ Sydney 때처럼 숨은 문서의 **첫 문장을 알고 있으면 이어서 읊
 8. **도구는 사용 설명서처럼 쓴다.** ChatGPT 프롬프트의 대부분은 도구별 설명이다. 함수 시그니처, 실행 제약(타임아웃·인터넷 차단), 결과를 언제·어떻게 인용할지까지 적는다.
 9. **정책은 대체 행동까지 적는다.** "하지 마라"로 끝내지 않고 작가 이름 → 형용사·사조·매체, 실존 인물 → 일반화처럼 **대신 무엇을 할지**를 함께 준다.
 
-관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[chatgpt-prompt-cheat-sheet|ChatGPT 프롬프트 치트시트]]
+10. **에이전트 프롬프트는 일하는 방법을 적는다.** v0처럼 코드를 직접 고치는 에이전트는 "무엇을 거절할지"보다 "어떻게 찾아보고, 언제 묻고, 무엇을 기본값으로 쓸지"가 대부분이다.
+
+관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[chatgpt-prompt-cheat-sheet|ChatGPT 프롬프트 치트시트]], [[vibe-coding-beautiful-ui|바이브 코딩으로 예쁜 UI 만들기]]
