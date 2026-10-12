@@ -2,31 +2,20 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import ForceGraph3D, { type ForceGraphMethods } from "react-force-graph-3d";
-import * as THREE from "three";
-import SpriteText from "three-spritetext";
+import ForceGraph2D, { type ForceGraphMethods } from "react-force-graph-2d";
 import useTheme from "@/hooks/useTheme";
 import type { GraphLink, GraphNode } from "@/lib/knowledge";
 
-type Node = GraphNode & { x?: number; y?: number; z?: number };
+type Node = GraphNode & { x?: number; y?: number };
 type Link = GraphLink & { source: string | Node; target: string | Node };
 
-// Zoom bar maps camera distance on a log scale: 0 = farthest, 1 = closest
-const MIN_DIST = 25;
-const MAX_DIST = 4000;
-const LOG_SPAN = Math.log(MAX_DIST) - Math.log(MIN_DIST);
-const distToZoom = (d: number) => Math.min(1, Math.max(0, (Math.log(MAX_DIST) - Math.log(d)) / LOG_SPAN));
-const zoomToDist = (z: number) => Math.exp(Math.log(MAX_DIST) - z * LOG_SPAN);
+// Zoom bar maps the canvas zoom factor on a log scale: 0 = farthest, 1 = closest
+const MIN_SCALE = 0.15;
+const MAX_SCALE = 12;
+const LOG_SPAN = Math.log(MAX_SCALE) - Math.log(MIN_SCALE);
+const scaleToZoom = (k: number) => Math.min(1, Math.max(0, (Math.log(k) - Math.log(MIN_SCALE)) / LOG_SPAN));
+const zoomToScale = (z: number) => Math.exp(Math.log(MIN_SCALE) + z * LOG_SPAN);
 
-type OrbitControls = THREE.EventDispatcher<{ change: object }> & {
-  target: THREE.Vector3;
-  autoRotate?: boolean;
-  autoRotateSpeed?: number;
-  enableDamping?: boolean;
-  minDistance?: number;
-  maxDistance?: number;
-  update?: () => void;
-};
 type Category = { id: string; name: string; color: string; count: number };
 
 function useSize(ref: React.RefObject<HTMLElement | null>) {
@@ -41,9 +30,20 @@ function useSize(ref: React.RefObject<HTMLElement | null>) {
   return size;
 }
 
-const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
 const REFERENCE_COLOR = { dark: "#f5c26b", light: "#975a16" } as const; // light value doubles as label text, so ≥4.5:1
+const FONT = "IBM Plex Sans KR, Apple SD Gothic Neo, sans-serif";
+// Doc labels appear on their own once zoomed in this far
+const DOC_LABEL_SCALE = 2.2;
+
+const linkVisibility = (l: object) => (l as Link).kind !== "hub";
+const linkWidth = (l: object) => ((l as Link).kind === "reference" ? 1.6 : 0.6);
+const linkCurvature = (l: object) => ((l as Link).kind === "reference" ? 0.18 : 0);
+const nodePointerArea = (n: Node, color: string, ctx: CanvasRenderingContext2D) => {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.arc(n.x ?? 0, n.y ?? 0, n.size + 1.5, 0, 2 * Math.PI);
+  ctx.fill();
+};
 
 export default function MindMapCanvas({
   data,
@@ -108,7 +108,7 @@ export default function MindMapCanvas({
     [focus, neighbors],
   );
 
-  // Forces + camera controls
+  // Forces
   useEffect(() => {
     const fg = fgRef.current;
     if (!fg || !width) return;
@@ -119,88 +119,34 @@ export default function MindMapCanvas({
     });
     const charge = fg.d3Force("charge") as unknown as { strength?: (n: number) => void } | undefined;
     charge?.strength?.(-45);
-    const controls = fg.controls() as OrbitControls;
-    controls.autoRotate = !reducedMotion();
-    controls.autoRotateSpeed = 0.45;
-    controls.enableDamping = true;
-    controls.minDistance = MIN_DIST;
-    controls.maxDistance = MAX_DIST;
   }, [width]);
 
-  // Keep the zoom bar in sync with wheel/pinch zoom and camera flights
+  // Keep the zoom bar in sync with wheel/pinch zoom and animated transitions
   const [zoom, setZoom] = useState(0.5);
-  useEffect(() => {
-    const fg = fgRef.current;
-    if (!fg || !width) return;
-    const controls = fg.controls() as OrbitControls;
-    let frame = 0;
-    const sync = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const d = fg.camera().position.distanceTo(controls.target);
-        setZoom(Math.round(distToZoom(d) * 1000) / 1000);
-      });
-    };
-    controls.addEventListener("change", sync);
-    sync();
-    return () => {
-      cancelAnimationFrame(frame);
-      controls.removeEventListener("change", sync);
-    };
-  }, [width]);
+  const zoomFrame = useRef(0);
+  const onZoom = useCallback(({ k }: { k: number }) => {
+    cancelAnimationFrame(zoomFrame.current);
+    zoomFrame.current = requestAnimationFrame(() => setZoom(Math.round(scaleToZoom(k) * 1000) / 1000));
+  }, []);
+  useEffect(() => () => cancelAnimationFrame(zoomFrame.current), []);
 
   const zoomTo = useCallback((z: number) => {
-    const fg = fgRef.current;
-    if (!fg) return;
-    const controls = fg.controls() as OrbitControls;
-    controls.autoRotate = false;
-    const camera = fg.camera();
-    const dir = camera.position.clone().sub(controls.target);
-    if (dir.lengthSq() === 0) dir.set(0, 0, 1);
-    camera.position.copy(controls.target).add(dir.normalize().multiplyScalar(zoomToDist(Math.min(1, Math.max(0, z)))));
-    controls.update?.();
-    setZoom(z);
+    const clamped = Math.min(1, Math.max(0, z));
+    fgRef.current?.zoom(zoomToScale(clamped), 0);
+    setZoom(clamped);
   }, []);
 
-  // Depth fog: far nodes fade into the background instead of competing for attention
-  useEffect(() => {
-    const fg = fgRef.current;
-    if (!fg || !width) return;
-    const scene = fg.scene();
-    scene.fog = new THREE.FogExp2(dark ? 0x070a0e : 0xf3f4f0, 0.00055);
-    return () => {
-      scene.fog = null;
-    };
-  }, [dark, width]);
-
-  const flyTo = useCallback((node: Node, distance = 90) => {
+  const select = useCallback((node: Node) => {
+    setSelected(node);
     const fg = fgRef.current;
     if (!fg || node.x === undefined) return;
-    const controls = fg.controls() as { autoRotate?: boolean };
-    controls.autoRotate = false;
-    const r = Math.hypot(node.x, node.y ?? 0, node.z ?? 0) || 1;
-    const ratio = 1 + distance / r;
-    fg.cameraPosition(
-      { x: node.x * ratio, y: (node.y ?? 0) * ratio, z: (node.z ?? 0) * ratio },
-      { x: node.x, y: node.y ?? 0, z: node.z ?? 0 },
-      1200,
-    );
+    fg.centerAt(node.x, node.y, 800);
+    fg.zoom(node.kind === "category" ? 2 : 4, 800);
   }, []);
-
-  const select = useCallback(
-    (node: Node) => {
-      setSelected(node);
-      flyTo(node, node.kind === "category" ? 300 : 110);
-    },
-    [flyTo],
-  );
 
   const reset = () => {
     setSelected(null);
-    const fg = fgRef.current;
-    if (!fg) return;
-    fg.zoomToFit(1000, 60);
-    (fg.controls() as { autoRotate?: boolean }).autoRotate = !reducedMotion();
+    fgRef.current?.zoomToFit(800, 60);
   };
 
   const results = useMemo(() => {
@@ -209,64 +155,71 @@ export default function MindMapCanvas({
     return graphData.nodes.filter((n) => n.name.toLowerCase().includes(q)).slice(0, 8);
   }, [query, graphData]);
 
-  // Spheres are rebuilt on every focus change; share a handful of geometries/materials instead of one per node.
-  // (three-forcegraph disposes them on rebuild, and three.js re-uploads them on the next draw.)
-  const geometriesRef = useRef(new Map<number, THREE.SphereGeometry>());
-  const materialsRef = useRef(new Map<string, THREE.MeshLambertMaterial>());
-  useEffect(() => {
-    const geometries = geometriesRef.current;
-    const materials = materialsRef.current;
-    return () => {
-      geometries.forEach((g) => g.dispose());
-      materials.forEach((m) => m.dispose());
-    };
-  }, []);
-
-  const nodeObject = useCallback(
-    (n: Node) => {
+  const drawNode = useCallback(
+    (n: Node, ctx: CanvasRenderingContext2D, scale: number) => {
+      const x = n.x ?? 0;
+      const y = n.y ?? 0;
       const lit = isLit(n.id);
-      const group = new THREE.Group();
-      const radius = n.size;
-      const geometries = geometriesRef.current;
-      const materials = materialsRef.current;
-      let geometry = geometries.get(radius);
-      if (!geometry) geometries.set(radius, (geometry = new THREE.SphereGeometry(radius, 20, 16)));
-      const opacity = lit ? (n.kind === "doc" ? 0.85 : 0.95) : 0.12;
-      const key = `${n.color}|${opacity}|${dark}`;
-      let material = materials.get(key);
-      if (!material)
-        materials.set(
-          key,
-          (material = new THREE.MeshLambertMaterial({
-            color: n.color,
-            emissive: n.color,
-            emissiveIntensity: dark ? 0.45 : 0.08,
-            transparent: true,
-            opacity,
-          })),
-        );
-      group.add(new THREE.Mesh(geometry, material));
-      const showLabel = n.kind === "category" || (focus && lit);
-      if (showLabel) {
-        const label = new SpriteText(n.name);
-        label.fontFace = "IBM Plex Sans KR, Apple SD Gothic Neo, sans-serif";
-        label.fontWeight = n.kind === "doc" ? "500" : "700";
-        label.textHeight = n.kind === "category" ? 14 : 3.6;
-        label.color = n.kind === "category" ? n.color : dark ? "#cbd5e1" : "#1f2933";
-        if (n.kind === "doc") {
-          label.backgroundColor = dark ? "rgba(16,22,30,0.82)" : "rgba(255,255,255,0.88)";
-          label.padding = 1.2;
-          label.borderRadius = 2;
-        }
-        label.material.opacity = lit ? 1 : 0.18;
-        label.material.depthWrite = false;
-        label.position.set(0, radius + label.textHeight * 0.85, 0);
-        group.add(label);
+      ctx.globalAlpha = lit ? 1 : 0.15;
+      if (dark && lit) {
+        ctx.shadowColor = n.color;
+        ctx.shadowBlur = n.kind === "category" ? 14 : 5;
       }
-      return group;
+      ctx.fillStyle = n.color;
+      ctx.beginPath();
+      ctx.arc(x, y, n.size, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      const showLabel = n.kind === "category" || (focus ? lit : scale >= DOC_LABEL_SCALE);
+      if (showLabel) {
+        // World-sized text, but never smaller than a readable size on screen
+        const size = n.kind === "category" ? Math.max(8, 13 / scale) : Math.max(3, 11 / scale);
+        ctx.font = `${n.kind === "doc" ? 500 : 700} ${size}px ${FONT}`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+        const ty = y - n.size - size * 0.3;
+        if (n.kind === "doc") {
+          const w = ctx.measureText(n.name).width;
+          const pad = size * 0.3;
+          ctx.fillStyle = dark ? "rgba(16,22,30,0.82)" : "rgba(255,255,255,0.88)";
+          ctx.fillRect(x - w / 2 - pad, ty - size - pad * 0.5, w + pad * 2, size + pad);
+          ctx.fillStyle = dark ? "#cbd5e1" : "#1f2933";
+        } else {
+          ctx.fillStyle = dark ? n.color : "#1f2933";
+        }
+        ctx.fillText(n.name, x, ty);
+      }
+      ctx.globalAlpha = 1;
     },
     [dark, focus, isLit],
   );
+
+  const linkColor = useCallback(
+    (l: object) => {
+      const link = l as Link;
+      const t = link.target as Node;
+      const s = link.source as Node;
+      const lit = !focus || (isLit(t.id) && isLit(s.id) && (focus.id === t.id || focus.id === s.id || link.kind === "member"));
+      if (link.kind === "reference") return lit ? REFERENCE_COLOR[theme] : dark ? "#2a2416" : "#ece3d2";
+      if (link.kind === "related") return lit ? (dark ? "#5b6b7d88" : "#9aa39a88") : dark ? "#161d26" : "#e6e8e2";
+      if (!focus) return dark ? "#3a4a5a" : "#b9c0b5";
+      return lit ? `${t.color}aa` : dark ? "#1a222c" : "#e1e4dd";
+    },
+    [dark, focus, isLit, theme],
+  );
+
+  const onNodeHover = useCallback((n: Node | null) => {
+    if (wrapRef.current) wrapRef.current.style.cursor = n ? "pointer" : "grab";
+  }, []);
+  const onBackgroundClick = useCallback(() => setSelected(null), []);
+  const selectedRef = useRef<Node | null>(null);
+  useEffect(() => {
+    selectedRef.current = selected;
+  }, [selected]);
+  const onEngineStop = useCallback(() => {
+    if (!selectedRef.current) fgRef.current?.zoomToFit(800, 60);
+  }, []);
 
   // Escape clears the selection, like clicking the background
   useEffect(() => {
@@ -280,41 +233,31 @@ export default function MindMapCanvas({
   return (
     <div ref={wrapRef} className="relative h-full w-full overflow-hidden">
       <p className="sr-only">
-        3D 마인드맵은 마우스나 터치로 보는 시각화예요. 화면 낭독기나 키보드로는 아래 검색창과 분야 버튼으로 노드를 고르거나,{" "}
+        마인드맵은 마우스나 터치로 보는 시각화예요. 화면 낭독기나 키보드로는 아래 검색창과 분야 버튼으로 노드를 고르거나,{" "}
         <Link href="/knowledge/dictionary">계층형 사전</Link>에서 같은 노트를 목록으로 볼 수 있어요.
       </p>
       {width > 0 && (
-        <ForceGraph3D<Node>
+        <ForceGraph2D<Node>
           ref={fgRef}
           width={width}
           height={height}
           graphData={graphData}
-          controlType="orbit"
           backgroundColor={dark ? "#070a0e" : "#f3f4f0"}
-          showNavInfo={false}
-          nodeThreeObject={nodeObject}
-          linkColor={(l) => {
-            const link = l as unknown as Link;
-            const t = link.target as Node;
-            const s = link.source as Node;
-            const lit = !focus || (isLit(t.id) && isLit(s.id) && (focus.id === t.id || focus.id === s.id || link.kind === "member"));
-            if (link.kind === "reference") return lit ? REFERENCE_COLOR[theme] : dark ? "#2a2416" : "#ece3d2";
-            if (link.kind === "related") return lit ? (dark ? "#5b6b7d" : "#9aa39a") : dark ? "#161d26" : "#e6e8e2";
-            if (!focus) return dark ? "#3a4a5a" : "#b9c0b5";
-            return lit ? t.color : dark ? "#1a222c" : "#e1e4dd";
-          }}
-          linkVisibility={(l) => (l as unknown as Link).kind !== "hub"}
-          linkOpacity={dark ? 0.35 : 0.55}
-          linkWidth={(l) => ((l as unknown as Link).kind === "reference" ? 1.6 : 0)}
-          linkCurvature={(l) => ((l as unknown as Link).kind === "reference" ? 0.18 : 0)}
-          onNodeHover={(n) => {
-            if (wrapRef.current) wrapRef.current.style.cursor = n ? "pointer" : "grab";
-          }}
-          onNodeClick={(n) => select(n as Node)}
-          onBackgroundClick={() => setSelected(null)}
-          warmupTicks={60}
-          cooldownTicks={200}
-          onEngineStop={() => !selected && fgRef.current?.zoomToFit(800, 60)}
+          minZoom={MIN_SCALE}
+          maxZoom={MAX_SCALE}
+          nodeCanvasObject={drawNode}
+          nodePointerAreaPaint={nodePointerArea}
+          linkColor={linkColor}
+          linkVisibility={linkVisibility}
+          linkWidth={linkWidth}
+          linkCurvature={linkCurvature}
+          onNodeHover={onNodeHover}
+          onNodeClick={select}
+          onBackgroundClick={onBackgroundClick}
+          onZoom={onZoom}
+          warmupTicks={100}
+          cooldownTicks={150}
+          onEngineStop={onEngineStop}
         />
       )}
 
@@ -498,7 +441,7 @@ export default function MindMapCanvas({
 
       {!selected && (
         <p className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-bg-elev/70 px-3 py-1 text-xs whitespace-nowrap text-muted backdrop-blur">
-          <span className="hidden sm:inline">드래그해서 회전 · 스크롤이나 오른쪽 바로 확대 · 노드를 클릭해 이동 ·</span>
+          <span className="hidden sm:inline">드래그해서 이동 · 스크롤이나 오른쪽 바로 확대 · 노드를 클릭해 초점 ·</span>
           <span className="inline-block h-0.5 w-4 rounded" style={{ background: REFERENCE_COLOR[theme] }} />
           노트 간 링크
           <span className="inline-block h-px w-4 bg-muted" />

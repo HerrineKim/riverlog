@@ -3,7 +3,7 @@ import MindMap from "@/components/knowledge/MindMap";
 import ViewSwitch from "@/components/knowledge/ViewSwitch";
 import { categoryColor, getGraphData, getKnowledgeTree, knowledgeStats } from "@/lib/knowledge";
 
-export const metadata: Metadata = { title: "지식 창고 · 3D 마인드맵" };
+export const metadata: Metadata = { title: "지식 창고 · 마인드맵" };
 
 export default function KnowledgeMapPage() {
   const data = getGraphData();

@@ -106,8 +106,8 @@ export default function AboutPage() {
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <Link href="/knowledge" className="group rounded-2xl border border-line bg-bg-elev p-5 transition hover:border-accent">
                 <Constellation />
-                <p className="text-lg font-semibold text-fg-strong group-hover:text-accent">3D 마인드맵 <span aria-hidden>→</span></p>
-                <p className="mt-1 text-sm text-muted">개념들의 연결을 공간 속에서 탐색</p>
+                <p className="text-lg font-semibold text-fg-strong group-hover:text-accent">마인드맵 <span aria-hidden>→</span></p>
+                <p className="mt-1 text-sm text-muted">개념들의 연결을 한눈에 탐색</p>
               </Link>
               <Link href="/knowledge/dictionary" className="group rounded-2xl border border-line bg-bg-elev p-5 transition hover:border-accent">
                 <div className="mb-5 space-y-1.5 font-mono text-xs text-muted">
