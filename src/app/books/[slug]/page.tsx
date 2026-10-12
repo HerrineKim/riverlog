@@ -41,6 +41,16 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
               <span className="rounded-full bg-accent-soft px-3 py-1 text-accent">{STATUS_LABEL[book.status]}</span>
               {book.rating && <span className="tracking-tight text-accent">{"★".repeat(book.rating) + "☆".repeat(5 - book.rating)}</span>}
               {book.finished && <span className="text-muted">{formatDate(book.finished)} 완독</span>}
+              {book.pdf && (
+                <a
+                  href={book.pdf}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full border border-line px-3 py-1 text-muted transition hover:border-accent hover:text-accent"
+                >
+                  PDF 보기 ↗
+                </a>
+              )}
             </div>
           </div>
         </header>

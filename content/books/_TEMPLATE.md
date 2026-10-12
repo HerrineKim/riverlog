@@ -6,6 +6,7 @@ status: "want"            # read · reading · want
 rating: 5                 # 1~5, 선택
 finished: "2026-10-11"    # 완독일, 선택
 tags: []
+pdf: "/books/파일.pdf"   # public/books/ 아래 PDF, 선택
 ---
 
 여기에 독후감을 적어요. (파일 이름이 `_`로 시작하면 사이트에 표시되지 않아요.)

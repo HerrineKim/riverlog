@@ -15,6 +15,7 @@ export type Book = {
   rating?: number;
   finished?: string;
   cover?: string;
+  pdf?: string; // path under public/, e.g. "/books/foo.pdf"
   tags: string[];
   review: string; // markdown 독후감, may be empty
 };
@@ -41,6 +42,7 @@ export function getAllBooks(): Book[] {
         rating: rating >= 1 && rating <= 5 ? Math.round(rating) : undefined,
         finished: data.finished ? String(data.finished) : undefined,
         cover: typeof data.cover === "string" && data.cover.startsWith("https://") ? data.cover : undefined,
+        pdf: typeof data.pdf === "string" && data.pdf.startsWith("/books/") ? data.pdf : undefined,
         tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
         review: content.trim(),
       };
