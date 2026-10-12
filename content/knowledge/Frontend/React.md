@@ -20,7 +20,7 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 ### 화면 구성
 - [이벤트 처리](/knowledge/dictionary/frontend/react/react-events)
 - [조건부 렌더링](/knowledge/dictionary/frontend/react/conditional-rendering)
-- [리스트와 Key](/knowledge/dictionary/frontend/react/lists-and-keys)
+- [리스트와 Key](/knowledge/dictionary/frontend/react/lists-and-keys): map 렌더링, key의 역할, key 값에 따른 리렌더링·리마운트 차이
 - [폼](/knowledge/dictionary/frontend/react/forms): 제어 컴포넌트, 여러 input, 단위 변환기 예제
 - [합성](/knowledge/dictionary/frontend/react/composition): children, 특수화, 상속 대신 합성
 - [Context](/knowledge/dictionary/frontend/react/context): props drilling 없이 값 공유, Flux 패턴
