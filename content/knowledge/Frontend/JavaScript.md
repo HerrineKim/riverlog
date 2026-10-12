@@ -27,6 +27,9 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [이벤트](/knowledge/dictionary/frontend/javascript/dom-events): addEventListener, 이벤트 객체, preventDefault
 - [Debounce와 Throttle](/knowledge/dictionary/frontend/javascript/debounce-throttle): 연속 이벤트의 실행 횟수를 줄이는 두 기법과 직접 구현
 
+### 엔진과 실행
+- [JavaScript는 인터프리터 언어일까, 컴파일 언어일까](/knowledge/dictionary/frontend/javascript/js-engine-v8): V8 파이프라인(Parser·Ignition·Sparkplug·TurboFan), JIT, TSC·Babel과 비교
+
 ### 비동기
 - [이벤트 루프](/knowledge/dictionary/frontend/javascript/event-loop): 싱글 스레드, 콜 스택, Web APIs, 태스크·마이크로태스크 큐
 - [콜백과 Promise](/knowledge/dictionary/frontend/javascript/callback-and-promise): 비동기의 문제, 콜백 지옥, Promise 상태와 체이닝, Promise.all
