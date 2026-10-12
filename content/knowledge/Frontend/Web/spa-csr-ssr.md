@@ -55,4 +55,4 @@ source: til
 - 렌더링 주체가 **서버면 SSR, 클라이언트면 CSR**.
 - CSR은 UX와 트래픽에, SSR은 초기 로딩과 SEO에 강하다.
 
-관련 노트: [[templates-static|Django 템플릿(서버 렌더링)]], [[vue-spa|Vue와 Vuex로 만든 영화 SPA]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]]
+관련 노트: [[templates-static|Django 템플릿(서버 렌더링)]], [[vuex|Vuex 상태 관리]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]]

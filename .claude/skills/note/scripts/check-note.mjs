@@ -62,6 +62,13 @@ for (const arg of files) {
     errors.push("date must be YYYY-MM-DD");
   if (/^#\s/m.test(content.replace(/```[\s\S]*?```/g, ""))) warns.push("body has an h1; title comes from frontmatter");
 
+  // Log-shaped notes: headings or title organized by date/session instead of topic
+  const LOG = /\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}|\bday\s*\d+|\d+\s*(일차|주차|회차)|\bpjt\s*\d+|오늘|회고/i;
+  const logHeads = [String(data.title ?? ""), ...[...content.replace(/```[\s\S]*?```/g, "").matchAll(/^#{2,3}\s+(.+)$/gm)].map((m) => m[1])]
+    .filter((h) => LOG.test(h));
+  if (logHeads.length)
+    warns.push(`looks like a log, not a topic note (organize by concept): ${logHeads.slice(0, 3).join(" / ")}`);
+
   // Unique file name (wikilinks resolve by bare name)
   const base = path.basename(file).toLowerCase();
   const dupes = all.filter((f) => f !== file && path.basename(f).toLowerCase() === base && f.endsWith(".md"));

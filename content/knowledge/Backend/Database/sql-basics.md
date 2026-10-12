@@ -87,10 +87,10 @@ SELECT country, COUNT(*) FROM users_user GROUP BY country;   -- 지역별 인원
 
 `COUNT`, `SUM`, `AVG`, `MAX`, `MIN`은 여러 행을 하나의 값으로 요약한다. `GROUP BY`는 지정한 열 값이 같은 행끼리 묶어 그룹마다 집계한다. (그룹에 조건을 걸 때는 `WHERE`가 아니라 `HAVING`)
 
-## 실습 환경 메모
+## 실습 환경 팁
 
-- 로컬 학습에는 Django 기본 DB인 SQLite나 VSCode SQLite 확장이 가장 간단하다.
-- 강의에서는 AWS Lightsail의 관리형 MySQL을 만들고 MySQL Workbench로 접속했다(Hostname = DB 엔드포인트, Username/Password 입력, DB를 Public 모드로 전환 후 Test Connection). 관리형 DB는 무료 기간이 끝나면 과금되므로 실습 후 반드시 삭제한다.
+- 로컬에서 연습할 때는 Django 기본 DB인 SQLite나 VSCode SQLite 확장이 가장 간단하다.
+- 클라우드 관리형 DB(AWS Lightsail 등)에 MySQL Workbench로 접속하려면 DB를 Public 모드로 전환해야 한다. 관리형 DB는 무료 기간이 끝나면 과금되므로 쓰고 나면 삭제한다.
 
 ## 핵심 정리
 

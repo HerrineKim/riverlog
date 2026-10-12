@@ -1,12 +1,11 @@
 ---
-title: "SSAFY 관통 프로젝트 회고"
-concept: "SSAFY"
-summary: "파이썬 데이터 수집부터 Django, DRF, Vue까지 '영화 추천 서비스'라는 하나의 주제로 10번의 프로젝트를 거치며 풀스택 웹 개발을 익힌 여정."
-tags: ["project", "retrospective", "django", "vue", "python"]
-source: til
+title: "SSAFY 관통 프로젝트 회고 — 영화 서비스로 10주"
+date: "2022-05-15"
+description: "파이썬 데이터 수집부터 Django, DRF, Vue까지 '영화 추천 서비스'라는 하나의 주제로 10번의 프로젝트를 거치며 풀스택 웹 개발을 익힌 여정을 돌아봅니다."
+tags: ["회고", "SSAFY", "Django", "Vue"]
 ---
 
-SSAFY(삼성 청년 SW 아카데미) 1학기 동안 매주 진행한 **관통 프로젝트**는 "영화 정보·추천 서비스"라는 하나의 주제를 따라, 배운 기술을 차곡차곡 쌓아 올리는 구조였습니다. 첫 주에는 JSON 파일을 읽는 파이썬 스크립트였던 것이, 마지막 주에는 Vue SPA가 되었습니다. 이 노트는 10개의 프로젝트를 한눈에 정리한 지도이고, 세부 내용은 단계별 노트에 있습니다.
+SSAFY(삼성 청년 SW 아카데미) 1학기 동안 매주 진행한 **관통 프로젝트**는 "영화 정보·추천 서비스"라는 하나의 주제를 따라, 배운 기술을 차곡차곡 쌓아 올리는 구조였습니다. 첫 주에는 JSON 파일을 읽는 파이썬 스크립트였던 것이, 마지막 주에는 Vue SPA가 되었습니다. 이 글은 10개의 프로젝트를 한눈에 돌아보는 회고입니다.
 
 ## 여정 한눈에 보기
 
@@ -23,14 +22,17 @@ SSAFY(삼성 청년 SW 아카데미) 1학기 동안 매주 진행한 **관통 �
 | 5. 추천·비동기 | pjt09 | 인기 영화 추천, 좋아요·팔로우 | 추천 로직, 커스텀 템플릿 필터, axios(AJAX) |
 | 6. 프론트 | pjt10 | 영화 목록·랜덤 추천·보고 싶은 영화 SPA | Vue, Vuex, Vue Router, TMDB API |
 
-## 단계별 노트
+## 단계별로 정리한 개념
 
-1. [데이터 수집·가공](SSAFY/data-collection.md) — pjt01~02
-2. [Django 영화 서비스와 CRUD](SSAFY/django-web-service.md) — pjt03~06
-3. [사용자 인증과 댓글](SSAFY/auth-and-comments.md) — pjt07
-4. [DRF로 만든 REST API 서버](SSAFY/rest-api-server.md) — pjt08
-5. [추천 알고리즘과 비동기 좋아요·팔로우](SSAFY/recommendation-and-ajax.md) — pjt09
-6. [Vue + Vuex 영화 SPA](SSAFY/vue-spa.md) — pjt10
+프로젝트 기록은 따로 남기지 않고, 배운 개념을 주제별 지식 노트로 옮겨 정리했습니다.
+
+| 단계 | 정리한 노트 |
+| --- | --- |
+| 데이터 | [[python-data-analysis|파이썬 데이터 분석 프로세스]] (JSON·API·정렬) |
+| Django 서비스, CRUD, 인증 | [[Backend/Django|Django]] ([[forms-modelform|Form과 ModelForm]], [[auth-user|User와 인증]], [[relationships|모델 관계]]) |
+| REST API | [[rest-api|REST API 설계]], [[drf-serializer|DRF Serializer와 관계 표현]] |
+| 추천·비동기 | [[ajax|AJAX와 HTTP 요청]], [[templates-static|Template과 Static 파일]] |
+| Vue SPA | [[vuex|Vuex 상태 관리]], [[spa-csr-ssr|SPA와 CSR·SSR]] |
 
 ## 전체를 돌아보며
 
@@ -41,4 +43,3 @@ SSAFY(삼성 청년 SW 아카데미) 1학기 동안 매주 진행한 **관통 �
 - **진로 고민**: 백엔드는 어려울 거라 생각했는데 Django가 의외로 재미있었고, 프론트엔드도 즐거워 갈팡질팡했다. 결국 사용자와 가장 가까운 곳에서 일하고 싶다는 생각에 프론트엔드를 더 깊이 공부하기로 했다.
 - **외우지 말고 이해하기**: 참고 코드를 따라 쓰다 `event.preventDefault()` 한 줄을 빠뜨려 한참 헤맨 경험 이후, 코드 한 줄 한 줄의 동작을 이해하려고 노력하게 되었다.
 
-개념 정리 노트: [[Backend/Django|Django]], [[rest-api|REST API 설계]], [[spa-csr-ssr|SPA와 CSR·SSR]]

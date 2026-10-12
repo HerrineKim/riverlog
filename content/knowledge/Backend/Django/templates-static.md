@@ -27,6 +27,29 @@ Django 템플릿은 **표현(presentation)을 위한 도구**다. 조건·반복
 {% if user.is_authenticated %}안녕하세요, {{ user.username }}님{% endif %}
 ```
 
+### 커스텀 템플릿 필터
+
+내장 필터로 부족하면 앱 안에 `templatetags/` 폴더(이름 고정, `__init__.py` 필요)를 만들어 직접 등록한다. 예를 들어 M:N 장르 목록을 `액션, 드라마`처럼 한 줄로 보여 주는 필터다.
+
+```python
+# movies/templatetags/movie_filters.py
+from django import template
+
+register = template.Library()
+
+@register.filter
+def make_genre_list(genres):
+    return ', '.join(genre.name for genre in genres)
+```
+
+```django
+{% load movie_filters %}
+<p>Genre: {{ movie.genres.all|make_genre_list }}</p>
+```
+
+- 모듈은 위치와 무관하게 **파일 이름으로 `{% load %}`**되므로 다른 앱의 모듈과 이름이 겹치지 않게 짓는다.
+- 처음 만든 뒤에는 개발 서버를 재시작해야 인식된다.
+
 ## 템플릿 상속
 
 공통 레이아웃(헤더, 네비게이션, 푸터)을 `base.html` 하나에 두고, 자식 템플릿은 바뀌는 블록만 채운다.
@@ -128,6 +151,6 @@ def catch(request):
 
 ## 핵심 정리
 
-- `{{ }}` 출력, `|` 필터, `{% %}` 태그, `{# #}` 주석.
+- `{{ }}` 출력, `|` 필터(부족하면 `templatetags`로 직접 등록), `{% %}` 태그, `{# #}` 주석.
 - `base.html` + `{% extends %}` + `{% block %}`으로 중복 레이아웃을 제거한다.
 - 정적 파일은 `{% load static %}` + `{% static %}`, 배포 땐 `collectstatic`.

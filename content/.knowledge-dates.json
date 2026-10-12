@@ -1,7 +1,7 @@
 {
  "AI-Data.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T20:35:49+09:00"
+  "updated": "2026-10-12T20:49:13+09:00"
  },
  "AI-Data/ai-frontend-design-prompting.md": {
   "created": "2026-10-11T23:03:06+09:00",
@@ -33,7 +33,7 @@
  },
  "AI-Data/python-data-analysis.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:49:13+09:00"
  },
  "AI-Data/vibe-coding-beautiful-ui.md": {
   "created": "2026-10-12T17:23:42+09:00",
@@ -54,6 +54,10 @@
  "Algorithm/Basics/prefix-sum.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-12T12:22:51+09:00"
+ },
+ "Algorithm/Coding-Test.md": {
+  "created": "2026-10-12T20:48:38+09:00",
+  "updated": "2026-10-12T20:48:38+09:00"
  },
  "Algorithm/Coding-Test/approach.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -173,11 +177,11 @@
  },
  "Backend/Database/sql-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:48:23+09:00"
  },
  "Backend/Django.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:49:46+09:00"
  },
  "Backend/Django/admin.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -185,11 +189,15 @@
  },
  "Backend/Django/auth-user.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:48:48+09:00"
+ },
+ "Backend/Django/drf-serializer.md": {
+  "created": "2026-10-12T20:49:40+09:00",
+  "updated": "2026-10-12T20:49:40+09:00"
  },
  "Backend/Django/forms-modelform.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:48:48+09:00"
  },
  "Backend/Django/getting-started-mtv.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -201,19 +209,19 @@
  },
  "Backend/Django/orm-queryset.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-12T20:48:30+09:00"
  },
  "Backend/Django/relationships.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:48:48+09:00"
  },
  "Backend/Django/templates-static.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-12T20:48:48+09:00"
  },
  "Backend/Django/urls-views.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-12T20:48:30+09:00"
  },
  "Backend/Express/express-middleware.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -297,7 +305,7 @@
  },
  "Backend/Web-Basics/rest-api.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:49:04+09:00"
  },
  "Career.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -357,7 +365,7 @@
  },
  "Computer-Science.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:48:23+09:00"
  },
  "Computer-Science/C-Programming.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -405,7 +413,7 @@
  },
  "Computer-Science/Computer-Architecture/data-representation.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:48:44+09:00"
  },
  "Computer-Science/Computer-Architecture/digital-components.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -561,7 +569,11 @@
  },
  "Computer-Science/cs-roadmap.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:00:52+09:00"
+  "updated": "2026-10-12T20:48:23+09:00"
+ },
+ "Computer-Science/developer-traps.md": {
+  "created": "2026-10-12T20:48:44+09:00",
+  "updated": "2026-10-12T20:48:44+09:00"
  },
  "DevOps.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -581,7 +593,7 @@
  },
  "Frontend.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:49:46+09:00"
  },
  "Frontend/CSS.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -617,7 +629,7 @@
  },
  "Frontend/JavaScript/ajax.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:49:04+09:00"
  },
  "Frontend/JavaScript/arrays-and-objects.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -685,7 +697,7 @@
  },
  "Frontend/React.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
+  "updated": "2026-10-12T20:48:23+09:00"
  },
  "Frontend/React/auth-flow.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -733,7 +745,7 @@
  },
  "Frontend/React/re-rendering.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-11T23:36:27+09:00"
+  "updated": "2026-10-12T20:48:31+09:00"
  },
  "Frontend/React/react-events.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -776,12 +788,16 @@
   "updated": "2026-10-12T12:22:51+09:00"
  },
  "Frontend/UI-Design/animated-icon.md": {
-  "created": "2026-10-12T20:42:02+09:00",
-  "updated": "2026-10-12T20:42:02+09:00"
+  "created": "2026-10-12T20:47:34+09:00",
+  "updated": "2026-10-12T20:47:34+09:00"
  },
  "Frontend/UI-Design/design-system.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-11T23:36:27+09:00"
+  "updated": "2026-10-12T20:47:34+09:00"
+ },
+ "Frontend/Vue/vuex.md": {
+  "created": "2026-10-12T20:49:40+09:00",
+  "updated": "2026-10-12T20:49:40+09:00"
  },
  "Frontend/Web.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -809,7 +825,7 @@
  },
  "Frontend/Web/spa-csr-ssr.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T20:38:56+09:00"
+  "updated": "2026-10-12T20:49:04+09:00"
  },
  "Frontend/Web/web-security.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -911,42 +927,6 @@
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-12T12:22:51+09:00"
  },
- "Projects.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T23:36:27+09:00"
- },
- "Projects/Hackathon/ai-trading-data-platform.md": {
-  "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
- "Projects/SSAFY.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
- "Projects/SSAFY/auth-and-comments.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
- "Projects/SSAFY/data-collection.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
- "Projects/SSAFY/django-web-service.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
- "Projects/SSAFY/recommendation-and-ajax.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
- "Projects/SSAFY/rest-api-server.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
- "Projects/SSAFY/vue-spa.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-12T12:22:51+09:00"
- },
  "Tools.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-11T23:46:36+09:00"
@@ -961,7 +941,7 @@
  },
  "Tools/Blender.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-11T22:24:49+09:00"
+  "updated": "2026-10-12T20:48:23+09:00"
  },
  "Tools/Blender/basics-isometric-room.md": {
   "created": "2026-10-11T22:24:49+09:00",

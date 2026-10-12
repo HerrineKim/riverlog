@@ -36,6 +36,6 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 - [react-router로 레이아웃과 Breadcrumbs 만들기](/knowledge/dictionary/frontend/react/react-router-layout): URL 규칙, Outlet, 경로 기반 Breadcrumbs
 - [MUI Dialog로 삭제 확인 창 만들기](/knowledge/dictionary/frontend/react/confirm-dialog): 재사용 다이얼로그, 위험한 버튼 디자인
 
-## 학습 출처
+## 참고 자료
 
-여러 강의의 내용을 개념별로 합쳤다: 「처음 만나는 리액트」(인프런), 「ReactJS로 영화 웹 서비스 만들기」(노마드코더), 「Slack 클론 코딩」(인프런), 생활코딩 React(2022), React 공식 문서. 스터디에서는 개념 강의 → 실습 강의 → 클론 코딩 순서로 한 달 남짓 진행하고, 배운 내용을 GitHub에 정리한 뒤 회고를 남기는 것을 결과물로 삼았다. 실무 노트(리렌더링, react-hook-form, react-router, MUI)는 업무 중 해결한 문제에서 뽑았다.
+인프런 「처음 만나는 리액트」·「Slack 클론 코딩」, 노마드코더 「ReactJS로 영화 웹 서비스 만들기」, 생활코딩 React(2022), React 공식 문서를 개념별로 합쳐 정리했다.

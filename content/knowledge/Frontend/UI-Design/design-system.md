@@ -98,3 +98,5 @@ npx @my-org/skill-installer install team-dev-guide
 - 토큰(값) → 컴포넌트(UI) → 문서(Storybook)를 중앙 모노레포에서 관리하고 패키지로 배포한다.
 - 컴포넌트는 검증된 오픈 소스 위에 토큰을 입혀 빠르게 만든다.
 - 팀 규칙 파일(SKILL.md)도 같은 방식으로 패키지화하고, 업데이트는 자동 PR로 받는다.
+
+관련 노트: [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]]

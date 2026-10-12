@@ -85,6 +85,36 @@ def create(request):
 
 > 고친 점: 원래 필기의 Form 예시는 GET 요청에서도 `RecordForm(request.POST)`를 만들어, 처음 페이지에 들어갈 때부터 "필수 항목입니다" 에러가 표시되는 문제가 있었다. GET에서는 인자 없는 빈 폼을 만들어야 한다.
 
+## 작성자 채우기: `commit=False`
+
+작성자(`user`)나 부모 글(`movie`) 같은 외래키는 사용자가 입력하는 값이 아니므로 폼 필드에서 빼고, view에서 채워 넣는다. `save(commit=False)`는 DB에 저장하기 전의 인스턴스만 돌려준다.
+
+```python
+if form.is_valid():
+    comment = form.save(commit=False)   # 아직 DB에 저장하지 않음
+    comment.movie = movie
+    comment.user = request.user
+    comment.save()
+```
+
+## 이미지 업로드
+
+| 단계 | 내용 |
+| --- | --- |
+| 모델 | `ImageField` (Pillow 필요) |
+| 설정 | `MEDIA_ROOT`(저장 경로), `MEDIA_URL`(접근 URL 접두사) |
+| 템플릿 | `<form>`에 `enctype="multipart/form-data"` |
+| view | `MovieForm(request.POST, request.FILES)`로 파일까지 전달 |
+| 개발 서버 | 프로젝트 `urls.py`에 `+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)` |
+
+```django
+{% if movie.image %}
+  <img src="{{ movie.image.url }}" alt="{{ movie.title }}">
+{% endif %}
+```
+
+`enctype`이나 `request.FILES`를 빠뜨리면 오류 없이 파일만 저장되지 않으므로 업로드가 안 될 때 가장 먼저 확인한다.
+
 ## Widget
 
 위젯은 input 요소의 **HTML 렌더링**만 담당한다. 유효성 검사는 필드가 담당한다는 점을 혼동하지 않는다.
@@ -114,6 +144,6 @@ class RecordForm(forms.ModelForm):
 - view는 `if POST → is_valid → save → redirect / else → 빈 폼 → render` 패턴.
 - 검증 실패 시 입력값·에러가 담긴 폼을 그대로 다시 렌더링한다.
 
-관련 노트: [[web-security|웹 보안: CSRF와 XSS]] — `{% csrf_token %}`이 막는 공격, [[django-web-service|Django 영화 서비스와 CRUD 게시판]]
+관련 노트: [[web-security|웹 보안: CSRF와 XSS]] — `{% csrf_token %}`이 막는 공격, [[urls-views|Django URL과 View]] — render와 redirect
 
 참고: [Django Forms 문서](https://docs.djangoproject.com/en/stable/topics/forms/)

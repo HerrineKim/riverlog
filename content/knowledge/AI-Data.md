@@ -1,12 +1,12 @@
 ---
 title: "AI-Data"
-concept: "Data Science"
-summary: "파이썬 데이터 분석·Jupyter 같은 데이터 과학 도구와, LLM 시스템 프롬프트 설계처럼 AI를 다루는 방법에 관한 노트."
+concept: "AI & Data"
+summary: "LLM·에이전트 도구(Claude Code, 스킬, 루프 엔지니어링)와 AI 활용법, 파이썬 데이터 분석·Jupyter 같은 데이터 도구에 관한 노트."
 tags: ["data-science", "python", "analysis", "ai", "llm"]
 source: notion
 ---
 
-데이터 과학은 데이터 수집·정제, 통계 분석, 머신러닝 등 여러 기술을 활용해 복잡한 데이터에서 인사이트를 얻거나 지능형 시스템을 만드는 일을 통틀어 부르는 말입니다. 정의는 사람마다 조금씩 다르지만, "데이터로 더 나은 판단을 한다"는 목표는 같습니다. 이 분야에는 파이썬으로 데이터를 분석하는 흐름과 그 표준 도구인 Jupyter Notebook, 그리고 LLM 기반 AI 제품의 시스템 프롬프트가 어떻게 설계되는지 살펴본 노트를 정리했습니다.
+AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 목표를 공유하는 분야입니다. 이 분야에는 Claude Code·스킬·루프 엔지니어링 같은 LLM 에이전트 도구와 프롬프트 설계, AI로 UI를 만드는 방법, 그리고 파이썬 데이터 분석 흐름과 표준 도구인 Jupyter Notebook을 정리했습니다.
 
 ## 하위 노트
 
@@ -19,5 +19,3 @@ source: notion
 - [Claude Code 활용 가이드](AI-Data/claude-code-guide.md): 설치, 슬래시 명령·단축키, MCP, Skills·CLAUDE.md, 프롬프트 기법, 요금제
 - [Claude 스킬 만들기 가이드](AI-Data/claude-skill-building-guide.md): 프로그레시브 디스클로저, description 작성, 테스트·배포, 실전 패턴 5가지
 - [루프 엔지니어링](AI-Data/loop-engineering.md): 자동화·워크트리·스킬·서브에이전트·상태 파일로 에이전트가 스스로 도는 루프 설계하기
-
-관련 프로젝트: [SSAFY 데이터 수집·가공 프로젝트](Projects/SSAFY/data-collection.md)

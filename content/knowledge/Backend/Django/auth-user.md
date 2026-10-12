@@ -21,7 +21,7 @@ user.set_password('new_password')  # 비밀번호 변경도 전용 메서드로
 user.save()
 ```
 
-> 권장: 새 프로젝트는 처음부터 `AbstractUser`를 상속한 커스텀 User 모델을 만들고 `settings.AUTH_USER_MODEL = 'accounts.User'`로 지정해 두는 것이 Django 공식 권장 사항이다. 프로젝트 중간에 바꾸기는 매우 어렵다. 다른 곳에서 User를 참조할 때는 `get_user_model()`이나 `settings.AUTH_USER_MODEL`을 쓴다.
+> 권장: 새 프로젝트는 처음부터 `AbstractUser`를 상속한 커스텀 User 모델을 만들고 `settings.AUTH_USER_MODEL = 'accounts.User'`로 지정해 두는 것이 Django 공식 권장 사항이다. 프로젝트 중간에 바꾸기는 매우 어렵다. 다른 곳에서 User를 참조할 때는 모델의 외래키에는 `settings.AUTH_USER_MODEL`, 폼 등 그 밖의 코드에서는 `get_user_model()`을 쓴다. `AUTH_USER_MODEL`은 **첫 `migrate` 전에** 설정해야 한다.
 
 ## 인증과 로그인
 
@@ -52,7 +52,20 @@ if form.is_valid():
     login(request, form.get_user())
 ```
 
-로그인한 사용자만 접근하게 하려면 view에 `@login_required` 데코레이터를 붙인다.
+로그인한 사용자만 접근하게 하려면 view에 `@login_required` 데코레이터를 붙인다. 비로그인 사용자는 로그인 페이지로 이동하며 `?next=/movies/create/`가 붙는다. 로그인 view에서 `redirect(request.GET.get('next') or 'movies:index')`로 원래 가려던 페이지로 돌려보낼 수 있고, 이때 로그인 템플릿의 `<form action="">`을 비워 두어야 쿼리스트링의 `next`가 유지된다.
+
+### 계정 관리 도구
+
+| 기능 | 사용할 도구 |
+| --- | --- |
+| 회원가입 (커스텀 User) | `UserCreationForm`을 상속하고 `Meta.model = get_user_model()`로 교체 |
+| 회원정보 수정 | `UserChangeForm`을 상속하고 `fields`로 노출 필드 제한 |
+| 비밀번호 변경 | `PasswordChangeForm` + `update_session_auth_hash()` (변경 후에도 로그아웃되지 않게 세션 해시 갱신) |
+| 탈퇴 | `request.user.delete()` 후 `logout()` |
+
+### 작성자만 수정·삭제
+
+글과 댓글에 작성자(`ForeignKey`)를 두고, update·delete view에서 `request.user == obj.user`일 때만 처리한다. 템플릿에서 같은 조건으로 버튼을 숨기는 것은 편의일 뿐이고, **실제 보안은 view의 검사**다. 작성자 채우기는 [Form과 ModelForm](Backend/Django/forms-modelform)의 `commit=False`를 쓴다.
 
 ## 템플릿에서 사용자 정보 쓰기
 
@@ -78,6 +91,6 @@ if form.is_valid():
 - `UserCreationForm`·`AuthenticationForm`으로 회원가입·로그인을 빠르게 구현한다.
 - 템플릿의 `user` 변수는 auth context processor가 자동 제공한다.
 
-관련 노트: [[cookie-session|쿠키와 세션]], [[auth-and-comments|Django 사용자 인증과 댓글 게시판]]
+관련 노트: [[cookie-session|쿠키와 세션]], [[relationships|Django 모델 관계]] — 작성자·댓글 같은 1:N 설계
 
 참고: [Django 인증 문서](https://docs.djangoproject.com/en/stable/topics/auth/default/)

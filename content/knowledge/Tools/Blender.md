@@ -1,14 +1,14 @@
 ---
 title: "Blender"
 concept: "Blender"
-summary: "무료 오픈소스 3D 제작 도구 Blender로 모델링부터 재질, UV, 리깅까지 익힌 기록."
+summary: "무료 오픈소스 3D 제작 도구 Blender의 기본 조작, 모델링 테크닉, 재질·UV 매핑, 리깅을 다룬 노트."
 tags: ["blender", "3d", "modeling"]
 source: notion
 ---
 
 Blender는 모델링·재질·애니메이션·렌더링까지 지원하는 **무료 오픈소스 3D 제작 도구**입니다. 업계에서는 아직 Maya 같은 유료 툴의 점유율이 높지만, Blender로 넘어오는 흐름도 뚜렷합니다. 실무 파이프라인에서는 보통 Blender로 모델링하고, 텍스처는 Photoshop, 페인팅은 Substance Painter 같은 도구를 함께 씁니다.
 
-## 학습 순서
+## 하위 노트
 
 | 노트 | 내용 |
 | --- | --- |

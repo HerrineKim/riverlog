@@ -44,6 +44,31 @@ REST(Representational State Transfer)는 **자원(Resource)을 이름(URI)으로
 4. 파일 확장자를 URI에 넣지 않는다. 형식은 `Accept`/`Content-Type` 헤더로 표현한다.
 5. 컬렉션은 복수형, 계층 관계는 경로로 표현한다. (`/cats/3/friends`)
 
+## 설계 예: 영화와 리뷰
+
+영화(Movie) 1 : N 리뷰(Review), 영화 M : N 배우(Actor) 관계를 자원 중심으로 옮기면 다음과 같다. 상위 자원 아래에 하위 자원을 두는 경로(`/movies/:id/reviews`)로 소속 관계를 드러내고, 이미 존재하는 리뷰는 독립된 경로로도 다룬다.
+
+| 메서드 | URL | 설명 |
+| --- | --- | --- |
+| GET | `/api/v1/movies` | 영화 목록 |
+| GET | `/api/v1/movies/:movieId` | 영화 상세 (배우·리뷰 포함) |
+| POST | `/api/v1/movies/:movieId/reviews` | 해당 영화에 리뷰 작성 |
+| GET | `/api/v1/reviews` | 리뷰 목록 |
+| GET / PUT / DELETE | `/api/v1/reviews/:reviewId` | 리뷰 상세·수정·삭제 |
+| GET | `/api/v1/actors`, `/api/v1/actors/:actorId` | 배우 목록·상세 (출연작 포함) |
+
+상태 코드 선택에서 자주 헷갈리는 부분은 다음과 같다.
+
+| 상황 | 응답 |
+| --- | --- |
+| 생성 성공 | `201 Created` |
+| 삭제 성공 | `204 No Content` (본문 없음. 메시지를 보내려면 `200 OK`) |
+| 입력 검증 실패 | `400 Bad Request` |
+| 대상 없음 | `404 Not Found` |
+| 목록이 비어 있음 | `200 OK` + 빈 배열 `[]` (빈 목록은 정상 상태이므로 404로 처리하지 않는다) |
+
+Django에서 이 설계를 구현하는 방법은 [[drf-serializer|DRF Serializer와 관계 표현]]에서 다룬다.
+
 ## 장점과 한계
 
 - **장점**: HTTP 인프라를 그대로 사용하므로 별도 인프라가 필요 없고, HTTP를 지원하는 어떤 플랫폼에서도 쓸 수 있으며, 서버·클라이언트 역할이 명확히 분리된다.
@@ -55,6 +80,6 @@ REST(Representational State Transfer)는 **자원(Resource)을 이름(URI)으로
 - PUT은 전체 교체, PATCH는 부분 수정이다.
 - 응답에는 적절한 상태 코드(200, 201, 400, 401, 404 …)를 함께 돌려준다.
 
-관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[web-services-and-it-trends|웹 서비스 기술(SOAP·REST)]], [[rest-api-server|DRF로 만든 영화 REST API 서버]]
+관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[web-services-and-it-trends|웹 서비스 기술(SOAP·REST)]], [[drf-serializer|DRF Serializer와 관계 표현]]
 
 참고: [Microsoft REST API 디자인 가이드](https://learn.microsoft.com/ko-kr/azure/architecture/best-practices/api-design)

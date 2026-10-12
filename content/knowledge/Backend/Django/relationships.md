@@ -109,13 +109,33 @@ class Reservation(models.Model):
 
 > 고친 점: 원래 필기의 `models.ManyToManyField(doctor, ...)`는 클래스 이름 오타로 `NameError`가 난다. 클래스 `Doctor`(또는 문자열 `'Doctor'`)를 넘겨야 한다.
 
+### 자기 자신과의 M:N (팔로우)
+
+같은 모델끼리 맺는 M:N은 `'self'`를 쓴다. 팔로우처럼 **한 방향** 관계라면 `symmetrical=False`가 필요하다. 기본값 `True`에서는 A가 B를 추가하면 B도 A를 자동으로 추가한다.
+
+```python
+class User(AbstractUser):
+    followings = models.ManyToManyField('self', symmetrical=False, related_name='followers')
+```
+
+### 토글 패턴 (좋아요·팔로우)
+
+이미 관계가 있으면 `remove`, 없으면 `add`로 뒤집는다. 존재 여부는 `filter(...).exists()`로 확인한다.
+
+```python
+if review.like_users.filter(pk=request.user.pk).exists():
+    review.like_users.remove(request.user)
+else:
+    review.like_users.add(request.user)
+```
+
 ### `related_name`이 필요한 경우
 
 같은 두 모델 사이에 관계 필드가 둘 이상이면(예: User–Article 사이 `author` FK와 `like_users` M2M) 기본 역참조 이름 `article_set`이 충돌하므로 `related_name`을 반드시 지정해야 한다.
 
 ## 핵심 정리
 
-- 1:N은 N쪽에 `ForeignKey`, 역참조는 `모델명_set` 또는 `related_name`.
+- 1:N은 N쪽에 `ForeignKey`, 역참조는 `모델명_set` 또는 `related_name`(예: 게시글의 댓글은 `movie.comment_set.all()`).
 - M:N은 `ManyToManyField`. 관계에 추가 데이터가 필요하면 `through` 중개 모델.
 - `on_delete`로 참조 무결성 정책을 정한다.
 

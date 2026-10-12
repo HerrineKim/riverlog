@@ -33,6 +33,38 @@ soup = BeautifulSoup(html, "html.parser")
 print(soup.select_one("h1").text)
 ```
 
+### 수집 데이터 다루기 기본기
+
+JSON 파일이나 API 응답을 받으면 `dict`/`list`가 중첩된 구조가 되므로, 접근하기 전에 구조를 먼저 출력해 보는 것이 안전합니다.
+
+```python
+import json
+import requests
+
+# 파일 입출력: with 문은 블록이 끝나면 파일을 자동으로 닫는다
+with open("data/movie.json", encoding="utf-8") as f:   # 한글 데이터는 encoding을 명시
+    movie = json.load(f)                                # JSON → dict/list
+with open("result.json", "w", encoding="utf-8") as f:
+    json.dump(movie, f, ensure_ascii=False)             # dict/list → JSON
+
+# 키가 없을 수 있으면 dict.get으로 기본값 지정 (dict[key]는 KeyError)
+price = movie.get("price", "정보 없음")
+
+# API 요청: params 딕셔너리가 ?region=KR&language=ko 쿼리 스트링이 된다
+response = requests.get(
+    "https://api.themoviedb.org/3/movie/now_playing",
+    params={"api_key": API_KEY, "region": "KR", "language": "ko"},   # 키는 환경 변수 등으로 관리
+)
+movies = response.json().get("results", [])
+
+# 필터링과 정렬
+high_rated = [m for m in movies if m["vote_average"] >= 8]
+top5 = sorted(movies, key=lambda m: m["vote_average"], reverse=True)[:5]   # 내림차순 상위 5개
+```
+
+- 응답이 두 API에 걸쳐 있으면(예: 영화 검색 → 출연진 조회) 첫 응답의 id를 다음 요청의 경로에 넣어 이어서 호출합니다.
+- API 키를 코드에 직접 쓰지 않습니다.
+
 ## 2. EDA: 탐색적 데이터 분석
 
 **EDA(Exploratory Data Analysis)** 는 본격적인 모델링 전에 시각화, 요약 통계, 간단한 모델 등으로 데이터를 여러 각도에서 살펴보며 **이해하는** 과정입니다.
@@ -76,4 +108,4 @@ print(soup.select_one("h1").text)
 - 커뮤니티: PyCon, PyData, JupyterCon
 - 책: 『파이썬 라이브러리를 활용한 데이터 분석』, 『파이썬 데이터 사이언스 핸드북』, 『밑바닥부터 시작하는 데이터 과학』
 
-관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-collection|파이썬 데이터 수집·가공 (SSAFY)]], [[data-journalism|데이터 저널리즘 실무]]
+관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-journalism|데이터 저널리즘 실무]]

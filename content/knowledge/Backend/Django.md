@@ -23,7 +23,6 @@ Django는 "배터리 포함(batteries included)"을 내세우는 Python 웹 프�
 | 7 | [Form과 ModelForm](Backend/Django/forms-modelform) | 폼 렌더링, 유효성 검사, 위젯 |
 | 8 | [User와 인증](Backend/Django/auth-user) | User 모델, 회원가입·로그인 |
 | 9 | [Admin](Backend/Django/admin) | 관리자 페이지 등록과 커스터마이징 |
+| 10 | [DRF Serializer](Backend/Django/drf-serializer) | JSON API 서버, 중첩 Serializer로 1:N·M:N 표현, api_view |
 
 SQL 자체의 문법은 [SQL 기초](Backend/Database/sql-basics)에서, REST API 설계는 [REST API](Backend/Web-Basics/rest-api)에서 다룬다.
-
-이 개념들을 실제 프로젝트에 적용한 기록: [[django-web-service|Django 영화 서비스와 CRUD 게시판]], [[auth-and-comments|Django 사용자 인증과 댓글 게시판]], [[rest-api-server|DRF로 만든 영화 REST API 서버]]

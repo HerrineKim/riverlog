@@ -57,7 +57,6 @@ const CATEGORIES: { id: string; label: string; color: string }[] = [
   { id: "DevOps", label: "DevOps", color: "#86efac" },
   { id: "AI-Data", label: "AI & Data", color: "#f87171" },
   { id: "Tools", label: "Tools", color: "#7dd3fc" },
-  { id: "Projects", label: "Projects", color: "#fb923c" },
   { id: "Career", label: "Career", color: "#c4b5fd" },
   { id: "Life-and-Learning", label: "Life & Learning", color: "#cbd5e1" },
 ];

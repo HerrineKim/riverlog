@@ -39,6 +39,7 @@ User.objects.get(pk=101).delete()   # DELETE FROM users_user WHERE id = 101;
 ```
 
 - `get()`은 **정확히 한 개**를 기대한다. 없으면 `DoesNotExist`, 여러 개면 `MultipleObjectsReturned` 예외가 난다. 그래서 PK처럼 고유한 값으로만 쓴다.
+- view에서는 `get()` 대신 `get_object_or_404(Model, pk=pk)`를 쓰면 없을 때 예외 대신 404 응답이 된다. 목록 조회는 데이터가 0건이어도 정상 상태이므로 `get_list_or_404`보다 `all()`/`filter()`로 빈 QuerySet을 받는 편이 자연스럽다.
 - 필수 필드를 빼고 생성하면 ORM·SQL 모두 `NOT NULL constraint failed` 오류가 난다. 이미 있는 id로 insert하면 `UNIQUE constraint failed`가 난다.
 
 ## 조건 조회: `filter()`
@@ -77,6 +78,7 @@ User.objects.filter(Q(age=30) | Q(last_name='김'))   # WHERE age = 30 OR last_n
 ## 정렬과 LIMIT/OFFSET
 
 ```python
+Movie.objects.order_by('-popularity')[:10]      # 인기도 상위 10개 (인기도 기반 추천의 기본형)
 User.objects.order_by('-age')[:10]              # ORDER BY age DESC LIMIT 10
 User.objects.order_by('balance', '-age')[:10]   # ORDER BY balance ASC, age DESC LIMIT 10
 User.objects.order_by('-last_name', '-first_name')[4]   # ... LIMIT 1 OFFSET 4
