@@ -14,7 +14,7 @@ source: mixed
 - **transport-layer** — 전송 계층의 역할, 포트 번호, UDP, TCP와 UDP 비교
 - **tcp** — TCP 헤더와 플래그, 3-way handshake, 순서 번호와 상태 전이
 - **http** — HTTP 요청·응답 형식, 메서드, 상태 코드, URI·URL·URN, HTTP/1.1·2·3 비교
-- **https** — HTTP를 TLS로 암호화하는 HTTPS, 인증서와 TLS 핸드셰이크, Mixed Content·HSTS
+- **https** — HTTP를 TLS로 암호화하는 HTTPS, 대칭키·공개키와 TLS 핸드셰이크, Mixed Content, HSTS와 preload, 종단 간 암호화
 - **http-cache** — Cache-Control과 ETag로 응답을 재사용하는 HTTP 캐시, 자산별 캐시 전략
 - **dns** — 도메인을 IP로 바꾸는 조회 흐름, 레코드 종류, TTL, dns-prefetch·preconnect
 - **cdn** — 엣지 서버에 콘텐츠를 캐시해 가까운 곳에서 응답하는 CDN과 캐시 무효화
