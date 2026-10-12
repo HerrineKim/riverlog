@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Comments from "@/components/Comments";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
 import Toc, { MobileToc } from "@/components/Toc";
@@ -46,10 +47,10 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
   return (
     <>
       <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 pt-8 pb-24 sm:px-6 lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[15rem_minmax(0,1fr)_13rem]">
-        <aside className="hidden lg:block">
+        <aside aria-label="사전 탐색" className="hidden lg:block">
           <div className="sticky top-20 max-h-[calc(100dvh-6rem)] overflow-y-auto pr-2 pb-8">
             <Link href={KNOWLEDGE_BASE} className="mb-4 flex items-center gap-2 text-sm text-muted hover:text-accent">
-              ← 사전 전체
+              <span aria-hidden>←</span> 사전 전체
             </Link>
             <TreeNav tree={tree} currentId={node.id} />
           </div>
@@ -71,7 +72,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
           </nav>
 
           <header className="mt-5 border-b border-line pb-7">
-            <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.16em] uppercase" style={{ color }}>
+            <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.16em] text-fg uppercase">
               <span className="size-2 rounded-full" style={{ background: color, boxShadow: `0 0 10px ${color}` }} />
               {trail[0]?.name}
             </div>
@@ -106,7 +107,8 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
                     {doc.sources.map((s) => (
                       <li key={s} className="truncate">
                         <a href={s} className="hover:text-accent" target="_blank" rel="noreferrer">
-                          {sourceName(s)} ↗ <span className="opacity-60">{decodeSafe(s).replace(/^https?:\/\//, "")}</span>
+                          {sourceName(s)} <span aria-hidden>↗</span>
+                          <span className="sr-only">(새 창)</span> <span className="text-muted">{decodeSafe(s).replace(/^https?:\/\//, "")}</span>
                         </a>
                       </li>
                     ))}
@@ -118,19 +120,21 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
 
           {node.children.length > 0 && <ChildList node={node} hasDoc={!!doc} />}
 
+          {doc && <Comments term={`knowledge/${node.id}`} />}
+
           {(prev || next) && (
-            <nav className="mt-16 grid gap-3 sm:grid-cols-2">
+            <nav aria-label="이전·다음 항목" className="mt-16 grid gap-3 sm:grid-cols-2">
               {prev ? <Pager node={prev} dir="prev" /> : <span />}
               {next && <Pager node={next} dir="next" />}
             </nav>
           )}
         </main>
 
-        <aside className="hidden xl:block">
+        <div className="hidden xl:block">
           <div className="sticky top-20">
             <Toc items={toc} />
           </div>
-        </aside>
+        </div>
       </div>
       <SiteFooter />
     </>
@@ -182,7 +186,11 @@ function Pager({ node, dir }: { node: KNode; dir: "prev" | "next" }) {
       href={node.href}
       className={`rounded-xl border border-line p-4 transition hover:border-accent ${dir === "next" ? "text-right sm:col-start-2" : ""}`}
     >
-      <span className="text-xs text-muted">{dir === "prev" ? "← 이전" : "다음 →"}</span>
+      <span className="text-xs text-muted">
+        {dir === "prev" ? <span aria-hidden>← </span> : null}
+        {dir === "prev" ? "이전" : "다음"}
+        {dir === "next" ? <span aria-hidden> →</span> : null}
+      </span>
       <span className="mt-1 block truncate font-medium text-fg-strong">{node.doc?.title ?? node.name}</span>
     </Link>
   );

@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ForceGraph3D, { type ForceGraphMethods } from "react-force-graph-3d";
 import * as THREE from "three";
 import SpriteText from "three-spritetext";
+import useTheme from "@/hooks/useTheme";
 import type { GraphLink, GraphNode } from "@/lib/knowledge";
 
 type Node = GraphNode & { x?: number; y?: number; z?: number };
@@ -28,19 +29,6 @@ type OrbitControls = THREE.EventDispatcher<{ change: object }> & {
 };
 type Category = { id: string; name: string; color: string; count: number };
 
-function useTheme() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-  useEffect(() => {
-    const root = document.documentElement;
-    const read = () => setTheme(root.getAttribute("data-theme") === "light" ? "light" : "dark");
-    read();
-    const mo = new MutationObserver(read);
-    mo.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, []);
-  return theme;
-}
-
 function useSize(ref: React.RefObject<HTMLElement | null>) {
   const [size, setSize] = useState({ width: 0, height: 0 });
   useEffect(() => {
@@ -55,7 +43,7 @@ function useSize(ref: React.RefObject<HTMLElement | null>) {
 
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const REFERENCE_COLOR = { dark: "#f5c26b", light: "#b7791f" } as const;
+const REFERENCE_COLOR = { dark: "#f5c26b", light: "#975a16" } as const; // light value doubles as label text, so ≥4.5:1
 
 export default function MindMapCanvas({
   data,
@@ -291,6 +279,10 @@ export default function MindMapCanvas({
 
   return (
     <div ref={wrapRef} className="relative h-full w-full overflow-hidden">
+      <p className="sr-only">
+        3D 마인드맵은 마우스나 터치로 보는 시각화예요. 화면 낭독기나 키보드로는 아래 검색창과 분야 버튼으로 노드를 고르거나,{" "}
+        <Link href="/knowledge/dictionary">계층형 사전</Link>에서 같은 노트를 목록으로 볼 수 있어요.
+      </p>
       {width > 0 && (
         <ForceGraph3D<Node>
           ref={fgRef}
@@ -345,6 +337,9 @@ export default function MindMapCanvas({
               aria-label="마인드맵에서 노드 찾기"
               className="w-full rounded-full border border-line bg-bg-elev/85 px-4 py-2 text-sm text-fg-strong outline-none backdrop-blur placeholder:text-muted focus:border-accent"
             />
+            <p className="sr-only" aria-live="polite">
+              {query.trim() ? `검색 결과 ${results.length}개${results.length ? ", Enter로 첫 결과로 이동" : ""}` : ""}
+            </p>
             {results.length > 0 && (
               <ul className="absolute mt-2 w-full overflow-hidden rounded-xl border border-line bg-bg-elev/95 text-sm shadow-xl backdrop-blur">
                 {results.map((r) => (
@@ -386,10 +381,18 @@ export default function MindMapCanvas({
         </ul>
       </div>
 
+      <p className="sr-only" aria-live="polite">
+        {selected ? `${selected.name} 선택됨. ${selected.kind === "doc" ? "노트" : "분야"}, ${selected.path}` : ""}
+      </p>
+
       {/* Selected node card */}
       {selected && (
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center p-4 sm:justify-start">
-          <div className="pointer-events-auto w-full max-w-sm rounded-2xl border border-line bg-bg-elev/90 p-4 shadow-2xl backdrop-blur-md">
+          <div
+            role="region"
+            aria-label="선택한 노드"
+            className="pointer-events-auto w-full max-w-sm rounded-2xl border border-line bg-bg-elev/90 p-4 shadow-2xl backdrop-blur-md"
+          >
             {(() => {
               const n = selected;
               return (
@@ -410,7 +413,11 @@ export default function MindMapCanvas({
                           >
                             <span className="size-1.5 shrink-0 rounded-full" style={{ background: c.color }} />
                             <span className="truncate">{c.name}</span>
-                            {c.kind !== "doc" && <span className="ml-auto text-xs text-muted">›</span>}
+                            {c.kind !== "doc" && (
+                              <span aria-hidden className="ml-auto text-xs text-muted">
+                                ›
+                              </span>
+                            )}
                           </button>
                         </li>
                       ))}
@@ -443,7 +450,7 @@ export default function MindMapCanvas({
                   <div className="mt-3 flex gap-2">
                     {n.href && (
                       <Link href={n.href} className="rounded-full bg-accent px-3.5 py-1.5 text-sm font-medium text-accent-ink hover:opacity-90">
-                        {n.kind === "doc" ? "노트 열기" : "사전에서 보기"} →
+                        {n.kind === "doc" ? "노트 열기" : "사전에서 보기"} <span aria-hidden>→</span>
                       </Link>
                     )}
                     {selected && (
@@ -460,7 +467,7 @@ export default function MindMapCanvas({
       )}
 
       {/* Zoom bar */}
-      <div className="absolute right-4 bottom-20 flex flex-col items-center gap-1 rounded-full border border-line bg-bg-elev/85 p-1.5 shadow-lg backdrop-blur sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2">
+      <div role="group" aria-label="확대·축소" className="absolute right-4 bottom-20 flex flex-col items-center gap-1 rounded-full border border-line bg-bg-elev/85 p-1.5 shadow-lg backdrop-blur sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2">
         <button
           onClick={() => zoomTo(zoom + 0.08)}
           aria-label="확대"
@@ -476,6 +483,7 @@ export default function MindMapCanvas({
           value={zoom}
           onChange={(e) => zoomTo(Number(e.target.value))}
           aria-label="확대·축소"
+          aria-orientation="vertical"
           className="h-32 w-6 cursor-grab accent-[var(--accent)] active:cursor-grabbing sm:h-40"
           style={{ writingMode: "vertical-lr", direction: "rtl" }}
         />

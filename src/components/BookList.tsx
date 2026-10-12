@@ -80,7 +80,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
               status === s.key ? "bg-accent font-medium text-accent-ink" : "border border-line text-muted hover:text-fg-strong"
             }`}
           >
-            {s.label} <span className="tabular-nums opacity-70">{count(s.key)}</span>
+            {s.label} <span className="tabular-nums">{count(s.key)}</span>
           </button>
         ))}
         <label className="ml-auto flex cursor-pointer items-center gap-2 text-sm text-muted">
@@ -116,14 +116,14 @@ export default function BookList({ books }: { books: BookRow[] }) {
                   {b.title}
                   {b.hasReview && (
                     <span className="ml-2 align-middle text-[0.7rem] font-normal text-accent" title="독후감 있음">
-                      ✎ 독후감
+                      <span aria-hidden>✎</span> 독후감
                     </span>
                   )}
                 </p>
                 <p className="truncate text-sm text-muted">{b.author || "저자 정보 없음"}</p>
               </div>
               <span className="hidden truncate text-sm text-muted sm:block">{b.category}</span>
-              <span className="hidden text-sm tracking-tight text-accent sm:block" aria-label={b.rating ? `별점 ${b.rating}점` : "별점 없음"}>
+              <span role="img" className="hidden text-sm tracking-tight text-accent sm:block" aria-label={b.rating ? `별점 5점 중 ${b.rating}점` : "별점 없음"}>
                 {b.rating ? "★".repeat(b.rating) + "☆".repeat(5 - b.rating) : <span className="text-muted">—</span>}
               </span>
               <span className={`justify-self-end rounded-full px-2.5 py-0.5 text-xs whitespace-nowrap ${STATUS_STYLE[b.status]}`}>

@@ -26,7 +26,7 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
     <>
       <main className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6 sm:py-20">
         <Link href="/books" className="text-sm text-muted hover:text-accent">
-          ← 책장
+          <span aria-hidden>←</span> 책장
         </Link>
         <header className="mt-8 flex gap-6 border-b border-line pb-8">
           {book.cover && (
@@ -39,7 +39,11 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
             <p className="mt-2 text-lg text-muted">{book.author || "저자 정보 없음"}</p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
               <span className="rounded-full bg-accent-soft px-3 py-1 text-accent">{STATUS_LABEL[book.status]}</span>
-              {book.rating && <span className="tracking-tight text-accent">{"★".repeat(book.rating) + "☆".repeat(5 - book.rating)}</span>}
+              {book.rating && (
+                <span role="img" aria-label={`별점 5점 중 ${book.rating}점`} className="tracking-tight text-accent">
+                  {"★".repeat(book.rating) + "☆".repeat(5 - book.rating)}
+                </span>
+              )}
               {book.finished && <span className="text-muted">{formatDate(book.finished)} 완독</span>}
               {book.pdf && (
                 <a
@@ -48,7 +52,8 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
                   rel="noreferrer"
                   className="rounded-full border border-line px-3 py-1 text-muted transition hover:border-accent hover:text-accent"
                 >
-                  PDF 보기 ↗
+                  PDF 보기 <span aria-hidden>↗</span>
+                  <span className="sr-only">(새 창)</span>
                 </a>
               )}
             </div>
@@ -64,7 +69,8 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
               rel="noreferrer"
               className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted transition hover:border-accent hover:text-accent"
             >
-              ✎ {book.review ? "독후감 수정" : "독후감 쓰기"}
+              <span aria-hidden>✎</span> {book.review ? "독후감 수정" : "독후감 쓰기"}
+              <span className="sr-only">(GitHub, 새 창)</span>
             </a>
           </div>
           {book.review ? (

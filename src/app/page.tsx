@@ -62,10 +62,12 @@ export default function AboutPage() {
               <div className="max-w-2xl">
                 <Prose markdown={about.body} />
               </div>
-              <aside className="lg:pt-1">
-                <p className="mb-3 text-xs font-semibold tracking-[0.18em] text-muted uppercase">Contact & Subscribe</p>
+              <section aria-labelledby="contact-heading" className="lg:pt-1">
+                <h2 id="contact-heading" className="mb-3 text-xs font-semibold tracking-[0.18em] text-muted uppercase">
+                  Contact & Subscribe
+                </h2>
                 <SocialLinks />
-              </aside>
+              </section>
             </div>
           </div>
         </section>
@@ -75,7 +77,7 @@ export default function AboutPage() {
             <div className="flex items-baseline justify-between">
               <h2 className="text-sm font-semibold tracking-[0.18em] text-muted uppercase">최근 글</h2>
               <Link href="/blog" className="text-sm text-muted hover:text-accent">
-                전체 →
+                전체 <span aria-hidden>→</span>
               </Link>
             </div>
             <ul className="mt-5 divide-y divide-line border-t border-line">
@@ -104,7 +106,7 @@ export default function AboutPage() {
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <Link href="/knowledge" className="group rounded-2xl border border-line bg-bg-elev p-5 transition hover:border-accent">
                 <Constellation />
-                <p className="text-lg font-semibold text-fg-strong group-hover:text-accent">3D 마인드맵 →</p>
+                <p className="text-lg font-semibold text-fg-strong group-hover:text-accent">3D 마인드맵 <span aria-hidden>→</span></p>
                 <p className="mt-1 text-sm text-muted">개념들의 연결을 공간 속에서 탐색</p>
               </Link>
               <Link href="/knowledge/dictionary" className="group rounded-2xl border border-line bg-bg-elev p-5 transition hover:border-accent">
@@ -113,7 +115,7 @@ export default function AboutPage() {
                   <p className="pl-3">└ React</p>
                   <p className="pl-7">└ Hooks</p>
                 </div>
-                <p className="text-lg font-semibold text-fg-strong group-hover:text-accent">계층형 사전 →</p>
+                <p className="text-lg font-semibold text-fg-strong group-hover:text-accent">계층형 사전 <span aria-hidden>→</span></p>
                 <p className="mt-1 text-sm text-muted">분야별 목차와 가나다·ABC 색인</p>
               </Link>
             </div>

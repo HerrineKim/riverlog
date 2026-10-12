@@ -40,7 +40,8 @@ const processor = unified()
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, { behavior: "wrap" })
   .use(rehypePrettyCode, {
-    theme: { dark: "github-dark-dimmed", light: "github-light" },
+    // github-light's comment/string/orange tokens fall below 4.5:1; the high-contrast variant passes
+    theme: { dark: "github-dark-dimmed", light: "github-light-high-contrast" },
     keepBackground: false,
     defaultLang: { block: "plaintext" },
   })

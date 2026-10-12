@@ -27,9 +27,9 @@
   --fg: #1f2933;
   --fg-strong: #0b1219;
   --muted: #5f6b78;
-  --accent: #0f766e;
+  --accent: #0d6d65; /* 5:1 on --accent-soft, so tinted chips stay readable */
   --accent-ink: #f0fdfa;
-  --accent-soft: rgb(15 118 110 / 0.1);
+  --accent-soft: rgb(13 109 101 / 0.1);
   --code-bg: #f1f3ef;
   color-scheme: light;
 }

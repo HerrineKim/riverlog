@@ -129,7 +129,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
         </div>
       ) : (
         <div className="mt-8">
-          <nav className="mb-8 flex flex-wrap gap-1.5">
+          <nav aria-label="색인 바로가기" className="mb-8 flex flex-wrap gap-1.5">
             {index.map(([k]) => (
               <a key={k} href={`#idx-${k}`} className="grid size-8 place-items-center rounded-md border border-line text-sm text-muted hover:border-accent hover:text-accent">
                 {k}

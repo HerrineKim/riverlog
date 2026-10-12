@@ -49,6 +49,7 @@ export default function SocialLinks() {
               <SocialIcon name={l.key} className="size-3.5" />
             </span>
             <span className="truncate">{l.label}</span>
+            {l.href.startsWith("http") && <span className="sr-only">(새 창)</span>}
             <span className="ml-auto hidden truncate pl-2 text-xs text-muted lg:inline">{l.value}</span>
           </a>
         </li>

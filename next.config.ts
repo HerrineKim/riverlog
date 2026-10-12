@@ -10,6 +10,7 @@ const csp = [
   "img-src 'self' https: data: blob:", // book covers and note images may be remote
   "font-src 'self'",
   "connect-src 'self'",
+  "frame-src https://giscus.app", // comments (GitHub Discussions)
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
