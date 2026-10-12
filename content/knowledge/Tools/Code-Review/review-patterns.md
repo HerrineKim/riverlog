@@ -213,4 +213,4 @@ function SignUpForm() {
 | state 직접 수정 | `map` + spread로 새 객체 |
 | props 과다 | 데이터 + 콜백 한두 개로 |
 
-관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[forms|폼과 제어 컴포넌트]], [[principles|코드 리뷰 원칙]]
+관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[forms|폼과 제어 컴포넌트]], [[principles|코드 리뷰 원칙]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]]

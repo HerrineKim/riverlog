@@ -17,6 +17,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [배열·객체·문자열](/knowledge/dictionary/frontend/javascript/arrays-and-objects): 주요 메서드, map·filter·reduce, ES6 객체 문법, 구조 분해, 옵셔널 체이닝, JSON
 - [템플릿 리터럴](/knowledge/dictionary/frontend/javascript/template-literals): 여러 줄·표현식 삽입·중첩, 태그드 템플릿과 styled-components의 원리
 - [class 문법](/knowledge/dictionary/frontend/javascript/class): constructor, static, extends, getter·setter, private 필드
+- [TypeScript 코딩 컨벤션](/knowledge/dictionary/frontend/javascript/typescript-coding-convention): 이름 짓기, 타입, 클래스, 배열 메서드, 에러 처리, 모듈 규칙을 필수·권장 등급과 이유로 정리
 
 ### 브라우저와 함께
 - [DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·생성·삽입·삭제·속성 변경, innerText vs innerHTML
