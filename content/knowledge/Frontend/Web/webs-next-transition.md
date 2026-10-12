@@ -122,4 +122,4 @@ HTTP, HTML, CSS, JavaScript는 1990년대 중반에 표준이 됐다. 그 뒤로
 
 더 읽을거리: Frontend Mastery 「The new wave of JavaScript web frameworks」, Jenna Smith 「Progressively enhance for a more resilient web」
 
-관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[ajax|AJAX와 HTTP 요청]], [[nextjs|Next.js를 쓰는 이유]]
+관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[ajax|AJAX와 HTTP 요청]], [[nextjs|Next.js를 쓰는 이유]], [[frontend-history|프론트엔드의 등장 배경]]
