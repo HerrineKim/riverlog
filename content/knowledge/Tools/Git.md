@@ -17,7 +17,7 @@ Git은 **분산 버전 관리 시스템(DVCS)** 입니다. 모든 작업자가 �
 | --- | --- |
 | [기본 명령과 파일 상태](/knowledge/dictionary/tools/git/git-basics) | `init`, `add`, `commit`, `status`, `log` 와 Working Directory → Staging Area → Repository 흐름 |
 | [브랜치](/knowledge/dictionary/tools/git/branch) | 브랜치·HEAD 개념, `git branch`, `git switch`, 브랜치 이동 시 주의점 |
-| [브랜치 병합](/knowledge/dictionary/tools/git/merge) | Fast-Forward, 3-Way Merge, Merge Conflict 해결 |
+| [브랜치 병합](/knowledge/dictionary/tools/git/merge) | Fast-Forward, 3-Way Merge, Merge Conflict 해결, Merge Commit의 함정(부모 순서, `--remerge-diff`) |
 | [원격 저장소와 GitHub](/knowledge/dictionary/tools/git/remote-github) | `remote`, `push`, `pull`, `fetch`, `clone`, 미러링(GitLab → GitHub), 커밋 메시지 습관 |
 | [되돌리기와 이력 다루기](/knowledge/dictionary/tools/git/git-undo-and-rewrite) | `reset`(soft·mixed·hard), `revert`, `rebase`, `cherry-pick`, `--abort` |
 | [커밋 컨벤션과 자동 검사](/knowledge/dictionary/tools/git/commit-convention) | `type(scope): subject` 형식, 커밋 템플릿, husky·commitlint |

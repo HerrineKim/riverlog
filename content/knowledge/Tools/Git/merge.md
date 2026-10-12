@@ -3,7 +3,9 @@ title: "Git 브랜치 병합"
 concept: "Merge"
 summary: "갈라진 브랜치를 하나로 합치는 방법으로, Fast-Forward·3-Way Merge·Merge Conflict 세 가지 상황이 있다."
 tags: ["git", "version-control", "branch", "merge"]
-source: til
+source: mixed
+date: "2026-10-12"
+sources: ["https://wizardzines.com/comics/merge-commits/"]
 ---
 
 브랜치에서 작업을 마치면 그 결과를 기본 브랜치에 반영해야 합니다. 이를 **병합(merge)** 이라고 하며, 두 브랜치의 이력이 어떻게 갈라져 있는지에 따라 Git의 동작이 달라집니다.
@@ -131,6 +133,35 @@ $ git log --oneline --all --graph
 
 병합을 포기하고 이전 상태로 돌아가고 싶다면 `git merge --abort` 를 사용합니다.
 
+## Merge Commit의 함정
+
+> Julia Evans의 만화 「[merge commits](https://wizardzines.com/comics/merge-commits/)」(wizard zines)를 요약·재구성한 부분입니다.
+
+Merge Commit에는 의외의 함정이 몇 가지 있습니다.
+
+| 함정 | 내용 | 대처 |
+| --- | --- | --- |
+| 병합은 대칭이 아니다 | `main`에서 `merge mybranch`를 하든 `mybranch`에서 `merge main`을 하든 결과 코드는 같지만, **부모 순서가 다르다** | 보통은 `main`으로 이동해 `main`에 합친다 |
+| 병합 중에도 코딩이 된다 | 병합 중인 걸 잊고 계속 작업하면, 상관없는 변경이 Merge Commit에 섞여 들어간다 | 프롬프트에 병합 중임을 표시한다 (예: `__git_ps1`의 `MERGING`) |
+| `git show`가 다 보여 주지 않는다 | 한쪽 변경을 버리는 등 중요한 일을 했어도 Merge Commit이 "비어 있는" 것처럼 보일 수 있다 | `git show --remerge-diff`로 확인한다 |
+
+### 부모 순서와 `HEAD^`
+
+`HEAD^`는 **첫 번째 부모**를 가리킵니다. 첫 번째 부모는 병합을 실행한 쪽, 즉 결과를 받은 브랜치의 커밋입니다. 보통은 이것이 `main`의 커밋이기를 기대하므로, 거꾸로 병합하면 `HEAD^`·`git log --first-parent` 같은 명령이 예상과 다른 이력을 따라갑니다.
+
+```text
+git switch main; git merge mybranch   → 첫 번째 부모 = main  (일반적)
+git switch mybranch; git merge main   → 첫 번째 부모 = mybranch (이상함)
+```
+
+### `git show --remerge-diff`
+
+```bash
+$ git show --remerge-diff <커밋 ID>
+```
+
+두 부모를 **다시 병합해 보고**, 그 결과와 실제 Merge Commit에 들어 있는 내용의 차이를 보여 줍니다. 충돌을 어떻게 풀었는지, 병합하면서 무엇을 버리거나 더했는지 확인할 때 씁니다. (Git 2.36부터 지원합니다.)
+
 ## 핵심 정리
 
 | 상황 | 조건 | 결과 |
@@ -138,6 +169,9 @@ $ git log --oneline --all --graph
 | Fast-Forward | 대상 브랜치에 새 커밋이 없음 | 포인터만 이동, 새 커밋 없음 |
 | 3-Way Merge | 양쪽에 커밋, 수정 부분이 겹치지 않음 | 부모가 둘인 Merge Commit 생성 |
 | Merge Conflict | 같은 파일의 같은 부분을 양쪽에서 수정 | 수동 해결 → `add` → `commit` |
+
+- Merge Commit의 첫 번째 부모는 결과를 받은 브랜치다. `main`에서 병합해야 `HEAD^`가 `main`을 가리킨다.
+- Merge Commit이 실제로 무엇을 했는지는 `git show --remerge-diff`로 본다.
 
 > 참고: 병합 외에 `git rebase`로 한 브랜치의 커밋들을 다른 브랜치 끝으로 옮겨 이력을 일직선으로 만드는 방법도 있습니다. 이력이 깔끔해지는 대신 커밋이 새로 만들어지므로, 이미 원격에 공유한 브랜치에는 쓰지 않는 것이 원칙입니다.
 
