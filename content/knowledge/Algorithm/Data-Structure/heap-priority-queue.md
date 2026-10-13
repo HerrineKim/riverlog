@@ -4,6 +4,7 @@ concept: "Heap"
 summary: "우선순위가 가장 높은 원소를 O(log n)에 넣고 꺼낼 수 있게 해 주는 완전 이진 트리 기반 자료구조."
 tags: ["data-structure", "heap", "priority-queue", "python"]
 source: til
+date: "2026-10-13"
 ---
 
 ## 우선순위 큐
@@ -89,7 +90,7 @@ heapq.heappush(tasks, (1, "read"))
 print(heapq.heappop(tasks))  # (1, 'read')
 ```
 
-> **Python 3.14부터**는 `heapq`에 최대 힙 함수(`heapify_max`, `heappush_max`, `heappop_max`, `heappushpop_max`, `heapreplace_max`)가 추가되어 부호를 뒤집지 않아도 된다. 다만 코딩 테스트 채점 환경은 대개 이보다 낮은 버전이라, 음수로 넣는 방법이 여전히 가장 안전하다. ([Python 문서: heapq](https://docs.python.org/3/library/heapq.html))
+> **Python 3.14부터**는 `heapq`에 최대 힙 함수(`heapify_max`, `heappush_max`, `heappop_max`, `heappushpop_max`, `heapreplace_max`)가 추가되어 부호를 뒤집지 않아도 된다. 채점 환경의 파이썬이 3.14보다 낮으면 이 함수가 없으므로, 음수로 넣는 방법이 호환 범위가 가장 넓다. ([Python 문서: heapq](https://docs.python.org/3/library/heapq.html))
 >
 > ```python
 > import heapq  # Python 3.14+
