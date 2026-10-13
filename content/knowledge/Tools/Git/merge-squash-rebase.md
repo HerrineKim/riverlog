@@ -4,10 +4,10 @@ concept: "PR Merge Strategy"
 summary: "PR을 합칠 때 merge 커밋, squash, 인터랙티브 rebase를 상황에 따라 고르는 기준. 기본은 merge 커밋(진짜 이력, 쉬운 되돌리기, 잘게 쪼개진 bisect), 작은 diff에 WIP가 많으면 squash, 큰 diff에 WIP가 많으면 인터랙티브 rebase로 다듬는다."
 tags: ["git", "version-control", "merge", "branch"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
 ---
 
-> Mitchell Hashimoto가 gist에 올린 것으로 알려진 merge·squash·rebase에 대한 의견 글을 요약·재구성한 노트입니다. 한 개발자의 개인적·실무적 의견입니다.
+> Mitchell Hashimoto가 gist에 올린 것으로 알려진 merge·squash·rebase에 대한 글을 바탕으로 재구성한 노트입니다. 팀마다 기본 전략이 다를 수 있는 실무 기준입니다.
 
 ## 정답은 하나가 아니다
 
@@ -15,7 +15,7 @@ merge, squash, rebase는 모두 장점이 있고 **상황에 따라** 고른다.
 
 | 상황 | 선택 |
 | --- | --- |
-| 대부분의 PR (글쓴이는 10개 중 9개 이상) | **merge 커밋** |
+| 대부분의 PR | **merge 커밋** |
 | diff는 작은데 "WIP" 커밋이 잔뜩 있고 목표가 하나 | **squash** + 커밋 메시지 새로 쓰기 |
 | diff도 크고 "WIP" 커밋도 많음 | **인터랙티브 rebase**로 골라서 합치고 순서 정리 → merge |
 
@@ -30,9 +30,9 @@ squash 한 덩어리: +2000/-500  → bisect가 여기서 멈추면 사실상 �
 merge 안의 커밋:  +50/-50      → "아, 여기다" 하고 바로 찾음 (최악이어도 +500/-500 이내)
 ```
 
-글쓴이는 +50/-50짜리 커밋 1,000개가 든 merge를 squash 한 덩어리보다 매일 고르겠다고 말한다. **squash는 이 정보를 없앤다.**
++50/-50짜리 커밋 1,000개가 든 merge가 squash 한 덩어리보다 디버깅에 유리하다. **squash는 이 정보를 없앤다.**
 
-전제가 있다. **모든 커밋이 빌드돼야 한다.** 빌드 안 되는 커밋이 섞이면 bisect가 엉뚱한 곳에서 멈춘다. 글쓴이는 팀에는 이 위생을 기대하고, 오픈소스 기여처럼 통제할 수 없을 땐 merge 전에 인터랙티브 rebase로 직접 고친다.
+전제가 있다. **모든 커밋이 빌드돼야 한다.** 빌드 안 되는 커밋이 섞이면 bisect가 엉뚱한 곳에서 멈춘다. 팀에는 이 위생을 규칙으로 요구하고, 오픈소스 기여처럼 통제할 수 없을 땐 merge 전에 인터랙티브 rebase로 직접 고친다.
 
 ## squash를 쓰는 경우
 
@@ -45,7 +45,7 @@ merge 안의 커밋:  +50/-50      → "아, 여기다" 하고 바로 찾음 (�
 diff가 크고 WIP도 많으면 squash하면 bisect 정보를 잃고, 그대로 merge하면 쓸모없는 커밋이 남는다. `git rebase -i`로 **관련 커밋끼리 골라서 합치고 순서를 바꿔** 의미 있는 단위로 정리한 다음 merge한다.
 
 - 개발자가 스스로 커밋을 다듬을 줄 알기를 기대하지만, Git에 익숙하지 않은 사람이 많아 오픈소스에서는 메인테이너가 대신 하기도 한다.
-- 커밋이 50개를 넘고 변경 줄이 많은 큰 rebase는 GUI 클라이언트(글쓴이는 macOS의 Tower)를 쓰면 편하다. CLI에 익숙해도 이 경우만은 GUI가 낫다고 한다.
+- 커밋이 50개를 넘고 변경 줄이 많은 큰 rebase는 GUI 클라이언트(Tower, Fork, GitKraken 등)를 쓰면 편하다. CLI에 익숙해도 커밋을 끌어다 놓으며 순서를 바꾸는 일은 GUI가 빠르다.
 
 ## 정리
 
