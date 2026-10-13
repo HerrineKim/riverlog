@@ -4,11 +4,11 @@ concept: "App Router"
 summary: "App Router는 서버가 라우팅하고 클라이언트가 내비게이션한다. Link·useRouter, prefetch와 클라이언트 캐시, 서버 컴포넌트의 병렬·순차 fetch, 요청 중복 제거, React cache()와 preload 패턴을 정리한다."
 tags: ["nextjs", "react", "rendering", "cache", "frontend"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/207", "https://riverkim.kr/214"]
+date: "2026-10-13"
+sources: ["https://riverkim.kr/207", "https://riverkim.kr/214", "https://nextjs.org/docs/app/getting-started/linking-and-navigating", "https://nextjs.org/docs/app/api-reference/config/next-config-js/staleTimes"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다. 원글은 2023년 Next.js 13 베타 문서를 읽고 썼습니다. 개념은 그대로지만 캐싱 기본값 등 세부 동작은 버전마다 바뀌었으니, 바뀐 부분은 따로 표시했습니다.
+> riverkim.kr에 쓴 글들을 바탕으로 Next.js 16 공식 문서와 대조해 재구성한 노트입니다.
 
 Next.js 13에서 도입된 **App Router**(`app/` 디렉터리)는 Pages Router와 사고방식이 다르다. **라우팅은 서버 중심이고, 내비게이션은 클라이언트 사이드다.** 데이터는 `getServerSideProps` 같은 페이지 단위 함수 대신 서버 컴포넌트 안에서 바로 `fetch`한다. 렌더링 방식(SSR·SSG)과 `fetch` 캐시 옵션은 [Next.js를 쓰는 이유](/knowledge/dictionary/frontend/next-js/nextjs)에 정리했다.
 
@@ -39,7 +39,12 @@ export default function GoDashboard() {
 
 ### Prefetch
 
-`<Link>`가 화면(뷰포트)에 보이면 Next.js가 **이동하기 전에** 그 경로의 코드와 데이터를 백그라운드에서 미리 받아 클라이언트 캐시에 넣는다. 그래서 실제로 클릭했을 때 SPA처럼 빠르게 전환된다. prefetch는 프로덕션 빌드에서만 동작한다.
+`<Link>`가 화면(뷰포트)에 들어오거나 마우스가 올라가면 Next.js가 **이동하기 전에** 그 경로를 백그라운드에서 미리 받아 클라이언트 캐시에 넣는다. 그래서 실제로 클릭했을 때 SPA처럼 빠르게 전환된다. prefetch는 프로덕션 빌드에서만 동작한다.
+
+| 경로 | 미리 받는 범위 |
+| --- | --- |
+| 정적 경로 | 경로 전체 |
+| 동적 경로 | 건너뛰거나, `loading.tsx`가 있으면 공유 레이아웃과 로딩 UI까지만(부분 prefetch) |
 
 ### 이동이 일어나는 순서
 
@@ -47,22 +52,15 @@ export default function GoDashboard() {
 <Link> 클릭 또는 router.push()
   └─ 주소창 URL 갱신
       └─ 클라이언트 캐시에 쓸 수 있는 결과가 있나?
-          ├─ 있음 → soft navigation: 캐시를 재사용, 바뀐 구획만 렌더링
-          └─ 없음 → hard navigation: 서버에서 서버 컴포넌트를 새로 받아 옴
+          ├─ 있음 → 캐시를 재사용, 바뀐 구획(segment)만 렌더링
+          └─ 없음 → 서버에서 바뀐 구획의 RSC Payload를 받아 옴
                      (받는 동안 loading UI 표시)
 ```
 
-| 구분 | 동작 |
-| --- | --- |
-| soft navigation | 바뀐 구획(segment)의 캐시가 있으면 재사용한다. 서버에 새 요청을 보내지 않고, 같은 레이아웃 아래 형제 페이지끼리 이동하면 바뀐 부분만 다시 그린다 |
-| hard navigation | 캐시를 버리고 서버에서 데이터를 다시 가져와 바뀐 구획을 렌더링한다 |
-| 뒤로·앞으로 가기 | soft navigation과 같은 방식으로 클라이언트 캐시를 재사용한다 |
-
-- 레이아웃은 이동해도 다시 렌더링되지 않아 **클라이언트 상태가 유지**된다.
-- `router.refresh()`를 호출하면 현재 경로의 클라이언트 캐시를 버리고 서버에서 다시 받아 온다.
-- `/dashboard/[team]`처럼 동적 구획이 있으면 그 파라미터(`team`)가 바뀔 때만 해당 구획의 캐시가 무효화된다.
-
-> 버전 차이: 클라이언트 라우터 캐시의 유지 시간은 버전마다 달라졌다. Next.js 15부터는 동적 페이지의 캐시 유지 시간이 기본 0이라, 동적 페이지로 이동하면 매번 서버에서 새로 받는다(뒤로 가기는 예외).
+- **부분 렌더링(partial rendering)**: 공유 레이아웃은 이동해도 다시 받거나 다시 렌더링하지 않는다. 바뀐 페이지 구획만 교체하므로 레이아웃의 **클라이언트 상태가 유지**된다.
+- **클라이언트 캐시(Client Cache)**: 방문하거나 prefetch한 경로의 RSC Payload를 브라우저 메모리에 둔다. 레이아웃과 로딩 UI는 재사용하지만 **동적 페이지는 기본으로 캐시하지 않는다**(Next.js 15부터 `staleTimes.dynamic` 기본값 0초, 정적 페이지는 5분). 뒤로·앞으로 가기는 예외로 캐시를 재사용해 스크롤 위치를 지킨다.
+- 캐시를 버리는 방법: `router.refresh()`, `revalidatePath`·`revalidateTag`·`updateTag`, `cookies.set`·`cookies.delete`. 새로 고침하면 캐시가 모두 사라진다.
+- 유지 시간은 경로별로 `cacheLife`의 `stale` 값으로 정하는 것이 권장 방식이다. 전역 설정 `staleTimes`는 실험 기능이다.
 
 ## 데이터 가져오기
 
@@ -101,8 +99,6 @@ export default async function Page() {
 - 서버 컴포넌트는 그대로 `async`/`await`를 쓴다. 결과를 직렬화하지 않으므로 `Date`·`Map` 같은 값도 반환할 수 있다.
 - 서버 컴포넌트에서 `cookies()`, `headers()`로 요청의 쿠키·헤더를 읽을 수 있다. 이 함수를 쓰면 그 경로는 **동적 렌더링**이 된다.
 - 클라이언트 컴포넌트에서는 `async` 컴포넌트를 쓸 수 없다. 대신 React의 `use(promise)`로 Promise 결과를 읽는다(React 19에서 정식 기능). `use`는 다른 훅과 달리 조건문·반복문 안에서도 호출할 수 있다. 자세한 내용은 [[react-use-hook|use 훅과 리액트 비동기 처리]] 참고.
-
-> 버전 차이: 원글 시점에는 async 서버 컴포넌트에 TypeScript 타입 오류가 나서 `{/* @ts-expect-error Server Component */}`를 붙여야 했다. TypeScript 5.1 이후로는 필요 없다.
 
 ### 병렬 vs 순차
 
@@ -200,7 +196,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 ## 정리
 
 - App Router는 서버 컴포넌트가 기본이고, 상호작용이 필요한 곳만 `'use client'`로 만든다.
-- 이동은 `<Link>`(prefetch 포함)나 `next/navigation`의 `useRouter`로 한다. 캐시가 있으면 soft navigation으로 바뀐 부분만 그린다.
+- 이동은 `<Link>`(prefetch 포함)나 `next/navigation`의 `useRouter`로 한다. 공유 레이아웃은 유지하고 바뀐 구획만 그린다.
 - 데이터는 서버 컴포넌트에서, 쓰는 곳 가까이에서, 가능하면 병렬로 가져온다. 느린 부분은 `<Suspense>`로 감싼다.
 - 같은 GET `fetch`는 자동으로 중복 제거되고, `fetch`가 아닌 데이터는 `cache()`로 감싼다.
 - 캐싱 기본값은 버전마다 바뀌었으므로 원하는 동작은 옵션으로 명시한다([[nextjs|Next.js를 쓰는 이유]]의 캐싱 절 참고).

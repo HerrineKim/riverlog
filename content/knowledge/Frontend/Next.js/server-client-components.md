@@ -4,11 +4,11 @@ concept: "RSC Composition"
 summary: "React Server Components에서 서버·클라이언트 컴포넌트를 어떻게 섞을 수 있는지 한 장으로 정리한다. 클라이언트는 서버 안에 넣을 수 있지만 서버를 클라이언트에서 import할 수는 없고, 대신 children·props로 넘길 수 있다. 클라이언트에서 서버 코드를 부르는 Server Function과 그 주의점까지 Next.js 16 문서 기준으로 확인했다."
 tags: ["react", "nextjs", "frontend", "rendering"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://nextjs.org/docs/app/getting-started/server-and-client-components", "https://nextjs.org/docs/app/guides/server-and-client-boundary"]
 ---
 
-> RSC 조합 규칙을 데모 화면으로 보여 주는 스크린샷(Node v20.8.0으로 렌더링된 것으로 보아 2023년 말 무렵)을 요약하고, 2026년 10월 기준 Next.js 16.4·React 19.3 공식 문서와 대조해 재구성한 노트입니다.
+> RSC 조합 규칙을 데모 화면으로 보여 주는 스크린샷을 바탕으로 Next.js 16 공식 문서와 대조해 재구성한 노트입니다.
 
 ## 두 종류의 컴포넌트
 
@@ -34,14 +34,14 @@ sources: ["https://nextjs.org/docs/app/getting-started/server-and-client-compone
 
 ## 조합 규칙 일곱 가지
 
-| # | 규칙 | 2026년 문서 기준 |
+| # | 규칙 | 비고 |
 | --- | --- | --- |
-| 1 | 서버 컴포넌트는 서버에서만 렌더링된다 | 유효 |
-| 2 | 클라이언트 컴포넌트는 서버에서 먼저 렌더링되고, 브라우저에서 다시 렌더링된다 | 유효 (첫 방문 기준) |
-| 3 | 서버 컴포넌트 안에 클라이언트 컴포넌트를 넣을 수 있다 | 유효 |
-| 4 | 클라이언트 컴포넌트가 서버 컴포넌트를 **import해서** 넣을 수는 없다 | 유효 |
-| 5 | 대신 서버 컴포넌트를 `children`·props로 **넘겨 줄 수는** 있다. 단, 넘기는 쪽이 서버여야 한다 | 유효 |
-| 6 | 클라이언트가 서버에서 코드를 실행할 수 있다 | 유효. 이름은 **Server Function**(`'use server'`), 폼·변경 작업에 쓰면 Server Action |
+| 1 | 서버 컴포넌트는 서버에서만 렌더링된다 | |
+| 2 | 클라이언트 컴포넌트는 서버에서 먼저 렌더링되고, 브라우저에서 다시 렌더링된다 | 첫 방문 기준 |
+| 3 | 서버 컴포넌트 안에 클라이언트 컴포넌트를 넣을 수 있다 | |
+| 4 | 클라이언트 컴포넌트가 서버 컴포넌트를 **import해서** 넣을 수는 없다 | |
+| 5 | 대신 서버 컴포넌트를 `children`·props로 **넘겨 줄 수는** 있다 | 넘기는 쪽이 서버여야 한다 |
+| 6 | 클라이언트가 서버에서 코드를 실행할 수 있다 | **Server Function**(`'use server'`). 폼·변경 작업에 쓰면 Server Action |
 | 7 | 클라이언트 데이터를 서버로 보내고 결과를 받아올 수 있다 | 가능하지만 **조회용으로는 주의** (아래) |
 
 ### 3. 서버 안에 클라이언트
@@ -99,12 +99,12 @@ export async function getUptime() {
 
 ### 7. 클라이언트 데이터를 서버로 보내 결과 받기 — 조회에는 주의
 
-입력값으로 서버에서 검색해 결과를 받아오는 것도 Server Function으로 **할 수는 있다.** 하지만 Next.js 16 문서가 짚는 제약이 있다.
+입력값으로 서버에서 검색해 결과를 받아오는 것도 Server Function으로 **할 수는 있다.** 하지만 다음 제약이 있다.
 
 | 주의점 | 내용 |
 | --- | --- |
 | 순차 실행 | Next.js는 Server Action을 **클라이언트당 하나씩 차례로** 보낸다. 빠르게 세 번 부르면 앞 요청이 끝나야 다음이 간다. `Promise.all`로 병렬화되지 않는다 |
-| 용도 | 문서는 변경(mutation) 용도로 설명한다. 변경이 아닌 조회는 서버 컴포넌트에서 가져오거나 **Route Handler**를 쓰라고 안내한다 |
+| 용도 | 변경(mutation)용으로 설계됐다. 조회는 서버 컴포넌트에서 가져오거나 **Route Handler**를 쓴다 |
 | 보안 | 앱 UI가 아니어도 누구나 그 `POST`를 직접 보낼 수 있다. **모든 Server Function 안에서 인증·권한을 확인**한다 |
 
 입력할 때마다 결과가 바뀌는 검색처럼 호출이 잦은 조회라면, 검색어를 URL 쿼리로 두고 서버 컴포넌트가 다시 렌더링하게 하거나 Route Handler + SWR/TanStack Query가 더 맞다.
@@ -122,6 +122,6 @@ export async function getUptime() {
 - 코드는 import로, 데이터는 직렬화된 props로 경계를 넘는다.
 - 클라이언트 안에 서버를 넣고 싶으면 import하지 말고 서버 쪽에서 `children`으로 꽂아 준다.
 - 클라이언트에서 서버 코드를 부를 땐 Server Function을 쓰되, 순차 실행·인증 확인을 기억하고 잦은 조회는 다른 방법을 고른다.
-- 스크린샷의 규칙은 2026년 하반기에도 그대로 유효하다. 바뀐 건 이름(Server Actions → 더 넓은 Server Functions)과 조회 용도에 대한 권장 방식이다.
+- 서버에서 실행되는 함수의 총칭은 Server Function이고, Server Action은 그중 폼·변경 작업에 쓰는 경우를 가리킨다.
 
 관련 노트: [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]], [[nextjs|Next.js를 쓰는 이유]], [[react-use-hook|use 훅과 리액트 비동기 처리]], [[streaming-ssr|스트리밍 SSR]], [[composition|합성: 상속 대신 Composition]]
