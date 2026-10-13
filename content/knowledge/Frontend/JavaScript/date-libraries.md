@@ -1,14 +1,22 @@
 ---
 title: "날짜 라이브러리: date-fns와 Day.js"
 concept: "Date Library"
-summary: "유지보수 모드에 들어간 Moment.js 대신 많이 쓰는 date-fns(함수형·트리 셰이킹)와 Day.js(초경량·Moment 호환 API)의 사용법 비교."
+summary: "유지보수 모드에 들어간 Moment.js 대신 많이 쓰는 date-fns(함수형·트리 셰이킹)와 Day.js(초경량·Moment 호환 API)의 사용법 비교, 그리고 Date를 대체할 표준 API Temporal의 지원 현황."
 tags: ["javascript", "frontend", "library"]
 source: notion
+date: "2026-10-13"
+sources: ["https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal", "https://momentjs.com/docs/#/-project-status/"]
 ---
 
 JavaScript의 기본 `Date`는 API가 불편하고(월이 0부터 시작, 포맷 함수 부재), 값을 직접 바꾸는 가변(mutable) 객체라 버그가 나기 쉽다. 그래서 날짜 라이브러리를 쓰는데, 오랫동안 표준처럼 쓰이던 Moment.js는 2020년부터 새 기능 개발을 멈춘 유지보수 모드이며 공식 문서에서도 다른 라이브러리를 권한다. 그 대안 중 가장 많이 쓰는 두 가지가 **date-fns**와 **Day.js**다.
 
-> 참고: 장기적으로는 불변 객체 기반의 표준 날짜 API인 **Temporal**이 `Date`를 대체한다. Firefox 139(2025년 5월), Chrome·Edge 144(2026년 1월)가 Temporal을 기본 탑재했지만 Safari 정식 버전은 아직 지원 일정이 확정되지 않았다(2026년 기준). 모든 브라우저를 지원해야 한다면 polyfill을 쓰거나, 당분간 아래 라이브러리를 쓴다.
+## Temporal: 표준 날짜 API
+
+불변 객체 기반의 새 표준 날짜 API **Temporal**이 `Date`를 대체한다. 월이 1부터 시작하고, 타임존(`Temporal.ZonedDateTime`)과 날짜만(`PlainDate`)·시각만(`PlainTime`)을 따로 다룬다. Firefox 139(2025.05), Chrome·Edge 144(2026.01)와 Node.js 26이 기본 탑재했지만, Safari 정식 버전의 지원이 늦어 2026년 10월 MDN 기준 아직 Baseline이 아니다. 모든 브라우저를 지원해야 하면 polyfill(`@js-temporal/polyfill`, `temporal-polyfill`)을 쓰거나 아래 라이브러리를 쓴다.
+
+```typescript
+Temporal.Now.plainDateISO().add({ months: 1 }).toString() // '2026-11-13'
+```
 
 ## 한눈에 비교
 
@@ -117,6 +125,7 @@ a.diff(b, 'day', true)  // 402.96... (세 번째 인자 true면 소수까지)
 
 - 기존 Moment 코드를 빠르게 옮기거나 번들 크기가 가장 중요하다면 **Day.js**.
 - `Date` 객체를 그대로 다루고 함수 단위로 import해 쓰고 싶다면 **date-fns**.
+- 지원 대상 브라우저가 모두 Temporal을 지원하거나 polyfill을 감수할 수 있다면 새 코드는 **Temporal**로 쓴다.
 - 프로젝트에 이미 Moment가 있다면 무리하게 바꾸기보다 `moment(...).format('YYMMDD')`처럼 이미 있는 포맷 기능을 활용하고, 새 코드부터 대안을 쓰는 것도 방법이다.
 
 ## 핵심 정리
