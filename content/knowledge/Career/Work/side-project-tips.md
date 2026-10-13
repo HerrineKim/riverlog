@@ -5,10 +5,10 @@ summary: "꾸준히 하나는 굴리기, 내 불편에서 아이디어 찾기, �
 tags: ["career", "growth", "productivity", "side-project"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM"]
+sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM", "https://webactually.com/2015/04/17/%ed%95%9c%ea%b3%84%ec%97%90%ec%84%9c-%ec%9d%b4%ec%96%b4%ec%a7%84-%eb%82%98%ec%9d%98-%ec%95%b1%ec%8a%a4%ed%86%a0%ec%96%b4-%ec%84%b1%ea%b3%b5%ea%b3%bc-%ec%8b%a4%ed%8c%a8-%ec%9d%b4%ec%95%bc%ea%b8%b0/"]
 ---
 
-> Chris Yang의 「[당신의 사이드 프로젝트를 위한 10가지 팁](https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects)」(2019.08)을 바탕으로 재구성한 노트입니다. 원 자료는 Traversy Media의 영상 「[10 Tips For Starting & Creating Side Projects](https://www.youtube.com/watch?v=eCAj3mWFpNM)」입니다.
+> Chris Yang의 「[당신의 사이드 프로젝트를 위한 10가지 팁](https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects)」(2019.08)을 바탕으로 재구성한 노트입니다. 원 자료는 Traversy Media의 영상 「[10 Tips For Starting & Creating Side Projects](https://www.youtube.com/watch?v=eCAj3mWFpNM)」입니다. 출시 이후의 원칙은 웹액츄얼리가 번역한 「한계에서 이어진 나의 앱스토어 성공과 실패 이야기」(2015.04)를 바탕으로 덧붙였습니다.
 
 ## 사이드 프로젝트가 필요한 이유
 
@@ -64,6 +64,19 @@ Kanye West 팬을 위한 데이팅 사이트는 입소문만으로 수천 명을
 반응 없음 ──→ 틈새를 바꾸거나 다른 아이디어
 ```
 
+## 출시 이후: 작은 앱을 운영할 때
+
+| 원칙 | 내용 |
+| --- | --- |
+| 한계를 장점으로 쓴다 | 돈도 서버 지식도 없다면 서버 없이 앱 안에서 모든 걸 처리한다. 고정 비용이 거의 없는 구조가 된다 |
+| 관점을 뒤집는다 | 새 아이디어가 아니어도 된다. 바쁜 일정 대신 **빈 시간**을 강조하는 캘린더처럼, 모두가 당연시하는 것을 다르게 보여 주면 눈에 띈다 |
+| 반복은 기능 추가가 아니다 | 반복할수록 기능이 불어나 핵심 가치가 흐려진다. 사용자 대부분은 핵심 기능 하나만 쓰고, 부가 기능은 한 자릿수 비율만 쓰는 일이 흔하다. 최소 기능 제품을 다듬는 데 시간을 쓴다 |
+| 온보딩은 건너뛸 수 있게 | 기능을 설명하는 긴 안내 화면은 이탈의 원인이다. "건너뛰기"를 반드시 둔다 |
+| 내 문제가 모두의 문제는 아니다 | 내가 쓰고 싶은 것을 만들되, 남도 같은 방식으로 원하리라 기대하지 않는다. 개발 기간의 큰 몫을 쓴 기능을 극소수만 쓰기도 한다 |
+| 처음부터 세계용으로 | 다국어를 지원하지 않으면 해외 사용자를 놓친다. 날짜·시간은 특히 위험하다. 서머타임으로 자정이 없는 날, 윤일, 음력·이슬람력 같은 다른 달력이 있으니 직접 계산하지 말고 OS의 날짜 라이브러리를 쓴다. 주말·근무 시간도 문화와 야간 근무 여부에 따라 다르다 |
+| 작은 디테일에 공을 들인다 | 사람들은 기능 목록보다 로딩 애니메이션 같은 작은 즐거움을 기억한다 |
+| 업데이트를 끊지 않는다 | 업데이트가 멈추면 버그와 OS 변화로 신뢰를 잃고 사용자가 빠르게 떠난다. 매일 쓰는 앱이라면 시간이 지나며 어떻게 개선할지까지 계획한다 |
+
 ## AI 도구와 사이드 프로젝트
 
 AI 코딩 도구로 프로토타입을 만드는 비용이 크게 줄었다. 그만큼 원칙의 무게가 옮겨 간다.
@@ -79,5 +92,6 @@ AI 코딩 도구로 프로토타입을 만드는 비용이 크게 줄었다. 그
 - 작게 시작하고 1~2주 기한을 둔다. 번아웃은 사이드 프로젝트의 목적과 반대다.
 - 모르는 기술은 배우고, 막히면 사람을 구한다.
 - 코딩보다 **랜딩 페이지가 먼저**다. 반응을 보고 만든다.
+- 출시 후에는 기능을 늘리기보다 핵심 하나를 다듬고, 업데이트를 끊지 않는다.
 
 관련 노트: [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[career-in-ai-era|AI 시대의 커리어]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[reputation-building|명성 쌓기와 커뮤니티 기여]]
