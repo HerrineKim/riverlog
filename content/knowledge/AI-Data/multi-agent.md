@@ -4,11 +4,11 @@ concept: "Multi Agent"
 summary: "여러 AI 에이전트가 조사·작성·검토·실행 역할을 나눠 일하는 방식. 목표 설정 → 분업 → 병렬 수행 → 통합 → 검토로 돌아가며, 에이전트 수보다 역할 설계와 연결(공유 컨텍스트·가드레일)이 품질을 좌우한다."
 tags: ["ai", "llm", "agent", "architecture"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/331"]
+date: "2026-10-13"
+sources: ["https://riverkim.kr/331", "https://learn.microsoft.com/en-us/agent-framework/overview/", "https://code.claude.com/docs/en/sub-agents"]
 ---
 
-> riverkim.kr에 쓴 카드뉴스(2026.07)를 다시 정리한 노트입니다. 프레임워크 동향은 글을 쓴 시점(2026) 기준입니다.
+> riverkim.kr에 쓴 카드뉴스(2026.07)를 다시 정리한 노트입니다.
 
 ## 멀티 에이전트란
 
@@ -77,21 +77,23 @@ sources: ["https://riverkim.kr/331"]
 
 ## 주요 프레임워크
 
-글 작성 시점(2026) 기준이며, 이 분야는 빠르게 바뀐다.
+2026년 기준으로 많이 쓰는 도구들이다. 이 분야는 빠르게 바뀌므로 도입 전에 각 프로젝트의 유지 상태를 확인한다.
 
 | 프레임워크 | 특징 |
 | --- | --- |
 | LangGraph | 상태를 가진 오케스트레이션, 그래프 기반 워크플로, 서브그래프 |
-| Microsoft AutoGen | 비동기 메시징, 분산형 멀티 에이전트 앱 설계 |
+| Microsoft Agent Framework | AutoGen과 Semantic Kernel의 직접 후속작. AutoGen의 멀티 에이전트 추상화에 Semantic Kernel의 상태 관리·텔레메트리를 합치고 그래프 워크플로를 더했다. 새 프로젝트는 AutoGen 대신 이것으로 시작한다 |
 | CrewAI | crews + flows, 가드레일, 메모리, 관찰성(observability) |
-| OpenAI Agents SDK | 오케스트레이션, 가드레일, 상태, 평가 중심 |
-| Anthropic Subagents | 한 가지 일에 집중하는 서브에이전트와 제한된 도구 권한 패턴 |
+| OpenAI Agents SDK | 에이전트 간 인계(handoff), 가드레일, 추적 |
+| Claude Agent SDK·서브에이전트 | Claude Code의 에이전트 루프를 라이브러리로 쓰고, 한 가지 일에 집중하는 서브에이전트에 도구 권한을 제한해 맡긴다 |
 
-최근 흐름에서 강조되는 점은 세 가지다.
+에이전트끼리, 에이전트와 도구 사이를 잇는 표준도 자리 잡았다. 도구 연결은 **MCP**, 서로 다른 프레임워크의 에이전트 간 통신은 **A2A(Agent2Agent)** 프로토콜이 맡는다.
+
+설계할 때 함께 기억할 원칙은 세 가지다.
 
 - **멀티 에이전트가 항상 정답은 아니다.** 단순한 일은 에이전트 하나가 낫다.
 - 관찰성·평가·가드레일이 실전 품질을 좌우한다.
-- 도구 사용과 역할 분리가 핵심 패턴으로 자리 잡고 있다.
+- 도구 사용과 역할 분리가 핵심 패턴이다.
 
 키워드: orchestration, observability, guardrails, evaluation.
 
