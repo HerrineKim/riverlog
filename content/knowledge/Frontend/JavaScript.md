@@ -35,6 +35,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·생성·삽입·삭제·속성 변경, innerText vs innerHTML
 - [이벤트](/knowledge/dictionary/frontend/javascript/dom-events): addEventListener, 이벤트 객체, preventDefault
 - [Debounce와 Throttle](/knowledge/dictionary/frontend/javascript/debounce-throttle): 연속 이벤트의 실행 횟수를 줄이는 두 기법과 직접 구현
+- [책임감 있는 자바스크립트](/knowledge/dictionary/frontend/javascript/responsible-javascript): JS의 처리 비용, 저사양 Android·느린 4G·Baseline 기준선, 웹 플랫폼 우선, 번들 줄이기, 서드파티 관리
 
 ### 엔진과 실행
 - [JavaScript는 인터프리터 언어일까, 컴파일 언어일까](/knowledge/dictionary/frontend/javascript/js-engine-v8): V8 파이프라인(Parser·Ignition·Sparkplug·TurboFan), JIT, TSC·Babel과 비교
