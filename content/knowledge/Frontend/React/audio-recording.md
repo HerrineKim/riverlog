@@ -4,7 +4,7 @@ concept: "MediaRecorder"
 summary: "getUserMedia로 마이크 권한을 얻고 MediaRecorder로 녹음해 Blob을 만든 뒤, 다운로드 링크로 저장하거나 FormData(multipart/form-data)로 서버에 보내는 흐름. react-media-recorder로 간단히 쓰는 방법까지."
 tags: ["react", "browser", "api", "frontend", "javascript"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/110", "https://riverkim.kr/113", "https://webactually.com/2021/02/10/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%EA%B3%BC-%EB%8B%A4%EC%9D%B4%EC%96%BC%EB%A1%9C%EA%B7%B8%ED%94%8C%EB%A1%9C-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8/"]
 ---
 
@@ -61,7 +61,7 @@ export function Recorder() {
 - `stop()`을 부르면 `dataavailable` 이벤트로 녹음 데이터가 들어오고, 이어서 `stop` 이벤트가 온다. Blob은 `onstop`에서 합친다.
 - 스트림의 모든 트랙에 `stop()`을 불러야 브라우저의 "마이크 사용 중" 표시가 꺼진다.
 - 녹음 형식은 브라우저가 정한다. Chrome은 `audio/webm`(확장자 `.weba`/`.webm`), Safari는 `audio/mp4`다. 확장자만 `.mp3`로 바꿔도 형식은 바뀌지 않는다. 서버에서 특정 형식이 필요하면 서버에서 변환한다.
-- 녹음 길이 제한(예: 60초)은 `setTimeout`으로 `stop()`을 예약해 구현한다. 원래 참고한 예제는 `AudioContext.createScriptProcessor`의 `onaudioprocess`로 재생 시간을 쟀는데, 이 API는 **deprecated**다(대체는 `AudioWorklet`). 시간 제한만 필요하면 오디오 처리 API는 쓸 필요가 없다.
+- 녹음 길이 제한(예: 60초)은 `setTimeout`으로 `stop()`을 예약해 구현한다. 옛 예제에서 보이는 `AudioContext.createScriptProcessor`의 `onaudioprocess`로 시간을 재는 방식은 **deprecated** API다(대체는 `AudioWorklet`). 시간 제한만 필요하면 오디오 처리 API는 쓸 필요가 없다.
 
 ## 2. 라이브러리: react-media-recorder
 
