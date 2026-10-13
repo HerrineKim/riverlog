@@ -5,7 +5,10 @@ summary: "input의 22가지 type과 label·select·textarea·fieldset·datalist�
 tags: ["html", "form", "input", "frontend", "accessibility"]
 source: other
 date: "2026-10-12"
+sources: ["https://webactually.com/2019/03/13/html5-%ec%9e%85%eb%a0%a5-%ec%96%91%ec%8b%9d-%ec%96%b4%eb%94%94%ec%af%a4-%ec%99%94%ec%9d%84%ea%b9%8c/"]
 ---
+
+> 「type 고르기: 쓸 곳과 피할 곳」 부분은 Drew McLellan의 「HTML5 입력 양식: 어디쯤 왔을까?」(웹액츄얼리 번역, 2019.03)를 바탕으로 보강한 노트입니다.
 
 `<input>`은 `type` 하나로 텍스트 칸, 체크박스, 날짜 선택기, 버튼까지 완전히 다른 컨트롤이 된다. 알맞은 type을 고르면 브라우저가 **형식 검증, 모바일 키보드, 선택 UI**를 공짜로 제공한다. 폼과 input의 기본 문법은 [[html|HTML 기초와 HTML5]] 노트에 있고, 여기서는 입력 요소를 용도별로 모았다.
 
@@ -143,6 +146,23 @@ input의 `list` 속성과 datalist의 `id`를 연결하면, 자유롭게 입력�
 </datalist>
 ```
 
+## type 고르기: 쓸 곳과 피할 곳
+
+지원하지 않는 type은 `text`로 대체되므로 써서 손해 볼 일은 거의 없다. 다만 type마다 맞는 쓰임이 있다.
+
+| type | 쓸 곳 | 피할 곳·주의 |
+| --- | --- | --- |
+| `tel` | 모든 전화번호. 숫자 키패드와 연락처 자동 완성이 붙는다 | 형식 검증은 없다. 국가마다 형식이 달라 `pattern`은 꼭 필요할 때만 |
+| `email` | 모든 이메일. 브라우저 검증이 손으로 짠 정규식보다 정확하다 | 여러 주소를 받을 때는 `multiple` |
+| `url` | 완전한 절대 URL(`https://…`)을 받을 때 | 도메인만, 경로만 받는 칸에는 맞지 않는다 |
+| `number` | 수량·나이처럼 **크기를 비교하는 수** | 우편번호·카드 번호·인증 코드처럼 숫자로 된 문자열에는 `type="text" inputmode="numeric"` |
+| `range` | 정확한 값이 필요 없는 정도 표시(추천 의향 등) | 정확한 값이 필요하면 `number` |
+| `search` | OS 검색창 모양과 지우기 버튼을 그대로 쓸 때 | 의미 차이는 없다. 검색 영역 자체는 `<search>` 요소로 감싼다 |
+| `color` | 테마·CMS 색 고르기. 주요 브라우저 모두 색 선택기를 띄운다 | 일반 사용자에게 16진수 값을 보여 주지 않도록 미리보기를 함께 둔다 |
+| `date` 등 | 가까운 날짜 고르기(예약일). 주요 브라우저 모두 선택기를 띄운다 | 생년월일처럼 먼 날짜는 달력 선택이 번거롭다. 연·월·일 세 칸이나 형식을 밝힌 텍스트 입력이 낫다. 선택기 모양과 접근성이 브라우저마다 다르다 |
+
+입력 type과 함께 `autocomplete`(예: `email`, `tel`, `bday`, `one-time-code`)를 지정하면 브라우저 자동 완성이 정확해진다.
+
 ## 핵심 정리
 
 - 값의 성격에 맞는 type을 고르면 검증, 모바일 키보드, 선택 UI를 브라우저가 대신 해 준다.
@@ -152,4 +172,4 @@ input의 `list` 속성과 datalist의 `id`를 연결하면, 자유롭게 입력�
 - hidden 값은 숨겨질 뿐 안전하지 않다.
 - 모든 입력에는 `label`을 연결하고, 관련 입력은 `fieldset`으로 묶는다.
 
-관련 노트: [[form-usability|더 나은 폼을 만드는 팁]], [[html|HTML 기초와 HTML5]]
+관련 노트: [[form-usability|더 나은 폼을 만드는 팁]], [[html|HTML 기초와 HTML5]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]]
