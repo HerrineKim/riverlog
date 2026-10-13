@@ -4,7 +4,7 @@ concept: "URL to Page"
 summary: "주소창에 URL을 입력한 뒤 화면이 그려지기까지의 흐름. DNS 조회, TCP 연결, TLS 핸드셰이크, HTTP 요청·응답, 렌더링을 순서대로 잇고 각 단계의 상세 노트로 연결한다."
 tags: ["network", "http", "web", "browser", "dns"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/320", "https://riverkim.kr/125", "https://riverkim.kr/135"]
 ---
 
@@ -25,6 +25,8 @@ sources: ["https://riverkim.kr/320", "https://riverkim.kr/125", "https://riverki
 7. HTTP 응답       200 OK + 헤더 + HTML
 8. 렌더링          HTML 파싱 → CSS 적용 → JS 실행 → 화면 그리기
 ```
+
+HTTP/3를 쓰는 서버라면 3·4단계가 UDP 위의 **QUIC 핸드셰이크 하나**로 합쳐진다. TLS 1.3이 QUIC에 내장되어 있어 첫 연결은 1-RTT, 재방문은 0-RTT로 요청을 보낼 수 있다.
 
 ## 단계별 정리
 
