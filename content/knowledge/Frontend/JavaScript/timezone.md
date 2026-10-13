@@ -4,11 +4,11 @@ concept: "Timezone"
 summary: "타임존은 오프셋이 아니라 한 지역의 표준시·서머타임 변경 이력 전체이고, 표준은 IANA tz database다. JS의 Date는 OS의 로컬 타임존에 묶여 있어 오프셋을 더하고 빼는 방식으로는 다른 타임존의 날짜 연산을 정확히 할 수 없다."
 tags: ["javascript", "frontend", "browser", "api"]
 source: other
-date: "2026-10-12"
-sources: ["https://ui.toast.com/weekly-pick/ko_20170804", "https://ui.toast.com/weekly-pick/ko_20170922"]
+date: "2026-10-13"
+sources: ["https://ui.toast.com/weekly-pick/ko_20170804", "https://ui.toast.com/weekly-pick/ko_20170922", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/ZonedDateTime"]
 ---
 
-> 김동우의 TOAST UI 글 「[자바스크립트에서 타임존 다루기](https://ui.toast.com/weekly-pick/ko_20170804)」(2017.08)와 「[자바스크립트에서 타임존 다루기 (2)](https://ui.toast.com/weekly-pick/ko_20170922)」(2017.09)를 요약·재구성한 노트입니다. 2017년 글이라 IE 관련 내용과 라이브러리 추천은 지금과 다릅니다. 이 부분은 정리 섹션에서 따로 짚습니다.
+> 김동우의 TOAST UI 글 「[자바스크립트에서 타임존 다루기](https://ui.toast.com/weekly-pick/ko_20170804)」(2017.08)와 「[자바스크립트에서 타임존 다루기 (2)](https://ui.toast.com/weekly-pick/ko_20170922)」(2017.09)를 바탕으로 재구성한 노트입니다.
 
 ## 용어
 
@@ -35,7 +35,7 @@ sources: ["https://ui.toast.com/weekly-pick/ko_20170804", "https://ui.toast.com/
 | 이집트·러시아 | 2011년부터 DST 폐지 |
 | 사모아 | 2011년 UTC-10 → UTC+14로 바꾸며 12월 30일이 사라짐 |
 
-그래서 "뉴욕의 타임존은 PST다"는 틀린 말이다. 정확히 말하면 **뉴욕은 현재 PST를 쓰고 있다**. 특정 시점의 시각을 계산하려면 그 지역의 **변경 이력 전체**가 필요하다.
+그래서 "캘리포니아의 타임존은 PST다"는 틀린 말이다. 정확히 말하면 **`America/Los_Angeles` 타임존이 겨울에는 PST를, 여름에는 PDT를 쓴다**. 특정 시점의 시각을 계산하려면 그 지역의 **변경 이력 전체**가 필요하다.
 
 ## IANA tz database
 
@@ -88,12 +88,23 @@ ny.setDate(15)        → 뉴욕 3/15 21:30 … 그런데 3/12부터 DST라 오�
 - 연산도 대상 타임존 기준으로 해야 한다. 서울 기준 11일 → 15일은 4일, 뉴욕 기준 10일 → 15일은 5일이다.
 - 받은 오프셋 하나로는 **그 날짜의 오프셋**을 알 수 없다. 결국 tz database가 필요하다.
 
-### 라이브러리로 풀기
+### 타임존 이름으로 풀기
 
-글은 IANA 데이터를 내장한 Moment Timezone을 권한다. 타임존 이름만 주면 날짜를 바꿀 때 오프셋도 맞게 바뀐다.
+해법은 오프셋 숫자 대신 **IANA 타임존 이름**을 들고 다니며, tz database를 아는 API에 계산을 맡기는 것이다.
+
+| 필요 | 쓸 것 |
+| --- | --- |
+| 표시만 | `Intl.DateTimeFormat`·`toLocaleString`의 `timeZone` 옵션. 브라우저·Node에 tz 데이터가 내장돼 있다 |
+| 다른 타임존 기준 날짜 연산 | 표준 API **Temporal**의 `ZonedDateTime`. 지원이 부족한 환경은 polyfill([[date-libraries|날짜 라이브러리]] 참고) |
+| 라이브러리 | date-fns의 `@date-fns/tz`, Day.js의 `timezone` 플러그인. 과거에는 Moment Timezone이 표준처럼 쓰였다 |
 
 ```js
-moment(ms).tz('America/New_York').date(15).format(); // 2017-03-15T21:30:00-04:00
+new Date(ms).toLocaleString('ko-KR', { timeZone: 'America/New_York' }); // 표시만
+
+Temporal.Instant.fromEpochMilliseconds(ms)
+  .toZonedDateTimeISO('America/New_York')
+  .with({ day: 15 })
+  .toString(); // '2017-03-15T21:30:00-04:00[America/New_York]' — DST 오프셋이 자동으로 바뀐다
 ```
 
 ## 정리
@@ -101,7 +112,7 @@ moment(ms).tz('America/New_York').date(15).format(); // 2017-03-15T21:30:00-04:0
 - 타임존은 오프셋이 아니라 **지역 + 변경 이력**이다. 저장·전달은 UTC 절대값이나 오프셋이 붙은 ISO-8601로 한다.
 - 타임존은 `+09:00` 같은 오프셋 대신 `Asia/Seoul` 같은 IANA 이름으로 다룬다.
 - `Date`는 로컬 타임존에 묶여 있다. 오프셋을 더하고 빼는 계산은 서머타임이 없고 규칙이 안 바뀌는 지역에서만 버틴다.
-- (덧붙임) 지금 기준으로 보면 Moment는 유지 보수 모드에 들어갔다. 표시만 필요하면 `Intl.DateTimeFormat`·`toLocaleString`의 `timeZone` 옵션을 쓰고, 연산이 필요하면 타임존 플러그인이 있는 날짜 라이브러리나 새 표준 API인 Temporal을 검토한다.
+- 표시만 필요하면 `Intl`의 `timeZone` 옵션, 연산이 필요하면 Temporal `ZonedDateTime`이나 타임존을 아는 라이브러리를 쓴다.
 - 라이브러리를 고르기 전에 문제가 무엇인지 알아야 맞는 도구를 고를 수 있다.
 
 관련 노트: [[date-object|Date 객체: 0부터 시작하는 월과 시간대 변환]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]], [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]]
