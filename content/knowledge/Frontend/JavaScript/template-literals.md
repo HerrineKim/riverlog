@@ -4,6 +4,8 @@ concept: "Template Literal"
 summary: "백틱 문자열로 여러 줄·표현식 삽입·중첩을 쓰는 템플릿 리터럴과, styled-components의 바탕이 되는 태그드 템플릿."
 tags: ["javascript", "frontend", "styling"]
 source: notion
+date: "2026-10-13"
+sources: ["https://opencollective.com/styled-components/updates"]
 ---
 
 **템플릿 리터럴(template literal)** 은 따옴표 대신 백틱(`` ` ``)으로 감싸는 문자열로, 여러 줄 문자열과 표현식 삽입을 지원한다. ES2015 초안에서는 "template strings"라고 불렸다. 한 단계 더 나아간 **태그드 템플릿**은 문자열을 함수로 파싱할 수 있게 해 주며, styled-components 같은 CSS-in-JS 라이브러리가 이 문법 위에 만들어졌다.
@@ -93,7 +95,7 @@ const buttonCss = styled`
 // margin-bottom: 24px;
 ```
 
-실제 라이브러리는 이렇게 만든 CSS 문자열에 고유 클래스 이름을 붙여 `<style>` 태그로 삽입한다. 사용법은 [React 스타일링](/knowledge/dictionary/frontend/react/styling) 참고.
+실제 라이브러리는 이렇게 만든 CSS 문자열에 고유 클래스 이름을 붙여 `<style>` 태그로 삽입한다. 이렇게 런타임에 스타일을 만드는 방식은 서버 컴포넌트·스트리밍 SSR과 잘 맞지 않아, styled-components는 2025년 3월 유지보수 모드를 선언했고 새 프로젝트는 CSS Modules·Tailwind CSS나 빌드 타임 CSS-in-JS(vanilla-extract, Panda CSS)를 많이 쓴다. 사용법은 [React 스타일링](/knowledge/dictionary/frontend/react/styling) 참고.
 
 ## 핵심 정리
 
