@@ -4,7 +4,7 @@ concept: "CPU Scheduling"
 summary: "프로세스 상태 전이, CPU burst와 성능 척도, 선점·비선점 스케줄링 알고리즘(FCFS·SJF·HRN·RR·MLFQ), 다중 프로세서·실시간·스레드 스케줄링, 문맥 교환 비용 정리."
 tags: ["os", "process", "scheduling", "certificate"]
 source: notion
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/206"]
 ---
 
@@ -171,6 +171,8 @@ ready 큐를 여러 줄로 나누고, 프로세스 종류에 따라 줄을 고�
 3. 할당 시간을 다 쓰고도 끝나지 않으면 한 단계 아래 큐로 강등된다.
 
 결과적으로 CPU burst가 짧은 작업은 빨리 끝나고, 긴 작업은 점점 아래로 내려간다. 실행 시간을 미리 몰라도 SJF와 비슷한 효과를 낸다.
+
+실제 범용 OS는 이런 아이디어를 섞어 쓴다. 리눅스는 오랫동안 CFS(Completely Fair Scheduler)를 쓰다가 커널 6.6(2023)부터 **EEVDF** 스케줄러로 바꿨다. 둘 다 고정된 할당 시간 대신 프로세스마다 "받아야 할 CPU 몫"을 추적해 공평하게 나누고, EEVDF는 여기에 마감 시각 개념을 더해 지연에 민감한 작업을 먼저 돌린다.
 
 ## 특수한 환경의 스케줄링
 
