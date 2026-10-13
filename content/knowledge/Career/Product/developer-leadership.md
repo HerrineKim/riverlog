@@ -82,4 +82,4 @@ OKR이 방향이라면 애자일은 걷는 방법이다. 둘 중 하나만 있�
 - 함께 일하고 싶은 개발자는 "이게 문제 해결에 적절한 방법인가요?"를 묻는다.
 - PO의 사고방식은 고객 집착과 목적 지향이고, OKR(방향)과 애자일(걷는 법)은 한 쌍이다.
 
-관련 노트: [[product-minded-engineer|제품 중심 개발자]], [[decision-making|의사결정 체크리스트]], [[project-process|프로젝트 진행 순서]]
+관련 노트: [[product-minded-engineer|제품 중심 개발자]], [[decision-making|의사결정 체크리스트]], [[project-process|프로젝트 진행 순서]], [[collaborative-developer|협업을 잘하는 개발자]], [[agile-sprint|애자일과 스프린트]]

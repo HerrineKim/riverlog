@@ -99,4 +99,4 @@ project = DP AND issuetype = Bug AND assignee is EMPTY ORDER BY priority DESC
 - 워크플로는 팀에 맞게 설계하고, Board·Sprint는 프로젝트에 종속되지 않음을 기억한다.
 - Bulk Change를 할 때는 알림 메일을 끈다.
 
-관련 노트: [[commit-convention|커밋 컨벤션과 자동 검사]], [[github-collaboration|GitHub 협업 저장소 설정]]
+관련 노트: [[commit-convention|커밋 컨벤션과 자동 검사]], [[github-collaboration|GitHub 협업 저장소 설정]], [[agile-sprint|애자일과 스프린트]]
