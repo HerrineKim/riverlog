@@ -4,7 +4,7 @@ concept: "Composition"
 summary: "children과 props로 컴포넌트를 조합해 재사용하는 React의 방식과, 상속을 권장하지 않는 이유."
 tags: ["react", "component", "frontend"]
 source: til
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/255"]
 ---
 
@@ -89,7 +89,7 @@ function SignUpDialog() {
 
 ## 상속은?
 
-Facebook(Meta)은 수천 개의 컴포넌트를 쓰면서도 상속 계층이 필요한 사례를 찾지 못했다고 한다. props와 합성만으로 컴포넌트의 모양과 동작을 명시적이고 안전하게 바꿀 수 있다. props로는 원시 값, 엘리먼트, 함수 등 무엇이든 넘길 수 있기 때문이다.
+React는 컴포넌트끼리 상속 계층을 만드는 방식을 권하지 않는다. 대규모 코드베이스에서도 상속이 필요한 경우가 거의 없고, props와 합성만으로 컴포넌트의 모양과 동작을 명시적이고 안전하게 바꿀 수 있다. props로는 원시 값, 엘리먼트, 함수 등 무엇이든 넘길 수 있기 때문이다.
 
 UI가 아닌 **로직**을 여러 컴포넌트에서 재사용하고 싶다면 별도 JavaScript 모듈(함수, 객체, 클래스)이나 [커스텀 훅](/knowledge/dictionary/frontend/react/hooks)으로 분리해 import한다.
 
