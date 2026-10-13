@@ -110,4 +110,4 @@ DOM을 직접 자주 조작하면 리렌더링이 잦아지기 쉽다. React·Vu
 - 위치·크기가 바뀌면 레이아웃부터, 색만 바뀌면 페인팅부터 다시 한다. 레이아웃을 건드리는 변경이 더 비싸다.
 - 보충: 브라우저는 보통 여러 DOM 변경을 모아 한 번에 레이아웃한다. 다만 변경 사이에 `offsetHeight` 같은 레이아웃 값을 읽으면 그때마다 강제로 레이아웃이 일어나므로, 읽기와 쓰기를 섞지 않는다.
 
-관련 노트: [[dom|DOM]], [[html|HTML]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]]
+관련 노트: [[dom|DOM]], [[html|HTML]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]]
