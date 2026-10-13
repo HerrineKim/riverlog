@@ -5,7 +5,7 @@ summary: "플린 분류, 파이프라인의 원리와 해저드 해결법, 벡�
 tags: ["computer-architecture", "cpu", "pipeline", "parallel-processing"]
 source: notion
 date: "2026-10-12"
-sources: ["https://riverkim.kr/192"]
+sources: ["https://riverkim.kr/192", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc"]
 ---
 
 같은 클럭 속도에서도 여러 일을 겹쳐서 처리하면 처리량이 늘어난다. 파이프라인은 CPU 내부에서 명령어 단계를 겹치는 기법이고, 벡터·배열 처리는 많은 데이터를 한꺼번에 다루는 기법이다.
@@ -139,5 +139,3 @@ C(0:99) = A(0:99) + B(0:99)
 - 해저드는 자원·데이터·분기 세 가지이며, 하드웨어(포워딩, 예측)와 컴파일러(지연 로드·분기)로 완화한다.
 - 슈퍼스칼라는 파이프라인을 여러 개 두고, 비순차 실행은 의존성 없는 명령어를 먼저 처리해 멈춤을 줄인다.
 - 대량 데이터에는 벡터 처리와 메모리 인터리빙이 효과적이다.
-
-참고 강의: [컴퓨터시스템구조 9장](https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc)
