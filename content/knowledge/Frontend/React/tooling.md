@@ -70,7 +70,7 @@ entry(시작 파일) ──▶ module.rules(로더로 변환) ──▶ output(�
 
 ## 라우팅과 코드 스플리팅
 
-- `react-router-dom`으로 URL과 페이지 컴포넌트를 연결한다. 앱을 `BrowserRouter`로 감싸고 경로를 정의한다. (참고: v6부터 `Switch` → `Routes`, `Redirect` → `Navigate`, `component={X}` → `element={<X />}`로 바뀌었다. v7부터는 `react-router` 패키지 하나로 합쳐져 `react-router-dom`은 호환용으로만 남았다. [react-router 레이아웃](/knowledge/dictionary/frontend/react/react-router-layout) 참고.)
+- `react-router`로 URL과 페이지 컴포넌트를 연결한다. 앱을 `BrowserRouter`로 감싸고 경로를 정의한다. (참고: v6부터 `Switch` → `Routes`, `Redirect` → `Navigate`, `component={X}` → `element={<X />}`로 바뀌었다. v7부터 `react-router` 패키지 하나로 합쳐졌고, v8에서는 호환용 `react-router-dom`도 빠졌다. [react-router 레이아웃](/knowledge/dictionary/frontend/react/react-router-layout) 참고.)
 - 코드 스플리팅: 페이지별로 번들을 나눠, 회원가입 페이지에 들어온 사람은 회원가입에 필요한 JS만 받게 한다. `React.lazy` + `Suspense` 또는 `@loadable/component`를 쓴다. 첫 화면이 3초 안에 떠야 사용자가 떠나지 않는다는 점을 기억해 둔다.
 
 ## 환경 변수 트러블슈팅
