@@ -4,6 +4,7 @@ concept: "Mongoose Schema"
 summary: "@Schema·@Prop 데코레이터로 MongoDB 컬렉션 구조를 클래스로 정의하고, virtual 필드로 응답에서 민감 정보를 숨기는 방법."
 tags: ["nestjs", "mongodb", "database", "typescript"]
 source: til
+date: "2026-10-13"
 ---
 
 Mongoose는 MongoDB 문서를 JavaScript 객체로 다루게 해 주는 **ODM(Object Document Mapper)이다**. `@nestjs/mongoose`를 쓰면 스키마를 TypeScript 클래스와 데코레이터로 정의할 수 있다.
@@ -17,7 +18,7 @@ Mongoose는 MongoDB 문서를 JavaScript 객체로 다루게 해 주는 **ODM(Ob
 ```typescript
 // cats/cats.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaOptions } from 'mongoose';
+import { HydratedDocument, SchemaOptions } from 'mongoose';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 const options: SchemaOptions = {
@@ -25,7 +26,7 @@ const options: SchemaOptions = {
 };
 
 @Schema(options)
-export class Cat extends Document {
+export class Cat {
   @Prop({ required: true, unique: true })
   @IsEmail()
   @IsNotEmpty()
@@ -48,11 +49,12 @@ export class Cat extends Document {
   readonly readOnlyData: { id: string; email: string; name: string };
 }
 
+export type CatDocument = HydratedDocument<Cat>; // _id, id, save() 등을 포함한 문서 타입
 export const CatSchema = SchemaFactory.createForClass(Cat);
 ```
 
 - `@Prop()`은 DB 차원의 제약(필수, 유일), `@IsEmail()` 등은 [요청 검증](Backend/NestJS/dto-validation)용이다. 스키마 클래스에 검증 데코레이터를 같이 달아 두면 DTO가 `PickType`으로 상속해 재사용할 수 있다.
-- `extends Document`는 강의 당시 방식이다. 최신 문서는 클래스는 순수하게 두고 `HydratedDocument<Cat>` 타입을 따로 쓰는 방식을 권장한다.
+- 스키마 클래스는 순수 클래스로 두고, `_id`·`save()` 같은 문서 기능이 붙은 타입은 `HydratedDocument<Cat>`으로 따로 만든다. 과거에는 `class Cat extends Document`로 상속하는 방식을 썼다.
 
 ## 모듈에 등록하고 주입받기
 
@@ -77,7 +79,7 @@ constructor(@InjectModel(Cat.name) private readonly catModel: Model<Cat>) {}
 회원가입 후 생성된 문서를 그대로 반환하면 **해시된 비밀번호까지 노출**된다. virtual 필드는 DB에 저장되지 않지만 문서에서 계산해 꺼낼 수 있는 필드로, 응답용 데이터만 골라낼 때 유용하다.
 
 ```typescript
-CatSchema.virtual('readOnlyData').get(function (this: Cat) {
+CatSchema.virtual('readOnlyData').get(function (this: CatDocument) {
   return {
     id: this.id,
     email: this.email,

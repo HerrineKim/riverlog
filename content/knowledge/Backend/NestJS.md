@@ -4,13 +4,14 @@ concept: "NestJS"
 summary: "Express·Fastify 위에 모듈·DI·데코레이터 기반 아키텍처를 얹은 TypeScript Node.js 서버 프레임워크."
 tags: ["nestjs", "nodejs", "typescript", "backend"]
 source: til
+date: "2026-10-13"
 ---
 
 NestJS는 TypeScript를 기본으로 지원하는 Node.js 서버 애플리케이션 프레임워크다. 내부적으로는 Express(기본) 또는 Fastify를 HTTP 엔진으로 쓰면서, 그 위에 **Module · Controller · Provider(DI)** 라는 구조와 데코레이터 문법을 제공해 확장 가능하고 유지보수하기 쉬운 서버를 만들게 돕는다. Spring처럼 객체지향·DI 중심이라 Java 개발자에게 익숙하고, Express 개념(미들웨어·라우터·서비스 분리)을 알면 금방 적응할 수 있다.
 
-> 이 주제의 노트는 인프런 "탄탄한 백엔드 NestJS, 기초부터 심화까지" 강의(NestJS 7 시절, 현재 **deprecated** 처리됨) 필기를 바탕으로 재구성했다. 핵심 개념과 API는 최신 버전에서도 거의 그대로지만, 바뀐 부분은 각 노트에 "최신 버전에서는 …"으로 보충해 두었다.
->
-> 2026년 10월 기준 최신은 **NestJS 12**(2026년 8월 출시)다. 코어 패키지가 ESM으로 배포되고 Node.js 20.19+ 또는 22.12+가 필요하지만, 기존 CommonJS 앱도 Node의 `require(esm)` 덕분에 대부분 그대로 동작한다. ([마이그레이션 가이드](https://docs.nestjs.com/migration-guide))
+> 인프런 「탄탄한 백엔드 NestJS, 기초부터 심화까지」 강의 필기를 바탕으로 재구성한 노트 묶음입니다.
+
+2026년 10월 기준 최신은 **NestJS 12**다. 코어 패키지가 ESM으로 배포되고 Node.js 20.19+ 또는 22.12+가 필요하다(CLI는 22.22+·24.15+·26+). 기존 CommonJS 앱도 Node의 `require(esm)` 덕분에 대부분 그대로 동작한다. Module·Controller·Provider·DI와 요청 생명주기 같은 핵심 API는 초기 버전부터 거의 같다. ([마이그레이션 가이드](https://docs.nestjs.com/migration-guide))
 
 ## 요청 생명주기 한눈에 보기
 

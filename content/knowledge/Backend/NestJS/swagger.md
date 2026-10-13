@@ -4,11 +4,12 @@ concept: "Swagger"
 summary: "@nestjs/swagger로 코드의 데코레이터에서 OpenAPI 문서를 자동 생성하고, 운영 환경에서는 Basic Auth로 문서 접근을 막는 방법."
 tags: ["nestjs", "api", "documentation", "openapi"]
 source: til
+date: "2026-10-13"
 ---
 
 프론트엔드와 협업할 때 "어떤 API가 있고, 무엇을 보내면 무엇이 오는지"를 문서로 공유해야 한다. Swagger(OpenAPI)는 코드에 붙인 데코레이터로 이 문서를 자동 생성하고, 브라우저에서 바로 요청을 테스트할 수 있는 UI까지 제공한다.
 
-> 강의는 NestJS 7 + `@nestjs/swagger@4`로 진행했다. 최신 버전에서도 아래 API는 거의 동일하므로 버전 지정 없이 `npm i @nestjs/swagger`로 설치하면 된다.
+설치는 `npm i @nestjs/swagger`다. `DocumentBuilder`, `@ApiProperty` 같은 아래 API는 초기 버전부터 거의 그대로다.
 
 ## 설정
 
@@ -42,7 +43,7 @@ export class CatsController {
 }
 ```
 
-> 고친 점: 원래 필기에서는 응답 DTO(`type`)를 500 응답 쪽에 붙였는데, 성공 시 반환되는 형태이므로 성공 응답(201/200)에 연결해야 한다.
+> 응답 DTO(`type`)는 그 DTO가 실제로 반환되는 상태 코드(보통 성공 응답 200/201)에 붙인다. 에러 응답에 붙이면 문서의 스키마가 실제 응답과 어긋난다.
 
 ## 요청·응답 스키마
 

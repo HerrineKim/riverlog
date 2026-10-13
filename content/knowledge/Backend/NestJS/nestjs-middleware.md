@@ -4,6 +4,7 @@ concept: "Nest Middleware"
 summary: "라우트 핸들러 이전에 실행되는 함수를 클래스로 만들고 모듈에서 특정 경로에 적용하는 NestJS 미들웨어."
 tags: ["nestjs", "middleware", "logging", "backend"]
 source: til
+date: "2026-10-13"
 ---
 
 NestJS의 미들웨어는 **라우트 핸들러보다 먼저 호출되는 함수**로, 요청·응답 객체와 `next()`에 접근할 수 있다. 개념은 [Express 미들웨어](Backend/Express/express-middleware)와 같고, 차이는 `@Injectable()` 클래스로 만들어 DI를 받을 수 있다는 점이다.
@@ -58,7 +59,7 @@ export class AppModule implements NestModule {
 - `.forRoutes(...)`: 적용할 경로. `'cats'`, `CatsController`, `{ path: 'cats', method: RequestMethod.GET }` 등을 줄 수 있고 `'*'`는 전체 경로다.
 - `.exclude(...)`: 제외할 경로
 
-> 최신 버전에서는: NestJS 11은 Express 5를 사용하면서 경로 와일드카드 문법이 바뀌어, 전체 경로에는 `'*'` 대신 `'{*splat}'` 같은 이름 있는 와일드카드를 쓰도록 안내한다.
+경로 일부에 와일드카드를 쓸 때는 Express 5(path-to-regexp 8) 문법을 따른다. NestJS 11부터 와일드카드에 이름을 붙여 `'cats/*splat'`처럼 쓰고, `cats/` 자체까지 포함하려면 중괄호로 감싸 `'cats/{*splat}'`로 쓴다. 과거의 `'cats/*'`·`'ab*cd'` 같은 익명 와일드카드는 더 이상 쓰지 않는다. ([NestJS Middleware 문서](https://docs.nestjs.com/middleware))
 
 ## Interceptor와의 차이
 

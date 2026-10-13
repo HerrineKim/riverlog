@@ -4,6 +4,7 @@ concept: "File Upload"
 summary: "multipart/form-data 요청을 Multer와 FileInterceptor로 받아 이미지·영상 같은 미디어 파일을 저장하는 방법."
 tags: ["nestjs", "file-upload", "api", "backend"]
 source: til
+date: "2026-10-13"
 ---
 
 이미지·mp3·mp4 같은 파일은 JSON이 아니라 `multipart/form-data` 형식으로 전송된다. Multer는 이 형식을 파싱해 파일을 저장해 주는 Node.js 미들웨어이고, NestJS는 `@nestjs/platform-express`에 이를 감싼 인터셉터를 내장하고 있다.
@@ -58,7 +59,7 @@ uploadCatImg(@UploadedFiles() files: Array<Express.Multer.File>) {
 - 인자 `'image'`는 form-data의 **필드 이름**과 같아야 한다.
 - Postman에서 테스트할 때는 Body → form-data → key 타입을 *File*로 바꾸고 필드 이름을 `image`로 맞춘다.
 
-> 고친 점: 원래 필기는 `FileInterceptor`(단일)와 `@UploadedFiles()`(복수)를 섞어 썼고, 파라미터 이름(`image`)과 로그에 찍는 변수(`files`)도 달랐다. 위 표처럼 짝을 맞춰야 값이 들어온다.
+> 흔한 실수: `FileInterceptor`(단일)와 `@UploadedFiles()`(복수)를 섞어 쓰면 값이 `undefined`로 들어온다. 위 표처럼 짝을 맞춘다.
 
 ## 정적 파일로 제공하기
 

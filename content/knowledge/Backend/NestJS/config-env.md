@@ -4,6 +4,7 @@ concept: "Environment Variables"
 summary: "@nestjs/config로 .env를 읽어 DB 주소·포트·비밀키를 코드 밖으로 분리하고 MongoDB에 연결하는 방법."
 tags: ["nestjs", "config", "security", "mongodb"]
 source: til
+date: "2026-10-13"
 ---
 
 DB 접속 주소, JWT 비밀키, 포트처럼 **환경마다 다르거나 노출되면 안 되는 값**은 코드에 직접 쓰지 않고 환경 변수로 분리한다. 실수로 비밀번호가 포함된 접속 문자열을 커밋하는 사고를 막는 가장 기본적인 방법이다.
@@ -46,7 +47,7 @@ await app.listen(PORT);
 ```
 
 - `isGlobal: true`를 주면 모든 모듈에서 따로 import하지 않고 `ConfigService`를 주입받을 수 있다.
-- **로드 순서 주의**: 데코레이터 안의 `process.env.X`는 모듈 파일이 import되는 시점에 평가된다. `ConfigModule.forRoot()`가 아직 실행되지 않았다면 `undefined`가 된다. 강의에서는 `AuthModule`에도 `ConfigModule.forRoot()`를 추가해 해결했지만, 권장 방식은 `forRootAsync`/`registerAsync`로 `ConfigService`를 주입받는 것이다.
+- **로드 순서 주의**: 데코레이터 안의 `process.env.X`는 모듈 파일이 import되는 시점에 평가된다. `ConfigModule.forRoot()`가 아직 실행되지 않았다면 `undefined`가 된다. 모듈마다 `ConfigModule.forRoot()`를 다시 부르는 임시방편도 있지만, 권장 방식은 `forRootAsync`/`registerAsync`로 `ConfigService`를 주입받는 것이다.
 
 ```typescript
 // 권장: 설정이 로드된 뒤에 값을 읽도록 비동기 등록
@@ -78,7 +79,7 @@ export class AppModule implements NestModule {
 }
 ```
 
-> 최신 버전에서는: 강의 당시에는 `{ useNewUrlParser: true, useUnifiedTopology: true }` 옵션을 넘겼지만, **Mongoose 6부터 이 옵션들은 기본값이 되어 지정할 필요가 없다**(`useFindAndModify`, `useCreateIndex`도 제거됨).
+> 접속 옵션 `useNewUrlParser`, `useUnifiedTopology`는 Mongoose 6부터 기본 동작이 되어 넘기지 않는다(`useFindAndModify`, `useCreateIndex`는 제거됨). 오래된 예제에서 이 옵션을 보면 지운다.
 
 ## 핵심 정리
 

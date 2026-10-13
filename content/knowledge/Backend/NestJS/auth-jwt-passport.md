@@ -4,9 +4,12 @@ concept: "JWT Authentication"
 summary: "로그인 시 JWT를 발급하고, Passport Strategy와 Guard로 요청마다 토큰을 검증해 현재 사용자를 꺼내는 NestJS 인증 구현."
 tags: ["nestjs", "auth", "jwt", "security"]
 source: til
+date: "2026-10-13"
 ---
 
-로그인 상태를 유지하는 방법에는 세션·쿠키, 단순 토큰, JWT 등이 있다. JWT는 서버가 세션 저장소를 두지 않아도 되어(stateless) 웹뿐 아니라 모바일 앱 백엔드에서도 널리 쓰인다.
+로그인 상태를 유지하는 방법에는 세션·쿠키, 단순 토큰, JWT 등이 있다. JWT는 서버가 세션 저장소를 두지 않아도 되어(stateless) 모바일 앱이나 여러 서비스가 토큰을 나눠 쓰는 API에 잘 맞는다. 반대로 같은 도메인의 웹 앱만 상대한다면 즉시 로그아웃·강제 만료가 쉬운 서버 세션 + HttpOnly 쿠키가 더 단순하다([[cookie-session|쿠키와 세션]]).
+
+NestJS 공식 문서는 `JwtService`와 직접 만든 Guard로 구현하는 방법과, 아래처럼 Passport 전략으로 구현하는 방법을 모두 안내한다. 소셜 로그인처럼 전략을 여러 개 붙일 때 Passport가 편하다.
 
 ## JWT 구조
 
@@ -63,7 +66,7 @@ nest g service auth
 export class AuthModule {}
 ```
 
-> 비밀키는 반드시 [환경 변수](Backend/NestJS/config-env)로 관리한다. `process.env` 로드 순서 문제를 피하려면 `JwtModule.registerAsync({ inject: [ConfigService], useFactory: ... })`를 쓰는 것이 안전하다. 실습의 만료 기간 1년은 예시일 뿐, 실제로는 짧은 Access Token + Refresh Token 조합을 쓴다.
+> 비밀키는 반드시 [환경 변수](Backend/NestJS/config-env)로 관리한다. `process.env` 로드 순서 문제를 피하려면 `JwtModule.registerAsync({ inject: [ConfigService], useFactory: ... })`를 쓰는 것이 안전하다. 위의 만료 기간 1년은 예시일 뿐이다. JWT는 발급 뒤 서버가 강제로 무효화하기 어려우므로, 실제로는 수 분~수십 분짜리 Access Token과 교체(rotation)되는 Refresh Token을 함께 쓴다.
 
 ### 로그인 서비스: 토큰 발급
 

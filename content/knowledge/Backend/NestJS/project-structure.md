@@ -4,6 +4,7 @@ concept: "Nest Project"
 summary: "Nest CLI로 만든 프로젝트의 파일 구성과 main.ts에서 컨트롤러·서비스까지 요청이 흘러가는 기본 흐름."
 tags: ["nestjs", "typescript", "nodejs", "backend"]
 source: til
+date: "2026-10-13"
 ---
 
 Nest CLI로 프로젝트를 만들면 Module·Controller·Service가 하나씩 들어 있는 최소 구조가 생긴다. 이 네 파일의 관계만 이해하면 이후 모든 기능은 "같은 패턴의 반복"이다.
@@ -88,17 +89,19 @@ export class AppService {
 
 ## 코드 스타일 설정
 
-CLI 템플릿에는 ESLint(`@typescript-eslint`)와 Prettier 설정이 기본 포함되어 있다. 필요에 따라 규칙을 조정한다.
+CLI 템플릿에는 린터와 Prettier 설정이 기본 포함되어 있다. NestJS 12의 새 ESM 프로젝트는 **oxlint**를, CommonJS 템플릿은 **ESLint**(flat config, `eslint.config.mjs`)를 쓴다. 필요에 따라 규칙을 조정한다. ([NestJS 마이그레이션 가이드](https://docs.nestjs.com/migration-guide))
 
 ```javascript
-// .eslintrc.js 의 rules 예시
-rules: {
-  'no-console': 'warn', // 운영 코드에 console.log가 남지 않도록 경고
-  '@typescript-eslint/no-explicit-any': 'off',
-},
+// eslint.config.mjs 의 rules 예시
+{
+  rules: {
+    'no-console': 'warn', // 운영 코드에 console.log가 남지 않도록 경고
+    '@typescript-eslint/no-explicit-any': 'off',
+  },
+}
 ```
 
-> 참고: NestJS 11 CLI는 ESLint 9의 flat config(`eslint.config.mjs`)를 생성한다. 규칙 내용은 같고 파일 형식만 다르다. NestJS 12부터는 새 ESM 프로젝트가 기본으로 Vitest와 oxlint를 쓰고, CommonJS 템플릿은 계속 Jest와 ESLint를 쓴다. ([NestJS 마이그레이션 가이드](https://docs.nestjs.com/migration-guide))
+과거(ESLint 8 이전)에는 `.eslintrc.js`에 같은 규칙을 적었다.
 
 ## 핵심 정리
 

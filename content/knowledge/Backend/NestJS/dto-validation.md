@@ -4,6 +4,7 @@ concept: "DTO"
 summary: "요청 바디를 DTO 클래스로 정의하고 class-validator와 ValidationPipe로 자동 검증하는 패턴, 회원가입 구현 예."
 tags: ["nestjs", "validation", "typescript", "api"]
 source: til
+date: "2026-10-13"
 ---
 
 DTO(Data Transfer Object)는 **계층 사이에서 데이터를 주고받을 때 쓰는 객체의 형태**를 정의한 클래스다. 클라이언트가 보낸 바디를 DTO로 만들고 검증을 통과한 것만 컨트롤러 → 서비스 → DB로 흘려보낸다.
@@ -102,7 +103,7 @@ export class CatsService {
 ```
 
 - 비밀번호는 `bcrypt`로 **해싱**해서 저장한다(`npm i bcrypt`, `npm i -D @types/bcrypt`). 로그인 시에는 `bcrypt.compare(입력값, 해시)`로 비교한다.
-- 중복 가입은 강의에서 401(`UnauthorizedException`)로 처리했지만, 의미상 **409 Conflict**나 400이 더 적절하다.
+- 중복 가입은 인증 실패가 아니므로 401(`UnauthorizedException`)이 아니라 **409 Conflict**(또는 400)로 응답한다.
 - `readOnlyData`는 [Mongoose 스키마](Backend/NestJS/mongoose-schema)의 virtual 필드다.
 
 ## 핵심 정리
