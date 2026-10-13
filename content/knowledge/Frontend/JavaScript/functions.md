@@ -4,7 +4,7 @@ concept: "Function"
 summary: "함수 선언식과 표현식, 화살표 함수, rest·spread 연산자, 호출 방식에 따라 달라지는 this와 bind."
 tags: ["javascript", "function", "frontend"]
 source: til
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/209", "https://riverkim.kr/116"]
 ---
 
@@ -175,7 +175,7 @@ const sayHi = user.sayHi.bind(user)
 setTimeout(sayHi, 1000)      // 'Hello, John!'
 ```
 
-인자를 미리 채워 두는 용도로도 쓴다. React Native 예제에서 목록 아이템을 누르면 해당 id로 삭제 함수를 부르게 할 때 `onPress={props.onDeleteItem.bind(this, props.id)}`처럼 사용했다. 같은 일을 화살표 함수로 `onPress={() => props.onDeleteItem(props.id)}`처럼 쓸 수도 있다.
+인자를 미리 채워 두는 용도로도 쓴다. 목록 아이템을 누르면 해당 id로 삭제 함수를 부르게 할 때 `onPress={props.onDeleteItem.bind(this, props.id)}`처럼 쓴다([[react-native-interaction|React Native 상호작용과 리스트]]). 같은 일을 화살표 함수로 `onPress={() => props.onDeleteItem(props.id)}`처럼 쓰는 편이 더 흔하다.
 
 ## 핵심 정리
 
