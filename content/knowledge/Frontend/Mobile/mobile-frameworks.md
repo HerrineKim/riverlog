@@ -4,9 +4,10 @@ concept: "Cross Platform"
 summary: "네이티브, 웹뷰 기반 하이브리드, 네이티브로 컴파일되는 크로스 플랫폼 앱의 원리와 장단점."
 tags: ["mobile", "react-native", "flutter", "architecture"]
 source: notion
+date: "2026-10-13"
 ---
 
-모바일 앱을 만드는 방법은 크게 세 가지다. Android와 iOS를 각각 따로 만드는 **네이티브**, 웹 페이지를 앱 껍데기에 담는 **하이브리드**, 공통 코드 하나로 두 플랫폼의 네이티브 앱을 만드는 **크로스 플랫폼**. 초창기에는 두 플랫폼의 차이가 커서 따로 만들 수밖에 없었지만, 점점 비슷해지면서 "한 번에 둘 다 만들 수 없을까"라는 시도들이 생겨났다.
+모바일 앱을 만드는 방법은 크게 세 가지다. Android와 iOS를 각각 따로 만드는 **네이티브**, 웹 페이지를 앱 껍데기에 담는 **하이브리드**, 공통 코드 하나로 두 플랫폼의 네이티브 앱을 만드는 **크로스 플랫폼**. 두 플랫폼의 UI·기능이 서로 비슷해지면서 한 코드베이스로 둘 다 만드는 방식이 널리 쓰이게 됐다.
 
 ## 네이티브 앱
 
@@ -16,7 +17,7 @@ source: notion
 
 ## 하이브리드 앱
 
-**Native + HTML.** 앱 안에서 **WebView**(주소창이 없는 브라우저)를 띄우고 그 안에 웹 페이지를 보여 준다. 대표 프레임워크는 Cordova.
+**Native + HTML.** 앱 안에서 **WebView**(주소창이 없는 브라우저)를 띄우고 그 안에 웹 페이지를 보여 준다. 대표 프레임워크는 Ionic의 **Capacitor**이고, 그 전에는 Cordova(PhoneGap)가 쓰였다.
 
 | 장점 | 단점 |
 | --- | --- |
@@ -29,7 +30,7 @@ source: notion
 
 하이브리드의 단점을 보완하려는 방식이다. 하이브리드는 기기 기능을 라이브러리로 감싸 웹에서 호출하느라 느렸다. 크로스 플랫폼은 **공통 언어 하나로 작성하면 네이티브 UI·네이티브 앱으로 만들어** 주므로 속도와 성능이 훨씬 좋다.
 
-- 대표: **React Native**(JavaScript/React), **Flutter**(Dart), **.NET MAUI**(C#)
+- 대표: **React Native**(JavaScript/React), **Flutter**(Dart), **Kotlin Multiplatform**(Kotlin, Compose Multiplatform로 UI까지 공유), **.NET MAUI**(C#)
 - (레거시) Xamarin(C#)은 2024년 5월 1일 지원이 종료되었고, Microsoft는 후속인 .NET MAUI로 옮길 것을 권한다.
 
 ### 100% 네이티브처럼 만들 수 있을까?
@@ -39,7 +40,7 @@ source: notion
 - 네이티브의 모든 기능을 제공하지는 못한다.
 - 플랫폼에 새 기능이 나와도 프레임워크가 지원하기까지 시간이 걸린다.
 - 프레임워크를 만든 회사의 사정에 따라 지원이 중단될 위험이 있다.
-- 실제로 Airbnb는 React Native를 도입했다가 네이티브로 되돌아갔다. 정리 당시 React Native는 0.x 버전으로, 메이저 버전 1에 도달하지 않았다는 것 자체가 아직 완성형이 아니라는 신호로 읽혔다. 이후 React Native는 0.76(2024)에서 브리지를 걷어 낸 **New Architecture**를 기본으로 바꾸고 0.82(2025)부터는 이전 아키텍처를 끌 수 없게 하는 등 구조를 크게 다시 만들었다. 자세한 내용은 [React Native 기초](/knowledge/dictionary/frontend/mobile/react-native-basics) 참고.
+- Airbnb는 2016년 React Native를 도입했다가 2018년 네이티브로 되돌아갔다. 당시 지적된 브리지 병목은 React Native가 0.76(2024)에서 **New Architecture**를 기본으로 바꾸고 0.82(2025)부터 이전 아키텍처를 없애며 구조적으로 풀었다. 자세한 내용은 [React Native 기초](/knowledge/dictionary/frontend/mobile/react-native-basics) 참고.
 
 ## 어떻게 고를까
 
