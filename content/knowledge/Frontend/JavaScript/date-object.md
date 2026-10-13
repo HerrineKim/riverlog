@@ -4,7 +4,7 @@ concept: "Date"
 summary: "JavaScript 기본 Date 객체에서 자주 틀리는 두 가지. getMonth()가 0부터 시작하는 이유와, 서버·사용자 시간대와 관계없이 한국 시간을 구하는 방법."
 tags: ["javascript", "frontend", "tips"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/260", "https://riverkim.kr/213"]
 ---
 
@@ -32,7 +32,7 @@ moonLanding.getMonth() // 6 — 7월인데 6이다 (1월이 0)
 
 JavaScript를 만든 브렌던 아이크(Brendan Eich)가 직접 설명한 적이 있다. JS의 `Date`는 Java JDK 1.0의 `java.util.Date`를 그대로 옮긴 것이다. 당시 "Java처럼 보이게 하라"는 요구를 받았고 데모까지 열흘밖에 없어서, 자체 API를 설계하거나 Java의 것을 고칠 시간이 없었다.
 
-Java는 8버전에서 새 날짜·시간 패키지(`java.time`)로 이 문제를 정리했다. JavaScript는 하위 호환 때문에 `Date`를 그대로 두었고, 대신 새 표준 API인 **Temporal**이 대체재로 나오고 있다(월이 1부터 시작한다).
+Java는 8버전에서 새 날짜·시간 패키지(`java.time`)로 이 문제를 정리했다. JavaScript는 하위 호환 때문에 `Date`를 그대로 두었고, 대체재로 새 표준 API **Temporal**을 들였다(월이 1부터 시작한다). 브라우저 지원 현황은 [[date-libraries|날짜 라이브러리]]에 있다.
 
 ## 2. new Date()는 실행 환경의 시간대를 따른다
 
