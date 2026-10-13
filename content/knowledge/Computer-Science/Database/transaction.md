@@ -4,6 +4,7 @@ concept: "Transaction"
 summary: "트랜잭션의 ACID 특성, 이를 지키기 위한 병행 제어·고립화 수준·회복 기법을 연결해서 정리."
 tags: ["database", "transaction", "acid", "certificate"]
 source: notion
+date: "2026-10-13"
 ---
 
 트랜잭션은 데이터베이스에서 **하나의 논리적 작업 단위**다. 계좌 이체처럼 "출금"과 "입금"이 둘 다 되거나 둘 다 안 되어야 하는 작업을 묶는다. 트랜잭션이 지켜야 할 네 가지 성질(ACID)과, DBMS가 각 성질을 보장하는 수단을 짝지어 기억하면 이해가 쉽다.
@@ -25,7 +26,7 @@ source: notion
 | --- | --- |
 | `COMMIT` | 트랜잭션 결과를 DB에 영구 반영 |
 | `ROLLBACK` | 트랜잭션 실행 이전 상태로 되돌림 |
-| `SAVEPOINT` (CHECKPOINT) | 롤백할 중간 지점 지정 |
+| `SAVEPOINT` | 롤백할 중간 지점 지정 (`ROLLBACK TO 이름`) |
 
 ## 병행 제어 (Concurrency Control)
 
@@ -46,6 +47,8 @@ source: notion
 | Read Committed | 방지 | 발생 | 발생 |
 | Repeatable Read | 방지 | 방지 | 발생 |
 | Serializable | 방지 | 방지 | 방지 |
+
+위 표는 SQL 표준의 정의다. 실제 DBMS는 MVCC로 구현해 표준보다 강하게 막는 경우가 있다. 예를 들어 PostgreSQL은 Read Uncommitted를 Read Committed처럼 다루고 Repeatable Read에서도 팬텀을 막는다. MySQL InnoDB의 기본값은 Repeatable Read, PostgreSQL·Oracle의 기본값은 Read Committed다.
 
 ## 회복 기법 (Recovery)
 
