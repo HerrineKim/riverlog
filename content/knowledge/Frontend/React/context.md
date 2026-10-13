@@ -1,10 +1,11 @@
 ---
 title: "Context와 전역 상태"
 concept: "Context"
-summary: "props를 일일이 내려주지 않고 컴포넌트 트리 전체에 값을 공유하는 Context API와, 전역 상태 관리의 Flux 패턴."
+summary: "props를 일일이 내려주지 않고 컴포넌트 트리 전체에 값을 공유하는 Context API와, Context로 부족할 때 고르는 전역 상태 라이브러리(Redux Toolkit, Zustand, Jotai)."
 tags: ["react", "state", "hooks", "frontend"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
+sources: ["https://react.dev/reference/react/useContext", "https://github.com/facebookexperimental/Recoil", "https://pinia.vuejs.org/"]
 ---
 
 **Context**는 props를 거치지 않고 컴포넌트 트리 깊숙한 곳까지 값을 전달하는 방법이다. 로그인 사용자, 테마, 언어 설정처럼 여러 컴포넌트가 함께 쓰는 값을 한곳에서 관리할 때 쓴다. 중간 컴포넌트들이 쓰지도 않는 props를 계속 넘기는 props drilling을 피할 수 있다.
@@ -46,6 +47,7 @@ function App() {
 | 방법 | 대상 | 비고 |
 | --- | --- | --- |
 | `useContext(ThemeContext)` | 함수 컴포넌트 | **권장** |
+| `use(ThemeContext)` | 함수 컴포넌트 | React 19. 조건문·조기 return 뒤에서도 부를 수 있다 |
 | `<ThemeContext.Consumer>{(value) => ...}</ThemeContext.Consumer>` | 함수·클래스 | render props 형태, 거의 쓰지 않음 |
 | `static contextType = ThemeContext` | 클래스 컴포넌트 | 하나의 Context만 가능 |
 
@@ -60,7 +62,16 @@ function ThemedButton() {
 
 ## 전역 상태 관리와 Flux 패턴
 
-앱이 커지면 Context만으로 관리하기 어려운 복잡한 전역 상태가 생기고, Redux·Vuex 같은 상태 관리 라이브러리를 쓴다. 이들이 따르는 **Flux 패턴**(Action → Dispatcher → Store → View의 단방향 흐름)과 Redux의 사용법은 [[redux|Redux와 react-redux]]에 정리했다. React에서는 `useReducer` + Context 조합으로 작은 규모의 Flux를 직접 구현할 수도 있다. 서버에서 받아 온 데이터는 전역 state 대신 [SWR](/knowledge/dictionary/frontend/react/swr) 같은 데이터 패칭 라이브러리의 캐시로 관리하는 방법도 많이 쓴다.
+Context는 값을 **전달**하는 도구이지 상태 관리 도구가 아니다. 값이 자주 바뀌고 구독자가 많으면 바뀔 때마다 모든 구독자가 다시 그려진다. 이럴 때는 필요한 조각만 구독하게 해 주는 전역 상태 라이브러리를 쓴다.
+
+| 도구 | 성격 |
+| --- | --- |
+| Redux Toolkit | Flux 패턴(Action → Store → View의 단방향 흐름)의 표준 구현. 큰 팀·복잡한 상태 ([[redux\|Redux와 react-redux]]) |
+| Zustand | 훅 하나로 쓰는 가벼운 스토어. selector로 필요한 값만 구독 |
+| Jotai | atom 단위로 상태를 쪼개 조합 |
+| `useReducer` + Context | 라이브러리 없이 만드는 작은 Flux |
+
+과거에 쓰이던 Recoil은 2025년 1월 저장소가 보관(archived)되어 더 이상 관리되지 않는다. Vue에서는 Vuex 대신 Pinia가 공식 상태 관리 도구다. 서버에서 받아 온 데이터는 전역 state에 넣지 않고 [TanStack Query](/knowledge/dictionary/frontend/react/tanstack-query)·[SWR](/knowledge/dictionary/frontend/react/swr) 같은 서버 상태 라이브러리의 캐시에 맡긴다.
 
 ## 핵심 정리
 
@@ -68,4 +79,4 @@ function ThemedButton() {
 - Context 값 변경은 리렌더링의 주요 원인 중 하나다. 추적 방법은 [[re-rendering|리렌더링 원인 추적하기]] 참고.
 - 값이 바뀌면 모든 구독자가 리렌더링된다. Provider value에 매번 새 객체를 넘기지 않는다.
 - 얕은 전달은 props, 깊은 전달은 합성 먼저, 여러 곳이 공유하는 값은 Context.
-- 복잡한 전역 상태는 Flux(단방향 데이터 흐름) 기반 라이브러리를 고려한다.
+- 자주 바뀌는 전역 상태는 Zustand·Redux Toolkit 같은 라이브러리로, 서버 데이터는 서버 상태 라이브러리로 나눈다.
