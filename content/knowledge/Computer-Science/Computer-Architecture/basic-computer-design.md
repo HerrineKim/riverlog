@@ -5,6 +5,7 @@ summary: "교재의 16비트 기본 컴퓨터를 예로 명령어 형식과 직�
 tags: ["computer-architecture", "cpu", "instruction-cycle", "control-unit", "interrupt"]
 source: notion
 sources: ["https://app.notion.com/p/05c0b3d436554ca9a02b8b9ff217b222", "https://app.notion.com/p/1766ffac6eeb46cfad5456ca1658da53"]
+date: "2026-10-13"
 ---
 
 컴퓨터 구조 교재(『컴퓨터 시스템 구조』, Mano)는 설명을 위해 단순한 16비트 **기본 컴퓨터(Basic Computer)** 를 정의하고, 그 구조와 제어 장치를 처음부터 설계한다. 규모는 작지만 "명령어를 메모리에서 꺼내 해석하고 실행한다"는 현대 CPU의 기본 설계 구조가 그대로 들어 있다.
@@ -146,7 +147,7 @@ RT2: PC ← PC + 1,  IEN ← 0,  R ← 0,  SC ← 0
 
 ## 기본 컴퓨터의 설계
 
-컴퓨터 설계의 70~90%는 **제어 장치**를 만드는 일이다. 기본 컴퓨터의 하드웨어 구성은 다음과 같다.
+기본 컴퓨터 설계의 핵심은 **제어 장치**를 만드는 일이다. 기본 컴퓨터의 하드웨어 구성은 다음과 같다.
 
 - 16비트 × 4096워드 메모리
 - 레지스터 9개: AR, PC, DR, AC, IR, TR, OUTR, INPR, SC
