@@ -5,6 +5,7 @@ summary: "디스크 구조(섹터·논리 블록), 포맷팅·파티셔닝과 �
 tags: ["os", "disk", "scheduling", "storage", "raid"]
 source: notion
 sources: ["https://app.notion.com/p/b0b7e47aef714bc9a0a33e37f1cb4b41"]
+date: "2026-10-13"
 ---
 
 디스크는 파일을 영구 저장하는 곳이자, 메모리가 모자랄 때 쓰는 스왑 공간이다. 디스크 접근은 CPU·메모리에 비해 매우 느리기 때문에, 운영체제는 요청을 처리하는 **순서**를 조절해 성능을 높인다.
@@ -31,7 +32,7 @@ sources: ["https://app.notion.com/p/b0b7e47aef714bc9a0a33e37f1cb4b41"]
 [ header | data (보통 512바이트) | trailer ]
 ```
 
-- **data**: 외부에서 요청한 논리 블록의 내용. 전통적으로 512바이트였고, 최근 대용량 디스크는 4KB 섹터(Advanced Format)를 쓰는 경우가 많다.
+- **data**: 외부에서 요청한 논리 블록의 내용. 전통적으로 512바이트였고, 지금의 대용량 HDD는 4KB 물리 섹터(Advanced Format)를 쓴다. 호환을 위해 밖으로는 512바이트 섹터처럼 보이게 하는 방식(512e)도 있다.
 - **header·trailer**: 섹터 번호, ECC(Error-Correcting Code) 같은 부가 정보. 디스크 컨트롤러가 직접 접근·운영한다.
 
 ### 파티셔닝
@@ -49,7 +50,7 @@ sources: ["https://app.notion.com/p/b0b7e47aef714bc9a0a33e37f1cb4b41"]
 3. 섹터 0에는 **full bootstrap loader** 프로그램이 있어, 파일 시스템에서 운영체제 커널의 위치를 찾아 메모리에 올리고 실행한다.
 4. 운영체제가 메모리에 올라와 실행된다.
 
-> 위 흐름은 BIOS + MBR 방식의 고전적인 설명이다. 요즘 PC는 대부분 BIOS 대신 **UEFI** 펌웨어를 쓰고, 디스크는 GPT로 파티셔닝한다. UEFI는 섹터 0의 코드를 실행하는 대신 **EFI 시스템 파티션(ESP)** 에 있는 부트로더 파일을 찾아 실행한다. "펌웨어 → 부트로더 → 커널"이라는 큰 흐름은 같다.
+> 위 흐름은 BIOS + MBR 방식의 고전적인 설명이다. 현재 PC는 BIOS 대신 **UEFI** 펌웨어를 쓰고, 디스크는 GPT로 파티셔닝한다. UEFI는 섹터 0의 코드를 실행하는 대신 **EFI 시스템 파티션(ESP)** 에 있는 부트로더 파일을 찾아 실행한다. "펌웨어 → 부트로더 → 커널"이라는 큰 흐름은 같다.
 
 ## 접근 시간 (Access Time)
 
