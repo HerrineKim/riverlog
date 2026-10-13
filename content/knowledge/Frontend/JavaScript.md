@@ -25,6 +25,11 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [TypeScript 코딩 컨벤션](/knowledge/dictionary/frontend/javascript/typescript-coding-convention): 이름 짓기, 타입, 클래스, 배열 메서드, 에러 처리, 모듈 규칙을 필수·권장 등급과 이유로 정리
 - [ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md): 품질은 ESLint, 모양은 Prettier로 역할 나누기, 저장 시 자동 수정 에디터 설정, `.eslintrc` 항목의 뜻과 ESLint 9 flat config
 
+### 프로그래밍 패러다임
+- [객체 지향 프로그래밍과 JavaScript](Frontend/JavaScript/oop-and-javascript.md): 구조체에서 클래스로, 캡슐화·상속·추상화·다형성, 프로토타입·덕 타이핑·일급 함수로 푼 JavaScript의 OOP
+- [함수형 프로그래밍](Frontend/JavaScript/functional-programming.md): 액션·계산·데이터, 카피 온 라이트와 방어적 복사, 계층형 설계와 추상화 벽, 입력→화면 파이프라인
+- [반응형 프로그래밍과 RxJS](Frontend/JavaScript/reactive-programming.md): 변경 전파와 선언적 데이터 흐름, Pull→Push와 제어의 역전, Observable과 연산자, Hot·Cold
+
 ### 브라우저와 함께
 - [DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·생성·삽입·삭제·속성 변경, innerText vs innerHTML
 - [이벤트](/knowledge/dictionary/frontend/javascript/dom-events): addEventListener, 이벤트 객체, preventDefault
