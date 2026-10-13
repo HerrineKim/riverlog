@@ -10,7 +10,7 @@ source: notion
 
 - **Writing** — [글쓰기 원칙: 구조, 설득, 문장력](/knowledge/dictionary/life-and-learning/writing/persuasive-writing), [온라인 글쓰기](/knowledge/dictionary/life-and-learning/writing/online-writing), [뉴스레터 발행의 35가지 교훈](/knowledge/dictionary/life-and-learning/writing/newsletter-lessons)
 - **Journalism** — [데이터 저널리즘 실무](/knowledge/dictionary/life-and-learning/journalism/data-journalism)(무료 도구로 첫 시각화, 공유·수익 모델 논점 포함), [뉴스 가치](/knowledge/dictionary/life-and-learning/journalism/news-values), [언론사의 디지털 전환 과제](/knowledge/dictionary/life-and-learning/journalism/media-digital-transformation)
-- **Design** — [발표·포트폴리오 디자인 팁](/knowledge/dictionary/life-and-learning/design/presentation-design), [무료 폰트 모음](/knowledge/dictionary/life-and-learning/design/free-fonts)
+- **Design** — [발표·포트폴리오 디자인 팁](/knowledge/dictionary/life-and-learning/design/presentation-design), [무료 폰트 모음](/knowledge/dictionary/life-and-learning/design/free-fonts), [사용자 리서치](/knowledge/dictionary/life-and-learning/design/user-research)
 - **English** — [비즈니스 미팅 쿠션 표현](/knowledge/dictionary/life-and-learning/english/business-expressions), [영어 어휘 노트](/knowledge/dictionary/life-and-learning/english/vocabulary), [TOEIC 핵심 문법 정리](/knowledge/dictionary/life-and-learning/english/toeic-grammar), [OPIc 공략 전략](/knowledge/dictionary/life-and-learning/english/opic)
 - **Learning** — [블럭-건물 암기법](/knowledge/dictionary/life-and-learning/learning/memorization)
 - **Tips** — 온라인·IT 실용 팁: [블로그 수익화](/knowledge/dictionary/life-and-learning/tips/blog-monetization), [생활 속 IT 팁](/knowledge/dictionary/life-and-learning/tips/everyday-tech-tips), [절판 도서 구하기](/knowledge/dictionary/life-and-learning/tips/out-of-print-books)
