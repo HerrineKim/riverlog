@@ -222,4 +222,4 @@ TDD는 만능이 아니다. 테스트를 통과하면서도 좋은 설계 원칙
 - 상호작용은 `fireEvent`보다 `user-event`, Redux 연결 컴포넌트는 훅 모킹 대신 실제 store로 통합 테스트한다.
 - 만능은 아니다. 설계 습관부터 들이고 상황에 맞게 점진적으로 도입한다.
 
-관련 노트: [[software-testing|소프트웨어 테스트(테스트 레벨과 기법)]], [[bdd-sdd-task-design|BDD·SDD로 기획서를 태스크로 나누기]]
+관련 노트: [[software-testing|소프트웨어 테스트(테스트 레벨과 기법)]], [[bdd-sdd-task-design|BDD·SDD로 기획서를 태스크로 나누기]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[humble-object-pattern|험블 객체 패턴]]
