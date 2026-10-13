@@ -5,7 +5,7 @@ summary: "소스 코드가 명령어가 되는 과정, CPU 내부(ALU·제어장
 tags: ["computer-architecture", "cpu", "instruction-set", "interrupt"]
 source: notion
 date: "2026-10-12"
-sources: ["https://riverkim.kr/188", "https://riverkim.kr/191", "https://riverkim.kr/192"]
+sources: ["https://riverkim.kr/188", "https://riverkim.kr/191", "https://riverkim.kr/192", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc"]
 ---
 
 CPU가 실행하는 것은 결국 메모리에 놓인 기계어 명령어다. 명령어가 피연산자를 어디서 가져오는지, 실행 흐름이 어떻게 바뀌는지를 이해하면 컴파일러와 운영체제가 하는 일도 함께 보이기 시작한다.
@@ -246,5 +246,3 @@ RISC의 장점
 - 주소 지정 방식은 포인터·배열·재배치를 지원하기 위한 장치다.
 - 인터럽트는 외부 신호로 흐름이 바뀌므로 PSW 전체를 저장해야 한다.
 - RISC는 단순한 고정 길이 명령어 + load/store 구조로 파이프라인 효율을 높인다.
-
-참고 강의: [컴퓨터시스템구조 8장](https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc)
