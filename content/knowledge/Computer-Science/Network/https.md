@@ -125,4 +125,4 @@ HSTS 헤더도 **처음 한 번은 받아야** 효과가 있다. preload 목록�
 - 리다이렉트만으로는 첫 평문 요청이 남는다. HSTS로 막고, 첫 방문까지 막으려면 preload(되돌리기 어려움에 주의).
 - **HTTPS는 전송 구간만 지킨다.** XSS·CSRF처럼 애플리케이션 단의 공격은 따로 막아야 한다.
 
-관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[security|정보 시스템 보안(공격 기법과 암호)]], [[web-security|웹 보안: CSRF와 XSS]], [[cookie-session|쿠키와 세션]], [[local-https-mkcert|로컬 개발 환경에 HTTPS 적용하기]]
+관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[security|정보 시스템 보안(공격 기법과 암호)]], [[web-security|웹 보안: CSRF와 XSS]], [[cookie-session|쿠키와 세션]], [[local-https-mkcert|로컬 개발 환경에 HTTPS 적용하기]], [[https-migration|HTTPS 전환: 인증서 고르기부터 리다이렉트까지]]

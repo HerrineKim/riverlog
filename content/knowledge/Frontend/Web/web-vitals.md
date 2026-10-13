@@ -62,4 +62,4 @@ INP처럼 실제 상호작용이 필요한 지표는 실험실에서 재기 어�
 - Lighthouse로 원인을 찾고, 필드 데이터로 효과를 확인한다.
 - 숫자의 감각은 [[frontend-latency-numbers|프론트엔드 지연 시간 숫자]]와 함께 보면 좋다.
 
-관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[seo-basics|SEO 기초]]
+관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[seo-basics|SEO 기초]], [[responsible-javascript|책임감 있는 자바스크립트]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]]
