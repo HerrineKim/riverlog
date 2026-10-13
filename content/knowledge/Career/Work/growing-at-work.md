@@ -47,4 +47,4 @@ source: notion
 - 업무에 테스트·자동화·문서화·교육을 얹어 난이도를 올린다.
 - 이직은 끌림(pull)으로, 밀림(push)으로 하지 않는다.
 
-관련 노트: [[work-habits|사회 초년생을 위한 직장 생활 팁]], [[career-in-ai-era|AI 시대의 커리어]], [[tech-interview-tips|기술면접 잘 보는 법]]
+관련 노트: [[work-habits|사회 초년생을 위한 직장 생활 팁]], [[career-in-ai-era|AI 시대의 커리어]], [[tech-interview-tips|기술면접 잘 보는 법]], [[reputation-building|명성 쌓기와 커뮤니티 기여]]
