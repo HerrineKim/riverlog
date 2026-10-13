@@ -4,15 +4,15 @@ concept: "Frontend Frameworks"
 summary: "State of Frontend 2024 설문에서 React·Vue 다음으로 많이 쓰인 프레임워크들의 특징을 비교한다. 컴파일러, 풀스택 프레임워크, 경량 대체재, HTML 속성 기반 도구로 성격이 갈린다. Knockout부터 Svelte까지 프레임워크의 계보와 컴파일러 방식이 빠른 이유도 다룬다."
 tags: ["frontend", "javascript", "architecture"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/315", "https://velog.io/@teo/왜-Svelte스벨트를-좋아하나요", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS"]
 ---
 
-> riverkim.kr에 쓴 글(2025.06)을 다시 정리한 노트입니다. 점유율 수치는 2024년 설문 기준입니다. 프레임워크 계보와 컴파일러 방식은 테오(teo)의 「[왜 Svelte(스벨트)를 좋아하나요?](https://velog.io/@teo/왜-Svelte스벨트를-좋아하나요)」(2021.12)를 바탕으로 보강했습니다.
+> riverkim.kr에 쓴 글(2025.06)과 테오(teo)의 「[왜 Svelte(스벨트)를 좋아하나요?](https://velog.io/@teo/왜-Svelte스벨트를-좋아하나요)」(2021.12)를 바탕으로 재구성한 노트입니다.
 
 ## 얼마나 쓰이나
 
-국내 채용 시장에서는 React와 Vue 외의 프레임워크를 찾기 어렵다. 하지만 The Software House의 [State of Frontend 2024](https://tsh.io/state-of-frontend) 설문(프론트엔드 개발자 6,028명)에서 "작년에 써 봤고 좋은 경험이었다"는 응답을 보면 다른 선택지도 적지 않다.
+국내 채용 시장은 React와 Vue가 대부분이다. 하지만 The Software House의 [State of Frontend 2024](https://tsh.io/state-of-frontend) 설문(프론트엔드 개발자 6,028명)에서 "작년에 써 봤고 좋은 경험이었다"는 응답을 보면 다른 선택지도 적지 않다.
 
 ![[riverkim/315-3.jpg]]
 
@@ -59,7 +59,7 @@ React·Vue·Angular는 브라우저에서 돌아가는 **런타임 라이브러�
 
 ### Angular 2+
 
-Angular 2부터 TypeScript 지원과 컴포넌트 기반 구조로 크게 바뀌었고, 2 이상 버전을 묶어 Angular 2+라고 부른다. 라우팅·폼·HTTP 같은 기능을 프레임워크가 기본 제공해 선택할 것이 적다. 모바일 앱에 코드를 거의 그대로 가져갈 수 있다는 점도 장점으로 꼽힌다.
+Angular 2부터 TypeScript 지원과 컴포넌트 기반 구조로 크게 바뀌었다. 1.x(AngularJS)와 구분하려고 Angular 2+라고 불렀고, 지금은 그냥 Angular라고 부른다. 라우팅·폼·HTTP 같은 기능을 프레임워크가 기본 제공해 선택할 것이 적다. 최근 버전은 반응성의 중심을 RxJS에서 **Signals**로 옮기고 Zone.js 없이(zoneless) 변경을 감지하는 방향으로 바뀌었다.
 
 ### Preact
 
