@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture"]
 ---
 
-> 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08)를 묶어 요약·재구성한 노트입니다. 라이브러리 이름과 유행은 글 작성 시점 기준이라 지금은 달라졌을 수 있습니다.
+> 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08)를 바탕으로 재구성한 노트입니다.
 
 ## 아키텍처란
 
@@ -39,8 +39,7 @@ UI 소프트웨어의 본질은 단순하다. 데이터를 화면에 그리고, 
                           ┌───────────────┼────────────────┐
                           ▼               ▼                ▼
                   Context·hooks   Atom형 전역 스토어   서버 상태 관리
-                                  (Recoil, Zustand,    (React Query, SWR)
-                                   jotai)
+                                  (Zustand, Jotai)    (TanStack Query, SWR)
 ```
 
 | 단계 | Model / View / Controller | 바뀐 점과 남은 불편 |
@@ -51,8 +50,9 @@ UI 소프트웨어의 본질은 단순하다. 데이터를 화면에 그리고, 
 | 컴포넌트, Container-Presenter | 로직은 Container, 표시는 Presenter | 재사용을 위해 로직을 위로 모으자 중간 컴포넌트가 쓰지도 않는 props를 나르게 됐다(**props drilling**) |
 | Flux·Redux | Store / 하나의 큰 View / Action·Dispatch·Reducer | 비즈니스 로직을 컴포넌트 계층에서 떼어 냈다. 이때부터 **상태 관리**라고 부른다. 대신 학습 곡선과 장황한 문법 |
 | Context·hooks | 공통 조상이 데이터를 제공 | 새 개념 없이 props drilling만 막는다 |
-| Atom형 스토어 (Recoil, Zustand, jotai, Svelte store) | 컴포넌트 밖 공용 데이터에 간단히 get/set | 중간 과정은 자율, 파생 값(computed·selector)과 동기화를 제공 |
-| 서버 상태 (React Query, SWR, RTK Query) | 서버 fetch가 Model, query·mutation이 Controller | 전역 상태의 대부분은 결국 API 데이터라는 관찰. 캐싱·무효화·재요청을 맡긴다 |
+| 가벼운 전역 스토어 (Zustand, Jotai, Svelte store) | 컴포넌트 밖 공용 데이터에 간단히 get/set | 중간 과정은 자율, 파생 값(computed·selector)과 동기화를 제공. 과거에 유행한 Recoil은 2025년 저장소가 보관(archived)됐다 |
+| 시그널 (Vue 반응성, Svelte 5 runes, Angular Signals, Solid) | 값 단위로 의존을 추적해 바뀐 곳만 갱신 | 반응형 상태가 프레임워크 기본 기능으로 들어왔다 |
+| 서버 상태 (TanStack Query, SWR, RTK Query) | 서버 fetch가 Model, query·mutation이 Controller | 전역 상태의 대부분은 결국 API 데이터라는 관찰. 캐싱·무효화·재요청을 맡긴다 |
 
 Flux의 세부 구성은 [[redux|Redux와 react-redux]]에 있다.
 
@@ -62,7 +62,7 @@ Flux의 세부 구성은 [[redux|Redux와 react-redux]]에 있다.
 
 ## MVI: 흐름을 아키텍처로 정리하기
 
-MVI(Model-View-Intent)는 웹의 cycle.js에서 먼저 나온 개념이 iOS·Android 쪽에서 아키텍처 이름으로 정리된 것이다. Flux, Redux, 상태 관리가 줄곧 해 오던 일을 하나의 그림으로 설명한다.
+MVI(Model-View-Intent)는 웹의 cycle.js에서 먼저 나온 개념이 Android·iOS 쪽에서 아키텍처 이름으로 정리된 것이다. Jetpack Compose·SwiftUI 같은 선언형 UI의 단방향 데이터 흐름(UDF) 권장 구조와 같은 모양이다. Flux, Redux, 상태 관리가 줄곧 해 오던 일을 하나의 그림으로 설명한다.
 
 ### Intent를 왜 따로 두나
 
@@ -119,7 +119,7 @@ const Counter = () => {
 
 MVC, MVVM, Flux, MVI, Atomic… 실제 라이브러리는 어느 이름에도 딱 맞지 않는다. 이름은 개념의 범주를 잡기 위한 마인드셋이고, 차별화를 위해 새로 붙인 이름도 많다. AngularJS는 아예 MVW(Model-View-Whatever)라고 불러 달라고 했다.
 
-글쓴이가 본 최근 아키텍처의 공통 방향은 다음과 같다.
+MV* 계열 아키텍처가 수렴해 온 공통 방향은 다음과 같다.
 
 - 단방향 데이터 흐름
 - 선언적 프로그래밍으로 바뀐 Controller
