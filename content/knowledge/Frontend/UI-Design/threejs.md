@@ -4,7 +4,10 @@ concept: "Three.js"
 summary: "WebGL을 쉽게 쓰도록 감싼 JavaScript 3D 라이브러리 Three.js의 구성 요소(Scene·Camera·Mesh·Renderer)와 활용 사례, 장단점."
 tags: ["3d", "javascript", "webgl", "frontend"]
 source: notion
+sources: ["https://webactually.com/2017/11/09/webgl%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%9c-%ec%95%a0%eb%8b%88%eb%a9%94%ec%9d%b4%ec%85%98-%eb%b0%8f-%ec%9d%b8%ed%84%b0%eb%9e%99%ec%85%98-%ea%b8%b0%eb%b2%95/"]
 ---
+
+> 「코드로 움직임 만들기」 부분은 Karim Maaloul의 「WebGL을 사용한 애니메이션 및 인터랙션 기법」(웹액츄얼리 번역, 2017.11)을 바탕으로 보강한 노트입니다.
 
 **Three.js**는 웹 페이지에 3D 객체를 렌더링하게 해 주는 오픈 소스 JavaScript 라이브러리다. Three.js 자체가 렌더링 기술은 아니고, 저수준 그래픽 API인 **WebGL**을 쉽고 직관적으로 쓰게 감싼 래퍼다. 데모씬(컴퓨터 아트 커뮤니티) 출신 개발자 Ricardo Cabello(mrdoob)가 WebGL을 편하게 쓰려고 만들기 시작했다.
 
@@ -68,6 +71,40 @@ renderer.setAnimationLoop(() => {
 - lil-gui 같은 GUI 라이브러리를 붙이면 회전 속도·빛의 각도를 실시간으로 조절하는 패널을 만들 수 있다.
 - React에서는 **react-three-fiber**로 Three.js 객체를 JSX 컴포넌트처럼 선언할 수 있다.
 - 가방·자동차 같은 정교한 모델은 Three.js 코드로 만들지 않는다. [Blender](/knowledge/dictionary/tools/blender), Maya, Cinema 4D 등에서 모델링해 glTF로 내보낸 뒤 불러온다.
+
+## 코드로 움직임 만들기: 삼각함수 사이클
+
+키프레임 타임라인 없이, 사용자 입력에 반응하는 캐릭터 움직임을 코드로 만들 수 있다. 원리는 자동 인형(오토마톤)과 같다. **하나의 회전 각도가 돌아가면 모든 부위가 그 주기에 맞춰 움직인다.**
+
+```text
+x = cos(angle) * distance
+y = sin(angle) * distance     ← 원운동을 가로·세로 직선 운동으로 바꾼다
+```
+
+```javascript
+// 매 프레임 각도를 조금씩 늘리고, 부위마다 위상(offset)과 진폭(amp)을 달리 준다
+hero.run = function () {
+  this.cycle += 0.03
+  const t = this.cycle, amp = 4
+  this.legR.position.x = Math.cos(t) * amp
+  this.legR.position.y = Math.max(0, -Math.sin(t) * amp)   // 땅 아래로는 안 내려간다
+  this.legL.position.x = Math.cos(t + Math.PI) * amp        // 반대 다리는 반 바퀴 늦게
+  this.legL.position.y = Math.max(0, -Math.sin(t + Math.PI) * amp)
+  this.torso.position.y = 8 - Math.cos(t * 2) * amp * 0.2  // 몸통은 두 배 빠르게 살짝 출렁
+  this.head.rotation.x = Math.cos(t) * amp * 0.02
+}
+```
+
+| 조절값 | 효과 |
+| --- | --- |
+| 각도 증가량 | 속도. 크게 하면 빨리 달린다 |
+| 위상 차이 (`+ PI`) | 왼쪽·오른쪽처럼 번갈아 움직이는 부위 |
+| 주파수 (`t * 2`) | 한 걸음에 두 번 출렁이는 몸통처럼 빠른 반복 |
+| 진폭 | 움직임의 크기. 귀·혀 같은 작은 부위에도 작게 주면 생동감이 생긴다 |
+
+- 먼저 **관찰**한다. 슬로 모션 영상에서 달릴 때 다리뿐 아니라 귀·입·몸통이 같은 주기로 움직이는 것을 본다.
+- 부위는 `THREE.Group`으로 몸통에 묶어 함께 움직이게 한다.
+- 정점 수와 부위 수를 일부러 적게 제한하면, 오히려 감정(편안함·기쁨·불안)을 움직임 하나로 또렷하게 표현할 수 있다.
 
 ## 활용 사례
 
