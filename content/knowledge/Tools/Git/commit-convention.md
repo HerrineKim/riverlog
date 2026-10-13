@@ -4,6 +4,8 @@ concept: "Commit Convention"
 summary: "좋은 커밋 메시지의 일반 원칙과 type(scope): subject 형식의 컨벤션, 커밋 템플릿 설정, husky와 commitlint로 규칙을 자동 검사하는 방법."
 tags: ["git", "collaboration", "convention", "automation"]
 source: notion
+date: "2026-10-13"
+sources: ["https://www.conventionalcommits.org/ko/v1.0.0/", "https://commitlint.js.org/"]
 ---
 
 커밋 메시지는 나중에 변경 이력을 찾는 사람이 읽는 **문서**다. 팀원마다 형식이 다르면 이력을 훑어보기 어렵기 때문에, 형식을 정하고(컨벤션) 커밋할 때 자동으로 검사하게 만든다.
@@ -18,9 +20,9 @@ source: notion
 
 참고 글: [좋은 git 커밋 메시지를 작성하기 위한 7가지 약속](https://meetup.toast.com/posts/106), [좋은 git commit 메시지를 위한 영어 사전](https://blog.ull.im/engineering/2019/03/10/logs-on-git.html)
 
-## 메시지 형식: Udacity 스타일
+## 메시지 형식: Conventional Commits
 
-널리 쓰이는 Udacity 커밋 컨벤션은 세 부분으로 나뉜다. Angular 규칙에서 나온 **Conventional Commits** 표준도 거의 같은 구조다.
+가장 널리 쓰는 형식은 Angular 커밋 규칙에서 나온 **[Conventional Commits](https://www.conventionalcommits.org/ko/v1.0.0/)** 표준이다. Udacity 컨벤션도 같은 세 부분 구조다. 이 형식을 지키면 변경 로그 생성과 시맨틱 버전 결정(`feat` → minor, `BREAKING CHANGE` → major)을 도구가 자동으로 해 준다.
 
 ```text
 <type>(<scope>): <subject>      ← 제목: 무엇을 바꿨는지 짧게
@@ -35,21 +37,24 @@ source: notion
 - **footer**: 하위 호환이 깨지는 변경(BREAKING CHANGE)은 상세 설명과 함께 적고, 처리한 이슈는 `Closes #123, #124`처럼 표기하면 GitHub가 이슈를 자동으로 닫는다.
 - scope는 선택. 이슈 번호를 제목에 붙이는 팀도 있다: `feat(login): #42 - 소셜 로그인 추가`
 
-### type 예시
+### type 목록
 
-팀에서 쓰던 이모지 + type 조합:
+`@commitlint/config-conventional`이 허용하는 type은 다음과 같다.
 
 | type | 의미 |
 | --- | --- |
-| 🎨 `feat` | 기능 추가·개선 |
-| 🐛 `fix` | 오류 수정 |
-| 💄 `style` | 코드 동작 변경 없는 포맷팅 |
-| 🧪 `test` | 테스트 추가·수정 |
-| ♻️ `refactor` | 동작은 그대로, 구조 개선 |
-| 🗑️ `cleanup` | 안 쓰는 코드 정리 |
-| 🚧 `chore` | 환경 설정, 빌드·패키지 작업 |
+| `feat` | 기능 추가 |
+| `fix` | 버그 수정 |
+| `docs` | 문서만 변경 |
+| `style` | 코드 동작 변경 없는 포맷팅 |
+| `refactor` | 동작은 그대로, 구조 개선 |
+| `perf` | 성능 개선 |
+| `test` | 테스트 추가·수정 |
+| `build` · `ci` | 빌드 시스템·CI 설정 |
+| `chore` | 그 밖의 잡무(패키지 정리 등) |
+| `revert` | 이전 커밋 되돌리기 |
 
-규칙을 정규식으로 쓰면 이런 모양이다.
+팀에 따라 type 앞에 이모지를 붙이거나(🐛 `fix`) `cleanup` 같은 고유 type을 더한다. 그런 규칙을 정규식으로 쓰면 이런 모양이다.
 
 ```javascript
 /^(🎨|🐛|💄|♻️|🗑️|🚧|🧪)(feat|fix|style|refactor|cleanup|chore|test)\s:\s.+/
