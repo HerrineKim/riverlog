@@ -53,6 +53,7 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/ai-data/vibe-coding-beautiful-ui": "/knowledge/dictionary/ai-data/ai-frontend-design-prompting",
   "/knowledge/dictionary/career/product/product-owner": "/knowledge/dictionary/career/product/developer-leadership",
   "/knowledge/dictionary/life-and-learning/writing/sentence-craft": "/knowledge/dictionary/life-and-learning/writing/persuasive-writing",
+  "/knowledge/dictionary/career/work/phone-etiquette": "/knowledge/dictionary/career/work/work-habits",
 };
 
 const nextConfig: NextConfig = {
