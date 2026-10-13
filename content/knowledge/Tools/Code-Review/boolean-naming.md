@@ -4,7 +4,7 @@ concept: "Boolean Naming"
 summary: "불리언 변수 이름을 영어 문법에 맞게 짓는 네 가지 형태(is, 조동사, has, 3인칭 단수 동사)와 흔한 실수(is + 동사원형)를 정리한다. Bool·mutating·nonmutating 함수 이름을 구분하는 법도 함께 다룬다."
 tags: ["code-review", "clean-code", "naming", "english", "convention"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://soojin.ro/blog/naming-boolean-variables"]
 ---
 
@@ -54,7 +54,7 @@ var canEdit: Bool      // 편집할 수 있는가?
 
 ### 4. 동사 3인칭 단수
 
-원문이 "끝판왕"이라 부른 형태다. 인스턴스가 주어인 문장으로 읽히므로 동사에 **-s/-es**를 붙인다.
+가장 자연스럽게 읽히는 형태다. 인스턴스가 주어인 문장으로 읽히므로 동사에 **-s/-es**를 붙인다.
 
 | 동사 | 뜻 | 예 |
 | --- | --- | --- |
