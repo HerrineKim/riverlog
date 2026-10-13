@@ -1,18 +1,18 @@
 ---
 title: "JavaScript는 인터프리터 언어일까, 컴파일 언어일까"
 concept: "JS Engine"
-summary: "현대 JS 엔진(V8)은 파싱 → 바이트코드 실행 → 자주 쓰는 코드만 JIT 컴파일하는 혼합 방식이라 둘 중 하나로 딱 자르기 어렵다. V8 파이프라인과 TypeScript 컴파일러·Babel의 단계를 비교한다."
+summary: "현대 JS 엔진(V8)은 파싱 → 바이트코드 실행 → 자주 쓰는 코드만 단계적으로 JIT 컴파일하는 혼합 방식이라 둘 중 하나로 딱 자르기 어렵다. V8의 Ignition·Sparkplug·Maglev·TurboFan 파이프라인과 TypeScript 컴파일러·Babel의 단계를 비교한다."
 tags: ["javascript", "typescript", "browser", "nodejs"]
 source: other
-date: "2026-10-12"
-sources: ["https://ryankim.hashnode.dev/js"]
+date: "2026-10-13"
+sources: ["https://ryankim.hashnode.dev/js", "https://v8.dev/blog/maglev", "https://v8.dev/blog/sparkplug"]
 ---
 
-> ryankim.hashnode.dev의 글 「[Js는 인터프리터 언어일까, 컴파일 언어일까?](https://ryankim.hashnode.dev/js)」(2024.02)를 요약·재구성한 노트입니다. V8 파이프라인 설명은 글이 기준으로 삼은 V8 9.1 시점이라 지금은 바뀌었을 수 있습니다.
+> ryankim.hashnode.dev의 글 「[Js는 인터프리터 언어일까, 컴파일 언어일까?](https://ryankim.hashnode.dev/js)」(2024.02)를 바탕으로 재구성한 노트입니다.
 
 ## 질문
 
-MDN은 JS를 "가벼운 인터프리터(또는 JIT 컴파일) 언어"라고 부른다. 반면 『You Don't Know JS Yet』의 저자는 실행 전에 문법 오류를 잡아 주므로 **정신적으로는 컴파일 언어**라고 본다. 이 구분이 중요한 이유는 **오류가 언제 잡히는지**가 달라지기 때문이다.
+MDN은 JS를 "가벼운 인터프리터(또는 JIT 컴파일) 언어"로 정의한다. 한편 실행 전에 문법 오류를 잡아 주므로 **사실상 컴파일 언어**로 봐야 한다는 관점도 있다(『You Don't Know JS Yet』). 이 구분이 중요한 이유는 **오류가 언제 잡히는지**가 달라지기 때문이다.
 
 | 입장 | 근거 |
 | --- | --- |
@@ -32,19 +32,24 @@ Parser ── 어휘 분석(토큰화) → 구문 분석(SyntaxError는 여기�
   ▼
 Ignition (인터프리터) ── AST → 바이트코드 생성 → 실행 ★실제 코드 실행
   │                        └ 실행하며 프로파일링·피드백 수집
-  ├──────────────▶ Sparkplug (비최적화 컴파일러) ── 바이트코드 → 기계어, 빠르게
-  └──────────────▶ TurboFan  (최적화 컴파일러)  ── 피드백 기반 최적화 기계어
-                                                  └ 가정이 깨지면 역최적화
+  ▼ 자주 실행될수록 다음 단계로
+Sparkplug (베이스라인 컴파일러) ── 바이트코드 → 기계어, 거의 즉시
+  ▼
+Maglev    (중간 단계 최적화 컴파일러) ── 피드백 기반으로 빠르게 "충분히 좋은" 기계어
+  ▼
+TurboFan  (최상위 최적화 컴파일러) ── 가장 뜨거운 코드만 공격적으로 최적화
+                                      └ 가정이 깨지면 역최적화
 ```
 
 | 단계 | 하는 일 | 알아 둘 점 |
 | --- | --- | --- |
 | Parser | 코드를 토큰으로 쪼개고 문법을 검사해 AST(추상 구문 트리)를 만든다 | `SyntaxError: Unexpected token`은 이 단계의 오류다 |
 | Ignition | AST를 바이트코드(중간 언어, IR)로 바꿔 실행한다 | 바이트코드 실행 직전에 **실행 컨텍스트**가 만들어진다. 호이스팅·this 바인딩·외부 렉시컬 환경 참조가 여기서 정해진다 |
-| Sparkplug | 바이트코드를 기계어로 바로 옮긴다 | AST 분석·디슈가링을 건너뛰어 빠르다. 뒤에 TurboFan이 있으니 최적화는 적게 한다 |
-| TurboFan | 프로파일 데이터로 최적화된 기계어를 만든다 | 히든 클래스, 인라인 캐싱 같은 기법을 쓴다. 필요 없어지면 역최적화(deoptimization)한다 |
+| Sparkplug | 바이트코드를 기계어로 바로 옮긴다(2021) | 최적화 없이 거의 즉시 컴파일한다. 인터프리터 비용만 걷어 낸다 |
+| Maglev | 수집한 타입 피드백으로 빠르게 최적화한다(2023, Chrome 117) | Sparkplug와 TurboFan 사이를 메운다. 컴파일은 TurboFan보다 훨씬 빠르고, 결과는 Sparkplug보다 빠르다 |
+| TurboFan | 프로파일 데이터로 최적화된 기계어를 만든다 | 히든 클래스, 인라인 캐싱, 인라이닝 같은 기법을 쓴다. 가정이 깨지면 역최적화(deoptimization)한다 |
 
-어느 컴파일러로 보낼지는 반복 횟수, 코드 양 같은 실행 정보로 정한다.
+어느 단계로 올릴지는 호출·반복 횟수 같은 실행 정보로 정한다. 컴파일 비용과 실행 속도를 맞바꾸는 **단계적 JIT(tiered compilation)** 다.
 
 ## TypeScript 컴파일러와 비교
 
