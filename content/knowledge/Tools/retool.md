@@ -4,11 +4,11 @@ concept: "Retool"
 summary: "어드민 페이지·대시보드 같은 내부 도구를 UI 개발 없이 약간의 JS와 SQL로 만드는 로우 코드 플랫폼 Retool의 특징과 어울리는 쓰임."
 tags: ["tools", "productivity", "database", "frontend"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/266"]
 ---
 
-> riverkim.kr에 쓴 글을 다시 정리한 노트입니다. 기능 목록은 글을 쓴 시점(2023) 기준입니다.
+> riverkim.kr에 쓴 글을 다시 정리한 노트입니다.
 
 ## 로우 코드와 Retool
 
