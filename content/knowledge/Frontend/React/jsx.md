@@ -4,7 +4,7 @@ concept: "JSX"
 summary: "JavaScript 안에서 HTML처럼 UI를 선언하는 JSX 문법과, 그 결과물인 불변 React 엘리먼트의 렌더링."
 tags: ["react", "jsx", "javascript", "frontend"]
 source: til
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/134", "https://riverkim.kr/299"]
 ---
 
@@ -22,7 +22,7 @@ function App() {
 }
 ```
 
-React 17부터는 새 JSX 변환(`react/jsx-runtime`)을 써서 파일마다 `import React`를 하지 않아도 된다.
+지금의 JSX 변환(React 17에서 도입된 `react/jsx-runtime`)은 `createElement` 대신 `jsx()` 호출을 만들고, 이 함수를 자동으로 import하므로 파일마다 `import React`를 쓰지 않는다.
 
 ## JSX 문법 규칙
 
@@ -183,7 +183,7 @@ const root = createRoot(document.getElementById('root'))
 root.render(<App />)
 ```
 
-참고: React 17 이하에서 쓰던 `ReactDOM.render(<App />, document.getElementById('root'))`는 React 18에서 deprecated, React 19에서 제거되었다. 강의 자료에 이 형태가 나오면 위 방식으로 바꿔 쓴다.
+과거에는 `ReactDOM.render(<App />, document.getElementById('root'))`를 썼다. React 18에서 deprecated, React 19에서 제거됐으므로 옛 코드에서 이 형태를 보면 `createRoot`로 바꾼다.
 
 ## 핵심 정리
 
