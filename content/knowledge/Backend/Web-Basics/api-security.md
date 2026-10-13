@@ -49,11 +49,13 @@ API 게이트웨이  ⑤ 운영   레이트 리밋 · 트래픽 관리
 
 | 항목 | 할 일 |
 | --- | --- |
-| 강한 인증(Authentication) | OAuth, OpenID Connect 같은 검증된 프로토콜을 쓴다 |
+| 강한 인증(Authentication) | OAuth 2.0·OpenID Connect 같은 검증된 프로토콜을 쓴다. 인가 코드 흐름에는 PKCE를 붙이고 implicit·password 흐름은 쓰지 않는다. 사용자 로그인에는 패스키(WebAuthn)를 지원한다 |
 | 엄격한 인가(Authorization) | 리소스에 접근하기 전에 매번 권한을 확인한다 |
 | 최소 권한(Least Privilege) | 사용자에게 꼭 필요한 만큼만 권한을 준다 |
 | 안전한 세션 쿠키 | 세션 쿠키에 `HttpOnly`와 `Secure` 플래그를 건다 |
 | API 키 관리 | 키를 안전한 곳에 저장하고 주기적으로 교체(rotate)한다 |
+
+OAuth의 보안 권고는 RFC 9700(OAuth 2.0 Security Best Current Practice, 2025)에 모여 있고, 이를 본문에 반영한 OAuth 2.1은 2026년 10월 기준 아직 IETF 초안이다. ([RFC 9700](https://datatracker.ietf.org/doc/rfc9700/), [OAuth 2.1 초안](https://datatracker.ietf.org/doc/draft-ietf-oauth-v2-1/))
 
 **인증은 "누구인가", 인가는 "이걸 해도 되는가"다**. 로그인만 확인하고 리소스 소유자를 확인하지 않으면 남의 데이터를 ID만 바꿔 조회할 수 있다.
 

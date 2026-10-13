@@ -4,6 +4,7 @@ concept: "Data Flow"
 summary: "데이터가 Presentation·Application·Data 티어를 거쳐 흐르는 방식을 기준으로 모놀리식 3-Tier, MSA, DevOps, 보안 요소를 정리한 아키텍처 개관."
 tags: ["architecture", "backend", "msa", "security", "devops"]
 source: notion
+date: "2026-10-13"
 ---
 
 서비스를 설계하거나 회의에서 구조를 논의할 때, **데이터가 어디서 들어와 어디를 거쳐 어디에 저장되는지(Data Flow)를** 그릴 수 있으면 대화를 빠르게 이해하고 더 정확하게 설계·개발할 수 있다. 결과적으로 개발 기간도 줄어든다.
@@ -28,7 +29,7 @@ source: notion
 2. **BFF(Backend For Frontend)**: 화면(웹·앱)별로 필요한 데이터를 여러 서비스에서 모아 주는 중간 서버.
 3. **메시지 큐/브로커(RabbitMQ, Kafka)**: 서비스 사이의 데이터를 비동기로 전달해 결합도를 낮춘다.
 
-> MSA는 장점만 있는 것이 아니라 운영 복잡도가 크게 늘어난다. 현업에서도 아직 과장되거나 불완전하게 도입되는 경우가 많으므로, 필요가 분명할 때 선택한다.
+> MSA는 배포·관측·데이터 정합성 등 운영 복잡도를 크게 늘린다. 팀과 트래픽 규모가 독립 배포를 필요로 할 때 선택하고, 그 전에는 모듈을 잘 나눈 모놀리식(모듈러 모놀리스)이 대개 더 싸다.
 
 ## DevOps와 탈중앙화
 
@@ -37,12 +38,12 @@ source: notion
 
 ## 보안 관점에서 챙길 것
 
-개발에 집중하다 보면 놓치기 쉽지만 현업에서는 보안을 매우 엄격하게 따진다.
+보안은 데이터가 지나는 구간마다 따로 설계한다.
 
 - **전송 구간 암호화**: TLS(구 SSL)로 데이터 중간 탈취를 막는다. Let's Encrypt 인증서를 발급·갱신해 주는 **Certbot**이 대표 도구다.
 - **포트**: 0~1023번은 운영체제가 관리하는 well-known 포트 영역이다. ([웹 앱의 요청·응답 구조](Backend/Web-Basics/http-web-architecture))
 - **저장 데이터 보호**: 비밀번호는 **bcrypt** 같은 단방향 해시로, 복호화가 필요한 민감 데이터는 **AES-256** 같은 대칭키 암호로 저장한다.
-- **인증 방식의 변화**: 세션·DB 토큰 방식은 요청마다 서버가 DB·세션 저장소를 오가며 유효한 사용자인지 확인해야 해 부담이 컸다. Stateless한 REST가 확산되면서, 서명으로 자체 검증되는 **JWT**를 한 번 발급해 쓰는 방식이 널리 쓰이게 되었다. ([JWT 인증](Backend/NestJS/auth-jwt-passport))
+- **인증 상태 저장 위치**: 서버 세션은 세션 저장소(Redis 등)를 조회하는 대신 즉시 무효화가 쉽고, **JWT**는 서명으로 자체 검증되어 저장소 조회가 없는 대신 발급 뒤 취소가 어렵다. 같은 도메인의 웹 앱은 세션 + HttpOnly 쿠키, 모바일·여러 서비스가 공유하는 API는 짧은 수명의 JWT + Refresh Token이 흔한 조합이다. 로그인 수단으로는 비밀번호 대신 패스키(WebAuthn)를 지원하는 서비스가 늘고 있다. ([JWT 인증](Backend/NestJS/auth-jwt-passport))
 
 ## 더 세밀한 그림
 
@@ -52,6 +53,6 @@ source: notion
 
 - Presentation → Application → Data 티어로 데이터 흐름을 그려 보는 습관을 들인다.
 - MSA는 서비스별 DB, BFF, 메시지 큐로 흐름이 복잡해지는 대신 독립 배포가 가능해진다. 배포 단위인 컨테이너와의 궁합은 [[vm-vs-container|VM과 컨테이너]] 참고.
-- 전송(TLS)·저장(해시·암호화)·인증(JWT) 각 구간의 보안을 함께 설계한다.
+- 전송(TLS)·저장(해시·암호화)·인증(세션·JWT) 각 구간의 보안을 함께 설계한다.
 
 관련 노트: [[vm-vs-container|VM과 컨테이너]], [[security|정보 시스템 보안]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[bff|BFF (Backend For Frontend)]]

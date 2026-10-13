@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/"]
 ---
 
-> 카카오엔터테인먼트 박수빈(cheese)의 글 「[카카오페이지는 BFF(Backend For Frontend)를 어떻게 적용했을까?](https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/)」(2022.03)를 요약·재구성한 노트입니다. 라이브러리 구성은 2022년 기준입니다.
+> 카카오엔터테인먼트 박수빈(cheese)의 글 「[카카오페이지는 BFF(Backend For Frontend)를 어떻게 적용했을까?](https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/)」(2022.03)를 요약·재구성한 노트입니다.
 
 ## 왜 필요한가
 
@@ -92,7 +92,7 @@ Apollo Client는 응답 객체를 `__typename:id`를 키로 **정규화해 저�
 | `keyFields` | Apollo Client의 캐시 키 설정으로 식별 기준을 바꾼다 |
 | 라이브러리 교체 | 카카오페이지는 **쿼리(문서) 단위로 캐시하는 urql**로 바꿨다 |
 
-## 카카오페이지 웹의 구성
+## 사례: 카카오페이지 웹의 구성(2022)
 
 | 역할 | 도구 |
 | --- | --- |
@@ -103,9 +103,9 @@ Apollo Client는 응답 객체를 `__typename:id`를 키로 **정규화해 저�
 
 GraphQL 캐시만으로 충분할 것 같지만, 그린 뒤 **중간 데이터를 비동기로 고치는 일**(클릭 시 추가 로딩, 무한 스크롤로 채우기)이 복잡해졌다. 그래서 GraphQL 응답을 정규화해 Redux에 넣었다. **가져오기(urql)와 저장·사용(Redux)은 목적이 다르다**는 판단이다.
 
-## 2026년 시점에서
+## Next.js로 BFF 만들기
 
-원문 이후 Next.js에는 BFF 역할을 하는 기본 기능이 늘었다. Next.js 16 문서는 "Backend for Frontend" 가이드에서 **Route Handler**(`app/**/route.ts`), Proxy, rewrites로 Next.js를 BFF로 쓰는 법을 안내하고, 완전한 백엔드 대체가 아니라 **공개된 API 계층**이라고 선을 긋는다. 서버 컴포넌트도 렌더링 중에 여러 API를 서버에서 불러 필요한 값만 클라이언트로 넘기므로, GraphQL 없이도 BFF의 상당 부분을 대신한다. 다만 여러 플랫폼이 같은 BFF 계층을 공유해야 하면 GraphQL BFF가 여전히 선택지다.
+Next.js에는 BFF 역할을 하는 기본 기능이 있다. Next.js 16 문서는 "Backend for Frontend" 가이드에서 **Route Handler**(`app/**/route.ts`), Proxy, rewrites로 Next.js를 BFF로 쓰는 법을 안내하고, 완전한 백엔드 대체가 아니라 **공개된 API 계층**이라고 선을 긋는다. 서버 컴포넌트도 렌더링 중에 여러 API를 서버에서 불러 필요한 값만 클라이언트로 넘기므로, GraphQL 없이도 BFF의 상당 부분을 대신한다. 다만 여러 플랫폼이 같은 BFF 계층을 공유해야 하면 GraphQL BFF가 여전히 선택지다.
 
 ## 정리
 
