@@ -4,6 +4,8 @@ concept: "Re-rendering"
 summary: "리렌더링을 일으키는 원인, React.memo가 효과 없는 경우, useQuery가 최소 두 번 렌더링하는 이유, DevTools로 추적하고 줄이는 순서."
 tags: ["react", "rendering", "performance", "debugging", "frontend"]
 source: notion
+date: "2026-10-13"
+sources: ["https://react.dev/learn/react-compiler"]
 ---
 
 React 컴포넌트는 **state가 바뀌거나, 부모가 렌더링되거나, 구독한 Context·외부 스토어 값이 바뀌면** 다시 렌더링된다. 리렌더링 자체는 나쁜 것이 아니지만, 값이 그대로인데 여러 번 다시 그려진다면 원인을 찾아 줄일 수 있다. `React.memo`를 여기저기 씌우기보다 **렌더링을 일으키는 원인을 먼저 찾는다**. 메모이제이션 API 자체는 [Hooks](/knowledge/dictionary/frontend/react/hooks)의 메모이제이션 절 참고.
@@ -41,7 +43,7 @@ react-query(TanStack Query)의 `useQuery`를 쓰는 컴포넌트는 최소 두 �
 
 1. 렌더링을 촉발하는 원인을 찾는다: 자기 state 변경인가, 부모 렌더링인가, Context인가, 데이터 패칭 상태인가.
 2. 원인을 제거한다: state를 실제로 쓰는 컴포넌트 가까이로 내리기, 부모에서 바뀌는 부분과 안 바뀌는 부분을 컴포넌트로 분리하기, 필요 없는 state 제거하기.
-3. 그래도 남는 경우에만 `React.memo` + `useCallback`/`useMemo`로 props 참조를 고정한다.
+3. 그래도 남는 경우에만 `React.memo` + `useCallback`/`useMemo`로 props 참조를 고정한다. React Compiler를 켠 프로젝트에서는 이 단계의 메모이제이션을 컴파일러가 자동으로 넣으므로, 손으로 고정할 곳은 컴파일러가 건너뛴 컴포넌트 정도다.
 4. 측정한다. 렌더링 몇 번이 실제로 느린지 Profiler로 확인하고, 느리지 않다면 굳이 최적화하지 않는다.
 
 ## 핵심 정리
