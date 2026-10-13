@@ -8,11 +8,11 @@ date: "2026-10-12"
 sources: ["https://cep.dev/posts/every-infrastructure-decision-i-endorse-or-regret-after-4-years-running-infrastructure-at-a-startup/", "https://news.hada.io/topic?id=13564"]
 ---
 
-> GeekNews의 요약 「[스타트업에서 4년간 인프라를 운영하며 좋았던/후회하는 (거의) 모든 인프라 결정들](https://news.hada.io/topic?id=13564)」(2024.02)을 요약·재구성한 노트입니다. 원 자료는 Jack Lindamood의 「[(Almost) Every infrastructure decision I endorse or regret after 4 years running infrastructure at a startup](https://cep.dev/posts/every-infrastructure-decision-i-endorse-or-regret-after-4-years-running-infrastructure-at-a-startup/)」(2024.02)입니다. 도구 평가와 가격은 글 작성 시점 기준이라 지금은 바뀌었을 수 있습니다.
+> GeekNews의 요약 「[스타트업에서 4년간 인프라를 운영하며 좋았던/후회하는 (거의) 모든 인프라 결정들](https://news.hada.io/topic?id=13564)」(2024.02)을 요약·재구성한 노트입니다. 원 자료는 Jack Lindamood의 「[(Almost) Every infrastructure decision I endorse or regret after 4 years running infrastructure at a startup](https://cep.dev/posts/every-infrastructure-decision-i-endorse-or-regret-after-4-years-running-infrastructure-at-a-startup/)」(2024.02)입니다.
 
-## 어떤 글인가
+## 개요
 
-빠르게 커진 AI 스타트업에서 인프라를 4년 동안 맡은 사람이, 초기에 내린 결정 하나하나에 **지지(Endorse)** 또는 **후회(Regret)를** 매긴 목록이다. 개별 도구 평가보다 그 밑에 깔린 판단 기준이 더 쓸모 있다.
+빠르게 성장한 AI 스타트업이 4년 동안(2020~2024) 내린 인프라 결정을 **지지(Endorse)** 와 **후회(Regret)로** 나눈 사례 목록이다. 개별 도구 평가는 시점에 묶여 있으므로, 먼저 아래 판단 기준을 보고 영역별 표는 그 근거로 읽는다. 이후 바뀐 사실은 표 아래에 따로 적었다.
 
 ## 판단 기준
 
@@ -67,9 +67,16 @@ sources: ["https://cep.dev/posts/every-infrastructure-decision-i-endorse-or-regr
 | SealedSecrets | 후회 | 개발자에게 어렵고 AWS의 자동 교체를 잃는다 |
 | ExternalSecrets | 지지 | AWS 시크릿을 k8s로 동기화. 이해하기 쉽다 |
 | ExternalDNS · cert-manager | 지지 | 4년간 거의 문제없었다 |
-| Nginx 인그레스 | 지지 | 오래됐지만 검증됐다 |
+| Nginx 인그레스 | 지지 | 오래됐지만 검증됐다 (2026년 3월 유지보수 종료, 아래 참고) |
 | AWS VPN + Okta | 지지 | 설정과 이해가 단순하다 |
 | 자체 IP 블록 구매 | 지지 | 외부 파트너에게 화이트리스트를 주기 쉽다 |
+
+### 이후 바뀐 것 (2026년 10월 기준)
+
+| 항목 | 변화 |
+| --- | --- |
+| 커뮤니티 Ingress NGINX | 2026년 3월 유지보수가 끝났다. 쿠버네티스는 후속으로 **Gateway API**를 권한다([[kubernetes-request-path\|요청 경로 노트]]) |
+| Terraform | 2023년 라이선스가 BSL로 바뀌었고, 오픈소스 포크 **OpenTofu**가 리눅스 재단에서 이어진다. Terraform Cloud는 2024년 HCP Terraform으로 이름이 바뀌었다 |
 
 ### 운영 · 관측
 

@@ -4,6 +4,7 @@ concept: "CI/CD"
 summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지 이어 주는(CD) 파이프라인의 개념과 GitLab CI/CD·Docker 활용."
 tags: ["ci-cd", "devops", "docker", "gitlab", "git"]
 source: notion
+date: "2026-10-13"
 ---
 
 배포 과정은 사람이 손으로 할수록 **휴먼 에러**가 잦다. 빌드 명령을 빠뜨리거나, 테스트를 건너뛰거나, 엉뚱한 서버에 올리는 식이다. CI/CD는 이 과정을 파이프라인으로 자동화해 매번 같은 절차가 실행되게 만든다.
@@ -38,7 +39,7 @@ stages:
 
 test:
   stage: test
-  image: node:24   # LTS 버전 사용 (Node 20은 지원 종료)
+  image: node:24   # LTS 버전 사용 (2026년 10월 기준 22·24가 LTS, 20은 2026년 4월 지원 종료)
   script:
     - npm ci
     - npm test
@@ -66,10 +67,14 @@ deploy:
 
 | 도구 | 특징 |
 | --- | --- |
-| Jenkins | 오래된 오픈소스. 플러그인이 풍부하고 자체 서버에 설치해 운영 |
-| Bamboo | Atlassian 제품. Jira·Bitbucket과 연동 |
+| GitHub Actions | GitHub에 내장. `.github/workflows/*.yml`. 공개 액션을 조합해 쓰며 GitHub 저장소의 기본 선택지 |
 | GitLab CI/CD | GitLab에 내장. `.gitlab-ci.yml` |
-| GitHub Actions | GitHub에 내장. `.github/workflows/*.yml` |
+| Bitbucket Pipelines | Bitbucket에 내장. Jira와 연동된다. 같은 Atlassian의 Bamboo는 자체 호스팅용(Data Center) 제품이다 |
+| Jenkins | 오래된 오픈소스. 플러그인이 풍부하고 자체 서버에 설치해 운영한다 |
+| CircleCI | 저장소 호스팅과 분리된 SaaS CI |
+| Argo CD · Flux | 쿠버네티스용 **GitOps** CD. 클러스터가 Git 저장소에 선언된 상태를 끌어와(pull) 맞춘다 |
+
+Vercel·Netlify 같은 배포 플랫폼은 저장소를 연결하면 푸시마다 빌드·미리보기 배포를 자동으로 해 주므로, 프론트엔드 앱은 별도 CD 파이프라인 없이 운영하기도 한다.
 
 ## 핵심 정리
 
