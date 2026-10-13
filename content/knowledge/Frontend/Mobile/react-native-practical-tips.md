@@ -4,13 +4,13 @@ concept: "RN Tips"
 summary: "입력창이 키보드에 가려질 때 KeyboardAvoidingView와 ScrollView를 함께 쓰는 법, AsyncStorage로 키-값 저장하기, ADB로 안드로이드 실기기 연결하기, Snackbar·전역 폰트 같은 자잘한 도구."
 tags: ["react-native", "mobile", "frontend", "tips"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/165", "https://riverkim.kr/154", "https://riverkim.kr/156", "https://riverkim.kr/152", "https://riverkim.kr/150"]
+date: "2026-10-13"
+sources: ["https://reactnative.dev/blog/2026/06/11/react-native-0.86", "https://riverkim.kr/165", "https://riverkim.kr/154", "https://riverkim.kr/156", "https://riverkim.kr/152", "https://riverkim.kr/150"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다. 2022년 React Native 앱을 유지보수하며 부딪힌 문제들입니다.
+> riverkim.kr에 쓴 글들을 바탕으로 재구성한 노트입니다.
 
-React Native 기본 컴포넌트와 스타일은 [React Native 기초](/knowledge/dictionary/frontend/mobile/react-native-basics)에, 리스트와 상호작용은 [React Native 상호작용과 리스트](/knowledge/dictionary/frontend/mobile/react-native-interaction)에 있다. 이 노트는 실제 앱에서 자주 만나는 문제와 도구를 모았다.
+React Native 기본 컴포넌트와 스타일은 [React Native 기초](/knowledge/dictionary/frontend/mobile/react-native-basics)에, 리스트와 상호작용은 [React Native 상호작용과 리스트](/knowledge/dictionary/frontend/mobile/react-native-interaction)에 있다. 이 노트는 실무에서 자주 만나는 문제와 도구를 모았다.
 
 ## 1. 입력창이 키보드에 가려질 때
 
@@ -39,7 +39,7 @@ import { KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
 | `position` | 뷰 전체를 위로 옮긴다. 원래 키보드 위치와 떨어져 있던 만큼 떨어진 채로 올라온다 |
 
 - **`keyboardVerticalOffset`**: 키보드와 내용 사이에 추가로 둘 거리. 헤더 높이처럼 기기·OS마다 다른 값이 있어 `Platform.OS`로 나눠 준다.
-- Android는 `AndroidManifest.xml`의 `windowSoftInputMode="adjustResize"` 설정만으로 해결되는 경우도 많다. 그 경우 `behavior`를 주지 않는 편이 겹침이 없다.
+- 예전 Android 앱은 `AndroidManifest.xml`의 `windowSoftInputMode="adjustResize"`만으로 해결되는 경우가 많았다. 하지만 Android 15(target SDK 35)부터 앱이 기본으로 **edge-to-edge**로 그려지면서 `adjustResize`가 화면을 줄여 주지 않는다. React Native 0.86에서 edge-to-edge 환경의 `KeyboardAvoidingView`가 고쳐졌고, 더 세밀한 제어가 필요하면 `react-native-keyboard-controller`를 쓴다(Expo 문서도 이것을 권한다).
 
 ### ScrollView에 정렬 스타일을 줬더니 에러가 날 때
 
@@ -90,7 +90,7 @@ const settings = raw !== null ? JSON.parse(raw) : null
 ```bash
 adb devices                    # 연결된 기기 목록. unauthorized면 폰에서 허용 팝업을 누른다
 adb reverse tcp:8081 tcp:8081  # 기기에서 PC의 Metro 번들러(8081)에 접속할 수 있게 연결
-npx react-native run-android
+npx expo run:android          # Expo 프로젝트 (Community CLI 프로젝트는 npx react-native run-android)
 ```
 
 ## 4. 자잘한 도구
@@ -108,4 +108,4 @@ npx react-native run-android
 - 로컬 키-값 저장은 `@react-native-async-storage/async-storage`. 문자열만 저장되고 암호화되지 않는다.
 - 실기기 개발은 USB 디버깅 + `adb devices`로 연결을 확인하는 것부터 시작한다.
 
-관련 노트: [[react-native-basics|React Native 기초와 스타일링]], [[react-native-interaction|React Native 상호작용과 리스트]], [[codepush|CodePush로 React Native 앱 업데이트하기]]
+관련 노트: [[react-native-basics|React Native 기초와 스타일링]], [[react-native-interaction|React Native 상호작용과 리스트]], [[codepush|React Native OTA 업데이트와 CodePush]]
