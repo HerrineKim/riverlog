@@ -108,3 +108,5 @@ CSS의 두 번째 원칙: **display에 따라 크기와 배치가 달라진다.*
 - `box-sizing: border-box`를 전역으로 적용하면 크기 계산이 단순해진다.
 - `inline`은 width/height와 상하 margin을 무시한다. 필요하면 `inline-block`.
 - `display: none`은 공간까지 제거, `visibility: hidden`은 공간은 유지.
+
+관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]]
