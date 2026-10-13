@@ -66,6 +66,7 @@ sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers"]
 - 타임스탬프 단위(초·밀리초·나노초)가 시스템마다 다르다.
 - Java·JS의 월은 0부터 시작한다. 날짜 포맷 문자 `M`/`m`의 뜻도 언어마다 다르다.
 - MySQL `timestamp`는 2038년에 넘친다.
+- 달력·시간대·서머타임에 대한 더 많은 착각은 [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]]에 모았다.
 
 ### 5. SQL 데이터베이스
 

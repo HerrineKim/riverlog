@@ -16,3 +16,4 @@ source: mixed
 - [C-Programming](Computer-Science/C-Programming.md) — C 기초와 컴파일 과정, 포인터와 메모리, 파일 입출력 (CS50)
 - [Engineer-Information-Processing](Computer-Science/Engineer-Information-Processing.md) — 정보처리기사 실기의 반복 출제 개념 정리
 - [개발자가 빠지는 함정 모음](Computer-Science/developer-traps.md) — CSS·유니코드·부동소수점·시간·SQL·동시성·Git 등에서 직관과 다르게 동작하는 지점
+- [달력과 시간에 대한 개발자의 착각](Computer-Science/calendar-fallacies.md) — 하루·주·달·해·시간대·서머타임에 대한 흔한 가정과 그것을 깨는 실제 사례

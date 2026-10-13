@@ -104,4 +104,4 @@ moment(ms).tz('America/New_York').date(15).format(); // 2017-03-15T21:30:00-04:0
 - (덧붙임) 지금 기준으로 보면 Moment는 유지 보수 모드에 들어갔다. 표시만 필요하면 `Intl.DateTimeFormat`·`toLocaleString`의 `timeZone` 옵션을 쓰고, 연산이 필요하면 타임존 플러그인이 있는 날짜 라이브러리나 새 표준 API인 Temporal을 검토한다.
 - 라이브러리를 고르기 전에 문제가 무엇인지 알아야 맞는 도구를 고를 수 있다.
 
-관련 노트: [[date-object|Date 객체: 0부터 시작하는 월과 시간대 변환]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]]
+관련 노트: [[date-object|Date 객체: 0부터 시작하는 월과 시간대 변환]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]], [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]]
