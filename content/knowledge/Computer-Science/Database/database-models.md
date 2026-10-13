@@ -4,6 +4,7 @@ concept: "Database Model"
 summary: "관계형 DB의 특징과 한계, NoSQL 네 가지 유형, 둘의 장점을 합치려는 NewSQL을 비교."
 tags: ["database", "rdbms", "nosql", "newsql"]
 source: notion
+date: "2026-10-13"
 ---
 
 데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
@@ -16,7 +17,7 @@ source: notion
 | 일관성 | ACID 트랜잭션 | 대체로 완화된 일관성 | ACID 지원 |
 | 확장 | 주로 수직 확장(scale-up) | 수평 확장(scale-out) 용이 | 수평 확장 지원 |
 | 질의 | 표준 SQL, JOIN | 제품별 API | SQL |
-| 예 | MySQL, PostgreSQL, Oracle, SQL Server | MongoDB, Redis, Cassandra, Neo4j | CockroachDB, NuoDB |
+| 예 | MySQL, PostgreSQL, Oracle, SQL Server | MongoDB, Redis, Cassandra, Neo4j | Google Spanner, CockroachDB, TiDB, YugabyteDB |
 
 ## 관계형 데이터베이스 (RDB)
 
@@ -71,6 +72,6 @@ RDB의 **ACID와 SQL**을 유지하면서 NoSQL 수준의 **수평 확장성과 
 - 파티셔닝/샤딩으로 데이터를 여러 노드에 분산
 - 분산 환경에서의 동시성 제어
 - 복제(replication)와 장애 복구(crash recovery)
-- 예: CockroachDB, NuoDB (Google Spanner도 이 계열로 분류된다)
+- 예: Google Spanner, CockroachDB, TiDB, YugabyteDB. "분산 SQL(Distributed SQL)"이라고도 부른다. 초기 대표 제품이던 NuoDB는 2020년 다쏘시스템에 인수되었다.
 
 실제 프로젝트에서 RDB와 NoSQL 중 무엇을 고를지는 [[rdbms-vs-nosql|RDBMS와 NoSQL]], 문서형 DB 사용법은 [[mongodb|MongoDB]]를 참고한다.
