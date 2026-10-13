@@ -55,4 +55,4 @@ sources: ["https://riverkim.kr/304"]
 - 트레이드오프를 엔지니어링과 제품 양쪽에서 동시에 본다.
 - 출시 후 데이터 확인까지가 일이다.
 
-관련 노트: [[developer-leadership|개발자의 리더십과 PO의 사고방식]], [[project-process|프로젝트 진행 순서]]
+관련 노트: [[developer-leadership|개발자의 리더십과 PO의 사고방식]], [[project-process|프로젝트 진행 순서]], [[working-with-designers|디자이너와 함께 일하기]]
