@@ -5,10 +5,10 @@ summary: "기술 스택은 혼자가 아니라 함께 쓰는 것이라 커뮤니
 tags: ["frontend", "career", "architecture", "growth"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS"]
+sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://risingstars.js.org/"]
 ---
 
-> 테오(teo)의 「[2024 프론트엔드 기술스택 이야기](https://velog.io/@teo/2024-frontend-techstack)」(2024.04)를 중심으로, 비주류 스택을 쓰며 겪은 이야기인 「[Svelte Rxjs Vite AdorableCSS](https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS)」(2022.01)를 더해 요약·재구성한 노트입니다. 연도별 추천 목록은 시점에 따라 바뀌므로 원칙 위주로 남겼습니다.
+> 테오(teo)의 「[2024 프론트엔드 기술스택 이야기](https://velog.io/@teo/2024-frontend-techstack)」(2024.04)를 바탕으로 재구성한 노트입니다.
 
 ## 기술 스택이란
 
@@ -32,7 +32,7 @@ sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@te
 
 - **캐즘(Chasm)**: 얼리어답터의 열광과 대중의 수용 사이에 있는 깊은 골. 새 기술을 배우고 바꾸는 데는 비용이 들기 때문에 대부분은 **주류가 될 것 같을 때에야** 움직인다. 이 골을 넘는 기술은 드물다.
 - **하이프 사이클(Hype Cycle)**: 발표 → 과대 기대 → 현실 검증 → 주류 수용. **얼리어답터가 떠들 때가 가장 시끄럽다**. 그들이 열정적으로 홍보하는 이유는 캐즘을 못 넘으면 좋아하는 기술이 사라진다는 걸 알기 때문이다.
-- 프론트엔드는 jQuery → AngularJS → React·Vue·Angular → Svelte·Solid·Qwik으로 10년 넘게 거대한 하이프를 겪었고, 글 작성 시점(2024)에는 안정기로 들어섰다고 봤다. 하이프가 지난 것은 몰락이 아니라 안정이다.
+- 프론트엔드는 jQuery → AngularJS → React·Vue·Angular → Svelte·Solid·Qwik으로 10년 넘게 거대한 하이프를 겪은 뒤 안정기에 들어섰다. 하이프가 지난 것은 몰락이 아니라 안정이다. 대안 프레임워크가 내놓은 아이디어(컴파일러 최적화, 시그널 반응성)는 주류 프레임워크가 흡수하는 식으로 퍼진다.
 
 ### 캐즘을 넘었는지 알아보는 법
 
@@ -43,7 +43,7 @@ sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@te
 | 기준 | 질문 |
 | --- | --- |
 | 범용성과 특수성 | 우리 프로젝트에 필요한 기술인가? 기본은 보편 스택(예: TypeScript + React)으로, **뾰족한 문제에는 뾰족한 도구**를 섞는다 |
-| 학습 비용 | 새로 배워야 하나, 배우기 쉬운가? 비슷한 기능이면 사람들은 결국 쉬운 쪽을 고른다 (Redux → Redux Toolkit → Zustand, 강력하지만 어려운 RxJS) |
+| 학습 비용 | 새로 배워야 하나, 배우기 쉬운가? 비슷한 기능이면 사람들은 결국 쉬운 쪽을 고른다 (Redux → Redux Toolkit → Zustand로 옮겨 간 흐름, 강력하지만 어려워 널리 퍼지지 못한 RxJS) |
 | 커뮤니티와 지원 | 모르는 에러를 만나면 답을 찾을 수 있는가? 검색해도 안 나오는 에러의 막막함을 떠올려 보라 |
 | 인력 수급 | 이미 배운 사람을 구하기 쉬운가? |
 | 지속 가능성 | 오래 업데이트되고 트렌드에 맞는가? 회사는 10~20년을 본다 |
@@ -52,13 +52,13 @@ sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@te
 
 ### 비주류를 고르면 생기는 일
 
-테오는 사내 자체 프레임워크와 Svelte·RxJS·자작 CSS 도구처럼 비주류 스택을 오래 썼다. 결과물에는 문제가 없었지만 대가가 있었다.
+결과물에 문제가 없어도 비주류 스택(자체 제작 프레임워크 포함)에는 대가가 따른다.
 
-- 회사를 옮길 때 **주류 프레임워크 경험이 없다는 것**이 뼈아팠다. 경험이 있어야 이직이 되는데, 이직을 해야 경험이 쌓인다.
-- 인수인계할 때 문서도 없는 자체 프레임워크를 넘기기 부담스러웠다. Svelte로 만든 프로젝트도 담당 팀이 바뀌자 React로 다시 짜였다.
-- 생태계가 작으면 "이거 있나?"를 찾기 전에 직접 만들어야 하고, 베스트 프랙티스가 없다.
+- 쓰는 사람의 이력에 **주류 프레임워크 경험이 비게 된다**. 채용은 경험을 요구하고, 경험은 채용돼야 쌓인다.
+- 인수인계가 어렵다. 문서 없는 자체 프레임워크나 작은 생태계의 기술은 담당 팀이 바뀌면 주류 스택으로 다시 짜이기 쉽다.
+- 생태계가 작으면 필요한 것을 찾기 전에 직접 만들어야 하고, 베스트 프랙티스가 없다.
 
-좋은 기술이라는 것과 회사에서 쓸 기술이라는 것은 다르다. 비주류 기술은 **사이드 프로젝트로 해 보기**에 좋다.
+좋은 기술이라는 것과 회사에서 쓸 기술이라는 것은 다르다. 비주류 기술은 **사이드 프로젝트로 해 보기**에 좋다. AI 코딩 도구는 학습 데이터가 많은 주류 기술일수록 더 정확한 코드를 내므로, 이 격차는 더 커지는 경향이 있다.
 
 ## 트렌드는 범주로 읽는다
 
@@ -75,7 +75,21 @@ sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@te
 1. 기존 범주의 어떤 문제를 개선하려는가?
 2. 전에 없던 **새 범주와 패러다임**을 만드는가? (jQuery → 프레임워크처럼) 이쪽이면 더 주의 깊게 본다.
 
-범주마다 주류 하나를 숙련하고 나머지는 배경과 코어 컨셉만 이해해도 트렌드를 따라가기에 충분하다. 2024년 시점의 무난한 조합(TypeScript, React, Next.js, TanStack Query, Zustand, TailwindCSS, Vite, Prettier, Storybook, Playwright 등)은 바뀔 수 있으니 범주 지도만 기억한다.
+범주마다 주류 하나를 숙련하고 나머지는 배경과 코어 컨셉만 이해해도 트렌드를 따라가기에 충분하다. 2026년 기준으로 캐즘을 넘어 기본값이 된 조합은 이렇다.
+
+| 범주 | 주류 | 대안·비고 |
+| --- | --- | --- |
+| 언어 | TypeScript (7.0부터 Go로 다시 쓴 네이티브 컴파일러) | JavaScript |
+| 프레임워크 | React (React Compiler로 메모이제이션 자동화) | Vue, Svelte 5, Angular |
+| 메타 프레임워크 | Next.js | React Router(구 Remix), Nuxt, SvelteKit, Astro |
+| 서버 상태 | TanStack Query | SWR |
+| 클라이언트 상태 | Zustand | Jotai. 과거에는 Redux가 기본이었다 |
+| 스타일 | Tailwind CSS v4 | CSS Modules, zero-runtime CSS-in-JS |
+| 컴포넌트 | shadcn/ui (Radix 같은 헤드리스 컴포넌트 위) | MUI, Mantine |
+| 빌드 | Vite (Rolldown 번들러) | webpack, Rspack |
+| 테스트 | Vitest, Testing Library, Playwright | Jest. e2e는 과거 Cypress가 강했다 |
+| 포매터·린터 | Prettier, ESLint | Biome |
+| UI 문서화 | Storybook | |
 
 ## 레거시를 대하는 자세
 
