@@ -4,8 +4,8 @@ concept: "Memory Hierarchy"
 summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 저장 장치를 계층으로 묶는 구조와 RAM의 종류, 하드 디스크·플래시 메모리(SSD), RAID, 연관 메모리."
 tags: ["computer-architecture", "memory", "storage", "raid"]
 source: notion
-date: "2026-10-12"
-sources: ["https://riverkim.kr/196", "https://riverkim.kr/197"]
+date: "2026-10-13"
+sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc"]
 ---
 
 빠른 메모리는 비싸고 작으며, 큰 메모리는 느리다. 그래서 컴퓨터는 여러 종류의 저장 장치를 **계층**으로 쌓고, 자주 쓰는 데이터를 위쪽에 두는 방식으로 "빠르면서도 큰" 메모리처럼 보이게 만든다.
@@ -36,7 +36,7 @@ sources: ["https://riverkim.kr/196", "https://riverkim.kr/197"]
 실행 중인 프로그램과 데이터를 담는 빠른 저장소로, RAM과 ROM으로 구성된다.
 
 - **RAM**: 읽기/쓰기 가능. 실행 중인 프로그램을 담는다.
-- **ROM**: 읽기 전용(요즘은 주로 Flash). 전원이 꺼져도 남아야 하는 펌웨어(BIOS, 요즘 PC는 UEFI)와 부트스트랩 코드를 담는다.
+- **ROM**: 읽기 전용(현재는 주로 Flash). 전원이 꺼져도 남아야 하는 펌웨어(BIOS, 현재 PC는 UEFI)와 부트스트랩 코드를 담는다.
 
 ### RAM의 종류
 
@@ -47,7 +47,7 @@ RAM은 전원이 꺼지면 내용이 사라지는 **휘발성** 저장 장치다
 | DRAM (Dynamic) | 시간이 지나면 데이터가 사라져 주기적으로 다시 써야(refresh) 한다. 소비 전력이 낮고 싸며 집적도가 높다 | 주기억장치 |
 | SRAM (Static) | 전원만 있으면 데이터가 유지되고 DRAM보다 빠르다. 집적도가 낮고 전력 소모가 크며 비싸다 | 캐시 메모리 |
 | SDRAM (Synchronous) | 클럭에 동기화되어 클럭마다 CPU와 데이터를 주고받는 DRAM. SDR SDRAM이라고도 한다 | 주기억장치 |
-| DDR SDRAM (Double Data Rate) | 한 클럭에 두 번 데이터를 주고받아 대역폭을 두 배로 넓힌 SDRAM. DDR2, DDR3, DDR4로 갈수록 대역폭이 더 넓어진다 | 현재 가장 흔한 주기억장치 |
+| DDR SDRAM (Double Data Rate) | 한 클럭에 두 번 데이터를 주고받아 대역폭을 두 배로 넓힌 SDRAM. DDR2·DDR3·DDR4·DDR5로 갈수록 대역폭이 넓어진다. 2026년 기준 새 데스크톱·서버는 DDR5(JEDEC 규격 최대 8800MT/s), 노트북·스마트폰은 저전력판 LPDDR5·LPDDR5X를 쓴다 | 주기억장치 |
 
 ### 칩 예시
 
@@ -57,7 +57,7 @@ RAM은 전원이 꺼지면 내용이 사라지는 **휘발성** 저장 장치다
 
 ### DRAM 모듈
 
-DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한쪽 면 접점) → DIMM(양면 독립 접점, SDRAM/DDR 세대) → 노트북용 소형 SO-DIMM. 세대(DDR, DDR2, DDR3 …)마다 핀 수와 슬롯이 다르다.
+DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한쪽 면 접점) → DIMM(양면 독립 접점, SDRAM/DDR 세대) → 노트북용 소형 SO-DIMM. 세대(DDR … DDR5)마다 핀 수와 슬롯이 달라 서로 꽂히지 않는다.
 
 ## 보조 기억 장치
 
@@ -77,7 +77,7 @@ DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한�
 - **회전 지연**: 원하는 섹터가 헤드 아래로 돌아오기까지의 시간.
 - **전송 시간**: 실제로 데이터를 읽어 내보내는 시간.
 
-자기 테이프는 순차 접근만 가능하지만 저렴해 백업용으로 쓰였다.
+자기 테이프는 순차 접근만 가능하지만 용량당 가격이 싸고 오래 보관할 수 있어, 지금도 데이터센터의 백업·아카이브에 LTO 테이프가 쓰인다.
 
 ### 플래시 메모리와 SSD
 
@@ -85,10 +85,12 @@ DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한�
 
 | 종류 | 셀당 비트 | 특징 |
 | --- | --- | --- |
-| SLC (Single Level Cell) | 1 | 가장 빠르고 수명이 길지만 용량 대비 비싸다. 고성능이 필요한 기업용 |
-| MLC (Multi Level Cell) | 2 | 속도·수명은 조금 떨어지지만 대용량화에 유리. 시중 제품에 많이 쓰인다 |
-| TLC (Triple Level Cell) | 3 | 가장 느리고 수명이 짧지만 용량 대비 저렴하다 |
-| QLC (Quad Level Cell) | 4 | TLC보다 더 고밀도 |
+| SLC (Single Level Cell) | 1 | 가장 빠르고 수명이 길지만 용량 대비 비싸다. 산업용, 그리고 SSD 안에서 일부 영역을 SLC처럼 쓰는 쓰기 캐시(SLC 캐시) |
+| MLC (Multi Level Cell) | 2 | 한때 고급 소비자 SSD의 주류였지만 지금은 드물다 |
+| TLC (Triple Level Cell) | 3 | 속도·수명·가격의 균형이 좋아 2026년 기준 소비자·서버 SSD의 주류 |
+| QLC (Quad Level Cell) | 4 | 가장 고밀도이고 용량 대비 싸지만, 쓰기 속도와 수명이 TLC보다 낮다. 대용량·읽기 위주 용도 |
+
+셀당 비트가 늘수록 용량은 커지고 속도·수명은 줄어든다. 실제 체감 속도는 셀보다 **인터페이스**가 크게 좌우한다. SATA SSD는 SATA 3(6Gb/s)에 묶여 순차 읽기가 약 550MB/s에 머물고, NVMe SSD는 PCIe 레인을 직접 써서 PCIe 4.0 제품이 약 7GB/s, PCIe 5.0 제품이 약 14GB/s대까지 나온다.
 
 ```text
 셀 → 페이지 → 블록 → 플레인 → 다이
@@ -136,5 +138,3 @@ DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한�
 - RAID는 스트라이핑(성능), 미러링·패리티(안정성)의 조합이다.
 
 관련 노트: [[cache-and-virtual-memory|캐시 메모리와 MMU]] (계층 사이를 잇는 캐시와 주소 변환 하드웨어), [[disk-scheduling|디스크 관리와 스케줄링]] (운영체제가 디스크 요청을 처리하는 방법)
-
-참고 강의: [컴퓨터시스템구조 12장](https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc)
