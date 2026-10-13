@@ -4,11 +4,13 @@ concept: "Product Engineer"
 summary: "기획을 구현만 하지 않고 제품의 이유를 묻고, 제품·엔지니어링 트레이드오프를 함께 제안하며, 출시 후 데이터까지 책임지는 개발자의 9가지 특징과 성장 방법."
 tags: ["career", "product", "growth", "collaboration"]
 source: notion
-date: "2026-10-11"
-sources: ["https://riverkim.kr/304"]
+date: "2026-10-13"
+sources: ["https://blog.pragmaticengineer.com/the-product-minded-engineer/", "https://riverkim.kr/304"]
 ---
 
-개발자를 Frontend/Backend 대신 **Product/Platform Engineer**로 나눠 불러야 한다는 이야기가 화제가 된 적이 있다. 그중 **Product Engineer**, 즉 제품 중심 개발자는 제품 자체에 큰 관심을 갖고, 사람들이 제품을 어떻게 쓰는지 이해하려 하며, 제품 결정에 참여하는 것을 즐기는 개발자다. Gergely Orosz의 글 [The Product-Minded Software Engineer](https://blog.pragmaticengineer.com/the-product-minded-engineer)를 번역하며 정리한 내용이다.
+> Gergely Orosz의 「[The Product-Minded Software Engineer](https://blog.pragmaticengineer.com/the-product-minded-engineer/)」(2019.09)를 바탕으로 재구성한 노트입니다.
+
+개발자를 Frontend/Backend처럼 기술 스택이 아니라 **Product Engineer / Platform Engineer**처럼 일의 대상으로 나누는 방식이 있다. **Product Engineer**, 즉 제품 중심 개발자는 제품 자체에 큰 관심을 갖고, 사람들이 제품을 어떻게 쓰는지 이해하려 하며, 제품 결정에 참여하는 개발자다. Platform Engineer는 다른 개발 팀이 쓰는 내부 인프라·도구를 만든다.
 
 ## 9가지 특징
 
@@ -44,10 +46,10 @@ sources: ["https://riverkim.kr/304"]
 | 상황 | 결과 | 먼저 물었다면 |
 | --- | --- | --- |
 | 애니메이션 라이브러리가 특정 OS에서만 동작하지 않음 | 원인을 붙잡고 시간을 끌다가 결국 GIF로 대체 | "이 애니메이션으로 전달하려는 게 뭔가?"를 물어 처음부터 단순한 대안을 고를 수 있었다 |
-| 데이터 트래킹 요구사항을 내가 이해한 대로 구현 | 요청자의 의도와 달라 전부 다시 개발 | 구현 전에 "이 데이터로 무엇을 보려는가"를 확인했으면 됐다 |
+| 데이터 트래킹 요구사항을 구현자가 이해한 대로 구현 | 요청자의 의도와 달라 전부 다시 개발 | 구현 전에 "이 데이터로 무엇을 보려는가"를 확인했으면 됐다 |
 | 의문이 드는 기획을 문제 삼지 않고 그대로 구현 | 디자인 QA 단계에서 뒤집혀 재작업 | 의문을 초기에 꺼냈다면 기획 단계에서 정리됐다 |
 
-"질문을 더 많이 하자"는 다짐에서 한 걸음 더 나가면, 개발자는 지시받은 요구사항을 들어 주는 사람이 아니라 **제품 의사결정에 참여해 더 좋은 제품에 실제로 기여하는 사람**이라는 관점에 이른다. 토스가 개발자를 '메이커'라고 부르는 것도 같은 맥락이다.
+질문을 더 하는 데서 한 걸음 더 나가면, 개발자는 지시받은 요구사항을 들어 주는 사람이 아니라 **제품 의사결정에 참여해 더 좋은 제품에 실제로 기여하는 사람**이라는 관점에 이른다. 토스가 개발자를 '메이커'라고 부르는 것도 같은 맥락이다.
 
 ## 핵심 정리
 
