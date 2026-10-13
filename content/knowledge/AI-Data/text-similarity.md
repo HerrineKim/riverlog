@@ -4,7 +4,7 @@ concept: "Text Similarity"
 summary: "검색어와 제목처럼 짧은 문자열은 편집 거리·Jaro-Winkler로, 키워드 묶음처럼 긴 문서는 벡터화 후 코사인 유사도로 비교한다. 영화 검색·추천 기능에 적용한 파이썬 예제와 함께 정리."
 tags: ["ai", "python", "algorithm", "search", "data-analysis"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/127"]
 ---
 
@@ -48,7 +48,7 @@ def edit_distance(a: str, b: str) -> int:
 
 ### Jaro-Winkler 유사도
 
-실제 프로젝트에서는 `jellyfish` 라이브러리의 **Jaro-Winkler 유사도**를 썼다. 편집 횟수 대신 일치하는 문자와 순서가 뒤바뀐 문자를 따져 0~1 사이 점수를 내고, **앞부분(접두사)이 같을수록 가산점**을 준다. 사람들이 검색어를 앞에서부터 입력하는 점을 생각하면 제목 검색에 잘 맞는다.
+파이썬에서는 `jellyfish`나 `rapidfuzz` 라이브러리로 **Jaro-Winkler 유사도**를 바로 계산한다. 편집 횟수 대신 일치하는 문자와 순서가 뒤바뀐 문자를 따져 0~1 사이 점수를 내고, **앞부분(접두사)이 같을수록 가산점**을 준다. 사람들이 검색어를 앞에서부터 입력하는 점을 생각하면 제목 검색에 잘 맞는다.
 
 ```python
 from jellyfish import jaro_winkler_similarity
@@ -105,6 +105,7 @@ def recommend(words_list, target_idx, top_n=6):
 - 편집 거리는 작을수록, Jaro-Winkler와 코사인 유사도는 클수록 비슷하다.
 - 콘텐츠 기반 추천의 가장 단순한 형태는 "키워드 벡터 → 코사인 유사도 → 상위 N개"다.
 - 데이터가 커지면 유사도 계산을 미리 해 두거나 검색 엔진에 맡긴다.
+- 단어가 달라도 뜻이 비슷한 문서를 찾으려면 단어 빈도 대신 **임베딩 모델**로 만든 벡터에 같은 코사인 유사도를 쓴다. 벡터가 많아지면 벡터 DB의 근사 최근접 이웃(ANN) 검색으로 상위 N개를 고른다.
 
 ## 참고 자료
 
