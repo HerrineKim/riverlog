@@ -4,9 +4,10 @@ concept: "Blender"
 summary: "무료 오픈소스 3D 제작 도구 Blender의 기본 조작, 모델링 테크닉, 재질·UV 매핑, 리깅을 다룬 노트."
 tags: ["blender", "3d", "modeling"]
 source: notion
+date: "2026-10-13"
 ---
 
-Blender는 모델링·재질·애니메이션·렌더링까지 지원하는 **무료 오픈소스 3D 제작 도구**입니다. 업계에서는 아직 Maya 같은 유료 툴의 점유율이 높지만, Blender로 넘어오는 흐름도 뚜렷합니다. 실무 파이프라인에서는 보통 Blender로 모델링하고, 텍스처는 Photoshop, 페인팅은 Substance Painter 같은 도구를 함께 씁니다.
+Blender는 모델링·재질·애니메이션·렌더링까지 지원하는 **무료 오픈소스 3D 제작 도구**입니다. 대형 영화·게임 스튜디오의 파이프라인은 Maya 같은 상용 툴 중심인 곳이 많지만, 인디·중소 스튜디오와 개인 작업에서는 Blender가 널리 쓰입니다. 실무에서는 보통 Blender로 모델링하고, 텍스처 편집은 Photoshop, 텍스처 페인팅은 Substance 3D Painter 같은 도구를 함께 씁니다.
 
 ## 하위 노트
 
