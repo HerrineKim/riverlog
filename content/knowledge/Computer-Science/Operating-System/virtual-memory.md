@@ -4,7 +4,7 @@ concept: "Virtual Memory"
 summary: "요구 페이징과 페이지 폴트 처리, OPT·FIFO·LRU·LFU·Clock 페이지 교체 알고리즘, 다양한 캐싱 환경, 프레임 할당과 스래싱, Working Set·PFF, 페이지 크기."
 tags: ["os", "memory", "virtual-memory", "paging", "cache"]
 source: notion
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://app.notion.com/p/1d87bf214b924a63a303d3f8f4b9eca4", "https://riverkim.kr/216"]
 ---
 
@@ -197,7 +197,7 @@ modified bit가 0이면 backing store에 같은 내용이 있으므로 그냥 �
 - 페이지 안에서 쓰이지 않는 부분이 줄어 **꼭 필요한 정보만** 올라가므로 메모리 이용은 효율적이다. 페이지가 크면 아주 작은 부분만 필요해도 큰 페이지를 통째로 올려야 한다.
 - **디스크 전송 효율은 떨어진다.** 디스크는 헤드를 옮기는 탐색(seek) 시간이 대부분이라, 한 번 이동해서 많이 읽어 오는 편이 유리하다.
 
-요즘 추세는 **페이지 크기를 키우는** 쪽이다. 기본 페이지는 여전히 4KB인 경우가 많지만, 메모리를 많이 쓰는 프로그램을 위해 x86-64의 2MB·1GB 같은 **huge page**를 함께 쓰면 TLB 하나로 더 넓은 영역을 커버할 수 있다.
+메모리 용량이 커지면서 **페이지 크기를 키우는** 쪽으로 가고 있다. x86-64의 기본 페이지는 4KB지만, 메모리를 많이 쓰는 프로그램은 2MB·1GB **huge page**를 함께 써서 TLB 항목 하나로 더 넓은 영역을 커버한다. Apple 실리콘의 macOS·iOS는 16KB 페이지를 쓰고, 안드로이드도 16KB 페이지로 옮겨 가고 있다. Google Play는 2025년 11월부터 Android 15 이상을 대상으로 하는 앱에 16KB 페이지 지원을 요구한다.
 
 ## 핵심 정리
 
