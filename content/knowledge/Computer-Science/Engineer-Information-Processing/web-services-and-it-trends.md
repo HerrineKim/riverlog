@@ -4,6 +4,7 @@ concept: "Web Services"
 summary: "XML·JSON·SOAP·WSDL·REST 같은 웹 서비스 기술, EAI, 데이터 마이닝과 빅데이터, 네트워크 신기술 용어 정리."
 tags: ["certificate", "web-service", "xml", "big-data", "network"]
 source: notion
+date: "2026-10-13"
 ---
 
 이 영역은 용어의 정의를 정확히 알고 있는지 묻는 단답형 문제가 많다. 서로 비슷한 기술은 "왜 등장했는가, 무엇을 대체했는가"로 묶어서 기억한다.
@@ -26,7 +27,7 @@ source: notion
 | WSDL | 웹 서비스의 이름, 위치, 메시지 형식, 프로토콜을 **XML로 기술**한 문서. 클라이언트가 이를 읽고 사용할 수 있는 기능을 파악 |
 | UDDI | WSDL로 기술된 웹 서비스를 등록·검색하는 저장소 |
 
-SOAP은 무겁기 때문에 최근에는 REST로 대체하는 경우가 많다. 실무 관점의 REST 설계 규칙은 [[rest-api|REST API 설계]], AJAX 요청 방법(fetch·axios)은 [[ajax|AJAX와 HTTP 요청]]을 참고한다.
+SOAP은 메시지가 무거워 공개 웹 API는 대부분 REST(JSON)로 만든다. SOAP은 금융·공공 같은 기존 기업 시스템 연계에 남아 있다. 실무 관점의 REST 설계 규칙은 [[rest-api|REST API 설계]], AJAX 요청 방법(fetch·axios)은 [[ajax|AJAX와 HTTP 요청]]을 참고한다.
 
 ### REST
 
