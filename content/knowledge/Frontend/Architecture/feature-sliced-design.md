@@ -1,14 +1,14 @@
 ---
 title: "Feature-Sliced Design"
 concept: "FSD"
-summary: "프론트엔드 코드를 레이어 → 슬라이스 → 세그먼트 3단계로 나누고, 위 레이어만 아래 레이어를 쓰게 하며, 슬라이스는 Public API로만 드나들게 하는 아키텍처 방법론. 구조, 규칙, 다른 구조와의 비교, Next.js와 함께 쓸 때의 충돌을 정리한다."
+summary: "프론트엔드 코드를 레이어 → 슬라이스 → 세그먼트 3단계로 나누고, 위 레이어만 아래 레이어를 쓰게 하며, 슬라이스는 Public API로만 드나들게 하는 아키텍처 방법론. 구조, 규칙, 다른 구조와의 비교, Next.js와 함께 쓸 때의 충돌, 그리고 레이어 경계를 정하고 점진적으로 도입하는 법을 정리한다."
 tags: ["frontend", "architecture", "design", "react"]
 source: other
 date: "2026-10-12"
-sources: ["https://dev.to/m_midas/feature-sliced-design-the-best-frontend-architecture-4noj", "https://feature-sliced.design/"]
+sources: ["https://dev.to/m_midas/feature-sliced-design-the-best-frontend-architecture-4noj", "https://feature-sliced.design/", "https://velog.io/@teo/fsd"]
 ---
 
-> Yan Levin의 글 「[Feature-Sliced Design: The Best Frontend Architecture](https://dev.to/m_midas/feature-sliced-design-the-best-frontend-architecture-4noj)」(2023.07)을 요약·재구성한 노트입니다. 2023년 글이라 레이어 구성이나 Next.js 관련 내용은 [공식 문서](https://feature-sliced.design/) 기준으로 바뀌었을 수 있습니다.
+> Yan Levin의 글 「[Feature-Sliced Design: The Best Frontend Architecture](https://dev.to/m_midas/feature-sliced-design-the-best-frontend-architecture-4noj)」(2023.07)을 요약·재구성한 노트입니다. 2023년 글이라 레이어 구성이나 Next.js 관련 내용은 [공식 문서](https://feature-sliced.design/) 기준으로 바뀌었을 수 있습니다. 「경계 찾기와 점진적 도입」 절은 테오(teo)의 「[FSD 관점으로 바라보는 코드 경계 찾기](https://velog.io/@teo/fsd)」(2024.11)를 요약·재구성했습니다.
 
 ## Feature-Sliced Design이란
 
@@ -119,6 +119,51 @@ FSD에서는 규칙을 어긴 코드가 **바로 눈에 띈다.** 문제를 나�
 
 App Router에서는 `app/` 폴더가 라우팅을 맡으므로 FSD의 `app` 레이어와 이름이 겹친다. 원문 이후의 일이라 이 부분은 공식 문서의 Next.js 가이드를 따로 확인한다.
 
+## 경계 찾기와 점진적 도입
+
+FSD를 처음 도입하면 "이건 entity인가 feature인가"에서 막힌다. 공식 문서도 딱 맞는 답을 주지 않고 예제마다 해석이 다르다. 테오는 여러 프로젝트에 적용해 본 뒤 접근 순서를 바꿨다.
+
+### 1. 이미 아는 경계부터 나눈다
+
+폴더 규칙에 코드를 끼워 맞추지 말고, 평소 자연스럽게 나누던 경계로 먼저 나눈다. 순수 UI와 도메인 컴포넌트, 상태를 바꾸는 훅과 계산만 하는 함수, 서버 상태와 클라이언트 상태, 그리고 `데이터 → 화면`, `화면 → 행동`, `행동 → 데이터`라는 흐름의 경계다. 세그먼트는 기존 역할 분리와 비슷해서 쉽다. 헷갈리는 곳은 `model`과 `lib` 정도인데, **인자에 도메인 타입이 들어가면 model, 아니면 lib**로 가르면 된다.
+
+```ts
+const addProductToCart = (cart: Cart, product: Product) => [...cart, product]; // model
+const addItem = <T,>(arr: T[], item: T) => [...arr, item];                     // lib
+```
+
+### 2. 레이어의 감각을 팀이 맞춘다
+
+| 레이어 | 감각 |
+| --- | --- |
+| `app` | 이 프로젝트에서만 쓰는 공용 (AppProvider, 전역 설정) |
+| `shared` | 다른 프로젝트에서도 쓸 수 있는 공용 (Button, debounce) |
+| `entities` | 읽기, 데이터 원본, 순수 함수. 상태와 부수 효과가 없다 |
+| `features` | 쓰기, 사용자 행동과 상태 변경. **기능 하나 = 주된 사용자 행동 하나** |
+| `widgets` | 떼어 붙여도 어색하지 않은 블록. 직접 로직 없이 조립만 한다 |
+| `pages` | 경로 단위 화면 |
+
+경계는 무지개 색과 같다. 빨강과 주황 사이를 정확히 긋기는 어렵지만, 7색이라는 이름이 있어 7색을 본다. **경계를 완벽하게 긋기보다, 한번 정한 기준을 일관되게 지키는 것**이 중요하다.
+
+### 3. 이름은 REST처럼 조합해 예측한다
+
+REST가 `POST /createUser` 같은 제각각 이름을 `HTTP 메서드 + 리소스`로 고정해 API를 예측 가능하게 만들었듯, FSD는 `레이어 + 슬라이스 + 세그먼트`를 조합한다. `features/cart/ui`만 보고 "장바구니 행동 UI"를 떠올릴 수 있다. 그래서 **레이어·세그먼트 이름은 바꾸거나 늘리지 않는다.** 팀은 "`widgets/cart/model`에는 뭐가 들어갈까?" 같은 조합을 함께 상상해 보며 컨벤션을 만든다.
+
+### 4. 작게 시작해 가지를 친다
+
+| 단계 | 구조 |
+| --- | --- |
+| 처음 | `app/config`, `shared/ui·lib`, `pages/ui·model·api`만 |
+| 도메인 패턴이 보이면 | 읽기·계산 중심이면 `entities`, 이벤트 핸들러가 2~3개로 늘어난 행동이면 `features` |
+| 조합이 커지면 | 여러 feature·entity를 묶어 `widgets` |
+| 독립 구조가 필요하면 | 새 `app`이나 페이지 안의 중첩 FSD |
+
+프로젝트 성격에 따라 쓰는 레이어도 달라진다. 관리자 콘솔은 엔티티 CRUD가 중심이고, 앱형은 features·widgets가 많고, 페이지마다 독립적인 홈페이지형은 일반 FSD가 오히려 파편화를 키워 페이지 안에 중첩 구조를 두는 편이 낫다.
+
+### props 규칙
+
+`shared/ui`만 이벤트 핸들러, 스타일, 설정 props를 받는다. 나머지 컴포넌트는 **도메인 데이터만** 받고 핸들러는 안에서 훅으로 처리한다. `onAddToCart`를 props로 받는 feature 컴포넌트는 책임이 밖으로 샌 것이고, 사용자 행동이 없는 컴포넌트는 feature가 아니라 entity나 widget이다.
+
 ## 장단점
 
 | 장점 | 단점 |
@@ -134,6 +179,7 @@ App Router에서는 `app/` 폴더가 라우팅을 맡으므로 FSD의 `app` 레�
 - **위 레이어만 아래 레이어를 쓴다.** 아래 레이어일수록 많이 쓰이니 신중히 고친다.
 - 슬라이스는 `index.ts` Public API로만 드나든다.
 - 작은 프로젝트·MVP에는 과하고, 오래 유지할 중간 이상 규모에서 값을 한다. 팀이 규칙을 함께 지켜야 효과가 난다.
+- 경계가 애매하면 이미 아는 경계로 먼저 나누고, 레이어 이름은 **팀 컨벤션**으로 쓴다. 처음부터 모든 레이어를 만들지 않는다.
 - "The Best"라는 제목은 글쓴이의 주장이다. 도입 전에는 팀 규모와 프로젝트 수명에 맞는지부터 따진다.
 
-관련 노트: [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]]
+관련 노트: [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]]
