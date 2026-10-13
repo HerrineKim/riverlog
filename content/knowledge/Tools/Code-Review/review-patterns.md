@@ -4,6 +4,7 @@ concept: "Review Patterns"
 summary: "코드 리뷰에서 자주 반복되는 JavaScript·React 코드 지적(const, else, 기본값, 불리언 이름, 빈 문자열 비교, 비동기 에러, 불변 업데이트, props 설계 등)을 고친 코드와 함께 정리."
 tags: ["code-review", "javascript", "react", "clean-code"]
 source: notion
+date: "2026-10-13"
 ---
 
 코드 리뷰에서 **반복해서 나오는 지적**만 모았다. 하나하나는 작지만, 습관이 되면 코드의 의도가 훨씬 분명해진다. 각 항목은 "왜 문제인가 → 고친 코드" 순서로 정리했다.
@@ -135,7 +136,7 @@ const value = await firstValueFrom(source)
 
 ## 9. 불변 업데이트: 원본 배열·객체를 건드리지 않기
 
-Vuex·Redux 같은 스토어의 state나 React state를 직접 바꾸면 에러가 나거나 화면이 갱신되지 않는다. `map` 안에서 spread로 **새 객체**를 만들어 반환한다.
+Pinia·Redux 같은 스토어의 state나 React state를 직접 바꾸면 에러가 나거나 화면이 갱신되지 않는다. `map` 안에서 spread로 **새 객체**를 만들어 반환한다.
 
 ```javascript
 // Before: [...undefined]는 TypeError, 배열은 항상 truthy라 || []는 의미가 없다
