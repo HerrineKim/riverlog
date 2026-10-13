@@ -4,6 +4,7 @@ concept: "Async Await"
 summary: "Promise를 동기 코드처럼 읽히게 해 주는 async/await 문법과 try/catch 에러 처리, 실무에서 주의할 점."
 tags: ["javascript", "async", "promise", "frontend"]
 source: mixed
+date: "2026-10-13"
 ---
 
 `async`/`await`(ES2017)는 Promise 위에 얹은 문법이다. Promise의 결과를 `then`으로 받는 대신 **변수에 바로 담아** 동기 코드처럼 위에서 아래로 읽히게 작성할 수 있다. 원래 콜백이 만드는 깊은 들여쓰기(콜백 지옥)를 해결하려던 흐름의 마지막 단계다. Promise 자체는 [콜백과 Promise](/knowledge/dictionary/frontend/javascript/callback-and-promise) 노트 참고.
@@ -108,10 +109,10 @@ async function load() {
 | 에러 처리 | `.catch()` | `try...catch` |
 | 중간 값 재사용 | 스코프가 갈려 불편 | 변수로 자연스럽게 재사용 |
 
-## 코드 리뷰에서 배운 것
+## 실무에서 지킬 것
 
 - **둘 중 하나만 쓴다.** `await fetchX().then(...)`처럼 `then`을 써 놓고 앞에 `await`를 또 붙이면 동작은 하지만 의미 없이 섞인 코드다. 한 함수 안에서는 한 방식으로 통일한다.
-- **에러를 콘솔에만 찍고 넘기지 않는다.** 개인 프로젝트에서는 `console.log(err)`로 충분할 수 있지만, 실제 서비스에서는 콘솔 로그는 아무도 보지 않고 지나간다. 에러를 다시 던지거나(`throw`), 사용자에게 메시지를 보여 주거나, 모니터링 도구로 보내서 빨리 발견하고 고칠 수 있게 한다. 로그를 남길 때도 `console.error`, 객체 구조를 보려면 `console.dir`처럼 목적에 맞는 메서드를 쓴다.
+- **에러를 콘솔에만 찍고 넘기지 않는다.** 실제 서비스에서 콘솔 로그는 아무도 보지 않고 지나간다. 에러를 다시 던지거나(`throw`), 사용자에게 메시지를 보여 주거나, 모니터링 도구로 보내서 빨리 발견하고 고칠 수 있게 한다. 로그를 남길 때도 `console.error`, 객체 구조를 보려면 `console.dir`처럼 목적에 맞는 메서드를 쓴다.
 - **조건 비교는 무엇을 걸러야 하는지 먼저 정한다.** `newAccount !== ''`는 빈 문자열만 거르고 `null`·`undefined`는 통과시킨다. 문자열 타입이 보장되면 `if (newAccount)`로 충분하고, 아니면 `typeof`와 `trim()`까지 확인한다. 자세한 것은 [[review-patterns|코드 리뷰에서 자주 나온 지적]]의 5번 참고.
 
 ## 핵심 정리
