@@ -10,11 +10,11 @@ sources: ["https://www.cjchilvers.com/blog/35-lessons-from-35-years-of-newslette
 
 > CJ 칠버스(CJ Chilvers)의 글 「[35 Lessons from 35 Years of Newsletter Publishing](https://www.cjchilvers.com/blog/35-lessons-from-35-years-of-newsletter-publishing/)」(2022.01)를 요약·재구성한 노트입니다.
 
-## 어떤 글인가
+## 뉴스레터란
 
-글쓴이는 열두 살이던 1987년에 첫 뉴스레터를 냈다. 이후 개인 뉴스레터부터 큰 회사의 뉴스레터까지 35년 동안 발행했다. 교훈 대부분은 실패에서 나왔다고 한다. 원문은 35개 항목을 짧게 나열한다. 이 노트는 그것을 다섯 주제로 다시 묶었다.
+뉴스레터는 구독을 신청한 독자에게 정기적으로 보내는 이메일 출판물이다. 개인 발행부터 기업 마케팅까지 쓰임이 넓지만, 오래 가는 뉴스레터의 원칙은 다섯 가지 주제로 모인다. 독자와의 관계, 쓰는 법, 지표, 습관, 성장과 수익이다.
 
-**한 줄 요약: 뉴스레터는 구독자 수를 늘리는 채널이 아니라 관계를 쌓는 채널이다.**
+**뉴스레터는 구독자 수를 늘리는 채널이 아니라 관계를 쌓는 채널이다.**
 
 ## 1. 독자와의 관계
 
@@ -40,7 +40,7 @@ sources: ["https://www.cjchilvers.com/blog/35-lessons-from-35-years-of-newslette
 
 ## 3. 지표와 운영
 
-| 항목 | 글쓴이의 판단 |
+| 항목 | 원칙 |
 | --- | --- |
 | 성과 지표 | **답장 수**가 가장 좋은 척도다 |
 | 클릭 추적 | 집착하지 않는다 |
