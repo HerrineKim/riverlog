@@ -24,3 +24,6 @@ source: mixed
 | [UI Design](/knowledge/dictionary/frontend/ui-design) | 디자인 시스템과 공용 스킬 배포, Animated Icon, Three.js로 웹에서 3D 그리기 (AI로 디자인을 뽑는 프롬프트 기법은 [[ai-frontend-design-prompting|AI & Data]] 분야에 있다) |
 
 학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/frontend-roadmap)에 정리했다.
+
+- [프론트엔드 개발자의 업무 범위와 역량](Frontend/frontend-developer-role.md): 데이터 흐름으로 본 여섯 업무 영역, 퍼블리셔·백엔드·풀스택과의 경계, 잘하는 프론트엔드 개발자의 조건
+- [기술 스택 고르기](Frontend/tech-stack-selection.md): 기술 수용 주기·캐즘·하이프 사이클, 스택을 고르는 다섯 기준, 범주로 트렌드 읽기, 레거시를 대하는 자세
