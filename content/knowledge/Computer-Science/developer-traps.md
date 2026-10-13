@@ -8,13 +8,13 @@ date: "2026-10-12"
 sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers"]
 ---
 
-> qouteall의 글 「[Traps to Developers](https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers)」(2026.10 갱신판)를 요약·재구성한 노트입니다. 원문은 계속 갱신되는 목록이라 항목이 바뀌었을 수 있고, 여기서는 자주 마주칠 만한 것만 골랐습니다.
+> qouteall의 글 「[Traps to Developers](https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers)」(2026.10 갱신판)를 바탕으로 재구성한 노트입니다.
 
 ## 함정이란
 
 여기서 함정(trap)은 **문법상 문제없고 대부분 잘 돌아가지만, 특정 조건에서 직관과 다르게 동작하는 지점**이다. 컴파일러도 린터도 잡아 주지 않는다. 그래서 한 번 겪어 보거나 미리 알고 있어야 피할 수 있다.
 
-원문은 언어·도구별로 수백 개를 나열한다. 이 노트는 그것을 **함정이 생기는 원인** 기준으로 다시 묶고, 분야별로 대표 항목만 표로 정리했다.
+함정은 언어·도구마다 수백 가지지만, 대부분 **몇 가지 원인**으로 묶인다. 아래는 원인별 분류와 분야별 대표 항목이다.
 
 ## 함정이 생기는 다섯 가지 원인
 
