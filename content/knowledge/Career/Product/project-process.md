@@ -50,4 +50,4 @@ source: notion
 
 참고: okdevtv의 "개발 프로젝트 진행 순서" 정리, 『오늘도 개발자가 안 된다고 말했다』
 
-관련 노트: [[ci-cd|CI/CD]], [[github-collaboration|GitHub 협업 저장소 설정]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[ga4-setup|GA4 시작하기]], [[side-project-tips|사이드 프로젝트 10가지 팁]]
+관련 노트: [[ci-cd|CI/CD]], [[github-collaboration|GitHub 협업 저장소 설정]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[ga4-setup|GA4 시작하기]], [[side-project-tips|사이드 프로젝트 10가지 팁]], [[agile-sprint|애자일과 스프린트]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]]
