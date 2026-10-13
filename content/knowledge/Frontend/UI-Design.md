@@ -13,3 +13,5 @@ UI 디자인 주제는 **화면이 어떻게 보이고 움직이는가**를 다�
 - [디자인 시스템을 패키지로 배포하기](Frontend/UI-Design/design-system.md): 디자인 토큰과 UI 컴포넌트를 중앙 모노레포에서 패키지로 만들어 여러 프로젝트에 배포하고 Storybook으로 문서화하는 구조
 - [Animated Icon — 영상을 투명 배경 아이콘으로 쓰기](Frontend/UI-Design/animated-icon.md): 3D 아이콘 영상을 알파 채널 애니메이션 포맷으로 바꿔 앱·웹에서 쓰는 흐름과 포맷별 선택지
 - [Three.js로 웹에서 3D 그리기](Frontend/UI-Design/threejs.md): WebGL을 쉽게 쓰게 감싼 라이브러리의 구성 요소(Scene·Camera·Mesh·Renderer), 활용 사례, 장단점
+- [웹 접근성: 표준 준수에서 실제 사용성까지](Frontend/UI-Design/web-accessibility.md): 장애의 사회적 정의, 접근성 트리, WCAG 2.2와 접근성 법, 장애인 참가자와 사용성 테스트, 바로 할 수 있는 다섯 가지
+- [색과 움직임의 접근성](Frontend/UI-Design/color-motion-accessibility.md): 색각 결핍, 색만으로 정보 전달 금지, 대비 기준, prefers-color-scheme·prefers-reduced-motion, 5초 애니메이션 규칙
