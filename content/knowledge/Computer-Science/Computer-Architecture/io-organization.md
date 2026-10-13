@@ -5,7 +5,7 @@ summary: "CPU와 주변 장치를 잇는 입출력 인터페이스, 전송 방�
 tags: ["computer-architecture", "io", "interrupt", "dma"]
 source: notion
 date: "2026-10-12"
-sources: ["https://riverkim.kr/203"]
+sources: ["https://riverkim.kr/203", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc"]
 ---
 
 키보드, 디스크, 네트워크 카드 같은 주변 장치는 CPU보다 훨씬 느리고 데이터 형식도 제각각이다. 입출력 구조는 이 차이를 메우고, CPU가 기다리느라 시간을 낭비하지 않도록 하는 방법을 다룬다.
@@ -169,5 +169,3 @@ CPU와 주변 장치 사이의 통로로, 다음 차이를 해결한다.
 - 직렬 통신은 CRC로 에러를 검출하고, 비트 스터핑으로 데이터 투명성을 확보한다.
 
 운영체제가 인터럽트·시스템 콜·DMA를 어떻게 활용하는지는 [[system-structure|컴퓨터 시스템 구조와 인터럽트]]에 정리했다.
-
-참고 강의: [컴퓨터시스템구조 11장](https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc)
