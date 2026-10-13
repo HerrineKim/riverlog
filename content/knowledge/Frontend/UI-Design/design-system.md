@@ -4,6 +4,8 @@ concept: "Design System"
 summary: "디자인 토큰과 UI 컴포넌트를 중앙 모노레포에서 패키지로 만들어 여러 프로젝트에 배포하고 Storybook으로 문서화하는 구조."
 tags: ["design-system", "frontend", "collaboration", "monorepo"]
 source: notion
+sources: ["https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/"]
+date: "2026-10-13"
 ---
 
 여러 프로젝트가 같은 버튼·색·간격을 쓰게 하려면 각 저장소에 스타일을 복사하지 말고 **한 곳에서 만들어 패키지로 배포**해야 한다. 이것이 디자인 시스템의 배포 구조다.
@@ -17,15 +19,18 @@ source: notion
 ```json
 {
   "color": {
-    "primary": { "value": "#5B5CFF" }
+    "primary": { "$type": "color", "$value": "#5B5CFF" },
+    "action": { "$value": "{color.primary}" }
   },
   "spacing": {
-    "md": { "value": "16px" }
+    "md": { "$type": "dimension", "$value": { "value": 16, "unit": "px" } }
   }
 }
 ```
 
-토큰 JSON에서 CSS 변수, TypeScript 상수, 테마 객체 등을 자동 생성해 쓴다(예: Style Dictionary).
+토큰 파일 형식은 W3C 디자인 토큰 커뮤니티 그룹(DTCG)의 [Design Tokens Format Module](https://www.designtokens.org/TR/drafts/format/)이 표준이다. 2025년 10월 첫 안정판(2025.10)이 나왔다. `$value`가 있는 객체가 토큰이고, `$type`·`$description`을 붙이며, `{color.primary}`처럼 다른 토큰을 참조(alias)한다. 과거에는 도구마다 `value` 같은 제각각의 키를 썼다.
+
+토큰 JSON에서 CSS 변수, TypeScript 상수, 테마 객체 등을 자동 생성해 쓴다(예: Style Dictionary). Figma 변수도 같은 토큰으로 내보내고 들여올 수 있다.
 
 ### UI 컴포넌트 표준화
 

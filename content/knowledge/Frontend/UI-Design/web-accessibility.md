@@ -5,7 +5,7 @@ summary: "장애는 개인의 속성이 아니라 능력과 환경의 불일치�
 tags: ["accessibility", "frontend", "ux", "html", "testing"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/", "https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/", "https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/"]
+sources: ["https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/", "https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/", "https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/", "https://www.w3.org/WAI/news/2025-10-21/wcag22-iso", "https://www.deque.com/blog/en-301-549-v4-1-1-is-final-what-changed-what-it-means-and-what-you-should-do/"]
 ---
 
 > 웹액츄얼리가 번역한 유리 파즈(Uri Paz)의 「[접근성과 사용성 엮어내기](https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/)」(2020.12), 비 버챌(Be Birchall)의 「[컨텍스트에서의 웹 접근성](https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/)」(2019.12), 로빈 크리스토퍼슨(Robin Christopherson)의 「[코로나 시대의 글로벌 디지털 접근성 개발](https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/)」(2021.02)을 바탕으로 재구성한 노트입니다.
@@ -51,11 +51,11 @@ HTML ──파싱──→ DOM ──┬──→ 렌더링 → 화면
 
 | 지침 | 대상 | 내용 |
 | --- | --- | --- |
-| WCAG (웹 콘텐츠 접근성 지침) | 글·이미지·폼 같은 콘텐츠 | 인지 가능·조작 가능·이해 가능·견고함 4원칙 아래 13개 지침, 성공 기준마다 A·AA·AAA 등급. 2026년 기준 최신 권고안은 WCAG 2.2(2023)이고, 법·조달 기준은 보통 AA다 |
+| WCAG (웹 콘텐츠 접근성 지침) | 글·이미지·폼 같은 콘텐츠 | 인지 가능·조작 가능·이해 가능·견고함 4원칙 아래 13개 지침, 성공 기준마다 A·AA·AAA 등급. 2026년 기준 최신 권고안은 WCAG 2.2(2023.10)이고, 2025년에 국제 표준 ISO/IEC 40500:2025로도 채택됐다. 법·조달 기준은 보통 AA다. WCAG 3.0은 아직 초안이다 |
 | ATAG (저작 도구 접근성 지침) | HTML 편집기, CMS | 장애인도 WCAG를 지키는 콘텐츠를 만들 수 있게 하는 도구 |
 | UAAG (사용자 에이전트 접근성 지침) | 브라우저, 확장 프로그램, 미디어 플레이어 | 콘텐츠를 보여 주는 쪽의 접근성 |
 
-접근성은 법적 의무이기도 하다. 유럽 접근성법(European Accessibility Act)은 2025년 6월 28일부터 시행돼 EU에서 파는 전자상거래·은행·전자책 같은 디지털 서비스에 접근성을 요구하고, 기술 기준은 WCAG를 따르는 EN 301 549다. 미국은 ADA와 508조, 한국은 장애인차별금지법과 한국형 웹 콘텐츠 접근성 지침(KWCAG)이 기준이다.
+접근성은 법적 의무이기도 하다. 유럽 접근성법(European Accessibility Act)은 2025년 6월 28일부터 시행돼 EU에서 파는 전자상거래·은행·전자책 같은 디지털 서비스에 접근성을 요구한다. 기술 기준은 유럽 표준 EN 301 549다. 현재 효력이 있는 V3.2.1(2021)은 WCAG 2.1 AA를 따르고, WCAG 2.2 AA로 기준을 올린 V4.1.1이 2026년 9월 발행돼 EU 관보 등재(2026년 말 예정)를 기다리고 있다. 미국은 ADA와 508조, 한국은 장애인차별금지법과 한국형 웹 콘텐츠 접근성 지침(KWCAG)이 기준이다.
 
 ## 표준을 지켜도 쓰기 어려울 수 있다
 

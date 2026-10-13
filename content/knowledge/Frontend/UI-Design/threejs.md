@@ -4,7 +4,8 @@ concept: "Three.js"
 summary: "WebGL을 쉽게 쓰도록 감싼 JavaScript 3D 라이브러리 Three.js의 구성 요소(Scene·Camera·Mesh·Renderer)와 활용 사례, 장단점."
 tags: ["3d", "javascript", "webgl", "frontend"]
 source: notion
-sources: ["https://webactually.com/2017/11/09/webgl%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%9c-%ec%95%a0%eb%8b%88%eb%a9%94%ec%9d%b4%ec%85%98-%eb%b0%8f-%ec%9d%b8%ed%84%b0%eb%9e%99%ec%85%98-%ea%b8%b0%eb%b2%95/"]
+sources: ["https://webactually.com/2017/11/09/webgl%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%9c-%ec%95%a0%eb%8b%88%eb%a9%94%ec%9d%b4%ec%85%98-%eb%b0%8f-%ec%9d%b8%ed%84%b0%eb%9e%99%ec%85%98-%ea%b8%b0%eb%b2%95/", "https://web.dev/blog/webgpu-supported-major-browsers"]
+date: "2026-10-13"
 ---
 
 > 「코드로 움직임 만들기」 부분은 Karim Maaloul의 「WebGL을 사용한 애니메이션 및 인터랙션 기법」(웹액츄얼리 번역, 2017.11)을 바탕으로 보강한 노트입니다.
@@ -125,7 +126,7 @@ hero.run = function () {
 ## 함께 보면 좋은 기술
 
 - **Babylon.js**: 물리 엔진 연동과 에디터를 갖춘 TypeScript 기반 3D 엔진. Microsoft가 후원한다.
-- **WebGPU**: WebGL의 후속인 차세대 웹 그래픽 API로, GPU 연산을 더 효율적으로 쓸 수 있다. Three.js도 `WebGPURenderer`로 지원을 넓혀 가고 있다.
+- **WebGPU**: WebGL의 후속 웹 그래픽 API로, 렌더링뿐 아니라 컴퓨트 셰이더로 GPU 연산을 직접 쓸 수 있다. Chrome·Edge(113~), Safari 26, Firefox(141~, Windows부터)가 기본으로 지원한다. Three.js는 `three/webgpu`의 `WebGPURenderer`를 제공하고, WebGPU가 없는 환경에서는 WebGL 2로 자동 대체한다. 셰이더는 플랫폼 공통 노드 언어인 TSL(Three Shading Language)로 쓴다.
 
 ## 핵심 정리
 

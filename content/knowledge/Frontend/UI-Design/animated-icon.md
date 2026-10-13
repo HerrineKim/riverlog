@@ -4,11 +4,11 @@ concept: "Animated Icon"
 summary: "Airbnb 스타일 3D 아이콘을 영상으로 만든 뒤, Lava 같은 투명 배경(알파 채널) 애니메이션 포맷으로 바꾸면 앱·웹에서 움직이는 아이콘으로 쓸 수 있다. 포맷별 선택지와 제작 흐름을 정리했다."
 tags: ["frontend", "design", "media", "mobile", "animation"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://github.com/AlexStrNik/OpenLava", "https://github.com/Mathvdias/lava_flutter", "https://www.richardrolfs.com/resources/airbnb-2025-lava-icons"]
+date: "2026-10-13"
+sources: ["https://github.com/AlexStrNik/OpenLava", "https://github.com/Mathvdias/lava_flutter", "https://www.richardrolfs.com/resources/airbnb-2025-lava-icons", "https://jakearchibald.com/2024/video-with-transparency/"]
 ---
 
-> Airbnb의 Lava 아이콘과 이를 재구현한 공개 자료(OpenLava, lava_flutter README 등)를 바탕으로, AI로 만든 3D 아이콘 영상을 투명 배경 아이콘으로 쓰는 방법을 정리한 노트입니다. Lava는 Airbnb가 사양을 공개하지 않은 포맷이라 세부 내용은 커뮤니티 구현 기준이며, 바뀌었을 수 있습니다.
+> Airbnb의 Lava 아이콘과 이를 재구현한 공개 자료(OpenLava, lava_flutter README 등)를 바탕으로, AI로 만든 3D 아이콘 영상을 투명 배경 아이콘으로 쓰는 방법을 정리한 노트입니다. Lava는 Airbnb가 사양을 공개하지 않은 포맷이라 세부 구조는 커뮤니티 구현 기준입니다.
 
 ## Animated Icon이란
 
