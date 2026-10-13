@@ -5,6 +5,7 @@ summary: "웹 통신 규약 HTTP의 요청·응답 메시지 형식, 메서드, 
 tags: ["network", "http", "web", "application-layer"]
 source: notion
 sources: ["https://app.notion.com/p/49200e54fe6d461ab1ebc5180b35337b"]
+date: "2026-10-13"
 ---
 
 HTTP(HyperText Transfer Protocol)는 웹 통신을 위한 응용 계층 프로토콜이다. 이름은 HTML 문서 전송에서 왔지만, 이미지·JSON 등 웹 표준으로 정의된 여러 종류의 데이터를 주고받을 수 있다. 동작은 단순하게 **"요청하면 응답한다"**. 브라우저·프론트엔드·백엔드가 이 규약 위에서 어떻게 대화하는지는 [[http-web-architecture|웹 앱의 요청·응답 구조]]에 정리했다.
@@ -55,9 +56,11 @@ Content-Type: text/html             ← Headers
 | --- | --- | --- |
 | 1xx | 정보(처리 중) | 100 Continue, 101 Switching Protocols |
 | 2xx | 요청 성공 | 200 OK |
-| 3xx | 리다이렉트 | 301, 302 |
+| 3xx | 리다이렉트 | 301 Moved Permanently(영구), 302 Found(임시), 304 Not Modified(캐시 재사용), 307·308(임시·영구, 메서드 유지) |
 | 4xx | 클라이언트 에러 | 400 Bad Request, 404 Not Found |
 | 5xx | 서버 에러 | 500 Internal Server Error, 503 Service Unavailable(일시적으로 처리 불가, 세션 초과 등) |
+
+301과 302는 역사적으로 브라우저가 POST를 GET으로 바꿔 다시 요청하는 경우가 있었다. 메서드를 반드시 유지해야 하면 307·308을 쓴다. 검색 엔진은 301·308을 영구 이동으로 보고 새 URL로 신호를 옮긴다([[seo-basics|SEO 기초]]).
 
 ## 헤더의 종류
 

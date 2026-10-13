@@ -87,4 +87,4 @@ SSG의 "바뀔 때마다 재배포" 문제를 줄이려고 Next.js가 만든 방
 - CSR은 UX와 트래픽에, SSR은 초기 로딩과 SEO에 강하다.
 - SSG는 빌드 때 미리 만들어 가장 빠르지만 재배포가 필요하고, ISR은 재검증 시간마다 다시 만들어 이를 보완한다.
 
-관련 노트: [[nextjs|Next.js를 쓰는 이유]], [[templates-static|Django 템플릿(서버 렌더링)]], [[vuex|Vuex 상태 관리]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]], [[streaming-ssr|스트리밍 SSR]]
+관련 노트: [[nextjs|Next.js를 쓰는 이유]], [[templates-static|Django 템플릿(서버 렌더링)]], [[vuex|Vuex 상태 관리]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]], [[streaming-ssr|스트리밍 SSR]], [[seo-basics|SEO 기초]]
