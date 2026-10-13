@@ -121,4 +121,4 @@ SNS에 돌던 이미지를 옮긴 것이다. 출처와 작성 시점이 불분�
 
 원래 메모에는 냉장고라고 적혀 있었다. 방송 실험과 도서관 보존 지침은 모두 **냉동**을 권한다. 도서관 지침은 48~72시간 안에 말릴 수 없으면 얼려서 곰팡이를 막으라고 한다. 귀한 책이나 오수에 젖은 자료는 전문 동결건조 업체에 맡긴다.
 
-관련 노트: [[cleaning|세탁과 청소 노하우]], [[everyday-tech-tips|생활 속 IT 팁]], [[service-contract-tips|업체·전문가와 거래할 때]], [[dementia-care|가족이 치매일 때 받을 수 있는 지원]], [[hospital-rankings|진료과별 병원 순위와 명의 목록]], [[marvel-watch-order|마블 영화 보는 순서]]
+관련 노트: [[cleaning|세탁과 청소 노하우]], [[everyday-tech-tips|생활 속 IT 팁]], [[service-contract-tips|업체·전문가와 거래할 때]], [[dementia-care|가족이 치매일 때 받을 수 있는 지원]], [[hospital-rankings|진료과별 병원 순위와 명의 목록]], [[marvel-watch-order|마블 영화 보는 순서]], [[ergonomic-chair-guide|체형에 맞는 의자 고르기]]
