@@ -4,6 +4,8 @@ concept: "Hooks"
 summary: "함수 컴포넌트에서 state·생명주기·메모이제이션을 쓰게 해 주는 API와 그 규칙, 커스텀 훅."
 tags: ["react", "hooks", "state", "lifecycle", "frontend"]
 source: til
+date: "2026-10-13"
+sources: ["https://react.dev/reference/react/hooks", "https://react.dev/blog/2025/10/01/react-19-2", "https://react.dev/blog/2025/10/07/react-compiler-1"]
 ---
 
 **Hook**은 함수 컴포넌트가 클래스 컴포넌트의 기능(state, 생명주기 등)을 쓸 수 있게 해 주는 함수다. React 16.8(2019)에 추가되었고, 지금은 함수 컴포넌트 + Hooks가 React의 표준 작성 방식이다. 기존 클래스 컴포넌트를 굳이 Hooks로 다시 쓸 필요는 없다.
@@ -12,11 +14,7 @@ source: til
 
 함수 컴포넌트는 리렌더링될 때마다 **함수 전체가 다시 실행**된다. 안에서 선언한 변수는 매번 새로 만들어지고 초기화되므로, 그대로는 이전 값을 기억할 수 없다(그래서 예전에는 함수 컴포넌트를 stateless component라고 불렀다). 반면 클래스 컴포넌트는 인스턴스가 유지되어 `render()` 외의 메서드와 state가 보존된다.
 
-Hook은 React가 컴포넌트별로 값을 따로 저장해 두고, 리렌더링 때 다시 꺼내 주는 방식으로 함수 컴포넌트가 값을 "기억"하게 한다. React 팀이 Hook을 만든 이유는 다음과 같다.
-
-1. 컴포넌트 사이에서 **상태 로직을 재사용**하기 어려웠다(render props, HOC 같은 패턴은 컴포넌트 트리를 불필요하게 중첩시킨다).
-2. 복잡한 클래스 컴포넌트는 관련 없는 로직이 여러 생명주기 메서드에 흩어져 이해하기 어려웠다.
-3. 클래스 문법(`this`, 바인딩)이 사람과 도구 모두에게 어렵다.
+Hook은 React가 컴포넌트별로 값을 따로 저장해 두고, 리렌더링 때 다시 꺼내 주는 방식으로 함수 컴포넌트가 값을 "기억"하게 한다. 그 덕에 상태 로직을 HOC·render props 같은 중첩 없이 재사용하고, 여러 생명주기 메서드에 흩어지던 관련 로직을 한곳에 모으고, `this` 바인딩 같은 클래스 문법의 함정을 피할 수 있게 됐다.
 
 ## Hook의 규칙
 
@@ -24,7 +22,7 @@ Hook은 React가 컴포넌트별로 값을 따로 저장해 두고, 리렌더링
 2. **React 함수(컴포넌트, 커스텀 훅) 안에서만 호출한다.** 일반 JavaScript 함수에서는 안 된다.
 3. 커스텀 훅 이름은 **`use`로 시작**한다. 그래야 규칙이 적용되는 함수인지 한눈에 알 수 있고 린터가 검사할 수 있다.
 
-`eslint-plugin-react-hooks`가 이 규칙을 강제해 준다(CRA·Vite 템플릿에 포함).
+`eslint-plugin-react-hooks`가 이 규칙을 강제한다. Vite·Next.js 템플릿에 기본으로 들어 있고, 최신 버전의 `recommended` 프리셋(flat config)에는 React Compiler가 쓰는 규칙 검사도 함께 들어 있다.
 
 ### 왜 순서가 중요한가
 
@@ -53,8 +51,13 @@ function Form() {
 | `useMemo` | 계산 결과를 메모이제이션해 재사용 |
 | `useRef` | DOM 요소 참조, 또는 리렌더링을 일으키지 않는 값 보관 |
 | `useLayoutEffect` | DOM 변경 후 화면에 그리기 **전** 동기 실행(레이아웃 측정) |
+| `useTransition`, `useDeferredValue` | 급하지 않은 업데이트를 뒤로 미뤄 입력 반응성 유지 |
+| `useId` | 서버·클라이언트에서 같은 고유 id 생성(접근성 속성 연결) |
+| `useSyncExternalStore` | 외부 스토어 구독 (상태 관리 라이브러리가 내부에서 쓴다) |
 | `useImperativeHandle`, `useDebugValue` | ref로 노출할 값 지정, DevTools 라벨 |
-| `useActionState`, `useOptimistic`, `use` (React 19) | 폼 액션의 결과·대기 상태 관리, 요청 중 낙관적 UI, Promise·Context 읽기 |
+| `useActionState`, `useOptimistic`, `useFormStatus` (React 19) | 폼 액션의 결과·대기 상태, 요청 중 낙관적 UI, 부모 폼의 제출 상태 ([폼](/knowledge/dictionary/frontend/react/forms)) |
+| `use` (React 19) | Promise·Context 읽기. 조건문 안에서도 호출 가능 ([use](/knowledge/dictionary/frontend/react/react-use-hook)) |
+| `useEffectEvent` (React 19.2) | effect 안에서 최신 props·state를 읽되 effect를 다시 실행시키지 않는 함수 |
 
 ## useEffect
 
@@ -106,7 +109,24 @@ useEffect(() => {
 - 컴포넌트가 **언마운트**될 때
 - deps가 바뀌어 effect가 **다시 실행되기 직전**(이전 effect를 먼저 정리)
 
-즉 흐름은 **리렌더링 → 이전 effect의 cleanup → 새 effect 실행**이다. deps가 `[]`이면 다시 실행될 일이 없으므로 cleanup은 언마운트 때만 실행된다.
+즉 흐름은 **리렌더링 → 이전 effect의 cleanup → 새 effect 실행**이다. deps가 `[]`이면 다시 실행될 일이 없으므로 cleanup은 언마운트 때만 실행된다. 개발 모드의 StrictMode는 cleanup 누락을 찾으려고 마운트 직후 한 번 더 정리·실행해 본다([생명주기](/knowledge/dictionary/frontend/react/lifecycle)).
+
+### useEffectEvent: 반응하지 않을 값 분리
+
+effect 안에서 읽기만 하고 **바뀌어도 effect를 다시 돌리고 싶지 않은 값**(테마, 로그용 값)이 있다. deps에 넣으면 연결이 불필요하게 끊겼다 다시 맺히고, 빼면 린터가 경고한다. React 19.2의 `useEffectEvent`로 그 부분을 떼어 낸다.
+
+```jsx
+const onConnected = useEffectEvent(() => {
+  showNotification('연결됨', theme) // 항상 최신 theme을 읽는다
+})
+
+useEffect(() => {
+  const conn = createConnection(roomId)
+  conn.on('connected', () => onConnected())
+  conn.connect()
+  return () => conn.disconnect()
+}, [roomId]) // theme이 바뀌어도 다시 연결하지 않는다. onConnected는 deps에 넣지 않는다
+```
 
 ## 메모이제이션: React.memo, useCallback, useMemo
 
@@ -138,10 +158,6 @@ function App() {
 컴포넌트 안에서 선언한 함수는 렌더링마다 **새로 만들어진다.** 그래서 `React.memo`로 감싼 자식에 함수를 넘기면, 내용이 같아도 참조가 달라 자식이 매번 리렌더링된다. `useCallback`은 deps가 바뀌지 않는 한 같은 함수를 재사용한다.
 
 ```jsx
-const memoizedCallback = useCallback(fn, deps)
-```
-
-```jsx
 const onSave = useCallback(() => {
   console.log(name)
 }, [name]) // name이 바뀔 때만 함수를 새로 만든다
@@ -165,15 +181,9 @@ const sorted = useMemo(() => heavySort(items), [items])
 
 ### 최적화를 언제 하나
 
-Hook 자체는 가볍지만, 메모이제이션은 비교와 저장에 비용이 드므로 **무조건 남발하면 오히려 손해**다. 다음을 먼저 따져 본다.
+메모이제이션도 비교와 저장에 비용이 든다. **Profiler로 실제로 느린 컴포넌트를 찾은 뒤** 그곳에만 적용한다. 원인을 찾고 줄이는 순서는 [리렌더링 원인 추적하기](/knowledge/dictionary/frontend/react/re-rendering)에 있다.
 
-1. 꼭 필요한 리렌더링만 일어나고 있는가?
-2. 렌더링될 때 꼭 필요한 값·함수만 새로 만들어지는가?
-3. 1·2를 지키지 않아도 될 만큼 렌더링이 드문가?
-
-React DevTools의 Profiler로 실제로 느린 컴포넌트를 찾은 뒤 적용하는 것이 좋다(예: 채팅 목록의 각 `Chat` 항목에 `memo` 적용). 참고로 **React Compiler**는 빌드 단계에서 이런 메모이제이션을 자동으로 넣어 준다. 2025년 10월 첫 안정 버전(1.0)이 나왔고 React 17·18·19 코드베이스에서 쓸 수 있으며, Expo·Vite·Next.js 새 프로젝트에서 바로 켤 수 있다. 컴파일러를 쓰는 프로젝트라면 `useMemo`·`useCallback`을 손으로 넣을 일이 크게 줄어든다.
-
-`React.memo`를 씌웠는데도 렌더링이 줄지 않는다면 렌더링을 일으키는 원인이 다른 곳에 있다는 뜻이다. 원인을 추적하는 과정은 [리렌더링 원인 추적하기](/knowledge/dictionary/frontend/react/re-rendering)에 정리했다.
+**React Compiler**는 빌드 단계에서 이런 메모이제이션을 자동으로 넣는다. 2025년 10월 첫 안정 버전(1.0)이 나왔고 React 17·18·19 코드베이스에서 쓸 수 있으며, Expo·Vite·Next.js 새 프로젝트에서 바로 켤 수 있다. 컴파일러를 쓰는 프로젝트에서는 `useMemo`·`useCallback`·`React.memo`를 손으로 넣을 일이 크게 줄고, 남는 것은 effect의 deps로 값의 동일성을 정확히 제어해야 하는 경우 정도다.
 
 ## 커스텀 훅
 
@@ -205,11 +215,9 @@ const [nickname, onChangeNickname] = useInput('')
 // <input value={email} onChange={onChangeEmail} />
 ```
 
-- **제네릭 `T`**: 초기값의 타입을 정하면 반환되는 값의 타입도 같이 결정된다. `any`를 쓰는 것보다 안전하다.
-- `Dispatch<SetStateAction<T>>`는 `useState`가 반환하는 setter의 TypeScript 타입이다. setter도 함께 반환하면 값을 직접 초기화할 때 쓸 수 있다.
-- TypeScript는 매개변수 타입을 잘 추론하지 못하므로(인라인 콜백 제외) 이벤트 매개변수에는 타입을 명시한다.
-- 반환하는 함수에는 `useCallback`, 계산된 값에는 `useMemo`를 적용해 두면 사용하는 쪽에서 불필요한 리렌더링이 줄어든다.
-- 중복이 두세 번 보인다고 성급히 추상화하지는 않는다. 정말 같은 로직인지 확인하고 뽑는다.
+- **제네릭 `T`**: 초기값의 타입이 반환값의 타입을 정한다. `Dispatch<SetStateAction<T>>`는 `useState` setter의 타입이다.
+- 이벤트 매개변수에는 타입을 명시한다(인라인 콜백이 아니면 추론되지 않는다).
+- 중복이 두세 번 보인다고 성급히 추상화하지 않는다. 정말 같은 로직인지 확인하고 뽑는다.
 
 ## 핵심 정리
 
