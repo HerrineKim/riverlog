@@ -4,9 +4,10 @@ concept: "JavaScript"
 summary: "브라우저를 조작할 수 있는 유일한 언어이자, ECMAScript 표준을 따르는 동적 타입 언어."
 tags: ["javascript", "frontend", "browser"]
 source: mixed
+date: "2026-10-13"
 ---
 
-JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이며, 브라우저(BOM)와 그 안의 문서(DOM)를 조작할 수 있는 유일한 언어다. 언어의 핵심 문법은 **ECMAScript** 표준으로 정의된다. ECMA International이 ECMA-262 규격으로 정의한 언어가 ECMAScript이고, 2015년에 발표된 6번째 판(ES6, ES2015)부터 `let`/`const`, 화살표 함수, Promise, 클래스 같은 현대적 문법이 대거 들어왔다.
+JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이며, 브라우저(BOM)와 그 안의 문서(DOM)를 조작할 수 있는 유일한 언어다. 언어의 핵심 문법은 **ECMAScript** 표준으로 정의된다. ECMA International이 ECMA-262 규격으로 정의한 언어가 ECMAScript이고, 2015년에 발표된 6번째 판(ES6, ES2015)부터 `let`/`const`, 화살표 함수, Promise, 클래스 같은 현대적 문법이 대거 들어왔고, 이후 해마다 새 판(ES2016, ES2017 …)이 나온다.
 
 ## 노트
 
@@ -26,7 +27,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [TypeScript 코딩 컨벤션](/knowledge/dictionary/frontend/javascript/typescript-coding-convention): 이름 짓기, 타입, 클래스, 배열 메서드, 에러 처리, 모듈 규칙을 필수·권장 등급과 이유로 정리
 - [TypeScript로 동적인 코드에 정적 타입 입히기](/knowledge/dictionary/frontend/javascript/typescript-advanced-types): 리터럴 유니온, never, 제네릭, 템플릿 리터럴 타입, infer 재귀로 라우트 매개변수 추출
 - [명확한 코드의 네 가지 원칙](/knowledge/dictionary/frontend/javascript/clear-code-principles): 단일 책임, 명령-질의 분리, 낮은 결합도, 높은 응집도
-- [ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md): 품질은 ESLint, 모양은 Prettier로 역할 나누기, 저장 시 자동 수정 에디터 설정, `.eslintrc` 항목의 뜻과 ESLint 9 flat config
+- [ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md): 품질은 ESLint, 모양은 Prettier로 역할 나누기, 저장 시 자동 수정 에디터 설정, flat config 읽는 법과 ESLint 10에서 제거된 `.eslintrc`
 
 ### 프로그래밍 패러다임
 - [객체 지향 프로그래밍과 JavaScript](Frontend/JavaScript/oop-and-javascript.md): 구조체에서 클래스로, 캡슐화·상속·추상화·다형성, 프로토타입·덕 타이핑·일급 함수로 푼 JavaScript의 OOP
@@ -40,17 +41,17 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [책임감 있는 자바스크립트](/knowledge/dictionary/frontend/javascript/responsible-javascript): JS의 처리 비용, 저사양 Android·느린 4G·Baseline 기준선, 웹 플랫폼 우선, 번들 줄이기, 서드파티 관리
 
 ### 엔진과 실행
-- [JavaScript는 인터프리터 언어일까, 컴파일 언어일까](/knowledge/dictionary/frontend/javascript/js-engine-v8): V8 파이프라인(Parser·Ignition·Sparkplug·TurboFan), JIT, TSC·Babel과 비교
+- [JavaScript는 인터프리터 언어일까, 컴파일 언어일까](/knowledge/dictionary/frontend/javascript/js-engine-v8): V8 파이프라인(Parser·Ignition·Sparkplug·Maglev·TurboFan), JIT, TSC·Babel과 비교
 
 ### 비동기
 - [이벤트 루프](/knowledge/dictionary/frontend/javascript/event-loop): 싱글 스레드, 콜 스택, Web APIs, 태스크·마이크로태스크 큐
 - [콜백과 Promise](/knowledge/dictionary/frontend/javascript/callback-and-promise): 비동기의 문제, 콜백 지옥, Promise 상태와 체이닝, Promise.all
-- [async/await](/knowledge/dictionary/frontend/javascript/async-await): 동기 코드처럼 쓰는 비동기, try/catch 에러 처리, 코드 리뷰에서 배운 점
+- [async/await](/knowledge/dictionary/frontend/javascript/async-await): 동기 코드처럼 쓰는 비동기, try/catch 에러 처리, 실무에서 지킬 것
 - [AJAX와 HTTP 요청](/knowledge/dictionary/frontend/javascript/ajax): XMLHttpRequest, fetch, axios, CORS
 
 ### 라이브러리
-- [날짜 라이브러리](/knowledge/dictionary/frontend/javascript/date-libraries): Moment.js 이후의 대안, date-fns와 Day.js 비교
-- [패키지 매니저: npm, yarn, pnpm](/knowledge/dictionary/frontend/javascript/package-managers): lock 파일의 역할, 세 매니저 비교와 고르는 기준, npm EINTEGRITY 오류 해결
+- [날짜 라이브러리](/knowledge/dictionary/frontend/javascript/date-libraries): Moment.js 이후의 대안, date-fns와 Day.js 비교, 표준 API Temporal의 지원 현황
+- [패키지 매니저: npm, yarn, pnpm](/knowledge/dictionary/frontend/javascript/package-managers): lock 파일의 역할, 매니저 비교와 고르는 기준, packageManager와 Corepack, 설치 스크립트 차단, npm EINTEGRITY 오류 해결
 - [번들러의 역사와 Vite](/knowledge/dictionary/frontend/javascript/bundlers-and-vite): CommonJS·AMD·ES 모듈에서 번들러로, esbuild와 Snowpack이 푼 느린 빌드, Vite의 개발·배포 이원 구조
 - [React와 Vue 말고: 다른 프론트엔드 프레임워크](/knowledge/dictionary/frontend/javascript/frontend-frameworks): Svelte, Angular, Preact, Alpine.js, HTMX의 성격과 쓰임
 
