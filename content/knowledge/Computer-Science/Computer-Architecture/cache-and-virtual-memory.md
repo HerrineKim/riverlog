@@ -5,7 +5,7 @@ summary: "캐시의 주소 매핑(연관·직접·집합 연관)과 쓰기 정�
 tags: ["computer-architecture", "cache", "memory", "virtual-memory", "os"]
 source: notion
 date: "2026-10-12"
-sources: ["https://riverkim.kr/196"]
+sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc"]
 ---
 
 캐시와 가상 메모리는 같은 아이디어를 메모리 계층의 서로 다른 층에 적용한 것이다. 캐시는 "느린 메인 메모리를 빠르게", 가상 메모리는 "작은 메인 메모리를 크게" 보이게 만든다. 둘 다 프로그램이 최근에 쓴 데이터나 그 근처를 다시 쓰는 경향(**지역성**)에 기대고 있다. 이 노트는 그중 하드웨어가 담당하는 부분, 즉 캐시 회로와 MMU를 다룬다.
@@ -78,5 +78,3 @@ sources: ["https://riverkim.kr/196"]
 - MMU는 재배치·공유·보호를 맡고, TLB로 주소 변환을 빠르게 한다. 보호는 세그먼트 테이블의 길이·보호 필드로 구현한다.
 
 캐시가 놓인 위치는 [[memory-hierarchy|메모리 계층 구조]]를 참고한다.
-
-참고 강의: [컴퓨터시스템구조 12장](https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc)
