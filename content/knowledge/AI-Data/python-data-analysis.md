@@ -4,6 +4,8 @@ concept: "EDA"
 summary: "데이터를 구하고 처리한 뒤 탐색적 데이터 분석(EDA)과 시각화로 패턴을 찾고, 필요하면 성능을 개선하는 파이썬 데이터 분석의 흐름."
 tags: ["data-science", "python", "eda", "visualization"]
 source: notion
+date: "2026-10-13"
+sources: ["https://pandas.pydata.org/", "https://pola.rs/"]
 ---
 
 파이썬은 데이터 수집부터 분석·시각화까지 한 언어로 처리할 수 있는 생태계를 갖추고 있어 데이터 분석의 기본 언어로 쓰입니다. 분석은 대략 **데이터 구하기 → 처리와 분석 → 탐색·시각화 → 개선**의 흐름으로 진행됩니다.
@@ -65,6 +67,25 @@ top5 = sorted(movies, key=lambda m: m["vote_average"], reverse=True)[:5]   # 내
 - 응답이 두 API에 걸쳐 있으면(예: 영화 검색 → 출연진 조회) 첫 응답의 id를 다음 요청의 경로에 넣어 이어서 호출합니다.
 - API 키를 코드에 직접 쓰지 않습니다.
 
+### 표 데이터 다루기
+
+수집한 데이터는 DataFrame(행·열로 된 표)으로 바꿔 다룬다.
+
+| 라이브러리 | 특징 |
+| --- | --- |
+| pandas | 파이썬 데이터 분석의 표준 DataFrame. 생태계(시각화·머신 러닝 라이브러리)와 가장 잘 맞물린다 |
+| Polars | Rust로 만든 DataFrame. 멀티코어와 지연 실행(lazy)으로 pandas보다 훨씬 빠르고 메모리를 덜 쓴다. 큰 데이터에 먼저 고려한다 |
+| DuckDB | 파일(CSV·Parquet)과 DataFrame에 바로 SQL을 던지는 내장형 분석 DB |
+
+```python
+import pandas as pd
+
+df = pd.read_csv("data/sales.csv")
+df.info()              # 열 이름·타입·결측치 수
+df.describe()          # 숫자 열의 요약 통계
+df.groupby("region")["amount"].sum().sort_values(ascending=False)
+```
+
 ## 2. EDA: 탐색적 데이터 분석
 
 **EDA(Exploratory Data Analysis)** 는 본격적인 모델링 전에 시각화, 요약 통계, 간단한 모델 등으로 데이터를 여러 각도에서 살펴보며 **이해하는** 과정입니다.
@@ -94,8 +115,9 @@ top5 = sorted(movies, key=lambda m: m["vote_average"], reverse=True)[:5]   # 내
 
 - **프로파일링**: 어디가 느린지 먼저 재고 고친다. 측정 방법은 Jupyter 매직 명령 정리([[jupyter-notebook#알아 두면 좋은 기능|Jupyter Notebook]])에 있다.
 - **GPU 가속**: CUDA, cuDF(GPU 기반 DataFrame)
-- **병렬·분산 처리**: Dask, Vaex (메모리보다 큰 데이터 처리)
-- **JIT 컴파일**: PyPy, Numba
+- **더 빠른 DataFrame**: Polars, DuckDB로 바꾸는 것만으로 단일 머신에서 수십 배 빨라지는 경우가 많다
+- **병렬·분산 처리**: Dask, Ray, Spark(PySpark) (메모리보다 큰 데이터 처리)
+- **JIT 컴파일**: Numba(숫자 계산 루프), PyPy(순수 파이썬 코드)
 
 ### 협업과 환경
 
