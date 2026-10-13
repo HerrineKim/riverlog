@@ -4,6 +4,8 @@ concept: "AJAX"
 summary: "페이지를 새로고침하지 않고 서버와 비동기로 데이터를 주고받는 AJAX와 fetch·axios, CORS."
 tags: ["javascript", "http", "async", "frontend"]
 source: til
+date: "2026-10-13"
+sources: ["https://vite.dev/config/server-options#server-proxy"]
 ---
 
 **AJAX(Asynchronous JavaScript And XML)** 는 페이지 전체를 새로 받지 않고, JavaScript로 서버와 **비동기 통신**해 필요한 데이터만 받아 화면 일부를 갱신하는 기법이다. SPA와 CSR의 기반이 되는 기술이다.
@@ -12,7 +14,7 @@ source: til
 
 - 원래 `XMLHttpRequest`(XHR) 객체로 서버와 통신했다.
 - JSON, XML, HTML, 일반 텍스트 등 다양한 형식을 주고받을 수 있다.
-- 이름의 X는 XML이지만, 요즘은 더 가볍고 JavaScript 객체와 바로 호환되는 **JSON**을 주로 쓴다.
+- 이름의 X는 XML이지만, 지금은 더 가볍고 JavaScript 객체와 바로 호환되는 **JSON**을 주로 쓴다.
 
 ## 요청을 보내는 방법
 
@@ -101,19 +103,21 @@ form.addEventListener('submit', (event) => {
 - 개발 환경에서는 프론트 개발 서버에 **프록시**를 두어 우회할 수 있다. 브라우저는 같은 출처(프론트 개발 서버)로 요청하고, 개발 서버가 백엔드로 대신 전달한다.
 
 ```typescript
-// webpack.config.ts — /api/로 시작하는 요청을 백엔드(3095)로 전달
-devServer: {
-  port: 3090,
-  proxy: {
-    '/api/': {
-      target: 'http://localhost:3095',
-      changeOrigin: true,
+// vite.config.ts — /api로 시작하는 요청을 백엔드(3095)로 전달
+export default defineConfig({
+  server: {
+    port: 3090,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3095',
+        changeOrigin: true,
+      },
     },
   },
-},
+})
 ```
 
-이 방법은 프론트와 백엔드가 모두 로컬에서 돌 때 쓰는 개발용 우회다. Vite·CRA 등 다른 개발 서버도 같은 개념의 proxy 설정을 제공한다.
+이 방법은 프론트와 백엔드가 모두 로컬에서 돌 때 쓰는 개발용 우회다. webpack-dev-server의 `devServer.proxy`, Next.js의 `rewrites`도 같은 개념이다.
 
 ## 디버깅 팁
 
