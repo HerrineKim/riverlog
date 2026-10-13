@@ -4,11 +4,11 @@ concept: "mkcert"
 summary: "localhost는 대부분 보안 컨텍스트로 취급되지만 Secure 쿠키·HTTP/2·커스텀 호스트가 필요하면 로컬 HTTPS가 필요하다. mkcert로 내 기기만 믿는 로컬 CA를 만들어 인증서를 발급하고, 웹 서버·Node·프레임워크 개발 서버에 붙인다."
 tags: ["security", "http", "network", "frontend", "tips"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://velog.io/@sejinkim/%EB%A1%9C%EC%BB%AC-%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD%EC%97%90-HTTPS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0"]
 ---
 
-> sejin 님의 글 「[로컬 개발환경에 HTTPS 적용하기](https://velog.io/@sejinkim/%EB%A1%9C%EC%BB%AC-%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD%EC%97%90-HTTPS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)」(2023.06)을 요약·재구성한 노트입니다. 설치 명령과 프레임워크 설정은 글 작성 시점 기준이라 바뀌었을 수 있습니다.
+> sejin 님의 글 「[로컬 개발환경에 HTTPS 적용하기](https://velog.io/@sejinkim/%EB%A1%9C%EC%BB%AC-%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD%EC%97%90-HTTPS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)」(2023.06)을 바탕으로, 프레임워크 설정은 각 공식 문서로 확인해 재구성한 노트입니다.
 
 ## 로컬에서도 HTTPS가 필요한 경우
 
@@ -62,7 +62,7 @@ mkcert "*.example.dev" localhost 127.0.0.1 ::1   # 인증서 발급 (와일드�
 | Nginx | `listen 443 ssl;`, `ssl_certificate`, `ssl_certificate_key` |
 | Node.js | `https.createServer({ key, cert }, handler)` |
 | http-server | `http-server -S -C cert.pem -K key.pem` |
-| Next.js | 커스텀 서버 대신 리버스 프록시 (아래) |
+| Next.js | `next dev --experimental-https` (아래) |
 | Nuxt 3 | `devServer.https`에 key·cert 경로 |
 
 ```js
@@ -80,21 +80,25 @@ https
 
 ### 프레임워크 개발 서버
 
-Next.js 커스텀 서버(`createServer`)는 HMR·자동 정적 최적화가 깨져 권장되지 않는다. 대신 개발 서버 앞에 HTTPS 프록시를 둔다.
+Next.js는 개발 서버에 HTTPS 옵션이 있다. `--experimental-https`만 주면 내부적으로 mkcert를 써서 로컬에서 신뢰되는 인증서를 만들어 붙이고, 직접 만든 인증서를 넘길 수도 있다.
 
 ```bash
-next dev -p 3001 | local-ssl-proxy --key example.dev-key.pem --cert example.dev.pem --source 3000 --target 3001
+next dev --experimental-https
+next dev --experimental-https \
+  --experimental-https-key ./example.dev-key.pem \
+  --experimental-https-cert ./example.dev.pem
 ```
 
-- HMR은 WebSocket으로 동작하므로(Next 12+, Vite) **프록시가 WebSocket 업그레이드를 지원해야** 한다.
-- Nuxt 3(Vite)에서 HMR 연결이 끊기면 `vite.server.hmr`에 `protocol: 'wss'`와 `host`를 지정한다.
-- 글 이후 Next.js에는 `next dev --experimental-https` 옵션이 생겼다. 인증서를 자동으로 만들어 주고, `--experimental-https-key`·`--experimental-https-cert`로 mkcert 인증서를 넘길 수도 있다.
+- Vite는 `server.https`에 key·cert를 넘기거나 `@vitejs/plugin-basic-ssl`을 쓴다.
+- 개발 서버가 HTTPS를 지원하지 않으면 앞에 HTTPS 리버스 프록시(`local-ssl-proxy`, Caddy 등)를 둔다. HMR은 WebSocket으로 동작하므로 **프록시가 WebSocket 업그레이드를 지원해야** 한다.
+- Nuxt(Vite)에서 HMR 연결이 끊기면 `vite.server.hmr`에 `protocol: 'wss'`와 `host`를 지정한다.
+- Next.js 커스텀 서버(`createServer`)로 HTTPS를 붙이는 방법은 자동 최적화를 잃으므로 쓰지 않는다.
 
 ## 정리
 
 - localhost는 대부분 보안 컨텍스트라 HTTP로 충분하지만, Secure 쿠키·HTTP/2·커스텀 호스트가 필요하면 로컬 HTTPS를 쓴다.
 - mkcert = 로컬 루트 CA 생성 + 신뢰 등록 + 인증서 발급. 경고 없는 인증서를 명령 세 줄로 얻는다.
 - 루트 CA 개인키는 공유 금지. 팀원마다 따로 설치한다.
-- 프레임워크 개발 서버는 직접 고치기보다 프록시를 앞에 두고, WebSocket(HMR) 지원을 확인한다.
+- 프레임워크 개발 서버는 내장 HTTPS 옵션을 먼저 쓰고, 없으면 프록시를 앞에 두되 WebSocket(HMR) 지원을 확인한다.
 
 관련 노트: [[https|HTTPS와 TLS]], [[cookie-session|쿠키와 세션]], [[nextjs|Next.js]]
