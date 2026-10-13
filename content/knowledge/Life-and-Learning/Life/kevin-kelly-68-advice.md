@@ -4,9 +4,13 @@ concept: "Kevin Kelly"
 summary: "Wired 창립 편집장 케빈 켈리가 68세 생일에 남긴 「68 Bits of Unsolicited Advice」 중 배움·일·관계·습관·돈에 대한 조언 모음."
 tags: ["life", "advice", "habits", "career"]
 source: mixed
+date: "2026-10-13"
+sources: ["https://kk.org/thetechnium/68-bits-of-unsolicited-advice/"]
 ---
 
-Wired 창립 편집장 케빈 켈리(KK)가 68세 생일에 블로그에 올린 「68 Bits of Unsolicited Advice」 가운데 일부를 번역해 모았다. 원문은 [kk.org](https://kk.org/thetechnium/68-bits-of-unsolicited-advice/)에서 볼 수 있다.
+> 케빈 켈리(Kevin Kelly)의 「[68 Bits of Unsolicited Advice](https://kk.org/thetechnium/68-bits-of-unsolicited-advice/)」(2020.04) 가운데 일부를 옮겨 주제별로 묶은 노트입니다.
+
+케빈 켈리는 Wired의 공동 창립 편집장이다. 68세 생일에 맞춰 쓴 이 조언 목록은 배움, 일, 관계, 습관, 돈, 미래에 대한 짧은 경구로 이뤄져 있다.
 
 ## 배움과 생각
 
