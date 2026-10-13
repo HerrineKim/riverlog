@@ -5,10 +5,10 @@ summary: "getUserMedia로 마이크 권한을 얻고 MediaRecorder로 녹음해 
 tags: ["react", "browser", "api", "frontend", "javascript"]
 source: mixed
 date: "2026-10-12"
-sources: ["https://riverkim.kr/110", "https://riverkim.kr/113"]
+sources: ["https://riverkim.kr/110", "https://riverkim.kr/113", "https://webactually.com/2021/02/10/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%EA%B3%BC-%EB%8B%A4%EC%9D%B4%EC%96%BC%EB%A1%9C%EA%B7%B8%ED%94%8C%EB%A1%9C-%EC%97%90%EC%9D%B4%EC%A0%84%ED%8A%B8/"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
+> riverkim.kr에 쓴 글들과, 「5. 응용」 부분은 Nwani Victory의 「리액트 애플리케이션과 다이얼로그플로 에이전트 연결하기」(웹액츄얼리 번역, 2021.02)를 바탕으로 재구성한 노트입니다.
 
 브라우저에서 음성을 녹음하려면 별도 플러그인 없이 웹 표준 API 두 개면 된다. `navigator.mediaDevices.getUserMedia()`로 마이크 스트림을 얻고, `MediaRecorder`로 그 스트림을 녹음해 **Blob**(파일처럼 다룰 수 있는 바이너리 데이터)으로 받는다. 받은 Blob은 다운로드 링크로 저장하거나 `FormData`에 담아 서버로 보낸다.
 
@@ -123,11 +123,37 @@ await fetch('/api/voice', { method: 'POST', body: formData })
 - `FormData` 내용은 `console.log(formData)`로 보이지 않는다. `for (const [k, v] of formData) console.log(k, v)`로 확인한다.
 - HTML 폼으로 파일을 보낼 때의 `enctype`은 [HTML](/knowledge/dictionary/frontend/web/html) 참고.
 
+## 5. 응용: 음성·텍스트를 대화형 에이전트로 보내기
+
+녹음한 음성을 챗봇에 보내는 구조다. Dialogflow 같은 대화형 에이전트 서비스든 LLM API든 모양은 같다. **브라우저가 에이전트 서비스를 직접 부르지 않고, 내 백엔드를 거친다.**
+
+```text
+React 채팅 UI ── 텍스트(JSON) / 음성(FormData) ──▶ 내 서버(Express 등)
+                                                     │  서비스 계정 키로 인증, 세션 ID 관리
+                                                     ▼
+                                              대화형 에이전트 서비스
+                                    (음성→텍스트, 의도 파악, 응답 생성)
+                                                     │
+React ◀──────────── 응답 메시지 ─────────────────────┘
+```
+
+| 결정 | 이유 |
+| --- | --- |
+| 서버를 거친다 | 서비스 계정 키·API 키는 브라우저에 두면 누구나 꺼내 쓴다. 키는 서버 환경 변수에 두고 Git에 올리지 않는다 |
+| 세션 ID를 만든다 | 대화마다 UUID를 붙여 에이전트가 앞뒤 맥락을 잇고, 대화 기록을 추적한다 |
+| 음성은 스트림으로 넘긴다 | 서버는 multipart 본문을 파싱(busboy·multer)해 파일 스트림을 에이전트의 스트리밍 인식 API로 바로 연결한다. 디스크에 저장하지 않아도 된다 |
+| 오류를 삼키지 않는다 | 에이전트 호출 실패를 잡아 사용자에게 "다시 말해 달라"는 응답으로 돌려준다 |
+
+Dialogflow 용어로는 사용자의 말을 분류하는 단위가 **인텐트(intent)**, 말에서 뽑아내는 값(금액·날짜)이 **엔터티(entity)**, 인텐트가 맞았을 때 외부 데이터를 가져오는 웹훅이 **풀필먼트(fulfillment)**, 인텐트 사이의 흐름을 잇는 상태가 **컨텍스트(context)** 다.
+
+UI 쪽에서는 메시지 배열, 로딩 상태("입력 중…"), 녹음 중 상태("듣는 중…")를 스토어에 두고, 입력칸이 비었으면 마이크 버튼, 글자가 있으면 전송 버튼을 보여 준다.
+
 ## 정리
 
 - 녹음 = `getUserMedia`(권한·스트림) + `MediaRecorder`(녹음) → Blob.
 - 끝나면 스트림 트랙을 모두 멈추고, 만든 object URL은 해제한다.
 - 형식은 브라우저가 정한다(Chrome은 webm). 확장자를 바꾼다고 형식이 바뀌지 않는다.
 - 업로드는 `FormData`에 담아 보내고, `Content-Type`은 브라우저에 맡긴다.
+- 외부 AI·음성 서비스는 키를 가진 내 서버를 거쳐 부른다.
 
-관련 노트: [[hooks|Hooks]], [[html|HTML]], [[ajax|AJAX와 HTTP 요청]]
+관련 노트: [[hooks|Hooks]], [[html|HTML]], [[ajax|AJAX와 HTTP 요청]], [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름: REST와 WebSocket 역할 나누기]], [[api-security|API 보안 체크리스트]]
