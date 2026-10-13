@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://yourcalendricalfallacyis.com/"]
 ---
 
-> Dave DeLong의 「[Your Calendrical Fallacy Is…](https://yourcalendricalfallacyis.com/)」를 요약·재구성한 노트입니다. 시간대·서머타임 규칙은 해마다 바뀌므로 사례는 글 작성 시점 기준입니다.
+> Dave DeLong의 「[Your Calendrical Fallacy Is…](https://yourcalendricalfallacyis.com/)」를 바탕으로 재구성한 노트입니다.
 
 ## 왜 착각이 생기나
 

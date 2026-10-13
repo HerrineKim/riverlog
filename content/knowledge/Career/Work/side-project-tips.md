@@ -8,13 +8,13 @@ date: "2026-10-13"
 sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM"]
 ---
 
-> Chris Yang의 「[당신의 사이드 프로젝트를 위한 10가지 팁](https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects)」(2019.08)을 요약·재구성한 노트입니다. 원 자료는 Traversy Media의 영상 「[10 Tips For Starting & Creating Side Projects](https://www.youtube.com/watch?v=eCAj3mWFpNM)」입니다.
+> Chris Yang의 「[당신의 사이드 프로젝트를 위한 10가지 팁](https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects)」(2019.08)을 바탕으로 재구성한 노트입니다. 원 자료는 Traversy Media의 영상 「[10 Tips For Starting & Creating Side Projects](https://www.youtube.com/watch?v=eCAj3mWFpNM)」입니다.
 
 ## 사이드 프로젝트가 필요한 이유
 
 사이드 프로젝트는 대부분 실패한다. 그래도 계속 하는 이유는 **상사도 클라이언트도 없는 유일한 개발**이기 때문이다. 기술을 마음대로 고르고, 배우고 싶은 것을 배우고, 만들고 싶은 것을 만든다. 본업에 지쳐 열정이 식을 때 동기를 지켜 주는 장치다.
 
-원 자료는 Kanye West 팬을 위한 데이팅 사이트가 입소문을 타고 성공한 사례를 계기로 삼았다. 데이팅 앱 자체는 새롭지 않았다. **특정 팬층이라는 틈새**를 겨냥한 것이 달랐다.
+Kanye West 팬을 위한 데이팅 사이트는 입소문만으로 수천 명을 모았다. 데이팅 앱 자체는 새롭지 않았다. **특정 팬층이라는 틈새**를 겨냥한 것이 달랐다.
 
 ## 10가지 팁
 
@@ -33,7 +33,7 @@ sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projec
 | --- | --- |
 | 2. 좋은 아이디어는 아직 남아 있다 | 내 불편함, 주변 사람의 필요, 일반 사용자의 문제에서 찾는다. "이런 게 있으면 좋겠다"는 말이 힌트다 |
 | 3. 틈새를 찾는다 | 참신함이 성공을 보장하지 않는다. 이미 있는 아이디어라도 좁은 대상에 맞추면 된다 |
-| 4. 관심 있는 분야를 고른다 | 아는 게 많아 만들기 쉽고, 동기도 오래 간다. 글쓴이는 DJ 취미를 살려 DJ 소셜 네트워크와 광고 플랫폼을 만들었다 |
+| 4. 관심 있는 분야를 고른다 | 아는 게 많아 만들기 쉽고, 동기도 오래 간다. 취미 분야(예: DJ를 위한 커뮤니티)는 사용자의 불편을 이미 알고 있다는 이점이 있다 |
 | 9. 앱일 필요는 없다 | 코딩에 지쳤다면 책, 유튜브·팟캐스트, 밋업·컨퍼런스 주최, 아이들 코딩 교육도 사이드 프로젝트다 |
 
 ### 진행: 작게, 기한을 두고
@@ -64,10 +64,13 @@ sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projec
 반응 없음 ──→ 틈새를 바꾸거나 다른 아이디어
 ```
 
-## 한계
+## AI 도구와 사이드 프로젝트
 
-- 원 자료는 강연 형식의 경험담이고, 실패율이나 성공 사례의 수치 근거는 없다.
-- 2019년 자료라 소개된 서비스(ideaswatch.com 등)는 지금 없을 수 있다.
+AI 코딩 도구로 프로토타입을 만드는 비용이 크게 줄었다. 그만큼 원칙의 무게가 옮겨 간다.
+
+- **만드는 것보다 고르는 것이 어렵다.** 아이디어 검증(랜딩 페이지, 대기 명단)과 틈새 선택의 비중이 더 커졌다.
+- 모르는 기술에 나를 맞추는 일(팁 7)은 쉬워졌다. 대신 생성된 코드를 이해하고 설명할 수 있는지가 학습의 기준이 된다.
+- 기한을 짧게 잡기 쉬워졌으니, 1~2주마다 실제 사용자에게 보여 줄 수 있는 결과를 낸다.
 
 ## 정리
 
