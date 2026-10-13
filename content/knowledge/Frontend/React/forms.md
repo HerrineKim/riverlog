@@ -169,6 +169,7 @@ function MinutesToHours() {
 ```
 
 - 실제로 저장하는 값은 `amount` 하나이고, 화면에 보이는 두 값은 **렌더링할 때 계산**한다. 파생 값을 별도 state로 두지 않는 것이 핵심이다.
+
 ## 핵심 정리
 
 - 제어 컴포넌트 = `value`는 state에서, 변경은 `onChange`로 state에.
