@@ -4,6 +4,7 @@ concept: "Django Admin"
 summary: "모델을 admin.py에 등록해 데이터를 확인·생성·수정할 수 있는 관리자 페이지를 자동으로 만드는 Django 기능."
 tags: ["django", "python", "admin", "backend"]
 source: til
+date: "2026-10-13"
 ---
 
 Django Admin은 서버 관리자가 쓰는 페이지로, 모델을 등록하기만 하면 목록·생성·수정·삭제 화면을 자동으로 만들어 준다. 레코드가 제대로 생성되는지 확인하거나 테스트 데이터를 직접 넣을 때 특히 유용하다. (`django.contrib.admin` 앱이 제공하며, 로그인·권한은 `django.contrib.auth`를 사용한다.)
@@ -31,7 +32,7 @@ Django Admin은 서버 관리자가 쓰는 페이지로, 모델을 등록하기�
 
 3. `python manage.py runserver` 후 `/admin`에서 로그인
 
-> 고친 점: 원래 필기는 `list_display`에 오타(`'little'`)가 있었고, `ArticleAdmin`을 정의만 하고 `register(Article)`에 넘기지 않아 설정이 적용되지 않았다.
+> 흔한 실수: `ModelAdmin` 클래스를 정의만 하고 `register(Article)`처럼 모델만 넘기면 설정이 적용되지 않는다. `list_display`에 없는 필드 이름을 쓰면 시스템 체크 오류(`admin.E108`)가 난다.
 
 데코레이터 방식도 같다.
 

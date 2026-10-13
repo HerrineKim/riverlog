@@ -4,6 +4,7 @@ concept: "Model Relationship"
 summary: "OneToOneField, ForeignKey, ManyToManyField로 모델 간 1:1, 1:N, M:N 관계를 표현하고 역참조하는 방법."
 tags: ["django", "database", "orm", "modeling"]
 source: til
+date: "2026-10-13"
 ---
 
 관계형 DB의 힘은 테이블 사이의 관계에서 나온다. Django는 세 가지 필드로 관계를 표현하고, 반대 방향 조회(역참조)도 자동으로 만들어 준다.
@@ -107,7 +108,7 @@ class Reservation(models.Model):
     reserved_at = models.DateTimeField()
 ```
 
-> 고친 점: 원래 필기의 `models.ManyToManyField(doctor, ...)`는 클래스 이름 오타로 `NameError`가 난다. 클래스 `Doctor`(또는 문자열 `'Doctor'`)를 넘겨야 한다.
+> 관계 필드의 첫 인자에는 모델 클래스(`Doctor`)나 문자열(`'Doctor'`, 다른 앱이면 `'app.Doctor'`)을 넘긴다. 아직 정의되지 않은 모델을 가리킬 때는 문자열을 쓴다. 소문자 `doctor`처럼 없는 이름을 쓰면 `NameError`가 난다.
 
 ### 자기 자신과의 M:N (팔로우)
 

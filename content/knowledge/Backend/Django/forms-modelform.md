@@ -4,6 +4,7 @@ concept: "ModelForm"
 summary: "Django Form으로 입력 폼 렌더링과 유효성 검사를 자동화하고, ModelForm으로 모델 필드를 재사용해 생성·수정 로직을 단순화한다."
 tags: ["django", "python", "validation", "form"]
 source: til
+date: "2026-10-13"
 ---
 
 사용자 입력을 HTML `<input>`으로 직접 받아 검증하는 일은 번거롭고 실수하기 쉽다. Django Form은 이 작업의 상당 부분을 자동화하고, 직접 짜는 것보다 안전하다.
@@ -83,7 +84,7 @@ def create(request):
 - 이때 다시 보여 주는 폼은 빈 폼이 아니라 **사용자가 입력한 값과 에러 메시지를 담은 폼**이다. 사용자는 잘못된 부분만 고쳐 다시 제출하면 된다.
 - 수정(update)도 같은 구조에서 `RecordForm(request.POST, instance=record)` / `RecordForm(instance=record)`만 바꾸면 된다.
 
-> 고친 점: 원래 필기의 Form 예시는 GET 요청에서도 `RecordForm(request.POST)`를 만들어, 처음 페이지에 들어갈 때부터 "필수 항목입니다" 에러가 표시되는 문제가 있었다. GET에서는 인자 없는 빈 폼을 만들어야 한다.
+> 흔한 실수: GET 요청에서도 `RecordForm(request.POST)`를 만들면 처음 페이지에 들어갈 때부터 "필수 항목입니다" 에러가 표시된다. GET에서는 인자 없는 빈 폼을 만든다.
 
 ## 작성자 채우기: `commit=False`
 
