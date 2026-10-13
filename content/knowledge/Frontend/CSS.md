@@ -18,6 +18,7 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 - [박스 모델과 display](/knowledge/dictionary/frontend/css/box-model): margin·padding·border, margin collapse, box-sizing, display 값, 100% vs vh
 - [position](/knowledge/dictionary/frontend/css/position): static·relative·absolute·fixed·sticky와 z-index
 - [Float와 Flexbox](/knowledge/dictionary/frontend/css/flexbox): Normal Flow를 벗어나는 배치와 1차원 레이아웃 모델, `min-width: 0` 넘침 함정
+- [반응형 디자인과 다국어 타이포그래피](/knowledge/dictionary/frontend/css/responsive-design): 뷰포트 메타 태그, 브레이크포인트, 모바일 퍼스트, 기기 픽셀 비율, clamp(), :lang()과 rem으로 언어별 글자 크기 조절
 - [transform](/knowledge/dictionary/frontend/css/transform): 이동·확대·회전·기울이기 함수와 translate(-50%, -50%) 가운데 정렬
 
 ## 참고
