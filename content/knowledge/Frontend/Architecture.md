@@ -16,6 +16,8 @@ source: mixed
 - [Atomic Design과 컴포넌트 폴더 구조](Frontend/Architecture/atomic-design.md): 원자 → 분자 → 유기체 → 템플릿 → 페이지는 멘탈 모델이다. 폴더로 쓸 때의 한계와 이름 붙은 영역 먼저 나누는 절충안
 - [프론트엔드 폴더 구조의 진화](Frontend/Architecture/frontend-folder-structure.md): 역할 기반 폴더에서 엔티티·위젯·기능 중심 응집으로. 좋은 구조는 팀의 멘탈 모델과 일치하는 구조
 - [프론트엔드 MV* 아키텍처의 흐름: MVC에서 MVI까지](Frontend/Architecture/frontend-mv-architecture.md): MVC → MVVM → Flux → 가벼운 스토어·서버 상태로 이어진 변천과 MVI. 뷰는 의도만 보내고 데이터는 한 방향으로 돈다
+- [추상화 계층과 데이터 흐름](Frontend/Architecture/abstraction-layers.md): 구현에 알맞은 이름과 수준을 주면 추상화, 쌓이면 계층. 사용자 중심으로 순환하는 데이터 흐름 위에서 코드의 자리를 정하는 그라데이션 사고
+- [게슈탈트 법칙으로 보는 읽기 좋은 코드](Frontend/Architecture/readable-code.md): 근접성·공통 영역·유사성·연속성·폐쇄성으로 점검하는 빈 줄과 주석, 코드 배치, 이름 짓기
 - [Feature-Sliced Design](Frontend/Architecture/feature-sliced-design.md): 레이어 → 슬라이스 → 세그먼트 3단계 분할, 위 레이어만 아래를 쓰는 규칙, Public API, Next.js와 함께 쓸 때의 충돌, 레이어 경계 찾기와 점진적 도입
 
 관련 주제: 빌드 도구와 폴더를 처음 잡는 과정은 [React](Frontend/React.md), 테스트로 설계를 이끄는 방법은 [Testing](Frontend/Testing.md)에 있다.
