@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://dev.to/m_midas/feature-sliced-design-the-best-frontend-architecture-4noj", "https://feature-sliced.design/", "https://velog.io/@teo/fsd"]
 ---
 
-> Yan Levin의 글 「[Feature-Sliced Design: The Best Frontend Architecture](https://dev.to/m_midas/feature-sliced-design-the-best-frontend-architecture-4noj)」(2023.07)을 요약·재구성한 노트입니다. 2023년 글이라 레이어 구성이나 Next.js 관련 내용은 [공식 문서](https://feature-sliced.design/) 기준으로 바뀌었을 수 있습니다. 「경계 찾기와 점진적 도입」 절은 테오(teo)의 「[FSD 관점으로 바라보는 코드 경계 찾기](https://velog.io/@teo/fsd)」(2024.11)를 요약·재구성했습니다.
+> Yan Levin의 글 「[Feature-Sliced Design: The Best Frontend Architecture](https://dev.to/m_midas/feature-sliced-design-the-best-frontend-architecture-4noj)」(2023.07), 테오(teo)의 「[FSD 관점으로 바라보는 코드 경계 찾기](https://velog.io/@teo/fsd)」(2024.11), [FSD 공식 문서](https://feature-sliced.design/)를 바탕으로 재구성한 노트입니다.
 
 ## Feature-Sliced Design이란
 
@@ -33,12 +33,12 @@ src/
 
 ## 레이어: 위에서 아래로만 의존한다
 
-레이어는 최대 7개로 이름이 정해져 있고, 일부는 선택이다. 위에 있을수록 비즈니스에 가깝고, 아래로 갈수록 추상적이고 재사용성이 높다.
+레이어는 최대 7개로 이름이 정해져 있다. 모두 쓸 필요는 없고, 대부분의 프로젝트는 최소 `shared`·`pages`·`app`을 두며 나머지는 값을 할 때 더한다. 새 레이어를 만들지는 않는다. 위에 있을수록 비즈니스에 가깝고, 아래로 갈수록 추상적이고 재사용성이 높다.
 
 | 레이어 | 맡는 일 | 예시 |
 | --- | --- | --- |
 | `app` | 앱 진입점. 초기화 | 프로바이더, 라우터, 전역 스타일, 전역 타입 |
-| `processes` | 여러 페이지에 걸친 흐름 (선택, 원문 시점에도 deprecated) | 여러 단계의 회원 가입 |
+| `processes` | 여러 페이지에 걸친 흐름. **deprecated**, 내용은 `features`와 `app`으로 옮긴다 | 여러 단계의 회원 가입 |
 | `pages` | 페이지 | 홈, 상품 상세 |
 | `widgets` | 페이지에 놓이는 독립된 UI 덩어리 | 헤더, 피드 |
 | `features` | 비즈니스 가치가 있는 사용자 행동 (선택) | 좋아요, 리뷰 쓰기, 평점 매기기 |
@@ -90,7 +90,7 @@ export { useLikePost } from './model/useLikePost';
 
 ## OOP 원칙과의 대응
 
-글쓴이는 FSD가 OOP의 네 원칙을 프론트엔드 폴더 구조로 옮긴 것이라고 본다.
+FSD의 규칙은 OOP의 원칙과 대응한다.
 
 | OOP 원칙 | FSD에서 |
 | --- | --- |
@@ -106,22 +106,23 @@ export { useLikePost } from './model/useLikePost';
 | 단순 모듈 구조 | 빠르게 시작한다 | 어느 모듈에 넣을지 애매하고, 모듈끼리 쓰기 어렵고, 비즈니스 엔티티 둘 곳이 없고, 전역 함수로 의존이 숨는다 | MVP, 수명이 짧은 프로젝트 |
 | FSD | 연결이 명시적이고, 표준화돼 있고, 확장된다 | 진입 장벽이 높다 | 중간 이상 복잡도의 프로젝트 |
 
-FSD에서는 규칙을 어긴 코드가 **바로 눈에 띈다.** 문제를 나중이 아니라 지금 풀어야 하는데, 글쓴이는 이것을 단점이자 장점으로 본다.
+FSD에서는 규칙을 어긴 코드가 **바로 눈에 띈다.** 문제를 나중이 아니라 지금 풀어야 한다는 점에서 단점이자 장점이다.
 
 ## Next.js와 함께 쓸 때
 
-원문은 Pages Router 기준으로 두 군데 충돌을 짚는다.
+Next.js의 `app/`(App Router)·`pages/`(Pages Router) 폴더는 라우팅을 맡아 FSD의 `app`·`pages` 레이어와 이름이 겹친다. 공식 가이드의 해법은 이렇다.
 
-| 충돌 | 내용 | 해결 |
-| --- | --- | --- |
-| `pages` | Next.js의 `pages`는 파일 라우팅, FSD의 `pages`는 페이지 레이어 | ① Next.js 라우트는 루트 `pages/`, FSD 레이어는 `src/pages/`에 둔다 (글쓴이 선호) ② FSD 쪽을 `pages-flat` 같은 이름으로 바꾸고 Next.js `pages`에서 다시 export한다 |
-| `app` | 앱 초기화를 Next.js가 대부분 맡는다 | 앱 전체에 걸 것이 있으면 Layout 패턴을 쓴다 |
-
-App Router에서는 `app/` 폴더가 라우팅을 맡으므로 FSD의 `app` 레이어와 이름이 겹친다. 원문 이후의 일이라 이 부분은 공식 문서의 Next.js 가이드를 따로 확인한다.
+| 항목 | 방법 |
+| --- | --- |
+| 이름 충돌 | FSD 쪽 레이어를 `_app`, `_pages`로 바꾸고 `src/` 안에 둔다. Next.js 라우팅 폴더는 프로젝트 루트에 둔다 |
+| 라우트 파일 | `app/example/page.tsx`(또는 `pages/example/index.tsx`)는 `src/_pages`의 페이지를 다시 export만 한다 |
+| API 라우트 | 구현은 `src/_app/api-routes/`에 두고 `app/api/…`(또는 `pages/api/…`)에서 다시 export한다 |
+| 서버 전용 코드 | 한 슬라이스에 서버·클라이언트 코드가 섞이면 `index.server.ts`로 서버 전용 export를 분리해 클라이언트 번들로 새지 않게 한다 |
+| DB 쿼리 | `shared`의 `db` 세그먼트에 두고, 캐싱·재검증 로직을 쿼리 옆에 둔다 |
 
 ## 경계 찾기와 점진적 도입
 
-FSD를 처음 도입하면 "이건 entity인가 feature인가"에서 막힌다. 공식 문서도 딱 맞는 답을 주지 않고 예제마다 해석이 다르다. 테오는 여러 프로젝트에 적용해 본 뒤 접근 순서를 바꿨다.
+FSD를 처음 도입하면 "이건 entity인가 feature인가"에서 막힌다. 공식 문서도 딱 맞는 답을 주지 않고 예제마다 해석이 다르다. 그래서 경계는 규칙에서 출발하지 않고 이미 아는 경계에서 출발한다.
 
 ### 1. 이미 아는 경계부터 나눈다
 
@@ -180,6 +181,6 @@ REST가 `POST /createUser` 같은 제각각 이름을 `HTTP 메서드 + 리소�
 - 슬라이스는 `index.ts` Public API로만 드나든다.
 - 작은 프로젝트·MVP에는 과하고, 오래 유지할 중간 이상 규모에서 값을 한다. 팀이 규칙을 함께 지켜야 효과가 난다.
 - 경계가 애매하면 이미 아는 경계로 먼저 나누고, 레이어 이름은 **팀 컨벤션**으로 쓴다. 처음부터 모든 레이어를 만들지 않는다.
-- "The Best"라는 제목은 글쓴이의 주장이다. 도입 전에는 팀 규모와 프로젝트 수명에 맞는지부터 따진다.
+- 모든 프로젝트에 최선인 구조는 아니다. 도입 전에는 팀 규모와 프로젝트 수명에 맞는지부터 따진다.
 
 관련 노트: [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]]
