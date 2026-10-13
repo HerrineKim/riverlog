@@ -54,6 +54,8 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/career/product/product-owner": "/knowledge/dictionary/career/product/developer-leadership",
   "/knowledge/dictionary/life-and-learning/writing/sentence-craft": "/knowledge/dictionary/life-and-learning/writing/persuasive-writing",
   "/knowledge/dictionary/career/work/phone-etiquette": "/knowledge/dictionary/career/work/work-habits",
+  "/knowledge/dictionary/ai-data/copilot-leaked-prompt": "/knowledge/dictionary/ai-data/system-prompt-patterns",
+  "/knowledge/dictionary/ai-data/chatgpt-prompt-cheat-sheet": "/knowledge/dictionary/ai-data/prompt-cheat-sheet",
 };
 
 const nextConfig: NextConfig = {
