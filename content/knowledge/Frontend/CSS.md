@@ -13,6 +13,7 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 
 ## 노트
 
+- [CSS의 역사로 본 CSS가 어려워진 이유](/knowledge/dictionary/frontend/css/css-history): 전역 범위와 명시도, 시맨틱·Sass·BEM·CSS Modules·CSS-in-JS·유틸리티 CSS, @layer·@scope 같은 네이티브 해법
 - [CSS 기초](/knowledge/dictionary/frontend/css/css-basics): 문법, 적용 방법 3가지, 크기·색상 단위, font-style, 속성 선언 순서, Safari 버튼 색
 - [선택자와 우선순위](/knowledge/dictionary/frontend/css/selectors): 기본 선택자, 결합자, 가상 클래스·요소, 캐스케이딩과 특정성, 상속
 - [박스 모델과 display](/knowledge/dictionary/frontend/css/box-model): margin·padding·border, margin collapse, box-sizing, display 값, 100% vs vh
@@ -20,6 +21,9 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 - [Float와 Flexbox](/knowledge/dictionary/frontend/css/flexbox): Normal Flow를 벗어나는 배치와 1차원 레이아웃 모델, `min-width: 0` 넘침 함정
 - [반응형 디자인과 다국어 타이포그래피](/knowledge/dictionary/frontend/css/responsive-design): 뷰포트 메타 태그, 브레이크포인트, 모바일 퍼스트, 기기 픽셀 비율, clamp(), :lang()과 rem으로 언어별 글자 크기 조절
 - [transform](/knowledge/dictionary/frontend/css/transform): 이동·확대·회전·기울이기 함수와 translate(-50%, -50%) 가운데 정렬
+- [CSS 그리드 레이아웃](/knowledge/dictionary/frontend/css/css-grid): 2차원 레이아웃의 용어와 속성, fr·minmax·auto-fill, 명시적·묵시적 그리드, 서브그리드, 실무 원칙
+- [쓰기 모드와 논리적 속성](/knowledge/dictionary/frontend/css/logical-properties): 블록·인라인 축, inline-size·margin-block 같은 논리 속성, 그리드·플렉스박스가 start·end로 생각하는 이유
+- [CSS 점진적 향상: 폴백과 피처 쿼리](/knowledge/dictionary/frontend/css/css-progressive-enhancement): 새 CSS를 옛 브라우저에 쓸 만하게 지원하는 법, @supports, 폴리필을 피하는 이유
 
 ## 참고
 
