@@ -1,14 +1,14 @@
 ---
 title: "자바스크립트 패키지 매니저: npm, yarn, pnpm"
 concept: "Package Manager"
-summary: "패키지 설치·업데이트·의존성 관리를 맡는 패키지 매니저 npm·yarn·pnpm의 차이와 고르는 기준, 그리고 배포 중 만나는 npm EINTEGRITY 오류의 원인과 해결."
+summary: "패키지 설치·업데이트·의존성 관리를 맡는 패키지 매니저 npm·yarn·pnpm(그리고 Bun)의 차이와 고르는 기준, packageManager 필드와 Corepack, 설치 스크립트 차단 같은 공급망 보안 기본값, npm EINTEGRITY 오류의 원인과 해결."
 tags: ["javascript", "nodejs", "frontend", "tools"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/91", "https://riverkim.kr/265"]
+date: "2026-10-13"
+sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.org/api/corepack.html", "https://pnpm.io/settings", "https://yarnpkg.com/blog"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다. 도구별 비교는 글을 쓴 시점(2022~2023) 기준이라 지금과 다를 수 있습니다.
+> riverkim.kr에 쓴 글들을 바탕으로 재구성한 노트입니다.
 
 ## 패키지 매니저란
 
@@ -25,9 +25,11 @@ sources: ["https://riverkim.kr/91", "https://riverkim.kr/265"]
 | | npm | yarn | pnpm |
 | --- | --- | --- | --- |
 | 출발 | 최초의 Node.js 패키지 매니저 | Facebook이 주도해 npm의 속도·일관성·보안 문제를 보완하려고 만듦 | "performant npm". 디스크 효율을 목표로 만든 매니저 |
-| 설치 | Node.js에 기본 포함, 따로 설치할 필요 없음 | 별도 설치(또는 Corepack) | 별도 설치(또는 Corepack) |
-| 특징 | 가장 오래되어 생태계·자료가 가장 많다 | 병렬 설치로 속도 개선. 현재 버전(yarn berry)은 Plug'n'Play 같은 새 방식을 지원 | 패키지를 **전역 저장소에 한 번만 저장**하고 프로젝트에서는 링크로 연결해 디스크와 설치 시간을 아낀다 |
+| 설치 | Node.js에 기본 포함 | 별도 설치 | 별도 설치 |
+| 특징 | 가장 오래되어 생태계·자료가 가장 많다 | Yarn 2 이후(berry, 현재 4.x)는 Plug'n'Play·제로 인스톨 같은 새 방식을 지원한다. Rust로 다시 쓴 Yarn 6이 준비 중이다. 1.x(classic)는 유지보수만 한다 | 패키지를 **전역 저장소에 한 번만 저장**하고 프로젝트에서는 링크로 연결해 디스크와 설치 시간을 아낀다. 모노레포 workspace 지원이 강하다 |
 | lock 파일 | `package-lock.json` | `yarn.lock` | `pnpm-lock.yaml` |
+
+런타임 **Bun**도 npm 호환 패키지 매니저(`bun install`, lock 파일 `bun.lock`)를 내장하고 있어 설치 속도를 앞세운 네 번째 선택지가 됐다.
 
 pnpm의 `node_modules`는 `package.json`에 적지 않은 패키지에 접근할 수 없도록 엄격하게 구성된다. 다른 패키지의 의존성을 우연히 가져다 쓰는 "유령 의존성" 문제를 막아 주지만, 그런 패키지에 기대던 프로젝트는 옮길 때 오류가 날 수 있다.
 
@@ -37,6 +39,22 @@ pnpm의 `node_modules`는 `package.json`에 적지 않은 패키지에 접근할
 - **프로젝트 하나에는 매니저 하나만** 쓴다. lock 파일이 두 종류 섞이면 팀원마다 다른 버전이 설치된다.
 - 디스크를 많이 쓰는 모노레포나 패키지가 많은 프로젝트라면 pnpm의 이점이 커진다.
 - 결국은 팀 컨벤션과 배포 환경 지원 여부를 보고, 필요하면 직접 설치 속도와 방식을 비교해 정한다.
+
+## 매니저와 버전 고정: packageManager와 Corepack
+
+`package.json`의 `packageManager` 필드(`"packageManager": "pnpm@10.x.x"`)에 프로젝트가 쓰는 매니저와 정확한 버전을 적는다. **Corepack**은 이 필드를 읽어 맞는 yarn·pnpm을 자동으로 내려받아 실행하는 도구다. Node.js 16.9~24에는 Corepack이 함께 배포됐지만 **Node.js 25부터는 빠졌다.** 필요하면 `npm install -g corepack`으로 따로 설치하고, CI·Docker 이미지에도 설치 단계를 넣는다.
+
+## 공급망 보안 기본값
+
+npm 패키지 탈취·악성 배포 사고가 잦아지면서, 설치 중에 의존성의 `postinstall` 같은 **라이프사이클 스크립트를 실행하지 않는 것**이 기본값이 되고 있다.
+
+| 매니저 | 동작 |
+| --- | --- |
+| pnpm 10+ | 의존성 빌드 스크립트를 기본으로 실행하지 않는다. 허용할 패키지만 `onlyBuiltDependencies`에 적는다 |
+| Yarn 4 (4.14+) | `enableScripts` 기본값이 `false`다 |
+| npm | 기본으로 실행한다. `--ignore-scripts`나 `.npmrc`의 `ignore-scripts=true`로 끈다 |
+
+lock 파일을 커밋하고 CI에서는 `npm ci`·`pnpm install --frozen-lockfile`처럼 lock 파일을 바꾸지 않는 명령을 쓰는 것도 같은 맥락이다.
 
 ## 트러블슈팅: `npm ERR! code EINTEGRITY`
 
@@ -65,7 +83,8 @@ npm cache verify && npm cache clean --force && rm -rf package-lock.json && npm i
 ## 정리
 
 - 패키지 매니저는 의존성 설치와 버전 재현을 맡고, 그 핵심은 lock 파일이다.
-- npm은 기본 포함과 생태계, yarn은 속도와 새 설치 방식, pnpm은 디스크 효율과 엄격한 의존성이 강점이다.
+- npm은 기본 포함과 생태계, yarn은 PnP 같은 새 설치 방식, pnpm은 디스크 효율과 엄격한 의존성, Bun은 속도가 강점이다.
+- 매니저 버전은 `packageManager` 필드로 고정한다. Corepack은 Node.js 25부터 따로 설치한다.
 - 한 프로젝트에는 한 매니저, lock 파일은 커밋한다.
 - EINTEGRITY는 해시 불일치다. 캐시를 비우고 lock 파일을 다시 만든다.
 
