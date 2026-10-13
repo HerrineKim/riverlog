@@ -1,10 +1,10 @@
 ---
 title: "Float와 Flexbox 레이아웃"
 concept: "Flexbox"
-summary: "Normal Flow를 벗어나 요소를 배치하는 float와, 축을 기준으로 아이템을 정렬하는 1차원 레이아웃 모델 Flexbox."
+summary: "Normal Flow를 벗어나 요소를 배치하는 float와, 축을 기준으로 아이템을 정렬하는 1차원 레이아웃 모델 Flexbox. display: flex를 선언하면 적용되는 초깃값과 내용 기반 공간 분배, 쓰기 모드에 따라 바뀌는 축까지."
 tags: ["css", "layout", "flexbox", "frontend"]
 source: mixed
-sources: ["https://heewon26.tistory.com/298"]
+sources: ["https://heewon26.tistory.com/298", "https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/"]
 date: "2026-10-12"
 ---
 
@@ -123,6 +123,25 @@ float된 요소는 Normal Flow에서 벗어나 떠 있기 때문에, 이후 요�
 }
 ```
 
+## display: flex를 선언하면 생기는 일
+
+> Rachel Andrew의 「[플렉스박스 플렉스 컨테이너를 만들 때 무슨 일이 벌어질까?](https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/)」(2018.09, 웹액츄얼리 번역)를 바탕으로 재구성한 내용입니다.
+
+`display: flex`는 `display: block flex`의 줄임이다. **바깥쪽**은 블록이라 컨테이너 자신은 일반 블록처럼 놓이고, **안쪽**은 flex라 자식이 플렉스 아이템이 된다. `inline-flex`는 `inline flex`다. 아무것도 더 쓰지 않으면 다음 초깃값이 동작한다.
+
+| 속성 | 초깃값 | 결과 |
+| --- | --- | --- |
+| `flex-direction` | `row` | 인라인 방향으로 나열. 가로쓰기·왼→오면 왼쪽부터, RTL이면 오른쪽부터, 세로쓰기면 위부터 |
+| `justify-content` | `flex-start` | 주축 시작에 모인다. 남는 공간이 없으면 어떤 값이든 효과가 없다 |
+| `align-items` | `stretch` | 가장 높은 아이템에 맞춰 모두 늘어난다 |
+| `flex-grow` | `0` | 남는 공간이 있어도 커지지 않는다 |
+| `flex-shrink` | `1` | 공간이 모자라면 줄어든다 |
+| `flex-basis` | `auto` | 크기를 정하지 않았으면 `max-content`(한 줄로 늘였을 때 크기)에서 출발 |
+
+줄어들 때는 `flex-shrink` 값에 **기본 크기를 곱한 비율**로 줄어든다. 내용이 많은 아이템은 덜 줄고 짧은 아이템이 먼저 사라지지 않는다. 그래서 따로 크기를 주지 않아도 **내용에 비례해 공간을 나눠 갖는다.** 이것이 플렉스박스를 쓰는 핵심 이유다.
+
+`row-reverse`, `column-reverse`는 순서를 바꾸는 것이 아니라 **주축의 시작점(main-start)을 반대편으로 옮길 뿐**이다. 키보드·스크린 리더 순서는 소스 그대로다. 행과 열이 쓰기 모드를 따르는 원리는 [[logical-properties|쓰기 모드와 논리적 속성]]에 있다.
+
 ## 함정: flex 아이템이 컨테이너를 넘칠 때
 
 > 곽빵의 「[flexbox에서 가변요소의 자식 width가 부모 width를 넘을 때](https://heewon26.tistory.com/298)」(2021.09)를 요약·재구성한 내용입니다.
@@ -163,7 +182,7 @@ float된 요소는 Normal Flow에서 벗어나 떠 있기 때문에, 이후 요�
 
 ## Flexbox와 Grid
 
-Flexbox는 **한 방향**(행 또는 열)의 배치에, Grid는 행과 열을 **동시에** 다루는 2차원 배치에 적합하다. 두 가지로 대부분의 레이아웃을 구성할 수 있다. React Native의 레이아웃도 Flexbox 기반이다([React Native 스타일링](/knowledge/dictionary/frontend/mobile/react-native-basics) 참고).
+Flexbox는 **한 방향**(행 또는 열)의 배치에, Grid는 행과 열을 **동시에** 다루는 2차원 배치에 적합하다. 두 가지로 대부분의 레이아웃을 구성할 수 있다. 아이템에 `%` 너비를 주고 `flex-grow: 0`으로 막고 있다면 2차원 배치가 필요하다는 신호다([[css-grid|CSS 그리드 레이아웃]]). React Native의 레이아웃도 Flexbox 기반이다([React Native 스타일링](/knowledge/dictionary/frontend/mobile/react-native-basics) 참고).
 
 ## 핵심 정리
 
@@ -171,3 +190,6 @@ Flexbox는 **한 방향**(행 또는 열)의 배치에, Grid는 행과 열을 **
 - Flexbox: 부모에 `display: flex`, 주축은 `justify-content`, 교차축은 `align-items`.
 - `align-self`, `flex-grow`, `order`는 **아이템**에 주는 속성이다.
 - flex 아이템의 `min-width` 기본값은 `auto`다. 긴 텍스트 때문에 아이템이 넘치면 `min-width: 0`을 준다.
+- 초깃값만으로도 아이템은 내용에 비례해 공간을 나눠 갖는다. `-reverse`는 시작점만 옮긴다.
+
+관련 노트: [[css-grid|CSS 그리드 레이아웃]], [[logical-properties|쓰기 모드와 논리적 속성]], [[box-model|박스 모델과 display]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]]
