@@ -4,9 +4,11 @@ concept: "Segment"
 summary: "한 번 심은 이벤트 추적 코드로 여러 분석·마케팅 도구에 데이터를 보내는 CDP Segment의 Source·Destination 구조, Track·Identify 스펙, Cloud/Device 모드, Warehouse, 디버깅."
 tags: ["analytics", "tracking", "data", "marketing"]
 source: notion
+date: "2026-10-13"
+sources: ["https://www.twilio.com/docs/segment", "https://www.twilio.com/docs/segment/unify"]
 ---
 
-**Segment**는 서비스에서 일어나는 일(가입, 클릭, 결제 등)을 표준 형식의 메시지로 만들어 **여러 도구로 한 번에 보내 주는** 고객 데이터 플랫폼(CDP)이다. GA, 광고 픽셀, 이메일 마케팅 도구마다 추적 코드를 따로 심는 대신 Segment 코드 하나만 심고, 어디로 보낼지는 Segment 대시보드에서 켜고 끈다. Segment 공식 교육(Segment 101·201)을 바탕으로 정리했다.
+**Segment**(Twilio Segment)는 서비스에서 일어나는 일(가입, 클릭, 결제 등)을 표준 형식의 메시지로 만들어 **여러 도구로 한 번에 보내 주는** 고객 데이터 플랫폼(CDP)이다. GA, 광고 픽셀, 이메일 마케팅 도구마다 추적 코드를 따로 심는 대신 Segment 코드 하나만 심고, 어디로 보낼지는 Segment 대시보드에서 켜고 끈다. 공식 문서는 [Twilio Docs](https://www.twilio.com/docs/segment)로 옮겨졌다.
 
 ## 기본 구조
 
@@ -88,16 +90,19 @@ SQL로 웹 행동과 CS 티켓, 결제 데이터를 함께 분석할 수 있게 
 ## 디버깅
 
 - **Source → Debugger**(Live): 이벤트가 Segment에 실제로 들어오는지 실시간 확인
-- **Event Tester**: 특정 이벤트를 골라 특정 Destination으로 보내 보고 응답을 확인
+- **Event Tester·Mappings Tester**: 특정 이벤트를 골라 Destination으로 보내 보고 응답을 확인(Cloud Mode 연동만 해당)
 - **Event Delivery**: Destination별 전송 성공·실패 현황
 - 브라우저 네트워크 탭에서 도구별 ID(예: 광고 픽셀 ID)로 필터링해 실제 요청을 대조
 - 안 들어온다면 확인할 것: Destination이 첫 Page 호출을 필요로 하는가? 필수 속성이 다 있는가? 그 이벤트 타입을 Destination이 지원하는가? Cloud/Device 모드 설정이 맞는가?
 
-## Engage (구 Personas)
+## Unify와 Engage (구 Personas)
 
-- **Identity Resolution**: 여러 채널에서 수집한 한 고객의 데이터를 하나의 프로필로 통합
-- **Computed Traits**: 행동을 바탕으로 계산한 사용자 특성(예: 최근 30일 구매 횟수)
-- **Audiences**: 조건으로 잠재 고객 그룹을 정의하고 광고·이메일 도구로 내보냄
+수집한 이벤트로 고객 프로필을 만들고 활용하는 유료 기능이다.
+
+| 제품 | 기능 |
+| --- | --- |
+| **Unify** | **Identity Resolution**(여러 기기·채널의 데이터를 한 프로필로 통합), 프로필 탐색, **Computed Traits**(행동으로 계산한 특성, 예: 최근 30일 구매 횟수), SQL Traits, 예측 |
+| **Engage** | **Audiences**(조건으로 고객 그룹을 정의해 광고·이메일 도구로 내보냄), Journeys(단계별 메시지 흐름). Unify가 있어야 쓴다 |
 
 GA4 자체 설정은 [GA4 시작하기](/knowledge/dictionary/tools/analytics/ga4-setup) 참고.
 
