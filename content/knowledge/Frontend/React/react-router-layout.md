@@ -4,11 +4,11 @@ concept: "React Router"
 summary: "일관된 URL 규칙을 정하고, 레이아웃에서 경로별 버튼과 현재 경로 기반 Breadcrumbs를 렌더링하는 react-router 패턴."
 tags: ["react", "routing", "mui", "frontend"]
 source: notion
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/182"]
 ---
 
-관리자 화면처럼 목록·상세·수정·등록 페이지가 반복되는 서비스는 **URL 규칙을 먼저 통일**해 두면, 레이아웃 한 곳에서 경로만 보고 버튼이나 Breadcrumbs(현재 위치 표시)를 자동으로 만들 수 있다. react-router v6의 `<Outlet />`, `useLocation()`을 활용한다.
+관리자 화면처럼 목록·상세·수정·등록 페이지가 반복되는 서비스는 **URL 규칙을 먼저 통일**해 두면, 레이아웃 한 곳에서 경로만 보고 버튼이나 Breadcrumbs(현재 위치 표시)를 자동으로 만들 수 있다. react-router의 `<Outlet />`, `useLocation()`을 활용한다.
 
 ## 기본: Routes, Route, Outlet
 
@@ -85,7 +85,7 @@ function AdminLayout() {
 
 ```tsx
 import { Breadcrumbs, Link, Typography, type LinkProps } from "@mui/material"
-import { Link as RouterLink, useLocation } from "react-router-dom"
+import { Link as RouterLink, useLocation } from "react-router"
 
 const LinkRouter = (props: LinkProps & { to: string }) => (
   <Link {...props} component={RouterLink} />
@@ -137,9 +137,9 @@ export default function PathBreadcrumbs({ labels }: Props) {
 
 결과 예: `/user/edit/368` → `Home / 회원 목록 / 회원 상세 / 회원 수정`
 
-> 참고: 위 코드는 v6 기준이다. **react-router v7**부터는 패키지가 `react-router` 하나로 합쳐졌고, `react-router-dom`은 v6 앱의 업그레이드를 돕기 위해 `react-router`를 그대로 다시 내보내는 호환용 패키지로 남았다. 새 코드에서는 `import { Link, useLocation } from "react-router"`처럼 가져온다.
+> 참고: 패키지 이름이 바뀌어 왔다. v6까지는 웹용 API를 `react-router-dom`에서 가져왔고, v7에서 `react-router` 하나로 합쳐지며 `react-router-dom`은 다시 내보내기만 하는 호환용으로 남았다. v8(2026.06)에서는 `react-router-dom`이 빠졌으므로 `react-router`에서 가져오고, `RouterProvider`·`HydratedRouter`만 `react-router/dom`에서 가져온다.
 
-> 참고: react-router v6.4+의 데이터 라우터(`createBrowserRouter`)를 쓴다면 각 라우트의 `handle`에 라벨을 넣고 `useMatches()`로 꺼내는 방식이 공식 권장 패턴이다. URL 문자열을 직접 파싱하지 않아도 된다.
+> 참고: 데이터 라우터(`createBrowserRouter`)를 쓴다면 각 라우트의 `handle`에 라벨을 넣고 `useMatches()`로 꺼내는 방식이 공식 권장 패턴이다. URL 문자열을 직접 파싱하지 않아도 된다.
 
 ## 핵심 정리
 
