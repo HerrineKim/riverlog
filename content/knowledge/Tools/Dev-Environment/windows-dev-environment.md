@@ -4,7 +4,7 @@ concept: "Windows Dev Setup"
 summary: "터미널·셸의 뜻과 CMD·PowerShell·Git Bash의 차이, Windows용 Git 설치 때 고를 옵션, 그리고 Windows에서 자주 만나는 CRLF 줄바꿈 오류(Prettier의 Delete ␍)를 정리한 노트."
 tags: ["tools", "cli", "git", "productivity"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/231", "https://riverkim.kr/142", "https://riverkim.kr/85"]
 ---
 
@@ -20,7 +20,7 @@ Windows에서 웹 개발을 시작하면 macOS·Linux 중심으로 쓰인 문서
 | 셸(Shell) | 터미널 안에서 입력한 명령을 해석해 운영체제에 전달하는 소프트웨어 |
 | CLI(Command Line Interface) | 이렇게 명령어로 다루는 방식 자체 |
 
-유닉스·리눅스 계열 셸에는 sh, ksh, csh, bash 등이 있다. Windows는 예전에는 CMD가, 지금은 PowerShell이 기본 셸이다.
+유닉스·리눅스 계열 셸에는 sh, ksh, csh, bash, zsh 등이 있다. Windows는 과거에는 CMD가 기본 셸이었고, 지금은 PowerShell이 기본 셸이며 Windows 11의 기본 터미널 앱인 **Windows Terminal**이 여러 셸을 탭으로 띄운다.
 
 ## CMD, PowerShell, Git Bash
 
@@ -32,8 +32,9 @@ VS Code 터미널 드롭다운에 보이는 셸들은 다음과 같이 다르다
 | PowerShell | cmdlet이라는 별도 명령 집합을 쓰고, 파이프로 한 명령의 결과(객체)를 다음 명령에 넘길 수 있다. CMD로 하던 작업은 모두 할 수 있다 |
 | Git Bash | Git for Windows에 함께 설치되는 **bash** 환경. Windows에서 Git 명령과 `ls`, `rm` 같은 유닉스 명령을 함께 쓸 수 있다 |
 | Git CMD | CMD에서 Git 명령을 쓸 수 있게 한 것 |
+| WSL(Windows Subsystem for Linux) | Windows 안에서 실제 리눅스 배포판(Ubuntu 등)을 돌린다. `wsl --install` 한 줄로 설치한다 |
 
-bash는 GNU 프로젝트에서 Brian Fox가 만든 유닉스 셸로, 리눅스의 사실상 표준 셸이다. 튜토리얼 대부분이 bash 문법으로 쓰여 있으므로 **Windows에서는 Git Bash를 기본 터미널로 두면** 문서 속 명령을 거의 그대로 따라 할 수 있다.
+bash는 GNU 프로젝트에서 Brian Fox가 만든 유닉스 셸로, 리눅스의 사실상 표준 셸이다. 튜토리얼 대부분이 bash 문법으로 쓰여 있으므로 Windows에서는 **Git Bash를 기본 터미널로 두면** 문서 속 명령을 거의 그대로 따라 할 수 있다. 리눅스 서버와 같은 환경(Docker, 네이티브 빌드 도구)이 필요하면 **WSL 2**에서 개발하는 편이 낫다. VS Code는 WSL 안의 폴더를 그대로 열 수 있다.
 
 ## Windows에 Git 설치하기
 
@@ -53,7 +54,7 @@ git config --global user.email "메일 주소"
 
 ### 왜 master 대신 main인가
 
-2020년 무렵 컴퓨터 업계에서 master/slave 같은 용어가 노예제를 떠올리게 한다는 문제가 제기됐다. GitHub는 이런 **문화적 민감성(cultural sensitivity)** 을 고려해 새 저장소의 기본 브랜치 이름을 `main`으로 바꿨다. Git 자체의 기본값은 아직 `master`이고 `init.defaultBranch`로 맞추는 방법은 [[git-basics|Git 기본 명령과 파일 상태]]에 있다. 다만 저장소를 다른 서비스로 미러링할 계획이 있다면 양쪽의 기본 브랜치 이름을 맞춰 두는 편이 안전하다([[remote-github|원격 저장소와 GitHub]]의 미러링 참고).
+2020년 무렵 컴퓨터 업계에서 master/slave 같은 용어가 노예제를 떠올리게 한다는 문제가 제기됐다. GitHub는 이런 **문화적 민감성(cultural sensitivity)** 을 고려해 새 저장소의 기본 브랜치 이름을 `main`으로 바꿨다. Git 2.x의 기본값은 여전히 `master`이고(Git 3.0부터 `main`) `init.defaultBranch`로 맞추는 방법은 [[git-basics|Git 기본 명령과 파일 상태]]에 있다. 다만 저장소를 다른 서비스로 미러링할 계획이 있다면 양쪽의 기본 브랜치 이름을 맞춰 두는 편이 안전하다([[remote-github|원격 저장소와 GitHub]]의 미러링 참고).
 
 ## 줄바꿈 문제: `Delete ␍` 오류
 
@@ -71,7 +72,7 @@ ESLint에 Prettier를 붙인 프로젝트를 Windows에서 열면 모든 줄 끝
 ## 정리
 
 - 터미널은 명령을 입력하는 창, 셸은 그 명령을 해석하는 프로그램이다.
-- Windows에서는 Git Bash를 쓰면 bash 기반 문서를 그대로 따라 하기 쉽다. PowerShell은 CMD를 대체하는 강력한 Windows 셸이다.
+- Windows에서는 Git Bash를 쓰면 bash 기반 문서를 그대로 따라 하기 쉽다. 리눅스와 같은 환경이 필요하면 WSL 2를 쓴다. PowerShell은 CMD를 대체하는 강력한 Windows 셸이다.
 - Git 설치 때 에디터와 기본 브랜치 이름(`main`)만 직접 고른다.
 - `Delete ␍`는 CRLF와 LF의 충돌이다. 혼자면 `endOfLine: "auto"`, 팀이면 저장소 단위로 LF 통일.
 
