@@ -42,6 +42,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 ### 라이브러리
 - [날짜 라이브러리](/knowledge/dictionary/frontend/javascript/date-libraries): Moment.js 이후의 대안, date-fns와 Day.js 비교
 - [패키지 매니저: npm, yarn, pnpm](/knowledge/dictionary/frontend/javascript/package-managers): lock 파일의 역할, 세 매니저 비교와 고르는 기준, npm EINTEGRITY 오류 해결
+- [번들러의 역사와 Vite](/knowledge/dictionary/frontend/javascript/bundlers-and-vite): CommonJS·AMD·ES 모듈에서 번들러로, esbuild와 Snowpack이 푼 느린 빌드, Vite의 개발·배포 이원 구조
 - [React와 Vue 말고: 다른 프론트엔드 프레임워크](/knowledge/dictionary/frontend/javascript/frontend-frameworks): Svelte, Angular, Preact, Alpine.js, HTMX의 성격과 쓰임
 
 ## 코딩 스타일
