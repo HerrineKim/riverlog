@@ -4,12 +4,12 @@ concept: "Resume"
 summary: "외국계 취업용 레주메를 한 장으로, 성과 중심으로 쓰는 법: 섹션 순서, 학력 표기, 2~3문장 Summary, 액션 동사와 숫자로 쓰는 경력, 커버레터 구조와 템플릿."
 tags: ["career", "job-search", "resume", "english"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
 ---
 
-> 외국계 취업 컨설턴트 마차카피(matchacopy)가 Flitto와 함께 진행한 웨비나 「합격하는 레주메 & 커버레터의 모든 것」을 듣고 정리한 노트다.
+> 마차카피(matchacopy)와 Flitto의 웨비나 「합격하는 레주메 & 커버레터의 모든 것」을 바탕으로 재구성한 노트입니다.
 
-📎 웨비나에서 받은 레주메·커버레터 템플릿: [[resume_cover_letter_template.docx|resume_cover_letter_template.docx]] (Word)
+📎 레주메·커버레터 템플릿: [[resume_cover_letter_template.docx|resume_cover_letter_template.docx]] (Word)
 
 국문 이력서와 가장 큰 차이는 **직무 설명과 성과를 함께** 써야 한다는 점이다. "무슨 일을 했다"에서 끝내지 않고 "그래서 어떤 결과가 나왔다"까지 쓴다.
 
