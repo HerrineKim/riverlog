@@ -4,7 +4,7 @@ concept: "A11y-driven Testing"
 summary: "UI 테스트가 xpath·CSS 선택자 때문에 쉽게 깨지던 문제를 WAI-ARIA의 role과 접근 가능한 이름(accessible name)으로 요소를 찾는 방식으로 푸는 법. getByRole 쿼리, aria-label·aria-labelledby·aria-current·aria-expanded 활용, 헤드리스 컴포넌트, 인수·회귀 테스트로서의 효과를 정리한다."
 tags: ["testing", "frontend", "accessibility", "html", "react"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://tech.wonderwall.kr/articles/a11ydriventestautomation/"]
 ---
 
@@ -156,9 +156,14 @@ await expect(page.getByRole('heading', { name: '로그인' })).toBeVisible();
 
 회귀 테스트는 **안정적이어야** 한다. 코드 한 줄에 테스트 수백 줄을 고쳐야 한다면 유지보수 비용이 구현보다 커진다.
 
-원문 팀의 "정렬할 수 있다" e2e 테스트는 상품 목록을 inline-block에서 grid로, CSR에서 SSG로, `img`에서 Next.js `Image`로 바꾸는 동안 한 번도 깨지지 않았다. 사용자 동작이 그대로였기 때문이다. 반대로 헤더를 고치다 `useEffect` 의존성 배열에 참조가 바뀌는 `cancel` 함수를 넣어 정렬 요청이 취소되는 버그는, 코드 리뷰는 통과했지만 머지 직전 e2e가 잡았다.
+role과 이름으로 찾는 테스트는 **사용자 동작이 그대로인 한** 구현 교체를 견딘다.
 
-이 방식에서 e2e가 깨지는 경우는 대부분 진짜 버그이거나 잘못된 접근성을 바로잡은 경우였다.
+| 바뀐 것 | 테스트 |
+| --- | --- |
+| 레이아웃(inline-block → grid), 렌더링 방식(CSR → SSG), `img` → 프레임워크 이미지 컴포넌트 | 통과. 사용자가 보는 역할·이름이 같다 |
+| `useEffect` 의존성 배열에 매번 참조가 바뀌는 함수를 넣어 요청이 취소되는 버그 | 실패. 코드 리뷰에서 놓친 동작 결함을 잡는다 |
+
+그래서 이 방식의 E2E가 깨지면 대부분 **진짜 버그이거나 잘못된 접근성을 바로잡은 경우**다.
 
 ## 정리
 
