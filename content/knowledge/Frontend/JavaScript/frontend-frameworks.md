@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://riverkim.kr/315", "https://velog.io/@teo/왜-Svelte스벨트를-좋아하나요", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS"]
 ---
 
-> riverkim.kr에 쓴 글(2025.06)을 다시 정리한 노트입니다. 점유율 수치는 2024년 설문 기준입니다. 프레임워크 계보와 Svelte의 컴파일러 방식은 테오(teo)의 「[왜 Svelte(스벨트)를 좋아하나요?](https://velog.io/@teo/왜-Svelte스벨트를-좋아하나요)」(2021.12)와 「[Svelte Rxjs Vite AdorableCSS](https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS)」(2022.01)로 보강했습니다.
+> riverkim.kr에 쓴 글(2025.06)을 다시 정리한 노트입니다. 점유율 수치는 2024년 설문 기준입니다. 프레임워크 계보와 컴파일러 방식은 테오(teo)의 「[왜 Svelte(스벨트)를 좋아하나요?](https://velog.io/@teo/왜-Svelte스벨트를-좋아하나요)」(2021.12)를 바탕으로 보강했습니다.
 
 ## 얼마나 쓰이나
 
@@ -48,13 +48,14 @@ React·Vue·Angular는 브라우저에서 돌아가는 **런타임 라이브러�
 | --- | --- | --- |
 | 갱신 방식 | 컴포넌트를 가상으로 다시 그려 이전과 비교한 뒤 바뀐 곳만 반영 | 값이 바뀌는 지점에 갱신 코드(`$$invalidate`)를 미리 심어 해당 노드만 바꾼다 |
 | 번들에 실리는 것 | 라이브러리 런타임 전체 | 작은 유틸 정도. 컴파일러가 아무리 커져도 번들 크기와 무관하다 |
-| 상태 변경 | `setState`·`useState` 같은 변경 알림이 필요하다 | `count++` 같은 **평범한 대입**이 곧 반응성이다 |
+| 상태 변경 | `useState`의 setter로 변경을 알린다 | `let count = $state(0)`로 선언한 뒤 `count++` 같은 **평범한 대입**이 곧 반응성이다 |
 
 프레임워크 코드는 적을수록 빠르고, 어떤 알고리즘도 잘 짠 바닐라 JavaScript보다 빠를 수는 없다. 컴파일러 방식은 그 바닐라 코드를 대신 써 주는 셈이다. 그 밖의 특징은 이렇다.
 
 - 상용구(boilerplate)가 없고 문법이 HTML·CSS·JS 그대로다. 퍼블리셔가 만든 `.html`을 확장자만 바꿔도 동작해, HTML·CSS만 아는 사람도 바로 적응한다.
 - `<style>`에 쓴 CSS가 자동으로 컴포넌트 범위로 갇힌다(scoped CSS). CSS-in-JS 라이브러리 없이 CSS 변수로 JS 값과 연동한다.
-- 약점은 **작은 커뮤니티**다. 초기에는 TypeScript·IDE·HMR 지원이 늦었고, 베스트 프랙티스가 적어 필요한 것을 직접 만들 일이 많다. 성능 논쟁이 아니라 생태계 문제다. 이후 React도 컴파일러로 메모이제이션을 자동화하는 쪽으로 가며 이 개념을 흡수하고 있다.
+- Svelte 5(2024)부터 반응성을 **룬(rune)** 으로 명시한다. `$state`·`$derived`·`$effect`가 컴파일러에 주는 표시이고, 내부는 시그널(signal)로 바뀌었다. 과거(Svelte 3·4)에는 컴포넌트 최상단의 `let` 대입 자체가 반응형이었고 파생 값은 `$:` 문법으로 썼다. 룬은 `.svelte.ts` 파일에서도 쓸 수 있어 컴포넌트 밖으로 상태를 꺼내기 쉬워졌다.
+- 약점은 **작은 커뮤니티**다. 베스트 프랙티스와 라이브러리가 적어 필요한 것을 직접 만들 일이 많다. 성능이 아니라 생태계 문제다. 컴파일러 접근은 React Compiler(2025년 1.0)처럼 주류 프레임워크도 흡수했다. React Compiler는 `useMemo`·`useCallback` 같은 메모이제이션을 빌드 시점에 자동으로 넣는다.
 
 ### Angular 2+
 
@@ -86,7 +87,7 @@ HTML 요소에 `x-data`, `x-on`, `x-show` 같은 속성으로 상태와 이벤�
 
 ## 프레임워크의 계보
 
-테오가 직접 겪은 흐름이다. 새 프레임워크는 대개 앞선 것의 불편을 고치며 나왔다. MVC·MVVM 같은 패턴 자체는 [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]]에 있다.
+새 프레임워크는 대개 앞선 것의 불편을 고치며 나왔다. MVC·MVVM 같은 패턴 자체는 [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]]에 있다.
 
 ```text
 jQuery (DOM 직접 조작)
