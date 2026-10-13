@@ -25,6 +25,7 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 - [쓰기 모드와 논리적 속성](/knowledge/dictionary/frontend/css/logical-properties): 블록·인라인 축, inline-size·margin-block 같은 논리 속성, 그리드·플렉스박스가 start·end로 생각하는 이유
 - [CSS 점진적 향상: 폴백과 피처 쿼리](/knowledge/dictionary/frontend/css/css-progressive-enhancement): 새 CSS를 옛 브라우저에 쓸 만하게 지원하는 법, @supports, 폴리필을 피하는 이유
 - [CSS 커스텀 속성으로 색상 체계 짜기](/knowledge/dictionary/frontend/css/css-color-variables): 팔레트·기능 색상·컴포넌트 색상 3단계, oklch·color-mix, 테마와 다크 모드
+- [Sass: 파일 구조, 믹스인과 @extend](/knowledge/dictionary/frontend/css/sass): 네이티브 CSS와의 역할 분담, 7-1 폴더 구조와 @use, 믹스인·@extend·플레이스홀더
 
 ## 참고
 
