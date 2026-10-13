@@ -93,4 +93,4 @@ Notion(문서), Slack, Linear, 사내 스크립트 배포용 Homebrew, 내부 �
 - 관리형 편의 기능은 커스터마이즈가 막히는지 먼저 본다.
 - 도구 목록은 시간이 지나면 낡는다. 남는 것은 **무엇을 기준으로 골랐나**다.
 
-관련 노트: [[ci-cd|CI/CD]], [[vm-vs-container|VM과 컨테이너]], [[rds-security-group|AWS RDS 외부 접속 허용]]
+관련 노트: [[ci-cd|CI/CD]], [[vm-vs-container|VM과 컨테이너]], [[rds-security-group|AWS RDS 외부 접속 허용]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]]
