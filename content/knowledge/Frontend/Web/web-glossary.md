@@ -1,7 +1,7 @@
 ---
 title: "프론트엔드 웹 개발 용어집"
 concept: "Web Glossary"
-summary: "API부터 Yarn까지 프론트엔드 개발에서 자주 듣는 용어 61개를 주제별로 묶어 한두 줄로 설명하고, 자세한 노트가 있는 용어는 그 노트로 연결했다."
+summary: "API부터 Yarn까지 프론트엔드 개발에서 자주 듣는 용어 70여 개를 주제별로 묶어 한두 줄로 설명하고, 자세한 노트가 있는 용어는 그 노트로 연결했다."
 tags: ["frontend", "web", "html", "css", "javascript"]
 source: mixed
 date: "2026-10-13"
@@ -10,7 +10,7 @@ sources: ["https://velog.io/@cookie004/61-frontend-web-development-buzz-words"]
 
 > Tapajyoti Bose의 「61 Frontend Web Development Buzz Words Every Developer Should Have in Their Vocabulary」를 Minjeong Koo가 번역한 글(velog, 2022.08)의 용어 목록을 바탕으로, 설명을 보충하고 주제별로 다시 묶은 노트입니다.
 
-원문은 알파벳순 목록이다. 이 노트는 **주제별**로 묶었다. 자세한 설명이 있는 용어는 「자세히」 칸의 노트로 이어진다.
+용어는 **주제별**로 묶었다. 자세한 설명이 있는 용어는 「자세히」 칸의 노트로 이어진다.
 
 ## 웹의 기본 구조
 
@@ -20,7 +20,8 @@ sources: ["https://velog.io/@cookie004/61-frontend-web-development-buzz-words"]
 | Server (서버) | 요청을 받아 HTML·데이터를 돌려주는 컴퓨터나 프로그램. 정적 파일을 주는 웹 서버와 로직을 실행하는 WAS로 나뉜다 | [[web-server-and-nginx|웹 서버, WAS, Nginx]] |
 | Domain (도메인) | `example.com`처럼 사람이 읽는 웹사이트 주소. DNS가 IP 주소로 바꿔 준다 | [[dns|DNS]] |
 | HTTP | 브라우저와 서버가 요청·응답을 주고받는 규약. 상태를 기억하지 않는다 | [[http|HTTP 프로토콜]] |
-| HTTPS | TLS로 암호화한 HTTP. 요즘 브라우저는 HTTP 페이지에 「안전하지 않음」을 띄우고, 많은 웹 API가 HTTPS에서만 동작한다 | [[https|HTTPS와 TLS]] |
+| HTTP/2·HTTP/3 | HTTP의 새 전송 방식. HTTP/2는 연결 하나에 여러 요청을 동시에 싣고(멀티플렉싱), HTTP/3는 UDP 기반 QUIC 위에서 돌아 패킷 손실이 다른 요청을 막지 않는다. 주요 브라우저와 CDN이 모두 지원하고 TLS가 사실상 필수다 | [[http|HTTP 프로토콜]] |
+| HTTPS | TLS로 암호화한 HTTP. 브라우저는 HTTP 페이지에 「안전하지 않음」을 띄우고, 많은 웹 API가 HTTPS에서만 동작한다 | [[https|HTTPS와 TLS]] |
 | API | 프로그램끼리 대화하는 약속. 웹 개발에서는 보통 서버의 REST·GraphQL API나 브라우저가 제공하는 Web API(fetch, localStorage 등)를 말한다 | [[rest-api|REST API 설계]] |
 | Cookies (쿠키) | 서버가 브라우저에 저장시키고 이후 요청마다 돌려받는 작은 데이터. 로그인 유지와 추적에 쓴다. `HttpOnly`, `Secure`, `SameSite`로 보호한다 | [[cookie-session|쿠키와 세션]] |
 | Cache (캐시) | 한 번 받은 파일을 저장해 두었다가 다시 쓰는 것. 브라우저 캐시, CDN 캐시, 서버 캐시가 층을 이룬다 | [[http-cache|HTTP 캐시]] |
@@ -67,7 +68,7 @@ sources: ["https://velog.io/@cookie004/61-frontend-web-development-buzz-words"]
 | Promises | 비동기 작업의 미래 결과를 담는 객체. 대기·이행·거부 세 상태가 있고 `async/await`는 그 위의 문법이다 | [[callback-and-promise|콜백과 Promise]] |
 | Libraries (라이브러리) | 가져다 쓰는 재사용 코드 묶음. 내 코드가 라이브러리를 **호출**한다. 패키지는 npm 같은 저장소로 배포하는 단위다 | [[frontend-dependency|프론트엔드 의존성 관리]] |
 | Framework (프레임워크) | 앱의 뼈대와 규칙을 정해 주는 도구. 프레임워크가 내 코드를 **호출**한다(제어의 역전). React는 스스로를 라이브러리라 부르지만 Next.js와 함께 쓰면 프레임워크에 가깝다 | [[frontend-frameworks|React와 Vue 말고]] |
-| Bootstrap | 트위터에서 2011년 공개한 CSS 프레임워크. 그리드와 미리 만든 컴포넌트를 클래스로 쓴다. 요즘은 Tailwind CSS 같은 유틸리티 방식이 많이 쓰인다. 「부트스트랩」은 프로젝트를 초기화한다는 일반 동사로도 쓴다 | |
+| Bootstrap | 트위터에서 2011년 공개한 CSS 프레임워크. 그리드와 미리 만든 컴포넌트를 클래스로 쓴다. 지금은 Tailwind CSS 같은 유틸리티 방식이 주류다. 「부트스트랩」은 프로젝트를 초기화한다는 일반 동사로도 쓴다 | |
 | NPM | Node.js와 함께 설치되는 기본 패키지 매니저이자 패키지 저장소 | [[package-managers|자바스크립트 패키지 매니저]] |
 | Yarn | 페이스북이 2016년 내놓은 npm 대안 패키지 매니저. 잠금 파일과 빠른 설치로 출발했다 | [[package-managers|자바스크립트 패키지 매니저]] |
 | Git | 코드 변경 이력을 기록하는 분산 버전 관리 시스템 | [[git-basics|Git 기본 명령]] |
@@ -80,9 +81,17 @@ sources: ["https://velog.io/@cookie004/61-frontend-web-development-buzz-words"]
 
 | 용어 | 뜻과 보충 | 자세히 |
 | --- | --- | --- |
+| CSR | 브라우저의 JavaScript가 데이터를 받아 화면을 그리는 렌더링. SPA의 기본 방식이다 | [[spa-csr-ssr|SPA와 CSR·SSR]] |
 | SSR | 서버에서 HTML을 완성해 보내는 렌더링. 첫 화면과 SEO에 유리하다 | [[spa-csr-ssr|SPA와 CSR·SSR]] |
+| SSG·ISR | 빌드 때 HTML을 미리 만드는 렌더링(SSG)과, 정한 주기마다 다시 만드는 방식(ISR) | [[spa-csr-ssr|SPA와 CSR·SSR]] |
+| Hydration | 서버가 보낸 HTML에 브라우저가 JS로 이벤트와 상태를 붙여 살아 있는 앱으로 만드는 과정 | [[spa-csr-ssr|SPA와 CSR·SSR]] |
+| Streaming SSR | HTML을 한 번에 보내지 않고 준비된 부분부터 `<Suspense>` 경계 단위로 나눠 보내는 SSR | [[streaming-ssr|스트리밍 SSR]] |
+| RSC | React Server Components. 서버에서만 실행되어 코드가 번들에 들어가지 않는 컴포넌트. Next.js App Router의 기본이다 | [[server-client-components|서버·클라이언트 컴포넌트 조합 규칙]] |
+| Core Web Vitals | 구글이 사용자 경험의 핵심으로 정한 세 지표. 로딩 LCP, 반응성 INP, 시각 안정성 CLS | [[web-vitals|웹 성능 지표]] |
 | FCP | 첫 콘텐츠가 그려지는 시간 | [[web-vitals|웹 성능 지표]] |
-| LCP | 가장 큰 콘텐츠가 그려지는 시간. Core Web Vitals 중 하나 | [[web-vitals|웹 성능 지표]] |
+| LCP | 가장 큰 콘텐츠가 그려지는 시간. 2.5초 이하가 좋음 | [[web-vitals|웹 성능 지표]] |
+| INP | 클릭·입력 뒤 다음 화면이 그려지기까지의 시간. 200ms 이하가 좋음. 2024년 3월에 FID를 대신했다 | [[web-vitals|웹 성능 지표]] |
+| CLS | 로딩 중 요소가 갑자기 밀리는 정도. 0.1 이하가 좋음 | [[web-vitals|웹 성능 지표]] |
 | Lighthouse | 구글의 페이지 품질 검사 도구. 성능·접근성·권장사항·SEO 점수를 매긴다 | [[web-vitals|웹 성능 지표]] |
 | Crawl (크롤링) | 검색 엔진 봇이 링크를 따라 페이지를 수집하는 것 | [[seo-basics|SEO 기초]] |
 | SEO | 검색 결과에서 잘 발견되도록 콘텐츠와 구조를 다듬는 일 | [[seo-basics|SEO 기초]] |
@@ -113,4 +122,4 @@ sources: ["https://velog.io/@cookie004/61-frontend-web-development-buzz-words"]
 - 용어 대부분은 웹의 세 층으로 나뉜다. 네트워크(HTTP, 캐시), 문서(HTML, CSS, DOM), 동작(JavaScript, 도구)이다.
 - 낯선 용어를 만나면 「어느 층의 이야기인가」부터 따지면 빨리 자리를 잡는다.
 
-관련 노트: [[frontend-roadmap|프론트엔드 학습 로드맵]], [[html|HTML 기초와 HTML5]], [[seo-basics|SEO 기초]], [[web-vitals|웹 성능 지표와 Lighthouse]]
+관련 노트: [[frontend-roadmap|프론트엔드 학습 로드맵]], [[html|HTML 기초와 HTML5]], [[seo-basics|SEO 기초]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[spa-csr-ssr|SPA와 CSR·SSR]]
