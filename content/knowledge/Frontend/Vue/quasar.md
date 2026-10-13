@@ -4,11 +4,11 @@ concept: "Quasar"
 summary: "Vue 3 기반 UI 프레임워크 Quasar의 q- 컴포넌트와 유틸리티 클래스, 레이아웃·페이지 구조와 중첩 라우팅, 플러그인으로 쓰는 기능(Dialog), 폼 검증 라이브러리 연동을 정리한다."
 tags: ["vue", "frontend", "layout", "design"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/47", "https://riverkim.kr/45", "https://riverkim.kr/63"]
+date: "2026-10-13"
+sources: ["https://quasar.dev/quasar-cli-vite/lint-and-format-code", "https://vee-validate.logaretm.com/v4/", "https://riverkim.kr/47", "https://riverkim.kr/45", "https://riverkim.kr/63"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다. Quasar 공식 [영상 튜토리얼](https://quasar.dev/video-tutorials)(TODO 앱 만들기)과 공식 문서를 바탕으로 2022년(Quasar 2, Vue 3) 기준으로 썼습니다.
+> riverkim.kr에 쓴 글들과 Quasar 공식 문서를 바탕으로 재구성한 노트입니다. Quasar 2(Vue 3) 기준입니다.
 
 **Quasar**는 Vue.js 기반 프레임워크다. 머티리얼 디자인 스타일의 UI 컴포넌트를 많이 제공해서 화면을 빠르게 만들 수 있고, 같은 코드로 SPA·SSR·PWA·모바일 앱(Capacitor/Cordova)·데스크톱 앱(Electron)까지 빌드할 수 있다. CSS 프레임워크처럼 쓰면서도 레이아웃·라우팅 구조까지 정해 주는 점이 특징이다.
 
@@ -104,8 +104,8 @@ Dialog, Notify, Loading처럼 컴포넌트 밖에서 호출하는 기능은 **�
 
 ## 개발 환경 메모
 
-- **ESLint**: Quasar CLI로 프로젝트를 만들 때 ESLint를 함께 고를 수 있고, 나중에 따로 추가해도 된다. 따로 설정할 때는 `.eslintrc.js`의 `extends`에 `plugin:vue/vue3-essential`, `eslint:recommended`, `@vue/eslint-config-prettier`를 넣었다. 설정 절차는 [ESLint와 Prettier](/knowledge/dictionary/frontend/react/tooling) 참고. Quasar 공식 문서의 [VS Code 설정](https://quasar.dev/start/vs-code-configuration)에 권장 `settings.json`이 있다.
-- **폼 검증**: 간단한 검증은 `q-input`의 `rules`로 충분하다. 복잡한 폼은 VeeValidate 같은 검증 라이브러리와 연결하는데, VeeValidate 공식 문서의 [서드파티 UI 라이브러리 연동](https://vee-validate.logaretm.com/v3/guide/3rd-party-libraries.html) 가이드를 따른다(링크는 v3 문서).
+- **린트**: Quasar CLI(`@quasar/app-vite`)로 프로젝트를 만들 때 ESLint를 함께 고를 수 있다. 지금은 루트의 `eslint.config.js`(flat config)에 `@eslint/js`, `eslint-plugin-vue`, `@quasar/app-vite/eslint`, 선택적으로 `@vue/eslint-config-prettier`를 넣고, `vite-plugin-checker`로 개발 서버에서 검사한다. 과거에는 `.eslintrc.js`의 `extends`에 `plugin:vue/vue3-essential` 등을 넣었다. 원리는 [[eslint-prettier|ESLint와 Prettier 설정]], 권장 에디터 설정은 Quasar 공식 문서의 [VS Code 설정](https://quasar.dev/start/vs-code-configuration)에 있다.
+- **폼 검증**: 간단한 검증은 `q-input`의 `rules`로 충분하다. 복잡한 폼은 Vue 3용 [VeeValidate 4](https://vee-validate.logaretm.com/v4/)의 `useField`·`useForm`으로 값과 오류 메시지를 만들고 `q-input`의 `v-model`·`error`·`error-message`에 연결한다. 스키마는 Zod·Yup으로 정의할 수 있다.
 
 ## 정리
 
