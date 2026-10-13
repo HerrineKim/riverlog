@@ -24,6 +24,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [자바스크립트에서 타임존 다루기](/knowledge/dictionary/frontend/javascript/timezone): 타임존 ≠ 오프셋, 서머타임, IANA tz database, Date와 서버 간 시간 주고받기, 오프셋 계산의 한계
 - [TypeScript 학습법](/knowledge/dictionary/frontend/javascript/typescript-learning): 슈퍼셋이라는 본질, JavaScript가 정적 타입을 얻기까지, 흔한 오해, 추론·스키마·좁히기·strict 순서의 로드맵
 - [TypeScript 코딩 컨벤션](/knowledge/dictionary/frontend/javascript/typescript-coding-convention): 이름 짓기, 타입, 클래스, 배열 메서드, 에러 처리, 모듈 규칙을 필수·권장 등급과 이유로 정리
+- [명확한 코드의 네 가지 원칙](/knowledge/dictionary/frontend/javascript/clear-code-principles): 단일 책임, 명령-질의 분리, 낮은 결합도, 높은 응집도
 - [ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md): 품질은 ESLint, 모양은 Prettier로 역할 나누기, 저장 시 자동 수정 에디터 설정, `.eslintrc` 항목의 뜻과 ESLint 9 flat config
 
 ### 프로그래밍 패러다임
