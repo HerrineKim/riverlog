@@ -4,11 +4,11 @@ concept: "Claude Skills"
 summary: "Anthropic의 스킬 제작 가이드 요점: 3단계 프로그레시브 디스클로저, 트리거를 담은 description, 폴더·이름 규칙, 테스트와 반복 개선, 배포 방식과 팀 공용 스킬 패키지화, 실전 패턴 5가지, 트러블슈팅."
 tags: ["ai", "llm", "claude-code", "skills", "mcp", "agent"]
 source: other
-date: "2026-10-12"
-sources: ["https://riverkim.kr/328"]
+date: "2026-10-13"
+sources: ["https://riverkim.kr/328", "https://agentskills.io/specification", "https://code.claude.com/docs/en/skills"]
 ---
 
-> baho.dev의 글 「[Anthropic의 스킬 가이드를 읽혔다 — 챕터별 핵심 정리](https://baho.dev/blog/anthropic-skill-guide/)」(Jihye Song, 2026.02)를 요약·재구성한 노트입니다. 원 자료는 Anthropic이 공개한 30쪽짜리 PDF 「The Complete Guide to Building Skills for Claude」이고, 공식 예제는 [anthropics/skills](https://github.com/anthropics/skills) 저장소에 있습니다.
+> baho.dev의 글 「[Anthropic의 스킬 가이드를 읽혔다 — 챕터별 핵심 정리](https://baho.dev/blog/anthropic-skill-guide/)」(Jihye Song, 2026.02)를 요약·재구성한 노트입니다. 원 자료는 Anthropic이 공개한 30쪽짜리 PDF 「The Complete Guide to Building Skills for Claude」이고, 형식 규칙은 [Agent Skills 명세](https://agentskills.io/specification)와 [Claude Code 스킬 문서](https://code.claude.com/docs/en/skills)로 확인했습니다. 공식 예제는 [anthropics/skills](https://github.com/anthropics/skills) 저장소에 있습니다.
 
 ## 1. 기본 구조: 3단계 프로그레시브 디스클로저
 
@@ -16,14 +16,14 @@ sources: ["https://riverkim.kr/328"]
 
 | 단계 | 내용 | 언제 읽히나 |
 | --- | --- | --- |
-| 1 | YAML 프론트매터 (`name`, `description`) | 항상 시스템 프롬프트에 들어감. 스킬을 쓸지 판단하는 데만 사용 |
+| 1 | YAML 프론트매터 (`name`, `description`), 스킬당 약 100토큰 | 항상 시스템 프롬프트에 들어감. 스킬을 쓸지 판단하는 데만 사용 |
 | 2 | `SKILL.md` 본문 | 관련 있다고 판단될 때 |
 | 3 | `references/` 등 링크된 파일 | 본문이 가리키고, 실제로 필요할 때 |
 
 설계할 때 지킬 원칙은 두 가지다.
 
 - **합성성**: 여러 스킬이 동시에 로딩될 수 있다. 내 스킬만 단독으로 쓰인다고 가정하지 않는다.
-- **이식성**: Claude.ai, Claude Code, API에서 똑같이 동작한다.
+- **이식성**: Claude.ai, Claude Code, API에서 똑같이 동작한다. Agent Skills는 개방형 표준이라 같은 폴더를 다른 에이전트 도구에서도 쓸 수 있다.
 
 ### MCP와 스킬의 관계
 
@@ -31,7 +31,7 @@ sources: ["https://riverkim.kr/328"]
 
 ## 2. 설계: description이 전부다
 
-`description`은 Claude가 스킬을 불러올지 결정하는 **유일한 단서**다. 시스템 프롬프트에 그대로 들어가기 때문에 1024자 이내여야 하고 XML 태그를 쓸 수 없다.
+`description`은 Claude가 스킬을 불러올지 결정하는 **유일한 단서**다. 시스템 프롬프트에 그대로 들어가기 때문에 명세상 1,024자 이내여야 하고, claude.ai·API에 올릴 때는 XML 태그를 쓸 수 없다. 핵심 쓰임을 맨 앞에 둔다.
 
 반드시 두 가지를 담는다.
 
@@ -62,9 +62,9 @@ your-skill/
 └── assets/       ← 선택: 템플릿, 이미지 등
 ```
 
-- 폴더명은 **소문자와 하이픈만** 쓴다 (`my-skill` O, `My_Skill` X).
-- 프론트매터에 `name`과 `description`은 필수다.
-- `claude`, `anthropic`은 이름에 쓸 수 없는 예약어다.
+- 이름은 **소문자·숫자·하이픈만**, 64자 이내로 쓰고 폴더명과 같게 맞춘다 (`my-skill` O, `My_Skill` X).
+- 명세상 프론트매터에 `name`과 `description`은 필수다. Claude Code는 `name`이 없으면 폴더명을 쓰고, `allowed-tools`·`disable-model-invocation` 같은 확장 필드를 더 받는다.
+- claude.ai·API에 올리는 스킬은 이름에 `claude`, `anthropic`을 쓸 수 없다.
 - 스킬 폴더 안에 `README.md`를 두지 않는다. 설명은 `SKILL.md`나 `references/`로.
 
 ### 지시문 쓰는 법
@@ -78,7 +78,7 @@ your-skill/
 - **정량**: 관련 질문의 약 90%에서 스킬이 뜬다. 스킬 유무로 토큰·대화 횟수를 비교한다. API 실패 0건.
 - **정성**: 사용자가 "다음엔 뭐 해요?"라고 묻지 않는다. 교정 없이 끝까지 간다. 세션이 바뀌어도 결과가 같다.
 
-가이드 스스로도 평가 일부는 아직 체감(vibes)에 기댄다고 인정한다.
+다만 정성 기준은 결국 사람이 써 보며 판단할 수밖에 없다. 평가의 일부가 체감에 기댄다는 점을 알고 쓴다.
 
 ## 3. 테스트와 반복 개선
 
@@ -88,7 +88,7 @@ your-skill/
 2. **기능 테스트**: 결과가 정확한가, 에러를 제대로 처리하는가.
 3. **성능 비교**: 스킬이 있을 때와 없을 때 차이.
 
-가이드가 든 비교 예시:
+스킬 유무를 비교하면 이런 차이가 난다(가이드의 예시 수치):
 
 | 항목 | 스킬 없음 | 스킬 있음 |
 | --- | --- | --- |
@@ -112,11 +112,12 @@ your-skill/
 
 | 범위 | 방법 |
 | --- | --- |
-| 개인 | 폴더를 zip으로 묶어 Claude.ai에 업로드, 또는 Claude Code의 `.claude/skills/`에 넣기 |
-| 조직 | 관리자가 워크스페이스 전체에 배포 (2025년 12월 도입) |
+| 개인 | 폴더를 zip으로 묶어 Claude.ai에 업로드, 또는 `~/.claude/skills/`(내 모든 프로젝트)·`.claude/skills/`(이 저장소)에 넣기 |
+| 플러그인 | Claude Code 플러그인에 스킬을 담아 마켓플레이스로 배포. `/플러그인명:스킬명`으로 불린다 |
+| 조직 | 관리자가 워크스페이스 전체에 배포 |
 | API | `/v1/skills` 엔드포인트, `container.skills` 파라미터, Agent SDK 연동 |
 
-- Anthropic은 스킬을 MCP처럼 **오픈 스탠다드**로 공개했다. 다른 AI 플랫폼에서도 돌아가게 하는 것이 목표다.
+- 스킬은 MCP처럼 **개방형 표준**([Agent Skills](https://agentskills.io))이다. 같은 형식을 다른 에이전트 도구도 읽는다.
 - 권장 공유 방식: GitHub 공개 저장소에 올리고, MCP 문서에서 스킬로 링크하고, 설치 가이드를 붙인다.
 - 소개할 땐 기능보다 결과를 말한다. "YAML 프론트매터와 마크다운이 담긴 폴더"보다 "팀 워크스페이스를 몇 초 만에 세팅"이 낫다.
 
@@ -166,14 +167,14 @@ npx @my-org/skill-installer install team-dev-guide
 
 ### 성능
 
-- `SKILL.md`는 **5,000단어 이내**로 두고 나머지는 `references/`로 뺀다.
+- `SKILL.md`는 **500줄 이내**(본문 5,000토큰 안팎)로 두고 나머지는 `references/`로 뺀다. 참조 파일은 `SKILL.md`에서 한 단계 깊이까지만 건다.
 - 동시에 켜진 스킬이 **20~50개**를 넘으면 성능이 떨어진다. 관련 스킬은 "팩"으로 묶는다.
 
 ## 체크리스트
 
-- [ ] 폴더명은 소문자-하이픈, 파일명은 정확히 `SKILL.md`
-- [ ] `description`에 what + when(트리거 문구), 1024자 이내, XML 태그 없음
-- [ ] 핵심 지시는 맨 위, 상세는 `references/`, 본문 5,000단어 이내
+- [ ] 폴더명·`name`은 소문자-하이픈, 파일명은 정확히 `SKILL.md`
+- [ ] `description`에 what + when(트리거 문구), 1,024자 이내, XML 태그 없음
+- [ ] 핵심 지시는 맨 위, 상세는 `references/`, 본문 500줄 이내
 - [ ] 모호한 지시 대신 실행 가능한 명령, 중요한 검증은 스크립트로
 - [ ] 에러 처리 지침 포함
 - [ ] 관련·무관 질문 양쪽으로 트리거 테스트
