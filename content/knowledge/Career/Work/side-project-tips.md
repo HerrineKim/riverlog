@@ -77,4 +77,4 @@ sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projec
 - 모르는 기술은 배우고, 막히면 사람을 구한다.
 - 코딩보다 **랜딩 페이지가 먼저**다. 반응을 보고 만든다.
 
-관련 노트: [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[career-in-ai-era|AI 시대의 커리어]], [[growing-at-work|회사에서 빠르게 성장하는 법]]
+관련 노트: [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[career-in-ai-era|AI 시대의 커리어]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]]
