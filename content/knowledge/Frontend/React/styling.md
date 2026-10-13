@@ -4,6 +4,8 @@ concept: "Styled Components"
 summary: "React 컴포넌트에 스타일을 입히는 방법들과 CSS-in-JS 라이브러리 styled-components·emotion 사용법."
 tags: ["react", "css", "styling", "frontend"]
 source: mixed
+date: "2026-10-13"
+sources: ["https://styled-components.com/docs/faqs", "https://github.com/styled-components/styled-components/releases"]
 ---
 
 React에서는 스타일을 **컴포넌트 단위**로 관리하려는 방법이 여럿 있다. 전역 CSS 파일 하나에 모든 클래스를 쌓으면 이름이 충돌하기 쉽기 때문이다. 대표적인 방법은 인라인 스타일, CSS Modules, CSS-in-JS(styled-components, emotion), 그리고 컴포넌트 라이브러리(MUI 등)다.
@@ -37,7 +39,7 @@ function Button({ text }) {
 
 - 가져온 `styles` 객체의 속성을 `className`에 넘긴다.
 - 빌드 과정에서 `Button_btn__x1y2z` 같은 **랜덤한 클래스 이름**이 생성되므로, 다른 파일과 같은 클래스 이름을 써도 충돌하지 않는다. 클래스 이름을 전역적으로 신경 쓸 필요 없이 "이 JSX 요소에 적용할 스타일"로 생각하면 된다.
-- CRA, Vite, Next.js에서 별도 설정 없이 지원한다.
+- Vite, Next.js에서 별도 설정 없이 지원한다.
 
 ## styled-components
 
@@ -81,7 +83,9 @@ function Sample() {
 - `&:hover`, `&:focus`, `& > span`처럼 SCSS 스타일의 중첩 선택자를 쓸 수 있다.
 - 런타임에 `<style>` 태그를 만들어 삽입하는 방식이다([CSS 기초](/knowledge/dictionary/frontend/css/css-basics)의 내부 참조 방식). 원리는 [[template-literals|태그드 템플릿]] 참고.
 
-> 참고(2025~): styled-components 메인테이너는 2025년 3월 프로젝트를 **유지보수 모드**로 전환한다고 밝히며 새 프로젝트에는 권하지 않는다고 했다. 런타임 CSS-in-JS는 React Server Components에서 `'use client'` 없이 쓸 수 없다는 한계도 있다. 이후 RSC 대응 릴리스가 다시 나오고 있지만, 새 프로젝트라면 CSS Modules나 빌드 타임에 CSS를 뽑아내는 방식(Tailwind CSS 등)도 함께 검토한다. 기존 코드는 그대로 동작한다.
+### 현재 위치
+
+styled-components는 2025년 3월 **유지보수 모드**로 전환됐고, 새 프로젝트 도입은 권장되지 않는다. 기존 사용자를 위한 수정 릴리스는 계속 나온다. 6.3부터는 `'use client'` 없이 React 서버 컴포넌트에서도 동작하지만, 서버 컴포넌트에서는 Context가 없어 `ThemeProvider`가 효과가 없으므로 테마는 CSS 변수로 다룬다. 새 프로젝트라면 CSS Modules, Tailwind CSS, 빌드 타임에 CSS를 뽑아내는 vanilla-extract·Panda CSS 같은 방식을 먼저 검토한다.
 
 ### 자주 쓰는 상태 가상 클래스
 
@@ -95,7 +99,7 @@ function Sample() {
 
 ## emotion
 
-styled-components와 거의 같은 API를 제공하면서 설정이 간단하다.
+styled-components와 거의 같은 API를 제공하면서 설정이 간단하다. 런타임 CSS-in-JS라서 서버 컴포넌트에서는 `'use client'` 경계 안에서만 쓴다.
 
 ```bash
 npm install @emotion/react @emotion/styled
