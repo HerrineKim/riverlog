@@ -4,6 +4,8 @@ concept: "Google Analytics"
 summary: "GA4 계정·속성을 만들고 gtag.js 또는 Google Tag Manager(Google 태그)로 웹사이트에 추적 태그를 설치하는 과정."
 tags: ["analytics", "ga4", "marketing", "web"]
 source: notion
+date: "2026-10-13"
+sources: ["https://support.google.com/tagmanager/answer/13543899", "https://developers.google.com/tag-platform/security/guides/consent"]
 ---
 
 **Google Analytics 4(GA4)** 는 웹사이트·앱의 사용자 행동을 이벤트 단위로 수집해 분석하는 도구입니다. 이전 버전인 Universal Analytics(UA)는 2023년 7월 데이터 수집이 종료되어, 지금은 GA4가 표준입니다. 이론보다 실제 사이트에 태그를 붙여 보며 익히는 것이 빠릅니다.
@@ -43,6 +45,10 @@ Tag Manager를 쓸 수 없는 환경이라면, 측정 ID(`G-XXXXXXXXXX`)가 들�
 > 예전 자료에 나오는 "GA4 구성(Configuration) 태그"는 2023년 9월부터 **Google 태그**로 대체되었고, 기존 태그는 자동으로 전환되었다. ([Tag Manager 도움말](https://support.google.com/tagmanager/answer/13543899))
 
 이후 이벤트 추적을 추가할 때 사이트 코드를 고치지 않고 GTM 화면에서 태그·트리거만 관리하면 되므로, GA4를 제대로 쓰려면 GTM은 사실상 필수입니다.
+
+## 동의 모드(Consent Mode)
+
+EU·영국 등 동의가 필요한 지역의 방문자를 받는다면, 쿠키 배너(동의 관리 플랫폼)의 선택을 태그에 전달하는 **동의 모드 v2**를 설정합니다. 사용자가 거부하면 태그는 쿠키 없이 최소 신호만 보내고, Google 광고 기능(리마케팅·전환)을 그 지역에서 쓰려면 동의 모드가 필요합니다. 자세한 설정은 [Google 동의 모드 가이드](https://developers.google.com/tag-platform/security/guides/consent)를 따릅니다.
 
 ## 연습용 데이터: 데모 계정
 
