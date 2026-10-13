@@ -89,4 +89,4 @@ sources: ["https://webactually.com/2017/11/15/%ec%8b%a4%eb%a0%a5%ec%9d%b4-%ec%84
 - 글쓰기와 발표는 홍보이기 전에 생각을 다듬는 훈련이다. 공개할 수 있는 작업을 만들어 나눈다.
 - 커뮤니티 기여는 하루 몇 분의 짧은 답변으로도 된다. 따져 묻고, 정확하게 말하고, 윤리를 지킨다.
 
-관련 노트: [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[online-writing|온라인 글쓰기]], [[career-in-ai-era|AI 시대의 커리어]]
+관련 노트: [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[online-writing|온라인 글쓰기]], [[career-in-ai-era|AI 시대의 커리어]], [[project-pricing|웹 프로젝트 가격 책정]]
