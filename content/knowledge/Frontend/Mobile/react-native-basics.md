@@ -4,7 +4,8 @@ concept: "React Native"
 summary: "React 코드를 네이티브 UI로 바꿔 주는 React Native의 동작 원리(브리지에서 New Architecture로), Expo로 시작하기, 코어 컴포넌트, StyleSheet와 Flexbox 레이아웃."
 tags: ["react-native", "mobile", "react", "css"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
+sources: ["https://reactnative.dev/docs/environment-setup", "https://docs.expo.dev/get-started/create-a-project/"]
 ---
 
 **React Native**는 React 문법으로 Android·iOS **네이티브 앱**을 만드는 크로스 플랫폼 프레임워크다. React의 컴포넌트·props·state·Hooks를 그대로 쓰되, `<div>`, `<p>` 같은 HTML 대신 네이티브 UI로 변환되는 **코어 컴포넌트**를 쓴다.
@@ -32,22 +33,24 @@ date: "2026-10-12"
 입문에는 **Expo**를 추천한다. React Native 공식 문서도 새 앱은 Expo 같은 **프레임워크**로 시작하라고 권하고, 프레임워크 없이 Android Studio·Xcode로 직접 구성하는 방식은 특별한 제약이 있을 때의 선택지로 둔다.
 
 ```bash
-npx create-expo-app@latest RNCourse   # (예전 방식: npm i -g expo-cli && expo init RNCourse)
+npx create-expo-app@latest RNCourse --template blank   # 기본 템플릿은 Expo Router + TypeScript
 cd RNCourse
-npm start
+npx expo start
 ```
 
 ### 실행해 보기
 
 1. 휴대폰에 **Expo Go** 앱을 설치한다.
-2. `npm start` 후 터미널에 표시된 QR 코드를 스캔하면 앱이 실행되고, 저장할 때마다 자동으로 반영된다.
+2. `npx expo start` 후 터미널에 표시된 QR 코드를 스캔하면 앱이 실행되고, 저장할 때마다 자동으로 반영된다.
 3. 실물 기기가 없거나 iPhone만 있다면 Android Studio 에뮬레이터(Play Store 아이콘이 있는 기기 이미지로 생성)를 띄운 뒤 터미널에서 `a`를 누르면 자동으로 실행된다.
 
 ### 프로젝트 구조
 
+`--template` 없이 만들면 기본(default) 템플릿으로 **Expo Router**가 깔린 `app/` 폴더 기반 파일 라우팅 구조가 생긴다. 화면이 하나뿐인 학습용이라면 `--template blank`로 만든 아래 구조가 단순하다. 과거의 전역 `expo-cli`(`expo init`)는 더 이상 쓰지 않는다.
+
 | 파일 | 역할 |
 | --- | --- |
-| `App.js` | 시작 컴포넌트. 처음에는 유일한 실제 코드 파일 |
+| `App.js` | 시작 컴포넌트. blank 템플릿에서는 유일한 실제 코드 파일 |
 | `app.json` | 앱 이름, 아이콘 등 앱 설정. Expo가 빌드할 때 읽어 간다 |
 | `babel.config.js` | 보통 수정할 필요 없음 |
 
