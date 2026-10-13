@@ -8,11 +8,11 @@ date: "2026-10-13"
 sources: ["https://www.lesswrong.com/posts/7hFeMWC6Y5eaSixbD/100-tips-for-a-better-life"]
 ---
 
-> Ideopunk의 글 「[100 Tips for a Better Life](https://www.lesswrong.com/posts/7hFeMWC6Y5eaSixbD/100-tips-for-a-better-life)」(LessWrong, 2020.12)를 요약·재구성한 노트입니다. 건강·법률 관련 팁은 의학·법률 조언이 아니며, 글 작성 시점의 미국 기준입니다.
+> Ideopunk의 글 「[100 Tips for a Better Life](https://www.lesswrong.com/posts/7hFeMWC6Y5eaSixbD/100-tips-for-a-better-life)」(LessWrong, 2020.12)를 요약·재구성한 노트입니다. 건강 관련 팁은 의학 조언이 아닙니다.
 
-## 어떤 글인가
+## 개요
 
-글쓴이가 전년도의 「100 ways to live better」에서 영감을 받아 커뮤니티에서 조언을 모은 목록이다. 원문은 12개 분류에 100개 팁을 한 줄씩 나열한다. 이 노트는 비슷한 분류를 합쳐 일곱 주제로 다시 묶었다. 미국에만 해당하는 몇 가지는 줄이거나 뺐다.
+커뮤니티에서 모은 생활 조언 100가지를 물건과 돈, 생활과 몸, 일, 생각, 나 자신, 관계, 즐거움의 일곱 주제로 묶었다. 미국에만 해당하는 팁은 뺐다.
 
 ## 1. 물건과 돈
 
@@ -33,7 +33,6 @@ sources: ["https://www.lesswrong.com/posts/7hFeMWC6Y5eaSixbD/100-tips-for-a-bett
 - **20-20-20 규칙**: 화면을 20분 보면 20피트(약 6m) 밖을 20초 본다.
 - 운동은 효과가 가장 큰 생활 습관이다. 일주일에 15분이라도 **작게 시작**한다. 근력 운동은 근육과 뼈 모두에 좋다.
 - 휴대폰은 생각보다 무거워 손목에 부담을 준다. 가능하면 컴퓨터를 쓰거나 폰을 받쳐 둔다.
-- 종합 비타민보다 비타민 D가 효과가 있다는 근거가 많다고 원문은 말한다. 의학 조언은 아니다.
 
 ## 3. 일하는 법
 
