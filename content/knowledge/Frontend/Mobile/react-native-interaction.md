@@ -1,12 +1,13 @@
 ---
 title: "React Native 상호작용과 리스트"
 concept: "FlatList"
-summary: "목표 관리 앱 실습으로 본 React Native의 이벤트 처리, ScrollView와 FlatList, 컴포넌트 분리, Pressable·Modal·StatusBar."
+summary: "React Native의 이벤트 처리(onPress·onChangeText), ScrollView와 FlatList, 컴포넌트 분리, Pressable·Modal·StatusBar를 목표 목록 앱 예제로 정리한다."
 tags: ["react-native", "mobile", "react", "state"]
 source: til
+date: "2026-10-13"
 ---
 
-React Native에서 state·이벤트·컴포넌트 분리는 React와 거의 같다. 다른 점은 이벤트 이름(`onPress`, `onChangeText`)과, 긴 목록을 효율적으로 그리기 위한 `FlatList` 같은 모바일 전용 컴포넌트다. "목표(goal)를 입력해 목록에 추가하고, 누르면 삭제하는" 간단한 앱을 만들며 정리했다.
+React Native에서 state·이벤트·컴포넌트 분리는 React와 거의 같다. 다른 점은 이벤트 이름(`onPress`, `onChangeText`)과, 긴 목록을 효율적으로 그리기 위한 `FlatList` 같은 모바일 전용 컴포넌트다. 아래 예제는 "목표(goal)를 입력해 목록에 추가하고, 누르면 삭제하는" 간단한 앱이다.
 
 ## 이벤트와 State
 
@@ -44,7 +45,7 @@ export default function App() {
 }
 ```
 
-id를 `Math.random()`으로 만든 것은 실습용이다. 실제로는 충돌 가능성이 없는 UUID 등을 쓴다.
+id를 `Math.random()`으로 만든 것은 예제용이다. 실제로는 `expo-crypto`의 `randomUUID()`나 `uuid` 패키지로 만든 UUID를 쓴다.
 
 ## ScrollView vs FlatList
 
@@ -184,7 +185,7 @@ function addGoalHandler(text) {
 - 로컬 이미지는 `source={require('경로')}`로 불러온다.
 - `Button`은 `style` prop을 받지 않으므로, 크기·여백은 바깥 `View`로 감싸서 지정한다.
 
-## 마무리: 배경색과 상태바
+## 배경색과 상태바
 
 - 앱 전체 배경색은 최상위 컨테이너 스타일(`backgroundColor`)이나 `app.json`의 `backgroundColor`로 지정한다.
 - 상태바(시계·배터리 영역) 글자색은 `expo-status-bar`로 바꾼다. 어두운 배경이면 `light`.
