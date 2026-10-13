@@ -1,14 +1,14 @@
 ---
 title: "프론트엔드와 SOLID 원칙"
 concept: "SOLID"
-summary: "객체 지향 설계 원칙 SOLID(SRP·OCP·LSP·ISP·DIP)를 React 컴포넌트에 옮겨 본다. 책임은 요구 사항 단위로 나누고, 분기 대신 확장으로 기능을 늘리고, props는 필요한 만큼만 받고, 데이터 소스는 추상화 뒤에 숨긴다."
+summary: "객체 지향 설계 원칙 SOLID(SRP·OCP·LSP·ISP·DIP)를 React 컴포넌트에 옮겨 본다. 책임은 요구 사항 단위로 나누고, 분기 대신 확장으로 기능을 늘리고, props는 필요한 만큼만 받고, 데이터 소스는 추상화 뒤에 숨긴다. 클래스 없이 함수 위주로 쓰는 JS·TS에서 각 원칙이 어떻게 보이는지도 함께 정리한다."
 tags: ["react", "frontend", "javascript", "design"]
 source: other
 date: "2026-10-12"
-sources: ["https://yozm.wishket.com/magazine/detail/2479/"]
+sources: ["https://yozm.wishket.com/magazine/detail/2479/", "https://velog.io/@teo/Javascript에서도-SOLID-원칙이-통할까"]
 ---
 
-> pxd Story의 글 「[프론트엔드와 SOLID 원칙 살펴보기](https://yozm.wishket.com/magazine/detail/2479/)」(요즘IT, 2024.03)를 요약·재구성한 노트입니다. 원문 코드는 그대로 옮기지 않고 설명용 예시로 다시 썼습니다.
+> pxd Story의 글 「[프론트엔드와 SOLID 원칙 살펴보기](https://yozm.wishket.com/magazine/detail/2479/)」(요즘IT, 2024.03)와 테오(teo)의 「[Javascript에서도 SOLID 원칙이 통할까?](https://velog.io/@teo/Javascript에서도-SOLID-원칙이-통할까)」(2022.01)를 바탕으로 재구성한 노트입니다.
 
 ## SOLID란
 
@@ -62,7 +62,7 @@ S가 T의 하위 타입이면, T 자리에 S를 넣어도 문제없이 돌아가
 - `BaseButton`을 확장한 `SpecialButton`이 `onClick`을 재정의한다면, 부모의 `onClick` 동작은 유지하고 그 위에 덧붙인다.
 - 부모가 약속한 동작을 바꾸거나 없애면 위반이다. 어떤 버튼을 쓰든 동작이 일관돼야 한다.
 
-React는 상속보다 [[composition|합성]]을 권하므로, 실제로는 "감싼 컴포넌트가 원래 컴포넌트의 props 계약(받는 값·이벤트 동작)을 깨지 않는다"로 읽으면 된다. (내 해석)
+React는 상속보다 [[composition|합성]]을 권하므로, 실제로는 "감싼 컴포넌트가 원래 컴포넌트의 props 계약(받는 값·이벤트 동작)을 깨지 않는다"로 읽으면 된다.
 
 ## ISP: 인터페이스 분리 원칙
 
@@ -98,6 +98,27 @@ function useItems(service: ItemService) { /* service.getItems() */ }
 
 테스트에서 mock 서비스를 끼워 넣기 쉬워지는 것도 같은 효과다.
 
+## 함수 위주 코드로 읽는 SOLID
+
+SOLID는 클래스 기반 설계에서 나왔다. 그렇다고 함수 중심의 JS·TS와 무관하지 않다. 클래스도 결국 데이터·함수·타입의 묶음이고, 원칙의 본질은 **변경이 생겨도 다른 곳이 함께 쓰러지지 않게** 하는 데 있다. 도미노를 세울 때 중간을 비워 두면 실수해도 피해가 국지화되는 것과 같다.
+
+| 원칙 | 함수 위주 코드에서 | 신호 |
+| --- | --- | --- |
+| SRP | 함수 하나는 한 가지 일. `filter`·`map`·`sort`에 넘길 판별·변환 함수를 떼어 낸다. **순수 함수**가 SRP에 가장 잘 맞는 모양이다 | 한 함수가 조회·판별·부수 효과를 다 한다 |
+| OCP | 옵션 대신 **함수를 인자로** 받는다(고차 함수). 공통 메커니즘은 닫고 방식은 연다. Redux 미들웨어, webpack 로더, Vite 플러그인이 같은 구조다 | `option`·`flag` 인자와 그에 따른 `if` 분기가 늘어난다. 새 기능을 넣으려고 기존 함수를 고친다 |
+| LSP | 상속이 없으니 그대로는 안 맞는다. "먼저 선언한 조건과 나중 조건이 충돌하지 않게"로 넓혀 읽으면 **선언적 코드의 순환 의존 금지**에 대응한다 | `useEffect`끼리 서로의 결과를 상태로 고쳐 무한 루프 |
+| ISP | 함수는 인터페이스와 대개 1:1이라 어기기 어렵다. 모듈 단위로 보면 "큰 모듈을 통째로 들이지 않기"와 닮았다(트리 셰이킹) | 서버 스키마 타입에 화면용 필드를 `?`로 덧붙인다 |
+| DIP | 컴포넌트 → 커스텀 훅 → API 클라이언트로 층을 둔다. 컴포넌트가 필요한 건 데이터지 서버가 아니다 | 컴포넌트에서 `fetch`·`axios`를 직접 부른다. 반대로 API 모듈이 컴포넌트 props를 건드린다 |
+
+```ts
+// OCP: 새 변환이 생겨도 map은 그대로
+const map = <T, R>(arr: T[], fn: (x: T) => R) => arr.map(fn);
+const doubled = (arr: number[]) => map(arr, (x) => x * 2);
+const halved = (arr: number[]) => map(arr, (x) => x / 2);
+```
+
+어디까지 쪼갤지는 융통성의 문제다. `hasChildren = (item) => !!item.children` 같은 한 줄 함수는 재사용·변경 여지가 있는지, 이름이 표현식보다 읽기 좋은지, 오히려 파이프라인을 오가게 만드는지로 판단한다. 기준은 **가독성과 응집도**이고, 가독성은 쓴 사람이 아니라 읽는 사람이 판단한다.
+
 ## 정리
 
 - SRP: 책임은 동작이 아니라 **요구 사항 단위**. 너무 잘게 쪼개지 않는다.
@@ -108,4 +129,4 @@ function useItems(service: ItemService) { /* service.getItems() */ }
 
 원칙은 목표가 아니라 기준이다. 지금 코드가 바꾸기 어려운 이유를 설명하는 도구로 쓰면 된다.
 
-관련 노트: [[composition|합성]], [[components-and-props|컴포넌트와 Props]], [[tdd|프론트엔드에서의 TDD]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]]
+관련 노트: [[functional-programming|함수형 프로그래밍]], [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[composition|합성]], [[components-and-props|컴포넌트와 Props]], [[tdd|프론트엔드에서의 TDD]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]]
