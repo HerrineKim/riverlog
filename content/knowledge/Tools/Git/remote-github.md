@@ -4,7 +4,7 @@ concept: "Remote Repository"
 summary: "remote·push·pull·fetch·clone으로 로컬 저장소를 GitHub 같은 원격 저장소와 동기화하는 방법과, 이력을 유지한 채 다른 서비스로 옮기는 미러링."
 tags: ["git", "github", "collaboration"]
 source: til
-date: "2026-10-11"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/94", "https://riverkim.kr/162"]
 ---
 
@@ -80,7 +80,7 @@ $ git push --mirror https://github.com/username/project.git    # 빈 새 저장�
 
 | 막히는 지점 | 원인 | 해결 |
 | --- | --- | --- |
-| push가 크기 제한으로 거절됨 | 이력 어딘가에 대용량 파일(빌드 결과물, 데이터 등)이 커밋되어 있음 | Git LFS로 옮기거나 BFG Repo-Cleaner로 이력에서 큰 파일을 지운 뒤 push |
+| push가 크기 제한으로 거절됨 | 이력 어딘가에 대용량 파일(빌드 결과물, 데이터 등)이 커밋되어 있음 | Git LFS로 옮기거나 `git filter-repo`(또는 BFG Repo-Cleaner)로 이력에서 큰 파일을 지운 뒤 push |
 | 기본 브랜치가 엉뚱하게 잡힘 | 두 저장소의 기본 브랜치 이름이 다름(`master` vs `main`) | 옮기기 전에 이름을 맞추거나, 옮긴 뒤 저장소 설정에서 기본 브랜치를 바꿈 |
 
 대용량 저장소를 옮기는 전체 과정은 [GitLab → GitHub 대용량 프로젝트 이동 (lfs, bfg)](https://coding-nurse.tistory.com/431), 기본 흐름은 [Gitlab에서 Github으로 저장소 옮기기](https://jennnn.tistory.com/86)에 잘 정리되어 있습니다.
