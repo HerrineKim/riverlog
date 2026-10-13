@@ -5,8 +5,10 @@ summary: "HTML을 DOM으로, CSS를 CSSOM으로 파싱하고, 둘을 합친 렌�
 tags: ["frontend", "browser", "dom", "rendering", "performance"]
 source: mixed
 date: "2026-10-12"
-sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work"]
+sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/"]
 ---
+
+> 「렌더링 전: 내비게이션」 부분은 Ali Alabbas의 「서버에서 클라이언트로」(웹액츄얼리 번역, 2020.06)를 바탕으로 보강한 노트입니다.
 
 ## 한눈에 보기
 
@@ -25,6 +27,23 @@ CSS  ──파싱──> CSSOM ┘
 | 3. 렌더 트리 생성 | DOM + CSSOM | 화면에 보일 노드와 계산된 스타일 |
 | 4. 레이아웃 | 렌더 트리 + 뷰포트 크기 | 각 노드의 위치와 크기 |
 | 5. 페인팅 | 레이아웃 결과 | 화면의 픽셀 |
+
+## 렌더링 전: 내비게이션
+
+렌더링은 HTML이 도착해야 시작한다. 주소창 입력, 링크 클릭, 북마크 선택은 모두 **내비게이션**을 만들고, 브라우저는 네트워크에 나가기 전에 몇 단계를 먼저 확인한다. DNS·TCP·TLS 같은 네트워크 단계 자체는 [[url-to-page|브라우저에 URL을 입력하면 일어나는 일]]에 있다.
+
+| 순서 | 확인 | 내용 |
+| --- | --- | --- |
+| 1 | HSTS | `http://`인데 도메인이 HSTS 목록(브라우저 내장 preload 목록 + 이전에 받은 헤더)에 있으면 `https://`로 바꿔 요청한다 |
+| 2 | 서비스 워커 | 이 URL 범위에 등록된 서비스 워커가 있으면 요청을 넘긴다. 워커는 캐시로 바로 응답할 수 있다. 내비게이션 프리로드를 켜 두면 워커가 깨어나는 동안 네트워크 요청도 함께 보낸다 |
+| 3 | HTTP 캐시 | `Cache-Control`의 유효 기간 안이면 캐시로 끝낸다. 만료됐으면 `If-None-Match`·`If-Modified-Since`로 재검증해 304(그대로 써라) 또는 200(새 본문)을 받는다 |
+| 4 | 연결 재사용 | 같은 호스트·포트로 열린 연결이 있으면 다시 쓴다. 없으면 DNS 조회 → 연결 → TLS 핸드셰이크. `rel="preconnect"`로 미리 열어 둘 수 있다 |
+| 5 | 응답 처리 | 헤더가 리다이렉트(`Location`)면 1번부터 다시. 압축을 풀고, 캐시에 기록하고, MIME 타입을 보고 HTML이면 파싱을 시작한다 |
+| 6 | 방문 기록 | 이 시점에 URL이 기록에 들어가 뒤로·앞으로 가기가 가능해진다 |
+
+- HTML 파서가 일하는 동안 **프리로드 스캐너**가 문서 속 이미지·CSS·JS URL을 미리 찾아 다운로드를 시작한다. 그래서 `<img>`의 `srcset`·`sizes`처럼 마크업에 정보를 적어 두는 것이 중요하다.
+- 캐시와 저장소는 **출처(origin = 스킴 + 호스트 + 포트)** 단위로 격리된다. 하나라도 다르면 다른 출처이고, 다른 출처의 자원을 읽으려면 그쪽이 CORS 헤더로 허락해야 한다.
+- 서비스 워커 캐시 전략은 [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]]에 정리했다.
 
 ## 1. DOM 생성
 
@@ -110,4 +129,4 @@ DOM을 직접 자주 조작하면 리렌더링이 잦아지기 쉽다. React·Vu
 - 위치·크기가 바뀌면 레이아웃부터, 색만 바뀌면 페인팅부터 다시 한다. 레이아웃을 건드리는 변경이 더 비싸다.
 - 보충: 브라우저는 보통 여러 DOM 변경을 모아 한 번에 레이아웃한다. 다만 변경 사이에 `offsetHeight` 같은 레이아웃 값을 읽으면 그때마다 강제로 레이아웃이 일어나므로, 읽기와 쓰기를 섞지 않는다.
 
-관련 노트: [[dom|DOM]], [[html|HTML]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]]
+관련 노트: [[dom|DOM]], [[html|HTML]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]]
