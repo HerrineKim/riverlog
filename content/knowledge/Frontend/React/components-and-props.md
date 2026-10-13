@@ -1,11 +1,11 @@
 ---
 title: "컴포넌트와 Props"
 concept: "Props"
-summary: "UI를 재사용 가능한 조각으로 나누는 컴포넌트와, 부모가 자식에게 값을 넘기는 읽기 전용 입력값 props."
+summary: "UI를 재사용 가능한 조각으로 나누는 컴포넌트와, 부모가 자식에게 값을 넘기는 읽기 전용 입력값 props. 타입은 TypeScript로 정하고, React 19부터 ref도 일반 prop으로 받는다."
 tags: ["react", "component", "frontend"]
 source: til
-date: "2026-10-12"
-sources: ["https://riverkim.kr/102"]
+date: "2026-10-13"
+sources: ["https://riverkim.kr/102", "https://react.dev/blog/2024/04/25/react-19-upgrade-guide", "https://react.dev/blog/2024/12/05/react-19"]
 ---
 
 **컴포넌트**는 화면을 독립적이고 재사용 가능한 조각으로 나눈 단위다. 개념적으로는 함수와 같아서, **props**라는 입력을 받아 화면에 무엇을 그릴지(React 엘리먼트)를 반환한다. 컴포넌트 하나당 파일 하나를 두면 모듈화도 쉬워진다.
@@ -81,38 +81,14 @@ function App() {
 | 소유 | 부모가 넘겨줌 | 컴포넌트 자신이 관리 |
 | 변경 | 읽기 전용 | setter로 변경 → 리렌더링 |
 
-### 기본값
+## Props 타입: TypeScript
 
-```jsx
-function Btn({ buttonName, fontSize = 14 }) {
-  return <button style={{ fontSize }}>{buttonName}</button>
-}
-```
-
-## PropTypes
-
-JavaScript는 타입이 없어서 잘못된 props를 넘겨도 React가 알려 주지 않는다. `prop-types` 패키지로 기대하는 타입과 필수 여부를 선언하면 개발 모드에서 콘솔 경고를 띄워 준다.
-
-```jsx
-import PropTypes from 'prop-types'
-
-function Btn({ buttonName, fontSize = 14 }) {
-  return <button style={{ fontSize }}>{buttonName}</button>
-}
-
-Btn.propTypes = {
-  buttonName: PropTypes.string.isRequired,
-  fontSize: PropTypes.number,
-}
-```
-
-- 경고는 **개발 빌드**에서만 나온다(production 빌드에서는 검사하지 않는다).
-- 참고: 최신 React(19)는 `propTypes` 검사를 더 이상 지원하지 않는다. 지금은 **TypeScript로 props 타입을 정의**하는 것이 표준이다.
+props의 타입은 **TypeScript로 정의**한다. 잘못된 props를 넘기면 실행 전에 에디터와 컴파일러가 알려 준다.
 
 ```tsx
 type BtnProps = {
   buttonName: string
-  fontSize?: number
+  fontSize?: number // 선택 prop
 }
 
 function Btn({ buttonName, fontSize = 14 }: BtnProps) {
@@ -120,7 +96,26 @@ function Btn({ buttonName, fontSize = 14 }: BtnProps) {
 }
 ```
 
-### setState 함수를 props로 넘길 때
+- 기본값은 구조 분해의 기본 매개변수로 준다. 함수 컴포넌트의 `defaultProps`는 React 19에서 제거됐다(클래스 컴포넌트에만 남았다).
+- 과거에는 `prop-types` 패키지로 `Btn.propTypes = { buttonName: PropTypes.string.isRequired }`처럼 선언해 개발 모드에서 콘솔 경고를 받았다. React 19는 `propTypes` 검사를 하지 않고 조용히 무시한다.
+
+## ref도 props다
+
+React 19부터 함수 컴포넌트는 `ref`를 **일반 prop처럼** 받는다. 예전처럼 `forwardRef`로 감쌀 필요가 없다.
+
+```tsx
+function TextInput({ ref, ...rest }: React.ComponentProps<'input'>) {
+  return <input ref={ref} {...rest} />
+}
+
+// 사용하는 쪽
+const inputRef = useRef<HTMLInputElement>(null)
+<TextInput ref={inputRef} placeholder="이름" />
+```
+
+`forwardRef`는 기존 코드에서 계속 동작하지만, React 19 발표 때 향후 deprecated·제거 대상으로 공지됐다. 새 컴포넌트는 `ref`를 prop으로 받는다. 클래스 컴포넌트에 준 `ref`는 여전히 props로 전달되지 않고 인스턴스를 가리킨다.
+
+## setState 함수를 props로 넘길 때
 
 자식이 부모의 state를 바꾸게 하려면 setter 함수를 props로 넘긴다. TypeScript에서 자식의 props 타입을 정하지 않으면 다음과 같은 에러가 난다.
 
@@ -158,4 +153,5 @@ setter를 그대로 넘기면 자식이 `setOpen(prev => !prev)`처럼 무엇이
 
 - 컴포넌트 = props를 받아 엘리먼트를 반환하는 함수. 이름은 대문자로 시작.
 - props는 부모 → 자식 단방향, 읽기 전용. 바뀌는 값은 state로.
-- props 타입은 PropTypes 대신 TypeScript로 정의한다. setter를 넘길 때 타입은 `Dispatch<SetStateAction<T>>`.
+- props 타입은 TypeScript로, 기본값은 기본 매개변수로 정한다. setter를 넘길 때 타입은 `Dispatch<SetStateAction<T>>`.
+- `ref`도 일반 prop으로 받는다. 새 코드에는 `forwardRef`가 필요 없다.
