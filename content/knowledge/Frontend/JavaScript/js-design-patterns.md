@@ -4,11 +4,11 @@ concept: "JS Design Patterns"
 summary: "객체를 만드는 방식을 다루는 생성 패턴 중 생성자·모듈·싱글톤·프로토타입 패턴을 JavaScript 코드로 정리하고, 프로토타입 기반 언어라서 달라지는 점을 짚는다."
 tags: ["javascript", "design-pattern", "oop", "frontend"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/316"]
 ---
 
-> 『자바스크립트 + 리액트 디자인 패턴』(한빛미디어)을 읽고 riverkim.kr에 쓴 글을 다시 정리한 노트입니다. 책의 19개 패턴 중 글에 정리한 생성 패턴 네 가지만 담았습니다.
+> 『자바스크립트 + 리액트 디자인 패턴』(한빛미디어)의 생성 패턴 부분을 바탕으로 재구성한 노트입니다.
 
 ## 생성 패턴이란
 
