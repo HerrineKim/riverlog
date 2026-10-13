@@ -4,7 +4,7 @@ concept: "DOM"
 summary: "브라우저가 HTML 문서를 파싱해 메모리에 올린 객체 트리와, 이를 다루는 API. 문자열 HTML 대신 DOM이 필요해진 이유와 프레임워크 시대에 DOM API를 익히는 법도 다룬다."
 tags: ["dom", "browser", "web", "javascript"]
 source: til
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/223", "https://riverkim.kr/185", "https://riverkim.kr/77", "https://velog.io/@teo/dom"]
 ---
 
@@ -74,7 +74,7 @@ const scrollToTop = () => {
 }
 ```
 
-옵션 객체 형태와 `smooth`는 IE에서 지원되지 않았다. IE 지원이 끝난 지금은 대부분 신경 쓰지 않아도 된다.
+옵션 객체와 `smooth`는 모든 주요 브라우저가 지원한다(과거 IE는 지원하지 않았다). 운영체제에서 「동작 줄이기」를 켠 사용자에게는 `matchMedia('(prefers-reduced-motion: reduce)')`로 확인해 `smooth`를 끈다.
 
 **디자인 모드: `document.designMode`.** 개발자 도구 콘솔에서 `document.designMode = 'on'`을 실행하면 페이지 전체를 문서 편집기처럼 클릭해 텍스트를 고칠 수 있다. 코드를 건드리지 않고 문구 길이나 줄바꿈이 레이아웃에 주는 영향을 빠르게 확인할 때 쓴다. `'off'`로 끄며, 새로고침하면 원래대로 돌아간다.
 

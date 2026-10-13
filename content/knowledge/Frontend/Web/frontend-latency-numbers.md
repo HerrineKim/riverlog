@@ -4,11 +4,11 @@ concept: "Latency Numbers"
 summary: "네트워크 왕복, 파싱, 프레임 예산, 사람의 체감 한계를 밀리초 단위로 정리한 표. 지연은 워터폴로 곱해지므로 요청 체인을 서버로 옮기고, JS를 줄이고, 사용자 가까이 배포한다."
 tags: ["frontend", "performance", "network", "browser", "web"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://vercel.com/blog/latency-numbers-every-web-developer-should-know"]
 ---
 
-> Malte Ubl(Vercel)의 글 「[Latency Numbers Every Frontend Developer Should Know](https://vercel.com/blog/latency-numbers-every-web-developer-should-know)」(2024.04)를 요약·재구성한 노트입니다. Jeff Dean의 「Latency Numbers Every Programmer Should Know」를 프론트엔드 관점으로 옮긴 글입니다. 수치는 글 작성 시점의 추정치입니다.
+> Malte Ubl(Vercel)의 글 「[Latency Numbers Every Frontend Developer Should Know](https://vercel.com/blog/latency-numbers-every-web-developer-should-know)」(2024.04)를 요약·재구성한 노트입니다. Jeff Dean의 「Latency Numbers Every Programmer Should Know」를 프론트엔드 관점으로 옮긴 글입니다.
 
 ## 왜 숫자를 외워 두나
 
@@ -45,7 +45,7 @@ sources: ["https://vercel.com/blog/latency-numbers-every-web-developer-should-kn
 | 사람이 "느리다"고 느끼는 시간 | 200ms | INP |
 | 지구 반대편 왕복, 전용 광케이블 없음 (hot potato routing) | 300ms | TTFB, FCP, LCP |
 
-기기에 따라 달라지는 수치는 2023년형 고급 안드로이드 폰에서 잰 값이다. 노트북과 아이폰은 대체로 더 빠르고, 많은 기기는 더 느리다.
+수치는 자릿수를 어림하기 위한 값이다. 파싱처럼 기기에 따라 달라지는 수치는 고급 안드로이드 폰 기준이며, 노트북과 아이폰은 대체로 더 빠르고, 보급형 기기는 몇 배 느리다.
 
 ## 표를 읽는 법
 
@@ -53,7 +53,7 @@ sources: ["https://vercel.com/blog/latency-numbers-every-web-developer-should-kn
 
 - **Wi-Fi**는 신호가 약하거나 장비가 오래되면 느려진다.
 - **5G 고대역**은 가장 빠르지만 기지국이 눈에 보이는 도심에서만 현실적이다. 중대역은 신호·기지국 부하에 따라 들쭉날쭉하다.
-- **3G**는 아직 흔히 쓰이는 셀룰러 중 가장 느리다.
+- **3G**는 표에서 가장 느린 셀룰러 연결이다. 신호가 나쁜 곳의 느린 회선을 어림하는 기준으로 쓴다.
 - 같은 대륙 왕복 33ms는 5,000km 기준 계산값이라 실제로는 다를 수 있다.
 
 ### 라우팅: cold potato vs hot potato

@@ -4,7 +4,7 @@ concept: "HTML"
 summary: "웹 문서의 구조와 의미를 태그로 표현하는 마크업 언어와 그 핵심 문법."
 tags: ["html", "web", "semantic", "frontend"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/280", "https://riverkim.kr/282"]
 ---
 
@@ -142,7 +142,7 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 - `noopener`: 새 페이지에서 `window.opener`를 `null`로 만든다.
 - `noreferrer`: `noopener` 효과에 더해 이전 페이지 주소(Referer 헤더)도 보내지 않는다.
 
-최신 브라우저는 `target="_blank"`에 `noopener`를 기본 적용하지만, 모든 브라우저·버전이 그런 것은 아니므로 명시하는 편이 안전하다.
+주요 브라우저(크롬 88·파이어폭스 79·사파리 12.1 이후)는 `target="_blank"`에 `noopener`를 기본 적용한다. 그래서 `noopener`는 아주 오래된 브라우저를 위한 안전장치이고, 이전 페이지 주소까지 숨기려면 `noreferrer`를 명시한다.
 
 ## `&nbsp;`: 줄 바꿈 없는 공백
 

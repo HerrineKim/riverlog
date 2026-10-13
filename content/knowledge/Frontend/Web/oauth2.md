@@ -4,8 +4,8 @@ concept: "OAuth2"
 summary: "비밀번호를 넘기지 않고 다른 서비스의 자원 접근 권한을 위임하는 OAuth 2.0. 네 역할, Authorization Code + PKCE 흐름, 토큰 종류, OIDC와의 차이, 프론트엔드 보안 주의점을 정리한다."
 tags: ["security", "web", "auth", "oauth", "frontend"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/323"]
+date: "2026-10-13"
+sources: ["https://riverkim.kr/323", "https://www.rfc-editor.org/rfc/rfc9700"]
 ---
 
 ## OAuth 2.0이란
@@ -27,7 +27,7 @@ OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 
 
 ## Authorization Code + PKCE 흐름
 
-현재 브라우저 앱·모바일 앱·서버 앱 모두에 권장되는 방식이다.
+브라우저 앱·모바일 앱·서버 앱 모두에 권장되는 방식이다. OAuth 2.0 보안 모범 사례(RFC 9700, 2025)와 이를 본문에 합친 OAuth 2.1 초안이 모든 클라이언트에 PKCE를 요구한다.
 
 ```text
 1. 앱이 code_verifier(난수)를 만들고, 그 해시인 code_challenge를 준비
@@ -43,7 +43,7 @@ OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 
 
 - **state**: 4단계 응답이 내가 시작한 요청인지 확인한다. OAuth판 CSRF 방어다.
 - **PKCE**: 인가 코드를 중간에 가로채도 `code_verifier`가 없으면 토큰으로 바꿀 수 없다.
-- 예전에 SPA에 쓰던 Implicit 방식(토큰을 URL로 바로 받음)은 **더 이상 권장되지 않는다.**
+- 과거 SPA에 쓰던 Implicit 방식(토큰을 URL로 바로 받음)과 사용자 비밀번호를 앱이 직접 받는 Password 방식은 **쓰지 않는다.**
 
 ## 토큰
 

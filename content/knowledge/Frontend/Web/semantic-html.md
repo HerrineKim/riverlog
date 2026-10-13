@@ -5,10 +5,10 @@ summary: "태그로 모양이 아니라 의미를 표시하는 시맨틱 HTML. �
 tags: ["html", "semantic", "a11y", "frontend", "seo"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://webactually.com/2020/03/03/%3Csection%3E%EC%9D%84-%EB%B2%84%EB%A6%AC%EA%B3%A0-HTML5-%3Carticle%3E%EC%9D%84-%EC%8D%A8%EC%95%BC-%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0/"]
+sources: ["https://webactually.com/2020/03/03/%3Csection%3E%EC%9D%84-%EB%B2%84%EB%A6%AC%EA%B3%A0-HTML5-%3Carticle%3E%EC%9D%84-%EC%8D%A8%EC%95%BC-%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0/", "https://developer.mozilla.org/en-US/blog/h1-element-styles/"]
 ---
 
-> 「`<article>` 대 `<section>`」 부분은 브루스 로슨(Bruce Lawson)의 「Why You Should Choose HTML5 `<article>` Over `<section>`」(Smashing Magazine, 2020.01)을 웹액츄얼리 코리아가 번역한 글(2020.03)을 요약·재구성했습니다. 브라우저 지원은 글 작성 시점 기준입니다.
+> 「`<article>` 대 `<section>`」 부분은 브루스 로슨(Bruce Lawson)의 「Why You Should Choose HTML5 `<article>` Over `<section>`」(Smashing Magazine, 2020.01)을 웹액츄얼리 코리아가 번역한 글(2020.03)을 바탕으로 재구성했습니다.
 
 ## 시맨틱 HTML이란
 
@@ -39,9 +39,9 @@ sources: ["https://webactually.com/2020/03/03/%3Csection%3E%EC%9D%84-%EB%B2%84%E
 
 HTML5 명세에는 **아웃라인 알고리즘**이 있었다. `<section>`을 중첩하면 그 안의 `<h1>`이 자동으로 `<h2>`, `<h3>`처럼 계층을 갖는다는 구상이다. 하지만 이 기능은 **어떤 브라우저도 구현하지 않았다.**
 
-- Firefox는 중첩된 `<h1>`을 작게 그렸을 뿐, 접근성 트리에서는 여전히 1단계 제목으로 알렸다. 이후 이 동작도 걷어 냈다.
-- 스크린 리더 JAWS가 지원을 시도했지만 버그가 많아 접었다.
-- 결국 HTML 명세도 제목 수준은 `<h1>`~`<h6>`로 직접 표시하라고 권한다.
+- 브라우저는 중첩된 `<h1>`을 기본 스타일로 작게 그렸을 뿐, 접근성 트리에서는 여전히 1단계 제목으로 알렸다. 스크린 리더 JAWS도 지원을 시도했다가 접었다.
+- 아웃라인 알고리즘은 2022년 HTML 명세에서 삭제됐다. 중첩된 `<h1>`을 작게 그리던 기본 스타일도 2025년 Firefox 140을 시작으로 주요 브라우저가 걷어 내, 지금은 어디에 있든 `<h1>`은 같은 크기로 그려진다.
+- 제목 수준은 `<h1>`~`<h6>`로 직접 표시한다.
 
 스크린 리더 사용자는 제목 구조에 크게 기댄다. WebAIM의 8차 스크린 리더 사용자 조사에서 응답자 86.1%가 제목 구조를 아는 것이 유용하다고 답했다.
 
@@ -67,7 +67,7 @@ HTML5 명세에는 **아웃라인 알고리즘**이 있었다. `<section>`을 �
 | 예 | 블로그 글, 뉴스 기사, 댓글, 상품 카드, 위젯 | 글 안의 「소개」, 「사용법」 같은 장 |
 | 효과 | 애플 watchOS 읽기 모드가 본문으로 인식한다. 안의 `<header>`에 작성자·날짜를 두면 함께 표시된다 | 이름이 없으면 스크린 리더가 존재를 알리지 않는다 |
 
-로슨의 결론은 이렇다. 아웃라인 알고리즘이 없으니 `<section>`은 대부분 `<div>`와 다를 바 없다. 독립적인 내용이면 `<article>`을 쓴다. 스크린 리더 사용자가 **구역의 시작과 끝을 알아야 할 때만** 이름을 붙인 `<section>`을 쓴다.
+정리하면, 아웃라인 알고리즘이 없으니 `<section>`은 대부분 `<div>`와 다를 바 없다. 독립적인 내용이면 `<article>`을 쓴다. 스크린 리더 사용자가 **구역의 시작과 끝을 알아야 할 때만** 이름을 붙인 `<section>`을 쓴다.
 
 ```html
 <section aria-label="간단 요약">…</section>   <!-- 들어가고 나올 때 안내되고, 건너뛸 수 있다 -->

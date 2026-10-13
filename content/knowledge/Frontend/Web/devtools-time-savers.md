@@ -4,11 +4,11 @@ concept: "DevTools Tips"
 summary: "소스를 고치지 않고 화면을 바꿔 보는 designMode, 한 줄짜리 JS 관용구(구조 분해 교환·Set 중복 제거·performance.now), debugger 문, console.table·console.dir처럼 작업 시간을 줄여 주는 프론트엔드 팁."
 tags: ["frontend", "javascript", "browser", "tips", "tools"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://yozm.wishket.com/magazine/detail/1585/"]
 ---
 
-> 곰씨네 IT 블로그의 「[웹 개발 시간을 줄여주는 팁 4가지](https://yozm.wishket.com/magazine/detail/1585/)」(요즘IT, 2022.07)를 요약·재구성한 노트입니다. 원문 코드 중 틀린 부분은 고쳐 적었습니다.
+> 곰씨네 IT 블로그의 「[웹 개발 시간을 줄여주는 팁 4가지](https://yozm.wishket.com/magazine/detail/1585/)」(요즘IT, 2022.07)를 바탕으로 재구성한 노트입니다.
 
 ## 한눈에 보기
 
@@ -56,7 +56,7 @@ console.log(performance.now() - start);
 
 ### Live Server
 
-VS Code 확장 Live Server는 로컬 서버를 띄우고 파일을 저장할 때마다 브라우저를 새로 고친다. 번들러 없이 HTML·CSS·JS를 만질 때 유용하다.
+VS Code 확장 Live Server는 로컬 서버를 띄우고 파일을 저장할 때마다 브라우저를 새로 고친다. 번들러 없이 HTML·CSS·JS를 만질 때 유용하다. Vite 같은 개발 서버를 쓰는 프로젝트에서는 HMR(바뀐 모듈만 교체)이 같은 일을 더 빠르게 한다.
 
 ### `debugger` 문
 
@@ -83,7 +83,7 @@ const c = console.log.bind(console);
 c(a);
 ```
 
-원문은 `bind(document)`로 썼지만 `this`는 `console`이어야 의도에 맞다.
+`bind`의 대상은 `console`이어야 한다. 다른 객체에 묶으면 일부 브라우저에서 `Illegal invocation` 오류가 난다.
 
 ## 정리
 

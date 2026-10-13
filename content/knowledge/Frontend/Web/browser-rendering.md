@@ -1,10 +1,10 @@
 ---
 title: "브라우저 렌더링 과정"
 concept: "Critical Rendering Path"
-summary: "HTML을 DOM으로, CSS를 CSSOM으로 파싱하고, 둘을 합친 렌더 트리로 레이아웃(리플로우)과 페인팅을 거쳐 화면을 그린다. 레이아웃·페인팅은 비싸서 자주 일어나면 성능이 떨어진다."
+summary: "HTML을 DOM으로, CSS를 CSSOM으로 파싱하고, 둘을 합친 렌더 트리로 레이아웃(리플로우)·페인팅·합성을 거쳐 화면을 그린다. 레이아웃·페인팅은 비싸서 자주 일어나면 성능이 떨어진다."
 tags: ["frontend", "browser", "dom", "rendering", "performance"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/"]
 ---
 
@@ -16,7 +16,7 @@ sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/a
 
 ```text
 HTML ──파싱──> DOM ─┐
-                    ├──> 렌더 트리 ──> 레이아웃(리플로우) ──> 페인팅
+                    ├──> 렌더 트리 ──> 레이아웃(리플로우) ──> 페인팅 ──> 합성
 CSS  ──파싱──> CSSOM ┘
 ```
 
@@ -26,7 +26,8 @@ CSS  ──파싱──> CSSOM ┘
 | 2. CSSOM 생성 | CSS | 스타일 규칙 트리(CSSOM) |
 | 3. 렌더 트리 생성 | DOM + CSSOM | 화면에 보일 노드와 계산된 스타일 |
 | 4. 레이아웃 | 렌더 트리 + 뷰포트 크기 | 각 노드의 위치와 크기 |
-| 5. 페인팅 | 레이아웃 결과 | 화면의 픽셀 |
+| 5. 페인팅 | 레이아웃 결과 | 레이어별 그리기 명령·픽셀 |
+| 6. 합성(composite) | 레이어들 | 레이어를 순서대로 겹친 최종 화면 |
 
 ## 렌더링 전: 내비게이션
 
@@ -115,18 +116,22 @@ DOM과 CSSOM을 합쳐 **화면에 실제로 그릴 것만** 담은 렌더 트�
 
 레이아웃 결과를 바탕으로 노드를 실제 픽셀로 그린다. 페인팅도 전역·증분이 있고, 증분 페인팅은 바뀐 노드만 다시 그린다.
 
+## 6. 합성
+
+브라우저는 페이지를 여러 **레이어**로 나눠 그린 뒤, 컴포지터 스레드(대개 GPU)에서 순서대로 겹쳐 최종 화면을 만든다. `transform`·`opacity`만 바꾸는 애니메이션은 레이아웃과 페인팅을 건너뛰고 합성만 다시 하므로 메인 스레드가 바빠도 부드럽다. `will-change: transform`으로 레이어 분리를 미리 알릴 수 있지만, 레이어마다 메모리를 쓰므로 필요한 요소에만 쓴다.
+
 ## 리렌더링과 성능
 
 렌더링의 모든 단계는 비용이 들고, 특히 **레이아웃과 페인팅이 자주 일어나면 성능 문제**가 된다.
 
-DOM을 직접 자주 조작하면 리렌더링이 잦아지기 쉽다. React·Vue 같은 라이브러리는 변경을 먼저 **가상 DOM**에 반영하고, 이전 상태와 비교해 실제로 바뀐 부분만 DOM에 적용해 이를 줄인다.
+DOM을 직접 자주 조작하면 리렌더링이 잦아지기 쉽다. React·Vue 같은 라이브러리는 변경을 먼저 **가상 DOM**에 반영하고, 이전 상태와 비교해 실제로 바뀐 부분만 DOM에 적용해 이를 줄인다. Svelte·Solid는 가상 DOM 없이 컴파일러와 시그널로 바뀐 노드만 직접 갱신한다.
 
 ## 정리
 
 - HTML → DOM, CSS → CSSOM, 둘을 합쳐 렌더 트리 → 레이아웃 → 페인팅.
 - 속성 없는 `<script>`는 HTML 파싱을 멈춘다. `defer`·`async`로 막지 않게 한다.
 - 렌더 트리에는 보이는 노드만 들어가므로 DOM과 1:1이 아니다.
-- 위치·크기가 바뀌면 레이아웃부터, 색만 바뀌면 페인팅부터 다시 한다. 레이아웃을 건드리는 변경이 더 비싸다.
+- 위치·크기가 바뀌면 레이아웃부터, 색만 바뀌면 페인팅부터, `transform`·`opacity`만 바뀌면 합성만 다시 한다. 레이아웃을 건드리는 변경이 가장 비싸다.
 - 보충: 브라우저는 보통 여러 DOM 변경을 모아 한 번에 레이아웃한다. 다만 변경 사이에 `offsetHeight` 같은 레이아웃 값을 읽으면 그때마다 강제로 레이아웃이 일어나므로, 읽기와 쓰기를 섞지 않는다.
 
 관련 노트: [[dom|DOM]], [[html|HTML]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]]
