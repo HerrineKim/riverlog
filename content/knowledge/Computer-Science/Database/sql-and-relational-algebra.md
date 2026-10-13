@@ -4,6 +4,7 @@ concept: "Relational Algebra"
 summary: "DDL·DML·DCL 분류와 자주 쓰는 SQL 문법, 관계대수 연산자, DB 설계 단계와 스키마·인덱스 개념."
 tags: ["database", "sql", "relational-algebra", "certificate"]
 source: notion
+date: "2026-10-13"
 ---
 
 SQL은 관계형 데이터베이스를 다루는 표준 언어이고, 관계대수는 그 바탕이 되는 수학적 연산 체계다. SQL은 "무엇을 원하는지"만 적는 비절차적 언어, 관계대수는 "어떻게 구할지"를 연산 순서로 적는 절차적 언어라는 차이가 있다.
@@ -16,7 +17,7 @@ SQL은 관계형 데이터베이스를 다루는 표준 언어이고, 관계대�
 | DML (조작어) | 데이터 조회·삽입·수정·삭제 | `SELECT`, `INSERT`, `UPDATE`, `DELETE` |
 | DCL (제어어) | 권한과 트랜잭션 제어 | `GRANT`, `REVOKE`, `COMMIT`, `ROLLBACK` |
 
-`GRANT`는 사용자에게 권한을 부여하고 `REVOKE`는 회수한다.
+`GRANT`는 사용자에게 권한을 부여하고 `REVOKE`는 회수한다. `COMMIT`·`ROLLBACK`·`SAVEPOINT`는 트랜잭션 제어어(TCL)로 따로 나누기도 한다([[transaction|트랜잭션과 회복]]).
 
 ## 자주 쓰는 문법
 
