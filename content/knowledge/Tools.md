@@ -13,6 +13,7 @@ source: mixed
 - Code Review: [코드 리뷰 원칙과 체크리스트](/knowledge/dictionary/tools/code-review/principles), [리뷰 코멘트와 PR 소통](/knowledge/dictionary/tools/code-review/review-communication), [코드 리뷰에서 자주 나온 지적](/knowledge/dictionary/tools/code-review/review-patterns), [리팩터링 원칙](/knowledge/dictionary/tools/code-review/refactoring-principles), [Simple Design](/knowledge/dictionary/tools/code-review/simple-design), [불리언 변수 이름 짓기](/knowledge/dictionary/tools/code-review/boolean-naming)
 - [Git](/knowledge/dictionary/tools/git): 버전 관리 기본, 브랜치와 병합, 원격 저장소·미러링, 되돌리기와 이력 다루기, 커밋 컨벤션, GitHub 협업 설정
 - [Markdown](/knowledge/dictionary/tools/markdown): 문서 작성용 마크업 문법, markdownlint
+- [구글 검색 연산자](/knowledge/dictionary/tools/google-search-operators): 따옴표·제외·OR 같은 기본 연산자와 site:·intitle:·filetype: 같은 고급 연산자, 사라진 연산자
 - [개발 환경](Tools/Dev-Environment.md): [Windows 개발 환경](Tools/Dev-Environment/windows-dev-environment.md), [로컬 HTTPS(mkcert)](Tools/Dev-Environment/local-https-mkcert.md), [Java 빌드 도구와 IntelliJ 실행 오류](Tools/Dev-Environment/java-build-tools.md), [pyenv로 Python 환경 잡기](Tools/Dev-Environment/python-pyenv-setup.md)
 - [Jira: 이슈 구성, JQL, 워크플로](/knowledge/dictionary/tools/jira): 이슈 필드와 Epic·Component·Label 구분, JQL 검색, 워크플로·Board·Sprint·스토리 포인트, Bulk Change 같은 실무 팁
 - Analytics: [GA4 시작하기](/knowledge/dictionary/tools/analytics/ga4-setup), [Segment로 사용자 데이터 수집하기](/knowledge/dictionary/tools/analytics/segment)
