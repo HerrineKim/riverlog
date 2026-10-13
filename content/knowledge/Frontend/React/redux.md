@@ -143,4 +143,4 @@ export const store = configureStore({ reducer: { counter: counterSlice.reducer }
 - 새 코드는 `createStore` 대신 Redux Toolkit의 `configureStore`·`createSlice`를 쓴다.
 - 서버 데이터는 Redux에 넣기보다 서버 상태 라이브러리에 맡기는 편이 단순하다.
 
-관련 노트: [[context|Context]], [[state|State]], [[vuex|Vuex 상태 관리]]
+관련 노트: [[context|Context]], [[state|State]], [[vuex|Vuex 상태 관리]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]]
