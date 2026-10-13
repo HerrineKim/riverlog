@@ -4,6 +4,8 @@ concept: "Jupyter"
 summary: "코드·실행 결과·마크다운 문서·시각화를 한 파일에 담는 웹 기반 인터랙티브 개발 환경으로, 데이터 과학의 사실상 표준 도구."
 tags: ["data-science", "python", "jupyter", "tools"]
 source: notion
+date: "2026-10-13"
+sources: ["https://jupyter.org/", "https://jupyter-notebook.readthedocs.io/en/latest/"]
 ---
 
 Jupyter Notebook은 **"실행되는 문서"** 입니다. 하나의 노트북 안에 설명(마크다운), 코드, 실행 결과, 그래프, 수식을 함께 담을 수 있어 분석 과정을 그대로 기록하고 공유하기 좋습니다. 그래서 데이터 과학 분야의 사실상 표준(de facto) 도구가 되었습니다.
@@ -42,8 +44,8 @@ Jupyter Notebook은 **"실행되는 문서"** 입니다. 하나의 노트북 안
 ```
 
 - `%`로 시작하는 **매직 명령**으로 시간 측정, 프로파일링, 셸 명령 실행(`!pip install ...`) 등을 할 수 있다. 분석이 느릴 때는 이것으로 병목을 먼저 잰다.
-- 차세대 인터페이스인 **JupyterLab**은 파일 브라우저·터미널·여러 탭을 갖춘 IDE 형태다.
-- VS Code, PyCharm 등에서도 `.ipynb` 파일을 직접 열고 실행할 수 있다. (JetBrains의 데이터 과학 전용 IDE였던 DataSpell은 2026년 신규 판매가 중단되고 기능이 PyCharm으로 통합되었다.)
+- **JupyterLab**은 파일 브라우저·터미널·여러 탭을 갖춘 IDE 형태의 인터페이스다. Notebook 7(2023)부터는 클래식 Notebook도 JupyterLab의 구성 요소 위에서 다시 만들어져, 둘은 같은 확장을 공유하고 화면 구성만 다르다.
+- VS Code, PyCharm 등에서도 `.ipynb` 파일을 직접 열고 실행할 수 있다. JetBrains의 데이터 과학 전용 IDE였던 DataSpell은 2026년 신규 판매가 끝나고 기능이 PyCharm으로 합쳐졌다.
 
 ## 공유와 배포
 
