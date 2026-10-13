@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/separation-of-concerns-of-frontend"]
 ---
 
-> 테오(teo)의 「[프론트엔드 개발자 관점으로 바라보는 관심사의 분리와 좋은 폴더 구조 (feat. FSD)](https://velog.io/@teo/separation-of-concerns-of-frontend)」(2024.09)를 요약·재구성한 노트입니다. 원문은 항해 DEV LAB 미니 학술회 발표를 글로 옮긴 것입니다.
+> 테오(teo)의 「[프론트엔드 개발자 관점으로 바라보는 관심사의 분리와 좋은 폴더 구조 (feat. FSD)](https://velog.io/@teo/separation-of-concerns-of-frontend)」(2024.09)를 바탕으로 재구성한 노트입니다.
 
 ## 관심사의 분리란
 
