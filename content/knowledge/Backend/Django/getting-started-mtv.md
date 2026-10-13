@@ -4,6 +4,7 @@ concept: "MTV"
 summary: "Django 프로젝트와 앱을 만들고, Model·Template·View가 요청을 나눠 처리하는 MTV 구조를 이해한다."
 tags: ["django", "python", "mtv", "backend"]
 source: til
+date: "2026-10-13"
 ---
 
 Django 프로젝트는 여러 **앱(app)의** 묶음이고, 각 앱은 MTV 패턴에 따라 데이터(Model), 화면(Template), 처리 로직(View)을 나눠 갖는다.
@@ -95,7 +96,7 @@ USE_I18N = True           # 번역 시스템 사용
 USE_TZ = True             # 시간대 인식(aware) datetime 사용. DB에는 UTC로 저장
 ```
 
-> 최신 버전에서는: `USE_L10N`(지역화 형식)은 Django 4.0부터 기본값이 True가 되며 deprecated되었고 5.0에서 제거되었다. 더 이상 설정하지 않는다.
+> 과거 설정 파일에 있던 `USE_L10N`(지역화 형식)은 Django 4.0부터 기본값이 True가 되며 deprecated되었고 5.0에서 제거되었다. 더 이상 설정하지 않는다.
 
 ## 핵심 정리
 
