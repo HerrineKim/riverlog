@@ -4,8 +4,8 @@ concept: "Redux"
 summary: "앱 전체가 공유하는 state를 store 한 곳에 두고, reducer에 정의한 방식대로 dispatch로만 바꾸게 하는 상태 관리 라이브러리. react-redux의 Provider·useSelector·useDispatch로 컴포넌트와 연결한다."
 tags: ["react", "state", "redux", "frontend"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/251", "https://riverkim.kr/252"]
+date: "2026-10-13"
+sources: ["https://riverkim.kr/251", "https://riverkim.kr/252", "https://redux.js.org/introduction/why-rtk-is-redux-today"]
 ---
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
@@ -108,7 +108,7 @@ function Counter() {
 
 ## 지금 쓴다면: Redux Toolkit
 
-위 코드는 원리를 보여 주는 기본형이다. 지금 Redux 공식 문서는 `createStore`를 **deprecated**로 표시하고, 보일러플레이트를 줄인 **Redux Toolkit(RTK)** 을 표준으로 권한다.
+위 코드는 원리를 보여 주는 기본형이다. Redux 공식 문서는 `createStore`를 **deprecated**로 표시하고(`legacy_createStore`로만 남았다), 보일러플레이트를 줄인 **Redux Toolkit(RTK)** 을 표준으로 권한다.
 
 ```js
 import { configureStore, createSlice } from '@reduxjs/toolkit'
@@ -133,7 +133,8 @@ export const store = configureStore({ reducer: { counter: counterSlice.reducer }
 | 몇 단계만 내려가는 값 | props |
 | 테마·로그인 사용자처럼 드물게 바뀌는 전역 값 | [Context](/knowledge/dictionary/frontend/react/context) |
 | 서버에서 받아 온 데이터(목록, 상세) | [TanStack Query](/knowledge/dictionary/frontend/react/tanstack-query)나 [SWR](/knowledge/dictionary/frontend/react/swr) 같은 서버 상태 라이브러리 |
-| 여러 화면이 함께 고치는 복잡한 클라이언트 state | Redux(RTK) 같은 전역 상태 라이브러리 |
+| 여러 화면이 함께 쓰는 클라이언트 state, 작거나 중간 규모 | Zustand(스토어 하나를 훅으로) 또는 Jotai(atom 조합) |
+| 여러 화면이 함께 고치는 복잡한 클라이언트 state, 액션 기록·미들웨어·DevTools 추적이 중요 | Redux Toolkit. 서버 데이터까지 한 도구로 다루려면 RTK Query |
 
 ## 정리
 
