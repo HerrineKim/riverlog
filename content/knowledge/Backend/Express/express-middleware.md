@@ -4,6 +4,7 @@ concept: "Middleware"
 summary: "요청과 최종 라우트 핸들러 사이에서 로깅·파싱·에러 처리 같은 공통 작업을 수행하는 함수 체인."
 tags: ["express", "nodejs", "middleware", "backend"]
 source: til
+date: "2026-10-13"
 ---
 
 미들웨어는 요청(request)이 들어와 응답(response)이 나가기까지의 **중간 단계에서 실행되는 함수**다. 로깅, JSON 파싱, 인증 확인, 404 처리처럼 여러 라우트에 공통으로 필요한 일을 한 곳에서 처리할 수 있게 해 준다.
@@ -43,7 +44,7 @@ app.use((req, res) => {       // 4. 어떤 라우트에도 걸리지 않은 요�
 
 - 로깅·파싱처럼 **모든 라우트보다 먼저** 실행돼야 하는 미들웨어는 위쪽에 둔다.
 - **404 미들웨어는 맨 마지막**에 둔다. 앞의 어떤 라우트도 응답하지 않았을 때만 도달하기 때문이다.
-- 응답을 보낸 뒤에는 `next()`를 호출하지 않는다. (원래 실습 코드의 404 미들웨어는 `res.send()` 뒤에 `next()`를 불렀는데, 이후 다른 핸들러가 응답을 또 보내려 하면 `Cannot set headers after they are sent` 에러가 날 수 있다.)
+- 응답을 보낸 뒤에는 `next()`를 호출하지 않는다. `res.send()` 뒤에 `next()`를 부르면 뒤의 핸들러가 응답을 또 보내려다 `Cannot set headers after they are sent` 에러가 날 수 있다.
 
 ## 에러 처리 미들웨어
 
@@ -55,7 +56,7 @@ app.use((err, req, res, next) => {
 });
 ```
 
-> 최신 버전에서는: Express 5부터 `async` 핸들러·미들웨어가 예외를 던지거나 반환한 Promise가 reject되면 Express가 자동으로 `next(err)`를 호출한다. Express 4(레거시)에서는 `try/catch`로 잡아 직접 `next(err)`를 불러야 했다. ([Express 에러 처리 가이드](https://expressjs.com/en/guide/error-handling.html))
+> Express 5(2025년 3월 5.1부터 npm 기본 버전)에서는 `async` 핸들러·미들웨어가 예외를 던지거나 반환한 Promise가 reject되면 Express가 자동으로 `next(err)`를 호출한다. Express 4에서는 `try/catch`로 잡아 직접 `next(err)`를 불러야 했다. ([Express 에러 처리 가이드](https://expressjs.com/en/guide/error-handling.html))
 
 ## 핵심 정리
 

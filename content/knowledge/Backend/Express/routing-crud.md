@@ -4,6 +4,7 @@ concept: "Express Routing"
 summary: "Express로 서버를 띄우고 Router로 경로를 분리해 REST 방식의 CRUD API를 만드는 방법."
 tags: ["express", "nodejs", "api", "rest", "typescript"]
 source: til
+date: "2026-10-13"
 ---
 
 Express는 Node.js에서 가장 널리 쓰이는 최소한의 웹 프레임워크다. NestJS도 기본적으로 Express 위에서 동작하므로, Express로 라우팅·CRUD를 직접 만들어 보면 NestJS가 무엇을 대신 해 주는지 분명해진다.
@@ -16,6 +17,7 @@ npm i -D @types/express typescript
 ```
 
 - `-D`(devDependencies)로 설치한 패키지는 개발·빌드 때만 필요하고 운영 의존성에는 포함되지 않는다. 타입 정의(`@types/*`)가 대표적이다.
+- `npm i express`는 Express 5를 설치한다(2025년 3월부터 npm 기본 버전). 라우트 경로 문법이 4와 조금 달라, 와일드카드는 `/*splat`처럼 이름을 붙인다.
 - `npm run start:dev` 같은 스크립트에 `tsc --watch`나 `tsx watch`를 걸어 두면 코드가 바뀔 때마다 자동으로 다시 컴파일·실행된다. `npm run start`는 `prestart`에서 `tsconfig.json` 기준으로 `dist/`에 빌드한 뒤 `node dist/app.js`를 실행하는 식으로 구성한다.
 
 ```typescript
@@ -133,7 +135,7 @@ router.delete('/cats/:id', (req, res) => {
 export default router;
 ```
 
-> 고친 점: 원래 실습 코드는 `forEach((cat) => { cat = body })`로 수정했는데, 이는 **콜백의 지역 변수만 바꿀 뿐 배열 원소는 바뀌지 않는다.** DELETE도 `filter()`로 새 배열을 만들기만 하고 원본에 반영하지 않았다. 위처럼 `findIndex`로 위치를 찾아 직접 대입·`splice`해야 실제로 반영된다. (DB를 붙이면 이 부분은 쿼리로 대체된다.)
+> 흔한 실수: `forEach((cat) => { cat = body })`는 **콜백의 지역 변수만 바꿀 뿐 배열 원소는 바뀌지 않는다.** `filter()`도 새 배열을 만들 뿐 원본은 그대로다. 위처럼 `findIndex`로 위치를 찾아 직접 대입·`splice`해야 실제로 반영된다. (DB를 붙이면 이 부분은 쿼리로 대체된다.)
 
 ## 핵심 정리
 

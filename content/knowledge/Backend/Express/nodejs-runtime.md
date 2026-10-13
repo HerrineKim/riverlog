@@ -53,7 +53,9 @@ npm install -D cross-env
 
 남이 만든 Node 서버를 받아 `yarn start`가 실패한다면 scripts에 `cross-env` 같은 OS 관련 도구가 쓰였는지, 그 패키지가 설치됐는지부터 확인한다.
 
-환경 변수 파일(`.env`)을 프레임워크에서 읽는 방법은 [[config-env|NestJS 설정과 환경 변수]]에 있다.
+`.env` 파일은 Node.js 20.6부터 `node --env-file=.env app.js`로 별도 패키지 없이 읽을 수 있다. 과거에는 `dotenv` 패키지가 필수였다. 프레임워크에서 읽는 방법은 [[config-env|NestJS 설정과 환경 변수]]에 있다.
+
+서버를 돌릴 Node.js는 **LTS 버전**을 쓴다. 2026년 10월 기준 LTS는 22와 24이고 20은 2026년 4월에 지원이 끝났다. 짝수 버전이 Current로 나온 뒤 6개월 지나 LTS가 되며, 27부터는 1년 주기로 바뀐다. ([Node.js Releases](https://nodejs.org/en/about/previous-releases))
 
 ### 2. 파일 경로: path 모듈
 
