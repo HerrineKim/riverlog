@@ -4,15 +4,15 @@ concept: "Git Config"
 summary: "개발자들이 실제로 켜 두는 git config 옵션을 pull·merge·rebase·diff·전역 설정별로 묶었다. 대부분 기본값의 불편함을 고치는 한 줄 설정이다."
 tags: ["git", "version-control", "config", "tools"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://news.hada.io/topic?id=13405", "https://jvns.ca/blog/2024/02/16/popular-git-config-options/"]
 ---
 
-> GeekNews의 「[인기 있는 Git 설정 옵션들](https://news.hada.io/topic?id=13405)」(2024.02)을 요약·재구성한 노트입니다. 원 자료는 Julia Evans의 「[Popular git config options](https://jvns.ca/blog/2024/02/16/popular-git-config-options/)」입니다. 옵션 이름과 기본값은 글 작성 시점 기준이라 Git 버전에 따라 다를 수 있습니다.
+> GeekNews의 「[인기 있는 Git 설정 옵션들](https://news.hada.io/topic?id=13405)」(2024.02)을 바탕으로 재구성한 노트입니다. 원 자료는 Julia Evans의 「[Popular git config options](https://jvns.ca/blog/2024/02/16/popular-git-config-options/)」입니다.
 
 ## Git 설정이란
 
-Git의 동작 대부분은 `git config`로 바꿀 수 있다. 원 글은 여러 사람에게 즐겨 쓰는 설정을 물어 자주 언급된 것을 모은 목록이다. **기본값이 불편해서 생기는 실수**(의도치 않은 merge 커밋, 읽기 힘든 충돌 표시)를 한 줄로 막는 옵션이 많다.
+Git의 동작 대부분은 `git config`로 바꿀 수 있다. 개발자들이 즐겨 켜 두는 옵션은 대부분 **기본값이 불편해서 생기는 실수**(의도치 않은 merge 커밋, 읽기 힘든 충돌 표시)를 한 줄로 막는 옵션이 많다.
 
 ```bash
 git config --global <이름> <값>     # 설정 (~/.gitconfig에 저장)
@@ -26,7 +26,7 @@ git config --list                   # 현재 설정 확인
 | --- | --- |
 | `pull.ff only` | 원격과 갈라졌으면 pull을 멈춘다. `git pull --ff-only`와 같다 |
 | `pull.rebase true` | 항상 `git pull --rebase`처럼 동작한다 |
-| `merge.conflictstyle zdiff3` | 충돌 표시에 **양쪽이 갈라지기 전 원본**까지 보여 준다. `diff3`의 개선판이다 |
+| `merge.conflictstyle zdiff3` | 충돌 표시에 **양쪽이 갈라지기 전 원본**까지 보여 준다. `diff3`의 개선판이다(Git 2.35+) |
 | `rerere.enabled true` | 충돌 해결 방식을 기록했다가 같은 충돌이 다시 나면 자동으로 적용한다 |
 
 `pull.ff only`와 `pull.rebase true`는 둘 다 의도치 않은 merge 커밋을 막는 용도다. **둘 중 하나만 쓴다.** 함께 켜면 `--ff-only`가 우선해 rebase 설정은 의미가 없다.
@@ -90,7 +90,6 @@ git rebase -i main           # autosquash가 켜져 있으면 자동으로 제�
 
 - 처음 켤 만한 것: `pull.ff only`(또는 `pull.rebase true`), `merge.conflictstyle zdiff3`, `rebase.autosquash true`, `diff.algorithm histogram`.
 - 여러 계정을 쓰면 `includeIf`와 `user.useConfigOnly`로 커밋 이메일 실수를 막는다.
-- 원 글 작성자도 조사 후 `zdiff3`, `histogram`, `branch.sort -committerdate`를 새로 켰다고 한다.
 - 설정은 기기마다 따로라서, `~/.gitconfig`를 dotfiles로 관리하면 여러 기기에서 같은 환경을 유지할 수 있다.
 
 관련 노트: [[git-basics|기본 명령과 파일 상태]], [[merge|브랜치 병합]], [[git-undo-and-rewrite|되돌리기와 이력 다루기]]
