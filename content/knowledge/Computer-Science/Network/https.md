@@ -4,8 +4,8 @@ concept: "HTTPS"
 summary: "HTTP를 TLS로 감싸 도청·변조·위장을 막는 HTTPS. 대칭키·공개키를 섞어 쓰는 TLS 핸드셰이크, 첫 HTTP 요청의 빈틈을 막는 HSTS와 preload, HTTPS만으로는 부족한 경우를 정리한다."
 tags: ["network", "security", "http", "web", "frontend"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishket.com/magazine/detail/1862/"]
+date: "2026-10-13"
+sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishket.com/magazine/detail/1862/", "https://www.ssl.com/article/ssl-certificate-validity-changes-what-you-need-to-know/", "https://www.encryptionconsulting.com/x25519mlkem768-tls-deployment-guide/"]
 ---
 
 > 핸드셰이크·HSTS 부분은 테크유람의 요즘IT 연재 「[안전한 웹을 위해 HTTPS 이해하기 ①HTTPS의 작동 원리](https://yozm.wishket.com/magazine/detail/1852/)」·「[②HTTPS를 강제하는 HSTS 기술](https://yozm.wishket.com/magazine/detail/1862/)」(2023.01)을 요약·재구성해 보강했습니다.
@@ -38,7 +38,9 @@ HTTPS는 둘을 섞는다. **공개키로 대칭키(세션 키)를 안전하게 
 
 서버는 "이 공개키는 example.com의 것"이라는 내용에 **CA가 서명한 인증서**를 보낸다. 브라우저는 OS·브라우저에 미리 들어 있는 루트 CA 목록으로 서명 사슬을 따라가 검증한다. 도메인이 다르거나, 만료됐거나, 신뢰할 수 없는 CA면 경고 화면을 띄운다.
 
-Let's Encrypt 같은 무료 CA와 Vercel·Netlify 같은 호스팅이 인증서를 자동 발급·갱신해 주므로, 요즘은 직접 다룰 일이 드물다.
+Let's Encrypt 같은 무료 CA와 Vercel·Netlify 같은 호스팅이 인증서를 ACME 프로토콜로 자동 발급·갱신한다.
+
+공개 인증서의 최대 유효 기간은 CA/브라우저 포럼 규정(Ballot SC-081)에 따라 단계적으로 줄어든다. 2026년 3월 15일부터 200일, 2027년 3월 15일부터 100일, 2029년 3월 15일부터 47일이다. 수동 갱신은 사실상 불가능해지므로 **자동 갱신과 만료 모니터링이 전제**다.
 
 ## TLS 핸드셰이크 (TLS 1.3 기준)
 
@@ -54,6 +56,7 @@ Let's Encrypt 같은 무료 CA와 Vercel·Netlify 같은 호스팅이 인증서�
 - **공개키 방식은 키를 나눠 갖는 데만 쓴다.** 실제 데이터는 빠른 대칭키로 암호화한다.
 - 암호 묶음(cipher suite)은 키 교환·인증·암호화·무결성 검증에 쓸 알고리즘 조합이다. ClientHello에서 후보를 보내고 서버가 하나를 고른다.
 - TLS 1.3은 1-RTT로 핸드셰이크를 끝낸다(1.2는 2-RTT). HTTP/3는 QUIC 안에 TLS 1.3을 내장해 연결 수립을 더 줄인다.
+- 키 교환에는 양자 컴퓨터에 대비한 **하이브리드 방식 X25519MLKEM768**(기존 X25519 + ML-KEM)이 쓰인다. Chrome·Edge·Firefox 최신판과 주요 CDN이 기본으로 협상하며, 대신 ClientHello가 1KB 넘게 커진다.
 
 ### 고전적인 흐름: RSA 키 교환 (TLS 1.2까지)
 
