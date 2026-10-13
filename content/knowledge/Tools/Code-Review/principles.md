@@ -139,4 +139,4 @@ const isUserMentioned = (user) => mentionedUsers.has(user)
 - 가독성 → 부작용 → 경계 조건 → 보안 → 성능 → 테스트 순으로 훑는다.
 - 친절하게, 고수준부터, 예시 코드와 함께.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[web-security|웹 보안]], [[review-patterns|코드 리뷰에서 자주 나온 지적]]
+관련 노트: [[tdd|프론트엔드에서의 TDD]], [[web-security|웹 보안]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[readable-code|게슈탈트 법칙으로 보는 읽기 좋은 코드]]
