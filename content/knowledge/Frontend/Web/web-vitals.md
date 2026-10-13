@@ -5,9 +5,10 @@ summary: "FCP·LCP·INP·CLS·TTFB 같은 웹 성능 지표의 뜻과 기준값,
 tags: ["performance", "web", "frontend", "browser"]
 source: mixed
 date: "2026-10-13"
+sources: ["https://web.dev/articles/vitals", "https://web.dev/blog/lcp-and-inp-are-now-baseline-newly-available"]
 ---
 
-「빠르다」를 숫자로 말하기 위한 지표들이다. 「61가지 프론트엔드 용어」([[web-glossary|용어집]])의 FCP·LCP·Lighthouse·Minification 항목을 보충했다. 기준값은 구글 web.dev 기준이며 바뀔 수 있다.
+웹 성능 지표는 「빠르다」를 숫자로 말하기 위한 측정값이다. 기준값은 구글 web.dev가 정한다. 용어의 짧은 정의는 [[web-glossary|용어집]]에 있다.
 
 ## 지표
 
@@ -19,13 +20,16 @@ date: "2026-10-13"
 | **INP** (Interaction to Next Paint) | 클릭·입력 뒤 다음 화면이 그려질 때까지. 반응성 | 200ms 이하 |
 | **CLS** (Cumulative Layout Shift) | 로딩 중 요소가 갑자기 밀리는 정도 | 0.1 이하 |
 
-굵게 표시한 셋이 구글의 **Core Web Vitals**다. 2024년 3월에 INP가 FID(First Input Delay)를 대신했다. 실제 사용자의 75번째 백분위 값으로 판정하고 검색 순위 신호에도 쓰인다.
+굵게 표시한 셋이 구글의 **Core Web Vitals**다. 실제 사용자의 75번째 백분위 값으로 판정하고 검색 순위 신호에도 쓰인다.
+
+- 2024년 3월에 INP가 FID(First Input Delay)를 대신했다. FID는 첫 입력의 **대기 시간**만 쟀고, INP는 페이지를 쓰는 동안 일어난 상호작용 전체에서 **다음 화면이 그려지기까지**를 잰다.
+- LCP와 INP는 2025년 12월 Safari 26.2가 지원하면서 주요 브라우저 모두에서 잴 수 있게 됐다(Baseline). CLS는 아직 Chromium 계열에서만 잰다.
 
 ## 실험실 데이터와 필드 데이터
 
 | | 실험실(lab) | 필드(field) |
 | --- | --- | --- |
-| 출처 | 정해진 기기·네트워크에서 한 번 측정 | 실제 사용자 크롬 브라우저에서 수집(CrUX) |
+| 출처 | 정해진 기기·네트워크에서 한 번 측정 | 실제 사용자 브라우저에서 수집. 구글 공개 데이터(CrUX)는 크롬 사용자 기준 |
 | 도구 | Lighthouse, DevTools Performance 패널 | PageSpeed Insights, 서치 콘솔, `web-vitals` 라이브러리 |
 | 장점 | 바로 재현하고 원인을 찾기 좋다 | 진짜 체감이다. 순위에 쓰이는 것은 이쪽이다 |
 | 한계 | 내 사용자 환경과 다르다 | 데이터가 쌓일 때까지 기다려야 한다 |
@@ -38,7 +42,7 @@ INP처럼 실제 상호작용이 필요한 지표는 실험실에서 재기 어�
 
 - 점수는 실행할 때마다 흔들린다. 시크릿 창에서 확장 프로그램을 끄고 여러 번 재서 본다.
 - 모바일 측정은 느린 기기와 네트워크를 흉내 내므로 데스크톱보다 점수가 낮다.
-- 점수보다 항목별 진단(「렌더링 차단 리소스 제거」 등)이 실제 할 일이다.
+- 점수보다 항목별 진단(렌더링을 막는 요청, LCP 요소 분석 등)이 실제 할 일이다.
 
 ## 지표별 개선 방법
 

@@ -4,7 +4,7 @@ concept: "SPA"
 summary: "한 페이지에서 필요한 부분만 다시 그리는 SPA와, 렌더링 주체·시점에 따른 CSR·SSR·SSG·ISR의 차이."
 tags: ["web", "rendering", "spa", "seo"]
 source: til
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/257", "https://riverkim.kr/321"]
 ---
 
@@ -78,6 +78,16 @@ SSG의 "바뀔 때마다 재배포" 문제를 줄이려고 Next.js가 만든 방
 | 서버 부담 | 적음 | 큼 | 적음 | 적음 |
 | SEO | 불리 | 유리 | 유리 | 유리 |
 
+## 한 페이지 안에서 섞기: 서버 컴포넌트와 스트리밍
+
+위 네 방식은 **페이지 단위**의 선택이다. React 18 이후 프레임워크는 한 페이지 안에서도 섞는다.
+
+| 방식 | 섞는 단위 | 노트 |
+| --- | --- | --- |
+| 스트리밍 SSR | 빠른 부분을 먼저 보내고 느린 부분은 `<Suspense>` 경계 단위로 이어서 보낸다 | [[streaming-ssr\|스트리밍 SSR]] |
+| React Server Components(RSC) | 컴포넌트마다 서버에서만 실행할지(코드가 번들에 안 들어감), 브라우저에서도 실행할지 고른다 | [[server-client-components\|서버·클라이언트 컴포넌트 조합 규칙]] |
+| 부분 사전 렌더링 | 정적 껍데기는 빌드 때 만들어 CDN에서, 동적 부분은 요청 때 스트리밍한다(Next.js Cache Components) | [[nextjs\|Next.js를 쓰는 이유]] |
+
 이 방식들은 "어느 쪽이 더 좋다"가 아니라 서비스 특성에 맞게 고르는 것이다. 예를 들어 Django 템플릿으로 페이지를 그리면서 좋아요·팔로우만 axios로 비동기 처리하는 구조는 SSR을 기본으로 일부만 CSR을 섞은 형태다. Next.js처럼 SSR·SSG와 CSR을 페이지 단위로 섞어 쓰는 프레임워크도 있다([Next.js](/knowledge/dictionary/frontend/next-js/nextjs) 참고).
 
 ## 핵심 정리
@@ -86,5 +96,6 @@ SSG의 "바뀔 때마다 재배포" 문제를 줄이려고 Next.js가 만든 방
 - 렌더링 주체가 **서버면 SSR, 클라이언트면 CSR**.
 - CSR은 UX와 트래픽에, SSR은 초기 로딩과 SEO에 강하다.
 - SSG는 빌드 때 미리 만들어 가장 빠르지만 재배포가 필요하고, ISR은 재검증 시간마다 다시 만들어 이를 보완한다.
+- 지금의 프레임워크는 스트리밍·서버 컴포넌트·부분 사전 렌더링으로 한 페이지 안에서 이 방식들을 섞는다.
 
 관련 노트: [[nextjs|Next.js를 쓰는 이유]], [[templates-static|Django 템플릿(서버 렌더링)]], [[vuex|Vuex 상태 관리]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]], [[streaming-ssr|스트리밍 SSR]], [[seo-basics|SEO 기초]], [[static-site-generator|정적 사이트 생성기와 Jamstack]]

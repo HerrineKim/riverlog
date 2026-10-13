@@ -1,14 +1,14 @@
 ---
 title: "스트리밍 SSR"
 concept: "Streaming SSR"
-summary: "HTML을 한 번에 다 만들어 보내지 않고 Suspense 경계 단위로 나눠 흘려보내는 SSR. React 18에서 도입됐고, 2026년 지금은 React 19의 부분 사전 렌더링과 Next.js Cache Components의 기반이 되어 기본 동작으로 자리 잡았다."
+summary: "HTML을 한 번에 다 만들어 보내지 않고 Suspense 경계 단위로 나눠 흘려보내는 SSR. React 18에서 도입됐고, 지금은 React 19의 부분 사전 렌더링과 Next.js Cache Components의 기반이 되어 기본 동작으로 자리 잡았다."
 tags: ["frontend", "react", "rendering", "performance", "web"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://react.dev/reference/react-dom/server", "https://react.dev/blog/2025/10/01/react-19-2", "https://nextjs.org/docs/app/guides/streaming"]
 ---
 
-> React 공식 문서(react-dom/server, React 19.2 릴리스 노트)와 Next.js 16.4 「Streaming」 가이드를 요약·재구성한 노트입니다. 2026년 10월 기준이며, API 이름과 프레임워크 동작은 바뀌었을 수 있습니다.
+> React 공식 문서(react-dom/server, React 19.2 릴리스 노트)와 Next.js 16 「Streaming」 가이드를 바탕으로 재구성한 노트입니다.
 
 ## 스트리밍 SSR이란
 
@@ -16,9 +16,9 @@ sources: ["https://react.dev/reference/react-dom/server", "https://react.dev/blo
 
 React에서는 **`<Suspense>` 경계가 조각을 나누는 단위**다. 경계 바깥은 먼저 보내고, 경계 안쪽은 fallback을 먼저 보냈다가 준비되면 진짜 내용으로 바꿔 끼운다.
 
-## 2026년에도 유효한가
+## 발전 과정
 
-**유효하다. 오히려 선택 기능에서 기본 동작으로 바뀌었다.**
+스트리밍은 선택 기능에서 **기본 동작**으로 바뀌었다.
 
 | 시기 | 변화 |
 | --- | --- |
@@ -28,7 +28,7 @@ React에서는 **`<Suspense>` 경계가 조각을 나누는 단위**다. 경계 
 | React 19.2 (2025.10) | 부분 사전 렌더링(`prerender` → `resume`). Suspense 경계 공개를 묶어서 처리 |
 | Next.js 16 Cache Components | 정적 껍데기는 빌드 때 만들어 CDN에서, 동적 부분은 요청 때 스트리밍 |
 
-지금 React 문서는 `renderToString`·`renderToStaticMarkup`을 **레거시(Legacy)** 로 분류하고, 스트리밍 API보다 기능이 제한된다고 적는다. 2022년 무렵 글에서 말하는 핵심 원리(Suspense 경계, 선택적 hydration, HTTP 상태 코드 제약)는 그대로 맞다. 달라진 점은 렌더링 방식이다. 요청마다 처음부터 렌더링하고 스트리밍하던 것이 **정적 부분은 미리 만들고 동적 부분만 이어서 스트리밍하는 방식**으로 진화했다.
+React 문서는 `renderToString`·`renderToStaticMarkup`을 **레거시(Legacy)** API로 분류한다. 스트리밍 API보다 기능이 제한되기 때문이다. 핵심 원리(Suspense 경계, 선택적 hydration, HTTP 상태 코드 제약)는 React 18 때와 같다. 달라진 점은 렌더링 시점이다. 요청마다 처음부터 렌더링하고 스트리밍하던 것이 **정적 부분은 미리 만들고 동적 부분만 이어서 스트리밍하는 방식**으로 진화했다.
 
 ## 동작 흐름
 
@@ -111,7 +111,7 @@ export default function Dashboard() {
 ## 정리
 
 - 스트리밍 SSR은 "SSR이냐 CSR이냐"의 이분법을 깨고 **한 페이지 안에서 빠른 부분과 느린 부분을 따로 보낸다**.
-- 개념은 2022년(React 18) 그대로 유효하다. `renderToString`만 쓰는 설명은 이제 레거시를 다루는 것이다.
+- 원리는 React 18에서 정해졌다. `renderToString`만 쓰는 방식은 레거시다.
 - 지금의 흐름은 **정적 껍데기를 최대한 키우고(캐시) Suspense 경계는 동적 데이터 바로 옆에 두는 것**이다.
 - 대가도 있다. 상태 코드를 나중에 바꿀 수 없고, 프록시·CDN 버퍼링에 약하며, 경계를 잘못 두면 LCP·CLS가 나빠진다.
 

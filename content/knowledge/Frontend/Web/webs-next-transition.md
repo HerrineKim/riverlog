@@ -4,7 +4,8 @@ concept: "PESPA"
 summary: "MPA → PEMPA → SPA를 거쳐 온 웹 앱 아키텍처가 '점진적으로 향상된 SPA(PESPA)'로 옮겨 가고 있다. 코드가 어디에 사는지, 각 단계가 무엇을 풀고 무엇을 남겼는지 비교한다."
 tags: ["web", "architecture", "spa", "ssr", "progressive-enhancement", "remix"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
+sources: ["https://www.epicweb.dev/the-webs-next-transition", "https://remix.run/blog/merging-remix-and-react-router"]
 ---
 
 > Kent C. Dodds의 글 「[The Web's Next Transition](https://www.epicweb.dev/the-webs-next-transition)」(EpicWeb.dev, 2024.03)을 요약·재구성한 노트입니다. 단계별 코드 변화는 TodoMVC로 만든 예제 저장소 [kentcdodds/the-webs-next-transformation](https://github.com/kentcdodds/the-webs-next-transformation)에서 볼 수 있습니다.
@@ -13,7 +14,7 @@ date: "2026-10-12"
 
 HTTP, HTML, CSS, JavaScript는 1990년대 중반에 표준이 됐다. 그 뒤로 웹은 문서 플랫폼에서 앱 플랫폼이 됐고, 앱을 만드는 아키텍처도 바뀌어 왔다. 바탕에는 처음부터 브라우저와 서버가 양방향으로 대화하게 해 준 두 요소, `<a>`(읽기)와 `<form>`(쓰기)이 있다.
 
-글은 네 가지 아키텍처를 **"코드가 어디에 사는가"로** 비교한다. 비교 기준은 여섯 가지다.
+네 가지 아키텍처는 **"코드가 어디에 사는가"로** 비교하면 차이가 선명하다. 비교 기준은 여섯 가지다.
 
 > 영속화(persistence) · 라우팅 · 데이터 읽기 · 데이터 변경(mutation) · 렌더링 · UI 피드백
 
@@ -50,7 +51,7 @@ HTTP, HTML, CSS, JavaScript는 1990년대 중반에 표준이 됐다. 그 뒤로
 
 **렌더링을 서버에서 완전히 걷어 낸다.** 서버는 API만 제공하고, UI는 전부 클라이언트가 그린다. HTML은 CDN의 정적 파일로 나간다. 초기엔 거의 빈 HTML 껍데기였고, 이후 SSG로 아는 페이지는 빌드 때 미리 그리게 됐다. Backbone, Angular, Ember, React, Vue, Svelte 시대이고, 2010년대 중반부터 사실상 표준이다.
 
-- **얻은 것**: 개발자 경험. 특히 렌더링 코드 중복이 사라졌다. (CDN에서 HTML을 주면 체감 성능이 좋아질 거라 기대했지만, 글쓴이는 실제로는 별 차이가 없었다고 본다.)
+- **얻은 것**: 개발자 경험. 특히 렌더링 코드 중복이 사라졌다. CDN에서 빈 HTML을 빨리 주는 것만으로는 체감 성능이 크게 나아지지 않는다. 화면은 결국 JS와 데이터를 기다리기 때문이다.
 
 **문제점**
 
@@ -106,9 +107,9 @@ HTTP, HTML, CSS, JavaScript는 1990년대 중반에 표준이 됐다. 그 뒤로
 
 ## 구현체: Remix와 그 밖의 프레임워크
 
-- 글쓴이는 **Remix**를 PESPA를 기본으로 제공한 첫 프레임워크로 꼽는다. 네트워크 양쪽을 잇는 다리 역할을 하고, 데이터 읽기·변경·UI 피드백(대기·낙관적 상태)에 점진적 향상을 지원한다.
-- **중첩 라우팅(nested routing)은** 코드 구조를 정리하고 라우트 단위로 더 잘게 코드를 나누게 해 준다. Next.js도 같은 방향(App Router)으로 가고 있다.
-- SvelteKit, SolidStart도 PESPA 원칙을 받아들이고 있다.
+- **Remix**는 PESPA를 기본으로 제공한 첫 프레임워크다. 라우트마다 `loader`(읽기)와 `action`(변경)을 두고, 폼 제출 뒤 데이터를 자동으로 재검증하며, 대기·낙관적 상태에 점진적 향상을 지원한다. 이 기능은 2024년 **React Router v7의 프레임워크 모드**로 합쳐졌다.
+- **중첩 라우팅(nested routing)은** 코드 구조를 정리하고 라우트 단위로 더 잘게 코드를 나누게 해 준다. Next.js App Router도 중첩 레이아웃과, `<form action>`에 Server Action을 넘기면 JS 없이도 제출되는 폼으로 같은 원칙을 따른다([[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]).
+- SvelteKit(form actions), SolidStart도 같은 원칙을 따른다.
 - PESPA에 필요한 기능 자체는 전부터 있었다. 새로운 건 **점진적 향상과 공유 렌더링을 합치는 데 초점**을 맞췄다는 점이다.
 
 ## 한눈에 보기
@@ -122,4 +123,4 @@ HTTP, HTML, CSS, JavaScript는 1990년대 중반에 표준이 됐다. 그 뒤로
 
 더 읽을거리: Frontend Mastery 「The new wave of JavaScript web frameworks」, Jenna Smith 「Progressively enhance for a more resilient web」
 
-관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[ajax|AJAX와 HTTP 요청]], [[nextjs|Next.js를 쓰는 이유]], [[frontend-history|프론트엔드의 등장 배경]]
+관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[ajax|AJAX와 HTTP 요청]], [[nextjs|Next.js를 쓰는 이유]], [[frontend-history|프론트엔드의 등장 배경]], [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]
