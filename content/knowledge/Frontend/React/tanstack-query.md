@@ -4,11 +4,11 @@ concept: "React Query"
 summary: "서버에서 가져온 데이터의 캐싱·재요청·로딩/에러 상태를 훅 하나로 다루게 해 주는 서버 상태 라이브러리. QueryClientProvider 설정, useQuery의 query key와 옵션, useMutation까지."
 tags: ["react", "state", "cache", "api", "frontend"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://riverkim.kr/159", "https://riverkim.kr/151"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다. 원글은 2022년 React Query v3~v4 시절에 썼고, 아래 코드는 현재 v5 문법으로 고쳤습니다.
+> riverkim.kr에 쓴 글들을 바탕으로 재구성한 노트입니다. 코드는 TanStack Query v5 기준입니다.
 
 **TanStack Query**(옛 이름 React Query)는 **서버 상태**, 즉 서버에서 가져와 화면에 보여 주는 데이터를 다루는 라이브러리다. 앱이 단순하면 `useState`와 Context만으로도 충분하지만, 같은 데이터를 여러 화면이 쓰고 언제 다시 가져올지 정해야 하는 순간부터 캐싱·중복 요청 제거·에러 처리 코드가 불어난다. TanStack Query는 이 일을 훅 하나로 처리하고, 데이터가 바뀐 컴포넌트만 다시 렌더링한다. Redux보다 진입 장벽이 낮고 훅 기반이라 쓰기 편하다.
 
@@ -106,7 +106,7 @@ const { mutate } = useMutation({
 
 ## 버전별로 바뀐 점
 
-원글의 v3~v4 예제를 읽을 때 알아 둘 차이다.
+v3~v4 시절 코드를 읽을 때 알아 둘 차이다.
 
 | v3~v4 | v5 |
 | --- | --- |
