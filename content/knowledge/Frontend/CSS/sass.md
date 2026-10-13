@@ -5,7 +5,7 @@ summary: "CSS 전처리기 Sass의 쓰임새와 설치, 파셜 파일을 폴더�
 tags: ["css", "sass", "architecture", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2014/08/19/sass-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ec%95%84%ed%82%a4%ed%85%8d%ec%b2%98/", "https://webactually.com/2014/06/03/sass-%eb%b0%b0%eb%82%ad%ea%be%b8%eb%a6%ac%ea%b8%b0/", "https://webactually.com/2019/12/27/sass-%eb%af%b9%ec%8a%a4%ec%9d%b8-%ec%a4%91%eb%b3%b5-%eb%b0%b0%ec%a0%9c%ed%95%98%ea%b8%b0/", "https://webactually.com/2014/06/25/sass%ec%9d%98-extend%eb%a1%9c-%eb%b6%80%ed%8a%b8%ec%8a%a4%ed%8a%b8%eb%9e%a9%ec%9d%84-%ec%8b%9c%eb%a7%a8%ed%8b%b1%ed%95%98%ea%b2%8c-%ed%99%95%ec%9e%a5%ed%95%98%ea%b8%b0/", "https://webactually.com/2014/08/09/%ec%9c%88%eb%8f%84%ec%9a%b0%ec%97%90%ec%84%9c-sass-%ec%84%a4%ec%b9%98%ed%95%98%ea%b8%b0/"]
+sources: ["https://webactually.com/2014/08/19/sass-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ec%95%84%ed%82%a4%ed%85%8d%ec%b2%98/", "https://webactually.com/2014/06/03/sass-%eb%b0%b0%eb%82%ad%ea%be%b8%eb%a6%ac%ea%b8%b0/", "https://webactually.com/2019/12/27/sass-%eb%af%b9%ec%8a%a4%ec%9d%b8-%ec%a4%91%eb%b3%b5-%eb%b0%b0%ec%a0%9c%ed%95%98%ea%b8%b0/", "https://webactually.com/2014/06/25/sass%ec%9d%98-extend%eb%a1%9c-%eb%b6%80%ed%8a%b8%ec%8a%a4%ed%8a%b8%eb%9e%a9%ec%9d%84-%ec%8b%9c%eb%a7%a8%ed%8b%b1%ed%95%98%ea%b2%8c-%ed%99%95%ec%9e%a5%ed%95%98%ea%b8%b0/", "https://webactually.com/2014/08/09/%ec%9c%88%eb%8f%84%ec%9a%b0%ec%97%90%ec%84%9c-sass-%ec%84%a4%ec%b9%98%ed%95%98%ea%b8%b0/", "https://sass-lang.com/documentation/breaking-changes/import/"]
 ---
 
 > Hugo Giraudel의 「[Sass 프로젝트를 위한 아키텍처](https://webactually.com/2014/08/19/sass-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ec%95%84%ed%82%a4%ed%85%8d%ec%b2%98/)」(2014.08), Marshall Norman의 「Sass 배낭 꾸리기」(2014.06), Sam Richard의 「Sass 믹스인 중복 배제하기」(2019.12), Brad Barrow의 「Sass의 @extend로 부트스트랩을 시맨틱하게 확장하기」(2014.06), 웹액츄얼리 북스팀의 「윈도우에서 SASS 설치하기」(2014.08)를 바탕으로 재구성한 노트입니다.
@@ -38,7 +38,7 @@ Sass에 남는 강점은 **믹스인, 반복문·조건문, 맵 같은 데이터
 
 ## 설치: 예전과 지금
 
-공식 구현은 Dart Sass이고 Node 패키지로 설치한다. 과거에는 Ruby를 먼저 깔고 `gem install sass`로 Ruby Sass를 설치했지만, Ruby Sass는 2019년에 지원이 끝났다.
+공식 구현은 Dart Sass이고 Node 패키지로 설치한다. 과거에는 Ruby를 먼저 깔고 `gem install sass`로 Ruby Sass를 설치했지만, Ruby Sass는 2019년에 지원이 끝났다. C++ 구현인 LibSass(node-sass)도 2020년에 폐기됐다.
 
 ```bash
 npm install -D sass
@@ -69,14 +69,22 @@ scss/
 - 황금률은 하나다. **팀이 모두 납득하는 구조를 고르고, 문서로 남긴다.**
 
 ```scss
-// main.scss — @import는 폐기됐다. @use로 불러온다
+// main.scss — @import 대신 @use로 불러온다
 @use 'helpers/variables';
 @use 'base/reset';
 @use 'layout/header';
 @use 'components/button';
 ```
 
-`@use`는 파일을 한 번만 불러오고 멤버에 네임스페이스를 붙인다(`variables.$brand`). 여러 파셜을 한 진입점으로 다시 내보낼 때는 `@forward`를 쓴다. 전역 내장 함수(`map-merge` 등)도 모듈 함수(`map.merge`, `math.div`)로 바뀌었다.
+`@use`는 파일을 한 번만 불러오고 멤버에 네임스페이스를 붙인다(`variables.$brand`). 여러 파셜을 한 진입점으로 다시 내보낼 때는 `@forward`를 쓴다.
+
+| 옛 방식 | 상태 | 대체 |
+| --- | --- | --- |
+| Sass `@import` | Dart Sass 1.80.0(2024.10)부터 폐기 예고(deprecated). 경고만 내고 아직 동작한다. 3.0.0에서 제거 예정(1.80.0 이후 최소 2년 뒤) | `@use`, `@forward` |
+| 전역 내장 함수 `map-merge()`, `darken()` 등 | `@import`와 함께 폐기 예고, 3.0.0에서 제거 예정 | 모듈 함수 `map.merge()`, `color.adjust()` |
+| `/` 나눗셈 | 폐기 예고 | `math.div()` 또는 `calc()` |
+
+옮기는 작업은 공식 도구 `sass-migrator`(`npx sass-migrator module --migrate-deps main.scss`)가 대부분 자동으로 한다. 2026년 10월 기준 Dart Sass는 1.x대이며 3.0.0은 나오지 않았다. 일정은 [Sass 공식 breaking changes 문서](https://sass-lang.com/documentation/breaking-changes/import/)에서 확인한다.
 
 ## 파일과 규칙 안의 순서
 
@@ -147,6 +155,6 @@ DRY 믹스인은 이 아이디어를 끝까지 밀어붙인 패턴이다. 믹스
 - 개발은 파셜로 잘게, 배포는 한 파일. base·helpers·layout·components·pages·vendors로 나누고 팀과 합의한다.
 - 파일은 모듈 하나, 150줄 안팎, 중첩은 2~3단계까지.
 - 변형이 필요하면 믹스인, 같은 스타일 공유는 `@extend` + 플레이스홀더. 둘을 섞으면 출력 중복을 줄일 수 있다.
-- 지금은 Dart Sass(`npm i -D sass`)와 `@use`가 표준이다.
+- 지금은 Dart Sass(`npm i -D sass`)와 `@use`가 표준이다. `@import`와 전역 함수는 3.0.0에서 사라진다.
 
 관련 노트: [[oocss|객체 지향 CSS(OOCSS)]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[selectors|CSS 선택자와 우선순위]], [[styling|React 스타일링: CSS Modules와 styled-components]], [[css-history|CSS의 역사로 본 CSS가 어려워진 이유]]

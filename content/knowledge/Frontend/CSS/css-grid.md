@@ -5,7 +5,7 @@ summary: "행과 열을 동시에 다루는 2차원 레이아웃 CSS 그리드�
 tags: ["css", "layout", "grid", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://webactually.com/2018/07/02/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83-%eb%aa%a8%eb%b2%94-%ec%82%ac%eb%a1%80/", "https://webactually.com/2018/08/06/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%eb%b2%a82-%ec%84%9c%eb%b8%8c%ea%b7%b8%eb%a6%ac%eb%93%9c-2/"]
+sources: ["https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://webactually.com/2018/07/02/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83-%eb%aa%a8%eb%b2%94-%ec%82%ac%eb%a1%80/", "https://webactually.com/2018/08/06/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%eb%b2%a82-%ec%84%9c%eb%b8%8c%ea%b7%b8%eb%a6%ac%eb%93%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid"]
 ---
 
 > CSS-Tricks의 「[그리드 완벽 가이드](https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/)」(2019.06)와 Rachel Andrew의 「CSS 그리드 레이아웃 모범 사례」(2018.07)·「CSS 그리드 레벨2: 서브그리드」(2018.08, 웹액츄얼리 번역)를 바탕으로 재구성한 노트입니다.
@@ -99,7 +99,7 @@ CSS 그리드(Grid Layout)는 **행과 열을 동시에** 다루는 2차원 레�
 
 그리드 아이템을 다시 그리드 컨테이너로 만드는 중첩은 자유롭다. 하지만 일반 중첩 그리드는 **부모의 트랙과 무관한 새 그리드**다. 그래서 카드마다 제목 길이가 다르면 카드끼리 헤더·본문·푸터 줄이 어긋난다.
 
-서브그리드(subgrid)는 자식 그리드가 부모의 트랙을 그대로 빌려 쓰게 한다. 그리드 레벨 2 명세의 기능이며 모든 주요 브라우저가 지원한다.
+서브그리드(subgrid)는 자식 그리드가 부모의 트랙을 그대로 빌려 쓰게 한다. 그리드 레벨 2 명세의 기능이며 2023년 9월부터 모든 주요 브라우저가 지원한다(Baseline 2023).
 
 ```css
 .cards { display: grid; grid-template-columns: repeat(3, 1fr); grid-auto-rows: auto auto auto; }

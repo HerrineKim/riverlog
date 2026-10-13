@@ -5,7 +5,7 @@ summary: "새 CSS 기능을 지원하지 않는 브라우저를 '똑같이 보�
 tags: ["css", "browser", "layout", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb%a1%9c-%eb%af%b8%ec%a7%80%ec%9b%90-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%a7%80%ec%9b%90%ed%95%98%ea%b8%b0/", "https://webactually.com/2017/11/30/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83%ec%9d%84-%ec%a7%80%ea%b8%88-%ec%82%ac%ec%9a%a9%ed%95%b4%eb%8f%84-%ec%a0%95%eb%a7%90-%ea%b4%9c%ec%b0%ae%ec%9d%84%ea%b9%8c%ec%9a%94/", "https://webactually.com/2020/01/29/ie%EC%97%90%EC%84%9C%EC%9D%98-css-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-ie-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%98%A4%ED%95%B4%EB%A5%BC/", "https://webactually.com/2018/10/02/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-css-%ea%b7%b8%eb%a6%ac%eb%93%9c%ec%99%80-autoprefixer/", "https://webactually.com/2018/11/13/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ea%b0%84%ea%b2%a9%ec%9c%bc%eb%a1%9c-%ec%9e%90%eb%8f%99-%eb%b0%b0%ec%b9%98/", "https://webactually.com/2020/07/27/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ec%a4%91%eb%b3%b5%eb%90%9c-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%98%81%ec%97%ad-%ec%9d%b4%eb%a6%84/"]
+sources: ["https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb%a1%9c-%eb%af%b8%ec%a7%80%ec%9b%90-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%a7%80%ec%9b%90%ed%95%98%ea%b8%b0/", "https://webactually.com/2017/11/30/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83%ec%9d%84-%ec%a7%80%ea%b8%88-%ec%82%ac%ec%9a%a9%ed%95%b4%eb%8f%84-%ec%a0%95%eb%a7%90-%ea%b4%9c%ec%b0%ae%ec%9d%84%ea%b9%8c%ec%9a%94/", "https://webactually.com/2020/01/29/ie%EC%97%90%EC%84%9C%EC%9D%98-css-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-ie-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%98%A4%ED%95%B4%EB%A5%BC/", "https://webactually.com/2018/10/02/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-css-%ea%b7%b8%eb%a6%ac%eb%93%9c%ec%99%80-autoprefixer/", "https://webactually.com/2018/11/13/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ea%b0%84%ea%b2%a9%ec%9c%bc%eb%a1%9c-%ec%9e%90%eb%8f%99-%eb%b0%b0%ec%b9%98/", "https://webactually.com/2020/07/27/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ec%a4%91%eb%b3%b5%eb%90%9c-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%98%81%ec%97%ad-%ec%9d%b4%eb%a6%84/", "https://web.dev/baseline", "https://web.dev/blog/same-document-view-transitions-are-now-baseline-newly-available", "https://developer.mozilla.org/en-US/docs/Web/CSS/anchor-name"]
 ---
 
 > Rachel Andrew의 「[CSS 그리드로 미지원 브라우저 지원하기](https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb%a1%9c-%eb%af%b8%ec%a7%80%ec%9b%90-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%a7%80%ec%9b%90%ed%95%98%ea%b8%b0/)」(2018.01)·「CSS 그리드 레이아웃을 지금 사용해도 정말 괜찮을까」(2017.11)와 Daniel Tonon의 「IE에서 CSS 그리드 사용하기」 시리즈(2018~2020, 웹액츄얼리 번역)를 바탕으로 재구성한 노트입니다.
@@ -21,7 +21,18 @@ sources: ["https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb
 
 **모든 브라우저에서 똑같아야 한다면 그 기능을 쓰지 않는다.** 새 기능은 이전에 불가능했던 일을 하려고 쓰는 것이지, 옛 디자인을 똑같이 재현하려고 쓰는 것이 아니다.
 
-CSS 그리드·플렉스박스는 이제 모든 주요 브라우저가 지원한다. 같은 원칙이 지금은 서브그리드, 컨테이너 쿼리, `:has()`, 네이티브 중첩, `oklch()` 색상, 뷰 트랜지션처럼 지원 시기가 엇갈리는 기능에 그대로 적용된다.
+CSS 그리드·플렉스박스는 이제 모든 주요 브라우저가 지원한다. 같은 원칙이 지금은 지원 시기가 엇갈린 새 기능에 그대로 적용된다. Baseline 연도는 Chrome·Edge·Firefox·Safari가 모두 지원하게 된 해다(Newly available). 그로부터 30개월이 지나면 Widely available이 된다.
+
+| 기능 | Baseline |
+| --- | --- |
+| 캐스케이드 레이어 `@layer` | 2022 |
+| 컨테이너 크기 쿼리 `@container`, 서브그리드, `:has()`, 네이티브 중첩, `oklch()`, `color-mix()` | 2023 |
+| 상대 색상 문법(`oklch(from …)`), `light-dark()`, `font-size-adjust` | 2024 |
+| 같은 문서 뷰 트랜지션(`document.startViewTransition()`), `@scope` | 2025 |
+| 앵커 위치 지정(anchor positioning) | 2026 |
+| `text-wrap: pretty` | 아직 아님 (2026년 10월 기준 Firefox 미지원) |
+
+최신 상태는 [web.dev Baseline](https://web.dev/baseline)과 [Can I use](https://caniuse.com/)에서 확인한다.
 
 ## 지원 대상 정하기
 

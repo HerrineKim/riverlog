@@ -4,8 +4,8 @@ concept: "Flexbox"
 summary: "Normal Flow를 벗어나 요소를 배치하는 float와, 축을 기준으로 아이템을 정렬하는 1차원 레이아웃 모델 Flexbox. display: flex를 선언하면 적용되는 초깃값과 내용 기반 공간 분배, 쓰기 모드에 따라 바뀌는 축까지."
 tags: ["css", "layout", "flexbox", "frontend"]
 source: mixed
-sources: ["https://heewon26.tistory.com/298", "https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/"]
-date: "2026-10-12"
+sources: ["https://heewon26.tistory.com/298", "https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/", "https://developer.mozilla.org/en-US/docs/Web/CSS/gap"]
+date: "2026-10-13"
 ---
 
 블록은 위에서 아래로, 인라인은 왼쪽에서 오른쪽으로 쌓이는 Normal Flow만으로는 "옆으로 나란히", "가운데 정렬", "남은 공간 나눠 갖기" 같은 레이아웃을 만들기 어렵다. 예전에는 `float`로 이를 해결했고, 지금은 대부분 **Flexbox**와 **Grid**로 처리한다.
@@ -67,6 +67,7 @@ float된 요소는 Normal Flow에서 벗어나 떠 있기 때문에, 이후 요�
 | 공간 나누기 | `justify-content` | **주축** 방향 공간 분배 |
 | 공간 나누기 | `align-content` | **교차축** 방향 공간 분배(여러 줄일 때만 의미 있음) |
 | 정렬 | `align-items` | 모든 아이템을 교차축 기준으로 정렬 |
+| 간격 | `gap` (`row-gap`, `column-gap`) | 아이템 사이 간격. 2021년부터 모든 주요 브라우저가 플렉스에서도 지원해, 아이템마다 margin을 주고 마지막 것만 빼는 우회가 필요 없다 |
 
 ![flex-direction](/images/til/FRONTEND/CSS/CSS-Layout-float-flexbox-grid-.assets/image-20220824103520725.png)
 

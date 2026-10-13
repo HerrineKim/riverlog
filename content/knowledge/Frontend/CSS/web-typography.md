@@ -5,7 +5,7 @@ summary: "사람이 화면의 글을 읽는 방식에서 출발해 글줄 길이
 tags: ["css", "typography", "design", "a11y", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/", "https://webactually.com/2021/02/02/%ea%b0%80%eb%8f%85%ec%84%b1-%ea%b0%9c%ec%84%a0%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%b5%9c%ec%8b%a0-css-%ed%85%8c%ed%81%ac%eb%8b%89/", "https://webactually.com/2017/12/05/16734/"]
+sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/", "https://webactually.com/2021/02/02/%ea%b0%80%eb%8f%85%ec%84%b1-%ea%b0%9c%ec%84%a0%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%b5%9c%ec%8b%a0-css-%ed%85%8c%ed%81%ac%eb%8b%89/", "https://webactually.com/2017/12/05/16734/", "https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap-style", "https://caniuse.com/mdn-css_properties_text-wrap-style_pretty"]
 ---
 
 > Laura Franz의 「[반응형 웹 디자인에서 글줄의 길이와 글자 크기 균형 잡기](https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/)」(2015.10), Edoardo Cavazza의 「가독성 개선을 위한 최신 CSS 테크닉」(2021.02), Bram Stein의 「웹폰트 사용하기」(2017.12, 웹액츄얼리 번역)를 바탕으로 재구성한 노트입니다.
@@ -18,7 +18,7 @@ sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b
 | 찾아 읽기 | 특정 정보를 찾아 덩어리에서 덩어리로 건너뛴다 |
 | 몰입해 읽기 | 처음부터 끝까지 천천히 읽는다 |
 
-어느 방식이든 시선은 **F자 패턴**을 그린다. 눈은 단어를 하나씩 읽지 않는다. 중심시(foveal vision)로 몇 글자에 초점을 맞추고, 주변시(peripheral vision)로 다음 지점을 찾아 도약(saccade)한다. 한 줄을 가로로 읽으면서 다음 줄의 시작을 예측하고, 지치면 왼쪽 가장자리를 따라 세로로 훑는다. **가로 이동과 세로 이동의 줄다리기**가 F자를 만든다. 그래서 왼쪽 정렬이 기본이다. 줄 시작점이 일정해야 눈이 돌아올 곳을 찾는다.
+서식 단서가 적은 글을 훑을 때 시선은 흔히 **F자 패턴**을 그린다(제목·굵은 글씨·목록 같은 단서가 많으면 다른 패턴이 나온다). 눈은 단어를 하나씩 읽지 않는다. 중심시(foveal vision)로 몇 글자에 초점을 맞추고, 주변시(peripheral vision)로 다음 지점을 찾아 도약(saccade)한다. 한 줄을 가로로 읽으면서 다음 줄의 시작을 예측하고, 지치면 왼쪽 가장자리를 따라 세로로 훑는다. **가로 이동과 세로 이동의 줄다리기**가 F자를 만든다. 그래서 왼쪽 정렬이 기본이다. 줄 시작점이 일정해야 눈이 돌아올 곳을 찾는다.
 
 ## 세 변수의 균형: 글줄 길이, 글자 크기, 줄 간격
 
@@ -62,11 +62,13 @@ sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b
 .prose p { text-wrap: pretty; }   /* 마지막 줄 외톨이 단어 방지 */
 ```
 
+`text-wrap: balance`(제목 줄 길이 고르기)는 Baseline 2024다. `pretty`는 Chrome 130·Safari 26부터 지원하고 Firefox는 2026년 10월 기준 지원하지 않는다. 모르는 브라우저는 기본 줄바꿈으로 돌아가므로 점진적 향상으로 그냥 써도 된다.
+
 ## 글꼴 지표를 다루는 CSS
 
 | 문제 | 도구 |
 | --- | --- |
-| 같은 `font-size`인데 글꼴마다 커 보이는 정도가 다르다 | `font-size-adjust`: 소문자 높이(x-height) 비율을 맞춘다. 폴백 글꼴로 바뀌어도 크기가 튀지 않는다 |
+| 같은 `font-size`인데 글꼴마다 커 보이는 정도가 다르다 | `font-size-adjust`(Baseline 2024): 소문자 높이(x-height) 비율을 맞춘다. 폴백 글꼴로 바뀌어도 크기가 튀지 않는다 |
 | 웹폰트 로딩 전후로 레이아웃이 흔들린다 | `@font-face`의 `size-adjust`, `ascent-override` 등으로 폴백 글꼴 지표를 웹폰트에 맞춘다 |
 | 글자·단어 간격 | `letter-spacing`, `word-spacing`. 난독증 독자에게는 글꼴 모양보다 **간격을 넓히는 것**이 더 도움이 된다는 연구가 있다 |
 | 굵기·폭·광학 크기를 연속적으로 조절 | 가변 폰트(variable font) + `font-variation-settings`, `font-optical-sizing` |

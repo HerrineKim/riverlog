@@ -4,8 +4,8 @@ concept: "Box Model"
 summary: "모든 요소를 content·padding·border·margin의 네모로 다루는 박스 모델과, 배치 방식을 결정하는 display."
 tags: ["css", "layout", "frontend"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://mytory.net/archives/16246"]
+date: "2026-10-13"
+sources: ["https://mytory.net/archives/16246", "https://developer.mozilla.org/en-US/docs/Web/CSS/length"]
 ---
 
 CSS의 첫 번째 원칙은 **모든 요소는 네모(박스)** 라는 것이다. 요소의 실제 크기와 요소 사이 간격은 박스 모델로 계산되고, 그 박스가 한 줄을 차지할지 옆으로 나란히 놓일지는 `display`가 결정한다.
@@ -97,10 +97,12 @@ CSS의 두 번째 원칙: **display에 따라 크기와 배치가 달라진다.*
 
 ```css
 .full-screen {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;          /* 100vw는 세로 스크롤바 폭까지 포함해 가로 스크롤이 생길 수 있다 */
+  min-height: 100dvh;   /* 모바일 주소창이 늘고 줄어도 화면에 맞는 동적 뷰포트 높이 */
 }
 ```
+
+모바일 브라우저에서 `100vh`는 주소창이 접혔을 때의 높이라 화면보다 길어진다. `dvh`(동적), `svh`(가장 작을 때), `lvh`(가장 클 때) 단위로 의도를 고른다. 모든 주요 브라우저가 지원한다.
 
 ## 핵심 정리
 
@@ -109,4 +111,4 @@ CSS의 두 번째 원칙: **display에 따라 크기와 배치가 달라진다.*
 - `inline`은 width/height와 상하 margin을 무시한다. 필요하면 `inline-block`.
 - `display: none`은 공간까지 제거, `visibility: hidden`은 공간은 유지.
 
-관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]]
+관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[logical-properties|쓰기 모드와 논리적 속성]], [[position|CSS position과 z-index]]

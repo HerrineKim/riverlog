@@ -5,7 +5,7 @@ summary: "속성 암기보다 먼저 익혀야 할 CSS의 핵심 개념(캐스�
 tags: ["css", "browser", "rendering", "layout", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/", "https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/"]
+sources: ["https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/", "https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade"]
 ---
 
 > Rachel Andrew의 「[CSS를 배우는 방법](https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/)」(2019.02)과 Greg Whitworth의 「[중괄호에서 픽셀로](https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/)」(Braces to Pixels, 2019.01, 웹액츄얼리 번역)를 바탕으로 재구성한 노트입니다.
@@ -62,9 +62,11 @@ CSS 텍스트
 | 순서 | 기준 | 내용 |
 | --- | --- | --- |
 | 1 | 출처와 중요도 | 일반 선언은 작성자 > 사용자 > 브라우저 기본(user agent). `!important`는 이 순서가 뒤집혀 브라우저 기본 > 사용자 > 작성자. 그래서 사용자의 접근성 설정이 `!important`로 작성자 스타일을 이길 수 있다 |
-| 2 | 캐스케이드 레이어 | `@layer`로 묶은 규칙은 레이어 순서가 특정도보다 먼저다. 레이어 밖 규칙이 가장 강하다 |
-| 3 | 특정도 | ID > 클래스·속성·가상 클래스 > 요소·가상 요소. 인라인 `style`은 선택자보다 강하다 |
-| 4 | 등장 순서 | 모두 같으면 나중에 나온 선언이 이긴다 |
+| 2 | 맥락(context) | 섀도 DOM 안팎의 규칙이 부딪치면 캡슐화 규칙으로 가린다 |
+| 3 | 요소에 붙은 스타일 | 인라인 `style` 속성은 어떤 선택자보다 강하다. 레이어·특정도보다 먼저 비교한다 |
+| 4 | 캐스케이드 레이어 | `@layer`로 묶은 규칙은 레이어 순서가 특정도보다 먼저다. 일반 선언은 나중 레이어가, 레이어 밖 규칙이 가장 강하다. `!important`는 반대로 먼저 선언한 레이어가 이긴다 |
+| 5 | 특정도 | ID > 클래스·속성·가상 클래스 > 요소·가상 요소. `:where()`는 0, `:is()`·`:has()`는 인자 중 가장 높은 값 |
+| 6 | 등장 순서 | 모두 같으면 나중에 나온 선언이 이긴다 |
 
 이긴 값이 없는 속성은 상속되는 속성(글자색, 글꼴 등)이면 부모에게서, 아니면 초깃값을 쓴다.
 
@@ -102,7 +104,7 @@ CSS 텍스트
 - 속성은 찾아 쓰고, 캐스케이드·박스 모델·흐름·서식 맥락·크기 결정을 이해한다.
 - 이상하게 동작하면 최소 재현 예제와 개발자 도구로 원인을 찾는다.
 - CSS는 해석 → 캐스케이드 → 계산 → 레이아웃 → 페인트 → 합성을 거쳐 픽셀이 된다.
-- 캐스케이드는 출처·중요도 → 레이어 → 특정도 → 순서로 비교한다.
+- 캐스케이드는 출처·중요도 → 맥락 → 인라인 스타일 → 레이어 → 특정도 → 순서로 비교한다.
 - 바꾸는 속성에 따라 레이아웃·페인트·합성 중 어디부터 다시 도는지가 달라진다.
 
 관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[selectors|CSS 선택자와 우선순위]], [[box-model|박스 모델과 display]], [[css-basics|CSS 기초: 문법, 적용 방법, 단위]], [[position|CSS position과 z-index]]

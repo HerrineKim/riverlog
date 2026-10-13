@@ -5,7 +5,7 @@ summary: "색상 변수를 팔레트·기능 색상·컴포넌트 색상의 세 
 tags: ["css", "design", "design-system", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2021/02/05/CSS-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A7%80%EC%A0%95-%EC%86%8D%EC%84%B1%EC%9C%BC%EB%A1%9C-%EC%83%89%EC%83%81-%EB%A7%8C%EB%93%A4%EA%B8%B0/"]
+sources: ["https://webactually.com/2021/02/05/CSS-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A7%80%EC%A0%95-%EC%86%8D%EC%84%B1%EC%9C%BC%EB%A1%9C-%EC%83%89%EC%83%81-%EB%A7%8C%EB%93%A4%EA%B8%B0/", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark", "https://web.dev/articles/baseline-in-action-color-theme"]
 ---
 
 > Artur Basak의 「[CSS 개발자 지정 속성으로 색상 만들기](https://webactually.com/2021/02/05/CSS-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A7%80%EC%A0%95-%EC%86%8D%EC%84%B1%EC%9C%BC%EB%A1%9C-%EC%83%89%EC%83%81-%EB%A7%8C%EB%93%A4%EA%B8%B0/)」(2021.02, 웹액츄얼리 번역)를 바탕으로 재구성한 노트입니다.
@@ -43,7 +43,7 @@ CSS 커스텀 속성(Custom Properties, 흔히 CSS 변수)은 `--이름: 값`으
 - 색상환에서 기본 색 몇 개를 고른다(단색, 보색, 삼원색, 사원색, 인접색 구성 등).
 - 나머지 단계는 기본 색에서 **밝기만 바꿔 계산**한다. 기본 색만 고치면 나머지가 따라 바뀐다.
 - 계산에는 `oklch()`가 맞다. HSL은 같은 명도 값이라도 색상마다 눈에 보이는 밝기가 달라 단계가 고르지 않다. OKLCH는 지각적으로 균일해 단계와 대비를 예측하기 쉽다.
-- 상대 색상 문법(`oklch(from var(--x) …)`)과 `color-mix()`로 기본 색에서 파생 색과 투명도를 바로 만든다. 알파 채널용 RGB 값을 따로 둘 필요가 없다.
+- 상대 색상 문법(`oklch(from var(--x) …)`, Baseline 2024)과 `color-mix()`(Baseline 2023)로 기본 색에서 파생 색과 투명도를 바로 만든다. 알파 채널용 RGB 값을 따로 둘 필요가 없다. 상대 색상 문법에서 OKLCH의 `l`은 0~1 사이 숫자로 풀린다.
 - **색 이름(`green`, `gray`)이 변수 이름에 들어가는 곳은 팔레트뿐이다.**
 
 ```css
@@ -73,7 +73,7 @@ CSS 커스텀 속성(Custom Properties, 흔히 CSS 변수)은 `--이름: 값`으
 ```
 
 - 테마 전환, 다크 모드, 대비 높이기는 **기능 색상만 재정의**하면 된다.
-- 시스템 설정을 따르는 다크 모드는 `color-scheme: light dark`를 선언하고 `light-dark(밝을 때, 어두울 때)` 함수나 `@media (prefers-color-scheme: dark)`로 기능 색상을 나눈다.
+- 시스템 설정을 따르는 다크 모드는 `color-scheme: light dark`를 선언하고 `light-dark(밝을 때, 어두울 때)` 함수(Baseline 2024)나 `@media (prefers-color-scheme: dark)`로 기능 색상을 나눈다. `light-dark()`는 `color-scheme`이 없으면 동작하지 않는다.
 - 페이지마다 대표색이 다른 사이트는 공통 스타일에서 `--page-color`를 쓰고 페이지별 스타일에서 이 값만 바꾼다.
 
 ### 3. 컴포넌트 색상

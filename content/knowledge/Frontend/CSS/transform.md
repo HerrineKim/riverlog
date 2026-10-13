@@ -4,8 +4,8 @@ concept: "CSS Transform"
 summary: "요소를 문서 흐름에 영향 없이 이동·확대·회전·기울이는 transform 함수들과, top·left 50%에 translate(-50%, -50%)를 더하는 가운데 정렬 패턴."
 tags: ["css", "layout", "frontend"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/233"]
+date: "2026-10-13"
+sources: ["https://riverkim.kr/233", "https://developer.mozilla.org/en-US/docs/Web/CSS/translate"]
 ---
 
 > riverkim.kr에 쓴 글을 다시 정리한 노트입니다.
@@ -35,6 +35,20 @@ sources: ["https://riverkim.kr/233"]
 ```
 
 `translate`의 `%`는 부모가 아니라 **요소 자기 크기** 기준이다. 아래 가운데 정렬이 동작하는 이유다.
+
+### 개별 변형 속성
+
+`translate`, `rotate`, `scale`은 `transform` 함수일 뿐 아니라 **독립된 CSS 속성**이기도 하다. 모든 주요 브라우저가 2022년부터 지원한다.
+
+```css
+.card { translate: 0 0; scale: 1; transition: translate .2s, scale .2s; }
+.card:hover { translate: 0 -4px; }        /* scale은 그대로 둔 채 이동만 바꾼다 */
+.card:active { scale: .98; }
+```
+
+`transform` 한 줄에 함수를 몰아 쓰면 호버에서 이동만 바꾸려 해도 확대 값까지 다시 적어야 한다. 개별 속성은 서로 덮어쓰지 않아 상태별로 따로 바꾸기 쉽다. 적용 순서는 작성 순서와 상관없이 항상 `translate` → `rotate` → `scale` → `transform`이다.
+
+`transform`·`opacity`만 바꾸는 애니메이션은 레이아웃과 페인트를 다시 하지 않고 합성 단계만 다시 돌아 부드럽다([[how-css-works|CSS가 동작하는 방식]]). `transform`이 있는 요소는 새 쌓임 맥락을 만들고, 그 안의 `position: fixed` 자식의 기준이 된다([[position|CSS position과 z-index]]).
 
 ## 가운데 정렬 패턴
 
@@ -67,13 +81,22 @@ top/left 50%만        translate(-50%, -50%) 추가
  모서리가 중앙          요소의 중심이 중앙
 ```
 
-요소 크기를 몰라도 동작한다는 점이 장점이다. 부모 안에서 가운데 두려면 `position: absolute`와 부모의 `position: relative`를 쓴다([[position|position]]). 일반 레이아웃 안의 가운데 정렬은 Flexbox(`justify-content`·`align-items: center`)가 더 간단하다.
+요소 크기를 몰라도 동작한다는 점이 장점이다. 부모 안에서 가운데 두려면 `position: absolute`와 부모의 `position: relative`를 쓴다([[position|position]]).
+
+지금은 변형 없이 가운데 정렬하는 방법이 더 간단하다.
+
+| 상황 | 방법 |
+| --- | --- |
+| 일반 레이아웃 안 | 부모에 `display: grid; place-items: center` 또는 Flexbox(`justify-content`·`align-items: center`) |
+| 고정·절대 위치 팝업 | `position: fixed; inset: 0; margin: auto; width: fit-content; height: fit-content` |
+| 모달 대화 상자 | `<dialog>`의 `showModal()`. 브라우저가 화면 가운데·최상위 레이어에 띄운다 |
 
 ## 정리
 
 - `transform`은 자리는 그대로, 보이는 모습만 바꾼다.
 - `translate`의 `%`는 자기 크기 기준이다.
-- 크기를 모르는 팝업의 정중앙 배치: `top·left: 50%` + `translate(-50%, -50%)`.
+- 크기를 모르는 팝업의 정중앙 배치: `top·left: 50%` + `translate(-50%, -50%)`. 그리드 `place-items: center`, `inset: 0; margin: auto`, `<dialog>`도 같은 일을 한다.
+- 상태마다 따로 바꿀 값은 `translate`·`rotate`·`scale` 개별 속성으로 쓴다.
 
 ## 참고 자료
 

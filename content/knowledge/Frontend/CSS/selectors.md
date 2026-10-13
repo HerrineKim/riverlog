@@ -4,6 +4,8 @@ concept: "Selector"
 summary: "스타일을 적용할 요소를 고르는 선택자와, 스타일이 겹칠 때 무엇이 적용되는지 정하는 캐스케이딩·특정성·상속."
 tags: ["css", "selector", "frontend"]
 source: til
+sources: ["https://developer.mozilla.org/en-US/docs/Web/CSS/:has", "https://developer.mozilla.org/en-US/docs/Web/CSS/@layer"]
+date: "2026-10-13"
 ---
 
 선택자(Selector)는 스타일을 적용할 HTML 요소를 고르는 문법이다. 한 요소에 여러 규칙이 겹치면 CSS는 **캐스케이딩(cascading)** 규칙에 따라 하나를 고른다. "왜 내 스타일이 안 먹지?"의 대부분은 이 우선순위 문제다.
@@ -47,9 +49,27 @@ a:hover {}    /* 마우스를 올린 상태(터치 스크린에서는 한 번 �
 a:active {}   /* 클릭하고 있는 상태 */
 a:visited {}  /* 이미 방문한 링크 */
 input:focus {} /* 포커스를 받은 상태 */
+button:focus-visible {} /* 키보드 탐색처럼 포커스 표시가 필요할 때만 */
 input:checked {} /* 체크된 radio/checkbox */
 li:first-child {} li:last-child {} /* 부모 기준 첫/마지막 자식 */
 ```
+
+### 논리 가상 클래스
+
+| 선택자 | 뜻 | 특정성 |
+| --- | --- | --- |
+| `:is(A, B)` | A나 B 중 하나와 일치. 긴 선택자 목록을 묶는다 | 인자 중 가장 높은 값 |
+| `:where(A, B)` | `:is()`와 같지만 덮어쓰기 쉽게 | 항상 0 |
+| `:not(A)` | A가 아닌 것 | 인자 중 가장 높은 값 |
+| `:has(A)` | A를 자손(또는 `+`, `~`로 형제)으로 가진 요소. 자식 상태로 부모를 고른다 | 인자 중 가장 높은 값 |
+
+```css
+.card:has(img) { grid-template-rows: auto 1fr; } /* 이미지가 있는 카드만 */
+form:has(:invalid) button[type="submit"] { opacity: .5; }
+:where(.prose) h2 { margin-top: 2em; }          /* 특정성 (0,0,1)이라 덮어쓰기 쉽다 */
+```
+
+네 가지 모두 모든 주요 브라우저가 지원한다(`:has()`는 2023년부터).
 
 ### 가상 요소(pseudo-element) — 실제로는 없는 **요소**
 
@@ -78,8 +98,18 @@ input::placeholder { color: #999; }
 적용 순서는 다음과 같이 판단한다.
 
 1. **중요도**: `!important`가 붙은 선언이 가장 우선한다. 흐름을 깨뜨리므로 존재만 알고 되도록 쓰지 않는다.
-2. **특정성(specificity)**: 선택자가 얼마나 구체적인가.
-3. **선언 순서**: 특정성이 같으면 뒤에 선언된(나중에 로드된) 것이 적용된다.
+2. **인라인 스타일**: `style` 속성은 어떤 선택자보다 강하다.
+3. **캐스케이드 레이어**: `@layer`로 묶은 규칙은 특정성보다 레이어 순서가 먼저다. 나중에 선언한 레이어가 이기고, 레이어 밖 규칙이 가장 강하다.
+4. **특정성(specificity)**: 선택자가 얼마나 구체적인가.
+5. **선언 순서**: 특정성이 같으면 뒤에 선언된(나중에 로드된) 것이 적용된다.
+
+```css
+@layer reset, base, components, utilities;  /* 뒤로 갈수록 강하다 */
+@layer components { #nav .link { color: gray; } }
+@layer utilities  { .text-red { color: red; } }  /* 특정성이 낮아도 이긴다 */
+```
+
+출처(브라우저·사용자·작성자)와 섀도 DOM까지 포함한 전체 순서는 [[how-css-works|CSS가 동작하는 방식]]에 있다.
 
 ### 특정성 계산
 
@@ -126,7 +156,8 @@ input, button {
 ## 핵심 정리
 
 - 선택자는 기본 선택자 → 결합자 → 가상 클래스·요소 순으로 확장된다.
-- 겹치는 스타일은 `!important` → 특정성 → 선언 순서로 결정된다.
+- 겹치는 스타일은 `!important` → 인라인 스타일 → `@layer` 순서 → 특정성 → 선언 순서로 결정된다.
+- `:is()`·`:where()`·`:has()`로 선택자를 묶고, `:where()`로 특정성을 0으로 낮춘다.
 - 글꼴·색상은 상속되고, 박스·위치 관련 속성은 상속되지 않는다.
 
 관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[oocss|객체 지향 CSS(OOCSS)]]
