@@ -1,62 +1,82 @@
 ---
 title: "컴포넌트 생명주기"
 concept: "Lifecycle"
-summary: "컴포넌트가 화면에 나타나고(마운트) 바뀌고(업데이트) 사라지는(언마운트) 흐름과, 클래스 생명주기 메서드·useEffect의 대응."
+summary: "컴포넌트가 화면에 나타나고(마운트) 바뀌고(업데이트) 사라지는(언마운트) 흐름. 함수 컴포넌트에서는 useEffect의 의존성 배열과 cleanup으로 다루고, 클래스 생명주기 메서드는 기존 코드를 읽기 위한 대응표로 정리한다."
 tags: ["react", "lifecycle", "hooks", "frontend"]
 source: til
+date: "2026-10-13"
+sources: ["https://react.dev/learn/lifecycle-of-reactive-effects", "https://react.dev/reference/react/Component"]
 ---
 
-컴포넌트는 **생성(마운트) → 갱신(업데이트) → 제거(언마운트)** 의 생명주기를 가진다. 클래스 컴포넌트에서는 각 시점에 호출되는 **생명주기 메서드**로 데이터 요청, 구독, 정리 작업을 했다. 함수 컴포넌트에서는 같은 일을 `useEffect`로 한다. 클래스 컴포넌트를 새로 쓸 일은 거의 없지만, 생명주기 개념은 `useEffect`를 이해하는 바탕이 된다.
+컴포넌트는 **마운트(화면에 나타남) → 업데이트(다시 렌더링) → 언마운트(화면에서 사라짐)** 의 생명주기를 가진다. 함수 컴포넌트가 표준인 지금은 이 흐름을 메서드가 아니라 **effect의 시작과 정리**로 다룬다. 클래스 컴포넌트의 생명주기 메서드는 새로 쓰지 않지만, 기존 코드와 에러 바운더리를 읽을 때 필요하다.
+
+## 함수 컴포넌트의 생명주기: useEffect
+
+```jsx
+function Hello() {
+  useEffect(() => {
+    console.log('created :)')                 // 마운트 후
+    return () => console.log('destroyed :(')  // 언마운트 직전 (cleanup)
+  }, [])
+  return <h1>Hello</h1>
+}
+```
+
+`Hello`를 show/hide 버튼으로 토글하면, 보일 때마다 'created', 숨길 때마다 'destroyed'가 찍힌다. 화면에서 사라진 컴포넌트는 state까지 버려지고, 다시 보이면 처음부터 새로 만들어진다.
+
+| 시점 | 함수 컴포넌트 |
+| --- | --- |
+| 마운트 후 한 번 | `useEffect(() => { ... }, [])` |
+| 특정 값이 바뀐 뒤 | `useEffect(() => { ... }, [value])` |
+| 언마운트 직전 / 다음 effect 직전 | effect가 반환한 cleanup 함수 |
+| 화면에 그리기 전 DOM 측정 | `useLayoutEffect` |
+| 같은 props면 다시 그리지 않기 | `React.memo` |
+
+effect는 "마운트 때 할 일"보다 **"외부 시스템과 동기화를 시작하고 멈추는 일"** 로 생각하는 편이 정확하다. 구독·타이머·소켓 연결을 열었으면 cleanup에서 닫는다. 의존성 배열과 cleanup의 세부 규칙은 [[hooks|Hooks]]의 useEffect 절에 있다.
+
+### 개발 모드에서 effect가 두 번 도는 이유
+
+`<StrictMode>` 아래에서는 개발 빌드가 컴포넌트를 **마운트 → 언마운트 → 다시 마운트**해 본다. cleanup을 빠뜨린 effect(리스너 중복 등록, 연결을 닫지 않음)를 일부러 드러내기 위해서다. 프로덕션 빌드에서는 한 번만 실행된다. effect가 두 번 돌아 문제가 생긴다면 고칠 곳은 StrictMode가 아니라 cleanup이다.
+
+### 데이터 요청은 effect보다 전용 도구로
+
+effect 안에서 `fetch`하는 방식은 여전히 동작하지만 경쟁 상태, 캐시 부재, 요청 워터폴을 직접 막아야 한다. 지금은 프레임워크의 데이터 로딩(Next.js 서버 컴포넌트, React Router loader), [[tanstack-query|TanStack Query]]·[[swr|SWR]] 같은 서버 상태 라이브러리, 또는 캐시된 Promise를 [[react-use-hook|use]]로 읽는 방식을 먼저 쓴다.
+
+## 클래스 컴포넌트의 생명주기 메서드
 
 ![생명주기 메서드 다이어그램](/images/til/FRONTEND/React/-inflearn-%EC%B2%98%EC%9D%8C-%EB%A7%8C%EB%82%98%EB%8A%94-%EB%A6%AC%EC%95%A1%ED%8A%B8/%EC%8B%A4%EC%8A%B5_%EC%A0%95%EB%A6%AC/6_State_and_LifeCycle.assets/cNfpEph.png)
 
 (출처: [React Lifecycle Methods diagram](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/))
 
-## 마운트
+| 단계 | 호출 순서 | 하는 일 |
+| --- | --- | --- |
+| 마운트 | `constructor` → `getDerivedStateFromProps` → `render` → `componentDidMount` | 생성자에서 state 초기화, DOM에 나타난 뒤 구독·DOM 측정 |
+| 업데이트 | `getDerivedStateFromProps` → `shouldComponentUpdate` → `render` → `getSnapshotBeforeUpdate` → `componentDidUpdate` | `false`를 반환해 렌더링 건너뛰기, 반영 직전 DOM 정보 읽기, 반영 뒤 후속 작업 |
+| 언마운트 | `componentWillUnmount` | 이벤트 제거, `clearInterval`, 소켓 해제 같은 정리 |
+| 에러 | `getDerivedStateFromError`, `componentDidCatch` | 하위 트리의 렌더링 에러를 잡아 대체 UI 표시 |
 
-컴포넌트가 처음 만들어져 화면에 나타날 때. 호출 순서:
+- `static getDerivedStateFromProps(props, state)`는 props를 state에 동기화할 때 쓴다. 객체를 반환하면 state에 합쳐지고, `null`이면 아무 일도 없다. 대부분은 렌더링 중 계산이나 `key`로 리셋하는 편이 낫다.
+- `shouldComponentUpdate(nextProps, nextState)`는 함수 컴포넌트의 `React.memo`, 클래스의 `PureComponent`와 같은 역할이다.
+- 에러 바운더리는 **아직 클래스로만 만들 수 있다.** 직접 쓰기보다 `react-error-boundary` 패키지를 많이 쓴다.
+- `componentWillMount`·`componentWillReceiveProps`·`componentWillUpdate`는 비동기 렌더링과 맞지 않아 `UNSAFE_` 접두사가 붙은 레거시 API가 됐다.
 
-1. **`constructor(props)`**: 가장 먼저 실행되는 생성자. state 초기화.
-2. **`static getDerivedStateFromProps(nextProps, prevState)`**: props로 받은 값을 state에 동기화할 때. `static`이라 `this`를 쓸 수 없고, 객체를 반환하면 state에 합쳐지고 `null`이면 아무 일도 없다. 첫 렌더링 전과 매 리렌더링 전에 호출된다.
-3. **`render()`**: 엘리먼트를 반환.
-4. **`componentDidMount()`**: 첫 렌더링이 끝나 DOM에 나타난 뒤. 데이터 요청(fetch, axios), 외부 라이브러리 연동(D3 등), DOM 측정·조작을 여기서 한다.
+### getSnapshotBeforeUpdate: 스크롤 위치 유지
 
-## 업데이트
-
-props나 state가 바뀔 때. 호출 순서:
-
-1. **`getDerivedStateFromProps`**
-2. **`shouldComponentUpdate(nextProps, nextState)`**: `false`를 반환하면 리렌더링을 건너뛴다. 최적화용(함수 컴포넌트의 `React.memo`와 비슷한 역할).
-3. **`render()`**
-4. **`getSnapshotBeforeUpdate(prevProps, prevState)`**: 변경이 DOM에 반영되기 **직전**의 DOM 정보를 읽는다. 반환값은 다음 메서드의 세 번째 인자로 전달된다.
-5. **`componentDidUpdate(prevProps, prevState, snapshot)`**: 리렌더링이 끝나 화면에 반영된 뒤.
-
-```jsx
-shouldComponentUpdate(nextProps, nextState) {
-  return nextState.number % 10 !== 4 // 마지막 자리가 4면 리렌더링하지 않음
-}
-```
-
-### getSnapshotBeforeUpdate 활용: 스크롤 위치 유지
-
-채팅·피드처럼 목록 **위쪽**에 새 항목이 추가되면, 브라우저에 따라 사용자가 보던 위치가 아래로 밀린다. 업데이트 직전의 스크롤 높이를 기억했다가 업데이트 후 차이만큼 보정한다.
+채팅·피드처럼 목록 **위쪽**에 새 항목이 붙으면 보던 위치가 아래로 밀린다. 업데이트 직전의 스크롤 높이를 기억했다가, 업데이트 뒤 늘어난 높이만큼 보정한다.
 
 ```jsx
 getSnapshotBeforeUpdate(prevProps, prevState) {
   if (prevState.array !== this.state.array) {
     const { scrollTop, scrollHeight } = this.list
-    return { scrollTop, scrollHeight } // componentDidUpdate의 snapshot으로 전달
+    return { scrollTop, scrollHeight } // componentDidUpdate의 세 번째 인자로 전달
   }
   return null
 }
 
 componentDidUpdate(prevProps, prevState, snapshot) {
-  if (snapshot) {
-    const { scrollTop } = this.list
-    if (scrollTop !== snapshot.scrollTop) return // 브라우저가 이미 보정했다면 건너뜀
-    const diff = this.list.scrollHeight - snapshot.scrollHeight
-    this.list.scrollTop += diff
-  }
+  if (!snapshot) return
+  if (this.list.scrollTop !== snapshot.scrollTop) return // 브라우저가 이미 보정했다면 건너뜀
+  this.list.scrollTop += this.list.scrollHeight - snapshot.scrollHeight
 }
 ```
 
@@ -64,36 +84,24 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 
 ![보정 후: 위치 유지](/images/til/FRONTEND/React/-inflearn-%EC%B2%98%EC%9D%8C-%EB%A7%8C%EB%82%98%EB%8A%94-%EB%A6%AC%EC%95%A1%ED%8A%B8/%EC%8B%A4%EC%8A%B5_%EC%A0%95%EB%A6%AC/6_State_and_LifeCycle.assets/gS01iZ9.gif)
 
-자주 쓰이지는 않으며, Hooks에는 이 메서드를 직접 대체하는 것이 아직 없다.
+Hooks에는 이 메서드에 딱 대응하는 API가 없다. 함수 컴포넌트에서는 항목을 추가하기 직전의 높이를 ref에 담아 두고, `useLayoutEffect`에서 늘어난 만큼 보정한다.
 
-## 언마운트
-
-**`componentWillUnmount()`**: 컴포넌트가 화면에서 사라지기 직전. 직접 등록한 DOM 이벤트 제거, `clearTimeout`/`clearInterval`, 소켓 연결 해제, 외부 라이브러리의 dispose 호출 등 **정리(cleanup)** 를 한다.
-
-## 함수 컴포넌트에서는: useEffect
+## 대응표
 
 | 클래스 | 함수 컴포넌트 |
 | --- | --- |
 | `componentDidMount` | `useEffect(() => { ... }, [])` |
 | `componentDidUpdate` (특정 값 변경 시) | `useEffect(() => { ... }, [value])` |
-| `componentWillUnmount` | `useEffect(() => { return () => { /* cleanup */ } }, [])` |
-| `shouldComponentUpdate` | `React.memo` |
+| `componentWillUnmount` | `useEffect`가 반환한 cleanup |
+| `shouldComponentUpdate` | `React.memo` (React Compiler를 쓰면 대부분 자동) |
+| `getSnapshotBeforeUpdate` | 직접 대응 없음. ref + `useLayoutEffect` |
+| `componentDidCatch` | 직접 대응 없음. 클래스 에러 바운더리나 `react-error-boundary` |
 
-```jsx
-function Hello() {
-  useEffect(() => {
-    console.log('created :)')           // 마운트 시
-    return () => console.log('destroyed :(') // 언마운트 시 (cleanup)
-  }, [])
-  return <h1>Hello</h1>
-}
-```
+## 정리
 
-이 `Hello`를 show/hide 버튼으로 토글하면, 보일 때마다 'created', 숨길 때마다 'destroyed'가 찍힌다. 컴포넌트가 화면에서 사라지면 정말로 파괴되고, 다시 보이면 새로 만들어지기 때문이다. 자세한 내용은 [Hooks](/knowledge/dictionary/frontend/react/hooks)의 useEffect 절 참고.
+- 생명주기는 마운트 → 업데이트 → 언마운트다. 함수 컴포넌트에서는 effect의 시작과 cleanup으로 다룬다.
+- 열었으면 닫는다. StrictMode의 이중 실행은 cleanup 누락을 찾아 주는 장치다.
+- 데이터 요청은 effect보다 프레임워크·서버 상태 라이브러리·`use`로 한다.
+- 클래스 메서드는 기존 코드와 에러 바운더리를 읽기 위한 지식이다.
 
-## 핵심 정리
-
-- 마운트: constructor → render → componentDidMount(데이터 요청)
-- 업데이트: shouldComponentUpdate(건너뛰기 가능) → render → componentDidUpdate
-- 언마운트: componentWillUnmount(정리)
-- 함수 컴포넌트에서는 `useEffect`의 의존성 배열과 cleanup 함수로 같은 일을 한다.
+관련 노트: [[hooks|Hooks]], [[state|State와 useState]], [[re-rendering|리렌더링 원인과 추적]]
