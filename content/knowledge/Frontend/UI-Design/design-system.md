@@ -78,4 +78,4 @@ AI 코딩 도구가 읽는 팀 규칙 파일(`SKILL.md`)도 중앙 저장소에�
 - 컴포넌트는 검증된 오픈 소스 위에 토큰을 입혀 빠르게 만든다.
 - 각 저장소는 설치와 버전 업데이트만 하고, 수정은 중앙에서만 한다.
 
-관련 노트: [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]]
+관련 노트: [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]]

@@ -162,4 +162,4 @@ Button처럼 props로 모든 걸 주입받는 방식을 도메인 컴포넌트�
 - 더 커지면 데이터(엔티티)·화면(위젯)·행동(기능) 기준으로 응집한다. 의존은 위에서 아래로만.
 - FSD는 따를 규칙이 아니라 구조를 보는 **렌즈**다. 원칙을 이해하고 프로젝트 성격에 맞게 고친다.
 
-관련 노트: [[feature-sliced-design|Feature-Sliced Design]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[composition|합성: 상속 대신 Composition]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]]
+관련 노트: [[feature-sliced-design|Feature-Sliced Design]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[composition|합성: 상속 대신 Composition]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]]
