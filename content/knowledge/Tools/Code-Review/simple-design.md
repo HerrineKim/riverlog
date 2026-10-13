@@ -4,7 +4,7 @@ concept: "Simple Design"
 summary: "코드 품질을 '가독성'·'깔끔함' 같은 느낌 대신 객관적 기준으로 다루기 위해 켄트 벡의 Simple Design을 '중복이 없으면서 최소한의 문법 요소로 구성된 코드'로 줄여 쓰는 방법. 중복 제거 시점, 비용과의 타협, 본질적 복잡성 다루기까지 정리한다."
 tags: ["code-review", "clean-code", "software-engineering", "agile"]
 source: other
-date: "2026-10-12"
+date: "2026-10-13"
 sources: ["https://youngrok.com/Simple%20Design"]
 ---
 
@@ -45,7 +45,7 @@ sources: ["https://youngrok.com/Simple%20Design"]
 
 ### 최소한의 문법 요소
 
-켄트 벡은 "클래스와 메서드", 파울러는 "요소"라고 했고, 글쓴이는 이를 **문법 요소**로 좁혔다.
+켄트 벡은 "클래스와 메서드", 파울러는 "요소"라고 했다. 이를 코드 수준에서 셀 수 있게 좁히면 **문법 요소**가 된다.
 
 - 클래스, 메서드, 상속 계층, 콜 스택 깊이
 - 멤버 변수, 로컬 변수, 데코레이터
@@ -58,7 +58,7 @@ sources: ["https://youngrok.com/Simple%20Design"]
 
 ### "미래에 갈라질 수 있으니 남겨 둔다"는 YAGNI 위반이다
 
-「Don't DRY Your Code Prematurely」 류의 주장은 "지금은 같아도 나중에 로직이 달라질 수 있다"를 근거로 든다. 글쓴이는 이것이 오히려 **YAGNI**에 어긋난다고 본다. 아직 오지 않은 변화를 근거로 설계하는 것이기 때문이다. 좋은 코드는 **현재에 충실한 Simple Design**이지 미래 변화에 대비한 유연함이 아니다.
+「Don't DRY Your Code Prematurely」 류의 주장은 "지금은 같아도 나중에 로직이 달라질 수 있다"를 근거로 든다. Simple Design 관점에서는 이것이 오히려 **YAGNI**에 어긋난다. 아직 오지 않은 변화를 근거로 설계하는 것이기 때문이다. 좋은 코드는 **현재에 충실한 Simple Design**이지 미래 변화에 대비한 유연함이 아니다.
 
 ```python
 def assert_future(deadline):
