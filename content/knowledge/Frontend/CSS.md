@@ -28,6 +28,7 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 - [Sass: 파일 구조, 믹스인과 @extend](/knowledge/dictionary/frontend/css/sass): 네이티브 CSS와의 역할 분담, 7-1 폴더 구조와 @use, 믹스인·@extend·플레이스홀더
 - [객체 지향 CSS(OOCSS)](/knowledge/dictionary/frontend/css/oocss): 구조/겉모양·컨테이너/콘텐츠 분리, 미디어 객체, 특정도를 낮게 유지하는 규칙, BEM·유틸리티 CSS로 이어진 흐름
 - [웹 타이포그래피: 가독성, 글줄 길이, 웹폰트](/knowledge/dictionary/frontend/css/web-typography): 글줄 길이·글자 크기·줄 간격의 균형, font-size-adjust, 하이픈과 대비, @font-face와 WOFF2
+- [CSS가 동작하는 방식](/knowledge/dictionary/frontend/css/how-css-works): 먼저 익힐 핵심 개념, 해석→캐스케이드→계산→레이아웃→페인트→합성, 상호작용 시 다시 도는 단계
 
 ## 참고
 
