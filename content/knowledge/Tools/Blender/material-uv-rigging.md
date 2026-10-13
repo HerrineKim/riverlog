@@ -4,9 +4,10 @@ concept: "UV Mapping"
 summary: "Shade Smooth와 Mirror로 형태를 다듬고, 재질·이미지 텍스처를 입히고, UV를 펼친 뒤 뼈를 심어 움직이게 하는 과정."
 tags: ["blender", "3d", "texture", "rigging"]
 source: notion
+date: "2026-10-13"
 ---
 
-모델링이 끝나면 **표면을 다듬고(Shading) → 색과 질감을 입히고(Material/Texture) → 텍스처가 제대로 붙도록 UV를 펼치고 → 뼈를 심어 움직일 수 있게(Rigging)** 만듭니다. 레고 피규어를 만들며 이 흐름을 한 번에 연습했습니다.
+모델링이 끝나면 **표면을 다듬고(Shading) → 색과 질감을 입히고(Material/Texture) → 텍스처가 제대로 붙도록 UV를 펼치고 → 뼈를 심어 움직일 수 있게(Rigging)** 만듭니다. 레고 피규어처럼 부품이 단순한 모델로 이 흐름을 한 번에 연습하기 좋습니다.
 
 ## 표면 다듬기
 
