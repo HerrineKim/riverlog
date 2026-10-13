@@ -4,9 +4,10 @@ concept: "Auth Flow"
 summary: "커스텀 훅, axios, SWR을 조합해 회원가입·로그인·로그아웃과 로그인 상태에 따른 리다이렉트를 구현하는 흐름."
 tags: ["react", "auth", "http", "hooks", "frontend"]
 source: til
+date: "2026-10-13"
 ---
 
-회원가입·로그인은 폼 처리, 비동기 요청, 에러 표시, 전역 로그인 상태가 모두 들어가는 좋은 실전 예제다. Slack 클론 프로젝트(세션 쿠키 기반 백엔드)에서 구현한 흐름을 정리했다.
+회원가입·로그인에는 폼 처리, 비동기 요청, 에러 표시, 전역 로그인 상태가 모두 들어간다. 아래는 **세션 쿠키**로 로그인을 유지하는 백엔드를 기준으로, 클라이언트 렌더링 SPA에서 쓰는 흐름이다.
 
 ## 전체 흐름
 
@@ -43,7 +44,7 @@ const onChangePasswordCheck = useCallback((e) => {
 
 ## 2. 회원가입 요청
 
-백엔드가 남긴 API 문서를 보고 요청한다. 모든 API는 `/api`로 시작하고, 개발 중 CORS는 devServer proxy로 우회했다([AJAX와 CORS](/knowledge/dictionary/frontend/javascript/ajax)).
+API 경로가 `/api`로 시작하면, 개발 중에는 개발 서버의 proxy(Vite `server.proxy`, webpack `devServer.proxy`)로 같은 출처처럼 요청해 CORS 문제를 피할 수 있다([AJAX와 CORS](/knowledge/dictionary/frontend/javascript/ajax)).
 
 ```tsx
 const [signUpError, setSignUpError] = useState('')
@@ -72,6 +73,8 @@ const onSubmit = useCallback(
 - 이전 요청의 결과가 남아 있지 않도록 요청 직전에 에러·성공 state를 초기화한다.
 - 에러 응답 구조는 확실하지 않으므로 `error.response?.data`처럼 옵셔널 체이닝으로 꺼낸다.
 - 요청이 이상하면 개발자 도구 **Network 탭**에서 요청 본문과 응답을 확인한다.
+
+React 19에서는 같은 흐름을 [폼 액션](/knowledge/dictionary/frontend/react/forms)으로 줄일 수 있다. `useActionState`가 요청 결과(에러 메시지)와 대기 상태를 함께 관리하므로, 요청 전 초기화·`preventDefault`·로딩 state를 따로 두지 않아도 된다. 입력마다 비밀번호 일치를 보여 주는 것처럼 실시간 검증이 필요한 입력만 제어 컴포넌트로 남긴다.
 
 ## 3. 로그인과 로그인 상태 확인
 
@@ -115,7 +118,7 @@ function LogIn() {
 - **Hooks보다 아래에서 return**해야 한다. 조건부 `return`이 Hook 호출보다 위에 있으면 렌더링마다 Hook 개수가 달라져 규칙 위반이다.
 - `withCredentials: true`를 빠뜨리면 다른 출처의 서버가 준 세션 쿠키가 저장·전송되지 않아 로그인이 유지되지 않는다.
 - `undefined`(아직 로딩)와 `false`(비로그인)를 구분하면, 로딩 중 로그인 폼이 잠깐 깜빡이는 것을 막을 수 있다.
-- React Router v5에서는 `<Redirect to=... />`, v6부터는 `<Navigate to=... />`를 쓴다.
+- 리다이렉트는 react-router의 `<Navigate to=... />`로 한다. 과거 v5에서는 `<Redirect>`였다.
 
 ## 4. 로그아웃과 보호된 페이지
 
