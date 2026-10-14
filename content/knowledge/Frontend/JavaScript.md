@@ -14,6 +14,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 ### 언어 기초
 - [변수와 데이터 타입](/knowledge/dictionary/frontend/javascript/variables-and-types): 식별자 규칙, let·const·var, 호이스팅, 원시·참조 타입, null과 undefined
 - [연산자와 제어문](/knowledge/dictionary/frontend/javascript/operators-and-control-flow): `==` vs `===`, 단축 평가와 `?.`·`??`, 삼항 연산자, if·switch, for·for...in·for...of
+- [문(Statement)과 식(Expression)](/knowledge/dictionary/frontend/javascript/statements-vs-expressions): 값을 만드는 식과 명령하는 문, 식 자리, `{}`·`function`의 문/식 해석 차이, JSX 중괄호가 식만 받는 이유
 - [함수와 this](/knowledge/dictionary/frontend/javascript/functions): 선언식·표현식, 화살표 함수, rest·spread, this와 bind
 - [배열·객체·문자열](/knowledge/dictionary/frontend/javascript/arrays-and-objects): 주요 메서드, map·filter·reduce, ES6 객체 문법, 구조 분해, 옵셔널 체이닝, JSON
 - [JavaScript의 네 가지 주석](/knowledge/dictionary/frontend/javascript/js-comments): `//`·`/* */`의 동작, 해시뱅 `#!`, HTML 유사 주석 `<!--`의 유래

@@ -93,7 +93,7 @@ function App() {
 }
 ```
 
-값으로 평가되는 모든 **표현식**은 넣을 수 있지만, `if`문이나 `for`문 같은 **문(statement)** 은 넣을 수 없다. 조건에 따라 다르게 그리려면 JSX 밖에서 `if`를 쓰거나, 안에서 삼항 연산자 `? :`, `&&`를 쓴다([조건부 렌더링](/knowledge/dictionary/frontend/react/conditional-rendering)). 반복은 `map`을 쓴다([리스트와 Key](/knowledge/dictionary/frontend/react/lists-and-keys)).
+값으로 평가되는 모든 **표현식**은 넣을 수 있지만, `if`문이나 `for`문 같은 **문(statement)** 은 넣을 수 없다(이유는 [[statements-vs-expressions|문과 식]]). 조건에 따라 다르게 그리려면 JSX 밖에서 `if`를 쓰거나, 안에서 삼항 연산자 `? :`, `&&`를 쓴다([조건부 렌더링](/knowledge/dictionary/frontend/react/conditional-rendering)). 반복은 `map`을 쓴다([리스트와 Key](/knowledge/dictionary/frontend/react/lists-and-keys)).
 
 ### 3. 속성 이름은 camelCase, 예약어는 피한다
 

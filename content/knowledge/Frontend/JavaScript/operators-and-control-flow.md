@@ -197,4 +197,4 @@ for (const fruit of fruits) {
 - switch는 break를 잊으면 fall through.
 - 객체는 `for...in`(키), 배열·iterable은 `for...of`(값).
 
-관련 노트: [[conditional-rendering|React 조건부 렌더링(&&·삼항 연산자 활용)]]
+관련 노트: [[conditional-rendering|React 조건부 렌더링(&&·삼항 연산자 활용)]], [[statements-vs-expressions|문(Statement)과 식(Expression)]]
