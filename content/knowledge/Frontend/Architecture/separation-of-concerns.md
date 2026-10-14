@@ -113,4 +113,4 @@ const taskToBoardItem = (task: Task): BoardItem => ({
 - 관심사는 레이어·모듈·데이터 흐름 여러 방향이 있고, 폴더는 하나만 고를 수 있다. 시기별 관심사에 맞춰 구조를 키운다.
 - 모양이 같다고 합치지 않는다. 같은 화면을 공유해야 하면 데이터를 어댑터로 맞춘다.
 
-관련 노트: [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[abstraction-layers|추상화 계층과 데이터 흐름]]
+관련 노트: [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[abstraction-layers|추상화 계층과 데이터 흐름]], [[component-splitting|컴포넌트를 분리하는 기준과 방법]]

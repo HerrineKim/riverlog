@@ -143,3 +143,5 @@ function Text({ as: Component = 'p', children, ...rest }: TextProps) {
 - 특수한 컴포넌트는 범용 컴포넌트를 렌더링하며 props로 구체화한다.
 - React에서 상속은 쓰지 않는다. 로직 재사용은 모듈이나 커스텀 훅으로.
 - `as`(MUI는 `component`) prop은 스타일·동작을 유지한 채 그릴 요소만 바꾼다.
+
+관련 노트: [[components-and-props|컴포넌트와 Props]], [[component-splitting|컴포넌트를 분리하는 기준과 방법]]

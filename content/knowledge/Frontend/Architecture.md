@@ -14,6 +14,7 @@ date: "2026-10-14"
 - [프론트엔드에서 의존성 관리하기](Frontend/Architecture/frontend-dependency.md): 의존성은 변경에 노출되는 관계다. 변수 스코프 좁히기, 공용 함수의 의존성 역전, API 응답 대신 도메인 타입에 기대기
 - [프론트엔드와 SOLID 원칙](Frontend/Architecture/frontend-solid.md): SRP·OCP·LSP·ISP·DIP를 React 컴포넌트 설계에 옮기기
 - [프론트엔드에서 관심사의 분리](Frontend/Architecture/separation-of-concerns.md): 역할 → 컴포넌트 → 컴포넌트 안의 계층으로 바뀐 분리 축, 레이어·모듈·데이터 흐름이라는 관심사의 방향, 시기별로 달라지는 구조
+- [컴포넌트를 분리하는 기준과 방법](Frontend/Architecture/component-splitting.md): 재사용·복잡성·렌더링 범위라는 세 가지 이유. 모양이 같아도 바뀌는 이유가 다르면 중복이 아니고, 고유한 부분은 props로 넘긴다
 - [Atomic Design과 컴포넌트 폴더 구조](Frontend/Architecture/atomic-design.md): 원자 → 분자 → 유기체 → 템플릿 → 페이지는 멘탈 모델이다. 폴더로 쓸 때의 한계와 이름 붙은 영역 먼저 나누는 절충안
 - [프론트엔드 폴더 구조의 진화](Frontend/Architecture/frontend-folder-structure.md): 역할 기반 폴더에서 엔티티·위젯·기능 중심 응집으로. 좋은 구조는 팀의 멘탈 모델과 일치하는 구조
 - [프론트엔드 MV* 아키텍처의 흐름: MVC에서 MVI까지](Frontend/Architecture/frontend-mv-architecture.md): MVC·MVP·MVVM 비교, MVC → MVVM → Flux → 가벼운 스토어·서버 상태로 이어진 변천과 MVI. 뷰는 의도만 보내고 데이터는 한 방향으로 돈다
