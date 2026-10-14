@@ -188,4 +188,4 @@ P2가 먼저 CPU를 받아도 `S = 0`이라 기다리게 되므로, 어느 쪽�
 - 임계 구역 해결 조건: 상호 배제, 진행, 유한 대기.
 - 세마포어 P는 획득(없으면 대기), V는 반납(대기자가 있으면 깨움). Busy-wait 대신 block/wakeup으로 CPU 낭비를 줄인다.
 
-관련 노트: [[pthread-sync-api|POSIX 스레드와 동기화 API]], [[deadlock|교착 상태]]
+관련 노트: [[pthread-sync-api|POSIX 스레드와 동기화 API]], [[deadlock|교착 상태]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]]
