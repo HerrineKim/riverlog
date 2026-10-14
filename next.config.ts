@@ -57,6 +57,7 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/ai-data/copilot-leaked-prompt": "/knowledge/dictionary/ai-data/system-prompt-patterns",
   "/knowledge/dictionary/ai-data/chatgpt-prompt-cheat-sheet": "/knowledge/dictionary/ai-data/prompt-cheat-sheet",
   "/knowledge/dictionary/frontend/javascript/date-object": "/knowledge/dictionary/frontend/javascript/date-libraries",
+  "/knowledge/dictionary/life-and-learning/life/marvel-watch-order": "/knowledge/dictionary/life-and-learning",
   "/books/computer-architecture": "/books/computer-architecture-book",
 };
 
