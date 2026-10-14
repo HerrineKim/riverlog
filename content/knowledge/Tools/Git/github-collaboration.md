@@ -81,4 +81,4 @@ npx github-label-sync --access-token <TOKEN> --labels ./labels.json <owner>/<rep
 - CODEOWNERS로 리뷰어 자동 지정, 템플릿·라벨로 이슈·PR 형식 통일.
 - 기능마다 브랜치를 나눠야 부분 머지가 쉽다.
 
-관련 노트: [[ci-cd|CI/CD]], [[review-communication|리뷰 코멘트와 PR 소통]]
+관련 노트: [[ci-cd|CI/CD]], [[github-issue-workflow|GitHub 이슈·프로젝트로 진행 상황 관리하기]], [[review-communication|리뷰 코멘트와 PR 소통]]

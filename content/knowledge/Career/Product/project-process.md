@@ -68,4 +68,4 @@ sources: ["https://webactually.com/2015/10/22/%eb%82%b4%ea%b0%80-%ed%95%98%eb%8a
 
 참고: okdevtv의 "개발 프로젝트 진행 순서" 정리, 『오늘도 개발자가 안 된다고 말했다』
 
-관련 노트: [[ci-cd|CI/CD]], [[github-collaboration|GitHub 협업 저장소 설정]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[ga4-setup|GA4 시작하기]], [[side-project-tips|사이드 프로젝트 10가지 팁]], [[content-strategy|콘텐츠 전략과 핵심 모델]], [[working-with-designers|디자이너와 함께 일하기]], [[agile-sprint|애자일과 스프린트]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]]
+관련 노트: [[ci-cd|CI/CD]], [[github-collaboration|GitHub 협업 저장소 설정]], [[github-issue-workflow|GitHub 이슈·프로젝트로 진행 상황 관리하기]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[ga4-setup|GA4 시작하기]], [[side-project-tips|사이드 프로젝트 10가지 팁]], [[content-strategy|콘텐츠 전략과 핵심 모델]], [[working-with-designers|디자이너와 함께 일하기]], [[agile-sprint|애자일과 스프린트]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]]
