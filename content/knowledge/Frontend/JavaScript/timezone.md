@@ -5,7 +5,7 @@ summary: "타임존은 오프셋이 아니라 한 지역의 표준시·서머타
 tags: ["javascript", "frontend", "browser", "api"]
 source: other
 date: "2026-10-13"
-sources: ["https://ui.toast.com/weekly-pick/ko_20170804", "https://ui.toast.com/weekly-pick/ko_20170922", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/ZonedDateTime"]
+sources: ["https://riverkim.kr/213", "https://ui.toast.com/weekly-pick/ko_20170804", "https://ui.toast.com/weekly-pick/ko_20170922", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/ZonedDateTime"]
 ---
 
 > 김동우의 TOAST UI 글 「[자바스크립트에서 타임존 다루기](https://ui.toast.com/weekly-pick/ko_20170804)」(2017.08)와 「[자바스크립트에서 타임존 다루기 (2)](https://ui.toast.com/weekly-pick/ko_20170922)」(2017.09)를 바탕으로 재구성한 노트입니다.
@@ -77,6 +77,17 @@ const ny = new Date(ms - (nyOffsetMin - offsetMin) * 60 * 1000);
 ny.getHours(); // 뉴욕 기준 시
 ```
 
+서머타임이 없는 한국 시간이라면 UTC로 맞춘 뒤 +9시간 하는 식으로 단순해진다. 해외 리전 서버에서 "한국 시간 오전 9시~오후 6시에만 배너 표시" 같은 조건을 계산할 때 쓴다.
+
+```js
+const now = new Date();
+const utcMs = now.getTime() + now.getTimezoneOffset() * 60 * 1000;
+const koreaNow = new Date(utcMs + 9 * 60 * 60 * 1000);
+koreaNow.getHours(); // 어디서 실행해도 한국 기준 시
+```
+
+이렇게 옮긴 `Date`는 getter가 다른 타임존의 숫자를 돌려주도록 **값을 옮겨 놓은** 객체다. 비교와 표시에만 쓰고, `toISOString()`으로 서버에 보내거나 저장하면 오프셋만큼 어긋난다.
+
 **표시만 할 때는 된다. 날짜 연산에서 깨진다.**
 
 ```text
@@ -115,4 +126,4 @@ Temporal.Instant.fromEpochMilliseconds(ms)
 - 표시만 필요하면 `Intl`의 `timeZone` 옵션, 연산이 필요하면 Temporal `ZonedDateTime`이나 타임존을 아는 라이브러리를 쓴다.
 - 라이브러리를 고르기 전에 문제가 무엇인지 알아야 맞는 도구를 고를 수 있다.
 
-관련 노트: [[date-object|Date 객체: 0부터 시작하는 월과 시간대 변환]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]], [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]]
+관련 노트: [[date-libraries|날짜 라이브러리: date-fns와 Day.js]], [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]]

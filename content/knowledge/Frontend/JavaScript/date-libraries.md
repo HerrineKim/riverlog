@@ -1,14 +1,32 @@
 ---
 title: "날짜 라이브러리: date-fns와 Day.js"
 concept: "Date Library"
-summary: "유지보수 모드에 들어간 Moment.js 대신 많이 쓰는 date-fns(함수형·트리 셰이킹)와 Day.js(초경량·Moment 호환 API)의 사용법 비교, 그리고 Date를 대체할 표준 API Temporal의 지원 현황."
+summary: "기본 Date의 함정(0부터 시작하는 월)과 그 유래, 유지보수 모드에 들어간 Moment.js 대신 많이 쓰는 date-fns(함수형·트리 셰이킹)와 Day.js(초경량·Moment 호환 API)의 사용법 비교, 그리고 Date를 대체할 표준 API Temporal의 지원 현황."
 tags: ["javascript", "frontend", "library"]
 source: notion
 date: "2026-10-13"
-sources: ["https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal", "https://momentjs.com/docs/#/-project-status/"]
+sources: ["https://riverkim.kr/260", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal", "https://momentjs.com/docs/#/-project-status/"]
 ---
 
 JavaScript의 기본 `Date`는 API가 불편하고(월이 0부터 시작, 포맷 함수 부재), 값을 직접 바꾸는 가변(mutable) 객체라 버그가 나기 쉽다. 그래서 날짜 라이브러리를 쓰는데, 오랫동안 표준처럼 쓰이던 Moment.js는 2020년부터 새 기능 개발을 멈춘 유지보수 모드이며 공식 문서에서도 다른 라이브러리를 권한다. 그 대안 중 가장 많이 쓰는 두 가지가 **date-fns**와 **Day.js**다.
+
+## 기본 Date의 함정: 0부터 시작하는 월
+
+```javascript
+const moonLanding = new Date('July 20, 69 00:20:18')
+moonLanding.getMonth() // 6 — 7월인데 6이다 (1월이 0)
+```
+
+| 메서드 | 범위 |
+| --- | --- |
+| `getFullYear()` | 실제 연도 |
+| `getMonth()` | **0~11** |
+| `getDate()` | 1~31 |
+| `getDay()` | 0(일요일)~6 |
+
+연·일은 사람이 쓰는 숫자 그대로인데 월만 0부터 시작한다. `new Date(2024, 0, 1)`처럼 생성자에 월을 넘길 때도 같다. 화면에 보여 줄 때는 `getMonth() + 1`을 한다.
+
+이유는 역사에 있다. JS의 `Date`는 Java JDK 1.0의 `java.util.Date`를 그대로 옮긴 것이다. "Java처럼 보이게 하라"는 요구와 열흘의 일정 때문에 브렌던 아이크(Brendan Eich)가 API를 따로 설계하거나 고칠 시간이 없었다. Java는 8버전의 `java.time`으로 정리했지만, JavaScript는 하위 호환 때문에 `Date`를 그대로 두고 새 표준 Temporal을 들였다.
 
 ## Temporal: 표준 날짜 API
 
@@ -134,4 +152,4 @@ a.diff(b, 'day', true)  // 402.96... (세 번째 인자 true면 소수까지)
 - 두 라이브러리 모두 불변: 조작 결과는 새 값이다.
 - 월은 둘 다 0부터 시작한다. 포맷 토큰은 date-fns `yyyy-MM-dd`, Day.js `YYYY-MM-DD`로 다르다.
 
-관련 노트: [[realtime-chat-app|실시간 채팅 앱(dayjs로 날짜 구분선 만들기)]]
+관련 노트: [[timezone|자바스크립트에서 타임존 다루기]], [[realtime-chat-app|실시간 채팅 앱(dayjs로 날짜 구분선 만들기)]]
