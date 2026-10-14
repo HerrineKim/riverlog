@@ -8,9 +8,14 @@ const PORTFOLIO_DIR = path.join(process.cwd(), "content/portfolio");
 /** Closing sections that are not projects, so the index card leaves them out. */
 const NON_PROJECT_HEADINGS = new Set(["돌아보며"]);
 
+/** `career` and `education` run along the career timeline; a `project` (hackathon, side project) stays off it and lists after them. */
+export type WorkKind = "career" | "education" | "project";
+const WORK_KINDS: WorkKind[] = ["career", "education", "project"];
+
 /** One company (or client engagement); each `##` heading in the body is a project, except a closing "돌아보며". */
 export type Work = {
   slug: string;
+  kind: WorkKind;
   company: string;
   companyEn?: string;
   role: string;
@@ -49,6 +54,7 @@ function readWorks(): Work[] {
       const list = (v: unknown) => (Array.isArray(v) ? v.map(String) : []);
       return {
         slug: file.replace(/\.md$/, ""),
+        kind: WORK_KINDS.includes(data.kind) ? data.kind : "career",
         company: String(data.company ?? file),
         companyEn: data.companyEn ? String(data.companyEn) : undefined,
         role: String(data.role ?? ""),
@@ -68,7 +74,7 @@ function readWorks(): Work[] {
       };
     })
     .filter((w): w is Work => !!w)
-    .sort((a, b) => b.start.localeCompare(a.start));
+    .sort((a, b) => Number(a.kind === "project") - Number(b.kind === "project") || b.start.localeCompare(a.start));
 }
 
 function readProjects(markdown: string): Project[] {
@@ -96,6 +102,9 @@ export function monthSpan(start: string, end: string): number {
   const [ey, em] = end.split("-").map(Number);
   return Math.max(1, (ey - sy) * 12 + (em - sm) + 1);
 }
+
+/** Works that belong on the career timeline, i.e. everything except standalone projects. */
+export const onTimeline = (w: Work) => w.kind !== "project";
 
 export function getWork(slug: string): Work | undefined {
   return getAllWorks().find((w) => w.slug === decodeURIComponent(slug));

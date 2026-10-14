@@ -63,6 +63,7 @@ source: til               # til | notion | mixed
 
 ```md
 ---
+kind: "career"          # career(기본) | education | project — project는 타임라인에서 빠지고 경력 뒤에 나옵니다
 company: "회사명"
 companyEn: "Company"
 role: "직무 · 직급"

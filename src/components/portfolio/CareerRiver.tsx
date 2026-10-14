@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { monthSpan, type Work } from "@/lib/portfolio";
+import { monthSpan, onTimeline, type Work } from "@/lib/portfolio";
 
 /**
  * Every company on one shared time axis, each bar as long as the time spent there.
  * Older stretches are paler and the current one carries the full accent, so the river runs toward now.
  */
 export default function CareerRiver({ works }: { works: Work[] }) {
-  const rows = [...works].sort((a, b) => a.start.localeCompare(b.start));
+  const rows = works.filter(onTimeline).sort((a, b) => a.start.localeCompare(b.start));
   if (rows.length === 0) return null;
   const origin = rows[0].start;
   const total = monthSpan(origin, rows.reduce((m, w) => (w.end > m ? w.end : m), rows[0].end));

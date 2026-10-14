@@ -6,9 +6,15 @@ import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
 import Toc, { MobileToc } from "@/components/Toc";
 import { extractToc } from "@/lib/markdown";
-import { getAllWorks, getWork } from "@/lib/portfolio";
+import { getAllWorks, getWork, type WorkKind } from "@/lib/portfolio";
 
 export const dynamicParams = false;
+
+const LABELS: Record<WorkKind, { location: string; about: string }> = {
+  career: { location: "근무 형태", about: "회사" },
+  education: { location: "장소", about: "과정" },
+  project: { location: "장소", about: "행사" },
+};
 
 export function generateStaticParams() {
   return getAllWorks().map((w) => ({ slug: w.slug }));
@@ -48,13 +54,13 @@ export default async function WorkPage({ params }: PageProps<"/portfolio/[slug]"
                 </div>
                 {work.location && (
                   <div>
-                    <dt className="text-muted">근무 형태</dt>
+                    <dt className="text-muted">{LABELS[work.kind].location}</dt>
                     <dd className="mt-0.5 text-fg">{work.location}</dd>
                   </div>
                 )}
                 {work.about && (
                   <div>
-                    <dt className="text-muted">회사</dt>
+                    <dt className="text-muted">{LABELS[work.kind].about}</dt>
                     <dd className="mt-0.5 leading-relaxed text-fg">{work.about}</dd>
                   </div>
                 )}
