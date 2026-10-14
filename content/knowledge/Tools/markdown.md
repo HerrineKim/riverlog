@@ -1,10 +1,14 @@
 ---
 title: "Markdown 문법"
 concept: "Markdown"
-summary: "간단한 기호만으로 제목·목록·코드·링크·표 등을 표현하는 경량 마크업 언어의 기본 문법."
+summary: "간단한 기호만으로 제목·목록·코드·링크·표 등을 표현하는 경량 마크업 언어의 기본 문법과 Mermaid 다이어그램, markdownlint."
 tags: ["markdown", "writing", "documentation"]
 source: mixed
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/85df6351e0bd4b0c88c07431df7515df"]
 ---
+
+> 「Mermaid」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「노션에서 다이어그램 만들기」를 바탕으로 보강했습니다.
 
 Markdown은 `#`, `-`, `*` 같은 간단한 기호로 문서 구조를 표현하는 **경량 마크업 언어**입니다. README, TIL, 블로그, 기술 문서 대부분이 Markdown으로 쓰이고, 결국 HTML로 변환되어 보입니다.
 
@@ -87,6 +91,28 @@ for i in range(5):
 | `~~취소선~~` | ~~취소선~~ |
 | `---` 또는 `***` (한 줄 단독) | 수평선 |
 
+## 코드로 그리는 다이어그램: Mermaid
+
+**Mermaid**는 텍스트 문법으로 순서도·시퀀스 다이어그램·간트 차트 등을 그리는 도구다. 코드 블록의 언어를 `mermaid`로 지정하면 GitHub, GitLab, Notion, Obsidian이 블록을 그림으로 바꿔 보여 준다. 그림 파일과 달리 텍스트라서 diff로 변경을 추적하고 고치기 쉽다.
+
+```text
+graph TD
+    A(기상) --> B((샤워))
+    B --> C{출근할까?}
+    C -.->|Yes| D[나갈 준비]
+    C -.->|No| E[다시 잠]
+```
+
+| 문법 | 뜻 |
+| --- | --- |
+| `graph TD` / `graph LR` | 위→아래 / 왼쪽→오른쪽 방향의 순서도 (`flowchart`도 같다) |
+| `A[글]`, `A(글)`, `A{글}`, `A((글))` | 사각형, 둥근 사각형, 마름모(조건), 원 노드 |
+| `-->`, `---`, `-.->` | 화살표, 선, 점선 화살표 |
+| `-->|글|` | 화살표에 이름 붙이기 |
+| `%% 주석` | 주석 |
+
+`sequenceDiagram`, `classDiagram`, `erDiagram`, `gantt` 같은 다른 다이어그램 종류도 있다. [Mermaid Live Editor](https://mermaid.live)에서 미리 보며 작성할 수 있다.
+
 ## 문법 검사: markdownlint
 
 Markdown은 문법이 틀려도 에러 없이 그냥 이상하게 렌더링될 뿐이라, 실수를 알아채기 어렵다. **markdownlint**(VS Code 확장, CLI)를 쓰면 다음을 얻을 수 있다.
@@ -96,3 +122,5 @@ Markdown은 문법이 틀려도 에러 없이 그냥 이상하게 렌더링될 �
 3. 함께 쓰면 좋은 에디터 확장(Markdown All in One 등)은 단축키, 표 자동 정렬, 이미지·링크 경로 자동 완성 같은 편의 기능을 더해 준다.
 
 규칙은 프로젝트 루트의 `.markdownlint.json`으로 켜고 끈다.
+
+관련 노트: [[latex|LaTeX 시작하기]], [[vscode|VS Code 설정과 활용]]

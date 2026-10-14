@@ -4,11 +4,12 @@ concept: "Git Undo"
 summary: "reset·revert로 커밋을 되돌리고, rebase·cherry-pick으로 이력을 옮기며, 진행 중인 merge·rebase를 --abort로 취소하는 방법. 공유된 이력이면 revert, 내 로컬 이력이면 reset이 기본이다."
 tags: ["git", "version-control", "cli", "collaboration"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/61", "https://riverkim.kr/107", "https://riverkim.kr/305"]
+date: "2026-10-14"
+sources: ["https://riverkim.kr/61", "https://riverkim.kr/107", "https://riverkim.kr/305", "https://80000coding.notion.site/bf2a95caa3a84a98a6878270c98268bb", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository"]
 ---
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
+> 「이미 푸시한 이력에서 지워야 할 때」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「깃허브에서 잘못 올린 PR 완전히 삭제하기 (2) - 커밋」, 「GitHub 이메일 교체 시 잔디가 사라지는 현상」을 바탕으로 보강했습니다.
 
 Git을 쓰다 보면 커밋을 되돌리거나, 다른 브랜치의 이력을 내 브랜치로 옮겨야 할 때가 생긴다. 기본 흐름(`add` → `commit` → `push`)은 [[git-basics|Git 기본 명령과 파일 상태]]와 [[remote-github|원격 저장소와 GitHub]]에 있고, 이 노트는 **이미 만든 이력을 고치는 명령**만 모았다.
 
@@ -78,11 +79,41 @@ git rebase --abort   # rebase 시작 전으로
 
 명령을 치기 전 상태로 완전히 돌아간다. 이미 merge·rebase를 끝내고 push까지 했다면 abort로는 되돌릴 수 없고, reset이나 revert를 써야 한다.
 
+## 이미 푸시한 이력에서 지워야 할 때
+
+### 민감 정보(토큰·비밀번호)를 푸시했다면
+
+**가장 먼저 그 비밀 값을 폐기하고 새로 발급한다.** 공개 저장소에 올라간 순간 이미 수집됐다고 가정해야 하고, 이력에서 지우는 일은 그다음이다. 키를 교체할 수 있다면 이력 정리 없이 교체만으로 끝내도 된다.
+
+이력에서도 없애야 한다면 순서는 다음과 같다.
+
+1. `git filter-repo`로 해당 파일이나 문자열을 모든 커밋에서 지운다(`--invert-paths --path <파일>`, `--replace-text`). 과거의 `git filter-branch`는 느리고 실수하기 쉬워 공식 문서도 filter-repo를 권한다.
+2. 모든 브랜치·태그를 force push한다.
+3. 그래도 GitHub에는 흔적이 남는다. **커밋 해시 URL로 직접 접근**하면 브랜치에서 떨어진 커밋도 열리고, 그 커밋을 포함한 PR(닫힌 PR 포함)에서도 보인다. 이 캐시된 화면과 PR 참조는 저장소 주인이 지울 수 없어서 [GitHub Support](https://support.github.com/request)에 저장소 이름, 영향받은 PR 수, 처음 바뀐 커밋을 알려 제거를 요청한다. Support는 키 교체로 위험을 해소할 수 없는 경우에만 처리해 준다.
+4. 다른 사람의 clone과 fork는 지울 수 없다. 협업자에게 새로 clone하라고 안내한다.
+
+### 커밋 작성자 이름·이메일 일괄 변경
+
+잘못된 이메일로 커밋해 GitHub 기여 그래프에 집계되지 않을 때처럼 작성자를 바꿔야 하면 `.mailmap` 파일에 대응을 적고 filter-repo로 이력 전체에 적용한다.
+
+```bash
+# .mailmap — "새 이름 <새 이메일> <옛 이메일>"
+New Name <new@example.com> <old@example.com>
+```
+
+```bash
+git filter-repo --mailmap .mailmap
+git push --force origin main
+```
+
+filter-repo는 안전장치로 실행 뒤 `origin` 원격을 지우므로 `git remote add`로 다시 등록하고 push한다. 모든 커밋 해시가 바뀌므로 공유 저장소라면 팀과 먼저 맞춘다.
+
 ## 정리
 
 - 공유된 이력은 **revert**, 나만 가진 이력은 **reset**.
 - reset 옵션은 변경 내용을 staged(`--soft`)·unstaged(`--mixed`)로 남기거나 버린다(`--hard`).
 - rebase는 이력을 깔끔하게 하지만 커밋을 새로 만든다. force push가 따라온다.
+- 비밀 값을 푸시했으면 이력 정리보다 **키 교체가 먼저**다. GitHub의 캐시·PR 흔적은 Support에 요청해야 지워진다.
 - 꼬였으면 `--abort`로 처음부터. 그래도 가장 확실한 백업은 자주 commit·push 해 두는 것이다.
 
 ## 참고 자료

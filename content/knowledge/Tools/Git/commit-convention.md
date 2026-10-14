@@ -5,10 +5,11 @@ summary: "좋은 커밋 메시지의 7가지 규칙(빈 줄, 50/72자, 명령문
 tags: ["git", "collaboration", "convention", "automation"]
 source: notion
 date: "2026-10-14"
-sources: ["https://meetup.nhncloud.com/posts/106", "https://cbea.ms/git-commit/", "https://www.conventionalcommits.org/ko/v1.0.0/", "https://commitlint.js.org/"]
+sources: ["https://meetup.nhncloud.com/posts/106", "https://cbea.ms/git-commit/", "https://www.conventionalcommits.org/ko/v1.0.0/", "https://commitlint.js.org/", "https://80000coding.notion.site/00bcbffd6fbb4be481abef0925efd267", "https://80000coding.notion.site/eed9ae12cbf24ee58256821ca5c5947c", "https://pre-commit.com/"]
 ---
 
 > NHN Cloud Meetup의 「[좋은 git 커밋 메시지를 작성하기 위한 7가지 약속](https://meetup.nhncloud.com/posts/106)」(2017.03)을 바탕으로 원칙 부분을 보강한 노트입니다. 원 자료는 Chris Beams의 「[How to Write a Git Commit Message](https://cbea.ms/git-commit/)」입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Git 커밋 메시지 컨벤션」, 「Git 커밋할 때 코드 스타일 검사하기」도 함께 반영했습니다.
 
 커밋 메시지는 나중에 변경 이력을 찾는 사람이 읽는 **문서**다. 팀원마다 형식이 다르면 이력을 훑어보기 어렵기 때문에, 형식을 정하고(컨벤션) 커밋할 때 자동으로 검사하게 만든다.
 
@@ -148,11 +149,33 @@ export default { extends: ['@commitlint/config-conventional'] }
 
 팀 고유 type(이모지 등)을 쓴다면 `rules`에서 `type-enum`이나 정규식 파서를 직접 지정한다.
 
+### Git hook과 언어 무관한 `pre-commit` 프레임워크
+
+Git hook은 저장소의 `.git/hooks/`에 이벤트 이름(`pre-commit`, `commit-msg`, `pre-push` 등)으로 둔 실행 파일이다. `git init`하면 `*.sample` 예제가 들어 있다. 다만 `.git/` 안은 커밋되지 않아 팀원에게 그대로 공유되지 않으므로, 설정 파일을 저장소에 두고 hook을 설치해 주는 도구를 쓴다. Node 프로젝트는 husky, 언어와 무관하게는 Python으로 만든 **pre-commit**이 대표적이다.
+
+```yaml
+# .pre-commit-config.yaml — C/C++ 코드를 clang-format으로 검사
+repos:
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v21.1.0          # 고정된 태그. pre-commit autoupdate로 갱신
+    hooks:
+      - id: clang-format
+        args: [--style=Google]
+```
+
+```bash
+pip install pre-commit      # 또는 brew install pre-commit
+pre-commit install          # .git/hooks/pre-commit 설치
+pre-commit run --all-files  # 전체 파일에 한 번 실행
+```
+
+이후 커밋할 때마다 스테이징된 파일에 hook이 돌고, 포매팅이 어긋난 파일이 있으면 고쳐 놓고 커밋을 실패시킨다. 고쳐진 파일을 다시 `add`해 커밋하면 된다. 설정 파일은 팀이 같은 검사를 받도록 **저장소에 커밋하는 것이 원칙**이다. 로컬 hook은 `--no-verify`로 건너뛸 수 있으므로, 반드시 지켜야 할 검사는 CI에서도 한 번 더 돌린다.
+
 ## 핵심 정리
 
 - 형식: `type(scope): subject` + 빈 줄 + body + 빈 줄 + footer.
 - 제목은 50자 안팎의 명령문, 본문은 72자 줄 바꿈으로 무엇·왜를 쓴다.
 - 이슈는 `Closes #번호`로 닫는다(기본 브랜치에 들어갈 때 동작).
-- 커밋 템플릿으로 안내하고, husky + commitlint로 강제한다.
+- 커밋 템플릿으로 안내하고, husky + commitlint(또는 pre-commit)로 강제한다. 필수 검사는 CI에서도 돌린다.
 
 관련 노트: [[remote-github|원격 저장소와 GitHub]], [[github-collaboration|GitHub 협업 저장소 설정]], [[principles|코드 리뷰 원칙]], [[ci-cd|CI/CD]]

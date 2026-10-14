@@ -4,8 +4,11 @@ concept: "Git Basics"
 summary: "저장소를 만들고 add·commit으로 버전을 기록하며, 파일이 untracked·modified·staged·committed 상태를 오가는 흐름. 커밋을 식별하는 해시도 함께 다룬다."
 tags: ["git", "version-control", "cli"]
 source: til
-date: "2026-10-13"
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/2ea16c6dc08341c1a13339e30fe8ac49"]
 ---
+
+> 「git add -p」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「git 변경사항 잘게 쪼개서 add 하기」를 바탕으로 보강했습니다.
 
 Git으로 버전을 남기는 과정은 결국 **"작업한 파일을 골라서(add) 스냅숏으로 기록(commit)"** 하는 일의 반복입니다. 이 흐름과 각 단계에서 파일이 어떤 상태인지 알면 대부분의 `git status` 메시지를 읽을 수 있습니다.
 
@@ -54,6 +57,20 @@ $ git add a.txt b.txt      # 여러 파일
 $ git add my_folder/       # 폴더 전체
 $ git add .                # 현재 디렉터리의 모든 변경
 ```
+
+#### 파일의 일부만 고르기: `git add -p`
+
+한 파일에 성격이 다른 수정 두 개가 섞여 있으면 커밋을 나누기 어렵다. `-p`(`--patch`)를 붙이면 변경을 **헝크(hunk)** 라는 덩어리 단위로 하나씩 보여 주며 스테이징할지 묻는다.
+
+| 입력 | 동작 |
+| --- | --- |
+| `y` / `n` | 이 헝크를 스테이징 / 건너뛰기 |
+| `s` | 헝크가 크면 더 작게 쪼개기 |
+| `e` | 헝크를 편집기로 열어 줄 단위로 고르기 |
+| `q` | 나머지는 건너뛰고 끝내기 |
+| `?` | 전체 도움말 |
+
+`git restore -p`(되돌리기), `git reset -p`(스테이징 취소), `git stash -p`도 같은 방식으로 일부만 고른다.
 
 ### 커밋: `git commit`
 
@@ -116,4 +133,4 @@ $ rm -rf dir        # 폴더와 하위 파일 모두 삭제 (주의)
 - `git status`의 세 구역(staged / not staged / untracked)은 Staging Area · Working Directory · 미추적 파일에 대응한다.
 - `.git` 폴더가 곧 저장소다. 지우면 이력이 사라진다.
 
-관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]]
+관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]], [[git-internals|Git의 내부 구조]]

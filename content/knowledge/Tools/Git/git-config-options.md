@@ -4,11 +4,12 @@ concept: "Git Config"
 summary: "개발자들이 실제로 켜 두는 git config 옵션을 pull·merge·rebase·diff·전역 설정별로 묶었다. 대부분 기본값의 불편함을 고치는 한 줄 설정이다."
 tags: ["git", "version-control", "config", "tools"]
 source: other
-date: "2026-10-13"
-sources: ["https://news.hada.io/topic?id=13405", "https://jvns.ca/blog/2024/02/16/popular-git-config-options/"]
+date: "2026-10-14"
+sources: ["https://news.hada.io/topic?id=13405", "https://jvns.ca/blog/2024/02/16/popular-git-config-options/", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://80000coding.notion.site/19c283f564a6492d98945e4558a990d7"]
 ---
 
 > GeekNews의 「[인기 있는 Git 설정 옵션들](https://news.hada.io/topic?id=13405)」(2024.02)을 바탕으로 재구성한 노트입니다. 원 자료는 Julia Evans의 「[Popular git config options](https://jvns.ca/blog/2024/02/16/popular-git-config-options/)」입니다.
+> 「커밋 작성자와 GitHub 기여 그래프」, 「alias」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「GitHub 이메일 교체 시 잔디가 사라지는 현상」, 「git - 사소한 꿀팁」을 바탕으로 보강했습니다.
 
 ## Git 설정이란
 
@@ -83,6 +84,27 @@ git rebase -i main           # autosquash가 켜져 있으면 자동으로 제�
 [includeIf "gitdir:~/work/"]
   path = ~/.gitconfig-work
 ```
+
+### 커밋 작성자와 GitHub 기여 그래프
+
+커밋에 찍히는 이름·이메일은 `user.name`, `user.email`에서 온다. `--global`은 `~/.gitconfig`에, 옵션 없이 저장소 안에서 실행하면 그 저장소의 `.git/config`에 저장되고 저장소 설정이 우선한다. 현재 값은 `git config --list --show-origin`으로 어느 파일에서 왔는지까지 본다.
+
+GitHub 프로필의 기여 그래프(잔디)는 **커밋 작성자 이메일이 내 GitHub 계정에 등록된 이메일과 같을 때만** 집계된다. 그래서 계정에서 옛 이메일을 지우면 그 이메일로 쓴 과거 커밋이 그래프에서 사라진다.
+
+- 이메일을 바꿀 때는 옛 이메일을 지우지 말고 **보조 이메일로 남겨 둔다.** 가장 안전하다.
+- 주소를 공개하고 싶지 않으면 GitHub가 주는 `아이디@users.noreply.github.com` 주소를 `user.email`로 쓴다.
+- 이미 지웠다면 과거 커밋의 작성자를 다시 써야 한다. 이력 재작성이므로 [[git-undo-and-rewrite|되돌리기와 이력 다루기]]의 `git filter-repo --mailmap`을 참고한다.
+
+### 명령에 별명 붙이기: alias
+
+길게 치는 명령은 `alias.<이름>`으로 줄인다. `~/.gitconfig`의 `[alias]` 절에 직접 적어도 된다.
+
+```bash
+git config --global alias.st status
+git config --global alias.l "log --graph --abbrev-commit --pretty=format:'%C(red)%h%C(reset) -%C(yellow)%d%C(reset) %s %C(green)(%cr) %C(bold blue)<%an>%C(reset)'"
+```
+
+이제 `git l`이 브랜치 그래프와 해시·참조·메시지·상대 시각·작성자를 한 줄씩 색을 입혀 보여 준다.
 
 서브모듈을 쓰면 `submodule.recurse true`, `status.submoduleSummary true`, `diff.submodule log`도 자주 언급된다.
 
