@@ -59,6 +59,8 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 브라우저 ── Cookie: sessionid=abc ──▶ 서버: id로 세션 조회 → 사용자 식별
 ```
 
+세션 저장소 확장(Redis), 세션 고정 공격, 토큰(JWT) 방식과의 비교는 [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]에 있다.
+
 ### 예: Django의 세션
 
 - 세션은 미들웨어로 구현된다. `SessionMiddleware`가 요청 전반의 세션을 관리하고, `AuthenticationMiddleware`가 세션을 이용해 사용자를 요청(`request.user`)에 연결한다.
