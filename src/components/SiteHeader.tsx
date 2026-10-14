@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BugReport from "./BugReport";
 import NavLinks from "./NavLinks";
 import ThemeToggle from "./ThemeToggle";
 
@@ -22,6 +23,7 @@ export default function SiteHeader() {
         </Link>
         <div className="flex min-w-0 items-center gap-1 sm:gap-3">
           <NavLinks />
+          <BugReport />
           <ThemeToggle />
         </div>
       </div>
