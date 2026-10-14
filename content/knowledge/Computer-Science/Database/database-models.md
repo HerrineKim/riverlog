@@ -1,13 +1,14 @@
 ---
 title: "데이터베이스 모델: RDB, NoSQL, NewSQL"
 concept: "Database Model"
-summary: "관계형 DB의 특징과 한계, NoSQL 네 가지 유형, 둘의 장점을 합치려는 NewSQL을 비교."
-tags: ["database", "rdbms", "nosql", "newsql"]
+summary: "관계형 DB의 특징과 한계, NoSQL 네 가지 유형, 둘의 장점을 합치려는 NewSQL을 비교하고, 프로젝트에서 무엇을 고를지와 PostgreSQL·MySQL의 차이를 정리."
+tags: ["database", "rdbms", "nosql", "newsql", "sql", "mongodb"]
 source: notion
 date: "2026-10-13"
+sources: ["https://riverkim.kr/175"]
 ---
 
-데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
+데이터베이스는 데이터의 집합이고, 이를 저장·관리하는 소프트웨어가 **DBMS(Database Management System)**다. 데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
 
 ## 한눈에 비교
 
@@ -33,9 +34,21 @@ date: "2026-10-13"
 대표 제품
 
 - **MySQL**: 가장 널리 쓰이는 오픈소스 RDBMS 중 하나, 가볍고 다중 사용자 환경에 강함
-- **PostgreSQL**: 표준 준수와 확장성이 뛰어난 오픈소스 RDBMS
+- **PostgreSQL**: 표준 준수와 확장성이 뛰어난 오픈소스 RDBMS (아래 절 참고)
 - **Oracle**: 대기업·금융권에서 많이 쓰는 상용 RDBMS
 - **Microsoft SQL Server**
+
+### PostgreSQL과 MySQL
+
+PostgreSQL은 사용자 정의 타입, 테이블 상속, 배열·JSON 컬럼 같은 객체 지향 기능을 갖춰 **객체관계형 DBMS(ORDBMS)**로 분류된다. 다만 지금은 주요 RDBMS 대부분이 이런 기능을 받아들여, ORDBMS와 RDBMS를 나누는 의미는 작다. 로고의 코끼리 이름은 Slonik이다.
+
+| 구분 | PostgreSQL | MySQL |
+| --- | --- | --- |
+| SQL 표준 | 충실하게 따른다 | 상대적으로 느슨하다 |
+| 강점 | 복잡한 쿼리, 확장 기능(JSONB, 전문 검색 등) | 단순한 CRUD가 가볍고 빠르다 |
+| 쓰임 | Stack Overflow 개발자 설문에서 2023년부터 사용률 1위. Supabase·Neon 같은 관리형 서비스의 기본 엔진 | 국내 웹 서비스에서 오래 쓰여 레거시가 많다 |
+
+버전이 오르며 두 DB의 기능 격차는 많이 줄었고, 기본 기능이 비슷해 서로 옮기기도 어렵지 않다. GUI 클라이언트로 접속하는 방법은 [[dbeaver|DBeaver]]에 있다.
 
 ## NoSQL
 
@@ -74,4 +87,23 @@ RDB의 **ACID와 SQL**을 유지하면서 NoSQL 수준의 **수평 확장성과 
 - 복제(replication)와 장애 복구(crash recovery)
 - 예: Google Spanner, CockroachDB, TiDB, YugabyteDB. "분산 SQL(Distributed SQL)"이라고도 부른다. 초기 대표 제품이던 NuoDB는 2020년 다쏘시스템에 인수되었다.
 
-실제 프로젝트에서 RDB와 NoSQL 중 무엇을 고를지는 [[rdbms-vs-nosql|RDBMS와 NoSQL]], 문서형 DB 사용법은 [[mongodb|MongoDB]]를 참고한다.
+## 무엇을 고를까
+
+판단 기준은 **데이터가 테이블에 담기는 쪽이 유리한지, 문서에 담기는 쪽이 유리한지**다.
+
+| 상황 | 유리한 쪽 |
+| --- | --- |
+| 데이터 간 관계가 많고 정합성이 중요하다 (결제, 재고) | RDB |
+| 스키마가 자주 바뀌거나 비정형 데이터가 많다 | 문서형 NoSQL (MongoDB 등) |
+| 특별한 요구가 없는 일반 서비스 (쇼핑몰, 블로그) | 어느 쪽으로도 만들 수 있다 |
+
+흔히 "MongoDB는 쉽다"고 하는데, 이는 쿼리 문법이 JavaScript 객체와 닮아 입문 장벽이 낮다는 뜻이다. 초보용·숙련자용을 가르는 기준은 아니다.
+
+## 애플리케이션에서 접근하기: ORM과 ODM
+
+애플리케이션 코드는 보통 DB를 직접 다루지 않고 매핑 도구를 거친다.
+
+- **ORM**(Object-Relational Mapping): 테이블 행을 객체로 매핑한다. 예: Django ORM, TypeORM, Prisma
+- **ODM**(Object-Document Mapping): 문서를 객체로 매핑한다. 예: Mongoose
+
+관련 노트: [[sql-basics|SQL 기초]], [[mongodb|MongoDB 시작하기와 CRUD]], [[transaction|트랜잭션과 회복]], [[normalization|정규화와 반정규화]]

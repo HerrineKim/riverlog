@@ -58,6 +58,7 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/ai-data/chatgpt-prompt-cheat-sheet": "/knowledge/dictionary/ai-data/prompt-cheat-sheet",
   "/knowledge/dictionary/frontend/javascript/date-object": "/knowledge/dictionary/frontend/javascript/date-libraries",
   "/knowledge/dictionary/life-and-learning/life/marvel-watch-order": "/knowledge/dictionary/life-and-learning",
+  "/knowledge/dictionary/backend/database/rdbms-vs-nosql": "/knowledge/dictionary/computer-science/database/database-models",
   "/books/computer-architecture": "/books/computer-architecture-book",
 };
 

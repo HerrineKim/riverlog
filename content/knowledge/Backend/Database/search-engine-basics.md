@@ -157,4 +157,4 @@ IDF(qᵢ) = ln(1 + (N − n(qᵢ) + 0.5) / (n(qᵢ) + 0.5))
 - 랭킹의 기본은 BM25다. TF-IDF에 tf 포화와 문서 길이 보정을 더한 것이다.
 - 원리를 알고, 구현은 Elasticsearch·OpenSearch에 맡긴다.
 
-관련 노트: [[text-similarity|문자열·문서 유사도]], [[seo-basics|SEO 기초]], [[rdbms-vs-nosql|RDBMS와 NoSQL]], [[sql-basics|SQL 기초]]
+관련 노트: [[text-similarity|문자열·문서 유사도]], [[seo-basics|SEO 기초]], [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[sql-basics|SQL 기초]]
