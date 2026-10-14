@@ -48,7 +48,7 @@ sources: ["https://80000coding.notion.site/497dc9bfb79549dba4e2946ad868224b", "h
 | Engine | 대부분 C++ | 프레임을 실제 픽셀로 그리는 렌더러, Dart 코드를 실행하는 런타임, 텍스트 배치, 파일·네트워크 I/O, 접근성, 플러그인 통신 |
 | Embedder | 플랫폼 언어 | OS와 엔진 사이의 접착제. 그릴 화면(surface)을 받아 오고, 입력 이벤트·접근성·메시지 루프를 OS와 주고받는다 |
 
-렌더러는 오랫동안 **Skia**였고, 지금은 iOS와 Android에서 **Impeller**가 기본이다. Impeller는 셰이더를 빌드 때 미리 컴파일해 첫 애니메이션에서 생기던 버벅임(shader compilation jank)을 없앴다.
+렌더러는 오랫동안 **Skia**였고, 지금은 iOS·Android·macOS·Windows·Linux에서 **Impeller**가 기본이다. iOS는 Impeller만 지원하고, Android는 API 29 이상에서 기본이며 그보다 낮거나 Vulkan이 없는 기기에서는 기존 OpenGL 렌더러로 자동 전환된다. 웹은 아직 Skia로 그린다. Impeller는 셰이더를 빌드 때 미리 컴파일해 첫 애니메이션에서 생기던 버벅임(shader compilation jank)을 없앴다.
 
 ## 프레임워크 라이브러리
 

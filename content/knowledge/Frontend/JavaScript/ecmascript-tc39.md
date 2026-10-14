@@ -1,7 +1,7 @@
 ---
 title: "ECMAScript 표준과 TC39 프로세스"
 concept: "ECMAScript"
-summary: "JavaScript의 표준 ECMA-262를 누가 어떻게 정하는지 정리한다. ECMA International과 TC39, 제안이 Stage 0부터 4까지 올라가 매년 새 판(ES2015, ES2016 …)에 실리는 과정, ES6와 ES2015 같은 이름 규칙, ES2022의 클래스 필드·top-level await·at()·Object.hasOwn부터 ES2025까지의 주요 추가 기능을 다룬다."
+summary: "JavaScript의 표준 ECMA-262를 누가 어떻게 정하는지 정리한다. ECMA International과 TC39, 제안이 Stage 0부터 4까지 올라가 매년 새 판(ES2015, ES2016 …)에 실리는 과정, ES6와 ES2015 같은 이름 규칙, ES2022의 클래스 필드·top-level await·at()·Object.hasOwn부터 ES2026까지의 주요 추가 기능을 다룬다."
 tags: ["javascript", "frontend", "ecmascript", "history"]
 source: other
 date: "2026-10-14"
@@ -70,7 +70,10 @@ ES2015부터 공식 이름은 연도다. ES6·ES8 같은 판 번호는 관용적
 | --- | --- |
 | ES2023 | `findLast`·`findLastIndex`, 원본을 바꾸지 않는 `toSorted`·`toReversed`·`toSpliced`·`with`, 해시뱅(`#!`) 문법 |
 | ES2024 | `Object.groupBy`·`Map.groupBy`, `Promise.withResolvers`, 정규식 `v` 플래그, 크기 조절 가능한 `ArrayBuffer` |
-| ES2025 | 이터레이터 헬퍼(`iterator.map().filter().take()`), `Set`의 합집합·교집합 메서드, JSON 모듈과 import 속성(`with { type: 'json' }`), `RegExp.escape`, `Promise.try` |
+| ES2025 | 이터레이터 헬퍼(`iterator.map().filter().take()`), `Set`의 합집합·교집합 메서드, JSON 모듈과 import 속성(`with { type: 'json' }`), `RegExp.escape`, `Promise.try`, `Float16Array` |
+| ES2026 | `Array.fromAsync`, `Error.isError`, `Math.sumPrecise`, `Uint8Array`의 Base64·hex 변환, 이터레이터 이어 붙이기(`Iterator.concat`), `Map`·`WeakMap`의 `getOrInsert`(Upsert), `JSON.parse` 원문 접근 |
+
+날짜·시간 API **Temporal**과 `using` 선언(Explicit Resource Management)은 Stage 4를 마쳐 ES2027에 실릴 예정이다.
 
 새 기능을 실제 서비스에 쓸 때는 판 번호보다 **브라우저 지원 범위**가 기준이다. MDN의 호환성 표나 Baseline 표시로 대상 브라우저에서 되는지 확인하고, 안 되면 Babel·TypeScript로 변환하거나 폴리필을 넣는다([[responsible-javascript|책임감 있는 자바스크립트]]).
 

@@ -72,7 +72,7 @@ val state by viewModel.uiState.collectAsStateWithLifecycle()
 | `targetSdk` | 앱이 **테스트되고 맞춰진 API 레벨** | OS는 이 값을 보고 새 동작 변경(권한, 백그라운드 제한 등)을 적용할지 정한다. 더 높은 OS에서는 하위 호환 동작으로 실행된다. 생략하면 `minSdk`와 같게 본다 |
 | `compileSdk` | 컴파일에 쓰는 SDK 버전 | 어떤 API를 코드에서 쓸 수 있는지 정할 뿐 런타임 동작은 바꾸지 않는다. 보통 최신으로 둔다 |
 
-관계는 `minSdk ≤ targetSdk ≤ compileSdk`다. `targetSdk`를 올리면 새 OS의 동작 변경이 내 앱에도 적용되므로, 올릴 때마다 해당 버전의 동작 변경 문서를 확인하고 테스트한다. **Google Play는 매년 targetSdk 최소 요구치를 올린다.** 2025년 8월 31일부터 신규 앱과 업데이트는 Android 15(API 35) 이상을 타기팅해야 하며, 최신 기준은 [Play의 타기팅 요구사항 문서](https://developer.android.com/google/play/requirements/target-sdk)에서 확인한다.
+관계는 `minSdk ≤ targetSdk ≤ compileSdk`다. `targetSdk`를 올리면 새 OS의 동작 변경이 내 앱에도 적용되므로, 올릴 때마다 해당 버전의 동작 변경 문서를 확인하고 테스트한다. **Google Play는 매년 targetSdk 최소 요구치를 올린다.** 2026년 8월 31일부터 신규 앱과 업데이트는 Android 16(API 36) 이상을 타기팅해야 하고(Wear OS·Automotive는 API 35, TV·XR은 API 34), 기존 앱도 API 35 미만이면 더 높은 OS의 새 사용자에게 노출되지 않는다. 최신 기준은 [Play의 타기팅 요구사항 문서](https://developer.android.com/google/play/requirements/target-sdk)에서 확인한다.
 
 ## 정리
 
