@@ -5,8 +5,10 @@ summary: "프로세스 상태 전이, CPU burst와 성능 척도, 선점·비선
 tags: ["os", "process", "scheduling", "certificate"]
 source: notion
 date: "2026-10-13"
-sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/206"]
+sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/206", "https://80000coding.notion.site/b271bc9865be47228299a087dc014f3c", "https://80000coding.notion.site/b5ed3d3e0d3048cba1563f9617f7c27e"]
 ---
+
+> 「실제 운영체제의 스케줄러」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「프로세스 스케줄링을 이해해보자」, 「[OS] CPU scheduling algorithm」을 바탕으로 보강했습니다.
 
 여러 프로세스가 하나의 CPU를 나눠 쓰려면 "지금 누구에게 CPU를 줄 것인가"를 정하는 규칙이 필요하다. 이것이 CPU 스케줄링이며, 프로세스의 상태 변화를 이해해야 스케줄링이 언제 일어나는지도 이해할 수 있다. 프로세스의 구조와 PCB, 스레드는 [[process-and-thread|프로세스와 스레드]]에 따로 정리했다.
 
@@ -194,6 +196,20 @@ ready 큐를 여러 줄로 나누고, 프로세스 종류에 따라 줄을 고�
 
 - **Local scheduling**: 사용자 수준 스레드는 커널이 존재를 모르므로, 사용자 프로세스(스레드 라이브러리)가 어느 스레드를 실행할지 정한다.
 - **Global scheduling**: 커널 수준 스레드는 커널이 일반 프로세스처럼 직접 스케줄링한다.
+
+## 실제 운영체제의 스케줄러
+
+교과서 알고리즘은 실제 스케줄러의 재료다. 범용 OS는 여러 아이디어를 섞어 "대화형 작업은 빠르게 응답하고, CPU를 오래 쓰는 작업도 굶기지 않게" 만든다.
+
+| OS | 스케줄러 | 아이디어 |
+| --- | --- | --- |
+| Linux (6.6 이전) | CFS (Completely Fair Scheduler) | 각 작업이 받은 가상 실행 시간(vruntime)을 레드-블랙 트리에 정렬하고, 가장 적게 받은 작업을 먼저 실행. 우선순위(nice)는 시간이 흐르는 속도로 반영 |
+| Linux (6.6~) | EEVDF (Earliest Eligible Virtual Deadline First) | CFS의 공정성에 "가상 마감 시각"을 더해, 짧은 시간 조각을 원하는 지연 민감 작업을 더 빨리 실행 |
+| Linux 실시간 클래스 | `SCHED_FIFO`, `SCHED_RR`, `SCHED_DEADLINE` | 고정 우선순위 FCFS·RR과 EDF. 일반 작업보다 항상 먼저 |
+| Windows, macOS | 다단계 피드백 큐 계열 | 우선순위 큐 여러 개 + 입출력 대기 후·포그라운드 창에 우선순위 가산 |
+
+- I/O 중심 작업은 CPU를 짧게 쓰고 금방 대기 상태로 가므로, MLFQ·CFS 모두에서 자연스럽게 우대된다. 키 입력에 빨리 반응하는 이유다.
+- 여러 작업을 번갈아 실행해 동시에 도는 것처럼 보이게 하는 것이 **병행(concurrency)**, 코어 여러 개에서 실제로 같은 순간에 실행하는 것이 **병렬(parallelism)** 이다.
 
 ## 알고리즘 평가 방법
 

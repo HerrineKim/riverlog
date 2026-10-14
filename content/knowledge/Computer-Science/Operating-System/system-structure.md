@@ -1,10 +1,14 @@
 ---
 title: "컴퓨터 시스템 구조와 인터럽트"
 concept: "Interrupt"
-summary: "모드 비트, 타이머, 장치 제어기, 인터럽트, 시스템 콜, DMA를 통해 운영체제가 하드웨어를 다루는 방식을 정리."
+summary: "모드 비트, 타이머, 장치 제어기, 인터럽트, 시스템 콜, DMA를 통해 운영체제가 하드웨어를 다루는 방식과, 시스템 콜·라이브러리 함수의 차이와 man 페이지 섹션을 정리."
 tags: ["os", "interrupt", "system-call", "dma", "io"]
 source: notion
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/82228175c0df477992b7b23e8afb8f16", "https://80000coding.notion.site/2287b35ba1644ade8d8015559f00fbe8", "https://80000coding.notion.site/99627aac4d8945a8bc45735301b4fb3d"]
 ---
+
+> 「시스템 콜과 라이브러리 함수」·「man 페이지」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「write는 라이브러리 함수가 아니다? 커널과 시스템 콜에 대해」, 「man」, 「[unix] 나만의 manpage 작성하기」를 바탕으로 보강했습니다.
 
 운영체제가 어떻게 하드웨어를 통제하는지 이해하려면 먼저 컴퓨터 시스템의 구성 요소와, 이들이 **인터럽트**로 CPU와 소통하는 방식을 알아야 한다. 현대 운영체제는 "인터럽트에 의해 구동된다"고 할 만큼 인터럽트가 핵심이다.
 
@@ -89,3 +93,46 @@ I/O 장치에 주소를 붙이는 두 방식(격리형 I/O와 메모리 맵 I/O)
 - **커널 함수**: OS의 함수. 호출하는 것이 곧 시스템 콜 (커널 모드)
 
 프로그램은 실행되는 동안 사용자 모드와 커널 모드를 계속 오간다.
+
+### 시스템 콜과 라이브러리 함수
+
+**커널**은 하드웨어를 직접 다룰 수 있는 유일한 프로그램이다. 디스크·네트워크·화면에 무언가를 하려면 프로그램은 커널에 부탁해야 하고, 그 창구가 시스템 콜이다. C에서 `read`, `write`, `open`, `fork`, `execve`, `unlink`는 시스템 콜을 감싼 얇은 함수라 일반 함수처럼 부른다.
+
+| 구분 | 시스템 콜 | 라이브러리 함수 |
+| --- | --- | --- |
+| 실행 위치 | 커널 모드로 전환해 커널 코드 실행 | 사용자 모드, 프로세스 자신의 주소 공간 |
+| 비용 | 모드 전환이 있어 상대적으로 비싸다 | 일반 함수 호출 |
+| 예 | `write`, `read`, `fork`, `mmap` | `printf`(내부에서 `write` 호출), `strlen`(시스템 콜 없음), `malloc`(필요할 때만 `brk`·`mmap`) |
+| 매뉴얼 | `man 2` | `man 3` |
+
+라이브러리 함수는 시스템 콜을 쓸 수도, 안 쓸 수도 있다. `printf`가 매번 `write`를 부르지 않고 버퍼에 모았다가 한 번에 부르는 것처럼, 라이브러리는 시스템 콜 횟수를 줄이는 역할도 한다([[unix-file-io|UNIX 파일 입출력]]). 프로그램이 부르는 시스템 콜은 `strace`(Linux)·`dtruss`(macOS)로 볼 수 있다.
+
+| 범주 | UNIX | Windows |
+| --- | --- | --- |
+| 프로세스 제어 | `fork`, `exec`, `wait`, `exit` | `CreateProcess`, `WaitForSingleObject`, `ExitProcess` |
+| 파일 관리 | `open`, `read`, `write`, `close` | `CreateFile`, `ReadFile`, `WriteFile`, `CloseHandle` |
+| 장치 관리 | `ioctl`, `read`, `write` | `SetConsoleMode`, `ReadConsole`, `WriteConsole` |
+| 정보 관리 | `getpid`, `alarm`, `sleep` | `GetCurrentProcessId`, `SetTimer`, `Sleep` |
+| 통신 | `pipe`, `shm_open`, `mmap` | `CreatePipe`, `CreateFileMapping`, `MapViewOfFile` |
+| 보호 | `chmod`, `umask`, `chown` | `SetFileSecurity`, `SetSecurityDescriptorGroup` |
+
+### man 페이지
+
+UNIX 계열의 매뉴얼은 섹션으로 나뉜다. 이름이 같은 항목이 여러 섹션에 있을 수 있어서, `man printf`는 셸 명령(섹션 1)을 보여 주고 C 함수는 `man 3 printf`로 봐야 한다. 시스템 콜 `write`는 `man 2 write`다.
+
+| 섹션 | 내용 | 예 |
+| --- | --- | --- |
+| 1 | 사용자 명령 | `ls`, `chmod` |
+| 2 | 시스템 콜 | `open`, `fork` |
+| 3 | 라이브러리 함수 | `printf`, `strlen` |
+| 4 | 장치 파일 (`/dev`) | `null`, `tty` |
+| 5 | 설정 파일 형식 | `passwd`, `crontab` |
+| 6 | 게임 | |
+| 7 | 개요·규약 | `signal`, `ascii`, `regex` |
+| 8 | 관리자 명령 | `mount`, `useradd` |
+
+- 문서는 NAME, SYNOPSIS(원형·헤더), DESCRIPTION, RETURN VALUE, ERRORS, EXAMPLES, SEE ALSO 순으로 구성된다. 함수를 쓸 때는 RETURN VALUE와 ERRORS를 꼭 확인한다.
+- `man -k 키워드`(= `apropos`)로 검색하고, `man -f 이름`(= `whatis`)으로 어느 섹션에 있는지 본다. 같은 이름의 섹션을 찾는 순서는 시스템마다 설정이 다르다.
+- 매뉴얼 파일은 `/usr/share/man/man<섹션>/`에 roff 형식을 gzip으로 압축해 둔다. 직접 쓴 페이지는 `man -l 파일`로 바로 볼 수 있다. 문법은 `man 7 groff_man`에 있다(`.TH` 제목, `.SH` 절, `.B` 굵게).
+
+관련 노트: [[os-overview|운영체제 개요]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[unix-signals|UNIX 시그널]], [[time-and-timers|운영체제의 시간과 타이머]]

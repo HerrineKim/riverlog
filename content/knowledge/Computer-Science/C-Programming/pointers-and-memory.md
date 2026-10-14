@@ -4,6 +4,7 @@ concept: "Pointer"
 summary: "C에서 주소와 포인터로 메모리를 다루는 법: 문자열의 실체, 동적 할당과 해제, 스택과 힙."
 tags: ["c", "memory", "pointer", "cs50"]
 source: notion
+date: "2026-10-14"
 ---
 
 C의 변수는 메모리 어딘가에 놓인 바이트 묶음이고, **포인터**는 그 위치(주소)를 담는 변수다. 문자열 비교가 왜 실패하는지, swap 함수가 왜 동작하지 않는지 같은 C의 "이상한" 현상은 대부분 주소와 값을 구분하면 풀린다.
@@ -201,3 +202,5 @@ int main(void)
 - 문자열은 `char *`이므로 `==`는 주소 비교, 내용 비교는 `strcmp`, 복사는 `malloc` + `strcpy`.
 - `malloc`한 메모리는 반드시 `free`, 배열 범위 밖 접근은 버퍼 오버플로우.
 - 함수에서 원본을 바꾸려면 포인터를 넘긴다.
+
+관련 노트: [[c-pointer-pitfalls|C 포인터의 함정]], [[c-debugging-tools|C 디버깅 도구]]

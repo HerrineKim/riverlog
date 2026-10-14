@@ -4,9 +4,11 @@ concept: "HTTP"
 summary: "웹 통신 규약 HTTP의 요청·응답 메시지 형식, 메서드, 상태 코드, 헤더 종류, URI·URL·URN의 차이와 HTTP/1.1·2·3 비교."
 tags: ["network", "http", "web", "application-layer"]
 source: notion
-sources: ["https://app.notion.com/p/49200e54fe6d461ab1ebc5180b35337b"]
-date: "2026-10-13"
+sources: ["https://app.notion.com/p/49200e54fe6d461ab1ebc5180b35337b", "https://80000coding.notion.site/d0f4fab2a1ca49c8ad36a81fd2329fcb"]
+date: "2026-10-14"
 ---
+
+> 줄 끝 CRLF 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「나만 몰랐던 이야기 - \r\n편」을 바탕으로 보강했습니다.
 
 HTTP(HyperText Transfer Protocol)는 웹 통신을 위한 응용 계층 프로토콜이다. 이름은 HTML 문서 전송에서 왔지만, 이미지·JSON 등 웹 표준으로 정의된 여러 종류의 데이터를 주고받을 수 있다. 동작은 단순하게 **"요청하면 응답한다"**. 브라우저·프론트엔드·백엔드가 이 규약 위에서 어떻게 대화하는지는 [[http-web-architecture|웹 앱의 요청·응답 구조]]에 정리했다.
 
@@ -26,6 +28,17 @@ Accept: text/html
 - **Headers**: 요청에 대한 부가 정보
 - **빈 줄**: 헤더의 끝 표시
 - **Body**: 서버로 보낼 데이터
+
+### 줄 끝은 CRLF
+
+HTTP/1.1의 시작줄과 헤더는 각 줄을 **`\r\n`(CRLF)** 으로 끝내고, 헤더의 끝은 빈 줄 `\r\n\r\n`으로 표시한다. SMTP 같은 오래된 텍스트 프로토콜도 같다.
+
+| 문자 | 이름 | 타자기 시절의 동작 |
+| --- | --- | --- |
+| `\r` (0x0D) | CR, Carriage Return | 활자 위치(캐리지)를 줄 맨 앞으로 되돌림 |
+| `\n` (0x0A) | LF, Line Feed | 종이를 한 줄 올림 |
+
+타자기에서 "다음 줄 첫 칸"은 두 동작을 함께 해야 했다. 그래서 터미널에서 `printf("aa\rbb\n")`을 하면 `\r`이 커서를 줄 앞으로 돌려 `bb`가 `aa`를 덮어쓴다. 운영체제마다 줄바꿈 관례가 다르다. UNIX·macOS는 LF, Windows는 CRLF를 쓴다. 저장소에서는 `.gitattributes`로 줄바꿈을 통일한다. 헤더 값에 사용자 입력을 그대로 넣으면 공격자가 CRLF를 끼워 헤더를 추가로 만들 수 있다(HTTP 응답 분할). HTTP/2·3은 메시지를 이진 프레임으로 보내므로 줄 구분 문자가 없다.
 
 ### 주요 메서드
 
@@ -104,3 +117,5 @@ HTTPS는 HTTP를 TLS로 암호화한 것이다([[https|HTTPS와 TLS]]). 응답 �
 - 상태 코드 앞자리: 1 정보, 2 성공, 3 리다이렉트, 4 클라이언트 잘못, 5 서버 잘못.
 - URI ⊃ URL(위치), URN(이름).
 - HTTP/1.1·HTTP/2는 TCP 위에서, HTTP/3는 UDP 기반 QUIC 위에서 동작한다.
+
+관련 노트: [[https|HTTPS와 TLS]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[rfc-requirement-levels|RFC와 요구 수준 키워드]]

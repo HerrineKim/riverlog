@@ -92,4 +92,4 @@ class Seller {
 - 본질은 메시징, 캡슐화, 늦은 바인딩이다. 클래스·상속은 구현 수단이다.
 - 객체를 설계할 때는 「어떤 데이터를 가지나」보다 **「어떤 메시지를 주고받나」**를 먼저 정한다.
 
-관련 노트: [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[functional-programming|함수형 프로그래밍]], [[class|class 문법]]
+관련 노트: [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[functional-programming|함수형 프로그래밍]], [[class|class 문법]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]]

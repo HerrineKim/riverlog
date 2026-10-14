@@ -1,0 +1,114 @@
+---
+title: "클린 코드: 함수와 이름"
+concept: "Clean Code"
+summary: "『클린 코드』의 함수와 이름 규칙을 정리한다. 함수는 작게, 한 가지만, 한 추상화 수준으로 쓰고 위에서 아래로 이야기처럼 읽히게 배치한다. 타입 분기는 팩터리 한 곳에 가두고 나머지는 다형성에 맡기며, 이름은 의도를 드러내고 한 개념에 한 단어만 쓴다."
+tags: ["clean-code", "oop", "code-review", "software-engineering", "design"]
+source: other
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/b43188a4f8554ab19c50401626c84dcd", "https://80000coding.notion.site/7a0a2aeb367a49e8874c403025687071", "https://google.github.io/styleguide/javaguide.html#s5-naming"]
+---
+
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[클린코드] 함수는 작고 간결하게」, 「[클린코드] 2장 의미 있는 이름」을 바탕으로 재구성한 노트입니다. 원 자료는 로버트 C. 마틴의 『클린 코드』 2장·3장입니다.
+
+## 함수는 작게
+
+함수 규칙의 출발점은 **작게 만드는 것**이다. 수십 줄짜리 함수는 무엇을 하는지 한눈에 들어오지 않고, 이름이 내용을 다 담지 못한다. 『클린 코드』의 예는 위키 페이지에 설정·해제 페이지를 끼워 넣는 60줄 함수를 세 단계로 줄인다.
+
+```java
+// 줄인 결과: 무엇을 하는지만 남고, 어떻게는 아래 함수들로 내려갔다
+public static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean isSuite) throws Exception {
+    if (isTestPage(pageData))
+        includeSetupAndTeardownPages(pageData, isSuite);
+    return pageData.getHtml();
+}
+```
+
+| 규칙 | 기준 |
+| --- | --- |
+| 한 가지만 한다 | 함수 이름으로 설명할 수 없는 일을 하고 있으면 쪼갠다. 의미 있는 이름으로 다른 함수를 추출할 수 있다면 두 가지 이상을 하는 것이다 |
+| 추상화 수준을 맞춘다 | `getHtml()`(높음), `PathParser.render(path)`(중간), `.append("\n")`(낮음)을 한 함수에 섞지 않는다 |
+| 내려가기 규칙 | 코드는 위에서 아래로 읽힌다. 호출하는 함수 바로 아래에 호출당하는 함수를 두어, 한 단계씩 추상화 수준이 내려가게 한다 |
+| 들여쓰기 2단계 이하 | `if`·`while` 블록 안은 가능하면 한 줄(함수 호출)로 만든다 |
+
+## 타입 분기는 한 곳에 가둔다
+
+직원 유형별로 급여를 계산하는 `switch`는 유형이 늘 때마다 커지고, 같은 `switch`가 `isPayday`, `deliverPay`에도 반복된다. 이는 단일 책임과 개방-폐쇄 원칙을 함께 어긴다.
+
+```java
+// 분기는 객체를 만드는 팩터리 한 곳에서만
+public class EmployeeFactoryImpl implements EmployeeFactory {
+    public Employee makeEmployee(EmployeeRecord r) {
+        switch (r.type) {
+            case COMMISSIONED: return new CommissionedEmployee(r);
+            case HOURLY:       return new HourlyEmployee(r);
+            case SALARIED:     return new SalariedEmployee(r);
+            default: throw new InvalidEmployeeType(r.type);
+        }
+    }
+}
+
+// 나머지 코드는 다형성으로: employee.calculatePay(), employee.isPayday()
+public abstract class Employee {
+    public abstract boolean isPayday();
+    public abstract Money calculatePay();
+}
+```
+
+**분기는 생성 지점 한 곳, 나머지는 다형성.** 새 유형이 생기면 클래스 하나와 팩터리의 `case` 하나만 추가된다. 설계 원칙은 [[frontend-solid|SOLID 원칙]] 노트, 추상 클래스와 인터페이스의 선택은 [[abstract-class-vs-interface|추상 클래스와 인터페이스]] 노트에 있다.
+
+## 인수와 부수 효과
+
+- **인수는 적을수록 좋다.** 0~2개가 이상적이고, 3개 이상이면 묶을 개념이 있는지 본다. `makeCircle(double x, double y, double radius)`보다 `makeCircle(Point center, double radius)`가 의도를 드러낸다.
+- 불리언 플래그 인수는 "이 함수가 두 가지 일을 한다"는 신호다. 함수를 둘로 나눈다.
+- **부수 효과를 숨기지 않는다.** `checkPassword()`가 비밀번호가 맞을 때 `Session.initialize()`까지 호출하면, 이름만 보고 부른 사람은 세션이 지워지는 줄 모른다. 이름에 드러내거나(`checkPasswordAndInitializeSession`) 호출 위치를 분리한다. 값을 돌려주는 함수는 상태를 바꾸지 않는다는 원칙은 [[clear-code-principles|명확한 코드의 네 가지 원칙]]의 명령-질의 분리에 있다.
+
+## 처음부터 깔끔하게 쓰지 않는다
+
+작은 함수는 처음부터 나오지 않는다. 순서가 있다.
+
+```text
+1. 일단 동작하는 함수를 쓴다       (길고 중복도 많다)
+2. 분기·경계값을 모두 덮는 테스트를 쓴다
+3. 테스트를 돌리며 리팩터링한다     (쪼개기, 이름 바꾸기, 중복 제거)
+```
+
+3단계는 출력이 같다는 전제에서 가독성만 높이는 작업이라, 테스트가 그 전제를 지켜 준다. [[tdd|TDD]]는 이 순서를 테스트 먼저로 뒤집은 것이다.
+
+## 의미 있는 이름
+
+| 규칙 | 나쁜 예 → 좋은 예 |
+| --- | --- |
+| 의도를 드러낸다. 주석이 필요하면 이름이 부족한 것이다 | `int a; String b;` → `int itemCount; String itemName;` |
+| 맥락 있는 이름을 쓴다 | `i, j, k` → `row, col, depth` |
+| 인덱스가 필요 없으면 반복 변수를 없앤다 | `for (int i...)` → `for (String word : words)`, `words.forEach(...)` |
+| 한 개념에 한 단어만 쓴다 | `fetch`/`retrieve`/`get`, `Member`/`User`/`Customer`, `Manager`/`Service`를 섞지 않는다 |
+| 타입을 이름에 넣지 않는다 | `nameString` → `name`, `memberArray` → `members` |
+| 인터페이스에 접두사, 구현에 막연한 접미사를 붙이지 않는다 | `IShapeFactory` / `ShapeFactoryImpl` → `ShapeFactory` / `RectangleFactory` |
+
+- 컬렉션은 복수형(`members`)이 기본이고, `Map`처럼 대체할 말이 마땅치 않으면 `memberById`처럼 키를 드러내는 이름이 낫다.
+- 한 개념에 한 단어는 **팀 단위 합의**다. 프로젝트 초기에 용어집을 정해 두면 리뷰에서 이름 논쟁이 줄어든다.
+- 타입 접두사(헝가리안 표기법)를 금지하는 이 규칙과 반대로, C++ 게임 코드처럼 `m`·`b` 접두사를 표준으로 정한 팀도 있다. 어느 쪽이든 저장소 안에서 통일하는 것이 우선이다([[cpp-coding-style|C++ 코딩 표준과 clang-format]]).
+
+## Google Java 스타일의 이름 규칙
+
+| 대상 | 규칙 | 예 |
+| --- | --- | --- |
+| 패키지 | 소문자만, 밑줄 없음 | `com.example.deepspace` |
+| 클래스 | UpperCamelCase, 명사(구) | `AddressParser`, `ImmutableList` |
+| 인터페이스 | UpperCamelCase, 명사 또는 형용사 | `List`, `Readable` |
+| 테스트 클래스 | 대상 + `Test` | `MapTest` |
+| 메서드 | lowerCamelCase, 동사(구) | `sendMessage` |
+| 접근자·변경자·조건자 | `get`·`set`·`is` | `getName`, `isEmpty` |
+| 상수 | UPPER_SNAKE_CASE | `MAX_SIZE` |
+
+불리언 이름의 문법은 [[boolean-naming|불리언 변수 이름 짓기]] 노트에 따로 있다.
+
+## 정리
+
+- 함수는 작게, 한 가지만, 한 추상화 수준으로 쓰고 위에서 아래로 읽히게 배치한다.
+- 타입 분기는 팩터리 한 곳에 가두고 나머지는 다형성에 맡긴다.
+- 인수는 2개 이하를 목표로 하고, 부수 효과는 이름에 드러내거나 분리한다.
+- 깔끔한 함수는 동작 → 테스트 → 리팩터링 순서로 만든다.
+- 이름은 의도를 드러내고, 한 개념에 한 단어를 쓰며, 타입을 넣지 않는다.
+
+관련 노트: [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[readable-code|게슈탈트 법칙으로 보는 읽기 좋은 코드]], [[boolean-naming|불리언 변수 이름 짓기]], [[simple-design|Simple Design]]

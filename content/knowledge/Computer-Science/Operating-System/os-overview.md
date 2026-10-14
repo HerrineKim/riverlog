@@ -4,9 +4,11 @@ concept: "OS Basics"
 summary: "운영체제가 무엇이고 왜 필요한지, 커널 영역과 이중 모드·시스템 호출, 어떤 기준으로 분류되는지 정리한 입문 노트."
 tags: ["os", "kernel", "computer-science"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/204"]
+date: "2026-10-14"
+sources: ["https://riverkim.kr/204", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a"]
 ---
+
+> 「세 가지 핵심 주제」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] 개요 - 3가지 이야기」를 바탕으로 보강했습니다.
 
 운영체제(Operating System)는 컴퓨터 하드웨어 바로 위에 설치되어 사용자·응용 프로그램과 하드웨어를 연결하는 소프트웨어 계층이다. 사용자에게는 컴퓨터를 편하게 쓸 수 있는 환경을, 컴퓨터 입장에서는 한정된 자원을 효율적으로 나눠 주는 **자원 할당자** 역할을 한다.
 
@@ -79,12 +81,24 @@ sources: ["https://riverkim.kr/204"]
 - **Hard real-time**: 마감 시간을 어기면 치명적 (로켓, 반도체 장비)
 - **Soft real-time**: 마감이 있지만 가끔 어겨도 큰 문제는 없음 (동영상 재생)
 
+## 세 가지 핵심 주제: 가상화·병행성·영속성
+
+운영체제 교재 『Operating Systems: Three Easy Pieces』는 운영체제가 하는 일을 세 주제로 묶는다. 이 창고의 OS 노트도 대체로 이 셋으로 나뉜다.
+
+| 주제 | 운영체제가 만드는 환상 | 관련 노트 |
+| --- | --- | --- |
+| 가상화(virtualization) | CPU 하나를 여러 개처럼(CPU 가상화), 물리 메모리를 프로세스마다 독립된 주소 공간처럼(메모리 가상화) 보이게 한다. 그래서 운영체제를 가상 머신이라고도 부른다 | [[process-scheduling|CPU 스케줄링]], [[virtual-memory|가상 메모리]], [[virtualization|가상화와 하이퍼바이저]] |
+| 병행성(concurrency) | 여러 실행 흐름이 같은 데이터를 동시에 건드려도 망가지지 않게 한다. 운영체제 자신도, 메모리를 공유하는 멀티스레드 프로그램도 이 문제를 겪는다 | [[process-synchronization|프로세스 동기화]], [[pthread-sync-api|POSIX 스레드와 동기화 API]] |
+| 영속성(persistence) | 전원이 꺼져도 데이터가 남게 디스크를 관리한다. 파일 시스템이 데이터의 위치를 추적하고, 저널링이나 쓰기 시 복사(copy-on-write)로 쓰다가 멈춰도 일관성을 되찾게 한다 | [[file-system|파일 시스템]], [[unix-file-io|UNIX 파일 입출력]] |
+
+응용 프로그램은 이 기능들을 **시스템 콜**이라는 API로 쓴다([[system-structure|컴퓨터 시스템 구조와 인터럽트]]).
+
 ## 운영체제의 예
 
 - **MS-DOS**: 1981년 IBM PC용. 단일 사용자, 메모리 관리 한계(640KB).
 - **MS Windows**: GUI 기반 다중 작업 OS. Plug and Play(장치를 연결하면 별도 설정 없이 바로 사용), 풍부한 소프트웨어 생태계.
 - **UNIX**: 벨 연구소에서 개발. 코드 대부분이 C로 작성되어 **이식성**이 높고, 커널이 작으며 확장이 쉽다. System V, BSD, Solaris 등 여러 계열이 있고 macOS·iOS도 유닉스 계열이다.
-- **Linux**: 유닉스와 기능적으로 비슷한 Unix-like OS지만 유닉스 코드에서 파생된 것은 아니다.
+- **Linux**: 유닉스와 기능적으로 비슷한 Unix-like OS지만 유닉스 코드에서 파생된 것은 아니다. 엄밀히는 커널 이름이고, 실제로 쓰는 것은 배포판이다([[linux-distributions|리눅스 배포판과 패키지 관리]]).
 - **임베디드·소형 기기용**: 예전에는 PalmOS, Windows CE가 대표적이었지만 둘 다 단종되었다. 지금은 스마트폰의 Android·iOS, 마이크로컨트롤러용 FreeRTOS·Zephyr 같은 실시간 OS, 센서 네트워크용 TinyOS 등이 쓰인다.
 
 ## 핵심 정리

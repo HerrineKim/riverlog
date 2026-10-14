@@ -5,10 +5,11 @@ summary: "HTTP를 TLS로 감싸 도청·변조·위장을 막는 HTTPS. 대칭�
 tags: ["network", "security", "http", "web", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishket.com/magazine/detail/1862/", "https://www.ssl.com/article/ssl-certificate-validity-changes-what-you-need-to-know/", "https://www.encryptionconsulting.com/x25519mlkem768-tls-deployment-guide/"]
+sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishket.com/magazine/detail/1862/", "https://www.ssl.com/article/ssl-certificate-validity-changes-what-you-need-to-know/", "https://www.encryptionconsulting.com/x25519mlkem768-tls-deployment-guide/", "https://howhttps.works/"]
 ---
 
 > 핸드셰이크·HSTS 부분은 테크유람의 요즘IT 연재 「[안전한 웹을 위해 HTTPS 이해하기 ①HTTPS의 작동 원리](https://yozm.wishket.com/magazine/detail/1852/)」·「[②HTTPS를 강제하는 HSTS 기술](https://yozm.wishket.com/magazine/detail/1862/)」(2023.01)을 요약·재구성해 보강했습니다.
+> SSL·TLS 역사와 인증서 체인·검증 수준 부분은 DNSimple의 만화 「[How HTTPS Works](https://howhttps.works/)」(5화 연재)를 바탕으로 보강했습니다.
 
 ## HTTPS란
 
@@ -22,7 +23,21 @@ HTTPS는 **HTTP 메시지를 TLS(Transport Layer Security)로 암호화해 주�
 | 무결성 | 변조 | MAC·AEAD로 메시지 검증 |
 | 인증 | 서버 위장 | 인증 기관(CA)이 서명한 인증서 |
 
-TLS는 SSL(Secure Socket Layer)을 개선한 후속 규격이다. 지금 쓰는 인증서는 거의 TLS용이지만 관습적으로 "SSL 인증서"라고 부른다.
+TLS는 SSL(Secure Sockets Layer)을 개선한 후속 규격이다. 지금 쓰는 인증서는 거의 TLS용이지만 관습적으로 "SSL 인증서"라고 부른다.
+
+### SSL에서 TLS로
+
+| 연도 | 버전 | 비고 |
+| --- | --- | --- |
+| 1995 | SSL 2.0 → SSL 3.0 | Netscape가 개발. 2.0은 결함이 커서 같은 해 3.0으로 교체 |
+| 1999 | TLS 1.0 | IETF로 관리가 넘어가며 이름이 바뀜. 사실상 SSL 3.1 |
+| 2006 | TLS 1.1 | |
+| 2008 | TLS 1.2 | 브라우저 지원은 2013년 무렵에야 퍼짐 |
+| 2015 | | SSL 3.0 공식 폐기(RFC 7568) |
+| 2018 | TLS 1.3 | RFC 8446. 약한 알고리즘을 걷어 내고 핸드셰이크를 1-RTT로 줄임 |
+| 2020~2021 | | 주요 브라우저가 TLS 1.0·1.1 지원 종료, IETF도 폐기(RFC 8996) |
+
+지금은 TLS 1.3이 기본이고 1.2는 구형 클라이언트용으로만 남는다. 서버는 1.2 미만을 꺼 둔다.
 
 ## 대칭키와 공개키
 
@@ -32,11 +47,41 @@ TLS는 SSL(Secure Socket Layer)을 개선한 후속 규격이다. 지금 쓰는 
 | 장점 | 빠르고 가볍다 | 키를 미리 나눠 갖지 않아도 된다 |
 | 약점 | 키를 안전하게 건네기 어렵다. 유출되면 끝 | 연산이 무거워 대량 데이터에 부적합 |
 
+공개키 방식은 반대 방향으로도 쓴다. **개인키로 서명한 것은 짝인 공개키로만 검증된다.** 이것이 디지털 서명이고, 인증서가 "이 공개키의 주인이 맞다"를 증명하는 원리다.
+
 HTTPS는 둘을 섞는다. **공개키로 대칭키(세션 키)를 안전하게 나눠 갖고, 이후 데이터는 대칭키로 암호화한다.**
 
 ## 인증서와 CA
 
 서버는 "이 공개키는 example.com의 것"이라는 내용에 **CA가 서명한 인증서**를 보낸다. 브라우저는 OS·브라우저에 미리 들어 있는 루트 CA 목록으로 서명 사슬을 따라가 검증한다. 도메인이 다르거나, 만료됐거나, 신뢰할 수 없는 CA면 경고 화면을 띄운다.
+
+### 신뢰 사슬: 루트와 중간 인증서
+
+CA가 되려면 엄격한 보안 요건과 정기 감사를 통과해 **루트 저장소**(root store)에 들어가야 한다. Apple, Microsoft, Mozilla(Firefox), Google(Chrome)이 각자 루트 저장소를 관리하고 OS·브라우저에 미리 넣어 둔다.
+
+```text
+루트 인증서 (루트 저장소에 내장, 오프라인 보관)
+   └─ 서명 → 중간 인증서 (CA가 평소 발급에 사용)
+                └─ 서명 → 사이트 인증서 (example.com)
+```
+
+- 브라우저는 사이트 인증서에서 시작해 서명한 인증서를 차례로 따라 올라간다. **끝이 신뢰하는 루트에 닿으면** 사슬 전체를 믿고, 닿지 못하면 경고를 띄운다.
+- 서버는 사이트 인증서와 **중간 인증서까지 함께** 보내야 한다. 중간 인증서를 빠뜨리면 일부 클라이언트(특히 모바일 앱·`curl`)에서 검증이 실패한다.
+- 루트 키로 직접 서명하지 않는 이유: 루트는 모든 기기에 깔려 있어 교체가 어렵다. 중간 인증서가 유출되면 그것만 폐기하면 된다.
+
+### 검증 수준과 자체 서명 인증서
+
+| 종류 | CA가 확인하는 것 | 비고 |
+| --- | --- | --- |
+| DV (Domain Validated) | 신청자가 그 **도메인을 통제하는지**만 (DNS 레코드, HTTP 파일) | 자동 발급 가능. 대부분의 사이트에 충분 |
+| OV (Organization Validated) | 도메인 + 조직의 실존 | 사람이 서류를 확인 |
+| EV (Extended Validation) | 도메인 + 조직에 대한 엄격한 심사 | 브라우저가 주소창에 회사명을 표시하던 기능은 없어졌다. 자물쇠를 눌러 인증서 정보에서만 보인다 |
+
+암호화 강도는 세 종류 모두 같다. 차이는 **누구인지를 얼마나 확인했느냐**뿐이다.
+
+**자체 서명 인증서**(self-signed)는 누구나 무료로 만들 수 있고 암호화도 똑같이 되지만, 신뢰하는 CA의 서명이 없어 브라우저가 경고한다. 공격자도 똑같이 만들 수 있으므로 신원 증명이 되지 않는다. 테스트나 사내망에서만 쓰고, 로컬 개발에는 로컬 CA를 신뢰 목록에 넣는 mkcert가 편하다([[local-https-mkcert|로컬 개발 환경에 HTTPS 적용하기]]).
+
+### 발급 자동화와 유효 기간
 
 Let's Encrypt 같은 무료 CA와 Vercel·Netlify 같은 호스팅이 인증서를 ACME 프로토콜로 자동 발급·갱신한다.
 
@@ -53,6 +98,7 @@ Let's Encrypt 같은 무료 CA와 Vercel·Netlify 같은 호스팅이 인증서�
   │ ◀═══════ 암호화된 HTTP 요청·응답 ══════▶ │
 ```
 
+- ClientHello에 키 교환 값(key_share)을 미리 실어 보내므로 왕복 한 번에 세션 키가 나온다. **ServerHello 이후의 핸드셰이크(인증서 포함)는 이미 암호화된다.**
 - **공개키 방식은 키를 나눠 갖는 데만 쓴다.** 실제 데이터는 빠른 대칭키로 암호화한다.
 - 암호 묶음(cipher suite)은 키 교환·인증·암호화·무결성 검증에 쓸 알고리즘 조합이다. ClientHello에서 후보를 보내고 서버가 하나를 고른다.
 - TLS 1.3은 1-RTT로 핸드셰이크를 끝낸다(1.2는 2-RTT). HTTP/3는 QUIC 안에 TLS 1.3을 내장해 연결 수립을 더 줄인다.

@@ -147,3 +147,5 @@ int main(int argc, string argv[])
 - 배열은 같은 자료형을 메모리에 연속으로 저장한다.
 - C 문자열은 `\0`으로 끝나는 `char` 배열이라, n글자 문자열은 n + 1바이트를 쓴다.
 - `main(int argc, string argv[])`로 명령행 인자를 받고, 반환값은 종료 상태다.
+
+관련 노트: [[gcc-compile-and-link|GCC 컴파일과 링크]], [[makefile|Makefile과 make]], [[c-integer-types|C의 정수 자료형과 형 변환]]

@@ -78,3 +78,5 @@ sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8
 - MMU는 재배치·공유·보호를 맡고, TLB로 주소 변환을 빠르게 한다. 보호는 세그먼트 테이블의 길이·보호 필드로 구현한다.
 
 캐시가 놓인 위치는 [[memory-hierarchy|메모리 계층 구조]]를 참고한다.
+
+관련 노트: [[cache-friendly-code|캐시를 고려한 코드]], [[memory-management|메모리 관리]]
