@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useDeferredValue, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import useSearchOnEnter from "@/hooks/useSearchOnEnter";
+import { makeMatcher } from "@/lib/search";
 import type { LiteNode } from "./types";
 
 const CHO = ["ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"];
@@ -30,28 +32,21 @@ function flatten(n: LiteNode, trail: string[], out: Flat[]) {
 }
 
 export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
-  const [query, setQuery] = useState("");
+  const { query, draft, inputProps } = useSearchOnEnter();
   const [mode, setMode] = useState<"tree" | "index" | "date">("tree");
   const [dateKey, setDateKey] = useState<DateKey>("created");
   const [newestFirst, setNewestFirst] = useState(true);
-  const q = useDeferredValue(query.trim().toLowerCase());
 
   const all = useMemo(() => flatten(tree, [], []), [tree]);
   const matches = useMemo(() => {
-    if (!q) return null;
-    // "#react" matches the tag exactly; anything else searches title, summary, tags and path
-    const tag = q.startsWith("#") ? q.slice(1) : undefined;
-    if (tag === "") return null;
+    const match = makeMatcher(query);
+    if (!match) return null;
     return new Set(
       all
-        .filter(({ node, trail }) =>
-          tag !== undefined
-            ? node.tags.some((t) => t.toLowerCase() === tag)
-            : [node.name, node.excerpt ?? "", node.tags.join(" "), trail.join(" ")].join(" ").toLowerCase().includes(q),
-        )
+        .filter(({ node, trail }) => match([node.name, node.excerpt ?? "", trail.join(" ")].join(" "), node.tags))
         .map((f) => f.node.id),
     );
-  }, [all, q]);
+  }, [all, query]);
 
   const visible = (n: LiteNode): boolean =>
     !matches || matches.has(n.id) || n.children.some((c) => visible(c));
@@ -94,10 +89,9 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
           </svg>
           <input
             type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Escape" && setQuery("")}
-            placeholder="용어, 주제로 찾기 · #태그"
+            enterKeyHint="search"
+            {...inputProps}
+            placeholder="용어, 주제로 찾기 · #태그 (Enter)"
             className="w-full rounded-full border border-line bg-bg-elev py-2 pr-4 pl-9 text-sm text-fg-strong outline-none placeholder:text-muted focus:border-accent"
           />
         </label>
@@ -135,6 +129,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
         )}
         <span className="text-xs text-muted tabular-nums" aria-live="polite">
           {resultCount}개 항목
+          {draft.trim() && draft.trim() !== query && <span className="ml-1.5 text-accent">· Enter로 검색</span>}
         </span>
       </div>
 

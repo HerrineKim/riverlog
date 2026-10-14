@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useDeferredValue, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import useSearchOnEnter from "@/hooks/useSearchOnEnter";
 
 export type BookRow = {
   slug: string;
@@ -33,9 +34,9 @@ export default function BookList({ books }: { books: BookRow[] }) {
   const [status, setStatus] = useState<(typeof STATUS)[number]["key"]>("all");
   const [category, setCategory] = useState("all");
   const [onlyReviewed, setOnlyReviewed] = useState(false);
-  const [query, setQuery] = useState("");
   const [limit, setLimit] = useState(PAGE);
-  const q = useDeferredValue(query.trim().toLowerCase());
+  const { query, draft, inputProps } = useSearchOnEnter(() => setLimit(PAGE));
+  const q = query.toLowerCase();
   // Any filter change starts the list over from the top
   const filter = <T,>(set: (v: T) => void) => (v: T) => {
     set(v);
@@ -62,10 +63,9 @@ export default function BookList({ books }: { books: BookRow[] }) {
         </svg>
         <input
           type="search"
-          value={query}
-          onChange={(e) => filter(setQuery)(e.target.value)}
-          onKeyDown={(e) => e.key === "Escape" && filter(setQuery)("")}
-          placeholder="제목이나 저자로 찾기…"
+          enterKeyHint="search"
+          {...inputProps}
+          placeholder="제목이나 저자로 찾기 (Enter)"
           className="w-full rounded-full border border-line bg-bg-elev py-2 pr-4 pl-9 text-sm text-fg-strong outline-none placeholder:text-muted focus:border-accent"
         />
       </label>
@@ -106,6 +106,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
 
       <p className="mt-6 text-xs text-muted tabular-nums" aria-live="polite">
         {shown.length}권
+        {draft.trim() && draft.trim() !== query && <span className="ml-1.5 text-accent">· Enter로 검색</span>}
       </p>
       <ul className="mt-2 divide-y divide-line border-y border-line">
         {shown.slice(0, limit).map((b) => (

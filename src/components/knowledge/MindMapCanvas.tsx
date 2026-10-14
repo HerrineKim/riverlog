@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ForceGraph2D, { type ForceGraphMethods } from "react-force-graph-2d";
+import useSearchOnEnter from "@/hooks/useSearchOnEnter";
 import useTheme from "@/hooks/useTheme";
 import type { GraphLink, GraphNode } from "@/lib/knowledge";
+import { makeMatcher } from "@/lib/search";
 
 type Node = GraphNode & { x?: number; y?: number };
 type Link = GraphLink & { source: string | Node; target: string | Node };
@@ -58,7 +60,8 @@ export default function MindMapCanvas({
   const theme = useTheme();
   const dark = theme === "dark";
   const [selected, setSelected] = useState<Node | null>(null);
-  const [query, setQuery] = useState("");
+  // A new search drops the selection so its hits show
+  const { query, draft, inputProps, clear } = useSearchOnEnter(() => setSelected(null));
 
   // react-force-graph mutates nodes/links; give it its own copy once.
   const graphData = useMemo(
@@ -102,10 +105,19 @@ export default function MindMapCanvas({
     return m;
   }, [data, graphData]);
 
+  // Nodes whose name, summary, tags or path contain the submitted query
+  const results = useMemo(() => {
+    const match = makeMatcher(query);
+    if (!match) return null;
+    return graphData.nodes.filter((n) => match(`${n.name} ${n.excerpt ?? ""} ${n.path}`, n.tags));
+  }, [query, graphData]);
+  const hits = useMemo(() => (results?.length ? new Set(results.map((n) => n.id)) : null), [results]);
+
+  // A selected node focuses its neighborhood; otherwise search hits stay lit
   const focus = selected;
   const isLit = useCallback(
-    (id: string) => !focus || focus.id === id || !!neighbors.get(focus.id)?.has(id),
-    [focus, neighbors],
+    (id: string) => (focus ? focus.id === id || !!neighbors.get(focus.id)?.has(id) : !hits || hits.has(id)),
+    [focus, hits, neighbors],
   );
 
   // Forces
@@ -144,16 +156,24 @@ export default function MindMapCanvas({
     fg.zoom(node.kind === "category" ? 2 : 4, 800);
   }, []);
 
+  // Frame the search hits when there are any, the whole map otherwise
+  const hitsRef = useRef(hits);
+  useEffect(() => {
+    hitsRef.current = hits;
+  }, [hits]);
+  const fit = useCallback(() => {
+    const h = hitsRef.current;
+    fgRef.current?.zoomToFit(800, 80, h ? (n: Node) => h.has(n.id) : undefined);
+  }, []);
+
   const reset = () => {
     setSelected(null);
-    fgRef.current?.zoomToFit(800, 60);
+    fit();
   };
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
-    return graphData.nodes.filter((n) => n.name.toLowerCase().includes(q)).slice(0, 8);
-  }, [query, graphData]);
+  useEffect(() => {
+    fit();
+  }, [hits, fit]);
 
   const drawNode = useCallback(
     (n: Node, ctx: CanvasRenderingContext2D, scale: number) => {
@@ -171,7 +191,7 @@ export default function MindMapCanvas({
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      const showLabel = n.kind === "category" || (focus ? lit : scale >= DOC_LABEL_SCALE);
+      const showLabel = n.kind === "category" || (focus || hits ? lit : scale >= DOC_LABEL_SCALE);
       if (showLabel) {
         // World-sized text, but never smaller than a readable size on screen
         const size = n.kind === "category" ? Math.max(8, 13 / scale) : Math.max(3, 11 / scale);
@@ -192,7 +212,7 @@ export default function MindMapCanvas({
       }
       ctx.globalAlpha = 1;
     },
-    [dark, focus, isLit],
+    [dark, focus, hits, isLit],
   );
 
   const linkColor = useCallback(
@@ -200,15 +220,18 @@ export default function MindMapCanvas({
       const link = l as Link;
       const t = link.target as Node;
       const s = link.source as Node;
-      const lit = !focus || (isLit(t.id) && isLit(s.id) && (focus.id === t.id || focus.id === s.id || link.kind === "member"));
+      const lit = focus
+        ? isLit(t.id) && isLit(s.id) && (focus.id === t.id || focus.id === s.id || link.kind === "member")
+        : !hits || (hits.has(t.id) && hits.has(s.id));
+      const dimmed = focus || hits;
       // Quiet in the overview; full strength only on the selected note's own links
       if (link.kind === "reference")
-        return !focus ? `${REFERENCE_COLOR[theme]}66` : lit ? REFERENCE_COLOR[theme] : dark ? "#2a2416" : "#ece3d2";
+        return !dimmed ? `${REFERENCE_COLOR[theme]}66` : lit ? REFERENCE_COLOR[theme] : dark ? "#2a2416" : "#ece3d2";
       if (link.kind === "related") return lit ? (dark ? "#5b6b7d88" : "#9aa39a88") : dark ? "#161d26" : "#e6e8e2";
-      if (!focus) return dark ? "#3a4a5a" : "#b9c0b5";
+      if (!dimmed) return dark ? "#3a4a5a" : "#b9c0b5";
       return lit ? `${t.color}aa` : dark ? "#1a222c" : "#e1e4dd";
     },
-    [dark, focus, isLit, theme],
+    [dark, focus, hits, isLit, theme],
   );
 
   const onNodeHover = useCallback((n: Node | null) => {
@@ -220,8 +243,8 @@ export default function MindMapCanvas({
     selectedRef.current = selected;
   }, [selected]);
   const onEngineStop = useCallback(() => {
-    if (!selectedRef.current) fgRef.current?.zoomToFit(800, 60);
-  }, []);
+    if (!selectedRef.current) fit();
+  }, [fit]);
 
   // Escape clears the selection, like clicking the background
   useEffect(() => {
@@ -269,41 +292,46 @@ export default function MindMapCanvas({
           <div className="relative">
             <input
               type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Escape") setQuery("");
-                if (e.key === "Enter" && results[0]) {
-                  select(results[0]);
-                  setQuery("");
-                }
-              }}
-              placeholder="노드 찾기…"
+              enterKeyHint="search"
+              {...inputProps}
+              placeholder="노드 찾기 · #태그 (Enter)"
               aria-label="마인드맵에서 노드 찾기"
               className="w-full rounded-full border border-line bg-bg-elev/85 px-4 py-2 text-sm text-fg-strong outline-none backdrop-blur placeholder:text-muted focus:border-accent"
             />
             <p className="sr-only" aria-live="polite">
-              {query.trim() ? `검색 결과 ${results.length}개${results.length ? ", Enter로 첫 결과로 이동" : ""}` : ""}
+              {results ? `검색 결과 ${results.length}개${results.length ? ", 일치하는 노드만 강조했어요" : ""}` : ""}
             </p>
-            {results.length > 0 && (
-              <ul className="absolute mt-2 w-full overflow-hidden rounded-xl border border-line bg-bg-elev/95 text-sm shadow-xl backdrop-blur">
-                {results.map((r) => (
-                  <li key={r.id}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        select(r);
-                        setQuery("");
-                      }}
-                      className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-accent-soft"
-                    >
-                      <span className="size-2 shrink-0 rounded-full" style={{ background: r.color }} />
-                      <span className="truncate text-fg-strong">{r.name}</span>
-                      <span className="ml-auto shrink-0 text-xs text-muted">{r.kind === "doc" ? "노트" : "분야"}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+            {draft.trim() && draft.trim() !== query && (
+              <p className="mt-1.5 px-3 text-xs text-muted">Enter로 검색</p>
+            )}
+            {results && !selected && (
+              <div className="mt-2 overflow-hidden rounded-xl border border-line bg-bg-elev/95 text-sm shadow-xl backdrop-blur">
+                <p className="flex items-center justify-between gap-2 border-b border-line px-3 py-2 text-xs text-muted">
+                  <span>
+                    “{query}” {results.length ? `${results.length}개 일치` : "에 해당하는 노드가 없어요"}
+                  </span>
+                  <button type="button" onClick={clear} className="hover:text-fg-strong">
+                    지우기
+                  </button>
+                </p>
+                {results.length > 0 && (
+                  <ul className="max-h-64 overflow-y-auto">
+                    {results.map((r) => (
+                      <li key={r.id}>
+                        <button
+                          type="button"
+                          onClick={() => select(r)}
+                          className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-accent-soft"
+                        >
+                          <span className="size-2 shrink-0 rounded-full" style={{ background: r.color }} />
+                          <span className="truncate text-fg-strong">{r.name}</span>
+                          <span className="ml-auto shrink-0 text-xs text-muted">{r.kind === "doc" ? "노트" : "분야"}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             )}
           </div>
         </div>

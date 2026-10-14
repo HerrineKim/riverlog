@@ -293,6 +293,7 @@ export type GraphNode = {
   color: string;
   href?: string;
   excerpt?: string;
+  tags: string[];
   path: string;
   size: number;
 };
@@ -339,6 +340,7 @@ export function getGraphData(): { nodes: GraphNode[]; links: GraphLink[] } {
       color,
       href: cat.href,
       excerpt: cat.doc?.excerpt,
+      tags: cat.doc?.tags ?? [],
       path: `${cat.docCount}개 노트`,
       size: 6 + Math.min(6, Math.sqrt(cat.docCount)),
     });
@@ -352,6 +354,7 @@ export function getGraphData(): { nodes: GraphNode[]; links: GraphLink[] } {
           color,
           href: n.href,
           excerpt: n.doc.excerpt,
+          tags: n.doc.tags,
           path: [cat.name, ...trail].join(" › "),
           size: 2.2,
         });
