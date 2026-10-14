@@ -1,10 +1,14 @@
 ---
 title: "생활 속 IT 팁"
 concept: "Tech Tips"
-summary: "구글 드라이브 다운로드 한도 우회, OneDrive 제거, 휴대폰 별 사진, 3D 게임 멀미 줄이기 같은 소소한 IT 해결법."
-tags: ["tips", "productivity", "windows", "google-drive"]
+summary: "구글 드라이브 다운로드 한도 우회, Gmail에서 다른 주소로 보내기, OneDrive 제거, 휴대폰 별 사진, 3D 게임 멀미 줄이기 같은 소소한 IT 해결법."
+tags: ["tips", "productivity", "windows", "google-drive", "email"]
 source: notion
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/917d970237d2446f93f79a48ada57522"]
 ---
+
+> 「Gmail에서 다른 주소로 메일 보내기」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「42메일로 이메일 보내기」를 바탕으로 보강한 노트입니다.
 
 자주 찾아보게 되는 소소한 IT 문제 해결법 모음. 서비스 화면과 메뉴 이름은 업데이트로 바뀔 수 있다.
 
@@ -17,6 +21,18 @@ source: notion
 3. 파일 우클릭 → **사본 만들기**
 4. 내 드라이브에 생긴 사본을 우클릭 → 다운로드
 5. 파일명 앞의 "~의 사본"을 지운다.
+
+## Gmail에서 다른 주소로 메일 보내기
+
+학교·회사 주소처럼 다른 이메일 주소를 **보낸사람**으로 쓰고 싶을 때 Gmail의 "다른 주소에서 메일 보내기"를 쓴다.
+
+1. Gmail **설정 → 모든 설정 보기 → 계정 및 가져오기 → 다른 주소에서 메일 보내기 → 다른 이메일 주소 추가**
+2. 이름과 보낼 주소를 입력한다.
+3. SMTP 서버 정보를 넣는다. 그 주소가 Google 계정(Google Workspace 학교·회사 계정 포함)에 연결되어 있으면 `smtp.gmail.com`, 포트 587(TLS)을 쓴다.
+4. 사용자 이름에는 그 SMTP 서버에 로그인하는 Google 계정 주소를, 비밀번호에는 **계정 비밀번호가 아니라 앱 비밀번호**를 넣는다.
+5. 해당 주소로 온 확인 메일의 링크를 누르면 끝이다.
+
+`535-5.7.8 Username and Password not accepted` 오류는 거의 항상 4번 문제다. 앱 비밀번호는 Google 계정에 **2단계 인증을 켠 뒤** 계정 설정의 "앱 비밀번호"에서 만든다. 학교·회사 계정은 관리자가 앱 비밀번호를 막아 두었을 수 있다.
 
 ## Windows에서 OneDrive 완전히 제거
 
