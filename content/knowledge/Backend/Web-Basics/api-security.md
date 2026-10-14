@@ -84,4 +84,4 @@ DB 모델을 그대로 직렬화해 보내면 비밀번호 해시나 내부 필�
 - 응답은 필요한 만큼만, 권한도 필요한 만큼만 준다는 **최소화 원칙**이 여러 항목에 걸쳐 반복된다.
 - 어느 하나로 완벽히 막을 수는 없다. 여러 겹을 쌓아 하나가 뚫려도 다음 겹이 막게 한다.
 
-관련 노트: [[web-security|웹 보안: CSRF와 XSS]], [[oauth2|OAuth 2.0]], [[https|HTTPS와 TLS]], [[cors|CORS]], [[rest-api|REST API 설계]]
+관련 노트: [[web-security|웹 보안: CSRF와 XSS]], [[oauth2|OAuth 2.0]], [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]], [[https|HTTPS와 TLS]], [[cors|CORS]], [[rest-api|REST API 설계]]

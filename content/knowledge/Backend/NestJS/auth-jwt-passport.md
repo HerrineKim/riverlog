@@ -151,6 +151,6 @@ getCurrentCat(@CurrentUser() cat: Cat) {
 - 인증 = `@UseGuards(JwtAuthGuard)` → `JwtStrategy.validate()` → `request.user`.
 - 비밀키는 환경 변수로, payload에는 민감 정보 없이 식별자만 넣는다.
 
-관련 노트: [[cookie-session|쿠키와 세션]], [[web-security|웹 보안: CSRF와 XSS]], [[auth-flow|React로 회원가입·로그인 구현하기]]
+관련 노트: [[cookie-session|쿠키와 세션]], [[web-security|웹 보안: CSRF와 XSS]], [[auth-flow|React로 회원가입·로그인 구현하기]], [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]
 
 참고: [NestJS Authentication](https://docs.nestjs.com/recipes/passport), [Guards](https://docs.nestjs.com/guards)

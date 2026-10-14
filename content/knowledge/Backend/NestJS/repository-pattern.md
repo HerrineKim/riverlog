@@ -4,6 +4,7 @@ concept: "Repository Pattern"
 summary: "서비스와 데이터베이스 사이에 데이터 접근 전담 계층을 두어 비즈니스 로직과 DB 쿼리를 분리하는 패턴."
 tags: ["nestjs", "design-pattern", "architecture", "database"]
 source: til
+date: "2026-10-13"
 ---
 
 기존 구조는 `Controller → Service → DB`였다. 리포지토리 패턴은 서비스와 DB 사이에 **데이터 접근만 담당하는 중개자(Repository)를** 둔다.
@@ -74,3 +75,5 @@ export class CatsService {
 - Service = "무엇을 할지"(비즈니스 규칙), Repository = "어떻게 가져올지"(쿼리).
 - 리포지토리도 `@Injectable()` 프로바이더이므로 모듈에 등록·export해 주입받는다.
 - TypeORM·Prisma 같은 ORM도 같은 개념의 Repository를 제공한다.
+
+관련 노트: [[dto-vo-dao-repository|DTO와 VO, DAO와 Repository]]

@@ -78,4 +78,4 @@ server {
 - Spring Boot는 Tomcat을 내장한 jar로 배포하는 것이 일반적이다.
 - Nginx에서는 `location`으로 묶고, `rewrite`로 경로를 바꾸고, `proxy_pass`로 다른 서버에 넘긴다.
 
-관련 노트: [[http-web-architecture|웹 앱의 요청·응답 구조]], [[vm-vs-container|VM과 컨테이너]], [[data-flow|Data Flow로 보는 웹 아키텍처]], [[cdn|CDN]]
+관련 노트: [[http-web-architecture|웹 앱의 요청·응답 구조]], [[vm-vs-container|VM과 컨테이너]], [[data-flow|Data Flow로 보는 웹 아키텍처]], [[cdn|CDN]], [[spring-singleton-thread-safety|스프링의 싱글톤 빈과 요청 스레드]]
