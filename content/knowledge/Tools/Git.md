@@ -24,6 +24,7 @@ Git은 **분산 버전 관리 시스템(DVCS)** 입니다. 모든 작업자가 �
 | [되돌리기와 이력 다루기](/knowledge/dictionary/tools/git/git-undo-and-rewrite) | `reset`(soft·mixed·hard), `revert`, `rebase`, `cherry-pick`, `--abort`, 푸시한 민감 정보·작성자 이메일 정리(filter-repo) |
 | [merge·squash·rebase 언제 쓰나](/knowledge/dictionary/tools/git/merge-squash-rebase) | PR 통합 전략 고르기: merge 커밋과 bisect, squash 메시지, 인터랙티브 rebase |
 | [커밋 컨벤션과 자동 검사](/knowledge/dictionary/tools/git/commit-convention) | 좋은 커밋 메시지 7가지 규칙, 이슈 자동 닫기 키워드, `type(scope): subject` 형식, 커밋 템플릿, husky·commitlint, pre-commit 프레임워크 |
+| [영어 커밋 메시지 동사 사전](/knowledge/dictionary/tools/git/commit-message-verbs) | Fix·Add·Update·Make·Ensure·Prevent 등 동사별 패턴과 예문, 헷갈리는 동사 구분, 간결하게 쓰는 규칙 |
 | [GitHub 협업 저장소 설정](/knowledge/dictionary/tools/git/github-collaboration) | 브랜치 보호 규칙, CODEOWNERS, 이슈·PR 템플릿, 라벨, 알림 도구 |
 | [GitHub 이슈·프로젝트로 진행 상황 관리하기](/knowledge/dictionary/tools/git/github-issue-workflow) | 이슈 크기 기준, 하위 이슈, 프로젝트 보드와 스크럼, 이슈 → 브랜치 → 커밋 → PR 연결, 개발 문서화 원칙 |
 | [자주 쓰는 Git 설정 옵션](/knowledge/dictionary/tools/git/git-config-options) | `pull.ff`, `zdiff3`, `rebase.autosquash`, `diff.algorithm histogram`, `includeIf`, alias, 커밋 이메일과 기여 그래프 등 git config 추천 옵션 |

@@ -77,7 +77,7 @@ GitHub는 커밋 메시지나 PR 본문에 `키워드 #이슈번호`가 있으�
 - 커밋 메시지의 키워드는 그 커밋이 **기본 브랜치에 들어갈 때** 동작한다. `develop`에 푸시한 커밋은 기본 브랜치로 머지될 때 이슈를 닫는다.
 - 여러 이슈를 닫으려면 키워드를 이슈마다 붙인다: `Closes #128, closes #129, fixes #78`.
 
-참고 글: [좋은 git commit 메시지를 위한 영어 사전](https://blog.ull.im/engineering/2019/03/10/logs-on-git.html)
+영어 제목에 쓸 동사와 패턴은 [[commit-message-verbs|영어 커밋 메시지 동사 사전]]에 있다.
 
 ## 메시지 형식: Conventional Commits
 
@@ -178,4 +178,4 @@ pre-commit run --all-files  # 전체 파일에 한 번 실행
 - 이슈는 `Closes #번호`로 닫는다(기본 브랜치에 들어갈 때 동작).
 - 커밋 템플릿으로 안내하고, husky + commitlint(또는 pre-commit)로 강제한다. 필수 검사는 CI에서도 돌린다.
 
-관련 노트: [[remote-github|원격 저장소와 GitHub]], [[github-collaboration|GitHub 협업 저장소 설정]], [[principles|코드 리뷰 원칙]], [[ci-cd|CI/CD]]
+관련 노트: [[remote-github|원격 저장소와 GitHub]], [[github-collaboration|GitHub 협업 저장소 설정]], [[principles|코드 리뷰 원칙]], [[ci-cd|CI/CD]], [[commit-message-verbs|영어 커밋 메시지 동사 사전]]
