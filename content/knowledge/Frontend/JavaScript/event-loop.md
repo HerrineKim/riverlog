@@ -74,4 +74,4 @@ console.log('4')
 - [콜 스택, 콜백 큐, 이벤트 루프](https://www.sungikchoi.com/blog/call-stack-callback-queue-event-loop/)
 - [자바스크립트 Promise 쉽게 이해하기](https://joshua1988.github.io/web-development/javascript/promise-for-beginners/)
 
-관련 노트: [[callback-and-promise|콜백과 Promise]], [[async-await|async/await]], [[debounce-throttle|Debounce와 Throttle]], [[js-engine-v8|JS 엔진과 V8 파이프라인]]
+관련 노트: [[callback-and-promise|콜백과 Promise]], [[async-await|async/await]], [[debounce-throttle|Debounce와 Throttle]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[browser-rendering|브라우저 렌더링 과정]]

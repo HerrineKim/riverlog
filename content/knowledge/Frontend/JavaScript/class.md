@@ -142,3 +142,5 @@ account.balance           // 100
 - `class` = 프로토타입 기반 객체 생성의 문법적 설탕. `new`로 인스턴스를 만든다.
 - `constructor`는 하나, 자식 constructor에서는 `super()`를 먼저 호출한다.
 - `static`은 클래스 자체의 멤버, `#`은 private 필드, `get`/`set`은 속성처럼 쓰는 함수다.
+
+관련 노트: [[ecmascript-tc39|ECMAScript 표준과 TC39 프로세스]]

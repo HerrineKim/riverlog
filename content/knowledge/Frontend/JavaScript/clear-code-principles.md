@@ -102,4 +102,4 @@ function saveFirstName(name) {
 - 같은 데이터를 쓰는 코드는 모으고, 관련 없는 코드는 떼어 놓는다.
 - 네 원칙은 **나중에 읽을 사람(미래의 나 포함)을 위한 설계 기준**이다.
 
-관련 노트: [[frontend-solid|프론트엔드와 SOLID 원칙]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[simple-design|Simple Design]], [[refactoring-principles|리팩터링 원칙]]
+관련 노트: [[frontend-solid|프론트엔드와 SOLID 원칙]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[simple-design|Simple Design]], [[refactoring-principles|리팩터링 원칙]], [[clean-code-functions-naming|클린 코드: 함수와 이름]]

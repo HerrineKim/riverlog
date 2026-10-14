@@ -121,3 +121,5 @@ async function load() {
 - 독립적인 작업은 `Promise.all`로 병렬 실행한다. `await`를 줄줄이 쓰면 순차 실행이 된다.
 - 에러는 `try...catch`로 잡고, 서비스 코드에서는 콘솔에만 남기지 않는다.
 - `then`과 `await`를 한 흐름에 섞지 않는다.
+
+관련 노트: [[dart-language|Dart의 Future와 Stream]]

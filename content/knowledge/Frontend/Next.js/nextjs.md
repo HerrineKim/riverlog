@@ -5,8 +5,10 @@ summary: "SSR·SSG·파일 기반 라우팅·자동 코드 스플리팅을 제�
 tags: ["nextjs", "react", "rendering", "seo", "cache", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/214", "https://nextjs.org/docs/app/getting-started/caching", "https://nextjs.org/docs/app/getting-started/proxy", "https://nextjs.org/docs/app/guides/upgrading/version-16"]
+sources: ["https://riverkim.kr/214", "https://80000coding.notion.site/a688c09821014d51a01f37d773906165", "https://80000coding.notion.site/bc0ccbe2aabe4205aaa7e9233bb5ead6", "https://80000coding.notion.site/286aebc32d214857abe04c9a306aa02d", "https://nextjs.org/docs/app/getting-started/caching", "https://nextjs.org/docs/app/getting-started/proxy", "https://nextjs.org/docs/app/guides/upgrading/version-16"]
 ---
+
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Next.js 공식 문서 읽기(1) - FOUNDATIONS」, 「Next.js 공식 문서 읽기(2) - CREATE YOUR FIRST APP」, 「Next.js (SSR) 공식문서 읽어보기 (12.0 버전)」에서 Pages Router와 CDN·엣지 내용을 더한 노트입니다.
 
 **Next.js**는 React 기반 웹 애플리케이션 **프레임워크**다. React가 UI 라이브러리라면, Next.js는 라우팅·렌더링 전략·빌드 최적화까지 정해진 틀을 제공한다. 가장 큰 장점은 React의 기본 방식인 CSR의 약점, 즉 **검색 엔진이 내용을 읽기 어렵다는 점**을 SSR·SSG로 보완해 준다는 것이다. Node.js(브라우저 밖에서 JavaScript를 실행하는 Chrome V8 기반 런타임) 위에서 동작한다.
 
@@ -118,6 +120,39 @@ export async function getPosts() {
 - 컴포넌트·페이지 맨 위에 `'use cache'`를 쓰면 UI 단위로 캐시된다.
 - 요청마다 새로 가져와야 하는 데이터는 캐시하지 않고 `<Suspense>`로 감싸, 미리 렌더링된 정적 껍데기(shell)를 먼저 보내고 데이터는 스트리밍한다([[streaming-ssr|스트리밍 SSR]]).
 - `fetch`의 `cache`·`next.revalidate` 옵션도 계속 동작하므로, 기존 코드를 읽을 때는 위의 표가 그대로 유효하다.
+
+## Pages Router 코드 읽기
+
+Next.js 12까지의 튜토리얼과 오래된 프로젝트는 대부분 Pages Router로 쓰였다. 개념은 같고 이름과 위치가 다르다.
+
+| 하는 일 | Pages Router (`pages/`) | App Router (`app/`) |
+| --- | --- | --- |
+| 공통 레이아웃·전역 CSS | `pages/_app.js`, `pages/_document.js` | `app/layout.tsx` (루트 레이아웃) |
+| 빌드 때 데이터 가져오기(SSG) | `export async function getStaticProps()` | 서버 컴포넌트에서 캐시되는 `fetch`·`'use cache'` |
+| 요청마다 가져오기(SSR) | `getServerSideProps(context)` | 캐시하지 않는 `fetch`, `cookies()` 같은 동적 API |
+| 동적 경로 미리 만들기 | `getStaticPaths` → `{ paths: [{ params: { id } }], fallback }` | `generateStaticParams()` |
+| `<head>` 수정 | `next/head`의 `<Head>` | `metadata` 객체, `generateMetadata()` |
+| API 엔드포인트 | `pages/api/hello.js`의 `handler(req, res)` | `app/api/hello/route.ts`의 `GET`·`POST` (Route Handler) |
+| 404 페이지 | `pages/404.js` | `app/not-found.tsx` |
+| CMS 초안 미리보기 | Preview Mode | Draft Mode |
+
+두 방식에 공통인 기능도 있다.
+
+- **`<Link>`**: 클라이언트 측 내비게이션. 배포 빌드에서는 화면에 보이는 링크의 페이지 코드를 백그라운드에서 미리 받아(prefetch) 전환이 빠르다. Next.js 13부터는 자식에 `<a>`를 넣지 않는다.
+- **`next/image`**: 크기 자동 조정, 최신 포맷 변환, 기본 지연 로딩. 크기를 알고 그려 레이아웃 이동(CLS)을 막는다.
+- **`next/script`**: 서드파티 스크립트의 로드 시점을 `strategy`로 조절한다.
+- **CSS Modules**: `*.module.css`로 import하면 클래스 이름이 파일마다 고유하게 바뀌어 충돌하지 않는다. 전역 CSS는 `_app`(Pages)이나 루트 레이아웃(App)에서만 import한다.
+- `getStaticProps`처럼 서버에서만 도는 코드에서 **자기 앱의 API Route를 `fetch`하지 않는다.** 같은 서버 안이므로 DB나 라이브러리 함수를 직접 부른다.
+
+## 코드는 어디서 실행되나: 오리진, CDN, 엣지
+
+| 위치 | 하는 일 |
+| --- | --- |
+| 오리진 서버 | 애플리케이션 코드가 실제로 도는 주 서버. 요청을 받아 계산하고 결과를 CDN에 넘긴다 |
+| CDN | 정적 결과물(HTML, 이미지, JS)을 전 세계 여러 위치에 캐시해 사용자와 가장 가까운 곳에서 응답한다. 오리진이 매번 다시 계산할 필요가 없다 |
+| 엣지 | 사용자에게 가장 가까운 네트워크 지점. CDN처럼 분산되어 있지만 **코드도 실행**할 수 있다 |
+
+미리 렌더링한 페이지(SSG·ISR)는 CDN에 올리기 좋아 Next.js와 궁합이 맞는다. 요청 앞단의 리다이렉트·인증 검사처럼 가벼운 로직은 엣지에서 돌리기도 한다. 다만 Next.js 16의 `proxy.ts`는 Node.js 런타임에서 돌고, Edge 런타임은 Route Handler 등에서 선택적으로 쓴다.
 
 ## 언제 Next.js를 고르나
 

@@ -19,6 +19,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [JavaScript의 네 가지 주석](/knowledge/dictionary/frontend/javascript/js-comments): `//`·`/* */`의 동작, 해시뱅 `#!`, HTML 유사 주석 `<!--`의 유래
 - [템플릿 리터럴](/knowledge/dictionary/frontend/javascript/template-literals): 여러 줄·표현식 삽입·중첩, 태그드 템플릿과 styled-components의 원리
 - [class 문법](/knowledge/dictionary/frontend/javascript/class): 생성자 함수와 new, constructor, static, extends, getter·setter, private 필드
+- [ECMAScript 표준과 TC39 프로세스](/knowledge/dictionary/frontend/javascript/ecmascript-tc39): ECMA-262와 TC39, Stage 0~4, ES6=ES2015 이름 규칙, ES2022 기능과 이후 판
 - [모듈: export와 import](/knowledge/dictionary/frontend/javascript/es-modules): named export와 default export, export default 논쟁
 - [JavaScript 디자인 패턴: 생성 패턴](/knowledge/dictionary/frontend/javascript/js-design-patterns): 생성자·모듈·싱글톤·프로토타입 패턴과 프로토타입 기반 언어의 차이
 - [Date 객체](/knowledge/dictionary/frontend/javascript/date-object): 0부터 시작하는 getMonth()의 유래, 서버 시간대와 관계없이 한국 시간 구하기
@@ -53,6 +54,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [날짜 라이브러리](/knowledge/dictionary/frontend/javascript/date-libraries): Moment.js 이후의 대안, date-fns와 Day.js 비교, 표준 API Temporal의 지원 현황
 - [패키지 매니저: npm, yarn, pnpm](/knowledge/dictionary/frontend/javascript/package-managers): lock 파일의 역할, 매니저 비교와 고르는 기준, packageManager와 Corepack, 설치 스크립트 차단, npm EINTEGRITY 오류 해결
 - [번들러의 역사와 Vite](/knowledge/dictionary/frontend/javascript/bundlers-and-vite): CommonJS·AMD·ES 모듈에서 번들러로, esbuild와 Snowpack이 푼 느린 빌드, Vite의 개발·배포 이원 구조
+- [React와 Vue 비교](/knowledge/dictionary/frontend/javascript/react-vs-vue): JSX와 템플릿, 불변 상태와 반응형 상태, v-model의 정체, 생태계 범위와 고르는 기준
 - [React와 Vue 말고: 다른 프론트엔드 프레임워크](/knowledge/dictionary/frontend/javascript/frontend-frameworks): Svelte, Angular, Preact, Alpine.js, HTMX의 성격과 쓰임
 
 ## 코딩 스타일

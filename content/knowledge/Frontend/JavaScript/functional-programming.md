@@ -5,10 +5,11 @@ summary: "함수형 프로그래밍을 순수 함수·불변성·선언적 패�
 tags: ["javascript", "frontend", "functional-programming", "programming-paradigm"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study"]
+sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45"]
 ---
 
 > 테오(teo)의 「[다시 쓰는 함수형 프로그래밍](https://velog.io/@teo/functional-programming)」(2022.05)과 「[함수형 프로그래밍을 배워보자!](https://velog.io/@teo/functional-programming-study)」(2023.01)를 바탕으로 재구성한 노트입니다. 용어 틀은 에릭 노먼드의 『쏙쏙 들어오는 함수형 코딩』(Grokking Simplicity)에서 왔습니다.
+> 명령형과 선언형 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로 더한 노트입니다.
 
 ## 함수형 프로그래밍이란
 
@@ -32,6 +33,25 @@ sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo
 | 선언적 패턴 | **계층형 설계, 추상화 벽** | "무엇"과 "어떻게"를 층으로 나눈다 |
 
 "부수 효과를 멀리하라"는 말은 오해를 부른다. 서버 통신, DOM 변경, 로그가 없는 프로그램은 쓸모가 없다. 부수 효과를 없애는 게 아니라 **구분해서 최소화하는** 것이 목표다.
+
+## 명령형과 선언형
+
+**명령형**은 "어떻게(how)"를 단계별로 지시하고, **선언형**은 "무엇을(what)" 원하는지 적는다. 절차적·객체 지향 코드는 명령형에, 함수형·논리형 코드는 선언형에 속한다.
+
+```js
+const fruits = ['yellow banana', 'red apple', 'black banana'];
+
+// 명령형: 반복 변수, 조건, 결과 배열을 직접 관리한다
+const bananas = [];
+for (let i = 0; i < fruits.length; i++) {
+  if (fruits[i].includes('banana')) bananas.push(fruits[i]);
+}
+
+// 선언형: 조건만 말하고 반복은 filter에 맡긴다
+const bananas2 = fruits.filter((f) => f.includes('banana'));
+```
+
+명령형은 중간에 멈추기(`break`) 같은 세밀한 제어가 쉽고 경우에 따라 더 빠르다. 대신 길어지고 인덱스·조건 실수로 버그가 끼기 쉽다. 선언형은 의도가 한눈에 보인다. JavaScript에서 이것이 가능한 이유는 **함수가 일급 객체**라서다. 함수를 값처럼 변수에 담고, 인자로 넘기고, 반환할 수 있으므로 `filter`·`map` 같은 고차 함수에 "무엇을"을 함수로 건넬 수 있다.
 
 ## 1. 액션, 계산, 데이터
 

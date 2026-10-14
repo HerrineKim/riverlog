@@ -17,7 +17,7 @@ date: "2026-10-13"
 - [HTML 입력 요소 치트시트](/knowledge/dictionary/frontend/web/html-input-types): input의 22가지 type, label·select·textarea·fieldset·datalist
 - [더 나은 폼을 만드는 팁](/knowledge/dictionary/frontend/web/form-usability): 브라우저 기본 동작 존중, inputmode, 보이는 검증 메시지, 커서·포커스를 빼앗지 않는 입력 처리
 - [DOM](/knowledge/dictionary/frontend/web/dom): 브라우저가 문서를 객체 트리로 표현하는 방식, DOM tree와 노드 종류, BOM
-- [브라우저 렌더링 과정](/knowledge/dictionary/frontend/web/browser-rendering): DOM·CSSOM → 렌더 트리 → 레이아웃(리플로우) → 페인팅, 스크립트의 파싱 차단, 리렌더링 비용
+- [브라우저 렌더링 과정](/knowledge/dictionary/frontend/web/browser-rendering): 브라우저 구성 요소, DOM·CSSOM → 렌더 트리 → 레이아웃(리플로우) → 페인팅, 스크립트·CSS의 차단, 강제 동기 레이아웃, 리렌더링 비용
 - [반응형 이미지: srcset·sizes와 picture](/knowledge/dictionary/frontend/web/responsive-images): 크기만 다르면 srcset·sizes, 자르기·형식 대체는 picture, sizes 근삿값, 이미지 CDN·CMS 자동화
 - [브라우저 기본 동작을 존중하기](/knowledge/dictionary/frontend/web/respect-browser-defaults): 스크롤바·스크롤·강조색·글자 크기·포커스·클립보드·방문 기록을 덮어쓰지 않는 이유와 원칙
 - [SPA와 CSR·SSR](/knowledge/dictionary/frontend/web/spa-csr-ssr): 단일 페이지 애플리케이션과 렌더링 주체·시점에 따른 차이(CSR·SSR·SSG·ISR)

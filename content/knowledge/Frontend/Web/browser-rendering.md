@@ -1,14 +1,14 @@
 ---
 title: "브라우저 렌더링 과정"
 concept: "Critical Rendering Path"
-summary: "HTML을 DOM으로, CSS를 CSSOM으로 파싱하고, 둘을 합친 렌더 트리로 레이아웃(리플로우)·페인팅·합성을 거쳐 화면을 그린다. 레이아웃·페인팅은 비싸서 자주 일어나면 성능이 떨어진다."
+summary: "브라우저의 구성 요소와, HTML을 DOM으로·CSS를 CSSOM으로 파싱해 렌더 트리로 레이아웃(리플로우)·페인팅·합성을 거쳐 화면을 그리는 과정. HTML 파서의 특성, 스크립트·스타일 시트의 차단, 더티 비트와 강제 동기 레이아웃, 변경마다 다시 도는 단계까지."
 tags: ["frontend", "browser", "dom", "rendering", "performance"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/"]
+date: "2026-10-14"
+sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/", "https://d2.naver.com/helloworld/59361", "https://wormwlrm.github.io/2021/03/27/How-browsers-work.html"]
 ---
 
-> 「렌더링 전: 내비게이션」 부분은 Ali Alabbas의 「서버에서 클라이언트로」(웹액츄얼리 번역, 2020.06)를 바탕으로 보강한 노트입니다.
+> 브라우저 구조·파서·레이아웃 최적화 부분은 Tali Garsiel의 「[브라우저는 어떻게 동작하는가?](https://d2.naver.com/helloworld/59361)」(NAVER D2 번역, 2012.05)와 재그지그의 「[프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)」(2021.03)을, 「렌더링 전: 내비게이션」 부분은 Ali Alabbas의 「서버에서 클라이언트로」(웹액츄얼리 번역, 2020.06)를 바탕으로 보강한 노트입니다.
 
 ## 한눈에 보기
 
@@ -29,6 +29,26 @@ CSS  ──파싱──> CSSOM ┘
 | 5. 페인팅 | 레이아웃 결과 | 레이어별 그리기 명령·픽셀 |
 | 6. 합성(composite) | 레이어들 | 레이어를 순서대로 겹친 최종 화면 |
 
+## 브라우저의 구성 요소
+
+| 구성 요소 | 하는 일 |
+| --- | --- |
+| 사용자 인터페이스 | 주소창, 뒤로·앞으로 가기, 북마크처럼 페이지 영역 밖의 모든 UI |
+| 브라우저 엔진 | UI와 렌더링 엔진 사이에서 명령을 중개한다 (새로고침 버튼 → 다시 불러오기) |
+| 렌더링 엔진 | HTML·CSS를 파싱해 화면에 그린다. 이 노트의 주제 |
+| 네트워킹 | HTTP 요청 등 외부 자원을 가져온다 |
+| JavaScript 엔진 | JS를 해석·실행한다. 자세한 내용은 [[js-engine-v8|JS 엔진과 V8 파이프라인]] |
+| UI 백엔드 | `<select>`, `alert` 같은 기본 위젯을 OS의 그리기 기능으로 그린다 |
+| 자료 저장소 | 쿠키, localStorage·sessionStorage, IndexedDB 같은 로컬 저장 공간 |
+
+| 브라우저 | 렌더링 엔진 | JS 엔진 |
+| --- | --- | --- |
+| Chrome, Edge, Opera, Samsung Internet | Blink | V8 |
+| Safari | WebKit | JavaScriptCore |
+| Firefox | Gecko | SpiderMonkey |
+
+Edge는 2020년 자체 엔진(EdgeHTML)을 버리고 Chromium 기반으로 바뀌었고, Trident를 쓰던 Internet Explorer는 2022년 지원이 끝났다. Chrome은 탭(사이트)마다 **렌더러 프로세스**를 따로 띄우고, 그 안의 **메인 스레드 하나**가 JS 실행·스타일 계산·레이아웃·페인트를 모두 맡는다. 그래서 긴 JS 작업은 렌더링을 멈춘다. 메인 스레드가 일을 고르는 방식은 [[event-loop|이벤트 루프]]에 있다.
+
 ## 렌더링 전: 내비게이션
 
 렌더링은 HTML이 도착해야 시작한다. 주소창 입력, 링크 클릭, 북마크 선택은 모두 **내비게이션**을 만들고, 브라우저는 네트워크에 나가기 전에 몇 단계를 먼저 확인한다. DNS·TCP·TLS 같은 네트워크 단계 자체는 [[url-to-page|브라우저에 URL을 입력하면 일어나는 일]]에 있다.
@@ -42,7 +62,7 @@ CSS  ──파싱──> CSSOM ┘
 | 5 | 응답 처리 | 헤더가 리다이렉트(`Location`)면 1번부터 다시. 압축을 풀고, 캐시에 기록하고, MIME 타입을 보고 HTML이면 파싱을 시작한다 |
 | 6 | 방문 기록 | 이 시점에 URL이 기록에 들어가 뒤로·앞으로 가기가 가능해진다 |
 
-- HTML 파서가 일하는 동안 **프리로드 스캐너**가 문서 속 이미지·CSS·JS URL을 미리 찾아 다운로드를 시작한다. 그래서 `<img>`의 `srcset`·`sizes`처럼 마크업에 정보를 적어 두는 것이 중요하다.
+- HTML 파서가 일하는 동안 **프리로드 스캐너**(예측 파싱, speculative parsing)가 문서 속 이미지·CSS·JS URL을 미리 찾아 다운로드를 시작한다. DOM은 건드리지 않고 자원 요청만 앞당긴다. 그래서 `<img>`의 `srcset`·`sizes`처럼 마크업에 정보를 적어 두는 것이 중요하다.
 - 캐시와 저장소는 **출처(origin = 스킴 + 호스트 + 포트)** 단위로 격리된다. 하나라도 다르면 다른 출처이고, 다른 출처의 자원을 읽으려면 그쪽이 CORS 헤더로 허락해야 한다.
 - 서비스 워커 캐시 전략은 [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]]에 정리했다.
 
@@ -53,25 +73,31 @@ HTML은 네 단계를 거쳐 [[dom|DOM]] 트리가 된다.
 | 단계 | 하는 일 |
 | --- | --- |
 | 바이트 → 문자 | 네트워크·디스크에서 받은 원시 바이트를 지정된 인코딩(UTF-8 등)으로 해석한다 |
-| 토큰화 | HTML 표준 규칙에 따라 `<html>`, `<head>` 같은 토큰으로 쪼갠다 |
+| 토큰화 | 상태 기계(state machine)인 토크나이저가 문자를 하나씩 읽으며 시작 태그·종료 태그·텍스트 토큰을 만든다 |
 | 객체화 | 토큰을 속성을 가진 노드 객체로 만든다 |
 | 트리 구성 | 태그의 포함 관계에 따라 부모-자식 트리로 엮는다 |
 
-### 파서는 틀린 HTML도 고친다
+### HTML 파서가 일반 파서와 다른 점
 
-HTML 파서는 문법 오류로 멈추지 않는다. 빠진 태그를 채우고 닫히지 않은 태그를 닫는다.
+대부분의 프로그래밍 언어와 CSS는 **문맥 자유 문법(context-free grammar)** 이라 파서 생성기로 만든 일반 파서로 처리된다. HTML은 그렇지 않다. 그래서 HTML 표준(WHATWG HTML Living Standard)이 토큰화와 트리 구축 알고리즘을 직접 정의한다. 과거 HTML4는 DTD로 문법을 정의했다.
+
+| 특성 | 의미 |
+| --- | --- |
+| 오류에 관대함 | 문법 오류로 멈추지 않는다. 빠진 태그를 채우고, 닫히지 않은 태그를 닫고, `</br>`을 `<br>`로 고친다. 고치는 방법까지 표준에 정해져 있어 브라우저마다 결과가 같다 |
+| 재진입(reentrant) | 파싱 도중 실행된 스크립트가 `document.write`로 입력 스트림에 마크업을 끼워 넣을 수 있다 |
+| 점진적 | 받은 부분부터 바로 파싱하고, 화면에도 먼저 그릴 수 있다 |
 
 ```html
 <!-- 작성한 코드 -->
 <body>
-<p>Front-end Developer
+<p class=highlight>Front-end Developer
 <span>Zero
 
 <!-- 파서가 만든 구조 -->
 <html>
   <head></head>
   <body>
-    <p>Front-end Developer <span>Zero</span></p>
+    <p class="highlight">Front-end Developer <span>Zero</span></p>
   </body>
 </html>
 ```
@@ -80,11 +106,12 @@ HTML 파서는 문법 오류로 멈추지 않는다. 빠진 태그를 채우고 
 
 | 자원 | 파싱 중 만나면 |
 | --- | --- |
-| 이미지·CSS 등 | 요청만 보내고 파싱을 계속한다 |
+| 이미지 등 | 요청만 보내고 파싱을 계속한다 |
+| CSS (`<link rel="stylesheet">`) | 파싱은 계속하지만 **렌더링을 막는다(render-blocking)**. 뒤따르는 동기 스크립트도 CSSOM이 완성될 때까지 실행을 기다린다 |
 | `<script>` (속성 없음) | **파싱을 멈추고** 스크립트를 받아 실행한 뒤 이어서 파싱한다 |
 | `<script async>` / `<script defer>` | 받는 동안 파싱을 계속한다. async는 받는 즉시, defer는 파싱이 끝난 뒤 실행 |
 
-스크립트가 파싱을 막는 이유는 스크립트가 `document.write` 등으로 DOM 자체를 바꿀 수 있기 때문이다.
+스크립트가 파싱을 막는 이유는 스크립트가 `document.write` 등으로 DOM 자체를 바꿀 수 있기 때문이다. 스크립트가 CSS를 기다리는 이유는 `getComputedStyle`처럼 스타일을 읽는 코드가 덜 만들어진 CSSOM에서 틀린 값을 받지 않게 하려는 것이다.
 
 ## 2. CSSOM 생성
 
@@ -92,46 +119,88 @@ HTML 파서는 문법 오류로 멈추지 않는다. 빠진 태그를 채우고 
 
 - 브라우저 기본 스타일(User Agent Stylesheet)과 작성한 CSS를 함께 반영한다.
 - 일반적인 규칙(`body`)에서 구체적인 규칙(`body p span`)으로 내려가며 스타일을 덧씌운다. 그래서 트리 구조다.
+- HTML과 달리 **파일을 끝까지 받아야** 쓸 수 있다. 뒤쪽 규칙이 앞쪽 규칙을 덮어쓸 수 있기 때문이다. CSS가 렌더링을 막는 이유가 이것이다.
+- 규칙이 겹칠 때 무엇이 이기는지는 출처·중요도 → 특정도(specificity) → 선언 순서로 정한다. 자세한 규칙은 [[selectors|CSS 선택자와 우선순위]]에 있다.
 
 ## 3. 렌더 트리 생성
 
-DOM과 CSSOM을 합쳐 **화면에 실제로 그릴 것만** 담은 렌더 트리를 만든다.
+DOM과 CSSOM을 합쳐 **화면에 실제로 그릴 것만** 담은 렌더 트리를 만든다. Gecko에서는 프레임 트리라고 부른다.
 
 1. DOM 루트부터 노드를 순회한다.
 2. 보이지 않는 노드는 뺀다: `<script>`, `<meta>`, `display: none`인 요소 등.
 3. 남은 노드마다 [캐스케이드](https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade)로 결정된 스타일을 붙인다.
 
-그래서 **DOM 트리와 렌더 트리는 1:1로 대응하지 않는다.** `visibility: hidden`은 공간을 차지하므로 렌더 트리에 남는다는 점이 `display: none`과 다르다.
+그래서 **DOM 트리와 렌더 트리는 1:1로 대응하지 않는다.** `visibility: hidden`은 공간을 차지하므로 렌더 트리에 남는다는 점이 `display: none`과 다르다. 반대로 `<select>`처럼 노드 하나가 렌더 객체 여러 개가 되기도 한다.
+
+스타일 계산은 요소마다 모든 규칙을 맞춰 봐야 해서 비싸다. 엔진은 같은 스타일을 받는 형제 요소끼리 계산 결과를 공유하고, 선택자를 맨 오른쪽 부분(키 선택자)으로 분류해 둬 맞춰 볼 규칙 수를 줄인다.
 
 ## 4. 레이아웃 (리플로우)
 
-렌더 트리에는 스타일만 있고, 뷰포트 안에서 **어디에 얼마나 크게** 놓일지는 아직 없다. 이것을 계산하는 단계가 레이아웃이고, 다시 일어날 때는 리플로우(reflow)라고 부른다.
+렌더 트리에는 스타일만 있고, 뷰포트 안에서 **어디에 얼마나 크게** 놓일지는 아직 없다. 이것을 계산하는 단계가 레이아웃이고, 다시 일어날 때는 리플로우(reflow)라고 부른다. 루트에서 시작해 재귀적으로 내려가며, 부모가 자식의 너비를 정하고 자식의 높이를 모아 자기 높이를 정한다.
 
 | 종류 | 언제 | 범위 |
 | --- | --- | --- |
 | 전역 레이아웃 | 글꼴 크기 등 전역 스타일 변경, 뷰포트 크기 변경 | 렌더 트리 전체를 다시 순회 |
 | 증분 레이아웃 | 그 밖의 스타일 변경 | 바뀐 노드만, 비동기로 |
 
+증분 레이아웃은 **더티 비트(dirty bit)** 로 동작한다. 바뀐 노드와 그 조상에 "다시 계산해야 함" 표시만 해 두고, 스케줄러가 나중에 표시된 노드들을 **한꺼번에** 계산한다. 그래서 스크립트가 스타일을 여러 번 바꿔도 레이아웃은 보통 한 번만 일어난다.
+
+### 강제 동기 레이아웃
+
+이 일괄 처리를 깨는 것이 **레이아웃 값 읽기**다. 더티 표시가 남은 상태에서 `offsetHeight`, `clientWidth`, `getBoundingClientRect()` 같은 값을 읽으면, 브라우저는 정확한 값을 주려고 그 자리에서 레이아웃을 강제로 수행한다. 읽기와 쓰기를 번갈아 하면 매번 레이아웃이 일어난다(레이아웃 스래싱, layout thrashing).
+
+```js
+// 나쁨: 쓰기 뒤에 읽기 → 두 번째 읽기에서 강제 레이아웃
+const width = div1.clientWidth;
+div2.style.width = `${width}px`;
+const height = div1.clientHeight;
+div2.style.height = `${height}px`;
+
+// 좋음: 읽기를 모으고, 쓰기를 모은다
+const w = div1.clientWidth;
+const h = div1.clientHeight;
+div2.style.width = `${w}px`;
+div2.style.height = `${h}px`;
+```
+
 ## 5. 페인팅
 
-레이아웃 결과를 바탕으로 노드를 실제 픽셀로 그린다. 페인팅도 전역·증분이 있고, 증분 페인팅은 바뀐 노드만 다시 그린다.
+레이아웃 결과를 바탕으로 노드를 실제 픽셀로 그린다. 페인팅도 전역·증분이 있고, 증분 페인팅은 바뀐 영역만 다시 그린다. 단색보다 그림자·흐림 효과가 그리기 비용이 크다.
+
+한 블록은 CSS 명세가 정한 순서로 칠해진다.
+
+```text
+background-color → background-image → border → 자식 → outline
+```
+
+그래서 큰 배경 이미지를 지정하면 이미지가 도착하기 전까지 배경색이 먼저 보인다. 요소 사이의 순서는 `z-index`가 만드는 쌓임 맥락(stacking context)을 따라 낮은 것부터 그린다. 쌓임 맥락은 [[how-css-works|CSS가 동작하는 방식]]에 있다.
 
 ## 6. 합성
 
 브라우저는 페이지를 여러 **레이어**로 나눠 그린 뒤, 컴포지터 스레드(대개 GPU)에서 순서대로 겹쳐 최종 화면을 만든다. `transform`·`opacity`만 바꾸는 애니메이션은 레이아웃과 페인팅을 건너뛰고 합성만 다시 하므로 메인 스레드가 바빠도 부드럽다. `will-change: transform`으로 레이어 분리를 미리 알릴 수 있지만, 레이어마다 메모리를 쓰므로 필요한 요소에만 쓴다.
 
-## 리렌더링과 성능
+## 변경이 다시 도는 단계
 
-렌더링의 모든 단계는 비용이 들고, 특히 **레이아웃과 페인팅이 자주 일어나면 성능 문제**가 된다.
+브라우저는 변경에 대해 가능한 한 적은 단계만 다시 수행한다.
 
-DOM을 직접 자주 조작하면 리렌더링이 잦아지기 쉽다. React·Vue 같은 라이브러리는 변경을 먼저 **가상 DOM**에 반영하고, 이전 상태와 비교해 실제로 바뀐 부분만 DOM에 적용해 이를 줄인다. Svelte·Solid는 가상 DOM 없이 컴파일러와 시그널로 바뀐 노드만 직접 갱신한다.
+| 변경 | 다시 도는 단계 |
+| --- | --- |
+| 색·배경·그림자 | 페인팅 → 합성 (해당 요소만) |
+| 크기·위치·여백, 텍스트 내용 | 레이아웃 → 페인팅 → 합성 (요소와 자식, 영향받는 형제) |
+| DOM 노드 추가·삭제 | 그 노드 주변의 레이아웃과 페인팅 |
+| `html`의 글꼴 크기, 뷰포트 크기 | 캐시를 버리고 트리 전체를 레이아웃·페인팅 |
+| `transform`·`opacity` | 합성만 |
+
+화면은 디스플레이 주사율에 맞춰 갱신된다. 60Hz면 프레임당 약 16.7ms 안에 JS, 스타일, 레이아웃, 페인트를 모두 끝내야 끊김이 없다. 시각적 변경은 `requestAnimationFrame` 안에서 하면 다음 프레임 직전에 모아 처리된다.
+
+DOM을 직접 자주 조작하면 리렌더링이 잦아지기 쉽다. React·Vue 같은 라이브러리는 변경을 먼저 메모리 속 **가상 DOM**에 반영하고, 이전 상태와 비교해 실제로 바뀐 부분만 한 번에 DOM에 적용해 이를 줄인다. 같은 효과는 DOM 변경을 직접 모아 실행해도 얻을 수 있다. 가상 DOM은 그 일을 자동화한 것이다. Svelte·Solid는 가상 DOM 없이 컴파일러와 시그널로 바뀐 노드만 직접 갱신한다.
 
 ## 정리
 
-- HTML → DOM, CSS → CSSOM, 둘을 합쳐 렌더 트리 → 레이아웃 → 페인팅.
-- 속성 없는 `<script>`는 HTML 파싱을 멈춘다. `defer`·`async`로 막지 않게 한다.
-- 렌더 트리에는 보이는 노드만 들어가므로 DOM과 1:1이 아니다.
-- 위치·크기가 바뀌면 레이아웃부터, 색만 바뀌면 페인팅부터, `transform`·`opacity`만 바뀌면 합성만 다시 한다. 레이아웃을 건드리는 변경이 가장 비싸다.
-- 보충: 브라우저는 보통 여러 DOM 변경을 모아 한 번에 레이아웃한다. 다만 변경 사이에 `offsetHeight` 같은 레이아웃 값을 읽으면 그때마다 강제로 레이아웃이 일어나므로, 읽기와 쓰기를 섞지 않는다.
+- 브라우저는 UI·브라우저 엔진·렌더링 엔진·네트워킹·JS 엔진·UI 백엔드·저장소로 나뉜다. 렌더링과 JS는 같은 메인 스레드를 쓴다.
+- HTML → DOM, CSS → CSSOM, 둘을 합쳐 렌더 트리 → 레이아웃 → 페인팅 → 합성.
+- HTML 파서는 오류를 표준대로 고치며 점진적으로 파싱한다. CSS는 끝까지 받아야 해서 렌더링을 막고, 속성 없는 `<script>`는 파싱을 막는다.
+- 위치·크기가 바뀌면 레이아웃부터, 색만 바뀌면 페인팅부터, `transform`·`opacity`만 바뀌면 합성만 다시 한다.
+- 브라우저는 더티 비트로 레이아웃을 모아 처리한다. **레이아웃 값 읽기와 스타일 쓰기를 섞지 않는 것**이 이 최적화를 살리는 방법이다.
 
-관련 노트: [[dom|DOM]], [[html|HTML]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]]
+관련 노트: [[dom|DOM]], [[html|HTML]], [[event-loop|이벤트 루프]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]]

@@ -58,3 +58,5 @@ date: "2026-10-13"
 - 하이브리드 = WebView에 웹 페이지를 담은 앱(빠른 개발, 느린 성능).
 - 크로스 플랫폼 = 하나의 코드로 네이티브 앱 생성(React Native, Flutter).
 - 크로스 플랫폼도 네이티브를 100% 대체하지는 못한다. 기본기는 네이티브다.
+
+관련 노트: [[flutter-architecture|Flutter의 구조와 위젯 트리]], [[android-fundamentals|Android 핵심 개념]]

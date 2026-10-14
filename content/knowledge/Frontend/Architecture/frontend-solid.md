@@ -5,10 +5,11 @@ summary: "객체 지향 설계 원칙 SOLID(SRP·OCP·LSP·ISP·DIP)를 React �
 tags: ["react", "frontend", "javascript", "design"]
 source: other
 date: "2026-10-12"
-sources: ["https://yozm.wishket.com/magazine/detail/2479/", "https://velog.io/@teo/Javascript에서도-SOLID-원칙이-통할까"]
+sources: ["https://yozm.wishket.com/magazine/detail/2479/", "https://velog.io/@teo/Javascript에서도-SOLID-원칙이-통할까", "https://80000coding.notion.site/ddedd7bd3558415182930eea33ae6769"]
 ---
 
 > pxd Story의 글 「[프론트엔드와 SOLID 원칙 살펴보기](https://yozm.wishket.com/magazine/detail/2479/)」(요즘IT, 2024.03)와 테오(teo)의 「[Javascript에서도 SOLID 원칙이 통할까?](https://velog.io/@teo/Javascript에서도-SOLID-원칙이-통할까)」(2022.01)를 바탕으로 재구성한 노트입니다.
+> 클래스 기준의 원래 정의는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[클린코드] 객체지향과 SOLID 설계 원칙」을 바탕으로 보강했습니다.
 
 ## SOLID란
 
@@ -21,6 +22,20 @@ SOLID는 코드를 **유지보수하기 쉽고, 재사용·확장하기 좋게**
 | **L**SP 리스코프 치환 | 자식은 부모를 대신할 수 있어야 한다 | 확장한 컴포넌트도 원래 동작 약속을 지킨다 |
 | **I**SP 인터페이스 분리 | 쓰지 않는 것에 의존하지 않는다 | props는 필요한 것만 받는다 |
 | **D**IP 의존 역전 | 구체가 아니라 추상에 의존한다 | 컴포넌트가 API를 직접 부르지 않고 서비스에 의존 |
+
+### 클래스 기준의 원래 정의
+
+컴포넌트로 옮기기 전, 클래스 설계에서의 원래 뜻은 다음과 같다. 다섯 원칙 모두 **추상화와 다형성**을 써서 변경의 파급을 끊는다는 같은 목표를 향한다.
+
+| 원칙 | 클래스 설계에서의 정의 | 지키는 수단 |
+| --- | --- | --- |
+| SRP | 클래스를 **변경해야 하는 이유는 하나**뿐이어야 한다 | 요리·정원 관리·운전을 다 하는 로봇 클래스를 역할별 클래스로 나눈다 |
+| OCP | 요구 사항이 늘어도 기존 클래스는 고치지 않고 새 클래스를 더해 확장한다 | 상위 타입(추상 클래스·인터페이스)에 기대고 구현을 추가 |
+| LSP | 하위 타입은 언제든 상위 타입 자리에 들어갈 수 있어야 한다. 상위 타입의 **계약**(사전·사후 조건, 던지는 예외, 접근 범위)을 좁히거나 깨지 않는다 | 상속보다 인터페이스 구현이나 합성을 우선 |
+| ISP | 클라이언트는 쓰지 않는 메서드에 의존하지 않는다. SRP가 클래스의 단일 책임이라면 ISP는 **인터페이스의 단일 책임**이다 | 큰 인터페이스를 역할별로 쪼갠다 |
+| DIP | 상위 모듈과 하위 모듈 모두 추상에 의존하고, 추상은 세부 구현에 의존하지 않는다 | 생성자로 인터페이스 구현을 주입(DI) |
+
+추상 클래스와 인터페이스 중 무엇을 상위 타입으로 쓸지는 [[abstract-class-vs-interface|추상 클래스와 인터페이스]], 타입 분기를 팩터리에 가두는 OCP 예시는 [[clean-code-functions-naming|클린 코드: 함수와 이름]] 노트에 있다.
 
 ## SRP: 단일 책임 원칙
 
@@ -129,4 +144,4 @@ const halved = (arr: number[]) => map(arr, (x) => x / 2);
 
 원칙은 목표가 아니라 기준이다. 지금 코드가 바꾸기 어려운 이유를 설명하는 도구로 쓰면 된다.
 
-관련 노트: [[functional-programming|함수형 프로그래밍]], [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[composition|합성]], [[components-and-props|컴포넌트와 Props]], [[tdd|프론트엔드에서의 TDD]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[clear-code-principles|명확한 코드의 네 가지 원칙]]
+관련 노트: [[functional-programming|함수형 프로그래밍]], [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[composition|합성]], [[components-and-props|컴포넌트와 Props]], [[tdd|프론트엔드에서의 TDD]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]]

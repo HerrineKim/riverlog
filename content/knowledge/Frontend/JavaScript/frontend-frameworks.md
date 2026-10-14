@@ -109,4 +109,4 @@ AngularJS가 "더는 업데이트하지 않겠다"고 선언하고 Angular 2가 
 - Svelte는 런타임 대신 **컴파일러**로 바닐라 JS를 생성해 작고 빠르다. 약점은 성능이 아니라 생태계다.
 - 회사에서는 생태계가 큰 React·Vue를 쓰게 되는 경우가 많다. 개인 프로젝트에서는 성능 중심인지, 기능 중심인지, 얼마나 가벼워야 하는지에 따라 골라 볼 만하다.
 
-관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[tech-stack-selection|기술 스택 고르기]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[webs-next-transition|웹 아키텍처의 다음 전환]], [[mobile-frameworks|모바일 프레임워크 비교]]
+관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[tech-stack-selection|기술 스택 고르기]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[webs-next-transition|웹 아키텍처의 다음 전환]], [[mobile-frameworks|모바일 프레임워크 비교]], [[react-vs-vue|React와 Vue 비교]]

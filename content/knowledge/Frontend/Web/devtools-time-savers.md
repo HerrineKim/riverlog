@@ -5,10 +5,11 @@ summary: "소스를 고치지 않고 화면을 바꿔 보는 designMode, 한 줄
 tags: ["frontend", "javascript", "browser", "tips", "tools"]
 source: other
 date: "2026-10-13"
-sources: ["https://yozm.wishket.com/magazine/detail/1585/"]
+sources: ["https://yozm.wishket.com/magazine/detail/1585/", "https://80000coding.notion.site/cf68279ce9c846d5a0b408d8aaeced25"]
 ---
 
 > 곰씨네 IT 블로그의 「[웹 개발 시간을 줄여주는 팁 4가지](https://yozm.wishket.com/magazine/detail/1585/)」(요즘IT, 2022.07)를 바탕으로 재구성한 노트입니다.
+> 콘솔 메서드 일부는 팔만코딩경(42Seoul 커뮤니티 위키)의 「js에서 console.log보다 예쁘게 봐보자!」를 바탕으로 더한 노트입니다.
 
 ## 한눈에 보기
 
@@ -74,6 +75,7 @@ function calc(items) {
 | 메서드 | 출력 |
 | --- | --- |
 | `console.table(arr)` | 객체 배열을 표로 보여 준다. 열을 클릭해 정렬할 수 있다 |
+| `console.error(msg)` · `console.warn(msg)` | 빨간색·노란색으로 강조하고 호출 스택을 붙인다. 콘솔의 레벨 필터로 오류·경고만 골라 볼 수 있다 |
 | `console.dir(obj)` | 객체를 펼칠 수 있는 트리로 보여 준다. DOM 요소도 HTML 대신 속성 목록으로 보인다 |
 
 자주 쓰면 짧은 별칭을 만든다.

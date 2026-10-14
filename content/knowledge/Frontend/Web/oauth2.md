@@ -1,12 +1,14 @@
 ---
 title: "OAuth 2.0"
 concept: "OAuth2"
-summary: "비밀번호를 넘기지 않고 다른 서비스의 자원 접근 권한을 위임하는 OAuth 2.0. 네 역할, Authorization Code + PKCE 흐름, 토큰 종류, OIDC와의 차이, 프론트엔드 보안 주의점을 정리한다."
+summary: "비밀번호를 넘기지 않고 다른 서비스의 자원 접근 권한을 위임하는 OAuth 2.0. 네 역할, Authorization Code + PKCE 흐름, 토큰 종류, OIDC와의 차이, 프론트엔드 보안 주의점, OIDC로 구현하는 SSO를 정리한다."
 tags: ["security", "web", "auth", "oauth", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/323", "https://www.rfc-editor.org/rfc/rfc9700"]
+sources: ["https://riverkim.kr/323", "https://www.rfc-editor.org/rfc/rfc9700", "https://80000coding.notion.site/7e32a39070024199bf98063452f5fcb3"]
 ---
+
+> SSO 섹션에 팔만코딩경(42Seoul 커뮤니티 위키)의 「싱글 사인온 (Single Sign On)」을 재구성해 더한 노트입니다.
 
 ## OAuth 2.0이란
 
@@ -63,6 +65,23 @@ OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 
 
 **Access Token으로 로그인을 판단하면 안 된다.** 로그인은 OIDC의 ID Token으로 확인한다.
 
+## SSO: 한 번 로그인으로 여러 서비스
+
+**SSO(Single Sign-On)** 는 한 번의 인증으로 여러 애플리케이션을 쓰게 하는 방식이다. 회사 계정 하나로 메일·메신저·사내 위키에 들어가거나, Google 계정 하나로 Gmail·YouTube를 오가는 것이 예다. 인증은 한 곳(IdP, Identity Provider)이 맡고, 각 서비스는 그 결과를 믿는다.
+
+| 구축 방식 | 동작 | 쓰는 곳 |
+| --- | --- | --- |
+| 인증 대행 | 에이전트가 사용자의 각 서비스 계정 정보를 보관했다가 대신 로그인해 준다 | 인증 방식을 고칠 수 없는 레거시 시스템 |
+| 인증 정보 전달 | IdP가 인증 후 토큰·어설션을 발급하고, 각 서비스는 그것을 검증해 사용자를 확인한다 | 웹 SSO의 표준 방식 |
+
+인증 정보 전달 방식의 표준 프로토콜은 둘이다. 웹·모바일의 새 서비스는 **OIDC**(위의 ID Token 흐름), 기업용 레거시 시스템은 XML 기반 **SAML 2.0**을 많이 쓴다. 사용자가 IdP에 한 번 로그인하면 IdP 도메인에 세션 쿠키가 남으므로, 다른 서비스가 IdP로 보내도 다시 비밀번호를 묻지 않고 바로 토큰을 돌려준다.
+
+| 장점 | 주의 |
+| --- | --- |
+| 사용자는 비밀번호 하나만 관리한다 | IdP 계정이 털리면 모든 서비스가 열린다. MFA를 함께 건다 |
+| 비밀번호 정책·접근 권한·계정 정지를 한 곳에서 관리한다 | IdP가 멈추면 모든 서비스 로그인이 멈춘다 |
+| 각 서비스는 인증 구현을 직접 하지 않아도 된다 | 로그아웃을 모든 서비스에 전파하려면 별도 처리(OIDC 로그아웃 규격 등)가 필요하다 |
+
 ## 프론트엔드 보안 주의점
 
 - `client_secret`은 브라우저 코드에 넣지 않는다. 노출되는 클라이언트는 PKCE로 대신한다.
@@ -75,7 +94,7 @@ OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 
 
 - OAuth 2.0은 비밀번호 대신 토큰으로 권한을 위임하는 인가 표준이다.
 - 지금의 기본 흐름은 Authorization Code + PKCE, 그리고 state 검증이다.
-- 로그인(인증)은 OAuth 위의 OIDC가 맡는다.
+- 로그인(인증)은 OAuth 위의 OIDC가 맡는다. OIDC·SAML로 IdP 한 곳에 인증을 모으면 SSO가 된다.
 - **토큰을 어디에 두느냐가 프론트엔드 보안의 핵심**이다.
 
 관련 노트: [[cookie-session|쿠키와 세션]], [[web-security|웹 보안: CSRF와 XSS]], [[auth-jwt-passport|NestJS JWT 인증]], [[auth-flow|React로 회원가입·로그인 구현하기]], [[https|HTTPS와 TLS]]

@@ -20,7 +20,7 @@ date: "2026-10-13"
 | [React](/knowledge/dictionary/frontend/react) | JSX, 컴포넌트·Props, State·생명주기, Hooks, 폼·리스트·조건부 렌더링, Context, 스타일링, SWR·TanStack Query, Redux, 리렌더링 추적, react-hook-form·react-router·MUI 실무 패턴 |
 | [Next.js](/knowledge/dictionary/frontend/next-js) | React 기반 프레임워크를 쓰는 이유(SSR·SSG와 SEO), App Router의 내비게이션과 데이터 가져오기, `proxy.ts`, `fetch` 캐싱과 `use cache`, 서버·클라이언트 컴포넌트 조합 규칙 |
 | [Architecture](/knowledge/dictionary/frontend/architecture) | 의존성 관리, 프론트엔드의 SOLID 원칙, 폴더 구조의 진화, Feature-Sliced Design |
-| [Mobile](/knowledge/dictionary/frontend/mobile) | 네이티브·하이브리드·크로스 플랫폼 비교, React Native 핵심과 실무 팁, CodePush OTA 업데이트 |
+| [Mobile](/knowledge/dictionary/frontend/mobile) | 네이티브·하이브리드·크로스 플랫폼 비교, React Native 핵심과 실무 팁, CodePush OTA 업데이트, Flutter 구조와 Dart 문법, Swift Codable, Android 상태·Context·SDK 버전 |
 | [Testing](/knowledge/dictionary/frontend/testing) | 테스트의 층(정적·단위·통합·E2E)과 테스트 대역, TDD, 험블 객체 패턴, 접근성 기반 UI 테스트, Vitest·Jest·Testing Library·Playwright |
 | [UI Design](/knowledge/dictionary/frontend/ui-design) | 디자인 시스템과 공용 스킬 배포, Animated Icon, Three.js로 웹에서 3D 그리기 (AI로 디자인을 뽑는 프롬프트 기법은 [[ai-frontend-design-prompting|AI & Data]] 분야에 있다) |
 

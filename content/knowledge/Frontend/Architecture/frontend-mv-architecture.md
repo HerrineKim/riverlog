@@ -1,14 +1,14 @@
 ---
 title: "프론트엔드 MV* 아키텍처의 흐름: MVC에서 MVI까지"
 concept: "MV* Architecture"
-summary: "웹 프론트엔드의 아키텍처가 MVC → MVVM → Container-Presenter → Flux → 가벼운 전역 스토어·서버 상태 관리로 바뀌어 온 흐름과, 그 흐름을 정리한 MVI(Model-View-Intent) 아키텍처. 뷰와 비즈니스 로직을 분리하고, 뷰는 의도만 전하고, 데이터는 한 방향으로 돈다."
+summary: "MVC·MVP·MVVM의 구조와 차이, 웹 프론트엔드의 아키텍처가 MVC → MVVM → Container-Presenter → Flux → 가벼운 전역 스토어·서버 상태 관리로 바뀌어 온 흐름과, 그 흐름을 정리한 MVI(Model-View-Intent) 아키텍처. 뷰와 비즈니스 로직을 분리하고, 뷰는 의도만 전하고, 데이터는 한 방향으로 돈다."
 tags: ["frontend", "architecture", "state", "design-pattern"]
 source: other
-date: "2026-10-13"
-sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture"]
+date: "2026-10-14"
+sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://beomy.tistory.com/43"]
 ---
 
-> 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08)를 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08)를 바탕으로 재구성하고, 「MVC·MVP·MVVM 비교」는 beomy의 「[MVC, MVP, MVVM 비교](https://beomy.tistory.com/43)」(2018.09)로 보강한 노트입니다.
 
 ## 아키텍처란
 
@@ -27,6 +27,28 @@ UI 소프트웨어의 본질은 단순하다. 데이터를 화면에 그리고, 
 | Controller | 모델을 화면에 그리고, 화면의 동작으로 모델을 바꾼다 | 둘 사이의 중개자 |
 
 나눈 이유는 두 가지다. 화면 문제와 데이터 문제는 성격이 다르고, 둘의 의존을 줄여 **한쪽 수정이 다른 쪽으로 번지지 않게** 하려는 것이다.
+
+## MVC·MVP·MVVM 비교
+
+세 패턴 모두 Model과 View는 같고, **둘 사이를 잇는 세 번째 역할**과 의존 방향이 다르다.
+
+```text
+MVC   입력 → Controller ─갱신→ Model ←─읽기── View   (Controller는 View를 고르기만 한다)
+MVP   입력 → View ⇄ Presenter ⇄ Model              (View와 Model은 서로 모른다)
+MVVM  입력 → View ─명령→ ViewModel ⇄ Model
+             View ←─데이터 바인딩── ViewModel       (ViewModel은 View를 모른다)
+```
+
+| | MVC | MVP | MVVM |
+| --- | --- | --- | --- |
+| 세 번째 역할 | Controller: 입력을 받아 Model을 바꾸고 보여 줄 View를 고른다 | Presenter: View의 요청으로 Model을 가공해 View에 직접 넘긴다 | ViewModel: View에 보여 줄 상태와 동작만 모은 "View를 위한 Model" |
+| 입력이 들어오는 곳 | Controller | View | View (명령으로 ViewModel에 전달) |
+| View 갱신 | View가 Model을 직접 읽거나, Model이 알리거나(Observer), View가 주기적으로 확인 | Presenter가 View 인터페이스를 호출 | 바인딩이 ViewModel 변경을 자동 반영 |
+| 관계 | Controller : View = 1 : n | Presenter : View = 1 : 1 | ViewModel : View = 1 : n |
+| 장점 | 가장 단순하다 | View와 Model의 의존이 끊긴다. View를 가짜로 바꿔 Presenter를 테스트하기 쉽다 | View와 ViewModel까지 느슨해져 각 부분을 따로 개발·테스트할 수 있다 |
+| 약점 | View가 Model에 기대므로 앱이 커질수록 얽힌다 | View와 Presenter가 1:1로 단단히 묶이고 Presenter가 비대해진다 | ViewModel 설계가 어렵고, 바인딩이 많으면 흐름을 추적하기 어렵다 |
+
+MVVM은 명령(Command) 패턴과 데이터 바인딩이라는 두 장치로 의존을 끊는다. 웹에서는 Knockout·AngularJS가 시작이었고 Vue의 반응형 템플릿이 같은 모양이다. 모바일에서는 Android Jetpack의 ViewModel, SwiftUI의 `@Observable` 객체가 MVVM 구조로 쓰인다. MVP는 Android가 공식 ViewModel을 내기 전에 많이 쓰였다.
 
 ## 웹 프론트엔드 아키텍처의 변천
 
@@ -136,4 +158,4 @@ MV* 계열 아키텍처가 수렴해 온 공통 방향은 다음과 같다.
 - MVI는 그 흐름의 요약이다. 뷰는 의도를 보내고, 모델만 데이터를 바꾸고, 변화는 한 방향으로 돈다.
 - 새 라이브러리를 볼 때는 이름이 아니라 **어떤 불편을 풀었는지**로 판단한다.
 
-관련 노트: [[redux|Redux와 react-redux]], [[context|Context와 전역 상태]], [[tanstack-query|TanStack Query(React Query)]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]]
+관련 노트: [[redux|Redux와 react-redux]], [[getting-started-mtv|Django 시작하기와 MTV 패턴]], [[context|Context와 전역 상태]], [[tanstack-query|TanStack Query(React Query)]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]]

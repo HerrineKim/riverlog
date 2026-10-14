@@ -4,6 +4,7 @@ concept: "Frontend Architecture"
 summary: "폴더 구조, 의존성, SOLID, Feature-Sliced Design처럼 프론트엔드 코드를 어떻게 나누고 어디에 두는지에 관한 설계 원칙 모음."
 tags: ["frontend", "architecture", "design-principles"]
 source: mixed
+date: "2026-10-14"
 ---
 
 프론트엔드 아키텍처는 **코드를 어떤 단위로 나누고, 그 단위들이 서로 어떻게 의존하게 할지**를 정하는 일이다. 컴포넌트 하나를 잘 만드는 것과는 다른 문제다. 화면이 늘어나면 "이 파일을 어디에 두나", "이 훅은 어디까지 알아도 되나"가 되풀이해서 나오고, 그 답이 쌓인 것이 폴더 구조와 의존 규칙이다. 이 주제의 노트는 "의존성 → SOLID → 폴더 구조의 진화 → FSD" 순서로 읽으면 원칙에서 방법론으로 자연스럽게 이어진다.
@@ -15,7 +16,7 @@ source: mixed
 - [프론트엔드에서 관심사의 분리](Frontend/Architecture/separation-of-concerns.md): 역할 → 컴포넌트 → 컴포넌트 안의 계층으로 바뀐 분리 축, 레이어·모듈·데이터 흐름이라는 관심사의 방향, 시기별로 달라지는 구조
 - [Atomic Design과 컴포넌트 폴더 구조](Frontend/Architecture/atomic-design.md): 원자 → 분자 → 유기체 → 템플릿 → 페이지는 멘탈 모델이다. 폴더로 쓸 때의 한계와 이름 붙은 영역 먼저 나누는 절충안
 - [프론트엔드 폴더 구조의 진화](Frontend/Architecture/frontend-folder-structure.md): 역할 기반 폴더에서 엔티티·위젯·기능 중심 응집으로. 좋은 구조는 팀의 멘탈 모델과 일치하는 구조
-- [프론트엔드 MV* 아키텍처의 흐름: MVC에서 MVI까지](Frontend/Architecture/frontend-mv-architecture.md): MVC → MVVM → Flux → 가벼운 스토어·서버 상태로 이어진 변천과 MVI. 뷰는 의도만 보내고 데이터는 한 방향으로 돈다
+- [프론트엔드 MV* 아키텍처의 흐름: MVC에서 MVI까지](Frontend/Architecture/frontend-mv-architecture.md): MVC·MVP·MVVM 비교, MVC → MVVM → Flux → 가벼운 스토어·서버 상태로 이어진 변천과 MVI. 뷰는 의도만 보내고 데이터는 한 방향으로 돈다
 - [추상화 계층과 데이터 흐름](Frontend/Architecture/abstraction-layers.md): 구현에 알맞은 이름과 수준을 주면 추상화, 쌓이면 계층. 사용자 중심으로 순환하는 데이터 흐름 위에서 코드의 자리를 정하는 그라데이션 사고
 - [게슈탈트 법칙으로 보는 읽기 좋은 코드](Frontend/Architecture/readable-code.md): 근접성·공통 영역·유사성·연속성·폐쇄성으로 점검하는 빈 줄과 주석, 코드 배치, 이름 짓기
 - [Feature-Sliced Design](Frontend/Architecture/feature-sliced-design.md): 레이어 → 슬라이스 → 세그먼트 3단계 분할, 위 레이어만 아래를 쓰는 규칙, Public API, Next.js와 함께 쓸 때의 충돌, 레이어 경계 찾기와 점진적 도입
