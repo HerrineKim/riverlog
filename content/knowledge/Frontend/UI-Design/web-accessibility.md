@@ -1,14 +1,14 @@
 ---
 title: "웹 접근성: 표준 준수에서 실제 사용성까지"
 concept: "Web Accessibility"
-summary: "장애는 개인의 속성이 아니라 능력과 환경의 불일치다. 브라우저는 시맨틱 HTML로 접근성 트리를 만들어 보조 기술에 넘기고, WCAG는 그 최소선을 정한다. 하지만 표준을 지켜도 쓰기 어려울 수 있으니 장애인과 함께하는 사용성 테스트와 조직 차원의 우선순위가 필요하다."
+summary: "장애는 개인의 속성이 아니라 능력과 환경의 불일치다. 브라우저는 시맨틱 HTML로 접근성 트리를 만들어 보조 기술에 넘기고, 대체 텍스트와 절제된 ARIA가 그 트리를 채우며, WCAG는 그 최소선을 정한다. 하지만 표준을 지켜도 쓰기 어려울 수 있으니 장애인과 함께하는 사용성 테스트와 조직 차원의 우선순위가 필요하다."
 tags: ["accessibility", "frontend", "ux", "html", "testing"]
 source: other
-date: "2026-10-13"
-sources: ["https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/", "https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/", "https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/", "https://www.w3.org/WAI/news/2025-10-21/wcag22-iso", "https://www.deque.com/blog/en-301-549-v4-1-1-is-final-what-changed-what-it-means-and-what-you-should-do/"]
+date: "2026-10-14"
+sources: ["https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/", "https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/", "https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/", "https://www.w3.org/WAI/news/2025-10-21/wcag22-iso", "https://www.deque.com/blog/en-301-549-v4-1-1-is-final-what-changed-what-it-means-and-what-you-should-do/", "https://dev.to/bellatrick/mastering-web-accessibility-a-guide-for-frontend-developers-48ad", "https://webaim.org/projects/million/"]
 ---
 
-> 웹액츄얼리가 번역한 유리 파즈(Uri Paz)의 「[접근성과 사용성 엮어내기](https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/)」(2020.12), 비 버챌(Be Birchall)의 「[컨텍스트에서의 웹 접근성](https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/)」(2019.12), 로빈 크리스토퍼슨(Robin Christopherson)의 「[코로나 시대의 글로벌 디지털 접근성 개발](https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/)」(2021.02)을 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역한 유리 파즈(Uri Paz)의 「[접근성과 사용성 엮어내기](https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/)」(2020.12), 비 버챌(Be Birchall)의 「[컨텍스트에서의 웹 접근성](https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/)」(2019.12), 로빈 크리스토퍼슨(Robin Christopherson)의 「[코로나 시대의 글로벌 디지털 접근성 개발](https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/)」(2021.02)을 바탕으로 재구성하고, 대체 텍스트·ARIA 원칙은 버사요 새뮤얼(Busayo Samuel)의 「[Mastering Web Accessibility](https://dev.to/bellatrick/mastering-web-accessibility-a-guide-for-frontend-developers-48ad)」(DEV, 2023.04)로 보강한 노트입니다.
 
 ## 웹 접근성이란
 
@@ -23,6 +23,8 @@ sources: ["https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%
 - 색맹을 위한 화면 대비 설정은 햇빛 아래에서 화면을 보는 사람에게도 쓸모 있다.
 
 다양한 능력을 위한 설계가 모두에게 쓸모 있는 혁신으로 이어지는 일이 많다. 접근성은 소수를 위한 추가 작업이 아니라 **더 넓은 사용자를 위한 설계**다.
+
+현실은 멀다. WebAIM이 해마다 상위 100만 개 사이트의 홈페이지를 자동 검사하는 [WebAIM Million](https://webaim.org/projects/million/)의 2026년 결과에서 **95.9%가 WCAG 2 실패를 하나 이상** 갖고 있었고, 페이지당 평균 오류는 56.1개였다. 흔한 순서는 낮은 텍스트 대비(83.9%), 이미지 대체 텍스트 누락(53.1%), 폼 라벨 누락(51%), 빈 링크(46.3%), 빈 버튼(30.6%)이다. 대부분 마크업만 고쳐도 사라지는 문제다.
 
 ## 보조 기술은 웹을 어떻게 읽나
 
@@ -46,6 +48,50 @@ HTML ──파싱──→ DOM ──┬──→ 렌더링 → 화면
 - 머신러닝이 이미지 대체 텍스트를 자동 생성하는 등 트리에 들어갈 데이터를 보강하기 시작했지만, 아직은 개발자가 넣는 의미가 기본이다.
 
 시맨틱 마크업 자체는 [[semantic-html|시맨틱 HTML과 문서 구조]]에, role과 접근 가능한 이름을 테스트에 쓰는 법은 [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]에 있다. 이 방식의 약점은 개발자가 의도에 맞는 태그와 속성을 써야만 동작한다는 점이다. 그래서 **오늘날 웹 접근성의 가장 큰 장벽은 기술 한계가 아니라 인식과 우선순위의 부족**이다.
+
+## 대체 텍스트: 보이지 않는 사람에게 같은 정보를
+
+이미지·차트·영상처럼 눈으로만 얻는 정보에는 같은 내용을 텍스트로 준다.
+
+| 콘텐츠 | 방법 |
+| --- | --- |
+| 정보를 담은 이미지 | `alt`에 이미지가 **전하는 내용**을 쓴다. 「사진」, 「이미지」 같은 말은 붙이지 않는다(스크린 리더가 이미 이미지라고 알린다) |
+| 장식용 이미지 | `alt=""`로 비워 보조 기술이 건너뛰게 한다. `alt` 속성 자체를 빼면 파일명을 읽는다 |
+| 링크·버튼 안의 아이콘 | 아이콘이 아니라 **동작**을 이름으로 준다(`aria-label="검색"`). 아이콘 자체는 `aria-hidden="true"` |
+| 차트·도표 | `alt`에는 요지를, 자세한 수치는 `<figcaption>`이나 본문 표로 준다 |
+| 영상·오디오 | `<video>`에는 `alt`가 없다. 자막은 `<track kind="captions">`, 음성만 있는 콘텐츠는 대본(transcript)을 함께 둔다 |
+
+```html
+<figure>
+  <img src="growth.png" alt="2021년부터 2025년까지 매출이 매년 늘어 다섯 배가 됐다">
+  <figcaption>연도별 매출 추이 (상세 수치는 아래 표)</figcaption>
+</figure>
+
+<video controls src="ski.mp4">
+  <track kind="captions" src="ski.ko.vtt" srclang="ko" label="한국어">
+</video>
+```
+
+## ARIA는 마지막 수단이다
+
+ARIA(Accessible Rich Internet Applications)는 HTML만으로 표현할 수 없는 role·state·property를 접근성 트리에 더하는 W3C 명세다. 탭, 아코디언, 콤보박스처럼 네이티브 요소가 없는 위젯에서 쓴다.
+
+**ARIA의 첫 번째 규칙: 같은 의미의 네이티브 HTML 요소가 있으면 그것을 쓴다.** `<div role="button">`보다 `<button>`이 낫다. 네이티브 요소는 키보드 조작, 포커스, 상태 알림을 브라우저가 공짜로 해 주지만, ARIA는 **의미만 바꿀 뿐 동작은 하나도 더하지 않는다.** 그래서 잘못 쓴 ARIA는 안 쓴 것보다 나쁘다. WebAIM Million에서도 ARIA를 쓴 페이지가 쓰지 않은 페이지보다 평균 오류가 약 17개 많았다(복잡한 페이지일수록 ARIA를 많이 쓴다는 점을 감안해도 경향은 같다).
+
+| 속성 | 쓰임 |
+| --- | --- |
+| `aria-label`, `aria-labelledby` | 보이는 텍스트가 없거나 부족할 때 접근 가능한 이름을 준다 |
+| `aria-expanded` + `aria-controls` | 펼침 버튼이 어떤 영역을 열고 닫는지, 지금 열렸는지 알린다 |
+| `aria-current` | 현재 페이지·단계를 표시한다 |
+| `aria-live` | 화면 이동 없이 바뀐 내용(토스트, 폼 오류)을 읽게 한다 |
+| `aria-hidden="true"` | 장식 요소를 접근성 트리에서 뺀다. **포커스 가능한 요소에는 쓰지 않는다** |
+
+```html
+<button aria-expanded="false" aria-controls="more">더 보기</button>
+<div id="more" hidden>추가 내용</div>   <!-- 닫힌 내용은 aria-hidden보다 hidden 속성으로 -->
+```
+
+접힌 영역을 `aria-hidden`으로만 숨기면 안의 링크에 키보드 포커스가 여전히 들어간다. 정말 숨길 때는 `hidden` 속성이나 `display: none`을 쓴다. 위젯별 올바른 ARIA 패턴은 W3C의 [ARIA Authoring Practices Guide(APG)](https://www.w3.org/WAI/ARIA/apg/)에 있다.
 
 ## 표준: WCAG와 그 밖의 지침
 
@@ -93,8 +139,8 @@ WCAG를 통과한 제품을 시각장애인·전맹인과 테스트하면 이런
 ## 바로 할 수 있는 다섯 가지
 
 1. **마우스를 치우고 키보드로만 써 본다.** 포커스 표시가 항상 보이고, 포커스 순서가 논리적이어야 한다.
-2. **낮은 대비를 피한다.** 눈으로 먼저 거슬리는 곳을 찾고 대비 검사 도구로 확인한다.
-3. **자동 검사를 돌린다.** axe DevTools, Lighthouse, WebAIM의 WAVE, Accessibility Insights 같은 도구가 라벨 누락 같은 문제를 빨리 잡는다. 다만 자동 검사는 **일부 문제만** 찾는다. 키보드로 끝까지 할 수 있는지 같은 건 사람이 확인해야 한다.
+2. **낮은 대비를 피한다.** 눈으로 먼저 거슬리는 곳을 찾고 대비 검사 도구로 확인한다. 글자 크기는 WCAG가 정한 최솟값이 없다. 대신 브라우저에서 200%로 키워도 내용이 잘리지 않아야 하므로(성공 기준 1.4.4) 글자 크기는 `px`보다 `rem`으로 준다.
+3. **자동 검사를 돌리고 스크린 리더로 들어 본다.** axe DevTools, Lighthouse, WebAIM의 WAVE, Accessibility Insights 같은 도구가 라벨 누락 같은 문제를 빨리 잡는다. 다만 자동 검사는 **일부 문제만** 찾는다. 키보드로 끝까지 할 수 있는지, 읽는 순서가 자연스러운지는 사람이 확인해야 한다. Windows는 무료 스크린 리더 NVDA, macOS·iOS는 내장 VoiceOver로 직접 들어 본다.
 4. **접근성 페이지를 둔다.** 취한 조치와 문제를 알릴 연락처를 밝힌다.
 5. **쉬운 말로 쓴다.** 전문용어를 줄이고, 제목·문단·목록으로 나누고, 한 문단에 요점 하나를 둔다.
 
@@ -116,6 +162,7 @@ WCAG를 통과한 제품을 시각장애인·전맹인과 테스트하면 이런
 
 - 장애는 능력과 환경의 불일치다. 접근성은 결국 더 많은 사람을 위한 설계다.
 - 브라우저는 시맨틱 HTML로 접근성 트리를 만든다. 의미에 맞는 마크업이 보조 기술 지원의 기본이다.
+- 시각 정보에는 대체 텍스트를 주고, ARIA는 네이티브 요소로 안 될 때만 쓴다.
 - WCAG는 최소선이다. 지켜도 쓰기 어려울 수 있으니 장애인과 직접 테스트한다.
 - 자동 검사와 오버레이는 보조 수단이다. 키보드 테스트와 사람의 판단이 필요하다.
 - **가장 큰 장벽은 기술이 아니라 우선순위다.**
