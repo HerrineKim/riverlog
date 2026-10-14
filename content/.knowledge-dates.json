@@ -245,7 +245,7 @@
  },
  "Backend.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-14T10:57:29+09:00"
+  "updated": "2026-10-14T11:29:13+09:00"
  },
  "Backend/Architecture/bff.md": {
   "created": "2026-10-13T00:00:40+09:00",
@@ -271,13 +271,9 @@
   "created": "2026-10-11T23:36:27+09:00",
   "updated": "2026-10-13T19:54:33+09:00"
  },
- "Backend/Database/rdbms-vs-nosql.md": {
-  "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-13T19:54:33+09:00"
- },
  "Backend/Database/search-engine-basics.md": {
   "created": "2026-10-14T10:18:30+09:00",
-  "updated": "2026-10-14T10:18:30+09:00"
+  "updated": "2026-10-14T11:29:13+09:00"
  },
  "Backend/Database/sql-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -437,7 +433,7 @@
  },
  "Backend/Web-Basics/web-server-and-nginx.md": {
   "created": "2026-10-12T21:27:28+09:00",
-  "updated": "2026-10-14T10:57:29+09:00"
+  "updated": "2026-10-14T11:29:13+09:00"
  },
  "Career.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -609,7 +605,7 @@
  },
  "Computer-Science/C-Programming/file-io.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-14T10:57:30+09:00"
+  "updated": "2026-10-14T11:29:13+09:00"
  },
  "Computer-Science/C-Programming/gcc-compile-and-link.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -649,7 +645,7 @@
  },
  "Computer-Science/Computer-Architecture/computer-system-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-13T19:56:34+09:00"
+  "updated": "2026-10-14T11:29:13+09:00"
  },
  "Computer-Science/Computer-Architecture/cpu-instructions.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -693,7 +689,7 @@
  },
  "Computer-Science/Database/database-models.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-13T19:56:35+09:00"
+  "updated": "2026-10-14T11:29:13+09:00"
  },
  "Computer-Science/Database/normalization.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -821,7 +817,7 @@
  },
  "Computer-Science/Operating-System/file-system.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-14T10:57:30+09:00"
+  "updated": "2026-10-14T11:29:13+09:00"
  },
  "Computer-Science/Operating-System/kernel-types.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -873,7 +869,7 @@
  },
  "Computer-Science/Operating-System/unix-file-io.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-14T10:57:30+09:00"
+  "updated": "2026-10-14T11:29:13+09:00"
  },
  "Computer-Science/Operating-System/unix-signals.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1109,7 +1105,7 @@
  },
  "Frontend/JavaScript.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-14T10:57:31+09:00"
+  "updated": "2026-10-14T11:26:50+09:00"
  },
  "Frontend/JavaScript/ajax.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1141,11 +1137,7 @@
  },
  "Frontend/JavaScript/date-libraries.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-13T19:55:27+09:00"
- },
- "Frontend/JavaScript/date-object.md": {
-  "created": "2026-10-12T21:27:28+09:00",
-  "updated": "2026-10-13T19:55:27+09:00"
+  "updated": "2026-10-14T11:26:50+09:00"
  },
  "Frontend/JavaScript/debounce-throttle.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -1229,7 +1221,7 @@
  },
  "Frontend/JavaScript/timezone.md": {
   "created": "2026-10-12T21:46:33+09:00",
-  "updated": "2026-10-13T19:55:27+09:00"
+  "updated": "2026-10-14T11:26:50+09:00"
  },
  "Frontend/JavaScript/typescript-advanced-types.md": {
   "created": "2026-10-13T19:48:50+09:00",
@@ -1489,7 +1481,7 @@
  },
  "Frontend/Web/cookie-session.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-13T19:56:21+09:00"
+  "updated": "2026-10-14T11:29:13+09:00"
  },
  "Frontend/Web/devtools-time-savers.md": {
   "created": "2026-10-12T21:48:31+09:00",
@@ -1521,7 +1513,7 @@
  },
  "Frontend/Web/https-migration.md": {
   "created": "2026-10-13T19:48:50+09:00",
-  "updated": "2026-10-13T19:48:50+09:00"
+  "updated": "2026-10-14T11:26:59+09:00"
  },
  "Frontend/Web/oauth2.md": {
   "created": "2026-10-12T21:06:09+09:00",
@@ -1601,7 +1593,7 @@
  },
  "Life-and-Learning.md": {
   "created": "2026-10-12T12:22:51+09:00",
-  "updated": "2026-10-13T20:00:43+09:00"
+  "updated": "2026-10-14T11:27:15+09:00"
  },
  "Life-and-Learning/Design/designers-learning-code.md": {
   "created": "2026-10-13T19:44:20+09:00",
@@ -1689,11 +1681,7 @@
  },
  "Life-and-Learning/Life/life-tips.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-13T20:00:43+09:00"
- },
- "Life-and-Learning/Life/marvel-watch-order.md": {
-  "created": "2026-10-13T14:36:59+09:00",
-  "updated": "2026-10-13T20:00:43+09:00"
+  "updated": "2026-10-14T11:27:15+09:00"
  },
  "Life-and-Learning/Life/service-contract-tips.md": {
   "created": "2026-10-13T14:28:36+09:00",
