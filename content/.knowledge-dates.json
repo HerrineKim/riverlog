@@ -405,7 +405,7 @@
  },
  "Career/Product/project-process.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-13T19:48:04+09:00"
+  "updated": "2026-10-14T10:14:53+09:00"
  },
  "Career/Product/working-with-designers.md": {
   "created": "2026-10-13T19:43:50+09:00",
@@ -461,7 +461,7 @@
  },
  "Computer-Science.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-13T19:56:34+09:00"
+  "updated": "2026-10-14T10:06:44+09:00"
  },
  "Computer-Science/C-Programming.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -699,6 +699,10 @@
   "created": "2026-10-12T20:48:44+09:00",
   "updated": "2026-10-13T19:56:36+09:00"
  },
+ "Computer-Science/oop-messaging.md": {
+  "created": "2026-10-14T10:06:44+09:00",
+  "updated": "2026-10-14T10:06:44+09:00"
+ },
  "DevOps.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-13T19:55:41+09:00"
@@ -925,7 +929,7 @@
  },
  "Frontend/JavaScript/oop-and-javascript.md": {
   "created": "2026-10-13T19:43:42+09:00",
-  "updated": "2026-10-13T19:43:42+09:00"
+  "updated": "2026-10-14T10:06:44+09:00"
  },
  "Frontend/JavaScript/operators-and-control-flow.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1529,7 +1533,7 @@
  },
  "Tools/Git.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-13T08:00:18+09:00"
+  "updated": "2026-10-14T10:14:53+09:00"
  },
  "Tools/Git/branch.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1553,7 +1557,11 @@
  },
  "Tools/Git/github-collaboration.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-12T20:56:03+09:00"
+  "updated": "2026-10-14T10:14:53+09:00"
+ },
+ "Tools/Git/github-issue-workflow.md": {
+  "created": "2026-10-14T10:14:53+09:00",
+  "updated": "2026-10-14T10:14:53+09:00"
  },
  "Tools/Git/merge-squash-rebase.md": {
   "created": "2026-10-12T23:59:49+09:00",
