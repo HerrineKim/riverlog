@@ -16,6 +16,7 @@ date: "2026-10-13"
 - [시맨틱 HTML과 문서 구조](/knowledge/dictionary/frontend/web/semantic-html): 랜드마크 태그, h1~h6 제목 계층, 구현되지 않은 아웃라인 알고리즘, article과 section 고르기
 - [HTML 입력 요소 치트시트](/knowledge/dictionary/frontend/web/html-input-types): input의 22가지 type, label·select·textarea·fieldset·datalist
 - [더 나은 폼을 만드는 팁](/knowledge/dictionary/frontend/web/form-usability): 브라우저 기본 동작 존중, inputmode, 보이는 검증 메시지, 커서·포커스를 빼앗지 않는 입력 처리
+- [잘 안 쓰지만 쓸모 있는 HTML 속성](/knowledge/dictionary/frontend/web/html-lesser-known-attributes): enterkeyhint, ol의 reversed·start, download, form, loading·fetchpriority·imagesrcset, cite·datetime, optgroup, 대체 스타일시트
 - [DOM](/knowledge/dictionary/frontend/web/dom): 브라우저가 문서를 객체 트리로 표현하는 방식, DOM tree와 노드 종류, BOM
 - [브라우저 렌더링 과정](/knowledge/dictionary/frontend/web/browser-rendering): 브라우저 구성 요소, DOM·CSSOM → 렌더 트리 → 레이아웃(리플로우) → 페인팅, 스크립트·CSS의 차단, 강제 동기 레이아웃, 리렌더링 비용
 - [반응형 이미지: srcset·sizes와 picture](/knowledge/dictionary/frontend/web/responsive-images): 크기만 다르면 srcset·sizes, 자르기·형식 대체는 picture, sizes 근삿값, 이미지 CDN·CMS 자동화

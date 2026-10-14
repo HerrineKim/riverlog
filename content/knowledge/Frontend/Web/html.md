@@ -170,4 +170,4 @@ JSX에서 줄을 나눠 쓴 요소 사이에 일반 공백이 필요하면 `{' '
 - 영역을 나눌 때는 가능한 한 시맨틱 태그를 쓴다. SEO와 접근성의 기본이다.
 - form 데이터는 input의 `name`/`value` 쌍으로 전송되고, `label` 연결로 사용성과 접근성을 챙긴다.
 
-관련 노트: [[markdown|Markdown(또 하나의 마크업 언어)]], [[dom|DOM과 BOM]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-glossary|프론트엔드 웹 개발 용어집]]
+관련 노트: [[markdown|Markdown(또 하나의 마크업 언어)]], [[dom|DOM과 BOM]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-glossary|프론트엔드 웹 개발 용어집]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]

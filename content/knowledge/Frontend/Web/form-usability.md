@@ -75,4 +75,4 @@ input:user-invalid {
 - 기준은 **사용자의 통제권**이다. 말 없이 막기, 포커스 뺏기, 커서 옮기기, 입력 제한은 모두 사용성을 깎는다.
 - 모바일에서는 `inputmode` 한 줄이 체감 품질을 크게 바꾼다.
 
-관련 노트: [[html-input-types|HTML 입력 요소 치트시트]], [[html|HTML 기초와 HTML5]], [[forms|폼과 제어 컴포넌트]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]]
+관련 노트: [[html-input-types|HTML 입력 요소 치트시트]], [[html|HTML 기초와 HTML5]], [[forms|폼과 제어 컴포넌트]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]
