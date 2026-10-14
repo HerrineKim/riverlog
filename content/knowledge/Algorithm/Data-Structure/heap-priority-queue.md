@@ -3,9 +3,12 @@ title: "힙과 우선순위 큐"
 concept: "Heap"
 summary: "우선순위가 가장 높은 원소를 O(log n)에 넣고 꺼낼 수 있게 해 주는 완전 이진 트리 기반 자료구조."
 tags: ["data-structure", "heap", "priority-queue", "python"]
-source: til
-date: "2026-10-13"
+source: mixed
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f"]
 ---
+
+> 구현 방식 비교와 O(n) 힙 만들기는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[자료구조] 우선순위큐와 힙」을 바탕으로 보강했습니다.
 
 ## 우선순위 큐
 
@@ -14,7 +17,16 @@ date: "2026-10-13"
 1. `push`: 원소를 우선순위와 함께 추가
 2. `pop`: 우선순위가 가장 높은 원소를 제거하고 반환
 
-리스트로 구현하면 삽입 O(1)·삭제 O(n)이거나(매번 최댓값 탐색), 삽입 O(n)·삭제 O(1)이다(정렬 상태 유지). **힙**을 쓰면 둘 다 O(log n)이 된다.
+구현 방법에 따라 비용이 다르다.
+
+| 구현 | 삽입 | 최우선 원소 삭제 | 최우선 원소 확인 |
+| --- | --- | --- | --- |
+| 정렬 안 된 배열·리스트 | O(1) | O(n) (매번 탐색) | O(n) |
+| 정렬된 배열·리스트 | O(n) (자리 찾아 끼우기) | O(1) | O(1) |
+| 균형 이진 탐색 트리 | O(log n) | O(log n) | O(log n) |
+| **이진 힙** | O(log n) | O(log n) | **O(1)** |
+
+힙은 배열 하나로 구현되어 메모리와 상수 비용이 작고, 꺼낼 원소만 빨리 알면 되는 경우에 가장 알맞다. 다익스트라·프림 알고리즘, 허프만 코딩, 이벤트 시뮬레이션, 운영체제 작업 스케줄링, k번째 원소 찾기에 쓰인다.
 
 ## 힙 (Heap)
 
@@ -45,6 +57,28 @@ date: "2026-10-13"
 ![힙 삭제](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/14-%ED%9E%99-Heap-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90.assets/6dimHpq.png)
 
 트리의 높이가 log n이므로 삽입·삭제 모두 O(log n), 최솟값(최댓값) 확인은 O(1)이다. 힙에서 원소를 하나씩 꺼내면 정렬이 되는데, 이것이 **힙 정렬**(O(n log n))이다.
+
+### 배열을 한 번에 힙으로 만들기 — O(n)
+
+원소 n개를 하나씩 push하면 O(n log n)이다. 대신 배열을 그대로 둔 채 **마지막 내부 노드 `(n-2)//2`부터 루트까지 거꾸로** 내려가며 각 노드에 "아래로 내리기(sift down)"를 하면 O(n)에 힙이 된다. 노드의 대부분은 아래쪽에 있어 내려갈 거리가 짧기 때문이다. 파이썬 `heapq.heapify`가 이 방식이다.
+
+```python
+def sift_down(a, i, n):              # 최대 힙 기준
+    while True:
+        big, l, r = i, 2 * i + 1, 2 * i + 2
+        if l < n and a[l] > a[big]: big = l
+        if r < n and a[r] > a[big]: big = r
+        if big == i:
+            return
+        a[i], a[big] = a[big], a[i]
+        i = big
+
+def build_heap(a):
+    for i in range((len(a) - 2) // 2, -1, -1):
+        sift_down(a, i, len(a))
+```
+
+C처럼 배열 크기가 고정된 언어에서는 가득 차면 두 배 크기로 새로 할당해 옮긴다. 분할 상환하면 삽입당 O(1) 추가 비용이다.
 
 ## 파이썬의 `heapq`
 

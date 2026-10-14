@@ -3,8 +3,12 @@ title: "병합 정렬과 퀵 정렬"
 concept: "Merge Sort"
 summary: "분할 정복으로 평균 O(n log n)에 정렬하는 두 대표 알고리즘과 정렬 알고리즘 비교."
 tags: ["algorithm", "sorting", "divide-and-conquer", "python"]
-source: til
+source: mixed
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/21cb57a3681b404da4ac8ab0e7289bc0"]
 ---
+
+> 자바 정렬 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JAVA] Sort 사용 (Arrays, Collections)」을 바탕으로 보강했습니다.
 
 병합 정렬과 퀵 정렬은 모두 **분할 정복**으로 리스트를 나눠 정렬한다. 차이는 실제 작업이 어디서 일어나느냐다. 병합 정렬은 **합치는 단계**에서, 퀵 정렬은 **나누는 단계**에서 정렬이 이뤄진다.
 
@@ -105,10 +109,27 @@ students = [("kim", 90), ("lee", 85), ("park", 90)]
 students.sort(key=lambda s: (-s[1], s[0]))  # 점수 내림차순, 이름 오름차순
 ```
 
+자바는 대상 타입에 따라 알고리즘이 다르다.
+
+| 호출 | 대상 | 알고리즘 | 특징 |
+| --- | --- | --- | --- |
+| `Arrays.sort(int[])` 등 | 기본형 배열 | Dual-Pivot Quicksort | 평균 O(n log n), 불안정. 기본형은 같은 값을 구별할 수 없어 안정성이 의미 없다 |
+| `Arrays.sort(T[], Comparator)` | 객체 배열 | Timsort | 최악 O(n log n), 안정 |
+| `Collections.sort(list)`, `list.sort(c)` | `List` | 배열로 바꿔 `Arrays.sort` 호출 | 객체 정렬과 같다 |
+
+정렬 기준은 원소 클래스가 `Comparable`(`compareTo`)을 구현해 정하거나, 정렬 호출에 `Comparator`를 넘겨 정한다. 내림차순은 `Collections.reverseOrder()`나 `Comparator.comparing(...).reversed()`를 쓴다. 이 Comparator 방식은 **객체 배열에만** 쓸 수 있어서 `int[]`를 내림차순으로 정렬하려면 `Integer[]`로 박싱하거나 오름차순 정렬 뒤 뒤집어야 한다.
+
+```java
+Integer[] arr = {8, 7, 6, 5, 4};
+Arrays.sort(arr, Collections.reverseOrder());                 // 8 7 6 5 4
+people.sort(Comparator.comparingInt(Person::score).reversed()
+                      .thenComparing(Person::name));          // 점수 내림차순, 이름 오름차순
+```
+
 ## 핵심 정리
 
 - 병합 정렬: 나누고 합치며 정렬, 항상 O(n log n), 추가 메모리 O(n), 안정
 - 퀵 정렬: 피벗으로 나누며 정렬, 평균 O(n log n)·최악 O(n²), 불안정
-- 실전은 내장 정렬(Timsort) + `key` 함수
+- 실전은 내장 정렬(Timsort) + `key` 함수. 자바는 기본형 배열에 Dual-Pivot Quicksort, 객체에 Timsort
 
 관련 노트: [[divide-and-conquer|분할 정복]], [[heap-priority-queue|힙(힙 정렬)]], [[elementary-sorts|기본 정렬]], [[big-o|빅오 표기법]]

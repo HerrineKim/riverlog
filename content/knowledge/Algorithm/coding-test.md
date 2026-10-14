@@ -1,12 +1,14 @@
 ---
 title: "코딩 테스트 접근법"
 concept: "Coding Test"
-summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법, 파이썬 실전 팁."
+summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법, 랜덤 비교 테스트로 반례 찾기, 파이썬 실전 팁."
 tags: ["coding-test", "algorithm", "python", "problem-solving"]
 source: mixed
-date: "2026-10-11"
-sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516"]
+date: "2026-10-14"
+sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f"]
 ---
+
+> 반례 찾기와 파이썬 표준 라이브러리 팁 일부는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Python&C] 맞왜틀 이제 그만, 반례 생성기!」, 「코딩테스트를 위한 python 문법」을 바탕으로 보강했습니다.
 
 코딩 테스트에서 시간이 부족해지는 이유는 대개 타이핑이 느려서가 아니라, 설계 없이 코드부터 쓰다가 중간에 방향을 잃기 때문이다. 아래는 문제를 풀 때 따르는 순서와 자주 쓰는 실전 팁이다.
 
@@ -75,6 +77,36 @@ sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.ti
 
 코딩 테스트는 입구일 뿐이다. 프로젝트와 CS 기초 공부를 함께 가져간다.
 
+## 반례 찾기: 랜덤 비교 테스트
+
+예제도 통과하고 알려진 반례도 통과하는데 틀렸다면, **작은 입력을 무작위로 만들어 확실히 맞는 풀이와 결과를 비교**한다. 스트레스 테스트(stress test)라고도 부른다.
+
+| 구성 요소 | 역할 |
+| --- | --- |
+| 입력 생성기 | 문제 조건을 지키는 입력을 `random`으로 만든다. 범위는 **아주 작게**(N ≤ 10, 값 ≤ 20) 잡아야 찾은 반례를 손으로 따라갈 수 있다 |
+| 정답 풀이 | 느려도 확실한 풀이. 완전 탐색이 가장 좋다. 남의 정답 코드를 써도 된다 |
+| 검사 풀이 | 제출해서 틀린 내 풀이 |
+| 비교 루프 | 두 결과가 다를 때까지 반복하고, 다르면 입력과 두 답을 출력하고 멈춘다 |
+
+```python
+from random import randint
+
+def gen():
+    k = randint(1, 5)
+    return [randint(1, 20) for _ in range(k)], randint(1, 10)
+
+for _ in range(10_000):                 # 재귀 대신 반복문: 깊이 제한에 걸리지 않는다
+    lines, n = gen()
+    expected, got = brute(lines, n), solve(lines, n)
+    if expected != got:
+        print(lines, n, "정답:", expected, "내 답:", got)
+        break
+```
+
+- 반례가 나오면 그 입력을 고정해 두고 디버깅한다. 이분 탐색의 경계(`>` vs `>=`, 시작값 0 vs 1), 0으로 나누기, 정수 오버플로 같은 실수가 주로 걸린다.
+- C·C++ 풀이도 같은 방식으로 비교할 수 있다. 셸 스크립트로 생성기·두 실행 파일을 돌려 출력 파일을 `diff`하면 언어와 무관하게 쓸 수 있다.
+- 시간 초과는 이 방법으로 못 찾는다. 최대 크기 입력을 따로 만들어 실행 시간을 잰다.
+
 ## 입력 크기로 풀이 방향 정하기
 
 문제를 읽으면 먼저 **N의 범위를 보고 허용되는 시간 복잡도**를 정한다. 파이썬은 1초에 대략 10⁷ ~ 10⁸번의 단순 연산을 한다고 어림잡는다.
@@ -116,6 +148,9 @@ s = input().rstrip()                # readline은 줄바꿈 문자를 포함하�
 - 큐는 `list.pop(0)`(O(n)) 대신 `deque.popleft()`(O(1))
 - 우선순위 큐는 `heapq`(최소 힙). 최대 힙은 음수로 넣기
 - 원소 존재 여부를 자주 확인하면 리스트(O(n)) 대신 `set`/`dict`(평균 O(1))
+- 순열·조합은 `itertools`의 `permutations`, `combinations`, `product`(중복 순열), `combinations_with_replacement`(중복 조합)
+- 개수 세기는 `collections.Counter`, 정렬된 리스트의 위치 찾기는 `bisect_left`·`bisect_right`
+- 실수 계산은 오차가 있다(`0.3 + 0.6 == 0.8999999999999999`). 비교는 `abs(a - b) < 1e-9`나 `math.isclose`로 하고, 가능하면 정수로 바꿔 계산한다.
 - 2차원 리스트는 `[[0] * m for _ in range(n)]`으로 만든다. `[[0] * m] * n`은 같은 행을 공유하는 버그가 생긴다.
 - 문자열을 반복해서 이어 붙일 때는 리스트에 모은 뒤 `''.join()`
 - 출력이 많으면 `print('\n'.join(map(str, result)))`로 한 번에 출력

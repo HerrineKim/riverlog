@@ -4,6 +4,7 @@ concept: "Binary Search"
 summary: "정렬된 데이터에서 탐색 범위를 절반씩 줄여 O(log n)에 원하는 값을 찾는 방법."
 tags: ["algorithm", "search", "binary-search", "python"]
 source: til
+date: "2026-10-14"
 ---
 
 ![순차 탐색과 이분 탐색 비교](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/05-%EC%9D%B4%EB%B6%84-%ED%83%90%EC%83%89-Binary-Search-.assets/binary-and-linear-search-animations.gif)
@@ -109,4 +110,4 @@ print(max_cut_height([19, 15, 10, 17], 6))  # 15
 - 파이썬에서는 `bisect`로 간단히 구현할 수 있다.
 - 답의 범위를 이분 탐색하는 파라메트릭 서치로 최적화 문제도 풀 수 있다.
 
-관련 노트: [[divide-and-conquer|분할 정복]], [[big-o|빅오 표기법]]
+관련 노트: [[divide-and-conquer|분할 정복]], [[big-o|빅오 표기법]], [[longest-increasing-subsequence|최장 증가 부분 수열]], [[tree|이진 탐색 트리]]

@@ -4,6 +4,7 @@ concept: "Greedy"
 summary: "매 선택의 순간마다 당장 가장 좋아 보이는 것을 골라 최종 해답에 도달하는 방법."
 tags: ["algorithm", "paradigm", "greedy"]
 source: til
+date: "2026-10-14"
 ---
 
 그리디(Greedy, 탐욕법) 알고리즘은 여러 경우 중 하나를 골라야 할 때마다 **그 순간 가장 좋아 보이는 선택**을 하며 최종 해답에 도달하는 방법이다. 앞으로의 선택이나 지나간 선택을 다시 고려하지 않는다. 구현이 간단하고 빠르지만, **최적해를 항상 보장하지는 않는다**.
@@ -56,4 +57,4 @@ print(min_coins(960))  # 7
 - 빠르고 간단하지만 최적해를 보장하지 않는다.
 - 선택 기준이 정당한지(반례가 없는지) 확인하는 것이 핵심
 
-관련 노트: [[dynamic-programming|동적 계획법]], [[dijkstra|다익스트라]], [[disjoint-set|서로소 집합(크루스칼)]]
+관련 노트: [[dynamic-programming|동적 계획법]], [[dijkstra|다익스트라]], [[disjoint-set|서로소 집합(크루스칼)]], [[sweep-line|스위핑]]

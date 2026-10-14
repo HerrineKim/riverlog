@@ -1,10 +1,14 @@
 ---
 title: "재귀 함수"
 concept: "Recursion"
-summary: "자기 자신을 다시 호출해 문제를 더 작은 같은 문제로 줄여 가는 함수와 그 종료 조건."
+summary: "자기 자신을 다시 호출해 문제를 더 작은 같은 문제로 줄여 가는 함수와 그 종료 조건. 예제로 팩토리얼과 유클리드 호제법(최대공약수·최소공배수)을 다룬다."
 tags: ["algorithm", "recursion", "python"]
-source: til
+source: mixed
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/78fab30ae56449158565b4808ffb9c25"]
 ---
+
+> 유클리드 호제법의 복잡도와 최소공배수 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「유클리드 호제법으로 최대 공약수(GCD) 최소 공배수(LCM) 구하기」를 바탕으로 보강했습니다.
 
 재귀 함수(Recursive Function)는 **자기 자신을 다시 호출하는 함수**다. 큰 문제를 "같은 모양의 더 작은 문제"로 바꿔 표현할 수 있을 때 코드가 수학식처럼 간결해진다. DFS, 분할 정복, 백트래킹, 메모이제이션 DP의 기반이 된다.
 
@@ -77,7 +81,25 @@ def gcd(a, b):
 print(gcd(192, 162))  # 6
 ```
 
-> 실무에서는 `math.gcd(192, 162)`를 쓰면 된다.
+2부터 min(a, b)까지 모든 수로 나눠 보는 방법은 O(min(a, b))지만, 유클리드 호제법은 나머지가 두 단계마다 절반 아래로 줄어 **O(log min(a, b))** 다. 꼬리 재귀라 반복문으로 바꾸기도 쉽다.
+
+```python
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+```
+
+**최소공배수**는 `a × b = gcd(a, b) × lcm(a, b)` 관계로 구한다. 곱을 먼저 하면 정수 범위가 넘칠 수 있는 언어(C, Java, JavaScript의 큰 수)에서는 `a // gcd(a, b) * b` 순서로 나눗셈을 먼저 한다.
+
+```python
+def lcm(a, b):
+    return a // gcd(a, b) * b
+
+print(lcm(192, 162))  # 5184
+```
+
+> 실무에서는 `math.gcd`, `math.lcm`(파이썬 3.9+, 인자 여러 개 가능)이나 C++17의 `std::gcd`·`std::lcm`을 쓰면 된다.
 
 ## 재귀를 쓸 때 주의할 점
 

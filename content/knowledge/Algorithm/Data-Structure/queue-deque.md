@@ -3,8 +3,12 @@ title: "큐와 덱"
 concept: "Queue"
 summary: "먼저 넣은 것을 먼저 꺼내는 큐(FIFO)와, 양쪽 끝에서 넣고 뺄 수 있는 덱."
 tags: ["data-structure", "queue", "deque", "python"]
-source: til
+source: mixed
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/6b362391f808445f8e5f1e1f017c1bfb"]
 ---
+
+> 원형 버퍼로 덱을 만드는 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[push_swap] Linked List 말고 Circular Queue를 이용하여 Stack을 구현해보자!」를 바탕으로 보강했습니다.
 
 ## 큐 (Queue)
 
@@ -102,6 +106,27 @@ print(d)  # deque([10, 0, 1, 2, 3])
 d.rotate(1)              # 오른쪽으로 한 칸 회전
 print(list(d))  # [3, 10, 0, 1, 2]
 ```
+
+### 원형 버퍼로 덱 직접 만들기
+
+C처럼 표준 덱이 없는 환경에서는 양방향 연결 리스트 대신 **배열 하나를 원형으로 쓰는 덱(ring buffer)** 이 간단하다. 최대 원소 수를 미리 알 수 있다면(예: 입력 개수만큼만 담긴다) 노드 할당·해제가 없어 메모리 누수 걱정도 없다.
+
+- 인덱스를 `% capacity`로 순환시킨다. 앞으로 한 칸은 `(i + capacity - 1) % capacity`, 뒤로 한 칸은 `(i + 1) % capacity`. `i - 1`을 그대로 쓰면 0에서 음수 인덱스가 된다.
+- `front`·`rear`만으로는 비었을 때와 꽉 찼을 때가 같은 모양이 된다. 위의 원형 큐처럼 한 칸을 비워 두거나, **원소 수 `len`을 따로 들고 다니면** 구분이 쉽다.
+- pop은 값을 지우지 않고 인덱스만 옮긴다. 남은 값은 다음 push가 덮어쓴다.
+
+```c
+typedef struct { int *data; int cap, front, len; } t_deque;
+
+int  idx(t_deque *d, int k) { return (d->front + k) % d->cap; }  /* k번째 원소 위치 */
+
+void push_front(t_deque *d, int v) { d->front = (d->front + d->cap - 1) % d->cap; d->data[d->front] = v; d->len++; }
+void push_back(t_deque *d, int v)  { d->data[idx(d, d->len)] = v; d->len++; }
+int  pop_front(t_deque *d) { int v = d->data[d->front]; d->front = (d->front + 1) % d->cap; d->len--; return v; }
+int  pop_back(t_deque *d)  { d->len--; return d->data[idx(d, d->len)]; }
+```
+
+호출 전에 `len == 0`(비었음), `len == cap`(가득 참)을 확인한다. 모든 연산이 O(1)이고, k번째 원소도 `idx(d, k)`로 O(1)에 읽을 수 있다.
 
 ### 활용
 

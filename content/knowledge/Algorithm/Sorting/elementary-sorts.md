@@ -4,6 +4,7 @@ concept: "Elementary Sorts"
 summary: "구현이 단순한 O(n²) 비교 정렬 세 가지와, 값의 범위가 작을 때 쓰는 계수 정렬."
 tags: ["algorithm", "sorting", "complexity", "python"]
 source: til
+date: "2026-10-14"
 ---
 
 정렬 알고리즘의 성능은 보통 **빅오 표기법**으로 최선·평균·최악의 경우를 나눠 비교한다. 이 노트의 버블·선택·삽입 정렬은 원리가 단순한 대신 평균 O(n²)이라 데이터가 많으면 느리다. 계수 정렬은 비교 없이 개수를 세서 O(n + k)에 정렬한다.
@@ -113,4 +114,4 @@ def counting_sort_stable(arr, max_num):
 - 삽입 정렬은 거의 정렬된 데이터에서 O(n)에 가깝다.
 - 값의 범위가 작은 정수라면 계수 정렬이 O(n + k)로 가장 빠르다.
 
-관련 노트: [[big-o|빅오 표기법]], [[merge-quick-sort|병합 정렬과 퀵 정렬]]
+관련 노트: [[big-o|빅오 표기법]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[merge-insertion-sort|병합 삽입 정렬(이진 삽입)]]
