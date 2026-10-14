@@ -107,4 +107,4 @@ if (selected) {
 - 객체지향으로 짜야 한다는 부담 없이 JavaScript답게 쓰고, 타입은 경계에만 적는다.
 - 세팅된 프로젝트 → 변수·인자 → 추론 → API 스키마 → 콜백 → 좁히기 → strict 순으로, 필요할 때 필요한 만큼 배운다.
 
-관련 노트: [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[variables-and-types|변수와 데이터 타입]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]]
+관련 노트: [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[variables-and-types|변수와 데이터 타입]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[typescript-basics|TypeScript 문법 한눈에 보기]]

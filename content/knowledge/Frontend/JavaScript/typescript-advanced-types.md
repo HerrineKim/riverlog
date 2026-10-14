@@ -134,4 +134,4 @@ type T = ParseRouteParams<'/api/users/:userID/orders/:orderID'>
 - 템플릿 리터럴 타입 + `infer` + 재귀로 문자열에서 타입을 뽑아낼 수 있다.
 - **동적인 JS 코드의 모양은 그대로 두고, 검사만 정적으로 한다.**
 
-관련 노트: [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[template-literals|템플릿 리터럴과 태그드 템플릿]], [[variables-and-types|변수와 데이터 타입]], [[routing-crud|Express 라우팅과 CRUD API]]
+관련 노트: [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[template-literals|템플릿 리터럴과 태그드 템플릿]], [[variables-and-types|변수와 데이터 타입]], [[routing-crud|Express 라우팅과 CRUD API]], [[typescript-basics|TypeScript 문법 한눈에 보기]]
