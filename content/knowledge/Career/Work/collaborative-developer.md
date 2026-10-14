@@ -90,4 +90,4 @@ API는 그대로였지만 체감 속도가 크게 좋아졌고, 서버는 급한
 - 심리적 안전감을 만들고, 의도와 맥락을 담아 말하고, 설득 대신 주파수를 맞춘다.
 - 프로그래머를 넘어 **문제 해결사**로 일하면 일 전체가 내 일이 된다.
 
-관련 노트: [[developer-leadership|개발자의 리더십과 PO의 사고방식]], [[product-minded-engineer|제품 중심 개발자]], [[effective-meetings|회의 잘하는 법]], [[agile-sprint|애자일과 스프린트]], [[review-communication|리뷰 코멘트와 PR 소통]]
+관련 노트: [[developer-leadership|개발자의 리더십과 PO의 사고방식]], [[product-minded-engineer|제품 중심 개발자]], [[effective-meetings|회의 잘하는 법]], [[agile-sprint|애자일과 스프린트]], [[review-communication|리뷰 코멘트와 PR 소통]], [[pair-programming|페어 프로그래밍]]

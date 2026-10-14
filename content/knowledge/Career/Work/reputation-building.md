@@ -2,13 +2,15 @@
 title: "실력만으로는 부족하다: 명성 쌓기와 커뮤니티 기여"
 concept: "Reputation"
 summary: "일을 잘해도 알려지지 않으면 기회가 오지 않는다. 글쓰기·발표·공개 작업으로 명성을 쌓는 원칙, 흔한 핑계를 넘는 법, 커뮤니티에 기여할 때 지킬 태도를 정리했다."
-tags: ["career", "growth", "writing", "communication", "community"]
+tags: ["career", "growth", "writing", "communication", "community", "open-source"]
 source: other
-date: "2026-10-13"
-sources: ["https://webactually.com/2017/11/15/%ec%8b%a4%eb%a0%a5%ec%9d%b4-%ec%84%b1%ea%b3%b5%ec%9d%84-%ec%a2%8c%ec%9a%b0%ed%95%98%eb%8a%94%ea%b0%80/", "https://webactually.com/2015/04/17/%eb%8b%b9%ec%8b%a0%ec%9d%b4-%eb%b2%a0%ed%91%bc-%ec%82%ac%eb%9e%91/", "https://webactually.com/2011/08/30/%ed%98%84%ec%9e%ac-%ec%9b%b9%eb%94%94%ec%9e%90%ec%9d%b8-%ec%bb%a4%eb%ae%a4%eb%8b%88%ed%8b%b0%ec%9d%98-%ec%83%81%ed%99%a9-1/", "https://webactually.com/2019/05/20/%e3%80%8a%ec%82%ac%eb%9e%8c%ec%9d%84-%eb%b0%b0%eb%a0%a4%ed%95%98%eb%8a%94-%eb%94%94%ec%9e%90%ec%9d%b8%e3%80%8b-%ec%a0%80%ec%9e%90-%ec%9d%b8%ed%84%b0%eb%b7%b0/"]
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/044f8405756246f5a03d59e27ea9e52a", "https://webactually.com/2017/11/15/%ec%8b%a4%eb%a0%a5%ec%9d%b4-%ec%84%b1%ea%b3%b5%ec%9d%84-%ec%a2%8c%ec%9a%b0%ed%95%98%eb%8a%94%ea%b0%80/", "https://webactually.com/2015/04/17/%eb%8b%b9%ec%8b%a0%ec%9d%b4-%eb%b2%a0%ed%91%bc-%ec%82%ac%eb%9e%91/", "https://webactually.com/2011/08/30/%ed%98%84%ec%9e%ac-%ec%9b%b9%eb%94%94%ec%9e%90%ec%9d%b8-%ec%bb%a4%eb%ae%a4%eb%8b%88%ed%8b%b0%ec%9d%98-%ec%83%81%ed%99%a9-1/", "https://webactually.com/2019/05/20/%e3%80%8a%ec%82%ac%eb%9e%8c%ec%9d%84-%eb%b0%b0%eb%a0%a4%ed%95%98%eb%8a%94-%eb%94%94%ec%9e%90%ec%9d%b8%e3%80%8b-%ec%a0%80%ec%9e%90-%ec%9d%b8%ed%84%b0%eb%b7%b0/"]
 ---
 
 > 웹액츄얼리가 번역한 Paul Boag의 「실력이 성공을 좌우하는가」(2017.11), Jeffrey Zeldman의 칼럼 「당신이 베푼 사랑」(2015.04), Vitaly Friedman의 「열정있던 웹디자인계는 어디로 사라졌나」(2011.08), 《사람을 배려하는 디자인》 저자 인터뷰(2019.05)를 바탕으로 재구성한 노트입니다.
+
+> 오픈 소스 공개 항목은 팔만코딩경(42Seoul 커뮤니티 위키)의 「오픈소스 만들고 먹고살기 v3」 특강 정리를 바탕으로 보강한 노트입니다.
 
 ## 왜 실력만으로는 안 되나
 
@@ -56,6 +58,17 @@ sources: ["https://webactually.com/2017/11/15/%ec%8b%a4%eb%a0%a5%ec%9d%b4-%ec%84
 - 개발자라면 GitHub에서 보여야 한다. 다른 사람의 프로젝트에 기여하거나 내 프로젝트를 시작한다.
 - 회사 일이 따분하면 나를 위해 만든다. 공개할 수 있는 부분은 오픈 소스로 내고, 블로그에 그 코드 이야기를 쓴다.
 - 꿈의 일자리를 누가 제안해 주길 기다리지 않는다. 무언가 만들고 선의로 나눈다. 본업이 답답할 때 시작한 사이드 프로젝트가 경력의 중심이 되는 일은 흔하다.
+
+오픈 소스로 공개할 때는 코드만큼 **쓰는 사람을 위한 틀**이 중요하다. 오픈 소스는 쓰는 문화가 아니라 함께 만들어 가는 문화이기 때문이다.
+
+| 항목 | 내용 |
+| --- | --- |
+| 이름 | 기능이 늘어도 어울리게, 너무 좁지 않게 짓는다 |
+| README | 프로젝트 개요, 설치·사용법, 기여 방법(CONTRIBUTING), 기여자, 사용하는 곳을 적는다 |
+| 라이선스 | 반드시 고른다. 라이선스가 없으면 남이 합법적으로 쓸 수 없다. MIT는 저작권 고지만 남기면 되는 가장 단순한 허용형, Apache 2.0은 허용형에 특허 허락과 변경 고지가 더해진 것, GPL은 파생물도 같은 라이선스로 공개해야 하는 카피레프트다. 모르면 [choosealicense.com](https://choosealicense.com/)에서 고른다 |
+| 테스트 | 기여자가 내 변경이 무엇을 깨는지 확인할 수 있어야 PR이 들어온다 |
+
+남의 프로젝트에 참여할 때는 관심 있는 기술의 저장소를 골라 쓰면서 불편한 점을 개선하고 커밋한다. 사용만 하지 말고 코드를 읽어 공부하고, 여력이 되면 후원한다. 오픈 소스를 사업으로 잇는 일은 상용 소프트웨어보다 더 많은 전략이 필요하다.
 
 ## 흔한 핑계를 넘는 법
 

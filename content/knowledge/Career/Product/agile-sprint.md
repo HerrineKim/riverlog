@@ -125,4 +125,4 @@ sources: ["https://velog.io/@teo/agile-feedback-game", "https://velog.io/@teo/sc
 - 완성의 기준은 테스트 가능 여부다. 언제든 배포할 수 있는 작은 완성을 유지한다.
 - 장치의 형식보다 의도를 이해해야 회사마다 다른 환경에 응용할 수 있다.
 
-관련 노트: [[effective-meetings|회의 잘하는 법]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]], [[collaborative-developer|협업을 잘하는 개발자]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[developer-leadership|개발자의 리더십과 PO의 사고방식]]
+관련 노트: [[effective-meetings|회의 잘하는 법]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]], [[collaborative-developer|협업을 잘하는 개발자]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[developer-leadership|개발자의 리더십과 PO의 사고방식]], [[pair-programming|페어 프로그래밍]]

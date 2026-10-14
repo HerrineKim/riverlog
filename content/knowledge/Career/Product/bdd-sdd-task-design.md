@@ -126,4 +126,4 @@ given-when-then을 나누는 정답은 없다. 다음이 되면 충분하다.
 - then 하나가 태스크 하나이고, then은 데이터 변화로 표현되어야 한다.
 - 병목인 개발을 비개발 직군이 코딩 외 일로 도우면 협업 전체가 빨라진다.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[agile-sprint|애자일과 스프린트]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[project-process|새 서비스 개발 프로젝트 진행 순서]]
+관련 노트: [[tdd|프론트엔드에서의 TDD]], [[agile-sprint|애자일과 스프린트]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[use-case-diagram|유스케이스 다이어그램]]
