@@ -107,4 +107,4 @@ sources: ["https://webactually.com/2021/01/15/%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B
 - 과적합과 과소적합 사이의 균형이 모든 기법의 공통 과제다.
 - **모델을 고르기 전에 무엇을 예측하고 무엇으로 성공을 잴지부터 정한다.**
 
-관련 노트: [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[jupyter-notebook|Jupyter Notebook]], [[text-similarity|문자열·문서 유사도: 편집 거리와 코사인 유사도]]
+관련 노트: [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[jupyter-notebook|Jupyter Notebook]], [[text-similarity|문자열·문서 유사도: 편집 거리와 코사인 유사도]], [[perceptron-mlp|퍼셉트론과 다층 퍼셉트론]], [[classification-metrics|분류 모델 성능 평가 지표]], [[decision-tree-ensemble|결정 트리와 앙상블]]
