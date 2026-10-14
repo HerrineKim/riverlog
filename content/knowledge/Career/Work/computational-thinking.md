@@ -101,4 +101,4 @@ run & fix만 반복하며 직관에 기대면 어느 지점에서 성장이 멈�
 - 개발은 운동처럼 훈련으로 는다. 목표를 정하고, 남의 코드를 돌리고, 고치고, 합치는 과정을 반복한다.
 - "일단 뭐든 만들어 보되, 생각은 하면서."
 
-관련 노트: [[coding-test|코딩 테스트 접근법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]], [[frontend-developer-role|프론트엔드 개발자의 업무 범위와 역량]]
+관련 노트: [[coding-test|코딩 테스트 접근법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]], [[frontend-developer-role|프론트엔드 개발자의 업무 범위와 역량]], [[finding-dev-references|개발 자료 잘 찾는 법]]
