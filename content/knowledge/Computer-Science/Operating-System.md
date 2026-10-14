@@ -11,7 +11,7 @@ source: mixed
 - [운영체제 개요](Computer-Science/Operating-System/os-overview.md) — 운영체제의 정의, 목적, 분류와 대표적인 예
 - [커널의 종류](Computer-Science/Operating-System/kernel-types.md) — 단일형·마이크로·하이브리드 커널 비교
 - [컴퓨터 시스템 구조와 인터럽트](Computer-Science/Operating-System/system-structure.md) — 모드 비트, 타이머, 인터럽트, 시스템 콜, DMA로 본 컴퓨터 시스템 구조
-- [프로세스와 스레드](Computer-Science/Operating-System/process-and-thread.md) — 프로세스의 문맥과 PCB, 문맥 교환, 스케줄러, 스레드, fork·exec·wait, IPC
+- [프로세스와 스레드](Computer-Science/Operating-System/process-and-thread.md) — 프로세스의 문맥과 PCB, 문맥 교환, 스케줄러, 스레드, 멀티프로세스·멀티스레드 비교, fork·exec·wait, IPC
 - [프로세스 상태와 CPU 스케줄링](Computer-Science/Operating-System/process-scheduling.md) — 프로세스 상태, CPU 스케줄링 알고리즘과 성능 척도, 다중 프로세서·실시간 스케줄링
 - [프로세스 동기화](Computer-Science/Operating-System/process-synchronization.md) — 경쟁 상태, 임계 구역 문제, 세마포어, 고전적인 동기화 문제
 - [교착 상태](Computer-Science/Operating-System/deadlock.md) — 교착 상태의 발생 조건과 예방·회피·탐지·무시
