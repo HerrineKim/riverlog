@@ -4,9 +4,11 @@ concept: "Container"
 summary: "OS 전체를 가상화하는 VM과 애플리케이션 단위로 격리하는 Docker 컨테이너의 차이, Dockerfile·이미지·Compose, 오토 스케일링과 오케스트레이션(Kubernetes)."
 tags: ["docker", "devops", "infra", "msa"]
 source: notion
-date: "2026-10-12"
-sources: ["https://riverkim.kr/313"]
+date: "2026-10-14"
+sources: ["https://riverkim.kr/313", "https://80000coding.notion.site/95596b1b156b4451bd3e7d20d9e664eb"]
 ---
+
+> 「쿠버네티스가 표준이 되기까지」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「쿠버네티스에 대한 흥미로운 사실들 24가지」를 바탕으로 보강했습니다. 원 자료는 다큐멘터리 「Kubernetes: The Documentary」입니다.
 
 서비스를 서버에 올리는 방식은 물리 서버 → 가상 머신(VM) → 컨테이너로 발전해 왔다. 컨테이너는 가볍고 빠르게 늘리고 줄일 수 있어, MSA·오토 스케일링과 함께 쓰이는 현재의 기본 배포 단위가 되었다.
 
@@ -34,6 +36,8 @@ sources: ["https://riverkim.kr/313"]
 | 컨테이너 | 이미지를 실행한 것. 어느 서버에서든 같은 환경으로 코드를 안정적으로 돌린다 |
 | Docker Compose | 서버·DB·캐시처럼 여러 컨테이너를 설정 파일 하나로 묶어 한 번에 띄우는 도구 |
 
+Dockerfile 작성법은 [[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]], Compose의 네트워크·볼륨은 [[docker-compose|Docker Compose: 여러 컨테이너 묶어 띄우기]]에서 자세히 다룬다.
+
 개발자 입장에서 가장 체감되는 이점은 **로컬 세팅이 사라진다**는 것이다. 언어 런타임·DB·환경 변수를 손으로 맞추느라 며칠씩 걸리던 백엔드 서버도, Compose 파일이 있으면 `docker compose up` 한 줄로 같은 환경이 뜬다.
 
 ## 오토 스케일링
@@ -47,6 +51,20 @@ sources: ["https://riverkim.kr/313"]
 
 관리할 컨테이너가 많아지면 사람이 일일이 배치·재시작·네트워크 연결을 할 수 없다. Docker가 서버 한 대의 컨테이너를 관리한다면, 오케스트레이션 도구는 **Docker가 깔린 여러 서버**를 묶어, 여러 서버에 걸친 컨테이너의 배포, 스케일링, 장애 시 재시작, 서비스 디스커버리를 자동으로 관리한다. 대표적으로 Kubernetes, Docker Swarm, AWS ECS가 있다.
 
+### 쿠버네티스가 표준이 되기까지
+
+컨테이너 기술 자체는 Docker 이전부터 있었다(리눅스의 cgroups·namespaces, LXC). Docker(2013)는 이를 이미지와 간단한 CLI로 감싸 **누구나 쓸 수 있게** 만들어 대중화했다. 쿠버네티스는 그다음 문제, 즉 수많은 컨테이너를 여러 서버에 걸쳐 운영하는 문제의 답으로 등장했다.
+
+| 시기 | 일 |
+| --- | --- |
+| 2000년대 | 구글이 사내 클러스터 관리 시스템 **Borg**로 컨테이너 기반 대규모 서비스를 운영 |
+| 2014 | 구글이 Borg의 경험을 바탕으로 쿠버네티스를 오픈 소스로 공개. 같은 시기 Docker Swarm, Apache Mesos 등 경쟁 도구가 쏟아짐 |
+| 2015 | v1.0 출시와 함께 구글이 쿠버네티스를 새로 만든 **CNCF**(Cloud Native Computing Foundation)에 기증. 특정 회사가 아닌 중립 재단 소속이 되면서 여러 기업이 기여하기 시작 |
+| 2016 | 포켓몬 GO가 예상의 50배가 넘는 트래픽을 구글 클라우드의 쿠버네티스 위에서 버텨 내며 대규모 운영 능력을 입증 |
+| 2017~2018 | AWS가 관리형 쿠버네티스 EKS를 발표·출시하면서 3대 클라우드가 모두 쿠버네티스를 지원. 오케스트레이션 경쟁이 사실상 끝남 |
+
+쿠버네티스가 이긴 이유로는 기술 자체보다 **중립 재단과 거대한 기여자 커뮤니티·생태계**가 꼽힌다. 지금도 Swarm은 단순한 소규모 환경, AWS ECS는 AWS 안에서만 쓰는 관리형 대안으로 남아 있다.
+
 ## MSA와의 관계
 
 MSA는 기능을 독립적으로 배포 가능한 서비스들로 쪼갠 구조라서, 서비스마다 컨테이너로 포장해 따로 배포·확장하기에 알맞다. MSA의 구성 요소와 도입 시 주의점은 [[data-flow|Data Flow로 보는 웹 아키텍처]]에 정리했다.
@@ -57,4 +75,4 @@ MSA는 기능을 독립적으로 배포 가능한 서비스들로 쪼갠 구조�
 - Docker는 Dockerfile → 이미지 → 컨테이너 순으로 실행 환경을 통째로 포장해, 어디서나 같은 환경을 띄우게 한다.
 - 오토 스케일링으로 부하에 맞춰 컨테이너·인스턴스 수를 조절하고, 많아지면 오케스트레이션 도구로 관리한다.
 
-관련 노트: [[kernel-types|커널의 종류]], [[ci-cd|CI/CD]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]]
+관련 노트: [[kernel-types|커널의 종류]], [[ci-cd|CI/CD]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[dockerfile|Dockerfile 작성]], [[docker-compose|Docker Compose]]

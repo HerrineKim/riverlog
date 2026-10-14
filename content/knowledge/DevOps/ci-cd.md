@@ -1,13 +1,20 @@
 ---
 title: "CI/CD"
 concept: "CI/CD"
-summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지 이어 주는(CD) 파이프라인의 개념과 GitLab CI/CD·Docker 활용."
-tags: ["ci-cd", "devops", "docker", "gitlab", "git"]
+summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지 이어 주는(CD) 파이프라인의 개념과 DevOps에서 나온 배경, GitHub Actions·GitLab CI/CD 예시와 Docker 활용."
+tags: ["ci-cd", "devops", "docker", "github", "automation"]
 source: notion
-date: "2026-10-13"
+date: "2026-10-14"
+sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions"]
 ---
 
+> 「왜 생겼나」와 「GitHub Actions 예시」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「DevOps 간단 정리」, 「Github Action을 이용해 코드 검사 자동화하기」를 바탕으로 보강했습니다.
+
 배포 과정은 사람이 손으로 할수록 **휴먼 에러**가 잦다. 빌드 명령을 빠뜨리거나, 테스트를 건너뛰거나, 엉뚱한 서버에 올리는 식이다. CI/CD는 이 과정을 파이프라인으로 자동화해 매번 같은 절차가 실행되게 만든다.
+
+## 왜 생겼나: DevOps와 CI/CD
+
+애자일로 개발 주기가 짧아지자, 자주 배포해 기능을 늘리고 싶은 **개발 조직**과 배포가 곧 장애 위험이라 변경을 줄이고 싶은 **운영 조직**의 갈등이 커졌다. **DevOps**(Development + Operations)는 두 조직의 협업을 강조하는 문화이고, 그 핵심 수단이 개발부터 배포까지를 **하나의 자동화된 절차로 잇는 것**, 즉 CI/CD다. 반복되는 빌드·테스트·배포를 기계가 매번 같은 방식으로 하면 잦은 배포와 안정성을 함께 얻을 수 있다.
 
 ## CI와 CD
 
@@ -63,6 +70,42 @@ deploy:
 
 비밀번호·토큰은 파일에 쓰지 않고 GitLab의 CI/CD Variables에 저장해 `$변수`로 참조한다. `docker login -p 비밀번호`처럼 인자로 넘기면 프로세스 목록·로그에 남을 수 있어, 공식 예시처럼 `--password-stdin`으로 넘긴다. ([GitLab: 컨테이너 이미지 빌드·푸시](https://docs.gitlab.com/user/packages/container_registry/build_and_push_images/))
 
+## GitHub Actions 예시
+
+GitHub Actions는 저장소의 `.github/workflows/*.yml` 파일 하나를 **워크플로**로 실행한다. 워크플로는 `on`(언제 실행할지)과 `jobs`(무엇을 할지)가 필수다.
+
+```yaml
+name: check
+on:
+  push:                    # 모든 브랜치의 push
+  pull_request:            # 모든 PR
+jobs:
+  lint:
+    runs-on: ubuntu-latest # GitHub가 제공하는 실행 환경(러너)
+    steps:
+      - uses: actions/checkout@v6        # 저장소 코드를 내려받는 공개 액션
+      - run: pip install ruff            # 셸 명령 실행
+      - run: ruff check .
+  build:
+    runs-on: ubuntu-latest
+    needs: lint            # lint가 성공해야 실행. 없으면 job끼리 병렬 실행
+    steps:
+      - uses: actions/checkout@v6
+      - run: make
+```
+
+| 키 | 의미 |
+| --- | --- |
+| `on` | 트리거 이벤트. `push`, `pull_request`, `schedule`(cron), `workflow_dispatch`(수동) 등. `branches:`로 대상 브랜치를 좁힌다 |
+| `jobs.<id>` | 작업 단위. job마다 **새 가상 머신에서 따로** 실행되어 기본적으로 병렬이다 |
+| `runs-on` | 러너. Ubuntu·Windows·macOS가 제공되며, 직접 운영하는 self-hosted 러너도 쓸 수 있다 |
+| `steps` | job 안에서 순서대로 실행할 단계. `run`(명령) 또는 `uses`(재사용 액션) |
+| `needs` | job 사이 의존 관계. 지정하면 순서대로 실행된다 |
+
+러너는 깨끗한 기본 이미지에서 시작하므로 코드 checkout과 의존성 설치를 매번 해야 한다. `actions/checkout`이 인증 토큰 처리까지 맡아 주고, 설치 시간은 `actions/cache`나 `actions/setup-*`의 캐시 옵션으로 줄인다.
+
+**브랜치 보호 규칙과 연결**하면 효과가 커진다. main에 직접 push를 막아 PR을 강제하고, 이 워크플로를 **필수 상태 검사(required status check)** 로 지정하면 검사를 통과한 코드만 main에 들어간다. 여기에 리뷰 승인까지 필수로 걸면 실수로 깨진 코드가 올라가는 일을 미리 막는다([[github-collaboration|GitHub 협업 저장소 설정]]).
+
 ## 대표 CI/CD 도구
 
 | 도구 | 특징 |
@@ -81,5 +124,6 @@ Vercel·Netlify 같은 배포 플랫폼은 저장소를 연결하면 푸시마�
 - CI = 합칠 때마다 자동 빌드·테스트, CD = 검증된 결과물을 자동으로 배포 가능/배포.
 - Docker 이미지를 파이프라인의 산출물로 삼으면 테스트한 환경 그대로 배포된다.
 - 비밀 값은 CI 변수로 관리한다.
+- GitHub Actions는 `on` + `jobs`로 쓰고, 브랜치 보호의 필수 검사로 걸어야 강제력이 생긴다.
 
 관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[tdd|프론트엔드에서의 TDD]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]]
