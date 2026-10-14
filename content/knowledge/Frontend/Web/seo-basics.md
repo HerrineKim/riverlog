@@ -110,4 +110,4 @@ Sitemap: https://example.com/sitemap.xml
 - 중복 URL에 canonical이, 옮긴 URL에 301이 있는가
 - 모바일에서 읽을 수 있고 충분히 빠른가
 
-관련 노트: [[semantic-html|시맨틱 HTML과 문서 구조]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[http|HTTP 프로토콜]], [[structured-content|구조화된 콘텐츠와 기계가 읽는 웹]]
+관련 노트: [[semantic-html|시맨틱 HTML과 문서 구조]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[http|HTTP 프로토콜]], [[structured-content|구조화된 콘텐츠와 기계가 읽는 웹]], [[search-engine-basics|검색엔진의 원리]]

@@ -111,4 +111,4 @@ def recommend(words_list, target_idx, top_n=6):
 
 - [코사인 유사도(Cosine Similarity) — 딥 러닝을 이용한 자연어 처리 입문](https://wikidocs.net/24603)
 
-관련 노트: [[dynamic-programming|동적 계획법]], [[python-data-analysis|파이썬 데이터 분석 프로세스]]
+관련 노트: [[dynamic-programming|동적 계획법]], [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[search-engine-basics|검색엔진의 원리]]
