@@ -102,4 +102,4 @@ top/left 50%만        translate(-50%, -50%) 추가
 
 - [CSS3 Transform — PoiemaWeb](https://poiemaweb.com/css3-transform)
 
-관련 노트: [[position|position]], [[flexbox|Float와 Flexbox]]
+관련 노트: [[position|position]], [[flexbox|Float와 Flexbox]], [[css-animation|CSS 애니메이션: transition과 @keyframes]]

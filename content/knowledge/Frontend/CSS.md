@@ -22,12 +22,13 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 - [Float와 Flexbox](/knowledge/dictionary/frontend/css/flexbox): Normal Flow를 벗어나는 배치와 1차원 레이아웃 모델, `min-width: 0` 넘침 함정
 - [반응형 디자인과 다국어 타이포그래피](/knowledge/dictionary/frontend/css/responsive-design): 뷰포트 메타 태그, 브레이크포인트, 모바일 퍼스트, 컨테이너 쿼리, 기기 픽셀 비율, clamp(), :lang()과 rem으로 언어별 글자 크기 조절
 - [transform](/knowledge/dictionary/frontend/css/transform): 이동·확대·회전·기울이기 함수와 translate(-50%, -50%) 가운데 정렬
+- [CSS 애니메이션: transition과 @keyframes](/knowledge/dictionary/frontend/css/css-animation): transition과 animation의 차이와 속성, transform·opacity 원칙, 움직임 줄이기, Animate.css 등 라이브러리
 - [CSS 그리드 레이아웃](/knowledge/dictionary/frontend/css/css-grid): 2차원 레이아웃의 용어와 속성, fr·minmax·auto-fill, 명시적·묵시적 그리드, 서브그리드, 실무 원칙
 - [쓰기 모드와 논리적 속성](/knowledge/dictionary/frontend/css/logical-properties): 블록·인라인 축, inline-size·margin-block 같은 논리 속성, 그리드·플렉스박스가 start·end로 생각하는 이유
 - [CSS 점진적 향상: 폴백과 피처 쿼리](/knowledge/dictionary/frontend/css/css-progressive-enhancement): 새 CSS를 옛 브라우저에 쓸 만하게 지원하는 법, 주요 기능의 Baseline 연도, @supports, 폴리필을 피하는 이유
 - [CSS 커스텀 속성으로 색상 체계 짜기](/knowledge/dictionary/frontend/css/css-color-variables): 팔레트·기능 색상·컴포넌트 색상 3단계, oklch·color-mix, 테마와 다크 모드
 - [Sass: 파일 구조, 믹스인과 @extend](/knowledge/dictionary/frontend/css/sass): 네이티브 CSS와의 역할 분담, 7-1 폴더 구조와 @use, 믹스인·@extend·플레이스홀더
-- [객체 지향 CSS(OOCSS)](/knowledge/dictionary/frontend/css/oocss): 구조/겉모양·컨테이너/콘텐츠 분리, 미디어 객체, 특정도를 낮게 유지하는 규칙, BEM·유틸리티 CSS로 이어진 흐름
+- [객체 지향 CSS(OOCSS)](/knowledge/dictionary/frontend/css/oocss): 구조/겉모양·컨테이너/콘텐츠 분리, 미디어 객체, 특정도를 낮게 유지하는 규칙, 타이포그래피 전략과 흔한 오용, BEM·유틸리티 CSS로 이어진 흐름
 - [웹 타이포그래피: 가독성, 글줄 길이, 웹폰트](/knowledge/dictionary/frontend/css/web-typography): 글줄 길이·글자 크기·줄 간격의 균형, font-size-adjust, 하이픈과 대비, @font-face와 WOFF2
 - [CSS가 동작하는 방식](/knowledge/dictionary/frontend/css/how-css-works): 먼저 익힐 핵심 개념, 해석→캐스케이드→계산→레이아웃→페인트→합성, 상호작용 시 다시 도는 단계
 

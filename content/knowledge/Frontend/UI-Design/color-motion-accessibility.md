@@ -108,4 +108,4 @@ WCAG 규칙: **자동으로 시작해 5초 넘게 이어지는** 움직임·깜�
 - `prefers-color-scheme`, `prefers-reduced-motion`으로 사용자 설정을 따른다.
 - 5초 넘는 자동 애니메이션은 멈출 수 있게 하고, 시뮬레이터보다 실제 사용자와 테스트한다.
 
-관련 노트: [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[presentation-design|발표·포트폴리오 디자인 팁]]
+관련 노트: [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[presentation-design|발표·포트폴리오 디자인 팁]], [[css-animation|CSS 애니메이션: transition과 @keyframes]]
