@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2016/01/27/%ea%b4%91%ea%b3%a0-%ec%b0%a8%eb%8b%a8%ea%b3%bc-%ec%9b%b9%ec%9d%98-%eb%af%b8%eb%9e%98/", "https://support.google.com/adsense/answer/9724", "https://support.google.com/adsense/answer/48182"]
 ---
 
-> 광고와 독자 경험의 균형은 웹액츄얼리가 번역한 Jeffrey Zeldman의 「광고 차단과 웹의 미래」(2016.01)를, 애드센스 요건은 Google 애드센스 고객센터 정책 문서를 바탕으로 재구성한 노트입니다.
+> 광고와 독자 경험의 균형은 웹액츄얼리가 번역한 Jeffrey Zeldman의 「광고 차단과 웹의 미래」(2016.01)를, 애드센스 요건은 Google 애드센스 고객센터 정책 문서를 바탕으로 재구성한 노트다.
 
 블로그 수익의 핵심은 **사람들이 검색하는 키워드에 답하는 글**이다. 광고는 그 트래픽 위에 얹히는 것일 뿐이다.
 

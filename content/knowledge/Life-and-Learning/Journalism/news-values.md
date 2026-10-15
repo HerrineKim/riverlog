@@ -4,6 +4,7 @@ concept: "News Values"
 summary: "시의성·근접성·영향성·저명성·흥미성·진귀성 등 뉴스 가치와, 일상에서 기삿거리를 발견하는 관점."
 tags: ["journalism", "writing", "content-marketing"]
 source: notion
+date: "2026-10-12"
 ---
 
 어떤 사건이 기사가 되는지는 **뉴스 가치**로 판단한다. 블로그 글이나 사내 공지처럼 기사가 아닌 글을 쓸 때도, 독자가 왜 이 글을 읽어야 하는지 점검하는 기준으로 쓸 수 있다.

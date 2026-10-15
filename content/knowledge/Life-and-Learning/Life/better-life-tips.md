@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://www.lesswrong.com/posts/7hFeMWC6Y5eaSixbD/100-tips-for-a-better-life"]
 ---
 
-> Ideopunk의 글 「[100 Tips for a Better Life](https://www.lesswrong.com/posts/7hFeMWC6Y5eaSixbD/100-tips-for-a-better-life)」(LessWrong, 2020.12)를 요약·재구성한 노트입니다. 건강 관련 팁은 의학 조언이 아닙니다.
+> Ideopunk의 글 「[100 Tips for a Better Life](https://www.lesswrong.com/posts/7hFeMWC6Y5eaSixbD/100-tips-for-a-better-life)」(LessWrong, 2020.12)를 요약·재구성한 노트다. 건강 관련 팁은 의학 조언이 아닙니다.
 
 ## 개요
 

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://kk.org/thetechnium/68-bits-of-unsolicited-advice/"]
 ---
 
-> 케빈 켈리(Kevin Kelly)의 「[68 Bits of Unsolicited Advice](https://kk.org/thetechnium/68-bits-of-unsolicited-advice/)」(2020.04) 가운데 일부를 옮겨 주제별로 묶은 노트입니다.
+> 케빈 켈리(Kevin Kelly)의 「[68 Bits of Unsolicited Advice](https://kk.org/thetechnium/68-bits-of-unsolicited-advice/)」(2020.04) 가운데 일부를 옮겨 주제별로 묶은 노트다.
 
 케빈 켈리는 Wired의 공동 창립 편집장이다. 68세 생일에 맞춰 쓴 이 조언 목록은 배움, 일, 관계, 습관, 돈, 미래에 대한 짧은 경구로 이뤄져 있다.
 
@@ -63,4 +63,4 @@ sources: ["https://kk.org/thetechnium/68-bits-of-unsolicited-advice/"]
 
 - 장기적으로 미래는 낙관론자들이 만든다. 낙관론자가 되기 위해 우리가 만드는 수많은 문제를 외면할 필요는 없다. 문제를 해결하는 우리의 능력이 나아지는 모습을 상상하기만 하면 된다.
 
-관련 노트: [[career-in-ai-era|AI 시대의 커리어]], [[better-life-tips|더 나은 삶을 위한 100가지 팁]]
+관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[better-life-tips|더 나은 삶을 위한 100가지 팁]]

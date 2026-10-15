@@ -4,9 +4,10 @@ concept: "TOEIC Grammar"
 summary: "동사 형식, 자동사·타동사, 가정법, 사역·지각동사, 가산·불가산, 수량 표현, 접속부사, 전치사 등 TOEIC 빈출 문법."
 tags: ["english", "toeic", "grammar"]
 source: notion
+date: "2026-10-12"
 ---
 
-TOEIC Part 5·6에서 반복적으로 나오는 문법 포인트를 시험 직전에 훑어보기 좋게 정리했다. 어휘는 [[vocabulary|영어 어휘 노트]]에 따로 모았다.
+TOEIC Part 5·6에서 반복적으로 나오는 문법 포인트를 시험 직전에 훑어보기 좋게 정리했다.
 
 ## 동사
 

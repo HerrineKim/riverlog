@@ -1,14 +1,14 @@
 ---
 title: "생활 속 IT 팁"
 concept: "Tech Tips"
-summary: "구글 드라이브 다운로드 한도 우회, Gmail에서 다른 주소로 보내기, OneDrive 제거, 휴대폰 별 사진, 3D 게임 멀미 줄이기 같은 소소한 IT 해결법."
-tags: ["tips", "productivity", "windows", "google-drive", "email"]
+summary: "구글 드라이브 다운로드 한도 우회, Gmail에서 다른 주소로 보내기, 공공 와이파이 보안형 접속, OneDrive 제거, 휴대폰 별 사진, 3D 게임 멀미 줄이기 같은 소소한 IT 해결법."
+tags: ["tips", "productivity", "windows", "google-drive", "email", "security"]
 source: notion
 date: "2026-10-14"
 sources: ["https://80000coding.notion.site/917d970237d2446f93f79a48ada57522"]
 ---
 
-> 「Gmail에서 다른 주소로 메일 보내기」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「42메일로 이메일 보내기」를 바탕으로 보강한 노트입니다.
+> 「Gmail에서 다른 주소로 메일 보내기」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「42메일로 이메일 보내기」를 바탕으로 보강한 노트다.
 
 자주 찾아보게 되는 소소한 IT 문제 해결법 모음. 서비스 화면과 메뉴 이름은 업데이트로 바뀔 수 있다.
 
@@ -33,6 +33,20 @@ sources: ["https://80000coding.notion.site/917d970237d2446f93f79a48ada57522"]
 5. 해당 주소로 온 확인 메일의 링크를 누르면 끝이다.
 
 `535-5.7.8 Username and Password not accepted` 오류는 거의 항상 4번 문제다. 앱 비밀번호는 Google 계정에 **2단계 인증을 켠 뒤** 계정 설정의 "앱 비밀번호"에서 만든다. 학교·회사 계정은 관리자가 앱 비밀번호를 막아 두었을 수 있다.
+
+## 공용 와이파이 접속
+
+공공 와이파이는 개방형과 보안형 두 가지 네트워크가 함께 뜬다. **보안형(Secure)** 에 접속해야 오가는 데이터가 암호화된다.
+
+| 네트워크 | 이름(SSID) | 아이디 / 비밀번호 |
+| --- | --- | --- |
+| 서울시 공공 와이파이 | `SEOUL_Secure`, 더 강한 WPA3 방식은 `SEOUL_Secure_(3)` | seoul / seoul |
+| 전국 공공 와이파이 (지자체·버스 등) | `Public WiFi Secure` | 대부분 wifi / wifi. 지자체마다 다를 수 있다 |
+| 서울 시내버스 | `PublicWiFi@Bus_Secure_노선번호` | 위 공공 와이파이와 같다 |
+
+- 보안형에 한 번 접속해 두면 다음부터 자동으로 붙는다. 안드로이드는 EAP 방식을 PEAP로 고르고, 아이폰은 인증서 신뢰를 한 번 승인한다.
+- 지하철과 통신사 와이파이는 유심(USIM) 인증으로 비밀번호 없이 붙는 경우가 많다. 카페·편의점 와이파이 비밀번호는 매장 안내나 영수증을 본다.
+- 공용 와이파이에서는 금융 거래와 중요한 로그인을 피하고, 필요하면 모바일 데이터나 VPN을 쓴다.
 
 ## Windows에서 OneDrive 완전히 제거
 
@@ -59,3 +73,5 @@ taskkill /f /im OneDrive.exe
 3. 카메라 흔들림(head bob) 효과를 끈다.
 4. 그래픽 품질보다 **프레임 우선** 설정으로 프레임을 높고 안정적으로 유지한다.
 5. 그래도 힘들면 멀미약.
+
+관련 노트: [[life-tips|생활 정보 모음]], [[out-of-print-books|절판 도서 구하기]]

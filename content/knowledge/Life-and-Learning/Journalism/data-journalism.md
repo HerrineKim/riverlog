@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/72", "https://riverkim.kr/73", "https://journalismcourses.org/course/dataviz/"]
 ---
 
-> 탐사보도 매체 데이터팀과의 질의응답, Knight Center MOOC 「Data Journalism and Visualization with Free Tools」, 데이터 저널리즘 코리아 컨퍼런스(2019)의 내용을 바탕으로 재구성한 노트입니다.
+> 탐사보도 매체 데이터팀과의 질의응답, Knight Center MOOC 「Data Journalism and Visualization with Free Tools」, 데이터 저널리즘 코리아 컨퍼런스(2019)의 내용을 바탕으로 재구성한 노트다.
 
 데이터 저널리즘은 데이터를 수집·분석·시각화해 기사의 근거이자 소재로 삼는 보도 방식이다. 실무 흐름을 단계별로 정리하고, 무료 도구로 첫 시각화를 만드는 법과 공유·수익 모델에 관한 논점을 덧붙였다.
 

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://www.cjchilvers.com/blog/35-lessons-from-35-years-of-newsletter-publishing/"]
 ---
 
-> CJ 칠버스(CJ Chilvers)의 글 「[35 Lessons from 35 Years of Newsletter Publishing](https://www.cjchilvers.com/blog/35-lessons-from-35-years-of-newsletter-publishing/)」(2022.01)를 요약·재구성한 노트입니다.
+> CJ 칠버스(CJ Chilvers)의 글 「[35 Lessons from 35 Years of Newsletter Publishing](https://www.cjchilvers.com/blog/35-lessons-from-35-years-of-newsletter-publishing/)」(2022.01)를 요약·재구성한 노트다.
 
 ## 뉴스레터란
 

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://enuri.com/knowcom/detail.jsp?kbno=252512"]
 ---
 
-> 에누리 쇼핑지식의 구매 가이드 「[체형별 맞춤의자 선택 방법!](https://enuri.com/knowcom/detail.jsp?kbno=252512)」(2016.07)을 바탕으로 재구성한 노트입니다.
+> 에누리 쇼핑지식의 구매 가이드 「[체형별 맞춤의자 선택 방법!](https://enuri.com/knowcom/detail.jsp?kbno=252512)」(2016.07)을 바탕으로 재구성한 노트다.
 
 ## 바른 자세가 기준이다
 
