@@ -1,14 +1,14 @@
 ---
 title: "프론트엔드 테스트의 종류와 도구"
 concept: "Frontend Testing"
-summary: "정적·단위·통합·E2E 테스트가 각각 무엇을 확인하는지, 테스트 대역(더미·스텁·스파이·페이크·목)의 차이, 구현이 아니라 사용자 행위를 검증하는 원칙과 테스트 작성 원칙(AAA, 블랙박스, 현실적인 데이터), 그리고 층마다 쓰는 도구(TypeScript·ESLint, Vitest·Jest, Testing Library, MSW, Playwright)."
+summary: "정적·단위·통합·E2E 테스트가 각각 무엇을 확인하는지, 폴더 역할(apis·components·hooks·context·pages)별로 무엇을 검증할지, 테스트 대역(더미·스텁·스파이·페이크·목)의 차이, 구현이 아니라 사용자 행위를 검증하는 원칙과 테스트 작성 원칙(AAA, 블랙박스, 현실적인 데이터), 그리고 층마다 쓰는 도구(TypeScript·ESLint, Vitest·Jest, Testing Library, MSW, Playwright)."
 tags: ["testing", "frontend", "javascript", "tdd"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0", "https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html"]
+sources: ["https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8B%A8%EC%9C%84", "https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0", "https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html"]
 ---
 
-> 이현호의 「[테스트를 처음 공부하는 프론트엔드 개발자의 개념 다지기](https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0)」(2022.06)와 김정환의 「[자스민으로 프론트엔드 테스트 코드 작성하기](https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html)」(2017.03)를 바탕으로 재구성한 노트다. 테스트 작성 원칙은 Yoni Goldberg의 「[JavaScript Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md)」에서 뽑았다.
+> 이현호의 「[테스트를 처음 공부하는 프론트엔드 개발자의 개념 다지기](https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0)」(2022.06)와 김정환의 「[자스민으로 프론트엔드 테스트 코드 작성하기](https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html)」(2017.03)를 바탕으로 재구성한 노트다. 테스트 작성 원칙은 Yoni Goldberg의 「[JavaScript Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md)」에서, 폴더 역할별 테스트 단위는 김승규의 「[내가 생각하는 프론트엔드 테스트 단위](https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8B%A8%EC%9C%84)」(2023.06)에서 뽑았다.
 
 ## 프론트엔드 테스트란
 
@@ -37,6 +37,28 @@ sources: ["https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-
 | --- | --- | --- |
 | 진짜를 쓴다 | Sociable: 자식 컴포넌트까지 렌더링 | Broad: 의존 모듈을 모두 연결 |
 | 대역으로 바꾼다 | Solitary: 자식 컴포넌트를 목으로 대체 | Narrow: 외부 API를 가짜 서버로 대체 |
+
+## 폴더 역할별로 무엇을 테스트하나
+
+층을 정했으면 "어느 파일을 어떤 단위로 테스트할까"가 남는다. 실용적인 기준은 **폴더(모듈)마다 맡은 책임을 하나씩 검증**하는 것이다. 정답이 정해진 분류는 아니고, 팀이 합의할 출발점이다.
+
+| 폴더 | 책임 | 검증할 것 | 방법 |
+| --- | --- | --- | --- |
+| `apis` | 서버와 통신 | 올바른 요청을 보내고 응답을 원하는 모양으로 돌려주나 | MSW로 응답을 고정하고 함수를 호출한다. axios·fetch를 직접 목으로 바꾸면 구현에 묶인다 |
+| `components` (공통 UI) | 받은 props대로 그리고 알린다 | 렌더링되나, 클릭하면 받은 `onClick`을 부르나 | 단위 테스트. 버튼이 어디에 쓰일지가 아니라 **받은 콜백을 부르는 것**까지가 책임이다 |
+| `hooks` | 재사용 로직 | 입력·환경(예: 저장된 토큰 유무)에 따라 올바른 값을 돌려주나 | `renderHook` |
+| `context`·스토어 | 도메인 상태 | 추가·수정·삭제 뒤 상태가 맞나, Provider 밖에서 쓰면 에러를 던지나 | Provider로 감싸 렌더링하거나 `renderHook`의 `wrapper` |
+| `pages` | 기능 하나의 사용자 흐름 | 유효한 입력일 때만 버튼이 켜지나, 성공하면 이동하고 실패하면 알리나, 로그인 상태면 리다이렉트하나 | 페이지 통합 테스트(Testing Library + MSW + 메모리 라우터). 실제 브라우저가 필요한 핵심 흐름만 E2E |
+
+```tsx
+test('저장된 토큰이 있으면 로그인 상태다', () => {
+  localStorage.setItem('token', 'abc')
+  const { result } = renderHook(() => useAuth())
+  expect(result.current).toEqual({ isLogin: true, token: 'abc' })
+})
+```
+
+아래 폴더일수록 단위 테스트로 좁게, `pages`로 갈수록 통합 테스트로 넓게 검증한다. 같은 동작을 여러 층에서 반복해 확인하지 않는다.
 
 ## 테스트 대역(Test Double)
 
