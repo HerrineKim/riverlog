@@ -31,7 +31,7 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 ### 실전
 - [React 빌드 환경 직접 구성하기: webpack·Babel·TypeScript](Frontend/React/tooling.md): CDN 실습, CRA 종료 이후의 선택, webpack·Babel·tsconfig 역할, 라우팅·코드 스플리팅, 도구별 환경 변수 접두사
 - [SWR로 데이터 가져오기](/knowledge/dictionary/frontend/react/swr): fetcher, mutate 옵션과 optimisticData, SWR 캐시로 로그인 상태 판단·보호된 페이지, useSWRInfinite
-- [TanStack Query(React Query)](/knowledge/dictionary/frontend/react/tanstack-query): QueryClientProvider, query key, useQuery·useMutation, v5 변경점
+- [TanStack Query(React Query)](/knowledge/dictionary/frontend/react/tanstack-query): QueryClientProvider, query key, useQuery·useMutation, SSR 하이드레이션(dehydrate·HydrationBoundary), v5 변경점
 - [Redux와 react-redux](/knowledge/dictionary/frontend/react/redux): Flux 패턴, store·reducer·dispatch, useSelector·useDispatch, Redux Toolkit
 - [use 훅과 리액트 비동기 처리](/knowledge/dictionary/frontend/react/react-use-hook): Promise·Context를 읽는 React 19 API, 캐시된 Promise만 넘기기, 서버 컴포넌트에서 내려받은 Promise 읽기
 - [실시간 채팅 앱의 데이터 흐름: REST와 WebSocket 역할 나누기](Frontend/React/realtime-chat-app.md): 쓰기는 REST·알림은 소켓, 리소스 계층이 드러나는 URL, 소켓 연결 수명, optimistic UI와 중복 방지, 긴 목록 최적화
