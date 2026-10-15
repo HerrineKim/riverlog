@@ -12,18 +12,11 @@ date: "2026-10-13"
 
 **Three.js**는 웹 페이지에 3D 객체를 렌더링하게 해 주는 오픈 소스 JavaScript 라이브러리다. Three.js 자체가 렌더링 기술은 아니고, 저수준 그래픽 API인 **WebGL**을 쉽고 직관적으로 쓰게 감싼 래퍼다. 데모씬(컴퓨터 아트 커뮤니티) 출신 개발자 Ricardo Cabello(mrdoob)가 WebGL을 편하게 쓰려고 만들기 시작했다.
 
-## OpenGL, WebGL, Three.js
+## WebGL 위의 라이브러리
 
-| 이름 | 정체 |
-| --- | --- |
-| OpenGL | GPU에 그래픽 작업을 시키는 크로스 플랫폼 API 규격. 게임·CAD·VR 등에 쓰인다 |
-| WebGL | OpenGL ES를 바탕으로 브라우저에서 GPU를 쓰게 해 주는 JavaScript API. HTML `<canvas>` 안에 그린다 |
-| Three.js | WebGL 위에 장면·카메라·조명·재질 같은 고수준 개념을 얹은 라이브러리 |
+WebGL은 브라우저가 GPU에 그리기를 시키는 저수준 API이고, 실제 그리기는 GPU에서 도는 **셰이더(shader)** 가 맡는다. 순수 WebGL로 큐브 하나를 그리려면 셰이더 작성부터 수십 줄이 필요하지만, Three.js는 열 몇 줄이면 된다. OpenGL·WebGL·WebGPU의 관계와 셰이더의 동작은 [[webgl-shaders|WebGL과 셰이더]]에 있다.
 
-- GPU는 코어가 많아 수많은 점과 픽셀을 **병렬로** 계산하는 데 강하다.
-- 앱이 "이 모양을 그려 줘"라고 요청하면 WebGL이 정점(vertex)과 색 정보를 GPU로 보내고, GPU에서 도는 작은 프로그램인 **셰이더(shader)** 가 이를 화면 픽셀로 바꾼다.
 - 웹에서 화려한 3D 그래픽을 보면 개발자 도구에서 `<canvas>` 태그를 찾을 수 있다(영상이나 GIF가 아니라면).
-- 큐브 하나를 그리는 데 순수 WebGL은 셰이더 작성부터 수십 줄이 필요하지만, Three.js는 열 몇 줄이면 된다.
 
 ## 구성 요소
 
@@ -133,3 +126,5 @@ hero.run = function () {
 - WebGL(저수준 GPU API) 위에 Scene·Camera·Mesh·Light·Renderer라는 고수준 개념을 얹은 것이 Three.js다.
 - Mesh = Geometry + Material, 애니메이션은 `setAnimationLoop`로 매 프레임 렌더링한다.
 - 복잡한 모델은 외부 툴에서 만들어 불러오고, React에서는 react-three-fiber를 쓴다.
+
+관련 노트: [[webgl-shaders|WebGL과 셰이더]], [[transformation-matrix|변환 행렬]]
