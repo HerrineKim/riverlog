@@ -4,9 +4,10 @@ concept: "Branch"
 summary: "원본에 영향을 주지 않고 독립적으로 작업할 수 있도록 커밋 흐름을 나누는 Git의 핵심 기능."
 tags: ["git", "version-control", "branch"]
 source: mixed
+date: "2026-10-12"
 ---
 
-브랜치(branch)는 나뭇가지처럼 작업 흐름을 여러 갈래로 나누어 **서로 독립적으로 개발**할 수 있게 해 주는 기능입니다. Git의 브랜치는 특정 커밋을 가리키는 가벼운 포인터일 뿐이라서, 만들고 이동하는 비용이 거의 없습니다.
+브랜치(branch)는 나뭇가지처럼 작업 흐름을 여러 갈래로 나누어 **서로 독립적으로 개발**할 수 있게 해 주는 기능이다. Git의 브랜치는 특정 커밋을 가리키는 가벼운 포인터일 뿐이라서, 만들고 이동하는 비용이 거의 없다.
 
 ![브랜치 개념](/images/til/ETC/Git/md-images/branch.png)
 
@@ -19,7 +20,7 @@ source: mixed
 
 ## HEAD
 
-**HEAD**는 "지금 내가 있는 브랜치(커밋)"를 가리키는 포인터입니다. 브랜치를 이동한다는 것은 HEAD가 다른 브랜치를 가리키게 한다는 뜻이고, 그 결과 Working Directory도 그 브랜치의 최신 커밋 상태로 바뀝니다.
+**HEAD**는 "지금 내가 있는 브랜치(커밋)"를 가리키는 포인터다. 브랜치를 이동한다는 것은 HEAD가 다른 브랜치를 가리키게 한다는 뜻이고, 그 결과 Working Directory도 그 브랜치의 최신 커밋 상태로 바뀐다.
 
 ## 브랜치 명령어
 
@@ -35,7 +36,7 @@ $ git branch -D <이름>        # 강제 삭제 (병합 안 된 브랜치도 삭
 
 ### `git switch`: 브랜치 이동
 
-Git 2.23(2019)에서 추가된 명령으로, 예전에 `git checkout`이 하던 일 중 "브랜치 전환" 기능만 분리한 것입니다. 파일을 되돌리는 기능은 `git restore`로 분리되었습니다.
+Git 2.23(2019)에서 추가된 명령으로, 예전에 `git checkout`이 하던 일 중 "브랜치 전환" 기능만 분리한 것이다. 파일을 되돌리는 기능은 `git restore`로 분리되었다.
 
 ```bash
 $ git switch <브랜치>         # 다른 브랜치로 이동
@@ -50,11 +51,11 @@ $ git switch -               # 직전 브랜치로 돌아가기
 | `git checkout -- <파일>` | `git restore <파일>` |
 | `git reset HEAD <파일>` (스테이징 취소) | `git restore --staged <파일>` |
 
-`git checkout`은 지금도 동작하고 Git 프로젝트도 없앨 계획이 없다고 밝혔지만([Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)), 한 명령이 브랜치 이동과 파일 덮어쓰기를 함께 맡아 실수하기 쉽습니다. 새로 배운다면 `switch`/`restore`를 쓰고, 오래된 문서에서 `checkout`을 보면 위 표처럼 바꿔 읽으면 됩니다.
+`git checkout`은 지금도 동작하고 Git 프로젝트도 없앨 계획이 없다고 밝혔지만([Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)), 한 명령이 브랜치 이동과 파일 덮어쓰기를 함께 맡아 실수하기 쉽다. 새로 배운다면 `switch`/`restore`를 쓰고, 오래된 문서에서 `checkout`을 보면 위 표처럼 바꿔 읽으면 된다.
 
 ## 예시: 갈라지는 브랜치
 
-`master`에서 커밋 3개를 만든 뒤 `login` 브랜치를 만들고, `master`에 커밋을 하나 더 쌓은 상황입니다.
+`master`에서 커밋 3개를 만든 뒤 `login` 브랜치를 만들고, `master`에 커밋을 하나 더 쌓은 상황이다.
 
 ```bash
 $ git branch login
@@ -66,7 +67,7 @@ $ git log --oneline
 3d71510 master-1
 ```
 
-`login`으로 이동하면 `test.txt`에서 `master-4` 내용이 사라지고, `git log`에서도 `master` 브랜치가 보이지 않습니다. 브랜치가 지워진 것이 아니라 **HEAD 기준으로 이력을 보여주기 때문**입니다. `--all` 옵션을 주면 모든 브랜치를 볼 수 있습니다.
+`login`으로 이동하면 `test.txt`에서 `master-4` 내용이 사라지고, `git log`에서도 `master` 브랜치가 보이지 않는다. 브랜치가 지워진 것이 아니라 **HEAD 기준으로 이력을 보여주기 때문**이다. `--all` 옵션을 주면 모든 브랜치를 볼 수 있다.
 
 ```bash
 $ git switch login
@@ -76,7 +77,7 @@ $ git log --oneline --all
 ...
 ```
 
-`login`에서 새 커밋을 만들면 두 브랜치가 다른 갈래로 나뉩니다.
+`login`에서 새 커밋을 만들면 두 브랜치가 다른 갈래로 나뉜다.
 
 ```bash
 $ git log --oneline --graph --all
@@ -92,7 +93,7 @@ $ git log --oneline --graph --all
 
 ## 주의: 추적되지 않는 파일은 브랜치를 따라다닌다
 
-`feature` 브랜치에서 `test.txt`를 만들고 `git add` 하지 않은 채 `git switch master` 하면, `test.txt`가 `master`에도 그대로 남아 있습니다.
+`feature` 브랜치에서 `test.txt`를 만들고 `git add` 하지 않은 채 `git switch master` 하면, `test.txt`가 `master`에도 그대로 남아 있다.
 
 - 브랜치가 독립적인 것은 **Git이 관리하는 파일**에 한해서다.
 - 한 번도 Staging Area에 올라간 적 없는(untracked) 파일은 버전 관리 대상이 아니므로 브랜치를 바꿔도 Working Directory에 계속 남는다.

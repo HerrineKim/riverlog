@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://github.blog/changelog/2025-04-09-evolving-github-issues-and-projects/", "https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/adding-sub-issues"]
 ---
 
-> 허광남의 발표 자료 「GitHub 기반의 개발 진행상황 관리법」을 바탕으로, 현재 GitHub Issues·Projects 기능에 맞춰 재구성한 노트입니다.
+> 허광남의 발표 자료 「GitHub 기반의 개발 진행상황 관리법」을 바탕으로, 현재 GitHub Issues·Projects 기능에 맞춰 재구성한 노트다.
 
 ## 이슈 기반 진행 관리란
 
@@ -61,7 +61,7 @@ gh pr create --fill                      # 5. PR 생성, 본문에 "Closes #42"
 6. 동료가 리뷰하고 합치거나 닫는다. 합친 브랜치는 지운다(저장소 설정의 *Automatically delete head branches*).
 7. 개발 서버에 배포해 확인한다. 자동화된 테스트가 있으면 이 단계가 가벼워진다.
 
-- 커밋·PR에 `#42`를 쓰면 이슈 타임라인에 연결이 남고, PR 본문의 `Closes #42`는 머지될 때 이슈를 자동으로 닫는다.
+- 커밋·PR에 `#42`를 쓰면 이슈 타임라인에 연결이 남는다. `Closes #42` 같은 자동 닫기 키워드는 [[commit-convention|커밋 컨벤션과 자동 검사]]의 「커밋 메시지로 이슈 닫기」에 있다.
 - 이슈 화면 사이드바의 **Development → Create a branch**로 이슈에 연결된 브랜치를 바로 만들 수도 있다.
 - 브랜치 이름에 이슈 번호를 넣으면 브랜치만 보고도 무슨 작업인지 안다.
 - 같은 저장소의 멤버는 **브랜치**로, 쓰기 권한이 없는 외부 기여자는 **포크(fork)** 로 PR을 보낸다.

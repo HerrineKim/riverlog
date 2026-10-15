@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/0fc58551fdae4c119d63ee6102d21ac7", "http://wiki.ktug.org/wiki/wiki.php/%EC%B2%98%EC%9D%8C%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「LaTeX (시작하는 방법과 참고자료)」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「LaTeX (시작하는 방법과 참고자료)」를 바탕으로 재구성한 노트다.
 
 ## LaTeX이란
 

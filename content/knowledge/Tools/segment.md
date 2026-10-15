@@ -104,7 +104,7 @@ SQL로 웹 행동과 CS 티켓, 결제 데이터를 함께 분석할 수 있게 
 | **Unify** | **Identity Resolution**(여러 기기·채널의 데이터를 한 프로필로 통합), 프로필 탐색, **Computed Traits**(행동으로 계산한 특성, 예: 최근 30일 구매 횟수), SQL Traits, 예측 |
 | **Engage** | **Audiences**(조건으로 고객 그룹을 정의해 광고·이메일 도구로 내보냄), Journeys(단계별 메시지 흐름). Unify가 있어야 쓴다 |
 
-GA4 자체 설정은 [GA4 시작하기](/knowledge/dictionary/tools/analytics/ga4-setup) 참고.
+GA4 자체 설정은 [[ga4-setup|GA4 시작하기]] 참고.
 
 ## 핵심 정리
 

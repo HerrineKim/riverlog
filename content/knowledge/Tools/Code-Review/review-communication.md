@@ -4,6 +4,7 @@ concept: "Review Comment"
 summary: "의도가 정확히 전달되는 리뷰 코멘트 쓰는 법, PR에서 자주 쓰는 약어(LGTM·IMO·NIT·PTAL), 리뷰를 받는 쪽의 태도와 PR 템플릿."
 tags: ["code-review", "collaboration", "github", "communication"]
 source: notion
+date: "2026-10-12"
 ---
 
 같은 지적이라도 어떻게 쓰느냐에 따라 받아들이는 사람의 반응이 완전히 달라진다. 좋은 리뷰 코멘트는 **무엇이 문제인지, 왜 그런지, 어떻게 바꾸면 좋을지**가 한 번에 전달되고, 그 지적이 꼭 고쳐야 하는 것인지 취향인지까지 분명하다. 무엇을 볼지는 [코드 리뷰 원칙과 체크리스트](/knowledge/dictionary/tools/code-review/principles)에 정리했다.

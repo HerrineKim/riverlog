@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/231", "https://riverkim.kr/142", "https://riverkim.kr/85"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
+> riverkim.kr에 쓴 글들을 다시 정리한 노트다.
 
 Windows에서 웹 개발을 시작하면 macOS·Linux 중심으로 쓰인 문서와 어긋나는 부분이 몇 군데 생긴다. 어떤 터미널을 쓸지, Git을 어떻게 설치할지, 줄바꿈 문자가 왜 린트 오류를 내는지가 대표적이다.
 
@@ -43,7 +43,7 @@ bash는 GNU 프로젝트에서 Brian Fox가 만든 유닉스 셸로, 리눅스�
 | 설치 옵션 | 고를 것 |
 | --- | --- |
 | Default editor | 커밋 메시지 등을 쓸 때 Git이 여는 에디터. VS Code를 쓰면 VS Code를 고른다 |
-| Initial branch name | `git init`이 만드는 기본 브랜치 이름. 팀 컨벤션이 없다면 `main`을 고른다 |
+| Initial branch name | `git init`이 만드는 기본 브랜치 이름. 팀 컨벤션이 없다면 `main`을 고른다(이름이 바뀐 배경과 `init.defaultBranch` 설정은 [[git-basics\|Git 기본 명령과 파일 상태]] 참고) |
 
 설치 후에는 사용자 이름과 이메일을 먼저 등록한다.
 
@@ -51,10 +51,6 @@ bash는 GNU 프로젝트에서 Brian Fox가 만든 유닉스 셸로, 리눅스�
 git config --global user.name "이름"
 git config --global user.email "메일 주소"
 ```
-
-### 왜 master 대신 main인가
-
-2020년 무렵 컴퓨터 업계에서 master/slave 같은 용어가 노예제를 떠올리게 한다는 문제가 제기됐다. GitHub는 이런 **문화적 민감성(cultural sensitivity)** 을 고려해 새 저장소의 기본 브랜치 이름을 `main`으로 바꿨다. Git 2.x의 기본값은 여전히 `master`이고(Git 3.0부터 `main`) `init.defaultBranch`로 맞추는 방법은 [[git-basics|Git 기본 명령과 파일 상태]]에 있다. 다만 저장소를 다른 서비스로 미러링할 계획이 있다면 양쪽의 기본 브랜치 이름을 맞춰 두는 편이 안전하다([[remote-github|원격 저장소와 GitHub]]의 미러링 참고).
 
 ## 줄바꿈 문제: `Delete ␍` 오류
 

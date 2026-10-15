@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/216dcb7b968742abbf4028ae8e6b8caa", "https://80000coding.notion.site/014aa6329e3e4e39bf1b8fe1688a9f84", "https://80000coding.notion.site/7cf061c6a49541a4a80a747a3a3fe2d8", "https://80000coding.notion.site/2a61bdb018be4efdaf5709ecc66df1cf", "https://neovim.io/doc/user/pack.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「ed에서 vi/vim을 거쳐 neovim까지」, 「생산성 향상을 위한 Vim 커스터마이징」, 「man 페이지를 vim으로 열어보자!」, 「[Vimium] 웹브라우저를 Vim 처럼.」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「ed에서 vi/vim을 거쳐 neovim까지」, 「생산성 향상을 위한 Vim 커스터마이징」, 「man 페이지를 vim으로 열어보자!」, 「[Vimium] 웹브라우저를 Vim 처럼.」을 바탕으로 재구성한 노트다.
 
 ## Vim이란
 

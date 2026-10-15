@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://riverkim.kr/240", "https://riverkim.kr/274"]
 ---
 
-> 마틴 파울러의 『리팩터링』(2판) 1~2장을 읽으며 riverkim.kr에 남긴 메모를 다시 정리한 노트입니다. 책: [[books/ripaektoring|리팩토링]]
+> 마틴 파울러의 『리팩터링』(2판) 1~2장을 읽으며 riverkim.kr에 남긴 메모를 다시 정리한 노트다. 책: [[books/ripaektoring|리팩토링]]
 
 ## 리팩터링이란
 

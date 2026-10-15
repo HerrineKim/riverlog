@@ -7,7 +7,7 @@ source: mixed
 date: "2026-10-13"
 ---
 
-개발 환경은 한 번 제대로 잡아 두면 잊어버리지만, 새 기기나 새 팀에 들어갈 때마다 같은 문제를 다시 만나게 됩니다. 이 묶음에는 Windows와 macOS에서 터미널·Git·언어 런타임을 설치할 때 고를 옵션, 로컬에서 HTTPS를 쓰는 방법, 빌드 도구와 IDE가 말없이 죽을 때 원인을 찾는 법을 정리했습니다. 각 노트는 "왜 필요한지 → 설정 순서 → 자주 만나는 오류" 순서로 읽으면 됩니다.
+개발 환경은 한 번 제대로 잡아 두면 잊어버리지만, 새 기기나 새 팀에 들어갈 때마다 같은 문제를 다시 만나게 된다. 이 묶음에는 Windows와 macOS에서 터미널·Git·언어 런타임을 설치할 때 고를 옵션, 로컬에서 HTTPS를 쓰는 방법, 빌드 도구와 IDE가 말없이 죽을 때 원인을 찾는 법을 정리했다. 각 노트는 "왜 필요한지 → 설정 순서 → 자주 만나는 오류" 순서로 읽으면 된다.
 
 ## 노트
 
@@ -16,4 +16,4 @@ date: "2026-10-13"
 - [Java 빌드 도구와 IntelliJ 실행 오류](Tools/Dev-Environment/java-build-tools.md): 빌드와 Ant·Maven·Gradle, JDK 설치, IntelliJ 힙 설정(-Xms > -Xmx) 오류
 - [macOS에서 pyenv로 Python 환경 잡기](Tools/Dev-Environment/python-pyenv-setup.md): pyenv로 버전 설치·지정, VSCode 인터프리터 선택, venv로 패키지 분리
 
-Git 자체의 사용법은 [[Tools/Git|Git]]에서 다룹니다.
+Git 자체의 사용법은 [[Tools/Git|Git]]에서 다룬다.

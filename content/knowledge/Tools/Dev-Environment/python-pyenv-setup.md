@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/301", "https://leesh90.github.io/environment/2021/04/03/python-install/", "https://github.com/pyenv/pyenv", "https://docs.astral.sh/uv/"]
 ---
 
-> riverkim.kr에 쓴 설정 글을 다시 정리하고, 명령은 [pyenv](https://github.com/pyenv/pyenv)·[uv](https://docs.astral.sh/uv/) 공식 문서로 확인한 노트입니다.
+> riverkim.kr에 쓴 설정 글을 다시 정리하고, 명령은 [pyenv](https://github.com/pyenv/pyenv)·[uv](https://docs.astral.sh/uv/) 공식 문서로 확인한 노트다.
 
 macOS에는 Xcode Command Line Tools와 함께 시스템용 `python3`가 깔리지만, 운영체제 도구들이 이 버전에 의존하므로 직접 업그레이드하거나 패키지를 섞어 깔지 않는 것이 좋다. 대신 **버전 관리자**를 두고 그 위에 필요한 버전을 설치한다. Node.js의 nvm이 하는 일을 Python에서는 **pyenv**가 맡는다.
 
@@ -16,8 +16,8 @@ macOS에는 Xcode Command Line Tools와 함께 시스템용 `python3`가 깔리�
 
 ```bash
 brew install pyenv            # 1. 버전 관리자 설치
-pyenv install 3.14            # 2. 3.14 계열 최신 패치 버전 설치 (앞자리만 써도 된다)
-pyenv global 3.14             #    셸 어디서나 기본으로 쓸 버전 지정
+pyenv install 3.15            # 2. 3.15 계열 최신 패치 버전 설치 (앞자리만 써도 된다)
+pyenv global 3.15             #    셸 어디서나 기본으로 쓸 버전 지정
 ```
 
 | 명령 | 역할 |
@@ -63,7 +63,7 @@ pip install -r requirements.txt
 
 ```bash
 brew install uv
-uv python install 3.14        # Python 버전 설치
+uv python install 3.15        # Python 버전 설치
 uv init my-project            # pyproject.toml이 있는 프로젝트 생성
 cd my-project
 uv add pandas scipy           # 패키지 추가 (.venv와 uv.lock 자동 관리)

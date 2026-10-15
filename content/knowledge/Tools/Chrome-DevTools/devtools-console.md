@@ -8,8 +8,8 @@ date: "2026-10-15"
 sources: ["https://developer.chrome.com/docs/devtools/console?hl=ko", "https://developer.chrome.com/docs/devtools/console/reference?hl=ko", "https://developer.chrome.com/docs/devtools/console/log?hl=ko", "https://developer.chrome.com/docs/devtools/console/api?hl=ko", "https://developer.chrome.com/docs/devtools/console/format-style?hl=ko", "https://developer.chrome.com/docs/devtools/console/javascript?hl=ko", "https://developer.chrome.com/docs/devtools/console/live-expressions?hl=ko", "https://developer.chrome.com/docs/devtools/console/utilities?hl=ko", "https://yozm.wishket.com/magazine/detail/1585/", "https://80000coding.notion.site/cf68279ce9c846d5a0b408d8aaeced25"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트입니다.
-> 콘솔 메서드 활용 팁 일부는 요즘IT 「[웹 개발 시간을 줄여주는 팁 4가지](https://yozm.wishket.com/magazine/detail/1585/)」와 팔만코딩경의 「js에서 console.log보다 예쁘게 봐보자!」에서 가져왔습니다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
+> 콘솔 메서드 활용 팁 일부는 요즘IT 「[웹 개발 시간을 줄여주는 팁 4가지](https://yozm.wishket.com/magazine/detail/1585/)」와 팔만코딩경의 「js에서 console.log보다 예쁘게 봐보자!」에서 가져왔다.
 
 ## 콘솔이란
 
@@ -145,7 +145,7 @@ monitorEvents($0, "key");          // 선택한 input의 키 이벤트만 기록
 getEventListeners(document);       // { click: [...], keydown: [...] }
 ```
 
-이벤트 위임과 리스너 동작은 [[dom-events|DOM 이벤트와 addEventListener]]에 있다.
+이벤트 위임과 리스너 동작은 [[dom-manipulation|DOM 조작과 이벤트]]에 있다.
 
 ## 정리
 
@@ -155,4 +155,4 @@ getEventListeners(document);       // { click: [...], keydown: [...] }
 - `$0`, `$$()`, `copy()`, `getEventListeners()`, `monitorEvents()`를 쓰면 코드를 고치지 않고 페이지를 조사할 수 있다.
 - 값을 여러 개 동시에 봐야 하면 로그를 늘리지 말고 중단점으로 멈춰서 본다.
 
-관련 노트: [[devtools-debugging|DevTools로 JavaScript 디버깅하기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[devtools-network|DevTools Network 패널]], [[devtools-time-savers|웹 개발 시간을 줄이는 브라우저·JS 팁]], [[dom-events|DOM 이벤트와 addEventListener]], [[cors|CORS]]
+관련 노트: [[devtools-debugging|DevTools로 JavaScript 디버깅하기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[devtools-network|DevTools Network 패널]], [[dom-manipulation|DOM 조작과 이벤트]], [[cors|CORS]]

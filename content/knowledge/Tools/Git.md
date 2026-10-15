@@ -7,7 +7,7 @@ source: mixed
 date: "2026-10-14"
 ---
 
-Git은 **분산 버전 관리 시스템(DVCS)** 입니다. 모든 작업자가 저장소의 전체 이력을 로컬에 갖고 있어서, 네트워크 없이도 커밋·브랜치·병합을 할 수 있고 필요할 때 원격 저장소(GitHub 등)와 동기화합니다.
+Git은 **분산 버전 관리 시스템(DVCS)** 이다. 모든 작업자가 저장소의 전체 이력을 로컬에 갖고 있어서, 네트워크 없이도 커밋·브랜치·병합을 할 수 있고 필요할 때 원격 저장소(GitHub 등)와 동기화한다.
 
 - **Git**: 버전을 기록하는 도구 (로컬에서 동작)
 - **GitHub**: Git 저장소를 호스팅하는 원격 서비스. 협업 공간이자 포트폴리오 역할도 한다.
@@ -21,8 +21,8 @@ Git은 **분산 버전 관리 시스템(DVCS)** 입니다. 모든 작업자가 �
 | [브랜치](/knowledge/dictionary/tools/git/branch) | 브랜치·HEAD 개념, `git branch`, `git switch`, 브랜치 이동 시 주의점 |
 | [브랜치 병합](/knowledge/dictionary/tools/git/merge) | Fast-Forward, 3-Way Merge, Merge Conflict 해결, Merge Commit의 함정(부모 순서, `--remerge-diff`) |
 | [원격 저장소와 GitHub](/knowledge/dictionary/tools/git/remote-github) | `remote`(`set-url`, 원격 여러 개), `push`, `pull`, `fetch`, `clone`, `subtree`, 미러링(GitLab → GitHub) |
-| [되돌리기와 이력 다루기](/knowledge/dictionary/tools/git/git-undo-and-rewrite) | `reset`(soft·mixed·hard), `revert`, `rebase`, `cherry-pick`, `--abort`, 푸시한 민감 정보·작성자 이메일 정리(filter-repo) |
-| [merge·squash·rebase 언제 쓰나](/knowledge/dictionary/tools/git/merge-squash-rebase) | PR 통합 전략 고르기: merge 커밋과 bisect, squash 메시지, 인터랙티브 rebase |
+| [되돌리기와 이력 다루기](/knowledge/dictionary/tools/git/git-undo-and-rewrite) | `reset`(soft·mixed·hard), `revert`, `cherry-pick`, `--abort`, 푸시한 민감 정보·작성자 이메일 정리(filter-repo) |
+| [merge·squash·rebase 언제 쓰나](/knowledge/dictionary/tools/git/merge-squash-rebase) | PR 통합 전략 고르기: merge 커밋과 bisect, squash 메시지, rebase와 force push, 인터랙티브 rebase |
 | [커밋 컨벤션과 자동 검사](/knowledge/dictionary/tools/git/commit-convention) | 좋은 커밋 메시지 7가지 규칙, 이슈 자동 닫기 키워드, `type(scope): subject` 형식, 커밋 템플릿, husky·commitlint, pre-commit 프레임워크 |
 | [영어 커밋 메시지 동사 사전](/knowledge/dictionary/tools/git/commit-message-verbs) | Fix·Add·Update·Make·Ensure·Prevent 등 동사별 패턴과 예문, 헷갈리는 동사 구분, 간결하게 쓰는 규칙 |
 | [GitHub 협업 저장소 설정](/knowledge/dictionary/tools/git/github-collaboration) | 브랜치 보호 규칙, CODEOWNERS, 이슈·PR 템플릿, 라벨, 알림 도구 |

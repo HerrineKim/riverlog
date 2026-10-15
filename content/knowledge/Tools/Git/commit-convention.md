@@ -8,8 +8,8 @@ date: "2026-10-14"
 sources: ["https://meetup.nhncloud.com/posts/106", "https://cbea.ms/git-commit/", "https://www.conventionalcommits.org/ko/v1.0.0/", "https://commitlint.js.org/", "https://80000coding.notion.site/00bcbffd6fbb4be481abef0925efd267", "https://80000coding.notion.site/eed9ae12cbf24ee58256821ca5c5947c", "https://pre-commit.com/"]
 ---
 
-> NHN Cloud Meetup의 「[좋은 git 커밋 메시지를 작성하기 위한 7가지 약속](https://meetup.nhncloud.com/posts/106)」(2017.03)을 바탕으로 원칙 부분을 보강한 노트입니다. 원 자료는 Chris Beams의 「[How to Write a Git Commit Message](https://cbea.ms/git-commit/)」입니다.
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Git 커밋 메시지 컨벤션」, 「Git 커밋할 때 코드 스타일 검사하기」도 함께 반영했습니다.
+> NHN Cloud Meetup의 「[좋은 git 커밋 메시지를 작성하기 위한 7가지 약속](https://meetup.nhncloud.com/posts/106)」(2017.03)을 바탕으로 원칙 부분을 보강한 노트다. 원 자료는 Chris Beams의 「[How to Write a Git Commit Message](https://cbea.ms/git-commit/)」다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Git 커밋 메시지 컨벤션」, 「Git 커밋할 때 코드 스타일 검사하기」도 함께 반영했다.
 
 커밋 메시지는 나중에 변경 이력을 찾는 사람이 읽는 **문서**다. 팀원마다 형식이 다르면 이력을 훑어보기 어렵기 때문에, 형식을 정하고(컨벤션) 커밋할 때 자동으로 검사하게 만든다.
 
@@ -93,7 +93,7 @@ GitHub는 커밋 메시지나 PR 본문에 `키워드 #이슈번호`가 있으�
 
 - **subject**: 변경 내용을 짧게. 위 일반 원칙대로 명령형 현재 시제(`changed` ✗ → `change` ✓).
 - **body**: 수정 이유와 전후 비교.
-- **footer**: 하위 호환이 깨지는 변경(BREAKING CHANGE)은 상세 설명과 함께 적고, 처리한 이슈는 `Closes #123, #124`처럼 표기하면 GitHub가 이슈를 자동으로 닫는다.
+- **footer**: 하위 호환이 깨지는 변경(BREAKING CHANGE)은 상세 설명과 함께 적는다. 이슈 번호는 꼬리말에 쓴다(키워드는 위 「커밋 메시지로 이슈 닫기」 참고).
 - scope는 선택. 이슈 번호를 제목에 붙이는 팀도 있다: `feat(login): #42 - 소셜 로그인 추가`
 
 ### type 목록

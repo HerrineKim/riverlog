@@ -53,29 +53,7 @@ await getList({ ...DEFAULT_PARAMS, ...value, yearMonth })
 
 ## 4. 불리언 변수 이름은 질문처럼
 
-`isOpen`, `shouldReload`, `hasError`처럼 읽으면 예/아니오로 답할 수 있는 이름을 붙인다. 아래처럼 "재장전해야 하는가?"가 변수 이름에 그대로 드러나면 조건문이 문장처럼 읽힌다.
-
-```typescript
-class Gun {
-  private bulletCount = 8
-  private shouldReload = false
-
-  shoot() {
-    if (this.shouldReload) this.reload()
-    this.bulletCount--
-    if (this.bulletCount <= 0) this.shouldReload = true
-  }
-
-  reload() {
-    this.bulletCount = 8
-    this.shouldReload = false
-  }
-}
-```
-
-모달·드롭다운처럼 **보임 여부**를 정하는 값도 문자열이나 숫자 대신 `isOpen` 같은 불리언 state로 둔다.
-
-`is`·`has`·조동사별 형태 표와 `is` + 동사원형 같은 흔한 실수는 [[boolean-naming|불리언 변수 이름 짓기]]에 정리했다.
+`isOpen`, `shouldReload`, `hasError`처럼 읽으면 예/아니오로 답할 수 있는 이름을 붙이면 `if (this.shouldReload) this.reload()`처럼 조건문이 문장으로 읽힌다. 모달·드롭다운처럼 **보임 여부**를 정하는 값도 문자열이나 숫자 대신 `isOpen` 같은 불리언 state로 둔다. 접두어별 형태와 흔한 실수는 [[boolean-naming|불리언 변수 이름 짓기]]에 있다.
 
 ## 5. 빈 문자열 검사는 의도대로
 
@@ -162,40 +140,9 @@ props가 많다는 것은 관리하고 파악해야 할 지점이 많다는 뜻�
 <TodoItem todo={todo} onChange={handleChange} />  // 변경 종류는 인자로 구분
 ```
 
-## 11. 컴포넌트 선언 방식은 팀에서 하나로
+## 11. 입력이 많은 폼은 form 요소를 활용
 
-`function` 선언과 화살표 함수는 동작이 거의 같다. 차이는 `function` 선언은 호이스팅되고 `export default function Name() {}`처럼 선언과 내보내기를 한 줄에 쓸 수 있다는 정도다. 어느 쪽이든 **한 프로젝트 안에서 일관되게** 쓰는 것이 중요하다.
-
-## 12. 입력이 많은 폼은 form 요소를 활용
-
-입력마다 state를 두는 것이 일반적이지만, 입력이 아주 많거나 제출 시점에만 값이 필요하다면 `<form>`의 `onSubmit`에서 `FormData`로 한 번에 읽는 비제어 방식도 있다. 입력할 때마다 리렌더링되지 않는다.
-
-```tsx
-function SignUpForm() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const name = formData.get('name')
-    const agreed = formData.get('agree') === 'on'
-    // ...
-  }
-  return (
-    <form onSubmit={handleSubmit}>
-      <input name="name" type="text" />
-      <input name="password" type="password" />
-      <input name="agree" type="checkbox" />
-      <button type="submit">가입</button>
-    </form>
-  )
-}
-```
-
-## 13. 그 밖에
-
-- **크기 단위**: 디바이스 대응이 필요한 스타일은 `px`보다 `rem`(또는 프로젝트의 rem 변환 함수)을 쓴다.
-- **날짜 포맷**: 문자열을 잘라 붙이지 말고 프로젝트에 있는 날짜 라이브러리의 `format()`을 쓴다([날짜 라이브러리](/knowledge/dictionary/frontend/javascript/date-libraries)).
-- **처음 만드는 구조는 레퍼런스부터**: Todo 앱처럼 흔한 기능은 잘 짜인 예제 코드를 먼저 보고 시작하면 구조 설계에서 덜 헤맨다.
-- **복사해 온 코드도 이해하고 쓴다**: "명세에 있던 코드를 그대로 붙였다"는 리뷰에서 가장 설득력 없는 답이다.
+입력이 아주 많고 제출 시점에만 값이 필요하면, 입력마다 state를 두지 말고 `<form>`의 `onSubmit`에서 `FormData`로 한 번에 읽는 비제어 방식을 고려한다. 자세한 비교는 [[forms|폼과 제어 컴포넌트]]에 있다.
 
 ## 핵심 정리
 
@@ -209,5 +156,9 @@ function SignUpForm() {
 | 비동기 콜백 안 에러 | `error` 콜백, `firstValueFrom` |
 | state 직접 수정 | `map` + spread로 새 객체 |
 | props 과다 | 데이터 + 콜백 한두 개로 |
+| 입력 많은 폼의 state 범벅 | `FormData`로 제출 시 한 번에 읽기 |
+| 디바이스 대응 스타일에 `px` | `rem`(또는 프로젝트의 rem 변환 함수) |
+| 날짜 문자열 잘라 붙이기 | 프로젝트 날짜 라이브러리의 `format()`([[date-libraries\|날짜 라이브러리]]) |
+| 흔한 기능의 구조를 처음부터 설계 | 잘 짜인 예제 코드를 먼저 보고 시작 |
 
 관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[forms|폼과 제어 컴포넌트]], [[principles|코드 리뷰 원칙]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[boolean-naming|불리언 변수 이름 짓기]]

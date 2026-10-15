@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/56", "https://riverkim.kr/145", "https://riverkim.kr/155", "https://riverkim.kr/261"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
+> riverkim.kr에 쓴 글들을 다시 정리한 노트다.
 
 ## 빌드와 빌드 도구
 

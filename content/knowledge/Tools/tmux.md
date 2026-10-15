@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/513a28227b7d4b9ba680d8236f8fb21d", "https://missing.csail.mit.edu/2020/command-line/", "https://github.com/tmux/tmux/wiki/Getting-Started"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Terminal Multiplexer(tmux) 짧은 소개」를 바탕으로 재구성한 노트입니다. 원 자료는 MIT 「[The Missing Semester](https://missing.csail.mit.edu/2020/command-line/)」의 Command-line Environment 강의입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Terminal Multiplexer(tmux) 짧은 소개」를 바탕으로 재구성한 노트다. 원 자료는 MIT 「[The Missing Semester](https://missing.csail.mit.edu/2020/command-line/)」의 Command-line Environment 강의다.
 
 ## 터미널 멀티플렉서란
 

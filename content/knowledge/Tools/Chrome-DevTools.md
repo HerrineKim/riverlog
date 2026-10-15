@@ -8,9 +8,9 @@ date: "2026-10-15"
 sources: ["https://developer.chrome.com/docs/devtools?hl=ko", "https://developer.chrome.com/docs/devtools/overview?hl=ko", "https://developer.chrome.com/docs/devtools/open?hl=ko", "https://developer.chrome.com/docs/devtools/command-menu?hl=ko", "https://developer.chrome.com/docs/devtools/shortcuts?hl=ko", "https://developer.chrome.com/docs/devtools/settings?hl=ko", "https://developer.chrome.com/docs/devtools/settings/preferences?hl=ko", "https://developer.chrome.com/docs/devtools/customize?hl=ko", "https://developer.chrome.com/docs/devtools/search?hl=ko", "https://developer.chrome.com/docs/devtools/issues?hl=ko", "https://developer.chrome.com/docs/devtools/changes?hl=ko", "https://developer.chrome.com/docs/devtools/developer-resources?hl=ko", "https://developer.chrome.com/docs/devtools/protocol-monitor?hl=ko", "https://developer.chrome.com/docs/devtools/quick-source?hl=ko"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트입니다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
 
-Chrome DevTools는 Chrome 브라우저에 내장된 웹 개발자 도구 모음입니다. 페이지의 DOM과 CSS를 그 자리에서 고쳐 보고, 로그와 네트워크 요청을 확인하고, 중단점으로 JavaScript를 멈추고, 성능과 메모리를 기록해 원인을 찾는 일을 모두 브라우저 안에서 할 수 있습니다. 탭(문서에서는 **패널**이라고 부릅니다)이 많아 처음엔 복잡해 보이지만, "무엇을 하려는가"에 따라 갈 패널이 정해져 있습니다. 이 노트는 그 지도와 모든 패널에 공통으로 쓰는 조작(명령 메뉴, 단축키, 설정)을 다루고, 패널별 사용법은 아래 하위 노트에서 다룹니다.
+Chrome DevTools는 Chrome 브라우저에 내장된 웹 개발자 도구 모음이다. 페이지의 DOM과 CSS를 그 자리에서 고쳐 보고, 로그와 네트워크 요청을 확인하고, 중단점으로 JavaScript를 멈추고, 성능과 메모리를 기록해 원인을 찾는 일을 모두 브라우저 안에서 할 수 있다. 탭(문서에서는 **패널**이라고 부른다)이 많아 처음엔 복잡해 보이지만, "무엇을 하려는가"에 따라 갈 패널이 정해져 있다. 이 노트는 그 지도와 모든 패널에 공통으로 쓰는 조작(명령 메뉴, 단축키, 설정)을 다루고, 패널별 사용법은 아래 하위 노트에서 다룬다.
 
 ## 여는 법
 

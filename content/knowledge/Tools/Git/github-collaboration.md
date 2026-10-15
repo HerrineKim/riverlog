@@ -4,6 +4,7 @@ concept: "Branch Protection"
 summary: "팀 저장소를 처음 세팅할 때 할 일: 협업자·브랜치 보호 규칙·CODEOWNERS·이슈/PR 템플릿·라벨, 그리고 PR 알림 도구와 기능별 브랜치 습관."
 tags: ["git", "github", "collaboration", "code-review"]
 source: notion
+date: "2026-10-14"
 ---
 
 여러 사람이 한 저장소에서 일하려면 "누가 무엇을 리뷰하고, 무엇이 통과해야 머지되는지"를 저장소 설정으로 정해 두는 것이 좋다. 사람의 기억 대신 규칙이 지켜 주기 때문이다. 아래는 그 저장소 세팅 순서다.
@@ -71,14 +72,10 @@ npx github-label-sync --access-token <TOKEN> --labels ./labels.json <owner>/<rep
 
 규모 있는 오픈 소스의 `.github/` 폴더를 보면 이슈·PR 템플릿, 라벨, 자동화 설정을 배울 수 있다: [toss/slash](https://github.com/toss/slash), [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped), [nestjs/nest](https://github.com/nestjs/nest)(husky, CI hook), [dependabot](https://github.com/dependabot) 등.
 
-## 브랜치 습관: 기능마다 처음부터 별도 브랜치
-
-한 브랜치에서 여러 기능을 함께 작업하면, 그중 일부만 먼저 머지해야 할 때 `git reset` 후 변경을 손으로 다시 나누는 고생을 하게 된다. 기능 하나 = 브랜치 하나 = PR 하나로 시작한다([브랜치](/knowledge/dictionary/tools/git/branch)).
-
 ## 핵심 정리
 
 - 보호 규칙은 머지 대상 브랜치에: PR 필수, 승인 수, CI 통과, 관리자 우회 금지.
 - CODEOWNERS로 리뷰어 자동 지정, 템플릿·라벨로 이슈·PR 형식 통일.
-- 기능마다 브랜치를 나눠야 부분 머지가 쉽다.
+- 기능 하나 = 브랜치 하나 = PR 하나로 시작해야 부분 머지가 쉽다([[branch|Git 브랜치]]).
 
 관련 노트: [[ci-cd|CI/CD]], [[github-issue-workflow|GitHub 이슈·프로젝트로 진행 상황 관리하기]], [[review-communication|리뷰 코멘트와 PR 소통]]

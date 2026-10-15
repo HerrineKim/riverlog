@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://blog.ull.im/engineering/2019/03/10/logs-on-git.html"]
 ---
 
-> Reid의 「[좋은 git commit 메시지를 위한 영어 사전](https://blog.ull.im/engineering/2019/03/10/logs-on-git.html)」(2019.03)을 바탕으로 재구성한 노트입니다. 예문은 Node.js·React·React Native 저장소의 커밋 이력에서 나온 것입니다.
+> Reid의 「[좋은 git commit 메시지를 위한 영어 사전](https://blog.ull.im/engineering/2019/03/10/logs-on-git.html)」(2019.03)을 바탕으로 재구성한 노트다. 예문은 Node.js·React·React Native 저장소의 커밋 이력에서 나온 것이다.
 
 ## 작문이 아니라 패턴이다
 

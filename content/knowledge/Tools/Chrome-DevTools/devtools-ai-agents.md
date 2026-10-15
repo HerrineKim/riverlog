@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://developer.chrome.com/docs/devtools/ai-assistance", "https://developer.chrome.com/docs/devtools/ai-assistance/get-started", "https://developer.chrome.com/docs/devtools/ai-assistance/chat", "https://developer.chrome.com/docs/devtools/ai-assistance/code-generation", "https://developer.chrome.com/docs/devtools/ai-assistance/data-usage-and-enterprise-controls", "https://developer.chrome.com/docs/devtools/settings/ai-innovations", "https://developer.chrome.com/docs/devtools/agents", "https://developer.chrome.com/docs/devtools/agents/get-started", "https://developer.chrome.com/docs/devtools/agents/get-started/configuration", "https://developer.chrome.com/docs/devtools/agents/use-cases/auto-connect", "https://developer.chrome.com/docs/devtools/agents/use-cases/emulation", "https://developer.chrome.com/docs/devtools/agents/use-cases/lighthouse-audit", "https://developer.chrome.com/docs/devtools/agents/use-cases/third-party-tools", "https://developer.chrome.com/docs/devtools/agents/memory", "https://developer.chrome.com/docs/devtools/agents/extensions", "https://developer.chrome.com/docs/devtools/agents/webmcp-debugging", "https://developer.chrome.com/docs/devtools/application/webmcp"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트입니다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
 
 ## 두 방향의 AI
 

@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://developer.chrome.com/docs/devtools/elements", "https://developer.chrome.com/docs/devtools/elements/badges", "https://developer.chrome.com/docs/devtools/dom", "https://developer.chrome.com/docs/devtools/dom/properties", "https://developer.chrome.com/docs/devtools/css", "https://developer.chrome.com/docs/devtools/css/reference", "https://developer.chrome.com/docs/devtools/css/issues", "https://developer.chrome.com/docs/devtools/css/color", "https://developer.chrome.com/docs/devtools/css/flexbox", "https://developer.chrome.com/docs/devtools/css/grid", "https://developer.chrome.com/docs/devtools/css/container-queries", "https://developer.chrome.com/docs/devtools/css/animations", "https://developer.chrome.com/docs/devtools/css-overview", "https://developer.chrome.com/docs/devtools/changes", "https://developer.chrome.com/docs/devtools/autofill", "https://developer.chrome.com/docs/devtools/accessibility/reference", "https://developer.chrome.com/docs/devtools/accessibility/contrast", "https://developer.chrome.com/docs/devtools/accessibility/focus", "https://developer.chrome.com/docs/devtools/accessibility/navigation"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트입니다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
 
 ## Elements 패널 한눈에 보기
 

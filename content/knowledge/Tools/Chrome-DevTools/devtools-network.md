@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://developer.chrome.com/docs/devtools/network", "https://developer.chrome.com/docs/devtools/network/overview", "https://developer.chrome.com/docs/devtools/network/reference", "https://developer.chrome.com/docs/devtools/request-conditions", "https://developer.chrome.com/docs/devtools/settings/throttling", "https://developer.chrome.com/docs/devtools/security", "https://developer.chrome.com/docs/devtools/resources"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트입니다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
 
 ## Network 패널이란
 

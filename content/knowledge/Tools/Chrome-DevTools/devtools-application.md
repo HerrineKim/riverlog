@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://developer.chrome.com/docs/devtools/application", "https://developer.chrome.com/docs/devtools/progressive-web-apps", "https://developer.chrome.com/docs/devtools/storage/localstorage", "https://developer.chrome.com/docs/devtools/storage/sessionstorage", "https://developer.chrome.com/docs/devtools/storage/indexeddb", "https://developer.chrome.com/docs/devtools/storage/cache", "https://developer.chrome.com/docs/devtools/storage/extensionstorage", "https://developer.chrome.com/docs/devtools/application/cookies", "https://developer.chrome.com/docs/devtools/application/back-forward-cache", "https://developer.chrome.com/docs/devtools/application/debugging-speculation-rules", "https://developer.chrome.com/docs/devtools/application/frames"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트입니다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
 
 ## Application 패널이란
 

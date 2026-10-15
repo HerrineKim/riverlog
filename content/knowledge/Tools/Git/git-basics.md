@@ -8,9 +8,9 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/2ea16c6dc08341c1a13339e30fe8ac49"]
 ---
 
-> 「git add -p」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「git 변경사항 잘게 쪼개서 add 하기」를 바탕으로 보강했습니다.
+> 「git add -p」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「git 변경사항 잘게 쪼개서 add 하기」를 바탕으로 보강했다.
 
-Git으로 버전을 남기는 과정은 결국 **"작업한 파일을 골라서(add) 스냅숏으로 기록(commit)"** 하는 일의 반복입니다. 이 흐름과 각 단계에서 파일이 어떤 상태인지 알면 대부분의 `git status` 메시지를 읽을 수 있습니다.
+Git으로 버전을 남기는 과정은 결국 **"작업한 파일을 골라서(add) 스냅숏으로 기록(commit)"** 하는 일의 반복이다. 이 흐름과 각 단계에서 파일이 어떤 상태인지 알면 대부분의 `git status` 메시지를 읽을 수 있다.
 
 ## 세 개의 영역
 
@@ -22,7 +22,7 @@ Git으로 버전을 남기는 과정은 결국 **"작업한 파일을 골라서(
 
 ![Git의 세 영역](/images/til/ETC/Git/git.assets/image-20220113101851253.png)
 
-Staging Area와 Repository는 `.git` 폴더 안에서 관리되는 논리적 공간입니다. 즉 `.git` 폴더를 지우면 **모든 버전 기록이 사라지니** 주의해야 합니다.
+Staging Area와 Repository는 `.git` 폴더 안에서 관리되는 논리적 공간이다. 즉 `.git` 폴더를 지우면 **모든 버전 기록이 사라지니** 주의해야 한다.
 
 ## 파일의 상태(라이프 사이클)
 
@@ -34,7 +34,7 @@ Staging Area와 Repository는 `.git` 폴더 안에서 관리되는 논리적 공
 
 ![파일 상태 변화](/images/til/ETC/Git/git.assets/image-20220113101938077.png)
 
-커밋된 내용은 언제든 되살릴 수 있지만, 한 번도 커밋되지 않은 변경은 Git이 복구해 줄 수 없습니다. (`git restore <file>`로 작업 내용을 되돌리면 그 변경은 영영 사라지니 주의합니다.)
+커밋된 내용은 언제든 되살릴 수 있지만, 한 번도 커밋되지 않은 변경은 Git이 복구해 줄 수 없다. (`git restore <file>`로 작업 내용을 되돌리면 그 변경은 영영 사라지니 주의한다.)
 
 ## 기본 명령어
 
@@ -45,9 +45,9 @@ $ git init
 Initialized empty Git repository in /Users/me/first/.git/
 ```
 
-현재 폴더에 `.git` 디렉터리가 생기고, 터미널 프롬프트에 `(master)` 처럼 현재 브랜치가 표시됩니다.
+현재 폴더에 `.git` 디렉터리가 생기고, 터미널 프롬프트에 `(master)` 처럼 현재 브랜치가 표시된다.
 
-> 참고: GitHub는 2020년 10월부터 새 저장소의 기본 브랜치를 `main`으로 만듭니다([GitHub Changelog](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/)). 반면 Git 2.x의 `git init`은 설정이 없으면 여전히 `master`를 만들고 힌트 메시지를 띄우며, 다음 메이저 버전인 Git 3.0부터 `main`이 기본이 될 예정입니다(출시일 미정, [Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)). 지금 바로 맞추려면 `git config --global init.defaultBranch main` (Git 2.28+)으로 설정합니다. 이름이 바뀐 배경은 [[windows-dev-environment|Windows 개발 환경]]의 「왜 master 대신 main인가」에 있습니다. 이 노트의 예시는 `master`를 쓰므로, `main`을 쓰는 저장소라면 이름만 바꿔 읽으면 됩니다.
+> 참고: GitHub는 2020년 10월부터 새 저장소의 기본 브랜치를 `main`으로 만든다([GitHub Changelog](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/)). 반면 Git 2.x의 `git init`은 설정이 없으면 여전히 `master`를 만들고 힌트 메시지를 띄우며, 다음 메이저 버전인 Git 3.0부터 `main`이 기본이 될 예정이다(출시일 미정, [Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)). 지금 바로 맞추려면 `git config --global init.defaultBranch main` (Git 2.28+)으로 설정한다. 이름이 바뀐 배경은 master/slave 같은 용어가 노예제를 떠올리게 한다는 문제 제기이다. GitHub는 이런 문화적 민감성(cultural sensitivity)을 고려해 기본값을 `main`으로 바꿨고, 저장소를 다른 서비스로 미러링할 계획이라면 양쪽의 기본 브랜치 이름을 맞춰 두는 편이 안전한다([[remote-github|원격 저장소와 GitHub]]의 미러링 참고). 이 노트의 예시는 `master`를 쓰므로, `main`을 쓰는 저장소라면 이름만 바꿔 읽으면 된다.
 
 ### 스테이징: `git add`
 
@@ -78,7 +78,7 @@ $ git add .                # 현재 디렉터리의 모든 변경
 $ git commit -m "Add login form"
 ```
 
-커밋 메시지는 **이 버전에서 무엇이 바뀌었는지** 드러나도록 씁니다. `-m` 없이 실행하면 에디터(기본 Vim)가 열리고, 메시지를 쓴 뒤 `Esc` → `:wq` 로 저장·종료합니다.
+커밋 메시지는 **이 버전에서 무엇이 바뀌었는지** 드러나도록 쓴다. `-m` 없이 실행하면 에디터(기본 Vim)가 열리고, 메시지를 쓴 뒤 `Esc` → `:wq` 로 저장·종료한다.
 
 ### 상태 확인: `git status`
 
@@ -100,7 +100,7 @@ Untracked files:                    # Git이 추적하지 않는 새 파일
         d.txt
 ```
 
-`status` 출력은 위의 세 영역과 그대로 대응합니다. 안내 문구에 나오는 `git restore --staged`(스테이징 취소)와 `git restore`(작업 내용 되돌리기)도 함께 기억해 두면 좋습니다.
+`status` 출력은 위의 세 영역과 그대로 대응한다. 안내 문구에 나오는 `git restore --staged`(스테이징 취소)와 `git restore`(작업 내용 되돌리기)도 함께 기억해 두면 좋다.
 
 ### 이력 보기: `git log`
 
@@ -112,11 +112,11 @@ $ git log --oneline --all --graph   # 모든 브랜치를 그래프로
 
 #### 커밋 해시
 
-로그의 각 커밋 앞에 붙는 40자리 16진수가 **커밋 해시(SHA-1)** 입니다. 전 세계 어디서 만든 커밋이든 충돌 없이 구분할 만큼 큰 값이라서, 평소에는 `git log --oneline`에 보이는 앞 7자리 정도만 써도 충분합니다. Git은 SHA-256 저장소도 지원하며, Git 3.0부터는 새 저장소의 기본 해시를 SHA-256(64자리)으로 바꿀 예정입니다([Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)).
+로그의 각 커밋 앞에 붙는 40자리 16진수가 **커밋 해시(SHA-1)** 이다. 전 세계 어디서 만든 커밋이든 충돌 없이 구분할 만큼 큰 값이라서, 평소에는 `git log --oneline`에 보이는 앞 7자리 정도만 써도 충분하다. Git은 SHA-256 저장소도 지원하며, Git 3.0부터는 새 저장소의 기본 해시를 SHA-256(64자리)으로 바꿀 예정이다([Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)).
 
 ## 자주 쓰는 셸 명령
 
-Git Bash/터미널에서 함께 쓰는 기본 명령입니다.
+Git Bash/터미널에서 함께 쓰는 기본 명령이다.
 
 ```bash
 $ pwd               # 현재 위치

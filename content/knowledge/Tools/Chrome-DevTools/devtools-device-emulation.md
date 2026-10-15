@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://developer.chrome.com/docs/devtools/device-mode", "https://developer.chrome.com/docs/devtools/device-mode/override-user-agent", "https://developer.chrome.com/docs/devtools/sensors", "https://developer.chrome.com/docs/devtools/settings/devices", "https://developer.chrome.com/docs/devtools/settings/locations", "https://developer.chrome.com/docs/devtools/rendering/emulate-css", "https://developer.chrome.com/docs/devtools/rendering/apply-effects", "https://developer.chrome.com/docs/devtools/remote-debugging", "https://developer.chrome.com/docs/devtools/remote-debugging/webviews", "https://developer.chrome.com/docs/devtools/remote-debugging/local-server", "https://developer.chrome.com/docs/devtools/webauthn", "https://developer.chrome.com/docs/devtools/media-panel", "https://developer.chrome.com/docs/devtools/webaudio"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트입니다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
 
 ## 무엇을 어디서 흉내 내나
 

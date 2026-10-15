@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://youngrok.com/Simple%20Design"]
 ---
 
-> 박영록의 위키 글 「[Simple Design](https://youngrok.com/Simple%20Design)」(2024.06)을 요약·재구성한 노트입니다.
+> 박영록의 위키 글 「[Simple Design](https://youngrok.com/Simple%20Design)」(2024.06)을 요약·재구성한 노트다.
 
 ## 왜 객관적 기준이 필요한가
 

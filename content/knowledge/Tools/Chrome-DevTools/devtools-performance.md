@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://developer.chrome.com/docs/devtools/performance", "https://developer.chrome.com/docs/devtools/performance/overview", "https://developer.chrome.com/docs/devtools/performance/reference", "https://developer.chrome.com/docs/devtools/performance/annotations", "https://developer.chrome.com/docs/devtools/performance/save-trace", "https://developer.chrome.com/docs/devtools/performance/selector-stats", "https://developer.chrome.com/docs/devtools/performance/nodejs", "https://developer.chrome.com/docs/devtools/performance/timeline-reference", "https://developer.chrome.com/docs/devtools/performance-monitor", "https://developer.chrome.com/docs/devtools/rendering", "https://developer.chrome.com/docs/devtools/rendering/performance", "https://developer.chrome.com/docs/devtools/layers", "https://developer.chrome.com/docs/devtools/coverage", "https://developer.chrome.com/docs/devtools/memory", "https://developer.chrome.com/docs/devtools/memory-problems", "https://developer.chrome.com/docs/devtools/memory-problems/get-started", "https://developer.chrome.com/docs/devtools/memory-problems/heap-snapshots", "https://developer.chrome.com/docs/devtools/memory-problems/allocation-profiler", "https://developer.chrome.com/docs/devtools/memory-inspector", "https://developer.chrome.com/docs/devtools/lighthouse"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트입니다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
 
 이 노트는 DevTools로 **측정하고 원인을 찾는 절차**를 다룬다. LCP·INP·CLS 같은 지표의 뜻과 기준값, Lighthouse의 개념은 [[web-vitals|웹 성능 지표와 Lighthouse]]에, 레이아웃·페인트·합성의 원리는 [[browser-rendering|브라우저 렌더링 과정]]에 있다.
 

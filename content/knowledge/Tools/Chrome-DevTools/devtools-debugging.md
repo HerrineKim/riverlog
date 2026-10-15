@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://developer.chrome.com/docs/devtools/javascript?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/breakpoints?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/reference?hl=ko", "https://developer.chrome.com/docs/devtools/sources?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/snippets?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/source-maps?hl=ko", "https://developer.chrome.com/docs/devtools/settings/ignore-list?hl=ko", "https://developer.chrome.com/docs/devtools/x-google-ignore-list?hl=ko", "https://developer.chrome.com/docs/devtools/workspaces?hl=ko", "https://developer.chrome.com/docs/devtools/settings/workspace?hl=ko", "https://developer.chrome.com/docs/devtools/overrides?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/disable?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/background-services?hl=ko", "https://developer.chrome.com/docs/devtools/wasm?hl=ko", "https://developer.chrome.com/docs/devtools/recorder/overview?hl=ko", "https://developer.chrome.com/docs/devtools/recorder/reference?hl=ko", "https://yozm.wishket.com/magazine/detail/1585/"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트입니다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
 
 ## 왜 console.log 대신 중단점인가
 

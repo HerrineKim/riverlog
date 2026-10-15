@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/7267f19f53594799a7405d0f316fb589", "https://git-scm.com/book/ko/v2/Git%EC%9D%98-%EB%82%B4%EB%B6%80-Git-%EA%B0%9C%EC%B2%B4"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「그림으로 Git의 내부구조 파악하기」를 바탕으로 재구성한 노트입니다. 바탕 자료는 『팀 개발을 위한 Git, GitHub 시작하기』(한빛미디어)와 Pro Git의 「Git의 내부」 장입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「그림으로 Git의 내부구조 파악하기」를 바탕으로 재구성한 노트다. 바탕 자료는 『팀 개발을 위한 Git, GitHub 시작하기』(한빛미디어)와 Pro Git의 「Git의 내부」 장이다.
 
 ## 왜 내부를 알아야 하나
 

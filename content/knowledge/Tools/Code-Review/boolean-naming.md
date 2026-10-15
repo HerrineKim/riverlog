@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://soojin.ro/blog/naming-boolean-variables"]
 ---
 
-> 김수진의 글 「[Bool 변수 이름 제대로 짓기 위한 최소한의 영어 문법](https://soojin.ro/blog/naming-boolean-variables)」(2018.04)을 요약·재구성한 노트입니다. 예시는 원문대로 Swift·Cocoa Touch API에서 가져왔습니다.
+> 김수진의 글 「[Bool 변수 이름 제대로 짓기 위한 최소한의 영어 문법](https://soojin.ro/blog/naming-boolean-variables)」(2018.04)을 요약·재구성한 노트다. 예시는 원문대로 Swift·Cocoa Touch API에서 가져왔다.
 
 ## 왜 문법까지 따지나
 

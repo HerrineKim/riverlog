@@ -8,8 +8,8 @@ date: "2026-10-14"
 sources: ["https://news.hada.io/topic?id=13405", "https://jvns.ca/blog/2024/02/16/popular-git-config-options/", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://80000coding.notion.site/19c283f564a6492d98945e4558a990d7"]
 ---
 
-> GeekNews의 「[인기 있는 Git 설정 옵션들](https://news.hada.io/topic?id=13405)」(2024.02)을 바탕으로 재구성한 노트입니다. 원 자료는 Julia Evans의 「[Popular git config options](https://jvns.ca/blog/2024/02/16/popular-git-config-options/)」입니다.
-> 「커밋 작성자와 GitHub 기여 그래프」, 「alias」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「GitHub 이메일 교체 시 잔디가 사라지는 현상」, 「git - 사소한 꿀팁」을 바탕으로 보강했습니다.
+> GeekNews의 「[인기 있는 Git 설정 옵션들](https://news.hada.io/topic?id=13405)」(2024.02)을 바탕으로 재구성한 노트다. 원 자료는 Julia Evans의 「[Popular git config options](https://jvns.ca/blog/2024/02/16/popular-git-config-options/)」다.
+> 「커밋 작성자와 GitHub 기여 그래프」, 「alias」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「GitHub 이메일 교체 시 잔디가 사라지는 현상」, 「git - 사소한 꿀팁」을 바탕으로 보강했다.
 
 ## Git 설정이란
 

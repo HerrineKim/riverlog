@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://www.twinword.co.kr/blog/search-operator-complete-list/", "https://support.google.com/websearch/answer/2466433"]
 ---
 
-> 트윈워드 블로그의 「[구글 검색을 200% 활용하게 해주는 검색 명령어 총정리](https://www.twinword.co.kr/blog/search-operator-complete-list/)」(Brian Yang)를 바탕으로, 구글 공식 도움말 「[Refine Google searches](https://support.google.com/websearch/answer/2466433)」와 대조해 재구성한 노트입니다.
+> 트윈워드 블로그의 「[구글 검색을 200% 활용하게 해주는 검색 명령어 총정리](https://www.twinword.co.kr/blog/search-operator-complete-list/)」(Brian Yang)를 바탕으로, 구글 공식 도움말 「[Refine Google searches](https://support.google.com/websearch/answer/2466433)」와 대조해 재구성한 노트다.
 
 ## 검색 연산자란
 

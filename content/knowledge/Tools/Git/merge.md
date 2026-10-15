@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://wizardzines.com/comics/merge-commits/"]
 ---
 
-브랜치에서 작업을 마치면 그 결과를 기본 브랜치에 반영해야 합니다. 이를 **병합(merge)** 이라고 하며, 두 브랜치의 이력이 어떻게 갈라져 있는지에 따라 Git의 동작이 달라집니다.
+브랜치에서 작업을 마치면 그 결과를 기본 브랜치에 반영해야 한다. 이를 **병합(merge)** 이라고 하며, 두 브랜치의 이력이 어떻게 갈라져 있는지에 따라 Git의 동작이 달라진다.
 
 ## `git merge` 기본
 
@@ -17,11 +17,11 @@ $ git switch master      # 1. 결과를 받을(합쳐질) 브랜치로 먼저 �
 $ git merge feature      # 2. 가져올 브랜치를 지정
 ```
 
-`git merge <브랜치>`는 **현재 브랜치(HEAD)에 지정한 브랜치를 합칩니다.** 따라서 병합 전에 결과를 받을 브랜치로 `switch` 하는 것이 먼저입니다.
+`git merge <브랜치>`는 **현재 브랜치(HEAD)에 지정한 브랜치를 합친다.** 따라서 병합 전에 결과를 받을 브랜치로 `switch` 하는 것이 먼저다.
 
 ## 1. Fast-Forward
 
-`feature` 브랜치를 만든 뒤 `master`에 새 커밋이 없는 경우입니다. `feature`의 커밋이 `master` 커밋을 그대로 이어받았으므로, 새 커밋을 만들 필요 없이 **`master` 포인터를 앞으로 옮기기만** 하면 됩니다(빨리 감기).
+`feature` 브랜치를 만든 뒤 `master`에 새 커밋이 없는 경우이다. `feature`의 커밋이 `master` 커밋을 그대로 이어받았으므로, 새 커밋을 만들 필요 없이 **`master` 포인터를 앞으로 옮기기만** 하면 된다(빨리 감기).
 
 ![fast-forward](/images/til/ETC/Git/md-images/fast.png)
 
@@ -44,11 +44,11 @@ $ git branch -d login     # 병합이 끝난 브랜치는 삭제
 
 ## 2. 3-Way Merge (Merge Commit)
 
-브랜치를 만든 뒤 **양쪽 모두에 새 커밋이 생긴** 경우입니다. 포인터 이동만으로는 합칠 수 없으므로, Git은 **두 브랜치의 최신 커밋 2개 + 공통 조상 1개**를 비교해 결과를 계산하고, 이를 새로운 **Merge Commit**으로 남깁니다. Merge Commit은 부모가 둘입니다.
+브랜치를 만든 뒤 **양쪽 모두에 새 커밋이 생긴** 경우이다. 포인터 이동만으로는 합칠 수 없으므로, Git은 **두 브랜치의 최신 커밋 2개 + 공통 조상 1개**를 비교해 결과를 계산하고, 이를 새로운 **Merge Commit**으로 남긴다. Merge Commit은 부모가 둘이다.
 
 ![3-way merge](/images/til/ETC/Git/md-images/way.png)
 
-두 브랜치가 **서로 다른 파일** 또는 **같은 파일의 다른 부분**을 수정했다면 자동으로 병합됩니다.
+두 브랜치가 **서로 다른 파일** 또는 **같은 파일의 다른 부분**을 수정했다면 자동으로 병합된다.
 
 ```bash
 $ git switch -c signout
@@ -71,11 +71,11 @@ $ git log --oneline --all --graph
 * 43fab3e master test 1
 ```
 
-> 참고: Git 2.33까지는 기본 전략이 `recursive`여서 `Merge made by the 'recursive' strategy.`로 표시됩니다. 2.34부터는 `ort`가 기본입니다.
+> 참고: Git 2.33까지는 기본 전략이 `recursive`여서 `Merge made by the 'recursive' strategy.`로 표시된다. 2.34부터는 `ort`가 기본이다.
 
 ## 3. Merge Conflict
 
-두 브랜치가 **같은 파일의 같은 부분**을 다르게 수정하면, Git은 어느 쪽을 택할지 판단하지 못하고 충돌(conflict)을 알립니다. 이때는 사람이 직접 결과를 정해야 합니다.
+두 브랜치가 **같은 파일의 같은 부분**을 다르게 수정하면, Git은 어느 쪽을 택할지 판단하지 못하고 충돌(conflict)을 알린다. 이때는 사람이 직접 결과를 정해야 한다.
 
 ![conflict](/images/til/ETC/Git/md-images/conflict.png)
 
@@ -131,13 +131,13 @@ $ git log --oneline --all --graph
    [master eec8da4] Merge branch 'hotfix'
    ```
 
-병합을 포기하고 이전 상태로 돌아가고 싶다면 `git merge --abort` 를 사용합니다.
+병합을 포기하려면 `git merge --abort`를 쓴다([[git-undo-and-rewrite|Git 되돌리기와 이력 다루기]] 참고).
 
 ## Merge Commit의 함정
 
-> Julia Evans의 만화 「[merge commits](https://wizardzines.com/comics/merge-commits/)」(wizard zines)를 요약·재구성한 부분입니다.
+> Julia Evans의 만화 「[merge commits](https://wizardzines.com/comics/merge-commits/)」(wizard zines)를 요약·재구성한 부분이다.
 
-Merge Commit에는 의외의 함정이 몇 가지 있습니다.
+Merge Commit에는 의외의 함정이 몇 가지 있다.
 
 | 함정 | 내용 | 대처 |
 | --- | --- | --- |
@@ -147,7 +147,7 @@ Merge Commit에는 의외의 함정이 몇 가지 있습니다.
 
 ### 부모 순서와 `HEAD^`
 
-`HEAD^`는 **첫 번째 부모**를 가리킵니다. 첫 번째 부모는 병합을 실행한 쪽, 즉 결과를 받은 브랜치의 커밋입니다. 보통은 이것이 `main`의 커밋이기를 기대하므로, 거꾸로 병합하면 `HEAD^`·`git log --first-parent` 같은 명령이 예상과 다른 이력을 따라갑니다.
+`HEAD^`는 **첫 번째 부모**를 가리킨다. 첫 번째 부모는 병합을 실행한 쪽, 즉 결과를 받은 브랜치의 커밋이다. 보통은 이것이 `main`의 커밋이기를 기대하므로, 거꾸로 병합하면 `HEAD^`·`git log --first-parent` 같은 명령이 예상과 다른 이력을 따라간다.
 
 ```text
 git switch main; git merge mybranch   → 첫 번째 부모 = main  (일반적)
@@ -160,7 +160,7 @@ git switch mybranch; git merge main   → 첫 번째 부모 = mybranch (이상�
 $ git show --remerge-diff <커밋 ID>
 ```
 
-두 부모를 **다시 병합해 보고**, 그 결과와 실제 Merge Commit에 들어 있는 내용의 차이를 보여 줍니다. 충돌을 어떻게 풀었는지, 병합하면서 무엇을 버리거나 더했는지 확인할 때 씁니다. (Git 2.36부터 지원합니다.)
+두 부모를 **다시 병합해 보고**, 그 결과와 실제 Merge Commit에 들어 있는 내용의 차이를 보여 준다. 충돌을 어떻게 풀었는지, 병합하면서 무엇을 버리거나 더했는지 확인할 때 쓴다. (Git 2.36부터 지원한다.)
 
 ## 핵심 정리
 
@@ -173,6 +173,6 @@ $ git show --remerge-diff <커밋 ID>
 - Merge Commit의 첫 번째 부모는 결과를 받은 브랜치다. `main`에서 병합해야 `HEAD^`가 `main`을 가리킨다.
 - Merge Commit이 실제로 무엇을 했는지는 `git show --remerge-diff`로 본다.
 
-> 참고: 병합 대신 `git rebase`로 이력을 일직선으로 만드는 방법은 [[git-undo-and-rewrite|Git 되돌리기와 이력 다루기]]에 정리했습니다.
+> 참고: 병합 대신 `git rebase`로 이력을 일직선으로 만드는 방법은 [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]]에 정리했다.
 
 관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]], [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]]

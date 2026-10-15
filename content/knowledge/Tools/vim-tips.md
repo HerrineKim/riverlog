@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/dd6588a1d7ef4b3aa0db79d7adc18166", "https://80000coding.notion.site/218c91e14b80407595157742bc83c876", "https://80000coding.notion.site/c4cf772432664fc1aa87c148509cbfec", "https://80000coding.notion.site/494c23d5d9464f13abdaca40f7eb5c2f", "https://80000coding.notion.site/3d0b8132613349cd9387a4ec8ebdb0e2", "https://80000coding.notion.site/6e7153c06a9941b2b318cc591a38d78f", "https://neovim.io/doc/user/lua.html#vim.hl.on_yank()"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「vim 잡기술 - listchars」, 「vim 잡기술 - fold」, 「vim에서 연속된 숫자 입력하기」, 「vim 잡기술 - 조건부 키맵핑?!」, 「neovim 간단 꿀팁 - 복사한부분 하이라이팅」, 「Vim에서 마우스 드래그로 텍스트 복붙하기」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「vim 잡기술 - listchars」, 「vim 잡기술 - fold」, 「vim에서 연속된 숫자 입력하기」, 「vim 잡기술 - 조건부 키맵핑?!」, 「neovim 간단 꿀팁 - 복사한부분 하이라이팅」, 「Vim에서 마우스 드래그로 텍스트 복붙하기」를 바탕으로 재구성한 노트다.
 
 Vim의 설정은 `~/.vimrc`(Neovim은 `init.vim`/`init.lua`)에 적으면 매번 적용되고, 노멀 모드에서 `:set ...`으로 치면 그 세션에만 적용된다. 아래 예시는 Vimscript 기준이며 Neovim에서도 그대로 동작한다. 편집기 자체의 소개는 [[vim-and-neovim|Vim과 Neovim]]에 있다.
 

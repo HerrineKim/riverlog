@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@sejinkim/%EB%A1%9C%EC%BB%AC-%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD%EC%97%90-HTTPS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0"]
 ---
 
-> sejin 님의 글 「[로컬 개발환경에 HTTPS 적용하기](https://velog.io/@sejinkim/%EB%A1%9C%EC%BB%AC-%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD%EC%97%90-HTTPS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)」(2023.06)을 바탕으로, 프레임워크 설정은 각 공식 문서로 확인해 재구성한 노트입니다.
+> sejin 님의 글 「[로컬 개발환경에 HTTPS 적용하기](https://velog.io/@sejinkim/%EB%A1%9C%EC%BB%AC-%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD%EC%97%90-HTTPS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)」(2023.06)을 바탕으로, 프레임워크 설정은 각 공식 문서로 확인해 재구성한 노트다.
 
 ## 로컬에서도 HTTPS가 필요한 경우
 

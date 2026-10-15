@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/9822b952339f49bb8c417a852bfe9b3e", "https://80000coding.notion.site/b06e3c86359c4d528dfe752e1569e4ad", "https://80000coding.notion.site/97dd08bde65843029c77e4ab2d660047", "https://80000coding.notion.site/f55cced001f74015be57953854bf88e0", "https://80000coding.notion.site/e975e8a22e054a08bb38bb868c2dab7f", "https://code.visualstudio.com/docs/configure/settings-sync"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「VS Code 설정 동기화하기」, 「VScode에서 디버깅 하는 간단한 방법」, 「github.dev로 간단하게 코드 살펴보기」, 「VS Code extensions for Flutter」, 「VS Code에서 Flutter Icon 검색 팁」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「VS Code 설정 동기화하기」, 「VScode에서 디버깅 하는 간단한 방법」, 「github.dev로 간단하게 코드 살펴보기」, 「VS Code extensions for Flutter」, 「VS Code에서 Flutter Icon 검색 팁」을 바탕으로 재구성한 노트다.
 
 ## VS Code란
 

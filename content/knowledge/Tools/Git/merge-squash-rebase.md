@@ -1,13 +1,13 @@
 ---
 title: "merge·squash·rebase 언제 쓰나"
 concept: "PR Merge Strategy"
-summary: "PR을 합칠 때 merge 커밋, squash, 인터랙티브 rebase를 상황에 따라 고르는 기준. 기본은 merge 커밋(진짜 이력, 쉬운 되돌리기, 잘게 쪼개진 bisect), 작은 diff에 WIP가 많으면 squash, 큰 diff에 WIP가 많으면 인터랙티브 rebase로 다듬는다."
+summary: "PR을 합칠 때 merge 커밋, squash, rebase·인터랙티브 rebase를 상황에 따라 고르는 기준. 기본은 merge 커밋(진짜 이력, 쉬운 되돌리기, 잘게 쪼개진 bisect), 작은 diff에 WIP가 많으면 squash, 큰 diff에 WIP가 많으면 인터랙티브 rebase로 다듬는다."
 tags: ["git", "version-control", "merge", "branch"]
 source: other
 date: "2026-10-13"
 ---
 
-> Mitchell Hashimoto가 gist에 올린 것으로 알려진 merge·squash·rebase에 대한 글을 바탕으로 재구성한 노트입니다. 팀마다 기본 전략이 다를 수 있는 실무 기준입니다.
+> Mitchell Hashimoto가 gist에 올린 것으로 알려진 merge·squash·rebase에 대한 글을 바탕으로 재구성한 노트다. 팀마다 기본 전략이 다를 수 있는 실무 기준이다.
 
 ## 정답은 하나가 아니다
 
@@ -40,6 +40,20 @@ merge 안의 커밋:  +50/-50      → "아, 여기다" 하고 바로 찾음 (�
 
 이때 **커밋 메시지를 새로 쓴다.** Git·GitHub의 기본 squash 메시지는 합쳐진 커밋 메시지를 이어 붙일 뿐이라 대개 "WIP"의 나열이 된다.
 
+## rebase: 내 브랜치를 최신 기준 위로 옮기기
+
+`git rebase main`은 내 브랜치가 **마치 최신 main에서 시작한 것처럼** 시작점을 옮긴다. merge가 기준 브랜치의 변경을 merge 커밋 하나로 합치는 것과 달리, rebase는 내 커밋들을 최신 main 뒤에 하나씩 다시 쌓는다.
+
+```text
+merge:   main ─A─B─C──────M      (M = merge 커밋)
+               └─X─Y─┘
+rebase:  main ─A─B─C─X'─Y'       (X, Y가 새 커밋 X', Y'로 다시 만들어짐)
+```
+
+| 장점 | 주의 |
+| --- | --- |
+| 이력이 일직선이 되어 PR의 변경 범위가 잘 보이고 리뷰가 편하다 | 커밋이 새로 만들어지므로 이미 push한 브랜치라면 force push가 필요하다. 여러 사람이 함께 쓰는 브랜치에서는 팀 규칙을 먼저 정한다 |
+
 ## 인터랙티브 rebase를 쓰는 경우
 
 diff가 크고 WIP도 많으면 squash하면 bisect 정보를 잃고, 그대로 merge하면 쓸모없는 커밋이 남는다. `git rebase -i`로 **관련 커밋끼리 골라서 합치고 순서를 바꿔** 의미 있는 단위로 정리한 다음 merge한다.
@@ -53,5 +67,6 @@ diff가 크고 WIP도 많으면 squash하면 bisect 정보를 잃고, 그대로 
 - merge 전략은 **커밋마다 빌드되는** 위생이 받쳐 줘야 한다.
 - 작은 diff + WIP 범벅 → squash, 메시지는 다시 쓴다.
 - 큰 diff + WIP 범벅 → 인터랙티브 rebase로 정리한 뒤 merge.
+- rebase는 이력을 일직선으로 만들지만 커밋을 새로 만든다. 이미 push한 브랜치면 force push가 따라온다.
 
 관련 노트: [[merge|Git 브랜치 병합]], [[git-undo-and-rewrite|Git 되돌리기와 이력 다루기]], [[commit-convention|커밋 컨벤션과 자동 검사]], [[github-collaboration|GitHub 협업 저장소 설정]]

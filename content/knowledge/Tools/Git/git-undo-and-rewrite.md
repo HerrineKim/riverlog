@@ -1,15 +1,15 @@
 ---
 title: "Git 되돌리기와 이력 다루기"
 concept: "Git Undo"
-summary: "reset·revert로 커밋을 되돌리고, rebase·cherry-pick으로 이력을 옮기며, 진행 중인 merge·rebase를 --abort로 취소하는 방법. 공유된 이력이면 revert, 내 로컬 이력이면 reset이 기본이다."
+summary: "reset·revert로 커밋을 되돌리고, cherry-pick으로 커밋 하나를 옮기며, 진행 중인 merge·rebase를 --abort로 취소하고, 푸시한 민감 정보·작성자를 filter-repo로 정리하는 방법. 공유된 이력이면 revert, 내 로컬 이력이면 reset이 기본이다."
 tags: ["git", "version-control", "cli", "collaboration"]
 source: mixed
 date: "2026-10-14"
 sources: ["https://riverkim.kr/61", "https://riverkim.kr/107", "https://riverkim.kr/305", "https://80000coding.notion.site/bf2a95caa3a84a98a6878270c98268bb", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
-> 「이미 푸시한 이력에서 지워야 할 때」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「깃허브에서 잘못 올린 PR 완전히 삭제하기 (2) - 커밋」, 「GitHub 이메일 교체 시 잔디가 사라지는 현상」을 바탕으로 보강했습니다.
+> riverkim.kr에 쓴 글들을 다시 정리한 노트다.
+> 「이미 푸시한 이력에서 지워야 할 때」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「깃허브에서 잘못 올린 PR 완전히 삭제하기 (2) - 커밋」, 「GitHub 이메일 교체 시 잔디가 사라지는 현상」을 바탕으로 보강했다.
 
 Git을 쓰다 보면 커밋을 되돌리거나, 다른 브랜치의 이력을 내 브랜치로 옮겨야 할 때가 생긴다. 기본 흐름(`add` → `commit` → `push`)은 [[git-basics|Git 기본 명령과 파일 상태]]와 [[remote-github|원격 저장소와 GitHub]]에 있고, 이 노트는 **이미 만든 이력을 고치는 명령**만 모았다.
 
@@ -19,7 +19,7 @@ Git을 쓰다 보면 커밋을 되돌리거나, 다른 브랜치의 이력을 �
 | --- | --- | --- |
 | 특정 커밋으로 브랜치를 되감기 | `git reset <옵션> <커밋>` | 바꾼다 (커밋이 사라진 것처럼 보인다) |
 | 특정 커밋을 취소하는 새 커밋 만들기 | `git revert <커밋>` | 바꾸지 않는다 (커밋이 하나 늘어난다) |
-| 내 브랜치 시작점을 최신 기준 브랜치로 옮기기 | `git rebase <브랜치>` | 바꾼다 (내 커밋이 새로 만들어진다) |
+| 내 브랜치 시작점을 최신 기준 브랜치로 옮기기 | `git rebase <브랜치>` ([[merge-squash-rebase\|merge·squash·rebase 언제 쓰나]]) | 바꾼다 (내 커밋이 새로 만들어진다) |
 | 다른 브랜치의 커밋 하나만 가져오기 | `git cherry-pick <커밋>` | 내 브랜치에 새 커밋이 추가된다 |
 | 진행 중인 병합·리베이스 취소 | `git merge --abort`, `git rebase --abort` | 명령 전 상태로 돌아간다 |
 
@@ -46,19 +46,6 @@ force push로 원격 브랜치가 덮어써진 경우에도 **내 로컬에는 �
 
 - **이미 push해서 다른 사람이 받아 간 커밋**은 revert로 되돌린다. reset 후 force push하면 동료의 로컬 이력과 어긋난다.
 - 아직 나만 가진 로컬 커밋이면 reset이 더 간단하다.
-
-## rebase: 내 브랜치를 최신 기준 위로 옮기기
-
-`git rebase main`은 내 브랜치가 **마치 최신 main에서 시작한 것처럼** 시작점을 옮긴다. merge가 기준 브랜치의 변경을 맨 끝에 merge 커밋으로 합치는 것과 달리, rebase는 내 커밋들을 최신 main 뒤에 하나씩 다시 쌓는다.
-
-```text
-merge:   main ─A─B─C──────M      (M = merge 커밋)
-               └─X─Y─┘
-rebase:  main ─A─B─C─X'─Y'       (X, Y가 새 커밋 X', Y'로 다시 만들어짐)
-```
-
-- 장점: 이력이 일직선이 되어 PR의 변경 범위가 잘 보이고 리뷰가 편하다.
-- 주의: 커밋이 새로 만들어지므로 이미 push한 브랜치라면 force push가 필요하다. 여러 사람이 함께 쓰는 브랜치에서는 팀 규칙을 먼저 정한다.
 
 ## cherry-pick: 커밋 하나만 가져오기
 
@@ -112,7 +99,6 @@ filter-repo는 안전장치로 실행 뒤 `origin` 원격을 지우므로 `git r
 
 - 공유된 이력은 **revert**, 나만 가진 이력은 **reset**.
 - reset 옵션은 변경 내용을 staged(`--soft`)·unstaged(`--mixed`)로 남기거나 버린다(`--hard`).
-- rebase는 이력을 깔끔하게 하지만 커밋을 새로 만든다. force push가 따라온다.
 - 비밀 값을 푸시했으면 이력 정리보다 **키 교체가 먼저**다. GitHub의 캐시·PR 흔적은 Support에 요청해야 지워진다.
 - 꼬였으면 `--abort`로 처음부터. 그래도 가장 확실한 백업은 자주 commit·push 해 두는 것이다.
 
@@ -122,4 +108,4 @@ filter-repo는 안전장치로 실행 뒤 `origin` 원격을 지우므로 `git r
 - [Git 특정 버전으로 되돌렸다가 돌아오기](https://mintaku.tistory.com/12)
 - [진행중이던 merge 작업 취소하기](https://nochoco-lee.tistory.com/83)
 
-관련 노트: [[merge|Git 브랜치 병합]], [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]]
+관련 노트: [[merge|Git 브랜치 병합]], [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]], [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]]
