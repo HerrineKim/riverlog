@@ -1,14 +1,14 @@
 ---
 title: "프롬프트 작성법 치트시트"
 concept: "Prompt Cheat Sheet"
-summary: "목표·맥락·과제·제약·형식·예시를 채우면 프롬프트가 된다. 어떤 LLM에나 통하는 원칙(분명하게, 이유를 붙여, 예시로 보여 주고, 구조를 나누고, 금지 대신 할 일을)과 어조·문체·형식 목록, 제약 템플릿을 한 장으로 정리했다."
+summary: "목표·맥락·과제·제약·형식·예시를 채우면 프롬프트가 된다. 어떤 LLM에나 통하는 원칙(분명하게, 이유를 붙여, 예시로 보여 주고, 구조를 나누고, 금지 대신 할 일을)과 역할·어조·형식을 골라 끼우는 예시를 한 장으로 정리했다."
 tags: ["ai", "llm", "prompting"]
 source: other
 date: "2026-10-13"
 sources: ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"]
 ---
 
-> SNS에서 돌던 이미지 「ChatGPT Cheat Sheet」를 뼈대로, Anthropic의 [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)로 원칙을 확인해 재구성한 노트입니다.
+> SNS에서 돌던 이미지 「ChatGPT Cheat Sheet」를 뼈대로, Anthropic의 [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)로 원칙을 확인해 재구성한 노트다.
 
 ## 핵심: 맥락 없는 신입에게 일을 맡기듯
 
@@ -44,30 +44,15 @@ LLM은 **똑똑하지만 우리 규칙과 사정을 전혀 모르는 신입**과
 - **"10점 만점짜리로"보다 평가 기준을 준다.** 스스로 점수를 매기게 할 때도 무엇을 기준으로 볼지 적어야 개선이 일어난다.
 - **추론 모델에는 생각 과정을 일일이 지시하지 않는다.** 단계별 사고는 모델이 스스로 한다. 대신 성공 기준과 확인 방법을 준다.
 
-## 고를 수 있는 값
+## 역할·어조·형식 고르기
 
-| 항목 | 예 |
-| --- | --- |
-| 역할 | 제품 디자이너, 역사학자, 번역가, 카피라이터, UX 리서처, 데이터 사이언티스트, 법률 자문, 영양사, 커리어 코치, SEO 전문가 등 |
-| 어조(Tone) | 친근한, 흥미진진한, 혁신적인, 진취적인, 안정적인, 일관된 |
-| 문체(Writing style) | 전문적, 정보 전달형, 교육용, 사실 기반, 비교형, 이점 중심, 해결책 중심, 스토리텔링, 유머, 감성, 명령형, 캐주얼, 대화체 |
-| 출력 형식(Format) | 표, 목록, 요약, 일반 텍스트, JSON, HTML, CSV, XML, Markdown, 글머리표, 긴 글 |
+역할, 어조(Tone), 문체(Writing style), 출력 형식(Format)은 고정된 칸으로 두고 값만 바꿔 끼우면 매번 고민하지 않아도 된다. 역할에는 「숙련된」「전략적인」 같은 수식어로 전문성의 결을 한 번 더 지정한다.
 
-역할에는 「숙련된」「공감하는」「전략적인」 같은 수식어를 붙여 전문성의 결을 한 번 더 지정한다.
-
-## 제약 템플릿
-
-`{TYPE}` 자리에 값을 넣어 프롬프트 끝에 붙여 쓴다.
-
-```text
-Language: {TYPE}로 답한다.
-Tone: {TYPE} 어조를 유지한다.
-Sentence length: 간결한 문장을 선호한다.
-Style: {TYPE} 문체를 쓴다.
-Sources: 신뢰할 수 있는 출처에 근거하고, 출처를 밝힌다.
-Names: 구체적인 이름은 {Var: Name} 같은 변수로 바꾼다.
-Output format: 일반 텍스트로 답한다.
-```
+| 쓰임 | 역할 | 어조·문체 | 제약·형식 |
+| --- | --- | --- | --- |
+| 제품 소개 글 | 숙련된 카피라이터 | 친근한 어조, 이점 중심 | 한국어, 간결한 문장, 글머리표 5개 이내 |
+| 시장 조사 요약 | 데이터 사이언티스트 | 사실 기반, 비교형 | 신뢰할 수 있는 출처를 밝히고, 표로 |
+| 사용자 인터뷰 정리 | UX 리서처 | 정보 전달형, 해결책 중심 | 구체적인 이름은 `{Name}` 같은 변수로 바꾸고, JSON으로 |
 
 ## 그 밖의 요령
 
@@ -82,7 +67,7 @@ Output format: 일반 텍스트로 답한다.
 - 프롬프트는 **목표 + 맥락 + 과제 + 제약 + 형식 + 예시**의 조합이다.
 - 규칙에는 이유를 붙이고, 금지보다 할 일을 적는다.
 - 예시는 형식을 맞추는 가장 확실한 방법이다.
-- 어조·문체·형식은 목록에서 골라 끼우면 매번 고민하지 않아도 된다.
+- 역할·어조·형식은 칸을 정해 두고 값만 바꿔 끼운다.
 - 결국 **AI는 마음을 읽지 못한다**. 원하는 것을 말로 꺼내 놓는 만큼 답이 좋아진다.
 
 관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]], [[claude-code-guide|Claude Code 활용 가이드]]

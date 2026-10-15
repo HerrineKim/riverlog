@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/5c8ae455c4534df68fe6dd0fedb8fc24"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「비전공자도 쉽게 배우는 인공지능 - extra : Model」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「비전공자도 쉽게 배우는 인공지능 - extra : Model」을 바탕으로 재구성한 노트다.
 
 ## 딥러닝만이 답은 아니다
 

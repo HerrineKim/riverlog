@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version", "https://docs.midjourney.com/hc/en-us/articles/32859204029709-Parameter-List"]
 ---
 
-> 크리에이티브 디렉터 Joshua Cho가 링크드인에 공유한 크리스마스 디자인용 미드저니 프롬프트를 바탕으로 재구성한 노트입니다.
+> 크리에이티브 디렉터 Joshua Cho가 링크드인에 공유한 크리스마스 디자인용 미드저니 프롬프트를 바탕으로 재구성한 노트다.
 
 ## 예시 프롬프트
 

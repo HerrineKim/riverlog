@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/ai-and-developer", "https://velog.io/@teo/we-programmer", "https://velog.io/@teo/ai-era-developer-role"]
 ---
 
-> 테오(teo)의 「[AI 시대의 개발자: 현업 개발자의 솔직한 이야기](https://velog.io/@teo/ai-and-developer)」(2025.11), 「[우리, 프로그래머들 — .md로 코딩하는 시대](https://velog.io/@teo/we-programmer)」(2026.03), 「[더이상 사람이 코딩하지 않는 시대, 개발자는 무엇을 해야 할까?](https://velog.io/@teo/ai-era-developer-role)」(2026.06)를 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[AI 시대의 개발자: 현업 개발자의 솔직한 이야기](https://velog.io/@teo/ai-and-developer)」(2025.11), 「[우리, 프로그래머들 — .md로 코딩하는 시대](https://velog.io/@teo/we-programmer)」(2026.03), 「[더이상 사람이 코딩하지 않는 시대, 개발자는 무엇을 해야 할까?](https://velog.io/@teo/ai-era-developer-role)」(2026.06)를 바탕으로 재구성한 노트다.
 
 ## 코딩 노동력이 병목이던 산업
 
@@ -102,4 +102,4 @@ LLM과의 작업은 **여러 주사위를 던지고 원하는 눈은 고정한 �
 - 코딩이 사라진 자리에서 문서·테스트·의사결정 기록으로 맥락을 보존하는 일이 커졌다.
 - AI가 내 대신 생각하게 두면 스스로 대체된다. AI를 잘 쓰려면 역설적으로 **AI가 아닌 것**(원리, 원본 문서, 동료, 언어 능력)을 더 잘해야 한다.
 
-관련 노트: [[career-in-ai-era|AI 시대의 커리어 — 나에게 누적되는 것]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[loop-engineering|루프 엔지니어링]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]]
+관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[loop-engineering|루프 엔지니어링]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]]

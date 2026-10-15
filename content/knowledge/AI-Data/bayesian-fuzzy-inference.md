@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/735f7a26edf0466e8f905c49142f31b4"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[인공지능] 지식을 이용한 추론 - Bayesian Inference & Fuzzy Inference」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[인공지능] 지식을 이용한 추론 - Bayesian Inference & Fuzzy Inference」를 바탕으로 재구성한 노트다.
 
 ## 두 종류의 불확실성
 

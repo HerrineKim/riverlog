@@ -7,7 +7,7 @@ source: other
 date: "2026-10-13"
 ---
 
-> OpenAI Developers 블로그의 「Designing delightful frontends with GPT-5.4」(2026.03, Brian Fioca 외)와 SNS에서 돌던 「HOW TO VIBE CODE BEAUTIFUL UI」 팁 7가지를 함께 재구성한 노트입니다.
+> OpenAI Developers 블로그의 「Designing delightful frontends with GPT-5.4」(2026.03, Brian Fioca 외)와 SNS에서 돌던 「HOW TO VIBE CODE BEAUTIFUL UI」 팁 7가지를 함께 재구성한 노트다.
 
 ## 왜 AI가 만든 화면은 비슷비슷할까
 
@@ -118,4 +118,4 @@ date: "2026-10-13"
 - **제약(디자인 시스템) + 레퍼런스(이미지) + 서사(콘텐츠 구조) + 검증 도구(브라우저 테스트)** 네 가지를 갖추면 결과물이 확실히 달라진다.
 - 규칙의 대부분은 사람 디자이너에게도 통하는 이야기다. **하나의 화면에는 하나의 메시지**다.
 
-관련 노트: [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[free-fonts|무료 폰트]]
+관련 노트: [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[presentation-design|발표·포트폴리오 디자인 팁]]

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://addyosmani.com/blog/loop-engineering/", "https://code.claude.com/docs/en/goal", "https://code.claude.com/docs/en/scheduled-tasks", "https://code.claude.com/docs/en/worktrees"]
 ---
 
-> Addy Osmani의 글 「[Loop Engineering](https://addyosmani.com/blog/loop-engineering/)」(2026.06)을 바탕으로, 명령어는 Claude Code 공식 문서로 확인해 재구성한 노트입니다.
+> Addy Osmani의 글 「[Loop Engineering](https://addyosmani.com/blog/loop-engineering/)」(2026.06)을 바탕으로, 명령어는 Claude Code 공식 문서로 확인해 재구성한 노트다.
 
 ## 루프란
 

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://diwank.space/field-notes-from-shipping-real-code-with-claude"]
 ---
 
-> Diwank Singh의 글 「[Field Notes From Shipping Real Code With Claude](https://diwank.space/field-notes-from-shipping-real-code-with-claude)」(2025.06)를 바탕으로 재구성한 노트입니다.
+> Diwank Singh의 글 「[Field Notes From Shipping Real Code With Claude](https://diwank.space/field-notes-from-shipping-real-code-with-claude)」(2025.06)를 바탕으로 재구성한 노트다.
 
 ## 핵심 원칙
 

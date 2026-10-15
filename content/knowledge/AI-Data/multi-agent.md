@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/331", "https://learn.microsoft.com/en-us/agent-framework/overview/", "https://code.claude.com/docs/en/sub-agents"]
 ---
 
-> riverkim.kr에 쓴 카드뉴스(2026.07)를 다시 정리한 노트입니다.
+> riverkim.kr에 쓴 카드뉴스(2026.07)를 다시 정리한 노트다.
 
 ## 멀티 에이전트란
 

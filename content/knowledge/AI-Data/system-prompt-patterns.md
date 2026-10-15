@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://news.hada.io/topic?id=13326", "https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools"]
 ---
 
-> 유출된 것으로 알려진 GitHub Copilot Chat·Bing Chat(Sydney)·Microsoft 365 Copilot·ChatGPT·Vercel v0 시스템 프롬프트(GeekNews 「[최신 GPT-4 시스템 프롬프트 (유출)](https://news.hada.io/topic?id=13326)」, [system-prompts-and-models-of-ai-tools](https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools) 저장소 등)를 비교해 재구성한 노트입니다. 유출본은 공식 문서가 아니고 제품 버전마다 바뀌므로, 개별 문구가 아니라 반복되는 설계만 정리했습니다.
+> 유출된 것으로 알려진 GitHub Copilot Chat·Bing Chat(Sydney)·Microsoft 365 Copilot·ChatGPT·Vercel v0 시스템 프롬프트(GeekNews 「[최신 GPT-4 시스템 프롬프트 (유출)](https://news.hada.io/topic?id=13326)」, [system-prompts-and-models-of-ai-tools](https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools) 저장소 등)를 비교해 재구성한 노트다. 유출본은 공식 문서가 아니고 제품 버전마다 바뀌므로, 개별 문구가 아니라 반복되는 설계만 정리했다.
 
 ## 시스템 프롬프트란
 

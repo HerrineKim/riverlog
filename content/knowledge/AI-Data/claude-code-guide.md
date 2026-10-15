@@ -5,41 +5,20 @@ summary: "채팅형 AI와 무엇이 다른지부터 설치, 슬래시 명령·�
 tags: ["ai", "llm", "claude-code", "agentic-coding", "prompting", "mcp"]
 source: other
 date: "2026-10-13"
-sources: ["https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills"]
+sources: ["https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp"]
 ---
 
-> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트입니다.
+> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다.
 
-## 채팅 도구가 아니라 "운영 체제"
+## 채팅형 AI와 다른 점
 
-브라우저에서 쓰는 채팅형 AI는 대화창 안에 갇혀 있다. Claude Code는 내 컴퓨터에서 직접 일하는 **에이전트**라서 제약의 성격이 다르다.
+브라우저의 채팅형 AI는 대화창 안에 갇혀 있다. Claude Code는 내 컴퓨터에서 직접 일하는 **에이전트**라서, 도움을 청하는 상대가 아니라 실제로 실행하는 팀원에 가깝다.
 
-| 채팅형 AI | Claude Code |
-| --- | --- |
-| 대화창 안에서만 동작 | 시스템 전체에 접근 (파일, 터미널) |
-| 업로드 용량 제한 | 파일을 업로드하지 않고 디스크에서 직접 읽음 |
-| 세션이 끝나면 맥락이 사라짐 | CLAUDE.md·자동 메모리로 다음 세션에 맥락을 잇고, 몇 시간짜리 작업도 이어서 수행 |
-| 실행은 결국 내가 함 | 서브에이전트까지 부리는 "AI 팀원" |
-
-차이를 한 문장으로 줄이면, **누군가에게 도움을 청하는 것**과 **실제로 실행하는 유능한 팀원을 두는 것**의 차이다.
-
-## 할 수 있는 일 네 가지
-
-- **파일 시스템 접근**: 프로젝트 파일을 읽고, 쓰고, 정리하고, 분석한다. 업로드 없이 수천 개의 파일을 다룬다.
-- **도구·명령 실행**: 셸 명령, 스크립트 실행, Git 관리, 패키지 설치를 자연어로 시킨다. 터미널 문법을 몰라도 된다.
-- **MCP 연결**: GitHub, Notion, Slack, Jira, 데이터베이스 등 외부 도구와 이어져 지금 쓰는 도구 체계 안에서 일한다.
-- **병렬·백그라운드 작업**: 서브에이전트가 병렬로 일하고, 체크포인트로 되감고, 백그라운드 작업이 내가 다른 일을 하는 동안 돌아간다. 워크트리로 세션마다 작업 디렉터리를 나눌 수도 있다.
-
-## 작업 흐름: 조사 → 계획 → 실행 → 확장
-
-| 단계 | 예시 |
-| --- | --- |
-| **Analyze & Research** | 고객 피드백 종합, 경쟁사 조사, 문서에서 인사이트 추출, 설문 파일 읽고 요약 |
-| **Plan & Decide** | 메모로 PRD 초안 작성, 로드맵 우선순위 정하기, 전략 옵션 만들기, 의사결정 프레임워크 짜기 |
-| **Create & Execute** | 발표 자료, 문서·코드·프로토타입, 리포트, 대시보드 만들기 |
-| **Scale & Repeat** | 반복 워크플로 구성, MCP로 도구 연결, 재사용 스킬 만들기, 배치 작업 예약 |
-
-PM이라면 이런 흐름을 통째로 맡길 수 있다: 회의록으로 PRD 작성 → Jira 티켓 자동 생성 → Slack에 요약 게시 → 대시보드 갱신.
+| 측면 | 채팅형 AI | Claude Code |
+| --- | --- | --- |
+| 파일과 명령 | 대화창 안에서만 동작하고 파일은 업로드해야 한다 | 디스크의 파일을 직접 읽고 쓰며, 셸 명령·스크립트·Git·패키지 설치를 자연어로 시킨다 |
+| 외부 도구 | 대화 밖 도구와 단절 | MCP로 GitHub·Notion·Slack·Jira·DB 같은 도구에 연결해 지금 쓰는 체계 안에서 일한다 |
+| 맥락과 규모 | 세션이 끝나면 맥락이 사라지고 실행은 결국 사람이 한다 | CLAUDE.md·자동 메모리로 맥락을 잇고, 서브에이전트 병렬 작업·백그라운드 작업·체크포인트 되감기·워크트리로 긴 작업을 나눠 수행한다 |
 
 ## 설치와 준비물
 
@@ -81,7 +60,7 @@ claude
 | `/context` | 맥락 사용량 보기 |
 | `/model` | 모델과 추론 강도(effort) 전환 |
 | `/resume` | 이전 대화 이어 가기 |
-| `/rewind` | 체크포인트로 대화·코드 되감기 |
+| `/rewind` | 체크포인트로 대화·코드 되감기. 계획 → 실행 → 잘못되면 되감기 → 피드백 반복 |
 | `/memory` | CLAUDE.md 편집, 자동 메모리 켜기·끄기 |
 | `/mcp` | MCP 서버 연결 상태 확인·재연결 |
 | `/permissions` | 도구 허용·거부 규칙 관리 |
@@ -106,14 +85,7 @@ claude
 
 ## MCP로 도구 연결하기
 
-**MCP(Model Context Protocol)** 는 AI를 외부 도구와 잇는 개방형 표준이다. "AI용 USB-C"처럼, 프로토콜 하나로 여러 도구에 연결한다.
-
-| 분야 | 연결할 수 있는 도구 예 |
-| --- | --- |
-| 개발 | GitHub, Sentry, Linear, GitLab |
-| 생산성 | Notion, Slack, Atlassian(Jira·Confluence) |
-| 데이터·리서치 | PostgreSQL, 웹 검색, 파일 시스템 |
-| 커뮤니케이션 | Gmail, Google Calendar, Discord |
+**MCP(Model Context Protocol)** 는 AI를 외부 도구와 잇는 개방형 표준이다. "AI용 USB-C"처럼 프로토콜 하나로 개발(GitHub, Sentry, Linear), 생산성(Notion, Slack, Jira·Confluence), 데이터(PostgreSQL, 웹 검색), 커뮤니케이션(Gmail, Google Calendar) 도구에 연결한다.
 
 ```bash
 # 예: Notion을 HTTP MCP 서버로 추가
@@ -147,18 +119,13 @@ Claude Code에는 `/loop`(주기 실행), `/batch`(대규모 병렬 변경), `/s
 매 세션 처음에 읽히는 마크다운 파일이라, 한 번 적어 두면 같은 설명을 반복할 필요가 없다. `/init`으로 초안을 만들고, 200줄 안쪽으로 유지한다.
 
 ```markdown
-# Project: Marketing Dashboard
-
 ## Key Commands
-- npm run build
-- npm test
+- npm run build / npm test
 
 ## Style Guide
-- Use TypeScript
-- Follow existing patterns
+- Use TypeScript, follow existing patterns
 
 ## Important Context
-- Main data source: /data/analytics.csv
 - Deploy target: Vercel
 ```
 
@@ -178,31 +145,15 @@ CLAUDE.md는 사람이 쓰는 지시이고, **자동 메모리**는 Claude가 �
 | 기법 | 언제 쓰나 | 왜 |
 | --- | --- | --- |
 | **맥락은 `@`로 직접 준다** | 파일·폴더를 다룰 때 | 내용을 설명하지 말고 `@report.csv`, `@data/`처럼 붙이면 Claude가 직접 읽는다 |
-| **`/clear` 자주 쓰기** | 관련 없는 작업 사이 | 이전 맥락이 새 작업을 오염시키지 않게 한다 |
+| **작업 하나에 세션 하나** | 관련 없는 작업 사이 | `/clear`로 맥락을 비운다. 이유는 [[ai-coding-guardrails\|AI 코딩 실무 가드레일]]의 「맥락과 세션 관리」 참고 |
 | **반복되는 지시는 CLAUDE.md로** | 세션마다 같은 말을 하고 있을 때 | 매 세션 자동으로 읽히므로 프롬프트가 짧아진다 |
 | **계획 모드 → 검토 → 실행** | 파일을 여러 개 고치는 작업 | `Shift+Tab`으로 계획 모드에 두면 코드를 고치지 않고 계획만 낸다. 실행 전에 계획을 보면 되돌릴 일이 줄어든다 |
 | **끝나는 조건을 준다** | 테스트 통과처럼 확인 가능한 목표가 있을 때 | `/goal 모든 테스트 통과`처럼 조건을 걸면 별도 모델이 매 턴 충족 여부를 판정하고, 충족될 때까지 이어서 일한다 |
-
-### 체크포인트 + 반복 패턴
-
-1. 실행 전에 **계획부터** 세우게 한다.
-2. 실행에 들어가기 전에 계획을 검토한다.
-3. 실행하면서 체크포인트가 쌓이게 둔다.
-4. 잘못되면 `Esc` 두 번이나 `/rewind`로 **되감는다**.
-5. 피드백을 주며 반복한다.
 
 에이전트에게 맡길 때 결과를 일관되게 만드는 방법은 [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], 반복 작업을 루프로 돌리는 방법은 [[loop-engineering|루프 엔지니어링]]에서 더 깊이 다뤘다.
 
 ## 요금제
 
 구독(Pro·Max·Team·Enterprise)으로 쓰거나, CI/CD·파이프라인처럼 자동화 용도면 API 사용량 과금으로 쓴다. Amazon Bedrock·Google Cloud·Microsoft Foundry를 통해서도 쓸 수 있다. 플랜별 요금과 한도는 자주 바뀌므로 [공식 요금 안내](https://claude.com/pricing)에서 확인하고, 세션 안에서는 `/usage`로 사용량을 본다.
-
-## 공식 문서
-
-- [설치](https://code.claude.com/docs/en/setup)
-- [단축키·입력 모드](https://code.claude.com/docs/en/interactive-mode)
-- [명령어 목록](https://code.claude.com/docs/en/commands)
-- [메모리(CLAUDE.md)](https://code.claude.com/docs/en/memory)
-- [MCP](https://code.claude.com/docs/en/mcp)
 
 관련 노트: [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]]
