@@ -98,3 +98,5 @@ date: "2026-10-12"
 - must / suggestion / nit 으로 중요도를 구분한다.
 - LGTM(승인), NIT(사소함), PTAL(다시 봐 주세요), IMO(개인 의견)는 꼭 알아 둔다.
 - PR은 작게, 설명은 충분히, 답변은 성실하게.
+
+관련 노트: [[kind-engineering|친절한 엔지니어링]]
