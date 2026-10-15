@@ -1,14 +1,14 @@
 ---
 title: "프로토타입과 상속"
 concept: "Prototype"
-summary: "JavaScript 객체는 프로토타입 객체에 연결되어, 자기에게 없는 속성을 그 체인을 따라 찾는다. 생성자 함수와 new가 하는 일, 인스턴스 속성과 프로토타입 메서드의 구분, 프로토타입 체인과 섀도잉, Object.create와 getPrototypeOf, class 문법이 프로토타입 코드로 어떻게 풀리는지, 내장 프로토타입을 고치면 안 되는 이유와 폴리필을 정리했다."
+summary: "JavaScript 객체는 프로토타입 객체에 연결되어, 자기에게 없는 속성을 그 체인을 따라 찾는다. 클래스와 다른 철학적 뿌리(분류 대 가족 유사성·원형), 생성자 함수와 new가 하는 일, 인스턴스 속성과 프로토타입 메서드의 구분, 프로토타입 체인과 섀도잉, Object.create와 getPrototypeOf, class 문법이 프로토타입 코드로 어떻게 풀리는지, 내장 프로토타입을 고치면 안 되는 이유와 폴리필을 정리했다."
 tags: ["javascript", "frontend", "oop", "prototype"]
 source: other
 date: "2026-10-15"
-sources: ["https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/60-the-new-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/61-the-this-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/63-prototypes-and-prototypal-inheritance", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/62-prototype-refactor-of-gallery-exercise", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new"]
+sources: ["https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/60-the-new-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/61-the-this-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/63-prototypes-and-prototypal-inheritance", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/62-prototype-refactor-of-gallery-exercise", "https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new"]
 ---
 
-> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로 재구성한 노트다.
+> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로 재구성한 노트다. 프로토타입의 철학적 배경은 임성묵의 「[자바스크립트는 왜 프로토타입을 선택했을까](https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42)」(2021.12)를 바탕으로 덧붙였다.
 
 ## 프로토타입이란
 
@@ -22,6 +22,33 @@ const numbers = [1, 2, 3]
 names.filter === numbers.filter                // true — 같은 함수 하나를 공유한다
 Object.getPrototypeOf(names) === Array.prototype // true
 ```
+
+## 왜 클래스가 아니라 프로토타입인가
+
+클래스와 프로토타입은 "같은 종류의 객체를 어떻게 묶나"에 대한 두 가지 답이다. 차이는 철학에서 왔다(Antero Taivalsaari, 「Classes vs. Prototypes: Some Philosophical and Historical Observations」, 1996).
+
+| | 클래스 기반 | 프로토타입 기반 |
+| --- | --- | --- |
+| 뿌리 | 플라톤의 이데아, 아리스토텔레스의 **분류**: 공통 속성이 같으면 같은 범주다 | 비트겐슈타인의 **가족 유사성**과 Rosch의 **프로토타입 이론**: 범주는 정의가 아니라 가장 전형적인 본보기(원형)와 얼마나 닮았는가로 정해진다 |
+| 객체 만들기 | 먼저 추상적인 설계도(클래스)를 정의하고 `new`로 구체화한다 | 이미 있는 구체적인 객체를 본보기로 삼아 복사하거나 연결한다 |
+| 확장 | 클래스 상속 | 위임(delegation). 자기가 모르는 메시지는 원형에게 넘긴다 |
+| 설계 순서 | 분류 체계를 미리 잘 세워야 한다. 잘못 세운 상속 계층은 나중에 바꾸기 어렵다 | 개별 객체를 고쳐 가며 점진적으로 발전시킨다 |
+
+Rosch의 실험에서 사람들은 '새'를 떠올릴 때 참새를 전형으로, 타조·펭귄을 가장자리로 둔다. 모든 새가 공유하는 속성 목록이 아니라 원형과의 거리로 범주를 판단한다는 뜻이다. 이 생각을 언어로 옮긴 것이 1980년대의 **Self**이고, JavaScript는 Self에서 프로토타입을, Scheme에서 일급 함수와 클로저를, Java에서 문법의 겉모양을 가져왔다.
+
+```javascript
+const sparrow = { wings: 2, canFly: true }
+const chicken = Object.create(sparrow)  // 설계도가 아니라 실제 객체를 원형으로 삼는다
+chicken.canFly = false                  // 원형은 그대로, 자기만 달라진다(섀도잉)
+chicken.wings                           // 2 — 원형에 위임
+```
+
+| 관점 | 근거 |
+| --- | --- |
+| 렉시컬 스코프·호이스팅·호출 방식에 따라 정해지는 `this`도 "의미는 맥락에서 정해진다"는 프로토타입 철학에서 나왔다 | 이렇게 보면 `this`를 경우의 수로 외우지 않고 "누가 호출했나"라는 하나의 원리로 이해할 수 있다 |
+| 이 기능들은 철학이 아니라 설계상의 선택이다 | 렉시컬 스코프는 Scheme 계열에서, 동적 `this`는 함수를 메서드로 빌려 쓰는 위임 모델에서 왔다. 클래스 언어도 렉시컬 스코프를 쓴다 |
+
+어느 쪽이든 `this`의 규칙 자체는 [[functions|함수와 this]]에, 스코프와 호이스팅은 [[scope-and-closures|스코프와 클로저]]에 있다.
 
 ## 생성자 함수와 new
 
@@ -148,6 +175,7 @@ if (!Array.prototype.at) {
 
 ## 정리
 
+- 클래스는 미리 정한 분류에서, 프로토타입은 실제 본보기와의 닮음에서 출발한다. JavaScript는 Self에서 이 모델을 가져왔다.
 - 객체는 `[[Prototype]]` 링크로 다른 객체에 위임한다. 없는 속성은 체인을 따라 `null`까지 찾는다.
 - `new`는 빈 객체를 `F.prototype`에 잇고, `this`로 본문을 실행해 돌려준다.
 - 데이터는 인스턴스(`this`)에, 공유 동작은 `prototype`에 둔다.

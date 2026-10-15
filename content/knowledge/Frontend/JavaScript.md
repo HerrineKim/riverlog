@@ -23,7 +23,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [JavaScript의 네 가지 주석](/knowledge/dictionary/frontend/javascript/js-comments): `//`·`/* */`의 동작, 해시뱅 `#!`, HTML 유사 주석 `<!--`의 유래
 - [템플릿 리터럴](/knowledge/dictionary/frontend/javascript/template-literals): 여러 줄·표현식 삽입·중첩, 태그드 템플릿과 styled-components의 원리
 - [class 문법](/knowledge/dictionary/frontend/javascript/class): 생성자 함수와 new, constructor, static, extends, getter·setter, private 필드
-- [프로토타입과 상속](/knowledge/dictionary/frontend/javascript/prototype-and-inheritance): 프로토타입 체인, new가 하는 일, 인스턴스 데이터와 프로토타입 메서드, Object.create, class와의 대응
+- [프로토타입과 상속](/knowledge/dictionary/frontend/javascript/prototype-and-inheritance): 클래스와 다른 철학(분류 대 원형), 프로토타입 체인, new가 하는 일, 인스턴스 데이터와 프로토타입 메서드, Object.create, class와의 대응
 - [ECMAScript 표준과 TC39 프로세스](/knowledge/dictionary/frontend/javascript/ecmascript-tc39): ECMA-262와 TC39, Stage 0~4, ES6=ES2015 이름 규칙, ES2022 기능과 이후 판
 - [모듈: export와 import](/knowledge/dictionary/frontend/javascript/es-modules): named export와 default export, export default 논쟁
 - [JavaScript 디자인 패턴: 생성 패턴](/knowledge/dictionary/frontend/javascript/js-design-patterns): 생성자·모듈·싱글톤·프로토타입 패턴과 프로토타입 기반 언어의 차이
