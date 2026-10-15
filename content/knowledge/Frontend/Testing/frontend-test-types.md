@@ -65,19 +65,7 @@ sources: ["https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-
 
 ## 테스트 작성 원칙
 
-모든 원칙의 출발점은 한 문장이다. **테스트는 단순하고 짧고 추상화 없이, 보자마자 의미를 알 수 있게 만든다.** 테스트 코드는 제품 코드보다 덜 고민하고 읽혀야 한다.
-
-| 원칙 | 내용 |
-| --- | --- |
-| 이름에 세 가지를 담는다 | 무엇을 테스트하는지, 어떤 상황에서, 기대 결과가 무엇인지 |
-| AAA 패턴 | 준비(Arrange) → 실행(Act) → 검증(Assert)으로 나눠 쓴다 |
-| 블랙박스로 테스트한다 | 내부 구현이 아니라 공개된 동작·결과를 검증한다. 구현을 바꿔도 깨지지 않아야 한다 |
-| 현실적인 입력 데이터 | `"foo"` 같은 더미 대신 실제와 비슷한 데이터를 쓴다 |
-| 테스트마다 자기 데이터 | 전역 픽스처를 공유하지 말고 테스트 안에서 필요한 데이터를 만든다 |
-| 에러는 기대로 검증 | try/catch로 잡지 말고 `expect(...).toThrow()`처럼 단언한다 |
-| 어느 환경에서나 같은 결과 | 타임존·현재 시각·실행 순서에 기대지 않는다. 시간은 가짜 타이머로 고정한다 |
-
-테스트 자체의 품질은 커버리지, 뮤테이션 테스트(코드를 일부러 바꿔도 테스트가 실패하는지 확인), 테스트용 린트 규칙(`eslint-plugin-jest`, `eslint-plugin-testing-library`)으로 점검한다.
+모든 원칙의 출발점은 한 문장이다. **테스트는 단순하고 짧고 추상화 없이, 보자마자 의미를 알 수 있게 만든다.** 이름에 대상·상황·기대를 담고, AAA로 나누고, 공개된 동작만 검증하고, 데이터는 현실적으로 테스트마다 따로 만든다. 원칙 전체와 커버리지·뮤테이션 테스트·CI 운영은 [[js-testing-best-practices|JavaScript 테스트 모범 사례]]에 모았다.
 
 ## 도구 고르기
 
@@ -115,4 +103,4 @@ sources: ["https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-
 - 테스트는 짧고 읽기 쉽게: 이름에 대상·상황·기대 결과, 본문은 AAA.
 - 기본 조합은 TypeScript·ESLint + Vitest + Testing Library + MSW + Playwright다.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[jest-practices|Jest·Vitest 실행 팁]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]]
+관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[jest-practices|Jest·Vitest 실행 팁]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]]
