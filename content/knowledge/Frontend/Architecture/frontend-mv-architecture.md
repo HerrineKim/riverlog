@@ -5,10 +5,10 @@ summary: "MVC·MVP·MVVM의 구조와 차이, 웹 프론트엔드의 아키텍�
 tags: ["frontend", "architecture", "state", "design-pattern"]
 source: other
 date: "2026-10-14"
-sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://beomy.tistory.com/43"]
+sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://yozm.wishket.com/magazine/detail/1663/", "https://beomy.tistory.com/43"]
 ---
 
-> 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08)를 바탕으로 재구성하고, 「MVC·MVP·MVVM 비교」는 beomy의 「[MVC, MVP, MVVM 비교](https://beomy.tistory.com/43)」(2018.09)로 보강한 노트다.
+> 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08, 요즘IT 재게재)를 바탕으로 재구성하고, 「MVC·MVP·MVVM 비교」는 beomy의 「[MVC, MVP, MVVM 비교](https://beomy.tistory.com/43)」(2018.09)로 보강한 노트다.
 
 ## 아키텍처란
 
@@ -62,7 +62,7 @@ MVVM은 명령(Command) 패턴과 데이터 바인딩이라는 두 장치로 의
 | 시그널 (Vue 반응성, Svelte 5 runes, Angular Signals, Solid) | 값 단위로 의존을 추적해 바뀐 곳만 갱신 | 반응형 상태가 프레임워크 기본 기능으로 들어왔다 |
 | 서버 상태 (TanStack Query, SWR, RTK Query) | 서버 fetch가 Model, query·mutation이 Controller | 전역 상태의 대부분은 결국 API 데이터라는 관찰. 캐싱·무효화·재요청을 맡긴다 |
 
-Flux의 세부 구성은 [[redux|Redux와 react-redux]]에 있다.
+Redux 이후 진영마다 비슷한 도구가 나왔다. Vue의 Vuex(지금은 [[vuex|Pinia]]), 데코레이터로 반응성을 쓰는 MobX, Angular의 RxJS 기반 NgRx와 그것을 간소화한 NGXS, 유한 상태 기계를 쓰는 XState, Effector 등이다. Flux의 세부 구성은 [[redux|Redux와 react-redux]]에 있다.
 
 ### props drilling이 드러낸 문제
 
@@ -108,6 +108,7 @@ const store = createStore({ count: 0 }, (state) => {
 // View: 읽고(Query), 의도만 보낸다(Intent)
 const Counter = () => {
   const count = select(store.count);
+  const doubled = count * 2;                 // 파생 값은 읽은 데이터에서 계산
   const onClick = () => dispatch(INCREASE(1));
   return <button onClick={onClick}>{count}</button>;
 };
