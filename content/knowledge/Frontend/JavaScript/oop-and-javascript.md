@@ -68,7 +68,7 @@ cat.name = '냥이';
 cat.sleep();                          // cat에 없으니 animal에서 찾는다
 ```
 
-클래스가 없다는 이유로 처음엔 낮은 수준의 언어로 취급받았고, prototype.js처럼 클래스를 흉내 내는 라이브러리가 유행했다. 결국 ES6에 `class`가 들어왔지만 **프로토타입 위에 얹은 문법**일 뿐이다([[class|class 문법]]). 반대로 함수를 값으로 다루는 설계는 많은 객체 지향 언어에 영향을 줘, 지금은 함수형과 객체 지향을 섞어 쓰는 쪽으로 흐름이 바뀌었다.
+클래스가 없다는 이유로 처음엔 낮은 수준의 언어로 취급받았고, prototype.js처럼 클래스를 흉내 내는 라이브러리가 유행했다. 결국 ES6에 `class`가 들어왔지만 **프로토타입 위에 얹은 문법**일 뿐이다([[class|class 문법]]). 체인을 따라 찾는 원리와 `new`가 하는 일은 [[prototype-and-inheritance|프로토타입과 상속]]에 있다. 반대로 함수를 값으로 다루는 설계는 많은 객체 지향 언어에 영향을 줘, 지금은 함수형과 객체 지향을 섞어 쓰는 쪽으로 흐름이 바뀌었다.
 
 ## 그래서 JavaScript에서는
 
@@ -86,4 +86,4 @@ cat.sleep();                          // cat에 없으니 animal에서 찾는다
 - JavaScript는 클래스 대신 프로토타입, 타입 대신 덕 타이핑, 리스너 패턴 대신 일급 함수로 OOP를 풀었다. `class`는 그 위의 문법이다.
 - JavaScript에서는 객체 지향과 함수형 중 하나를 고르기보다 **간결하고 바꾸기 쉬운 쪽으로 섞는다.**
 
-관련 노트: [[oop-messaging|객체 지향의 본질: 메시징]], [[class|class 문법]], [[js-design-patterns|JavaScript 디자인 패턴: 생성 패턴]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[functional-programming|함수형 프로그래밍]], [[software-engineering|소프트웨어 설계와 공학]]
+관련 노트: [[oop-messaging|객체 지향의 본질: 메시징]], [[class|class 문법]], [[prototype-and-inheritance|프로토타입과 상속]], [[js-design-patterns|JavaScript 디자인 패턴: 생성 패턴]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[functional-programming|함수형 프로그래밍]], [[software-engineering|소프트웨어 설계와 공학]]

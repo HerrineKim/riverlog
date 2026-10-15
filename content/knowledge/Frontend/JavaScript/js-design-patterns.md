@@ -41,7 +41,7 @@ new Person('John', 30).sayHello()
 
 ### 2. 모듈 패턴
 
-변수와 함수를 감추고 공개 인터페이스만 돌려준다. 즉시 실행 함수(IIFE)와 클로저로 private 상태를 만든다.
+변수와 함수를 감추고 공개 인터페이스만 돌려준다. 즉시 실행 함수(IIFE)와 클로저로 private 상태를 만든다([[scope-and-closures|스코프와 클로저]]).
 
 ```javascript
 const CounterModule = (function () {
@@ -84,7 +84,7 @@ a === b // true
 
 ### 4. 프로토타입 패턴
 
-미리 만든 **원형(prototype) 객체를 복제**해 새 객체를 만들고 필요한 속성만 덮어쓴다. JavaScript 언어 자체의 상속 방식이기도 하다.
+미리 만든 **원형(prototype) 객체를 복제**해 새 객체를 만들고 필요한 속성만 덮어쓴다. JavaScript 언어 자체의 상속 방식이기도 하다. 언어 차원의 프로토타입 체인은 [[prototype-and-inheritance|프로토타입과 상속]]에 정리했다.
 
 ```javascript
 const ButtonProto = {
@@ -118,4 +118,4 @@ JavaScript가 프로토타입 방식을 택한 것은 1995년 아주 짧은 기�
 - 싱글톤은 쓸 수 있지만 객체 리터럴로 충분한지 먼저 본다.
 - 프로토타입 패턴은 JavaScript 상속의 본모습이다. 복제가 아니라 위임이라는 점을 기억한다.
 
-관련 노트: [[class|class 문법]], [[es-modules|모듈: export와 import]], [[singleton-service-pattern|Express 싱글톤 패턴과 서비스 패턴]], [[software-engineering|디자인 패턴(GoF)]]
+관련 노트: [[class|class 문법]], [[prototype-and-inheritance|프로토타입과 상속]], [[es-modules|모듈: export와 import]], [[singleton-service-pattern|Express 싱글톤 패턴과 서비스 패턴]], [[software-engineering|디자인 패턴(GoF)]]

@@ -33,28 +33,19 @@ person.greet() // '안녕하세요, John Doe입니다.'
 
 ## class 이전: 생성자 함수와 new
 
-ES6 이전에는 **생성자 함수**로 같은 모양의 객체를 찍어 냈다. 일반 함수와 구분하려고 이름을 대문자로 시작한다. 함수 앞에 `new`를 붙여 호출하면 객체가 만들어져 반환된다.
+ES2015 이전에는 **생성자 함수**에 `new`를 붙여 같은 모양의 객체를 찍어 냈다. 인스턴스 데이터는 함수 본문에서 `this`에, 공유 메서드는 `Person.prototype`에 따로 붙였다.
 
 ```javascript
 function Person(name) {
   this.name = name
-  this.introduce = function () {
-    return 'My name is ' + this.name
-  }
 }
-
-const p1 = new Person('river')
-p1.introduce() // 'My name is river'
+Person.prototype.introduce = function () {
+  return 'My name is ' + this.name
+}
+new Person('river').introduce() // 'My name is river'
 ```
 
-`new`를 붙여 호출하면 다음 일이 일어난다.
-
-1. 빈 객체를 새로 만들고 `this`에 연결한다.
-2. 그 객체의 프로토타입을 `Person.prototype`으로 잡는다.
-3. 함수 본문을 실행해 `this`에 속성을 채운다.
-4. 다른 객체를 `return`하지 않으면 `this`를 반환한다.
-
-생성자 함수로 객체의 형식을 정해 두고, `new`로 그 형식대로 실제 객체를 만든다고 보면 된다. 위 예처럼 메서드를 `this`에 넣으면 인스턴스마다 함수가 새로 생기므로, 공유할 메서드는 `Person.prototype`에 두는 것이 원래 방식이다. `class`는 이 과정을 정리한 문법이다.
+`class`는 이 두 덩어리를 한 블록으로 묶은 문법이다. `new`가 내부에서 하는 일과 class 문법이 프로토타입 코드로 어떻게 풀리는지는 [[prototype-and-inheritance|프로토타입과 상속]]에 정리했다.
 
 ## 클래스 필드와 static
 
@@ -143,4 +134,4 @@ account.balance           // 100
 - `constructor`는 하나, 자식 constructor에서는 `super()`를 먼저 호출한다.
 - `static`은 클래스 자체의 멤버, `#`은 private 필드, `get`/`set`은 속성처럼 쓰는 함수다.
 
-관련 노트: [[ecmascript-tc39|ECMAScript 표준과 TC39 프로세스]]
+관련 노트: [[prototype-and-inheritance|프로토타입과 상속]], [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[ecmascript-tc39|ECMAScript 표준과 TC39 프로세스]]
