@@ -4,11 +4,11 @@ concept: "Statement vs Expression"
 summary: "식은 값을 만들어 내는 코드이고, 문은 무언가를 하라는 명령이다. 문에는 식을 끼우는 자리가 있고, 식은 늘 어떤 문 안에 있다. 함수 인자, 화살표 함수의 간결한 본문, JSX의 중괄호는 식만 받는 자리라서 if·for 대신 삼항 연산자·map을 쓴다."
 tags: ["javascript", "frontend", "react", "jsx"]
 source: other
-date: "2026-10-14"
-sources: ["https://www.joshwcomeau.com/javascript/statements-vs-expressions/"]
+date: "2026-10-15"
+sources: ["https://www.joshwcomeau.com/javascript/statements-vs-expressions/", "https://wesbos.com/javascript/01-the-basics/variables-and-statements"]
 ---
 
-> Josh W. Comeau의 「[Statements Vs. Expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)」(2025.08 갱신)를 바탕으로 재구성한 노트다.
+> Josh W. Comeau의 「[Statements Vs. Expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)」(2025.08 갱신)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다.
 
 ## 식과 문
 
@@ -39,6 +39,8 @@ data.forEach((item) => console.log(item)); // for문은 없지만, 이 줄 전�
 ```
 
 세미콜론은 문의 끝을 표시한다. `if`, `while`, 함수 선언처럼 블록으로 끝나는 문은 세미콜론이 필요 없다.
+
+세미콜론을 생략하면 엔진이 자동 세미콜론 삽입(ASI, Automatic Semicolon Insertion) 규칙으로 줄 끝에 넣어 준다. 다만 **다음 줄이 `(`, `[`, `` ` ``로 시작하면 앞 줄과 이어진 하나의 식으로 읽힌다.** 세미콜론 없는 스타일에서는 그런 줄 앞에 `;`를 붙인다(`;[a, b] = [b, a]`). 반대로 `return` 바로 뒤에서 줄을 바꾸면 그 자리에 세미콜론이 들어가 `undefined`가 반환된다.
 
 ## 구분하는 요령: console.log에 넣어 본다
 
