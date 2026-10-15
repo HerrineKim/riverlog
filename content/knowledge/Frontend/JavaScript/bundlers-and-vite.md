@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://vite.dev/blog/announcing-vite8"]
 ---
 
-> 테오(teo)의 「[Vite 이야기 (feat. Svelte)](https://velog.io/@teo/vite)」(2022.07)를 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[Vite 이야기 (feat. Svelte)](https://velog.io/@teo/vite)」(2022.07)를 바탕으로 재구성한 노트다.
 
 ## 번들러가 필요한 이유
 

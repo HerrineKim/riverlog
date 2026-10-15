@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/223", "https://riverkim.kr/185", "https://riverkim.kr/77", "https://velog.io/@teo/dom"]
 ---
 
-> riverkim.kr에 쓴 TIL과 테오(teo)의 「[DOM은 다들 어떤식으로 공부하셨나요?](https://velog.io/@teo/dom)」(2022.01)를 바탕으로 재구성한 노트입니다.
+> riverkim.kr에 쓴 TIL과 테오(teo)의 「[DOM은 다들 어떤식으로 공부하셨나요?](https://velog.io/@teo/dom)」(2022.01)를 바탕으로 재구성한 노트다.
 
 텍스트 파일인 HTML을 화면에 그리려면 브라우저가 이해할 수 있는 구조로 메모리에 올려야 한다. 브라우저의 렌더링 엔진은 문서를 **파싱(parsing)** 해 모든 요소·속성·텍스트를 객체로 만들고, 이 객체들을 부모-자식 관계의 트리로 구성한다. 이것이 **DOM(Document Object Model)** 이다. JavaScript로 DOM을 바꾸면 그 변경이 곧바로 화면에 반영된다.
 
@@ -86,7 +86,7 @@ const scrollToTop = () => {
 | BOM 조작 | `location`, `history`, `navigator` 등 브라우저 제어 |
 | JavaScript Core(ECMAScript) | 자료구조(Object, Array), 조건문, 반복문 등 언어 자체 |
 
-DOM을 다루는 순서는 항상 같다. **① 조작할 요소를 선택(탐색)하고 → ② 내용이나 속성을 변경한다.** 구체적인 메서드는 [DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation) 노트에 정리했다.
+선택·변경·이벤트를 다루는 구체적인 메서드는 [[dom-manipulation|DOM 조작과 이벤트]]에 있다.
 
 ## DOM이 필요해진 이유
 
@@ -115,4 +115,4 @@ DOM의 본질은 "HTML을 이렇게 고쳐 달라"를 컴퓨터가 알아듣게 
 - BOM은 문서 바깥의 브라우저 자체를 다루며 최상위 객체는 `window`.
 - DOM은 문자열 HTML을 매번 다시 파싱하는 비용을 피하려고, 이미 만든 구조를 부분 수정하기 위해 생겼다.
 
-관련 노트: [[dom-manipulation|DOM 조작]], [[dom-events|이벤트]], [[browser-rendering|브라우저 렌더링 과정]], [[frontend-history|프론트엔드의 등장 배경]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]
+관련 노트: [[dom-manipulation|DOM 조작과 이벤트]], [[browser-rendering|브라우저 렌더링 과정]], [[frontend-history|프론트엔드의 등장 배경]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]

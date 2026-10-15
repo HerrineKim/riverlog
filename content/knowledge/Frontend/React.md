@@ -7,7 +7,7 @@ source: mixed
 date: "2026-10-13"
 ---
 
-React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러리다. 바닐라 JS에서는 HTML 요소를 먼저 만들고 JS로 찾아서 바꿨다면, React에서는 **JS(JSX)로 화면을 선언**하고 상태(state)가 바뀌면 React가 알아서 필요한 최소 부분만 다시 그린다. 이벤트가 많아질수록 복잡해지는 DOM 조작을 React가 대신 맡아 주는 셈이다. 국내 프론트엔드 채용에서도 가장 널리 쓰이는 기술이며, 정적 타입을 더하는 TypeScript와 서버 컴포넌트·SSR을 지원하는 Next.js가 흔히 함께 쓰인다. 2026년 기준 최신 메이저는 React 19로, 폼 Actions·`use`·ref as prop이 들어왔고 React Compiler가 메모이제이션을 자동으로 넣어 준다.
+React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러리다. 바닐라 JS에서는 HTML 요소를 먼저 만들고 JS로 찾아서 바꿨다면, React에서는 **JS(JSX)로 화면을 선언**하고 상태(state)가 바뀌면 React가 알아서 필요한 최소 부분만 다시 그린다. 이벤트가 많아질수록 복잡해지는 DOM 조작을 React가 대신 맡아 주는 셈이다. 정적 타입을 더하는 TypeScript, 서버 컴포넌트·SSR을 지원하는 Next.js와 흔히 함께 쓰인다. React 19에서 폼 Actions·`use`·ref as prop이 들어왔고, React Compiler가 메모이제이션을 자동으로 넣어 준다.
 
 ## 노트
 
@@ -29,11 +29,10 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 
 ### 실전
 - [React 빌드 환경 직접 구성하기: webpack·Babel·TypeScript](Frontend/React/tooling.md): CDN 실습, CRA 종료 이후의 선택, webpack·Babel·tsconfig 역할, 라우팅·코드 스플리팅, 도구별 환경 변수 접두사
-- [SWR로 데이터 가져오기](/knowledge/dictionary/frontend/react/swr): fetcher, mutate, useSWRInfinite
+- [SWR로 데이터 가져오기](/knowledge/dictionary/frontend/react/swr): fetcher, mutate 옵션과 optimisticData, SWR 캐시로 로그인 상태 판단·보호된 페이지, useSWRInfinite
 - [TanStack Query(React Query)](/knowledge/dictionary/frontend/react/tanstack-query): QueryClientProvider, query key, useQuery·useMutation, v5 변경점
 - [Redux와 react-redux](/knowledge/dictionary/frontend/react/redux): Flux 패턴, store·reducer·dispatch, useSelector·useDispatch, Redux Toolkit
 - [use 훅과 리액트 비동기 처리](/knowledge/dictionary/frontend/react/react-use-hook): Promise·Context를 읽는 React 19 API, 캐시된 Promise만 넘기기, 서버 컴포넌트에서 내려받은 Promise 읽기
-- [회원가입·로그인 구현](/knowledge/dictionary/frontend/react/auth-flow): useInput 훅, axios, 로그인 상태에 따른 리다이렉트
 - [실시간 채팅 앱의 데이터 흐름: REST와 WebSocket 역할 나누기](Frontend/React/realtime-chat-app.md): 쓰기는 REST·알림은 소켓, 리소스 계층이 드러나는 URL, 소켓 연결 수명, optimistic UI와 중복 방지, 긴 목록 최적화
 - [리렌더링 원인 추적하기](/knowledge/dictionary/frontend/react/re-rendering): memo가 안 먹힐 때, useQuery의 렌더링, DevTools 하이라이트·Profiler
 - [react-hook-form과 MUI Select](/knowledge/dictionary/frontend/react/react-hook-form): Controller, 빈 값 처리, 수정 폼 초기값

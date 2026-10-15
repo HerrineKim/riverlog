@@ -4,6 +4,7 @@ concept: "Conditional Rendering"
 summary: "조건에 따라 서로 다른 컴포넌트를 그리거나 아예 그리지 않는 React의 렌더링 패턴."
 tags: ["react", "jsx", "frontend"]
 source: til
+date: "2026-10-11"
 ---
 
 **조건부 렌더링**은 조건에 따라 화면에 무엇을 그릴지(또는 그리지 않을지) 달라지는 것이다. JSX의 `{}` 안에는 `if`문을 쓸 수 없으므로, JSX 밖의 `if`나 JSX 안의 표현식(`&&`, `? :`)을 상황에 맞게 고른다.

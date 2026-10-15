@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://webactually.com/2019/10/08/%ea%b0%9d%ec%b2%b4-%ec%a7%80%ed%96%a5-css-%ec%86%8c%ea%b0%9c/", "https://mytory.net/archives/13185"]
 ---
 
-> Louis Lazaris의 「[객체 지향 CSS 소개](https://webactually.com/2019/10/08/%ea%b0%9d%ec%b2%b4-%ec%a7%80%ed%96%a5-css-%ec%86%8c%ea%b0%9c/)」(An Introduction To Object Oriented CSS, 2019.10, 웹액츄얼리 번역)를 바탕으로 재구성하고, 안형우의 「[유지보수하기 쉬운 CSS 전략](https://mytory.net/archives/13185)」(WSConf. Seoul 2016 발표)의 실무 전략으로 보강한 노트입니다.
+> Louis Lazaris의 「[객체 지향 CSS 소개](https://webactually.com/2019/10/08/%ea%b0%9d%ec%b2%b4-%ec%a7%80%ed%96%a5-css-%ec%86%8c%ea%b0%9c/)」(An Introduction To Object Oriented CSS, 2019.10, 웹액츄얼리 번역)를 바탕으로 재구성하고, 안형우의 「[유지보수하기 쉬운 CSS 전략](https://mytory.net/archives/13185)」(WSConf. Seoul 2016 발표)의 실무 전략으로 보강한 노트다.
 
 ## OOCSS란
 
@@ -162,17 +162,7 @@ OOCSS는 HTML에 `globalwidth`, `skin` 같은 **겉모양을 설명하는 클래
 
 ## 이어진 흐름
 
-OOCSS의 "재사용 가능한 클래스 객체" 발상은 이후 방법론과 도구의 뿌리가 됐다.
-
-```text
-OOCSS (구조/겉모양 분리, 컨테이너/콘텐츠 분리)
- ├─ SMACSS   규칙을 base·layout·module·state·theme 범주로 나눔
- ├─ BEM      block__element--modifier 이름 규칙으로 객체 경계를 명시
- ├─ 유틸리티 CSS (Atomic CSS, Tailwind)  겉모양 분리를 속성 하나 단위까지 밀어붙임
- └─ 컴포넌트 스코프 (CSS Modules, CSS-in-JS)  이름 충돌을 도구가 막음
-```
-
-컴포넌트 단위로 스타일을 묶는 방식은 [[styling|React 스타일링: CSS Modules와 styled-components]], 컴포넌트를 크기별로 나누는 사고는 [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]]와 이어진다.
+OOCSS의 "재사용 가능한 클래스 객체" 발상은 SMACSS·BEM 같은 방법론, 겉모양 분리를 속성 하나 단위까지 밀어붙인 유틸리티 CSS, 이름 충돌을 도구가 막는 CSS Modules·CSS-in-JS로 이어졌다. 그 흐름은 [[css-history|CSS의 역사]]에, 컴포넌트 단위로 스타일을 묶는 방식은 [[styling|React 스타일링]]에 있다.
 
 ## 한계
 

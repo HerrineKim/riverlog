@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/207", "https://riverkim.kr/214", "https://nextjs.org/docs/app/getting-started/linking-and-navigating", "https://nextjs.org/docs/app/api-reference/config/next-config-js/staleTimes"]
 ---
 
-> riverkim.kr에 쓴 글들을 바탕으로 Next.js 16 공식 문서와 대조해 재구성한 노트입니다.
+> riverkim.kr에 쓴 글들을 바탕으로 Next.js 16 공식 문서와 대조해 재구성한 노트다.
 
 Next.js 13에서 도입된 **App Router**(`app/` 디렉터리)는 Pages Router와 사고방식이 다르다. **라우팅은 서버 중심이고, 내비게이션은 클라이언트 사이드다.** 데이터는 `getServerSideProps` 같은 페이지 단위 함수 대신 서버 컴포넌트 안에서 바로 `fetch`한다. 렌더링 방식(SSR·SSG)과 `fetch` 캐시 옵션은 [Next.js를 쓰는 이유](/knowledge/dictionary/frontend/next-js/nextjs)에 정리했다.
 
@@ -16,7 +16,12 @@ Next.js 13에서 도입된 **App Router**(`app/` 디렉터리)는 Pages Router�
 
 `app/` 아래 컴포넌트는 기본이 **React Server Component(RSC)** 다. 상호작용이 필요한 곳만 `'use client'`로 클라이언트 컴포넌트를 만들고, 서버가 경로를 해석해 그 결과(RSC payload)를 내려보내므로 클라이언트가 라우터 지도 전체를 받을 필요가 없다. 두 종류의 컴포넌트를 어떻게 섞을 수 있고 무엇이 안 되는지는 [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]에 정리했다.
 
-![[riverkim/207-1.jpg]]
+```text
+요청 /dashboard ──▶ 서버: 경로 해석 → 서버 컴포넌트 렌더링(데이터 fetch 포함)
+                          │  RSC payload (+ 클라이언트 컴포넌트 JS 참조)
+                          ▼
+                    브라우저: 'use client' 부분만 hydration
+```
 
 ## 내비게이션
 
@@ -27,15 +32,7 @@ Next.js 13에서 도입된 **App Router**(`app/` 디렉터리)는 Pages Router�
 | `<Link href="/dashboard">` | 서버·클라이언트 컴포넌트 | `<a>`를 확장한 컴포넌트. prefetch와 클라이언트 사이드 이동을 지원하는 기본 수단 |
 | `useRouter()` (`next/navigation`) | 클라이언트 컴포넌트 | `router.push()`, `router.replace()`, `router.refresh()`로 코드에서 이동 |
 
-```tsx
-'use client'
-import { useRouter } from 'next/navigation' // Pages Router의 next/router가 아니다
-
-export default function GoDashboard() {
-  const router = useRouter()
-  return <button onClick={() => router.push('/dashboard')}>Dashboard</button>
-}
-```
+`useRouter`는 Pages Router의 `next/router`가 아니라 `next/navigation`에서 가져온다.
 
 ### Prefetch
 
@@ -64,34 +61,15 @@ export default function GoDashboard() {
 
 ## 데이터 가져오기
 
-### 원칙
-
-1. 가능하면 **서버 컴포넌트에서** 가져온다.
-2. 독립적인 요청은 **병렬로** 시작해 대기 시간을 줄인다.
-3. 데이터는 **쓰는 곳에서 직접** 가져온다. 같은 요청이 여러 번 나와도 Next.js·React가 중복을 없앤다.
-4. `loading.js`와 `<Suspense>`로 준비된 부분부터 보여 준다(스트리밍).
-
-### 서버에서 가져오면 좋은 점
-
-- 백엔드 데이터 소스(DB 등)에 직접 접근할 수 있다.
-- API 키·액세스 토큰이 브라우저에 노출되지 않는다.
-- 렌더링과 데이터 가져오기가 같은 곳에서 일어나 클라이언트↔서버 왕복이 줄어든다.
-- 클라이언트에서 요청을 여러 번 보내는 대신 서버에서 한 번에 모은다.
-
-클라이언트에서 가져와야 한다면(사용자 입력에 따라 바뀌는 데이터 등) [SWR](/knowledge/dictionary/frontend/react/swr)이나 [TanStack Query](/knowledge/dictionary/frontend/react/tanstack-query)를 쓴다.
+가능하면 **서버 컴포넌트에서** 가져온다. DB·비밀값에 바로 접근하고 키가 브라우저에 노출되지 않는 이유는 [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]에 있다. 사용자 입력에 따라 바뀌는 데이터처럼 클라이언트에서 가져와야 하면 [[swr|SWR]]이나 [[tanstack-query|TanStack Query]]를 쓴다.
 
 ### async 서버 컴포넌트
 
 ```tsx
-// app/page.tsx
-async function getData() {
+export default async function Page() {
   const res = await fetch('https://api.example.com/posts')
   if (!res.ok) throw new Error('Failed to fetch data') // 가장 가까운 error.js가 받는다
-  return res.json()
-}
-
-export default async function Page() {
-  const data = await getData()
+  const posts = await res.json()
   return <main>{/* ... */}</main>
 }
 ```
@@ -109,7 +87,12 @@ export default async function Page() {
 
 순차 요청은 앞 요청이 끝나야 다음이 시작되는 **폭포(waterfall)** 를 만든다. 의도한 게 아니라면 로딩만 길어진다.
 
-![[riverkim/214-1.jpg]]
+```text
+순차:  getArtist ████████
+                         getAlbums ████████        → 두 시간의 합
+병렬:  getArtist ████████
+       getAlbums ████████                          → 긴 쪽 하나의 시간
+```
 
 ```tsx
 // app/artist/[username]/page.tsx
@@ -123,15 +106,10 @@ export default async function Page({ params }: { params: Promise<{ username: str
     <>
       <h1>{artist.name}</h1>
       <Suspense fallback={<div>Loading...</div>}>
-        <Albums promise={albumsData} />
+        <Albums promise={albumsData} /> {/* 안에서 await promise */}
       </Suspense>
     </>
   )
-}
-
-async function Albums({ promise }: { promise: Promise<Album[]> }) {
-  const albums = await promise
-  return <ul>{albums.map((a) => <li key={a.id}>{a.name}</li>)}</ul>
 }
 ```
 
@@ -152,7 +130,12 @@ HTML을 Suspense 경계 단위로 나눠 보내는 원리와 상태 코드·버�
 
 같은 렌더링 중에 여러 컴포넌트가 **같은 URL·옵션의 GET `fetch`** 를 부르면 실제 요청은 한 번만 나간다(request memoization). 그래서 현재 사용자 정보처럼 여러 곳에서 필요한 데이터를 props로 내려보내지 않고 각자 가져와도 된다. POST 요청은 중복 제거되지 않는다.
 
-![[riverkim/214-2.jpg]]
+```text
+한 번의 렌더링
+├─ Layout   fetch('/api/user') ─┐
+├─ Page     fetch('/api/user') ─┼─▶ 실제 요청 1번, 결과를 나눠 받는다
+└─ Sidebar  fetch('/api/user') ─┘
+```
 
 ### React `cache()`
 
@@ -178,16 +161,7 @@ export const preload = (id: string) => {
 
 ### preload 패턴
 
-```tsx
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params
-  preload(id) // 사용자 데이터 요청을 지금 시작
-  const condition = await fetchCondition()
-  return condition ? <User id={id} /> : null // User 안의 getUser(id)는 캐시를 받는다
-}
-```
-
-조건을 확인하는 동안 필요할 것 같은 데이터를 미리 요청해 둔다. `preload`는 API가 아니라 이름 붙인 패턴일 뿐이다.
+위의 `preload(id)`를 페이지 맨 앞에서 부르면, 조건을 `await`로 확인하는 동안 사용자 데이터 요청이 먼저 출발한다. 나중에 자식의 `getUser(id)`는 캐시된 결과를 받는다. `preload`는 API가 아니라 이름 붙인 패턴이다.
 
 ### 데이터 캐시와 재검증
 

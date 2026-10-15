@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2014/08/07/%eb%b2%84%ed%8a%bc%ec%9d%84-%eb%84%98%ec%96%b4%ec%84%9c-%ec%a0%9c%ec%8a%a4%ec%b2%98-%ea%b8%b0%eb%b0%98-%ec%9d%b8%ed%84%b0%ed%8e%98%ec%9d%b4%ec%8a%a4-%ec%88%98%ec%9a%a9/"]
 ---
 
-> 웹액츄얼리가 번역한 토마스 주스(Thomas Joos)의 「[버튼을 넘어서: 제스처 기반 인터페이스의 수용](https://webactually.com/2014/08/07/%eb%b2%84%ed%8a%bc%ec%9d%84-%eb%84%98%ec%96%b4%ec%84%9c-%ec%a0%9c%ec%8a%a4%ec%b2%98-%ea%b8%b0%eb%b0%98-%ec%9d%b8%ed%84%b0%ed%8e%98%ec%9d%b4%ec%8a%a4-%ec%88%98%ec%9a%a9/)」(2014.08)을 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역한 토마스 주스(Thomas Joos)의 「[버튼을 넘어서: 제스처 기반 인터페이스의 수용](https://webactually.com/2014/08/07/%eb%b2%84%ed%8a%bc%ec%9d%84-%eb%84%98%ec%96%b4%ec%84%9c-%ec%a0%9c%ec%8a%a4%ec%b2%98-%ea%b8%b0%eb%b0%98-%ec%9d%b8%ed%84%b0%ed%8e%98%ec%9d%b4%ec%8a%a4-%ec%88%98%ec%9a%a9/)」(2014.08)을 바탕으로 재구성한 노트다.
 
 ## 제스처 기반 인터페이스란
 
@@ -74,4 +74,4 @@ sources: ["https://webactually.com/2014/08/07/%eb%b2%84%ed%8a%bc%ec%9d%84-%eb%84
 - 보이지 않는 조작이므로 점진적 힌트와 시각 단서로 가르친다.
 - **모든 제스처에는 버튼 대안을 둔다.** 시스템 제스처와 겹치지 않게 한다.
 
-관련 노트: [[ecommerce-ui|전자상거래 UI 디자인]], [[react-native-interaction|React Native 상호작용과 리스트]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[design-tools-handoff|디자인 도구와 개발자 핸드오프]]
+관련 노트: [[ecommerce-ui|전자상거래 UI 디자인]], [[react-native-basics|React Native 기초와 스타일링]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[design-tools-handoff|디자인 도구와 개발자 핸드오프]]

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/233", "https://developer.mozilla.org/en-US/docs/Web/CSS/translate"]
 ---
 
-> riverkim.kr에 쓴 글을 다시 정리한 노트입니다.
+> riverkim.kr에 쓴 글을 다시 정리한 노트다.
 
 ## transform이란
 
@@ -48,7 +48,7 @@ sources: ["https://riverkim.kr/233", "https://developer.mozilla.org/en-US/docs/W
 
 `transform` 한 줄에 함수를 몰아 쓰면 호버에서 이동만 바꾸려 해도 확대 값까지 다시 적어야 한다. 개별 속성은 서로 덮어쓰지 않아 상태별로 따로 바꾸기 쉽다. 적용 순서는 작성 순서와 상관없이 항상 `translate` → `rotate` → `scale` → `transform`이다.
 
-`transform`·`opacity`만 바꾸는 애니메이션은 레이아웃과 페인트를 다시 하지 않고 합성 단계만 다시 돌아 부드럽다([[how-css-works|CSS가 동작하는 방식]]). `transform`이 있는 요소는 새 쌓임 맥락을 만들고, 그 안의 `position: fixed` 자식의 기준이 된다([[position|CSS position과 z-index]]).
+`transform`·`opacity`만 바꾸면 합성만 다시 돌아 부드럽다([[browser-rendering#변경이 다시 도는 단계|변경이 다시 도는 단계]]). `transform`이 있는 요소는 새 쌓임 맥락을 만들고, 그 안의 `position: fixed` 자식의 기준이 된다([[position|CSS position과 z-index]]).
 
 ## 가운데 정렬 패턴
 

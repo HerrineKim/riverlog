@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@cookie004/61-frontend-web-development-buzz-words"]
 ---
 
-> Tapajyoti Bose의 「61 Frontend Web Development Buzz Words Every Developer Should Have in Their Vocabulary」를 Minjeong Koo가 번역한 글(velog, 2022.08)의 용어 목록을 바탕으로, 설명을 보충하고 주제별로 다시 묶은 노트입니다.
+> Tapajyoti Bose의 「61 Frontend Web Development Buzz Words Every Developer Should Have in Their Vocabulary」를 Minjeong Koo가 번역한 글(velog, 2022.08)의 용어 목록을 바탕으로, 설명을 보충하고 주제별로 다시 묶은 노트다.
 
 용어는 **주제별**로 묶었다. 자세한 설명이 있는 용어는 「자세히」 칸의 노트로 이어진다.
 

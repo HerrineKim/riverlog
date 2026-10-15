@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://mytory.net/archives/15921"]
 ---
 
-> mytory의 「[더 나은 폼을 만드는 몇 가지 팁](https://mytory.net/archives/15921)」(2024.02)을 요약·재구성한 노트입니다.
+> mytory의 「[더 나은 폼을 만드는 몇 가지 팁](https://mytory.net/archives/15921)」(2024.02)을 요약·재구성한 노트다.
 
 ## 폼 사용성이 중요한 이유
 

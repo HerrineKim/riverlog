@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/7ff7204ed08f4d0dbfc0835f202b654b", "https://developer.apple.com/documentation/foundation/encoding-and-decoding-custom-types"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「(Swift) Codable 그리고 Encoding, Decoding」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「(Swift) Codable 그리고 Encoding, Decoding」을 바탕으로 재구성한 노트다.
 
 **Codable**은 Swift 타입이 **자기 자신을 외부 표현(JSON, Property List 등)으로 바꾸거나, 외부 표현에서 자기 자신을 만들 수 있다**는 약속이다. 서버 응답 JSON을 구조체로 받고, 구조체를 JSON으로 보내는 일이 대부분 이것으로 끝난다. SwiftUI 튜토리얼의 모델 코드에 설명 없이 붙어 나오는 `: Codable`이 바로 이것이다.
 

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2017/09/28/%ec%9b%b9-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%8a%94-pwa%ec%9d%b4%ec%96%b4%ec%95%bc-%ed%95%9c%eb%8b%a41/", "https://webactually.com/2020/09/23/PWA-%EC%8B%9C%EB%8C%80%EC%9D%98-%EC%BA%90%EC%8B%9C-%EC%A0%84%EB%9E%B5/"]
 ---
 
-> Aaron Gustafson의 「웹 프로젝트는 PWA이어야 한다」(웹액츄얼리 번역, 2017.09)와 「PWA 시대의 캐시 전략」(웹액츄얼리 번역, 2020.09)을 바탕으로 재구성한 노트입니다.
+> Aaron Gustafson의 「웹 프로젝트는 PWA이어야 한다」(웹액츄얼리 번역, 2017.09)와 「PWA 시대의 캐시 전략」(웹액츄얼리 번역, 2020.09)을 바탕으로 재구성한 노트다.
 
 ## PWA란
 

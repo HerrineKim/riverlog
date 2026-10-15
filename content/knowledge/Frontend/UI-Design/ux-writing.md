@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://brunch.co.kr/@1dayliterature/679", "https://www.madebyslater.com/advice/ux-writing-checklist", "https://mobile.newsis.com/view/NISX20250213_0003063585"]
 ---
 
-> 글쓰는개미핥기의 「[최고의 UX라이팅 체크리스트 8가지](https://brunch.co.kr/@1dayliterature/679)」(2023.06)를 바탕으로 재구성한 노트입니다. 원 자료는 Slater의 「[UX Writing Checklist](https://www.madebyslater.com/advice/ux-writing-checklist)」입니다.
+> 글쓰는개미핥기의 「[최고의 UX라이팅 체크리스트 8가지](https://brunch.co.kr/@1dayliterature/679)」(2023.06)를 바탕으로 재구성한 노트다. 원 자료는 Slater의 「[UX Writing Checklist](https://www.madebyslater.com/advice/ux-writing-checklist)」이다.
 
 ## UX 라이팅이란
 

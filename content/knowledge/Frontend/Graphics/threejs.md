@@ -8,7 +8,7 @@ sources: ["https://webactually.com/2017/11/09/webgl%ec%9d%84-%ec%82%ac%ec%9a%a9%
 date: "2026-10-13"
 ---
 
-> 「코드로 움직임 만들기」 부분은 Karim Maaloul의 「WebGL을 사용한 애니메이션 및 인터랙션 기법」(웹액츄얼리 번역, 2017.11)을 바탕으로 보강한 노트입니다.
+> 「코드로 움직임 만들기」 부분은 Karim Maaloul의 「WebGL을 사용한 애니메이션 및 인터랙션 기법」(웹액츄얼리 번역, 2017.11)을 바탕으로 보강한 노트다.
 
 **Three.js**는 웹 페이지에 3D 객체를 렌더링하게 해 주는 오픈 소스 JavaScript 라이브러리다. Three.js 자체가 렌더링 기술은 아니고, 저수준 그래픽 API인 **WebGL**을 쉽고 직관적으로 쓰게 감싼 래퍼다. 데모씬(컴퓨터 아트 커뮤니티) 출신 개발자 Ricardo Cabello(mrdoob)가 WebGL을 편하게 쓰려고 만들기 시작했다.
 
@@ -119,7 +119,7 @@ hero.run = function () {
 ## 함께 보면 좋은 기술
 
 - **Babylon.js**: 물리 엔진 연동과 에디터를 갖춘 TypeScript 기반 3D 엔진. Microsoft가 후원한다.
-- **WebGPU**: WebGL의 후속 웹 그래픽 API로, 렌더링뿐 아니라 컴퓨트 셰이더로 GPU 연산을 직접 쓸 수 있다. Chrome·Edge(113~), Safari 26, Firefox(141~, Windows부터)가 기본으로 지원한다. Three.js는 `three/webgpu`의 `WebGPURenderer`를 제공하고, WebGPU가 없는 환경에서는 WebGL 2로 자동 대체한다. 셰이더는 플랫폼 공통 노드 언어인 TSL(Three Shading Language)로 쓴다.
+- **WebGPU**: WebGL의 후속 API. 브라우저 지원과 Three.js의 `WebGPURenderer`·TSL은 [[webgl-shaders#WebGPU|WebGL과 셰이더]]에 있다.
 
 ## 핵심 정리
 

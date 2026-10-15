@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://html.spec.whatwg.org/multipage/scripting.html#the-script-element", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script"]
 ---
 
-> Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 script·리소스 배치·프로그레시브 렌더링 문항을 바탕으로, HTML Living Standard와 MDN으로 확인해 재구성한 노트입니다.
+> Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 script·리소스 배치·프로그레시브 렌더링 문항을 바탕으로, HTML Living Standard와 MDN으로 확인해 재구성한 노트다.
 
 ## 왜 로딩 순서가 중요한가
 

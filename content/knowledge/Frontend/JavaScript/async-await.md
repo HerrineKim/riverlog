@@ -62,6 +62,8 @@ async function parallelAll() {
 }
 ```
 
+`Promise.all`을 쓰기 좋은 상황과 일부 실패를 견뎌야 할 때 쓰는 `allSettled`는 [[callback-and-promise#Promise.all|콜백과 Promise]]에 있다.
+
 ## 에러 처리: try/catch
 
 reject된 Promise를 `await`하면 그 자리에서 에러가 던져진다. 그래서 동기 코드와 똑같이 `try...catch`로 처리한다.
@@ -113,7 +115,6 @@ async function load() {
 
 - **둘 중 하나만 쓴다.** `await fetchX().then(...)`처럼 `then`을 써 놓고 앞에 `await`를 또 붙이면 동작은 하지만 의미 없이 섞인 코드다. 한 함수 안에서는 한 방식으로 통일한다.
 - **에러를 콘솔에만 찍고 넘기지 않는다.** 실제 서비스에서 콘솔 로그는 아무도 보지 않고 지나간다. 에러를 다시 던지거나(`throw`), 사용자에게 메시지를 보여 주거나, 모니터링 도구로 보내서 빨리 발견하고 고칠 수 있게 한다. 로그를 남길 때도 `console.error`, 객체 구조를 보려면 `console.dir`처럼 목적에 맞는 메서드를 쓴다.
-- **조건 비교는 무엇을 걸러야 하는지 먼저 정한다.** `newAccount !== ''`는 빈 문자열만 거르고 `null`·`undefined`는 통과시킨다. 문자열 타입이 보장되면 `if (newAccount)`로 충분하고, 아니면 `typeof`와 `trim()`까지 확인한다. 자세한 것은 [[review-patterns|코드 리뷰에서 자주 나온 지적]]의 5번 참고.
 
 ## 핵심 정리
 
@@ -122,4 +123,4 @@ async function load() {
 - 에러는 `try...catch`로 잡고, 서비스 코드에서는 콘솔에만 남기지 않는다.
 - `then`과 `await`를 한 흐름에 섞지 않는다.
 
-관련 노트: [[dart-language|Dart의 Future와 Stream]]
+관련 노트: [[callback-and-promise|콜백과 Promise]], [[event-loop|이벤트 루프]], [[dart-language|Dart의 Future와 Stream]]

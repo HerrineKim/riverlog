@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2021/02/05/CSS-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A7%80%EC%A0%95-%EC%86%8D%EC%84%B1%EC%9C%BC%EB%A1%9C-%EC%83%89%EC%83%81-%EB%A7%8C%EB%93%A4%EA%B8%B0/", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark", "https://web.dev/articles/baseline-in-action-color-theme"]
 ---
 
-> Artur Basak의 「[CSS 개발자 지정 속성으로 색상 만들기](https://webactually.com/2021/02/05/CSS-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A7%80%EC%A0%95-%EC%86%8D%EC%84%B1%EC%9C%BC%EB%A1%9C-%EC%83%89%EC%83%81-%EB%A7%8C%EB%93%A4%EA%B8%B0/)」(2021.02, 웹액츄얼리 번역)를 바탕으로 재구성한 노트입니다.
+> Artur Basak의 「[CSS 개발자 지정 속성으로 색상 만들기](https://webactually.com/2021/02/05/CSS-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A7%80%EC%A0%95-%EC%86%8D%EC%84%B1%EC%9C%BC%EB%A1%9C-%EC%83%89%EC%83%81-%EB%A7%8C%EB%93%A4%EA%B8%B0/)」(2021.02, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다.
 
 ## 커스텀 속성이란
 

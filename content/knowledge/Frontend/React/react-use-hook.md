@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://yozm.wishket.com/magazine/detail/2374/", "https://react.dev/reference/react/use", "https://react.dev/reference/react/cache"]
 ---
 
-> 요즘IT에 실린 「[use 훅이 바꿀 리액트 비동기 처리의 미래 맛보기(2)](https://yozm.wishket.com/magazine/detail/2374/)」(2023.12, 원 자료는 FEConf 2023 발표)와 React 공식 문서를 바탕으로 재구성한 노트입니다.
+> 요즘IT에 실린 「[use 훅이 바꿀 리액트 비동기 처리의 미래 맛보기(2)](https://yozm.wishket.com/magazine/detail/2374/)」(2023.12, 원 자료는 FEConf 2023 발표)와 React 공식 문서를 바탕으로 재구성한 노트다.
 
 ## use란
 

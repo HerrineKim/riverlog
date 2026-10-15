@@ -8,8 +8,8 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45"]
 ---
 
-> 테오(teo)의 「[다시 쓰는 함수형 프로그래밍](https://velog.io/@teo/functional-programming)」(2022.05)과 「[함수형 프로그래밍을 배워보자!](https://velog.io/@teo/functional-programming-study)」(2023.01)를 바탕으로 재구성한 노트입니다. 용어 틀은 에릭 노먼드의 『쏙쏙 들어오는 함수형 코딩』(Grokking Simplicity)에서 왔습니다.
-> 명령형과 선언형 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로 더한 노트입니다.
+> 테오(teo)의 「[다시 쓰는 함수형 프로그래밍](https://velog.io/@teo/functional-programming)」(2022.05)과 「[함수형 프로그래밍을 배워보자!](https://velog.io/@teo/functional-programming-study)」(2023.01)를 바탕으로 재구성한 노트다. 용어 틀은 에릭 노먼드의 『쏙쏙 들어오는 함수형 코딩』(Grokking Simplicity)에서 왔다.
+> 명령형과 선언형 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로 더한 노트다.
 
 ## 함수형 프로그래밍이란
 

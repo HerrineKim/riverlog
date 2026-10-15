@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/typescript", "https://www.typescriptlang.org/docs/handbook/intro.html"]
 ---
 
-> 테오(teo)의 「[Typescript는 어떻게 공부해야 하나요?](https://velog.io/@teo/typescript)」(2022.02)를 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[Typescript는 어떻게 공부해야 하나요?](https://velog.io/@teo/typescript)」(2022.02)를 바탕으로 재구성한 노트다.
 
 ## TypeScript란
 

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/323", "https://www.rfc-editor.org/rfc/rfc9700", "https://80000coding.notion.site/7e32a39070024199bf98063452f5fcb3"]
 ---
 
-> SSO 섹션에 팔만코딩경(42Seoul 커뮤니티 위키)의 「싱글 사인온 (Single Sign On)」을 재구성해 더한 노트입니다.
+> SSO 섹션에 팔만코딩경(42Seoul 커뮤니티 위키)의 「싱글 사인온 (Single Sign On)」을 재구성해 더한 노트다.
 
 ## OAuth 2.0이란
 
@@ -97,4 +97,4 @@ OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 
 - 로그인(인증)은 OAuth 위의 OIDC가 맡는다. OIDC·SAML로 IdP 한 곳에 인증을 모으면 SSO가 된다.
 - **토큰을 어디에 두느냐가 프론트엔드 보안의 핵심**이다.
 
-관련 노트: [[cookie-session|쿠키와 세션]], [[web-security|웹 보안: CSRF와 XSS]], [[auth-jwt-passport|NestJS JWT 인증]], [[auth-flow|React로 회원가입·로그인 구현하기]], [[https|HTTPS와 TLS]]
+관련 노트: [[cookie-session|쿠키와 세션]], [[web-security|웹 보안: CSRF와 XSS]], [[auth-jwt-passport|NestJS JWT 인증]], [[swr|SWR로 서버 데이터 가져오기(로그인 상태 판단)]], [[https|HTTPS와 TLS]]

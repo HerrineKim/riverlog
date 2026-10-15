@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/", "https://webactually.com/2021/02/02/%ea%b0%80%eb%8f%85%ec%84%b1-%ea%b0%9c%ec%84%a0%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%b5%9c%ec%8b%a0-css-%ed%85%8c%ed%81%ac%eb%8b%89/", "https://webactually.com/2017/12/05/16734/", "https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap-style", "https://caniuse.com/mdn-css_properties_text-wrap-style_pretty"]
 ---
 
-> Laura Franz의 「[반응형 웹 디자인에서 글줄의 길이와 글자 크기 균형 잡기](https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/)」(2015.10), Edoardo Cavazza의 「가독성 개선을 위한 최신 CSS 테크닉」(2021.02), Bram Stein의 「웹폰트 사용하기」(2017.12, 웹액츄얼리 번역)를 바탕으로 재구성한 노트입니다.
+> Laura Franz의 「[반응형 웹 디자인에서 글줄의 길이와 글자 크기 균형 잡기](https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/)」(2015.10), Edoardo Cavazza의 「가독성 개선을 위한 최신 CSS 테크닉」(2021.02), Bram Stein의 「웹폰트 사용하기」(2017.12, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다.
 
 ## 사람은 화면의 글을 어떻게 읽나
 

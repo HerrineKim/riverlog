@@ -4,6 +4,7 @@ concept: "Referrer"
 summary: "사용자가 어느 페이지에서 왔는지 알아내는 세 가지 방법(document.referrer, 직접 기록, 쿠키·sessionStorage)과 각각의 한계."
 tags: ["javascript", "browser", "web", "frontend"]
 source: notion
+date: "2026-10-11"
 ---
 
 "특정 페이지에서 넘어온 사용자에게만 팝업을 띄우기"처럼 **직전 페이지**를 알아야 할 때가 있다. 브라우저는 보안상 방문 기록(history)의 URL 목록을 스크립트에 공개하지 않기 때문에, 쓸 수 있는 방법이 제한적이다.

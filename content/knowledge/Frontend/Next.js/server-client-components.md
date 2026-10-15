@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://nextjs.org/docs/app/getting-started/server-and-client-components", "https://nextjs.org/docs/app/guides/server-and-client-boundary"]
 ---
 
-> RSC 조합 규칙을 데모 화면으로 보여 주는 스크린샷을 바탕으로 Next.js 16 공식 문서와 대조해 재구성한 노트입니다.
+> RSC 조합 규칙을 데모 화면으로 보여 주는 스크린샷을 바탕으로 Next.js 16 공식 문서와 대조해 재구성한 노트다.
 
 ## 두 종류의 컴포넌트
 

@@ -12,7 +12,7 @@ date: "2026-10-13"
 ## 노트
 
 - [프론트엔드의 등장 배경](/knowledge/dictionary/frontend/web/frontend-history): Web 1.0·2.0, img·CSS·JavaScript·AJAX의 등장, Flash의 퇴장, 프론트엔드·백엔드 분리
-- [HTML](/knowledge/dictionary/frontend/web/html): 문서 구조, 요소와 속성, 시맨틱 태그, 표, 폼과 input, HTML5
+- [HTML](/knowledge/dictionary/frontend/web/html): 문서 구조, DOCTYPE과 렌더링 모드, 요소와 속성, 시맨틱 태그, 표, form 속성, 링크의 target·rel, HTML5
 - [시맨틱 HTML과 문서 구조](/knowledge/dictionary/frontend/web/semantic-html): 랜드마크 태그, h1~h6 제목 계층, 구현되지 않은 아웃라인 알고리즘, article과 section 고르기
 - [HTML 입력 요소 치트시트](/knowledge/dictionary/frontend/web/html-input-types): input의 22가지 type, label·select·textarea·fieldset·datalist
 - [더 나은 폼을 만드는 팁](/knowledge/dictionary/frontend/web/form-usability): 브라우저 기본 동작 존중, inputmode, 보이는 검증 메시지, 커서·포커스를 빼앗지 않는 입력 처리
@@ -32,7 +32,6 @@ date: "2026-10-13"
 - [프론트엔드 개발자가 알아야 할 지연 시간 숫자](/knowledge/dictionary/frontend/web/frontend-latency-numbers): 네트워크 왕복·파싱·프레임 예산·체감 한계의 ms 단위 표와 성능 원칙
 - [PWA와 서비스 워커 캐시 전략](/knowledge/dictionary/frontend/web/pwa-service-worker): HTTPS·매니페스트·서비스 워커, 사이트 원형별 이점, 미디어 중요도별 캐시와 캐시 정리
 - [지속 가능한 웹 디자인](/knowledge/dictionary/frontend/web/sustainable-web-design): 전송량·CPU로 어림하는 에너지 사용, 요청·기능 덜어내기, 서버 캐시와 친환경 호스팅
-- [웹 개발 시간을 줄이는 브라우저·JS 팁](/knowledge/dictionary/frontend/web/devtools-time-savers): designMode, 구조 분해 교환·Set 중복 제거·performance.now, Live Server (콘솔·디버거는 Chrome DevTools 노트로)
 - [쿠키와 세션](/knowledge/dictionary/frontend/web/cookie-session): 상태 없는 HTTP에서 사용자를 기억하는 방법
 - [웹 보안: CSRF와 XSS](/knowledge/dictionary/frontend/web/web-security): 대표적인 두 공격과 방어 방법
 - [HTTPS 전환](/knowledge/dictionary/frontend/web/https-migration): DV·OV·EV와 인증서 범위, ACME 자동 갱신, 혼합 콘텐츠·301·HSTS 체크리스트

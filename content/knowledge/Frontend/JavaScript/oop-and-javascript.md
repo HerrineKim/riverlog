@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/oop"]
 ---
 
-> 테오(teo)의 「[객체지향 프로그래밍과 javascript (약간의 역사를 곁들인...)](https://velog.io/@teo/oop)」(2022.03)를 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[객체지향 프로그래밍과 javascript (약간의 역사를 곁들인...)](https://velog.io/@teo/oop)」(2022.03)를 바탕으로 재구성한 노트다.
 
 ## 기술은 문제를 풀려고 나온다
 

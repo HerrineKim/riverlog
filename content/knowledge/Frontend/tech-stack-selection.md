@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://risingstars.js.org/"]
 ---
 
-> 테오(teo)의 「[2024 프론트엔드 기술스택 이야기](https://velog.io/@teo/2024-frontend-techstack)」(2024.04)를 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[2024 프론트엔드 기술스택 이야기](https://velog.io/@teo/2024-frontend-techstack)」(2024.04)를 바탕으로 재구성한 노트다.
 
 ## 기술 스택이란
 

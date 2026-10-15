@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2021/02/23/%ed%83%80%ec%9e%85%ec%8a%a4%ed%81%ac%eb%a6%bd%ed%8a%b8%ec%97%90%ec%84%9c-%eb%8f%99%ec%a0%81%c2%b7%ec%a0%95%ec%a0%81-%ed%83%80%ec%9e%85-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0/", "https://www.typescriptlang.org/docs/handbook/2/types-from-types.html"]
 ---
 
-> Stefan Baumgartner의 「타입스크립트에서 동적·정적 타입 사용하기」(웹액츄얼리 번역, 2021.02)를 바탕으로 재구성한 노트입니다.
+> Stefan Baumgartner의 「타입스크립트에서 동적·정적 타입 사용하기」(웹액츄얼리 번역, 2021.02)를 바탕으로 재구성한 노트다.
 
 ## 왜 타입을 다듬나
 

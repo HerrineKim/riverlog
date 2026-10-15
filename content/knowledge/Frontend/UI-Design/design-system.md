@@ -8,7 +8,7 @@ sources: ["https://www.inflearn.com/pages/infmation-64-20231017", "https://blog.
 date: "2026-10-13"
 ---
 
-> 인프런 「[그래서, 디자인 시스템이 대체 뭔데?](https://www.inflearn.com/pages/infmation-64-20231017)」(2023.10), 크몽 블로그 「[크몽 디자인 시스템 v.2.0 구축기](https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333)」(2023.11), 유니크굿 「[리얼월드 스튜디오 디자인 시스템 제작기 #1](https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564)」(2022.03)로 보강한 노트입니다.
+> 인프런 「[그래서, 디자인 시스템이 대체 뭔데?](https://www.inflearn.com/pages/infmation-64-20231017)」(2023.10), 크몽 블로그 「[크몽 디자인 시스템 v.2.0 구축기](https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333)」(2023.11), 유니크굿 「[리얼월드 스튜디오 디자인 시스템 제작기 #1](https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564)」(2022.03)로 보강한 노트다.
 
 ## 디자인 시스템이란
 

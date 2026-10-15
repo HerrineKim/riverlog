@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/497dc9bfb79549dba4e2946ad868224b", "https://80000coding.notion.site/0acaa5e70c944ea48b5a258ad5459e39", "https://80000coding.notion.site/9ef01c5e463f4fffac00f9475877d31c", "https://docs.flutter.dev/resources/architectural-overview", "https://docs.flutter.dev/perf/impeller", "https://80000coding.notion.site/420abc5b7b4741959b308b8fd0d8da23", "https://dart.dev/tools/pub/publishing"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Flutter 아키텍쳐 계층 살펴보기」, 「[Flutter] setState를 해도 위젯순서가 바뀌지 않는 이유를 Key로 해결해보자」, 「내가 Flutter를 쓰는 이유」, 「[Flutter] 플러터 패키지 배포, 밥아저씨처럼 단숨에 해보기」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Flutter 아키텍쳐 계층 살펴보기」, 「[Flutter] setState를 해도 위젯순서가 바뀌지 않는 이유를 Key로 해결해보자」, 「내가 Flutter를 쓰는 이유」, 「[Flutter] 플러터 패키지 배포, 밥아저씨처럼 단숨에 해보기」를 바탕으로 재구성한 노트다.
 
 **Flutter**는 Google이 만든 오픈 소스 UI 툴킷이다. [[dart-language|Dart]] 코드 하나로 Android·iOS·웹·Windows·macOS·Linux 앱을 만든다. React Native가 각 OS의 네이티브 UI 컴포넌트를 호출하는 것과 달리, Flutter는 **화면의 픽셀을 자체 렌더링 엔진으로 직접 그린다.** 그래서 플랫폼이 달라도 모양이 같고, 플랫폼별 UI 차이에 덜 흔들린다. 크로스 플랫폼 방식 전반의 비교는 [[mobile-frameworks|모바일 앱 프레임워크 비교]]에 있다.
 

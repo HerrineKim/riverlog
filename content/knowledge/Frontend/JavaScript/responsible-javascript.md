@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2019/10/10/%ec%9e%90%eb%b0%94%ec%8a%a4%ed%81%ac%eb%a6%bd%ed%8a%b8%ec%9d%98-%ec%b1%85%ec%9e%84-part-%e2%85%a0/", "https://webactually.com/2019/11/11/%ec%9e%90%eb%b0%94%ec%8a%a4%ed%81%ac%eb%a6%bd%ed%8a%b8%ec%9d%98-%ec%b1%85%ec%9e%84-part-%e2%85%a1/", "https://webactually.com/2020/02/12/%ec%9e%90%eb%b0%94%ec%8a%a4%ed%81%ac%eb%a6%bd%ed%8a%b8%ec%9d%98-%ec%b1%85%ec%9e%84-part-%e2%85%a2/", "https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022", "https://web.dev/baseline"]
 ---
 
-> Jeremy Wagner의 「자바스크립트의 책임」 Part Ⅰ~Ⅲ(웹액츄얼리 번역, 2019.10~2020.02)과 Alan Dávalos의 「[2022년 웹 개발에서 고려해야 할 환경](https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022)」(LINE Engineering, 2022.02)을 바탕으로 재구성한 노트입니다.
+> Jeremy Wagner의 「자바스크립트의 책임」 Part Ⅰ~Ⅲ(웹액츄얼리 번역, 2019.10~2020.02)과 Alan Dávalos의 「[2022년 웹 개발에서 고려해야 할 환경](https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022)」(LINE Engineering, 2022.02)을 바탕으로 재구성한 노트다.
 
 ## 왜 자바스크립트가 문제인가
 
@@ -37,10 +37,9 @@ IE가 사라진 뒤에는 "어디까지 지원할까"를 사용자 기기 데이
 | 관찰 | 의미 |
 | --- | --- |
 | React·Vue·Angular 사이트는 프레임워크 없는 사이트보다 JS를 수백 KB 더 보낸다 | 프레임워크를 고르는 순간 줄일 수 없는 기본 비용이 생긴다 |
-| React 기반 SSG(Next.js·Gatsby)는 Hugo·Jekyll·Eleventy보다 JS를 훨씬 많이 보낸다 | 콘텐츠 사이트에 SPA 프레임워크가 꼭 필요한지 따져 본다 |
 | 벤치마크에서 Solid·Svelte·Lit은 바닐라 JS에 가깝고, 가상 DOM을 쓰는 React는 그보다 느리다 | 번들 크기만이 아니라 런타임 구현도 성능을 가른다 |
 
-정적 사이트 생성기 선택은 [[static-site-generator|정적 사이트 생성기와 Jamstack]]에서 다룬다.
+콘텐츠 사이트라면 SPA 프레임워크가 꼭 필요한지 따져 본다. 정적 사이트 생성기 선택은 [[static-site-generator|정적 사이트 생성기와 Jamstack]]에서 다룬다.
 
 ## 원칙 1. 웹 플랫폼을 먼저 쓴다
 

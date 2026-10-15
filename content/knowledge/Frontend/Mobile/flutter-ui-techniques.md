@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/c5a5dd8efb5a452facdb79baa1cc16bc", "https://80000coding.notion.site/06043af3e166468a9eab10375eb7a477", "https://80000coding.notion.site/5baeee620ec44f7f82b736707019f725", "https://80000coding.notion.site/531f3cf56830483d9a2943c34e14d9db", "https://pub.dev/packages/flutter_native_splash", "https://pub.dev/packages/go_router"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Flutter] Navigator 위젯으로 마치 Fragment처럼 화면 일부만 이동하기」, 「[Flutter] CustomPaint를 이용하여 Border를 밥아저씨처럼 쉽게 그려보기」, 「[Flutter] EasyRichText를 이용하여 밥아저씨처럼 간단하게 글자 꾸미기」, 「[Flutter] flutter_native_splash를 활용하여, 밥아저씨처럼 손쉽게 네이티브 스플래시 만들기」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Flutter] Navigator 위젯으로 마치 Fragment처럼 화면 일부만 이동하기」, 「[Flutter] CustomPaint를 이용하여 Border를 밥아저씨처럼 쉽게 그려보기」, 「[Flutter] EasyRichText를 이용하여 밥아저씨처럼 간단하게 글자 꾸미기」, 「[Flutter] flutter_native_splash를 활용하여, 밥아저씨처럼 손쉽게 네이티브 스플래시 만들기」를 바탕으로 재구성한 노트다.
 
 | 문제 | 해법 |
 | --- | --- |
@@ -163,4 +163,4 @@ FlutterNativeSplash.remove();
 - 한 문장 안의 부분 스타일은 `Text.rich` + `TextSpan`이다.
 - 시작 때의 흰 화면은 Dart가 아니라 네이티브 스플래시로 가린다.
 
-관련 노트: [[flutter-architecture|Flutter의 구조와 위젯 트리]], [[dart-language|Dart 핵심 문법]], [[react-native-interaction|React Native 상호작용과 리스트]]
+관련 노트: [[flutter-architecture|Flutter의 구조와 위젯 트리]], [[dart-language|Dart 핵심 문법]], [[react-native-basics|React Native 기초와 스타일링]]

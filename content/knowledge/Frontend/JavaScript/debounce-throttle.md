@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://riverkim.kr/322"]
 ---
 
-> riverkim.kr에 쓴 글을 다시 정리한 노트입니다.
+> riverkim.kr에 쓴 글을 다시 정리한 노트다.
 
 ## 두 기법이란
 
@@ -77,4 +77,4 @@ lodash의 `debounce`·`throttle`이 오랫동안 표준처럼 쓰였다. 다만 
 - 쓰로틀: 연속 호출 중 일정 간격마다 한 번. 스크롤·무한 스크롤.
 - 핵심 구현은 `setTimeout` + 클로저에 갇힌 `timer` 변수 하나다.
 
-관련 노트: [[event-loop|이벤트 루프]], [[dom-events|DOM 이벤트]]
+관련 노트: [[event-loop|이벤트 루프]], [[dom-manipulation|DOM 조작과 이벤트]]

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://witch.work/ko/posts/javascript-various-comments", "https://tc39.es/ecma262/#sec-comments"]
 ---
 
-> 김성현(Witch-Work)의 글 「[JS 탐구생활 - JS의 주석은 //과 /* */뿐만이 아니다](https://witch.work/ko/posts/javascript-various-comments)」(2024.01)를 요약·재구성한 노트입니다.
+> 김성현(Witch-Work)의 글 「[JS 탐구생활 - JS의 주석은 //과 /* */뿐만이 아니다](https://witch.work/ko/posts/javascript-various-comments)」(2024.01)를 요약·재구성한 노트다.
 
 ## 한눈에 보기
 

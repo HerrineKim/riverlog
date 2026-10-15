@@ -61,55 +61,26 @@ function Form() {
 
 ## useEffect
 
-state가 바뀔 때마다 컴포넌트의 **모든 코드가 다시 실행**된다. API 호출처럼 "처음 한 번만" 또는 "특정 값이 바뀔 때만" 실행해야 하는 코드를 그대로 두면 렌더링마다 반복된다. `useEffect`는 코드의 **실행 시점을 통제**하는 도구다.
+state가 바뀔 때마다 컴포넌트의 **모든 코드가 다시 실행**된다. API 호출처럼 "처음 한 번만" 또는 "특정 값이 바뀔 때만" 실행할 코드를 그대로 두면 렌더링마다 반복된다. `useEffect(effect, deps)`는 코드의 **실행 시점을 통제**하는 도구다.
 
-```jsx
-useEffect(effect, deps)
-```
+| deps | 실행 시점 | cleanup 시점 |
+| --- | --- | --- |
+| 생략 | 매 렌더링 후 | 다음 effect 직전, 언마운트 |
+| `[]` | 마운트 후 한 번 | 언마운트 때만 |
+| `[a, b]` | 마운트 후 + `a`나 `b`가 바뀔 때마다 | 다시 실행되기 직전, 언마운트 |
 
-| deps | 실행 시점 |
-| --- | --- |
-| 생략 | 매 렌더링 후 |
-| `[]` | 첫 렌더링(마운트) 후 한 번만 — 지켜볼 값이 없으니 다시 실행할 이유가 없다 |
-| `[keyword]` | 마운트 후 + `keyword`가 바뀔 때마다 |
-| `[keyword, counter]` | 둘 중 하나라도 바뀔 때마다 |
-
-```jsx
-function Search() {
-  const [counter, setCounter] = useState(0)
-  const [keyword, setKeyword] = useState('')
-
-  useEffect(() => {
-    console.log('CALL THE API') // 한 번만
-  }, [])
-
-  useEffect(() => {
-    if (keyword !== '' && keyword.length > 5) {
-      console.log('SEARCH FOR', keyword) // 글자를 칠 때만, 버튼 클릭에는 반응하지 않음
-    }
-  }, [keyword])
-
-  // ...
-}
-```
-
-### cleanup 함수
-
-effect에서 **함수를 반환**하면 React가 정리 시점에 그 함수를 호출한다.
+effect에서 **함수를 반환**하면 그것이 cleanup이다. 흐름은 **리렌더링 → 이전 effect의 cleanup → 새 effect 실행**이다.
 
 ```jsx
 useEffect(() => {
-  const id = setInterval(tick, 1000)
-  return () => clearInterval(id) // 정리
-}, [])
+  const conn = createConnection(roomId)
+  conn.connect()
+  return () => conn.disconnect() // roomId가 바뀌면 이전 연결을 끊고 새로 연결한다
+}, [roomId])
 ```
 
-정리 함수가 호출되는 시점은 두 가지다.
-
-- 컴포넌트가 **언마운트**될 때
-- deps가 바뀌어 effect가 **다시 실행되기 직전**(이전 effect를 먼저 정리)
-
-즉 흐름은 **리렌더링 → 이전 effect의 cleanup → 새 effect 실행**이다. deps가 `[]`이면 다시 실행될 일이 없으므로 cleanup은 언마운트 때만 실행된다. 개발 모드의 StrictMode는 cleanup 누락을 찾으려고 마운트 직후 한 번 더 정리·실행해 본다([생명주기](/knowledge/dictionary/frontend/react/lifecycle)).
+- effect 안에서 읽는 state·props는 모두 deps에 넣는다. 빠뜨리면 오래된 값에 갇힌다.
+- 개발 모드의 StrictMode는 cleanup 누락을 찾으려고 마운트 직후 한 번 더 정리·실행해 본다. 자세한 내용은 [[lifecycle#StrictMode의 이중 실행|생명주기]]에 있다.
 
 ### useEffectEvent: 반응하지 않을 값 분리
 
@@ -128,100 +99,46 @@ useEffect(() => {
 }, [roomId]) // theme이 바뀌어도 다시 연결하지 않는다. onConnected는 deps에 넣지 않는다
 ```
 
-## 메모이제이션: React.memo, useCallback, useMemo
+## 메모이제이션: useMemo, useCallback, memo
 
-### React.memo
+부모가 리렌더링되면 자식도 전부 리렌더링되고, 컴포넌트 안에서 만든 함수·객체는 렌더링마다 **새 참조**가 된다. 메모이제이션은 이 재계산·재생성을 건너뛰게 한다.
 
-부모가 리렌더링되면 자식도 **전부** 리렌더링된다. props가 바뀌지 않은 자식까지 다시 그리는 낭비를 막으려면 컴포넌트를 `React.memo`로 감싼다. props가 이전과 같으면(얕은 비교) 리렌더링을 건너뛴다.
+| 도구 | 재사용하는 것 | 쓸 때 | 예 |
+| --- | --- | --- | --- |
+| `useMemo(fn, deps)` | 계산 결과(값) | 비싼 계산, 자식·effect deps로 넘길 객체 | `useMemo(() => heavySort(items), [items])` |
+| `useCallback(fn, deps)` | 함수 자체. `useMemo(() => fn, deps)`와 같다 | `memo`로 감싼 자식이나 effect deps에 함수를 넘길 때 | `useCallback(() => save(name), [name])` |
+| `memo(Component)` | 컴포넌트의 렌더링 결과 | props가 같으면(얕은 비교) 리렌더링을 건너뛰고 싶을 때 | `const Row = memo(function Row(props) { ... })` |
 
-```jsx
-function Btn({ buttonName, changeName }) {
-  console.log(buttonName, 'rendered')
-  return <button onClick={changeName}>{buttonName}</button>
-}
-const MemorizedBtn = React.memo(Btn)
+- `memo`로 감싼 자식에 매번 새로 만든 함수·객체를 넘기면 얕은 비교가 실패해 효과가 없다. 그래서 `useCallback`·`useMemo`와 함께 쓴다.
+- deps를 빠뜨리면 처음 만들어질 때의 값을 계속 기억한다(stale closure). 참조하는 값은 모두 deps에 넣는다.
+- 메모이제이션도 비교와 저장에 비용이 든다. **Profiler로 실제로 느린 곳을 찾은 뒤** 적용한다. 원인 추적 순서는 [[re-rendering|리렌더링 원인 추적하기]]에 있다.
 
-function App() {
-  const [name, setName] = useState('Save Changes')
-  const changeName = () => setName('Revert Changes')
-  return (
-    <div>
-      <MemorizedBtn buttonName={name} changeName={changeName} />
-      <MemorizedBtn buttonName="Confirm" /> {/* name이 바뀌어도 다시 그려지지 않음 */}
-    </div>
-  )
-}
-```
-
-### useCallback
-
-컴포넌트 안에서 선언한 함수는 렌더링마다 **새로 만들어진다.** 그래서 `React.memo`로 감싼 자식에 함수를 넘기면, 내용이 같아도 참조가 달라 자식이 매번 리렌더링된다. `useCallback`은 deps가 바뀌지 않는 한 같은 함수를 재사용한다.
-
-```jsx
-const onSave = useCallback(() => {
-  console.log(name)
-}, [name]) // name이 바뀔 때만 함수를 새로 만든다
-```
-
-**deps를 빠뜨리면 오래된 값에 갇힌다.** 위에서 deps를 `[]`로 두면 함수가 처음 만들어질 때의 `name`(빈 문자열)을 계속 기억해서, 몇 번을 호출해도 빈 문자열만 출력된다. 함수 안에서 참조하는 state·props는 모두 deps에 넣는다.
-
-### useMemo
-
-비용이 큰 **계산 결과**를 deps가 바뀔 때만 다시 계산한다.
-
-```jsx
-const sorted = useMemo(() => heavySort(items), [items])
-```
-
-| | 재사용하는 것 |
-| --- | --- |
-| `useMemo` | 값(계산 결과) |
-| `useCallback` | 함수 자체 (`useCallback(fn, deps)` = `useMemo(() => fn, deps)`) |
-| `React.memo` | 컴포넌트의 렌더링 결과 |
-
-### 최적화를 언제 하나
-
-메모이제이션도 비교와 저장에 비용이 든다. **Profiler로 실제로 느린 컴포넌트를 찾은 뒤** 그곳에만 적용한다. 원인을 찾고 줄이는 순서는 [리렌더링 원인 추적하기](/knowledge/dictionary/frontend/react/re-rendering)에 있다.
-
-**React Compiler**는 빌드 단계에서 이런 메모이제이션을 자동으로 넣는다. 2025년 10월 첫 안정 버전(1.0)이 나왔고 React 17·18·19 코드베이스에서 쓸 수 있으며, Expo·Vite·Next.js 새 프로젝트에서 바로 켤 수 있다. 컴파일러를 쓰는 프로젝트에서는 `useMemo`·`useCallback`·`React.memo`를 손으로 넣을 일이 크게 줄고, 남는 것은 effect의 deps로 값의 동일성을 정확히 제어해야 하는 경우 정도다.
+**React Compiler**는 빌드 단계에서 이런 메모이제이션을 자동으로 넣는다. 2025년 10월 1.0이 나왔고 React 17·18·19 코드베이스에서 쓸 수 있으며, Expo·Vite·Next.js 새 프로젝트에서 바로 켤 수 있다. 컴파일러를 쓰면 `useMemo`·`useCallback`·`memo`를 손으로 넣을 일이 크게 줄고, 남는 것은 effect deps로 값의 동일성을 정확히 제어해야 하는 경우 정도다.
 
 ## 커스텀 훅
 
-여러 컴포넌트에서 반복되는 **상태 로직**을 `use`로 시작하는 함수로 뽑아낸 것이다. 훅 안에서 다른 훅을 호출할 수 있는 유일한 장소이며, HOC나 render props 없이 로직을 재사용할 수 있다.
-
-### 예: useInput
-
-폼마다 반복되는 "state + onChange 핸들러" 쌍을 하나로 묶는다.
+여러 컴포넌트에서 반복되는 **상태 로직**을 `use`로 시작하는 함수로 뽑아낸 것이다. 훅 안에서 다른 훅을 부를 수 있고, HOC나 render props 없이 로직을 재사용한다. 예를 들어 폼마다 반복되는 "state + onChange" 쌍을 `useInput`으로 묶는다.
 
 ```typescript
-import { Dispatch, SetStateAction, useCallback, useState, ChangeEvent } from 'react'
-
-type ReturnTypes<T> = [T, (e: ChangeEvent<HTMLInputElement>) => void, Dispatch<SetStateAction<T>>]
-
-const useInput = <T,>(initialValue: T): ReturnTypes<T> => {
+function useInput<T>(initialValue: T) {
   const [value, setValue] = useState(initialValue)
-  const handler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value as unknown as T)
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value as T)
   }, [])
-  return [value, handler, setValue]
+  return [value, onChange, setValue] as const
 }
 
-export default useInput
+const [email, onChangeEmail] = useInput('') // <input value={email} onChange={onChangeEmail} />
 ```
 
-```tsx
-const [email, onChangeEmail] = useInput('')
-const [nickname, onChangeNickname] = useInput('')
-// <input value={email} onChange={onChangeEmail} />
-```
+- 커스텀 훅은 **로직**을 공유하지 state를 공유하지 않는다. 부르는 컴포넌트마다 독립된 state를 갖는다.
+- 중복이 두세 번 보인다고 성급히 추상화하지 않는다. 정말 같은 이유로 바뀌는 로직인지 확인하고 뽑는다.
 
-- **제네릭 `T`**: 초기값의 타입이 반환값의 타입을 정한다. `Dispatch<SetStateAction<T>>`는 `useState` setter의 타입이다.
-- 이벤트 매개변수에는 타입을 명시한다(인라인 콜백이 아니면 추론되지 않는다).
-- 중복이 두세 번 보인다고 성급히 추상화하지 않는다. 정말 같은 로직인지 확인하고 뽑는다.
-
-## 핵심 정리
+## 정리
 
 - Hook은 최상위에서, React 함수 안에서만, 항상 같은 순서로 호출한다.
 - `useEffect(fn, deps)`: deps가 없으면 매번, `[]`면 한 번, `[x]`면 x가 바뀔 때. 반환한 함수는 cleanup.
-- `React.memo`(컴포넌트), `useCallback`(함수), `useMemo`(값)로 불필요한 재생성을 막되, 측정 후 필요한 곳에만.
+- `useMemo`(값), `useCallback`(함수), `memo`(컴포넌트)로 재생성을 막되 측정 후 필요한 곳에만. React Compiler가 있으면 대부분 자동이다.
 - 반복되는 상태 로직은 커스텀 훅(`useXxx`)으로 뽑는다.
+
+관련 노트: [[lifecycle|생명주기]], [[state|State]], [[re-rendering|리렌더링 원인 추적하기]], [[forms|폼]], [[react-use-hook|use 훅과 리액트 비동기 처리]]

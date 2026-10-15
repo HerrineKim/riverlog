@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/"]
 ---
 
-> 웹액츄얼리가 번역한 앤디 피츠제럴드(Andy Fitzgerald)의 「[로봇과의 대화: 음성 검색과 스마트 에이전트, 구조화된 콘텐츠 사례](https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/)」(2019.06)을 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역한 앤디 피츠제럴드(Andy Fitzgerald)의 「[로봇과의 대화: 음성 검색과 스마트 에이전트, 구조화된 콘텐츠 사례](https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/)」(2019.06)을 바탕으로 재구성한 노트다.
 
 ## 왜 기계가 읽는 웹인가
 

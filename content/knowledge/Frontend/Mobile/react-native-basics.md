@@ -1,8 +1,8 @@
 ---
 title: "React Native 기초와 스타일링"
 concept: "React Native"
-summary: "React 코드를 네이티브 UI로 바꿔 주는 React Native의 동작 원리(브리지에서 New Architecture로), Expo로 시작하기, 코어 컴포넌트, StyleSheet와 Flexbox 레이아웃."
-tags: ["react-native", "mobile", "react", "css"]
+summary: "React 코드를 네이티브 UI로 바꿔 주는 React Native의 동작 원리(브리지에서 New Architecture로), Expo로 시작하기, 코어 컴포넌트, StyleSheet와 Flexbox 레이아웃, onPress·onChangeText 이벤트와 ScrollView·FlatList 목록."
+tags: ["react-native", "mobile", "react", "css", "state"]
 source: mixed
 date: "2026-10-13"
 sources: ["https://reactnative.dev/docs/environment-setup", "https://docs.expo.dev/get-started/create-a-project/"]
@@ -12,47 +12,32 @@ sources: ["https://reactnative.dev/docs/environment-setup", "https://docs.expo.d
 
 ## 동작 원리
 
-![React Native 개요](/images/til/FRONTEND/React-Native/-YouTube-React-Native-Crash-Course/00_Intro.assets/image-20220904182039167.png)
-
-- React Native는 React 코드와 각 플랫폼의 **Native API를 연결**하는 다리 역할을 한다.
-- `<View>`, `<Text>` 같은 컴포넌트는 Android·iOS 각각의 네이티브 뷰로 그려진다(웹뷰가 아니다).
-- JavaScript로 작성한 로직은 네이티브 코드로 컴파일되지 않고, 앱 안에서 React Native가 관리하는 **JavaScript 스레드**에서 따로 실행된다.
-- (레거시 아키텍처) 예전에는 JS와 네이티브가 **브리지(Bridge)** 를 통해 메시지를 비동기로 직렬화해 주고받았다.
-- (현재) React Native 0.76부터 **New Architecture**가 기본이고, 0.82부터는 New Architecture만 쓸 수 있다(이전 아키텍처를 끄는 설정이 무시됨). JS가 JSI로 네이티브 객체를 직접 호출하고, 새 렌더러(Fabric)와 Turbo Modules가 브리지를 대신한다.
-
-![컴포넌트가 각 플랫폼 네이티브 뷰로 변환된다](/images/til/FRONTEND/React-Native/-YouTube-React-Native-Crash-Course/00_Intro.assets/image-20220904212351135.png)
-
-## 시작하기: Expo vs React Native CLI
-
-| | Expo | React Native CLI |
-| --- | --- | --- |
-| 난이도 | 쉽다. 네이티브 개발 환경 없이 시작 | 설정할 것이 많아 초심자에게 어렵다 |
-| 네이티브 코드(Swift, Kotlin) 통합 | 제한적이었으나 현재는 dev build로 가능 | 쉽다 |
-| 전환 | 필요하면 CLI 방식으로 전환 가능 | — |
-
-입문에는 **Expo**를 추천한다. React Native 공식 문서도 새 앱은 Expo 같은 **프레임워크**로 시작하라고 권하고, 프레임워크 없이 Android Studio·Xcode로 직접 구성하는 방식은 특별한 제약이 있을 때의 선택지로 둔다.
-
-```bash
-npx create-expo-app@latest RNCourse --template blank   # 기본 템플릿은 Expo Router + TypeScript
-cd RNCourse
-npx expo start
+```text
+React 컴포넌트 (<View>, <Text>)
+   │  JS 스레드에서 실행 (네이티브 코드로 컴파일되지 않음)
+   ▼
+JSI ─ Fabric(렌더러) · Turbo Modules
+   ▼
+Android View / iOS UIView   ← 웹뷰가 아니라 진짜 네이티브 뷰
 ```
 
-### 실행해 보기
+- `<View>`, `<Text>` 같은 컴포넌트는 플랫폼마다 네이티브 뷰로 그려진다.
+- JavaScript 로직은 앱 안의 **JavaScript 스레드**에서 따로 실행된다.
+- React Native 0.76부터 **New Architecture**가 기본이고, 0.82부터는 New Architecture만 쓸 수 있다. JS가 JSI로 네이티브 객체를 직접 호출하고, Fabric과 Turbo Modules가 옛 구조를 대신한다.
+- 과거에는 JS와 네이티브가 **브리지(Bridge)** 로 메시지를 비동기 직렬화해 주고받았다.
 
-1. 휴대폰에 **Expo Go** 앱을 설치한다.
-2. `npx expo start` 후 터미널에 표시된 QR 코드를 스캔하면 앱이 실행되고, 저장할 때마다 자동으로 반영된다.
-3. 실물 기기가 없거나 iPhone만 있다면 Android Studio 에뮬레이터(Play Store 아이콘이 있는 기기 이미지로 생성)를 띄운 뒤 터미널에서 `a`를 누르면 자동으로 실행된다.
+## 시작하기
 
-### 프로젝트 구조
+새 앱은 **Expo** 같은 프레임워크로 시작한다. 공식 문서의 권장이다.
+프레임워크 없이 Android Studio·Xcode로 직접 구성하는 방식은 특별한 제약이 있을 때의 예외다.
 
-`--template` 없이 만들면 기본(default) 템플릿으로 **Expo Router**가 깔린 `app/` 폴더 기반 파일 라우팅 구조가 생긴다. 화면이 하나뿐인 학습용이라면 `--template blank`로 만든 아래 구조가 단순하다. 과거의 전역 `expo-cli`(`expo init`)는 더 이상 쓰지 않는다.
+```bash
+npx create-expo-app@latest RNCourse --template blank   # 템플릿 없이 만들면 Expo Router + TypeScript
+cd RNCourse && npx expo start                           # 터미널의 QR 코드를 휴대폰 Expo Go 앱으로 스캔
+# 에뮬레이터: Android Studio 에뮬레이터를 띄운 뒤 터미널에서 a (iOS 시뮬레이터는 i)
+```
 
-| 파일 | 역할 |
-| --- | --- |
-| `App.js` | 시작 컴포넌트. blank 템플릿에서는 유일한 실제 코드 파일 |
-| `app.json` | 앱 이름, 아이콘 등 앱 설정. Expo가 빌드할 때 읽어 간다 |
-| `babel.config.js` | 보통 수정할 필요 없음 |
+blank 템플릿에서는 `App.js`가 시작 컴포넌트이고, `app.json`에 앱 이름·아이콘·배경색 같은 설정을 둔다. 과거의 전역 `expo-cli`(`expo init`)는 더 이상 쓰지 않는다.
 
 ## 코어 컴포넌트
 
@@ -61,126 +46,116 @@ npx expo start
 | `View` | 레이아웃 컨테이너 | `div` |
 | `Text` | 텍스트 표시 | `p`, `span` |
 | `TextInput` | 텍스트 입력 | `input` |
-| `Button` | 기본 버튼 | `button` |
-| `Image` | 이미지 | `img` |
+| `Button` | 플랫폼 기본 버튼 | `button` |
+| `Image` | 이미지. 로컬 파일은 `source={require('./a.png')}` | `img` |
 | `ScrollView`, `FlatList` | 스크롤 영역, 목록 | — |
-| `Pressable`, `Modal` | 터치 감지, 모달 | — |
+| `Pressable`, `Modal` | 터치 감지, 오버레이 화면 | — |
 
-웹보다 문법이 엄격하다. 예를 들어 문자열은 반드시 `<Text>` 안에 있어야 하며, `<View>` 안에 문자열을 바로 넣으면 에러가 난다. 이 코어 컴포넌트들을 조합해 UI를 만든다.
+웹보다 문법이 엄격하다. **문자열은 반드시 `<Text>` 안에** 있어야 하며, `<View>` 안에 바로 넣으면 에러가 난다.
 
-### 주의: 기본 `Button`은 스타일을 받지 않는다
+### 기본 `Button`은 스타일을 받지 않는다
 
-`StyleSheet`로 크기·배경·테두리를 만들어 `<Button style={...}>`에 넘겨도 **아무것도 반영되지 않는다.** 기본 `Button`은 `style` prop이 없고 `title`, `color`, `disabled` 정도만 지원하는 플랫폼 기본 버튼이기 때문이다. 모양을 직접 꾸미려면 `Pressable`(또는 `TouchableOpacity`)로 `Text`를 감싸 버튼을 만든다.
+`<Button style={...}>`는 **아무것도 반영되지 않는다.** 기본 `Button`은 `title`, `color`, `disabled` 정도만 받는다. 크기·여백은 바깥 `View`로 감싸 지정하고, 모양을 직접 꾸미려면 `Pressable`로 `Text`를 감싸 버튼을 만든다.
 
 ```jsx
 <Pressable style={styles.button} onPress={onPress}>
   <Text style={styles.buttonText}>확인</Text>
 </Pressable>
-
-const styles = StyleSheet.create({
-  button: {
-    width: '100%',
-    height: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 8,
-    borderWidth: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  buttonText: { fontSize: 32, fontWeight: '400' },
-})
 ```
 
-컴포넌트가 어떤 props를 받는지는 문서를 열지 않아도 에디터에서 `Ctrl`(macOS `Cmd`) + 클릭으로 타입 정의를 열어 확인할 수 있다. 스타일이 안 먹을 때는 import한 스타일 객체를 `console.log`로 찍어 보는 것도 원인을 좁히는 데 도움이 된다.
+컴포넌트가 받는 props는 에디터에서 `Cmd`(Windows `Ctrl`) + 클릭으로 타입 정의를 열어 확인한다.
 
 ## 스타일링
 
-React Native에는 **CSS가 없다.** 모든 스타일을 JavaScript 객체로 작성하며, 속성 이름과 개념은 CSS를 따르지만 완전히 같지는 않다(camelCase, 단위 없는 숫자, 상속이 거의 없음 등).
-
-### 인라인 스타일 vs StyleSheet
-
-```jsx
-import { StyleSheet, Text, View } from 'react-native'
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      {/* 인라인 스타일 */}
-      <Text style={{ margin: 16, borderWidth: 2, borderColor: 'red', padding: 16 }}>
-        Inline
-      </Text>
-      {/* StyleSheet */}
-      <Text style={styles.dummyText}>StyleSheet</Text>
-    </View>
-  )
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  dummyText: {
-    margin: 16,
-    borderWidth: 2,
-    borderColor: 'red',
-    padding: 16,
-  },
-})
-```
-
-`StyleSheet.create`를 쓰면 스타일 속성 자동 완성과 유효성 검사를 받을 수 있어 인라인보다 권장된다.
+React Native에는 **CSS가 없다.** 모든 스타일을 JavaScript 객체로 쓴다. 속성 이름은 CSS를 따르되 camelCase, 단위 없는 숫자, 거의 없는 상속이 다르다. 인라인 객체도 되지만 `StyleSheet.create`가 자동 완성과 유효성 검사를 주므로 권장된다.
 
 ### Flexbox 레이아웃
 
-React Native의 레이아웃은 **Flexbox**가 기본이고 매우 중요하다. 웹 CSS Flexbox와 거의 같지만 기본값이 다르다.
+레이아웃은 **Flexbox**가 기본이다. 웹 CSS Flexbox와 거의 같지만 기본값이 다르다.
 
-- 모든 `View`가 기본적으로 flex 컨테이너다(`display: flex`를 따로 쓰지 않는다).
-- 기본 `flexDirection`이 **`column`**(웹은 `row`).
-- `flex: 1`은 남은 공간을 비율로 나눠 갖는다.
+| 항목 | React Native | 웹 |
+| --- | --- | --- |
+| flex 컨테이너 | 모든 `View`가 기본으로 flex | `display: flex`를 써야 한다 |
+| 기본 `flexDirection` | **`column`** | `row` |
+| 축약 속성 | `paddingHorizontal`, `marginVertical` 등이 있다 | 없다 |
 
 ```jsx
 const styles = StyleSheet.create({
-  appContainer: {
-    flex: 1,
-    paddingTop: 50,
-    paddingHorizontal: 16,
-  },
+  appContainer: { flex: 1, paddingTop: 50, paddingHorizontal: 16 },
   inputContainer: {
-    flex: 1,                     // 1 : 4 비율로
-    flexDirection: 'row',        // 입력창과 버튼을 가로로
+    flex: 1,                        // 입력 영역 : 목록 = 1 : 4
+    flexDirection: 'row',           // 입력창과 버튼을 가로로
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 24,
-    borderBottomWidth: 1,
-    borderBottomColor: '#cccccc',
   },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#cccccc',
-    width: '80%',
-    marginRight: 8,
-    padding: 8,
-  },
-  goalsContainer: {
-    flex: 4,                     // 목록이 나머지 공간의 대부분을 차지
-  },
+  goalsContainer: { flex: 4 },
 })
 ```
 
-![Flexbox로 개선한 레이아웃](/images/til/FRONTEND/React-Native/-YouTube-React-Native-Crash-Course/03_Styling-React-Native-apps.assets/image-20220910231136593.png)
+Flexbox 개념 자체는 [Float와 Flexbox](/knowledge/dictionary/frontend/css/flexbox) 노트에 있다.
 
-`paddingHorizontal`, `marginVertical`처럼 웹에 없는 축약 속성도 있다. Flexbox 개념 자체는 [Float와 Flexbox](/knowledge/dictionary/frontend/css/flexbox) 노트 참고.
+## 이벤트와 입력
 
-## 핵심 정리
+state·이벤트·컴포넌트 분리는 React와 같다. 이벤트 이름만 다르다.
+
+| 웹(React) | React Native |
+| --- | --- |
+| `onClick` | `onPress` |
+| `onChange={(e) => e.target.value}` | `onChangeText={(text) => ...}`. 입력된 문자열을 바로 받는다 |
+
+```jsx
+function GoalInput({ onAddGoal }) {
+  const [text, setText] = useState('')
+
+  function addHandler() {
+    onAddGoal(text)
+    setText('')            // 입력창 비우기
+  }
+
+  return (
+    <View style={styles.inputContainer}>
+      <TextInput value={text} onChangeText={setText} placeholder="목표" />
+      <Button title="추가" onPress={addHandler} />
+    </View>
+  )
+}
+```
+
+**입력창을 비우려면 `value`를 연결한 제어 컴포넌트로 만든다.** `value` 없이 `onChangeText`만 두면 state를 `''`로 바꿔도 화면의 글자는 남는다.
+
+## ScrollView와 FlatList
+
+`View`는 내용이 넘쳐도 스크롤되지 않는다. 스크롤이 필요하면 둘 중 하나를 쓴다.
+
+| | ScrollView | FlatList |
+| --- | --- | --- |
+| 렌더링 | 모든 항목을 **한 번에** 렌더링 | 화면에 **보이는 부분만** 렌더링(가상화) |
+| 적합한 경우 | 양이 적고 고정된 콘텐츠(약관, 설정 화면) | 길이가 가변적이거나 긴 목록 |
+| 사용법 | 자식을 `map`으로 넣는다(key 필요) | `data`와 `renderItem`을 props로 넘긴다 |
+| key | 각 자식에 `key` | 데이터의 `key` 속성을 자동으로 쓰고, 다른 이름이면 `keyExtractor` |
+
+```jsx
+<FlatList
+  data={goals}
+  renderItem={({ item }) => <GoalItem text={item.text} onDelete={() => deleteGoal(item.id)} />}
+  keyExtractor={(item) => item.id}
+/>
+```
+
+`renderItem`은 `{ item, index }` 객체를 받는다. `alwaysBounceVertical`처럼 한 플랫폼에서만 동작하는 props도 있으니 문서의 플랫폼 표시를 확인한다. id는 `Math.random()` 대신 `expo-crypto`의 `randomUUID()`로 만든다.
+
+## 그 밖의 상호작용 컴포넌트
+
+- `Pressable`: `android_ripple={{ color }}`은 Android 물결 효과이고, iOS에는 `style={({ pressed }) => pressed && styles.pressed}`로 눌림 스타일을 준다.
+- `Modal`: `visible`과 `animationType="slide"`로 입력 화면 같은 오버레이를 띄우고, 닫기는 부모 state로 제어한다.
+- `expo-status-bar`: `<StatusBar style="light" />`로 상태바(시계·배터리) 글자색을 배경에 맞춘다.
+
+## 정리
 
 - React Native = React 문법 + 네이티브 UI. 로직은 JS 스레드에서 실행된다.
-- 입문은 Expo + Expo Go로 시작한다.
-- HTML 대신 코어 컴포넌트(`View`, `Text`, `TextInput`…), 문자열은 반드시 `Text` 안에.
+- 새 앱은 Expo로 시작한다. 문자열은 반드시 `Text` 안에 둔다.
 - 기본 `Button`은 꾸밀 수 없다. 커스텀 버튼은 `Pressable` + `Text`.
-- CSS 대신 `StyleSheet.create` 객체, 레이아웃은 Flexbox(기본 방향 `column`).
+- 스타일은 `StyleSheet.create` 객체, 레이아웃은 Flexbox(기본 방향 `column`).
+- 이벤트는 `onPress`·`onChangeText`, 입력을 비우려면 제어 컴포넌트. 짧은 목록은 `ScrollView`, 긴 목록은 `FlatList`.
 
-
-관련 노트: [[react-native-practical-tips|React Native 실무 팁]]
+관련 노트: [[react-native-practical-tips|React Native 실무 팁]], [[mobile-frameworks|모바일 앱 프레임워크 비교]], [[lists-and-keys|리스트와 Key]]

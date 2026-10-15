@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%EC%9D%98%EC%A1%B4%EC%84%B1-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0-b242a2fd4e85"]
 ---
 
-> 이문기의 글 「[프론트엔드에서 의존성 살펴보기](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%EC%9D%98%EC%A1%B4%EC%84%B1-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0-b242a2fd4e85)」(Medium, 2023.09)를 요약·재구성한 노트입니다. 코드는 설명용으로 줄여 다시 썼습니다.
+> 이문기의 글 「[프론트엔드에서 의존성 살펴보기](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%EC%9D%98%EC%A1%B4%EC%84%B1-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0-b242a2fd4e85)」(Medium, 2023.09)를 요약·재구성한 노트다. 코드는 설명용으로 줄여 다시 썼다.
 
 ## 의존성이란
 

@@ -8,9 +8,9 @@ date: "2026-10-13"
 sources: ["https://reactnative.dev/blog/2026/06/11/react-native-0.86", "https://riverkim.kr/165", "https://riverkim.kr/154", "https://riverkim.kr/156", "https://riverkim.kr/152", "https://riverkim.kr/150"]
 ---
 
-> riverkim.kr에 쓴 글들을 바탕으로 재구성한 노트입니다.
+> riverkim.kr에 쓴 글들을 바탕으로 재구성한 노트다.
 
-React Native 기본 컴포넌트와 스타일은 [React Native 기초](/knowledge/dictionary/frontend/mobile/react-native-basics)에, 리스트와 상호작용은 [React Native 상호작용과 리스트](/knowledge/dictionary/frontend/mobile/react-native-interaction)에 있다. 이 노트는 실무에서 자주 만나는 문제와 도구를 모았다.
+React Native 기본 컴포넌트·스타일·리스트·이벤트는 [React Native 기초](/knowledge/dictionary/frontend/mobile/react-native-basics)에 있다. 이 노트는 실무에서 자주 만나는 문제와 도구를 모았다.
 
 ## 1. 입력창이 키보드에 가려질 때
 
@@ -108,4 +108,4 @@ npx expo run:android          # Expo 프로젝트 (Community CLI 프로젝트는
 - 로컬 키-값 저장은 `@react-native-async-storage/async-storage`. 문자열만 저장되고 암호화되지 않는다.
 - 실기기 개발은 USB 디버깅 + `adb devices`로 연결을 확인하는 것부터 시작한다.
 
-관련 노트: [[react-native-basics|React Native 기초와 스타일링]], [[react-native-interaction|React Native 상호작용과 리스트]], [[codepush|React Native OTA 업데이트와 CodePush]]
+관련 노트: [[react-native-basics|React Native 기초와 스타일링]], [[codepush|React Native OTA 업데이트와 CodePush]]

@@ -87,15 +87,7 @@ function Sample() {
 
 styled-components는 2025년 3월 **유지보수 모드**로 전환됐고, 새 프로젝트 도입은 권장되지 않는다. 기존 사용자를 위한 수정 릴리스는 계속 나온다. 6.3부터는 `'use client'` 없이 React 서버 컴포넌트에서도 동작하지만, 서버 컴포넌트에서는 Context가 없어 `ThemeProvider`가 효과가 없으므로 테마는 CSS 변수로 다룬다. 새 프로젝트라면 CSS Modules, Tailwind CSS, 빌드 타임에 CSS를 뽑아내는 vanilla-extract·Panda CSS 같은 방식을 먼저 검토한다.
 
-### 자주 쓰는 상태 가상 클래스
-
-| 가상 클래스 | 의미 |
-| --- | --- |
-| `:hover` | 마우스 커서가 요소 위에 있을 때 |
-| `:active` | 요소를 누르고 있을 때(주로 링크·버튼) |
-| `:focus` | 요소가 포커스를 가졌을 때(주로 input) |
-| `:checked` | radio·checkbox가 체크되었을 때 |
-| `:first-child`, `:last-child` | 부모 기준 첫·마지막 자식 |
+`:hover`, `:focus`, `:checked` 같은 상태 가상 클래스는 [[selectors|CSS 선택자와 우선순위]]에 정리했다.
 
 ## emotion
 

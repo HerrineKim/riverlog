@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://www.youtube.com/watch?v=6AHpdQCrf_Q", "https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API", "https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API"]
 ---
 
-> Wael Yasmina의 「[WebGL, Shaders, Vertex Shader, Fragment Shader, GLSL ES, and WebGPU In A Nutshell](https://www.youtube.com/watch?v=6AHpdQCrf_Q)」 영상을 바탕으로 재구성한 노트입니다.
+> Wael Yasmina의 「[WebGL, Shaders, Vertex Shader, Fragment Shader, GLSL ES, and WebGPU In A Nutshell](https://www.youtube.com/watch?v=6AHpdQCrf_Q)」 영상을 바탕으로 재구성한 노트다.
 
 ## 웹 3D를 이루는 층
 
@@ -83,9 +83,9 @@ void main() {
 | 기반 | OpenGL ES 3.0 | Vulkan·Metal·Direct3D 12 |
 | 셰이더 언어 | GLSL ES | WGSL |
 | 컴퓨트 셰이더 | 없음 | 있음 |
-| 지원 | 사실상 모든 브라우저 | Chrome·Edge·Safari·Firefox가 기본 지원(Firefox는 플랫폼별 순차 확대) |
+| 지원 | 사실상 모든 브라우저 | Chrome·Edge 113, Safari 26, Firefox 141(Windows부터, 다른 플랫폼은 순차 확대)부터 기본 지원 |
 
-Three.js는 `WebGPURenderer`로 WebGPU를 쓰고, 지원하지 않는 환경에서는 WebGL 2로 대체한다. 자세한 내용은 [[threejs|Three.js로 웹에서 3D 그리기]]에 있다.
+Three.js는 `three/webgpu`의 `WebGPURenderer`로 WebGPU를 쓰고, 지원하지 않는 환경에서는 WebGL 2로 자동 대체한다. 셰이더는 두 백엔드에 공통인 노드 언어 TSL(Three Shading Language)로 쓴다. 자세한 내용은 [[threejs|Three.js로 웹에서 3D 그리기]]에 있다.
 
 ## 무엇부터 배울까
 

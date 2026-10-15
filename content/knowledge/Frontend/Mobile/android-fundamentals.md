@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/ea28527e359249d1a3fa91af87374b4e", "https://developer.android.com/topic/libraries/architecture/livedata", "https://developer.android.com/kotlin/flow/stateflow-and-sharedflow", "https://developer.android.com/google/play/requirements/target-sdk"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Android 기술 면접 확인하세요. livedata, rxjava, context, postvalue, setvalue, minsdk, targetsdk」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Android 기술 면접 확인하세요. livedata, rxjava, context, postvalue, setvalue, minsdk, targetsdk」를 바탕으로 재구성한 노트다.
 
 Android 앱은 화면(Activity·Fragment·Composable)이 회전·백그라운드 전환으로 수시로 만들어지고 사라진다. 그래서 **상태를 화면보다 오래 사는 곳(ViewModel)에 두고, 화면은 그 상태를 관찰만 하는** 구조가 기본이다. 이 노트는 그 관찰 도구, 시스템 자원에 접근하는 열쇠인 Context, 그리고 앱이 지원하는 OS 범위를 정하는 SDK 버전을 다룬다.
 

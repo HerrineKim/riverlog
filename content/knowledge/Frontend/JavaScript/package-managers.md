@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.org/api/corepack.html", "https://pnpm.io/settings", "https://yarnpkg.com/blog"]
 ---
 
-> riverkim.kr에 쓴 글들을 바탕으로 재구성한 노트입니다.
+> riverkim.kr에 쓴 글들을 바탕으로 재구성한 노트다.
 
 ## 패키지 매니저란
 

@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@teo/frontend"]
 ---
 
-> 수코딩의 책 『아는 만큼 보이는 프런트엔드 개발』(길벗) 발췌를 실은 요즘IT의 글 「[유튜버 '수코딩'이 정리한 프론트엔드의 등장 배경](https://yozm.wishket.com/magazine/detail/2287/)」(2023.10)과 테오(teo)의 「[프론트엔드 역사와 미래, 업무 분야 ... 그리고 잘하는 프론트엔드 개발자란?](https://velog.io/@teo/frontend)」(2021.12)을 바탕으로 재구성한 노트입니다.
+> 수코딩의 책 『아는 만큼 보이는 프런트엔드 개발』(길벗) 발췌를 실은 요즘IT의 글 「[유튜버 '수코딩'이 정리한 프론트엔드의 등장 배경](https://yozm.wishket.com/magazine/detail/2287/)」(2023.10)과 테오(teo)의 「[프론트엔드 역사와 미래, 업무 분야 ... 그리고 잘하는 프론트엔드 개발자란?](https://velog.io/@teo/frontend)」(2021.12)을 바탕으로 재구성한 노트다.
 
 ## 웹의 세대 구분
 

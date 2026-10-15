@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/frontend", "https://velog.io/@teo/full-stack-developer"]
 ---
 
-> 테오(teo)의 「[프론트엔드 역사와 미래, 업무 분야 ... 그리고 잘하는 프론트엔드 개발자란?](https://velog.io/@teo/frontend)」(2021.12)과 「[풀스택 개발자에 대해서 어떻게 생각하나요?](https://velog.io/@teo/full-stack-developer)」(2022.01)를 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[프론트엔드 역사와 미래, 업무 분야 ... 그리고 잘하는 프론트엔드 개발자란?](https://velog.io/@teo/frontend)」(2021.12)과 「[풀스택 개발자에 대해서 어떻게 생각하나요?](https://velog.io/@teo/full-stack-developer)」(2022.01)를 바탕으로 재구성한 노트다.
 
 ## 프론트엔드는 무엇을 하나
 

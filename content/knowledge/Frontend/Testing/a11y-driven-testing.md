@@ -8,16 +8,11 @@ date: "2026-10-13"
 sources: ["https://tech.wonderwall.kr/articles/a11ydriventestautomation/"]
 ---
 
-> 원더월 김태희의 글 「[접근성이 이끄는 웹 프론트엔드 테스트 자동화](https://tech.wonderwall.kr/articles/a11ydriventestautomation/)」(2023.06)를 요약·재구성한 노트입니다. 예시 코드는 Playwright 기준입니다.
+> 원더월 김태희의 글 「[접근성이 이끄는 웹 프론트엔드 테스트 자동화](https://tech.wonderwall.kr/articles/a11ydriventestautomation/)」(2023.06)를 요약·재구성한 노트다. 예시 코드는 Playwright 기준이다.
 
-## 왜 UI 테스트는 자동화하기 어렵다고 여겨졌나
+## 프론트엔드는 UI를 테스트해야 한다
 
-예전 테스트 책은 "UI 테스트는 자동화하지 말고 모델을 단위 테스트하라"고 했다. 명령형 UI 시절에는 View를 최대한 얇게 만들고 모델만 테스트하면 됐다. 지금은 사정이 다르다.
-
-- 선언형 UI(React·Vue·Svelte)는 UI를 **상태의 함수**로 만들어 예측하고 테스트하기 쉬워졌다.
-- 백엔드가 모델과 로직을 대부분 가져가면서, 프론트엔드에 남은 복잡성은 **UI 로직과 상태**다. 접히고 펼쳐지는 UI, disabled, hover, 서버와의 상호작용은 단위 테스트만으로 검증하기 어렵다.
-
-그래서 **프론트엔드는 UI를 테스트해야 한다.** 문제는 요소를 찾는 방법이었다.
+선언형 UI는 UI를 **상태의 함수**로 만들어 예측하고 테스트하기 쉽게 했고, 프론트엔드에 남은 복잡성은 대부분 접힘·disabled·서버 상호작용 같은 **UI 로직과 상태**다. 그래서 모델만 단위 테스트하던 방식으로는 부족하다. 남은 문제는 요소를 찾는 방법이었다.
 
 ## 요소를 찾는 방법 비교
 
@@ -50,91 +45,47 @@ await page
 
 ## 테스트하기 좋은 마크업 만들기
 
-### 1. div에는 role과 동작을 준다
+| 상황 | aria 속성·마크업 | 테스트 쿼리 예 |
+| --- | --- | --- |
+| 디자인 때문에 `div`로 만든 버튼 | `role="button"`, `tabIndex={0}`, `aria-disabled`, Enter·Space 키 처리까지 구현 | `getByRole('button', { name: '구매하기' })` |
+| 텍스트 없는 아이콘 버튼 | `aria-label`. 이미지 대신 그 텍스트를 놓아도 말이 되게, 다국어면 i18n 값으로 | `getByRole('button', { name: '메뉴 열기' })` |
+| 같은 이름의 버튼이 여러 영역에 | `<section aria-labelledby="제목 id">`로 이름 있는 region을 만든다 | `getByRole('region', { name: '이메일' }).getByRole('button', { name: '확인' })` |
+| 여러 단계 중 현재 단계 | `aria-current="step"` | `toHaveAttribute('aria-current', 'step')` |
+| 접고 펼치는 영역 (DOM에는 남아 있음) | 버튼에 `aria-expanded`·`aria-controls` | `toHaveAttribute('aria-expanded', 'true')` |
+| Tab·Select·Datepicker 같은 복잡한 위젯 | 직접 만들지 말고 Radix UI·Ariakit·Ark UI 같은 헤드리스 라이브러리. ARIA·키보드·포커스를 갖췄다 | `getByRole('combobox', { name: '옵션' })`, `getByRole('option', { name: 'Night' })` |
 
-role은 대부분 시맨틱 HTML에 대응한다. `button` → button, `input[type=checkbox]` → checkbox, `section`(이름 있음) → region. 디자인 때문에 `div`로 컴포넌트를 만들면 role이 없어서 스크린 리더도 테스트 도구도 못 찾는다. **role을 달고, 그 role에 맞는 동작(키보드 등)을 구현하면** 시맨틱 요소처럼 다뤄진다. 필요한 동작은 MDN의 role 문서에 나와 있다.
+role은 대부분 시맨틱 HTML에 대응한다(`button` → button, 이름 있는 `section` → region). `div`에 role을 달 때는 MDN의 role 문서에 나온 키보드 동작까지 구현해야 시맨틱 요소처럼 다뤄진다.
 
-```jsx
-function Button({ children, onClick, disabled = false }) {
-  function handleCommand(event) {
-    if (disabled) return;
-    if (event.type === 'keydown' && event.key !== 'Enter' && event.key !== ' ') return;
-    onClick();
-  }
-
-  return (
-    <div tabIndex={0} role="button" aria-disabled={disabled}
-         onClick={handleCommand} onKeyDown={handleCommand}>
-      {children}
-    </div>
-  );
-}
-```
-
-### 2. 텍스트 없는 버튼에는 aria-label
-
-아이콘 버튼은 기계가 읽을 이름이 없다. 스크린 리더는 파일명이나 "라벨이 지정되지 않음"을 읽는다. `aria-label`로 이름을 붙인다.
-
-- 라벨은 **이미지 대신 그 텍스트를 놓아도 말이 되게** 쓴다. `test menu button` 같은 테스트용 이름은 안 된다.
-- 다국어 사이트라면 i18n으로 번역한 값을 넣는다.
+### 예: 같은 이름의 버튼을 영역으로 구분하기
 
 ```jsx
-<Button aria-label={t('header-menu-alt')} onClick={showMenu}>
-  <Icon src={menuIcon} />
-</Button>
-```
-
-### 3. 같은 이름이 여럿이면 aria-labelledby로 영역을 나눈다
-
-여러 단계 회원 가입처럼 단계마다 "확인" 버튼이 있으면 `getByRole('button', { name: '확인' })`이 여러 요소를 찾아 실패한다. `section`을 제목과 `aria-labelledby`로 연결하면 이름 있는 region이 되고, 그 안에서 찾을 수 있다.
-
-```jsx
-<section aria-labelledby="email-section-title"
-         aria-current={isCurrent ? 'step' : undefined}>
-  <h2 id="email-section-title">가입하실 이메일 주소를 입력해주세요</h2>
+<section aria-labelledby="email-title" aria-current={isCurrent ? 'step' : undefined}>
+  <h2 id="email-title">가입할 이메일 주소</h2>
   <Button>확인</Button>
 </section>
 ```
 
 ```ts
-await page.getByRole('region', { name: '가입하실 이메일 주소' })
+await page.getByRole('region', { name: '가입할 이메일 주소' })
   .getByRole('button', { name: '확인' }).click();
-
-await expect(page.getByRole('region', { name: '가입약관' }))
-  .toHaveAttribute('aria-current', 'step');
 ```
 
-현재 단계는 `aria-current="step"`으로 표시한다. 단계 이동을 테스트할 때 쓴다.
-
-### 4. 접고 펼치는 상태는 aria-expanded
-
-애니메이션, 탭 키 접근, 검색 노출 때문에 접힌 내용도 DOM에 남아 있어야 할 때가 있다. 그러면 눈에 안 보일 뿐이라 기계는 상태를 모른다. `aria-expanded`와 `aria-controls`로 알린다.
+### 예: 펼침 상태를 aria-expanded로 알리기
 
 ```jsx
-<button aria-expanded={isOpen} aria-controls="delivery-info"
-        onClick={() => setIsOpen((v) => !v)}>
+<button aria-expanded={isOpen} aria-controls="delivery-info" onClick={() => setIsOpen((v) => !v)}>
   배송정보 <Arrow />
 </button>
-<div id="delivery-info" aria-hidden={!isOpen}>…</div>
+<div id="delivery-info" hidden={!isOpen}>…</div>
 ```
 
 ```ts
 const toggle = page.getByRole('button', { name: '배송정보' });
-await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 await toggle.click();
 await expect(toggle).toHaveAttribute('aria-expanded', 'true');
 ```
 
-aria 속성은 DOM에 렌더되므로 **스타일도 여기에 건다.** `&[aria-expanded='true'] svg { transform: rotateZ(180deg); }`처럼 쓰면 테스트한 상태와 화면의 연결을 더 믿을 수 있다.
-
-### 5. 복잡한 컴포넌트는 헤드리스 라이브러리로
-
-Tab, Select, Dropdown, Datepicker를 직접 만들면 접근성도 테스트도 포기하기 쉽다. **Radix UI, Ariakit, Ark UI** 같은 헤드리스 컴포넌트 라이브러리는 로직·ARIA·키보드·포커스 관리를 갖추고 스타일만 맡긴다. Radix의 Select는 `combobox`·`option` role을 가져서 그대로 테스트할 수 있다.
-
-```ts
-await page.getByRole('combobox', { name: '옵션을 선택하세요' }).click();
-await page.getByRole('option', { name: 'Night .version' }).click();
-```
+aria 속성은 DOM에 렌더되므로 **스타일도 여기에 건다.** `&[aria-expanded='true'] svg { transform: rotate(180deg); }`처럼 쓰면 테스트한 상태와 화면이 같은 값에 묶인다.
 
 ## 테스트가 주는 것
 
@@ -173,4 +124,4 @@ role과 이름으로 찾는 테스트는 **사용자 동작이 그대로인 한*
 - 직접 만든 컴포넌트에는 role·aria 속성과 그에 맞는 동작을 넣고, 복잡한 컴포넌트는 헤드리스 라이브러리를 쓴다.
 - 접근성은 시각 장애인만이 아니라 테스트, 검색 엔진, 기획 소통까지 모두에게 이득이다.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[jest-practices|JavaScript 테스트 원칙과 Jest 실행 팁]], [[html|HTML 기초와 HTML5]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]]
+관련 노트: [[tdd|프론트엔드에서의 TDD]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[html|HTML 기초와 HTML5]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]]

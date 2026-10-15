@@ -175,7 +175,7 @@ const sayHi = user.sayHi.bind(user)
 setTimeout(sayHi, 1000)      // 'Hello, John!'
 ```
 
-인자를 미리 채워 두는 용도로도 쓴다. 목록 아이템을 누르면 해당 id로 삭제 함수를 부르게 할 때 `onPress={props.onDeleteItem.bind(this, props.id)}`처럼 쓴다([[react-native-interaction|React Native 상호작용과 리스트]]). 같은 일을 화살표 함수로 `onPress={() => props.onDeleteItem(props.id)}`처럼 쓰는 편이 더 흔하다.
+인자를 미리 채워 두는 용도로도 쓴다. 목록 아이템을 누르면 해당 id로 삭제 함수를 부르게 할 때 `onPress={props.onDeleteItem.bind(this, props.id)}`처럼 쓴다([[react-native-basics|React Native 기초와 스타일링]]). 같은 일을 화살표 함수로 `onPress={() => props.onDeleteItem(props.id)}`처럼 쓰는 편이 더 흔하다.
 
 ## 핵심 정리
 

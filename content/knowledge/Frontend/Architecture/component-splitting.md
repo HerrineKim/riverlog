@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EB%A5%BC-%EB%B6%84%EB%A6%AC%ED%95%98%EB%8A%94-%EA%B8%B0%EC%A4%80%EA%B3%BC-%EB%B0%A9%EB%B2%95-e7cf16bb157a"]
 ---
 
-> 이문기의 글 「[프론트엔드 아키텍처: 컴포넌트를 분리하는 기준과 방법](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EB%A5%BC-%EB%B6%84%EB%A6%AC%ED%95%98%EB%8A%94-%EA%B8%B0%EC%A4%80%EA%B3%BC-%EB%B0%A9%EB%B2%95-e7cf16bb157a)」(Medium, 2023.02)을 바탕으로 재구성한 노트입니다. 코드는 설명용으로 줄여 다시 썼습니다.
+> 이문기의 글 「[프론트엔드 아키텍처: 컴포넌트를 분리하는 기준과 방법](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EB%A5%BC-%EB%B6%84%EB%A6%AC%ED%95%98%EB%8A%94-%EA%B8%B0%EC%A4%80%EA%B3%BC-%EB%B0%A9%EB%B2%95-e7cf16bb157a)」(Medium, 2023.02)을 바탕으로 재구성한 노트다. 코드는 설명용으로 줄여 다시 썼다.
 
 ## 컴포넌트 분리란
 
@@ -71,6 +71,22 @@ function Card({ a, b, foo, bar, showSummary }) {
 이렇게 커지는 이유는 **쓰는 쪽과 `Card`가 강하게 결합했기** 때문이다. 결합이 강하면 `Card`를 다른 컴포넌트로 바꾸거나 props 이름을 바꾸기 어렵고, `Page1`의 요구로 `Card`를 고치면 `Page2`까지 확인해야 한다. 쓰는 곳이 늘수록 변경 비용이 커진다.
 
 원인은 **겉모습으로 중복을 판단한 것**이다. DRY 원칙에서 중복은 **같은 이유로 함께 바뀌는 코드**다. 모양이 같아도 바뀌는 이유가 다르면 중복이 아니다. 추출한 컴포넌트에 쓰는 곳별 조건문이 들어가기 시작했다면, 이미 수정 이유가 갈라졌다는 신호다.
+
+**데이터가 다르면 UI도 결국 달라진다.** 알바 공고 카드와 중고차 카드를 `ItemCard` 하나로 묶고 `if (알바) <Badge />`, `if (중고차) price * 0.1`을 붙이기 시작하면 결합도만 오른다. 공지·문의·방명록을 `BoardList` 하나로 묶어도 요구사항은 화면이 아니라 도메인을 따라 갈라진다(공지의 중요 배지, 문의의 비밀글, 방명록의 미리보기). 공통으로 둘 것은 Title, Card, Price처럼 **도메인을 모르는 UI 조각**뿐이고, 도메인 컴포넌트는 그것을 조합해 따로 만든다.
+
+반대로 관리자 콘솔의 만능 게시판처럼 **정말로 같은 화면**을 여러 데이터가 쓰는 경우도 있다. 이때도 게시판 안에 데이터별 분기를 넣지 않는다. 의존 방향은 데이터 → 화면이므로, **데이터 쪽에 어댑터를 두어** 게시판이 받는 모양으로 바꿔 넘긴다.
+
+```ts
+interface BoardItem { id: number; label: string; status: 'Complete' | 'Incomplete' }
+
+const taskToBoardItem = (task: Task): BoardItem => ({
+  id: task.id,
+  label: task.title,
+  status: task.isComplete ? 'Complete' : 'Incomplete',
+});
+
+<Board items={tasks.map(taskToBoardItem)} />;
+```
 
 ### 고유한 부분은 props로 넘긴다
 
@@ -158,7 +174,7 @@ React Compiler를 켜면 바뀌지 않은 하위 JSX는 자동으로 메모이�
 
 - 컴포넌트를 나누는 이유는 재사용, 복잡성, 렌더링 범위다.
 - 재사용 컴포넌트는 주변 HTML 문맥(`li`, heading 수준)에 기대지 않는 일반적인 블록으로 자른다.
-- 모양이 같아도 바뀌는 이유가 다르면 중복이 아니다. 쓰는 곳별 조건문이 생기면 고유한 부분을 props(JSX)로 넘긴다.
+- 모양이 같아도 바뀌는 이유가 다르면 중복이 아니다. 쓰는 곳별 조건문이 생기면 고유한 부분을 props(JSX)로 넘기고, 정말 같은 화면을 공유해야 하면 데이터 쪽 어댑터로 모양을 맞춘다.
 - 여러 책임은 각자 상태를 감춘 컴포넌트로 나누고 정해진 통로로만 소통시키며, 비즈니스 로직은 변경 빈도가 다른 UI에서 떼어 낸다.
 - 서로 무관한 상태는 그 상태를 쓰는 컴포넌트로 내린다.
 

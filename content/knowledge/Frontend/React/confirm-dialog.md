@@ -90,11 +90,9 @@ const handleDelete = async () => {
 />
 ```
 
-## 레이아웃 팁
+## 아이콘 버튼
 
-- 버튼 영역에 `justify-content: flex-end`를 주면, 조건에 따라 버튼 하나를 숨겨도 나머지 버튼 위치가 흔들리지 않는다.
-- 글자 없이 아이콘만 있는 버튼은 MUI `IconButton`을 쓴다. 클릭 물결 효과와 접근성 처리가 기본으로 들어 있다(아이콘 버튼에는 `aria-label`을 꼭 준다).
-- 모달 양옆에 이전/다음 아이콘 버튼을 붙일 때는 모달 내용을 감싼 컨테이너에 `position: relative`를, 버튼에 `position: absolute`와 `left`/`right`를 준다.
+글자 없이 아이콘만 있는 버튼은 MUI `IconButton`을 쓰고, 화면 낭독기가 읽을 이름이 없으므로 `aria-label`을 꼭 준다.
 
 ## 핵심 정리
 

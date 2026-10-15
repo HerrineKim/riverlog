@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/css-history-1", "https://velog.io/@teo/The-State-of-CSS-2021-results-are-here", "https://developer.mozilla.org/en-US/docs/Web/CSS/@layer", "https://web.dev/baseline"]
 ---
 
-> 테오(teo)의 「[CSS 역사로 알아보는 CSS가 어려워진 이유](https://velog.io/@teo/css-history-1)」(2022.01)를 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[CSS 역사로 알아보는 CSS가 어려워진 이유](https://velog.io/@teo/css-history-1)」(2022.01)를 바탕으로 재구성한 노트다.
 
 ## CSS는 왜 어려워졌나
 
@@ -79,17 +79,17 @@ IE11은 2015년 이후 기능 업데이트가 멈췄지만 점유율이 높아, 
 
 ## CSS가 스스로 푸는 시대
 
-2022년 이후 주요 브라우저가 함께 들여온 스펙은, 그동안 도구로 메우던 구조적 문제를 CSS 안에서 직접 다룬다. 괄호 안은 모든 주요 브라우저가 지원하게 된 Baseline 연도다.
+2022년 이후 주요 브라우저가 함께 들여온 스펙은, 그동안 도구로 메우던 구조적 문제를 CSS 안에서 직접 다룬다. 각 스펙의 Baseline 연도와 지금 써도 되는지는 [[css-progressive-enhancement|CSS 점진적 향상]]에 있다.
 
 | 스펙 | 대신하는 것 |
 | --- | --- |
-| 캐스케이드 레이어 `@layer` (2022) | 레이어 순서로 우선순위를 정해 **명시도 전쟁**을 끝낸다. 리셋·라이브러리·컴포넌트·유틸리티를 층으로 나눈다 |
-| `@scope` (2025) | 스타일이 적용될 범위를 DOM 하위 트리로 제한한다. **전역 범위** 문제를 BEM이나 CSS Modules 없이 다룬다 |
-| 네이티브 중첩(nesting) (2023) | Sass의 중첩 문법을 CSS가 직접 지원한다 |
-| CSS 변수·`color-mix()` (2023) | 전처리기의 변수와 색 계산을 대신한다 |
-| 컨테이너 쿼리 `@container` (2023) | 뷰포트가 아니라 **부모 크기**에 반응하는 컴포넌트 단위 반응형 |
-| `:has()` (2023) | 자식 상태로 부모를 고르는, JS로 하던 선택 |
-| 앵커 위치 지정 (2026) | 툴팁·드롭다운을 기준 요소 옆에 붙이던 Popper·Floating UI 같은 JS 위치 계산 |
+| 캐스케이드 레이어 `@layer` | 레이어 순서로 우선순위를 정해 **명시도 전쟁**을 끝낸다. 리셋·라이브러리·컴포넌트·유틸리티를 층으로 나눈다 |
+| `@scope` | 스타일이 적용될 범위를 DOM 하위 트리로 제한한다. **전역 범위** 문제를 BEM이나 CSS Modules 없이 다룬다 |
+| 네이티브 중첩(nesting) | Sass의 중첩 문법을 CSS가 직접 지원한다 |
+| `color-mix()` | 전처리기의 색 계산(`darken()`·`mix()`)을 대신한다. 변수는 앞의 CSS 변수(2017)가 이미 대신했다 |
+| 컨테이너 쿼리 `@container` | 뷰포트가 아니라 **부모 크기**에 반응하는 컴포넌트 단위 반응형 |
+| `:has()` | 자식 상태로 부모를 고르는, JS로 하던 선택 |
+| 앵커 위치 지정 | 툴팁·드롭다운을 기준 요소 옆에 붙이던 Popper·Floating UI 같은 JS 위치 계산 |
 
 도구 쪽도 이 흐름을 따른다. React 서버 컴포넌트와 맞지 않는 런타임 CSS-in-JS는 빌드 시점에 CSS를 뽑는 zero-runtime 방식으로 옮겨 갔고, Tailwind v4는 설정을 JS 파일이 아니라 CSS(`@theme`)에 쓰고 내부적으로 `@layer`를 쓴다. 지금의 CSS는 **유틸리티 CSS**, **컴포넌트 범위 CSS(CSS Modules·zero-runtime)**, 그리고 이를 받쳐 주는 **네이티브 스펙**이 함께 쓰이는 구도다.
 

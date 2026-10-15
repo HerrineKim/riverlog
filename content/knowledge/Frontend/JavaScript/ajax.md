@@ -60,39 +60,23 @@ await axios.get('/api/users', { withCredentials: true })           // 다른 출
 
 axios의 에러 객체에서 서버 응답은 `error.response?.data`처럼 옵셔널 체이닝으로 꺼내는 것이 안전하다(네트워크 오류면 `response`가 없다).
 
-## 예시: 새로고침 없는 좋아요
+## 예시: 새로고침 없는 폼 제출
 
-폼 제출 대신 JavaScript가 비동기 요청을 보내고, 서버는 JSON만 돌려주고, 바뀐 부분만 DOM에서 고치는 구조다. 좋아요·팔로우 같은 토글 버튼의 기본형이다.
+폼의 기본 제출을 막고, JavaScript가 비동기 요청을 보내고, 서버가 돌려준 JSON으로 바뀐 부분만 DOM에서 고치는 구조다. 좋아요·팔로우 같은 토글 버튼의 기본형이다.
 
 ```javascript
-const form = document.querySelector('.like-form')
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value   // Django가 폼에 심은 토큰
-
-form.addEventListener('submit', (event) => {
-  event.preventDefault()                      // 폼 기본 제출(새로고침)을 막는다
-  const reviewId = event.target.dataset.reviewId
-
-  axios({
-    method: 'post',
-    url: `/community/${reviewId}/like/`,
-    headers: { 'X-CSRFToken': csrftoken },    // Django CSRF 검사 통과
-  })
-    .then(({ data }) => {
-      const { is_liked, like_count } = data
-      document.querySelector(`#like-${reviewId}`).innerText = is_liked ? '좋아요 취소' : '좋아요'
-      document.querySelector(`#like-count-${reviewId}`).innerText = `${like_count}명`
-    })
-    .catch((error) => {
-      if (error.response?.status === 401) window.location.href = '/accounts/login/'
-    })
+form.addEventListener('submit', async (event) => {
+  event.preventDefault()                        // 기본 제출(새로고침)을 막는다
+  const response = await fetch(form.action, { method: 'POST', body: new FormData(form) })
+  if (response.status === 401) return location.assign('/login')
+  const { liked, count } = await response.json()
+  countEl.textContent = `${count}명`
 })
 ```
 
-- 이벤트는 `click`이 아니라 **`submit`**에 건다. 폼 안 어디를 눌러도 요청이 나가는 것을 막고, `event.target`이 항상 폼이 되기 때문이다.
-- 서버가 Django 서버 렌더링 앱이면 POST 요청에 CSRF 토큰이 필요하므로 `X-CSRFToken` 헤더로 보낸다.
-- 비로그인일 때 서버가 로그인 페이지로 `redirect`하면 axios는 그 HTML을 성공 응답으로 받는다. 클라이언트가 분기하려면 서버가 **`401` 상태 코드**를 돌려줘야 한다.
-- 서버 응답의 키 이름(`is_liked`)과 클라이언트에서 구조 분해하는 이름이 어긋나면 오류 없이 화면만 바뀌지 않는다. 키 이름 규칙(snake_case 등)을 하나로 정한다.
-- 서버 쪽 토글 구현은 [[relationships|Django 모델 관계]]의 좋아요·팔로우 패턴을 본다.
+- 이벤트는 `click`이 아니라 **`submit`** 에 건다. 엔터 키 제출도 잡히고 `event.target`이 항상 폼이 된다.
+- 비로그인일 때 서버가 로그인 페이지로 리다이렉트하면 클라이언트는 그 HTML을 성공 응답으로 받는다. 분기하려면 서버가 **`401` 상태 코드**를 돌려줘야 한다.
+- 서버 응답의 키 이름과 구조 분해하는 이름이 어긋나면 오류 없이 화면만 안 바뀐다. 키 이름 규칙을 하나로 정한다.
 
 ## CORS
 
@@ -130,4 +114,4 @@ export default defineConfig({
 - fetch는 HTTP 에러에서 reject되지 않으니 `response.ok`를 확인한다.
 - CORS는 브라우저 정책이다. 해결은 서버 설정, 개발 중 우회는 프록시.
 
-관련 노트: [[cors|CORS(서버 설정 관점)]], [[rest-api|REST API]], [[vuex|Vuex 상태 관리]] — axios로 받은 데이터를 스토어에 모으기
+관련 노트: [[cors|CORS(서버 설정 관점)]], [[rest-api|REST API]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]] — axios로 받은 데이터를 스토어에 모으기

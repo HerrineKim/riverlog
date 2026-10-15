@@ -51,14 +51,7 @@ sources: ["https://spoqa.github.io/2016/06/03/localize-type-setting.html", "http
 
 ## 해상도와 기기 픽셀 비율
 
-- 해상도(resolution)는 화면이나 이미지의 픽셀 수다. CSS의 `px`는 물리 픽셀이 아니라 **CSS 픽셀**이다.
-- 기기 픽셀 비율(DPR, `window.devicePixelRatio`)이 2인 화면은 CSS 1px을 물리 픽셀 2×2로 그린다. 그래서 같은 크기의 이미지가 흐려 보인다.
-- `srcset`과 `sizes`로 화면에 맞는 이미지를 브라우저가 고르게 한다. 아이콘은 크기와 상관없이 선명한 SVG가 낫다.
-
-```html
-<img src="hero-800.jpg" srcset="hero-800.jpg 800w, hero-1600.jpg 1600w"
-     sizes="(min-width: 1024px) 50vw, 100vw" alt="…" width="800" height="450" />
-```
+CSS의 `px`는 물리 픽셀이 아니라 CSS 픽셀이고, 기기 픽셀 비율(DPR)이 2인 화면은 CSS 1px을 물리 픽셀 2×2로 그린다. 화면에 맞는 이미지를 고르게 하는 `srcset`·`sizes`는 [[responsive-images|반응형 이미지]]에 있다.
 
 ## 폴드(Fold)
 
@@ -66,18 +59,16 @@ sources: ["https://spoqa.github.io/2016/06/03/localize-type-setting.html", "http
 
 ## 상대 단위로 유연하게
 
+`rem`·`dvh`·`cqi` 같은 단위의 전체 표는 [[css-basics|CSS 기초]]에 있다. 반응형에서 특히 쓸모 있는 두 가지는 다음과 같다.
+
 | 단위·함수 | 쓰임 |
 | --- | --- |
-| `%`, `fr` | 부모나 그리드 안에서 비율로 나누기 |
-| `rem` | 루트 글자 크기 기준. 사용자 글꼴 설정을 따른다 |
-| `vw`, `vh`, `dvh`·`svh`·`lvh` | 화면 크기 기준. 모바일 주소창 때문에 높이는 `dvh`가 안전하다 |
-| `cqi`, `cqb` | 컨테이너 쿼리의 컨테이너 크기 기준. 컴포넌트 안 글자·여백을 칸 너비에 맞춘다 |
 | `clamp(최소, 선호, 최대)` | 미디어 쿼리 없이 크기를 부드럽게. 예: `font-size: clamp(1rem, 2.5vw, 1.5rem)` |
 | `max-width` + `width: 100%` | 큰 화면에서는 멈추고 작은 화면에서는 줄어드는 상자 |
 
 ## 다국어 반응형 타이포그래피
 
-> 스포카 강영화의 「[다국어 환경에 맞게 타이포그래피 세팅하기](https://spoqa.github.io/2016/06/03/localize-type-setting.html)」(2016.06)를 바탕으로 재구성한 내용입니다.
+> 스포카 강영화의 「[다국어 환경에 맞게 타이포그래피 세팅하기](https://spoqa.github.io/2016/06/03/localize-type-setting.html)」(2016.06)를 바탕으로 재구성한 내용이다.
 
 반응형은 화면 크기만의 문제가 아니다. 같은 컴포넌트라도 **언어**에 따라 글자 너비가 다르다. 일본어 가나는 한글보다 넓은 경우가 많아, 좁은 버튼과 카드에서 일본어 문구만 어색하게 줄바꿈되기 쉽다.
 

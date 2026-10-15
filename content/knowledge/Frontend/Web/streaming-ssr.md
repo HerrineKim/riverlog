@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://react.dev/reference/react-dom/server", "https://react.dev/blog/2025/10/01/react-19-2", "https://nextjs.org/docs/app/guides/streaming"]
 ---
 
-> React 공식 문서(react-dom/server, React 19.2 릴리스 노트)와 Next.js 16 「Streaming」 가이드를 바탕으로 재구성한 노트입니다.
+> React 공식 문서(react-dom/server, React 19.2 릴리스 노트)와 Next.js 16 「Streaming」 가이드를 바탕으로 재구성한 노트다.
 
 ## 스트리밍 SSR이란
 

@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://www.heropy.dev/p/WhqSC8", "https://www.typescriptlang.org/docs/handbook/utility-types.html"]
 ---
 
-> HEROPY의 「[한눈에 보는 타입스크립트](https://www.heropy.dev/p/WhqSC8)」(2020.01 작성, 2026.08 갱신)를 바탕으로 재구성한 노트입니다.
+> HEROPY의 「[한눈에 보는 타입스크립트](https://www.heropy.dev/p/WhqSC8)」(2020.01 작성, 2026.08 갱신)를 바탕으로 재구성한 노트다.
 
 ## TypeScript란
 

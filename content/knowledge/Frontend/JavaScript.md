@@ -16,7 +16,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [연산자와 제어문](/knowledge/dictionary/frontend/javascript/operators-and-control-flow): `==` vs `===`, 단축 평가와 `?.`·`??`, 삼항 연산자, if·switch, for·for...in·for...of
 - [문(Statement)과 식(Expression)](/knowledge/dictionary/frontend/javascript/statements-vs-expressions): 값을 만드는 식과 명령하는 문, 식 자리, `{}`·`function`의 문/식 해석 차이, JSX 중괄호가 식만 받는 이유
 - [함수와 this](/knowledge/dictionary/frontend/javascript/functions): 선언식·표현식, 화살표 함수, rest·spread, this와 bind
-- [배열·객체·문자열](/knowledge/dictionary/frontend/javascript/arrays-and-objects): 주요 메서드, map·filter·reduce, ES6 객체 문법, 구조 분해, 옵셔널 체이닝, JSON
+- [배열·객체·문자열](/knowledge/dictionary/frontend/javascript/arrays-and-objects): 주요 메서드, map·filter·reduce, 원본을 바꾸지 않는 toSorted·with, ES6 객체 문법, 구조 분해, JSON
 - [JavaScript의 네 가지 주석](/knowledge/dictionary/frontend/javascript/js-comments): `//`·`/* */`의 동작, 해시뱅 `#!`, HTML 유사 주석 `<!--`의 유래
 - [템플릿 리터럴](/knowledge/dictionary/frontend/javascript/template-literals): 여러 줄·표현식 삽입·중첩, 태그드 템플릿과 styled-components의 원리
 - [class 문법](/knowledge/dictionary/frontend/javascript/class): 생성자 함수와 new, constructor, static, extends, getter·setter, private 필드
@@ -37,8 +37,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [반응형 프로그래밍과 RxJS](Frontend/JavaScript/reactive-programming.md): 변경 전파와 선언적 데이터 흐름, Pull→Push와 제어의 역전, Observable과 연산자, Hot·Cold
 
 ### 브라우저와 함께
-- [DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·생성·삽입·삭제·속성 변경, innerText vs innerHTML
-- [이벤트](/knowledge/dictionary/frontend/javascript/dom-events): addEventListener, 이벤트 객체, preventDefault
+- [DOM 조작과 이벤트](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·생성·삽입·삭제·속성 변경, innerText vs innerHTML, addEventListener와 이벤트 객체, preventDefault vs stopPropagation
 - [Debounce와 Throttle](/knowledge/dictionary/frontend/javascript/debounce-throttle): 연속 이벤트의 실행 횟수를 줄이는 두 기법과 직접 구현
 - [책임감 있는 자바스크립트](/knowledge/dictionary/frontend/javascript/responsible-javascript): JS의 처리 비용, 저사양 Android·느린 4G·Baseline 기준선, 웹 플랫폼 우선, 번들 줄이기, 서드파티 관리
 
@@ -55,8 +54,6 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [날짜 라이브러리](/knowledge/dictionary/frontend/javascript/date-libraries): 0부터 시작하는 월 같은 기본 Date의 함정, Moment.js 이후의 대안, date-fns와 Day.js 비교, 표준 API Temporal의 지원 현황
 - [패키지 매니저: npm, yarn, pnpm](/knowledge/dictionary/frontend/javascript/package-managers): lock 파일의 역할, 매니저 비교와 고르는 기준, packageManager와 Corepack, 설치 스크립트 차단, npm EINTEGRITY 오류 해결
 - [번들러의 역사와 Vite](/knowledge/dictionary/frontend/javascript/bundlers-and-vite): CommonJS·AMD·ES 모듈에서 번들러로, esbuild와 Snowpack이 푼 느린 빌드, Vite의 개발·배포 이원 구조
-- [React와 Vue 비교](/knowledge/dictionary/frontend/javascript/react-vs-vue): JSX와 템플릿, 불변 상태와 반응형 상태, v-model의 정체, 생태계 범위와 고르는 기준
-- [React와 Vue 말고: 다른 프론트엔드 프레임워크](/knowledge/dictionary/frontend/javascript/frontend-frameworks): Svelte, Angular, Preact, Alpine.js, HTMX의 성격과 쓰임
 
 ## 코딩 스타일
 

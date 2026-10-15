@@ -12,25 +12,7 @@ sources: ["https://riverkim.kr/166", "https://riverkim.kr/104"]
 
 ## 연산자
 
-### 할당 연산자
-
-```javascript
-let x = 0
-
-x += 10 // 10
-x *= 10 // 100
-x /= 10 // 10
-x++     // 11 (x += 1과 같음)
-x--     // 10
-```
-
-### 비교 연산자
-
-결과를 Boolean으로 반환한다. 문자열은 유니코드 값 기준 사전 순으로 비교한다(뒤 알파벳이 더 크고, 소문자가 대문자보다 크다).
-
-```javascript
-console.log('a' > 'z') // false
-```
+할당 연산자(`=`, `+=`, `*=`, `++`, `--`)는 다른 언어와 같다. 비교 연산자는 Boolean을 반환하고, 문자열은 유니코드 값 기준 사전 순으로 비교한다(`'a' > 'z'`는 `false`, 소문자가 대문자보다 크다).
 
 ### `==` vs `===`
 
@@ -51,35 +33,16 @@ console.log('a' > 'z') // false
 1 + true      // 2
 ```
 
-### 논리 연산자
+### 논리 연산자와 단축 평가
 
-`&&`(and), `||`(or), `!`(not). **단축 평가**를 지원해 결과가 확정되면 나머지를 평가하지 않는다. React의 조건부 렌더링 `{cond && <A />}`도 이 성질을 이용한다.
+`&&`(and), `||`(or), `!`(not) 가운데 `&&`와 `||`는 **단축 평가(short-circuit evaluation)** 를 한다. 결과가 확정되는 순간 나머지를 평가하지 않고, true/false가 아니라 **결과를 결정한 피연산자를 그대로** 반환한다. React의 조건부 렌더링 `{cond && <A />}`도 이 성질을 이용한다.
 
-```javascript
-false && anything // false (anything은 평가되지 않음)
-true || anything  // true
-```
-
-### 단축 평가(short-circuit evaluation)
-
-`&&`와 `||`는 true/false가 아니라 **결과를 결정한 피연산자를 타입 변환 없이 그대로** 반환한다. 결과가 확정되는 순간 나머지는 평가하지 않는데, 이를 단축 평가라고 한다.
-
-```javascript
-'Cat' && 'Dog' // 'Dog' — 좌항이 truthy라 우항까지 봐야 결과가 정해진다
-'Cat' || 'Dog' // 'Cat' — 좌항이 truthy면 바로 결정된다
-
-true || anything  // true
-false || anything // anything
-true && anything  // anything
-false && anything // false
-```
-
-| 쓰임 | 단축 평가 | 대신하는 코드 |
-| --- | --- | --- |
-| 조건이 truthy일 때만 값 | `message = done && '완료'` | `if (done) message = '완료'` |
-| 조건이 falsy일 때 대체값 | `message = done \|\| '미완료'` | `if (!done) message = '미완료'` |
-| null일 수 있는 객체의 속성 참조 | `const value = elem && elem.value` | `elem`이 null이면 `elem.value`에서 TypeError |
-| 매개변수 기본값(ES6 이전) | `str = str \|\| ''` | 지금은 `function f(str = '')` |
+| 식 | 결과 | 쓰임 | 대신하는 코드 |
+| --- | --- | --- | --- |
+| `'Cat' && 'Dog'` | `'Dog'` (좌항이 truthy라 우항까지 본다) | 조건이 truthy일 때만 값: `msg = done && '완료'` | `if (done) msg = '완료'` |
+| `false && anything` | `false` (`anything`은 평가하지 않음) | null일 수 있는 객체 참조: `elem && elem.value` | `elem`이 null이면 `elem.value`에서 TypeError |
+| `'Cat' \|\| 'Dog'` | `'Cat'` (좌항이 truthy면 바로 결정) | 조건이 falsy일 때 대체값: `msg = done \|\| '미완료'` | `if (!done) msg = '미완료'` |
+| `false \|\| anything` | `anything` | 매개변수 기본값(ES6 이전): `str = str \|\| ''` | 지금은 `function f(str = '')` |
 
 ### 옵셔널 체이닝 `?.`와 null 병합 `??` (ES2020)
 
@@ -87,7 +50,7 @@ false && anything // false
 
 | 연산자 | 동작 | 대체하던 코드 |
 | --- | --- | --- |
-| `a?.b` | `a`가 null/undefined면 `undefined`, 아니면 `a.b` | `a && a.b` |
+| `a?.b` | `a`가 null/undefined면 에러 없이 `undefined`, 아니면 `a.b` | `a && a.b` |
 | `a ?? b` | `a`가 null/undefined면 `b`, 아니면 `a` | `a \|\| b` |
 
 ```javascript
@@ -97,34 +60,20 @@ str?.length       // 0
 
 '' || 'default'   // 'default' — 빈 문자열이 유효한 값이어도 덮어쓴다
 '' ?? 'default'   // ''
-null ?? 'default' // 'default'
+
+// API 에러 응답처럼 구조가 확실하지 않을 때
+const code = error.response?.data?.code
 ```
 
 기본값을 줄 때 `0`·`''`·`false`도 유효한 값이면 `??`를, 객체 속성에 안전하게 접근할 때는 `?.`를 쓴다.
 
 ### 삼항 연산자
 
-```javascript
-const result = Math.PI > 4 ? 'Yes' : 'No' // 'No'
-```
-
-조건이 참이면 `:` 앞, 거짓이면 `:` 뒤의 값을 반환한다. 값이므로 변수에 할당할 수 있고, 한 줄로 쓰는 것을 권장한다.
+`조건 ? 참일 때 값 : 거짓일 때 값`. 문이 아니라 값이므로 변수에 바로 할당할 수 있다(`const result = Math.PI > 4 ? 'Yes' : 'No'`). 중첩하지 말고 한 줄로 쓴다.
 
 ## 조건문
 
-### if
-
-```javascript
-if (condition) {
-  // ...
-} else if (otherCondition) {
-  // ...
-} else {
-  // ...
-}
-```
-
-조건식의 결과를 Boolean으로 변환해 판단한다.
+`if`·`else if`·`else`는 조건식을 Boolean으로 변환해 판단한다.
 
 ### switch
 
@@ -186,7 +135,7 @@ for (const fruit of fruits) {
 ```
 
 - `for...in`으로 배열을 순회할 수도 있지만 인덱스 순서가 보장되지 않고 상속된 속성까지 돌 수 있어 **권장하지 않는다**.
-- `for...of`에서 반복 변수를 바꿀 일이 없으면 `const`로 선언한다. 매 반복마다 새 바인딩이 만들어지므로 `const`도 가능하다.
+- `for...of`의 반복 변수는 매 반복마다 새로 바인딩되므로 `const`로 선언한다.
 - 조건문·반복문 모두 블록 스코프를 만든다.
 
 ## 핵심 정리

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://webactually.com/2018/07/02/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83-%eb%aa%a8%eb%b2%94-%ec%82%ac%eb%a1%80/", "https://webactually.com/2018/08/06/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%eb%b2%a82-%ec%84%9c%eb%b8%8c%ea%b7%b8%eb%a6%ac%eb%93%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid"]
 ---
 
-> CSS-Tricks의 「[그리드 완벽 가이드](https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/)」(2019.06)와 Rachel Andrew의 「CSS 그리드 레이아웃 모범 사례」(2018.07)·「CSS 그리드 레벨2: 서브그리드」(2018.08, 웹액츄얼리 번역)를 바탕으로 재구성한 노트입니다.
+> CSS-Tricks의 「[그리드 완벽 가이드](https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/)」(2019.06)와 Rachel Andrew의 「CSS 그리드 레이아웃 모범 사례」(2018.07)·「CSS 그리드 레벨2: 서브그리드」(2018.08, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다.
 
 ## 그리드란
 

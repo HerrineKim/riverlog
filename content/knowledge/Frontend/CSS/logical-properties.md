@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2020/01/22/%ec%93%b0%ea%b8%b0-%eb%aa%a8%eb%93%9c%ec%99%80-css-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83/", "https://webactually.com/2018/06/28/%eb%85%bc%eb%a6%ac%ec%a0%81-css-%ec%86%8d%ec%84%b1%ea%b3%bc-%ea%b0%92-%ec%9d%b4%ed%95%b4%ed%95%98%ea%b8%b0/"]
 ---
 
-> Rachel Andrew의 「[쓰기 모드와 CSS 레이아웃](https://webactually.com/2020/01/22/%ec%93%b0%ea%b8%b0-%eb%aa%a8%eb%93%9c%ec%99%80-css-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83/)」(2020.01)과 「CSS 논리적 속성과 값 이해하기」(2018.06, 웹액츄얼리 번역)를 바탕으로 재구성한 노트입니다.
+> Rachel Andrew의 「[쓰기 모드와 CSS 레이아웃](https://webactually.com/2020/01/22/%ec%93%b0%ea%b8%b0-%eb%aa%a8%eb%93%9c%ec%99%80-css-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83/)」(2020.01)과 「CSS 논리적 속성과 값 이해하기」(2018.06, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다.
 
 ## 왜 알아야 하나
 

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2014/08/19/sass-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ec%95%84%ed%82%a4%ed%85%8d%ec%b2%98/", "https://webactually.com/2014/06/03/sass-%eb%b0%b0%eb%82%ad%ea%be%b8%eb%a6%ac%ea%b8%b0/", "https://webactually.com/2019/12/27/sass-%eb%af%b9%ec%8a%a4%ec%9d%b8-%ec%a4%91%eb%b3%b5-%eb%b0%b0%ec%a0%9c%ed%95%98%ea%b8%b0/", "https://webactually.com/2014/06/25/sass%ec%9d%98-extend%eb%a1%9c-%eb%b6%80%ed%8a%b8%ec%8a%a4%ed%8a%b8%eb%9e%a9%ec%9d%84-%ec%8b%9c%eb%a7%a8%ed%8b%b1%ed%95%98%ea%b2%8c-%ed%99%95%ec%9e%a5%ed%95%98%ea%b8%b0/", "https://webactually.com/2014/08/09/%ec%9c%88%eb%8f%84%ec%9a%b0%ec%97%90%ec%84%9c-sass-%ec%84%a4%ec%b9%98%ed%95%98%ea%b8%b0/", "https://sass-lang.com/documentation/breaking-changes/import/"]
 ---
 
-> Hugo Giraudel의 「[Sass 프로젝트를 위한 아키텍처](https://webactually.com/2014/08/19/sass-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ec%95%84%ed%82%a4%ed%85%8d%ec%b2%98/)」(2014.08), Marshall Norman의 「Sass 배낭 꾸리기」(2014.06), Sam Richard의 「Sass 믹스인 중복 배제하기」(2019.12), Brad Barrow의 「Sass의 @extend로 부트스트랩을 시맨틱하게 확장하기」(2014.06), 웹액츄얼리 북스팀의 「윈도우에서 SASS 설치하기」(2014.08)를 바탕으로 재구성한 노트입니다.
+> Hugo Giraudel의 「[Sass 프로젝트를 위한 아키텍처](https://webactually.com/2014/08/19/sass-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ec%95%84%ed%82%a4%ed%85%8d%ec%b2%98/)」(2014.08), Marshall Norman의 「Sass 배낭 꾸리기」(2014.06), Sam Richard의 「Sass 믹스인 중복 배제하기」(2019.12), Brad Barrow의 「Sass의 @extend로 부트스트랩을 시맨틱하게 확장하기」(2014.06), 웹액츄얼리 북스팀의 「윈도우에서 SASS 설치하기」(2014.08)를 바탕으로 재구성한 노트다.
 
 ## Sass란
 

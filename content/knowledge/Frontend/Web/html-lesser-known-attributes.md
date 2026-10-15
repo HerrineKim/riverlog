@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/", "https://www.frontendinterviewhandbook.com/kr/html-questions"]
 ---
 
-> Louis Lazaris의 「[Those HTML Attributes You Never Use](https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/)」(Smashing Magazine, 2022.03)를 바탕으로 재구성하고, 브라우저 지원은 2026년 기준으로 고친 노트입니다. 「data-* 속성」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 보강했습니다.
+> Louis Lazaris의 「[Those HTML Attributes You Never Use](https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/)」(Smashing Magazine, 2022.03)를 바탕으로 재구성하고, 브라우저 지원은 2026년 기준으로 고친 노트다. 「data-* 속성」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 보강했다.
 
 ## 왜 속성을 알아 두나
 

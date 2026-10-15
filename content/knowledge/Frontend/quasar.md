@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://quasar.dev/quasar-cli-vite/lint-and-format-code", "https://vee-validate.logaretm.com/v4/", "https://riverkim.kr/47", "https://riverkim.kr/45", "https://riverkim.kr/63"]
 ---
 
-> riverkim.kr에 쓴 글들과 Quasar 공식 문서를 바탕으로 재구성한 노트입니다. Quasar 2(Vue 3) 기준입니다.
+> riverkim.kr에 쓴 글들과 Quasar 공식 문서를 바탕으로 재구성한 노트다. Quasar 2(Vue 3) 기준이다.
 
 **Quasar**는 Vue.js 기반 프레임워크다. 머티리얼 디자인 스타일의 UI 컴포넌트를 많이 제공해서 화면을 빠르게 만들 수 있고, 같은 코드로 SPA·SSR·PWA·모바일 앱(Capacitor/Cordova)·데스크톱 앱(Electron)까지 빌드할 수 있다. CSS 프레임워크처럼 쓰면서도 레이아웃·라우팅 구조까지 정해 주는 점이 특징이다.
 
@@ -114,4 +114,4 @@ Dialog, Notify, Loading처럼 컴포넌트 밖에서 호출하는 기능은 **�
 - 화면 구조는 `q-layout` → `q-page-container` → `router-view` → `q-page`.
 - Dialog·Notify 같은 기능은 `quasar.config.js`에 플러그인으로 등록한 뒤 `useQuasar()`로 쓴다.
 
-관련 노트: [[vuex|Vuex 상태 관리]], [[spa-csr-ssr|SPA와 CSR·SSR]]
+관련 노트: [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]], [[spa-csr-ssr|SPA와 CSR·SSR]]

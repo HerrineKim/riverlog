@@ -24,19 +24,11 @@ function Hello() {
 
 `Hello`를 show/hide 버튼으로 토글하면, 보일 때마다 'created', 숨길 때마다 'destroyed'가 찍힌다. 화면에서 사라진 컴포넌트는 state까지 버려지고, 다시 보이면 처음부터 새로 만들어진다.
 
-| 시점 | 함수 컴포넌트 |
-| --- | --- |
-| 마운트 후 한 번 | `useEffect(() => { ... }, [])` |
-| 특정 값이 바뀐 뒤 | `useEffect(() => { ... }, [value])` |
-| 언마운트 직전 / 다음 effect 직전 | effect가 반환한 cleanup 함수 |
-| 화면에 그리기 전 DOM 측정 | `useLayoutEffect` |
-| 같은 props면 다시 그리지 않기 | `React.memo` |
-
 effect는 "마운트 때 할 일"보다 **"외부 시스템과 동기화를 시작하고 멈추는 일"** 로 생각하는 편이 정확하다. 구독·타이머·소켓 연결을 열었으면 cleanup에서 닫는다. 의존성 배열과 cleanup의 세부 규칙은 [[hooks|Hooks]]의 useEffect 절에 있다.
 
-### 개발 모드에서 effect가 두 번 도는 이유
+### StrictMode의 이중 실행
 
-`<StrictMode>` 아래에서는 개발 빌드가 컴포넌트를 **마운트 → 언마운트 → 다시 마운트**해 본다. cleanup을 빠뜨린 effect(리스너 중복 등록, 연결을 닫지 않음)를 일부러 드러내기 위해서다. 프로덕션 빌드에서는 한 번만 실행된다. effect가 두 번 돌아 문제가 생긴다면 고칠 곳은 StrictMode가 아니라 cleanup이다.
+개발 모드에서 effect가 두 번 도는 것은 StrictMode 때문이다. `<StrictMode>` 아래에서는 개발 빌드가 컴포넌트를 **마운트 → 언마운트 → 다시 마운트**해 본다. cleanup을 빠뜨린 effect(리스너 중복 등록, 연결을 닫지 않음)를 일부러 드러내기 위해서다. 프로덕션 빌드에서는 한 번만 실행된다. effect가 두 번 돌아 문제가 생긴다면 고칠 곳은 StrictMode가 아니라 cleanup이다.
 
 ### 데이터 요청은 effect보다 전용 도구로
 
@@ -44,9 +36,7 @@ effect 안에서 `fetch`하는 방식은 여전히 동작하지만 경쟁 상태
 
 ## 클래스 컴포넌트의 생명주기 메서드
 
-![생명주기 메서드 다이어그램](/images/til/FRONTEND/React/-inflearn-%EC%B2%98%EC%9D%8C-%EB%A7%8C%EB%82%98%EB%8A%94-%EB%A6%AC%EC%95%A1%ED%8A%B8/%EC%8B%A4%EC%8A%B5_%EC%A0%95%EB%A6%AC/6_State_and_LifeCycle.assets/cNfpEph.png)
-
-(출처: [React Lifecycle Methods diagram](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/))
+전체 흐름 그림은 [React Lifecycle Methods diagram](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/)에 있다.
 
 | 단계 | 호출 순서 | 하는 일 |
 | --- | --- | --- |
@@ -80,10 +70,6 @@ componentDidUpdate(prevProps, prevState, snapshot) {
 }
 ```
 
-![보정 전: 보던 위치가 밀림](/images/til/FRONTEND/React/-inflearn-%EC%B2%98%EC%9D%8C-%EB%A7%8C%EB%82%98%EB%8A%94-%EB%A6%AC%EC%95%A1%ED%8A%B8/%EC%8B%A4%EC%8A%B5_%EC%A0%95%EB%A6%AC/6_State_and_LifeCycle.assets/1POUOrQ.gif)
-
-![보정 후: 위치 유지](/images/til/FRONTEND/React/-inflearn-%EC%B2%98%EC%9D%8C-%EB%A7%8C%EB%82%98%EB%8A%94-%EB%A6%AC%EC%95%A1%ED%8A%B8/%EC%8B%A4%EC%8A%B5_%EC%A0%95%EB%A6%AC/6_State_and_LifeCycle.assets/gS01iZ9.gif)
-
 Hooks에는 이 메서드에 딱 대응하는 API가 없다. 함수 컴포넌트에서는 항목을 추가하기 직전의 높이를 ref에 담아 두고, `useLayoutEffect`에서 늘어난 만큼 보정한다.
 
 ## 대응표
@@ -94,6 +80,7 @@ Hooks에는 이 메서드에 딱 대응하는 API가 없다. 함수 컴포넌트
 | `componentDidUpdate` (특정 값 변경 시) | `useEffect(() => { ... }, [value])` |
 | `componentWillUnmount` | `useEffect`가 반환한 cleanup |
 | `shouldComponentUpdate` | `React.memo` (React Compiler를 쓰면 대부분 자동) |
+| 화면에 그리기 전 DOM 측정 | `useLayoutEffect` |
 | `getSnapshotBeforeUpdate` | 직접 대응 없음. ref + `useLayoutEffect` |
 | `componentDidCatch` | 직접 대응 없음. 클래스 에러 바운더리나 `react-error-boundary` |
 

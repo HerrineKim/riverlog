@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations"]
 ---
 
-> nanati의 「[CSS Animation을 간단하게 만들어주는 라이브러리 모음](https://nanati.me/css-animation-library/)」(2021.09)의 라이브러리 목록에 CSS 애니메이션 기본 개념을 더해 재구성한 노트입니다. 라이브러리 링크는 2026년 10월에 다시 확인했습니다.
+> nanati의 「[CSS Animation을 간단하게 만들어주는 라이브러리 모음](https://nanati.me/css-animation-library/)」(2021.09)의 라이브러리 목록에 CSS 애니메이션 기본 개념을 더해 재구성한 노트다. 라이브러리 링크는 2026년 10월에 다시 확인했다.
 
 ## 두 가지 방법
 
@@ -64,7 +64,7 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 
 ## 부드럽게 만드는 원칙
 
-- **`transform`과 `opacity`만 움직인다.** 이 둘은 레이아웃·페인트를 다시 하지 않고 합성(composite) 단계에서 처리된다. `width`, `top`, `margin`을 움직이면 매 프레임 레이아웃을 다시 계산해 끊긴다. 이유는 [[browser-rendering|브라우저 렌더링 과정]], 함수는 [[transform|transform: 이동·회전·확대·기울이기]]에 있다.
+- **`transform`과 `opacity`만 움직인다.** 합성만 다시 돌기 때문이다([[browser-rendering#변경이 다시 도는 단계|변경이 다시 도는 단계]]). `width`·`top`·`margin`은 매 프레임 레이아웃을 다시 한다. 함수는 [[transform|transform: 이동·회전·확대·기울이기]]에 있다.
 - `will-change: transform`은 곧 움직일 요소에만 잠깐 쓴다. 남발하면 메모리를 낭비한다.
 - 짧게 쓴다. UI 피드백은 100~300ms 안팎이면 충분하다.
 - **움직임 줄이기 설정을 존중한다.** 전정 장애가 있는 사용자는 큰 움직임에 어지러움을 느낀다.

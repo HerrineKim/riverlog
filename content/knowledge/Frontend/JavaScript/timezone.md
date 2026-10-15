@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/213", "https://ui.toast.com/weekly-pick/ko_20170804", "https://ui.toast.com/weekly-pick/ko_20170922", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/ZonedDateTime"]
 ---
 
-> 김동우의 TOAST UI 글 「[자바스크립트에서 타임존 다루기](https://ui.toast.com/weekly-pick/ko_20170804)」(2017.08)와 「[자바스크립트에서 타임존 다루기 (2)](https://ui.toast.com/weekly-pick/ko_20170922)」(2017.09)를 바탕으로 재구성한 노트입니다.
+> 김동우의 TOAST UI 글 「[자바스크립트에서 타임존 다루기](https://ui.toast.com/weekly-pick/ko_20170804)」(2017.08)와 「[자바스크립트에서 타임존 다루기 (2)](https://ui.toast.com/weekly-pick/ko_20170922)」(2017.09)를 바탕으로 재구성한 노트다.
 
 ## 용어
 

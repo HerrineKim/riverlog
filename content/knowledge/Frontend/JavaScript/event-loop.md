@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://riverkim.kr/324", "https://riverkim.kr/114"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
+> riverkim.kr에 쓴 글들을 다시 정리한 노트다.
 
 ## 싱글 스레드와 블로킹
 

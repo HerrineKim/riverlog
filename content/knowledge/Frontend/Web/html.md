@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/280", "https://riverkim.kr/282", "https://www.frontendinterviewhandbook.com/kr/html-questions"]
 ---
 
-> 「DOCTYPE과 렌더링 모드」와 「HTML5와 웹 플랫폼」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 HTML Living Standard·MDN으로 확인해 보강했습니다.
+> 「DOCTYPE과 렌더링 모드」와 「HTML5와 웹 플랫폼」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 HTML Living Standard·MDN으로 확인해 보강한 노트다.
 
 HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 마크업 언어다. 마크업 언어란 태그 등을 이용해 문서나 데이터의 구조를 명시하는 언어로, HTML과 Markdown이 대표적이다. 스타일은 CSS가, 동작은 JavaScript가 맡고 HTML은 "무엇이 어떤 의미의 내용인가"를 표현한다.
 
@@ -47,11 +47,7 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 
 ## 요소와 속성
 
-- **요소(element)** = 여는 태그 + 내용 + 닫는 태그. 예: `<h1>안녕하세요</h1>`
-  - 내용이 없는 빈 요소: `br`, `hr`, `img`, `input`, `link`, `meta`
-  - 요소는 중첩될 수 있다.
-- **속성(attribute)** 은 시작 태그에 `이름="값"` 쌍으로 적어 부가 정보를 준다. 예: `<a href="https://google.com">`
-  - 태그마다 사용할 수 있는 속성이 다르며, 공백·따옴표 등 작성 방식은 통일한다.
+**요소(element)** 는 여는 태그 + 내용 + 닫는 태그(`<h1>안녕하세요</h1>`)이고 서로 중첩된다. `br`, `hr`, `img`, `input`, `link`, `meta`는 내용이 없는 빈 요소다. **속성(attribute)** 은 시작 태그에 `이름="값"` 쌍으로 적는 부가 정보(`<a href="https://google.com">`)이며, 태그마다 쓸 수 있는 속성이 다르다.
 
 ### 전역 속성(Global Attribute)
 
@@ -67,33 +63,23 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 
 ## 시맨틱 태그
 
-의미 없는 `div`로만 영역을 나누는 대신, 영역의 **의미**를 드러내는 태그를 쓴다. `header`, `nav`, `main`, `section`, `article`, `aside`, `footer`가 대표적이다. 개발자, 검색 엔진, 스크린 리더 모두에게 의미 있는 구조를 전달하고 **SEO**와 접근성의 기본이 된다.
-
-태그별 의미, 제목 계층, `<article>`과 `<section>`을 고르는 법은 [[semantic-html|시맨틱 HTML과 문서 구조]]에 정리했다.
+의미 없는 `div`로만 영역을 나누는 대신, 영역의 **의미**를 드러내는 태그를 쓴다. `header`, `nav`, `main`, `section`, `article`, `aside`, `footer`가 대표적이다. 개발자, 검색 엔진, 스크린 리더 모두에게 의미 있는 구조를 전달하고 **SEO**와 접근성의 기본이 된다. 태그별 의미, 제목 계층, `<article>`과 `<section>`을 고르는 법은 [[semantic-html|시맨틱 HTML과 문서 구조]]에 정리했다.
 
 ## 자주 쓰는 태그
 
-### 텍스트 요소
+### 텍스트와 그룹 요소
 
-| 태그 | 설명 |
-| --- | --- |
-| `<a>` | `href`로 다른 URL에 연결하는 하이퍼링크 |
-| `<b>` / `<strong>` | 굵은 글씨 / **중요한 내용**의 강조(의미론적 차이) |
-| `<i>` / `<em>` | 기울임 글씨 / 강세를 둔 강조 |
-| `<br>` | 줄 바꿈 |
-| `<img>` | `src`로 이미지 표시 |
-| `<span>` | 의미 없는 인라인 컨테이너 |
-
-### 그룹 콘텐츠
-
-| 태그 | 설명 |
-| --- | --- |
-| `<p>` | 하나의 문단 |
-| `<hr>` | 주제의 분리(수평선으로 표현) |
-| `<ol>` / `<ul>` | 순서 있는 / 순서 없는 목록 |
-| `<pre>` | 작성한 내용을 공백까지 그대로 표현(보통 고정폭 글꼴) |
-| `<blockquote>` | 긴 인용문 |
-| `<div>` | 의미 없는 블록 컨테이너 |
+| 태그 | 종류 | 설명 |
+| --- | --- | --- |
+| `<a>` | 텍스트 | `href`로 다른 URL에 연결하는 하이퍼링크 |
+| `<b>` / `<strong>` | 텍스트 | 굵은 글씨 / **중요한 내용**의 강조(의미론적 차이) |
+| `<i>` / `<em>` | 텍스트 | 기울임 글씨 / 강세를 둔 강조 |
+| `<br>` / `<img>` | 텍스트 | 줄 바꿈 / `src`로 이미지 표시 |
+| `<p>` | 그룹 | 하나의 문단 |
+| `<hr>` | 그룹 | 주제의 분리(수평선으로 표현) |
+| `<ol>` / `<ul>` | 그룹 | 순서 있는 / 순서 없는 목록 |
+| `<pre>` / `<blockquote>` | 그룹 | 공백까지 그대로 표현 / 긴 인용문 |
+| `<span>` / `<div>` | 컨테이너 | 의미 없는 인라인 / 블록 컨테이너 |
 
 ### 표(table)
 
@@ -111,9 +97,9 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 </table>
 ```
 
-## form과 input
+## form
 
-`<form>`은 사용자 입력 데이터를 서버로 제출하는 영역이다.
+`<form>`은 사용자 입력 데이터를 서버로 제출하는 영역이다. 안에 든 입력 요소의 `name`과 `value`가 이름/값 쌍으로 전송된다.
 
 | form 속성 | 설명 |
 | --- | --- |
@@ -121,15 +107,7 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 | `method` | 제출할 때 사용할 HTTP 메서드(`GET` 또는 `POST`) |
 | `enctype` | POST일 때 데이터 형식. 기본값 `application/x-www-form-urlencoded`, 파일 전송 시 `multipart/form-data` |
 
-`<input>`은 `type`에 따라 동작이 완전히 달라진다.
-
-- 공통 속성: `name`과 `value`가 이름/값 쌍으로 전송된다. `required`, `readonly`, `autofocus`, `autocomplete`, `disabled` 등.
-- 일반 입력: `text`, `password`(입력값을 가림), `email`(형식이 아니면 제출 불가), `number`(`min`·`max`·`step`), `file`(`accept`로 파일 형식 지정)
-- 항목 선택: `checkbox`(다중 선택), `radio`(단일 선택). 같은 그룹은 같은 `name`을 주고 항목마다 `value`를 지정한다.
-- 기타: `color`, `date` 같은 picker, 사용자에게 보이지 않고 값만 전송하는 `hidden`
-- type별 용도와 `select`·`textarea`·`fieldset`·`datalist`는 [[html-input-types|HTML 입력 요소 치트시트]]에 정리했다.
-
-모든 input에는 `<label for>`를 연결해 터치 영역과 접근성을 확보한다. 연결 방법과 예시는 [[html-input-types|HTML 입력 요소 치트시트]]의 label 절에 있다.
+`<input>`의 type별 동작, `select`·`textarea`·`fieldset`·`datalist`, 모든 입력에 `<label for>`를 잇는 법은 [[html-input-types|HTML 입력 요소 치트시트]]에 있다.
 
 ## 링크의 target과 rel
 

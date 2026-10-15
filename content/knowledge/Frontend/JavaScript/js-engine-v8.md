@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://ryankim.hashnode.dev/js", "https://v8.dev/blog/maglev", "https://v8.dev/blog/sparkplug"]
 ---
 
-> ryankim.hashnode.dev의 글 「[Js는 인터프리터 언어일까, 컴파일 언어일까?](https://ryankim.hashnode.dev/js)」(2024.02)를 바탕으로 재구성한 노트입니다.
+> ryankim.hashnode.dev의 글 「[Js는 인터프리터 언어일까, 컴파일 언어일까?](https://ryankim.hashnode.dev/js)」(2024.02)를 바탕으로 재구성한 노트다.
 
 ## 질문
 

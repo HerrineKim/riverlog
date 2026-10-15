@@ -8,7 +8,7 @@ date: "2026-10-15"
 sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://www.w3.org/International/questions/qa-html-language-declarations", "https://developers.google.com/search/docs/specialty/international/localized-versions", "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites"]
 ---
 
-> Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 다국어 페이지 문항 두 개를 바탕으로, W3C 국제화 문서와 Google 검색 센터 문서로 확인해 재구성한 노트입니다.
+> Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 다국어 페이지 문항 두 개를 바탕으로, W3C 국제화 문서와 Google 검색 센터 문서로 확인해 재구성한 노트다.
 
 ## 두 가지 일: 국제화와 현지화
 
@@ -36,7 +36,7 @@ i18n을 먼저 해 두지 않으면 언어를 하나 늘릴 때마다 화면을 
 | 선택기 | 언어 이름을 그 언어로 쓴다(「English」, 「日本語」). 국기는 나라를 뜻하지 언어를 뜻하지 않으므로 쓰지 않는다 |
 | 같은 페이지의 섞인 언어 | 한 페이지는 한 언어가 기본이다. 일부 다른 언어 문장에는 그 요소에 `lang`을 따로 준다 |
 
-Next.js 같은 프레임워크는 로캘별 라우팅과 `Accept-Language` 감지를 미들웨어로 지원하고, 메시지 관리는 i18next·FormatJS 같은 라이브러리가 맡는다.
+Next.js 같은 프레임워크는 로캘별 라우팅을 지원하고, `Accept-Language` 감지는 `proxy.ts`(Next.js 16 이전 이름은 middleware)에서 한다. 메시지 관리는 i18next·FormatJS 같은 라이브러리가 맡는다.
 
 ## HTML로 언어 표시하기
 

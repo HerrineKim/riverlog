@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/702242eb995e4cb2b7ca68cd66c64d7a", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://tc39.es/process-document/", "https://github.com/tc39/proposals/blob/main/finished-proposals.md"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「ECMAScript와 ECMAScript 2022의 제안 알아보기」, 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「ECMAScript와 ECMAScript 2022의 제안 알아보기」, 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로 재구성한 노트다.
 
 **ECMAScript**는 JavaScript의 핵심 문법과 내장 객체를 정의한 언어 표준이다. 규격 문서의 번호는 **ECMA-262**이고, ECMA International의 기술 위원회 **TC39**가 관리한다. JavaScript는 이 표준을 구현한 언어이고, 브라우저의 DOM이나 Node.js의 `fs`처럼 실행 환경이 덧붙이는 API는 ECMAScript 바깥이다.
 

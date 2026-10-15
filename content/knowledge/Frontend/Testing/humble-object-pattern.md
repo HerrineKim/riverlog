@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://d2.naver.com/helloworld/9921217"]
 ---
 
-> 서동유의 「[테스트는 어떻게 좋은 코드를 만드는가(feat. 험블 객체 패턴)](https://d2.naver.com/helloworld/9921217)」(NAVER D2, 2025.03)를 바탕으로 재구성한 노트입니다.
+> 서동유의 「[테스트는 어떻게 좋은 코드를 만드는가(feat. 험블 객체 패턴)](https://d2.naver.com/helloworld/9921217)」(NAVER D2, 2025.03)를 바탕으로 재구성한 노트다.
 
 ## 테스트가 갈수록 고통스러워지는 이유
 

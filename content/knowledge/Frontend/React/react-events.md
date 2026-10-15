@@ -4,6 +4,7 @@ concept: "React Event"
 summary: "JSX 속성으로 핸들러 함수를 넘기는 React의 이벤트 처리 방식과 DOM 이벤트와의 차이."
 tags: ["react", "event", "frontend"]
 source: til
+date: "2026-10-13"
 ---
 
 **이벤트(Event)** 는 사용자의 클릭·입력 같은 사건이고, **이벤트 핸들러**는 그 사건이 일어났을 때 실행되는 함수다. React에서는 `addEventListener`를 직접 호출하는 대신, JSX 속성으로 핸들러 함수를 넘긴다. 바닐라 JS에서 이벤트 리스너를 일일이 붙이던 것과 비교하면 React의 큰 장점 중 하나다.

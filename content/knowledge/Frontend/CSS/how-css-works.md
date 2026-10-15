@@ -1,14 +1,14 @@
 ---
 title: "CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지"
 concept: "How CSS Works"
-summary: "속성 암기보다 먼저 익혀야 할 CSS의 핵심 개념(캐스케이드·상속·특정도, 박스 모델, 일반 흐름, 서식 맥락, 흐름 안팎, 정렬, 크기 결정)과, 브라우저가 CSS를 해석·계산·캐스케이드·레이아웃·페인트·합성해 픽셀로 만드는 과정. :hover 같은 상호작용이 이 과정의 어디를 다시 도는지까지."
+summary: "속성 암기보다 먼저 익혀야 할 CSS의 핵심 개념(캐스케이드·상속·특정도, 박스 모델, 일반 흐름, 서식 맥락, 흐름 안팎, 정렬, 크기 결정)과, 브라우저가 CSS를 해석·캐스케이드·계산해 레이아웃으로 넘기는 과정."
 tags: ["css", "browser", "rendering", "layout", "frontend"]
 source: other
 date: "2026-10-13"
 sources: ["https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/", "https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade"]
 ---
 
-> Rachel Andrew의 「[CSS를 배우는 방법](https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/)」(2019.02)과 Greg Whitworth의 「[중괄호에서 픽셀로](https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/)」(Braces to Pixels, 2019.01, 웹액츄얼리 번역)를 바탕으로 재구성한 노트입니다.
+> Rachel Andrew의 「[CSS를 배우는 방법](https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/)」(2019.02)과 Greg Whitworth의 「[중괄호에서 픽셀로](https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/)」(Braces to Pixels, 2019.01, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다.
 
 ## 속성보다 원리
 
@@ -37,23 +37,7 @@ CSS 속성과 값은 외울 필요가 없다. 필요할 때 MDN에서 찾으면 
 
 브라우저가 CSS를 처리하는 전체 흐름은 [[browser-rendering|브라우저 렌더링 과정]]에 있다. 여기서는 CSS 쪽 단계를 자세히 본다.
 
-```text
-CSS 텍스트
-  │ 1. 해석(parse): 토큰화 → 선택자·속성·값 구조. 축약형은 긴 속성으로 풀린다
-  ▼
-규칙 목록
-  │ 2. 캐스케이드: 요소마다 이기는 선언을 고른다
-  │ 3. 값 계산: em→px, vh→px, calc() 계산, currentColor→실제 색
-  ▼
-계산된 스타일 (CSSOM, getComputedStyle()이 돌려주는 값)
-  │ 4. 레이아웃: 박스 트리를 만들고 크기·위치 결정
-  ▼
-박스 트리
-  │ 5. 페인트: 쌓임 순서대로 배경 → 테두리 → 내용을 비트맵으로
-  │ 6. 합성(composite): 레이어 비트맵을 겹쳐 화면에 표시
-  ▼
-픽셀
-```
+CSS 텍스트는 해석(축약형은 긴 속성으로 풀린다) → 캐스케이드(요소마다 이기는 선언 고르기) → 값 계산(`em`·`vh`·`calc()`를 px로) → 레이아웃 → 페인트 → 합성을 거친다. 값 계산까지 끝난 결과가 `getComputedStyle()`이 돌려주는 계산된 스타일이다. `:hover` 같은 변경이 어느 단계부터 다시 도는지는 [[browser-rendering#변경이 다시 도는 단계|브라우저 렌더링 과정의 표]]에 있다.
 
 ### 캐스케이드
 
@@ -88,23 +72,11 @@ CSS 텍스트
 - `z-index`는 레이어를 만드는 것이 아니라 **쌓임 맥락(stacking context)**을 만들어 그리는 순서를 바꾼다.
 - 합성기(compositor)는 레이어 비트맵을 겹쳐 화면에 낸다. `transform`·`opacity` 애니메이션은 해당 요소를 별도 레이어로 두면 매 프레임 다시 그리지 않고 **위치만 옮겨 합성**할 수 있다. 합성기는 보통 별도 스레드에서 돌아 메인 스레드가 바빠도 애니메이션이 부드럽다.
 
-## 상호작용은 어디를 다시 도나
-
-버튼에 `:hover`로 배경색만 바꾸는 경우:
-
-1. 마우스가 움직이면 브라우저가 **히트 테스트(hit testing)**로 포인터 아래 박스를 찾는다.
-2. 그 박스와 자식에 대해 스타일과 캐스케이드를 다시 계산한다. `:hover` 규칙이 이긴다.
-3. 바뀐 것이 색뿐이므로 **레이아웃을 건너뛰고** 다시 페인트한다.
-4. 새 비트맵을 합성기에 넘겨 화면에 표시한다.
-
-크기·위치를 바꾸는 속성은 레이아웃부터 다시 돈다. 색·그림자는 페인트부터, `transform`·`opacity`는 합성만 다시 한다. 애니메이션에 `transform`·`opacity`를 권하는 이유다.
-
 ## 정리
 
 - 속성은 찾아 쓰고, 캐스케이드·박스 모델·흐름·서식 맥락·크기 결정을 이해한다.
 - 이상하게 동작하면 최소 재현 예제와 개발자 도구로 원인을 찾는다.
 - CSS는 해석 → 캐스케이드 → 계산 → 레이아웃 → 페인트 → 합성을 거쳐 픽셀이 된다.
 - 캐스케이드는 출처·중요도 → 맥락 → 인라인 스타일 → 레이어 → 특정도 → 순서로 비교한다.
-- 바꾸는 속성에 따라 레이아웃·페인트·합성 중 어디부터 다시 도는지가 달라진다.
 
 관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[selectors|CSS 선택자와 우선순위]], [[box-model|박스 모델과 display]], [[css-basics|CSS 기초: 문법, 적용 방법, 단위]], [[position|CSS position과 z-index]]

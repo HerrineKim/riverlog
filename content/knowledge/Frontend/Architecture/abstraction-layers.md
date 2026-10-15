@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/gradation-thinking"]
 ---
 
-> 테오(teo)의 「[잘하는 개발자가 되는 그라데이션 사고법 (추상화 계층과 데이터 흐름 이해하기)](https://velog.io/@teo/gradation-thinking)」(2023.06)을 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[잘하는 개발자가 되는 그라데이션 사고법 (추상화 계층과 데이터 흐름 이해하기)](https://velog.io/@teo/gradation-thinking)」(2023.06)을 바탕으로 재구성한 노트다.
 
 ## 구현: 요구사항을 데이터로 본다
 

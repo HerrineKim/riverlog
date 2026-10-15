@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/Atomic-Design-Pattern", "https://atomicdesign.bradfrost.com/chapter-2/"]
 ---
 
-> 테오(teo)의 「[Atomic Design Pattern의 Best Practice 여정기](https://velog.io/@teo/Atomic-Design-Pattern)」(2022.06)과 Brad Frost의 『[Atomic Design](https://atomicdesign.bradfrost.com/chapter-2/)』을 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[Atomic Design Pattern의 Best Practice 여정기](https://velog.io/@teo/Atomic-Design-Pattern)」(2022.06)과 Brad Frost의 『[Atomic Design](https://atomicdesign.bradfrost.com/chapter-2/)』을 바탕으로 재구성한 노트다.
 
 ## Atomic Design이란
 

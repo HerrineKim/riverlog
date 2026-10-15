@@ -76,10 +76,7 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 
 세션 저장소 확장(Redis), 세션 고정 공격, 토큰(JWT) 방식과의 비교는 [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]에 있다.
 
-### 예: Django의 세션
-
-- 세션은 미들웨어로 구현된다. `SessionMiddleware`가 요청 전반의 세션을 관리하고, `AuthenticationMiddleware`가 세션을 이용해 사용자를 요청(`request.user`)에 연결한다.
-- 세션 데이터는 DB의 `django_session` 테이블에 저장되고, 브라우저는 세션 ID가 담긴 쿠키만 가진다.
+Django는 `SessionMiddleware`로 세션을 처리하고 세션 데이터를 DB에 둔다 → [[auth-user|Django User와 인증]].
 
 ## 핵심 정리
 
@@ -87,4 +84,4 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 - 세션 = 상태는 서버에, 식별자(세션 ID)만 쿠키에 두는 방식.
 - 쿠키가 "자동으로 전송된다"는 성질 때문에 [CSRF](/knowledge/dictionary/frontend/web/web-security) 같은 공격이 가능해진다. `HttpOnly`·`Secure`·`SameSite`로 범위를 좁힌다.
 
-관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[auth-user|Django User와 인증]], [[auth-jwt-passport|NestJS JWT 인증(토큰 방식)]], [[auth-flow|React로 회원가입·로그인 구현하기]], [[oauth2|OAuth 2.0]], [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]], [[devtools-network|DevTools Network 패널]]
+관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[auth-user|Django User와 인증]], [[auth-jwt-passport|NestJS JWT 인증(토큰 방식)]], [[swr|SWR로 서버 데이터 가져오기(로그인 상태 판단)]], [[oauth2|OAuth 2.0]], [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]], [[devtools-network|DevTools Network 패널]]

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://miryang.dev/blog/how-studied-frontend", "https://roadmap.sh/frontend"]
 ---
 
-> MiryangJung의 「내가 프론트엔드를 학습한 방법」(2022.05)과 roadmap.sh의 Frontend 로드맵을 바탕으로 재구성한 노트입니다.
+> MiryangJung의 「내가 프론트엔드를 학습한 방법」(2022.05)과 roadmap.sh의 Frontend 로드맵을 바탕으로 재구성한 노트다.
 
 프론트엔드는 배울 것이 많아 보이지만, **앞 단계가 다음 단계의 토대**가 되도록 순서를 잡으면 수월하다. 라이브러리보다 웹 표준이 먼저이고, 프레임워크는 하나만 깊게 익힌 뒤 범주로 넓힌다.
 

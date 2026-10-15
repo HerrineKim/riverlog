@@ -69,7 +69,7 @@ key는 배열을 만드는 위치의 엘리먼트에 준다. 항목을 컴포넌
 
 ## key가 성능에 미치는 영향
 
-> 이 절은 Nadia Makarevich의 「[React key attribute: best practices for performant lists](https://www.developerway.com/posts/react-key-attribute)」(2022.05)를 요약·재구성했습니다.
+> 이 절은 Nadia Makarevich의 「[React key attribute: best practices for performant lists](https://www.developerway.com/posts/react-key-attribute)」(2022.05)를 요약·재구성했다.
 
 ### 리렌더링 때 key가 쓰이는 방식
 

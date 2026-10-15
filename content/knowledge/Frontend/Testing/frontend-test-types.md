@@ -1,14 +1,14 @@
 ---
 title: "프론트엔드 테스트의 종류와 도구"
 concept: "Frontend Testing"
-summary: "정적·단위·통합·E2E 테스트가 각각 무엇을 확인하는지, 테스트 대역(더미·스텁·스파이·페이크·목)의 차이, 구현이 아니라 사용자 행위를 검증하는 원칙, 그리고 층마다 쓰는 도구(TypeScript·ESLint, Vitest·Jest, Testing Library, MSW, Playwright)."
+summary: "정적·단위·통합·E2E 테스트가 각각 무엇을 확인하는지, 테스트 대역(더미·스텁·스파이·페이크·목)의 차이, 구현이 아니라 사용자 행위를 검증하는 원칙과 테스트 작성 원칙(AAA, 블랙박스, 현실적인 데이터), 그리고 층마다 쓰는 도구(TypeScript·ESLint, Vitest·Jest, Testing Library, MSW, Playwright)."
 tags: ["testing", "frontend", "javascript", "tdd"]
 source: other
 date: "2026-10-13"
 sources: ["https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0", "https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html"]
 ---
 
-> 이현호의 「[테스트를 처음 공부하는 프론트엔드 개발자의 개념 다지기](https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0)」(2022.06)와 김정환의 「[자스민으로 프론트엔드 테스트 코드 작성하기](https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html)」(2017.03)를 바탕으로 재구성한 노트입니다.
+> 이현호의 「[테스트를 처음 공부하는 프론트엔드 개발자의 개념 다지기](https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0)」(2022.06)와 김정환의 「[자스민으로 프론트엔드 테스트 코드 작성하기](https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html)」(2017.03)를 바탕으로 재구성한 노트다. 테스트 작성 원칙은 Yoni Goldberg의 「[JavaScript Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md)」에서 뽑았다.
 
 ## 프론트엔드 테스트란
 
@@ -63,6 +63,22 @@ sources: ["https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-
 
 **행위 중심이 표준이다.** Testing Library는 state나 props에 접근하는 API를 아예 주지 않고, 사용자가 화면을 찾는 방식(텍스트, 역할, 레이블)으로만 요소를 찾게 한다. 역할과 접근 가능한 이름으로 요소를 찾는 방법은 [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]에 있다.
 
+## 테스트 작성 원칙
+
+모든 원칙의 출발점은 한 문장이다. **테스트는 단순하고 짧고 추상화 없이, 보자마자 의미를 알 수 있게 만든다.** 테스트 코드는 제품 코드보다 덜 고민하고 읽혀야 한다.
+
+| 원칙 | 내용 |
+| --- | --- |
+| 이름에 세 가지를 담는다 | 무엇을 테스트하는지, 어떤 상황에서, 기대 결과가 무엇인지 |
+| AAA 패턴 | 준비(Arrange) → 실행(Act) → 검증(Assert)으로 나눠 쓴다 |
+| 블랙박스로 테스트한다 | 내부 구현이 아니라 공개된 동작·결과를 검증한다. 구현을 바꿔도 깨지지 않아야 한다 |
+| 현실적인 입력 데이터 | `"foo"` 같은 더미 대신 실제와 비슷한 데이터를 쓴다 |
+| 테스트마다 자기 데이터 | 전역 픽스처를 공유하지 말고 테스트 안에서 필요한 데이터를 만든다 |
+| 에러는 기대로 검증 | try/catch로 잡지 말고 `expect(...).toThrow()`처럼 단언한다 |
+| 어느 환경에서나 같은 결과 | 타임존·현재 시각·실행 순서에 기대지 않는다. 시간은 가짜 타이머로 고정한다 |
+
+테스트 자체의 품질은 커버리지, 뮤테이션 테스트(코드를 일부러 바꿔도 테스트가 실패하는지 확인), 테스트용 린트 규칙(`eslint-plugin-jest`, `eslint-plugin-testing-library`)으로 점검한다.
+
 ## 도구 고르기
 
 | 용도 | 기본 선택 | 대안·비고 |
@@ -74,7 +90,16 @@ sources: ["https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-
 | E2E | **Playwright** (Chromium·Firefox·WebKit, 병렬 실행, 자동 대기) | Cypress는 대화형 디버깅 UI가 강점. Selenium은 여러 언어·레거시 브라우저 그리드가 필요할 때 |
 | 시각 회귀 | Playwright 스크린샷 비교, Storybook + Chromatic | |
 
-Jest·Vitest의 기본 API(`describe`, `it`, `expect`, matcher)는 [[tdd|프론트엔드에서의 TDD]]에 표로 정리했다.
+| 기본 API | 역할 |
+| --- | --- |
+| `describe` | 관련 테스트를 그룹으로 묶는다 |
+| `test` / `it` | 테스트 하나 |
+| `expect(...).matcher()` | 결과 검증. `toBe`, `toEqual`, `toHaveBeenCalledTimes`, `toThrow` 등 |
+| `vi.fn()` / `jest.fn()` | 호출 여부·인자·횟수를 기록하는 스파이 함수 |
+| `render`, `screen.getByRole` | Testing Library로 렌더링하고 역할로 요소를 찾는다 |
+| `userEvent.setup()` → `await user.click()` | 실제 사용자 동작(포커스 이동, 키 입력 순서)을 흉내 낸다. `fireEvent`는 user-event가 지원하지 않을 때만 |
+
+`toHaveTextContent`, `toBeInTheDocument` 같은 DOM 전용 matcher는 `@testing-library/jest-dom`을 설정해야 쓸 수 있다. 실행 옵션(한 파일 커버리지, 특정 테스트 빼기)은 [[jest-practices|Jest·Vitest 실행 팁]]에 있다.
 
 ## 역사
 
@@ -87,6 +112,7 @@ Jest·Vitest의 기본 API(`describe`, `it`, `expect`, matcher)는 [[tdd|프론�
 - 정적 검사 → 단위 → 통합 → E2E 순으로 비용과 실제감이 함께 오른다. 프론트엔드는 통합 테스트의 효율이 가장 좋다.
 - 「목」은 더미·스텁·스파이·페이크·목을 구분해서 쓴다. 네트워크는 MSW로 요청 단에서 가로챈다.
 - **사용자가 보는 행위를 검증한다.** 내부 구현을 검사하는 테스트는 리팩터링을 막는다.
-- 2026년 기준 기본 조합은 TypeScript·ESLint + Vitest + Testing Library + MSW + Playwright다.
+- 테스트는 짧고 읽기 쉽게: 이름에 대상·상황·기대 결과, 본문은 AAA.
+- 기본 조합은 TypeScript·ESLint + Vitest + Testing Library + MSW + Playwright다.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[jest-practices|JavaScript 테스트 원칙과 Jest 실행 팁]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]]
+관련 노트: [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[jest-practices|Jest·Vitest 실행 팁]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]]

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://www.epicweb.dev/the-webs-next-transition", "https://remix.run/blog/merging-remix-and-react-router"]
 ---
 
-> Kent C. Dodds의 글 「[The Web's Next Transition](https://www.epicweb.dev/the-webs-next-transition)」(EpicWeb.dev, 2024.03)을 요약·재구성한 노트입니다. 단계별 코드 변화는 TodoMVC로 만든 예제 저장소 [kentcdodds/the-webs-next-transformation](https://github.com/kentcdodds/the-webs-next-transformation)에서 볼 수 있습니다.
+> Kent C. Dodds의 글 「[The Web's Next Transition](https://www.epicweb.dev/the-webs-next-transition)」(EpicWeb.dev, 2024.03)을 요약·재구성한 노트다. 단계별 코드 변화는 TodoMVC로 만든 예제 저장소 [kentcdodds/the-webs-next-transformation](https://github.com/kentcdodds/the-webs-next-transformation)에서 볼 수 있다.
 
 ## 출발점
 

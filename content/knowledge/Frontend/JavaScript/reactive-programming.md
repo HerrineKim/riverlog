@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/reactive-programming", "https://velog.io/@teo/rxjs"]
 ---
 
-> 테오(teo)의 「[프로그래밍 패러다임과 반응형 프로그래밍 그리고 Rx](https://velog.io/@teo/reactive-programming)」(2022.02)와 「[Rxjs 한번 배워보실래요?](https://velog.io/@teo/rxjs)」(2022.10)를 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[프로그래밍 패러다임과 반응형 프로그래밍 그리고 Rx](https://velog.io/@teo/reactive-programming)」(2022.02)와 「[Rxjs 한번 배워보실래요?](https://velog.io/@teo/rxjs)」(2022.10)를 바탕으로 재구성한 노트다.
 
 ## 패러다임이란
 

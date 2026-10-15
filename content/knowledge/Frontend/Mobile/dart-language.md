@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/9fa8948af7f745189515ba6301c67c28", "https://80000coding.notion.site/7cd69c275cf1420dbe661c8dac21fb1f", "https://80000coding.notion.site/fb62fce7ee32488fb42a057cb438019c", "https://dart.dev/null-safety", "https://dart.dev/libraries/async/async-await"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Flutter] const vs final」, 「Null safety 라는게 뭐지?」, 「Asynchronous programming in Dart」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Flutter] const vs final」, 「Null safety 라는게 뭐지?」, 「Asynchronous programming in Dart」를 바탕으로 재구성한 노트다.
 
 **Dart**는 Google이 만든 객체 지향 언어로, [[flutter-architecture|Flutter]]의 앱 코드를 쓰는 언어다. 문법은 Java·JavaScript와 비슷해 다른 언어를 써 봤다면 금방 읽힌다. 처음 걸리는 지점은 대개 상수 선언, null 처리, 비동기 세 가지다.
 

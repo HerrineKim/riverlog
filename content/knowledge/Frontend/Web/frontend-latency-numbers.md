@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://vercel.com/blog/latency-numbers-every-web-developer-should-know"]
 ---
 
-> Malte Ubl(Vercel)의 글 「[Latency Numbers Every Frontend Developer Should Know](https://vercel.com/blog/latency-numbers-every-web-developer-should-know)」(2024.04)를 요약·재구성한 노트입니다. Jeff Dean의 「Latency Numbers Every Programmer Should Know」를 프론트엔드 관점으로 옮긴 글입니다.
+> Malte Ubl(Vercel)의 글 「[Latency Numbers Every Frontend Developer Should Know](https://vercel.com/blog/latency-numbers-every-web-developer-should-know)」(2024.04)를 요약·재구성한 노트다. Jeff Dean의 「Latency Numbers Every Programmer Should Know」를 프론트엔드 관점으로 옮긴 글이다.
 
 ## 왜 숫자를 외워 두나
 

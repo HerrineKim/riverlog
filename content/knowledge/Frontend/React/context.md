@@ -60,18 +60,9 @@ function ThemedButton() {
 }
 ```
 
-## 전역 상태 관리와 Flux 패턴
+## Context는 전달 도구이지 상태 관리 도구가 아니다
 
-Context는 값을 **전달**하는 도구이지 상태 관리 도구가 아니다. 값이 자주 바뀌고 구독자가 많으면 바뀔 때마다 모든 구독자가 다시 그려진다. 이럴 때는 필요한 조각만 구독하게 해 주는 전역 상태 라이브러리를 쓴다.
-
-| 도구 | 성격 |
-| --- | --- |
-| Redux Toolkit | Flux 패턴(Action → Store → View의 단방향 흐름)의 표준 구현. 큰 팀·복잡한 상태 ([[redux\|Redux와 react-redux]]) |
-| Zustand | 훅 하나로 쓰는 가벼운 스토어. selector로 필요한 값만 구독 |
-| Jotai | atom 단위로 상태를 쪼개 조합 |
-| `useReducer` + Context | 라이브러리 없이 만드는 작은 Flux |
-
-과거에 쓰이던 Recoil은 2025년 1월 저장소가 보관(archived)되어 더 이상 관리되지 않는다. Vue에서는 Vuex 대신 Pinia가 공식 상태 관리 도구다. 서버에서 받아 온 데이터는 전역 state에 넣지 않고 [TanStack Query](/knowledge/dictionary/frontend/react/tanstack-query)·[SWR](/knowledge/dictionary/frontend/react/swr) 같은 서버 상태 라이브러리의 캐시에 맡긴다.
+Context는 값을 깊은 곳까지 **전달**할 뿐, 값을 어떻게 바꾸고 누가 무엇을 구독할지는 관리하지 않는다. 값이 자주 바뀌고 구독자가 많으면 바뀔 때마다 모든 구독자가 다시 그려진다. 이때는 필요한 조각만 구독하게 해 주는 전역 상태 라이브러리(Redux Toolkit, Zustand, Jotai)를 쓴다. 무엇을 고를지는 [[redux#언제 Redux를 쓰나|Redux와 react-redux의 「언제 Redux를 쓰나」]] 표에 정리했다. 서버에서 받아 온 데이터는 전역 state에 넣지 않고 [[tanstack-query|TanStack Query]]·[[swr|SWR]] 같은 서버 상태 라이브러리의 캐시에 맡긴다.
 
 ## 핵심 정리
 

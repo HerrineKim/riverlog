@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://www.joshwcomeau.com/javascript/statements-vs-expressions/"]
 ---
 
-> Josh W. Comeau의 「[Statements Vs. Expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)」(2025.08 갱신)를 바탕으로 재구성한 노트입니다.
+> Josh W. Comeau의 「[Statements Vs. Expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)」(2025.08 갱신)를 바탕으로 재구성한 노트다.
 
 ## 식과 문
 

@@ -1,12 +1,13 @@
 ---
-title: "DOM 조작"
+title: "DOM 조작과 이벤트"
 concept: "DOM API"
-summary: "JavaScript로 DOM 요소를 선택하고, 만들고, 붙이고, 지우고, 속성을 바꾸는 방법."
-tags: ["javascript", "dom", "browser", "frontend"]
+summary: "JavaScript로 DOM 요소를 선택하고, 만들고, 붙이고, 지우고, 속성을 바꾸는 방법과, addEventListener로 이벤트를 받아 preventDefault·stopPropagation으로 기본 동작과 전파를 제어하는 방법."
+tags: ["javascript", "dom", "browser", "event", "frontend"]
 source: til
+date: "2026-10-11"
 ---
 
-DOM 조작은 항상 **① 선택(select) → ② 변경(manipulation)** 두 단계다. 먼저 바꿀 요소를 찾고, 그 요소의 내용·속성·자식을 바꾼다. DOM의 개념과 노드 구조는 [DOM과 BOM](/knowledge/dictionary/frontend/web/dom) 노트에 있다.
+DOM 조작은 항상 **① 선택(select) → ② 변경(manipulation)** 두 단계이고, 사용자의 행동에 반응하려면 여기에 **③ 이벤트 리스너**를 붙인다. 먼저 바꿀 요소를 찾고, 그 요소의 내용·속성·자식을 바꾼다. DOM의 개념과 노드 구조는 [DOM과 BOM](/knowledge/dictionary/frontend/web/dom) 노트에 있다.
 
 ## 선택
 
@@ -97,8 +98,53 @@ a.classList.add('active')    // class 조작은 classList가 편하다
 a.classList.toggle('hidden')
 ```
 
+## 이벤트
+
+**이벤트(Event)** 는 클릭, 키 입력, 네트워크 응답처럼 "사건이 일어났다"는 것을 알리는 객체다. 사용자 행동으로 생기기도 하고 `element.click()`처럼 코드로 일으킬 수도 있다. 모든 이벤트는 `Event`를 상속하며, 자주 쓰는 것은 `UIEvent`를 부모로 하는 `MouseEvent`, `KeyboardEvent`, `InputEvent`, `FocusEvent`다.
+
+```javascript
+target.addEventListener(type, listener[, options])
+```
+
+| 인자 | 의미 |
+| --- | --- |
+| `target` | 이벤트를 받는 객체(Element, Document, Window). 모든 DOM 노드는 `EventTarget`을 상속한다 |
+| `type` | 이벤트 유형 문자열(대소문자 구분). `'click'`, `'input'`, `'submit'`, `'keydown'` |
+| `listener` | 이벤트가 생길 때 호출할 함수. 첫 인자로 **이벤트 객체**를 받는다(`event.target`은 이벤트가 생긴 요소) |
+| `options` | `{ once: true }`(한 번만), `{ passive: true }`(스크롤 성능), `{ capture: true }`(캡처 단계) |
+
+```javascript
+function handleClick(event) {
+  console.log(event.target)
+}
+btn.addEventListener('click', handleClick)
+btn.removeEventListener('click', handleClick) // 같은 함수 참조여야 지워진다
+```
+
+리스너를 지우려면 등록할 때와 **같은 함수 참조**를 넘겨야 한다. 익명 함수로 등록하면 지울 방법이 없으므로, 제거할 일이 있으면 이름 있는 함수로 등록한다.
+
+### 기본 동작과 전파 막기
+
+| 메서드 | 막는 것 | 예 |
+| --- | --- | --- |
+| `event.preventDefault()` | 요소의 **기본 동작**만. 전파는 그대로 | `<a>`의 페이지 이동, `<form>` 제출 시 새로고침 |
+| `event.stopPropagation()` | 부모로 올라가는 **전파(버블링)** 만. 기본 동작은 그대로 | 카드 안 버튼 클릭이 카드 클릭으로 번지지 않게 |
+
+```javascript
+form.addEventListener('submit', (event) => {
+  event.preventDefault() // 새로고침 없이
+  // fetch로 직접 전송
+})
+```
+
+React에서는 `addEventListener` 대신 JSX 속성에 함수를 넘긴다(`onClick={handleClick}`). 자세한 내용은 [[react-events|React 이벤트 처리]]에 있다.
+
 ## 핵심 정리
 
 - 선택은 `querySelector`(하나) / `querySelectorAll`(여러 개, static NodeList).
 - 만들기 `createElement` → 붙이기 `append` → 지우기 `remove`.
 - 텍스트는 `innerText`/`textContent`, `innerHTML`은 XSS 위험을 알고 쓴다.
+- 이벤트는 `addEventListener(type, listener)`로 받고, 지울 때는 같은 함수 참조를 넘긴다.
+- `preventDefault()`는 기본 동작(링크 이동, 폼 제출)만, `stopPropagation()`은 전파만 막는다.
+
+관련 노트: [[dom|DOM과 BOM]], [[react-events|React 이벤트 처리]], [[debounce-throttle|Debounce와 Throttle]], [[web-security|웹 보안]]

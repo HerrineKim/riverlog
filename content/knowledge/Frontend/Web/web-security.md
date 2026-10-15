@@ -27,21 +27,7 @@ date: "2026-10-13"
 - 쿠키의 `SameSite` 속성으로 다른 사이트에서 시작된 요청에 쿠키가 실리지 않게 하는 방법도 함께 쓴다. 크롬·엣지는 값을 생략하면 `Lax`로 다뤄 다른 사이트의 `POST`에 쿠키를 싣지 않지만, 브라우저마다 기본값이 다르므로 명시한다([[cookie-session|쿠키와 세션]]).
 - 요청의 `Origin`·`Sec-Fetch-Site` 헤더로 다른 사이트에서 온 변경 요청을 거부하는 방법도 있다.
 
-### 예: Django
-
-Django는 CSRF 방어를 위해 미들웨어(`CsrfViewMiddleware`)와 템플릿 태그를 제공한다.
-
-```django
-<form method="POST">
-  {% csrf_token %}
-  ...
-</form>
-```
-
-- `{% csrf_token %}`은 `<input type="hidden">`으로 렌더링되며, value에 Django가 생성한 토큰 값이 들어간다.
-- 토큰 없이 POST 요청을 보내면 서버는 `403 Forbidden`을 응답한다.
-
-참고로 **미들웨어(middleware)** 는 HTTP 요청과 응답 처리 중간에서 동작하는 계층이다. Django에서는 요청이 미들웨어를 거쳐 URL에 연결된 view로 가고, 응답도 미들웨어를 거쳐 나간다. 프로젝트를 만들면 `settings.py`에 기본 미들웨어들이 등록되어 있다.
+Django는 `CsrfViewMiddleware`와 폼에 숨은 입력을 넣는 `{% csrf_token %}`으로 이 방식을 처리한다 → [[auth-user|Django User와 인증]].
 
 ## XSS (Cross-Site Scripting)
 

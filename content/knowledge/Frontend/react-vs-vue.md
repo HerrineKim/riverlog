@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/f27f6183052343e1ab908f8175bd4a88", "https://vuejs.org/guide/extras/rendering-mechanism", "https://react.dev/learn/start-a-new-react-project"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「React와 Vue의 장단점 비교」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「React와 Vue의 장단점 비교」를 바탕으로 재구성한 노트다.
 
 **React**(Meta와 커뮤니티가 관리)와 **Vue**(Evan You와 커뮤니티가 관리)는 둘 다 **데이터로 컴포넌트를 렌더링하는 선언형 UI 도구**다. 상태를 바꾸면 화면은 도구가 알아서 갱신하고, 화면은 재사용 가능한 컴포넌트를 조립해 만든다. 같은 범주라 하나를 깊게 알면 다른 하나는 빨리 익힌다([[tech-stack-selection|기술 스택 고르기]]). 차이는 **상태 변화를 어떻게 감지하느냐**와 **UI를 무엇으로 쓰느냐**에서 갈린다.
 
@@ -61,4 +61,4 @@ React의 상태와 리렌더링은 [[state|State]], [[re-rendering|리렌더링]
 - Vue의 `v-model`은 양방향 바인딩처럼 보이는 문법 설탕이다.
 - 생태계 범위가 다르다. Vue는 공식 도구 한 벌, React는 코어 + 프레임워크·커뮤니티 선택.
 
-관련 노트: [[frontend-frameworks|React와 Vue 말고: 다른 프론트엔드 프레임워크]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처]], [[vuex|Vuex 상태 관리]], [[tech-stack-selection|기술 스택 고르기]]
+관련 노트: [[frontend-frameworks|React와 Vue 말고: 다른 프론트엔드 프레임워크]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]], [[tech-stack-selection|기술 스택 고르기]]

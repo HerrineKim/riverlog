@@ -73,22 +73,28 @@ entry(시작 파일) ──▶ module.rules(로더로 변환) ──▶ output(�
 - `react-router`로 URL과 페이지 컴포넌트를 연결한다. 앱을 `BrowserRouter`로 감싸고 경로를 정의한다. (참고: v6부터 `Switch` → `Routes`, `Redirect` → `Navigate`, `component={X}` → `element={<X />}`로 바뀌었다. v7부터 `react-router` 패키지 하나로 합쳐졌고, v8에서는 호환용 `react-router-dom`도 빠졌다. [react-router 레이아웃](/knowledge/dictionary/frontend/react/react-router-layout) 참고.)
 - 코드 스플리팅: 페이지별로 번들을 나눠, 회원가입 페이지에 들어온 사람은 회원가입에 필요한 JS만 받게 한다. `React.lazy` + `Suspense` 또는 `@loadable/component`를 쓴다. 첫 화면이 3초 안에 떠야 사용자가 떠나지 않는다는 점을 기억해 둔다.
 
-## 환경 변수 트러블슈팅
+## 환경 변수
 
-- 클라이언트 코드에 노출되는 환경 변수는 도구별 접두사가 필요하다. CRA는 `REACT_APP_`, Vite는 `VITE_`, Next.js는 `NEXT_PUBLIC_`. `.env`는 프로젝트 루트에 두고, 바꾼 뒤에는 개발 서버를 재시작한다.
-- Vite는 `process.env` 대신 **`import.meta.env`** 객체로 환경 변수를 읽는다. `VITE_` 접두사가 없는 변수는 `import.meta.env`에 들어가지 않는다. 예를 들어 `.env`에 `VITE_API_URL`이 빠져 있으면 API 주소가 `undefined`가 되어 요청이 엉뚱한 경로로 가고 404가 난다.
+클라이언트 코드에 노출되는 환경 변수는 도구별 접두사가 필요하다. `.env`는 프로젝트 루트에 두고, 바꾼 뒤에는 개발 서버를 재시작한다. 클라이언트에 노출되는 값은 비밀이 아니므로 진짜 비밀 키는 서버에만 둔다.
 
-  | 내장 변수 | 값 |
-  | --- | --- |
-  | `import.meta.env.MODE` | 현재 모드(`development`, `production` 등) |
-  | `import.meta.env.BASE_URL` | 앱이 제공되는 기본 URL(`base` 설정) |
-  | `import.meta.env.PROD` / `DEV` | 프로덕션 / 개발 환경 여부(항상 서로 반대) |
-  | `import.meta.env.SSR` | 서버에서 실행 중인지 |
+| 도구 | 접두사 | 읽는 법 |
+| --- | --- | --- |
+| Vite | `VITE_` | `import.meta.env.VITE_API_URL` |
+| Next.js | `NEXT_PUBLIC_` | `process.env.NEXT_PUBLIC_API_URL` |
+| CRA(종료) | `REACT_APP_` | `process.env.REACT_APP_API_URL` |
 
-  모드별로 `.env.development`, `.env.production` 파일을 나눠 두면 `vite build --mode staging`처럼 모드에 맞는 파일(`.env.staging`)이 함께 로드된다.
-- "환경 변수가 인식되지 않는다"는 문제의 상당수는 **값 자체를 잘못 넣은 경우**다. 예를 들어 Firebase 설정에서 `projectId` 자리에 스토리지 버킷 주소를 넣는 실수.
-- 하이픈 같은 특수문자가 들어간 값은 따옴표로 감싸 본다.
-- 클라이언트에 노출되는 환경 변수는 비밀이 아니다. 진짜 비밀 키는 서버에만 둔다.
+Vite가 기본으로 넣어 주는 값은 다음과 같다. 모드별로 `.env.development`, `.env.production`을 나눠 두면 `vite build --mode staging`처럼 모드에 맞는 파일(`.env.staging`)이 함께 로드된다.
+
+| 내장 변수 | 값 |
+| --- | --- |
+| `import.meta.env.MODE` | 현재 모드(`development`, `production` 등) |
+| `import.meta.env.BASE_URL` | 앱이 제공되는 기본 URL(`base` 설정) |
+| `import.meta.env.PROD` / `DEV` | 프로덕션 / 개발 환경 여부(항상 서로 반대) |
+| `import.meta.env.SSR` | 서버에서 실행 중인지 |
+
+| 증상 | 원인 | 해결 |
+| --- | --- | --- |
+| 환경 변수가 `undefined`라 API 요청이 엉뚱한 경로로 가 404가 난다 | 접두사가 없거나(`API_URL`), Vite에서 `process.env`로 읽었거나, `.env`를 바꾼 뒤 서버를 재시작하지 않았다 | 도구의 접두사를 붙이고 `import.meta.env`로 읽은 뒤 개발 서버를 재시작한다. 그래도 이상하면 값 자체가 맞는 자리에 들어갔는지, 특수문자가 있으면 따옴표로 감쌌는지 확인한다 |
 
 ## 핵심 정리
 

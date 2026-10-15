@@ -19,8 +19,8 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 - [선택자와 우선순위](/knowledge/dictionary/frontend/css/selectors): 기본 선택자, 결합자, 가상 클래스·요소, :is()·:where()·:has(), @layer·특정성, 상속
 - [박스 모델과 display](/knowledge/dictionary/frontend/css/box-model): margin·padding·border, margin collapse, box-sizing, display 값, 100% vs vh
 - [position](/knowledge/dictionary/frontend/css/position): static·relative·absolute·fixed·sticky, z-index와 쌓임 맥락, 앵커 위치 지정
-- [Float와 Flexbox](/knowledge/dictionary/frontend/css/flexbox): Normal Flow를 벗어나는 배치와 1차원 레이아웃 모델, `min-width: 0` 넘침 함정
-- [반응형 디자인과 다국어 타이포그래피](/knowledge/dictionary/frontend/css/responsive-design): 뷰포트 메타 태그, 브레이크포인트, 모바일 퍼스트, 컨테이너 쿼리, 기기 픽셀 비율, clamp(), :lang()과 rem으로 언어별 글자 크기 조절
+- [Float와 Flexbox](/knowledge/dictionary/frontend/css/flexbox): Normal Flow를 벗어나는 배치와 `flow-root`, 1차원 레이아웃 모델과 속성 초깃값, `min-width: 0` 넘침 함정
+- [반응형 디자인과 다국어 타이포그래피](/knowledge/dictionary/frontend/css/responsive-design): 뷰포트 메타 태그, 브레이크포인트, 모바일 퍼스트, 컨테이너 쿼리, clamp(), :lang()과 rem으로 언어별 글자 크기 조절
 - [transform](/knowledge/dictionary/frontend/css/transform): 이동·확대·회전·기울이기 함수와 translate(-50%, -50%) 가운데 정렬
 - [CSS 애니메이션: transition과 @keyframes](/knowledge/dictionary/frontend/css/css-animation): transition과 animation의 차이와 속성, transform·opacity 원칙, 움직임 줄이기, Animate.css 등 라이브러리
 - [CSS 그리드 레이아웃](/knowledge/dictionary/frontend/css/css-grid): 2차원 레이아웃의 용어와 속성, fr·minmax·auto-fill, 명시적·묵시적 그리드, 서브그리드, 실무 원칙
@@ -30,7 +30,7 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 - [Sass: 파일 구조, 믹스인과 @extend](/knowledge/dictionary/frontend/css/sass): 네이티브 CSS와의 역할 분담, 7-1 폴더 구조와 @use, 믹스인·@extend·플레이스홀더
 - [객체 지향 CSS(OOCSS)](/knowledge/dictionary/frontend/css/oocss): 구조/겉모양·컨테이너/콘텐츠 분리, 미디어 객체, 특정도를 낮게 유지하는 규칙, 타이포그래피 전략과 흔한 오용, BEM·유틸리티 CSS로 이어진 흐름
 - [웹 타이포그래피: 가독성, 글줄 길이, 웹폰트](/knowledge/dictionary/frontend/css/web-typography): 글줄 길이·글자 크기·줄 간격의 균형, font-size-adjust, 하이픈과 대비, @font-face와 WOFF2
-- [CSS가 동작하는 방식](/knowledge/dictionary/frontend/css/how-css-works): 먼저 익힐 핵심 개념, 해석→캐스케이드→계산→레이아웃→페인트→합성, 상호작용 시 다시 도는 단계
+- [CSS가 동작하는 방식](/knowledge/dictionary/frontend/css/how-css-works): 먼저 익힐 핵심 개념, 캐스케이드 비교 순서, 계산값, 레이아웃이 박스를 배치하는 방식
 
 ## 참고
 

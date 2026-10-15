@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/159", "https://riverkim.kr/151"]
 ---
 
-> riverkim.kr에 쓴 글들을 바탕으로 재구성한 노트입니다. 코드는 TanStack Query v5 기준입니다.
+> riverkim.kr에 쓴 글들을 바탕으로 재구성한 노트다. 코드는 TanStack Query v5 기준이다.
 
 **TanStack Query**(옛 이름 React Query)는 **서버 상태**, 즉 서버에서 가져와 화면에 보여 주는 데이터를 다루는 라이브러리다. 앱이 단순하면 `useState`와 Context만으로도 충분하지만, 같은 데이터를 여러 화면이 쓰고 언제 다시 가져올지 정해야 하는 순간부터 캐싱·중복 요청 제거·에러 처리 코드가 불어난다. TanStack Query는 이 일을 훅 하나로 처리하고, 데이터가 바뀐 컴포넌트만 다시 렌더링한다. Redux보다 진입 장벽이 낮고 훅 기반이라 쓰기 편하다.
 

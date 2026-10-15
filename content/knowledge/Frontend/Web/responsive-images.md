@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2020/07/13/html-%EB%B0%98%EC%9D%91%ED%98%95-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%AC%B8%EB%B2%95-%EA%B0%80%EC%9D%B4%EB%93%9C/", "https://webactually.com/2013/11/04/%ec%9a%b0%eb%a6%ac%ec%97%90%ea%b2%8c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9d%b4%eb%af%b8%ec%a7%80%ea%b0%80-%ed%95%84%ec%9a%94%ed%95%9c-%ec%9d%b4%ec%9c%a0/", "https://webactually.com/2016/01/19/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4-%ec%bd%94%ec%96%b4-4-4%ec%97%90-%ec%83%81%eb%a5%99%ed%95%9c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9d%b4%eb%af%b8%ec%a7%80/", "https://webactually.com/2014/08/18/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%98-%ed%98%84%ec%9e%ac/", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://webactually.com/2016/02/23/%ed%8e%ad%ea%b7%84%eb%9e%9c%eb%8d%a4%ed%95%98%ec%9a%b0%ec%8a%a4-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%ec%97%90%ec%84%9c-%ec%9a%b0%eb%a6%ac%ea%b0%80-%eb%b0%b0%ec%9a%b8/"]
 ---
 
-> CSS-Tricks의 「HTML 반응형 이미지 문법 가이드」(웹액츄얼리 번역, 2020.07)를 중심으로 Tim Kadlec·Tim Evko·Stéphanie Walter·Benjie Moss의 반응형 이미지 관련 글(웹액츄얼리 번역, 2013~2016)을 더해 재구성한 노트입니다. 브라우저의 후보 선택 과정은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 문항으로 보강했습니다.
+> CSS-Tricks의 「HTML 반응형 이미지 문법 가이드」(웹액츄얼리 번역, 2020.07)를 중심으로 Tim Kadlec·Tim Evko·Stéphanie Walter·Benjie Moss의 반응형 이미지 관련 글(웹액츄얼리 번역, 2013~2016)을 더해 재구성한 노트다. 브라우저의 후보 선택 과정은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 문항으로 보강했다.
 
 ## 왜 필요한가
 

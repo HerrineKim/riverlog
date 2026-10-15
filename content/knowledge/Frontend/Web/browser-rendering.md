@@ -8,17 +8,11 @@ date: "2026-10-14"
 sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/", "https://d2.naver.com/helloworld/59361", "https://wormwlrm.github.io/2021/03/27/How-browsers-work.html"]
 ---
 
-> 브라우저 구조·파서·레이아웃 최적화 부분은 Tali Garsiel의 「[브라우저는 어떻게 동작하는가?](https://d2.naver.com/helloworld/59361)」(NAVER D2 번역, 2012.05)와 재그지그의 「[프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)」(2021.03)을, 「렌더링 전: 내비게이션」 부분은 Ali Alabbas의 「서버에서 클라이언트로」(웹액츄얼리 번역, 2020.06)를 바탕으로 보강한 노트입니다.
+> 브라우저 구조·파서·레이아웃 최적화 부분은 Tali Garsiel의 「[브라우저는 어떻게 동작하는가?](https://d2.naver.com/helloworld/59361)」(NAVER D2 번역, 2012.05)와 재그지그의 「[프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)」(2021.03)을 바탕으로 재구성한 노트다.
 
 ## 한눈에 보기
 
 브라우저가 HTML 문서를 받아 화면에 픽셀을 찍기까지의 단계를 **중요 렌더링 경로(Critical Rendering Path)** 라고 한다.
-
-```text
-HTML ──파싱──> DOM ─┐
-                    ├──> 렌더 트리 ──> 레이아웃(리플로우) ──> 페인팅 ──> 합성
-CSS  ──파싱──> CSSOM ┘
-```
 
 | 단계 | 입력 | 결과 |
 | --- | --- | --- |
@@ -51,20 +45,9 @@ Edge는 2020년 자체 엔진(EdgeHTML)을 버리고 Chromium 기반으로 바�
 
 ## 렌더링 전: 내비게이션
 
-렌더링은 HTML이 도착해야 시작한다. 주소창 입력, 링크 클릭, 북마크 선택은 모두 **내비게이션**을 만들고, 브라우저는 네트워크에 나가기 전에 몇 단계를 먼저 확인한다. DNS·TCP·TLS 같은 네트워크 단계 자체는 [[url-to-page|브라우저에 URL을 입력하면 일어나는 일]]에 있다.
+렌더링은 HTML이 도착해야 시작한다. 주소창 입력이나 링크 클릭이 만든 **내비게이션**은 네트워크에 나가기 전에 HSTS 목록, 서비스 워커, HTTP 캐시, 열린 연결을 차례로 확인하고, 응답이 HTML이면 파싱을 시작한다. 이 과정과 DNS·TCP·TLS는 [[url-to-page|브라우저에 URL을 입력하면 일어나는 일]]에, 서비스 워커 캐시 전략은 [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]]에 있다.
 
-| 순서 | 확인 | 내용 |
-| --- | --- | --- |
-| 1 | HSTS | `http://`인데 도메인이 HSTS 목록(브라우저 내장 preload 목록 + 이전에 받은 헤더)에 있으면 `https://`로 바꿔 요청한다 |
-| 2 | 서비스 워커 | 이 URL 범위에 등록된 서비스 워커가 있으면 요청을 넘긴다. 워커는 캐시로 바로 응답할 수 있다. 내비게이션 프리로드를 켜 두면 워커가 깨어나는 동안 네트워크 요청도 함께 보낸다 |
-| 3 | HTTP 캐시 | `Cache-Control`의 유효 기간 안이면 캐시로 끝낸다. 만료됐으면 `If-None-Match`·`If-Modified-Since`로 재검증해 304(그대로 써라) 또는 200(새 본문)을 받는다 |
-| 4 | 연결 재사용 | 같은 호스트·포트로 열린 연결이 있으면 다시 쓴다. 없으면 DNS 조회 → 연결 → TLS 핸드셰이크. `rel="preconnect"`로 미리 열어 둘 수 있다 |
-| 5 | 응답 처리 | 헤더가 리다이렉트(`Location`)면 1번부터 다시. 압축을 풀고, 캐시에 기록하고, MIME 타입을 보고 HTML이면 파싱을 시작한다 |
-| 6 | 방문 기록 | 이 시점에 URL이 기록에 들어가 뒤로·앞으로 가기가 가능해진다 |
-
-- HTML 파서가 일하는 동안 **프리로드 스캐너**(예측 파싱, speculative parsing)가 문서 속 이미지·CSS·JS URL을 미리 찾아 다운로드를 시작한다. DOM은 건드리지 않고 자원 요청만 앞당긴다. 그래서 `<img>`의 `srcset`·`sizes`처럼 마크업에 정보를 적어 두는 것이 중요하다.
-- 캐시와 저장소는 **출처(origin = 스킴 + 호스트 + 포트)** 단위로 격리된다. 하나라도 다르면 다른 출처이고, 다른 출처의 자원을 읽으려면 그쪽이 CORS 헤더로 허락해야 한다.
-- 서비스 워커 캐시 전략은 [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]]에 정리했다.
+HTML 파서가 일하는 동안 **프리로드 스캐너**(예측 파싱, speculative parsing)가 문서 속 이미지·CSS·JS URL을 미리 찾아 다운로드를 시작한다. DOM은 건드리지 않고 자원 요청만 앞당긴다. 그래서 `<img>`의 `srcset`·`sizes`처럼 마크업에 정보를 적어 두는 것이 중요하다.
 
 ## 1. DOM 생성
 
@@ -188,21 +171,19 @@ background-color → background-image → border → 자식 → outline
 | 변경 | 다시 도는 단계 |
 | --- | --- |
 | 색·배경·그림자 | 페인팅 → 합성 (해당 요소만) |
+| `:hover`로 배경색만 바꿈 | 히트 테스트(hit testing)로 포인터 아래 박스를 찾고 → 그 박스의 스타일 재계산 → 레이아웃은 건너뛰고 페인팅 → 합성 |
 | 크기·위치·여백, 텍스트 내용 | 레이아웃 → 페인팅 → 합성 (요소와 자식, 영향받는 형제) |
 | DOM 노드 추가·삭제 | 그 노드 주변의 레이아웃과 페인팅 |
 | `html`의 글꼴 크기, 뷰포트 크기 | 캐시를 버리고 트리 전체를 레이아웃·페인팅 |
 | `transform`·`opacity` | 합성만 |
 
-화면은 디스플레이 주사율에 맞춰 갱신된다. 60Hz면 프레임당 약 16.7ms 안에 JS, 스타일, 레이아웃, 페인트를 모두 끝내야 끊김이 없다. 시각적 변경은 `requestAnimationFrame` 안에서 하면 다음 프레임 직전에 모아 처리된다.
-
-DOM을 직접 자주 조작하면 리렌더링이 잦아지기 쉽다. React·Vue 같은 라이브러리는 변경을 먼저 메모리 속 **가상 DOM**에 반영하고, 이전 상태와 비교해 실제로 바뀐 부분만 한 번에 DOM에 적용해 이를 줄인다. 같은 효과는 DOM 변경을 직접 모아 실행해도 얻을 수 있다. 가상 DOM은 그 일을 자동화한 것이다. Svelte·Solid는 가상 DOM 없이 컴파일러와 시그널로 바뀐 노드만 직접 갱신한다.
+화면은 디스플레이 주사율에 맞춰 갱신된다. 60Hz면 프레임당 약 16.7ms 안에 JS, 스타일, 레이아웃, 페인트를 모두 끝내야 끊김이 없다. 시각적 변경은 `requestAnimationFrame` 안에서 하면 다음 프레임 직전에 모아 처리된다. React·Vue의 **가상 DOM**은 변경을 메모리에서 먼저 비교해 바뀐 부분만 한 번에 DOM에 적용한다. DOM 변경을 직접 모아 실행하는 일을 자동화한 것이다. Svelte·Solid는 컴파일러와 시그널로 바뀐 노드만 직접 갱신한다.
 
 ## 정리
 
 - 브라우저는 UI·브라우저 엔진·렌더링 엔진·네트워킹·JS 엔진·UI 백엔드·저장소로 나뉜다. 렌더링과 JS는 같은 메인 스레드를 쓴다.
-- HTML → DOM, CSS → CSSOM, 둘을 합쳐 렌더 트리 → 레이아웃 → 페인팅 → 합성.
+- HTML → DOM, CSS → CSSOM, 둘을 합쳐 렌더 트리 → 레이아웃 → 페인팅 → 합성. 위치·크기가 바뀌면 레이아웃부터, 색만 바뀌면 페인팅부터, `transform`·`opacity`만 바뀌면 합성만 다시 한다.
 - HTML 파서는 오류를 표준대로 고치며 점진적으로 파싱한다. CSS는 끝까지 받아야 해서 렌더링을 막고, 속성 없는 `<script>`는 파싱을 막는다.
-- 위치·크기가 바뀌면 레이아웃부터, 색만 바뀌면 페인팅부터, `transform`·`opacity`만 바뀌면 합성만 다시 한다.
 - 브라우저는 더티 비트로 레이아웃을 모아 처리한다. **레이아웃 값 읽기와 스타일 쓰기를 섞지 않는 것**이 이 최적화를 살리는 방법이다.
 
 관련 노트: [[dom|DOM]], [[html|HTML]], [[event-loop|이벤트 루프]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]]

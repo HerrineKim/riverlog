@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2020/04/27/%EC%A0%91%EA%B7%BC%EC%84%B1-%EC%A2%8B%EC%9D%80-svg-%ED%8C%A8%ED%84%B4%EC%9D%84-%EB%84%98%EC%96%B4%EC%84%A0-%ED%8F%AC%EC%9A%A9%EC%84%B1/", "https://webactually.com/2020/07/09/%EC%83%89%EA%B0%81-%EA%B2%B0%ED%95%8D-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%9D%98-%EC%82%B6/"]
 ---
 
-> 웹액츄얼리가 번역한 캐리 피셔(Carie Fisher)의 「[접근성 좋은 SVG – 패턴을 넘어선 포용성](https://webactually.com/2020/04/27/%EC%A0%91%EA%B7%BC%EC%84%B1-%EC%A2%8B%EC%9D%80-svg-%ED%8C%A8%ED%84%B4%EC%9D%84-%EB%84%98%EC%96%B4%EC%84%A0-%ED%8F%AC%EC%9A%A9%EC%84%B1/)」(2020.04)과 노아 글루시엔(Noah Glushien)의 「[색각 결핍 디자이너의 삶](https://webactually.com/2020/07/09/%EC%83%89%EA%B0%81-%EA%B2%B0%ED%95%8D-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%9D%98-%EC%82%B6/)」(2020.07)을 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역한 캐리 피셔(Carie Fisher)의 「[접근성 좋은 SVG – 패턴을 넘어선 포용성](https://webactually.com/2020/04/27/%EC%A0%91%EA%B7%BC%EC%84%B1-%EC%A2%8B%EC%9D%80-svg-%ED%8C%A8%ED%84%B4%EC%9D%84-%EB%84%98%EC%96%B4%EC%84%A0-%ED%8F%AC%EC%9A%A9%EC%84%B1/)」(2020.04)과 노아 글루시엔(Noah Glushien)의 「[색각 결핍 디자이너의 삶](https://webactually.com/2020/07/09/%EC%83%89%EA%B0%81-%EA%B2%B0%ED%95%8D-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%9D%98-%EC%82%B6/)」(2020.07)을 바탕으로 재구성한 노트다.
 
 ## 왜 색과 움직임인가
 
