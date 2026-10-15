@@ -124,4 +124,4 @@ export async function getUptime() {
 - 클라이언트에서 서버 코드를 부를 땐 Server Function을 쓰되, 순차 실행·인증 확인을 기억하고 잦은 조회는 다른 방법을 고른다.
 - 서버에서 실행되는 함수의 총칭은 Server Function이고, Server Action은 그중 폼·변경 작업에 쓰는 경우를 가리킨다.
 
-관련 노트: [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]], [[nextjs|Next.js를 쓰는 이유]], [[react-use-hook|use 훅과 리액트 비동기 처리]], [[streaming-ssr|스트리밍 SSR]], [[composition|합성: 상속 대신 Composition]]
+관련 노트: [[react-server-components|React Server Components의 동작 원리]], [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]], [[nextjs|Next.js를 쓰는 이유]], [[react-use-hook|use 훅과 리액트 비동기 처리]], [[streaming-ssr|스트리밍 SSR]], [[composition|합성: 상속 대신 Composition]]

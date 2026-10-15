@@ -13,6 +13,7 @@ Next.js는 React 앱에 **서버 렌더링과 라우팅, 데이터 캐싱**을 �
 
 - [Next.js를 쓰는 이유](Frontend/Next.js/nextjs.md): CSR의 한계, SSR·SSG로 얻는 SEO, 파일 기반 라우팅, `proxy.ts`, `fetch` 캐싱·재검증과 Next.js 16의 `'use cache'`
 - [Next.js App Router의 내비게이션과 데이터 가져오기](Frontend/Next.js/nextjs-app-router.md): Link·useRouter와 prefetch, 부분 렌더링과 클라이언트 캐시, 서버 컴포넌트의 병렬·순차 fetch, 요청 중복 제거와 React `cache()`
+- [React Server Components의 동작 원리](Frontend/Next.js/react-server-components.md): RSC와 SSR의 차이, 클라이언트 컴포넌트 모듈 참조, RSC Payload 스트림과 Suspense, 갱신 시 재조정
 - [서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙](Frontend/Next.js/server-client-components.md): 클라이언트 안에 서버를 import할 수 없는 이유, children·props로 넘기기, Server Function
 
 관련 주제: 렌더링 방식의 개념은 [SPA와 CSR·SSR](Frontend/Web/spa-csr-ssr.md), 스트리밍은 [스트리밍 SSR](Frontend/Web/streaming-ssr.md)에 있다.
