@@ -74,4 +74,4 @@ function Text({ as: Component = 'p', children, ...rest }: TextProps) {
 - `as`(MUI는 `component`) prop은 스타일·동작을 유지한 채 그릴 요소만 바꾼다.
 - 상속은 쓰지 않는다. props와 합성만으로 모양과 동작을 명시적으로 바꿀 수 있고, UI가 아닌 로직 재사용은 모듈이나 [[hooks|커스텀 훅]]으로 한다.
 
-관련 노트: [[components-and-props|컴포넌트와 Props]], [[component-splitting|컴포넌트를 분리하는 기준과 방법]], [[context|Context]]
+관련 노트: [[components-and-props|컴포넌트와 Props]], [[component-splitting|컴포넌트를 분리하는 기준과 방법]], [[context|Context]], [[advanced-react-patterns|재사용 컴포넌트를 위한 리액트 패턴 5가지]]

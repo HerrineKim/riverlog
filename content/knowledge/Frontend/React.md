@@ -24,6 +24,7 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 - [리스트와 Key](/knowledge/dictionary/frontend/react/lists-and-keys): map 렌더링, key의 역할, key 값에 따른 리렌더링·리마운트 차이
 - [폼](/knowledge/dictionary/frontend/react/forms): 제어 컴포넌트, 여러 input, 파생 값 계산, React 19 폼 액션(useActionState·useFormStatus)
 - [합성](/knowledge/dictionary/frontend/react/composition): children, 특수화, 상속 대신 합성
+- [재사용 컴포넌트를 위한 리액트 패턴 5가지](/knowledge/dictionary/frontend/react/advanced-react-patterns): Compound Components, Control Props, Custom Hook, Props Getters, State Reducer 비교
 - [Context](/knowledge/dictionary/frontend/react/context): props drilling 없이 값 공유, Context로 부족할 때 고르는 Redux Toolkit·Zustand·Jotai
 - [스타일링](/knowledge/dictionary/frontend/react/styling): CSS Modules, styled-components(유지보수 모드), emotion, 인라인 스타일
 
