@@ -16,7 +16,7 @@ UI 디자인 주제는 **화면이 어떻게 보이고 움직이는가**를 다�
 - [WebGL과 셰이더: 브라우저가 GPU로 그리는 방식](Frontend/UI-Design/webgl-shaders.md): OpenGL·WebGL·WebGPU의 관계, 정점·프래그먼트 셰이더와 래스터화, GLSL ES·WGSL, 무엇부터 배울까
 - [웹 접근성: 표준 준수에서 실제 사용성까지](Frontend/UI-Design/web-accessibility.md): 장애의 사회적 정의, 접근성 트리, 대체 텍스트와 ARIA 사용 원칙, WCAG 2.2와 접근성 법, 장애인 참가자와 사용성 테스트, 바로 할 수 있는 다섯 가지
 - [색과 움직임의 접근성](Frontend/UI-Design/color-motion-accessibility.md): 색각 결핍, 색만으로 정보 전달 금지, 대비 기준, prefers-color-scheme·prefers-reduced-motion, 5초 애니메이션 규칙
-- [디자인 도구와 개발자 핸드오프](Frontend/UI-Design/design-tools-handoff.md): Figma 파일에서 개발자가 보는 것(변수·측정·애셋·프로토타입·댓글), 디자인 시스템을 도구에 담는 원칙, 도구 이전, 클릭되는 와이어프레임, 고해상도 대응
+- [디자인 도구와 개발자 핸드오프](Frontend/UI-Design/design-tools-handoff.md): Figma 파일에서 개발자가 보는 것(변수·측정·애셋·프로토타입·댓글), Auto Layout을 Flexbox로 옮기기, 디자인 시스템을 도구에 담는 원칙, 도구 이전, 클릭되는 와이어프레임, 고해상도 대응
 - [웹 레이아웃 디자인: 인쇄와 다른 매체](Frontend/UI-Design/web-layout-design.md): 인쇄와 웹의 매체 차이, 단락·문자 스타일과 CSS, 본질의 웹 디자인(그리드·컨테이너 쿼리), 이미지 위 텍스트 배치
 - [전자상거래 UI 디자인](Frontend/UI-Design/ecommerce-ui.md): 구매 여정의 마찰 제거, 얕은 메뉴·필터·검색, 상품 페이지 첫 화면, 옵션별 선택 UI와 품절 표시, 재고 기반 가격 슬라이더
 - [상세페이지 9단계 구조](Frontend/UI-Design/product-detail-page.md): 유입과 전환, 세일즈 퍼널, 판매 증거부터 상세 정보까지 고객의 의심을 푸는 순서, 표시·광고 규정과 접근성
