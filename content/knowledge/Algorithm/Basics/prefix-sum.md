@@ -4,6 +4,7 @@ concept: "Prefix Sum"
 summary: "앞에서부터의 누적 합을 미리 구해 두고, 임의 구간의 합을 뺄셈 한 번으로 구하는 기법."
 tags: ["algorithm", "prefix-sum", "array", "python"]
 source: til
+date: "2026-10-13"
 ---
 
 **구간 합 문제**는 연속으로 나열된 N개의 수에서 특정 구간 [Left, Right]의 합을 구하는 문제다. 예를 들어 {10, 20, 30, 40, 50}에서 2번째부터 4번째 수의 합은 20 + 30 + 40 = 90이다.

@@ -4,6 +4,7 @@ concept: "Stack"
 summary: "한쪽 끝에서만 넣고 빼는 후입선출(LIFO) 자료구조."
 tags: ["data-structure", "stack", "python"]
 source: til
+date: "2026-10-12"
 ---
 
 스택(Stack)은 **한쪽 끝(top)에서만 자료를 넣고 뺄 수 있는** 선형 자료구조다. 프링글스 통을 떠올리면 쉽다. 맨 위의 과자부터 꺼낼 수 있고, 새 과자는 그 위에 쌓인다. 나중에 들어간 것이 먼저 나오므로 **후입선출(LIFO, Last In First Out)** 구조라고 한다.

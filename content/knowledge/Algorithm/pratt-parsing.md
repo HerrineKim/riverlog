@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/f679402e987a497eb2015244d4d576b3", "https://en.wikipedia.org/wiki/Operator-precedence_parser#Pratt_parsing", "https://80000coding.notion.site/4b9531a2d52645cf9ba0c29a1d3908e1"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「미니쉘 파싱 쉽게 해보기」, 「나만의 JSON 파서로 재귀 파싱 연습하기」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「미니쉘 파싱 쉽게 해보기」, 「나만의 JSON 파서로 재귀 파싱 연습하기」를 바탕으로 재구성한 노트다.
 
 ## 파싱이 하는 일
 

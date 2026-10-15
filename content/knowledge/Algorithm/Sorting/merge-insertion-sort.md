@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/fc425e080c244c439422bfae68d55cbf", "https://80000coding.notion.site/3d8f8dfc4c964bcfa58bab0166321b30", "https://en.wikipedia.org/wiki/Merge-insertion_sort"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Ford-Johnson Algorithm의 한 예시」, 「Jacobsthal 수열의 일반항 유도」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Ford-Johnson Algorithm의 한 예시」, 「Jacobsthal 수열의 일반항 유도」를 바탕으로 재구성한 노트다.
 
 ## 무엇을 최적화하나
 

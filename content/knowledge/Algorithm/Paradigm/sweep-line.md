@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/a001c3e811794f45866f8d150f6d7b48", "https://80000coding.notion.site/194ccf68b6044aa686032c778358d89e"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「싹~ 쓸어버려 sweeping!」, 「Sweeping on plane.」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「싹~ 쓸어버려 sweeping!」, 「Sweeping on plane.」을 바탕으로 재구성한 노트다.
 
 ## 스위핑이란
 

@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/6b362391f808445f8e5f1e1f017c1bfb"]
 ---
 
-> 원형 버퍼로 덱을 만드는 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[push_swap] Linked List 말고 Circular Queue를 이용하여 Stack을 구현해보자!」를 바탕으로 보강했습니다.
+> 원형 버퍼로 덱을 만드는 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[push_swap] Linked List 말고 Circular Queue를 이용하여 Stack을 구현해보자!」를 바탕으로 보강했다.
 
 ## 큐 (Queue)
 

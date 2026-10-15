@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/3e013958fe35447e83c2150c951abe49", "https://80000coding.notion.site/194ccf68b6044aa686032c778358d89e", "https://80000coding.notion.site/6241cb5bb0fd4c26be30cbd7c3870b67"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「점과 평면 사이의 거리」, 「Sweeping on plane.」, 「삼각형 내 점이 있는지 구별하는 법」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「점과 평면 사이의 거리」, 「Sweeping on plane.」, 「삼각형 내 점이 있는지 구별하는 법」을 바탕으로 재구성한 노트다.
 
 ## 내적: 같은 방향 성분
 

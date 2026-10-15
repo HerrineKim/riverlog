@@ -4,6 +4,7 @@ concept: "Brute Force"
 summary: "가능한 모든 경우를 나열해 답을 찾는 방법과, 가망 없는 경로를 일찍 잘라내는 백트래킹."
 tags: ["algorithm", "search", "brute-force", "backtracking", "python"]
 source: til
+date: "2026-10-12"
 ---
 
 완전 탐색(Brute Force)은 **가능한 경우의 수를 모두 조사해서** 정답을 찾는 방법이다. 컴퓨터의 빠른 계산 능력을 믿고 일일이 확인하는 방식이라 구현이 단순하고 항상 정답을 찾지만, 경우의 수가 많으면 시간이 폭발한다.

@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/78b2942f85504386947b4676704cd80c", "https://80000coding.notion.site/60c3d4d3f5694b47bdde9a65d30f3bc5", "https://80000coding.notion.site/4debdb98503347c09f8b4f9a7d2cfc2b"]
 ---
 
-> 하위 문제를 찾는 연습과 구간 DP는 팔만코딩경(42Seoul 커뮤니티 위키)의 「너희는 전혀 dp하고 있지 않아」, 「동적 계획법(Dynamic Programming) 개념과 구현 (feat. 2 x n 타일링)」, 「연쇄행렬 최소곱셈 알고리즘(Matrix chain multiplication)」을 바탕으로 보강했습니다.
+> 하위 문제를 찾는 연습과 구간 DP는 팔만코딩경(42Seoul 커뮤니티 위키)의 「너희는 전혀 dp하고 있지 않아」, 「동적 계획법(Dynamic Programming) 개념과 구현 (feat. 2 x n 타일링)」, 「연쇄행렬 최소곱셈 알고리즘(Matrix chain multiplication)」을 바탕으로 보강했다.
 
 피보나치 수열을 재귀로 그대로 구하면 `fib(5)`를 구하려고 `fib(3)`을 두 번, `fib(2)`를 세 번 계산하는 식으로 **같은 연산이 반복**된다. 호출 수가 지수적으로(O(2ⁿ)) 늘어나는 이 낭비를 없애기 위해 고안된 것이 **동적 계획법(Dynamic Programming)이다**.
 

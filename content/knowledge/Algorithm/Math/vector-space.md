@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/fddfd82fd39b4acda977573ef6d49cf9"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[선형대수학] Vector Space 벡터공간 (1)」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[선형대수학] Vector Space 벡터공간 (1)」을 바탕으로 재구성한 노트다.
 
 ## 벡터공간이란
 

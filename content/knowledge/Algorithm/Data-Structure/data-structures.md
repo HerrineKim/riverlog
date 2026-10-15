@@ -1,14 +1,14 @@
 ---
 title: "기초 자료구조: 배열에서 트라이까지"
 concept: "Basic Data Structures"
-summary: "배열과 realloc 크기 조정 비용, 연결 리스트(C 구조체·Kotlin 예제)와 둘 중 고르는 기준, 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 스택·큐·딕셔너리, 얕은 복사와 깊은 복사."
+summary: "배열과 realloc 크기 조정 비용, 연결 리스트(C 구조체·Kotlin 예제)와 둘 중 고르는 기준, 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 얕은 복사와 깊은 복사."
 tags: ["data-structure", "cs50", "linked-list", "hash-table", "tree"]
 source: notion
 sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b"]
 date: "2026-10-13"
 ---
 
-> 하버드 CS50의 자료구조 강의를 바탕으로 재구성한 노트입니다. 배열과 연결 리스트 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「배열과 리스트 중 어떤 것을 사용해야 할까?」, 「[Push Swap 완전 정복] 00. 문제 분석 - locality.」, 트라이의 삽입·자동 완성은 「ALV tree 찢어버리기」를 바탕으로 보강했습니다.
+> 하버드 CS50의 자료구조 강의를 바탕으로 재구성한 노트다. 배열과 연결 리스트 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「배열과 리스트 중 어떤 것을 사용해야 할까?」, 「[Push Swap 완전 정복] 00. 문제 분석 - locality.」, 트라이의 삽입·자동 완성은 「ALV tree 찢어버리기」를 바탕으로 보강했다.
 
 자료구조는 데이터를 메모리에 어떻게 배치하고 연결하느냐의 문제다. 배열처럼 연속된 공간을 쓰면 접근은 빠르지만 크기를 바꾸기 어렵고, [[pointers-and-memory|포인터]]로 흩어진 공간을 이으면 크기는 자유롭지만 접근이 느려진다. 예제는 C와 Kotlin으로 든다.
 
@@ -57,39 +57,14 @@ typedef struct node
 } node;
 ```
 
-아래는 같은 구조를 Kotlin으로 옮긴 예제다. Kotlin의 객체 참조가 C의 포인터 역할을 한다.
+Kotlin에서는 객체 참조가 C의 포인터 역할을 한다.
 
 ```kotlin
 class Node(val value: String, var next: Node? = null)
 
-class MyList {
-    private var head: Node? = null
-
-    // 맨 끝에 노드 추가 — 끝까지 따라가야 하므로 O(n)
-    fun add(value: String) {
-        if (head == null) {
-            head = Node(value)
-            return
-        }
-        var temp = head
-        while (temp?.next != null) temp = temp.next
-        temp?.next = Node(value)
-    }
-
-    // prev 다음에 새 노드 끼워 넣기 — 포인터 두 개만 바꾸면 됨
-    fun addAfter(prev: Node, value: String) {
-        prev.next = Node(value, prev.next)
-    }
-
-    // 값으로 노드 찾기 — 처음부터 순회, O(n)
-    fun search(value: String): Node? {
-        var temp = head
-        while (temp != null) {
-            if (temp.value == value) return temp
-            temp = temp.next
-        }
-        return null
-    }
+// prev 다음에 새 노드 끼워 넣기 — 포인터 두 개만 바꾸면 된다
+fun addAfter(prev: Node, value: String) {
+    prev.next = Node(value, prev.next)
 }
 ```
 
@@ -121,7 +96,7 @@ class MyList {
 1. 키를 **해시 함수**에 넣으면 정수(해시값)가 나온다.
 2. 이 값을 정해진 크기의 배열(버킷, bucket)의 인덱스로 써서 바로 그 칸을 찾는다.
 
-그래서 평균 탐색 시간이 **O(1)** 이다.
+그래서 평균 탐색 시간이 **O(1)** 이다. key–value 쌍을 키로 조회하는 딕셔너리(Python `dict`, Java·Kotlin `Map`)가 대개 해시 테이블로 구현된다.
 
 ### 해시 충돌 (Collision)
 
@@ -140,15 +115,9 @@ class MyList {
 - 삽입은 글자마다 자식이 없으면 만들며 내려가고, 단어가 끝나는 노드에 **끝 표시**를 단다. 그래야 `ab`와 `abc`처럼 접두사 관계인 단어를 구분한다.
 - 접두사까지 내려간 뒤 그 아래 서브트리를 훑으면 그 접두사로 시작하는 단어를 모두 얻는다. 검색창 **자동 완성**이 이 원리다.
 
-## 스택, 큐, 딕셔너리
+## 스택과 큐
 
-| 자료구조 | 특징 | 연산 | 예 |
-| --- | --- | --- | --- |
-| 스택 (Stack) | LIFO(Last In First Out) | `push`(top에 넣기), `pop`(top에서 꺼내기) | 최신 메일이 맨 위에 오는 메일함 |
-| 큐 (Queue) | FIFO(First In First Out) | `enqueue`(넣기), `dequeue`(꺼내기) | 식당 대기 줄, 공용 프린터 출력 대기 |
-| 딕셔너리 (Dictionary) | key–value 쌍 | 키로 값 조회 | 단어와 뜻이 짝지어진 사전. Java·Kotlin에서는 `Map` |
-
-스택과 큐의 구현과 활용은 [[stack|스택]], [[queue-deque|큐와 덱]]에 더 자세히 정리했다.
+LIFO의 스택과 FIFO의 큐는 [[stack|스택]], [[queue-deque|큐와 덱]]에 따로 정리했다.
 
 ## 얕은 복사와 깊은 복사
 
@@ -156,33 +125,10 @@ C에서 `char *t = s;`가 문자열이 아니라 **주소만 복사**하는 것�
 
 | 구분 | 동작 | 결과 |
 | --- | --- | --- |
-| 얕은 복사 (Shallow Copy) | 원본 객체의 **주소**를 그대로 참조 | 같은 메모리를 가리키므로 한쪽을 바꾸면 다른 쪽도 바뀜 |
-| 깊은 복사 (Deep Copy) | 원본의 **값**을 새 메모리 공간에 복사 | 서로 독립적 |
+| 얕은 복사 (Shallow Copy) | 원본의 **참조(주소)** 를 복사 | 같은 메모리를 공유해 한쪽을 바꾸면 다른 쪽도 바뀐다 |
+| 깊은 복사 (Deep Copy) | 원본의 **값**을 새 메모리에 복사 | 서로 독립적이다 |
 
-```kotlin
-class AnyObject(var name: String)
-
-val a = AnyObject("Jimin")
-val b = a               // 얕은 복사: 같은 객체
-b.name = "SUGA"
-println(a === b)        // true  (===는 참조 비교)
-println(a.name)         // SUGA
-```
-
-Kotlin에서 복사본을 만드는 방법:
-
-- **data class의 `copy()`**: data class는 `toString()`, `hashCode()`, `equals()`, `copy()`를 자동으로 가진다. `copy()`는 새 객체를 만들지만 **얕은 복사**다. 프로퍼티가 리스트 같은 참조 타입이면 원본과 복사본이 같은 리스트를 공유한다. 프로퍼티가 모두 불변(`val`, 불변 타입)이라면 이것만으로 충분하다.
-- **`Cloneable` 구현**: `clone()`을 오버라이드한다. `super.clone()`도 필드를 그대로 복사하므로 **참조 타입 필드는 여전히 공유된다.** 이런 필드는 `clone()` 안에서 새 리스트로 복사해 줘야 진짜 깊은 복사가 된다.
-
-```kotlin
-class AnyObject(var name: String, var list: MutableList<Int>) : Cloneable {
-    public override fun clone(): AnyObject {
-        val copied = super.clone() as AnyObject
-        copied.list = list.toMutableList()   // 리스트도 새로 복사
-        return copied
-    }
-}
-```
+Kotlin data class의 `copy()`나 `super.clone()`처럼 언어가 주는 복사는 대개 얕은 복사다. 리스트 같은 참조 타입 필드는 직접 새로 복사해야 깊은 복사가 된다.
 
 ## 핵심 정리
 

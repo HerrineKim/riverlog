@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/aaed48853f144848b41681d9ee59a60f"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「최장 증가 부분 수열(Longest Increasing Subsequence)」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「최장 증가 부분 수열(Longest Increasing Subsequence)」을 바탕으로 재구성한 노트다.
 
 ## LIS란
 
