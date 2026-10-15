@@ -103,4 +103,4 @@ export function Message({ messagePromise }: { messagePromise: Promise<string> })
 - 기본 패턴은 서버 컴포넌트가 Promise를 만들고 클라이언트 컴포넌트가 `use`로 읽는 것이다.
 - 캐싱·재요청·무효화까지 필요한 클라이언트 데이터는 여전히 [[tanstack-query|TanStack Query]]·[[swr|SWR]]가 실용적이다.
 
-관련 노트: [[hooks|Hooks]], [[swr|SWR로 데이터 가져오기]], [[re-rendering|리렌더링 원인 추적하기]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]]
+관련 노트: [[hooks|Hooks]], [[swr|SWR로 데이터 가져오기]], [[re-rendering|리렌더링 원인 추적하기]], [[frontend-error-handling|프런트엔드 에러 핸들링]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]]
