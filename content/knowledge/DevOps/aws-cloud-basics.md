@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/94f23792f49b4c63a6701af578e74de1", "https://80000coding.notion.site/2049542166a4492cbe8a3a42e99467bb", "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/", "https://aws.amazon.com/ec2/pricing/"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「AWSome day 2022 - AWS 클라우드」, 「AWSome day 2022 - AWS Computing」을 바탕으로 행사 내용이 아닌 개념만 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「AWSome day 2022 - AWS 클라우드」, 「AWSome day 2022 - AWS Computing」을 바탕으로 행사 내용이 아닌 개념만 재구성한 노트다.
 
 ## 클라우드란
 

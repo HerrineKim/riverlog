@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/99481ed22b3e4d0da3f57f8930f8d8e7"]
 ---
 
-> 「SSH 터널」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「DB와 DataGrip 연결하기」를 바탕으로 보강했습니다.
+> 「SSH 터널」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「DB와 DataGrip 연결하기」를 바탕으로 보강했다.
 
 AWS의 **보안 그룹(Security Group)** 은 인스턴스·RDS 앞에 놓인 가상 방화벽이다. 기본적으로 허용하지 않은 인바운드(들어오는) 트래픽은 모두 막기 때문에, 로컬 PC의 DB 클라이언트(DBeaver 등)에서 RDS에 직접 접속하려면 내 IP를 인바운드 규칙에 추가해야 한다.
 

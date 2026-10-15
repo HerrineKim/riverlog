@@ -8,11 +8,9 @@ date: "2026-10-13"
 sources: ["https://blog.mathpresso.com/modern-frontend-infrastructure-overview-99b5a8c669df"]
 ---
 
-> 여울(Team QANDA)의 「[Modern Frontend Infrastructure Overview](https://blog.mathpresso.com/modern-frontend-infrastructure-overview-99b5a8c669df)」(2023.02)를 바탕으로 재구성한 노트입니다.
+> 여울(Team QANDA)의 「[Modern Frontend Infrastructure Overview](https://blog.mathpresso.com/modern-frontend-infrastructure-overview-99b5a8c669df)」(2023.02)를 바탕으로 재구성한 노트다.
 
-## 프론트엔드 개발자가 인프라 경로를 알아야 하는 이유
-
-서버 컴포넌트, 스트리밍 SSR, 엣지 렌더링이 보편화되면서 프론트엔드 코드가 **서버에서 도는 비중**이 커졌다. 그러면 「이 변경이 서버 요청을 늘리나」, 「어디서 캐시되나」, 「느린 건 앱인가 네트워크인가」를 답해야 한다. 그러려면 요청이 어떤 구성 요소를 지나 앱에 닿고, 각 지점의 트래픽을 어디서 보는지 알아야 한다.
+서버 컴포넌트·스트리밍 SSR로 프론트엔드 코드가 서버에서 도는 비중이 커지면서, 요청이 어떤 구성 요소를 지나 앱에 닿고 그 트래픽을 어디서 보는지 아는 것이 성능 작업의 출발점이 됐다.
 
 ## 요청 경로 한눈에
 
@@ -89,17 +87,7 @@ Istio는 Prometheus용 지표 노출을 기본으로 켜 두기 때문에, Prome
 
 지표 외에 로그와 분산 트레이스까지 한 표준으로 모으려면 **OpenTelemetry**로 계측하고, Grafana에서 지표(Prometheus)·로그(Loki)·트레이스(Tempo)를 함께 본다.
 
-## 학습용 구성 순서
-
-```text
-1. Terraform/OpenTofu로 관리형 클러스터 생성 (GKE·EKS·AKS)
-   └ 비용이 크므로 쓰고 나면 destroy
-2. 서비스 메시 설치 (Helm으로 istio base → istiod → gateway)
-3. 앱을 컨테이너 이미지로 빌드해 레지스트리에 푸시
-4. 앱 Helm 차트 설치 (Deployment·Service·HPA)
-5. 게이트웨이 라우트로 외부에 노출
-6. Prometheus·Grafana 설치 후 트래픽을 흘려 대시보드 확인
-```
+직접 구성해 볼 때는 Terraform으로 관리형 클러스터 생성 → Helm으로 서비스 메시·앱 차트 설치 → 게이트웨이 라우트로 노출 → Prometheus·Grafana로 확인하는 순서가 자연스럽고, 클러스터는 비용이 크므로 쓰고 나면 destroy한다.
 
 ## 정리
 

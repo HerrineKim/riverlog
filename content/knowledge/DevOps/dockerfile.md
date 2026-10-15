@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "https://80000coding.notion.site/be3f7cdb6d2f4e868fb6968740be0256", "https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "https://80000coding.notion.site/d6e6ca38d41347baa80ba1b4f40886ab", "https://docs.docker.com/reference/dockerfile/", "https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[inception] 인셉션 테스트 가이드라인」, 「Inception 참고자료」, 「[Inception] docker orchestration with docker-compose」, 「Inception 공부할때 유용했던 링크들」을 바탕으로 과제 풀이를 빼고 Docker 일반 개념만 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[inception] 인셉션 테스트 가이드라인」, 「Inception 참고자료」, 「[Inception] docker orchestration with docker-compose」, 「Inception 공부할때 유용했던 링크들」을 바탕으로 과제 풀이를 빼고 Docker 일반 개념만 재구성한 노트다.
 
 ## 이미지와 컨테이너
 
