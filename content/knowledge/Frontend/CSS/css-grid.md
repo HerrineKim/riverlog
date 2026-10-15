@@ -153,4 +153,4 @@ float 시절의 행 래퍼(row wrapper)나 12열 클래스 시스템을 그리�
 - 카드 사이 줄 맞춤은 서브그리드로 해결한다.
 - 재배치는 시각적 용도로만. 접근성은 소스 순서가 결정한다.
 
-관련 노트: [[flexbox|Float와 Flexbox 레이아웃]], [[logical-properties|쓰기 모드와 논리적 속성]], [[css-progressive-enhancement|CSS 점진적 향상: 폴백과 피처 쿼리]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[box-model|박스 모델과 display]]
+관련 노트: [[flexbox|Float와 Flexbox 레이아웃]], [[logical-properties|쓰기 모드와 논리적 속성]], [[css-progressive-enhancement|CSS 점진적 향상: 폴백과 피처 쿼리]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[box-model|박스 모델과 display]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]

@@ -160,4 +160,4 @@ input, button {
 - `:is()`·`:where()`·`:has()`로 선택자를 묶고, `:where()`로 특정성을 0으로 낮춘다.
 - 글꼴·색상은 상속되고, 박스·위치 관련 속성은 상속되지 않는다.
 
-관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[oocss|객체 지향 CSS(OOCSS)]]
+관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[oocss|객체 지향 CSS(OOCSS)]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]

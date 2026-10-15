@@ -122,4 +122,4 @@ const caches_ = {
 - 미디어를 필수·있으면 좋음·불필요로 나누고 `Save-Data`와 네트워크 상태에 맞춰 대체 이미지를 쓴다.
 - 캐시에 상한과 버전을 두어 사용자의 디스크를 존중한다.
 
-관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[responsive-images|반응형 이미지]], [[responsible-javascript|책임감 있는 자바스크립트]], [[cdn|CDN]], [[http|HTTP 프로토콜]]
+관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[responsive-images|반응형 이미지]], [[responsible-javascript|책임감 있는 자바스크립트]], [[cdn|CDN]], [[http|HTTP 프로토콜]], [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]]

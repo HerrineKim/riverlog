@@ -80,6 +80,8 @@ JWT는 `Header.Payload.Signature` 세 부분을 `.`으로 이은 문자열이다
 
 흔한 조합은 **Access Token은 메모리, Refresh Token은 HttpOnly 쿠키**다. 브라우저 전용 웹 앱이라면 처음부터 세션 쿠키를 쓰는 편이 단순하고 안전한 경우도 많다.
 
+실제로 어디에 무엇이 저장됐는지(쿠키의 `HttpOnly`·`Secure`·`SameSite`, `localStorage`의 토큰)는 Chrome DevTools의 Application 패널에서 확인한다 → [[devtools-application|DevTools Application 패널]].
+
 ## 정리
 
 - 세션은 상태를 서버에, 토큰은 상태를 토큰 안에 둔다. 차이는 **즉시 무효화**와 **확장성** 사이의 거래다.

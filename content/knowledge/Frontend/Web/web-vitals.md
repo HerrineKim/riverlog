@@ -44,6 +44,8 @@ INP처럼 실제 상호작용이 필요한 지표는 실험실에서 재기 어�
 - 모바일 측정은 느린 기기와 네트워크를 흉내 내므로 데스크톱보다 점수가 낮다.
 - 점수보다 항목별 진단(렌더링을 막는 요청, LCP 요소 분석 등)이 실제 할 일이다.
 
+DevTools에서 Lighthouse를 돌리는 법, 같은 진단을 트레이스 위에서 더 자세히 보여 주는 Performance 패널의 실시간 지표·인사이트 사용법은 [[devtools-performance|DevTools로 성능·메모리 분석하기]]에 있다.
+
 ## 지표별 개선 방법
 
 | 지표 | 흔한 원인 | 개선 |
@@ -63,7 +65,7 @@ INP처럼 실제 상호작용이 필요한 지표는 실험실에서 재기 어�
 ## 정리
 
 - 로딩은 LCP, 반응성은 INP, 안정성은 CLS로 본다.
-- Lighthouse로 원인을 찾고, 필드 데이터로 효과를 확인한다.
+- Lighthouse와 DevTools Performance 패널로 원인을 찾고, 필드 데이터로 효과를 확인한다.
 - 숫자의 감각은 [[frontend-latency-numbers|프론트엔드 지연 시간 숫자]]와 함께 보면 좋다.
 
-관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[seo-basics|SEO 기초]], [[responsible-javascript|책임감 있는 자바스크립트]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]]
+관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[seo-basics|SEO 기초]], [[responsible-javascript|책임감 있는 자바스크립트]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]]

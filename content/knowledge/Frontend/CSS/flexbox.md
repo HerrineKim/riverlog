@@ -193,4 +193,4 @@ Flexbox는 **한 방향**(행 또는 열)의 배치에, Grid는 행과 열을 **
 - flex 아이템의 `min-width` 기본값은 `auto`다. 긴 텍스트 때문에 아이템이 넘치면 `min-width: 0`을 준다.
 - 초깃값만으로도 아이템은 내용에 비례해 공간을 나눠 갖는다. `-reverse`는 시작점만 옮긴다.
 
-관련 노트: [[css-grid|CSS 그리드 레이아웃]], [[logical-properties|쓰기 모드와 논리적 속성]], [[box-model|박스 모델과 display]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]]
+관련 노트: [[css-grid|CSS 그리드 레이아웃]], [[logical-properties|쓰기 모드와 논리적 속성]], [[box-model|박스 모델과 display]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]

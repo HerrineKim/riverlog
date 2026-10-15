@@ -122,6 +122,8 @@ claude mcp add --transport http notion https://mcp.notion.com/mcp
 
 추가한 뒤 `/mcp`로 연결 상태를 확인한다.
 
+프런트엔드 작업이라면 Chrome DevTools MCP를 붙여 Claude Code가 실제 브라우저를 열고 성능 트레이스·Lighthouse·콘솔로 결과를 직접 확인하게 할 수 있다. 설치와 플래그는 [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]]에 있다.
+
 ## Skills와 CLAUDE.md
 
 ### Skills: 재사용하는 자동화

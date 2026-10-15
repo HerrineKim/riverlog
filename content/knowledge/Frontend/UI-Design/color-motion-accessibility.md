@@ -55,7 +55,7 @@ WCAG 성공 기준 1.4.1(색 사용)은 색이 정보 전달·행동 지시·반
 
 WebAIM이 해마다 상위 100만 개 홈페이지를 검사하는 WebAIM Million에서 **낮은 텍스트 대비는 매년 가장 흔한 오류**다. 2026년 보고서에서는 홈페이지의 83.9%에서 발견됐다.
 
-도구: 크롬 개발자 도구의 대비 검사기, Colour Contrast Analyser(코드 전 디자인 검사), WebAIM Contrast Checker, 팔레트 전체를 보는 A11Y Color Palette.
+도구: 크롬 개발자 도구의 대비 검사기(사용법은 [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]), Colour Contrast Analyser(코드 전 디자인 검사), WebAIM Contrast Checker, 팔레트 전체를 보는 A11Y Color Palette.
 
 ## 원칙 3. 사용자 설정을 존중한다
 

@@ -102,7 +102,7 @@ sources: ["https://velog.io/@cookie004/61-frontend-web-development-buzz-words"]
 | --- | --- | --- |
 | Application (애플리케이션) | 특정 기능을 하는 프로그램. 웹 앱은 설치 없이 브라우저에서 돈다. 정적인 문서 위주면 「웹사이트」, 상호작용이 많으면 「웹 앱」이라 부르는 편이다 | |
 | Bug (버그) | 의도와 다르게 동작하는 결함 | |
-| Debugging (디버깅) | 버그의 원인을 찾아 고치는 일. 재현 → 범위 좁히기 → 가설 검증 순서로 한다. 브라우저 DevTools의 중단점과 `debugger` 문이 기본 도구다 | [[devtools-time-savers|웹 개발 시간을 줄이는 팁]] |
+| Debugging (디버깅) | 버그의 원인을 찾아 고치는 일. 재현 → 범위 좁히기 → 가설 검증 순서로 한다. 브라우저 DevTools의 중단점과 `debugger` 문이 기본 도구다 | [[devtools-debugging|DevTools로 JavaScript 디버깅하기]] |
 | Deployment (배포) | 만든 코드를 사용자가 쓸 수 있는 환경에 올리는 일 | [[ci-cd|CI/CD]] |
 | CI/CD | 코드를 합칠 때마다 자동으로 빌드·테스트(CI)하고 배포까지 이어 가는(CD) 자동화 | [[ci-cd|CI/CD]] |
 | Documentation (문서화) | 코드와 시스템을 쓰고 고치는 방법을 적은 글. README, API 문서, 결정 기록(ADR)이 있다. 코드가 「무엇」을 말하면 문서는 「왜」를 말한다 | [[markdown|Markdown]] |

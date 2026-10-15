@@ -49,6 +49,21 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 
 주소창의 사이트가 직접 심은 쿠키가 **퍼스트파티**, 페이지에 들어 있는 다른 도메인(광고, 임베드)이 심은 쿠키가 **서드파티**다. 사파리와 파이어폭스는 서드파티 쿠키를 기본으로 막는다. 크롬은 단계적으로 없애려던 계획을 2025년에 철회하고 기본 허용을 유지한다. 브라우저마다 다르므로 로그인·결제 흐름은 서드파티 쿠키에 기대지 않게 설계한다.
 
+## 쿠키와 Web Storage 비교
+
+| 항목 | 쿠키 | localStorage | sessionStorage |
+| --- | --- | --- | --- |
+| 만드는 쪽 | 서버(`Set-Cookie`) 또는 JS | JS | JS |
+| 수명 | `Expires`·`Max-Age`, 없으면 브라우저 세션 동안 | 지울 때까지 | 탭을 닫을 때까지 |
+| 요청마다 자동 전송 | O | X | X |
+| 범위 | 도메인·경로 | 출처(origin) | 출처 + 탭 |
+| 용량 | 쿠키당 약 4KB | 출처당 약 5MiB | 출처당 약 5MiB |
+| JS 접근 | `HttpOnly`면 불가 | 가능 | 가능 |
+
+- 셋 다 문자열만 저장한다. 구조화된 큰 데이터는 IndexedDB를 쓴다.
+- 탭을 복제하면 sessionStorage도 복사된다.
+- 실제로 저장된 값은 DevTools Application 패널에서 보고 고칠 수 있다([[devtools-application|DevTools Application 패널]]).
+
 ## 세션
 
 세션 방식은 민감한 정보를 쿠키에 직접 담지 않는다. 서버가 세션 데이터를 저장하고, 브라우저에는 그 데이터를 찾을 **세션 ID**만 쿠키로 준다.
@@ -72,4 +87,4 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 - 세션 = 상태는 서버에, 식별자(세션 ID)만 쿠키에 두는 방식.
 - 쿠키가 "자동으로 전송된다"는 성질 때문에 [CSRF](/knowledge/dictionary/frontend/web/web-security) 같은 공격이 가능해진다. `HttpOnly`·`Secure`·`SameSite`로 범위를 좁힌다.
 
-관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[auth-user|Django User와 인증]], [[auth-jwt-passport|NestJS JWT 인증(토큰 방식)]], [[auth-flow|React로 회원가입·로그인 구현하기]], [[oauth2|OAuth 2.0]]
+관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[auth-user|Django User와 인증]], [[auth-jwt-passport|NestJS JWT 인증(토큰 방식)]], [[auth-flow|React로 회원가입·로그인 구현하기]], [[oauth2|OAuth 2.0]], [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]], [[devtools-network|DevTools Network 패널]]

@@ -115,4 +115,4 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 
 **좋은 애니메이션은 눈에 띄지 않고, 상태가 바뀌었다는 사실만 알려 준다.**
 
-관련 노트: [[transform|transform: 이동·회전·확대·기울이기]], [[browser-rendering|브라우저 렌더링 과정]], [[color-motion-accessibility|색과 움직임의 접근성]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]]
+관련 노트: [[transform|transform: 이동·회전·확대·기울이기]], [[browser-rendering|브라우저 렌더링 과정]], [[color-motion-accessibility|색과 움직임의 접근성]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]

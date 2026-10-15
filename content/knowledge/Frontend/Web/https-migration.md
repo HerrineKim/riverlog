@@ -50,7 +50,7 @@ ECDSA(ECC) 키는 RSA보다 작고 빠르다. P-256이면 충분하다. RSA는 �
 | 순서 | 할 일 | 이유 |
 | --- | --- | --- |
 | 1 | 인증서 설치 후 HTTPS로 모든 페이지가 열리는지 확인 | |
-| 2 | 혼합 콘텐츠(mixed content) 제거 | HTTPS 페이지가 `http://` 이미지·스크립트를 부르면 브라우저가 차단하거나 경고한다. 자원 URL을 `https://`나 상대 경로로 바꾸고, 남은 것은 CSP `upgrade-insecure-requests`로 올린다 |
+| 2 | 혼합 콘텐츠(mixed content) 제거 | HTTPS 페이지가 `http://` 이미지·스크립트를 부르면 브라우저가 차단하거나 경고한다. 자원 URL을 `https://`나 상대 경로로 바꾸고, 남은 것은 CSP `upgrade-insecure-requests`로 올린다. 남은 혼합 콘텐츠는 DevTools 보안 패널이나 Network 필터 `mixed-content:all`로 찾는다([[devtools-network|DevTools Network 패널]]) |
 | 3 | HTTP → HTTPS **301** 리다이렉트 | 검색 엔진이 새 URL로 신호를 옮긴다. canonical·사이트맵·내부 링크도 https로 바꾼다([[seo-basics|SEO 기초]]) |
 | 4 | HSTS 헤더 추가 | 첫 요청 이후 브라우저가 스스로 HTTPS로만 접속한다. 짧은 `max-age`로 시작해 늘리고, 안정되면 preload 목록 등록을 검토한다 |
 | 5 | 쿠키에 `Secure` 속성 | 인증 쿠키가 평문으로 새지 않게 한다 |

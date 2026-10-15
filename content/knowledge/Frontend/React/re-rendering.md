@@ -37,7 +37,7 @@ react-query(TanStack Query)의 `useQuery`를 쓰는 컴포넌트는 최소 두 �
 
 - **계층별 `console.log`**: 부모부터 자식까지 렌더링 시점을 찍어 보면 어느 층에서 렌더링이 시작되는지 보인다. 로그 순서상 자식이 부모보다 먼저 끝나는 것처럼 보일 수 있는데, 렌더 완료·커밋이 자식부터 이루어지기 때문이다.
 - **React DevTools → "Highlight updates when components render"**: 렌더링될 때마다 해당 컴포넌트에 테두리가 깜빡여 눈으로 바로 추적할 수 있다.
-- **React DevTools Profiler**: 각 렌더링이 *왜* 일어났는지(props 변경, state 변경, 부모 렌더링)와 소요 시간을 기록해 준다. "Record why each component rendered" 옵션을 켜 둔다.
+- **React DevTools Profiler**: 각 렌더링이 *왜* 일어났는지(props 변경, state 변경, 부모 렌더링)와 소요 시간을 기록해 준다. "Record why each component rendered" 옵션을 켜 둔다. 컴포넌트 단위가 아니라 메인 스레드 전체 비용(스크립트·레이아웃·페인트)은 Chrome DevTools의 Performance 패널로 본다([[devtools-performance|DevTools로 성능·메모리 분석하기]]).
 
 ## 줄이는 순서
 

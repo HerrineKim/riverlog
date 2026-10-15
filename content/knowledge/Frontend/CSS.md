@@ -35,5 +35,5 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 ## 참고
 
 - [MDN Web Docs](https://developer.mozilla.org/ko/)
-- [Chrome 개발자 도구로 CSS 보기](https://developer.chrome.com/docs/devtools/css): Styles 탭은 요소에 선언된 모든 CSS, Computed 탭은 최종 계산된 값을 보여 준다.
+- [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]: Styles 탭은 요소에 선언된 모든 CSS, Computed 탭은 최종 계산된 값을 보여 준다.
 - [Emmet 치트시트](https://docs.emmet.io/cheat-sheet/): HTML·CSS 약어 확장 도구

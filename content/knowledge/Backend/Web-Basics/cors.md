@@ -52,4 +52,4 @@ bootstrap();
 
 관련 노트: [[ajax|AJAX와 HTTP 요청]], [[web-security|웹 보안: CSRF와 XSS]], [[api-security|API 보안 체크리스트]]
 
-참고: [NestJS CORS 문서](https://docs.nestjs.com/security/cors), [OPTIONS 메소드를 쓰는 이유와 CORS (하나몬)](https://hanamon.kr/네트워크-http-options-메소드를-쓰는-이유와-cors란/), [No 'Access-Control-Allow-Origin' 해결 방법](https://kimyhcj.tistory.com/263)
+참고: [NestJS CORS 문서](https://docs.nestjs.com/security/cors), [OPTIONS 메소드를 쓰는 이유와 CORS (하나몬)](https://hanamon.kr/네트워크-http-options-메소드를-쓰는-이유와-cors란/), [No 'Access-Control-Allow-Origin' 해결 방법](https://kimyhcj.tistory.com/263), [[devtools-network|DevTools Network 패널]]

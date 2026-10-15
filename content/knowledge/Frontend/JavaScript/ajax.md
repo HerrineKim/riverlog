@@ -121,7 +121,7 @@ export default defineConfig({
 
 ## 디버깅 팁
 
-요청을 보낼 때는 브라우저 개발자 도구의 **Network 탭**에서 요청 URL, 메서드, 헤더(쿠키 포함 여부), 상태 코드, 응답 본문을 확인하는 습관을 들인다.
+요청이 실제로 어떻게 나갔는지(URL, 메서드, 헤더, 쿠키, 상태 코드, 응답 본문)는 DevTools Network 패널에서 확인한다. 보는 법과 Edit and resend as fetch로 다시 보내는 법은 [[devtools-network|DevTools Network 패널]]에 있다.
 
 ## 핵심 정리
 

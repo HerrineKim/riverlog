@@ -58,7 +58,7 @@ HTTP 캐시는 **한 번 받은 응답을 저장해 두었다가 같은 요청�
 ## 흔한 문제
 
 - **배포했는데 옛 화면이 보인다**: HTML이 길게 캐시되어 옛 번들을 가리키는 경우가 많다. HTML 캐시 헤더부터 확인한다.
-- DevTools의 Network 탭에서 `(memory cache)`, `(disk cache)`, `304`로 캐시 여부를 확인할 수 있다. "Disable cache"를 켜면 개발 중 혼란이 줄어든다.
+- 캐시에서 왔는지, 헤더가 의도대로인지는 DevTools Network 패널로 확인한다: [[devtools-network|DevTools Network 패널]].
 
 ## 정리
 

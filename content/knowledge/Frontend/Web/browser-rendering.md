@@ -109,7 +109,7 @@ HTML은 네 단계를 거쳐 [[dom|DOM]] 트리가 된다.
 | 이미지 등 | 요청만 보내고 파싱을 계속한다 |
 | CSS (`<link rel="stylesheet">`) | 파싱은 계속하지만 **렌더링을 막는다(render-blocking)**. 뒤따르는 동기 스크립트도 CSSOM이 완성될 때까지 실행을 기다린다 |
 | `<script>` (속성 없음) | **파싱을 멈추고** 스크립트를 받아 실행한 뒤 이어서 파싱한다 |
-| `<script async>` / `<script defer>` | 받는 동안 파싱을 계속한다. async는 받는 즉시, defer는 파싱이 끝난 뒤 실행 |
+| `<script async>` / `<script defer>` | 받는 동안 파싱을 계속한다. async는 받는 즉시, defer는 파싱이 끝난 뒤 실행(`type="module"`은 기본이 defer). 배치 원칙은 [[script-loading\|스크립트 로딩 순서]] |
 
 스크립트가 파싱을 막는 이유는 스크립트가 `document.write` 등으로 DOM 자체를 바꿀 수 있기 때문이다. 스크립트가 CSS를 기다리는 이유는 `getComputedStyle`처럼 스타일을 읽는 코드가 덜 만들어진 CSSOM에서 틀린 값을 받지 않게 하려는 것이다.
 
@@ -163,6 +163,8 @@ div2.style.width = `${w}px`;
 div2.style.height = `${h}px`;
 ```
 
+DevTools Performance 패널에서는 보라색 Layout 이벤트에 강제 리플로우 경고가 붙고, 렌더링 탭의 페인트 플래싱·레이어 테두리로 다시 칠하는 영역과 레이어를 화면에서 볼 수 있다. 절차는 [[devtools-performance|DevTools로 성능·메모리 분석하기]]에 있다.
+
 ## 5. 페인팅
 
 레이아웃 결과를 바탕으로 노드를 실제 픽셀로 그린다. 페인팅도 전역·증분이 있고, 증분 페인팅은 바뀐 영역만 다시 그린다. 단색보다 그림자·흐림 효과가 그리기 비용이 크다.
@@ -203,4 +205,4 @@ DOM을 직접 자주 조작하면 리렌더링이 잦아지기 쉽다. React·Vu
 - 위치·크기가 바뀌면 레이아웃부터, 색만 바뀌면 페인팅부터, `transform`·`opacity`만 바뀌면 합성만 다시 한다.
 - 브라우저는 더티 비트로 레이아웃을 모아 처리한다. **레이아웃 값 읽기와 스타일 쓰기를 섞지 않는 것**이 이 최적화를 살리는 방법이다.
 
-관련 노트: [[dom|DOM]], [[html|HTML]], [[event-loop|이벤트 루프]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]]
+관련 노트: [[dom|DOM]], [[html|HTML]], [[event-loop|이벤트 루프]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]]

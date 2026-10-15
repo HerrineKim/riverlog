@@ -115,4 +115,4 @@ DOM의 본질은 "HTML을 이렇게 고쳐 달라"를 컴퓨터가 알아듣게 
 - BOM은 문서 바깥의 브라우저 자체를 다루며 최상위 객체는 `window`.
 - DOM은 문자열 HTML을 매번 다시 파싱하는 비용을 피하려고, 이미 만든 구조를 부분 수정하기 위해 생겼다.
 
-관련 노트: [[dom-manipulation|DOM 조작]], [[dom-events|이벤트]], [[browser-rendering|브라우저 렌더링 과정]], [[frontend-history|프론트엔드의 등장 배경]]
+관련 노트: [[dom-manipulation|DOM 조작]], [[dom-events|이벤트]], [[browser-rendering|브라우저 렌더링 과정]], [[frontend-history|프론트엔드의 등장 배경]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]

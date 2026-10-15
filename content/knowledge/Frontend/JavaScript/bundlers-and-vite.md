@@ -62,6 +62,7 @@ Vue를 만든 Evan You가 Snowpack을 보고 같은 개념의 도구를 만들�
 
 - **번들러라기보다 빌드 도구 생태계다.** 개발 서버, 프록시, HMR, 플러그인, 프로젝트 생성(`npm create vite@latest`)을 묶고, 실제 변환·번들링은 내부 도구에 맡긴다.
 - 개발 모드는 브라우저 ES 모듈로 파일을 그대로 내려보내고 고친 모듈만 갱신한다. 배포 빌드는 하나로 묶는다.
+- 변환·압축된 코드는 소스 맵으로 원본과 이어 디버깅한다. 브라우저에서 보는 법은 [[devtools-debugging|DevTools로 JavaScript 디버깅하기]]에 있다.
 - Vite 8(2026.03)부터 내부 번들러가 **Rolldown** 하나로 통일됐다. 과거에는 개발 쪽 변환에 esbuild, 배포 번들에 Rollup을 따로 써서 두 도구의 동작 차이가 생기곤 했다. Rolldown은 Rollup 플러그인 API와 호환돼 기존 플러그인 생태계를 그대로 쓴다.
 - TypeScript·CSS 전처리, 코드 스플리팅, SSR을 기본으로 지원하고 webpack보다 설정이 짧다.
 - Vue 전용으로 시작했지만 React, Svelte, Preact, Lit, Solid로 넓어졌고, SvelteKit·Nuxt·React Router·Astro 같은 메타 프레임워크가 Vite 위에 올라가 있다. 테스트 러너 Vitest도 같은 설정을 공유한다.

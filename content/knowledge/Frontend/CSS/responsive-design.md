@@ -106,4 +106,4 @@ html:lang(ja) { font-size: 90%; }   // 1rem = 14.4px
 - 브레이크포인트는 기기가 아니라 콘텐츠가 깨지는 곳에 둔다.
 - 글자 크기를 `rem`으로 통일해 두면 화면이나 언어에 따라 루트 하나로 조절할 수 있다.
 
-관련 노트: [[css-basics|CSS 기초]], [[flexbox|Float와 Flexbox 레이아웃]], [[box-model|박스 모델과 display]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[web-typography|웹 타이포그래피: 가독성, 글줄 길이, 웹폰트]], [[css-grid|CSS 그리드 레이아웃]], [[web-layout-design|웹 레이아웃 디자인: 인쇄와 다른 매체]]
+관련 노트: [[css-basics|CSS 기초]], [[flexbox|Float와 Flexbox 레이아웃]], [[box-model|박스 모델과 display]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[web-typography|웹 타이포그래피: 가독성, 글줄 길이, 웹폰트]], [[css-grid|CSS 그리드 레이아웃]], [[web-layout-design|웹 레이아웃 디자인: 인쇄와 다른 매체]], [[devtools-device-emulation|DevTools로 기기·환경 에뮬레이션하기]]

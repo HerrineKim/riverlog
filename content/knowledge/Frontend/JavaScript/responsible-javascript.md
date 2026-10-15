@@ -69,6 +69,8 @@ IE가 사라진 뒤에는 "어디까지 지원할까"를 사용자 기기 데이
 | 작은 대체재 | React → Preact, moment.js → date-fns·Day.js, lodash 메서드 → 네이티브 배열 메서드 |
 | 빌드 대상 | 트랜스파일 대상을 Baseline 브라우저로 올린다. 구형 대상으로 변환하면 기본 매개변수·전개 구문·async 함수가 헬퍼 코드로 불어나고 폴리필이 붙는다 |
 
+페이지에서 실제로 안 쓰인 JS·CSS 바이트는 DevTools 커버리지 패널로 찾는다([[devtools-performance|DevTools로 성능·메모리 분석하기]]).
+
 과거에는 `type="module"`과 `nomodule`로 최신 브라우저용·구형 브라우저용 번들을 따로 보냈다. IE가 빠진 지금은 빌드 대상만 올리면 된다.
 
 ## 원칙 3. 서드파티는 사람이 관리한다
