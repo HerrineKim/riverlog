@@ -62,6 +62,11 @@ for (const arg of files) {
     errors.push("date must be YYYY-MM-DD");
   if (/^#\s/m.test(content.replace(/```[\s\S]*?```/g, ""))) warns.push("body has an h1; title comes from frontmatter");
 
+  // Notes are written in plain 평서체 "~다"; quoted text (「」, "", `code`) may stay polite
+  const prose = content.replace(/```[\s\S]*?```/g, "").replace(/`[^`]*`|「[^」]*」|"[^"]*"|“[^”]*”/g, "");
+  const polite = prose.match(/[^\s]*(습니다|입니다|세요|해요|예요|이에요)[.!?]?(?=\s|$)/gm);
+  if (polite) warns.push(`polite speech (use 평서체 "~다"): ${[...new Set(polite)].slice(0, 3).join(" / ")}`);
+
   // Log-shaped notes: headings or title organized by date/session instead of topic
   const LOG = /\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}|\bday\s*\d+|\d+\s*(일차|주차|회차)|\bpjt\s*\d+|오늘|회고/i;
   const logHeads = [String(data.title ?? ""), ...[...content.replace(/```[\s\S]*?```/g, "").matchAll(/^#{2,3}\s+(.+)$/gm)].map((m) => m[1])]
