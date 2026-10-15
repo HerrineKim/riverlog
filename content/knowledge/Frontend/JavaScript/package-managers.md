@@ -1,14 +1,14 @@
 ---
 title: "자바스크립트 패키지 매니저: npm, yarn, pnpm"
 concept: "Package Manager"
-summary: "패키지 설치·업데이트·의존성 관리를 맡는 패키지 매니저 npm·yarn·pnpm(그리고 Bun)의 차이와 고르는 기준, packageManager 필드와 Corepack, 설치 스크립트 차단 같은 공급망 보안 기본값, npm EINTEGRITY 오류의 원인과 해결."
+summary: "패키지 설치·업데이트·의존성 관리를 맡는 패키지 매니저의 기본(dependencies와 devDependencies, npm 스크립트, 패키지 고르는 법), npm·yarn·pnpm(그리고 Bun)의 차이와 고르는 기준, packageManager 필드와 Corepack, 설치 스크립트 차단 같은 공급망 보안 기본값, npm EINTEGRITY 오류의 원인과 해결."
 tags: ["javascript", "nodejs", "frontend", "tools"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.org/api/corepack.html", "https://pnpm.io/settings", "https://yarnpkg.com/blog"]
+sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.org/api/corepack.html", "https://pnpm.io/settings", "https://yarnpkg.com/blog", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/82-using-open-source-npm-packages", "https://wesbos.com/javascript/01-the-basics/code-quality-tooling-with-prettier-and-eslint"]
 ---
 
-> riverkim.kr에 쓴 글들을 바탕으로 재구성한 노트다.
+> riverkim.kr에 쓴 글들을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고해 재구성한 노트다.
 
 ## 패키지 매니저란
 
@@ -19,6 +19,23 @@ sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.o
 | `package.json` | 필요한 패키지와 허용 버전 범위(`^1.2.0` 등)를 적는다 |
 | lock 파일 (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`) | 실제로 설치된 **정확한 버전과 무결성 해시**를 기록한다. 커밋해서 팀이 공유한다 |
 | `node_modules/` | 설치된 패키지가 들어가는 폴더. 커밋하지 않는다 |
+
+## 의존성 추가와 npm 스크립트
+
+```bash
+npm install axios date-fns     # dependencies: 실행 코드가 import하는 패키지
+npm install -D vite eslint     # devDependencies: 빌드·검사·테스트에만 쓰는 도구
+npx eslint .                   # 전역 설치 없이 프로젝트(또는 임시로 받은) 패키지의 명령 실행
+```
+
+| 구분 | 넣는 것 | 차이가 드러나는 곳 |
+| --- | --- | --- |
+| `dependencies` | 앱이 실행될 때 필요한 라이브러리 | 라이브러리를 배포하면 쓰는 쪽에 함께 설치된다. 서버 배포에서 `npm ci --omit=dev`가 남기는 것 |
+| `devDependencies` | 번들러, 린터, 테스트 러너, 타입 정의 | 번들러를 거치는 프런트엔드 앱은 결과물에 쓰인 코드만 담기므로 구분이 관례에 가깝다 |
+
+- `node_modules` 안의 파일은 **직접 고치지 않는다.** 다음 설치 때 덮어써진다. 폴더는 언제 지워도 `npm install`로 다시 만들 수 있다. 패키지를 꼭 고쳐야 하면 `pnpm patch`나 `patch-package`로 패치 파일을 남긴다.
+- `package.json`의 `scripts`에 명령을 적어 두면 `npm run dev`처럼 실행한다. `start`·`test`는 `run` 없이 `npm start`·`npm test`로 줄여 쓴다. 스크립트 안에서는 `node_modules/.bin`의 명령을 경로 없이 쓸 수 있어 도구를 전역 설치할 필요가 없다.
+- 패키지를 고를 때는 관리 상태(최근 릴리스, 이슈 대응), 번들 크기, **필요한 함수만 가져올 수 있는지**(`import { format } from 'date-fns'`처럼 named import로 트리 셰이킹되는지)를 본다. `fetch`, `structuredClone`, `Intl` 같은 내장 API로 충분하면 패키지를 더하지 않는다. 날짜 라이브러리의 예는 [[date-libraries|날짜 라이브러리]]에 있다.
 
 ## 세 가지 매니저 비교
 
@@ -83,9 +100,10 @@ npm cache verify && npm cache clean --force && rm -rf package-lock.json && npm i
 ## 정리
 
 - 패키지 매니저는 의존성 설치와 버전 재현을 맡고, 그 핵심은 lock 파일이다.
+- 실행 코드는 `dependencies`, 도구는 `devDependencies`. 도구는 전역 설치 대신 npm 스크립트와 `npx`로 돌린다.
 - npm은 기본 포함과 생태계, yarn은 PnP 같은 새 설치 방식, pnpm은 디스크 효율과 엄격한 의존성, Bun은 속도가 강점이다.
 - 매니저 버전은 `packageManager` 필드로 고정한다. Corepack은 Node.js 25부터 따로 설치한다.
 - 한 프로젝트에는 한 매니저, lock 파일은 커밋한다.
 - EINTEGRITY는 해시 불일치다. 캐시를 비우고 lock 파일을 다시 만든다.
 
-관련 노트: [[ci-cd|CI/CD]], [[windows-dev-environment|Windows 개발 환경]]
+관련 노트: [[bundlers-and-vite|번들러의 역사와 Vite]], [[eslint-prettier|ESLint와 Prettier 설정]], [[ci-cd|CI/CD]], [[windows-dev-environment|Windows 개발 환경]]

@@ -5,8 +5,10 @@ summary: "코드 품질은 ESLint가, 모양은 Prettier가 맡도록 역할을 
 tags: ["javascript", "tooling", "eslint", "prettier", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/157", "https://eslint.org/blog/2026/02/eslint-v10.0.0-released/", "https://eslint.org/docs/latest/use/configure/configuration-files"]
+sources: ["https://riverkim.kr/157", "https://eslint.org/blog/2026/02/eslint-v10.0.0-released/", "https://eslint.org/docs/latest/use/configure/configuration-files", "https://eslint.org/docs/latest/use/configure/rules#disabling-rules", "https://wesbos.com/javascript/01-the-basics/code-quality-tooling-with-prettier-and-eslint"]
 ---
+
+> 직접 정리한 내용에 ESLint 공식 문서와 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고해 재구성한 노트다.
 
 ESLint는 코드를 분석해 문법 오류와 안티 패턴을 찾아 주는 린터(linter)다. Prettier는 줄바꿈·따옴표·들여쓰기 같은 **모양만** 일관되게 맞추는 포매터(formatter)다. 두 도구를 함께 쓰는 이유는 역할이 다르기 때문이다. 린터는 "이 코드가 버그를 낼 수 있다"를, 포매터는 "이 코드가 팀 규칙과 다르게 생겼다"를 말한다. 어느 프레임워크를 쓰든 설정 절차는 같다.
 
@@ -47,6 +49,32 @@ npm install -D eslint prettier eslint-config-prettier
 
 3. 프로젝트에 ESLint 설정 파일(`eslint.config.js`)과 `.prettierrc`를 만든다.
 4. VS Code를 다시 시작한다. 이후에는 저장할 때마다 검사·수정된다.
+
+## 명령줄과 CI에서 돌리기
+
+에디터 연동은 개인 편의다. 팀 전체에 규칙을 지키게 하려면 같은 검사를 명령으로도 돌린다. 도구는 전역이 아니라 **프로젝트의 devDependencies로 설치**해야 팀원과 CI가 같은 버전을 쓴다.
+
+```json
+{
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
+  }
+}
+```
+
+CI에서는 `npm run lint`와 `npm run format:check`를 돌려 위반이 있으면 실패시킨다. 커밋 직전에 바뀐 파일만 검사하려면 husky + lint-staged 같은 Git 훅 도구를 붙인다.
+
+규칙을 지킬 수 없는 줄은 그 자리에서만 끈다. 파일 전체나 설정에서 끄기보다 범위를 좁히고 이유를 남긴다.
+
+```js
+// eslint-disable-next-line no-console -- 배포 스크립트의 진행 로그
+console.log('deploying...')
+```
+
+ESLint 오류 메시지의 규칙 이름은 공식 문서의 규칙 페이지로 이어진다. 왜 지적됐는지 모르겠으면 끄기 전에 규칙 설명부터 읽는다.
 
 ## ESLint 설정 파일 읽는 법
 
@@ -101,6 +129,7 @@ ESLint 8까지는 `.eslintrc.*` 파일이 기본이었다. ESLint 9(2024)에서 
 
 - ESLint는 품질, Prettier는 모양. 겹치는 규칙은 `eslint-config-prettier`로 끈다.
 - 확장 프로그램 설치만으로는 동작하지 않는다. 설정 파일 + `formatOnSave` + `codeActionsOnSave`가 세트다.
+- 도구는 devDependencies로 설치하고 `lint`·`format:check` 스크립트를 CI에서 돌린다. 규칙은 필요한 줄에서만, 이유를 달아 끈다.
 - flat config는 "규칙 묶음 배열 + 덮어쓰기"다. `.eslintrc`는 ESLint 10에서 제거됐으니 옛 프로젝트는 변환한다.
 - 규칙으로 자동화할 수 없는 이름 짓기·타입·에러 처리 같은 약속은 [[typescript-coding-convention|TypeScript 코딩 컨벤션]]처럼 문서로 합의한다.
 

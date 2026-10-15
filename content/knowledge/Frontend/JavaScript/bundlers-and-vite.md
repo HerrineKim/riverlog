@@ -5,10 +5,10 @@ summary: "모듈 없이 태어난 JavaScript가 CommonJS·AMD·ES 모듈을 거�
 tags: ["frontend", "javascript", "tools", "performance"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://vite.dev/blog/announcing-vite8"]
+sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://vite.dev/blog/announcing-vite8", "https://vite.dev/config/build-options#build-target", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/81-bundling-and-building-with-parcel"]
 ---
 
-> 테오(teo)의 「[Vite 이야기 (feat. Svelte)](https://velog.io/@teo/vite)」(2022.07)를 바탕으로 재구성한 노트다.
+> 테오(teo)의 「[Vite 이야기 (feat. Svelte)](https://velog.io/@teo/vite)」(2022.07)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다.
 
 ## 번들러가 필요한 이유
 
@@ -22,6 +22,17 @@ sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-
 | 번들러 | 개발은 모듈로 나눠서 하고, **배포할 때 하나의 파일(bundle)로 합친다** | 수정할 때마다 다시 번들링해야 해서 느리다 |
 
 브라우저와 서버의 통신에는 데이터 양과 무관한 최소 왕복 시간이 있다. 그래서 파일을 쪼개 받으면 하나로 받는 것보다 오래 걸린다. 모듈 개발의 편리함과 한 파일 전송의 속도를 둘 다 얻으려고 생긴 것이 번들러다. 문법 쪽 이야기는 [[es-modules|모듈: export와 import]]에 있다.
+
+### 빌드할 때 번들러가 하는 일
+
+| 일 | 내용 |
+| --- | --- |
+| 모듈 해석 | `import 'date-fns'` 같은 패키지 이름을 `node_modules`의 실제 파일로 찾아 잇는다 |
+| 변환 | TypeScript·JSX를 JavaScript로 바꾸고, 대상 브라우저가 모르는 최신 문법을 낮춘다. 대상은 설정으로 정한다(Vite의 `build.target`, 기본값은 Baseline 기준으로 널리 쓸 수 있는 브라우저). 과거에는 Babel과 `browserslist`가 이 일을 맡았다 |
+| 압축(minify) | 공백·주석을 지우고 지역 변수 이름을 짧게 줄인다 |
+| 트리 셰이킹 | 어디서도 쓰지 않는 export를 결과물에서 뺀다 |
+| 코드 스플리팅 | 동적 `import()` 지점과 공통 의존성을 별도 파일(청크)로 나눈다 |
+| 에셋 처리 | CSS·이미지를 함께 묶거나 최적화하고, 내용 해시를 붙인 파일 이름으로 내보내 오래 캐시해도 되게 한다 |
 
 ## 번들러의 계보
 
