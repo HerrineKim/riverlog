@@ -110,4 +110,4 @@ TF-IDF(d, t) = tf(d, t) × log( N / df(t) )
 - 언어 모델은 n-gram → RNN → 트랜스포머 → LLM으로 이어지며 긴 문맥을 다루는 능력이 커졌다.
 - **좋은 NLP 모델의 출발점은 과제에 맞는 말뭉치와 깨끗한 전처리다.**
 
-관련 노트: [[text-similarity|문자열·문서 유사도: 편집 거리와 코사인 유사도]], [[classification-metrics|분류 모델 성능 평가 지표]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]]
+관련 노트: [[text-similarity|문자열·문서 유사도: 편집 거리와 코사인 유사도]], [[classification-metrics|분류 모델 성능 평가 지표]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]]
