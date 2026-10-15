@@ -5,7 +5,7 @@ River(Hyerin Kim)의 블로그이자 지식 창고. Next.js App Router로 만든
 - **About** (`/`) — 소개, RSS·LinkedIn·GitHub·메일 링크
 - **Blog** (`/blog`) — 마크다운 글, RSS 피드 `/rss.xml`
 - **Knowledge** — 같은 노트를 두 가지 방식으로 탐색
-  - `/knowledge` — 개념 지도 (분야 허브 ↔ 개념 노트, 같은 태그끼리 연결)
+  - `/knowledge` — 3D 개념 지도 (분야 허브 ↔ 개념 노트, 같은 태그끼리 연결)
   - `/knowledge/dictionary` — 계층형 사전 (분야 → 주제 → 노트, 가나다·ABC 색인, 추가일·수정일 기준 최신순·오래된순, 검색)
 - **Books** (`/books`) — 책장 목록과 책별 독후감
 - **Portfolio** (`/portfolio`) — 회사별 경력과 프로젝트
@@ -45,7 +45,7 @@ tags: ["회고"]
 ```md
 ---
 title: "React Hooks"
-concept: "Hooks"          # 지도에 표시할 짧은 개념어 (생략 시 title에서 자동 추출)
+concept: "Hooks"          # 3D 지도에 표시할 짧은 개념어 (생략 시 title에서 자동 추출)
 summary: "한 줄 요약"
 tags: ["react", "state"]  # 태그가 2개 이상 겹치는 노트끼리 지도에서 연결됩니다
 source: til               # til | notion | mixed

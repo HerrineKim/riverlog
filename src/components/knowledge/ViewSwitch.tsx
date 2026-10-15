@@ -20,7 +20,7 @@ export default function ViewSwitch({ active }: { active: View }) {
       {item(
         "map",
         "/knowledge",
-        "마인드맵",
+        "3D 마인드맵",
         <svg aria-hidden viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8">
           <circle cx="12" cy="12" r="2.5" />
           <circle cx="4.5" cy="6" r="1.8" />
