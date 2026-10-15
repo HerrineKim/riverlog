@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/collaboration", "https://velog.io/@teo/sprint-and-mind", "https://velog.io/@teo/ifkakao-after-talk-후기-요즘-웹-프론트는-디자니어와-CSS-협업-어떻게-해요"]
 ---
 
-> 테오(teo)의 「[협업을 잘하는 개발자가 되어보자 - 프로그래머가 아니라 문제 해결사가 되자!](https://velog.io/@teo/collaboration)」(2023.10)를 중심으로, 「[스프린트, 협업을 위한 장치 그리고 마인드](https://velog.io/@teo/sprint-and-mind)」(2024.02)와 「[if(kakao) after talk 후기](https://velog.io/@teo/ifkakao-after-talk-후기-요즘-웹-프론트는-디자니어와-CSS-협업-어떻게-해요)」(2021.11)의 내용을 더해 요약·재구성한 노트입니다.
+> 테오(teo)의 「[협업을 잘하는 개발자가 되어보자 - 프로그래머가 아니라 문제 해결사가 되자!](https://velog.io/@teo/collaboration)」(2023.10)를 중심으로, 「[스프린트, 협업을 위한 장치 그리고 마인드](https://velog.io/@teo/sprint-and-mind)」(2024.02)와 「[if(kakao) after talk 후기](https://velog.io/@teo/ifkakao-after-talk-후기-요즘-웹-프론트는-디자니어와-CSS-협업-어떻게-해요)」(2021.11)의 내용을 더해 요약·재구성한 노트다.
 
 ## 왜 개발자가 협업을 잘해야 하나
 
@@ -90,4 +90,4 @@ API는 그대로였지만 체감 속도가 크게 좋아졌고, 서버는 급한
 - 심리적 안전감을 만들고, 의도와 맥락을 담아 말하고, 설득 대신 주파수를 맞춘다.
 - 프로그래머를 넘어 **문제 해결사**로 일하면 일 전체가 내 일이 된다.
 
-관련 노트: [[developer-leadership|개발자의 리더십과 PO의 사고방식]], [[product-minded-engineer|제품 중심 개발자]], [[effective-meetings|회의 잘하는 법]], [[agile-sprint|애자일과 스프린트]], [[review-communication|리뷰 코멘트와 PR 소통]], [[pair-programming|페어 프로그래밍]]
+관련 노트: [[product-minded-engineer|제품 중심 개발자]], [[effective-meetings|회의 잘하는 법]], [[agile-sprint|애자일과 스프린트]], [[review-communication|리뷰 코멘트와 PR 소통]], [[pair-programming|페어 프로그래밍]]

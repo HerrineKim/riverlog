@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/behavior-driven-development-schema-driven-development", "https://velog.io/@teo/카카오워크-캘린더팀에서-사용한-figma를-이용한-기획-디자이너-QA-개발-방법", "https://velog.io/@teo/ifkakao-after-talk-후기-요즘-웹-프론트는-디자니어와-CSS-협업-어떻게-해요"]
 ---
 
-> 테오(teo)의 「[BDD? SDD? 팀 프로젝트 다같이 개발설계하는 방법](https://velog.io/@teo/behavior-driven-development-schema-driven-development)」(2022.07)과 「[figma를 이용한 더 나은 기획-디자이너-QA-개발 협업 방법](https://velog.io/@teo/카카오워크-캘린더팀에서-사용한-figma를-이용한-기획-디자이너-QA-개발-방법)」(2021.11), 「[if(kakao) after talk 후기](https://velog.io/@teo/ifkakao-after-talk-후기-요즘-웹-프론트는-디자니어와-CSS-협업-어떻게-해요)」(2021.11)를 요약·재구성한 노트입니다. 엄밀한 BDD·SDD 방법론이 아니라 그 개념을 태스크 설계에 빌려 쓴 실무 방식입니다.
+> 테오(teo)의 「[BDD? SDD? 팀 프로젝트 다같이 개발설계하는 방법](https://velog.io/@teo/behavior-driven-development-schema-driven-development)」(2022.07)과 「[figma를 이용한 더 나은 기획-디자이너-QA-개발 협업 방법](https://velog.io/@teo/카카오워크-캘린더팀에서-사용한-figma를-이용한-기획-디자이너-QA-개발-방법)」(2021.11), 「[if(kakao) after talk 후기](https://velog.io/@teo/ifkakao-after-talk-후기-요즘-웹-프론트는-디자니어와-CSS-협업-어떻게-해요)」(2021.11)를 요약·재구성한 노트다. 엄밀한 BDD·SDD 방법론이 아니라 그 개념을 태스크 설계에 빌려 쓴 실무 방식입니다.
 
 ## 왜 공유 아티팩트가 필요한가
 

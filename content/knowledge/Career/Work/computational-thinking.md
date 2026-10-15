@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/computational-thinking", "https://velog.io/@teo/프론트엔드-개발자에게-알고리즘-공부가-미치는-영향"]
 ---
 
-> 테오(teo)의 「[컴퓨팅 사고와 개발 실력 늘리는 공부법](https://velog.io/@teo/computational-thinking)」(2023.03)과 「[프론트엔드 개발자에게 알고리즘 공부가 미치는 영향](https://velog.io/@teo/프론트엔드-개발자에게-알고리즘-공부가-미치는-영향)」(2021.12)을 바탕으로 재구성한 노트입니다.
+> 테오(teo)의 「[컴퓨팅 사고와 개발 실력 늘리는 공부법](https://velog.io/@teo/computational-thinking)」(2023.03)과 「[프론트엔드 개발자에게 알고리즘 공부가 미치는 영향](https://velog.io/@teo/프론트엔드-개발자에게-알고리즘-공부가-미치는-영향)」(2021.12)을 바탕으로 재구성한 노트다.
 
 ## 컴퓨팅 사고란
 

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2012/03/02/%ec%9b%b9%ea%b0%9c%eb%b0%9c%ec%9e%90%eb%93%a4%ec%9d%84-%ec%9c%84%ed%95%9c-%eb%94%94%ec%9e%90%ec%9d%b8-%ec%9e%85%eb%ac%b8%ec%84%9c-%ea%b7%b8%eb%a6%ac%ea%b3%a0/", "https://webactually.com/2015/04/17/%eb%94%94%ec%9e%90%ec%9d%b4%eb%84%88%eb%a5%bc-%ec%b1%84%ec%9a%a9%ed%95%98%ea%b8%b0-%ec%a0%84-%ec%a4%80%eb%b9%84%ed%95%b4%ec%95%bc-%ed%95%a0-%ea%b2%83%eb%93%a4/", "https://webactually.com/2018/09/11/%ed%98%81%ec%8b%a0-%ec%a3%bc%eb%8f%84%eb%a5%bc-%ec%9c%84%ed%95%9c-%eb%8b%a4%ec%96%91%ed%95%9c-%eb%94%94%ec%9e%90%ec%9d%b8-%ed%8c%80-%ea%b5%ac%ec%84%b1%ed%95%98%ea%b8%b0/", "https://webactually.com/2015/01/02/%eb%a7%88%ec%9d%b4%ed%81%ac-%eb%aa%ac%ed%85%8c%ec%9d%b4%eb%a1%9c%ea%b0%80-%ec%a0%84%ed%95%98%eb%8a%94-%ed%9b%8c%eb%a5%ad%ed%95%9c-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%b4%eb%9e%80/", "https://webactually.com/2012/03/16/%eb%b8%8c%eb%9e%9c%eb%94%a9-%ec%97%85%ec%b2%b4-%ec%97%ac%eb%9f%ac%eb%b6%84-dear-branding-agencies/"]
 ---
 
-> 웹액츄얼리가 번역한 Michael Lopp(Rands)의 「디자이너와 개발자여. 더 자주 함께 파티하라!」(2012.03), Mike Monteiro가 A List Apart에 쓴 「Before You Hire Designers」의 번역 「디자이너를 채용하기 전, 준비해야 할 것들」(2015.04)과 「마이크 몬테이로가 전하는 훌륭한 디자인이란」(2015.01), Smashing Magazine의 「혁신 주도를 위한 다양한 디자인팀 구성하기」(2018.09), Happy Cog의 「브랜드 에이전시 여러분께」(2012.03)를 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역한 Michael Lopp(Rands)의 「디자이너와 개발자여. 더 자주 함께 파티하라!」(2012.03), Mike Monteiro가 A List Apart에 쓴 「Before You Hire Designers」의 번역 「디자이너를 채용하기 전, 준비해야 할 것들」(2015.04)과 「마이크 몬테이로가 전하는 훌륭한 디자인이란」(2015.01), Smashing Magazine의 「혁신 주도를 위한 다양한 디자인팀 구성하기」(2018.09), Happy Cog의 「브랜드 에이전시 여러분께」(2012.03)를 바탕으로 재구성한 노트다.
 
 ## 디자인이란
 

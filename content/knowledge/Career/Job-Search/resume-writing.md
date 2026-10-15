@@ -8,21 +8,18 @@ date: "2026-10-13"
 sources: ["https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9"]
 ---
 
-> 마차카피(matchacopy)와 Flitto의 웨비나 「합격하는 레주메 & 커버레터의 모든 것」을 바탕으로 재구성한 노트입니다.
+> 마차카피(matchacopy)와 Flitto의 웨비나 「합격하는 레주메 & 커버레터의 모든 것」을 바탕으로 재구성한 노트다. 「개발자 이력서에 공통으로 통하는 원칙」은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리로 보강했다.
 
-> 「개발자 이력서에 공통으로 통하는 원칙」은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리를 바탕으로 보강한 노트입니다.
-
-📎 레주메·커버레터 템플릿: [[resume_cover_letter_template.docx|resume_cover_letter_template.docx]] (Word)
+레주메·커버레터 템플릿: [[resume_cover_letter_template.docx|resume_cover_letter_template.docx]] (Word)
 
 국문 이력서와 가장 큰 차이는 **직무 설명과 성과를 함께** 써야 한다는 점이다. "무슨 일을 했다"에서 끝내지 않고 "그래서 어떤 결과가 나왔다"까지 쓴다.
 
 ## 1. 무조건 한 장으로 끝낸다
 
-- 인사 담당자는 이력서 한 장에 오래 머물지 않는다. 몇 초 안에 훑고 판단한다.
-- **Experience**에는 인턴십, 교내 활동, 봉사, 리서치, 아르바이트까지 적는다. 지원 직무와 직접 관련이 없어도 괜찮다.
-- 경력은 **수치화해서 구체적으로** 쓴다.
-- 하단 **Skills**에는 지원 포지션과 관련 있는 스킬만 넣는다.
-- 포맷, 스타일, 디테일은 지원하는 포지션과 업계 관행에 맞춘다.
+- 인사 담당자는 이력서 한 장을 몇 초 안에 훑고 판단한다.
+- **Experience**에는 인턴십, 교내 활동, 봉사, 리서치까지 적는다. 재학생·최근 졸업생은 교내 활동도 괜찮고, 리더십 포지션이었다면 더 좋다.
+- 하단 **Skills**에는 지원 포지션이 요구하는 스킬 중 **이미 가진 것**만 넣는다.
+- 포맷과 디테일은 지원하는 포지션과 업계 관행에 맞춘다.
 
 ## 2. 실무 경험과 학교 정보, 무엇을 먼저 쓸까
 
@@ -31,43 +28,32 @@ sources: ["https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9"]
 | **Experience** | 지원 직무와 관련된 경험이 있다 / 교내외 활동 경험이 다양하다 |
 | **Education** | 학위가 실무 경험보다 더 매력적이다 (전공과 지원 분야가 밀접하다, 석사 과정이다, 교내외 활동이 매우 적다) |
 
-학교 정보에는 **전공, 학점(3.45/4.00), 장학금, 교내 수상 실적**을 넣는다.
+학교 정보에는 **전공, 학점, 장학금, 교내 수상, 관련 수강 과목(Course Highlights)** 을 넣는다.
 
 ```text
-재학생
-EDUCATION   New York University, New York, NY          Sep 2020 – May 2024 (Expected)
-            Bachelor of Arts in Economics              GPA: 3.50/4.00
-
-졸업생
-EDUCATION   Flitto University, Seoul, Korea            May 2020
-            Bachelor of Science in Computer Science
+EDUCATION   Seoul National University, Seoul, Korea      Mar 2022 – Feb 2026 (Expected)
+            Bachelor of Science in Computer Science      GPA: 3.50/4.00
 ```
 
-- 날짜는 **월 + 연도** 순서(`Sep 2020`)로 쓰고, 학교·회사 이름 옆에 **도시**를 함께 적는다.
-- 재학 중이면 졸업 예정일 뒤에 `(Expected)`를 붙인다.
+날짜는 **월 + 연도**(`Mar 2022`)로 쓰고, 학교·회사 이름 옆에 **도시**를 적는다. 재학 중이면 졸업 예정일 뒤에 `(Expected)`를 붙인다.
 
 ## 3. Summary는 간략하게
 
-- 레주메가 내 이력을 한 장으로 요약한 서류라면, **Summary는 그 한 장을 2~3문장으로 요약한 것**이다.
-- **과거(경험) – 현재(강점) – 미래(커리어 목표)** 를 한 번에 보여 준다.
+레주메가 이력을 한 장으로 요약한 서류라면, **Summary는 그 한 장을 2~3문장으로 요약한 것**이다. **과거(경험) – 현재(강점) – 미래(커리어 목표)** 를 한 번에 보여 준다.
 
-예시:
-
-1. 외국인 학생들과 함께 파이낸스 공모전에 참가한 경험이 있는 경제학 졸업생. 유연한 사고방식과 꼼꼼한 일 처리가 강점. 커리어 목표는 글로벌 재무 분석가.
-2. 청년 플리마켓에서 자재 관리 경험이 있는 사회학 졸업생. 문제 해결 능력이 뛰어나고 제품 생산·유통 과정에 시스템을 도입하고 관리할 수 있음. 커리어 목표는 글로벌 회사의 유통망 관리.
+```text
+Frontend engineer with 3 years of experience building React and TypeScript web apps
+for 1M+ monthly users. Strong in performance tuning and design-system collaboration.
+Aiming to grow into a product engineer on a global team.
+```
 
 ## 4. 성과 중심으로 경력 쓰기
 
 각 경력 아래에 불릿(•)으로 2~4줄씩, **액션 동사 + 한 일 + 결과(숫자)** 순서로 쓴다.
 
 ```text
-생산/유통 관리 인턴                                   2019년 12월 – 2020년 2월
-전주 청년 플리마켓, 전주, 한국
-• 인벤토리, 매출, 매장 진열 공간 등을 파악해 20여 가지 상품의 공급을 관리함
-• 도매상 파트너들과 좋은 관계를 유지해 유통망을 튼튼히 하고, 예상치 못한 상품의
-  매출 증대 시 인벤토리를 성공적으로 확보한 결과 전년 대비 매출 20% 향상에 기여함
-• 비즈니스 개선 방안 모색을 위해 시장조사, 수익/비용 분석을 진행함.
-  선임 리더십 팀에게 권장 사항을 제안함
+• Reduced checkout page load time by 40% by code-splitting routes and lazy-loading
+  images, raising conversion by 5%
 ```
 
 - **시제**: 끝난 경험은 과거형(*managed*), 진행 중인 경험은 현재형(*manage*)으로 쓴다.
@@ -92,13 +78,6 @@ EDUCATION   Flitto University, Seoul, Korea            May 2020
    - Job Description에 적힌 요구 조건을 내 경험·능력과 **하나씩 연결**한다.
    - 성과는 **수치화**한다.
 4. **마무리**: 내 경험이 회사에 자산이 될 것이라는 말, 인터뷰에서 더 이야기 나누고 싶다는 요청, 감사 인사 → `Best Regards,` + 이름
-
-템플릿의 레주메 부분에도 같은 원칙이 주석으로 달려 있다.
-
-- 불릿은 **액션 동사로 시작해 성과로 끝낸다.**
-- 지원 회사가 요구하는 스킬 중 **이미 가진 것**을 강조한다.
-- 재학생·최근 졸업생은 교내 활동을 Experience에 써도 된다. 리더십 포지션이었다면 더 좋다.
-- Education에는 졸업(예정)일, 학위, 관련 수강 과목(Course Highlights)을, 그 아래 Awards와 Skills & Activities를 둔다.
 
 ## 개발자 이력서에 공통으로 통하는 원칙
 

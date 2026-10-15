@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2015/04/17/%ea%b2%bd%ec%b2%ad%ec%97%90-%ea%b4%80%ed%95%9c-%ec%83%88%eb%a1%9c%ec%9a%b4-%ec%8b%9c%ea%b0%81/", "https://webactually.com/2020/08/12/%E3%80%8A%EC%82%AC%EB%9E%8C%EC%9D%84-%EB%B0%B0%EB%A0%A4%ED%95%98%EB%8A%94-%EB%94%94%EC%9E%90%EC%9D%B8%E3%80%8B-%EC%A0%80%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-2/"]
 ---
 
-> 웹액츄얼리가 번역한 Indi Young의 「경청에 관한 새로운 시각」(2015.04)과 《사람을 배려하는 디자인》 저자 Sara Wachter-Boettcher 인터뷰(2020.08)를 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역한 Indi Young의 「경청에 관한 새로운 시각」(2015.04)과 《사람을 배려하는 디자인》 저자 Sara Wachter-Boettcher 인터뷰(2020.08)를 바탕으로 재구성한 노트다.
 
 ## 공감이란
 

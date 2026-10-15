@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2015/04/15/%ec%84%b1%ea%b3%b5%ec%a0%81%ec%9d%b8-%ec%bd%98%ed%85%90%ec%b8%a0-%ec%a0%84%eb%9e%b5%ec%9d%84-%ec%84%b8%ec%9a%b0%eb%8a%94-%ed%9a%a8%ea%b3%bc%ec%a0%81%ec%9d%b8-%eb%b0%a9%eb%b2%95/", "https://webactually.com/2016/03/17/%ed%95%b5%ec%8b%ac-%eb%aa%a8%eb%8d%b8%eb%a1%9c-%eb%8d%94-%eb%82%98%ec%9d%80-%ec%84%b1%ea%b3%bc-%eb%8b%ac%ec%84%b1%ed%95%98%ea%b8%b0/"]
 ---
 
-> 웹액츄얼리가 번역한 Smashing Magazine의 「성공적인 콘텐츠 전략을 세우는 효과적인 방법」(2015.04)과 Ida Aalen의 「핵심 모델로 더 나은 성과 달성하기」(2016.03)를 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역한 Smashing Magazine의 「성공적인 콘텐츠 전략을 세우는 효과적인 방법」(2015.04)과 Ida Aalen의 「핵심 모델로 더 나은 성과 달성하기」(2016.03)를 바탕으로 재구성한 노트다.
 
 ## 콘텐츠 전략이란
 

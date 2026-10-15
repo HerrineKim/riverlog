@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/1885121e45b04230bb8156f83804db68"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「UML 중 Use Case Diagram」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「UML 중 Use Case Diagram」을 바탕으로 재구성한 노트다.
 
 ## UML과 유스케이스 다이어그램
 

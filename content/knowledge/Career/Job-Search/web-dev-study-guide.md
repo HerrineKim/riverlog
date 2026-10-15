@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://subicura.com/2021/06/27/study-guide.html"]
 ---
 
-> subicura의 「[초보 웹 개발자를 위한 학습 안내서](https://subicura.com/2021/06/27/study-guide.html)」(2021.06)를 바탕으로 재구성한 노트입니다.
+> subicura의 「[초보 웹 개발자를 위한 학습 안내서](https://subicura.com/2021/06/27/study-guide.html)」(2021.06)를 바탕으로 재구성한 노트다.
 
 ## 왜 방향이 필요한가
 
@@ -49,7 +49,7 @@ sources: ["https://subicura.com/2021/06/27/study-guide.html"]
 | 스터디 | 어려운 내용을 빨리 익히고 자극을 받는다 | 주제·책을 정하고, 공동 정리와 발표 순서를 정해야 굴러간다 |
 | 온라인 강의 | 빠른 입문 | 핵심 위주라 깊이가 부족하다. 감을 잡은 뒤 공식 문서와 책으로 넘어간다 |
 | 컨퍼런스 | 실무 고민과 최신 흐름 | 지금 고민과 관련된 세션만 고른다. 다시보기는 잘 안 보게 되니 가능하면 라이브로 |
-| 책 | 깊이와 태도 | 추천 목록은 [[tech-reading-list|개발 분야 읽을 책 목록]] 참고 |
+| 책 | 깊이와 태도 | 추천 목록은 [[tech-reading-list|개발 분야별 추천 도서]] 참고 |
 | 유튜브·팟캐스트·트위터 | 이동 중에, 빠르게 | 흐름을 아는 용도. 깊은 공부를 대신하지 않는다 |
 
 ### 클론코딩을 내 것으로 만들기
@@ -105,4 +105,4 @@ sources: ["https://subicura.com/2021/06/27/study-guide.html"]
 - 배포, 도메인, 블로그, 오픈소스처럼 **한 일을 보이게** 만든다.
 - 지금 실력보다 계속 성장하고 있다는 사실이 중요하다.
 
-관련 노트: [[side-project-tips|사이드 프로젝트 10가지 팁]], [[coding-test|코딩 테스트 접근법]], [[tech-reading-list|개발 분야 읽을 책 목록]], [[tech-interview-tips|기술면접 잘 보는 법]]
+관련 노트: [[side-project-tips|사이드 프로젝트 10가지 팁]], [[coding-test|코딩 테스트 접근법]], [[tech-reading-list|개발 분야별 추천 도서]], [[tech-interview-tips|기술면접 잘 보는 법]]

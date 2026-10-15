@@ -8,9 +8,9 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/044f8405756246f5a03d59e27ea9e52a", "https://webactually.com/2017/11/15/%ec%8b%a4%eb%a0%a5%ec%9d%b4-%ec%84%b1%ea%b3%b5%ec%9d%84-%ec%a2%8c%ec%9a%b0%ed%95%98%eb%8a%94%ea%b0%80/", "https://webactually.com/2015/04/17/%eb%8b%b9%ec%8b%a0%ec%9d%b4-%eb%b2%a0%ed%91%bc-%ec%82%ac%eb%9e%91/", "https://webactually.com/2011/08/30/%ed%98%84%ec%9e%ac-%ec%9b%b9%eb%94%94%ec%9e%90%ec%9d%b8-%ec%bb%a4%eb%ae%a4%eb%8b%88%ed%8b%b0%ec%9d%98-%ec%83%81%ed%99%a9-1/", "https://webactually.com/2019/05/20/%e3%80%8a%ec%82%ac%eb%9e%8c%ec%9d%84-%eb%b0%b0%eb%a0%a4%ed%95%98%eb%8a%94-%eb%94%94%ec%9e%90%ec%9d%b8%e3%80%8b-%ec%a0%80%ec%9e%90-%ec%9d%b8%ed%84%b0%eb%b7%b0/"]
 ---
 
-> 웹액츄얼리가 번역한 Paul Boag의 「실력이 성공을 좌우하는가」(2017.11), Jeffrey Zeldman의 칼럼 「당신이 베푼 사랑」(2015.04), Vitaly Friedman의 「열정있던 웹디자인계는 어디로 사라졌나」(2011.08), 《사람을 배려하는 디자인》 저자 인터뷰(2019.05)를 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역한 Paul Boag의 「실력이 성공을 좌우하는가」(2017.11), Jeffrey Zeldman의 칼럼 「당신이 베푼 사랑」(2015.04), Vitaly Friedman의 「열정있던 웹디자인계는 어디로 사라졌나」(2011.08), 《사람을 배려하는 디자인》 저자 인터뷰(2019.05)를 바탕으로 재구성한 노트다.
 
-> 오픈 소스 공개 항목은 팔만코딩경(42Seoul 커뮤니티 위키)의 「오픈소스 만들고 먹고살기 v3」 특강 정리를 바탕으로 보강한 노트입니다.
+> 오픈 소스 공개 항목은 팔만코딩경(42Seoul 커뮤니티 위키)의 「오픈소스 만들고 먹고살기 v3」 특강 정리를 바탕으로 보강한 노트다.
 
 ## 왜 실력만으로는 안 되나
 
@@ -102,4 +102,4 @@ sources: ["https://80000coding.notion.site/044f8405756246f5a03d59e27ea9e52a", "h
 - 글쓰기와 발표는 홍보이기 전에 생각을 다듬는 훈련이다. 공개할 수 있는 작업을 만들어 나눈다.
 - 커뮤니티 기여는 하루 몇 분의 짧은 답변으로도 된다. 따져 묻고, 정확하게 말하고, 윤리를 지킨다.
 
-관련 노트: [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[online-writing|온라인 글쓰기]], [[career-in-ai-era|AI 시대의 커리어]], [[project-pricing|웹 프로젝트 가격 책정]]
+관련 노트: [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[online-writing|온라인 글쓰기]], [[project-pricing|웹 프로젝트 가격 책정]]

@@ -1,14 +1,14 @@
 ---
 title: "제품 중심 개발자 (Product-Minded Engineer)"
 concept: "Product Engineer"
-summary: "기획을 구현만 하지 않고 제품의 이유를 묻고, 제품·엔지니어링 트레이드오프를 함께 제안하며, 출시 후 데이터까지 책임지는 개발자의 9가지 특징과 성장 방법."
-tags: ["career", "product", "growth", "collaboration"]
+summary: "기획을 구현만 하지 않고 제품의 이유를 묻고, 제품·엔지니어링 트레이드오프를 함께 제안하며, 출시 후 데이터까지 책임지는 개발자의 9가지 특징과 성장 방법. 목적 조직에서 개발자가 맡는 역할과 OKR·애자일의 관계까지."
+tags: ["career", "product", "growth", "collaboration", "leadership", "okr"]
 source: notion
 date: "2026-10-13"
 sources: ["https://blog.pragmaticengineer.com/the-product-minded-engineer/", "https://riverkim.kr/304"]
 ---
 
-> Gergely Orosz의 「[The Product-Minded Software Engineer](https://blog.pragmaticengineer.com/the-product-minded-engineer/)」(2019.09)를 바탕으로 재구성한 노트입니다.
+> Gergely Orosz의 「[The Product-Minded Software Engineer](https://blog.pragmaticengineer.com/the-product-minded-engineer/)」(2019.09)를 바탕으로 재구성한 노트다. 「목적 조직과 PO의 사고방식」 절은 현업 PO의 리더십 특강과 책 『프로덕트 오너』를 참고했다.
 
 개발자를 Frontend/Backend처럼 기술 스택이 아니라 **Product Engineer / Platform Engineer**처럼 일의 대상으로 나누는 방식이 있다. **Product Engineer**, 즉 제품 중심 개발자는 제품 자체에 큰 관심을 갖고, 사람들이 제품을 어떻게 쓰는지 이해하려 하며, 제품 결정에 참여하는 개발자다. Platform Engineer는 다른 개발 팀이 쓰는 내부 인프라·도구를 만든다.
 
@@ -51,10 +51,30 @@ sources: ["https://blog.pragmaticengineer.com/the-product-minded-engineer/", "ht
 
 질문을 더 하는 데서 한 걸음 더 나가면, 개발자는 지시받은 요구사항을 들어 주는 사람이 아니라 **제품 의사결정에 참여해 더 좋은 제품에 실제로 기여하는 사람**이라는 관점에 이른다. 토스가 개발자를 '메이커'라고 부르는 것도 같은 맥락이다.
 
+## 목적 조직과 PO의 사고방식
+
+제품 중심 개발자가 힘을 쓰는 곳은 **목적 조직**이다. 기능 조직에서는 정해진 요구사항을 수행하는 것이 일이지만, 목적 조직에서는 "이용량을 늘리려면 우리가 뭘 할 수 있을까?"가 팀 전체에 던져진다.
+
+| | 기능 조직 | 목적 조직 |
+| --- | --- | --- |
+| 구성 | 기획·디자인·개발 팀이 분리, 프로젝트마다 TFT | 제품 단위 크로스펑셔널 팀 |
+| 우선순위 결정 | 디렉터·전략 기획자 | 프로덕트 팀 자체 |
+| 개발자 역할 | 정해진 일을 수행 | 상세 정책을 제안하고 함께 결정 |
+| 방법론 | 폭포수에 가깝다 | 애자일을 택하기 쉽다 |
+| 중요한 역량 | 요구사항 충족 | 데이터 기반 설득, 질문력, 기획력 |
+
+PO(Product Owner)는 제품이 **무엇을, 왜** 만들어야 하는지 책임진다. 핵심은 프로세스나 툴이 아니라 고객 집착과 목적 지향이라는 사고방식이고, 그 방향과 실행을 잇는 짝이 OKR과 애자일이다.
+
+| 구분 | 역할 | 하나만 있으면 |
+| --- | --- | --- |
+| OKR | 도달할 목표(Objective)와 측정 기준(Key Results). 방향 | 목표는 있는데 실행이 안 된다 |
+| 애자일 | 그 목표에 짧은 반복으로 다가가는 방식. 걷는 법 | 열심히 돌지만 방향이 없다 |
+
 ## 핵심 정리
 
 - 제품 중심 개발자 = 엔지니어링 역량 + "왜"를 묻는 제품 감각.
 - 트레이드오프를 엔지니어링과 제품 양쪽에서 동시에 본다.
 - 출시 후 데이터 확인까지가 일이다.
+- 목적 조직에서 개발자는 Why·What을 함께 정하는 구성원이고, OKR(방향)과 애자일(걷는 법)은 한 쌍이다.
 
-관련 노트: [[developer-leadership|개발자의 리더십과 PO의 사고방식]], [[project-process|프로젝트 진행 순서]], [[working-with-designers|디자이너와 함께 일하기]]
+관련 노트: [[collaborative-developer|협업을 잘하는 개발자]], [[agile-sprint|애자일과 스프린트]], [[project-process|프로젝트 진행 순서]], [[working-with-designers|디자이너와 함께 일하기]]

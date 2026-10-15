@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM", "https://webactually.com/2015/04/17/%ed%95%9c%ea%b3%84%ec%97%90%ec%84%9c-%ec%9d%b4%ec%96%b4%ec%a7%84-%eb%82%98%ec%9d%98-%ec%95%b1%ec%8a%a4%ed%86%a0%ec%96%b4-%ec%84%b1%ea%b3%b5%ea%b3%bc-%ec%8b%a4%ed%8c%a8-%ec%9d%b4%ec%95%bc%ea%b8%b0/"]
 ---
 
-> Chris Yang의 「[당신의 사이드 프로젝트를 위한 10가지 팁](https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects)」(2019.08)을 바탕으로 재구성한 노트입니다. 원 자료는 Traversy Media의 영상 「[10 Tips For Starting & Creating Side Projects](https://www.youtube.com/watch?v=eCAj3mWFpNM)」입니다. 출시 이후의 원칙은 웹액츄얼리가 번역한 「한계에서 이어진 나의 앱스토어 성공과 실패 이야기」(2015.04)를 바탕으로 덧붙였습니다.
+> Chris Yang의 「[당신의 사이드 프로젝트를 위한 10가지 팁](https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects)」(2019.08)을 바탕으로 재구성한 노트다. 원 자료는 Traversy Media의 영상 「[10 Tips For Starting & Creating Side Projects](https://www.youtube.com/watch?v=eCAj3mWFpNM)」다. 출시 이후의 원칙은 웹액츄얼리가 번역한 「한계에서 이어진 나의 앱스토어 성공과 실패 이야기」(2015.04)를 바탕으로 덧붙였다.
 
 ## 사이드 프로젝트가 필요한 이유
 
@@ -94,4 +94,4 @@ AI 코딩 도구로 프로토타입을 만드는 비용이 크게 줄었다. 그
 - 코딩보다 **랜딩 페이지가 먼저**다. 반응을 보고 만든다.
 - 출시 후에는 기능을 늘리기보다 핵심 하나를 다듬고, 업데이트를 끊지 않는다.
 
-관련 노트: [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[career-in-ai-era|AI 시대의 커리어]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[reputation-building|명성 쌓기와 커뮤니티 기여]]
+관련 노트: [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[reputation-building|명성 쌓기와 커뮤니티 기여]]

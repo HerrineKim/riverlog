@@ -7,7 +7,7 @@ source: other
 date: "2026-10-12"
 ---
 
-> Chris Donnelly의 이미지 「The Job Interview Cheat Sheet」를 요약·재구성한 노트입니다. 원문 번역이 아니라 질문 유형별로 다시 묶었습니다.
+> Chris Donnelly의 이미지 「The Job Interview Cheat Sheet」를 요약·재구성한 노트다. 원문 번역이 아니라 질문 유형별로 다시 묶었다.
 
 ## 인성·경험 면접이란
 

@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2013/05/24/%eb%82%b4-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8-%ec%a0%9c%ea%b0%92-%eb%b0%9b%ea%b8%b0/"]
 ---
 
-> 웹액츄얼리가 번역한 Code Poet의 전자책 「워드프레스 프로젝트 제값 받기(Getting Pricing Right)」(2013.05)를 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역한 Code Poet의 전자책 「워드프레스 프로젝트 제값 받기(Getting Pricing Right)」(2013.05)를 바탕으로 재구성한 노트다.
 
 ## 적절한 가격이란
 

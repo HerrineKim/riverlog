@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://teqoo.tistory.com/277", "https://reactflow.dev/learn/layouting/sub-flows"]
 ---
 
-> 개발세탁소의 「[개발 자료 잘 찾는 개발자 되기](https://teqoo.tistory.com/277)」(2022.04)를 바탕으로 재구성한 노트입니다.
+> 개발세탁소의 「[개발 자료 잘 찾는 개발자 되기](https://teqoo.tistory.com/277)」(2022.04)를 바탕으로 재구성한 노트다.
 
 ## 자료를 찾는 순서
 

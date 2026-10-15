@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/5fe0df00c385413b899d759a46868842"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「페어 프로그래밍이란? (feat. VSCode Live Share)」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「페어 프로그래밍이란? (feat. VSCode Live Share)」을 바탕으로 재구성한 노트다.
 
 ## 페어 프로그래밍이란
 

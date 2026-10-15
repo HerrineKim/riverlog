@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://webactually.com/2017/08/21/%eb%94%94%ec%a7%80%ed%84%b8-%eb%b3%80%ed%99%98-%eb%8c%80%eb%8b%b5%ed%95%b4%ec%95%bc-%ed%95%a0-%ec%97%ac%ec%84%af-%ea%b0%80%ec%a7%80-%ec%a7%88%eb%ac%b8/", "https://webactually.com/2015/12/17/%ed%8f%b4-%eb%b3%b4%ec%95%84%ea%b7%b8%ea%b0%80-%ec%a0%84%ed%95%98%eb%8a%94-%ec%9a%b0%eb%a6%ac-%ed%9a%8c%ec%82%ac-%eb%94%94%ec%a7%80%ed%84%b8%eb%a1%9c-%eb%a6%ac%ec%85%8b%ed%95%98%ea%b8%b0/", "https://webactually.com/2015/12/29/%ec%9b%b9-%ea%b1%b0%eb%b2%84%eb%84%8c%ec%8a%a4-%eb%b3%80%ed%99%94%ec%9d%98-%ec%a3%bc%ec%97%ad-%eb%90%98%ea%b8%b0/", "https://webactually.com/2013/11/19/%eb%8c%80%ec%95%88%ec%9d%80-%ec%97%86%eb%8b%a4/"]
 ---
 
-> 웹액츄얼리가 번역한 Paul Boag의 「디지털 변환: 대답해야 할 여섯 가지 질문」(2017.08)·「폴 보아그가 전하는 《우리 회사 디지털로 리셋하기》」(2015.12), Jonathan Kahn의 「웹 거버넌스: 변화의 주역 되기」(2015.12), A List Apart 칼럼 「대안은 없다」(2013.11)를 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역한 Paul Boag의 「디지털 변환: 대답해야 할 여섯 가지 질문」(2017.08)·「폴 보아그가 전하는 《우리 회사 디지털로 리셋하기》」(2015.12), Jonathan Kahn의 「웹 거버넌스: 변화의 주역 되기」(2015.12), A List Apart 칼럼 「대안은 없다」(2013.11)를 바탕으로 재구성한 노트다.
 
 ## 디지털 전환이란
 
@@ -112,4 +112,4 @@ IT 도구로 본다 → IT 부서 소관
 - 웹 거버넌스(전략·관리·실행·측정)가 없으면 디자인 개편과 캠페인만 반복된다.
 - 권한이 없어도 된다. 경영진의 언어, 후원자, 작은 시범 사업으로 시작한다. 전환은 끝나는 프로젝트가 아니라 계속 가꾸는 정원이다.
 
-관련 노트: [[content-strategy|콘텐츠 전략과 핵심 모델]], [[media-digital-transformation|언론사의 디지털 전환 과제]], [[developer-leadership|개발자의 리더십과 PO의 사고방식]], [[product-minded-engineer|제품 중심 개발자]]
+관련 노트: [[content-strategy|콘텐츠 전략과 핵심 모델]], [[media-digital-transformation|언론사의 디지털 전환 과제]], [[product-minded-engineer|제품 중심 개발자]]
