@@ -21,7 +21,7 @@ Git은 **분산 버전 관리 시스템(DVCS)** 이다. 모든 작업자가 저�
 | [브랜치](/knowledge/dictionary/tools/git/branch) | 브랜치·HEAD 개념, `git branch`, `git switch`, 브랜치 이동 시 주의점 |
 | [브랜치 병합](/knowledge/dictionary/tools/git/merge) | Fast-Forward, 3-Way Merge, Merge Conflict 해결, Merge Commit의 함정(부모 순서, `--remerge-diff`) |
 | [원격 저장소와 GitHub](/knowledge/dictionary/tools/git/remote-github) | `remote`(`set-url`, 원격 여러 개), `push`, `pull`, `fetch`, `clone`, `subtree`, 미러링(GitLab → GitHub) |
-| [되돌리기와 이력 다루기](/knowledge/dictionary/tools/git/git-undo-and-rewrite) | `reset`(soft·mixed·hard), `revert`, `cherry-pick`, `--abort`, 푸시한 민감 정보·작성자 이메일 정리(filter-repo) |
+| [되돌리기와 이력 다루기](/knowledge/dictionary/tools/git/git-undo-and-rewrite) | `reflog`, 상황별 복구(amend, 잘못한 브랜치 커밋 옮기기, `restore`로 파일 되돌리기, 원격 상태로 초기화), `reset`(soft·mixed·hard), `revert`, `cherry-pick`, `--abort`, 푸시한 민감 정보·작성자 이메일 정리(filter-repo) |
 | [merge·squash·rebase 언제 쓰나](/knowledge/dictionary/tools/git/merge-squash-rebase) | PR 통합 전략 고르기: merge 커밋과 bisect, squash 메시지, rebase와 force push, 인터랙티브 rebase |
 | [커밋 컨벤션과 자동 검사](/knowledge/dictionary/tools/git/commit-convention) | 좋은 커밋 메시지 7가지 규칙, 이슈 자동 닫기 키워드, `type(scope): subject` 형식, 커밋 템플릿, husky·commitlint, pre-commit 프레임워크 |
 | [영어 커밋 메시지 동사 사전](/knowledge/dictionary/tools/git/commit-message-verbs) | Fix·Add·Update·Make·Ensure·Prevent 등 동사별 패턴과 예문, 헷갈리는 동사 구분, 간결하게 쓰는 규칙 |

@@ -1,15 +1,16 @@
 ---
 title: "Git 되돌리기와 이력 다루기"
 concept: "Git Undo"
-summary: "reset·revert로 커밋을 되돌리고, cherry-pick으로 커밋 하나를 옮기며, 진행 중인 merge·rebase를 --abort로 취소하고, 푸시한 민감 정보·작성자를 filter-repo로 정리하는 방법. 공유된 이력이면 revert, 내 로컬 이력이면 reset이 기본이다."
+summary: "reflog로 지나온 상태를 찾아 되돌리는 법과 상황별 복구 레시피(마지막 커밋 고치기, 다른 브랜치에 잘못한 커밋 옮기기, 파일 하나 되돌리기, 원격 상태로 초기화), reset·revert로 커밋을 되돌리고, cherry-pick으로 커밋 하나를 옮기며, 진행 중인 merge·rebase를 --abort로 취소하고, 푸시한 민감 정보·작성자를 filter-repo로 정리하는 방법. 공유된 이력이면 revert, 내 로컬 이력이면 reset이 기본이다."
 tags: ["git", "version-control", "cli", "collaboration"]
 source: mixed
 date: "2026-10-14"
-sources: ["https://riverkim.kr/61", "https://riverkim.kr/107", "https://riverkim.kr/305", "https://80000coding.notion.site/bf2a95caa3a84a98a6878270c98268bb", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository"]
+sources: ["https://riverkim.kr/61", "https://riverkim.kr/107", "https://riverkim.kr/305", "https://80000coding.notion.site/bf2a95caa3a84a98a6878270c98268bb", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository", "https://ohshitgit.com/"]
 ---
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트다.
 > 「이미 푸시한 이력에서 지워야 할 때」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「깃허브에서 잘못 올린 PR 완전히 삭제하기 (2) - 커밋」, 「GitHub 이메일 교체 시 잔디가 사라지는 현상」을 바탕으로 보강했다.
+> 「상황별 복구 레시피」는 Katie Sylor-Miller의 「[Oh Shit, Git!?!](https://ohshitgit.com/)」([한국어판](https://ohshitgit.com/ko))을 바탕으로 지금의 `switch`·`restore` 명령으로 고쳐 썼다.
 
 Git을 쓰다 보면 커밋을 되돌리거나, 다른 브랜치의 이력을 내 브랜치로 옮겨야 할 때가 생긴다. 기본 흐름(`add` → `commit` → `push`)은 [[git-basics|Git 기본 명령과 파일 상태]]와 [[remote-github|원격 저장소와 GitHub]]에 있고, 이 노트는 **이미 만든 이력을 고치는 명령**만 모았다.
 
@@ -66,6 +67,62 @@ git rebase --abort   # rebase 시작 전으로
 
 명령을 치기 전 상태로 완전히 돌아간다. 이미 merge·rebase를 끝내고 push까지 했다면 abort로는 되돌릴 수 없고, reset이나 revert를 써야 한다.
 
+## 상황별 복구 레시피
+
+### 뭘 했는지 모르겠지만 망가졌다: reflog
+
+`git reflog`는 HEAD가 지나온 **모든 상태**를 브랜치와 상관없이 기록한다. 지운 브랜치, 잘못된 merge·rebase·reset 직전으로도 돌아갈 수 있는 타임머신이다.
+
+```bash
+git reflog                  # HEAD@{0}, HEAD@{1} … 망가지기 직전 항목을 찾는다
+git reset --hard HEAD@{5}   # 그 시점으로 되감는다
+```
+
+reflog는 로컬에만 있고 기본 90일(도달할 수 없는 항목은 30일) 뒤 정리된다.
+
+### 커밋하자마자 고칠 게 생겼다
+
+```bash
+git add .
+git commit --amend --no-edit   # 마지막 커밋에 합치고 메시지는 그대로
+git commit --amend             # 메시지만 고칠 때
+```
+
+amend는 커밋을 새로 만든다. **이미 푸시한 공유 브랜치의 커밋은 amend하지 않는다.**
+
+### 다른 브랜치에 커밋해 버렸다
+
+| 상황 | 방법 |
+| --- | --- |
+| `main`에 커밋했는데 **새 브랜치**에 있어야 했다 | `git branch new-feature` → `git reset --hard HEAD~` → `git switch new-feature`. 커밋은 새 브랜치에 남고 `main`에서만 빠진다 |
+| **이미 있는 다른 브랜치**에 있어야 했다 | `git reset --soft HEAD~` → `git stash` → `git switch right-branch` → `git stash pop` → 다시 커밋. 또는 `git switch right-branch` → `git cherry-pick main` → `main`으로 돌아와 `git reset --hard HEAD~` |
+
+둘 다 아직 푸시하지 않았을 때의 방법이다. 푸시했다면 revert로 되돌린다.
+
+### diff가 비어 있다
+
+`git add`로 스테이징한 변경은 `git diff`에 나오지 않는다. `git diff --staged`로 본다.
+
+### 파일 하나만 예전 상태로
+
+```bash
+git log -- path/to/file                         # 바뀌기 전 커밋 해시를 찾는다
+git restore --source=a1b2c3d -- path/to/file    # 그 시점 내용으로 되돌린다
+```
+
+과거에는 `git checkout a1b2c3d -- path/to/file`을 썼다. Git 2.23부터 `checkout`의 두 역할이 브랜치 이동(`switch`)과 파일 복원(`restore`)으로 나뉘었다. 몇 커밋 전의 커밋 하나를 통째로 되돌리는 것은 `git revert <해시>`다.
+
+### 다 포기하고 원격 상태로 초기화
+
+```bash
+git fetch origin
+git switch main
+git reset --hard origin/main   # 로컬 커밋과 변경을 원격과 똑같이
+git clean -d --force           # 추적하지 않는 파일·폴더까지 삭제
+```
+
+**되돌릴 수 없는 명령이다.** `git clean`은 먼저 `-n`(dry run)으로 무엇이 지워지는지 확인한다. 폴더를 지우고 다시 clone하는 것과 결과가 같지만 설정과 다른 브랜치는 남는다.
+
 ## 이미 푸시한 이력에서 지워야 할 때
 
 ### 민감 정보(토큰·비밀번호)를 푸시했다면
@@ -97,7 +154,8 @@ filter-repo는 안전장치로 실행 뒤 `origin` 원격을 지우므로 `git r
 
 ## 정리
 
-- 공유된 이력은 **revert**, 나만 가진 이력은 **reset**.
+- 길을 잃으면 `git reflog`로 망가지기 전 상태를 찾는다.
+- 공유된 이력은 **revert**, 나만 가진 이력은 **reset**. 푸시한 커밋은 amend하지 않는다.
 - reset 옵션은 변경 내용을 staged(`--soft`)·unstaged(`--mixed`)로 남기거나 버린다(`--hard`).
 - 비밀 값을 푸시했으면 이력 정리보다 **키 교체가 먼저**다. GitHub의 캐시·PR 흔적은 Support에 요청해야 지워진다.
 - 꼬였으면 `--abort`로 처음부터. 그래도 가장 확실한 백업은 자주 commit·push 해 두는 것이다.
