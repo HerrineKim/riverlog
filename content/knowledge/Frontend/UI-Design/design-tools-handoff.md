@@ -1,14 +1,14 @@
 ---
 title: "디자인 도구와 개발자 핸드오프"
 concept: "Design Handoff"
-summary: "디자인 핸드오프는 이미지와 문서를 메일로 넘기던 방식에서 브라우저 기반 공유 파일(Figma)로 옮겨 왔다. 개발자는 스타일·변수 확인, 치수 측정, 애셋 추출, 프로토타입 흐름 읽기, 댓글로 협업한다. 와이어프레임은 클릭되는 프로토타입으로, 디자인은 실제 데이터와 여러 화면 크기로 검증하고, 도구 이전은 비용을 계산해 한 번에 끝낸다."
+summary: "디자인 핸드오프는 이미지와 문서를 메일로 넘기던 방식에서 브라우저 기반 공유 파일(Figma)로 옮겨 왔다. 개발자는 스타일·변수 확인, 치수 측정, 애셋 추출, 프로토타입 흐름 읽기, 댓글로 협업한다. Inspect 코드는 그대로 쓰지 않고, absolute 좌표는 흐름으로, Auto Layout은 Flexbox로 옮긴다. 와이어프레임은 클릭되는 프로토타입으로, 디자인은 실제 데이터와 여러 화면 크기로 검증하고, 도구 이전은 비용을 계산해 한 번에 끝낸다."
 tags: ["design", "frontend", "collaboration", "tools", "design-system"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2021/01/18/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%95%8C%EC%95%84%EC%95%BC-%ED%95%A0-%ED%94%BC%EA%B7%B8%EB%A7%88%EC%9D%98-%EB%AA%A8%EB%93%A0-%EA%B2%83/", "https://webactually.com/2021/01/25/%EC%8A%A4%EC%BC%80%EC%B9%98%EC%97%90%EC%84%9C-%ED%94%BC%EA%B7%B8%EB%A7%88%EB%A1%9C-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%98%AE%EA%B8%B0%EA%B8%B0/", "https://webactually.com/2017/09/13/%ec%8a%a4%ec%bc%80%ec%b9%98%eb%a1%9c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ed%95%98%ea%b8%b0/", "https://webactually.com/2017/08/09/craft-%ed%94%8c%eb%9f%ac%ea%b7%b8%ec%9d%b8%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%b4-%ec%8a%a4%ec%bc%80%ec%b9%98%ec%97%90%ec%84%9c-%ec%8b%a4%ec%a0%9c-%eb%8d%b0%ec%9d%b4%ed%84%b0%eb%a1%9c-%eb%94%94%ec%9e%90/", "https://webactually.com/2012/10/21/%eb%a0%88%ed%8b%b0%eb%82%98retina%ec%97%90-%ec%b5%9c%ec%a0%81%ed%99%94%eb%90%9c-%ea%b3%a0%ed%95%b4%ec%83%81%eb%8f%84-%eb%94%94%ec%9e%90%ec%9d%b8%ed%95%98%ea%b8%b0/", "https://webactually.com/2015/05/21/%ec%9b%90%ed%99%9c%ed%95%9c-%ec%bb%a4%eb%ae%a4%eb%8b%88%ec%bc%80%ec%9d%b4%ec%85%98%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%99%80%ec%9d%b4%ec%96%b4%ed%94%84%eb%a0%88%ec%9e%84%ec%9d%84-%ec%b0%be%ec%95%84/"]
+sources: ["https://brunch.co.kr/@eddwardpark/56", "https://brunch.co.kr/@eddwardpark/51", "https://brunch.co.kr/@eddwardpark/10", "https://webactually.com/2021/01/18/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%95%8C%EC%95%84%EC%95%BC-%ED%95%A0-%ED%94%BC%EA%B7%B8%EB%A7%88%EC%9D%98-%EB%AA%A8%EB%93%A0-%EA%B2%83/", "https://webactually.com/2021/01/25/%EC%8A%A4%EC%BC%80%EC%B9%98%EC%97%90%EC%84%9C-%ED%94%BC%EA%B7%B8%EB%A7%88%EB%A1%9C-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%98%AE%EA%B8%B0%EA%B8%B0/", "https://webactually.com/2017/09/13/%ec%8a%a4%ec%bc%80%ec%b9%98%eb%a1%9c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ed%95%98%ea%b8%b0/", "https://webactually.com/2017/08/09/craft-%ed%94%8c%eb%9f%ac%ea%b7%b8%ec%9d%b8%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%b4-%ec%8a%a4%ec%bc%80%ec%b9%98%ec%97%90%ec%84%9c-%ec%8b%a4%ec%a0%9c-%eb%8d%b0%ec%9d%b4%ed%84%b0%eb%a1%9c-%eb%94%94%ec%9e%90/", "https://webactually.com/2012/10/21/%eb%a0%88%ed%8b%b0%eb%82%98retina%ec%97%90-%ec%b5%9c%ec%a0%81%ed%99%94%eb%90%9c-%ea%b3%a0%ed%95%b4%ec%83%81%eb%8f%84-%eb%94%94%ec%9e%90%ec%9d%b8%ed%95%98%ea%b8%b0/", "https://webactually.com/2015/05/21/%ec%9b%90%ed%99%9c%ed%95%9c-%ec%bb%a4%eb%ae%a4%eb%8b%88%ec%bc%80%ec%9d%b4%ec%85%98%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%99%80%ec%9d%b4%ec%96%b4%ed%94%84%eb%a0%88%ec%9e%84%ec%9d%84-%ec%b0%be%ec%95%84/"]
 ---
 
-> 웹액츄얼리가 번역·소개한 Jurn van Wissen의 「[개발자가 알아야 할 피그마의 모든 것](https://webactually.com/2021/01/18/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%95%8C%EC%95%84%EC%95%BC-%ED%95%A0-%ED%94%BC%EA%B7%B8%EB%A7%88%EC%9D%98-%EB%AA%A8%EB%93%A0-%EA%B2%83/)」(2021.01), 버즈 어스본(Buzz Usborne)의 「[스케치에서 피그마로 디자인 시스템 옮기기](https://webactually.com/2021/01/25/%EC%8A%A4%EC%BC%80%EC%B9%98%EC%97%90%EC%84%9C-%ED%94%BC%EA%B7%B8%EB%A7%88%EB%A1%9C-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%98%AE%EA%B8%B0%EA%B8%B0/)」(2021.01), Ashley Bennett의 「[스케치로 반응형 웹 디자인하기](https://webactually.com/2017/09/13/%ec%8a%a4%ec%bc%80%ec%b9%98%eb%a1%9c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ed%95%98%ea%b8%b0/)」(2017.09), Christian Krammer의 「[Craft 플러그인으로 실제 데이터로 디자인하기](https://webactually.com/2017/08/09/craft-%ed%94%8c%eb%9f%ac%ea%b7%b8%ec%9d%b8%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%b4-%ec%8a%a4%ec%bc%80%ec%b9%98%ec%97%90%ec%84%9c-%ec%8b%a4%ec%a0%9c-%eb%8d%b0%ec%9d%b4%ed%84%b0%eb%a1%9c-%eb%94%94%ec%9e%90/)」(2017.08), Christopher Downer의 「[레티나에 최적화된 디자인하기](https://webactually.com/2012/10/21/%eb%a0%88%ed%8b%b0%eb%82%98retina%ec%97%90-%ec%b5%9c%ec%a0%81%ed%99%94%eb%90%9c-%ea%b3%a0%ed%95%b4%ec%83%81%eb%8f%84-%eb%94%94%ec%9e%90%ec%9d%b8%ed%95%98%ea%b8%b0/)」(2012.10), 웹액츄얼리의 「[원활한 커뮤니케이션을 위한 와이어프레임을 찾아서](https://webactually.com/2015/05/21/%ec%9b%90%ed%99%9c%ed%95%9c-%ec%bb%a4%eb%ae%a4%eb%8b%88%ec%bc%80%ec%9d%b4%ec%85%98%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%99%80%ec%9d%b4%ec%96%b4%ed%94%84%eb%a0%88%ec%9e%84%ec%9d%84-%ec%b0%be%ec%95%84/)」(2015.05)을 바탕으로 재구성한 노트입니다.
+> 웹액츄얼리가 번역·소개한 Jurn van Wissen의 「[개발자가 알아야 할 피그마의 모든 것](https://webactually.com/2021/01/18/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%95%8C%EC%95%84%EC%95%BC-%ED%95%A0-%ED%94%BC%EA%B7%B8%EB%A7%88%EC%9D%98-%EB%AA%A8%EB%93%A0-%EA%B2%83/)」(2021.01), 버즈 어스본(Buzz Usborne)의 「[스케치에서 피그마로 디자인 시스템 옮기기](https://webactually.com/2021/01/25/%EC%8A%A4%EC%BC%80%EC%B9%98%EC%97%90%EC%84%9C-%ED%94%BC%EA%B7%B8%EB%A7%88%EB%A1%9C-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%98%AE%EA%B8%B0%EA%B8%B0/)」(2021.01), Ashley Bennett의 「[스케치로 반응형 웹 디자인하기](https://webactually.com/2017/09/13/%ec%8a%a4%ec%bc%80%ec%b9%98%eb%a1%9c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ed%95%98%ea%b8%b0/)」(2017.09), Christian Krammer의 「[Craft 플러그인으로 실제 데이터로 디자인하기](https://webactually.com/2017/08/09/craft-%ed%94%8c%eb%9f%ac%ea%b7%b8%ec%9d%b8%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%b4-%ec%8a%a4%ec%bc%80%ec%b9%98%ec%97%90%ec%84%9c-%ec%8b%a4%ec%a0%9c-%eb%8d%b0%ec%9d%b4%ed%84%b0%eb%a1%9c-%eb%94%94%ec%9e%90/)」(2017.08), Christopher Downer의 「[레티나에 최적화된 디자인하기](https://webactually.com/2012/10/21/%eb%a0%88%ed%8b%b0%eb%82%98retina%ec%97%90-%ec%b5%9c%ec%a0%81%ed%99%94%eb%90%9c-%ea%b3%a0%ed%95%b4%ec%83%81%eb%8f%84-%eb%94%94%ec%9e%90%ec%9d%b8%ed%95%98%ea%b8%b0/)」(2012.10), 웹액츄얼리의 「[원활한 커뮤니케이션을 위한 와이어프레임을 찾아서](https://webactually.com/2015/05/21/%ec%9b%90%ed%99%9c%ed%95%9c-%ec%bb%a4%eb%ae%a4%eb%8b%88%ec%bc%80%ec%9d%b4%ec%85%98%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%99%80%ec%9d%b4%ec%96%b4%ed%94%84%eb%a0%88%ec%9e%84%ec%9d%84-%ec%b0%be%ec%95%84/)」(2015.05)을 바탕으로 재구성한 노트입니다. 「Figma 디자인을 코드로 옮길 때」는 eddward park의 「[피그마 디자인을 코드로 만드는 방법](https://brunch.co.kr/@eddwardpark/56)」(2021.05)과 연재 글 「Figma AutoLayout vs CSS Flex」, 「피그마 포지션 자세히 살펴보기」로 보강했습니다.
 
 ## 디자인 핸드오프란
 
@@ -28,7 +28,7 @@ sources: ["https://webactually.com/2021/01/18/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%
 | 전체 스타일 확인 | 아무것도 선택하지 않으면 오른쪽 패널에 색·글꼴·효과 스타일과 **변수(variables)** 가 보인다. 이 값이 CSS 변수와 디자인 토큰의 출처다 |
 | 중첩 레이어 선택 | 클릭은 최상위만 선택한다. Cmd/Ctrl+클릭으로 깊은 레이어를 바로 고르거나, 더블클릭으로 한 단계씩 들어간다 |
 | 거리 측정 | 요소를 선택하고 Alt/Option을 누른 채 다른 요소에 올리면 간격이 빨간 선과 px로 나온다 |
-| CSS 확인 | Dev Mode의 Inspect 패널에서 CSS·iOS·Android 코드 스니펫을 본다. 위치값은 자동 생성이라 **그대로 복사하지 말고 참고만** 한다. Auto Layout은 flexbox로 읽으면 된다 |
+| CSS 확인 | Dev Mode의 Inspect 패널에서 CSS·iOS·Android 코드 스니펫을 본다. 위치값은 자동 생성이라 **그대로 복사하지 말고 참고만** 한다(아래 「Figma 디자인을 코드로 옮길 때」) |
 | 애셋 추출 | Export 설정에서 배율(1x·2x·3x)과 형식(PNG·JPG·SVG·PDF)을 고른다. 레이어 이름에 `/`를 쓰면 폴더로 묶여 나온다 |
 | 동작 확인 | Prototype 탭의 파란 화살표가 화면 흐름이다. 각 연결은 트리거·액션·전환(예: 탭 → 스마트 애니메이트, 300ms ease-out)으로 구성되고, 이 정보는 Inspect 코드에 나오지 않으니 따로 확인한다 |
 | 구현 상태 | "개발 준비 완료(Ready for dev)" 표시와 변경 비교로 무엇이 바뀌었는지 본다 |
@@ -37,6 +37,29 @@ sources: ["https://webactually.com/2021/01/18/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%
 자주 쓰는 단축키: Shift+1(전체 보기), Shift+2(선택 확대), Space+드래그(이동), Ctrl+Shift+?(단축키 목록).
 
 컴포넌트를 코드와 직접 잇는 Code Connect, AI 에이전트가 디자인 정보를 읽는 MCP 서버처럼 디자인과 코드 사이의 거리를 줄이는 기능이 계속 늘고 있다. 디자인 토큰을 코드 패키지로 배포하는 구조는 [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]]에 있다.
+
+## Figma 디자인을 코드로 옮길 때
+
+Inspect의 CSS를 붙여 넣기만 하면 시안과 똑같아질 것 같지만, 실제로는 **부모와 자식의 관계를 정하는 `position`과 `display`** 를 거의 매번 고쳐야 한다.
+
+### 위치: absolute를 흐름으로 바꾼다
+
+Auto Layout이 없는 프레임은 Inspect에서 프레임이 `position: relative`, 그 안의 요소가 모두 `position: absolute`와 좌표로 나온다. 캔버스에서는 요소끼리 영향을 주지 않으니 문제없지만, 브라우저에서는 글이 길어지거나 화면이 좁아지면 겹치고 깨진다. 코드로 옮길 때는 겹쳐 놓는 요소(배지, 닫기 버튼)만 absolute로 남기고 나머지는 문서 흐름과 Flexbox·Grid로 다시 배치한다([[position|position]]).
+
+### Auto Layout은 Flexbox다
+
+| Auto Layout | CSS |
+| --- | --- |
+| 방향: 세로 / 가로 / 줄바꿈 | `flex-direction: column` / `row` / `flex-wrap: wrap` |
+| 정렬(9칸 격자) | 주축은 `justify-content`, 교차축은 `align-items` |
+| 간격: 고정값 / Auto | `gap` / `justify-content: space-between` |
+| 패딩 | `padding` |
+| 크기: Hug / Fill / Fixed | 내용 크기(`fit-content`) / `flex: 1`·`align-self: stretch` / 고정 `width`·`height` |
+| Grid 흐름 | CSS Grid |
+
+방향이 바뀌면 같은 "가운데 정렬"이 다른 속성이 된다. 가로 방향에서 세로 위치는 `align-items`가 맡지만, 세로 방향에서는 `justify-content`가 맡는다. 캔버스에서는 직관적이지만 코드에서 가장 헷갈리는 지점이다([[flexbox|Float와 Flexbox]]).
+
+디자이너가 Auto Layout으로 시안을 만들면 개발자는 구조를 그대로 옮기면 되고, 반응형 동작에 대한 대화도 줄어든다. 코드를 직접 만져 보고 싶은 디자이너는 설치 없이 브라우저에서 돌려 보는 온라인 편집기로 시작할 수 있다([[designers-learning-code|디자이너는 어떻게 코드를 배우나]]).
 
 ## 디자인 시스템을 도구에 담는 원칙
 
