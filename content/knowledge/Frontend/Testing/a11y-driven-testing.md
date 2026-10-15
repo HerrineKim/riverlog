@@ -173,4 +173,4 @@ role과 이름으로 찾는 테스트는 **사용자 동작이 그대로인 한*
 - 직접 만든 컴포넌트에는 role·aria 속성과 그에 맞는 동작을 넣고, 복잡한 컴포넌트는 헤드리스 라이브러리를 쓴다.
 - 접근성은 시각 장애인만이 아니라 테스트, 검색 엔진, 기획 소통까지 모두에게 이득이다.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[jest-practices|JavaScript 테스트 원칙과 Jest 실행 팁]], [[html|HTML 기초와 HTML5]], [[design-system|디자인 시스템을 패키지로 배포하기]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]]
+관련 노트: [[tdd|프론트엔드에서의 TDD]], [[jest-practices|JavaScript 테스트 원칙과 Jest 실행 팁]], [[html|HTML 기초와 HTML5]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]]

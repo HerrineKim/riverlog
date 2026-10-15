@@ -10,7 +10,7 @@ UI 디자인 주제는 **화면이 어떻게 보이고 움직이는가**를 다�
 
 ## 노트
 
-- [디자인 시스템을 패키지로 배포하기](Frontend/UI-Design/design-system.md): 디자인 토큰과 UI 컴포넌트를 중앙 모노레포에서 패키지로 만들어 여러 프로젝트에 배포하고 Storybook으로 문서화하는 구조
+- [디자인 시스템: 구성, 도입, 구축과 배포](Frontend/UI-Design/design-system.md): 구성 요소, 작은 팀도 필요한 이유와 도입 시점, 감사부터 QA까지 구축 절차와 이름 규칙, 토큰·컴포넌트를 모노레포 패키지로 배포하고 Storybook으로 문서화하는 구조
 - [Animated Icon — 영상을 투명 배경 아이콘으로 쓰기](Frontend/UI-Design/animated-icon.md): 3D 아이콘 영상을 알파 채널 애니메이션 포맷으로 바꿔 앱·웹에서 쓰는 흐름과 포맷별 선택지
 - [Three.js로 웹에서 3D 그리기](Frontend/UI-Design/threejs.md): WebGL을 쉽게 쓰게 감싼 라이브러리의 구성 요소(Scene·Camera·Mesh·Renderer), 활용 사례, 장단점
 - [WebGL과 셰이더: 브라우저가 GPU로 그리는 방식](Frontend/UI-Design/webgl-shaders.md): OpenGL·WebGL·WebGPU의 관계, 정점·프래그먼트 셰이더와 래스터화, GLSL ES·WGSL, 무엇부터 배울까

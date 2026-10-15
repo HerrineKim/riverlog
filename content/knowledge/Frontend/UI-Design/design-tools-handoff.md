@@ -36,7 +36,7 @@ sources: ["https://webactually.com/2021/01/18/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%
 
 자주 쓰는 단축키: Shift+1(전체 보기), Shift+2(선택 확대), Space+드래그(이동), Ctrl+Shift+?(단축키 목록).
 
-컴포넌트를 코드와 직접 잇는 Code Connect, AI 에이전트가 디자인 정보를 읽는 MCP 서버처럼 디자인과 코드 사이의 거리를 줄이는 기능이 계속 늘고 있다. 디자인 토큰을 코드 패키지로 배포하는 구조는 [[design-system|디자인 시스템을 패키지로 배포하기]]에 있다.
+컴포넌트를 코드와 직접 잇는 Code Connect, AI 에이전트가 디자인 정보를 읽는 MCP 서버처럼 디자인과 코드 사이의 거리를 줄이는 기능이 계속 늘고 있다. 디자인 토큰을 코드 패키지로 배포하는 구조는 [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]]에 있다.
 
 ## 디자인 시스템을 도구에 담는 원칙
 
@@ -93,4 +93,4 @@ sources: ["https://webactually.com/2021/01/18/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%
 - 도구 이전은 비용을 계산하고, 다시 만들고, 한 번에 옮긴다.
 - 와이어프레임은 클릭되게, 시안은 실제 데이터와 여러 화면 크기로 검증한다.
 
-관련 노트: [[design-system|디자인 시스템을 패키지로 배포하기]], [[designers-learning-code|디자이너는 어떻게 코드를 배우나]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[project-process|새 서비스 개발 프로젝트 진행 순서]]
+관련 노트: [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[designers-learning-code|디자이너는 어떻게 코드를 배우나]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[project-process|새 서비스 개발 프로젝트 진행 순서]]

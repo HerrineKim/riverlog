@@ -105,7 +105,7 @@ CSS 커스텀 속성(Custom Properties, 흔히 CSS 변수)은 `--이름: 값`으
 | 메인 버튼, 1단계 링크, 헤더가 같은 초록 | 브랜드 색이 바뀌면 다 바뀐다. **기능 색상** |
 | 입력 오류, 오류 메시지, 삭제 버튼이 같은 빨강 | 앱 전체의 패턴이다. **기능 색상** |
 
-이 판단은 디자인 팀의 패턴 언어(pattern language)를 이해해야 내릴 수 있다([[design-system|디자인 시스템을 패키지로 배포하기]]).
+이 판단은 디자인 팀의 패턴 언어(pattern language)를 이해해야 내릴 수 있다([[design-system|디자인 시스템: 구성, 도입, 구축과 배포]]).
 
 ## 모든 변수를 :root에 두지 않는다
 
@@ -128,4 +128,4 @@ CSS 커스텀 속성(Custom Properties, 흔히 CSS 변수)은 `--이름: 값`으
 - 같은 색이라도 함께 바뀌어야 할 때만 같은 변수로 묶는다.
 - 루트에는 팔레트와 기능 색상만 둔다.
 
-관련 노트: [[design-system|디자인 시스템을 패키지로 배포하기]], [[sass|Sass: 파일 구조, 믹스인과 @extend]], [[web-typography|웹 타이포그래피: 가독성, 글줄 길이, 웹폰트]], [[css-progressive-enhancement|CSS 점진적 향상: 폴백과 피처 쿼리]]
+관련 노트: [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[sass|Sass: 파일 구조, 믹스인과 @extend]], [[web-typography|웹 타이포그래피: 가독성, 글줄 길이, 웹폰트]], [[css-progressive-enhancement|CSS 점진적 향상: 폴백과 피처 쿼리]]

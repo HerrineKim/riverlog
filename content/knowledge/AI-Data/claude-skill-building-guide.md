@@ -123,7 +123,7 @@ your-skill/
 
 ### 팀 공용 스킬을 패키지로 배포하기
 
-코딩 컨벤션, 커밋 규칙, 디자인 시스템 사용법처럼 **여러 저장소가 같이 지켜야 하는 규칙**을 저장소마다 `.claude/skills/`에 복사해 두면 금방 어긋난다. 디자인 시스템을 패키지로 배포하는 것과 같은 구조([[design-system|디자인 시스템을 패키지로 배포하기]])를 스킬에도 적용한다. **중앙에서 한 번 수정하고, 각 저장소는 설치·업데이트만 한다.**
+코딩 컨벤션, 커밋 규칙, 디자인 시스템 사용법처럼 **여러 저장소가 같이 지켜야 하는 규칙**을 저장소마다 `.claude/skills/`에 복사해 두면 금방 어긋난다. 디자인 시스템을 패키지로 배포하는 것과 같은 구조([[design-system|디자인 시스템: 구성, 도입, 구축과 배포]])를 스킬에도 적용한다. **중앙에서 한 번 수정하고, 각 저장소는 설치·업데이트만 한다.**
 
 ```text
 skill-installer/
@@ -185,4 +185,4 @@ npx @my-org/skill-installer install team-dev-guide
 - [클로드코드 스킬 개념 1 (Claude Code, Skill.md, 필드)](https://ios-development.tistory.com/1838)
 - [클로드코드 스킬 개념 2 - 활용하기 (동적 문자열, 참조, 프론트매터, 자동화 패턴)](https://ios-development.tistory.com/1837)
 
-관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[design-system|디자인 시스템을 패키지로 배포하기]]
+관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]]

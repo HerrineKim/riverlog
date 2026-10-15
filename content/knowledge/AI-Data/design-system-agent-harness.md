@@ -185,4 +185,4 @@ async function runCodingAgent(spec: DesignSpec) {
 - **구체화 → 기억 → 참고 → 생성 → 검증 → 축적** 루프가 "한 번에 잘 만들어줘"를 대체한다.
 - 중간 표현(스펙), 온디맨드 스킬, 자동 채점기, 결정 메모리는 화면 생성뿐 아니라 **모든 에이전틱 코딩 작업**에 그대로 옮겨 쓸 수 있는 패턴이다.
 
-관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[design-system|디자인 시스템을 패키지로 배포하기]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]]
+관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]]

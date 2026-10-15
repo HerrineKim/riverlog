@@ -111,4 +111,4 @@ HTML·CSS가 익숙해지면 JavaScript와 TypeScript, React·Vue 같은 프레�
 - 토큰·컴포넌트·DRY는 디자인 시스템과 같은 개념이다.
 - 새 능력은 겸손하게 쓴다. **공학적 결정은 엔지니어에게 맡긴다.**
 
-관련 노트: [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[design-system|디자인 시스템을 패키지로 배포하기]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[frontend-roadmap|프론트엔드 학습 로드맵]]
+관련 노트: [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[frontend-roadmap|프론트엔드 학습 로드맵]]
