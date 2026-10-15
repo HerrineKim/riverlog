@@ -4,11 +4,11 @@ concept: "Web Accessibility"
 summary: "장애는 개인의 속성이 아니라 능력과 환경의 불일치다. 브라우저는 시맨틱 HTML로 접근성 트리를 만들어 보조 기술에 넘기고, 대체 텍스트와 절제된 ARIA가 그 트리를 채우며, WCAG는 그 최소선을 정한다. 하지만 표준을 지켜도 쓰기 어려울 수 있으니 장애인과 함께하는 사용성 테스트와 조직 차원의 우선순위가 필요하다."
 tags: ["accessibility", "frontend", "ux", "html", "testing"]
 source: other
-date: "2026-10-14"
-sources: ["https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/", "https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/", "https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/", "https://www.w3.org/WAI/news/2025-10-21/wcag22-iso", "https://www.deque.com/blog/en-301-549-v4-1-1-is-final-what-changed-what-it-means-and-what-you-should-do/", "https://dev.to/bellatrick/mastering-web-accessibility-a-guide-for-frontend-developers-48ad", "https://webaim.org/projects/million/"]
+date: "2026-10-15"
+sources: ["https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/", "https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/", "https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/", "https://www.w3.org/WAI/news/2025-10-21/wcag22-iso", "https://www.deque.com/blog/en-301-549-v4-1-1-is-final-what-changed-what-it-means-and-what-you-should-do/", "https://dev.to/bellatrick/mastering-web-accessibility-a-guide-for-frontend-developers-48ad", "https://webaim.org/projects/million/", "https://wesbos.com/javascript/05-events/accessibility-gotchas-and-keyboard-codes", "https://wesbos.com/javascript/06-serious-practice-exercises/tabs", "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/"]
 ---
 
-> 웹액츄얼리가 번역한 유리 파즈(Uri Paz)의 「[접근성과 사용성 엮어내기](https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/)」(2020.12), 비 버챌(Be Birchall)의 「[컨텍스트에서의 웹 접근성](https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/)」(2019.12), 로빈 크리스토퍼슨(Robin Christopherson)의 「[코로나 시대의 글로벌 디지털 접근성 개발](https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/)」(2021.02)을 바탕으로 재구성하고, 대체 텍스트·ARIA 원칙은 버사요 새뮤얼(Busayo Samuel)의 「[Mastering Web Accessibility](https://dev.to/bellatrick/mastering-web-accessibility-a-guide-for-frontend-developers-48ad)」(DEV, 2023.04)로 보강한 노트다.
+> 웹액츄얼리가 번역한 유리 파즈(Uri Paz)의 「[접근성과 사용성 엮어내기](https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/)」(2020.12), 비 버챌(Be Birchall)의 「[컨텍스트에서의 웹 접근성](https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/)」(2019.12), 로빈 크리스토퍼슨(Robin Christopherson)의 「[코로나 시대의 글로벌 디지털 접근성 개발](https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/)」(2021.02)을 바탕으로 재구성하고, 대체 텍스트·ARIA 원칙은 버사요 새뮤얼(Busayo Samuel)의 「[Mastering Web Accessibility](https://dev.to/bellatrick/mastering-web-accessibility-a-guide-for-frontend-developers-48ad)」(DEV, 2023.04)로 보강했다. 키보드 인터랙션과 탭 패턴은 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다.
 
 ## 웹 접근성이란
 
@@ -92,6 +92,28 @@ ARIA(Accessible Rich Internet Applications)는 HTML만으로 표현할 수 없�
 ```
 
 접힌 영역을 `aria-hidden`으로만 숨기면 안의 링크에 키보드 포커스가 여전히 들어간다. 정말 숨길 때는 `hidden` 속성이나 `display: none`을 쓴다. 위젯별 올바른 ARIA 패턴은 W3C의 [ARIA Authoring Practices Guide(APG)](https://www.w3.org/WAI/ARIA/apg/)에 있다.
+
+## 키보드로 쓸 수 있는 인터랙션
+
+마크업이 맞아도 JavaScript가 **마우스로만 되는 동작**을 붙이면 접근성이 깨진다. 모달은 `<dialog>`의 `showModal()`을 쓰면 Esc 닫기와 포커스 가두기를 브라우저가 해 준다. 키 판정은 `event.key`로 한다([[dom-events|DOM 이벤트]]).
+
+| 실수 | 바로잡기 |
+| --- | --- |
+| `<a href="#">저장</a>` + `preventDefault()` | 페이지를 옮기면 링크, 동작을 하면 `<button>`이다. 링크의 `preventDefault()`는 로그인 안내처럼 이동을 조건부로 막을 때만 쓴다 |
+| `<img>`·`<div>`에 `click`만 붙임 | 키보드로 닿지도 누르지도 못한다. **`<button>`으로 감싸는 것**이 가장 간단하다 |
+| 어쩔 수 없이 `div`를 버튼으로 | `role="button"` + `tabindex="0"`(Tab 순서에 넣기) + `keydown`에서 `Enter`·`Space` 처리까지 직접 해야 한다. 네이티브 버튼은 Enter·Space에 `click`을 알아서 보낸다 |
+| `tabindex`에 양수 | 문서 순서를 깨뜨린다. `0`(순서에 넣기)과 `-1`(코드로만 포커스)만 쓴다 |
+
+탭 UI는 APG의 탭 패턴을 따른다. 탭 버튼은 `role="tab"`과 선택 상태 `aria-selected`, 패널을 가리키는 `aria-controls`를 갖고, 패널은 `role="tabpanel"` + `aria-labelledby`로 탭과 이어진다. 선택되지 않은 패널은 `hidden`으로 숨기고, CSS도 `[aria-selected="true"]`를 기준으로 그리면 상태가 한 곳에 모인다. 키보드로는 Tab으로 탭 목록에 들어가 **방향키로 탭 사이를 옮긴다.** 이를 위해 선택된 탭만 `tabindex="0"`, 나머지는 `-1`로 두는 로빙 탭인덱스(roving tabindex)를 쓴다.
+
+```html
+<div role="tablist" aria-label="언어">
+  <button role="tab" id="t-js" aria-selected="true" aria-controls="p-js">JS</button>
+  <button role="tab" id="t-py" aria-selected="false" aria-controls="p-py" tabindex="-1">Python</button>
+</div>
+<div role="tabpanel" id="p-js" aria-labelledby="t-js">…</div>
+<div role="tabpanel" id="p-py" aria-labelledby="t-py" hidden>…</div>
+```
 
 ## 표준: WCAG와 그 밖의 지침
 

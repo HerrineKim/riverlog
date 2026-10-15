@@ -4,11 +4,11 @@ concept: "Debounce Throttle"
 summary: "연속으로 일어나는 이벤트의 실행 횟수를 줄이는 두 기법. 디바운스는 마지막 호출만, 쓰로틀은 일정 간격마다 한 번만 실행한다."
 tags: ["javascript", "performance", "frontend"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://riverkim.kr/322"]
+date: "2026-10-15"
+sources: ["https://riverkim.kr/322", "https://wesbos.com/javascript/06-serious-practice-exercises/scroll-events-and-intersection-observer"]
 ---
 
-> riverkim.kr에 쓴 글을 다시 정리한 노트다.
+> riverkim.kr에 쓴 글을 다시 정리하고, 대안 부분은 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다.
 
 ## 두 기법이란
 
@@ -60,6 +60,12 @@ window.addEventListener('scroll', throttle(loadMoreIfNeeded, 200))
 
 처음 호출된 시점에만 실행을 예약하고, 그 뒤 `delay` 동안의 호출은 모두 무시한다. 그래서 callback은 **최대 `delay`마다 한 번** 실행된다. 실행이 끝나면 `timer`를 비워야 다음 주기에 다시 예약된다.
 
+## 쓰로틀보다 나은 대안
+
+- **요소가 화면에 들어왔는지**가 궁금한 것이라면(무한 스크롤, 지연 로딩) 스크롤 이벤트를 쓰로틀하기보다 `IntersectionObserver`가 낫다. 브라우저가 겹침을 계산해 기준을 넘을 때만 알려 준다([[intersection-observer|Intersection Observer와 관찰자 API]]).
+- 화면 갱신이 목적이면 프레임에 맞춰 한 번 실행하는 `requestAnimationFrame`이 고정 `delay`보다 자연스럽다.
+- `scroll`·`touchmove`·`wheel` 리스너에서 `preventDefault()`를 부르지 않는다면 `{ passive: true }`를 줘 스크롤을 막지 않게 한다([[dom-events|DOM 이벤트]]).
+
 ## 구현 포인트
 
 - `callback.apply(this, args)`로 호출하는 이유: 반환된 함수를 **호출한 객체(this)** 와 인자를 원래 함수에 그대로 넘기기 위해서다.
@@ -77,4 +83,4 @@ lodash의 `debounce`·`throttle`이 오랫동안 표준처럼 쓰였다. 다만 
 - 쓰로틀: 연속 호출 중 일정 간격마다 한 번. 스크롤·무한 스크롤.
 - 핵심 구현은 `setTimeout` + 클로저에 갇힌 `timer` 변수 하나다.
 
-관련 노트: [[event-loop|이벤트 루프]], [[dom-manipulation|DOM 조작과 이벤트]]
+관련 노트: [[event-loop|이벤트 루프]], [[dom-manipulation|DOM 조작과 이벤트]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[intersection-observer|Intersection Observer와 관찰자 API]]

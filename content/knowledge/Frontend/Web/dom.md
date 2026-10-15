@@ -86,7 +86,7 @@ const scrollToTop = () => {
 | BOM 조작 | `location`, `history`, `navigator` 등 브라우저 제어 |
 | JavaScript Core(ECMAScript) | 자료구조(Object, Array), 조건문, 반복문 등 언어 자체 |
 
-선택·변경·이벤트를 다루는 구체적인 메서드는 [[dom-manipulation|DOM 조작과 이벤트]]에 있다.
+선택·변경을 다루는 구체적인 메서드는 [[dom-manipulation|DOM 조작과 이벤트]]에, 이벤트 전파·위임은 [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]]에 있다.
 
 ## DOM이 필요해진 이유
 
@@ -115,4 +115,4 @@ DOM의 본질은 "HTML을 이렇게 고쳐 달라"를 컴퓨터가 알아듣게 
 - BOM은 문서 바깥의 브라우저 자체를 다루며 최상위 객체는 `window`.
 - DOM은 문자열 HTML을 매번 다시 파싱하는 비용을 피하려고, 이미 만든 구조를 부분 수정하기 위해 생겼다.
 
-관련 노트: [[dom-manipulation|DOM 조작과 이벤트]], [[browser-rendering|브라우저 렌더링 과정]], [[frontend-history|프론트엔드의 등장 배경]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]
+관련 노트: [[dom-manipulation|DOM 조작과 이벤트]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[intersection-observer|Intersection Observer와 관찰자 API]], [[browser-rendering|브라우저 렌더링 과정]], [[frontend-history|프론트엔드의 등장 배경]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]

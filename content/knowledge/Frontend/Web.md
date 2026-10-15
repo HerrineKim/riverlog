@@ -18,6 +18,7 @@ date: "2026-10-13"
 - [더 나은 폼을 만드는 팁](/knowledge/dictionary/frontend/web/form-usability): 브라우저 기본 동작 존중, inputmode, 보이는 검증 메시지, 커서·포커스를 빼앗지 않는 입력 처리
 - [잘 안 쓰지만 쓸모 있는 HTML 속성](/knowledge/dictionary/frontend/web/html-lesser-known-attributes): enterkeyhint, ol의 reversed·start, download, form, loading·fetchpriority·imagesrcset, cite·datetime, optgroup, 대체 스타일시트
 - [DOM](/knowledge/dictionary/frontend/web/dom): 브라우저가 문서를 객체 트리로 표현하는 방식, DOM tree와 노드 종류, BOM
+- [Intersection Observer와 관찰자 API](/knowledge/dictionary/frontend/web/intersection-observer): 스크롤 이벤트 대신 보이는지 묻기, root·rootMargin·threshold, 무한 스크롤·지연 로딩 패턴, ResizeObserver·MutationObserver
 - [브라우저 렌더링 과정](/knowledge/dictionary/frontend/web/browser-rendering): 브라우저 구성 요소, DOM·CSSOM → 렌더 트리 → 레이아웃(리플로우) → 페인팅, 스크립트·CSS의 차단, 강제 동기 레이아웃, 리렌더링 비용
 - [스크립트·스타일 로딩 순서와 점진적 렌더링](/knowledge/dictionary/frontend/web/script-loading): script·async·defer·module의 실행 시점, CSS는 head·스크립트는 defer인 이유와 예외, FOUC, 점진적 렌더링 기법
 - [반응형 이미지: srcset·sizes와 picture](/knowledge/dictionary/frontend/web/responsive-images): 크기만 다르면 srcset·sizes, 자르기·형식 대체는 picture, sizes 근삿값, 이미지 CDN·CMS 자동화
@@ -33,6 +34,7 @@ date: "2026-10-13"
 - [PWA와 서비스 워커 캐시 전략](/knowledge/dictionary/frontend/web/pwa-service-worker): HTTPS·매니페스트·서비스 워커, 사이트 원형별 이점, 미디어 중요도별 캐시와 캐시 정리
 - [지속 가능한 웹 디자인](/knowledge/dictionary/frontend/web/sustainable-web-design): 전송량·CPU로 어림하는 에너지 사용, 요청·기능 덜어내기, 서버 캐시와 친환경 호스팅
 - [쿠키와 세션](/knowledge/dictionary/frontend/web/cookie-session): 상태 없는 HTTP에서 사용자를 기억하는 방법
+- [Web Storage: localStorage와 sessionStorage](/knowledge/dictionary/frontend/web/web-storage): 키-값 API, JSON 직렬화와 복원, storage 이벤트로 탭 동기화, 용량·예외, 토큰을 넣지 않는 이유
 - [웹 보안: CSRF와 XSS](/knowledge/dictionary/frontend/web/web-security): 대표적인 두 공격과 방어 방법
 - [HTTPS 전환](/knowledge/dictionary/frontend/web/https-migration): DV·OV·EV와 인증서 범위, ACME 자동 갱신, 혼합 콘텐츠·301·HSTS 체크리스트
 - [OAuth 2.0](/knowledge/dictionary/frontend/web/oauth2): 비밀번호 없이 권한을 위임하는 흐름(Authorization Code + PKCE), 토큰, OIDC와의 차이

