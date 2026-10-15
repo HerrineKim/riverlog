@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/2dfd43ab9e184c7a9056e6fde4848b77", "https://80000coding.notion.site/8051d71ed91d4fc8a49281d93c21ad74", "https://80000coding.notion.site/55f0f3945bac423286efc72b9e194e11", "https://80000coding.notion.site/1a5b31cb355741748a9af33adf497fc6", "https://80000coding.notion.site/2393bba5dab449ad93d4a221262a1e7e", "https://80000coding.notion.site/405b810d81b8452ea6f9b1282d816ba4", "https://80000coding.notion.site/fbebe8bd620e41bb86c4ab0f580e6f10", "https://80000coding.notion.site/cafa9acc2af849fd8e2a855d1b71b394", "https://80000coding.notion.site/bbe65c2efe264c5c91d62e1d74430114", "https://80000coding.notion.site/f217ea68a2da4e9da1f503e66f0b705e", "https://en.cppreference.com/w/c/language/conversion"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「기초중의 기초 - C언어 자료형」, 「Casting, Sign extension」, 「char는 char로 연산이 안된다고?」, 「오버플로우와 언더플로우」, 「int의 오버플로우가 위험한 이유」, 「size_t 란 ?」, 「메모리 주소는 왜 16진수로 표현할까?」, 「이해하기 쉬운 고정소수점 샘플」, 「isnan, isinf 구현하기」, 「libft, 깨고 나니 보이는 것들」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「기초중의 기초 - C언어 자료형」, 「Casting, Sign extension」, 「char는 char로 연산이 안된다고?」, 「오버플로우와 언더플로우」, 「int의 오버플로우가 위험한 이유」, 「size_t 란 ?」, 「메모리 주소는 왜 16진수로 표현할까?」, 「이해하기 쉬운 고정소수점 샘플」, 「isnan, isinf 구현하기」, 「libft, 깨고 나니 보이는 것들」을 바탕으로 재구성한 노트다.
 
 ## 크기는 최소만 정해져 있다
 

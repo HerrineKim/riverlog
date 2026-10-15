@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/5074d6c4b3244e919a2bbce03f85cf59", "https://en.cppreference.com/w/cpp/memory/new/operator_new"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「메모리 풀, malloc()보다 100배 빠르다!」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「메모리 풀, malloc()보다 100배 빠르다!」를 바탕으로 재구성한 노트다.
 
 ## 메모리 풀이란
 

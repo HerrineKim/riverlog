@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/0745e619a39f4bd3b8b10280ab6592a8", "https://www.rfc-editor.org/rfc/rfc2119", "https://www.rfc-editor.org/rfc/rfc8174"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「RFC 2119 Requirement level 요약」을 바탕으로 재구성한 노트입니다. 원문은 [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119)와 [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174)입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「RFC 2119 Requirement level 요약」을 바탕으로 재구성한 노트다. 원문은 [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119)와 [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174)이다.
 
 ## RFC란
 

@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/a6a43912cd6e485e9031fbc3969aa335", "https://80000coding.notion.site/4c0e1e36e7db4fb4a9c69c3073e89e9d", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://www.man7.org/linux/man-pages/man8/ip-netns.8.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「리눅스 네트워크 네임스페이스 살펴보기」, 「ip 명령어 메세지 살펴보기」, 「서버 관리 맛보기」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「리눅스 네트워크 네임스페이스 살펴보기」, 「ip 명령어 메세지 살펴보기」, 「서버 관리 맛보기」를 바탕으로 재구성한 노트다.
 
 ## ip 명령
 

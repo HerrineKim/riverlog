@@ -19,36 +19,13 @@ SQL은 관계형 데이터베이스를 다루는 표준 언어이고, 관계대�
 
 `GRANT`는 사용자에게 권한을 부여하고 `REVOKE`는 회수한다. `COMMIT`·`ROLLBACK`·`SAVEPOINT`는 트랜잭션 제어어(TCL)로 따로 나누기도 한다([[transaction|트랜잭션과 회복]]).
 
-## 자주 쓰는 문법
+## 헷갈리기 쉬운 문법
 
-```sql
--- 조회: 조건, 정렬, 패턴
-SELECT 학번, 이름 FROM 학생 WHERE 학년 IN (3, 4);
-SELECT * FROM 학생 WHERE 이름 LIKE '이%' ORDER BY 이름 DESC;
-
--- 중복 제거와 집계
-SELECT DISTINCT 학과 FROM 학생;
-SELECT 학과, COUNT(*) AS 학생수 FROM 학생 GROUP BY 학과;
-
--- 조인
-SELECT a.이름, b.학과명
-FROM 학생정보 a JOIN 학과정보 b ON a.학과 = b.학과;
-
--- 삽입·수정·삭제
-INSERT INTO 학생 (학번, 이름) VALUES (1, '홍길동');
-UPDATE 학생 SET 점수 = 점수 + 5 WHERE 점수 >= 90;
-DELETE FROM 학생 WHERE 이름 = '민수';
-
--- 구조 변경과 인덱스
-ALTER TABLE 학생 ADD 주소 VARCHAR(20);
-CREATE INDEX idx_name ON student(name);
-```
-
-헷갈리기 쉬운 점
+`SELECT`·`INSERT`·`UPDATE`·`DELETE`, 조인, `LIKE` 와일드카드 같은 기본 문법은 [[sql-basics|SQL 기초]]에 있다. 여기서는 시험에 반복해 나오는 함정만 둔다.
 
 - `SELECT 학과 FROM 학생`은 행 수만큼, `SELECT DISTINCT 학과`는 서로 다른 학과 수만큼 나온다.
-- **CROSS JOIN**은 두 테이블의 모든 행 조합(카티션 곱)을 만든다. 행이 m개, n개면 결과는 m × n개.
-- `LIKE` 와일드카드와 `WHERE`·`HAVING`의 구분은 [[sql-basics|SQL 기초]]에 있다. 시험에서는 아래처럼 **행 조건은 WHERE, 집계 후 그룹 조건은 HAVING**에 두는 문제가 반복해서 나온다. 그룹 기준이 여러 개면 `GROUP BY` 뒤에 나열한다.
+- **CROSS JOIN**은 두 테이블의 모든 행 조합(카티션 곱)을 만든다. 행이 m개, n개면 결과는 m × n개다.
+- **행 조건은 WHERE, 집계 후 그룹 조건은 HAVING**에 둔다. 그룹 기준이 여러 개면 `GROUP BY` 뒤에 나열한다.
 
 ```sql
 -- 팀·직급별 성과급 합계

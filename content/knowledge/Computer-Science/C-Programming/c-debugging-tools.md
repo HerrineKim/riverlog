@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/e2076b1b212448e9838c53686622db22", "https://80000coding.notion.site/457f637fb1014f79adc80ca72bd3c6f3", "https://80000coding.notion.site/107bc2ff145e427b9bd076b015908916", "https://80000coding.notion.site/a2810918ee9a472ea1cddae61ce7b6f6", "https://80000coding.notion.site/d2985f3d6c27469b85682f1e499e78e6", "https://80000coding.notion.site/5196284cbb1c4cf095aa6da1046840b3", "https://80000coding.notion.site/bac2c93a62794b3d8ad3b9a84a6ed709", "https://80000coding.notion.site/2dba73d25a2c4f81ba62452c15575272", "https://lldb.llvm.org/use/map.html", "https://clang.llvm.org/docs/AddressSanitizer.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「위기탈출 LLDB (꿀팁 포함)」, 「leaks 1.2배 더 유용하게 사용하기」, 「atexit을 활용해 누수 확인하기」, 「strace로 시스템콜 추적하기」, 「Bus error vs Segmentation fault?」, 「Make와 Sanitizer 더 잘 쓰기」, 「심플한 어셈블리 분석하기」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「위기탈출 LLDB (꿀팁 포함)」, 「leaks 1.2배 더 유용하게 사용하기」, 「atexit을 활용해 누수 확인하기」, 「strace로 시스템콜 추적하기」, 「Bus error vs Segmentation fault?」, 「Make와 Sanitizer 더 잘 쓰기」, 「심플한 어셈블리 분석하기」를 바탕으로 재구성한 노트다.
 
 ## 어떤 도구를 언제 쓰나
 

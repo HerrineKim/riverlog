@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://riverkim.kr/188", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e"]
 ---
 
-> 진법 변환·KiB·부호 확장·IEEE 754 세부·해밍 코드 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「원리를 알면 까먹지 않을 10진법을 2진법으로 변환하는 방법」, 「KB(킬로바이트)와 KiB(키비바이트)」, 「Unsigned char와 Char의 차이」, 「실수의 비트 표현 방법」, 「JavaScript에서 표현할 수 있는 수의 범위와 부동소수점」, 「Parity Bit (패리티 비트)」, 「Born2BeRoot를 진행하며 궁금했던 부분들」을 바탕으로 보강했습니다.
+> 진법 변환·KiB·부호 확장·IEEE 754 세부·해밍 코드 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「원리를 알면 까먹지 않을 10진법을 2진법으로 변환하는 방법」, 「KB(킬로바이트)와 KiB(키비바이트)」, 「Unsigned char와 Char의 차이」, 「실수의 비트 표현 방법」, 「JavaScript에서 표현할 수 있는 수의 범위와 부동소수점」, 「Parity Bit (패리티 비트)」, 「Born2BeRoot를 진행하며 궁금했던 부분들」을 바탕으로 보강했다.
 
 컴퓨터는 모든 정보를 0과 1로 저장한다. 정수, 실수, 문자를 어떤 규칙으로 비트에 담는지 알아야 오버플로우나 부동 소수점 오차 같은 현상을 이해할 수 있다.
 

@@ -7,7 +7,7 @@ source: other
 date: "2026-10-14"
 ---
 
-언어의 문법은 금방 익히지만, 그 문법이 컴파일된 뒤 무엇이 되는지(템플릿 인스턴스화, vtable, 예외 테이블)를 알면 성능과 버그를 설명할 수 있습니다. 이 주제에는 C++를 중심으로 한 언어 내부 동작과, 언어를 넘어 쓰이는 객체 지향 설계 개념을 모았습니다. C 언어와 포인터는 [C-Programming](Computer-Science/C-Programming.md)에, 객체 지향의 철학은 [객체 지향의 본질: 메시징](Computer-Science/oop-messaging.md)에 있습니다.
+언어의 문법은 금방 익히지만, 그 문법이 컴파일된 뒤 무엇이 되는지(템플릿 인스턴스화, vtable, 예외 테이블)를 알면 성능과 버그를 설명할 수 있다. 이 주제에는 C++를 중심으로 한 언어 내부 동작과, 언어를 넘어 쓰이는 객체 지향 설계 개념을 모았다. C 언어와 포인터는 [C-Programming](Computer-Science/C-Programming.md)에 있다.
 
 ## 하위 노트
 
@@ -23,6 +23,7 @@ date: "2026-10-14"
 
 ### 객체 지향 설계
 
+- [객체 지향의 본질: 메시징](Computer-Science/Programming-Languages/oop-messaging.md) — 앨런 케이가 본 OOP의 본질(메시징·캡슐화·늦은 바인딩)과 클래스·상속이 본질이 아닌 이유
 - [추상 클래스와 인터페이스](Computer-Science/Programming-Languages/abstract-class-vs-interface.md) — is-a와 can-do, 템플릿 메서드와 훅, Java 8 디폴트 메서드, 고르는 기준
 - [위임 패턴과 Kotlin by](Computer-Science/Programming-Languages/kotlin-delegation.md) — 상속 대신 위임, 클래스·프로퍼티 위임, by lazy와 by viewModels()
 - [DTO와 VO, DAO와 Repository](Computer-Science/Programming-Languages/dto-vo-dao-repository.md) — 전송 객체와 값 객체, 테이블 중심 DAO와 도메인 중심 Repository

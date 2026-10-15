@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://velog.io/@eddy_song/alan-kay-OOP", "https://www.purl.org/stefan_ram/pub/doc_kay_oop_en"]
 ---
 
-> Eddy의 「[창시자 앨런 케이가 말하는, 객체 지향 프로그래밍의 본질](https://velog.io/@eddy_song/alan-kay-OOP)」(2022.01)을 바탕으로 재구성한 노트입니다. 원 자료는 앨런 케이가 Stefan Ram에게 보낸 [OOP 정의 메일](https://www.purl.org/stefan_ram/pub/doc_kay_oop_en)(2003)입니다.
+> Eddy의 「[창시자 앨런 케이가 말하는, 객체 지향 프로그래밍의 본질](https://velog.io/@eddy_song/alan-kay-OOP)」(2022.01)을 바탕으로 재구성한 노트다. 원 자료는 앨런 케이가 Stefan Ram에게 보낸 [OOP 정의 메일](https://www.purl.org/stefan_ram/pub/doc_kay_oop_en)(2003)이다.
 
 ## 메시징 관점의 객체 지향이란
 

@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/b7c35daad31e4f7f9573caa31685dbf5", "https://80000coding.notion.site/001f68841ca94386a7d90e4a35116cea", "https://80000coding.notion.site/126dc22073ec453b91d981e3a5b680f2", "https://80000coding.notion.site/0e912b650f404936b211f9c9a4b6880f"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] Thread 와 Mutex의 개념과 관련 함수」, 「[OS] Synchronization Examples」, 「원자성이란 무엇인가?」, 「mutex 동작원리」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] Thread 와 Mutex의 개념과 관련 함수」, 「[OS] Synchronization Examples」, 「원자성이란 무엇인가?」, 「mutex 동작원리」를 바탕으로 재구성한 노트다.
 
 경쟁 상태, 임계 구역 조건, 세마포어의 개념과 고전적인 동기화 문제는 [[process-synchronization|프로세스 동기화]]에 있다. 이 노트는 그 개념을 **실제 코드에서 어떤 API로 쓰는지**를 다룬다.
 

@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://black7375.tistory.com/90", "https://peps.python.org/pep-0703/", "https://openjdk.org/jeps/444"]
 ---
 
-> black7375의 「[동시성, 병렬, 비동기, 논블럭킹과 컨셉들](https://black7375.tistory.com/90)」(2022.06)을 바탕으로 재구성하고, 언어별 현황은 공식 문서로 최신화한 노트입니다.
+> black7375의 「[동시성, 병렬, 비동기, 논블럭킹과 컨셉들](https://black7375.tistory.com/90)」(2022.06)을 바탕으로 재구성하고, 언어별 현황은 공식 문서로 최신화한 노트다.
 
 ## 네 가지 용어 구분
 

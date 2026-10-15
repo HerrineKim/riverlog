@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/cf49e4717acb41308654fcfeed13bda5", "https://80000coding.notion.site/be1a0d0185214f76877b9e3b8f08305d", "https://en.cppreference.com/w/cpp/container"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C++] vector STL method 시간복잡도」, 「[C++] set STL 을 알아보자.」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C++] vector STL method 시간복잡도」, 「[C++] set STL 을 알아보자.」를 바탕으로 재구성한 노트다.
 
 ## STL 컨테이너란
 

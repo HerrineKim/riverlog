@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers"]
 ---
 
-> qouteall의 글 「[Traps to Developers](https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers)」(2026.10 갱신판)를 바탕으로 재구성한 노트입니다.
+> qouteall의 글 「[Traps to Developers](https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers)」(2026.10 갱신판)를 바탕으로 재구성한 노트다.
 
 ## 함정이란
 

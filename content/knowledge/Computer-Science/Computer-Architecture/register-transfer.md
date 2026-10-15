@@ -5,6 +5,7 @@ summary: "레지스터 전송 언어(RTL), 버스와 3-상태 버퍼, 메모리 
 tags: ["computer-architecture", "register", "micro-operation", "bus"]
 source: notion
 sources: ["https://app.notion.com/p/a4261087c1424a308d65977fc57d9cec"]
+date: "2026-10-12"
 ---
 
 **레지스터**는 CPU가 요청을 처리하는 데 필요한 데이터를 일시적으로 저장하는 기억 장치로, 여러 개의 플립플롭으로 이루어진다. 컴퓨터의 동작은 결국 레지스터 사이에서 데이터를 옮기고 가공하는 작은 연산들의 연속이다.

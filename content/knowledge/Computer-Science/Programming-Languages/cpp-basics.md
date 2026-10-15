@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/23ed5ee6e09d4953af96a16a1463b635", "https://80000coding.notion.site/71480af963104c8cbaf82ea65b513ddb", "https://80000coding.notion.site/ddcdbb4d461a4a6497b85040fc49c7d6", "https://80000coding.notion.site/e570df1529ef464290454f72795785e9", "https://en.cppreference.com/w/cpp/language/attributes/fallthrough"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「C++의 기초적인 사용법」, 「참조 변수 (Reference Variable)」, 「참조자는 왜 쓰는걸까?」, 「switch case에서의 명시적 fallthrough」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「C++의 기초적인 사용법」, 「참조 변수 (Reference Variable)」, 「참조자는 왜 쓰는걸까?」, 「switch case에서의 명시적 fallthrough」를 바탕으로 재구성한 노트다.
 
 ## C++란
 
@@ -150,4 +150,4 @@ default:
 - "없음"이 가능한 자리에만 포인터를 쓴다.
 - 의도한 fallthrough는 `[[fallthrough]]`로 표시하고 경고는 켜 둔다.
 
-관련 노트: [[pointers-and-memory|포인터와 메모리]], [[c-basics|C 기초: 컴파일, 자료형, 배열과 문자열]], [[cpp-templates|C++ 템플릿]], [[programming-language|코드 해석 문제의 핵심 개념]]
+관련 노트: [[pointers-and-memory|포인터와 메모리]], [[c-basics|C 기초: 컴파일, 자료형, 배열과 문자열]], [[cpp-templates|C++ 템플릿]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]]

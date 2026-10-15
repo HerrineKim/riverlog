@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/dcd0f224053f456caf22d7e0946fa868", "https://www.baeldung.com/java-dao-vs-repository", "https://martinfowler.com/eaaCatalog/dataTransferObject.html", "https://martinfowler.com/bliki/ValueObject.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「DTO와 VO, DAO와 Repository」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「DTO와 VO, DAO와 Repository」를 바탕으로 재구성한 노트다.
 
 ## 한눈에 보기
 

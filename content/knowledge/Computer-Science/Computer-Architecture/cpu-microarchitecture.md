@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/d1a5529246ad4553a1dab05d762ead4d", "https://80000coding.notion.site/f250356ec7d242f8b891faea05dd5c91", "https://80000coding.notion.site/36dd833d01cb440287ac53f3793ca061", "https://80000coding.notion.site/5dad7432a4554bb5bd7c936120c45fe4", "https://80000coding.notion.site/10a0a4524e46409b83a73ccd65e432a1", "https://80000coding.notion.site/7819ea91fc32412996e6e235b17d4335", "https://www.agner.org/optimize/microarchitecture.pdf"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「CPU의 대략적 구조」, 「μops와 port (port pressure,DSB,LSD,fusion,AGU)」, 「if 문 결과를 CPU가 예측한다고? (Branch Prediction)」, 「두 배 더 빠른 퀵정렬 구현 방법」, 「캐시 메모리는 프로그래머가 제어하지 않는지 궁금합니다.」, 「컴퓨터 동작 과정 한눈에 보기」를 바탕으로 재구성한 노트입니다. 세부 수치는 Agner Fog의 마이크로아키텍처 자료와 Intel 최적화 매뉴얼을 기준으로 합니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「CPU의 대략적 구조」, 「μops와 port (port pressure,DSB,LSD,fusion,AGU)」, 「if 문 결과를 CPU가 예측한다고? (Branch Prediction)」, 「두 배 더 빠른 퀵정렬 구현 방법」, 「캐시 메모리는 프로그래머가 제어하지 않는지 궁금한다.」, 「컴퓨터 동작 과정 한눈에 보기」를 바탕으로 재구성한 노트다. 세부 수치는 Agner Fog의 마이크로아키텍처 자료와 Intel 최적화 매뉴얼을 기준으로 한다.
 
 ## ISA와 마이크로아키텍처
 

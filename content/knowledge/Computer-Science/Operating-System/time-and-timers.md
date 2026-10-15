@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/49da4c70a23844dabc4e6a6ba4aca5f6", "https://man7.org/linux/man-pages/man2/clock_gettime.2.html", "https://man7.org/linux/man-pages/man7/time.7.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] Time의 종류와 Alarm」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] Time의 종류와 Alarm」을 바탕으로 재구성한 노트다.
 
 ## 세 가지 시간
 

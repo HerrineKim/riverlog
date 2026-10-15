@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://riverkim.kr/204", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a"]
 ---
 
-> 「세 가지 핵심 주제」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] 개요 - 3가지 이야기」를 바탕으로 보강했습니다.
+> 「세 가지 핵심 주제」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] 개요 - 3가지 이야기」를 바탕으로 보강했다.
 
 운영체제(Operating System)는 컴퓨터 하드웨어 바로 위에 설치되어 사용자·응용 프로그램과 하드웨어를 연결하는 소프트웨어 계층이다. 사용자에게는 컴퓨터를 편하게 쓸 수 있는 환경을, 컴퓨터 입장에서는 한정된 자원을 효율적으로 나눠 주는 **자원 할당자** 역할을 한다.
 
@@ -97,7 +97,7 @@ sources: ["https://riverkim.kr/204", "https://80000coding.notion.site/aaeb2710ba
 
 - **MS-DOS**: 1981년 IBM PC용. 단일 사용자, 메모리 관리 한계(640KB).
 - **MS Windows**: GUI 기반 다중 작업 OS. Plug and Play(장치를 연결하면 별도 설정 없이 바로 사용), 풍부한 소프트웨어 생태계.
-- **UNIX**: 벨 연구소에서 개발. 코드 대부분이 C로 작성되어 **이식성**이 높고, 커널이 작으며 확장이 쉽다. System V, BSD, Solaris 등 여러 계열이 있고 macOS·iOS도 유닉스 계열이다.
+- **UNIX**: 벨 연구소에서 개발했고 C로 다시 작성되어 이식성이 높다. 단일형 커널이며 System V, BSD 계열로 갈라졌고 macOS·iOS도 유닉스 계열이다([[c-history-and-standards|C의 역사와 표준]]).
 - **Linux**: 유닉스와 기능적으로 비슷한 Unix-like OS지만 유닉스 코드에서 파생된 것은 아니다. 엄밀히는 커널 이름이고, 실제로 쓰는 것은 배포판이다([[linux-distributions|리눅스 배포판과 패키지 관리]]).
 - **임베디드·소형 기기용**: 예전에는 PalmOS, Windows CE가 대표적이었지만 둘 다 단종되었다. 지금은 스마트폰의 Android·iOS, 마이크로컨트롤러용 FreeRTOS·Zephyr 같은 실시간 OS, 센서 네트워크용 TinyOS 등이 쓰인다.
 

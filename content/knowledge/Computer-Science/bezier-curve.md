@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/5d058f269b7f46feac8b46d33eab5ac2"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「포토샵에서 곡선을 그리는 방법, Bezier Curve」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「포토샵에서 곡선을 그리는 방법, Bezier Curve」를 바탕으로 재구성한 노트다.
 
 ## 베지어 곡선이란
 

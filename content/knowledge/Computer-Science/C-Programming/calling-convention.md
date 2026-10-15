@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/46f94402f7a444ab8b18dae303c104c2", "https://80000coding.notion.site/dd099860360f4902bef36a96730076b2", "https://80000coding.notion.site/96e4431d38784b17a079004ebe3cbb81", "https://80000coding.notion.site/2dba73d25a2c4f81ba62452c15575272", "https://80000coding.notion.site/4f84a0f3f7f3424d83e88d1132664476", "https://en.wikipedia.org/wiki/X86_calling_conventions"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C] 가변인자와 호출규약」, 「[C] 스택의 방향을 판단하는 코드 작성하기」, 「[C] 재귀함수와 꼬리 재귀함수」, 「심플한 어셈블리 분석하기」, 「컴파일만하면 다 해주는게 아니다.?! (어셈블러 찍먹)」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C] 가변인자와 호출규약」, 「[C] 스택의 방향을 판단하는 코드 작성하기」, 「[C] 재귀함수와 꼬리 재귀함수」, 「심플한 어셈블리 분석하기」, 「컴파일만하면 다 해주는게 아니다.?! (어셈블러 찍먹)」을 바탕으로 재구성한 노트다.
 
 ## 스택 프레임
 

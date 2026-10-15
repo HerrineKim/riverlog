@@ -8,8 +8,8 @@ date: "2026-10-13"
 sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishket.com/magazine/detail/1862/", "https://www.ssl.com/article/ssl-certificate-validity-changes-what-you-need-to-know/", "https://www.encryptionconsulting.com/x25519mlkem768-tls-deployment-guide/", "https://howhttps.works/"]
 ---
 
-> 핸드셰이크·HSTS 부분은 테크유람의 요즘IT 연재 「[안전한 웹을 위해 HTTPS 이해하기 ①HTTPS의 작동 원리](https://yozm.wishket.com/magazine/detail/1852/)」·「[②HTTPS를 강제하는 HSTS 기술](https://yozm.wishket.com/magazine/detail/1862/)」(2023.01)을 요약·재구성해 보강했습니다.
-> SSL·TLS 역사와 인증서 체인·검증 수준 부분은 DNSimple의 만화 「[How HTTPS Works](https://howhttps.works/)」(5화 연재)를 바탕으로 보강했습니다.
+> 핸드셰이크·HSTS 부분은 테크유람의 요즘IT 연재 「[안전한 웹을 위해 HTTPS 이해하기 ①HTTPS의 작동 원리](https://yozm.wishket.com/magazine/detail/1852/)」·「[②HTTPS를 강제하는 HSTS 기술](https://yozm.wishket.com/magazine/detail/1862/)」(2023.01)을 요약·재구성해 보강했다.
+> SSL·TLS 역사와 인증서 체인·검증 수준 부분은 DNSimple의 만화 「[How HTTPS Works](https://howhttps.works/)」(5화 연재)를 바탕으로 보강했다.
 
 ## HTTPS란
 

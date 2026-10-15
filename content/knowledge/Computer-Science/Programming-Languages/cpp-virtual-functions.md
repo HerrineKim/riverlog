@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/7e1085b337114dd2aeb657ac2b4fec16", "https://isocpp.org/wiki/faq/strange-inheritance#calling-virtuals-from-ctors"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「소멸자에서 가상함수를 호출하면 생기는 에러」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「소멸자에서 가상함수를 호출하면 생기는 에러」를 바탕으로 재구성한 노트다.
 
 ## 가상 함수란
 

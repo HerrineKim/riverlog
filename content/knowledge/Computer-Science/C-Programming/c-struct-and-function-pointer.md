@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/65cbd691258f411289c7305fd6b30922", "https://80000coding.notion.site/892137b4b3b44cf180f1f04ed7a7eed2", "https://80000coding.notion.site/107bc2ff145e427b9bd076b015908916"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「C에서 시작하는 객체생활.」, 「[C] 구조체 개념 정리 및 연결 리스트 구현」, 「atexit을 활용해 누수 확인하기」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「C에서 시작하는 객체생활.」, 「[C] 구조체 개념 정리 및 연결 리스트 구현」, 「atexit을 활용해 누수 확인하기」를 바탕으로 재구성한 노트다.
 
 ## 구조체
 

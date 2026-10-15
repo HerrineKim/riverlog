@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/535cc7e502fe461da464145cd734abea", "https://80000coding.notion.site/31f3b39714834a759d88c99284e7f3ca", "https://80000coding.notion.site/4382416262554994a32b0393c8b01800", "https://80000coding.notion.site/30af7372f69240ec8eb8cd6813f4775f", "https://www.bell-labs.com/usr/dmr/www/chist.html", "https://www.iso.org/standard/82075.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「기초 중의 기초 - C언어의 유래, 표준화」, 「80년대 C언어는 어땠을까?」, 「어차피 char로 해석할건데 왜 int형 매개변수로 받을까? (ft. memset())」, 「Unix 연대기」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「기초 중의 기초 - C언어의 유래, 표준화」, 「80년대 C언어는 어땠을까?」, 「어차피 char로 해석할건데 왜 int형 매개변수로 받을까? (ft. memset())」, 「Unix 연대기」를 바탕으로 재구성한 노트다.
 
 ## 유닉스를 위해 태어난 언어
 

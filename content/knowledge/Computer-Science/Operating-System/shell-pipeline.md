@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/e416ec1f544444ac90afa1a45d95d448", "https://80000coding.notion.site/5b2650763f64428f80675deacc9b5b24", "https://www.gnu.org/software/bash/manual/bash.html", "https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「다사다난했던 pipex 여정」, 「The Hitchhiker's Guide to the BIGSHELL」을 바탕으로 재구성한 노트입니다. 셸 문법의 기준은 POSIX Shell Command Language와 GNU Bash 매뉴얼입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「다사다난했던 pipex 여정」, 「The Hitchhiker's Guide to the BIGSHELL」을 바탕으로 재구성한 노트다. 셸 문법의 기준은 POSIX Shell Command Language와 GNU Bash 매뉴얼이다.
 
 ## 셸은 무엇을 하는 프로그램인가
 

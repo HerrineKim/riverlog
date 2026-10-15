@@ -4,6 +4,7 @@ concept: "Software Testing"
 summary: "테스트 원리, V-모델의 테스트 레벨, 블랙박스·화이트박스 기법, 테스트 오라클, 통합 테스트와 결함 관리 정리."
 tags: ["certificate", "testing", "software-engineering"]
 source: notion
+date: "2026-10-12"
 ---
 
 테스트는 결함을 찾아 품질을 확인하는 활동이다. 시험에서는 "언제(테스트 레벨), 어떻게(블랙박스·화이트박스 기법), 무엇과 비교해서(오라클), 무엇으로(하네스·자동화 도구)" 테스트하는지를 반복해서 묻는다.

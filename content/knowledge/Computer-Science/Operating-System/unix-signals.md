@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/a70aa8cc081c4918a996f83a51299f73", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/49da4c70a23844dabc4e6a6ba4aca5f6", "https://man7.org/linux/man-pages/man7/signal.7.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「minitalk 에서 컴퓨터 통신 맛보기」, 「exit() atexit() _exit() 뭐가 다른지 설명할 수 있어?」, 「[운영체제] Time의 종류와 Alarm」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「minitalk 에서 컴퓨터 통신 맛보기」, 「exit() atexit() _exit() 뭐가 다른지 설명할 수 있어?」, 「[운영체제] Time의 종류와 Alarm」을 바탕으로 재구성한 노트다.
 
 ## 시그널이란
 
@@ -91,6 +91,13 @@ sigaction(SIGUSR1, &sa, NULL);
 | 부모가 먼저 죽음 | 고아(orphan)가 되어 init(PID 1)이나 subreaper가 입양해 거둠 | 셸·컨테이너의 PID 1은 반드시 자식을 거둬야 한다 |
 
 `SIGCHLD`는 합쳐질 수 있으므로 핸들러에서 한 번만 `waitpid`하면 자식을 놓친다. 위처럼 반복해서 거둔다. `SIGCHLD`를 `SIG_IGN`으로 두면 커널이 자식을 자동으로 거둔다(대신 종료 코드를 받을 수 없다).
+
+`waitpid(pid, &status, options)`는 거둘 자식을 고르고(`-1`이면 아무나), `WNOHANG`이면 기다리지 않고 바로 돌아온다. 종료 상태는 정수를 직접 비트 연산하지 말고 매크로로 읽는다.
+
+| 매크로 | 참일 때 함께 읽는 값 |
+| --- | --- |
+| `WIFEXITED(status)` | `WEXITSTATUS(status)`: `exit()`에 넘긴 값의 **하위 8비트**(0~255) |
+| `WIFSIGNALED(status)` | `WTERMSIG(status)`: 프로세스를 죽인 시그널 번호 |
 
 ## 시그널로 통신하기의 한계
 

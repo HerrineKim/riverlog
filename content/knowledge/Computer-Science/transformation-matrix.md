@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/91635ca98c204debb1d5b667b4ba92e6"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「행렬 연산과 물체의 이동」을 바탕으로 재구성한 노트입니다. 원 자료는 UC Davis 컴퓨터 그래픽스 강의 「Moving Objects in Space」입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「행렬 연산과 물체의 이동」을 바탕으로 재구성한 노트다. 원 자료는 UC Davis 컴퓨터 그래픽스 강의 「Moving Objects in Space」이다.
 
 ## 왜 행렬인가
 

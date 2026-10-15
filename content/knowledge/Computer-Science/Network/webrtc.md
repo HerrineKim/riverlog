@@ -4,6 +4,7 @@ concept: "WebRTC"
 summary: "브라우저와 앱이 서버를 거치지 않고 오디오·비디오·데이터를 실시간으로 주고받게 하는 WebRTC의 API, 시그널링, ICE/STUN/TURN, 연결 흐름."
 tags: ["network", "webrtc", "javascript", "p2p", "realtime"]
 source: til
+date: "2026-10-13"
 ---
 
 WebRTC(Web Real-Time Communication)는 웹 브라우저와 네이티브 앱이 **P2P(peer-to-peer)** 로 오디오, 비디오, 임의의 데이터를 실시간으로 주고받게 해 주는 오픈 소스 기술이다. 플러그인 없이 화상 통화나 파일 공유를 구현할 수 있다. 다만 "P2P"라고 해도 연결을 맺기까지는 몇 가지 서버의 도움이 필요하다.

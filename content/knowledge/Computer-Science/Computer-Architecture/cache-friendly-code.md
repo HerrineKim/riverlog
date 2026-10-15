@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/10a0a4524e46409b83a73ccd65e432a1", "https://80000coding.notion.site/551ed68537b2480caaa38f4996e26c4f", "https://80000coding.notion.site/ed9d632385a240a8a553297ba68db7fd", "https://80000coding.notion.site/5f1a4f9f25d14a3b9236e6d6cc9f8bb8", "https://80000coding.notion.site/4805f6aca90f440797c337f3a939d4fd", "https://80000coding.notion.site/f6cc395bb7834e8f9a117a7172a15bc6", "https://80000coding.notion.site/0fb3911bd066455e9a65d61b7b6671c4"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「캐시 메모리는 프로그래머가 제어하지 않는지 궁금합니다.」, 「SIMD Non-temporal Hint (w/ LFB,BUS,DMA)」, 「Cache Coherence Bottleneck (false sharing)」, 「배열 vs 연결리스트」, 「bool은 자료형이 뭘까」, 「DB구현에서 왜 Memory Mapped File을 안쓸까」, 「CPP09 시간 측정 노이즈 제거하기」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「캐시 메모리는 프로그래머가 제어하지 않는지 궁금한다.」, 「SIMD Non-temporal Hint (w/ LFB,BUS,DMA)」, 「Cache Coherence Bottleneck (false sharing)」, 「배열 vs 연결리스트」, 「bool은 자료형이 뭘까」, 「DB구현에서 왜 Memory Mapped File을 안쓸까」, 「CPP09 시간 측정 노이즈 제거하기」를 바탕으로 재구성한 노트다.
 
 캐시의 매핑 방식과 쓰기 정책 같은 하드웨어 구조는 [[cache-and-virtual-memory|캐시 메모리와 MMU]]에 있다. 이 노트는 **코드를 쓰는 쪽에서** 캐시를 어떻게 다뤄야 하는지를 다룬다.
 

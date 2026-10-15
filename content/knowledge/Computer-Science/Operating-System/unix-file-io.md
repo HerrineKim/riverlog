@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/d45aa46eb8e44cb6b21bbf0e66b36cfb", "https://80000coding.notion.site/b2ce62a9502c408b9a76262263a3b8b6", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/f6cc395bb7834e8f9a117a7172a15bc6", "https://80000coding.notion.site/340d53d7bfb54f8b9df0d9acab3002a3", "https://80000coding.notion.site/44f89332af544b1e9fe25d9b6e76f1e2", "https://80000coding.notion.site/10981a9a178f440e98bfcba1d9c90bb6", "https://80000coding.notion.site/f217ea68a2da4e9da1f503e66f0b705e"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] File I/O」, 「파일 디스크립터(file descriptor)」, 「exit() atexit() _exit() 뭐가 다른지 설명할 수 있어?」, 「DB구현에서 왜 Memory Mapped File을 안쓸까」, 「파일 입출력: read()」, 「리눅스가 파일을 다루는 방식」, 「아니 그래서 printf 버퍼 관리가 뭔데…!!」, 「libft, 깨고 나니 보이는 것들」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] File I/O」, 「파일 디스크립터(file descriptor)」, 「exit() atexit() _exit() 뭐가 다른지 설명할 수 있어?」, 「DB구현에서 왜 Memory Mapped File을 안쓸까」, 「파일 입출력: read()」, 「리눅스가 파일을 다루는 방식」, 「아니 그래서 printf 버퍼 관리가 뭔데…!!」, 「libft, 깨고 나니 보이는 것들」을 바탕으로 재구성한 노트다.
 
 ## 파일 디스크립터란
 

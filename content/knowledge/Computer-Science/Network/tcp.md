@@ -4,6 +4,7 @@ concept: "TCP"
 summary: "신뢰성 있는 연결 지향 프로토콜 TCP의 헤더와 플래그, 3-way handshake, 순서·확인 번호 규칙, 연결 상태 전이."
 tags: ["network", "tcp", "transport-layer", "handshake"]
 source: notion
+date: "2026-10-12"
 ---
 
 TCP(Transmission Control Protocol)는 서로 다른 호스트의 프로그램이 데이터를 **안정적으로, 순서대로, 오류 없이** 주고받게 해 주는 전송 계층 프로토콜이다. 그 대가로 연결 수립과 확인 응답 과정이 필요해 UDP보다 느리다.

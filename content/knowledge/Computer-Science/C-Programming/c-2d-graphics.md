@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/6a5558b813f042ad8f65446c17aebe5b", "https://80000coding.notion.site/d04a212f05cf48f1b323082e03687fd9", "https://80000coding.notion.site/0665e1d6aa93451e884ee5a95123c994", "https://80000coding.notion.site/5eb639715824421b911941099664fa12", "https://80000coding.notion.site/7753186d6cf441d5bd5a580b19b8108a", "https://80000coding.notion.site/63af4ea645f84e1aa4ad3050db0d69eb", "https://80000coding.notion.site/3eff78b192034232b890312b50da1164", "https://80000coding.notion.site/b44522da1efb46aa86f3ec9bbb13f58a", "https://80000coding.notion.site/d4e67cf330a54853afc6213f443bf148", "https://wiki.libsdl.org/SDL3/README-migration"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「SDL 2.0 을 알아보자」 연재(2~6탄), 「FDF - 어떤 걸 배울 수 있을까」 1·2편, 「mlx와 fdf 문제해결 정리」, 「그래픽 과제의 메인은 그래픽이 아니다.(mlx)」를 SDL 공식 문서와 함께 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「SDL 2.0 을 알아보자」 연재(2~6탄), 「FDF - 어떤 걸 배울 수 있을까」 1·2편, 「mlx와 fdf 문제해결 정리」, 「그래픽 과제의 메인은 그래픽이 아니다.(mlx)」를 SDL 공식 문서와 함께 재구성한 노트다.
 
 ## 그래픽 라이브러리의 공통 구조
 
@@ -92,7 +92,7 @@ int get_r(unsigned int c) { return (c >> 16) & 0xFF; }
 | --- | --- | --- |
 | 브레젠험 직선(Bresenham's line) | 두 점 사이를 픽셀로 잇기 | 변화량이 큰 축을 1씩 늘리면서, 누적 오차가 절반을 넘을 때만 다른 축을 1 옮긴다. **정수 덧셈과 비교만** 쓴다 |
 | 선형 보간(linear interpolation) | 두 색 사이의 그라데이션 | 진행 비율 `t`(0~1)에 대해 채널마다 `c = c0 + (c1 - c0) × t`. `t`는 변화량이 큰 축 기준으로 구한다 |
-| 회전 변환 | 점을 원점 기준으로 회전 | 2D: `x' = x cosθ − y sinθ`, `y' = x sinθ + y cosθ`. 3D는 x·y·z축 회전 행렬을 차례로 곱한다 |
+| 회전 변환 | 점을 원점 기준으로 회전 | 회전 행렬을 곱한다. 2D·3D 행렬과 곱하는 순서는 [[transformation-matrix\|변환 행렬]]에 있다 |
 | 등각 투영(isometric projection) | 3D 격자를 2D 화면에 비스듬히 | `X = (x − y) × cos30°`, `Y = (x + y) × sin30° − z` |
 
 좌표계가 다르다는 점이 자주 버그를 만든다. 화면 좌표는 **y가 아래로 갈수록 커지지만**, 수학의 3D 좌표에서 z(높이)는 위로 갈수록 커진다. 인터넷의 회전 공식을 그대로 썼는데 반대로 돈다면 축 방향이 다른 것이다. 변환은 "맵 좌표 → 확대 → 회전 → 투영 → 화면 중앙으로 이동" 순서로 한 단계씩 적용하면 디버깅이 쉽다. 회전과 투영을 여러 점에 반복 적용하는 계산은 [[c-low-level-optimization|C 저수준 최적화]]의 SIMD로 빠르게 할 수 있다.
@@ -118,4 +118,4 @@ SDL2 자료가 많지만 새 프로젝트는 SDL3를 쓴다. 개념은 같고 �
 - 색은 정수 하나에 비트로 패킹하고, 직선은 브레젠험, 그라데이션은 선형 보간으로 그린다.
 - 좌표계의 축 방향이 다르면 회전·투영이 뒤집힌다. 변환은 단계별로 적용한다.
 
-관련 노트: [[c-low-level-optimization|C 저수준 최적화]], [[gcc-compile-and-link|GCC 컴파일과 링크]], [[c-struct-and-function-pointer|구조체와 함수 포인터]], [[basics-isometric-room|Blender 기초: 아이소메트릭 방]]
+관련 노트: [[c-low-level-optimization|C 저수준 최적화]], [[gcc-compile-and-link|GCC 컴파일과 링크]], [[c-struct-and-function-pointer|구조체와 함수 포인터]], [[Blender|Blender 기초 조작과 모델링]]

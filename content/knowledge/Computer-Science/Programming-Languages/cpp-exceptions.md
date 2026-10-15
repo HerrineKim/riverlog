@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/c622fed6d55849af83f4d03b0314a58c", "https://80000coding.notion.site/9baff667c62d42e69e948fe2a55dbeca", "https://80000coding.notion.site/1b6c77742039492f9744eeb81f44825f", "https://en.cppreference.com/w/cpp/utility/expected", "https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html", "https://llvm.org/docs/ExceptionHandling.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「std::exception 동작원리」, 「exception은 스택과 힙 어디에 할당될까」, 「C++ 에러 코드와 에러 메시지 관리」를 바탕으로 재구성한 노트입니다. 구현 세부는 Itanium C++ ABI 예외 처리 문서를 기준으로 맞췄습니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「std::exception 동작원리」, 「exception은 스택과 힙 어디에 할당될까」, 「C++ 에러 코드와 에러 메시지 관리」를 바탕으로 재구성한 노트다. 구현 세부는 Itanium C++ ABI 예외 처리 문서를 기준으로 맞췄다.
 
 ## throw가 하는 일
 

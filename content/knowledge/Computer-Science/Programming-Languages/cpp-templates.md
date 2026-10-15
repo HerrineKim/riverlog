@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/e4d170fd04df4c2497c48c2a27d9f8d0", "https://80000coding.notion.site/bce4147ecad5436e89b9a46d284bad69", "https://en.cppreference.com/w/cpp/language/templates"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C++] Template 은 무엇일까」, 「[c++] Template Recursion(템플릿 재귀)」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C++] Template 은 무엇일까」, 「[c++] Template Recursion(템플릿 재귀)」를 바탕으로 재구성한 노트다.
 
 ## 템플릿이란
 

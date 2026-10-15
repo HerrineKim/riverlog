@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/5e4cfeac0cae49eab170acdeab86beec", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/705db1daea764875a8b2a971a18b9097", "https://man7.org/linux/man-pages/man7/daemon.7.html", "https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[linux] fork 그만, systemd를 이용해 데몬 생성하기」, 「서버 관리 맛보기」, 「[Born2beRoot] 보너스 서비스로 sendmail 어때요?」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[linux] fork 그만, systemd를 이용해 데몬 생성하기」, 「서버 관리 맛보기」, 「[Born2beRoot] 보너스 서비스로 sendmail 어때요?」를 바탕으로 재구성한 노트다.
 
 ## 데몬이란
 

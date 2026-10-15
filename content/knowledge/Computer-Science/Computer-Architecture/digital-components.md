@@ -4,6 +4,7 @@ concept: "Digital Logic"
 summary: "집적회로, 디코더·인코더, 멀티플렉서, 레지스터, 카운터, RAM/ROM 등 컴퓨터를 이루는 기본 디지털 부품."
 tags: ["computer-architecture", "digital-logic", "register", "memory"]
 source: notion
+date: "2026-10-11"
 ---
 
 CPU와 메모리는 몇 가지 기본 디지털 부품의 조합으로 만들어진다. 각 부품이 "무엇을 입력받아 무엇을 내보내는지"를 알아 두면 이후 CPU 구조와 메모리 구조가 쉽게 읽힌다.

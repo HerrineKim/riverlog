@@ -5,6 +5,7 @@ summary: "CPU가 다루는 데이터 형식별 덧셈·뺄셈 하드웨어 알�
 tags: ["computer-architecture", "arithmetic", "alu", "floating-point"]
 source: notion
 sources: ["https://app.notion.com/p/2910d70658b74418917c89f239c87fd6"]
+date: "2026-10-12"
 ---
 
 CPU의 산술 연산은 데이터가 어떤 형식으로 표현되어 있느냐에 따라 알고리즘이 달라진다. 이 노트는 각 형식에서 덧셈·뺄셈·곱셈·나눗셈을 하드웨어로 어떻게 처리하는지 정리한다. 수의 표현 자체는 [[data-representation|데이터의 표현]]을 참고한다.

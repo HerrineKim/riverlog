@@ -5,6 +5,7 @@ summary: "기본 컴퓨터의 기계어와 어셈블리 언어, 의사 명령어
 tags: ["computer-architecture", "assembly", "assembler", "machine-language"]
 source: notion
 sources: ["https://app.notion.com/p/e8ff6261f12d4093bc741b882bba8f90"]
+date: "2026-10-12"
 ---
 
 컴퓨터는 0과 1로 된 **기계어**만 해석할 수 있다. 사람이 이를 직접 쓰기는 어려우므로 명령어를 기호로 쓰는 **어셈블리 언어**를 만들고, **어셈블러**가 이를 기계어로 번역한다. 여기서는 [[basic-computer-design|기본 컴퓨터]]의 명령어로 간단한 프로그램을 짜 본다.

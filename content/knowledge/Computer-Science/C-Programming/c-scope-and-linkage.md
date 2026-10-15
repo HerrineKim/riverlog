@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/353fe98e21a54b1889f294192257551f", "https://80000coding.notion.site/c5e5094f801e4dc493b45de9a61fdd11", "https://80000coding.notion.site/083f8a82494543658797ac87745289b3", "https://80000coding.notion.site/374b09d2f19a4ccc92dc22b38b73207a", "https://80000coding.notion.site/46b05277e1cd476ca86a36581932b775", "https://en.cppreference.com/w/c/language/scope"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C] Identifier와 Name Space」, 「외부 비노출 함수는 static 함수로 선언하는 것이 '권장'됨」, 「상수(constant)를 직접 정의해 가독성을 높이자」, 「C 코딩 스타일 가이드」 연재를 바탕으로 C 표준 문서와 함께 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C] Identifier와 Name Space」, 「외부 비노출 함수는 static 함수로 선언하는 것이 '권장'됨」, 「상수(constant)를 직접 정의해 가독성을 높이자」, 「C 코딩 스타일 가이드」 연재를 바탕으로 C 표준 문서와 함께 재구성한 노트다.
 
 ## 식별자
 

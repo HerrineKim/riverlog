@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/5d5246876b2d45ffb8416ac7e68aa746", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/82228175c0df477992b7b23e8afb8f16", "https://www.redhat.com/en/topics/linux/what-is-centos-stream"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「CentOS의 현재」, 「서버 관리 맛보기」, 「write는 라이브러리 함수가 아니다? 커널과 시스템 콜에 대해」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「CentOS의 현재」, 「서버 관리 맛보기」, 「write는 라이브러리 함수가 아니다? 커널과 시스템 콜에 대해」를 바탕으로 재구성한 노트다.
 
 ## 커널과 배포판
 

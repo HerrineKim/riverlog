@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/a7082b282de545e0aab7d71452450a3b", "https://80000coding.notion.site/69e744e6ef41453fad79079f2655c00c", "https://80000coding.notion.site/4eaf13713faa4c11a983902bd6d451a2", "https://80000coding.notion.site/d835a99d4d264eadb46df105ed769d99", "https://80000coding.notion.site/694fc8c704aa41ea98614f4e7eac7f6c", "https://80000coding.notion.site/c2fc3384860f4f5795cb6b8acc208c12", "https://80000coding.notion.site/673a9e7d18c24c8ab0e1fb145a954ca3", "https://80000coding.notion.site/b799e831198f42719ce64d194fe3ff32", "https://80000coding.notion.site/f217ea68a2da4e9da1f503e66f0b705e"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「char *str = "abc"와 char str[] = "abc"의 차이!」, 「포인터와 배열의 차이(?)」, 「const char * vs char * const」, 「함수 내에서 외부 포인터에 동적할당하기」, 「malloc, free 그리고 dangling pointer가 생기는 이유」, 「C/C++의 동적 메모리 할당과 해제」, 「정적 할당에 대한 오해」, 「libft ft_lstdelone 함수에서 next 는 free 하면 안되는 이유?」, 「libft, 깨고 나니 보이는 것들」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「char *str = "abc"와 char str[] = "abc"의 차이!」, 「포인터와 배열의 차이(?)」, 「const char * vs char * const」, 「함수 내에서 외부 포인터에 동적할당하기」, 「malloc, free 그리고 dangling pointer가 생기는 이유」, 「C/C++의 동적 메모리 할당과 해제」, 「정적 할당에 대한 오해」, 「libft ft_lstdelone 함수에서 next 는 free 하면 안되는 이유?」, 「libft, 깨고 나니 보이는 것들」을 바탕으로 재구성한 노트다.
 
 주소·역참조·`malloc` 같은 기초는 [[pointers-and-memory|포인터와 메모리]]에 있다. 이 노트는 그다음 단계에서 버그를 만드는 지점만 다룬다.
 

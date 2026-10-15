@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/6c7136862b56453085d30f48cf702ba4", "https://kotlinlang.org/docs/delegation.html", "https://kotlinlang.org/docs/delegated-properties.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Kotlin] by 키워드」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Kotlin] by 키워드」를 바탕으로 재구성한 노트다.
 
 ## 위임 패턴이란
 

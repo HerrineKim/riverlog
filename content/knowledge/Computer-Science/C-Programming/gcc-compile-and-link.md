@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/d5fa7c87192f4c6895ebaa4af5b9dbf5", "https://80000coding.notion.site/a45f1a4841e9455081208ae9ca3b54a1", "https://80000coding.notion.site/4c67b8c953df4afa8f4f9fe0094a4a6e", "https://80000coding.notion.site/4ff0a20c0d144de293102d73d3a0eb6e", "https://80000coding.notion.site/9fc02b4a89ef4d83b862badad55949a6", "https://80000coding.notion.site/4f84a0f3f7f3424d83e88d1132664476", "https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「GCC 컴파일러 개념 정리」, 「Libft 과제에서 만든 라이브러리(libft.a)를 사용해보자」, 「공유 라이브러리를 링크하는 방법」, 「헤더 중복 방지 기법 세 가지(#pragma once)」, 「POSIX cc, C 컴파일러」, 「컴파일만하면 다 해주는게 아니다.?! (어셈블러 찍먹)」을 GCC 공식 문서와 함께 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「GCC 컴파일러 개념 정리」, 「Libft 과제에서 만든 라이브러리(libft.a)를 사용해보자」, 「공유 라이브러리를 링크하는 방법」, 「헤더 중복 방지 기법 세 가지(#pragma once)」, 「POSIX cc, C 컴파일러」, 「컴파일만하면 다 해주는게 아니다.?! (어셈블러 찍먹)」을 GCC 공식 문서와 함께 재구성한 노트다.
 
 ## 컴파일러 드라이버
 
@@ -89,7 +89,7 @@ cc main.o -lft -lftprintf   # 실패: ft를 지나간 뒤에야 ftprintf가 ft�
 | 환경 변수 | `LD_LIBRARY_PATH`(리눅스), `DYLD_LIBRARY_PATH`(macOS, SIP 보호 대상에선 무시됨). 임시 확인용 |
 | 시스템 경로에 설치 | `/usr/local/lib`에 두고 리눅스는 `ldconfig` |
 
-`ldd app`(리눅스)이나 `otool -L app`(macOS)으로 실행 파일이 어떤 공유 라이브러리를 요구하는지 확인한다. 동적 링킹이 메모리에서 어떻게 공유되는지는 [[memory-management|메모리 관리]]에 있다.
+`ldd app`(리눅스)이나 `otool -L app`(macOS)으로 실행 파일이 어떤 공유 라이브러리를 요구하는지 확인한다. 동적 링킹된 함수는 호출 자리에 작은 **stub**(ELF에서는 PLT 항목)을 거친다. 처음 호출될 때 실제 주소를 찾아 GOT에 채우고, 이후 호출은 바로 간다(지연 바인딩). 라이브러리 코드 페이지는 물리 메모리에 한 벌만 올라가 여러 프로세스가 공유한다([[memory-management|메모리 관리]]).
 
 ## 헤더 중복 포함 방지
 

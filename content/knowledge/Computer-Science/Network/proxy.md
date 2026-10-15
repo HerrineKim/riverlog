@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/8f7f756919304866b8d7d8413d663406", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Proxy, Front Proxy, Reverse Proxy란?」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Proxy, Front Proxy, Reverse Proxy란?」을 바탕으로 재구성한 노트다.
 
 ## 프록시란
 

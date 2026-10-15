@@ -5,6 +5,7 @@ summary: "디지털 컴퓨터의 구성, 논리 게이트와 부울 대수, 카�
 tags: ["computer-architecture", "digital-logic", "boolean-algebra", "flip-flop"]
 source: notion
 sources: ["https://app.notion.com/p/48db9c6264fa4deabd5e3760c9f08e54"]
+date: "2026-10-13"
 ---
 
 컴퓨터의 모든 부품은 결국 0과 1을 다루는 논리 회로로 만들어진다. 논리 게이트로 덧셈 회로를 만들고, 플립플롭으로 값을 기억하는 회로를 만들면 레지스터·메모리·CPU로 확장할 수 있다. 여기서 만든 회로가 [[digital-components|디지털 부품]]의 재료가 된다.

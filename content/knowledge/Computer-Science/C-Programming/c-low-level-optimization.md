@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/c4f3f1f21573477ebcc1a3f5caa960b6", "https://80000coding.notion.site/7c87e26aaaa545b5af38bd60968a2832", "https://80000coding.notion.site/4beea92ae6944b5c932db53258d40817", "https://80000coding.notion.site/3ba610f3ffdb4b16bb1c71a80c08525f", "https://80000coding.notion.site/cafa9acc2af849fd8e2a855d1b71b394", "https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「if-else문과 switch문의 차이 (LUT)」, 「정적 분기예측 컴파일러 힌트」, 「memset() 최적화」, 「SIMD로 행렬연산 10배이상 빠르게 구현하기(SSE, AVX)」, 「이해하기 쉬운 고정소수점 샘플」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「if-else문과 switch문의 차이 (LUT)」, 「정적 분기예측 컴파일러 힌트」, 「memset() 최적화」, 「SIMD로 행렬연산 10배이상 빠르게 구현하기(SSE, AVX)」, 「이해하기 쉬운 고정소수점 샘플」을 바탕으로 재구성한 노트다.
 
 ## 원칙: 측정하고, 컴파일러를 먼저 믿는다
 

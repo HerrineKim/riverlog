@@ -4,6 +4,7 @@ concept: "Normalization"
 summary: "중복으로 생기는 이상 현상을 없애는 정규화 단계(1NF~5NF)와, 성능을 위해 일부러 정규화를 깨는 반정규화."
 tags: ["database", "normalization", "certificate"]
 source: notion
+date: "2026-10-11"
 ---
 
 정규화는 테이블의 중복을 줄여 데이터를 넣고 고치고 지울 때 생기는 **이상 현상(anomaly)** 을 없애는 과정이다. 반대로 조회 성능을 위해 정규화를 의도적으로 되돌리는 것이 반정규화다. 둘은 "정합성 vs 성능"의 트레이드오프다.

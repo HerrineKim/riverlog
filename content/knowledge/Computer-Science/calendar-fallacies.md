@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://yourcalendricalfallacyis.com/"]
 ---
 
-> Dave DeLong의 「[Your Calendrical Fallacy Is…](https://yourcalendricalfallacyis.com/)」를 바탕으로 재구성한 노트입니다.
+> Dave DeLong의 「[Your Calendrical Fallacy Is…](https://yourcalendricalfallacyis.com/)」를 바탕으로 재구성한 노트다.
 
 ## 왜 착각이 생기나
 

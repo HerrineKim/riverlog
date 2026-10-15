@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/8b5f8a97fe134adba47fbbb3b00969d5", "https://80000coding.notion.site/bb5a3d33a6f54b44afa95d008afd28d5", "https://80000coding.notion.site/9828b3b803464ac5aa7434a944de9489", "https://80000coding.notion.site/b553047b42f640669f30f4aef0b0503d", "https://80000coding.notion.site/1c295f7bcfbc41df8e8a23a66f6266d3", "https://80000coding.notion.site/237e8818beeb45f6ac714084ca477e55", "https://80000coding.notion.site/de20a702d17043b287545c861ab15457", "https://80000coding.notion.site/a8702bfc6af7405195b549a24411f843", "https://80000coding.notion.site/6172b58680564cb18c4f2179009aef3f", "https://80000coding.notion.site/d25159318abd4e7caeeee3cc8023008d", "https://80000coding.notion.site/d73b19bf218645fca662b2a06e2887bd", "https://80000coding.notion.site/41ab07b7d40f4cc5b45e95320174fb4c", "https://80000coding.notion.site/38ce31eb01e444f78ae1ec9f1802b7f8", "https://80000coding.notion.site/5196284cbb1c4cf095aa6da1046840b3", "https://80000coding.notion.site/bac2c93a62794b3d8ad3b9a84a6ed709", "https://www.gnu.org/software/make/manual/make.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「한글로 Makefile 가볍게 읽어보기」 연재, 「Makefile 개념 및 사용법 정리」, 「Makefile 의존성 처리」, 「Makefile에 헤더 파일의 의존성 정보를 자동으로 반영시키기」, 「Makefile 리링크(re-link)를 방지하는 법」, 「`re: fclean all`을 쓰지 마세요!」, 「Makefile 없는 C/C++ 개발환경」 등을 GNU make 매뉴얼과 함께 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「한글로 Makefile 가볍게 읽어보기」 연재, 「Makefile 개념 및 사용법 정리」, 「Makefile 의존성 처리」, 「Makefile에 헤더 파일의 의존성 정보를 자동으로 반영시키기」, 「Makefile 리링크(re-link)를 방지하는 법」, 「`re: fclean all`을 쓰지 마세요!」, 「Makefile 없는 C/C++ 개발환경」 등을 GNU make 매뉴얼과 함께 재구성한 노트다.
 
 ## make란
 

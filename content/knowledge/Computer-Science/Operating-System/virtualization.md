@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/7638f02b1afe4ec697def740fb87ddf5", "https://80000coding.notion.site/a6441099745c4aff8cd50a5ac36c7238", "https://80000coding.notion.site/506a40f3aed7484aa461027f014aff35", "https://80000coding.notion.site/369d9cf9c1a4418f8efb4943ea952da4", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/6020ebc86a2c468e9440a5686272a925"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「웅성웅성.. 뭔 가상화 종류가 이렇게 많아….」, 「가상 머신(Virtual Machine, VM)이란?」, 「가상 머신(VM)과 컨테이너」, 「여러분은 인터넷에 있는 파일을 의심해본 적이 있나요?!!」, 「서버 관리 맛보기」, 「m1, m2 Mac 에서 VMware를 통해 Ubuntu 설치」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「웅성웅성.. 뭔 가상화 종류가 이렇게 많아….」, 「가상 머신(Virtual Machine, VM)이란?」, 「가상 머신(VM)과 컨테이너」, 「여러분은 인터넷에 있는 파일을 의심해본 적이 있나요?!!」, 「서버 관리 맛보기」, 「m1, m2 Mac 에서 VMware를 통해 Ubuntu 설치」를 바탕으로 재구성한 노트다.
 
 ## 가상화란
 

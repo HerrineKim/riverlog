@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/475d966a41884db380adcb3755a995b6", "https://80000coding.notion.site/82ab87b33eec4ea097349c918ac29301", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/369d9cf9c1a4418f8efb4943ea952da4", "https://www.sudo.ws/docs/man/sudoers.man/"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「AppArmor를 좀 더 알아보자!」, 「sudo를 비밀번호 없이 실행해보자」, 「서버 관리 맛보기」, 「여러분은 인터넷에 있는 파일을 의심해본 적이 있나요?!!」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「AppArmor를 좀 더 알아보자!」, 「sudo를 비밀번호 없이 실행해보자」, 「서버 관리 맛보기」, 「여러분은 인터넷에 있는 파일을 의심해본 적이 있나요?!!」를 바탕으로 재구성한 노트다.
 
 ## 두 가지 접근 제어 모델
 

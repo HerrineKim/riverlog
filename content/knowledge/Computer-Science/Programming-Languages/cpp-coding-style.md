@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/48994d585d6846399982e7d31c61e66f", "https://80000coding.notion.site/bd5c80d792ce4387ae74b6d35ad77635", "https://clang.llvm.org/docs/ClangFormatStyleOptions.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「IRC를 위한 C++ 코딩 컨벤션」, 「VS Code에서 C++ 포매터 사용하기」를 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「IRC를 위한 C++ 코딩 컨벤션」, 「VS Code에서 C++ 포매터 사용하기」를 바탕으로 재구성한 노트다.
 
 ## 코딩 표준이란
 
