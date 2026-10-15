@@ -4,6 +4,7 @@ concept: "MongoDB"
 summary: "문서형 NoSQL인 MongoDB를 Atlas 클라우드에 만들고 접속 설정을 한 뒤, 기본 CRUD 명령과 Mongoose로 다루는 방법."
 tags: ["mongodb", "nosql", "database", "backend"]
 source: til
+date: "2026-10-13"
 ---
 
 MongoDB는 데이터를 JSON과 비슷한 **문서(document, 내부적으로 BSON)** 단위로 저장하는 NoSQL DB다. 문서들이 모여 **컬렉션(collection)을**, 컬렉션들이 모여 **데이터베이스**를 이룬다. RDB에 대응하면 테이블 ≈ 컬렉션, 행 ≈ 문서, 열 ≈ 필드다.

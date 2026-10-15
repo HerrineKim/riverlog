@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://riverkim.kr/254"]
 ---
 
-> riverkim.kr에 쓴 글을 다시 정리한 노트입니다.
+> riverkim.kr에 쓴 글을 다시 정리한 노트다.
 
 ## DB 마이그레이션과 Flyway
 

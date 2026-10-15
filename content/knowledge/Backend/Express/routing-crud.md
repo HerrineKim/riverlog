@@ -22,21 +22,10 @@ npm i -D @types/express typescript
 
 ```typescript
 // app.ts
-import express from 'express';
-
-const app = express();          // app: 서버 역할을 하는 express 인스턴스
-const port = 8000;
-
-// GET / 요청이 들어왔을 때의 동작을 정의하는 라우트
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-// 서버 실행
-app.listen(port, () => console.log(`listening on http://localhost:${port}`));
+const app = express();                                // 서버 역할을 하는 인스턴스
+app.get('/', (req, res) => res.send('Hello World!')); // GET / 라우트
+app.listen(8000);
 ```
-
-API는 Postman 같은 HTTP 클라이언트로 GET/POST 요청을 보내 테스트한다.
 
 ## Router로 라우트 분리하기
 
@@ -45,28 +34,13 @@ API는 Postman 같은 HTTP 클라이언트로 GET/POST 요청을 보내 테스�
 ```text
 src/
 ├── app.ts
-├── app.model.ts        # 목업 데이터와 타입
+├── app.model.ts        # 목업 데이터(CatType[])
 └── cats/
     ├── cats.route.ts   # 라우팅
     └── cats.service.ts # 비즈니스 로직 (→ 서비스 패턴)
 ```
 
-```typescript
-// app.model.ts
-export type CatType = {
-  id: string;
-  name: string;
-  age: number;
-  species: string;
-  isCute: boolean;
-  friends: string[];
-};
-
-export const Cat: CatType[] = [
-  { id: 'fsduifh', name: 'blue', age: 8, species: 'Russian Blue', isCute: true, friends: [] },
-  { id: 'iohf2309q4hr', name: 'som', age: 4, species: 'Sphynx cat', isCute: true, friends: [] },
-];
-```
+데이터는 `CatType = { id, name, age, species, isCute, friends }` 배열을 메모리에 둔 목업이다.
 
 ```typescript
 // app.ts
@@ -81,58 +55,39 @@ app.listen(8000);
 
 ## CRUD 구현
 
-응답은 `{ success, data }` / `{ success, error }` 형태로 통일하고, 성공·실패에 맞는 상태 코드를 `res.status()`로 지정한다.
+응답은 `{ success, data }` / `{ success, error }` 형태로 통일하고, 상태 코드는 `res.status()`로 지정한다.
+
+| 메서드 | 경로 | 처리 | 상태 코드 |
+| --- | --- | --- | --- |
+| GET | `/cats` | 전체 목록 반환 | 200 |
+| GET | `/cats/:id` | `find`로 한 건 조회 | 200, 없으면 404 |
+| POST | `/cats` | `req.body`를 배열에 `push` | 201 |
+| PUT | `/cats/:id` | `findIndex` 위치를 `req.body`로 통째 교체 | 200, 없으면 404 |
+| PATCH | `/cats/:id` | 기존 값 위에 바뀐 필드만 덮어쓰기 | 200, 없으면 404 |
+| DELETE | `/cats/:id` | `findIndex` 위치를 `splice` | 200, 없으면 404 |
+
+동적 라우팅은 `:id` 자리의 값을 `req.params`로 꺼낸다.
 
 ```typescript
 // cats/cats.route.ts
-import { Router } from 'express';
-import { Cat } from '../app.model';
-
 const router = Router();
 
-// READ 전체 조회
-router.get('/cats', (req, res) => {
-  res.status(200).send({ success: true, data: { cats: Cat } });
-});
-
-// READ 특정 고양이 조회 (동적 라우팅: req.params)
 router.get('/cats/:id', (req, res) => {
   const cat = Cat.find((c) => c.id === req.params.id);
   if (!cat) return res.status(404).send({ success: false, error: 'not found' });
   res.status(200).send({ success: true, data: { cat } });
 });
+```
 
-// CREATE
-router.post('/cats', (req, res) => {
-  Cat.push(req.body);
-  res.status(201).send({ success: true, data: req.body });
-});
+PATCH는 스프레드로 기존 객체와 바디를 합친다. 뒤에 오는 `req.body`의 필드가 앞의 값을 덮어쓴다.
 
-// UPDATE 전체 교체 (PUT)
-router.put('/cats/:id', (req, res) => {
-  const index = Cat.findIndex((c) => c.id === req.params.id);
-  if (index === -1) return res.status(404).send({ success: false, error: 'not found' });
-  Cat[index] = req.body;
-  res.status(200).send({ success: true, data: { cat: Cat[index] } });
-});
-
-// UPDATE 부분 수정 (PATCH)
+```typescript
 router.patch('/cats/:id', (req, res) => {
   const index = Cat.findIndex((c) => c.id === req.params.id);
   if (index === -1) return res.status(404).send({ success: false, error: 'not found' });
-  Cat[index] = { ...Cat[index], ...req.body }; // 기존 값 위에 바뀐 필드만 덮어쓰기
+  Cat[index] = { ...Cat[index], ...req.body };
   res.status(200).send({ success: true, data: { cat: Cat[index] } });
 });
-
-// DELETE
-router.delete('/cats/:id', (req, res) => {
-  const index = Cat.findIndex((c) => c.id === req.params.id);
-  if (index === -1) return res.status(404).send({ success: false, error: 'not found' });
-  Cat.splice(index, 1);
-  res.status(200).send({ success: true });
-});
-
-export default router;
 ```
 
 > 흔한 실수: `forEach((cat) => { cat = body })`는 **콜백의 지역 변수만 바꿀 뿐 배열 원소는 바뀌지 않는다.** `filter()`도 새 배열을 만들 뿐 원본은 그대로다. 위처럼 `findIndex`로 위치를 찾아 직접 대입·`splice`해야 실제로 반영된다. (DB를 붙이면 이 부분은 쿼리로 대체된다.)
@@ -142,6 +97,5 @@ export default router;
 - `app.get/post/put/patch/delete(path, handler)`로 메서드별 라우트를 정의한다.
 - `Router()`로 도메인별 라우트를 분리하고 `app.use(router)`로 연결한다.
 - POST/PUT/PATCH 바디를 읽으려면 `express.json()` 미들웨어가 먼저 등록되어 있어야 한다.
-- 이어서 볼 노트: [미들웨어](Backend/Express/express-middleware), [싱글톤·서비스 패턴](Backend/Express/singleton-service-pattern)
 
-관련 노트: [[rest-api|REST API 설계]], [[http-web-architecture|웹 앱의 요청·응답 구조]]
+관련 노트: [[rest-api|REST API 설계]], [[express-middleware|Express 미들웨어]], [[singleton-service-pattern|싱글톤·서비스 패턴]], [[http-web-architecture|웹 앱의 요청·응답 구조]]

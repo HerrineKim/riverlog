@@ -4,6 +4,7 @@ concept: "Django Auth"
 summary: "django.contrib.auth의 User 모델로 회원가입·로그인을 구현하고, 템플릿에서 현재 사용자 정보를 쓰는 방법."
 tags: ["django", "auth", "security", "python"]
 source: til
+date: "2026-10-12"
 ---
 
 Django는 `django.contrib.auth` 앱으로 사용자 모델, 비밀번호 해싱, 로그인 세션 관리를 기본 제공한다. 직접 구현하지 않고 이 기능을 그대로 쓰는 것이 안전하다.
@@ -66,6 +67,18 @@ if form.is_valid():
 ### 작성자만 수정·삭제
 
 글과 댓글에 작성자(`ForeignKey`)를 두고, update·delete view에서 `request.user == obj.user`일 때만 처리한다. 템플릿에서 같은 조건으로 버튼을 숨기는 것은 편의일 뿐이고, **실제 보안은 view의 검사**다. 작성자 채우기는 [Form과 ModelForm](Backend/Django/forms-modelform)의 `commit=False`를 쓴다.
+
+## 세션과 CSRF를 맡는 미들웨어
+
+미들웨어는 요청이 view에 닿기 전과 응답이 나가기 전에 끼어드는 층이다. 요청은 `settings.MIDDLEWARE`에 등록된 순서대로 미들웨어를 지나 view에 닿고, 응답은 그 역순으로 나간다. 인증과 관련된 것은 셋이다.
+
+| 미들웨어 | 하는 일 |
+| --- | --- |
+| `SessionMiddleware` | 세션 ID 쿠키로 세션을 찾아 `request.session`에 붙인다. 세션 데이터는 DB(`django_session` 테이블)에 있고 브라우저에는 ID만 있다 |
+| `AuthenticationMiddleware` | 세션을 보고 `request.user`에 로그인한 User(없으면 `AnonymousUser`)를 붙인다 |
+| `CsrfViewMiddleware` | POST 같은 변경 요청에 CSRF 토큰이 없거나 틀리면 `403 Forbidden`으로 막는다 |
+
+POST 폼에는 `{% csrf_token %}`을 넣는다. 이 태그는 토큰을 담은 `<input type="hidden">`으로 렌더링된다. CSRF 공격 원리는 [[web-security|웹 보안]]에 있다.
 
 ## 템플릿에서 사용자 정보 쓰기
 

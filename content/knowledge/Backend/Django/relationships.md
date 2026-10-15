@@ -57,25 +57,11 @@ owner.car_set.all()       # 역참조: 소유자의 모든 차 (모델명_set)
 
 M:N은 두 테이블만으로는 표현할 수 없고, 양쪽 id를 짝지어 저장하는 **중개 테이블**이 필요하다.
 
-### 1) 중개 모델을 직접 만들기
-
-```python
-class Book(models.Model):
-    title = models.CharField(max_length=70)
-
-class Author(models.Model):
-    name = models.CharField(max_length=30)
-
-class BookAuthor(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
-```
-
-Book과 BookAuthor가 1:N, Author와 BookAuthor가 1:N이 되어 결과적으로 M:N이 된다. 하지만 조회가 번거롭다.
-
-### 2) `ManyToManyField` — 중개 테이블 자동 생성
-
-추가 정보가 필요 없고 양쪽 id만 있으면 될 때. Django가 중개 테이블(`앱_patient_doctors`)을 **자동으로** 만든다.
+| 방식 | 언제 | 조회 방식 |
+| --- | --- | --- |
+| 중개 모델을 직접 만들기 (FK 두 개) | 쓰지 않는다. 아래 `through`가 같은 일을 더 편하게 한다 | `BookAuthor.objects.filter(book=b)`처럼 중개 모델을 거쳐야 해 번거롭다 |
+| `ManyToManyField` | 양쪽 id만 있으면 될 때. 중개 테이블(`앱_patient_doctors`)을 Django가 자동 생성 | `patient.doctors.all()`, 역참조 `doctor.patients.all()` |
+| `ManyToManyField(through=...)` | 예약 일시처럼 관계 자체에 데이터가 필요할 때 | 위와 같고, 추가 필드는 중개 모델로 조회 |
 
 ```python
 class Doctor(models.Model):
@@ -84,22 +70,15 @@ class Doctor(models.Model):
 class Patient(models.Model):
     name = models.CharField(max_length=10)
     doctors = models.ManyToManyField(Doctor, related_name='patients')
-```
 
-```python
 patient.doctors.add(doctor)     # 관계 추가
 patient.doctors.remove(doctor)  # 관계 제거
-patient.doctors.all()           # 정참조
-doctor.patients.all()           # 역참조 (related_name)
 ```
 
-### 3) `through` — 중개 모델에 추가 정보 저장
-
-예약 일시처럼 관계 자체에 데이터가 필요하면 중개 모델을 직접 만들고 `through`로 지정한다.
+관계에 데이터가 붙으면 중개 모델을 만들고 `through`로 지정한다.
 
 ```python
 class Patient(models.Model):
-    name = models.CharField(max_length=10)
     doctors = models.ManyToManyField(Doctor, through='Reservation', related_name='patients')
 
 class Reservation(models.Model):
@@ -136,7 +115,7 @@ else:
 
 ## 핵심 정리
 
-- 1:N은 N쪽에 `ForeignKey`, 역참조는 `모델명_set` 또는 `related_name`(예: 게시글의 댓글은 `movie.comment_set.all()`).
+- 1:N은 N쪽에 `ForeignKey`, 역참조는 `모델명_set` 또는 `related_name`.
 - M:N은 `ManyToManyField`. 관계에 추가 데이터가 필요하면 `through` 중개 모델.
 - `on_delete`로 참조 무결성 정책을 정한다.
 

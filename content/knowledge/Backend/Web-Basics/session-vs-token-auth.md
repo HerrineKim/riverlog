@@ -8,7 +8,7 @@ date: "2026-10-14"
 sources: ["https://80000coding.notion.site/8016475c9c904c8ea1c4100af15728f3"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「세션과 토큰 기반 인증방식」을 바탕으로 재구성한 노트입니다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「세션과 토큰 기반 인증방식」을 바탕으로 재구성한 노트다.
 
 ## 왜 인증 방식이 필요한가
 
@@ -42,7 +42,15 @@ HTTP는 상태가 없다(stateless). 요청마다 "이 사람이 아까 로그�
 
 ## 토큰 기반 인증 (JWT)
 
-JWT는 `Header.Payload.Signature` 세 부분을 `.`으로 이은 문자열이다. Header와 Payload는 Base64URL **인코딩**일 뿐이라 누구나 읽을 수 있고, Signature만이 위변조를 막는다. 구조와 NestJS 구현은 [[auth-jwt-passport|NestJS JWT 인증]]에 있다.
+JWT(JSON Web Token)는 `header.payload.signature` 세 부분을 `.`으로 이은 문자열이다.
+
+| 부분 | 내용 |
+| --- | --- |
+| Header | 토큰 타입(`JWT`)과 서명 알고리즘(`HS256`, `RS256` 등). Base64URL 인코딩 |
+| Payload | 클레임(key-value). Base64URL 인코딩. 대표 클레임은 `sub`(대상, 보통 사용자 ID), `exp`(만료 시각), `iat`(발급 시각), `jti`(토큰 ID) |
+| Signature | Header + Payload를 서버의 키로 서명한 값. 위변조 검증용 |
+
+Header와 Payload는 **인코딩**일 뿐이라 누구나 디코딩해 읽을 수 있다([jwt.io](https://jwt.io/)). 위변조를 막는 것은 Signature뿐이다. NestJS에서 Passport로 구현하는 방법은 [[auth-jwt-passport|NestJS JWT 인증]]에 있다.
 
 ```text
 1. POST /login

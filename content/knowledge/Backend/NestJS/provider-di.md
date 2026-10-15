@@ -4,6 +4,7 @@ concept: "Dependency Injection"
 summary: "@Injectable 클래스를 모듈에 등록해 두면 Nest가 인스턴스를 만들어 필요한 곳의 생성자에 주입해 주는 구조."
 tags: ["nestjs", "design-pattern", "typescript", "oop"]
 source: til
+date: "2026-10-13"
 ---
 
 NestJS의 핵심은 **의존성 주입(Dependency Injection)이다**. 컨트롤러가 서비스를 직접 `new`로 만들지 않고, 생성자에 "이게 필요하다"고 선언만 하면 Nest가 알맞은 인스턴스를 넣어 준다.

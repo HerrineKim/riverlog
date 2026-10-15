@@ -4,6 +4,7 @@ concept: "Exception Filter"
 summary: "예외를 일관된 응답 형식으로 바꾸는 Exception Filter와, 들어오는 값을 변환·검증하는 Pipe."
 tags: ["nestjs", "error-handling", "validation", "backend"]
 source: til
+date: "2026-10-13"
 ---
 
 요청 생명주기의 양 끝을 담당하는 두 장치다. **Pipe**는 컨트롤러에 들어가기 직전 데이터를 변환·검증하고, **Exception Filter**는 처리 중 던져진 예외를 잡아 클라이언트에게 보낼 응답 형태로 바꾼다.
@@ -42,41 +43,25 @@ export class HttpExceptionFilter implements ExceptionFilter {
       | string
       | { error: string; statusCode: number; message: string | string[] };
 
-    // 직접 던진 문자열 에러 vs Nest 내장 에러(ValidationPipe 등)의 객체 형태를 분기
-    if (typeof error === 'string') {
-      response.status(status).json({
-        success: false,
-        timestamp: new Date().toISOString(),
-        path: request.url,
-        error,
-      });
-    } else {
-      response.status(status).json({
-        success: false,
-        timestamp: new Date().toISOString(),
-        ...error,
-      });
-    }
+    // 직접 던진 문자열 에러는 { error }로 감싸고, 내장 에러(ValidationPipe 등)의 객체는 펼친다
+    const body = typeof error === 'string' ? { error } : error;
+    response.status(status).json({
+      success: false,
+      timestamp: new Date().toISOString(),
+      path: request.url,
+      ...body,
+    });
   }
 }
 ```
 
 ### 적용 범위
 
-```typescript
-// 1) 메서드 단위
-@Get()
-@UseFilters(HttpExceptionFilter)
-getAllCat() {}
-
-// 2) 컨트롤러 단위
-@Controller('cats')
-@UseFilters(HttpExceptionFilter)
-export class CatsController {}
-
-// 3) 전역 (main.ts)
-app.useGlobalFilters(new HttpExceptionFilter());
-```
+| 범위 | 적용 방법 |
+| --- | --- |
+| 메서드 | 핸들러에 `@UseFilters(HttpExceptionFilter)` |
+| 컨트롤러 | 클래스에 `@UseFilters(HttpExceptionFilter)` |
+| 전역 | `main.ts`에서 `app.useGlobalFilters(new HttpExceptionFilter())` |
 
 예외가 나면 라우트 → 컨트롤러 → 전역 필터 순으로 가장 가까운 필터가 처리한다.
 
@@ -100,13 +85,7 @@ getOneCat(@Param('id', ParseIntPipe) id: number) {
 
 여러 파이프를 나열하면 순서대로 실행된다: `@Param('id', ParseIntPipe, PositiveIntPipe)`. 이 밖에 `ParseBoolPipe`, `ParseUUIDPipe`, `DefaultValuePipe` 등이 내장되어 있다.
 
-### 바디 검증: `ValidationPipe`
-
-DTO 클래스에 붙인 `class-validator` 데코레이터로 바디 전체를 검증한다. 보통 전역으로 건다. 자세한 내용은 [DTO와 Validation](Backend/NestJS/dto-validation).
-
-```typescript
-app.useGlobalPipes(new ValidationPipe());
-```
+DTO 바디 전체는 보통 전역 `ValidationPipe`로 검증한다. 설정과 옵션은 [[dto-validation|DTO와 Validation]]에 있다.
 
 ## 핵심 정리
 

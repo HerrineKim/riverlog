@@ -4,6 +4,7 @@ concept: "SQL"
 summary: "관계형 데이터베이스에서 데이터를 생성·조회·수정·삭제하고 조건·정렬·집계·그룹화하는 기본 SQL 문법."
 tags: ["sql", "database", "mysql", "sqlite"]
 source: til
+date: "2026-10-13"
 ---
 
 SQL(Structured Query Language)은 RDBMS에서 데이터를 관리하기 위해 설계된 언어다. ORM을 쓰더라도 실제로 DB에 전달되는 것은 SQL이므로, 기본 문법을 알면 ORM이 만드는 쿼리를 이해하고 문제를 진단할 수 있다.
@@ -59,8 +60,7 @@ DELETE FROM users_user WHERE id = 102;
 ## 조건: WHERE
 
 ```sql
-SELECT COUNT(*) FROM users_user WHERE age >= 30;
-SELECT COUNT(*) FROM users_user WHERE age = 30 AND last_name = '김';
+SELECT COUNT(*) FROM users_user WHERE age >= 30 AND last_name = '김';
 SELECT * FROM users_user WHERE age = 30 OR last_name = '김';
 SELECT COUNT(*) FROM users_user WHERE phone LIKE '02-%';
 ```
@@ -78,25 +78,19 @@ SELECT * FROM users_user ORDER BY last_name DESC, first_name DESC LIMIT 1 OFFSET
 ## 집계 함수와 GROUP BY
 
 ```sql
-SELECT AVG(age) FROM users_user;
-SELECT AVG(age) FROM users_user WHERE last_name = '김';
-SELECT MAX(balance), SUM(balance) FROM users_user;
+SELECT AVG(age), MAX(balance), SUM(balance) FROM users_user WHERE last_name = '김';
 
 SELECT country, COUNT(*) FROM users_user GROUP BY country;   -- 지역별 인원 수
+SELECT country, COUNT(*) FROM users_user GROUP BY country HAVING COUNT(*) >= 10;
 ```
 
-`COUNT`, `SUM`, `AVG`, `MAX`, `MIN`은 여러 행을 하나의 값으로 요약한다. `GROUP BY`는 지정한 열 값이 같은 행끼리 묶어 그룹마다 집계한다. (그룹에 조건을 걸 때는 `WHERE`가 아니라 `HAVING`)
-
-## 실습 환경 팁
-
-- 로컬에서 연습할 때는 Django 기본 DB인 SQLite나 VSCode SQLite 확장이 가장 간단하다.
-- 클라우드 관리형 DB(AWS Lightsail 등)에 MySQL Workbench로 접속하려면 DB를 Public 모드로 전환해야 한다. 관리형 DB는 무료 기간이 끝나면 과금되므로 쓰고 나면 삭제한다.
+`COUNT`, `SUM`, `AVG`, `MAX`, `MIN`은 여러 행을 하나의 값으로 요약한다. `GROUP BY`는 지정한 열 값이 같은 행끼리 묶어 그룹마다 집계한다. 그룹에 조건을 걸 때는 `WHERE`가 아니라 `HAVING`을 쓴다.
 
 ## 핵심 정리
 
 - `INSERT / SELECT / UPDATE / DELETE` + `WHERE`가 CRUD의 전부다.
 - `ORDER BY … LIMIT … OFFSET`으로 정렬·페이지네이션, `GROUP BY` + 집계 함수로 요약.
-- 같은 쿼리를 Django ORM으로 쓰는 법은 [ORM과 QuerySet](Backend/Django/orm-queryset).
+- 같은 쿼리를 Django ORM으로 쓰는 법은 [[orm-queryset|Django ORM과 QuerySet]]에 대응표로 있다.
 
 관련 노트: [[sql-and-relational-algebra|SQL과 관계대수]], [[dbeaver|DBeaver에서 SQL로 데이터 다루기]]
 

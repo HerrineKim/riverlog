@@ -1,26 +1,26 @@
 ---
 title: "텔레그램 미니앱 인증 흐름"
 concept: "Telegram Mini App"
-summary: "텔레그램이 서명한 initData를 클라이언트가 서버로 보내고, 서버가 봇 토큰 기반 HMAC-SHA256으로 위변조와 만료를 검증하는 미니앱 인증 과정."
+summary: "텔레그램이 서명한 initData를 클라이언트가 서버로 보내고, 서버가 봇 토큰 기반 HMAC-SHA256으로 위변조와 만료를 검증한 뒤 자체 세션·JWT를 발급하는 미니앱 인증 패턴."
 tags: ["auth", "security", "nextjs", "backend"]
 source: notion
 date: "2026-10-13"
 ---
 
-**텔레그램 미니앱(Telegram Mini App)** 은 텔레그램 안에서 열리는 웹앱이다. 별도 로그인 화면 없이, 텔레그램이 앱을 열 때 넘겨주는 `initData`(사용자 정보 + 서명)로 사용자를 인증한다. 클라이언트가 받은 사용자 정보를 그대로 믿지 않고, **서버가 봇 토큰으로 서명을 검증**한 뒤에만 신뢰한다. 아래는 Next.js로 만든 미니앱을 예로 든 호출 순서다.
+**텔레그램 미니앱(Telegram Mini App)** 은 텔레그램 안에서 열리는 웹앱이다. 별도 로그인 화면 없이, 텔레그램이 앱을 열 때 넘겨주는 `initData`(사용자 정보 + 서명)로 사용자를 인증한다. 클라이언트가 받은 사용자 정보를 그대로 믿지 않고, **서버가 봇 토큰으로 서명을 검증**한 뒤에만 신뢰한다. 코드 예시는 Next.js 기준이지만 흐름은 어떤 서버에서나 같다.
 
 ## 전체 흐름
 
 ```text
 [텔레그램] 미니앱 실행 → initData(서명 포함) 전달
    ↓
-[클라이언트] SDK 초기화 → initData 획득 → POST /api/user
+[클라이언트] SDK 초기화 → initData 원본을 서버로 전송
    ↓
 [서버] initData 파싱 → auth_date 만료 확인 → HMAC 해시 계산·비교
-   ↓ 성공                         ↓ 실패
-사용자 생성·조회 → 응답          403 Forbidden
+   ↓ 성공                                  ↓ 실패
+사용자 생성·조회 → 자체 세션·JWT 발급        403 Forbidden
    ↓
-[클라이언트] 상태 초기화 → 게임 화면 전환
+[클라이언트] 이후 요청은 세션 쿠키·토큰으로 인증
 ```
 
 ## 1. 클라이언트: initData 얻어서 보내기
@@ -31,14 +31,13 @@ WebApp.ready() // 로딩 완료를 텔레그램에 알림
 
 const initData = WebApp.initData                   // 서명된 원본 문자열 → 서버 검증용
 const user = WebApp.initDataUnsafe.user            // 파싱된 값 → 화면 표시용으로만
-const startParam = WebApp.initDataUnsafe.start_param // 추천인 ID 등 시작 파라미터
 
-const response = await fetch('/api/user', {
+const response = await fetch('/api/auth/telegram', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ telegramInitData: initData, referrerTelegramId: startParam }),
+  body: JSON.stringify({ telegramInitData: initData }),
 })
-if (!response.ok) throw new Error('Failed to fetch or create user')
+if (!response.ok) throw new Error('Telegram auth failed')
 ```
 
 - `initDataUnsafe`는 이름 그대로 **검증되지 않은 값**이다. 화면에 이름을 보여 주는 정도로만 쓰고, 권한 판단에는 쓰지 않는다.
@@ -97,10 +96,12 @@ export function validateTelegramInitData(telegramInitData: string, botToken: str
 
 봇 토큰을 공유할 수 없는 외부 서비스는 `signature`(Ed25519 서명, base64url)를 텔레그램이 공개한 공개키로 검증할 수 있다. 이때 data-check-string은 첫 줄에 `<bot_id>:WebAppData`를 두고, 그 아래에 `hash`와 `signature`를 **둘 다 뺀** 필드를 정렬해 이어 붙인다. `auth_date` 만료 확인은 똑같이 한다. ([Telegram Mini Apps: Validating data](https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app))
 
-## 3. API 라우트: 결과 처리
+## 3. API 라우트: 검증 후 세션 발급
 
 ```typescript
-// app/api/user/route.ts
+// app/api/auth/telegram/route.ts
+import { NextResponse } from 'next/server'
+
 export async function POST(req: Request) {
   const { telegramInitData } = await req.json()
   const result = validateTelegramInitData(telegramInitData, process.env.BOT_TOKEN!)
@@ -113,17 +114,21 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid user data' }, { status: 400 })
   }
 
-  // 사용자 생성·조회, 게임 데이터 동기화 등 비즈니스 로직
   const user = await findOrCreateUser(telegramId)
-  return NextResponse.json(user)
+  const res = NextResponse.json(user)
+  res.cookies.set('session', await createSession(user.id), { httpOnly: true, secure: true, sameSite: 'none' })
+  return res
 }
 ```
 
-인증이 필요한 다른 API도 같은 방식으로 **요청마다 initData를 검증**하거나, 첫 검증 후 서버가 자체 세션·JWT를 발급해 이후 요청에 쓴다.
+이후 API는 두 방식 중 하나로 인증한다.
 
-## 4. 클라이언트: 응답 반영
+| 방식 | 장점 | 단점 |
+| --- | --- | --- |
+| 요청마다 `initData` 검증 | 서버 상태가 없다 | `auth_date` 만료 뒤에는 미니앱을 다시 열어야 한다 |
+| 첫 검증 뒤 자체 세션·JWT 발급 | 수명·무효화를 서버가 정한다 | 세션 저장소나 토큰 관리가 필요하다 |
 
-서버가 돌려준 사용자 데이터로 앱 상태(게임 상태 등)를 초기화하고, 로딩 완료 플래그를 세운 뒤 메인 화면으로 전환한다.
+웹 버전 텔레그램에서는 미니앱이 iframe 안에서 열려 쿠키가 서드파티로 취급된다. 그래서 `SameSite=None; Secure`를 주고, 브라우저가 서드파티 쿠키를 막으면 `Authorization` 헤더 토큰으로 바꾼다. 두 방식의 비교는 [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]에 있다.
 
 ## 개발 환경 인증 우회 주의
 
@@ -136,6 +141,7 @@ export async function POST(req: Request) {
 
 - 클라이언트는 서명된 `initData` 원본을 서버로 보내고, `initDataUnsafe`는 표시용으로만 쓴다.
 - 서버는 `hash`를 뺀 정렬된 data-check-string을 봇 토큰 기반 HMAC-SHA256으로 검증하고, `auth_date`로 만료를 확인한다.
-- 실패하면 403. 개발용 우회 플래그는 서버 전용·운영 차단.
+- 실패하면 403. 성공하면 자체 세션·JWT를 발급해 이후 요청을 인증한다.
+- 개발용 우회 플래그는 서버 전용·운영 차단.
 
-관련 노트: [NestJS JWT 인증](/knowledge/dictionary/backend/nestjs/auth-jwt-passport), [쿠키와 세션](/knowledge/dictionary/frontend/web/cookie-session), [[nextjs|Next.js를 쓰는 이유]], [[security|정보 시스템 보안(해시·암호 알고리즘)]]
+관련 노트: [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]], [[auth-jwt-passport|NestJS JWT 인증과 Passport]], [[cookie-session|쿠키와 세션]], [[nextjs|Next.js를 쓰는 이유]], [[security|정보 시스템 보안(해시·암호 알고리즘)]]

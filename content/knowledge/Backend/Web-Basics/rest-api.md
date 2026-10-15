@@ -83,6 +83,16 @@ PUT으로 일부 필드만 보내면 빠진 필드가 비워질 수 있다. 필�
 
 Django에서 이 설계를 구현하는 방법은 [[drf-serializer|DRF Serializer와 관계 표현]]에서 다룬다.
 
+## REST 이전: SOAP
+
+| 기술 | 역할 |
+| --- | --- |
+| SOAP | HTTP·HTTPS·SMTP 위에서 **XML 메시지**를 주고받는 통신 규약. Envelope(전체 정의), Header(선택), Body(실제 메시지)로 구성 |
+| WSDL | 웹 서비스의 이름, 위치, 메시지 형식, 프로토콜을 **XML로 기술**한 문서. 클라이언트가 이를 읽고 사용할 수 있는 기능을 파악 |
+| UDDI | WSDL로 기술된 웹 서비스를 등록·검색하는 저장소 |
+
+REST 이전의 웹 서비스는 이 세 기술을 묶어 썼다. SOAP은 메시지가 무거워 공개 웹 API는 대부분 REST(JSON)로 만든다. SOAP은 금융·공공 같은 기존 기업 시스템 연계에 남아 있다.
+
 ## 장점과 한계
 
 - **장점**: HTTP 인프라를 그대로 사용하므로 별도 인프라가 필요 없고, HTTP를 지원하는 어떤 플랫폼에서도 쓸 수 있으며, 서버·클라이언트 역할이 명확히 분리된다.
@@ -94,6 +104,6 @@ Django에서 이 설계를 구현하는 방법은 [[drf-serializer|DRF Serialize
 - PUT은 전체 교체(멱등), PATCH는 부분 수정(멱등 보장 안 됨), POST는 생성·기타 작업(멱등 아님)이다.
 - 응답에는 적절한 상태 코드(200, 201, 400, 401, 404 …)를 함께 돌려준다.
 
-관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[web-services-and-it-trends|웹 서비스 기술(SOAP·REST)]], [[drf-serializer|DRF Serializer와 관계 표현]]
+관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[web-services-and-it-trends|웹 서비스와 IT 신기술 용어]], [[drf-serializer|DRF Serializer와 관계 표현]]
 
 참고: [Microsoft REST API 디자인 가이드](https://learn.microsoft.com/ko-kr/azure/architecture/best-practices/api-design)

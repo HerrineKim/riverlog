@@ -1,7 +1,7 @@
 ---
 title: "NestJS 설정과 환경 변수"
 concept: "Environment Variables"
-summary: "@nestjs/config로 .env를 읽어 DB 주소·포트·비밀키를 코드 밖으로 분리하고 MongoDB에 연결하는 방법."
+summary: "@nestjs/config로 .env를 읽어 DB 주소·포트·비밀키를 코드 밖으로 분리하고, 다른 모듈 설정은 forRootAsync와 ConfigService로 읽는 방법."
 tags: ["nestjs", "config", "security", "mongodb"]
 source: til
 date: "2026-10-13"
@@ -59,27 +59,7 @@ MongooseModule.forRootAsync({
 }),
 ```
 
-## MongoDB(Mongoose) 연결
-
-```bash
-npm i @nestjs/mongoose mongoose
-```
-
-- Atlas를 쓴다면 클러스터의 **Connect → Drivers**에서 접속 문자열을 복사해 `MONGODB_URI`에 넣는다. (Atlas 설정은 [MongoDB](Backend/Database/mongodb) 노트 참고)
-- 개발 모드에서는 Mongoose가 실행하는 쿼리를 로그로 볼 수 있다.
-
-```typescript
-import * as mongoose from 'mongoose';
-
-export class AppModule implements NestModule {
-  private readonly isDev = process.env.MODE === 'dev';
-  configure() {
-    mongoose.set('debug', this.isDev); // dev일 때만 쿼리 로그 출력
-  }
-}
-```
-
-> 접속 옵션 `useNewUrlParser`, `useUnifiedTopology`는 Mongoose 6부터 기본 동작이 되어 넘기지 않는다(`useFindAndModify`, `useCreateIndex`는 제거됨). 오래된 예제에서 이 옵션을 보면 지운다.
+MongoDB 연결 준비(패키지 설치, Atlas 접속 문자열, 디버그 로그)는 [[mongoose-schema#연결과 디버그 로그|Mongoose 스키마]] 노트에 있다.
 
 ## 핵심 정리
 

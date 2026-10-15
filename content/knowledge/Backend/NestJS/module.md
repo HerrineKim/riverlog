@@ -4,6 +4,7 @@ concept: "Module"
 summary: "관련된 컨트롤러·프로바이더를 하나로 묶고, export한 것만 외부에 공개하는 NestJS의 구성 단위."
 tags: ["nestjs", "oop", "architecture", "typescript"]
 source: til
+date: "2026-10-13"
 ---
 
 모듈은 기능 단위(예: cats, users, auth)로 컨트롤러와 프로바이더를 묶는 상자다. 루트 `AppModule`이 기능 모듈들을 `imports`해 앱 전체 구조가 트리 형태로 구성된다.

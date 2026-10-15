@@ -90,9 +90,7 @@ app.use(
 
 계정 정보는 [환경 변수](Backend/NestJS/config-env)로 관리한다.
 
-## Fastify 참고
-
-Fastify는 Express와 비슷한 Node.js 웹 프레임워크로 구조·속도 면에서 더 우수하다고 평가된다. NestJS는 기본적으로 Express 어댑터로 동작하지만 `@nestjs/platform-fastify`로 교체할 수 있다. 먼저 Express로 개발하고 성능이 중요한 경우 Fastify로 전환을 검토하는 것이 일반적이다. (단, `express-basic-auth`처럼 Express 전용 미들웨어는 대체가 필요하다.)
+> `express-basic-auth`는 Express 전용 미들웨어다. Fastify 어댑터를 쓰면 다른 방식으로 바꿔야 한다.
 
 ## 핵심 정리
 

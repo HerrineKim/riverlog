@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://riverkim.kr/167", "https://riverkim.kr/158", "https://riverkim.kr/230"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트입니다.
+> riverkim.kr에 쓴 글들을 다시 정리한 노트다.
 
 ## Node.js란
 

@@ -4,20 +4,12 @@ concept: "Django Model"
 summary: "models.py의 클래스로 DB 테이블 구조를 정의하고, makemigrations·migrate로 그 변경을 데이터베이스에 반영하는 방법."
 tags: ["django", "database", "orm", "python"]
 source: til
+date: "2026-10-13"
 ---
 
 Model은 **웹 애플리케이션의 데이터를 구조화하고 조작하기 위한 도구**다. 저장할 데이터의 필드와 동작을 정의하며, 일반적으로 모델 하나가 DB 테이블 하나에 매핑된다. 기본 DB는 SQLite다.
 
-## 데이터베이스 기본 용어
-
-| 용어 | 의미 |
-| --- | --- |
-| 스키마(Schema) | DB의 자료 구조, 표현 방법, 관계를 정의한 구조 |
-| 테이블(Table) | 행과 열로 조직된 데이터 집합 (관계형 DB에서는 relation이라고도 함) |
-| 열(Column) | 필드·속성. 열마다 데이터 타입이 정해짐 |
-| 행(Row) | 레코드·튜플. 실제 데이터 한 건 |
-| PK(Primary Key) | 각 행을 고유하게 식별하는 값. Django는 `id`(자동 증가)를 자동 생성 |
-| 쿼리(Query) | 데이터를 조회·조작하는 명령. "쿼리를 날린다" = DB를 조작한다 |
+모델과 DB는 **클래스 = 테이블, 클래스 속성 = 열(column), 인스턴스 = 행(row)** 으로 대응한다. PK는 따로 정의하지 않으면 Django가 자동 증가 `id`를 만든다.
 
 ## 모델 작성
 
@@ -43,7 +35,7 @@ class Article(models.Model):              # django.db.models.Model 상속
 | `TextField()` | 길이 제한 없는 긴 텍스트. `max_length`를 줘도 폼 위젯(textarea)에만 반영되고 DB에는 적용되지 않는다 |
 | `DateTimeField(auto_now_add=True)` | **최초 생성** 시각. 처음 insert될 때만 기록 |
 | `DateTimeField(auto_now=True)` | **최종 수정** 시각. `save()`할 때마다 갱신 |
-| `IntegerField`, `BooleanField`, `ForeignKey` … | 숫자, 불리언, [관계](Backend/Django/relationships) 등 |
+| `IntegerField`, `BooleanField`, `ForeignKey` … | 숫자, 불리언, [[relationships|관계]] 등 |
 
 ## Migration
 
@@ -82,16 +74,7 @@ COMMIT;
 
 ## 모델 → DB API
 
-모델을 정의하면 Django가 데이터를 생성·조회·수정·삭제할 수 있는 **DB API**를 자동으로 만들어 준다.
-
-```python
-Article.objects.all()
-# Article: 모델 클래스
-# objects: Manager — DB 쿼리와 연결되는 인터페이스 (모든 모델에 기본 추가)
-# all(): QuerySet API — DB에서 받은 객체 목록(0개 이상)을 다룸
-```
-
-자세한 사용법은 [ORM과 QuerySet](Backend/Django/orm-queryset).
+모델을 정의하면 Django가 `Article.objects`(Manager)를 붙여 CRUD용 QuerySet API를 자동으로 만든다. 사용법은 [[orm-queryset|Django ORM과 QuerySet]]에 있다.
 
 ## 핵심 정리
 

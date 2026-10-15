@@ -4,6 +4,7 @@ concept: "URLconf"
 summary: "urls.py가 요청 주소를 view 함수로 연결하고, view가 render로 응답을 만드는 흐름과 URL 분리·이름·namespace."
 tags: ["django", "python", "routing", "backend"]
 source: til
+date: "2026-10-12"
 ---
 
 Django의 요청 처리는 `urls.py → views.py → template` 순서로 흐른다. 장고 서버로 요청이 들어오면 URLconf가 경로를 보고 알맞은 view 함수로 넘기고, view는 데이터를 준비해 템플릿을 렌더링한 응답을 돌려준다.

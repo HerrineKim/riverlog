@@ -1,13 +1,34 @@
 ---
 title: "NestJS에서 Mongoose 스키마 정의"
 concept: "Mongoose Schema"
-summary: "@Schema·@Prop 데코레이터로 MongoDB 컬렉션 구조를 클래스로 정의하고, virtual 필드로 응답에서 민감 정보를 숨기는 방법."
+summary: "@nestjs/mongoose 연결·디버그 로그 설정, @Schema·@Prop 데코레이터로 MongoDB 컬렉션 구조를 클래스로 정의하고 virtual 필드로 응답에서 민감 정보를 숨기는 방법."
 tags: ["nestjs", "mongodb", "database", "typescript"]
 source: til
 date: "2026-10-13"
 ---
 
 Mongoose는 MongoDB 문서를 JavaScript 객체로 다루게 해 주는 **ODM(Object Document Mapper)이다**. `@nestjs/mongoose`를 쓰면 스키마를 TypeScript 클래스와 데코레이터로 정의할 수 있다.
+
+## 연결과 디버그 로그
+
+```bash
+npm i @nestjs/mongoose mongoose
+```
+
+- 접속 문자열은 `.env`의 `MONGODB_URI`에 두고 `MongooseModule.forRootAsync`로 읽는다. 패턴은 [[config-env|설정과 환경 변수]]에 있다.
+- Atlas를 쓰면 클러스터의 **Connect → Drivers**에서 접속 문자열을 복사한다. Atlas 설정은 [[mongodb|MongoDB]] 노트에 있다.
+- `mongoose.set('debug', true)`를 켜면 Mongoose가 실행하는 쿼리가 로그로 찍힌다. 개발 모드에서만 켠다.
+
+```typescript
+export class AppModule implements NestModule {
+  private readonly isDev = process.env.MODE === 'dev';
+  configure() {
+    mongoose.set('debug', this.isDev); // dev일 때만 쿼리 로그
+  }
+}
+```
+
+> `useNewUrlParser`, `useUnifiedTopology`는 Mongoose 6부터 기본 동작이라 넘기지 않는다. `useFindAndModify`, `useCreateIndex`는 제거됐다. 오래된 예제에서 보이면 지운다.
 
 ## 스키마 정의 순서
 

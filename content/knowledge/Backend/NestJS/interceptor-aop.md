@@ -4,6 +4,7 @@ concept: "Interceptor"
 summary: "핸들러 실행 전후를 감싸 로깅·응답 가공 같은 횡단 관심사를 한곳에서 처리하는 NestJS 인터셉터와 그 배경인 AOP."
 tags: ["nestjs", "aop", "design-pattern", "backend"]
 source: til
+date: "2026-10-13"
 ---
 
 인터셉터는 `NestInterceptor` 인터페이스를 구현한 `@Injectable()` 클래스로, **컨트롤러 핸들러 실행 전과 후 양쪽에 로직을 끼워 넣을 수 있다.** 관점 지향 프로그래밍(AOP)에서 영감을 받았다.
@@ -68,15 +69,7 @@ export class CatsController {
 
 ## 요청 생명주기에서의 위치
 
-1. Incoming request
-2. Middleware (전역 → 모듈)
-3. Guards (전역 → 컨트롤러 → 라우트)
-4. **Interceptors — pre-controller** (전역 → 컨트롤러 → 라우트)
-5. Pipes (전역 → 컨트롤러 → 라우트 → 라우트 파라미터)
-6. Controller (method handler) → Service
-7. **Interceptors — post-request** (라우트 → 컨트롤러 → 전역)
-8. Exception filters (라우트 → 컨트롤러 → 전역)
-9. Server response
+인터셉터는 Guard 다음, Pipe 앞에서 한 번(전처리), 핸들러 실행 뒤 Exception Filter 앞에서 한 번(후처리) 실행된다. 전체 순서는 [[NestJS|NestJS 요청 생명주기]]에 있다.
 
 ## Middleware와 무엇이 다른가
 

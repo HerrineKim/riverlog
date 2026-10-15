@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://riverkim.kr/97"]
 ---
 
-> riverkim.kr에 쓴 글을 다시 정리한 노트입니다.
+> riverkim.kr에 쓴 글을 다시 정리한 노트다.
 
 ## Base64란
 
@@ -30,7 +30,7 @@ HTML, 이메일, JSON처럼 **문자를 위한 매체에 바이너리를 실어 
        →  T      W      F      u        →  "TWFu"
 ```
 
-URL이나 파일 이름에 넣을 때는 `+`, `/` 대신 `-`, `_`를 쓰는 **Base64URL** 변형을 쓴다. JWT가 이 방식이다([[auth-jwt-passport|NestJS JWT 인증과 Passport]]).
+URL이나 파일 이름에 넣을 때는 `+`, `/` 대신 `-`, `_`를 쓰는 **Base64URL** 변형을 쓴다. JWT가 이 방식이다([[session-vs-token-auth#토큰 기반 인증 (JWT)|JWT 구조]]).
 
 ## 왜 굳이 쓰나
 
@@ -44,26 +44,7 @@ Base64로 바꾸면 6비트를 표현하는 데 8비트 문자 하나를 쓰므�
 
 ## 예: 이미지를 OCR API로 보내기
 
-Google Cloud Vision API는 이미지를 URI로 넘기거나 바디에 직접 넣을 수 있다. 로컬 기기에서 찍은 사진의 URI는 외부 서버가 읽을 수 없으므로, **이미지 자체를 Base64 문자열로 바꿔 `content` 필드에 담아야 한다.** React Native(Expo)에서는 카메라·갤러리 API에 `base64: true` 옵션을 주면 인코딩된 문자열을 함께 돌려준다.
-
-```javascript
-// expo-camera / expo-image-picker
-const photo = await camera.takePictureAsync({ quality: 0.5, base64: true });
-
-await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`, {
-  method: 'POST',
-  body: JSON.stringify({
-    requests: [{
-      image: { content: photo.base64 },        // URI가 아니라 Base64 문자열
-      features: [{ type: 'TEXT_DETECTION' }],
-    }],
-  }),
-});
-```
-
-| 증상 | 원인 | 해결 |
-| --- | --- | --- |
-| 공식 문서대로 이미지 URI를 보냈는데 API가 이미지를 읽지 못함 | 기기 로컬 URI(`file://`)는 외부 서버가 접근할 수 없다 | 촬영·선택 시 `base64: true`로 받아 `image.content`에 넣는다 |
+Google Cloud Vision 같은 이미지 API는 이미지를 URI로 받거나 바디의 `content` 필드에 Base64 문자열로 받는다. 기기 로컬 URI(`file://`)는 외부 서버가 읽을 수 없으므로, 모바일 앱에서 찍은 사진은 **이미지 자체를 Base64로 바꿔 보내야 한다.** Expo의 카메라·갤러리 API는 `base64: true` 옵션을 주면 인코딩된 문자열을 함께 돌려준다.
 
 ## 정리
 
@@ -72,4 +53,4 @@ await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`, {
 - 크기가 약 33% 늘어나는 대신, 텍스트 전용 채널에서도 데이터가 깨지지 않는다.
 - 작은 이미지·토큰에는 편하지만 큰 파일은 바이너리 업로드 방식이 낫다.
 
-관련 노트: [[data-representation|데이터의 표현]], [[auth-jwt-passport|NestJS JWT 인증과 Passport]], [[http-web-architecture|웹 앱의 요청·응답 구조]]
+관련 노트: [[data-representation|데이터의 표현]], [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]], [[http-web-architecture|웹 앱의 요청·응답 구조]]

@@ -7,32 +7,15 @@ source: til
 date: "2026-10-13"
 ---
 
-로그인 상태를 유지하는 방법에는 세션·쿠키, 단순 토큰, JWT 등이 있다. JWT는 서버가 세션 저장소를 두지 않아도 되어(stateless) 모바일 앱이나 여러 서비스가 토큰을 나눠 쓰는 API에 잘 맞는다. 반대로 같은 도메인의 웹 앱만 상대한다면 즉시 로그아웃·강제 만료가 쉬운 서버 세션 + HttpOnly 쿠키가 더 단순하다([[cookie-session|쿠키와 세션]]).
+JWT의 구조(Header·Payload·Signature, `sub`·`exp`·`iat` 클레임)와 세션 방식과의 비교는 [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]에 있다. 이 노트는 NestJS에서 **Passport Strategy와 Guard**로 토큰을 발급·검증하는 구현만 다룬다.
 
-NestJS 공식 문서는 `JwtService`와 직접 만든 Guard로 구현하는 방법과, 아래처럼 Passport 전략으로 구현하는 방법을 모두 안내한다. 소셜 로그인처럼 전략을 여러 개 붙일 때 Passport가 편하다.
-
-## JWT 구조
-
-JWT(JSON Web Token)는 점(`.`)으로 구분된 세 부분으로 이뤄진다: `header.payload.signature`
-
-| 부분 | 내용 |
-| --- | --- |
-| Header | 토큰 타입(`JWT`)과 서명 알고리즘(`HS256` 등)을 Base64URL 인코딩 |
-| Payload | 사용자 식별자 등 클레임(key-value)을 Base64URL 인코딩. `sub`(대상 = 유저 고유 ID), `exp`(만료 시각), `iat`(발급 시각) |
-| Signature | Header + Payload를 **서버의 비밀키로 서명**한 값. 위·변조 검증용 |
-
-> Payload는 암호화가 아니라 **인코딩**일 뿐이라 누구나 디코딩해 읽을 수 있다([jwt.io](https://jwt.io/)). 비밀번호 같은 민감 정보는 절대 넣지 않는다.
+NestJS 공식 문서는 `JwtService`와 직접 만든 Guard로 구현하는 방법과 Passport 전략으로 구현하는 방법을 모두 안내한다. 소셜 로그인처럼 전략을 여러 개 붙일 때 Passport가 편하다.
 
 ## 로그인과 인증 흐름
 
-![JWT 로그인 과정](/images/til/BACKEND/Nestjs/-Deprecated-%ED%83%84%ED%83%84%ED%95%9C-%EB%B0%B1%EC%97%94%EB%93%9C-NestJS-%EA%B8%B0%EC%B4%88%EB%B6%80%ED%84%B0-%EC%8B%AC%ED%99%94%EA%B9%8C%EC%A7%80/05-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-1-%EA%B3%A0%EC%96%91%EC%9D%B4-%EC%A0%95%EB%B3%B4-%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0/07-JWT%EC%99%80-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%88%9C%ED%99%98-%EC%B0%B8%EC%A1%B0-%EB%AA%A8%EB%93%88.assets/image-20230102175556698.png)
-
 1. 프론트엔드가 email·password로 로그인 API를 호출한다.
 2. 백엔드는 사용자를 확인하고 비밀번호를 검증한 뒤, `{ email, sub: userId }` payload를 **비밀키로 서명해 JWT를 발급**한다.
-3. 프론트엔드는 토큰을 저장한다(localStorage 또는 HttpOnly 쿠키. XSS 위험을 고려하면 HttpOnly 쿠키가 더 안전하다).
-
-![JWT 인증 과정](/images/til/BACKEND/Nestjs/-Deprecated-%ED%83%84%ED%83%84%ED%95%9C-%EB%B0%B1%EC%97%94%EB%93%9C-NestJS-%EA%B8%B0%EC%B4%88%EB%B6%80%ED%84%B0-%EC%8B%AC%ED%99%94%EA%B9%8C%EC%A7%80/05-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-1-%EA%B3%A0%EC%96%91%EC%9D%B4-%EC%A0%95%EB%B3%B4-%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0/07-JWT%EC%99%80-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%88%9C%ED%99%98-%EC%B0%B8%EC%A1%B0-%EB%AA%A8%EB%93%88.assets/image-20230103101803020.png)
-
+3. 프론트엔드는 토큰을 보관한다. 보관 위치별 위험은 [[session-vs-token-auth#토큰을 어디에 보관하나 (브라우저)|토큰 보관 위치]]에 있다.
 4. 이후 요청마다 `Authorization: Bearer <token>` 헤더에 토큰을 실어 보낸다.
 5. 백엔드의 **JwtAuthGuard**가 **JwtStrategy**를 실행해 서명·만료를 검증하고, payload의 `sub`로 사용자를 찾아 `request.user`에 넣는다.
 6. 핸들러는 `request.user`를 이용해 비즈니스 로직을 수행한다.
@@ -151,6 +134,6 @@ getCurrentCat(@CurrentUser() cat: Cat) {
 - 인증 = `@UseGuards(JwtAuthGuard)` → `JwtStrategy.validate()` → `request.user`.
 - 비밀키는 환경 변수로, payload에는 민감 정보 없이 식별자만 넣는다.
 
-관련 노트: [[cookie-session|쿠키와 세션]], [[web-security|웹 보안: CSRF와 XSS]], [[auth-flow|React로 회원가입·로그인 구현하기]], [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]
+관련 노트: [[cookie-session|쿠키와 세션]], [[web-security|웹 보안: CSRF와 XSS]], [[swr|SWR로 서버 데이터 가져오기(로그인 상태 판단)]], [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]
 
 참고: [NestJS Authentication](https://docs.nestjs.com/recipes/passport), [Guards](https://docs.nestjs.com/guards)

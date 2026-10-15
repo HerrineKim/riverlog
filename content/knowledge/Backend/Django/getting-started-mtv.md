@@ -49,18 +49,13 @@ INSTALLED_APPS = [
     # 2. Third party apps
     # 3. Django apps
     'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # ... auth, contenttypes, sessions, messages, staticfiles
 ]
 ```
 
 | 앱 파일 | 역할 |
 | --- | --- |
-| `models.py` | 데이터 구조(DB 테이블) 정의 |
-| `views.py` | 요청을 받아 처리하고 응답을 반환하는 함수/클래스 |
+| `models.py`, `views.py` | MTV의 Model·View (아래 표) |
 | `admin.py` | 관리자 페이지 등록 |
 | `apps.py` | 앱 정보 (거의 수정하지 않음) |
 | `tests.py` | 테스트 코드 |
@@ -71,20 +66,12 @@ INSTALLED_APPS = [
 
 ![Django 기본 개발 흐름](/images/til/BACKEND/Django/00_django_intro.assets/image-20220302134411476.png)
 
-| MTV | MVC 대응 | 역할 |
-| --- | --- | --- |
-| **Model** | Model | 데이터 구조 정의와 DB 기록 관리(추가·수정·삭제). [ORM](Backend/Django/orm-queryset) 덕분에 SQL 없이 Python으로 DB를 다룬다 |
-| **Template** | View | 사용자에게 보여지는 화면의 구조·레이아웃 (HTML + [DTL](Backend/Django/templates-static)) |
-| **View** | Controller | HTTP 요청을 받아 Model로 데이터를 다루고, Template에 응답 렌더링을 맡김 |
-
-여기에 **URLconf**(`urls.py`)가 "어떤 URL 요청을 어떤 view로 보낼지"를 정한다. Django 1.x는 정규식 기반 `url()`을 썼지만 2.0부터 `path()`로 훨씬 간단해졌다.
-
-| 하고 싶은 일 | 작업할 곳 |
-| --- | --- |
-| 데이터를 어떤 형태로 저장할지 | `models.py` |
-| 어떤 주소로 들어오면 무엇을 할지 | `urls.py` |
-| 데이터를 처리·가공할지 | `views.py` |
-| 화면을 어떻게 보여줄지 | `templates/*.html` |
+| MTV | MVC 대응 | 파일 | 하는 일 |
+| --- | --- | --- | --- |
+| **Model** | Model | `models.py` | 데이터를 어떤 형태로 저장할지 정의하고 DB 기록을 관리한다. [[orm-queryset|ORM]] 덕분에 SQL 없이 Python으로 다룬다 |
+| **Template** | View | `templates/*.html` | 화면을 어떻게 보여 줄지 정한다. HTML + [[templates-static|DTL]] |
+| **View** | Controller | `views.py` | 요청을 받아 Model로 데이터를 처리하고 Template에 렌더링을 맡긴다 |
+| URLconf | (라우터) | `urls.py` | 어떤 URL 요청을 어떤 view로 보낼지 정한다. 2.0부터 정규식 `url()` 대신 `path()`를 쓴다 |
 
 ## 기본 설정
 
