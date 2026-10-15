@@ -5,10 +5,10 @@ summary: "검색 엔진이 페이지를 크롤링·색인·순위 매기는 흐�
 tags: ["seo", "web", "html", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing"]
+sources: ["https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions"]
 ---
 
-> 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트입니다.
+> 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트입니다. hreflang 항목은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 다국어 페이지 노트와 연결했습니다.
 
 검색 엔진 최적화(SEO, Search Engine Optimization)는 검색 결과에서 페이지가 잘 발견되고 높은 순위에 오르도록 콘텐츠와 구조를 다듬는 일이다. 콘텐츠의 질이 가장 중요하지만, **검색 엔진이 페이지를 읽을 수 있게 만드는 것**은 프론트엔드의 몫이다. 관련 용어의 짧은 정의는 [[web-glossary|용어집]]에 있다.
 
@@ -51,7 +51,7 @@ Sitemap: https://example.com/sitemap.xml
 | `<meta name="robots" content="noindex">` | 색인하지 말라는 신호 |
 | `<link rel="canonical">` | 같은 내용이 여러 URL에 있을 때 대표 URL을 지정한다 |
 | `<meta property="og:*">` | 오픈 그래프. 메신저·SNS 공유 미리보기의 제목·이미지·설명 |
-| `<link rel="alternate" hreflang="en">` | 다국어 페이지의 언어별 버전을 연결한다 |
+| `<link rel="alternate" hreflang="en">` | 다국어 페이지의 언어별 버전을 연결한다. 양방향 연결·`x-default` 규칙은 [[multilingual-pages|다국어 페이지]]에 있다 |
 | `<link rel="icon">` | 파비콘. 탭과 모바일 검색 결과에 표시된다 |
 
 ## 리다이렉트
@@ -110,4 +110,4 @@ Sitemap: https://example.com/sitemap.xml
 - 중복 URL에 canonical이, 옮긴 URL에 301이 있는가
 - 모바일에서 읽을 수 있고 충분히 빠른가
 
-관련 노트: [[semantic-html|시맨틱 HTML과 문서 구조]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[http|HTTP 프로토콜]], [[structured-content|구조화된 콘텐츠와 기계가 읽는 웹]], [[search-engine-basics|검색엔진의 원리]]
+관련 노트: [[semantic-html|시맨틱 HTML과 문서 구조]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[http|HTTP 프로토콜]], [[structured-content|구조화된 콘텐츠와 기계가 읽는 웹]], [[search-engine-basics|검색엔진의 원리]], [[multilingual-pages|다국어 페이지: lang·hreflang과 국제화]]

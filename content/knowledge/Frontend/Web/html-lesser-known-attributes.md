@@ -1,14 +1,14 @@
 ---
 title: "잘 안 쓰지만 쓸모 있는 HTML 속성"
 concept: "HTML Attributes"
-summary: "JavaScript 없이 HTML 속성만으로 해결되는 일들. 가상 키보드의 엔터 키 문구(enterkeyhint), 번호 목록 제어(reversed·start·type·value), 내려받기 링크(download), 폼 밖의 입력(form), 이미지·iframe 로딩 힌트(decoding·loading·fetchpriority), 반응형 이미지 미리 로드(imagesrcset·imagesizes), 인용·수정 이력(cite·datetime), 옵션 묶기(optgroup), 대체 스타일시트(title)까지 정리한다."
+summary: "JavaScript 없이 HTML 속성만으로 해결되는 일들. 가상 키보드의 엔터 키 문구(enterkeyhint), 번호 목록 제어(reversed·start·type·value), 내려받기 링크(download), 폼 밖의 입력(form), 이미지·iframe 로딩 힌트(decoding·loading·fetchpriority), 반응형 이미지 미리 로드(imagesrcset·imagesizes), 인용·수정 이력(cite·datetime), 옵션 묶기(optgroup), 사용자 정의 데이터(data-*), 대체 스타일시트(title)까지 정리한다."
 tags: ["html", "frontend", "form", "performance", "web"]
 source: other
 date: "2026-10-14"
-sources: ["https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/"]
+sources: ["https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/", "https://www.frontendinterviewhandbook.com/kr/html-questions"]
 ---
 
-> Louis Lazaris의 「[Those HTML Attributes You Never Use](https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/)」(Smashing Magazine, 2022.03)를 바탕으로 재구성하고, 브라우저 지원은 2026년 기준으로 고친 노트입니다.
+> Louis Lazaris의 「[Those HTML Attributes You Never Use](https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/)」(Smashing Magazine, 2022.03)를 바탕으로 재구성하고, 브라우저 지원은 2026년 기준으로 고친 노트입니다. 「data-* 속성」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 보강했습니다.
 
 ## 왜 속성을 알아 두나
 
@@ -29,6 +29,7 @@ HTML 요소는 익숙해도 속성은 잊기 쉽다. 그런데 꽤 많은 기능
 | `cite`, `datetime` | `<blockquote>`, `<q>`, `<del>`, `<ins>` | 출처 URL, 변경 일시 |
 | `label`, `disabled` | `<optgroup>` | 옵션 묶음 제목, 묶음 전체 비활성화 |
 | `title` + `rel="alternate stylesheet"` | `<link>` | 사용자가 고르는 대체 스타일시트 |
+| `data-*` | 모든 요소 | 표준 속성이 없는 사용자 정의 데이터 |
 
 ## 입력과 폼
 
@@ -106,6 +107,32 @@ HTML 요소는 익숙해도 속성은 잊기 쉽다. 그런데 꽤 많은 기능
 <del datetime="2023-12-19">Firefox는 iframe의 loading 속성을 지원하지 않는다.</del>
 <ins datetime="2023-12-19">Firefox 121부터 iframe의 loading 속성을 지원한다.</ins>
 ```
+
+## data-* 속성
+
+`data-`로 시작하는 속성은 **표준에 알맞은 속성이 없는 데이터를 요소에 붙이는** 공식 통로다. 이름은 `data-` 뒤에 한 글자 이상, 대문자 없이 쓴다. 값은 늘 문자열이다.
+
+```html
+<li data-review-id="42" data-state="open">…</li>
+```
+
+```js
+el.dataset.reviewId   // "42" — data-review-id가 카멜케이스로 바뀐다
+el.dataset.state = 'closed'
+```
+
+```css
+li[data-state="open"] { font-weight: bold; }
+li::after { content: attr(data-state); }
+```
+
+| 쓰기 좋은 곳 | 피할 곳 |
+| --- | --- |
+| 서버가 렌더링한 HTML에서 JS로 ID·설정값 넘기기, 이벤트 위임에서 대상 구분([[ajax|AJAX]]의 리뷰 ID 예) | 앱 상태의 원본 저장소. 상태는 JS(프레임워크 상태)에 두고 DOM은 그 결과로 그린다 |
+| CSS 선택자로 상태 표현(`[data-state]`), 테스트 훅(`data-testid`) | 비밀값·권한 정보. 개발자 도구로 누구나 보고 고칠 수 있다 |
+| 분석 이벤트 이름 같은 부가 정보 | 이미 표준 속성이 있는 의미(`hidden`, `disabled`, `aria-*`, `value`) |
+
+JavaScript 프레임워크 이전에는 DOM에 데이터를 두는 주된 방법이었고, 지금은 HTML과 JS·CSS 사이에 값을 넘기는 가벼운 통로로 쓴다. CSS `attr()`은 `content`에서는 모든 브라우저가 지원하고, 다른 속성 값에 타입을 지정해 쓰는 확장 문법은 아직 실험적이다.
 
 ## 대체 스타일시트
 
