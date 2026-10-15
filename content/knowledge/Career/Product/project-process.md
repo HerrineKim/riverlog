@@ -4,11 +4,11 @@ concept: "Project Process"
 summary: "기획 → 개발 기반 구축 → 개발 진행 → 서비스 진화의 기승전결로 정리한 서비스 개발 절차."
 tags: ["career", "product", "process", "ci-cd"]
 source: notion
-sources: ["https://webactually.com/2015/10/22/%eb%82%b4%ea%b0%80-%ed%95%98%eb%8a%94-%ec%9d%bc%ec%97%90-%eb%8c%80%ed%95%b4-%eb%b0%94%eb%a1%9c-%ec%95%8c%ec%95%84%ea%b0%80%ea%b8%b0/"]
+sources: ["https://webactually.com/2015/10/22/%eb%82%b4%ea%b0%80-%ed%95%98%eb%8a%94-%ec%9d%bc%ec%97%90-%eb%8c%80%ed%95%b4-%eb%b0%94%eb%a1%9c-%ec%95%8c%ec%95%84%ea%b0%80%ea%b8%b0/", "https://asana.com/ko/resources/proof-of-concept"]
 date: "2026-10-14"
 ---
 
-> okdevtv의 「개발 프로젝트 진행 순서」 정리와 『오늘도 개발자가 안 된다고 말했다』를 바탕으로 정리한 노트다. 「결정 로그」는 웹액츄얼리가 번역한 Happy Cog의 「내가 하는 일에 대해 바로 알아가기」(2015.10)를 바탕으로 덧붙였다.
+> okdevtv의 「개발 프로젝트 진행 순서」 정리와 『오늘도 개발자가 안 된다고 말했다』를 바탕으로 정리한 노트다. 「결정 로그」는 웹액츄얼리가 번역한 Happy Cog의 「내가 하는 일에 대해 바로 알아가기」(2015.10)를 바탕으로 덧붙였다. PoC·프로토타입·MVP 비교는 Asana의 「[애자일 프로젝트 관리 리소스](https://asana.com/ko/resources/agile)」 아티클들을 함께 참고했다.
 
 새로운 서비스를 처음부터 만들 때 무엇을 어떤 순서로 준비해야 하는지 **기승전결** 네 단계로 정리한 체크리스트다. 사이드 프로젝트를 시작할 때 빠뜨린 단계가 없는지 점검하는 용도로 쓰기 좋다.
 
@@ -19,6 +19,20 @@ date: "2026-10-14"
 - 화면 설계: 와이어프레임 (Figma 등)
 - 데이터 설계: ERD (ERDCloud 등)
 - 개발 기술 스택 선택
+
+### 만들기 전에 검증하기: PoC · 프로토타입 · MVP
+
+셋 다 "작게 먼저 만들어 본다"지만, **답하려는 질문**이 다르다.
+
+| | 개념 증명(PoC) | 프로토타입 | MVP |
+| --- | --- | --- | --- |
+| 질문 | 기술적으로 **가능한가** | 어떻게 **보이고 쓰이는가** | 사용자가 실제로 **원하는가** |
+| 대상 | 개발팀·의사결정자 | 팀·이해관계자·소수 사용자 | 실제 사용자 |
+| 모양 | 핵심 기술 하나만 검증하는 코드 조각 | 화면 흐름, 클릭되는 목업 | 핵심 가치 하나를 담은, 실제로 쓰이는 제품 |
+| 이후 | 대개 버린다 | 디자인·기획 결정에 반영하고 버린다 | 피드백을 받아 계속 키운다 |
+
+- PoC는 **선례가 없는 기술이나 방법**을 쓸 때 필요하다. 이미 검증된 방식이면 조사 자료로 대신한다.
+- MVP의 "최소"는 품질이 아니라 **범위**다. 기능은 적어도 쓸 만해야 배울 것이 생긴다.
 
 ## 승 — 개발 기반 구축
 
@@ -63,4 +77,4 @@ date: "2026-10-14"
 | 개발 | 스프린트 결과물, 테스트, 품질·보안 점검, 모니터링 |
 | 진화 | 운영 지표, 개선 기획 |
 
-관련 노트: [[ci-cd|CI/CD]], [[github-collaboration|GitHub 협업 저장소 설정]], [[github-issue-workflow|GitHub 이슈·프로젝트로 진행 상황 관리하기]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[ga4-setup|GA4 시작하기]], [[side-project-tips|사이드 프로젝트 10가지 팁]], [[content-strategy|콘텐츠 전략과 핵심 모델]], [[working-with-designers|디자이너와 함께 일하기]], [[agile-sprint|애자일과 스프린트]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]]
+관련 노트: [[ci-cd|CI/CD]], [[github-collaboration|GitHub 협업 저장소 설정]], [[github-issue-workflow|GitHub 이슈·프로젝트로 진행 상황 관리하기]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[ga4-setup|GA4 시작하기]], [[side-project-tips|사이드 프로젝트 10가지 팁]], [[content-strategy|콘텐츠 전략과 핵심 모델]], [[working-with-designers|디자이너와 함께 일하기]], [[agile-sprint|애자일과 스프린트]], [[scrum-framework|스크럼: 책임·이벤트·산출물]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]]

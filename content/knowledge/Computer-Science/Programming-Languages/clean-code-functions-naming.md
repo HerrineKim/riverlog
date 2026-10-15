@@ -137,4 +137,4 @@ public abstract class Employee {
 - 깔끔한 함수는 동작 → 테스트 → 리팩터링 순서로 만든다.
 - 이름은 의도를 드러내고, 한 개념에 한 단어를 쓰며, 타입을 넣지 않는다.
 
-관련 노트: [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[readable-code|게슈탈트 법칙으로 보는 읽기 좋은 코드]], [[boolean-naming|불리언 변수 이름 짓기]], [[simple-design|Simple Design]]
+관련 노트: [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[readable-code|게슈탈트 법칙으로 보는 읽기 좋은 코드]], [[boolean-naming|불리언 변수 이름 짓기]], [[simple-design|Simple Design]], [[technical-debt|기술 부채]]

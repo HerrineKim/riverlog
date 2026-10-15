@@ -1,14 +1,14 @@
 ---
 title: "애자일과 스프린트"
 concept: "Agile Sprint"
-summary: "애자일의 핵심은 만들고-보여주고-피드백 받고-방향을 맞추는 주기를 모두가 함께 짧게 만드는 것이다. 스프린트는 목표를 쳐내는 마감 장치가 아니라 정해진 주기마다 속도와 방향을 점검하는 장치이며, 일정은 미리 예측하지 말고 만들어 보며 측정한다. 구글 스프린트 5일 구성과 장치들도 함께 정리했다."
+summary: "애자일의 핵심은 만들고-보여주고-피드백 받고-방향을 맞추는 주기를 모두가 함께 짧게 만드는 것이다. 스프린트는 목표를 쳐내는 마감 장치가 아니라 정해진 주기마다 속도와 방향을 점검하는 장치이며, 일정은 미리 예측하지 말고 만들어 보며 측정한다. 구글 스프린트 5일 구성과 장치들, 폭포수와 애자일을 고르는 기준도 함께 정리했다."
 tags: ["career", "agile", "collaboration", "process", "product"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/agile-feedback-game", "https://velog.io/@teo/scrum-sprint", "https://velog.io/@teo/sprint-and-mind", "https://velog.io/@teo/google-sprint-1", "https://velog.io/@teo/google-sprint-10", "https://velog.io/@teo/google-sprint-15"]
+sources: ["https://velog.io/@teo/agile-feedback-game", "https://velog.io/@teo/scrum-sprint", "https://velog.io/@teo/sprint-and-mind", "https://velog.io/@teo/google-sprint-1", "https://velog.io/@teo/google-sprint-10", "https://velog.io/@teo/google-sprint-15", "https://asana.com/ko/resources/waterfall-vs-agile", "https://asana.com/ko/resources/iterative-process"]
 ---
 
-> 테오(teo)의 애자일·스크럼·스프린트 글과 「테오의 스프린트」 회고(2021~2024)를 요약·재구성한 노트다.
+> 테오(teo)의 애자일·스크럼·스프린트 글과 「테오의 스프린트」 회고(2021~2024)를 요약·재구성한 노트다. 방법론 비교는 Asana의 「[애자일 프로젝트 관리 리소스](https://asana.com/ko/resources/agile)」 아티클들을 함께 참고했다.
 
 ## 애자일이란
 
@@ -24,6 +24,23 @@ sources: ["https://velog.io/@teo/agile-feedback-game", "https://velog.io/@teo/sc
 | 업무의 시각화 | 결과뿐 아니라 진행 과정까지 보이게 한다 (칸반 등) |
 | 짧은 피드백 | 피드백 간격을 계속 줄인다 |
 | 함께 맞추는 방향 | 고객·조직·팀·개인 사이의 방향을 수시로 맞춘다 |
+
+### 반복적과 점진적
+
+**반복적(iterative)** 개발은 같은 것을 피드백에 따라 여러 번 다듬는다. **점진적(incremental)** 개발은 동작하는 뼈대 위에 기능을 한 조각씩 더한다. 애자일은 둘을 함께 쓴다. 매 주기 기능을 하나 더하고(점진), 이미 만든 것도 피드백에 맞춰 고친다(반복).
+
+### 폭포수가 맞을 때, 애자일이 맞을 때
+
+애자일이 늘 정답은 아니다. 변경 비용과 불확실성이 기준이다.
+
+| 폭포수가 맞는 일 | 애자일이 맞는 일 |
+| --- | --- |
+| 요구사항이 처음부터 명확하고 거의 안 바뀐다 | 무엇을 만들어야 할지 만들어 봐야 안다 |
+| 단계가 엄격히 순서대로다 (규제 인증, 하드웨어, 계약 고정 납품) | 고객이 과정에 참여해 자주 피드백할 수 있다 |
+| 나중에 바꾸는 비용이 매우 크다 | 바꾸는 비용이 싸다 (소프트웨어, 디지털 제품) |
+| 예측 가능성이 적응력보다 중요하다 | 완벽한 한 번보다 빠른 첫 결과와 개선이 중요하다 |
+
+애자일 안에서도 실천 방법이 갈린다. 고정 길이 스프린트와 정해진 책임·이벤트로 리듬을 만드는 [[scrum-framework|스크럼]], 스프린트 없이 WIP 제한으로 흐름을 만드는 [[kanban-lean-flow|칸반]], 둘을 섞은 스크럼반이 대표적이다. 스크럼은 애자일을 하는 한 방법일 뿐이라, 스크럼 마스터나 스프린트 없이도 작은 팀·짧은 주기·정기 검토만 지키면 애자일하게 일할 수 있다.
 
 ## 왜 피드백 간격이 핵심인가
 
@@ -70,6 +87,8 @@ sources: ["https://velog.io/@teo/agile-feedback-game", "https://velog.io/@teo/sc
 80%를 만들었어도 아무도 써 볼 수 없으면 안 만든 것과 같다. 3일차에 테스트 가능한 80%를 내면 기획·디자인이 남은 2일의 방향을 바꿀 수 있다. 5일차에 처음 보여 주면 고치기 비싸서 아쉬운 채로 타협하게 된다. 태스크 우선순위도 "가장 먼저 테스트 가능한 형태가 되는 순서"로 세운다.
 
 ## 스크럼 운영 장치
+
+스크럼의 공식 구성(책임·이벤트·산출물)은 [[scrum-framework|스크럼: 책임·이벤트·산출물]]에, 스토리 쪼개기와 추정·속도는 [[backlog-and-estimation|백로그와 추정]]에 있다. 여기서는 실무에서 쓰는 운영 요령만 둔다.
 
 | 장치 | 운영 방법 |
 | --- | --- |
@@ -118,4 +137,4 @@ sources: ["https://velog.io/@teo/agile-feedback-game", "https://velog.io/@teo/sc
 - 완성의 기준은 테스트 가능 여부다. 언제든 배포할 수 있는 작은 완성을 유지한다.
 - 장치의 형식보다 의도를 이해해야 회사마다 다른 환경에 응용할 수 있다.
 
-관련 노트: [[effective-meetings|회의 잘하는 법]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]], [[collaborative-developer|협업을 잘하는 개발자]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[product-minded-engineer|제품 중심 개발자]], [[pair-programming|페어 프로그래밍]]
+관련 노트: [[scrum-framework|스크럼: 책임·이벤트·산출물]], [[backlog-and-estimation|백로그와 추정]], [[kanban-lean-flow|칸반과 린: 흐름과 낭비]], [[effective-meetings|회의 잘하는 법]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]], [[collaborative-developer|협업을 잘하는 개발자]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[product-minded-engineer|제품 중심 개발자]], [[pair-programming|페어 프로그래밍]]
