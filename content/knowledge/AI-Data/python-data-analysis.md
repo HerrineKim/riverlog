@@ -25,6 +25,7 @@ sources: ["https://pandas.pydata.org/", "https://pola.rs/"]
 - **크롤링 프레임워크**: `scrapy`
 - **브라우저 자동화**(JavaScript로 그려지는 페이지): `selenium`
 - **파싱**: `BeautifulSoup`, `lxml`, `json`
+- **기사 본문 추출**: `newspaper4k` — [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]]
 
 ```python
 import requests
@@ -128,4 +129,4 @@ df.groupby("region")["amount"].sum().sort_values(ascending=False)
 - 커뮤니티: PyCon, PyData, JupyterCon
 - 책: 『파이썬 라이브러리를 활용한 데이터 분석』, 『파이썬 데이터 사이언스 핸드북』, 『밑바닥부터 시작하는 데이터 과학』
 
-관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-journalism|데이터 저널리즘 실무]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[location-estimation|데이터의 위치 추정]]
+관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-journalism|데이터 저널리즘 실무]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[location-estimation|데이터의 위치 추정]], [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]]
