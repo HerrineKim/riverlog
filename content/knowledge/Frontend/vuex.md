@@ -129,7 +129,7 @@ auth.$subscribe((mutation, state) => {
 
 ## 환경 변수
 
-API 키 같은 값은 `.env.local`에 두고 저장소에 올리지 않는다. Vite 기반 Vue 프로젝트에서는 **`VITE_` 접두사**가 붙은 변수만 클라이언트 코드에 노출되고, `import.meta.env.VITE_TMDB_KEY`로 읽는다. 과거에는(Vue CLI) `VUE_APP_` 접두사와 `process.env`를 썼다. 클라이언트에 노출된 값은 누구나 볼 수 있으므로 비밀 키는 서버를 거쳐 호출한다.
+스토어에서 쓰는 API 키 같은 값은 `.env.local`에 두고, Vite 기반 Vue 프로젝트에서는 `VITE_` 접두사를 붙여 `import.meta.env`로 읽는다(과거 Vue CLI는 `VUE_APP_`와 `process.env`). 도구별 접두사와 내장 변수, 흔한 실수는 [[tooling#환경 변수|React 빌드 환경 직접 구성하기]]에 모았다.
 
 ## 정리
 

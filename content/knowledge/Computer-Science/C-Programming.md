@@ -17,7 +17,7 @@ C는 메모리를 직접 다루는 언어라서, 주소와 포인터를 이해�
 - [C의 정수 자료형과 형 변환](Computer-Science/C-Programming/c-integer-types.md) — 플랫폼별 크기, stdint.h와 size_t, 정수 승격, 부호 확장, 오버플로 미정의 동작, 고정소수점
 - [구조체와 함수 포인터](Computer-Science/C-Programming/c-struct-and-function-pointer.md) — 구조체 패딩, 함수 포인터와 콜백, 불투명 포인터와 가상 함수 테이블로 객체 흉내 내기
 - [C의 스코프와 링키지](Computer-Science/C-Programming/c-scope-and-linkage.md) — 스코프와 이름 가림, 네 가지 이름 공간, 저장 기간, static과 내부 링키지, 기호 상수
-- [C 입력과 파일 입출력](Computer-Science/C-Programming/file-io.md) — scanf, fopen/fread, open/read/write와 파일 디스크립터, read의 반환값, stdio 버퍼링
+- [C 입력과 파일 입출력](Computer-Science/C-Programming/file-io.md) — scanf, fopen·fprintf·fread·fclose, 매직 넘버로 바이너리 판별, stdio 아래의 fd와 시스템 콜
 
 ### 빌드와 디버깅
 

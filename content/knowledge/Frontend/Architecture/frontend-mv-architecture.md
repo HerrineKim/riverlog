@@ -61,6 +61,7 @@ MVVM은 명령(Command) 패턴과 데이터 바인딩이라는 두 장치로 의
 | 가벼운 전역 스토어 (Zustand, Jotai, Svelte store) | 컴포넌트 밖 공용 데이터에 간단히 get/set | 중간 과정은 자율, 파생 값(computed·selector)과 동기화를 제공. 과거에 유행한 Recoil은 2025년 1월 저장소가 보관(archived)됐다 |
 | 시그널 (Vue 반응성, Svelte 5 runes, Angular Signals, Solid) | 값 단위로 의존을 추적해 바뀐 곳만 갱신 | 반응형 상태가 프레임워크 기본 기능으로 들어왔다 |
 | 서버 상태 (TanStack Query, SWR, RTK Query) | 서버 fetch가 Model, query·mutation이 Controller | 전역 상태의 대부분은 결국 API 데이터라는 관찰. 캐싱·무효화·재요청을 맡긴다 |
+| 서버로 이동 (서버 컴포넌트, 라우터 loader) | 데이터 로딩이 서버 컴포넌트·loader로 옮겨 간다 | 클라이언트에 남는 상태가 더 줄었다([[react-server-components\|React Server Components]]) |
 
 Redux 이후 진영마다 비슷한 도구가 나왔다. Vue의 Vuex(지금은 [[vuex|Pinia]]), 데코레이터로 반응성을 쓰는 MobX, Angular의 RxJS 기반 NgRx와 그것을 간소화한 NGXS, 유한 상태 기계를 쓰는 XState, Effector 등이다. Flux의 세부 구성은 [[redux|Redux와 react-redux]]에 있다.
 
@@ -132,4 +133,4 @@ const Counter = () => {
 - 실제 라이브러리는 어느 이름에도 딱 맞지 않는다(AngularJS는 아예 MVW, Model-View-Whatever라 불렀다). MV* 계열이 수렴해 온 방향은 단방향 데이터 흐름, 선언적으로 바뀐 Controller, 뷰와 비즈니스 로직의 분리, 반응형 변화 전파, 서버 연동 자체를 상태로 다루기, 작게 시작해 필요할 때 복잡해지는 도구다.
 - 새 라이브러리를 볼 때는 이름이 아니라 **어떤 불편을 풀었는지**로 판단한다.
 
-관련 노트: [[redux|Redux와 react-redux]], [[getting-started-mtv|Django 시작하기와 MTV 패턴]], [[context|Context와 전역 상태]], [[tanstack-query|TanStack Query(React Query)]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]]
+관련 노트: [[redux|Redux와 react-redux]], [[getting-started-mtv|Django 시작하기와 MTV 패턴]], [[context|Context와 전역 상태]], [[tanstack-query|TanStack Query(React Query)]], [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]]

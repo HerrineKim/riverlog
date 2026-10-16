@@ -67,22 +67,14 @@ const snap = useSnapshot(state)   // 읽은 속성만 추적
 state.count++                     // 변경하듯 쓴다
 ```
 
-어느 쪽이 정답은 아니다. 액션·미들웨어·DevTools 같은 구조가 필요하면 스토어, 상태가 잘게 흩어져 있고 파생 값이 많으면 atom, 변경하듯 쓰는 것이 자연스러운 도메인이면 proxy가 맞다. Redux가 언제 맞는지는 [[redux|Redux와 react-redux]]의 「언제 Redux를 쓰나」에 있다.
+atom 방식을 알린 Recoil은 2025년 1월 저장소가 보관됐고, 같은 모델은 Jotai가 잇는다. 어느 쪽이 정답은 아니다. 액션·미들웨어·DevTools 같은 구조가 필요하면 스토어, 상태가 잘게 흩어져 있고 파생 값이 많으면 atom, 변경하듯 쓰는 것이 자연스러운 도메인이면 proxy가 맞다. Redux가 언제 맞는지는 [[redux|Redux와 react-redux]]의 「언제 Redux를 쓰나」에 있다.
 
 ## 흐름: 어떻게 여기까지 왔나
 
-```text
-Flux        단방향 데이터 흐름 (Facebook)
- └ Redux    단일 스토어, 시간 여행 디버깅. 서버 데이터까지 넣으며 보일러플레이트 폭증
-   └ Context + useReducer   Redux가 과하다는 반작용. 커지면 Redux를 서툴게 다시 만들고 리렌더링이 문제
-     ├ 서버 상태 라이브러리  React Query·SWR·Apollo·RTK Query가 서버 데이터를 가져감
-     ├ 작은 전역 상태        Zustand·Jotai·Valtio (훅 중심, 작은 API)
-     └ 서버로 이동           Remix(현 React Router)·Next.js 서버 컴포넌트가 데이터 로딩을 서버로
-```
+Flux·Redux에서 Context, 서버 상태 라이브러리, 작은 전역 스토어로 이어진 변천은 [[frontend-mv-architecture#웹 프론트엔드 아키텍처의 변천|프론트엔드 MV* 아키텍처의 흐름]]에 표로 정리했다. 상태 관리 관점에서 남길 교훈은 두 가지다.
 
 - Redux의 문제는 스토어 자체보다 **UI 상태와 서버 데이터를 한 곳에 섞은 것**이었다. 지금의 Redux Toolkit은 RTK Query로 이 둘을 나눈다.
-- 서버 컴포넌트와 라우터 loader가 데이터를 서버에서 가져오면서, 클라이언트에 남는 상태는 더 줄었다([[react-server-components|React Server Components의 동작 원리]]).
-- atom 방식을 알린 Recoil은 2025년 1월 저장소가 보관되어 관리되지 않는다. 같은 모델은 Jotai가 잇는다.
+- 서버 컴포넌트와 라우터 loader(Remix, 현 React Router)가 데이터를 서버에서 가져오면서, 클라이언트에 남는 상태는 더 줄었다([[react-server-components|React Server Components의 동작 원리]]).
 
 ## 정리
 
@@ -92,4 +84,4 @@ Flux        단방향 데이터 흐름 (Facebook)
 - 스토어·atom·proxy는 우열이 아니라 모양의 차이다. 팀과 앱에 맞는 쪽을 고른다.
 - 로컬에서 시작하고 필요할 때만 끌어올린다.
 
-관련 노트: [[state|State]], [[context|Context]], [[redux|Redux와 react-redux]], [[tanstack-query|TanStack Query(React Query)]], [[react-server-components|React Server Components의 동작 원리]]
+관련 노트: [[state|State]], [[context|Context]], [[redux|Redux와 react-redux]], [[tanstack-query|TanStack Query(React Query)]], [[react-server-components|React Server Components의 동작 원리]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]]

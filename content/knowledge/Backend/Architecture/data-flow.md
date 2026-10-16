@@ -1,7 +1,7 @@
 ---
 title: "Data Flow로 보는 웹 아키텍처"
 concept: "Data Flow"
-summary: "데이터가 Presentation·Application·Data 티어를 거쳐 흐르는 방식을 기준으로 모놀리식 3-Tier, MSA, DevOps, 보안 요소를 정리한 아키텍처 개관."
+summary: "데이터가 Presentation·Application·Data 티어를 거쳐 흐르는 방식을 기준으로 모놀리식 3-Tier, MSA, 보안 요소를 정리한 아키텍처 개관."
 tags: ["architecture", "backend", "msa", "security", "devops"]
 source: notion
 date: "2026-10-13"
@@ -26,14 +26,10 @@ date: "2026-10-13"
 기능을 독립적으로 배포 가능한 작은 서비스들로 쪼갠 구조다. 데이터 흐름 관점에서 새로 등장하는 요소는 다음과 같다.
 
 1. **서비스별 DB**: 각 서비스가 자기 데이터를 소유한다.
-2. **BFF(Backend For Frontend)**: 화면(웹·앱)별로 필요한 데이터를 여러 서비스에서 모아 주는 중간 서버.
+2. **BFF(Backend For Frontend)**: 화면(웹·앱)별로 필요한 데이터를 여러 서비스에서 모아 주는 중간 서버([[bff|BFF]]).
 3. **메시지 큐/브로커(RabbitMQ, Kafka)**: 서비스 사이의 데이터를 비동기로 전달해 결합도를 낮춘다.
 
 > MSA는 배포·관측·데이터 정합성 등 운영 복잡도를 크게 늘린다. 팀과 트래픽 규모가 독립 배포를 필요로 할 때 선택하고, 그 전에는 모듈을 잘 나눈 모놀리식(모듈러 모놀리스)이 대개 더 싸다.
-
-## DevOps
-
-- **DevOps**도 이 흐름 안에 들어 있다. 빌드·배포·인프라 역시 각 티어를 떠받치는 구성 요소다. ([DevOps](DevOps))
 
 ## 보안 관점에서 챙길 것
 
@@ -45,7 +41,7 @@ date: "2026-10-13"
 
 ## 더 세밀한 그림
 
-3-Tier를 DNS → 로드밸런서 → 웹 서버·WAS → 캐시·DB·작업 큐 → CDN으로 더 쪼개어 그리면 학습 지도가 된다. 웹 서버와 WAS를 나누는 기준은 [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]]에 있다.
+3-Tier를 DNS → 로드밸런서 → 웹 서버·WAS → 캐시·DB·작업 큐 → CDN으로 더 쪼개어 그리면 학습 지도가 된다. 빌드·배포·인프라([DevOps](DevOps.md))도 각 티어를 떠받치는 구성 요소로 이 그림에 들어간다. 웹 서버와 WAS를 나누는 기준은 [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]]에 있다.
 
 ## 핵심 정리
 

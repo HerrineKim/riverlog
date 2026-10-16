@@ -10,7 +10,7 @@ sources: ["https://riverkim.kr/284", "https://riverkim.kr/289", "https://riverki
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트다.
 
-Jest·Vitest로 테스트를 돌릴 때 자주 쓰는 실행 옵션을 모았다. 옵션 이름은 Jest 30 기준이고, Vitest는 같은 개념을 `coverage.include`, `test.exclude`로 둔다. 무엇을 어떻게 테스트할지에 대한 원칙은 [[frontend-test-types#테스트 작성 원칙|프론트엔드 테스트의 종류와 도구]]에 있다.
+Jest·Vitest로 테스트를 돌릴 때 자주 쓰는 실행 옵션을 모았다. 옵션 이름은 Jest 30 기준이고, Vitest는 같은 개념을 `coverage.include`, `test.exclude`로 둔다. 무엇을 어떻게 테스트할지에 대한 원칙은 [[js-testing-best-practices|JavaScript 테스트 모범 사례]]에 있다.
 
 ## 특정 파일의 커버리지만 보기
 
