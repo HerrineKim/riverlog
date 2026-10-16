@@ -128,7 +128,7 @@ grep -rl -E "/<slug>\)|\[\[<slug>[|#\]]|<slug>\.md" content/knowledge           
 짧게 보고한다:
 
 - 만든/고친 파일 경로와 사이트 URL(`/knowledge/dictionary/<분야>/<slug>` — 소문자)
-- 노트 구성 한 줄 요약, 뺀 내용(사적 정보·불확실한 사실)이 있으면 그것
+- 노트 구성 한 줄 요약, 뺀 내용(불확실한 사실)이 있으면 그것
 - 커밋 여부를 AskUserQuestion으로 묻는다. **푸시는 곧 배포**이므로 사용자가 원할 때만 한다.
   커밋 메시지 형식: `Add knowledge note: <제목>` (보강이면 `Update knowledge note: <제목>`)
 - 커밋은 노트마다 하되, **푸시는 노트마다 하지 않는다.** 이번 작업의 노트를 모두 커밋한 뒤 한 번만 푸시한다.
