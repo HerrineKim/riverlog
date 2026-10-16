@@ -6,9 +6,9 @@ import matter from "gray-matter";
  * content/ is an Obsidian vault. This module knows the vault-wide conventions:
  * which notes are public, where attachments live, and how [[wikilinks]] resolve to site URLs.
  */
-export const CONTENT_DIR = path.join(process.cwd(), "content");
-export const ATTACHMENTS_DIR = path.join(CONTENT_DIR, "attachments");
-export const ATTACHMENTS_URL = "/attachments"; // content/attachments is copied to public/attachments before dev/build
+const CONTENT_DIR = path.join(process.cwd(), "content");
+const ATTACHMENTS_DIR = path.join(CONTENT_DIR, "attachments");
+const ATTACHMENTS_URL = "/attachments"; // content/attachments is copied to public/attachments before dev/build
 export const KNOWLEDGE_BASE = "/knowledge/dictionary";
 
 /** Files and folders starting with "_" or "." (templates, drafts, .obsidian) never reach the site. */
@@ -16,6 +16,18 @@ export const isHiddenName = (name: string) => name.startsWith("_") || name.start
 
 /** A note is public unless its frontmatter says `publish: false`. */
 export const isPublished = (data: Record<string, unknown>) => data.publish !== false;
+
+/** A frontmatter list (`tags`, `stack`) as strings; anything else is empty. */
+export const stringList = (v: unknown): string[] => (Array.isArray(v) ? v.map(String) : []);
+
+/** decodeURIComponent that leaves malformed input as is. */
+export function safeDecode(s: string): string {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+}
 
 export function slugify(segment: string): string {
   return segment
@@ -41,20 +53,38 @@ function walk(dir: string, onFile: (file: string, rel: string) => void, rel = ""
   }
 }
 
-export type NoteRef = { href: string; title: string };
-type Index = { notes: Map<string, NoteRef>; attachments: Map<string, string> };
-let cached: Index | undefined;
-let cachedAt = 0;
-
 /**
  * Production builds read the vault once. In dev the cache lives for a moment, so one render reuses it
  * but an edit in Obsidian shows up on the next refresh.
  */
-export const isFresh = (at: number) => process.env.NODE_ENV === "production" || Date.now() - at < 2000;
+const isFresh = (at: number) => process.env.NODE_ENV === "production" || Date.now() - at < 2000;
+
+/** `read`, cached for as long as the vault counts as unchanged (see isFresh). */
+export function cachedRead<T>(read: () => T): () => T {
+  let cached: { value: T; at: number } | undefined;
+  return () => {
+    if (!cached || !isFresh(cached.at)) cached = { value: read(), at: Date.now() };
+    return cached.value;
+  };
+}
+
+/** Published notes directly in content/<section> (blog, books, portfolio), with their frontmatter. */
+export function readSection(section: string) {
+  const dir = path.join(CONTENT_DIR, section);
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith(".md") && !isHiddenName(f))
+    .flatMap((file) => {
+      const { data, content } = matter(fs.readFileSync(path.join(dir, file), "utf8"));
+      return isPublished(data) ? [{ file, slug: file.replace(/\.md$/, ""), data, content }] : [];
+    });
+}
+
+type NoteRef = { href: string; title: string };
 
 /** Note name/path → site URL, and attachment name/path → public URL. First match wins, like Obsidian's shortest-path links. */
-function index(): Index {
-  if (cached && isFresh(cachedAt)) return cached;
+const index = cachedRead(() => {
   const notes = new Map<string, NoteRef>();
   const add = (keys: string[], ref: NoteRef) => keys.forEach((k) => notes.has(key(k)) || notes.set(key(k), ref));
   /** Title of a published note, undefined for non-notes and `publish: false`. */
@@ -89,10 +119,8 @@ function index(): Index {
     for (const k of [`attachments/${rel}`, rel, path.posix.basename(rel)]) if (!attachments.has(k.toLowerCase())) attachments.set(k.toLowerCase(), url);
   });
 
-  cached = { notes, attachments };
-  cachedAt = Date.now();
-  return cached;
-}
+  return { notes, attachments };
+});
 
 /** `note`, `folder/note`, `note.md` → URL and title of a published note. */
 export function resolveNote(target: string): NoteRef | undefined {

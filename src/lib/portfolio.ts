@@ -1,10 +1,6 @@
-import fs from "node:fs";
-import path from "node:path";
-import matter from "gray-matter";
 import { extractToc } from "./markdown";
-import { isFresh, isPublished, resolveAttachment } from "./vault";
+import { cachedRead, readSection, resolveAttachment, stringList } from "./vault";
 
-const PORTFOLIO_DIR = path.join(process.cwd(), "content/portfolio");
 /** Closing sections that are not projects, so the index card leaves them out. */
 const NON_PROJECT_HEADINGS = new Set(["돌아보며"]);
 
@@ -35,25 +31,11 @@ export type Work = {
 /** A `##` section; `summary` is the `> one-liner` right under its heading. */
 export type Project = { id: string; title: string; summary?: string };
 
-let cached: { list: Work[]; at: number } | undefined;
-
-export function getAllWorks(): Work[] {
-  if (cached && isFresh(cached.at)) return cached.list;
-  cached = { list: readWorks(), at: Date.now() };
-  return cached.list;
-}
-
-function readWorks(): Work[] {
-  if (!fs.existsSync(PORTFOLIO_DIR)) return [];
-  return fs
-    .readdirSync(PORTFOLIO_DIR)
-    .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
-    .map((file): Work | undefined => {
-      const { data, content } = matter(fs.readFileSync(path.join(PORTFOLIO_DIR, file), "utf8"));
-      if (!isPublished(data)) return undefined;
-      const list = (v: unknown) => (Array.isArray(v) ? v.map(String) : []);
-      return {
-        slug: file.replace(/\.md$/, ""),
+export const getAllWorks = cachedRead((): Work[] =>
+  readSection("portfolio")
+    .map(
+      ({ file, slug, data, content }): Work => ({
+        slug,
         kind: WORK_KINDS.includes(data.kind) ? data.kind : "career",
         company: String(data.company ?? file),
         companyEn: data.companyEn ? String(data.companyEn) : undefined,
@@ -64,18 +46,17 @@ function readWorks(): Work[] {
         location: data.location ? String(data.location) : undefined,
         summary: String(data.summary ?? ""),
         about: data.about ? String(data.about) : undefined,
-        stack: list(data.stack),
+        stack: stringList(data.stack),
         highlights: Array.isArray(data.highlights)
           ? data.highlights.map((h: Record<string, unknown>) => ({ value: String(h.value ?? ""), label: String(h.label ?? "") }))
           : [],
         cover: typeof data.cover === "string" ? resolveAttachment(data.cover) : undefined,
         projects: readProjects(content),
         body: content,
-      };
-    })
-    .filter((w): w is Work => !!w)
-    .sort((a, b) => Number(a.kind === "project") - Number(b.kind === "project") || b.start.localeCompare(a.start));
-}
+      }),
+    )
+    .sort((a, b) => Number(a.kind === "project") - Number(b.kind === "project") || b.start.localeCompare(a.start)),
+);
 
 function readProjects(markdown: string): Project[] {
   const headings = extractToc(markdown).filter((t) => t.depth === 2);

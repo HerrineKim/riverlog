@@ -24,6 +24,7 @@ type Flat = { node: LiteNode; trail: string[] };
 type DateKey = "created" | "updated";
 
 const dateLabel = (iso?: string) => (iso ? iso.slice(0, 10).replaceAll("-", ".") : "");
+const byName = (x: Flat, y: Flat) => x.node.name.localeCompare(y.node.name, "ko", { numeric: true });
 
 function flatten(n: LiteNode, trail: string[], out: Flat[]) {
   if (n.isDoc && n.depth > 0) out.push({ node: n, trail });
@@ -49,7 +50,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
   }, [all, query]);
 
   const visible = (n: LiteNode): boolean =>
-    !matches || matches.has(n.id) || n.children.some((c) => visible(c));
+    !matches || matches.has(n.id) || n.children.some(visible);
 
   const index = useMemo(() => {
     const groups = new Map<string, Flat[]>();
@@ -61,7 +62,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
     const order = (k: string) => (CHO.includes(k) ? 0 : /[A-Z]/.test(k) ? 1 : 2);
     return [...groups.entries()]
       .sort(([a], [b]) => order(a) - order(b) || a.localeCompare(b, "ko"))
-      .map(([k, v]) => [k, v.sort((x, y) => x.node.name.localeCompare(y.node.name, "ko", { numeric: true }))] as const);
+      .map(([k, v]) => [k, v.sort(byName)] as const);
   }, [all, matches]);
 
   const byDate = useMemo(() => {
@@ -72,7 +73,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
         // Undated notes go last either way
         if (!at(x) !== !at(y)) return at(x) ? -1 : 1;
         const c = at(x).localeCompare(at(y));
-        return (newestFirst ? -c : c) || x.node.name.localeCompare(y.node.name, "ko", { numeric: true });
+        return (newestFirst ? -c : c) || byName(x, y);
       });
   }, [all, matches, dateKey, newestFirst]);
 
@@ -164,13 +165,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
                 )}
               </p>
               <div>
-                <Link href={node.href} className="font-medium text-fg-strong hover:text-accent">
-                  {node.name}
-                </Link>
-                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted">
-                  <span className="size-1.5 rounded-full" style={{ background: node.color }} />
-                  {trail.join(" › ")}
-                </p>
+                <NoteTitle node={node} trail={trail} />
               </div>
               <p className="line-clamp-2 text-sm text-muted">{node.excerpt}</p>
             </li>
@@ -193,13 +188,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
                   {items.map(({ node, trail }) => (
                     <div key={node.id} className="grid gap-1 py-3 sm:grid-cols-[minmax(0,16rem)_1fr] sm:gap-6">
                       <dt>
-                        <Link href={node.href} className="font-medium text-fg-strong hover:text-accent">
-                          {node.name}
-                        </Link>
-                        <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted">
-                          <span className="size-1.5 rounded-full" style={{ background: node.color }} />
-                          {trail.join(" › ")}
-                        </p>
+                        <NoteTitle node={node} trail={trail} />
                       </dt>
                       <dd className="line-clamp-2 text-sm text-muted">{node.excerpt}</dd>
                     </div>
@@ -211,6 +200,21 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
         </div>
       )}
     </div>
+  );
+}
+
+/** A note's title link over its category dot and folder trail. */
+function NoteTitle({ node, trail }: Flat) {
+  return (
+    <>
+      <Link href={node.href} className="font-medium text-fg-strong hover:text-accent">
+        {node.name}
+      </Link>
+      <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted">
+        <span className="size-1.5 rounded-full" style={{ background: node.color }} />
+        {trail.join(" › ")}
+      </p>
+    </>
   );
 }
 

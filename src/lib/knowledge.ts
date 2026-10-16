@@ -2,26 +2,23 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { excerptOf } from "./markdown";
-import { isFresh, isHiddenName, isPublished, KNOWLEDGE_BASE, resolveNote, slugify } from "./vault";
+import { cachedRead, isHiddenName, isPublished, KNOWLEDGE_BASE, resolveNote, safeDecode, slugify, stringList } from "./vault";
 
-export { KNOWLEDGE_BASE, slugify };
+export { KNOWLEDGE_BASE };
 
 const ROOT = path.join(process.cwd(), "content/knowledge");
 const DATES_FILE = path.join(process.cwd(), "content/.knowledge-dates.json"); // written by scripts/knowledge-dates.mjs
 
 type NoteDates = { created: string; updated: string };
-let datesCache: { map: Record<string, NoteDates>; at: number } | undefined;
 
 /** When a note was first added to the knowledge base and last changed, keyed by path under content/knowledge. */
-function noteDates(): Record<string, NoteDates> {
-  if (datesCache && isFresh(datesCache.at)) return datesCache.map;
-  let map: Record<string, NoteDates> = {};
+const noteDates = cachedRead((): Record<string, NoteDates> => {
   try {
-    map = JSON.parse(fs.readFileSync(DATES_FILE, "utf8"));
-  } catch {}
-  datesCache = { map, at: Date.now() };
-  return map;
-}
+    return JSON.parse(fs.readFileSync(DATES_FILE, "utf8"));
+  } catch {
+    return {};
+  }
+});
 
 export type KDoc = {
   title: string;
@@ -82,24 +79,21 @@ function prettyFolder(name: string, depth: number): string {
  */
 function resolveRelativeLinks(markdown: string, file: string): string {
   const fromDir = path.posix.dirname(path.relative(ROOT, file).split(path.sep).join("/"));
+  const hrefOf = (rel: string) => `${KNOWLEDGE_BASE}/${rel.split("/").map(slugify).join("/")}`;
   // Only published notes resolve, so a link never points at a draft's 404 or leaks its file name
   const noteHref = (rel: string) => {
     // resolveNote also matches bare file names; a file-path link must name the exact note
     const href = resolveNote(rel)?.href;
-    return href === `${KNOWLEDGE_BASE}/${rel.split("/").map(slugify).join("/")}` ? href : undefined;
+    return href === hrefOf(rel) ? href : undefined;
   };
   const isFolder = (rel: string) => fs.existsSync(path.join(ROOT, rel)) && fs.statSync(path.join(ROOT, rel)).isDirectory();
   const exists = (rel: string) => !rel.startsWith("..") && (!!noteHref(rel) || isFolder(rel));
   return markdown.replace(/\]\((?!https?:|\/|#|mailto:)([^)\s#{}]+?)(#[^)\s]*)?\)/g, (m, target: string, hash = "") => {
-    let decoded = target;
-    try {
-      decoded = decodeURIComponent(target);
-    } catch {}
-    const bare = decoded.replace(/\.md$/, "").replace(/\/$/, "");
+    const bare = safeDecode(target).replace(/\.md$/, "").replace(/\/$/, "");
     const candidates = [path.posix.normalize(path.posix.join(fromDir === "." ? "" : fromDir, bare)), path.posix.normalize(bare)];
     const hit = candidates.find(exists);
     if (!hit) return m;
-    return `](${noteHref(hit) ?? `${KNOWLEDGE_BASE}/${hit.split("/").map(slugify).join("/")}`}${hash})`;
+    return `](${noteHref(hit) ?? hrefOf(hit)}${hash})`;
   });
 }
 
@@ -122,7 +116,7 @@ function readDoc(file: string): KDoc | undefined {
     date: data.date ? String(data.date) : undefined,
     created: added?.created,
     updated: added?.updated,
-    tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
+    tags: stringList(data.tags),
     excerpt: data.summary ? String(data.summary) : excerptOf(content),
     body: content,
   };
@@ -183,10 +177,7 @@ function buildNode(dir: string, slug: string[], name: string, category: string, 
   };
 }
 
-let cached: { tree: KNode; byId: Map<string, KNode>; at: number } | undefined;
-
-function load() {
-  if (cached && isFresh(cached.at)) return cached;
+const load = cachedRead(() => {
   const tree = buildNode(ROOT, [], "Knowledge", "");
   const byId = new Map<string, KNode>();
   const visit = (n: KNode) => {
@@ -194,26 +185,15 @@ function load() {
     n.children.forEach(visit);
   };
   visit(tree);
-  cached = { tree, byId, at: Date.now() };
-  return cached;
-}
+  return { tree, byId };
+});
 
 export function getKnowledgeTree(): KNode {
   return load().tree;
 }
 
 export function getNode(slug: string[]): KNode | undefined {
-  const id = slug
-    .map((s) => {
-      try {
-        return decodeURIComponent(s);
-      } catch {
-        return s;
-      }
-    })
-    .map((s) => s.normalize("NFC"))
-    .join("/");
-  return load().byId.get(id);
+  return load().byId.get(slug.map((s) => safeDecode(s).normalize("NFC")).join("/"));
 }
 
 export function getAllNodes(): KNode[] {
@@ -278,11 +258,8 @@ function buildTags(): TagEntry[] {
 }
 
 export function getTag(param: string): TagEntry | undefined {
-  let tag = param;
-  try {
-    tag = decodeURIComponent(param);
-  } catch {}
-  return getTags().find((t) => t.tag === tag.toLowerCase());
+  const tag = safeDecode(param).toLowerCase();
+  return getTags().find((t) => t.tag === tag);
 }
 
 export type GraphNode = {
@@ -301,7 +278,7 @@ export type GraphNode = {
 export type GraphLink = { source: string; target: string; kind: "member" | "related" | "hub" | "reference" };
 
 /** Concept-map label: "01 정렬(sorting)" → "정렬", "[Udemy] 빅오 소개" → "빅오 소개". */
-export function conceptLabel(title: string): string {
+function conceptLabel(title: string): string {
   const cleaned = title
     .replace(/^\s*\[[^\]]*\]\s*/g, "")
     .replace(/^\s*(?:\d+[\s._)-]*)+/, "")

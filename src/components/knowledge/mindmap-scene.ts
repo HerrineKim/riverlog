@@ -42,6 +42,7 @@ export const REFERENCE_COLOR = { dark: "#f5c26b", light: "#975a16" } as const; /
 const BG = { dark: "#070a0e", light: "#f3f4f0" } as const;
 const FONT = "IBM Plex Sans KR, Apple SD Gothic Neo, sans-serif";
 const FOV = 50;
+const TAN_HALF_FOV = Math.tan(THREE.MathUtils.degToRad(FOV / 2));
 // Doc labels show for notes this close to the camera, nearest first
 const LABEL_NEAR = 220;
 const MAX_NEAR_LABELS = 40;
@@ -306,7 +307,7 @@ export class MindMapScene {
     if (i === undefined) return;
     this.stopMotion();
     const target = this.nodePos[i];
-    const dir = this.camera.position.clone().sub(this.controls.target).normalize();
+    const dir = this.viewDir();
     this.flyTo(target.clone().addScaledVector(dir, n.kind === "category" ? 300 : 110), target.clone(), 900);
   }
 
@@ -315,16 +316,15 @@ export class MindMapScene {
     const pts = ids ? this.nodes.flatMap((n, i) => (ids.has(n.id) ? [this.nodePos[i]] : [])) : this.nodePos;
     if (!pts.length) return;
     const sphere = new THREE.Sphere().setFromPoints(pts);
-    const halfFov = THREE.MathUtils.degToRad(FOV / 2);
-    const fitAngle = Math.min(halfFov, Math.atan(Math.tan(halfFov) * this.camera.aspect));
+    const fitAngle = Math.min(THREE.MathUtils.degToRad(FOV / 2), Math.atan(TAN_HALF_FOV * this.camera.aspect));
     const dist = THREE.MathUtils.clamp((Math.max(sphere.radius, 20) / Math.sin(fitAngle)) * 0.9, MIN_DIST, MAX_DIST);
-    const dir = this.camera.position.clone().sub(this.controls.target).normalize();
+    const dir = this.viewDir();
     this.flyTo(sphere.center.clone().addScaledVector(dir, dist), sphere.center.clone(), ms);
   }
 
   zoomTo(z: number) {
     this.stopMotion();
-    const dir = this.camera.position.clone().sub(this.controls.target).normalize();
+    const dir = this.viewDir();
     this.camera.position.copy(this.controls.target).addScaledVector(dir, zoomToDist(z));
     this.controls.update();
     this.requestRender();
@@ -360,6 +360,11 @@ export class MindMapScene {
 
   // ---- internals ---------------------------------------------------------------------------
 
+  /** Unit vector from the orbit target to the camera. */
+  private viewDir() {
+    return this.camera.position.clone().sub(this.controls.target).normalize();
+  }
+
   private stopMotion = () => {
     this.controls.autoRotate = false;
     this.flight = null;
@@ -392,7 +397,7 @@ export class MindMapScene {
     this.camera.updateProjectionMatrix();
     // Pixels per world unit at distance 1, so point sizes match the world radius
     this.points.material.uniforms.uScale.value =
-      (h * this.renderer.getPixelRatio()) / (2 * Math.tan(THREE.MathUtils.degToRad(FOV / 2)));
+      (h * this.renderer.getPixelRatio()) / (2 * TAN_HALF_FOV);
     // Frame the map once the real aspect is known
     if (!this.fitted) {
       this.fitted = true;
@@ -474,7 +479,7 @@ export class MindMapScene {
       const x = ((p.x + 1) / 2) * w;
       const y = ((1 - p.y) / 2) * h;
       // Lift the label above the disc: the node's on-screen radius plus a small gap
-      const r = (this.nodes[i].size * h) / (2 * Math.tan(THREE.MathUtils.degToRad(FOV / 2)) * this.nodePos[i].distanceTo(camPos));
+      const r = (this.nodes[i].size * h) / (2 * TAN_HALF_FOV * this.nodePos[i].distanceTo(camPos));
       s.style.display = "block";
       s.style.transform = `translate(${x}px, ${y - r - 3}px) translate(-50%, -100%)`;
     }
@@ -487,7 +492,7 @@ export class MindMapScene {
     const mx = clientX - rect.left;
     const my = clientY - rect.top;
     const { width: w, height: h } = rect;
-    const k = h / (2 * Math.tan(THREE.MathUtils.degToRad(FOV / 2)));
+    const k = h / (2 * TAN_HALF_FOV);
     const camPos = this.camera.position;
     let best = -1;
     let bestDepth = Infinity;

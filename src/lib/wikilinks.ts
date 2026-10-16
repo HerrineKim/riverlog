@@ -2,7 +2,7 @@ import { slug } from "github-slugger";
 import type { Image, Link, PhrasingContent, Root } from "mdast";
 import { findAndReplace } from "mdast-util-find-and-replace";
 import { visit } from "unist-util-visit";
-import { resolveAttachment, resolveNote } from "./vault";
+import { resolveAttachment, resolveNote, safeDecode } from "./vault";
 
 // [[note]], [[note|label]], [[note#heading]], ![[image.png]], ![[file.pdf]]. `\|` is how Obsidian escapes the pipe inside tables.
 const WIKILINK = /(!?)\[\[([^\]|\n]+?)(?:\\?\|([^\]\n]+))?\]\]/g;
@@ -35,10 +35,7 @@ export function remarkObsidian() {
     visit(tree, ["link", "image"], (node) => {
       const n = node as Link | Image;
       if (/^[a-z]+:|^\/|^#/i.test(n.url) || !/(^|\/)attachments\//.test(n.url)) return;
-      let url = n.url;
-      try {
-        url = decodeURIComponent(url);
-      } catch {}
+      const url = safeDecode(n.url);
       const resolved = resolveAttachment(url.slice(url.indexOf("attachments/")));
       if (resolved) n.url = resolved;
     });

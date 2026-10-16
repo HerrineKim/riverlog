@@ -9,7 +9,6 @@ import type { GraphLink } from "@/lib/knowledge";
 import { makeMatcher } from "@/lib/search";
 import { MindMapScene, REFERENCE_COLOR } from "./mindmap-scene";
 
-type Node = PlacedNode;
 type Category = { id: string; name: string; color: string; count: number };
 
 function webglAvailable() {
@@ -30,10 +29,9 @@ export default function MindMapCanvas({
   const [failed, setFailed] = useState(() => !webglAvailable());
   const theme = useTheme();
   const dark = theme === "dark";
-  const [selected, setSelected] = useState<Node | null>(null);
+  const [selected, setSelected] = useState<PlacedNode | null>(null);
   // A new search drops the selection so its hits show
   const { query, draft, inputProps, clear } = useSearchOnEnter(() => setSelected(null));
-
 
   const neighbors = useMemo(() => {
     const m = new Map<string, Set<string>>();
@@ -46,10 +44,11 @@ export default function MindMapCanvas({
     return m;
   }, [data]);
 
+  const byId = useMemo(() => new Map(data.nodes.map((n) => [n.id, n])), [data]);
+
   // Note-to-note connections for the info card: explicit links first, then shared tags
   const connectionsOf = useMemo(() => {
-    const byId = new Map(data.nodes.map((n) => [n.id, n]));
-    const m = new Map<string, { node: Node; kind: "reference" | "related" }[]>();
+    const m = new Map<string, { node: PlacedNode; kind: "reference" | "related" }[]>();
     const add = (a: string, b: string, kind: "reference" | "related") => {
       const node = byId.get(b);
       if (node) m.set(a, [...(m.get(a) ?? []), { node, kind }]);
@@ -61,15 +60,14 @@ export default function MindMapCanvas({
       }
     for (const list of m.values()) list.sort((x, y) => (x.kind === y.kind ? 0 : x.kind === "reference" ? -1 : 1));
     return m;
-  }, [data]);
+  }, [data, byId]);
 
   const childrenOf = useMemo(() => {
-    const byId = new Map(data.nodes.map((n) => [n.id, n]));
-    const m = new Map<string, Node[]>();
+    const m = new Map<string, PlacedNode[]>();
     for (const l of data.links)
       if (l.kind === "member") m.set(l.source, [...(m.get(l.source) ?? []), byId.get(l.target)!]);
     return m;
-  }, [data]);
+  }, [data, byId]);
 
   // Nodes whose name, summary, tags or path contain the submitted query
   const results = useMemo(() => {
@@ -80,23 +78,22 @@ export default function MindMapCanvas({
   const hits = useMemo(() => (results?.length ? new Set(results.map((n) => n.id)) : null), [results]);
 
   // A selected node focuses its neighborhood; otherwise search hits stay lit
-  const focus = selected;
   const isLit = useCallback(
-    (id: string) => (focus ? focus.id === id || !!neighbors.get(focus.id)?.has(id) : !hits || hits.has(id)),
-    [focus, hits, neighbors],
+    (id: string) => (selected ? selected.id === id || !!neighbors.get(selected.id)?.has(id) : !hits || hits.has(id)),
+    [selected, hits, neighbors],
   );
 
   const isLinkLit = useCallback(
     (l: GraphLink) =>
-      focus
-        ? isLit(l.target) && isLit(l.source) && (focus.id === l.target || focus.id === l.source || l.kind === "member")
+      selected
+        ? isLit(l.target) && isLit(l.source) && (selected.id === l.target || selected.id === l.source || l.kind === "member")
         : !hits || (hits.has(l.target) && hits.has(l.source)),
-    [focus, hits, isLit],
+    [selected, hits, isLit],
   );
 
   const [zoom, setZoom] = useState(0.5);
 
-  const select = useCallback((node: Node) => {
+  const select = useCallback((node: PlacedNode) => {
     setSelected(node);
     sceneRef.current?.focusOn(node);
   }, []);
@@ -127,11 +124,11 @@ export default function MindMapCanvas({
       dark,
       isLit,
       isLinkLit,
-      dimmed: !!(focus || hits),
-      labelled: (n) => n.kind === "category" || (!!(focus || hits) && isLit(n.id)),
-      labelNearby: !(focus || hits),
+      dimmed: !!(selected || hits),
+      labelled: (n) => n.kind === "category" || (!!(selected || hits) && isLit(n.id)),
+      labelNearby: !(selected || hits),
     });
-  }, [data, dark, focus, hits, isLit, isLinkLit]);
+  }, [data, dark, selected, hits, isLit, isLinkLit]);
 
   const zoomTo = useCallback((z: number) => {
     const clamped = Math.min(1, Math.max(0, z));
@@ -237,7 +234,7 @@ export default function MindMapCanvas({
             <li key={c.id}>
               <button
                 onClick={() => {
-                  const n = data.nodes.find((x) => x.id === c.id);
+                  const n = byId.get(c.id);
                   if (n) select(n);
                 }}
                 className="flex items-center gap-1.5 rounded-full border border-line bg-bg-elev/80 px-2.5 py-1 text-xs text-fg backdrop-blur transition hover:border-accent"
@@ -263,75 +260,66 @@ export default function MindMapCanvas({
             aria-label="선택한 노드"
             className="pointer-events-auto w-full max-w-sm rounded-2xl border border-line bg-bg-elev/90 p-4 shadow-2xl backdrop-blur-md"
           >
-            {(() => {
-              const n = selected;
-              return (
-                <>
-                  <p className="flex items-center gap-2 text-xs text-muted">
-                    <span className="size-2 rounded-full" style={{ background: n.color }} />
-                    {n.path}
-                  </p>
-                  <p className="mt-1.5 text-lg font-semibold text-fg-strong">{n.name}</p>
-                  {n.excerpt && <p className="mt-1 line-clamp-3 text-sm leading-relaxed text-muted">{n.excerpt}</p>}
-                  {selected && (childrenOf.get(n.id)?.length ?? 0) > 0 && (
-                    <ul className="mt-3 max-h-48 space-y-0.5 overflow-y-auto border-t border-line pt-2 text-sm">
-                      {childrenOf.get(n.id)!.map((c) => (
-                        <li key={c.id}>
-                          <button
-                            onClick={() => select(c)}
-                            className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent"
-                          >
-                            <span className="size-1.5 shrink-0 rounded-full" style={{ background: c.color }} />
-                            <span className="truncate">{c.name}</span>
-                            {c.kind !== "doc" && (
-                              <span aria-hidden className="ml-auto text-xs text-muted">
-                                ›
-                              </span>
-                            )}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {selected && n.kind === "doc" && (connectionsOf.get(n.id)?.length ?? 0) > 0 && (
-                    <div className="mt-3 border-t border-line pt-2">
-                      <p className="mb-1 text-xs font-semibold tracking-wide text-muted">연결된 노트</p>
-                      <ul className="max-h-40 space-y-0.5 overflow-y-auto text-sm">
-                        {connectionsOf.get(n.id)!.map(({ node: c, kind }) => (
-                          <li key={c.id}>
-                            <button
-                              onClick={() => select(c)}
-                              className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent"
-                            >
-                              <span className="size-1.5 shrink-0 rounded-full" style={{ background: c.color }} />
-                              <span className="truncate">{c.name}</span>
-                              <span
-                                className="ml-auto shrink-0 text-[0.7rem]"
-                                style={{ color: kind === "reference" ? REFERENCE_COLOR[theme] : undefined }}
-                              >
-                                {kind === "reference" ? "링크" : "같은 태그"}
-                              </span>
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  <div className="mt-3 flex gap-2">
-                    {n.href && (
-                      <Link href={n.href} className="rounded-full bg-accent px-3.5 py-1.5 text-sm font-medium text-accent-ink hover:opacity-90">
-                        {n.kind === "doc" ? "노트 열기" : "사전에서 보기"} <span aria-hidden>→</span>
-                      </Link>
-                    )}
-                    {selected && (
-                      <button onClick={reset} className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted hover:text-fg-strong">
-                        전체 보기
+            <p className="flex items-center gap-2 text-xs text-muted">
+              <span className="size-2 rounded-full" style={{ background: selected.color }} />
+              {selected.path}
+            </p>
+            <p className="mt-1.5 text-lg font-semibold text-fg-strong">{selected.name}</p>
+            {selected.excerpt && <p className="mt-1 line-clamp-3 text-sm leading-relaxed text-muted">{selected.excerpt}</p>}
+            {(childrenOf.get(selected.id)?.length ?? 0) > 0 && (
+              <ul className="mt-3 max-h-48 space-y-0.5 overflow-y-auto border-t border-line pt-2 text-sm">
+                {childrenOf.get(selected.id)!.map((c) => (
+                  <li key={c.id}>
+                    <button
+                      onClick={() => select(c)}
+                      className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent"
+                    >
+                      <span className="size-1.5 shrink-0 rounded-full" style={{ background: c.color }} />
+                      <span className="truncate">{c.name}</span>
+                      {c.kind !== "doc" && (
+                        <span aria-hidden className="ml-auto text-xs text-muted">
+                          ›
+                        </span>
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {selected.kind === "doc" && (connectionsOf.get(selected.id)?.length ?? 0) > 0 && (
+              <div className="mt-3 border-t border-line pt-2">
+                <p className="mb-1 text-xs font-semibold tracking-wide text-muted">연결된 노트</p>
+                <ul className="max-h-40 space-y-0.5 overflow-y-auto text-sm">
+                  {connectionsOf.get(selected.id)!.map(({ node: c, kind }) => (
+                    <li key={c.id}>
+                      <button
+                        onClick={() => select(c)}
+                        className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent"
+                      >
+                        <span className="size-1.5 shrink-0 rounded-full" style={{ background: c.color }} />
+                        <span className="truncate">{c.name}</span>
+                        <span
+                          className="ml-auto shrink-0 text-[0.7rem]"
+                          style={{ color: kind === "reference" ? REFERENCE_COLOR[theme] : undefined }}
+                        >
+                          {kind === "reference" ? "링크" : "같은 태그"}
+                        </span>
                       </button>
-                    )}
-                  </div>
-                </>
-              );
-            })()}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="mt-3 flex gap-2">
+              {selected.href && (
+                <Link href={selected.href} className="rounded-full bg-accent px-3.5 py-1.5 text-sm font-medium text-accent-ink hover:opacity-90">
+                  {selected.kind === "doc" ? "노트 열기" : "사전에서 보기"} <span aria-hidden>→</span>
+                </Link>
+              )}
+              <button onClick={reset} className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted hover:text-fg-strong">
+                전체 보기
+              </button>
+            </div>
           </div>
         </div>
       )}
