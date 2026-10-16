@@ -4,11 +4,11 @@ concept: "Resume"
 summary: "외국계 취업용 레주메를 한 장으로, 성과 중심으로 쓰는 법: 섹션 순서, 학력 표기, 2~3문장 Summary, 액션 동사와 숫자로 쓰는 경력, 커버레터 구조와 템플릿."
 tags: ["career", "job-search", "resume", "english"]
 source: other
-date: "2026-10-13"
-sources: ["https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9"]
+date: "2026-10-16"
+sources: ["https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://taegon.kim/blog/developer-resume-checklist/"]
 ---
 
-> 마차카피(matchacopy)와 Flitto의 웨비나 「합격하는 레주메 & 커버레터의 모든 것」을 바탕으로 재구성한 노트다. 「개발자 이력서에 공통으로 통하는 원칙」은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리로 보강했다.
+> 마차카피(matchacopy)와 Flitto의 웨비나 「합격하는 레주메 & 커버레터의 모든 것」을 바탕으로 재구성한 노트다. 「개발자 이력서에 공통으로 통하는 원칙」은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리로 보강했고, 「제출 전 감점 체크」는 김태곤의 「[개발자 이력서, 사소한 체크리스트](https://taegon.kim/blog/developer-resume-checklist/)」(2023.08)로 보강했다.
 
 레주메·커버레터 템플릿: [[resume_cover_letter_template.docx|resume_cover_letter_template.docx]] (Word)
 
@@ -91,9 +91,23 @@ Aiming to grow into a product engineer on a global team.
 | 직무와 관련된 것만 쓴다 | 사진, MBTI, 취미는 채용 판단에 쓰이지 않는다. 교육 과정·부트캠프 경험도 1~2줄로 압축한다 |
 | 수식어 대신 사실을 쓴다 | "포기를 모르는 개발자" 같은 문구는 없느니만 못하다. 무엇을 했고 어떤 결과가 났는지로 보여 준다 |
 | 블로그·GitHub는 꾸준할 때만 | 없는 것보단 낫지만, 읽을 만한 글과 코드가 쌓여 있어야 효과가 있다 |
-| 숙련도 그래프·상중하 표기는 피한다 | 근거 없는 자기 평가로 읽힌다. 성장은 프로젝트와 협업 경험으로 보여 준다 |
+| 숙련도 그래프·상중하 표기는 피한다 | 근거 없는 자기 평가로 읽힌다. 「상」은 면접관의 검증 욕구를 부르고, 「중」은 애매하고, 「하」는 그대로 약점이 된다. 점수 대신 쓴 기간·프로젝트·성과로 보여 준다 |
+| 지원 직무의 기술을 앞에 둔다 | 프론트엔드에 지원하면서 `Java, Spring, MySQL, React` 순으로 쓰면 주력이 백엔드로 읽힌다. React·TypeScript처럼 직무에 맞는 것을 먼저 쓴다 |
 
 신입 이력서에 빈칸이 많은 것은 당연하다. 억지로 채우지 말고 1페이지 안에서 지원 직무에 맞는 강점만 추린다.
+
+## 제출 전 감점 체크
+
+지원자가 많으면 서류 검토는 **「안 될 이유」부터 찾아** 걸러 내는 방식이 된다. 실력과 무관한 사소한 흠이 그 이유가 되지 않게 한다.
+
+| 항목 | 감점되는 모습 | 이렇게 |
+| --- | --- | --- |
+| 용어 표기 | `Typescript`와 `TypeScript`가 섞여 있다, `Jquery` | 공식 표기(`TypeScript`, `jQuery`, `Next.js`)로 통일한다 |
+| 용어 오용 | Vanilla JavaScript를 「라이브러리」라고 쓴다 | 개념을 정확히 쓴다. 틀린 용어는 이해 부족으로 읽힌다 |
+| 정보량 | 경력직인데 「프론트엔드 개발 경험 있음」 한 줄 | 비공개 프로젝트라도 맡은 범위와 한 일을 쓴다. 예: 「사내 관리자 페이지 리뉴얼에서 React 컴포넌트 설계와 API 연동 담당」 |
+| 깨진 링크 | 포트폴리오 링크가 404 | 제출 직전에 모든 링크를 직접 열어 본다. 사라진 사이트는 다른 근거로 바꾼다 |
+| 커밋 로그 | 개인 프로젝트 커밋이 `update`, `Fix bugs`, `임시 저장`, `.` | 변경 의도가 보이게 쓴다. 검토자는 최종 코드보다 **변경 이력에서 습관**을 본다. 형식보다 의미가 중요하다([[commit-convention\|커밋 컨벤션]]) |
+| 경력 공백 | 근무 기간 사이가 설명 없이 비어 있다 | 이유를 한두 줄로 적는다. 서류만 보는 사람은 사정을 알 수 없다 |
 
 ## 체크리스트
 
@@ -103,5 +117,9 @@ Aiming to grow into a product engineer on a global team.
 - [ ] 날짜는 `월 연도`, 장소는 도시까지 적었는가?
 - [ ] Skills는 지원 포지션과 관련된 것만 남겼는가?
 - [ ] Summary가 2~3문장 안에 과거·현재·미래를 담고 있는가?
+- [ ] 기술 이름 표기가 공식 표기로 통일됐는가?
+- [ ] 모든 링크를 제출 직전에 열어 봤는가?
+- [ ] 링크한 저장소의 커밋 메시지가 변경 의도를 설명하는가?
+- [ ] 경력 공백에 한 줄 설명이 있는가?
 
 관련 노트: [[recruiter-outreach-email|리크루터에게 보내는 영문 이메일]], [[tech-interview-tips|기술면접 잘 보는 법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]]
