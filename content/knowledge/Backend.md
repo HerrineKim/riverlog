@@ -11,6 +11,8 @@ date: "2026-10-14"
 
 ## 하위 주제
 
+먼저 전체 지도를 보려면 [백엔드 개발자가 알아야 할 것](Backend/backend-developer-roadmap.md): 인터넷·HTTP·DB·API 스타일·배포·보안까지 영역별 핵심 질문과 관련 노트.
+
 | 주제 | 내용 |
 | --- | --- |
 | [Web-Basics](/knowledge/dictionary/backend/web-basics/http-web-architecture) | 웹 앱의 요청·응답 구조와 포트, [REST API 설계 원칙](/knowledge/dictionary/backend/web-basics/rest-api), [CORS](/knowledge/dictionary/backend/web-basics/cors), [API 보안 체크리스트](/knowledge/dictionary/backend/web-basics/api-security), [Base64 인코딩](/knowledge/dictionary/backend/web-basics/base64-encoding), [웹 서버·WAS와 Nginx](/knowledge/dictionary/backend/web-basics/web-server-and-nginx), [텔레그램 미니앱 initData 검증](/knowledge/dictionary/backend/web-basics/telegram-mini-app-auth), [세션 기반 인증과 토큰 기반 인증](/knowledge/dictionary/backend/web-basics/session-vs-token-auth), [스프링의 싱글톤 빈과 요청 스레드](/knowledge/dictionary/backend/web-basics/spring-singleton-thread-safety) |

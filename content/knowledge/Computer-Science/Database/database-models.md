@@ -1,11 +1,11 @@
 ---
 title: "데이터베이스 모델: RDB, NoSQL, NewSQL"
 concept: "Database Model"
-summary: "관계형 DB의 특징과 한계, NoSQL 네 가지 유형, 둘의 장점을 합치려는 NewSQL을 비교하고, 프로젝트에서 무엇을 고를지와 PostgreSQL·MySQL의 차이를 정리."
+summary: "관계형 DB의 특징과 한계, NoSQL 네 가지 유형과 CAP 정리, 둘의 장점을 합치려는 NewSQL을 비교하고, 프로젝트에서 무엇을 고를지와 PostgreSQL·MySQL의 차이를 정리."
 tags: ["database", "rdbms", "nosql", "newsql", "sql", "mongodb"]
 source: notion
-date: "2026-10-13"
-sources: ["https://riverkim.kr/175"]
+date: "2026-10-16"
+sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350"]
 ---
 
 데이터베이스는 데이터의 집합이고, 이를 저장·관리하는 소프트웨어가 **DBMS(Database Management System)**다. 데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
@@ -78,6 +78,18 @@ PostgreSQL은 사용자 정의 타입, 테이블 상속, 배열·JSON 컬럼 같
 - 소셜 네트워크, 추천 시스템 등에 적합.
 - 예: Neo4j
 
+### CAP 정리
+
+분산 데이터베이스는 네트워크가 끊겨 노드끼리 연락이 안 되는 상황(분할)을 피할 수 없다. CAP 정리(CAP theorem)는 **분할이 생겼을 때 일관성과 가용성 중 하나를 포기해야 한다**는 뜻이다.
+
+| 성질 | 뜻 |
+| --- | --- |
+| 일관성(Consistency) | 어느 노드에서 읽어도 가장 최근에 쓴 값을 본다 |
+| 가용성(Availability) | 살아 있는 노드는 항상 응답한다 |
+| 분할 내성(Partition tolerance) | 노드 사이 통신이 끊겨도 시스템이 동작한다 |
+
+분할 내성은 분산 시스템에서 뺄 수 없으므로 실제 선택은 **CP**(분할 중에는 일부 요청을 거절하고 정확성을 지킨다)와 **AP**(일단 응답하고 나중에 맞춘다, 최종 일관성) 사이다. 분할이 없을 때도 지연 시간과 일관성을 맞바꾼다는 점까지 넣은 확장이 PACELC다. 많은 제품은 하나로 고정되지 않고 설정(복제 수, 읽기·쓰기 정족수)으로 조절한다.
+
 ## NewSQL
 
 RDB의 **ACID와 SQL**을 유지하면서 NoSQL 수준의 **수평 확장성과 성능**을 얻으려는 데이터베이스.
@@ -106,4 +118,4 @@ RDB의 **ACID와 SQL**을 유지하면서 NoSQL 수준의 **수평 확장성과 
 - **ORM**(Object-Relational Mapping): 테이블 행을 객체로 매핑한다. 예: Django ORM, TypeORM, Prisma
 - **ODM**(Object-Document Mapping): 문서를 객체로 매핑한다. 예: Mongoose
 
-관련 노트: [[sql-basics|SQL 기초]], [[mongodb|MongoDB 시작하기와 CRUD]], [[transaction|트랜잭션과 회복]], [[normalization|정규화와 반정규화]]
+관련 노트: [[sql-basics|SQL 기초]], [[mongodb|MongoDB 시작하기와 CRUD]], [[transaction|트랜잭션과 회복]], [[normalization|정규화와 반정규화]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]]
