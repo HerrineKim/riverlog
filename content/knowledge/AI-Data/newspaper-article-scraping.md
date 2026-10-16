@@ -151,4 +151,4 @@ article = Article(url, config=config, language="ko")
 - 차단·JS 페이지는 HTML을 따로 받아 `input_html`로 넘기고 파싱만 맡긴다.
 - `build()`를 반복 실행할 때는 `memoize_articles` 캐시를 기억한다.
 
-관련 노트: [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[nlp-pipeline|자연어 처리 파이프라인]], [[text-similarity|문자열·문서 유사도]]
+관련 노트: [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[nlp-pipeline|자연어 처리 파이프라인]], [[text-similarity|문자열·문서 유사도]], [[naver-blog-crawling|네이버 블로그 크롤링]]
