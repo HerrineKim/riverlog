@@ -96,6 +96,6 @@ HTML → CSS → JavaScript → DOM·브라우저 → Git/GitHub → TypeScript
 - TypeScript는 선택이 아니라 기본기다. 프레임워크는 하나를 깊게, 나머지는 범주로 이해한다.
 - 필수 줄기(HTML·CSS·JS·TS·React·Next.js·서버 데이터·테스트)를 먼저 세우고, 상태 관리 도구·GraphQL·앱·데스크톱은 관심과 직무에 맞춰 고른다.
 - 단계마다 작은 프로젝트를 만들고, 잘 만든 코드를 읽고, 막힌 것과 푼 것을 기록한다.
-- 낯선 용어는 [[web-glossary|프론트엔드 웹 개발 용어집]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]]에서 자리를 잡는다.
+- 낯선 용어는 [[web-glossary|프론트엔드 웹 개발 용어집]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[frontend-career-tracks|프론트엔드 엔지니어의 세 가지 성장 트랙]]에서 자리를 잡는다.
 
 관련 노트: [[frontend-developer-role|프론트엔드 개발자의 업무 범위와 역량]], [[tech-stack-selection|기술 스택 고르기]], [[web-glossary|프론트엔드 웹 개발 용어집]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]]

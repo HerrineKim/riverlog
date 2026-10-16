@@ -77,4 +77,4 @@ sources: ["https://velog.io/@teo/frontend", "https://velog.io/@teo/full-stack-de
 - 풀스택은 원래 "혼자 웹 서비스를 만들 줄 아는가"였다. 지금은 T자형으로 전문성과 넓은 시야를 함께 갖는 것이 현실적이다.
 - 잘하는 프론트엔드 개발자는 정해진 일정과 인력 안에서 요구를 구현해 내고, 협업하며, 트렌드와 현실의 균형을 잡고, 좋은 서비스를 만들려고 애쓰는 사람이다.
 
-관련 노트: [[frontend-history|프론트엔드의 등장 배경]], [[frontend-roadmap|프론트엔드 학습 로드맵]], [[tech-stack-selection|기술 스택 고르기]], [[product-minded-engineer|제품 중심 개발자]]
+관련 노트: [[frontend-history|프론트엔드의 등장 배경]], [[frontend-roadmap|프론트엔드 학습 로드맵]], [[tech-stack-selection|기술 스택 고르기]], [[product-minded-engineer|제품 중심 개발자]], [[frontend-career-tracks|프론트엔드 엔지니어의 세 가지 성장 트랙]]

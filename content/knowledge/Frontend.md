@@ -27,6 +27,7 @@ date: "2026-10-13"
 학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/frontend-roadmap)에 정리했다.
 
 - [프론트엔드 개발자의 업무 범위와 역량](Frontend/frontend-developer-role.md): 데이터 흐름으로 본 여섯 업무 영역, 퍼블리셔·백엔드·풀스택과의 경계, 잘하는 프론트엔드 개발자의 조건
+- [프론트엔드 엔지니어의 세 가지 성장 트랙](Frontend/frontend-career-tracks.md): 웹 특화·제품 특화·운영 특화 트랙별 지식과 진로, 탁월한 엔지니어의 다섯 역량, 시니어다운 일하기
 - [기술 스택 고르기](Frontend/tech-stack-selection.md): 기술 수용 주기·캐즘·하이프 사이클, 스택을 고르는 다섯 기준, 범주로 트렌드 읽기, 레거시를 대하는 자세
 - [React와 Vue 비교](Frontend/react-vs-vue.md): JSX와 템플릿, 불변 상태와 반응형 상태, v-model의 정체, 생태계 범위와 고르는 기준
 - [React와 Vue 말고: 다른 프론트엔드 프레임워크](Frontend/frontend-frameworks.md): Svelte, Angular, Preact, Alpine.js, HTMX의 성격과 쓰임
