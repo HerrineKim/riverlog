@@ -4,7 +4,7 @@ concept: "Coding Test"
 summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법, 랜덤 비교 테스트로 반례 찾기, 파이썬 실전 팁."
 tags: ["coding-test", "algorithm", "python", "problem-solving"]
 source: mixed
-date: "2026-10-14"
+date: "2026-10-16"
 sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f"]
 ---
 
@@ -44,9 +44,9 @@ sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.ti
 | 반드시 | 구현·시뮬레이션, 문자열 | 요구 사항을 그대로 옮기는 문제 | |
 | 반드시 | 에라토스테네스의 체, 유클리드 호제법 | 소수 판별, 최대공약수·최소공배수 | |
 | 자주 | 다익스트라, 플로이드-워셜 | 한 점에서 모든 점, 모든 점 사이 최단 거리 | [[dijkstra\|다익스트라]] |
-| 자주 | 유니온 파인드, 크루스칼·프림 | 같은 집합 판별, 최소 신장 트리 | [[disjoint-set\|서로소 집합]] |
+| 자주 | 유니온 파인드, 크루스칼·프림 | 같은 집합 판별, 최소 신장 트리(크루스칼은 간선을 정렬해 고르고, 프림은 정점에서 뻗어 나간다) | [[disjoint-set\|서로소 집합]] |
 | 자주 | LIS, LCS, 진법 변환 | 대표 DP 유형과 수 표현 | [[longest-increasing-subsequence\|LIS]] |
-| 여유 있으면 | 위상 정렬, 트라이, KMP, 비트마스킹, 세그먼트 트리 | 선후 관계, 문자열 검색, 상태 압축, 구간 질의 | |
+| 여유 있으면 | 위상 정렬, 트라이, KMP·라빈-카프·보이어-무어, 비트마스킹, 세그먼트 트리 | 선후 관계, 문자열 검색, 상태 압축, 구간 질의 | |
 
 ## 연습 방법
 
