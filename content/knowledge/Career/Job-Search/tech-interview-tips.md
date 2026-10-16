@@ -57,4 +57,4 @@ IT 기술면접에서 좋은 인상을 주는 태도와 준비법이다. 기본 
 - 긴장하지 말고, 면접관과 계속 소통하며, 하고 싶은 일을 이야기하면서 그동안 닦은 실력을 보여 준다.
 - 떨어져도 짧은 시간 작은 영역에서 본 한 번의 평가일 뿐이다. 운도 따르지만 **더 많이 준비하고 경험한 사람이 조금 더 운이 좋다.**
 
-관련 노트: [[coding-test|코딩 테스트 접근법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]]
+관련 노트: [[coding-test|코딩 테스트 접근법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[interview-attitude|면접에서 태도로 평가받는 법]]
