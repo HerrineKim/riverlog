@@ -21,6 +21,8 @@ date: "2026-10-13"
 - [달력과 시간에 대한 개발자의 착각](Computer-Science/calendar-fallacies.md) — 하루·주·달·해·시간대·서머타임에 대한 흔한 가정과 그것을 깨는 실제 사례
 - [베지어 곡선](Computer-Science/bezier-curve.md) — 선형 보간을 겹친 드 카스텔조 알고리즘, 2·3차 곡선 식과 행렬 표현, 펜 툴·SVG·CSS의 곡선
 - [변환 행렬: 이동·크기·회전과 동차 좌표](Computer-Science/transformation-matrix.md) — 그래픽스의 2D·3D 변환 행렬, 기준점·임의 축 변환의 합성, 곱하는 순서와 투영
+- [양자역학 기초: 이중 슬릿, 중첩, 얽힘](Computer-Science/quantum-mechanics-basics.md) — 파동-입자 이중성, 양자 중첩과 얽힘, 양자역학에 대한 흔한 오해
+- [양자 컴퓨터의 원리: 큐비트, 양자 알고리즘, 양자 게이트](Computer-Science/quantum-computing.md) — 진폭 간섭으로 정답 확률 키우기, 블로흐 구면과 X·H·CNOT, 그로버·쇼어, 양자내성암호, 오류 정정
 
 ## 학습 순서와 자료
 
