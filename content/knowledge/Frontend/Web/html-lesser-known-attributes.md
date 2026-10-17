@@ -128,7 +128,7 @@ li::after { content: attr(data-state); }
 
 | 쓰기 좋은 곳 | 피할 곳 |
 | --- | --- |
-| 서버가 렌더링한 HTML에서 JS로 ID·설정값 넘기기, 이벤트 위임에서 대상 구분([[ajax|AJAX]]의 리뷰 ID 예) | 앱 상태의 원본 저장소. 상태는 JS(프레임워크 상태)에 두고 DOM은 그 결과로 그린다 |
+| 서버가 렌더링한 HTML에서 JS로 ID·설정값 넘기기, 이벤트 위임에서 대상 구분([[ajax\|AJAX]]의 리뷰 ID 예) | 앱 상태의 원본 저장소. 상태는 JS(프레임워크 상태)에 두고 DOM은 그 결과로 그린다 |
 | CSS 선택자로 상태 표현(`[data-state]`), 테스트 훅(`data-testid`) | 비밀값·권한 정보. 개발자 도구로 누구나 보고 고칠 수 있다 |
 | 분석 이벤트 이름 같은 부가 정보 | 이미 표준 속성이 있는 의미(`hidden`, `disabled`, `aria-*`, `value`) |
 
@@ -159,4 +159,4 @@ JavaScript 프레임워크 이전에는 DOM에 데이터를 두는 주된 방법
 
 **HTML 속성은 브라우저가 이미 구현해 둔 기능의 스위치다.**
 
-관련 노트: [[html|HTML 기초와 HTML5]], [[html-input-types|HTML 입력 요소 치트시트]], [[form-usability|더 나은 폼을 만드는 팁]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]]
+관련 노트: [[html|HTML 기초와 HTML5]], [[html-input-types|HTML 입력 요소 치트시트]], [[form-usability|더 나은 폼을 만드는 팁]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]], [[html-media-elements|이미지·오디오·비디오 임베드]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[html-lists-tables|목록과 표 마크업]], [[resource-hints|리소스 힌트와 미리 불러오기]], [[lazy-loading|지연 로딩: 이미지·iframe·퍼사드]], [[popover-anchor-positioning|팝오버와 앵커 위치 지정]], [[payment-address-forms|결제·주소 폼]]

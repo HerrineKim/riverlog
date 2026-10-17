@@ -5,10 +5,10 @@ summary: "브라우저에 키-값 문자열을 저장하는 localStorage·sessio
 tags: ["browser", "web", "javascript", "frontend", "state"]
 source: other
 date: "2026-10-15"
-sources: ["https://wesbos.com/javascript/10-harder-practice-exercises/57-shopping-form-with-custom-events-delegation-and-localstorage", "https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API", "https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event"]
+sources: ["https://ko.javascript.info/localstorage", "https://wesbos.com/javascript/10-harder-practice-exercises/57-shopping-form-with-custom-events-delegation-and-localstorage", "https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API", "https://developer.mozilla.org/en-US/docs/Web/API/Window/storage_event", "https://web.dev/learn/privacy/third-parties", "https://webkit.org/tracking-prevention/"]
 ---
 
-> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, API 세부는 MDN으로 확인해 재구성한 노트다.
+> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, API 세부는 MDN으로 확인해 재구성한 노트다. 브라우저의 저장소 삭제·분할 규칙은 web.dev의 「[Learn Privacy](https://web.dev/learn/privacy)」 강좌와 WebKit 문서로 보강했다.
 
 ## Web Storage란
 
@@ -80,7 +80,7 @@ window.addEventListener('storage', (event) => {
 })
 ```
 
-한 탭에서 로그아웃하거나 테마를 바꿨을 때 다른 탭에도 반영하는 데 쓴다. 저장 없이 탭끼리 메시지만 주고받으려면 `BroadcastChannel`이 더 맞다.
+한 탭에서 로그아웃하거나 테마를 바꿨을 때 다른 탭에도 반영하는 데 쓴다. 저장 없이 탭끼리 메시지만 주고받으려면 `BroadcastChannel`이 더 맞다. 저장된 키를 순회할 때는 `for...in`을 쓰지 않는다. `length`·`getItem` 같은 내장 속성까지 나오므로 `Object.keys(localStorage)`나 `key(i)` 루프를 쓴다.
 
 ## 예외와 한계
 
@@ -88,6 +88,8 @@ window.addEventListener('storage', (event) => {
 | --- | --- | --- |
 | 용량 초과(출처당 보통 약 5MiB) | `setItem`이 `QuotaExceededError`를 던진다 | `try/catch`로 감싸고 오래된 항목을 지운다 |
 | 사용자가 사이트 데이터를 막음, 일부 사생활 보호 모드 | 접근만 해도 예외가 나거나 저장이 탭 종료 후 사라진다 | 저장소 없이도 화면이 동작하게 만든다 |
+| 사파리에서 7일간 방문하지 않음 | ITP가 스크립트로 쓴 저장소(localStorage·IndexedDB 등)를 지운다 | 잃어도 되는 값만 둔다. 지켜야 할 상태는 서버에 둔다 |
+| 다른 사이트에 iframe으로 실림 | 서드파티 맥락의 저장소는 최상위 사이트별로 분할된다. 같은 위젯이라도 사이트마다 다른 `localStorage`를 본다 | 사이트를 넘는 공유가 필요하면 Storage Access API를 쓴다([[browser-tracking-protection\|브라우저 추적 방지]]) |
 | 큰 데이터, 구조화된 데이터, 파일 | 동기 API라 느리고 문자열 변환 비용이 크다 | IndexedDB(비동기, 구조화 저장)를 쓴다 |
 
 ## 넣지 말아야 할 것
@@ -106,4 +108,4 @@ window.addEventListener('storage', (event) => {
 - 다른 탭의 변경은 `storage` 이벤트로 받는다.
 - 토큰처럼 민감한 값은 넣지 않는다. 큰 데이터는 IndexedDB로 간다.
 
-관련 노트: [[cookie-session|쿠키와 세션]], [[web-security|웹 보안: CSRF와 XSS]], [[devtools-application|DevTools Application 패널]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[previous-url|이전 페이지 URL 알아내기]]
+관련 노트: [[cookie-session|쿠키와 세션]], [[browser-tracking-protection|서드파티 쿠키와 브라우저 추적 방지]], [[web-security|웹 보안: CSRF와 XSS]], [[devtools-application|DevTools Application 패널]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[previous-url|이전 페이지 URL 알아내기]], [[pwa-offline-storage|PWA 오프라인 데이터와 저장소 관리]]

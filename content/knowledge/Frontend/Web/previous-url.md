@@ -65,3 +65,5 @@ sessionStorage.removeItem('prevPath')
 | `document.referrer` | 코드 한 줄 | 직접 진입 시 빈 값, 교차 출처는 origin만, SPA 내부 이동 미반영 |
 | `history.state`·라우터 state | SPA 내부 이동에 정확 | 외부에서 들어오거나 주소를 직접 입력하면 없음 |
 | 쿠키 / sessionStorage | 페이지 이동·새로고침에도 유지 | 직접 저장·삭제 관리 필요 |
+
+관련 노트: [[third-party-privacy|서드파티와 프라이버시]]

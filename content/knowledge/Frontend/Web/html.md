@@ -1,14 +1,14 @@
 ---
 title: "HTML 기초와 HTML5"
 concept: "HTML"
-summary: "웹 문서의 구조와 의미를 태그로 표현하는 마크업 언어와 그 핵심 문법."
+summary: "웹 문서의 구조와 의미를 태그로 표현하는 마크업 언어와 그 핵심 문법. 요소와 태그, 대체·빈 요소, 생략 가능한 태그, 불리언·열거형·전역 속성, DOCTYPE, 링크의 target까지 다룬다."
 tags: ["html", "web", "semantic", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/280", "https://riverkim.kr/282", "https://www.frontendinterviewhandbook.com/kr/html-questions"]
+sources: ["https://riverkim.kr/280", "https://riverkim.kr/282", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://web.dev/learn/html/overview", "https://web.dev/learn/html/attributes", "https://web.dev/learn/html/forms"]
 ---
 
-> 「DOCTYPE과 렌더링 모드」와 「HTML5와 웹 플랫폼」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 HTML Living Standard·MDN으로 확인해 보강한 노트다.
+> 「DOCTYPE과 렌더링 모드」와 「HTML5와 웹 플랫폼」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 HTML Living Standard·MDN으로 확인해 보강한 노트다. 「요소의 종류」와 「속성 문법」은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Overview of HTML」·「Attributes」 모듈을 바탕으로 보강했다.
 
 HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 마크업 언어다. 마크업 언어란 태그 등을 이용해 문서나 데이터의 구조를 명시하는 언어로, HTML과 Markdown이 대표적이다. 스타일은 CSS가, 동작은 JavaScript가 맡고 HTML은 "무엇이 어떤 의미의 내용인가"를 표현한다.
 
@@ -33,6 +33,8 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 | `<head>` | 문서 메타데이터(제목, 인코딩, 스타일, 외부 파일 로딩 등). 보통 화면에 나타나지 않는다 |
 | `<body>` | 문서 본문. 실제 화면 구성과 관련된 내용 |
 
+`<head>`에 넣는 인코딩·뷰포트·`<link rel>`·meta·Open Graph·`<base>`는 [[html-head-metadata|문서 head와 메타데이터]]에 정리했다.
+
 ## DOCTYPE과 렌더링 모드
 
 `<!DOCTYPE html>`은 문서 맨 앞에 두는 **문서 유형 선언**이다. 대소문자는 가리지 않는다. 예전 HTML 4·XHTML의 DOCTYPE은 문서가 따르는 DTD(Document Type Definition, 어떤 요소 안에 무엇이 올 수 있는지 정한 문법 정의)를 가리켰다. 지금 HTML은 SGML 기반이 아니라 DTD가 없고, DOCTYPE이 하는 일은 **브라우저의 렌더링 모드를 고르는 것** 하나다.
@@ -47,19 +49,54 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 
 ## 요소와 속성
 
-**요소(element)** 는 여는 태그 + 내용 + 닫는 태그(`<h1>안녕하세요</h1>`)이고 서로 중첩된다. `br`, `hr`, `img`, `input`, `link`, `meta`는 내용이 없는 빈 요소다. **속성(attribute)** 은 시작 태그에 `이름="값"` 쌍으로 적는 부가 정보(`<a href="https://google.com">`)이며, 태그마다 쓸 수 있는 속성이 다르다.
+**요소(element)** 는 여는 태그 + 내용 + 닫는 태그(`<h1>안녕하세요</h1>`)이고 서로 중첩된다. **태그(tag)** 는 꺾쇠괄호를 포함한 `<h1>` 자체를 말한다. 둘을 섞어 부르지만, 요소는 그 안의 내용과 중첩 요소까지 포함한다. 브라우저는 태그를 보여 주지 않고 내용을 해석하는 데만 쓴다. **속성(attribute)** 은 시작 태그에 `이름="값"` 쌍으로 적는 부가 정보(`<a href="https://google.com">`)이며, 태그마다 쓸 수 있는 속성이 다르다.
+
+### 요소의 종류
+
+| 구분 | 뜻 | 예 |
+| --- | --- | --- |
+| 비대체 요소(non-replaced) | 태그가 감싼 글과 요소를 그대로 그린다 | `<p>`, `<h1>`, `<ul>`, `<a>` |
+| 대체 요소(replaced) | 내용이 바깥 객체(이미지, 폼 위젯)로 **바뀌어** 그려진다. 기본 모양이 있고 CSS로 꾸밀 수 있는 범위가 좁다 | `<img>`, `<input>`, `<video>`, `<iframe>` |
+| 빈 요소(void) | 내용을 가질 수 없어 **닫는 태그가 없다** | `<br>`, `<hr>`, `<img>`, `<input>`, `<link>`, `<meta>`, `<source>`, `<track>`, `<wbr>`, `<col>`, `<embed>` |
+
+대체 요소와 빈 요소는 다른 개념이다. `<video>`, `<picture>`, `<iframe>`은 대체 요소지만 대체 콘텐츠를 담으므로 닫는 태그가 있다. `<link>`, `<meta>`, `<base>`는 빈 요소지만 아무것도 그리지 않고 속성으로 정보만 준다. 빈 요소 끝의 `/`(`<img />`)는 XML(XHTML·SVG)의 습관이다. HTML 파서는 무시하고 검사기는 경고를 낸다. 일관되게 쓰기만 하면 된다. 다만 따옴표 없는 속성 값 바로 뒤에 붙이면 `/`가 값에 들어간다.
+
+### 브라우저는 관대하다, 그래도 닫는다
+
+HTML 파서는 틀린 마크업에도 실패하지 않는다. 생략한 `</li>`, `</p>`는 다음 태그에서 닫힌 것으로 보고, `<body>`나 표의 `<tbody>`는 쓰지 않아도 만들어 넣는다. 명세는 요소마다 태그를 생략할 수 있는지 정해 두었다. 하지만 **모든 요소를 닫고 순서대로 중첩한다.** 닫지 않은 `</ul>` 뒤의 `<h1>`은 목록의 일부로 해석되어 스타일까지 물려받고, `<script>`, `<style>`, `<template>`, `<textarea>`, `<title>`을 닫지 않으면 뒤의 내용 전체가 그 안으로 빨려 들어가 페이지가 망가진다. 어떤 태그가 생략 가능한지 외우는 것보다 전부 닫는 편이 쉽다.
+
+### 속성 문법
+
+- 속성은 **여는 태그에만** 쓴다. 요소 이름 뒤에 공백으로 구분한다.
+- 값에 공백이나 특수 문자가 있으면 따옴표가 필수다. 그러니 늘 따옴표를 쓴다.
+- HTML 요소·속성 이름은 대소문자를 가리지 않는다. 명세가 정한 키워드 값(`type="TeXt"`)도 가리지 않는다. 하지만 **`id`·`class`처럼 작성자가 정한 문자열은 가린다.** HTML에서 대소문자를 가리는 값은 CSS 속성 선택자와 JavaScript에서도 가린다.
+- 요소·속성 이름은 소문자로, 값은 따옴표로 감싸는 습관이 흔히 말하는 「XHTML 스타일」이다.
+
+| 속성 유형 | 규칙 | 예 |
+| --- | --- | --- |
+| 불리언(boolean) | **있으면 참, 없으면 거짓.** 값은 생략하거나 빈 문자열이나 속성 이름. `"false"`를 써도 참이다 | `required`, `disabled`, `checked`, `inert`, `muted`, `autoplay`, `open` |
+| 열거형(enumerated) | 정해진 값 중 하나. **빠졌을 때와 잘못된 값일 때의 기본값이 속성마다 다르다** | `contenteditable`(없거나 틀리면 `inherit`, `"contenteditable"`도 틀린 값), `<input type>`(없거나 틀리면 `text`) |
+| 일반 | 문자열·숫자·URL 등 | `href`, `src`, `alt` |
+
+불리언 속성은 값을 바꾸지 말고 **속성 자체를 넣고 뺀다**(`el.toggleAttribute('muted')`, `removeAttribute('disabled')`). 열거형과 헷갈리지 않으려면 값이 필요 없는 속성은 값을 비워 쓰고, 나머지는 명세를 찾아본다.
 
 ### 전역 속성(Global Attribute)
 
+모든 요소에 쓸 수 있는 속성이다. 30개가 넘고, `<meta hidden>`처럼 붙여도 효과가 없는 조합도 있다.
+
 | 속성 | 설명 |
 | --- | --- |
-| `id` | 문서 전체에서 유일한 식별자 |
-| `class` | 공백으로 구분된 클래스 목록. CSS·JS에서 요소를 선택할 때 사용 |
-| `data-*` | 요소에 사용자 정의 데이터를 붙인다. JS에서는 `dataset`으로 읽는다([[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]) |
-| `lang`, `dir` | 내용의 언어와 글 방향([[multilingual-pages|다국어 페이지]]) |
-| `style` | 인라인 스타일 |
-| `title` | 요소에 대한 추가 정보(툴팁) |
-| `tabindex` | 탭 키 이동 순서 |
+| `id` | 문서 전체에서 유일한 식별자. 링크 프래그먼트(`#id`)의 목적지, `getElementById()`, `<label for>`, `aria-labelledby`·`aria-describedby`의 참조 대상이다. 중복되면 화면은 멀쩡해도 링크·스크립트·레이블이 틀어진다. 공백 없이 글자로 시작하고 ASCII 글자·숫자·`_`·`-`만 쓰는 규칙을 정해 지킨다 |
+| `class` | 공백으로 구분된 클래스 목록. CSS·JS에서 요소를 선택하는 것 말고는 HTML에서 하는 일이 없다. 시맨틱 구조만으로도 `header nav a` 같은 선택자가 충분할 때가 많다 |
+| `data-*` | 요소에 사용자 정의 데이터를 붙인다. JS에서는 `dataset`으로 읽는다([[html-lesser-known-attributes\|잘 안 쓰지만 쓸모 있는 HTML 속성]]). 표준에 없는 속성을 아무렇게나 만들지 않고 `data-`를 붙이는 이유는 앞으로 생길 표준 속성과 겹치지 않기 때문이다 |
+| `lang`, `dir` | 내용의 언어와 글 방향([[multilingual-pages\|다국어 페이지]]) |
+| `style` | 인라인 스타일. 그 요소에만 적용되고 `@keyframes` 같은 규칙은 못 쓴다. 개발 중 실험용으로만 쓰고 파일로 옮긴다 |
+| `title` | 요소에 대한 추가 정보(툴팁). 키보드·터치 사용자는 보기 어렵다 |
+| `tabindex`, `contenteditable`, `inert`, `autofocus`, `hidden` | 포커스·편집·비활성·숨김([[html-interactive-elements\|포커스 속성과 details·dialog]]) |
+| `role`, `aria-*` | HTML 명세가 아니라 ARIA 명세의 속성. 의미만 바꾸고 동작은 더하지 않는다([[aria-basics\|ARIA와 접근 가능한 이름]]) |
+| `slot`, `part` | 웹 컴포넌트의 슬롯 지정과 섀도 트리 꾸미기([[web-components\|웹 컴포넌트]]) |
+
+`getElementsByClassName()`은 DOM이 바뀌면 함께 바뀌는 살아 있는 `HTMLCollection`을, `querySelectorAll()`은 호출 시점의 정적 `NodeList`를 돌려준다.
 
 ## 시맨틱 태그
 
@@ -81,9 +118,11 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 | `<pre>` / `<blockquote>` | 그룹 | 공백까지 그대로 표현 / 긴 인용문 |
 | `<span>` / `<div>` | 컨테이너 | 의미 없는 인라인 / 블록 컨테이너 |
 
+인용·강조·코드·약어 요소를 어떤 의미로 고르는지는 [[html-text-elements|텍스트 의미 요소와 문자 참조]]에 있다.
+
 ### 표(table)
 
-`<table>` 안을 `<thead>`, `<tbody>`, `<tfoot>`으로 나누고, 행은 `<tr>`, 제목 셀은 `<th>`, 데이터 셀은 `<td>`로 만든다. `<caption>`은 표 제목이다.
+`<table>` 안을 `<thead>`, `<tbody>`, `<tfoot>`으로 나누고, 행은 `<tr>`, 제목 셀은 `<th>`, 데이터 셀은 `<td>`로 만든다. `<caption>`은 표 제목이다. 자식 순서, `scope`·`headers`, 셀 합치기, `<colgroup>`은 [[html-lists-tables|목록과 표 마크업]]에 정리했다.
 
 ```html
 <table>
@@ -107,9 +146,19 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 | `method` | 제출할 때 사용할 HTTP 메서드(`GET` 또는 `POST`) |
 | `enctype` | POST일 때 데이터 형식. 기본값 `application/x-www-form-urlencoded`, 파일 전송 시 `multipart/form-data` |
 
-`<input>`의 type별 동작, `select`·`textarea`·`fieldset`·`datalist`, 모든 입력에 `<label for>`를 잇는 법은 [[html-input-types|HTML 입력 요소 치트시트]]에 있다.
+제출되는 데이터에는 몇 가지 규칙이 있다.
+
+- `name`이 없는 컨트롤, 선택되지 않은 체크박스·라디오, 제출에 쓰지 않은 버튼은 보내지 않는다. 값이 비어 있어도 `name`이 있으면 빈 값으로 간다.
+- `value` 없는 `<option>`은 글자가 값이 되고, `value` 없는 체크박스는 `on`이 된다.
+- 같은 `name`의 라디오끼리 하나만 선택된다. 버튼에 `name`을 주면 어느 버튼으로 제출했는지 알 수 있다.
+- 버튼의 `formaction`·`formmethod`·`formnovalidate` 등은 `<form>`의 값보다 우선한다. `required`·`pattern`·`min` 같은 속성은 JavaScript 없이 제출 전 제약 검증을 한다.
+- 비밀번호·카드 번호는 URL에 남는 `GET` 대신 `POST`로 보낸다. 클라이언트 검증은 서버 검증을 대신하지 않는다.
+
+`<input>`의 type별 동작, `select`·`textarea`·`fieldset`·`datalist`, 모든 입력에 `<label for>`를 잇는 법은 [[html-input-types|HTML 입력 요소 치트시트]]에, 폼 사용성은 [[form-usability|더 나은 폼을 만드는 팁]]과 [[accessible-forms|접근 가능한 폼과 오류 처리]]에 있다.
 
 ## 링크의 target과 rel
+
+`href`가 가리킬 수 있는 곳(프래그먼트, `mailto:`·`tel:`), 이름 붙은 `target`, `rel` 값과 내비게이션 마크업은 [[html-links-navigation|링크와 내비게이션 마크업]]에 있다.
 
 `<a>`의 `target`은 링크한 URL을 **어느 브라우징 맥락**(탭, 창, `<iframe>`)에 띄울지 정한다.
 
@@ -152,7 +201,7 @@ HTML5는 마크업 문법만이 아니라 **새 요소와 DOM API를 함께 묶�
 | --- | --- |
 | 의미(Semantics) | `header`·`main`·`article` 등 시맨틱 태그, 새 폼 입력 타입 |
 | 연결(Connectivity) | `fetch`, WebSocket, Server-Sent Events, WebRTC |
-| 오프라인·저장소 | Web Storage, IndexedDB, 서비스 워커와 Cache API([[pwa-service-worker|PWA]]) |
+| 오프라인·저장소 | Web Storage, IndexedDB, 서비스 워커와 Cache API([[pwa-service-worker\|PWA]]) |
 | 멀티미디어 | `<video>`, `<audio>`, Media Source Extensions |
 | 그래픽·효과 | `<canvas>`, SVG, WebGL·WebGPU |
 | 성능·통합 | Web Worker, `requestAnimationFrame`, WebAssembly |
@@ -164,7 +213,8 @@ HTML5는 마크업 문법만이 아니라 **새 요소와 DOM API를 함께 묶�
 ## 핵심 정리
 
 - HTML은 **구조와 의미**, CSS는 표현, JavaScript는 동작을 담당한다.
+- 파서는 관대하지만 모든 요소를 닫고, 속성 값은 따옴표로 감싼다. 불리언 속성은 있으면 참이다.
 - 영역을 나눌 때는 가능한 한 시맨틱 태그를 쓴다. SEO와 접근성의 기본이다.
 - form 데이터는 input의 `name`/`value` 쌍으로 전송되고, `label` 연결로 사용성과 접근성을 챙긴다.
 
-관련 노트: [[markdown|Markdown(또 하나의 마크업 언어)]], [[dom|DOM과 BOM]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-glossary|프론트엔드 웹 개발 용어집]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[multilingual-pages|다국어 페이지]]
+관련 노트: [[markdown|Markdown(또 하나의 마크업 언어)]], [[dom|DOM과 BOM]], [[html-head-metadata|문서 head와 메타데이터]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[html-lists-tables|목록과 표 마크업]], [[html-links-navigation|링크와 내비게이션 마크업]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-glossary|프론트엔드 웹 개발 용어집]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[multilingual-pages|다국어 페이지]], [[form-submission|폼 제출과 데이터 전송]], [[constraint-validation|제약 검증: required·pattern·ValidityState]], [[windows-and-frames|창과 프레임: 팝업, iframe, postMessage]]

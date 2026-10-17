@@ -1,14 +1,14 @@
 ---
 title: "스크립트·스타일 로딩 순서와 점진적 렌더링"
 concept: "Script Loading"
-summary: "<script>, async, defer, type=module이 HTML 파싱과 실행 순서에 주는 차이, CSS는 <head>에 두고 스크립트는 defer로 미루는 이유와 예외, 콘텐츠를 받는 대로 먼저 보여 주는 점진적 렌더링 기법을 정리했다."
+summary: "<script>, async, defer, type=module이 HTML 파싱과 실행 순서에 주는 차이, 프리로드 스캐너가 못 보는 늦게 발견되는 자원, CSS는 <head>에 두고 스크립트는 defer로 미루는 이유와 예외, @import를 피하고 중요 CSS만 인라인하는 CSS 경량화, 콘텐츠를 받는 대로 먼저 보여 주는 점진적 렌더링 기법을 정리했다."
 tags: ["html", "javascript", "performance", "web", "frontend"]
 source: other
-date: "2026-10-15"
-sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://html.spec.whatwg.org/multipage/scripting.html#the-script-element", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script"]
+date: "2026-10-17"
+sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://ko.javascript.info/script-async-defer", "https://html.spec.whatwg.org/multipage/scripting.html#the-script-element", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script", "https://web.dev/learn/performance/optimize-resource-loading", "https://web.dev/learn/performance/understanding-the-critical-path"]
 ---
 
-> Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 script·리소스 배치·프로그레시브 렌더링 문항을 바탕으로, HTML Living Standard와 MDN으로 확인해 재구성한 노트다.
+> Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 script·리소스 배치·프로그레시브 렌더링 문항을 바탕으로, HTML Living Standard와 MDN으로 확인해 재구성한 노트다. 프리로드 스캐너와 CSS 경량화는 web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Optimize resource loading」 모듈로 보강했다. 동적 스크립트의 실행 순서는 javascript.info(모던 JavaScript 튜토리얼)의 「defer, async 스크립트」 글로 보강했다.
 
 ## 왜 로딩 순서가 중요한가
 
@@ -38,6 +38,24 @@ sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https:
 - `defer` 스크립트는 `DOMContentLoaded`를 늦춘다. `async` 스크립트는 그 이벤트와 순서가 정해져 있지 않다.
 - 모듈은 `defer`가 기본이라 `defer`를 따로 붙여도 변화가 없다. 다른 출처의 모듈은 CORS 응답이 필요하다(→ [[es-modules|모듈: export와 import]]).
 - 비동기 스크립트의 `document.write()`는 무시된다. `document.write()`는 동기 파싱을 전제로 한 옛 API라 쓰지 않는다.
+- JS로 만들어 DOM에 넣은 `<script>`(`document.createElement('script')`)는 문서에 붙는 순간 받기 시작하고 `async`처럼 동작한다. 아무것도 기다리지 않고 아무도 기다리지 않으며, 먼저 받은 것부터 실행된다(load-first). 넣은 순서대로 실행해야 하면 붙이기 전에 `script.async = false`를 준다. 로딩 성공·실패는 `load`·`error` 이벤트로 안다([[page-lifecycle-events|페이지 생명주기와 리소스 로딩 이벤트]]).
+- `defer` 스크립트끼리는 작은 파일이 먼저 받아져도 **문서 순서대로** 실행된다. `async`는 다운로드가 끝난 순서다.
+- 파서를 막는 스크립트는 그보다 앞서 요청된 렌더링 차단 CSS가 도착해 파싱될 때까지 실행을 기다린다. 스크립트가 `getComputedStyle()`처럼 스타일을 읽을 수 있기 때문이다.
+
+## 프리로드 스캐너가 못 보는 자원
+
+파서가 스크립트나 CSS에 막혀 있는 동안에도 **프리로드 스캐너**(보조 파서)가 받은 HTML 원문을 훑어 이미지·CSS·JS를 미리 요청한다. 그래서 중요한 자원은 **서버가 보낸 HTML 마크업 안에** 있어야 한다. 아래 패턴은 스캐너가 발견하지 못해 늦게 요청된다.
+
+| 늦게 발견되는 패턴 | 대신 |
+| --- | --- |
+| CSS `background-image`로 넣은 이미지 | 중요한 이미지는 `<img>`로, 아니면 `preload` |
+| JS가 DOM에 넣는 스크립트, 동적 `import()` | 첫 화면에 필요하면 HTML의 `<script>`나 `modulepreload` |
+| 클라이언트 렌더링으로 만든 HTML(JS 문자열 속 마크업) | SSR·SSG로 HTML에 넣는다 |
+| CSS의 `@import` | HTML의 `<link rel="stylesheet">` 여러 개 |
+
+피할 수 없을 때는 `preload`로 발견을 앞당긴다([[resource-hints|리소스 힌트와 미리 불러오기]]). LCP 이미지가 이 패턴에 걸리면 LCP가 크게 늦어진다([[lcp-optimization|LCP 최적화]]).
+
+`defer`·`async`로 미루면 스크립트가 실행되기 **전에** 화면이 먼저 보인다. 그 스크립트가 붙이는 기능(버튼 동작, 위젯)은 준비될 때까지 로딩 표시를 두거나 `disabled`로 두어, 눌러도 반응 없는 상태를 숨기지 않는다. `DOMContentLoaded`·`load`가 각 스크립트를 기다리는지는 [[page-lifecycle-events|페이지 생명주기와 리소스 로딩 이벤트]]에 정리했다.
 
 ## CSS는 head에, 스크립트는 defer로
 
@@ -58,7 +76,20 @@ sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https:
 | 첫 화면에 꼭 필요한 최소 CSS | `<style>`로 인라인하고(critical CSS) 나머지는 비동기로 받는다 |
 | 렌더링 전에 반드시 끝나야 하는 비동기 스크립트(A/B 테스트) | `<head>`의 스크립트에 `blocking="render"`. Chromium 계열만 지원하는 실험적 속성이다 |
 
-내려받기 순서를 더 당기거나 미루는 힌트(`preload`, `fetchpriority`, `loading`)는 [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]에 있다.
+내려받기 순서를 더 당기거나 미루는 힌트(`preload`, `fetchpriority`, `loading`)는 [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]과 [[resource-hints|리소스 힌트와 미리 불러오기]]에 있다.
+
+## CSS를 가볍게
+
+CSS가 렌더링을 막는 것은 FOUC를 막기 위해서라 나쁜 일이 아니다. 줄여야 할 것은 **막는 시간**이다.
+
+| 방법 | 내용 | 주의 |
+| --- | --- | --- |
+| 최소화(minify) | 공백·주석을 지운다. 배포 빌드에서 번들러가 자동으로 한다. FCP, 때로 LCP가 좋아진다 | 규칙을 합치는 공격적인 최적화는 CSS 구조에 따라 깨질 수 있다 |
+| 안 쓰는 CSS 제거 | 브라우저는 안 쓰는 규칙도 모두 받고 파싱한다. DevTools 커버리지나 Lighthouse로 찾고, 페이지별 파일로 나누거나 지운다 | 전부 없애기는 비현실적이다. 큰 것부터 |
+| `@import` 피하기 | `@import`는 바깥 파일을 받아야 안쪽을 발견하는 **요청 체인**을 만들고, 프리로드 스캐너도 못 본다. HTML의 `<link>` 여러 개는 동시에 받는다 | 캐스케이드 레이어·서드파티 때문에 꼭 써야 하면 `preload`로 보완한다. Sass의 `@use`·`@import`는 빌드 때 한 파일로 합쳐지므로 해당하지 않는다 |
+| 중요 CSS 인라인 | 첫 화면에 필요한 스타일만 `<head>`의 `<style>`에 넣어 요청 하나를 없앤다. 캐시가 빈 첫 방문의 FCP가 좋아진다 | 고를 범위·자동화·유지가 어렵다. 인라인한 CSS는 HTML에 붙어 **페이지 간 캐시가 안 된다.** 재 보고 결정한다 |
+
+JS도 같은 원리로 최소화하고, 번들러는 배포 빌드에서 식별자 이름까지 줄인다(uglify, 예: Terser). 기본 설정이 크기와 정확성의 균형을 대개 잘 맞춘다.
 
 ## 점진적 렌더링
 
@@ -67,8 +98,8 @@ sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https:
 | 기법 | 하는 일 |
 | --- | --- |
 | 첫 화면 우선 | 첫 화면에 필요한 최소한의 CSS·콘텐츠만 먼저 보내고, 나머지 스크립트는 `defer`·`async`나 `DOMContentLoaded`·`load` 이후로 미룬다 |
-| HTML 스트리밍 | 서버가 HTML을 완성되는 조각부터 흘려보낸다. 브라우저는 받은 만큼 파싱하고 그린다. React의 [[streaming-ssr|스트리밍 SSR]]이 대표적이다 |
-| 이미지·iframe 지연 로딩 | 첫 화면 밖 이미지는 `loading="lazy"`로 스크롤해 다가올 때 받는다. 예전엔 스크롤 이벤트나 `IntersectionObserver`로 직접 구현했다 |
+| HTML 스트리밍 | 서버가 HTML을 완성되는 조각부터 흘려보낸다. 브라우저는 받은 만큼 파싱하고 그린다. React의 [[streaming-ssr\|스트리밍 SSR]]이 대표적이다 |
+| 이미지·iframe 지연 로딩 | 첫 화면 밖 이미지는 `loading="lazy"`로 스크롤해 다가올 때 받는다. 예전엔 스크롤 이벤트나 `IntersectionObserver`로 직접 구현했다([[lazy-loading\|지연 로딩]]) |
 | 화면 밖 렌더링 건너뛰기 | CSS `content-visibility: auto`로 화면 밖 구역의 레이아웃·페인트를 미룬다 |
 | 자리 표시 | 크기를 미리 잡은 스켈레톤으로 레이아웃 이동(CLS) 없이 빈자리를 채운다 |
 
@@ -83,4 +114,4 @@ sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https:
 
 **파서를 막지 말고, 첫 화면에 필요한 것부터 보낸다.**
 
-관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[html|HTML 기초와 HTML5]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[streaming-ssr|스트리밍 SSR]], [[es-modules|모듈: export와 import]]
+관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[html|HTML 기초와 HTML5]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[resource-hints|리소스 힌트와 미리 불러오기]], [[lcp-optimization|LCP 최적화]], [[lazy-loading|지연 로딩]], [[streaming-ssr|스트리밍 SSR]], [[es-modules|모듈: export와 import]], [[html-head-metadata|문서 head와 메타데이터]], [[page-lifecycle-events|페이지 생명주기와 리소스 로딩 이벤트]]

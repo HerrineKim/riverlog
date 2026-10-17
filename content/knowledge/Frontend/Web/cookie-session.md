@@ -5,8 +5,10 @@ summary: "상태가 없는 HTTP에서 브라우저와 서버가 사용자를 기
 tags: ["http", "web", "browser", "security"]
 source: til
 date: "2026-10-13"
-sources: ["https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies"]
+sources: ["https://ko.javascript.info/cookie", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies", "https://web.dev/learn/privacy/third-parties", "https://privacysandbox.google.com/blog/privacy-sandbox-next-steps"]
 ---
+
+> TIL을 정리하고, 서드파티 쿠키 부분은 web.dev의 「[Learn Privacy](https://web.dev/learn/privacy)」 강좌와 Privacy Sandbox 공식 발표로 보강했다.
 
 HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토콜이라, 그대로는 "방금 로그인한 그 사용자"를 기억하지 못한다. **쿠키(Cookie)** 는 서버가 브라우저에 보내 저장시키는 작은 데이터 조각으로, 이후 같은 서버에 요청할 때마다 함께 전송되어 상태를 유지하게 해 준다. **세션(Session)** 은 쿠키를 이용해 상태를 서버 쪽에 보관하는 방식이다.
 
@@ -43,11 +45,31 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 | `Secure` | HTTPS 요청에만 싣는다 |
 | `HttpOnly` | JavaScript(`document.cookie`)로 읽지 못하게 한다. 세션 쿠키에는 필수다 |
 | `SameSite` | 다른 사이트에서 시작된 요청에 실을지. `Strict`(안 실음), `Lax`(최상위 GET 이동에만 실음), `None`(항상 실음, `Secure` 필수). 값을 생략하면 크롬·엣지는 `Lax`로 다룬다 |
-| `Partitioned` | 서드파티 쿠키를 최상위 사이트별로 따로 저장한다(CHIPS). 임베드된 위젯이 사이트를 넘나들며 추적하지 못하게 한다 |
+| `Partitioned` | 서드파티 쿠키를 최상위 사이트별로 따로 저장한다(CHIPS). 임베드된 위젯이 사이트를 넘나들며 추적하지 못하게 한다. `Secure`가 필수다 |
+
+### JavaScript로 쿠키 다루기
+
+`HttpOnly`가 없는 쿠키는 `document.cookie`로 읽고 쓸 수 있다. 인터페이스가 특이하다.
+
+| 동작 | 방법 | 주의 |
+| --- | --- | --- |
+| 읽기 | `document.cookie` | `name=value; name2=value2` 한 문자열이다. 직접 나눠 파싱한다 |
+| 쓰기 | `document.cookie = "user=" + encodeURIComponent(v) + "; path=/; max-age=3600"` | 대입 한 번에 **쿠키 하나만** 바뀐다. 다른 쿠키는 지워지지 않는다 |
+| 지우기 | 같은 이름·`path`·`domain`으로 `max-age=0` | path나 domain이 다르면 다른 쿠키로 취급돼 지워지지 않는다 |
+
+이름과 값은 `encodeURIComponent`로 인코딩한다. 쿠키 하나는 약 4KB, 도메인당 개수도 제한이 있다. 비동기로 쿠키를 읽고 쓰며 변경 이벤트까지 받는 Cookie Store API(`cookieStore.get()`·`set()`, `change` 이벤트)가 2025년에 Baseline이 됐다.
 
 ### 퍼스트파티와 서드파티 쿠키
 
-주소창의 사이트가 직접 심은 쿠키가 **퍼스트파티**, 페이지에 들어 있는 다른 도메인(광고, 임베드)이 심은 쿠키가 **서드파티**다. 사파리와 파이어폭스는 서드파티 쿠키를 기본으로 막는다. 크롬은 단계적으로 없애려던 계획을 2025년에 철회하고 기본 허용을 유지한다. 브라우저마다 다르므로 로그인·결제 흐름은 서드파티 쿠키에 기대지 않게 설계한다.
+주소창의 사이트가 직접 심은 쿠키가 **퍼스트파티**, 페이지에 들어 있는 다른 도메인(광고, 임베드)이 심은 쿠키가 **서드파티**다. 같은 도메인의 쿠키라도 어느 페이지 맥락에서 실리느냐에 따라 퍼스트파티도, 서드파티도 된다.
+
+| 브라우저 | 서드파티 쿠키 기본 동작 |
+| --- | --- |
+| 사파리 | 예외 없이 차단(ITP) |
+| 파이어폭스 | 최상위 사이트별로 분할(Total Cookie Protection) |
+| 크롬 | 단계적 폐지를 철회하고 일반 창은 사용자 설정에 맡긴다(기본 허용). 시크릿 창은 차단 |
+
+브라우저마다 다르므로 로그인·결제 흐름은 서드파티 쿠키에 기대지 않게 설계한다. 임베드 안의 상태는 `Partitioned`(CHIPS)로, 분할되지 않은 쿠키가 꼭 필요하면 Storage Access API로 처리한다. 브라우저별 세부 규칙과 크롬의 Privacy Sandbox 정리는 [[browser-tracking-protection|서드파티 쿠키와 브라우저 추적 방지]]에 있다.
 
 ## 쿠키와 Web Storage 비교
 
@@ -74,6 +96,8 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 브라우저 ── Cookie: sessionid=abc ──▶ 서버: id로 세션 조회 → 사용자 식별
 ```
 
+로그아웃할 때는 서버의 세션을 지우고, 응답에 `Clear-Site-Data: "cookies", "storage"`를 붙여 브라우저에 남은 쿠키·저장소까지 지운다([[privacy-data-minimization|데이터 최소화와 프라이버시 실천]]).
+
 세션 저장소 확장(Redis), 세션 고정 공격, 토큰(JWT) 방식과의 비교는 [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]에 있다.
 
 Django는 `SessionMiddleware`로 세션을 처리하고 세션 데이터를 DB에 둔다 → [[auth-user|Django User와 인증]].
@@ -84,4 +108,4 @@ Django는 `SessionMiddleware`로 세션을 처리하고 세션 데이터를 DB�
 - 세션 = 상태는 서버에, 식별자(세션 ID)만 쿠키에 두는 방식.
 - 쿠키가 "자동으로 전송된다"는 성질 때문에 [CSRF](/knowledge/dictionary/frontend/web/web-security) 같은 공격이 가능해진다. `HttpOnly`·`Secure`·`SameSite`로 범위를 좁힌다.
 
-관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[auth-user|Django User와 인증]], [[auth-jwt-passport|NestJS JWT 인증(토큰 방식)]], [[swr|SWR로 서버 데이터 가져오기(로그인 상태 판단)]], [[oauth2|OAuth 2.0]], [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]], [[devtools-network|DevTools Network 패널]]
+관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[browser-tracking-protection|서드파티 쿠키와 브라우저 추적 방지]], [[auth-user|Django User와 인증]], [[auth-jwt-passport|NestJS JWT 인증(토큰 방식)]], [[swr|SWR로 서버 데이터 가져오기(로그인 상태 판단)]], [[oauth2|OAuth 2.0]], [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]], [[devtools-network|DevTools Network 패널]]

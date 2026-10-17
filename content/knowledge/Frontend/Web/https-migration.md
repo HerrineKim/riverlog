@@ -50,8 +50,8 @@ ECDSA(ECC) 키는 RSA보다 작고 빠르다. P-256이면 충분하다. RSA는 �
 | 순서 | 할 일 | 이유 |
 | --- | --- | --- |
 | 1 | 인증서 설치 후 HTTPS로 모든 페이지가 열리는지 확인 | |
-| 2 | 혼합 콘텐츠(mixed content) 제거 | HTTPS 페이지가 `http://` 이미지·스크립트를 부르면 브라우저가 차단하거나 경고한다. 자원 URL을 `https://`나 상대 경로로 바꾸고, 남은 것은 CSP `upgrade-insecure-requests`로 올린다. 남은 혼합 콘텐츠는 DevTools 보안 패널이나 Network 필터 `mixed-content:all`로 찾는다([[devtools-network|DevTools Network 패널]]) |
-| 3 | HTTP → HTTPS **301** 리다이렉트 | 검색 엔진이 새 URL로 신호를 옮긴다. canonical·사이트맵·내부 링크도 https로 바꾼다([[seo-basics|SEO 기초]]) |
+| 2 | 혼합 콘텐츠(mixed content) 제거 | HTTPS 페이지가 `http://` 이미지·스크립트를 부르면 브라우저가 차단하거나 경고한다. 자원 URL을 `https://`나 상대 경로로 바꾸고, 남은 것은 CSP `upgrade-insecure-requests`로 올린다. 남은 혼합 콘텐츠는 DevTools 보안 패널이나 Network 필터 `mixed-content:all`로 찾는다([[devtools-network\|DevTools Network 패널]]) |
+| 3 | HTTP → HTTPS **301** 리다이렉트 | 검색 엔진이 새 URL로 신호를 옮긴다. canonical·사이트맵·내부 링크도 https로 바꾼다([[seo-basics\|SEO 기초]]) |
 | 4 | HSTS 헤더 추가 | 첫 요청 이후 브라우저가 스스로 HTTPS로만 접속한다. 짧은 `max-age`로 시작해 늘리고, 안정되면 preload 목록 등록을 검토한다 |
 | 5 | 쿠키에 `Secure` 속성 | 인증 쿠키가 평문으로 새지 않게 한다 |
 | 6 | 서버 TLS 설정 점검 | TLS 1.2 이상만 허용하고 1.3을 우선한다. Mozilla SSL Configuration Generator로 설정을 만들고, Qualys SSL Labs 서버 테스트로 확인한다 |
@@ -65,4 +65,4 @@ ECDSA(ECC) 키는 RSA보다 작고 빠르다. P-256이면 충분하다. RSA는 �
 - 발급·갱신은 ACME로 자동화한다. 유효 기간은 계속 짧아진다.
 - 설치로 끝나지 않는다. **혼합 콘텐츠, 301, HSTS, Secure 쿠키, TLS 설정**까지 챙겨야 전환이 끝난다.
 
-관련 노트: [[https|HTTPS와 TLS]], [[local-https-mkcert|로컬 개발 환경에 HTTPS 적용하기]], [[seo-basics|SEO 기초]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]]
+관련 노트: [[https|HTTPS와 TLS]], [[local-https-mkcert|로컬 개발 환경에 HTTPS 적용하기]], [[seo-basics|SEO 기초]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[privacy-encryption|프라이버시를 위한 암호화]]

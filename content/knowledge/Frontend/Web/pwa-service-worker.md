@@ -4,11 +4,11 @@ concept: "PWA"
 summary: "PWA는 HTTPS·웹 앱 매니페스트·서비스 워커 세 가지를 갖춘 웹사이트일 뿐이고, 사이트 종류와 상관없이 득이 된다. 서비스 워커로 캐시를 직접 다룰 수 있게 된 만큼, 필요한 것만 작게 요청하고 미디어를 중요도별로 나눠 캐시하고, 캐시 크기를 제한해 사용자의 데이터와 디스크를 아낀다."
 tags: ["frontend", "web", "cache", "performance", "browser"]
 source: other
-date: "2026-10-13"
-sources: ["https://webactually.com/2017/09/28/%ec%9b%b9-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%8a%94-pwa%ec%9d%b4%ec%96%b4%ec%95%bc-%ed%95%9c%eb%8b%a41/", "https://webactually.com/2020/09/23/PWA-%EC%8B%9C%EB%8C%80%EC%9D%98-%EC%BA%90%EC%8B%9C-%EC%A0%84%EB%9E%B5/"]
+date: "2026-10-17"
+sources: ["https://web.dev/learn/pwa", "https://web.dev/learn/pwa/progressive-web-apps", "https://web.dev/learn/pwa/getting-started", "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/", "https://webkit.org/blog/17333/webkit-features-in-safari-26-0/", "https://webactually.com/2017/09/28/%ec%9b%b9-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%8a%94-pwa%ec%9d%b4%ec%96%b4%ec%95%bc-%ed%95%9c%eb%8b%a41/", "https://webactually.com/2020/09/23/PWA-%EC%8B%9C%EB%8C%80%EC%9D%98-%EC%BA%90%EC%8B%9C-%EC%A0%84%EB%9E%B5/"]
 ---
 
-> Aaron Gustafson의 「웹 프로젝트는 PWA이어야 한다」(웹액츄얼리 번역, 2017.09)와 「PWA 시대의 캐시 전략」(웹액츄얼리 번역, 2020.09)을 바탕으로 재구성한 노트다.
+> Aaron Gustafson의 「웹 프로젝트는 PWA이어야 한다」(웹액츄얼리 번역, 2017.09)와 「PWA 시대의 캐시 전략」(웹액츄얼리 번역, 2020.09)을 바탕으로, web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 PWA 개요·시작하기 모듈과 WebKit 블로그로 지원 범위를 보강해 재구성한 노트다.
 
 ## PWA란
 
@@ -16,7 +16,7 @@ sources: ["https://webactually.com/2017/09/28/%ec%9b%b9-%ed%94%84%eb%a1%9c%ec%a0
 
 | 요건 | 이유 |
 | --- | --- |
-| HTTPS | OS 권한에 가까운 API를 쓰므로 보안 연결이 전제다([[https-migration|HTTPS 전환]]) |
+| HTTPS | OS 권한에 가까운 API를 쓰므로 보안 연결이 전제다([[https-migration\|HTTPS 전환]]) |
 | 웹 앱 매니페스트 | 이름·아이콘·시작 URL을 담은 JSON. `<link rel="manifest">`로 연결한다 |
 | 서비스 워커 | 네트워크 요청을 가로채 캐시·오프라인·푸시를 처리하는 백그라운드 스크립트 |
 
@@ -25,9 +25,48 @@ sources: ["https://webactually.com/2017/09/28/%ec%9b%b9-%ed%94%84%eb%a1%9c%ec%a0
 | 기능 | 지원 범위 (2026년 기준) |
 | --- | --- |
 | 서비스 워커·Cache API | 모든 주요 브라우저 |
-| 설치 | Chromium 계열은 데스크톱·Android 모두, Safari는 iOS·macOS의 「홈 화면/Dock에 추가」 |
-| 웹 푸시 | 대부분 지원. iOS는 홈 화면에 추가한 PWA에서만 |
+| 설치 | Chromium 계열은 데스크톱·Android 모두. Safari는 iOS·iPadOS의 「홈 화면에 추가」(26부터 매니페스트 없이도 기본으로 웹 앱으로 열린다)와 macOS Sonoma 이상의 「Dock에 추가」. Firefox는 Android와 Windows(143부터 작업 표시줄 웹 앱) |
+| 웹 푸시 | 주요 브라우저. iOS·iPadOS는 16.4부터 홈 화면에 추가한 웹 앱에서만 |
 | 백그라운드 동기화 | Chromium 계열만. 다른 브라우저에서는 다음 방문 때 재시도하는 식으로 대체한다 |
+
+플랫폼별 설치 방식과 설치 기준은 [[pwa-installation|PWA 설치와 설치 유도]]에 정리했다.
+
+### 설치된 PWA가 얻는 것
+
+설치하면 PWA는 네이티브 앱처럼 동작한다. 홈 화면·런처·시작 메뉴 아이콘, OS 앱 검색 노출, 브라우저 UI 없는 자기 창, URL 처리·제목 표시줄 같은 OS 통합, 오프라인 동작이다. 웹의 장점(링크로 공유, 검색, 코드베이스 하나, 스토어 심사 없는 배포와 늘 최신 버전)은 그대로 남는다. 원하면 Google Play·Microsoft Store·App Store에도 올릴 수 있다.
+
+과제도 있다. 브라우저마다 지원 기능이 다르고(특히 iOS·iPadOS의 Safari), 사용자는 사이트를 설치할 수 있다는 사실을 잘 모른다. 주요 브라우저·OS가 업데이트될 때마다 각 플랫폼에서 시험하고 대체 경로를 둔다.
+
+## 시작하는 네 가지 방법
+
+| 방법 | 내용 |
+| --- | --- |
+| 설치 가능하게 만들기 | 기본 매니페스트 + 오프라인 페이지 + 핵심 CSS·JS를 캐시하는 서비스 워커. 성능도 함께 좋아진다 |
+| 기능 하나에 집중 | 푸시 알림, 파일 처리처럼 사용자·사업에 효과가 큰 기능 하나부터 |
+| 한 흐름만 완성 | 영상 재생, 탑승권처럼 한 사용자 여정을 오프라인 우선으로 끝까지 |
+| 처음부터 | 리디자인이나 새 프로젝트일 때. 서비스 워커를 설계 초기부터 넣는다 |
+
+### 체크리스트
+
+| 핵심 | 더 나은 PWA |
+| --- | --- |
+| 빠르게 시작하고 빠르게 유지 | 연결 없이 되는 기능은 오프라인으로 |
+| 모든 브라우저에서 동작(같을 필요는 없다) | 완전한 접근성: 스크린 리더·키보드·포커스·대비 |
+| 모든 화면 크기에 반응 | 검색으로 찾을 수 있게(canonical URL, 색인 가능한 콘텐츠) |
+| 브라우저 기본 대신 자체 오프라인 페이지 | 어떤 입력 방식이든, 화면 크기와 무관하게 |
+| 설치 가능 | 권한 요청 전에 맥락 설명, 쓸 수 있는 곳에서 강력한 기능 사용 |
+
+자세한 주제는 각 노트에 있다.
+
+| 주제 | 노트 |
+| --- | --- |
+| 서비스 워커 등록·스코프·생명주기·업데이트·디버깅 | [[service-worker-lifecycle\|서비스 워커 등록·스코프·생명주기와 업데이트]] |
+| Cache Storage, fetch 응답 전략, Workbox | [[service-worker-caching\|서비스 워커 캐싱과 응답 전략]] |
+| IndexedDB, 할당량, 영속 저장, 백그라운드 동기화 | [[pwa-offline-storage\|PWA 오프라인 데이터와 저장소 관리]] |
+| 매니페스트 필드, 아이콘, 표시 방식 | [[web-app-manifest\|웹 앱 매니페스트]] |
+| 설치 기준, 플랫폼별 설치, 설치 프롬프트 | [[pwa-installation\|PWA 설치와 설치 유도]] |
+| 앱다운 CSS, 창 관리 | [[pwa-app-experience\|PWA 앱 경험 설계와 창 관리]] |
+| 푸시, 배지, 공유, 파일, 하드웨어 API | [[pwa-os-integration\|PWA 기능과 OS 통합]] |
 
 ## 사이트 종류별로 얻는 것
 
@@ -58,7 +97,7 @@ sources: ["https://webactually.com/2017/09/28/%ec%9b%b9-%ed%94%84%eb%a1%9c%ec%a0
 | HTTP 캐시 | 서버 응답 헤더 | `max-age`로 기간, `no-store`로 금지, `immutable`로 영구 보관. 바뀌는 파일은 URL을 바꾼다 |
 | 서비스 워커 캐시 | 사이트의 JS 코드 | 무엇을 언제 넣고 뺄지 직접 결정한다. 출처(origin)마다 따로 격리된다 |
 
-브라우저가 요청을 처리하는 전체 순서는 [[browser-rendering|브라우저 렌더링 과정]]의 내비게이션 단계에 정리했다.
+브라우저가 요청을 처리하는 전체 순서는 [[browser-rendering|브라우저 렌더링 과정]]의 내비게이션 단계에 정리했다. Cache Storage API와 fetch 이벤트의 응답 전략(캐시 우선·네트워크 우선·stale-while-revalidate 등)은 [[service-worker-caching|서비스 워커 캐싱과 응답 전략]]에 있다. 이 노트의 아래 전략은 그 위에서 **무엇을 얼마나 요청하고 캐시할지**를 다룬다.
 
 ## 캐시 전략: 요청에 의도를 담는다
 
@@ -122,4 +161,4 @@ const caches_ = {
 - 미디어를 필수·있으면 좋음·불필요로 나누고 `Save-Data`와 네트워크 상태에 맞춰 대체 이미지를 쓴다.
 - 캐시에 상한과 버전을 두어 사용자의 디스크를 존중한다.
 
-관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[responsive-images|반응형 이미지]], [[responsible-javascript|책임감 있는 자바스크립트]], [[cdn|CDN]], [[http|HTTP 프로토콜]], [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]]
+관련 노트: [[service-worker-lifecycle|서비스 워커 등록·스코프·생명주기와 업데이트]], [[service-worker-caching|서비스 워커 캐싱과 응답 전략]], [[pwa-installation|PWA 설치와 설치 유도]], [[browser-rendering|브라우저 렌더링 과정]], [[responsive-images|반응형 이미지]], [[responsible-javascript|책임감 있는 자바스크립트]], [[cdn|CDN]], [[http|HTTP 프로토콜]], [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]], [[resource-hints|리소스 힌트와 미리 불러오기]]

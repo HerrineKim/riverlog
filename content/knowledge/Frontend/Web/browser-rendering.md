@@ -4,11 +4,11 @@ concept: "Critical Rendering Path"
 summary: "브라우저의 구성 요소와, HTML을 DOM으로·CSS를 CSSOM으로 파싱해 렌더 트리로 레이아웃(리플로우)·페인팅·합성을 거쳐 화면을 그리는 과정. HTML 파서의 특성, 스크립트·스타일 시트의 차단, 더티 비트와 강제 동기 레이아웃, 변경마다 다시 도는 단계까지."
 tags: ["frontend", "browser", "dom", "rendering", "performance"]
 source: mixed
-date: "2026-10-14"
-sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/", "https://d2.naver.com/helloworld/59361", "https://wormwlrm.github.io/2021/03/27/How-browsers-work.html"]
+date: "2026-10-17"
+sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/", "https://d2.naver.com/helloworld/59361", "https://wormwlrm.github.io/2021/03/27/How-browsers-work.html", "https://web.dev/learn/performance/understanding-the-critical-path"]
 ---
 
-> 브라우저 구조·파서·레이아웃 최적화 부분은 Tali Garsiel의 「[브라우저는 어떻게 동작하는가?](https://d2.naver.com/helloworld/59361)」(NAVER D2 번역, 2012.05)와 재그지그의 「[프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)」(2021.03)을 바탕으로 재구성한 노트다.
+> 브라우저 구조·파서·레이아웃 최적화 부분은 Tali Garsiel의 「[브라우저는 어떻게 동작하는가?](https://d2.naver.com/helloworld/59361)」(NAVER D2 번역, 2012.05)와 재그지그의 「[프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)」(2021.03)을 바탕으로 재구성한 노트다. 첫 렌더링이 기다리는 자원은 web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Understanding the critical path」 모듈로 보강했다.
 
 ## 한눈에 보기
 
@@ -31,7 +31,7 @@ sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/a
 | 브라우저 엔진 | UI와 렌더링 엔진 사이에서 명령을 중개한다 (새로고침 버튼 → 다시 불러오기) |
 | 렌더링 엔진 | HTML·CSS를 파싱해 화면에 그린다. 이 노트의 주제 |
 | 네트워킹 | HTTP 요청 등 외부 자원을 가져온다 |
-| JavaScript 엔진 | JS를 해석·실행한다. 자세한 내용은 [[js-engine-v8|JS 엔진과 V8 파이프라인]] |
+| JavaScript 엔진 | JS를 해석·실행한다. 자세한 내용은 [[js-engine-v8\|JS 엔진과 V8 파이프라인]] |
 | UI 백엔드 | `<select>`, `alert` 같은 기본 위젯을 OS의 그리기 기능으로 그린다 |
 | 자료 저장소 | 쿠키, localStorage·sessionStorage, IndexedDB 같은 로컬 저장 공간 |
 
@@ -96,6 +96,28 @@ HTML은 네 단계를 거쳐 [[dom|DOM]] 트리가 된다.
 
 스크립트가 파싱을 막는 이유는 스크립트가 `document.write` 등으로 DOM 자체를 바꿀 수 있기 때문이다. 스크립트가 CSS를 기다리는 이유는 `getComputedStyle`처럼 스타일을 읽는 코드가 덜 만들어진 CSSOM에서 틀린 값을 받지 않게 하려는 것이다.
 
+### 첫 렌더링이 기다리는 자원
+
+중요 렌더링 경로는 **전체 렌더링이 아니라 첫 렌더링**에 필요한 최소한의 자원이다. 너무 일찍 그리면 깨진 화면이 크게 바뀌고, 다 기다리면 사용자가 필요 이상으로 기다린다. 렌더링 차단은 그 사이의 균형점이다.
+
+| 첫 렌더링이 기다린다 | 기다리지 않는다 |
+| --- | --- |
+| HTML의 앞부분(스트리밍으로 받은 만큼) | HTML 전체 |
+| `<head>`의 렌더링 차단 CSS(`<style>`, `<link rel="stylesheet">`) | `media`가 지금 조건과 맞지 않는 CSS(`media="print"` 등) |
+| `<head>`의 파서 차단 스크립트(`async`·`defer`·`type="module"`이 없는 것) | 폰트, 이미지 |
+| | `<body>` 끝의 스크립트, `<head>` 밖의 CSS |
+
+- 폰트·이미지는 나중의 다시 그리기에서 채워진다. 그래서 글자가 잠깐 숨거나 빈자리가 생기고, 크기를 잡아 두지 않으면 레이아웃 이동(CLS)이 생긴다([[cls-optimization|CLS 최적화]]).
+- `<head>`는 메타데이터만 담으므로 거기서 막히면 페이지 전체가 막힌다. `<body>` 중간의 차단 자원은 현재 Chromium·Firefox에서 그 **아래쪽 콘텐츠**만 막는다.
+- `blocking="render"` 속성을 `<link>`·`<script>`·`<style>`에 주면 파싱은 계속하되 처리될 때까지 렌더링을 막는다(Chromium 계열).
+- 첫 페인트만 보면 이미지 문제가 안 보인다. 주요 콘텐츠가 그려질 때(LCP)까지를 경로로 보는 관점은 [[lcp-optimization|LCP 최적화]]에 있다.
+
+| 도구 | 보여 주는 것 |
+| --- | --- |
+| WebPageTest 워터폴 | 렌더링 차단 자원에 주황색 표시, 렌더링 시작 시점에 진한 초록 세로선 |
+| Lighthouse 「렌더링 차단 리소스 제거」 | 실제로 렌더링을 늦춘 자원만 꼽는다 |
+| Lighthouse 「중요 요청 체인」 | 중첩된 중요 자원과 체인별 누적 지연. 폰트처럼 차단은 아니지만 우선순위가 높은 자원도 포함한다 |
+
 ## 2. CSSOM 생성
 
 파싱 중 발견한 CSS도 비슷한 과정을 거쳐 CSSOM(CSS Object Model)이 된다. DOM 생성과는 **독립적으로** 진행된다.
@@ -130,7 +152,7 @@ DOM과 CSSOM을 합쳐 **화면에 실제로 그릴 것만** 담은 렌더 트�
 
 ### 강제 동기 레이아웃
 
-이 일괄 처리를 깨는 것이 **레이아웃 값 읽기**다. 더티 표시가 남은 상태에서 `offsetHeight`, `clientWidth`, `getBoundingClientRect()` 같은 값을 읽으면, 브라우저는 정확한 값을 주려고 그 자리에서 레이아웃을 강제로 수행한다. 읽기와 쓰기를 번갈아 하면 매번 레이아웃이 일어난다(레이아웃 스래싱, layout thrashing).
+이 일괄 처리를 깨는 것이 **레이아웃 값 읽기**다. 더티 표시가 남은 상태에서 `offsetHeight`, `clientWidth`, `getBoundingClientRect()` 같은 값을 읽으면, 브라우저는 정확한 값을 주려고 그 자리에서 레이아웃을 강제로 수행한다. 읽기와 쓰기를 번갈아 하면 매번 레이아웃이 일어난다(레이아웃 스래싱, layout thrashing). `offset*`·`client*`·`scroll*` 계열 속성, `getBoundingClientRect()`, `getComputedStyle()`, `scrollTo()`·`scrollIntoView()`, `elementFromPoint()`가 모두 여기에 해당한다. 각 값이 무엇을 재는지는 [[dom-geometry|요소 크기·스크롤·좌표]]에 있다.
 
 ```js
 // 나쁨: 쓰기 뒤에 읽기 → 두 번째 읽기에서 강제 레이아웃
@@ -186,4 +208,4 @@ background-color → background-image → border → 자식 → outline
 - HTML 파서는 오류를 표준대로 고치며 점진적으로 파싱한다. CSS는 끝까지 받아야 해서 렌더링을 막고, 속성 없는 `<script>`는 파싱을 막는다.
 - 브라우저는 더티 비트로 레이아웃을 모아 처리한다. **레이아웃 값 읽기와 스타일 쓰기를 섞지 않는 것**이 이 최적화를 살리는 방법이다.
 
-관련 노트: [[dom|DOM]], [[html|HTML]], [[event-loop|이벤트 루프]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]]
+관련 노트: [[dom|DOM]], [[html|HTML]], [[event-loop|이벤트 루프]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[lcp-optimization|LCP 최적화]], [[inp-optimization|INP 최적화]], [[dom-geometry|요소 크기·스크롤·좌표]]

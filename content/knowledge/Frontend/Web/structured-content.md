@@ -5,10 +5,10 @@ summary: "음성 비서·검색 엔진·AI 답변 엔진은 웹 페이지를 그
 tags: ["web", "seo", "html", "semantic", "content-marketing"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/"]
+sources: ["https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/", "https://web.dev/learn/html/inline-text"]
 ---
 
-> 웹액츄얼리가 번역한 앤디 피츠제럴드(Andy Fitzgerald)의 「[로봇과의 대화: 음성 검색과 스마트 에이전트, 구조화된 콘텐츠 사례](https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/)」(2019.06)을 바탕으로 재구성한 노트다.
+> 웹액츄얼리가 번역한 앤디 피츠제럴드(Andy Fitzgerald)의 「[로봇과의 대화: 음성 검색과 스마트 에이전트, 구조화된 콘텐츠 사례](https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/)」(2019.06)을 바탕으로 재구성한 노트다. `<data>`·`<time>` 부분은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Other inline text elements」를 바탕으로 보강했다.
 
 ## 왜 기계가 읽는 웹인가
 
@@ -49,6 +49,8 @@ sources: ["https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%
 이 구조라면 에이전트는 `h2` 세 개를 `h1`에 딸린 "납부 방법"으로 읽고, "과태료 어떻게 내?"에 세 가지 방법을 바로 답할 수 있다. 같은 내용을 굵은 글씨(`<strong>`)와 큰 글자 스타일로만 꾸미면 사람 눈엔 같아 보여도 기계는 관계를 모른다. 한 항목만 `<strong>`으로 쓰면 그 항목은 답에서 빠진다.
 
 손으로 쓰는 시맨틱 마크업은 이렇게 실수에 약하다. WYSIWYG 편집기는 이론상 시맨틱 HTML을 지원하지만 결과는 편집자 습관에 좌우된다. 그래서 **CMS의 콘텐츠 모델 자체가 구조를 강제**하게 만드는 것이 확실하다(제목 필드, 방법 목록 필드처럼). 마크업 원칙은 [[semantic-html|시맨틱 HTML과 문서 구조]]에 있다.
+
+값 하나에도 기계용 표기를 붙일 수 있다. `<time datetime="2026-10-17T19:00">토요일 저녁 7시</time>`, `<data value="398">9호 신발</data>`처럼 사람에게 보이는 글과 기계가 읽을 값을 함께 둔다. 텍스트 요소 전반은 [[html-text-elements|텍스트 의미 요소와 문자 참조]]에 있다.
 
 ### 2. 링크드 데이터: 현실 세계 개념의 의미
 
@@ -97,4 +99,4 @@ sources: ["https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%
 - 구조가 없으면 에이전트가 틀린 답을 정답처럼 낸다.
 - 손 마크업보다 **CMS 콘텐츠 모델이 구조를 강제**하게 만든다.
 
-관련 노트: [[seo-basics|SEO 기초]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]]
+관련 노트: [[seo-basics|SEO 기초]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]]

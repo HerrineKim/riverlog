@@ -5,10 +5,10 @@ summary: "검색 엔진이 페이지를 크롤링·색인·순위 매기는 흐�
 tags: ["seo", "web", "html", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions"]
+sources: ["https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://velog.io/@jiseung/Why-Site-Speed-Matters"]
 ---
 
-> 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트다. hreflang 항목은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 다국어 페이지 노트와 연결했다.
+> 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트다. hreflang 항목은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 다국어 페이지 노트와 연결했다. 「순위를 정하는 요소」는 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」 부록으로 보강했다.
 
 검색 엔진 최적화(SEO, Search Engine Optimization)는 검색 결과에서 페이지가 잘 발견되고 높은 순위에 오르도록 콘텐츠와 구조를 다듬는 일이다. 콘텐츠의 질이 가장 중요하지만, **검색 엔진이 페이지를 읽을 수 있게 만드는 것**은 프론트엔드의 몫이다. 관련 용어의 짧은 정의는 [[web-glossary|용어집]]에 있다.
 
@@ -25,7 +25,21 @@ sources: ["https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b
 | 크롤링 | 링크가 `<a href>`가 아니라 `onClick` 이동, robots.txt 차단 | 실제 링크를 쓰고, 사이트맵을 제출한다 |
 | 렌더링 | 본문이 JS 실행 뒤에야 생김 | SSR·SSG로 HTML에 본문을 담는다 |
 | 색인 | 같은 내용이 여러 URL에 있음, `noindex` | canonical을 지정하고 메타 로봇을 확인한다 |
-| 순위 | 느린 페이지, 모바일 미대응 | [[web-vitals|웹 성능 지표]]와 [[responsive-design|반응형]]을 챙긴다 |
+| 순위 | 느린 페이지, 모바일 미대응 | [[web-vitals\|웹 성능 지표]]와 [[responsive-design\|반응형]]을 챙긴다 |
+
+## 순위를 정하는 요소
+
+검색 결과 페이지(SERP)는 보통 한 쪽에 결과 열 개를 보여 주고, 질의에 답할 가능성이 높은 순서로 줄을 세운다. 그 순서를 정하는 요소는 넷으로 묶을 수 있다.
+
+| 요소 | 무엇을 보나 | 할 일 |
+| --- | --- | --- |
+| 콘텐츠 품질 | 검색 의도(search intent)에 얼마나 잘 답하나 | 실제로 검색되는 키워드를 조사하고, 사용자가 이루려는 목표에 맞춰 빠짐없이, 읽기 쉽게 쓴다 |
+| 페이지 안 요소(on-page) | 콘텐츠가 어떻게 짜였나 | 명확한 제목, 의미 있는 소제목, 설명적인 파일 이름과 대체 텍스트, 이해하기 쉬운 사이트 계층, 메타 정보의 핵심 키워드 |
+| 페이지 밖 요소(off-page) | 다른 사이트가 이 페이지를 어떻게 평가하나 | 신뢰받는 사이트가 걸어 주는 링크가 가치의 신호가 된다 |
+| 사용자 경험 | 빠르고 안정적으로 뜨나, 모바일에서 쓸 만한가 | [[web-vitals\|Core Web Vitals]], HTTPS, 콘텐츠를 가리는 전면 팝업 피하기 |
+
+- 내부 링크는 사이트 안에서 어떤 페이지가 중요한지 검색 엔진에 알려 준다.
+- **키워드 채우기(keyword stuffing)** 처럼 순위를 노리고 키워드를 부자연스럽게 반복하는 블랙햇 기법은 효과가 없고 오히려 불이익을 받는다.
 
 ## robots.txt와 사이트맵
 
@@ -51,7 +65,7 @@ Sitemap: https://example.com/sitemap.xml
 | `<meta name="robots" content="noindex">` | 색인하지 말라는 신호 |
 | `<link rel="canonical">` | 같은 내용이 여러 URL에 있을 때 대표 URL을 지정한다 |
 | `<meta property="og:*">` | 오픈 그래프. 메신저·SNS 공유 미리보기의 제목·이미지·설명 |
-| `<link rel="alternate" hreflang="en">` | 다국어 페이지의 언어별 버전을 연결한다. 양방향 연결·`x-default` 규칙은 [[multilingual-pages|다국어 페이지]]에 있다 |
+| `<link rel="alternate" hreflang="en">` | 다국어 페이지의 언어별 버전을 연결한다. 양방향 연결·`x-default` 규칙은 [[multilingual-pages\|다국어 페이지]]에 있다 |
 | `<link rel="icon">` | 파비콘. 탭과 모바일 검색 결과에 표시된다 |
 
 ## 리다이렉트
@@ -96,7 +110,7 @@ Sitemap: https://example.com/sitemap.xml
 | 기기별 검색어를 담았는가 | 사용자는 「모바일 게임」, 「앱」처럼 기기 특화 검색어로도 찾는다. 해당 콘텐츠가 있다면 그 단어가 페이지에 있어야 한다 |
 | 미디어가 모든 기기에서 재생되는가 | 표준 `<video>`·`<audio>`를 쓴다 |
 | 앱 설치를 강요하지 않는가 | 콘텐츠를 가리는 전면 팝업(door slam, 침입형 전면 광고)은 모바일 검색 순위에 불리하다. 작은 배너로 알린다 |
-| 빠른가 | 페이지 경험 신호에 Core Web Vitals가 들어간다([[web-vitals|웹 성능 지표]]) |
+| 빠른가 | 페이지 경험 신호에 Core Web Vitals가 들어간다([[web-vitals\|웹 성능 지표]]) |
 | 공유하기 쉬운 URL인가 | 사람이 읽고 기억할 수 있는 경로가 링크·공유를 부른다 |
 
 사이트맵은 HTML 페이지용과 이미지·동영상용 확장을 구분해 정확히 쓴다. Search Console의 페이지 색인 보고서로 어떤 URL이 색인되고 빠졌는지 확인한다.
@@ -110,4 +124,4 @@ Sitemap: https://example.com/sitemap.xml
 - 중복 URL에 canonical이, 옮긴 URL에 301이 있는가
 - 모바일에서 읽을 수 있고 충분히 빠른가
 
-관련 노트: [[semantic-html|시맨틱 HTML과 문서 구조]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[http|HTTP 프로토콜]], [[structured-content|구조화된 콘텐츠와 기계가 읽는 웹]], [[search-engine-basics|검색엔진의 원리]], [[multilingual-pages|다국어 페이지: lang·hreflang과 국제화]], [[web-search-engine|웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리]]
+관련 노트: [[semantic-html|시맨틱 HTML과 문서 구조]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[http|HTTP 프로토콜]], [[structured-content|구조화된 콘텐츠와 기계가 읽는 웹]], [[search-engine-basics|검색엔진의 원리]], [[multilingual-pages|다국어 페이지: lang·hreflang과 국제화]], [[web-search-engine|웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리]], [[html-head-metadata|문서 head와 메타데이터]]

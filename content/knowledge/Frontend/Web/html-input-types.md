@@ -1,14 +1,14 @@
 ---
 title: "HTML 입력 요소 치트시트"
 concept: "Input Types"
-summary: "input의 22가지 type과 label·select·textarea·fieldset·datalist까지, 폼에서 쓰는 입력 요소를 용도별로 정리."
+summary: "input의 22가지 type과 label·select·textarea·fieldset·datalist까지, 폼에서 쓰는 입력 요소를 용도별로 정리하고, 값의 성격에 맞는 type·선택 컨트롤 고르기와 inputmode 8가지 값까지 다룬다."
 tags: ["html", "form", "input", "frontend", "accessibility"]
 source: other
-date: "2026-10-12"
-sources: ["https://webactually.com/2019/03/13/html5-%ec%9e%85%eb%a0%a5-%ec%96%91%ec%8b%9d-%ec%96%b4%eb%94%94%ec%af%a4-%ec%99%94%ec%9d%84%ea%b9%8c/"]
+date: "2026-10-17"
+sources: ["https://web.dev/learn/forms/form-fields", "https://web.dev/learn/forms/fields", "https://web.dev/learn/forms/attributes", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inputmode", "https://webactually.com/2019/03/13/html5-%ec%9e%85%eb%a0%a5-%ec%96%91%ec%8b%9d-%ec%96%b4%eb%94%94%ec%af%a4-%ec%99%94%ec%9d%84%ea%b9%8c/"]
 ---
 
-> 「type 고르기: 쓸 곳과 피할 곳」 부분은 Drew McLellan의 「HTML5 입력 양식: 어디쯤 왔을까?」(웹액츄얼리 번역, 2019.03)를 바탕으로 보강한 노트다.
+> 「type 고르기: 쓸 곳과 피할 곳」 부분은 Drew McLellan의 「HTML5 입력 양식: 어디쯤 왔을까?」(웹액츄얼리 번역, 2019.03)를 바탕으로 보강한 노트다. 「선택 컨트롤 고르기」와 「inputmode」는 web.dev의 「[Learn Forms](https://web.dev/learn/forms)」 강좌 중 「Form fields in depth」, 「Form attributes in depth」 모듈을 바탕으로, 값 목록은 MDN으로 확인해 보강했다.
 
 `<input>`은 `type` 하나로 텍스트 칸, 체크박스, 날짜 선택기, 버튼까지 완전히 다른 컨트롤이 된다. 알맞은 type을 고르면 브라우저가 **형식 검증, 모바일 키보드, 선택 UI**를 공짜로 제공한다. 폼과 input의 기본 문법은 [[html|HTML 기초와 HTML5]] 노트에 있고, 여기서는 입력 요소를 용도별로 모았다.
 
@@ -39,6 +39,20 @@ sources: ["https://webactually.com/2019/03/13/html5-%ec%9e%85%eb%a0%a5-%ec%96%91
 | `range` | 슬라이더로 범위 안의 값 선택 (`min`·`max`·`step`) |
 | `color` | 색상 선택기. 값은 `#rrggbb`, 기본값은 검정(`#000000`) |
 | `file` | 파일 선택 버튼. `accept`로 형식 제한, `multiple`로 여러 개 |
+
+### 선택 컨트롤 고르기
+
+| 상황 | 컨트롤 |
+| --- | --- |
+| 켜고 끄는 하나(약관 동의, 뉴스레터 수신) | 체크박스 하나 |
+| 여러 개를 골라도 됨 | 체크박스 여러 개. `<select multiple>`은 Ctrl·Shift 클릭을 모르는 사용자가 많아 피한다 |
+| 하나만, 선택지가 적다 | 라디오. 모든 선택지가 한눈에 보인다 |
+| 하나만, 선택지가 많다(국가, 연도) | `<select>`. 처음엔 첫 option이나 `selected`가 붙은 option이 선택돼 있다 |
+| 자유 입력 + 추천 | `<input list>` + `<datalist>` |
+| 대략적인 정도 | `range` |
+| 어느 것도 맞지 않음 | 폼 연동 커스텀 요소(form-associated custom element). 마지막 수단이다 |
+
+판단이 애매하면 실제 사용자에게 시험한다.
 
 ```html
 <input type="radio" name="flavor" value="chocolate" id="choco" />
@@ -120,6 +134,8 @@ follow @reactive_dude</textarea>
 
 기본값은 `value` 속성이 아니라 **태그 사이의 내용**이다.
 
+`<textarea>`는 기본으로 크기를 조절할 수 있다. 레이아웃을 지키려고 `resize: none`으로 막지 말고 `resize: vertical`로 세로만 허용한다. 내용에 맞춰 늘게 하려면 `field-sizing: content`가 있다([[form-styling|폼 스타일링]]).
+
 ### fieldset과 legend: 관련 입력 묶기
 
 ```html
@@ -161,7 +177,29 @@ input의 `list` 속성과 datalist의 `id`를 연결하면, 자유롭게 입력�
 | `color` | 테마·CMS 색 고르기. 주요 브라우저 모두 색 선택기를 띄운다 | 일반 사용자에게 16진수 값을 보여 주지 않도록 미리보기를 함께 둔다 |
 | `date` 등 | 가까운 날짜 고르기(예약일). 주요 브라우저 모두 선택기를 띄운다 | 생년월일처럼 먼 날짜는 달력 선택이 번거롭다. 연·월·일 세 칸이나 형식을 밝힌 텍스트 입력이 낫다. 선택기 모양과 접근성이 브라우저마다 다르다 |
 
-입력 type과 함께 `autocomplete`(예: `email`, `tel`, `bday`, `one-time-code`)를 지정하면 브라우저 자동 완성이 정확해진다.
+입력 type과 함께 `autocomplete`(예: `email`, `tel`, `bday`, `one-time-code`)를 지정하면 브라우저 자동 완성이 정확해진다. 토큰 목록과 문법은 [[form-autofill|자동 완성과 autocomplete 토큰]]에 있다.
+
+## inputmode: 키보드만 바꾸기
+
+`type`은 데이터 형식·검증·UI까지 바꾸고, `inputmode`는 **가상 키보드 모양만** 바꾼다. 검증을 바꾸지 않고 키보드만 맞추고 싶을 때 쓴다. 2021년 말부터 주요 브라우저가 모두 지원한다.
+
+| 값 | 키보드 | 쓰는 곳 |
+| --- | --- | --- |
+| `text` | 기본 키보드 (기본값) | |
+| `numeric` | 숫자 0~9 | 카드 번호, 인증 코드, 우편번호, PIN |
+| `decimal` | 숫자 + 소수점(지역에 따라 `.` 또는 `,`) | 금액, 측정값 |
+| `tel` | 전화 키패드(0~9, `*`, `#`) | 전화번호가 아닌 키패드 입력. 전화번호는 `type="tel"` |
+| `email` | `@`가 있는 키보드 | 보통은 `type="email"`이 낫다 |
+| `url` | `/`가 눈에 띄는 키보드 | 보통은 `type="url"`이 낫다 |
+| `search` | 엔터 자리에 「검색」 | 보통은 `type="search"` |
+| `none` | 키보드를 띄우지 않음 | 페이지가 자체 키패드를 제공할 때만 |
+
+```html
+<input name="otp" inputmode="numeric" autocomplete="one-time-code">
+<input name="amount" inputmode="decimal">
+```
+
+엔터 키 문구를 바꾸는 `enterkeyhint`(`next`, `done`, `search`, `send` 등)는 [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]에 있다.
 
 ## 핵심 정리
 
@@ -172,4 +210,4 @@ input의 `list` 속성과 datalist의 `id`를 연결하면, 자유롭게 입력�
 - hidden 값은 숨겨질 뿐 안전하지 않다.
 - 모든 입력에는 `label`을 연결하고, 관련 입력은 `fieldset`으로 묶는다.
 
-관련 노트: [[form-usability|더 나은 폼을 만드는 팁]], [[html|HTML 기초와 HTML5]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]]
+관련 노트: [[form-usability|더 나은 폼을 만드는 팁]], [[form-autofill|자동 완성과 autocomplete 토큰]], [[constraint-validation|제약 검증: required·pattern·ValidityState]], [[html|HTML 기초와 HTML5]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]]

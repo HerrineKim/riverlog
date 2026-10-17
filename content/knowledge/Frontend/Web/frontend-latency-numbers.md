@@ -76,9 +76,9 @@ sources: ["https://vercel.com/blog/latency-numbers-every-web-developer-should-kn
 
 | 원칙 | 방법 |
 | --- | --- |
-| 네트워크 워터폴을 줄인다 | 요청 체인을 서버로 옮긴다. 예: React Server Components. 같은 리전의 서버 간 요청은 사용자 회선보다 100배쯤 빠를 수 있다. 체인과 단계별 시간은 [[devtools-network|DevTools Network 패널]]의 워터폴로 확인한다 |
-| JS 크기를 줄인다 | 코드 분할(code-splitting)이 1순위 |
-| 입력 반응을 200ms 아래로 | 무거운 일은 메인 스레드 밖으로 빼서 INP를 지킨다 |
+| 네트워크 워터폴을 줄인다 | 요청 체인을 서버로 옮긴다. 예: React Server Components. 같은 리전의 서버 간 요청은 사용자 회선보다 100배쯤 빠를 수 있다. 체인과 단계별 시간은 [[devtools-network\|DevTools Network 패널]]의 워터폴로 확인한다 |
+| JS 크기를 줄인다 | 코드 분할(code-splitting)이 1순위([[code-splitting\|코드 분할]]) |
+| 입력 반응을 200ms 아래로 | 무거운 일은 메인 스레드 밖으로 빼서 INP를 지킨다([[web-workers\|웹 워커]], [[inp-optimization\|INP 최적화]]) |
 | 사용자 가까이 배포한다 | 거리와 라우팅 품질이 지연을 크게 더한다. 싼 CDN 경로는 지연을 두 배로 만들 수 있다 |
 
 ```text
@@ -97,4 +97,4 @@ sources: ["https://vercel.com/blog/latency-numbers-every-web-developer-should-kn
 
 더 많은 어림 숫자는 Napkin Math 같은 자료가 정리해 두었다.
 
-관련 노트: [[cdn|CDN]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[webs-next-transition|웹 아키텍처의 다음 전환]], [[memory-hierarchy|메모리 계층]], [[web-vitals|웹 성능 지표와 Lighthouse]]
+관련 노트: [[cdn|CDN]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[webs-next-transition|웹 아키텍처의 다음 전환]], [[memory-hierarchy|메모리 계층]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[ttfb-optimization|TTFB 줄이기]]

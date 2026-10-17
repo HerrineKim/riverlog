@@ -4,8 +4,8 @@ concept: "Intersection Observer"
 summary: "스크롤 이벤트로 위치를 계산하는 대신, 요소가 화면(또는 스크롤 영역)에 얼마나 보이는지 브라우저가 알려 주는 IntersectionObserver. root·rootMargin·threshold 옵션, 무한 스크롤·지연 로딩·끝까지 읽음 감지 패턴, 크기 변화를 보는 ResizeObserver와 DOM 변화를 보는 MutationObserver를 정리한다."
 tags: ["browser", "web", "performance", "dom", "javascript"]
 source: other
-date: "2026-10-15"
-sources: ["https://wesbos.com/javascript/06-serious-practice-exercises/scroll-events-and-intersection-observer", "https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API", "https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver", "https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver"]
+date: "2026-10-17"
+sources: ["https://wesbos.com/javascript/06-serious-practice-exercises/scroll-events-and-intersection-observer", "https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API", "https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver", "https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver", "https://web.dev/learn/performance/lazy-load-images-and-iframe-elements"]
 ---
 
 > Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, API 세부는 MDN으로 확인해 재구성한 노트다.
@@ -16,8 +16,8 @@ sources: ["https://wesbos.com/javascript/06-serious-practice-exercises/scroll-ev
 
 | 문제 | 이유 |
 | --- | --- |
-| 너무 자주 실행된다 | `scroll`은 프레임마다 여러 번 일어날 수 있다. 그래서 [[debounce-throttle|쓰로틀]]을 덧대야 한다 |
-| 레이아웃을 강제한다 | 위치·크기를 읽으면 브라우저가 레이아웃을 바로 계산해야 한다([[browser-rendering|강제 동기 레이아웃]]) |
+| 너무 자주 실행된다 | `scroll`은 프레임마다 여러 번 일어날 수 있다. 그래서 [[debounce-throttle\|쓰로틀]]을 덧대야 한다 |
+| 레이아웃을 강제한다 | 위치·크기를 읽으면 브라우저가 레이아웃을 바로 계산해야 한다([[browser-rendering\|강제 동기 레이아웃]]) |
 | 계산이 깨지기 쉽다 | 화면 크기, 중첩된 스크롤 영역, 요소 높이에 따라 공식이 달라진다 |
 
 **IntersectionObserver**는 질문을 바꾼다. "얼마나 스크롤했나"가 아니라 **"이 요소가 기준 영역과 얼마나 겹치나"** 를 브라우저가 계산해, 기준을 넘을 때만 콜백을 부른다. 겹침은 브라우저가 렌더링 과정에서 비동기로 계산하므로, 스크롤할 때마다 내 코드가 돌거나 레이아웃을 강제하지 않는다. 모든 주요 브라우저가 지원한다.
@@ -70,7 +70,8 @@ document.querySelectorAll('.card').forEach((card) => observer.observe(card))
 | 노출 측정 | 광고·추천 카드 | 일정 비율 이상 보이면 노출로 기록 |
 | 현재 섹션 표시 | 제목·섹션 | 보이는 섹션에 맞춰 목차 항목 강조 |
 
-- 이미지·iframe 지연 로딩만 필요하면 관찰자 대신 HTML의 `loading="lazy"`를 쓴다([[script-loading|스크립트·스타일 로딩 순서]]).
+- 이미지·iframe 지연 로딩만 필요하면 관찰자 대신 HTML의 `loading="lazy"`를 쓴다. 관찰자는 `loading`을 지원하지 않는 자동 재생 `<video>`, CSS 배경 이미지 같은 대상에만 쓴다. lazysizes·yall.js 같은 라이브러리가 이 방식이다([[lazy-loading|지연 로딩]]).
+- 화면에 들어온 링크만 골라 다음 페이지를 미리 받거나(Quicklink) 외부 링크의 DNS를 미리 조회하는 데도 쓴다([[resource-hints|리소스 힌트와 미리 불러오기]]).
 - 무한 스크롤에는 키보드 사용자가 푸터에 닿지 못하는 접근성 문제가 있으므로 「더 보기」 버튼을 함께 두는 편이 낫다.
 
 ## 다른 관찰자 API
@@ -81,11 +82,11 @@ document.querySelectorAll('.card').forEach((card) => observer.observe(card))
 | --- | --- | --- |
 | `IntersectionObserver` | 요소와 기준 영역의 겹침 | 무한 스크롤, 지연 로딩, 노출 측정 |
 | `ResizeObserver` | **요소** 크기 변화 | 컨테이너 크기에 맞춘 차트 다시 그리기, 텍스트 넘침 감지 |
-| `MutationObserver` | DOM 트리 변화(자식 추가·삭제, 속성, 텍스트) | 내 코드 밖에서 바뀌는 DOM에 반응(서드파티 위젯, 확장 기능) |
-| `PerformanceObserver` | 성능 항목(LCP, long task 등) | [[web-vitals|웹 성능 지표]] 측정 |
+| `MutationObserver` | DOM 트리 변화(자식 추가·삭제, 속성, 텍스트) | 내 코드 밖에서 바뀌는 DOM에 반응(서드파티 위젯, 확장 기능). 스크롤·크기와 달리 **레이아웃이 아니라 트리 구조**를 본다 |
+| `PerformanceObserver` | 성능 항목(LCP, long task 등) | [[web-vitals\|웹 성능 지표]] 측정 |
 
 - `window`의 `resize` 이벤트는 창 크기만 알려 준다. 사이드바가 접혀 요소만 좁아진 경우는 `ResizeObserver`가 잡는다. 레이아웃만 바꾸면 되는 일은 CSS 컨테이너 쿼리가 먼저다.
-- `MutationObserver`는 변경을 모아 마이크로태스크로 전달한다. 콜백에서 다시 DOM을 바꾸면 자기 자신을 또 깨울 수 있으니 조건을 둔다.
+- `MutationObserver`는 변경을 모아 마이크로태스크로 전달한다. 콜백에서 다시 DOM을 바꾸면 자기 자신을 또 깨울 수 있으니 조건을 둔다. 옵션과 쓰임은 [[mutation-observer|MutationObserver]]에 있다.
 
 ## 정리
 
@@ -95,4 +96,4 @@ document.querySelectorAll('.card').forEach((card) => observer.observe(card))
 - 한 번이면 `unobserve`, 끝나면 `disconnect`로 정리한다.
 - 크기는 `ResizeObserver`, DOM 변화는 `MutationObserver`가 같은 모양으로 알려 준다.
 
-관련 노트: [[debounce-throttle|Debounce와 Throttle]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[browser-rendering|브라우저 렌더링 과정]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[dom|DOM과 BOM]]
+관련 노트: [[debounce-throttle|Debounce와 Throttle]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[browser-rendering|브라우저 렌더링 과정]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[lazy-loading|지연 로딩: 이미지·iframe·퍼사드]], [[dom|DOM과 BOM]], [[mutation-observer|MutationObserver]], [[dom-geometry|요소 크기·스크롤·좌표]]

@@ -5,10 +5,10 @@ summary: "여러 언어로 페이지를 제공할 때 언어마다 URL을 나누
 tags: ["html", "i18n", "seo", "web", "frontend"]
 source: other
 date: "2026-10-15"
-sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://www.w3.org/International/questions/qa-html-language-declarations", "https://developers.google.com/search/docs/specialty/international/localized-versions", "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites"]
+sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://www.w3.org/International/questions/qa-html-language-declarations", "https://developers.google.com/search/docs/specialty/international/localized-versions", "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites", "https://web.dev/learn/html/document-structure", "https://web.dev/learn/html/inline-text"]
 ---
 
-> Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 다국어 페이지 문항 두 개를 바탕으로, W3C 국제화 문서와 Google 검색 센터 문서로 확인해 재구성한 노트다.
+> Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 다국어 페이지 문항 두 개를 바탕으로, W3C 국제화 문서와 Google 검색 센터 문서로 확인해 재구성한 노트다. 인용 부호·방향 격리·루비 요소는 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌를 바탕으로 보강했다.
 
 ## 두 가지 일: 국제화와 현지화
 
@@ -59,7 +59,10 @@ Next.js 같은 프레임워크는 로캘별 라우팅을 지원하고, `Accept-L
 | `dir` | 글 방향. `ltr`, `rtl`(아랍어·히브리어), 사용자 입력처럼 모를 때 `auto`. CSS `direction`이 아니라 HTML 속성으로 준다 |
 | `translate="no"` | 브랜드명·코드처럼 자동 번역에서 빼야 할 부분 |
 | `hreflang` | 같은 내용의 다른 언어·지역판을 검색 엔진에 알린다 |
-| `Content-Language` 헤더 | 대상 독자의 언어 정보일 뿐, 문서 언어 선언은 `lang`이 맡는다 |
+| `Content-Language` 헤더 | 대상 독자의 언어 정보일 뿐, 문서 언어 선언은 `lang`이 맡는다. 같은 뜻의 `<meta http-equiv="content-language">`도 쓰지 않는다 |
+| `<q>` | 인용 부호를 `lang`에 맞게 그린다(영어 “ ”, 프랑스어 « »). 다른 언어 인용에는 `lang`을 단다 |
+| `<bdi>` / `<bdo dir>` | 방향을 모르는 글(사용자 이름)을 주변과 격리 / 방향을 강제로 뒤집기 |
+| `<ruby>`·`<rt>` | 한자·가나 위의 읽는 법 주석 |
 
 `hreflang`의 규칙:
 
@@ -69,18 +72,18 @@ Next.js 같은 프레임워크는 로캘별 라우팅을 지원하고, `Accept-L
 - `x-default`는 맞는 언어가 없을 때 보낼 페이지다. 언어 선택 페이지나 자동 분기하는 첫 화면에 쓴다.
 - Google은 페이지 언어를 `lang`이나 `hreflang`이 아니라 **보이는 본문**으로 판단한다. 번역은 본문까지 실제로 옮겨야 한다.
 
-검색 쪽 다른 메타 태그와 canonical은 [[seo-basics|SEO 기초]]에 있다.
+CSS에서는 `:lang(fr)`이나 `[lang|="fr"]`로 언어별 스타일을 준다. `:lang()`은 조상에게서 물려받은 언어까지 맞춘다. 검색 쪽 다른 메타 태그와 canonical은 [[seo-basics|SEO 기초]]에, head의 `<link rel="alternate">`는 [[html-head-metadata|문서 head와 메타데이터]]에 있다.
 
 ## 설계·개발할 때 주의할 것
 
 | 주의 | 이유와 방법 |
 | --- | --- |
 | **문자열을 이어 붙이지 않는다** | `"오늘은 " + date + "입니다"`는 어순이 다른 언어에서 깨진다. 자리 표시자가 있는 메시지 전체를 번역 단위로 둔다(`"오늘은 {date}입니다"`, `"Today is {date}"`). 복수형은 ICU MessageFormat이나 `Intl.PluralRules`로 다룬다 |
-| 날짜·숫자·통화는 로캘로 포맷한다 | 같은 날짜도 `5/31/2026`(미국), `31/05/2026`(영국), `2026. 5. 31.`(한국)으로 쓴다. `Intl.DateTimeFormat`, `Intl.NumberFormat`, `Intl.RelativeTimeFormat`을 쓴다(→ [[date-libraries|날짜 라이브러리]]) |
+| 날짜·숫자·통화는 로캘로 포맷한다 | 같은 날짜도 `5/31/2026`(미국), `31/05/2026`(영국), `2026. 5. 31.`(한국)으로 쓴다. `Intl.DateTimeFormat`, `Intl.NumberFormat`, `Intl.RelativeTimeFormat`을 쓴다(→ [[date-libraries\|날짜 라이브러리]]) |
 | 텍스트 길이가 달라진다 | 영어보다 독일어·핀란드어가 길고, 한·중·일어는 짧지만 글자가 높다. 버튼·제목·레이블은 고정 폭 대신 늘어날 공간을 두고, 넘침을 줄임표·줄바꿈 중 무엇으로 처리할지 정한다. 본문처럼 흐르는 글은 문제가 적다 |
-| 글 방향이 바뀐다 | RTL 언어에서는 레이아웃 전체가 뒤집힌다. `margin-left` 대신 `margin-inline-start` 같은 [[logical-properties|논리적 속성]]을 쓰면 `dir`만 바꿔도 맞는다. 세로쓰기는 `writing-mode`로 한다 |
+| 글 방향이 바뀐다 | RTL 언어에서는 레이아웃 전체가 뒤집힌다. `margin-left` 대신 `margin-inline-start` 같은 [[logical-properties\|논리적 속성]]을 쓰면 `dir`만 바꿔도 맞는다. 세로쓰기는 `writing-mode`로 한다 |
 | 이미지에 글자를 넣지 않는다 | 언어마다 이미지를 따로 만들어야 하고 검색·번역·스크린 리더가 읽지 못한다. 글자는 텍스트와 웹 폰트로 올린다 |
-| 글꼴과 글자 크기 | 언어마다 필요한 글꼴과 알맞은 크기가 다르다. `:lang()`으로 나눈다(→ [[responsive-design|반응형 디자인과 다국어 타이포그래피]]) |
+| 글꼴과 글자 크기 | 언어마다 필요한 글꼴과 알맞은 크기가 다르다. `:lang()`으로 나눈다(→ [[responsive-design\|반응형 디자인과 다국어 타이포그래피]]) |
 | 색·아이콘·이름의 문화 차이 | 색과 손짓 아이콘의 의미는 문화마다 다르다. 이름·주소·전화번호 입력 폼은 한 형식을 강제하지 않는다 |
 | 인코딩 | 모든 문서와 데이터는 UTF-8로 저장·전송한다 |
 
@@ -93,4 +96,4 @@ Next.js 같은 프레임워크는 로캘별 라우팅을 지원하고, `Accept-L
 
 **국제화는 번역 전에 끝나 있어야 하는 설계다.**
 
-관련 노트: [[seo-basics|SEO 기초]], [[html|HTML 기초와 HTML5]], [[logical-properties|쓰기 모드와 논리적 속성]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]]
+관련 노트: [[seo-basics|SEO 기초]], [[html-head-metadata|문서 head와 메타데이터]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[html|HTML 기초와 HTML5]], [[logical-properties|쓰기 모드와 논리적 속성]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]]

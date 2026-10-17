@@ -41,7 +41,7 @@ sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%
 | --- | --- |
 | jQuery 전체 | 몇 줄의 DOM 조작이면 네이티브 JS로 충분하지 않나 |
 | 캐러셀 | 이미지가 정말 다 필요한가. 사용자 대부분은 캐러셀을 보지 않는다. 강한 이미지 하나로 줄일 수 있나 |
-| 이미지 | 더 효율적인 형식(AVIF·WebP)과 알맞은 크기로 주고 있나([[responsive-images|반응형 이미지]]) |
+| 이미지 | 더 효율적인 형식(AVIF·WebP)과 알맞은 크기로 주고 있나([[responsive-images\|반응형 이미지]]) |
 | 웹 폰트 | 내려받은 폰트를 다 쓰나. 시스템 폰트 목록으로 대신할 수 없나 |
 | 유튜브 임베드 | 재생하지 않아도 수 MB를 받는다. 링크나 클릭 후 로드로 바꿀 수 없나 |
 | CMS 기본 스크립트 | WordPress 이모지 감지 스크립트처럼 쓰지 않는 기능을 끌 수 있나 |
@@ -59,7 +59,7 @@ sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%
 | --- | --- |
 | 압축 | 텍스트 자원은 Brotli(또는 gzip)로 항상 압축한다 |
 | 서버 캐시 | Nginx FastCGI 캐시, WordPress 캐시 플러그인으로 매 요청마다 PHP·DB를 돌리지 않는다 |
-| HTTPS + HTTP/2·HTTP/3 | 연결 수립을 줄이고, 서비스 워커 같은 기술을 쓸 수 있게 된다([[pwa-service-worker|PWA와 서비스 워커 캐시 전략]]) |
+| HTTPS + HTTP/2·HTTP/3 | 연결 수립을 줄이고, 서비스 워커 같은 기술을 쓸 수 있게 된다([[pwa-service-worker\|PWA와 서비스 워커 캐시 전략]]) |
 | 재생 에너지 호스팅 | 개발자가 줄 수 있는 가장 큰 영향. The Green Web Foundation이 친환경 호스트 목록을 관리한다 |
 
 피할 수 없는 배출은 탄소 상쇄를 고려할 수 있지만, 나무가 탄소를 흡수하는 기간은 100년 단위라 지금 배출을 줄이는 대안은 아니다. **먼저 줄이고, 남는 것을 상쇄한다.**
@@ -84,4 +84,4 @@ sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%
 - 서버 압축·캐시, 재생 에너지 호스팅까지 챙긴다.
 - 지속 가능한 웹은 곧 빠르고 접근하기 쉬운 웹이다.
 
-관련 노트: [[responsible-javascript|책임감 있는 자바스크립트]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[responsive-images|반응형 이미지]]
+관련 노트: [[responsible-javascript|책임감 있는 자바스크립트]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[responsive-images|반응형 이미지]], [[image-formats|웹 이미지 형식]]

@@ -5,10 +5,10 @@ summary: "사용자의 권한을 도용하는 CSRF와 악성 스크립트를 주
 tags: ["security", "web", "http", "django"]
 source: mixed
 date: "2026-10-15"
-sources: ["https://wesbos.com/javascript/04-the-dom/html-from-strings-and-xss", "https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML", "https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API"]
+sources: ["https://ko.javascript.info/clickjacking", "https://wesbos.com/javascript/04-the-dom/html-from-strings-and-xss", "https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML", "https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API", "https://web.dev/learn/privacy/third-parties"]
 ---
 
-> TIL을 정리하고, 문자열 HTML과 XSS 부분은 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다.
+> TIL을 정리하고, 문자열 HTML과 XSS 부분은 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를, 응답 헤더 부분은 web.dev의 「[Learn Privacy](https://web.dev/learn/privacy)」 강좌를 함께 참고했다.
 
 웹 애플리케이션의 대표적인 취약점 두 가지는 **CSRF**와 **XSS**다. 둘 다 "브라우저가 사용자를 대신해 무언가를 실행한다"는 점을 악용하지만, CSRF는 **요청을 위조**하고 XSS는 **스크립트를 주입**한다는 점이 다르다.
 
@@ -60,6 +60,19 @@ card.innerHTML = `<h2>${desc}</h2>` // onerror가 실행된다
 - 사용자가 쓴 HTML(리치 텍스트)을 보여 줘야 하면 `setHTML()`이나 DOMPurify로 정제한다.
 - `localStorage`도 같은 출처의 스크립트가 모두 읽으므로, XSS가 나면 그 안의 토큰이 함께 새어 나간다([[web-storage|Web Storage]]).
 
+## 클릭재킹(Clickjacking)
+
+공격자가 자기 페이지에 대상 사이트를 투명한 iframe으로 겹쳐 놓고, 사용자가 미끼 버튼을 누르게 해 실제로는 대상 사이트의 버튼(송금, 권한 허용)을 누르게 만드는 공격이다. 사용자는 로그인된 상태이므로 요청은 정상으로 처리된다.
+
+방어는 **남이 내 페이지를 프레임에 넣지 못하게** 하는 것이다. 표준은 CSP의 `frame-ancestors`이고, 옛 브라우저용으로 `X-Frame-Options`를 함께 건다(`ALLOW-FROM` 값은 폐기됐다).
+
+```http
+Content-Security-Policy: frame-ancestors 'self'
+X-Frame-Options: SAMEORIGIN
+```
+
+프레임 사이 통신을 쓸 때 `postMessage`를 받는 쪽이 `event.origin`을 검사하지 않으면, 아무 사이트나 메시지를 보내 DOM을 조작하게 되어 XSS 통로가 된다. 창·프레임 관계와 sandbox는 [[windows-and-frames|창과 프레임: 팝업, iframe, postMessage]]에 있다.
+
 ## 비교
 
 | 구분 | CSRF | XSS |
@@ -68,9 +81,21 @@ card.innerHTML = `<h2>${desc}</h2>` // onerror가 실행된다
 | 악용하는 점 | 브라우저가 쿠키를 자동 전송 | 사이트가 입력을 검증 없이 출력 |
 | 대표 방어 | CSRF 토큰, `SameSite` 쿠키, `Origin` 검사 | 출력 이스케이프, `innerHTML` 지양, CSP, `HttpOnly` 쿠키 |
 
+## 함께 거는 응답 헤더
+
+CSRF·XSS 방어 말고도 응답 헤더로 페이지가 할 수 있는 일의 범위를 좁힌다. 서드파티를 묶는 쪽의 자세한 설명은 [[third-party-privacy|서드파티와 프라이버시]]에 있다.
+
+| 헤더 | 막는 것 |
+| --- | --- |
+| `Content-Security-Policy` | 허용하지 않은 출처의 스크립트 실행. `-Report-Only`로 막지 않고 위반만 보고받아 예상 밖 서드파티를 감시할 수 있다 |
+| `Referrer-Policy` | 경로·쿼리에 담긴 정보가 `Referer`로 다른 사이트에 새는 것. 기본값 `strict-origin-when-cross-origin`을 명시하거나 더 좁힌다 |
+| `Permissions-Policy` | 페이지와 iframe이 카메라·위치 같은 강력한 기능을 쓰는 것. 기본 거부 후 필요한 것만 연다 |
+| `Strict-Transport-Security` | HTTP로의 다운그레이드([[https\|HTTPS와 TLS]]) |
+| `Clear-Site-Data` | 로그아웃 뒤 브라우저에 남는 쿠키·저장소·캐시 |
+
 ## 핵심 정리
 
 - CSRF는 "사용자가 원치 않은 요청"을, XSS는 "사이트가 원치 않은 스크립트"를 실행시킨다.
 - CSRF는 서버가 발급한 토큰으로, XSS는 입력을 HTML로 해석하지 않는 것으로 막는다.
 
-관련 노트: [[security|정보 시스템 보안(공격 기법과 암호)]], [[cookie-session|쿠키와 세션]], [[cors|CORS]], [[oauth2|OAuth 2.0]], [[https|HTTPS와 TLS]], [[api-security|API 보안 체크리스트]]
+관련 노트: [[security|정보 시스템 보안(공격 기법과 암호)]], [[cookie-session|쿠키와 세션]], [[third-party-privacy|서드파티와 프라이버시]], [[cors|CORS]], [[oauth2|OAuth 2.0]], [[https|HTTPS와 TLS]], [[api-security|API 보안 체크리스트]], [[regexp-engine|정규식 엔진: 탐욕·게으름·전후방탐색·백트래킹]]
