@@ -21,13 +21,15 @@ date: "2026-10-13"
 | [Architecture](/knowledge/dictionary/frontend/architecture) | 의존성 관리, 프론트엔드의 SOLID 원칙, 폴더 구조의 진화, Feature-Sliced Design |
 | [Mobile](/knowledge/dictionary/frontend/mobile) | 네이티브·하이브리드·크로스 플랫폼 비교, React Native 핵심과 실무 팁, CodePush OTA 업데이트, Flutter 구조와 Dart 문법, Swift Codable, Android 상태·Context·SDK 버전 |
 | [Testing](/knowledge/dictionary/frontend/testing) | 테스트의 층(정적·단위·통합·E2E)과 테스트 대역, TDD, 험블 객체 패턴, 접근성 기반 UI 테스트, Vitest·Jest·Testing Library·Playwright |
-| [UI Design](/knowledge/dictionary/frontend/ui-design) | 디자인 시스템과 핸드오프, 웹 접근성, 레이아웃, 전자상거래·제스처 UI 패턴, UX 라이팅 (AI로 디자인을 뽑는 프롬프트 기법은 [[ai-frontend-design-prompting|AI & Data]] 분야에 있다) |
+| [Accessibility](/knowledge/dictionary/frontend/accessibility) | 장애 유형별 웹 사용, WCAG, 시맨틱 구조·대체 텍스트·폼·ARIA·키보드·위젯·CSS의 접근성, 자동·수동 평가와 스크린 리더 테스트 |
+| [UI Design](/knowledge/dictionary/frontend/ui-design) | 디자인 시스템과 핸드오프, 레이아웃, 전자상거래·제스처 UI 패턴, UX 라이팅 (AI로 디자인을 뽑는 프롬프트 기법은 [[ai-frontend-design-prompting\|AI & Data]] 분야에 있다) |
 | [Graphics](/knowledge/dictionary/frontend/graphics) | WebGL·WebGPU와 셰이더, Three.js로 웹에서 3D 그리기, Animated Icon |
 
 학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/frontend-roadmap)에 정리했다.
 
 - [프론트엔드 개발자의 업무 범위와 역량](Frontend/frontend-developer-role.md): 데이터 흐름으로 본 여섯 업무 영역, 퍼블리셔·백엔드·풀스택과의 경계, 잘하는 프론트엔드 개발자의 조건
 - [프론트엔드 엔지니어의 세 가지 성장 트랙](Frontend/frontend-career-tracks.md): 웹 특화·제품 특화·운영 특화 트랙별 지식과 진로, 탁월한 엔지니어의 다섯 역량, 시니어다운 일하기
+- [UI 엔지니어링의 열두 가지 문제](Frontend/ui-engineering-problems.md): 일관성·반응성·지연·내비게이션·낡은 캐시·엔트로피·우선순위·접근성·국제화·전달·복원력·추상화, 라이브러리 없이 문제를 재현하며 배우기
 - [기술 스택 고르기](Frontend/tech-stack-selection.md): 기술 수용 주기·캐즘·하이프 사이클, 스택을 고르는 다섯 기준, 범주로 트렌드 읽기, 레거시를 대하는 자세
 - [React와 Vue 비교](Frontend/react-vs-vue.md): JSX와 템플릿, 불변 상태와 반응형 상태, v-model의 정체, 생태계 범위와 고르는 기준
 - [React와 Vue 말고: 다른 프론트엔드 프레임워크](Frontend/frontend-frameworks.md): Svelte, Angular, Preact, Alpine.js, HTMX의 성격과 쓰임
