@@ -1,14 +1,14 @@
 ---
 title: "프롬프트 작성법 치트시트"
 concept: "Prompt Cheat Sheet"
-summary: "목표·맥락·과제·제약·형식·예시를 채우면 프롬프트가 된다. 어떤 LLM에나 통하는 원칙(분명하게, 이유를 붙여, 예시로 보여 주고, 구조를 나누고, 금지 대신 할 일을)과 역할·어조·형식을 골라 끼우는 예시를 한 장으로 정리했다."
+summary: "목표·맥락·과제·제약·형식·예시를 채우면 프롬프트가 된다. 어떤 LLM에나 통하는 원칙(분명하게, 이유를 붙여, 예시로 보여 주고, 구조를 나누고, 금지 대신 할 일을), 앱에 넣는 프롬프트의 구성 요소, 제로샷·퓨샷·생각의 사슬·자기 성찰 기법, 역할·어조·형식을 골라 끼우는 예시를 한 장으로 정리했다."
 tags: ["ai", "llm", "prompting"]
 source: other
-date: "2026-10-13"
-sources: ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices"]
+date: "2026-10-17"
+sources: ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices", "https://web.dev/learn/ai/prompt-engineering"]
 ---
 
-> SNS에서 돌던 이미지 「ChatGPT Cheat Sheet」를 뼈대로, Anthropic의 [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)로 원칙을 확인해 재구성한 노트다.
+> SNS에서 돌던 이미지 「ChatGPT Cheat Sheet」를 뼈대로, Anthropic의 [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)로 원칙을 확인하고, 구성 요소와 기법은 web.dev 「[Learn AI](https://web.dev/learn/ai/prompt-engineering)」 강좌의 프롬프트 엔지니어링 모듈로 보강해 재구성한 노트다.
 
 ## 핵심: 맥락 없는 신입에게 일을 맡기듯
 
@@ -54,6 +54,39 @@ LLM은 **똑똑하지만 우리 규칙과 사정을 전혀 모르는 신입**과
 | 시장 조사 요약 | 데이터 사이언티스트 | 사실 기반, 비교형 | 신뢰할 수 있는 출처를 밝히고, 표로 |
 | 사용자 인터뷰 정리 | UX 리서처 | 정보 전달형, 해결책 중심 | 구체적인 이름은 `{Name}` 같은 변수로 바꾸고, JSON으로 |
 
+## 앱에 넣는 프롬프트: 구성 요소
+
+앱 안의 프롬프트는 **앱과 모델 사이의 구조화된 계약**이다. 구성 요소별로 나눠 두면 각각 버전 관리·테스트·개선할 수 있고, 팀이 함께 보는 산출물이 된다. 위의 7칸을 앱 관점에서 다시 나누면 이렇다.
+
+| 구성 요소 | 역할 | 블로그 제목 생성기 예 |
+| --- | --- | --- |
+| 맥락(Context) | 모델의 역할과 도메인 | "블로그 작성자를 돕는 글쓰기 도우미다" |
+| 지시(Instruction) | 할 작업 | "주어진 스타일로 대안 제목 3개를 만든다" |
+| 입력 변수(Input variables) | 앱이 실시간으로 넣는 값 | `${blogPostContent}`, `${titleStyle}` |
+| 출력 형식(Output format) | 기대하는 구조 | `{ "titles": [...] }` JSON만 |
+| 예시(Examples) | 다른 입력에 대한 모범 답 | 입력 JSON → 출력 JSON 한 쌍 |
+| 제약(Constraints) | 일관성·안전·브랜드를 지키는 한계 | 128자 미만, 초안 문장 복사 금지, 이모지·낚시성 표현 금지 |
+
+**지시와 출력 형식만으로 시작**하고, 결과를 보며 필요한 구성 요소를 하나씩 더한다. 정보마다 목적이 분명해야 한다. 예시나 세부가 너무 많으면 모델이 헷갈리고, 지연과 비용(서버 모델이라면)이 늘어난다. 어떤 구성 요소를 더할지는 [[evaluation-driven-development|평가 주도 개발]]로 정한다. 시스템 프롬프트와 사용자 프롬프트에 어떻게 나눌지는 [[system-prompt-patterns|시스템 프롬프트 설계 패턴]]에 있다.
+
+## 프롬프트 기법 네 가지
+
+| 기법 | 방법 | 잘 맞는 곳 | 주의 |
+| --- | --- | --- | --- |
+| **제로샷(Zero-shot)** | 작업만 설명한다 | 백과사전식 질문 같은 단순한 작업. 모든 개선의 기준선 | 실서비스에선 대개 조건과 논리를 더해야 한다 |
+| **퓨샷(Few-shot)** | 입력 → 출력 예시를 보여 준다 | 감성 분류 같은 유사 예측 과제, 제목 생성처럼 구조가 뚜렷한 작업 | 출력 공간이 넓은 장문·열린 작업은 예시로 덮을 수 없다 |
+| **생각의 사슬(Chain-of-thought)** | 답하기 전에 단계별로 추론하게 한다. 단계를 지정하거나 모델에게 맡긴다 | 글 개요 짜기, 복잡한 의사 결정. 추론 모델의 핵심 원리 | 추론 과정만큼 계산·비용·지연이 늘어난다. 정말 필요할 때만 |
+| **자기 성찰(Self-reflection)** | 첫 출력을 모델이 비평하고 고치게 한다 | 편집·다시 쓰기처럼 반복 개선이 이득인 작업 | 기본 프롬프트가 잘 돌아간 뒤에 얹는다 |
+
+```text
+퓨샷 예 (감성 분류)
+사용자 메시지를 "positive" / "negative" / "neutral" 중 하나로 분류한다.
+Input: "I love this product! It works perfectly."   Output: { "label": "positive" }
+Input: "This is terrible. I want a refund."          Output: { "label": "negative" }
+```
+
+기법을 고를 때는 이 과제가 **유추(퓨샷), 단계적 추론(생각의 사슬), 반복 개선(자기 성찰)** 중 무엇으로 가장 잘 풀리는지 묻는다. 모델마다 권장 방식이 다르니 쓰는 모델의 공식 프롬프트 가이드도 확인한다.
+
 ## 그 밖의 요령
 
 1. **목표를 먼저 정의한다.** 무엇을 얻고 싶은지 모르면 프롬프트도 흐려진다.
@@ -68,6 +101,7 @@ LLM은 **똑똑하지만 우리 규칙과 사정을 전혀 모르는 신입**과
 - 규칙에는 이유를 붙이고, 금지보다 할 일을 적는다.
 - 예시는 형식을 맞추는 가장 확실한 방법이다.
 - 역할·어조·형식은 칸을 정해 두고 값만 바꿔 끼운다.
+- 기법은 제로샷 기준선에서 시작해 퓨샷 → 생각의 사슬 → 자기 성찰 순으로 필요한 만큼만 더한다.
 - 결국 **AI는 마음을 읽지 못한다**. 원하는 것을 말로 꺼내 놓는 만큼 답이 좋아진다.
 
-관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]], [[claude-code-guide|Claude Code 활용 가이드]]
+관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]], [[claude-code-guide|Claude Code 활용 가이드]], [[evaluation-driven-development|평가 주도 개발(EDD)]]

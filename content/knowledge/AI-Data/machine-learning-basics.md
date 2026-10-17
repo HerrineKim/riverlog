@@ -97,7 +97,7 @@ sources: ["https://webactually.com/2021/01/15/%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B
 | NumPy | 효율적인 선형대수 연산 |
 | scikit-learn | 회귀·분류·군집 등 고전 기법을 바로 쓰는 라이브러리 |
 | PyTorch | 신경망과 딥러닝 |
-| Jupyter | 실험과 시각화를 한 문서에서([[jupyter-notebook|Jupyter Notebook]]) |
+| Jupyter | 실험과 시각화를 한 문서에서([[jupyter-notebook\|Jupyter Notebook]]) |
 
 ## 정리
 

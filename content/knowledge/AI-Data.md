@@ -26,7 +26,7 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [자연어 처리 파이프라인: 전처리부터 언어 모델까지](AI-Data/nlp-pipeline.md): 말뭉치 → 토큰화·정규화·인코딩 → 언어 모델(n-gram → 트랜스포머 → LLM) → 평가
 - [LLM은 무엇을 하고 왜 작동하나](AI-Data/how-llm-works.md): 다음 토큰 예측과 온도, 임베딩, 트랜스포머 내부 구조, 사전·사후 학습, 계산 환원 불가능성과 추론·도구로 넘는 법
 - [시스템 프롬프트 설계 패턴](AI-Data/system-prompt-patterns.md): 정체성 → 거절 → 출력 형식 → 환경·도구의 골격, 유출된 제품 프롬프트에서 보이는 설계 패턴과 보안 교훈
-- [프롬프트 작성법 치트시트](AI-Data/prompt-cheat-sheet.md): 목표·맥락·과제·제약·형식·예시 7칸, 이유 붙이기·금지 대신 할 일 같은 원칙, 어조·문체·형식 목록과 제약 템플릿
+- [프롬프트 작성법 치트시트](AI-Data/prompt-cheat-sheet.md): 목표·맥락·과제·제약·형식·예시 7칸, 이유 붙이기·금지 대신 할 일 같은 원칙, 어조·문체·형식 목록과 제약 템플릿, 제로샷·퓨샷·생각의 사슬·자기 성찰 기법
 - [AI 모델로 완성도 높은 프론트엔드 디자인 뽑기](AI-Data/ai-frontend-design-prompting.md): 디자인 시스템·와이어프레임·스크린샷·무드보드로 보여 주고 기본 폰트·아이콘을 바꿔 템플릿 티를 없애는 프롬프트 기법
 - [미드저니 프롬프트 파라미터](AI-Data/midjourney-prompt-parameters.md): --ar·--s·--c·--w·--sref·--sw·--p·--v의 뜻과 범위, 크리스마스 디자인용 프롬프트 예시
 - [디자인 시스템을 아는 화면 생성 에이전트 설계하기](AI-Data/design-system-agent-harness.md): 구체화·검증·메모리 루프로 일관된 결과를 내는 에이전틱 코딩 하네스
@@ -37,3 +37,10 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [멀티 에이전트](AI-Data/multi-agent.md): 여러 AI가 역할을 나눠 일하는 구조, 작동 흐름·구성 요소·주의점, 주요 프레임워크
 - [AI 네이티브 엔지니어의 작업 방식](AI-Data/ai-native-engineer.md): AI부터 시도하고 검증하기, 도입 단계, 도구 네 범주, 개발 생명 주기별 활용, 팀·윤리 규칙
 - [AI 시대 개발자의 역할](AI-Data/ai-era-developer.md): LLM의 구조적 한계, 지시에서 위임으로, 하네스와 오라클, 맥락 보존, 갈라지는 역할과 길러야 할 역량
+- [AI 기능 기획: 시스템 블루프린트와 유스케이스 발굴](AI-Data/ai-feature-blueprint.md): 기회·솔루션·거버넌스 블루프린트, 가치 5범주와 사용자 여정 매핑, 비용·실패 모드 추정, 프로토타입
+- [예측형 AI와 생성형 AI](AI-Data/predictive-vs-generative-ai.md): 출력 공간과 모델 차이, 이탈 예측·글쓰기 도우미로 본 두 개발 루프, 흔한 함정과 대응
+- [책임 있는 AI: 프라이버시·공정성·신뢰](AI-Data/responsible-ai-governance.md): 세 축을 데이터·지능·UX 층별로, PII 최소화, 편향 시험, 보정된 신뢰
+- [웹 AI 플랫폼 고르기: 클라이언트, 서버, 하이브리드](AI-Data/web-ai-platform-choice.md): 내장 AI·커스텀 모델·관리형 API·자체 호스팅 비교, 요구 사항에서 고르기, 클라이언트 우선 하이브리드
+- [클라이언트 사이드 웹 AI: 내장 AI API, 라이브러리, 런타임](AI-Data/client-side-web-ai.md): Chrome 내장 AI API 상태와 쓰는 순서, Transformers.js·WebLLM 등, Wasm·WebGPU·WebNN
+- [평가 주도 개발(EDD): AI 기능을 테스트하며 다듬기](AI-Data/evaluation-driven-development.md): AI용 TDD, 결정적·주관적 지표, 코드·사람·LLM 심판, 프롬프트 CI
+- [AI 기능의 UX 패턴: 배경형·제한형·개방형](AI-Data/ai-ux-patterns.md): 노출 단계별 예와 모범 사례, 배경형과 제한형 사이에서 고르기, 투명성·제어·신뢰 보정 패턴 표

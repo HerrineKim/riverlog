@@ -109,4 +109,4 @@ COCO 벤치마크는 IoU 기준을 0.5부터 0.95까지 0.05 간격으로 바꿔
 - 객체 탐지는 IoU로 정답 여부를 가르고 AP·mAP로 성능을 요약한다.
 - **지표를 고르는 일은 "어떤 실수가 더 비싼가"를 정하는 일이다.**
 
-관련 노트: [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[perceptron-mlp|퍼셉트론과 다층 퍼셉트론]], [[bayesian-fuzzy-inference|불확실한 지식으로 추론하기: 베이지안 분류기와 퍼지 추론]]
+관련 노트: [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[perceptron-mlp|퍼셉트론과 다층 퍼셉트론]], [[bayesian-fuzzy-inference|불확실한 지식으로 추론하기: 베이지안 분류기와 퍼지 추론]], [[predictive-vs-generative-ai|예측형 AI와 생성형 AI]]
