@@ -70,7 +70,8 @@ PostgreSQL은 사용자 정의 타입, 테이블 상속, 배열·JSON 컬럼 같
 
 - 행마다 서로 다른 컬럼 집합을 가질 수 있는 거대한 2차원 맵 구조.
 - 대규모 분산 저장과 대량 쓰기·조회에 강하다.
-- 예: Cassandra, HBase
+- 예: Cassandra, ScyllaDB, HBase
+- 파티션 키·클러스터링 키 설계, LSM 트리 저장 엔진, 핫 파티션 대응은 [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]]에 있다.
 
 ### 그래프형 (Graph)
 
@@ -118,4 +119,4 @@ RDB의 **ACID와 SQL**을 유지하면서 NoSQL 수준의 **수평 확장성과 
 - **ORM**(Object-Relational Mapping): 테이블 행을 객체로 매핑한다. 예: Django ORM, TypeORM, Prisma
 - **ODM**(Object-Document Mapping): 문서를 객체로 매핑한다. 예: Mongoose
 
-관련 노트: [[sql-basics|SQL 기초]], [[mongodb|MongoDB 시작하기와 CRUD]], [[transaction|트랜잭션과 회복]], [[normalization|정규화와 반정규화]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]]
+관련 노트: [[sql-basics|SQL 기초]], [[mongodb|MongoDB 시작하기와 CRUD]], [[transaction|트랜잭션과 회복]], [[normalization|정규화와 반정규화]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[database-sharding|데이터베이스 샤딩]]

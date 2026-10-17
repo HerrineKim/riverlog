@@ -4,7 +4,7 @@ concept: "Disk Scheduling"
 summary: "디스크 구조(섹터·논리 블록), 포맷팅·파티셔닝과 부팅 과정, 접근 시간 구성, FCFS·SSTF·SCAN·C-SCAN·N-SCAN·LOOK 디스크 스케줄링, 스왑 공간과 RAID."
 tags: ["os", "disk", "scheduling", "storage", "raid"]
 source: notion
-sources: ["https://app.notion.com/p/b0b7e47aef714bc9a0a33e37f1cb4b41", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://80000coding.notion.site/2fab2f6ce84d47019677858dd4f58ee2", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9"]
+sources: ["https://app.notion.com/p/b0b7e47aef714bc9a0a33e37f1cb4b41", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://80000coding.notion.site/2fab2f6ce84d47019677858dd4f58ee2", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://discord.com/blog/how-discord-supercharges-network-disks-for-extreme-low-latency"]
 date: "2026-10-14"
 ---
 
@@ -165,6 +165,13 @@ SCAN·C-SCAN은 헤드가 무조건 디스크 끝까지 간다. LOOK·C-LOOK은 
 | 신뢰성 향상 | 같은 정보를 여러 디스크에 **중복 저장**해 하나가 고장 나도 다른 디스크에서 읽는다(mirroring, shadowing) |
 
 데이터 전체를 중복 저장하는 대신, 일부 디스크에 **패리티(parity)** 만 저장해 오류를 검출·복구하면 공간 효율을 높일 수 있다. RAID 레벨별 구성은 [[memory-hierarchy|메모리 계층 구조]]에 정리했다. 패리티 계산의 원리(XOR, 해밍 코드)는 [[data-representation|데이터의 표현]]에 있다.
+
+### 리눅스 소프트웨어 RAID (md)
+
+RAID는 전용 컨트롤러 없이 커널의 **md** 드라이버(`mdadm`으로 관리)로도 구성한다. 성격이 다른 장치끼리 묶을 수 있어, 빠른 장치와 안전한 장치를 섞는 데 쓴다.
+
+- RAID 1의 한쪽 장치에 **write-mostly**를 표시하면 그 장치는 쓰기만 받고, 다른 장치를 쓸 수 없을 때만 읽기를 맡는다. 일반 RAID 1은 읽기를 양쪽에 나눠 보낸다.
+- 예: 빠르지만 휘발성인 클라우드 로컬 SSD를 RAID 0으로 묶고, 그 배열을 느리지만 복제·스냅샷이 되는 네트워크 디스크(write-mostly)와 RAID 1로 미러링한다. 읽기는 로컬 SSD 속도로, 내구성은 네트워크 디스크로 얻는다. 자세한 구성은 [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]]에 있다.
 
 ## 핵심 정리
 
