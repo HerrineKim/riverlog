@@ -4,15 +4,25 @@ concept: "Search Engine"
 summary: "검색엔진은 문서를 토큰으로 쪼개 단어 → 문서의 역인덱스를 만들고(색인), 질의어를 같은 방식으로 처리해 찾은 뒤 TF-IDF·BM25 같은 점수로 순서를 정한다(질의). 한국어는 형태소 분석이나 N-gram이 필요하다."
 tags: ["backend", "search", "database", "algorithm", "data-structure"]
 source: other
-date: "2026-10-14"
-sources: ["https://github.com/charsyam/simple_search_engine", "https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules-similarity.html", "https://www.elastic.co/guide/en/elasticsearch/plugins/current/analysis-nori.html"]
+date: "2026-10-17"
+sources: ["https://github.com/charsyam/simple_search_engine", "https://xo.dev/articles/how-search-engine-works", "https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules-similarity.html", "https://www.elastic.co/guide/en/elasticsearch/plugins/current/analysis-nori.html"]
 ---
 
-> 강대명의 「간단한 검색엔진의 원리」(BoB 보안개발트랙 강의 자료, 2022)를 바탕으로 재구성한 노트다.
+> 강대명의 「간단한 검색엔진의 원리」(BoB 보안개발트랙 강의 자료, 2022)를 바탕으로 재구성하고, 「DB 검색의 한계」는 blurfx의 「[검색 엔진은 어떻게 작동하는가](https://xo.dev/articles/how-search-engine-works)」(2023.04)로 보강한 노트다. 크롤러·PageRank·질의 의도 같은 웹 검색엔진 전체 흐름은 [[web-search-engine|웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리]]에 있다.
 
 ## 검색엔진이란
 
 검색엔진은 **어떤 단어가 들어간 문서를 빠르게 찾고, 관련도 순으로 정렬해 돌려주는 시스템**이다. DB의 `LIKE '%단어%'`는 인덱스를 타지 못해 전체 행을 훑고, 결과의 순서(랭킹)도 정해 주지 않는다. 이 두 가지가 필요해지면 검색엔진을 쓴다.
+
+### DB 검색의 한계
+
+| 방법 | 동작 | 한계 |
+| --- | --- | --- |
+| 문서마다 부분 문자열 비교 | 질의어가 본문에 있는지 하나씩 본다 | 문서 수 × 길이만큼 걸린다. `apple juice`를 단어로 나누면 단어 수만큼 더 느려진다 |
+| `LIKE '%단어%'`, `REGEXP` | 패턴 일치 | 앞에 `%`가 붙으면 B-트리 인덱스를 못 탄다 |
+| `FULLTEXT` 인덱스 (MySQL `MATCH … AGAINST`, PostgreSQL `tsvector`) | DB 안의 역인덱스 | 대부분의 경우 충분히 빠르지만, 오타 허용·랭킹 조정·한국어 분석·비정형 데이터 처리가 약하다 |
+
+이 한계를 넘는 기능(퍼지 검색, 분석기, 점수 조정)을 갖춘 것이 Elasticsearch·OpenSearch·Solr 같은 전용 검색엔진이다.
 
 **검색엔진은 직접 만들지 않는다.** 색인·질의·랭킹·분산·장애 처리를 모두 구현하는 비용이 크고, 직접 만든 것은 버그가 많다. 서비스에서는 Elasticsearch나 OpenSearch(둘 다 Apache Lucene 기반)를 쓰고, 원리는 튜닝과 문제 해결을 위해 이해한다.
 
@@ -31,7 +41,7 @@ sources: ["https://github.com/charsyam/simple_search_engine", "https://www.elast
 
 **질의어도 색인과 똑같은 분석 과정을 거쳐야 한다.** 색인할 때 소문자로 바꿨다면 질의어도 소문자로 바꿔야 일치한다.
 
-수집(크롤링)은 대부분 필요 없다. 서비스는 자기 DB를 색인하고, Elasticsearch도 크롤러를 포함하지 않는다. 외부 사이트를 수집할 때의 robots.txt 규칙은 [[seo-basics|SEO 기초]]에 있다.
+수집(크롤링)은 대부분 필요 없다. 서비스는 자기 DB를 색인하고, Elasticsearch도 크롤러를 포함하지 않는다. 외부 사이트를 수집할 때의 robots.txt 규칙은 [[seo-basics|SEO 기초: 크롤링부터 메타 태그까지]]에 있다.
 
 ## 역인덱스 만들기
 
@@ -120,6 +130,7 @@ BM25    score(D, Q) = Σ IDF(qᵢ) × f(qᵢ, D) × (k1 + 1)
 
 - 역인덱스는 **글자가 일치해야** 찾는다. `자동차`로 `차량`을 찾으려면 동의어 사전이 필요하다.
 - 의미가 비슷한 문서를 찾는 벡터 검색(임베딩 + kNN)이 이 빈틈을 메운다. Elasticsearch·OpenSearch도 벡터 필드를 지원하며, BM25 점수와 벡터 점수를 섞는 하이브리드 검색이 흔하다.
+- 오타는 역인덱스에서 그대로 빗나간다. 편집 거리 기반 퍼지 검색으로 비슷한 단어까지 찾는다.
 - 랭킹 공식은 출발점이다. 실서비스는 클릭 로그로 결과를 평가하고 가중치를 조정한다.
 
 ## 정리
@@ -130,4 +141,4 @@ BM25    score(D, Q) = Σ IDF(qᵢ) × f(qᵢ, D) × (k1 + 1)
 - 랭킹의 기본은 BM25다. TF-IDF에 tf 포화와 문서 길이 보정을 더한 것이다.
 - 원리를 알고, 구현은 Elasticsearch·OpenSearch에 맡긴다.
 
-관련 노트: [[text-similarity|문자열·문서 유사도]], [[seo-basics|SEO 기초]], [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[sql-basics|SQL 기초]]
+관련 노트: [[web-search-engine|웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리]], [[text-similarity|문자열·문서 유사도: 편집 거리와 코사인 유사도]], [[seo-basics|SEO 기초: 크롤링부터 메타 태그까지]], [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[sql-basics|SQL 기초]]
