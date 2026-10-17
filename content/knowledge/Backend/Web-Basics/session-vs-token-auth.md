@@ -4,11 +4,11 @@ concept: "Session vs Token Auth"
 summary: "로그인 상태를 서버 저장소에 두는 세션 방식과, 서명된 토큰(JWT)에 담아 클라이언트가 들고 다니는 토큰 방식의 흐름·장단점을 비교하고, 토큰 탈취 대책(짧은 만료, 슬라이딩 세션, 리프레시 토큰 회전)과 선택 기준을 정리한다."
 tags: ["backend", "auth", "security", "jwt", "http"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/8016475c9c904c8ea1c4100af15728f3"]
+date: "2026-10-17"
+sources: ["https://80000coding.notion.site/8016475c9c904c8ea1c4100af15728f3", "https://dev.gmarket.com/45"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「세션과 토큰 기반 인증방식」을 바탕으로 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「세션과 토큰 기반 인증방식」을 바탕으로 재구성하고, G마켓 기술 블로그의 「[인증/인가는 어디에 어떻게 구현해야 할까?](https://dev.gmarket.com/45)」(2022.09)로 다중 서버 세션 부분을 보탠 노트다.
 
 ## 왜 인증 방식이 필요한가
 
@@ -38,7 +38,18 @@ HTTP는 상태가 없다(stateless). 요청마다 "이 사람이 아까 로그�
 
 - 세션 ID는 무작위 문자열이라 **유출돼도 개인정보는 드러나지 않는다.** 다만 탈취하면 그 사용자로 위장할 수 있다(세션 하이재킹).
 - 로그인 직후 세션 ID를 새로 발급해 **세션 고정(session fixation)** 공격을 막는다.
-- 사용자마다 저장소 항목이 생기므로 동시 접속자가 많으면 저장소가 부담이 된다. 서버가 여러 대면 Redis 같은 공용 저장소를 둔다.
+- 사용자마다 저장소 항목이 생기므로 동시 접속자가 많으면 저장소가 부담이 된다.
+- 세션 ID 대신 **아이디·비밀번호를 쿠키에 담아 매번 보내는 방식은 쓰지 않는다.** 저장소가 필요 없고 확장도 쉽지만, 요청마다 자격 증명이 오가므로 쿠키 하나만 새도 계정이 넘어간다. 세션은 이 문제를 「의미 없는 식별자」로 바꾼 것이다.
+
+### 서버가 여러 대일 때
+
+세션 저장소가 서버 메모리에 있으면(예: 톰캣의 기본 세션 관리자), 로드밸런서가 요청을 다른 서버로 보내는 순간 세션을 찾지 못한다.
+
+| 방법 | 동작 | 대가 |
+| --- | --- | --- |
+| 스티키 세션(sticky session) | 로드밸런서가 같은 사용자를 늘 같은 서버로 보낸다 | 그 서버가 죽으면 세션이 사라진다. 부하가 고르게 퍼지지 않는다 |
+| 세션 복제(session replication) | 서버끼리 세션을 서로 복사해 똑같이 유지한다 | 서버가 늘수록 복제 트래픽과 메모리가 커진다 |
+| **공용 세션 저장소** | Redis 같은 외부 저장소 하나를 모든 서버가 함께 쓴다 | 저장소의 부하와 가용성만 신경 쓰면 된다. 가장 흔한 선택이다 |
 
 ## 토큰 기반 인증 (JWT)
 
@@ -50,7 +61,7 @@ JWT(JSON Web Token)는 `header.payload.signature` 세 부분을 `.`으로 이은
 | Payload | 클레임(key-value). Base64URL 인코딩. 대표 클레임은 `sub`(대상, 보통 사용자 ID), `exp`(만료 시각), `iat`(발급 시각), `jti`(토큰 ID) |
 | Signature | Header + Payload를 서버의 키로 서명한 값. 위변조 검증용 |
 
-Header와 Payload는 **인코딩**일 뿐이라 누구나 디코딩해 읽을 수 있다([jwt.io](https://jwt.io/)). 위변조를 막는 것은 Signature뿐이다. NestJS에서 Passport로 구현하는 방법은 [[auth-jwt-passport|NestJS JWT 인증]]에 있다.
+Header와 Payload는 **인코딩**일 뿐이라 누구나 디코딩해 읽을 수 있다([jwt.io](https://jwt.io/)). 위변조를 막는 것은 Signature뿐이다. NestJS에서 Passport로 구현하는 방법은 [[auth-jwt-passport|NestJS JWT 인증과 Passport]]에 있다.
 
 ```text
 1. POST /login
@@ -98,4 +109,4 @@ Header와 Payload는 **인코딩**일 뿐이라 누구나 디코딩해 읽을 �
 - 토큰을 쓰면 짧은 Access Token과 회전하는 Refresh Token을 함께 쓰고, 브라우저에서는 HttpOnly 쿠키를 우선 고려한다.
 - 같은 도메인의 웹 앱만 있다면 세션, 모바일·다중 서비스 API라면 토큰이 기본 선택이다.
 
-관련 노트: [[cookie-session|쿠키와 세션]], [[auth-jwt-passport|NestJS JWT 인증]], [[oauth2|OAuth 2.0]], [[web-security|웹 보안: CSRF와 XSS]], [[api-security|API 보안 체크리스트]], [[auth-user|Django User와 인증]]
+관련 노트: [[cookie-session|쿠키와 세션]], [[auth-jwt-passport|NestJS JWT 인증과 Passport]], [[oauth2|OAuth 2.0]], [[web-security|웹 보안: CSRF와 XSS]], [[api-security|API 보안 체크리스트]], [[auth-user|Django User와 인증]], [[auth-placement|인증·인가 로직은 어디에 두나: 필터, 인터셉터, API 게이트웨이]]
