@@ -180,4 +180,4 @@ React Compiler를 켜면 바뀌지 않은 하위 JSX는 자동으로 메모이�
 
 **나눌지 말지는 "이 코드는 무엇 때문에, 얼마나 자주 바뀌는가"로 정한다.**
 
-관련 노트: [[composition|합성: 상속 대신 Composition]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[re-rendering|리렌더링 원인과 추적]]
+관련 노트: [[composition|합성: 상속 대신 Composition]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[re-rendering|리렌더링 원인과 추적]], [[code-coupling|결합도를 낮추는 전략]]

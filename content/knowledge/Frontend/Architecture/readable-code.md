@@ -88,4 +88,4 @@ function Profile() {
 - 구조는 역할과 로직 중 하나를 고르기보다, 커스텀 훅 같은 공통 영역으로 둘 다 만족시킨다.
 - 이름은 형태를 알아볼 만큼만 간결하게, 같은 접두어는 같은 역할로 일관되게.
 
-관련 노트: [[principles|코드 리뷰 원칙과 체크리스트]], [[simple-design|Simple Design]], [[abstraction-layers|추상화 계층과 데이터 흐름]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[clean-code-functions-naming|클린 코드: 함수와 이름]]
+관련 노트: [[principles|코드 리뷰 원칙과 체크리스트]], [[simple-design|Simple Design]], [[abstraction-layers|추상화 계층과 데이터 흐름]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[clean-code-functions-naming|클린 코드: 함수와 이름]], [[code-readability|가독성을 높이는 전략]]
