@@ -4,11 +4,11 @@ concept: "Bézier Curve"
 summary: "베지어 곡선은 제어점 몇 개로 매끄러운 곡선을 정의하는 방법이다. 두 점 사이 선형 보간을 겹겹이 반복하는 드 카스텔조 알고리즘으로 1차(직선)·2차·3차 곡선 식과 행렬 표현을 유도하고, 펜 툴·SVG·CSS·폰트에서 어떻게 쓰이는지 정리한다."
 tags: ["computer-science", "graphics", "math", "algorithm"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/5d058f269b7f46feac8b46d33eab5ac2"]
+date: "2026-10-17"
+sources: ["https://80000coding.notion.site/5d058f269b7f46feac8b46d33eab5ac2", "https://ko.javascript.info/bezier-curve", "https://ko.javascript.info/css-animations"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「포토샵에서 곡선을 그리는 방법, Bezier Curve」를 바탕으로 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「포토샵에서 곡선을 그리는 방법, Bezier Curve」를 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「베지어 곡선」, 「CSS 애니메이션」 글로 보강해 재구성한 노트다.
 
 ## 베지어 곡선이란
 
@@ -50,6 +50,8 @@ K  = lerp(K₁, K₂, t)
 ```text
 B(t) = (1 − t)²·P₀ + 2(1 − t)t·P₁ + t²·P₂
 ```
+
+식은 벡터식이라 x와 y에 따로 적용한다. 점이 (0,0), (0.5,1), (1,0)이면 `x = t`, `y = 2t − 2t²`가 되어 가운데가 솟은 포물선이 나온다. 꼭짓점의 높이는 제어점의 절반(y=0.5)에 그친다. 제어점은 곡선을 끌어당길 뿐 닿지 않는다.
 
 ## 3차 곡선과 행렬 표현
 
@@ -94,9 +96,18 @@ curve = [bezier([(0, 0), (30, 100), (70, 100), (100, 0)], i / 50) for i in range
 | --- | --- |
 | 양 끝점 통과 | t=0이면 P₀, t=1이면 마지막 점 |
 | 접선 방향 | 시작점의 접선은 P₀→P₁, 끝점의 접선은 P₂→P₃ 방향. 펜 툴의 핸들이 바로 이 접선이다 |
-| 볼록 껍질 | 곡선은 제어점들이 만드는 볼록 다각형 안에 있다. 충돌 검사·화면 밖 판정에 쓴다 |
+| 볼록 껍질 | 곡선은 제어점들이 만드는 볼록 다각형 안에 있다. 두 곡선의 볼록 껍질이 겹치지 않으면 곡선도 만나지 않으므로, 교차·충돌 검사와 화면 밖 판정을 싸게 거른다 |
 | 아핀 불변 | 곡선을 이동·회전·확대하려면 제어점만 변환하면 된다 |
 | 전역 영향 | 제어점 하나를 움직이면 곡선 전체가 바뀐다. 그래서 긴 경로는 3차 곡선 여러 조각을 이어 붙이고(path), 이음매에서 핸들을 일직선으로 맞춰 매끄럽게 한다 |
+
+## 제어점 곡선과 보간 곡선
+
+베지어 곡선은 **양 끝점 말고는 제어점을 지나지 않는다.** 「이 점들을 모두 지나는 곡선」이 필요하면 베지어가 아니라 보간(interpolation)을 쓴다. 점이 많을 때는 구간마다 낮은 차수 다항식을 이어 붙이는 **스플라인 보간**(Catmull-Rom 등)이 흔하며, 이 스플라인도 구간별로 3차 베지어로 바꿔 그릴 수 있다.
+
+| | 베지어 | 보간(스플라인) |
+| --- | --- | --- |
+| 점의 역할 | 모양을 끌어당기는 손잡이 | 곡선이 지나야 하는 위치 |
+| 어울리는 곳 | 펜 툴, 폰트, 타이밍 곡선 | 데이터 점을 잇는 차트, 카메라 경로 |
 
 ## 웹에서 만나는 베지어 곡선
 
@@ -104,6 +115,13 @@ curve = [bezier([(0, 0), (30, 100), (70, 100), (100, 0)], i / 50) for i in range
 /* 애니메이션 진행률 곡선: P₀=(0,0), P₃=(1,1) 고정, 두 제어점만 지정 */
 .box { transition: transform 300ms cubic-bezier(0.25, 0.1, 0.25, 1); } /* = ease */
 ```
+
+CSS `cubic-bezier(x1, y1, x2, y2)`에서 **x축은 시간, y축은 진행률**이다.
+
+- 시간은 되돌릴 수 없으므로 **x는 0~1 안**이어야 한다. 벗어나면 그 값은 무효다.
+- y는 범위를 벗어나도 된다. 1보다 크면 목표를 지나쳤다가 돌아오고(overshoot), 0보다 작으면 시작 전에 뒤로 물러난다.
+- `linear`는 `cubic-bezier(0, 0, 1, 1)`, 직선이다.
+- 3차 베지어 하나로는 여러 번 튀는 바운스·탄성 곡선을 못 만든다. 이때는 CSS `linear()` 꺾은선이나 JavaScript 타이밍 함수를 쓴다(→ [[js-animation|JavaScript 애니메이션: requestAnimationFrame과 Web Animations API]]).
 
 ```html
 <!-- SVG 경로: M 시작점, C 제어점1 제어점2 끝점 -->
@@ -118,4 +136,4 @@ curve = [bezier([(0, 0), (30, 100), (70, 100), (100, 0)], i / 50) for i in range
 - 펜 툴의 핸들, SVG `C`·`Q`, CSS `cubic-bezier()`, 폰트 외곽선이 모두 같은 수학이다.
 - **복잡한 곡선은 고차 곡선 하나가 아니라 3차 곡선 조각을 이어서 만든다.**
 
-관련 노트: [[transformation-matrix|변환 행렬: 이동·크기·회전과 동차 좌표]]
+관련 노트: [[transformation-matrix|변환 행렬: 이동·크기·회전과 동차 좌표]], [[js-animation|JavaScript 애니메이션: requestAnimationFrame과 Web Animations API]], [[css-animation|CSS 애니메이션: transition과 @keyframes]]

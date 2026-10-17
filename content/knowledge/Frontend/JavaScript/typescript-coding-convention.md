@@ -1,13 +1,14 @@
 ---
 title: "TypeScript 코딩 컨벤션"
 concept: "TS Convention"
-summary: "TypeScript 팀 컨벤션 문서의 규칙을 주제별로 묶었다. 이름 짓기, 타입, 선언, 클래스, 표현식, 제어문, 함수, 에러 처리, 내장 객체, 모듈 규칙을 필수·권장과 이유까지 함께 정리했다."
+summary: "TypeScript 팀 컨벤션 문서의 규칙을 주제별로 묶었다. 이름 짓기, 타입, 선언, 클래스, 표현식, 제어문, 함수, 에러 처리, 내장 객체, 모듈 규칙을 필수·권장과 이유까지 함께 정리하고, 중괄호·줄 길이·빈 줄·중첩 줄이기·헬퍼 함수 위치 같은 코드 모양과 유지보수를 괴롭히는 패턴(닌자 코드) 목록을 더했다."
 tags: ["typescript", "javascript", "frontend", "collaboration"]
 source: other
-date: "2026-10-13"
+date: "2026-10-17"
+sources: ["https://ko.javascript.info/coding-style", "https://ko.javascript.info/ninja-code"]
 ---
 
-> 한국어로 쓰인 어느 TypeScript 팀 코딩 컨벤션 문서를 바탕으로 재구성한 노트다.
+> 한국어로 쓰인 어느 TypeScript 팀 코딩 컨벤션 문서를 바탕으로 재구성하고, 코드 모양과 읽기 어려운 코드 패턴은 javascript.info(모던 JavaScript 튜토리얼)의 「코딩 스타일」, 「닌자 코드」 글로 보강한 노트다.
 
 ## 코딩 컨벤션이란
 
@@ -174,12 +175,72 @@ try {
 - **`export default`를 쓰지 않는다**(필수). named export는 잘못된 이름으로 import하면 에러가 나고, default export는 아무 이름으로 받아도 통과해서 이름이 제각각이 된다.
 - tsconfig에서 `strict`를 켠다(필수). 소스 파일은 UTF-8로 저장한다. `euc-kr`은 쓰지 않는다.
 
+## 11. 코드 모양
+
+포매터(Prettier)가 대부분 자동으로 맞추지만, 무엇을 왜 맞추는지 알아 두면 설정을 고르고 리뷰할 때 기준이 된다.
+
+| 항목 | 관례 | 이유 |
+| --- | --- | --- |
+| 여는 중괄호 | 키워드와 같은 줄, 앞에 공백 하나(`if (x) {`) | JS 커뮤니티 대부분의 스타일. `return` 뒤 줄바꿈 같은 ASI 함정도 피한다 |
+| 한 줄 `if` | 블록 `{}`을 쓴다. `if (cond) return null`처럼 아주 짧으면 한 줄도 허용 | 중괄호 없이 **다음 줄에** 쓰면 줄을 추가할 때 첫 줄만 조건에 묶인다. 이 모양은 금지 |
+| 줄 길이 | 80~120자 중 팀이 정한다 | 긴 조건은 연산자 단위로 줄을 나누고, 긴 문자열은 템플릿 리터럴로 |
+| 들여쓰기 | 스페이스 2칸(또는 4칸) | 탭과 섞지 않는다 |
+| 빈 줄 | 선언·반복·반환처럼 논리 단위 사이에 한 줄 | 빈 줄 없이 아홉 줄 넘게 이어 쓰지 않는다 |
+| 세미콜론 | 쓰거나 안 쓰거나 일관되게 | 안 쓰는 스타일(StandardJS)은 `(`·`[`로 시작하는 줄 앞에 `;`([[statements-vs-expressions\|문과 식]]) |
+
+### 중첩을 줄인다
+
+```typescript
+// 예외 상황을 먼저 처리하고 빠져나가면 본 흐름이 한 단계 얕아진다
+function pow(x: number, n: number): number {
+  if (n < 0) throw new RangeError('n은 음수가 될 수 없다')
+
+  let result = 1
+  for (let i = 0; i < n; i++) result *= x
+  return result
+}
+
+for (const item of items) {
+  if (!item.visible) continue // if 블록으로 감싸는 대신 건너뛴다
+  render(item)
+}
+```
+
+### 헬퍼 함수는 사용하는 코드 아래에
+
+함수 선언은 호이스팅되므로 위치를 고를 수 있다. **사용하는 코드를 먼저, 헬퍼 함수를 그 아래에** 두는 배치가 흔하다. 읽는 사람은 "무엇을 하는지"를 먼저 알고 싶어 하고, 헬퍼 이름이 잘 지어졌다면 본문을 열어 보지 않아도 된다. 모듈이라면 헬퍼를 파일로 분리하는 편이 더 낫다.
+
+### 스타일 가이드와 린터
+
+처음부터 규칙을 만들기보다 [Airbnb](https://github.com/airbnb/javascript), [Google](https://google.github.io/styleguide/jsguide.html), [StandardJS](https://standardjs.com/) 같은 공개 가이드에서 출발해 팀에 맞게 고친다. 지키는 일은 사람이 아니라 ESLint(품질)와 Prettier(모양)에 맡긴다. 과거에는 JSLint·JSHint를 썼고 ESLint 설정도 `.eslintrc`였지만, 지금은 flat config(`eslint.config.js`)다([[eslint-prettier|ESLint와 Prettier 설정]]). 스타일 논쟁의 기준은 늘 두 질문이다. **"더 읽기 쉬운가?", "실수를 더 줄이는가?"**
+
+## 12. 피할 코드: 닌자 코드 목록
+
+똑똑해 보이지만 유지보수하는 사람을 괴롭히는 패턴들이다. 리뷰 체크리스트로 쓴다.
+
+| 패턴 | 예 | 대신 |
+| --- | --- | --- |
+| 짧게 쓰기 경쟁 | `i = i ? i < 0 ? Math.max(0, len + i) : i : 0` | 중첩 삼항은 `if`로 푼다 |
+| 한 글자·약어 이름 | `a`, `lst`, `brsr`, 반복문의 `i` 대신 `x` | 좁은 범위의 `i` 외에는 뜻이 보이는 이름(위 「1. 이름 짓기」) |
+| 무엇이든 되는 이름 | `data`, `value`, `item`, `obj`, `str`, `data2` | 담긴 것의 의미를 이름에 |
+| 철자가 비슷한 이름 | `date`와 `data` 섞어 쓰기 | 구분되는 단어 |
+| 같은 동작에 다른 동사 | `displayMessage`, `showName`, `renderUser`, `paintList` | 동작마다 동사 하나로 통일한다. 반대로 다른 동작(`printPage`는 프린터, `printText`는 화면)에 같은 동사를 쓰지 않는다 |
+| 변수 재사용 | 함수 중간에 `elem = clone(elem)` | 새 의미에는 새 변수 |
+| 의미 없는 `_`·`__` 접두사 | `_name`, `__value`를 기분 따라 | 사용 안 하는 변수 표시(`_`) 같은 합의된 용도만 |
+| 과장 형용사 | `superElement`, `megaFrame`, `niceItem` | 수식어를 빼거나 실제 차이를 이름에 |
+| 바깥 변수 가리기 | 함수 안에서 바깥과 같은 이름 `user`를 다시 선언 | 다른 이름. ESLint `no-shadow` |
+| 이름과 다른 부수 효과 | `isReady()`·`checkPermission()`·`findTags()`가 상태를 바꾸거나 불리언이 아닌 객체를 반환 | `is`·`check`·`find`는 확인만 하고 기대한 타입을 돌려준다 |
+| 이름보다 많은 일 | `validateEmail()`이 검사하면서 에러 창까지 띄운다 | 함수 하나에 동작 하나. 그래야 재사용된다 |
+
+함수 이름의 동사 관례(`get…` 값 반환, `calc…` 계산, `create…` 생성, `check…`·`is…` 확인 후 불리언)는 이 목록을 뒤집은 것이다. 동작 하나에 동사 하나를 팀 전체가 같은 뜻으로 쓴다. 이름을 고르는 원칙의 바탕은 [[clear-code-principles|명확한 코드의 네 가지 원칙]]에 있다.
+
 ## 정리
 
 - 대부분의 규칙은 **"코드가 의도와 다르게 조용히 동작하는 경우"를 막는다.** 래퍼 객체 비교, 스프레드 덮어쓰기, `forEach` 안의 `await`가 그런 예다.
 - 타입 규칙의 중심은 **느슨한 타입(`Object`, `any`성 `catch`, `null`이 섞인 별칭)을 줄이는 것**이다.
 - `no-var`, `default-case`처럼 ESLint로 자동화할 수 있는 규칙은 사람이 리뷰할 것이 아니라 린터에 맡긴다. 린터와 포매터를 연결하는 방법은 [[eslint-prettier|ESLint와 Prettier 설정]]에 있다.
 - 권장 규칙은 팀이 합의하면 예외를 둘 수 있다. 한글 식별자와 `switch (true)`가 그렇다.
+- 코드 모양은 포매터에, 금지 패턴은 린터에 맡기고, 사람은 이름과 함수의 책임처럼 도구가 못 보는 것을 리뷰한다.
 - 결국 컨벤션은 정답 목록이 아니라 **팀이 같은 코드를 같은 뜻으로 읽기 위한 합의**다.
 
-관련 노트: [[variables-and-types|변수와 데이터 타입]], [[arrays-and-objects|배열·객체·문자열]], [[class|class 문법]], [[eslint-prettier|ESLint와 Prettier 설정]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[typescript-learning|TypeScript 학습법]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]]
+관련 노트: [[variables-and-types|변수와 데이터 타입]], [[arrays-and-objects|배열·객체·문자열]], [[class|class 문법]], [[eslint-prettier|ESLint와 Prettier 설정]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[typescript-learning|TypeScript 학습법]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[js-comments|JavaScript 주석]], [[statements-vs-expressions|문(Statement)과 식(Expression)]]

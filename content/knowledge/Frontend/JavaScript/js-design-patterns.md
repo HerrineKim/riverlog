@@ -1,14 +1,14 @@
 ---
 title: "JavaScript 디자인 패턴: 생성 패턴"
 concept: "JS Design Patterns"
-summary: "객체를 만드는 방식을 다루는 생성 패턴 중 생성자·모듈·싱글톤·프로토타입 패턴을 JavaScript 코드로 정리하고, 프로토타입 기반 언어라서 달라지는 점을 짚는다."
+summary: "객체를 만드는 방식을 다루는 생성 패턴 중 생성자·모듈·싱글톤·프로토타입 패턴을 JavaScript 코드로 정리하고, 프로토타입 기반 언어라서 달라지는 점을 짚는다. 단일 상속을 보완해 여러 클래스에 동작을 섞어 넣는 믹스인(Object.assign 방식, 클래스 팩토리 방식, 이벤트 믹스인)도 함께 다룬다."
 tags: ["javascript", "design-pattern", "oop", "frontend"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://riverkim.kr/316"]
+date: "2026-10-17"
+sources: ["https://riverkim.kr/316", "https://ko.javascript.info/mixins", "https://ko.javascript.info/class-inheritance"]
 ---
 
-> 『자바스크립트 + 리액트 디자인 패턴』(한빛미디어)의 생성 패턴 부분을 바탕으로 재구성한 노트다.
+> 『자바스크립트 + 리액트 디자인 패턴』(한빛미디어)의 생성 패턴 부분을 바탕으로 재구성하고, 믹스인은 javascript.info(모던 JavaScript 튜토리얼)의 「믹스인」 글로 보강한 노트다.
 
 ## 생성 패턴이란
 
@@ -112,10 +112,52 @@ a1.run() // 멍멍이 runs
 
 JavaScript가 프로토타입 방식을 택한 것은 1995년 아주 짧은 기간에 설계되면서, 클래스를 설계·컴파일·인스턴스화하는 방식보다 객체를 바로 만들고 다른 객체에 위임하는 방식이 단순하고 유연하다고 봤기 때문이다. ES6 `class`도 결국 이 위임 모델 위의 문법이다.
 
+## 덧붙여: 믹스인
+
+JavaScript는 **단일 상속**이다. 객체는 `[[Prototype]]`을 하나만, 클래스는 부모를 하나만 가진다. `User`가 `Person`을 상속하면서 이벤트를 내보내는 기능까지 얻고 싶을 때처럼, 계층과 상관없는 동작을 여러 클래스에 나눠 주고 싶으면 **믹스인(mixin)** 을 쓴다. 믹스인은 혼자 쓰이지 않고 다른 클래스에 메서드를 더해 주기 위한 메서드 묶음이다.
+
+### 객체 믹스인: 프로토타입에 복사
+
+```javascript
+const sayHiMixin = {
+  sayHi() { return `Hello ${this.name}` },
+  sayBye() { return `Bye ${this.name}` },
+}
+
+class User extends Person {}
+Object.assign(User.prototype, sayHiMixin) // 상속 체인을 건드리지 않고 메서드만 복사
+new User('Dude').sayHi()                   // 'Hello Dude'
+```
+
+- 믹스인끼리 상속할 수도 있다(`const sayHiMixin = { __proto__: sayMixin, sayHi() { super.say(…) } }`). 이때 복사된 메서드의 `super`는 `User`의 부모가 아니라 **믹스인의 프로토타입**을 본다. 메서드가 자기가 정의된 객체를 `[[HomeObject]]`로 기억하기 때문이다([[class|class 문법]]의 super 절).
+- 믹스인 메서드가 기존 메서드와 이름이 같으면 조용히 덮어쓴다. 이름을 신중히 정한다.
+
+### 클래스 팩토리 믹스인
+
+`extends` 뒤에 식이 올 수 있다는 점을 이용해, **부모 클래스를 받아 확장한 클래스를 돌려주는 함수**로 믹스인을 만든다. 믹스인이 상속 체인 안에 들어가므로 `super`와 `instanceof` 체인이 자연스럽게 동작한다.
+
+```javascript
+const Serializable = (Base) => class extends Base {
+  toJSON() { return { ...this } }
+}
+const Timestamped = (Base) => class extends Base {
+  createdAt = Date.now()
+}
+
+class Post extends Serializable(Timestamped(Model)) {}
+```
+
+### 이벤트 믹스인
+
+여러 객체가 "무슨 일이 일어났다"를 알리고 구독받는 기능은 대표적인 믹스인 소재다. `on(name, handler)`로 구독, `off(name, handler)`로 해제, `trigger(name, ...args)`로 등록된 핸들러를 모두 부르는 메서드를 객체 믹스인으로 만들어 `Menu.prototype`에 복사하면, 메뉴가 `select` 이벤트를 내보내고 다른 객체가 반응할 수 있다. 관찰자(Observer) 패턴을 믹스인으로 나눠 준 것이다.
+
+브라우저와 Node.js에서는 직접 만들 필요 없이 표준 `EventTarget`을 상속하면 같은 일을 한다(`class Menu extends EventTarget`, `menu.dispatchEvent(new CustomEvent('select', { detail }))`). 다만 이미 다른 부모가 있으면 상속할 수 없으니, 그때 믹스인이 필요하다. `CustomEvent`는 [[dom-events|DOM 이벤트]]에 있다.
+
 ## 정리
 
 - 생성자 패턴은 `class`로, 모듈 패턴은 이제 ES 모듈로 쓴다.
 - 싱글톤은 쓸 수 있지만 객체 리터럴로 충분한지 먼저 본다.
 - 프로토타입 패턴은 JavaScript 상속의 본모습이다. 복제가 아니라 위임이라는 점을 기억한다.
+- 단일 상속으로 부족하면 믹스인으로 메서드를 섞는다. 객체를 `Object.assign`으로 복사하거나, 부모를 받아 확장 클래스를 돌려주는 함수로 만든다.
 
 관련 노트: [[class|class 문법]], [[prototype-and-inheritance|프로토타입과 상속]], [[es-modules|모듈: export와 import]], [[singleton-service-pattern|Express 싱글톤 패턴과 서비스 패턴]], [[software-engineering|디자인 패턴(GoF)]]

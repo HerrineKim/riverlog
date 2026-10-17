@@ -5,10 +5,10 @@ summary: "Promise를 동기 코드처럼 읽히게 해 주는 async/await 문법
 tags: ["javascript", "async", "promise", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://wesbos.com/javascript/12-advanced-flow-control/70-async-await", "https://wesbos.com/javascript/12-advanced-flow-control/71-async-await-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/72-async-await-prompt-ui"]
+sources: ["https://wesbos.com/javascript/12-advanced-flow-control/70-async-await", "https://wesbos.com/javascript/12-advanced-flow-control/71-async-await-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/72-async-await-prompt-ui", "https://web.dev/learn/javascript/control-flow", "https://ko.javascript.info/async-await", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await"]
 ---
 
-> 직접 정리한 내용에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고해 재구성한 노트다.
+> 직접 정리한 내용에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Control flow」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「async와 await」 글을 함께 참고해 재구성한 노트다.
 
 `async`/`await`(ES2017)는 Promise 위에 얹은 문법이다. Promise의 결과를 `then`으로 받는 대신 **변수에 바로 담아** 동기 코드처럼 위에서 아래로 읽히게 작성할 수 있다. 원래 콜백이 만드는 깊은 들여쓰기(콜백 지옥)를 해결하려던 흐름의 마지막 단계다. Promise 자체는 [콜백과 Promise](/knowledge/dictionary/frontend/javascript/callback-and-promise) 노트 참고.
 
@@ -26,11 +26,18 @@ console.log(result) // Promise {<fulfilled>: 'chan'}
 result.then((name) => console.log(name)) // 'chan'
 ```
 
+- Promise를 직접 `return`해도 결과는 같다. 함수 안에서 `throw`하면 그 에러로 **거부된** Promise가 된다.
+- 함수 선언식뿐 아니라 함수 표현식(`async function () {}`), 화살표 함수(`async () => {}`), 객체·클래스 메서드(`async load() {}`)에도 붙인다.
+- async가 아닌 일반 함수에서 async 함수의 결과가 필요하면 `await`를 쓸 수 없으므로 `load().then(...)`으로 받는다. async 함수도 결국 Promise를 돌려주는 평범한 함수다.
+
 ## await
 
-- `await`는 `async` 함수 안에서만 쓸 수 있다(모듈 최상위의 top-level await는 예외). 일반 함수에서 쓰면 SyntaxError.
+- `await`는 `async` 함수 안에서만 쓸 수 있다. 일반 함수에서 쓰면 SyntaxError다. 예외는 **ES 모듈의 최상위**(top-level await)다([[es-modules|모듈]]). 일반 스크립트의 최상위에서는 여전히 안 되므로 `(async () => { … })()`처럼 즉시 실행 async 함수로 감싼다.
 - Promise 앞에 `await`를 두면 그 Promise가 이행될 때까지 **함수 실행을 멈췄다가**, 이행값을 반환하고 다음 줄로 진행한다.
 - 멈추는 것은 해당 async 함수뿐이고, 그동안 다른 코드(이벤트 처리 등)는 계속 실행된다.
+- Promise가 **거부되면** `await` 식은 값을 돌려주지 않고 그 사유를 **예외로 던진다.** 그래서 아래 「에러 처리」처럼 `try/catch`로 받는다.
+- Promise가 아닌 값을 `await`하면 이미 이행된 Promise로 감싼 것처럼 그 값이 그대로 나온다(`await 'text'`는 `'text'`). 다만 다음 줄은 마이크로태스크로 한 박자 늦게 실행된다.
+- `then` 메서드만 있는 **thenable** 객체도 기다린다. `await`가 그 `then(resolve, reject)`를 불러 주고, 둘 중 하나가 호출될 때까지 기다린다([[callback-and-promise#thenable|thenable]]).
 
 ```javascript
 const delay = (value, ms) =>
@@ -121,6 +128,21 @@ const withErrorHandler = (fn, onError) => (...args) => fn(...args).catch(onError
 
 `try...catch`를 피하려고 `[error, data]` 튜플을 돌려주는 패턴도 있다(`await-to-js` 같은 작은 라이브러리, Go 스타일). `const [err, user] = await to(fetchUser())`처럼 쓰고 `if (err)`로 분기한다.
 
+`try` 안에서 Promise를 **`return`만 하면** 그 Promise의 거부는 이 `catch`에 잡히지 않는다. 함수가 이미 빠져나간 뒤에 거부되기 때문이다. 이 함수 안에서 잡으려면 `return await fetchUser()`처럼 기다린 뒤 반환한다. `try` 밖에서는 `return await`와 `return`의 결과가 같다.
+
+```javascript
+async function a() {
+  try { return fetchUser() }       // 거부돼도 여기 catch로 오지 않는다
+  catch { return guestUser }
+}
+async function b() {
+  try { return await fetchUser() } // 거부되면 catch로 온다
+  catch { return guestUser }
+}
+```
+
+`await Promise.all([...])`이 거부되면(하나라도 실패하면) 그 사유가 예외로 던져지므로 같은 `try...catch`로 잡는다.
+
 어느 방법도 쓰지 않은 거부는 **처리되지 않은 거부(unhandled rejection)** 가 된다. 브라우저는 콘솔에 `Uncaught (in promise)`를 찍고 `unhandledrejection` 이벤트를 발생시킨다. 에러 모니터링 도구는 이 이벤트를 받아 수집한다.
 
 ## then 체이닝 vs async/await
@@ -146,4 +168,4 @@ const withErrorHandler = (fn, onError) => (...args) => fn(...args).catch(onError
 - 에러는 `try...catch`, 호출하는 곳의 `.catch`, 고차 함수 중 하나로 잡고, 서비스 코드에서는 콘솔에만 남기지 않는다.
 - `then`과 `await`를 한 흐름에 섞지 않는다.
 
-관련 노트: [[callback-and-promise|콜백과 Promise]], [[event-loop|이벤트 루프]], [[dart-language|Dart의 Future와 Stream]]
+관련 노트: [[callback-and-promise|콜백과 Promise]], [[event-loop|이벤트 루프]], [[dart-language|Dart의 Future와 Stream]], [[js-error-handling|에러 처리: try...catch와 커스텀 에러]]

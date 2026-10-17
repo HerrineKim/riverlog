@@ -102,4 +102,4 @@ IE가 사라진 뒤에는 "어디까지 지원할까"를 사용자 기기 데이
 - 트리 셰이킹, 코드 분할, 작은 대체재로 이미 쓴 JS를 줄인다.
 - 서드파티는 이유·기한·담당자를 정해 관리한다. **가장 좋은 요청은 하지 않은 요청이다.**
 
-관련 노트: [[web-vitals|웹 성능 지표와 Lighthouse]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[frontend-frameworks|React와 Vue 말고: 다른 프론트엔드 프레임워크]], [[sustainable-web-design|지속 가능한 웹 디자인]]
+관련 노트: [[web-vitals|웹 성능 지표와 Lighthouse]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[frontend-frameworks|React와 Vue 말고: 다른 프론트엔드 프레임워크]], [[sustainable-web-design|지속 가능한 웹 디자인]], [[code-splitting|자바스크립트 코드 분할]], [[resource-hints|리소스 힌트와 미리 불러오기]]

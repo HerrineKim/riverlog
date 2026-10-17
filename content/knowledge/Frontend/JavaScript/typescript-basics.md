@@ -118,7 +118,7 @@ type ElementOf<T> = T extends (infer U)[] ? U : never; // 조건부 타입 + inf
 | `protected` | 자신과 하위 클래스 |
 | `private` | 자신만. **타입 검사에서만** 막는다. 런타임까지 숨기려면 JS의 `#field` |
 | `readonly` | 초기화 후 변경 불가 |
-| `abstract` | 추상 클래스·메서드. 하위 클래스가 구현해야 한다(→ [[abstract-class-vs-interface|추상 클래스와 인터페이스]]) |
+| `abstract` | 추상 클래스·메서드. 하위 클래스가 구현해야 한다(→ [[abstract-class-vs-interface\|추상 클래스와 인터페이스]]) |
 
 생성자 매개변수에 수식어를 붙이면(`constructor(private name: string)`) 속성 선언과 할당이 한 번에 된다. 단, 이것도 런타임 코드가 생기는 문법이라 Node.js 타입 제거로는 실행되지 않는다.
 
@@ -170,4 +170,4 @@ function area(s: Shape) {
 
 **TypeScript의 문법은 결국 "값의 모양을 적고, 좁히고, 변형하는" 세 가지 일이다.**
 
-관련 노트: [[typescript-learning|TypeScript 학습법]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[class|class 문법]]
+관련 노트: [[typescript-learning|TypeScript 학습법]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[class|class 문법]], [[static-analysis|정적 분석: 실행하지 않고 검사하기]]

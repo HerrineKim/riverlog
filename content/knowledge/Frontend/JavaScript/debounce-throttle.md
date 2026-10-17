@@ -82,5 +82,6 @@ lodash의 `debounce`·`throttle`이 오랫동안 표준처럼 쓰였다. 다만 
 - 디바운스: 연속 호출이 끝난 뒤 마지막 한 번. 검색·자동 저장.
 - 쓰로틀: 연속 호출 중 일정 간격마다 한 번. 스크롤·무한 스크롤.
 - 핵심 구현은 `setTimeout` + 클로저에 갇힌 `timer` 변수 하나다.
+- 둘 다 함수를 받아 감싼 함수를 돌려주는 데코레이터다. `callback.apply(this, args)`로 this와 인자를 넘기는 콜 포워딩의 원리는 [[function-decorators|데코레이터와 콜 포워딩]]에 있다.
 
-관련 노트: [[event-loop|이벤트 루프]], [[dom-manipulation|DOM 조작과 이벤트]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[intersection-observer|Intersection Observer와 관찰자 API]]
+관련 노트: [[event-loop|이벤트 루프]], [[dom-manipulation|DOM 조작과 이벤트]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[intersection-observer|Intersection Observer와 관찰자 API]], [[function-decorators|데코레이터와 콜 포워딩]]

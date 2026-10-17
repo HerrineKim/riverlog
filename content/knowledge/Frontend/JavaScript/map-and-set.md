@@ -4,11 +4,11 @@ concept: "Map & Set"
 summary: "Map은 어떤 값이든 키로 쓰고 넣은 순서를 지키는 키-값 컬렉션, Set은 중복 없는 값의 모음이다. 일반 객체와 비교해 언제 무엇을 쓸지, 주요 메서드와 순회, 객체와 서로 바꾸기, JSON으로 보낼 때의 제약, WeakMap·WeakSet, ES2025의 Set 집합 연산까지."
 tags: ["javascript", "data-structure", "frontend"]
 source: other
-date: "2026-10-15"
-sources: ["https://wesbos.com/javascript/08-data-types/maps", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap"]
+date: "2026-10-17"
+sources: ["https://wesbos.com/javascript/08-data-types/maps", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap", "https://web.dev/learn/javascript/collections/keyed", "https://ko.javascript.info/map-set", "https://ko.javascript.info/weakmap-weakset"]
 ---
 
-> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, MDN으로 확인해 재구성한 노트다.
+> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Keyed collections」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「맵과 셋」, 「위크맵과 위크셋」 글을 더하고 MDN으로 확인해 재구성한 노트다.
 
 ## Map이란
 
@@ -23,7 +23,9 @@ prizes.size        // 2
 prizes.delete(200) // true
 ```
 
-`prizes.age = 1`처럼 점 표기로 넣으면 항목이 아니라 Map 객체의 속성이 될 뿐이다. 항목은 늘 `set`·`get`으로 다룬다.
+같은 키로 다시 `set`하면 새 항목이 생기지 않고 **값만 덮어쓴다**. 키 비교 규칙은 Set과 같아서 `NaN`도 키로 찾을 수 있다. 처음부터 채우려면 `[키, 값]` 쌍의 이터러블을 넘긴다: `new Map([['a', 1], [null, 0]])`. `const`로 선언한 Map도 내용은 바꿀 수 있다(변수만 고정된다).
+
+`prizes['age'] = 1`이나 `prizes.age = 1`처럼 대괄호·점 표기로 넣으면 항목이 아니라 Map 객체의 속성이 될 뿐이다. 항목은 늘 `set`·`get`으로 다룬다.
 
 ### 객체를 키로: 사전(dictionary)
 
@@ -86,6 +88,8 @@ const unique = [...new Set(arr)] // 배열 중복 제거
 
 - `has`는 배열의 `includes`보다 빠르다. 많은 값에 대해 "이미 있나"를 반복해서 물을 때 Set으로 바꿔 둔다.
 - 객체는 참조로 비교되므로 내용이 같은 객체 두 개는 둘 다 남는다.
+- 인덱스가 없어 `set[0]`으로 꺼낼 수 없지만, 순회 순서는 **넣은 순서**다. 이미 있는 값을 다시 `add`하면 무시되고 원래 자리를 지킨다.
+- 배열로 돌릴 때는 `[...set]`이나 `Array.from(set)`. `forEach((value, sameValue, set) => …)`의 둘째 인자는 Map과 모양을 맞추려고 값을 한 번 더 준 것이다.
 
 ES2025부터 집합 연산 메서드가 표준이다. 모두 새 Set을 반환하거나 불리언을 답한다.
 
@@ -97,9 +101,11 @@ ES2025부터 집합 연산 메서드가 표준이다. 모두 새 Set을 반환�
 
 ## WeakMap과 WeakSet
 
-키(WeakSet은 값)로 **객체만** 받고, 그 객체를 약하게 참조한다. 다른 곳에서 그 객체를 더 이상 쓰지 않으면 항목째 가비지 컬렉션된다. 그래서 크기를 알 수 없고 순회도 할 수 없다.
+키(WeakSet은 값)로 **객체, 또는 전역 레지스트리에 등록하지 않은 Symbol**(ES2023)만 받고, 그 대상을 약하게 참조한다. 숫자·문자열 같은 원시값이나 `Symbol.for()`로 만든 Symbol은 언제든 똑같이 다시 만들 수 있어 "더 이상 아무도 안 쓴다"를 판단할 수 없으므로 거부된다(`set`·`add`에서 `TypeError`, [[js-symbol|Symbol]]). 다른 곳에서 그 객체를 더 이상 쓰지 않으면 항목째 가비지 컬렉션된다. 그래서 크기를 알 수 없고 순회도 할 수 없다.
 
-DOM 요소나 외부 라이브러리 객체에 부가 데이터·캐시를 붙일 때 쓴다. 일반 Map에 담으면 요소가 페이지에서 사라져도 Map이 붙잡고 있어 메모리가 새지만, WeakMap은 함께 사라진다.
+메서드는 `get`·`set`·`has`·`delete`(WeakSet은 `add`·`has`·`delete`)뿐이고 `size`·`keys()`·`forEach`가 없다. 가비지 컬렉션이 언제 항목을 치울지 엔진만 알기 때문이다.
+
+DOM 요소나 외부 라이브러리 객체에 부가 데이터·캐시를 붙일 때 쓴다. 대표적인 쓰임은 둘이다. 남의 객체에 방문 횟수 같은 **부가 데이터** 붙이기, 그리고 입력 객체별 계산 결과를 담는 **캐시**. 둘 다 객체가 사라지면 항목도 저절로 사라져 손으로 청소할 필요가 없다. 예제 코드와 도달 가능성 규칙, WeakRef는 [[garbage-collection|가비지 컬렉션과 메모리 누수]]에 있다. WeakSet은 "이 객체를 이미 처리했나"처럼 객체에 표시만 해 두는 용도(방문 표시, 순환 참조 검사)에 맞다. 일반 Map에 담으면 요소가 페이지에서 사라져도 Map이 붙잡고 있어 메모리가 새지만, WeakMap은 함께 사라진다.
 
 ## 정리
 
@@ -109,4 +115,4 @@ DOM 요소나 외부 라이브러리 객체에 부가 데이터·캐시를 붙�
 - 중복 제거와 빠른 포함 검사는 Set. 집합 연산은 `union`·`intersection` 등 표준 메서드로.
 - 객체에 데이터를 덧붙이되 수명을 같이하게 하려면 WeakMap.
 
-관련 노트: [[arrays-and-objects|배열·객체·문자열 다루기]], [[variables-and-types|변수와 데이터 타입]], [[data-structures|기초 자료구조]], [[ecmascript-tc39|ECMAScript 표준과 TC39 프로세스]]
+관련 노트: [[arrays-and-objects|배열·객체·문자열 다루기]], [[iterators-and-generators|이터레이터와 제너레이터]], [[variables-and-types|변수와 데이터 타입]], [[data-structures|기초 자료구조]], [[ecmascript-tc39|ECMAScript 표준과 TC39 프로세스]], [[garbage-collection|가비지 컬렉션과 메모리 누수]], [[destructuring|구조 분해 할당]]

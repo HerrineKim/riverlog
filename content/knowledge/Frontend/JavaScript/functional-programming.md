@@ -1,15 +1,16 @@
 ---
 title: "함수형 프로그래밍"
 concept: "Functional Programming"
-summary: "함수형 프로그래밍을 순수 함수·불변성·선언적 패턴이라는 학술 용어 대신 액션·계산·데이터 구분, 카피 온 라이트와 방어적 복사, 계층형 설계와 추상화 벽으로 다시 읽는다. 액션에서 계산을 빼내 테스트하기 쉬운 코드를 늘리고, 프론트엔드의 요구사항을 입력에서 화면까지의 파이프라인으로 보는 법을 정리한다."
+summary: "함수형 프로그래밍을 순수 함수·불변성·선언적 패턴이라는 학술 용어 대신 액션·계산·데이터 구분, 카피 온 라이트와 방어적 복사, 계층형 설계와 추상화 벽으로 다시 읽고, 인자를 미리 채워 함수를 특수화하는 커링과 부분 적용을 다룬다. 액션에서 계산을 빼내 테스트하기 쉬운 코드를 늘리고, 프론트엔드의 요구사항을 입력에서 화면까지의 파이프라인으로 보는 법을 정리한다."
 tags: ["javascript", "frontend", "functional-programming", "programming-paradigm"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45"]
+sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://ko.javascript.info/currying-partials"]
 ---
 
 > 테오(teo)의 「[다시 쓰는 함수형 프로그래밍](https://velog.io/@teo/functional-programming)」(2022.05)과 「[함수형 프로그래밍을 배워보자!](https://velog.io/@teo/functional-programming-study)」(2023.01)를 바탕으로 재구성한 노트다. 용어 틀은 에릭 노먼드의 『쏙쏙 들어오는 함수형 코딩』(Grokking Simplicity)에서 왔다.
 > 명령형과 선언형 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로 더한 노트다.
+> 커링과 부분 적용은 javascript.info(모던 JavaScript 튜토리얼)의 「커링」 글을 바탕으로 더했다.
 
 ## 함수형 프로그래밍이란
 
@@ -123,6 +124,35 @@ JavaScript는 객체·배열을 참조로 넘긴다. 계산 안에서 `arr.push(
 
 `UI = f(state)`의 관점이다. 왼쪽에 행동과 인자, 오른쪽에 화면에서 바뀔 데이터를 놓고 가운데 함수를 채우면 구조가 보인다.
 
+## 5. 커링과 부분 적용
+
+**부분 적용(partial application)** 은 인자 일부를 미리 채워 둔, 인자가 더 적은 새 함수를 만드는 것이다. **커링(currying)** 은 `f(a, b, c)`를 `f(a)(b)(c)`처럼 인자를 하나씩 받는 함수의 연쇄로 **변환**하는 것이다. 커링은 함수를 호출하지 않고 모양만 바꾼다. 커링한 함수는 앞쪽 인자만 넘겨 호출하는 것만으로 부분 적용된 함수가 나오므로, 둘은 함께 쓰인다.
+
+```javascript
+function curry(fn) {
+  return function curried(...args) {
+    if (args.length >= fn.length) return fn.apply(this, args) // 인자가 다 모이면 원래 함수 호출
+    return (...more) => curried.apply(this, [...args, ...more]) // 모자라면 모아 둔 채 다음 인자를 기다린다
+  }
+}
+
+const log = curry((date, level, message) => console.log(`[${date.toISOString()}] [${level}] ${message}`))
+log(new Date(), 'INFO', '그대로 호출해도 된다') // 원래처럼
+const logNow = log(new Date())                  // 첫 인자를 고정한 부분 적용 함수
+const debugNow = logNow('DEBUG')                // 하나 더 고정
+debugNow('메시지')
+```
+
+| 기법 | 형태 | 비고 |
+| --- | --- | --- |
+| 클로저로 직접 | `const add5 = (b) => add(5, b)` | 가장 읽기 쉽다. 순서와 상관없이 어느 인자든 고정할 수 있다 |
+| `bind` | `const double = mul.bind(null, 2)` | 앞쪽 인자를 채운다. `this`도 함께 정해지므로 메서드에는 주의한다([[functions\|함수와 this]]) |
+| 커링 헬퍼 | `_.curry(fn)`(lodash), Ramda의 모든 함수 | 한 번에 다 넘겨도, 나눠 넘겨도 된다 |
+
+- 커링 헬퍼는 `fn.length`(선언된 매개변수 수)로 인자가 다 모였는지 판단한다. 그래서 **매개변수 개수가 고정된 함수**에만 쓴다. rest 매개변수(`...args`)와, 기본값이 있는 첫 매개변수부터 뒤의 매개변수는 `length`에 세지 않아 의도대로 동작하지 않는다.
+- 커링은 **자주 바뀌지 않는 인자를 앞에** 둘 때 쓸모가 있다. 설정·날짜·로그 레벨처럼 한 번 정하면 반복되는 인자를 고정해 두고, 매번 달라지는 데이터는 마지막에 받는다. `map(logNow('INFO'))`처럼 고차 함수에 바로 넘길 수 있는 인자 하나짜리 함수가 나오는 것도 장점이다.
+- 함수를 이어 붙이는 `pipe`·`compose`가 인자 하나짜리 함수를 기대하므로, 함수형 라이브러리는 데이터를 마지막 인자로 받고 자동으로 커링한다.
+
 ## 한계: 왜 널리 쓰이지 못하나
 
 - 불변 갱신 문법이 없어 바닐라 JS로는 코드가 장황하다. 결국 라이브러리가 필요해진다.
@@ -137,6 +167,7 @@ JavaScript는 객체·배열을 참조로 넘긴다. 계산 안에서 `arr.push(
 - 암묵적 입출력을 인자와 반환값으로 바꾸면 액션에서 계산이 빠져나온다.
 - 원본을 고치지 않는다. 카피 온 라이트, 안 되면 방어적 복사.
 - 함수의 계층을 그리고 계층을 뛰어넘지 않게 짠다. 위는 선언적, 아래는 테스트하기 쉬운 조각.
+- 커링·부분 적용으로 자주 바뀌지 않는 인자를 고정해 함수를 특수화한다. 커링 헬퍼는 매개변수 수가 고정된 함수에만 쓴다.
 - 100% 함수형이 목표가 아니다. 객체 지향과 **균형 있게** 섞는다.
 
 관련 노트: [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[arrays-and-objects|배열·객체·문자열 다루기]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[reactive-programming|반응형 프로그래밍과 RxJS]], [[tdd|프론트엔드에서의 TDD]]

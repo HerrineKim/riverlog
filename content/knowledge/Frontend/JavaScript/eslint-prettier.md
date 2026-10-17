@@ -133,4 +133,4 @@ ESLint 8까지는 `.eslintrc.*` 파일이 기본이었다. ESLint 9(2024)에서 
 - flat config는 "규칙 묶음 배열 + 덮어쓰기"다. `.eslintrc`는 ESLint 10에서 제거됐으니 옛 프로젝트는 변환한다.
 - 규칙으로 자동화할 수 없는 이름 짓기·타입·에러 처리 같은 약속은 [[typescript-coding-convention|TypeScript 코딩 컨벤션]]처럼 문서로 합의한다.
 
-관련 노트: [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[tooling|React 빌드 환경 직접 구성하기]], [[review-patterns|코드 리뷰에서 자주 나온 지적]]
+관련 노트: [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[tooling|React 빌드 환경 직접 구성하기]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[static-analysis|정적 분석: 실행하지 않고 검사하기]]

@@ -106,7 +106,7 @@ ny.setDate(15)        → 뉴욕 3/15 21:30 … 그런데 3/12부터 DST라 오�
 | 필요 | 쓸 것 |
 | --- | --- |
 | 표시만 | `Intl.DateTimeFormat`·`toLocaleString`의 `timeZone` 옵션. 브라우저·Node에 tz 데이터가 내장돼 있다 |
-| 다른 타임존 기준 날짜 연산 | 표준 API **Temporal**의 `ZonedDateTime`. 지원이 부족한 환경은 polyfill([[date-libraries|날짜 라이브러리]] 참고) |
+| 다른 타임존 기준 날짜 연산 | 표준 API **Temporal**의 `ZonedDateTime`. 지원이 부족한 환경은 polyfill([[date-libraries\|날짜 라이브러리]] 참고) |
 | 라이브러리 | date-fns의 `@date-fns/tz`, Day.js의 `timezone` 플러그인. 과거에는 Moment Timezone이 표준처럼 쓰였다 |
 
 ```js

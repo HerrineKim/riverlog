@@ -124,4 +124,4 @@ fromEvent(window, 'click').pipe(
 - 프론트엔드의 어려움은 뒤섞인 비동기와 "~하면 ~해 주세요" 시나리오에 있다. 이벤트를 값으로, 스트림으로 보면 단순해진다.
 - RxJS의 Observable은 비동기 컬렉션이다. 실무에서는 연산자보다 **소스 만들기**와 **Hot/Cold**가 먼저다.
 
-관련 노트: [[functional-programming|함수형 프로그래밍]], [[callback-and-promise|콜백과 Promise]], [[async-await|async/await]], [[event-loop|이벤트 루프]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]]
+관련 노트: [[functional-programming|함수형 프로그래밍]], [[callback-and-promise|콜백과 Promise]], [[async-await|async/await]], [[event-loop|이벤트 루프]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]], [[proxy-and-reflect|Proxy와 Reflect]]

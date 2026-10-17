@@ -1,16 +1,72 @@
 ---
-title: "JavaScript의 네 가지 주석"
+title: "JavaScript 주석: 쓰는 법과 네 가지 문법"
 concept: "Comments"
-summary: "ECMAScript 명세에 정의된 주석 네 가지(//, /* */, #! 해시뱅, <!-- --> HTML 유사 주석)의 문법과 동작, 유래를 정리한다. 주석은 공백처럼 취급되지만 줄바꿈을 품은 여러 줄 주석은 줄바꿈으로 취급되고, 나머지 두 형식은 인터프리터 지정과 옛 브라우저 호환을 위해 생겼다."
+summary: "무엇을 주석으로 쓰고 무엇을 코드로 말할지(무엇·어떻게 대신 왜, 함수 추출, JSDoc), 그리고 ECMAScript 명세에 정의된 주석 네 가지(//, /* */, #! 해시뱅, <!-- --> HTML 유사 주석)의 문법과 동작, 유래를 정리한다. 주석은 공백처럼 취급되지만 줄바꿈을 품은 여러 줄 주석은 줄바꿈으로 취급되고, 나머지 두 형식은 인터프리터 지정과 옛 브라우저 호환을 위해 생겼다."
 tags: ["javascript", "frontend", "browser", "nodejs", "html"]
 source: other
-date: "2026-10-13"
-sources: ["https://witch.work/ko/posts/javascript-various-comments", "https://tc39.es/ecma262/#sec-comments"]
+date: "2026-10-17"
+sources: ["https://witch.work/ko/posts/javascript-various-comments", "https://tc39.es/ecma262/#sec-comments", "https://ko.javascript.info/comments", "https://ko.javascript.info/structure", "https://jsdoc.app/"]
 ---
 
-> 김성현(Witch-Work)의 글 「[JS 탐구생활 - JS의 주석은 //과 /* */뿐만이 아니다](https://witch.work/ko/posts/javascript-various-comments)」(2024.01)를 요약·재구성한 노트다.
+> 김성현(Witch-Work)의 글 「[JS 탐구생활 - JS의 주석은 //과 /* */뿐만이 아니다](https://witch.work/ko/posts/javascript-various-comments)」(2024.01)를 요약·재구성하고, 좋은 주석을 쓰는 법은 javascript.info(모던 JavaScript 튜토리얼)의 「주석」, 「코드 구조」 글로 보강한 노트다.
 
-## 한눈에 보기
+## 주석에 쓸 것과 쓰지 않을 것
+
+**주석은 코드가 말할 수 없는 것을 적는다.** 코드는 "무엇을 어떻게"를 이미 말한다. 그것을 다시 풀어 쓴 설명 주석이 많다면 코드가 불분명하다는 신호다. 주석이 필요할 만큼 헷갈리는 코드는 먼저 다시 쓴다.
+
+| 쓰지 않는다 | 쓴다 |
+| --- | --- |
+| 코드가 하는 일을 한 줄씩 옮긴 설명(`// i가 소수인지 확인`) | 전체 구조의 조감도: 모듈·컴포넌트가 어떻게 맞물리는지, 상황별 제어 흐름 |
+| 누가 언제 고쳤는지(버전 관리가 맡는다) | **왜 이 방법을 골랐는지.** 더 단순해 보이는 방법이 왜 안 되는지 |
+| 지운 코드를 주석 처리해 남겨 두기 | 직관에 어긋나는 동작, 일부러 비틀어 쓴 최적화, 외부 버그 우회 |
+| | 함수의 용도·매개변수·반환값(JSDoc) |
+
+"왜"가 빠진 코드는 나중에 누군가(대개 미래의 자신)가 "그때는 몰랐지" 하며 더 깔끔한 방법으로 고쳤다가, 이미 시도해서 실패했던 이유를 다시 겪는다. 그 이유를 적은 한 줄이 시간을 아낀다.
+
+### 설명 주석 대신 함수로
+
+주석이 코드 덩어리의 제목 노릇을 하고 있다면, 그 덩어리를 **이름 있는 함수로 뽑는다.** 함수 이름이 주석을 대신한다(자기 설명적 코드).
+
+```javascript
+// Before: 주석이 블록의 역할을 설명한다
+for (let i = 2; i < n; i++) {
+  // i가 소수인지 확인
+  // ...중첩 반복문...
+}
+
+// After: 이름이 설명한다
+for (let i = 2; i < n; i++) {
+  if (!isPrime(i)) continue
+  console.log(i)
+}
+```
+
+`// 위스키를 더한다`, `// 주스를 더한다`처럼 주석으로 나뉜 긴 흐름도 `addWhiskey(glass)`, `addJuice(glass)`로 쪼개면 각 함수가 무엇을 받고 돌려주는지까지 분명해진다. 함수를 얼마나 잘게 나눌지의 원칙은 [[clear-code-principles|명확한 코드의 네 가지 원칙]]에 있다.
+
+### JSDoc
+
+함수 위의 `/** … */` 블록은 **JSDoc** 형식으로 쓰면 에디터가 자동완성·툴팁·타입 검사에 쓰고, 문서 생성 도구가 HTML 문서로 만든다.
+
+```javascript
+/**
+ * x를 n번 곱한 값을 돌려준다.
+ *
+ * @param {number} x 거듭제곱할 수
+ * @param {number} n 곱할 횟수. 자연수여야 한다
+ * @returns {number} x의 n제곱
+ */
+function pow(x, n) {}
+```
+
+TypeScript 프로젝트에서는 타입을 코드가 맡으므로 `{number}` 같은 타입 표기는 빼고 설명과 `@example`·`@deprecated`·`@throws`만 남긴다. JS 파일에서도 `// @ts-check`와 JSDoc 타입으로 TypeScript의 검사를 받을 수 있다. 팀 규칙은 [[typescript-coding-convention|TypeScript 코딩 컨벤션]]의 「주석과 모듈」에 있다.
+
+### 그 밖의 요령
+
+- 주석 때문에 코드가 길어지는 것은 걱정하지 않는다. 배포용 빌드의 압축 도구(minifier)가 주석을 지운다. 라이선스 주석(`/*! … */`, `@license`)은 남기도록 설정할 수 있다.
+- 에디터 단축키(VS Code는 `Ctrl+/`·`Cmd+/`)로 줄 주석을 켜고 끈다.
+- `// TODO:`, `// FIXME:`는 린터 규칙이나 이슈 트래커와 연결해 두지 않으면 영원히 남는다.
+
+## 명세의 주석 네 가지: 한눈에 보기
 
 | 주석 | 형태 | 쓸 수 있는 곳 | 생긴 이유 |
 | --- | --- | --- | --- |
@@ -99,9 +155,10 @@ JavaScript는 1995년 넷스케이프 내비게이터 2에서 처음 나왔다. 
 
 ## 정리
 
+- 주석에는 코드가 말할 수 없는 "왜"를 쓴다. 블록을 설명하는 주석은 함수 이름으로 바꾼다. 함수 계약은 JSDoc으로.
 - 주석은 `//`와 `/* */`만 쓴다. `/* */`는 중첩이 안 되고 정규식 속 `*/`에 걸릴 수 있다.
 - 주석은 공백처럼 취급되지만, 줄바꿈을 품은 `/* */`는 줄바꿈으로 취급된다.
 - `#!`는 실행 파일 첫 줄에서 인터프리터를 지정할 때만 쓴다.
 - `<!--`/`-->`는 1990년대 브라우저 호환의 흔적이다. 언어의 역사가 명세에 남은 예다.
 
-관련 노트: [[variables-and-types|변수와 데이터 타입]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[frontend-history|프론트엔드의 등장 배경]]
+관련 노트: [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[statements-vs-expressions|문(Statement)과 식(Expression)]], [[variables-and-types|변수와 데이터 타입]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[frontend-history|프론트엔드의 등장 배경]]

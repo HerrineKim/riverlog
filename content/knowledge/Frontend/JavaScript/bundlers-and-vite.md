@@ -87,4 +87,4 @@ Vue를 만든 Evan You가 Snowpack을 보고 같은 개념의 도구를 만들�
 - 해법은 **네이티브 언어로 빠르게(esbuild)** 와 **개발 중엔 번들링하지 않기(Snowpack)** 였다.
 - Vite는 두 해법을 모아 표준 빌드 도구가 됐고, 이제 Rust 번들러 Rolldown 하나로 개발과 배포를 처리한다.
 
-관련 노트: [[es-modules|모듈: export와 import]], [[tooling|React 빌드 환경 직접 구성하기]], [[package-managers|패키지 매니저: npm, yarn, pnpm]], [[tech-stack-selection|기술 스택 고르기]]
+관련 노트: [[es-modules|모듈: export와 import]], [[tooling|React 빌드 환경 직접 구성하기]], [[package-managers|패키지 매니저: npm, yarn, pnpm]], [[tech-stack-selection|기술 스택 고르기]], [[code-splitting|자바스크립트 코드 분할]]
