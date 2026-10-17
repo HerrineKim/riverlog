@@ -74,22 +74,22 @@ test('어떤 상품이든 추가하면 장바구니 개수가 1 늘어난다', (
 | 데이터는 테스트마다 직접 만든다 | 전역 시드 데이터에 기대면 테스트끼리 얽혀 순서에 따라 깨진다 |
 | 에러는 잡지 말고 기대한다 | `try/catch` 대신 `await expect(fn()).rejects.toThrow(…)` |
 | 태그로 나눈다 | `#fast`·`#smoke` 같은 태그로 저장할 때는 빠른 테스트만, CI에서는 전부 돌린다(Vitest `--testNamePattern`, Playwright `--grep`) |
-| 고치기 전에 실패하는 테스트부터 | 버그를 찾으면 그 버그를 잡는 테스트를 먼저 쓴다. 모든 테스트는 한 번 실패하는 것을 확인한다([[tdd|TDD]]) |
-| 환경에 기대지 않는다 | 경로·OS·타임존·현재 시각을 고정한다([[jest-practices|Jest·Vitest 실행 팁]]) |
+| 고치기 전에 실패하는 테스트부터 | 버그를 찾으면 그 버그를 잡는 테스트를 먼저 쓴다. 모든 테스트는 한 번 실패하는 것을 확인한다([[tdd\|TDD]]) |
+| 환경에 기대지 않는다 | 경로·OS·타임존·현재 시각을 고정한다([[jest-practices\|Jest·Vitest 실행 팁]]) |
 
 ## 프런트엔드와 E2E
 
 | 원칙 | 방법 |
 | --- | --- |
 | 화면 세부와 데이터를 분리해 검증 | 애니메이션·스타일이 아니라 사용자가 보는 데이터만 단언한다 |
-| 바뀌지 않는 기준으로 요소를 찾는다 | CSS 클래스가 아니라 role·레이블·텍스트([[a11y-driven-testing|접근성 기반 UI 테스트]]). 마지막 수단이 `data-testid` |
+| 바뀌지 않는 기준으로 요소를 찾는다 | CSS 클래스가 아니라 role·레이블·텍스트([[a11y-driven-testing\|접근성 기반 UI 테스트]]). 마지막 수단이 `data-testid` |
 | 얕은 렌더링 대신 실제처럼 렌더링 | 자식까지 렌더링하고 사용자처럼 조작한다(Testing Library + user-event) |
 | `sleep`을 쓰지 않는다 | `findBy*`·`waitFor`, Playwright의 자동 대기와 web-first 단언(`await expect(locator).toBeVisible()`) |
 | 느리고 불안정한 백엔드는 가로챈다 | 컴포넌트·통합 테스트에서는 MSW나 Playwright `page.route`로 응답을 고정한다 |
 | E2E는 적게, 핵심 흐름만 | 시스템 전체를 지나는 테스트는 느리고 깨지기 쉽다. 결제·가입 같은 핵심 경로만 |
 | 로그인은 한 번만 | 로그인 상태를 저장해 재사용한다(Playwright `storageState`) |
 | 스모크 테스트 | 모든 페이지를 한 번씩 열어 에러 없이 뜨는지만 확인하는 가벼운 E2E를 배포 직후 돌린다 |
-| 네트워크로 어떻게 전달되는지도 본다 | Lighthouse·Web Vitals로 실제 로딩 성능을 측정한다([[web-vitals|Core Web Vitals]]) |
+| 네트워크로 어떻게 전달되는지도 본다 | Lighthouse·Web Vitals로 실제 로딩 성능을 측정한다([[web-vitals\|Core Web Vitals]]) |
 
 ## 백엔드
 
@@ -114,7 +114,7 @@ test('어떤 상품이든 추가하면 장바구니 개수가 1 늘어난다', (
 
 | 할 일 | 도구 예 |
 | --- | --- |
-| 린트를 넉넉히 켜고, 린트 에러가 있으면 빌드를 멈춘다 | ESLint + 보안·접근성 플러그인 ([[eslint-prettier|ESLint와 Prettier]]) |
+| 린트를 넉넉히 켜고, 린트 에러가 있으면 빌드를 멈춘다 | ESLint + 보안·접근성 플러그인 ([[eslint-prettier\|ESLint와 Prettier]]) |
 | 로컬에서 CI와 같은 검사를 빨리 돌린다 | watch 모드, `lint-staged` + Git 훅 |
 | E2E는 운영과 비슷한 환경에서 | 프리뷰 배포, Docker Compose로 띄운 실제 의존성 |
 | 테스트를 병렬로 | Vitest·Playwright 기본 병렬, CI 샤딩(`--shard`) |
@@ -132,4 +132,4 @@ test('어떤 상품이든 추가하면 장바구니 개수가 1 늘어난다', (
 - 데이터는 현실적으로, 테스트마다 따로. 입력이 넓으면 프로퍼티 기반 테스트를 쓴다.
 - E2E는 핵심 흐름만, `sleep` 대신 자동 대기. 커버리지는 하한선일 뿐이고 뮤테이션 테스트가 테스트의 힘을 잰다.
 
-관련 노트: [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[humble-object-pattern|험블 객체 패턴]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[tdd|프론트엔드에서의 TDD]], [[ci-cd|CI/CD]]
+관련 노트: [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[humble-object-pattern|험블 객체 패턴]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[tdd|프론트엔드에서의 TDD]], [[ci-cd|CI/CD]], [[test-primitives|테스트의 기본 요소]], [[test-run-stages|테스트를 돌리는 시점]]

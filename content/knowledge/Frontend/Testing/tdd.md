@@ -109,4 +109,4 @@ export default function Item({ task, onComplete }) {
 - 컴포넌트는 `user-event`와 `getByRole`로 사용자처럼 테스트하고, store 연결은 실제 store로 통합 테스트한다.
 - 깨지면 아픈 로직부터 점진적으로 도입한다.
 
-관련 노트: [[software-testing|소프트웨어 테스트(테스트 레벨과 기법)]], [[bdd-sdd-task-design|BDD·SDD로 기획서를 태스크로 나누기]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[humble-object-pattern|험블 객체 패턴]]
+관련 노트: [[software-testing|소프트웨어 테스트(테스트 레벨과 기법)]], [[bdd-sdd-task-design|BDD·SDD로 기획서를 태스크로 나누기]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[humble-object-pattern|험블 객체 패턴]], [[evaluation-driven-development|평가 주도 개발(EDD)]]

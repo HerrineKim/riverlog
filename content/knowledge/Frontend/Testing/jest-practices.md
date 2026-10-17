@@ -50,4 +50,4 @@ npx vitest run user.spec.js --coverage --coverage.include=src/js/user.js
 - 테스트 파일을 빼려면 Jest `testPathIgnorePatterns`, Vitest `test.exclude`. 기본 제외 목록을 지우지 않는다.
 - 환경 의존 테스트는 빼지 말고 타임존·시각을 고정해 고친다.
 
-관련 노트: [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[tdd|프론트엔드에서의 TDD]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]
+관련 노트: [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[tdd|프론트엔드에서의 TDD]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[test-run-stages|테스트를 돌리는 시점]]

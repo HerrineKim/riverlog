@@ -116,4 +116,4 @@ expect(saved).toEqual(['90점'])
 - 테스트하기 어려운 입출력을 얇은 험블 객체로 떼어 인터페이스 뒤에 두면, 나머지 로직은 스텁만으로 테스트된다.
 - 그 결과 코드는 SRP·OCP·DIP를 자연스럽게 따른다. **테스트하기 좋은 코드가 좋은 코드다.**
 
-관련 노트: [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[tdd|프론트엔드에서의 TDD]]
+관련 노트: [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[tdd|프론트엔드에서의 TDD]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[test-environment|테스트 실행 환경]]
