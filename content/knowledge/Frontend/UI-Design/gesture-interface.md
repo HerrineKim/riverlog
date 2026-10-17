@@ -74,4 +74,4 @@ sources: ["https://webactually.com/2014/08/07/%eb%b2%84%ed%8a%bc%ec%9d%84-%eb%84
 - 보이지 않는 조작이므로 점진적 힌트와 시각 단서로 가르친다.
 - **모든 제스처에는 버튼 대안을 둔다.** 시스템 제스처와 겹치지 않게 한다.
 
-관련 노트: [[ecommerce-ui|전자상거래 UI 디자인]], [[react-native-basics|React Native 기초와 스타일링]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[design-tools-handoff|디자인 도구와 개발자 핸드오프]]
+관련 노트: [[ecommerce-ui|전자상거래 UI 디자인]], [[react-native-basics|React Native 기초와 스타일링]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[responsive-ui-patterns|반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표]], [[ui-input-events|마우스·포인터·키보드 이벤트]]

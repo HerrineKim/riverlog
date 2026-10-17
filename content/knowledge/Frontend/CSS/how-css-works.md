@@ -5,10 +5,10 @@ summary: "속성 암기보다 먼저 익혀야 할 CSS의 핵심 개념(캐스�
 tags: ["css", "browser", "rendering", "layout", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/", "https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade"]
+sources: ["https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/", "https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade", "https://web.dev/learn/css/the-cascade"]
 ---
 
-> Rachel Andrew의 「[CSS를 배우는 방법](https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/)」(2019.02)과 Greg Whitworth의 「[중괄호에서 픽셀로](https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/)」(Braces to Pixels, 2019.01, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다.
+> Rachel Andrew의 「[CSS를 배우는 방법](https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/)」(2019.02)과 Greg Whitworth의 「[중괄호에서 픽셀로](https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/)」(Braces to Pixels, 2019.01, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다. 캐스케이드의 출처·중요도는 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 The cascade 모듈로 보강했다.
 
 ## 속성보다 원리
 
@@ -20,18 +20,18 @@ CSS 속성과 값은 외울 필요가 없다. 필요할 때 MDN에서 찾으면 
 
 | 개념 | 핵심 | 자세히 |
 | --- | --- | --- |
-| 선택자 | 문서 위치·상태로 요소를 고른다. 가상 클래스는 "클래스를 붙인 것처럼", 가상 요소는 "요소를 끼워 넣은 것처럼" 동작한다 | [[selectors|CSS 선택자와 우선순위]] |
+| 선택자 | 문서 위치·상태로 요소를 고른다. 가상 클래스는 "클래스를 붙인 것처럼", 가상 요소는 "요소를 끼워 넣은 것처럼" 동작한다 | [[selectors\|CSS 선택자와 우선순위]] |
 | 캐스케이드·상속·특정도 | 여러 규칙이 겹칠 때 무엇이 이기는지, 무엇이 자식에게 물려지는지 | 아래 "캐스케이드" |
-| 박스 모델 | 모든 것은 상자다. `content-box`는 너비에 패딩·테두리를 더하고, `border-box`는 너비 안에 포함한다 | [[box-model|박스 모델과 display]] |
+| 박스 모델 | 모든 것은 상자다. `content-box`는 너비에 패딩·테두리를 더하고, `border-box`는 너비 안에 포함한다 | [[box-model\|박스 모델과 display]] |
 | 일반 흐름 | 블록은 블록 방향으로, 인라인은 인라인 방향으로 쌓인다. 잘 짠 HTML은 CSS 없이도 읽힌다 | |
-| 서식 맥락 | `display`는 **바깥쪽 타입**(형제와 어떻게 놓이나)과 **안쪽 타입**(자식을 어떻게 배치하나)을 정한다. `display: flex` = `block flex` | [[flexbox|Float와 Flexbox 레이아웃]] |
-| 흐름 안과 밖 | `float`, `position: absolute`는 요소를 흐름에서 빼낸다. 빠진 요소는 다른 요소와 공간을 나누지 않아 겹침을 직접 관리해야 한다 | [[position|CSS position과 z-index]] |
-| 레이아웃 방법 | 일반 흐름, 플렉스, 그리드, 다단, 위치 지정. 경쟁이 아니라 상황별 선택지다. 억지로 맞추고 있다면 다른 방법을 시도한다 | [[css-grid|CSS 그리드 레이아웃]] |
-| 박스 정렬 | `justify-*`, `align-*`은 플렉스만의 기능이 아니다. 그리드·다단·블록에도 같은 모듈이 적용된다 | [[logical-properties|쓰기 모드와 논리적 속성]] |
+| 서식 맥락 | `display`는 **바깥쪽 타입**(형제와 어떻게 놓이나)과 **안쪽 타입**(자식을 어떻게 배치하나)을 정한다. `display: flex` = `block flex` | [[flexbox\|Float와 Flexbox 레이아웃]] |
+| 흐름 안과 밖 | `float`, `position: absolute`는 요소를 흐름에서 빼낸다. 빠진 요소는 다른 요소와 공간을 나누지 않아 겹침을 직접 관리해야 한다 | [[position\|CSS position과 z-index]] |
+| 레이아웃 방법 | 일반 흐름, 플렉스, 그리드, 다단, 위치 지정. 경쟁이 아니라 상황별 선택지다. 억지로 맞추고 있다면 다른 방법을 시도한다 | [[css-grid\|CSS 그리드 레이아웃]] |
+| 박스 정렬 | `justify-*`, `align-*`은 플렉스만의 기능이 아니다. 그리드·다단·블록에도 같은 모듈이 적용된다 | [[logical-properties\|쓰기 모드와 논리적 속성]] |
 | 크기 결정 | 내재적 크기(내용 기반: `min-content`, `max-content`)와 외재적 크기(맥락 기반: 고정값, `%`). 플렉스 공간 분배와 `fr`이 이 위에서 동작한다 | |
-| 반응형 | 유연한 레이아웃 덕분에 미디어 쿼리는 줄고, 필요한 곳에만 브레이크포인트를 둔다 | [[responsive-design|반응형 디자인과 다국어 타이포그래피]] |
-| 글꼴 | 가변 폰트로 파일 하나에서 굵기·폭을 연속 조절한다 | [[web-typography|웹 타이포그래피: 가독성, 글줄 길이, 웹폰트]] |
-| 변형·애니메이션 | `transform`, `transition`, `@keyframes`. 필요할 때 찾아 쓰되, JS·SVG·Web Animations API와의 선택 기준을 안다 | [[transform|transform: 이동·회전·확대·기울이기]] |
+| 반응형 | 유연한 레이아웃 덕분에 미디어 쿼리는 줄고, 필요한 곳에만 브레이크포인트를 둔다 | [[responsive-design\|반응형 디자인과 다국어 타이포그래피]] |
+| 글꼴 | 가변 폰트로 파일 하나에서 굵기·폭을 연속 조절한다 | [[web-typography\|웹 타이포그래피: 가독성, 글줄 길이, 웹폰트]] |
+| 변형·애니메이션 | `transform`, `transition`, `@keyframes`. 필요할 때 찾아 쓰되, JS·SVG·Web Animations API와의 선택 기준을 안다 | [[transform\|transform: 이동·회전·확대·기울이기]] |
 
 ## 중괄호가 픽셀이 되기까지
 
@@ -45,14 +45,16 @@ CSS 텍스트는 해석(축약형은 긴 속성으로 풀린다) → 캐스케�
 
 | 순서 | 기준 | 내용 |
 | --- | --- | --- |
-| 1 | 출처와 중요도 | 일반 선언은 작성자 > 사용자 > 브라우저 기본(user agent). `!important`는 이 순서가 뒤집혀 브라우저 기본 > 사용자 > 작성자. 그래서 사용자의 접근성 설정이 `!important`로 작성자 스타일을 이길 수 있다 |
+| 1 | 출처와 중요도 | 일반 선언은 작성자 > 사용자 > 브라우저 기본(user agent). `!important`는 이 순서가 뒤집혀 브라우저 기본 > 사용자 > 작성자. 그래서 사용자의 접근성 설정이 `!important`로 작성자 스타일을 이길 수 있다. 실행 중인 애니메이션 값은 일반 선언보다 강하고, 실행 중인 **전환(transition) 값은 `!important`보다도 강하다.** 상태를 바꾸는 것이 둘의 목적이기 때문이다 |
 | 2 | 맥락(context) | 섀도 DOM 안팎의 규칙이 부딪치면 캡슐화 규칙으로 가린다 |
 | 3 | 요소에 붙은 스타일 | 인라인 `style` 속성은 어떤 선택자보다 강하다. 레이어·특정도보다 먼저 비교한다 |
 | 4 | 캐스케이드 레이어 | `@layer`로 묶은 규칙은 레이어 순서가 특정도보다 먼저다. 일반 선언은 나중 레이어가, 레이어 밖 규칙이 가장 강하다. `!important`는 반대로 먼저 선언한 레이어가 이긴다 |
 | 5 | 특정도 | ID > 클래스·속성·가상 클래스 > 요소·가상 요소. `:where()`는 0, `:is()`·`:has()`는 인자 중 가장 높은 값 |
 | 6 | 등장 순서 | 모두 같으면 나중에 나온 선언이 이긴다 |
 
-이긴 값이 없는 속성은 상속되는 속성(글자색, 글꼴 등)이면 부모에게서, 아니면 초깃값을 쓴다.
+이긴 값이 없는 속성은 상속되는 속성(글자색, 글꼴 등)이면 부모에게서, 아니면 초깃값을 쓴다. 상속 목록과 `inherit`·`unset`·`revert` 같은 되돌리기 키워드는 [[selectors#상속|CSS 선택자와 우선순위의 상속]]에 있다.
+
+출처는 세 가지다. 브라우저 기본 스타일시트(user agent), 사용자 스타일(OS의 기본 글자 크기·움직임 줄이기 설정, 사용자 CSS를 넣는 확장 프로그램), 작성자 스타일(`<link>`, `<style>`, `@import`, `style` 속성 — Bootstrap 같은 라이브러리도 작성자 출처다). 같은 단계에서 비긴 `<link>`와 `<style>`은 **문서에서 뒤에 나온 것**이 이긴다. 개발자 도구의 스타일 창은 일치하는 모든 선언을 보여 주고 진 선언에 취소선을 긋는다. 기대한 규칙이 아예 없다면 선택자가 맞지 않은 것(오타, 잘못된 값)이다.
 
 ### 계산값
 

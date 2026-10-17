@@ -5,10 +5,10 @@ summary: "writing-mode가 정하는 블록·인라인 축, 그리고 top·left·
 tags: ["css", "layout", "i18n", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2020/01/22/%ec%93%b0%ea%b8%b0-%eb%aa%a8%eb%93%9c%ec%99%80-css-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83/", "https://webactually.com/2018/06/28/%eb%85%bc%eb%a6%ac%ec%a0%81-css-%ec%86%8d%ec%84%b1%ea%b3%bc-%ea%b0%92-%ec%9d%b4%ed%95%b4%ed%95%98%ea%b8%b0/"]
+sources: ["https://webactually.com/2020/01/22/%ec%93%b0%ea%b8%b0-%eb%aa%a8%eb%93%9c%ec%99%80-css-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83/", "https://webactually.com/2018/06/28/%eb%85%bc%eb%a6%ac%ec%a0%81-css-%ec%86%8d%ec%84%b1%ea%b3%bc-%ea%b0%92-%ec%9d%b4%ed%95%b4%ed%95%98%ea%b8%b0/", "https://web.dev/learn/css/logical-properties"]
 ---
 
-> Rachel Andrew의 「[쓰기 모드와 CSS 레이아웃](https://webactually.com/2020/01/22/%ec%93%b0%ea%b8%b0-%eb%aa%a8%eb%93%9c%ec%99%80-css-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83/)」(2020.01)과 「CSS 논리적 속성과 값 이해하기」(2018.06, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다.
+> Rachel Andrew의 「[쓰기 모드와 CSS 레이아웃](https://webactually.com/2020/01/22/%ec%93%b0%ea%b8%b0-%eb%aa%a8%eb%93%9c%ec%99%80-css-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83/)」(2020.01)과 「CSS 논리적 속성과 값 이해하기」(2018.06, 웹액츄얼리 번역)를 바탕으로 재구성하고, web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Logical Properties 모듈로 보강한 노트다.
 
 ## 왜 알아야 하나
 
@@ -47,6 +47,9 @@ sources: ["https://webactually.com/2020/01/22/%ec%93%b0%ea%b8%b0-%eb%aa%a8%eb%93
 | `top` / `right` / `bottom` / `left` | `inset-block-start` / `inset-inline-end` / `inset-block-end` / `inset-inline-start` |
 | `float: left` / `right` | `float: inline-start` / `inline-end` |
 | `text-align: left` / `right` | `text-align: start` / `end` |
+| `border-top-left-radius` 등 | `border-start-start-radius` 등. 앞이 블록, 뒤가 인라인: `border-end-end-radius` = 블록 끝·인라인 끝 모서리 |
+| `overflow-x` / `overflow-y` | `overflow-inline` / `overflow-block` |
+| 단위 `vw` / `vh` | `vi` / `vb` (뷰포트의 인라인·블록 방향 1%) |
 
 축약형도 있다. `margin-block: 1rem 2rem`(시작·끝), `padding-inline: 1rem`, `inset: 0` 등. 논리 속성은 모든 주요 브라우저가 지원한다. 과거에는 `offset-block-start` 같은 초안 이름과 PostCSS 변환 플러그인을 썼다.
 
@@ -79,6 +82,17 @@ sources: ["https://webactually.com/2020/01/22/%ec%93%b0%ea%b8%b0-%eb%aa%a8%eb%93
 ### 그 밖의 CSS
 
 다단 레이아웃의 `column-width`도 실제로는 인라인 크기다. 세로쓰기에서는 물리적 너비가 아니다. 이렇듯 CSS 곳곳이 이미 쓰기 모드를 전제로 움직인다.
+
+## 실전 예
+
+글 앞에 아이콘을 둔 라벨에서 `margin-right`로 간격을 주면 아랍어 페이지에서는 아이콘이 오른쪽으로 가면서 간격이 반대편에 남아 글자에 달라붙는다. `margin-inline-end`로 쓰면 방향과 상관없이 아이콘과 글 사이에 간격이 생긴다.
+
+```css
+.label { display: inline-flex; align-items: center; }
+.label svg { inline-size: 1.2em; block-size: 1.2em; margin-inline-end: .5em; flex: none; }
+```
+
+쓰기 모드는 다국어만의 도구가 아니다. 차트의 Y축 제목에 `writing-mode: vertical-rl`을 주면 X축 제목과 **같은** `margin-block-start`를 써도 각자 알맞은 쪽(X축은 위, Y축은 오른쪽)에 여백이 생긴다. 밑줄이 글자의 블록 끝 쪽에 그어지는 것도 같은 원리다.
 
 ## 언제 논리 속성을 쓰나
 

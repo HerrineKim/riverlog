@@ -145,4 +145,4 @@ AI 코딩 도구가 읽는 팀 규칙 파일(`SKILL.md`)도 같은 구조로 중
 - 이름은 색이 아니라 역할·형태로 짓고, 컴포넌트는 모양과 바꿀 수 있는 동작을 함께 정의한다.
 - 토큰 → 컴포넌트 → Storybook을 중앙에서 관리해 패키지로 배포하고, **한 번 만들고 끝이 아니라 버전을 올리며 계속 다듬는다.**
 
-관련 노트: [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]]
+관련 노트: [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[accessible-design-process|디자인 단계의 접근성]]

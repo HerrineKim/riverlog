@@ -5,10 +5,10 @@ summary: "색상 변수를 팔레트·기능 색상·컴포넌트 색상의 세 
 tags: ["css", "design", "design-system", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2021/02/05/CSS-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A7%80%EC%A0%95-%EC%86%8D%EC%84%B1%EC%9C%BC%EB%A1%9C-%EC%83%89%EC%83%81-%EB%A7%8C%EB%93%A4%EA%B8%B0/", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark", "https://web.dev/articles/baseline-in-action-color-theme"]
+sources: ["https://webactually.com/2021/02/05/CSS-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A7%80%EC%A0%95-%EC%86%8D%EC%84%B1%EC%9C%BC%EB%A1%9C-%EC%83%89%EC%83%81-%EB%A7%8C%EB%93%A4%EA%B8%B0/", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark", "https://web.dev/articles/baseline-in-action-color-theme", "https://web.dev/learn/css/custom-properties", "https://developer.mozilla.org/en-US/docs/Web/CSS/@property"]
 ---
 
-> Artur Basak의 「[CSS 개발자 지정 속성으로 색상 만들기](https://webactually.com/2021/02/05/CSS-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A7%80%EC%A0%95-%EC%86%8D%EC%84%B1%EC%9C%BC%EB%A1%9C-%EC%83%89%EC%83%81-%EB%A7%8C%EB%93%A4%EA%B8%B0/)」(2021.02, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다.
+> Artur Basak의 「[CSS 개발자 지정 속성으로 색상 만들기](https://webactually.com/2021/02/05/CSS-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%A7%80%EC%A0%95-%EC%86%8D%EC%84%B1%EC%9C%BC%EB%A1%9C-%EC%83%89%EC%83%81-%EB%A7%8C%EB%93%A4%EA%B8%B0/)」(2021.02, 웹액츄얼리 번역)를 바탕으로 재구성하고, 커스텀 속성의 동작은 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Custom properties 모듈로 보강한 노트다.
 
 ## 커스텀 속성이란
 
@@ -27,6 +27,47 @@ CSS 커스텀 속성(Custom Properties, 흔히 CSS 변수)은 `--이름: 값`으
 | 잘 맞는 일 | 팔레트처럼 거의 바뀌지 않는 값 계산 | 테마, 모드, 페이지·컴포넌트별 재정의 |
 
 둘은 경쟁 관계가 아니다. 팔레트는 전처리기로 계산하고, 그 결과를 커스텀 속성에 담아도 된다.
+
+### 커스텀 속성의 동작 규칙
+
+| 규칙 | 내용 |
+| --- | --- |
+| 이름 | 반드시 `--`로 시작한다. 명세는 `--`로 시작하는 속성을 절대 추가하지 않으므로 표준 속성과 겹치지 않는다. **대소문자를 구분한다** |
+| 캐스케이드·상속 | 일반 속성처럼 특정성으로 덮이고, 기본으로 **상속된다.** 요소에 다시 정하면 그 요소와 자손만 바뀐다 |
+| 쓰는 곳 | 속성 **값** 안에서만. 미디어 쿼리 조건(`@media (min-width: var(--bp))`)이나 선택자에는 못 쓴다 |
+| 폴백 | `var(--alert-bg, var(--primary-bg, white))`처럼 값이 없을 때 쓸 값을 두 번째 인자로. 폴백 안에 `var()`를 중첩할 수 있다 |
+| 계산값 시점의 무효 | 값이 그 속성에 맞지 않으면(`background-color: var(--length)`인데 `--length: 2rem`) **같은 요소의 다른 유효한 선언으로 돌아가지 않는다.** 이미 캐스케이드가 끝난 뒤 알게 되므로, 상속 속성이면 부모 값, 아니면 초깃값(`transparent`)이 된다 |
+
+```css
+.content { background-color: blue; }
+.content.invalid { --length: 2rem; background-color: var(--length); }  /* 파랑이 아니라 transparent */
+```
+
+#### @property로 타입 정하기
+
+`@property`로 등록하면 타입·상속 여부·초깃값을 정할 수 있다. 모든 주요 브라우저가 지원한다(Baseline 2024).
+
+```css
+@property --brand {
+  syntax: "<color>";       /* "*"는 아무 타입 */
+  inherits: false;
+  initial-value: oklch(62% 0.15 160);
+}
+```
+
+- **타입이 맞지 않는 값은 무효**가 되고 초깃값(또는 상속값)을 쓴다. 위의 계산값 무효 문제를 예측 가능하게 만든다.
+- `inherits: false`면 요소에 준 값이 자식에게 내려가지 않는다. 여러 선택자가 같은 요소를 겨눌 때 유용하다.
+- `syntax`가 `"*"`가 아니면 `initial-value`가 필수다. 그래서 등록된 속성은 절대 정의되지 않은 상태가 되지 않는다.
+- 타입을 아는 브라우저는 값을 **보간**할 수 있다. `--angle`을 `<angle>`로 등록하면 그라디언트 각도나 `sin(var(--angle))`을 `transition`·`@keyframes`로 움직일 수 있다. 등록하지 않은 커스텀 속성은 중간값 없이 뚝 바뀐다.
+
+#### JavaScript에서 읽고 쓰기
+
+```js
+el.style.setProperty('--color', 'orange');                       // 인라인 style에 --color: orange
+getComputedStyle(el).getPropertyValue('--color').trim();         // 캐스케이드가 끝난 값 읽기
+```
+
+`data-color` 같은 HTML 속성 값을 읽어 커스텀 속성에 넣으면, 버튼 클릭으로 테마를 바꾸는 일이 CSS 한 곳의 변수 교체로 끝난다.
 
 ## 색상을 세 단계로 나눈다
 
@@ -128,4 +169,4 @@ CSS 커스텀 속성(Custom Properties, 흔히 CSS 변수)은 `--이름: 값`으
 - 같은 색이라도 함께 바뀌어야 할 때만 같은 변수로 묶는다.
 - 루트에는 팔레트와 기능 색상만 둔다.
 
-관련 노트: [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[sass|Sass: 파일 구조, 믹스인과 @extend]], [[web-typography|웹 타이포그래피: 가독성, 글줄 길이, 웹폰트]], [[css-progressive-enhancement|CSS 점진적 향상: 폴백과 피처 쿼리]]
+관련 노트: [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[sass|Sass: 파일 구조, 믹스인과 @extend]], [[css-functions|CSS 함수: calc()·clamp()와 수학 함수]], [[css-basics|CSS 기초: 문법, 적용 방법, 단위]], [[web-typography|웹 타이포그래피: 가독성, 글줄 길이, 웹폰트]], [[css-progressive-enhancement|CSS 점진적 향상: 폴백과 피처 쿼리]]

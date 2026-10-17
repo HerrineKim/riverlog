@@ -57,7 +57,7 @@ Ajax와 jQuery 이후 백엔드는 JSON만 주고, HTML과 CSS는 프론트엔�
 | 해법 | 무엇을 풀었나 |
 | --- | --- |
 | CSS 방법론과 BEM (2013 무렵) | 여럿이 함께 쓸 아키텍처, 명시도 관리, 이름 짓기 규칙. OOCSS·SMACSS·ITCSS 중 **BEM**(`.block__element--modifier`)이 살아남았다. 구조를 표현하면서도 종속이 없고, 명시도를 클래스 하나로 통일하고, 규칙이 단순하다 |
-| Flexbox (2013) | 문서용 CSS와 **앱 레이아웃용 스펙**이 처음 분리됐다. float·table·absolute로 억지로 만들던 레이아웃 우회법은 이제 배울 필요가 없다. 자세한 내용은 [[flexbox|Float와 Flexbox]] |
+| Flexbox (2013) | 문서용 CSS와 **앱 레이아웃용 스펙**이 처음 분리됐다. float·table·absolute로 억지로 만들던 레이아웃 우회법은 이제 배울 필요가 없다. 자세한 내용은 [[flexbox\|Float와 Flexbox]] |
 | 핸드오프 도구 (Zeplin 2014, Figma) | 디자이너가 퍼블리싱까지 하던 구조가 끝나고, 디자인을 **컴포넌트 구조로 옮기는 능력**이 개발자의 몫이 됐다 |
 | CSS Modules (2015) | 컴포넌트에서 불러온 CSS를 그 컴포넌트에만 적용되게 컴파일한다. **전역 범위** 문제를 JS 쪽 도구로 풀었다 |
 | CSS-in-JS (styled-components 2016) | 스타일을 JS로 만들어 선택자 자체를 없앴다. **명시도의 근원인 선택자**가 사라졌다. 런타임에 CSS를 만드는 비용을 줄이려 zero-runtime 방식이 이어졌다 |

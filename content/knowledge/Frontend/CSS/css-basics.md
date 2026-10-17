@@ -1,12 +1,14 @@
 ---
 title: "CSS 기초: 문법, 적용 방법, 단위"
 concept: "CSS Syntax"
-summary: "선택자와 선언으로 이루어진 CSS 문법, 스타일 적용 방법 3가지, 크기와 색상 단위."
+summary: "선택자와 선언으로 이루어진 CSS 문법, 스타일 적용 방법 3가지, 수·퍼센트·절대·상대 길이와 각도·해상도 단위, 그리고 hex·rgb·hsl부터 oklch·display-p3·color()·상대 색상 문법까지의 색 표현."
 tags: ["css", "frontend"]
 source: til
 date: "2026-10-13"
-sources: ["https://riverkim.kr/263", "https://riverkim.kr/271", "https://riverkim.kr/225", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value"]
+sources: ["https://riverkim.kr/263", "https://riverkim.kr/271", "https://riverkim.kr/225", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value", "https://web.dev/learn/css/sizing", "https://web.dev/learn/css/color"]
 ---
+
+> riverkim.kr에 쓴 글을 정리한 노트에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Sizing Units·Color 모듈을 더해 보강했다.
 
 CSS는 "어떤 요소를(선택자) 어떻게 바꿀지(선언)"를 적는 언어다. 문법 자체는 단순하지만, 스타일을 **어디에** 작성하느냐와 **어떤 단위**를 쓰느냐에 따라 유지보수성과 반응형 대응이 크게 달라진다.
 
@@ -63,17 +65,60 @@ h1 {
 
 ## 크기 단위
 
-| 단위 | 기준 | 특징 |
+### 수와 퍼센트
+
+| 종류 | 예 | 의미 |
 | --- | --- | --- |
-| `px` | 화면의 픽셀 | 고정 크기 |
-| `%` | 부모 요소 | 가변 레이아웃에 자주 사용 |
-| `em` | 부모(상속받은) 글꼴 크기의 배수 | 중첩될수록 누적되어 커지거나 작아진다 |
-| `rem` | 최상위 요소(`html`)의 글꼴 크기의 배수 | 상속의 영향을 받지 않아 예측이 쉽다 |
-| `vw`, `vh`, `vmin`, `vmax` | 뷰포트(사용자에게 보이는 화면 영역) | `100vh` = 화면 높이 전체. 모바일에서는 주소창 때문에 화면보다 커질 수 있다 |
-| `dvh`, `svh`, `lvh` | 동적·가장 작은·가장 큰 뷰포트 | 모바일 주소창이 늘고 줄 때를 반영한다. 꽉 찬 화면에는 `100dvh` |
-| `ch` | 글꼴의 숫자 `0` 너비 | 글줄 길이 제한(`max-inline-size: 65ch`) |
-| `cqi`, `cqb` | 컨테이너 쿼리의 컨테이너 크기 | 컴포넌트가 놓인 칸 너비에 비례하는 크기 |
-| `clamp(최소, 선호, 최대)` | 함수. 선호값을 최소·최대 사이로 묶는다 | 미디어 쿼리 없이 부드럽게 변하는 크기. 예: `font-size: clamp(1rem, 2.5vw, 1.5rem)` |
+| 수(number) | `opacity: .5`, `line-height: 1.5`, `scale(1.2)`, `rgb(50 50 50)`, `sepia(.5)` | 단위 없는 정수·소수. 뜻은 속성마다 다르다 |
+| 퍼센트 | `width: 50%` | **무엇의** 퍼센트인지는 속성이 정한다 |
+
+| 속성 | `%`의 기준 |
+| --- | --- |
+| `width`, `inline-size` | 부모(컨테이닝 블록)의 너비 |
+| `margin`, `padding` | 방향과 상관없이 컨테이닝 블록의 **너비** |
+| `transform: translate()` | 요소 **자기 자신**의 크기 |
+| `font-size` | 부모의 글자 크기 |
+| `line-height` | 자기 글자 크기 |
+
+`line-height`는 단위 없는 수로 쓴다. `line-height: 1.5`는 자식에게 비율이 상속돼 자식의 글자 크기마다 다시 계산되지만, `line-height: 24px`나 `150%`는 계산된 길이가 상속돼 큰 글자의 줄이 겹친다.
+
+### 절대 길이
+
+모두 같은 기준(1in = 96px)으로 풀린다. 화면의 물리 크기는 기기마다 달라 `cm`·`in`은 화면에서 실제 자와 맞지 않는다. **인쇄 스타일시트**에서 쓴다.
+
+| 단위 | 크기 |
+| --- | --- |
+| `px` | 1/96in. CSS 픽셀이며 물리 픽셀이 아니다 |
+| `cm`, `mm`, `Q` | 센티미터, 1/10cm, 1/40cm |
+| `in`, `pc`, `pt` | 인치(96px), 1/6in, 1/72in |
+
+### 상대 길이
+
+| 기준 | 단위 | 의미 |
+| --- | --- | --- |
+| 글자 | `em` | 부모(상속받은) 글자 크기의 배수. `font-size` 외 속성에서는 자기 글자 크기. 중첩될수록 누적된다 |
+| | `rem` | 루트(`html`) 글자 크기의 배수. 상속에 흔들리지 않아 예측이 쉽다 |
+| | `ch` | 글꼴의 숫자 `0` 너비. 글줄 길이 제한(`max-inline-size: 65ch`) |
+| | `ex`, `cap` | 소문자 x 높이, 대문자 높이 |
+| | `ic` | 전각 글자 `水`의 너비. 한·중·일 글자 수 기준 |
+| | `lh` | 요소의 줄 높이. 아이콘을 한 줄 높이에 맞출 때 |
+| | `rex`, `rcap`, `rch`, `ric`, `rlh` | 위 단위의 루트 요소 기준 판 |
+| 뷰포트 | `vw`, `vh` | 뷰포트 너비·높이의 1% |
+| | `vi`, `vb` | 루트의 인라인·블록 축 방향 1%. 세로쓰기에서 축이 바뀐다 |
+| | `vmin`, `vmax` | 짧은 쪽·긴 쪽의 1% |
+| | `svh`, `lvh`, `dvh` (+`sv*`·`lv*`·`dv*` 전체) | 브라우저 UI가 모두 보일 때(작은 뷰포트)·모두 숨었을 때(큰 뷰포트)·지금 상태(동적). 기본 `vh`는 큰 뷰포트와 같다. 꽉 찬 화면에는 `100dvh`, 움직이지 않아야 하면 `100svh` |
+| 컨테이너 | `cqw`, `cqh`, `cqi`, `cqb`, `cqmin`, `cqmax` | 컨테이너 쿼리의 컨테이너 크기 1%([[responsive-design#컨테이너 쿼리\|컨테이너 쿼리]]) |
+
+뷰포트 단위도 상대 단위다. 기준은 기기 화면이 아니라 그 문서가 그려지는 창(iframe·웹뷰일 수 있다)이다.
+
+**글자 크기는 `rem`·`em`으로 쓴다.** `html`에 `font-size`를 고정하지 않으면 사용자가 OS·브라우저에서 키운 기본 글자 크기가 상대 단위에 반영된다. `px`로 쓰면 그 설정을 무시한다. 크기 사이를 부드럽게 오가는 `clamp(최소, 선호, 최대)`와 다른 수학 함수는 [[css-functions|CSS 함수]]에 있다.
+
+### 각도와 해상도
+
+| 종류 | 단위 | 쓰임 |
+| --- | --- | --- |
+| 각도 | `deg`, `rad`, `grad`, `turn` (`1turn` = `360deg`) | `rotate()`, `hsl()`의 색상, 그라디언트 방향 |
+| 해상도 | `dpi`, `dpcm`, `dppx`(`x`) | 고해상도 화면 미디어 쿼리 `@media (min-resolution: 2dppx)`, `image-set()` |
 
 ## 색상 표현
 
@@ -89,7 +134,42 @@ h1 {
 
 투명도(alpha)는 `/` 뒤에 쓴다. 쉼표로 구분하는 `rgba(255, 0, 0, 0.5)`·`hsla()`는 옛 문법이지만 여전히 동작하고, 지금은 `rgb()`·`hsl()` 하나로 투명도까지 쓴다. 색상 체계를 변수로 짜는 법은 [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]]에 있다.
 
-16진수 색은 `#RRGGBB` 꼴로 빨강·초록·파랑을 두 자리씩 `00`~`ff`(0~255)로 적는다. 두 자리가 같은 값이면 `#f00`(= `#ff0000`)처럼 세 자리로 줄일 수 있고, 뒤에 두 자리를 더 붙이면 투명도다(`#RRGGBBAA`, 네 자리 축약 `#RGBA`). 디자인 도구가 Hex로 색을 주는 경우가 많아 가장 흔히 쓰인다.
+16진수 색은 `#RRGGBB` 꼴로 빨강·초록·파랑을 두 자리씩 `00`~`ff`(0~255)로 적는다. 두 자리가 같은 값이면 `#f00`(= `#ff0000`)처럼 세 자리로 줄일 수 있고, 뒤에 두 자리를 더 붙이면 투명도다(`#RRGGBBAA`, 네 자리 축약 `#RGBA`). 투명도도 16진수라 50%는 `80`, 75%는 `BF`(= 191 ≈ 255의 75%), 0%는 `00`이다. 디자인 도구가 Hex로 색을 주는 경우가 많아 가장 흔히 쓰인다.
+
+### 넓은 색역과 색 공간
+
+`rgb()`·`hsl()`·Hex는 모두 **sRGB 색역** 안의 색만 표현한다. 최신 화면은 그보다 넓은 색을 낸다.
+
+| 함수 | 채널 | 쓰임 |
+| --- | --- | --- |
+| `color(srgb r g b)` | 0~1 | sRGB를 0~1로. `rgb(72% 8% 25%)` = `color(srgb .72 .08 .25)` |
+| `color(display-p3 r g b)` | 0~1 | Display P3 색역(sRGB보다 약 50% 넓다). 같은 숫자라도 더 선명한 색 |
+| `oklab(L a b)` | 밝기 0~1, a(초록↔빨강)·b(파랑↔노랑) -0.4~0.4 | 매끄러운 그라디언트, 색상·밝기를 유지한 채 채도 조절 |
+| `oklch(L C H)` | 밝기, 채도(0~0.4 남짓), 색상 각도 | 지각적으로 균일하다. 색상을 바꿔도 밝기가 그대로라 팔레트 만들기에 좋다 |
+| `lab()`, `lch()`, `hwb()` | | 다른 색 공간. 다 외울 필요는 없다 |
+
+- OKLCH는 색역에 묶이지 않아 `oklch(80% 0.4 200)`처럼 **어떤 화면도 못 내는 색**도 적을 수 있다. 화면이 못 내는 색은 브라우저가 가까운 색으로 바꾼다(gamut mapping). 화면별로 직접 고르려면 `@media (color-gamut: p3)`를 쓴다.
+- 실무에서는 Hex·`rgb()`를 읽을 줄 알고, 값을 손으로 조절할 때는 `oklch()`나 `hsl()`처럼 채널 뜻이 분명한 형식을 쓴다.
+
+### 특수 키워드와 시스템 색
+
+- `transparent`: 완전 투명. `background-color`의 초깃값이다.
+- `currentColor`: 그 요소의 `color` 계산값. `border-color`·`box-shadow`·SVG `fill`의 기본값이 이것이라, 글자색만 바꾸면 테두리·아이콘이 따라 바뀐다.
+- 시스템 색(`Canvas`, `CanvasText`, `ButtonBorder`, `Highlight` 등): OS 테마가 정한 색. 고대비 모드처럼 사용자가 색을 강제할 때 맞춰 쓴다. 대소문자는 구분하지 않는다.
+
+### 색 조작
+
+```css
+.hover   { background: color-mix(in oklch, var(--brand), black 15%); }   /* 15% 어둡게 */
+.dimmer  { color: oklch(from var(--brand) calc(l * .9) c h); }            /* 상대 색상 문법: 밝기만 90% */
+.complement { color: oklch(from var(--brand) l c calc(h + 180)); }       /* 보색 */
+```
+
+- `color-mix(in 색공간 [방향], 색1 비율, 색2)`: 같은 두 색도 **어느 색 공간에서 섞느냐**에 따라 결과가 다르다. 색상이 있는 공간은 `shorter`(기본)·`longer`·`increasing`·`decreasing`으로 색상환을 도는 방향을 고른다.
+- 상대 색상 문법 `함수(from 원래색 채널…)`: 원래 색을 그 함수의 채널(`l c h`, `r g b`)로 풀어 주고, `calc()`로 바꾸거나 다른 값으로 갈아 끼운다.
+- 동적으로 만든 색은 대비가 부족해지기 쉽다. 파생 색도 대비를 확인한다([[color-motion-accessibility|색과 움직임의 접근성]]).
+
+색은 `<color>` 타입을 받는 곳이면 어디든 같은 문법으로 쓴다: `color`, `background-color`, `border-color`, `outline-color`, `text-decoration-color`, `text-shadow`, `box-shadow`, 그라디언트([[css-backgrounds-gradients|CSS 배경과 그라디언트]]).
 
 ## 글꼴 기울이기: font-style
 
@@ -140,6 +220,9 @@ Stylelint의 `stylelint-order` 같은 플러그인으로 순서를 자동으로 
 
 - CSS = 선택자 + `{ 속성: 값; }` 선언의 묶음.
 - 공통 스타일은 외부 파일, 컴포넌트 단위 스타일은 내부/CSS-in-JS, 동적인 개별 값은 인라인으로 나눠 쓴다.
-- 반응형에는 `rem`, `%`, `vw/vh` 같은 상대 단위가 유리하다. 자세한 방법은 [[responsive-design|반응형 디자인]]에 있다.
+- 반응형에는 `rem`, `%`, `vw/vh` 같은 상대 단위가 유리하다. 글자 크기는 사용자 설정을 존중하도록 `rem`·`em`으로. 자세한 방법은 [[responsive-design|반응형 디자인]]에 있다.
 - 속성은 레이아웃에 큰 영향을 주는 것부터 순서를 정해 쓴다.
 - 브라우저마다 기본 스타일이 다르다. 색 같은 기본값은 명시한다.
+- 색 값을 손으로 조절할 땐 `oklch()`, 파생 색은 `color-mix()`와 상대 색상 문법으로 만든다.
+
+관련 노트: [[css-functions|CSS 함수: calc()·clamp()와 수학 함수]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[selectors|CSS 선택자와 우선순위]]

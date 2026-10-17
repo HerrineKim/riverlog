@@ -5,10 +5,10 @@ summary: "상태 변화를 부드럽게 잇는 transition과, 여러 단계를 �
 tags: ["css", "frontend", "animation", "performance"]
 source: other
 date: "2026-10-14"
-sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations"]
+sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations", "https://web.dev/learn/css/transitions", "https://web.dev/learn/css/animations"]
 ---
 
-> nanati의 「[CSS Animation을 간단하게 만들어주는 라이브러리 모음](https://nanati.me/css-animation-library/)」(2021.09)의 라이브러리 목록에 CSS 애니메이션 기본 개념을 더해 재구성한 노트다. 라이브러리 링크는 2026년 10월에 다시 확인했다.
+> nanati의 「[CSS Animation을 간단하게 만들어주는 라이브러리 모음](https://nanati.me/css-animation-library/)」(2021.09)의 라이브러리 목록에 CSS 애니메이션 기본 개념을 더해 재구성한 노트다. 라이브러리 링크는 2026년 10월에 다시 확인했다. transition·animation 속성의 세부 동작은 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Transitions·Animations 모듈로 보강했다.
 
 ## 두 가지 방법
 
@@ -36,7 +36,19 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 | `transition-timing-function` | 속도 곡선: `ease`, `linear`, `ease-in-out`, `cubic-bezier()`, `steps()` |
 | `transition-delay` | 시작 전 대기 |
 
-`display: none`처럼 원래 이어지지 않던(이산) 속성도 `transition-behavior: allow-discrete`와 `@starting-style`로 등장·퇴장 효과를 줄 수 있다.
+- `transition-timing-function`의 초깃값은 `ease`, `duration`·`delay`의 초깃값은 `0s`다. 축약형 순서는 `속성 길이 곡선 지연`(`transition: transform 300ms ease-in-out 0s`).
+- **중간 상태가 있는 속성만** 부드럽게 이어진다. `font-size`(길이)는 되고 `font-family`(serif와 monospace의 중간은 없다)는 안 된다. 이어지지 않는 속성은 끝에서 한 번에 바뀐다(이산 전환).
+- 전환은 값이 바뀌어야 시작한다. 흔한 계기는 `:hover`, `:focus`, `:focus-within`, `:target`, `:active`, JS로 클래스를 바꾸는 것이다.
+- **들어갈 때와 나올 때를 다르게** 하려면 각 상태에 다른 `transition`을 준다. 목표 상태 쪽 규칙의 `transition`이 쓰인다.
+- 형제마다 `transition-delay`를 조금씩 늘리면 차례로 움직이는 스태거(stagger) 효과가 된다. 음수 지연은 중간부터 시작한다.
+- 색 전환은 위치가 움직이지 않으므로 움직임 줄이기 설정에서도 대개 그대로 둬도 된다.
+
+```css
+.menu { opacity: 0; transition: opacity 2s ease-in; }                 /* 나갈 때: 천천히 */
+.menu.open { opacity: 1; transition: opacity 150ms ease; }            /* 들어올 때: 빠르게 */
+```
+
+`display: none`처럼 원래 이어지지 않던(이산) 속성도 `transition-behavior: allow-discrete`와 `@starting-style`로 등장·퇴장 효과를 줄 수 있다. 팝오버 예제는 [[popover-anchor-positioning#열고 닫기 애니메이션|팝오버 애니메이션]]에 있다. 실행 중인 전환 값은 캐스케이드에서 `!important`보다도 강하다([[how-css-works#캐스케이드|캐스케이드]]).
 
 ## @keyframes와 animation
 
@@ -60,7 +72,27 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 | `animation-fill-mode` | 재생 전후에 첫·끝 프레임을 유지할지. `both`가 흔하다 |
 | `animation-play-state` | `paused`로 멈춘다 |
 
-스크롤 위치에 맞춰 재생하는 **스크롤 기반 애니메이션**(`animation-timeline: scroll()`/`view()`)과, 페이지·상태 전환을 잇는 **View Transitions API**도 CSS로 다룬다.
+- `from`·`to`는 `0%`·`100%`와 같다. 키프레임은 하나만 있어도 된다. 빠진 시작·끝은 요소의 현재 스타일로 채운다(위 `spin`).
+- `@keyframes` 이름은 **대소문자를 구분하는** 사용자 정의 식별자다.
+- `animation-duration` 초깃값은 `0s`다. 애니메이션은 실행되지만 보이지 않는다. 음수는 안 된다.
+- `animation-delay`는 음수가 된다. 10초 애니메이션에 `-5s`면 중간부터 시작한다.
+- `animation-fill-mode`: `none`(기본, 끝나면 키프레임 값을 버림), `forwards`(마지막 프레임 유지), `backwards`(지연 동안 첫 프레임 적용), `both`.
+- `animation-iteration-count`의 초깃값은 `1`, 무한 반복은 `infinite`.
+- 축약형 순서는 대체로 `이름 길이 곡선 지연 반복 방향 채우기 재생상태`다. 시간 값이 두 개면 **첫째가 길이, 둘째가 지연**이다.
+
+### 타이밍 함수
+
+| 함수 | 모양 |
+| --- | --- |
+| `linear` | 일정한 속도 |
+| `ease`, `ease-in`, `ease-out`, `ease-in-out` | 미리 정의된 베지어 곡선. `ease`가 기본 |
+| `cubic-bezier(x1, y1, x2, y2)` | 직접 곡선을 정한다. y가 0~1을 벗어나면 튀어 오르는(overshoot) 효과 |
+| `steps(n, end)` | n개의 같은 간격으로 **뚝뚝 끊어** 움직인다. `end`(기본)는 각 구간 끝에서, `start`는 시작하자마자 첫 단계로 바뀐다. 스프라이트 애니메이션, 타자기 효과 |
+| `linear(0, .25 75%, 1)` | 점들을 이은 꺾은선. 스프링·바운스를 흉내 낸다 |
+
+실제 물체는 갑자기 서거나 출발하지 않는다. 등장은 `ease-out`, 퇴장은 `ease-in`이 자연스럽다. 개발자 도구의 곡선 편집기로 실시간 조절할 수 있다([[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]).
+
+스크롤 위치에 맞춰 재생하는 **스크롤 기반 애니메이션**(`animation-timeline: scroll()`/`view()`)과, 페이지·상태 전환을 잇는 **View Transitions API**도 CSS로 다룬다([[view-transitions|View Transitions: 화면 전환 애니메이션]]).
 
 ## 부드럽게 만드는 원칙
 
@@ -79,7 +111,7 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 }
 ```
 
-자세한 기준(5초 넘는 자동 애니메이션은 멈출 수 있게)은 [[color-motion-accessibility|색과 움직임의 접근성]]에 있다.
+움직임 줄이기는 「애니메이션 금지」가 아니라 **덜, 특히 예상치 못한 움직임을 덜** 달라는 요청이다. 자동 재생 애니메이션은 `animation-play-state: paused`로 멈추고, 큰 이동은 페이드로 바꾸는 식으로 대체한다. 반대로 `@media (prefers-reduced-motion: no-preference)` 안에서만 움직임을 켜는 방식도 있다. 자세한 기준(5초 넘는 자동 애니메이션은 멈출 수 있게)은 [[color-motion-accessibility|색과 움직임의 접근성]]에 있다.
 
 ## CSS 애니메이션 라이브러리
 
@@ -115,4 +147,4 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 
 **좋은 애니메이션은 눈에 띄지 않고, 상태가 바뀌었다는 사실만 알려 준다.**
 
-관련 노트: [[transform|transform: 이동·회전·확대·기울이기]], [[browser-rendering|브라우저 렌더링 과정]], [[color-motion-accessibility|색과 움직임의 접근성]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]
+관련 노트: [[transform|transform: 이동·회전·확대·기울이기]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[browser-rendering|브라우저 렌더링 과정]], [[color-motion-accessibility|색과 움직임의 접근성]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[js-animation|JavaScript 애니메이션]]

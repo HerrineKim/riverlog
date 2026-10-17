@@ -5,10 +5,10 @@ summary: "요소를 문서 흐름에 영향 없이 이동·확대·회전·기�
 tags: ["css", "layout", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/233", "https://developer.mozilla.org/en-US/docs/Web/CSS/translate"]
+sources: ["https://riverkim.kr/233", "https://developer.mozilla.org/en-US/docs/Web/CSS/translate", "https://web.dev/learn/css/functions"]
 ---
 
-> riverkim.kr에 쓴 글을 다시 정리한 노트다.
+> riverkim.kr에 쓴 글을 다시 정리하고, 3D 변형은 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Functions 모듈로 보강한 노트다.
 
 ## transform이란
 
@@ -47,6 +47,27 @@ sources: ["https://riverkim.kr/233", "https://developer.mozilla.org/en-US/docs/W
 ```
 
 `transform` 한 줄에 함수를 몰아 쓰면 호버에서 이동만 바꾸려 해도 확대 값까지 다시 적어야 한다. 개별 속성은 서로 덮어쓰지 않아 상태별로 따로 바꾸기 쉽다. 적용 순서는 작성 순서와 상관없이 항상 `translate` → `rotate` → `scale` → `transform`이다.
+
+### 3D 변형과 원근
+
+| 함수·속성 | 하는 일 |
+| --- | --- |
+| `rotateX()`, `rotateY()`, `rotateZ()` | 한 축을 중심으로 회전. `rotate()`는 `rotateZ()`와 같다 |
+| `rotate3d(x, y, z, 각도)` | 벡터 (x, y, z)를 축으로 회전 |
+| `translateZ()`, `translate3d()` | 화면 앞뒤(Z축)로 이동 |
+| `scaleZ()`, `scale3d()` | Z축 배율 |
+| `perspective` 속성 / `perspective()` 함수 | 보는 사람과 Z=0 평면 사이의 거리. 작을수록 원근이 강하다. 속성은 **자식**에, 함수는 그 요소에 적용된다 |
+| `perspective-origin` | 소실점 위치 |
+| `transform-style: preserve-3d` | 자식도 같은 3D 공간에 놓는다(카드 뒤집기) |
+| `backface-visibility: hidden` | 뒤집혔을 때 뒷면을 숨긴다 |
+
+```css
+.scene { perspective: 800px; }
+.card  { transform-style: preserve-3d; transition: rotate .6s; }
+.card.flipped { rotate: y 180deg; }
+.card :is(.front, .back) { backface-visibility: hidden; }
+.card .back { rotate: y 180deg; }   /* 앞뒤 면을 같은 칸에 겹쳐 둔다 */
+```
 
 `transform`·`opacity`만 바꾸면 합성만 다시 돌아 부드럽다([[browser-rendering#변경이 다시 도는 단계|변경이 다시 도는 단계]]). `transform`이 있는 요소는 새 쌓임 맥락을 만들고, 그 안의 `position: fixed` 자식의 기준이 된다([[position|CSS position과 z-index]]).
 
@@ -102,4 +123,4 @@ top/left 50%만        translate(-50%, -50%) 추가
 
 - [CSS3 Transform — PoiemaWeb](https://poiemaweb.com/css3-transform)
 
-관련 노트: [[position|position]], [[flexbox|Float와 Flexbox]], [[css-animation|CSS 애니메이션: transition과 @keyframes]]
+관련 노트: [[position|position]], [[flexbox|Float와 Flexbox]], [[css-animation|CSS 애니메이션: transition과 @keyframes]], [[css-functions|CSS 함수: calc()·clamp()와 수학 함수]]

@@ -98,4 +98,4 @@ sources: ["https://webactually.com/2021/01/29/%EC%A0%84%EC%9E%90%EC%83%81%EA%B1%
 - 옵션은 성격에 맞는 UI로, 품절은 고르기 전에 보여 준다.
 - 가격 슬라이더는 분할형으로, 실제 범위와 재고 분포를 보여 줘 결과 0건을 막는다.
 
-관련 노트: [[user-research|사용자 리서치]], [[gesture-interface|제스처 기반 인터페이스]], [[form-usability|더 나은 폼을 만드는 팁]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[product-detail-page|상세페이지 9단계 구조]]
+관련 노트: [[user-research|사용자 리서치]], [[gesture-interface|제스처 기반 인터페이스]], [[form-usability|더 나은 폼을 만드는 팁]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[product-detail-page|상세페이지 9단계 구조]], [[payment-address-forms|결제·주소 폼]]

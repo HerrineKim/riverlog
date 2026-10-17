@@ -5,10 +5,10 @@ summary: "사람이 화면의 글을 읽는 방식에서 출발해 글줄 길이
 tags: ["css", "typography", "design", "a11y", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/", "https://webactually.com/2021/02/02/%ea%b0%80%eb%8f%85%ec%84%b1-%ea%b0%9c%ec%84%a0%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%b5%9c%ec%8b%a0-css-%ed%85%8c%ed%81%ac%eb%8b%89/", "https://webactually.com/2017/12/05/16734/", "https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap-style", "https://caniuse.com/mdn-css_properties_text-wrap-style_pretty"]
+sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/", "https://webactually.com/2021/02/02/%ea%b0%80%eb%8f%85%ec%84%b1-%ea%b0%9c%ec%84%a0%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%b5%9c%ec%8b%a0-css-%ed%85%8c%ed%81%ac%eb%8b%89/", "https://webactually.com/2017/12/05/16734/", "https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap-style", "https://caniuse.com/mdn-css_properties_text-wrap-style_pretty", "https://web.dev/learn/css/typography"]
 ---
 
-> Laura Franz의 「[반응형 웹 디자인에서 글줄의 길이와 글자 크기 균형 잡기](https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/)」(2015.10), Edoardo Cavazza의 「가독성 개선을 위한 최신 CSS 테크닉」(2021.02), Bram Stein의 「웹폰트 사용하기」(2017.12, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다.
+> Laura Franz의 「[반응형 웹 디자인에서 글줄의 길이와 글자 크기 균형 잡기](https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/)」(2015.10), Edoardo Cavazza의 「가독성 개선을 위한 최신 CSS 테크닉」(2021.02), Bram Stein의 「웹폰트 사용하기」(2017.12, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다. 텍스트 속성 참조는 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Text and typography 모듈로 보강했다.
 
 ## 사람은 화면의 글을 어떻게 읽나
 
@@ -115,6 +115,49 @@ body { font-family: "Elena", Georgia, serif; }   /* 폴백을 반드시 둔다 *
 
 과거에는 IE8용 EOT, 구형 iOS용 SVG 폰트까지 나열하는 "방탄 @font-face 구문"을 썼다. 지금은 WOFF2만으로 충분하다. 웹폰트 로딩 성능은 [[web-vitals|웹 성능 지표와 Lighthouse]]의 LCP·CLS와 직결된다.
 
+## 텍스트 속성 빠른 참조
+
+### 글꼴 고르기와 굵기
+
+- `font-family`는 쉼표 목록이다. 브라우저는 목록을 **글자 하나하나마다** 앞에서부터 찾는다. 첫 글꼴에 한글이 없으면 한글만 다음 글꼴로 그린다.
+- 목록 끝에는 **일반 글꼴군**(`serif`, `sans-serif`, `monospace`, `system-ui`, `cursive`, `fantasy` 등)을 둔다. 원하는 글꼴과 비슷한 군을 고른다. 특정 글꼴 이름은 따옴표로 감싼다.
+- `@font-face`는 글꼴을 **선언하고 이름을 붙이는** 규칙이고, `font-family`는 그 이름을 요소에 **적용하는** 속성이다. `@font-face`는 선택자 블록 안에 쓸 수 없지만 조건부 그룹 규칙(`@supports` 등) 안에는 쓸 수 있다. 다른 출처의 글꼴 파일은 CORS 허용이 필요하다.
+- `font-weight`: `normal` = `400`, `bold` = `700`. `lighter`·`bolder`는 부모 기준 상대값이다. 가변 글꼴이 아니면 100 단위 값만 의미가 있고, 대부분 글꼴은 400과 700만 가진다. `321` 같은 값은 가변 글꼴에서만 된다.
+- `font-style`: `italic`은 따로 설계된 이탤릭 서체, `oblique`는 정체를 기울인 것이다.
+- `font-size` 키워드: 절대 `xx-small`~`xx-large`, 상대 `smaller`·`larger`(부모 기준).
+- `font` 축약형은 `font-style`, `font-variant`, `font-weight`, `font-stretch`, `font-size`/`line-height`, `font-family`를 한 줄에 쓴다. 크기와 글꼴군은 필수이고, 빠진 하위 속성은 초깃값으로 돌아간다.
+- `font-variant`는 `font-variant-caps`(작은 대문자), `-numeric`(`tabular-nums` 고정폭 숫자, `slashed-zero`), `-ligatures`, `-east-asian`, `-alternates`의 축약형이다. 표의 숫자 열에는 `tabular-nums`를 준다.
+
+### 꾸밈과 변형
+
+| 속성 | 값 | 비고 |
+| --- | --- | --- |
+| `text-transform` | `uppercase`, `lowercase`, `capitalize` | HTML은 그대로 두고 대소문자만 바꾼다 |
+| `text-decoration-line` | `underline`, `overline`, `line-through` (여러 개 가능) | `text-decoration`은 아래 넷의 축약형 |
+| `text-decoration-style` | `solid`, `double`, `dotted`, `dashed`, `wavy` | |
+| `text-decoration-color`, `-thickness` | 색, 두께 | |
+| `text-underline-offset` | 길이 | 밑줄과 글자 사이 거리. `text-underline-position: under`는 글자 아래로 내린다 |
+| `text-indent` | 길이, 컨테이닝 블록 너비의 `%` | 문단 첫 줄 들여쓰기 |
+| `letter-spacing`, `word-spacing` | 길이 | 기본 간격에 **더하는** 값. `word-spacing: 0` = `normal` |
+| `text-shadow` | x y 흐림 색 | [[css-borders-shadows\|CSS 테두리와 그림자]] |
+
+### 공백과 줄바꿈
+
+| 속성 | 값 | 쓰임 |
+| --- | --- | --- |
+| `white-space` | `normal`, `nowrap`, `pre`, `pre-wrap`, `pre-line` | `pre`는 공백·줄바꿈을 그대로(ASCII 아트, 코드) |
+| `word-break` | `normal`, `break-all`, `keep-all` | `break-all`은 글자 단위로 끊는다. 한국어 본문은 `keep-all` |
+| `overflow-wrap` | `normal`, `break-word`, `anywhere` | 긴 URL·단어가 박스를 뚫을 때. 둘 다 아무 데서나 끊지만 `anywhere`는 그 끊을 자리를 `min-content` 계산에 넣어 박스가 줄어들 수 있고, `break-word`는 넣지 않아 가장 긴 단어만큼 버틴다 |
+| `text-wrap` | `wrap`(기본), `nowrap`, `balance`, `pretty`, `stable` | `balance`는 줄 길이를 고르게(제목). 비용이 커서 브라우저는 몇 줄 이하에만 적용한다. `stable`은 편집 중인 글(contenteditable)에서 윗줄이 출렁이지 않게 한다 |
+| `text-overflow` | `clip`(기본), `ellipsis` | 한 줄 말줄임([[css-overflow-scroll\|CSS 오버플로와 스크롤]]) |
+| `text-align` | `start`, `end`, `left`, `right`, `center`, `justify`, `match-parent` | `start`·`end`는 문장 방향을 따른다 |
+
+### 방향과 쓰기 모드
+
+- `direction: rtl`보다 HTML `dir="rtl"` 속성을 쓴다. 방향은 문서 내용의 의미라 CSS가 없어도 유지돼야 한다.
+- `writing-mode`(`horizontal-tb`, `vertical-rl`, `vertical-lr`)와 세로쓰기 때 글자를 세울지 정하는 `text-orientation`(`mixed`, `upright`)은 [[logical-properties|쓰기 모드와 논리적 속성]]에 있다.
+- 첫 글자·첫 줄·선택 영역은 `::first-letter`, `::first-line`, `::selection`으로 꾸민다([[selectors#가상 요소: 실제로는 없는 요소|가상 요소]]).
+
 ## 정리
 
 - 글자 크기를 먼저 편하게 정하고, 글줄 길이는 단의 너비로 맞춘다. 본문은 `max-inline-size: 65ch` 안팎.
@@ -124,4 +167,4 @@ body { font-family: "Elena", Georgia, serif; }   /* 폴백을 반드시 둔다 *
 - 웹폰트는 WOFF2 + `format()` 힌트 + 폴백 글꼴 + `font-display`.
 - 규칙보다 실제 기기에서 읽어 보는 것이 우선이다.
 
-관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[logical-properties|쓰기 모드와 논리적 속성]], [[web-vitals|웹 성능 지표와 Lighthouse]]
+관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[accessible-css-typography|접근성을 위한 CSS와 타이포그래피]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[logical-properties|쓰기 모드와 논리적 속성]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[web-font-performance|웹 폰트 성능 최적화]]

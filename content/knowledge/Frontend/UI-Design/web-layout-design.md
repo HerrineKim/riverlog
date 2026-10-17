@@ -1,14 +1,14 @@
 ---
 title: "웹 레이아웃 디자인: 인쇄와 다른 매체"
 concept: "Intrinsic Web Design"
-summary: "웹은 크기가 고정되지 않은 매체다. 인쇄의 단락·문자 스타일은 CSS의 블록·인라인 규칙과 닮았지만, 결과를 확정할 수 없다는 점이 다르다. 플렉스박스·그리드 같은 CSS 자체의 레이아웃 기능으로 콘텐츠에 맞게 늘고 줄어드는 본질의 웹 디자인(Intrinsic Web Design)이 지금의 기본이고, 이미지 위 텍스트는 대비·위치·심도로 읽히게 한다."
+summary: "웹은 크기가 고정되지 않은 매체다. 화면 폭 대응은 고정폭·리퀴드·적응형을 거쳐 반응형으로 왔고, 지금은 플렉스박스·그리드·컨테이너 쿼리로 콘텐츠에 맞게 늘고 줄어드는 본질의 웹 디자인(Intrinsic Web Design)이 기본이다. 페이지(매크로)와 컴포넌트(마이크로) 레이아웃을 나눠 설계하고, 인쇄의 단락·문자 스타일은 CSS의 블록·인라인 규칙으로 이어지며, 이미지 위 텍스트는 대비·위치·심도로 읽히게 한다."
 tags: ["design", "layout", "css", "frontend", "typography"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2018/10/22/%ed%8e%b8%ec%a7%91-%eb%94%94%ec%9e%90%ec%9d%b8%ea%b3%bc-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%98-%ec%9c%a0%ec%82%ac%ec%84%b1-%eb%b9%84%ea%b5%90/", "https://webactually.com/2018/07/10/%eb%b3%b8%ec%a7%88%ec%9d%98-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8intrinsic-web-design-%ec%8b%9c%eb%8c%80%ea%b0%80-%ec%98%a8%eb%8b%a4/", "https://webactually.com/2014/12/05/%ec%9d%b4%eb%af%b8%ec%a7%80%ec%99%80-%ed%85%8d%ec%8a%a4%ed%8a%b8%eb%a5%bc-%ec%a1%b0%ed%99%94%eb%a1%ad%ea%b2%8c-%eb%b0%b0%ec%b9%98%ed%95%98%eb%8a%94-3%ea%b0%80%ec%a7%80-%eb%b0%a9%eb%b2%95/"]
+sources: ["https://webactually.com/2018/10/22/%ed%8e%b8%ec%a7%91-%eb%94%94%ec%9e%90%ec%9d%b8%ea%b3%bc-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%98-%ec%9c%a0%ec%82%ac%ec%84%b1-%eb%b9%84%ea%b5%90/", "https://webactually.com/2018/07/10/%eb%b3%b8%ec%a7%88%ec%9d%98-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8intrinsic-web-design-%ec%8b%9c%eb%8c%80%ea%b0%80-%ec%98%a8%eb%8b%a4/", "https://webactually.com/2014/12/05/%ec%9d%b4%eb%af%b8%ec%a7%80%ec%99%80-%ed%85%8d%ec%8a%a4%ed%8a%b8%eb%a5%bc-%ec%a1%b0%ed%99%94%eb%a1%ad%ea%b2%8c-%eb%b0%b0%ec%b9%98%ed%95%98%eb%8a%94-3%ea%b0%80%ec%a7%80-%eb%b0%a9%eb%b2%95/", "https://web.dev/learn/design/intro", "https://web.dev/learn/design/macro-layouts", "https://web.dev/learn/design/micro-layouts"]
 ---
 
-> 웹액츄얼리가 번역한 크리스 코이어(Chris Coyier)의 「[편집 디자인과 웹 디자인의 유사성 비교](https://webactually.com/2018/10/22/%ed%8e%b8%ec%a7%91-%eb%94%94%ec%9e%90%ec%9d%b8%ea%b3%bc-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%98-%ec%9c%a0%ec%82%ac%ec%84%b1-%eb%b9%84%ea%b5%90/)」(2018.10), 에제키엘 브루니(Ezequiel Bruni)의 「[본질의 웹 디자인 시대가 온다](https://webactually.com/2018/07/10/%eb%b3%b8%ec%a7%88%ec%9d%98-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8intrinsic-web-design-%ec%8b%9c%eb%8c%80%ea%b0%80-%ec%98%a8%eb%8b%a4/)」(2018.07), 아나리타 트란피치(Annarita Tranfici)의 「[이미지와 텍스트를 조화롭게 배치하는 3가지 방법](https://webactually.com/2014/12/05/%ec%9d%b4%eb%af%b8%ec%a7%80%ec%99%80-%ed%85%8d%ec%8a%a4%ed%8a%b8%eb%a5%bc-%ec%a1%b0%ed%99%94%eb%a1%ad%ea%b2%8c-%eb%b0%b0%ec%b9%98%ed%95%98%eb%8a%94-3%ea%b0%80%ec%a7%80-%eb%b0%a9%eb%b2%95/)」(2014.12)을 바탕으로 재구성한 노트다.
+> 웹액츄얼리가 번역한 크리스 코이어(Chris Coyier)의 「[편집 디자인과 웹 디자인의 유사성 비교](https://webactually.com/2018/10/22/%ed%8e%b8%ec%a7%91-%eb%94%94%ec%9e%90%ec%9d%b8%ea%b3%bc-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%98-%ec%9c%a0%ec%82%ac%ec%84%b1-%eb%b9%84%ea%b5%90/)」(2018.10), 에제키엘 브루니(Ezequiel Bruni)의 「[본질의 웹 디자인 시대가 온다](https://webactually.com/2018/07/10/%eb%b3%b8%ec%a7%88%ec%9d%98-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8intrinsic-web-design-%ec%8b%9c%eb%8c%80%ea%b0%80-%ec%98%a8%eb%8b%a4/)」(2018.07), 아나리타 트란피치(Annarita Tranfici)의 「[이미지와 텍스트를 조화롭게 배치하는 3가지 방법](https://webactually.com/2014/12/05/%ec%9d%b4%eb%af%b8%ec%a7%80%ec%99%80-%ed%85%8d%ec%8a%a4%ed%8a%b8%eb%a5%bc-%ec%a1%b0%ed%99%94%eb%a1%ad%ea%b2%8c-%eb%b0%b0%ec%b9%98%ed%95%98%eb%8a%94-3%ea%b0%80%ec%a7%80-%eb%b0%a9%eb%b2%95/)」(2014.12)을 바탕으로 재구성하고, web.dev 「[Learn Responsive Design](https://web.dev/learn/design)」 강좌로 보강한 노트다.
 
 ## 웹은 크기가 정해지지 않은 매체다
 
@@ -35,6 +35,23 @@ InDesign 같은 편집 도구의 스타일 체계는 CSS로 거의 그대로 옮
 | 다단 텍스트 | `columns` (multi-column) | 긴 글을 여러 단으로 흘린다 |
 | 커닝 | `font-kerning`, `letter-spacing` | 글꼴의 커닝 정보를 쓰거나 자간을 조절한다 |
 
+## 고정폭에서 반응형까지
+
+> 이 절과 「매크로 레이아웃과 마이크로 레이아웃」 절은 web.dev 「[Learn Responsive Design](https://web.dev/learn/design)」 강좌의 Introduction·Macro layouts·Micro layouts 모듈을 바탕으로 보강했다.
+
+화면 폭을 다루는 방식은 「한 폭을 정해 둔다」에서 「폭을 모른다고 인정한다」로 옮겨 왔다.
+
+| 방식 | 하는 일 | 한계 |
+| --- | --- | --- |
+| 고정폭(fixed-width) | 640 → 800 → 1024px처럼 그 시절 흔한 모니터 폭 하나에 맞춘다 | 넓은 화면엔 빈 공간, 좁은 화면엔 가로 스크롤(crawlbar) |
+| 리퀴드(liquid, fluid) | 열 너비를 퍼센트로 준다 | 아주 넓으면 늘어지고 아주 좁으면 짓눌린다. `min-width`·`max-width`로 막으면 그 바깥에서 다시 고정폭의 문제가 생긴다 |
+| 별도 모바일 사이트(`m.` 서브도메인) | 기기를 판별해 다른 사이트로 보낸다 | 코드베이스가 둘이다. 사용자 에이전트 판별은 믿을 수 없고, 태블릿을 어디로 보낼지 경계도 없다 |
+| 적응형(adaptive) | 미디어 쿼리로 고정폭 레이아웃 몇 벌을 갈아 끼운다 | 정해 둔 폭 사이에서는 늘 조금씩 어긋난다 |
+| **반응형(responsive)** | 미디어 쿼리 + 리퀴드 레이아웃 | 2010년 이선 마콧(Ethan Marcotte)이 이름 붙였다. 유동 그리드·유동 미디어·미디어 쿼리가 세 요소다 |
+| 본질의 웹 디자인 | 콘텐츠와 공간에 맞게 요소가 스스로 크기를 정한다 | 아래 절 |
+
+적응형이 「미디어 쿼리 + 고정폭」이라면 반응형은 「미디어 쿼리 + 리퀴드」다. 지금의 반응형은 화면 폭을 넘어 사용자 설정·입력 장치·컴포넌트가 놓인 공간에도 반응한다. 구현은 [[responsive-design|반응형 디자인과 다국어 타이포그래피]]에 있다.
+
 ## 본질의 웹 디자인 (Intrinsic Web Design)
 
 본질의 웹 디자인은 젠 시먼스(Jen Simmons)가 2018년에 붙인 이름으로, **CSS에 내장된(intrinsic) 레이아웃 기능만으로 콘텐츠에 맞게 늘고 줄어드는 레이아웃을 만드는 방식**이다.
@@ -58,6 +75,26 @@ InDesign 같은 편집 도구의 스타일 체계는 CSS로 거의 그대로 옮
 반응형 웹 디자인이 "화면 크기마다 브레이크포인트로 바꾼다"였다면, 본질의 웹 디자인은 **"콘텐츠와 공간에 맞게 스스로 크기를 정하게 한다"**에 가깝다. 고정 칼럼 수와 유동 칼럼, 고정 크기와 비율을 한 페이지에서 섞는다. 그래서 레이아웃 아이디어가 다시 잡지처럼 다양해질 수 있다.
 
 디자이너가 코드를 쓰지 않더라도 이 기능들로 **무엇이 가능한지** 알면 시안이 달라진다. 구현은 [[css-grid|CSS 그리드 레이아웃]]과 [[flexbox|Float와 Flexbox 레이아웃]]에 있다.
+
+## 매크로 레이아웃과 마이크로 레이아웃
+
+레이아웃은 두 층으로 나눠 설계한다.
+
+| | 매크로 레이아웃(macro layout) | 마이크로 레이아웃(micro layout) |
+| --- | --- | --- |
+| 대상 | 페이지 전체: 헤더, 본문, 사이드바, 푸터 | 컴포넌트 안: 카드, 미디어 객체, 장식선이 붙은 제목 |
+| 아는 것 | 자기 컨테이너 = 뷰포트 | 자기가 본문에 놓일지 사이드바에 놓일지 **모른다** |
+| 반응하는 기준 | 미디어 쿼리(뷰포트 폭) | 컨테이너 쿼리(부모 폭), 또는 그리드·플렉스의 내재적 크기 |
+| 흔한 도구 | 그리드 `grid-template-columns: 2fr 1fr` | 플렉스 `flex: 1` + `max-inline-size`, 그리드 `1fr auto 1fr` |
+
+설계 순서:
+
+1. **레이아웃 전에 콘텐츠의 순서부터 맞춘다.** 아무 레이아웃도 주지 않은 한 열 상태가 곧 작은 화면이 받는 모습이고, 키보드·스크린 리더가 따라가는 순서다.
+2. 화면이 넓어지면 매크로 레이아웃을 덧붙인다. 페이지 단위의 열 나눔은 그리드가 컨테이너 한 곳에서 표현할 수 있어 플렉스보다 짧다.
+3. 컴포넌트는 놓일 자리를 모른다고 가정하고, 부모 폭에 반응하게 만든다.
+4. 브레이크포인트가 계속 늘어나면 미디어 쿼리 대신 「카드는 15em보다 좁아지지 않게, 남는 만큼 채우게」 같은 규칙을 주고 계산을 브라우저에 맡긴다.
+
+컨테이너 쿼리와 「미디어 쿼리 없는 레이아웃」의 코드는 [[responsive-design|반응형 디자인과 다국어 타이포그래피]]에, 좁은 화면에서 모습이 크게 달라지는 내비게이션·캐러셀·표는 [[responsive-ui-patterns|반응형 UI 패턴]]에 있다.
 
 ## 이미지 위에 텍스트 올리기
 
@@ -88,7 +125,9 @@ InDesign 같은 편집 도구의 스타일 체계는 CSS로 거의 그대로 옮
 
 - 인쇄와 웹은 기본기가 같고 매체가 다르다. 웹은 **크기와 결과를 확정할 수 없는** 매체다.
 - 편집 도구의 단락·문자 스타일은 CSS의 블록·인라인 규칙으로 이어진다.
+- 화면 폭 대응은 고정폭 → 리퀴드 → 적응형 → 반응형으로 왔다. 반응형 = 유동 그리드 + 유동 미디어 + 미디어 쿼리.
 - 본질의 웹 디자인은 플렉스박스·그리드·컨테이너 쿼리로 콘텐츠에 맞게 스스로 크기를 정하는 레이아웃이다.
+- 페이지 단위(매크로)는 뷰포트에, 컴포넌트 단위(마이크로)는 부모 공간에 반응하게 나눠 설계한다.
 - 이미지 위 텍스트는 대비, 위치, 심도로 읽히게 하고, 이미지 용량을 함께 따진다.
 
-관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[css-grid|CSS 그리드 레이아웃]], [[flexbox|Float와 Flexbox 레이아웃]], [[color-motion-accessibility|색과 움직임의 접근성]], [[presentation-design|발표·포트폴리오 디자인 팁]]
+관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[css-grid|CSS 그리드 레이아웃]], [[flexbox|Float와 Flexbox 레이아웃]], [[color-motion-accessibility|색과 움직임의 접근성]], [[presentation-design|발표·포트폴리오 디자인 팁]], [[responsive-ui-patterns|반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표]]

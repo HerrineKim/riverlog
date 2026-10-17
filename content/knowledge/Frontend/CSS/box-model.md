@@ -1,12 +1,14 @@
 ---
 title: "박스 모델과 display"
 concept: "Box Model"
-summary: "모든 요소를 content·padding·border·margin의 네모로 다루는 박스 모델과, 배치 방식을 결정하는 display."
+summary: "모든 요소를 content·padding·border·margin의 네모로 다루는 박스 모델, 내용이 크기를 정하는 내재적 크기와 바깥이 정하는 외재적 크기, margin·padding·gap으로 간격을 주는 방법과 margin 병합, 배치 방식을 결정하는 display."
 tags: ["css", "layout", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://mytory.net/archives/16246", "https://developer.mozilla.org/en-US/docs/Web/CSS/length"]
+sources: ["https://mytory.net/archives/16246", "https://developer.mozilla.org/en-US/docs/Web/CSS/length", "https://web.dev/learn/css/box-model", "https://web.dev/learn/css/spacing", "https://web.dev/learn/css/layout"]
 ---
+
+> 직접 정리한 TIL에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Box Model·Spacing·Layout 모듈을 더해 보강한 노트다.
 
 CSS의 첫 번째 원칙은 **모든 요소는 네모(박스)** 라는 것이다. 요소의 실제 크기와 요소 사이 간격은 박스 모델로 계산되고, 그 박스가 한 줄을 차지할지 옆으로 나란히 놓일지는 `display`가 결정한다.
 
@@ -23,6 +25,23 @@ CSS의 첫 번째 원칙은 **모든 요소는 네모(박스)** 라는 것이다
 | border | 테두리 |
 | margin | 테두리 바깥 여백, 박스와 박스 사이 간격 |
 
+액자에 비유하면 content는 그림, padding은 그림과 액자 사이의 흰 대지, border는 액자 틀, margin은 액자와 액자 사이 벽이다. `border-radius`로 원처럼 보여도 박스는 여전히 네모다.
+
+- **스크롤바**는 padding 영역 안에 자리를 차지한다(`overflow: auto`·`scroll`일 때). 배경도 padding 영역까지 칠해진다.
+- **`outline`과 `box-shadow`**는 margin 영역 위에 겹쳐 그려질 뿐 박스 크기를 바꾸지 않는다. `outline-width: 200px`을 줘도 레이아웃은 그대로다.
+- 개발자 도구의 박스 모델 그림(Computed 탭)에서 네 영역의 실제 값을 확인한다([[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]).
+
+### 내재적 크기와 외재적 크기
+
+| | 외재적 크기(extrinsic) | 내재적 크기(intrinsic) |
+| --- | --- | --- |
+| 누가 정하나 | 바깥: `width: 400px`, `%` | 안의 내용 |
+| 장점 | 크기를 정확히 통제한다 | 내용이 늘어도 넘치지 않는다 |
+| 위험 | 내용이 크면 박스 밖으로 넘친다(overflow) | 내용에 따라 레이아웃이 흔들린다 |
+| 키워드 | 길이, `%` | `auto`(기본), `min-content`(가장 긴 단어만큼), `max-content`(한 줄로 늘였을 때), `fit-content` |
+
+**브라우저 기본은 내재적 크기**이고 대부분 이쪽이 더 유연하다. 고정 크기 박스에 긴 단어가 들어가 넘치면 `width: min-content`나 크기 지정 제거로 내용이 박스를 정하게 한다. 넘친 내용의 처리는 [[css-overflow-scroll|CSS 오버플로와 스크롤]]에 있다.
+
 ### shorthand
 
 ![margin·padding shorthand](/images/til/FRONTEND/CSS/CSS%EB%9E%80.assets/image-20220814220142594.png)
@@ -31,7 +50,16 @@ CSS의 첫 번째 원칙은 **모든 요소는 네모(박스)** 라는 것이다
 margin: 10px;                /* 상하좌우 */
 margin: 10px 20px;           /* 상하 | 좌우 */
 margin: 10px 20px 30px;      /* 상 | 좌우 | 하 */
-margin: 10px 20px 30px 40px; /* 상 | 우 | 하 | 좌 (시계 방향) */
+margin: 10px 20px 30px 40px; /* 상 | 우 | 하 | 좌 (시계 방향, TRouBLe로 외운다) */
+```
+
+- `margin`·`padding`의 `%`는 방향과 상관없이 **컨테이닝 블록의 너비**(가로쓰기 기준 인라인 크기)를 기준으로 한다. `margin-top: 50%`도 부모 너비의 절반이다.
+- `margin: auto`는 남은 공간을 그 방향으로 다 가져간다. 너비가 정해진 블록에 `margin-inline: auto`를 주면 가운데 정렬되고, 플렉스 아이템에 `margin-inline-start: auto`를 주면 그 아이템부터 끝으로 밀려난다.
+- 음수 margin은 이웃과의 간격을 줄이고, 공간보다 크면 요소가 겹친다.
+- 논리 판(`margin-block`, `padding-inline` 등)은 [[logical-properties|쓰기 모드와 논리적 속성]]에 있다.
+
+```css
+.wrapper { max-inline-size: 60rem; margin-inline: auto; }  /* 가운데 정렬되는 본문 칼럼 */
 ```
 
 ### margin collapse
@@ -57,6 +85,10 @@ Normal Flow에 있는 블록 요소의 **세로** margin은 더해지지 않고 
 .parent { display: flow-root; }    /* 새 BFC를 만든다 */
 ```
 
+- 형제 사이에 margin 없는 요소가 끼면 두 margin은 더 이상 인접하지 않아 합쳐지지 않는다.
+- **플렉스·그리드 아이템의 margin은 합쳐지지 않고 더해진다.** 레이아웃을 예측 가능하게 하려는 설계다. 제목의 `margin-bottom: 2rem`과 문단의 `margin-top: 3rem`은 일반 흐름에서 `3rem`이지만, `flex-direction: column` 컨테이너 안에서는 `5rem`이 된다.
+- 병합은 문서 시절의 유산이다. 제목·문단마다 위아래 margin을 줘도 간격이 두 배로 벌어지지 않게 한다.
+
 ### overflow
 
 박스 안 내용이 넘칠 때의 처리. `visible`(기본, 넘쳐서 보임), `hidden`(잘라냄), `scroll`, `auto`(넘칠 때만 스크롤).
@@ -73,6 +105,27 @@ Normal Flow에 있는 블록 요소의 **세로** margin은 더해지지 않고 
 
 요소마다 섞어 쓰면 크기 계산이 엉키므로, 위처럼 전체 선택자로 **모든 요소에 같은 방식**을 적용하는 것을 권장한다.
 
+## 간격 주는 방법 고르기
+
+| 도구 | 만드는 공간 | 어울리는 곳 |
+| --- | --- | --- |
+| `padding` | 박스 **안쪽** 여백(배경이 칠해짐) | 버튼·카드 내부 |
+| `margin` | 박스 **바깥** 여백 | 흐름 레이아웃의 블록 사이, `auto`로 밀어내기 |
+| `gap` (`row-gap`, `column-gap`) | 플렉스·그리드·다단의 **아이템 사이**에만 | 목록·카드 사이. 첫·마지막 항목 여백을 지울 필요가 없다 |
+| 플렉스·그리드 정렬 | `justify-content: space-between` 등으로 남는 공간 분배 | 양 끝 정렬 |
+| `inset`·`top` 등 | 위치 지정 요소의 오프셋 | [[position\|CSS position과 z-index]] |
+| HTML `<br>`, `<hr>`, `&nbsp;` | 줄바꿈, 주제 구분선, 줄바꿈 없는 공백 | **문서의 의미일 때만.** 장식용 선은 `border`, 여백은 CSS로. `&nbsp;`는 양옆 단어를 붙여 버려 예기치 않은 줄바꿈을 만든다 |
+
+`gap`은 값 하나면 행·열 모두, 두 값이면 `row-gap column-gap` 순이다.
+
+간격은 **일관된 척도**를 정하고 지킨다. 거터(gutter)는 늘 `20px`, 흐름 콘텐츠 사이는 `1em`처럼 정해 커스텀 속성으로 토큰화하면 한 곳에서 바꿀 수 있다([[design-system|디자인 시스템: 구성, 도입, 구축과 배포]]).
+
+```css
+:root { --gutter: 1.25rem; --flow-space: 1em; }
+.flow > * + * { margin-block-start: var(--flow-space); }
+.grid { display: grid; gap: var(--gutter); }
+```
+
 ## display
 
 CSS의 두 번째 원칙: **display에 따라 크기와 배치가 달라진다.**
@@ -84,6 +137,8 @@ CSS의 두 번째 원칙: **display에 따라 크기와 배치가 달라진다.*
 | `inline-block` | 일어나지 않음 | 내용만큼 또는 지정값 | 지정 가능 |
 | `none` | — | 화면에서 제거되어 **공간도 차지하지 않음** | — |
 
+- `display`는 두 가지를 정한다. **바깥**: 형제와 블록처럼 줄을 바꾸며 놓일지, 인라인처럼 문장 속에 놓일지. **안쪽**: 자식을 일반 흐름·플렉스·그리드 중 무엇으로 배치할지. `display: flex`는 바깥은 블록, 자식은 플렉스 아이템이다.
+- 인라인 요소의 위아래 margin·padding은 그려지지만 주변 줄이 **자리를 비켜 주지 않는다.** `inline-block`은 문장 속에 놓이면서도 위아래 여백을 존중받는다.
 - 블록 요소 안에는 인라인 요소가 들어갈 수 있다. (대표 블록: `div`, `p`, `ul`, `h1`… / 대표 인라인: `span`, `a`, `img`, `strong`…)
 - `visibility: hidden`은 `display: none`과 달리 **공간은 차지하면서** 보이지만 않게 한다.
 - `flex`, `grid` 등 레이아웃용 값은 [Flexbox](/knowledge/dictionary/frontend/css/flexbox) 노트 참고.
@@ -97,9 +152,11 @@ CSS의 두 번째 원칙: **display에 따라 크기와 배치가 달라진다.*
 
 ## 핵심 정리
 
+- 기본은 내재적 크기다. 고정 크기는 넘침을 각오하고 쓴다.
+- 간격은 안쪽 `padding`, 바깥 `margin`, 아이템 사이 `gap`. 척도를 정해 토큰으로 쓴다.
 - 박스 = content + padding + border + margin. 세로 margin은 형제·부모-자식·빈 블록에서 큰 쪽 하나로 합쳐지고, 가로 margin은 합쳐지지 않는다.
 - `box-sizing: border-box`를 전역으로 적용하면 크기 계산이 단순해진다.
 - `inline`은 width/height와 상하 margin을 무시한다. 필요하면 `inline-block`.
 - `display: none`은 공간까지 제거, `visibility: hidden`은 공간은 유지.
 
-관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[logical-properties|쓰기 모드와 논리적 속성]], [[position|CSS position과 z-index]]
+관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[logical-properties|쓰기 모드와 논리적 속성]], [[position|CSS position과 z-index]], [[css-overflow-scroll|CSS 오버플로와 스크롤: 넘침 처리와 스크롤 스냅]], [[css-borders-shadows|CSS 테두리와 그림자]]

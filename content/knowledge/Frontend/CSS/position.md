@@ -3,10 +3,12 @@ title: "CSS position과 z-index"
 concept: "Position"
 summary: "요소를 문서 흐름 안팎에서 원하는 위치로 옮기는 position 속성, 쌓임 순서를 정하는 z-index와 쌓임 맥락, 다른 요소에 붙여 배치하는 앵커 위치 지정."
 tags: ["css", "layout", "frontend"]
-source: til
-sources: ["https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioning/Stacking_context", "https://developer.mozilla.org/en-US/docs/Web/CSS/anchor-name"]
+source: mixed
+sources: ["https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioning/Stacking_context", "https://developer.mozilla.org/en-US/docs/Web/CSS/anchor-name", "https://web.dev/learn/css/z-index", "https://web.dev/learn/css/layout"]
 date: "2026-10-13"
 ---
+
+> 직접 정리한 TIL에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Layout·Z-index and stacking contexts 모듈을 더해 보강한 노트다.
 
 `position`은 요소가 **무엇을 기준으로** 배치될지 정하는 속성이다. `static`이 아닌 값을 주면 좌표 속성(`top`, `right`, `bottom`, `left`)으로 위치를 옮길 수 있고, 일부 값은 요소를 Normal Flow 밖으로 꺼낸다.
 
@@ -53,7 +55,9 @@ date: "2026-10-13"
 
 - X축: `left`, `right`
 - Y축: `top`, `bottom`
-- Z축: `z-index`. 값이 클수록 위에 쌓인다. `position`이 `static`이 아닌 요소(또는 flex/grid 아이템)에서 동작한다.
+- Z축: `z-index`. 값이 클수록 위에 쌓인다. 음수도 된다.
+
+`z-index`가 없으면 **소스 순서**가 쌓임 순서다. 문서에서 뒤에 나온 요소가 위에 그려진다. 일반 흐름에서 `z-index`가 안 먹으면 먼저 `position`이 `static`인지 본다. **플렉스·그리드 아이템은 `position` 없이도** `z-index`가 동작한다.
 
 z-index는 관리하지 않으면 어느새 엉뚱한 요소가 위로 올라와 있다. 팀 안에서 규칙을 정해 두는 것이 좋다.
 
@@ -75,6 +79,16 @@ z-index는 관리하지 않으면 어느새 엉뚱한 요소가 위로 올라와
 | 변형·효과 | `transform`, `filter`, `backdrop-filter`, `mix-blend-mode` |
 | 기타 | `isolation: isolate`, `will-change`, `contain: paint` |
 
+쌓임 맥락은 공통 부모 아래에서 **함께 Z축을 오르내리는 묶음**이다. 부모 A(`z-index: 1`) 안의 자식(`z-index: 999`)은 형제 부모 B(`z-index: 2`) 안의 자식(`z-index: 2`)보다 아래다. 비교는 부모끼리 먼저 이뤄진다.
+
+```css
+.card { background: rgb(232 240 254 / .4); }
+.card .bg-shape { position: relative; z-index: -1; }   /* .card의 z-index가 auto면 카드 뒤로 간다 */
+.card { position: relative; z-index: 0; }              /* 이 줄을 더하면 카드가 쌓임 맥락이 되어 -999를 줘도 카드 뒤로 못 간다 */
+```
+
+`<html>`은 그 자체가 쌓임 맥락이라 어떤 요소도 그 뒤로 갈 수 없다. `opacity`·`transform`·`will-change`·`filter`가 맥락을 만드는 이유는 브라우저가 이런 요소를 **별도 합성 레이어**로 올려 GPU로 처리하기 때문이다. 바뀔 가능성이 큰 요소를 포스트잇처럼 따로 떼어 두면 전체를 다시 그리지 않아도 된다([[browser-rendering|브라우저 렌더링 과정]]).
+
 컴포넌트 안의 겹침을 바깥과 분리하려면 `isolation: isolate`로 일부러 쌓임 맥락을 만든다. 모달·토스트·드롭다운은 `<dialog>`의 `showModal()`이나 `popover` 속성을 쓰면 **최상위 레이어(top layer)**에 올라가 `z-index` 경쟁에서 벗어난다.
 
 ### fixed가 뷰포트를 기준으로 하지 않을 때
@@ -95,7 +109,7 @@ z-index는 관리하지 않으면 어느새 엉뚱한 요소가 위로 올라와
 }
 ```
 
-`anchor()` 함수로 `top: anchor(bottom)`처럼 기준 요소의 가장자리를 좌표로 쓸 수도 있다. `popover`와 함께 쓰면 최상위 레이어 + 앵커 배치로 JS 없이 메뉴를 만든다.
+`position-area`의 3×3 격자, `anchor()`·`anchor-size()`, `@position-try`, `anchor-scope`, 그리고 `popover`와 함께 쓰는 법은 [[popover-anchor-positioning|팝오버와 앵커 위치 지정]]에 있다.
 
 ## 핵심 정리
 
@@ -105,4 +119,4 @@ z-index는 관리하지 않으면 어느새 엉뚱한 요소가 위로 올라와
 - z-index는 같은 쌓임 맥락 안에서만 비교된다. `transform`·`opacity` 등이 새 맥락을 만든다.
 - 다른 요소에 붙는 툴팁·메뉴는 앵커 위치 지정, 맨 위에 떠야 하는 것은 `popover`·`<dialog>`의 최상위 레이어로.
 
-관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[transform|transform: 이동·회전·확대·기울이기]], [[box-model|박스 모델과 display]]
+관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[transform|transform: 이동·회전·확대·기울이기]], [[box-model|박스 모델과 display]], [[popover-anchor-positioning|팝오버와 앵커 위치 지정]], [[css-visual-effects|CSS 시각 효과: 필터, 블렌드 모드, 클리핑, 마스킹]]
