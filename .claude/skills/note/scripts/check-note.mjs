@@ -89,6 +89,9 @@ for (const arg of files) {
       : noteKeys.has(key(target));
     if (!ok) errors.push(`broken wikilink: [[${m[2]}]]`);
   }
+  // In a table row an unescaped | inside [[slug|label]] splits the cell; write [[slug\|label]]
+  const pipeInTable = body.split("\n").filter((l) => /^\s*\|/.test(l)).flatMap((l) => l.match(/\[\[[^\]|\n]+?(?<!\\)\|[^\]\n]+\]\]/g) ?? []);
+  if (pipeInTable.length) errors.push(`unescaped | in table wikilink (use \\|): ${pipeInTable.slice(0, 3).join(" / ")}`);
   // Relative markdown links
   for (const m of body.matchAll(/\]\((?!https?:|\/|#|mailto:)([^)\s#]+)(#[^)\s]*)?\)/g)) {
     const t = decodeURIComponent(m[1]).replace(/\/$/, "");
