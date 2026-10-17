@@ -110,4 +110,4 @@ ATS는 지원자를 관리하는 소프트웨어다. Greenhouse, Lever, Workday,
 - ATS는 거르는 도구이지 평가자가 아니다. 파싱되는 서식과 Knockout 답이 관건이다.
 - 레주메는 7초 안에 분류되고, 배치 때문에 일찍 지원할수록 유리하다.
 
-관련 노트: [[resume-writing|합격하는 영문 레주메 작성법]], [[recruiter-outreach-email|리크루터에게 보내는 영문 이메일]], [[tech-interview-tips|기술면접 잘 보는 법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[stock-options|스톡옵션]]
+관련 노트: [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[recruiter-outreach-email|리크루터에게 보내는 영문 이메일]], [[tech-interview-tips|기술면접 잘 보는 법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[stock-options|스톡옵션]]
