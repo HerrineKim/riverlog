@@ -152,4 +152,4 @@ React 18 이전에는 서버 렌더링에서 `<Suspense>`를 쓸 수 없어서, 
 - 이벤트 핸들러 에러는 경계가 못 잡는다. 예상한 에러는 그 자리에서, 나머지는 `showBoundary`나 전역 핸들러로 넘긴다.
 - 예상 못 한 에러의 토스트·로깅은 한곳에 모아 반복을 없앤다.
 
-관련 노트: [[react-use-hook|use 훅과 리액트 비동기 처리]], [[tanstack-query|TanStack Query(React Query)]], [[lifecycle|생명주기]], [[streaming-ssr|스트리밍 SSR]]
+관련 노트: [[react-use-hook|use 훅과 리액트 비동기 처리]], [[tanstack-query|TanStack Query(React Query)]], [[lifecycle|생명주기]], [[streaming-ssr|스트리밍 SSR]], [[js-error-handling|에러 처리: try...catch와 커스텀 에러]]

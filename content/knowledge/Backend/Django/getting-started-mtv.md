@@ -68,8 +68,8 @@ INSTALLED_APPS = [
 
 | MTV | MVC 대응 | 파일 | 하는 일 |
 | --- | --- | --- | --- |
-| **Model** | Model | `models.py` | 데이터를 어떤 형태로 저장할지 정의하고 DB 기록을 관리한다. [[orm-queryset|ORM]] 덕분에 SQL 없이 Python으로 다룬다 |
-| **Template** | View | `templates/*.html` | 화면을 어떻게 보여 줄지 정한다. HTML + [[templates-static|DTL]] |
+| **Model** | Model | `models.py` | 데이터를 어떤 형태로 저장할지 정의하고 DB 기록을 관리한다. [[orm-queryset\|ORM]] 덕분에 SQL 없이 Python으로 다룬다 |
+| **Template** | View | `templates/*.html` | 화면을 어떻게 보여 줄지 정한다. HTML + [[templates-static\|DTL]] |
 | **View** | Controller | `views.py` | 요청을 받아 Model로 데이터를 처리하고 Template에 렌더링을 맡긴다 |
 | URLconf | (라우터) | `urls.py` | 어떤 URL 요청을 어떤 view로 보낼지 정한다. 2.0부터 정규식 `url()` 대신 `path()`를 쓴다 |
 

@@ -41,7 +41,7 @@ sources: ["https://80000coding.notion.site/d5fa7c87192f4c6895ebaa4af5b9dbf5", "h
 |  | `-DNAME=value` | 매크로 정의 (`-DBUFFER_SIZE=42`) |
 | 링크 | `-Ldir` | 라이브러리 검색 경로 추가 |
 |  | `-lname` | `libname.a` 또는 `libname.so`를 링크 |
-| 디버깅 | `-g` | 디버깅 심볼 포함 → [[c-debugging-tools|C 디버깅 도구]] |
+| 디버깅 | `-g` | 디버깅 심볼 포함 → [[c-debugging-tools\|C 디버깅 도구]] |
 |  | `-fsanitize=address,undefined` | 런타임 메모리·UB 검사 |
 | 최적화 | `-O0` `-O2` `-O3` `-Os` | 최적화 수준. 디버깅할 때는 `-O0` |
 | 의존성 | `-MMD -MP` | Makefile용 헤더 의존성 파일 생성 |

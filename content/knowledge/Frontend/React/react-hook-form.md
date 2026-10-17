@@ -115,3 +115,5 @@ react-hook-form을 왜 고르는지(입력마다 리렌더링하지 않는 비�
 
 - 인프랩, 「[react-hook-form을 선택한 이유와 적용 과정](https://tech.inflab.com/202207-rallit-form-refactoring/react-hook-form/)」(2022)
 - 딜리셔스, 「[깔끔한 폼 개발과 정시퇴근을 위하여 react-hook-form](https://dealicious-inc.github.io/2022/07/25/ss-studio.html)」(2022)
+
+관련 노트: [[constraint-validation|제약 검증: required·pattern·ValidityState]]

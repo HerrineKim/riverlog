@@ -89,7 +89,7 @@ sources: ["https://asana.com/ko/resources/agile", "https://asana.com/ko/resource
 | 운반 | 사람과 팀 사이의 인계(handoff), 정보 옮겨 적기 |
 | 동작 | 작업 전환, 도구 사이를 오가기, 겹치는 회의 |
 | 대기 | 리뷰·승인·다른 팀 응답 기다리기 |
-| 결함 | 버그, 재작업, [[technical-debt|기술 부채]] |
+| 결함 | 버그, 재작업, [[technical-debt\|기술 부채]] |
 | 활용되지 않는 재능 | 아이디어를 낼 권한이 없는 팀원 |
 
 ### 린의 다섯 원칙

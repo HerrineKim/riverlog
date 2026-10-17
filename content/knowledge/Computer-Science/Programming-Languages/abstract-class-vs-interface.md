@@ -109,7 +109,7 @@ public class Human extends Animal implements Thinkable, Comparable<Human> { ... 
 
 | 언어 | 추상 클래스 | 인터페이스 |
 | --- | --- | --- |
-| C++ | 순수 가상 함수(`= 0`)가 있는 클래스 | 별도 문법 없음. 순수 가상 함수만 있는 클래스로 표현 ([[cpp-virtual-functions|가상 함수와 vtable]]) |
+| C++ | 순수 가상 함수(`= 0`)가 있는 클래스 | 별도 문법 없음. 순수 가상 함수만 있는 클래스로 표현 ([[cpp-virtual-functions\|가상 함수와 vtable]]) |
 | Kotlin | `abstract class` | `interface`. 기본 구현과 추상 프로퍼티 가능, 상태(backing field)는 불가 |
 | TypeScript | `abstract class` | `interface`. 컴파일 후 사라지는 타입 정보 |
 

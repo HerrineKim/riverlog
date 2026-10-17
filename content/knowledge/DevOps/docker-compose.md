@@ -73,7 +73,7 @@ networks:
 | `environment` / `env_file` | 환경 변수 직접 지정 / 파일에서 읽기. 비밀번호는 `.env`에 두고 `.gitignore`에 넣는다 |
 | `depends_on` | 시작 순서. 기본은 "컨테이너가 시작됨"만 기다리므로, 준비 완료까지 기다리려면 `condition: service_healthy` + `healthcheck` |
 | `restart` | `no`(기본), `always`, `on-failure`, `unless-stopped`(직접 멈추기 전까지 재시작) |
-| `init` | `true`면 tini를 PID 1로 넣는다([[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]]) |
+| `init` | `true`면 tini를 PID 1로 넣는다([[dockerfile\|Dockerfile 작성과 컨테이너의 PID 1]]) |
 | `profiles` | 지정한 프로필을 켤 때만 띄울 서비스. `docker compose --profile bonus up` |
 
 같은 폴더의 `.env` 파일은 Compose가 자동으로 읽어 `${DB_NAME}`처럼 YAML 안의 변수 치환에도 쓴다. `env_file`은 그 값을 **컨테이너 안의 환경 변수**로 넣는 것이라 역할이 다르다.

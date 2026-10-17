@@ -35,7 +35,7 @@ class Article(models.Model):              # django.db.models.Model 상속
 | `TextField()` | 길이 제한 없는 긴 텍스트. `max_length`를 줘도 폼 위젯(textarea)에만 반영되고 DB에는 적용되지 않는다 |
 | `DateTimeField(auto_now_add=True)` | **최초 생성** 시각. 처음 insert될 때만 기록 |
 | `DateTimeField(auto_now=True)` | **최종 수정** 시각. `save()`할 때마다 갱신 |
-| `IntegerField`, `BooleanField`, `ForeignKey` … | 숫자, 불리언, [[relationships|관계]] 등 |
+| `IntegerField`, `BooleanField`, `ForeignKey` … | 숫자, 불리언, [[relationships\|관계]] 등 |
 
 ## Migration
 

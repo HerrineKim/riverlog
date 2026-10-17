@@ -66,7 +66,7 @@ OS 스레드는 커널이 관리하므로 만들고 바꿀 때마다 시스템 �
 
 ### async/await는 코루틴 + Promise
 
-`async` 함수는 `await`에서 멈추고 호출자에게 제어권을 돌려준다. 기다리던 Promise가 끝나면 그 지점부터 재개된다. 그래서 `async` 함수는 늘 Promise를 반환한다. JS에서의 실행 순서는 [[event-loop|이벤트 루프]]와 [[async-await|async/await]]에 있다.
+`async` 함수는 `await`에서 멈추고 호출자에게 제어권을 돌려준다. 기다리던 Promise가 끝나면 그 지점부터 재개된다. 그래서 `async` 함수는 늘 Promise를 반환한다. JS에서의 실행 순서는 [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]]와 [[async-await|async/await]]에 있다.
 
 ### 컨티뉴에이션과 CPS
 
@@ -158,4 +158,4 @@ JS가 언어 차원에서 공유 메모리 스레드를 두지 않는 이유도 
 
 **동시성 모델을 고를 때는 "무엇을 공유하고, 누가 전환을 결정하는가"부터 본다.**
 
-관련 노트: [[process-and-thread|프로세스와 스레드]], [[process-synchronization|프로세스 동기화]], [[pthread-sync-api|POSIX 스레드와 동기화 API]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[event-loop|이벤트 루프]], [[async-await|async/await]], [[pipeline-and-parallelism|파이프라인과 병렬 처리]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]]
+관련 노트: [[process-and-thread|프로세스와 스레드]], [[process-synchronization|프로세스 동기화]], [[pthread-sync-api|POSIX 스레드와 동기화 API]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]], [[async-await|async/await]], [[pipeline-and-parallelism|파이프라인과 병렬 처리]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[web-workers|웹 워커로 메인 스레드 비우기]]

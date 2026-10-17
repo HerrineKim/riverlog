@@ -45,7 +45,7 @@ React 코드는 그대로 브라우저에서 돌지 않는다. JSX와 최신 문
 | `tsconfig.json` | TypeScript 설정. `strict: true`를 켜야 타입 검사가 의미 있다 |
 | `webpack.config.ts` | ts·css·json·최신 JS를 하나의 번들로 합침 |
 | Babel 프리셋 | `@babel/preset-env`(최신 문법 → 구형 브라우저), `preset-react`(JSX), `preset-typescript`(TS) |
-| `eslint.config.js`(옛 `.eslintrc`)·`.prettierrc` | 코드 점검과 포맷. 설정 방법은 [[eslint-prettier|ESLint와 Prettier 설정]] |
+| `eslint.config.js`(옛 `.eslintrc`)·`.prettierrc` | 코드 점검과 포맷. 설정 방법은 [[eslint-prettier\|ESLint와 Prettier 설정]] |
 
 ### webpack 핵심 개념
 

@@ -43,7 +43,7 @@ sources: ["https://www.lesswrong.com/posts/7hFeMWC6Y5eaSixbD/100-tips-for-a-bett
 | 동기보다 규율 | 동기는 금방 사라지지만 규율은 훈련된다 |
 | 믿을 만함 | 꾸준함은 드물고 귀하다. 고객은 완벽보다 일관성을 원한다 |
 | 의사소통 | 지능보다 연습으로 늘리기 쉽고, 잘하면 확실한 우위가 된다 |
-| 도구 숙련 | 고급 검색 연산자, 단축키, 반복 작업 자동화(AutoHotkey, AppleScript)를 익힌다. 검색 연산자는 [[google-search-operators|구글 검색 연산자]] 참고 |
+| 도구 숙련 | 고급 검색 연산자, 단축키, 반복 작업 자동화(AutoHotkey, AppleScript)를 익힌다. 검색 연산자는 [[google-search-operators\|구글 검색 연산자]] 참고 |
 | 빈 책상 | 책상 위 물건은 모두 주의를 뺏는다. 책상은 일하는 곳이지 보관함이 아니다 |
 | 작은 보상 | 어설프게 끝냈더라도 해낸 일에는 스스로 보상한다 |
 

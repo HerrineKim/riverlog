@@ -59,7 +59,7 @@ sources: ["https://80000coding.notion.site/497dc9bfb79549dba4e2946ad868224b", "h
 | Widgets | `package:flutter/widgets.dart` | 두 디자인 언어에 속하지 않는 기본 위젯과 `StatelessWidget`·`StatefulWidget` 같은 토대 |
 | Rendering | `package:flutter/rendering.dart` | 위젯을 실제로 배치하고 그리는 `RenderObject` 트리 |
 | Animation | `package:flutter/animation.dart` | 트윈, 커브, 컨트롤러. 복잡한 애니메이션은 Rive·Lottie 파일을 불러와 쓰기도 한다 |
-| Painting | `package:flutter/painting.dart` | 테두리, 그림자, 그라디언트, 이미지 같은 저수준 그리기. 직접 그리기는 `CustomPaint`([[flutter-ui-techniques|Flutter UI 실전 기법]]) |
+| Painting | `package:flutter/painting.dart` | 테두리, 그림자, 그라디언트, 이미지 같은 저수준 그리기. 직접 그리기는 `CustomPaint`([[flutter-ui-techniques\|Flutter UI 실전 기법]]) |
 | Gestures | `package:flutter/gestures.dart` | 탭·드래그·스와이프 같은 터치 동작 인식 |
 | Foundation | `package:flutter/foundation.dart` | 다른 층이 쓰는 범용 클래스와 함수 |
 

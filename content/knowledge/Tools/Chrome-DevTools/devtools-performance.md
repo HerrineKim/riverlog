@@ -196,4 +196,4 @@ DevTools의 Lighthouse는 그 기기의 다른 부하, 확장 프로그램, 쿠�
 - 메모리는 작업 관리자와 메모리 그래프로 유형을 가른 뒤 스냅샷 비교와 Retainers로 붙잡은 참조를 찾는다.
 - 고친 뒤에는 같은 조건으로 다시 잰다.
 
-관련 노트: [[web-vitals|웹 성능 지표와 Lighthouse]], [[browser-rendering|브라우저 렌더링 과정]], [[responsible-javascript|책임감 있는 자바스크립트]], [[re-rendering|리렌더링 원인과 추적]], [[devtools-network|DevTools Network 패널]], [[devtools-debugging|DevTools로 JavaScript 디버깅하기]], [[devtools-device-emulation|DevTools로 기기·환경 에뮬레이션하기]], [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]], [[Chrome-DevTools|Chrome DevTools]]
+관련 노트: [[web-vitals|웹 성능 지표와 Lighthouse]], [[browser-rendering|브라우저 렌더링 과정]], [[responsible-javascript|책임감 있는 자바스크립트]], [[re-rendering|리렌더링 원인과 추적]], [[devtools-network|DevTools Network 패널]], [[devtools-debugging|DevTools로 JavaScript 디버깅하기]], [[devtools-device-emulation|DevTools로 기기·환경 에뮬레이션하기]], [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]], [[Chrome-DevTools|Chrome DevTools]], [[lcp-optimization|LCP 최적화]], [[inp-optimization|INP 최적화]], [[cls-optimization|CLS 최적화]]

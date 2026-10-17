@@ -95,4 +95,4 @@ Vercel·Netlify 같은 배포 플랫폼은 저장소를 연결하면 푸시마�
 - 비밀 값은 CI 변수로 관리한다.
 - GitHub Actions는 `on` + `jobs`로 쓰고, 브랜치 보호의 필수 검사로 걸어야 강제력이 생긴다.
 
-관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[tdd|프론트엔드에서의 TDD]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]]
+관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[tdd|프론트엔드에서의 TDD]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]], [[test-run-stages|테스트를 돌리는 시점: 로컬, PR, CI]]

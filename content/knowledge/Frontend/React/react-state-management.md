@@ -16,10 +16,10 @@ sources: ["https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%
 
 | 종류 | 예 | 맞는 도구 |
 | --- | --- | --- |
-| 로컬 UI 상태 | 드롭다운 열림, 입력 중인 값 | `useState`·`useReducer` ([[state|State]]) |
-| 서버 상태(원격 캐시) | 글 목록, 사용자 정보 | [[tanstack-query|TanStack Query]], [[swr|SWR]], Apollo·Relay, RTK Query, 또는 서버 컴포넌트 |
+| 로컬 UI 상태 | 드롭다운 열림, 입력 중인 값 | `useState`·`useReducer` ([[state\|State]]) |
+| 서버 상태(원격 캐시) | 글 목록, 사용자 정보 | [[tanstack-query\|TanStack Query]], [[swr\|SWR]], Apollo·Relay, RTK Query, 또는 서버 컴포넌트 |
 | URL 상태 | 검색어, 필터, 페이지 번호 | 라우터의 search params |
-| 폼 상태 | 필드 값, 검증 에러, 제출 중 | [[react-hook-form|react-hook-form]], React 19 폼 액션 |
+| 폼 상태 | 필드 값, 검증 에러, 제출 중 | [[react-hook-form\|react-hook-form]], React 19 폼 액션 |
 | 전역 클라이언트 상태 | 테마, 로그인 사용자 정보, 장바구니, 여러 화면이 함께 쓰는 편집 상태 | Context, Zustand, Jotai, Redux Toolkit, Valtio |
 
 **로컬 상태로 시작하고, 정말 공유가 필요할 때만 끌어올린다.** 많은 앱의 "전역 상태"는 사실 서버 데이터의 사본이었고, 서버 상태 라이브러리로 옮기면 거의 사라진다.

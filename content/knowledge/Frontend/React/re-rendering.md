@@ -52,3 +52,5 @@ react-query(TanStack Query)의 `useQuery`를 쓰는 컴포넌트는 최소 두 �
 - `React.memo`는 props가 같을 때만 효과가 있다. 원인을 모른 채 씌우면 소용없다.
 - `useQuery` 같은 데이터 패칭 훅은 로딩→성공 전환만으로도 최소 두 번 렌더링한다.
 - DevTools의 하이라이트와 Profiler로 원인을 찾은 다음 고친다.
+
+관련 노트: [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]]

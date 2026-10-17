@@ -170,4 +170,4 @@ JavaScript의 `Number`는 배정밀도 부동 소수점 하나뿐이다. 그래�
 
 C에서 자료형별 크기와 문자를 숫자로 다루는 예(ASCII로 대소문자 바꾸기)는 [[c-basics|C 기초]]에 있다.
 
-관련 노트: [[developer-traps|개발자가 빠지는 함정 모음]]
+관련 노트: [[developer-traps|개발자가 빠지는 함정 모음]], [[js-numbers|숫자와 Math]]

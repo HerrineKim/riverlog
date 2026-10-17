@@ -39,7 +39,7 @@ React의 상태와 리렌더링은 [[state|State]], [[re-rendering|리렌더링]
 | --- | --- |
 | "Vue는 양방향 바인딩, React는 단방향" | Vue도 props는 단방향이다. `v-model`은 `value` 바인딩 + `input` 이벤트를 줄인 문법일 뿐이다. React도 같은 일을 제어 컴포넌트로 직접 쓴다 |
 | "React는 앱이 커지면 느려진다" | 규모 자체보다 불필요한 리렌더링이 문제다. 상태를 쓰는 곳 가까이 두고, 컴파일러·메모이제이션으로 다룬다 |
-| "Vue는 테스트가 어렵다" | Vitest + Vue Test Utils, Testing Library로 React와 같은 방식으로 테스트한다([[frontend-test-types|프론트엔드 테스트의 종류]]) |
+| "Vue는 테스트가 어렵다" | Vitest + Vue Test Utils, Testing Library로 React와 같은 방식으로 테스트한다([[frontend-test-types\|프론트엔드 테스트의 종류]]) |
 | "Vue는 작은 프로젝트용" | 대규모 서비스에도 쓰인다. 다만 생태계·채용 시장의 크기는 React가 훨씬 크다 |
 
 ## 어떻게 고르나

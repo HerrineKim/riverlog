@@ -62,7 +62,7 @@ h + 1  ≤  n  ≤  2^(h+1) - 1
 | 전위(preorder) | V → L → R | 트리 복사, 구조 직렬화 |
 | 중위(inorder) | L → V → R | 이진 탐색 트리를 **정렬된 순서**로 출력 |
 | 후위(postorder) | L → R → V | 자식부터 해제·계산(디렉터리 용량, 수식 트리 계산) |
-| 레벨(level-order) | 위 레벨부터 왼쪽→오른쪽 | 큐를 쓰는 [[bfs|BFS]]와 같다 |
+| 레벨(level-order) | 위 레벨부터 왼쪽→오른쪽 | 큐를 쓰는 [[bfs\|BFS]]와 같다 |
 
 ```python
 def preorder(node):

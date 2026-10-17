@@ -157,4 +157,4 @@ bfcache는 뒤로·앞으로 이동 때 페이지를 메모리 스냅샷에서 �
 - 뒤로 가기가 느리다 → bfcache 테스트로 막는 원인 확인.
 - prefetch·prerender가 안 먹는다 → 추측 로드 탭을 열고 새로고침.
 
-관련 노트: [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[cookie-session|쿠키와 세션]], [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]], [[http-cache|HTTP 캐시]], [[devtools-network|DevTools Network 패널]], [[devtools-console|DevTools Console 활용]], [[devtools-device-emulation|DevTools로 기기·환경 에뮬레이션하기]]
+관련 노트: [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[cookie-session|쿠키와 세션]], [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]], [[http-cache|HTTP 캐시]], [[devtools-network|DevTools Network 패널]], [[devtools-console|DevTools Console 활용]], [[devtools-device-emulation|DevTools로 기기·환경 에뮬레이션하기]], [[browser-tracking-protection|서드파티 쿠키와 브라우저 추적 방지]], [[service-worker-lifecycle|서비스 워커 등록·스코프·생명주기와 업데이트]], [[page-lifecycle-events|페이지 생명주기와 리소스 로딩 이벤트]]

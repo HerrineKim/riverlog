@@ -135,4 +135,4 @@ await fetch('/api/voice', { method: 'POST', body: formData })
 - 업로드는 `FormData`에 담아 보내고, `Content-Type`은 브라우저에 맡긴다.
 - 외부 AI·음성 서비스는 키를 가진 내 서버를 거쳐 부른다.
 
-관련 노트: [[hooks|Hooks]], [[html|HTML]], [[ajax|AJAX와 HTTP 요청]], [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름: REST와 WebSocket 역할 나누기]], [[api-security|API 보안 체크리스트]]
+관련 노트: [[hooks|Hooks]], [[html|HTML]], [[ajax|AJAX와 HTTP 요청]], [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름: REST와 WebSocket 역할 나누기]], [[api-security|API 보안 체크리스트]], [[binary-data-and-files|바이너리 데이터와 파일]]

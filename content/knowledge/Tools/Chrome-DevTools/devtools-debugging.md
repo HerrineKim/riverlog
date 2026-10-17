@@ -4,11 +4,11 @@ concept: "JS Debugging"
 summary: "Chrome DevTools Sources 패널로 JavaScript를 디버깅하는 법. 상황별 중단점(줄·조건부·로그포인트·DOM·XHR/fetch·이벤트 리스너·예외·debugger 문), 단계 실행과 Scope·Watch·Call Stack, 스니펫, 소스 맵과 무시 목록, 로컬 파일에 저장하는 Workspaces와 응답을 바꿔 끼우는 로컬 재정의, Recorder까지 정리했다."
 tags: ["devtools", "debugging", "frontend", "javascript", "browser", "tools"]
 source: other
-date: "2026-10-15"
-sources: ["https://developer.chrome.com/docs/devtools/javascript?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/breakpoints?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/reference?hl=ko", "https://developer.chrome.com/docs/devtools/sources?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/snippets?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/source-maps?hl=ko", "https://developer.chrome.com/docs/devtools/settings/ignore-list?hl=ko", "https://developer.chrome.com/docs/devtools/x-google-ignore-list?hl=ko", "https://developer.chrome.com/docs/devtools/workspaces?hl=ko", "https://developer.chrome.com/docs/devtools/settings/workspace?hl=ko", "https://developer.chrome.com/docs/devtools/overrides?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/disable?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/background-services?hl=ko", "https://developer.chrome.com/docs/devtools/wasm?hl=ko", "https://developer.chrome.com/docs/devtools/recorder/overview?hl=ko", "https://developer.chrome.com/docs/devtools/recorder/reference?hl=ko", "https://yozm.wishket.com/magazine/detail/1585/"]
+date: "2026-10-17"
+sources: ["https://developer.chrome.com/docs/devtools/javascript?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/breakpoints?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/reference?hl=ko", "https://developer.chrome.com/docs/devtools/sources?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/snippets?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/source-maps?hl=ko", "https://developer.chrome.com/docs/devtools/settings/ignore-list?hl=ko", "https://developer.chrome.com/docs/devtools/x-google-ignore-list?hl=ko", "https://developer.chrome.com/docs/devtools/workspaces?hl=ko", "https://developer.chrome.com/docs/devtools/settings/workspace?hl=ko", "https://developer.chrome.com/docs/devtools/overrides?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/disable?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/background-services?hl=ko", "https://developer.chrome.com/docs/devtools/wasm?hl=ko", "https://developer.chrome.com/docs/devtools/recorder/overview?hl=ko", "https://developer.chrome.com/docs/devtools/recorder/reference?hl=ko", "https://yozm.wishket.com/magazine/detail/1585/", "https://ko.javascript.info/debugging-chrome", "https://ko.javascript.info/devtools"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「개발자 콘솔」, 「Chrome으로 디버깅하기」 글을 더해 재구성한 노트다.
 
 ## 왜 console.log 대신 중단점인가
 
@@ -19,6 +19,8 @@ sources: ["https://developer.chrome.com/docs/devtools/javascript?hl=ko", "https:
 ```
 
 Sources 패널은 세 영역으로 나뉜다. 왼쪽 **Page 탭**(페이지가 받은 파일 트리), 가운데 **편집기**, 오른쪽 **디버거**(Breakpoints·Scope·Watch·Call Stack). 명령 메뉴(`Ctrl+Shift+P` / `Cmd+Shift+P`)에서 `sources`로도 연다.
+
+DevTools는 `F12`(macOS `Cmd+Opt+I`, 콘솔로 바로 열기는 `Cmd+Opt+J`)로 연다. 다른 패널을 보는 중에도 `Esc`를 누르면 아래쪽 서랍에 Console이 열려, 멈춘 상태의 값을 바로 평가할 수 있다. 콘솔에서 여러 줄을 입력하려면 `Shift+Enter`로 줄을 바꾼다. 페이지의 스크립트 오류는 사용자에게 보이지 않고 Console에 빨간 메시지와 `파일:줄` 링크로만 남는다. Safari는 설정 → 고급에서 「웹 개발자용 기능 보기」를 켜야 개발 메뉴와 Web Inspector(`Cmd+Opt+C` 콘솔)가 생긴다.
 
 ## 중단점 고르기
 
@@ -45,10 +47,10 @@ Sources 패널은 세 영역으로 나뉜다. 왼쪽 **Page 탭**(페이지가 �
 | 컨트롤 | 동작 |
 | --- | --- |
 | 재개 (`F8`) | 다음 중단점까지 실행. 길게 누르면 **강제 실행**(모든 중단점 무시) |
-| Step over | 현재 줄의 함수 호출을 안으로 들어가지 않고 실행 |
-| Step into | 호출되는 함수 안으로 들어간다 |
-| Step out | 현재 함수의 나머지를 실행하고 호출한 곳으로 나온다 |
-| Step (`F9`) | 다음 문장으로 한 걸음. 압축 코드의 `a(),b(),42` 같은 쉼표 식도 하나씩 밟는다 |
+| Step over (`F10`) | 현재 줄의 함수 호출을 안으로 들어가지 않고 실행. 내부가 궁금하지 않은 함수에 |
+| Step into (`F11`) | 호출되는 함수 안으로 들어간다. `setTimeout` 콜백 같은 비동기 호출도 실행될 때까지 따라 들어간다 |
+| Step out (`Shift+F11`) | 현재 함수의 나머지를 실행하고 호출한 곳으로 나온다. 실수로 들어온 함수에서 빠져나올 때 |
+| Step (`F9`) | 다음 문장으로 한 걸음. 함수 호출이면 안으로 들어간다. 압축 코드의 `a(),b(),42` 같은 쉼표 식도 하나씩 밟는다 |
 | 여기로 계속 | 줄 우클릭. 중단점 없이 그 줄까지 실행 |
 
 | 창 | 쓰는 법 |
@@ -137,7 +139,7 @@ Sources 패널은 세 영역으로 나뉜다. 왼쪽 **Page 탭**(페이지가 �
 | 도구 | 쓰는 법 |
 | --- | --- |
 | JavaScript 사용 중지 | 명령 메뉴 → 「JavaScript 사용 중지」. DevTools가 열려 있는 동안 그 탭에만 적용된다. JS 없이 페이지가 어떻게 보이는지 확인한다 |
-| 백그라운드 서비스 | Application → 백그라운드 서비스에서 백그라운드 가져오기·동기화·알림·푸시 이벤트를 기록한다. DevTools를 닫아도 3일간 기록된다. 자세한 내용은 [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]] |
+| 백그라운드 서비스 | Application → 백그라운드 서비스에서 백그라운드 가져오기·동기화·알림·푸시 이벤트를 기록한다. DevTools를 닫아도 3일간 기록된다. 자세한 내용은 [[devtools-application\|DevTools Application 패널: 저장소·서비스 워커]] |
 | WebAssembly | Emscripten에서 `-g`로 DWARF 디버그 정보를 넣고 「C/C++ DevTools Support (DWARF)」 확장을 설치하면 C/C++ 원본에 중단점을 건다 |
 
 ### Recorder: 사용자 흐름 녹화·재생

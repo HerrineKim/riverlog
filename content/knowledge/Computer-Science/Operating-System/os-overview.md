@@ -87,9 +87,9 @@ sources: ["https://riverkim.kr/204", "https://80000coding.notion.site/aaeb2710ba
 
 | 주제 | 운영체제가 만드는 환상 | 관련 노트 |
 | --- | --- | --- |
-| 가상화(virtualization) | CPU 하나를 여러 개처럼(CPU 가상화), 물리 메모리를 프로세스마다 독립된 주소 공간처럼(메모리 가상화) 보이게 한다. 그래서 운영체제를 가상 머신이라고도 부른다 | [[process-scheduling|CPU 스케줄링]], [[virtual-memory|가상 메모리]], [[virtualization|가상화와 하이퍼바이저]] |
-| 병행성(concurrency) | 여러 실행 흐름이 같은 데이터를 동시에 건드려도 망가지지 않게 한다. 운영체제 자신도, 메모리를 공유하는 멀티스레드 프로그램도 이 문제를 겪는다 | [[process-synchronization|프로세스 동기화]], [[pthread-sync-api|POSIX 스레드와 동기화 API]] |
-| 영속성(persistence) | 전원이 꺼져도 데이터가 남게 디스크를 관리한다. 파일 시스템이 데이터의 위치를 추적하고, 저널링이나 쓰기 시 복사(copy-on-write)로 쓰다가 멈춰도 일관성을 되찾게 한다 | [[file-system|파일 시스템]], [[unix-file-io|UNIX 파일 입출력]] |
+| 가상화(virtualization) | CPU 하나를 여러 개처럼(CPU 가상화), 물리 메모리를 프로세스마다 독립된 주소 공간처럼(메모리 가상화) 보이게 한다. 그래서 운영체제를 가상 머신이라고도 부른다 | [[process-scheduling\|CPU 스케줄링]], [[virtual-memory\|가상 메모리]], [[virtualization\|가상화와 하이퍼바이저]] |
+| 병행성(concurrency) | 여러 실행 흐름이 같은 데이터를 동시에 건드려도 망가지지 않게 한다. 운영체제 자신도, 메모리를 공유하는 멀티스레드 프로그램도 이 문제를 겪는다 | [[process-synchronization\|프로세스 동기화]], [[pthread-sync-api\|POSIX 스레드와 동기화 API]] |
+| 영속성(persistence) | 전원이 꺼져도 데이터가 남게 디스크를 관리한다. 파일 시스템이 데이터의 위치를 추적하고, 저널링이나 쓰기 시 복사(copy-on-write)로 쓰다가 멈춰도 일관성을 되찾게 한다 | [[file-system\|파일 시스템]], [[unix-file-io\|UNIX 파일 입출력]] |
 
 응용 프로그램은 이 기능들을 **시스템 콜**이라는 API로 쓴다([[system-structure|컴퓨터 시스템 구조와 인터럽트]]).
 

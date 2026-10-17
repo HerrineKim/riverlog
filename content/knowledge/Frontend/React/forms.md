@@ -120,4 +120,4 @@ const hours = Math.round(minutes / 60) // state가 아니라 계산
 - 화면에 보이는 파생 값은 state로 따로 두지 말고 렌더링 중에 계산한다.
 - 제출 시점의 값만 필요하면 React 19의 폼 액션(`action={fn}` + `useActionState`·`useFormStatus`)을 쓴다.
 
-관련 노트: [[html-input-types|HTML 입력 요소 치트시트]], [[state|State]], [[react-hook-form|react-hook-form과 MUI Select]]
+관련 노트: [[html-input-types|HTML 입력 요소 치트시트]], [[state|State]], [[react-hook-form|react-hook-form과 MUI Select]], [[constraint-validation|제약 검증: required·pattern·ValidityState]]

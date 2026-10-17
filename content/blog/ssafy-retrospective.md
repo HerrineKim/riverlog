@@ -28,11 +28,11 @@ SSAFY(삼성 청년 SW 아카데미) 1학기 동안 매주 진행한 **관통 �
 
 | 단계 | 정리한 노트 |
 | --- | --- |
-| 데이터 | [[python-data-analysis|파이썬 데이터 분석 프로세스]] (JSON·API·정렬) |
-| Django 서비스, CRUD, 인증 | [[Backend/Django|Django]] ([[forms-modelform|Form과 ModelForm]], [[auth-user|User와 인증]], [[relationships|모델 관계]]) |
-| REST API | [[rest-api|REST API 설계]], [[drf-serializer|DRF Serializer와 관계 표현]] |
-| 추천·비동기 | [[ajax|AJAX와 HTTP 요청]], [[templates-static|Template과 Static 파일]] |
-| Vue SPA | [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]], [[spa-csr-ssr|SPA와 CSR·SSR]] |
+| 데이터 | [[python-data-analysis\|파이썬 데이터 분석 프로세스]] (JSON·API·정렬) |
+| Django 서비스, CRUD, 인증 | [[Backend/Django\|Django]] ([[forms-modelform\|Form과 ModelForm]], [[auth-user\|User와 인증]], [[relationships\|모델 관계]]) |
+| REST API | [[rest-api\|REST API 설계]], [[drf-serializer\|DRF Serializer와 관계 표현]] |
+| 추천·비동기 | [[ajax\|AJAX와 HTTP 요청]], [[templates-static\|Template과 Static 파일]] |
+| Vue SPA | [[vuex\|Vue 상태 관리: Pinia(옛 Vuex)]], [[spa-csr-ssr\|SPA와 CSR·SSR]] |
 
 ## 전체를 돌아보며
 

@@ -94,8 +94,8 @@ function Counter() {
 | 상황 | 선택 |
 | --- | --- |
 | 몇 단계만 내려가는 값 | props |
-| 테마·로그인 사용자처럼 드물게 바뀌는 전역 값 | [[context|Context]] |
-| 서버에서 받아 온 데이터(목록, 상세) | [[tanstack-query|TanStack Query]]나 [[swr|SWR]] 같은 서버 상태 라이브러리 |
+| 테마·로그인 사용자처럼 드물게 바뀌는 전역 값 | [[context\|Context]] |
+| 서버에서 받아 온 데이터(목록, 상세) | [[tanstack-query\|TanStack Query]]나 [[swr\|SWR]] 같은 서버 상태 라이브러리 |
 | 여러 화면이 함께 쓰는 클라이언트 state, 작거나 중간 규모 | Zustand(스토어 하나를 훅으로, selector로 필요한 값만 구독) 또는 Jotai(atom 조합) |
 | 여러 화면이 함께 고치는 복잡한 클라이언트 state, 액션 기록·미들웨어·DevTools 추적이 중요 | Redux Toolkit. 서버 데이터까지 한 도구로 다루려면 RTK Query |
 
