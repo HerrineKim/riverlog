@@ -20,6 +20,7 @@ DevOps는 개발(Development)과 운영(Operations) 사이의 벽을 줄여, 코
 | [AWS 클라우드 기초](/knowledge/dictionary/devops/aws-cloud-basics) | 클라우드의 이점, 리전·가용 영역, EC2 인스턴스와 요금 모델, ECS·EKS·Lambda, IaC |
 | [AWS RDS 외부 접속 허용](/knowledge/dictionary/devops/rds-security-group) | 보안 그룹 인바운드 규칙으로 내 IP만 DB 포트에 접근 허용, 배스천 SSH 터널 접속 |
 | [스타트업 인프라 결정: 지지와 후회](/knowledge/dictionary/devops/startup-infra-decisions) | AWS·EKS·Terraform·관측 도구 결정 사례와 거기서 뽑은 판단 기준 |
+| [고가용성과 재해 복구 설계](/knowledge/dictionary/devops/disaster-recovery) | HA와 DR의 차이, RTO·RPO, 백업·파일럿 라이트·웜 스탠바이·액티브-액티브, 운영 도구까지 포함한 전 계층 다중화와 전환 훈련 |
 | [쿠버네티스 위 웹 서비스의 요청 경로](/knowledge/dictionary/devops/kubernetes-request-path) | 로드 밸런서·게이트웨이·서비스 메시를 거쳐 파드에 닿는 요청 경로, Terraform·Helm·Istio·Prometheus·Grafana의 역할 |
 
 서비스 전체의 데이터 흐름 속에서 DevOps가 차지하는 자리는 [Data Flow 아키텍처](/knowledge/dictionary/backend/architecture/data-flow)에서 함께 볼 수 있다. 모바일 앱의 OTA 배포는 [CodePush](/knowledge/dictionary/frontend/mobile/codepush) 참고.

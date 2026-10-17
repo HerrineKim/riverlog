@@ -67,4 +67,4 @@ HTTP 캐시는 **한 번 받은 응답을 저장해 두었다가 같은 요청�
 - `no-cache`는 "매번 확인", `no-store`는 "저장 금지"다.
 - **해시 파일은 1년 + immutable, HTML은 매번 재검증**이 기본이다.
 
-관련 노트: [[cdn|CDN]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[swr|SWR]], [[cache-and-virtual-memory|캐시 메모리와 MMU]]
+관련 노트: [[cdn|CDN]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[swr|SWR]], [[cache-and-virtual-memory|캐시 메모리와 MMU]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]]

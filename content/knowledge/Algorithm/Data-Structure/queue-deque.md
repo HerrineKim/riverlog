@@ -139,4 +139,4 @@ int  pop_back(t_deque *d)  { d->len--; return d->data[idx(d, d->len)]; }
 - 파이썬에서 큐는 `list.pop(0)`(O(n)) 대신 `deque.popleft()`(O(1))를 쓴다.
 - `deque`는 양 끝 연산이 O(1)이지만 중간 접근은 O(n)이다.
 
-관련 노트: [[bfs|BFS]], [[stack|스택]], [[heap-priority-queue|힙과 우선순위 큐]], [[data-structures|기초 자료구조(CS50)]]
+관련 노트: [[bfs|BFS]], [[stack|스택]], [[heap-priority-queue|힙과 우선순위 큐]], [[data-structures|기초 자료구조(CS50)]], [[virtual-waiting-room|대기열 시스템(가상 대기실) 설계]]

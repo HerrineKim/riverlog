@@ -158,4 +158,4 @@ JS가 언어 차원에서 공유 메모리 스레드를 두지 않는 이유도 
 
 **동시성 모델을 고를 때는 "무엇을 공유하고, 누가 전환을 결정하는가"부터 본다.**
 
-관련 노트: [[process-and-thread|프로세스와 스레드]], [[process-synchronization|프로세스 동기화]], [[pthread-sync-api|POSIX 스레드와 동기화 API]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[event-loop|이벤트 루프]], [[async-await|async/await]], [[pipeline-and-parallelism|파이프라인과 병렬 처리]]
+관련 노트: [[process-and-thread|프로세스와 스레드]], [[process-synchronization|프로세스 동기화]], [[pthread-sync-api|POSIX 스레드와 동기화 API]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[event-loop|이벤트 루프]], [[async-await|async/await]], [[pipeline-and-parallelism|파이프라인과 병렬 처리]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]]

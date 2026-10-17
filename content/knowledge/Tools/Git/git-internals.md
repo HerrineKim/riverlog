@@ -84,4 +84,4 @@ git hash-object README.md   # 이 파일이 blob이 되면 받을 해시
 - 모든 객체는 내용의 해시로 이름 붙고, 같은 내용은 한 번만 저장된다.
 - Git은 변경분이 아니라 스냅숏을 기록한다.
 
-관련 노트: [[git-basics|Git 기본 명령과 파일 상태]], [[branch|Git 브랜치]], [[git-undo-and-rewrite|되돌리기와 이력 다루기]]
+관련 노트: [[git-basics|Git 기본 명령과 파일 상태]], [[branch|Git 브랜치]], [[git-undo-and-rewrite|되돌리기와 이력 다루기]], [[missing-semester|The Missing Semester: CS 교육에서 빠진 도구 학기]]

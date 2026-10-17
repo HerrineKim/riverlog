@@ -105,4 +105,4 @@ sources: ["https://subicura.com/2021/06/27/study-guide.html"]
 - 배포, 도메인, 블로그, 오픈소스처럼 **한 일을 보이게** 만든다.
 - 지금 실력보다 계속 성장하고 있다는 사실이 중요하다.
 
-관련 노트: [[side-project-tips|사이드 프로젝트 10가지 팁]], [[coding-test|코딩 테스트 접근법]], [[tech-reading-list|개발 분야별 추천 도서]], [[tech-interview-tips|기술면접 잘 보는 법]]
+관련 노트: [[side-project-tips|사이드 프로젝트 10가지 팁]], [[coding-test|코딩 테스트 접근법]], [[tech-reading-list|개발 분야별 추천 도서]], [[tech-interview-tips|기술면접 잘 보는 법]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]]

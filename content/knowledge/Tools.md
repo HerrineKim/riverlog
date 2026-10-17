@@ -19,6 +19,7 @@ date: "2026-10-14"
 - [Vim과 Neovim](Tools/vim-and-neovim.md): ed → vi → Vim → Neovim 계보, 두 편집기 비교, 플러그인 관리, man 페이지·Vimium
 - [Vim 편집 기술](Tools/vim-tips.md): listchars, fold, 연속 숫자 입력, `<expr>` 매핑, 복사 영역 강조, 시스템 클립보드
 - [tmux: 터미널 멀티플렉서](Tools/tmux.md): 세션·창·패인, detach/attach로 SSH 작업 살려 두기, 기본 키
+- [The Missing Semester: CS 교육에서 빠진 도구 학기](Tools/missing-semester.md): MIT의 도구 활용 과정 2026년판 9강 지도. 셸, 편집기, 디버깅·프로파일링, Git, 패키징과 배포, 에이전틱 코딩, 코드 품질
 - [VS Code 설정과 활용](Tools/vscode.md): settings.json과 설정 동기화, launch.json 디버깅, github.dev, 쓸 만한 확장
 - [구글 검색 연산자](/knowledge/dictionary/tools/google-search-operators): 따옴표·제외·OR 같은 기본 연산자와 site:·intitle:·filetype: 같은 고급 연산자, 사라진 연산자
 - [개발 환경](Tools/Dev-Environment.md): [Windows 개발 환경](Tools/Dev-Environment/windows-dev-environment.md), [로컬 HTTPS(mkcert)](Tools/Dev-Environment/local-https-mkcert.md), [Java 빌드 도구와 IntelliJ 실행 오류](Tools/Dev-Environment/java-build-tools.md), [pyenv로 Python 환경 잡기](Tools/Dev-Environment/python-pyenv-setup.md)

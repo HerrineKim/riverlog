@@ -49,4 +49,4 @@ date: "2026-10-13"
 - MSA는 서비스별 DB, BFF, 메시지 큐로 흐름이 복잡해지는 대신 독립 배포가 가능해진다. 배포 단위인 컨테이너와의 궁합은 [[vm-vs-container|VM과 컨테이너]] 참고.
 - 전송(TLS)·저장(해시·암호화)·인증(세션·JWT) 각 구간의 보안을 함께 설계한다.
 
-관련 노트: [[vm-vs-container|VM과 컨테이너]], [[security|정보 시스템 보안]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[bff|BFF (Backend For Frontend)]]
+관련 노트: [[vm-vs-container|VM과 컨테이너]], [[security|정보 시스템 보안]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[bff|BFF (Backend For Frontend)]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[auth-placement|인증·인가 로직은 어디에 두나: 필터, 인터셉터, API 게이트웨이]]

@@ -89,4 +89,4 @@ Amazon EC2는 크기를 고를 수 있는 가상 서버(인스턴스)다. OS부�
 - EC2는 일회용 서버로 다루고, 사용 패턴에 따라 온디맨드·Savings Plans·스팟을 섞는다.
 - 관리 부담을 줄이려면 관리형(RDS·ECS·EKS)과 서버리스(Lambda·Fargate)를 먼저 검토하고, 구성은 IaC로 남긴다.
 
-관련 노트: [[rds-security-group|AWS RDS에 외부 IP 접속 허용하기]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]], [[vm-vs-container|VM과 컨테이너]]
+관련 노트: [[rds-security-group|AWS RDS에 외부 IP 접속 허용하기]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]], [[vm-vs-container|VM과 컨테이너]], [[disaster-recovery|고가용성과 재해 복구 설계]]

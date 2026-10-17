@@ -64,4 +64,4 @@ set -g base-index 1        # 창 번호를 1부터
 - 원격 서버 작업의 핵심 이점은 **연결이 끊겨도 작업과 화면이 남는다**는 것이다.
 - 모든 키는 프리픽스(`Ctrl-b`) 다음에 누른다. `d`로 떼고 `tmux attach`로 다시 붙는다.
 
-관련 노트: [[vim-and-neovim|Vim과 Neovim]], [[vim-tips|Vim 편집 기술]]
+관련 노트: [[vim-and-neovim|Vim과 Neovim]], [[vim-tips|Vim 편집 기술]], [[missing-semester|The Missing Semester: CS 교육에서 빠진 도구 학기]]

@@ -188,4 +188,4 @@ printf ─▶ [stdio 사용자 버퍼] ─fflush─▶ write() ─▶ [커널 �
 - 많은 연결은 `epoll`·`kqueue`로 기다린다.
 - **mmap은 편하지만 쓰기 순서와 I/O 시점을 내줘야 한다.** 트랜잭션이 필요한 저장소는 직접 버퍼를 관리한다.
 
-관련 노트: [[file-system|파일 시스템]], [[file-system-implementation|파일 시스템 구현]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[unix-signals|UNIX 시그널]], [[file-io|C 입력과 파일 입출력]]
+관련 노트: [[file-system|파일 시스템]], [[file-system-implementation|파일 시스템 구현]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[unix-signals|UNIX 시그널]], [[file-io|C 입력과 파일 입출력]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]]
