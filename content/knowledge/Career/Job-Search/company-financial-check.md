@@ -67,4 +67,4 @@ smes.go.kr/venturein
 
 대외 활동의 크기가 아니라 매출과 현금의 흐름이 회사의 지금 상태를 말해 준다.
 
-관련 노트: [[interview-attitude|면접에서 태도로 평가받는 법]], [[decision-making|의사결정 체크리스트]]
+관련 노트: [[interview-attitude|면접에서 태도로 평가받는 법]], [[decision-making|의사결정 체크리스트]], [[investor-ir-deck|투자자가 보는 IR 자료]]
