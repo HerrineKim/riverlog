@@ -98,4 +98,4 @@ SSG의 "바뀔 때마다 재배포" 문제를 줄이려고 Next.js가 만든 방
 - SSG는 빌드 때 미리 만들어 가장 빠르지만 재배포가 필요하고, ISR은 재검증 시간마다 다시 만들어 이를 보완한다.
 - 지금의 프레임워크는 스트리밍·서버 컴포넌트·부분 사전 렌더링으로 한 페이지 안에서 이 방식들을 섞는다.
 
-관련 노트: [[nextjs|Next.js를 쓰는 이유]], [[templates-static|Django 템플릿(서버 렌더링)]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]], [[streaming-ssr|스트리밍 SSR]], [[seo-basics|SEO 기초]], [[static-site-generator|정적 사이트 생성기와 Jamstack]], [[view-transitions|View Transitions: 화면 전환 애니메이션]]
+관련 노트: [[nextjs|Next.js를 쓰는 이유]], [[templates-static|Django 템플릿(서버 렌더링)]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]], [[streaming-ssr|스트리밍 SSR]], [[seo-basics|SEO 기초]], [[static-site-generator|정적 사이트 생성기와 Jamstack]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[web-dev-myths|웹 개발에 대한 이상한 믿음들]]

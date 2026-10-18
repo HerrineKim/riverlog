@@ -40,6 +40,7 @@ date: "2026-10-13"
 - [이미지 CDN과 Accept 헤더 협상](/knowledge/dictionary/frontend/web/image-cdn): URL 매개변수 변환, Accept·Content-Type 협상, Vary: Accept 캐시, picture+type과 비교
 - [브라우저 기본 동작을 존중하기](/knowledge/dictionary/frontend/web/respect-browser-defaults): 스크롤바·스크롤·강조색·글자 크기·포커스·클립보드·방문 기록을 덮어쓰지 않는 이유와 원칙
 - [SPA와 CSR·SSR](/knowledge/dictionary/frontend/web/spa-csr-ssr): 단일 페이지 애플리케이션과 렌더링 주체·시점에 따른 차이(CSR·SSR·SSG·ISR)
+- [웹 개발에 대한 이상한 믿음들](/knowledge/dictionary/frontend/web/web-dev-myths): 브라우저 엔지니어·표준 제정자·개발자가 웹을 잘 안다는 믿음, SPA·MPA·JS 없는 사이트·빌드 단계에 대한 단정, 내 웹이 웹 전체는 아니다
 - [정적 사이트 생성기와 Jamstack](/knowledge/dictionary/frontend/web/static-site-generator): 빌드 때 HTML 만들기, 도구 고르기(Eleventy·Hugo·Astro·Next.js), WordPress에서 옮기는 흐름
 - [스트리밍 SSR](/knowledge/dictionary/frontend/web/streaming-ssr): Suspense 경계 단위로 HTML을 나눠 보내는 SSR, 선택적 hydration, 상태 코드·버퍼링 제약, React 18 이후의 발전
 - [웹 아키텍처의 다음 전환](/knowledge/dictionary/frontend/web/webs-next-transition): MPA → PEMPA → SPA → PESPA, 코드가 어디에 사는지로 본 아키텍처 변화
