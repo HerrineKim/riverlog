@@ -130,4 +130,4 @@ InDesign 같은 편집 도구의 스타일 체계는 CSS로 거의 그대로 옮
 - 페이지 단위(매크로)는 뷰포트에, 컴포넌트 단위(마이크로)는 부모 공간에 반응하게 나눠 설계한다.
 - 이미지 위 텍스트는 대비, 위치, 심도로 읽히게 하고, 이미지 용량을 함께 따진다.
 
-관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[css-grid|CSS 그리드 레이아웃]], [[flexbox|Float와 Flexbox 레이아웃]], [[color-motion-accessibility|색과 움직임의 접근성]], [[presentation-design|발표·포트폴리오 디자인 팁]], [[responsive-ui-patterns|반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표]]
+관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[css-grid|CSS 그리드 레이아웃]], [[flexbox|Float와 Flexbox 레이아웃]], [[color-motion-accessibility|색과 움직임의 접근성]], [[presentation-design|발표·포트폴리오 디자인 팁]], [[responsive-ui-patterns|반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표]], [[ui-density|UI 밀도: 시각·정보·디자인·시간·가치]]

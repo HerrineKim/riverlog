@@ -159,4 +159,4 @@ CSS `z-index`처럼 하나의 「중요도」 축에 줄 세우는 방식은 대
 - 도구는 바뀌어도(서버 상태 캐시, Suspense, top layer, 에러 바운더리) 문제는 그대로 남는다.
 - **라이브러리 없이 작은 앱으로 문제를 재현해 보는 것**이 가장 깊이 배우는 방법이다.
 
-관련 노트: [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]], [[tanstack-query|TanStack Query(React Query)]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[frontend-error-handling|프런트엔드 에러 핸들링: 분류와 선언적 처리]], [[changeable-code-criteria|변경하기 쉬운 코드의 네 가지 기준]], [[frontend-roadmap|프론트엔드 로드맵]]
+관련 노트: [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]], [[tanstack-query|TanStack Query(React Query)]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[frontend-error-handling|프런트엔드 에러 핸들링: 분류와 선언적 처리]], [[changeable-code-criteria|변경하기 쉬운 코드의 네 가지 기준]], [[frontend-roadmap|프론트엔드 로드맵]], [[ui-density|UI 밀도: 시각·정보·디자인·시간·가치]]
