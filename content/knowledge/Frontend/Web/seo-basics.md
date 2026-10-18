@@ -1,14 +1,14 @@
 ---
 title: "SEO 기초: 크롤링부터 메타 태그까지"
 concept: "SEO"
-summary: "검색 엔진이 페이지를 크롤링·색인·순위 매기는 흐름과, 프론트엔드가 챙길 robots.txt·사이트맵·메타 태그·canonical·리다이렉트·렌더링 방식을 정리했다."
+summary: "검색 엔진이 페이지를 크롤링·색인·순위 매기는 흐름과, 프론트엔드가 챙길 robots.txt·사이트맵·메타 태그·canonical·리다이렉트·렌더링 방식, 링크와 버튼의 구분을 정리했다."
 tags: ["seo", "web", "html", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://velog.io/@jiseung/Why-Site-Speed-Matters"]
+sources: ["https://x.com/azarchick/status/1757102271115166148", "https://developers.google.com/search/docs/crawling-indexing/links-crawlable", "https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://velog.io/@jiseung/Why-Site-Speed-Matters"]
 ---
 
-> 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트다. hreflang 항목은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 다국어 페이지 노트와 연결했다. 「순위를 정하는 요소」는 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」 부록으로 보강했다.
+> 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트다. hreflang 항목은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 다국어 페이지 노트와 연결했다. 「순위를 정하는 요소」는 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」 부록으로 보강했다. 「링크와 버튼을 구분한다」는 Kristina Azarenko의 [X 타래](https://x.com/azarchick/status/1757102271115166148)(2024.02)를 Google 검색 센터 문서로 확인해 보강했다.
 
 검색 엔진 최적화(SEO, Search Engine Optimization)는 검색 결과에서 페이지가 잘 발견되고 높은 순위에 오르도록 콘텐츠와 구조를 다듬는 일이다. 콘텐츠의 질이 가장 중요하지만, **검색 엔진이 페이지를 읽을 수 있게 만드는 것**은 프론트엔드의 몫이다. 관련 용어의 짧은 정의는 [[web-glossary|용어집]]에 있다.
 
@@ -79,6 +79,22 @@ Sitemap: https://example.com/sitemap.xml
 | 307 / 308 | 임시 / 영구, **요청 메서드 유지** | POST가 GET으로 바뀌면 안 될 때 |
 
 리다이렉트를 여러 번 잇는 체인은 느리고 봇이 중간에 멈출 수 있다. 한 번에 최종 주소로 보낸다. 페이지를 옮기거나 합칠 때는 옛 URL마다 새 URL로 가는 301을 남긴다.
+
+## 링크와 버튼을 구분한다
+
+| | 링크 | 버튼 |
+| --- | --- | --- |
+| 하는 일 | 다른 페이지(또는 위치)로 **이동**한다 | 폼 제출, 장바구니 담기 같은 **동작**을 일으킨다 |
+| 마크업 | `<a href="/products/42">` | `<button>`, 폼 안의 `<input type="submit">` |
+| SEO | 검색 엔진이 따라가며 크롤링하고 내부 링크 구조로 읽는다 | 링크로 취급되지 않는다 |
+
+검색 엔진은 `href`가 있는 `<a>`만 링크로 따라간다. `href` 없는 `<a>`, `<span onclick>`, `onclick`으로 `location`을 바꾸는 버튼은 사용자에게는 이동처럼 보여도 **크롤러에게는 링크가 없다.** 그래서 그 뒤의 페이지가 발견되지 않거나 내부 링크 신호를 잃는다([Google 검색 센터: 크롤링 가능한 링크](https://developers.google.com/search/docs/crawling-indexing/links-crawlable)).
+
+- 생김새와 역할을 혼동하지 않는다. 버튼처럼 **보이는** 링크는 문제없다. 마크업은 역할을 따른다.
+- 반대로 "장바구니 담기"처럼 동작을 일으키는 버튼에 `<a href>`를 붙이지 않는다.
+- SPA 라우터의 링크 컴포넌트(`<Link>` 등)는 실제 `<a href>`를 렌더링하므로 괜찮다. `router.push`만 부르는 버튼으로 페이지 이동을 만들지 않는다.
+
+같은 구분은 접근성에도 그대로 적용된다. 스크린 리더는 링크와 버튼을 다르게 안내하고, 링크는 `Enter`, 버튼은 `Enter`·`Space`로 동작한다([[keyboard-accessibility|키보드 접근성과 포커스 관리]]).
 
 ## 렌더링 방식과 SEO
 
