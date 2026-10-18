@@ -45,6 +45,7 @@ date: "2026-10-13"
 - [웹 아키텍처의 다음 전환](/knowledge/dictionary/frontend/web/webs-next-transition): MPA → PEMPA → SPA → PESPA, 코드가 어디에 사는지로 본 아키텍처 변화
 - [SEO 기초](/knowledge/dictionary/frontend/web/seo-basics): 크롤링·색인 흐름, robots.txt와 사이트맵, 메타 태그·canonical, 301·302 리다이렉트, 렌더링 방식
 - [다국어 페이지: lang·hreflang과 국제화](/knowledge/dictionary/frontend/web/multilingual-pages): 언어별 URL, Accept-Language와 언어 선택기, lang·dir·translate·hreflang, 문자열 연결 금지·Intl·텍스트 길이·RTL 같은 i18n 주의점
+- [프론트엔드 성능 최적화: 언제, 무엇을](/knowledge/dictionary/frontend/web/frontend-performance-strategy): 측정·p95 기준·트레이드오프, 초기 로딩의 세 원인(대역폭·지연 시간·JS 실행), 실제 성능과 체감 성능, 파생 상태와 리렌더링 범위
 - [웹 성능 지표와 Lighthouse](/knowledge/dictionary/frontend/web/web-vitals): FCP·LCP·INP·CLS 기준값, LCP 후보·INP 세 구간·CLS 세션 창, 실험실·필드 데이터와 web-vitals 라이브러리, Lighthouse
 - [TTFB 줄이기: 리디렉션·HTML 캐시·압축·CDN](/knowledge/dictionary/frontend/web/ttfb-optimization): 리디렉션 체인, 짧은 캐시와 ETag 재검증, Server-Timing, Brotli 정적·동적 압축, CDN 엣지
 - [LCP 최적화: 네 구간으로 나눠 줄이기](/knowledge/dictionary/frontend/web/lcp-optimization): TTFB·로드 지연·로드 시간·렌더 지연, HTML에서 발견되게, fetchpriority, 지연 로딩 금지, 막는 CSS·JS 걷어 내기

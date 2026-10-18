@@ -189,4 +189,4 @@ DevTools에서 Lighthouse를 돌리는 법, 같은 진단을 트레이스 위에
 - Lighthouse와 DevTools Performance 패널로 원인을 찾고, 필드 데이터로 효과를 확인한다.
 - 숫자의 감각은 [[frontend-latency-numbers|프론트엔드 지연 시간 숫자]]와 함께 보면 좋다.
 
-관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[lcp-optimization|LCP 최적화]], [[inp-optimization|INP 최적화]], [[cls-optimization|CLS 최적화]], [[ttfb-optimization|TTFB 줄이기]], [[seo-basics|SEO 기초]], [[responsible-javascript|책임감 있는 자바스크립트]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]]
+관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[lcp-optimization|LCP 최적화]], [[inp-optimization|INP 최적화]], [[cls-optimization|CLS 최적화]], [[ttfb-optimization|TTFB 줄이기]], [[seo-basics|SEO 기초]], [[responsible-javascript|책임감 있는 자바스크립트]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[frontend-performance-strategy|프론트엔드 성능 최적화: 언제, 무엇을]]

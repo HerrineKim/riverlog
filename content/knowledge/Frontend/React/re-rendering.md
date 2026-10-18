@@ -53,4 +53,4 @@ react-query(TanStack Query)의 `useQuery`를 쓰는 컴포넌트는 최소 두 �
 - `useQuery` 같은 데이터 패칭 훅은 로딩→성공 전환만으로도 최소 두 번 렌더링한다.
 - DevTools의 하이라이트와 Profiler로 원인을 찾은 다음 고친다.
 
-관련 노트: [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]]
+관련 노트: [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]], [[frontend-performance-strategy|프론트엔드 성능 최적화: 언제, 무엇을]]
