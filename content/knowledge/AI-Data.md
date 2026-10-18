@@ -34,6 +34,7 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [Claude Code 활용 가이드](AI-Data/claude-code-guide.md): 설치, 슬래시 명령·단축키, MCP, Skills·CLAUDE.md, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하기
 - [AI 코딩 실무 가드레일](AI-Data/ai-coding-guardrails.md): 규모별 세 가지 모드, CLAUDE.md·앵커 주석, 사람이 쓰는 테스트, AI가 건드리면 안 되는 영역
 - [AI로 개발 가속하기: 규칙을 키우는 개발](AI-Data/ai-accelerated-development.md): 한 방 프롬프트와 도메인 지식 문서, PRD → 태스크 리스트, 바이브 코딩의 현실적 패턴, Rule-Growing Development, AI가 찾기 쉬운 주석·이름, AI가 맡을 수 있는 작업 길이
+- [AI에게 일 맡기기: 권한·정보·도구](AI-Data/ai-delegation-toolkit.md): 위임 단계와 모니터링, STICC와 인지 작업 분석(CTA), 되묻게 하기·불확실성 지도·메타 프롬프트, 템플릿, MCP 선별과 검증 장치, 계획까지 커밋하는 작업 흐름
 - [Claude 스킬 만들기 가이드](AI-Data/claude-skill-building-guide.md): 프로그레시브 디스클로저, description 작성, 테스트·배포, 팀 공용 스킬 패키지화, 실전 패턴 5가지
 - [루프 엔지니어링](AI-Data/loop-engineering.md): 자동화·워크트리·스킬·서브에이전트·상태 파일로 에이전트가 스스로 도는 루프 설계하기
 - [프롬프트에서 하네스로: 에이전틱 패턴의 진화](AI-Data/harness-engineering.md): 프롬프트 → 컨텍스트 → 하네스 엔지니어링, Write/Select/Compress/Isolate와 KV 캐시, 하네스 네 사분면, 치명적 삼요소와 2의 규칙
