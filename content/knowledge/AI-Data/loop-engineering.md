@@ -79,4 +79,4 @@ sources: ["https://addyosmani.com/blog/loop-engineering/", "https://code.claude.
 
 루프는 만들되, 엔지니어로 남는다.
 
-관련 노트: [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[claude-code-guide|Claude Code 활용 가이드]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]]
+관련 노트: [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[claude-code-guide|Claude Code 활용 가이드]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]]
