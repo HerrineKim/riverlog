@@ -93,4 +93,4 @@ button svg {
 - 글 옆의 아이콘은 숨기고, 단독 아이콘은 모양이 아니라 뜻으로 이름을 준다.
 - 인라인 SVG는 `currentColor`와 `em` 크기로 글자를 따라가게 한다.
 
-관련 노트: [[ui-elements-glossary|UI 요소 용어집: 입력·내비게이션·정보·컨테이너]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[dark-mode-theming|테마와 다크 모드 구현]], [[image-formats|웹 이미지 형식]]
+관련 노트: [[ui-elements-glossary|UI 요소 용어집: 입력·내비게이션·정보·컨테이너]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[dark-mode-theming|테마와 다크 모드 구현]], [[image-formats|웹 이미지 형식]], [[icon-usability|아이콘 사용성]]
