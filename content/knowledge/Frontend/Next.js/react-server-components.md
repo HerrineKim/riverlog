@@ -1,14 +1,14 @@
 ---
 title: "React Server Components의 동작 원리"
 concept: "React Server Components"
-summary: "서버가 컴포넌트 트리를 렌더링해 HTML이 아니라 직렬화된 React 트리(RSC Payload)를 스트리밍하고, 브라우저가 클라이언트 컴포넌트 참조를 실제 코드로 바꿔 트리를 재구성하는 과정을 정리한다. SSR과의 차이, 요청 왕복을 줄이려고 나온 배경, 다시 렌더링되지 않는다는 성질과 클라이언트 경계, 갱신 방식, 제약까지."
+summary: "서버가 컴포넌트 트리를 렌더링해 HTML이 아니라 직렬화된 React 트리(RSC Payload)를 스트리밍하고, 브라우저가 클라이언트 컴포넌트 참조를 실제 코드로 바꿔 트리를 재구성하는 과정을 정리한다. SSR과의 차이, 요청 왕복을 줄이려고 나온 배경과 서버 컴포넌트 모델(XHP)에서 출발한 역사, 다시 렌더링되지 않는다는 성질과 클라이언트 경계, 갱신 방식, 제약까지."
 tags: ["react", "nextjs", "frontend", "rendering", "performance"]
 source: other
 date: "2026-10-15"
-sources: ["https://yceffort.kr/2022/01/how-react-server-components-work", "https://react.dev/reference/rsc/server-components", "https://www.joshwcomeau.com/react/server-components/"]
+sources: ["https://x.com/hewonjeong/status/1743629443346968724", "https://yceffort.kr/2022/01/how-react-server-components-work", "https://react.dev/reference/rsc/server-components", "https://www.joshwcomeau.com/react/server-components/"]
 ---
 
-> yceffort의 「[리액트 서버 컴포넌트의 동작 방식](https://yceffort.kr/2022/01/how-react-server-components-work)」(2022.01)을 바탕으로 React 19 문서와 대조해 재구성한 노트다. 「왜 필요했나」, 「서버 컴포넌트는 다시 렌더링되지 않는다」, 「클라이언트 경계」는 Josh W. Comeau의 「[Making Sense of React Server Components](https://www.joshwcomeau.com/react/server-components/)」(2023.09, 2025.05 갱신)로 보강했다.
+> yceffort의 「[리액트 서버 컴포넌트의 동작 방식](https://yceffort.kr/2022/01/how-react-server-components-work)」(2022.01)을 바탕으로 React 19 문서와 대조해 재구성한 노트다. 「왜 필요했나」, 「서버 컴포넌트는 다시 렌더링되지 않는다」, 「클라이언트 경계」는 Josh W. Comeau의 「[Making Sense of React Server Components](https://www.joshwcomeau.com/react/server-components/)」(2023.09, 2025.05 갱신)로 보강했다. 「서버에서 출발해 서버로 돌아온 React」는 Dan Abramov의 X 타래를 @hewonjeong이 번역한 [타래](https://x.com/hewonjeong/status/1743629443346968724)(2024.01)를 바탕으로 했다.
 
 ## React Server Components란
 
@@ -149,6 +149,19 @@ RSC 환경에서는 **모든 컴포넌트가 기본적으로 서버 컴포넌트
 - 번들러·서버 통합이 필요해 사실상 프레임워크에 묶인다.
 
 ## 역사
+
+### 서버에서 출발해 서버로 돌아온 React
+
+React는 흔히 클라이언트 라이브러리로 여겨지지만, 출발점은 서버였다. 페이스북은 처음부터 서버 중심 앱이었고, 서버에는 PHP 계열 언어 Hack과 그 안에서 컴포넌트를 조합해 HTML을 만드는 **XHP**가 있었다. 데이터 계층도 캐싱과 개인정보 보호 계층을 갖춘 ORM에 가까웠다. **서버에 이미 조합형 컴포넌트 모델이 있었기 때문에** 클라이언트에서도 같은 모델을 원했고, 그래서 React가 클라이언트에서 시작했다.
+
+| 시기 | 흐름 |
+| --- | --- |
+| 등장 | 클라이언트의 MV* 패턴(모델·뷰·컨트롤러 분리) 대신 **함수가 함수를 부르는** 선언적 컴포넌트 하나로 UI를 짠다. 이 방향이 네이티브를 포함한 다음 세대 UI 프레임워크로 퍼져, 클라이언트에서 MV*를 말하는 일이 드물어졌다 |
+| 확산 | 페이스북 안에서 React 코드가 늘며 XHP의 일부를 React 컴포넌트가 대체했다. 지표를 해치지 않는 한 클라이언트 상호작용을 붙이기 쉬웠다 |
+| 한계 | 코드를 점점 클라이언트로 밀어 넣자, 옮기지 않았다면 없었을 **인위적인 경계(seam)**가 생기고 나머지 코드는 떼어 낼 수 없게 엉켰다 |
+| 복귀 | XHP의 장점, 즉 **요청 하나에 응답하고 버리는** 상태 없는 멘탈 모델을 서버 대안으로 되살리려는 목표가 RSC로 이어졌다. 초기 RSC 프로토타입 API는 데이터 로더에 가까웠다 |
+
+그래서 RSC는 "React가 PHP를 닮아 간다"는 말을 듣는다. 남은 관심사는 서버 쪽에서도 MVC 대신 선언적 컴포넌트 아키텍처(async/await, Suspense)로 업계가 옮겨 갈지다.
 
 RSC는 2020년 12월 실험 데모로 처음 공개됐다. 초기에는 `*.server.jsx`·`*.client.jsx` 파일 이름으로 경계를 정했고, 브라우저는 `createFromFetch(...).readRoot()`로 Payload를 읽었다. 이후 파일 이름 규칙 대신 `'use client'`·`'use server'` 지시어로 바뀌었고, Next.js 13 App Router(2023, 안정화)가 첫 대중적 구현이 됐다. React 19(2024.12)에서 서버 컴포넌트가 안정 기능이 됐다. 다만 번들러·프레임워크 연동 API는 여전히 마이너 버전 사이에 바뀔 수 있다.
 
