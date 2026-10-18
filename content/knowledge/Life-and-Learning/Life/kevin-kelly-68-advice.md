@@ -63,4 +63,4 @@ sources: ["https://kk.org/thetechnium/68-bits-of-unsolicited-advice/"]
 
 - 장기적으로 미래는 낙관론자들이 만든다. 낙관론자가 되기 위해 우리가 만드는 수많은 문제를 외면할 필요는 없다. 문제를 해결하는 우리의 능력이 나아지는 모습을 상상하기만 하면 된다.
 
-관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[better-life-tips|더 나은 삶을 위한 100가지 팁]]
+관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[better-life-tips|더 나은 삶을 위한 100가지 팁]], [[levelsio-18-advice|지금 18살이라면 할 일]]
