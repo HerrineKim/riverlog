@@ -109,4 +109,4 @@ function Counter() {
 - 컴포넌트는 `useSelector`로 필요한 값만 읽고 `useDispatch`로 action을 보낸다.
 - 서버 데이터는 Redux에 넣기보다 서버 상태 라이브러리에 맡기는 편이 단순하다.
 
-관련 노트: [[context|Context]], [[state|State]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]], [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]]
+관련 노트: [[context|Context]], [[state|State]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]], [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]], [[functional-programming|함수형 프로그래밍]]
