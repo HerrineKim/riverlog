@@ -75,7 +75,7 @@ sources: ["https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://ro
 
 - **REST**는 표준 규격이 아니라 아키텍처 스타일이다. 상태 없음(stateless), 캐시 가능 여부 명시, 균일한 인터페이스가 핵심이다. 설계 규칙은 [[rest-api|REST API]]에 있다.
 - **GraphQL**은 스키마로 타입을 정의하고 클라이언트가 원하는 필드를 질의한다. 구독(subscription)으로 실시간 갱신도 받는다.
-- **gRPC**는 `.proto` 파일에 서비스와 메시지를 정의하면 여러 언어의 클라이언트·서버 코드가 생성된다. 호출마다 데드라인(타임아웃)을 걸 수 있다.
+- **gRPC**는 `.proto` 파일에 서비스와 메시지를 정의하면 여러 언어의 클라이언트·서버 코드가 생성된다. 호출마다 데드라인(타임아웃)을 걸 수 있다. 호출 방식과 브라우저 제약은 [[grpc|gRPC]]에 있다.
 
 ```protobuf
 service Greeter {
