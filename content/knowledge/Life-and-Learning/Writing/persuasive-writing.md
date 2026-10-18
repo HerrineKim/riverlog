@@ -96,4 +96,4 @@ sources: ["https://bloggertip.com/4175"]
 - 논리: 말하듯 쓰고, 사실과 판단을 가르고, 판단에는 근거를 붙인다
 - 문장력: 모으고, 메모하고, 사전을 찾고, 분석하며 읽고, 고친다
 
-관련 노트: [[online-writing|온라인 글쓰기]]
+관련 노트: [[online-writing|온라인 글쓰기]], [[eco-writing-rules|움베르토 에코의 글을 잘 쓰는 규칙]]
