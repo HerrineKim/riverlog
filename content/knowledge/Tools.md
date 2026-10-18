@@ -7,7 +7,7 @@ source: mixed
 date: "2026-10-14"
 ---
 
-좋은 도구를 제대로 쓰는 것은 실력만큼이나 생산성을 좌우한다. 이 분야에는 코드를 관리하는 Git과 GitHub 협업 설정, 코드 리뷰, 개발 환경 설정, 브라우저에서 웹 페이지를 검사·디버깅하는 Chrome DevTools부터 문서 작성용 Markdown·LaTeX, 편집기 Vim·VS Code와 터미널 도구 tmux, 팀 업무를 관리하는 Jira, 웹 분석 도구 GA4·Segment, DB 클라이언트, 스프레드시트, 로우 코드 내부 도구 Retool, CMS 워드프레스, 그리고 3D 모델링 도구 Blender까지 모았다. 각 노트는 "무엇을 왜 쓰는지 → 핵심 사용법 → 실무 팁" 순서로 정리되어 있다.
+좋은 도구를 제대로 쓰는 것은 실력만큼이나 생산성을 좌우한다. 이 분야에는 코드를 관리하는 Git과 GitHub 협업 설정, 코드 리뷰, 개발 환경 설정, 브라우저에서 웹 페이지를 검사·디버깅하는 Chrome DevTools부터 문서 작성용 Markdown·LaTeX, 편집기 Vim·VS Code와 터미널 도구 tmux, 팀 업무를 관리하는 Jira, 웹 분석 도구 GA4·Segment, DB 클라이언트, 스프레드시트, 로우 코드 내부 도구 Retool, CMS 워드프레스, 3D 모델링 도구 Blender, 영상 인코딩 도구 Compressor까지 모았다. 각 노트는 "무엇을 왜 쓰는지 → 핵심 사용법 → 실무 팁" 순서로 정리되어 있다.
 
 ## 하위 주제
 
@@ -28,6 +28,7 @@ date: "2026-10-14"
 - [DBeaver에서 SQL로 데이터 다루기](/knowledge/dictionary/tools/dbeaver): 여러 DBMS를 다루는 무료 GUI 클라이언트, PostgreSQL 연결, SQL 편집기로 조회·수정
 - [Google Sheets vs Excel](/knowledge/dictionary/tools/google-sheets-vs-excel): 공동 작업·배열 함수·Apps Script로 협업과 자동화에 강한 Google Sheets의 장점
 - [Blender](Tools/Blender.md): 화면 조작·변형 단축키, Edit 모드, 메시 편집 도구, 모디파이어, Shading → Material → UV → Rigging 흐름
+- [Compressor로 영상 용량 줄이기](Tools/apple-compressor.md): M1 이상 Mac에서 MPEG-4 프리셋 하드웨어 인코딩, 비트레이트 4,500Kbps로 유튜브 수준 용량
 - [Retool](/knowledge/dictionary/tools/retool): 어드민·대시보드 같은 내부 도구를 만드는 로우 코드 플랫폼
 - [워드프레스](/knowledge/dictionary/tools/wordpress): 설계 철학, 테마·플러그인 고르기, 사이트 속도 개선, 개발자로 성장하는 길과 생태계 비즈니스
 
