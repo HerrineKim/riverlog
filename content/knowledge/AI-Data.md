@@ -19,6 +19,7 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [문자열·문서 유사도: 편집 거리와 코사인 유사도](AI-Data/text-similarity.md): 오타에 강한 제목 검색(Jaro-Winkler)과 키워드 벡터 기반 영화 추천
 - [머신 러닝 기초: 네 단계 추상화](AI-Data/machine-learning-basics.md): 데이터 → 모델 → 손실 → 최적화, 지도·비지도, 최소제곱법, 과적합·MLE·MAP·정규화
 - [퍼셉트론과 다층 퍼셉트론](AI-Data/perceptron-mlp.md): 인공 뉴런·활성화 함수, 퍼셉트론 학습과 XOR 한계, MLP와 오류 역전파
+- [딥러닝 직관으로 이해하기: 신경망으로 숫자에서 패턴 찾기](AI-Data/deep-learning-intuition.md): 모든 것이 숫자인 컴퓨터, 규칙으로 못 적는 패턴, 프로그래밍과 학습의 차이, 층별 특징과 해석의 어려움, 강화 학습과 알파제로, 전이 학습
 - [결정 트리와 앙상블: 랜덤 포레스트와 부스팅](AI-Data/decision-tree-ensemble.md): 지니 불순도, 배깅과 부스팅 비교, 정형 데이터에 강한 트리 모델, 서버·엣지 배포
 - [분류 모델 성능 평가 지표](AI-Data/classification-metrics.md): 혼동 행렬, 정밀도·재현율·정확도·F1, 객체 탐지의 IoU·PR 곡선·AP·mAP
 - [불확실한 지식으로 추론하기: 베이지안 분류기와 퍼지 추론](AI-Data/bayesian-fuzzy-inference.md): 베이즈 정리·최소 오류/위험 분류기·나이브 베이즈, 퍼지 집합·관계·논리

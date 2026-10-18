@@ -108,4 +108,4 @@ PyTorch·TensorFlow 같은 프레임워크는 이 미분을 자동 미분(autogr
 - 은닉층을 쌓은 MLP와 오류 역전파가 그 한계를 넘었고, 이것이 딥러닝의 출발점이다.
 - **층을 쌓는 힘은 비선형 활성화 함수에서 나온다.** 선형 층만 쌓으면 결국 선형 변환 하나와 같다.
 
-관련 노트: [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[classification-metrics|분류 모델 성능 평가 지표]], [[decision-tree-ensemble|결정 트리와 앙상블]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]]
+관련 노트: [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[classification-metrics|분류 모델 성능 평가 지표]], [[decision-tree-ensemble|결정 트리와 앙상블]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[deep-learning-intuition|딥러닝 직관으로 이해하기]]
