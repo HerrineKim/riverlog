@@ -1,14 +1,14 @@
 ---
 title: "함수와 this"
 concept: "Function"
-summary: "함수 선언식·표현식(이름 있는 함수 표현식)·화살표 함수·IIFE·메서드·new Function, 블록 안 함수 선언의 스코프, 함수도 객체라는 점(name·length·커스텀 속성), 매개변수와 인자(호출마다 평가되는 기본값·arguments·rest·spread), return과 early return, 이름 짓기, 생성자 함수(new.target·return 규칙)와 팩토리 함수, 호출 방식에 따라 달라지는 this(전역·암묵적·명시적·new·이벤트 핸들러), 화살표 함수에 없는 것들, bind·call·apply와 이벤트 리스너에 메서드를 넘길 때의 함정, 재귀와 콜 스택 깊이."
+summary: "함수 선언식·표현식(이름 있는 함수 표현식)·화살표 함수·IIFE(식 자리에 문장 쓰기)·메서드·new Function, 블록 안 함수 선언의 스코프, 함수도 객체라는 점(name·length·커스텀 속성), 매개변수와 인자(호출마다 평가되는 기본값·arguments·rest·spread), return과 early return, 이름 짓기, 생성자 함수(new.target·return 규칙)와 팩토리 함수, 호출 방식에 따라 달라지는 this(전역·암묵적·명시적·new·이벤트 핸들러), 화살표 함수에 없는 것들, bind·call·apply와 이벤트 리스너에 메서드를 넘길 때의 함정, 재귀와 콜 스택 깊이."
 tags: ["javascript", "function", "frontend"]
 source: til
 date: "2026-10-17"
-sources: ["https://riverkim.kr/209", "https://riverkim.kr/116", "https://wesbos.com/javascript/02-functions/functions-parameters-and-arguments", "https://wesbos.com/javascript/02-functions/different-ways-to-declare-functions", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/61-the-this-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/65-bind-call-and-apply", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/62-prototype-refactor-of-gallery-exercise", "https://web.dev/learn/javascript/functions", "https://web.dev/learn/javascript/functions/function-expressions", "https://web.dev/learn/javascript/functions/new", "https://web.dev/learn/javascript/functions/return", "https://web.dev/learn/javascript/functions/this", "https://ko.javascript.info/function-basics", "https://ko.javascript.info/function-expressions", "https://ko.javascript.info/arrow-functions-basics", "https://ko.javascript.info/object-methods", "https://ko.javascript.info/constructor-new", "https://ko.javascript.info/recursion", "https://ko.javascript.info/rest-parameters-spread", "https://ko.javascript.info/function-object", "https://ko.javascript.info/new-function", "https://ko.javascript.info/bind", "https://ko.javascript.info/arrow-functions", "https://ko.javascript.info/reference-type"]
+sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493", "https://riverkim.kr/209", "https://riverkim.kr/116", "https://wesbos.com/javascript/02-functions/functions-parameters-and-arguments", "https://wesbos.com/javascript/02-functions/different-ways-to-declare-functions", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/61-the-this-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/65-bind-call-and-apply", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/62-prototype-refactor-of-gallery-exercise", "https://web.dev/learn/javascript/functions", "https://web.dev/learn/javascript/functions/function-expressions", "https://web.dev/learn/javascript/functions/new", "https://web.dev/learn/javascript/functions/return", "https://web.dev/learn/javascript/functions/this", "https://ko.javascript.info/function-basics", "https://ko.javascript.info/function-expressions", "https://ko.javascript.info/arrow-functions-basics", "https://ko.javascript.info/object-methods", "https://ko.javascript.info/constructor-new", "https://ko.javascript.info/recursion", "https://ko.javascript.info/rest-parameters-spread", "https://ko.javascript.info/function-object", "https://ko.javascript.info/new-function", "https://ko.javascript.info/bind", "https://ko.javascript.info/arrow-functions", "https://ko.javascript.info/reference-type"]
 ---
 
-> 직접 정리한 TIL에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(함수 모듈), javascript.info(모던 JavaScript 튜토리얼)의 함수 기초·함수 심화 글(「함수」, 「함수 표현식」, 「메서드와 this」, 「new 연산자와 생성자 함수」, 「재귀와 스택」, 「나머지 매개변수와 스프레드 문법」, 「객체로서의 함수와 기명 함수 표현식」, 「new Function 문법」, 「함수 바인딩」, 「화살표 함수 다시 살펴보기」, 「참조 타입」)을 함께 참고했다.
+> 직접 정리한 TIL에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(함수 모듈), javascript.info(모던 JavaScript 튜토리얼)의 함수 기초·함수 심화 글(「함수」, 「함수 표현식」, 「메서드와 this」, 「new 연산자와 생성자 함수」, 「재귀와 스택」, 「나머지 매개변수와 스프레드 문법」, 「객체로서의 함수와 기명 함수 표현식」, 「new Function 문법」, 「함수 바인딩」, 「화살표 함수 다시 살펴보기」, 「참조 타입」)을 함께 참고했다. 프론트엔드에서의 쓰임은 이문기의 「[프론트엔드에서 클래스와 즉시 실행 함수 쓰기](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493)」(2023.08)를 더했다.
 
 JavaScript의 함수는 **일급 객체(first-class citizen)** 다. 변수에 할당할 수 있고, 다른 함수의 인자로 넘길 수 있고, 함수의 반환값이 될 수 있다. 이 성질 덕분에 콜백, 고차 함수, 클로저, React 컴포넌트 같은 패턴이 가능하다. 함수 안의 `this`는 함수를 **어떻게 호출했는지**에 따라 달라진다.
 
@@ -58,7 +58,32 @@ typeof tick // 'undefined' — 바깥에서는 보이지 않는다
 
 함수 표현식이면 호출 괄호를 그룹 괄호 안(`(function () {}())`)에 둬도, 밖(`(function () {})()`)에 둬도 된다. **화살표 함수는 밖에만** 둘 수 있다. `(() => {}())`는 SyntaxError이고 `(() => {})()`로 쓴다. 화살표 함수는 식 자리에서 먼저 완성된 뒤에야 호출할 수 있기 때문이다.
 
-과거에는 모듈 패턴과 클로저를 만드는 기본 도구였다. 지금은 블록 스코프(`let`·`const`)와 ES 모듈이 같은 일을 하므로, 최상위에서 `await`를 쓸 수 없는 환경에서 `(async () => { … })()`로 감쌀 때 정도에만 쓴다. 옛 코드의 `!function () {}()`, `+function () {}()`도 같은 IIFE다. 괄호 대신 단항 연산자를 앞에 붙여 `function`을 선언문이 아닌 식으로 읽히게 한 것이다(선언문은 이름이 필수이고 정의하자마자 호출할 수 없다).
+과거에는 모듈 패턴과 클로저를 만드는 기본 도구였다. 지금은 블록 스코프(`let`·`const`)와 ES 모듈이 같은 일을 하므로, 스코프를 가두는 용도로는 거의 쓰지 않는다. 남은 쓰임은 둘이다. 최상위에서 `await`를 쓸 수 없는 환경에서 `(async () => { … })()`로 감쌀 때, 그리고 **식 자리에서 문장을 쓰고 싶을 때**다.
+
+#### 식 자리에 문장 쓰기
+
+`const`에 값을 한 번만 대입하고 싶은데 계산에 분기가 여러 개 필요하면 삼항 연산자가 중첩되기 쉽다. `let`으로 선언하고 `if`로 채우면 나중에 다른 곳에서 엉뚱한 값을 다시 대입할 여지가 생긴다. IIFE로 감싸면 `if`와 early return을 쓰면서도 결과는 `const` 하나에 한 번만 들어간다.
+
+```javascript
+const serviceDiscount = await getServiceDiscount()
+
+// 중첩 삼항 대신
+const price = (() => {
+  const hasService = serviceDiscount > 0
+  const hasProduct = product.discount > 0
+  if (hasService && hasProduct) {
+    return (1 - Math.max(serviceDiscount, product.discount)) * product.regularPrice
+  }
+  if (hasService) return (1 - serviceDiscount) * product.regularPrice
+  if (hasProduct) return (1 - product.discount) * product.regularPrice
+  return product.regularPrice
+})()
+```
+
+- 계산에 쓴 임시 변수가 IIFE 안에 갇혀, 같은 스코프에서 비슷한 계산을 반복할 때 `slicedUsers` 같은 이름이 충돌하지 않는다.
+- 함수 이름·매개변수·타입·위치를 고민하는 비용 없이 위에서 아래로 쓰던 흐름을 유지한다.
+- **함수 추출의 예비 단계**가 된다. 나중에 IIFE 본문을 그대로 이름 붙은 함수로 옮기면 된다.
+- 일반 IIFE 안에서는 `await`를 쓸 수 없다. 비동기 값은 바깥에서 먼저 받아 오거나 `async` IIFE의 결과를 `await`한다. 옛 코드의 `!function () {}()`, `+function () {}()`도 같은 IIFE다. 괄호 대신 단항 연산자를 앞에 붙여 `function`을 선언문이 아닌 식으로 읽히게 한 것이다(선언문은 이름이 필수이고 정의하자마자 호출할 수 없다).
 
 ### 문자열로 함수 만들기: new Function
 

@@ -1,14 +1,14 @@
 ---
 title: "class 문법"
 concept: "Class"
-summary: "ES6 class로 객체의 틀을 정의하는 방법: 선언과 표현식(익명 클래스, TDZ), constructor, 계산된 메서드 이름, 인스턴스·정적 멤버, 클래스 필드와 #private 필드·메서드, _ 관례로 흉내 내는 protected, 정적 초기화 블록, new this를 쓰는 정적 팩토리 메서드, extends와 super(파생 constructor가 super()를 먼저 불러야 하는 이유, 필드 오버라이딩의 함정, HomeObject), 내장 클래스 확장과 Symbol.species, getter·setter. class가 단순한 문법적 설탕이 아닌 지점(strict mode, new 강제, 열거 불가 메서드)까지."
+summary: "ES6 class로 객체의 틀을 정의하는 방법: 선언과 표현식(익명 클래스, TDZ), constructor, 계산된 메서드 이름, 인스턴스·정적 멤버, 클래스 필드와 #private 필드·메서드, _ 관례로 흉내 내는 protected, 정적 초기화 블록, new this를 쓰는 정적 팩토리 메서드, extends와 super(파생 constructor가 super()를 먼저 불러야 하는 이유, 필드 오버라이딩의 함정, HomeObject), 내장 클래스 확장과 Symbol.species, getter·setter, 프론트엔드에서 클래스를 꺼낼 때(관련 함수·데이터 묶기, 값 객체). class가 단순한 문법적 설탕이 아닌 지점(strict mode, new 강제, 열거 불가 메서드)까지."
 tags: ["javascript", "oop", "frontend"]
 source: mixed
 date: "2026-10-17"
-sources: ["https://riverkim.kr/178", "https://riverkim.kr/256", "https://web.dev/learn/javascript/classes", "https://web.dev/learn/javascript/classes/extends", "https://web.dev/learn/javascript/classes/class-fields", "https://web.dev/learn/javascript/classes/static-initialization-blocks", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks", "https://ko.javascript.info/class", "https://ko.javascript.info/class-inheritance", "https://ko.javascript.info/static-properties-methods", "https://ko.javascript.info/private-protected-properties-methods", "https://ko.javascript.info/extend-natives", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species"]
+sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493", "https://riverkim.kr/178", "https://riverkim.kr/256", "https://web.dev/learn/javascript/classes", "https://web.dev/learn/javascript/classes/extends", "https://web.dev/learn/javascript/classes/class-fields", "https://web.dev/learn/javascript/classes/static-initialization-blocks", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks", "https://ko.javascript.info/class", "https://ko.javascript.info/class-inheritance", "https://ko.javascript.info/static-properties-methods", "https://ko.javascript.info/private-protected-properties-methods", "https://ko.javascript.info/extend-natives", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species"]
 ---
 
-> 직접 정리한 내용에 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 클래스 모듈과 javascript.info(모던 JavaScript 튜토리얼)의 클래스 글(「클래스와 기본 문법」, 「클래스 상속」, 「정적 메서드와 정적 프로퍼티」, 「private, protected 프로퍼티와 메서드」, 「내장 클래스 확장하기」)을 더해, MDN으로 확인해 보강한 노트다.
+> 직접 정리한 내용에 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 클래스 모듈과 javascript.info(모던 JavaScript 튜토리얼)의 클래스 글(「클래스와 기본 문법」, 「클래스 상속」, 「정적 메서드와 정적 프로퍼티」, 「private, protected 프로퍼티와 메서드」, 「내장 클래스 확장하기」)을 더해, MDN으로 확인해 보강한 노트다. 프론트엔드에서의 쓰임은 이문기의 「[프론트엔드에서 클래스와 즉시 실행 함수 쓰기](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493)」(2023.08)를 더했다.
 
 **class**는 같은 모양의 객체를 찍어 내기 위한 템플릿이다. 데이터, 그 데이터를 다루는 메서드를 한 블록에 묶고, 이들을 통틀어 클래스의 **멤버**라고 한다. ES5까지는 생성자 함수와 프로토타입 체인으로 구현했고, ES6(2015)에서 `class`가 도입됐다. 내부 동작은 여전히 프로토타입 기반이라 `typeof MyClass`는 `'function'`이다.
 
@@ -309,6 +309,65 @@ account.balance           // 100
 - getter는 반드시 값을 `return`해야 하고, setter는 인자를 하나 받는다.
 - getter·setter는 인스턴스가 아니라 `prototype`에 접근자 속성으로 정의되어 모든 인스턴스가 공유한다([[property-descriptors|속성 설명자]]).
 - getter만 두고 setter를 두지 않으면 읽기 전용이 된다. class 본문은 strict mode라 대입하면 `TypeError`다.
+
+## 프론트엔드에서 클래스를 꺼낼 때
+
+프론트엔드 코드는 대부분 함수와 컴포넌트로 짜지만, 다음 두 경우에는 클래스가 낫다.
+
+### 관련 함수와 데이터가 함께 불어날 때
+
+상품 옵션처럼 원본 데이터 하나(`options`)를 두고 `getOption`, `getOptionToActivate`, `getAdditionalPrice` 같은 함수가 서로를 부르며 늘어나는 경우다. 이 함수들은 범용 유틸이 아니라 **이 문맥에서만 쓰이고**, 이벤트 핸들러가 원본 데이터를 직접 만지면 위험하다(실수로 바꾸면 원본을 다시 받으려고 API를 또 불러야 한다).
+
+```javascript
+class Options {
+  #options
+
+  constructor(options) {
+    this.#options = options
+  }
+
+  #getOption(selectionId) { /* … */ }
+
+  getOptionToActivate(selectionId) { /* #getOption 사용 */ }
+  getAdditionalPrice(selectionId) { /* #getOption 사용 */ }
+}
+```
+
+- 원본 데이터와 내부 헬퍼를 `#private`로 숨겨 바깥에서 실수로 건드릴 수 없다. 내부가 바뀌어도 살펴볼 범위가 좁다.
+- `getAdditionalPrice`라는 모호한 이름이 `options.getAdditionalPrice`가 되어 **어떤 문맥의 함수인지** 드러난다.
+- 관련 함수와 공유 값을 더할 자리가 생기고, 단위 테스트를 쓰기 쉬워진다.
+
+처음부터 객체와 협력을 설계하는 것이 정석이지만, 프론트엔드에서는 함수로 쓰다가 이런 신호가 보일 때 클래스로 묶는 경우가 더 흔하다.
+
+### 값 객체
+
+언어가 주는 타입(`Date`, `number`)만으로는 도메인 규칙을 담기 어려울 때 타입을 확장해 **값으로** 쓰는 클래스가 **값 객체(value object)**다. 이벤트 마감일을 `Date` 대신 `EventDate`로 표현하면, 그 값에 딸린 계산(`canShowBanner()`)이 한곳에 모이고 이름 자체가 문맥을 설명한다.
+
+```javascript
+class EventDate {
+  #lastDate
+  #offset
+
+  constructor(lastDate, offset = 0) {
+    this.#lastDate = lastDate
+    this.#offset = offset
+  }
+
+  canShowBanner(agreedToTerms, now = new Date()) {
+    return agreedToTerms && now < this.#lastDate - this.#offset
+  }
+
+  isEqual(other) {
+    return this.#lastDate.getTime() === other.#lastDate.getTime() && this.#offset === other.#offset
+  }
+}
+```
+
+| 규칙 | 이유 |
+| --- | --- |
+| **setter를 두지 않는다(불변)** | `10 === 20`이 중간 로직을 거친 뒤 `true`가 되면 코드를 믿을 수 없다. 값을 바꾸려면 새 인스턴스를 만든다 |
+| **같은 타입끼리 비교 메서드를 둔다** | `isEqual`, `isLaterThan`처럼 값으로 비교한다. `===`는 참조를 비교하므로 쓰지 않는다 |
+| **비교가 거짓이면 다른 값이다** | 식별자가 아니라 속성 값이 같은지로 같음을 정한다 |
 
 ## 핵심 정리
 
