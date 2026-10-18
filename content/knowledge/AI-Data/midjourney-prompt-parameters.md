@@ -49,4 +49,4 @@ using a dark, neutral color palette.
 - 문장은 대상과 색, 파라미터는 형식과 화풍을 정한다.
 - 스타일 참조 코드와 가중치가 결과의 인상을 가장 크게 바꾼다.
 
-관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]]
+관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[ai-image-to-vector|AI 이미지를 쓸모 있는 벡터로 바꾸기]]
