@@ -178,4 +178,4 @@ Claude Code를 잘 쓰면 개발자의 자리는 **코드를 치는 사람**에�
 
 구독(Pro·Max·Team·Enterprise)으로 쓰거나, CI/CD·파이프라인처럼 자동화 용도면 API 사용량 과금으로 쓴다. Amazon Bedrock·Google Cloud·Microsoft Foundry를 통해서도 쓸 수 있다. 플랜별 요금과 한도는 자주 바뀌므로 [공식 요금 안내](https://claude.com/pricing)에서 확인하고, 세션 안에서는 `/usage`로 사용량을 본다.
 
-관련 노트: [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]]
+관련 노트: [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]]

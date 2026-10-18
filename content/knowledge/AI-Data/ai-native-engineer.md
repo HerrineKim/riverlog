@@ -90,4 +90,4 @@ AI 네이티브 엔지니어(AI-native software engineer)는 AI를 가끔 꺼내
 - 요구 사항부터 운영까지 모든 단계에 쓸 곳이 있다. 다만 결정과 책임은 넘기지 않는다.
 - 기초(CS, 설계, 문제 해결)가 탄탄할수록 질문이 좋아지고 답을 잘 가려낸다.
 
-관련 노트: [[ai-era-developer|AI 시대 개발자의 역할]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-code-guide|Claude Code 활용 가이드]], [[loop-engineering|루프 엔지니어링]]
+관련 노트: [[ai-era-developer|AI 시대 개발자의 역할]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-code-guide|Claude Code 활용 가이드]], [[loop-engineering|루프 엔지니어링]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]]
