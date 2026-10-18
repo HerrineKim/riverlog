@@ -1,14 +1,14 @@
 ---
 title: "Claude Code 활용 가이드"
 concept: "Claude Code"
-summary: "채팅형 AI와 무엇이 다른지부터 설치, 슬래시 명령·단축키, MCP 연결, Skills와 CLAUDE.md, Claude Code에 맞는 프롬프트 습관까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
+summary: "채팅형 AI와 무엇이 다른지부터 설치, 슬래시 명령·단축키, MCP 연결, Skills와 CLAUDE.md, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하는 작업 방식까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
 tags: ["ai", "llm", "claude-code", "agentic-coding", "prompting", "mcp"]
 source: other
 date: "2026-10-13"
-sources: ["https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp"]
+sources: ["https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five", "https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp"]
 ---
 
-> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다.
+> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다. 위임 방식은 Kieran Klaassen의 「[How I Use Claude Code to Ship Like a Team of Five](https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five)」(2025.07)를 더했다.
 
 ## 채팅형 AI와 다른 점
 
@@ -151,6 +151,28 @@ CLAUDE.md는 사람이 쓰는 지시이고, **자동 메모리**는 Claude가 �
 | **끝나는 조건을 준다** | 테스트 통과처럼 확인 가능한 목표가 있을 때 | `/goal 모든 테스트 통과`처럼 조건을 걸면 별도 모델이 매 턴 충족 여부를 판정하고, 충족될 때까지 이어서 일한다 |
 
 에이전트에게 맡길 때 결과를 일관되게 만드는 방법은 [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], 반복 작업을 루프로 돌리는 방법은 [[loop-engineering|루프 엔지니어링]]에서 더 깊이 다뤘다.
+
+## 개발 팀장처럼 위임하기
+
+Claude Code를 잘 쓰면 개발자의 자리는 **코드를 치는 사람**에서 **결과를 정의하고 맡기는 엔지니어링 매니저·테크 리드**로 옮겨 간다. 파일과 함수 단위로 생각하지 않고, 만들 기능의 스펙과 원하는 결과로 생각한다. 직접 세부를 챙기는 마이크로매니저 자리에서 물러나되, 코드 리뷰와 테스트라는 견제 장치는 유지한다.
+
+| 습관 | 방법 |
+| --- | --- |
+| **이슈 → 구현 → 리뷰를 명령으로** | 반복 흐름을 스킬로 만든다. 예: `/issues`(조사해서 GitHub 이슈 작성) → `/work`(이슈를 구현하고 PR 열기) → `/review`(PR 리뷰와 개선 제안). "PR" 한마디로 브랜치·커밋 메시지·PR 설명까지 만들게 할 수도 있다 |
+| **워크트리로 병렬 실행** | 기능마다 git 워크트리를 따로 두고 탭 여러 개에서 동시에 돌린다. 구현, 리뷰, 변경 기록 작성, 버그 조사를 나란히 맡긴다. 자세한 구성은 [[loop-engineering\|루프 엔지니어링]] |
+| **남의 코드까지 읽게 하는 디버깅** | 코드와 로그가 멀쩡한데 문제가 나면 "개발 환경이 아니라 운영 환경 쪽 문제일 수 있다"고 방향을 주고, 쓰고 있는 외부 라이브러리 소스까지 따라가게 한다. 사람이 몇 시간 걸릴 낯선 코드 탐색을 AI가 맡고, 결론은 함께 낸다 |
+| **지친 상태의 결정을 덜어 낸다** | 변수 이름 같은 작은 결정이 쌓여 집중력을 깎는다. 구현 세부는 맡기고, 남은 집중력은 어려운 설계 판단에 쓴다 |
+| **외부 맥락은 MCP로** | 고객 피드백 도구 같은 서비스를 MCP로 연결해 이슈 작성의 재료로 쓴다 |
+
+자주 보이는 실패와 대처는 이렇다.
+
+| 증상 | 대처 |
+| --- | --- |
+| 단순한 일을 과하게 복잡하게 만든다 | `Esc`로 멈추고 범위를 다시 준다 |
+| 테스트를 지나치게 많이 쓴다 | 필요한 테스트 범위를 지시나 CLAUDE.md에 적는다 |
+| 테스트를 통과시키려고 테스트 자체를 우회·수정한다 | 결과를 리뷰에서 반드시 확인한다. 테스트는 사람이 정하는 원칙은 [[ai-coding-guardrails\|AI 코딩 실무 가드레일]] |
+
+주니어 개발자에게는 지치지 않는 멘토로도 쓸 수 있다. 내 코드 리뷰, 언어·방식 간 비교, 흔한 함정 설명을 부탁한다. 처음 쓸 때는 연습용이 아니라 **실제 프로젝트**에 적용해 보는 편이 빨리 감을 잡는다. 이 위임 방식을 실무 팀에 적용한 예는 [[ai-native-frontend|AI 네이티브 프론트엔드 개발]]에 있다.
 
 ## 요금제
 
