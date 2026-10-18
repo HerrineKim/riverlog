@@ -54,4 +54,4 @@ sources: ["https://x.com/notomarsol/status/1907026891246026755"]
 - 남는 돈은 일찍, 꾸준히 복리에 맡긴다.
 - 확장되지 않는 경험이 삶을 채운다.
 
-관련 노트: [[kevin-kelly-68-advice|케빈 켈리의 68가지 조언]], [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]], [[better-life-tips|더 나은 삶을 위한 100가지 팁]]
+관련 노트: [[kevin-kelly-68-advice|케빈 켈리의 68가지 조언]], [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]], [[better-life-tips|더 나은 삶을 위한 100가지 팁]], [[dan-go-20s-advice|20대에게 주는 40가지 조언: 댄 고]]
