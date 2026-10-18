@@ -1,14 +1,14 @@
 ---
 title: "프론트엔드의 등장 배경"
 concept: "Frontend History"
-summary: "초기 웹에는 프론트엔드라는 개념이 없었다. 이미지·CSS·JavaScript·AJAX가 차례로 등장하고 Flash가 물러나고, 구글·페이스북이 웹을 앱 플랫폼으로 밀어붙이면서 화면을 만드는 일이 전문 영역이 되었고, 트래픽이 커지자 프론트엔드와 백엔드가 나뉘었다."
-tags: ["frontend", "web", "javascript", "html"]
+summary: "초기 웹에는 프론트엔드라는 개념이 없었다. 이미지·CSS·JavaScript·AJAX가 차례로 등장하고 Flash가 물러나고, 구글·페이스북이 웹을 앱 플랫폼으로 밀어붙이면서 화면을 만드는 일이 전문 영역이 되었고, 트래픽이 커지자 프론트엔드와 백엔드가 나뉘었다. React 이후에는 프레임워크·상태 관리·타입·스타일링·빌드 도구·렌더링 방식이 해마다 바뀌었지만, 갈래별로 보면 방향은 일정했다."
+tags: ["frontend", "web", "javascript", "html", "history", "ecosystem"]
 source: other
 date: "2026-10-12"
-sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@teo/frontend"]
+sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@teo/frontend", "https://gist.github.com/pocojang/af4211355f72ea6f3fc306fe4580566f", "https://vite.dev/blog/announcing-vite8"]
 ---
 
-> 수코딩의 책 『아는 만큼 보이는 프런트엔드 개발』(길벗) 발췌를 실은 요즘IT의 글 「[유튜버 '수코딩'이 정리한 프론트엔드의 등장 배경](https://yozm.wishket.com/magazine/detail/2287/)」(2023.10)과 테오(teo)의 「[프론트엔드 역사와 미래, 업무 분야 ... 그리고 잘하는 프론트엔드 개발자란?](https://velog.io/@teo/frontend)」(2021.12)을 바탕으로 재구성한 노트다.
+> 수코딩의 책 『아는 만큼 보이는 프런트엔드 개발』(길벗) 발췌를 실은 요즘IT의 글 「[유튜버 '수코딩'이 정리한 프론트엔드의 등장 배경](https://yozm.wishket.com/magazine/detail/2287/)」(2023.10)과 테오(teo)의 「[프론트엔드 역사와 미래, 업무 분야 ... 그리고 잘하는 프론트엔드 개발자란?](https://velog.io/@teo/frontend)」(2021.12), pocojang의 「[2016년에 FE를 배우는 기분, 2023년에 FE를 배우는 기분](https://gist.github.com/pocojang/af4211355f72ea6f3fc306fe4580566f)」(2023.05)을 바탕으로 재구성한 노트다.
 
 ## 웹의 세대 구분
 
@@ -75,6 +75,29 @@ sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@t
 - **프로토타이핑의 최전선**: 설치가 필요 없고 가볍게 만들 수 있어, 스타트업이 사업을 검증하는 첫 도구가 된다.
 - **데이터를 다루는 앱**: Notion·Figma·Slack·VS Code처럼 웹이 문서가 아닌 애플리케이션이 됐다. 서버리스와 Next.js 같은 메타 프레임워크로 데이터 로직 일부가 프론트엔드 쪽으로 옮겨 왔고, 실시간 협업이 기본 기대치가 됐다.
 
+## React 이후: 생태계가 바뀐 흐름
+
+직군이 자리 잡은 2010년대 중반부터 프론트엔드는 **도구가 빠르게 바뀌는 분야**가 됐다. 해마다 「무엇을 배워야 하나」가 달라졌지만, 갈래별로 보면 방향은 일정했다.
+
+| 갈래 | 흐름 | 지금 |
+| --- | --- | --- |
+| 프레임워크 | AngularJS가 앞서다 Angular 2의 전면 재작성으로 흔들렸고, React가 대세가 됐다. Vue는 낮은 진입 장벽으로 입문용 선택지가 됐다 | React가 표준에 가깝다. AngularJS는 2021년에 지원이 끝났다. Svelte·Qwik 같은 컴파일·재개 방식이 대안으로 쓰인다 |
+| 상태 관리 | Redux(+Redux Saga)가 표준이 됐다가 보일러플레이트 피로로 MobX·Context API 논쟁이 붙었다. Hooks(React 16.8, 2019) 이후 Recoil이 유행했다 | **서버 상태는 TanStack Query·SWR, 클라이언트 상태는 Zustand·Jotai**처럼 나눠 쓴다. Recoil은 2025년에 저장소가 보관 처리됐다. Redux는 Redux Toolkit으로 쓴다 |
+| 타입 | 처음엔 학습 자료가 없고 진입 장벽이 높다며 TypeScript를 꺼렸다 | 채용 요건에 가까운 기본기다. Node.js가 타입을 지우고 `.ts`를 바로 실행하고, tRPC·Zod처럼 타입을 런타임 경계까지 잇는 도구가 흔하다 |
+| 스타일링 | CSS Modules·BEM → styled-components·Emotion의 CSS-in-JS → 런타임 비용을 없앤 zero-runtime CSS-in-JS | Tailwind CSS 같은 유틸리티 우선 방식이 주류다. styled-components는 2025년에 유지보수 모드로 들어갔다 |
+| 빌드 도구 | webpack·Babel 설정이 가장 큰 진입 장벽이었다. ESM 기반 개발 서버, esbuild·SWC 같은 Rust·Go 도구가 나오며 Vite로 대거 옮겨 갔다 | Vite 8은 Rust 번들러 Rolldown 하나로 빌드하고, Next.js는 Turbopack을 기본으로 쓴다 |
+| 모노레포·패키지 | Lerna로 시작해 Turborepo·Nx·Rush가 경쟁했다. 국내에서는 Yarn Berry(PnP) 도입이 유행했다 | pnpm 워크스페이스 + Turborepo·Nx 조합이 흔하다 |
+| 렌더링 | CSR SPA가 SEO 문제에 부딪혀 Next.js·Nuxt의 SSR로 돌아왔고, ISR·스트리밍 SSR이 더해졌다 | React Server Components가 Next.js App Router의 기본이 됐다 |
+| 브라우저 | IE 대응용 폴리필이 코드의 큰 몫이었다 | IE 지원 종료(2022) 뒤로 새 표준 API를 바로 쓴다 |
+| 협업·품질 | 팀이 커지며 Prettier·ESLint·Husky·lint-staged, Jest·Testing Library, Storybook과 디자인 시스템·디자인 토큰이 퍼졌다 | 프론트엔드 개발자의 영역이 CI/CD·DX·BFF·마이크로 프론트엔드까지 넓어졌다 |
+| AI | Copilot(2021) 다음 LLM(2023)이 개발 방식 자체를 흔들었다 | 코딩 에이전트에게 일을 맡기고 검증하는 것이 일상 업무가 됐다 |
+
+이 흐름에서 남는 교훈은 셋이다.
+
+- **생태계는 개발자와 함께 자란다.** 한때 「너무 어렵다」며 포기하던 Redux와 TypeScript 중 하나는 레거시 취급을 받고, 하나는 기본 요건이 됐다. 지금 어려운 도구도 몇 년 뒤엔 평범해지거나 사라진다.
+- **유행 하나하나를 좇으면 지친다.** 해마다 쏟아진 라이브러리는 대개 같은 문제(상태 동기화, 빌드 속도, 스타일 충돌, 첫 화면 속도)에 대한 다른 답이었다. 문제를 이해하면 새 도구는 비교 대상일 뿐이다.
+- **바뀌지 않는 것은 웹 플랫폼이다.** 폴리필과 프레임워크가 하던 일이 계속 표준으로 흡수된다. jQuery가 그랬듯 오늘의 라이브러리 기능도 내일의 브라우저 API가 된다.
+
 ## 정리
 
 - 프론트엔드는 한 사건이 아니라 **기술이 쌓이며 생긴** 영역이다.
@@ -82,5 +105,6 @@ sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@t
 - 표준 기술(HTML5·JS)이 독자 플러그인(Flash)을 대체하면서 브라우저가 앱 플랫폼이 됐다.
 - 사용자가 웹에 기대하는 것이 커질수록 화면을 만드는 일도 전문화됐다.
 - 구글(웹을 OS로)과 페이스북(거대한 단일 서비스)의 필요가 V8·크롬·React를 낳았고, 이것이 직군 분리를 굳혔다.
+- React 이후의 도구 교체는 같은 문제에 대한 답이 바뀐 것이다. 문제를 이해하면 유행에 덜 흔들린다.
 
-관련 노트: [[ajax|AJAX와 HTTP 요청]], [[html|HTML 기초와 HTML5]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]], [[frontend-roadmap|프론트엔드 학습 로드맵]], [[frontend-developer-role|프론트엔드 개발자의 업무 범위와 역량]]
+관련 노트: [[ajax|AJAX와 HTTP 요청]], [[html|HTML 기초와 HTML5]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]], [[frontend-roadmap|프론트엔드 학습 로드맵]], [[frontend-developer-role|프론트엔드 개발자의 업무 범위와 역량]], [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[react-server-components|React Server Components의 동작 원리]]

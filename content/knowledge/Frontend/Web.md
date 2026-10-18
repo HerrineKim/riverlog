@@ -11,7 +11,7 @@ date: "2026-10-13"
 
 ## 노트
 
-- [프론트엔드의 등장 배경](/knowledge/dictionary/frontend/web/frontend-history): Web 1.0·2.0, img·CSS·JavaScript·AJAX의 등장, Flash의 퇴장, 프론트엔드·백엔드 분리
+- [프론트엔드의 등장 배경](/knowledge/dictionary/frontend/web/frontend-history): Web 1.0·2.0, img·CSS·JavaScript·AJAX의 등장, Flash의 퇴장, 프론트엔드·백엔드 분리, React 이후 생태계 흐름
 - [HTML](/knowledge/dictionary/frontend/web/html): 문서 구조, DOCTYPE과 렌더링 모드, 요소와 속성, 시맨틱 태그, 표, form 속성, 링크의 target·rel, HTML5
 - [시맨틱 HTML과 문서 구조](/knowledge/dictionary/frontend/web/semantic-html): 랜드마크 태그, h1~h6 제목 계층, 구현되지 않은 아웃라인 알고리즘, article과 section 고르기
 - [문서 head와 메타데이터](/knowledge/dictionary/frontend/web/html-head-metadata): charset·viewport·title, link rel 종류, meta의 http-equiv·name, Open Graph, base, 웹 앱 매니페스트
