@@ -94,4 +94,4 @@ AI 코딩 도구로 프로토타입을 만드는 비용이 크게 줄었다. 그
 - 코딩보다 **랜딩 페이지가 먼저**다. 반응을 보고 만든다.
 - 출시 후에는 기능을 늘리기보다 핵심 하나를 다듬고, 업데이트를 끊지 않는다.
 
-관련 노트: [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[reputation-building|명성 쌓기와 커뮤니티 기여]]
+관련 노트: [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[experience-content-side-income|경험을 콘텐츠로 파는 온라인 사이드잡]]
