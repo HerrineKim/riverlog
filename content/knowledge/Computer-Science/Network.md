@@ -17,6 +17,7 @@ date: "2026-10-14"
 - [TCP](Computer-Science/Network/tcp.md) — TCP 헤더와 플래그, 3-way handshake, 순서 번호와 상태 전이
 - [HTTP 프로토콜](Computer-Science/Network/http.md) — HTTP 요청·응답 형식, 메서드, 상태 코드, URI·URL·URN, HTTP/1.1·2·3 비교
 - [HTTPS와 TLS](Computer-Science/Network/https.md) — HTTP를 TLS로 암호화하는 HTTPS, 대칭키·공개키와 TLS 핸드셰이크, Mixed Content, HSTS와 preload, 종단 간 암호화
+- [웹 PKI의 변천: 인증서 생태계는 왜 바뀌었나](Computer-Science/Network/web-pki-evolution.md) — CA 침해·감청·SHA-1·Heartbleed가 바꾼 인증서 체계, 전방 비밀성, CT 로그, 폐기의 한계, ACME, 47일 유효 기간과 수명 주기 자동화
 - [RFC와 요구 수준 키워드](Computer-Science/Network/rfc-requirement-levels.md) — 인터넷 표준 문서 RFC를 읽는 법과 MUST·SHOULD·MAY의 정확한 뜻
 - [HTTP 캐시](Computer-Science/Network/http-cache.md) — Cache-Control과 ETag로 응답을 재사용하는 HTTP 캐시, 자산별 캐시 전략
 - [DNS](Computer-Science/Network/dns.md) — 도메인을 IP로 바꾸는 조회 흐름, 레코드 종류, TTL, dns-prefetch·preconnect

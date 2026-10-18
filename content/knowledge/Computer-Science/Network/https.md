@@ -85,7 +85,7 @@ CA가 되려면 엄격한 보안 요건과 정기 감사를 통과해 **루트 �
 
 Let's Encrypt 같은 무료 CA와 Vercel·Netlify 같은 호스팅이 인증서를 ACME 프로토콜로 자동 발급·갱신한다.
 
-공개 인증서의 최대 유효 기간은 CA/브라우저 포럼 규정(Ballot SC-081)에 따라 단계적으로 줄어든다. 2026년 3월 15일부터 200일, 2027년 3월 15일부터 100일, 2029년 3월 15일부터 47일이다. 수동 갱신은 사실상 불가능해지므로 **자동 갱신과 만료 모니터링이 전제**다.
+공개 인증서의 최대 유효 기간은 CA/브라우저 포럼 규정(Ballot SC-081)에 따라 단계적으로 줄어든다. 2026년 3월 15일부터 200일, 2027년 3월 15일부터 100일, 2029년 3월 15일부터 47일이다. 수동 갱신은 사실상 불가능해지므로 **자동 갱신과 만료 모니터링이 전제**다. 유효 기간이 짧아진 배경(CA 침해, 폐기 실패, 브라우저 주도의 규칙 변경)은 [[web-pki-evolution|웹 PKI의 변천]]에 있다.
 
 ## TLS 핸드셰이크 (TLS 1.3 기준)
 
@@ -175,4 +175,4 @@ HSTS 헤더도 **처음 한 번은 받아야** 효과가 있다. preload 목록�
 - 리다이렉트만으로는 첫 평문 요청이 남는다. HSTS로 막고, 첫 방문까지 막으려면 preload(되돌리기 어려움에 주의).
 - **HTTPS는 전송 구간만 지킨다.** XSS·CSRF처럼 애플리케이션 단의 공격은 따로 막아야 한다.
 
-관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[security|정보 시스템 보안(공격 기법과 암호)]], [[web-security|웹 보안: CSRF와 XSS]], [[cookie-session|쿠키와 세션]], [[local-https-mkcert|로컬 개발 환경에 HTTPS 적용하기]], [[https-migration|HTTPS 전환: 인증서 고르기부터 리다이렉트까지]]
+관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[security|정보 시스템 보안(공격 기법과 암호)]], [[web-security|웹 보안: CSRF와 XSS]], [[cookie-session|쿠키와 세션]], [[local-https-mkcert|로컬 개발 환경에 HTTPS 적용하기]], [[https-migration|HTTPS 전환: 인증서 고르기부터 리다이렉트까지]], [[web-pki-evolution|웹 PKI의 변천: 인증서 생태계는 왜 바뀌었나]]

@@ -65,4 +65,4 @@ ECDSA(ECC) 키는 RSA보다 작고 빠르다. P-256이면 충분하다. RSA는 �
 - 발급·갱신은 ACME로 자동화한다. 유효 기간은 계속 짧아진다.
 - 설치로 끝나지 않는다. **혼합 콘텐츠, 301, HSTS, Secure 쿠키, TLS 설정**까지 챙겨야 전환이 끝난다.
 
-관련 노트: [[https|HTTPS와 TLS]], [[local-https-mkcert|로컬 개발 환경에 HTTPS 적용하기]], [[seo-basics|SEO 기초]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[privacy-encryption|프라이버시를 위한 암호화]]
+관련 노트: [[https|HTTPS와 TLS]], [[local-https-mkcert|로컬 개발 환경에 HTTPS 적용하기]], [[seo-basics|SEO 기초]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[privacy-encryption|프라이버시를 위한 암호화]], [[web-pki-evolution|웹 PKI의 변천: 인증서 생태계는 왜 바뀌었나]]
