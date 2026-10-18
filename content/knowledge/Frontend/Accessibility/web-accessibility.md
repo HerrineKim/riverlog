@@ -5,10 +5,11 @@ summary: "웹 접근성 주제의 개요 노트. 장애는 개인의 속성이 �
 tags: ["accessibility", "frontend", "ux", "html", "testing"]
 source: other
 date: "2026-10-15"
-sources: ["https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/", "https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/", "https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/", "https://www.w3.org/WAI/news/2025-10-21/wcag22-iso", "https://www.deque.com/blog/en-301-549-v4-1-1-is-final-what-changed-what-it-means-and-what-you-should-do/", "https://dev.to/bellatrick/mastering-web-accessibility-a-guide-for-frontend-developers-48ad", "https://webaim.org/projects/million/", "https://web.dev/learn/accessibility/welcome", "https://web.dev/learn/accessibility/why", "https://web.dev/learn/accessibility/conclusion"]
+sources: ["https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/", "https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/", "https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/", "https://www.w3.org/WAI/news/2025-10-21/wcag22-iso", "https://www.deque.com/blog/en-301-549-v4-1-1-is-final-what-changed-what-it-means-and-what-you-should-do/", "https://dev.to/bellatrick/mastering-web-accessibility-a-guide-for-frontend-developers-48ad", "https://webaim.org/projects/million/", "https://web.dev/learn/accessibility/welcome", "https://web.dev/learn/accessibility/why", "https://web.dev/learn/accessibility/conclusion", "https://www.youtube.com/watch?v=_WUHPk8BGfo"]
 ---
 
 > 웹액츄얼리가 번역한 유리 파즈(Uri Paz)의 「[접근성과 사용성 엮어내기](https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%BC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EC%97%AE%EC%96%B4%EB%82%B4%EA%B8%B0/)」(2020.12), 비 버챌(Be Birchall)의 「[컨텍스트에서의 웹 접근성](https://webactually.com/2019/12/11/%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%97%90%ec%84%9c%ec%9d%98-%ec%9b%b9-%ec%a0%91%ea%b7%bc%ec%84%b1/)」(2019.12), 로빈 크리스토퍼슨(Robin Christopherson)의 「[코로나 시대의 글로벌 디지털 접근성 개발](https://webactually.com/2021/02/23/%ec%bd%94%eb%a1%9c%eb%82%98-%ec%8b%9c%eb%8c%80%ec%9d%98-%ea%b8%80%eb%a1%9c%eb%b2%8c-%eb%94%94%ec%a7%80%ed%84%b8-%ec%a0%91%ea%b7%bc%ec%84%b1-%ea%b0%9c%eb%b0%9c/)」(2021.02)을 바탕으로 재구성하고, 대체 텍스트·ARIA 원칙은 버사요 새뮤얼(Busayo Samuel)의 「[Mastering Web Accessibility](https://dev.to/bellatrick/mastering-web-accessibility-a-guide-for-frontend-developers-48ad)」(DEV, 2023.04)로, 접근성이 사람·비즈니스·법에 주는 영향과 더 읽을 자료는 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」 강좌로 보강했다. 기법별 본론은 하위 노트에 있다.
+> 「더 읽을 자료」의 개발자용 안내·한국어 자료는 AOA11Y의 「[2024년 제2회 정보접근성 오픈아카데미](https://www.youtube.com/watch?v=_WUHPk8BGfo)」(2024.07) 1부를 바탕으로 보강했다.
 
 ## 웹 접근성이란
 
@@ -141,6 +142,13 @@ WCAG를 통과한 제품을 시각장애인·전맹인과 테스트하면 이런
 | [W3C Web Accessibility Laws & Policies](https://www.w3.org/WAI/policies/) | 나라별 법 |
 | [Deque University](https://dequeuniversity.com/) | 강좌와 참고 자료 |
 | [Google 개발자 문서 스타일 가이드: 접근 가능한 문서](https://developers.google.com/style/accessibility) | 문서·글쓰기의 접근성 |
+| [Accessibility Developer Guide(ADG)](https://www.accessibility-developer-guide.com/) ([한국어 번역](https://adg.mulder21c.io/)) | 개발자용 단계별 안내. 스크린 리더 설정부터 예제·CodePen까지 처음부터 차례로 읽게 짜여 있다 |
+| [WCAG 2.2 한국어 번역](https://a11ykr.github.io/wcag22/) | 원칙 → 지침 → 성공 기준 구조가 어려울 때 우리말로 |
+| [WCAG.com](https://wcag.com/), [Pearson 접근성 가이드라인](https://accessibility.pearson.com/) | 성공 기준을 개발자·디자이너·작성자 역할별로, 또는 누구에게 이로운지와 예시로 풀어 준다 |
+| [AccessGuide](https://www.accessguide.io/) | 지침을 그림 카드와 좋은 예·나쁜 예 비교로 보여 준다 |
+| [CSUN Universal Design Center](https://www.csun.edu/universal-design-center) | 대체 텍스트처럼 맥락에 따라 답이 달라지는 항목을 예시로 설명 |
+| [ARIA Authoring Practices Guide(APG)](https://www.w3.org/WAI/ARIA/apg/) ([한국어 번역](https://mulder21c.github.io/aria-practices/)) | 위젯 패턴별 role·상태·키 조작과 동작 예제 |
+| [NULI(널리)](https://nuli.navercorp.com/), [부스트코스 「웹 접근성의 이해」](https://www.boostcourse.org/web201), [사람인 접근성 가이드](https://saramin.github.io/a11y/) | 한국어 자료. 장애 체험, 한국형 지침(KWCAG) 무료 강좌와 퀴즈, 직무별 체크리스트 |
 
 ## 정리
 

@@ -83,7 +83,7 @@ sources: ["https://web.dev/learn/accessibility/design-ux", "https://web.dev/lear
 
 ## 접근성 주석: 핸드오프 전에 적는다
 
-접근성 주석(accessibility annotation)은 디자인 파일 위에 **화면으로는 보이지 않는 결정**을 적어 개발자에게 넘기는 것이다. 와이어프레임부터 고해상도 시안까지 어느 단계든 달 수 있고, 사용자 흐름·조건부 상태·기능까지 다룬다. 디자인팀이나 접근성 전문가가 이끈다. Figma에는 접근성 주석 키트가 여럿 있다(핸드오프 일반은 [[design-tools-handoff|디자인 도구와 개발자 핸드오프]]).
+접근성 주석(accessibility annotation)은 디자인 파일 위에 **화면으로는 보이지 않는 결정**을 적어 개발자에게 넘기는 것이다. 와이어프레임부터 고해상도 시안까지 어느 단계든 달 수 있고, 사용자 흐름·조건부 상태·기능까지 다룬다. 디자인팀이나 접근성 전문가가 이끈다. Figma에는 접근성 주석 키트가 여럿 있고, Stark·axe for Designers 같은 플러그인은 대비 검사와 함께 대체 텍스트·포커스 순서·제목·랜드마크 주석을 시안 위에 단다([[accessibility-evaluation|접근성 평가 방법과 도구]]). 핸드오프 일반은 [[design-tools-handoff|디자인 도구와 개발자 핸드오프]]에 있다.
 
 | 주석할 것 | 적는 내용 |
 | --- | --- |

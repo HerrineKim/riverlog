@@ -5,10 +5,11 @@ summary: "접근성 감사는 기준선을 잡고 개발 주기 내내 반복하
 tags: ["accessibility", "frontend", "testing", "wcag", "ux"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/articles/evaluationguide/", "https://webaim.org/articles/tools/", "https://webaim.org/presentations/2024/january/", "https://wave.webaim.org/", "https://wave.webaim.org/help", "https://webaim.org/articles/label-name/", "https://www.html5accessibility.com/tests/tsbookmarklet.html", "https://overlayfactsheet.com/en/", "https://webaim.org/projects/million/", "https://wave.webaim.org/api/docs", "https://web.dev/learn/accessibility/measure", "https://web.dev/learn/accessibility/test-automated", "https://web.dev/learn/accessibility/test-manual", "https://web.dev/learn/accessibility/glossary", "https://www.w3.org/WAI/test-evaluate/tools/selecting/"]
+sources: ["https://webaim.org/articles/evaluationguide/", "https://webaim.org/articles/tools/", "https://webaim.org/presentations/2024/january/", "https://wave.webaim.org/", "https://wave.webaim.org/help", "https://webaim.org/articles/label-name/", "https://www.html5accessibility.com/tests/tsbookmarklet.html", "https://overlayfactsheet.com/en/", "https://webaim.org/projects/million/", "https://wave.webaim.org/api/docs", "https://web.dev/learn/accessibility/measure", "https://web.dev/learn/accessibility/test-automated", "https://web.dev/learn/accessibility/test-manual", "https://web.dev/learn/accessibility/glossary", "https://www.w3.org/WAI/test-evaluate/tools/selecting/", "https://www.youtube.com/watch?v=_WUHPk8BGfo"]
 ---
 
 > WebAIM의 「[Web Accessibility Evaluation Guide](https://webaim.org/articles/evaluationguide/)」, 「[Accessibility Evaluation Tools](https://webaim.org/articles/tools/)」, 웹 접근성 교육 자료(「[Virtual Web Accessibility Training](https://webaim.org/presentations/2024/january/)」)와 [WAVE](https://wave.webaim.org/) 도움말, 「[Overlay Fact Sheet](https://overlayfactsheet.com/en/)」을 바탕으로 재구성하고, 감사 계획·도구 선택 기준·자동과 수동의 경계와 자주 나오는 문제는 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 측정·자동 테스트·수동 테스트 편으로 보강한 노트다.
+> 개발 주기 단계별 도구는 AOA11Y의 「[2024년 제2회 정보접근성 오픈아카데미](https://www.youtube.com/watch?v=_WUHPk8BGfo)」(2024.07) 2부를 바탕으로 보강했다.
 
 ## 접근성 평가란
 
@@ -72,6 +73,24 @@ sources: ["https://webaim.org/articles/evaluationguide/", "https://webaim.org/ar
 | Chrome DevTools | 접근 가능한 이름·설명, 상태별 대비, iframe `src` 확인 |
 
 자동 검사를 Playwright·Testing Library 테스트에 넣는 방법은 [[a11y-driven-testing|접근성 기반 테스트]]에 있다.
+
+### 개발 주기 단계별 도구
+
+문제는 늦게 찾을수록 고치기 비싸다. 디자인 파일, 브라우저, 편집기, 빌드 단계마다 도구를 하나씩 두면 각 단계에서 기계가 잡을 수 있는 것은 그 자리에서 걸러진다.
+
+| 단계 | 도구 | 하는 일 |
+| --- | --- | --- |
+| 디자인 (Figma 플러그인) | Stark | 대비, 글자 크기, 터치 영역, 색각·저시력 시뮬레이터, 대체 텍스트·포커스 순서·제목·랜드마크 주석. 프레임 전체 자동 검사는 유료 |
+| | axe for Designers | 프레임 단위 자동 검사(심각도·위치 표시), 대비 측정, 포커스 순서와 위젯 종류별 주석. 무료 플랜이 있다 |
+| 브라우저 | Lighthouse | Chrome 내장. axe-core 규칙의 **일부만** 돌리므로 점수가 높아도 문제가 남을 수 있다. DevTools 언어를 바꾸면 한국어 보고서가 나온다 |
+| | axe DevTools 확장 | 페이지 전체·일부 영역 검사, WCAG 성공 기준별·심각도별 분류, 보고서 내보내기. 표·모달처럼 의도를 물어 확인하는 유도형 검사(Intelligent Guided Tests)는 유료 |
+| | Stark 확장 | 페이지 위에 겹쳐 대비·시뮬레이터, 대체 텍스트·제목·터치 영역·포커스 순서·랜드마크 시각화 |
+| | HeadingsMap | 제목 구조를 트리로 보여 준다. 제목 목록으로 탐색하는 스크린 리더 사용자에게 페이지가 어떻게 보이는지 확인 |
+| 편집기 (VS Code) | axe Accessibility Linter, webhint | 마크업을 쓰는 중에 레이블 누락, `alt` 누락 등에 밑줄을 친다 |
+| 코드·빌드 | `eslint-plugin-jsx-a11y`(React), `eslint-plugin-vuejs-accessibility`(Vue) | 린트 규칙으로 잡아 커밋·빌드에서 막을 수 있다. 권장(recommended) 설정부터 켠다 |
+| 컴포넌트 | Storybook `@storybook/addon-a11y` | 스토리마다 axe 검사 결과를 패널로 보여 준다. 컴포넌트 단위로 고친 뒤 조합한다 |
+
+디자인 단계 도구의 **주석 기능**은 대체 텍스트·포커스 순서처럼 개발자가 추측하던 결정을 디자인 파일에 못 박는다([[accessible-design-process|디자인 단계의 접근성]]). 어느 단계 도구든 기계가 확인할 수 있는 것만 잡는다. 읽기 순서·이름의 적절성·위젯 동작은 아래 수동 절차로 본다.
 
 ## 평가 절차
 
