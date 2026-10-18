@@ -5,12 +5,12 @@ summary: "유동 그리드·유동 미디어·미디어 쿼리라는 세 요소�
 tags: ["css", "frontend", "mobile", "typography"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://spoqa.github.io/2016/06/03/localize-type-setting.html", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries", "https://web.dev/learn/css/container-queries", "https://web.dev/learn/design", "https://web.dev/learn/design/intro", "https://web.dev/learn/design/media-queries", "https://web.dev/learn/design/macro-layouts", "https://web.dev/learn/design/micro-layouts", "https://web.dev/learn/design/typography", "https://web.dev/learn/design/responsive-images", "https://web.dev/learn/design/accessibility", "https://web.dev/learn/design/internationalization"]
+sources: ["https://ethanmarcotte.com/wrote/responsive-design-at-15/", "https://spoqa.github.io/2016/06/03/localize-type-setting.html", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries", "https://web.dev/learn/css/container-queries", "https://web.dev/learn/design", "https://web.dev/learn/design/intro", "https://web.dev/learn/design/media-queries", "https://web.dev/learn/design/macro-layouts", "https://web.dev/learn/design/micro-layouts", "https://web.dev/learn/design/typography", "https://web.dev/learn/design/responsive-images", "https://web.dev/learn/design/accessibility", "https://web.dev/learn/design/internationalization"]
 ---
 
 반응형 디자인(Responsive Design)은 한 벌의 HTML·CSS가 휴대폰부터 큰 모니터까지 **어떤 화면에서도 읽기 좋게** 보이도록 만드는 방식이다. 브레이크포인트·모바일 퍼스트·해상도·폴드 같은 용어의 짧은 정의는 [[web-glossary|프론트엔드 용어집]]에 있다.
 
-> 일부 절은 web.dev 「[Learn Responsive Design](https://web.dev/learn/design)」 강좌로 보강했다.
+> 일부 절은 web.dev 「[Learn Responsive Design](https://web.dev/learn/design)」 강좌로, 이름의 유래는 Ethan Marcotte의 「[Responsive web design turns fifteen](https://ethanmarcotte.com/wrote/responsive-design-at-15/)」(2025.05)로 보강했다.
 
 ## 세 요소와 그 뒤
 
@@ -21,6 +21,12 @@ sources: ["https://spoqa.github.io/2016/06/03/localize-type-setting.html", "http
 | 미디어 쿼리 | 뷰포트 크기 + 사용자 설정·입력 장치·디스플레이를 묻는 미디어 기능 |
 
 고정폭·리퀴드·적응형 레이아웃에서 반응형으로 온 흐름은 [[web-layout-design|웹 레이아웃 디자인]]에 있다. 지금의 반응형은 화면 폭을 넘어 **사용자 설정**(다크 모드, 움직임 줄이기), **입력 장치**(터치·마우스), **화면 모양**(노치, 폴더블), **언어**에도 반응한다.
+
+### 이름의 시작과 지금
+
+「반응형 웹 디자인」은 이선 마콧(Ethan Marcotte)이 2010년 4월 An Event Apart 시애틀 강연에서 처음 쓴 말이고, 같은 해 5월 25일 A List Apart에 같은 제목의 글로 정리됐다. 개념을 널리 퍼뜨린 것은 그 뒤 직접 실험하고 글을 쓴 수많은 개발자·디자이너였다.
+
+지금 반응형은 **특별한 기법이 아니라 당연한 기본값**이다. 휴대폰·데스크톱·그 밖의 기기에서 모두 동작하는 사이트를 만드는 것이 그냥 해야 할 일로 여겨진다. 관점도 바뀌었다. 웹의 유동성은 맞서 싸울 제약이 아니라 **함께, 그리고 그것을 위해 디자인하는 자산**이다. 남은 과제는 화면 폭이 아니라 기기 성능 격차(저사양 휴대폰에서의 성능)와 접근성 쪽에 있다([[responsible-javascript|책임감 있는 JavaScript]], 아래 「반응형과 접근성」).
 
 ## 출발점: 뷰포트 메타 태그
 
