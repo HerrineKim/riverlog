@@ -5,10 +5,11 @@ summary: "모든 입력 칸에는 코드로 연결된 이름이 있어야 한다
 tags: ["accessibility", "frontend", "form", "validation", "aria", "html"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/techniques/forms/", "https://webaim.org/techniques/forms/controls", "https://webaim.org/techniques/forms/advanced", "https://webaim.org/techniques/formvalidation/", "https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html", "https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html", "https://web.dev/learn/accessibility/forms"]
+sources: ["https://webaim.org/techniques/forms/", "https://webaim.org/techniques/forms/controls", "https://webaim.org/techniques/forms/advanced", "https://webaim.org/techniques/formvalidation/", "https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html", "https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html", "https://web.dev/learn/accessibility/forms", "https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3"]
 ---
 
 > WebAIM의 「[Creating Accessible Forms](https://webaim.org/techniques/forms/)」(3쪽: [Accessible Form Controls](https://webaim.org/techniques/forms/controls), [Advanced Form Labeling](https://webaim.org/techniques/forms/advanced)), 「[Usable and Accessible Form Validation and Error Recovery](https://webaim.org/techniques/formvalidation/)」을 바탕으로, WCAG 2.2 성공 기준은 W3C의 Understanding 문서로 확인해 재구성하고, web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 폼 편으로 보강한 노트다.
+> 힌트·오류 문구 중복과 묶음 오류 부분은 AOA11Y의 강의 연재 「[항공사의 ARIA 적용 사례 살펴보기](https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3)」를 바탕으로 보강했다.
 
 ## 접근 가능한 폼이란
 
@@ -118,6 +119,8 @@ sources: ["https://webaim.org/techniques/forms/", "https://webaim.org/techniques
 <p id="pw-rule">8자 이상, 숫자를 하나 이상 넣는다.</p>
 ```
 
+이름·힌트·오류 문구가 같은 말을 되풀이하지 않게 한다. 「이름」 칸의 힌트도 「이름」, 오류도 「이름 필수」면 스크린 리더에는 「이름 필수 편집창 이름 이름 필수」로 들려 무엇이 이름이고 무엇이 오류인지 구분되지 않는다. 힌트는 예시(「예: 홍길동」)처럼 이름에 없는 정보를, 오류는 무엇이 문제인지(「이름을 입력해야 한다」)를 쓴다.
+
 마우스를 올려야 보이는 툴팁형 설명이라면 **키보드 포커스 때도** 보여야 한다. 폼 전체에 대한 안내는 폼 맨 앞에 두거나 해당 칸에 `aria-describedby`로 잇는다. 칸 사이에 둔 안내문은 Tab 이동 중에 건너뛰어진다.
 
 ## 필수 항목과 형식 요구
@@ -179,6 +182,7 @@ sources: ["https://webaim.org/techniques/forms/", "https://webaim.org/techniques
 - `aria-invalid="true"`를 오류 칸에 단다. 포커스가 가면 "유효하지 않음"이라고 읽는다. 시각 변화는 없으므로 아이콘·문구도 함께 둔다. 고쳐지면 값을 지운다.
 - 요약으로 포커스를 옮길 때는 `tabindex="-1"`을 단 요소에 `focus()`를 부르거나, 서버가 다시 그린 페이지라면 URL 조각(`#errors`)으로 이동시킨다.
 - 페이지 이동이나 포커스 이동 없이 상태만 바뀌는 메시지("저장했다", "3건 남음")는 라이브 영역(`role="status"`, `role="alert"`)으로 알린다(성공 기준 4.1.3 Status Messages). 라이브 영역 동작은 [[aria-basics|ARIA와 접근 가능한 이름]]에 있다.
+- 라디오·체크박스 **묶음 전체의 오류**(「조회할 달을 선택하라」)는 칸 하나가 아니라 묶음에 단다. `<fieldset>`의 `<legend>` 안에 오류 문구를 넣거나, `role="group"` + `aria-labelledby`로 묶고 `aria-describedby`로 오류를 이은 뒤 묶음의 첫 칸으로 포커스를 옮긴다. 묶음에 단 `aria-describedby`는 스크린 리더 지원이 고르지 않아 fieldset·legend 쪽이 더 확실하다. 실시간 검증·글자 수 알림처럼 입력 중에 바뀌는 메시지는 [[aria-widget-patterns|복합 위젯의 ARIA 패턴]]의 상태 알림에 있다.
 - `aria-errormessage`는 오류 메시지 전용 속성이지만 스크린 리더 지원이 아직 고르지 않다. 확실한 연결은 `aria-describedby`다.
 - 법적·금전적 결과가 있는 제출(결제, 계약)은 되돌리기·확인·검토 단계 중 하나를 둔다(성공 기준 3.3.4 Error Prevention).
 

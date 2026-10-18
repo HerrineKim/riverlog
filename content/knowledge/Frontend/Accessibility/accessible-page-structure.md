@@ -5,10 +5,11 @@ summary: "스크린 리더·키보드 사용자는 페이지를 위에서부터 
 tags: ["accessibility", "frontend", "html", "aria", "ux"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/techniques/semanticstructure/", "https://webaim.org/techniques/headings/", "https://webaim.org/techniques/pagetitle/", "https://webaim.org/techniques/language/", "https://webaim.org/techniques/skipnav/", "https://webaim.org/techniques/sitetools/", "https://webaim.org/techniques/frames/", "https://webaim.org/techniques/tables/", "https://webaim.org/techniques/tables/data", "https://web.dev/learn/accessibility/structure", "https://web.dev/learn/accessibility/more-html", "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/list-style"]
+sources: ["https://webaim.org/techniques/semanticstructure/", "https://webaim.org/techniques/headings/", "https://webaim.org/techniques/pagetitle/", "https://webaim.org/techniques/language/", "https://webaim.org/techniques/skipnav/", "https://webaim.org/techniques/sitetools/", "https://webaim.org/techniques/frames/", "https://webaim.org/techniques/tables/", "https://webaim.org/techniques/tables/data", "https://web.dev/learn/accessibility/structure", "https://web.dev/learn/accessibility/more-html", "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/list-style", "https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3"]
 ---
 
 > WebAIM의 「[Semantic Structure](https://webaim.org/techniques/semanticstructure/)」, 「[Headings](https://webaim.org/techniques/headings/)」, 「[Page Titles](https://webaim.org/techniques/pagetitle/)」, 「[Document and Content Language](https://webaim.org/techniques/language/)」, 「[Skip Navigation Links](https://webaim.org/techniques/skipnav/)」, 「[Site Searches, Indexes, and Site Maps](https://webaim.org/techniques/sitetools/)」, 「[Frames and Iframes](https://webaim.org/techniques/frames/)」, 「[Creating Accessible Tables](https://webaim.org/techniques/tables/)」 등을 바탕으로 WCAG 2.2 기준으로 재구성하고, web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 콘텐츠 구조·문서 편으로 보강한 노트다.
+> 목록 쪼개기·`<dl>` 남용·행 머리글·합계 행 부분은 AOA11Y의 강의 연재 「[항공사의 ARIA 적용 사례 살펴보기](https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3)」를 바탕으로 보강했다.
 
 ## 보조 기술 사용자는 페이지를 어떻게 탐색하나
 
@@ -123,6 +124,8 @@ SPA는 라우트가 바뀌어도 문서가 다시 열리지 않으므로 `docume
 | `<dl>` + `<dt>`·`<dd>` | 용어와 설명 짝 | 용어집, FAQ |
 
 - `•`나 `-` 문자를 찍어 목록처럼 보이게 하지 않는다. 목록이 아닌 내용을 레이아웃 때문에 `<ul>`로 감싸지도 않는다.
+- **배치 때문에 한 목록을 쪼개지 않는다.** 12개 항목을 3열로 보이려고 `<ul>` 넷에 나눠 담으면 「목록 3개」가 네 번 들려 전체가 몇 개인지 알 수 없다. 하나의 `<ul>`에 담고 열 배치는 CSS 그리드로 한다.
+- `<dl>`은 이름–값이 **한 쌍씩** 짝지어질 때만 쓴다. 라디오 묶음·입력 칸·메뉴처럼 정의도 설명도 아닌 것을 구조화했다는 이유로 `<dl>`로 감싸지 않는다. 이미 그렇게 만든 경우에는 `role="presentation"`으로 목록 의미를 지울 수 있지만, 맞는 태그로 바꾸는 것이 우선이다.
 - Safari는 `list-style: none`으로 표식을 없앤 `<ul>`·`<ol>`을 `<nav>` 안이 아니면 접근성 트리에서 목록으로 노출하지 않는다. MDN에 따르면 의도된 동작이다. 개수 안내가 중요하면 `role="list"`를 덧붙인다.
 - 목록은 관련 항목을 한 덩어리로 묶어 보여 주므로 인지·주의력·읽기 장애가 있는 사람에게도 도움이 된다.
 
@@ -242,6 +245,8 @@ SPA는 라우트가 바뀌어도 문서가 다시 열리지 않으므로 `docume
 | `<thead>`, `<tbody>`, `<tfoot>` | 접근성 효과는 거의 없다. 스타일링과 긴 표 인쇄에 쓴다 |
 
 - **복잡한 표는 단순하게 쪼갠다.** 합친 셀과 여러 단계 머리글은 스크린 리더마다 처리가 고르지 않다. 구조를 따로 설명해야 할 정도면 너무 복잡한 표다.
+- 열 머리글만이 아니라 **행을 식별하는 열**(탑승자 이름, 여정)도 `<th scope="row">`로 만든다. 셀로 이동할 때 「두 번째 초과 수하물, 엄마, 방콕–인천, 1개」처럼 행·열 머리글이 함께 들린다.
+- 열 머리글과 상관없는 합계(「총액 100,000원」)는 표 안 `<tfoot>`보다 **표 뒤의 문단**으로 뺀다. 표 안에 두면 합계를 읽을 때 무관한 열 머리글까지 붙어 들린다.
 - 옛 `summary` 속성은 HTML에서 폐기됐다. 표에 설명이 필요하면 `<caption>`이나 표 앞의 본문, `aria-describedby`로 준다.
 - 너비는 고정 픽셀보다 브라우저에 맡기거나 상대 단위로 주고, 셀 높이를 고정하지 않는다. 글자를 키우면 내용이 넘친다.
 - 좁은 화면에서 가로로 스크롤하는 표는 감싸는 요소에 `tabindex="0"`과 이름을 주어 키보드로 스크롤할 수 있게 한다. 표 요소의 `display`를 CSS로 바꾸면 일부 브라우저가 표 의미를 잃기도 하므로 접근성 트리로 확인한다.

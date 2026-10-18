@@ -5,10 +5,11 @@ summary: "CSS는 표현만 맡고 의미는 HTML이 진다. 소스 순서와 화
 tags: ["accessibility", "frontend", "css", "typography", "responsive"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/techniques/css/", "https://webaim.org/techniques/css/invisiblecontent/", "https://webaim.org/techniques/reflow/", "https://webaim.org/techniques/fonts/", "https://webaim.org/techniques/textlayout/", "https://webaim.org/techniques/screenreader/", "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html", "https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html", "https://developer.mozilla.org/en-US/docs/Web/CSS/clip", "https://web.dev/learn/accessibility/typography"]
+sources: ["https://webaim.org/techniques/css/", "https://webaim.org/techniques/css/invisiblecontent/", "https://webaim.org/techniques/reflow/", "https://webaim.org/techniques/fonts/", "https://webaim.org/techniques/textlayout/", "https://webaim.org/techniques/screenreader/", "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html", "https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html", "https://developer.mozilla.org/en-US/docs/Web/CSS/clip", "https://web.dev/learn/accessibility/typography", "https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3"]
 ---
 
 > WebAIM의 「[Accessible CSS](https://webaim.org/techniques/css/)」, 「[Invisible Content Just for Screen Reader Users](https://webaim.org/techniques/css/invisiblecontent/)」, 「[Responsive Design and Reflow](https://webaim.org/techniques/reflow/)」, 「[Typefaces and Fonts](https://webaim.org/techniques/fonts/)」, 「[Text/Typographical Layout](https://webaim.org/techniques/textlayout/)」, 「[Designing for Screen Reader Compatibility](https://webaim.org/techniques/screenreader/)」을 바탕으로, WCAG 2.2 기준과 숨김 패턴은 W3C·MDN 문서로 확인해 재구성하고, 글꼴 고르기와 글줄 폭은 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 타이포그래피 편으로 보강한 노트다.
+> 숨긴 텍스트의 공백과 화면을 보는 스크린 리더 사용자 부분은 AOA11Y의 강의 연재 「[항공사의 ARIA 적용 사례 살펴보기](https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3)」를 바탕으로 보강했다.
 
 ## CSS와 접근성의 관계
 
@@ -93,6 +94,7 @@ CSS의 `reading-flow` 속성은 그리드·플렉스의 시각 순서를 읽기�
 
 - **아껴 쓴다.** 내용은 원래 두 사용자에게 같아야 한다. 숨긴 텍스트는 시각적으로만 전달되는 의미를 보충할 때만 쓴다.
 - 링크·버튼처럼 **포커스 가능한 요소를 visually-hidden으로 숨기지 않는다.** 보이지 않는 곳에 포커스가 간다. 예외는 포커스 때 나타나는 경우다.
+- **숨긴 텍스트 앞뒤에 공백을 둔다.** 인라인 `<span>` 사이에 공백이 없으면 스크린 리더가 앞뒤 단어를 한 단어로 붙여 읽는다(`Privacy Policy<span>새 창</span>` → 「Policy새」). 화면에 보이지 않아 놓치기 쉬우니 CSS를 끄거나 NVDA 음성 뷰어(Speech Viewer)로 읽힌 글을 확인한다.
 - 건너뛰기 링크(skip link)가 그 예외다. 평소에는 숨기고 포커스를 받으면 보이게 한다. 갑자기 나타나면 당황할 수 있으므로 전환 효과를 주기도 한다. 건너뛰기 링크의 역할은 [[accessible-page-structure|접근 가능한 페이지 구조]]에 있다.
 
 ```css
@@ -207,6 +209,7 @@ p { margin-bottom: 2em !important; }
 - 문서 언어를 `<html lang="ko">`로 정하고, 다른 언어 구절에는 그 요소에 `lang`을 단다. 발음 엔진과 자동 번역이 이 값을 쓴다.
 - 스크린 리더는 구두점과 문단 끝에서 쉬고, 발음할 수 있는 약어는 단어로, 아니면 한 글자씩 읽는다. 비밀번호 칸은 "별표"로 읽는다. 철자가 같고 발음이 다른 단어와 기호는 설정에 따라 다르게 읽힌다.
 - 스크린 리더마다 단축키와 알림 방식이 다르다. 특정 제품에 맞춰 코딩하지 말고 **표준과 일반 기법**을 따른다.
+- **화면을 보면서 스크린 리더를 쓰는 사람이 많다.** 시각장애인 다수는 전맹이 아니라 저시력이어서, 읽히는 곳이 화면에도 보여야 맥락을 잡는다. 숨긴 콘텐츠를 음수 위치로 밀어내면 읽는 순간 화면이 위로 튀고, 약관처럼 긴 글을 `overflow: auto` 상자에 넣으면 스크린 리더에 따라 읽는 위치를 따라 상자가 스크롤되지 않는다. 긴 글은 페이지 스크롤로 펼치거나 화면을 거의 채우는 대화 상자로 보여 주고, 상자 안 스크롤은 줄인다.
 
 페이지 구조(제목·랜드마크·표)는 [[accessible-page-structure|접근 가능한 페이지 구조]]에, 링크 텍스트는 [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]]에, 실제 스크린 리더 조작은 [[screen-reader-testing|스크린 리더로 테스트하기]]에 있다.
 

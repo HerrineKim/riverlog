@@ -213,7 +213,7 @@ WCAG 2.5.3 Label in Name(A)은 **글자가 보이는 컨트롤의 접근 가능�
 | 이름이 있다 | 보이는 텍스트 → `<label>`, 없으면 `aria-labelledby`·`aria-label` |
 | role·state·property가 맞다 | APG 패턴의 role과 상태 속성을 그대로 쓴다. 맞는 role이면 스크린 리더가 조작법까지 안내한다 |
 
-탭·디스클로저·캐러셀의 구체적인 구현은 [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]]에, `tabindex` 사용법은 [[keyboard-accessibility|키보드 접근성과 포커스 관리]]에 있다.
+탭·디스클로저·캐러셀의 구체적인 구현은 [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]]에, 콤보박스·날짜 선택기·메뉴·툴팁과 상황별 상태 알림은 [[aria-widget-patterns|복합 위젯의 ARIA 패턴]]에, `tabindex` 사용법은 [[keyboard-accessibility|키보드 접근성과 포커스 관리]]에 있다.
 
 ## 이름과 설명 확인하기
 

@@ -22,6 +22,7 @@ date: "2026-10-17"
 - [ARIA와 접근 가능한 이름](Frontend/Accessibility/aria-basics.md): ARIA 다섯 규칙, role·state·property, 이름과 설명이 계산되는 순서, 라이브 영역
 - [키보드 접근성과 포커스 관리](Frontend/Accessibility/keyboard-accessibility.md): 포커스 순서와 표시, tabindex, 키보드 트랩, 스크립트 이벤트와 동적 콘텐츠
 - [접근 가능한 위젯: 펼침·탭·캐러셀](Frontend/Accessibility/accessible-widgets.md): 디스클로저와 아코디언, 탭 인터페이스, 자동 재생 캐러셀과 애니메이션 제어
+- [복합 위젯의 ARIA 패턴: 콤보박스·날짜 선택기·메뉴·상태 알림](Frontend/Accessibility/aria-widget-patterns.md): 자동완성 콤보박스, 날짜 선택기와 날짜 직접 입력, 사이트 메뉴와 menubar, 수량 버튼, 정렬 표, 툴팁, 로딩·토스트·글자 수 같은 상태 알림
 - [접근성을 위한 CSS와 타이포그래피](Frontend/Accessibility/accessible-css-typography.md): 스크린 리더 전용 텍스트, 리플로와 확대, 글꼴과 텍스트 간격, 스크린 리더 호환을 위한 설계
 - [색과 움직임의 접근성](Frontend/Accessibility/color-motion-accessibility.md): 색각 결핍, 색만으로 정보 전달 금지, 대비 기준, prefers-color-scheme·prefers-reduced-motion, 5초 애니메이션 규칙
 - [접근성 평가 방법과 도구](Frontend/Accessibility/accessibility-evaluation.md): 자동 검사의 한계, WAVE·DevTools로 하는 점검 순서, 수동 평가 체크포인트, 오버레이 제품을 쓰지 않는 이유
