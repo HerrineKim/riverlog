@@ -59,4 +59,4 @@ date: "2026-10-13"
 
 > (P) 회의록은 회의 직후 10분 안에 공유해야 한다. (R) 시간이 지날수록 기억이 흐려져 결정 사항이 왜곡되기 때문이다. (E) 실제로 다음 날 공유한 회의록은 수정 요청이 훨씬 많았다. (P) 그러니 회의가 끝나면 바로 정리하자.
 
-관련 노트: [[persuasive-writing|글쓰기 원칙: 구조, 설득, 문장력]], [[blog-monetization|블로그 수익화와 애드센스]], [[data-journalism|데이터 저널리즘 실무]], [[newsletter-lessons|뉴스레터 발행의 35가지 교훈]], [[ux-writing|UX 라이팅]]
+관련 노트: [[persuasive-writing|글쓰기 원칙: 구조, 설득, 문장력]], [[data-journalism|데이터 저널리즘 실무]], [[newsletter-lessons|뉴스레터 발행의 35가지 교훈]], [[ux-writing|UX 라이팅]]
