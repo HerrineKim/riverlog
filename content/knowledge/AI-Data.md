@@ -46,6 +46,7 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [AI 기능 기획: 시스템 블루프린트와 유스케이스 발굴](AI-Data/ai-feature-blueprint.md): 기회·솔루션·거버넌스 블루프린트, 가치 5범주와 사용자 여정 매핑, 비용·실패 모드 추정, 프로토타입
 - [예측형 AI와 생성형 AI](AI-Data/predictive-vs-generative-ai.md): 출력 공간과 모델 차이, 이탈 예측·글쓰기 도우미로 본 두 개발 루프, 흔한 함정과 대응
 - [책임 있는 AI: 프라이버시·공정성·신뢰](AI-Data/responsible-ai-governance.md): 세 축을 데이터·지능·UX 층별로, PII 최소화, 편향 시험, 보정된 신뢰
+- [AI 2027: 초지능 도래 시나리오와 정렬 문제](AI-Data/ai-2027-scenario.md): AI가 AI 연구를 자동화하는 지능 폭발 연대기, 진전 배수와 시간 지평, IDA·뉴럴리즈, 정렬이 어긋나는 단계와 통제 기법, 가중치 보안과 미·중 경쟁, 경쟁·감속 두 결말
 - [웹 AI 플랫폼 고르기: 클라이언트, 서버, 하이브리드](AI-Data/web-ai-platform-choice.md): 내장 AI·커스텀 모델·관리형 API·자체 호스팅 비교, 요구 사항에서 고르기, 클라이언트 우선 하이브리드
 - [클라이언트 사이드 웹 AI: 내장 AI API, 라이브러리, 런타임](AI-Data/client-side-web-ai.md): Chrome 내장 AI API 상태와 쓰는 순서, Transformers.js·WebLLM 등, Wasm·WebGPU·WebNN
 - [평가 주도 개발(EDD): AI 기능을 테스트하며 다듬기](AI-Data/evaluation-driven-development.md): AI용 TDD, 결정적·주관적 지표, 코드·사람·LLM 심판, 프롬프트 CI
