@@ -1,14 +1,15 @@
 ---
 title: "접근성 기반 UI 테스트 자동화"
 concept: "A11y-driven Testing"
-summary: "UI 테스트가 xpath·CSS 선택자 때문에 쉽게 깨지던 문제를 WAI-ARIA의 role과 접근 가능한 이름(accessible name)으로 요소를 찾는 방식으로 푸는 법. getByRole 쿼리, aria-label·aria-labelledby·aria-current·aria-expanded 활용, 헤드리스 컴포넌트, 인수·회귀 테스트로서의 효과를 정리한다."
+summary: "UI 테스트가 xpath·CSS 선택자 때문에 쉽게 깨지던 문제를 WAI-ARIA의 role과 접근 가능한 이름(accessible name)으로 요소를 찾는 방식으로 푸는 법. getByRole 쿼리, aria-label·aria-labelledby·aria-current·aria-expanded 활용, 헤드리스 컴포넌트, 인수·회귀 테스트로서의 효과, 접근성 트리를 LLM·AI 에이전트의 입력으로 쓰는 법을 정리한다."
 tags: ["testing", "frontend", "accessibility", "html", "react"]
 source: other
 date: "2026-10-13"
-sources: ["https://tech.wonderwall.kr/articles/a11ydriventestautomation/"]
+sources: ["https://tech.wonderwall.kr/articles/a11ydriventestautomation/", "https://playwright.dev/docs/aria-snapshots", "https://chromedevtools.github.io/devtools-protocol/tot/Accessibility/"]
 ---
 
 > 원더월 김태희의 글 「[접근성이 이끄는 웹 프론트엔드 테스트 자동화](https://tech.wonderwall.kr/articles/a11ydriventestautomation/)」(2023.06)를 요약·재구성한 노트다. 예시 코드는 Playwright 기준이다.
+> 「접근성 트리를 AI의 눈으로 쓰기」는 X(트위터)에서 @hmmhmm_hm과 김태희(@stelo_kim)가 나눈 대화(2024.04)를 바탕으로, 도구는 Playwright·Chrome DevTools Protocol 공식 문서로 확인해 더했다.
 
 ## 프론트엔드는 UI를 테스트해야 한다
 
@@ -116,6 +117,28 @@ role과 이름으로 찾는 테스트는 **사용자 동작이 그대로인 한*
 
 그래서 이 방식의 E2E가 깨지면 대부분 **진짜 버그이거나 잘못된 접근성을 바로잡은 경우**다.
 
+## 접근성 트리를 AI의 눈으로 쓰기
+
+테스트가 role과 이름으로 페이지를 읽듯, LLM에게도 HTML 대신 **접근성 트리**를 넘길 수 있다. 접근성 트리는 브라우저가 DOM에서 스타일·레이아웃용 요소와 속성을 걷어 내고 **역할·이름·상태**만 남긴 구조라([[aria-basics|ARIA와 접근 가능한 이름]]), 같은 페이지를 훨씬 적은 토큰으로 표현한다. 스크래핑에서 HTML 대신 접근성 트리를 보내 토큰을 10배 가까이 줄인 사례도 있다. 의미 있는 요소만 골라내야 하는 검색 결과 페이지 파싱 같은 일에 특히 잘 맞는다.
+
+```text
+HTML                                                  접근성 트리
+<div class="nav-wrap"><ul class="gnb">                navigation "주 메뉴"
+  <li class="item active"><a href="/" ...>홈</a>        link "홈" [current=page]
+  <li class="item"><a href="/docs" ...>문서</a>         link "문서"
+<button class="btn btn-primary" aria-expanded="false"> button "메뉴" [expanded=false]
+```
+
+| 방법 | 내용 |
+| --- | --- |
+| CDP | `Accessibility.getFullAXTree`로 브라우저가 계산한 트리를 그대로 받는다. Puppeteer의 `page.accessibility.snapshot()`도 이 계열이다 |
+| Playwright ARIA 스냅샷 | `locator.ariaSnapshot()`이 영역의 접근성 트리를 YAML로 돌려준다. `toMatchAriaSnapshot()`으로 테스트 단언에도 쓴다 |
+| 브라우저 없이 | Testing Library가 내부에서 쓰는 `dom-accessibility-api`(접근 가능한 이름 계산), `aria-query`(role 정의)로 DOM에서 직접 계산한다 |
+
+AI 에이전트가 웹을 다루는 방식도 이쪽으로 왔다. Playwright MCP는 기본으로 스크린샷 대신 접근성 스냅샷을 모델에 넘기고, 모델은 스냅샷 속 요소 참조로 클릭·입력한다. 그래서 **AI에게 사이트를 돌아다니며 테스트하게 하는** 탐색형 테스트가 가능해진다.
+
+같은 원리가 앞의 결론을 강화한다. 접근성이 나쁜 페이지는 스크린 리더와 테스트뿐 아니라 **AI 에이전트에게도 보이지 않는다.** `div`로 만든 버튼은 트리에 `generic`으로만 남고, 이름 없는 아이콘 버튼은 무엇을 하는지 알 수 없다.
+
 ## 정리
 
 - 테스트가 실제 사용 방식과 닮을수록 더 믿을 수 있다(Kent C. Dodds).
@@ -123,5 +146,6 @@ role과 이름으로 찾는 테스트는 **사용자 동작이 그대로인 한*
 - 테스트가 요소를 못 찾으면 스크린 리더도 못 찾는다. 테스트를 쓰다 보면 접근성이 같이 고쳐진다.
 - 직접 만든 컴포넌트에는 role·aria 속성과 그에 맞는 동작을 넣고, 복잡한 컴포넌트는 헤드리스 라이브러리를 쓴다.
 - 접근성은 시각 장애인만이 아니라 테스트, 검색 엔진, 기획 소통까지 모두에게 이득이다.
+- 접근성 트리는 HTML보다 훨씬 적은 토큰으로 페이지를 표현해 LLM 스크래핑과 AI 에이전트의 입력이 된다. 접근성이 나쁜 페이지는 AI에게도 보이지 않는다.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[html|HTML 기초와 HTML5]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]]
+관련 노트: [[tdd|프론트엔드에서의 TDD]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[html|HTML 기초와 HTML5]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[aria-basics|ARIA와 접근 가능한 이름]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]
