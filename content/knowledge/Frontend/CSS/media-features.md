@@ -114,7 +114,7 @@ button.back { display: none; }
 | 기능 | 묻는 것 | 값 |
 | --- | --- | --- |
 | `pointer` | **주** 입력 장치의 정밀도 | `fine`(마우스·스타일러스), `coarse`(손가락), `none`(키보드만) |
-| `any-pointer` | 연결된 장치 **중 하나라도** | 같은 값. `fine`과 `coarse`가 동시에 참일 수 있어, 뒤에 쓴 규칙이 이긴다 |
+| `any-pointer` | 연결된 장치 **중 하나라도** | 같은 값. `fine`과 `coarse`가 동시에 참일 수 있어, 뒤에 쓴 규칙이 이긴다. 마우스를 연결한 터치스크린 노트북은 `pointer: coarse`, `any-pointer: coarse`, `any-pointer: fine`이 모두 맞는다 |
 | `hover` | 주 입력 장치로 호버할 수 있나 | `hover`, `none` |
 | `any-hover` | 하나라도 호버할 수 있나 | `hover`, `none` |
 
@@ -131,7 +131,7 @@ button .extra { visibility: visible; }
   button:is(:hover, :focus-visible) .extra { visibility: visible; }
 }
 @media (pointer: coarse) {
-  button { padding: 1em 2em; }
+  button { padding: 1em 2em; min-block-size: 44px; }   /* 손가락이 누를 만한 크기 */
 }
 ```
 

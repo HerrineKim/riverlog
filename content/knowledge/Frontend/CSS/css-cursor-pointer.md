@@ -1,7 +1,7 @@
 ---
 title: "커서와 포인터 입력"
 concept: "Pointer Input"
-summary: "입력 장치에 맞춰 상호작용을 알리는 CSS. 상태를 알리는 cursor와 caret-color, 마우스·터치를 구분하는 pointer·any-pointer·hover 미디어 쿼리, 브라우저 기본 제스처를 고르는 touch-action, 상호작용을 끄는 pointer-events, 그리고 포커스 표시를 outline으로 그리는 기본 규칙을 정리한다."
+summary: "입력 장치에 맞춰 상호작용을 알리는 CSS. 상태를 알리는 cursor와 caret-color, 마우스·터치를 구분하는 pointer·any-pointer·hover 미디어 쿼리, 브라우저 기본 제스처를 고르는 touch-action, 상호작용을 끄는 pointer-events를 정리한다."
 tags: ["css", "frontend", "accessibility", "mobile"]
 source: other
 date: "2026-10-17"
@@ -36,24 +36,7 @@ input { caret-color: var(--accent); }                 /* 입력 위치를 보여
 
 ## 입력 장치에 맞추기
 
-마우스는 정확하고 손가락은 둔하다. 정확한 마우스에만 맞춰 만든 작은 버튼이나 다닥다닥 붙은 링크는 터치 사용자와 손 떨림이 있는 사용자가 누르기 어렵다. 누를 대상은 기본적으로 넉넉하게 만들고, 장치에 따라 조정한다.
-
-| 미디어 특성 | 묻는 것 | 값 |
-| --- | --- | --- |
-| `pointer` | **주** 입력 장치의 정밀도 | `fine`(마우스), `coarse`(터치), `none` |
-| `any-pointer` | 연결된 장치 **중 하나라도** | 같은 값. 여러 개가 동시에 맞을 수 있다 |
-| `hover`, `any-hover` | 호버할 수 있는가 | `hover`, `none` |
-
-```css
-@media (pointer: coarse) {
-  .toolbar button { min-block-size: 44px; min-inline-size: 44px; }
-}
-@media (hover: hover) {
-  .card:hover .actions { opacity: 1; }   /* 호버가 없는 기기에서 기능이 숨지 않게 */
-}
-```
-
-터치 화면 노트북에 마우스를 연결했다면 `pointer: coarse`, `any-pointer: coarse`, `any-pointer: fine`이 모두 맞는다. 호버로만 드러나는 기능은 호버가 없는 기기에서 쓸 수 없으니 기본으로 보이게 두고 호버 가능할 때만 숨긴다.
+마우스는 정확하고 손가락은 둔하다. 장치에 따른 조정은 `pointer`·`any-pointer`·`hover`로 직접 묻고, 호버로만 드러나는 기능은 만들지 않는다. 표와 코드는 [[media-features#입력 장치|미디어 쿼리 문법과 미디어 기능]]에 있다.
 
 ## 터치 제스처: touch-action
 
@@ -86,20 +69,7 @@ input { caret-color: var(--accent); }                 /* 입력 위치를 보여
 
 ## 포커스 표시
 
-키보드·스위치 사용자는 포커스 표시로 **지금 어디에 있는지** 안다. 브라우저 기본 포커스 링을 지우지 말고, 바꾸려면 더 잘 보이게 바꾼다.
-
-```css
-:focus-visible {
-  outline: 2px solid var(--focus-color);
-  outline-offset: 3px;      /* 양수는 바깥으로, 음수는 안쪽으로. 박스 크기는 그대로 */
-}
-```
-
-- `:focus-visible`은 키보드로 이동했을 때처럼 표시가 필요할 때만 맞는다. 마우스 클릭 때 링이 거슬린다는 이유로 `outline: none`을 쓰지 않는다.
-- `outline`은 박스 크기에 영향을 주지 않고 margin 영역에 겹쳐 그려진다. 지금은 모든 주요 브라우저에서 `border-radius`를 따라 둥글게 그려진다.
-- `box-shadow`만으로 만든 링은 Windows 고대비 모드에서 사라진다. 그림자를 쓰더라도 투명한 `outline`을 함께 둔다.
-- 포커스 가능한 요소는 링크·버튼·폼 요소다. `tabindex="0"`은 탭 순서에 넣고, `-1`은 스크립트·URL 해시로만 포커스되게 하며, 양수는 쓰지 않는다. 스킵 링크 대상 `<main tabindex="-1">`이 포커스 링을 보이는 것은 정상이다.
-- 플렉스·그리드로 화면 순서를 바꾸면 포커스 순서와 어긋난다([[css-grid#1. 보이는 순서와 소스 순서를 어긋나게 하지 않는다|그리드 실무 원칙]]).
+포커스 표시는 브라우저 기본 링을 지우지 않고 `:focus-visible`로 더 잘 보이게 바꾼다. 규칙은 [[keyboard-accessibility#CSS로 지키기|키보드 접근성과 포커스 관리]]에 있다. 플렉스·그리드로 화면 순서를 바꾸면 포커스 순서와 어긋난다([[css-grid#1. 보이는 순서와 소스 순서를 어긋나게 하지 않는다|그리드 실무 원칙]]).
 
 ## 정리
 

@@ -150,6 +150,7 @@ Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
 
 - 헤더는 **HTTPS 응답에만** 싣는다. 평문 HTTP 응답은 중간에서 바뀔 수 있어 브라우저가 무시한다.
 - 헤더를 받은 뒤 사용자가 `http://`로 접속하면 브라우저가 네트워크에 나가지 않고 **`307 Internal Redirect`** 로 바로 HTTPS로 바꾼다. 평문 요청 자체가 생기지 않는다.
+- HSTS를 켠 뒤에도 HTTP → HTTPS 301 리다이렉트는 유지한다. 헤더를 아직 못 받은 첫 방문자를 위해서이고, preload 목록 등록 조건이기도 하다.
 - 많은 CDN이 HSTS를 설정 하나로 켜 준다.
 
 ### preload 목록

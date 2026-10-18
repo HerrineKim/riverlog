@@ -24,18 +24,7 @@ sources: ["https://web.dev/learn/privacy/encryption", "https://developer.mozilla
 
 HTTPS는 요청을 읽거나 바꾸지 못하게 하고, 사용자의 ISP·Wi-Fi 제공자가 어떤 데이터를 보내는지도 숨긴다. 서비스 워커, 푸시, Web Share, Web Crypto 같은 API는 보안 컨텍스트(HTTPS)에서만 동작한다. 인증서·핸드셰이크 원리는 [[https|HTTPS와 TLS]], 전환 절차는 [[https-migration|HTTPS 전환]]에 있다.
 
-빠짐없이 덮으려면 세 가지가 함께 필요하다.
-
-| 단계 | 역할 | 비고 |
-| --- | --- | --- |
-| HTTP → HTTPS 301 리다이렉트 | `http://`로 들어온 요청을 옮긴다 | HSTS를 켠 뒤에도 유지한다. preload 목록 등록 조건이기도 하다 |
-| `Strict-Transport-Security` | 한 번 받은 브라우저는 이후 그 사이트를 스스로 HTTPS로만 연다. 리다이렉트를 거치지 않는다 | 짧은 `max-age`로 시작해 단계적으로 약 2년(`63072000`)까지 늘린다. 되돌리기 어렵다 |
-| CSP `upgrade-insecure-requests` | 페이지 안의 `http://` 하위 리소스를 HTTPS로 올려 요청한다 | 페이지 자체는 올리지 않고 기억하지도 않는다. 링크를 고치기 전 임시 보강이다 |
-
-```http
-Strict-Transport-Security: max-age=63072000; includeSubDomains
-Content-Security-Policy: upgrade-insecure-requests
-```
+빠짐없이 덮으려면 301 리다이렉트, `Strict-Transport-Security`, `upgrade-insecure-requests`를 함께 건다. 각 단계의 역할과 헤더 값은 [[https#HSTS: HTTPS를 강제하기|HSTS]]와 [[https-migration#전환 체크리스트|전환 체크리스트]]에 정리했다.
 
 인증서는 Let's Encrypt 같은 ACME 발급, 호스팅의 기본 제공, CDN·프록시 앞단 중에서 고른다. 프록시는 가장 쉽고 캐시·부하 분산도 얻지만 통제권 일부를 서드파티에 넘긴다([[third-party-privacy|서드파티와 프라이버시]]).
 

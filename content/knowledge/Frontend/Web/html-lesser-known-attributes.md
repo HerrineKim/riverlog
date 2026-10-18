@@ -1,7 +1,7 @@
 ---
 title: "잘 안 쓰지만 쓸모 있는 HTML 속성"
 concept: "HTML Attributes"
-summary: "JavaScript 없이 HTML 속성만으로 해결되는 일들. 가상 키보드의 엔터 키 문구(enterkeyhint), 번호 목록 제어(reversed·start·type·value), 내려받기 링크(download), 폼 밖의 입력(form), 이미지·iframe 로딩 힌트(decoding·loading·fetchpriority), 반응형 이미지 미리 로드(imagesrcset·imagesizes), 인용·수정 이력(cite·datetime), 옵션 묶기(optgroup), 사용자 정의 데이터(data-*), 대체 스타일시트(title)까지 정리한다."
+summary: "JavaScript 없이 HTML 속성만으로 해결되는 일들. 가상 키보드의 엔터 키 문구(enterkeyhint), 번호 목록 제어(reversed·start·type·value), 내려받기 링크(download), 폼 밖의 입력(form), 이미지·iframe 로딩 힌트(decoding·loading·fetchpriority), 인용·수정 이력(cite·datetime), 옵션 묶기(optgroup), 사용자 정의 데이터(data-*), 대체 스타일시트(title)까지 정리한다."
 tags: ["html", "frontend", "form", "performance", "web"]
 source: other
 date: "2026-10-14"
@@ -25,7 +25,6 @@ HTML 요소는 익숙해도 속성은 잊기 쉽다. 그런데 꽤 많은 기능
 | `decoding` | `<img>` | 이미지 디코딩 방식 힌트 |
 | `loading` | `<img>`, `<iframe>` | 지연 로딩 |
 | `fetchpriority` | `<img>`, `<link>`, `<script>` | 다운로드 우선순위 힌트 |
-| `imagesrcset`, `imagesizes` | `<link rel="preload" as="image">` | 반응형 이미지 미리 로드 |
 | `cite`, `datetime` | `<blockquote>`, `<q>`, `<del>`, `<ins>` | 출처 URL, 변경 일시 |
 | `label`, `disabled` | `<optgroup>` | 옵션 묶음 제목, 묶음 전체 비활성화 |
 | `title` + `rel="alternate stylesheet"` | `<link>` | 사용자가 고르는 대체 스타일시트 |
@@ -58,21 +57,7 @@ HTML 요소는 익숙해도 속성은 잊기 쉽다. 그런데 꽤 많은 기능
 
 ## 목록
 
-`<ol>`의 번호는 CSS 없이도 꽤 바꿀 수 있다.
-
-```html
-<ol reversed start="20" type="1">
-  <li>…</li>
-  <li value="100">…</li>  <!-- 이 항목부터 100, 99, … -->
-</ol>
-```
-
-| 속성 | 뜻 |
-| --- | --- |
-| `reversed` | **번호만** 거꾸로 센다. 항목 순서는 그대로다 |
-| `start` | 시작 번호 |
-| `type` | `1`(숫자), `a`·`A`(알파벳), `i`·`I`(로마 숫자) |
-| `value` (`<li>`) | 그 항목의 번호를 지정하고 이후는 거기서 이어진다 |
+`reversed`·`start`·`type`·`value`로 번호 매기기를 CSS 없이 바꾸는 법은 [[html-lists-tables#번호 제어|목록과 표]]에 정리했다.
 
 ## 링크와 내려받기
 
@@ -90,13 +75,7 @@ HTML 요소는 익숙해도 속성은 잊기 쉽다. 그런데 꽤 많은 기능
 | `fetchpriority` | `high` · `low` · `auto` | 첫 화면 히어로 이미지는 `high`, 캐러셀의 뒤쪽 이미지는 `low` |
 | `decoding` | `async` · `sync` · `auto`(기본) | 큰 이미지 디코딩이 다른 콘텐츠 표시를 막지 않게 `async`를 줄 수 있다. 브라우저가 이미 알아서 잘 처리해 효과는 작다 |
 
-화면 크기에 맞는 이미지를 **미리 로드**하려면 `<link rel="preload">`에 `imagesrcset`·`imagesizes`를 준다. 값은 `<img>`의 `srcset`·`sizes`와 똑같이 맞춘다. `srcset`·`sizes` 문법은 [[responsive-images|반응형 이미지: srcset·sizes와 picture]]에 있다.
-
-```html
-<link rel="preload" as="image" fetchpriority="high"
-      imagesrcset="hero-480.jpg 480w, hero-800.jpg 800w, hero-1600.jpg 1600w"
-      imagesizes="(max-width: 600px) 480px, 800px">
-```
+반응형 이미지를 미리 로드하는 `imagesrcset`·`imagesizes`는 [[resource-hints#preload: 늦게 발견되는 중요한 자원만|리소스 힌트]]에 있다.
 
 ## 인용과 수정 이력
 

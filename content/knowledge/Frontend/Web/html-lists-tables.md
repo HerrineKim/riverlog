@@ -49,10 +49,17 @@ sources: ["https://web.dev/learn/html/lists", "https://web.dev/learn/html/tables
 | --- | --- | --- |
 | `type` | `<ol>` | `1`, `a`, `A`, `i`, `I`. CSS `list-style-type`이 덮어쓰지만, 법률 문서처럼 번호 형식이 의미면 HTML에 둔다 |
 | `start` | `<ol>` | 시작 번호 |
-| `reversed` | `<ol>` | 번호를 거꾸로 센다 |
+| `reversed` | `<ol>` | **번호만** 거꾸로 센다. 항목 순서는 그대로다 |
 | `value` | `<li>` (`<ol>` 안에서만) | 그 항목의 번호. 다음 항목은 거기서 이어지고, `start`보다 우선한다 |
 
-**번호가 의미면 HTML 속성, 장식이면 CSS 카운터와 `::marker`** 로 한다. 예시는 [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]의 「목록」에 있다.
+**번호가 의미면 HTML 속성, 장식이면 CSS 카운터와 `::marker`** 로 한다. 
+
+```html
+<ol reversed start="20" type="1">
+  <li>…</li>
+  <li value="100">…</li>  <!-- 이 항목부터 100, 99, … -->
+</ol>
+```
 
 ### 목록 모양을 지울 때
 

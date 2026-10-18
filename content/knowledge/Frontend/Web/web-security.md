@@ -62,14 +62,7 @@ card.innerHTML = `<h2>${desc}</h2>` // onerror가 실행된다
 
 ## 클릭재킹(Clickjacking)
 
-공격자가 자기 페이지에 대상 사이트를 투명한 iframe으로 겹쳐 놓고, 사용자가 미끼 버튼을 누르게 해 실제로는 대상 사이트의 버튼(송금, 권한 허용)을 누르게 만드는 공격이다. 사용자는 로그인된 상태이므로 요청은 정상으로 처리된다.
-
-방어는 **남이 내 페이지를 프레임에 넣지 못하게** 하는 것이다. 표준은 CSP의 `frame-ancestors`이고, 옛 브라우저용으로 `X-Frame-Options`를 함께 건다(`ALLOW-FROM` 값은 폐기됐다).
-
-```http
-Content-Security-Policy: frame-ancestors 'self'
-X-Frame-Options: SAMEORIGIN
-```
+클릭재킹의 원리와 방어(`frame-ancestors`, `X-Frame-Options`)는 [[windows-and-frames#클릭재킹: 남의 iframe에 갇힌 내 페이지|창과 프레임]]에 정리했다.
 
 프레임 사이 통신을 쓸 때 `postMessage`를 받는 쪽이 `event.origin`을 검사하지 않으면, 아무 사이트나 메시지를 보내 DOM을 조작하게 되어 XSS 통로가 된다. 창·프레임 관계와 sandbox는 [[windows-and-frames|창과 프레임: 팝업, iframe, postMessage]]에 있다.
 

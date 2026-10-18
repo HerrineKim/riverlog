@@ -72,7 +72,7 @@ input.addEventListener('focus', (e) => e.target.select());
 **아무 말 없이 제출이 안 되는 폼**이 가장 나쁘다. 무엇이 틀렸는지 알려 주고, 가능하면 해당 칸으로 포커스를 옮긴다.
 
 - HTML 기본 검증 팝업은 놓치기 쉽다. 문구는 `setCustomValidity()`로 바꾸고, `:user-invalid`로 오류 칸을 눈에 띄게 꾸민다. 팝업이 안 뜨는 상황도 있으니 여러 환경에서 확인한다. 속성과 API는 [[constraint-validation|제약 검증: required·pattern·ValidityState]]에 있다.
-- **입력 중에 바로 오류를 띄우지 않는다.** 아직 다 쓰지도 않았는데 빨간 글씨가 뜨면 불안하다. `blur`·`change` 때 처음 띄우고, 한 번 뜬 뒤에는 실시간으로 갱신한다(VeeValidate의 검증 모드가 이런 방식).
+- 입력 중에 바로 오류를 띄우지 않는 타이밍(처음엔 `blur`·`change`, 한 뒤에는 실시간 갱신)은 [[constraint-validation#언제 오류를 보여 주나|제약 검증]]에 정리했다. VeeValidate의 검증 모드가 이런 방식이다.
 - 검증 라이브러리는 복잡한 UI에 빠르지만, 규칙이 특이하면 평범한 `if` 문이 개발자와 사용자 모두에게 더 명확할 수 있다.
 
 ```css
