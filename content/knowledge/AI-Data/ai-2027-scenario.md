@@ -137,4 +137,4 @@ LLM 동작 원리 자체는 [[how-llm-works|LLM은 무엇을 하고 왜 작동�
 - 사고 과정을 사람이 읽을 수 있느냐가 정렬 실패를 잡는 데 결정적이다.
 - 위험은 AI의 정렬 실패만이 아니다. 정렬에 성공해도 **누구에게 정렬됐는가**(권력 집중), 국가 간 경쟁, 가중치 보안, 대중과의 정보 격차가 함께 걸려 있다.
 
-관련 노트: [[responsible-ai-governance|책임 있는 AI: 프라이버시·공정성·신뢰]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편: 사티아 나델라]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[reinforcement-learning|강화 학습: 에이전트·MDP·가치 함수와 알고리즘 분류]], [[ai-era-developer|AI 시대 개발자의 역할]]
+관련 노트: [[responsible-ai-governance|책임 있는 AI: 프라이버시·공정성·신뢰]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편: 사티아 나델라]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[reinforcement-learning|강화 학습: 에이전트·MDP·가치 함수와 알고리즘 분류]], [[ai-era-developer|AI 시대 개발자의 역할]], [[scale-and-intelligence-utility|스케일과 지능 유틸리티: 샘 올트먼]]

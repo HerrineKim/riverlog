@@ -138,4 +138,4 @@ AI의 목적은 결국 **경제 성장**이다. 기준은 AGI 벤치마크가 �
 - 엔지니어는 저장소의 메타 모델을 쥔 아키텍트가 되고, 책임은 사람에게 남는다.
 - 리더십은 명확성, 에너지, 과잉 제약 문제 풀기다.
 
-관련 노트: [[ai-era-developer|AI 시대 개발자의 역할]], [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[responsible-ai-governance|책임 있는 AI: 프라이버시·공정성·신뢰]], [[digital-transformation|조직의 디지털 전환과 웹 거버넌스]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]], [[organizational-ax|조직 AX: 개발 자동화에서 전사 AI 전환까지]]
+관련 노트: [[ai-era-developer|AI 시대 개발자의 역할]], [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[responsible-ai-governance|책임 있는 AI: 프라이버시·공정성·신뢰]], [[digital-transformation|조직의 디지털 전환과 웹 거버넌스]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]], [[organizational-ax|조직 AX: 개발 자동화에서 전사 AI 전환까지]], [[scale-and-intelligence-utility|스케일과 지능 유틸리티: 샘 올트먼]]
