@@ -112,4 +112,4 @@ IT 도구로 본다 → IT 부서 소관
 - 웹 거버넌스(전략·관리·실행·측정)가 없으면 디자인 개편과 캠페인만 반복된다.
 - 권한이 없어도 된다. 경영진의 언어, 후원자, 작은 시범 사업으로 시작한다. 전환은 끝나는 프로젝트가 아니라 계속 가꾸는 정원이다.
 
-관련 노트: [[content-strategy|콘텐츠 전략과 핵심 모델]], [[media-digital-transformation|언론사의 디지털 전환 과제]], [[product-minded-engineer|제품 중심 개발자]]
+관련 노트: [[content-strategy|콘텐츠 전략과 핵심 모델]], [[media-digital-transformation|언론사의 디지털 전환 과제]], [[product-minded-engineer|제품 중심 개발자]], [[organizational-ax|조직 AX: 개발 자동화에서 전사 AI 전환까지]]
