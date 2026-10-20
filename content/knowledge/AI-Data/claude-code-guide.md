@@ -5,10 +5,10 @@ summary: "채팅형 AI와 무엇이 다른지부터 설치, 질문 → 편집 �
 tags: ["ai", "llm", "claude-code", "agentic-coding", "prompting", "mcp"]
 source: other
 date: "2026-10-20"
-sources: ["https://www.youtube.com/watch?v=6eBSHbLKuN0", "https://www.youtube.com/watch?v=kPUuh2ZnzEM", "https://code.claude.com/docs/en/headless", "https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five", "https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp"]
+sources: ["https://www.youtube.com/watch?v=6eBSHbLKuN0", "https://www.youtube.com/watch?v=kPUuh2ZnzEM", "https://code.claude.com/docs/en/headless", "https://gayuna.github.io/llm/claude-code/", "https://code.claude.com/docs/en/model-config", "https://code.claude.com/docs/en/github-actions", "https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five", "https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp"]
 ---
 
-> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다. 위임 방식은 Kieran Klaassen의 「[How I Use Claude Code to Ship Like a Team of Five](https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five)」(2025.07)를, 도입 순서와 팀 설정은 Claude Code를 만든 Boris Cherny의 강연 「[Mastering Claude Code in 30 minutes](https://www.youtube.com/watch?v=6eBSHbLKuN0)」(Code w/ Claude, 2025.05, [한글 자막판](https://www.youtube.com/watch?v=kPUuh2ZnzEM))을 더했다.
+> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다. 위임 방식은 Kieran Klaassen의 「[How I Use Claude Code to Ship Like a Team of Five](https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five)」(2025.07)를, 도입 순서와 팀 설정은 Claude Code를 만든 Boris Cherny의 강연 「[Mastering Claude Code in 30 minutes](https://www.youtube.com/watch?v=6eBSHbLKuN0)」(Code w/ Claude, 2025.05, [한글 자막판](https://www.youtube.com/watch?v=kPUuh2ZnzEM))을, 동작 원리·맥락 관리·GitHub 연동은 Anthropic 강의 「Claude Code in Action」을 정리한 hello.gayuna의 [글](https://gayuna.github.io/llm/claude-code/)(2025.09)을 더했다.
 
 ## 채팅형 AI와 다른 점
 
@@ -19,6 +19,20 @@ sources: ["https://www.youtube.com/watch?v=6eBSHbLKuN0", "https://www.youtube.co
 | 파일과 명령 | 대화창 안에서만 동작하고 파일은 업로드해야 한다 | 디스크의 파일을 직접 읽고 쓰며, 셸 명령·스크립트·Git·패키지 설치를 자연어로 시킨다 |
 | 외부 도구 | 대화 밖 도구와 단절 | MCP로 GitHub·Notion·Slack·Jira·DB 같은 도구에 연결해 지금 쓰는 체계 안에서 일한다 |
 | 맥락과 규모 | 세션이 끝나면 맥락이 사라지고 실행은 결국 사람이 한다 | CLAUDE.md·자동 메모리로 맥락을 잇고, 서브에이전트 병렬 작업·백그라운드 작업·체크포인트 되감기·워크트리로 긴 작업을 나눠 수행한다 |
+
+### 동작 원리: 도구 사용
+
+LLM 자체는 파일을 읽거나 명령을 실행할 수 없다. 「파일을 읽어 줘」라고만 하면 「읽을 수 없습니다」가 돌아온다. 코딩 어시스턴트는 그 사이에서 **도구 사용(tool use)** 루프를 돌린다.
+
+```text
+작업 받기("이 에러를 고쳐 줘")
+  → 맥락 모으기: 모델이 정해진 형식으로 "이 파일을 읽어 달라"고 요청 → 어시스턴트가 읽어서 내용을 돌려줌
+  → 계획 세우기
+  → 실행: 파일 수정·명령 실행도 같은 방식으로 요청 → 어시스턴트가 수행하고 결과를 돌려줌
+  → 결과를 보고 다음 행동 결정 (반복)
+```
+
+Claude Code의 기본 도구는 파일 읽기·편집, 셸 명령, 검색 정도다. 모델이 이 도구들을 엮어 처음 보는 도구도 쓰고 복잡한 작업을 처리한다. 새 도구(MCP)를 붙이면 그것도 알아서 쓴다. 코드를 미리 색인해 외부 서버로 올리지 않고 그때그때 탐색하므로 코드베이스 전체를 보내지 않아도 된다.
 
 ## 설치와 준비물
 
@@ -139,7 +153,18 @@ Claude가 **스스로 결과를 볼 수 있으면 반복해서 고친다.** 단�
 claude mcp add --transport http notion https://mcp.notion.com/mcp
 ```
 
-추가한 뒤 `/mcp`로 연결 상태를 확인한다.
+추가한 뒤 `/mcp`로 연결 상태를 확인한다. MCP 도구는 처음 쓸 때마다 권한을 묻는다. 늘 허용할 서버는 설정 파일의 허용 목록에 `mcp__서버이름` 형식으로 넣는다(밑줄이 두 개다).
+
+```bash
+claude mcp add playwright npx @playwright/mcp@latest
+```
+
+```json
+// .claude/settings.local.json
+{ "permissions": { "allow": ["mcp__playwright"] } }
+```
+
+브라우저 도구를 붙이면 확인 수단과 프롬프트 개선을 한 번에 엮을 수 있다. 「localhost:3000을 열어 컴포넌트를 하나 만들어 보고, 스타일을 검토한 뒤, 앞으로 더 나은 컴포넌트가 나오도록 @src/lib/prompts/generation.tsx의 생성 프롬프트를 고쳐라」.
 
 프런트엔드 작업이라면 Chrome DevTools MCP를 붙여 Claude Code가 실제 브라우저를 열고 성능 트레이스·Lighthouse·콘솔로 결과를 직접 확인하게 할 수 있다. 설치와 플래그는 [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]]에 있다.
 
@@ -157,6 +182,19 @@ claude mcp add --transport http notion https://mcp.notion.com/mcp
 └── data-cleaner/
     ├── SKILL.md
     └── scripts/clean.py
+```
+
+스킬에 인자를 받으려면 본문에 `$ARGUMENTS`를 쓴다. 예를 들어 테스트 작성 규칙을 `.claude/skills/write-tests/SKILL.md`에 두면 `/write-tests hooks 폴더의 use-auth.ts`처럼 부른다. 새로 만든 스킬이 바로 안 보이면 세션을 다시 시작한다.
+
+```markdown
+Write comprehensive tests for: $ARGUMENTS
+
+Testing conventions:
+- Use Vitest with React Testing Library
+- Place test files in a __tests__ directory next to the source file
+- Name test files as [filename].test.ts(x)
+
+Coverage: happy paths, edge cases, error states
 ```
 
 Claude Code에는 `/loop`(주기 실행), `/batch`(대규모 병렬 변경), `/simplify`, `/code-review` 같은 번들 스킬이 들어 있다. claude.ai와 API에서는 Anthropic이 만든 문서 스킬(Word `docx`, 스프레드시트 `xlsx`, 프레젠테이션 `pptx`, `pdf`)을 쓸 수 있다. 스킬을 직접 만드는 방법은 [[claude-skill-building-guide|Claude 스킬 만들기 가이드]]에 따로 정리했다.
@@ -214,6 +252,32 @@ claude -p "테스트를 돌리고 실패를 고쳐" --allowedTools "Bash,Read,Ed
 
 CI, 장애 대응, 대용량 로그 분석(클라우드 버킷의 로그나 Sentry CLI 출력을 파이프로 넣기), 이슈 자동 분류에 쓴다. Claude Code 저장소의 GitHub 이슈 라벨도 사람이 아니라 슬래시 명령 하나를 GitHub Actions에서 `-p`로 돌려 붙인다. CI처럼 어디서 돌려도 같은 결과가 필요하면 `--bare`로 개인 훅·플러그인·CLAUDE.md를 읽지 않게 한다.
 
+### GitHub Actions 연동
+
+`/install-github-app`을 실행하면 GitHub에 Claude 앱을 설치하고, API 키를 저장소 시크릿에 등록하고, 워크플로 파일을 담은 PR을 만든다.
+
+| 동작 | 내용 |
+| --- | --- |
+| 멘션 | 이슈나 PR 댓글에서 `@claude`를 부르면 내용을 분석해 답하거나 코드를 고쳐 PR을 연다 |
+| PR 리뷰 | 새 PR이 올라오면 변경을 검토하고 영향 범위를 리포트로 남긴다 |
+| 커스텀 워크플로 | 워크플로 파일에서 프로젝트 준비 단계(의존성 설치, 개발 서버 실행), 추가 지시(서버 주소, 로그 위치, 쓸 수 있는 CLI), MCP 서버 설정, 허용 도구 목록을 저장소에 맞게 정한다 |
+
+```yaml
+- uses: anthropics/claude-code-action@v1
+  with:
+    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+    claude_args: |
+      --append-system-prompt "서버는 localhost:3000에서 이미 돌고 있고 로그는 logs.txt에 쌓인다. DB는 sqlite3 CLI로 조회한다. 필요하면 mcp__playwright 도구로 브라우저를 띄워 앱을 확인한다."
+      --mcp-config .github/mcp.json
+      --allowedTools "Bash(npm *),Bash(sqlite3 *),mcp__playwright__browser_snapshot,mcp__playwright__browser_click"
+```
+
+v1부터는 Claude Code CLI 인자를 `claude_args` 하나로 넘긴다. 베타 시절의 `custom_instructions`·`mcp_config`·`allowed_tools` 같은 개별 입력은 `--append-system-prompt`·`--mcp-config`·`--allowedTools`로 옮겨졌다. 전체 입력 목록은 [GitHub Actions 문서](https://code.claude.com/docs/en/github-actions)에서 확인한다.
+
+### 훅: 반드시 지킬 규칙
+
+CLAUDE.md의 지시는 모델이 잊을 수 있다. 수정 후 포맷터·타입 검사, 민감 파일 차단처럼 **반드시 실행돼야 하는 규칙**은 도구 호출 앞뒤에 자동 실행되는 훅으로 건다. 이벤트·종료 코드·예제는 [[claude-code-hooks|Claude Code 훅]]에 따로 정리했다.
+
 ## 프롬프트 기법
 
 구체적인 지시, 예시, 단계 연결, 제약, 역할 부여 같은 일반 원칙은 어떤 모델에나 같다. [[prompt-cheat-sheet|프롬프트 작성법 치트시트]]에 정리해 두었고, 여기서는 **Claude Code에서만 통하는 것**만 적는다.
@@ -223,8 +287,31 @@ CI, 장애 대응, 대용량 로그 분석(클라우드 버킷의 로그나 Sent
 | **맥락은 `@`로 직접 준다** | 파일·폴더를 다룰 때 | 내용을 설명하지 말고 `@report.csv`, `@data/`처럼 붙이면 Claude가 직접 읽는다 |
 | **작업 하나에 세션 하나** | 관련 없는 작업 사이 | `/clear`로 맥락을 비운다. 이유는 [[ai-coding-guardrails\|AI 코딩 실무 가드레일]]의 「맥락과 세션 관리」 참고 |
 | **반복되는 지시는 CLAUDE.md로** | 세션마다 같은 말을 하고 있을 때 | 매 세션 자동으로 읽히므로 프롬프트가 짧아진다 |
-| **계획 모드 → 검토 → 실행** | 파일을 여러 개 고치는 작업 | `Shift+Tab`으로 계획 모드에 두면 코드를 고치지 않고 계획만 낸다. 실행 전에 계획을 보면 되돌릴 일이 줄어든다 |
+| **계획 모드 → 검토 → 실행** | 파일을 여러 개 고치는 작업 | `Shift+Tab`을 눌러 상태 표시줄에 `plan mode on`이 뜨게 하면 코드를 고치지 않고 계획만 낸다. 계획을 받아들이거나, 빠진 것을 더 지시한 뒤 실행한다 |
 | **끝나는 조건을 준다** | 테스트 통과처럼 확인 가능한 목표가 있을 때 | `/goal 모든 테스트 통과`처럼 조건을 걸면 별도 모델이 매 턴 충족 여부를 판정하고, 충족될 때까지 이어서 일한다 |
+
+### 계획 모드와 추론 강도: 넓이와 깊이
+
+| 도구 | 어울리는 일 | 쓰는 법 |
+| --- | --- | --- |
+| 계획 모드 (넓이) | 코드베이스를 넓게 이해해야 하는 일, 여러 단계 구현, 여러 파일·컴포넌트에 걸친 변경 | `Shift+Tab`, 또는 `claude --permission-mode plan` |
+| 추론 강도 (깊이) | 복잡한 로직, 까다로운 디버깅, 알고리즘 문제 | `/effort`로 `low`~`max` 단계를 고른다. 한 턴만 깊게 생각시키려면 프롬프트 어딘가에 `ultrathink`를 넣는다 |
+
+둘 다 토큰을 더 쓴다. 지금의 모델은 단계마다 생각할지 말지를 스스로 정하는 적응형 추론이라, 강도는 생각을 얼마나 자주·깊게 할지의 기준을 바꾼다.
+
+- 과거에는 `think` < `think hard` < `think harder` < `ultrathink`처럼 프롬프트의 키워드로 생각 예산을 정했다. 지금은 `ultrathink`만 키워드로 인식하고, 나머지 표현은 그냥 프롬프트 문장으로 전달된다.
+
+### 맥락이 흐트러졌을 때
+
+작업 A를 하위 작업 a·b·c·d로 나눠 진행하는 중이라고 하자.
+
+| 상황 | 대처 |
+| --- | --- |
+| 의도와 다른 방향으로 가고 있다 | `Esc`로 바로 끊고 다시 지시한다 |
+| 같은 실수를 반복한다 (없는 파일 경로를 계속 참조 등) | `Esc`로 끊고, 올바른 경로를 CLAUDE.md에 적게 한다(`/memory` 또는 「CLAUDE.md에 기억해 둬」) |
+| b의 에러를 오래 디버깅해서 맥락이 디버깅 이야기로 가득하다 | `Esc` 두 번(`/rewind`)으로 디버깅 이전 시점으로 돌아가 c부터 이어 간다 |
+| c를 디버깅하며 알아낸 것은 다음 작업에도 쓸모 있다 | `/compact`로 지금까지를 요약해 핵심은 남기고 맥락을 줄인다 |
+| 완전히 새로운 작업을 시작한다 | `/clear`로 비운다 |
 
 에이전트에게 맡길 때 결과를 일관되게 만드는 방법은 [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], 반복 작업을 루프로 돌리는 방법은 [[loop-engineering|루프 엔지니어링]]에서 더 깊이 다뤘다.
 
@@ -260,4 +347,4 @@ Claude Code가 IDE가 아니라 CLI로 나온 데는 두 가지 이유가 있다
 
 구독(Pro·Max·Team·Enterprise)으로 쓰거나, CI/CD·파이프라인처럼 자동화 용도면 API 사용량 과금으로 쓴다. Amazon Bedrock·Google Cloud·Microsoft Foundry를 통해서도 쓸 수 있다. 플랜별 요금과 한도는 자주 바뀌므로 [공식 요금 안내](https://claude.com/pricing)에서 확인하고, 세션 안에서는 `/usage`로 사용량을 본다.
 
-관련 노트: [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]
+관련 노트: [[claude-code-hooks|Claude Code 훅]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]
