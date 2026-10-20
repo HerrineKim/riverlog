@@ -5,10 +5,10 @@ summary: "초기 웹에는 프론트엔드라는 개념이 없었다. 이미지�
 tags: ["frontend", "web", "javascript", "html", "history", "ecosystem"]
 source: other
 date: "2026-10-12"
-sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@teo/frontend", "https://gist.github.com/pocojang/af4211355f72ea6f3fc306fe4580566f", "https://vite.dev/blog/announcing-vite8"]
+sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@teo/frontend", "https://yozm.wishket.com/magazine/detail/1289/", "https://gist.github.com/pocojang/af4211355f72ea6f3fc306fe4580566f", "https://vite.dev/blog/announcing-vite8"]
 ---
 
-> 수코딩의 책 『아는 만큼 보이는 프런트엔드 개발』(길벗) 발췌를 실은 요즘IT의 글 「[유튜버 '수코딩'이 정리한 프론트엔드의 등장 배경](https://yozm.wishket.com/magazine/detail/2287/)」(2023.10)과 테오(teo)의 「[프론트엔드 역사와 미래, 업무 분야 ... 그리고 잘하는 프론트엔드 개발자란?](https://velog.io/@teo/frontend)」(2021.12), pocojang의 「[2016년에 FE를 배우는 기분, 2023년에 FE를 배우는 기분](https://gist.github.com/pocojang/af4211355f72ea6f3fc306fe4580566f)」(2023.05)을 바탕으로 재구성한 노트다.
+> 수코딩의 책 『아는 만큼 보이는 프런트엔드 개발』(길벗) 발췌를 실은 요즘IT의 글 「[유튜버 '수코딩'이 정리한 프론트엔드의 등장 배경](https://yozm.wishket.com/magazine/detail/2287/)」(2023.10)과 테오(teo)의 「[프론트엔드 역사와 미래, 업무 분야 ... 그리고 잘하는 프론트엔드 개발자란?](https://velog.io/@teo/frontend)」(2021.12, 요즘IT에 「[시니어 개발자가 말하는, 프론트엔드 역사와 미래](https://yozm.wishket.com/magazine/detail/1289/)」로 2022.01 재게재), pocojang의 「[2016년에 FE를 배우는 기분, 2023년에 FE를 배우는 기분](https://gist.github.com/pocojang/af4211355f72ea6f3fc306fe4580566f)」(2023.05)을 바탕으로 재구성한 노트다.
 
 ## 웹의 세대 구분
 
@@ -23,7 +23,7 @@ sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@t
 ## 프론트엔드를 만든 기술들
 
 ```text
-1991 HTML 태그 ─ 1993 <img> ─ 1995 JavaScript ─ 1996 CSS ─ 2004~05 AJAX(Gmail, Google Maps) ─ 2010 무렵 Flash 퇴장
+1991 HTML 태그 ─ 1993 <img> ─ 1994 CGI ─ 1995 JavaScript ─ 1996 CSS ─ 2004~05 AJAX(Gmail, Google Maps) ─ 2010 무렵 Flash 퇴장
                                                                                                      │
                                                        트래픽·데이터 증가 → 프론트엔드 / 백엔드 분리 ◀┘
 ```
@@ -31,10 +31,19 @@ sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@t
 | 기술 | 바꾼 것 |
 | --- | --- |
 | `<img>` 태그 (1993) | 페이지가 풍성해졌다. 아직은 전문가가 따로 필요할 만큼 복잡하지 않았다 |
+| CGI (1994 무렵) | 사용자가 입력한 값을 서버로 보내 **서버가 동적으로 페이지를 만들게** 했다. PHP 같은 서버 스크립트 언어가 뒤따랐다. 방문자 카운터와 방명록이 붙었고, 방명록은 게시판으로, 게시판은 커뮤니티로 자랐다 |
 | CSS (1994 제안, 1996 공개, 1998 W3C 권고) | **문서 구조와 시각 디자인을 분리**했다 |
 | JavaScript (1995) | 사용자와 페이지가 상호작용할 수 있게 했다. Web 2.0의 바탕이 됐다 |
 | AJAX | 페이지 전체를 다시 불러오지 않고 **일부만 비동기로 갱신**한다. Gmail(2004)과 Google Maps(2005)가 보여 줬고, Jesse James Garrett이 이름을 붙였다. JavaScript의 위상이 크게 올라갔다 |
 | Flash의 퇴장 (2010 무렵) | 그 자리를 HTML5와 AJAX가 채웠다 |
+
+문서를 공유하던 웹은 곧 **좋은 문서를 찾는 일**로 커졌다. 유용한 링크를 모은 웹 디렉터리가 검색엔진으로, 인기 정보를 한곳에 모은 포털로 발전했다. 언제 어디서든 정보를 보낼 수 있다는 성질은 언제 어디서든 주문을 받는 e-커머스로 이어졌다.
+
+### Flash와 RIA
+
+닷컴 버블(2000년대 초)로 웹 사업이 재편되며 Web 2.0이라는 말이 생겼다. 프론트엔드와 가장 가까운 키워드는 **RIA(Rich Internet Application)**, 정적인 문서를 넘어 사용자와 상호작용하며 화면이 바뀌는 웹이었다. 당시 IE의 스크립트 능력은 열악했고, ActionScript를 쓰는 Flash가 디자인·애니메이션·인터랙션 모두에서 앞섰다. 웹 디자이너 대부분이 Flash를 배웠고 화려한 사이트가 쏟아졌으며, 이것이 웹의 미래라고 보는 사람이 많았다.
+
+하지만 애니메이션·이미지·사운드로 가득한 사이트는 사람을 피로하게 했고 긴 로딩을 요구했다. Flash는 결국 게임과 인터랙티브 콘텐츠 쪽으로 고립됐고, 애플이 아이폰에서 Flash를 받지 않기로 하면서 웹에서 물러났다. 다만 **웹에도 동적 스크립트가 필요하고, 표준 안에 그 대안이 있어야 한다**는 것을 알린 계기였다.
 
 ### Flash가 밀려난 이유
 
@@ -50,7 +59,7 @@ sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@t
 
 | 흐름 | 일어난 일 | 프론트엔드에 남긴 것 |
 | --- | --- | --- |
-| IE 독점과 홈페이지 붐 (1995~2004) | 홈페이지가 회사의 명함이 됐다. 게시판은 솔루션을 사서 붙였다 | HTML·CSS 작업은 수요가 많았지만 로직이 거의 없어 낮게 평가받았다 |
+| IE 독점과 홈페이지 붐 (1995~2004) | Windows에 IE가 기본 탑재되며 홈페이지가 회사의 명함이 됐다. 게시판은 솔루션을 사서 붙였고, 눈에 띄려고 화려한 배너·디자인 수요가 몰렸다 | HTML·CSS 작업은 수요가 많았지만 로직이 거의 없어, **HTML·CSS만 다루는 개발자는 실력이 없다**는 인식이 이때 생겼다 |
 | 구글의 "웹이 OS가 되면" | 오피스를 웹으로 옮기려 했고, 다른 벤더의 플러그인에 기대지 않으려고 JavaScript 비동기 화면(Google Maps)을 택했다 | JavaScript가 재평가됐다 |
 | 웹 표준과 접근성 | 여러 브라우저 벤더가 IE·ActiveX 대신 공통 표준을 만들었다 | 크로스 브라우징·시맨틱·접근성이 디자이너와 다른 **전문 영역**이 됐다. 디자인을 표준 HTML·CSS로 옮기는 일이 별도 공정이 됐다 |
 | jQuery (2006) | 쉬운 문법으로 DOM 조작·크로스 브라우징·Ajax를 한꺼번에 해결했다 | jQuery 문법의 상당수가 뒤에 표준 API(`querySelectorAll` 등)로 들어갔다 |
