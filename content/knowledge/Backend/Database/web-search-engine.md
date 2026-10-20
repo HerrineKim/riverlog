@@ -37,7 +37,7 @@ sources: ["https://tali.kr/2188", "https://xo.dev/articles/how-search-engine-wor
 | 구성 요소 | 자료구조·알고리즘 | 하는 일 |
 | --- | --- | --- |
 | URL 프런티어(frontier) | [[heap-priority-queue\|힙과 우선순위 큐]] + 호스트별 큐 | 다음에 방문할 URL을 중요도·갱신 주기 순으로 꺼낸다 |
-| 방문 확인 | 해시 집합, 블룸 필터 | 이미 본 URL을 다시 넣지 않는다. 블룸 필터는 메모리를 아끼는 대신 약간의 오탐을 허용한다 |
+| 방문 확인 | 해시 집합, 블룸 필터 | 이미 본 URL을 다시 넣지 않는다. 블룸 필터는 메모리를 아끼는 대신 약간의 오탐을 허용한다. 실제 크롤러의 자료 구조 배치는 [[web-crawler-at-scale\|대규모 웹 크롤러 설계]]에 있다 |
 | URL 정규화 | 문자열 규칙 | 대소문자, 끝 `/`, 추적 파라미터를 정리해 같은 페이지를 하나로 본다 |
 | 예의(politeness) | 호스트별 대기열과 지연 | 한 서버에 요청이 몰리지 않게 한다. 5xx 응답이 늘면 속도를 늦춘다 |
 | 규칙 준수 | robots.txt 파싱 | 막힌 경로는 가져오지 않는다 ([[seo-basics\|SEO 기초: 크롤링부터 메타 태그까지]]) |
@@ -168,4 +168,4 @@ PR(p) = (1 − d) / N  +  d × Σ PR(q) / L(q)      q: p를 링크한 페이지
 - 랭킹은 역인덱스 교집합 → BM25·정적 점수 → 모델 재정렬의 다단계이며, PageRank는 그중 링크 신호 하나다.
 - 네이버는 컬렉션·스마트블록 단위로 결과를 묶고 블록 순서까지 랭킹한다. 구글과 네이버 모두 신뢰·관련성·의도를 조합한다.
 
-관련 노트: [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]], [[seo-basics|SEO 기초: 크롤링부터 메타 태그까지]], [[google-search-operators|구글 검색 연산자]], [[bfs|너비 우선 탐색 (BFS)]], [[graph-basics|그래프의 기본과 표현 방법]], [[heap-priority-queue|힙과 우선순위 큐]], [[text-similarity|문자열·문서 유사도: 편집 거리와 코사인 유사도]]
+관련 노트: [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]], [[seo-basics|SEO 기초: 크롤링부터 메타 태그까지]], [[google-search-operators|구글 검색 연산자]], [[bfs|너비 우선 탐색 (BFS)]], [[graph-basics|그래프의 기본과 표현 방법]], [[heap-priority-queue|힙과 우선순위 큐]], [[text-similarity|문자열·문서 유사도: 편집 거리와 코사인 유사도]], [[web-crawler-at-scale|대규모 웹 크롤러 설계: 하루에 10억 페이지]]
