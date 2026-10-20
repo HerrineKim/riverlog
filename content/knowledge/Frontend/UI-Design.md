@@ -16,6 +16,7 @@ UI 디자인 주제는 **화면이 어떻게 보이고 쓰이는가**를 다룬�
 - [디자인 도구와 개발자 핸드오프](Frontend/UI-Design/design-tools-handoff.md): Figma 파일에서 개발자가 보는 것(변수·측정·애셋·프로토타입·댓글), Auto Layout을 Flexbox로 옮기기, 디자인 시스템을 도구에 담는 원칙, 도구 이전, 클릭되는 와이어프레임, 고해상도 대응
 - [웹 레이아웃 디자인: 인쇄와 다른 매체](Frontend/UI-Design/web-layout-design.md): 인쇄와 웹의 매체 차이, 단락·문자 스타일과 CSS, 본질의 웹 디자인(그리드·컨테이너 쿼리), 이미지 위 텍스트 배치, 고정폭→반응형의 흐름, 매크로·마이크로 레이아웃
 - [UI 밀도: 시각·정보·디자인·시간·가치](Frontend/UI-Design/ui-density.md): 시각 밀도의 함정, 데이터-잉크 비율, 게슈탈트로 센 디자인 밀도, 대기 시간 구간별 로딩 표시, 가치 밀도와 긴 폼 나누기
+- [로딩 UI: 스피너, 로딩 애니메이션, 스켈레톤, 프로그레스 바](Frontend/UI-Design/loading-ui.md): 네 가지 유형과 앱 예시, 스켈레톤 종류, 대기 시간별 선택, aria-busy·progressbar·움직임 줄이기
 - [SVG 아이콘: 형식, 넣는 방법, 이름 붙이기, 스타일](Frontend/UI-Design/svg-icons.md): PNG 대신 SVG, img·배경·인라인 비교, symbol/use, 장식·단독 아이콘의 접근 가능한 이름, currentColor
 - [나쁜 아이콘과 좋은 아이콘: 아이콘 사용성](Frontend/UI-Design/icon-usability.md): 나쁜 아이콘 다섯 유형, 아이콘의 비용과 이점, 좋은 아이콘의 조건, 여력이 없으면 텍스트 링크
 - [반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표](Frontend/UI-Design/responsive-ui-patterns.md): 숨기기 전에 다듬기 → 오버플로 패턴 → 점진적 공개, 캐러셀↔그리드 혼합형, 넘치는 표, 입력 장치를 가정하지 않기

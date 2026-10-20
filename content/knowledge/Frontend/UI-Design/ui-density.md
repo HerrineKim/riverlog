@@ -106,4 +106,4 @@ UI로 옮기면 반쪽만 맞는다. "각 부분이 보여 주는 정보를 최�
 - 화면을 우겨 넣기보다 로딩을 줄여 시간 밀도를 높이는 편이 효과가 크다. 줄일 수 없는 대기는 구간별로 체감을 설계한다.
 - 최종 기준은 가치 밀도다. 단계를 늘리거나 화면을 비우는 쪽이 더 많은 가치를 줄 수도 있다.
 
-관련 노트: [[ui-engineering-problems|UI 엔지니어링의 열두 가지 문제]], [[web-layout-design|웹 레이아웃 디자인: 인쇄와 다른 매체]], [[responsive-ui-patterns|반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]]
+관련 노트: [[ui-engineering-problems|UI 엔지니어링의 열두 가지 문제]], [[web-layout-design|웹 레이아웃 디자인: 인쇄와 다른 매체]], [[responsive-ui-patterns|반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[loading-ui|로딩 UI: 스피너, 로딩 애니메이션, 스켈레톤, 프로그레스 바]]

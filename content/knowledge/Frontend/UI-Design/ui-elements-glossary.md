@@ -107,4 +107,4 @@ UI 디자이너는 아이콘 메뉴에 음식 이름을 붙이기를 좋아한�
 - 구현은 **네이티브 HTML 요소 → ARIA 패턴** 순서로 기댄다.
 - 아이콘 메뉴는 모양마다 담는 것이 다르고, 아이콘 버튼에는 항상 이름을 준다.
 
-관련 노트: [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[ecommerce-ui|전자상거래 UI 디자인]], [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]], [[html-input-types|HTML 입력 요소 치트시트]], [[working-with-designers|디자이너와 함께 일하기: 역할·채용·협업]], [[svg-icons|SVG 아이콘: 형식, 넣는 방법, 이름 붙이기, 스타일]], [[responsive-ui-patterns|반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표]]
+관련 노트: [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[ecommerce-ui|전자상거래 UI 디자인]], [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]], [[html-input-types|HTML 입력 요소 치트시트]], [[working-with-designers|디자이너와 함께 일하기: 역할·채용·협업]], [[svg-icons|SVG 아이콘: 형식, 넣는 방법, 이름 붙이기, 스타일]], [[responsive-ui-patterns|반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표]], [[loading-ui|로딩 UI: 스피너, 로딩 애니메이션, 스켈레톤, 프로그레스 바]]
