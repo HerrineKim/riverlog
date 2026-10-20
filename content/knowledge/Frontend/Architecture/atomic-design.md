@@ -91,4 +91,4 @@ Atomic Design은 **선형 프로세스가 아니라 멘탈 모델**이다. 인�
 - 이름 붙은 영역(도메인·화면 구역)으로 먼저 나누고, 그 아래에서 계층을 쓴다. 애매한 경계는 "import가 없으면 원자"처럼 **판단이 필요 없는 규칙**으로 바꾼다.
 - 이후 이 고민은 엔티티·위젯·기능 중심 구조로 이어진다([[frontend-folder-structure|프론트엔드 폴더 구조의 진화]]).
 
-관련 노트: [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[components-and-props|컴포넌트와 Props]]
+관련 노트: [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[separation-of-concerns|프론트엔드에서 관심사의 분리]], [[components-and-props|컴포넌트와 Props]], [[product-language-design-system|제품 언어로서의 디자인 시스템: 토큰, 기능과 형태, 컴포넌트 API]]

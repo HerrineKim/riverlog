@@ -101,7 +101,7 @@ date: "2026-10-13"
 }
 ```
 
-토큰 파일 형식은 W3C 디자인 토큰 커뮤니티 그룹(DTCG)의 [Design Tokens Format Module](https://www.designtokens.org/TR/drafts/format/)이 표준이고, 2025년 10월 첫 안정판이 나왔다. `$value`가 있는 객체가 토큰이고, `{color.primary}`처럼 다른 토큰을 참조(alias)한다. 토큰 JSON에서 CSS 변수, TypeScript 상수, 테마 객체를 자동 생성하고(예: Style Dictionary), Figma 변수와도 주고받는다.
+토큰 파일 형식은 W3C 디자인 토큰 커뮤니티 그룹(DTCG)의 [Design Tokens Format Module](https://www.designtokens.org/TR/drafts/format/)이 표준이고, 2025년 10월 첫 안정판이 나왔다. `$value`가 있는 객체가 토큰이고, `{color.primary}`처럼 다른 토큰을 참조(alias)한다. 토큰 JSON에서 CSS 변수, TypeScript 상수, 테마 객체를 자동 생성하고(예: Style Dictionary), Figma 변수와도 주고받는다. 토큰을 「결정의 인코딩」으로 보는 관점과 섣부른 시맨틱 토큰의 함정은 [[product-language-design-system|제품 언어로서의 디자인 시스템]]에 있다.
 
 ### 컴포넌트
 
@@ -145,4 +145,4 @@ AI 코딩 도구가 읽는 팀 규칙 파일(`SKILL.md`)도 같은 구조로 중
 - 이름은 색이 아니라 역할·형태로 짓고, 컴포넌트는 모양과 바꿀 수 있는 동작을 함께 정의한다.
 - 토큰 → 컴포넌트 → Storybook을 중앙에서 관리해 패키지로 배포하고, **한 번 만들고 끝이 아니라 버전을 올리며 계속 다듬는다.**
 
-관련 노트: [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[accessible-design-process|디자인 단계의 접근성]]
+관련 노트: [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[accessible-design-process|디자인 단계의 접근성]], [[product-language-design-system|제품 언어로서의 디자인 시스템: 토큰, 기능과 형태, 컴포넌트 API]]

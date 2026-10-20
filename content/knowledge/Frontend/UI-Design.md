@@ -12,6 +12,7 @@ UI 디자인 주제는 **화면이 어떻게 보이고 쓰이는가**를 다룬�
 ## 노트
 
 - [디자인 시스템: 구성, 도입, 구축과 배포](Frontend/UI-Design/design-system.md): 구성 요소, 작은 팀도 필요한 이유와 도입 시점, 감사부터 QA까지 구축 절차와 이름 규칙, 토큰·컴포넌트를 모노레포 패키지로 배포하고 Storybook으로 문서화하는 구조
+- [제품 언어로서의 디자인 시스템: 토큰, 기능과 형태, 컴포넌트 API](Frontend/UI-Design/product-language-design-system.md): 범용 시스템과 제품 언어, 값·의도·맥락으로 인코딩하는 토큰과 섣부른 시맨틱 토큰, 기능·형태 해부와 상태 압축, 디자인-개발 순환 참조 끊기, 사전 조합 + 조합 가능한 패키지
 - [UI 요소 용어집: 입력·내비게이션·정보·컨테이너](Frontend/UI-Design/ui-elements-glossary.md): UI 요소 32가지를 네 범주로, 각각의 쓰임과 기댈 HTML 요소·ARIA 패턴, 햄버거·케밥·미트볼·벤토·도너 메뉴 구분, 헷갈리는 짝
 - [디자인 도구와 개발자 핸드오프](Frontend/UI-Design/design-tools-handoff.md): Figma 파일에서 개발자가 보는 것(변수·측정·애셋·프로토타입·댓글), Auto Layout을 Flexbox로 옮기기, 디자인 시스템을 도구에 담는 원칙, 도구 이전, 클릭되는 와이어프레임, 고해상도 대응
 - [웹 레이아웃 디자인: 인쇄와 다른 매체](Frontend/UI-Design/web-layout-design.md): 인쇄와 웹의 매체 차이, 단락·문자 스타일과 CSS, 본질의 웹 디자인(그리드·컨테이너 쿼리), 이미지 위 텍스트 배치, 고정폭→반응형의 흐름, 매크로·마이크로 레이아웃
