@@ -246,4 +246,4 @@ GitHub Copilot의 변화가 세 단계의 축소판이다. 현재 파일 자동�
 
 영어는 여전히 중요하지만, 이제 시스템 그 자체가 아니라 **시스템의 한 부품**이다.
 
-관련 노트: [[loop-engineering|루프 엔지니어링]], [[ai-era-developer|AI 시대 개발자의 역할]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[multi-agent|멀티 에이전트]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[evaluation-driven-development|평가 주도 개발]]
+관련 노트: [[personal-agent-harness|내 일을 줄이는 하네스 만들기]], [[loop-engineering|루프 엔지니어링]], [[ai-era-developer|AI 시대 개발자의 역할]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[multi-agent|멀티 에이전트]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[evaluation-driven-development|평가 주도 개발]]
