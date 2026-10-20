@@ -173,4 +173,4 @@ AI 도구가 오히려 개발을 느리게 했다는 연구도 있다. 다만 �
 - 세션은 자주 새로, 테스트는 가드레일로, 커밋은 자주 한다. 작업은 AI가 감당할 길이로 쪼갠다.
 - 사람은 깐깐한 리뷰어이자 트레이드오프 사이의 선택자가 된다.
 
-관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[ai-native-engineer|AI 네이티브 엔지니어의 작업 방식]], [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[ai-era-developer|AI 시대 개발자의 역할]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]
+관련 노트: [[agent-trust-environment|에이전트를 믿을 수 있는 환경 만들기]], [[claude-code-guide|Claude Code 활용 가이드]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[ai-native-engineer|AI 네이티브 엔지니어의 작업 방식]], [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[ai-era-developer|AI 시대 개발자의 역할]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]
