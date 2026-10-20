@@ -125,4 +125,4 @@ sources: ["https://webactually.com/2021/01/15/%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B
 - **모델을 고르기 전에 무엇을 예측하고 무엇으로 성공을 잴지부터 정한다.**
 - 엔지니어가 머신 러닝으로 넘어갈 때 가장 큰 장벽은 다시 초보자가 되는 것이다. 만들 것을 정해 배우고, 남의 모델 코드를 고쳐 보고, 실험 기록부터 챙긴다.
 
-관련 노트: [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[jupyter-notebook|Jupyter Notebook]], [[text-similarity|문자열·문서 유사도: 편집 거리와 코사인 유사도]], [[perceptron-mlp|퍼셉트론과 다층 퍼셉트론]], [[classification-metrics|분류 모델 성능 평가 지표]], [[decision-tree-ensemble|결정 트리와 앙상블]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]], [[deep-learning-intuition|딥러닝 직관으로 이해하기]]
+관련 노트: [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[jupyter-notebook|Jupyter Notebook]], [[text-similarity|문자열·문서 유사도: 편집 거리와 코사인 유사도]], [[perceptron-mlp|퍼셉트론과 다층 퍼셉트론]], [[classification-metrics|분류 모델 성능 평가 지표]], [[decision-tree-ensemble|결정 트리와 앙상블]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]], [[deep-learning-intuition|딥러닝 직관으로 이해하기]], [[Recommender-System|추천 시스템]]

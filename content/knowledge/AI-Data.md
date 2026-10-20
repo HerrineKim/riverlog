@@ -17,6 +17,7 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [네이버 블로그 크롤링](AI-Data/naver-blog-crawling.md): 검색 API로 글 목록, PostView 주소로 iframe 속 본문 받기, 선택자 변경·예외 처리 함정
 - [Jupyter Notebook](AI-Data/jupyter-notebook.md): 코드·문서·시각화를 한데 담는 "실행되는 문서"
 - [문자열·문서 유사도: 편집 거리와 코사인 유사도](AI-Data/text-similarity.md): 오타에 강한 제목 검색(Jaro-Winkler)과 키워드 벡터 기반 영화 추천
+- [추천 시스템](AI-Data/Recommender-System.md): 협업·콘텐츠 기반 필터링, 후보 생성 → 랭킹의 딥러닝 구조, 밴딧과 실시간 피드백·A/B 테스트, 멜론·브런치·루빅스·네이버 AiRS·AiTEMS·당근·번개장터·LINE 사례 (하위 노트 4편)
 - [머신 러닝 기초: 네 단계 추상화](AI-Data/machine-learning-basics.md): 데이터 → 모델 → 손실 → 최적화, 지도·비지도, 최소제곱법, 과적합·MLE·MAP·정규화
 - [퍼셉트론과 다층 퍼셉트론](AI-Data/perceptron-mlp.md): 인공 뉴런·활성화 함수, 퍼셉트론 학습과 XOR 한계, MLP와 오류 역전파
 - [딥러닝 직관으로 이해하기: 신경망으로 숫자에서 패턴 찾기](AI-Data/deep-learning-intuition.md): 모든 것이 숫자인 컴퓨터, 규칙으로 못 적는 패턴, 프로그래밍과 학습의 차이, 층별 특징과 해석의 어려움, 강화 학습과 알파제로, 전이 학습
