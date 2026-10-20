@@ -134,4 +134,4 @@ sources: ["https://d2.naver.com/helloworld/6070967", "https://github.com/Netflix
 - 외부 의존성은 **빠른 실패 + 서킷 브레이커 + 폴백**으로 감싸 장애 전파를 끊는다.
 - 한계치를 숫자로 정하고, 넘을 것 같으면 **자동으로 기능을 줄여** 핵심을 지킨다.
 
-관련 노트: [[cdn|CDN]], [[http-cache|HTTP 캐시]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[data-flow|Data Flow로 보는 웹 아키텍처]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[disaster-recovery|고가용성과 재해 복구 설계]]
+관련 노트: [[cdn|CDN]], [[http-cache|HTTP 캐시]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[data-flow|Data Flow로 보는 웹 아키텍처]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[web-scalability-components|웹 확장성의 구성 요소]]
