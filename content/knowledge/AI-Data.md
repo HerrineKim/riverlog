@@ -41,7 +41,7 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [AI에게 일 맡기기: 권한·정보·도구](AI-Data/ai-delegation-toolkit.md): 위임 단계와 모니터링, STICC와 인지 작업 분석(CTA), 되묻게 하기·불확실성 지도·메타 프롬프트, 템플릿, MCP 선별과 검증 장치, 계획까지 커밋하는 작업 흐름
 - [Claude 스킬 만들기 가이드](AI-Data/claude-skill-building-guide.md): 프로그레시브 디스클로저, description 작성, 테스트·배포, 팀 공용 스킬 패키지화, 실전 패턴 5가지
 - [루프 엔지니어링](AI-Data/loop-engineering.md): 자동화·워크트리·스킬·서브에이전트·상태 파일로 에이전트가 스스로 도는 루프 설계하기
-- [프롬프트에서 하네스로: 에이전틱 패턴의 진화](AI-Data/harness-engineering.md): 프롬프트 → 컨텍스트 → 하네스 엔지니어링, Write/Select/Compress/Isolate와 KV 캐시, 하네스 네 사분면, 치명적 삼요소와 2의 규칙
+- [프롬프트에서 하네스로: 에이전틱 패턴의 진화](AI-Data/harness-engineering.md): 프롬프트 → 컨텍스트 → 하네스 엔지니어링, 플로우 엔지니어링(AlphaCodium), Write/Select/Compress/Isolate와 KV 캐시, 하네스 네 사분면, 치명적 삼요소와 2의 규칙
 - [내 일을 줄이는 하네스 만들기](AI-Data/personal-agent-harness.md): 결과물이 아니라 생성 장치를 만드는 순서, PLAN/PROGRESS·참고 자료 캐시, 서브에이전트 분할, cron + claude -p 이슈 파이프라인, 병목의 이동
 - [에이전트를 믿을 수 있는 환경 만들기](AI-Data/agent-trust-environment.md): 신뢰가 병렬화를 막는 이유, 검증 스킬(CLI + 기능 지도), 교정을 넣는 다섯 층, 번지는 나쁜 패턴과 주석 금지, 에이전트 친화 프레임워크와 정원사
 - [멀티 에이전트](AI-Data/multi-agent.md): 여러 AI가 역할을 나눠 일하는 구조, 작동 흐름·구성 요소·주의점, 주요 프레임워크

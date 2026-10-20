@@ -1,14 +1,14 @@
 ---
 title: "프롬프트에서 하네스로: 에이전틱 패턴의 진화"
 concept: "Harness Engineering"
-summary: "AI 개발의 중심은 프롬프트 엔지니어링(무엇을 말할까) → 컨텍스트 엔지니어링(무엇을 보여 줄까) → 하네스 엔지니어링(어떤 시스템을 만들까)으로 옮겨 왔다. 엔지니어링의 엄밀함은 사라지지 않고 위치만 옮긴다. 각 단계의 핵심 기법(CoT·ReAct, Write/Select/Compress/Isolate, KV 캐시, 하네스 2×2), 실전 사례, 치명적 삼요소와 2의 규칙을 정리한다."
+summary: "AI 개발의 중심은 프롬프트 엔지니어링(무엇을 말할까) → 컨텍스트 엔지니어링(무엇을 보여 줄까) → 하네스 엔지니어링(어떤 시스템을 만들까)으로 옮겨 왔다. 엔지니어링의 엄밀함은 사라지지 않고 위치만 옮긴다. 각 단계의 핵심 기법(CoT·ReAct·플로우 엔지니어링, Write/Select/Compress/Isolate, KV 캐시, 하네스 2×2), 실전 사례, 치명적 삼요소와 2의 규칙을 정리한다."
 tags: ["ai", "llm", "agent", "agentic-coding", "prompting", "context-engineering"]
 source: other
 date: "2026-10-18"
-sources: ["https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html"]
+sources: ["https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html", "https://arxiv.org/abs/2401.08500"]
 ---
 
-> Jonas Kim의 「[From Prompts to Harnesses — Four Years of AI Agentic Patterns](https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html)」(2026.04)를 바탕으로 재구성한 노트다.
+> Jonas Kim의 「[From Prompts to Harnesses — Four Years of AI Agentic Patterns](https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html)」(2026.04)를 바탕으로, 플로우 엔지니어링은 AlphaCodium 논문 「[Code Generation with AlphaCodium: From Prompt Engineering to Flow Engineering](https://arxiv.org/abs/2401.08500)」(2024.01)으로 확인해 재구성한 노트다.
 
 ## 세 단계와 하나의 원칙
 
@@ -59,6 +59,28 @@ Andrew Ng이 정리한 실무 프레임워크다.
 | 멀티 에이전트 협업 | 코더·리뷰어·테스터 에이전트가 역할을 나눈다 | 가장 미성숙하지만 잠재력이 크다 |
 
 **모델을 바꾸지 않아도 모델 바깥의 패턴을 바꾸면 성능이 뛴다.** 약한 모델을 에이전틱 워크플로로 감싸면 강한 모델의 제로샷보다 나은 경우가 있다. 이것이 "모델 밖의 시스템이 중요하다"는 첫 신호였다.
+
+### 플로우 엔지니어링: 즉답을 요구하지 않는다
+
+Andrej Karpathy는 생각의 사슬이 통하는 이유를 **「LLM은 생각할 토큰이 필요하다」** 고 표현했다. 토큰 하나를 만드는 계산 깊이는 고정이므로([[how-llm-works|LLM은 무엇을 하고 왜 작동하나]]), 어려운 문제는 중간 과정을 토큰으로 써 내려갈 자리를 줘야 풀린다.
+
+이 생각을 프롬프트 한 장에서 **여러 단계의 흐름**으로 넓힌 것이 **플로우 엔지니어링(flow engineering)** 이다. CodiumAI(현 Qodo)의 AlphaCodium(2024.01)이 붙인 이름이다. 핵심은 어려운 질문에 바로 답을 내라고 하지 않고, 맥락을 주고 **반복해서 실험할 수 있는 구조**를 만들어 주는 것이다.
+
+```text
+① 문제 파악: 목표·입력·출력·제약을 자기 말로 정리한다
+② 공개 테스트 해설: 주어진 예제가 왜 그런 입출력이 되는지 설명한다
+③ 답안 2~3개: 정확성·단순성·강건성으로 순위를 매긴다
+④ 테스트 추가 생성: 경계 사례를 담은 테스트를 더 만든다
+⑤ 실행·수정 반복: 테스트를 돌려 실패하면 고치거나 새 답을 찾는다
+```
+
+| 결과 | 내용 |
+| --- | --- |
+| 정답률 | 경쟁 프로그래밍 데이터셋 CodeContests에서 GPT-4의 pass@5가 잘 짠 단일 프롬프트 19% → AlphaCodium 흐름 44% |
+| 모델 무관 | 오픈 모델(DeepSeek)에서도 같은 방향으로 올랐다 |
+| 비용 | 논문은 DeepMind의 AlphaCode보다 LLM 호출이 약 1만분의 1이면서 더 나은 결과라고 주장한다. AlphaCode 2와의 비교는 저자 측 주장이다 |
+
+모델을 바꾸지 않고 흐름만 바꿨다는 점에서, 위의 「모델 바깥의 패턴」을 가장 잘 보여 주는 예다. ④·⑤처럼 **스스로 검증 수단을 만들고 돌리는** 단계는 오늘날 코딩 에이전트의 테스트 루프와 같다. 코딩이 아닌 분야에서는 테스트 대신 합성 데이터(synthetic data)를 만들어 답을 확인하는 식으로 같은 구조를 옮길 수 있다.
 
 워크플로와 에이전트는 구분한다. **워크플로**는 흐름이 미리 정해진 파이프라인(생성 → 리뷰 → 테스트)이고, **에이전트**는 LLM이 다음 행동을 스스로 고르는 자율 프로세스다. 우열은 없다. 원칙은 **가능한 한 단순하게 시작하기**다. 워크플로로 충분하면 에이전트를 쓰지 않는다.
 
@@ -115,7 +137,7 @@ Andrew Ng이 정리한 실무 프레임워크다.
 
 ### KV 캐시 적중률이 운영 지표다
 
-LLM은 토큰마다 어텐션의 Key·Value를 계산한다. 요청의 **앞부분(prefix)이 이전 요청과 같으면** 그 부분은 캐시를 재사용한다. 캐시를 읽는 토큰은 일반 입력보다 훨씬 싸다(Claude API에서는 기본 입력 단가의 10분의 1). 반대로 **앞부분의 토큰 하나만 바뀌어도 그 뒤 캐시가 전부 무효**가 된다.
+LLM은 토큰마다 어텐션의 Key·Value를 계산한다. 요청의 **앞부분(prefix)이 이전 요청과 같으면** 그 부분은 캐시를 재사용한다. 캐시를 읽는 토큰은 일반 입력보다 훨씬 싸다(Claude API에서는 기본 입력 단가의 10분의 1). 반대로 **앞부분의 토큰 하나만 바뀌어도 그 뒤 캐시가 전부 무효**가 된다. 서버 쪽에서 KV 캐시가 GPU 메모리를 어떻게 차지하는지는 [[llm-serving-at-scale|LLM 서빙의 병목]]에 있다.
 
 ```text
 컨텍스트 창
