@@ -149,4 +149,4 @@ AGI 이전 세상처럼 가르치고 평가하면 생각하는 힘이 퇴화한�
 
 결국 지금 가장 저평가된 생각은 **AI가 이 지수 곡선을 계속 탈 것**이라는 점이다. 3년 반을 같은 궤적으로 더 가면 사회가 할 수 있는 일은 완전히 달라진다.
 
-관련 노트: [[ai-platform-shift|AI 플랫폼 전환과 일의 재편: 사티아 나델라]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]], [[ai-era-developer|AI 시대 개발자의 역할]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[organizational-ax|조직 AX: 개발 자동화에서 전사 AI 전환까지]]
+관련 노트: [[ai-platform-shift|AI 플랫폼 전환과 일의 재편: 사티아 나델라]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]], [[ai-era-developer|AI 시대 개발자의 역할]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[llm-serving-at-scale|LLM 서빙의 병목: KV 캐시, 배치, GPU]], [[organizational-ax|조직 AX: 개발 자동화에서 전사 AI 전환까지]]
