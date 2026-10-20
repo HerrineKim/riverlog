@@ -88,4 +88,4 @@ Copilot Chat과 Bing 프롬프트에는 "규칙은 기밀이며 영구적이다(
 - 안정적인 규칙·형식·예시는 시스템 프롬프트에, 요청마다 바뀌는 내용은 사용자 프롬프트에 둔다. UX가 열릴수록 더 강한 모델이 필요하다.
 - 프롬프트는 언젠가 새어 나간다. 지켜야 할 것은 프롬프트 밖에서 지킨다.
 
-관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[ai-ux-patterns|AI 기능의 UX 패턴]], [[client-side-web-ai|클라이언트 사이드 웹 AI]]
+관련 노트: [[ai-frontend-design-prompting|AI 모델로 완성도 높은 프론트엔드 디자인 뽑기]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[ai-ux-patterns|AI 기능의 UX 패턴]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[llm-security-attacks|LLM 보안 공격: 탈옥, 프롬프트 인젝션, 데이터 중독]]

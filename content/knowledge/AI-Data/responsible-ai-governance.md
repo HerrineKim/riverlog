@@ -20,7 +20,7 @@ sources: ["https://web.dev/learn/ai/responsibility", "https://web.dev/learn/ai/i
 | 공정성(Fairness) | 차별적 행동(편향)을 점검하고, 사용자가 문제를 신고하는 루프를 만든다 |
 | 신뢰와 투명성(Trust & transparency) | 불확실성과 실수가 있어도 계속 쓸 수 있도록 보정된 신뢰를 설계한다 |
 
-보안도 거버넌스의 중요한 축이다. 프롬프트 인젝션과 시스템 프롬프트 유출은 [[system-prompt-patterns|시스템 프롬프트 설계 패턴]]에, 더 넓은 틀은 Google의 [Secure AI Framework(SAIF)](https://saif.google/)에 있다.
+보안도 거버넌스의 중요한 축이다. 탈옥·프롬프트 인젝션·데이터 중독은 [[llm-security-attacks|LLM 보안 공격]]에, 시스템 프롬프트 유출은 [[system-prompt-patterns|시스템 프롬프트 설계 패턴]]에, 더 넓은 틀은 Google의 [Secure AI Framework(SAIF)](https://saif.google/)에 있다.
 
 세 축은 모두 AI 솔루션의 세 층(데이터 · 지능 · UX)에서 각각 다룬다.
 
