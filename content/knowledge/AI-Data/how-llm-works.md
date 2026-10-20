@@ -5,10 +5,10 @@ summary: "대규모 언어 모델은 '지금까지의 글에 이어질 그럴듯
 tags: ["ai", "llm", "deep-learning", "nlp", "machine-learning"]
 source: other
 date: "2026-10-15"
-sources: ["https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/"]
+sources: ["https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/", "https://blog.pragmaticengineer.com/how-does-chatgpt-work/"]
 ---
 
-> Stephen Wolfram의 「[What Is ChatGPT Doing … and Why Does It Work?](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)」(2023.02)를 바탕으로 재구성한 노트다.
+> Stephen Wolfram의 「[What Is ChatGPT Doing … and Why Does It Work?](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)」(2023.02)를 바탕으로, OpenAI Applied 팀이 설명한 「[How does ChatGPT work?](https://blog.pragmaticengineer.com/how-does-chatgpt-work/)」(The Pragmatic Engineer, 2024.04)의 비유를 더해 재구성한 노트다.
 
 ## LLM이 하는 일
 
@@ -47,6 +47,7 @@ sources: ["https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and
 | 역전파 | 연쇄 법칙으로 각 가중치의 기울기를 계산 |
 | 일반화 | 학습에 없던 입력에도 "사람이 보기에 맞는" 답을 내는 능력. 옳음을 증명할 수학 이론은 없다 |
 
+- 경사 하강법은 **안개 낀 산에서 내려오는 등산객**에 비유된다. 주변만 보이므로 지금 선 자리에서 가장 가파르게 내려가는 쪽으로 걷는다. 경사계로 기울기를 잴 수는 있지만 한 번 재는 데 시간이 걸리고 해 지기 전에 내려가야 하니, 얼마나 자주 멈춰 잴지를 정해야 한다. 한 번에 얼마나 걸을지가 학습률에 해당한다.
 - **정답의 기준은 사람의 판단이다.** 흐려진 숫자 「2」를 언제까지 2로 볼지는 수학이 아니라 사람이 정한다. 좋은 모델은 사람과 같은 지점에서 헷갈린다.
 - 큰 신경망이 오히려 학습하기 쉽다. 가중치가 많으면 국소 최솟값에 갇힐 길이 적다. 이것이 2010년대 딥러닝 도약의 열쇠였다.
 - 사람이 단계를 나눠 설계한 파이프라인보다 **입력부터 출력까지 통째로 학습(end-to-end)** 하는 편이 대체로 낫다.
@@ -83,6 +84,7 @@ GPT 계열 LLM은 트랜스포머(transformer)의 디코더 구조다. 토큰 �
 - **어텐션(attention)** 이 핵심이다. 멀리 떨어진 앞 단어(예: 문장 처음의 주어)도 직접 참고해 다음 토큰을 정한다.
 - 토큰 하나마다 모든 가중치를 한 번씩 쓴다. 가중치가 1,750억 개면 토큰당 연산도 그만큼이다.
 - **네트워크 안에는 루프가 없다.** 유일한 반복은 바깥 루프, 즉 만든 토큰을 다시 입력에 붙이는 것뿐이다.
+- 이 계산을 수많은 사용자에게 돌릴 때 생기는 KV 캐시·배치·GPU 메모리 문제는 [[llm-serving-at-scale|LLM 서빙의 병목]]에 있다.
 
 ## 학습 단계
 
@@ -134,4 +136,4 @@ LLM이 그럴듯한 글을 쓴다는 사실은 기술보다 언어에 대해 더
 - 사전 학습으로 언어의 규칙성을, 사후 학습으로 사람이 원하는 행동을 익힌다.
 - 계산적으로 깊은 일은 못 하므로 **사고 연쇄와 도구로 바깥에서 계산을 보탠다.** LLM이 작동한다는 사실은 언어가 생각보다 단순하다는 증거다.
 
-관련 노트: [[nlp-pipeline|자연어 처리 파이프라인]], [[perceptron-mlp|퍼셉트론과 다층 퍼셉트론]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[ai-era-developer|AI 시대 개발자의 역할]]
+관련 노트: [[nlp-pipeline|자연어 처리 파이프라인]], [[perceptron-mlp|퍼셉트론과 다층 퍼셉트론]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[ai-era-developer|AI 시대 개발자의 역할]], [[llm-serving-at-scale|LLM 서빙의 병목: KV 캐시, 배치, GPU]]
