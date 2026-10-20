@@ -160,4 +160,4 @@ AI:   요구사항 3~4줄 → PRD·명세·설계 일괄 생성 → 사람 검�
 
 결국 목표는 사람이 모든 일을 직접 처리하는 조직이 아니라, **사람이 남긴 맥락 위에서 AI가 함께 일하는 조직**이다.
 
-관련 노트: [[ai-platform-shift|AI 플랫폼 전환과 일의 재편]], [[ai-native-engineer|AI 네이티브 엔지니어의 작업 방식]], [[ai-accelerated-development|AI로 개발 가속하기]], [[harness-engineering|프롬프트에서 하네스로]], [[ai-era-developer|AI 시대 개발자의 역할]], [[digital-transformation|조직의 디지털 전환과 웹 거버넌스]]
+관련 노트: [[in-browser-preview-runtime|브라우저 안 빌드·프리뷰 환경]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편]], [[ai-native-engineer|AI 네이티브 엔지니어의 작업 방식]], [[ai-accelerated-development|AI로 개발 가속하기]], [[harness-engineering|프롬프트에서 하네스로]], [[ai-era-developer|AI 시대 개발자의 역할]], [[digital-transformation|조직의 디지털 전환과 웹 거버넌스]]

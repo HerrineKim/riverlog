@@ -185,4 +185,4 @@ ES 모듈 이전에는 즉시 실행 함수와 클로저로 private 변수를 �
 - [default export를 피해야 하는 이유 — yceffort](https://yceffort.kr/2020/11/avoid-default-export)
 - [What is the benefit of prefer-default-export? — airbnb/javascript #1365](https://github.com/airbnb/javascript/issues/1365)
 
-관련 노트: [[bundlers-and-vite|번들러의 역사와 Vite]], [[script-loading|스크립트·스타일 로딩 순서]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[js-design-patterns|JavaScript 디자인 패턴]], [[code-splitting|자바스크립트 코드 분할]]
+관련 노트: [[in-browser-preview-runtime|브라우저 안 빌드·프리뷰 환경]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[script-loading|스크립트·스타일 로딩 순서]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[js-design-patterns|JavaScript 디자인 패턴]], [[code-splitting|자바스크립트 코드 분할]]
