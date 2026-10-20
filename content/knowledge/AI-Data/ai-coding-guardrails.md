@@ -160,4 +160,4 @@ SPEC.md는 사람이 쓰고, "auth 모듈부터, 구현 전에 계획을 보여 
 - 프롬프트에는 맥락을 아끼지 말고, 작업마다 새 세션을 연다.
 - 실수의 비용에 맞춰 가드레일을 세운다.
 
-관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[loop-engineering|루프 엔지니어링]], [[tdd|프론트엔드에서의 TDD]], [[ai-era-developer|AI 시대 개발자의 역할]], [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]]
+관련 노트: [[claude-code-hooks|Claude Code 훅]], [[claude-code-guide|Claude Code 활용 가이드]], [[loop-engineering|루프 엔지니어링]], [[tdd|프론트엔드에서의 TDD]], [[ai-era-developer|AI 시대 개발자의 역할]], [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]]
