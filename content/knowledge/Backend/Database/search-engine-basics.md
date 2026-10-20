@@ -4,7 +4,7 @@ concept: "Search Engine"
 summary: "검색엔진은 문서를 토큰으로 쪼개 단어 → 문서의 역인덱스를 만들고(색인), 질의어를 같은 방식으로 처리해 찾은 뒤 TF-IDF·BM25 같은 점수로 순서를 정한다(질의). 한국어는 형태소 분석이나 N-gram이 필요하다."
 tags: ["backend", "search", "database", "algorithm", "data-structure"]
 source: other
-date: "2026-10-17"
+date: "2026-10-20"
 sources: ["https://github.com/charsyam/simple_search_engine", "https://xo.dev/articles/how-search-engine-works", "https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules-similarity.html", "https://www.elastic.co/guide/en/elasticsearch/plugins/current/analysis-nori.html"]
 ---
 
@@ -94,14 +94,7 @@ DOC3: Under blue sky, in bright sunlight, one need not search around.
 
 ## 랭킹
 
-`apple`처럼 수많은 문서에 들어 있는 단어는 결과가 너무 많다. 어떤 문서를 먼저 보여 줄지 정하는 것이 랭킹이다. 좋은 문서의 신호는 여러 가지다.
-
-| 신호 | 예 |
-| --- | --- |
-| 링크 구조 | 다른 문서, 특히 좋은 문서가 많이 링크한 문서 (PageRank) |
-| 신선도 | 최근에 갱신된 문서 |
-| 단어 위치 | 검색어들이 가까이 붙어 있는 문서 |
-| 단어 중요도 | 검색어가 그 문서의 핵심어인 문서 (TF-IDF, BM25) |
+`apple`처럼 수많은 문서에 들어 있는 단어는 결과가 너무 많다. 어떤 문서를 먼저 보여 줄지 정하는 것이 랭킹이다. 신호는 단어 중요도(TF-IDF, BM25) 외에도 단어 위치(검색어끼리 가까운가), 신선도, 링크 구조(PageRank) 등이 있다. 웹 검색의 랭킹 신호와 다단계 랭킹은 [[web-search-engine|웹 검색엔진의 동작]]에 있고, 여기서는 단어 중요도 점수만 다룬다.
 
 ### 랭킹 점수: TF-IDF에서 BM25로
 

@@ -16,7 +16,7 @@ sources: ["https://webaim.org/intro/", "https://webaim.org/articles/visual/", "h
 
 장벽을 없애려면 먼저 **사용자가 무엇을 못 하는지가 아니라 어떻게 쓰는지**를 알아야 한다. "시각장애인은 화면을 보지 못한다"를 떠올리면 대체 텍스트, 표 머리글, 폼 라벨이 왜 필요한지 따로 외우지 않아도 따라 나온다. WCAG의 네 원칙(인지·운용·이해·견고)도 이런 사용자 관점에서 나왔다([[wcag-guidelines|WCAG와 POUR 원칙]]).
 
-세계보건기구는 전 세계 약 13억 명(인구 6명 중 1명)이 상당한 장애를 겪는다고 추정한다. 장애를 능력과 환경의 불일치로 보는 사회적 정의는 [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]]에 있다.
+세계보건기구는 전 세계 약 13억 명(인구 6명 중 1명)이 상당한 장애를 겪는다고 추정한다. 장애를 능력과 환경의 불일치로 보는 사회적 정의는 [[Accessibility|웹 접근성]]에 있다.
 
 | 유형 | 범위 | 핵심 원칙 | 주로 쓰는 수단 |
 | --- | --- | --- | --- |
@@ -271,4 +271,4 @@ WCAG 2.2의 중복 입력 방지(3.3.7)와 인지 기능 테스트 없는 인증
 
 키보드로 되고, 텍스트로 바뀌고, 사용자가 키우고 바꿀 수 있는 콘텐츠가 거의 모든 장애 유형을 함께 돕는다.
 
-관련 노트: [[wcag-guidelines|WCAG와 POUR 원칙]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[color-motion-accessibility|색과 움직임의 접근성]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[captions-and-transcripts|자막, 대본, 음성 해설]], [[screen-reader-testing|스크린 리더로 테스트하기]], [[user-research|사용자 리서치]]
+관련 노트: [[wcag-guidelines|WCAG와 POUR 원칙]], [[Accessibility|웹 접근성]], [[color-motion-accessibility|색과 움직임의 접근성]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[captions-and-transcripts|자막, 대본, 음성 해설]], [[screen-reader-testing|스크린 리더로 테스트하기]], [[user-research|사용자 리서치]]

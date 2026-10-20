@@ -27,7 +27,7 @@ sources: ["https://webaim.org/articles/evaluationguide/", "https://webaim.org/ar
 
 - **감사는 한 번으로 끝나지 않는다.** 처음에 기준선을 잡고, 개발 주기 내내 같은 기준으로 반복해 적합성이 어떻게 바뀌는지 본다. 자동 검사는 CI에 넣어 매 변경마다, 수동·보조 기술 테스트는 큰 기능과 출시 전에 돌린다.
 - **설계 단계에서 막는 편이 싸다.** 디자인 검토와 접근성 주석은 [[accessible-design-process|디자인 단계의 접근성]]에 있다.
-- 적합성은 출발점이다. 장애인과 하는 사용성 테스트, 장애가 있는 사람의 채용, 전문가 자문이 함께 가야 한다([[web-accessibility|웹 접근성]]).
+- 적합성은 출발점이다. 장애인과 하는 사용성 테스트, 장애가 있는 사람의 채용, 전문가 자문이 함께 가야 한다([[Accessibility|웹 접근성]]).
 
 | 자동 검사가 하는 것 | 사람이 해야 하는 것 |
 | --- | --- |
@@ -42,7 +42,7 @@ sources: ["https://webaim.org/articles/evaluationguide/", "https://webaim.org/ar
 
 자동 검사는 빠르고, 반복할 수 있고, 전문 지식이 적어도 돌린다. 대신 많은 오류를 놓치고, 실제 위반이 아닌 것을 오류로 띄우는 **오탐(false positive)**도 낸다.
 
-자동 검사로 걸리는 문제가 얼마나 흔한지는 [[web-accessibility|웹 접근성]]의 WebAIM Million 수치를 본다. 상위 100만 개 홈페이지의 95% 이상에서 자동 검사만으로도 오류가 나온다.
+자동 검사로 걸리는 문제가 얼마나 흔한지는 [[Accessibility|웹 접근성]]의 WebAIM Million 수치를 본다. 상위 100만 개 홈페이지의 95% 이상에서 자동 검사만으로도 오류가 나온다.
 
 ## 도구 고르기
 
@@ -248,4 +248,4 @@ macOS는 시스템 설정의 키보드 탐색을 켜고, Safari는 설정 → �
 - 도구는 두 개 이상 섞고, 도구보다 기준을 먼저 익힌다.
 - 오버레이는 평가도 수리도 대신하지 못한다. 문제는 소스에서 고친다.
 
-관련 노트: [[web-accessibility|웹 접근성]], [[wcag-guidelines|WCAG 지침]], [[accessible-design-process|디자인 단계의 접근성]], [[screen-reader-testing|스크린 리더로 테스트하기]], [[a11y-driven-testing|접근성 기반 테스트]], [[keyboard-accessibility|키보드 접근성]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]
+관련 노트: [[Accessibility|웹 접근성]], [[wcag-guidelines|WCAG 지침]], [[accessible-design-process|디자인 단계의 접근성]], [[screen-reader-testing|스크린 리더로 테스트하기]], [[a11y-driven-testing|접근성 기반 테스트]], [[keyboard-accessibility|키보드 접근성]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]

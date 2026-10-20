@@ -123,4 +123,4 @@ sources: ["https://brunch.co.kr/@ywkim36/35"]
 - 강조는 본문이 아니라 검색되는 제목에 담는다.
 - 보내기 전 첨부와 수신 필드를 다시 본다.
 
-관련 노트: [[work-habits|사회 초년생을 위한 직장 생활 팁]], [[recruiter-outreach-email|리크루터에게 보내는 영문 이메일]], [[business-expressions|비즈니스 미팅 쿠션 표현]], [[online-writing|온라인 글쓰기 — 블로그·기사]]
+관련 노트: [[work-habits|사회 초년생을 위한 직장 생활 팁]], [[resume-writing#리크루터에게 먼저 보내는 메일|리크루터에게 보내는 영문 이메일]], [[business-expressions|비즈니스 미팅 쿠션 표현]], [[persuasive-writing#6. 온라인 글: 읽는 글이 아니라 보는 글|온라인 글쓰기]]

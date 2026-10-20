@@ -157,7 +157,7 @@ test('저장된 토큰이 있으면 로그인 상태다', () => {
 | `render`, `screen.getByRole` | Testing Library로 렌더링하고 역할로 요소를 찾는다 |
 | `userEvent.setup()` → `await user.click()` | 실제 사용자 동작(포커스 이동, 키 입력 순서)을 흉내 낸다. `fireEvent`는 user-event가 지원하지 않을 때만 |
 
-`toHaveTextContent`, `toBeInTheDocument` 같은 DOM 전용 matcher는 `@testing-library/jest-dom`을 설정해야 쓸 수 있다. 실행 옵션(한 파일 커버리지, 특정 테스트 빼기)은 [[jest-practices|Jest·Vitest 실행 팁]]에, 단언·스위트·수명 주기 훅의 개념은 [[test-primitives|테스트의 기본 요소]]에 있다.
+`toHaveTextContent`, `toBeInTheDocument` 같은 DOM 전용 matcher는 `@testing-library/jest-dom`을 설정해야 쓸 수 있다. 실행 옵션(한 파일 커버리지, 특정 테스트 빼기)은 [[test-run-stages|테스트를 돌리는 시점]]에, 단언·스위트·수명 주기 훅의 개념은 [[test-primitives|테스트의 기본 요소]]에 있다.
 
 ## 역사
 
@@ -174,4 +174,4 @@ test('저장된 토큰이 있으면 로그인 상태다', () => {
 - 테스트는 짧고 읽기 쉽게: 이름에 대상·상황·기대 결과, 본문은 AAA.
 - 기본 조합은 TypeScript·ESLint + Vitest + Testing Library + MSW + Playwright다.
 
-관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[jest-practices|Jest·Vitest 실행 팁]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]], [[test-environment|테스트 실행 환경]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[test-primitives|테스트의 기본 요소]], [[static-analysis|정적 분석]]
+관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[test-run-stages|테스트를 돌리는 시점]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]], [[test-environment|테스트 실행 환경]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[test-primitives|테스트의 기본 요소]], [[static-analysis|정적 분석]]

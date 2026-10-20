@@ -1,43 +1,15 @@
 ---
-title: "SQL과 관계대수"
+title: "관계대수와 DB 설계"
 concept: "Relational Algebra"
-summary: "DDL·DML·DCL 분류와 자주 쓰는 SQL 문법, 관계대수 연산자, DB 설계 단계와 스키마·인덱스 개념."
+summary: "SQL의 바탕이 되는 관계대수 연산자(σ·π·⋈·÷와 집합 연산)와 결과 카디널리티, DB 설계 단계, 스키마·인덱스 개념."
 tags: ["database", "sql", "relational-algebra", "certificate"]
 source: notion
-date: "2026-10-13"
+date: "2026-10-20"
 ---
 
-SQL은 관계형 데이터베이스를 다루는 표준 언어이고, 관계대수는 그 바탕이 되는 수학적 연산 체계다. SQL은 "무엇을 원하는지"만 적는 비절차적 언어, 관계대수는 "어떻게 구할지"를 연산 순서로 적는 절차적 언어라는 차이가 있다.
+관계대수는 관계형 데이터베이스의 질의를 연산으로 표현하는 수학적 체계이고, SQL은 그 위에 만든 표준 언어다. SQL은 "무엇을 원하는지"만 적는 비절차적 언어, 관계대수는 "어떻게 구할지"를 연산 순서로 적는 절차적 언어라는 차이가 있다.
 
-## SQL 명령어 분류
-
-| 분류 | 의미 | 명령어 |
-| --- | --- | --- |
-| DDL (정의어) | 스키마·테이블·뷰·인덱스 등 구조 정의 | `CREATE`, `ALTER`, `DROP`, `TRUNCATE` |
-| DML (조작어) | 데이터 조회·삽입·수정·삭제 | `SELECT`, `INSERT`, `UPDATE`, `DELETE` |
-| DCL (제어어) | 권한과 트랜잭션 제어 | `GRANT`, `REVOKE`, `COMMIT`, `ROLLBACK` |
-
-`GRANT`는 사용자에게 권한을 부여하고 `REVOKE`는 회수한다. `COMMIT`·`ROLLBACK`·`SAVEPOINT`는 트랜잭션 제어어(TCL)로 따로 나누기도 한다([[transaction|트랜잭션과 회복]]).
-
-## 헷갈리기 쉬운 문법
-
-`SELECT`·`INSERT`·`UPDATE`·`DELETE`, `LIKE` 와일드카드, 정렬과 집계 같은 기본 문법은 [[sql-basics|SQL 기초]]에 있다. 여기서는 시험에 반복해 나오는 함정만 둔다.
-
-- `SELECT 학과 FROM 학생`은 행 수만큼, `SELECT DISTINCT 학과`는 서로 다른 학과 수만큼 나온다.
-- **CROSS JOIN**은 두 테이블의 모든 행 조합(카티션 곱)을 만든다. 행이 m개, n개면 결과는 m × n개다.
-- **행 조건은 WHERE, 집계 후 그룹 조건은 HAVING**에 둔다. 그룹 기준이 여러 개면 `GROUP BY` 뒤에 나열한다.
-
-```sql
--- 팀·직급별 성과급 합계
-SELECT 팀명, 직급, SUM(성과급) AS 성과급 FROM 급여 GROUP BY 팀명, 직급;
-
--- 편의점이 4곳 이상인 광역시에서, 판매액 100만 원 초과 편의점의 평균 판매액
-SELECT 광역시, AVG(판매액)
-FROM 편의점
-WHERE 판매액 > 1000000      -- 행 조건: 그룹 만들기 전
-GROUP BY 광역시
-HAVING COUNT(*) >= 4;       -- 그룹 조건: 집계 후
-```
+SQL 명령어 분류(DDL·DML·DCL)와 문법, `WHERE`와 `HAVING` 같은 시험 단골 함정은 [[sql-basics|SQL 기초]]에 있다.
 
 ## 관계대수
 

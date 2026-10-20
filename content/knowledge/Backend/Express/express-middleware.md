@@ -62,6 +62,6 @@ app.use((err, req, res, next) => {
 
 - 미들웨어 = `(req, res, next)` 함수. `app.use()`로 등록한다.
 - 등록 순서대로 실행되므로 공통 처리 → 라우터 → 404 순으로 배치한다.
-- NestJS의 [Middleware](Backend/NestJS/nestjs-middleware)도 같은 개념을 클래스와 DI로 감싼 것이다.
+- NestJS의 [Middleware](Backend/NestJS/interceptor-aop)도 같은 개념을 클래스와 DI로 감싼 것이다.
 
 참고: [Express 미들웨어 작성 가이드](https://expressjs.com/ko/guide/writing-middleware.html)

@@ -1,10 +1,10 @@
 ---
 title: "폼 컨트롤과 포커스 이벤트"
 concept: "Form Controls DOM"
-summary: "JavaScript로 폼을 다루는 DOM API. document.forms와 form.elements로 컨트롤 찾기(라디오 묶음, fieldset, form.name 단축 표기의 함정), value·checked·select의 옵션 다루기, focus·blur와 버블링하는 focusin·focusout, change·input·beforeinput·클립보드 이벤트의 차이, submit 이벤트와 Enter 제출, submit()과 requestSubmit(), FormData를 정리한다."
+summary: "JavaScript로 폼을 다루는 DOM API. document.forms와 form.elements로 컨트롤 찾기(라디오 묶음, fieldset, form.name 단축 표기의 함정), value·checked·select의 옵션 다루기, focus·blur와 버블링하는 focusin·focusout, change·input·beforeinput·클립보드 이벤트의 차이, 폼 submit 이벤트를 듣는 이유를 정리한다. 제출 동작 자체는 폼 제출 노트에 있다."
 tags: ["javascript", "dom", "form", "event", "frontend"]
 source: other
-date: "2026-10-17"
+date: "2026-10-20"
 sources: ["https://ko.javascript.info/form-elements", "https://ko.javascript.info/focus-blur", "https://ko.javascript.info/events-change-input", "https://ko.javascript.info/forms-submit", "https://wesbos.com/javascript/05-events/prevent-default-and-form-events", "https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/requestSubmit", "https://developer.mozilla.org/en-US/docs/Web/API/Element/beforeinput_event"]
 ---
 
@@ -147,42 +147,7 @@ input.addEventListener('paste', (e) => {
 
 ## 제출
 
-폼은 **제출 버튼 클릭**이나 **입력란에서 Enter**로 제출되고, 둘 다 폼의 `submit` 이벤트를 일으킨다. 그래서 버튼의 `click`이 아니라 폼의 `submit`을 듣는다.
-
-```javascript
-form.addEventListener('submit', (event) => {
-  event.preventDefault()                         // 페이지 이동(새로고침) 막기
-  const data = new FormData(event.currentTarget) // name 속성 기준으로 값 수집
-  const plan = data.get('plan')
-  const agreed = event.currentTarget.elements.agree.checked
-  console.log(event.submitter?.name)             // 어느 제출 버튼이었나
-  event.currentTarget.reset()                    // 입력 비우기
-})
-```
-
-- 입력란에서 Enter로 제출하면 그 폼의 첫 제출 버튼에 **`click` 이벤트가 만들어진다.** 클릭하지 않았는데 버튼의 `click` 리스너가 실행되는 이유다.
-- `FormData`는 `name`이 있는 컨트롤만 모은다. `disabled` 컨트롤과 체크되지 않은 체크박스는 빠진다. `Object.fromEntries(data)`로 객체로 바꾸고, 같은 이름이 여럿이면 `data.getAll()`을 쓴다.
-- 필수·형식 검사는 `required`·`type="email"`·`pattern` 같은 HTML 검증에 먼저 맡긴다. HTML 검증이 통과해야 `submit` 이벤트가 일어나므로, 그것으로 안 되는 규칙만 `submit`에서 검사해 `preventDefault()`로 막는다.
-
-### 스크립트로 제출하기
-
-| 메서드 | `submit` 이벤트 | HTML 검증 |
-| --- | --- | --- |
-| `form.requestSubmit(button?)` | 일어난다 | 한다 |
-| `form.submit()` | **일어나지 않는다** | 하지 않는다 |
-
-`submit()`은 스크립트가 할 일을 다 했다고 보고 곧바로 보낸다. 사용자가 제출한 것과 똑같이 동작해야 하면 `requestSubmit()`을 쓴다. 넘긴 버튼은 `event.submitter`가 된다.
-
-```javascript
-const f = document.createElement('form') // 페이지 밖으로 보내는 폼을 만들어 제출하기
-f.action = 'https://example.com/search'
-f.method = 'GET'
-f.innerHTML = '<input name="q" value="테스트">'
-document.body.append(f) // 제출하려면 문서 안에 있어야 한다
-f.submit()
-```
-
-페이지 이동 없이 보내려면 `fetch(form.action, { method: 'POST', body: new FormData(form) })`를 쓴다([[ajax|AJAX와 HTTP 요청]]).
+폼은 제출 버튼 클릭이나 입력란에서 Enter로 제출되고, 둘 다 폼의 `submit` 이벤트를 일으킨다. 그래서 버튼의 `click`이 아니라 **폼의 `submit`을 듣는다.** 제출 순서(검증 → `submit` → 요청), `FormData`, `requestSubmit()`과 `submit()`의 차이, `fetch`로 새로 고침 없이 보내기는 [[form-submission|폼 제출과 데이터 전송]]에 있다.
 
 ## 정리
 
@@ -190,6 +155,6 @@ f.submit()
 - 사용자가 바꾼 값은 `value`·`checked`·`selectedOptions` 속성에 있다. 어트리뷰트는 초기값이다.
 - `focus`·`blur`는 버블링하지 않는다. 부모에서는 `focusin`·`focusout`이나 캡처로, 모양만이면 `:focus-within`으로.
 - 매번은 `input`, 확정은 `change`, 막아야 하면 `beforeinput`.
-- 폼은 `submit`으로 받고, 스크립트 제출은 이벤트와 검증이 필요하면 `requestSubmit()`이다.
+- 폼은 버튼 `click`이 아니라 폼 `submit`으로 받는다.
 
-관련 노트: [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[form-usability|더 나은 폼을 만드는 팁]], [[html-input-types|HTML 입력 요소 치트시트]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[selection-and-range|Selection과 Range]], [[ajax|AJAX와 HTTP 요청]]
+관련 노트: [[form-submission|폼 제출과 데이터 전송]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[form-usability|더 나은 폼을 만드는 팁]], [[html-input-types|HTML 입력 요소 치트시트]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[selection-and-range|Selection과 Range]], [[ajax|AJAX와 HTTP 요청]]

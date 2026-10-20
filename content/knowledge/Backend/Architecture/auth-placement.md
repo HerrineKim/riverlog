@@ -46,7 +46,7 @@ sources: ["https://dev.gmarket.com/45", "https://learn.microsoft.com/en-us/azure
 
 - 필터는 스프링 MVC 바깥이라 컨트롤러 정보를 모른다. 인터셉터는 어떤 핸들러로 가는지 안다. **인증은 필터, 경로·핸들러별 세부 규칙은 인터셉터나 메서드 보안**으로 나누는 것이 보통이다.
 - 직접 필터를 짜기보다 Spring Security를 쓰는 편이 안전하다. 세션 고정 방지, CSRF, 예외 처리 같은 빠뜨리기 쉬운 부분이 들어 있다. 메서드 보안은 `@EnableMethodSecurity`로 켠다.
-- NestJS에서는 같은 역할을 미들웨어와 가드(Guard)가 나눠 맡는다([[nestjs-middleware|NestJS Middleware]], [[auth-jwt-passport|NestJS JWT 인증과 Passport]]).
+- NestJS에서는 같은 역할을 미들웨어와 가드(Guard)가 나눠 맡는다([[interceptor-aop|NestJS Middleware와 Interceptor]], [[auth-jwt-passport|NestJS JWT 인증과 Passport]]).
 
 **리소스 소유권 확인은 공통 계층으로 끌어올릴 수 없다.** 필터는 「로그인한 사용자인가」까지만 안다. 「남의 주문을 ID만 바꿔 조회하는가」는 데이터를 본 도메인 로직만 판단할 수 있다.
 
@@ -103,4 +103,4 @@ sources: ["https://dev.gmarket.com/45", "https://learn.microsoft.com/en-us/azure
 - MSA에서는 게이트웨이가 토큰 검증과 거친 인가를, 각 서비스가 자기 데이터의 인가를 맡는다.
 - 게이트웨이를 쓰면 우회 차단, 전달 헤더 검증, 게이트웨이 가용성을 반드시 함께 설계한다.
 
-관련 노트: [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]], [[api-security|API 보안 체크리스트]], [[bff|BFF (Backend For Frontend)]], [[data-flow|Data Flow로 보는 웹 아키텍처]], [[oauth2|OAuth 2.0]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]]
+관련 노트: [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]], [[api-security|API 보안 체크리스트]], [[bff|BFF (Backend For Frontend)]], [[web-scalability-components|웹 확장성의 구성 요소]], [[oauth2|OAuth 2.0]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]]

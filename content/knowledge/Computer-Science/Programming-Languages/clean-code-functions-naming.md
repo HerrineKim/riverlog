@@ -1,14 +1,14 @@
 ---
 title: "클린 코드: 함수와 이름"
 concept: "Clean Code"
-summary: "『클린 코드』의 함수와 이름 규칙을 정리한다. 나쁜 코드가 비싼 이유와 보이스카우트 규칙, 피해야 할 습관도 다룬다. 함수는 작게, 한 가지만, 한 추상화 수준으로 쓰고 위에서 아래로 이야기처럼 읽히게 배치한다. 타입 분기는 팩터리 한 곳에 가두고 나머지는 다형성에 맡기며, 이름은 의도를 드러내고 한 개념에 한 단어만 쓴다."
+summary: "『클린 코드』의 함수와 이름 규칙을 정리한다. 나쁜 코드가 비싼 이유와 보이스카우트 규칙, 피해야 할 습관도 다룬다. 함수는 작게, 한 가지만, 한 추상화 수준으로 쓰고 위에서 아래로 이야기처럼 읽히게 배치한다. 값을 돌려주는 질의와 상태를 바꾸는 명령은 나눈다(명령-질의 분리). 타입 분기는 팩터리 한 곳에 가두고 나머지는 다형성에 맡기며, 이름은 의도를 드러내고 한 개념에 한 단어만 쓴다."
 tags: ["clean-code", "oop", "code-review", "software-engineering", "design"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/b43188a4f8554ab19c50401626c84dcd", "https://80000coding.notion.site/7a0a2aeb367a49e8874c403025687071", "https://google.github.io/styleguide/javaguide.html#s5-naming", "https://80000coding.notion.site/2d46fb01aa10486eae950074461d58d9", "https://80000coding.notion.site/a47f00c8e79143cf833283b4c0487eaf"]
+date: "2026-10-20"
+sources: ["https://80000coding.notion.site/b43188a4f8554ab19c50401626c84dcd", "https://80000coding.notion.site/7a0a2aeb367a49e8874c403025687071", "https://google.github.io/styleguide/javaguide.html#s5-naming", "https://80000coding.notion.site/2d46fb01aa10486eae950074461d58d9", "https://80000coding.notion.site/a47f00c8e79143cf833283b4c0487eaf", "https://webactually.com/2018/02/06/%eb%aa%85%ed%99%95%ed%95%9c-%ec%bd%94%eb%93%9c-%ec%9e%91%ec%84%b1%eb%b2%95/"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[클린코드] 함수는 작고 간결하게」, 「[클린코드] 2장 의미 있는 이름」, 「[클린코드] 1장 좋은코드와 나쁜코드」, 「동료들 뒷목 잡게 만드는 나쁜 프로그래밍 습관」을 바탕으로 재구성한 노트다. 원 자료는 로버트 C. 마틴의 『클린 코드』 1~3장이다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[클린코드] 함수는 작고 간결하게」, 「[클린코드] 2장 의미 있는 이름」, 「[클린코드] 1장 좋은코드와 나쁜코드」, 「동료들 뒷목 잡게 만드는 나쁜 프로그래밍 습관」을 바탕으로 재구성한 노트다. 원 자료는 로버트 C. 마틴의 『클린 코드』 1~3장이다. 명령-질의 분리는 Brandon Gregory의 「명확한 코드 작성법」(웹액츄얼리 번역, 2018.02)을 더했다.
 
 ## 나쁜 코드는 왜 비싼가
 
@@ -37,7 +37,7 @@ public static String renderPageWithSetupsAndTeardowns(PageData pageData, boolean
 
 | 규칙 | 기준 |
 | --- | --- |
-| 한 가지만 한다 | 함수 이름으로 설명할 수 없는 일을 하고 있으면 쪼갠다. 의미 있는 이름으로 다른 함수를 추출할 수 있다면 두 가지 이상을 하는 것이다 |
+| 한 가지만 한다 | 함수 이름으로 설명할 수 없는 일을 하고 있으면 쪼갠다. 기능을 설명할 때 "그리고"가 들어가거나, 의미 있는 이름으로 다른 함수를 추출할 수 있다면 두 가지 이상을 하는 것이다. 기능이 적은 함수가 더 많은 곳에서 쓰인다 |
 | 추상화 수준을 맞춘다 | `getHtml()`(높음), `PathParser.render(path)`(중간), `.append("\n")`(낮음)을 한 함수에 섞지 않는다 |
 | 내려가기 규칙 | 코드는 위에서 아래로 읽힌다. 호출하는 함수 바로 아래에 호출당하는 함수를 두어, 한 단계씩 추상화 수준이 내려가게 한다 |
 | 들여쓰기 2단계 이하 | `if`·`while` 블록 안은 가능하면 한 줄(함수 호출)로 만든다 |
@@ -72,7 +72,35 @@ public abstract class Employee {
 
 - **인수는 적을수록 좋다.** 0~2개가 이상적이고, 3개 이상이면 묶을 개념이 있는지 본다. `makeCircle(double x, double y, double radius)`보다 `makeCircle(Point center, double radius)`가 의도를 드러낸다.
 - 불리언 플래그 인수는 "이 함수가 두 가지 일을 한다"는 신호다. 함수를 둘로 나눈다.
-- **부수 효과를 숨기지 않는다.** `checkPassword()`가 비밀번호가 맞을 때 `Session.initialize()`까지 호출하면, 이름만 보고 부른 사람은 세션이 지워지는 줄 모른다. 이름에 드러내거나(`checkPasswordAndInitializeSession`) 호출 위치를 분리한다. 값을 돌려주는 함수는 상태를 바꾸지 않는다는 원칙은 [[clear-code-principles|명확한 코드의 네 가지 원칙]]의 명령-질의 분리에 있다.
+- **부수 효과를 숨기지 않는다.** `checkPassword()`가 비밀번호가 맞을 때 `Session.initialize()`까지 호출하면, 이름만 보고 부른 사람은 세션이 지워지는 줄 모른다. 이름에 드러내거나(`checkPasswordAndInitializeSession`) 호출 위치를 분리한다.
+
+### 명령-질의 분리
+
+함수는 두 종류로 나눈다. 이름이 약속하지 않은 부수 효과는 다른 값을 몰래 덮어쓰는 버그가 된다.
+
+| 종류 | 하는 일 | 지킬 것 |
+| --- | --- | --- |
+| 질의(query) | 값을 돌려준다 | 상태를 바꾸지 않는다 |
+| 명령(command) | 상태를 바꾼다 | 값을 돌려주지 않는다 |
+
+```javascript
+// 나쁨: 이름은 질의인데 데이터를 바꾸고 쿠키까지 쓴다
+function getFirstName() {
+  const name = input.value.toLowerCase()
+  document.cookie = `firstName=${name}`
+  return name
+}
+
+// 좋음: 묻기와 바꾸기를 나눈다
+function getFirstName() {
+  return input.value
+}
+function saveFirstName(name) {
+  document.cookie = `firstName=${name.toLowerCase()}`
+}
+```
+
+함수가 무슨 일을 하는지 매번 정의를 열어 확인해야 한다면 이 원칙이 깨진 것이다. 프론트엔드 코드에 적용한 모습은 [[code-predictability|예측 가능성을 높이는 전략]]의 「숨은 로직 드러내기」에 있다.
 
 ## 처음부터 깔끔하게 쓰지 않는다
 
@@ -133,8 +161,8 @@ public abstract class Employee {
 - 나쁜 코드의 비용은 쌓인다. 지나간 자리를 조금씩 낫게 남긴다.
 - 함수는 작게, 한 가지만, 한 추상화 수준으로 쓰고 위에서 아래로 읽히게 배치한다.
 - 타입 분기는 팩터리 한 곳에 가두고 나머지는 다형성에 맡긴다.
-- 인수는 2개 이하를 목표로 하고, 부수 효과는 이름에 드러내거나 분리한다.
+- 인수는 2개 이하를 목표로 하고, 부수 효과는 이름에 드러내거나 분리한다. 값을 돌려주는 함수는 아무것도 바꾸지 않는다.
 - 깔끔한 함수는 동작 → 테스트 → 리팩터링 순서로 만든다.
 - 이름은 의도를 드러내고, 한 개념에 한 단어를 쓰며, 타입을 넣지 않는다.
 
-관련 노트: [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[readable-code|게슈탈트 법칙으로 보는 읽기 좋은 코드]], [[boolean-naming|불리언 변수 이름 짓기]], [[simple-design|Simple Design]], [[technical-debt|기술 부채]]
+관련 노트: [[code-coupling|결합도를 낮추는 전략]], [[code-cohesion|응집도를 높이는 전략]], [[code-predictability|예측 가능성을 높이는 전략]], [[code-readability|가독성을 높이는 전략]], [[boolean-naming|불리언 변수 이름 짓기]], [[simple-design|Simple Design]], [[technical-debt|기술 부채]]

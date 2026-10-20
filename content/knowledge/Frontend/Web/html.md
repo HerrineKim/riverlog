@@ -1,14 +1,14 @@
 ---
 title: "HTML 기초와 HTML5"
 concept: "HTML"
-summary: "웹 문서의 구조와 의미를 태그로 표현하는 마크업 언어와 그 핵심 문법. 요소와 태그, 대체·빈 요소, 생략 가능한 태그, 불리언·열거형·전역 속성, DOCTYPE, 링크의 target까지 다룬다."
-tags: ["html", "web", "semantic", "frontend"]
+summary: "웹 문서의 구조와 의미를 태그로 표현하는 마크업 언어와 그 핵심 문법. 요소와 태그, 대체·빈 요소, 생략 가능한 태그, 불리언·열거형·전역 속성, data-* 속성, 속성 하나로 끝나는 기능(enterkeyhint·form·download·loading·fetchpriority·integrity·popover 등), DOCTYPE, form 데이터 규칙, HTML5까지 다룬다."
+tags: ["html", "web", "semantic", "frontend", "form"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://riverkim.kr/280", "https://riverkim.kr/282", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://web.dev/learn/html/overview", "https://web.dev/learn/html/attributes", "https://web.dev/learn/html/forms"]
+date: "2026-10-20"
+sources: ["https://riverkim.kr/280", "https://riverkim.kr/282", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://web.dev/learn/html/overview", "https://web.dev/learn/html/attributes", "https://web.dev/learn/html/forms", "https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/"]
 ---
 
-> 「DOCTYPE과 렌더링 모드」와 「HTML5와 웹 플랫폼」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 HTML Living Standard·MDN으로 확인해 보강한 노트다. 「요소의 종류」와 「속성 문법」은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Overview of HTML」·「Attributes」 모듈을 바탕으로 보강했다.
+> 「DOCTYPE과 렌더링 모드」와 「HTML5와 웹 플랫폼」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 HTML Living Standard·MDN으로 확인해 보강한 노트다. 「요소의 종류」와 「속성 문법」은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Overview of HTML」·「Attributes」 모듈을 바탕으로 보강했다. 「data-* 속성」은 같은 Front End Interview Handbook으로, 「속성 하나로 끝나는 기능」은 Louis Lazaris의 「[Those HTML Attributes You Never Use](https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/)」(Smashing Magazine, 2022.03)를 바탕으로 브라우저 지원을 2026년 기준으로 고쳐 보강했다.
 
 HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 마크업 언어다. 마크업 언어란 태그 등을 이용해 문서나 데이터의 구조를 명시하는 언어로, HTML과 Markdown이 대표적이다. 스타일은 CSS가, 동작은 JavaScript가 맡고 HTML은 "무엇이 어떤 의미의 내용인가"를 표현한다.
 
@@ -88,7 +88,7 @@ HTML 파서는 틀린 마크업에도 실패하지 않는다. 생략한 `</li>`,
 | --- | --- |
 | `id` | 문서 전체에서 유일한 식별자. 링크 프래그먼트(`#id`)의 목적지, `getElementById()`, `<label for>`, `aria-labelledby`·`aria-describedby`의 참조 대상이다. 중복되면 화면은 멀쩡해도 링크·스크립트·레이블이 틀어진다. 공백 없이 글자로 시작하고 ASCII 글자·숫자·`_`·`-`만 쓰는 규칙을 정해 지킨다 |
 | `class` | 공백으로 구분된 클래스 목록. CSS·JS에서 요소를 선택하는 것 말고는 HTML에서 하는 일이 없다. 시맨틱 구조만으로도 `header nav a` 같은 선택자가 충분할 때가 많다 |
-| `data-*` | 요소에 사용자 정의 데이터를 붙인다. JS에서는 `dataset`으로 읽는다([[html-lesser-known-attributes\|잘 안 쓰지만 쓸모 있는 HTML 속성]]). 표준에 없는 속성을 아무렇게나 만들지 않고 `data-`를 붙이는 이유는 앞으로 생길 표준 속성과 겹치지 않기 때문이다 |
+| `data-*` | 요소에 사용자 정의 데이터를 붙인다(아래 「data-* 속성」) |
 | `lang`, `dir` | 내용의 언어와 글 방향([[multilingual-pages\|다국어 페이지]]) |
 | `style` | 인라인 스타일. 그 요소에만 적용되고 `@keyframes` 같은 규칙은 못 쓴다. 개발 중 실험용으로만 쓰고 파일로 옮긴다 |
 | `title` | 요소에 대한 추가 정보(툴팁). 키보드·터치 사용자는 보기 어렵다 |
@@ -97,6 +97,56 @@ HTML 파서는 틀린 마크업에도 실패하지 않는다. 생략한 `</li>`,
 | `slot`, `part` | 웹 컴포넌트의 슬롯 지정과 섀도 트리 꾸미기([[web-components\|웹 컴포넌트]]) |
 
 `getElementsByClassName()`은 DOM이 바뀌면 함께 바뀌는 살아 있는 `HTMLCollection`을, `querySelectorAll()`은 호출 시점의 정적 `NodeList`를 돌려준다.
+
+### data-* 속성
+
+`data-`로 시작하는 속성은 **표준에 알맞은 속성이 없는 데이터를 요소에 붙이는** 공식 통로다. 표준에 없는 속성을 아무렇게나 만들지 않고 `data-`를 붙이는 이유는 앞으로 생길 표준 속성과 겹치지 않기 때문이다. 이름은 `data-` 뒤에 한 글자 이상, 대문자 없이 쓴다. 값은 늘 문자열이다.
+
+```html
+<li data-review-id="42" data-state="open">…</li>
+```
+
+```js
+el.dataset.reviewId   // "42" — data-review-id가 카멜케이스로 바뀐다
+el.dataset.state = 'closed'
+```
+
+```css
+li[data-state="open"] { font-weight: bold; }
+li::after { content: attr(data-state); }
+```
+
+| 쓰기 좋은 곳 | 피할 곳 |
+| --- | --- |
+| 서버가 렌더링한 HTML에서 JS로 ID·설정값 넘기기, 이벤트 위임에서 대상 구분([[ajax\|AJAX]]의 리뷰 ID 예) | 앱 상태의 원본 저장소. 상태는 JS(프레임워크 상태)에 두고 DOM은 그 결과로 그린다 |
+| CSS 선택자로 상태 표현(`[data-state]`), 테스트 훅(`data-testid`) | 비밀값·권한 정보. 개발자 도구로 누구나 보고 고칠 수 있다 |
+| 분석 이벤트 이름 같은 부가 정보 | 이미 표준 속성이 있는 의미(`hidden`, `disabled`, `aria-*`, `value`) |
+
+JavaScript 프레임워크 이전에는 DOM에 데이터를 두는 주된 방법이었고, 지금은 HTML과 JS·CSS 사이에 값을 넘기는 가벼운 통로로 쓴다. CSS `attr()`은 `content`에서는 모든 브라우저가 지원하고, 다른 속성 값에 타입을 지정해 쓰는 확장 문법은 아직 실험적이다.
+
+### 속성 하나로 끝나는 기능
+
+꽤 많은 기능이 **속성 하나로 끝난다.** JavaScript로 다시 만들기 전에 HTML에 이미 있는지부터 확인한다. HTML 속성은 브라우저가 이미 구현해 둔 기능의 스위치다.
+
+| 속성 | 붙는 곳 | 하는 일 | 자세히 |
+| --- | --- | --- | --- |
+| `enterkeyhint` | 입력 요소, `contenteditable` | 가상 키보드 엔터 키의 문구(`next`, `done`, `search`, `send` 등) | [[html-input-types\|HTML 입력 요소 치트시트]] |
+| `form` | 입력·버튼 | 부모가 아닌 `<form>`(그 `id`)에 연결해 함께 제출 | [[form-submission\|폼 제출과 데이터 전송]] |
+| `label`, `disabled` | `<optgroup>` | 옵션 묶음 제목, 묶음 전체 비활성화 | [[html-input-types\|HTML 입력 요소 치트시트]] |
+| `reversed`, `start`, `type`, `value` | `<ol>`, `<li>` | 번호 방향·시작값·형식·개별 번호 | [[html-lists-tables\|목록과 표 마크업]] |
+| `download` | `<a>` | 이동 대신 내려받기, 파일 이름 제안 | [[html-links-navigation\|링크와 내비게이션 마크업]] |
+| `loading` | `<img>`, `<iframe>` | 화면 밖 자원 지연 로딩. 첫 화면 큰 이미지에는 쓰지 않는다 | [[lazy-loading\|지연 로딩]] |
+| `fetchpriority` | `<img>`, `<link>`, `<script>` | 다운로드 우선순위 힌트. 히어로 이미지는 `high`, 캐러셀 뒤쪽은 `low` | [[resource-hints\|리소스 힌트]] |
+| `decoding` | `<img>` | 디코딩을 기다렸다 그릴지(`sync`), 나중에 붙일지(`async`) 힌트 | [[responsive-images\|반응형 이미지]] |
+| `cite`, `datetime` | `<blockquote>`, `<q>`, `<del>`, `<ins>`, `<time>` | 출처 URL, 변경·날짜 일시를 기계용으로 남긴다 | [[html-text-elements\|텍스트 의미 요소]] |
+| `rel="alternate stylesheet"` + `title` | `<link>` | 사용자가 고르는 대체 스타일시트(Firefox만 메뉴 제공) | [[html-head-metadata\|문서 head와 메타데이터]] |
+| `crossorigin` | `<img>`·`<script>`·`<link>` 등 | CORS 모드로 요청한다 | |
+| `integrity` | `<script>`, `<link>` | CDN에서 받은 파일이 변조되지 않았는지 해시로 확인한다(SRI) | |
+| `multiple` | `type="email"`, `type="file"` | 쉼표로 여러 주소, 여러 파일 | |
+| `disablepictureinpicture` | `<video>` | PIP 버튼을 숨긴다 | |
+| `popover` | 모든 요소 | JavaScript 없이 팝오버를 열고 닫는다. 바깥 클릭·Esc 닫기가 기본이다 | [[popover-anchor-positioning\|팝오버와 앵커 위치 지정]] |
+
+`cite`·`datetime`·`integrity`처럼 화면에 안 보이는 속성은 기계와 미래의 나를 위한 정보다.
 
 ## 시맨틱 태그
 
@@ -158,29 +208,7 @@ HTML 파서는 틀린 마크업에도 실패하지 않는다. 생략한 `</li>`,
 
 ## 링크의 target과 rel
 
-`href`가 가리킬 수 있는 곳(프래그먼트, `mailto:`·`tel:`), 이름 붙은 `target`, `rel` 값과 내비게이션 마크업은 [[html-links-navigation|링크와 내비게이션 마크업]]에 있다.
-
-`<a>`의 `target`은 링크한 URL을 **어느 브라우징 맥락**(탭, 창, `<iframe>`)에 띄울지 정한다.
-
-| 값 | 동작 |
-| --- | --- |
-| `_self` | 현재 맥락에 연다(기본값) |
-| `_blank` | 새 맥락에 연다. 보통 새 탭이고, 사용자 설정에 따라 새 창 |
-| `_parent` | 현재 맥락의 부모에 연다. 부모가 없으면 `_self`처럼 동작 |
-| `_top` | 가장 바깥(최상위) 맥락에 연다. 부모가 없으면 `_self`처럼 동작 |
-
-`<iframe>`은 그 자체로 하나의 브라우징 맥락이다. iframe 안의 링크가 기본값 `_self`로 열리면 **iframe 안에서만** 페이지가 바뀐다. 전체 창을 이동시키려면 `target="_top"`을 쓴다.
-
-새 탭으로 열 때는 `rel`도 함께 신경 쓴다. 새로 열린 페이지는 `window.opener`로 링크를 연 페이지에 접근할 수 있어, 악의적인 페이지가 원래 탭을 피싱 페이지로 바꿔치기할 수 있다.
-
-```html
-<a href="https://example.com" target="_blank" rel="noopener noreferrer">외부 링크</a>
-```
-
-- `noopener`: 새 페이지에서 `window.opener`를 `null`로 만든다.
-- `noreferrer`: `noopener` 효과에 더해 이전 페이지 주소(Referer 헤더)도 보내지 않는다.
-
-주요 브라우저(크롬 88·파이어폭스 79·사파리 12.1 이후)는 `target="_blank"`에 `noopener`를 기본 적용한다. 그래서 `noopener`는 아주 오래된 브라우저를 위한 안전장치이고, 이전 페이지 주소까지 숨기려면 `noreferrer`를 명시한다.
+`<a>`의 `target`(`_self`·`_blank`·`_parent`·`_top`), iframe 안 링크, `rel="noopener noreferrer"`, `download`와 내비게이션 마크업은 [[html-links-navigation|링크와 내비게이션 마크업]]에 있다.
 
 ## `&nbsp;`: 줄 바꿈 없는 공백
 
@@ -217,4 +245,4 @@ HTML5는 마크업 문법만이 아니라 **새 요소와 DOM API를 함께 묶�
 - 영역을 나눌 때는 가능한 한 시맨틱 태그를 쓴다. SEO와 접근성의 기본이다.
 - form 데이터는 input의 `name`/`value` 쌍으로 전송되고, `label` 연결로 사용성과 접근성을 챙긴다.
 
-관련 노트: [[markdown|Markdown(또 하나의 마크업 언어)]], [[dom|DOM과 BOM]], [[html-head-metadata|문서 head와 메타데이터]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[html-lists-tables|목록과 표 마크업]], [[html-links-navigation|링크와 내비게이션 마크업]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-glossary|프론트엔드 웹 개발 용어집]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[multilingual-pages|다국어 페이지]], [[form-submission|폼 제출과 데이터 전송]], [[constraint-validation|제약 검증: required·pattern·ValidityState]], [[windows-and-frames|창과 프레임: 팝업, iframe, postMessage]]
+관련 노트: [[markdown|Markdown(또 하나의 마크업 언어)]], [[dom|DOM과 BOM]], [[html-head-metadata|문서 head와 메타데이터]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[html-lists-tables|목록과 표 마크업]], [[html-links-navigation|링크와 내비게이션 마크업]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-glossary|프론트엔드 웹 개발 용어집]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[multilingual-pages|다국어 페이지]], [[form-submission|폼 제출과 데이터 전송]], [[constraint-validation|제약 검증: required·pattern·ValidityState]], [[windows-and-frames|창과 프레임: 팝업, iframe, postMessage]]

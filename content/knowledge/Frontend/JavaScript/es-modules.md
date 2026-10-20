@@ -4,7 +4,7 @@ concept: "ES Modules"
 summary: "ES 모듈의 named·default export와 여러 import·다시 내보내기 형태, 모듈 스코프·한 번만 평가·라이브 바인딩·import.meta 같은 성질, 브라우저에서 모듈 스크립트로 쓰는 법(defer, async, CORS)과 동적 import(), import attributes로 JSON 가져오기, CommonJS와의 관계, default와 named 중 무엇을 쓸지에 대한 논쟁."
 tags: ["javascript", "frontend", "typescript"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-20"
 sources: ["https://riverkim.kr/174", "https://riverkim.kr/120", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/78-modules", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/79-currency-module-refactor", "https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require", "https://ko.javascript.info/modules-intro", "https://ko.javascript.info/import-export", "https://ko.javascript.info/modules-dynamic-imports", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta"]
 ---
 
@@ -124,8 +124,7 @@ import만 해도 DOM을 찾고 이벤트를 거는 코드가 실행되면 테스
 <script type="module" src="./main.js"></script>
 ```
 
-- 진입점 하나에만 `type="module"`을 달면 나머지는 `import`로 따라 들어온다. 모듈 스크립트는 외부 파일이든 인라인이든 기본이 `defer`처럼 동작한다. HTML 파싱을 막지 않고 내려받고, 문서가 다 만들어진 뒤 문서 순서대로 실행된다. 그래서 모듈은 항상 완성된 DOM을 본다. 모듈이 실행되기 전까지 기능이 비어 있으니 필요하면 로딩 표시를 둔다([[script-loading|스크립트·스타일 로딩 순서]]).
-- 일반 스크립트의 `async`는 외부 파일에만 듣지만, 모듈은 **인라인에도** `<script type="module" async>`가 된다. import가 끝나는 대로 다른 스크립트나 파싱을 기다리지 않고 실행되므로 분석·광고처럼 아무것에도 의존하지 않는 코드에 맞다.
+- 진입점 하나에만 `type="module"`을 달면 나머지는 `import`로 따라 들어온다. 모듈 스크립트는 인라인이어도 기본이 `defer`처럼 동작해 항상 완성된 DOM을 보고, `async`를 주면 import가 끝나는 대로 실행된다. 일반 스크립트·`async`·`defer`와의 실행 순서 비교는 [[script-loading|스크립트·스타일 로딩 순서]]에 있다.
 - 같은 `src`의 모듈 스크립트는 여러 번 넣어도 한 번만 실행된다.
 - 모듈은 CORS 규칙을 따른다. 다른 출처에서 모듈을 가져오려면 그 서버가 `Access-Control-Allow-Origin` 헤더를 줘야 하고, HTML을 `file://`로 열면 막힌다. 로컬 서버로 연다.
 - 브라우저는 `'./utils.js'`처럼 **확장자까지 쓴 경로나 URL**만 해석한다. `import { format } from 'date-fns'` 같은 패키지 이름(bare specifier)은 번들러·Vite가 `node_modules`에서 찾아 주거나, `<script type="importmap">`으로 이름과 URL을 직접 짝지어 줘야 한다.

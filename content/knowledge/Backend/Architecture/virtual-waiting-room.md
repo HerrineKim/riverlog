@@ -126,4 +126,4 @@ CDN이 대기실을 기능으로 제공하기도 한다. Cloudflare Waiting Room
 - 트래픽 임계치로 대기열을 자동으로 켜면 예고 없는 폭주도 막는다.
 - 대기열 자체의 가용성, 우회 차단, 공정성을 함께 설계한다.
 
-관련 노트: [[queue-deque|큐와 덱]], [[api-security|API 보안 체크리스트]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[data-flow|Data Flow로 보는 웹 아키텍처]]
+관련 노트: [[queue-deque|큐와 덱]], [[api-security|API 보안 체크리스트]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[web-scalability-components|웹 확장성의 구성 요소]]

@@ -75,7 +75,7 @@ test('어떤 상품이든 추가하면 장바구니 개수가 1 늘어난다', (
 | 에러는 잡지 말고 기대한다 | `try/catch` 대신 `await expect(fn()).rejects.toThrow(…)` |
 | 태그로 나눈다 | `#fast`·`#smoke` 같은 태그로 저장할 때는 빠른 테스트만, CI에서는 전부 돌린다(Vitest `--testNamePattern`, Playwright `--grep`) |
 | 고치기 전에 실패하는 테스트부터 | 버그를 찾으면 그 버그를 잡는 테스트를 먼저 쓴다. 모든 테스트는 한 번 실패하는 것을 확인한다([[tdd\|TDD]]) |
-| 환경에 기대지 않는다 | 경로·OS·타임존·현재 시각을 고정한다([[jest-practices\|Jest·Vitest 실행 팁]]) |
+| 환경에 기대지 않는다 | 경로·OS·타임존·현재 시각을 고정한다([[test-run-stages\|테스트를 돌리는 시점]]) |
 
 ## 프런트엔드와 E2E
 

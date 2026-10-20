@@ -4,7 +4,7 @@ concept: "Map & Set"
 summary: "Map은 어떤 값이든 키로 쓰고 넣은 순서를 지키는 키-값 컬렉션, Set은 중복 없는 값의 모음이다. 일반 객체와 비교해 언제 무엇을 쓸지, 주요 메서드와 순회, 객체와 서로 바꾸기, JSON으로 보낼 때의 제약, WeakMap·WeakSet, ES2025의 Set 집합 연산까지."
 tags: ["javascript", "data-structure", "frontend"]
 source: other
-date: "2026-10-17"
+date: "2026-10-20"
 sources: ["https://wesbos.com/javascript/08-data-types/maps", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap", "https://web.dev/learn/javascript/collections/keyed", "https://ko.javascript.info/map-set", "https://ko.javascript.info/weakmap-weakset"]
 ---
 
@@ -105,7 +105,7 @@ ES2025부터 집합 연산 메서드가 표준이다. 모두 새 Set을 반환�
 
 메서드는 `get`·`set`·`has`·`delete`(WeakSet은 `add`·`has`·`delete`)뿐이고 `size`·`keys()`·`forEach`가 없다. 가비지 컬렉션이 언제 항목을 치울지 엔진만 알기 때문이다.
 
-DOM 요소나 외부 라이브러리 객체에 부가 데이터·캐시를 붙일 때 쓴다. 대표적인 쓰임은 둘이다. 남의 객체에 방문 횟수 같은 **부가 데이터** 붙이기, 그리고 입력 객체별 계산 결과를 담는 **캐시**. 둘 다 객체가 사라지면 항목도 저절로 사라져 손으로 청소할 필요가 없다. 예제 코드와 도달 가능성 규칙, WeakRef는 [[garbage-collection|가비지 컬렉션과 메모리 누수]]에 있다. WeakSet은 "이 객체를 이미 처리했나"처럼 객체에 표시만 해 두는 용도(방문 표시, 순환 참조 검사)에 맞다. 일반 Map에 담으면 요소가 페이지에서 사라져도 Map이 붙잡고 있어 메모리가 새지만, WeakMap은 함께 사라진다.
+남의 객체(DOM 요소, 외부 라이브러리 객체)에 **부가 데이터**나 객체별 **캐시**를 붙일 때 쓴다. 객체가 사라지면 항목도 저절로 사라져, 일반 Map처럼 요소를 붙잡아 메모리가 새지 않는다. WeakSet은 "이 객체를 이미 처리했나"처럼 표시만 해 두는 용도(방문 표시, 순환 참조 검사)에 맞다. 예제 코드와 도달 가능성 규칙, WeakRef는 [[garbage-collection|가비지 컬렉션과 메모리 누수]]에 있다.
 
 ## 정리
 

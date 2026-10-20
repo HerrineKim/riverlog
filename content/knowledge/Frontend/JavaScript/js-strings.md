@@ -1,14 +1,14 @@
 ---
 title: "문자열 다루기"
 concept: "String"
-summary: "JavaScript 문자열은 UTF-16 코드 단위의 나열이고 바꿀 수 없는 원시값이다. 따옴표와 이스케이프, 글자 접근(at·charAt), 검색(includes·indexOf와 0의 함정), 부분 문자열(slice·substring·substr의 차이), 대소문자·공백·패딩, 유니코드 순 비교와 localeCompare·Intl.Collator, 서로게이트 쌍과 코드 포인트, normalize로 맞추는 유니코드 정규화, 짝 잃은 서로게이트를 찾는 isWellFormed까지 정리한다."
-tags: ["javascript", "frontend", "data-structure", "i18n"]
-source: other
-date: "2026-10-17"
-sources: ["https://ko.javascript.info/string", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter"]
+summary: "JavaScript 문자열은 UTF-16 코드 단위의 나열이고 바꿀 수 없는 원시값이다. 따옴표와 이스케이프, 백틱 템플릿 리터럴(여러 줄·표현식 삽입·중첩)과 styled-components의 바탕인 태그드 템플릿, 글자 접근(at·charAt), 검색(includes·indexOf와 0의 함정), 부분 문자열(slice·substring·substr의 차이), 대소문자·공백·패딩, 유니코드 순 비교와 localeCompare·Intl.Collator, 서로게이트 쌍과 코드 포인트, normalize로 맞추는 유니코드 정규화, 짝 잃은 서로게이트를 찾는 isWellFormed까지 정리한다."
+tags: ["javascript", "frontend", "data-structure", "i18n", "styling"]
+source: mixed
+date: "2026-10-20"
+sources: ["https://ko.javascript.info/string", "https://opencollective.com/styled-components/updates", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「문자열」, 「자료형」, 「원시값의 메서드」 글을 바탕으로, ES2022 이후 추가된 메서드는 MDN으로 확인해 재구성한 노트다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「문자열」, 「자료형」, 「원시값의 메서드」 글을 바탕으로, ES2022 이후 추가된 메서드는 MDN으로 확인해 재구성한 노트다. 템플릿 리터럴과 태그드 템플릿은 노션에 정리해 둔 내용을 합쳤다.
 
 ## 문자열이란
 
@@ -27,7 +27,7 @@ str = 'h' + str.slice(1) // 새 문자열을 만들어 다시 대입한다
 | 따옴표 | 특징 |
 | --- | --- |
 | `'…'`, `"…"` | 완전히 같다. 소스에서 줄을 바꿀 수 없다 |
-| `` `…` `` | 여러 줄, `${식}` 삽입, 태그드 템플릿([[template-literals\|템플릿 리터럴]]) |
+| `` `…` `` | 템플릿 리터럴. 여러 줄, `${식}` 삽입, 태그드 템플릿(아래 「템플릿 리터럴」) |
 
 감싼 것과 같은 따옴표를 안에 쓰려면 백슬래시로 **이스케이프**한다(`'I\'m'`). 다른 따옴표로 감싸면 이스케이프가 필요 없다(`"I'm"`, `` `I'm` ``). 백슬래시는 소스를 읽을 때만 쓰이고 메모리의 문자열에는 남지 않는다.
 
@@ -40,6 +40,58 @@ str = 'h' + str.slice(1) // 새 문자열을 만들어 다시 대입한다
 | `\xXX` | 16진수 2자리 코드. `'\x7A'` → `z` |
 
 `length`는 메서드가 아니라 **속성**이다(`str.length`). 값은 글자 수가 아니라 **UTF-16 코드 단위 수**라서 이모지는 2가 된다(아래 「유니코드」).
+
+## 템플릿 리터럴
+
+**템플릿 리터럴(template literal)** 은 백틱(`` ` ``)으로 감싼 문자열이다. ES2015 초안에서는 "template strings"라고 불렀다. 따옴표 문자열과 달리 세 가지가 된다.
+
+```javascript
+// 여러 줄: 줄바꿈이 그대로 들어간다 ('line 1\n' + 'line 2' 대신)
+`line 1
+line 2`
+
+// 표현식 삽입: ${} 안에는 변수·연산·함수 호출 등 어떤 식이든 온다
+`Fifteen is ${a + b} and not ${2 * a + b}.`
+
+// 중첩: 템플릿 안에 템플릿. 공통 접두사 'icon-'을 한 번만 쓴다
+const classes = `header ${
+  isLargeScreen() ? '' : `icon-${item.isCollapsed ? 'expander' : 'collapser'}`
+}`
+```
+
+문자열을 이을 때는 `+`보다 템플릿 리터럴이 안전하다. `+`는 피연산자 하나만 숫자여도 계산 순서에 따라 결과가 바뀐다([[operators-and-control-flow|연산자와 제어문]]).
+
+### 태그드 템플릿
+
+템플릿 앞에 함수 이름을 붙이면 그 함수(태그)가 템플릿을 받아 처리한다. 첫 인자는 `${}` 사이사이의 **문자열 조각 배열**(`TemplateStringsArray`), 나머지 인자는 각 **표현식의 값**이다. 조각 수는 항상 **표현식 수 + 1**이다.
+
+```typescript
+function describe(strings: TemplateStringsArray, person: string, age: number) {
+  // strings = ['that ', ' is a ', ''] — 마지막 표현식 뒤에도 빈 조각이 있다
+  const ageWord = age > 99 ? 'centenarian' : 'youngster'
+  return `${strings[0]}${person}${strings[1]}${ageWord}`
+}
+describe`that ${'Mike'} is a ${28}` // 'that Mike is a youngster'
+```
+
+`String.raw`(이스케이프를 해석하지 않은 원문), GraphQL의 `gql`, styled-components가 태그드 템플릿을 쓴다.
+
+**styled-components의 원리**: 표현식 자리에 **함수**를 넣고, 태그 함수가 props를 넣어 그 함수를 실행하면 props에 따라 바뀌는 CSS가 나온다.
+
+```typescript
+const props = { primary: true, theme: { colors: { primary: 'coral', secondary: 'peachpuff' } } }
+type Props = typeof props
+
+function styled(css: TemplateStringsArray, ...fns: ((p: Props) => string)[]) {
+  return css.map((chunk, i) => chunk + (fns[i] ? fns[i](props) : '')).join('')
+}
+
+styled`
+  background: ${({ primary, theme }) => (primary ? theme.colors.primary : theme.colors.secondary)};
+` // 'background: coral;'
+```
+
+실제 라이브러리는 이 CSS 문자열에 고유 클래스 이름을 붙여 `<style>` 태그로 넣는다. 런타임에 스타일을 만드는 이 방식은 서버 컴포넌트·스트리밍 SSR과 잘 맞지 않아, styled-components는 2025년 3월 유지보수 모드에 들어갔다. 새 프로젝트는 CSS Modules·Tailwind CSS나 빌드 타임 CSS-in-JS(vanilla-extract, Panda CSS)를 많이 쓴다([React 스타일링](/knowledge/dictionary/frontend/react/styling)).
 
 ## 글자 꺼내기
 
@@ -167,9 +219,10 @@ const count = [...seg.segment('👨‍👩‍👧가')].length // 2
 ## 정리
 
 - 문자열은 바꿀 수 없는 UTF-16 코드 단위의 나열이다. `length`는 코드 단위 수다.
+- 백틱 템플릿 리터럴은 여러 줄·`${식}` 삽입을 지원하고, 태그드 템플릿은 `(조각 배열, ...값)`을 받는 함수로 문자열을 해석한다.
 - 포함 여부는 `includes`, 위치는 `indexOf`와 `-1` 비교. 부분 문자열은 `slice` 하나로 충분하다.
 - `<`·`>`는 코드 순서다. 사람용 정렬은 `localeCompare`나 `Intl.Collator`.
 - 이모지는 서로게이트 쌍이다. 코드 포인트는 `for...of`·`codePointAt`, 보이는 글자는 `Intl.Segmenter`.
 - 비교·저장 전에 `normalize()`로 정규화한다.
 
-관련 노트: [[template-literals|템플릿 리터럴과 태그드 템플릿]], [[arrays-and-objects|배열·객체 다루기]], [[variables-and-types|변수와 데이터 타입]], [[iterators-and-generators|이터레이터와 제너레이터]], [[operators-and-control-flow|연산자와 제어문]], [[regular-expressions|정규 표현식: 문법·플래그·메서드]]
+관련 노트: [[styling|React 스타일링]], [[arrays-and-objects|배열·객체 다루기]], [[variables-and-types|변수와 데이터 타입]], [[iterators-and-generators|이터레이터와 제너레이터]], [[operators-and-control-flow|연산자와 제어문]], [[regular-expressions|정규 표현식: 문법·플래그·메서드]]

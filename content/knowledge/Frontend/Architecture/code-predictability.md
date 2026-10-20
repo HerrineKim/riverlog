@@ -106,7 +106,7 @@ async function fetchBalance(): Promise<number> {
 </Button>;
 ```
 
-값을 돌려주는 함수가 상태를 바꾸지 않게 하는 일반 원칙은 명령-질의 분리다([[clear-code-principles|명확한 코드의 네 가지 원칙]]).
+값을 돌려주는 함수가 상태를 바꾸지 않게 하는 일반 원칙은 명령-질의 분리다([[clean-code-functions-naming|클린 코드: 함수와 이름]]).
 
 ## 정리
 
@@ -115,4 +115,4 @@ async function fetchBalance(): Promise<number> {
 - 같은 종류의 함수·훅은 반환 모양을 통일하고, 결과 타입은 판별 유니온으로 둔다.
 - 로깅·저장 같은 부수 효과는 함수 안에 숨기지 말고 호출부에 드러낸다.
 
-관련 노트: [[changeable-code-criteria|변경하기 쉬운 코드의 네 가지 기준]], [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[tanstack-query|TanStack Query]], [[clean-code-functions-naming|클린 코드: 함수와 이름]]
+관련 노트: [[changeable-code-criteria|변경하기 쉬운 코드의 네 가지 기준]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[tanstack-query|TanStack Query]], [[clean-code-functions-naming|클린 코드: 함수와 이름]]

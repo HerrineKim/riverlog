@@ -72,7 +72,7 @@ def search(movies, keyword, top_n=5):
 similarity(A, B) = (A · B) / (|A| × |B|)
 ```
 
-영화마다 줄거리·장르·키워드를 합친 `words` 문자열을 만들어 두고, 아래 순서로 비슷한 영화를 찾았다.
+영화마다 줄거리·장르·키워드를 합친 `words` 문자열을 만들어 두고, 아래 순서로 비슷한 영화를 찾는다.
 
 ```text
 영화별 words 문자열

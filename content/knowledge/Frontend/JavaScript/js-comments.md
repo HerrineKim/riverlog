@@ -41,7 +41,7 @@ for (let i = 2; i < n; i++) {
 }
 ```
 
-`// 위스키를 더한다`, `// 주스를 더한다`처럼 주석으로 나뉜 긴 흐름도 `addWhiskey(glass)`, `addJuice(glass)`로 쪼개면 각 함수가 무엇을 받고 돌려주는지까지 분명해진다. 함수를 얼마나 잘게 나눌지의 원칙은 [[clear-code-principles|명확한 코드의 네 가지 원칙]]에 있다.
+`// 위스키를 더한다`, `// 주스를 더한다`처럼 주석으로 나뉜 긴 흐름도 `addWhiskey(glass)`, `addJuice(glass)`로 쪼개면 각 함수가 무엇을 받고 돌려주는지까지 분명해진다. 함수를 얼마나 잘게 나눌지의 원칙은 [[clean-code-functions-naming|클린 코드: 함수와 이름]]에 있다.
 
 ### JSDoc
 
@@ -161,4 +161,4 @@ JavaScript는 1995년 넷스케이프 내비게이터 2에서 처음 나왔다. 
 - `#!`는 실행 파일 첫 줄에서 인터프리터를 지정할 때만 쓴다.
 - `<!--`/`-->`는 1990년대 브라우저 호환의 흔적이다. 언어의 역사가 명세에 남은 예다.
 
-관련 노트: [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[statements-vs-expressions|문(Statement)과 식(Expression)]], [[variables-and-types|변수와 데이터 타입]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[frontend-history|프론트엔드의 등장 배경]]
+관련 노트: [[clean-code-functions-naming|클린 코드: 함수와 이름]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[statements-vs-expressions|문(Statement)과 식(Expression)]], [[variables-and-types|변수와 데이터 타입]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[frontend-history|프론트엔드의 등장 배경]]

@@ -110,7 +110,7 @@ sigaction(SIGUSR1, &sa, NULL);
 | 느림 | 비트 하나마다 문맥 교환과 핸들러 실행 | 대량 전송은 파이프·소켓·공유 메모리로 |
 | `sleep`으로 간격 두기 | 도착을 보장하지 못하고 느리기만 함 | ACK 기반 흐름 제어 |
 
-비트마다 ACK를 기다리는 방식은 TCP 이전의 정지-대기(stop-and-wait) ARQ와 같은 구조다. 한 번에 여러 개를 보내고 누적 ACK를 받는 슬라이딩 윈도우, 실패 지점부터 다시 보내는 Go-Back-N, 실패한 것만 다시 보내는 Selective Repeat로 효율을 높이는 것이 [[tcp|TCP]]의 흐름 제어다.
+비트마다 ACK를 기다리는 방식은 TCP 이전의 정지-대기(stop-and-wait) ARQ와 같은 구조다. 한 번에 여러 개를 보내고 누적 ACK를 받는 슬라이딩 윈도우, 실패 지점부터 다시 보내는 Go-Back-N, 실패한 것만 다시 보내는 Selective Repeat로 효율을 높이는 것이 [[transport-layer|TCP]]의 흐름 제어다.
 
 ## 정리
 

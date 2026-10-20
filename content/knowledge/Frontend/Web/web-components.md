@@ -257,4 +257,4 @@ JavaScript 없이 HTML만으로 섀도 루트를 만들 수 있다. 서버 렌�
 - 이벤트는 호스트로 리타게팅되고, 커스텀 이벤트는 `bubbles`·`composed`를 둘 다 켜야 밖에서 받는다.
 - SSR에는 `<template shadowrootmode>`로 선언적 Shadow DOM을 쓴다.
 
-관련 노트: [[dom|DOM과 BOM]], [[dom-manipulation|DOM 조작과 이벤트]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[frontend-frameworks|프론트엔드 프레임워크]], [[aria-basics|ARIA와 접근 가능한 이름]]
+관련 노트: [[dom|DOM과 BOM]], [[dom-manipulation|DOM 조작]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[frontend-frameworks|프론트엔드 프레임워크]], [[aria-basics|ARIA와 접근 가능한 이름]]

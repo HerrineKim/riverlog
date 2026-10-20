@@ -1,10 +1,10 @@
 ---
 title: "데코레이터와 콜 포워딩"
 concept: "Decorator"
-summary: "함수를 고치지 않고 감싸서 동작을 더하는 데코레이터 함수. 캐싱 래퍼로 보는 기본 모양, 감싼 메서드가 this를 잃는 문제와 func.call(this, ...args)로 넘기는 콜 포워딩, call과 apply의 차이, 여러 인자를 키 하나로 바꾸는 해시, 유사 배열에 배열 메서드를 빌려 쓰는 메서드 빌리기, 래퍼가 원래 함수의 속성을 잃는 한계, bind와 partial 헬퍼로 만드는 부분 적용을 정리한다."
+summary: "함수를 고치지 않고 감싸서 동작을 더하는 데코레이터 함수. 캐싱 래퍼로 보는 기본 모양, 감싼 메서드가 this를 잃는 문제와 func.call(this, ...args)로 넘기는 콜 포워딩, call과 apply의 차이, 여러 인자를 키 하나로 바꾸는 해시, 유사 배열에 배열 메서드를 빌려 쓰는 메서드 빌리기, 래퍼가 원래 함수의 속성을 잃는 한계를 정리한다. 부분 적용은 함수형 프로그래밍 노트에 있다."
 tags: ["javascript", "function", "design-pattern", "cache", "frontend"]
 source: other
-date: "2026-10-17"
+date: "2026-10-20"
 sources: ["https://ko.javascript.info/call-apply-decorators", "https://ko.javascript.info/bind", "https://ko.javascript.info/arrow-functions", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply"]
 ---
 
@@ -22,7 +22,7 @@ sources: ["https://ko.javascript.info/call-apply-decorators", "https://ko.javasc
 
 [[debounce-throttle|debounce와 throttle]]도 "함수를 받아 실행 시점을 조절하는 래퍼를 돌려주는" 데코레이터다.
 
-> TypeScript와 ECMAScript 제안의 `@decorator` 문법은 클래스와 그 멤버에 이 아이디어를 문법으로 붙인 것이다([[typescript-basics|TypeScript 문법 한눈에 보기]]의 데코레이터 절). 이 노트는 문법 없이 함수만으로 만드는 데코레이터를 다룬다.
+> TypeScript와 ECMAScript 제안의 `@decorator` 문법은 클래스와 그 멤버에 이 아이디어를 문법으로 붙인 것이다([[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]]의 데코레이터 절). 이 노트는 문법 없이 함수만으로 만드는 데코레이터를 다룬다.
 
 ## 기본 모양: 캐싱 데코레이터
 
@@ -140,32 +140,7 @@ function spy(func) {
 
 ## 부분 적용
 
-**부분 적용(partial application)** 은 함수 인자의 앞부분을 미리 채워, 인자가 더 적은 새 함수를 만드는 것이다. 범용 함수에서 덜 범용적인 변형을 이름 붙여 만들 때 쓴다(`mul` → `double`, `send(from, to, text)` → `sendFromMe(to, text)`).
-
-```javascript
-const mul = (a, b) => a * b
-const double = mul.bind(null, 2) // this는 쓰지 않으니 null
-double(5) // 10
-```
-
-`bind`는 첫 인자로 반드시 `this`를 받는다. 메서드처럼 **this는 호출할 때 정하고 인자만 고정**하고 싶으면 헬퍼를 만든다.
-
-```javascript
-function partial(func, ...bound) {
-  return function (...args) {
-    return func.call(this, ...bound, ...args) // this는 호출 시점의 것
-  }
-}
-
-const user = {
-  name: 'river',
-  say(time, phrase) { return `[${time}] ${this.name}: ${phrase}` },
-}
-user.sayNow = partial(user.say, '10:00')
-user.sayNow('안녕') // '[10:00] river: 안녕'
-```
-
-lodash의 `_.partial`이 같은 일을 한다. 인자를 하나씩 받는 함수 사슬로 바꾸는 커링(currying)은 부분 적용을 일반화한 기법이다.
+래퍼의 한 가지로, 인자 앞부분을 미리 채운 새 함수를 돌려주는 **부분 적용**이 있다. `bind(null, 2)`와 this를 보존하는 `partial` 헬퍼, 커링은 [[functional-programming#7. 커링과 부분 적용|함수형 프로그래밍]]에 있다.
 
 ## 정리
 
@@ -173,6 +148,6 @@ lodash의 `_.partial`이 같은 일을 한다. 인자를 하나씩 받는 함수
 - 래퍼는 `func.apply(this, args)`로 **this와 인자를 그대로 넘긴다**(콜 포워딩). 래퍼 자체는 `function`으로, 래퍼 안의 콜백은 화살표 함수로 쓴다.
 - `call`은 이터러블을 펼쳐, `apply`는 유사 배열을 그대로 받는다.
 - 메서드 빌리기는 `this`만 바꿔 다른 객체의 메서드를 실행한다. 유사 배열에 배열 메서드를 쓸 때의 고전적 기법이다.
-- 래퍼는 원래 함수의 속성을 잃는다. 인자만 미리 채우려면 `bind(null, …)`나 `partial` 헬퍼를 쓴다.
+- 래퍼는 원래 함수의 속성을 잃는다.
 
-관련 노트: [[functions|함수와 this]], [[scope-and-closures|스코프와 클로저]], [[debounce-throttle|Debounce와 Throttle]], [[functional-programming|함수형 프로그래밍]], [[typescript-basics|TypeScript 문법 한눈에 보기]]
+관련 노트: [[functions|함수와 this]], [[scope-and-closures|스코프와 클로저]], [[debounce-throttle|Debounce와 Throttle]], [[functional-programming|함수형 프로그래밍]], [[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]]

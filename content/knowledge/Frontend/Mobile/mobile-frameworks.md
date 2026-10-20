@@ -4,7 +4,7 @@ concept: "Cross Platform"
 summary: "네이티브, 웹뷰 기반 하이브리드, 네이티브로 컴파일되는 크로스 플랫폼 앱의 원리와 장단점."
 tags: ["mobile", "react-native", "flutter", "architecture"]
 source: notion
-date: "2026-10-13"
+date: "2026-10-20"
 ---
 
 모바일 앱을 만드는 방법은 크게 세 가지다. Android와 iOS를 각각 따로 만드는 **네이티브**, 웹 페이지를 앱 껍데기에 담는 **하이브리드**, 공통 코드 하나로 두 플랫폼의 네이티브 앱을 만드는 **크로스 플랫폼**. 두 플랫폼의 UI·기능이 서로 비슷해지면서 한 코드베이스로 둘 다 만드는 방식이 널리 쓰이게 됐다.
@@ -40,7 +40,7 @@ date: "2026-10-13"
 - 네이티브의 모든 기능을 제공하지는 못한다.
 - 플랫폼에 새 기능이 나와도 프레임워크가 지원하기까지 시간이 걸린다.
 - 프레임워크를 만든 회사의 사정에 따라 지원이 중단될 위험이 있다.
-- Airbnb는 2016년 React Native를 도입했다가 2018년 네이티브로 되돌아갔다. 당시 지적된 브리지 병목은 React Native가 0.76(2024)에서 **New Architecture**를 기본으로 바꾸고 0.82(2025)부터 이전 아키텍처를 없애며 구조적으로 풀었다. 자세한 내용은 [React Native 기초](/knowledge/dictionary/frontend/mobile/react-native-basics) 참고.
+- JS와 네이티브 사이의 브리지 병목은 크로스 플랫폼을 포기하는 흔한 이유였다. React Native는 0.76(2024)에서 **New Architecture**를 기본으로 바꾸고 0.82(2025)부터 이전 아키텍처를 없애 이를 구조적으로 풀었다. 자세한 내용은 [React Native 기초](/knowledge/dictionary/frontend/mobile/react-native-basics) 참고.
 
 ## 어떻게 고를까
 

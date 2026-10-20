@@ -258,4 +258,4 @@ WCAG 2는 JavaScript를 요구해도 된다. 대신 **스크립트로 만든 화
 - 모달은 `<dialog>`의 `showModal()`과 `inert`로 만들고, 닫으면 포커스를 돌려준다.
 - 이벤트는 장치 독립으로, 화면이 바뀌면 포커스를 의도적으로 옮긴다.
 
-관련 노트: [[aria-basics|ARIA와 접근 가능한 이름]], [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[wcag-guidelines|WCAG와 POUR 원칙]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[dom-events|DOM 이벤트]], [[html-interactive-elements|포커스 속성과 details·dialog]], [[css-cursor-pointer|커서와 포인터 입력]], [[ui-input-events|마우스·포인터·키보드 이벤트]]
+관련 노트: [[aria-basics|ARIA와 접근 가능한 이름]], [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]], [[Accessibility|웹 접근성]], [[wcag-guidelines|WCAG와 POUR 원칙]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[dom-events|DOM 이벤트]], [[html-interactive-elements|포커스 속성과 details·dialog]], [[css-cursor-pointer|커서와 포인터 입력]], [[ui-input-events|마우스·포인터·키보드 이벤트]]

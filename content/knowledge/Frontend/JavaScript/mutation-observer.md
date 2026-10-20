@@ -115,4 +115,4 @@ handle(pending)                         // 꺼낸 레코드는 콜백으로 오�
 - 추가된 노드는 자신과 그 안쪽을 모두 검사한다.
 - 끝낼 때는 `takeRecords()` → `disconnect()`.
 
-관련 노트: [[intersection-observer|Intersection Observer와 관찰자 API]], [[dom-manipulation|DOM 조작과 이벤트]], [[web-components|웹 컴포넌트: template·slot·Shadow DOM]], [[event-loop|이벤트 루프]], [[dom|DOM과 BOM]]
+관련 노트: [[intersection-observer|Intersection Observer와 관찰자 API]], [[dom-manipulation|DOM 조작]], [[web-components|웹 컴포넌트: template·slot·Shadow DOM]], [[event-loop|이벤트 루프]], [[dom|DOM과 BOM]]

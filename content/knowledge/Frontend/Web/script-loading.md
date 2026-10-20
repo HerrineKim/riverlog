@@ -76,7 +76,7 @@ sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https:
 | 첫 화면에 꼭 필요한 최소 CSS | `<style>`로 인라인하고(critical CSS) 나머지는 비동기로 받는다 |
 | 렌더링 전에 반드시 끝나야 하는 비동기 스크립트(A/B 테스트) | `<head>`의 스크립트에 `blocking="render"`. Chromium 계열만 지원하는 실험적 속성이다 |
 
-내려받기 순서를 더 당기거나 미루는 힌트(`preload`, `fetchpriority`, `loading`)는 [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]과 [[resource-hints|리소스 힌트와 미리 불러오기]]에 있다.
+내려받기 순서를 더 당기거나 미루는 힌트(`preload`, `fetchpriority`, `loading`)는 [[html#속성 하나로 끝나는 기능|HTML 기초와 HTML5]]과 [[resource-hints|리소스 힌트와 미리 불러오기]]에 있다.
 
 ## CSS를 가볍게
 

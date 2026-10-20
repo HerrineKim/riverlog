@@ -99,4 +99,4 @@ sources: ["https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%
 - 구조가 없으면 에이전트가 틀린 답을 정답처럼 낸다.
 - 손 마크업보다 **CMS 콘텐츠 모델이 구조를 강제**하게 만든다.
 
-관련 노트: [[seo-basics|SEO 기초]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]]
+관련 노트: [[seo-basics|SEO 기초]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[Accessibility|웹 접근성]]

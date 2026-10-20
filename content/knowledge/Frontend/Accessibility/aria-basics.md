@@ -12,7 +12,7 @@ sources: ["https://webaim.org/techniques/aria/", "https://webaim.org/articles/la
 
 ## ARIA란
 
-WAI-ARIA(Accessible Rich Internet Applications)는 HTML만으로는 표현할 수 없는 의미를 접근성 트리에 더하는 W3C 명세다. 프로그래밍 언어가 아니라 HTML 요소에 붙이는 **속성 묶음**이다. 트리 메뉴·슬라이더·탭 같은 위젯의 정체와 상태, 동적으로 바뀌는 영역(라이브 영역), 이름과 설명의 연결을 브라우저의 접근성 API를 거쳐 보조 기술에 알린다. 접근성 트리가 만들어지는 과정은 [[web-accessibility|웹 접근성]]에 있고, Chrome DevTools에서 트리 전체를 볼 수 있다.
+WAI-ARIA(Accessible Rich Internet Applications)는 HTML만으로는 표현할 수 없는 의미를 접근성 트리에 더하는 W3C 명세다. 프로그래밍 언어가 아니라 HTML 요소에 붙이는 **속성 묶음**이다. 트리 메뉴·슬라이더·탭 같은 위젯의 정체와 상태, 동적으로 바뀌는 영역(라이브 영역), 이름과 설명의 연결을 브라우저의 접근성 API를 거쳐 보조 기술에 알린다. 접근성 트리가 만들어지는 과정은 [[Accessibility|웹 접근성]]에 있고, Chrome DevTools에서 트리 전체를 볼 수 있다.
 
 **ARIA는 의미만 바꾸고 동작·모양은 하나도 바꾸지 않는다.** 효과를 느끼는 사람은 보조 기술 사용자뿐이다. `<div role="button">`은 스크린 리더가 「버튼」이라고 읽지만, Tab으로 닿지도 Enter로 눌리지도 않는다. 키보드 조작, 포커스, 스타일은 개발자가 JavaScript와 CSS로 직접 맞춰야 한다. 그래서 잘못 쓴 ARIA는 안 쓴 것보다 나쁘다. WebAIM Million에서도 ARIA를 쓴 홈페이지가 쓰지 않은 홈페이지보다 평균 오류가 약 17개 많았다(복잡한 페이지일수록 ARIA를 많이 쓴다는 점을 감안해도 경향은 같다).
 
@@ -235,4 +235,4 @@ role과 이름은 테스트 코드의 선택자로도 쓰인다. `getByRole('but
 - 보조 설명은 `aria-describedby`로 이름과 따로 준다.
 - 상태 메시지는 미리 둔 라이브 영역(`role="status"`, `role="alert"`)으로 알리고, assertive는 아낀다.
 
-관련 노트: [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]], [[accessible-forms|접근 가능한 폼과 오류 처리]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]
+관련 노트: [[Accessibility|웹 접근성]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]], [[accessible-forms|접근 가능한 폼과 오류 처리]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]

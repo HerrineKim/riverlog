@@ -132,4 +132,4 @@ sources: ["https://web.dev/learn/ai/responsibility", "https://web.dev/learn/ai/i
 
 거버넌스는 규정 준수 절차가 아니라 사용자가 계속 쓰게 만드는 **설계 원칙**이다.
 
-관련 노트: [[ai-feature-blueprint|AI 기능 기획]], [[ai-ux-patterns|AI 기능의 UX 패턴]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편: 사티아 나델라]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]]
+관련 노트: [[ai-feature-blueprint|AI 기능 기획]], [[ai-ux-patterns|AI 기능의 UX 패턴]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]]

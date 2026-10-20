@@ -145,7 +145,7 @@ monitorEvents($0, "key");          // 선택한 input의 키 이벤트만 기록
 getEventListeners(document);       // { click: [...], keydown: [...] }
 ```
 
-이벤트 위임과 리스너 동작은 [[dom-manipulation|DOM 조작과 이벤트]]에 있다.
+이벤트 위임과 리스너 동작은 [[dom-manipulation|DOM 조작]]에 있다.
 
 ## 정리
 
@@ -155,4 +155,4 @@ getEventListeners(document);       // { click: [...], keydown: [...] }
 - `$0`, `$$()`, `copy()`, `getEventListeners()`, `monitorEvents()`를 쓰면 코드를 고치지 않고 페이지를 조사할 수 있다.
 - 값을 여러 개 동시에 봐야 하면 로그를 늘리지 말고 중단점으로 멈춰서 본다.
 
-관련 노트: [[devtools-debugging|DevTools로 JavaScript 디버깅하기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[devtools-network|DevTools Network 패널]], [[dom-manipulation|DOM 조작과 이벤트]], [[cors|CORS]]
+관련 노트: [[devtools-debugging|DevTools로 JavaScript 디버깅하기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[devtools-network|DevTools Network 패널]], [[dom-manipulation|DOM 조작]], [[cors|CORS]]

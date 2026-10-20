@@ -139,4 +139,4 @@ Lighthouse는 라벨 없는 칸, 너무 작은 탭 영역과 글자를 잡고, a
 - 모바일에서는 `inputmode` 한 줄이 체감 품질을 크게 바꾼다.
 - 칸을 줄이고, 라벨은 짧게 위에, 한 열로. 그리고 실제 기기와 실제 사람으로 시험하고 데이터로 확인한다.
 
-관련 노트: [[html-input-types|HTML 입력 요소 치트시트]], [[form-styling|폼 스타일링]], [[constraint-validation|제약 검증: required·pattern·ValidityState]], [[form-submission|폼 제출과 데이터 전송]], [[accessible-forms|접근 가능한 폼과 오류 처리]], [[html|HTML 기초와 HTML5]], [[forms|폼과 제어 컴포넌트]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]], [[form-controls-dom|폼 컨트롤과 포커스 이벤트]]
+관련 노트: [[html-input-types|HTML 입력 요소 치트시트]], [[form-styling|폼 스타일링]], [[constraint-validation|제약 검증: required·pattern·ValidityState]], [[form-submission|폼 제출과 데이터 전송]], [[accessible-forms|접근 가능한 폼과 오류 처리]], [[html|HTML 기초와 HTML5]], [[forms|폼과 제어 컴포넌트]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]], [[form-controls-dom|폼 컨트롤과 포커스 이벤트]]

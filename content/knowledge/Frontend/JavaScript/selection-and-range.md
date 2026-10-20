@@ -171,4 +171,4 @@ CSS.highlights.set('search', new Highlight(...ranges))
 - 입력란은 `selectionStart`·`selectionEnd`로 커서를, `setRangeText`로 그 자리 글자를 바꾼다.
 - 칠하기만 할 때는 DOM을 감싸지 말고 Highlight API를 쓴다.
 
-관련 노트: [[dom-manipulation|DOM 조작과 이벤트]], [[form-controls-dom|폼 컨트롤과 포커스 이벤트]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[form-usability|더 나은 폼을 만드는 팁]], [[dom|DOM과 BOM]]
+관련 노트: [[dom-manipulation|DOM 조작]], [[form-controls-dom|폼 컨트롤과 포커스 이벤트]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[form-usability|더 나은 폼을 만드는 팁]], [[dom|DOM과 BOM]]

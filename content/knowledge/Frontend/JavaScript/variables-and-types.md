@@ -4,7 +4,7 @@ concept: "Variables"
 summary: "식별자 규칙과 이름 짓기, let·const·var의 차이와 호이스팅, 원시 타입과 참조 타입, 원시값의 래퍼 객체(new String을 쓰지 않는 이유), typeof, null과 undefined의 구분, 값 복사와 참조 공유(비교·얕은 복사·structuredClone·함수 인자·const와 Object.freeze), 스택·힙과 가비지 컬렉션, 동적 타입과 여덟 가지 타입, 대문자 상수를 쓰는 때와 변수를 재사용하지 않는 이유."
 tags: ["javascript", "frontend", "memory"]
 source: mixed
-date: "2026-10-17"
+date: "2026-10-20"
 sources: ["https://riverkim.kr/118", "https://wesbos.com/javascript/01-the-basics/variables-and-statements", "https://wesbos.com/javascript/01-the-basics/types-introduction", "https://wesbos.com/javascript/01-the-basics/types-null-and-undefined", "https://wesbos.com/javascript/08-data-types/object-references-vs-values", "https://wesbos.com/javascript/08-data-types/objects", "https://web.dev/learn/javascript/data-types", "https://web.dev/learn/javascript/data-types/variable", "https://web.dev/learn/javascript/data-types/null-undefined", "https://web.dev/learn/javascript/data-types/boolean", "https://web.dev/learn/javascript/appendix", "https://ko.javascript.info/variables", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://ko.javascript.info/object-copy"]
 ---
 
@@ -63,17 +63,7 @@ let bar = 0    // 선언 + 할당 = 초기화
 
 ### 호이스팅(hoisting)
 
-선언이 스코프의 맨 위로 끌어올려진 것처럼 동작하는 현상이다.
-
-```javascript
-console.log(a) // undefined — 에러가 아니다
-var a = 1
-
-console.log(b) // ReferenceError: Cannot access 'b' before initialization
-let b = 2
-```
-
-`var`는 선언과 동시에 `undefined`로 초기화되어 선언 전에 접근해도 에러 없이 `undefined`가 나온다. `let`/`const`도 호이스팅되지만 초기화 전까지 접근할 수 없는 구간(TDZ, Temporal Dead Zone)에 있어 에러가 난다.
+선언이 스코프의 맨 위로 끌어올려진 것처럼 동작하는 현상이다. `var`는 `undefined`로 초기화되어 선언 전에 읽어도 에러가 없고, `let`·`const`는 초기화 전 구간(TDZ)에 있어 `ReferenceError`가 난다. 선언 종류별 표와 TDZ의 이유는 [[scope-and-closures#호이스팅과 TDZ|스코프와 클로저]]에 있다.
 
 ### 선언 없이 대입하면: 암묵적 전역
 
@@ -90,7 +80,7 @@ JavaScript는 **동적 타입(dynamically typed)** 언어다. 값에는 타입�
 | 타입 | 설명 |
 | --- | --- |
 | Number | 정수·실수 구분 없는 하나의 숫자 타입(부동소수점). 자세한 함정은 [[js-numbers\|숫자와 Math]] |
-| String | 텍스트. 작은따옴표·큰따옴표는 완전히 같고, 백틱은 여러 줄과 `${}` 삽입을 지원한다([[template-literals\|템플릿 리터럴]]). 글자 하나를 담는 `char` 타입은 따로 없다([[js-strings\|문자열 다루기]]) |
+| String | 텍스트. 작은따옴표·큰따옴표는 완전히 같고, 백틱은 여러 줄과 `${}` 삽입을 지원한다([[js-strings#템플릿 리터럴\|템플릿 리터럴]]). 글자 하나를 담는 `char` 타입은 따로 없다([[js-strings\|문자열 다루기]]) |
 | Boolean | `true` / `false` |
 | undefined | 값이 할당되지 않음 |
 | null | 값이 없음을 **의도적으로** 표현 |

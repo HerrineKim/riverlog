@@ -12,7 +12,7 @@ sources: ["https://riverkim.kr/322", "https://wesbos.com/javascript/06-serious-p
 
 ## 두 기법이란
 
-입력, 스크롤, 리사이즈처럼 짧은 시간에 수십 번 일어나는 이벤트마다 무거운 함수를 실행하면 요청과 렌더링이 낭비된다. 디바운스와 쓰로틀은 둘 다 **실행을 의도적으로 늦춰 횟수를 줄인다**. 프론트엔드 면접에 자주 나오는 개념이다.
+입력, 스크롤, 리사이즈처럼 짧은 시간에 수십 번 일어나는 이벤트마다 무거운 함수를 실행하면 요청과 렌더링이 낭비된다. 디바운스와 쓰로틀은 둘 다 **실행을 의도적으로 늦춰 횟수를 줄인다**.
 
 | | Debounce | Throttle |
 | --- | --- | --- |
@@ -84,4 +84,4 @@ lodash의 `debounce`·`throttle`이 오랫동안 표준처럼 쓰였다. 다만 
 - 핵심 구현은 `setTimeout` + 클로저에 갇힌 `timer` 변수 하나다.
 - 둘 다 함수를 받아 감싼 함수를 돌려주는 데코레이터다. `callback.apply(this, args)`로 this와 인자를 넘기는 콜 포워딩의 원리는 [[function-decorators|데코레이터와 콜 포워딩]]에 있다.
 
-관련 노트: [[event-loop|이벤트 루프]], [[dom-manipulation|DOM 조작과 이벤트]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[intersection-observer|Intersection Observer와 관찰자 API]], [[function-decorators|데코레이터와 콜 포워딩]]
+관련 노트: [[event-loop|이벤트 루프]], [[dom-manipulation|DOM 조작]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[intersection-observer|Intersection Observer와 관찰자 API]], [[function-decorators|데코레이터와 콜 포워딩]]

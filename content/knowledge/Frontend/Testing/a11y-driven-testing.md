@@ -148,4 +148,4 @@ AI 에이전트가 웹을 다루는 방식도 이쪽으로 왔다. Playwright MC
 - 접근성은 시각 장애인만이 아니라 테스트, 검색 엔진, 기획 소통까지 모두에게 이득이다.
 - 접근성 트리는 HTML보다 훨씬 적은 토큰으로 페이지를 표현해 LLM 스크래핑과 AI 에이전트의 입력이 된다. 접근성이 나쁜 페이지는 AI에게도 보이지 않는다.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[html|HTML 기초와 HTML5]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[aria-basics|ARIA와 접근 가능한 이름]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]
+관련 노트: [[tdd|프론트엔드에서의 TDD]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[html|HTML 기초와 HTML5]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[Accessibility|웹 접근성]], [[aria-basics|ARIA와 접근 가능한 이름]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]

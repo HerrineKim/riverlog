@@ -4,7 +4,7 @@ concept: "Event Loop"
 summary: "싱글 스레드인 JavaScript가 렌더링과 나눠 쓰는 메인 스레드, 실행 컨텍스트가 쌓이는 콜 스택, Web API, 태스크·마이크로태스크 큐, 이벤트 루프의 협업으로 화면을 멈추지 않고 비동기 작업을 처리하는 방식. 태스크 하나 → 마이크로태스크 전부 → 렌더링 순서의 한 바퀴, queueMicrotask, 긴 작업 쪼개기·진행률 표시·이벤트 처리 뒤로 미루기, 무거운 일을 메인 스레드 밖으로 빼는 Web Worker."
 tags: ["javascript", "async", "browser", "frontend"]
 source: mixed
-date: "2026-10-12"
+date: "2026-10-20"
 sources: ["https://riverkim.kr/324", "https://riverkim.kr/114", "https://web.dev/learn/javascript/appendix", "https://ko.javascript.info/event-loop", "https://ko.javascript.info/microtask-queue", "https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask"]
 ---
 
@@ -114,19 +114,11 @@ console.log('4')
 
 ### 처리되지 않은 거부의 판정 시점
 
-`unhandledrejection` 이벤트는 **마이크로태스크 큐가 빈 뒤**, 거부됐는데 핸들러가 없는 Promise가 남아 있으면 발생한다. 그래서 거부된 Promise에 `setTimeout`으로 나중에 `catch`를 달면 `catch`도 실행되지만, 그보다 먼저 `unhandledrejection`이 발생한다. 거부 처리는 같은 틱 안에, 체인으로 붙인다([[callback-and-promise#처리되지 않은 거부|처리되지 않은 거부]]).
+`unhandledrejection`은 **마이크로태스크 큐가 빈 뒤** 판정된다. 자세한 동작은 [[callback-and-promise#처리되지 않은 거부|콜백과 Promise]]에 있다.
 
 ## 메인 스레드 밖으로: Web Worker
 
-이벤트 루프는 "기다리는 일"을 비켜 갈 뿐, **계산 자체가 무거운 일**(큰 데이터 파싱, 이미지 처리, 암호화)은 결국 메인 스레드에서 돌아 화면을 멈춘다. 이런 일은 **Web Worker**로 별도 스레드에 맡긴다.
-
-| 제약 | 내용 |
-| --- | --- |
-| 실행 단위 | 별도의 스크립트 파일(또는 모듈)로 띄운다 |
-| 접근 범위 | DOM과 `window`에 접근할 수 없다. `fetch`·타이머 등 일부 API만 쓴다 |
-| 통신 | `postMessage`로 메시지를 주고받는다. 데이터는 복사(구조화된 복제)된다 |
-
-그래서 화면과 상관없는 무거운 계산을 떼어 내는 데 맞다. 워커마다 자기 이벤트 루프를 가진 싱글 스레드라는 점, 복사를 피하는 방법은 [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]]에 있다.
+이벤트 루프는 "기다리는 일"을 비켜 갈 뿐, **계산 자체가 무거운 일**(큰 데이터 파싱, 이미지 처리, 암호화)은 결국 메인 스레드에서 돌아 화면을 멈춘다. 이런 일은 DOM에 접근하지 않는 별도 스레드인 Web Worker에 맡긴다. 만드는 법·제약·무엇을 옮길지는 [[web-workers|웹 워커로 메인 스레드 비우기]]에, 워커마다 자기 이벤트 루프를 가진 싱글 스레드라는 점은 [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]]에 있다.
 
 ## async/await와의 관계
 

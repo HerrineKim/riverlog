@@ -58,7 +58,7 @@ MVVM은 명령(Command) 패턴과 데이터 바인딩이라는 두 장치로 의
 | 컴포넌트, Container-Presenter | 로직은 Container, 표시는 Presenter | 재사용을 위해 로직을 위로 모으자 중간 컴포넌트가 쓰지도 않는 props를 나르게 됐다(**props drilling**) |
 | Flux·Redux | Store / 하나의 큰 View / Action·Dispatch·Reducer | 비즈니스 로직을 컴포넌트 계층에서 떼어 냈다. 이때부터 **상태 관리**라고 부른다. 대신 학습 곡선과 장황한 문법 |
 | Context·hooks | 공통 조상이 데이터를 제공 | 새 개념 없이 props drilling만 막는다 |
-| 가벼운 전역 스토어 (Zustand, Jotai, Svelte store) | 컴포넌트 밖 공용 데이터에 간단히 get/set | 중간 과정은 자율, 파생 값(computed·selector)과 동기화를 제공. 과거에 유행한 Recoil은 2025년 1월 저장소가 보관(archived)됐다 |
+| 가벼운 전역 스토어 (Zustand, Jotai, Svelte store) | 컴포넌트 밖 공용 데이터에 간단히 get/set | 중간 과정은 자율, 파생 값(computed·selector)과 동기화를 제공 |
 | 시그널 (Vue 반응성, Svelte 5 runes, Angular Signals, Solid) | 값 단위로 의존을 추적해 바뀐 곳만 갱신 | 반응형 상태가 프레임워크 기본 기능으로 들어왔다 |
 | 서버 상태 (TanStack Query, SWR, RTK Query) | 서버 fetch가 Model, query·mutation이 Controller | 전역 상태의 대부분은 결국 API 데이터라는 관찰. 캐싱·무효화·재요청을 맡긴다 |
 | 서버로 이동 (서버 컴포넌트, 라우터 loader) | 데이터 로딩이 서버 컴포넌트·loader로 옮겨 간다 | 클라이언트에 남는 상태가 더 줄었다([[react-server-components\|React Server Components]]) |

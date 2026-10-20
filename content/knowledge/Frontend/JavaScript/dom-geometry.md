@@ -182,4 +182,4 @@ el?.classList.add('center') // 창 밖 좌표면 null이다
 - 창 기준 좌표는 `fixed`와, 문서 기준 좌표(`+ scrollY`)는 `absolute`와 짝을 이룬다.
 - 기하 속성 읽기는 레이아웃을 강제하므로 읽기를 모으고 쓰기를 모은다.
 
-관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[dom-manipulation|DOM 조작과 이벤트]], [[intersection-observer|Intersection Observer와 관찰자 API]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[debounce-throttle|Debounce와 Throttle]], [[dom|DOM과 BOM]]
+관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[dom-manipulation|DOM 조작]], [[intersection-observer|Intersection Observer와 관찰자 API]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[debounce-throttle|Debounce와 Throttle]], [[dom|DOM과 BOM]]

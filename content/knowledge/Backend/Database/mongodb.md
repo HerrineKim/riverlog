@@ -64,3 +64,5 @@ NestJS에서의 사용법은 [Mongoose 스키마](Backend/NestJS/mongoose-schema
 - MongoDB = DB > 컬렉션 > 문서(BSON). 스키마가 유연하다.
 - Atlas: 클러스터 생성 → IP 허용 → DB 사용자 → 접속 문자열.
 - CRUD: `insertOne/find/updateOne($set)/deleteOne`.
+
+관련 노트: [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[mongoose-schema|Mongoose 스키마]]

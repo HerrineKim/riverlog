@@ -66,4 +66,4 @@ date: "2026-10-12"
 - 이직 사유는 떠나는 이유보다 **가고 싶은 이유**로 답한다.
 - 질문별 영어 답변을 미리 써 두고 소리 내어 연습하면 실제 면접에서 덜 막힌다.
 
-관련 노트: [[tech-interview-tips|기술면접 잘 보는 법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[recruiter-outreach-email|리크루터에게 보내는 영문 이메일]], [[interview-attitude|면접에서 태도로 평가받는 법]]
+관련 노트: [[interview-attitude|면접 잘 보는 법]], [[resume-writing|합격하는 영문 레주메 작성법]]

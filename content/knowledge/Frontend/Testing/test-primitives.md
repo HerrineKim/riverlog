@@ -143,4 +143,4 @@ import { describe, test, expect } from 'vitest'
 - 스위트로 묶고 수명 주기 훅으로 준비·정리한다. 훅이 실패하면 구조를 의심한다.
 - 이름은 도구마다 다르니 개념으로 이해하고 자기 도구에 대응시킨다.
 
-관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[jest-practices|Jest·Vitest 실행 팁]], [[tdd|프론트엔드에서의 TDD]]
+관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[test-run-stages|테스트를 돌리는 시점]], [[tdd|프론트엔드에서의 TDD]]

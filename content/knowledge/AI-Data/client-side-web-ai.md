@@ -40,7 +40,7 @@ sources: ["https://web.dev/learn/ai/client-side", "https://web.dev/learn/ai/plat
 | Translator API (`Translator`) | 번역 | Chrome 138부터 정식 | Chrome 138부터 정식 |
 | Language Detector API (`LanguageDetector`) | 언어 감지 | Chrome 138부터 정식 | Chrome 138부터 정식 |
 | Summarizer API (`Summarizer`) | 요약 (`key-points`, `tldr`, `teaser`, `headline`) | Chrome 138부터 정식 | Chrome 138부터 정식 |
-| Prompt API (`LanguageModel`) | 자연어 요청, 텍스트·이미지·오디오 입력 | Chrome 148부터 정식 | Chrome 138부터 정식 |
+| Prompt API (`LanguageModel`) | 자연어 요청, 텍스트·이미지·오디오 입력 | Chrome 148 전후로 정식 전환 중(상태 표에서 확인) | Chrome 138부터 정식 |
 | Prompt API 샘플링 파라미터 (`samplingMode`) | 출력의 예측성·창의성 조절 | 오리진 트라이얼 (Chrome 148~) | `temperature`·`topK` 지원 |
 | Writer / Rewriter API (`Writer`, `Rewriter`) | 새 글 쓰기 / 고쳐 쓰기 | 개발자 트라이얼 (플래그) | 개발자 트라이얼 |
 | Proofreader API (`Proofreader`) | 교정 | 개발자 트라이얼 (플래그) | 개발자 트라이얼 |
@@ -153,7 +153,7 @@ RAG, 에이전트, 복잡한 워크플로가 필요하면 라이브러리 런타
 ## 정리
 
 - 내장 AI는 **설정 없이 공짜로** 좁은 기능을 붙이는 길이고, 라이브러리는 **모델을 고르는 대신 운영을 떠안는** 길이다.
-- Chrome에서 번역·언어 감지·요약은 138부터, Prompt API는 148부터 웹에서 정식이다. 쓰기·고쳐 쓰기·교정은 아직 플래그 단계다.
+- Chrome에서 번역·언어 감지·요약은 138부터, Prompt API는 148 전후로 웹 정식 전환이 진행 중이다. 쓰기·고쳐 쓰기·교정은 아직 플래그 단계다.
 - 내장 AI는 데스크톱 전용이고 Baseline이 아니다. **기능 감지 → `availability()` → 사용자 활성화 → `create()`** 순서와 서버·비AI 대체 경로를 항상 갖춘다.
 - 런타임은 WebGPU를 우선하되 Wasm으로 떨어질 수 있게 만든다.
 

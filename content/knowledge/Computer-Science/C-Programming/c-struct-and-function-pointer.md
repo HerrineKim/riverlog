@@ -126,4 +126,4 @@ C에는 자동 소멸자가 없어서, 오류 처리 경로마다 해제를 빠�
 - 불투명 포인터 + 생성·해제 함수로 캡슐화하고, `void *` + 원소 크기로 제네릭을 만든다.
 - 타입마다 동작이 다를 때만 가상 함수 테이블 패턴을 쓴다.
 
-관련 노트: [[c-pointer-pitfalls|C 포인터의 함정]], [[data-structures|기초 자료구조]], [[oop-messaging|객체 지향의 본질: 메시징]], [[c-scope-and-linkage|C의 스코프와 링키지]]
+관련 노트: [[pointers-and-memory|포인터와 메모리]], [[data-structures|기초 자료구조]], [[oop-messaging|객체 지향의 본질: 메시징]], [[c-scope-and-linkage|C의 스코프와 링키지]]

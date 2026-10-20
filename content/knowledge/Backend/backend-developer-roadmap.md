@@ -37,7 +37,7 @@ sources: ["https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://ro
 | CI/CD·도커 | 빌드·테스트·배포를 어떻게 자동화하고 환경을 고정하는가 | [[ci-cd\|CI/CD]], [[dockerfile\|Dockerfile]] |
 | 클라우드 | 서버·DB·네트워크를 어떻게 빌려 쓰는가 | [[aws-cloud-basics\|AWS 클라우드 기초]] |
 | 보안 | 입력 검증, 비밀 관리, 전송 암호화 | [[api-security\|API 보안 체크리스트]], [[https\|HTTPS]] |
-| 아키텍처 | 서비스를 어떻게 나누고 데이터를 흘리는가 | [[data-flow\|데이터 흐름과 아키텍처]], [[bff\|BFF]] |
+| 아키텍처 | 서비스를 어떻게 나누고 데이터를 흘리는가 | [[web-scalability-components\|웹 확장성의 구성 요소]], [[bff\|BFF]] |
 
 더 촘촘한 단계별 지도는 [roadmap.sh/backend](https://roadmap.sh/backend)에 있다.
 

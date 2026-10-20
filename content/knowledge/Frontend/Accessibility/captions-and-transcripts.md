@@ -197,4 +197,4 @@ NOTE 화자는 <v> 태그로, 의미 있는 소리는 대괄호로 적는다
 
 소리와 화면, 어느 한쪽만 받는 사람도 같은 내용을 얻게 하는 것이 멀티미디어 접근성의 전부다.
 
-관련 노트: [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[disability-and-web-use|장애 유형별 웹 사용]], [[color-motion-accessibility|색과 움직임의 접근성]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[wcag-guidelines|WCAG와 POUR 원칙]], [[html-media-elements|이미지·오디오·비디오 임베드]]
+관련 노트: [[Accessibility|웹 접근성]], [[disability-and-web-use|장애 유형별 웹 사용]], [[color-motion-accessibility|색과 움직임의 접근성]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[wcag-guidelines|WCAG와 POUR 원칙]], [[html-media-elements|이미지·오디오·비디오 임베드]]

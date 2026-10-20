@@ -78,4 +78,4 @@ function useItems(service: ItemService) { /* service.getItems() */ }
 
 원칙은 목표가 아니라 기준이다. 지금 코드가 바꾸기 어려운 이유를 설명하는 도구로 쓰면 된다.
 
-관련 노트: [[functional-programming|함수형 프로그래밍]], [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[composition|합성]], [[components-and-props|컴포넌트와 Props]], [[tdd|프론트엔드에서의 TDD]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]]
+관련 노트: [[functional-programming|함수형 프로그래밍]], [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[composition|합성]], [[components-and-props|컴포넌트와 Props]], [[tdd|프론트엔드에서의 TDD]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]], [[clean-code-functions-naming|클린 코드: 함수와 이름]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]]

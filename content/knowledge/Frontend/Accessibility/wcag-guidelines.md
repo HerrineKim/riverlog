@@ -255,4 +255,4 @@ WebAIM의 WCAG 2 체크리스트를 바탕으로 WCAG 2.2의 성공 기준을 �
 
 체크리스트는 최소선을 확인하는 도구이고, 접근성은 그 위에서 실제 사용자가 과제를 끝내는지로 판가름 난다.
 
-관련 노트: [[disability-and-web-use|장애 유형별 웹 사용]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[color-motion-accessibility|색과 움직임의 접근성]], [[accessibility-evaluation|접근성 평가 방법과 도구]], [[aria-basics|ARIA와 접근 가능한 이름]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]
+관련 노트: [[disability-and-web-use|장애 유형별 웹 사용]], [[Accessibility|웹 접근성]], [[color-motion-accessibility|색과 움직임의 접근성]], [[accessibility-evaluation|접근성 평가 방법과 도구]], [[aria-basics|ARIA와 접근 가능한 이름]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]

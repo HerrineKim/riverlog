@@ -83,4 +83,4 @@ RHEL은 GPL 등 오픈소스 라이선스의 소프트웨어로 만들어지므�
 - RHEL 호환이 필요하면 Rocky Linux·AlmaLinux를 고른다.
 - **서버는 LTS 배포판으로 버전을 고정하고, 보안 업데이트는 자동으로 받는다.**
 
-관련 노트: [[os-overview|운영체제 개요]], [[kernel-types|커널의 종류]], [[daemon-and-systemd|데몬과 systemd]], [[linux-access-control|리눅스 접근 제어]]
+관련 노트: [[os-overview|운영체제 개요]], [[daemon-and-systemd|데몬과 systemd]], [[linux-access-control|리눅스 접근 제어]]

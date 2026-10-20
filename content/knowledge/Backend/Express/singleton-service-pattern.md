@@ -81,4 +81,4 @@ router.get('/cats', readAllCat);
 
 - 서버 설정(미들웨어·라우터·listen)을 하나의 `Server` 클래스로 묶어 한 번만 생성한다.
 - 라우터 = 경로 매핑, 서비스 = 비즈니스 로직으로 책임을 나눈다.
-- 다음 단계: NestJS의 [[controller|Controller]]와 [[provider-di|Provider와 DI]]
+- 다음 단계: NestJS의 [[controller|Controller]]와 [[module|Module과 Provider(DI)]]

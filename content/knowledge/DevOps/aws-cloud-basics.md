@@ -1,14 +1,14 @@
 ---
-title: "AWS 클라우드 기초: 인프라와 컴퓨팅 서비스"
+title: "AWS 클라우드 기초: 인프라, 컴퓨팅, 보안 그룹"
 concept: "AWS"
-summary: "온프레미스와 클라우드의 차이와 클라우드의 이점, 리전·가용 영역·엣지 로케이션으로 이루어진 AWS 글로벌 인프라, EC2의 인스턴스 유형과 요금 모델, 관리형 서비스(ECS·EKS·Lambda), 콘솔·CLI·SDK와 코드형 인프라."
-tags: ["aws", "cloud", "devops", "infra"]
+summary: "온프레미스와 클라우드의 차이와 클라우드의 이점, 리전·가용 영역·엣지 로케이션으로 이루어진 AWS 글로벌 인프라, EC2의 인스턴스 유형과 요금 모델, 관리형 서비스(ECS·EKS·Lambda), 보안 그룹으로 RDS 접속을 여는 법과 배스천 SSH 터널, 콘솔·CLI·SDK와 코드형 인프라."
+tags: ["aws", "cloud", "devops", "infra", "security"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/94f23792f49b4c63a6701af578e74de1", "https://80000coding.notion.site/2049542166a4492cbe8a3a42e99467bb", "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/", "https://aws.amazon.com/ec2/pricing/"]
+date: "2026-10-20"
+sources: ["https://80000coding.notion.site/94f23792f49b4c63a6701af578e74de1", "https://80000coding.notion.site/2049542166a4492cbe8a3a42e99467bb", "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/", "https://aws.amazon.com/ec2/pricing/", "https://80000coding.notion.site/99481ed22b3e4d0da3f57f8930f8d8e7"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「AWSome day 2022 - AWS 클라우드」, 「AWSome day 2022 - AWS Computing」을 바탕으로 행사 내용이 아닌 개념만 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「AWSome day 2022 - AWS 클라우드」, 「AWSome day 2022 - AWS Computing」을 바탕으로 행사 내용이 아닌 개념만 재구성하고, 「보안 그룹과 RDS 접속」은 같은 위키의 「DB와 DataGrip 연결하기」로 보탠 노트다.
 
 ## 클라우드란
 
@@ -72,6 +72,32 @@ Amazon EC2는 크기를 고를 수 있는 가상 서버(인스턴스)다. OS부�
 - **ECS**는 AWS 고유의 관리형 컨테이너 오케스트레이션, **EKS**는 관리형 쿠버네티스다. 둘 다 컨테이너를 EC2 위에서 돌릴 수도, 서버 관리가 없는 **Fargate** 위에서 돌릴 수도 있다. 컨테이너가 많아질 때 오케스트레이션이 필요한 이유는 [[vm-vs-container|VM과 컨테이너]]에 있다.
 - **Lambda**는 이벤트(HTTP 요청, 파일 업로드, 일정)가 올 때만 함수를 실행하고 실행 시간만큼 과금한다. 상태를 함수 밖(DB, S3)에 두는 짧은 작업에 맞는다.
 
+## 보안 그룹과 RDS 접속
+
+**보안 그룹(Security Group)** 은 EC2·RDS 앞에 놓인 가상 방화벽이다. 허용하지 않은 인바운드 트래픽은 모두 막으므로, 로컬 PC의 DB 클라이언트(DBeaver·DataGrip)에서 RDS에 직접 붙으려면 내 IP를 인바운드 규칙에 넣어야 한다.
+
+1. RDS 콘솔 → **데이터베이스** → DB 식별자 → **연결 & 보안** 탭 → **VPC 보안 그룹** 링크
+2. **인바운드 규칙 편집** → **규칙 추가**: 유형 `PostgreSQL`(5432) 또는 `MySQL/Aurora`(3306), 소스 **내 IP**
+
+| 확인할 것 | 이유 |
+| --- | --- |
+| RDS의 **퍼블릭 액세스** 설정 | 꺼져 있으면 보안 그룹을 열어도 외부에서 닿지 않는다 |
+| 소스를 `0.0.0.0/0`으로 열지 않는다 | DB 포트를 인터넷 전체에 노출하면 무차별 대입 공격의 표적이 된다 |
+| 규칙에 설명을 적고, 쓰지 않는 규칙은 지운다 | 집·카페처럼 IP가 바뀌는 곳의 규칙이 쌓인다 |
+
+운영 DB는 퍼블릭 액세스를 끄고 VPC 안에만 둔다. 이때는 같은 VPC의 EC2(배스천 호스트)를 거쳐 **SSH 터널**로 접속한다. RDS 보안 그룹의 인바운드 소스는 내 IP가 아니라 **배스천의 보안 그룹**으로 지정한다.
+
+```text
+DB 클라이언트 ──▶ localhost:3307 ══SSH══▶ EC2(배스천) ──▶ RDS 엔드포인트:3306
+```
+
+```bash
+ssh -i key.pem -N -L 3307:mydb.xxxx.ap-northeast-2.rds.amazonaws.com:3306 ec2-user@<배스천 퍼블릭 DNS>
+# 클라이언트에서 Host=127.0.0.1, Port=3307 로 접속
+```
+
+GUI 클라이언트는 연결 설정의 **SSH Tunnel** 탭에서 같은 일을 한다. 일반 탭에는 RDS 엔드포인트·포트·DB 계정을, SSH 탭에는 배스천 주소, 기본 사용자(Amazon Linux `ec2-user`, Ubuntu `ubuntu`), `.pem` 키 경로를 넣는다. 열어 둔 SSH 포트조차 없애려면 AWS Systems Manager **Session Manager 포트 포워딩**을 쓴다.
+
 ## AWS를 다루는 방법
 
 | 도구 | 특징 |
@@ -87,6 +113,7 @@ Amazon EC2는 크기를 고를 수 있는 가상 서버(인스턴스)다. OS부�
 - 클라우드는 인프라를 빌려 쓰고 API로 다루는 방식이다. 보안은 AWS와 사용자가 나눠 진다.
 - 리전 > 가용 영역 > 데이터 센터. 장애에 견디려면 여러 AZ에 나눠 배치한다.
 - EC2는 일회용 서버로 다루고, 사용 패턴에 따라 온디맨드·Savings Plans·스팟을 섞는다.
+- 보안 그룹은 필요한 포트·소스만 연다. 운영 DB는 퍼블릭 액세스 없이 배스천 SSH 터널이나 Session Manager로 접속한다.
 - 관리 부담을 줄이려면 관리형(RDS·ECS·EKS)과 서버리스(Lambda·Fargate)를 먼저 검토하고, 구성은 IaC로 남긴다.
 
-관련 노트: [[rds-security-group|AWS RDS에 외부 IP 접속 허용하기]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]], [[vm-vs-container|VM과 컨테이너]], [[disaster-recovery|고가용성과 재해 복구 설계]]
+관련 노트: [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[vm-vs-container|VM과 컨테이너]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[dbeaver|DBeaver에서 SQL로 데이터 다루기]]

@@ -50,7 +50,7 @@ JavaScript는 **엔진**이 있는 곳이면 어디서든 돈다. 브라우저�
 | 브라우저 | DOM 조작, 사용자 입력에 반응, 네트워크 요청, 쿠키·로컬 저장소 | 임의의 디스크 파일 읽기·쓰기(사용자가 고른 파일만), 허락 없는 카메라·마이크, **다른 출처(origin)의 페이지·응답 읽기**(동일 출처 정책. 허용은 서버가 [[cors\|CORS]] 헤더로 한다) |
 | Node.js 등 서버 | 파일 시스템, 프로세스, 임의의 네트워크 | 브라우저 API(DOM)는 없다 |
 
-TypeScript, 예전의 CoffeeScript·Flow처럼 **JavaScript로 변환(트랜스파일)되어 실행되는 언어**도 있다. 결국 JavaScript로 돌기 때문에 무엇이 일어나는지 이해하려면 JavaScript를 알아야 한다([[typescript-learning|TypeScript 학습법]]).
+TypeScript, 예전의 CoffeeScript·Flow처럼 **JavaScript로 변환(트랜스파일)되어 실행되는 언어**도 있다. 결국 JavaScript로 돌기 때문에 무엇이 일어나는지 이해하려면 JavaScript를 알아야 한다([[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]]).
 
 ## 참고 자료
 
@@ -122,4 +122,4 @@ ES2015부터 공식 이름은 연도다. ES6·ES8 같은 판 번호는 관용적
 - ES2015부터 이름은 연도다. ES6 = ES2015가 가장 큰 개정이었고 이후는 매년 작게 늘어난다.
 - 쓸 수 있느냐는 판 번호가 아니라 대상 브라우저의 지원 여부로 판단한다.
 
-관련 노트: [[class|class 문법]], [[js-engine-v8|JavaScript 엔진과 V8]], [[strict-mode|strict mode]], [[regular-expressions|정규 표현식: 문법·플래그·메서드]], [[typescript-learning|TypeScript 학습법]], [[variables-and-types|변수와 데이터 타입]]
+관련 노트: [[class|class 문법]], [[js-engine-v8|JavaScript 엔진과 V8]], [[strict-mode|strict mode]], [[regular-expressions|정규 표현식: 문법·플래그·메서드]], [[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]], [[variables-and-types|변수와 데이터 타입]]

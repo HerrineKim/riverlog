@@ -99,7 +99,7 @@ function Counter() {
 | 여러 화면이 함께 쓰는 클라이언트 state, 작거나 중간 규모 | Zustand(스토어 하나를 훅으로, selector로 필요한 값만 구독) 또는 Jotai(atom 조합) |
 | 여러 화면이 함께 고치는 복잡한 클라이언트 state, 액션 기록·미들웨어·DevTools 추적이 중요 | Redux Toolkit. 서버 데이터까지 한 도구로 다루려면 RTK Query |
 
-과거에 쓰이던 Recoil은 2025년 1월 저장소가 보관(archived)되어 더 이상 관리되지 않는다.
+라이브러리별 접근(스토어·atom·proxy) 비교는 [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]]에 있다.
 
 ## 정리
 

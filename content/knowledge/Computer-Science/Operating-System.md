@@ -9,8 +9,7 @@ date: "2026-10-14"
 
 운영체제(OS)는 CPU·메모리·입출력 장치 같은 한정된 자원을 여러 프로그램에 나눠 주고, 프로그램이 하드웨어를 직접 다루지 않아도 되게 해 주는 소프트웨어 계층이다. 서버 성능 튜닝이나 대규모 서비스 운영처럼 "프로그램이 실제로 어떻게 돌아가는가"를 알아야 하는 순간에 바탕이 되는 지식이다.
 
-- [운영체제 개요](Computer-Science/Operating-System/os-overview.md) — 운영체제의 정의, 목적, 분류와 대표적인 예
-- [커널의 종류](Computer-Science/Operating-System/kernel-types.md) — 단일형·마이크로·하이브리드 커널 비교
+- [운영체제 개요](Computer-Science/Operating-System/os-overview.md) — 운영체제의 정의, 목적, 단일형·마이크로·하이브리드 커널, 분류와 대표적인 예
 - [리눅스 배포판과 패키지 관리](Computer-Science/Operating-System/linux-distributions.md) — 커널과 배포판, Debian·RHEL 계열과 apt·dnf, CentOS Stream과 Rocky·AlmaLinux
 - [컴퓨터 시스템 구조와 인터럽트](Computer-Science/Operating-System/system-structure.md) — 모드 비트, 타이머, 인터럽트, 시스템 콜, DMA로 본 컴퓨터 시스템 구조
 - [운영체제의 시간과 타이머](Computer-Science/Operating-System/time-and-timers.md) — 벽시계·단조·CPU 시간, RTC·TSC, clock_gettime, sleep, alarm과 POSIX 타이머

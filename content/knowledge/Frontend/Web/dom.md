@@ -4,7 +4,7 @@ concept: "DOM"
 summary: "브라우저가 HTML 문서를 파싱해 메모리에 올린 객체 트리와, 이를 다루는 API. window의 두 역할과 DOM·CSSOM·HTML 명세의 구분, 공백·주석까지 노드가 되는 규칙과 파서의 자동 교정, 노드 클래스 계층과 확인 방법, 문자열 HTML 대신 DOM이 필요해진 이유와 프레임워크 시대에 DOM API를 익히는 법도 다룬다."
 tags: ["dom", "browser", "web", "javascript"]
 source: til
-date: "2026-10-17"
+date: "2026-10-20"
 sources: ["https://ko.javascript.info/browser-environment", "https://ko.javascript.info/dom-nodes", "https://ko.javascript.info/basic-dom-node-properties", "https://riverkim.kr/223", "https://riverkim.kr/185", "https://riverkim.kr/77", "https://velog.io/@teo/dom", "https://web.dev/learn/html/apis"]
 ---
 
@@ -60,6 +60,16 @@ DOM tree의 진입점(entry point)은 `document` 객체이고, 끝은 텍스트 
 | 주석 노드(Comment) | `<!-- -->`. 화면에 보이지 않지만 트리에 있고 `data`로 읽을 수 있다 |
 
 명세의 노드 타입은 12가지지만 실무에서는 이 넷을 다룬다. `<!DOCTYPE html>`도 `<html>` 바로 앞의 노드다. 어트리뷰트는 `Attr` 객체로 표현되지만 트리의 자식이 아니라 요소의 **일부**로, 요소를 통해 접근한다.
+
+### 노드 종류 확인하기
+
+| 속성 | 내용 |
+| --- | --- |
+| `nodeType` | 숫자. `1` 요소, `3` 텍스트, `8` 주석, `9` 문서. 읽기 전용인 옛 방식이며 지금은 `instanceof`(`node instanceof HTMLElement`)를 주로 쓴다 |
+| `nodeName` | 모든 노드에 있다. 요소면 태그 이름, 아니면 `#text`·`#comment`·`#document` |
+| `tagName` | **요소에만** 있다. 다른 노드에서는 `undefined` |
+
+HTML 문서에서 `tagName`·`nodeName`은 항상 **대문자**(`'BODY'`)다. XML로 처리된 문서만 원래 대소문자를 지킨다. 그래서 비교는 `el.tagName === 'A'`나 `el.matches('a')`로 한다.
 
 ### 공백도, 주석도 노드다
 
@@ -167,7 +177,7 @@ const scrollToTop = () => {
 | BOM 조작 | `location`, `history`, `navigator` 등 브라우저 제어 |
 | JavaScript Core(ECMAScript) | 자료구조(Object, Array), 조건문, 반복문 등 언어 자체 |
 
-선택·변경을 다루는 구체적인 메서드는 [[dom-manipulation|DOM 조작과 이벤트]]에, 이벤트 전파·위임은 [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]]에 있다.
+선택·변경을 다루는 구체적인 메서드는 [[dom-manipulation|DOM 조작]]에, 이벤트 전파·위임은 [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]]에 있다.
 
 ## DOM이 필요해진 이유
 
@@ -192,8 +202,8 @@ DOM의 본질은 "HTML을 이렇게 고쳐 달라"를 컴퓨터가 알아듣게 
 ## 핵심 정리
 
 - DOM = 브라우저가 HTML을 파싱해 만든 **객체 트리**, DOM API = 그 트리를 다루는 인터페이스.
-- 노드는 문서·요소·속성·텍스트 네 종류이며, 진입점은 `document`.
+- 실무에서 다루는 노드는 문서·요소·텍스트·주석 네 종류이며, 진입점은 `document`. 종류는 `instanceof`나 `nodeName`으로 확인한다.
 - BOM은 문서 바깥의 브라우저 자체를 다루며 최상위 객체는 `window`.
 - DOM은 문자열 HTML을 매번 다시 파싱하는 비용을 피하려고, 이미 만든 구조를 부분 수정하기 위해 생겼다.
 
-관련 노트: [[dom-manipulation|DOM 조작과 이벤트]], [[web-components|웹 컴포넌트: template·slot·Shadow DOM]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[intersection-observer|Intersection Observer와 관찰자 API]], [[browser-rendering|브라우저 렌더링 과정]], [[frontend-history|프론트엔드의 등장 배경]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[dom-geometry|요소 크기·스크롤·좌표]], [[mutation-observer|MutationObserver]]
+관련 노트: [[dom-manipulation|DOM 조작]], [[web-components|웹 컴포넌트: template·slot·Shadow DOM]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[intersection-observer|Intersection Observer와 관찰자 API]], [[browser-rendering|브라우저 렌더링 과정]], [[frontend-history|프론트엔드의 등장 배경]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[dom-geometry|요소 크기·스크롤·좌표]], [[mutation-observer|MutationObserver]]

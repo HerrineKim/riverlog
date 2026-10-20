@@ -1,10 +1,10 @@
 ---
 title: "합격하는 영문 레주메 작성법"
 concept: "Resume"
-summary: "외국계 취업용 레주메를 한 장으로, 성과 중심으로 쓰는 법: 섹션 순서, 학력 표기, 2~3문장 Summary, 액션 동사와 숫자로 쓰는 경력, XYZ 공식, 미국식 직함·프로젝트·수상 쓰는 법, 커버레터 구조와 템플릿, 개발 환경·생산성 경험을 드러내는 법."
-tags: ["career", "job-search", "resume", "english", "dx"]
+summary: "외국계 취업용 레주메를 한 장으로, 성과 중심으로 쓰는 법: 섹션 순서, 학력 표기, 2~3문장 Summary, 액션 동사와 숫자로 쓰는 경력, XYZ 공식, 미국식 직함·프로젝트·수상 쓰는 법, 커버레터 구조와 템플릿, 리크루터에게 먼저 보내는 영문 메일, 개발 환경·생산성 경험을 드러내는 법."
+tags: ["career", "job-search", "resume", "english", "dx", "email"]
 source: other
-date: "2026-10-16"
+date: "2026-10-20"
 sources: ["https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://taegon.kim/blog/developer-resume-checklist/", "https://www.resume.guide/ko/intro"]
 ---
 
@@ -125,6 +125,37 @@ EDUCATION   Seoul National University, Seoul, Korea      Mar 2022 – Feb 2026 (
    - 성과는 **수치화**한다.
 4. **마무리**: 내 경험이 회사에 자산이 될 것이라는 말, 인터뷰에서 더 이야기 나누고 싶다는 요청, 감사 인사 → `Best Regards,` + 이름
 
+## 리크루터에게 먼저 보내는 메일
+
+공고를 보고 리크루터나 하이어링 매니저에게 먼저 연락하는 메일은 커버레터를 세 문단으로 줄인 것이다. 지원 경로로서의 의미는 [[us-hiring-process#지원 경로 네 가지|지원 경로 네 가지]]에 있다.
+
+```text
+Subject: [Job Title] Application – [Your Name]
+
+Dear [Name],
+
+I am reaching out because I noticed that [Company] is hiring for [Job Title],
+and I would like to express my interest in joining your team.
+
+I have [X years] of experience in [skills]. Recently, I [one concrete result with a number].
+I was especially drawn to [a specific product, feature, or engineering blog post].
+
+If you have a moment, I would love to chat further about how I could contribute.
+Thank you for your time, and I look forward to hearing from you.
+
+Best regards,
+[Your Name] · Resume (PDF) · LinkedIn · GitHub
+```
+
+| 문단 | 역할 | 다듬는 법 |
+| --- | --- | --- |
+| 1 | 연락한 이유와 포지션 | 제목에 포지션과 이름을 넣는다. `Dear Hiring Manager` 대신 LinkedIn·공고에서 찾은 실제 이름을 쓴다 |
+| 2 | 경력과 회사에 대한 관심 | 「experienced and highly skilled」 같은 형용사 대신 숫자와 결과를 쓴다. 회사의 평판 대신 최근 기능이나 기술 블로그 글처럼 구체적인 것을 든다 |
+| 3 | 다음 단계 제안과 감사 | 이력서·LinkedIn·GitHub 링크를 서명 아래 둔다 |
+
+- 모바일 화면 한 번에 읽히는 150~200단어가 적당하다.
+- 답이 없으면 1주쯤 뒤 한 번만 짧게 후속 메일을 보낸다(*I wanted to follow up on my previous email regarding the [Job Title] role.*).
+
 
 ## 개발자 이력서에 공통으로 통하는 원칙
 
@@ -185,4 +216,4 @@ DX/플랫폼 성격의 프론트엔드 포지션 공고가 자주 묻는 경험�
 - [ ] 링크한 저장소의 커밋 메시지가 변경 의도를 설명하는가?
 - [ ] 경력 공백에 한 줄 설명이 있는가?
 
-관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[recruiter-outreach-email|리크루터에게 보내는 영문 이메일]], [[tech-interview-tips|기술면접 잘 보는 법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]]
+관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[business-expressions|비즈니스 미팅 쿠션 표현]], [[interview-attitude|면접 잘 보는 법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]]

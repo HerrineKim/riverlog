@@ -1,10 +1,10 @@
 ---
-title: "전송 계층, 포트, UDP"
+title: "전송 계층: 포트, TCP, UDP"
 concept: "Transport Layer"
-summary: "프로세스 간 통신을 담당하는 전송 계층의 역할, 포트 번호 체계, 비연결형 UDP와 TCP의 비교."
-tags: ["network", "transport-layer", "udp", "tcp", "port"]
+summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계, 연결 지향 TCP의 헤더·플래그·3-way handshake·순서 번호 규칙·상태 전이, 비연결형 UDP, 그리고 TCP와 UDP의 비교."
+tags: ["network", "transport-layer", "tcp", "udp", "port", "handshake"]
 source: notion
-date: "2026-10-13"
+date: "2026-10-20"
 ---
 
 네트워크 계층(IP)이 데이터를 **목적지 호스트**까지 보내 준다면, 전송 계층(4계층)은 그 호스트 안의 **어느 프로세스**에게 줄지 결정하고 필요하면 신뢰성을 보장한다. 이때 프로세스를 구분하는 번호가 포트 번호다.
@@ -26,7 +26,7 @@ date: "2026-10-13"
 | 속도 | 상대적으로 느림 | 빠름 |
 | 용도 | 웹(HTTP/1.1·HTTP/2), 이메일, 파일 전송 | DNS, 스트리밍, 실시간 통화, 게임, QUIC(HTTP/3) |
 
-TCP의 헤더, 3-way handshake, 상태 전이 같은 자세한 동작은 [[tcp|TCP]]에 정리했다.
+TCP의 헤더, 3-way handshake, 상태 전이는 아래 「TCP」 절에, UDP는 그 뒤 「UDP」 절에 있다.
 
 ## 포트 번호
 
@@ -72,6 +72,88 @@ lsof -i 4                       # IPv4 연결만
 lsof -i 6                       # IPv6 연결만
 ```
 
+## TCP (Transmission Control Protocol)
+
+TCP는 서로 다른 호스트의 프로그램이 데이터를 **안정적으로, 순서대로, 오류 없이** 주고받게 하는 연결 지향 프로토콜이다. 그 대가로 연결 수립과 확인 응답 과정이 필요해 UDP보다 느리다.
+
+### 헤더의 주요 필드
+
+| 필드 | 설명 |
+| --- | --- |
+| 출발지·목적지 포트 | 각 2바이트 |
+| 순서 번호(Sequence Number) | 보내는 데이터의 첫 바이트 번호 |
+| 확인 번호(Acknowledgment Number) | 다음에 받기를 기대하는 바이트 번호 |
+| Offset | 헤더 길이 (4바이트 단위, 옵션이 없으면 20바이트 → 5) |
+| Reserved | 예약 필드 |
+| Flags | URG, ACK, PSH, RST, SYN, FIN |
+| Window | 수신 측 버퍼에 남은 공간 — 흐름 제어에 사용 |
+| Checksum | 오류 검출 |
+| Urgent Pointer | 긴급 데이터의 위치 |
+
+### 플래그
+
+| 플래그 | 이름 | 의미 |
+| --- | --- | --- |
+| URG | Urgent | 긴급 데이터가 있음. Urgent Pointer가 위치를 알려 줌 |
+| **ACK** | Acknowledgment | 확인 번호가 유효함. 상대의 패킷을 잘 받았다는 응답 |
+| PSH | Push | 버퍼가 찰 때까지 기다리지 말고 즉시 응용 계층으로 전달 (Telnet처럼 대화형일 때) |
+| **RST** | Reset | 비정상적인 상황에서 연결을 즉시 끊음 |
+| **SYN** | Synchronize | 연결 요청. 초기 순서 번호를 임의로 정해 보냄 |
+| **FIN** | Finish | 더 보낼 데이터가 없음. 정상적인 연결 종료 요청 |
+
+### 3-Way Handshake (연결 수립)
+
+데이터를 보내기 전에 양쪽이 서로의 초기 순서 번호를 확인하는 과정이다.
+
+1. **Client → Server: SYN**
+   - SEQ = 100 (클라이언트가 임의로 정한 값), ACK = 0
+2. **Server → Client: SYN + ACK**
+   - SEQ = 2000 (서버가 임의로 정한 값)
+   - ACK = 100 + 1 = **101** (받은 SEQ + 1)
+3. **Client → Server: ACK**
+   - SEQ = **101** (받은 ACK 값)
+   - ACK = 2000 + 1 = **2001**
+
+이후 양쪽 모두 `ESTABLISHED` 상태가 되어 데이터를 주고받는다. SYN과 FIN은 데이터가 없어도 순서 번호를 1 소비하기 때문에 +1이 된다.
+
+### 데이터 전송 시 순서·확인 번호 규칙
+
+1. 연달아 보낼 때는 내 SEQ, ACK가 그대로다.
+2. 받은 쪽이 응답할 때 **내 SEQ = 받은 ACK**.
+3. 받은 쪽이 응답할 때 **내 ACK = 받은 SEQ + 받은 데이터 크기**.
+
+예시: 클라이언트가 100바이트, 서버가 500바이트를 보냄
+
+| 방향 | SEQ | ACK | 데이터 |
+| --- | --- | --- | --- |
+| Client → Server | 101 | 2001 | 100바이트 |
+| Server → Client | 2001 | 201 (101 + 100) | 500바이트 |
+| Client → Server | 201 | 2501 (2001 + 500) | — |
+
+ACK를 받지 못하면 송신 측은 해당 데이터를 재전송한다. 이것이 TCP 신뢰성의 기본이다.
+
+> handshake 구조를 악용해 SYN만 대량으로 보내 연결 대기열을 채우는 공격이 SYN Flooding이다([[security|정보 시스템 보안]]).
+
+### 연결 상태 전이
+
+| 상태 | 의미 |
+| --- | --- |
+| LISTEN | 서버가 포트를 열고 연결 요청을 기다림 (passive open) |
+| SYN_SENT | 클라이언트가 SYN을 보낸 뒤 응답을 기다림 (active open) |
+| SYN_RECEIVED | 서버가 SYN을 받고 SYN+ACK를 보낸 상태 |
+| ESTABLISHED | 연결 수립 완료, 데이터 송수신 가능 |
+| FIN_WAIT, CLOSE_WAIT, TIME_WAIT 등 | 연결 종료 과정의 상태들 |
+
+흐름: 서버는 항상 `LISTEN`이어야 요청을 받을 수 있고, 클라이언트가 SYN을 보내면 `SYN_SENT` → 서버는 `SYN_RECEIVED` → 마지막 ACK 후 양쪽 `ESTABLISHED`.
+
+연결 종료는 보통 FIN → ACK → FIN → ACK의 **4-way handshake**로 이루어진다.
+
+### 흐름·혼잡·오류 제어
+
+- **흐름 제어**: 수신 측이 처리할 수 있는 만큼만 보내도록 Window 필드로 조절한다(슬라이딩 윈도우).
+- **혼잡 제어**: 네트워크가 막히면 전송 속도를 줄인다(슬로 스타트, 혼잡 회피 등). Linux의 기본 알고리즘은 CUBIC이고, 대역폭·RTT를 측정해 속도를 정하는 BBR도 쓴다.
+- **오류 제어**: 체크섬으로 오류를 검출하고, 손실된 세그먼트는 재전송한다.
+
 ## UDP (User Datagram Protocol)
 
 UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프로토콜이다. 연결 설정도, 재전송도, 순서 보장도 없다. 대신 지연이 적고 가볍다.
@@ -93,3 +175,12 @@ UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프�
 - 주기적으로 정보를 뿌리는 경우: **RIP** 라우팅 정보 교환
 - 신뢰성이 필요하면 애플리케이션 계층에서 직접 구현한다 (예: QUIC은 UDP 위에서 신뢰성과 암호화를 제공하며, [[http|HTTP/3]]가 QUIC 위에서 동작한다).
 - 브라우저 간 실시간 통화([[webrtc|WebRTC]])도 미디어를 UDP로 보낸다.
+
+## 핵심 정리
+
+- 전송 계층은 포트 번호로 호스트 안의 프로세스를 구분한다. Well-known 0~1023, 동적 49152~65535.
+- TCP 연결 수립 = SYN → SYN+ACK → ACK. 응답의 SEQ는 받은 ACK, 응답의 ACK는 받은 SEQ + 데이터 크기.
+- TCP의 중요 플래그는 SYN·ACK·FIN·RST, 중요 상태는 LISTEN·ESTABLISHED. 종료는 4-way handshake.
+- UDP는 포트와 체크섬만 얹은 8바이트 헤더로, 신뢰성이 필요하면 QUIC처럼 위 계층에서 구현한다.
+
+관련 노트: [[network-layer|네트워크 계층 프로토콜]], [[osi-7-layer|OSI 7계층]], [[http|HTTP 프로토콜]], [[security|정보 시스템 보안]]

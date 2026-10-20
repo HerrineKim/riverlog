@@ -142,4 +142,4 @@ AI 코딩 도구를 「주니어 개발자」에 비유하는 순간 질문이 �
 - 코딩이 사라진 자리에서 문서·테스트·의사결정 기록으로 맥락을 보존하는 일이 커졌다.
 - AI가 내 대신 생각하게 두면 스스로 대체된다. AI를 잘 쓰려면 역설적으로 **AI가 아닌 것**(원리, 원본 문서, 동료, 언어 능력)을 더 잘해야 한다.
 
-관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[ai-native-engineer|AI 네이티브 엔지니어의 작업 방식]], [[loop-engineering|루프 엔지니어링]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]], [[ai-native-frontend|AI 네이티브 프론트엔드 개발]], [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편: 사티아 나델라]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]]
+관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[loop-engineering|루프 엔지니어링]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]], [[ai-native-frontend|AI 네이티브 프론트엔드 개발]], [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]]

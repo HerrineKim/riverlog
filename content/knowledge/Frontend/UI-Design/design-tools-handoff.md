@@ -4,7 +4,7 @@ concept: "Design Handoff"
 summary: "디자인 핸드오프는 이미지와 문서를 메일로 넘기던 방식에서 브라우저 기반 공유 파일(Figma)로 옮겨 왔다. 개발자는 스타일·변수 확인, 치수 측정, 애셋 추출, 프로토타입 흐름 읽기, 댓글로 협업한다. Inspect 코드는 그대로 쓰지 않고, absolute 좌표는 흐름으로, Auto Layout은 Flexbox로 옮긴다. 와이어프레임은 클릭되는 프로토타입으로, 디자인은 실제 데이터와 여러 화면 크기로 검증하고, 도구 이전은 비용을 계산해 한 번에 끝낸다."
 tags: ["design", "frontend", "collaboration", "tools", "design-system"]
 source: other
-date: "2026-10-13"
+date: "2026-10-20"
 sources: ["https://brunch.co.kr/@eddwardpark/56", "https://brunch.co.kr/@eddwardpark/51", "https://brunch.co.kr/@eddwardpark/10", "https://webactually.com/2021/01/18/%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EC%95%8C%EC%95%84%EC%95%BC-%ED%95%A0-%ED%94%BC%EA%B7%B8%EB%A7%88%EC%9D%98-%EB%AA%A8%EB%93%A0-%EA%B2%83/", "https://webactually.com/2021/01/25/%EC%8A%A4%EC%BC%80%EC%B9%98%EC%97%90%EC%84%9C-%ED%94%BC%EA%B7%B8%EB%A7%88%EB%A1%9C-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%98%AE%EA%B8%B0%EA%B8%B0/", "https://webactually.com/2017/09/13/%ec%8a%a4%ec%bc%80%ec%b9%98%eb%a1%9c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ed%95%98%ea%b8%b0/", "https://webactually.com/2017/08/09/craft-%ed%94%8c%eb%9f%ac%ea%b7%b8%ec%9d%b8%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%b4-%ec%8a%a4%ec%bc%80%ec%b9%98%ec%97%90%ec%84%9c-%ec%8b%a4%ec%a0%9c-%eb%8d%b0%ec%9d%b4%ed%84%b0%eb%a1%9c-%eb%94%94%ec%9e%90/", "https://webactually.com/2012/10/21/%eb%a0%88%ed%8b%b0%eb%82%98retina%ec%97%90-%ec%b5%9c%ec%a0%81%ed%99%94%eb%90%9c-%ea%b3%a0%ed%95%b4%ec%83%81%eb%8f%84-%eb%94%94%ec%9e%90%ec%9d%b8%ed%95%98%ea%b8%b0/", "https://webactually.com/2015/05/21/%ec%9b%90%ed%99%9c%ed%95%9c-%ec%bb%a4%eb%ae%a4%eb%8b%88%ec%bc%80%ec%9d%b4%ec%85%98%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%99%80%ec%9d%b4%ec%96%b4%ed%94%84%eb%a0%88%ec%9e%84%ec%9d%84-%ec%b0%be%ec%95%84/"]
 ---
 
@@ -72,9 +72,9 @@ Auto Layout이 없는 프레임은 Inspect에서 프레임이 `position: relativ
 
 ## 도구를 바꿀 때
 
-과거에는 Sketch가 UI 디자인의 표준이었고 많은 팀이 Figma로 옮겼다. 도구 이전의 교훈은 어느 도구에나 통한다.
+도구 이전(예: Sketch → Figma)의 원칙은 어느 도구에나 통한다.
 
-- **이전 자체가 비용이다.** 라이브러리 재구축, 문서 갱신, 팀 교육이 실무와 동시에 든다. 사무실 이전에 가깝다.
+- **이전 자체가 비용이다.** 라이브러리 재구축, 문서 갱신, 팀 교육이 실무와 동시에 든다.
 - 가져오기(import)는 아이콘 같은 단순 요소에 쓰고, 복잡한 컴포넌트는 **새 도구의 방식으로 다시 만든다.** 옛 도구의 한계를 우회하던 복잡성까지 옮겨 오지 않기 위해서다.
 - 핵심 라이브러리부터 옮기고, 짧은 데모 영상으로 팀을 온보딩한다.
 - **두 도구를 병행하지 않는다.** 새 프로젝트는 새 도구, 진행 중인 프로젝트만 옛 도구로 끝낸다는 식으로 경계를 분명히 한다.

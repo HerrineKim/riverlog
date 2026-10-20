@@ -4,7 +4,7 @@ concept: "Functional Programming"
 summary: "함수형 프로그래밍을 순수 함수·불변성·선언적 패턴이라는 학술 용어 대신 액션·계산·데이터 구분, 카피 온 라이트와 방어적 복사, 계층형 설계와 추상화 벽으로 다시 읽고, 인자를 미리 채워 함수를 특수화하는 커링과 부분 적용을 다룬다. 액션에서 계산을 빼내 테스트하기 쉬운 코드를 늘리고, 상태·변경·효과를 줄이고 모으고 미루는 리팩터링, 효과를 데이터로 반환하는 기법, 로직을 데이터로 적는 데이터 주도 프로그래밍, 프론트엔드의 요구사항을 입력에서 화면까지의 파이프라인으로 보는 법을 정리한다."
 tags: ["javascript", "frontend", "functional-programming", "programming-paradigm"]
 source: other
-date: "2026-10-13"
+date: "2026-10-20"
 sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://ko.javascript.info/currying-partials", "https://www.youtube.com/watch?v=vK1DazRK_a0"]
 ---
 
@@ -232,7 +232,18 @@ debugNow('메시지')
 | --- | --- | --- |
 | 클로저로 직접 | `const add5 = (b) => add(5, b)` | 가장 읽기 쉽다. 순서와 상관없이 어느 인자든 고정할 수 있다 |
 | `bind` | `const double = mul.bind(null, 2)` | 앞쪽 인자를 채운다. `this`도 함께 정해지므로 메서드에는 주의한다([[functions\|함수와 this]]) |
+| `partial` 헬퍼 | `user.sayNow = partial(user.say, '10:00')` | 인자만 채우고 **this는 호출할 때 정한다**. 메서드에 쓴다(lodash `_.partial`) |
 | 커링 헬퍼 | `_.curry(fn)`(lodash), Ramda의 모든 함수 | 한 번에 다 넘겨도, 나눠 넘겨도 된다 |
+
+`bind`는 첫 인자로 반드시 `this`를 받으므로, 메서드처럼 this는 그대로 두고 인자만 고정하려면 헬퍼를 쓴다.
+
+```javascript
+function partial(func, ...bound) {
+  return function (...args) {
+    return func.call(this, ...bound, ...args) // this는 호출 시점의 것
+  }
+}
+```
 
 - 커링 헬퍼는 `fn.length`(선언된 매개변수 수)로 인자가 다 모였는지 판단한다. 그래서 **매개변수 개수가 고정된 함수**에만 쓴다. rest 매개변수(`...args`)와, 기본값이 있는 첫 매개변수부터 뒤의 매개변수는 `length`에 세지 않아 의도대로 동작하지 않는다.
 - 커링은 **자주 바뀌지 않는 인자를 앞에** 둘 때 쓸모가 있다. 설정·날짜·로그 레벨처럼 한 번 정하면 반복되는 인자를 고정해 두고, 매번 달라지는 데이터는 마지막에 받는다. `map(logNow('INFO'))`처럼 고차 함수에 바로 넘길 수 있는 인자 하나짜리 함수가 나오는 것도 장점이다.

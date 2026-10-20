@@ -276,4 +276,4 @@ SPA는 라우트가 바뀌어도 문서가 다시 열리지 않으므로 `docume
 
 구조는 보이지 않는 목차다. 눈으로 훑는 사람이 얻는 지름길을 마크업으로 똑같이 준다.
 
-관련 노트: [[semantic-html|시맨틱 HTML과 문서 구조]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[aria-basics|ARIA와 접근 가능한 이름]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[screen-reader-testing|스크린 리더로 테스트하기]]
+관련 노트: [[semantic-html|시맨틱 HTML과 문서 구조]], [[Accessibility|웹 접근성]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[aria-basics|ARIA와 접근 가능한 이름]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[screen-reader-testing|스크린 리더로 테스트하기]]

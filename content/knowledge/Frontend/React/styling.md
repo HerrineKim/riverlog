@@ -81,7 +81,7 @@ function Sample() {
 - `styled.태그명`으로 만들고, 템플릿 안에서 `${(props) => ...}`로 props에 따라 스타일을 바꾼다.
 - `styled(컴포넌트)`로 기존 스타일을 확장한다.
 - `&:hover`, `&:focus`, `& > span`처럼 SCSS 스타일의 중첩 선택자를 쓸 수 있다.
-- 런타임에 `<style>` 태그를 만들어 삽입하는 방식이다([CSS 기초](/knowledge/dictionary/frontend/css/css-basics)의 내부 참조 방식). 원리는 [[template-literals|태그드 템플릿]] 참고.
+- 런타임에 `<style>` 태그를 만들어 삽입하는 방식이다([CSS 기초](/knowledge/dictionary/frontend/css/css-basics)의 내부 참조 방식). 원리는 [[js-strings#태그드 템플릿|태그드 템플릿]] 참고.
 
 ### 현재 위치
 

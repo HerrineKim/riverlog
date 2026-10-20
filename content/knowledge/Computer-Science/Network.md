@@ -13,8 +13,7 @@ date: "2026-10-14"
 - [OSI 7계층](Computer-Science/Network/osi-7-layer.md) — OSI 7계층과 각 계층의 역할, TCP/IP 4계층과의 대응, 캡슐화와 계층별 PDU
 - [네트워크 계층 프로토콜](Computer-Science/Network/network-layer.md) — IP 주소 체계, ARP, ICMP, IPv6, NAT·포트 포워딩, 라우팅 프로토콜, 데이터 교환 방식
 - [리눅스 네트워크 네임스페이스와 ip 명령](Computer-Science/Network/linux-network-namespace.md) — ip 명령 출력 읽기, 라우팅 테이블, 네임스페이스와 veth로 본 컨테이너 네트워크
-- [전송 계층, 포트, UDP](Computer-Science/Network/transport-layer.md) — 전송 계층의 역할, 포트 번호, UDP, TCP와 UDP 비교
-- [TCP](Computer-Science/Network/tcp.md) — TCP 헤더와 플래그, 3-way handshake, 순서 번호와 상태 전이
+- [전송 계층: 포트, TCP, UDP](Computer-Science/Network/transport-layer.md) — 전송 계층의 역할과 포트 번호, TCP 헤더·플래그·3-way handshake·순서 번호·상태 전이, UDP, TCP와 UDP 비교
 - [HTTP 프로토콜](Computer-Science/Network/http.md) — HTTP 요청·응답 형식, 메서드, 상태 코드, URI·URL·URN, HTTP/1.1·2·3 비교
 - [HTTPS와 TLS](Computer-Science/Network/https.md) — HTTP를 TLS로 암호화하는 HTTPS, 대칭키·공개키와 TLS 핸드셰이크, Mixed Content, HSTS와 preload, 종단 간 암호화
 - [웹 PKI의 변천: 인증서 생태계는 왜 바뀌었나](Computer-Science/Network/web-pki-evolution.md) — CA 침해·감청·SHA-1·Heartbleed가 바꾼 인증서 체계, 전방 비밀성, CT 로그, 폐기의 한계, ACME, 47일 유효 기간과 수명 주기 자동화

@@ -139,4 +139,4 @@ sources: ["https://web.dev/learn/accessibility/design-ux", "https://web.dev/lear
 - 시안은 접근성 휴리스틱으로 점검하고, 상태·순서·이름·대체 텍스트를 주석으로 적어 넘긴다.
 - 컴포넌트와 디자인 시스템은 검증된 패턴에서 출발하되, 지원해야 할 보조 기술로 직접 시험한다.
 
-관련 노트: [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[accessibility-evaluation|접근성 평가 방법과 도구]], [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[user-research|사용자 리서치]]
+관련 노트: [[Accessibility|웹 접근성]], [[accessibility-evaluation|접근성 평가 방법과 도구]], [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]], [[design-system|디자인 시스템: 구성, 도입, 구축과 배포]], [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[user-research|사용자 리서치]]

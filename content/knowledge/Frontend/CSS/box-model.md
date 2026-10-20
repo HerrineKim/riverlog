@@ -91,7 +91,7 @@ Normal Flow에 있는 블록 요소의 **세로** margin은 더해지지 않고 
 
 ### overflow
 
-박스 안 내용이 넘칠 때의 처리. `visible`(기본, 넘쳐서 보임), `hidden`(잘라냄), `scroll`, `auto`(넘칠 때만 스크롤).
+박스 안 내용이 넘칠 때의 처리. `visible`(기본, 넘쳐서 보임), `hidden`(잘라냄), `scroll`, `auto`(넘칠 때만 스크롤). 말줄임·스크롤 접근성·스크롤 스냅은 [[css-overflow-scroll|CSS 오버플로와 스크롤]]에 있다.
 
 ### box-sizing
 

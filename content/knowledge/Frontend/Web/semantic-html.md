@@ -133,4 +133,4 @@ HTML5 명세에는 **아웃라인 알고리즘**이 있었다. `<section>`을 �
 - 제목 계층은 브라우저가 대신 만들어 주지 않는다. `<h1>` 하나에서 차례로 내려간다.
 - 떼어 가도 완결되면 `<article>`, 구역을 알려야 할 때만 이름 붙인 `<section>`이다.
 
-관련 노트: [[html|HTML 기초와 HTML5]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[aria-basics|ARIA와 접근 가능한 이름]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[seo-basics|SEO 기초]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[structured-content|구조화된 콘텐츠와 기계가 읽는 웹]]
+관련 노트: [[html|HTML 기초와 HTML5]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[aria-basics|ARIA와 접근 가능한 이름]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[seo-basics|SEO 기초]], [[Accessibility|웹 접근성]], [[structured-content|구조화된 콘텐츠와 기계가 읽는 웹]]

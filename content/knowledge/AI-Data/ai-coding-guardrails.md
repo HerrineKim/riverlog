@@ -4,7 +4,7 @@ concept: "AI Coding Guardrails"
 summary: "AI 코딩 에이전트로 프로덕션 코드를 다룰 때의 실무 규칙. 프로젝트 규모에 따른 세 가지 모드, CLAUDE.md와 앵커 주석(AIDEV-NOTE), 테스트는 사람이 쓴다는 원칙, 맥락을 아끼지 않는 프롬프트, 작업마다 새 세션, AI가 건드리면 안 되는 영역과 실수의 등급을 정리한다."
 tags: ["ai", "llm", "claude-code", "agentic-coding", "testing"]
 source: other
-date: "2026-10-13"
+date: "2026-10-20"
 sources: ["https://diwank.space/field-notes-from-shipping-real-code-with-claude"]
 ---
 
@@ -122,15 +122,9 @@ GET /users/{id}에 Redis 캐시 추가.
 | `[AI-minor]` | 절반 미만 |
 | `[AI-review]` | 리뷰에만 사용 |
 
-## 사례: 500곳의 에러 처리 리팩터링
+## 큰 리팩터링: 왜는 사람이, 어떻게는 AI가
 
-| 사람이 정한 것 (왜) | Claude가 한 것 (어떻게) |
-| --- | --- |
-| 에러 분류 체계: ClientError(4xx)·SystemError(5xx) 아래 계층 | `common/errors.py`에 계층 생성 |
-| 원칙: 4xx는 행동 가능한 안내, 5xx는 trace ID, 에러 코드는 안정적으로 | 응답 포매터와 미들웨어 |
-| 응답 형식 `{ code, message, details, trace_id }` | 500곳 넘는 `raise Exception(...)`을 찾아 교체 |
-
-SPEC.md는 사람이 쓰고, "auth 모듈부터, 구현 전에 계획을 보여 달라"처럼 범위와 순서를 정해 맡긴다. 왜(분류 체계·원칙)를 사람이 정해 두면 반복적인 어떻게(500곳 교체)는 AI가 빠르게 처리한다.
+대규모 반복 변경은 **사람이 SPEC.md에 원칙과 형식을 정하고**, 범위와 순서("auth 모듈부터, 구현 전에 계획을 보여 달라")를 정해 맡긴다. 예를 들어 에러 처리 통일이라면 분류 체계(4xx·5xx 계층), 응답 형식, 에러 코드 원칙은 사람이 정하고, 수백 곳의 `raise Exception(...)` 교체는 AI가 맡는다.
 
 ## AI가 건드리면 안 되는 것
 

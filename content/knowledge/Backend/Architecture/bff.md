@@ -1,10 +1,10 @@
 ---
 title: "BFF (Backend For Frontend)"
 concept: "BFF"
-summary: "프론트엔드 하나마다 그 화면에 맞춘 중간 서버를 두는 BFF 패턴. 여러 API를 묶고, 필요한 필드만 가공해 내려 주고, CORS·인증·MSA 엔드포인트 변경을 흡수한다. Next.js를 BFF로 쓰는 법, 카카오페이지 웹의 GraphQL BFF 사례와 Apollo Client 정규화 캐시 함정을 정리한다."
+summary: "프론트엔드 하나마다 그 화면에 맞춘 중간 서버를 두는 BFF 패턴. 여러 API를 묶고, 필요한 필드만 가공해 내려 주고, CORS·인증·MSA 엔드포인트 변경을 흡수한다. Next.js를 BFF로 쓰는 법과 GraphQL 정규화 캐시 함정을 정리한다."
 tags: ["backend", "architecture", "frontend", "graphql", "nextjs"]
 source: other
-date: "2026-10-13"
+date: "2026-10-20"
 sources: ["https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/"]
 ---
 
@@ -67,15 +67,13 @@ query userAndCash {
 
 Next.js 문서는 「Backend for Frontend」 가이드에서 **Route Handler**(`app/**/route.ts`), Proxy, rewrites로 Next.js를 BFF로 쓰는 법을 안내하고, 완전한 백엔드 대체가 아니라 **공개된 API 계층**이라고 선을 긋는다. 서버 컴포넌트도 렌더링 중에 여러 API를 서버에서 불러 필요한 값만 클라이언트로 넘기므로, GraphQL 없이도 BFF의 상당 부분을 대신한다. 여러 플랫폼이 같은 BFF 계층을 공유해야 하면 GraphQL BFF가 여전히 선택지다.
 
-## 사례와 함정
+## 함정: 정규화 캐시와 인자별 데이터
 
-카카오페이지 웹은 Next.js + Apollo Server(GraphQL BFF) + urql(가져오기) + Redux(화면 상태)로 구성했다. 그린 뒤 중간 데이터를 비동기로 고치는 일(추가 로딩, 무한 스크롤)이 GraphQL 캐시만으로는 복잡해서, 응답을 정규화해 Redux에 넣었다. **가져오기와 저장·사용은 목적이 다르다**는 판단이다.
+GraphQL BFF 앞에서는 **가져오기(fetching)와 화면 상태 저장은 목적이 다르다.** 추가 로딩·무한 스크롤처럼 그린 뒤 중간 데이터를 고치는 일은 GraphQL 클라이언트 캐시만으로 다루기 복잡해, 응답을 정규화해 별도 상태 저장소에 두기도 한다.
 
-**Apollo 정규화 캐시 함정**
-
-- 증상: Apollo Client는 객체를 `__typename:id`로 정규화해 저장하므로, 같은 id인데 인자(`categoryFilter`)에 따라 하위 데이터가 다르면 나중 응답이 앞 결과를 덮어써 탭을 바꿔도 엉뚱한 데이터가 보인다.
-- 해결 1: 하위 응답이 달라지면 구분 가능한 id를 주거나, `keyFields`로 캐시 식별 기준을 바꾼다.
-- 해결 2: urql처럼 쿼리(문서) 단위로 캐시하는 라이브러리로 바꾼다. 카카오페이지의 선택이다.
+| 증상 | 원인 | 해결 |
+| --- | --- | --- |
+| 탭(필터)을 바꿔도 엉뚱한 하위 데이터가 보인다 | Apollo Client는 객체를 `__typename:id`로 정규화해 저장한다. 같은 id인데 인자(`categoryFilter`)에 따라 하위 데이터가 다르면 나중 응답이 앞 결과를 덮어쓴다 | 인자별로 구분되는 id를 주거나 `keyFields`로 캐시 식별 기준을 바꾼다. 또는 urql처럼 쿼리(문서) 단위로 캐시하는 클라이언트를 쓴다 |
 
 ## 정리
 
@@ -84,4 +82,4 @@ Next.js 문서는 「Backend for Frontend」 가이드에서 **Route Handler**(`
 - 플랫폼이 하나뿐이면 굳이 둘 필요가 없을 수 있다. Next.js라면 Route Handler와 서버 컴포넌트가 가벼운 BFF가 된다.
 - GraphQL 캐시를 쓸 땐 정규화 캐시가 인자별 결과를 덮어쓰는지 확인한다.
 
-관련 노트: [[data-flow|Data Flow로 보는 웹 아키텍처]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]], [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]], [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]]
+관련 노트: [[web-scalability-components|웹 확장성의 구성 요소]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]], [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]], [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]]

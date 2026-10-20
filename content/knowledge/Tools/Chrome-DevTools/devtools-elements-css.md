@@ -142,7 +142,7 @@ Chrome이 저장된 **주소**로 폼을 채울 때 무엇을 어디에 넣는�
 
 ## 접근성 검사
 
-DevTools는 **마크업이 보조 기술에 어떻게 노출되나**를 잘 잡는다. 반면 키보드·스크린 리더로 실제로 쓸 수 있는지는 직접 써 봐야 안다. 원칙과 수동 점검은 [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]].
+DevTools는 **마크업이 보조 기술에 어떻게 노출되나**를 잘 잡는다. 반면 키보드·스크린 리더로 실제로 쓸 수 있는지는 직접 써 봐야 안다. 원칙과 수동 점검은 [[Accessibility|웹 접근성]].
 
 | 확인할 것 | 방법 |
 | --- | --- |
@@ -167,4 +167,4 @@ DevTools는 **마크업이 보조 기술에 어떻게 노출되나**를 잘 잡�
 - DevTools 수정은 새로고침하면 사라진다. 변경사항 패널에서 복사해 코드로 옮긴다.
 - **결국 DevTools는 지금 렌더링된 결과를 보여 주는 거울이다.** 고칠 곳은 소스에 있다.
 
-관련 노트: [[Chrome-DevTools|Chrome DevTools]], [[devtools-console|DevTools Console 활용]], [[devtools-debugging|DevTools로 JavaScript 디버깅하기]], [[devtools-device-emulation|DevTools로 기기·환경 에뮬레이션하기]], [[how-css-works|CSS가 동작하는 방식]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]]
+관련 노트: [[Chrome-DevTools|Chrome DevTools]], [[devtools-console|DevTools Console 활용]], [[devtools-debugging|DevTools로 JavaScript 디버깅하기]], [[devtools-device-emulation|DevTools로 기기·환경 에뮬레이션하기]], [[how-css-works|CSS가 동작하는 방식]], [[Accessibility|웹 접근성]]

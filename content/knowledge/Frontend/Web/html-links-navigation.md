@@ -1,11 +1,11 @@
 ---
 title: "링크와 내비게이션 마크업"
 concept: "Links & Navigation"
-summary: "<a href>가 가리킬 수 있는 곳(절대·상대 URL, 프래그먼트, mailto·tel, blob·data), 이름 붙은 브라우징 맥락으로 탭 폭증 막기, rel·hreflang·type·ping, 그리고 링크 목록을 <nav>로 묶는 건너뛰기 링크·목차·브레드크럼·로컬·전역 내비게이션 패턴을 정리한다."
+summary: "<a href>가 가리킬 수 있는 곳(절대·상대 URL, 프래그먼트, mailto·tel, blob·data), download로 내려받기, target과 rel=noopener·noreferrer, 이름 붙은 브라우징 맥락으로 탭 폭증 막기, rel·hreflang·type·ping, 그리고 링크 목록을 <nav>로 묶는 건너뛰기 링크·목차·브레드크럼·로컬·전역 내비게이션 패턴을 정리한다."
 tags: ["html", "navigation", "frontend", "web", "accessibility"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/html/links", "https://web.dev/learn/html/navigation"]
+date: "2026-10-20"
+sources: ["https://web.dev/learn/html/links", "https://web.dev/learn/html/navigation", "https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/"]
 ---
 
 > web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Links」와 「Navigation」 모듈을 바탕으로 재구성한 노트다.
@@ -35,13 +35,43 @@ sources: ["https://web.dev/learn/html/links", "https://web.dev/learn/html/naviga
 | `#top`, `#` | `id="top"`인 요소가 없으면 페이지 맨 위로 간다 |
 | `mailto:` | 메일 앱을 연다. `?` 뒤에 `cc`·`bcc`·`subject`·`body`를 `&`로 잇고 퍼센트 인코딩한다. 주소 없이 제목·본문만 채워 친구에게 보내게 할 수도 있다 |
 | `tel:` | 기기·OS·설치된 앱에 따라 전화, FaceTime, 연락처 등이 열린다 |
-| `blob:`, `data:` | 페이지가 만든 파일을 `download`와 함께 내려받게 한다(→ [[html-lesser-known-attributes\|잘 안 쓰지만 쓸모 있는 HTML 속성]]의 「링크와 내려받기」) |
+| `blob:`, `data:` | 페이지가 만든 파일을 `download`와 함께 내려받게 한다(아래 「download: 이동 대신 내려받기」) |
 
 다른 앱을 여는 링크는 텍스트로 미리 알린다(「메일 보내기」, 「PDF, 2MB」). CSS의 `[href^="mailto:"]`, `[href$=".pdf"]` 같은 속성 선택자로 아이콘을 붙여도 좋다.
 
+## download: 이동 대신 내려받기
+
+`download`가 있으면 링크를 열지 않고 내려받는다. 값을 주면 저장할 파일 이름을 제안한다. **같은 출처 URL이나 `blob:`·`data:` URL에서만** 동작하고, 다른 출처의 파일은 그냥 열린다. 사용자가 만든 내용을 `Blob` → `URL.createObjectURL()`로 링크에 넣어 저장시키는 데 자주 쓴다([[audio-recording|React에서 음성 녹음하고 파일로 보내기]]의 녹음 파일 저장이 그 예다).
+
+```html
+<a href="/report.pdf" download="2026-보고서.pdf">보고서 받기</a>
+```
+
 ## 어디에 여나: target과 브라우징 맥락
 
-`target`의 `_self`·`_blank`·`_parent`·`_top`과 `rel="noopener noreferrer"`는 [[html|HTML 기초와 HTML5]]의 「링크의 target과 rel」에 있다. 여기서는 **이름 붙은 맥락**만 더한다.
+`target`은 링크한 URL을 **어느 브라우징 맥락**(탭, 창, `<iframe>`)에 띄울지 정한다.
+
+| 값 | 동작 |
+| --- | --- |
+| `_self` | 현재 맥락에 연다(기본값) |
+| `_blank` | 새 맥락에 연다. 보통 새 탭이고, 사용자 설정에 따라 새 창 |
+| `_parent` | 현재 맥락의 부모에 연다. 부모가 없으면 `_self`처럼 동작 |
+| `_top` | 가장 바깥(최상위) 맥락에 연다. 부모가 없으면 `_self`처럼 동작 |
+
+`<iframe>`은 그 자체로 하나의 브라우징 맥락이다. iframe 안의 링크가 기본값 `_self`로 열리면 **iframe 안에서만** 페이지가 바뀐다. 전체 창을 이동시키려면 `target="_top"`을 쓴다.
+
+새 탭으로 열린 페이지는 `window.opener`로 링크를 연 페이지에 접근할 수 있어, 악의적인 페이지가 원래 탭을 피싱 페이지로 바꿔치기할 수 있다(→ [[windows-and-frames|창과 프레임]]).
+
+```html
+<a href="https://example.com" target="_blank" rel="noopener noreferrer">외부 링크</a>
+```
+
+- `noopener`: 새 페이지에서 `window.opener`를 `null`로 만든다.
+- `noreferrer`: `noopener` 효과에 더해 이전 페이지 주소(Referer 헤더)도 보내지 않는다.
+
+주요 브라우저(크롬 88·파이어폭스 79·사파리 12.1 이후)는 `target="_blank"`에 `noopener`를 기본 적용한다. 그래서 `noopener`는 아주 오래된 브라우저를 위한 안전장치이고, 이전 페이지 주소까지 숨기려면 `noreferrer`를 명시한다.
+
+### 이름 붙은 맥락
 
 `target`에는 밑줄로 시작하지 않는 아무 이름이나 줄 수 있다. 모든 탭(브라우징 맥락)은 이름을 가지며 기본값은 빈 문자열이다.
 
@@ -156,4 +186,4 @@ JavaScript에서는 `document.links`가 `href`가 있는 모든 `<a>`·`<area>`�
 - 링크 묶음은 `<nav>` + 목록, 둘 이상이면 이름을 주고, 현재 위치는 `aria-current="page"`.
 - 건너뛰기 링크는 맨 앞에, 포커스되면 보이게. 브레드크럼은 `<ol>`과 CSS 구분자.
 
-관련 노트: [[html|HTML 기초와 HTML5]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[html-lists-tables|목록과 표 마크업]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]]
+관련 노트: [[html|HTML 기초와 HTML5]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[html-lists-tables|목록과 표 마크업]], [[respect-browser-defaults|브라우저 기본 동작을 존중하기]], [[windows-and-frames|창과 프레임: 팝업, iframe, postMessage]]

@@ -123,7 +123,7 @@ sources: ["https://web.dev/learn/forms/form-fields", "https://web.dev/learn/form
 </select>
 ```
 
-`multiple`을 주면 여러 개를 고를 수 있고, `<optgroup label="...">`로 옵션을 묶을 수 있다.
+`multiple`을 주면 여러 개를 고를 수 있다. 긴 선택지는 `<optgroup label="...">`로 제목 붙은 묶음으로 나눈다. 묶음 제목은 선택할 수 없고, `<optgroup disabled>`는 묶음 전체를 비활성화한다.
 
 ### textarea: 여러 줄 입력
 
@@ -199,7 +199,14 @@ input의 `list` 속성과 datalist의 `id`를 연결하면, 자유롭게 입력�
 <input name="amount" inputmode="decimal">
 ```
 
-엔터 키 문구를 바꾸는 `enterkeyhint`(`next`, `done`, `search`, `send` 등)는 [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]에 있다.
+### enterkeyhint: 엔터 키에 할 일을 적는다
+
+`inputmode`가 키보드 종류를 정한다면 `enterkeyhint`는 **엔터 키의 문구·모양**을 정한다. 입력 요소와 `contenteditable`에 붙는다. 값은 `enter`, `done`, `go`, `next`, `previous`, `search`, `send` 일곱 가지뿐이고, 그 밖의 값은 무시된다. 검색창은 `search`, 여러 단계 폼의 중간 칸은 `next`, 마지막 칸은 `done`, 채팅 입력은 `send`처럼 **다음에 일어날 일**을 알린다.
+
+```html
+<input type="search" enterkeyhint="search">
+<input type="text" inputmode="numeric" enterkeyhint="next">
+```
 
 ## 핵심 정리
 

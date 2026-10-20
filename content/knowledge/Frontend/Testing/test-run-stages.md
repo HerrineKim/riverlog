@@ -1,14 +1,14 @@
 ---
 title: "테스트를 돌리는 시점: 로컬, PR, CI"
 concept: "Test Execution Stages"
-summary: "테스트는 개발 중 watch 모드로, 병합 전 PR 상태 검사로, 병합 뒤 main 브랜치의 CI로 세 번 돈다. 기본 test 스크립트는 몇 초 안에 끝나게 두고, PR에서 통과했는데 CI에서 깨지는 이유(변경 간 경합, 플레이키 테스트, 매번 돌리지 않는 비싼 테스트)와 빨간 빌드에 되돌리기·앞으로 고치기로 대응하는 법, 경보 피로를 줄이는 법을 정리한다."
-tags: ["testing", "ci", "ci-cd", "javascript", "vitest"]
+summary: "테스트는 개발 중 watch 모드로, 병합 전 PR 상태 검사로, 병합 뒤 main 브랜치의 CI로 세 번 돈다. 기본 test 스크립트는 몇 초 안에 끝나게 두고, PR에서 통과했는데 CI에서 깨지는 이유(변경 간 경합, 플레이키 테스트, 매번 돌리지 않는 비싼 테스트)와 빨간 빌드에 되돌리기·앞으로 고치기로 대응하는 법, 경보 피로를 줄이는 법, 한 파일 커버리지·테스트 파일 제외·타임존 고정 같은 실행 옵션을 정리한다."
+tags: ["testing", "ci", "ci-cd", "javascript", "vitest", "jest"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/testing/get-started/where-tests-run", "https://vitest.dev/guide/cli"]
+date: "2026-10-20"
+sources: ["https://web.dev/learn/testing/get-started/where-tests-run", "https://vitest.dev/guide/cli", "https://riverkim.kr/284", "https://riverkim.kr/289", "https://riverkim.kr/307"]
 ---
 
-> web.dev의 「[Learn Testing](https://web.dev/learn/testing)」 강좌의 「Where tests run」 모듈을 바탕으로, Vitest 명령은 공식 문서로 확인해 재구성한 노트다.
+> web.dev의 「[Learn Testing](https://web.dev/learn/testing)」 강좌의 「Where tests run」 모듈을 바탕으로, Vitest 명령은 공식 문서로 확인해 재구성한 노트다. 실행 옵션과 타임존 문제는 riverkim.kr에 쓴 글들에서 더했다.
 
 ## 세 번의 실행
 
@@ -52,6 +52,28 @@ npm·pnpm·Bun은 `package.json`의 `test` 스크립트를 특별하게 취급�
 | `test.only` / `describe.only` | 표시한 테스트만 돌려 문제에 집중한다. 커밋 전에 지운다(린트로 막는다: [[js-testing-best-practices\|JavaScript 테스트 모범 사례]]) |
 | 파일·줄 지정 | `vitest src/user.test.ts:10`처럼 한 테스트만 실행한다 |
 
+### 일부 파일의 커버리지만 보기
+
+전체 커버리지는 숫자가 커서 "지금 쓴 테스트가 이 파일을 얼마나 덮는가"를 보기 어렵다. 테스트 하나만 실행하면서 원하는 소스 파일의 커버리지만 모은다. 실행하는 테스트 파일과 커버리지를 모을 파일은 달라도 된다.
+
+```bash
+# Vitest
+npx vitest run user.spec.js --coverage --coverage.include=src/js/user.js
+# Jest (npm 스크립트를 거칠 때는 -- 뒤 인자가 그대로 전달된다)
+npm test user.spec.js -- --coverage --collectCoverageFrom=src/js/user.js
+```
+
+결과 표의 덮이지 않은 줄 번호(Uncovered Line)를 보고 테스트를 보충한다.
+
+### 특정 테스트 파일 빼기
+
+| 도구 | 설정 | 주의 |
+| --- | --- | --- |
+| Vitest | `vitest.config.ts`의 `test.exclude: [...configDefaults.exclude, '**/date-format.test.tsx']` | `configDefaults.exclude`를 펼쳐 기본 제외 목록을 유지한다 |
+| Jest | `jest.config.js`의 `testPathIgnorePatterns: ['/node_modules/', 'date-format.test.tsx']` | 기본값의 `/node_modules/`를 덮어쓰므로 함께 적는다 |
+
+테스트 **대상** 파일이 아니라 **테스트 파일**의 이름·경로를 적는다. 깨지는 테스트를 빼는 것은 임시방편이고, 근본 해결은 어느 환경에서도 같은 결과가 나오게 고치는 것이다(아래 플레이키 테스트).
+
 기능을 만들면서 테스트를 같이 쓰면 그 기능이 어떻게 동작해야 하는지가 분명해진다. 이것을 순서로 정한 것이 [[tdd|TDD]]다. 작은 프로젝트에서 전체 테스트가 몇 초면 끝난다면 그냥 전부 자주 돌린다.
 
 ## PR: 상태 검사
@@ -64,6 +86,7 @@ npm·pnpm·Bun은 `package.json`의 `test` 스크립트를 특별하게 취급�
 | --- | --- | --- |
 | 변경 간 경합 | 각자 통과한 PR 여러 개가 합쳐지며 테스트되지 않은 방식으로 얽힌다 | 병합 큐(merge queue)로 합친 결과를 병합 전에 검사한다 |
 | 플레이키 테스트(flaky test) | 코드가 그대로인데 통과했다 실패했다 한다. 대개 외부 시스템, 시간, 난수, 실행 순서에 기댄다. `Math.random() > 0.05`를 단언하면 5%는 실패한다 | 외부 의존을 가짜로 바꾸고 시간·난수를 고정한다. 재시도는 원인을 찾는 동안의 임시방편이다 |
+| 환경 차이(타임존) | 날짜·시간 테스트가 특정 컴퓨터·CI에서만 실패한다. 실행 환경의 타임존에 기대고 있다 | `TZ=UTC`로 타임존을 고정하고, 날짜는 오프셋을 명시한 값으로 만들고, 현재 시각은 `vi.setSystemTime()`(Jest는 `jest.useFakeTimers().setSystemTime()`)으로 고정한다 |
 | 비싼 테스트 | E2E처럼 느린 테스트는 PR마다 돌리지 않다 보니 아무도 모르게 깨져 있다 | 주기 실행 결과를 누군가 반드시 보게 한다. 핵심 흐름만 남겨 PR에서도 돌릴 만큼 줄인다 |
 
 ## 빌드가 빨개졌을 때
@@ -89,6 +112,7 @@ npm·pnpm·Bun은 `package.json`의 `test` 스크립트를 특별하게 취급�
 - 기본 `test` 스크립트는 몇 초 안에, 브라우저·네트워크 없이 끝나게 둔다.
 - PR에서 통과해도 경합·플레이키·비싼 테스트 때문에 CI에서 깨질 수 있다.
 - 빨간 빌드는 되돌리기와 앞으로 고치기 중 더 빨리 초록으로 돌아가는 쪽을 고른다.
+- 일부만 볼 때는 Vitest `--coverage.include`·`test.exclude`(Jest `--collectCoverageFrom`·`testPathIgnorePatterns`)를 쓰되, 환경 의존 테스트는 빼지 말고 타임존·시각을 고정해 고친다.
 - 무시되는 테스트는 없는 것과 같다. 작고 결정적인 테스트로 경보 피로를 막는다.
 
-관련 노트: [[ci-cd|CI/CD]], [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[jest-practices|Jest·Vitest 실행 팁]], [[test-environment|테스트 실행 환경]], [[tdd|프론트엔드에서의 TDD]]
+관련 노트: [[ci-cd|CI/CD]], [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[test-environment|테스트 실행 환경]], [[tdd|프론트엔드에서의 TDD]]

@@ -12,11 +12,11 @@ date: "2026-10-13"
 ## 노트
 
 - [프론트엔드의 등장 배경](/knowledge/dictionary/frontend/web/frontend-history): Web 1.0·2.0, img·CGI·CSS·JavaScript·AJAX의 등장, Flash와 RIA의 흥망, 프론트엔드·백엔드 분리, React 이후 생태계 흐름
-- [HTML](/knowledge/dictionary/frontend/web/html): 문서 구조, DOCTYPE과 렌더링 모드, 요소와 속성, 시맨틱 태그, 표, form 속성, 링크의 target·rel, HTML5
+- [HTML](/knowledge/dictionary/frontend/web/html): 문서 구조, DOCTYPE과 렌더링 모드, 요소와 속성, data-*, 속성 하나로 끝나는 기능(enterkeyhint·download·loading·integrity·popover 등), 시맨틱 태그, 표, form 속성, HTML5
 - [시맨틱 HTML과 문서 구조](/knowledge/dictionary/frontend/web/semantic-html): 랜드마크 태그, h1~h6 제목 계층, 구현되지 않은 아웃라인 알고리즘, article과 section 고르기
 - [문서 head와 메타데이터](/knowledge/dictionary/frontend/web/html-head-metadata): charset·viewport·title, link rel 종류, meta의 http-equiv·name, Open Graph, base, 웹 앱 매니페스트
 - [텍스트 의미 요소와 문자 참조](/knowledge/dictionary/frontend/web/html-text-elements): blockquote·q·cite, em·strong·mark·i·b·u·s, code·kbd·samp·data·time, abbr·dfn·ruby, br·hr·wbr, 문자 참조
-- [링크와 내비게이션 마크업](/knowledge/dictionary/frontend/web/html-links-navigation): href 형식, 이름 붙은 target, rel·ping, 건너뛰기 링크·목차·브레드크럼·전역 내비게이션
+- [링크와 내비게이션 마크업](/knowledge/dictionary/frontend/web/html-links-navigation): href 형식, download, target과 noopener·이름 붙은 맥락, rel·ping, 건너뛰기 링크·목차·브레드크럼·전역 내비게이션
 - [목록과 표 마크업](/knowledge/dictionary/frontend/web/html-lists-tables): ul·ol·dl 규칙과 번호 속성, 표 구조·scope·headers·colspan, colgroup·col, 표 CSS
 - [이미지·오디오·비디오 임베드](/knowledge/dictionary/frontend/web/html-media-elements): img의 alt·width·height·loading, figure, video·audio·source·track, 배경 영상과 사용자 정의 컨트롤
 - [웹 컴포넌트: template·slot·Shadow DOM](/knowledge/dictionary/frontend/web/web-components): 커스텀 요소, 슬롯, 스타일 캡슐화, :host·::slotted·::part, 선언적 Shadow DOM
@@ -29,7 +29,6 @@ date: "2026-10-13"
 - [로그인·가입 폼과 인증 입력](/knowledge/dictionary/frontend/web/sign-in-sign-up-forms): 비밀번호 관리자 대응, 비밀번호 보기 버튼, NIST 비밀번호 규칙, 패스키 자동 완성, one-time-code·WebOTP, 계정 설정
 - [결제·주소 폼](/knowledge/dictionary/frontend/web/payment-address-forms): 비회원 결제와 결제 흐름, 카드 칸, 한 칸 이름, 주소·우편번호, 국제화
 - [폼 스타일링](/knowledge/dictionary/frontend/web/form-styling): 글자 크기·테두리·탭 영역 기준, select와 base-select, 체크박스·라디오 숨김 기법, accent-color, field-sizing
-- [잘 안 쓰지만 쓸모 있는 HTML 속성](/knowledge/dictionary/frontend/web/html-lesser-known-attributes): enterkeyhint, ol의 reversed·start, download, form, loading·fetchpriority·imagesrcset, cite·datetime, optgroup, 대체 스타일시트
 - [DOM](/knowledge/dictionary/frontend/web/dom): 브라우저가 문서를 객체 트리로 표현하는 방식, DOM tree와 노드 종류, BOM
 - [Intersection Observer와 관찰자 API](/knowledge/dictionary/frontend/web/intersection-observer): 스크롤 이벤트 대신 보이는지 묻기, root·rootMargin·threshold, 무한 스크롤·지연 로딩 패턴, ResizeObserver·MutationObserver
 - [브라우저 렌더링 과정](/knowledge/dictionary/frontend/web/browser-rendering): 브라우저 구성 요소, DOM·CSSOM → 렌더 트리 → 레이아웃(리플로우) → 페인팅, 스크립트·CSS의 차단, 강제 동기 레이아웃, 리렌더링 비용

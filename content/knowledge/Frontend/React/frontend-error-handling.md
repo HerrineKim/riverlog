@@ -1,6 +1,6 @@
 ---
 title: "프런트엔드 에러 핸들링: 분류와 선언적 처리"
-concept: "Error Handling"
+concept: "Frontend Error Handling"
 summary: "에러를 '예상 가능한가'와 '사용자가 해결할 수 있는가'로 나눠 대응(가이드·격리·모니터링)을 정하고, React에서는 Suspense·ErrorBoundary로 로딩·에러를 선언적으로 처리한다. 이벤트 핸들러 에러를 경계로 넘기는 법과 예상치 못한 에러의 전역 처리까지."
 tags: ["react", "frontend", "error-handling", "suspense", "monitoring"]
 source: other

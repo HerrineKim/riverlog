@@ -1,14 +1,14 @@
 ---
 title: "응집도를 높이는 전략"
 concept: "Cohesion"
-summary: "응집도는 함께 수정돼야 할 코드가 항상 함께 수정되는지다. 함께 바뀌는 파일을 도메인 디렉토리에 모으고, 매직 넘버를 상수로 묶어 한쪽만 바뀌는 일을 막고, 폼은 변경 단위에 따라 필드 단위 검증과 스키마 기반 폼 전체 검증 중 하나를 고른다."
-tags: ["frontend", "clean-code", "architecture", "react"]
+summary: "응집도는 함께 수정돼야 할 코드가 항상 함께 수정되는지다. 모듈 응집도의 고전적 7단계 분류(기능적~우연적)와 낮은 응집의 신호를 정리하고, 함께 바뀌는 파일을 도메인 디렉토리에 모으고, 매직 넘버를 상수로 묶어 한쪽만 바뀌는 일을 막고, 폼은 변경 단위에 따라 필드 단위 검증과 스키마 기반 폼 전체 검증 중 하나를 고른다."
+tags: ["frontend", "clean-code", "architecture", "react", "software-engineering"]
 source: other
-date: "2026-10-17"
-sources: ["https://frontend-fundamentals.com/code-quality/code/"]
+date: "2026-10-20"
+sources: ["https://frontend-fundamentals.com/code-quality/code/", "https://webactually.com/2018/02/06/%eb%aa%85%ed%99%95%ed%95%9c-%ec%bd%94%eb%93%9c-%ec%9e%91%ec%84%b1%eb%b2%95/"]
 ---
 
-> 토스의 「[Frontend Fundamentals: 코드 품질](https://frontend-fundamentals.com/code-quality/code/)」 응집도 문서들을 바탕으로 재구성한 노트다.
+> 토스의 「[Frontend Fundamentals: 코드 품질](https://frontend-fundamentals.com/code-quality/code/)」 응집도 문서들을 바탕으로 재구성한 노트다. 일반 원칙은 Brandon Gregory의 「명확한 코드 작성법」(웹액츄얼리 번역)을, 응집의 종류는 정보처리기사 소프트웨어 설계 범위를 더했다.
 
 ## 응집도란
 
@@ -21,6 +21,29 @@ sources: ["https://frontend-fundamentals.com/code-quality/code/"]
 | 함께 수정되는 파일을 같은 디렉토리에 | 파일 |
 | 매직 넘버 없애기 | 값과 그 값에 기대는 코드 |
 | 폼의 응집도 생각하기 | 필드와 검증 로직 |
+
+### 응집의 종류
+
+모듈 안의 요소들이 **왜 한데 모였느냐**에 따라 일곱 단계로 나눈다. 위로 갈수록 강하고 좋은 응집이다.
+
+| 순서 | 종류 | 모인 이유 |
+| --- | --- | --- |
+| 1 (강함) | 기능적 | 모든 요소가 하나의 기능을 위해 수행된다 |
+| 2 | 순차적 | 한 활동의 출력이 다음 활동의 입력이 된다 |
+| 3 | 교환적(통신적) | 같은 입력·출력을 쓰지만 서로 다른 기능을 한다 |
+| 4 | 절차적 | 입출력 연관은 없지만 정해진 순서대로 수행해야 한다 |
+| 5 | 시간적 | 같은 시점에 처리된다 (예: 초기화) |
+| 6 | 논리적 | 비슷한 성격의 처리라서 모았다 |
+| 7 (약함) | 우연적 | 서로 관련이 없다 |
+
+### 낮은 응집의 신호
+
+- 여러 함수가 같은 변수·DOM 참조를 인자로 주고받는다. 한 객체·클래스로 묶고 인스턴스 속성으로 둔다.
+- `Common`, `utils`처럼 관련 없는 것을 한데 모은 덩어리가 있다. 정리한 것 같지만 우연적 응집이라 찾기 어렵다. 데이터 접근, 특정 UI 요소처럼 관심사별 모듈로 나눈다.
+- 클래스의 속성을 소수의 메서드만 쓰거나, 쓰이지 않는 메서드가 있다.
+- 같은 코드가 반복된다. 비슷한 문장은 함수로, 비슷한 함수는 클래스로 묶는다.
+
+응집도를 높이면 결합도는 대개 낮아진다. 둘이 부딪힐 때 무엇을 먼저 챙길지는 [[changeable-code-criteria|변경하기 쉬운 코드의 네 가지 기준]]에 있다.
 
 ## 1. 함께 수정되는 파일을 같은 디렉토리에 두기
 
@@ -128,4 +151,4 @@ Zod 4부터 이메일 같은 문자열 형식 검증은 `z.email()`처럼 최상
 - 의미 있는 숫자는 이름 붙인 상수로, 가능하면 그 값을 정의하는 쪽과 한곳에 둔다.
 - 폼 검증은 변경 단위에 맞춰 필드 단위와 스키마 기반 폼 단위 중 고른다.
 
-관련 노트: [[changeable-code-criteria|변경하기 쉬운 코드의 네 가지 기준]], [[code-coupling|결합도를 낮추는 전략]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]], [[forms|폼과 제어 컴포넌트]]
+관련 노트: [[software-engineering|소프트웨어 설계와 공학]], [[changeable-code-criteria|변경하기 쉬운 코드의 네 가지 기준]], [[code-coupling|결합도를 낮추는 전략]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]], [[forms|폼과 제어 컴포넌트]]

@@ -4,7 +4,7 @@ concept: "Cookie"
 summary: "상태가 없는 HTTP에서 브라우저와 서버가 사용자를 기억하기 위해 쓰는 쿠키와 세션."
 tags: ["http", "web", "browser", "security"]
 source: til
-date: "2026-10-13"
+date: "2026-10-20"
 sources: ["https://ko.javascript.info/cookie", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies", "https://web.dev/learn/privacy/third-parties", "https://privacysandbox.google.com/blog/privacy-sandbox-next-steps"]
 ---
 
@@ -88,17 +88,11 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 
 ## 세션
 
-세션 방식은 민감한 정보를 쿠키에 직접 담지 않는다. 서버가 세션 데이터를 저장하고, 브라우저에는 그 데이터를 찾을 **세션 ID**만 쿠키로 준다.
-
-```text
-브라우저 ── 로그인 ──▶ 서버: 세션 생성(DB/메모리), session id 발급
-브라우저 ◀─ Set-Cookie: sessionid=abc ── 서버
-브라우저 ── Cookie: sessionid=abc ──▶ 서버: id로 세션 조회 → 사용자 식별
-```
+세션 방식은 민감한 정보를 쿠키에 직접 담지 않는다. 서버가 세션 데이터를 저장하고, 브라우저에는 그 데이터를 찾을 **세션 ID**만 쿠키로 준다. 로그인부터 조회까지의 흐름은 [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]에 있다.
 
 로그아웃할 때는 서버의 세션을 지우고, 응답에 `Clear-Site-Data: "cookies", "storage"`를 붙여 브라우저에 남은 쿠키·저장소까지 지운다([[privacy-data-minimization|데이터 최소화와 프라이버시 실천]]).
 
-세션 저장소 확장(Redis), 세션 고정 공격, 토큰(JWT) 방식과의 비교는 [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]에 있다.
+세션 저장소 확장(Redis), 세션 고정 공격, 토큰(JWT) 방식과의 비교도 같은 노트에 있다.
 
 Django는 `SessionMiddleware`로 세션을 처리하고 세션 데이터를 DB에 둔다 → [[auth-user|Django User와 인증]].
 

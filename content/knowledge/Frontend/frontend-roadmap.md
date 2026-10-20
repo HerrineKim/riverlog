@@ -27,7 +27,7 @@ HTML → CSS → JavaScript → DOM·브라우저 → Git/GitHub → TypeScript
 | JavaScript | 화면을 어떻게 동적으로 바꾸는가. 타입, 함수, 비동기 | [[variables-and-types\|변수와 데이터 타입]], [[async-await\|async/await]] |
 | DOM·브라우저 | 브라우저는 문서를 어떤 구조로 들고 어떻게 그리는가 | [[dom\|DOM]], [[dom-manipulation\|DOM 조작]], [[browser-rendering\|브라우저 렌더링 과정]] |
 | Git/GitHub | 코드를 어떻게 관리·협업하는가 | [[git-basics\|Git 기초]] |
-| TypeScript | 타입으로 실수를 어떻게 컴파일 단계에서 잡는가. 사실상 필수다 | [[typescript-learning\|TypeScript 학습]] |
+| TypeScript | 타입으로 실수를 어떻게 컴파일 단계에서 잡는가. 사실상 필수다 | [[typescript-basics\|TypeScript 학습]] |
 | React | UI를 컴포넌트와 상태로 어떻게 조립하는가 | [[jsx\|JSX]], [[hooks\|Hooks]] |
 | 메타 프레임워크 | 라우팅·서버 렌더링·캐싱을 어떻게 고르는가 | [[nextjs\|Next.js를 쓰는 이유]], [[spa-csr-ssr\|SPA와 CSR·SSR]] |
 | 데이터 가져오기 | 프론트가 데이터를 어디서 어떻게 받아오는가 | [[ajax\|AJAX]], [[tanstack-query\|TanStack Query]] |

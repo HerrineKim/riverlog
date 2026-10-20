@@ -1,25 +1,52 @@
 ---
-title: "TypeScript 문법 한눈에 보기"
-concept: "TypeScript Syntax"
-summary: "TypeScript 문법을 사전처럼 찾아보기 위한 요약. 실행 환경(tsc·Vite·Node.js 타입 제거), 기본 타입과 any·unknown·never의 차이, 추론·단언·가드·satisfies, type과 interface, 제네릭(제약·const 타입 매개변수·조건부 타입), 함수 오버로드와 this, 클래스 수식어, 모듈과 @types, 구분된 유니언, 표준 데코레이터, 유틸리티 타입을 표 중심으로 정리한다."
-tags: ["typescript", "javascript", "frontend", "type-system"]
+title: "TypeScript: 개념과 문법 한눈에 보기"
+concept: "TypeScript"
+summary: "TypeScript는 JavaScript에 타입 검사와 자동완성을 더한 슈퍼셋이다. JavaScript가 정적 타입을 얻기까지의 역사와 흔한 오해, 실행 환경(tsc·Go로 다시 쓴 TypeScript 7·Vite·Node.js 타입 제거), 기본 타입과 any·unknown·never, 추론·단언·가드·satisfies, type과 interface, 제네릭, 함수 오버로드와 클래스 수식어, 모듈과 @types, 구분된 유니언, 표준 데코레이터, 유틸리티 타입을 표 중심으로 정리하고, 추론 → API 스키마 → 좁히기 → strict 순으로 익히는 순서를 덧붙인다."
+tags: ["typescript", "javascript", "frontend", "type-system", "tools"]
 source: other
-date: "2026-10-14"
-sources: ["https://www.heropy.dev/p/WhqSC8", "https://www.typescriptlang.org/docs/handbook/utility-types.html"]
+date: "2026-10-20"
+sources: ["https://www.heropy.dev/p/WhqSC8", "https://velog.io/@teo/typescript", "https://www.typescriptlang.org/docs/handbook/intro.html", "https://www.typescriptlang.org/docs/handbook/utility-types.html"]
 ---
 
-> HEROPY의 「[한눈에 보는 타입스크립트](https://www.heropy.dev/p/WhqSC8)」(2020.01 작성, 2026.08 갱신)를 바탕으로 재구성한 노트다.
+> HEROPY의 「[한눈에 보는 타입스크립트](https://www.heropy.dev/p/WhqSC8)」(2020.01 작성, 2026.08 갱신)를 바탕으로, 역사와 익히는 순서는 테오(teo)의 「[Typescript는 어떻게 공부해야 하나요?](https://velog.io/@teo/typescript)」(2022.02)로 보강해 재구성한 노트다.
 
 ## TypeScript란
 
-JavaScript에 **정적 타입 시스템**을 얹은 언어다. `.ts` 파일로 쓰고, 타입 검사를 거친 뒤 타입 표기를 지운 JavaScript로 실행한다. 오류를 런타임이 아니라 **코드를 입력하는 동안** 잡는 것이 목적이다. 왜 배우고 어떤 순서로 익히는지는 [[typescript-learning|TypeScript 학습법]]에 있다.
+TypeScript는 **JavaScript의 슈퍼셋(superset)** 이다. 모든 JavaScript 코드는 그대로 TypeScript 코드이고, 그 위에 **정적 타입 시스템**을 얹었다. `.ts` 파일로 쓰고, 타입 검사를 거친 뒤 타입 표기를 지운 JavaScript로 실행한다. 목적은 오류를 런타임이 아니라 **코드를 입력하는 동안** 잡고, 편집기 자동완성을 강하게 만드는 것이다. 타입이 틀려도 JavaScript로서는 돌아간다. 타입은 검증 도구일 뿐이다.
+
+웹 프론트엔드에서는 사실상 기본 언어다. npm 주요 라이브러리 대부분이 TypeScript로 쓰였거나 타입 선언을 제공한다.
+
+### JavaScript가 타입을 얻기까지
+
+JavaScript는 짧은 스크립트용으로 만들어져 타입과 클래스를 빼고 단순하게 설계됐다. 그 결과 **프로토타입 객체 기반·일급 함수·동적 타입**이라는 조합이 됐다.
+
+| 시도 | 결과 |
+| --- | --- |
+| ECMAScript 4 (1999~2008) | 클래스·정적 타입·인터페이스·제네릭을 넣으려 했으나 하위 호환과 이해관계 충돌로 폐기됐다. 그래서 ES3 다음이 ES5다. 이 초안을 이어받은 것이 Flash의 ActionScript 3다 |
+| CoffeeScript | 간결한 문법을 내세웠다. 화살표 함수·구조 분해·템플릿 리터럴이 ES6에 들어가는 데 영향을 줬다 |
+| Babel | 제안 단계 문법을 먼저 써 보게 했고, 호응을 얻은 문법(옵셔널 체이닝, `??` 등)이 표준이 됐다 |
+| TypeScript (2012, Microsoft) | 언어를 갈아엎지 않고 **슈퍼셋**으로 정적 타입의 장점만 더했다. VS Code 자동완성과 함께 퍼졌다 |
+
+동적 타입은 작은 코드에서는 유연하지만, 큰 팀이 정해진 스키마 위에서 일할 때는 **오타 하나가 실행해 봐야 드러나는** 비용이 크다. State of JS 설문에서 "JavaScript에 가장 필요한 기능"으로 정적 타입이 해마다 1위에 오르고, 타입 문법을 주석처럼 무시하고 실행하게 하자는 TC39 제안(Type Annotations)도 이 흐름에 있다.
+
+### 실행 환경
 
 | 실행 방법 | 설명 |
 | --- | --- |
-| `tsc` | 공식 컴파일러. `tsconfig.json`의 `compilerOptions`(`strict`, `target`, `module` 등)를 따른다 |
-| Vite 등 번들러 | `.ts`를 바로 import한다. 번들러는 타입을 **지우기만** 하므로 검사는 `tsc --noEmit`을 따로 돌린다 |
-| Node.js | 22.18·23.6부터 플래그 없이 `node main.ts`로 실행한다(타입 제거, type stripping). 24.12·25.2부터 안정 단계다. `enum`처럼 런타임 코드가 생기는 문법은 지원하지 않으므로 `erasableSyntaxOnly` 옵션으로 막아 둔다 |
+| `tsc` | 공식 컴파일러. `tsconfig.json`의 `compilerOptions`(`strict`, `target`, `module` 등)를 따른다. TypeScript 7.0(2026.07)부터 컴파일러가 Go로 다시 쓰여 큰 프로젝트의 빌드가 8~12배 빨라졌다. Vue·Svelte·Angular 템플릿 검사처럼 컴파일러 API에 기대는 도구는 안정 API가 나올 때까지 TypeScript 6을 쓴다 |
+| Vite 등 번들러 | `.ts`를 바로 import한다. 번들러(Babel, esbuild 포함)는 타입을 **지우기만** 하므로 검사는 편집기와 `tsc --noEmit`이 따로 한다 |
+| Node.js | 22.18·23.6부터 플래그 없이 `node main.ts`로 실행한다(타입 제거, type stripping). 24.12·25.2부터 안정 단계다. `enum`처럼 런타임 코드가 생기는 문법은 지원하지 않으므로 `erasableSyntaxOnly` 옵션으로 막아 둔다. Deno·Bun도 TypeScript를 기본 실행한다 |
 | TypeScript Playground | 브라우저에서 바로 실험한다 |
+
+과거의 단점(느린 `tsc`, 타입 없는 라이브러리의 `any` 범벅, 실행 전 빌드 필요)은 이렇게 대부분 사라졌다. 라이브러리 타입은 패키지 자체나 `@types/*`가 제공한다(아래 「모듈과 타입 선언」).
+
+### 흔한 오해
+
+| 오해 | 실제 |
+| --- | --- |
+| 새 정적 타입 언어라 배우기 어렵다 | JavaScript에 문법이 조금 더해진 것이다. 필요할 때 필요한 만큼만 배우면 된다 |
+| 클래스와 객체지향으로 짜야 한다 | JavaScript답게 함수와 객체로 짜고 **타입 검사 + 자동완성**만 얹는다 |
+| 협업엔 좋지만 당장 생산성은 떨어진다 | 자동완성 덕에 오히려 빨라진다. 생산성을 떨어뜨리는 것은 억지로 붙인 타입과 `any` 남발이다 |
 
 ## 타입 선언
 
@@ -161,13 +188,23 @@ function area(s: Shape) {
 | 추론 제어 | `NoInfer<T>` | 이 자리에서는 제네릭을 추론하지 않게 한다 |
 | 문자열 | `Uppercase`, `Lowercase`, `Capitalize`, `Uncapitalize` | 문자열 리터럴 타입 변환 |
 
+## 익히는 순서
+
+1. **세팅된 프로젝트로 시작한다.** `tsconfig.json` 옵션을 처음부터 다 이해하려 하지 말고 `npm create vite@latest`의 TypeScript 템플릿처럼 설정된 환경에서 시작한다. 라이브러리라면 tsdown 같은 번들 도구의 기본값을 쓴다. 빨간 줄이 너무 많으면 `any`로 덮지 말고 차라리 `strict`를 잠시 끈다.
+2. **변수와 함수 인자부터.** 기본 타입과 배열을 붙이고, 구조 분해한 인자에 타입 주는 법을 익힌다.
+3. **쓰기보다 추론에 맡긴다.** `let n: number = 10`은 중복이다. 추론되는 곳에 또 쓰면 바꿀 때 두 군데를 고쳐야 한다.
+4. **백엔드 스키마를 `interface`로.** `Promise<User>`를 반환하게 하면 API 응답 필드가 자동완성되고, 제네릭과 유틸리티 타입을 자연스럽게 만난다. 길어지는 콜백 타입은 `type`으로 빼서 이름을 붙인다.
+5. **유니언과 좁히기.** `User | null`을 조건문으로 좁히는 것이 중급의 관문이다. 핸드북의 Narrowing·Utility Types는 정독하지 말고 필요할 때 찾는다.
+6. **`strict: true`로 에러 0.** `as`·`any`·복잡한 타입 곡예가 생겼다면, 원래 쓰려던 JavaScript에 **최소한으로만 덧붙인 타입**인지 되묻는다.
+
 ## 정리
 
-- 타입은 추론에 맡기고, 경계(함수 인자, API 응답)에만 적는다.
+- TypeScript는 JavaScript의 슈퍼셋이고, 본질은 **타입 검사와 자동완성을 더해 주는 도구**다. 빌드할 때 타입은 지워진다.
+- 타입은 추론에 맡기고, 경계(함수 인자, API 응답, 공개 인터페이스)에만 적는다.
 - `any`보다 `unknown`, `as`보다 선언이나 `satisfies`를 쓴다.
 - 유니언은 구분자로 좁히고 `never`로 완전성을 검사한다.
 - `enum`, 생성자 매개변수 속성처럼 런타임 코드가 생기는 문법은 타입 제거 환경에서 동작하지 않는다.
 
 **TypeScript의 문법은 결국 "값의 모양을 적고, 좁히고, 변형하는" 세 가지 일이다.**
 
-관련 노트: [[typescript-learning|TypeScript 학습법]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[class|class 문법]], [[static-analysis|정적 분석: 실행하지 않고 검사하기]]
+관련 노트: [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[class|class 문법]], [[static-analysis|정적 분석: 실행하지 않고 검사하기]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]]

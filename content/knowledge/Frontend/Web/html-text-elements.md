@@ -61,7 +61,14 @@ HTML은 원래 문서를 나누려고 만든 언어라 글의 의미를 표시�
 | `<s>` | 더는 맞지 않지만 **지우지는 않은** 내용(지난 가격) | 취소선 |
 | `<del>` / `<ins>` | 문서에서 **지운** 글 / **넣은** 글. `cite`(변경 이유 URL), `datetime`(변경 일시) | 취소선 / 밑줄 |
 
-`<i>`, `<b>`, `<u>`는 한때 폐기 대상이었다가 위처럼 좁은 의미로 되살아났다. 모양 때문에 쓰지 않는다. `<del>`·`<ins>`로 수정 이력을 남기는 예는 [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]에 있다.
+`<i>`, `<b>`, `<u>`는 한때 폐기 대상이었다가 위처럼 좁은 의미로 되살아났다. 모양 때문에 쓰지 않는다.
+
+`<del>`·`<ins>`는 오래된 글의 사실을 고칠 때 이력을 남기기 좋다. `cite`에는 변경 이유를 설명하는 URL(버그 리포트 등)을, `datetime`에는 변경 일시를 넣는다.
+
+```html
+<del datetime="2023-12-19">Firefox는 iframe의 loading 속성을 지원하지 않는다.</del>
+<ins datetime="2023-12-19">Firefox 121부터 iframe의 loading 속성을 지원한다.</ins>
+```
 
 ## 기술 문서용 요소
 
@@ -113,4 +120,4 @@ HTML이 문법으로 쓰는 문자는 글자로 보이려면 **문자 참조**�
 - 줄 바꿈은 줄이 의미일 때만 `<br>`, 문단은 `<p>`, 주제 전환은 `<hr>`.
 - UTF-8 문서에서 꼭 이스케이프할 문자는 `<`와 `&`다.
 
-관련 노트: [[html|HTML 기초와 HTML5]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[multilingual-pages|다국어 페이지: lang·hreflang과 국제화]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]]
+관련 노트: [[html|HTML 기초와 HTML5]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[multilingual-pages|다국어 페이지: lang·hreflang과 국제화]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]]

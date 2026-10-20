@@ -66,4 +66,4 @@ sources: ["https://brunch.co.kr/@janegray/149"]
 
 좋은 글은 규칙을 지킨 글이 아니라, 독자가 규칙 위반을 알아챌 틈이 없는 글이다.
 
-관련 노트: [[persuasive-writing|글쓰기 원칙: 구조, 설득, 문장력]], [[online-writing|온라인 글쓰기]], [[ux-writing|UX 라이팅]]
+관련 노트: [[persuasive-writing|글쓰기 원칙: 구조, 설득, 문장력]], [[ux-writing|UX 라이팅]]

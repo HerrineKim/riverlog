@@ -12,7 +12,7 @@ sources: ["https://riverkim.kr/320", "https://riverkim.kr/125", "https://riverki
 
 ## 한눈에 보기
 
-면접 단골 질문이기도 한 이 흐름은 네트워크 노트 여러 편을 한 줄로 꿰는 지도 역할을 한다. 예로 `https://example.com/books/1`을 입력했다고 하자.
+이 흐름은 네트워크 노트 여러 편을 한 줄로 꿰는 지도 역할을 한다. 예로 `https://example.com/books/1`을 입력했다고 하자.
 
 ```text
 1. URL 해석        https  ://  example.com  /books/1
@@ -34,7 +34,7 @@ HTTP/3를 쓰는 서버라면 3·4단계가 UDP 위의 **QUIC 핸드셰이크 �
 | --- | --- | --- |
 | URL 해석 | 도메인 뒤 슬래시(`/`) 이후의 **경로**는 서버 안의 특정 리소스(페이지, API 엔드포인트)를 가리킨다 | [[http\|HTTP 프로토콜]]의 URI·URL·URN |
 | DNS 조회 | 도메인에 대응하는 서버 **IP 주소**를 알아낸다. 브라우저와 OS가 여러 층의 캐시를 먼저 보고, 없을 때만 DNS 서버에 묻는다 | [[dns\|DNS]] |
-| TCP 연결 | TCP/IP로 서버와 연결한다. IP는 패킷을 목적지 주소까지 전달하고, TCP는 순서와 무결성을 책임진다 | [[tcp\|TCP]], [[network-layer\|네트워크 계층 프로토콜]] |
+| TCP 연결 | TCP/IP로 서버와 연결한다. IP는 패킷을 목적지 주소까지 전달하고, TCP는 순서와 무결성을 책임진다 | [[transport-layer\|TCP]], [[network-layer\|네트워크 계층 프로토콜]] |
 | TLS 핸드셰이크 | HTTPS라면 브라우저와 서버가 암호화 키를 교환하고, 이후 데이터를 암호화해 주고받는다 | [[https\|HTTPS와 TLS]] |
 | HTTP 요청 | 요청 라인(메서드·경로·버전), 헤더(클라이언트 정보·인증·콘텐츠 타입), 필요하면 바디를 보낸다 | [[http\|HTTP 프로토콜]] |
 | 서버 처리 | 웹 서버가 받아 정적 파일을 내주거나 WAS로 넘겨 로직을 처리한다 | [[web-server-and-nginx\|웹 서버, WAS, 그리고 Nginx]] |

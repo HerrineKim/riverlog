@@ -4,7 +4,7 @@ concept: "JavaScript"
 summary: "브라우저를 조작할 수 있는 유일한 언어이자, ECMAScript 표준을 따르는 동적 타입 언어."
 tags: ["javascript", "frontend", "browser"]
 source: mixed
-date: "2026-10-13"
+date: "2026-10-20"
 ---
 
 JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이며, 브라우저(BOM)와 그 안의 문서(DOM)를 조작할 수 있는 유일한 언어다. 언어의 핵심 문법은 **ECMAScript** 표준으로 정의된다. ECMA International이 ECMA-262 규격으로 정의한 언어가 ECMAScript이고, 2015년에 발표된 6번째 판(ES6, ES2015)부터 `let`/`const`, 화살표 함수, Promise, 클래스 같은 현대적 문법이 대거 들어왔고, 이후 해마다 새 판(ES2016, ES2017 …)이 나온다.
@@ -16,15 +16,14 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [연산자와 제어문](/knowledge/dictionary/frontend/javascript/operators-and-control-flow): 연산자 우선순위, 형변환과 truthy·falsy, `==` vs `===`, 단축 평가와 `?.`·`??`, 삼항 연산자, if·switch, for·for...in·for...of
 - [문(Statement)과 식(Expression)](/knowledge/dictionary/frontend/javascript/statements-vs-expressions): 값을 만드는 식과 명령하는 문, 식 자리, `{}`·`function`의 문/식 해석 차이, JSX 중괄호가 식만 받는 이유
 - [함수와 this](/knowledge/dictionary/frontend/javascript/functions): 선언식·표현식, 화살표 함수, rest·spread, this와 bind·call·apply, 매개변수 기본값
-- [데코레이터와 콜 포워딩](/knowledge/dictionary/frontend/javascript/function-decorators): 함수를 감싸 기능을 더하는 래퍼, func.apply(this, args)로 this·인자 넘기기, call과 apply, 메서드 빌리기, 부분 적용과 partial
+- [데코레이터와 콜 포워딩](/knowledge/dictionary/frontend/javascript/function-decorators): 함수를 감싸 기능을 더하는 래퍼, func.apply(this, args)로 this·인자 넘기기, call과 apply, 메서드 빌리기, 래퍼가 잃는 함수 속성
 - [에러 처리: try...catch와 커스텀 에러](/knowledge/dictionary/frontend/javascript/js-error-handling): try·catch·finally가 못 잡는 것, finally와 return, 에러 객체와 내장 에러 종류, 다시 던지기, Error 상속과 cause로 예외 감싸기, 전역 에러 이벤트
 - [스코프와 클로저](/knowledge/dictionary/frontend/javascript/scope-and-closures): 전역·모듈·함수·블록 스코프, 렉시컬 스코프, 호이스팅과 TDZ, 클로저로 만드는 팩토리·비공개 상태
 - [배열·객체 다루기](/knowledge/dictionary/frontend/javascript/arrays-and-objects): 주요 메서드, map·filter·reduce, 원본을 바꾸지 않는 toSorted·with, ES6 객체 문법, 구조 분해, JSON
 - [Map과 Set](/knowledge/dictionary/frontend/javascript/map-and-set): 객체 대신 Map을 쓸 때, 키의 종류와 순서, Set으로 중복 제거, WeakMap
 - [숫자와 Math](/knowledge/dictionary/frontend/javascript/js-numbers): 반올림 메서드, 난수 정수, Number vs parseInt, NaN, 0.1 + 0.2, 돈은 정수로, Intl.NumberFormat
 - [JavaScript 주석: 쓰는 법과 네 가지 문법](/knowledge/dictionary/frontend/javascript/js-comments): `//`·`/* */`의 동작, 해시뱅 `#!`, HTML 유사 주석 `<!--`의 유래
-- [템플릿 리터럴](/knowledge/dictionary/frontend/javascript/template-literals): 여러 줄·표현식 삽입·중첩, 태그드 템플릿과 styled-components의 원리
-- [문자열 다루기](/knowledge/dictionary/frontend/javascript/js-strings): UTF-16과 불변성, 검색·slice, localeCompare·Intl.Collator, 서로게이트 쌍·normalize·Intl.Segmenter
+- [문자열 다루기](/knowledge/dictionary/frontend/javascript/js-strings): UTF-16과 불변성, 템플릿 리터럴과 태그드 템플릿, 검색·slice, localeCompare·Intl.Collator, 서로게이트 쌍·normalize·Intl.Segmenter
 - [구조 분해 할당](/knowledge/dictionary/frontend/javascript/destructuring): 배열·객체 패턴, undefined일 때만 쓰는 기본값, 이름 바꾸기·중첩, 똑똑한 함수 매개변수와 = {}
 - [JSON: stringify와 parse](/knowledge/dictionary/frontend/javascript/json): 빠지거나 바뀌는 값, replacer·space·toJSON, reviver, 큰 정수와 JSON.rawJSON
 - [객체의 원시형 변환](/knowledge/dictionary/frontend/javascript/object-to-primitive): hint 세 가지, Symbol.toPrimitive·valueOf·toString 순서, [] + {}의 이유
@@ -37,11 +36,9 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [모듈: export와 import](/knowledge/dictionary/frontend/javascript/es-modules): named export와 default export, export default 논쟁
 - [JavaScript 디자인 패턴: 생성 패턴](/knowledge/dictionary/frontend/javascript/js-design-patterns): 생성자·모듈·싱글톤·프로토타입 패턴과 프로토타입 기반 언어의 차이
 - [자바스크립트에서 타임존 다루기](/knowledge/dictionary/frontend/javascript/timezone): 타임존 ≠ 오프셋, 서머타임, IANA tz database, Date와 서버 간 시간 주고받기, 오프셋 계산의 한계
-- [TypeScript 학습법](/knowledge/dictionary/frontend/javascript/typescript-learning): 슈퍼셋이라는 본질, JavaScript가 정적 타입을 얻기까지, 흔한 오해, 추론·스키마·좁히기·strict 순서의 로드맵
-- [TypeScript 문법 한눈에 보기](/knowledge/dictionary/frontend/javascript/typescript-basics): 실행 환경, any·unknown·never, 단언·가드·satisfies, type vs interface, 제네릭, 구분된 유니언, 데코레이터, 유틸리티 타입
+- [TypeScript: 개념과 문법 한눈에 보기](/knowledge/dictionary/frontend/javascript/typescript-basics): 슈퍼셋이라는 본질과 타입을 얻기까지의 역사, 실행 환경(TypeScript 7·Node.js 타입 제거), any·unknown·never, 단언·가드·satisfies, type vs interface, 제네릭, 구분된 유니언, 데코레이터, 유틸리티 타입, 익히는 순서
 - [TypeScript 코딩 컨벤션](/knowledge/dictionary/frontend/javascript/typescript-coding-convention): 이름 짓기, 타입, 클래스, 배열 메서드, 에러 처리, 모듈 규칙을 필수·권장 등급과 이유로 정리
 - [TypeScript로 동적인 코드에 정적 타입 입히기](/knowledge/dictionary/frontend/javascript/typescript-advanced-types): 리터럴 유니온, never, 제네릭, 템플릿 리터럴 타입, infer 재귀로 라우트 매개변수 추출
-- [명확한 코드의 네 가지 원칙](/knowledge/dictionary/frontend/javascript/clear-code-principles): 단일 책임, 명령-질의 분리, 낮은 결합도, 높은 응집도
 - [ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md): 품질은 ESLint, 모양은 Prettier로 역할 나누기, 저장 시 자동 수정 에디터 설정, flat config 읽는 법과 ESLint 10에서 제거된 `.eslintrc`
 - [strict mode(엄격 모드)](/knowledge/dictionary/frontend/javascript/strict-mode): "use strict" 켜는 법, 모듈·class 자동 적용, 암묵적 전역·조용한 실패·this가 바뀌는 동작
 - [속성 설명자](/knowledge/dictionary/frontend/javascript/property-descriptors): writable·enumerable·configurable, getter·setter 접근자, defineProperty 기본값, freeze·seal
@@ -51,11 +48,11 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 
 ### 프로그래밍 패러다임
 - [객체 지향 프로그래밍과 JavaScript](Frontend/JavaScript/oop-and-javascript.md): 구조체에서 클래스로, 캡슐화·상속·추상화·다형성, 프로토타입·덕 타이핑·일급 함수로 푼 JavaScript의 OOP
-- [함수형 프로그래밍](Frontend/JavaScript/functional-programming.md): 액션·계산·데이터, 카피 온 라이트와 방어적 복사, 계층형 설계와 추상화 벽, 입력→화면 파이프라인
+- [함수형 프로그래밍](Frontend/JavaScript/functional-programming.md): 액션·계산·데이터, 카피 온 라이트와 방어적 복사, 계층형 설계와 추상화 벽, 입력→화면 파이프라인, 커링과 부분 적용(partial)
 - [반응형 프로그래밍과 RxJS](Frontend/JavaScript/reactive-programming.md): 변경 전파와 선언적 데이터 흐름, Pull→Push와 제어의 역전, Observable과 연산자, Hot·Cold
 
 ### 브라우저와 함께
-- [DOM 조작과 이벤트](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·탐색(closest), 속성과 dataset, classList, 생성·삽입(insertAdjacent*, DocumentFragment), 문자열 HTML, 삭제, addEventListener 기본
+- [DOM 조작](/knowledge/dictionary/frontend/javascript/dom-manipulation): 선택·탐색(closest), 속성과 dataset, classList, 생성·삽입(insertAdjacent*, DocumentFragment), 문자열 HTML, 삭제
 - [DOM 이벤트: 전파, 위임, 커스텀 이벤트](/knowledge/dictionary/frontend/javascript/dom-events): 캡처·버블과 target·currentTarget, 이벤트 위임, once·passive·signal 옵션, 핸들러 할당 방식·handleEvent, 기본 동작과 defaultPrevented, Event·CustomEvent 생성과 동기 dispatch, 바깥 클릭 감지
 - [요소 크기·스크롤·좌표](/knowledge/dictionary/frontend/javascript/dom-geometry): offset·client·scroll 속성, 창 크기·문서 높이, scrollTo·scrollIntoView, 창·문서 좌표, getBoundingClientRect, elementFromPoint
 - [마우스·포인터·키보드 이벤트](/knowledge/dictionary/frontend/javascript/ui-input-events): 마우스 이벤트와 보조키, over/out과 enter/leave, 포인터 이벤트·포인터 캡처, 직접 만드는 드래그 앤 드롭, key와 code
@@ -85,6 +82,6 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 
 ## 코딩 스타일
 
-- 세미콜론은 선택 사항이다. 생략하면 ASI(Automatic Semicolon Insertion) 규칙에 따라 자동으로 삽입된다. 어느 쪽이든 팀 안에서 일관되게 쓰는 것이 중요하다.
+- 세미콜론은 선택 사항이다. 생략하면 ASI(Automatic Semicolon Insertion) 규칙에 따라 자동으로 삽입되고, 그 함정은 [[statements-vs-expressions|문(Statement)과 식(Expression)]]에 있다. 어느 쪽이든 팀 안에서 일관되게 쓴다.
 - 코드 리뷰에서 반복해서 나온 스타일 지적(const, else, 기본값, 불리언 이름 등)은 [코드 리뷰에서 자주 나온 지적](/knowledge/dictionary/tools/code-review/review-patterns)에 모았다.
 - 스타일의 핵심은 "합의된 원칙과 일관성"이다. 참고할 만한 가이드: [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript), [Google JavaScript Style Guide](https://google.github.io/styleguide/jsguide.html), [standardjs](https://standardjs.com/). 실무에서는 ESLint와 Prettier로 자동화한다([ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md)).

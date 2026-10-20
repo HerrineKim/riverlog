@@ -1,10 +1,10 @@
 ---
-title: "Django Model과 Migration"
+title: "Django Model, Migration과 Admin"
 concept: "Django Model"
-summary: "models.py의 클래스로 DB 테이블 구조를 정의하고, makemigrations·migrate로 그 변경을 데이터베이스에 반영하는 방법."
-tags: ["django", "database", "orm", "python"]
+summary: "models.py의 클래스로 DB 테이블 구조를 정의하고, makemigrations·migrate로 그 변경을 데이터베이스에 반영하며, admin.py에 모델을 등록해 관리자 페이지에서 데이터를 확인·편집하는 방법."
+tags: ["django", "database", "orm", "python", "admin"]
 source: til
-date: "2026-10-13"
+date: "2026-10-20"
 ---
 
 Model은 **웹 애플리케이션의 데이터를 구조화하고 조작하기 위한 도구**다. 저장할 데이터의 필드와 동작을 정의하며, 일반적으로 모델 하나가 DB 테이블 하나에 매핑된다. 기본 DB는 SQLite다.
@@ -76,8 +76,37 @@ COMMIT;
 
 모델을 정의하면 Django가 `Article.objects`(Manager)를 붙여 CRUD용 QuerySet API를 자동으로 만든다. 사용법은 [[orm-queryset|Django ORM과 QuerySet]]에 있다.
 
+## Admin으로 데이터 확인하기
+
+`django.contrib.admin`은 모델을 등록하기만 하면 목록·생성·수정·삭제 화면을 자동으로 만든다. 레코드가 제대로 생기는지 확인하거나 테스트 데이터를 넣을 때 쓴다. 로그인·권한은 `django.contrib.auth`를 쓴다.
+
+```bash
+python manage.py createsuperuser   # 관리자 계정 생성 → runserver 후 /admin 접속
+```
+
+```python
+# articles/admin.py
+from django.contrib import admin
+from .models import Article
+
+@admin.register(Article)              # = admin.site.register(Article, ArticleAdmin)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'title', 'created_at')   # 목록에 보일 열
+```
+
+| `ModelAdmin` 옵션 | 효과 |
+| --- | --- |
+| `list_display` | 목록 화면에 보일 필드 |
+| `list_filter` | 오른쪽 필터 사이드바 |
+| `search_fields` | 검색창 대상 필드 |
+| `ordering` | 기본 정렬 |
+| `readonly_fields` | 수정 불가 필드 |
+
+> 흔한 실수: `ModelAdmin` 클래스를 정의만 하고 `register(Article)`처럼 모델만 넘기면 설정이 적용되지 않는다. `list_display`에 없는 필드 이름을 쓰면 시스템 체크 오류(`admin.E108`)가 난다. 옵션 전체는 [ModelAdmin options](https://docs.djangoproject.com/en/stable/ref/contrib/admin/#modeladmin-options).
+
 ## 핵심 정리
 
 - 모델 클래스 = 테이블, 클래스 속성 = 열, 인스턴스 = 행.
 - 모델을 바꾸면 항상 `makemigrations` → `migrate`.
 - `auto_now_add`는 생성 시각, `auto_now`는 수정 시각.
+- 관리자 페이지는 `createsuperuser` → `@admin.register(Model)` + `ModelAdmin` 옵션.

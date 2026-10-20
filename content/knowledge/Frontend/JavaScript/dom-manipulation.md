@@ -1,10 +1,10 @@
 ---
-title: "DOM 조작과 이벤트"
+title: "DOM 조작"
 concept: "DOM API"
-summary: "JavaScript로 DOM 요소를 선택·탐색하고(live·static 컬렉션, 표 탐색 속성), 노드의 종류와 내용(innerHTML+=의 함정, outerHTML 대입, textContent)을 다루고, 속성(property)과 어트리뷰트(attribute)의 동기화 규칙, 클래스와 인라인 스타일·계산된 스타일을 읽고 쓰고, 요소를 만들어 원하는 위치에 넣고 지우는 방법. 문자열 HTML을 넣는 법과 위험, 리플로우를 줄이는 일괄 삽입, addEventListener로 이벤트를 받는 기본까지 다룬다."
+summary: "JavaScript로 DOM 요소를 선택·탐색하고(live·static 컬렉션, 표 탐색 속성), 노드의 내용(innerHTML+=의 함정, outerHTML 대입, textContent)을 다루고, 속성(property)과 어트리뷰트(attribute)의 동기화 규칙, 클래스와 인라인 스타일·계산된 스타일을 읽고 쓰고, 요소를 만들어 원하는 위치에 넣고 지우는 방법. 문자열 HTML을 넣는 법과 위험, 리플로우를 줄이는 일괄 삽입까지 다룬다."
 tags: ["javascript", "dom", "browser", "event", "frontend"]
 source: mixed
-date: "2026-10-17"
+date: "2026-10-20"
 sources: ["https://ko.javascript.info/dom-navigation", "https://ko.javascript.info/searching-elements-dom", "https://ko.javascript.info/basic-dom-node-properties", "https://ko.javascript.info/dom-attributes-and-properties", "https://ko.javascript.info/modifying-document", "https://ko.javascript.info/styles-and-classes", "https://wesbos.com/javascript/04-the-dom/selecting-elements", "https://wesbos.com/javascript/04-the-dom/element-properties-and-methods", "https://wesbos.com/javascript/04-the-dom/working-with-classes", "https://wesbos.com/javascript/04-the-dom/built-in-and-custom-data-attributes", "https://wesbos.com/javascript/04-the-dom/creating-html", "https://wesbos.com/javascript/04-the-dom/html-from-strings-and-xss", "https://wesbos.com/javascript/04-the-dom/traversing-and-removing-nodes", "https://wesbos.com/javascript/05-events/event-listener"]
 ---
 
@@ -90,16 +90,6 @@ card.contains(button)                   // 자손인가(boolean)
 | `<td>`·`<th>` | `cellIndex` |
 
 `table.rows[0].cells[1]`처럼 쓴다. HTML에 `<tbody>`를 생략해도 파서가 DOM에 `<tbody>`를 넣는다는 점에 주의한다([[dom|DOM과 BOM]]). 폼에도 `form.elements` 같은 전용 탐색 속성이 있다([[form-controls-dom|폼 컨트롤과 포커스 이벤트]]).
-
-## 노드의 종류와 이름
-
-| 속성 | 내용 |
-| --- | --- |
-| `nodeType` | 숫자. `1` 요소, `3` 텍스트, `8` 주석, `9` 문서. 읽기 전용인 옛 방식이며 지금은 `instanceof`(`node instanceof HTMLElement`)를 주로 쓴다 |
-| `nodeName` | 모든 노드에 있다. 요소면 태그 이름, 아니면 `#text`·`#comment`·`#document` |
-| `tagName` | **요소에만** 있다. 다른 노드에서는 `undefined` |
-
-HTML 문서에서 `tagName`·`nodeName`은 항상 **대문자**(`'BODY'`)다. XML로 처리된 문서만 원래 대소문자를 지킨다. 그래서 비교는 `el.tagName === 'A'`나 `el.matches('a')`로 한다.
 
 ## 속성(property)과 어트리뷰트(attribute)
 
@@ -276,24 +266,7 @@ ul.replaceChildren() // 자식 전부 비우기
 
 ## 이벤트 받기
 
-```javascript
-target.addEventListener(type, listener[, options])
-
-function handleClick(event) {
-  console.log(event.currentTarget) // 리스너가 붙은 요소
-}
-btn.addEventListener('click', handleClick)    // 함수를 호출하지 말고 참조를 넘긴다
-btn.removeEventListener('click', handleClick) // 같은 함수 참조여야 지워진다
-
-buttons.forEach((b) => b.addEventListener('click', handleClick)) // NodeList에는 직접 못 붙인다
-```
-
-- 모든 노드는 `EventTarget`을 상속하므로 요소·`document`·`window` 모두 리스너를 받는다.
-- `handleClick()`처럼 괄호를 붙이면 등록 시점에 바로 실행된다.
-- 익명 함수로 등록한 리스너는 지울 수 없다. 지울 일이 있으면 이름 있는 함수나 `signal` 옵션을 쓴다.
-- 리스너는 첫 인자로 **이벤트 객체**를 받는다. `target`·`currentTarget`의 차이, 버블링·캡처, `preventDefault`·`stopPropagation`, 이벤트 위임, `once`·`passive`·`signal` 옵션, 커스텀 이벤트는 [[dom-events|DOM 이벤트]]에서 다룬다.
-
-React에서는 JSX 속성에 함수를 넘긴다(`onClick={handleClick}`) → [[react-events|React 이벤트 처리]].
+요소에 리스너를 붙이는 `addEventListener`와 지우는 법, 전파·위임·옵션은 [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]]에 있다. 노드가 어떤 종류인지(`nodeType`·`nodeName`·`tagName`) 확인하는 법은 [[dom|DOM과 BOM]]에 있다.
 
 ## 핵심 정리
 

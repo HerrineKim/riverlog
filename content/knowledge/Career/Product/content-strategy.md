@@ -98,4 +98,4 @@ sources: ["https://webactually.com/2015/04/15/%ec%84%b1%ea%b3%b5%ec%a0%81%ec%9d%
 - 핵심 모델 워크숍은 유입 경로 → 핵심 콘텐츠 → 이동 경로 → 모바일 우선순위로 진행하고, 이동 경로는 맥락에 맞춘다.
 - 메뉴를 두고 싸우는 대신 사용자 작업에 집중하면 팀의 대화가 바뀐다.
 
-관련 노트: [[digital-transformation|조직의 디지털 전환과 웹 거버넌스]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[product-minded-engineer|제품 중심 개발자]], [[online-writing|온라인 글쓰기]]
+관련 노트: [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[digital-transformation|조직의 디지털 전환과 웹 거버넌스]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[product-minded-engineer|제품 중심 개발자]], [[persuasive-writing#6. 온라인 글: 읽는 글이 아니라 보는 글|온라인 글쓰기]]

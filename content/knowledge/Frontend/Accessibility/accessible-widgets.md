@@ -309,4 +309,4 @@ carousel.addEventListener('mouseenter', () => stop());
 - 캐러셀은 피하는 게 최선이다. 쓰면 정지 버튼, 포커스·호버 시 정지, 숨은 슬라이드 차단, 회전 중 `aria-live="off"`를 갖춘다.
 - 상태 속성은 화면과 같은 핸들러에서 갱신하고, 스타일도 그 속성에 건다.
 
-관련 노트: [[aria-basics|ARIA와 접근 가능한 이름]], [[accessible-design-process|디자인 단계의 접근성]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[color-motion-accessibility|색과 움직임의 접근성]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]], [[html-interactive-elements|포커스 속성과 details·dialog]], [[aria-widget-patterns|복합 위젯의 ARIA 패턴: 콤보박스·날짜 선택기·메뉴·상태 알림]]
+관련 노트: [[aria-basics|ARIA와 접근 가능한 이름]], [[accessible-design-process|디자인 단계의 접근성]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[color-motion-accessibility|색과 움직임의 접근성]], [[Accessibility|웹 접근성]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[html|HTML 기초와 HTML5]], [[html-interactive-elements|포커스 속성과 details·dialog]], [[aria-widget-patterns|복합 위젯의 ARIA 패턴: 콤보박스·날짜 선택기·메뉴·상태 알림]]

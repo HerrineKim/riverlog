@@ -4,7 +4,7 @@ concept: "WordPress"
 summary: "웹의 큰 몫을 차지하는 오픈 소스 CMS 워드프레스. '옵션이 아닌 결정', 80% 규칙 같은 설계 철학, 테마·플러그인을 고르는 기준, 사이트를 빠르게 하는 순서, 실력을 쌓는 길과 GPL 위에서 돌아가는 비즈니스 모델을 정리했다."
 tags: ["tools", "wordpress", "cms", "performance", "open-source"]
 source: other
-date: "2026-10-13"
+date: "2026-10-20"
 sources: ["https://webactually.com/2011/11/22/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4%ec%9d%98-%ec%b2%a0%ed%95%99/", "https://webactually.com/2011/11/15/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4-%ec%a0%84%ec%84%b8%ea%b3%84-%ec%83%81%ec%9c%84100%eb%a7%8c%ea%b0%9c-%ec%82%ac%ec%9d%b4%ed%8a%b8-%ec%a4%91-14-7%ea%b0%80-%ec%82%ac%ec%9a%a9/", "https://webactually.com/2011/11/22/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4-%ea%b8%b0%ec%97%85-%ed%95%b5%ec%8b%ac%eb%a7%9d%eb%8f%84-%ec%98%a4%ed%94%88%ec%86%8c%ec%8a%a4-%ec%8d%a8%ec%95%bc/", "https://webactually.com/2015/04/17/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4-%ed%85%8c%eb%a7%88%eb%a5%bc-%ea%b3%a0%eb%a5%bc%eb%95%8c-%ea%b3%a0%eb%a0%a4%ed%95%a0-%ea%b2%83%eb%93%a4/", "https://webactually.com/2014/12/04/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4-%ec%82%ac%ec%9d%b4%ed%8a%b8%ec%9d%98-%ec%86%8d%eb%8f%84%eb%a5%bc-%eb%86%92%ec%97%ac%eb%9d%bc/", "https://webactually.com/2012/11/08/%ec%b5%9c%ea%b3%a0%ec%9d%98-%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4-%ea%b0%9c%eb%b0%9c%ec%9e%90%ea%b0%80-%eb%90%98%eb%8a%94-%eb%b0%a9%eb%b2%95/", "https://webactually.com/2012/07/10/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4%eb%a5%bc-%eb%91%98%eb%9f%ac%ec%8b%bc-%eb%b9%84%ec%a6%88%eb%8b%88%ec%8a%a4-%ec%9d%b4%ec%95%bc%ea%b8%b0-part1/", "https://webactually.com/2012/09/17/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4%ec%99%80-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%eb%94%94%ec%9e%90%ec%9d%b8-%ec%9d%b8%ed%84%b0%eb%b7%b0-with-%ed%81%ac%eb%a6%ac%ec%8a%a4-%ec%bd%94/", "https://wordpress.org/about/philosophy/", "https://w3techs.com/technologies/details/cm-wordpress"]
 ---
 
@@ -39,7 +39,7 @@ wordpress.org가 밝힌 철학은 CMS를 넘어 제품 설계 일반에 통하�
 | 목소리 큰 소수 | 포럼에 의견을 남기는 사람은 실사용자의 1%도 안 된다. 그들의 말을 듣되, 행사 등에서 조용한 다수를 직접 만나 균형을 잡는다 |
 | 권리 장전(GPL) | GPLv2 이상 라이선스로 실행·학습·수정·재배포의 네 가지 자유를 보장한다. 테마와 플러그인 같은 파생 저작물에도 이어진다 |
 
-오픈 소스 도구에 익숙한 직원들은 몇 초면 끝날 일을 몇 분씩 붙잡게 하는 낡은 사내 CMS를 참지 않는다. 오픈 소스 CMS가 기업 시스템으로 들어가는 이유다.
+이 원칙 덕분에 쓰기 쉬운 오픈 소스 CMS가 기업 사내 시스템으로도 들어간다.
 
 ## 테마 고르기
 
@@ -107,7 +107,7 @@ wordpress.org가 밝힌 철학은 CMS를 넘어 제품 설계 일반에 통하�
 | 컨설팅·개발 | 플러그인·테마 선택과 함정을 미리 아는 경험, 비즈니스 목표에 맞춘 범위 조정 |
 | 번역·다국어 | 다국어 사이트를 만드는 도구와 번역 서비스 |
 
-공통 패턴은 **자기 불편에서 출발**했다는 것이다. 트래픽이 몰릴 때마다 블로그가 죽는 문제가 호스팅 회사가 되고, 번역의 고통이 번역 서비스가 된다. 다만 좋은 아이디어가 모두 좋은 비즈니스는 아니다. 시장에서 직접 확인해야 하고, 수익이 나기까지 몇 달이 걸린다. 프로젝트 값을 정하는 법은 [[project-pricing|웹 프로젝트 가격 책정]]에 따로 정리했다.
+공통 패턴은 **자기 불편에서 출발**한다는 것이다. 다만 좋은 아이디어가 모두 좋은 비즈니스는 아니므로 시장에서 직접 확인해야 한다. 프로젝트 값을 정하는 법은 [[project-pricing|웹 프로젝트 가격 책정]]에 따로 정리했다.
 
 ## 정리
 

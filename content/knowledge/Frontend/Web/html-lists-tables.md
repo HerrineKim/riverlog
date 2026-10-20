@@ -165,4 +165,4 @@ sources: ["https://web.dev/learn/html/lists", "https://web.dev/learn/html/tables
 - 머리글은 `<th>`와 `scope`, 복잡하면 `headers`. 하지만 먼저 표를 단순하게 만든다.
 - 열 스타일은 `<col>`로 일부만 되고, 나머지 표 모양은 CSS로 정한다.
 
-관련 노트: [[html|HTML 기초와 HTML5]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]], [[html-links-navigation|링크와 내비게이션 마크업]], [[semantic-html|시맨틱 HTML과 문서 구조]]
+관련 노트: [[html|HTML 기초와 HTML5]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[html-links-navigation|링크와 내비게이션 마크업]], [[semantic-html|시맨틱 HTML과 문서 구조]]

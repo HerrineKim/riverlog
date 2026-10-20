@@ -4,7 +4,7 @@ concept: "Multi Agent"
 summary: "여러 AI 에이전트가 조사·작성·검토·실행 역할을 나눠 일하는 방식. 목표 설정 → 분업 → 병렬 수행 → 통합 → 검토로 돌아가며, 에이전트 수보다 역할 설계와 연결(공유 컨텍스트·가드레일)이 품질을 좌우한다."
 tags: ["ai", "llm", "agent", "architecture"]
 source: mixed
-date: "2026-10-13"
+date: "2026-10-20"
 sources: ["https://riverkim.kr/331", "https://learn.microsoft.com/en-us/agent-framework/overview/", "https://code.claude.com/docs/en/sub-agents"]
 ---
 
@@ -73,7 +73,7 @@ sources: ["https://riverkim.kr/331", "https://learn.microsoft.com/en-us/agent-fr
 | 전문화: 역할별로 더 정교한 지시·도구 | 비용·지연: 에이전트가 늘수록 호출 비용과 시간도 는다 |
 | 확장성: 업무가 커져도 구조적으로 늘리기 쉽다 | 최종 책임: 중요한 결정은 사람의 검수와 판단이 필요하다 |
 
-역할 설계와 컨텍스트 관리가 어렵다면 에이전트를 여럿 두는 대신 **하네스 하나 + 외부 위임**으로 푸는 길도 있다. [[design-system-agent-harness#기법 2. 멀티 에이전트 대신 "하네스 + 외부 위임"|디자인 시스템을 아는 화면 생성 에이전트 설계하기]]의 기법 2가 그 예다.
+역할 설계와 컨텍스트 관리가 어렵다면 에이전트를 여럿 두는 대신 **하네스 하나 + 외부 위임**으로 푸는 길도 있다. [[design-system-agent-harness#멀티 에이전트 대신 "하네스 + 외부 위임"|디자인 시스템을 아는 화면 생성 에이전트 설계하기]]의 「멀티 에이전트 대신 하네스 + 외부 위임」이 그 예다.
 
 ## 주요 프레임워크
 

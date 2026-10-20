@@ -48,7 +48,7 @@ sources: ["https://www.youtube.com/watch?v=1Vn8et-MdaI", "https://frontend-funda
 | 한쪽만 고치면 버그·장애가 난다 | 응집도 | 공통화·추상화한다 |
 | 위험이 크지 않다, 앞으로 달라질 여지가 있다 | 가독성·결합도 | 중복을 허용한다 |
 
-"응집도와 결합도가 충돌하면 응집도를 먼저"라는 일반 원칙([[clear-code-principles|명확한 코드의 네 가지 원칙]])도 있지만, 프론트엔드처럼 화면마다 요구사항이 갈라지기 쉬운 곳에서는 **위험이 낮은 중복은 남겨 두는 편이 변경에 더 강하다.** 결국 지금 상황에서 장기적으로 무엇을 우선할지 매번 고르는 일이다.
+"응집도와 결합도가 충돌하면 응집도를 먼저"라는 일반 원칙도 있지만, 프론트엔드처럼 화면마다 요구사항이 갈라지기 쉬운 곳에서는 **위험이 낮은 중복은 남겨 두는 편이 변경에 더 강하다.** 결국 지금 상황에서 장기적으로 무엇을 우선할지 매번 고르는 일이다.
 
 ## 왜 품질을 챙기나
 
@@ -113,4 +113,4 @@ sources: ["https://www.youtube.com/watch?v=1Vn8et-MdaI", "https://frontend-funda
 - 품질은 동료와 비즈니스 속도를 위한 것이다. 눈이 편한 가독성은 린터에, 머리가 편한 가독성은 설계와 리뷰에 맡기고, 짬짬이 정리하며 일정 산정으로 지킨다.
 - 논쟁적인 스타일은 근거를 놓고 팀이 정한 뒤 린터에 맡긴다.
 
-관련 노트: [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[readable-code|게슈탈트 법칙으로 보는 읽기 좋은 코드]], [[principles|코드 리뷰 원칙과 체크리스트]], [[conditional-rendering|조건부 렌더링]], [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]]
+관련 노트: [[clean-code-functions-naming|클린 코드: 함수와 이름]], [[code-readability|가독성을 높이는 전략]], [[principles|코드 리뷰 원칙과 체크리스트]], [[conditional-rendering|조건부 렌더링]], [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]]

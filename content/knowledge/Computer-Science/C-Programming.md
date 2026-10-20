@@ -12,8 +12,7 @@ C는 메모리를 직접 다루는 언어라서, 주소와 포인터를 이해�
 ### 언어 기초
 
 - [C 기초: 컴파일, 자료형, 배열과 문자열](Computer-Science/C-Programming/c-basics.md) — 정보의 표현, 4단계 컴파일 과정, 자료형 크기, 배열과 널 종단 문자열, 명령행 인자
-- [포인터와 메모리](Computer-Science/C-Programming/pointers-and-memory.md) — 16진수와 주소, 포인터, 문자열의 정체, malloc/free, 메모리 영역(스택·힙)
-- [C 포인터의 함정](Computer-Science/C-Programming/c-pointer-pitfalls.md) — 배열과 포인터의 차이, 읽기 전용 리터럴, const 위치, 이중 포인터, 댕글링 포인터, memmove, new/delete 짝
+- [포인터와 메모리](Computer-Science/C-Programming/pointers-and-memory.md) — 주소와 포인터, 문자열의 정체, malloc/free와 저장 기간, 스택·힙, 배열과 포인터의 차이, 읽기 전용 리터럴, const 위치, 이중 포인터, 댕글링 포인터, memmove, new/delete 짝
 - [C의 정수 자료형과 형 변환](Computer-Science/C-Programming/c-integer-types.md) — 플랫폼별 크기, stdint.h와 size_t, 정수 승격, 부호 확장, 오버플로 미정의 동작, 고정소수점
 - [구조체와 함수 포인터](Computer-Science/C-Programming/c-struct-and-function-pointer.md) — 구조체 패딩, 함수 포인터와 콜백, 불투명 포인터와 가상 함수 테이블로 객체 흉내 내기
 - [C의 스코프와 링키지](Computer-Science/C-Programming/c-scope-and-linkage.md) — 스코프와 이름 가림, 네 가지 이름 공간, 저장 기간, static과 내부 링키지, 기호 상수

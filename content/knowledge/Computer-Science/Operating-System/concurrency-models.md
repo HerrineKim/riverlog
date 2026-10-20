@@ -4,7 +4,7 @@ concept: "Concurrency Models"
 summary: "동시성(논리적으로 함께 진행)과 병렬(물리적으로 동시에 실행), 동기·비동기(완료를 누가 확인하나)와 블로킹·논블로킹(제어권을 바로 돌려받나)을 구분하고, 스레드보다 가벼운 실행 단위(파이버·코루틴·그린 스레드·가상 스레드), async/await와 CPS, Reactor·Proactor, 공유 메모리 대신 메시지를 쓰는 CSP·액터, Go·Tokio·BEAM 런타임의 스케줄링, GIL과 그 대안을 한 지도로 정리한다."
 tags: ["computer-science", "os", "concurrency", "async", "process", "performance"]
 source: other
-date: "2026-10-14"
+date: "2026-10-20"
 sources: ["https://black7375.tistory.com/90", "https://peps.python.org/pep-0703/", "https://openjdk.org/jeps/444"]
 ---
 
@@ -134,7 +134,7 @@ Go 채널은 내부적으로 링 버퍼 + 뮤텍스이고, 보내기·받기 인
 
 ### JVM: 가상 스레드
 
-과거 JVM의 그린 스레드는 OS 스레드 하나에 여러 스레드를 올리는 N:1 구조라 멀티코어를 못 써서 버려졌다. Java 21(2023)에 정식 도입된 **가상 스레드(Project Loom)**는 M:N으로 돌아왔다. 블로킹 I/O를 만나면 런타임이 가상 스레드를 OS 스레드에서 내리고 다른 것을 올린다. 그래서 **블로킹 스타일로 짠 코드가 논블로킹 서버처럼 확장**되고, 리액티브 스타일을 쓰지 않아도 된다. Java 24부터는 `synchronized` 블록 안에서 블로킹해도 OS 스레드에 묶이지(pinning) 않는다.
+과거 JVM의 그린 스레드는 OS 스레드 하나에 여러 스레드를 올리는 N:1 구조라 멀티코어를 못 써서 버려졌다. Java 21(2023)에 정식 도입된 **가상 스레드(Project Loom)**는 M:N으로 돌아왔다. 블로킹 I/O를 만나면 런타임이 가상 스레드를 OS 스레드에서 내리고 다른 것을 올린다. 그래서 **블로킹 스타일로 짠 코드가 논블로킹 서버처럼 확장**되고, 리액티브 스타일을 쓰지 않아도 된다. 이벤트 루프 서버와 무엇을 언제 고를지, pinning 같은 제약은 [[event-loop-server|비동기 서버의 이벤트 루프]]의 「가상 스레드와의 관계」에 있다.
 
 ## GIL과 스크립트 언어의 선택
 

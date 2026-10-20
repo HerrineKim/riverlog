@@ -49,7 +49,7 @@ sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/lear
 | `apple-touch-icon` | iOS 홈 화면 아이콘 | 비표준이지만 사파리가 쓴다 |
 | `manifest` | 웹 앱 매니페스트 | 앱 이름, 아이콘, 테마 색, 표시 방식을 JSON 하나로 |
 | `alternate` | 같은 내용의 다른 버전 | 번역본이면 `hreflang` 필수, RSS면 `type="application/rss+xml"` |
-| `alternate stylesheet` | 대체 스타일시트 | `title` 필수(→ [[html-lesser-known-attributes\|잘 안 쓰지만 쓸모 있는 HTML 속성]]) |
+| `alternate stylesheet` | 대체 스타일시트 | `title` 필수. 사용자가 브라우저 메뉴에서 고르는데, **Firefox만** 메뉴(보기 → 페이지 스타일)를 주고 Chromium 계열은 지원하지 않는다. 고대비·다크 테마는 `prefers-color-scheme`·`prefers-contrast`와 사이트 안 테마 전환으로 한다(→ [[color-motion-accessibility\|색과 움직임의 접근성]]) |
 | `canonical` | 대표 URL | 번역본·복제본·신디케이션된 글이 원본을 가리킨다(→ [[seo-basics\|SEO 기초]]) |
 | `preload`, `preconnect` 등 | 성능 힌트 | 로딩 순서는 [[script-loading\|스크립트·스타일 로딩 순서와 점진적 렌더링]] |
 

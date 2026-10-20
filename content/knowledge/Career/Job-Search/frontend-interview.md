@@ -104,4 +104,4 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 - UI 코딩은 범위를 먼저 합의하고, 극단적 입력·네트워크·접근성·보안을 짚는다.
 - 시스템 디자인은 RADIO로 대화를 이끌고, 최적화 단계에서 깊이를 보여 준다.
 
-관련 노트: [[tech-interview-tips|기술면접 잘 보는 법]], [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[debounce-throttle|Debounce와 Throttle]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[web-security|웹 보안: CSRF와 XSS]]
+관련 노트: [[interview-attitude|면접 잘 보는 법]], [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[debounce-throttle|Debounce와 Throttle]], [[Accessibility|웹 접근성]], [[web-security|웹 보안: CSRF와 XSS]]

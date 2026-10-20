@@ -111,4 +111,4 @@ Spring Data JPA의 `JpaRepository`는 이름은 Repository지만 엔티티 하�
 - 엔티티는 ID로, VO는 값으로 구분한다.
 - DAO는 테이블에 가까운 저수준 접근 계층, Repository는 도메인에 가까운 컬렉션 추상화다.
 
-관련 노트: [[repository-pattern|Repository 패턴과 레이어 분리]], [[dto-validation|NestJS DTO와 Validation]], [[data-flow|Data Flow로 보는 웹 아키텍처]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]]
+관련 노트: [[repository-pattern|Repository 패턴과 레이어 분리]], [[dto-validation|NestJS DTO와 Validation]], [[web-scalability-components|웹 확장성의 구성 요소]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]]

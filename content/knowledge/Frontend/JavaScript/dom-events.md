@@ -4,7 +4,7 @@ concept: "DOM Events"
 summary: "DOM 이벤트는 캡처 → 타깃 → 버블 순서로 트리를 오간다. 핸들러를 붙이는 세 방법(HTML 속성·on 속성·addEventListener)과 handleEvent 객체, target과 currentTarget의 차이, 전파·기본 동작 제어와 stopPropagation 대신 defaultPrevented로 알리기, 부모 하나로 자식 이벤트를 받는 이벤트 위임과 data 속성 행동 패턴, once·passive·signal 옵션, Event·CustomEvent 생성과 dispatchEvent의 동기 실행, 바깥 클릭 감지 패턴을 정리한다."
 tags: ["javascript", "dom", "event", "browser", "frontend"]
 source: other
-date: "2026-10-17"
+date: "2026-10-20"
 sources: ["https://ko.javascript.info/introduction-browser-events", "https://ko.javascript.info/bubbling-and-capturing", "https://ko.javascript.info/event-delegation", "https://ko.javascript.info/default-browser-action", "https://ko.javascript.info/dispatch-events", "https://wesbos.com/javascript/05-events/event-listener", "https://wesbos.com/javascript/05-events/targets-bubbling-propagation-and-capture", "https://wesbos.com/javascript/05-events/prevent-default-and-form-events", "https://wesbos.com/javascript/05-events/accessibility-gotchas-and-keyboard-codes", "https://wesbos.com/javascript/06-serious-practice-exercises/click-outside-modal", "https://wesbos.com/javascript/10-harder-practice-exercises/57-shopping-form-with-custom-events-delegation-and-localstorage", "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog"]
 ---
 
@@ -12,7 +12,7 @@ sources: ["https://ko.javascript.info/introduction-browser-events", "https://ko.
 
 ## DOM 이벤트란
 
-요소는 클릭·입력·스크롤처럼 무언가 일어날 때 **이벤트**를 내보낸다. 이벤트는 DOM 노드에만 있지 않다. `window`, `XMLHttpRequest`, `WebSocket`처럼 `EventTarget`을 상속한 객체는 모두 이벤트를 낸다. `addEventListener(type, listener)`로 함수를 넘겨 두면 브라우저가 그때 함수를 호출한다. 리스너를 등록하고 지우는 기본 문법은 [[dom-manipulation|DOM 조작과 이벤트]]에 있다. 이 노트는 그다음, 이벤트가 **트리를 어떻게 이동하고 그 흐름을 어떻게 다루는지**를 다룬다. 입력 장치별 이벤트는 [[ui-input-events|마우스·포인터·키보드 이벤트]]에, 폼 이벤트는 [[form-controls-dom|폼 컨트롤과 포커스 이벤트]]에, 문서 로딩 이벤트는 [[page-lifecycle-events|페이지 생명주기와 리소스 로딩 이벤트]]에 있다.
+요소는 클릭·입력·스크롤처럼 무언가 일어날 때 **이벤트**를 내보낸다. 이벤트는 DOM 노드에만 있지 않다. `window`, `XMLHttpRequest`, `WebSocket`처럼 `EventTarget`을 상속한 객체는 모두 이벤트를 낸다. `addEventListener(type, listener)`로 함수를 넘겨 두면 브라우저가 그때 함수를 호출한다. 이 노트는 리스너를 붙이는 법과, 이벤트가 **트리를 어떻게 이동하고 그 흐름을 어떻게 다루는지**를 다룬다. 입력 장치별 이벤트는 [[ui-input-events|마우스·포인터·키보드 이벤트]]에, 폼 이벤트는 [[form-controls-dom|폼 컨트롤과 포커스 이벤트]]에, 문서 로딩 이벤트는 [[page-lifecycle-events|페이지 생명주기와 리소스 로딩 이벤트]]에 있다.
 
 ## 핸들러를 붙이는 세 가지 방법
 
@@ -28,6 +28,8 @@ HTML 속성 방식은 결국 DOM 속성에 함수를 대입하는 것과 같다.
 - `setAttribute('onclick', fn)`은 함수를 문자열로 바꿔 버려 동작하지 않는다.
 - DOM 속성은 대소문자를 가린다. `elem.onclick`은 되고 `elem.ONCLICK`은 안 된다(HTML 속성은 가리지 않는다).
 - `on<event>` 속성이 **없는** 이벤트가 있다. `DOMContentLoaded`, `focusin`·`focusout`, 그리고 모든 커스텀 이벤트는 `addEventListener`로만 받는다.
+- `querySelectorAll`이 돌려준 `NodeList`에는 리스너를 직접 붙일 수 없다. `forEach`로 하나씩 붙이거나 부모 하나에 위임한다(아래 「이벤트 위임」).
+- React에서는 JSX 속성에 함수를 넘긴다(`onClick={handleClick}`) → [[react-events|React 이벤트 처리]].
 - `document`나 `window`에 전역 리스너를 둘 때는 다른 코드의 핸들러를 덮어쓰지 않도록 항상 `addEventListener`를 쓴다.
 
 ### 핸들러 안의 this와 handleEvent 객체
@@ -146,7 +148,7 @@ list.addEventListener('click', (event) => {
 | 정리가 쉽다 | 지울 리스너도 하나뿐이다 |
 
 - `event.target.matches('button')`은 버튼 안 아이콘·`<strong>`을 클릭하면 실패한다. **`closest()`로 위로 올라가며 찾는 편이 안전하다.**
-- 항목 식별자는 `data-*` 속성에 넣어 두고 `dataset`으로 읽는다([[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]).
+- 항목 식별자는 `data-*` 속성에 넣어 두고 `dataset`으로 읽는다([[html#data-* 속성|HTML 기초와 HTML5]]).
 - 중첩된 같은 구조(표 안의 표) 바깥의 요소가 잡힐 수 있으므로 `container.contains(found)`로 범위를 확인한다.
 - 버블링하지 않는 이벤트(`focus`·`blur`, `mouseenter`·`mouseleave`)는 위임할 수 없다. `focusin`·`focusout`, `mouseover`·`mouseout`이나 캡처 단계를 쓴다. 안쪽에서 `stopPropagation()`하면 위임도 끊긴다.
 
@@ -305,4 +307,4 @@ window.addEventListener('keydown', (event) => {
 - 바깥 리스너를 물러서게 할 때는 전파를 끊지 말고 `defaultPrevented`로 알린다.
 - 코드 사이의 알림은 `CustomEvent`로 하고, 막을 수 있게 하려면 `cancelable`과 `dispatchEvent()`의 반환값을 쓴다. `dispatchEvent()`는 동기로 실행된다.
 
-관련 노트: [[dom-manipulation|DOM 조작과 이벤트]], [[dom|DOM과 BOM]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[form-controls-dom|폼 컨트롤과 포커스 이벤트]], [[page-lifecycle-events|페이지 생명주기와 리소스 로딩 이벤트]], [[react-events|React 이벤트 처리]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[web-components|웹 컴포넌트: template·slot·Shadow DOM]], [[web-accessibility|웹 접근성]], [[debounce-throttle|Debounce와 Throttle]], [[intersection-observer|Intersection Observer와 관찰자 API]]
+관련 노트: [[dom-manipulation|DOM 조작]], [[dom|DOM과 BOM]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[form-controls-dom|폼 컨트롤과 포커스 이벤트]], [[page-lifecycle-events|페이지 생명주기와 리소스 로딩 이벤트]], [[react-events|React 이벤트 처리]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[web-components|웹 컴포넌트: template·slot·Shadow DOM]], [[Accessibility|웹 접근성]], [[debounce-throttle|Debounce와 Throttle]], [[intersection-observer|Intersection Observer와 관찰자 API]]

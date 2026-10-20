@@ -4,7 +4,7 @@ concept: "Review Comment"
 summary: "의도가 정확히 전달되는 리뷰 코멘트 쓰는 법, PR에서 자주 쓰는 약어(LGTM·IMO·NIT·PTAL), 리뷰를 받는 쪽의 태도와 PR 템플릿."
 tags: ["code-review", "collaboration", "github", "communication"]
 source: notion
-date: "2026-10-12"
+date: "2026-10-20"
 sources: ["https://www.youtube.com/watch?v=TAPviNhFuSg"]
 ---
 
@@ -30,7 +30,7 @@ sources: ["https://www.youtube.com/watch?v=TAPviNhFuSg"]
 ❓ alert 객체를 따로 변수에 담은 이유가 궁금합니다. $emit 인자로 바로 넘겨도 되지 않을까요?
 ```
 
-> 이런 질문에 "참고 코드를 그대로 복사했다"는 답이 돌아오기도 한다. 그럴 때 질문은 **복사해 온 코드도 내 코드처럼 이해하고 고쳐서 써야 한다**는 점을 일깨운다.
+질문은 **가져온 코드도 내 코드처럼 이해하고 고쳐서 써야 한다**는 점을 작성자가 스스로 확인하게 한다.
 
 ### 명령 대신 요청, 판단 대신 원칙
 

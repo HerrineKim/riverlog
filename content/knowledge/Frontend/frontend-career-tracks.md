@@ -4,7 +4,7 @@ concept: "Career Tracks"
 summary: "주니어 이후 프론트엔드 엔지니어가 깊어질 방향을 웹 특화(소프트웨어 엔지니어)·제품 특화(프로덕트 엔지니어)·운영 특화(풀스택 엔지니어) 세 트랙으로 나누고, 트랙별 지식·성장법·함정·시니어 이후 진로, 모든 트랙의 바탕인 탁월한 엔지니어의 다섯 역량과 시니어다운 일하기를 정리한다."
 tags: ["frontend", "career", "growth", "roadmap"]
 source: other
-date: "2026-10-16"
+date: "2026-10-20"
 sources: ["https://steady-study.super.site/frontend-engineer-career-roadmap"]
 ---
 
@@ -65,14 +65,14 @@ AI를 비서처럼 부리는 능력도 바탕 역량이 됐다. 원하는 것을
 | HTTP와 브라우저 | CORS, 캐시, Cookie·localStorage·IndexedDB의 차이 | [[cors\|CORS]], [[http-cache\|HTTP 캐시]] |
 | 렌더링과 성능 | 크리티컬 렌더링 패스, Core Web Vitals, Lighthouse·성능 프로파일러·번들 분석기 | [[browser-rendering\|브라우저 렌더링 과정]] |
 | DOM과 실행 환경 | DOM API와 이벤트, 폴리필·폴백, 모바일 웹뷰·Node.js·jsdom의 차이 | [[dom\|DOM]] |
-| 문서와 렌더링 전략 | 시맨틱 HTML, 접근성, CSR·SSR·SSG 선택 기준 | [[semantic-html\|시맨틱 HTML]], [[web-accessibility\|웹 접근성]] |
+| 문서와 렌더링 전략 | 시맨틱 HTML, 접근성, CSR·SSR·SSG 선택 기준 | [[semantic-html\|시맨틱 HTML]], [[Accessibility\|웹 접근성]] |
 | CSS | 모던 셀렉터, CSS Modules·CSS-in-JS·Tailwind CSS, Storybook 기반 디자인 시스템 | [[design-system\|디자인 시스템]] |
-| JS와 도구 체인 | ES2015 이후 문법, ESM과 CommonJS, TypeScript, 빌드·린트·테스트·배포 도구 | [[typescript-learning\|TypeScript 학습]] |
+| JS와 도구 체인 | ES2015 이후 문법, ESM과 CommonJS, TypeScript, 빌드·린트·테스트·배포 도구 | [[typescript-basics\|TypeScript 학습]] |
 | 새 기술 | Rust 기반 도구, WebAssembly, 엣지 컴퓨팅이 프론트엔드에 주는 영향 | |
 
 도구 체인은 계속 바뀐다. 번들러는 webpack에서 Vite·Turbopack처럼 Rust·Go로 만든 도구로, 테스트는 Jest에서 Vitest·Playwright로 무게가 옮겨 가고 있다. 특정 도구보다 **각 도구가 푸는 문제**를 이해하는 것이 이 트랙의 핵심이다.
 
-이 트랙의 롤모델은 자기가 겪은 문제를 도구로 만들어 공개한 사람들이다. react-router·Remix의 Ryan Florence, Testing Library의 Kent C. Dodds, TanStack Query의 Tanner Linsley, CSS 교육의 Josh W. Comeau, swc를 만들고 Vercel에 합류한 강동윤이 그렇다.
+이 트랙의 성장 경로는 **자기가 겪은 문제를 도구로 만들어 공개하는 것**이다. Testing Library, TanStack Query 같은 오픈소스가 그렇게 나왔다.
 
 ## 트랙 2: 제품 특화
 

@@ -66,4 +66,4 @@ filetype:pdf intitle:"operating system" lecture        강의 자료 PDF 찾기
 - 출처를 고정할 때는 `site:`, 형식을 고정할 때는 `filetype:`, 기간을 고정할 때는 `before:`·`after:`를 쓴다.
 - 연산자는 구글 업데이트로 사라지기도 한다. 결과가 이상하면 연산자가 아직 동작하는지부터 의심한다.
 
-관련 노트: [[finding-dev-references|개발 자료 잘 찾는 법]], [[better-life-tips|더 나은 삶을 위한 100가지 팁]], [[everyday-tech-tips|생활 속 IT 팁]], [[web-search-engine|웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리]]
+관련 노트: [[finding-dev-references|개발 자료 잘 찾는 법]], [[better-life-tips|더 나은 삶을 위한 100가지 팁]], [[life-tips|생활 정보 모음]], [[web-search-engine|웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리]]

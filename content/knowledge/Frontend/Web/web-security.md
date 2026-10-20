@@ -47,7 +47,7 @@ card.innerHTML = `<h2>${desc}</h2>` // onerror가 실행된다
 
 - `innerHTML`로 넣은 `<script>` 태그는 실행되지 않는다. 그래서 안전하다고 착각하기 쉽지만, `onerror`·`onload` 같은 **이벤트 속성**과 `javascript:` URL은 그대로 동작한다. `<style>`만 넣어도 페이지 전체를 숨기거나 가짜 화면을 덮을 수 있다.
 - 같은 위험을 가진 지점(sink)은 `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `createContextualFragment`, `document.write`, 그리고 React의 `dangerouslySetInnerHTML`이다.
-- 텍스트만 필요하면 `textContent`나 `createElement` + `textContent`로 만든다([[dom-manipulation|DOM 조작과 이벤트]]).
+- 텍스트만 필요하면 `textContent`나 `createElement` + `textContent`로 만든다([[dom-manipulation|DOM 조작]]).
 - HTML을 허용해야 하면 정제(sanitize)한다. 표준 **`Element.setHTML()`**(HTML Sanitizer API)은 문자열을 파싱하면서 스크립트·이벤트 속성 같은 위험 요소를 항상 제거한다. 크롬 146·파이어폭스 148부터 지원하고 2026년 10월 기준 사파리는 지원하지 않으므로, 기능 감지 후 없으면 **DOMPurify**로 정제해 넣는다. 이름이 비슷한 `setHTMLUnsafe()`는 정제하지 않는다.
 - **Trusted Types**(CSP의 `require-trusted-types-for 'script'`)를 켜면 위 sink에 일반 문자열을 넣는 코드가 아예 오류가 된다. 크롬 83, 사파리 26, 파이어폭스 148부터 지원해 주요 브라우저에서 모두 쓸 수 있다.
 

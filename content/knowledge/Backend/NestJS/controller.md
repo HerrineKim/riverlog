@@ -105,4 +105,4 @@ export class AppModule {}
 
 - `@Controller(prefix)` + `@Get/@Post/...(path)`로 라우트를 선언한다.
 - `@Body`, `@Param`, `@Query`로 필요한 요청 데이터만 주입받는다.
-- 컨트롤러는 얇게 유지하고 로직은 [서비스](Backend/NestJS/provider-di)로 넘긴다.
+- 컨트롤러는 얇게 유지하고 로직은 [서비스](Backend/NestJS/module)로 넘긴다.

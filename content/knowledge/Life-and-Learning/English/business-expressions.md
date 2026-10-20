@@ -79,4 +79,4 @@ sources: ["https://riverkim.kr/291"]
 - 핵심은 **사과를 감사로 바꾸는 것**이다. 내 책임이 아닌 일에 sorry를 붙이지 않는다.
 - 미국 직장에서는 직급이 낮아도 허락을 구하는 말투보다 의견을 묻거나 계획을 알리는 말투를 쓰는 편이다. 대신 결과에 대한 책임은 분명히 진다.
 
-관련 노트: [[everyday-english-phrases|상황별 영어 회화 표현]], [[recruiter-outreach-email|리크루터에게 보내는 영문 이메일]], [[review-communication|리뷰 코멘트와 PR 소통]]
+관련 노트: [[everyday-english-phrases|상황별 영어 회화 표현]], [[resume-writing#리크루터에게 먼저 보내는 메일|리크루터에게 보내는 영문 이메일]], [[review-communication|리뷰 코멘트와 PR 소통]]

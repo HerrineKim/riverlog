@@ -30,7 +30,7 @@ sources: ["https://web.dev/learn/html/images", "https://web.dev/learn/html/audio
 | `decoding`, `crossorigin`, `referrerpolicy` | 디코딩 방식, CORS 요청, Referer 정책 |
 | `srcset`, `sizes` | 해상도·뷰포트별 후보. 맞는 후보가 있으면 `src`보다 우선한다 |
 
-`width`·`height`를 넣어도 이미지는 여전히 반응형이다. CSS의 `max-width: 100%; height: auto;`가 크기를 정하고, 속성은 비율만 알려 준다. 로딩 시간은 같지만 **그려질 때 화면이 튀지 않는다**(→ [[web-vitals|웹 성능 지표와 Lighthouse]]). 로딩 힌트 속성의 자세한 값은 [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]에 있다.
+`width`·`height`를 넣어도 이미지는 여전히 반응형이다. CSS의 `max-width: 100%; height: auto;`가 크기를 정하고, 속성은 비율만 알려 준다. 로딩 시간은 같지만 **그려질 때 화면이 튀지 않는다**(→ [[web-vitals|웹 성능 지표와 Lighthouse]]). `loading`은 [[lazy-loading|지연 로딩]], `fetchpriority`는 [[resource-hints|리소스 힌트]]에 있다.
 
 ### alt를 쓰는 요령
 
@@ -154,4 +154,4 @@ button.addEventListener('click', () => {
 - 영상은 `<source>`에 `type`을 달고, `controls`를 늘 넣고, 자동 재생은 `muted`와 멈춤 수단이 있을 때만.
 - 자막은 `<track>`과 WebVTT. 대사만이면 `subtitles`, 소리 정보까지면 `captions`.
 
-관련 노트: [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[color-motion-accessibility|색과 움직임의 접근성]], [[captions-and-transcripts|자막, 대본, 음성 해설]], [[audio-recording|React에서 음성 녹음하고 파일로 보내기]], [[image-formats|웹 이미지 형식]], [[responsive-images|반응형 이미지]]
+관련 노트: [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[color-motion-accessibility|색과 움직임의 접근성]], [[captions-and-transcripts|자막, 대본, 음성 해설]], [[audio-recording|React에서 음성 녹음하고 파일로 보내기]], [[image-formats|웹 이미지 형식]], [[responsive-images|반응형 이미지]]

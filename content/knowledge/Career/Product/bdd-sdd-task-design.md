@@ -4,11 +4,11 @@ concept: "BDD SDD Task"
 summary: "기획·디자인·개발·QA가 같은 문서를 보도록 기획을 사용자 행동(BDD의 given-when-then)과 데이터 구조(SDD)로 정리해 태스크를 만드는 방법. then 하나가 태스크 하나가 되어 진척도·일정·테스트 범위가 함께 보이고, Figma에 디자인과 기획을 합쳐 두면 최신 화면까지 한곳에서 관리된다."
 tags: ["career", "collaboration", "process", "testing", "product"]
 source: other
-date: "2026-10-13"
+date: "2026-10-20"
 sources: ["https://velog.io/@teo/behavior-driven-development-schema-driven-development", "https://velog.io/@teo/카카오워크-캘린더팀에서-사용한-figma를-이용한-기획-디자이너-QA-개발-방법", "https://velog.io/@teo/ifkakao-after-talk-후기-요즘-웹-프론트는-디자니어와-CSS-협업-어떻게-해요"]
 ---
 
-> 테오(teo)의 「[BDD? SDD? 팀 프로젝트 다같이 개발설계하는 방법](https://velog.io/@teo/behavior-driven-development-schema-driven-development)」(2022.07)과 「[figma를 이용한 더 나은 기획-디자이너-QA-개발 협업 방법](https://velog.io/@teo/카카오워크-캘린더팀에서-사용한-figma를-이용한-기획-디자이너-QA-개발-방법)」(2021.11), 「[if(kakao) after talk 후기](https://velog.io/@teo/ifkakao-after-talk-후기-요즘-웹-프론트는-디자니어와-CSS-협업-어떻게-해요)」(2021.11)를 요약·재구성한 노트다. 엄밀한 BDD·SDD 방법론이 아니라 그 개념을 태스크 설계에 빌려 쓴 실무 방식입니다.
+> 테오(teo)의 「[BDD? SDD? 팀 프로젝트 다같이 개발설계하는 방법](https://velog.io/@teo/behavior-driven-development-schema-driven-development)」(2022.07)과 「[figma를 이용한 더 나은 기획-디자이너-QA-개발 협업 방법](https://velog.io/@teo/카카오워크-캘린더팀에서-사용한-figma를-이용한-기획-디자이너-QA-개발-방법)」(2021.11), 「[if(kakao) after talk 후기](https://velog.io/@teo/ifkakao-after-talk-후기-요즘-웹-프론트는-디자니어와-CSS-협업-어떻게-해요)」(2021.11)를 요약·재구성한 노트다. 엄밀한 BDD·SDD 방법론이 아니라 그 개념을 태스크 설계에 빌려 쓴 실무 방식이다.
 
 ## 왜 공유 아티팩트가 필요한가
 
@@ -98,17 +98,17 @@ const inc = (state: { count: number }) => ({ ...state, count: state.count + 1 })
 
 ## Figma로 기획과 디자인을 한곳에
 
-카카오워크 캘린더 팀은 기획서를 Figma로 옮겨 디자인과 합쳤다.
+기획서를 Figma로 옮겨 디자인과 한 파일에 두면 최신 화면과 기획이 갈라지지 않는다.
 
 | 장치 | 효과 |
 | --- | --- |
 | 기획서 왼쪽에 실제 디자인 컴포넌트 배치 | 초반에는 와이어프레임, 디자인이 나오면 교체한다. 개발자가 두 문서를 오가지 않는다 |
 | 스토리·태스크 단위로 given-when-then 작성 | 개발 범위 산정과 QA 케이스가 같은 문서에서 나온다 |
 | 태스크마다 신호등 표시 | 개발자가 매일 진척을 표시하면 PM은 일정을 예측하고, QA는 테스트 시작 시점을 안다. 미구현 기능에 대한 버그 리포트가 사라진다 |
-| QA가 기획 단계에서 테스트 케이스를 미리 작성 | 구현 결과가 나오면 맞춰 보완한다. 개발자는 기획서 대신 테스트 케이스를 보고 개발하게 되었다 |
+| QA가 기획 단계에서 테스트 케이스를 미리 작성 | 구현 결과가 나오면 맞춰 보완한다. 개발자는 기획서 대신 테스트 케이스를 보고 개발할 수 있다 |
 | Idea Pot | 누구나 의견을 적어 두는 공간. 당장 채택되지 않아도 대립 없이 담당자에게 서서히 영향을 준다 |
 
-기획자에게는 일이 늘어난 것 같지만, 행동 단위로 쪼개다 보면 분량이 가늠되고 놓친 케이스가 줄어든다. 기획서를 **프로젝트 관리 도구이자 산출물**로 보면 들일 만한 시간이다. 디자이너와 개발이 Zeplin 같은 전달 도구를 따로 두지 않고 Figma 하나로 소통한 것도 같은 맥락이다.
+기획자에게는 일이 늘어난 것 같지만, 행동 단위로 쪼개다 보면 분량이 가늠되고 놓친 케이스가 줄어든다. 기획서를 **프로젝트 관리 도구이자 산출물**로 보면 들일 만한 시간이다. 같은 이유로 디자인 전달 도구를 따로 두지 않고 Figma 하나로 소통하면 문서가 하나로 모인다.
 
 ## 적용할 때
 

@@ -222,4 +222,4 @@ WCAG 2.4.4 링크 목적(맥락 안에서, A)은 링크 텍스트와 그 주변 
 
 이미지, 링크, 글 모두 같은 질문으로 점검한다. 눈으로 보지 않고, 앞뒤 맥락 없이도 같은 뜻이 전해지는가.
 
-관련 노트: [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[color-motion-accessibility|색과 움직임의 접근성]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[captions-and-transcripts|자막, 대본, 음성 해설]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[aria-basics|ARIA와 접근 가능한 이름]], [[svg-icons|SVG 아이콘]]
+관련 노트: [[Accessibility|웹 접근성]], [[color-motion-accessibility|색과 움직임의 접근성]], [[accessible-page-structure|접근 가능한 페이지 구조]], [[captions-and-transcripts|자막, 대본, 음성 해설]], [[keyboard-accessibility|키보드 접근성과 포커스 관리]], [[aria-basics|ARIA와 접근 가능한 이름]], [[svg-icons|SVG 아이콘]]

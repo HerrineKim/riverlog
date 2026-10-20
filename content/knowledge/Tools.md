@@ -12,12 +12,11 @@ date: "2026-10-14"
 ## 하위 주제
 
 - Code Review: [코드 리뷰 원칙과 체크리스트](/knowledge/dictionary/tools/code-review/principles), [리뷰 코멘트와 PR 소통](/knowledge/dictionary/tools/code-review/review-communication), [코드 리뷰에서 자주 나온 지적](/knowledge/dictionary/tools/code-review/review-patterns), [리팩터링 원칙](/knowledge/dictionary/tools/code-review/refactoring-principles), [Simple Design](/knowledge/dictionary/tools/code-review/simple-design), [불리언 변수 이름 짓기](/knowledge/dictionary/tools/code-review/boolean-naming)
-- [Git](/knowledge/dictionary/tools/git): 버전 관리 기본, 브랜치와 병합, 원격 저장소·미러링, 되돌리기와 이력 다루기, 커밋 컨벤션, GitHub 협업 설정
+- [Git](Tools/Git.md): 버전 관리 기본, 브랜치와 병합, 원격 저장소·미러링, 되돌리기와 이력 다루기, 커밋 컨벤션, GitHub 협업 설정
 - [Chrome DevTools](Tools/Chrome-DevTools.md): 패널 지도와 명령 메뉴·단축키, DOM·CSS, Console, JavaScript 디버깅, Network, 성능·메모리, Application, 기기 에뮬레이션, AI 지원과 DevTools MCP
 - [Markdown](/knowledge/dictionary/tools/markdown): 문서 작성용 마크업 문법, Mermaid 다이어그램, markdownlint
 - [LaTeX 시작하기](Tools/latex.md): 구조를 명령어로 쓰고 서식은 컴파일러에 맡기는 조판 언어, Overleaf, 문서 기본 구조와 kotex
-- [Vim과 Neovim](Tools/vim-and-neovim.md): ed → vi → Vim → Neovim 계보, 두 편집기 비교, 플러그인 관리, man 페이지·Vimium
-- [Vim 편집 기술](Tools/vim-tips.md): listchars, fold, 연속 숫자 입력, `<expr>` 매핑, 복사 영역 강조, 시스템 클립보드
+- [Vim과 Neovim](Tools/vim-and-neovim.md): ed → vi → Vim → Neovim 계보, 두 편집기 비교, 플러그인 관리, listchars·fold·`<expr>` 매핑·시스템 클립보드 같은 편집 기술, man 페이지·Vimium
 - [tmux: 터미널 멀티플렉서](Tools/tmux.md): 세션·창·패인, detach/attach로 SSH 작업 살려 두기, 기본 키
 - [The Missing Semester: CS 교육에서 빠진 도구 학기](Tools/missing-semester.md): MIT의 도구 활용 과정 2026년판 9강 지도. 셸, 편집기, 디버깅·프로파일링, Git, 패키징과 배포, 에이전틱 코딩, 코드 품질
 - [VS Code 설정과 활용](Tools/vscode.md): settings.json과 설정 동기화, launch.json 디버깅, github.dev, 쓸 만한 확장

@@ -233,7 +233,7 @@ const chars = [...'héllo']       // 문자열도 이터러블이라 펼쳐진�
 
 ## 형식화 배열(TypedArray)
 
-`Uint8Array`, `Float32Array` 같은 **형식화 배열**은 이진 데이터를 정해진 숫자 형식으로 담는 배열이다. 파일 업로드, 이미지 픽셀(`ImageData.data`는 `Uint8ClampedArray`), WebGL, 오디오, 네트워크 버퍼처럼 바이트를 직접 다룰 때 쓴다. 모두 `%TypedArray%`라는 공통 부모를 상속하지만 그 부모는 직접 호출하거나 `new`할 수 없고, 구체 생성자(`new Uint8Array(16)`)만 쓴다. 길이가 고정되고 요소 타입이 하나라는 점이 일반 배열과 다르다.
+`Uint8Array`, `Float32Array` 같은 **형식화 배열**은 이진 데이터를 정해진 숫자 형식으로 담는 배열이다. 파일 업로드, 이미지 픽셀(`ImageData.data`는 `Uint8ClampedArray`), WebGL, 오디오, 네트워크 버퍼처럼 바이트를 직접 다룰 때 쓴다. 모두 `%TypedArray%`라는 공통 부모를 상속하지만 그 부모는 직접 호출하거나 `new`할 수 없고, 구체 생성자(`new Uint8Array(16)`)만 쓴다. 길이가 고정되고 요소 타입이 하나라는 점이 일반 배열과 다르다. 버퍼(ArrayBuffer)와 뷰, DataView, Blob과의 관계는 [[binary-data-and-files|바이너리 데이터와 파일]]에 있다.
 
 ## JSON
 

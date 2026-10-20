@@ -167,4 +167,4 @@ JS로는 `el.showPopover()`, `hidePopover()`, `togglePopover()`를 부른다. `s
 - 대부분의 배치는 `position-area` 한 줄, 세밀한 배치는 inset 속성의 `anchor()`.
 - 넘칠 때는 `position-try-fallbacks`와 `flip-*`. 반복 컴포넌트는 `anchor-scope`.
 
-관련 노트: [[position|CSS position과 z-index]], [[css-animation|CSS 애니메이션: transition과 @keyframes]], [[logical-properties|쓰기 모드와 논리적 속성]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]
+관련 노트: [[position|CSS position과 z-index]], [[css-animation|CSS 애니메이션: transition과 @keyframes]], [[logical-properties|쓰기 모드와 논리적 속성]], [[html|HTML 기초와 HTML5]]

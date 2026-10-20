@@ -18,12 +18,11 @@ Django는 "배터리 포함(batteries included)"을 내세우는 Python 웹 프�
 | 1 | [시작하기와 MTV](Backend/Django/getting-started-mtv) | 프로젝트·앱 생성, 구조, MTV 패턴, 기본 설정 |
 | 2 | [URL과 View](Backend/Django/urls-views) | 요청 흐름, 변수 라우팅, include, URL 이름과 namespace |
 | 3 | [Template과 Static 파일](Backend/Django/templates-static) | DTL 문법, 템플릿 상속, form으로 데이터 받기, 정적 파일 |
-| 4 | [Model과 Migration](Backend/Django/model-migration) | 모델 필드, makemigrations/migrate |
+| 4 | [Model, Migration과 Admin](Backend/Django/model-migration) | 모델 필드, makemigrations/migrate, 관리자 페이지 등록 |
 | 5 | [ORM과 QuerySet](Backend/Django/orm-queryset) | CRUD, 조건 조회, 정렬, aggregate·annotate |
 | 6 | [모델 관계](Backend/Django/relationships) | 1:1, 1:N(ForeignKey), M:N(ManyToManyField) |
 | 7 | [Form과 ModelForm](Backend/Django/forms-modelform) | 폼 렌더링, 유효성 검사, 위젯 |
 | 8 | [User와 인증](Backend/Django/auth-user) | User 모델, 회원가입·로그인 |
-| 9 | [Admin](Backend/Django/admin) | 관리자 페이지 등록과 커스터마이징 |
-| 10 | [DRF Serializer](Backend/Django/drf-serializer) | JSON API 서버, 중첩 Serializer로 1:N·M:N 표현, api_view |
+| 9 | [DRF Serializer](Backend/Django/drf-serializer) | JSON API 서버, 중첩 Serializer로 1:N·M:N 표현, api_view |
 
 SQL 자체의 문법은 [SQL 기초](Backend/Database/sql-basics)에서, REST API 설계는 [REST API](Backend/Web-Basics/rest-api)에서 다룬다.

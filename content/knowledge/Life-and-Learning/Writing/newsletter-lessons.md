@@ -80,4 +80,4 @@ sources: ["https://www.cjchilvers.com/blog/35-lessons-from-35-years-of-newslette
 - 지속하는 힘은 영감이 아니라 정해 둔 시간과 과정에서 나온다.
 - 블로그나 기술 글에도 그대로 옮겨 쓸 수 있다. 「한 사람에게 쓴다」와 「과정을 개선한다」가 특히 그렇다.
 
-관련 노트: [[online-writing|온라인 글쓰기]], [[persuasive-writing|글쓰기 원칙: 구조, 설득, 문장력]], [[kevin-kelly-68-advice|케빈 켈리의 68가지 조언]], [[experience-content-side-income|경험을 콘텐츠로 파는 온라인 사이드잡]]
+관련 노트: [[persuasive-writing#6. 온라인 글: 읽는 글이 아니라 보는 글|온라인 글쓰기]], [[kevin-kelly-68-advice|케빈 켈리의 68가지 조언]], [[experience-content-side-income|경험을 콘텐츠로 파는 온라인 사이드잡]]

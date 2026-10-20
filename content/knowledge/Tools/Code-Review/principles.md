@@ -8,7 +8,7 @@ date: "2026-10-11"
 sources: ["https://riverkim.kr/194", "https://riverkim.kr/184", "https://www.youtube.com/watch?v=TAPviNhFuSg", "https://github.com/ryanmcdermott/code-review-tips"]
 ---
 
-코드 리뷰는 내가 쓴 코드의 문제를 혼자서는 다 찾을 수 없기 때문에 하는 일이다. 최고의 농구 선수도 슛을 놓치듯, 누구의 코드든 다른 사람의 눈을 거치면 사용자에게 닿기 전에 더 많은 버그를 잡을 수 있다. 완벽한 단 하나의 프로세스는 없으니 팀에 맞는 방식을 찾되, **정기적으로** 하는 것이 가장 중요하다.
+코드 리뷰는 내가 쓴 코드의 문제를 혼자서는 다 찾을 수 없기 때문에 하는 일이다. 누구의 코드든 다른 사람의 눈을 거치면 사용자에게 닿기 전에 더 많은 버그를 잡을 수 있다. 완벽한 단 하나의 프로세스는 없으니 팀에 맞는 방식을 찾되, **정기적으로** 하는 것이 가장 중요하다.
 
 > 백명석의 「[한번 듣고 평생 써먹는 코드 리뷰 노하우](https://www.youtube.com/watch?v=TAPviNhFuSg)」(OKKY 세미나, 2022.01) 강연을 함께 정리했다. 체크리스트는 Ryan McDermott의 [code-review-tips](https://github.com/ryanmcdermott/code-review-tips)를 바탕으로 재구성했다.
 
@@ -178,4 +178,4 @@ const isUserMentioned = (user) => mentionedUsers.has(user)
 - 가독성 → 부작용 → 경계 조건 → 보안 → 성능 → 테스트 순으로 훑는다.
 - 친절하게, 고수준부터, 예시 코드와 함께.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[web-security|웹 보안]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[kind-engineering|친절한 엔지니어링]], [[pair-programming|페어 프로그래밍]], [[readable-code|게슈탈트 법칙으로 보는 읽기 좋은 코드]]
+관련 노트: [[tdd|프론트엔드에서의 TDD]], [[web-security|웹 보안]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[kind-engineering|친절한 엔지니어링]], [[pair-programming|페어 프로그래밍]], [[code-readability|가독성을 높이는 전략]]

@@ -80,4 +80,4 @@ AI가 코드와 글을 대신 만들어 주는 환경에서는 도구 이름이 
 - 왜를 묻고, 알아보고 묻고, 배운 것을 나누고 가르치며, 잘하는 사람들 곁에 선다.
 - 도구가 아니라 나에게 쌓이는 역량을 기준으로, 본캐를 키우는 부캐와 100일 프로젝트를 고른다.
 
-관련 노트: [[work-habits|사회 초년생을 위한 직장 생활 팁]], [[ai-era-developer|AI 시대 개발자의 역할]], [[side-project-tips|사이드 프로젝트 10가지 팁]], [[tech-interview-tips|기술면접 잘 보는 법]], [[reputation-building|실력만으로는 부족하다: 명성 쌓기와 커뮤니티 기여]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]]
+관련 노트: [[work-habits|사회 초년생을 위한 직장 생활 팁]], [[ai-era-developer|AI 시대 개발자의 역할]], [[side-project-tips|사이드 프로젝트 10가지 팁]], [[interview-attitude|면접 잘 보는 법]], [[reputation-building|실력만으로는 부족하다: 명성 쌓기와 커뮤니티 기여]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]]

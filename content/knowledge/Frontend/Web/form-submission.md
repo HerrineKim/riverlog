@@ -4,7 +4,7 @@ concept: "Form Submission"
 summary: "<form>은 Enter 제출·검증·자동 완성·보조 기술 지원을 공짜로 주므로 데이터를 보내는 곳에는 항상 쓴다. GET과 POST 고르기, 제출 버튼의 종류와 type=\"button\" 함정, 제출 버튼을 언제 막는가, FormData와 fetch로 새로 고침 없이 보내는 점진적 향상, 같은 엔드포인트에서 HTML·JSON 응답 나누기, HTTPS·데이터 최소화·허니팟 같은 보안·개인정보 원칙을 정리한다."
 tags: ["frontend", "html", "form", "javascript", "security", "privacy"]
 source: other
-date: "2026-10-17"
+date: "2026-10-20"
 sources: ["https://web.dev/learn/forms/form-element", "https://web.dev/learn/forms/form", "https://web.dev/learn/forms/javascript", "https://web.dev/learn/forms/security-privacy", "https://web.dev/learn/forms/attributes", "https://web.dev/articles/payment-and-address-form-best-practices", "https://web.dev/articles/sign-in-form-best-practices", "https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API"]
 ---
 
@@ -42,6 +42,13 @@ sources: ["https://web.dev/learn/forms/form-element", "https://web.dev/learn/for
 - `action`이 없으면 **현재 페이지 URL**로, `method`가 없으면 **GET**으로 보낸다.
 - 파일을 보내려면 `method="post"`와 `enctype="multipart/form-data"`가 둘 다 있어야 한다. 기본 인코딩(`application/x-www-form-urlencoded`)으로는 파일 이름만 간다.
 - 버튼의 `formaction`·`formmethod`·`formenctype`·`formnovalidate`는 그 버튼으로 제출할 때만 폼의 값을 덮어쓴다. 「임시 저장」과 「발행」처럼 한 폼에 목적지가 둘일 때 쓴다.
+- 레이아웃 때문에 칸이나 버튼을 `<form>` 바깥에 둬야 하면 `form` 속성에 폼의 `id`를 준다. 그 폼과 함께 제출된다.
+
+```html
+<form id="order" action="/order">…</form>
+<textarea name="memo" form="order"></textarea>
+<button type="submit" form="order">주문</button>
+```
 
 ### GET과 POST 고르기
 
@@ -82,7 +89,7 @@ HTTPS는 두 방식 모두 전송 구간을 암호화하지만, GET의 URL은 �
 - **입력이 다 맞을 때까지 제출 버튼을 `disabled`로 막지 않는다.** 사용자는 버튼이 고장 났다고 여기고, 무엇이 틀렸는지 알려 줄 기회도 사라진다. 누르게 두고 오류를 보여 준다([[constraint-validation|제약 검증]]).
 - **제출한 뒤에는 막는다.** 결제·로그인 버튼은 자주 두 번 눌린다. 첫 클릭 뒤 처리 중에는 비활성화해 중복 요청을 막는다.
 - **시간 제한을 두지 않는다.** 입력 도중 세션이 끝나 데이터를 잃게 하지 않는다. 꼭 필요하면 미리 알리고 연장할 수 있게 한다.
-- 모바일 키보드의 엔터 키에는 `enterkeyhint`로 다음 동작(`next`, `done`, `search`, `send`)을 적는다([[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]).
+- 모바일 키보드의 엔터 키에는 `enterkeyhint`로 다음 동작(`next`, `done`, `search`, `send`)을 적는다([[html-input-types#enterkeyhint: 엔터 키에 할 일을 적는다|HTML 입력 요소 치트시트]]).
 
 ## 새로 고침 없이 보내기: 점진적 향상
 
@@ -116,6 +123,10 @@ form.addEventListener('submit', async (event) => {
 | `aria-live="polite"` 영역 | 페이지 이동 없이 끝난 결과를 스크린 리더에 알린다 |
 
 - 서버는 같은 엔드포인트에서 일반 폼 POST에는 HTML(리디렉션)을, `Accept: application/json` 요청에는 JSON을 돌려주면 스크립트 유무와 상관없이 동작한다.
+- `FormData`는 `name`이 있는 컨트롤만 모은다. `disabled` 컨트롤과 체크되지 않은 체크박스는 빠진다. `Object.fromEntries(data)`로 객체로 바꾸고, 같은 이름이 여럿이면 `data.getAll()`을 쓴다.
+- Enter로 암묵적 제출이 일어나면 첫 제출 버튼에 **`click` 이벤트가 만들어진다.** 누르지 않았는데 버튼의 `click` 리스너가 도는 이유다. 제출 처리는 버튼 `click`이 아니라 폼 `submit`에 둔다.
+- 필수·형식 검사는 HTML 제약 검증에 먼저 맡긴다. 검증을 통과해야 `submit`이 일어나므로, 그것으로 안 되는 규칙만 `submit`에서 검사해 `preventDefault()`로 막는다.
+- `form.submit()`은 문서 안에 붙은 폼에서만 동작한다. 스크립트로 만든 폼으로 다른 페이지에 GET/POST를 보내려면 `document.body.append(form)` 뒤에 부른다.
 - `input.value`(프로퍼티)는 **지금 값**, `input.getAttribute('value')`는 **처음 값**이다. 「변경 사항이 있는가」 판단에 둘을 비교할 수 있다(`defaultValue`도 처음 값이다).
 - 라디오에서 「기타」를 고르면 추가 칸을 보여 주는 식의 조건부 칸은, 숨긴 칸도 스크립트 없이 제출에 문제가 없게 만든다. 열림 상태를 스크린 리더에 알리려고 `aria-controls`·`aria-expanded`를 붙여도, 라디오의 `aria-expanded`는 읽어 주지 않는 스크린 리더가 있다.
 
@@ -148,4 +159,4 @@ form.addEventListener('submit', async (event) => {
 - 스크립트 제출은 `preventDefault()` + `FormData` + `fetch()`, 결과는 `aria-live`로 알린다.
 - 묻는 칸을 줄이는 것이 가장 강한 개인정보 보호다.
 
-관련 노트: [[html|HTML 기초와 HTML5]], [[constraint-validation|제약 검증: required·pattern·ValidityState]], [[sign-in-sign-up-forms|로그인·가입 폼과 인증 입력]], [[form-usability|더 나은 폼을 만드는 팁]], [[web-security|웹 보안: CSRF와 XSS]], [[forms|폼과 제어 컴포넌트]]
+관련 노트: [[html|HTML 기초와 HTML5]], [[constraint-validation|제약 검증: required·pattern·ValidityState]], [[sign-in-sign-up-forms|로그인·가입 폼과 인증 입력]], [[form-usability|더 나은 폼을 만드는 팁]], [[web-security|웹 보안: CSRF와 XSS]], [[forms|폼과 제어 컴포넌트]], [[form-controls-dom|폼 컨트롤과 포커스 이벤트]]

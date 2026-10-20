@@ -162,4 +162,4 @@ if (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
 - 위치·시간대·UA를 바꿔 지역·환경별 분기를 시험하되, UA 재정의는 식별자만 바꾼다는 점을 기억한다.
 - 기기에서 로컬 개발 서버를 열 때는 포트 포워딩이 가장 간단하다.
 
-관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[color-motion-accessibility|색과 움직임의 접근성]], [[web-accessibility|웹 접근성: 표준 준수에서 실제 사용성까지]], [[mobile-frameworks|모바일 앱 프레임워크 비교]], [[react-native-practical-tips|React Native 실무 팁]], [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]], [[devtools-performance|DevTools로 성능·메모리 분석하기]]
+관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[color-motion-accessibility|색과 움직임의 접근성]], [[Accessibility|웹 접근성]], [[mobile-frameworks|모바일 앱 프레임워크 비교]], [[react-native-practical-tips|React Native 실무 팁]], [[devtools-application|DevTools Application 패널: 저장소·서비스 워커]], [[devtools-performance|DevTools로 성능·메모리 분석하기]]

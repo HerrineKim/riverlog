@@ -232,7 +232,7 @@ for (const item of items) {
 | 이름과 다른 부수 효과 | `isReady()`·`checkPermission()`·`findTags()`가 상태를 바꾸거나 불리언이 아닌 객체를 반환 | `is`·`check`·`find`는 확인만 하고 기대한 타입을 돌려준다 |
 | 이름보다 많은 일 | `validateEmail()`이 검사하면서 에러 창까지 띄운다 | 함수 하나에 동작 하나. 그래야 재사용된다 |
 
-함수 이름의 동사 관례(`get…` 값 반환, `calc…` 계산, `create…` 생성, `check…`·`is…` 확인 후 불리언)는 이 목록을 뒤집은 것이다. 동작 하나에 동사 하나를 팀 전체가 같은 뜻으로 쓴다. 이름을 고르는 원칙의 바탕은 [[clear-code-principles|명확한 코드의 네 가지 원칙]]에 있다.
+함수 이름의 동사 관례(`get…` 값 반환, `calc…` 계산, `create…` 생성, `check…`·`is…` 확인 후 불리언)는 이 목록을 뒤집은 것이다. 동작 하나에 동사 하나를 팀 전체가 같은 뜻으로 쓴다. 이름을 고르는 원칙의 바탕은 [[clean-code-functions-naming|클린 코드: 함수와 이름]]에 있다.
 
 ## 정리
 
@@ -243,4 +243,4 @@ for (const item of items) {
 - 코드 모양은 포매터에, 금지 패턴은 린터에 맡기고, 사람은 이름과 함수의 책임처럼 도구가 못 보는 것을 리뷰한다.
 - 결국 컨벤션은 정답 목록이 아니라 **팀이 같은 코드를 같은 뜻으로 읽기 위한 합의**다.
 
-관련 노트: [[variables-and-types|변수와 데이터 타입]], [[arrays-and-objects|배열·객체·문자열]], [[class|class 문법]], [[eslint-prettier|ESLint와 Prettier 설정]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[typescript-learning|TypeScript 학습법]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[clear-code-principles|명확한 코드의 네 가지 원칙]], [[js-comments|JavaScript 주석]], [[statements-vs-expressions|문(Statement)과 식(Expression)]]
+관련 노트: [[variables-and-types|변수와 데이터 타입]], [[arrays-and-objects|배열·객체·문자열]], [[class|class 문법]], [[eslint-prettier|ESLint와 Prettier 설정]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[clean-code-functions-naming|클린 코드: 함수와 이름]], [[js-comments|JavaScript 주석]], [[statements-vs-expressions|문(Statement)과 식(Expression)]]

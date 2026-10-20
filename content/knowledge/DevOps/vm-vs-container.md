@@ -4,7 +4,7 @@ concept: "Container"
 summary: "OS 전체를 가상화하는 VM과 애플리케이션 단위로 격리하는 Docker 컨테이너의 차이, 그리고 컨테이너가 많아질 때 필요한 오케스트레이션·오토 스케일링(Kubernetes)."
 tags: ["docker", "devops", "infra", "msa"]
 source: notion
-date: "2026-10-14"
+date: "2026-10-20"
 sources: ["https://riverkim.kr/313", "https://80000coding.notion.site/95596b1b156b4451bd3e7d20d9e664eb"]
 ---
 
@@ -22,7 +22,7 @@ sources: ["https://riverkim.kr/313", "https://80000coding.notion.site/95596b1b15
 | 비용·밀도 | 무겁고 비싸서 한 서버에 많이 못 올림 | 가벼워서 같은 자원에 훨씬 많이 실행 |
 | 격리 수준 | 강함 (OS까지 분리) | 상대적으로 약함 (커널 공유) |
 
-- 보안이 중요한 회사는 직원마다 VM을 나눠 주고 그 안에서만 개발하게 하기도 한다. 강한 격리가 필요할 때는 여전히 VM이 쓰인다.
+- 강한 격리가 필요할 때(믿을 수 없는 코드 실행, 보안 경계가 중요한 개발 환경)는 여전히 VM을 쓴다. 컨테이너가 커널을 공유하며 무엇으로 격리하는지(네임스페이스·cgroups)와 하이퍼바이저의 원리는 [[virtualization|가상화와 하이퍼바이저]]에 있다.
 - 실무에서는 둘을 함께 쓴다. 클라우드 VM(예: AWS EC2) 위에 여러 컨테이너를 올리는 식이다.
 
 ## Docker
@@ -44,7 +44,7 @@ sources: ["https://riverkim.kr/313", "https://80000coding.notion.site/95596b1b15
 
 ## MSA와의 관계
 
-MSA는 기능을 독립적으로 배포 가능한 서비스들로 쪼갠 구조라서, 서비스마다 컨테이너로 포장해 따로 배포·확장하기에 알맞다. MSA의 구성 요소와 도입 시 주의점은 [[data-flow|Data Flow로 보는 웹 아키텍처]]에 정리했다.
+MSA는 기능을 독립적으로 배포 가능한 서비스들로 쪼갠 구조라서, 서비스마다 컨테이너로 포장해 따로 배포·확장하기에 알맞다. MSA의 구성 요소와 도입 시 주의점은 [[web-scalability-components|웹 확장성의 구성 요소]]의 「확장의 세 축」에 정리했다.
 
 ## 핵심 정리
 
@@ -52,4 +52,4 @@ MSA는 기능을 독립적으로 배포 가능한 서비스들로 쪼갠 구조�
 - Docker는 실행 환경을 이미지로 통째로 포장해 어디서나 같은 환경을 띄우게 한다.
 - 컨테이너가 많아지면 오케스트레이션 도구가 배치·재시작·오토 스케일링을 맡는다. 사실상 표준은 쿠버네티스다.
 
-관련 노트: [[kernel-types|커널의 종류]], [[ci-cd|CI/CD]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[dockerfile|Dockerfile 작성]], [[docker-compose|Docker Compose]]
+관련 노트: [[virtualization|가상화와 하이퍼바이저]], [[os-overview|운영체제 개요(커널의 구조)]], [[ci-cd|CI/CD]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[dockerfile|Dockerfile 작성]], [[docker-compose|Docker Compose]]

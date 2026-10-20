@@ -14,7 +14,7 @@ sources: ["https://d2.naver.com/helloworld/6070967", "https://github.com/Netflix
 
 포털 첫 화면, 뉴스 속보 페이지처럼 **누구나 같은 내용을 보는 읽기 위주 서비스**는 평소에도 트래픽이 많고, 지진·스포츠 경기 득점 같은 사건이 터지면 **수십 초 만에 평소의 몇 배로** 치솟는다. 이때 목표는 하나다. **무슨 일이 있어도 빈 화면을 내보내지 않는다.**
 
-로드 밸런서 → 웹 서버 → WAS → DB로 이어지는 흔한 3계층 구조([[data-flow|Data Flow로 보는 웹 아키텍처]])는 계층마다 다중화의 난이도가 다르다.
+로드 밸런서 → 웹 서버 → WAS → DB로 이어지는 흔한 3계층 구조([[web-scalability-components|웹 확장성의 구성 요소]]의 3-Tier)는 계층마다 다중화의 난이도가 다르다.
 
 | 계층 | 다중화 | 어려운 점 |
 | --- | --- | --- |
@@ -134,4 +134,4 @@ sources: ["https://d2.naver.com/helloworld/6070967", "https://github.com/Netflix
 - 외부 의존성은 **빠른 실패 + 서킷 브레이커 + 폴백**으로 감싸 장애 전파를 끊는다.
 - 한계치를 숫자로 정하고, 넘을 것 같으면 **자동으로 기능을 줄여** 핵심을 지킨다.
 
-관련 노트: [[cdn|CDN]], [[http-cache|HTTP 캐시]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[data-flow|Data Flow로 보는 웹 아키텍처]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[web-scalability-components|웹 확장성의 구성 요소]]
+관련 노트: [[cdn|CDN]], [[http-cache|HTTP 캐시]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[web-scalability-components|웹 확장성의 구성 요소]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[disaster-recovery|고가용성과 재해 복구 설계]]

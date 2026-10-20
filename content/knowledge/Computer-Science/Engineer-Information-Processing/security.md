@@ -44,7 +44,7 @@ sources: ["https://riverkim.kr/201", "https://80000coding.notion.site/5c5a05d1cc
 | Spoofing | 신뢰된 대상으로 위장 (IP·ARP·DNS 스푸핑). ARP 스푸핑은 MAC 주소를 위조해 트래픽을 가로챔 |
 | Session Hijacking | 정상 연결을 RST로 끊고 재연결 시 공격자와 연결되게 해 세션을 가로챔 |
 
-SYN Flooding·Session Hijacking이 악용하는 TCP 연결 과정은 [[tcp|TCP]], ARP 스푸핑의 대상인 ARP는 [[network-layer|네트워크 계층]]에 정리했다.
+SYN Flooding·Session Hijacking이 악용하는 TCP 연결 과정은 [[transport-layer|전송 계층의 TCP 절]], ARP 스푸핑의 대상인 ARP는 [[network-layer|네트워크 계층]]에 정리했다.
 
 ### 애플리케이션·사용자 대상
 
@@ -94,7 +94,7 @@ XSS와 CSRF의 원리와 실제 방어법은 [[web-security|웹 보안: CSRF와 
 | 기법 | 방식 |
 | --- | --- |
 | TCP 연결 스캔 | 3-way handshake를 끝까지 맺어 열림·닫힘 판단. 기록이 남는다 |
-| SYN 스캔(반개방) | SYN만 보내고 SYN-ACK이 오면 열림, RST로 끊는다. 연결이 완성되지 않아 덜 드러난다([[tcp\|TCP]]) |
+| SYN 스캔(반개방) | SYN만 보내고 SYN-ACK이 오면 열림, RST로 끊는다. 연결이 완성되지 않아 덜 드러난다([[transport-layer\|TCP]]) |
 | UDP 스캔 | 응답이 없으면 열림·필터링, ICMP port unreachable이면 닫힘. 느리다 |
 | 서비스·버전 탐지, 스크립트 스캔 | 배너와 응답으로 소프트웨어 버전을 알아내고 알려진 취약점을 점검 |
 

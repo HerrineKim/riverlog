@@ -119,4 +119,4 @@ x86-64는 정렬되지 않은 접근을 대부분 허용하므로 Bus error가 �
 - 흐름은 디버거, 메모리 오류는 ASan, 누수는 LSan·`leaks`·Valgrind, 커널과의 상호작용은 `strace`.
 - Segfault는 권한 위반, Bus error는 처리할 수 없는 주소다. 둘 다 `bt`로 시작한다.
 
-관련 노트: [[pointers-and-memory|포인터와 메모리]], [[c-pointer-pitfalls|C 포인터의 함정]], [[gcc-compile-and-link|GCC 컴파일과 링크]], [[calling-convention|호출 규약과 스택 프레임]]
+관련 노트: [[pointers-and-memory|포인터와 메모리]], [[gcc-compile-and-link|GCC 컴파일과 링크]], [[calling-convention|호출 규약과 스택 프레임]]

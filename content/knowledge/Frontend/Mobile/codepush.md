@@ -4,7 +4,7 @@ concept: "OTA Update"
 summary: "스토어 심사 없이 React Native 앱의 JavaScript 번들만 교체하는 OTA 업데이트의 원리, 채널 배포 → 확인 → 승격 흐름, 도구 선택(EAS Update, 자체 호스팅 CodePush 서버). App Center CodePush는 2025년 3월 종료됐다."
 tags: ["react-native", "mobile", "deployment", "ci-cd"]
 source: notion
-date: "2026-10-13"
+date: "2026-10-20"
 sources: ["https://riverkim.kr/218", "https://aka.ms/appcenter/retire", "https://docs.expo.dev/eas-update/introduction/"]
 ---
 
@@ -51,7 +51,7 @@ OTA로 보낸 번들은 **같은 네이티브 바이너리 버전**에서만 동
 
 ## 역사: App Center CodePush
 
-CodePush는 Visual Studio App Center의 서비스로 제공됐고, App Center는 **2025년 3월 31일에 종료**됐다. 당시에는 `appcenter-cli`로 로그인하고, 플랫폼별로 앱을 등록한 뒤 `appcenter codepush release-react -a <owner>/<app> -t "1.0.0 - 1.0.4"`로 Staging에 배포하고, 웹 콘솔이나 `appcenter codepush promote`로 Production에 승격했다. 이 명령들은 더 이상 동작하지 않는다.
+CodePush는 Visual Studio App Center의 서비스로 제공됐고, App Center는 **2025년 3월 31일에 종료**됐다. `appcenter codepush` 명령은 더 이상 동작하지 않는다.
 
 ## 정리
 

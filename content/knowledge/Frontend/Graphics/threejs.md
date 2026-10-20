@@ -5,12 +5,12 @@ summary: "WebGL을 쉽게 쓰도록 감싼 JavaScript 3D 라이브러리 Three.j
 tags: ["3d", "javascript", "webgl", "frontend"]
 source: notion
 sources: ["https://webactually.com/2017/11/09/webgl%ec%9d%84-%ec%82%ac%ec%9a%a9%ed%95%9c-%ec%95%a0%eb%8b%88%eb%a9%94%ec%9d%b4%ec%85%98-%eb%b0%8f-%ec%9d%b8%ed%84%b0%eb%9e%99%ec%85%98-%ea%b8%b0%eb%b2%95/", "https://web.dev/blog/webgpu-supported-major-browsers"]
-date: "2026-10-13"
+date: "2026-10-20"
 ---
 
 > 「코드로 움직임 만들기」 부분은 Karim Maaloul의 「WebGL을 사용한 애니메이션 및 인터랙션 기법」(웹액츄얼리 번역, 2017.11)을 바탕으로 보강한 노트다.
 
-**Three.js**는 웹 페이지에 3D 객체를 렌더링하게 해 주는 오픈 소스 JavaScript 라이브러리다. Three.js 자체가 렌더링 기술은 아니고, 저수준 그래픽 API인 **WebGL**을 쉽고 직관적으로 쓰게 감싼 래퍼다. 데모씬(컴퓨터 아트 커뮤니티) 출신 개발자 Ricardo Cabello(mrdoob)가 WebGL을 편하게 쓰려고 만들기 시작했다.
+**Three.js**는 웹 페이지에 3D 객체를 렌더링하게 해 주는 오픈 소스 JavaScript 라이브러리다. Three.js 자체가 렌더링 기술은 아니고, 저수준 그래픽 API인 **WebGL**을 쉽고 직관적으로 쓰게 감싼 래퍼다.
 
 ## WebGL 위의 라이브러리
 
@@ -102,10 +102,7 @@ hero.run = function () {
 
 ## 활용 사례
 
-- 인터랙티브 포트폴리오(예: 자동차를 운전하며 둘러보는 Bruno Simon의 포트폴리오)
-- 브랜드 상품 소개 페이지: 마우스 커서에 반응하며 돌아가는 3D 상품
-- 웹 게임: 물리 엔진(예: p2.js, cannon-es)과 결합한 핀볼 등
-- 비주얼 저널리즘: 드래그로 대상을 돌려 보며 읽는 기사. 해외 언론사에서 자주 쓴다
+인터랙티브 포트폴리오, 커서에 반응하는 3D 상품 소개, 물리 엔진(cannon-es 등)과 결합한 웹 게임, 드래그로 돌려 보는 비주얼 저널리즘에 쓴다.
 
 ## 장점과 한계
 

@@ -35,8 +35,8 @@ Response
 
 | 구분 | 노트 |
 | --- | --- |
-| 기본 구조 | [프로젝트 구조](Backend/NestJS/project-structure), [Controller](Backend/NestJS/controller), [Provider와 DI](Backend/NestJS/provider-di), [Module과 캡슐화](Backend/NestJS/module) |
-| 요청 파이프라인 | [Middleware](Backend/NestJS/nestjs-middleware), [Exception Filter와 Pipe](Backend/NestJS/exception-filter-pipe), [Interceptor와 AOP](Backend/NestJS/interceptor-aop) |
+| 기본 구조 | [프로젝트 구조](Backend/NestJS/project-structure), [Controller](Backend/NestJS/controller), [Module과 Provider(DI)](Backend/NestJS/module) |
+| 요청 파이프라인 | [Middleware와 Interceptor(AOP)](Backend/NestJS/interceptor-aop), [Exception Filter와 Pipe](Backend/NestJS/exception-filter-pipe) |
 | 데이터 계층 | [설정과 환경 변수](Backend/NestJS/config-env), [Mongoose 스키마](Backend/NestJS/mongoose-schema), [DTO와 Validation](Backend/NestJS/dto-validation), [Repository 패턴](Backend/NestJS/repository-pattern) |
 | 기능 구현 | [JWT·Passport 인증](Backend/NestJS/auth-jwt-passport), [Swagger 문서화](Backend/NestJS/swagger), [파일 업로드(Multer)](Backend/NestJS/file-upload-multer) |
 

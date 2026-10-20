@@ -8,7 +8,7 @@ date: "2026-10-20"
 sources: ["https://inner-game.tistory.com/662", "https://omscs.gatech.edu/admission-criteria", "https://omscs.gatech.edu/deadlines-decisions-requirements-and-guidelines", "https://bursar.gatech.edu/student/tuition/fa26/fa26_omscs.pdf", "https://pe.gatech.edu/degrees/analytics", "https://self-taught-programmer.tistory.com/8", "https://tech-millennial.tistory.com/5"]
 ---
 
-> InnerGame 블로그의 「[한국에서 미국 조지아텍 대학원 컴퓨터공학 온라인 석사](https://inner-game.tistory.com/662)」(2026.02)를 바탕으로, 입학 요건·학비는 조지아텍 공식 페이지로 확인해 재구성한 노트다. 수강 경험은 self-taught-programmer 블로그의 OMSCS 진행기(2021)와 tech-millennial 블로그의 「비전공자 미국 CS 석사 가능할까?」(2020)에서 가져왔다.
+> InnerGame 블로그의 「[한국에서 미국 조지아텍 대학원 컴퓨터공학 온라인 석사](https://inner-game.tistory.com/662)」(2026.02)를 바탕으로, 입학 요건·학비는 조지아텍 공식 페이지로 확인해 재구성한 노트다. 수업 강도는 self-taught-programmer 블로그의 OMSCS 진행기(2021)와 tech-millennial 블로그의 「비전공자 미국 CS 석사 가능할까?」(2020)로 보강했다.
 
 ## OMSCS란
 
@@ -59,7 +59,7 @@ OMSCS(Online Master of Science in Computer Science)는 조지아텍(Georgia Inst
 
 논문이 없는 과정이라 깊이가 얕을 거라는 걱정과 달리, 대부분 과목이 **코딩 프로젝트 비중이 크다.** 대신 과목 하나에 주 20~40시간이 든다. 일하면서는 한 학기 한 과목도 벅차서 졸업까지 3년쯤 걸린다.
 
-직장인 수강 예로, 한 학기 한 과목씩 Graduate Intro to Operating Systems(CS 6200) → Advanced Operating Systems(CS 6210) → AI for Robotics(CS 7638) → Computer Networks(CS 6250) → Machine Learning for Trading(CS 7646) 순서로 들어 2년 남짓에 절반(15학점)을 채운 사례가 있다. 같은 시기에 이직 준비를 병행해 개발 직무로 옮겼다. 학위가 끝나기를 기다리지 않고 공부와 이직을 같이 진행하는 것이 일반적이다.
+한 학기 한 과목이면 2년 남짓에 절반(15학점)을 채운다. 학위가 끝나기를 기다리지 않고 공부와 이직 준비를 함께 진행하는 것이 일반적이다.
 
 ## 사전 준비
 
@@ -86,4 +86,4 @@ OMSCS(Online Master of Science in Computer Science)는 조지아텍(Georgia Inst
 - 첫 12개월 안에 기초 과목 2개를 B 이상으로 통과해야 한다.
 - 학위가 비자를 주지는 않는다. 학비·요건은 학기마다 공식 페이지에서 다시 확인한다.
 
-관련 노트: [[us-work-visa-paths|한국 개발자가 미국에서 일하는 경로]], [[non-cs-masters-path|비전공자의 미국 CS 석사 준비]], [[us-study-funding|미국 유학 학비 지원과 장학금]], [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[tech-interview-tips|기술면접 잘 보는 법]]
+관련 노트: [[us-work-visa-paths|한국 개발자가 미국에서 일하는 경로]], [[non-cs-masters-path|비전공자의 미국 CS 석사 준비]], [[us-study-funding|미국 유학 학비 지원과 장학금]], [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[interview-attitude|면접 잘 보는 법]]

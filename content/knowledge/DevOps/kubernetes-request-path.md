@@ -96,4 +96,4 @@ Istio는 Prometheus용 지표 노출을 기본으로 켜 두기 때문에, Prome
 - 클러스터 입구는 Ingress에서 **Gateway API**로, 서비스 메시는 사이드카에서 **앰비언트** 방식으로 옮겨 가고 있다.
 - 서버에서 도는 프론트엔드 코드가 늘수록, 요청 경로와 지표를 직접 읽을 줄 아는 것이 성능 작업의 출발점이다.
 
-관련 노트: [[vm-vs-container|VM과 컨테이너]], [[startup-infra-decisions|스타트업 인프라 결정: 지지와 후회]], [[ci-cd|CI/CD]]
+관련 노트: [[vm-vs-container|VM과 컨테이너]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[ci-cd|CI/CD]]

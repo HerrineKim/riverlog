@@ -99,7 +99,7 @@ sources: ["https://web.dev/learn/performance/resource-hints", "https://web.dev/l
 - 로딩은 대략 두 단계다. 첫 단계는 막는 스크립트를 모두 받고 실행할 때까지이고, 이 동안 낮은 우선순위 자원은 미뤄질 수 있다. `fetchpriority="high"`를 주면 첫 단계부터 받는다.
 - **LCP 이미지 하나에만 `high`를 준다.** 여러 장에 주면 효과가 없다. 캐러셀의 숨은 슬라이드처럼 당장 안 보이는 이미지에는 `low`를 준다.
 
-`loading`·`decoding`·`fetchpriority` 속성 요약은 [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]]에 있다.
+`loading`·`decoding`·`fetchpriority` 속성 요약은 [[html#속성 하나로 끝나는 기능|HTML 기초와 HTML5]]에 있다.
 
 ## 다음 이동을 위한 미리 불러오기
 
@@ -187,4 +187,4 @@ precacheAndRoute([
 
 **앞당길 것은 적게, 정확히 고른다.**
 
-관련 노트: [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[lcp-optimization|LCP 최적화]], [[web-font-performance|웹 폰트 성능 최적화]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[html-lesser-known-attributes|잘 안 쓰지만 쓸모 있는 HTML 속성]], [[dns|DNS]]
+관련 노트: [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[lcp-optimization|LCP 최적화]], [[web-font-performance|웹 폰트 성능 최적화]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[html|HTML 기초와 HTML5]], [[dns|DNS]]

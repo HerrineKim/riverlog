@@ -13,17 +13,17 @@ date: "2026-10-13"
 
 | 주제 | 내용 |
 | --- | --- |
-| [Web](/knowledge/dictionary/frontend/web) | HTML·시맨틱 마크업, DOM과 브라우저 렌더링, SPA와 CSR/SSR/SSG/ISR·스트리밍 SSR, 웹 성능 지표(Core Web Vitals), SEO, PWA, 쿠키·세션·OAuth, CSRF·XSS 같은 웹 보안, 용어집 |
-| [CSS](/knowledge/dictionary/frontend/css) | 문법과 단위, 선택자와 우선순위, 박스 모델, position, Flexbox·Grid, 반응형 디자인, 애니메이션, CSS의 역사 |
-| [JavaScript](/knowledge/dictionary/frontend/javascript) | 변수·타입, 연산자·제어문, 함수와 this, 배열·객체, 템플릿 리터럴, class, DOM 조작과 이벤트, 비동기(콜백·Promise·async/await), AJAX, TypeScript, 패키지 매니저·번들러 |
-| [React](/knowledge/dictionary/frontend/react) | JSX, 컴포넌트·Props, State·생명주기, Hooks, 폼·리스트·조건부 렌더링, Context, 스타일링, SWR·TanStack Query, Redux, 리렌더링 추적, react-hook-form·react-router·MUI 실무 패턴 |
-| [Next.js](/knowledge/dictionary/frontend/next-js) | React 기반 프레임워크를 쓰는 이유(SSR·SSG와 SEO), App Router의 내비게이션과 데이터 가져오기, `proxy.ts`, `fetch` 캐싱과 `use cache`, 서버·클라이언트 컴포넌트 조합 규칙 |
-| [Architecture](/knowledge/dictionary/frontend/architecture) | 의존성 관리, 프론트엔드의 SOLID 원칙, 폴더 구조의 진화, Feature-Sliced Design |
-| [Mobile](/knowledge/dictionary/frontend/mobile) | 네이티브·하이브리드·크로스 플랫폼 비교, React Native 핵심과 실무 팁, CodePush OTA 업데이트, Flutter 구조와 Dart 문법, Swift Codable, Android 상태·Context·SDK 버전 |
-| [Testing](/knowledge/dictionary/frontend/testing) | 테스트의 층(정적·단위·통합·E2E)과 테스트 대역, TDD, 험블 객체 패턴, 접근성 기반 UI 테스트, Vitest·Jest·Testing Library·Playwright |
-| [Accessibility](/knowledge/dictionary/frontend/accessibility) | 장애 유형별 웹 사용, WCAG, 시맨틱 구조·대체 텍스트·폼·ARIA·키보드·위젯·CSS의 접근성, 자동·수동 평가와 스크린 리더 테스트 |
-| [UI Design](/knowledge/dictionary/frontend/ui-design) | 디자인 시스템과 핸드오프, 레이아웃, 전자상거래·제스처 UI 패턴, UX 라이팅 (AI로 디자인을 뽑는 프롬프트 기법은 [[ai-frontend-design-prompting\|AI & Data]] 분야에 있다) |
-| [Graphics](/knowledge/dictionary/frontend/graphics) | WebGL·WebGPU와 셰이더, Three.js로 웹에서 3D 그리기, Animated Icon |
+| [Web](Frontend/Web.md) | HTML·시맨틱 마크업, DOM과 브라우저 렌더링, SPA와 CSR/SSR/SSG/ISR·스트리밍 SSR, 웹 성능 지표(Core Web Vitals), SEO, PWA, 쿠키·세션·OAuth, CSRF·XSS 같은 웹 보안, 용어집 |
+| [CSS](Frontend/CSS.md) | 문법과 단위, 선택자와 우선순위, 박스 모델, position, Flexbox·Grid, 반응형 디자인, 애니메이션, CSS의 역사 |
+| [JavaScript](Frontend/JavaScript.md) | 변수·타입, 연산자·제어문, 함수와 this, 배열·객체, 템플릿 리터럴, class, DOM 조작과 이벤트, 비동기(콜백·Promise·async/await), AJAX, TypeScript, 패키지 매니저·번들러 |
+| [React](Frontend/React.md) | JSX, 컴포넌트·Props, State·생명주기, Hooks, 폼·리스트·조건부 렌더링, Context, 스타일링, SWR·TanStack Query, Redux, 리렌더링 추적, react-hook-form·react-router·MUI 실무 패턴 |
+| [Next.js](Frontend/Next.js.md) | React 기반 프레임워크를 쓰는 이유(SSR·SSG와 SEO), App Router의 내비게이션과 데이터 가져오기, `proxy.ts`, `fetch` 캐싱과 `use cache`, 서버·클라이언트 컴포넌트 조합 규칙 |
+| [Architecture](Frontend/Architecture.md) | 변경하기 쉬운 코드의 네 기준(가독성·예측 가능성·응집도·결합도), 의존성 관리, SOLID, 관심사의 분리, 컴포넌트 분리, 추상화 계층, MV*·MVI 아키텍처, Atomic Design, 폴더 구조의 진화, Feature-Sliced Design |
+| [Mobile](Frontend/Mobile.md) | 네이티브·하이브리드·크로스 플랫폼 비교, React Native 핵심과 실무 팁, CodePush OTA 업데이트, Flutter 구조와 Dart 문법, Swift Codable, Android 상태·Context·SDK 버전 |
+| [Testing](Frontend/Testing.md) | 테스트의 층(정적·단위·통합·E2E)과 테스트 대역, 기본 요소와 모범 사례, 실행 환경과 실행 시점(로컬·PR·CI), 의존성 있는 컴포넌트 테스트, 정적 분석, TDD, 험블 객체 패턴, 접근성 기반 UI 테스트, Vitest·Jest·Testing Library·Playwright |
+| [Accessibility](Frontend/Accessibility.md) | 장애 유형별 웹 사용, WCAG, 시맨틱 구조·대체 텍스트·폼·ARIA·키보드·위젯·CSS의 접근성, 자동·수동 평가와 스크린 리더 테스트 |
+| [UI Design](Frontend/UI-Design.md) | 디자인 시스템과 핸드오프, 레이아웃, 전자상거래·제스처 UI 패턴, UX 라이팅 (AI로 디자인을 뽑는 프롬프트 기법은 [[ai-frontend-design-prompting\|AI & Data]] 분야에 있다) |
+| [Graphics](Frontend/Graphics.md) | WebGL·WebGPU와 셰이더, Three.js로 웹에서 3D 그리기, Animated Icon |
 
 학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/frontend-roadmap)에 정리했다.
 

@@ -10,9 +10,8 @@ date: "2026-10-14"
 컴퓨터 구조는 논리 회로 수준의 부품이 모여 CPU와 메모리, 입출력 시스템을 이루고, 그 위에서 명령어가 실행되는 원리를 다룬다. 운영체제와 성능 최적화를 이해하는 기반이 된다.
 
 - [컴퓨터 시스템의 기본 구성](Computer-Science/Computer-Architecture/computer-system-basics.md) — 컴퓨터의 역사와 기본 구성(CPU·메모리·저장 장치)
-- [디지털 논리 회로](Computer-Science/Computer-Architecture/digital-logic-circuits.md) — 논리 게이트, 부울 대수와 카르노 맵, 가산기, 플립플롭과 순차 회로
+- [디지털 논리 회로와 부품](Computer-Science/Computer-Architecture/digital-logic-circuits.md) — 논리 게이트, 부울 대수와 카르노 맵, 가산기·디코더·MUX, 플립플롭과 레지스터·카운터, RAM/ROM, 집적회로
 - [데이터의 표현](Computer-Science/Computer-Architecture/data-representation.md) — 진법, 보수, 고정·부동 소수점, 에러 검출 코드
-- [디지털 부품](Computer-Science/Computer-Architecture/digital-components.md) — 디코더, 멀티플렉서, 레지스터, 카운터, RAM/ROM
 - [레지스터 전송과 마이크로 연산](Computer-Science/Computer-Architecture/register-transfer.md) — 레지스터 전송 언어, 버스, 산술·논리·시프트 마이크로 연산
 - [기본 컴퓨터의 구조와 설계](Computer-Science/Computer-Architecture/basic-computer-design.md) — 기본 컴퓨터의 명령어 형식, 레지스터와 버스, 명령어 사이클, 인터럽트, 제어 장치 설계
 - [기본 컴퓨터 프로그래밍](Computer-Science/Computer-Architecture/basic-computer-programming.md) — 기계어와 어셈블리, 2-pass 어셈블러, 루프·서브루틴·입출력 프로그래밍
