@@ -4,12 +4,13 @@ concept: "Accessible Forms"
 summary: "모든 입력 칸에는 코드로 연결된 이름이 있어야 한다. label을 기본으로, 표처럼 일대일이 안 되는 곳은 aria-labelledby, 보조 설명은 aria-describedby로 잇고, 묶음은 fieldset·legend로 준다. 검증은 서버와 클라이언트를 함께 두고, 오류는 알리고·데려가고·다시 제출하게 하는 세 단계로 복구시킨다. WCAG 2.2의 중복 입력 금지와 인지 테스트 없는 인증까지 다룬다."
 tags: ["accessibility", "frontend", "form", "validation", "aria", "html"]
 source: other
-date: "2026-10-17"
-sources: ["https://webaim.org/techniques/forms/", "https://webaim.org/techniques/forms/controls", "https://webaim.org/techniques/forms/advanced", "https://webaim.org/techniques/formvalidation/", "https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html", "https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html", "https://web.dev/learn/accessibility/forms", "https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3", "https://webaim.org/presentations/2024/january/"]
+date: "2026-10-21"
+sources: ["https://webaim.org/techniques/forms/", "https://webaim.org/techniques/forms/controls", "https://webaim.org/techniques/forms/advanced", "https://webaim.org/techniques/formvalidation/", "https://www.w3.org/WAI/WCAG22/Understanding/redundant-entry.html", "https://www.w3.org/WAI/WCAG22/Understanding/accessible-authentication-minimum.html", "https://web.dev/learn/accessibility/forms", "https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3", "https://webaim.org/presentations/2024/january/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Fieldset%EC%9D%B4%20flex%EA%B0%80%20%EC%95%88%EB%90%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md"]
 ---
 
 > WebAIM의 「[Creating Accessible Forms](https://webaim.org/techniques/forms/)」(3쪽: [Accessible Form Controls](https://webaim.org/techniques/forms/controls), [Advanced Form Labeling](https://webaim.org/techniques/forms/advanced)), 「[Usable and Accessible Form Validation and Error Recovery](https://webaim.org/techniques/formvalidation/)」을 바탕으로, WCAG 2.2 성공 기준은 W3C의 Understanding 문서로 확인해 재구성하고, web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 폼 편으로 보강한 노트다.
 > 힌트·오류 문구 중복과 묶음 오류 부분은 AOA11Y의 강의 연재 「[항공사의 ARIA 적용 사례 살펴보기](https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3)」를 바탕으로 보강했다.
+> fieldset의 플렉스·그리드 지원은 「[Frontend_TIL: Fieldset이 flex가 안되는 이유](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Fieldset%EC%9D%B4%20flex%EA%B0%80%20%EC%95%88%EB%90%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md)」를 브라우저 출시 기록으로 확인해 최신화했다.
 > `aria-invalid` 스타일링과 숨긴 오류 문구의 함정은 WebAIM의 교육 자료 「[Web Accessibility Training](https://webaim.org/presentations/2024/january/)」(Jon Whiting·Jared Smith, 2024.01)을 바탕으로 보강했다.
 
 ## 접근 가능한 폼이란
@@ -109,6 +110,7 @@ sources: ["https://webaim.org/techniques/forms/", "https://webaim.org/techniques
 - legend는 칸마다 반복해 읽힐 수 있으므로 **짧게** 쓴다.
 - 라디오 묶음이라도 상위 질문이 필요 없으면 fieldset을 생략해도 된다.
 - fieldset을 중첩하지 않는다. 스크린 리더마다 이상하게 읽는다.
+- 배치 때문에 fieldset을 `<div role="group">`으로 바꿀 필요는 없다. 과거 Chrome·Edge에서는 `<fieldset>`에 `display: flex`·`grid`가 먹지 않아 그렇게 우회했지만, Chromium 86(2020)부터 모든 주요 브라우저에서 fieldset을 플렉스·그리드 컨테이너로 쓸 수 있다. 기본 `min-inline-size: min-content` 때문에 좁은 화면에서 넘치면 `min-inline-size: 0`을 준다.
 
 ### aria-describedby: 이름 뒤에 붙는 설명
 

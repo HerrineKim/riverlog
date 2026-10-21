@@ -157,4 +157,4 @@ test('고르면 그 사용자 ID로 콜백을 부른다', async () => {
 - 전역은 `vi.stubGlobal` + 복원, 모듈은 `vi.mock`, Context는 Provider로 `vi.fn()`을 주입한다.
 - 요청이 늘면 MSW, 목이 늘면 설계를 바꾼다.
 
-관련 노트: [[humble-object-pattern|험블 객체 패턴]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[test-environment|테스트 실행 환경]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]
+관련 노트: [[api-mocking|API 모킹: MSW와 json-server]], [[humble-object-pattern|험블 객체 패턴]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[test-environment|테스트 실행 환경]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]

@@ -4,11 +4,12 @@ concept: "Flexbox"
 summary: "Normal Flow를 벗어나 요소를 배치하는 float와 flow-root로 float 담기, 축을 기준으로 아이템을 정렬하는 1차원 레이아웃 모델 Flexbox. 속성의 초깃값과 flex 키워드, 내용 기반 공간 분배, auto margin으로 그룹 나누기, 쓰기 모드에 따라 바뀌는 축, min-width: auto 함정, 그리고 글을 여러 단으로 흘리는 다단 레이아웃까지."
 tags: ["css", "layout", "flexbox", "frontend"]
 source: mixed
-sources: ["https://heewon26.tistory.com/298", "https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/", "https://developer.mozilla.org/en-US/docs/Web/CSS/gap", "https://developer.mozilla.org/en-US/docs/Web/CSS/display#flow-root", "https://web.dev/learn/css/flexbox", "https://web.dev/learn/css/layout", "https://developer.mozilla.org/en-US/docs/Web/CSS/align-content"]
-date: "2026-10-13"
+sources: ["https://heewon26.tistory.com/298", "https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/", "https://developer.mozilla.org/en-US/docs/Web/CSS/gap", "https://developer.mozilla.org/en-US/docs/Web/CSS/display#flow-root", "https://web.dev/learn/css/flexbox", "https://web.dev/learn/css/layout", "https://developer.mozilla.org/en-US/docs/Web/CSS/align-content", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%20%ED%95%B4%EC%A0%9C%20%EB%B0%A9%EB%B2%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Float%20%EB%B0%B0%EC%B9%98%EB%90%98%EB%8A%94%20%EA%B3%BC%EC%A0%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%EC%9C%BC%EB%A1%9C%20%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%20%EA%B5%AC%EC%84%B1%20%EB%B0%8F%20%EC%9D%B4%ED%95%B4.md"]
+date: "2026-10-21"
 ---
 
 > Rachel Andrew의 「[플렉스박스 플렉스 컨테이너를 만들 때 무슨 일이 벌어질까?](https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/)」(2018.09, 웹액츄얼리 번역)과 곽빵의 「[flexbox에서 가변요소의 자식 width가 부모 width를 넘을 때](https://heewon26.tistory.com/298)」(2021.09)를 바탕으로 재구성하고, web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Layout·Flexbox 모듈로 보강한 노트다.
+> float가 놓이는 규칙과 옛 float 해제법은 「[Frontend_TIL: Float 배치되는 과정](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Float%20%EB%B0%B0%EC%B9%98%EB%90%98%EB%8A%94%20%EA%B3%BC%EC%A0%95.md)」·「[float 해제 방법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%20%ED%95%B4%EC%A0%9C%20%EB%B0%A9%EB%B2%95.md)」·「[float으로 레이아웃 구성 및 이해](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%EC%9C%BC%EB%A1%9C%20%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%20%EA%B5%AC%EC%84%B1%20%EB%B0%8F%20%EC%9D%B4%ED%95%B4.md)」을 CSS 명세로 확인해 보강했다.
 
 블록은 위에서 아래로, 인라인은 왼쪽에서 오른쪽으로 쌓이는 Normal Flow만으로는 "옆으로 나란히", "가운데 정렬", "남은 공간 나눠 갖기" 같은 레이아웃을 만들기 어렵다. 예전에는 `float`로 이를 해결했고, 지금은 대부분 **Flexbox**와 **Grid**로 처리한다.
 
@@ -22,16 +23,49 @@ date: "2026-10-13"
 .left { float: left; } /* none(기본) | left | right */
 ```
 
+- float된 박스는 `display`가 블록 계열로 바뀌고(`inline`이어도 `width`·`height`가 먹는다), 너비는 내용만큼 줄어든다.
+- 블록 박스는 float를 못 본 척 그 아래로 깔리지만, 그 안의 **줄 상자(글)만** float를 피해 옆으로 흐른다. 그래서 float 뒤 블록의 배경은 float 밑으로 들어가고 글자만 비켜 선다.
+
+### float가 놓이는 규칙
+
+float는 「같은 방향으로 가능한 한 위, 가능한 한 바깥쪽」에 놓이지만 몇 가지 제약을 받는다.
+
+| 규칙 | 결과 |
+| --- | --- |
+| 먼저 나온 float보다 위로 올라가지 못한다 | 소스 순서가 뒤인 float의 윗변은 앞선 float의 윗변보다 높을 수 없다 |
+| 남은 줄 폭에 안 들어가면 아래로 밀린다 | 폭 300px 컨테이너에 100px float 다음 210px float가 오면 두 번째는 첫째 아래 줄로 내려간다 |
+| 밀려난 자리 위로는 아무것도 못 간다 | 위 예에서 뒤따르는 20px짜리 `float: right`는 첫 줄 오른쪽에 빈 공간이 있어도 그 줄로 못 올라가고, 밀려난 float와 같은 줄 오른쪽에 붙는다 |
+| 왼쪽 float와 오른쪽 float는 서로 겹치지 않는다 | 한 줄에 둘이 다 안 들어가면 뒤에 나온 쪽이 아래로 밀린다 |
+
+![float 배치 예](https://raw.githubusercontent.com/AI-Dev-Lex-Kim/Frontend_TIL/master/Images/inline-box.jpg)
+
+float로 여러 칸을 늘어놓으면 높이가 다른 칸 하나가 뒤의 칸들을 엉뚱한 줄에 걸리게 만든다. 칸 배치는 플렉스·그리드로 한다.
+
 ### float를 부모 안에 담기
 
-float된 요소는 Normal Flow에서 벗어나 떠 있기 때문에, 이후 요소가 그 밑으로 파고들거나 부모가 높이를 잃는다. **부모에 `display: flow-root`를 주면** 부모가 새 블록 서식 맥락(BFC)을 만들어 float를 안에 담는다. 높이가 float까지 늘어나고, 바깥 요소와도 섞이지 않는다.
+float된 요소는 Normal Flow에서 벗어나 떠 있기 때문에, 이후 요소가 그 밑으로 파고들거나 부모가 높이를 잃는다(float만 담은 부모의 높이는 0이다). **부모에 `display: flow-root`를 주면** 부모가 새 블록 서식 맥락(BFC)을 만들어 float를 안에 담는다. 높이가 float까지 늘어나고, 바깥 요소와도 섞이지 않는다.
 
 ```css
 .media { display: flow-root; } /* 안의 float를 품는다 */
 .after-float { clear: both; }   /* 특정 요소만 float 아래로 내릴 때 */
 ```
 
-과거에는 `::after` 가상 요소에 `clear: both`를 주는 clearfix 핵으로 같은 일을 했다. Flexbox·Grid 등장 이후 float로 레이아웃을 짜는 일은 크게 줄었고, 지금은 본래 용도(글 감싸기)에 주로 쓴다.
+`flow-root` 전에는 여러 우회법을 썼다. 모두 부작용이 있어 새 코드에는 쓰지 않는다.
+
+| 옛 방법 | 원리 | 부작용 |
+| --- | --- | --- |
+| 부모도 `float` | float는 BFC를 만들어 자식 float를 감싼다 | 부모가 흐름에서 빠지고 너비가 줄어 문제가 한 단계 위로 옮겨 간다 |
+| 부모에 `display: inline-block` | inline-block도 BFC를 만든다 | 부모가 내용 폭으로 줄고 인라인처럼 놓인다 |
+| 부모에 `overflow: hidden` | `visible`이 아닌 overflow가 BFC를 만든다 | 밖으로 나가야 할 그림자·드롭다운이 잘린다 |
+| 마지막 자식으로 빈 `<div style="clear: both">` | 빈 요소가 float 아래로 내려가며 부모를 늘린다 | 의미 없는 마크업이 남는다 |
+| clearfix(`::after`) | 가상 요소를 빈 블록으로 만들어 `clear` | 동작은 맞지만 `flow-root` 한 줄로 대체된다 |
+
+```css
+/* 과거의 clearfix. ::after는 기본이 인라인이라 clear가 먹지 않아 block으로 바꾸고, content가 있어야 생긴다 */
+.clearfix::after { content: ""; display: block; clear: both; }
+```
+
+Flexbox·Grid 등장 이후 float로 레이아웃을 짜는 일은 크게 줄었고, 지금은 본래 용도(글 감싸기)에 주로 쓴다. BFC가 무엇이고 어떤 값이 만드는지는 [[box-model#블록 서식 맥락(BFC)|박스 모델의 BFC]]에 있다.
 
 ## Flexbox
 

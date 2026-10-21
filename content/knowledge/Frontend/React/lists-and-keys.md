@@ -4,9 +4,11 @@ concept: "Key"
 summary: "배열을 map으로 엘리먼트 목록으로 바꿔 렌더링하는 방법과, 각 항목을 식별하는 key의 역할. key 값(없음·랜덤·인덱스·id)에 따라 리렌더링과 리마운트가 어떻게 달라지는지, 인덱스 key가 오히려 빠른 경우까지 다룬다."
 tags: ["react", "jsx", "frontend", "performance"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://www.developerway.com/posts/react-key-attribute"]
+date: "2026-10-21"
+sources: ["https://www.developerway.com/posts/react-key-attribute", "https://react.vlpt.us/basic/11-render-array.html"]
 ---
+
+> 개인 TIL을 바탕으로, key가 없을 때의 갱신 방식은 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[배열 렌더링하기](https://react.vlpt.us/basic/11-render-array.html)」를 바탕으로 보강했다.
 
 목록을 그릴 때는 JavaScript 배열의 `map()`으로 각 데이터를 엘리먼트로 바꿔 반환한다. 이때 각 항목에는 **key**를 줘야 한다. key는 React가 리렌더링 때 "어떤 항목이 추가·삭제·이동되었는지"를 알아내는 이름표다.
 
@@ -50,6 +52,11 @@ function TodoList({ todos }) {
 - 형제 항목 사이에서 **고유하고 안정적인** 값이어야 한다(전체 앱에서 고유할 필요는 없다).
 - key가 없으면 콘솔에 경고가 뜬다. React Native에서도 마찬가지다.
 - 가장 좋은 key는 데이터의 **id**다.
+- 형제 사이에 **같은 key가 두 번** 나오면 콘솔 오류가 나고, React가 어느 쪽을 갱신할지 헷갈려 항목이 중복되거나 사라진다.
+
+key가 없으면 `[a, b, c, d]`의 b와 c 사이에 z를 넣을 때 React는 자리(인덱스)로 비교한다. 그래서 「c 자리를 z로, d 자리를 c로 바꾸고 끝에 d를 새로 붙이는」 식으로 뒤쪽 항목을 전부 고친다. key가 있으면 기존 항목은 그대로 두고 z만 끼워 넣는다.
+
+![key 없이 중간에 삽입하면 뒤쪽 항목이 모두 바뀐다](https://i.imgur.com/3rkaiY1.gif)
 
 ### 인덱스를 key로 쓰면 안 되는 이유
 

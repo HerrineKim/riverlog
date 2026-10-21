@@ -4,9 +4,11 @@ concept: "SWR"
 summary: "캐시를 먼저 보여 주고 백그라운드에서 재검증하는 데이터 패칭 훅 SWR의 사용 패턴. mutate 옵션 객체와 optimisticData로 캐시를 갱신하고, SWR 캐시로 로그인 상태를 판단해 보호된 페이지를 만든다."
 tags: ["react", "hooks", "http", "cache", "frontend", "auth"]
 source: til
-date: "2026-10-12"
-sources: ["https://swr.vercel.app/docs/mutation"]
+date: "2026-10-21"
+sources: ["https://swr.vercel.app/docs/mutation", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/SWR.md"]
 ---
+
+> 커스텀 훅으로 데이터를 나눠 쓰는 패턴은 「[Frontend_TIL: SWR](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/SWR.md)」을 바탕으로 보강했다.
 
 **SWR**은 Vercel이 만든 데이터 패칭용 React Hooks 라이브러리다. 이름은 HTTP 캐시 전략 **stale-while-revalidate**에서 왔다. 캐시된(stale) 데이터를 먼저 보여 주고, 백그라운드에서 다시 요청해(revalidate) 최신 데이터로 바꾼다. 같은 key로 요청하는 컴포넌트들이 캐시를 공유하므로 서버 데이터를 **전역 상태처럼** 쓸 수 있다.
 
@@ -38,6 +40,18 @@ function Profile() {
 | 쿠키 | 세션 쿠키로 로그인을 증명한다면 fetcher에 `withCredentials: true`가 필수다. 빠뜨리면 다른 출처 서버의 쿠키가 저장·전송되지 않는다 |
 
 GET은 SWR로, POST/PUT/DELETE 같은 변경 요청은 axios로 직접 보내고 그 뒤에 `mutate`로 캐시를 갱신하는 조합이 일반적이다.
+
+중복 제거 덕분에 **데이터를 props로 내려보내지 않아도 된다.** key와 fetcher를 커스텀 훅으로 감싸 두고, 데이터가 필요한 컴포넌트가 각자 호출한다. 여러 곳에서 불러도 요청은 한 번이다. 부모는 데이터를 몰라도 되고, 컴포넌트를 옮겨도 props 연결을 다시 하지 않는다.
+
+```tsx
+function useNews() {
+  const { data, error, isLoading } = useSWR('/api/news', fetcher)
+  return { news: data, error, isLoading }
+}
+
+function Headline() { const { news } = useNews(); return <h2>{news?.[0].title}</h2> }
+function NewsList() { const { news } = useNews(); return <ul>{news?.map((n) => <li key={n.id}>{n.title}</li>)}</ul> }
+```
 
 ## mutate: 캐시 갱신
 

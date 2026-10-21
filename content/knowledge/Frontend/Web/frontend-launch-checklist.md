@@ -5,10 +5,10 @@ summary: "웹 페이지를 배포하기 전에 확인할 항목을 head·HTML·C
 tags: ["frontend", "web", "performance", "accessibility", "seo", "security"]
 source: other
 date: "2026-10-21"
-sources: ["https://github.com/kesuskim/Front-End-Checklist", "https://github.com/thedaviddias/Front-End-Checklist"]
+sources: ["https://github.com/kesuskim/Front-End-Checklist", "https://github.com/thedaviddias/Front-End-Checklist", "https://github.com/mr-mig/going-to-production"]
 ---
 
-> 「[프론트엔드 체크리스트](https://github.com/kesuskim/Front-End-Checklist)」(David Dias의 [Front-End Checklist](https://github.com/thedaviddias/Front-End-Checklist) 한국어 번역)의 분류를 뼈대로, 항목은 오늘 기준으로 고쳐 재구성한 노트다.
+> 「[프론트엔드 체크리스트](https://github.com/kesuskim/Front-End-Checklist)」(David Dias의 [Front-End Checklist](https://github.com/thedaviddias/Front-End-Checklist) 한국어 번역)의 분류를 뼈대로, 항목은 오늘 기준으로 고쳐 재구성한 노트다. 배포·오류 추적·법 항목은 「[Going To Production Checklist](https://github.com/mr-mig/going-to-production)」의 SPA 체크리스트로 보강했다. 서버 쪽 점검은 [[production-readiness-checklist|서비스 운영 준비 체크리스트]]에 있다.
 
 ## 체크리스트를 쓰는 법
 
@@ -36,6 +36,9 @@ sources: ["https://github.com/kesuskim/Front-End-Checklist", "https://github.com
 | 성능 | Core Web Vitals(LCP·INP·CLS)가 「좋음」 기준, 실제 사용자 데이터로 확인 | [[web-vitals\|웹 성능 지표]] |
 | 접근성 | 폼 레이블, 키보드만으로 모든 기능 사용, 보이는 포커스, 색 대비, 스크린 리더 확인 | [[accessibility-evaluation\|접근성 평가]], [[keyboard-accessibility\|키보드 접근성]] |
 | SEO | `sitemap.xml`, `robots.txt`가 필요한 페이지를 막지 않음, canonical, 구조화된 데이터, 소셜 공유 메타(Open Graph) | [[seo-basics\|SEO 기초]], [[structured-content\|구조화된 콘텐츠]] |
+| 배포·캐시 | 정적 자산은 파일 이름에 내용 해시를 넣고 `Cache-Control: max-age=31536000, immutable`로 영구 캐시, HTML은 짧게 캐시해 새 배포가 바로 보이게(캐시 무효화), CDN 배포, Brotli·gzip 압축, 점검(maintenance) 페이지 준비 | [[http-cache\|HTTP 캐시]] |
+| 오류 추적 | 처리되지 않은 예외를 오류 수집 서비스(Sentry 등)로 보내고, 소스 맵을 그 서비스에만 올려 압축된 스택을 원래 코드로 되돌린다. 오래 켜 두는 SPA는 메모리 누수를 확인한다 | [[garbage-collection\|가비지 컬렉션과 메모리 누수]] |
+| 법·정책 | 서드파티 의존성의 라이선스를 어기지 않음, 암호화 관련 규제와 조직의 기준 준수 | [[open-source-licenses\|오픈소스 라이선스]] |
 
 ## 그대로 따르지 않는 항목
 
@@ -46,7 +49,10 @@ sources: ["https://github.com/kesuskim/Front-End-Checklist", "https://github.com
 | CSS·JS 파일을 하나로 합친다 | HTTP/2·3에서는 요청 수보다 **캐시 효율**이 중요하다. 라우트·공통 청크로 나누고 내용 해시를 붙여 오래 캐시한다([[bundlers-and-vite\|번들러]]) |
 | PageSpeed 점수 90점 이상 | 실험실 점수는 참고값이다. 실제 사용자 지표(CrUX, RUM)의 Core Web Vitals로 판단한다 |
 | IE 대응, 벤더 접두사 수동 추가 | Baseline으로 지원 범위를 정하고, 접두사는 빌드 도구가 붙인다 |
-| 아이콘 폰트 | 접근성과 렌더링 문제로 SVG 아이콘을 쓴다([[svg-icons\|SVG 아이콘]]) |
+| 아이콘 폰트, 이미지 스프라이트 | 접근성과 렌더링 문제로 SVG 아이콘을 쓴다([[svg-icons\|SVG 아이콘]]). 요청 수를 줄이려던 스프라이트는 HTTP/2 이후 이점이 거의 없다 |
+| 호스트당 동시 연결 수(6개) 제한을 피하려 도메인 나누기 | HTTP/2·3은 연결 하나에 요청을 다중화하므로 도메인 샤딩은 오히려 연결 비용만 늘린다 |
+| jQuery 같은 유명 라이브러리를 공용 CDN에서 받아 다른 사이트의 캐시를 재활용 | 브라우저가 캐시를 사이트별로 나눠(cache partitioning) 공용 CDN 캐시 공유 효과가 사라졌다. 번들에 넣어 자기 도메인에서 서빙한다 |
+| YSlow로 점수 측정 | YSlow는 개발이 멈췄다. Lighthouse와 PageSpeed Insights, 실사용자 지표를 쓴다 |
 | 폰트 전체 용량 상한 같은 고정 수치 | 숫자보다 「첫 화면에 필요한 글꼴만 미리 받는다」는 원칙으로 본다 |
 
 ## 정리

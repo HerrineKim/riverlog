@@ -4,11 +4,11 @@ concept: "MutationObserver"
 summary: "DOM 트리의 변화(자식 추가·삭제, 속성, 텍스트)를 지켜보다 모아서 알려 주는 MutationObserver. observe 옵션(childList·subtree·attributes·characterData·attributeFilter·oldValue), MutationRecord의 내용, 서드파티 스크립트가 넣는 DOM에 반응하기와 동적으로 들어온 콘텐츠를 한곳에서 처리하는 쓰임, takeRecords·disconnect, 마이크로태스크로 전달되는 특성과 무한 루프 주의, 폐기된 뮤테이션 이벤트를 정리한다."
 tags: ["javascript", "dom", "browser", "event", "frontend"]
 source: other
-date: "2026-10-17"
-sources: ["https://ko.javascript.info/mutation-observer", "https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver", "https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent"]
+date: "2026-10-21"
+sources: ["https://ko.javascript.info/mutation-observer", "https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver", "https://developer.mozilla.org/en-US/docs/Web/API/MutationEvent", "https://developers.google.com/web/updates/2012/02/Detect-DOM-changes-with-Mutation-Observers"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「뮤테이션 옵저버」 글을 바탕으로, 세부 동작은 MDN으로 확인해 재구성한 노트다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「뮤테이션 옵저버」 글을 바탕으로, 세부 동작은 MDN으로 확인해 재구성한 노트다. 「[Detect DOM changes with mutation observers](https://developer.chrome.com/blog/detect-dom-changes-with-mutation-observers)」로 역사를 보강했다.
 
 ## MutationObserver란
 
@@ -105,7 +105,16 @@ handle(pending)                         // 꺼낸 레코드는 콜백으로 오�
 
 ## 역사: 뮤테이션 이벤트
 
-과거에는 `DOMNodeInserted`, `DOMSubtreeModified`, `DOMAttrModified` 같은 **뮤테이션 이벤트**로 DOM 변화를 받았다. 변경마다 동기로 이벤트를 쏘고 버블링까지 해서 DOM 조작을 크게 느리게 했다. 폐기됐고 브라우저에서 제거되는 중이다. `MutationObserver`가 그 대체다.
+과거에는 `DOMNodeInserted`, `DOMSubtreeModified`, `DOMAttrModified` 같은 **뮤테이션 이벤트**로 DOM 변화를 받았다. 2000년 DOM Level 2 이벤트 명세에 들어간 이 방식은 변경마다 동기로 이벤트를 쏘고 버블링까지 해서 DOM 조작을 크게 느리게 했다. 2012년 DOM4 명세와 함께 나온 `MutationObserver`(Chrome 18부터)가 변경을 모아 한 번에 넘기는 방식으로 대체했다. 뮤테이션 이벤트는 폐기됐고 Chrome은 127(2024)에서 기본으로 제거했다.
+
+```js
+// 과거: 노드 하나마다 동기 이벤트
+document.addEventListener('DOMNodeInserted', (e) => inserted.push(e.target));
+// 지금: 여러 변경을 모아 한 번에
+new MutationObserver((records) => {
+  for (const r of records) inserted.push(...r.addedNodes);
+}).observe(document.documentElement, { childList: true, subtree: true });
+```
 
 ## 정리
 

@@ -4,11 +4,11 @@ concept: "Web Workers"
 summary: "웹 워커는 JS를 메인 스레드가 아닌 별도 스레드에서 돌린다. DOM과 window에는 접근할 수 없고 postMessage로만 메인 스레드와 대화한다. 가져오기·파싱·대용량 계산처럼 DOM이 필요 없는 무거운 일을 옮기면 긴 작업이 줄어 INP가 좋아지고, 그 일에 쓰는 라이브러리의 다운로드·컴파일 비용도 함께 빠진다."
 tags: ["performance", "javascript", "browser", "frontend", "thread"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/performance/web-worker-overview", "https://web.dev/learn/performance/web-worker-demo"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/performance/web-worker-overview", "https://web.dev/learn/performance/web-worker-demo", "https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API"]
 ---
 
-> web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「An overview of web workers」, 「A concrete web worker use case」 모듈을 바탕으로 재구성한 노트다.
+> web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「An overview of web workers」, 「A concrete web worker use case」 모듈을 바탕으로 재구성하고, MDN 「[Web Workers API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API)」로 워커 종류를 보강한 노트다.
 
 ## 메인 스레드와 워커
 
@@ -93,7 +93,20 @@ DevTools Performance 패널로 비교하면 차이가 보인다.
 | 이미지·오디오 처리, 압축, 암호화 | 매 프레임 화면과 맞물려야 하는 일(OffscreenCanvas로 옮길 수 있는 그리기는 예외) |
 | 문법 강조, 검색 색인 같은 백그라운드 작업 | |
 
-워커로 옮길 수 없는 렌더링 관련 작업은 [[inp-optimization|INP 최적화]]의 양보(`scheduler.yield()`)로 쪼갠다. 서비스 워커는 이름이 비슷하지만 네트워크 프록시 역할의 다른 워커다([[pwa-service-worker|PWA와 서비스 워커]]).
+워커로 옮길 수 없는 렌더링 관련 작업은 [[inp-optimization|INP 최적화]]의 양보(`scheduler.yield()`)로 쪼갠다.
+
+## 워커의 종류
+
+| 종류 | 만들기 | 전역 스코프 | 특징 |
+| --- | --- | --- | --- |
+| 전용 워커(dedicated) | `new Worker(url)` | `DedicatedWorkerGlobalScope` | 만든 스크립트 하나만 쓴다. 이 노트의 대부분 |
+| 공유 워커(shared) | `new SharedWorker(url)` | `SharedWorkerGlobalScope` | 같은 출처의 여러 탭·iframe·워커가 함께 쓴다. `worker.port`(`MessagePort`)로 통신하고 워커는 `connect` 이벤트로 접속을 받는다. 탭 사이에 WebSocket 하나를 나눠 쓰는 식이다 |
+| 서비스 워커 | `navigator.serviceWorker.register(url)` | `ServiceWorkerGlobalScope` | 페이지와 네트워크 사이의 프록시. 페이지가 없어도 이벤트로 깨어난다([[service-worker-lifecycle\|서비스 워커 등록·스코프·생명주기와 업데이트]]) |
+
+- 셋 다 `Window`는 없지만 `fetch`, `setTimeout` 같은 타이머, IndexedDB, `crypto` 같은 공용 기능(`WindowOrWorkerGlobalScope`)은 쓴다. 워커 안에서 `XMLHttpRequest`의 `responseXML`은 늘 `null`이다(DOM 파서가 없다).
+- 워커는 같은 출처 안에서 다시 워커를 만들 수 있다.
+- 메시지 데이터는 공유되지 않고 **구조화된 복제(structured clone)** 로 복사된다. 함수·DOM 노드는 보낼 수 없다.
+- 오디오 처리(`AudioWorklet`)나 CSS 페인트(`paintWorklet`)처럼 렌더링 파이프라인 안의 정해진 지점에서 도는 가벼운 스크립트는 **워클릿(worklet)** 이라고 따로 부른다.
 
 ## 정리
 
@@ -102,4 +115,4 @@ DevTools Performance 패널로 비교하면 차이가 보인다.
 - 그 일에 쓰는 라이브러리의 다운로드·컴파일 비용도 메인 스레드에서 빠진다.
 - 메시지는 복사되므로 작은 일에는 오히려 손해다. 큰 버퍼는 이전한다.
 
-관련 노트: [[inp-optimization|INP 최적화]], [[event-loop|이벤트 루프]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[browser-rendering|브라우저 렌더링 과정]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[pwa-offline-storage|PWA 오프라인 데이터와 저장소 관리]]
+관련 노트: [[shared-memory-atomics|SharedArrayBuffer와 Atomics]], [[inp-optimization|INP 최적화]], [[event-loop|이벤트 루프]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[browser-rendering|브라우저 렌더링 과정]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[pwa-offline-storage|PWA 오프라인 데이터와 저장소 관리]]

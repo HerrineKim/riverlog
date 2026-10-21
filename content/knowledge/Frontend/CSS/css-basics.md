@@ -1,14 +1,15 @@
 ---
 title: "CSS 기초: 문법, 적용 방법, 단위"
 concept: "CSS Syntax"
-summary: "선택자와 선언으로 이루어진 CSS 문법, 스타일 적용 방법 3가지, 수·퍼센트·절대·상대 길이와 각도·해상도 단위, 그리고 hex·rgb·hsl부터 oklch·display-p3·color()·상대 색상 문법까지의 색 표현."
+summary: "선택자와 선언으로 이루어진 CSS 문법, 스타일 적용 방법 3가지, 수·퍼센트·절대·상대 길이와 각도·해상도 단위, 그리고 hex·rgb·hsl부터 oklch·display-p3·color()·상대 색상 문법까지의 색 표현, 브라우저 기본 스타일을 맞추는 리셋과 노멀라이즈."
 tags: ["css", "frontend"]
 source: til
-date: "2026-10-13"
-sources: ["https://riverkim.kr/263", "https://riverkim.kr/271", "https://riverkim.kr/225", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value", "https://web.dev/learn/css/sizing", "https://web.dev/learn/css/color"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/263", "https://riverkim.kr/271", "https://riverkim.kr/225", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value", "https://web.dev/learn/css/sizing", "https://web.dev/learn/css/color", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/reset-normalize.md", "http://nicolasgallagher.com/about-normalize-css/", "http://meyerweb.com/eric/tools/css/reset/", "https://css-tricks.com/rems-ems/"]
 ---
 
 > riverkim.kr에 쓴 글을 정리한 노트에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Sizing Units·Color 모듈을 더해 보강했다.
+> 「리셋과 노멀라이즈」는 「[Must-Know-About-Frontend: Reset.css vs Normalize.css](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/reset-normalize.md)」를 바탕으로, 「[About normalize.css](http://nicolasgallagher.com/about-normalize-css/)」와 「[Reset CSS](http://meyerweb.com/eric/tools/css/reset/)」로 보강했다. rem과 em을 섞어 쓰는 법은 「[Font Size Idea: px at the Root, rem for Components, em for Text Elements](https://css-tricks.com/rems-ems/)」를 바탕으로 보강했다.
 
 CSS는 "어떤 요소를(선택자) 어떻게 바꿀지(선언)"를 적는 언어다. 문법 자체는 단순하지만, 스타일을 **어디에** 작성하느냐와 **어떤 단위**를 쓰느냐에 따라 유지보수성과 반응형 대응이 크게 달라진다.
 
@@ -111,7 +112,18 @@ h1 {
 
 뷰포트 단위도 상대 단위다. 기준은 기기 화면이 아니라 그 문서가 그려지는 창(iframe·웹뷰일 수 있다)이다.
 
-**글자 크기는 `rem`·`em`으로 쓴다.** `html`에 `font-size`를 고정하지 않으면 사용자가 OS·브라우저에서 키운 기본 글자 크기가 상대 단위에 반영된다. `px`로 쓰면 그 설정을 무시한다. 크기 사이를 부드럽게 오가는 `clamp(최소, 선호, 최대)`와 다른 수학 함수는 [[css-functions|CSS 함수]]에 있다.
+**글자 크기는 `rem`·`em`으로 쓴다.** `html`에 `font-size`를 고정하지 않으면 사용자가 OS·브라우저에서 키운 기본 글자 크기가 상대 단위에 반영된다. `px`로 쓰면 그 설정을 무시한다.
+
+`rem`과 `em`은 섞어 쓴다. 모든 글자를 `rem`으로 쓰고 루트 크기만 바꾸면 전체가 똑같은 비율로 커지고 줄어, 큰 제목은 너무 커지고 작은 글은 너무 작아진다. 대신 **모듈(카드·사이드바)의 뿌리에 `rem`, 그 안의 글 요소에 `em`** 을 쓰면 모듈 하나의 `font-size`만 바꿔 그 안의 비율을 유지한 채 모듈 단위로 키우고 줄일 수 있다.
+
+```css
+.sidebar-widget { font-size: 0.875rem; }   /* 모듈: 루트 기준 */
+.sidebar-widget h3 { font-size: 1.25em; }  /* 글 요소: 모듈 기준 */
+.sidebar { container-type: inline-size; }
+@container (inline-size < 20rem) { .sidebar-widget { font-size: 0.8125rem; } }  /* 사이드바가 좁으면 모듈째 줄인다 */
+```
+
+과거에는 루트에 `html { font-size: 17px }`처럼 `px`을 박고 미디어 쿼리로 바꿨지만, 사용자 설정을 덮어쓰므로 지금은 루트를 비워 두거나 `%`로 쓴다. 크기 사이를 부드럽게 오가는 `clamp(최소, 선호, 최대)`와 다른 수학 함수는 [[css-functions|CSS 함수]]에 있다.
 
 ### 각도와 해상도
 
@@ -206,7 +218,45 @@ h1 {
 
 Stylelint의 `stylelint-order` 같은 플러그인으로 순서를 자동으로 맞출 수 있다.
 
-## 브라우저 기본 스타일 주의: Safari의 버튼 글자색
+## 브라우저 기본 스타일
+
+브라우저는 요소마다 기본 스타일(User Agent Stylesheet)을 갖고, 그 값이 브라우저마다 조금씩 다르다. 한 브라우저에서만 확인하면 다른 브라우저에서 뒤늦게 어긋남을 발견한다. 대응은 두 겹이다. 작성한 CSS를 같은 출발점에서 시작하도록 **기본 스타일을 먼저 정리하는 파일**을 두고, 그래도 브라우저마다 다른 값은 **명시**한다.
+
+### 리셋과 노멀라이즈
+
+| | 리셋(reset) | 노멀라이즈(normalize) |
+| --- | --- | --- |
+| 방식 | 기본 스타일을 **지운다**. `h1`~`h6`·`p`·`ul`의 margin, 글자 크기, 목록 기호까지 0·없음으로 | 쓸모 있는 기본값은 **남기고** 브라우저 사이의 차이·버그만 고친다 |
+| 대표 | Eric Meyer의 Reset CSS(v2.0, 2011) | necolas의 normalize.css(마지막 릴리스 v8, 2018), 그 후속인 modern-normalize |
+| 장점 | 출발점이 완전히 같다. 브라우저가 바뀌어도 고칠 게 거의 없다 | 제목·강조 같은 기본 표현이 살아 있어 다시 쓸 스타일이 적다. 주석에 고치는 이유가 적혀 있다 |
+| 단점 | 모든 요소를 다시 꾸며야 한다. 목록 기호를 지우면 VoiceOver가 목록으로 읽지 않는 것처럼 접근성 단서도 같이 사라질 수 있다 | 브라우저가 바뀔 때마다 갱신이 필요하다 |
+
+지금은 브라우저 간 차이가 많이 줄어 두 방식을 섞은 **짧은 현대식 리셋**을 쓰는 경우가 많다. Tailwind의 Preflight도 modern-normalize 위에 리셋을 얹은 형태다.
+
+```css
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+body { line-height: 1.5; -webkit-font-smoothing: antialiased; }
+img, picture, video, canvas, svg { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; color: inherit; }
+p, h1, h2, h3, h4, h5, h6 { overflow-wrap: break-word; }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+```
+
+| 줄 | 이유 |
+| --- | --- |
+| `box-sizing: border-box` | 지정한 너비에 padding·border가 포함돼 계산이 쉽다([[box-model\|박스 모델]]) |
+| `margin: 0` | 요소 기본 여백 대신 레이아웃(`gap`)이나 컴포넌트가 간격을 정한다 |
+| `line-height: 1.5` | 기본 `normal`(약 1.2)은 본문에 좁다. 단위 없이 써야 상속이 안전하다 |
+| 미디어 `display: block` | 인라인 이미지 아래 생기는 틈이 사라진다([[line-height-vertical-align\|line-height와 vertical-align]]) |
+| 폼 요소 `font: inherit` | 버튼·입력은 글꼴을 상속하지 않고 시스템 글꼴을 쓴다 |
+| `overflow-wrap: break-word` | 긴 URL·단어가 컨테이너를 뚫고 나가지 않는다 |
+| `text-wrap: balance`·`pretty` | 제목 줄 길이를 고르게, 본문 마지막 줄의 외톨이 단어를 줄인다. `pretty`를 모르는 브라우저(Firefox)는 무시한다 |
+
+리셋은 컴포넌트 스타일을 이기면 안 된다. 리셋 전체를 `@layer reset { … }`에 넣거나, 선택자를 `:where()`로 감싸 명시도를 0으로 두면 어떤 클래스로도 덮을 수 있다([[selectors|선택자와 우선순위]]). ITCSS에서는 이 자리가 Generic 층이다([[css-methodologies|CSS 설계 방법론]]). `:focus-visible` 윤곽선, `prefers-reduced-motion` 처리 같은 접근성 기본값은 지우지 않거나 다시 넣는다.
+
+### 사례: Safari의 버튼 글자색
 
 `<button>`에 `color`를 지정하지 않으면 iOS·macOS Safari는 버튼 글자를 파란색(`-apple-system-blue`)으로 표시한다. 다른 브라우저에서는 검은 글씨로 보여 Safari에서만 뒤늦게 발견되기 쉽다. `-apple-system-blue`는 Apple의 HIG(Human Interface Guidelines) 디자인 언어에 맞춘 시스템 색상 키워드다.
 
@@ -214,7 +264,7 @@ Stylelint의 `stylelint-order` 같은 플러그인으로 순서를 자동으로 
 | --- | --- | --- |
 | Safari에서만 버튼 텍스트가 파랗다 | `color`가 없는 버튼에 Safari가 시스템 색을 적용 | 버튼에 `color`를 명시한다(예: `color: inherit`) |
 
-리셋 CSS에 `button { color: inherit; }`를 넣어 두면 같은 문제를 미리 막는다.
+위 리셋의 `button { color: inherit; }` 한 줄이 이 문제를 미리 막는다. 폼 요소가 부모의 글꼴·색을 물려받지 않는 것도 같은 종류의 기본 스타일 차이다.
 
 ## 핵심 정리
 
@@ -222,7 +272,7 @@ Stylelint의 `stylelint-order` 같은 플러그인으로 순서를 자동으로 
 - 공통 스타일은 외부 파일, 컴포넌트 단위 스타일은 내부/CSS-in-JS, 동적인 개별 값은 인라인으로 나눠 쓴다.
 - 반응형에는 `rem`, `%`, `vw/vh` 같은 상대 단위가 유리하다. 글자 크기는 사용자 설정을 존중하도록 `rem`·`em`으로. 자세한 방법은 [[responsive-design|반응형 디자인]]에 있다.
 - 속성은 레이아웃에 큰 영향을 주는 것부터 순서를 정해 쓴다.
-- 브라우저마다 기본 스타일이 다르다. 색 같은 기본값은 명시한다.
+- 브라우저마다 기본 스타일이 다르다. 짧은 리셋으로 출발점을 맞추고, 버튼 글자색 같은 기본값은 명시한다.
 - 색 값을 손으로 조절할 땐 `oklch()`, 파생 색은 `color-mix()`와 상대 색상 문법으로 만든다.
 
 관련 노트: [[css-functions|CSS 함수: calc()·clamp()와 수학 함수]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[selectors|CSS 선택자와 우선순위]]

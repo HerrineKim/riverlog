@@ -4,11 +4,11 @@ concept: "Web Vitals"
 summary: "FCP·LCP·INP·CLS·TTFB 같은 웹 성능 지표의 뜻과 기준값, Core Web Vitals 세 지표가 무엇을 어떻게 재는지(LCP 후보 요소, INP의 세 구간, CLS의 세션 창), 실험실·필드 데이터와 web-vitals 라이브러리로 재는 법, Lighthouse를 정리했다. 지표별 개선법은 따로 나눈 최적화 노트로 연결한다."
 tags: ["performance", "web", "frontend", "browser"]
 source: mixed
-date: "2026-10-17"
-sources: ["https://web.dev/articles/vitals", "https://web.dev/blog/lcp-and-inp-are-now-baseline-newly-available", "https://web.dev/articles/lcp", "https://web.dev/articles/inp", "https://web.dev/articles/cls", "https://web.dev/learn/performance/why-speed-matters", "https://velog.io/@jiseung/Why-Site-Speed-Matters", "https://bytebytego.com/guides/top-9-website-performance-metrics-you-cannot-ignore"]
+date: "2026-10-21"
+sources: ["https://web.dev/articles/vitals", "https://web.dev/blog/lcp-and-inp-are-now-baseline-newly-available", "https://web.dev/articles/lcp", "https://web.dev/articles/inp", "https://web.dev/articles/cls", "https://web.dev/learn/performance/why-speed-matters", "https://velog.io/@jiseung/Why-Site-Speed-Matters", "https://bytebytego.com/guides/top-9-website-performance-metrics-you-cannot-ignore", "https://web.dev/articles/rail", "https://philipwalton.com/articles/why-web-developers-need-to-care-about-interactivity/", "https://developer.chrome.com/docs/lighthouse/performance/performance-scoring"]
 ---
 
-> web.dev의 지표 문서(「[Web Vitals](https://web.dev/articles/vitals)」, 「[LCP](https://web.dev/articles/lcp)」, 「[INP](https://web.dev/articles/inp)」, 「[CLS](https://web.dev/articles/cls)」)와 「[Learn Performance](https://web.dev/learn/performance)」 강좌의 「왜 속도가 중요한가」 모듈을 바탕으로 재구성한 노트다. 「속도를 정하는 요인」은 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」(Cloudflare 학습 센터 정리)로 보강했다. 「그 밖의 로딩 지표」는 ByteByteGo의 System Design 101 가이드 「[Top 9 Website Performance Metrics You Cannot Ignore](https://bytebytego.com/guides/top-9-website-performance-metrics-you-cannot-ignore)」를 바탕으로 보강했다.
+> web.dev의 지표 문서(「[Web Vitals](https://web.dev/articles/vitals)」, 「[LCP](https://web.dev/articles/lcp)」, 「[INP](https://web.dev/articles/inp)」, 「[CLS](https://web.dev/articles/cls)」)와 「[Learn Performance](https://web.dev/learn/performance)」 강좌의 「왜 속도가 중요한가」 모듈을 바탕으로 재구성한 노트다. 「속도를 정하는 요인」은 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」(Cloudflare 학습 센터 정리)로 보강했다. 「그 밖의 로딩 지표」는 ByteByteGo의 System Design 101 가이드 「[Top 9 Website Performance Metrics You Cannot Ignore](https://bytebytego.com/guides/top-9-website-performance-metrics-you-cannot-ignore)」를 바탕으로 보강했다. 이전 모델은 web.dev의 「[Measure performance with the RAIL model](https://web.dev/articles/rail)」과 「[Why Web Developers Need to Care about Interactivity](https://philipwalton.com/articles/why-web-developers-need-to-care-about-interactivity/)」, 점수 계산은 「[Lighthouse performance scoring](https://developer.chrome.com/docs/lighthouse/performance/performance-scoring)」으로 보강했다.
 
 웹 성능 지표는 「빠르다」를 숫자로 말하기 위한 측정값이다. 기준값은 구글 web.dev가 정한다. 용어의 짧은 정의는 [[web-glossary|용어집]]에 있다.
 
@@ -70,6 +70,27 @@ Core Web Vitals 말고도 원인을 좁힐 때 보는 지표가 있다. 대부�
 | 실험(experimental) | 시험하고 다듬는 중. 피드백을 받는 단계 |
 | 대기(pending) | 쓸모가 검증됐고, 안정 단계로 가기 전 최소 6개월을 둔다 |
 | 안정(stable) | 현재의 Core Web Vitals. 정의는 많아야 1년에 한 번 바뀌고 변경 기록이 공개된다 |
+
+### 이전 모델: RAIL과 TTI·FID
+
+Core Web Vitals 전에는 **RAIL** 모델이 목표를 정했다. 사용자의 행동을 응답(Response)·애니메이션(Animation)·유휴(Idle)·로드(Load)로 나누고, 사람의 지연 인지에 맞춰 시간 예산을 둔다.
+
+| 사람이 느끼는 지연 | 인상 |
+| --- | --- |
+| 0~16ms | 애니메이션이 매끄럽다(60fps) |
+| 0~100ms | 즉각 반응한다 |
+| 100~1000ms | 자연스러운 작업 흐름 |
+| 1초 이상 | 주의가 흩어진다 |
+| 10초 이상 | 짜증 내고 떠난다 |
+
+| 영역 | 목표 | 지침 |
+| --- | --- | --- |
+| Response | 입력 후 100ms 안에 눈에 보이는 반응 | 핸들러는 **50ms 안에** 끝낸다. 입력이 그 직전에 시작된 50ms짜리 작업을 기다릴 수 있기 때문이다 |
+| Animation | 프레임당 10ms | 16ms 중 약 6ms는 브라우저 렌더링 몫이다. 스크롤·드래그도 애니메이션이다 |
+| Idle | 유휴 시간을 최대로 | 미뤄 둔 일은 **50ms 단위**로 나눠 한다. 사용자 입력이 오면 유휴 작업보다 먼저 처리한다 |
+| Load | 중급 모바일·느린 3G에서 5초 안에 상호작용 가능, 재방문은 2초 | 실제 사용자의 기기·회선으로 잰다 |
+
+**50ms 긴 작업** 기준과 「메인 스레드가 바쁘면 링크 클릭·텍스트 선택·체크박스, 경우에 따라 스크롤까지 멈춘다」는 관점이 여기서 나왔고, 이것이 TTI(5초 동안 긴 작업이 없는 시점)와 FID(첫 입력 지연) 같은 상호작용 지표로 이어졌다. 콘텐츠 사이트도 예외가 아니다. 광고·위젯 같은 서드파티 스크립트가 메인 스레드를 가장 많이 막는다. 지금은 RAIL 대신 Core Web Vitals의 기준값을 목표로 쓰고, 상호작용은 INP로 잰다. 인지 시간 숫자는 [[frontend-latency-numbers|프론트엔드 지연 시간 숫자]]에도 있다.
 
 ## LCP: 무엇이 「가장 큰 요소」인가
 
@@ -142,7 +163,7 @@ INP는 클릭, 터치 탭, 키 입력(물리·화면 키보드)만 센다. 스�
 
 ### web-vitals 라이브러리로 재기
 
-원시 API(`PerformanceObserver`의 `largest-contentful-paint`, `event`, `layout-shift` 항목)를 직접 쓰면 처리할 예외가 많다. 구글의 `web-vitals` 라이브러리가 이를 대신한다.
+원시 API([[performance-timing-apis|성능 측정 API]]인 `PerformanceObserver`의 `largest-contentful-paint`, `event`, `layout-shift` 항목)를 직접 쓰면 처리할 예외가 많다. 구글의 `web-vitals` 라이브러리가 이를 대신한다.
 
 ```js
 import { onCLS, onINP, onLCP } from 'web-vitals'
@@ -173,6 +194,8 @@ onLCP(send)
 
 구글이 만든 오픈 소스 페이지 품질 검사 도구다. 크롬 DevTools의 Lighthouse 탭, PageSpeed Insights, CLI로 돌린다. **성능, 접근성, 권장사항, SEO** 네 영역을 점수로 매기고 개선 항목을 알려 준다.
 
+- 성능 점수는 지표 점수의 **가중 평균**이다. 진단·개선 기회 항목은 점수에 직접 들어가지 않는다. Lighthouse 10 이후 가중치는 TBT 30%, LCP 25%, CLS 25%, FCP 10%, Speed Index 10%다(TTI는 10에서 빠졌다).
+- 각 지표 값은 HTTP Archive의 실제 사이트 데이터로 만든 로그 정규 곡선에 대어 점수로 바꾼다. HTTP Archive 사이트 중 상위 25%에 드는 값이 50점, 상위 8%에 드는 값이 90점이다. 0~49 빨강, 50~89 주황, 90~100 초록이다. 90점 근처부터는 곡선이 완만해져 99→100이 90→94만큼 어렵다. 데스크톱은 Lighthouse 6부터 별도 곡선을 쓴다.
 - 점수는 실행할 때마다 흔들린다. 시크릿 창에서 확장 프로그램을 끄고 여러 번 재서 본다.
 - 모바일 측정은 느린 기기와 네트워크를 흉내 내므로 데스크톱보다 점수가 낮다.
 - 점수보다 항목별 진단(렌더링을 막는 요청, LCP 요소와 구간 분석, 중요 요청 체인 등)이 실제 할 일이다.
@@ -203,4 +226,4 @@ DevTools에서 Lighthouse를 돌리는 법, 같은 진단을 트레이스 위에
 - Lighthouse와 DevTools Performance 패널로 원인을 찾고, 필드 데이터로 효과를 확인한다.
 - 숫자의 감각은 [[frontend-latency-numbers|프론트엔드 지연 시간 숫자]]와 함께 보면 좋다.
 
-관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[lcp-optimization|LCP 최적화]], [[inp-optimization|INP 최적화]], [[cls-optimization|CLS 최적화]], [[ttfb-optimization|TTFB 줄이기]], [[seo-basics|SEO 기초]], [[responsible-javascript|책임감 있는 자바스크립트]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[frontend-performance-strategy|프론트엔드 성능 최적화: 언제, 무엇을]]
+관련 노트: [[performance-timing-apis|성능 측정 API]], [[browser-rendering|브라우저 렌더링 과정]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[lcp-optimization|LCP 최적화]], [[inp-optimization|INP 최적화]], [[cls-optimization|CLS 최적화]], [[ttfb-optimization|TTFB 줄이기]], [[seo-basics|SEO 기초]], [[responsible-javascript|책임감 있는 자바스크립트]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[frontend-performance-strategy|프론트엔드 성능 최적화: 언제, 무엇을]]

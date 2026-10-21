@@ -1,14 +1,15 @@
 ---
 title: "기술 스택 고르기"
 concept: "Tech Stack"
-summary: "기술 스택은 혼자가 아니라 함께 쓰는 것이라 커뮤니티가 키운다. 기술 수용 주기·캐즘·하이프 사이클로 유행이 만들어지는 과정을 보고, 범용성·학습 비용·커뮤니티·인력·지속 가능성 다섯 기준과 범주로 트렌드를 읽는 법, 레거시를 대하는 자세를 정리했다."
+summary: "기술 스택은 혼자가 아니라 함께 쓰는 것이라 커뮤니티가 키운다. 기술 수용 주기·캐즘·하이프 사이클로 유행이 만들어지는 과정을 보고, 범용성·학습 비용·커뮤니티·인력·지속 가능성 다섯 기준, 큰 팀이 유지 보수성과 안정성을 위해 보는 결정 축(도구 강제·경계·재현성), 언어부터 배포·모니터링까지 계층별 2026년 기본 선택과 고르는 이유, 레거시를 대하는 자세를 정리했다."
 tags: ["frontend", "career", "architecture", "growth"]
 source: other
-date: "2026-10-13"
-sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://risingstars.js.org/"]
+date: "2026-10-21"
+sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://risingstars.js.org/", "https://github.com/grab/front-end-guide"]
 ---
 
 > 테오(teo)의 「[2024 프론트엔드 기술스택 이야기](https://velog.io/@teo/2024-frontend-techstack)」(2024.04)를 바탕으로 재구성한 노트다.
+> Grab의 「[Front End Guide](https://github.com/grab/front-end-guide)」를 바탕으로 보강했다.
 
 ## 기술 스택이란
 
@@ -60,6 +61,23 @@ sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@te
 
 좋은 기술이라는 것과 회사에서 쓸 기술이라는 것은 다르다. 비주류 기술은 **사이드 프로젝트로 해 보기**에 좋다. AI 코딩 도구는 학습 데이터가 많은 주류 기술일수록 더 정확한 코드를 내므로, 이 격차는 더 커지는 경향이 있다.
 
+### 큰 팀은 유지 보수성과 안정성을 먼저 본다
+
+팀이 빠르게 커지고 백엔드 개발자·신입까지 프론트엔드 코드를 만지면 기준의 무게가 바뀐다. 한 사람의 생산성보다 **처음 온 사람이 고쳐도 깨지지 않는가**가 중요해진다. 코드는 쓰는 횟수보다 읽는 횟수가 많기 때문이다.
+
+| 결정 축 | 큰 팀에서의 판단 | 예 |
+| --- | --- | --- |
+| 관례인가, 도구가 강제하나 | 관례는 한 사람이 어기면 깨진다. 도구가 강제하는 쪽을 고른다 | BEM 이름 규칙 대신 CSS Modules·`@layer`, 리뷰 지적 대신 Prettier·린터, 주석 대신 타입 |
+| 경계가 분명한가 | 입력과 출력이 뚜렷하면 테스트와 대규모 리팩터링이 쉽다 | 같은 props면 어디로 옮겨도 되는 컴포넌트, 「이전 state + 액션 → 새 state」인 reducer |
+| 클라이언트와 서버를 나누나 | API 계약만 지키면 따로 개발·배포한다. 여러 클라이언트가 한 API를 쓰면 이득이 크다 | [[spa-csr-ssr\|SPA]] + API 서버 |
+| 업그레이드 길이 있나 | 메이저 버전마다 codemod와 마이그레이션 가이드를 주는가 | React·Next.js의 공식 codemod([[babel\|Babel과 AST 변환]]) |
+| 개발 경험 | 상태를 들여다보는 도구와 즉시 반영이 있는가 | React DevTools, Redux DevTools, HMR |
+| 재현되나 | 누가 언제 설치·빌드·배포해도 결과가 같은가 | lock 파일, 한 번 빌드한 산출물을 환경마다 승격([[ci-cd\|CI/CD]]) |
+
+작은 팀과 짧은 프로젝트에서는 이 비용(설정, 타입, 린트 규칙)이 이득보다 클 수 있다. 결정은 **팀의 크기와 코드의 수명**에 맞춘다.
+
+선택은 계층마다 「무엇을 · 왜 · 대안은」으로 적어 둔다. 그 문서가 새 팀원의 학습 가이드가 되고, 나중에 다시 평가할 때 기준이 된다. 「지금은 Flow, TypeScript와의 격차가 벌어지면 다시 본다」처럼 **재평가 조건**까지 적으면 결정이 낡았는지 알아보기 쉽다. 경쟁 도구가 비슷하면 「하나라도 쓰는 것이 안 쓰는 것보다 낫다」가 기준이 된다. Flow를 고른 팀도 문법이 비슷해 TypeScript로 큰 비용 없이 옮겨 갔다.
+
 ## 트렌드는 범주로 읽는다
 
 **스택 숙련도와 스택 이해도는 다르다.** 숙련도는 특정 도구로 문제를 풀어 본 경험(짬)이고, 이해도는 그 도구가 어떤 범주의 어떤 문제를 풀려는지 아는 것이다. React·Vue·Angular는 모두 "DOM 직접 조작보다 데이터 기반 컴포넌트 렌더링이 낫다"는 같은 범주에 있다. 하나를 잘하면 나머지도 금방 한다.
@@ -75,21 +93,30 @@ sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@te
 1. 기존 범주의 어떤 문제를 개선하려는가?
 2. 전에 없던 **새 범주와 패러다임**을 만드는가? (jQuery → 프레임워크처럼) 이쪽이면 더 주의 깊게 본다.
 
-범주마다 주류 하나를 숙련하고 나머지는 배경과 코어 컨셉만 이해해도 트렌드를 따라가기에 충분하다. 2026년 기준으로 캐즘을 넘어 기본값이 된 조합은 이렇다.
+범주마다 주류 하나를 숙련하고 나머지는 배경과 코어 컨셉만 이해해도 트렌드를 따라가기에 충분하다.
 
-| 범주 | 주류 | 대안·비고 |
-| --- | --- | --- |
-| 언어 | TypeScript (7.0부터 Go로 다시 쓴 네이티브 컴파일러) | JavaScript |
-| 프레임워크 | React (React Compiler로 메모이제이션 자동화) | Vue, Svelte 5, Angular |
-| 메타 프레임워크 | Next.js | React Router(구 Remix), Nuxt, SvelteKit, Astro |
-| 서버 상태 | TanStack Query | SWR |
-| 클라이언트 상태 | Zustand | Jotai. 과거에는 Redux가 기본이었다 |
-| 스타일 | Tailwind CSS v4 | CSS Modules, zero-runtime CSS-in-JS |
-| 컴포넌트 | shadcn/ui (Radix 같은 헤드리스 컴포넌트 위) | MUI, Mantine |
-| 빌드 | Vite (Rolldown 번들러) | webpack, Rspack |
-| 테스트 | Vitest, Testing Library, Playwright | Jest. e2e는 과거 Cypress가 강했다 |
-| 포매터·린터 | Prettier, ESLint | Biome |
-| UI 문서화 | Storybook | |
+## 계층별 기본 선택 (2026)
+
+캐즘을 넘어 기본값이 된 조합이다. 코드를 짜는 계층뿐 아니라 코드를 사용자에게 보내고 지켜보는 계층까지 한 줄씩 정해야 스택이 완성된다.
+
+| 계층 | 주류 | 고르는 이유 | 대안·과거 |
+| --- | --- | --- | --- |
+| 언어 | TypeScript (7.0부터 Go로 다시 쓴 네이티브 컴파일러) | 리팩터링할 때의 확신, 타입이 곧 문서라 온보딩이 빠르다([[typescript-basics\|TypeScript]]) | JavaScript. 과거에는 Flow가 「배우기 쉽고 파일 단위로 옮길 수 있다」는 이유로 경쟁했다 |
+| UI 프레임워크 | React (React Compiler로 메모이제이션 자동화) | 화면을 `props`·`state`의 함수로 선언한다. API가 작고 잘 안 바뀌며 생태계가 가장 크다 | Vue, Svelte 5, Angular([[frontend-frameworks\|다른 프레임워크]]) |
+| 메타 프레임워크 | Next.js | 라우팅·SSR·코드 스플리팅을 정해진 구조로 받는다 | React Router(구 Remix), Nuxt, SvelteKit, Astro. 과거 Create React App은 지원 종료됐다 |
+| 서버 상태 | TanStack Query | 캐시·재요청·로딩 상태를 직접 짜지 않는다 | SWR |
+| 클라이언트 상태 | Zustand | 학습 비용과 보일러플레이트가 작다 | Jotai, Redux Toolkit(액션 기록·미들웨어가 중요할 때). 과거에는 Redux가 사실상 기본이었다 |
+| 스타일 | Tailwind CSS v4 | 디자인 토큰을 강제하고 전역 이름 충돌이 없다 | CSS Modules, zero-runtime CSS-in-JS([[css-in-js\|CSS-in-JS와 CSS Modules]]). 과거에는 BEM 같은 이름 규칙에 기댔다 |
+| 컴포넌트 | shadcn/ui (Radix 같은 헤드리스 컴포넌트 위) | 코드를 내 저장소에 복사해 직접 소유한다 | MUI, Mantine |
+| 빌드 | Vite (Rolldown 번들러) | 설정이 거의 없고 개발 서버가 즉시 뜬다 | webpack, Rspack([[bundlers-and-vite\|번들러의 역사와 Vite]]) |
+| 패키지 매니저 | npm, 모노레포는 pnpm | lock 파일로 설치를 재현한다. pnpm은 전역 저장소로 디스크를 아끼고 유령 의존성을 막는다 | Bun. 과거 Yarn v1이 lock 파일과 오프라인 캐시로 npm을 앞섰지만 npm 5 이후 격차가 줄었다([[package-managers\|패키지 매니저]]) |
+| 테스트 | Vitest, Testing Library, Playwright | 구현이 아니라 사용자가 보는 행위를 검증한다 | Jest. 과거 React 컴포넌트는 Enzyme, e2e는 Cypress가 강했다([[frontend-test-types\|테스트 도구]]) |
+| 포매터·린터 | Prettier, ESLint, stylelint | 스타일 지적을 리뷰에서 없앤다([[eslint-prettier\|ESLint와 Prettier]]) | Biome |
+| UI 문서화 | Storybook | 컴포넌트를 앱 밖에서 따로 보고 시험한다 | |
+| CI | GitHub Actions | 저장소에 내장되어 린트·테스트·빌드를 PR마다 돌린다 | GitLab CI, CircleCI. 과거 Travis CI가 오픈소스의 기본이었다 |
+| 호스팅·CDN | Vercel·Netlify, 또는 S3 + CloudFront | 정적 산출물은 앱 서버 없이 스토리지 + CDN으로 낸다([[s3-cloudfront-static-hosting\|S3·CloudFront]]) | Cloudflare Pages |
+| 배포 | PR 미리보기 + 버전별 산출물 승격 | 롤백은 이전 버전 재배포로 끝난다 | 과거에는 Ansible Tower 같은 별도 배포 도구를 썼다 |
+| 모니터링 | Sentry + Web Vitals 실사용자 측정 | 앱 로직 에러와 실제 성능을 본다. 네트워크 장애는 CDN 지표로 따로 본다([[frontend-error-handling\|에러 핸들링]]) | |
 
 ## 레거시를 대하는 자세
 
@@ -103,6 +130,7 @@ sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@te
 - 스택은 함께 쓰는 것이라 **커뮤니티와 생태계**가 기술의 수명을 정한다.
 - 새 기술 대부분은 캐즘을 넘지 못한다. 가장 시끄러운 때는 얼리어답터 구간이니 조급해할 필요 없다.
 - 범용성·학습 비용·커뮤니티·인력·지속 가능성으로 고르고, 모르면 다수가 쓰는 것을 쓴다.
+- 큰 팀은 관례보다 **도구가 강제하는 쪽**, 경계가 분명하고 재현되는 쪽을 고른다. 계층마다 무엇을·왜·대안을 적어 두고 재평가 조건을 단다.
 - 도구 하나보다 **범주와 문제 인식**을 이해하면 무엇이 나와도 따라갈 수 있다.
 
 관련 노트: [[frontend-developer-role|프론트엔드 개발자의 업무 범위와 역량]], [[frontend-frameworks|React와 Vue 말고: 다른 프론트엔드 프레임워크]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[frontend-roadmap|프론트엔드 학습 로드맵]]

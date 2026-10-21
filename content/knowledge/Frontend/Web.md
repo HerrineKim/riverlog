@@ -40,7 +40,9 @@ date: "2026-10-13"
 - [이미지 CDN과 Accept 헤더 협상](/knowledge/dictionary/frontend/web/image-cdn): URL 매개변수 변환, Accept·Content-Type 협상, Vary: Accept 캐시, picture+type과 비교
 - [브라우저 기본 동작을 존중하기](/knowledge/dictionary/frontend/web/respect-browser-defaults): 스크롤바·스크롤·강조색·글자 크기·포커스·클립보드·방문 기록을 덮어쓰지 않는 이유와 원칙
 - [SPA와 CSR·SSR](/knowledge/dictionary/frontend/web/spa-csr-ssr): 단일 페이지 애플리케이션과 렌더링 주체·시점에 따른 차이(CSR·SSR·SSG·ISR)
+- [클라이언트 사이드 라우팅: 해시, History API, Navigation API](/knowledge/dictionary/frontend/web/client-side-routing): hashchange·pushState·popstate, 새로고침 때 서버의 index.html 폴백, Navigation API
 - [웹 개발에 대한 이상한 믿음들](/knowledge/dictionary/frontend/web/web-dev-myths): 브라우저 엔지니어·표준 제정자·개발자가 웹을 잘 안다는 믿음, SPA·MPA·JS 없는 사이트·빌드 단계에 대한 단정, 내 웹이 웹 전체는 아니다
+- [웹 표준은 어떻게 만들어지나: W3C·WHATWG·WICG](/knowledge/dictionary/frontend/web/web-standards-process): 권고안 트랙과 성숙 단계, 리빙 스탠더드, 인큐베이션, TC39 단계, 표준·구현 상태 확인하는 곳
 - [정적 사이트 생성기와 Jamstack](/knowledge/dictionary/frontend/web/static-site-generator): 빌드 때 HTML 만들기, 도구 고르기(Eleventy·Hugo·Astro·Next.js), WordPress에서 옮기는 흐름
 - [AMP: 규칙으로 빠르게 만드는 모바일 페이지](/knowledge/dictionary/frontend/web/amp-pages): HTML 제약·전용 런타임·캐시 CDN, 비판과 Core Web Vitals로 옮겨 간 흐름
 - [스트리밍 SSR](/knowledge/dictionary/frontend/web/streaming-ssr): Suspense 경계 단위로 HTML을 나눠 보내는 SSR, 선택적 hydration, 상태 코드·버퍼링 제약, React 18 이후의 발전
@@ -50,6 +52,7 @@ date: "2026-10-13"
 - [프론트엔드 출시 전 체크리스트](/knowledge/dictionary/frontend/web/frontend-launch-checklist): head·HTML·CSS·이미지·폰트·JS·보안·성능·접근성·SEO 점검표와 자동화
 - [프론트엔드 성능 최적화: 언제, 무엇을](/knowledge/dictionary/frontend/web/frontend-performance-strategy): 측정·p95 기준·트레이드오프, 초기 로딩의 세 원인(대역폭·지연 시간·JS 실행), 실제 성능과 체감 성능, 파생 상태와 리렌더링 범위
 - [웹 성능 지표와 Lighthouse](/knowledge/dictionary/frontend/web/web-vitals): FCP·LCP·INP·CLS 기준값, LCP 후보·INP 세 구간·CLS 세션 창, 실험실·필드 데이터와 web-vitals 라이브러리, Lighthouse
+- [성능 측정 API: Navigation·Resource·User Timing과 PerformanceObserver](/knowledge/dictionary/frontend/web/performance-timing-apis): 성능 항목 읽기, mark·measure, buffered 구독, Timing-Allow-Origin
 - [TTFB 줄이기: 리디렉션·HTML 캐시·압축·CDN](/knowledge/dictionary/frontend/web/ttfb-optimization): 리디렉션 체인, 짧은 캐시와 ETag 재검증, Server-Timing, Brotli 정적·동적 압축, CDN 엣지
 - [LCP 최적화: 네 구간으로 나눠 줄이기](/knowledge/dictionary/frontend/web/lcp-optimization): TTFB·로드 지연·로드 시간·렌더 지연, HTML에서 발견되게, fetchpriority, 지연 로딩 금지, 막는 CSS·JS 걷어 내기
 - [INP 최적화: 긴 작업 쪼개기와 양보](/knowledge/dictionary/frontend/web/inp-optimization): 입력 지연·처리 시간·표시 지연별 처방, scheduler.yield, 레이아웃 스래싱, DOM 크기와 content-visibility
@@ -60,6 +63,7 @@ date: "2026-10-13"
 - [지연 로딩: 이미지·iframe·퍼사드](/knowledge/dictionary/frontend/web/lazy-loading): loading="lazy"와 첫 화면 예외, 무거운 임베드의 퍼사드, IntersectionObserver 기반 라이브러리
 - [자바스크립트 코드 분할](/knowledge/dictionary/frontend/web/code-splitting): 시작 JS와 TBT·INP, 커버리지, 동적 import()와 번들러 청크, 캐시·압축·평가의 균형
 - [웹 워커로 메인 스레드 비우기](/knowledge/dictionary/frontend/web/web-workers): Worker와 postMessage, DOM 없는 스레드의 제약, 무거운 가져오기·파싱 옮기기
+- [WebAssembly: 브라우저의 두 번째 언어](/knowledge/dictionary/frontend/web/webassembly): JS 대비 줄어드는 단계, Module·Memory·Table·Instance와 JS API, 툴체인, Wasm 2.0·3.0, WASI
 - [프론트엔드 개발자가 알아야 할 지연 시간 숫자](/knowledge/dictionary/frontend/web/frontend-latency-numbers): 네트워크 왕복·파싱·프레임 예산·체감 한계의 ms 단위 표와 성능 원칙
 - [PWA와 서비스 워커 캐시 전략](/knowledge/dictionary/frontend/web/pwa-service-worker): HTTPS·매니페스트·서비스 워커, 2026년 지원 범위, 시작 방법·체크리스트, 사이트 원형별 이점, 미디어 중요도별 캐시와 캐시 정리, PWA 하위 노트 안내
 - [서비스 워커 등록·스코프·생명주기와 업데이트](/knowledge/dictionary/frontend/web/service-worker-lifecycle): 등록·스코프 규칙, install·activate·waiting, skipWaiting·clients.claim, 수명, 브라우저별 디버깅
@@ -75,6 +79,8 @@ date: "2026-10-13"
 - [IndexedDB](/knowledge/dictionary/frontend/web/indexeddb): 버전과 upgradeneeded, 객체 저장소·인덱스·커서, 자동 커밋 트랜잭션의 함정, 탭 간 버전 충돌, idb 대응표
 - [창과 프레임: 팝업, iframe, postMessage](/knowledge/dictionary/frontend/web/windows-and-frames): 동일 출처와 창 접근, sandbox, postMessage·BroadcastChannel, COOP, 클릭재킹 방어
 - [브라우저 실시간 통신: 롱 폴링, SSE, WebSocket 클라이언트](/knowledge/dictionary/frontend/web/browser-realtime-apis): 롱 폴링 루프, EventSource 형식·재연결, fetch 스트림으로 SSE 읽기, WebSocket 버퍼·종료 코드·재연결
+- [미디어 캡처와 Web Audio API](/knowledge/dictionary/frontend/web/media-capture-web-audio): MediaStream·트랙, getUserMedia·getDisplayMedia, AudioContext 노드 그래프, 예약 재생과 자동 재생 정책
+- [권한 모델과 기기 API](/knowledge/dictionary/frontend/web/device-permission-apis): Permissions API와 권한 상태, 위치·기기 방향·게임패드·음성 합성과 인식·진동
 - [웹 보안: CSRF와 XSS](/knowledge/dictionary/frontend/web/web-security): 대표적인 두 공격과 방어 방법
 - [데이터 최소화와 프라이버시 실천](/knowledge/dictionary/frontend/web/privacy-data-minimization): 수집하지 않기·구간화·무작위 응답·차등 프라이버시, 보존 기한과 Clear-Site-Data, 수집 이유 설명, 데이터 목록 문서화와 감사
 - [서드파티와 프라이버시](/knowledge/dictionary/frontend/web/third-party-privacy): 서드파티가 받는 정보, 기술·비기술 감사, 공유 링크·퍼사드·nocookie 임베드, Referrer-Policy·Permissions-Policy·CSP Report-Only, GPC

@@ -4,11 +4,11 @@ concept: "INP Optimization"
 summary: "INP는 입력 지연, 처리 시간, 표시 지연의 합이다. 필드 데이터로 느린 상호작용을 찾고, 시작할 때의 스크립트 평가를 줄여 입력 지연을, 핸들러를 가볍게 하고 메인 스레드에 양보해 처리 시간을, DOM 크기·content-visibility·클라이언트 HTML 렌더링을 손봐 표시 지연을 줄인다."
 tags: ["performance", "web", "frontend", "javascript", "browser"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/articles/optimize-inp", "https://web.dev/articles/inp", "https://web.dev/learn/performance/code-split-javascript", "https://developer.mozilla.org/en-US/docs/Web/API/Scheduler/yield", "https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility"]
+date: "2026-10-21"
+sources: ["https://web.dev/articles/optimize-inp", "https://web.dev/articles/inp", "https://web.dev/learn/performance/code-split-javascript", "https://developer.mozilla.org/en-US/docs/Web/API/Scheduler/yield", "https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility", "https://developer.chrome.com/blog/using-requestidlecallback", "https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback"]
 ---
 
-> web.dev의 「[Optimize Interaction to Next Paint](https://web.dev/articles/optimize-inp)」를 바탕으로, `scheduler.yield()`·`content-visibility`의 지원 범위는 MDN으로 확인해 재구성한 노트다. INP의 정의와 세 구간은 [[web-vitals|웹 성능 지표]]에 있다.
+> web.dev의 「[Optimize Interaction to Next Paint](https://web.dev/articles/optimize-inp)」를 바탕으로, `scheduler.yield()`·`content-visibility`의 지원 범위는 MDN으로 확인해 재구성한 노트다. 유휴 작업은 「[Using requestIdleCallback](https://developer.chrome.com/blog/using-requestidlecallback)」으로 보강했다. INP의 정의와 세 구간은 [[web-vitals|웹 성능 지표]]에 있다.
 
 ## 목표와 원인
 
@@ -82,6 +82,22 @@ async function processAll(items) {
 | `setTimeout(fn, 0)` | 어디서나 된다. 이어지는 작업이 **태스크 큐 맨 뒤**로 가서 다른 작업에 밀릴 수 있다 |
 | `scheduler.yield()` | 이어지는 작업을 우선순위가 높은 큐에 넣어, 양보한 뒤 **먼저 이어서** 실행한다. Baseline이 아니므로 기능 감지 후 `setTimeout`으로 대체한다 |
 | `requestAnimationFrame` + `setTimeout` | 화면을 먼저 그리고 나서 나머지를 한다 |
+| `requestIdleCallback(cb, { timeout })` | 급하지 않은 일(분석 전송, 미리 계산)을 프레임이 끝나고 남는 시간이나 사용자가 쉬는 동안 실행한다. 아래 참고 |
+
+**유휴 콜백(`requestIdleCallback`)** 은 콜백에 `deadline`을 넘긴다. `deadline.timeRemaining()`이 0이 될 때까지만 일하고, 남은 일은 다시 예약한다. 한 번에 주는 시간은 최대 50ms라 그 사이 들어온 입력도 100ms 안에 처리된다. 바쁜 페이지에서는 영영 불리지 않을 수 있으므로 `timeout`을 주면 그 시간이 지나 `deadline.didTimeout`이 `true`인 채로 불린다.
+
+```js
+function work(deadline) {
+  while ((deadline.timeRemaining() > 0 || deadline.didTimeout) && tasks.length) {
+    sendAnalytics(tasks.shift())
+  }
+  if (tasks.length) requestIdleCallback(work, { timeout: 2000 })
+}
+requestIdleCallback(work, { timeout: 2000 })
+```
+
+- **유휴 콜백 안에서 DOM을 바꾸지 않는다.** 프레임이 끝난 뒤라 레이아웃이 이미 계산돼 있어, 바꾸면 그것을 무효로 만들고 소요 시간도 예측할 수 없다. DOM 변경은 `DocumentFragment`에 모아 다음 `requestAnimationFrame`에서 붙인다.
+- Safari가 지원하지 않아 Baseline이 아니다. 기능 감지 후 `setTimeout`으로 대체한다.
 
 - 매 반복마다 양보하면 오버헤드가 생긴다. 일정 시간(예: 50ms)이 지났을 때만 양보하는 식으로 조절할 수 있다. 그래도 **아무 데서나 양보하는 것이 전혀 안 하는 것보다 낫다.**
 - 렌더링과 무관한 계산 자체가 무겁다면 쪼개기보다 [[web-workers|웹 워커]]로 메인 스레드 밖에 둔다.

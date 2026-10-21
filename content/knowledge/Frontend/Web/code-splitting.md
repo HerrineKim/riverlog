@@ -1,14 +1,14 @@
 ---
 title: "자바스크립트 코드 분할"
 concept: "Code Splitting"
-summary: "시작할 때 받는 JS가 크면 파싱·컴파일·실행 동안 메인 스레드가 막혀 TBT와 INP가 나빠진다. 커버리지로 시작 때 안 쓰는 코드를 찾고, 동적 import()로 나중에 필요한 코드를 별도 청크로 떼어 상호작용할 때 불러온다. 청크 크기는 캐시·압축·평가 시간의 균형으로 정한다."
+summary: "시작할 때 받는 JS가 크면 파싱·컴파일·실행 동안 메인 스레드가 막혀 TBT와 INP가 나빠진다. 커버리지로 시작 때 안 쓰는 코드를 찾고, 동적 import()로 나중에 필요한 코드를 별도 청크로 떼어 상호작용할 때 불러온다. 청크 크기는 캐시·압축·평가 시간의 균형으로 정한다. 로딩 전략 전체는 PRPL(Preload·Render·Pre-cache·Lazy load)로 묶는다."
 tags: ["performance", "javascript", "frontend", "web", "build"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/performance/code-split-javascript"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/performance/code-split-javascript", "https://developers.google.com/web/fundamentals/performance/prpl-pattern/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/code%20splitting%2C%20Lazy%20loading.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%20Preloading.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/webpack%20bundle%20analyzer%2C%20cra-bundle-analyzer.md"]
 ---
 
-> web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Code-split JavaScript」 모듈을 바탕으로 재구성한 노트다. `import()` 문법은 [[es-modules|모듈: export와 import]]에, 번들러 일반은 [[bundlers-and-vite|번들러의 역사와 Vite]]에 있다.
+> web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Code-split JavaScript」 모듈을 바탕으로 재구성하고, 「[Apply instant loading with the PRPL pattern](https://web.dev/articles/apply-instant-loading-with-prpl)」으로 PRPL을 보강한 노트다. 번들 분석 도구와 분할한 컴포넌트를 미리 받는 시점은 「[Frontend_TIL: 컴포넌트 Preloading](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%20Preloading.md)」 등을 바탕으로 보강했다. `import()` 문법은 [[es-modules|모듈: export와 import]]에, 번들러 일반은 [[bundlers-and-vite|번들러의 역사와 Vite]]에 있다.
 
 ## 왜 나누나
 
@@ -23,6 +23,7 @@ sources: ["https://web.dev/learn/performance/code-split-javascript"]
 | --- | --- |
 | Lighthouse 「JavaScript 실행 시간 줄이기」 | 스크립트별 실행 시간. 큰 것부터 후보 |
 | DevTools 커버리지(Coverage) | 페이지 로드 중 **실제로 실행되지 않은** 코드 비율([[devtools-performance\|DevTools로 성능 분석하기]]) |
+| 번들 분석기(`webpack-bundle-analyzer`, Vite·Rollup은 `rollup-plugin-visualizer`) | 번들 안 모듈별 크기를 면적 지도(treemap)로 보여 준다. 가장 큰 의존성, 실수로 들어간 모듈, 여러 청크에 중복된 모듈을 찾는다 |
 
 코드 분할은 번들을 둘로 나누는 일이다.
 
@@ -56,8 +57,32 @@ const Chart = lazy(() => import('./Chart'))
 // <Suspense fallback={<Spinner />}><Chart /></Suspense>
 ```
 
-- 상호작용 뒤에 받으면 첫 클릭이 그만큼 느려진다. 곧 쓸 게 확실하면 유휴 시간에 미리 받아 둔다(`<link rel="modulepreload">`, 호버 시 `import()` 시작, [[resource-hints|prefetch]]).
 - 라우트 단위 분할은 대부분의 프레임워크 라우터가 기본으로 한다. 그 다음 후보는 모달·에디터·차트처럼 **누른 뒤에만 쓰는 큰 기능**이다.
+
+### 미리 받기: 나눈 청크의 첫 클릭 비용
+
+나눈 청크는 필요할 때 **받기(네트워크) → 평가(메인 스레드) → 실행**을 거친다. 첫 화면은 빨라지지만 그 기능을 처음 쓰는 순간 앞의 두 단계만큼 늦다. 곧 쓸 게 확실하면 실행 직전까지 미리 해 둔다. 같은 `import()`를 다시 부르면 모듈 캐시에서 바로 돌려주므로, 미리 한 번 불러 두기만 하면 된다.
+
+| 시점 | 방법 | 맞는 경우 |
+| --- | --- | --- |
+| 버튼에 마우스를 올릴 때 | `onMouseEnter`·`onFocus`에서 `import()` 시작. 올리고 누르기까지 보통 수백 ms가 걸려 그동안 받는다 | 청크가 작아 그 사이에 받아지는 경우 |
+| 첫 화면을 다 그린 뒤 | `useEffect`나 `requestIdleCallback`에서 `import()` | 청크가 커서 호버 시간으로는 모자란 경우 |
+| 브라우저에 맡김 | `<link rel="modulepreload">`, [[resource-hints\|prefetch·Speculation Rules]] | 다음 페이지 이동, 프레임워크 라우터의 링크 미리 받기 |
+
+```jsx
+// lazy 컴포넌트에 preload를 붙이는 팩토리
+function lazyWithPreload(factory) {
+  const Component = lazy(factory)
+  Component.preload = factory
+  return Component
+}
+
+const ImageModal = lazyWithPreload(() => import('./ImageModal'))
+
+<button onMouseEnter={ImageModal.preload} onClick={() => setOpen(true)}>사진 보기</button>
+```
+
+`react-lazy-with-preload` 패키지가 같은 모양을 제공한다. Next.js `<Link>`·React Router의 `prefetch` 옵션처럼 라우터가 화면 진입·호버 때 자동으로 해 주는 경우가 많다.
 
 ## 청크를 얼마나 잘게
 
@@ -82,6 +107,19 @@ const Chart = lazy(() => import('./Chart'))
 - `chunks: 'initial'`로 바꾸면 미루려던 코드가 시작 번들에 합쳐져 첫 로딩이 나빠진다.
 - `maxSize`로 큰 청크를 더 쪼개면 평가가 나뉘어 긴 작업이 준다.
 - `splitChunks: false`로 끄면 공유 모듈이 여러 청크에 **중복**으로 들어간다.
+
+## PRPL 패턴
+
+코드 분할을 로딩 전략 전체로 넓힌 이름이 **PRPL**이다. 네 단계는 서로 독립적으로도 쓸 수 있다.
+
+| 글자 | 할 일 | 수단 |
+| --- | --- | --- |
+| **P**reload | 늦게 발견되는 핵심 리소스를 미리 요청 | `<link rel="preload" as="image" href="hero.jpg">`. CSS `background-image`처럼 프리로드 스캐너가 못 찾는 것에 쓴다. 우선순위는 `fetchpriority`로 따로 올린다(→ [[resource-hints\|리소스 힌트와 미리 불러오기]]) |
+| **R**ender | 첫 경로를 최대한 빨리 그림 | 핵심 CSS·JS 인라인과 나머지 `async`·`defer`, 또는 서버 렌더링. 인라인은 따로 캐시되지 않고, SSR은 HTML이 커져 상호작용이 늦어질 수 있어 득실을 잰다 |
+| **P**re-cache | 나머지 자산을 서비스 워커로 미리 캐시 | Workbox 프리캐시. 재방문이 빨라지고 오프라인에서도 뜬다(→ [[service-worker-caching\|서비스 워커 캐싱과 응답 전략]]) |
+| **L**azy load | 다른 경로와 급하지 않은 자산을 나중에 | 경로별 동적 `import()`, 이미지 `loading="lazy"` |
+
+2016년 Polymer 팀이 처음 낸 PRPL의 첫 P는 **Push**(HTTP/2 서버 푸시)였다. 서버 푸시는 이미 캐시된 리소스까지 밀어 넣는 문제로 거의 쓰이지 않았고 Chrome 106에서 제거됐다. 그래서 지금은 Preload로 읽는다. 서버가 먼저 힌트를 주고 싶으면 `103 Early Hints`를 쓴다.
 
 ## 정리
 

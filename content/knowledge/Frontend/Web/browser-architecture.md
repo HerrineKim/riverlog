@@ -5,10 +5,10 @@ summary: "Chrome을 예로 브라우저가 프로세스를 어떻게 나누는�
 tags: ["frontend", "browser", "rendering", "performance", "web"]
 source: other
 date: "2026-10-21"
-sources: ["https://d2.naver.com/helloworld/2922312", "https://d2.naver.com/helloworld/9274593", "https://d2.naver.com/helloworld/5237120", "https://d2.naver.com/helloworld/6204533", "https://developer.chrome.com/blog/inside-browser-part1"]
+sources: ["https://d2.naver.com/helloworld/2922312", "https://d2.naver.com/helloworld/9274593", "https://d2.naver.com/helloworld/5237120", "https://d2.naver.com/helloworld/6204533", "https://developer.chrome.com/blog/inside-browser-part1", "https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/", "https://www.sitepoint.com/introduction-to-hardware-acceleration-css-animations/"]
 ---
 
-> Mariko Kosaka의 「Inside look at modern web browser」 시리즈를 NAVER D2가 번역한 「[브라우저의 내부 살펴보기 1](https://d2.naver.com/helloworld/2922312)」, 「[2](https://d2.naver.com/helloworld/9274593)」, 「[3](https://d2.naver.com/helloworld/5237120)」, 「[4](https://d2.naver.com/helloworld/6204533)」를 바탕으로 재구성한 노트다. DOM·CSSOM부터 페인트까지 렌더링 단계 자체는 [[browser-rendering|브라우저 렌더링 과정]]에 있다.
+> Mariko Kosaka의 「Inside look at modern web browser」 시리즈를 NAVER D2가 번역한 「[브라우저의 내부 살펴보기 1](https://d2.naver.com/helloworld/2922312)」, 「[2](https://d2.naver.com/helloworld/9274593)」, 「[3](https://d2.naver.com/helloworld/5237120)」, 「[4](https://d2.naver.com/helloworld/6204533)」를 바탕으로 재구성한 노트다. DOM·CSSOM부터 페인트까지 렌더링 단계 자체는 [[browser-rendering|브라우저 렌더링 과정]]에 있다. 레이어 승격의 비용은 「[CSS GPU Animation: Doing It Right](https://www.smashingmagazine.com/2016/12/gpu-animation-doing-it-right/)」와 「[An Introduction to Hardware Acceleration with CSS Animations](https://www.sitepoint.com/introduction-to-hardware-acceleration-css-animations/)」로 보강했다.
 
 ## 프로세스와 스레드
 
@@ -108,6 +108,32 @@ DOM → 계산된 스타일 → 레이아웃 트리 → 페인트 기록(무엇�
 - 레이어로 나뉘는 기준은 엔진이 정한다. `will-change: transform`으로 힌트를 줄 수 있지만 레이어마다 메모리와 합성 비용이 들어 남발하면 오히려 느려진다.
 - 컴포지터는 레이어를 **타일**로 나눠 래스터 스레드에 보내고, 뷰포트 근처 타일을 먼저 칠한다. 다 모이면 **드로 쿼드**(타일 위치 정보)로 컴포지터 프레임을 만들어 GPU에 보낸다.
 - 스크롤이나 `transform`·`opacity` 애니메이션은 이미 칠한 레이어의 위치만 바꾸면 되므로 **메인 스레드를 기다리지 않는다.** 메인 스레드가 JS로 바빠도 부드러운 이유다.
+
+### 레이어 승격의 비용
+
+합성 레이어(composited layer)는 표준에 없는 **엔진 내부 최적화**다. 합성만으로 애니메이션하려면 속성이 문서 흐름에 영향을 주지도, 받지도 않고, 다시 칠할 필요도 없어야 한다. 이 조건을 늘 만족하는 속성이 `transform`과 `opacity`뿐이다. `left`·`top`은 `%` 값이 부모 크기에 기대므로 해당하지 않는다.
+
+| 레이어가 생기는 흔한 이유 | 예 |
+| --- | --- |
+| 명시적 | 3D 변환(`translate3d`, `translateZ`), `will-change`, `<video>`·`<canvas>`·`<iframe>`, `position: fixed`, `filter`, CSS·`element.animate()`로 `transform`·`opacity`를 애니메이션하는 중 |
+| **암시적 합성(implicit compositing)** | 레이어가 된 요소보다 쌓임 순서상 **위에 그려져야 하는** 요소. 순서를 지키려고 엔진이 함께 승격시킨다 |
+
+레이어는 공짜가 아니다.
+
+- **메모리**: 레이어는 압축 이미지가 아니라 RGBA 비트맵으로 GPU에 올라간다. 크기는 `너비 × 높이 × 4바이트`이고 고밀도 화면이면 기기 픽셀 비율의 제곱만큼 커진다. 800×600 사진 10장에 `will-change: transform`을 미리 걸면 약 19MB다. 메모리가 적은 모바일에서는 탭이 죽을 수 있다.
+- **승격 순간의 페인트·전송**: 레이어가 생기거나 사라질 때 그 영역을 다시 칠하고 텍스처를 GPU로 보낸다. 애니메이션 시작·끝에 깜빡임이 보이는 원인이다.
+- **레이어 폭발**: 암시적 합성으로 레이어가 수십·수백 개로 불어난다.
+
+| 줄이는 방법 | 이유 |
+| --- | --- |
+| 움직이는 요소를 쌓임 순서의 위쪽에 둔다(가능하면 `body` 바로 아래) | 위에 겹친 요소가 없으면 암시적 합성이 생기지 않는다 |
+| 작게 그리고 `transform: scale()`로 키운다 | 10×10 레이어를 `scale(10)`하면 100×100 레이어보다 메모리가 100분의 1이다. 단색·흐린 배경에 쓴다 |
+| `background-color` 대신 위에 겹친 의사 요소의 `opacity`를 바꾼다 | 색 전환도 합성만으로 처리한다 |
+| 선언형(CSS·`element.animate()`)으로 애니메이션한다 | 시작·끝을 미리 알려 주므로 컴포지터가 메인 스레드 없이 프레임을 만든다. `requestAnimationFrame` JS 애니메이션은 매 프레임 메인 스레드가 필요하다 |
+
+레이어 목록과 승격 이유, 레이어별 메모리는 Chrome DevTools의 **Layers** 패널(More tools)과 Safari Web Inspector의 Layers 사이드바에서 본다. Rendering 탭의 Layer borders는 화면에 레이어 경계를 그린다.
+
+과거에는 `transform: translateZ(0)`을 붙여 레이어를 억지로 만드는 「하드웨어 가속 핵」이 흔했다. 지금은 의도를 밝히는 `will-change`를 쓰되 꼭 필요한 요소에만 쓴다([[css-animation|CSS 애니메이션]]).
 
 ### 프레임 예산
 

@@ -4,9 +4,11 @@ concept: "React Native"
 summary: "React 코드를 네이티브 UI로 바꿔 주는 React Native의 동작 원리(브리지에서 New Architecture로), Expo로 시작하기, 코어 컴포넌트, StyleSheet와 Flexbox 레이아웃, onPress·onChangeText 이벤트와 ScrollView·FlatList 목록."
 tags: ["react-native", "mobile", "react", "css", "state"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://reactnative.dev/docs/environment-setup", "https://docs.expo.dev/get-started/create-a-project/"]
+date: "2026-10-21"
+sources: ["https://reactnative.dev/docs/environment-setup", "https://docs.expo.dev/get-started/create-a-project/", "https://tadeuzagallo.com/blog/react-native-bridge/", "https://reactnative.dev/architecture/landing-page"]
 ---
+
+> 브리지의 동작은 Tadeu Zagallo의 「[Bridging in React Native](https://tadeuzagallo.com/blog/react-native-bridge/)」를 바탕으로, New Architecture는 [React Native 공식 문서](https://reactnative.dev/architecture/landing-page)로 확인해 보강했다.
 
 **React Native**는 React 문법으로 Android·iOS **네이티브 앱**을 만드는 크로스 플랫폼 프레임워크다. React의 컴포넌트·props·state·Hooks를 그대로 쓰되, `<div>`, `<p>` 같은 HTML 대신 네이티브 UI로 변환되는 **코어 컴포넌트**를 쓴다.
 
@@ -24,7 +26,19 @@ Android View / iOS UIView   ← 웹뷰가 아니라 진짜 네이티브 뷰
 - `<View>`, `<Text>` 같은 컴포넌트는 플랫폼마다 네이티브 뷰로 그려진다.
 - JavaScript 로직은 앱 안의 **JavaScript 스레드**에서 따로 실행된다.
 - React Native 0.76부터 **New Architecture**가 기본이고, 0.82부터는 New Architecture만 쓸 수 있다. JS가 JSI로 네이티브 객체를 직접 호출하고, Fabric과 Turbo Modules가 옛 구조를 대신한다.
-- 과거에는 JS와 네이티브가 **브리지(Bridge)** 로 메시지를 비동기 직렬화해 주고받았다.
+
+### 브리지에서 JSI로
+
+과거에는 JS와 네이티브가 **브리지(Bridge)** 로 메시지를 비동기 직렬화해 주고받았다. 그 구조에서 앱은 세 스레드로 돌았다. JS 코드가 도는 **JS 스레드**, 네이티브 뷰를 그리는 **메인(UI) 스레드**, 레이아웃(Yoga)을 계산하는 **섀도 스레드**다. 네이티브 모듈은 각자 따로 큐를 받았다.
+
+| 단계 | 브리지 시절 | New Architecture |
+| --- | --- | --- |
+| 모듈 등록 | 앱 시작 때 모든 네이티브 모듈을 만들고, 이름·메서드 시그니처를 **JSON 설정**으로 JS 쪽 전역에 넘긴다. JS에서는 `NativeModules.Person`으로 보인다 | Turbo Modules는 처음 쓸 때 **지연 로드**한다. 타입은 TypeScript 명세에서 Codegen으로 만든다 |
+| 호출 | JS가 네이티브 메서드를 부르면 (모듈, 메서드, 인자)가 **큐에 쌓이고**, JS 실행이 한 번 끝날 때 묶음으로 네이티브에 넘어간다. 인자는 JSON으로 직렬화된다 | JSI가 C++ 호스트 객체의 참조를 JS에 직접 쥐여 준다. 직렬화가 없고 필요하면 **동기 호출**도 된다 |
+| 결과 | 콜백·Promise로 비동기로만 돌아온다 | 동기·비동기 모두 |
+| 렌더링 | 섀도 스레드의 레이아웃 결과를 브리지로 넘겨 UI 스레드가 반영 | Fabric 렌더러가 C++로 공유되어 동기 레이아웃 측정, 동시성 렌더링(React 18 기능)을 지원 |
+
+브리지의 병목은 **잦은 왕복과 직렬화**였다. 스크롤에 맞춰 움직이는 애니메이션이나 제스처처럼 프레임마다 JS와 네이티브를 오가야 하는 일에서 끊김이 생겼다. 그래서 Animated의 `useNativeDriver`, Reanimated처럼 작업을 UI 스레드로 넘기는 우회가 발달했다. JS 엔진은 처음에 iOS의 JavaScriptCore를 썼고, 지금은 시작 속도와 메모리에 맞춘 **Hermes**(바이트코드를 빌드 때 미리 만든다)가 기본이다.
 
 ## 시작하기
 

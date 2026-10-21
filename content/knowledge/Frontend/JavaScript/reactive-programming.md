@@ -4,11 +4,11 @@ concept: "Reactive Programming"
 summary: "반응형 프로그래밍은 데이터 흐름과 변경 전파에 초점을 둔 선언적 패러다임이다. 스프레드시트와 웹 프레임워크로 개념을 잡고, Pull에서 Push로, 제어의 역전으로 비동기를 단순하게 보는 법, 이벤트를 배열처럼 다루는 RxJS의 Observable과 연산자, 실무에서 막히는 소스 만들기와 Hot·Cold, Vue·MobX·시그널이 쓰는 의존성 추적(읽을 때 구독, 쓸 때 통지)의 원리를 정리한다."
 tags: ["javascript", "frontend", "async", "programming-paradigm"]
 source: other
-date: "2026-10-20"
-sources: ["https://velog.io/@teo/reactive-programming", "https://velog.io/@teo/rxjs", "https://ui.toast.com/weekly-pick/ko_20190531/"]
+date: "2026-10-21"
+sources: ["https://velog.io/@teo/reactive-programming", "https://velog.io/@teo/rxjs", "https://ui.toast.com/weekly-pick/ko_20190531/", "https://gist.github.com/staltz/868e7e9bc2a7b8c1f754", "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/when"]
 ---
 
-> 테오(teo)의 「[프로그래밍 패러다임과 반응형 프로그래밍 그리고 Rx](https://velog.io/@teo/reactive-programming)」(2022.02)와 「[Rxjs 한번 배워보실래요?](https://velog.io/@teo/rxjs)」(2022.10)를 바탕으로 재구성한 노트다. 의존성 추적의 원리는 「[0.7KB로 Vue와 같은 반응형 시스템 만들기](https://ui.toast.com/weekly-pick/ko_20190531/)」를 바탕으로 더했다.
+> 테오(teo)의 「[프로그래밍 패러다임과 반응형 프로그래밍 그리고 Rx](https://velog.io/@teo/reactive-programming)」(2022.02)와 「[Rxjs 한번 배워보실래요?](https://velog.io/@teo/rxjs)」(2022.10)를 바탕으로 재구성한 노트다. 의존성 추적의 원리는 「[0.7KB로 Vue와 같은 반응형 시스템 만들기](https://ui.toast.com/weekly-pick/ko_20190531/)」를 바탕으로 더했다. 요청·응답을 스트림으로 다루는 예와 flatMap 계열 연산자는 「[The introduction to Reactive Programming you've been missing](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754)」을 바탕으로 RxJS 7 연산자로 옮겨 보강했다.
 
 ## 패러다임이란
 
@@ -102,6 +102,43 @@ fromEvent(window, 'click').pipe(
 
 앱 코드의 대부분은 API 사용법보다 **"참여자가 10명을 넘으면 마이크를 끈다"** 같은 조건과 시점의 시나리오다. RxJS는 이 "~하면"을 로직의 조합이 아니라 **값의 변환**(참여자 수 변화 → 이전 값과 비교 → 2초 버퍼 → 토스트)으로 쓰게 한다.
 
+### 요청과 응답도 스트림이다
+
+"새로고침을 누르면 추천 사용자 3명을 새로 받아 보여 준다" 같은 화면을 스트림으로 짜면, 클릭·요청·응답·화면 상태가 모두 스트림이고 코드는 그 사이의 변환만 남는다.
+
+```ts
+const refreshClick$ = fromEvent(refreshButton, 'click')
+
+const request$ = refreshClick$.pipe(
+  startWith(null),                                   // 처음 한 번은 클릭 없이도 요청
+  map(() => `https://api.github.com/users?since=${Math.floor(Math.random() * 500)}`),
+)
+
+const response$ = request$.pipe(
+  switchMap((url) => fetch(url).then((r) => r.json())), // 스트림의 스트림을 펴서 응답 스트림 하나로
+)
+
+const suggestion1$ = merge(
+  refreshClick$.pipe(map(() => null)),               // 누르는 즉시 비운다
+  response$.pipe(map((users) => users[Math.floor(Math.random() * users.length)])),
+).pipe(startWith(null))
+
+suggestion1$.subscribe(renderSuggestion1)
+```
+
+- 요청 URL 하나마다 응답이 오는 비동기 스트림이 하나씩 생긴다. 이 **스트림의 스트림(메타스트림)** 을 하나로 펴는 것이 `flatMap` 계열 연산자다. 펴는 방식이 다르다.
+
+| 연산자 | 새 요청이 오면 | 쓰는 곳 |
+| --- | --- | --- |
+| `mergeMap`(옛 `flatMap`) | 이전 요청도 그대로 두고 모두 흘린다 | 순서와 무관한 병렬 작업 |
+| `switchMap` | **이전 요청을 취소**하고 최신 것만 | 검색어 자동완성, 새로고침 — 늦게 도착한 옛 응답이 화면을 덮는 경쟁 상태를 막는다 |
+| `concatMap` | 이전 것이 끝날 때까지 줄 세운다 | 순서가 중요한 저장 요청 |
+| `exhaustMap` | 진행 중이면 새 것을 무시한다 | 중복 제출 방지 |
+
+- 화면 조각 하나(추천 1번 칸)의 상태는 "클릭하면 비운다"와 "응답이 오면 채운다"를 `merge`한 하나의 스트림이다. 닫기 버튼처럼 다른 스트림의 최신 값이 함께 필요하면 `combineLatest`로 묶는다.
+
+**절차형과의 차이**는 "누가 언제 무엇을 바꾸나"를 어디에 적느냐다. 절차형은 클릭 핸들러 안에 요청·로딩 표시·결과 반영을 차례로 적고, 반응형은 각 값이 **무엇으로부터 만들어지는지**를 선언하고 실행 순서는 스트림에 맡긴다.
+
 ## 실무에서 막히는 지점
 
 | 지점 | 내용 | 대응 |
@@ -166,7 +203,7 @@ cart.qty = 3                                                     // 자동으로
 | 값 여러 개를 바꾸면 그때마다 다시 그린다 | 통지를 모아 마이크로태스크에서 한 번에 실행한다(batch) |
 | 10만 건 배열의 원소마다 Proxy를 씌우면 느리다 | 큰 컬렉션은 반응형으로 만들지 않고 통째로 교체하거나 수동으로 통지한다(Vue의 `shallowRef`, MobX의 `observable.ref`) |
 
-React는 이 방식을 쓰지 않는다. 상태를 바꾸면 컴포넌트를 다시 실행해 결과를 비교한다. 두 모델의 차이는 [[react-vs-vue|React와 Vue]]에 있다. 시그널을 언어 표준으로 넣자는 TC39 제안도 진행 중이다.
+React는 이 방식을 쓰지 않는다. 상태를 바꾸면 컴포넌트를 다시 실행해 결과를 비교한다. 두 모델의 차이는 [[react-vs-vue|React와 Vue]]에 있다. 시그널을 언어 표준으로 넣자는 TC39 제안도 진행 중이다. 이벤트 쪽에서는 `addEventListener` 대신 Observable을 돌려주는 `EventTarget.when()`(WICG Observable 제안)이 Chrome에 들어갔지만, 다른 브라우저가 지원하지 않아 Baseline이 아니다.
 
 ## 한계
 

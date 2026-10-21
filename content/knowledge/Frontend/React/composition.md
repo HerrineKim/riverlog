@@ -61,6 +61,7 @@ function Text({ as: Component = 'p', children, ...rest }: TextProps) {
 ```
 
 - 같은 스타일을 시맨틱에 맞는 다른 태그(`h2`, `label`, `a`)에 쓸 수 있다.
+- `React.ElementType`으로만 받으면 넘긴 요소의 props(`as="a"`의 `href`)는 검사하지 않는다. 요소에 맞춰 props까지 검사하는 제네릭 타입은 [[react-typescript|React와 TypeScript]]의 「제네릭 컴포넌트」에 있다.
 - 직접 만든 컴포넌트를 넘기면(`<Form.Control as={StudentInput} />`) 받은 props가 그대로 전달된다. 복잡한 입력 부분을 별도 파일로 빼는 데에도 쓴다.
 
 ## 합성으로 props drilling 줄이기

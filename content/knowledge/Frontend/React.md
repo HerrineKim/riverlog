@@ -14,6 +14,7 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 ### 기본 개념
 - [JSX와 엘리먼트 렌더링](/knowledge/dictionary/frontend/react/jsx): JSX 문법 규칙, Babel 변환, React 엘리먼트와 불변성
 - [컴포넌트와 Props](/knowledge/dictionary/frontend/react/components-and-props): 함수 컴포넌트, props 전달, TypeScript로 props 타입 정하기, ref as prop
+- [React와 TypeScript](/knowledge/dictionary/frontend/react/react-typescript): props·children·ref 타입, ComponentProps로 요소 감싸기, 판별 유니언으로 props 제한, 제네릭 컴포넌트, 이벤트·훅 타입
 - [State](/knowledge/dictionary/frontend/react/state): useState, 함수형 업데이트, 불변성, State 끌어올리기
 - [생명주기](/knowledge/dictionary/frontend/react/lifecycle): 마운트·업데이트·언마운트를 useEffect로 다루기, StrictMode 이중 실행, 클래스 메서드 대응표
 - [Hooks](/knowledge/dictionary/frontend/react/hooks): 규칙, useEffect·useEffectEvent, 메모이제이션과 React Compiler, 커스텀 훅
@@ -24,9 +25,15 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 - [리스트와 Key](/knowledge/dictionary/frontend/react/lists-and-keys): map 렌더링, key의 역할, key 값에 따른 리렌더링·리마운트 차이
 - [폼](/knowledge/dictionary/frontend/react/forms): 제어 컴포넌트, 여러 input, 파생 값 계산, React 19 폼 액션(useActionState·useFormStatus)
 - [합성](/knowledge/dictionary/frontend/react/composition): children, 특수화, 상속 대신 합성
+- [로직 재사용 패턴: HOC, Render Props, 커스텀 훅](/knowledge/dictionary/frontend/react/logic-reuse-patterns): 세 방식 비교, 컨테이너 컴포넌트와 커스텀 훅 고르는 기준
+- [포털: createPortal로 다른 DOM에 그리기](/knowledge/dictionary/frontend/react/portals): 모달·툴팁이 overflow·z-index에 갇히지 않게, React 트리를 따르는 이벤트와 Context
 - [재사용 컴포넌트를 위한 리액트 패턴 5가지](/knowledge/dictionary/frontend/react/advanced-react-patterns): Compound Components, Control Props, Custom Hook, Props Getters, State Reducer 비교
 - [Context](/knowledge/dictionary/frontend/react/context): props drilling 없이 값 공유, Context로 부족할 때 고르는 Redux Toolkit·Zustand·Jotai
 - [스타일링](/knowledge/dictionary/frontend/react/styling): CSS Modules, styled-components(유지보수 모드), emotion, 인라인 스타일
+
+### 렌더링 원리
+- [재조정(Reconciliation)과 state 보존](/knowledge/dictionary/frontend/react/reconciliation): render·commit 단계, 타입별 비교 규칙, 트리 위치에 묶인 state와 key로 초기화
+- [동시성 렌더링: useTransition과 useDeferredValue](/knowledge/dictionary/frontend/react/concurrent-rendering): 급한 업데이트와 전환, 끊을 수 있는 렌더링, async 전환과 Actions, Suspense와 use
 
 ### 실전
 - [React 빌드 환경 직접 구성하기: webpack·Babel·TypeScript](Frontend/React/tooling.md): CDN 실습, CRA 종료 이후의 선택, webpack·Babel·tsconfig 역할, 라우팅·코드 스플리팅, 도구별 환경 변수 접두사
@@ -34,10 +41,12 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 - [TanStack Query(React Query)](/knowledge/dictionary/frontend/react/tanstack-query): QueryClientProvider, query key, useQuery·useMutation, SSR 하이드레이션(dehydrate·HydrationBoundary), v5 변경점
 - [리액트 상태 관리의 흐름과 고르는 기준](/knowledge/dictionary/frontend/react/react-state-management): 상태 종류별 도구, 전역 상태 라이브러리의 네 가지 문제, 스토어·atom·proxy 비교, Flux부터 서버 컴포넌트까지의 흐름
 - [Redux와 react-redux](/knowledge/dictionary/frontend/react/redux): Flux 패턴, store·reducer·dispatch, useSelector·useDispatch, Redux Toolkit
+- [Redux 미들웨어와 비동기 처리](/knowledge/dictionary/frontend/react/redux-middleware): store => next => action 체인, thunk, RTK Query·createAsyncThunk, listener middleware, redux-saga가 남은 자리
 - [use 훅과 리액트 비동기 처리](/knowledge/dictionary/frontend/react/react-use-hook): Promise·Context를 읽는 React 19 API, 캐시된 Promise만 넘기기, 서버 컴포넌트에서 내려받은 Promise 읽기
 - [실시간 채팅 앱의 데이터 흐름: REST와 WebSocket 역할 나누기](Frontend/React/realtime-chat-app.md): 쓰기는 REST·알림은 소켓, 리소스 계층이 드러나는 URL, 소켓 연결 수명, optimistic UI와 중복 방지, 긴 목록 최적화
 - [프런트엔드 에러 핸들링: 분류와 선언적 처리](/knowledge/dictionary/frontend/react/frontend-error-handling): 예상 가능·해결 가능으로 나눈 에러 분류, Suspense·ErrorBoundary 경계, 이벤트 핸들러 에러와 unhandledrejection 전역 처리
 - [리렌더링 원인 추적하기](/knowledge/dictionary/frontend/react/re-rendering): memo가 안 먹힐 때, useQuery의 렌더링, DevTools 하이라이트·Profiler
+- [리스트 가상화(Windowing)](/knowledge/dictionary/frontend/react/list-virtualization): 보이는 항목만 그리는 원리, TanStack Virtual·react-window, 가변 높이·접근성 한계, content-visibility
 - [react-hook-form과 MUI Select](/knowledge/dictionary/frontend/react/react-hook-form): Controller, 빈 값 처리, 수정 폼 초기값
 - [react-router로 레이아웃과 Breadcrumbs 만들기](/knowledge/dictionary/frontend/react/react-router-layout): URL 규칙, Outlet, 경로 기반 Breadcrumbs
 - [MUI Dialog로 삭제 확인 창 만들기](/knowledge/dictionary/frontend/react/confirm-dialog): 재사용 다이얼로그, 위험한 버튼 디자인

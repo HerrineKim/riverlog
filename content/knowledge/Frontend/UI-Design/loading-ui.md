@@ -4,11 +4,11 @@ concept: "Loading UI"
 summary: "기다림을 줄일 수 없을 때 체감을 다루는 로딩 UI 네 가지를 정리했다. 짧고 부분적인 로딩은 스피너, 핵심 액션은 브랜드 로딩 애니메이션, 페이지 전체는 스켈레톤, 10초 넘는 작업과 단계형 흐름은 프로그레스 바를 쓴다. 1초 미만이면 아무것도 띄우지 않는다."
 tags: ["frontend", "ux", "ui", "animation", "accessibility"]
 source: other
-date: "2026-10-20"
-sources: ["https://yozm.wishket.com/magazine/detail/1238/", "https://www.nngroup.com/articles/skeleton-screens/", "https://www.nngroup.com/articles/progress-indicators/"]
+date: "2026-10-21"
+sources: ["https://yozm.wishket.com/magazine/detail/1238/", "https://www.nngroup.com/articles/skeleton-screens/", "https://www.nngroup.com/articles/progress-indicators/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/%EC%8A%A4%EC%BC%88%EB%A0%88%ED%86%A4%20UI%20%28Skeleton%20UI%29.md"]
 ---
 
-> 뉴봄이의 「[빙글빙글 돌아가는 로딩만 로딩이 아니야!](https://yozm.wishket.com/magazine/detail/1238/)」(요즘IT, 2021.12)를 바탕으로, 사용 기준은 닐슨 노먼 그룹의 진행 표시·스켈레톤 스크린 가이드로 보강해 재구성한 노트다.
+> 뉴봄이의 「[빙글빙글 돌아가는 로딩만 로딩이 아니야!](https://yozm.wishket.com/magazine/detail/1238/)」(요즘IT, 2021.12)를 바탕으로, 사용 기준은 닐슨 노먼 그룹의 진행 표시·스켈레톤 스크린 가이드로 보강해 재구성한 노트다. 스켈레톤 구현은 「[Frontend_TIL: 스켈레톤 UI](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/%EC%8A%A4%EC%BC%88%EB%A0%88%ED%86%A4%20UI%20%28Skeleton%20UI%29.md)」을 바탕으로 보강했다.
 
 ## 로딩 UI란
 
@@ -50,6 +50,29 @@ sources: ["https://yozm.wishket.com/magazine/detail/1238/", "https://www.nngroup
 - 화면마다 따로 만들어야 하므로 **중요도가 높고 레이아웃이 자주 바뀌지 않는 화면**에 쓴다.
 - 스켈레톤이 실제 콘텐츠와 크기가 같아야 데이터가 도착할 때 레이아웃이 튀지 않는다. 자리 잡기는 [[cls-optimization|CLS 최적화: 자리를 먼저 잡기]]와 같은 원리다.
 - 다운로드·업로드·파일 변환처럼 진척도가 있는 작업에는 맞지 않는다. 프로그레스 바를 쓴다.
+- 실제 화면과 모양이 너무 다르면 로딩 중이 아니라 다른 정보를 보여 주는 UI로 오해한다.
+
+**만드는 법**: 실제 컴포넌트와 **같은 마크업 구조와 같은 레이아웃 CSS**(크기·여백·배치)를 공유하고, 글자·이미지 자리만 색 막대로 채운 뒤 배경색을 깜빡이는 애니메이션을 준다.
+
+```css
+.card, .skeleton { display: flex; gap: 10px; padding: 20px; height: 155px; } /* 레이아웃은 공유 */
+.skeleton-img   { width: 75px; height: 75px; border-radius: 50%; }
+.skeleton-title { width: 150px; height: 12px; }
+.skeleton-line  { width: 210px; height: 10px; }
+
+.skeleton :is(.skeleton-img, .skeleton-title, .skeleton-line) {
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { background-color: #94a3b8; }
+  50%      { background-color: #cbd5e1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton * { animation: none; }
+}
+```
+
+React에서는 `<Suspense fallback={<CardSkeleton />}>`의 `fallback`으로 쓰는 경우가 많다. 화면마다 손으로 만들기 번거로우면 `react-loading-skeleton`(기존 컴포넌트 모양을 따라 막대를 그린다)이나 `react-content-loader`(SVG로 원·사각형을 배치한다) 같은 라이브러리를 쓴다.
 
 ### 4. 프로그레스 바
 

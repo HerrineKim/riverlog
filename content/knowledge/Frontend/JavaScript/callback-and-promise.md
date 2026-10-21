@@ -4,11 +4,11 @@ concept: "Promise"
 summary: "언제 끝날지 모르는 비동기 작업의 결과를 다루는 콜백 함수(오류 우선 콜백)와 Promise. 상태와 핸들러 규칙, 체이닝과 에러 전파(암시적 try...catch, 다시 던지기, thenable), 처리되지 않은 거부, 콜백 API를 Promise로 감싸는 프로미스화(wait, promisify), all·allSettled·race·any·resolve·try로 여러 Promise를 조합하는 법."
 tags: ["javascript", "async", "promise", "frontend"]
 source: til
-date: "2026-10-12"
-sources: ["https://riverkim.kr/220", "https://wesbos.com/javascript/12-advanced-flow-control/67-promises", "https://wesbos.com/javascript/12-advanced-flow-control/68-promises-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/69-refactoring-callback-hell-to-promise-land", "https://ko.javascript.info/callbacks", "https://ko.javascript.info/promise-basics", "https://ko.javascript.info/promise-chaining", "https://ko.javascript.info/promise-error-handling", "https://ko.javascript.info/promise-api", "https://ko.javascript.info/promisify", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/try", "https://developers.google.com/web/fundamentals/primers/promises?hl=ko", "https://web.dev/articles/promises", "https://joshua1988.github.io/web-development/javascript/promise-for-beginners/"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/220", "https://wesbos.com/javascript/12-advanced-flow-control/67-promises", "https://wesbos.com/javascript/12-advanced-flow-control/68-promises-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/69-refactoring-callback-hell-to-promise-land", "https://ko.javascript.info/callbacks", "https://ko.javascript.info/promise-basics", "https://ko.javascript.info/promise-chaining", "https://ko.javascript.info/promise-error-handling", "https://ko.javascript.info/promise-api", "https://ko.javascript.info/promisify", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/try", "https://developers.google.com/web/fundamentals/primers/promises?hl=ko", "https://web.dev/articles/promises", "https://joshua1988.github.io/web-development/javascript/promise-for-beginners/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%94%84%EB%A1%9C%EB%AF%B8%EC%8A%A4.md"]
 ---
 
-> riverkim.kr에 쓴 글을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「콜백」, 「프라미스」, 「프라미스 체이닝」, 「프라미스와 에러 핸들링」, 「프라미스 API」, 「프라미스화」 글을 함께 참고해 재구성한 노트다. `then`의 두 번째 인자와 `catch`의 차이, 동시에 시작해 순서대로 보여 주는 패턴은 web.dev의 「[JavaScript Promise 소개](https://web.dev/articles/promises)」와 「[자바스크립트 Promise 쉽게 이해하기](https://joshua1988.github.io/web-development/javascript/promise-for-beginners/)」를 바탕으로 더했다.
+> riverkim.kr에 쓴 글을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「콜백」, 「프라미스」, 「프라미스 체이닝」, 「프라미스와 에러 핸들링」, 「프라미스 API」, 「프라미스화」 글을 함께 참고해 재구성한 노트다. `then`의 두 번째 인자와 `catch`의 차이, 동시에 시작해 순서대로 보여 주는 패턴은 web.dev의 「[JavaScript Promise 소개](https://web.dev/articles/promises)」와 「[자바스크립트 Promise 쉽게 이해하기](https://joshua1988.github.io/web-development/javascript/promise-for-beginners/)」를 바탕으로 더했다. 「[Frontend_TIL: 프로미스](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%94%84%EB%A1%9C%EB%AF%B8%EC%8A%A4.md)」을 바탕으로 보강했다.
 
 서버 요청, 타이머처럼 **언제 끝날지 모르는 작업**은 비동기로 실행된다. 비동기 작업을 기다리지 않고 다음 코드가 먼저 실행되기 때문에, 결과를 받아 쓰려면 별도의 방법이 필요하다. JavaScript는 이를 위해 **콜백 → Promise → async/await** 순서로 발전해 왔다. 이 노트는 앞의 두 가지를 다루고, async/await는 [다음 노트](/knowledge/dictionary/frontend/javascript/async-await)에서 다룬다.
 
@@ -67,7 +67,16 @@ first((err, a) => {
 
 문제는 가독성만이 아니다.
 
-- 에러 처리를 **단계마다** 반복해야 한다.
+- 에러 처리를 **단계마다** 반복해야 한다. 바깥에서 `try...catch`로 한꺼번에 잡을 수도 없다. 에러는 호출자 쪽(콜 스택 아래)으로 전파되는데, 비동기 콜백은 `setTimeout`을 부른 함수가 이미 스택에서 빠진 뒤 태스크 큐에서 따로 실행되므로 감싼 `try` 블록이 없다.
+
+```javascript
+try {
+  setTimeout(() => { throw new Error('Error!') }, 1000)
+} catch (e) {
+  // 여기로 오지 않는다. 1초 뒤 전역 uncaught 에러가 된다
+}
+```
+
 - 콜백을 넘기는 순간 **호출 시점의 제어권**이 넘겨받은 함수에 있다. 언제·몇 번 호출될지 우리가 통제할 수 없다.
 - 호출하기 **전에** 결과로 무엇을 할지(콜백)를 준비해 둬야 하고, 결과를 받을 함수는 하나뿐이다.
 

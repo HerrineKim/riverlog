@@ -4,11 +4,11 @@ concept: "Prototype"
 summary: "JavaScript 객체는 프로토타입 객체에 연결되어, 자기에게 없는 속성을 그 체인을 따라 찾는다. 클래스와 다른 철학적 뿌리(분류 대 가족 유사성·원형), 생성자 함수와 new가 하는 일, F.prototype과 constructor, 인스턴스 속성과 프로토타입 메서드의 구분, 프로토타입 체인과 섀도잉, 읽기만 체인을 타는 규칙, 내장 객체의 프로토타입, Object.create와 getPrototypeOf, __proto__의 역사와 프로토타입 오염, instanceof와 타입 확인, class 문법이 프로토타입 코드로 어떻게 풀리는지, 내장 프로토타입을 고치면 안 되는 이유와 폴리필을 정리했다."
 tags: ["javascript", "frontend", "oop", "prototype"]
 source: other
-date: "2026-10-17"
-sources: ["https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/60-the-new-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/61-the-this-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/63-prototypes-and-prototypal-inheritance", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/62-prototype-refactor-of-gallery-exercise", "https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new", "https://web.dev/learn/javascript/objects/prototypal-inheritance", "https://web.dev/learn/javascript/objects/property-descriptors", "https://web.dev/learn/javascript/appendix", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto", "https://ko.javascript.info/prototype-inheritance", "https://ko.javascript.info/function-prototype", "https://ko.javascript.info/native-prototypes", "https://ko.javascript.info/prototype-methods", "https://ko.javascript.info/instanceof"]
+date: "2026-10-21"
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/prototype.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/new.md", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/60-the-new-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/61-the-this-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/63-prototypes-and-prototypal-inheritance", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/62-prototype-refactor-of-gallery-exercise", "https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new", "https://web.dev/learn/javascript/objects/prototypal-inheritance", "https://web.dev/learn/javascript/objects/property-descriptors", "https://web.dev/learn/javascript/appendix", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto", "https://ko.javascript.info/prototype-inheritance", "https://ko.javascript.info/function-prototype", "https://ko.javascript.info/native-prototypes", "https://ko.javascript.info/prototype-methods", "https://ko.javascript.info/instanceof", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%ED%98%95%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%28OOP%29/%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%20%EC%98%88%EC%A0%9C.md", "http://dmitrysoshnikov.com/ecmascript/chapter-7-1-oop-general-theory/", "http://dmitrysoshnikov.com/ecmascript/chapter-7-2-oop-ecmascript-implementation/"]
 ---
 
-> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로 재구성한 노트다. 프로토타입의 철학적 배경은 임성묵의 「[자바스크립트는 왜 프로토타입을 선택했을까](https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42)」(2021.12)를 바탕으로 덧붙였다. web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 객체·부록 모듈과 javascript.info(모던 JavaScript 튜토리얼)의 「프로토타입 상속」, 「함수의 prototype 프로퍼티」, 「내장 객체의 프로토타입」, 「프로토타입 메서드와 __proto__가 없는 객체」, 「instanceof로 클래스 확인하기」 글로 보강했다.
+> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로 재구성한 노트다. 프로토타입의 철학적 배경은 임성묵의 「[자바스크립트는 왜 프로토타입을 선택했을까](https://medium.com/@limsungmook/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EB%8A%94-%EC%99%9C-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%EC%9D%84-%EC%84%A0%ED%83%9D%ED%96%88%EC%9D%84%EA%B9%8C-997f985adb42)」(2021.12)를 바탕으로 덧붙였다. web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 객체·부록 모듈과 javascript.info(모던 JavaScript 튜토리얼)의 「프로토타입 상속」, 「함수의 prototype 프로퍼티」, 「내장 객체의 프로토타입」, 「프로토타입 메서드와 __proto__가 없는 객체」, 「instanceof로 클래스 확인하기」 글로 보강했다. 「[Must-Know-About-Frontend: 프로토타입](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/prototype.md)」, 「[Must-Know-About-Frontend: new의 동작방식](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/new.md)」의 내용을 더해 보강했다. 「[Frontend_TIL: 프로토타입 예제](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5%ED%98%95%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%28OOP%29/%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85%20%EC%98%88%EC%A0%9C.md)」을 바탕으로 보강했다. 정적·동적 클래스 모델과의 비교는 Dmitry Soshnikov의 「[OOP: The general theory](http://dmitrysoshnikov.com/ecmascript/chapter-7-1-oop-general-theory/)」, 「[OOP: ECMAScript implementation](http://dmitrysoshnikov.com/ecmascript/chapter-7-2-oop-ecmascript-implementation/)」을 바탕으로 보강했다.
 
 ## 프로토타입이란
 
@@ -33,6 +33,8 @@ Object.getPrototypeOf(names) === Array.prototype // true
 | 객체 만들기 | 먼저 추상적인 설계도(클래스)를 정의하고 `new`로 구체화한다 | 이미 있는 구체적인 객체를 본보기로 삼아 복사하거나 연결한다 |
 | 확장 | 클래스 상속 | 위임(delegation). 자기가 모르는 메시지는 원형에게 넘긴다 |
 | 설계 순서 | 분류 체계를 미리 잘 세워야 한다. 잘못 세운 상속 계층은 나중에 바꾸기 어렵다 | 개별 객체를 고쳐 가며 점진적으로 발전시킨다 |
+
+실제 언어의 경계는 표만큼 선명하지 않다. C++·Java 같은 **정적 클래스 기반**은 클래스가 컴파일 때 굳어 객체의 모양을 실행 중에 바꿀 수 없다. 반면 Python·Ruby 같은 **동적 클래스 기반**은 실행 중에 클래스에 메서드를 더하면 이미 만든 인스턴스도 그 메서드를 쓰고, 인스턴스가 클래스를 가리키는 연결을 따라 메서드를 찾는다. 이 구조는 프로토타입의 위임과 거의 같다. JavaScript의 `class`는 이 동적 클래스 모델을 프로토타입 위에 문법으로 얹은 것이다.
 
 Rosch의 실험에서 사람들은 '새'를 떠올릴 때 참새를 전형으로, 타조·펭귄을 가장자리로 둔다. 모든 새가 공유하는 속성 목록이 아니라 원형과의 거리로 범주를 판단한다는 뜻이다. 이 생각을 언어로 옮긴 것이 1980년대의 **Self**이고, JavaScript는 Self에서 프로토타입을, Scheme에서 일급 함수와 클로저를, Java에서 문법의 겉모양을 가져왔다.
 
@@ -136,6 +138,7 @@ Object.hasOwn(pepperoni, 'size') // true — 자기 속성인지 확인
 
 **프로토타입은 읽을 때만 쓰인다.** 데이터 속성을 대입·삭제하면 체인을 거치지 않고 그 객체 자신에게 적용된다. 위의 `pepperoni.size = 'Medium'`이 `Pizza.prototype.size`를 바꾸지 않고 자기 속성을 새로 만드는 이유다.
 
+- 체인 위의 같은 이름 속성이 **읽기 전용(`writable: false`)** 이면 자기 속성도 생기지 않는다. 대입이 sloppy mode에서는 조용히 무시되고 strict mode에서는 `TypeError`다. `Object.defineProperty(F.prototype, 'num', { value: 2, writable: false })` 뒤의 `new F().num = 1`은 여전히 `2`를 읽는다. 이때도 `Object.defineProperty(instance, 'num', …)`로는 자기 속성을 만들 수 있다.
 - 예외는 **체인에 setter가 있을 때**다. `admin.fullName = 'Alice Cooper'`에서 `fullName`이 프로토타입의 접근자 속성이면, 새 속성을 만드는 대신 그 setter가 호출된다.
 - 이때든 메서드 호출이든 **`this`는 프로토타입이 아니라 점 앞의 객체**다. setter나 `sleep() { this.isSleeping = true }` 같은 상속 메서드가 `this`에 쓰면 호출한 객체에 속성이 생긴다. 그래서 **메서드는 공유되고 상태는 공유되지 않는다.**
 - `for...in`은 상속받은 **열거 가능한** 속성까지 돈다. 자기 속성만 원하면 `Object.keys`·`Object.entries`를 쓰거나 `Object.hasOwn`으로 거른다. 키·값을 다루는 내장 메서드는 대부분 자기 속성만 본다.
@@ -210,6 +213,26 @@ ES2015의 `class`는 새 상속 모델이 아니라 위 코드를 정리한 문�
 | `static create() {}` | `Pizza.create = function () {}` (생성자 함수 자체의 속성) |
 | `class Child extends Parent` | `Child.prototype`의 프로토타입을 `Parent.prototype`으로, `Child`의 프로토타입을 `Parent`로 잇는다 |
 | `super.eat()` | 체인에서 한 단계 위의 `eat`을 부른다 |
+
+`extends` 이전에는 생성자 상속을 두 줄로 직접 이었다. 부모 생성자를 `call`로 빌려 인스턴스 데이터를 채우고, 자식 `prototype`을 부모 `prototype`에 잇는다.
+
+```javascript
+function Animal(name, sound) {
+  this.name = name
+  this.sound = sound
+}
+Animal.prototype.say = function () { return `${this.name}: ${this.sound}` }
+
+function Dog(name) {
+  Animal.call(this, name, '멍멍')                   // super(name, '멍멍')에 해당
+}
+Dog.prototype = Object.create(Animal.prototype)     // 메서드 체인 잇기
+Dog.prototype.constructor = Dog                     // 덮어써서 사라진 constructor 복구
+
+new Dog('바둑이').say() // '바둑이: 멍멍'
+```
+
+`Dog.prototype = Animal.prototype`처럼 같은 객체를 넣으면 자식에 추가한 메서드가 부모에도 생기므로 `Object.create`로 한 단계 끼운다. `extends`는 이 과정에 정적 메서드 상속(`Object.setPrototypeOf(Dog, Animal)`)까지 해 준다.
 
 다만 `class`에는 함수로 흉내 낼 때 없는 차이가 있다. `new` 없이 부르면 `TypeError`가 나고, 본문은 자동으로 strict mode이며, 메서드는 열거되지 않고, 선언은 `let`처럼 TDZ에 놓인다. 새 코드에서는 생성자 함수 대신 `class`를 쓴다.
 

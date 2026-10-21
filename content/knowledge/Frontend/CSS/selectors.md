@@ -4,11 +4,13 @@ concept: "Selector"
 summary: "스타일을 적용할 요소를 고르는 선택자(속성 연산자, 결합자, 상태·위치·폼 가상 클래스, 가상 요소)와 네이티브 CSS 중첩, 스타일이 겹칠 때 무엇이 적용되는지 정하는 캐스케이딩·특정성, 그리고 상속과 inherit·initial·unset·revert·revert-layer 키워드."
 tags: ["css", "selector", "frontend"]
 source: mixed
-sources: ["https://developer.mozilla.org/en-US/docs/Web/CSS/:has", "https://developer.mozilla.org/en-US/docs/Web/CSS/@layer", "https://web.dev/learn/css/selectors", "https://web.dev/learn/css/pseudo-classes", "https://web.dev/learn/css/pseudo-elements", "https://web.dev/learn/css/nesting", "https://web.dev/learn/css/specificity", "https://web.dev/learn/css/inheritance"]
-date: "2026-10-17"
+sources: ["https://developer.mozilla.org/en-US/docs/Web/CSS/:has", "https://developer.mozilla.org/en-US/docs/Web/CSS/@layer", "https://web.dev/learn/css/selectors", "https://web.dev/learn/css/pseudo-classes", "https://web.dev/learn/css/pseudo-elements", "https://web.dev/learn/css/nesting", "https://web.dev/learn/css/specificity", "https://web.dev/learn/css/inheritance", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/nth-child%20%EC%95%88%EB%A8%B9%ED%9E%88%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/CSS%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%20%EB%B0%A9%EB%B2%95%28first-child%2C%20last-child%2C%20nth-child%2C%20nth-of-type%2C%20nth-last-of-type%29.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C%20CSS%20%EC%82%AC%EC%9A%A9.md", "https://github.com/AllThingsSmitty/css-protips", "https://www.smashingmagazine.com/2015/07/quantity-ordering-with-css/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%ED%98%B8%EB%B2%84%2C%20%ED%81%B4%EB%A6%AD%EC%8B%9C%20%EB%B3%84%EC%A0%90%20%EA%B8%B0%EB%8A%A5%20UI.md"]
+date: "2026-10-21"
 ---
 
 > 직접 정리한 TIL에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Selectors·Pseudo-classes·Pseudo-elements·Nesting·Specificity·Inheritance 모듈을 더해 보강한 노트다.
+> 「[Frontend_TIL: nth-child 안먹히는 이유](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/nth-child%20%EC%95%88%EB%A8%B9%ED%9E%88%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md)」·「[CSS 요소 선택 방법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/CSS%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%20%EB%B0%A9%EB%B2%95%28first-child%2C%20last-child%2C%20nth-child%2C%20nth-of-type%2C%20nth-last-of-type%29.md)」·「[효율적으로 CSS 사용](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C%20CSS%20%EC%82%AC%EC%9A%A9.md)」과 「[CSS Protips](https://github.com/AllThingsSmitty/css-protips)」의 선택자 팁, 「[Quantity Queries with Flexbox](https://www.smashingmagazine.com/2015/07/quantity-ordering-with-css/)」의 수량 쿼리를 바탕으로 보강했다.
+> 별점 예시는 「[Frontend_TIL: 호버, 클릭시 별점 기능 UI](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%ED%98%B8%EB%B2%84%2C%20%ED%81%B4%EB%A6%AD%EC%8B%9C%20%EB%B3%84%EC%A0%90%20%EA%B8%B0%EB%8A%A5%20UI.md)」를 바탕으로 보강했다.
 
 선택자(Selector)는 스타일을 적용할 HTML 요소를 고르는 문법이다. 하나의 CSS 규칙은 **선택자 목록 + 선언 블록**이고, 선언은 속성과 값의 쌍이다. 한 요소에 여러 규칙이 겹치면 CSS는 **캐스케이딩(cascading)** 규칙에 따라 하나를 고른다. "왜 내 스타일이 안 먹지?"의 대부분은 이 우선순위 문제다.
 
@@ -56,7 +58,36 @@ div > span { color: red; }  /* div의 직계 자식 span만 */
 input:checked ~ .switch { background: green; } /* 체크박스 뒤의 커스텀 스위치 */
 ```
 
-`.top *`로 모든 자손에 여백을 주면 중첩된 요소에도 여백이 쌓인다. `> * + *`처럼 자식 결합자와 다음 형제 결합자를 섞으면 직계 자식 사이에만 준다. 조합에 이론상 제한은 없지만 `.box > div > h1 + p`처럼 깊어질수록 관리가 어려워진다. 실무에서는 3~4단계 이상 이어 쓰지 않는다.
+`.top *`로 모든 자손에 여백을 주면 중첩된 요소에도 여백이 쌓인다. `> * + *`처럼 자식 결합자와 다음 형제 결합자를 섞으면 직계 자식 사이에만 준다. `* + *`는 생김새 때문에 「올빼미 선택자(lobotomized owl)」라고 부르는데, 전역에 쓰면 모든 깊이의 형제에 여백이 붙으므로 위처럼 컨테이너 클래스 아래로 범위를 좁힌다. 조합에 이론상 제한은 없지만 `.box > div > h1 + p`처럼 깊어질수록 관리가 어려워진다. 실무에서는 3~4단계 이상 이어 쓰지 않는다.
+
+### 예: CSS만으로 만드는 별점
+
+별 위에 호버하면 **그 별과 앞의 별**이 모두 칠해지고, 클릭하면 그 상태가 남아야 한다. JavaScript로 호버 인덱스를 state에 두면 마우스가 움직일 때마다 리렌더링되지만, 선택자로 풀면 CSS만 바뀐다. 문제는 `~`가 **뒤의** 형제만 고른다는 점이다.
+
+```html
+<!-- 역순(5→1)으로 두고 화면에서만 뒤집는다. 선택 상태는 숨긴 라디오가 기억한다 -->
+<fieldset class="rating">
+  <input type="radio" id="r5" name="rating" value="5"><label for="r5">5점</label>
+  <input type="radio" id="r4" name="rating" value="4"><label for="r4">4점</label>
+  <input type="radio" id="r3" name="rating" value="3"><label for="r3">3점</label>
+  <input type="radio" id="r2" name="rating" value="2"><label for="r2">2점</label>
+  <input type="radio" id="r1" name="rating" value="1"><label for="r1">1점</label>
+</fieldset>
+```
+
+```css
+.rating { display: flex; flex-direction: row-reverse; justify-content: flex-end; }
+.rating input { position: absolute; opacity: 0; }        /* display: none이면 키보드로 못 고른다 */
+.rating label:hover,
+.rating label:hover ~ label,                              /* 역순이라 「뒤의 형제」가 화면의 앞 별 */
+.rating input:checked ~ label { color: gold; }            /* 클릭한 별 뒤(=화면의 앞)까지 유지 */
+```
+
+- 별 모양은 `<label>` 안의 SVG로 그리고 색을 `fill: currentColor`로 받으면 이미지 두 벌(빈 별·찬 별)을 내려받지 않고 색만 바꾼다.
+- 0.5점 단위는 별 반쪽을 한 라벨로 삼아 라벨 수를 두 배로 늘린다.
+- 지금은 `:has()`로 **DOM 순서를 뒤집지 않고** 앞의 형제를 고를 수 있다: `.rating:has(label:hover) label { color: gold } .rating label:hover ~ label { color: inherit }`. 시각 순서와 DOM 순서가 같아 스크린 리더·탭 순서도 자연스럽다.
+
+브라우저는 선택자를 **오른쪽 끝(키 선택자)부터 왼쪽으로** 맞춰 본다. 그래서 `button#back`처럼 ID에 태그를 덧붙이거나 `ul li a` 같은 긴 자손 체인을 피하라는 옛 성능 지침이 있었다. 지금 엔진은 키 선택자로 규칙을 분류하고 결과를 공유해([[browser-rendering|브라우저 렌더링 과정]]) 선택자 모양에 따른 속도 차이가 거의 없다. 선택자는 성능보다 **특정성과 읽기 쉬움**으로 고른다.
 
 ## 가상 클래스: 요소의 상태
 
@@ -84,6 +115,9 @@ input:checked ~ .switch { background: green; } /* 체크박스 뒤의 커스텀 
 ```css
 li:nth-child(3n + 3) {}                       /* 3, 6, 9…번째 */
 li:nth-child(even) {}                         /* 짝수 */
+li:nth-child(-n + 3) {}                       /* 앞에서 1~3번째 (n = 0, 1, 2…를 넣어 3, 2, 1) */
+li:not(:nth-child(-n + 3)) {}                 /* 처음 셋을 뺀 나머지 */
+.nav li:not(:last-child) { border-inline-end: 1px solid; } /* 마지막을 뺀 항목 사이 구분선 */
 tr:nth-child(even of :not([hidden])) {}       /* 숨긴 행을 빼고 센 짝수 행: 필터링되는 표의 줄무늬 */
 .post :empty { display: none; }               /* 에디터가 남긴 빈 <p> 숨기기 */
 input:user-invalid { border-color: var(--danger); }
@@ -91,6 +125,8 @@ input:user-invalid { border-color: var(--danger); }
 
 - `:nth-child(An+B of S)`는 선택자 S에 맞는 형제만 세고 그중 위치를 고른다. `li:nth-of-type(even)` = `:nth-child(even of li)`지만 `of S`는 태그가 아닌 아무 선택자나 받는다.
 - `.parent div:first-child`는 첫 자식이 `<p>`면 아무것도 고르지 않는다. "div 중 첫째"는 `:first-of-type`이다.
+- 같은 함정이 `:nth-child`에도 있다. `<span>1</span><span>2</span><h3>…</h3><span>3</span>`에서 `span:nth-child(3)`은 「세 번째 자식이면서 span」이라 세 번째 자식인 `<h3>`에서 막혀 아무것도 고르지 않는다. 「span 중 세 번째」는 `span:nth-of-type(3)` 또는 `:nth-child(3 of span)`이다. 다른 태그가 섞인 목록을 끝에서 셀 때도 `:last-child` 대신 `:last-of-type`·`:nth-last-of-type(n)`을 쓴다.
+- 「마지막만 빼고 선 긋기」는 모두에 선을 준 뒤 `:last-child`에서 지우는 대신 `:not(:last-child)` 한 규칙으로 쓴다. 덮어쓸 규칙이 하나 줄고 읽히는 그대로 동작한다.
 - `<div> </div>`처럼 공백이 있으면 `:empty`가 맞지 않는다.
 - **링크는 LVHA 순서로**: `:link` → `:visited` → `:hover` → `:active`. 특정성이 같으면 뒤 규칙이 이기므로 순서가 바뀌면 호버가 방문 스타일에 묻힌다. `:visited`는 개인정보 보호 때문에 `color`, `background-color`, `border-color`, `outline-color`, SVG `fill`·`stroke` 색만 바꿀 수 있다.
 - 상태를 색만으로 알리지 않는다. 빨강·초록만으로 오류·성공을 표시하면 색각 결핍 사용자가 놓친다. 아이콘과 글을 함께 쓴다([[color-motion-accessibility|색과 움직임의 접근성]]).
@@ -117,6 +153,23 @@ form:has(input:valid) label::after { content: "✅"; }
 - 일반 선택자 목록은 하나만 틀려도 규칙 전체가 버려진다. `:is()`·`:where()` 안에서는 틀린 것만 무시된다.
 - `:has()`는 다른 `:has()` 안에 중첩할 수 없고, 인자에 가상 요소를 쓸 수 없다(`:has(::before)`는 규칙 전체가 무효).
 - 네 가지 모두 모든 주요 브라우저가 지원한다(`:has()`는 2023년부터).
+
+### 수량 쿼리: 형제 수에 따라 스타일 바꾸기
+
+**수량 쿼리(quantity query)** 는 형제 요소가 몇 개인지 세어 스타일을 바꾸는 선택자 패턴이다. 미디어 쿼리가 화면을 묻는다면 수량 쿼리는 **콘텐츠의 양**을 묻는다. 항목이 많으면 메뉴를 촘촘하게, 적으면 넓게 펴는 식이다.
+
+```css
+/* 과거 방식: 4개 이상이면 모든 li에 적용 */
+li:nth-last-child(n + 4),
+li:nth-last-child(n + 4) ~ li { flex-basis: 50%; }
+
+/* 지금: 부모에서 바로 센다 */
+ul:has(> li:nth-child(4)) { --cols: 2; }          /* 4개 이상 */
+ul:has(> li:nth-child(4)):not(:has(> li:nth-child(7))) {}  /* 4~6개 */
+ul:has(> li:only-child) {}                          /* 정확히 1개 */
+```
+
+`:nth-last-child(n + 4)`는 「끝에서 세어 4번째이거나 그보다 앞」이라 형제가 4개 이상일 때만 맞고, `~ li`로 그 뒤 형제까지 넓힌다. 이 방식은 **자식만** 고를 수 있어 부모의 레이아웃은 못 바꿨다. `:has()`가 생긴 뒤로는 부모를 직접 골라 그리드 칼럼 수나 커스텀 속성을 바꾼다. 플렉스박스의 `order`와 섞으면 항목 수에 따라 특정 항목(예: 가격 칸)을 첫 줄 끝으로 옮길 수도 있지만, 보이는 순서와 읽는 순서가 어긋나지 않게 조심한다([[css-grid#1. 보이는 순서와 소스 순서를 어긋나게 하지 않는다|보이는 순서와 소스 순서]]).
 
 ## 가상 요소: 실제로는 없는 요소
 
@@ -276,4 +329,4 @@ input, button, select, textarea { font: inherit; color: inherit; }  /* 폼 요�
 - 네이티브 중첩에서 `&`는 `:is(부모)`처럼 계산된다. 2~3단계 이상 중첩하지 않는다.
 - 글꼴·색상은 상속되고 박스·위치 관련 속성은 상속되지 않는다. `inherit`·`initial`·`unset`·`revert`·`revert-layer`로 되돌린다.
 
-관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[oocss|객체 지향 CSS(OOCSS)]], [[sass|Sass: 파일 구조, 믹스인과 @extend]], [[css-lists-counters|CSS 목록과 카운터]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[constraint-validation|제약 검증: required·pattern·ValidityState]]
+관련 노트: [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[oocss|객체 지향 CSS(OOCSS)]], [[sass|Sass: 파일 구조, 믹스인과 @extend]], [[css-lists-counters|CSS 목록과 카운터]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[constraint-validation|제약 검증: required·pattern·ValidityState]], [[css-practical-tips|CSS 실전 팁: 리셋과 작은 패턴]]

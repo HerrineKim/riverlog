@@ -4,11 +4,12 @@ concept: "Web Font Performance"
 summary: "웹 폰트는 레이아웃이 필요로 할 때에야 요청되는 늦게 발견되는 자원이다. preload나 인라인 @font-face로 일찍 발견되게 하고, 자체 호스팅·WOFF2·서브셋으로 빨리 받고, font-display로 글자가 숨거나 밀리는 방식을 고른다."
 tags: ["performance", "css", "web", "frontend", "typography"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/performance/optimize-web-fonts", "https://web.dev/articles/optimize-cls", "https://web.dev/articles/optimize-lcp", "https://d2.naver.com/helloworld/4969726", "https://www.44bits.io/ko/post/optimization_webfont_with_pyftsubnet"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/performance/optimize-web-fonts", "https://web.dev/articles/optimize-cls", "https://web.dev/articles/optimize-lcp", "https://d2.naver.com/helloworld/4969726", "https://www.44bits.io/ko/post/optimization_webfont_with_pyftsubnet", "https://www.zachleat.com/web/comprehensive-webfonts/"]
 ---
 
 > web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Optimize web fonts」 모듈을 바탕으로 재구성한 노트다. `@font-face` 선언 문법과 타이포그래피는 [[web-typography|웹 타이포그래피]]에 있다. 한글 서브셋과 FOIT·FOUT 부분은 NAVER D2의 「[웹 폰트 사용과 최적화의 최근 동향](https://d2.naver.com/helloworld/4969726)」과 44BITS의 「[웹폰트 경량화 - 폰트툴즈의 pyftsubset을 사용한 폰트 서브셋 만들기](https://www.44bits.io/ko/post/optimization_webfont_with_pyftsubnet)」로 보강했다.
+> 굵기가 여러 개일 때의 로딩 전략은 「[A Comprehensive Guide to Font Loading Strategies](https://www.zachleat.com/web/comprehensive-webfonts/)」를 바탕으로 보강했다.
 
 ## 웹 폰트가 성능에 주는 영향
 
@@ -93,7 +94,7 @@ pyftsubset NotoSansKR-Regular.otf \
 
 ## 3. 렌더링: font-display 고르기
 
-웹 폰트를 쓰는 글자는 기본적으로 폰트가 올 때까지 **숨겨진다.** 글자가 안 보였다가 나타나는 것을 **FOIT**(Flash of Invisible Text), 대체 폰트로 보였다가 바뀌는 것을 **FOUT**(Flash of Unstyled Text)라고 부른다. 강조하려고 웹 폰트를 입힌 단어가 FOIT 동안 빠져 보이면 문장의 뜻이 바뀌기도 한다. `font-display`가 둘 중 어느 쪽을 택할지 정한다. 과거에는 Font Face Observer 같은 라이브러리로 폰트 로딩을 감지해 클래스를 바꾸는 식으로 FOUT를 흉내 냈지만, 지금은 `font-display`와 CSS Font Loading API(`document.fonts`)로 충분하다.
+웹 폰트를 쓰는 글자는 기본적으로 폰트가 올 때까지 **숨겨진다.** 글자가 안 보였다가 나타나는 것을 **FOIT**(Flash of Invisible Text), 대체 폰트로 보였다가 바뀌는 것을 **FOUT**(Flash of Unstyled Text)라고 부른다. 강조하려고 웹 폰트를 입힌 단어가 FOIT 동안 빠져 보이면 문장의 뜻이 바뀌기도 한다. `font-display`가 둘 중 어느 쪽을 택할지 정한다.
 
 | 값 | 동작 | 맞는 곳 |
 | --- | --- | --- |
@@ -105,10 +106,30 @@ pyftsubset NotoSansKR-Regular.otf \
 - 텍스트가 LCP라면 `block`·`auto`는 LCP를 폰트 도착까지 미룬다. 그 밖의 값을 쓴다([[lcp-optimization|LCP 최적화]]).
 - `swap`의 교체 이동은 대체 폰트의 `size-adjust`·`ascent-override` 등으로 지표를 맞춰 줄인다. 예시는 [[cls-optimization|CLS 최적화]]에 있다.
 
+### JS로 교체 시점 제어하기: 두 단계 렌더링
+
+본문용 보통체, 굵게, 기울임, 굵은 기울임을 한꺼번에 받으면 교체가 여러 번 일어나 문단이 계속 흔들린다. 그래서 **가장 많이 쓰는 보통체(roman)를 먼저** 받아 그리고, 나머지는 뒤에 받는다. 첫 단계 동안 굵게·기울임은 브라우저가 보통체를 두껍게·기울여 **합성(font synthesis)** 한 가짜 글꼴로 보인다. 이를 FOFT(Flash of Faux Text)라고 한다.
+
+| 전략 | 방법 | 효과 |
+| --- | --- | --- |
+| FOUT with a Class | `document.fonts.load()`로 폰트를 받은 뒤 `<html>`에 클래스를 붙이고, 그 클래스 아래에서만 웹 폰트를 쓴다 | FOIT가 없다. 여러 폰트를 한 번의 다시 그리기로 묶는다 |
+| FOFT(두 단계) | 1단계 보통체, 2단계 나머지 굵기·스타일 | 가장 큰 밀림(보통체 교체)이 빨리 끝난다 |
+| Critical FOFT | 1단계에 **알파벳·숫자 정도만 담은 아주 작은 서브셋** 보통체를 preload, 2단계에 전체 | 첫 글자가 가장 빨리 바뀐다. 서브셋을 직접 만들어야 한다 |
+| 반복 방문 | 첫 방문에 다 받았으면 `sessionStorage` 표시를 보고 바로 웹 폰트 클래스를 붙인다 | 두 번째 페이지부터는 밀림이 없다 |
+
+```js
+Promise.all([
+  document.fonts.load('400 1em Inter'),
+]).then(() => document.documentElement.classList.add('fonts-stage-1'))
+```
+
+이 전략들은 `font-display`가 없던 시절 Font Face Observer 같은 라이브러리로 로딩을 감지해 FOIT를 피하던 방법이다. 지금은 같은 감지를 CSS Font Loading API(`document.fonts`)가 맡는다. 지금은 `font-display: swap`(또는 `optional`)이 기본을 맡고, 굵기가 여러 개면 **가변 폰트(variable font) 한 파일**로 바꿔 교체 횟수 자체를 줄이는 편이 단순하다. 두 단계 렌더링은 정적 폰트 파일을 여러 개 써야 할 때만 검토한다.
+
 ## 정리
 
 - 폰트는 레이아웃이 필요로 할 때에야 요청되는 **늦게 발견되는 자원**이다. 중요한 폰트만 `preload`(+`crossorigin`)한다.
 - 가능하면 자체 호스팅하고, WOFF2 하나로, 쓰는 글자만 서브셋한다. 한글은 `unicode-range` 분할이 효과가 크다.
 - `font-display`는 「숨김」과 「밀림」 중 무엇을 감수할지 고르는 일이다. 이동이 싫으면 `optional`, 꼭 보여야 하면 `swap` + 지표 보정.
+- 굵기가 여러 개면 가변 폰트 한 파일로 교체 횟수를 줄인다. 정적 파일 여러 개를 써야 할 때만 보통체 먼저 받는 두 단계 렌더링을 쓴다.
 
 관련 노트: [[web-typography|웹 타이포그래피: 가독성, 글줄 길이, 웹폰트]], [[resource-hints|리소스 힌트와 미리 불러오기]], [[cls-optimization|CLS 최적화]], [[lcp-optimization|LCP 최적화]]

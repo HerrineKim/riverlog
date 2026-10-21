@@ -4,11 +4,12 @@ concept: "CSRF"
 summary: "사용자의 권한을 도용하는 CSRF와 악성 스크립트를 주입하는 XSS의 원리와 방어법. 문자열 HTML을 innerHTML에 넣을 때의 위험과 setHTML·DOMPurify·Trusted Types도 다룬다."
 tags: ["security", "web", "http", "django"]
 source: mixed
-date: "2026-10-15"
-sources: ["https://ko.javascript.info/clickjacking", "https://wesbos.com/javascript/04-the-dom/html-from-strings-and-xss", "https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML", "https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API", "https://web.dev/learn/privacy/third-parties"]
+date: "2026-10-21"
+sources: ["https://ko.javascript.info/clickjacking", "https://wesbos.com/javascript/04-the-dom/html-from-strings-and-xss", "https://developer.mozilla.org/en-US/docs/Web/API/Element/setHTML", "https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API", "https://web.dev/learn/privacy/third-parties", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/security/xss-csrf.md", "https://web.dev/articles/csp", "https://web.dev/articles/strict-csp", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP"]
 ---
 
 > TIL을 정리하고, 문자열 HTML과 XSS 부분은 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를, 응답 헤더 부분은 web.dev의 「[Learn Privacy](https://web.dev/learn/privacy)」 강좌를 함께 참고했다.
+> XSS 유형 구분은 「[Must-Know-About-Frontend: XSS와 CSRF](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/security/xss-csrf.md)」를 바탕으로 보강했다. CSP는 web.dev의 「[Content security policy](https://web.dev/articles/csp)」, 「[Mitigate XSS with a strict CSP](https://web.dev/articles/strict-csp)」와 MDN의 「[Content Security Policy (CSP)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP)」를 바탕으로 보강했다.
 
 웹 애플리케이션의 대표적인 취약점 두 가지는 **CSRF**와 **XSS**다. 둘 다 "브라우저가 사용자를 대신해 무언가를 실행한다"는 점을 악용하지만, CSRF는 **요청을 위조**하고 XSS는 **스크립트를 주입**한다는 점이 다르다.
 
@@ -36,6 +37,16 @@ Django는 `CsrfViewMiddleware`와 폼에 숨은 입력을 넣는 `{% csrf_token 
 
 공격자가 입력창(`<input>`, 게시글 등)을 통해 웹 페이지에 **악성 스크립트를 삽입**하는 공격이다. 다른 사용자의 브라우저가 그 스크립트를 실행하면서 쿠키 탈취, 사용자 사칭, 접근 제어 우회 등이 일어난다.
 
+스크립트가 페이지에 들어가는 경로에 따라 세 갈래로 나눈다.
+
+| 유형 | 스크립트가 있는 곳 | 퍼지는 방식 | 예 |
+| --- | --- | --- | --- |
+| 저장(stored) XSS | 서버 DB | 그 페이지를 여는 **모든 사용자**가 실행한다 | 게시글·댓글·프로필에 넣은 `<img onerror>` |
+| 반사(reflected) XSS | 요청 URL | 서버가 입력을 응답 HTML에 그대로 되돌려 준다. 악성 링크를 누른 사용자만 당한다 | `?q=<script>…`를 「검색 결과 없음: …」에 그대로 출력 |
+| DOM 기반 XSS | 요청 URL·`location.hash` 등 | 서버를 거치지 않고 **클라이언트 JS**가 값을 위험한 지점(sink)에 넣는다 | `el.innerHTML = location.hash.slice(1)` |
+
+저장·반사형은 서버의 출력 이스케이프로, DOM 기반은 프론트엔드 코드에서 아래 「문자열로 HTML을 만들 때」의 규칙으로 막는다.
+
 ### 문자열로 HTML을 만들 때
 
 템플릿 리터럴로 HTML을 만들어 `innerHTML`에 넣는 코드는 짧고 편하다. 하지만 끼워 넣은 값이 사용자 입력이면 그 값도 HTML로 해석된다.
@@ -59,6 +70,36 @@ card.innerHTML = `<h2>${desc}</h2>` // onerror가 실행된다
 - **CSP(Content Security Policy)** 헤더로 실행할 수 있는 스크립트의 출처를 제한한다. 인라인 스크립트를 막고 nonce·hash가 맞는 스크립트만 허용하면, 주입된 스크립트가 있어도 실행되지 않는다.
 - 사용자가 쓴 HTML(리치 텍스트)을 보여 줘야 하면 `setHTML()`이나 DOMPurify로 정제한다.
 - `localStorage`도 같은 출처의 스크립트가 모두 읽으므로, XSS가 나면 그 안의 토큰이 함께 새어 나간다([[web-storage|Web Storage]]).
+
+### CSP: 실행할 수 있는 것을 응답 헤더로 정한다
+
+**CSP(Content Security Policy)는 페이지가 어디서 온 스크립트·스타일·이미지·프레임을 불러오고 실행할 수 있는지를 서버가 응답 헤더로 선언하는 장치다.** 이스케이프가 한 곳에서 새더라도 주입된 스크립트가 실행되지 않게 막는 2차 방어선이다.
+
+```http
+Content-Security-Policy: default-src 'self'; img-src 'self' https://cdn.example.com; object-src 'none'; frame-ancestors 'none'
+```
+
+| 지시어 | 정하는 것 |
+| --- | --- |
+| `default-src` | 따로 적지 않은 리소스 종류의 기본값 |
+| `script-src`, `style-src`, `img-src`, `font-src`, `connect-src`(fetch·WebSocket), `frame-src` | 종류별 허용 출처 |
+| `object-src 'none'` | 플러그인(`<object>`·`<embed>`)을 막는다 |
+| `base-uri 'none'` | `<base>` 태그를 주입해 상대 경로 스크립트를 공격자 서버로 돌리는 것을 막는다 |
+| `frame-ancestors` | 이 페이지를 iframe에 넣을 수 있는 출처. 클릭재킹 방어. `default-src`로 대신 정해지지 않고 `<meta>`로는 설정할 수 없다 |
+| `upgrade-insecure-requests` | 페이지 안의 `http://` 하위 리소스 요청을 `https://`로 올린다 |
+| `report-to` | 위반 보고를 받을 끝점(`Reporting-Endpoints` 헤더에 정의). 예전 `report-uri`는 폐기 예정이지만 호환을 위해 함께 쓴다 |
+
+**출처 허용 목록만으로는 약하다.** 허용한 CDN에 JSONP 엔드포인트나 오래된 라이브러리가 있으면 그것을 통해 우회된다. 그래서 지금 권장하는 형태는 출처 대신 **nonce나 hash로 스크립트 하나하나를 허용하는 strict CSP**다.
+
+```http
+Content-Security-Policy: script-src 'nonce-R4nd0m' 'strict-dynamic'; object-src 'none'; base-uri 'none'
+```
+
+- 서버는 **응답마다 새 무작위 nonce**를 만들어 헤더와 `<script nonce="R4nd0m">`에 같이 넣는다. 주입된 스크립트는 nonce를 모르므로 실행되지 않는다. 정적 페이지라 nonce를 못 넣으면 스크립트 내용의 해시(`'sha256-…'`)를 쓴다.
+- `'strict-dynamic'`은 nonce로 허용된 스크립트가 동적으로 추가한 스크립트도 믿는다. 번들러가 청크를 불러오는 코드가 깨지지 않는다.
+- `'unsafe-inline'`과 `'unsafe-eval'`은 CSP의 효과를 거의 없앤다. 인라인 이벤트 속성(`onclick="…"`)과 `eval()`·`new Function()`·문자열 `setTimeout`을 코드에서 없애야 CSP를 켤 수 있다.
+- 처음에는 `Content-Security-Policy-Report-Only`로 막지 않고 위반만 모아, 깨질 곳을 고친 뒤 강제로 바꾼다.
+- `<meta http-equiv="Content-Security-Policy">`로도 걸 수 있지만 `frame-ancestors`, `report-uri`, `sandbox`는 헤더로만 된다.
 
 ## 클릭재킹(Clickjacking)
 

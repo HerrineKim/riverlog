@@ -4,11 +4,12 @@ concept: "CSS Backgrounds"
 summary: "모든 박스 뒤에는 배경 레이어가 있다. background-color 위에 이미지·그라디언트를 여러 겹 쌓고, repeat·position·size·attachment·origin·clip으로 각 겹을 조절한다. linear·radial·conic 그라디언트와 반복형, 색 공간을 고르는 보간(in oklch)까지 정리한다."
 tags: ["css", "frontend", "design"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/css/backgrounds", "https://web.dev/learn/css/gradients", "https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/css/backgrounds", "https://web.dev/learn/css/gradients", "https://developer.mozilla.org/en-US/docs/Web/CSS/background-clip", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/IS%2CIR%20%EA%B8%B0%EB%B2%95.md"]
 ---
 
 > web.dev의 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Backgrounds·Gradients 모듈을 바탕으로 재구성한 노트다.
+> 이미지 스프라이트는 「[Frontend_TIL: IS, IR 기법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/IS%2CIR%20%EA%B8%B0%EB%B2%95.md)」을 바탕으로 보강했다.
 
 ## 배경 레이어
 
@@ -47,6 +48,15 @@ background-position: right 30% bottom 20%;  /* 3~4값: 키워드 뒤의 값은 �
 ```
 
 키워드와 숫자를 섞으면 순서가 중요하다. `50% left`처럼 가로 자리에 세로 값을 쓰거나 `left right`처럼 같은 축 키워드를 함께 쓰면 무효다. 값이 세 개 이상이면 모든 길이 앞에 `top`·`right`·`bottom`·`left` 중 하나가 와야 한다.
+
+**이미지 스프라이트(CSS sprite)** 는 이 속성의 대표 활용이었다. 아이콘 여러 개를 한 장에 모아 두고, 아이콘 크기만 한 박스에 그 이미지를 배경으로 깔아 `background-position`을 음수로 밀어 원하는 칸만 보이게 한다. 이미지 요청 수를 줄이려는 기법이라 HTTP/1.1 시절에 효과가 컸다.
+
+```css
+.icon      { width: 100px; height: 100px; background: url(sprite.png) no-repeat; }
+.icon-next { background-position: -180px 0; }   /* 왼쪽에서 180px 지점의 아이콘 */
+```
+
+HTTP/2부터는 한 연결로 여러 파일을 동시에 받아 요청 수의 부담이 작고, 아이콘 하나만 바꿔도 시트 전체의 캐시가 깨지는 단점이 더 크다. 지금 아이콘은 SVG로 그린다([[svg-icons|SVG 아이콘]]). 배경 이미지는 대체 텍스트가 없으므로 의미 있는 이미지는 `<img alt>`로 넣는다([[accessible-images-links-text|접근 가능한 이미지·링크·텍스트]]).
 
 ### size
 

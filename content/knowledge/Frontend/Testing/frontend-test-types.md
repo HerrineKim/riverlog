@@ -4,11 +4,11 @@ concept: "Frontend Testing"
 summary: "정적·단위·통합·E2E 테스트가 각각 무엇을 확인하는지, 무엇부터 테스트할지, 피라미드·트로피 같은 전략의 모양과 스모크·회귀·시각 같은 목적별 테스트, 폴더 역할(apis·components·hooks·context·pages)별로 무엇을 검증할지, 테스트 대역(더미·스텁·스파이·페이크·목)의 차이, 구현이 아니라 사용자 행위를 검증하는 원칙과 테스트 작성 원칙(AAA, 블랙박스, 현실적인 데이터), 그리고 층마다 쓰는 도구(TypeScript·ESLint, Vitest·Jest, Testing Library, MSW, Playwright)."
 tags: ["testing", "frontend", "javascript", "tdd"]
 source: other
-date: "2026-10-13"
-sources: ["https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8B%A8%EC%9C%84", "https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0", "https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html", "https://web.dev/learn/testing/get-started/test-types", "https://web.dev/learn/testing/get-started/what-to-test", "https://web.dev/learn/testing/get-started/what-testing-is", "https://www.integer.blog/practical-test-pyramid/"]
+date: "2026-10-21"
+sources: ["https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8B%A8%EC%9C%84", "https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0", "https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html", "https://web.dev/learn/testing/get-started/test-types", "https://web.dev/learn/testing/get-started/what-to-test", "https://web.dev/learn/testing/get-started/what-testing-is", "https://www.integer.blog/practical-test-pyramid/", "https://martinfowler.com/bliki/TestDouble.html", "https://dev.to/milipski/test-doubles---fakes-mocks-and-stubs", "https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-mocks-in-sinon-js", "http://blog.testdouble.com/posts/2016-03-13-testdouble-vs-sinon.html", "http://airbnb.io/enzyme/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Jest%20UI%20testing.md", "https://testing-library.com/docs/queries/about"]
 ---
 
-> 이현호의 「[테스트를 처음 공부하는 프론트엔드 개발자의 개념 다지기](https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0)」(2022.06)와 김정환의 「[자스민으로 프론트엔드 테스트 코드 작성하기](https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html)」(2017.03)를 바탕으로 재구성한 노트다. 테스트 작성 원칙은 Yoni Goldberg의 「[JavaScript Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md)」에서, 폴더 역할별 테스트 단위는 김승규의 「[내가 생각하는 프론트엔드 테스트 단위](https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8B%A8%EC%9C%84)」(2023.06)에서 뽑았다. 테스트 우선순위, 전략의 모양, 목적별 테스트 종류는 web.dev의 「[Learn Testing](https://web.dev/learn/testing)」 강좌로 보강했다. 「[실용적인 테스트 피라미드](https://www.integer.blog/practical-test-pyramid/)」의 내용을 더해 보강했다.
+> 이현호의 「[테스트를 처음 공부하는 프론트엔드 개발자의 개념 다지기](https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0)」(2022.06)와 김정환의 「[자스민으로 프론트엔드 테스트 코드 작성하기](https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html)」(2017.03)를 바탕으로 재구성한 노트다. 테스트 작성 원칙은 Yoni Goldberg의 「[JavaScript Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md)」에서, 폴더 역할별 테스트 단위는 김승규의 「[내가 생각하는 프론트엔드 테스트 단위](https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8B%A8%EC%9C%84)」(2023.06)에서 뽑았다. 테스트 우선순위, 전략의 모양, 목적별 테스트 종류는 web.dev의 「[Learn Testing](https://web.dev/learn/testing)」 강좌로 보강했다. 「[실용적인 테스트 피라미드](https://www.integer.blog/practical-test-pyramid/)」의 내용을 더해 보강했다. 테스트 대역은 「[Test Double](https://martinfowler.com/bliki/TestDouble.html)」, 「[Test Doubles - Fakes, Mocks and Stubs](https://dev.to/milipski/test-doubles---fakes-mocks-and-stubs)」, 「[Best Practices for Spies, Stubs and Mocks in Sinon.js](https://semaphoreci.com/community/tutorials/best-practices-for-spies-stubs-and-mocks-in-sinon-js)」, 「[testdouble.js vs. sinon.js](http://blog.testdouble.com/posts/2016-03-13-testdouble-vs-sinon.html)」을 바탕으로 보강했다. Testing Library 쿼리 접두어 표는 「[Frontend_TIL: Jest UI testing](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Jest%20UI%20testing.md)」을 바탕으로 보강했다.
 
 ## 프론트엔드 테스트란
 
@@ -122,7 +122,32 @@ test('저장된 토큰이 있으면 로그인 상태다', () => {
 | 페이크(fake) | 간단하지만 실제로 동작하는 구현. 운영에는 못 쓴다 | 메모리 DB, 가짜 저장소 |
 | 목(mock) | 기대한 호출이 일어났는지 **행위**를 검증한다 | "저장 메서드가 이 인자로 한 번 불렸다" |
 
+**대역의 종류는 만드는 API가 아니라 쓰는 방식이 정한다.** `vi.fn()` 하나가 반환값을 정하면 스텁, 호출을 단언하면 스파이 역할을 한다. 과거 Sinon.js는 `spy`·`stub`·`mock`을 따로 만들게 했는데, testdouble.js는 함수 하나(`td.func()`)를 설정에 따라 쓰게 하고 전역 `td.reset()`으로 한 번에 복원하는 쪽을 택했다. Vitest·Jest의 `vi.fn`/`jest.fn`도 같은 방향이다.
+
+### 언제, 어떤 대역을 쓰나
+
+대역이 필요한 곳은 **부작용(side effect)이 있는 의존성**이다. 결과가 인자에만 달린 순수 함수(`toLowerCase`)는 진짜를 쓴다. 저장·네트워크·현재 시각·랜덤처럼 바깥 상태에 기대거나, 너무 느려 테스트를 늦추는 것만 바꾼다.
+
+고르는 기준은 **명령-조회 분리(CQS)** 로 정리된다.
+
+| 대상 메서드 | 검증 방법 | 대역 |
+| --- | --- | --- |
+| 조회(query): 값을 돌려주고 상태를 바꾸지 않는다 | 대상의 **반환값**을 단언한다 | 스텁. 계산에 필요한 만큼만 값을 정한다(`gradesFor` → `[8, 6, 10]`이면 평균 `8`) |
+| 명령(command): 상태를 바꾸고 돌려주는 값이 없다 | 의존성이 **불렸는지**를 단언한다 | 스파이(또는 목). 메일을 실제로 보내지 않고 `send`가 이 인자로 한 번 불렸는지 본다 |
+| 진짜를 쓰기엔 무겁지만 동작은 필요하다 | 결과 상태를 단언한다 | 페이크. 메모리 저장소로 DB 없이 서비스 통합 테스트를 돌린다. 프로토타입에서 DB 설계를 미루는 데도 쓴다 |
+
+스텁은 이것 말고도 **평소엔 안 타는 경로를 강제로 탄다**(`mockRejectedValue(new Error('oops'))`로 에러 처리 검증). 비동기 콜백을 즉시 부르게 해 테스트를 동기로 만들 수도 있다.
+
 네트워크는 함수를 목으로 바꾸기보다 **요청 단에서 가로채는 편**이 테스트를 덜 깨뜨린다. MSW(Mock Service Worker)는 같은 핸들러를 테스트, 브라우저 개발 환경, Storybook에서 함께 쓴다. 목을 많이 쓸수록 테스트가 비싸지는 이유와 줄이는 설계는 [[humble-object-pattern|험블 객체 패턴]]에 정리했다.
+
+### 쓸 때의 함정
+
+| 함정 | 내용 | 대응 |
+| --- | --- | --- |
+| 목의 과한 기대 | 목은 기대를 **먼저** 선언하고(`expects('save').once().withArgs(user)`) 마지막에 `verify()`한다. 조건을 늘리기 쉬워 구현 세부에 묶인 **깨지기 쉬운 테스트**가 된다. 준비-실행-단언(AAA) 순서도 거스른다 | 스텁 + 필요한 단언 한두 개로 쓴다. 단언이 여러 개 필요하면 테스트를 나눈다 |
+| 부분 대역(partial double) | `vi.spyOn(obj, 'method')`은 기본적으로 **진짜 구현을 호출하면서** 기록만 한다. "호출을 검증"하려는지 "통합 동작을 확인"하려는지가 섞인다 | 의도를 하나로 정한다. 대체하려면 `.mockImplementation()`이나 `.mockReturnValue()`를 붙인다 |
+| 복원 누락 | 바꿔 끼운 메서드를 되돌리지 않으면 **다음 테스트들이 연쇄로 실패**한다. 테스트가 중간에 던지면 끝의 `restore()`까지 가지 못한다 | `afterEach(() => vi.restoreAllMocks())` 또는 설정의 `restoreMocks: true`. 공유 스텁은 `beforeEach`에서 만든다 |
+| 가짜 타이머와 비동기 | 가짜 타이머가 켜져 있으면 `setTimeout`에 기대는 비동기 테스트가 시간 초과로 실패한다 | 필요한 테스트에서만 `vi.useFakeTimers()`, 끝나면 `vi.useRealTimers()` |
 
 ## 구현이 아니라 행위를 검증한다
 
@@ -161,6 +186,15 @@ test('저장된 토큰이 있으면 로그인 상태다', () => {
 | `render`, `screen.getByRole` | Testing Library로 렌더링하고 역할로 요소를 찾는다 |
 | `userEvent.setup()` → `await user.click()` | 실제 사용자 동작(포커스 이동, 키 입력 순서)을 흉내 낸다. `fireEvent`는 user-event가 지원하지 않을 때만 |
 
+Testing Library 쿼리는 **접두어로 "없을 때 어떻게 하나"** 를, 접미어로 무엇으로 찾는지(`ByRole`·`ByLabelText`·`ByPlaceholderText`·`ByText`·`ByDisplayValue`·`ByAltText`·`ByTitle`·`ByTestId`, 앞쪽일수록 우선)를 정한다.
+
+| 접두어 | 없으면 | 여러 개면 | 쓰는 때 |
+| --- | --- | --- | --- |
+| `getBy` | 즉시 에러 | 에러 | 있어야 하는 요소 |
+| `queryBy` | `null` | 에러 | **없음을** 확인할 때: `expect(screen.queryByText('오류')).toBeNull()` |
+| `findBy` | 기다리다(기본 1초) 거부 | 거부 | 비동기로 나타나는 요소. `await`한다 |
+| `getAllBy`·`queryAllBy`·`findAllBy` | 위와 같음(`queryAllBy`는 `[]`) | 배열 | 목록 |
+
 `toHaveTextContent`, `toBeInTheDocument` 같은 DOM 전용 matcher는 `@testing-library/jest-dom`을 설정해야 쓸 수 있다. 실행 옵션(한 파일 커버리지, 특정 테스트 빼기)은 [[test-run-stages|테스트를 돌리는 시점]]에, 단언·스위트·수명 주기 훅의 개념은 [[test-primitives|테스트의 기본 요소]]에 있다.
 
 ## 역사
@@ -178,4 +212,4 @@ test('저장된 토큰이 있으면 로그인 상태다', () => {
 - 테스트는 짧고 읽기 쉽게: 이름에 대상·상황·기대 결과, 본문은 AAA.
 - 기본 조합은 TypeScript·ESLint + Vitest + Testing Library + MSW + Playwright다.
 
-관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[test-run-stages|테스트를 돌리는 시점]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]], [[test-environment|테스트 실행 환경]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[test-primitives|테스트의 기본 요소]], [[static-analysis|정적 분석]], [[backend-testing|백엔드 테스트]]
+관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[test-run-stages|테스트를 돌리는 시점]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]], [[test-environment|테스트 실행 환경]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[test-primitives|테스트의 기본 요소]], [[static-analysis|정적 분석]], [[backend-testing|백엔드 테스트]], [[api-mocking|API 모킹: MSW와 json-server]], [[storybook|Storybook]]

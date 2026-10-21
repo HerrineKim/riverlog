@@ -1,14 +1,14 @@
 ---
 title: "에러 처리: try...catch와 커스텀 에러"
 concept: "Error Handling"
-summary: "JavaScript 언어 차원의 에러 처리. try...catch...finally가 잡는 것과 못 잡는 것(문법 에러, 예약된 콜백), 에러 객체의 name·message·stack·cause, 내장 에러 종류, throw와 다시 던지기, finally와 return의 우선순위, Error를 상속한 커스텀 에러와 계층, cause로 예외 감싸기, 전역 에러 이벤트까지."
+summary: "JavaScript 언어 차원의 에러 처리. try...catch...finally가 잡는 것과 못 잡는 것(문법 에러, 예약된 콜백), 에러 객체의 name·message·stack·cause, 내장 에러 종류, throw와 다시 던지기, finally와 return의 우선순위, Error를 상속한 커스텀 에러와 계층, cause로 예외 감싸기, 전역 에러 이벤트, 에러를 삼키지 않고 클라이언트에서 수집해 보내는 법까지."
 tags: ["javascript", "error-handling", "frontend", "debugging"]
 source: other
-date: "2026-10-17"
-sources: ["https://ko.javascript.info/try-catch", "https://ko.javascript.info/custom-errors", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch"]
+date: "2026-10-21"
+sources: ["https://ko.javascript.info/try-catch", "https://ko.javascript.info/custom-errors", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch", "https://www.sitepoint.com/proper-error-handling-javascript/", "https://www.thoughtworks.com/radar/techniques/capturing-client-side-javascript-errors"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「try..catch와 에러 핸들링」, 「커스텀 에러와 에러 확장」 글을 바탕으로, MDN으로 확인해 재구성한 노트다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「try..catch와 에러 핸들링」, 「커스텀 에러와 에러 확장」 글을 바탕으로, MDN으로 확인해 재구성한 노트다. 에러 수집은 「[A Guide to Proper Error Handling in JavaScript](https://www.sitepoint.com/proper-error-handling-javascript/)」와 Thoughtworks Technology Radar의 「[Capturing client-side JavaScript errors](https://www.thoughtworks.com/radar/techniques/capturing-client-side-javascript-errors)」를 바탕으로 보강했다.
 
 ## 에러 처리란
 
@@ -131,6 +131,17 @@ try {
 
 다시 던진 에러는 바깥의 `try...catch`가 잡고, 아무도 잡지 않으면 아래의 전역 핸들러까지 간다.
 
+가장 나쁜 것은 모든 에러를 받아 **삼키는** `catch`다.
+
+```js
+// 나쁜 예: 실패를 null로 바꿔 숨긴다
+function safe(fn) {
+  try { return fn() } catch { return null }
+}
+```
+
+이렇게 **조용히 실패(fail-silent)** 하면 호출한 쪽은 왜 `null`인지 모른다. 증상을 몇 시간 쫓다가 원인인 `catch`를 놓치고, 최악에는 잘못된 값이 저장돼 데이터가 망가진다. 처리할 수 없는 에러는 다시 던져 스택을 풀게 두고, 감쌀 때는 `cause`로 원래 에러를 보존한다(아래 「예외 감싸기와 cause」).
+
 ## 커스텀 에러
 
 `HttpError`, `ValidationError`, `NotFoundError`처럼 **도메인에 맞는 에러 클래스**를 만들면 `catch`에서 종류별로 가를 수 있다. `throw`에는 아무 객체나 던질 수 있지만, `Error`를 상속해야 `stack`이 생기고 `err instanceof Error`가 통한다.
@@ -222,12 +233,24 @@ try {
 - `window.onerror = function (message, url, line, col, error) {}` 속성 방식도 동작하지만, 핸들러를 하나만 둘 수 있어 `addEventListener`를 쓴다.
 - Node.js는 처리되지 않은 Promise 거부가 생기면 기본으로 프로세스를 종료한다.
 
+### 브라우저 에러 수집
+
+서버 에러는 로그에 남지만 **브라우저에서 난 에러는 사용자 기기에서 사라진다.** 특정 브라우저·확장 프로그램·기기 조합에서만 나는 문제는 수집하지 않으면 알 수 없다. 그래서 전역 핸들러에서 에러를 서버로 보낸다.
+
+| 함께 보낼 것 | 이유 |
+| --- | --- |
+| 메시지, `error.stack`, `name` | 어디서 났나. 압축된 번들의 스택은 **소스 맵**으로 원래 위치로 되돌린다 |
+| 페이지 URL, 사용자 에이전트, 앱 릴리스 버전 | 어떤 환경·배포에서 났나 |
+| 직전 사용자 동작(브레드크럼) | 재현 경로 |
+
+페이지를 떠나는 중에도 전송되도록 `navigator.sendBeacon()`이나 `fetch(url, { keepalive: true })`를 쓴다. 직접 만들기보다 Sentry 같은 에러 수집 서비스를 쓰고, 많을 때는 표본을 추린다. React에서 에러 경계·루트 훅과 수집 서비스를 잇는 법은 [[frontend-error-handling|프런트엔드 에러 핸들링]]에 있다.
+
 ## 정리
 
 - `try...catch`는 실행 중(런타임) 에러를, 그것도 **동기적으로** 실행되는 코드의 에러만 잡는다. 예약된 콜백 안의 에러는 콜백 안에서 잡는다.
 - `finally`는 어떤 경로로 빠져나가든 실행된다. 안에서 `return`하면 앞의 결과와 에러를 덮어쓰므로 정리 코드만 둔다.
-- 던질 때는 `Error`나 그 하위 클래스만, 받을 때는 아는 에러만 처리하고 나머지는 다시 던진다.
+- 던질 때는 `Error`나 그 하위 클래스만, 받을 때는 아는 에러만 처리하고 나머지는 다시 던진다. `null`로 바꿔 삼키지 않는다.
 - 커스텀 에러는 `Error`를 상속하고 `super(message, options)`와 `name`을 챙긴다. 종류는 `instanceof`로 가린다.
-- 저수준 에러는 추상 에러로 감싸 `cause`에 원인을 남긴다. 잡히지 않은 에러는 전역 핸들러에서 기록한다.
+- 저수준 에러는 추상 에러로 감싸 `cause`에 원인을 남긴다. 잡히지 않은 에러는 전역 핸들러에서 스택·URL·릴리스와 함께 수집 서버로 보낸다.
 
 관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[frontend-error-handling|프런트엔드 에러 핸들링]], [[class|class 문법]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[callback-and-promise|콜백과 Promise]], [[strict-mode|strict mode]]

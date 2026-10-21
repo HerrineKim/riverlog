@@ -4,11 +4,13 @@ concept: "Why Next.js"
 summary: "SSR·SSG·파일 기반 라우팅·자동 코드 스플리팅을 제공해 React 앱의 초기 로딩과 SEO를 개선하는 프레임워크. App Router의 fetch 캐싱과 재검증, Next.js 16의 'use cache'까지."
 tags: ["nextjs", "react", "rendering", "seo", "cache", "frontend"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://riverkim.kr/214", "https://80000coding.notion.site/a688c09821014d51a01f37d773906165", "https://80000coding.notion.site/bc0ccbe2aabe4205aaa7e9233bb5ead6", "https://80000coding.notion.site/286aebc32d214857abe04c9a306aa02d", "https://nextjs.org/docs/app/getting-started/caching", "https://nextjs.org/docs/app/getting-started/proxy", "https://nextjs.org/docs/app/guides/upgrading/version-16"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/214", "https://80000coding.notion.site/a688c09821014d51a01f37d773906165", "https://80000coding.notion.site/bc0ccbe2aabe4205aaa7e9233bb5ead6", "https://80000coding.notion.site/286aebc32d214857abe04c9a306aa02d", "https://nextjs.org/docs/app/getting-started/caching", "https://nextjs.org/docs/app/getting-started/proxy", "https://nextjs.org/docs/app/guides/upgrading/version-16", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%281%29%20-%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0%2C%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%288%29%20-%20Middleware.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「Next.js 공식 문서 읽기(1) - FOUNDATIONS」, 「Next.js 공식 문서 읽기(2) - CREATE YOUR FIRST APP」, 「Next.js (SSR) 공식문서 읽어보기 (12.0 버전)」에서 Pages Router 내용을 더한 노트다.
+>
+> `proxy.ts`의 matcher·쿠키는 「[Frontend_TIL: Next.js(8) - Middleware](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%288%29%20-%20Middleware.md)」를 바탕으로 보강했다.
 
 **Next.js**는 React 기반 웹 애플리케이션 **프레임워크**다. React가 UI 라이브러리라면, Next.js는 라우팅·렌더링 전략·빌드 최적화까지 정해진 틀을 제공한다. 가장 큰 장점은 React의 기본 방식인 CSR의 약점, 즉 **검색 엔진이 내용을 읽기 어렵다는 점**을 SSR·SSG로 보완해 준다는 것이다. Node.js(브라우저 밖에서 JavaScript를 실행하는 Chrome V8 기반 런타임) 위에서 동작한다.
 
@@ -32,7 +34,7 @@ app/about/page.tsx         → /about
 app/posts/[id]/page.tsx    → /posts/1, /posts/2 ...
 ```
 
-과거의 **Pages Router**(`pages/about.js` → `/about`)도 계속 지원되지만 새 기능은 App Router 기준으로 나온다.
+과거의 **Pages Router**(`pages/about.js` → `/about`)도 계속 지원되지만 새 기능은 App Router 기준으로 나온다. 특수 파일(`layout`·`loading`·`error`·`route`…), 동적 세그먼트, 라우트 그룹, 병렬·가로채는 라우트는 [[nextjs-routing-conventions|App Router의 파일 규칙과 라우팅]]에 있다.
 
 ### 자동 코드 스플리팅
 
@@ -52,6 +54,10 @@ export function proxy(request: NextRequest) {
 
 export const config = { matcher: '/about/:path*' }
 ```
+
+- `matcher`는 Proxy를 돌릴 경로를 거른다. 배열로 여러 개(`['/about/:path*', '/dashboard/:path*']`)를 줄 수 있고, 없으면 모든 요청에 돈다.
+- `new URL('/home', request.url)`은 현재 요청 URL을 기준으로 절대 URL을 만든다. 리다이렉트 대상은 절대 URL이어야 한다.
+- 쿠키는 `request.cookies`(`get`·`getAll`·`has`·`set`·`delete`·`clear`)로 읽고, 응답에는 `NextResponse.next()`로 만든 응답의 `response.cookies.set('theme', 'dark')`로 `Set-Cookie`를 단다. `NextResponse.next()`는 요청을 그대로 다음 단계(라우트)로 넘긴다.
 
 단순 리다이렉트는 `next.config.ts`의 `redirects`로 충분하다. Proxy는 쿠키를 보고 로그인 페이지로 보내는 낙관적 검사에 쓰고, **인가(authorization) 판단 자체는 데이터에 접근하는 서버 코드에서 다시 한다.**
 
@@ -164,4 +170,4 @@ Next.js 12까지의 튜토리얼과 오래된 프로젝트는 대부분 Pages Ro
 - 재검증은 시간 기반(`revalidate`·`cacheLife`)과 요청 기반(`revalidateTag`·`updateTag`·`revalidatePath`) 두 가지다. 여러 값이 겹치면 가장 짧은 값이 이긴다.
 - 요청 앞단 처리는 `proxy.ts`(옛 이름 Middleware), 번들러는 Turbopack이 기본이다.
 
-관련 노트: [[nextjs-app-router|App Router의 내비게이션과 데이터 가져오기]], [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[streaming-ssr|스트리밍 SSR]]
+관련 노트: [[nextjs-app-router|App Router의 내비게이션과 데이터 가져오기]], [[nextjs-routing-conventions|App Router의 파일 규칙과 라우팅]], [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[streaming-ssr|스트리밍 SSR]]

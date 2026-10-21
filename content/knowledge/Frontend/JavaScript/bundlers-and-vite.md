@@ -63,7 +63,7 @@ sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-
 | plugin | 번들 결과 전체에 개입한다(HTML 생성, 압축, 환경 변수 주입) | 플러그인 |
 | mode | `development`·`production`에 따라 압축·소스 맵·최적화 기본값을 바꾼다 | `vite`(dev)와 `vite build` |
 
-개발 서버, HMR(Hot Module Replacement: 새로고침 없이 바뀐 모듈만 교체), 소스 맵이 개발 편의를 맡는다. 소스 맵으로 번들을 원본 파일로 디버깅하는 법은 [[devtools-debugging|DevTools 디버깅]]에 있다.
+개발 서버, HMR(Hot Module Replacement: 새로고침 없이 바뀐 모듈만 교체), 소스 맵이 개발 편의를 맡는다. 로더 적용 순서, shimming, 스코프 호이스팅, HMR의 동작과 Rollup과의 차이는 [[webpack|webpack 동작 원리]]에, 변환을 맡던 Babel은 [[babel|Babel과 AST 변환]]에 있다. 소스 맵으로 번들을 원본 파일로 디버깅하는 법은 [[devtools-debugging|DevTools 디버깅]]에 있다.
 
 ## 느린 빌드를 푸는 두 가지 길
 

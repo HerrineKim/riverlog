@@ -4,11 +4,11 @@ concept: "Caching Strategy"
 summary: "Cache Storage API로 요청·응답 쌍을 저장하고, fetch 이벤트의 respondWith()로 캐시 우선·네트워크 우선·stale-while-revalidate·네트워크 전용·캐시 전용 중 하나를 URL별로 골라 응답한다. 무엇을 언제 프리캐시할지, 불투명 응답과 addAll의 원자성 함정, 오프라인 대체 페이지, Workbox로 줄이는 코드, 페이지를 조각별로 캐시하는 서비스 워커 인클루드와 스트리밍까지 정리한다."
 tags: ["frontend", "web", "pwa", "service-worker", "cache", "performance"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/pwa/caching", "https://web.dev/learn/pwa/serving", "https://web.dev/learn/pwa/workbox", "https://web.dev/learn/pwa/assets-and-data", "https://web.dev/learn/pwa/architecture", "https://web.dev/learn/pwa/update", "https://developer.mozilla.org/en-US/docs/Web/API/URLPattern"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/pwa/caching", "https://web.dev/learn/pwa/serving", "https://web.dev/learn/pwa/workbox", "https://web.dev/learn/pwa/assets-and-data", "https://web.dev/learn/pwa/architecture", "https://web.dev/learn/pwa/update", "https://developer.mozilla.org/en-US/docs/Web/API/URLPattern", "https://jakearchibald.com/2014/offline-cookbook/", "https://developers.google.com/web/updates/2015/11/app-shell"]
 ---
 
-> web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 캐싱·서빙·Workbox·아키텍처 모듈을 바탕으로 재구성한 노트다.
+> web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 캐싱·서빙·Workbox·아키텍처 모듈을 바탕으로 재구성한 노트다. 「[The offline cookbook](https://jakearchibald.com/2014/offline-cookbook/)」으로 캐시 시점·응답 패턴을, 「[Instant Loading Web Apps with an Application Shell Architecture](https://developer.chrome.com/blog/app-shell)」로 앱 셸을 보강했다.
 
 ## 두 단계: 저장하고, 응답한다
 
@@ -69,6 +69,20 @@ self.addEventListener('activate', (event) => {
 ```
 
 새 서비스 워커를 설치해도 **옛 캐시는 저절로 지워지지 않는다.** 캐시 이름에 버전을 붙이고 `activate`에서 정리한다.
+
+### 캐시에 넣는 시점: 세분한 패턴
+
+| 시점 | 방법 | 어울리는 대상 |
+| --- | --- | --- |
+| install, **의존성으로** | `event.waitUntil(cache.addAll(…))`. 하나라도 실패하면 설치가 실패한다 | 그 버전의 정적 자산(CSS·JS·폰트·템플릿) |
+| install, **의존성 아님** | `addAll()`을 `await`하지 않는다. 실패해도 설치는 끝난다 | 당장 필요 없는 큰 자산(게임의 뒷 레벨). 워커가 도중에 종료될 수 있어 없으면 다시 받는 코드가 필요하다 |
+| activate | 옛 캐시 삭제, 데이터 마이그레이션 | 정리 |
+| 사용자 동작 | 페이지에서 직접 `caches.open()`·`cache.add()` (「오프라인으로 저장」 버튼) | 사이트 전체를 오프라인화할 수 없을 때 사용자가 고른 글·영상 |
+| 네트워크 응답 | fetch 핸들러에서 받은 응답을 `cache.put(request, response.clone())` | 받은편지함·기사처럼 자주 바뀌는 것 |
+| 푸시 메시지 | `push` 이벤트에서 **알림을 띄우기 전에** 관련 데이터를 캐시 | 알림을 누를 때 오프라인일 수 있으므로 채팅·메일 본문 |
+| 백그라운드 동기화 | `sync`(한 번)·`periodicsync`(주기) 이벤트에서 갱신 | 타임라인·뉴스처럼 급하지 않은 갱신. **Chromium 전용**이고 주기 동기화는 설치된 PWA만 |
+
+Cache Storage도 출처의 공용 할당량을 나눠 쓰고, 저장 공간이 부족하면 지워질 수 있다. 지켜야 할 데이터는 `navigator.storage.persist()`로 영속 저장을 요청한다([[pwa-offline-storage|PWA 오프라인 데이터와 저장소 관리]]).
 
 ### 다른 출처의 응답: 불투명 응답
 
@@ -137,6 +151,17 @@ event.respondWith(
 - 전략은 URL 패턴별로 다르게 고른다. `event.request.url`을 정규식으로 보거나 `URLPattern`을 쓴다. `URLPattern`은 2025년 9월부터 Baseline이다.
 - 직접 만든 전략도 된다. 예: 네트워크 우선이되 3초가 지나면 캐시로 응답하기, 캐시와 네트워크 응답을 합치기.
 - 업데이트 확인 때문에 **렌더링을 막지 않는다.** Core Web Vitals를 해친다([[web-vitals|웹 성능 지표와 Lighthouse]]).
+
+### 다섯 가지 밖의 패턴
+
+| 패턴 | 방식 | 어울리는 경우 |
+| --- | --- | --- |
+| 캐시·네트워크 경주 | `Promise.any([caches.match(req), fetch(req)])`로 먼저 성공한 쪽을 쓴다 | 디스크가 느린 기기의 작은 자산. 이미 가진 것을 또 받으니 데이터는 낭비된다 |
+| 캐시 다음 네트워크(cache then network) | **페이지가** 캐시와 네트워크에 동시에 요청해 캐시로 먼저 그리고, 네트워크 응답이 오면 다시 그린다 | 타임라인·순위표. 네트워크 우선의 약점(느린 연결에서 실패할 때까지 기다림)을 피한다. 새 내용은 사용자가 읽던 것을 밀어내지 않게 위에 끼우고 스크롤 위치를 맞춘다 |
+| 범용 대체 | 캐시·네트워크가 모두 실패하면 미리 캐시한 대체물 | 아바타 자리 표시 이미지, 실패한 POST, 「오프라인에서는 쓸 수 없음」 페이지 |
+| 서비스 워커 템플릿 | 캐시한 HTML 템플릿 + JSON 데이터를 워커에서 합쳐 `new Response(html, { headers: { 'Content-Type': 'text/html' } })` | 「~로 로그인됨」처럼 사용자별 상태가 섞여 서버 HTML을 그대로 캐시할 수 없는 페이지 |
+
+`Promise.race()`는 먼저 **거부된** Promise에도 끝나 버리므로 경주에는 `Promise.any()`(ES2021)를 쓴다.
 
 ## 오프라인 대체 페이지
 
@@ -220,7 +245,13 @@ npm 모듈을 `import`로 쓰면 배포 전에 번들링한다. 모듈 서비스
 
 ### 앱 셸과 스트리밍
 
-SPA의 **앱 셸(app shell)** 모델은 껍데기 HTML을 캐시해 즉시 보여 주고 내용은 클라이언트가 채운다. 서비스 워커에서 Streams API로 **캐시한 셸 + 네트워크 본문을 하나의 응답 스트림으로 이어 보내면**, 브라우저가 첫 조각부터 점진적으로 그려 MPA처럼 빠르게 뜬다. Streams API는 저수준이라 `workbox-streams`를 쓰는 편이 쉽다. 서버 쪽 스트리밍은 [[streaming-ssr|스트리밍 SSR]]을 본다.
+SPA의 **앱 셸(app shell)** 모델은 껍데기 HTML을 캐시해 즉시 보여 주고 내용은 클라이언트가 채운다. 앱 셸은 UI를 띄우는 **최소한의 HTML·CSS·JS**로, 네이티브 앱이라면 스토어에 올릴 번들에 해당한다. 툴바·카드 틀 같은 의미 있는 화면을 네트워크 없이 그리고 내용은 점진적으로 채운다.
+
+- 첫 방문은 서버가 내용까지 렌더링해 보내고, 그 페이지가 서비스 워커를 등록해 셸과 의존 자산을 캐시한다. 다음 방문부터는 셸을 캐시에서 띄우고 **데이터만** 요청한다.
+- 셸의 핵심 CSS는 `<head>`에 인라인하고, 뷰별 JS는 비동기로 받는다. 파일 이름에 해시를 넣어 긴 HTTP 캐시와 버전 관리를 함께 한다.
+- 서비스 워커를 쓰지 못하는 환경에는 서버 렌더링 페이지를 그대로 준다(점진적 향상).
+- 동적인 앱일수록 이득이 크다. 작고 정적인 사이트는 셸 없이 install에서 사이트 전체를 캐시하면 된다.
+- 과거에는 sw-precache·sw-toolbox로 셸을 캐시했고, 지금은 그 후속인 Workbox를 쓴다. 서비스 워커에서 Streams API로 **캐시한 셸 + 네트워크 본문을 하나의 응답 스트림으로 이어 보내면**, 브라우저가 첫 조각부터 점진적으로 그려 MPA처럼 빠르게 뜬다. Streams API는 저수준이라 `workbox-streams`를 쓰는 편이 쉽다. 서버 쪽 스트리밍은 [[streaming-ssr|스트리밍 SSR]]을 본다.
 
 ### SPA와 MPA
 

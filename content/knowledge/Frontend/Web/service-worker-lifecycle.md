@@ -4,11 +4,11 @@ concept: "Service Worker"
 summary: "서비스 워커는 페이지와 서버 사이에서 스코프 안의 요청을 가로채는 별도 스레드의 스크립트다. 등록 → 설치 → 활성화 순서로 생명주기를 밟고, 파일이 한 바이트라도 바뀌면 새 버전이 설치되지만 옛 버전이 모든 창에서 물러날 때까지 대기한다. skipWaiting·clients.claim의 위험, 메모리 상태가 사라지는 수명, 브라우저별 디버깅 도구를 정리한다."
 tags: ["frontend", "web", "pwa", "service-worker", "browser"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/pwa/service-workers", "https://web.dev/learn/pwa/update", "https://web.dev/learn/pwa/tools-and-debug", "https://web.dev/learn/pwa/assets-and-data"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/pwa/service-workers", "https://web.dev/learn/pwa/update", "https://web.dev/learn/pwa/tools-and-debug", "https://web.dev/learn/pwa/assets-and-data", "https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API", "https://github.com/w3c/ServiceWorker/blob/master/explainer.md", "https://developers.google.com/web/fundamentals/getting-started/primers/service-workers", "https://developers.google.com/web/fundamentals/instant-and-offline/service-worker/lifecycle"]
 ---
 
-> web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 서비스 워커·업데이트·도구와 디버깅 모듈을 바탕으로 재구성한 노트다.
+> web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 서비스 워커·업데이트·도구와 디버깅 모듈을 바탕으로 재구성한 노트다. 「[Service workers explained](https://github.com/w3c/ServiceWorker/blob/main/explainer.md)」, 「[The service worker lifecycle](https://web.dev/articles/service-worker-lifecycle)」, MDN 「[Service Worker API](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)」로 설계 배경·업데이트 계기를 보강했다.
 
 ## 서비스 워커란
 
@@ -21,6 +21,17 @@ sources: ["https://web.dev/learn/pwa/service-workers", "https://web.dev/learn/pw
 | 코드로 응답을 만든다 | `new Response(...)` |
 
 파일만 등록해서는 아무 일도 하지 않는다. 캐시도 응답도 직접 코드로 짠다. 요청 프록시 외에 푸시 알림, 백그라운드 동기화, 결제 처리도 서비스 워커가 맡는다([[pwa-os-integration|PWA 기능과 OS 통합]]).
+
+### 왜 이런 모양인가
+
+오프라인 웹은 Google Gears, Dojo Offline, HTML5 AppCache 같은 **선언적** 방식으로 여러 번 시도됐지만 모두 같은 이유로 실패했다. 매니페스트에 적힌 규칙만으로는 앱마다 다른 요구를 다 표현할 수 없었다. AppCache는 폐기돼 모든 브라우저에서 제거됐다. 서비스 워커는 반대로 **개발자가 코드로 모든 것을 정하는 명령형** 설계를 택했다.
+
+| 공유 워커와 같은 점 | 공유 워커와 다른 점 |
+| --- | --- |
+| 자기 전역 컨텍스트(보통 별도 스레드)에서 돈다 | 열린 페이지가 하나도 없어도 돌 수 있다 |
+| 특정 페이지에 묶이지 않는다 | 이벤트가 올 때만 깨어나고 쉬면 종료된다 |
+| DOM에 접근하지 못한다 | 정해진 업데이트 모델이 있다 |
+| | HTTPS에서만 등록된다. 요청을 가로채고 응답을 바꾸는 힘이 있어, 중간자가 워커를 바꿔치지 못하게 하려는 것이다 |
 
 **서비스 워커는 선택 사항으로 다룬다.** 지원하지 않는 브라우저가 있고, 지원해도 첫 방문과 활성화 대기 중에는 페이지를 제어하지 않는다. 핵심 기능이 서비스 워커에 기대면 안 된다.
 
@@ -91,9 +102,21 @@ self.addEventListener('activate', (event) => {
 | 파일 이름에 해시를 붙여 바꾼다(`sw.3f9a.js`) | 브라우저는 등록된 옛 URL만 다시 확인하므로 새 버전을 영영 못 받는다. **이름은 고정한다** |
 | 파일을 지우거나 이름을 바꿔 제거하려 한다 | 이미 설치된 클라이언트에서는 남는다. `getRegistrations()` 후 `unregister()`로 지운다 |
 
+업데이트 확인이 일어나는 때는 정해져 있다.
+
+| 계기 | 비고 |
+| --- | --- |
+| 스코프 안 페이지로 내비게이션 | 가장 흔한 경로 |
+| `push`·`sync` 같은 기능 이벤트 | 최근 **24시간** 안에 확인한 적이 없을 때만 |
+| `register()`를 다른 URL로 호출 | URL은 바꾸지 않는 것이 원칙이라 사실상 쓰지 않는다 |
+| 페이지에서 `reg.update()` | 새로고침 없이 오래 켜 두는 앱은 한 시간마다 부르기도 한다 |
+
+- 워커 스크립트를 확인할 때는 기본으로 **HTTP 캐시를 무시**한다(Chrome 68부터, 다른 브라우저도 같다). `importScripts()`로 부른 파일은 캐시 헤더를 따른다. `register(url, { updateViaCache: 'none' | 'imports' | 'all' })`로 바꾼다. 기본값은 `'imports'`다.
+- 새 워커는 옛 워커와 **나란히** 떠서 자기 `install`을 받는다. 응답이 404 같은 오류이거나, 파싱·실행 중 오류가 나거나, `install`의 `waitUntil()`이 거부되면 새 워커는 버려지고(`redundant`) 옛 워커가 계속 일한다.
+
 ### 대기(waiting)
 
-새 워커는 설치를 마쳐도 **옛 워커가 제어하는 창이 하나라도 남아 있으면 기다린다.** 새로고침으로는 부족하다. 그 스코프의 탭과 PWA 창을 모두 닫거나 떠났다가 돌아와야 교체된다. 옛 버전용으로 만들어진 페이지를 새 워커가 갑자기 맡지 않게 하려는 장치다.
+새 워커는 설치를 마쳐도 **옛 워커가 제어하는 창이 하나라도 남아 있으면 기다린다.** 새로고침으로는 부족하다. 브라우저는 현재 페이지를 내리기 전에 다음 페이지 요청을 보내므로, 새로고침 중에도 옛 워커가 제어하는 클라이언트가 0이 되는 순간이 없다. 그 스코프의 탭과 PWA 창을 모두 닫거나 떠났다가 돌아와야 교체된다. 옛 버전용으로 만들어진 페이지를 새 워커가 갑자기 맡지 않게 하려는 장치다.
 
 ### 즉시 교체: skipWaiting과 clients.claim
 
@@ -150,7 +173,8 @@ self.addEventListener('message', (event) => {
 
 Chromium의 패널 사용법은 [[devtools-application|DevTools Application 패널]]에 정리했다. 그 밖의 요령:
 
-- **Shift + 새로고침**은 서비스 워커를 거치지 않고 불러온다. 잘못된 응답으로 앱이 안 뜰 때 쓴다.
+- **Shift + 새로고침**은 서비스 워커를 거치지 않고 불러온다(명세에 정해진 동작이라 모든 브라우저가 같다). 페이지는 컨트롤러 없이 열린다. 잘못된 응답으로 앱이 안 뜰 때 쓴다.
+- Chromium의 **Update on reload** 옵션을 켜면 내비게이션마다 워커를 다시 받아, 바이트가 같아도 새 버전으로 설치하고 대기를 건너뛴다. 개발 중 탭을 닫았다 열 필요가 없어진다.
 - 설치된 앱 목록: 데스크톱 Chromium은 `about:apps`, Android Chrome의 WebAPK는 `about:webapks`(업데이트 상태 확인·요청).
 - **Android 실기기 테스트는 포트 포워딩**으로 한다. 기기의 `localhost`는 기기 자신이고, 개발 PC의 LAN IP로 접속하면 HTTPS가 아니어서 서비스 워커와 설치 기준이 모두 실패한다. Chrome 원격 디버깅의 포트 포워딩으로 기기 `localhost:포트`를 PC에 잇는다.
 - iOS·iPadOS는 macOS의 Xcode Simulator가 실제 Safari와 설치된 웹 앱 엔진을 쓰므로 대표성이 높다. Simulator의 `localhost`는 Mac 자신이다. 원격 검사는 Mac Safari의 개발자용 메뉴로 한다.

@@ -4,11 +4,11 @@ concept: "AJAX"
 summary: "페이지를 새로고침하지 않고 서버와 비동기로 데이터를 주고받는 AJAX. fetch의 Response·본문 형식·FormData, URL·URLSearchParams, 스트림으로 읽는 다운로드 진행률과 업로드 진행률, AbortController 취소·타임아웃, 나머지 fetch 옵션(credentials·cache·keepalive 등), 업로드 재개, axios, 자주 만나는 오류, 클라이언트에서 보이는 CORS와 프록시, 브라우저 코드가 공개된다는 전제의 API 키 관리."
 tags: ["javascript", "http", "async", "frontend"]
 source: til
-date: "2026-10-13"
-sources: ["https://vite.dev/config/server-options#server-proxy", "https://developer.mozilla.org/en-US/docs/Web/API/AbortController", "https://wesbos.com/javascript/13-ajax-and-fetching-data/74-ajax-and-apis", "https://wesbos.com/javascript/13-ajax-and-fetching-data/75-cors-and-recipes", "https://wesbos.com/javascript/13-ajax-and-fetching-data/76-dad-jokes", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/83-security", "https://ko.javascript.info/fetch", "https://ko.javascript.info/formdata", "https://ko.javascript.info/fetch-progress", "https://ko.javascript.info/fetch-abort", "https://ko.javascript.info/fetch-crossorigin", "https://ko.javascript.info/fetch-api", "https://ko.javascript.info/url", "https://ko.javascript.info/xmlhttprequest", "https://ko.javascript.info/resume-upload", "https://developer.mozilla.org/en-US/docs/Web/API/RequestInit", "https://developer.mozilla.org/en-US/docs/Web/API/URL/parse_static"]
+date: "2026-10-21"
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/ajax.md", "https://vite.dev/config/server-options#server-proxy", "https://developer.mozilla.org/en-US/docs/Web/API/AbortController", "https://developers.google.com/web/updates/2017/09/abortable-fetch", "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API", "https://wesbos.com/javascript/13-ajax-and-fetching-data/74-ajax-and-apis", "https://wesbos.com/javascript/13-ajax-and-fetching-data/75-cors-and-recipes", "https://wesbos.com/javascript/13-ajax-and-fetching-data/76-dad-jokes", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/83-security", "https://ko.javascript.info/fetch", "https://ko.javascript.info/formdata", "https://ko.javascript.info/fetch-progress", "https://ko.javascript.info/fetch-abort", "https://ko.javascript.info/fetch-crossorigin", "https://ko.javascript.info/fetch-api", "https://ko.javascript.info/url", "https://ko.javascript.info/xmlhttprequest", "https://ko.javascript.info/resume-upload", "https://developer.mozilla.org/en-US/docs/Web/API/RequestInit", "https://developer.mozilla.org/en-US/docs/Web/API/URL/parse_static"]
 ---
 
-> 직접 정리한 내용에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「fetch」, 「FormData」, 「fetch 다운로드 진행 상황 추적하기」, 「fetch 중단하기」, 「fetch와 Cross-Origin 요청」, 「fetch API」, 「URL 객체」, 「XMLHttpRequest」, 「업로드 재개하기」 글을 함께 참고해 재구성한 노트다.
+> 직접 정리한 내용에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「fetch」, 「FormData」, 「fetch 다운로드 진행 상황 추적하기」, 「fetch 중단하기」, 「fetch와 Cross-Origin 요청」, 「fetch API」, 「URL 객체」, 「XMLHttpRequest」, 「업로드 재개하기」 글을 함께 참고해 재구성한 노트다. 「[Abortable fetch](https://developer.chrome.com/blog/abortable-fetch)」와 MDN 「[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)」로 취소의 세부·역사와 지연 fetch를 보강했다. 「[Must-Know-About-Frontend: AJAX](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/ajax.md)」의 내용을 더해 보강했다.
 
 **AJAX(Asynchronous JavaScript And XML)** 는 페이지 전체를 새로 받지 않고, JavaScript로 서버와 **비동기 통신**해 필요한 데이터만 받아 화면 일부를 갱신하는 기법이다. SPA와 CSR의 기반이 되는 기술이다.
 
@@ -182,6 +182,11 @@ await fetch('/api/slow', { signal: AbortSignal.timeout(5000) }) // 5초 뒤 'Tim
 - 취소로 생긴 거부는 실패가 아니므로 `error.name === 'AbortError'`면 사용자에게 에러를 보여 주지 않는다. `AbortSignal.timeout()`으로 끊기면 이름이 `'TimeoutError'`라서 「시간 초과」 안내와 구분할 수 있다.
 - **한 컨트롤러로 여러 요청을 한꺼번에** 끊을 수 있다. `Promise.all(urls.map((u) => fetch(u, { signal })))`에 같은 `signal`을 넘기면 `abort()` 한 번에 모두 멈춘다.
 
+- 취소는 요청과 응답을 함께 끊는다. 헤더를 받은 뒤라도 `response.text()`·`json()` 같은 **본문 읽기까지 `AbortError`로 끝난다.** 이미 끝난 요청에 `abort()`를 불러도 아무 일도 없다.
+- 모든 `Request`에는 `request.signal`이 있다. 서비스 워커의 `fetch` 이벤트에서 `event.request.signal`은 페이지가 요청을 버리면 abort를 알린다. `respondWith(fetch(event.request))`는 자동으로 따라 끊기고, URL을 바꿔 새로 요청할 때는 `fetch(url, { signal: event.request.signal })`로 넘긴다.
+
+취소 API는 「fetch가 돌려주는 객체에 `abort()`를 붙이자」는 안과 「응답 받기와 조작을 분리하자」는 안이 맞서 2015년부터 오래 논의됐다. TC39의 「취소 가능한 Promise」(세 번째 상태와 `catch cancel` 문법)는 합의를 얻지 못해 철회됐고, 결국 새 문법이 필요 없는 `AbortController`/`AbortSignal`을 DOM 표준에 정의했다. Edge 16·Firefox 57(2017)부터 들어와 지금은 모든 브라우저가 지원한다.
+
 `AbortController`는 fetch 전용이 아니라 **「취소」를 전달하는 범용 장치**다. 내가 만든 비동기 작업과 이벤트 리스너도 같은 신호로 멈춘다.
 
 ```javascript
@@ -266,7 +271,7 @@ function upload(file, onProgress) {
 | `integrity` | 없음 | `'sha384-…'`: 받은 본문의 해시가 다르면 실패한다(하위 리소스 무결성) |
 | `keepalive` | `false` | `true`: 페이지를 떠난 뒤에도 요청을 끝까지 보낸다. 본문 합계가 **64KiB 이하**여야 하고 응답은 처리할 수 없다 |
 
-페이지를 떠날 때 분석 데이터를 보내는 용도로는 `keepalive` fetch나 `navigator.sendBeacon(url, data)`를 쓴다. 보내는 시점은 `unload`가 아니라 `visibilitychange`에서 `document.visibilityState === 'hidden'`일 때가 안정적이다. `unload`는 모바일에서 잘 발생하지 않고 bfcache를 막는다.
+페이지를 떠날 때 분석 데이터를 보내는 용도로는 `keepalive` fetch나 `navigator.sendBeacon(url, data)`를 쓴다. 보내는 시점은 `unload`가 아니라 `visibilitychange`에서 `document.visibilityState === 'hidden'`일 때가 안정적이다. `unload`는 모바일에서 잘 발생하지 않고 bfcache를 막는다. Chromium에는 보낼 시점을 브라우저에 맡기는 `fetchLater(url, { activateAfter })`(지연 fetch)도 있다. 페이지를 닫거나 떠날 때, 또는 정한 시간이 지나면 보내 준다. 아직 Baseline이 아니다.
 
 ## 자주 만나는 오류
 

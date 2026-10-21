@@ -4,17 +4,29 @@ concept: "Responsible JavaScript"
 summary: "JS는 압축해도 파싱·실행 비용이 그대로 남아 저사양 기기에서 가장 비싼 자원이다. 웹 플랫폼(HTML·CSS)을 먼저 쓰고, 트리 셰이킹·코드 분할·최신 문법 빌드·작은 대체재로 줄이고, 서드파티 스크립트는 담당자를 두고 관리한다. 성능은 저사양 Android와 느린 4G, 표준 지원은 Baseline으로 기준을 잡는다."
 tags: ["frontend", "javascript", "performance", "web", "browser"]
 source: other
-date: "2026-10-13"
-sources: ["https://webactually.com/2019/10/10/%ec%9e%90%eb%b0%94%ec%8a%a4%ed%81%ac%eb%a6%bd%ed%8a%b8%ec%9d%98-%ec%b1%85%ec%9e%84-part-%e2%85%a0/", "https://webactually.com/2019/11/11/%ec%9e%90%eb%b0%94%ec%8a%a4%ed%81%ac%eb%a6%bd%ed%8a%b8%ec%9d%98-%ec%b1%85%ec%9e%84-part-%e2%85%a1/", "https://webactually.com/2020/02/12/%ec%9e%90%eb%b0%94%ec%8a%a4%ed%81%ac%eb%a6%bd%ed%8a%b8%ec%9d%98-%ec%b1%85%ec%9e%84-part-%e2%85%a2/", "https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022", "https://web.dev/baseline"]
+date: "2026-10-21"
+sources: ["https://webactually.com/2019/10/10/%ec%9e%90%eb%b0%94%ec%8a%a4%ed%81%ac%eb%a6%bd%ed%8a%b8%ec%9d%98-%ec%b1%85%ec%9e%84-part-%e2%85%a0/", "https://webactually.com/2019/11/11/%ec%9e%90%eb%b0%94%ec%8a%a4%ed%81%ac%eb%a6%bd%ed%8a%b8%ec%9d%98-%ec%b1%85%ec%9e%84-part-%e2%85%a1/", "https://webactually.com/2020/02/12/%ec%9e%90%eb%b0%94%ec%8a%a4%ed%81%ac%eb%a6%bd%ed%8a%b8%ec%9d%98-%ec%b1%85%ec%9e%84-part-%e2%85%a2/", "https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022", "https://web.dev/baseline", "https://medium.com/reloading/javascript-start-up-performance-69200f43b201", "https://v8.dev/blog/code-caching-for-devs"]
 ---
 
-> Jeremy Wagner의 「자바스크립트의 책임」 Part Ⅰ~Ⅲ(웹액츄얼리 번역, 2019.10~2020.02)과 Alan Dávalos의 「[2022년 웹 개발에서 고려해야 할 환경](https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022)」(LINE Engineering, 2022.02)을 바탕으로 재구성한 노트다.
+> Jeremy Wagner의 「자바스크립트의 책임」 Part Ⅰ~Ⅲ(웹액츄얼리 번역, 2019.10~2020.02)과 Alan Dávalos의 「[2022년 웹 개발에서 고려해야 할 환경](https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022)」(LINE Engineering, 2022.02)을 바탕으로 재구성한 노트다. 시작 비용과 V8의 대응은 Addy Osmani의 「[JavaScript Start-up Performance](https://medium.com/reloading/javascript-start-up-performance-69200f43b201)」와 V8 블로그 「[Code caching for JavaScript developers](https://v8.dev/blog/code-caching-for-devs)」로 보강했다.
 
 ## 왜 자바스크립트가 문제인가
 
 **JS는 전송량보다 처리 비용이 비싸다.** 텍스트 자원은 압축해서 보내지만, 브라우저는 받은 뒤 압축을 풀고 파싱·컴파일·실행해야 한다. 압축 수백 KB는 메가바이트 단위 코드가 된다. 이미지는 내려받으면 바로 그릴 수 있지만 JS는 메인 스레드를 붙잡는다.
 
 같은 코드라도 기기에 따라 처리 시간이 몇 배씩 차이 난다. 고사양 노트북에서 25ms 걸리는 스크립트가 저가 Android 폰에서는 200ms 가까이 걸린다. 네트워크가 아무리 빨라도 CPU가 느리면 JS가 많은 페이지는 느리다.
+
+### 시작 비용: 파싱·컴파일·실행
+
+JS가 메인 스레드를 잡는 시작 비용은 세 단계다. 크기와 비례하지도 않는다. 200KB라도 최상위에서 많은 일을 하는 코드는 더 비싸다.
+
+| 단계 | 엔진이 줄이는 방법 | 개발자가 할 일 |
+| --- | --- | --- |
+| 파싱 | **스크립트 스트리밍**: 받는 도중 백그라운드 스레드에서 파싱한다. `async`·`defer`든 일반 스크립트든 해당한다. **지연 파싱**: 함수 본문은 미리 훑기만(pre-parse) 하고 호출될 때 제대로 파싱한다 | `<head>`에 `defer`로 두어 일찍 발견되게 한다 |
+| 컴파일 | **코드 캐시**: 컴파일 결과를 저장해 다음 방문에 파싱·컴파일을 건너뛴다. Chrome은 첫 방문(cold)에 파일만 저장하고, 두 번째(warm)에 컴파일 결과를 파일에 붙여 두고, 세 번째(hot)부터 컴파일을 건너뛴다. 서비스 워커의 `install`에서 Cache Storage에 넣은 스크립트는 넣는 즉시 코드 캐시를 만든다. 1KiB보다 작은 스크립트는 캐시하지 않는다 | 캐시가 **URL에 묶이므로** 파일 이름에 해시를 붙여 바뀌지 않은 청크의 URL을 유지한다. 자주 바뀌는 코드와 라이브러리를 다른 청크로 나눈다 |
+| 실행 | 최상위 코드가 길수록 오래 막는다 | 첫 화면에 필요한 코드만 보낸다([[code-splitting\|코드 분할]]). 프레임워크의 기본 비용(아래)을 비교한다 |
+
+측정은 DevTools Performance 패널의 Bottom-Up에서 Compile Script·Evaluate Script 항목을 본다. 엔진 파이프라인 자체는 [[js-engine-v8|JS 엔진과 V8 파이프라인]]에 있다. 과거에는 즉시 실행 함수를 괄호로 감싸 지연 파싱을 피하는 `optimize-js` 같은 도구도 쓰였지만, 엔진이 이 경우를 스스로 처리하면서 쓰이지 않는다.
 
 ## 기준선: 누구를 위해 만드는가
 

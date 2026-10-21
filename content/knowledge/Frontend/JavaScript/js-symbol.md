@@ -4,11 +4,11 @@ concept: "Symbol"
 summary: "Symbol은 만들 때마다 세상에 하나뿐인 값이 되는 원시 타입이다. 다른 코드와 겹치지 않는 속성 키로 쓰고, 일반 순회와 JSON에서는 숨겨진다. 설명(description)과 고유성, 전역 레지스트리의 Symbol.for·keyFor, 언어의 내장 동작을 여는 well-known symbol(Symbol.iterator·toPrimitive·toStringTag 등)을 정리한다."
 tags: ["javascript", "frontend", "data-structure"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/javascript/data-types/symbol", "https://web.dev/learn/javascript/collections/keyed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol", "https://ko.javascript.info/symbol"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/javascript/data-types/symbol", "https://web.dev/learn/javascript/collections/keyed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol", "https://ko.javascript.info/symbol", "https://dmitripavlutin.com/detailed-overview-of-well-known-symbols/"]
 ---
 
-> web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Symbols」 모듈을 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「심볼형」 글을 더하고 MDN으로 확인해 재구성한 노트다.
+> web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Symbols」 모듈을 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「심볼형」 글을 더하고 MDN으로 확인해 재구성한 노트다. well-known symbol 목록은 「[Detailed overview of well-known symbols](https://dmitripavlutin.com/detailed-overview-of-well-known-symbols/)」을 바탕으로 보강했다.
 
 ## Symbol이란
 
@@ -78,6 +78,9 @@ Symbol('k') === Symbol.for('k') // false — 설명과 레지스트리 키는 �
 | `Symbol.toStringTag` | `Object.prototype.toString.call(obj)` | `'[object 이름]'`의 이름을 정한다 |
 | `Symbol.hasInstance` | `x instanceof C` | `instanceof` 판정을 바꾼다 |
 | `Symbol.species` | `map`·`filter`가 결과 배열을 만들 때 | 하위 클래스의 결과 타입을 정한다 |
+| `Symbol.isConcatSpreadable` | `arr.concat(x)` | `true`면 유사 배열 객체도 펼쳐 붙이고, `false`면 배열도 통째로 한 원소로 붙인다 |
+| `Symbol.match` · `matchAll` · `replace` · `search` · `split` | `str.match(x)`, `str.replace(x, …)` 등 문자열 메서드 | 정규식이 아닌 객체도 문자열 메서드의 패턴으로 쓸 수 있다. `Symbol.match`를 `false`로 두면 `startsWith`·`includes`가 정규식을 문자열로 취급한다 |
+| `Symbol.unscopables` | `with (obj)` 블록의 이름 해석 | 나열한 속성은 `with` 안에서 변수로 보이지 않는다. 배열의 새 메서드(`includes`, `flat` 등)가 옛 `with` 코드의 같은 이름 변수를 가리지 않게 하려고 쓰인다 |
 
 ```javascript
 class Money {

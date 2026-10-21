@@ -4,11 +4,11 @@ concept: "Property Descriptor"
 summary: "객체의 모든 속성에는 값 말고도 writable·enumerable·configurable 같은 숨은 설정이 붙어 있다. 데이터 속성과 접근자(getter·setter) 속성의 차이, Object.defineProperty의 기본값이 리터럴과 정반대라는 점, enumerable이 for...in·Object.keys·spread·JSON에 미치는 영향, Object.create의 두 번째 인자, preventExtensions·seal·freeze의 차이를 정리한다."
 tags: ["javascript", "frontend", "oop", "prototype"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/javascript/objects/property-descriptors", "https://web.dev/learn/javascript/control-flow", "https://web.dev/learn/javascript/collections/indexed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties", "https://ko.javascript.info/property-descriptors", "https://ko.javascript.info/property-accessors"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/javascript/objects/property-descriptors", "https://web.dev/learn/javascript/control-flow", "https://web.dev/learn/javascript/collections/indexed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties", "https://ko.javascript.info/property-descriptors", "https://ko.javascript.info/property-accessors", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0%20%EC%96%B4%ED%8A%B8%EB%A6%AC%EB%B7%B0%ED%8A%B8.md"]
 ---
 
-> web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Property descriptors」 모듈과 javascript.info(모던 JavaScript 튜토리얼)의 「프로퍼티 플래그와 설명자」, 「프로퍼티 getter와 setter」 글을 바탕으로, MDN으로 확인해 재구성한 노트다.
+> web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Property descriptors」 모듈과 javascript.info(모던 JavaScript 튜토리얼)의 「프로퍼티 플래그와 설명자」, 「프로퍼티 getter와 setter」 글을 바탕으로, MDN으로 확인해 재구성한 노트다. 「[Frontend_TIL: 프로퍼티 어트리뷰트](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0%20%EC%96%B4%ED%8A%B8%EB%A6%AC%EB%B7%B0%ED%8A%B8.md)」을 바탕으로 보강했다.
 
 ## 속성 설명자란
 
@@ -131,6 +131,18 @@ function User(name, birthday) {
 | `Object.preventExtensions(obj)` | 불가 | 가능 | 가능 | `Object.isExtensible` |
 | `Object.seal(obj)` | 불가 | 불가(모든 속성 `configurable: false`) | 가능 | `Object.isSealed` |
 | `Object.freeze(obj)` | 불가 | 불가 | 불가(모든 데이터 속성 `writable: false`) | `Object.isFrozen` |
+
+중첩 객체까지 모두 얼린 **불변 객체**가 필요하면 객체인 속성을 재귀로 따라가며 `freeze`한다.
+
+```javascript
+function deepFreeze(target) {
+  if (target && typeof target === 'object' && !Object.isFrozen(target)) {
+    Object.freeze(target)
+    Object.values(target).forEach(deepFreeze)
+  }
+  return target
+}
+```
 
 `const`와 `Object.freeze`의 차이는 [[variables-and-types|변수와 데이터 타입]]의 「const와 Object.freeze」에 있다.
 

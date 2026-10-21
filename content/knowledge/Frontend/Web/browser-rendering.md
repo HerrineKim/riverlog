@@ -4,11 +4,11 @@ concept: "Critical Rendering Path"
 summary: "브라우저의 구성 요소와, HTML을 DOM으로·CSS를 CSSOM으로 파싱해 렌더 트리로 레이아웃(리플로우)·페인팅·합성을 거쳐 화면을 그리는 과정. HTML 파서의 특성, 스크립트·스타일 시트의 차단, 더티 비트와 강제 동기 레이아웃, 변경마다 다시 도는 단계까지."
 tags: ["frontend", "browser", "dom", "rendering", "performance"]
 source: mixed
-date: "2026-10-17"
-sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/", "https://d2.naver.com/helloworld/59361", "https://wormwlrm.github.io/2021/03/27/How-browsers-work.html", "https://web.dev/learn/performance/understanding-the-critical-path", "https://bytebytego.com/guides/how-does-the-browser-render-a-web-page"]
+date: "2026-10-21"
+sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/", "https://d2.naver.com/helloworld/59361", "https://wormwlrm.github.io/2021/03/27/How-browsers-work.html", "https://web.dev/learn/performance/understanding-the-critical-path", "https://bytebytego.com/guides/how-does-the-browser-render-a-web-page", "https://dbaron.org/talks/2012-03-11-sxsw/master.xhtml", "https://web.dev/articles/rendering-performance", "https://www.phpied.com/css-and-the-critical-path/", "https://developer.chrome.com/blog/css-containment", "https://developer.mozilla.org/en-US/docs/Web/CSS/contain", "https://developer.chrome.com/docs/lighthouse/performance/critical-request-chains"]
 ---
 
-> 브라우저 구조·파서·레이아웃 최적화 부분은 Tali Garsiel의 「[브라우저는 어떻게 동작하는가?](https://d2.naver.com/helloworld/59361)」(NAVER D2 번역, 2012.05)와 재그지그의 「[프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)」(2021.03)을 바탕으로 재구성한 노트다. 첫 렌더링이 기다리는 자원은 web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Understanding the critical path」 모듈로 보강했다. 전체 흐름 요약은 ByteByteGo의 System Design 101 가이드 「[How Browsers Render Web Pages](https://bytebytego.com/guides/how-does-the-browser-render-a-web-page)」도 참고했다.
+> 브라우저 구조·파서·레이아웃 최적화 부분은 Tali Garsiel의 「[브라우저는 어떻게 동작하는가?](https://d2.naver.com/helloworld/59361)」(NAVER D2 번역, 2012.05)와 재그지그의 「[프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)」(2021.03)을 바탕으로 재구성한 노트다. 첫 렌더링이 기다리는 자원은 web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Understanding the critical path」 모듈로 보강했다. 전체 흐름 요약은 ByteByteGo의 System Design 101 가이드 「[How Browsers Render Web Pages](https://bytebytego.com/guides/how-does-the-browser-render-a-web-page)」도 참고했다. 속성별로 다시 도는 단계는 David Baron의 발표 「[Fast CSS: How Browsers Lay Out Web Pages](https://dbaron.org/talks/2012-03-11-sxsw/master.xhtml)」와 web.dev의 「[Rendering performance](https://web.dev/articles/rendering-performance)」, CSS가 곧 중요 경로라는 관점은 「[CSS and the critical path](https://www.phpied.com/css-and-the-critical-path/)」, containment는 「[CSS containment in Chrome 52](https://developer.chrome.com/blog/css-containment)」와 MDN으로 보강했다.
 
 ## 한눈에 보기
 
@@ -107,6 +107,7 @@ HTML은 네 단계를 거쳐 [[dom|DOM]] 트리가 된다.
 | `<head>`의 파서 차단 스크립트(`async`·`defer`·`type="module"`이 없는 것) | 폰트, 이미지 |
 | | `<body>` 끝의 스크립트, `<head>` 밖의 CSS |
 
+- **CSS는 곧 중요 경로다.** HTML 다음으로 첫 화면이 반드시 기다리는 자원이 CSS이므로, 작게 줄이고 같은 출처에서 한 파일로 일찍 보내거나 첫 화면용만 인라인한다. `media`가 맞지 않는 스타일 시트(`print`, `(min-width: 4000px)`)도 **내려받기는 한다.** 다만 지금 브라우저는 가장 낮은 우선순위로 받고 렌더링을 막지 않는다. 과거에는 이런 스타일 시트까지 렌더링을 막는 브라우저가 많았다.
 - 폰트·이미지는 나중의 다시 그리기에서 채워진다. 그래서 글자가 잠깐 숨거나 빈자리가 생기고, 크기를 잡아 두지 않으면 레이아웃 이동(CLS)이 생긴다([[cls-optimization|CLS 최적화]]).
 - `<head>`는 메타데이터만 담으므로 거기서 막히면 페이지 전체가 막힌다. `<body>` 중간의 차단 자원은 현재 Chromium·Firefox에서 그 **아래쪽 콘텐츠**만 막는다.
 - `blocking="render"` 속성을 `<link>`·`<script>`·`<style>`에 주면 파싱은 계속하되 처리될 때까지 렌더링을 막는다(Chromium 계열).
@@ -170,6 +171,22 @@ div2.style.height = `${h}px`;
 
 DevTools Performance 패널에서는 보라색 Layout 이벤트에 강제 리플로우 경고가 붙고, 렌더링 탭의 페인트 플래싱·레이어 테두리로 다시 칠하는 영역과 레이어를 화면에서 볼 수 있다. 절차는 [[devtools-performance|DevTools로 성능·메모리 분석하기]]에 있다.
 
+### 범위를 가두는 containment
+
+레이아웃은 기본적으로 **문서 전체가 범위**다. 한 요소의 `left`만 바꿔도 이론상 DOM의 모든 요소를 다시 확인해야 할 수 있다. CSS `contain` 속성은 「이 요소 안의 변화는 밖에 영향을 주지 않는다」고 브라우저에 약속해 스타일·레이아웃·페인트 작업의 범위를 그 요소 하위 트리로 줄인다. 2022년부터 모든 주요 브라우저에서 쓸 수 있다(Baseline).
+
+| 값 | 약속 | 부수 효과·주의 |
+| --- | --- | --- |
+| `layout` | 안의 레이아웃이 밖에 영향을 주지 않고, 밖도 안에 영향을 주지 않는다 | 독립된 서식 맥락, 쌓임 맥락, `absolute`·`fixed` 자식의 기준 박스가 된다 |
+| `paint` | 자손이 박스 밖에 그려지지 않는다. 화면 밖이면 자손도 칠할 필요가 없다 | 박스 밖으로 넘친 부분이 잘린다. `layout`과 같은 부수 효과 |
+| `size` | 자식을 보지 않고 크기를 정한다 | 크기를 지정하지 않으면 0×0이 된다 |
+| `inline-size` | 인라인 방향 크기만 자식과 분리 | 컨테이너 쿼리(`container-type: inline-size`)가 내부적으로 쓴다 |
+| `style` | 카운터·`quotes`처럼 하위 트리 밖까지 번지는 효과를 가둔다 | Shadow DOM 같은 스타일 격리가 아니다 |
+| `content` | `layout paint style` | 크기를 몰라도 쓸 수 있어 기본으로 고르는 값 |
+| `strict` | `size layout paint style` | 크기를 알 때만 |
+
+`content-visibility: auto`는 여기에 「화면 밖이면 렌더링 자체를 건너뛴다」를 더한 속성이다. 건너뛴 영역의 높이는 `contain-intrinsic-size: auto 500px`처럼 추정치로 잡아 스크롤바가 튀지 않게 한다. 쓰는 법은 [[inp-optimization|INP 최적화]]에 있다.
+
 ## 5. 페인팅
 
 레이아웃 결과를 바탕으로 노드를 실제 픽셀로 그린다. 페인팅도 전역·증분이 있고, 증분 페인팅은 바뀐 영역만 다시 그린다. 단색보다 그림자·흐림 효과가 그리기 비용이 크다.
@@ -188,7 +205,7 @@ background-color → background-image → border → 자식 → outline
 
 ## 변경이 다시 도는 단계
 
-브라우저는 변경에 대해 가능한 한 적은 단계만 다시 수행한다.
+브라우저는 변경에 대해 가능한 한 적은 단계만 다시 수행한다. 최적화는 세 가지다: **단계를 통째로 건너뛰기**(어떤 선택자도 `data-rating` 속성을 보지 않으면 그 속성을 바꿔도 스타일 계산조차 하지 않는다), **단계의 일부만 하기**(바뀐 하위 트리만), **변경 모으기**(다시 그릴 때나 스크립트가 값을 물을 때까지 미룬다). 어떤 최적화를 하는지는 엔진과 버전마다 다르다. 속성별 비용은 대략 `width`·`height`·`margin`·`padding`·`border-width`·`font-*`·`line-height`는 레이아웃, `color`·`background-*`·`border-color`는 페인트다.
 
 | 변경 | 다시 도는 단계 |
 | --- | --- |
@@ -197,6 +214,7 @@ background-color → background-image → border → 자식 → outline
 | 크기·위치·여백, 텍스트 내용 | 레이아웃 → 페인팅 → 합성 (요소와 자식, 영향받는 형제) |
 | DOM 노드 추가·삭제 | 그 노드 주변의 레이아웃과 페인팅 |
 | `html`의 글꼴 크기, 뷰포트 크기 | 캐시를 버리고 트리 전체를 레이아웃·페인팅 |
+| `display`, `position`, `float`·`transform`을 `none`과 다른 값 사이로 바꿈 | 렌더 트리(박스) 재구성부터 전부 |
 | `transform`·`opacity` | 합성만 |
 
 화면은 디스플레이 주사율에 맞춰 갱신된다. 60Hz면 프레임당 약 16.7ms 안에 JS, 스타일, 레이아웃, 페인트를 모두 끝내야 끊김이 없다. 시각적 변경은 `requestAnimationFrame` 안에서 하면 다음 프레임 직전에 모아 처리된다. React·Vue의 **가상 DOM**은 변경을 메모리에서 먼저 비교해 바뀐 부분만 한 번에 DOM에 적용한다. DOM 변경을 직접 모아 실행하는 일을 자동화한 것이다. Svelte·Solid는 컴파일러와 시그널로 바뀐 노드만 직접 갱신한다.

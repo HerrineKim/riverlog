@@ -4,11 +4,11 @@ concept: "DOM API"
 summary: "JavaScript로 DOM 요소를 선택·탐색하고(live·static 컬렉션, 표 탐색 속성), 노드의 내용(innerHTML+=의 함정, outerHTML 대입, textContent)을 다루고, 속성(property)과 어트리뷰트(attribute)의 동기화 규칙, 클래스와 인라인 스타일·계산된 스타일을 읽고 쓰고, 요소를 만들어 원하는 위치에 넣고 지우는 방법. 문자열 HTML을 넣는 법과 위험, 리플로우를 줄이는 일괄 삽입까지 다룬다."
 tags: ["javascript", "dom", "browser", "event", "frontend"]
 source: mixed
-date: "2026-10-20"
-sources: ["https://ko.javascript.info/dom-navigation", "https://ko.javascript.info/searching-elements-dom", "https://ko.javascript.info/basic-dom-node-properties", "https://ko.javascript.info/dom-attributes-and-properties", "https://ko.javascript.info/modifying-document", "https://ko.javascript.info/styles-and-classes", "https://wesbos.com/javascript/04-the-dom/selecting-elements", "https://wesbos.com/javascript/04-the-dom/element-properties-and-methods", "https://wesbos.com/javascript/04-the-dom/working-with-classes", "https://wesbos.com/javascript/04-the-dom/built-in-and-custom-data-attributes", "https://wesbos.com/javascript/04-the-dom/creating-html", "https://wesbos.com/javascript/04-the-dom/html-from-strings-and-xss", "https://wesbos.com/javascript/04-the-dom/traversing-and-removing-nodes", "https://wesbos.com/javascript/05-events/event-listener"]
+date: "2026-10-21"
+sources: ["https://css-tricks.com/now-ever-might-not-need-jquery/", "https://ko.javascript.info/dom-navigation", "https://ko.javascript.info/searching-elements-dom", "https://ko.javascript.info/basic-dom-node-properties", "https://ko.javascript.info/dom-attributes-and-properties", "https://ko.javascript.info/modifying-document", "https://ko.javascript.info/styles-and-classes", "https://wesbos.com/javascript/04-the-dom/selecting-elements", "https://wesbos.com/javascript/04-the-dom/element-properties-and-methods", "https://wesbos.com/javascript/04-the-dom/working-with-classes", "https://wesbos.com/javascript/04-the-dom/built-in-and-custom-data-attributes", "https://wesbos.com/javascript/04-the-dom/creating-html", "https://wesbos.com/javascript/04-the-dom/html-from-strings-and-xss", "https://wesbos.com/javascript/04-the-dom/traversing-and-removing-nodes", "https://wesbos.com/javascript/05-events/event-listener"]
 ---
 
-> TIL을 정리하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다. 탐색·검색·노드 속성·어트리뷰트·문서 수정·스타일은 javascript.info(모던 JavaScript 튜토리얼)의 「DOM 탐색하기」, 「getElement*, querySelector*로 요소 검색하기」, 「주요 노드 프로퍼티」, 「속성과 프로퍼티」, 「문서 수정하기」, 「스타일과 클래스」 글로 보강했다.
+> TIL을 정리하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다. 탐색·검색·노드 속성·어트리뷰트·문서 수정·스타일은 javascript.info(모던 JavaScript 튜토리얼)의 「DOM 탐색하기」, 「getElement*, querySelector*로 요소 검색하기」, 「주요 노드 프로퍼티」, 「속성과 프로퍼티」, 「문서 수정하기」, 「스타일과 클래스」 글로 보강했다. jQuery 대응표는 「[(Now More Than Ever) You Might Not Need jQuery](https://css-tricks.com/now-ever-might-not-need-jquery/)」을 바탕으로 했다.
 
 DOM 조작은 항상 **① 선택(select) → ② 변경(manipulation)** 두 단계이고, 사용자의 행동에 반응하려면 여기에 **③ 이벤트 리스너**를 붙인다. DOM의 개념과 노드 구조는 [[dom|DOM과 BOM]], 이벤트 전파·위임은 [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]]에 있다.
 
@@ -267,6 +267,24 @@ ul.replaceChildren() // 자식 전부 비우기
 ## 이벤트 받기
 
 요소에 리스너를 붙이는 `addEventListener`와 지우는 법, 전파·위임·옵션은 [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]]에 있다. 노드가 어떤 종류인지(`nodeType`·`nodeName`·`tagName`) 확인하는 법은 [[dom|DOM과 BOM]]에 있다.
+
+## jQuery 없이: 대응표
+
+jQuery(2006)가 다듬은 API 상당수가 그대로 표준 DOM에 들어왔다. 지금은 모든 브라우저가 상시 업데이트(evergreen)되고 IE가 은퇴해, 새 코드에 jQuery를 들일 이유가 거의 없다.
+
+| jQuery | 표준 DOM |
+| --- | --- |
+| `$('.a')` | `document.querySelectorAll('.a')` — `NodeList`는 `forEach`·`for…of`로 바로 순회한다 |
+| `$el.remove()` / `.prepend()` / `.before()` / `.replaceWith()` | `el.remove()` / `el.prepend()` / `el.before()` / `el.replaceWith()` |
+| `$el.closest('div')` | `el.closest('div')` |
+| `$el.one('click', fn)` | `el.addEventListener('click', fn, { once: true })` |
+| `$el.fadeIn()`, `$el.animate({…})` | CSS 트랜지션 + 클래스 토글, 또는 `el.animate()`(Web Animations API, → [[js-animation\|JavaScript 애니메이션]]). jQuery `animate`는 숫자 값만 다뤄 `transform`·색을 못 움직였다 |
+| `$.ajax()` | `fetch()`(→ [[ajax\|AJAX와 fetch]]). HTTP 오류 상태에서 reject하지 않는 점만 주의한다 |
+| `$el.hide()` | `el.hidden = true` 또는 클래스. `hide()`는 계산된 스타일을 읽어 느렸다 |
+
+- jQuery는 결과를 `NodeList`가 아닌 자체 객체로 감싸서, 표준 메서드를 쓸 수 없고 같은 일을 두 방식으로 배워야 했다.
+- `$` 문법만 원하면 `querySelectorAll`을 감싼 몇 줄짜리 함수로 충분하다(Bling.js 같은 마이크로 라이브러리가 이 방식이다).
+- 과거에는 모자란 기능을 cdn.polyfill.io 같은 폴리필 서비스로 채웠지만, 이 도메인은 2024년 소유권이 넘어간 뒤 악성 코드를 배포한 공급망 공격에 쓰였다. 폴리필이 필요하면 빌드 도구로 번들에 넣는다.
 
 ## 핵심 정리
 

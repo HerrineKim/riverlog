@@ -4,11 +4,12 @@ concept: "SPA"
 summary: "한 페이지에서 필요한 부분만 다시 그리는 SPA와, 렌더링 주체·시점에 따른 CSR·SSR·SSG·ISR의 차이."
 tags: ["web", "rendering", "spa", "seo"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://riverkim.kr/257", "https://riverkim.kr/321", "https://junilhwang.github.io/TIL/Javascript/Design/Vanilla-JS-Server-Side-Rendering/", "https://zuminternet.github.io/ZUM-Mobile-NodeJS/"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/257", "https://riverkim.kr/321", "https://junilhwang.github.io/TIL/Javascript/Design/Vanilla-JS-Server-Side-Rendering/", "https://zuminternet.github.io/ZUM-Mobile-NodeJS/", "https://github.com/grab/front-end-guide"]
 ---
 
 > 개인 TIL을 바탕으로, SSR의 뼈대는 「[프레임워크 없이 만드는 SSR](https://junilhwang.github.io/TIL/Javascript/Design/Vanilla-JS-Server-Side-Rendering/)」, 「[모바일 줌 SpringBoot → NodeJS 전환기 (feat. VueJS SSR)](https://zuminternet.github.io/ZUM-Mobile-NodeJS/)」를 바탕으로 더한 노트다.
+> Grab의 「[Front End Guide](https://github.com/grab/front-end-guide)」를 바탕으로 보강했다.
 
 **SPA(Single Page Application)** 는 처음에 한 번만 페이지를 받아 오고, 이후에는 서버에서 새 페이지 전체를 받지 않고 **현재 페이지의 필요한 부분만 동적으로 다시 그리는** 웹 애플리케이션이다. 화면 전환이 매끄러워 네이티브 앱과 비슷한 사용자 경험을 준다. SPA는 주로 CSR 방식으로 동작하므로, CSR과 SSR의 차이를 함께 이해해야 한다.
 
@@ -17,6 +18,8 @@ sources: ["https://riverkim.kr/257", "https://riverkim.kr/321", "https://junilhw
 1. 과거에는 요청마다 새 HTML 페이지를 응답하는 **MPA(Multi Page Application)** 방식이었다.
 2. 스마트폰 보급으로 트래픽 절감, 빠른 반응성 같은 모바일 최적화가 중요해졌다.
 3. React, Vue.js 같은 프론트엔드 프레임워크가 등장하며 CSR 기반의 SPA가 보편화되었다.
+
+페이지마다 jQuery 조각을 붙이는 방식은 앱이 커지면 버티지 못한다. jQuery는 DOM 조작 라이브러리일 뿐 앱의 구조를 정해 주지 않기 때문이다. 프레임워크는 상태를 DOM이 아니라 **메모리에** 두고 DOM 조작을 추상화하며, 정해진 구조를 준다. 그 프레임워크를 아는 새 팀원은 처음 보는 코드베이스도 빨리 읽는다.
 
 MPA에서 SPA로, 다시 서버와 클라이언트가 역할을 나누는 구조로 이어지는 흐름은 [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]]에서 "코드가 어디에 사는지"로 설명한다.
 
@@ -31,6 +34,8 @@ MPA에서 SPA로, 다시 서버와 클라이언트가 역할을 나누는 구조
 | --- | --- |
 | 정적 리소스는 한 번만 받고 데이터만 갱신하므로 서버와의 트래픽이 줄어든다 | 첫 화면이 완성되기까지(초기 로딩)가 SSR보다 느리다 |
 | 바뀌는 부분만 갱신해 화면 전환이 부드럽다(UX 향상) | 최초 HTML에 콘텐츠가 없어 **SEO(검색 엔진 최적화)** 에 불리하다 |
+| 클라이언트와 서버가 **API 계약으로만** 이어진다. 둘을 따로 개발·배포하고, 같은 API에 모바일 앱 같은 다른 클라이언트를 붙이기 쉽다. 팀이 클수록 이 분리가 이득이다 | 서버(또는 CDN)가 모든 경로 요청에 `index.html`을 돌려줘야 클라이언트 라우터가 받는다([[client-side-routing\|클라이언트 사이드 라우팅]]) |
+| 정적 파일뿐이라 앱 서버 없이 스토리지 + CDN으로 호스팅한다([[s3-cloudfront-static-hosting\|S3·CloudFront]]) | 여러 페이지의 코드를 처음에 한꺼번에 받으면 무겁다. 경로별 [[code-splitting\|코드 스플리팅]]으로 나눈다 |
 
 ## SSR (Server Side Rendering)
 
@@ -119,4 +124,4 @@ SSG의 "바뀔 때마다 재배포" 문제를 줄이려고 Next.js가 만든 방
 - SSG는 빌드 때 미리 만들어 가장 빠르지만 재배포가 필요하고, ISR은 재검증 시간마다 다시 만들어 이를 보완한다.
 - 지금의 프레임워크는 스트리밍·서버 컴포넌트·부분 사전 렌더링으로 한 페이지 안에서 이 방식들을 섞는다.
 
-관련 노트: [[nextjs|Next.js를 쓰는 이유]], [[templates-static|Django 템플릿(서버 렌더링)]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]], [[streaming-ssr|스트리밍 SSR]], [[seo-basics|SEO 기초]], [[static-site-generator|정적 사이트 생성기와 Jamstack]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[web-dev-myths|웹 개발에 대한 이상한 믿음들]]
+관련 노트: [[client-side-routing|클라이언트 사이드 라우팅: 해시, History API, Navigation API]], [[nextjs|Next.js를 쓰는 이유]], [[templates-static|Django 템플릿(서버 렌더링)]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]], [[webs-next-transition|웹 아키텍처의 다음 전환: MPA에서 PESPA까지]], [[streaming-ssr|스트리밍 SSR]], [[seo-basics|SEO 기초]], [[static-site-generator|정적 사이트 생성기와 Jamstack]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[web-dev-myths|웹 개발에 대한 이상한 믿음들]]

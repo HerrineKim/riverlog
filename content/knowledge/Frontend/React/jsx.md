@@ -4,9 +4,11 @@ concept: "JSX"
 summary: "JavaScript 안에서 HTML처럼 UI를 선언하는 JSX 문법과, 그 결과물인 불변 React 엘리먼트의 렌더링."
 tags: ["react", "jsx", "javascript", "frontend"]
 source: til
-date: "2026-10-13"
-sources: ["https://riverkim.kr/134", "https://riverkim.kr/299"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/134", "https://riverkim.kr/299", "https://react.vlpt.us/basic/01-concept.html", "https://react.vlpt.us/basic/03-first-component.html", "https://react.vlpt.us/basic/04-jsx.html"]
 ---
+
+> 개인 TIL을 바탕으로, 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[리액트는 어쩌다 만들어졌을까?](https://react.vlpt.us/basic/01-concept.html)」·「[JSX의 기본 규칙](https://react.vlpt.us/basic/04-jsx.html)」을 바탕으로 보강했다.
 
 **JSX(JavaScript XML)** 는 JavaScript 안에 HTML과 비슷한 마크업을 쓸 수 있게 한 확장 문법이다. 공식 JavaScript 문법이 아니라서 브라우저가 직접 이해하지 못하고, **Babel**이 일반 JavaScript(`React.createElement` 호출)로 변환한다. 마크업과 로직을 한 파일에서 함께 다룰 수 있어 읽고 쓰기 쉽다.
 
@@ -23,6 +25,28 @@ function App() {
 ```
 
 지금의 JSX 변환(React 17에서 도입된 `react/jsx-runtime`)은 `createElement` 대신 `jsx()` 호출을 만들고, 이 함수를 자동으로 import하므로 파일마다 `import React`를 쓰지 않는다.
+
+## 왜 React인가: 갱신 규칙 대신 다시 그리기
+
+DOM을 직접 다루면 「어떤 이벤트가 나면 어떤 노드의 어떤 속성을 어떻게 바꾼다」는 **갱신 규칙**을 하나하나 써야 한다.
+
+```javascript
+const number = document.getElementById('number')
+document.getElementById('increase').onclick = () => {
+  number.innerText = parseInt(number.innerText, 10) + 1 // 규칙 1
+}
+document.getElementById('decrease').onclick = () => {
+  number.innerText = parseInt(number.innerText, 10) - 1 // 규칙 2
+}
+```
+
+이벤트·상태·DOM이 늘면 규칙이 곱으로 늘어 관리하기 어려워진다. Backbone·AngularJS 같은 이전 세대 프레임워크는 값과 DOM 속성을 연결(바인딩)해 이 규칙을 줄였다. React는 발상을 바꿨다. **상태가 바뀌면 화면 전체를 처음부터 다시 그린다고 생각하고 코드를 쓴다.** 그러면 "어떻게 갱신할지"는 고민하지 않고 "이 상태일 때 화면은 이렇다"만 선언하면 된다(선언형 UI).
+
+실제 DOM을 매번 다시 만들면 느리므로, React는 메모리 속 JavaScript 객체 트리인 **가상 DOM(Virtual DOM)** 에 먼저 그린 뒤 이전 트리와 비교해 **달라진 곳만 실제 DOM에 반영**한다.
+
+![상태 변경 → 가상 DOM 렌더링 → 비교 → 바뀐 부분만 실제 DOM에 패치](https://i.imgur.com/u6YnxUS.png)
+
+부모가 리렌더링되면 자식도 함께 다시 렌더링(가상 DOM 계산)되지만, 실제 DOM이 바뀌는 곳은 결과가 달라진 노드뿐이다. 다시 렌더링 자체를 줄이는 방법은 [[re-rendering|리렌더링 원인과 추적]]에, 두 트리를 비교하는 규칙과 그에 따라 state가 유지·초기화되는 원리는 [[reconciliation|재조정과 state 보존]]에 있다.
 
 ## JSX 문법 규칙
 
@@ -60,6 +84,8 @@ function Columns() {
   )
 }
 ```
+
+또 **모든 태그는 닫아야 한다.** HTML에서 닫지 않고 쓰던 `<input>`, `<br>`도 `<input />`, `<br />`처럼 self-closing 태그로 쓴다. 내용이 없는 컴포넌트도 `<Hello />`로 닫는다.
 
 ### 2. 중괄호 `{}` 안에는 JavaScript 표현식
 

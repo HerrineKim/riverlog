@@ -20,4 +20,6 @@ date: "2026-10-13"
 - [테스트를 돌리는 시점: 로컬, PR, CI](/knowledge/dictionary/frontend/testing/test-run-stages): test 스크립트, watch·only, 상태 검사, 플레이키 테스트, 되돌리기와 앞으로 고치기, 경보 피로, 파일별 커버리지·테스트 파일 제외·타임존 고정
 - [테스트의 기본 요소](/knowledge/dictionary/frontend/testing/test-primitives): 단언 3종, assert와 expect, suite·describe, 수명 주기 훅, 테스트 파일 위치
 - [의존성이 있는 컴포넌트 테스트하기](/knowledge/dictionary/frontend/testing/component-test-dependencies): vi.stubGlobal, vi.mock, Context 주입, MSW로 넘어갈 시점
+- [API 모킹: MSW와 json-server](/knowledge/dictionary/frontend/testing/api-mocking): 코드 속 가짜 데이터·가짜 REST 서버·MSW 비교, MSW 2 핸들러와 브라우저·Node 설정, 테스트별 핸들러 교체
 - [정적 분석: 실행하지 않고 검사하기](/knowledge/dictionary/frontend/testing/static-analysis): ESLint 규칙, eslint-plugin-compat, TypeScript noImplicitAny, 런타임 데이터의 한계
+- [Storybook: 컴포넌트를 상태별로 떼어 보는 도구](/knowledge/dictionary/frontend/testing/storybook): CSF3 스토리와 args, 3단계 설정과 decorators, Controls·Actions·Viewport, Meta·StoryObj 타입, 스토리를 테스트로

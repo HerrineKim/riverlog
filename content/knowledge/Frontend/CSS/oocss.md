@@ -77,7 +77,7 @@ html { font-size: 100%; font-family: "Pretendard", system-ui, sans-serif; }
 input, textarea, button { font: inherit; color: inherit; } /* 폼 요소도 기본값을 물려받게 */
 ```
 
-과거에는 normalize.css를 깔고 시작했다. 지금 브라우저는 차이가 많이 줄어, 위처럼 꼭 필요한 부분만 다루는 짧은 리셋을 쓰는 경우가 많다.
+과거에는 normalize.css를 깔고 시작했다. 지금 브라우저는 차이가 많이 줄어, 위처럼 꼭 필요한 부분만 다루는 짧은 리셋을 쓰는 경우가 많다(리셋과 노멀라이즈의 차이는 [[css-basics|CSS 기초]]).
 
 ### 타이포그래피 전략
 
@@ -179,4 +179,4 @@ OOCSS의 "재사용 가능한 클래스 객체" 발상은 SMACSS·BEM 같은 방
 - 클래스명은 개발자를 위한 이름이다. 위치·색이 아니라 역할과 패턴으로 짓는다.
 - 규모가 클수록 이득이 크다. 작은 프로젝트에도 관점만큼은 유용하다. 원칙을 정하고, 예외는 팀이 토론해 정한다.
 
-관련 노트: [[selectors|CSS 선택자와 우선순위]], [[sass|Sass: 파일 구조, 믹스인과 @extend]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[styling|React 스타일링: CSS Modules와 styled-components]], [[css-history|CSS의 역사로 본 CSS가 어려워진 이유]]
+관련 노트: [[selectors|CSS 선택자와 우선순위]], [[sass|Sass: 파일 구조, 믹스인과 @extend]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[styling|React 스타일링: CSS Modules와 styled-components]], [[css-history|CSS의 역사로 본 CSS가 어려워진 이유]], [[css-methodologies|CSS 설계 방법론: BEM과 ITCSS]]

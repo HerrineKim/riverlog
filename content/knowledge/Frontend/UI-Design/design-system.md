@@ -1,14 +1,15 @@
 ---
 title: "디자인 시스템: 구성, 도입, 구축과 배포"
 concept: "Design System"
-summary: "디자인 시스템은 팀이 같은 UI를 같은 규칙으로 만들게 하는 원칙·스타일·컴포넌트·문서의 묶음이다. 무엇으로 이루어지는지, 작은 팀도 필요한 이유와 도입 시점, 감사→기준 합의→파운데이션·컴포넌트 정리→개발 합의→QA로 이어지는 구축 절차, 토큰과 컴포넌트를 중앙 모노레포에서 패키지로 배포하는 구조까지 정리했다."
+summary: "디자인 시스템은 팀이 같은 UI를 같은 규칙으로 만들게 하는 원칙·스타일·컴포넌트·문서의 묶음이다. 무엇으로 이루어지는지, 작은 팀도 필요한 이유와 도입 시점, 감사→기준 합의→파운데이션·컴포넌트 정리→개발 합의→QA로 이어지는 구축 절차, 토큰과 컴포넌트를 중앙 모노레포에서 패키지로 배포하는 구조까지 정리했다. 감사는 인터페이스 인벤토리로, 시각 방향은 스타일 타일·요소 콜라주로 가볍게 합의한다."
 tags: ["design-system", "frontend", "collaboration", "design", "monorepo"]
 source: mixed
-sources: ["https://www.inflearn.com/pages/infmation-64-20231017", "https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333", "https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564", "https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/", "https://tech.socarcorp.kr/design/2020/07/31/component-01.html", "https://medium.com/@kykkjh2984/%EC%BD%94%EB%93%9C%EB%A1%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-design-system-b04bb916a02b"]
-date: "2026-10-13"
+sources: ["https://www.inflearn.com/pages/infmation-64-20231017", "https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333", "https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564", "https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/", "https://tech.socarcorp.kr/design/2020/07/31/component-01.html", "https://medium.com/@kykkjh2984/%EC%BD%94%EB%93%9C%EB%A1%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-design-system-b04bb916a02b", "https://www.smashingmagazine.com/atomic-design-workflow/", "https://css-tricks.com/what-are-design-tokens/"]
+date: "2026-10-21"
 ---
 
 > 인프런 「[그래서, 디자인 시스템이 대체 뭔데?](https://www.inflearn.com/pages/infmation-64-20231017)」(2023.10), 크몽 블로그 「[크몽 디자인 시스템 v.2.0 구축기](https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333)」(2023.11), 유니크굿 「[리얼월드 스튜디오 디자인 시스템 제작기 #1](https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564)」(2022.03)로 보강한 노트다. 컴포넌트 이름과 속성 축은 쏘카 기술 블로그 「[컴포넌트, 제대로 만들어 쉽게 쓰자! (1탄)](https://tech.socarcorp.kr/design/2020/07/31/component-01.html)」과 「[코드로 만드는 Design System](https://medium.com/@kykkjh2984/%EC%BD%94%EB%93%9C%EB%A1%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-design-system-b04bb916a02b)」으로 보강했다.
+> 인터페이스 인벤토리와 시각 방향 정하기는 「[The Atomic Workflow — People, Process, And Making Design Systems Happen](https://www.smashingmagazine.com/atomic-design-workflow/)」을, 토큰의 출발은 「[What Are Design Tokens?](https://css-tricks.com/what-are-design-tokens/)」를 바탕으로 보강했다.
 
 ## 디자인 시스템이란
 
@@ -64,6 +65,30 @@ date: "2026-10-13"
 7. 릴리스·개선       사용자가 이질감을 느끼지 않게 기존 인상은 유지하고, 버전을 올리며 계속 다듬는다
 ```
 
+### 인터페이스 인벤토리: 1단계를 설득 도구로
+
+1단계 감사는 **인터페이스 인벤토리(interface inventory)** 로 한다. 콘텐츠 인벤토리처럼, 지금 화면에 있는 **고유한 UI 패턴을 전부 스크린숏으로 모아 범주별로 묶는** 작업이다. 같은 패턴은 한 번만 찍는다. 한 페이지에 모양이 다른 버튼이 십여 개 모인 슬라이드는 말보다 강하게 시스템의 필요를 보여 준다.
+
+| 단계 | 하는 일 |
+| --- | --- |
+| 사람 모으기 | 디자이너 혼자가 아니라 개발·콘텐츠·기획·PM이 **한 방에서 함께** 한다. 비일관성의 고통을 모두가 직접 겪어야 시스템을 지지한다 |
+| 도구 통일 | 한 슬라이드 도구(공유 문서)에 모두 모은다. 나중에 합치기 쉽다 |
+| 범주 나눠 찍기 | 사람마다 범주를 맡는다. 전역 요소(헤더·푸터), 내비게이션, 이미지 종류, 아이콘, 폼, 버튼, 제목, 블록(미디어 객체 같은 묶음), 목록, 상호작용 컴포넌트(아코디언·탭·캐러셀), 미디어, 서드파티 위젯, 광고, 메시지(알림·오류·툴팁·로더), 색, 애니메이션(화면 녹화) |
+| 발표 | 범주마다 발견한 것을 보여 주고 이야기한다 |
+| 다음 단계 | 결과를 패턴 라이브러리의 출발점으로 삼고, 이해관계자에게 공유한다 |
+
+### 시각 방향을 싸게 정하는 법
+
+3단계 기준 합의 중 디자인 방향성은 완성 시안(comp)부터 그리지 않고 정한다. 완성 시안부터 그리면 시간이 많이 들고, 한 번 그린 레이아웃에 의견이 묶인다. 그 전에 가벼운 산출물로 미감을 합의한다.
+
+| 산출물 | 무엇을 보여 주나 | 효과 |
+| --- | --- | --- |
+| 20초 직감 테스트 | 관련 사이트 20~30개를 20초씩 보여 주고 1~10점으로 투표, 최고·최저·논쟁 점수를 토론 | 이해관계자의 취향 차이를 초기에 드러내 공통 미감을 찾는다 |
+| 스타일 타일(style tile) | 색·글꼴·질감·아이콘 견본. 레이아웃은 없다 | 무드보드보다 구체적이고 시안보다 빠르다. 페이지가 아니라 **시스템의 재료**로 생각하게 한다 |
+| 요소 콜라주(element collage) | 실제 UI 요소(버튼, 카드, 내비게이션)에 그 재료를 입힌 조각 모음 | 레이아웃 없이 실제 인터페이스 느낌을 확인한다 |
+
+이 단계 뒤에야 브라우저 안에서 컴포넌트를 반복해 다듬는다. 디자인이 끝나고 개발이 시작되는 폭포수가 아니라, **개발도 디자인 과정의 일부**로 함께 돈다.
+
 ### 흔한 문제와 처방
 
 | 증상 | 처방 |
@@ -115,7 +140,7 @@ date: "2026-10-13"
 
 ### 디자인 토큰
 
-색상, 간격, 모서리, 폰트 크기, 브레이크포인트처럼 **디자인 결정을 값으로 정의**한 것이 디자인 토큰이다.
+색상, 간격, 모서리, 폰트 크기, 브레이크포인트처럼 **디자인 결정을 값으로 정의**한 것이 디자인 토큰이다. 값을 Sass·CSS 파일에 두지 않고 플랫폼 중립 형식(JSON)에 한 번만 적어, 웹·iOS·안드로이드가 같은 원천에서 각자의 변수를 생성한다. Salesforce Lightning 디자인 시스템이 처음 이름 붙여 퍼뜨렸다.
 
 ```json
 {
@@ -173,4 +198,4 @@ AI 코딩 도구가 읽는 팀 규칙 파일(`SKILL.md`)도 같은 구조로 중
 - 이름은 색이 아니라 역할·형태로 짓고, 컴포넌트는 모양과 바꿀 수 있는 동작을 함께 정의한다.
 - 토큰 → 컴포넌트 → Storybook을 중앙에서 관리해 패키지로 배포하고, **한 번 만들고 끝이 아니라 버전을 올리며 계속 다듬는다.**
 
-관련 노트: [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[accessible-design-process|디자인 단계의 접근성]], [[product-language-design-system|제품 언어로서의 디자인 시스템: 토큰, 기능과 형태, 컴포넌트 API]], [[visual-design-tips|개발자를 위한 시각 디자인 요령]]
+관련 노트: [[storybook|Storybook]], [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[accessible-design-process|디자인 단계의 접근성]], [[product-language-design-system|제품 언어로서의 디자인 시스템: 토큰, 기능과 형태, 컴포넌트 API]], [[visual-design-tips|개발자를 위한 시각 디자인 요령]]

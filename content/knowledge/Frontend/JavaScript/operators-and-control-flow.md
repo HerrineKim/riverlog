@@ -4,11 +4,11 @@ concept: "Control Flow"
 summary: "연산자 우선순위와 그룹 연산자, 단항 +·전위/후위 증감·할당의 반환값·쉼표 연산자, 형변환(coercion)과 truthy·falsy, == vs ===(그리고 == true가 불리언 비교가 아닌 이유), 단축 평가와 ?.·??, 논리 할당 &&=·||=·??=, 삼항 연산자, if의 평가 순서와 early return, switch의 fall through와 case 스코프, for·for...in·for...of·while·do...while·forEach 반복문."
 tags: ["javascript", "frontend"]
 source: mixed
-date: "2026-10-17"
-sources: ["https://riverkim.kr/166", "https://riverkim.kr/104", "https://wesbos.com/javascript/07-logic-and-flow-control/bedmas", "https://wesbos.com/javascript/07-logic-and-flow-control/if-statements-function-returns-truthy-falsy", "https://wesbos.com/javascript/07-logic-and-flow-control/coercion-ternaries-and-conditional-abuse", "https://wesbos.com/javascript/07-logic-and-flow-control/case-switch-and-animating-a-turtle-with-css-variables", "https://wesbos.com/javascript/01-the-basics/types-booleans-and-equality", "https://wesbos.com/javascript/09-gettin-loopy/54-looping-and-iterating-for-for-in-for-off-and-while-loops", "https://web.dev/learn/javascript/comparison", "https://web.dev/learn/javascript/control-flow", "https://ko.javascript.info/operators", "https://ko.javascript.info/comparison", "https://ko.javascript.info/type-conversions", "https://ko.javascript.info/logical-operators", "https://ko.javascript.info/nullish-coalescing-operator", "https://ko.javascript.info/optional-chaining", "https://ko.javascript.info/ifelse", "https://ko.javascript.info/while-for", "https://ko.javascript.info/switch"]
+date: "2026-10-21"
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/identity-equal.md", "https://riverkim.kr/166", "https://riverkim.kr/104", "https://wesbos.com/javascript/07-logic-and-flow-control/bedmas", "https://wesbos.com/javascript/07-logic-and-flow-control/if-statements-function-returns-truthy-falsy", "https://wesbos.com/javascript/07-logic-and-flow-control/coercion-ternaries-and-conditional-abuse", "https://wesbos.com/javascript/07-logic-and-flow-control/case-switch-and-animating-a-turtle-with-css-variables", "https://wesbos.com/javascript/01-the-basics/types-booleans-and-equality", "https://wesbos.com/javascript/09-gettin-loopy/54-looping-and-iterating-for-for-in-for-off-and-while-loops", "https://web.dev/learn/javascript/comparison", "https://web.dev/learn/javascript/control-flow", "https://ko.javascript.info/operators", "https://ko.javascript.info/comparison", "https://ko.javascript.info/type-conversions", "https://ko.javascript.info/logical-operators", "https://ko.javascript.info/nullish-coalescing-operator", "https://ko.javascript.info/optional-chaining", "https://ko.javascript.info/ifelse", "https://ko.javascript.info/while-for", "https://ko.javascript.info/switch", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%83%80%EC%9E%85%EB%B3%80%ED%99%98%EA%B3%BC%20%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%97%B0%EC%82%B0%EC%9E%90.md", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness", "http://dmitrysoshnikov.com/notes/note-2-ecmascript-equality-operators/", "https://dmitripavlutin.com/the-legend-of-javascript-equality-operator/"]
 ---
 
-> 개인 TIL을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(비교 연산자·제어 흐름 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「기본 연산자와 수학」, 「비교 연산자」, 「형 변환」, 「논리 연산자」, 「nullish 병합 연산자 '??'」, 「옵셔널 체이닝 '?.'」, 「if와 '?'를 사용한 조건 처리」, 「while과 for 반복문」, 「switch문」 글을 함께 참고해 보강했다.
+> 개인 TIL을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(비교 연산자·제어 흐름 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「기본 연산자와 수학」, 「비교 연산자」, 「형 변환」, 「논리 연산자」, 「nullish 병합 연산자 '??'」, 「옵셔널 체이닝 '?.'」, 「if와 '?'를 사용한 조건 처리」, 「while과 for 반복문」, 「switch문」 글을 함께 참고해 보강했다. 「[Must-Know-About-Frontend: == vs ===](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/identity-equal.md)」의 내용을 더해 보강했다. 「[Frontend_TIL: 타입변환과 단축평가](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%83%80%EC%9E%85%EB%B3%80%ED%99%98%EA%B3%BC%20%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80.md)」, 「[Frontend_TIL: 연산자](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%97%B0%EC%82%B0%EC%9E%90.md)」을 바탕으로 보강했다. 같음 비교의 네 알고리즘과 `==`의 비추이성은 MDN의 「[Equality comparisons and sameness](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness)」, Dmitry Soshnikov의 「[Equality operators](http://dmitrysoshnikov.com/notes/note-2-ecmascript-equality-operators/)」, 「[The Legend of JavaScript Equality Operator](https://dmitripavlutin.com/the-legend-of-javascript-equality-operator/)」을 바탕으로 보강했다.
 
 연산자와 제어문은 대부분의 언어와 비슷하지만, JavaScript에는 **암묵적 형변환**을 하는 `+`와 `==`, 객체용 `for...in`과 iterable용 `for...of`의 구분처럼 헷갈리기 쉬운 지점이 있다.
 
@@ -17,6 +17,10 @@ sources: ["https://riverkim.kr/166", "https://riverkim.kr/104", "https://wesbos.
 할당 연산자(`=`, `+=`, `*=`, `++`, `--`)와 산술 연산자는 다른 언어와 같다. 거듭제곱은 `**`, 나머지는 `%`다(숫자 연산의 세부는 [[js-numbers|숫자와 Math]]).
 
 **우선순위**는 수학과 같이 괄호 → 거듭제곱 → 곱셈·나눗셈 → 덧셈·뺄셈 순이다. `10 * 5 - 2`는 48, `10 * (5 - 2)`는 30이다. 함수 호출은 먼저 값이 된다. 논리 연산자는 `&&`가 `||`보다 먼저 묶이므로 `a || b && c`는 `a || (b && c)`다. 섞어 쓸 때는 괄호로 의도를 드러낸다. 이 괄호를 **그룹 연산자(grouping operator)** 라 하며, 안쪽 식을 한 단위로 먼저 평가하게 한다. `2 + 2 * 4`는 10, `(2 + 2) * 4`는 16이다.
+
+우선순위가 같은 연산자끼리는 **결합 방향(associativity)** 이 순서를 정한다. 산술·비교는 왼쪽부터 묶지만 할당(`a = b = c`)과 거듭제곱은 오른쪽부터 묶는다. `2 ** 3 ** 2`는 `2 ** 9`라서 512다. `**`는 이항 연산자 중 우선순위가 가장 높지만, 단항 연산자를 왼쪽에 바로 붙인 `-2 ** 2`는 해석이 모호해 SyntaxError다. `(-2) ** 2`처럼 괄호로 쓴다.
+
+대부분의 연산자는 피연산자를 바꾸지 않고 새 값을 만든다. 피연산자 자체를 바꾸는 **부수 효과(side effect)** 가 있는 연산자는 할당(`=`, `+=` 등), 증감(`++`, `--`), `delete` 셋이다. 이 연산자들이 식 한가운데 섞이면 같은 변수를 쓰는 다른 코드에 영향이 번지므로 따로 한 줄로 쓴다.
 
 ### 단항·증감·할당·쉼표
 
@@ -35,7 +39,7 @@ sources: ["https://riverkim.kr/166", "https://riverkim.kr/104", "https://wesbos.
 
 ## 형변환(coercion)
 
-한 타입의 값을 다른 타입으로 바꾸는 것이다. 직접 바꾸는 **명시적** 변환과, 연산자가 알아서 바꾸는 **암묵적** 변환이 있다.
+한 타입의 값을 다른 타입으로 바꾸는 것이다. 직접 바꾸는 **명시적** 변환(타입 캐스팅)과, 연산자가 알아서 바꾸는 **암묵적** 변환(타입 강제 변환)이 있다. 어느 쪽이든 **원래 값은 그대로 두고 새 원시값을 만든다.** `x + ''`는 `x`를 문자열로 바꾸는 것이 아니라 `'10'`을 새로 만들어 한 번 쓰고 버린다.
 
 | 목표 | 명시적 | 암묵적 |
 | --- | --- | --- |
@@ -93,6 +97,41 @@ sources: ["https://riverkim.kr/166", "https://riverkim.kr/104", "https://wesbos.
 ```
 
 truthy 여부는 `if (x)`나 `Boolean(x)`로 확인하고, 불리언과 `==`로 비교하지 않는다.
+
+`==`는 **추이적(transitive)이지도 않다.** `'0' == 0`이고 `0 == ''`인데 `'0' == ''`는 `false`다. 앞의 둘은 숫자로 바꿔 비교하고, 마지막은 둘 다 문자열이라 그대로 비교하기 때문이다. 래퍼 객체도 함정이다. `new Boolean(false)`는 객체라서 `if`에서는 truthy인데, `new Boolean(false) == false`는 원시값으로 바뀌어 `true`다.
+
+#### 같음을 판단하는 네 가지 알고리즘
+
+명세에는 "같다"의 정의가 네 개 있고, 연산자·메서드마다 다른 것을 쓴다. 차이는 `NaN`, `+0`과 `-0`, 타입 변환에서만 드러난다.
+
+| 알고리즘 | 쓰는 곳 | 타입 변환 | `NaN`과 `NaN` | `+0`과 `-0` |
+| --- | --- | --- | --- | --- |
+| IsLooselyEqual | `==` | 한다 | 다르다 | 같다 |
+| IsStrictlyEqual | `===`, `indexOf`, `lastIndexOf`, `switch`의 `case` | 안 한다 | 다르다 | 같다 |
+| SameValueZero | `includes`, `Map`·`Set`의 키, TypedArray·`Array`의 `includes` | 안 한다 | **같다** | 같다 |
+| SameValue | `Object.is`, `Object.defineProperty`가 값을 바꿨는지 볼 때 | 안 한다 | **같다** | **다르다** |
+
+```javascript
+[NaN].indexOf(NaN)   // -1 — === 기준이라 못 찾는다
+[NaN].includes(NaN)  // true — SameValueZero
+new Set([NaN, NaN]).size // 1
+Object.is(-0, 0)     // false
+Object.is(NaN, 0 / 0) // true
+```
+
+`NaN`이 섞일 수 있는 배열 검색에는 `includes`나 `findIndex(Number.isNaN)`을 쓴다. `-0`은 `Math.round(-0.4)`나 `-1 * 0`처럼 부호 있는 계산에서 생기고, 대부분의 연산에서 `0`과 똑같이 굴지만 `1 / -0`은 `-Infinity`다([[js-numbers|숫자]]). React가 상태 변화를 감지할 때 쓰는 비교가 `Object.is`다.
+
+`==`는 **추이성도 없다.** 두 쌍이 같아도 나머지 한 쌍은 다를 수 있다. 원시값과 래퍼 객체를 비교할 때도 두 연산자의 결과가 갈린다.
+
+```javascript
+0 == ''                         // true  — '' → 0
+0 == '0'                        // true  — '0' → 0
+'' == '0'                       // false — 둘 다 문자열이라 변환 없이 비교
+' \t\r\n ' == 0                 // true  — 공백뿐인 문자열은 0이 된다
+
+'abc' == new String('abc')      // true  — 객체를 원시값으로 바꿔 비교
+'abc' === new String('abc')     // false — 타입이 string과 object로 다르다
+```
 
 ### null·undefined와 크기 비교
 

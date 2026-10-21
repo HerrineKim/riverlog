@@ -4,11 +4,11 @@ concept: "Intersection Observer"
 summary: "스크롤 이벤트로 위치를 계산하는 대신, 요소가 화면(또는 스크롤 영역)에 얼마나 보이는지 브라우저가 알려 주는 IntersectionObserver. root·rootMargin·threshold 옵션, 무한 스크롤·지연 로딩·끝까지 읽음 감지 패턴, 크기 변화를 보는 ResizeObserver와 DOM 변화를 보는 MutationObserver를 정리한다."
 tags: ["browser", "web", "performance", "dom", "javascript"]
 source: other
-date: "2026-10-17"
-sources: ["https://wesbos.com/javascript/06-serious-practice-exercises/scroll-events-and-intersection-observer", "https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API", "https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver", "https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver", "https://web.dev/learn/performance/lazy-load-images-and-iframe-elements"]
+date: "2026-10-21"
+sources: ["https://wesbos.com/javascript/06-serious-practice-exercises/scroll-events-and-intersection-observer", "https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API", "https://developers.google.com/web/updates/2016/04/intersectionobserver", "https://developers.google.com/web/updates/2016/10/resizeobserver", "https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver", "https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver", "https://web.dev/learn/performance/lazy-load-images-and-iframe-elements"]
 ---
 
-> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, API 세부는 MDN으로 확인해 재구성한 노트다.
+> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, API 세부는 MDN으로 확인해 재구성한 노트다. 「[IntersectionObserver's coming into view](https://web.dev/articles/intersectionobserver)」, 「[ResizeObserver: it's like document.onresize for elements](https://web.dev/articles/resize-observer)」로 콜백 성질·iframe·ResizeObserver 세부를 보강했다.
 
 ## 왜 스크롤 이벤트 대신인가
 
@@ -55,6 +55,13 @@ document.querySelectorAll('.card').forEach((card) => observer.observe(card))
 
 관찰을 끝낼 때는 `unobserve(el)`(하나) 또는 `disconnect()`(전부)를 부른다. 컴포넌트가 사라질 때 `disconnect()`하지 않으면 관찰자가 남는다.
 
+- 요소마다 관찰자를 만들지 않는다. **관찰자 하나에 `observe()`를 여러 번** 부르는 편이 권장된다.
+- `intersectionRect`는 `boundingClientRect`와 `rootBounds`가 겹친 사각형, 즉 실제로 보이는 부분이다.
+- `root`로 지정한 요소는 관찰 대상 모두의 **조상**이어야 한다. `rootMargin`의 퍼센트 값은 `root`를 지정했을 때만 쓸 수 있다.
+- 콜백은 메인 스레드에서 돌지만 **낮은 우선순위로 비동기 전달**된다. 의도적으로 픽셀 단위로 정확하지도, 지연이 짧지도 않다. 스크롤 위치에 맞춰 움직이는 애니메이션에는 맞지 않고, 그런 효과는 CSS 스크롤 기반 애니메이션(`animation-timeline: scroll()`·`view()`)으로 만든다.
+- 다른 출처의 `<iframe>` 안에서도 자기 요소의 노출을 알 수 있다. 광고·소셜 위젯이 원래 주된 용도였다. 이때 `rootBounds`는 출처 간 정보 유출을 막으려고 `null`이 된다.
+- **Intersection Observer v2**(Chromium 전용)는 `trackVisibility: true`, `delay` 옵션과 `entry.isVisible`로 요소가 다른 요소에 가려지거나 투명도·필터로 감춰졌는지까지 판정한다. 클릭재킹·광고 노출 조작 방지용이고 계산 비용이 커서 `delay`를 100ms 이상으로 둬야 한다.
+
 ### threshold 1의 함정
 
 `threshold: 1`은 요소가 **100% 보일 때만** 알린다. 요소가 뷰포트보다 크면 결코 100%가 되지 않아 콜백이 오지 않는다. 긴 문단 전체가 아니라 **끝에 둔 작은 요소(센티널)** 를 관찰하거나 `threshold`를 낮춘다.
@@ -63,7 +70,7 @@ document.querySelectorAll('.card').forEach((card) => observer.observe(card))
 
 | 패턴 | 관찰 대상 | 처리 |
 | --- | --- | --- |
-| 무한 스크롤 | 목록 끝의 빈 센티널 요소 | 보이면 다음 페이지 요청. `rootMargin`을 크게 줘 미리 불러온다 |
+| 무한 스크롤 | 목록 끝의 빈 센티널 요소 | 보이면 다음 페이지 요청. `rootMargin`을 크게 줘 미리 불러온다. 항목마다 관찰하지 말고 센티널 하나를 새 끝으로 옮겨 재사용하면 `observe()`를 다시 부를 필요가 없다 |
 | 끝까지 읽음 확인 | 약관 스크롤 상자의 마지막 자식, `root`는 그 상자 | 보이면 「동의」 버튼을 활성화하고 `unobserve` |
 | 지연 로딩 | 화면 밖 이미지·iframe·무거운 위젯 | 보이기 직전 `src`를 넣거나 모듈을 `import()` |
 | 등장 애니메이션 | 섹션 | 보이면 클래스를 추가. 「동작 줄이기」 설정 사용자는 건너뛴다 |
@@ -87,6 +94,30 @@ document.querySelectorAll('.card').forEach((card) => observer.observe(card))
 
 - `window`의 `resize` 이벤트는 창 크기만 알려 준다. 사이드바가 접혀 요소만 좁아진 경우는 `ResizeObserver`가 잡는다. 레이아웃만 바꾸면 되는 일은 CSS 컨테이너 쿼리가 먼저다.
 - `MutationObserver`는 변경을 모아 마이크로태스크로 전달한다. 콜백에서 다시 DOM을 바꾸면 자기 자신을 또 깨울 수 있으니 조건을 둔다. 옵션과 쓰임은 [[mutation-observer|MutationObserver]]에 있다.
+
+### ResizeObserver 세부
+
+`resize` 이벤트 + `getBoundingClientRect()` 방식은 창 크기 변화만 잡고, 자식 추가·`display` 변경처럼 창은 그대로인데 요소 크기가 바뀌는 경우를 놓치며, 읽기·쓰기를 섞으면 레이아웃 스래싱을 일으킨다. `ResizeObserver`는 **원인과 상관없이 요소 크기 변화**를 알려 준다(Baseline 2020).
+
+```js
+const ro = new ResizeObserver((entries) => {
+  for (const entry of entries) {
+    const { inlineSize, blockSize } = entry.contentBoxSize[0];
+    entry.target.classList.toggle('narrow', inlineSize < 400);  // 요소 단위 브레이크포인트
+  }
+});
+ro.observe(chart);
+```
+
+| 항목 | 내용 |
+| --- | --- |
+| 무엇을 보나 | 기본은 **콘텐츠 박스**(테두리 박스 − 패딩). `observe(el, { box: 'border-box' })`로 바꿀 수 있다. SVG는 바운딩 박스를 준다 |
+| 무엇을 주나 | `contentRect`(옛 방식), `contentBoxSize`·`borderBoxSize`·`devicePixelContentBoxSize`(`inlineSize`·`blockSize`를 담은 배열. 다단 조각을 대비한 배열이라 지금은 원소가 하나) |
+| 언제 부르나 | **레이아웃 뒤, 페인트 전.** 콜백에서 레이아웃을 바꾸면 레이아웃만 다시 하고 페인트는 한 번이다 |
+| 무한 루프 방지 | 콜백 안에서 관찰 대상 크기를 바꾸면 같은 프레임에 다시 불리지만, 직전 처리한 요소보다 **DOM에서 더 깊은 요소**만 같은 프레임에 처리하고 나머지는 다음 프레임으로 미룬다. 이때 `ResizeObserver loop completed with undelivered notifications` 오류가 보고된다 |
+
+- 채팅창을 맨 아래에 붙여 두려면 `document.scrollingElement`와 메시지 목록을 함께 관찰하고 콜백에서 `scrollTop = scrollHeight`를 넣는다. 화면 회전과 새 메시지 추가(목록이 커진다)가 한 코드로 처리된다.
+- 콜백은 렌더링 직전에 돌기 때문에 무거운 작업은 다음 페인트를 늦춰 [[inp-optimization|INP]]를 나쁘게 한다. 콜백 안에서는 강제 리플로를 일으키는 읽기를 피하고 할 일을 최소로 둔다.
 
 ## 정리
 

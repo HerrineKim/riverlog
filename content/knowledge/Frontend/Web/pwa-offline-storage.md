@@ -4,11 +4,11 @@ concept: "Offline Storage"
 summary: "URL로 요청하는 자산은 Cache Storage에, 검색·조합할 구조화 데이터는 IndexedDB에 둔다. 저장소 할당량은 출처 단위로 묶이고 StorageManager.estimate()로 확인한다. 브라우저는 압박이 생기거나 오래 쓰지 않으면 데이터를 지우므로 persist()로 영속 저장을 요청하고, 지워진 뒤에도 앱이 온라인에서 다시 뜨게 만든다. 데이터를 뒤에서 최신으로 유지하는 백그라운드 동기화 계열 API도 정리한다."
 tags: ["frontend", "web", "pwa", "storage", "browser", "service-worker"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/pwa/offline-data", "https://web.dev/learn/pwa/assets-and-data", "https://web.dev/learn/pwa/update", "https://web.dev/learn/pwa/architecture", "https://web.dev/learn/pwa/complexity"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/pwa/offline-data", "https://web.dev/learn/pwa/assets-and-data", "https://web.dev/learn/pwa/update", "https://web.dev/learn/pwa/architecture", "https://web.dev/learn/pwa/complexity", "https://developers.google.com/web/fundamentals/instant-and-offline/web-storage/offline-for-pwa", "https://webkit.org/blog/14403/updates-to-storage-policy/"]
 ---
 
-> web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 자산과 데이터·오프라인 데이터·업데이트·아키텍처 모듈을 바탕으로 재구성한 노트다.
+> web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 자산과 데이터·오프라인 데이터·업데이트·아키텍처 모듈을 바탕으로 재구성한 노트다. 「[Storage for the web](https://web.dev/articles/storage-for-the-web)」으로 브라우저별 할당량·초과 처리·삭제 정책을, WebKit 블로그 「[Updates to Storage Policy](https://webkit.org/blog/14403/updates-to-storage-policy/)」로 Safari 17 할당량을 보강했다.
 
 ## 오프라인 경험의 단계
 
@@ -92,7 +92,15 @@ if (navigator.storage?.estimate) {
 ```
 
 - `navigator.storage`는 `StorageManager`다. `localStorage`의 `Storage` 인터페이스와 헷갈리기 쉽다.
-- 할당량은 브라우저마다 다르고 보통 기기 디스크 크기에 비례해 넉넉하다. 정확한 값은 `estimate()`로 확인한다. 불투명 응답은 실제보다 크게 계산된다.
+- 할당량은 브라우저마다 다르고 보통 기기 디스크 크기에 비례해 넉넉하다(최소 수백 MB, 많으면 수백 GB). 정확한 값은 `estimate()`로 확인한다. 불투명 응답은 실제보다 크게 계산된다.
+
+| 브라우저 | 할당량 |
+| --- | --- |
+| Chrome | 브라우저 전체가 디스크의 80%, 한 출처가 **전체 디스크의 60%**까지. 시크릿 모드는 약 5%, 「창을 닫을 때 사이트 데이터 삭제」를 켜면 약 300MB. 남은 공간과 상관없이 늘 60%를 보고해 저장량 추측(핑거프린팅)을 막는다 |
+| Firefox | 브라우저 전체가 남은 디스크의 50%, 같은 eTLD+1 묶음(`example.com`, `www.example.com`, `foo.bar.example.com`)이 2GB까지. 영속 저장이면 더 크다 |
+| Safari 17+ | 브라우저 앱에서 한 출처가 전체 디스크의 약 60%, 앱 안 WebView는 약 15%. 과거에는 1GB에서 사용자에게 200MB씩 늘릴지 물었다 |
+
+할당량을 넘으면 IndexedDB 쓰기는 트랜잭션이 중단돼 `onabort`의 `event.target.error.name`이 `'QuotaExceededError'`가 되고, Cache API의 `put()`·`add()`는 같은 이름의 `DOMException`으로 거부된다. **쓰기 오류는 늘 잡아서** 오래 안 쓴 항목부터 지우거나, 크기순으로 지우거나, 사용자에게 지울 것을 고르게 한다.
 - Chromium DevTools의 애플리케이션 > 저장소에서 사용량 분해와 할당량 시뮬레이션을 볼 수 있다. Firefox·Safari에는 요약 화면이 없다.
 
 ## 삭제(eviction)와 영속 저장
@@ -101,7 +109,7 @@ if (navigator.storage?.estimate) {
 
 | 누가 | 언제 |
 | --- | --- |
-| 브라우저 | 저장 공간 압박이 생길 때, 또는 브라우저 탭에서 쓰던 사이트를 몇 주 방문하지 않았을 때 |
+| 브라우저 | 저장 공간 압박이 생길 때(Chromium·Firefox는 **가장 오래 안 쓴 출처의 데이터를 통째로** 지우는 LRU 방식), 또는 사용자와 상호작용 없이 일정 기간이 지났을 때(Safari는 13.1부터 스크립트로 쓴 저장소 전체에 **7일 상한**. 홈 화면에 추가한 웹 앱에는 적용하지 않는다) |
 | 사용자 | 브라우저 설정에서 사이트 데이터를 지울 때. 영속 저장이어도 막지 못한다 |
 
 일부 플랫폼은 설치된 PWA의 데이터를 자동으로 지우지 않는다. 그래도 지워질 수 있다고 가정한다. **지워진 뒤에도 설치된 PWA는 온라인에서 다시 떠야 한다.** 서비스 워커 생명주기가 처음부터 다시 돌고 네트워크에서 자산을 받는다.
@@ -118,8 +126,12 @@ if (navigator.storage?.persist) {
 | --- | --- |
 | Firefox | 사용자에게 권한을 묻는다 |
 | Chromium | 묻지 않고 사이트의 중요도(설치 여부, 방문 빈도, 알림 권한 등)로 판단한다 |
+| Safari 17+ | 묻지 않고 홈 화면 웹 앱으로 열렸는지 같은 기준으로 판단한다 |
 
 영속 저장이 허락되면 서비스 워커 등록, IndexedDB, Cache Storage를 브라우저가 자동으로 지우지 않는다. 오프라인 편집기처럼 사용자 데이터가 기기에만 있는 앱에서 요청한다.
+
+- **Storage Buckets API**(`navigator.storageBuckets.open('drafts', { persisted: true })`, Chromium 전용)는 한 출처 안에 저장소를 여러 통으로 나눠, 통마다 영속 여부와 삭제 우선순위를 따로 정한다. 「출처 전체를 지우거나 다 지키거나」의 양자택일을 피한다.
+- 관계형 데이터가 필요하면 폐기된 WebSQL 대신 **SQLite Wasm + OPFS(Origin Private File System)** 를 쓴다. 출처 전용 파일 시스템 위에서 SQLite를 돌리는 방식이다.
 
 ## 데이터를 최신으로 유지하기
 

@@ -4,12 +4,13 @@ concept: "Accessible CSS"
 summary: "CSS는 표현만 맡고 의미는 HTML이 진다. 소스 순서와 화면 순서를 맞추고, 숨김은 모두에게 숨길지(display:none·hidden) 화면에서만 숨길지(visually-hidden) 구분한다. 400% 확대에서도 가로 스크롤 없이 읽히게(1.4.10 Reflow), 사용자가 줄·글자 간격을 넓혀도 깨지지 않게(1.4.12 Text Spacing) 만들고, 글꼴·정렬·글줄 길이로 읽기 부담을 줄인다."
 tags: ["accessibility", "frontend", "css", "typography", "responsive"]
 source: other
-date: "2026-10-17"
-sources: ["https://webaim.org/techniques/css/", "https://webaim.org/techniques/css/invisiblecontent/", "https://webaim.org/techniques/reflow/", "https://webaim.org/techniques/fonts/", "https://webaim.org/techniques/textlayout/", "https://webaim.org/techniques/screenreader/", "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html", "https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html", "https://developer.mozilla.org/en-US/docs/Web/CSS/clip", "https://web.dev/learn/accessibility/typography", "https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3"]
+date: "2026-10-21"
+sources: ["https://webaim.org/techniques/css/", "https://webaim.org/techniques/css/invisiblecontent/", "https://webaim.org/techniques/reflow/", "https://webaim.org/techniques/fonts/", "https://webaim.org/techniques/textlayout/", "https://webaim.org/techniques/screenreader/", "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html", "https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html", "https://developer.mozilla.org/en-US/docs/Web/CSS/clip", "https://web.dev/learn/accessibility/typography", "https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/IS%2CIR%20%EA%B8%B0%EB%B2%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%EC%8A%A4%ED%81%AC%EB%A6%B0%20%EB%A6%AC%EB%8D%94%20%EC%82%AC%EC%9A%A9%EC%9E%90%EB%A5%BC%20%EC%9C%84%ED%95%9C%20%ED%85%8D%EC%8A%A4%ED%8A%B8%20%EC%88%A8%EA%B9%80%20%EB%B0%A9%EB%B2%95.md"]
 ---
 
 > WebAIM의 「[Accessible CSS](https://webaim.org/techniques/css/)」, 「[Invisible Content Just for Screen Reader Users](https://webaim.org/techniques/css/invisiblecontent/)」, 「[Responsive Design and Reflow](https://webaim.org/techniques/reflow/)」, 「[Typefaces and Fonts](https://webaim.org/techniques/fonts/)」, 「[Text/Typographical Layout](https://webaim.org/techniques/textlayout/)」, 「[Designing for Screen Reader Compatibility](https://webaim.org/techniques/screenreader/)」을 바탕으로, WCAG 2.2 기준과 숨김 패턴은 W3C·MDN 문서로 확인해 재구성하고, 글꼴 고르기와 글줄 폭은 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 타이포그래피 편으로 보강한 노트다.
 > 숨긴 텍스트의 공백과 화면을 보는 스크린 리더 사용자 부분은 AOA11Y의 강의 연재 「[항공사의 ARIA 적용 사례 살펴보기](https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3)」를 바탕으로 보강했다.
+> IR 기법과 숨김 실수는 「[Frontend_TIL: IS, IR 기법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/IS%2CIR%20%EA%B8%B0%EB%B2%95.md)」·「[스크린 리더 사용자를 위한 텍스트 숨김 방법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%EC%8A%A4%ED%81%AC%EB%A6%B0%20%EB%A6%AC%EB%8D%94%20%EC%82%AC%EC%9A%A9%EC%9E%90%EB%A5%BC%20%EC%9C%84%ED%95%9C%20%ED%85%8D%EC%8A%A4%ED%8A%B8%20%EC%88%A8%EA%B9%80%20%EB%B0%A9%EB%B2%95.md)」을 바탕으로 보강했다.
 
 ## CSS와 접근성의 관계
 
@@ -62,7 +63,7 @@ CSS의 `reading-flow` 속성은 그리드·플렉스의 시각 순서를 읽기�
 | 화면에서만 숨기고 읽게 한다 | visually-hidden 클래스 | 아이콘 버튼 이름, 숨긴 label, "현재 위치:" 같은 짧은 맥락 |
 | 읽지 않게만 한다 | `aria-hidden="true"` | 장식 아이콘. 포커스 가능한 요소에는 쓰지 않는다 |
 | 쓰지 않는다 | `width: 0; height: 0`, `font-size: 0`, `line-height: 0` | 스크린 리더도 무시할 수 있고, 검색 엔진이 숨긴 텍스트 스팸으로 볼 수 있다 |
-| 쓰지 않는다 | `text-indent: -10000px` | 읽히긴 하지만 포커스 가능한 요소에 쓰면 보이지 않는 곳에 포커스가 간다. RTL 문서에서도 깨진다 |
+| 쓰지 않는다 | `text-indent: -10000px`, 박스 크기만큼 `padding`을 주고 `overflow: hidden` | 배경 이미지 위의 글을 밀어내 숨기던 IR(Image Replacement) 기법이다. 읽히긴 하지만 포커스 가능한 요소에 쓰면 보이지 않는 곳에 포커스가 간다. RTL 문서에서도 깨진다. 의미 있는 이미지는 `<img alt>`나 `role="img"` + `aria-label`로 바꾼다. 역할 없는 `<div>`에 준 `aria-label`은 읽히지 않는다 |
 
 ### visually-hidden 패턴
 

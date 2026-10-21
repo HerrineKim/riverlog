@@ -4,9 +4,11 @@ concept: "Controlled Component"
 summary: "입력값을 React state로 관리하는 제어 컴포넌트, 여러 입력 다루기, 파생 값 계산, 그리고 React 19의 폼 액션(useActionState·useFormStatus)."
 tags: ["react", "form", "state", "frontend"]
 source: til
-date: "2026-10-13"
-sources: ["https://react.dev/blog/2024/12/05/react-19", "https://react.dev/reference/react/useActionState"]
+date: "2026-10-21"
+sources: ["https://react.dev/blog/2024/12/05/react-19", "https://react.dev/reference/react/useActionState", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Controlled%20components.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/map%20function%20%EC%82%AC%EC%9A%A9%EC%8B%9C%2C%20radio%20input%20%EC%B2%AB%EB%B2%88%EC%A7%B8%20input%EC%9D%84%20default%20checked%20%EA%B0%92%EC%9C%BC%EB%A1%9C%20%ED%95%98%EB%8A%94%EB%B2%95.md"]
 ---
+
+> 「[Frontend_TIL: Controlled components](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Controlled%20components.md)」와 「[map function 사용시 radio input 첫번째를 default checked로 하는법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/map%20function%20%EC%82%AC%EC%9A%A9%EC%8B%9C%2C%20radio%20input%20%EC%B2%AB%EB%B2%88%EC%A7%B8%20input%EC%9D%84%20default%20checked%20%EA%B0%92%EC%9C%BC%EB%A1%9C%20%ED%95%98%EB%8A%94%EB%B2%95.md)」을 바탕으로 보강했다.
 
 HTML의 `<input>`, `<textarea>`, `<select>`는 원래 스스로 값을 기억한다. React에서는 보통 이 값을 state로 옮겨, React가 값을 통제하게 만든다. 이렇게 값이 React의 통제를 받는 폼 요소를 **제어 컴포넌트(Controlled Component)** 라고 한다.
 
@@ -38,6 +40,23 @@ function NameForm() {
 - `value={state}`로 값을 내려 주고, `onChange`에서 state를 갱신한다.
 - 값이 state에 있으므로 입력을 **직접 제어**할 수 있다: 대문자 변환, 길이 제한, 실시간 검증, 다른 곳에서 값 초기화(`setValue('')`) 등.
 - `onChange` 없이 `value`만 주면 입력이 막힌다(읽기 전용 경고). 일부러 수정 가능하게 열어 두려면 `value`에 `undefined`나 `null`을 준다.
+- React의 `onChange`는 DOM의 `change`(포커스가 떠날 때)가 아니라 **`input` 이벤트처럼 키를 칠 때마다** 발생한다. 그래서 매 입력이 state로 바로 들어간다.
+
+### 비제어 컴포넌트: 초기값만 주기
+
+값을 state로 옮기지 않고 DOM이 기억하게 두면 **비제어 컴포넌트(Uncontrolled Component)**다. 초기값은 `value`·`checked` 대신 `defaultValue`·`defaultChecked`로 준다. 한 번만 적용되고 이후 값은 사용자가 바꾼다. 값은 제출할 때 `FormData`나 `ref`로 읽는다.
+
+```jsx
+// map으로 만든 라디오 묶음에서 첫 번째만 처음에 선택
+{types.map((type, i) => (
+  <label key={type}>
+    <input type="radio" name="md" value={type} defaultChecked={i === 0} />
+    {type}
+  </label>
+))}
+```
+
+`checked={i === 0}`으로 쓰면 제어 컴포넌트가 되어 `onChange` 없이는 다른 항목을 고를 수 없다. 한 요소에 `value`와 `defaultValue`를 함께 주지 않는다.
 
 ## 요소별·여러 입력 다루기
 

@@ -1,14 +1,14 @@
 ---
 title: "CSS 점진적 향상: 폴백과 피처 쿼리"
 concept: "Progressive Enhancement"
-summary: "새 CSS 기능을 지원하지 않는 브라우저를 '똑같이 보이게'가 아니라 '쓸 만하게' 지원하는 방식. 모르는 CSS는 무시된다는 규칙, 새 레이아웃이 옛 레이아웃을 덮어쓰는 규칙, @supports 피처 쿼리로 폴백을 정리하는 패턴, 무거운 폴리필을 피하는 이유, 실제 브라우저 테스트까지."
+summary: "새 CSS 기능을 지원하지 않는 브라우저를 '똑같이 보이게'가 아니라 '쓸 만하게' 지원하는 방식. 모르는 CSS는 무시된다는 규칙, 새 레이아웃이 옛 레이아웃을 덮어쓰는 규칙, @supports 피처 쿼리로 폴백을 정리하는 패턴, 브라우저 대신 컴포넌트에 매기는 지원 등급, 무거운 폴리필을 피하는 이유, 실제 브라우저 테스트까지."
 tags: ["css", "browser", "layout", "frontend"]
 source: other
-date: "2026-10-13"
-sources: ["https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb%a1%9c-%eb%af%b8%ec%a7%80%ec%9b%90-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%a7%80%ec%9b%90%ed%95%98%ea%b8%b0/", "https://webactually.com/2017/11/30/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83%ec%9d%84-%ec%a7%80%ea%b8%88-%ec%82%ac%ec%9a%a9%ed%95%b4%eb%8f%84-%ec%a0%95%eb%a7%90-%ea%b4%9c%ec%b0%ae%ec%9d%84%ea%b9%8c%ec%9a%94/", "https://webactually.com/2020/01/29/ie%EC%97%90%EC%84%9C%EC%9D%98-css-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-ie-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%98%A4%ED%95%B4%EB%A5%BC/", "https://webactually.com/2018/10/02/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-css-%ea%b7%b8%eb%a6%ac%eb%93%9c%ec%99%80-autoprefixer/", "https://webactually.com/2018/11/13/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ea%b0%84%ea%b2%a9%ec%9c%bc%eb%a1%9c-%ec%9e%90%eb%8f%99-%eb%b0%b0%ec%b9%98/", "https://webactually.com/2020/07/27/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ec%a4%91%eb%b3%b5%eb%90%9c-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%98%81%ec%97%ad-%ec%9d%b4%eb%a6%84/", "https://web.dev/baseline", "https://web.dev/blog/same-document-view-transitions-are-now-baseline-newly-available", "https://developer.mozilla.org/en-US/docs/Web/CSS/anchor-name"]
+date: "2026-10-21"
+sources: ["https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb%a1%9c-%eb%af%b8%ec%a7%80%ec%9b%90-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%a7%80%ec%9b%90%ed%95%98%ea%b8%b0/", "https://webactually.com/2017/11/30/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83%ec%9d%84-%ec%a7%80%ea%b8%88-%ec%82%ac%ec%9a%a9%ed%95%b4%eb%8f%84-%ec%a0%95%eb%a7%90-%ea%b4%9c%ec%b0%ae%ec%9d%84%ea%b9%8c%ec%9a%94/", "https://webactually.com/2020/01/29/ie%EC%97%90%EC%84%9C%EC%9D%98-css-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-ie-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%98%A4%ED%95%B4%EB%A5%BC/", "https://webactually.com/2018/10/02/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-css-%ea%b7%b8%eb%a6%ac%eb%93%9c%ec%99%80-autoprefixer/", "https://webactually.com/2018/11/13/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ea%b0%84%ea%b2%a9%ec%9c%bc%eb%a1%9c-%ec%9e%90%eb%8f%99-%eb%b0%b0%ec%b9%98/", "https://webactually.com/2020/07/27/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ec%a4%91%eb%b3%b5%eb%90%9c-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%98%81%ec%97%ad-%ec%9d%b4%eb%a6%84/", "https://web.dev/baseline", "https://web.dev/blog/same-document-view-transitions-are-now-baseline-newly-available", "https://developer.mozilla.org/en-US/docs/Web/CSS/anchor-name", "https://github.com/yui/yui3/wiki/Graded-Browser-Support", "https://www.filamentgroup.com/lab/grade-the-components.html"]
 ---
 
-> Rachel Andrew의 「[CSS 그리드로 미지원 브라우저 지원하기](https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb%a1%9c-%eb%af%b8%ec%a7%80%ec%9b%90-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%a7%80%ec%9b%90%ed%95%98%ea%b8%b0/)」(2018.01)·「CSS 그리드 레이아웃을 지금 사용해도 정말 괜찮을까」(2017.11)와 Daniel Tonon의 「IE에서 CSS 그리드 사용하기」 시리즈(2018~2020, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다.
+> Rachel Andrew의 「[CSS 그리드로 미지원 브라우저 지원하기](https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb%a1%9c-%eb%af%b8%ec%a7%80%ec%9b%90-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%a7%80%ec%9b%90%ed%95%98%ea%b8%b0/)」(2018.01)·「CSS 그리드 레이아웃을 지금 사용해도 정말 괜찮을까」(2017.11)와 Daniel Tonon의 「IE에서 CSS 그리드 사용하기」 시리즈(2018~2020, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다. 지원 등급은 Yahoo의 「[Graded Browser Support](https://github.com/yui/yui3/wiki/Graded-Browser-Support)」와 Filament Group의 「[Grade components, not browsers](https://www.filamentgroup.com/lab/grade-the-components.html)」(2013)를 바탕으로 더했다.
 
 ## 점진적 향상이란
 
@@ -39,6 +39,25 @@ CSS 그리드·플렉스박스는 이제 모든 주요 브라우저가 지원한
 - 추측하지 말고 **실제 방문자 분석 데이터**를 본다. 모바일에서 못 쓰는 사이트라면 모바일 방문이 적게 잡혀 데이터가 왜곡된다.
 - 데이터가 없으면 Can I Use의 지역별 사용 통계나 Baseline(웹 플랫폼 기능이 모든 주요 브라우저에서 쓸 수 있는지 표시하는 기준)을 참고한다.
 - 사이트의 대상 지역을 잊지 않는다. 저사양 기기와 데이터 절약형 브라우저가 많은 시장에서는 새 기능 지원이 늦다.
+
+### 지원 등급: 브라우저가 아니라 컴포넌트에 매긴다
+
+지원 범위를 문서로 정하는 고전적인 틀은 Yahoo의 **등급별 브라우저 지원(Graded Browser Support)** 이다. 「지원」을 똑같은 경험이 아니라 등급으로 나눴다.
+
+| 등급 | 받는 것 | QA |
+| --- | --- | --- |
+| A | 전체 경험(스타일·스크립트·고급 기능) | 모두 테스트하고 버그를 고친다 |
+| C | 시맨틱 HTML만으로 된 핵심 콘텐츠와 기능 | 대표 브라우저 한두 개, 또는 CSS·JS를 끈 최신 브라우저로 테스트 |
+| X | 알 수 없는·드문 브라우저. 유능하다고 가정하고 A와 같은 것을 준다 | 테스트하지 않는다 |
+
+C 등급은 블랙리스트, A 등급은 화이트리스트로 브라우저를 미리 분류했다. 막 나온 A 등급 브라우저의 새 버전은 아직 테스트 전이라 X 등급이다.
+
+브라우저 단위 등급에는 한계가 있다. 지금 방문자 대부분은 A 등급이고, 한 브라우저가 어떤 기능은 지원하고 어떤 기능은 지원하지 않는다. 지원 범위는 사다리가 아니라 **산점도**다. 그래서 **컴포넌트마다 등급을 매긴다.**
+
+- 컴포넌트마다 기본 경험과 향상된 경험(필요하면 중간 단계)을 정한다. 예: 데이터 시각화는 기본이 HTML 표, 향상이 Canvas 차트. 내비게이션은 기본이 페이지 이동 링크, 향상이 `fetch` + `history.pushState`로 부분 갱신.
+- 어느 단계를 줄지는 브라우저 이름이 아니라 **그 컴포넌트가 쓰는 기능의 지원 여부**(`@supports`, `'x' in window`)로 정한다.
+- 과거에는 페이지 전체를 두 등급으로 가르는 **컷 더 머스터드(Cut the Mustard)** 검사를 많이 썼다. `'querySelector' in document && 'addEventListener' in window`처럼 몇 가지 기능이 있으면 향상 스크립트를 싣고 없으면 HTML만 준다. 지금은 `<script type="module">`을 이해하는 브라우저에만 최신 번들을 싣는 것이 같은 역할을 한다.
+- UA로 브라우저를 판별하는 것은 기능 감지가 불가능한 마지막 경우에만 쓴다.
 
 ## CSS가 이미 가진 두 가지 장치
 
@@ -130,4 +149,4 @@ PostCSS·Autoprefixer·Lightning CSS 같은 도구는 접두사를 붙이거나 
 - 새어 나오는 값만 `@supports` 안에서 되돌린다. 선택자 지원은 `@supports selector()`로 묻는다.
 - 무거운 폴리필 대신 단순한 경험을 준다. 변환 도구 결과는 실제 브라우저로 확인한다.
 
-관련 노트: [[css-grid|CSS 그리드 레이아웃]], [[flexbox|Float와 Flexbox 레이아웃]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]]
+관련 노트: [[css-grid|CSS 그리드 레이아웃]], [[flexbox|Float와 Flexbox 레이아웃]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[postcss|PostCSS와 CSS 변환 도구]], [[css-houdini|CSS Houdini: 렌더링 엔진에 끼어드는 API]]

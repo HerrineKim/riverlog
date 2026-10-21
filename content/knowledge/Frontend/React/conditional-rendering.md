@@ -4,8 +4,11 @@ concept: "Conditional Rendering"
 summary: "조건에 따라 서로 다른 컴포넌트를 그리거나 아예 그리지 않는 React의 렌더링 패턴."
 tags: ["react", "jsx", "frontend"]
 source: til
-date: "2026-10-11"
+date: "2026-10-21"
+sources: ["https://react.vlpt.us/basic/06-conditional-rendering.html", "https://react.vlpt.us/basic/26-componentDidCatch-and-sentry.html"]
 ---
+
+> 개인 TIL을 바탕으로, 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[조건부 렌더링](https://react.vlpt.us/basic/06-conditional-rendering.html)」을 바탕으로 보강했다.
 
 **조건부 렌더링**은 조건에 따라 화면에 무엇을 그릴지(또는 그리지 않을지) 달라지는 것이다. JSX의 `{}` 안에는 `if`문을 쓸 수 없으므로, JSX 밖의 `if`나 JSX 안의 표현식(`&&`, `? :`)을 상황에 맞게 고른다.
 
@@ -89,6 +92,8 @@ function WarningBanner({ warning }) {
 ```
 
 `null`을 반환해도 컴포넌트의 생명주기(effect 등)는 그대로 동작한다.
+
+JSX에서 `null`, `undefined`, `true`, `false`는 아무것도 그리지 않는다. `&&`와 삼항 연산자의 "안 그리는 쪽"이 동작하는 이유다. 숫자 `0`과 빈 문자열은 예외라서 앞의 `&&` 주의가 생긴다. 데이터가 아직 없을 때 `if (!user) return null`로 먼저 빠져나가는 것(null checking)은 `undefined.id`를 읽다가 앱 전체가 흰 화면이 되는 렌더링 에러를 막는 가장 흔한 방어다.
 
 ## 핵심 정리
 

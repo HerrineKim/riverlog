@@ -4,11 +4,11 @@ concept: "PWA"
 summary: "PWA는 HTTPS·웹 앱 매니페스트·서비스 워커 세 가지를 갖춘 웹사이트일 뿐이고, 사이트 종류와 상관없이 득이 된다. 서비스 워커로 캐시를 직접 다룰 수 있게 된 만큼, 필요한 것만 작게 요청하고 미디어를 중요도별로 나눠 캐시하고, 캐시 크기를 제한해 사용자의 데이터와 디스크를 아낀다."
 tags: ["frontend", "web", "cache", "performance", "browser"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/pwa", "https://web.dev/learn/pwa/progressive-web-apps", "https://web.dev/learn/pwa/getting-started", "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/", "https://webkit.org/blog/17333/webkit-features-in-safari-26-0/", "https://webactually.com/2017/09/28/%ec%9b%b9-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%8a%94-pwa%ec%9d%b4%ec%96%b4%ec%95%bc-%ed%95%9c%eb%8b%a41/", "https://webactually.com/2020/09/23/PWA-%EC%8B%9C%EB%8C%80%EC%9D%98-%EC%BA%90%EC%8B%9C-%EC%A0%84%EB%9E%B5/"]
+date: "2026-10-21"
+sources: ["https://developers.google.com/web/progressive-web-apps/checklist", "https://web.dev/learn/pwa", "https://web.dev/learn/pwa/progressive-web-apps", "https://web.dev/learn/pwa/getting-started", "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/", "https://webkit.org/blog/17333/webkit-features-in-safari-26-0/", "https://webactually.com/2017/09/28/%ec%9b%b9-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%8a%94-pwa%ec%9d%b4%ec%96%b4%ec%95%bc-%ed%95%9c%eb%8b%a41/", "https://webactually.com/2020/09/23/PWA-%EC%8B%9C%EB%8C%80%EC%9D%98-%EC%BA%90%EC%8B%9C-%EC%A0%84%EB%9E%B5/"]
 ---
 
-> Aaron Gustafson의 「웹 프로젝트는 PWA이어야 한다」(웹액츄얼리 번역, 2017.09)와 「PWA 시대의 캐시 전략」(웹액츄얼리 번역, 2020.09)을 바탕으로, web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 PWA 개요·시작하기 모듈과 WebKit 블로그로 지원 범위를 보강해 재구성한 노트다.
+> Aaron Gustafson의 「웹 프로젝트는 PWA이어야 한다」(웹액츄얼리 번역, 2017.09)와 「PWA 시대의 캐시 전략」(웹액츄얼리 번역, 2020.09)을 바탕으로, web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 PWA 개요·시작하기 모듈과 WebKit 블로그로 지원 범위를 보강해 재구성한 노트다. 체크리스트 세부는 「[What makes a good Progressive Web App?](https://web.dev/articles/pwa-checklist)」로 보강했다.
 
 ## PWA란
 
@@ -55,6 +55,11 @@ sources: ["https://web.dev/learn/pwa", "https://web.dev/learn/pwa/progressive-we
 | 모든 화면 크기에 반응 | 검색으로 찾을 수 있게(canonical URL, 색인 가능한 콘텐츠) |
 | 브라우저 기본 대신 자체 오프라인 페이지 | 어떤 입력 방식이든, 화면 크기와 무관하게 |
 | 설치 가능 | 권한 요청 전에 맥락 설명, 쓸 수 있는 곳에서 강력한 기능 사용 |
+| | 건강한 코드: 알려진 취약점이 있는 라이브러리·폐기된 API·`document.write()`·passive가 아닌 스크롤 리스너를 쓰지 않고, 분석·서드파티 스크립트가 실패해도 앱이 깨지지 않게 |
+
+- 「모든 브라우저에서 동작」은 점진적 향상으로 만든다. 핵심 기능을 가장 단순한 기술(HTML 폼의 POST 제출)로 먼저 만들고, 기능 감지로 확인한 뒤 JS 검증·AJAX 제출을 덧입힌다.
+- 알림·위치·자격 증명 같은 권한 프롬프트는 페이지 로드 때 띄우지 않는다. 필요한 순간에 이유를 먼저 보여 준 뒤 요청해야 수락률과 신뢰가 지켜진다.
+- 과거에는 Lighthouse에 PWA 점수 영역이 있었지만 Lighthouse 12(2024)에서 빠졌다. 설치 가능 여부는 DevTools 애플리케이션 > 매니페스트 패널에서 확인한다.
 
 자세한 주제는 각 노트에 있다.
 

@@ -4,11 +4,12 @@ concept: "Roadmap"
 summary: "웹 표준(HTML·CSS·JavaScript·DOM)에서 TypeScript, React와 메타 프레임워크, 데이터 가져오기, 테스트·배포로 이어지는 프론트엔드 학습 순서, 필수와 관심·직무에 따른 선택 기술, 함께 쌓을 CS 기초, 공부하는 방법."
 tags: ["frontend", "roadmap", "career"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://miryang.dev/blog/how-studied-frontend", "https://roadmap.sh/frontend", "https://www.zerocho.com", "https://poiemaweb.com/", "https://github.com/yjs03057/33-js-concepts", "https://github.com/lydiahallie/javascript-questions/blob/master/ko-KR/README-ko_KR.md", "https://ui.toast.com/fe-guide/ko", "https://github.com/naver/fe-news", "https://ko.javascript.info", "https://developer.mozilla.org/ko/docs/A_re-introduction_to_JavaScript"]
+date: "2026-10-21"
+sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/frontEnd/%EC%8B%A4%EB%A0%A5%EC%9E%88%EB%8A%94%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EA%B0%9C%EB%B0%9C%EC%9E%90.md", "https://miryang.dev/blog/how-studied-frontend", "https://roadmap.sh/frontend", "https://www.zerocho.com", "https://poiemaweb.com/", "https://github.com/yjs03057/33-js-concepts", "https://github.com/lydiahallie/javascript-questions/blob/master/ko-KR/README-ko_KR.md", "https://ui.toast.com/fe-guide/ko", "https://github.com/naver/fe-news", "https://ko.javascript.info", "https://developer.mozilla.org/ko/docs/A_re-introduction_to_JavaScript"]
 ---
 
 > MiryangJung의 「내가 프론트엔드를 학습한 방법」(2022.05), roadmap.sh의 Frontend 로드맵, 제로초(ZeroCho)의 프론트엔드 로드맵 다이어그램을 바탕으로 재구성한 노트다.
+> 「공부하는 방법」의 범위 좁히기·기술이 생긴 이유 읽기·원문 따라가기는 「[Frontend_TIL: 실력있는 프론트엔드 개발자](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/frontEnd/%EC%8B%A4%EB%A0%A5%EC%9E%88%EB%8A%94%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EA%B0%9C%EB%B0%9C%EC%9E%90.md)」를 바탕으로 보강했다.
 
 프론트엔드는 배울 것이 많아 보이지만, **앞 단계가 다음 단계의 토대**가 되도록 순서를 잡으면 수월하다. 라이브러리보다 웹 표준이 먼저이고, 프레임워크는 하나만 깊게 익힌 뒤 범주로 넓힌다.
 
@@ -74,10 +75,14 @@ HTML → CSS → JavaScript → DOM·브라우저 → Git/GitHub → TypeScript
 | 방법 | 구체적으로 |
 | --- | --- |
 | 배우고 바로 만들기 | 강의 하나를 끝내면 한 페이지짜리라도 직접 만든다. 단계마다 작은 개인 프로젝트를 하나씩 남긴다 |
-| 잘 만든 코드를 통째로 읽기 | 완성도 높은 오픈 소스 저장소와 PR을 파일 하나하나 열어 읽는다 |
+| 범위를 좁혀 시작하기 | 다 배우려 하지 않는다. HTML 태그도 실제 서비스가 쓰는 것은 수십 개다. 실무에서 쓰는 것부터, 공식 문서를 기준으로 익힌다 |
+| 잘 만든 코드를 통째로 읽기 | 완성도 높은 오픈 소스 저장소와 PR을 파일 하나하나 열어 읽는다. 가고 싶은 회사가 공개한 코드와 기술 블로그도 좋은 재료다 |
+| 기술이 생긴 이유부터 읽기 | 라이브러리 문서의 「왜 만들었나(Motivation)」, 기존 도구와의 비교를 먼저 읽는다. 이유를 알면 쓰임새와 모범 사례가 따라온다 |
 | 에러로 배우기 | 기존 프로젝트에 TypeScript를 붙이고 쏟아지는 타입 에러를 직접 고친다 |
-| 묻고 기록하기 | 검색하고 커뮤니티에 묻고, 답을 문서로 정리해 공유한다 |
-| README 쓰기 | 프로젝트마다 무엇을 왜 했는지, 어떤 문제를 어떻게 풀었는지 남긴다 |
+| 가져온 코드는 고쳐 보기 | 검색으로 찾은 코드를 붙이고 끝내지 않는다. 일부러 바꾸고 망가뜨려 보며 원리를 확인한다 |
+| 묻고 기록하기 | 검색하고 커뮤니티에 묻고, 답을 문서로 정리해 공유한다. 남에게 설명하듯 쓰면 모르는 곳이 드러난다([[tech-blogging\|기술 블로그 쓰기]]) |
+| README 쓰기 | 프로젝트마다 무엇을 왜 했는지, 어떤 문제를 어떻게 풀었는지 남긴다. 면접에서는 「써 봤더니 이런 장단점이 있었다」까지 말할 수 있어야 한다 |
+| 흐름은 원문으로 따라가기 | 새 도구는 영어권에서 먼저 나온다. 공식 블로그와 GitHub Trending을 훑어 반복해 보이는 이름을 눈여겨본다 |
 | AI 도구는 설명을 듣는 데 쓰기 | 생성된 코드를 그대로 붙이지 말고, 왜 그렇게 동작하는지 설명할 수 있을 때 받아들인다 |
 
 ### 기본 자료

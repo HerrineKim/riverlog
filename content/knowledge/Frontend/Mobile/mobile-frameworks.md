@@ -1,14 +1,14 @@
 ---
 title: "모바일 앱 프레임워크 비교: 네이티브·하이브리드·크로스 플랫폼"
 concept: "Cross Platform"
-summary: "네이티브, 웹뷰 기반 하이브리드, 네이티브로 컴파일되는 크로스 플랫폼 앱의 원리와 장단점."
+summary: "네이티브, 웹뷰 기반 하이브리드, 네이티브로 컴파일되는 크로스 플랫폼 앱의 원리와 장단점. PhoneGap·Cordova에서 Capacitor로 이어진 하이브리드 계보와 흔한 실수(deviceready, CDN 자산, 버전 고정, CSP, 웹사이트 감싸기)도 정리한다."
 tags: ["mobile", "react-native", "flutter", "architecture"]
 source: notion
-date: "2026-10-20"
-sources: ["https://d2.naver.com/helloworld/3384599"]
+date: "2026-10-21"
+sources: ["https://d2.naver.com/helloworld/3384599", "https://github.com/jessemonroy650/top-phonegap-mistakes/blob/master/new-to-Phonegap.md"]
 ---
 
-> 크로스 플랫폼을 평가하는 기준과 방법은 NAVER D2의 「[지식iN 앱을 Flutter로 개발하는 이유](https://d2.naver.com/helloworld/3384599)」를 바탕으로 보강했다.
+> 크로스 플랫폼을 평가하는 기준과 방법은 NAVER D2의 「[지식iN 앱을 Flutter로 개발하는 이유](https://d2.naver.com/helloworld/3384599)」를 바탕으로, 하이브리드 앱의 흔한 실수는 「[Top Mistakes by Developers new to Cordova/Phonegap](https://github.com/jessemonroy650/top-phonegap-mistakes/blob/master/new-to-Phonegap.md)」을 바탕으로 보강했다.
 
 모바일 앱을 만드는 방법은 크게 세 가지다. Android와 iOS를 각각 따로 만드는 **네이티브**, 웹 페이지를 앱 껍데기에 담는 **하이브리드**, 공통 코드 하나로 두 플랫폼의 네이티브 앱을 만드는 **크로스 플랫폼**. 두 플랫폼의 UI·기능이 서로 비슷해지면서 한 코드베이스로 둘 다 만드는 방식이 널리 쓰이게 됐다.
 
@@ -28,6 +28,19 @@ sources: ["https://d2.naver.com/helloworld/3384599"]
 | 웹 페이지 하나로 웹·앱을 모두 서비스 | 속도가 느리다 |
 | 화면만 바뀌면 앱 마켓 재심사 없이 업데이트 | 카메라·센서 등 기기 기능을 쓰기 어렵다 |
 | | 화면을 매번 불러와 데이터 사용량이 많다 |
+
+### 하이브리드 앱에서 흔한 실수
+
+이름의 계보부터 헷갈린다. PhoneGap은 2009년 Nitobi가 만들었고, 2011년 Adobe가 회사를 사면서 오픈 소스 핵심을 Apache에 기증한 것이 **Cordova**다. Adobe는 2020년 PhoneGap과 클라우드 빌드 서비스 PhoneGap Build를 종료했다. 지금 새 프로젝트는 **Capacitor**로 시작하고, Cordova 플러그인 상당수를 Capacitor에서도 쓸 수 있다.
+
+| 실수 | 왜 문제인가 | 대신 |
+| --- | --- | --- |
+| 웹뷰를 브라우저나 웹 서버처럼 생각한다 | 웹뷰 앱은 서버가 아니다. PHP 같은 서버 코드는 돌지 않고, 브라우저 UI(주소창·뒤로 가기)도 없다 | 서버 로직은 API로 부르고, 화면 전환·뒤로 가기는 앱에서 처리한다 |
+| 스크립트·CSS를 CDN에서 불러온다 | 오프라인에서 앱이 뜨지 않는다 | 자산은 앱 패키지에 넣는다 |
+| 네이티브 준비 신호 전에 플러그인 API를 부른다 | 웹 코드가 네이티브 쪽보다 먼저 실행될 수 있다 | Cordova는 `deviceready` 이벤트 뒤에, Capacitor는 플러그인 Promise로 호출한다 |
+| 플랫폼·플러그인 버전을 고정하지 않는다 | 빌드할 때마다 최신 버전이 들어와 깨진다 | 버전을 고정하고 의도적으로 올린다 |
+| 접근 허용 목록과 CSP를 빠뜨린다 | 외부 요청이 막히거나, 반대로 무엇이든 실행된다 | 허용할 도메인을 설정하고 `Content-Security-Policy`를 건다 |
+| 웹사이트를 그대로 감싸 낸다 | 앱스토어·Google Play 정책은 웹사이트를 묶기만 한 앱을 거절한다 | 오프라인 동작·기기 기능처럼 앱으로서의 가치를 더한다. 그럴 게 없으면 [[pwa-service-worker\|PWA]]가 맞다 |
 
 ## 크로스 플랫폼 앱
 

@@ -4,11 +4,11 @@ concept: "React Server Components"
 summary: "서버가 컴포넌트 트리를 렌더링해 HTML이 아니라 직렬화된 React 트리(RSC Payload)를 스트리밍하고, 브라우저가 클라이언트 컴포넌트 참조를 실제 코드로 바꿔 트리를 재구성하는 과정을 정리한다. SSR과의 차이, 요청 왕복을 줄이려고 나온 배경과 서버 컴포넌트 모델(XHP)에서 출발한 역사, 다시 렌더링되지 않는다는 성질과 클라이언트 경계, 갱신 방식, 제약까지."
 tags: ["react", "nextjs", "frontend", "rendering", "performance"]
 source: other
-date: "2026-10-20"
-sources: ["https://x.com/hewonjeong/status/1743629443346968724", "https://yceffort.kr/2022/01/how-react-server-components-work", "https://react.dev/reference/rsc/server-components", "https://www.joshwcomeau.com/react/server-components/", "https://roy-jung.github.io/250323-react-server-components"]
+date: "2026-10-21"
+sources: ["https://x.com/hewonjeong/status/1743629443346968724", "https://yceffort.kr/2022/01/how-react-server-components-work", "https://react.dev/reference/rsc/server-components", "https://www.joshwcomeau.com/react/server-components/", "https://roy-jung.github.io/250323-react-server-components", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%282%29%20-%20RSC.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%282-2%29%20-%20RSC%20%EB%8D%94%20%EA%B9%8A%EA%B2%8C%20%EC%9E%98%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0%28%EC%8B%AC%ED%99%94%29.md"]
 ---
 
-> yceffort의 「[리액트 서버 컴포넌트의 동작 방식](https://yceffort.kr/2022/01/how-react-server-components-work)」(2022.01)을 바탕으로 React 19 문서와 대조해 재구성한 노트다. 「왜 필요했나」, 「서버 컴포넌트는 다시 렌더링되지 않는다」, 「클라이언트 경계」는 Josh W. Comeau의 「[Making Sense of React Server Components](https://www.joshwcomeau.com/react/server-components/)」(2023.09, 2025.05 갱신)로 보강했다. 「서버에서 출발한 컴포넌트 모델」은 Dan Abramov의 X 타래를 @hewonjeong이 번역한 [타래](https://x.com/hewonjeong/status/1743629443346968724)(2024.01)를 바탕으로 했다. Payload의 리소스 힌트 줄은 「[리액트 서버 컴포넌트 톺아보기](https://roy-jung.github.io/250323-react-server-components)」를 바탕으로 더했다.
+> yceffort의 「[리액트 서버 컴포넌트의 동작 방식](https://yceffort.kr/2022/01/how-react-server-components-work)」(2022.01)을 바탕으로 React 19 문서와 대조해 재구성한 노트다. 「왜 필요했나」, 「서버 컴포넌트는 다시 렌더링되지 않는다」, 「클라이언트 경계」는 Josh W. Comeau의 「[Making Sense of React Server Components](https://www.joshwcomeau.com/react/server-components/)」(2023.09, 2025.05 갱신)로 보강했다. 「서버에서 출발한 컴포넌트 모델」은 Dan Abramov의 X 타래를 @hewonjeong이 번역한 [타래](https://x.com/hewonjeong/status/1743629443346968724)(2024.01)를 바탕으로 했다. Payload의 리소스 힌트 줄은 「[리액트 서버 컴포넌트 톺아보기](https://roy-jung.github.io/250323-react-server-components)」를 바탕으로 더했다. 실시간 갱신의 한계는 「[Frontend_TIL: Next.js(2-2) - RSC 더 깊게 잘이해하기](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%282-2%29%20-%20RSC%20%EB%8D%94%20%EA%B9%8A%EA%B2%8C%20%EC%9E%98%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0%28%EC%8B%AC%ED%99%94%29.md)」를 바탕으로 보강했다.
 
 ## React Server Components란
 
@@ -147,6 +147,7 @@ RSC 환경에서는 **모든 컴포넌트가 기본적으로 서버 컴포넌트
 
 - 서버 컴포넌트는 state·이벤트 핸들러를 가질 수 없고, 클라이언트 컴포넌트는 서버 컴포넌트를 import할 수 없다. 우회하는 조합 규칙은 [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]에 있다.
 - 서버 내용이 바뀌려면 네트워크 왕복이 필요하다. 오프라인·즉각 반응이 중요한 부분은 클라이언트에 둔다.
+- 서버 컴포넌트는 요청 한 번에 한 번 그리고 끝난다. WebSocket처럼 서버가 계속 밀어 주는 실시간 갱신은 클라이언트 컴포넌트에서 구독하거나 주기적으로 다시 가져온다(폴링, SWR·TanStack Query의 재검증).
 - 번들러·서버 통합이 필요해 사실상 프레임워크에 묶인다.
 
 ## 역사

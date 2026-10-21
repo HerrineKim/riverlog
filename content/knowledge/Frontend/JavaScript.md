@@ -19,6 +19,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [데코레이터와 콜 포워딩](/knowledge/dictionary/frontend/javascript/function-decorators): 함수를 감싸 기능을 더하는 래퍼, func.apply(this, args)로 this·인자 넘기기, call과 apply, 메서드 빌리기, 래퍼가 잃는 함수 속성
 - [에러 처리: try...catch와 커스텀 에러](/knowledge/dictionary/frontend/javascript/js-error-handling): try·catch·finally가 못 잡는 것, finally와 return, 에러 객체와 내장 에러 종류, 다시 던지기, Error 상속과 cause로 예외 감싸기, 전역 에러 이벤트
 - [스코프와 클로저](/knowledge/dictionary/frontend/javascript/scope-and-closures): 전역·모듈·함수·블록 스코프, 렉시컬 스코프, 호이스팅과 TDZ, 클로저로 만드는 팩토리·비공개 상태
+- [실행 컨텍스트](/knowledge/dictionary/frontend/javascript/execution-context): 실행 컨텍스트 스택, LexicalEnvironment·VariableEnvironment와 this, 생성·실행 단계로 보는 호이스팅·TDZ·스코프 체인
 - [배열·객체 다루기](/knowledge/dictionary/frontend/javascript/arrays-and-objects): 주요 메서드, map·filter·reduce, 원본을 바꾸지 않는 toSorted·with, ES6 객체 문법, 구조 분해, JSON
 - [Map과 Set](/knowledge/dictionary/frontend/javascript/map-and-set): 객체 대신 Map을 쓸 때, 키의 종류와 순서, Set으로 중복 제거, WeakMap
 - [숫자와 Math](/knowledge/dictionary/frontend/javascript/js-numbers): 반올림 메서드, 난수 정수, Number vs parseInt, NaN, 0.1 + 0.2, 돈은 정수로, Intl.NumberFormat
@@ -39,6 +40,8 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [TypeScript: 개념과 문법 한눈에 보기](/knowledge/dictionary/frontend/javascript/typescript-basics): 슈퍼셋이라는 본질과 타입을 얻기까지의 역사, 실행 환경(TypeScript 7·Node.js 타입 제거), any·unknown·never, 단언·가드·satisfies, type vs interface, 제네릭, 구분된 유니언, 데코레이터, 유틸리티 타입, 익히는 순서
 - [TypeScript 코딩 컨벤션](/knowledge/dictionary/frontend/javascript/typescript-coding-convention): 이름 짓기, 타입, 클래스, 배열 메서드, 에러 처리, 모듈 규칙을 필수·권장 등급과 이유로 정리
 - [TypeScript로 동적인 코드에 정적 타입 입히기](/knowledge/dictionary/frontend/javascript/typescript-advanced-types): 리터럴 유니온, never, 제네릭, 템플릿 리터럴 타입, infer 재귀로 라우트 매개변수 추출
+- [TypeScript 타입 호환성](/knowledge/dictionary/frontend/javascript/typescript-type-compatibility): 값의 집합으로 보는 타입, 구조적 타이핑과 잉여 속성 검사, 유니언·인터섹션, 함수의 공변·반공변, 구분자
+- [TypeScript 타입 연산: 타입으로 타입 만들기](/knowledge/dictionary/frontend/javascript/typescript-type-operators): keyof·typeof·인덱스 접근, 매핑 타입, 조건부 타입과 infer, 분배 규칙, 템플릿 리터럴 타입, 유틸리티 타입 구현
 - [ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md): 품질은 ESLint, 모양은 Prettier로 역할 나누기, 저장 시 자동 수정 에디터 설정, flat config 읽는 법과 ESLint 10에서 제거된 `.eslintrc`
 - [strict mode(엄격 모드)](/knowledge/dictionary/frontend/javascript/strict-mode): "use strict" 켜는 법, 모듈·class 자동 적용, 암묵적 전역·조용한 실패·this가 바뀌는 동작
 - [속성 설명자](/knowledge/dictionary/frontend/javascript/property-descriptors): writable·enumerable·configurable, getter·setter 접근자, defineProperty 기본값, freeze·seal
@@ -65,6 +68,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [Debounce와 Throttle](/knowledge/dictionary/frontend/javascript/debounce-throttle): 연속 이벤트의 실행 횟수를 줄이는 두 기법과 직접 구현
 - [책임감 있는 자바스크립트](/knowledge/dictionary/frontend/javascript/responsible-javascript): JS의 처리 비용, 저사양 Android·느린 4G·Baseline 기준선, 웹 플랫폼 우선, 번들 줄이기, 서드파티 관리
 - [바이너리 데이터와 파일: ArrayBuffer, Blob, File](/knowledge/dictionary/frontend/javascript/binary-data-and-files): ArrayBuffer·뷰·DataView, TextEncoder/Decoder, Blob·File, object URL과 data URL, base64
+- [SharedArrayBuffer와 Atomics](/knowledge/dictionary/frontend/javascript/shared-memory-atomics): 워커 간 공유 메모리, Atomics 연산과 wait·notify, 교차 출처 격리(COOP·COEP), waitAsync
 
 ### 엔진과 실행
 - [JavaScript는 인터프리터 언어일까, 컴파일 언어일까](/knowledge/dictionary/frontend/javascript/js-engine-v8): V8 파이프라인(Parser·Ignition·Sparkplug·Maglev·TurboFan), JIT, TSC·Babel과 비교
@@ -79,6 +83,10 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [날짜 라이브러리](/knowledge/dictionary/frontend/javascript/date-libraries): 0부터 시작하는 월 같은 기본 Date의 함정, Moment.js 이후의 대안, date-fns와 Day.js 비교, 표준 API Temporal의 지원 현황
 - [패키지 매니저: npm, yarn, pnpm](/knowledge/dictionary/frontend/javascript/package-managers): lock 파일의 역할, 매니저 비교와 고르는 기준, packageManager와 Corepack, 설치 스크립트 차단, npm EINTEGRITY 오류 해결
 - [번들러의 역사와 Vite](/knowledge/dictionary/frontend/javascript/bundlers-and-vite): CommonJS·AMD·ES 모듈에서 번들러로, esbuild와 Snowpack이 푼 느린 빌드, Vite의 개발·배포 이원 구조
+- [webpack 동작 원리](/knowledge/dictionary/frontend/javascript/webpack): 의존성 그래프, 로더 적용 순서, Define·Provide 같은 플러그인, shimming, 스코프 호이스팅, HMR, Rollup과 차이
+- [Babel과 AST 변환](/knowledge/dictionary/frontend/javascript/babel): parse → transform → generate, 플러그인·프리셋 순서, preset-env와 core-js, visitor 패턴, codemod
+- [npm 스크립트로 작업 자동화하기](/knowledge/dictionary/frontend/javascript/npm-scripts): node_modules/.bin과 PATH, pre/post 훅, 인자 전달, 직렬·병렬 조합, node --run, 태스크 러너가 밀려난 이유
+- [작은 모듈 철학과 npm 의존성의 비용](/knowledge/dictionary/frontend/javascript/small-modules): 유닉스 철학과 하이퍼 모듈화 논쟁, left-pad 사건, 공급망 위험, 의존성을 들일 때의 판단 기준
 
 ## 코딩 스타일
 

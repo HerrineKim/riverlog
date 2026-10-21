@@ -4,11 +4,11 @@ concept: "Web Capabilities"
 summary: "PWA가 운영 체제와 이어지는 기능을 지원 범위별로 정리한다. 웹 푸시와 알림(iOS는 16.4부터 홈 화면 웹 앱에서만, 18.4부터 선언적 웹 푸시), 앱 배지, 공유하기와 공유 대상, 파일 시스템 접근과 파일 핸들러, 프로토콜 핸들러, 링크 캡처, 연락처 선택기, 하드웨어 API, 그리고 Project Fugu·오리진 트라이얼로 새 기능을 시험하는 법과 기능 감지·권한 요청 원칙을 다룬다."
 tags: ["frontend", "web", "pwa", "browser", "mobile"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/pwa/os-integration", "https://web.dev/learn/pwa/capabilities", "https://web.dev/learn/pwa/experimental", "https://web.dev/learn/pwa/update", "https://web.dev/learn/pwa/getting-started", "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/", "https://webkit.org/blog/16535/meet-declarative-web-push/", "https://developer.mozilla.org/en-US/docs/Web/API/Badging_API", "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference/file_handlers"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/pwa/os-integration", "https://web.dev/learn/pwa/capabilities", "https://web.dev/learn/pwa/experimental", "https://web.dev/learn/pwa/update", "https://web.dev/learn/pwa/getting-started", "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/", "https://webkit.org/blog/16535/meet-declarative-web-push/", "https://developer.mozilla.org/en-US/docs/Web/API/Badging_API", "https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Manifest/Reference/file_handlers", "https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API"]
 ---
 
-> web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 OS 통합·기능·실험적 기능 모듈을 바탕으로, iOS 지원은 WebKit 블로그, 상태는 MDN으로 확인해 재구성한 노트다.
+> web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 OS 통합·기능·실험적 기능 모듈을 바탕으로, iOS 지원은 WebKit 블로그, 상태는 MDN으로 확인해 재구성한 노트다. 알림의 두 종류는 MDN의 「[Notifications API](https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API)」로 보강했다.
 
 ## 원칙: 감지하고, 맥락을 주고, 대체한다
 
@@ -27,6 +27,15 @@ sources: ["https://web.dev/learn/pwa/os-integration", "https://web.dev/learn/pwa
 | Push API | 서버가 푸시 서비스를 거쳐 서비스 워커를 깨우고 작은 페이로드를 보낸다. 앱이 닫혀 있어도 된다 |
 | Notifications API | 시스템 알림을 띄운다. 사용자 권한이 필요하다 |
 | VAPID 키 | 푸시를 보내는 서버를 식별하는 키 쌍. 구독 때 공개 키를 넘긴다 |
+
+알림은 OS의 알림 시스템이 그리므로 탭을 바꾸거나 다른 앱으로 가도 보인다. 만드는 곳에 따라 두 가지다.
+
+| 종류 | 만드는 법 | 수명 |
+| --- | --- | --- |
+| 비지속(non-persistent) | 페이지에서 `new Notification(title, options)` | 페이지가 닫히면 더는 반응하지 않는다. 클릭은 그 인스턴스의 `click` 이벤트로 받는다 |
+| 지속(persistent) | 서비스 워커에서 `registration.showNotification()` | 페이지보다 오래 산다. 클릭은 서비스 워커의 `notificationclick`으로 받는다 |
+
+**모바일에서는 지속 알림만 된다.** 대부분의 모바일 브라우저에서 `Notification()` 생성자는 `TypeError`를 던진다. 권한은 `Notification.requestPermission()`으로, 클릭 같은 사용자 동작 안에서만 요청한다. 권한 상태를 일관되게 확인하는 방법은 [[device-permission-apis|권한 모델과 기기 API]]에 있다.
 
 ```javascript
 // 사용자가 「알림 받기」를 눌렀을 때
@@ -157,7 +166,7 @@ if ('launchQueue' in window) {
 | 연락처 선택기 | `navigator.contacts.select(['name', 'tel'], { multiple: true })`로 네이티브 연락처 대화상자 | 모바일 일부. 요청한 속성이 빠져 올 수 있어 확인한다 |
 | 결제 | Payment Request API(Apple Pay JS도 그 위에 있다), TWA로 Google Play에 올린 PWA의 Digital Goods API | |
 | 백그라운드 | 백그라운드 동기화·주기적 동기화·백그라운드 가져오기 | Chromium([[pwa-offline-storage\|PWA 오프라인 데이터와 저장소 관리]]) |
-| 센서 | Generic Sensor API, 옛 `DeviceMotionEvent`·`DeviceOrientationEvent` | Safari는 비표준 권한 요청이 필요하다 |
+| 센서 | Generic Sensor API, 옛 `DeviceMotionEvent`·`DeviceOrientationEvent`([[device-permission-apis\|권한 모델과 기기 API]]) | Safari는 비표준 권한 요청이 필요하다 |
 
 정확한 지원은 기능마다 MDN의 Baseline 표시와 호환성 표로 확인한다.
 
@@ -180,4 +189,4 @@ Safari에는 오리진 트라이얼이 없다. 트라이얼 기능은 언제든 
 - 공유는 Web Share, 파일은 파일 시스템 접근 API(없으면 input·다운로드), 다른 앱 호출은 표준 스킴.
 - 실험 기능은 오리진 트라이얼로 시험하되, 사라져도 앱이 동작하게 만든다.
 
-관련 노트: [[pwa-installation|PWA 설치와 설치 유도]], [[web-app-manifest|웹 앱 매니페스트]], [[service-worker-lifecycle|서비스 워커 등록·스코프·생명주기와 업데이트]], [[pwa-offline-storage|PWA 오프라인 데이터와 저장소 관리]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]]
+관련 노트: [[pwa-installation|PWA 설치와 설치 유도]], [[web-app-manifest|웹 앱 매니페스트]], [[service-worker-lifecycle|서비스 워커 등록·스코프·생명주기와 업데이트]], [[pwa-offline-storage|PWA 오프라인 데이터와 저장소 관리]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[device-permission-apis|권한 모델과 기기 API]]

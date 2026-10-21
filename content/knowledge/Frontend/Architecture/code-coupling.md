@@ -1,14 +1,14 @@
 ---
 title: "결합도를 낮추는 전략"
 concept: "Coupling"
-summary: "결합도는 코드를 고쳤을 때 영향이 미치는 범위다. 모듈 결합도의 고전적 6단계 분류(자료~내용)와 높은 결합의 신호를 정리하고, 페이지 전체 쿼리 파라미터를 한 훅에 몰지 않고 책임별로 쪼개고, 앞으로 갈라질 수 있는 코드는 중복을 허용하고, Props Drilling은 조합(children) 패턴으로 먼저 풀고 마지막에 Context를 쓴다."
+summary: "결합도는 코드를 고쳤을 때 영향이 미치는 범위다. 모듈 결합도의 고전적 6단계 분류(자료~내용)와 높은 결합의 신호를 정리하고, 페이지 전체 쿼리 파라미터를 한 훅에 몰지 않고 책임별로 쪼개고, 앞으로 갈라질 수 있는 코드는 중복을 허용하고, Props Drilling은 조합(children) 패턴으로 먼저 풀고 마지막에 Context를 쓴다. 앱 규모에서는 기능 모듈이 서로를 부르지 않고 퍼사드(샌드박스)와 중재자(앱 코어)를 거치게 한다."
 tags: ["frontend", "clean-code", "architecture", "react", "software-engineering"]
 source: other
-date: "2026-10-20"
-sources: ["https://frontend-fundamentals.com/code-quality/code/", "https://webactually.com/2018/02/06/%eb%aa%85%ed%99%95%ed%95%9c-%ec%bd%94%eb%93%9c-%ec%9e%91%ec%84%b1%eb%b2%95/"]
+date: "2026-10-21"
+sources: ["https://frontend-fundamentals.com/code-quality/code/", "https://webactually.com/2018/02/06/%eb%aa%85%ed%99%95%ed%95%9c-%ec%bd%94%eb%93%9c-%ec%9e%91%ec%84%b1%eb%b2%95/", "https://addyosmani.com/largescalejavascript/"]
 ---
 
-> 토스의 「[Frontend Fundamentals: 코드 품질](https://frontend-fundamentals.com/code-quality/code/)」 결합도 문서들을 바탕으로 재구성한 노트다. 일반 원칙은 Brandon Gregory의 「명확한 코드 작성법」(웹액츄얼리 번역)을, 결합의 종류는 정보처리기사 소프트웨어 설계 범위를 더했다.
+> 토스의 「[Frontend Fundamentals: 코드 품질](https://frontend-fundamentals.com/code-quality/code/)」 결합도 문서들을 바탕으로 재구성한 노트다. 일반 원칙은 Brandon Gregory의 「명확한 코드 작성법」(웹액츄얼리 번역)을, 결합의 종류는 정보처리기사 소프트웨어 설계 범위를 더했다. 중재자·퍼사드로 모듈을 떼는 구조는 Addy Osmani의 「[Patterns For Large-Scale JavaScript Application Architecture](https://addyosmani.com/largescalejavascript/)」를 바탕으로 더했다.
 
 ## 결합도란
 
@@ -152,11 +152,32 @@ Context는 **마지막 수단**이다.
 2. 값을 전달만 하는 중간 컴포넌트가 문제라면 먼저 `children`으로 깊이를 줄인다.
 3. 둘 다 맞지 않을 때 Context를 쓴다. Context 값이 바뀌면 구독하는 컴포넌트가 모두 리렌더링된다는 점도 고려한다([[context|Context와 전역 상태]]).
 
+## 4. 기능 모듈끼리 직접 부르지 않기: 중재자와 퍼사드
+
+앱 규모에서 결합도를 낮추는 고전적인 구조가 있다. Gmail의 채팅·메일 목록처럼 **기능 단위 모듈**이 서로를 직접 import하거나 호출하지 않게 하는 것이다.
+
+```text
+모듈 A ─┐                         ┌─ 모듈 C
+모듈 B ─┼─▶ 샌드박스(퍼사드) ─▶ 앱 코어(중재자) ─▶ 라이브러리(DOM·Ajax)
+        └ 모듈은 "이런 일이 생겼다"를 발행만 한다
+```
+
+| 부품 | 패턴 | 하는 일 |
+| --- | --- | --- |
+| 모듈 | 모듈 패턴 | 자기 일만 하고, 다른 모듈이 있는지 모른다. 바깥과는 샌드박스만 통한다 |
+| 샌드박스 | 퍼사드(Facade) | 모듈에게 쓸 수 있는 좁은 API만 보여 준다. 권한 검사도 여기서 한다 |
+| 앱 코어 | 중재자(Mediator) | 모듈의 시작·정지를 관리하고, 발행된 메시지를 관심 있는 모듈에 전달한다(발행·구독) |
+
+이렇게 하면 모듈 하나를 빼거나 바꿔도, 오류가 나도 나머지가 무너지지 않는다. 모듈은 다른 모듈의 존재가 아니라 메시지의 모양에만 의존한다.
+
+지금은 같은 생각이 다른 이름으로 쓰인다. 전역 스토어에 액션을 보내고 필요한 쪽이 구독하는 상태 관리([[frontend-mv-architecture|MV* 아키텍처의 흐름]]), 같은 계층의 슬라이스끼리 import를 금지하고 공개 API(`index.ts`)로만 노출하는 [[feature-sliced-design|Feature-Sliced Design]]이 그 예다. 다만 메시지로만 연결하면 **누가 무엇에 반응하는지 코드에서 따라가기 어려워진다.** 흐름이 단순한 곳에는 직접 호출이 낫다. 각 패턴의 정의는 [[gof-design-patterns|GoF 디자인 패턴]]에 있다.
+
 ## 정리
 
 - 결합도는 "고치면 어디까지 영향이 가는가"다. 자료만 주고받을수록 약하고, 남의 내부를 직접 건드릴수록 강하다.
 - 훅·함수는 로직 종류가 아니라 책임 하나 단위로 만든다.
 - 공통화는 앞으로도 같이 바뀔 것이 확실할 때만 한다. 갈라질 여지가 있으면 중복이 더 싸다.
 - Props Drilling은 조합 → Context 순서로 푼다. 의도를 담은 props는 그대로 둔다.
+- 기능 모듈끼리는 직접 부르지 않고 좁은 창구(퍼사드)와 중재자·스토어를 거치게 하면 모듈을 빼고 바꿔도 나머지가 버틴다. 대신 흐름을 따라가기 어려워지니 단순한 곳에는 직접 호출을 쓴다.
 
 관련 노트: [[software-engineering|소프트웨어 설계와 공학]], [[changeable-code-criteria|변경하기 쉬운 코드의 네 가지 기준]], [[code-cohesion|응집도를 높이는 전략]], [[component-splitting|컴포넌트를 분리하는 기준과 방법]], [[composition|합성: 상속 대신 Composition]], [[context|Context와 전역 상태]], [[frontend-dependency|프론트엔드에서 의존성 관리하기]]

@@ -4,11 +4,11 @@ concept: "Statement vs Expression"
 summary: "식은 값을 만들어 내는 코드이고, 문은 무언가를 하라는 명령이다. 문에는 식을 끼우는 자리가 있고, 식은 늘 어떤 문 안에 있다. 블록 문과 그룹 연산자, 세미콜론과 자동 세미콜론 삽입(ASI) 규칙과 함정. 함수 인자, 화살표 함수의 간결한 본문, JSX의 중괄호는 식만 받는 자리라서 if·for 대신 삼항 연산자·map을 쓴다."
 tags: ["javascript", "frontend", "react", "jsx"]
 source: other
-date: "2026-10-17"
-sources: ["https://www.joshwcomeau.com/javascript/statements-vs-expressions/", "https://wesbos.com/javascript/01-the-basics/variables-and-statements", "https://web.dev/learn/javascript/introduction", "https://web.dev/learn/javascript/appendix", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar", "https://ko.javascript.info/structure", "https://ko.javascript.info/javascript-specials", "https://bakyeono.net/post/2018-01-19-javascript-use-semicolon-or-not.html"]
+date: "2026-10-21"
+sources: ["https://www.joshwcomeau.com/javascript/statements-vs-expressions/", "https://wesbos.com/javascript/01-the-basics/variables-and-statements", "https://web.dev/learn/javascript/introduction", "https://web.dev/learn/javascript/appendix", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar", "https://ko.javascript.info/structure", "https://ko.javascript.info/javascript-specials", "https://bakyeono.net/post/2018-01-19-javascript-use-semicolon-or-not.html", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%91%9C%ED%98%84%EC%8B%9D%EA%B3%BC%20%EB%AC%B8.md"]
 ---
 
-> Josh W. Comeau의 「[Statements Vs. Expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)」(2025.08 갱신)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(소개·부록 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「코드 구조」, 「기본 문법 요약」 글을 함께 참고했다. 세미콜론 논쟁은 「[자바스크립트, 세미콜론을 써야 하나 말아야 하나](https://bakyeono.net/post/2018-01-19-javascript-use-semicolon-or-not.html)」를 바탕으로 더했다.
+> Josh W. Comeau의 「[Statements Vs. Expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)」(2025.08 갱신)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(소개·부록 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「코드 구조」, 「기본 문법 요약」 글을 함께 참고했다. 세미콜론 논쟁은 「[자바스크립트, 세미콜론을 써야 하나 말아야 하나](https://bakyeono.net/post/2018-01-19-javascript-use-semicolon-or-not.html)」를 바탕으로 더했다. 「[Frontend_TIL: 표현식과 문](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%91%9C%ED%98%84%EC%8B%9D%EA%B3%BC%20%EB%AC%B8.md)」을 바탕으로 보강했다.
 
 ## 식과 문
 
@@ -79,6 +79,8 @@ console.log(/* 의심 가는 코드 */);
 ```
 
 실행되면 식이고, 문법 오류가 나면 문(또는 잘못된 코드)이다. **함수 인자는 모두 식이어야 하기** 때문이다. 덤으로 그 식이 무슨 값이 되는지도 출력된다.
+
+문 중에도 **식인 문**이 있다. 대입문 `x = 100`은 대입한 값으로 평가되는 식이라 `const foo = x = 100`처럼 다른 식 자리에 들어간다. 선언문 `var x`나 `if`문은 값이 되지 않아 그 자리에 넣으면 SyntaxError다. 브라우저 콘솔에서 식이 아닌 문을 실행하면 `undefined`가 찍히는데, 이것은 문의 **완료값(completion value)** 일 뿐 그 문이 `undefined`로 평가되는 식이라는 뜻은 아니다.
 
 ## 같은 모양, 다른 해석
 

@@ -4,11 +4,11 @@ concept: "Function"
 summary: "함수 선언식·표현식(이름 있는 함수 표현식)·화살표 함수·IIFE(식 자리에 문장 쓰기)·메서드·new Function, 블록 안 함수 선언의 스코프, 함수도 객체라는 점(name·length·커스텀 속성), 매개변수와 인자(호출마다 평가되는 기본값·arguments·rest·spread), return과 early return, 이름 짓기, 생성자 함수(new.target·return 규칙)와 팩토리 함수, 호출 방식에 따라 달라지는 this(전역·암묵적·명시적·new·이벤트 핸들러), 화살표 함수에 없는 것들, bind·call·apply와 이벤트 리스너에 메서드를 넘길 때의 함정, 재귀와 콜 스택 깊이."
 tags: ["javascript", "function", "frontend"]
 source: til
-date: "2026-10-17"
-sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493", "https://riverkim.kr/209", "https://riverkim.kr/116", "https://wesbos.com/javascript/02-functions/functions-parameters-and-arguments", "https://wesbos.com/javascript/02-functions/different-ways-to-declare-functions", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/61-the-this-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/65-bind-call-and-apply", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/62-prototype-refactor-of-gallery-exercise", "https://web.dev/learn/javascript/functions", "https://web.dev/learn/javascript/functions/function-expressions", "https://web.dev/learn/javascript/functions/new", "https://web.dev/learn/javascript/functions/return", "https://web.dev/learn/javascript/functions/this", "https://ko.javascript.info/function-basics", "https://ko.javascript.info/function-expressions", "https://ko.javascript.info/arrow-functions-basics", "https://ko.javascript.info/object-methods", "https://ko.javascript.info/constructor-new", "https://ko.javascript.info/recursion", "https://ko.javascript.info/rest-parameters-spread", "https://ko.javascript.info/function-object", "https://ko.javascript.info/new-function", "https://ko.javascript.info/bind", "https://ko.javascript.info/arrow-functions", "https://ko.javascript.info/reference-type"]
+date: "2026-10-21"
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/iife.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/this.md", "https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493", "https://riverkim.kr/209", "https://riverkim.kr/116", "https://wesbos.com/javascript/02-functions/functions-parameters-and-arguments", "https://wesbos.com/javascript/02-functions/different-ways-to-declare-functions", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/61-the-this-keyword", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/65-bind-call-and-apply", "https://wesbos.com/javascript/11-prototypes-this-new-and-inheritance/62-prototype-refactor-of-gallery-exercise", "https://web.dev/learn/javascript/functions", "https://web.dev/learn/javascript/functions/function-expressions", "https://web.dev/learn/javascript/functions/new", "https://web.dev/learn/javascript/functions/return", "https://web.dev/learn/javascript/functions/this", "https://ko.javascript.info/function-basics", "https://ko.javascript.info/function-expressions", "https://ko.javascript.info/arrow-functions-basics", "https://ko.javascript.info/object-methods", "https://ko.javascript.info/constructor-new", "https://ko.javascript.info/recursion", "https://ko.javascript.info/rest-parameters-spread", "https://ko.javascript.info/function-object", "https://ko.javascript.info/new-function", "https://ko.javascript.info/bind", "https://ko.javascript.info/arrow-functions", "https://ko.javascript.info/reference-type", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%95%A8%EC%88%98%20%EA%B0%9D%EC%B2%B4%EC%9D%98%20%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0%EC%99%80%20%EC%9D%BC%EA%B8%89%20%EA%B0%9D%EC%B2%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%95%A8%EC%88%98-2.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%83%9D%EC%84%B1%EC%9E%90%20%ED%95%A8%EC%88%98%EC%97%90%20%EC%9D%98%ED%95%9C%20%EA%B0%9D%EC%B2%B4%20%EC%83%9D%EC%84%B1.md"]
 ---
 
-> 직접 정리한 TIL에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(함수 모듈), javascript.info(모던 JavaScript 튜토리얼)의 함수 기초·함수 심화 글(「함수」, 「함수 표현식」, 「메서드와 this」, 「new 연산자와 생성자 함수」, 「재귀와 스택」, 「나머지 매개변수와 스프레드 문법」, 「객체로서의 함수와 기명 함수 표현식」, 「new Function 문법」, 「함수 바인딩」, 「화살표 함수 다시 살펴보기」, 「참조 타입」)을 함께 참고했다. 프론트엔드에서의 쓰임은 이문기의 「[프론트엔드에서 클래스와 즉시 실행 함수 쓰기](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493)」(2023.08)를 더했다.
+> 직접 정리한 TIL에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(함수 모듈), javascript.info(모던 JavaScript 튜토리얼)의 함수 기초·함수 심화 글(「함수」, 「함수 표현식」, 「메서드와 this」, 「new 연산자와 생성자 함수」, 「재귀와 스택」, 「나머지 매개변수와 스프레드 문법」, 「객체로서의 함수와 기명 함수 표현식」, 「new Function 문법」, 「함수 바인딩」, 「화살표 함수 다시 살펴보기」, 「참조 타입」)을 함께 참고했다. 프론트엔드에서의 쓰임은 이문기의 「[프론트엔드에서 클래스와 즉시 실행 함수 쓰기](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493)」(2023.08)를 더했다. 「[Must-Know-About-Frontend: IIFE](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/iife.md)」, 「[Must-Know-About-Frontend: this의 바인딩](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/this.md)」의 내용을 더해 보강했다. 「[Frontend_TIL: 함수 객체의 프로퍼티와 일급 객체](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%95%A8%EC%88%98%20%EA%B0%9D%EC%B2%B4%EC%9D%98%20%ED%94%84%EB%A1%9C%ED%8D%BC%ED%8B%B0%EC%99%80%20%EC%9D%BC%EA%B8%89%20%EA%B0%9D%EC%B2%B4.md)」, 「[Frontend_TIL: 함수-2](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%95%A8%EC%88%98-2.md)」을 바탕으로 보강했다. 「[Frontend_TIL: 생성자 함수에 의한 객체 생성](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%83%9D%EC%84%B1%EC%9E%90%20%ED%95%A8%EC%88%98%EC%97%90%20%EC%9D%98%ED%95%9C%20%EA%B0%9D%EC%B2%B4%20%EC%83%9D%EC%84%B1.md)」을 바탕으로 보강했다.
 
 JavaScript의 함수는 **일급 객체(first-class citizen)** 다. 변수에 할당할 수 있고, 다른 함수의 인자로 넘길 수 있고, 함수의 반환값이 될 수 있다. 이 성질 덕분에 콜백, 고차 함수, 클로저, React 컴포넌트 같은 패턴이 가능하다. 함수 안의 `this`는 함수를 **어떻게 호출했는지**에 따라 달라진다.
 
@@ -58,7 +58,7 @@ typeof tick // 'undefined' — 바깥에서는 보이지 않는다
 
 함수 표현식이면 호출 괄호를 그룹 괄호 안(`(function () {}())`)에 둬도, 밖(`(function () {})()`)에 둬도 된다. **화살표 함수는 밖에만** 둘 수 있다. `(() => {}())`는 SyntaxError이고 `(() => {})()`로 쓴다. 화살표 함수는 식 자리에서 먼저 완성된 뒤에야 호출할 수 있기 때문이다.
 
-과거에는 모듈 패턴과 클로저를 만드는 기본 도구였다. 지금은 블록 스코프(`let`·`const`)와 ES 모듈이 같은 일을 하므로, 스코프를 가두는 용도로는 거의 쓰지 않는다. 남은 쓰임은 둘이다. 최상위에서 `await`를 쓸 수 없는 환경에서 `(async () => { … })()`로 감쌀 때, 그리고 **식 자리에서 문장을 쓰고 싶을 때**다.
+과거에는 모듈 패턴과 클로저를 만드는 기본 도구였다. 인자로 전역을 받아 지역 이름으로 바꾸는 데도 썼다. `(function ($) { … })(jQuery)`는 다른 라이브러리가 전역 `$`를 차지해도 안에서는 `$`가 jQuery를 가리키게 하고, `(function (window, document) { … })(window, document)`는 압축 도구가 지역 이름을 `w`·`d`로 줄일 수 있게 한다. 지금은 블록 스코프(`let`·`const`)와 ES 모듈이 같은 일을 하므로, 스코프를 가두는 용도로는 거의 쓰지 않는다. 남은 쓰임은 둘이다. 최상위에서 `await`를 쓸 수 없는 환경에서 `(async () => { … })()`로 감쌀 때, 그리고 **식 자리에서 문장을 쓰고 싶을 때**다.
 
 #### 식 자리에 문장 쓰기
 
@@ -109,6 +109,9 @@ getFunc()() // 'undefined' — 바깥 함수의 value를 보지 못한다
 | --- | --- | --- |
 | `name` | 함수 이름 | 익명 함수라도 `const sayHi = function () {}`, 기본값 `(f = () => {})`, 객체 메서드처럼 **문맥에서 이름을 추론**한다(contextual name). `[function () {}]`처럼 추론할 곳이 없으면 빈 문자열 |
 | `length` | 선언한 매개변수 개수 | rest 매개변수와, 기본값이 있는 첫 매개변수부터 뒤는 세지 않는다. `(a, b = 1, c) => {}`의 `length`는 1 |
+| `prototype` | `new`로 만들 인스턴스의 프로토타입이 될 객체 | **생성자가 될 수 있는 함수**(함수 선언·표현식, `class`)에만 있다. 화살표 함수와 `{ method() {} }` 단축 메서드에는 없다([[prototype-and-inheritance\|프로토타입과 상속]]) |
+| `__proto__` | 함수 자신의 프로토타입(`Function.prototype`) | 함수의 속성이 아니라 `Object.prototype`에서 물려받은 접근자다 |
+| `arguments`·`caller` | 함수 객체에 붙은 인자 목록, 자신을 부른 함수 | 비표준이거나 폐기된 속성이다. strict mode 함수에서는 읽으면 `TypeError`다. 인자는 함수 안의 지역 `arguments`나 rest 매개변수로 읽는다 |
 | 커스텀 속성 | `fn.counter = 0`처럼 직접 붙인 값 | 함수 안의 지역 변수와 아무 관계가 없다 |
 
 `length`는 받은 콜백의 모양에 따라 다르게 부르는 다형적 함수에 쓰인다. 인자가 없는 핸들러(`handler.length === 0`)는 성공할 때만, 인자를 받는 핸들러는 결과를 넘겨 항상 부르는 식이다.
@@ -126,6 +129,8 @@ const pair = (a, b) => [a, b]
 pair(1, 2, 3) // [1, 2] — 남는 인자는 무시
 pair(1)       // [1, undefined] — 모자란 인자는 undefined
 ```
+
+엔진은 인자의 **개수도 타입도 검사하지 않는다.** `add('a', 2)`도 에러 없이 `'a2'`가 된다. 잘못된 인자를 막으려면 함수 안에서 `typeof`로 확인해 에러를 던지거나, 정적 검사인 [[typescript-basics|TypeScript]]를 쓴다. 매개변수는 적을수록 이해하기 쉽다. 셋을 넘으면 순서를 외워야 하므로 아래 「기본값」 끝의 방법처럼 객체 하나로 받는다.
 
 ### 기본값
 
@@ -246,6 +251,8 @@ button.addEventListener('click', function () {
 | `fn.call(x)`·`fn.bind(x)` | 명시한 `x`. 메서드 호출의 this보다 우선한다 |
 | 함수 바깥(최상위) | 일반 스크립트에서는 전역 객체(`globalThis`: 브라우저 `window`, Node.js `global`), ES 모듈에서는 `undefined` |
 
+여러 규칙이 겹치면 **`new` > 명시적 바인딩(`call`·`apply`·`bind`) > 메서드 호출(암시적 바인딩) > 일반 호출(기본 바인딩)** 순으로 이긴다. `bind`로 묶은 함수도 `new`로 부르면 묶은 값이 무시되고 새 인스턴스가 this가 된다. 화살표 함수는 이 순위 밖이다. 자기 this가 없어 `call`·`bind`·`new` 어느 것으로도 바꿀 수 없다([[execution-context|실행 컨텍스트]]).
+
 sloppy mode에서는 `fn.call(null)`의 this가 전역 객체로, `fn.call(10)`의 this가 래퍼 객체 `Number {10}`으로 바뀐다. strict mode에서는 넘긴 값이 그대로 this가 된다([[strict-mode|strict mode]]).
 
 ES 모듈과 `class` 본문은 자동으로 strict mode이므로, 요즘 코드에서 메서드를 떼어 부르면 this는 대개 `undefined`다.
@@ -353,7 +360,7 @@ function Person(name) { this.name = name }          // 생성자
 const createPerson = (name) => ({ name })           // 팩토리
 ```
 
-생성자 함수의 세부 규칙은 다음과 같다. 모든 일반 함수(화살표 함수 제외)는 `new`와 부르면 생성자처럼 동작하고, 대문자 이름은 "`new`와 부르라"는 약속일 뿐이다.
+생성자 함수의 세부 규칙은 다음과 같다. 함수 객체는 일반 호출용 내부 메서드 `[[Call]]`을 모두 갖지만, `new`용 `[[Construct]]`는 **constructor**만 갖는다. 함수 선언·함수 표현식·`class`가 constructor이고, 화살표 함수와 객체·클래스의 단축 메서드(`{ sayHi() {} }`)는 **non-constructor**라 `new`로 부르면 `TypeError`다. constructor인 함수는 `new`와 부르면 생성자처럼 동작하고, 대문자 이름은 "`new`와 부르라"는 약속일 뿐이다.
 
 | 규칙 | 동작 |
 | --- | --- |

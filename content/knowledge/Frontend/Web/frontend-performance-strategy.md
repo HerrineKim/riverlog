@@ -4,11 +4,11 @@ concept: "Performance Strategy"
 summary: "최적화는 측정한 뒤에, 최악의 사용자(p95·p99)를 기준으로, 무엇을 희생하는지 알고 한다. 느림은 초기 로딩(대역폭·지연 시간·JS 실행)과 런타임(실제 성능과 체감 성능)으로 나눠 본다. 캐싱·프리패치·코드 분할, 긴 작업 줄이기와 쪼개기, 파생 상태와 리렌더링 범위 좁히기를 각 원인에 맞춰 고른다."
 tags: ["frontend", "performance", "web", "react"]
 source: other
-date: "2026-10-18"
-sources: ["https://www.youtube.com/watch?v=upUON56UEYo", "https://bytebytego.com/guides/how-to-load-your-websites-at-lightning-speed", "https://medium.com/myrealtrip-product/fe-website-perf-part1-6ae5b10e3433"]
+date: "2026-10-21"
+sources: ["https://www.youtube.com/watch?v=upUON56UEYo", "https://bytebytego.com/guides/how-to-load-your-websites-at-lightning-speed", "https://medium.com/myrealtrip-product/fe-website-perf-part1-6ae5b10e3433", "https://web.dev/articles/performance-budgets-101"]
 ---
 
-> 토스 「모닥불」 EP.9 「[프론트엔드 서비스 최적화? 토스에서는 '이렇게' 합니다!](https://www.youtube.com/watch?v=upUON56UEYo)」(2024.12, 박서진·박건영·조유성)를 바탕으로 재구성한 노트다. 각 기법의 자세한 방법은 연결한 노트에 있다. 측정 조건과 성능 예산은 마이리얼트립의 「[웹사이트 성능 측정 및 최적화 Part 1. 리소스 로딩](https://medium.com/myrealtrip-product/fe-website-perf-part1-6ae5b10e3433)」으로 보강했다.
+> 토스 「모닥불」 EP.9 「[프론트엔드 서비스 최적화? 토스에서는 '이렇게' 합니다!](https://www.youtube.com/watch?v=upUON56UEYo)」(2024.12, 박서진·박건영·조유성)를 바탕으로 재구성한 노트다. 각 기법의 자세한 방법은 연결한 노트에 있다. 측정 조건과 성능 예산은 마이리얼트립의 「[웹사이트 성능 측정 및 최적화 Part 1. 리소스 로딩](https://medium.com/myrealtrip-product/fe-website-perf-part1-6ae5b10e3433)」으로 보강했다. 예산의 지표 종류는 web.dev의 「[Performance budgets 101](https://web.dev/articles/performance-budgets-101)」로 보강했다.
 > 로딩 기법 모음 표는 ByteByteGo의 System Design 101 가이드 「[Frontend Performance Optimization](https://bytebytego.com/guides/how-to-load-your-websites-at-lightning-speed)」을 바탕으로 보강했다.
 
 ## 언제 최적화하나
@@ -36,6 +36,14 @@ sources: ["https://www.youtube.com/watch?v=upUON56UEYo", "https://bytebytego.com
 ### 성능 예산
 
 **성능 예산(performance budget)** 은 넘지 않기로 팀이 합의한 한도다. 번들 크기, 이미지 총량, 특정 네트워크에서의 LCP 같은 값으로 정한다. 한 번 줄인 성능은 기능이 붙으며 다시 늘어나므로, CI에서 자동으로 확인해야 지켜진다.
+
+| 예산의 종류 | 예 | 성격 |
+| --- | --- | --- |
+| 양(quantity) | 이미지 최대 크기, 웹 폰트 개수, 스크립트 총량(프레임워크 포함), 서드파티 요청 수 | 디자이너·개발자 모두 알아듣기 쉬워 초기에 좋다. 다만 같은 무게라도 **요청 순서**에 따라 체감이 달라 경험을 직접 말해 주지 않는다 |
+| 시점(milestone) | LCP, INP, CLS 같은 사용자 중심 지표 | 경험을 잰다. 개발 초기부터 추적한다([[web-vitals\|웹 성능 지표]]) |
+| 규칙(rule-based) | Lighthouse 성능 점수 | 모범 사례 점검표. 다른 두 종류의 보조로 쓴다 |
+
+예산은 페이지 종류마다 따로 둔다. 「상품 페이지는 모바일에서 JS 170KB 미만」, 「검색 페이지의 이미지는 데스크톱에서 2MB 미만」, 「블로그는 Lighthouse 성능 80점 이상」처럼 **대상 페이지·기기·한도**를 함께 적는다. 예산을 넘으면 선택지는 셋이다: 기존 기능·자원을 최적화하거나, 빼거나, 새것을 넣지 않는다. 과거에는 「느린 3G의 Moto G4에서 5초 안에 TTI」가 대표 기준이었지만, TTI는 Lighthouse 10에서 빠졌고 지금은 Core Web Vitals 기준을 쓴다.
 
 - 번들 크기: `size-limit` 같은 도구로 파일별 상한을 두고 초과하면 빌드를 실패시킨다. 번들 구성은 `rollup-plugin-visualizer`·`webpack-bundle-analyzer`로 본다. 이미지·폰트를 base64로 번들에 넣는 인라인 기준을 너무 크게 잡으면 번들이 부푼다.
 - 지표: Lighthouse CI의 `budget.json`·assertion으로 PR마다 검사한다([[web-vitals|웹 성능 지표와 Lighthouse]]).

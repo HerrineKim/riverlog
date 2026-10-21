@@ -4,11 +4,11 @@ concept: "HTTPS Migration"
 summary: "사이트를 HTTPS로 옮기는 실무 흐름. 인증서는 검증 수준(DV·OV·EV)과 도메인 범위(단일·다중·와일드카드)로 고르는데, 웹사이트에는 ACME로 자동 발급·갱신하는 DV가 표준이다. 설치 뒤 301 리다이렉트·혼합 콘텐츠 제거·HSTS·서버 설정 점검까지 해야 전환이 끝난다."
 tags: ["web", "security", "http", "network", "devops"]
 source: other
-date: "2026-10-13"
-sources: ["https://webactually.com/2018/11/16/http%ec%97%90%ec%84%9c-https%eb%a1%9c-%ec%a0%84%ed%99%98%ed%95%98%ea%b8%b0-%ec%9c%84%ed%95%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://ssl-config.mozilla.org/", "https://letsencrypt.org/docs/"]
+date: "2026-10-21"
+sources: ["https://webactually.com/2018/11/16/http%ec%97%90%ec%84%9c-https%eb%a1%9c-%ec%a0%84%ed%99%98%ed%95%98%ea%b8%b0-%ec%9c%84%ed%95%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://ssl-config.mozilla.org/", "https://letsencrypt.org/docs/", "https://web.dev/articles/what-is-mixed-content", "https://web.dev/articles/fixing-mixed-content", "https://web.dev/articles/why-https-matters"]
 ---
 
-> Vladislav Denishev의 「HTTP에서 HTTPS로 전환하기 위한 완벽 가이드」(웹액츄얼리 번역, 2018.11)를 바탕으로 재구성한 노트다.
+> Vladislav Denishev의 「HTTP에서 HTTPS로 전환하기 위한 완벽 가이드」(웹액츄얼리 번역, 2018.11)를 바탕으로 재구성한 노트다. 혼합 콘텐츠는 web.dev의 「[What is mixed content?](https://web.dev/articles/what-is-mixed-content)」, 「[Fixing mixed content](https://web.dev/articles/fixing-mixed-content)」, 「[Why HTTPS matters](https://web.dev/articles/why-https-matters)」를 바탕으로 보강했다.
 
 ## HTTPS 전환이란
 
@@ -56,6 +56,17 @@ ECDSA(ECC) 키는 RSA보다 작고 빠르다. P-256이면 충분하다. RSA는 �
 | 5 | 쿠키에 `Secure` 속성 | 인증 쿠키가 평문으로 새지 않게 한다 |
 | 6 | 서버 TLS 설정 점검 | TLS 1.2 이상만 허용하고 1.3을 우선한다. Mozilla SSL Configuration Generator로 설정을 만들고, Qualys SSL Labs 서버 테스트로 확인한다 |
 | 7 | 외부 연동 갱신 | 분석 도구·검색 콘솔·결제·웹훅에 등록된 URL을 https로 바꾼다 |
+
+### 혼합 콘텐츠의 두 종류
+
+**혼합 콘텐츠는 HTTPS로 받은 페이지가 하위 리소스를 HTTP로 부르는 상태다.** 그 요청은 도청·변조될 수 있어 페이지 전체의 보안이 그 리소스 수준으로 떨어진다. 경고가 뜰 때는 이미 요청이 나간 뒤라 늦다.
+
+| 종류 | 대상 | 위험 | 브라우저 처리 |
+| --- | --- | --- | --- |
+| 능동(active, 차단 대상) | 스크립트, 스타일시트, iframe, `fetch`·XHR, 폰트 등 페이지를 바꾸거나 코드를 실행할 수 있는 것 | 공격자가 페이지 전체를 장악한다(로그인 정보·세션 쿠키 탈취, 다른 사이트로 이동) | 차단한다 |
+| 수동(passive, 업그레이드 대상) | `<img>`, `<audio>`, `<video>` | 이미지 바꿔치기, 어떤 페이지·상품을 보는지 추적 | 주요 브라우저는 `https://`로 자동 업그레이드해 요청하고, HTTPS로 제공되지 않으면 불러오지 않는다 |
+
+자동 업그레이드는 HTTPS 버전이 없으면 리소스가 깨지는 것으로 끝나므로, 결국 URL을 고쳐야 한다. Chromium 계열은 DevTools Issues 탭에, Firefox·Safari는 콘솔에 막히거나 업그레이드된 리소스를 남긴다.
 
 ## 정리
 

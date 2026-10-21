@@ -4,11 +4,11 @@ concept: "Resource Hints"
 summary: "브라우저가 스스로 늦게 발견하는 자원을 앞당기는 힌트. 다른 출처 연결은 preconnect·dns-prefetch, 늦게 발견되는 중요한 자원은 preload, 우선순위는 fetchpriority로 조정한다. 다음 이동을 위해서는 prefetch, Speculation Rules의 prefetch·prerender, 서비스 워커 프리캐싱을 쓰되 확신이 있을 때만 쓴다."
 tags: ["performance", "html", "web", "frontend", "network", "browser"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/performance/resource-hints", "https://web.dev/learn/performance/prefetching-prerendering-precaching", "https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/prefetch"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/performance/resource-hints", "https://web.dev/learn/performance/prefetching-prerendering-precaching", "https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/prefetch", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/%EC%9D%B4%EB%AF%B8%EC%A7%80%20preloading.md"]
 ---
 
-> web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Assist the browser with resource hints」, 「Prefetching, prerendering, and service worker precaching」 모듈을 바탕으로, 지원 범위는 MDN으로 확인해 재구성한 노트다.
+> web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Assist the browser with resource hints」, 「Prefetching, prerendering, and service worker precaching」 모듈을 바탕으로, 지원 범위는 MDN으로 확인해 재구성한 노트다. 스크립트로 이미지를 미리 받는 방법은 「[Frontend_TIL: 이미지 preloading](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/%EC%9D%B4%EB%AF%B8%EC%A7%80%20preloading.md)」을 바탕으로 보강했다.
 
 ## 리소스 힌트란
 
@@ -169,6 +169,32 @@ precacheAndRoute([
 - 직접 짜기보다 Workbox를 쓰는 편이 낫다. 버전을 추적하고, 서비스 워커가 갱신되면 만료된 항목을 지운다.
 - 서비스 워커의 Cache API와 `Cache-Control`이 다루는 HTTP 캐시는 **다른 캐시**다.
 - 프리캐시도 대역폭·저장 공간·CPU를 쓴다. 쓸 게 확실한 것만 넣고, 애매하면 런타임 캐시로 돌린다. 캐시 전략은 [[service-worker-caching|서비스 워커 캐싱과 응답 전략]]에 있다.
+
+### 스크립트로 이미지 미리 받기
+
+다음 화면·모달에서 쓸 이미지는 `new Image()`의 `src`를 채우는 순간 요청이 나가고, 응답은 HTTP 캐시에 들어간다. 나중에 같은 URL의 `<img>`가 나오면 DevTools Network의 Size 칸에 `memory cache`·`disk cache`로 찍히며 바로 그려진다. 응답의 캐시 헤더가 저장을 막지 않아야 한다.
+
+```js
+// 병렬: 한꺼번에 요청한다
+urls.forEach((url) => { new Image().src = url })
+
+// 직렬: 앞 이미지가 끝나야 다음을 받는다 (우선순위 순으로 정렬해 둔다)
+async function preloadInOrder(urls) {
+  for (const url of urls) {
+    const img = new Image()
+    img.src = url
+    await img.decode().catch(() => {}) // 받고 디코딩까지 끝나면 다음으로
+  }
+}
+```
+
+| 방식 | 장점 | 단점 |
+| --- | --- | --- |
+| 병렬 | 전체가 가장 빨리 끝난다 | 큰 이미지가 많으면 대역폭을 나눠 써서 **먼저 필요한 이미지가 늦게** 끝나고, 현재 페이지의 요청과도 경쟁한다 |
+| 직렬 | 우선순위대로 하나씩 확실히 끝난다 | 전체 완료가 늦다 |
+
+- 모두 미리 받지 말고 **가장 크거나 가장 먼저 보일 것**만 고른다. 첫 화면을 다 그린 뒤(`load` 이후나 유휴 시간)에 시작한다.
+- 현재 페이지의 LCP 이미지라면 스크립트가 아니라 `<link rel="preload" as="image">`나 `<img fetchpriority="high">`로 선언한다. 스크립트 방식은 다음 화면용이다.
 
 ### 언제 미리 받지 않나
 

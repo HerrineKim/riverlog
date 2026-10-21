@@ -4,11 +4,11 @@ concept: "JavaScript Animation"
 summary: "CSS로 부족한 애니메이션을 JavaScript로 만드는 두 방법. requestAnimationFrame 위에 duration·timing·draw로 나눈 범용 animate 함수를 짜고, 타이밍 함수(power·back·bounce·elastic)와 easeOut·easeInOut 변환을 직접 만든다. 브라우저 엔진을 그대로 쓰는 element.animate()는 재생 제어, finished 프로미스, commitStyles, 스크롤 타임라인을 준다."
 tags: ["javascript", "animation", "browser", "performance", "frontend"]
 source: other
-date: "2026-10-17"
-sources: ["https://ko.javascript.info/js-animation", "https://ko.javascript.info/css-animations", "https://ko.javascript.info/bezier-curve", "https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API", "https://developer.mozilla.org/en-US/docs/Web/API/ScrollTimeline"]
+date: "2026-10-21"
+sources: ["https://ko.javascript.info/js-animation", "https://ko.javascript.info/css-animations", "https://ko.javascript.info/bezier-curve", "https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API", "https://developer.mozilla.org/en-US/docs/Web/API/ScrollTimeline", "https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API", "https://alistapart.com/article/web-animation-past-present-and-future", "http://danielcwilson.com/blog/2015/07/animations-intro/"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「자바스크립트 애니메이션」, 「CSS 애니메이션」 글을 바탕으로, Web Animations API는 MDN으로 확인해 재구성한 노트다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「자바스크립트 애니메이션」, 「CSS 애니메이션」 글을 바탕으로, Web Animations API는 MDN으로 확인해 재구성한 노트다. 역사는 「[Web Animation Past, Present, and Future](https://alistapart.com/article/web-animation-past-present-and-future)」, 「[Let's talk about the Web Animations API](http://danielcwilson.com/blog/2015/07/animations-intro/)」로 보강했다.
 
 ## 언제 JavaScript로 움직이나
 
@@ -167,7 +167,24 @@ el.animate({ rotate: ['0deg', '360deg'] },
 
 ## 라이브러리를 고를 때
 
-여러 요소의 타임라인, 스프링 물리, 레이아웃 전환(FLIP)이 필요하면 GSAP, Motion 같은 라이브러리를 쓴다. 이들도 내부에서 `requestAnimationFrame`이나 Web Animations API를 쓴다.
+여러 요소의 타임라인, 스프링 물리, 레이아웃 전환(FLIP)이 필요하면 GSAP, Motion 같은 라이브러리를 쓴다. 이들도 내부에서 `requestAnimationFrame`이나 Web Animations API를 쓴다. SVG 경로 모핑처럼 브라우저가 아직 고르게 지원하지 않는 효과도 라이브러리 몫이다.
+
+## 역사
+
+Web Animations API는 **CSS 애니메이션, CSS 트랜지션, SVG의 SMIL을 하나의 애니메이션 엔진으로 묶으려는** 명세에서 출발했다. 세 방식이 따로 놀던 시절의 장단점이 이 API의 설계 이유다.
+
+| 옛 방식 | 장점 | 한계 |
+| --- | --- | --- |
+| CSS 애니메이션·트랜지션 | 브라우저가 최적화하고 합성 단계에서 돈다 | 값이 CSS에 고정돼 동적으로 바꾸기 번거롭다. 재생 제어가 없다 |
+| `setInterval` | 쉽다 | 프레임과 어긋나 끊긴다 |
+| `jQuery.animate()` | 쓰기 편하다 | 매 단계 스타일을 바꿔 느리다 |
+| `requestAnimationFrame` | 프레임에 맞춘다 | 메인 스레드가 바쁘면 같이 멈춘다. 타이밍 계산을 직접 한다 |
+| GSAP·Velocity | 빠르고 브라우저 차이를 메운다 | 외부 라이브러리를 싣고 유지해야 한다 |
+
+- 2014년 Polymer가 폴리필로 먼저 썼고, Chrome·Firefox가 2015~2016년에 구현했다. Safari까지 들어온 뒤(13.1) 지금은 모든 주요 브라우저의 기본 기능이다.
+- 초기 초안의 `GroupEffect`·`SequenceEffect`(여러 효과를 묶어 순서대로 재생)는 Level 2 초안에 남아 있고 브라우저에는 구현되지 않았다. 순서 재생은 `await anim.finished`로 잇는다. 모션 경로는 CSS의 `offset-path`로 갈라져 나왔다.
+- Chrome은 2015년 SMIL 지원 중단을 예고했다가 철회했다. SMIL(`<animate>`)은 지금도 모든 주요 브라우저가 지원한다.
+- 이 API 덕분에 브라우저 개발자 도구에 애니메이션 타임라인 패널(재생 속도 조절, 키프레임 확인)이 생겼다.
 
 ## 정리
 

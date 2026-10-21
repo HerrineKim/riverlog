@@ -4,12 +4,13 @@ concept: "Multilingual Web"
 summary: "여러 언어로 페이지를 제공할 때 언어마다 URL을 나누고 lang·dir·hreflang으로 표시하는 법, Accept-Language를 쓰되 강제로 넘기지 않는 언어 선택, 문자열 연결 금지·Intl API·텍스트 길이·방향·이미지 속 글자 같은 국제화 설계 주의점을 정리했다."
 tags: ["html", "i18n", "seo", "web", "frontend"]
 source: other
-date: "2026-10-15"
-sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://www.w3.org/International/questions/qa-html-language-declarations", "https://developers.google.com/search/docs/specialty/international/localized-versions", "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites", "https://web.dev/learn/html/document-structure", "https://web.dev/learn/html/inline-text", "https://bytebytego.com/guides/how-do-we-design-a-system-for-internationalization"]
+date: "2026-10-21"
+sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://www.w3.org/International/questions/qa-html-language-declarations", "https://developers.google.com/search/docs/specialty/international/localized-versions", "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites", "https://web.dev/learn/html/document-structure", "https://web.dev/learn/html/inline-text", "https://bytebytego.com/guides/how-do-we-design-a-system-for-internationalization", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/%EB%8B%A4%EA%B5%AD%EC%96%B4%20%ED%8E%98%EC%9D%B4%EC%A7%80%EB%A5%BC%20%EB%A7%8C%EB%93%A4%EB%95%8C%20%EA%B3%A0%EB%A0%A4%ED%95%B4%EC%95%BC%ED%95%A0%20%EC%82%AC%ED%95%AD.md"]
 ---
 
 > Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 다국어 페이지 문항 두 개를 바탕으로, W3C 국제화 문서와 Google 검색 센터 문서로 확인해 재구성한 노트다. 인용 부호·방향 격리·루비 요소는 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌를 바탕으로 보강했다.
 > 시간대·통화·법인 같은 시스템 쪽 국제화는 ByteByteGo의 System Design 101 가이드 「[How do we design a system for internationalization?](https://bytebytego.com/guides/how-do-we-design-a-system-for-internationalization)」를 바탕으로 보탰다.
+> 대상 지역 네트워크와 문화 차이는 「[Frontend_TIL: 다국어 페이지를 만들때 고려해야할 사항](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/%EB%8B%A4%EA%B5%AD%EC%96%B4%20%ED%8E%98%EC%9D%B4%EC%A7%80%EB%A5%BC%20%EB%A7%8C%EB%93%A4%EB%95%8C%20%EA%B3%A0%EB%A0%A4%ED%95%B4%EC%95%BC%ED%95%A0%20%EC%82%AC%ED%95%AD.md)」을 바탕으로 보강했다.
 
 ## 두 가지 일: 국제화와 현지화
 
@@ -87,6 +88,7 @@ CSS에서는 `:lang(fr)`이나 `[lang|="fr"]`로 언어별 스타일을 준다. 
 | 글꼴과 글자 크기 | 언어마다 필요한 글꼴과 알맞은 크기가 다르다. `:lang()`으로 나눈다(→ [[responsive-design\|반응형 디자인과 다국어 타이포그래피]]) |
 | 색·아이콘·이름의 문화 차이 | 색과 손짓 아이콘의 의미는 문화마다 다르다. 이름·주소·전화번호 입력 폼은 한 형식을 강제하지 않는다 |
 | 인코딩 | 모든 문서와 데이터는 UTF-8로 저장·전송한다 |
+| 대상 지역의 네트워크 | 나라마다 회선 속도와 데이터 요금이 크게 다르다. 본사 사무실 회선이 아니라 대상 지역의 느린 망을 기준으로 이미지·폰트 용량을 줄이고, 지역 가까이 배포한 CDN으로 내보낸다(→ [[web-font-performance\|웹폰트 성능]], [[image-cdn\|이미지 CDN]]) |
 
 ### 시스템 쪽 국제화: 텍스트 밖의 것들
 

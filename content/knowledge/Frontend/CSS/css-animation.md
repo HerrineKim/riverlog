@@ -4,11 +4,11 @@ concept: "CSS Animation"
 summary: "상태 변화를 부드럽게 잇는 transition과, 여러 단계를 스스로 재생하는 @keyframes 애니메이션의 차이와 속성. 부드러운 애니메이션을 위한 transform·opacity 원칙, 움직임 줄이기 설정 존중, Animate.css·Hover.css·Animista 같은 CSS 애니메이션 라이브러리와 JS 라이브러리로 넘어갈 시점을 정리한다."
 tags: ["css", "frontend", "animation", "performance"]
 source: other
-date: "2026-10-14"
-sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations", "https://web.dev/learn/css/transitions", "https://web.dev/learn/css/animations"]
+date: "2026-10-21"
+sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animations/Using_CSS_animations", "https://web.dev/learn/css/transitions", "https://web.dev/learn/css/animations", "https://developer.mozilla.org/en-US/docs/Web/CSS/will-change", "https://dev.opera.com/articles/css-will-change-property/"]
 ---
 
-> nanati의 「[CSS Animation을 간단하게 만들어주는 라이브러리 모음](https://nanati.me/css-animation-library/)」(2021.09)의 라이브러리 목록에 CSS 애니메이션 기본 개념을 더해 재구성한 노트다. 라이브러리 링크는 2026년 10월에 다시 확인했다. transition·animation 속성의 세부 동작은 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Transitions·Animations 모듈로 보강했다.
+> nanati의 「[CSS Animation을 간단하게 만들어주는 라이브러리 모음](https://nanati.me/css-animation-library/)」(2021.09)의 라이브러리 목록에 CSS 애니메이션 기본 개념을 더해 재구성한 노트다. 라이브러리 링크는 2026년 10월에 다시 확인했다. transition·animation 속성의 세부 동작은 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Transitions·Animations 모듈로 보강했다. `will-change` 쓰는 법은 MDN과 「[Everything You Need to Know About the CSS will-change Property](https://dev.opera.com/articles/css-will-change-property/)」로 보강했다.
 
 ## 두 가지 방법
 
@@ -90,14 +90,14 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 | `steps(n, end)` | n개의 같은 간격으로 **뚝뚝 끊어** 움직인다. `end`(기본)는 각 구간 끝에서, `start`는 시작하자마자 첫 단계로 바뀐다. 스프라이트 애니메이션, 타자기 효과 |
 | `linear(0, .25 75%, 1)` | 점들을 이은 꺾은선. 스프링·바운스를 흉내 낸다 |
 
-실제 물체는 갑자기 서거나 출발하지 않는다. 등장은 `ease-out`, 퇴장은 `ease-in`이 자연스럽다. 개발자 도구의 곡선 편집기로 실시간 조절할 수 있다([[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]).
+실제 물체는 갑자기 서거나 출발하지 않는다. 등장은 `ease-out`, 퇴장은 `ease-in`이 자연스럽다. 개발자 도구의 곡선 편집기로 실시간 조절할 수 있다([[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]). 곡선을 읽는 법, 애니메이션 12원칙, 곡선 경로와 안무는 [[ui-motion-principles|UI 모션 디자인]]에 있다.
 
 스크롤 위치에 맞춰 재생하는 **스크롤 기반 애니메이션**(`animation-timeline: scroll()`/`view()`)과, 페이지·상태 전환을 잇는 **View Transitions API**도 CSS로 다룬다([[view-transitions|View Transitions: 화면 전환 애니메이션]]).
 
 ## 부드럽게 만드는 원칙
 
 - **`transform`과 `opacity`만 움직인다.** 합성만 다시 돌기 때문이다([[browser-rendering#변경이 다시 도는 단계|변경이 다시 도는 단계]]). `width`·`top`·`margin`은 매 프레임 레이아웃을 다시 한다. 함수는 [[transform|transform: 이동·회전·확대·기울이기]]에 있다.
-- `will-change: transform`은 곧 움직일 요소에만 잠깐 쓴다. 남발하면 메모리를 낭비한다.
+- `will-change`는 곧 움직일 요소에만 잠깐 쓴다. 아래 「will-change 쓰는 법」을 따른다.
 - 짧게 쓴다. UI 피드백은 100~300ms 안팎이면 충분하다.
 - **움직임 줄이기 설정을 존중한다.** 전정 장애가 있는 사용자는 큰 움직임에 어지러움을 느낀다.
 
@@ -112,6 +112,25 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 ```
 
 움직임 줄이기는 「애니메이션 금지」가 아니라 **덜, 특히 예상치 못한 움직임을 덜** 달라는 요청이다. 자동 재생 애니메이션은 `animation-play-state: paused`로 멈추고, 큰 이동은 페이드로 바꾸는 식으로 대체한다. 반대로 `@media (prefers-reduced-motion: no-preference)` 안에서만 움직임을 켜는 방식도 있다. 자세한 기준(5초 넘는 자동 애니메이션은 멈출 수 있게)은 [[color-motion-accessibility|색과 움직임의 접근성]]에 있다.
+
+### will-change 쓰는 법
+
+`will-change`는 「이 속성이 곧 바뀐다」는 **힌트**다. 브라우저는 미리 레이어를 만드는 식으로 준비한다. 성능 문제가 실제로 있을 때 쓰는 **최후의 수단**이고, 2020년부터 모든 주요 브라우저가 지원한다.
+
+| 값 | 뜻 |
+| --- | --- |
+| `auto` | 특별한 준비 없음(기본값) |
+| `transform`, `opacity` 등 속성 이름 | 그 속성이 바뀐다 |
+| `scroll-position` | 스크롤 위치가 바뀐다. 보이는 영역 밖까지 미리 그린다 |
+| `contents` | 내용이 자주 바뀐다. 렌더링 결과를 캐시하지 않는다 |
+
+| 원칙 | 이유·방법 |
+| --- | --- |
+| 많은 요소에 걸지 않는다 | `* { will-change: transform }`처럼 쓰면 레이어마다 메모리를 잡아 오히려 느려진다. 레이어의 비용은 [[browser-architecture#레이어 승격의 비용\|레이어 승격의 비용]]에 있다 |
+| 바뀌기 **조금 전에** 건다 | 변경 직전에 걸면 준비할 시간이 없다. 클릭에 움직일 요소라면 부모에 `:hover`할 때 건다 |
+| 끝나면 지운다 | 스타일 시트에 고정해 두면 지울 수 없다. 스크립트로 걸고 `animationend`·`transitionend`에서 `el.style.willChange = 'auto'`로 되돌린다 |
+| 계속 바뀌는 요소만 스타일 시트에 둔다 | 슬라이드 패널처럼 사용자가 반복해서 여닫는 요소 |
+| 부수 효과를 안다 | 초깃값이 아닐 때 쌓임 맥락을 만드는 속성(`opacity`, `transform`, `clip-path` 등)을 적으면 `will-change`만으로 쌓임 맥락이 생긴다. `transform`을 적으면 `position: fixed` 자손의 기준 박스도 된다 |
 
 ## CSS 애니메이션 라이브러리
 
@@ -147,4 +166,4 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 
 **좋은 애니메이션은 눈에 띄지 않고, 상태가 바뀌었다는 사실만 알려 준다.**
 
-관련 노트: [[transform|transform: 이동·회전·확대·기울이기]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[browser-rendering|브라우저 렌더링 과정]], [[color-motion-accessibility|색과 움직임의 접근성]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[js-animation|JavaScript 애니메이션]]
+관련 노트: [[transform|transform: 이동·회전·확대·기울이기]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[browser-rendering|브라우저 렌더링 과정]], [[color-motion-accessibility|색과 움직임의 접근성]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[js-animation|JavaScript 애니메이션]], [[ui-motion-principles|UI 모션 디자인: 애니메이션 원칙, 모션 커브, 안무]]

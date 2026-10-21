@@ -4,11 +4,12 @@ concept: "SEO"
 summary: "검색 엔진이 페이지를 크롤링·색인·순위 매기는 흐름과, 프론트엔드가 챙길 robots.txt·사이트맵·메타 태그·canonical·리다이렉트·렌더링 방식, 링크와 버튼의 구분을 정리했다."
 tags: ["seo", "web", "html", "frontend"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://x.com/azarchick/status/1757102271115166148", "https://developers.google.com/search/docs/crawling-indexing/links-crawlable", "https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://velog.io/@jiseung/Why-Site-Speed-Matters", "https://bytebytego.com/guides/making-sense-of-search-engine-optimization", "https://developers.google.com/search/docs/crawling-indexing/url-structure"]
+date: "2026-10-21"
+sources: ["https://x.com/azarchick/status/1757102271115166148", "https://developers.google.com/search/docs/crawling-indexing/links-crawlable", "https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://velog.io/@jiseung/Why-Site-Speed-Matters", "https://bytebytego.com/guides/making-sense-of-search-engine-optimization", "https://developers.google.com/search/docs/crawling-indexing/url-structure", "https://developers.google.com/search/docs/fundamentals/seo-starter-guide", "https://www.hobo-web.co.uk/seo-tutorial/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/SEO%20%EA%B0%9C%EB%85%90%20%EB%B0%8F%20%ED%96%A5%EC%83%81%EB%B0%A9%EB%B2%95.md", "https://web.archive.org/web/2019/https://katemats.com/blog/what-every-programmer-should-know-about-seo"]
 ---
 
-> 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트다. hreflang 항목은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 다국어 페이지 노트와 연결했다. 「순위를 정하는 요소」는 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」 부록으로 보강했다. 「링크와 버튼을 구분한다」는 Kristina Azarenko의 [X 타래](https://x.com/azarchick/status/1757102271115166148)(2024.02)를 Google 검색 센터 문서로 확인해 보강했다. 「색인 단계에서 일어나는 일」과 「크롤러가 읽기 쉬운 사이트 구조」는 ByteByteGo의 System Design 101 가이드 「[Making Sense of Search Engine Optimization](https://bytebytego.com/guides/making-sense-of-search-engine-optimization)」을 Google URL 구조 가이드로 확인해 보강했다.
+> 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트다. hreflang 항목은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 다국어 페이지 노트와 연결했다. 「순위를 정하는 요소」는 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」 부록으로 보강했다. 「링크와 버튼을 구분한다」는 Kristina Azarenko의 [X 타래](https://x.com/azarchick/status/1757102271115166148)(2024.02)를 Google 검색 센터 문서로 확인해 보강했다. 「색인 단계에서 일어나는 일」과 「크롤러가 읽기 쉬운 사이트 구조」는 ByteByteGo의 System Design 101 가이드 「[Making Sense of Search Engine Optimization](https://bytebytego.com/guides/making-sense-of-search-engine-optimization)」을 Google URL 구조 가이드로 확인해 보강했다. 「흔한 오해」와 색인 확인·제목 링크·스니펫·rel 링크 속성 내용은 Google의 「[SEO 기본 가이드](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)」(옛 「Search Engine Optimization Starter Guide」 PDF의 현행판)와 Hobo의 「[SEO Tutorial For Beginners](https://www.hobo-web.co.uk/seo-tutorial/)」를 바탕으로 보강했다.
+> 구조화된 데이터와 제목·설명 작성은 「[Frontend_TIL: SEO 개념 및 향상방법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/SEO%20%EA%B0%9C%EB%85%90%20%EB%B0%8F%20%ED%96%A5%EC%83%81%EB%B0%A9%EB%B2%95.md)」을 Google 검색 센터 문서로 확인해 보강했다. 앵커 텍스트와 중복 탐지는 Kate Matsudaira의 「[What Every Programmer Should Know About SEO](https://web.archive.org/web/2019/https://katemats.com/blog/what-every-programmer-should-know-about-seo)」를 바탕으로 보탰다.
 
 검색 엔진 최적화(SEO, Search Engine Optimization)는 검색 결과에서 페이지가 잘 발견되고 높은 순위에 오르도록 콘텐츠와 구조를 다듬는 일이다. 콘텐츠의 질이 가장 중요하지만, **검색 엔진이 페이지를 읽을 수 있게 만드는 것**은 프론트엔드의 몫이다. 관련 용어의 짧은 정의는 [[web-glossary|용어집]]에 있다.
 
@@ -41,7 +42,8 @@ sources: ["https://x.com/azarchick/status/1757102271115166148", "https://develop
 
 - 크롤러가 읽지 못하는 요소(프레임, 플러그인 콘텐츠, 끝없이 파라미터가 붙는 동적 URL)를 줄인다.
 - 사이트 계층을 얕게 둔다. 중요한 페이지는 홈에서 몇 번의 클릭 안에 닿아야 한다.
-- URL은 짧고 내용을 설명하게 쓰고 키워드를 넣는다. 단어 구분은 밑줄(`_`) 대신 **하이픈(`-`)** 을 쓴다. 검색 엔진은 하이픈을 단어 경계로 보지만 밑줄로 이은 단어는 한 단어로 읽을 수 있다.
+- URL은 짧고 내용을 설명하게 쓰고 키워드를 넣는다. 단어 구분은 밑줄(`_`) 대신 **하이픈(`-`)** 을 쓴다. 검색 엔진은 하이픈을 단어 경계로 보지만 밑줄로 이은 단어는 한 단어로 읽을 수 있다. URL 경로의 단어는 검색 결과에 **이동 경로(breadcrumb)** 로도 보인다(구조화 데이터로 바꿀 수 있다). 무작위 ID만 있는 URL은 사용자에게 아무것도 알려 주지 않는다.
+- URL이 수천 개를 넘는 사이트는 주제별 디렉터리로 묶는다. 구글이 디렉터리마다 갱신 주기를 따로 익힌다.
 - 키워드는 사업과 관련 있고, **검색량은 많은데 경쟁 페이지는 적은** 것을 고른다.
 
 ## 순위를 정하는 요소
@@ -56,7 +58,13 @@ sources: ["https://x.com/azarchick/status/1757102271115166148", "https://develop
 | 사용자 경험 | 빠르고 안정적으로 뜨나, 모바일에서 쓸 만한가 | [[web-vitals\|Core Web Vitals]], HTTPS, 콘텐츠를 가리는 전면 팝업 피하기 |
 
 - 내부 링크는 사이트 안에서 어떤 페이지가 중요한지 검색 엔진에 알려 준다.
-- **키워드 채우기(keyword stuffing)** 처럼 순위를 노리고 키워드를 부자연스럽게 반복하는 블랙햇 기법은 효과가 없고 오히려 불이익을 받는다.
+- 링크의 **앵커 텍스트**는 링크된 페이지가 무엇에 관한지 알려 주는 신호다. 「여기를 클릭」 대신 내용을 설명하는 텍스트를 쓴다. 다른 사이트가 어떤 말로 링크하느냐가 페이지 자체의 글보다 중요하게 쓰이기도 한다.
+- 검색 엔진은 shingling 같은 유사 문서 탐지로 중복을 찾는다. 블로그 목록 페이지에 글 전문을 싣지 말고 요약만 보여 주면 같은 글이 두 URL에 생기지 않는다.
+- 이미지는 관련 있는 글 가까이에 두고 `alt`를 쓴다. 이미지 검색에서 처음 사이트를 찾는 사용자도 많다.
+- 광고나 자사 CTA가 본문(main content)을 화면 아래로 밀어내지 않게 한다.
+- 링크 신호를 넘기고 싶지 않은 링크에는 이유를 표시한다. 사용자 생성 콘텐츠에는 `rel="ugc"`, 광고·제휴에는 `rel="sponsored"`, 그 밖에는 `rel="nofollow"`.
+- **키워드 채우기(keyword stuffing)** 처럼 순위를 노리고 키워드를 부자연스럽게 반복하는 블랙햇 기법은 스팸 정책 위반이라 효과가 없고 오히려 불이익을 받는다. 조작적 링크 구매 같은 기법으로 받은 불이익은 원인을 고친 뒤에도 회복에 6~12개월 이상 걸릴 수 있고, 예전 순위로 돌아온다는 보장도 없다.
+- 바꾼 것이 순위에 반영되기까지 몇 시간에서 몇 달이 걸린다. 몇 주는 기다린 뒤 효과를 판단한다.
 
 ## robots.txt와 사이트맵
 
@@ -70,20 +78,25 @@ Disallow: /admin/
 Sitemap: https://example.com/sitemap.xml
 ```
 
+색인됐는지는 구글에서 `site:example.com`으로 검색해 확인한다. 페이지 하나가 구글에 어떻게 보이는지는 Search Console의 **URL 검사 도구**로 본다.
+
 ## 메타 태그
 
 메타 태그(meta tag)는 `<head>` 안에서 페이지에 대한 정보를 주는 태그다. 화면에는 보이지 않는다.
 
 | 태그 | 역할 |
 | --- | --- |
-| `<title>` | 검색 결과의 파란 제목. 페이지마다 다르게 쓴다 |
-| `<meta name="description">` | 검색 결과의 요약문 후보. 순위보다 클릭률에 영향을 준다 |
+| `<title>` | 검색 결과의 파란 제목(제목 링크, title link)의 주된 재료. 페이지마다 다르게 쓴다 |
+| `<meta name="description">` | 검색 결과 요약문(스니펫, snippet)의 후보. 스니펫은 주로 본문에서 뽑고, description이 본문보다 페이지를 잘 요약할 때 쓰인다. 순위보다 클릭률에 영향을 준다 |
 | `<meta name="viewport">` | 모바일 화면 너비에 맞춘다. 없으면 모바일 친화성에서 감점된다 |
 | `<meta name="robots" content="noindex">` | 색인하지 말라는 신호 |
 | `<link rel="canonical">` | 같은 내용이 여러 URL에 있을 때 대표 URL을 지정한다 |
 | `<meta property="og:*">` | 오픈 그래프. 메신저·SNS 공유 미리보기의 제목·이미지·설명 |
 | `<link rel="alternate" hreflang="en">` | 다국어 페이지의 언어별 버전을 연결한다. 양방향 연결·`x-default` 규칙은 [[multilingual-pages\|다국어 페이지]]에 있다 |
 | `<link rel="icon">` | 파비콘. 탭과 모바일 검색 결과에 표시된다 |
+| `<script type="application/ld+json">` | schema.org 어휘의 구조화된 데이터. 기사·제품·FAQ·이동 경로(BreadcrumbList)·리뷰 등을 표시하면 검색 결과에 별점·가격 같은 **리치 결과**로 나올 수 있다. 순위 신호는 아니다([[structured-content\|구조화된 콘텐츠]]) |
+
+`<title>`과 description은 글자 수 제한이 정해져 있지 않다. 검색 결과는 화면 폭에 맞춰 자르므로 핵심 키워드와 페이지만의 정보를 앞에 둔다. 「대표 키워드 - 브랜드」처럼 구분자로 이어 붙이는 형식이 흔하다.
 
 ## 리다이렉트
 
@@ -147,6 +160,21 @@ Sitemap: https://example.com/sitemap.xml
 | 공유하기 쉬운 URL인가 | 사람이 읽고 기억할 수 있는 경로가 링크·공유를 부른다 |
 
 사이트맵은 HTML 페이지용과 이미지·동영상용 확장을 구분해 정확히 쓴다. Search Console의 페이지 색인 보고서로 어떤 URL이 색인되고 빠졌는지 확인한다.
+
+## 흔한 오해: 신경 쓰지 않아도 되는 것
+
+Google 검색 센터의 SEO 기본 가이드는 순위에 거의 영향이 없는 것을 따로 짚는다.
+
+| 오해 | 실제 |
+| --- | --- |
+| `<meta name="keywords">`를 채워야 한다 | 구글은 이 태그를 쓰지 않는다 |
+| 도메인·URL 경로에 키워드가 있어야 한다 | 이동 경로에 보이는 것 말고는 효과가 거의 없다. 최상위 도메인(`.com`, `.kr`)도 특정 국가를 노릴 때만 약한 신호다 |
+| 글이 길어야(짧아야) 한다 | 정해진 글자 수 기준은 없다. 자연스럽게 표현을 바꿔 쓰면 다양한 검색어에 걸릴 뿐이다 |
+| 서브도메인과 하위 디렉터리 중 하나가 유리하다 | 순위와 무관하다. 관리하기 편한 쪽을 고른다 |
+| PageRank(링크)가 전부다 | 많은 순위 신호 가운데 하나다 |
+| 중복 콘텐츠는 벌점을 받는다 | 한 사이트 안에서 같은 내용이 여러 URL에 있는 것은 비효율일 뿐 벌점 대상이 아니다. 대표 URL로 301 리다이렉트하거나 canonical을 건다. 남의 글을 베끼는 것은 다른 문제다 |
+| 제목 태그 순서가 순위에 영향을 준다 | 검색 순위에는 상관없다. 순서는 스크린 리더를 위해 지킨다 |
+| E-E-A-T가 순위 요소다 | 경험·전문성·권위·신뢰는 품질 평가의 관점이지 하나의 순위 신호가 아니다 |
 
 ## 체크리스트
 

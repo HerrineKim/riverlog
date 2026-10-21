@@ -1,14 +1,14 @@
 ---
 title: "모듈: export와 import, export default"
 concept: "ES Modules"
-summary: "ES 모듈의 named·default export와 여러 import·다시 내보내기 형태, 모듈 스코프·한 번만 평가·라이브 바인딩·import.meta 같은 성질, 브라우저에서 모듈 스크립트로 쓰는 법(defer, async, CORS)과 동적 import(), import attributes로 JSON 가져오기, CommonJS와의 관계, default와 named 중 무엇을 쓸지에 대한 논쟁."
+summary: "ES 모듈의 named·default export와 여러 import·다시 내보내기 형태, 모듈 스코프·한 번만 평가·라이브 바인딩·import.meta 같은 성질, 브라우저에서 모듈 스크립트로 쓰는 법(defer, async, CORS)과 동적 import(), import attributes로 JSON 가져오기, CommonJS와의 관계(exports와 module.exports, AMD·UMD 비교), default와 named 중 무엇을 쓸지에 대한 논쟁. 로드 3단계(구성·연결·평가), CommonJS 래퍼 함수와 Node.js의 형식 판별·상호 운용 규칙까지."
 tags: ["javascript", "frontend", "typescript"]
 source: mixed
-date: "2026-10-20"
-sources: ["https://riverkim.kr/174", "https://riverkim.kr/120", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/78-modules", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/79-currency-module-refactor", "https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require", "https://ko.javascript.info/modules-intro", "https://ko.javascript.info/import-export", "https://ko.javascript.info/modules-dynamic-imports", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta"]
+date: "2026-10-21"
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/module.md", "https://riverkim.kr/174", "https://riverkim.kr/120", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/78-modules", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/79-currency-module-refactor", "https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require", "https://ko.javascript.info/modules-intro", "https://ko.javascript.info/import-export", "https://ko.javascript.info/modules-dynamic-imports", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta", "https://github.com/myshov/history-of-javascript/tree/master/4_evolution_of_js_modularity", "https://ponyfoo.com/articles/es6-modules-in-depth", "https://jakearchibald.com/2017/es-modules-in-browsers/", "https://hackernoon.com/node-js-tc-39-and-modules-a1118aecf95e", "https://nodejs.org/api/esm.html"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「모듈 소개」, 「모듈 내보내고 가져오기」, 「동적으로 모듈 가져오기」 글을 함께 참고해 재구성한 노트다.
+> riverkim.kr에 쓴 글들을 다시 정리하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「모듈 소개」, 「모듈 내보내고 가져오기」, 「동적으로 모듈 가져오기」 글을 함께 참고해 재구성한 노트다. CommonJS·AMD·UMD 비교는 「[Must-Know-About-Frontend: 모듈 시스템](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/module.md)」을 바탕으로 보강했다. 로드 단계, CommonJS 래퍼 함수, Node.js의 형식 판별과 상호 운용은 「[Node.js, TC-39, and Modules](https://hackernoon.com/node-js-tc-39-and-modules-a1118aecf95e)」, 「[ECMAScript modules in browsers](https://jakearchibald.com/2017/es-modules-in-browsers/)」, 「[ES6 Modules in Depth](https://ponyfoo.com/articles/es6-modules-in-depth)」, 「[The Evolution of JavaScript Modularity](https://github.com/myshov/history-of-javascript/tree/master/4_evolution_of_js_modularity)」을 바탕으로 Node.js 공식 [ECMAScript modules 문서](https://nodejs.org/api/esm.html)로 최신화해 보강했다.
 
 ## 모듈과 export
 
@@ -118,6 +118,18 @@ Airbnb 스타일 가이드의 `import/prefer-default-export` 규칙을 두고도
 
 import만 해도 DOM을 찾고 이벤트를 거는 코드가 실행되면 테스트와 재사용이 어렵다. 초기화 코드는 `export function init()`으로 감싸고 진입점에서 한 번 호출하는 편이 낫다.
 
+### 로드는 세 단계다: 구성 → 연결 → 평가
+
+ES 모듈이 정적이라는 성질은 로더가 코드를 실행하기 **전에** 모듈 그래프 전체를 만든다는 뜻이다.
+
+| 단계 | 하는 일 |
+| --- | --- |
+| 구성(construction) | 진입점에서 시작해 `import` 경로를 URL로 풀고, 파일을 받아 파싱해 **모듈 레코드**(가져오는 것·내보내는 것 목록)를 만든다. 그래프 전체를 받을 때까지 아무 코드도 실행하지 않는다 |
+| 연결(linking) | 모듈마다 환경을 만들고, import한 이름을 상대 모듈의 export 칸에 **연결**한다. 없는 이름을 가져오면 이 단계에서 `SyntaxError`가 나 아무것도 실행되지 않는다 |
+| 평가(evaluation) | 의존 그래프의 깊은 쪽(잎)부터 모듈 본문을 한 번씩 실행해 칸에 값을 채운다 |
+
+라이브 바인딩과 순환 의존의 동작이 모두 여기서 나온다. 연결 단계에서 이미 칸끼리 이어져 있으므로 값이 바뀌면 가져온 쪽에도 보이고, 순환 의존에서 아직 평가되지 않은 모듈의 칸을 읽으면 TDZ 오류가 난다. CommonJS는 이와 달리 `require()`를 만나는 순간 파일을 읽고 바로 실행한다.
+
 ## 브라우저에서 모듈 쓰기
 
 ```html
@@ -160,15 +172,77 @@ button.addEventListener('click', async () => {
 - 처음 호출할 때만 네트워크 요청이 나가고, 이후 호출은 캐시된 모듈을 바로 돌려준다.
 - 번들러는 동적 import 지점을 별도 청크로 쪼갠다(코드 스플리팅). React의 `lazy()`도 이 위에 있다. 무엇을 언제 쪼갤지는 [[code-splitting|자바스크립트 코드 분할]]에 있다.
 
-## CommonJS와의 관계
+## 표준 이전의 모듈 형식
 
-Node.js가 먼저 쓰던 모듈 형식이 CommonJS(`const x = require('x')`, `module.exports = …`)다. 문서에서 `require`를 보면 `import x from 'x'`로 옮겨 쓰면 된다. 지금 Node.js는 ES 모듈을 기본 지원하고(`"type": "module"` 또는 `.mjs`), Node.js 20.19·22.12부터는 플래그 없이 CommonJS에서 (top-level await가 없는) ES 모듈을 `require()`로 불러올 수도 있다. 표준 모듈(2015) 이전에는 require.js의 AMD, Node.js의 CommonJS, 둘을 함께 지원하려는 UMD가 쓰였다. 형식이 생겨난 순서는 [[bundlers-and-vite|번들러의 역사와 Vite]]에 있다.
+표준 모듈(2015) 이전에는 언어에 모듈이 없어 여러 방식이 쓰였다. 가장 먼저 쓰인 것은 즉시 실행 함수와 클로저로 private 변수를 숨기는 **모듈 패턴**이고([[js-design-patterns|JavaScript 디자인 패턴]] 참고), 그다음 Node.js의 CommonJS, require.js의 AMD, 둘을 함께 지원하려는 UMD가 나왔다. 지금은 파일 자체가 스코프인 ES 모듈이 이 역할을 모두 맡는다. 형식이 생겨난 순서는 [[bundlers-and-vite|번들러의 역사와 Vite]]에 있다.
 
-두 형식은 **순환 의존**에서 다르게 깨진다. CommonJS는 실행이 덜 끝난 모듈의 빈 `module.exports`를 넘겨 나중에 `is not a function`이 나고, ES 모듈은 바인딩이 살아 있어 나중에 채워진 값이 보이지만 최상위에서 바로 쓰면 초기화 전 접근 오류가 난다. 원인과 해결은 [[express-project-architecture|Express 프로젝트 구조]]의 「순환 의존을 피한다」에 있다.
+| 형식 | 대상 | 정의·사용 | 특징 |
+| --- | --- | --- | --- |
+| CommonJS | 서버(Node.js) | `require()`·`module.exports` | 동기 로딩. 파일을 바로 읽는 서버에 맞다 |
+| AMD | 브라우저 | `define(['dep'], (dep) => …)`·`require([...], cb)`, 대표 구현 RequireJS | 의존 모듈을 비동기로 받은 뒤 콜백을 실행한다 |
+| UMD | 둘 다 | 아래처럼 환경을 검사하는 래퍼 | 한 파일로 AMD·CommonJS·전역 변수 방식을 모두 지원한다 |
 
-## 모듈 이전: 모듈 패턴
+```javascript
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) define([], factory)          // AMD
+  else if (typeof module === 'object' && module.exports) module.exports = factory() // CommonJS
+  else root.myLib = factory()                                                   // 브라우저 전역
+})(typeof self !== 'undefined' ? self : this, function () {
+  return { /* 내보낼 것 */ }
+})
+```
 
-ES 모듈 이전에는 즉시 실행 함수와 클로저로 private 변수를 숨기는 **모듈 패턴**을 썼다. 지금은 파일 자체가 스코프인 ES 모듈이 그 역할을 맡는다([[js-design-patterns|JavaScript 디자인 패턴]] 참고).
+모듈 패턴보다 앞서는 방식도 있었다. `<script>` 태그 순서로 의존성을 직접 맞추고(1999년 무렵), 전역 이름 충돌을 줄이려 객체 하나에 모두 매다는 **네임스페이스 패턴**(`var App = App || {}; App.utils = …`, 2002년 무렵)을 썼다. 이 둘은 이름 충돌만 줄였을 뿐, 의존 순서를 사람이 관리하는 문제는 그대로였다. 그 순서를 코드 안에 선언하게 만든 것이 CommonJS·AMD다.
+
+새 코드는 ES 모듈로 쓰고, AMD·UMD는 옛 라이브러리의 배포 파일이나 `<script>`로 바로 넣는 빌드에서 만난다. 번들러는 이런 형식을 모두 해석해 하나로 묶는다.
+
+### CommonJS: exports와 module.exports
+
+Node.js가 먼저 쓰던 모듈 형식이 CommonJS(`const x = require('x')`, `module.exports = …`)다. CommonJS 모듈 안의 `module`은 현재 모듈 정보(`id`, `path`, `exports` …)를 담은 객체다.
+
+- `module.exports`는 처음에 빈 객체이고, **`require()`가 돌려주는 것은 언제나 `module.exports`** 다.
+- `exports`는 같은 객체를 가리키는 지역 변수일 뿐이다. 그래서 `exports.sum = sum`처럼 **속성을 붙이는 것은 되지만**, `exports = { sum }`처럼 새 객체를 대입하면 연결이 끊겨 아무것도 내보내지 않는다.
+- 함수 하나나 새 객체를 통째로 내보낼 때는 `module.exports = …`를 쓴다.
+
+`exports`·`require`·`module`·`__filename`·`__dirname`은 전역 변수가 아니다. Node.js는 CommonJS 파일을 실행하기 전에 **함수로 감싸** 이 다섯 개를 인자로 넣는다.
+
+```javascript
+(function (exports, require, module, __filename, __dirname) {
+  const m = 1
+  module.exports.m = m
+})
+```
+
+그래서 CommonJS 모듈이 무엇을 내보내는지는 **이 함수를 실행해 봐야** 안다. ES 모듈은 `export`가 문법이라 파싱만으로 내보내는 이름 목록(모듈 레코드)이 정해진다. 이 차이가 아래 상호 운용의 제약을 만든다.
+
+### Node.js에서 ES 모듈과 함께 쓰기
+
+문서에서 `require`를 보면 `import x from 'x'`로 옮겨 쓰면 된다. 지금 Node.js는 ES 모듈을 기본 지원하고(`"type": "module"` 또는 `.mjs`), Node.js 20.19·22.12부터는 플래그 없이 CommonJS에서 (top-level await가 없는) ES 모듈을 `require()`로 불러올 수도 있다.
+
+Node가 파일을 어느 형식으로 읽을지는 이 순서로 정한다.
+
+| 표시 | ES 모듈 | CommonJS |
+| --- | --- | --- |
+| 확장자 | `.mjs` | `.cjs` |
+| 가장 가까운 `package.json`의 `"type"` | `"module"` | `"commonjs"` |
+| 표시가 없으면 | 소스에 `import`·`export` 문법이 있으면 ES 모듈로 다시 읽는다(구문 감지) | 그 밖에는 CommonJS |
+
+같은 `.js`가 두 문법(Script·Module)으로 해석될 수 있어서 이런 명시가 필요하다. 라이브러리는 `"type"`을 적고 `package.json`의 `"exports"` 필드로 진입점과 공개 경로를 정해 둔다(`"exports"`가 있으면 거기 적지 않은 내부 파일은 import할 수 없다).
+
+ES 모듈에서 CommonJS를 가져오면 `module.exports`가 default export가 되고, Node가 소스를 정적으로 분석해 `exports.name = …` 같은 흔한 패턴을 **named export로도** 노출한다. 분석은 최선 추정이라 동적으로 만든 export는 빠질 수 있고, 이렇게 복사된 이름은 라이브 바인딩이 아니다. 확실히 하려면 `import pkg from 'cjs-pkg'`로 default를 받는다.
+
+ES 모듈로 옮길 때 바뀌는 것:
+
+| CommonJS | ES 모듈 |
+| --- | --- |
+| `require('./util')` | `import … from './util.js'` — **확장자와 `index.js`까지 써야 한다**(브라우저와 같은 규칙) |
+| `__dirname`, `__filename` | `import.meta.dirname`, `import.meta.filename` |
+| `require.resolve(x)` | `import.meta.resolve(x)` |
+| `require.main === module` | `import.meta.main` |
+| `require` 자체가 필요할 때(네이티브 애드온, JSON의 동기 로드) | `import { createRequire } from 'node:module'; const require = createRequire(import.meta.url)` |
+| `require.cache`로 모듈 다시 불러오기 | 없다. ES 모듈 캐시는 따로 있고, 쿼리 문자열을 바꾼 URL(`./a.js?v=2`)은 다른 모듈로 다시 평가된다 |
+
+CommonJS와 ES 모듈은 **순환 의존**에서 다르게 깨진다. CommonJS는 실행이 덜 끝난 모듈의 빈 `module.exports`를 넘겨 나중에 `is not a function`이 나고, ES 모듈은 바인딩이 살아 있어 나중에 채워진 값이 보이지만 최상위에서 바로 쓰면 초기화 전 접근 오류가 난다. 원인과 해결은 [[express-project-architecture|Express 프로젝트 구조]]의 「순환 의존을 피한다」에 있다.
 
 ## 정리
 

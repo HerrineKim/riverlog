@@ -4,11 +4,12 @@ concept: "Position"
 summary: "요소를 문서 흐름 안팎에서 원하는 위치로 옮기는 position 속성, 쌓임 순서를 정하는 z-index와 쌓임 맥락, 다른 요소에 붙여 배치하는 앵커 위치 지정."
 tags: ["css", "layout", "frontend"]
 source: mixed
-sources: ["https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioning/Stacking_context", "https://developer.mozilla.org/en-US/docs/Web/CSS/anchor-name", "https://web.dev/learn/css/z-index", "https://web.dev/learn/css/layout"]
-date: "2026-10-13"
+sources: ["https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioning/Stacking_context", "https://developer.mozilla.org/en-US/docs/Web/CSS/anchor-name", "https://web.dev/learn/css/z-index", "https://web.dev/learn/css/layout", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/z-index.md", "https://www.w3.org/TR/CSS22/zindex.html"]
+date: "2026-10-21"
 ---
 
 > 직접 정리한 TIL에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Layout·Z-index and stacking contexts 모듈을 더해 보강한 노트다.
+> 「쌓임 맥락 안의 기본 순서」는 「[Must-Know-About-Frontend: z-index의 동작방식](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/z-index.md)」을 CSS 2.2 명세 부록 E로 확인해 보강했다.
 
 `position`은 요소가 **무엇을 기준으로** 배치될지 정하는 속성이다. `static`이 아닌 값을 주면 좌표 속성(`top`, `right`, `bottom`, `left`)으로 위치를 옮길 수 있고, 일부 값은 요소를 Normal Flow 밖으로 꺼낸다.
 
@@ -90,6 +91,22 @@ z-index는 관리하지 않으면 어느새 엉뚱한 요소가 위로 올라와
 `<html>`은 그 자체가 쌓임 맥락이라 어떤 요소도 그 뒤로 갈 수 없다. `opacity`·`transform`·`will-change`·`filter`가 맥락을 만드는 이유는 브라우저가 이런 요소를 **별도 합성 레이어**로 올려 GPU로 처리하기 때문이다. 바뀔 가능성이 큰 요소를 포스트잇처럼 따로 떼어 두면 전체를 다시 그리지 않아도 된다([[browser-rendering|브라우저 렌더링 과정]]).
 
 컴포넌트 안의 겹침을 바깥과 분리하려면 `isolation: isolate`로 일부러 쌓임 맥락을 만든다. 모달·토스트·드롭다운은 `<dialog>`의 `showModal()`이나 `popover` 속성을 쓰면 **최상위 레이어(top layer)**에 올라가 `z-index` 경쟁에서 벗어난다.
+
+#### 쌓임 맥락 안의 기본 순서
+
+한 쌓임 맥락 안에서는 `z-index`보다 먼저 **요소의 종류**가 층을 정한다. 아래에서 위로 그린다.
+
+| 층 (아래 → 위) | 들어가는 것 |
+| --- | --- |
+| 1 | 쌓임 맥락을 만든 요소 자신의 배경·테두리 |
+| 2 | 음수 `z-index`를 가진 자손 |
+| 3 | 흐름 속 위치 지정 없는 블록 |
+| 4 | 위치 지정 없는 float |
+| 5 | 흐름 속 인라인 내용(글자, 인라인 이미지) |
+| 6 | `z-index: auto`·`0`인 위치 지정 자손, `opacity`·`transform` 등으로 맥락을 만든 자손 |
+| 7 | 양수 `z-index`를 가진 자손 (값 순서대로) |
+
+같은 층 안에서는 소스 순서를 따른다. 그래서 `position: absolute`만 주고 `z-index`를 생략한 형제 셋은 쌓임 맥락을 만들지 않고, 6층에서 **마크업 순서대로** 쌓인다. 부모가 쌓임 맥락이면 음수 `z-index` 자식이 부모 배경 뒤로는 못 가면서(1층 위) 부모 안의 블록 뒤로는 숨는(3층 아래) 이유도 이 표에 있다.
 
 ### fixed가 뷰포트를 기준으로 하지 않을 때
 

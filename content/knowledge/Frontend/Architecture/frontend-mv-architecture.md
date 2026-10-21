@@ -1,14 +1,14 @@
 ---
 title: "프론트엔드 MV* 아키텍처의 흐름: MVC에서 MVI까지"
 concept: "MV* Architecture"
-summary: "MVC·MVP·MVVM의 구조와 차이, 웹 프론트엔드의 아키텍처가 MVC → MVVM → Container-Presenter → Flux → 가벼운 전역 스토어·서버 상태 관리로 바뀌어 온 흐름과, 그 흐름을 정리한 MVI(Model-View-Intent) 아키텍처. 뷰와 비즈니스 로직을 분리하고, 뷰는 의도만 전하고, 데이터는 한 방향으로 돈다."
+summary: "MVC·MVP·MVVM의 구조와 차이, 수동적 뷰·감독 컨트롤러·프레젠테이션 모델·Model 2 같은 변형, 웹 프론트엔드의 아키텍처가 MVC → MVVM → Container-Presenter → Flux → 가벼운 전역 스토어·서버 상태 관리로 바뀌어 온 흐름과, Flux가 reducer와 단일 스토어의 Redux로 줄어든 과정, 그 흐름을 정리한 MVI(Model-View-Intent) 아키텍처. 뷰와 비즈니스 로직을 분리하고, 뷰는 의도만 전하고, 데이터는 한 방향으로 돈다."
 tags: ["frontend", "architecture", "state", "design-pattern"]
 source: other
-date: "2026-10-14"
-sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://yozm.wishket.com/magazine/detail/1663/", "https://beomy.tistory.com/43", "https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns", "https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html"]
+date: "2026-10-21"
+sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://yozm.wishket.com/magazine/detail/1663/", "https://beomy.tistory.com/43", "https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns", "https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html", "https://staltz.com/unidirectional-user-interface-architectures.html", "https://blog.nodejitsu.com/scaling-isomorphic-javascript-code/", "https://addyosmani.com/blog/understanding-mvc-and-mvp-for-javascript-and-backbone-developers/", "https://addyosmani.com/blog/understanding-mvvm-a-guide-for-javascript-developers/", "https://martinfowler.com/eaaDev/", "https://github.com/facebook/flux/tree/master/examples/flux-concepts", "https://survivejs.com/blog/redux-interview/", "https://guide.elm-lang.org/architecture/", "https://cycle.js.org/model-view-intent.html"]
 ---
 
-> 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08, 요즘IT 재게재)를 바탕으로 재구성하고, MVVM-C·VIPER는 ByteByteGo의 System Design 101 가이드 「[MVC, MVP, MVVM, VIPER Patterns](https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns)」로, 「MVC·MVP·MVVM 비교」는 beomy의 「[MVC, MVP, MVVM 비교](https://beomy.tistory.com/43)」(2018.09)로 보강한 노트다. 단방향 아키텍처의 변형은 「[단방향 사용자 인터페이스 아키텍쳐](https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html)」(André Staltz 글의 번역)로 보강했다.
+> 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08, 요즘IT 재게재)를 바탕으로 재구성하고, MVVM-C·VIPER는 ByteByteGo의 System Design 101 가이드 「[MVC, MVP, MVVM, VIPER Patterns](https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns)」로, 「MVC·MVP·MVVM 비교」는 beomy의 「[MVC, MVP, MVVM 비교](https://beomy.tistory.com/43)」(2018.09)로 보강한 노트다. 단방향 아키텍처의 변형은 「[단방향 사용자 인터페이스 아키텍쳐](https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html)」(André Staltz 글의 번역)로 보강했다. MVP의 변형과 Model 2는 Nodejitsu의 「[Scaling Isomorphic Javascript Code](https://blog.nodejitsu.com/scaling-isomorphic-javascript-code/)」(2011)와 Addy Osmani의 「[Understanding MVC And MVP](https://addyosmani.com/blog/understanding-mvc-and-mvp-for-javascript-and-backbone-developers/)」·「[Understanding MVVM](https://addyosmani.com/blog/understanding-mvvm-a-guide-for-javascript-developers/)」로, Flux에서 Redux로의 과정은 Flux 저장소의 「[Flux Concepts](https://github.com/facebook/flux/tree/master/examples/flux-concepts)」와 「[Redux - Reinventing Flux](https://survivejs.com/blog/redux-interview/)」(Dan Abramov 인터뷰, 2015)로 더했다.
 
 ## 아키텍처란
 
@@ -35,6 +35,19 @@ MVVM  입력 → View ─명령→ ViewModel ⇄ Model
 | 약점 | View가 Model에 기대므로 앱이 커질수록 얽힌다 | View와 Presenter가 1:1로 단단히 묶이고 Presenter가 비대해진다 | ViewModel 설계가 어렵고, 바인딩이 많으면 흐름을 추적하기 어렵다 |
 
 MVVM은 명령(Command) 패턴과 데이터 바인딩이라는 두 장치로 의존을 끊는다. 웹에서는 Knockout·AngularJS가 시작이었고 Vue의 반응형 템플릿이 같은 모양이다. 모바일에서는 Android Jetpack의 ViewModel, SwiftUI의 `@Observable` 객체가 MVVM 구조로 쓰인다. MVP는 Android가 공식 ViewModel을 내기 전에 많이 쓰였다.
+
+### 같은 이름 아래의 변형들
+
+MVC와 MVP는 하나의 정해진 구조가 아니라 여러 변형을 묶는 이름이다. 마틴 파울러가 정리한 GUI 패턴 분류가 기준이 된다.
+
+| 변형 | 핵심 | 언제 맞나 |
+| --- | --- | --- |
+| MVP: 수동적 뷰(Passive View) | View는 위젯만 두고 표시 로직까지 전부 Presenter가 한다. Presenter가 View의 setter를 하나하나 호출한다 | View를 테스트할 수 없는 환경에서 테스트 범위를 최대로 넓힐 때 |
+| MVP: 감독 컨트롤러(Supervising Controller) | 단순한 표시는 View가 선언적 바인딩으로 직접 하고, 바인딩으로 안 되는 복잡한 로직만 Presenter가 맡는다 | 바인딩 기능이 있는 UI 툴킷 |
+| 프레젠테이션 모델(Presentation Model) | View의 상태와 동작을 View와 무관한 클래스에 모으고 View가 그것과 동기화한다 | MVVM의 원형. MVVM은 이 동기화를 바인딩 엔진이 자동으로 한다 |
+| Model 2 (서버 MVC) | 요청마다 Controller가 Model을 부르고 View 템플릿을 한 번 그려 응답한다. View는 **요청이 끝나면 사라진다** | Rails·Spring MVC·Django 같은 서버 프레임워크. 상태는 세션·DB에 둔다 |
+
+원래 MVC(Smalltalk)는 **오래 살아 있는 View**를 가정하고 사용자 입력도 View로 들어온다. 서버의 Model 2는 HTTP가 상태 없는 프로토콜이라 View가 매 요청마다 새로 만들어지는 **일회용 View**이고, Controller → View 한 방향만 있다. 같은 MVC라는 이름이지만 브라우저(오래 사는 View)와 서버(일회용 View)에서 요구가 정반대라, 같은 코드를 양쪽에서 돌리는 동형(isomorphic) JavaScript에서는 MVC를 그대로 옮기기 어려웠다. View가 Model을 직접 참조하지 않는 MVP·MVVM 계열이 양쪽에 맞추기 쉬웠다. 실제 라이브러리도 정의와 다르다. Backbone은 MVC를 표방했지만 View가 Model을 직접 바꿨다.
 
 ### 모바일에서 더 나눈 변형: MVVM-C와 VIPER
 
@@ -148,6 +161,8 @@ Flux 이후 나온 단방향 UI 아키텍처들은 모두 **사용자 이벤트 
 | MVU (Elm) | Model · view 함수 · update 함수 | 모두 순수 함수다. 각 부분을 그대로 중첩할 수 있어 컴포넌트를 조각으로 떼어 내기 쉽다 |
 | MVI (Cycle.js) | Intent · Model · View, 모두 스트림 | 입력·모델·렌더링을 Observable 스트림으로 이어 흐름이 코드에 드러난다. 스트림 라이브러리에 강하게 의존한다 |
 
+**Flux에서 Redux로 줄어든 과정**은 이렇다. Flux에서 Store는 액션에만 반응해 바뀌고 공개 setter 없이 getter만 둔다. 액션은 `{ type: 'delete-todo', todoID }`처럼 **구현 단계가 아니라 일어난 일을 의미 있게** 이름 붙인다(`delete-user`를 `clear-user-data`, `refresh-credentials`로 쪼개지 않는다). Redux는 핫 리로딩과 시간 여행 디버깅을 하려고 Store에서 구독·등록 같은 부수 효과를 빼냈다. 남은 Store의 핵심은 `(state, action) => newState`라는 순수 함수, 곧 **reducer**다. reducer들을 루트 reducer 하나로 합치자 액션을 Store마다 나눠 주던 Dispatcher가 필요 없어졌다. 컴포넌트 트리에 루트가 하나인 것처럼 상태 트리에도 루트가 하나가 됐고, 이 모양은 Elm Architecture(Model·view·update)와 같다. 상태가 불변이고 갱신이 순수 함수라 액션 기록을 다시 재생하면 어느 시점의 상태든 재현된다.
+
 - **프랙탈 구조**: 하위 컴포넌트가 앱 전체와 같은 모양(MVU 안의 MVU)이면, 앱을 통째로 더 큰 앱의 컴포넌트로 재사용할 수 있다.
 - **드라이버**: Cycle.js는 DOM뿐 아니라 HTTP 같은 바깥 세계도 입력·출력 스트림으로 맞춰 UI 프로그램에 연결한다. 부수 효과를 프로그램 밖 드라이버로 밀어내 본체를 순수하게 유지한다.
 - 입력과 출력의 모양만 정해 두고 내부 구조(Flux든 MVU든)는 자유롭게 두면 여러 아키텍처를 섞어 쓸 수 있지만, 팀에 줄 구조 지침이 사라져 일관성이 떨어질 수 있다.
@@ -160,4 +175,4 @@ Flux 이후 나온 단방향 UI 아키텍처들은 모두 **사용자 이벤트 
 - 실제 라이브러리는 어느 이름에도 딱 맞지 않는다(AngularJS는 아예 MVW, Model-View-Whatever라 불렀다). MV* 계열이 수렴해 온 방향은 단방향 데이터 흐름, 선언적으로 바뀐 Controller, 뷰와 비즈니스 로직의 분리, 반응형 변화 전파, 서버 연동 자체를 상태로 다루기, 작게 시작해 필요할 때 복잡해지는 도구다.
 - 새 라이브러리를 볼 때는 이름이 아니라 **어떤 불편을 풀었는지**로 판단한다.
 
-관련 노트: [[redux|Redux와 react-redux]], [[getting-started-mtv|Django 시작하기와 MTV 패턴]], [[context|Context와 전역 상태]], [[tanstack-query|TanStack Query(React Query)]], [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]]
+관련 노트: [[redux|Redux와 react-redux]], [[getting-started-mtv|Django 시작하기와 MTV 패턴]], [[context|Context와 전역 상태]], [[tanstack-query|TanStack Query(React Query)]], [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]], [[ui-change-detection|UI 변경 감지]]

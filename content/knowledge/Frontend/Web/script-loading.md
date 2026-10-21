@@ -4,11 +4,11 @@ concept: "Script Loading"
 summary: "<script>, async, defer, type=module이 HTML 파싱과 실행 순서에 주는 차이, 프리로드 스캐너가 못 보는 늦게 발견되는 자원, CSS는 <head>에 두고 스크립트는 defer로 미루는 이유와 예외, @import를 피하고 중요 CSS만 인라인하는 CSS 경량화, 콘텐츠를 받는 대로 먼저 보여 주는 점진적 렌더링 기법을 정리했다."
 tags: ["html", "javascript", "performance", "web", "frontend"]
 source: other
-date: "2026-10-17"
-sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://ko.javascript.info/script-async-defer", "https://html.spec.whatwg.org/multipage/scripting.html#the-script-element", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script", "https://web.dev/learn/performance/optimize-resource-loading", "https://web.dev/learn/performance/understanding-the-critical-path"]
+date: "2026-10-21"
+sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://ko.javascript.info/script-async-defer", "https://html.spec.whatwg.org/multipage/scripting.html#the-script-element", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/script", "https://web.dev/learn/performance/optimize-resource-loading", "https://web.dev/learn/performance/understanding-the-critical-path", "https://www.stevesouders.com/blog/2010/12/06/evolution-of-script-loading/", "https://www.stevesouders.com/blog/2010/02/07/browser-script-loading-roundup/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/%EC%82%AC%EC%9A%A9%ED%95%98%EC%A7%80%20%EC%95%8A%EB%8A%94%20CSS%20%EC%A0%9C%EA%B1%B0.md"]
 ---
 
-> Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 script·리소스 배치·프로그레시브 렌더링 문항을 바탕으로, HTML Living Standard와 MDN으로 확인해 재구성한 노트다. 프리로드 스캐너와 CSS 경량화는 web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Optimize resource loading」 모듈로 보강했다. 동적 스크립트의 실행 순서는 javascript.info(모던 JavaScript 튜토리얼)의 「defer, async 스크립트」 글로 보강했다.
+> Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 script·리소스 배치·프로그레시브 렌더링 문항을 바탕으로, HTML Living Standard와 MDN으로 확인해 재구성한 노트다. 프리로드 스캐너와 CSS 경량화는 web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Optimize resource loading」 모듈로 보강했다. 동적 스크립트의 실행 순서는 javascript.info(모던 JavaScript 튜토리얼)의 「defer, async 스크립트」 글로 보강했다. 역사는 「[Evolution of Script Loading](https://www.stevesouders.com/blog/2010/12/06/evolution-of-script-loading/)」과 「[Browser script loading roundup](https://www.stevesouders.com/blog/2010/02/07/browser-script-loading-roundup/)」으로 보강했다. 안 쓰는 CSS를 빌드 때 지우는 방법은 「[Frontend_TIL: 사용하지 않는 CSS 제거](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/%EC%82%AC%EC%9A%A9%ED%95%98%EC%A7%80%20%EC%95%8A%EB%8A%94%20CSS%20%EC%A0%9C%EA%B1%B0.md)」을 바탕으로 보강했다.
 
 ## 왜 로딩 순서가 중요한가
 
@@ -85,7 +85,7 @@ CSS가 렌더링을 막는 것은 FOUC를 막기 위해서라 나쁜 일이 아�
 | 방법 | 내용 | 주의 |
 | --- | --- | --- |
 | 최소화(minify) | 공백·주석을 지운다. 배포 빌드에서 번들러가 자동으로 한다. FCP, 때로 LCP가 좋아진다 | 규칙을 합치는 공격적인 최적화는 CSS 구조에 따라 깨질 수 있다 |
-| 안 쓰는 CSS 제거 | 브라우저는 안 쓰는 규칙도 모두 받고 파싱한다. DevTools 커버리지나 Lighthouse로 찾고, 페이지별 파일로 나누거나 지운다 | 전부 없애기는 비현실적이다. 큰 것부터 |
+| 안 쓰는 CSS 제거 | 브라우저는 안 쓰는 규칙도 모두 받고 파싱한다. DevTools 커버리지나 Lighthouse로 찾고, 페이지별 파일로 나누거나 지운다. CSS 프레임워크를 통째로 쓴다면 빌드 때 PurgeCSS 같은 도구가 HTML·JS 소스에서 문자열을 뽑아 클래스 이름과 대조하고, 나오지 않는 선택자를 지운다 | 전부 없애기는 비현실적이다. 큰 것부터. 문자열 대조 방식이라 `hover:opacity-100`처럼 특수문자가 든 클래스는 추출기(`defaultExtractor` 정규식)를 맞춰야 하고, JS에서 조립하는 클래스(`'btn-' + size`)는 safelist에 두지 않으면 지워진다. Tailwind는 지금 쓴 클래스만 생성해 따로 지울 필요가 없다 |
 | `@import` 피하기 | `@import`는 바깥 파일을 받아야 안쪽을 발견하는 **요청 체인**을 만들고, 프리로드 스캐너도 못 본다. HTML의 `<link>` 여러 개는 동시에 받는다 | 캐스케이드 레이어·서드파티 때문에 꼭 써야 하면 `preload`로 보완한다. Sass의 `@use`·`@import`는 빌드 때 한 파일로 합쳐지므로 해당하지 않는다 |
 | 중요 CSS 인라인 | 첫 화면에 필요한 스타일만 `<head>`의 `<style>`에 넣어 요청 하나를 없앤다. 캐시가 빈 첫 방문의 FCP가 좋아진다 | 고를 범위·자동화·유지가 어렵다. 인라인한 CSS는 HTML에 붙어 **페이지 간 캐시가 안 된다.** 재 보고 결정한다 |
 
@@ -104,6 +104,19 @@ JS도 같은 원리로 최소화하고, 번들러는 배포 빌드에서 식별�
 | 자리 표시 | 크기를 미리 잡은 스켈레톤으로 레이아웃 이동(CLS) 없이 빈자리를 채운다 |
 
 점진적 렌더링은 「먼저 보여 줄 것」과 「나중에 해도 되는 것」을 나누는 일이다. CSS를 `<head>`에 두는 것도 받는 대로 그릴 수 있게 하려는 같은 원칙에서 나온다.
+
+## 역사
+
+지금의 「`<head>`에 두고 `defer`」 원칙은 브라우저가 스크립트를 다루는 방식이 바뀌며 자리 잡았다.
+
+| 시기 | 브라우저 동작 | 당시 권장 |
+| --- | --- | --- |
+| ~2008 (IE7, Firefox 2) | 스크립트를 **하나씩 차례로** 받고 실행했다. 받는 동안 이미지·CSS 등 **다른 다운로드도 모두 막았다.** 실행 순서를 지키려는 동작이었다 | 스크립트를 `</body>` 직전으로 옮긴다 |
+| 2009~2010 (IE8, Firefox 3.6, Chrome 2~4, Safari 4) | 스크립트끼리, 다른 자원과도 **병렬로 받기** 시작했다. 다만 일부 자원(iframe, IE8은 이미지도)은 여전히 막았다 | `document.createElement('script')`로 동적 삽입해 비동기로 받는다. LABjs·ControlJS 같은 로더가 순서를 관리했다 |
+| 같은 시기 | 받은 스크립트를 파싱·실행하는 동안 UI가 멈춘다 | 첫 화면에 필요한 코드와 나중 코드를 나눠, 나머지는 `onload` 뒤에 불러온다. 지금의 [[code-splitting\|코드 분할]]이다 |
+| HTML5 이후 | `async`·`defer`가 표준이 되고, 모든 브라우저에 프리로드 스캐너가 들어갔다 | `<head>` + `defer`, 모듈, `<link rel="preload">` |
+
+다운로드와 실행 시점을 따로 제어하려던 당시의 꼼수(`<object>`나 가짜 `type`으로 받아 두기)는 지금 `preload`·`modulepreload`가 맡는다([[resource-hints|리소스 힌트]]).
 
 ## 정리
 

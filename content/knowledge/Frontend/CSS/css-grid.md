@@ -4,11 +4,12 @@ concept: "CSS Grid"
 summary: "행과 열을 동시에 다루는 2차원 레이아웃 CSS 그리드의 용어, 핵심 속성, fr·minmax·auto-fill 같은 크기 도구와 명시적·묵시적 그리드, 서브그리드, 그리고 접근성과 플렉스박스와의 역할 분담 같은 실무 원칙."
 tags: ["css", "layout", "grid", "frontend"]
 source: other
-date: "2026-10-13"
-sources: ["https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://webactually.com/2018/07/02/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83-%eb%aa%a8%eb%b2%94-%ec%82%ac%eb%a1%80/", "https://webactually.com/2018/08/06/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%eb%b2%a82-%ec%84%9c%eb%b8%8c%ea%b7%b8%eb%a6%ac%eb%93%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid", "https://web.dev/learn/css/grid"]
+date: "2026-10-21"
+sources: ["https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://webactually.com/2018/07/02/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83-%eb%aa%a8%eb%b2%94-%ec%82%ac%eb%a1%80/", "https://webactually.com/2018/08/06/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%eb%b2%a82-%ec%84%9c%eb%b8%8c%ea%b7%b8%eb%a6%ac%eb%93%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid", "https://web.dev/learn/css/grid", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/grid.md"]
 ---
 
 > CSS-Tricks의 「[그리드 완벽 가이드](https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/)」(2019.06)와 Rachel Andrew의 「CSS 그리드 레이아웃 모범 사례」(2018.07)·「CSS 그리드 레벨2: 서브그리드」(2018.08, 웹액츄얼리 번역)를 바탕으로 재구성하고, web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Grid 모듈로 보강한 노트다.
+> 「옛 습관을 버린다」의 그리드 시스템 비교는 「[Must-Know-About-Frontend: 그리드 시스템](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/grid.md)」을 바탕으로 보강했다.
 
 ## 그리드란
 
@@ -192,6 +193,20 @@ CSS 그리드(Grid Layout)는 **행과 열을 동시에** 다루는 2차원 레�
 ### 5. 옛 습관을 버린다
 
 float 시절의 행 래퍼(row wrapper)나 12열 클래스 시스템을 그리드 위에 다시 만들 필요가 없다. 명세가 정한 방식대로 쓰는 것이 모범 사례다.
+
+**그리드 시스템**(960px·1200px 폭을 12·16·24단으로 나눠 놓은 레이아웃 규칙)을 만드는 비용이 방식마다 다르다.
+
+| 방식 | 행 | 열 너비 | 간격 |
+| --- | --- | --- | --- |
+| float | `.row`마다 clearfix(`::after { clear: both }`)로 높이를 잡는다 | 칸마다 직접 계산: `.col-4-12 { width: calc(100% / 3 - var(--gutter) * 8 / 12) }` | 열의 `margin-right`, 마지막 열은 0으로 되돌린다 |
+| flexbox | `.row { display: flex }`로 clearfix가 필요 없다 | 여전히 칸마다 계산한다 | `gap`을 쓸 수 있다 |
+| grid | 행 래퍼가 필요 없다. 아이템이 알아서 줄을 바꾼다 | `grid-template-columns: repeat(12, 1fr)` 한 줄, 아이템은 `grid-column: span 4` | `gap` |
+
+```css
+.layout { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; }
+.main { grid-column: span 8; }
+.aside { grid-column: span 4; }
+```
 
 ### 6. 부모 너비에 반응해야 하면 컨테이너 쿼리
 

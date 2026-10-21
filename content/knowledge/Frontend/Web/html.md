@@ -4,11 +4,13 @@ concept: "HTML"
 summary: "웹 문서의 구조와 의미를 태그로 표현하는 마크업 언어와 그 핵심 문법. 요소와 태그, 대체·빈 요소, 생략 가능한 태그, 불리언·열거형·전역 속성, data-* 속성, 속성 하나로 끝나는 기능(enterkeyhint·form·download·loading·fetchpriority·integrity·popover 등), DOCTYPE, form 데이터 규칙, HTML5까지 다룬다."
 tags: ["html", "web", "semantic", "frontend", "form"]
 source: mixed
-date: "2026-10-20"
-sources: ["https://riverkim.kr/280", "https://riverkim.kr/282", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://web.dev/learn/html/overview", "https://web.dev/learn/html/attributes", "https://web.dev/learn/html/forms", "https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/280", "https://riverkim.kr/282", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://web.dev/learn/html/overview", "https://web.dev/learn/html/attributes", "https://web.dev/learn/html/forms", "https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/html/data.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/XML%EA%B3%BC%20XHTML.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/XHTML%EC%9D%98%20%ED%95%9C%EA%B3%84%EC%A0%90.md", "http://diveintohtml5.info/past.html"]
 ---
 
 > 「DOCTYPE과 렌더링 모드」와 「HTML5와 웹 플랫폼」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 HTML Living Standard·MDN으로 확인해 보강한 노트다. 「요소의 종류」와 「속성 문법」은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Overview of HTML」·「Attributes」 모듈을 바탕으로 보강했다. 「data-* 속성」은 같은 Front End Interview Handbook으로, 「속성 하나로 끝나는 기능」은 Louis Lazaris의 「[Those HTML Attributes You Never Use](https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/)」(Smashing Magazine, 2022.03)를 바탕으로 브라우저 지원을 2026년 기준으로 고쳐 보강했다.
+> 「XML·XHTML에서 HTML5로」는 「[Frontend_TIL: XML과 XHTML](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/XML%EA%B3%BC%20XHTML.md)」·「[XHTML의 한계점](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/XHTML%EC%9D%98%20%ED%95%9C%EA%B3%84%EC%A0%90.md)」을 W3C·WHATWG 기록으로 확인해 보강했다. 「HTML이 자라 온 방식」과 MIME 타입 문단은 Dive Into HTML5의 「[A Quite Biased History of HTML5](http://diveintohtml5.info/past.html)」를 바탕으로 보강했다.
+> 「data-* 속성」의 용도 범위는 「[Must-Know-About-Frontend: data- 속성](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/html/data.md)」을 바탕으로 보강했다.
 
 HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 마크업 언어다. 마크업 언어란 태그 등을 이용해 문서나 데이터의 구조를 명시하는 언어로, HTML과 Markdown이 대표적이다. 스타일은 CSS가, 동작은 JavaScript가 맡고 HTML은 "무엇이 어떤 의미의 내용인가"를 표현한다.
 
@@ -121,6 +123,8 @@ li::after { content: attr(data-state); }
 | 서버가 렌더링한 HTML에서 JS로 ID·설정값 넘기기, 이벤트 위임에서 대상 구분([[ajax\|AJAX]]의 리뷰 ID 예) | 앱 상태의 원본 저장소. 상태는 JS(프레임워크 상태)에 두고 DOM은 그 결과로 그린다 |
 | CSS 선택자로 상태 표현(`[data-state]`), 테스트 훅(`data-testid`) | 비밀값·권한 정보. 개발자 도구로 누구나 보고 고칠 수 있다 |
 | 분석 이벤트 이름 같은 부가 정보 | 이미 표준 속성이 있는 의미(`hidden`, `disabled`, `aria-*`, `value`) |
+
+`data-*`는 **그 사이트 자신의 스크립트·스타일을 위한 비공개 값**이다. 명세는 사이트와 무관한 외부 소프트웨어(검색 엔진, 다른 사이트의 크롤러·확장)가 이 값을 읽어 쓰는 것을 의도하지 않는다. 음악 목록에 `data-length="2m11s"`를 붙여 자체 정렬 스크립트가 쓰는 것은 맞는 용도이고, 외부에 기계가 읽을 정보를 알리려면 Microdata·JSON-LD 같은 구조화 데이터를 쓴다([[seo-basics|SEO 기초]]).
 
 JavaScript 프레임워크 이전에는 DOM에 데이터를 두는 주된 방법이었고, 지금은 HTML과 JS·CSS 사이에 값을 넘기는 가벼운 통로로 쓴다. CSS `attr()`은 `content`에서는 모든 브라우저가 지원하고, 다른 속성 값에 타입을 지정해 쓰는 확장 문법은 아직 실험적이다.
 
@@ -237,6 +241,28 @@ HTML5는 마크업 문법만이 아니라 **새 요소와 DOM API를 함께 묶�
 | 스타일링 | CSS3 이후의 모듈들(전환·애니메이션·그리드·웹 폰트) |
 
 지금은 「HTML5」라는 버전이 따로 없다. HTML 표준(HTML Living Standard)은 WHATWG가 계속 고쳐 가는 단일 문서이고, 2019년부터 W3C와 협력해 관리한다.
+
+### XML·XHTML에서 HTML5로
+
+| | XML | XHTML | HTML |
+| --- | --- | --- | --- |
+| 목적 | 데이터를 **설명·교환**하는 범용 마크업. 태그를 사용자가 정의한다 | HTML 요소를 XML 문법으로 쓴 것 | 문서를 **표시**하는 정해진 어휘 |
+| 문법 | 모든 태그를 닫고, 소문자, 속성 값은 따옴표 | XML과 같다 | 관대하다. 생략 가능한 태그, 따옴표 없는 값도 허용 |
+| 오류 처리 | 형식이 하나라도 틀리면 처리를 멈춘다(draconian) | `application/xhtml+xml`로 보내면 XML처럼 멈추고 오류 화면을 띄운다 | 명세에 정해진 복구 규칙으로 끝까지 그린다 |
+
+W3C는 HTML 4.01(1999) 뒤 표준의 방향을 XHTML 1.0으로 돌렸고, 하위 호환을 버린 XHTML 2.0을 준비했다. 하지만 오류 하나에 페이지 전체가 멈추는 문법은 현실의 웹과 맞지 않았고, 대부분의 「XHTML」 페이지는 `text/html`로 보내져 실제로는 HTML 파서로 읽혔다. 2004년 브라우저 제조사들이 WHATWG를 세워 하위 호환과 웹 애플리케이션 기능을 앞세운 HTML5를 만들었고, W3C는 2009년 XHTML 2.0을 접었다. 지금 XML 문법은 HTML 명세 안의 한 표기법(XML 직렬화)으로 남아 있다. 모두 닫고 소문자로 쓰는 습관만 「XHTML 스타일」로 이어진다.
+
+**어떤 파서가 읽는지는 DOCTYPE이 아니라 MIME 타입이 정한다.** XHTML 1.0 부록 C는 XHTML 문법으로 쓰되 `text/html`로 보내도 된다는 길을 열어 두었고, 대부분의 페이지가 이 길을 택했다. XHTML 1.1은 `application/xhtml+xml`만 허용해 이 길을 닫았고, 그래서 거의 쓰이지 않았다. 웹 페이지의 대다수가 마크업 오류를 하나 이상 품고 있다는 현실에서, 오류 하나에 화면이 멈추는 처리 방식은 받아들여질 수 없었다.
+
+### HTML이 자라 온 방식
+
+| 사건 | 개념 |
+| --- | --- |
+| 1993년 Mosaic이 `<img src>`를 먼저 구현했다. `<include>`, `<icon>`, `<a rel="embed">` 같은 대안 제안은 구현되지 않았다 | **구현해서 내보낸 쪽이 표준이 된다.** 다만 `<img>`는 공통 이미지 포맷도 대체 텍스트도 없이 출발해, `alt`는 나중에 덧붙었고 콘텐츠 스니핑 문제는 지금도 남아 있다 |
+| HTML 2.0(1995)과 3.2(1997)는 이미 널리 쓰이던 기능(표, 이미지 둘레 글 흐름 등)을 문서로 정리했다. 앞서 나간 HTML+·HTML 3.0은 구현되지 않았다 | **역명세(retro-spec)**: 성공한 HTML 버전 대부분은 현실을 뒤따라 정리하면서 조금씩 방향을 이끈 문서다 |
+| 2004년 W3C 워크숍에서 Mozilla와 Opera가 HTML 4를 진화시키자는 안을 냈다. 하위 호환, 명세로 정한 오류 복구, 실제 사용 사례로 정당화된 기능, 공개된 절차가 원칙이었다. 투표에서 11 대 8로 부결되자 같은 해 WHATWG가 출범했다 | 오류 처리까지 명세에 적어 두어야 브라우저들이 서로를 역공학하지 않는다. 지금 HTML 파싱 알고리즘이 오류 복구 규칙을 모두 정의하는 이유다 |
+
+1990년에 만든 페이지도 지금 브라우저에서 열린다. HTML은 버전이 갈아엎힌 적 없이 하위 호환을 지키며 이어졌다.
 
 ## 핵심 정리
 

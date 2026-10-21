@@ -4,11 +4,11 @@ concept: "Event Loop"
 summary: "싱글 스레드인 JavaScript가 렌더링과 나눠 쓰는 메인 스레드, 실행 컨텍스트가 쌓이는 콜 스택, Web API, 태스크·마이크로태스크 큐, 이벤트 루프의 협업으로 화면을 멈추지 않고 비동기 작업을 처리하는 방식. 태스크 하나 → 마이크로태스크 전부 → 렌더링 순서의 한 바퀴, queueMicrotask, 긴 작업 쪼개기·진행률 표시·이벤트 처리 뒤로 미루기, 무거운 일을 메인 스레드 밖으로 빼는 Web Worker."
 tags: ["javascript", "async", "browser", "frontend"]
 source: mixed
-date: "2026-10-20"
-sources: ["https://riverkim.kr/324", "https://riverkim.kr/114", "https://web.dev/learn/javascript/appendix", "https://ko.javascript.info/event-loop", "https://ko.javascript.info/microtask-queue", "https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask", "https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/", "https://www.youtube.com/watch?v=8aGhZQkoFbQ", "http://latentflip.com/loupe/"]
+date: "2026-10-21"
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/event-loop.md", "https://riverkim.kr/324", "https://riverkim.kr/114", "https://web.dev/learn/javascript/appendix", "https://ko.javascript.info/event-loop", "https://ko.javascript.info/microtask-queue", "https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask", "https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/", "https://www.youtube.com/watch?v=8aGhZQkoFbQ", "http://latentflip.com/loupe/"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리하고, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌 부록의 메인 스레드·콜 스택 설명과 javascript.info(모던 JavaScript 튜토리얼)의 「이벤트 루프와 매크로태스크, 마이크로태스크」, 「마이크로태스크」 글로 보강한 노트다. 작업 쪼개기와 취소는 LINE 엔지니어링 블로그의 「[매끄러운 경험을 위한 JavaScript 비동기 처리](https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/)」를 바탕으로 더했다.
+> riverkim.kr에 쓴 글들을 다시 정리하고, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌 부록의 메인 스레드·콜 스택 설명과 javascript.info(모던 JavaScript 튜토리얼)의 「이벤트 루프와 매크로태스크, 마이크로태스크」, 「마이크로태스크」 글로 보강한 노트다. 작업 쪼개기와 취소는 LINE 엔지니어링 블로그의 「[매끄러운 경험을 위한 JavaScript 비동기 처리](https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/)」를 바탕으로 더했다. 「[Must-Know-About-Frontend: 이벤트 루프](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/event-loop.md)」의 내용을 더해 보강했다.
 
 ## 싱글 스레드와 블로킹
 
@@ -168,4 +168,4 @@ input.addEventListener('input', () => {
 - [Loupe](http://latentflip.com/loupe/) — 코드를 넣으면 콜 스택과 콜백 큐의 움직임을 단계별로 보여 주는 시각화 도구
 - [매끄러운 경험을 위한 JavaScript 비동기 처리](https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/) — 제너레이터로 작업 쪼개기, 워커 위임
 
-관련 노트: [[callback-and-promise|콜백과 Promise]], [[async-await|async/await]], [[debounce-throttle|Debounce와 Throttle]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[browser-rendering|브라우저 렌더링 과정]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]], [[timers|타이머]]
+관련 노트: [[nodejs-runtime#Node.js의 이벤트 루프|Node.js의 이벤트 루프]], [[execution-context|실행 컨텍스트]], [[callback-and-promise|콜백과 Promise]], [[async-await|async/await]], [[debounce-throttle|Debounce와 Throttle]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[browser-rendering|브라우저 렌더링 과정]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]], [[timers|타이머]]

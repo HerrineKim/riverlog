@@ -4,11 +4,12 @@ concept: "Package Manager"
 summary: "패키지 설치·업데이트·의존성 관리를 맡는 패키지 매니저의 기본(dependencies와 devDependencies, npm 스크립트, 패키지 고르는 법), npm·yarn·pnpm(그리고 Bun)의 차이와 고르는 기준, packageManager 필드와 Corepack, 설치 스크립트 차단 같은 공급망 보안 기본값, npm EINTEGRITY 오류의 원인과 해결."
 tags: ["javascript", "nodejs", "frontend", "tools"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.org/api/corepack.html", "https://pnpm.io/settings", "https://yarnpkg.com/blog", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/82-using-open-source-npm-packages", "https://wesbos.com/javascript/01-the-basics/code-quality-tooling-with-prettier-and-eslint", "http://jeonghwan-kim.github.io/series/2019/12/09/frontend-dev-env-npm.html"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.org/api/corepack.html", "https://pnpm.io/settings", "https://yarnpkg.com/blog", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/82-using-open-source-npm-packages", "https://wesbos.com/javascript/01-the-basics/code-quality-tooling-with-prettier-and-eslint", "http://jeonghwan-kim.github.io/series/2019/12/09/frontend-dev-env-npm.html", "https://yarnpkg.com/en/docs/yarn-lock", "http://stackoverflow.com/questions/18875674/whats-the-difference-between-dependencies-devdependencies-and-peerdependencies", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/nvm.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/npm.md", "https://github.com/nvm-sh/nvm", "https://github.com/grab/front-end-guide"]
 ---
 
-> riverkim.kr에 쓴 글들을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고해 재구성한 노트다. 설치 방식 비교와 `package.json` 필드는 「[프론트엔드 개발 환경의 이해: NPM](https://jeonghwan-kim.github.io/series/2019/12/09/frontend-dev-env-npm.html)」을 바탕으로 더했다.
+> riverkim.kr에 쓴 글들을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고해 재구성한 노트다. 설치 방식 비교와 `package.json` 필드는 「[프론트엔드 개발 환경의 이해: NPM](https://jeonghwan-kim.github.io/series/2019/12/09/frontend-dev-env-npm.html)」을 바탕으로 더했다. 의존성 종류와 lock 파일의 동작은 Yarn 문서 「[yarn.lock](https://yarnpkg.com/en/docs/yarn-lock)」과 Stack Overflow 문답 「[What's the difference between dependencies, devDependencies and peerDependencies](http://stackoverflow.com/questions/18875674/whats-the-difference-between-dependencies-devdependencies-and-peerdependencies)」을 바탕으로 보강했다. 「Node.js 버전 고정」은 「[Frontend_TIL: nvm](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/nvm.md)」, 「[npm](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/npm.md)」을 바탕으로 nvm 공식 README로 확인해 보강했다.
+> Grab의 「[Front End Guide](https://github.com/grab/front-end-guide)」를 바탕으로 보강했다.
 
 ## 패키지 매니저란
 
@@ -19,6 +20,8 @@ sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.o
 | `package.json` | 필요한 패키지와 허용 버전 범위(`^1.2.0` 등)를 적는다 |
 | lock 파일 (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`) | 실제로 설치된 **정확한 버전과 무결성 해시**를 기록한다. 커밋해서 팀이 공유한다 |
 | `node_modules/` | 설치된 패키지가 들어가는 폴더. 커밋하지 않는다 |
+
+lock 파일은 `package.json`의 범위(`^4.0.0`, `^4.5.0`)를 실제 버전 하나(`4.6.3`)와 내려받을 주소·해시로 풀어 둔 기록이다. 범위가 겹치면 한 버전으로 합쳐 적는다. 매니저가 자동으로 고치는 파일이라 손으로 편집하지 않는다. lock 파일이 없으면 설치할 때마다 범위 안의 최신 버전을 새로 고른다. 그래서 어떤 의존성이 MINOR 업데이트에 깨지는 변경을 실수로 넣으면(유의적 버전을 어기면) **로컬에서 통과한 코드가 CI에서만 깨진다**. lock 파일은 「언제 어디서 설치해도 같은 `node_modules`」를 보장해 이 비결정성을 없앤다. **설치할 때는 최상위 프로젝트의 lock 파일만 쓰고**, 의존 패키지 안에 든 lock 파일은 무시한다. 그래서 라이브러리 작성자도 개발 재현을 위해 lock 파일을 커밋하지만, 그것이 사용자 설치 버전을 고정하지는 않는다.
 
 ## 의존성 추가와 npm 스크립트
 
@@ -31,10 +34,14 @@ npx eslint .                   # 전역 설치 없이 프로젝트(또는 임시
 | 구분 | 넣는 것 | 차이가 드러나는 곳 |
 | --- | --- | --- |
 | `dependencies` | 앱이 실행될 때 필요한 라이브러리 | 라이브러리를 배포하면 쓰는 쪽에 함께 설치된다. 서버 배포에서 `npm ci --omit=dev`가 남기는 것 |
-| `devDependencies` | 번들러, 린터, 테스트 러너, 타입 정의 | 번들러를 거치는 프런트엔드 앱은 결과물에 쓰인 코드만 담기므로 구분이 관례에 가깝다 |
+| `devDependencies` | 번들러, 린터, 테스트 러너, 타입 정의 | 번들러를 거치는 프런트엔드 앱은 결과물에 쓰인 코드만 담기므로 구분이 관례에 가깝다. **전이되지 않는다**: 내가 쓰는 라이브러리의 devDependencies는 내 프로젝트에 설치되지 않는다 |
+| `peerDependencies` | 플러그인이 기대하는 **호스트** 패키지(React 컴포넌트 라이브러리의 `react`, ESLint 플러그인의 `eslint`) | 플러그인이 자기 사본을 따로 갖지 않고 앱이 설치한 호스트 하나를 함께 쓴다. React가 두 벌 설치되면 훅이 깨지는 것 같은 사고를 막는다. npm 7+는 빠진 peer를 자동 설치하고, 버전 범위가 충돌하면 `ERESOLVE` 오류를 낸다(`--legacy-peer-deps`는 검사를 끄는 우회일 뿐이다) |
+| `optionalDependencies` | 없어도 동작하는 패키지(특정 OS용 네이티브 바이너리) | 설치에 실패해도 전체 설치가 실패하지 않는다. esbuild·SWC가 플랫폼별 바이너리를 이 방식으로 나눠 받는다 |
+| `bundleDependencies` | 패키지와 함께 tarball에 넣어 배포할 의존성 | 레지스트리에서 다시 받지 않는다. 드물게 쓴다 |
 
+- 의존성이 많으면 업데이트를 대화형으로 고른다. `pnpm update -i --latest`, `yarn upgrade-interactive`가 낡은 패키지 목록을 보여 주고 올릴 것만 체크하게 한다. npm은 `npm outdated`로 목록만 보여 주므로 `npx npm-check-updates -i`를 쓴다.
 - `node_modules` 안의 파일은 **직접 고치지 않는다.** 다음 설치 때 덮어써진다. 폴더는 언제 지워도 `npm install`로 다시 만들 수 있다. 패키지를 꼭 고쳐야 하면 `pnpm patch`나 `patch-package`로 패치 파일을 남긴다.
-- `package.json`의 `scripts`에 명령을 적어 두면 `npm run dev`처럼 실행한다. `start`·`test`는 `run` 없이 `npm start`·`npm test`로 줄여 쓴다. 스크립트 안에서는 `node_modules/.bin`의 명령을 경로 없이 쓸 수 있어 도구를 전역 설치할 필요가 없다.
+- `package.json`의 `scripts`에 명령을 적어 두면 `npm run dev`처럼 실행한다. `start`·`test`는 `run` 없이 `npm start`·`npm test`로 줄여 쓴다. 스크립트 안에서는 `node_modules/.bin`의 명령을 경로 없이 쓸 수 있어 도구를 전역 설치할 필요가 없다. 훅·인자 전달·조합법은 [[npm-scripts|npm 스크립트로 작업 자동화하기]]에 있다.
 - 패키지를 고를 때는 관리 상태(최근 릴리스, 이슈 대응), 번들 크기, **필요한 함수만 가져올 수 있는지**(`import { format } from 'date-fns'`처럼 named import로 트리 셰이킹되는지)를 본다. `fetch`, `structuredClone`, `Intl` 같은 내장 API로 충분하면 패키지를 더하지 않는다. 날짜 라이브러리의 예는 [[date-libraries|날짜 라이브러리]]에 있다.
 
 ### 왜 CDN이나 직접 내려받기 대신 매니저인가
@@ -72,6 +79,23 @@ pnpm의 `node_modules`는 `package.json`에 적지 않은 패키지에 접근할
 ## 매니저와 버전 고정: packageManager와 Corepack
 
 `package.json`의 `packageManager` 필드(`"packageManager": "pnpm@10.x.x"`)에 프로젝트가 쓰는 매니저와 정확한 버전을 적는다. **Corepack**은 이 필드를 읽어 맞는 yarn·pnpm을 자동으로 내려받아 실행하는 도구다. Node.js 16.9~24에는 Corepack이 함께 배포됐지만 **Node.js 25부터는 빠졌다.** 필요하면 `npm install -g corepack`으로 따로 설치하고, CI·Docker 이미지에도 설치 단계를 넣는다.
+
+### Node.js 버전 고정: nvm과 `.nvmrc`
+
+매니저보다 아래층인 **Node.js 버전**도 프로젝트마다 다르다. 시스템에 Node를 하나만 깔지 않고 **버전 관리자**로 여러 버전을 두고 바꿔 쓴다. 대표가 **nvm**(Node Version Manager, macOS·Linux 셸 스크립트)이고, 더 빠른 Rust 구현인 **fnm**, 여러 언어를 함께 다루는 **mise**·asdf도 같은 일을 한다. Windows는 별도 프로젝트인 nvm-windows를 쓴다.
+
+```bash
+nvm install --lts      # 최신 LTS 설치 (nvm install node 는 최신 Current)
+nvm install 22         # 메이저 버전으로 설치
+nvm use 22             # 이 셸에서 쓸 버전
+nvm ls                 # 설치된 버전, nvm ls-remote 는 설치 가능한 버전
+nvm alias default 22   # 새 셸의 기본값
+echo "22" > .nvmrc     # 프로젝트 버전 기록 → 이 폴더에서 nvm use / nvm install
+```
+
+- 프로젝트 루트의 `.nvmrc`(fnm·mise도 읽는다)와 `package.json`의 `engines.node`에 버전을 적어 팀과 CI가 같은 Node를 쓰게 한다. GitHub Actions의 `actions/setup-node`도 `node-version-file: .nvmrc`로 읽는다.
+- 운영에는 짝수 메이저의 **LTS**를 쓴다. 홀수 버전은 6개월만 지원된다.
+- 버전 관리자로 깐 Node에서는 `npm install -g`가 그 버전 폴더 안에 들어가 `sudo`가 필요 없다. 대신 Node 버전을 바꾸면 전역 패키지도 따로다. 도구는 전역 설치보다 `devDependencies` + `npx`를 쓴다.
 
 ## 공급망 보안 기본값
 
@@ -118,4 +142,4 @@ npm cache verify && npm cache clean --force && rm -rf package-lock.json && npm i
 - 한 프로젝트에는 한 매니저, lock 파일은 커밋한다.
 - EINTEGRITY는 해시 불일치다. 캐시를 비우고 lock 파일을 다시 만든다.
 
-관련 노트: [[bundlers-and-vite|번들러의 역사와 Vite]], [[eslint-prettier|ESLint와 Prettier 설정]], [[ci-cd|CI/CD]], [[windows-dev-environment|Windows 개발 환경]]
+관련 노트: [[small-modules|작은 모듈 철학과 npm 의존성]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[eslint-prettier|ESLint와 Prettier 설정]], [[ci-cd|CI/CD]], [[windows-dev-environment|Windows 개발 환경]]

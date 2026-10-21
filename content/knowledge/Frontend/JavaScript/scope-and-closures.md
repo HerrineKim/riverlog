@@ -4,11 +4,11 @@ concept: "Scope & Closure"
 summary: "변수를 어디서 쓸 수 있는지 정하는 스코프(전역·모듈·함수·블록)와 globalThis, 안쪽에서 바깥으로 찾아가는 스코프 체인과 섀도잉, 정의된 위치로 정해지는 렉시컬 스코프, 선언이 끌어올려지는 호이스팅과 TDZ, var가 블록을 무시하는 동작, 렉시컬 환경과 함수가 기억하는 태어난 환경으로 설명하는 클로저의 원리, 클로저의 쓰임새(함수 공장, private 상태)와 메모리·디버깅 주의점을 정리했다."
 tags: ["javascript", "frontend", "scope", "closure", "function"]
 source: other
-date: "2026-10-17"
-sources: ["https://wesbos.com/javascript/03-the-tricky-bits/scope", "https://wesbos.com/javascript/03-the-tricky-bits/hoisting", "https://wesbos.com/javascript/03-the-tricky-bits/closures", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures", "https://developer.mozilla.org/en-US/docs/Glossary/Hoisting", "https://web.dev/learn/javascript/data-types/variable", "https://ko.javascript.info/closure", "https://ko.javascript.info/var", "https://ko.javascript.info/global-object"]
+date: "2026-10-21"
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/closure.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/scope.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/hoisting.md", "https://wesbos.com/javascript/03-the-tricky-bits/scope", "https://wesbos.com/javascript/03-the-tricky-bits/hoisting", "https://wesbos.com/javascript/03-the-tricky-bits/closures", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures", "https://developer.mozilla.org/en-US/docs/Glossary/Hoisting", "https://web.dev/learn/javascript/data-types/variable", "https://ko.javascript.info/closure", "https://ko.javascript.info/var", "https://ko.javascript.info/global-object", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%81%B4%EB%A1%9C%EC%A0%80.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%A0%84%EC%97%AD%20%EB%B3%80%EC%88%98%EC%9D%98%20%EB%AC%B8%EC%A0%9C%EC%A0%90.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%8A%A4%EC%BD%94%ED%94%84.md"]
 ---
 
-> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로 재구성하고, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Variables」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「변수의 유효범위와 클로저」, 「오래된 var」, 「전역 객체」 글로 보강한 노트다.
+> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로 재구성하고, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Variables」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「변수의 유효범위와 클로저」, 「오래된 var」, 「전역 객체」 글로 보강한 노트다. 「[Frontend_TIL: 클로저](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%81%B4%EB%A1%9C%EC%A0%80.md)」, 「[Frontend_TIL: 호이스팅](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85.md)」, 「[Frontend_TIL: 전역 변수의 문제점](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%A0%84%EC%97%AD%20%EB%B3%80%EC%88%98%EC%9D%98%20%EB%AC%B8%EC%A0%9C%EC%A0%90.md)」을 바탕으로 보강했다. 「[Must-Know-About-Frontend: 클로저](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/closure.md)」, 「[Must-Know-About-Frontend: 스코프](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/scope.md)」, 「[Must-Know-About-Frontend: 호이스팅](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/hoisting.md)」의 내용을 더해 보강했다. 「[Frontend_TIL: 스코프](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%8A%A4%EC%BD%94%ED%94%84.md)」을 바탕으로 보강했다.
 
 ## 스코프란
 
@@ -37,7 +37,16 @@ window.first  // undefined — let·const는 전역이지만 window에 붙지 �
 window.age    // 100 — var와 함수 선언은 window의 속성이 된다
 ```
 
-전역 변수는 다른 스크립트·라이브러리와 이름이 부딪치므로 만들지 않는다. **ES 모듈에서는 파일이 곧 스코프**여서 `window.x = …`처럼 명시하지 않는 한 전역이 생기지 않는다([[es-modules|모듈: export와 import]]).
+전역 변수는 만들지 않는다. **변수의 생명주기는 그 스코프의 생명주기**다. 지역 변수는 함수 호출과 함께 생기고 끝나면 사라지지만, `var` 전역 변수는 전역 객체의 속성이라 페이지를 닫을 때까지 살아 있다.
+
+| 전역 변수의 문제 | 내용 |
+| --- | --- |
+| 암묵적 결합(implicit coupling) | 어느 코드든 읽고 바꿀 수 있어, 한 곳의 변경이 어디로 번질지 알 수 없다 |
+| 긴 생명주기 | 메모리를 오래 차지하고, 같은 이름의 `var`를 다시 선언하면 에러 없이 덮어쓴다 |
+| 스코프 체인의 끝 | 식별자 검색이 가장 마지막에 닿는 곳이다 |
+| 네임스페이스 오염 | 파일이 나뉘어 있어도 일반 스크립트는 전역 스코프 하나를 함께 쓴다 |
+
+전역을 줄이는 방법은 IIFE로 감싸기, 전역 객체 하나(`MYAPP`)에 속성으로 몰아넣는 네임스페이스 객체, IIFE와 클로저로 공개할 것만 돌려주는 모듈 패턴 순으로 발전했다. 지금은 **ES 모듈이 표준 답이다. 파일이 곧 스코프**여서 `window.x = …`처럼 명시하지 않는 한 전역이 생기지 않는다([[es-modules|모듈: export와 import]]).
 
 전역 객체에는 `Array`·`Promise` 같은 내장 객체와 `innerHeight` 같은 환경 전용 값이 들어 있다. 이름은 환경마다 달라서 브라우저는 `window`(워커는 `self`), Node.js는 `global`이었고, ES2020부터 모든 환경에서 **`globalThis`** 로 같은 객체를 가리킨다.
 
@@ -84,7 +93,7 @@ function isCool(name) {
 
 ## 렉시컬 스코프: 정의된 곳이 기준이다
 
-JavaScript는 **렉시컬 스코프(lexical scope, 정적 스코프)** 를 쓴다. 함수가 바깥 변수를 찾는 경로는 **함수를 정의한 위치**로 정해지고, 호출한 위치와는 상관없다.
+JavaScript는 **렉시컬 스코프(lexical scope, 정적 스코프)** 를 쓴다. 함수가 바깥 변수를 찾는 경로는 **함수를 정의한 위치**로 정해지고, 호출한 위치와는 상관없다. 반대로 호출한 위치로 상위 스코프를 정하는 방식은 **동적 스코프(dynamic scope)** 라고 하며, 정의할 때는 어디서 불릴지 몰라 코드만 보고 변수를 추적할 수 없다. 대부분의 언어가 렉시컬 스코프를 쓴다.
 
 ```javascript
 const dog = 'snickers'
@@ -116,6 +125,27 @@ go()
 ```javascript
 console.log(age) // undefined — 엔진은 var age; console.log(age); age = 10 처럼 처리한다
 var age = 10
+```
+
+같은 이름으로 함수 선언과 `var`가 함께 있으면 **함수 선언이 이긴다.** `var`의 선언만으로는 이미 등록된 함수를 덮지 않고, 대입문이 실행되는 순간에야 값이 바뀐다.
+
+```javascript
+func()                                  // '함수 선언' — 아직 대입 전이다
+var func = function () { console.log('함수 표현식') }
+function func() { console.log('함수 선언') }
+func()                                  // '함수 표현식' — 대입 뒤
+```
+
+선언을 먼저 등록하는 순서는 [[execution-context|실행 컨텍스트]]의 생성 단계에서 나온다.
+
+`let`·`const`도 호이스팅은 된다. 호이스팅되지 않는다면 아래 블록의 `console.log`는 바깥 `foo`를 읽어야 하지만, 블록 안의 `foo`가 이미 등록돼 있어 에러가 난다.
+
+```javascript
+let foo = 1
+{
+  console.log(foo) // ReferenceError: Cannot access 'foo' before initialization
+  let foo = 2
+}
 ```
 
 `let`·`const`가 선언된 줄에 닿기 전까지의 구간을 **TDZ(Temporal Dead Zone)** 라고 한다. 이 구간에서는 `typeof`도 에러를 낸다. TDZ 덕분에 "선언 전에 쓴" 실수가 조용한 `undefined` 대신 에러로 드러난다. 에러 메시지도 다르다. 엔진은 이 스코프에 그 변수가 **곧 생긴다는 것을 이미 알기 때문에** "is not defined"가 아니라 "before initialization"이라고 알려 준다. `const`에는 TDZ가 필수다. `var`처럼 `undefined`로 미리 초기화해 두면, 다시 대입할 수 없는 상수에 진짜 값을 넣을 기회가 없어진다.
@@ -162,7 +192,7 @@ counter() 호출 시          makeCounter() 호출 때 만든 환경        전�
 3. 함수를 호출하면 그 호출만의 새 환경이 생기고, 그 outer는 함수의 `[[Environment]]`다. 그래서 변수를 찾는 경로가 **호출 위치가 아니라 정의 위치**로 정해진다.
 4. 변수를 바꾸면 그 변수가 **들어 있는 환경**에서 바뀐다. 그래서 `counter()`를 부를 때마다 같은 `count`가 1, 2, 3으로 늘고, `makeCounter()`를 다시 부르면 별개의 `count`를 가진 새 환경이 생긴다.
 
-이 모델에서 보면 **JavaScript의 함수는 모두 클로저**다. 예외는 `new Function`으로 만든 함수로, `[[Environment]]`가 만든 위치가 아니라 전역 환경을 가리킨다([[functions|함수와 this]]).
+이 모델에서 보면 **JavaScript의 함수는 모두 클로저**다. 다만 보통 "클로저"라고 부르는 것은 더 좁다. **바깥 함수보다 오래 살아남으면서 바깥 스코프의 식별자를 실제로 참조하는 함수**다. 이렇게 붙잡힌 바깥 변수를 **자유 변수(free variable)** 라고 한다. 바깥 변수를 하나도 쓰지 않거나, 바깥 함수 안에서만 쓰이고 함께 사라지는 안쪽 함수는 클로저라고 하지 않는다. 예외는 `new Function`으로 만든 함수로, `[[Environment]]`가 만든 위치가 아니라 전역 환경을 가리킨다([[functions|함수와 this]]).
 
 ### 쓰임새
 
@@ -223,4 +253,4 @@ for (let j = 0; j < 3; j++) setTimeout(() => console.log(j)) // 0, 1, 2
 - 모든 함수는 태어난 렉시컬 환경을 `[[Environment]]`로 기억한다. 그래서 끝난 함수의 변수를 계속 읽는 클로저가 되고, 그 환경은 함수가 살아 있는 동안 메모리에 남는다.
 - 클로저는 함수 공장과 private 상태의 기본 도구다. 전역 객체는 `globalThis`로 읽고, 전역 변수는 만들지 않는다.
 
-관련 노트: [[variables-and-types|변수와 데이터 타입]], [[functions|함수와 this]], [[strict-mode|strict mode]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[debounce-throttle|Debounce와 Throttle]], [[es-modules|모듈: export와 import]], [[hooks|React Hooks]]
+관련 노트: [[execution-context|실행 컨텍스트]], [[variables-and-types|변수와 데이터 타입]], [[functions|함수와 this]], [[strict-mode|strict mode]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[debounce-throttle|Debounce와 Throttle]], [[es-modules|모듈: export와 import]], [[hooks|React Hooks]]

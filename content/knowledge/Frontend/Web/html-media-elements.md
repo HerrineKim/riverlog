@@ -4,11 +4,12 @@ concept: "HTML Media"
 summary: "내용인 이미지는 HTML, 장식은 CSS다. <img>의 필수 src·alt, 레이아웃 이동을 막는 width·height, loading·fetchpriority, figure·figcaption, SVG의 role=\"img\"를 정리하고, <video>·<audio>의 source·type·codecs, poster, controls, autoplay와 muted, track의 다섯 kind, 배경 영상과 사용자 정의 컨트롤의 원칙을 다룬다."
 tags: ["html", "media", "frontend", "performance", "accessibility"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/html/images", "https://web.dev/learn/html/audio-video", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/html/images", "https://web.dev/learn/html/audio-video", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/img%20%ED%83%9C%EA%B7%B8%20%EC%9D%B4%EB%AF%B8%EC%A7%80%EA%B0%80%20%EC%97%86%EC%9D%84%EA%B2%BD%EC%9A%B0%20%EB%8C%80%EC%B2%B4%EC%9D%B4%EB%AF%B8%EC%A7%80%20%EC%83%9D%EC%84%B1.md"]
 ---
 
 > web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Images」와 「Audio and Video」 모듈을 바탕으로, 브라우저 지원은 MDN으로 확인해 재구성한 노트다.
+> 깨진 이미지 대체는 「[Frontend_TIL: img 태그 이미지가 없을경우 대체이미지 생성](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/img%20%ED%83%9C%EA%B7%B8%20%EC%9D%B4%EB%AF%B8%EC%A7%80%EA%B0%80%20%EC%97%86%EC%9D%84%EA%B2%BD%EC%9A%B0%20%EB%8C%80%EC%B2%B4%EC%9D%B4%EB%AF%B8%EC%A7%80%20%EC%83%9D%EC%84%B1.md)」를 바탕으로 보강했다.
 
 ## 내용인가, 장식인가
 
@@ -63,6 +64,7 @@ sources: ["https://web.dev/learn/html/images", "https://web.dev/learn/html/audio
 
 | 기능 | 내용 |
 | --- | --- |
+| 깨진 이미지 대체 | 주소가 틀리거나 파일이 없으면 `error` 이벤트가 난다. 핸들러에서 `src`를 대체 이미지로 바꾼다. React: `onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/img/fallback.png' }}`. 대체 이미지마저 없을 때 무한 반복되지 않게 핸들러를 먼저 떼거나, state로 한 번만 바꾼다 |
 | `<input type="image">` | 이미지로 된 제출 버튼. 클릭 좌표가 `이름.x=169&이름.y=66`으로 함께 전송된다(이름이 없으면 `x`, `y`) |
 | `ismap` | 서버 측 이미지 맵. 거의 쓰지 않고, 쓰면 포인터 없는 사용자를 위해 링크로 감싼다 |
 
@@ -144,7 +146,7 @@ button.addEventListener('click', () => {
 
 - HTML에는 `controls`를 넣어 두고, JavaScript가 **대체 컨트롤을 만든 뒤에** 지운다. 스크립트가 실패해도 사용자는 재생을 멈출 수 있다.
 - 버튼 문구를 상태에 맞게 바꾼다. 컨트롤이 콘텐츠에 가려지는 배경 영상에는 바깥에 컨트롤을 둔다.
-- `<audio>`·`<video>`는 `HTMLMediaElement`의 `play()`, `pause()`, `paused`, `currentTime`, `duration`, `ended`를 공유한다. 녹음·화면 녹화는 Media Capture and Streams와 `MediaDevices`, 소리 가공은 Web Audio API가 맡는다(→ [[audio-recording|React에서 음성 녹음하고 파일로 보내기]]).
+- `<audio>`·`<video>`는 `HTMLMediaElement`의 `play()`, `pause()`, `paused`, `currentTime`, `duration`, `ended`를 공유한다. 녹음·화면 녹화는 Media Capture and Streams와 `MediaDevices`, 소리 가공은 Web Audio API가 맡는다(→ [[media-capture-web-audio|미디어 캡처와 Web Audio API]], [[audio-recording|React에서 음성 녹음하고 파일로 보내기]]).
 
 ## 정리
 

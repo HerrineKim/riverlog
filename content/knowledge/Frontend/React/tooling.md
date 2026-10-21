@@ -4,9 +4,11 @@ concept: "Build Tools"
 summary: "React 코드가 브라우저에서 돌기까지 Babel(문법 변환)과 webpack(번들링)이 무엇을 하는지, CDN 한 줄 실습부터 webpack+Babel+TypeScript 직접 구성, 라우팅·코드 스플리팅, 도구별 클라이언트 환경 변수 규칙까지 정리한다. CRA는 지원이 끝났다."
 tags: ["react", "tooling", "typescript", "webpack", "frontend"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://riverkim.kr/45", "https://riverkim.kr/84"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/45", "https://riverkim.kr/84", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Webpack.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Webpack%2C%20Babel%20%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C%20React%20%EA%B0%9C%EB%B0%9C%20%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/webpack%20%EC%9D%B4%EB%AF%B8%EC%A7%80%2C%20%ED%8F%B0%ED%8A%B8%20loader.md", "https://webpack.js.org/guides/asset-modules/"]
 ---
+
+> 「로더 규칙」과 entry·output 해시는 「[Frontend_TIL: Webpack](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Webpack.md)」, 「[Webpack, Babel 사용해서 React 개발 환경 구축](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Webpack%2C%20Babel%20%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C%20React%20%EA%B0%9C%EB%B0%9C%20%ED%99%98%EA%B2%BD%20%EA%B5%AC%EC%B6%95.md)」, 「[webpack 이미지, 폰트 loader](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/webpack%20%EC%9D%B4%EB%AF%B8%EC%A7%80%2C%20%ED%8F%B0%ED%8A%B8%20loader.md)」를 바탕으로 webpack 5 기준으로 보강했다.
 
 React 코드는 그대로 브라우저에서 돌지 않는다. JSX와 최신 문법은 **Babel**이 변환하고, 흩어진 파일들은 **webpack** 같은 번들러가 하나로 합친다. Vite나 Next.js 같은 도구는 이 설정을 숨겨 두는데, 한 번 직접 구성해 보면 각 도구가 어느 단계에서 무엇을 하는지 보인다.
 
@@ -54,11 +56,51 @@ entry(시작 파일) ──▶ module.rules(로더로 변환) ──▶ output(�
                          plugins(빌드 중 부가 작업)
 ```
 
-- `entry`: `{ app: './client' }` → `output.filename: '[name].js'`이면 `[name]`이 `app`으로 바뀌어 `dist/app.js`가 생성된다.
-- loader: ts/tsx는 `babel-loader`, css는 `style-loader` + `css-loader`로 JS 안에 넣는다.
-- `devServer`: 개발 서버(포트, `historyApiFallback`으로 SPA 라우팅 지원, `proxy`로 API 요청 전달, [AJAX와 CORS](/knowledge/dictionary/frontend/javascript/ajax) 참고).
+- `entry`: `{ app: './client' }` → `output.filename: '[name].js'`이면 `[name]`이 `app`으로 바뀌어 `dist/app.js`가 생성된다. 키를 여러 개 두면 결과 번들도 여러 개 나온다(페이지마다 번들이 따로 필요한 MPA). 값에 배열을 주면 여러 파일을 번들 하나로 합친다.
+- `output.filename`의 자리표시자: `[name]`(entry 키), `[contenthash]`(**파일 내용**이 바뀔 때만 바뀌는 해시). 배포용은 `'[name].[contenthash].js'`로 두어, 바뀌지 않은 파일은 브라우저 캐시를 그대로 쓰게 한다. 빌드마다 바뀌는 `[fullhash]`(webpack 4의 `[hash]`)는 캐시를 매번 깨뜨린다.
+- `devServer`: 개발 서버(포트, `historyApiFallback`으로 SPA 라우팅 지원, `proxy`로 API 요청 전달, [AJAX와 CORS](/knowledge/dictionary/frontend/javascript/ajax) 참고). 정적 파일 폴더는 `static`으로 지정한다(webpack-dev-server 3의 `contentBase`).
 - Hot reloading: `@pmmmwh/react-refresh-webpack-plugin` + `react-refresh`로 저장 시 state를 유지한 채 화면만 갱신.
 - `fork-ts-checker-webpack-plugin`: 타입 검사를 별도 프로세스에서 병렬로 돌려 빌드를 빠르게 한다.
+
+### 로더 규칙: 무엇을 어떤 순서로 변환하나
+
+webpack은 JavaScript와 JSON만 이해한다. 나머지 파일은 `module.rules`에서 `test`(정규식으로 파일 고르기)와 `use`(적용할 로더)로 변환한다. **`use` 배열은 뒤에서 앞으로(아래에서 위로) 실행된다.**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      { test: /\.[jt]sx?$/, exclude: /node_modules/, use: 'babel-loader' },
+      {
+        test: /\.scss$/,
+        // sass-loader(SCSS → CSS) → css-loader(@import·url() 해석, JS 모듈로) → 마지막 로더
+        use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader', 'sass-loader'],
+      },
+      { test: /\.(png|jpe?g|gif|svg|webp)$/i, type: 'asset' },
+      { test: /\.(woff2?|ttf|otf)$/i, type: 'asset/resource', generator: { filename: 'fonts/[name].[contenthash][ext]' } },
+    ],
+  },
+  plugins: [new HtmlWebpackPlugin({ template: './public/index.html' }), new MiniCssExtractPlugin()],
+}
+```
+
+| CSS 마지막 단계 | 결과 | 쓰는 때 |
+| --- | --- | --- |
+| `style-loader` | CSS를 JS 번들에 넣고 실행 시 `<style>` 태그로 삽입 | 개발. HMR이 빠르다 |
+| `MiniCssExtractPlugin.loader` + 플러그인 | 별도 `.css` 파일로 뽑아 `<link>`로 건다 | 배포. JS와 병렬로 받고 따로 캐시된다 |
+
+이미지·폰트는 webpack 5의 **에셋 모듈(asset modules)** 이 로더 없이 처리한다.
+
+| `type` | 하는 일 | 옛 로더 |
+| --- | --- | --- |
+| `asset/resource` | 파일을 출력 폴더로 복사하고 URL을 돌려준다 | `file-loader` |
+| `asset/inline` | base64 data URI로 번들에 넣는다. 요청이 하나 줄지만 크기가 약 33% 커지고 따로 캐시되지 않는다 | `url-loader` |
+| `asset/source` | 파일 내용을 문자열로 | `raw-loader` |
+| `asset` | 기본 8KB(`parser.dataUrlCondition.maxSize`)보다 작으면 inline, 크면 resource | `url-loader`의 `limit` |
+
+에셋은 **코드에서 `import`하거나 CSS의 `url()`로 참조한 것만** 번들에 들어간다. 참조하지 않은 이미지는 출력되지 않는다. 경로를 문자열로 하드코딩하면 빌드 후 위치(`dist/fonts/…`)와 어긋나므로 `import logo from './logo.png'`처럼 모듈로 불러와 webpack이 최종 URL을 넣게 한다. 결과 URL 앞에 붙는 경로는 `output.publicPath`로 정한다. 과거 `file-loader`를 `require()`로 불러오면 ES 모듈 객체가 와서 `.default`를 붙여야 했는데, 에셋 모듈로는 그럴 일이 없다.
+
+`HtmlWebpackPlugin`은 템플릿 HTML에 번들 `<script>`·`<link>`를 자동으로 넣어 출력 폴더에 쓴다. 폴리필은 `@babel/polyfill`(7.4에서 폐기)이 아니라 `@babel/preset-env`의 대상 브라우저 설정과 core-js로 넣는다([[babel|Babel]]).
 
 ### tsconfig 메모
 

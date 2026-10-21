@@ -4,11 +4,11 @@ concept: "Strict Mode"
 summary: "ES5가 하위 호환을 깨지 않고 언어의 오래된 함정을 막으려고 만든 선택적 규칙 집합. 파일·함수 맨 앞의 \"use strict\"로 켜고, ES 모듈과 class 본문은 자동으로 켜진다. 암묵적 전역, 조용한 실패, this의 전역 객체 대체, 블록 밖으로 새는 함수 선언 같은 동작이 에러나 더 엄격한 규칙으로 바뀐다."
 tags: ["javascript", "frontend", "ecmascript"]
 source: other
-date: "2026-10-17"
-sources: ["https://ko.javascript.info/strict-mode", "https://ko.javascript.info/eval", "https://web.dev/learn/javascript/appendix", "https://web.dev/learn/javascript/functions/this", "https://web.dev/learn/javascript/functions", "https://web.dev/learn/javascript/objects/property-descriptors", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode"]
+date: "2026-10-21"
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/strict-mode.md", "https://ko.javascript.info/strict-mode", "https://ko.javascript.info/eval", "https://web.dev/learn/javascript/appendix", "https://web.dev/learn/javascript/functions/this", "https://web.dev/learn/javascript/functions", "https://web.dev/learn/javascript/objects/property-descriptors", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/strict%20mode.md", "http://dmitrysoshnikov.com/ecmascript/es5-chapter-2-strict-mode/"]
 ---
 
-> web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 부록·함수·속성 설명자 모듈을 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「엄격 모드」, 「Eval: 문자열 코드 실행하기」 글을 더하고 MDN으로 확인해 재구성한 노트다.
+> web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 부록·함수·속성 설명자 모듈을 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「엄격 모드」, 「Eval: 문자열 코드 실행하기」 글을 더하고 MDN으로 확인해 재구성한 노트다. 「[Must-Know-About-Frontend: 엄격 모드](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/strict-mode.md)」의 내용을 더해 보강했다. 「[Frontend_TIL: strict mode](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/strict%20mode.md)」을 바탕으로 보강했다. 예약어·`caller`·상속된 읽기 전용 속성 규칙은 Dmitry Soshnikov의 「[ECMA-262-5 in detail. Chapter 2. Strict Mode](http://dmitrysoshnikov.com/ecmascript/es5-chapter-2-strict-mode/)」를 바탕으로 보강했다.
 
 ## strict mode란
 
@@ -35,6 +35,7 @@ function legacy() {
 - **스크립트나 함수 본문의 맨 처음**에 와야 한다. 앞에 실행 코드가 한 줄이라도 있으면 그냥 문자열 식으로 취급되어 무시된다(주석은 괜찮다).
 - 평범한 문자열 리터럴이어야 한다. `` `use strict` ``처럼 템플릿 리터럴로 쓰면 켜지지 않는다.
 - 블록 `{}` 단위로는 켤 수 없다. 파일 아니면 함수다.
+- 파일 단위 지시어는 **그 `<script>` 하나에만** 적용된다. 한 페이지의 다른 `<script>`는 여전히 sloppy mode라 같은 코드가 태그마다 다르게 동작한다. 여러 파일을 그냥 이어 붙이던 시절에는 맨 앞 파일의 `'use strict'`가 뒤 파일까지 strict로 바꾸거나, 반대로 중간 파일의 지시어가 무시되는 일이 생겼다. 그래서 모듈 이전에는 파일 전체를 IIFE로 감싸고 그 안에서 켰고, 함수마다 제각각 켜는 것은 피했다. 지금은 모듈이 이 문제를 없앴다.
 - 기본값이 있는 매개변수, rest 매개변수, 구조 분해 매개변수를 쓰는 함수 안에서는 `'use strict'`를 쓸 수 없다(SyntaxError). 파일 단위로 켠다.
 
 ### 자동으로 켜지는 곳
@@ -65,11 +66,17 @@ DevTools 콘솔은 기본이 sloppy mode이고, 한 줄씩 실행해서 첫 줄�
 | 읽기 전용 속성(`writable: false`), `Object.freeze`한 객체에 쓰기 | 조용히 무시 | `TypeError` |
 | getter만 있는 속성에 대입, 확장 불가 객체에 속성 추가 | 조용히 무시 | `TypeError` |
 | 지울 수 없는 속성 `delete` | `false` 반환 | `TypeError` |
+| 변수 이름에 `delete x` | `false` 반환 | SyntaxError |
+| `arguments.callee`(실행 중인 함수 자신) | 쓸 수 있다 | `TypeError` |
 | 블록 안의 함수 선언 | 바깥 함수 스코프로 샌다(브라우저마다 다르던 동작) | `let`처럼 그 블록 스코프에 갇힌다 |
 | `with` 문, `0644` 같은 옛 8진수 리터럴 | 허용 | SyntaxError |
 | 같은 이름의 매개변수 `function f(a, a)` | 허용 | SyntaxError |
 | `arguments[0] = 1`이 매개변수를 바꾸는가 | 바꾼다(연동) | 연동하지 않는다 |
 | `eval`이 바깥에 변수를 만드는가 | 만든다 | 만들지 않는다 |
+| `eval`·`arguments`를 변수·매개변수 이름으로 쓰거나 대입 | 허용 | SyntaxError |
+| `implements`·`interface`·`package`·`private`·`protected`·`public`·`static`·`let`·`yield`를 식별자로 | 허용 | SyntaxError(미래 예약어) |
+| 함수의 `caller`·`arguments` 속성 읽기 | 엔진마다 호출자를 노출 | `TypeError`. 호출 스택을 엿보는 경로를 막는다 |
+| 프로토타입의 읽기 전용 속성과 같은 이름으로 대입 `child.x = 1` | 조용히 무시(자기 속성이 생기지 않는다) | `TypeError` |
 
 가장 자주 체감하는 것은 표의 첫 두 줄이다. 오타 하나가 전역 변수가 되는 일이 막히고, 메서드를 떼어 부르면 `this`가 `undefined`가 되어 곧장 에러가 난다. 둘 다 "조용히 틀린 값"을 "바로 보이는 에러"로 바꾼다. `this` 규칙의 전체는 [[functions|함수와 this]]에, 쓰기 실패를 만드는 속성 설정은 [[property-descriptors|속성 설명자]]에 있다.
 

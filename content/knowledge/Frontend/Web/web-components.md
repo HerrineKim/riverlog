@@ -4,11 +4,11 @@ concept: "Web Components"
 summary: "라이브러리 없이 재사용 가능한 요소를 만드는 웹 표준. <template>은 렌더링되지 않는 HTML 조각, 커스텀 요소는 HTMLElement를 상속한 클래스와 라이프사이클 콜백, Shadow DOM은 마크업과 스타일을 캡슐화하는 별도 트리, <slot>은 바깥 내용을 끼울 자리다. :host·::slotted()·::part()·커스텀 속성으로 경계를 넘어 꾸미고, 이벤트는 리타게팅되며 composed 이벤트만 밖으로 나간다. 선언적 Shadow DOM으로 서버에서 그린다."
 tags: ["html", "component", "dom", "javascript", "frontend"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/html/template", "https://developer.mozilla.org/en-US/docs/Web/API/Web_components", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/template", "https://ko.javascript.info/webcomponents-intro", "https://ko.javascript.info/custom-elements", "https://ko.javascript.info/shadow-dom", "https://ko.javascript.info/template-element", "https://ko.javascript.info/slots-composition", "https://ko.javascript.info/shadow-dom-style", "https://ko.javascript.info/shadow-dom-events", "https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/html/template", "https://developer.mozilla.org/en-US/docs/Web/API/Web_components", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/template", "https://ko.javascript.info/webcomponents-intro", "https://ko.javascript.info/custom-elements", "https://ko.javascript.info/shadow-dom", "https://ko.javascript.info/template-element", "https://ko.javascript.info/slots-composition", "https://ko.javascript.info/shadow-dom-style", "https://ko.javascript.info/shadow-dom-events", "https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements", "https://developers.google.com/web/updates/2017/01/webcomponents-org", "https://developers.google.com/web/fundamentals/getting-started/primers/shadowdom", "https://developers.google.com/web/fundamentals/getting-started/primers/customelements"]
 ---
 
-> web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Template, slot, and shadow」 모듈을 바탕으로, 선언적 Shadow DOM과 브라우저 지원은 MDN으로 확인해 보강하고, javascript.info(모던 JavaScript 튜토리얼)의 「웹 컴포넌트」 장(커스텀 요소, 섀도 DOM, 템플릿 요소, 슬롯과 컴포지션, 섀도 DOM 스타일링, 섀도 DOM과 이벤트)으로 라이프사이클·슬롯 API·스타일 우선순위·이벤트를 더한 노트다.
+> web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Template, slot, and shadow」 모듈을 바탕으로, 선언적 Shadow DOM과 브라우저 지원은 MDN으로 확인해 보강하고, javascript.info(모던 JavaScript 튜토리얼)의 「웹 컴포넌트」 장(커스텀 요소, 섀도 DOM, 템플릿 요소, 슬롯과 컴포지션, 섀도 DOM 스타일링, 섀도 DOM과 이벤트)으로 라이프사이클·슬롯 API·스타일 우선순위·이벤트를 더한 노트다. 「[Custom Elements v1](https://web.dev/articles/custom-elements-v1)」, 「[Shadow DOM v1](https://web.dev/articles/shadowdom-v1)」, 「[Web Components v1 - the next generation](https://web.dev/articles/webcomponents-org)」으로 반사·업그레이드·포커스·역사를 보강했다.
 
 ## 웹 컴포넌트란
 
@@ -90,6 +90,38 @@ class TimeFormatted extends HTMLElement {
 }
 customElements.define('time-formatted', TimeFormatted);
 ```
+
+### 프로퍼티를 어트리뷰트로 반사하기
+
+내장 요소는 대부분 JavaScript 프로퍼티 값을 같은 이름의 HTML 어트리뷰트로 되비춘다. `div.hidden = true`를 하면 DOM에 `<div hidden>`이 생긴다. 이를 **반사(reflecting properties to attributes)** 라고 한다. 커스텀 요소도 같은 관례를 따라야 사용하는 쪽의 CSS 선택자(`app-drawer[disabled]`)와 접근성 도구가 JS 상태 변화를 본다.
+
+```js
+class AppDrawer extends HTMLElement {
+  static observedAttributes = ['disabled', 'open'];
+  get disabled() { return this.hasAttribute('disabled'); }
+  set disabled(val) {                       // 프로퍼티 → 어트리뷰트
+    this.toggleAttribute('disabled', Boolean(val));
+  }
+  attributeChangedCallback() {               // 어트리뷰트 → 내부 상태
+    this.setAttribute('tabindex', this.disabled ? '-1' : '0');
+    this.setAttribute('aria-disabled', String(this.disabled));
+  }
+}
+```
+
+상태의 원본을 어트리뷰트에 두고 getter는 어트리뷰트를 읽게 하면 둘이 어긋나지 않는다. 객체·배열처럼 문자열로 담기 어려운 값은 반사하지 않고 프로퍼티로만 받는다.
+
+### 업그레이드를 기다리기
+
+커스텀 요소는 정의 전에도 문서에 둘 수 있다. 명세상 요소의 상태는 `undefined` → `custom`(또는 실패 시 `failed`)으로 바뀐다. 자식 컴포넌트가 모두 정의된 뒤에 일을 하려면 `:not(:defined)`로 아직 안 된 것을 모아 `whenDefined()`를 기다린다.
+
+```js
+const pending = [...root.querySelectorAll(':not(:defined)')]
+  .map((el) => customElements.whenDefined(el.localName));
+await Promise.all(pending);   // 모든 자식이 업그레이드됨
+```
+
+요소가 자기 내용을 만들 때 `connectedCallback`에서 `this.innerHTML`을 덮어쓰면 사용하는 쪽이 넣은 자식이 사라진다. 자기 마크업은 **섀도 트리에 그리고**, 사용자 마크업은 슬롯으로 받는다.
 
 ### 파싱 순서 함정
 
@@ -194,6 +226,18 @@ this._internals.states.add('open');        // my-menu:state(open) { … }
 - 커스텀 속성은 경계를 통과한다. 컴포넌트는 `color: var(--rating-color, gold)`처럼 노출하고, 노출한 커스텀 속성과 `part` 이름을 **공개 API로 문서화**한다.
 - `:host-context(.dark)`(조상 기준 스타일)는 명세에서 빠졌다. 바깥 테마는 커스텀 속성이나 컨테이너 스타일 쿼리로 받는다.
 
+### 호스트 기본 스타일
+
+커스텀 요소의 기본 `display`는 `inline`이다. 대부분의 컴포넌트는 `:host`에 표시 방식과 격리를 먼저 정한다.
+
+```css
+:host { display: block; contain: content; }   /* 레이아웃·페인트를 컴포넌트 안으로 가둔다 */
+:host([hidden]) { display: none; }             /* display를 바꿨으면 hidden이 다시 통하게 */
+:host { all: initial; }                        /* 필요하면 상속된 글꼴·색을 초기화(맨 앞 규칙으로) */
+```
+
+`contain: content`는 컴포넌트 내부 변경이 바깥 레이아웃 계산에 번지지 않게 해 렌더링 비용을 줄인다(→ [[browser-rendering|브라우저 렌더링]]).
+
 ### 스타일시트 공유
 
 인스턴스마다 `<style>`을 복제하는 대신 **생성 가능한 스타일시트(constructable stylesheet)** 하나를 여러 섀도 루트가 공유할 수 있다(Baseline). 섀도 트리 안의 `<link rel="stylesheet">`도 HTTP 캐시 덕분에 다시 받지 않는다.
@@ -241,12 +285,17 @@ JavaScript 없이 HTML만으로 섀도 루트를 만들 수 있다. 서버 렌�
 ## 접근성 주의
 
 - 표준 요소를 흉내 내는 커스텀 요소는 `role`, `tabindex`, 키보드 처리(Enter·Space)를 **모두 직접** 다시 만들어야 한다. 가능하면 섀도 트리 안에 진짜 `<button>`·`<input>`을 둔다(→ [[aria-basics|ARIA와 접근 가능한 이름]]).
+- `attachShadow({ mode: 'open', delegatesFocus: true })`를 쓰면 섀도 트리의 포커스 불가능한 곳을 클릭해도 **안쪽 첫 포커스 가능 요소**로 포커스가 가고, 안쪽 요소가 포커스를 받으면 호스트에도 `:focus`가 적용된다. 섀도 트리 안에서 실제로 포커스된 요소는 `document.activeElement`가 아니라 `shadowRoot.activeElement`를 따라 내려가야 찾는다.
 - 섀도 경계를 넘어 `id`로 참조할 수 없다. 바깥 `<label for>`나 `aria-labelledby`가 섀도 트리 안 요소를 가리키지 못한다.
 - 폼에 값을 제출하는 커스텀 요소는 `static formAssociated = true`와 `attachInternals()`로 폼 연결 요소(form-associated custom element)를 만든다.
 
 ## 이름 충돌과 범위 지정 레지스트리
 
 `customElements`는 페이지 전역 레지스트리라 같은 이름을 두 번 `define()`하면 오류가 난다. 두 라이브러리가 같은 태그 이름을 쓰면 충돌한다. **범위 지정 레지스트리**(`new CustomElementRegistry()`를 `attachShadow({ customElementRegistry })`에 넘김)는 정의를 섀도 루트 안으로 한정하지만 아직 Baseline이 아니다. 지금은 태그 이름에 접두사(`acme-rating`)를 붙이는 것이 기본이다.
+
+## 역사: v0에서 v1로
+
+초기 명세(v0)는 Chrome 33~35에서만 구현됐고 `document.registerElement()`, `createShadowRoot()`, HTML Imports를 썼다. 다른 브라우저는 webcomponents.js·Shady DOM 폴리필에 기댔고 Polymer 라이브러리가 이를 감쌌다. 브라우저 제조사들이 합의한 v1(`customElements.define()`, `attachShadow()`)이 2016~2020년에 Chrome 53·54, Safari 10, Firefox 63, Chromium 기반 Edge 79 순서로 들어오면서 폴리필이 필요 없어졌다. HTML Imports는 ES 모듈로 대체돼 폐기됐다. Polymer의 후속은 가벼운 베이스 클래스 [Lit](https://lit.dev)이다. 컴포넌트 카탈로그였던 webcomponents.org도 이 시기의 산물이다.
 
 ## 정리
 

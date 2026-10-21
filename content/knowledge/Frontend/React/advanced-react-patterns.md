@@ -168,4 +168,4 @@ Hooks 이전에는 같은 목적을 HOC(고차 컴포넌트)와 render props로 
 - State Reducer의 액션 타입은 공개 API이므로 안정적으로 유지한다.
 - 플러그 앤 플레이로 충분하면 패턴을 쓰지 않는 것이 가장 좋은 선택이다.
 
-관련 노트: [[composition|합성: 상속 대신 Composition]], [[hooks|Hooks]], [[context|Context]], [[component-splitting|컴포넌트를 분리하는 기준과 방법]]
+관련 노트: [[composition|합성: 상속 대신 Composition]], [[logic-reuse-patterns|로직 재사용 패턴: HOC, Render Props, 커스텀 훅]], [[hooks|Hooks]], [[context|Context]], [[component-splitting|컴포넌트를 분리하는 기준과 방법]]

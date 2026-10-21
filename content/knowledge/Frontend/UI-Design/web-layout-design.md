@@ -1,10 +1,10 @@
 ---
 title: "웹 레이아웃 디자인: 인쇄와 다른 매체"
 concept: "Intrinsic Web Design"
-summary: "웹은 크기가 고정되지 않은 매체다. 화면 폭 대응은 고정폭·리퀴드·적응형을 거쳐 반응형으로 왔고, 지금은 플렉스박스·그리드·컨테이너 쿼리로 콘텐츠에 맞게 늘고 줄어드는 본질의 웹 디자인(Intrinsic Web Design)이 기본이다. 페이지(매크로)와 컴포넌트(마이크로) 레이아웃을 나눠 설계하고, 인쇄의 단락·문자 스타일은 CSS의 블록·인라인 규칙으로 이어지며, 이미지 위 텍스트는 대비·위치·심도로 읽히게 한다."
+summary: "웹은 크기가 고정되지 않은 매체다. 화면 폭 대응은 고정폭·리퀴드·적응형을 거쳐 반응형으로 왔고, 지금은 플렉스박스·그리드·컨테이너 쿼리로 콘텐츠에 맞게 늘고 줄어드는 본질의 웹 디자인(Intrinsic Web Design)이 기본이다. 페이지(매크로)와 컴포넌트(마이크로) 레이아웃을 나눠 설계하고, 인쇄의 단락·문자 스타일은 CSS의 블록·인라인 규칙으로, 칼럼 그리드와 8pt 간격 체계는 CSS 그리드와 디자인 토큰으로 이어지며, 이미지 위 텍스트는 대비·위치·심도로 읽히게 한다."
 tags: ["design", "layout", "css", "frontend", "typography"]
 source: other
-date: "2026-10-13"
+date: "2026-10-21"
 sources: ["https://webactually.com/2018/10/22/%ed%8e%b8%ec%a7%91-%eb%94%94%ec%9e%90%ec%9d%b8%ea%b3%bc-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%98-%ec%9c%a0%ec%82%ac%ec%84%b1-%eb%b9%84%ea%b5%90/", "https://webactually.com/2018/07/10/%eb%b3%b8%ec%a7%88%ec%9d%98-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8intrinsic-web-design-%ec%8b%9c%eb%8c%80%ea%b0%80-%ec%98%a8%eb%8b%a4/", "https://webactually.com/2014/12/05/%ec%9d%b4%eb%af%b8%ec%a7%80%ec%99%80-%ed%85%8d%ec%8a%a4%ed%8a%b8%eb%a5%bc-%ec%a1%b0%ed%99%94%eb%a1%ad%ea%b2%8c-%eb%b0%b0%ec%b9%98%ed%95%98%eb%8a%94-3%ea%b0%80%ec%a7%80-%eb%b0%a9%eb%b2%95/", "https://web.dev/learn/design/intro", "https://web.dev/learn/design/macro-layouts", "https://web.dev/learn/design/micro-layouts"]
 ---
 
@@ -34,6 +34,10 @@ InDesign 같은 편집 도구의 스타일 체계는 CSS로 거의 그대로 옮
 | 문자 스타일 (글꼴, 색. 간격은 못 바꿈) | `strong`, `em`, `span` 같은 인라인 요소 규칙 | 줄 안의 일부만 꾸민다 |
 | 다단 텍스트 | `columns` (multi-column) | 긴 글을 여러 단으로 흘린다 |
 | 커닝 | `font-kerning`, `letter-spacing` | 글꼴의 커닝 정보를 쓰거나 자간을 조절한다 |
+
+## 그리드 시스템
+
+편집 디자인의 그리드 시스템도 웹으로 넘어왔다. 페이지 전체의 배치는 칼럼 그리드(보통 12칼럼)로, 요소 하나하나의 크기와 간격은 8의 배수로 맞추는 8pt 그리드로 정한다. 용어와 배치 조합, 하드·소프트 방식, 수직 리듬과 코드 구현은 [[layout-grid-spacing|레이아웃 그리드와 간격 체계]]에 있다.
 
 ## 고정폭에서 반응형까지
 

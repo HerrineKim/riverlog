@@ -33,5 +33,6 @@ date: "2026-10-13"
 - [기술 스택 고르기](Frontend/tech-stack-selection.md): 기술 수용 주기·캐즘·하이프 사이클, 스택을 고르는 다섯 기준, 범주로 트렌드 읽기, 레거시를 대하는 자세
 - [React와 Vue 비교](Frontend/react-vs-vue.md): JSX와 템플릿, 불변 상태와 반응형 상태, v-model의 정체, 생태계 범위와 고르는 기준
 - [React와 Vue 말고: 다른 프론트엔드 프레임워크](Frontend/frontend-frameworks.md): Svelte, Angular, Preact, Alpine.js, HTMX의 성격과 쓰임
+- [Electron: 웹 기술로 데스크톱 앱 만들기](Frontend/electron.md): 메인·렌더러 프로세스와 preload·IPC, 컨텍스트 격리·샌드박스 기본값, 패키징과 릴리스, Tauri와 비교
 - [Vue 상태 관리: Pinia(옛 Vuex)](Frontend/vuex.md): Pinia `defineStore`(옵션·setup 스토어), 옛 Vuex의 mutations·actions, Vite 환경 변수
 - [Quasar 프레임워크 기초](Frontend/quasar.md): Vue 기반 UI 프레임워크 Quasar

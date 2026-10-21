@@ -1,14 +1,14 @@
 ---
 title: "페이지 생명주기와 리소스 로딩 이벤트"
 concept: "Page Lifecycle Events"
-summary: "문서가 열리고 닫히는 동안 일어나는 이벤트. DOMContentLoaded가 기다리는 것과 기다리지 않는 것, load와 readyState, 떠날 때의 beforeunload·pagehide·visibilitychange와 피해야 할 unload, sendBeacon·keepalive로 마지막 데이터 보내기, 스크립트·이미지의 load·error 이벤트와 crossorigin 속성으로 다른 출처 스크립트의 오류 정보 얻기를 정리한다."
+summary: "문서가 열리고 닫히는 동안 일어나는 이벤트. DOMContentLoaded가 기다리는 것과 기다리지 않는 것, load와 readyState, 떠날 때의 beforeunload·pagehide·visibilitychange와 숨은 탭의 rAF 정지·타이머 제한, 피해야 할 unload, sendBeacon·keepalive로 마지막 데이터 보내기, 스크립트·이미지의 load·error 이벤트와 crossorigin 속성으로 다른 출처 스크립트의 오류 정보 얻기를 정리한다."
 tags: ["javascript", "browser", "event", "performance", "frontend"]
 source: other
-date: "2026-10-17"
-sources: ["https://ko.javascript.info/onload-ondomcontentloaded", "https://ko.javascript.info/onload-onerror", "https://developer.mozilla.org/en-US/docs/Web/API/Window/unload_event", "https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event", "https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event"]
+date: "2026-10-21"
+sources: ["https://ko.javascript.info/onload-ondomcontentloaded", "https://ko.javascript.info/onload-onerror", "https://developer.mozilla.org/en-US/docs/Web/API/Window/unload_event", "https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeunload_event", "https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event", "https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「DOMContentLoaded, load, beforeunload, unload 이벤트」, 「Resource loading: onload and onerror」 글을 바탕으로, 페이지를 떠날 때의 권장 방식은 MDN으로 확인해 재구성한 노트다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「DOMContentLoaded, load, beforeunload, unload 이벤트」, 「Resource loading: onload and onerror」 글을 바탕으로, 페이지를 떠날 때의 권장 방식은 MDN으로 확인해 재구성한 노트다. 숨은 페이지의 동작은 MDN의 「[Page Visibility API](https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API)」로 보강했다.
 
 ## 한눈에 보기
 
@@ -113,6 +113,27 @@ document.addEventListener('visibilitychange', () => {
 - `navigator.sendBeacon(url, data)`는 페이지가 사라져도 브라우저가 백그라운드에서 **POST**로 끝까지 보낸다. 응답은 받을 수 없고, 보낼 수 있는 크기에 제한(보통 64KB 안팎)이 있다.
 - 헤더나 메서드를 정해야 하면 `fetch(url, { method: 'POST', body, keepalive: true })`를 쓴다. `keepalive` 요청도 크기 제한이 같다.
 - 웹 바이탈 지표를 보고할 때도 같은 방식을 쓴다([[web-vitals|웹 성능 지표와 Lighthouse]]). bfcache를 막는 원인 확인은 [[devtools-application|DevTools Application 패널]]에 있다.
+
+### 숨은 페이지에서 일어나는 일
+
+Page Visibility API(`document.visibilityState`, `document.hidden`, `visibilitychange`)는 페이지가 **실제로 보이는지**를 알려 준다. 탭을 바꾸거나 창을 최소화하거나 화면이 꺼지면 `hidden`이 된다. 창의 `blur`·`focus`는 다른 창으로 포커스가 갔다는 뜻일 뿐, 페이지가 가려졌다는 뜻이 아니다. `<iframe>`은 부모 문서의 상태를 따르고, CSS로 `display: none`해도 상태가 바뀌지 않는다.
+
+브라우저는 숨은 페이지의 자원을 스스로 줄인다.
+
+| 정책 | 내용 |
+| --- | --- |
+| `requestAnimationFrame` | 숨은 탭·숨은 iframe에서는 콜백을 멈춘다 |
+| 타이머 | 숨은 탭의 `setTimeout`·`setInterval`은 최소 1초 간격으로 묶인다. 예산 기반 제한도 있어 실행 시간만큼 예산이 줄고 초당 10ms씩 회복된다. Chrome은 5분 넘게 숨은 페이지의 연쇄 타이머를 1분에 한 번으로 더 줄인다 |
+| 예외 | 소리를 내는 탭, WebSocket·WebRTC 연결이 있는 탭, IndexedDB 작업은 제한하지 않는다 |
+
+그래서 숨은 동안의 일은 브라우저에 맡기지 말고 직접 멈춘다. 캐러셀 자동 넘김, 대시보드 폴링, 영상·효과음 재생은 `hidden`에서 멈추고 `visible`에서 다시 시작한다. 타이머가 늦게 도는 원리는 [[timers|타이머]]에 있다.
+
+```javascript
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) stopPolling()
+  else { refreshNow(); startPolling() }
+})
+```
 
 ## 리소스의 load와 error
 

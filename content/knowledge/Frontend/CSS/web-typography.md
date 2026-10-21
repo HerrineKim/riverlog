@@ -4,11 +4,12 @@ concept: "Web Typography"
 summary: "사람이 화면의 글을 읽는 방식에서 출발해 글줄 길이(45~85자, ch 단위), 글자 크기와 줄 간격의 균형, x-height를 맞추는 font-size-adjust, 자간·단어 간격과 가변 폰트, 양쪽 정렬과 하이픈, 대비와 다크 모드, 그리고 @font-face로 웹폰트를 선언하는 법까지."
 tags: ["css", "typography", "design", "a11y", "frontend"]
 source: other
-date: "2026-10-13"
-sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/", "https://webactually.com/2021/02/02/%ea%b0%80%eb%8f%85%ec%84%b1-%ea%b0%9c%ec%84%a0%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%b5%9c%ec%8b%a0-css-%ed%85%8c%ed%81%ac%eb%8b%89/", "https://webactually.com/2017/12/05/16734/", "https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap-style", "https://caniuse.com/mdn-css_properties_text-wrap-style_pretty", "https://web.dev/learn/css/typography"]
+date: "2026-10-21"
+sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/", "https://webactually.com/2021/02/02/%ea%b0%80%eb%8f%85%ec%84%b1-%ea%b0%9c%ec%84%a0%ec%9d%84-%ec%9c%84%ed%95%9c-%ec%b5%9c%ec%8b%a0-css-%ed%85%8c%ed%81%ac%eb%8b%89/", "https://webactually.com/2017/12/05/16734/", "https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap-style", "https://caniuse.com/mdn-css_properties_text-wrap-style_pretty", "https://web.dev/learn/css/typography", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%EC%9B%B9%ED%8F%B0%ED%8A%B8%2C%20%EB%A1%9C%EC%BB%AC%ED%8F%B0%ED%8A%B8%20%EC%A0%81%EC%9A%A9.md", "https://github.com/AllThingsSmitty/css-protips"]
 ---
 
 > Laura Franz의 「[반응형 웹 디자인에서 글줄의 길이와 글자 크기 균형 잡기](https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%97%90%ec%84%9c-%ea%b8%80%ec%a4%84%ec%9d%98-%ea%b8%b8%ec%9d%b4%ec%99%80-%ea%b8%80%ec%9e%90-%ed%81%ac%ea%b8%b0-%ea%b7%a0%ed%98%95/)」(2015.10), Edoardo Cavazza의 「가독성 개선을 위한 최신 CSS 테크닉」(2021.02), Bram Stein의 「웹폰트 사용하기」(2017.12, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다. 텍스트 속성 참조는 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Text and typography 모듈로 보강했다.
+> `local()` 항목은 「[Frontend_TIL: 웹폰트, 로컬폰트 적용](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%EC%9B%B9%ED%8F%B0%ED%8A%B8%2C%20%EB%A1%9C%EC%BB%AC%ED%8F%B0%ED%8A%B8%20%EC%A0%81%EC%9A%A9.md)」과 「[CSS Protips](https://github.com/AllThingsSmitty/css-protips)」의 로컬 글꼴 팁을 바탕으로 보강했다.
 
 ## 사람은 화면의 글을 어떻게 읽나
 
@@ -109,7 +110,7 @@ body { font-family: "Elena", Georgia, serif; }   /* 폴백을 반드시 둔다 *
 | 포맷 | WOFF2 하나면 된다. 모든 주요 브라우저가 지원하고 압축률이 가장 좋다 |
 | `format()` 힌트 | 항상 쓴다. 브라우저가 내려받기 전에 지원 여부를 판단한다 |
 | 폴백 글꼴 | 웹폰트가 실패하거나 늦을 때 쓸 글꼴을 `font-family` 목록 끝에 반드시 둔다 |
-| `local()` | 사용자 컴퓨터의 같은 이름 글꼴은 버전·글리프 범위가 다를 수 있다. 보장이 없으면 쓰지 않는다 |
+| `local()` | `src: local("Pretendard"), url(…woff2)`처럼 앞에 두면 설치된 글꼴이 있을 때 내려받지 않는다. 하지만 사용자 컴퓨터의 같은 이름 글꼴은 버전·글리프 범위가 다를 수 있고, Safari는 지문 수집을 막으려고 사용자가 직접 설치한 글꼴을 웹에 노출하지 않아 효과도 브라우저마다 다르다. 버전이 보장되는 시스템 글꼴이 아니면 쓰지 않는다 |
 | `font-display` | `swap`은 폴백으로 먼저 보여 주고 교체한다. 레이아웃 흔들림은 지표 보정으로 줄인다 |
 | 한글 웹폰트 | 글리프가 많아 파일이 크다. `unicode-range`로 나눈 서브셋 파일을 쓴다 |
 

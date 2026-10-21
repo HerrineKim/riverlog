@@ -18,7 +18,7 @@ sources: ["https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%
 | --- | --- | --- |
 | 로컬 UI 상태 | 드롭다운 열림, 입력 중인 값 | `useState`·`useReducer` ([[state\|State]]) |
 | 서버 상태(원격 캐시) | 글 목록, 사용자 정보 | [[tanstack-query\|TanStack Query]], [[swr\|SWR]], Apollo·Relay, RTK Query, 또는 서버 컴포넌트 |
-| URL 상태 | 검색어, 필터, 페이지 번호 | 라우터의 search params |
+| URL 상태 | 검색어, 필터, 페이지 번호 | 라우터의 search params (`useSearchParams`, [[react-router-layout\|React Router]]) |
 | 폼 상태 | 필드 값, 검증 에러, 제출 중 | [[react-hook-form\|react-hook-form]], React 19 폼 액션 |
 | 전역 클라이언트 상태 | 테마, 로그인 사용자 정보, 장바구니, 여러 화면이 함께 쓰는 편집 상태 | Context, Zustand, Jotai, Redux Toolkit, Valtio |
 
@@ -95,4 +95,4 @@ Flux·Redux에서 Context, 서버 상태 라이브러리, 작은 전역 스토�
 - 스토어·atom·proxy는 우열이 아니라 모양의 차이다. 팀과 앱에 맞는 쪽을 고른다.
 - 로컬에서 시작하고 필요할 때만 끌어올린다.
 
-관련 노트: [[state|State]], [[context|Context]], [[redux|Redux와 react-redux]], [[tanstack-query|TanStack Query(React Query)]], [[react-server-components|React Server Components의 동작 원리]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]]
+관련 노트: [[state|State]], [[context|Context]], [[redux|Redux와 react-redux]], [[redux-middleware|Redux 미들웨어와 비동기 처리]], [[tanstack-query|TanStack Query(React Query)]], [[react-server-components|React Server Components의 동작 원리]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]]

@@ -26,15 +26,21 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 - [테마와 다크 모드 구현: theme-color, color-scheme, accent-color](/knowledge/dictionary/frontend/css/dark-mode-theming): 브라우저 UI·기본 컨트롤·강조색·아이콘·이미지까지 테마를 끝까지 적용하는 체크리스트, 사용자 선택 토글
 - [transform](/knowledge/dictionary/frontend/css/transform): 이동·확대·회전·기울이기 함수와 translate(-50%, -50%) 가운데 정렬
 - [CSS 애니메이션: transition과 @keyframes](/knowledge/dictionary/frontend/css/css-animation): transition과 animation의 차이와 속성, transform·opacity 원칙, 움직임 줄이기, Animate.css 등 라이브러리
+- [무한 캐러셀과 자동 슬라이드 구현](/knowledge/dictionary/frontend/css/infinite-carousel): 복제 슬라이드와 transitionend 점프, 연속 클릭 잠금, translateX(-50%) 마키, 멈춤 구간 있는 자동 슬라이드, 움직임 줄이기
 - [CSS 그리드 레이아웃](/knowledge/dictionary/frontend/css/css-grid): 2차원 레이아웃의 용어와 속성, fr·minmax·auto-fill, 명시적·묵시적 그리드, 서브그리드, 실무 원칙
 - [쓰기 모드와 논리적 속성](/knowledge/dictionary/frontend/css/logical-properties): 블록·인라인 축, inline-size·margin-block 같은 논리 속성, 그리드·플렉스박스가 start·end로 생각하는 이유
 - [CSS 점진적 향상: 폴백과 피처 쿼리](/knowledge/dictionary/frontend/css/css-progressive-enhancement): 새 CSS를 옛 브라우저에 쓸 만하게 지원하는 법, 주요 기능의 Baseline 연도, @supports, 폴리필을 피하는 이유
 - [CSS 커스텀 속성으로 색상 체계 짜기](/knowledge/dictionary/frontend/css/css-color-variables): 팔레트·기능 색상·컴포넌트 색상 3단계, oklch·color-mix, 테마와 다크 모드
 - [Sass: 파일 구조, 믹스인과 @extend](/knowledge/dictionary/frontend/css/sass): 네이티브 CSS와의 역할 분담, 7-1 폴더 구조와 @use, 믹스인·@extend·플레이스홀더
+- [PostCSS와 CSS 변환 도구](/knowledge/dictionary/frontend/css/postcss): AST 기반 플러그인 구조, Autoprefixer·postcss-preset-env·browserslist, 미래 문법의 위험, Lightning CSS·Vite·Tailwind v4와 역할 분담
 - [객체 지향 CSS(OOCSS)](/knowledge/dictionary/frontend/css/oocss): 구조/겉모양·컨테이너/콘텐츠 분리, 미디어 객체, 특정도를 낮게 유지하는 규칙, 타이포그래피 전략과 흔한 오용, BEM·유틸리티 CSS로 이어진 흐름
+- [CSS 설계 방법론: BEM과 ITCSS](/knowledge/dictionary/frontend/css/css-methodologies): BEM 이름 규칙, ITCSS 일곱 층과 BEMIT, OOCSS·SMACSS 비교, @layer·@scope·CSS Modules와의 역할 분담
+- [유틸리티 우선 CSS](/knowledge/dictionary/frontend/css/utility-first-css): 속성 하나짜리 클래스 조합, 관심사 분리를 의존 방향으로 다시 보기, 인라인 스타일과 차이, Tailwind CSS v4
+- [CSS-in-JS와 CSS Modules](/knowledge/dictionary/frontend/css/css-in-js): 대규모 CSS의 일곱 가지 문제, 빌드 도구와 JS로 푸는 두 방식, zero-runtime으로의 이동, 서버 컴포넌트 시대의 선택
 - [웹 타이포그래피: 가독성, 글줄 길이, 웹폰트](/knowledge/dictionary/frontend/css/web-typography): 글줄 길이·글자 크기·줄 간격의 균형, font-size-adjust, 하이픈과 대비, @font-face와 WOFF2
 - [line-height와 vertical-align: 글꼴 지표와 인라인 서식 맥락](/knowledge/dictionary/frontend/css/line-height-vertical-align): em 사각형과 ascent·descent, content-area와 줄 상자, line-height: normal, 이미지 아래 틈
 - [CSS가 동작하는 방식](/knowledge/dictionary/frontend/css/how-css-works): 먼저 익힐 핵심 개념, 캐스케이드 비교 순서, 계산값, 레이아웃이 박스를 배치하는 방식
+- [CSS 실전 팁: 리셋과 작은 패턴](/knowledge/dictionary/frontend/css/css-practical-tips): 최소 리셋과 all: unset, 생성 콘텐츠·선택자 패턴, table-layout: fixed, 높이 펼치기 애니메이션
 - [CSS 함수: calc()·clamp()와 수학 함수](/knowledge/dictionary/frontend/css/css-functions): var·attr·url, calc·min·max·clamp, 삼각·지수·반올림·부호 함수와 지원 범위
 - [CSS 배경과 그라디언트](/knowledge/dictionary/frontend/css/css-backgrounds-gradients): background 속성과 여러 겹 배경, linear·radial·conic 그라디언트, in oklch 보간
 - [CSS 테두리와 그림자](/knowledge/dictionary/frontend/css/css-borders-shadows): border-style·radius·border-image, box-shadow·text-shadow·drop-shadow 비교
@@ -42,6 +48,7 @@ CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일�
 - [CSS 오버플로와 스크롤](/knowledge/dictionary/frontend/css/css-overflow-scroll): overflow 값과 말줄임, 스크롤 영역 접근성, 스크롤바·overscroll-behavior, 스크롤 스냅
 - [팝오버와 앵커 위치 지정](/knowledge/dictionary/frontend/css/popover-anchor-positioning): popover auto·manual·hint, 등장 애니메이션, position-area·anchor()·position-try
 - [View Transitions: 화면 전환 애니메이션](/knowledge/dictionary/frontend/css/view-transitions): startViewTransition, ::view-transition 가상 요소, view-transition-name, 전환 유형
+- [CSS Houdini: 렌더링 엔진에 끼어드는 API](/knowledge/dictionary/frontend/css/css-houdini): 워크릿, @property, Typed OM, Paint·Layout·Animation Worklet과 2026년 지원 상태
 - [CSS 목록과 카운터](/knowledge/dictionary/frontend/css/css-lists-counters): list-style, ::marker, @counter-style, counter-reset·counters()
 - [커서와 포인터 입력](/knowledge/dictionary/frontend/css/css-cursor-pointer): cursor·caret-color, pointer·hover 미디어 쿼리, touch-action, pointer-events, 포커스 표시
 

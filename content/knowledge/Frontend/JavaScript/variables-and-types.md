@@ -4,11 +4,11 @@ concept: "Variables"
 summary: "식별자 규칙과 이름 짓기, let·const·var의 차이와 호이스팅, 원시 타입과 참조 타입, 원시값의 래퍼 객체(new String을 쓰지 않는 이유), typeof, null과 undefined의 구분, 값 복사와 참조 공유(비교·얕은 복사·structuredClone·함수 인자·const와 Object.freeze), 스택·힙과 가비지 컬렉션, 동적 타입과 여덟 가지 타입, 대문자 상수를 쓰는 때와 변수를 재사용하지 않는 이유."
 tags: ["javascript", "frontend", "memory"]
 source: mixed
-date: "2026-10-20"
-sources: ["https://riverkim.kr/118", "https://wesbos.com/javascript/01-the-basics/variables-and-statements", "https://wesbos.com/javascript/01-the-basics/types-introduction", "https://wesbos.com/javascript/01-the-basics/types-null-and-undefined", "https://wesbos.com/javascript/08-data-types/object-references-vs-values", "https://wesbos.com/javascript/08-data-types/objects", "https://web.dev/learn/javascript/data-types", "https://web.dev/learn/javascript/data-types/variable", "https://web.dev/learn/javascript/data-types/null-undefined", "https://web.dev/learn/javascript/data-types/boolean", "https://web.dev/learn/javascript/appendix", "https://ko.javascript.info/variables", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://ko.javascript.info/object-copy"]
+date: "2026-10-21"
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/var-let-const.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/stack-heap.md", "https://riverkim.kr/118", "https://wesbos.com/javascript/01-the-basics/variables-and-statements", "https://wesbos.com/javascript/01-the-basics/types-introduction", "https://wesbos.com/javascript/01-the-basics/types-null-and-undefined", "https://wesbos.com/javascript/08-data-types/object-references-vs-values", "https://wesbos.com/javascript/08-data-types/objects", "https://web.dev/learn/javascript/data-types", "https://web.dev/learn/javascript/data-types/variable", "https://web.dev/learn/javascript/data-types/null-undefined", "https://web.dev/learn/javascript/data-types/boolean", "https://web.dev/learn/javascript/appendix", "https://ko.javascript.info/variables", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://ko.javascript.info/object-copy", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EB%B3%80%EC%88%98%20%EB%B0%8F%20%EB%8F%99%EC%9E%91%EC%9B%90%EB%A6%AC%20%EC%9D%B4%ED%95%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%ED%83%80%EC%9E%85.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%9B%90%EC%8B%9C%EA%B0%92%EA%B3%BC%20%EA%B0%9D%EC%B2%B4%EC%9D%98%20%EB%B9%84%EA%B5%90.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EB%B9%8C%ED%8A%B8%EC%9D%B8%20%EA%B0%9D%EC%B2%B4.md", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures", "http://dmitrysoshnikov.com/ecmascript/chapter-8-evaluation-strategy/", "https://dmitripavlutin.com/variables-lifecycle-and-why-let-is-not-hoisted/", "https://dmitripavlutin.com/7-tips-to-handle-undefined-in-javascript/"]
 ---
 
-> 개인 TIL을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(데이터 타입·변수·부록 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「변수와 상수」, 「자료형」, 「원시값의 메서드」, 「참조에 의한 객체 복사」 글을 함께 참고해 보강했다.
+> 개인 TIL을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(데이터 타입·변수·부록 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「변수와 상수」, 「자료형」, 「원시값의 메서드」, 「참조에 의한 객체 복사」 글을 함께 참고해 보강했다. 「[Must-Know-About-Frontend: var vs let vs const](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/var-let-const.md)」, 「[Must-Know-About-Frontend: 콜 스택과 힙](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/stack-heap.md)」의 내용을 더해 보강했다. 「[Frontend_TIL: 변수 및 동작원리 이해](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EB%B3%80%EC%88%98%20%EB%B0%8F%20%EB%8F%99%EC%9E%91%EC%9B%90%EB%A6%AC%20%EC%9D%B4%ED%95%B4.md)」, 「[Frontend_TIL: 데이터 타입](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%ED%83%80%EC%9E%85.md)」, 「[Frontend_TIL: 원시값과 객체의 비교](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%9B%90%EC%8B%9C%EA%B0%92%EA%B3%BC%20%EA%B0%9D%EC%B2%B4%EC%9D%98%20%EB%B9%84%EA%B5%90.md)」을 바탕으로 보강했다. 「[Frontend_TIL: 빌트인 객체](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EB%B9%8C%ED%8A%B8%EC%9D%B8%20%EA%B0%9D%EC%B2%B4.md)」을 바탕으로 보강했다. 평가 전략 비교는 Dmitry Soshnikov의 「[Evaluation strategy](http://dmitrysoshnikov.com/ecmascript/chapter-8-evaluation-strategy/)」를 바탕으로 보강했다.
 
 변수를 어떻게 선언하느냐는 스코프와 재할당 가능 여부를 결정하고, 값의 타입이 원시 타입이냐 참조 타입이냐는 복사·비교 방식을 결정한다. JavaScript 버그의 상당수가 이 두 가지를 헷갈려서 생긴다.
 
@@ -67,11 +67,19 @@ let bar = 0    // 선언 + 할당 = 초기화
 
 ### 선언 없이 대입하면: 암묵적 전역
 
-초기 JavaScript는 선언하지 않은 이름에 값을 넣으면(`dog = 'snickers'`) 함수·블록 안이라도 전역 변수를 만들어 줬다(implied global). 오타 하나가 전역 변수가 되는 셈이다. 하위 호환 때문에 이 동작은 지금도 남아 있고, **strict mode에서는 `ReferenceError`** 가 난다. ES 모듈과 `class` 본문은 자동으로 strict mode라서 요즘 코드는 대부분 따로 적지 않아도 막힌다. 켜는 방법과 달라지는 동작 전체는 [[strict-mode|strict mode]]에 있다.
+초기 JavaScript는 선언하지 않은 이름에 값을 넣으면(`dog = 'snickers'`) 함수·블록 안이라도 전역 변수를 만들어 줬다(implied global). 오타 하나가 전역 변수가 되는 셈이다. 정확히는 변수 선언이 아니라 **전역 객체에 속성을 더하는 것**(`window.dog = …`)이라, 호이스팅되지 않고 `delete dog`로 지울 수도 있다. `var`로 선언한 전역 변수는 지워지지 않는다. 하위 호환 때문에 이 동작은 지금도 남아 있고, **strict mode에서는 `ReferenceError`** 가 난다. ES 모듈과 `class` 본문은 자동으로 strict mode라서 요즘 코드는 대부분 따로 적지 않아도 막힌다. 켜는 방법과 달라지는 동작 전체는 [[strict-mode|strict mode]]에 있다.
 
 ## 데이터 타입
 
 JavaScript는 **동적 타입(dynamically typed)** 언어다. 값에는 타입이 있지만 변수에는 없어서, 같은 변수에 문자열을 넣었다가 숫자를 넣어도 된다(`let m = 'hi'; m = 123`). 타입은 모두 **여덟 가지**다. 아래 원시 타입 일곱 가지와 객체(Object).
+
+| | 정적 타입 언어(Java, C, TypeScript) | 동적 타입 언어(JavaScript, Python) |
+| --- | --- | --- |
+| 타입이 정해지는 때 | 변수를 선언할 때 명시 | 값을 **할당할 때** 결정되고 재할당으로 바뀐다 |
+| 타입 검사 | 컴파일 시점. 맞지 않으면 실행 전에 막는다 | 실행 중. 틀린 타입은 런타임 에러나 엉뚱한 결과로 드러난다 |
+| 대가 | 선언이 길어진다 | 값의 타입을 코드만 보고 확신하기 어렵고, 암묵적 형변환까지 겹쳐 오류가 나기 쉽다 |
+
+그래서 동적 타입 코드는 변수 수를 줄이고 스코프를 좁히며, 재할당 대신 `const`를 쓰고, 이름으로 의도를 드러낸다. 규모가 커지면 [[typescript-basics|TypeScript]]로 정적 타입을 얹는다. 엔진 쪽에서 보면 타입은 **값을 담을 메모리 크기와 비트를 읽는 방식**을 정한다. 같은 비트 `0100 0001`이 숫자로는 65, 문자로는 `'A'`다.
 
 ### 원시 타입(Primitive type)
 
@@ -176,6 +184,20 @@ p1 === p3         // true — 같은 객체
 | `b = a` 대입 | 값 복사 | 참조 복사. 한쪽을 고치면 다른 쪽도 바뀐다 |
 | 함수 인자로 전달 | 함수 안에서 재할당해도 바깥은 그대로 | 함수 안에서 **속성을 고치면 바깥 객체가 바뀐다**. 매개변수 자체를 재할당하는 것은 바깥에 영향이 없다 |
 
+흔히 원시값은 "값에 의한 전달", 객체는 "참조에 의한 전달"이라고 부르지만, 두 경우 모두 **변수에 든 값을 복사해 넘긴다**는 점은 같다. 객체 변수에 든 값이 참조값(주소)일 뿐이다. 그래서 JavaScript에는 C++식 참조 전달(매개변수 재할당이 바깥 변수를 바꾸는 것)이 없고, 이 방식을 **공유에 의한 전달(pass by sharing)** 이라고 부르기도 한다.
+
+인자 전달 방식(평가 전략)을 비교하면 이렇다.
+
+| 전략 | 넘기는 것 | 함수 안에서 속성 변경 | 함수 안에서 매개변수 재할당 | 언어 |
+| --- | --- | --- | --- | --- |
+| 값에 의한 호출(call by value) | 값 전체의 사본 | 바깥에 영향 없음(사본을 고친다) | 바깥에 영향 없음 | C의 구조체 |
+| 참조에 의한 호출(call by reference) | 바깥 변수 자체의 별칭 | 바깥이 바뀐다 | **바깥 변수가 바뀐다** | C++의 `T&`, C#의 `ref` |
+| 공유에 의한 호출(call by sharing) | 객체를 가리키는 참조값의 사본 | 바깥이 바뀐다 | 바깥에 영향 없음 | JavaScript, Python, Java, Ruby |
+
+공유에 의한 호출은 "참조값을 값으로 복사하는" 값에 의한 호출의 특수한 경우로 볼 수 있다. Java 문서가 "자바는 언제나 값에 의한 호출"이라 하고 JavaScript 글들이 "객체는 참조로 넘긴다"고 하는 것은 같은 동작을 다른 용어로 부른 것이다. 또 JavaScript는 **인자를 호출 전에 왼쪽부터 모두 평가**한다(eager evaluation). `f(a(), b())`에서 `a()`가 먼저 실행되고, 인자가 실제로 쓰일 때까지 미루는 지연 평가(lazy evaluation)는 하지 않는다. 미루고 싶으면 `() => expensive()`처럼 함수로 감싸 넘긴다.
+
+원시값은 바꿀 수 없으므로 원시값을 담은 변수에 재할당하면 **기존 메모리를 고치지 않고 새 값을 만든 뒤 변수가 그쪽을 가리키게** 된다. 바뀌는 것은 변수의 연결이지 값이 아니다. 반대로 객체는 크기가 크고 일정하지 않아 바꿀 때마다 복사하면 비효율적이라, 제자리에서 고치는 대신 여러 변수가 한 객체를 공유할 수 있게 설계됐다.
+
 ### 복사하기
 
 | 방법 | 깊이 | 비고 |
@@ -196,7 +218,7 @@ deep.clothing.shirts = 1      // person은 그대로
 
 ### 메모리: 스택과 힙
 
-JavaScript는 메모리를 자동으로 관리한다. 직접 할당하거나 해제하지 않는다. 개념적으로는 두 영역으로 나눠 이해한다.
+JavaScript는 메모리를 자동으로 관리한다. 직접 할당하거나 해제하지 않는다. 이렇게 엔진에 내장된 가비지 컬렉터가 해제를 맡는 언어를 **매니지드 언어**라고 한다. C처럼 개발자가 직접 할당·해제하는 언매니지드 언어보다 실수가 적고 생산적이지만, 해제 시점을 예측할 수 없어 성능을 세밀하게 통제하기 어렵다. 개념적으로는 두 영역으로 나눠 이해한다.
 
 | 영역 | 담는 것 | 성질 |
 | --- | --- | --- |

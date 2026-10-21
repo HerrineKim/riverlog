@@ -4,9 +4,11 @@ concept: "Props"
 summary: "UI를 재사용 가능한 조각으로 나누는 컴포넌트와, 부모가 자식에게 값을 넘기는 읽기 전용 입력값 props. 타입은 TypeScript로 정하고, React 19부터 ref도 일반 prop으로 받는다."
 tags: ["react", "component", "frontend"]
 source: til
-date: "2026-10-13"
-sources: ["https://riverkim.kr/102", "https://react.dev/blog/2024/04/25/react-19-upgrade-guide", "https://react.dev/blog/2024/12/05/react-19"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/102", "https://react.dev/blog/2024/04/25/react-19-upgrade-guide", "https://react.dev/blog/2024/12/05/react-19", "https://react.vlpt.us/basic/05-props.html", "https://react.vlpt.us/styling/01-sass.html"]
 ---
+
+> 개인 TIL을 바탕으로, 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[props를 통해 컴포넌트에게 값 전달하기](https://react.vlpt.us/basic/05-props.html)」와 「[Sass](https://react.vlpt.us/styling/01-sass.html)」의 rest props 부분을 바탕으로 보강했다.
 
 **컴포넌트**는 화면을 독립적이고 재사용 가능한 조각으로 나눈 단위다. 개념적으로는 함수와 같아서, **props**라는 입력을 받아 화면에 무엇을 그릴지(React 엘리먼트)를 반환한다. 컴포넌트 하나당 파일 하나를 두면 모듈화도 쉬워진다.
 
@@ -70,6 +72,30 @@ function App() {
 - 문자열은 `name="Mike"`, 그 외(숫자, 객체, 함수, JSX)는 `{}`로 넘긴다.
 - 함수도 넘길 수 있다. 자식이 부모의 state를 바꾸게 하려면 부모가 **변경 함수를 props로** 내려 준다.
 - `onClick`처럼 생겼어도 **커스텀 컴포넌트에 준 props는 그냥 값**이다. 자식이 실제 `<button onClick>`에 연결해 줘야 이벤트가 된다.
+- 값을 생략하고 이름만 쓰면 `true`다. `<Hello isSpecial />`은 `<Hello isSpecial={true} />`와 같다.
+- 여는 태그와 닫는 태그 사이에 넣은 내용은 `children` prop으로 들어온다. 자식이 `{children}`을 렌더링하지 않으면 보이지 않는다. 쓰임새는 [[composition|합성]]에 있다.
+
+### 나머지 props 그대로 넘기기: `...rest`
+
+`Button`, `CheckBox`처럼 HTML 요소를 감싸는 컴포넌트는 `onClick`, `onMouseMove`, `name`, `disabled`를 하나하나 받아 넘기지 않는다. 직접 쓰는 props만 구조 분해로 꺼내고 나머지는 rest로 모아 요소에 펼친다.
+
+```tsx
+type ButtonProps = React.ComponentProps<'button'> & {
+  size?: 'small' | 'medium' | 'large'
+}
+
+function Button({ size = 'medium', className, children, ...rest }: ButtonProps) {
+  return (
+    <button className={clsx('Button', size, className)} {...rest}>
+      {children}
+    </button>
+  )
+}
+
+<Button size="large" onClick={save} disabled={saving}>저장</Button>
+```
+
+`className`도 받아서 합쳐 줘야 바깥에서 스타일을 덧입힐 수 있다(styled-components의 `styled(Button)`도 `className`으로 스타일을 넘긴다). 조건부 클래스 조합(`clsx`)은 [[styling|React 스타일링]]에 있다.
 
 ### Props는 읽기 전용
 

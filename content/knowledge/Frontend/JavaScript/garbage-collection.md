@@ -1,18 +1,20 @@
 ---
 title: "가비지 컬렉션과 메모리 누수"
 concept: "Garbage Collection"
-summary: "JavaScript 엔진은 루트에서 참조를 따라 닿을 수 있는(reachable) 값만 남기고 나머지를 자동으로 회수한다. 루트와 도달 가능성, 서로 참조해도 닿을 수 없으면 지워지는 '섬', 기본 알고리즘 mark-and-sweep과 순환 참조에 약했던 참조 카운팅, 세대별·점진적·병렬·유휴 시간 수집 같은 최적화, 그리고 GC가 막지 못하는 누수 패턴(전역, 잊힌 타이머·리스너, 클로저, 떨어져 나간 DOM, 끝없는 캐시)과 WeakMap·WeakRef·FinalizationRegistry를 정리한다."
+summary: "JavaScript 엔진은 루트에서 참조를 따라 닿을 수 있는(reachable) 값만 남기고 나머지를 자동으로 회수한다. 루트와 도달 가능성, 서로 참조해도 닿을 수 없으면 지워지는 '섬', 기본 알고리즘 mark-and-sweep과 순환 참조에 약했던 참조 카운팅, 세대별·점진적·병렬·유휴 시간 수집 같은 최적화(V8의 스캐빈지·mark-compact·쓰기 장벽), 그리고 GC가 막지 못하는 누수 패턴(전역, 잊힌 타이머·리스너, 클로저, 떨어져 나간 DOM, 끝없는 캐시)과 WeakMap·WeakRef·FinalizationRegistry를 정리한다."
 tags: ["javascript", "frontend", "memory", "performance", "browser"]
 source: other
-date: "2026-10-17"
-sources: ["https://ko.javascript.info/garbage-collection", "https://ko.javascript.info/weakmap-weakset", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry", "https://v8.dev/blog/trash-talk"]
+date: "2026-10-21"
+sources: ["https://ko.javascript.info/garbage-collection", "https://ko.javascript.info/weakmap-weakset", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry", "https://v8.dev/blog/trash-talk", "http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management", "https://blog.risingstack.com/node-js-at-scale-node-js-garbage-collection/", "https://medium.com/sessionstack-blog/how-javascript-works-memory-management-how-to-handle-4-common-memory-leaks-3f28b94cfbec"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「가비지 컬렉션」, 「위크맵과 위크셋」 글을 바탕으로, MDN과 V8 블로그로 확인해 재구성한 노트다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「가비지 컬렉션」, 「위크맵과 위크셋」 글을 바탕으로, MDN과 V8 블로그로 확인해 재구성한 노트다. V8의 스캐빈지와 쓰기 장벽은 Jay Conrod의 「[A tour of V8: Garbage Collection](http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection)」을 바탕으로 더했다. 클로저가 환경을 나눠 쓰는 누수는 RisingStack의 「[Node.js Garbage Collection Explained](https://blog.risingstack.com/node-js-at-scale-node-js-garbage-collection/)」를 바탕으로 보강했다. 결정 불가능성과 할당 시점 수집, 떨어져 나간 표 셀 누수는 SessionStack의 「[How JavaScript works: memory management + how to handle 4 common memory leaks](https://medium.com/sessionstack-blog/how-javascript-works-memory-management-how-to-handle-4-common-memory-leaks-3f28b94cfbec)」로 보강했다.
 
 ## 가비지 컬렉션이란
 
 JavaScript는 메모리를 직접 할당·해제하지 않는다. 값을 만들면 엔진이 메모리를 잡고, 더 쓸 수 없게 된 값은 **가비지 컬렉터(GC)** 가 알아서 회수한다. 개발자는 GC를 강제로 실행하거나 막을 수 없다. 기준은 **도달 가능성(reachability)** 하나다.
+
+어떤 메모리가 「앞으로 다시 쓰일지」는 일반적으로 결정 불가능한 문제다. 그래서 GC는 「아직 닿을 수 있는가」로 **근사**한다. 닿을 수는 있지만 다시는 읽히지 않을 값은 GC 입장에서 살아 있는 값이고, 이것이 누수의 출발점이다.
 
 ## 루트와 도달 가능성
 
@@ -76,6 +78,18 @@ GC가 도는 동안 JavaScript 실행이 멈출 수 있어서(stop-the-world), �
 | 병렬·동시 수집(parallel, concurrent) | 보조 스레드가 메인 스레드와 함께, 또는 메인 스레드가 일하는 동안 표시·정리를 한다 |
 | 유휴 시간 수집(idle-time) | 프레임 사이처럼 메인 스레드가 한가할 때 GC 작업을 돌린다 |
 
+V8의 세대별 수집은 두 알고리즘을 세대마다 다르게 쓴다.
+
+| 세대 | 알고리즘 | 동작 |
+| --- | --- | --- |
+| young (작은 공간, 수 MB~수십 MB) | **스캐빈지(scavenge)**, Cheney의 복사 알고리즘 | 공간을 같은 크기의 반쪽 둘(from·to)로 나눈다. 할당은 포인터를 하나 올리는 것뿐이라 매우 싸다. 가득 차면 루트에서 닿는 객체만 다른 반쪽으로 복사하고 나머지는 통째로 버린다. 두 번 살아남은 객체는 old로 승격(promotion)한다 |
+| old (큰 공간) | **mark-sweep / mark-compact** | 표시 단계에서 루트부터 그래프를 훑어 흰색(미방문)·회색(방문했지만 자식 미처리)·검은색(완료)으로 칠한다. 흰색으로 남은 것을 빈 목록으로 돌리거나(sweep), 조각난 페이지의 객체를 다른 페이지로 옮겨 페이지를 OS에 돌려준다(compact) |
+
+- **쓰기 장벽(write barrier)**: 스캐빈지는 young만 훑는데, old 객체가 young 객체를 가리키면 그것도 루트로 봐야 한다. 그래서 객체 필드에 포인터를 쓸 때마다 짧은 검사 코드가 돌아 「old → young」 참조를 따로 기록해 둔다(기억 집합, remembered set). old 전체를 훑지 않는 대가로 쓰기마다 약간의 비용을 낸다.
+- 복사는 살아 있는 객체 수에 비례하고 죽은 객체 수와는 무관하다. 대부분의 객체가 금방 죽는다는 세대 가설이 맞을수록 스캐빈지가 싸다.
+
+**GC는 대개 할당할 때 돈다.** 큰 캐시를 `null`로 끊은 뒤 새 할당이 거의 없으면 회수가 한동안 미뤄져 메모리 사용량이 높게 남는다. 누수는 아니지만 메모리 그래프만 보면 누수처럼 보이므로, 판단은 힙 스냅샷으로 한다.
+
 세부 알고리즘은 엔진과 버전마다 다르고 계속 바뀐다(V8은 Orinoco라는 이름으로 위 기법을 묶었다). 코드를 짤 때 알아야 할 것은 알고리즘이 아니라 **"닿을 수 있으면 안 지워진다"** 는 규칙 하나다.
 
 ## GC가 막지 못하는 누수
@@ -87,9 +101,27 @@ GC는 닿을 수 없는 값만 회수한다. **더 이상 필요 없는데 어�
 | 전역 변수 | 선언 없이 대입한 암묵적 전역, `window.cache = …` | strict mode·모듈로 암묵적 전역을 막는다([[strict-mode\|strict mode]]) |
 | 잊힌 타이머 | 컴포넌트가 사라져도 도는 `setInterval`이 큰 객체를 클로저로 잡는다 | `clearInterval`, React effect의 정리 함수([[timers\|타이머]]) |
 | 잊힌 이벤트 리스너 | `window`·`document`에 단 리스너가 언마운트된 컴포넌트의 상태를 잡는다 | `removeEventListener`, `AbortController`의 `signal`로 한꺼번에 해제([[dom-events\|DOM 이벤트]]) |
-| 클로저 | 오래 사는 함수가 큰 배열이 든 바깥 변수를 계속 참조한다 | 필요한 값만 꺼내 두고 큰 참조는 끊는다([[scope-and-closures\|스코프와 클로저]]) |
-| 떨어져 나간 DOM | DOM에서 지운 요소를 JS 변수·배열이 아직 가리킨다(detached node) | 참조를 `null`로 지우거나 WeakMap·WeakRef로 담는다 |
+| 클로저 | 오래 사는 함수가 큰 배열이 든 바깥 변수를 계속 참조한다 | 필요한 값만 꺼내 두고 큰 참조는 끊는다([[scope-and-closures\|스코프와 클로저]]). 같은 함수에서 만든 클로저끼리 환경을 공유해 생기는 누수는 아래에 있다 |
+| 떨어져 나간 DOM | DOM에서 지운 요소를 JS 변수·배열이 아직 가리킨다(detached node). 자식 노드는 `parentNode`로 부모를 가리키므로, 지운 표의 `<td>` 하나만 잡아도 **표 전체**가 남는다 | 참조를 `null`로 지우거나 WeakMap·WeakRef로 담는다 |
 | 끝없이 자라는 캐시 | 객체를 키로 쓰는 `Map` 캐시에 항목만 쌓인다 | 크기 제한(LRU)을 두거나 `WeakMap`을 쓴다 |
+
+### 클로저끼리 환경을 나눠 쓰는 누수
+
+같은 함수 안에서 만든 클로저들은 **바깥 환경(렉시컬 환경) 하나를 함께 붙잡는다.** 엔진은 어느 클로저도 쓰지 않는 변수만 환경에서 빼므로, 한 클로저가 쓰는 변수는 다른 클로저가 살아 있는 동안에도 남는다.
+
+```javascript
+let theThing = null
+setInterval(() => {
+  const originalThing = theThing
+  const unused = () => { if (originalThing) console.log('hi') } // originalThing을 쓴다
+  theThing = {
+    longStr: new Array(1_000_000).join('*'),
+    someMethod() { console.log('message') }, // originalThing을 안 쓰지만 같은 환경을 붙잡는다
+  }
+}, 1000)
+```
+
+`someMethod`는 `unused`와 같은 환경을 공유하고, 그 환경에 `originalThing`(직전의 `theThing`)이 남는다. 새 `theThing`이 옛 `theThing`을 잡고, 옛 것은 그 전 것을 잡아 1초마다 1MB짜리 문자열이 사슬로 쌓인다. Meteor 팀이 찾아낸 사례다. 루프 끝에서 `originalThing = null`로 끊으면 사라진다.
 
 누수를 확인하는 절차(힙 스냅샷 비교, 할당 타임라인, 「Detached」 노드 찾기)는 [[devtools-performance|DevTools로 성능·메모리 분석하기]]에 있다.
 

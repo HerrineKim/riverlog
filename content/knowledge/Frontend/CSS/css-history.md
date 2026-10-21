@@ -111,4 +111,4 @@ IE11은 2015년 이후 기능 업데이트가 멈췄지만 점유율이 높아, 
 - 옛 우회법(float 레이아웃, 복잡한 선택자)과 지금의 정석을 구분해서 배운다.
 - CSS는 깊은 이론보다 **숙달**이 중요하다. 나만의 베스트 프랙티스를 만들고, 새 스펙과 도구를 지켜보며 적당한 때 갱신한다.
 
-관련 노트: [[selectors|선택자와 우선순위]], [[flexbox|Float와 Flexbox]], [[styling|React 스타일링]], [[css-basics|CSS 기초]]
+관련 노트: [[selectors|선택자와 우선순위]], [[flexbox|Float와 Flexbox]], [[styling|React 스타일링]], [[css-basics|CSS 기초]], [[css-methodologies|CSS 설계 방법론: BEM과 ITCSS]], [[utility-first-css|유틸리티 우선 CSS]], [[css-in-js|CSS-in-JS와 CSS Modules]]

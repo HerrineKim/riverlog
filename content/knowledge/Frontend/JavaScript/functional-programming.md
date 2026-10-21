@@ -1,14 +1,14 @@
 ---
 title: "함수형 프로그래밍"
 concept: "Functional Programming"
-summary: "함수형 프로그래밍을 순수 함수·불변성·선언적 패턴이라는 학술 용어 대신 액션·계산·데이터 구분, 카피 온 라이트와 방어적 복사, 계층형 설계와 추상화 벽으로 다시 읽고, 인자를 미리 채워 함수를 특수화하는 커링과 부분 적용을 다룬다. 액션에서 계산을 빼내 테스트하기 쉬운 코드를 늘리고, 상태·변경·효과를 줄이고 모으고 미루는 리팩터링, 효과를 데이터로 반환하는 기법, 로직을 데이터로 적는 데이터 주도 프로그래밍, 프론트엔드의 요구사항을 입력에서 화면까지의 파이프라인으로 보는 법을 정리한다."
+summary: "함수형 프로그래밍을 순수 함수·불변성·선언적 패턴이라는 학술 용어 대신 액션·계산·데이터 구분, 카피 온 라이트와 방어적 복사, 계층형 설계와 추상화 벽으로 다시 읽고, 인자를 미리 채워 함수를 특수화하는 커링과 부분 적용을 다룬다. 액션에서 계산을 빼내 테스트하기 쉬운 코드를 늘리고, 상태·변경·효과를 줄이고 모으고 미루는 리팩터링, 효과를 데이터로 반환하는 기법, 로직을 데이터로 적는 데이터 주도 프로그래밍, 프론트엔드의 요구사항을 입력에서 화면까지의 파이프라인으로 보는 법을 정리한다. 구조적 공유(영속 자료구조), data-last·자동 커링 라이브러리 규칙, 어플리커티브와 지연 Future, 대수적 데이터 타입까지."
 tags: ["javascript", "frontend", "functional-programming", "programming-paradigm"]
 source: other
-date: "2026-10-20"
-sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://ko.javascript.info/currying-partials", "https://www.youtube.com/watch?v=vK1DazRK_a0", "https://evan-moon.github.io/2020/01/27/safety-function-composition/", "https://evan-moon.github.io/2020/01/05/what-is-immutable/"]
+date: "2026-10-21"
+sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://ko.javascript.info/currying-partials", "https://www.youtube.com/watch?v=vK1DazRK_a0", "https://evan-moon.github.io/2020/01/27/safety-function-composition/", "https://evan-moon.github.io/2020/01/05/what-is-immutable/", "https://github.com/lodash/lodash/wiki/FP-Guide", "https://auth0.com/blog/intro-to-immutable-js/", "http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/", "https://hackernoon.com/from-callback-to-future-functor-monad-6c86d9c16cb5", "http://blog.jenkster.com/2016/06/functional-mumbo-jumbo-adts.html", "http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html"]
 ---
 
-> 테오(teo)의 「[다시 쓰는 함수형 프로그래밍](https://velog.io/@teo/functional-programming)」(2022.05)과 「[함수형 프로그래밍을 배워보자!](https://velog.io/@teo/functional-programming-study)」(2023.01)를 바탕으로 재구성한 노트다. 용어 틀은 에릭 노먼드의 『쏙쏙 들어오는 함수형 코딩』(Grokking Simplicity)에서 왔다. 펑터와 불변성의 비용은 「[어떻게 하면 안전하게 함수를 합성할 수 있을까?](https://evan-moon.github.io/2020/01/27/safety-function-composition/)」, 「[변하지 않는 상태를 유지하는 방법, 불변성(Immutable)](https://evan-moon.github.io/2020/01/05/what-is-immutable/)」를 바탕으로 보강했다.
+> 테오(teo)의 「[다시 쓰는 함수형 프로그래밍](https://velog.io/@teo/functional-programming)」(2022.05)과 「[함수형 프로그래밍을 배워보자!](https://velog.io/@teo/functional-programming-study)」(2023.01)를 바탕으로 재구성한 노트다. 용어 틀은 에릭 노먼드의 『쏙쏙 들어오는 함수형 코딩』(Grokking Simplicity)에서 왔다. 펑터와 불변성의 비용은 「[어떻게 하면 안전하게 함수를 합성할 수 있을까?](https://evan-moon.github.io/2020/01/27/safety-function-composition/)」, 「[변하지 않는 상태를 유지하는 방법, 불변성(Immutable)](https://evan-moon.github.io/2020/01/05/what-is-immutable/)」를 바탕으로 보강했다. 영속 자료구조, 함수형 라이브러리의 규칙, 어플리커티브와 지연 Future, ADT는 「[lodash FP Guide](https://github.com/lodash/lodash/wiki/FP-Guide)」, 「[Introduction to Immutable.js and Functional Programming Concepts](https://auth0.com/blog/intro-to-immutable-js/)」, 「[Thinking in Ramda](http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/)」, 「[From Callback to Future -> Functor -> Monad](https://hackernoon.com/from-callback-to-future-functor-monad-6c86d9c16cb5)」, 「[Functional Mumbo Jumbo - ADTs](http://blog.jenkster.com/2016/06/functional-mumbo-jumbo-adts.html)」, 「[Functors, Applicatives, And Monads In Pictures](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)」을 바탕으로 보강했다.
 > 명령형과 선언형 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로 더한 노트다.
 > 커링과 부분 적용은 javascript.info(모던 JavaScript 튜토리얼)의 「커링」 글을 바탕으로 더했다.
 > 상태를 줄이고·모으고·미루는 법과 데이터 주도 프로그래밍은 Rafal Dittwald의 Clojure/north 2019 발표 「[Solving Problems the Clojure Way](https://www.youtube.com/watch?v=vK1DazRK_a0)」를 바탕으로 더했다.
@@ -99,6 +99,14 @@ JavaScript는 객체·배열을 참조로 넘긴다. 계산 안에서 `arr.push(
 | 방어적 복사(깊은 복사) | 고칠 수 없는 라이브러리가 인자를 변경할 때 | `structuredClone(obj)`로 사본을 넘긴다 |
 
 중첩 객체를 카피 온 라이트로 바꾸면 스프레드가 겹겹이 쌓인다. JavaScript가 불변 문법을 지원하지 않아서다. immer, Immutable.js 같은 라이브러리가 이 빈자리를 메운다.
+
+| 방식 | 원리 | 비용 |
+| --- | --- | --- |
+| 스프레드로 경로 복사 | 바뀐 경로의 객체만 새로 만들고 나머지는 참조를 그대로 둔다 | 깊을수록 코드가 길어진다 |
+| immer | 초안(draft) 객체를 마음대로 고치게 하고, `Proxy`로 기록한 변경만 반영해 새 객체를 만든다 | 일반 객체·배열을 그대로 쓴다. Redux Toolkit이 내장한다 |
+| Immutable.js(영속 자료구조) | `Map`·`List`를 트리(해시 배열 매핑 트라이)로 저장한다. `set`은 바뀐 노드의 경로만 새로 만들고 나머지 가지는 이전 버전과 **공유**한다(구조적 공유) | 큰 컬렉션의 잦은 변경이 싸다. 대신 `get('key')` 같은 전용 API를 써야 하고 일반 객체와 오갈 때 `toJS()` 변환 비용이 든다 |
+
+구조적 공유 덕분에 이전 버전이 그대로 남아, 변경 감지는 참조 비교 한 번(`prev !== next`)으로 끝나고 실행 취소(undo)도 이전 참조를 들고 있으면 된다.
 
 - `const`는 **재할당**만 막는다. 객체 내부 값은 그대로 바꿀 수 있다. 불변성은 이름이 아니라 메모리의 값을 바꾸지 않는 것이다.
 - React와 Redux는 `Object.is`로 이전·다음 상태를 **참조 비교**해 변화를 감지한다. 원본을 고치면 참조가 같아 변화를 놓치므로 새 객체를 만들어 돌려준다.
@@ -253,6 +261,18 @@ function partial(func, ...bound) {
 - 커링은 **자주 바뀌지 않는 인자를 앞에** 둘 때 쓸모가 있다. 설정·날짜·로그 레벨처럼 한 번 정하면 반복되는 인자를 고정해 두고, 매번 달라지는 데이터는 마지막에 받는다. `map(logNow('INFO'))`처럼 고차 함수에 바로 넘길 수 있는 인자 하나짜리 함수가 나오는 것도 장점이다.
 - 함수를 이어 붙이는 `pipe`·`compose`가 인자 하나짜리 함수를 기대하므로, 함수형 라이브러리는 데이터를 마지막 인자로 받고 자동으로 커링한다.
 
+함수형 라이브러리(Ramda, `lodash/fp`)가 일반 유틸 라이브러리와 다른 점은 다섯 가지다.
+
+| 규칙 | 뜻 | 예 |
+| --- | --- | --- |
+| 데이터는 마지막(data-last) | 변환 함수를 먼저, 데이터를 나중에 받는다 | `_.map(arr, fn)` → `fp.map(fn)(arr)` |
+| 자동 커링 | 인자를 나눠 넘겨도 된다 | `const toNames = R.map(R.prop('name'))` — 데이터 없이 함수를 만든다(포인트 프리) |
+| 고정된 인자 수 | 선택 인자를 없애 커링이 예측 가능하다 | `fp.padStart(3)('a')`는 공백, 채울 문자는 `fp.padCharsStart('-')(3)('a')`로 따로 |
+| 콜백 인자 개수 제한 | `map` 콜백에 값 하나만 넘긴다 | `['6', '8', '10'].map(parseInt)`는 `parseInt('8', 1)`처럼 인덱스가 진법으로 들어가 `[6, NaN, 2]`다. `fp.map(parseInt)`는 `[6, 8, 10]` |
+| 불변 | 입력을 바꾸지 않고 새 값을 돌려준다 | `fp.set('a.b', 1)(obj)` |
+
+마지막 `parseInt` 함정은 함수형 라이브러리를 쓰지 않아도 알아 둘 만하다. 콜백에 함수 참조를 바로 넘기면 `map`이 넘기는 `(value, index, array)`가 모두 들어간다. 의도한 인자만 넘기려면 `arr.map((s) => parseInt(s, 10))`이나 `arr.map(Number)`로 감싼다.
+
 ## 8. 펑터와 Maybe: 실패할 수 있는 함수를 안전하게 합성한다
 
 두 함수를 합성하려면 앞 함수의 출력 타입이 뒤 함수의 입력 타입과 맞아야 한다. 그런데 순수 함수라도 빈 문자열을 받으면 `undefined`를 돌려주는 식으로 **예상 밖의 값**을 낼 수 있고, 그 값이 다음 함수로 흘러가면 합성 전체가 깨진다. 호출할 때마다 `if (x == null)`을 넣으면 검사가 곳곳에 흩어진다.
@@ -263,7 +283,12 @@ function partial(func, ...bound) {
 | --- | --- | --- |
 | **펑터(Functor)** | 값을 감싼 상자. `map`으로 안의 값을 바꾸고 **새 상자**를 돌려준다. 상자의 구조는 그대로다 | `Array.prototype.map`, `Promise.then`(값이 나중에 생기는 상자) |
 | **Maybe** | 값이 있을 수도 없을 수도 있는 상자. `Just(x)`는 `map`을 적용하고, `Nothing`은 `map`을 무시하고 자기 자신을 돌려준다 | 옵셔널 체이닝 `a?.b?.c`가 같은 생각의 문법 버전이다 |
+| **어플리커티브(Applicative)** | 상자에 든 **함수**를 상자에 든 값에 적용(`ap`)한다. 서로 의존하지 않는 상자 여러 개를 합칠 때 쓴다 | `Promise.all([a, b]).then(([x, y]) => f(x, y))`가 같은 일을 한다 |
 | **모나드(Monad)** | 상자를 돌려주는 함수를 이어 붙일 때 상자가 겹치지 않게 펴 주는(`flatMap`, `chain`) 상자 | `Array.prototype.flatMap`, 중첩 Promise를 자동으로 펴는 `then` |
+
+세 개념의 차이는 "무엇이 상자에 들어 있나"다. 펑터는 평범한 함수를 상자 속 값에, 어플리커티브는 상자 속 함수를 상자 속 값에, 모나드는 상자를 돌려주는 함수를 상자 속 값에 적용한다.
+
+Promise는 이 성질을 대부분 갖지만 순수한 모나드는 아니다. **만드는 순간 실행되고(eager)**, `then`이 값과 Promise를 구분해 자동으로 펴기 때문이다. 함수형 라이브러리의 Future·Task는 `fork()`나 `run()`을 부르기 전까지 아무것도 하지 않는 **지연(lazy)** 상자라서, 비동기 작업을 값처럼 조합해 두고 실행 시점을 바깥에서 정한다. 콜백을 받는 함수 → 그 콜백을 감싼 상자(Future) → `map`(펑터) → `chain`(모나드)으로 넓혀 가면 콜백 지옥이 평평한 사슬이 된다.
 
 ```js
 const Just = (x) => ({ map: (f) => Maybe(f(x)), get: () => x });
@@ -274,6 +299,17 @@ Maybe(user).map((u) => u.profile).map((p) => p.name).get(); // 중간이 비어�
 ```
 
 중간마다 검사하지 않고 **합성에만 집중**한 뒤 마지막에 한 번 결과를 확인한다. 실패 이유까지 전달하려면 성공·실패 두 갈래를 갖는 `Either`(`Result`) 상자를 쓰고, 이 방식으로 오류 처리를 이어 붙이는 것을 철도 지향 프로그래밍(Railway Oriented Programming)이라 부른다.
+
+## 9. 대수적 데이터 타입: 불가능한 상태를 만들 수 없게
+
+**대수적 데이터 타입(ADT)** 은 타입을 두 연산으로 조합하는 방식이다.
+
+| 종류 | 연산 | 가능한 값의 수 | JavaScript·TypeScript에서 |
+| --- | --- | --- | --- |
+| 곱 타입(product) | A **그리고** B | A의 경우의 수 × B의 경우의 수 | 객체, 튜플 `{ name: string; age: number }` |
+| 합 타입(sum) | A **또는** B 중 하나 | A + B | 태그가 붙은 유니언 `{ type: 'ok'; id: string } \| { type: 'expired'; card: Card }` |
+
+곱 타입만 쓰면 불리언 플래그와 선택 필드가 늘어나, `isLoading: true`인데 `error`도 있는 식의 **있을 수 없는 조합**이 타입상 허용된다. 합 타입으로 "로딩 중 / 성공(데이터) / 실패(에러)" 중 정확히 하나만 되게 짜면 그런 상태를 아예 만들 수 없다. 결제 응답처럼 결과마다 딸린 데이터가 다른 경우가 대표적이다. TypeScript에서는 판별 필드(`type`·`status`)로 나눈 유니언과 `switch`의 철저성 검사로 구현한다([[typescript-basics#구분된 유니언|TypeScript 기초]]). Maybe·Either도 합 타입이다.
 
 ## 한계: 왜 널리 쓰이지 못하나
 

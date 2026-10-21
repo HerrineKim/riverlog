@@ -4,11 +4,11 @@ concept: "Responsive Images"
 summary: "같은 이미지를 크기만 바꿔 줄 때는 srcset·sizes로 브라우저에 선택을 맡기고(서술형), 자르기·형식 대체처럼 규칙을 강제할 때는 picture를 쓴다(지시형). 크기만 맞춰도 작은 화면의 이미지 용량이 70% 넘게 준다. sizes는 레이아웃에서의 폭이라 도구가 알 수 없으니 근삿값을 주거나, 지연 로딩 이미지는 sizes=\"auto\"에 맡긴다."
 tags: ["frontend", "html", "performance", "web", "mobile"]
 source: other
-date: "2026-10-17"
-sources: ["https://webactually.com/2020/07/13/html-%EB%B0%98%EC%9D%91%ED%98%95-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%AC%B8%EB%B2%95-%EA%B0%80%EC%9D%B4%EB%93%9C/", "https://webactually.com/2013/11/04/%ec%9a%b0%eb%a6%ac%ec%97%90%ea%b2%8c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9d%b4%eb%af%b8%ec%a7%80%ea%b0%80-%ed%95%84%ec%9a%94%ed%95%9c-%ec%9d%b4%ec%9c%a0/", "https://webactually.com/2016/01/19/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4-%ec%bd%94%ec%96%b4-4-4%ec%97%90-%ec%83%81%eb%a5%99%ed%95%9c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9d%b4%eb%af%b8%ec%a7%80/", "https://webactually.com/2014/08/18/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%98-%ed%98%84%ec%9e%ac/", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://webactually.com/2016/02/23/%ed%8e%ad%ea%b7%84%eb%9e%9c%eb%8d%a4%ed%95%98%ec%9a%b0%ec%8a%a4-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%ec%97%90%ec%84%9c-%ec%9a%b0%eb%a6%ac%ea%b0%80-%eb%b0%b0%ec%9a%b8/", "https://web.dev/learn/images/history", "https://web.dev/learn/images/responsive-images", "https://web.dev/learn/images/descriptive", "https://web.dev/learn/images/prescriptive", "https://web.dev/learn/images/automating", "https://web.dev/learn/images/cms", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img", "https://velog.io/@chris/the-css-background-image-property-as-an-anti-pattern"]
+date: "2026-10-21"
+sources: ["https://webactually.com/2020/07/13/html-%EB%B0%98%EC%9D%91%ED%98%95-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%AC%B8%EB%B2%95-%EA%B0%80%EC%9D%B4%EB%93%9C/", "https://webactually.com/2013/11/04/%ec%9a%b0%eb%a6%ac%ec%97%90%ea%b2%8c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9d%b4%eb%af%b8%ec%a7%80%ea%b0%80-%ed%95%84%ec%9a%94%ed%95%9c-%ec%9d%b4%ec%9c%a0/", "https://webactually.com/2016/01/19/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4-%ec%bd%94%ec%96%b4-4-4%ec%97%90-%ec%83%81%eb%a5%99%ed%95%9c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9d%b4%eb%af%b8%ec%a7%80/", "https://webactually.com/2014/08/18/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%98-%ed%98%84%ec%9e%ac/", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://webactually.com/2016/02/23/%ed%8e%ad%ea%b7%84%eb%9e%9c%eb%8d%a4%ed%95%98%ec%9a%b0%ec%8a%a4-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%ec%97%90%ec%84%9c-%ec%9a%b0%eb%a6%ac%ea%b0%80-%eb%b0%b0%ec%9a%b8/", "https://web.dev/learn/images/history", "https://web.dev/learn/images/responsive-images", "https://web.dev/learn/images/descriptive", "https://web.dev/learn/images/prescriptive", "https://web.dev/learn/images/automating", "https://web.dev/learn/images/cms", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img", "https://velog.io/@chris/the-css-background-image-property-as-an-anti-pattern", "https://www.paintcodeapp.com/news/ultimate-guide-to-iphone-resolutions"]
 ---
 
-> CSS-Tricks의 「HTML 반응형 이미지 문법 가이드」(웹액츄얼리 번역, 2020.07)를 중심으로 Tim Kadlec·Tim Evko·Stéphanie Walter·Benjie Moss의 반응형 이미지 관련 글(웹액츄얼리 번역, 2013~2016)을 더해 재구성한 노트다. 브라우저의 후보 선택 과정은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 문항으로, 픽셀 밀도·`sizes` 계산·`<picture>` 규칙은 web.dev 「[Learn Images](https://web.dev/learn/images)」 강좌의 반응형 이미지 모듈로 보강했다. 브라우저 지원은 MDN으로 확인했다. CSS 배경 이미지의 한계는 「[안티 패턴으로서의 CSS background-image 속성](https://velog.io/@chris/the-css-background-image-property-as-an-anti-pattern)」(번역)으로 보강했다.
+> CSS-Tricks의 「HTML 반응형 이미지 문법 가이드」(웹액츄얼리 번역, 2020.07)를 중심으로 Tim Kadlec·Tim Evko·Stéphanie Walter·Benjie Moss의 반응형 이미지 관련 글(웹액츄얼리 번역, 2013~2016)을 더해 재구성한 노트다. 브라우저의 후보 선택 과정은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 문항으로, 픽셀 밀도·`sizes` 계산·`<picture>` 규칙은 web.dev 「[Learn Images](https://web.dev/learn/images)」 강좌의 반응형 이미지 모듈로 보강했다. 브라우저 지원은 MDN으로 확인했다. CSS 배경 이미지의 한계는 「[안티 패턴으로서의 CSS background-image 속성](https://velog.io/@chris/the-css-background-image-property-as-an-anti-pattern)」(번역)으로, 논리 단위에서 물리 화면까지의 렌더링 과정은 PaintCode의 「[The Ultimate Guide To iPhone Resolutions](https://www.paintcodeapp.com/news/ultimate-guide-to-iphone-resolutions)」로 보강했다.
 
 ## 왜 필요한가
 
@@ -32,6 +32,26 @@ sources: ["https://webactually.com/2020/07/13/html-%EB%B0%98%EC%9D%91%ED%98%95-%
 ### 기기 픽셀 비율(DPR)
 
 기기 픽셀 비율(device pixel ratio)은 화면의 물리 픽셀 수를 CSS 픽셀 수로 나눈 값이다. DPR 2 화면에서 CSS 400px로 그려지는 이미지가 선명하려면 실제 폭 800px 파일이 필요하다. 반대로 DPR 1 기기에 고밀도 파일을 주면 보이는 차이 없이 대역폭과 처리 시간만 쓴다. 저밀도 기기는 대개 오래되고 느린 기기라 손해가 더 크다.
+
+기기가 화면을 그리는 과정을 나눠 보면 세 값이 서로 다르다는 것이 보인다. iOS의 포인트(point)와 Android의 dp는 CSS 픽셀과 같은 **논리 단위**다.
+
+```text
+레이아웃 (논리 단위: pt·dp·CSS px)
+  │  × 배율(scale factor, 1x·2x·3x) = DPR
+  ▼
+렌더링된 비트맵 (논리 크기 × 배율)
+  │  패널 해상도와 다르면 축소·확대(다운샘플링)
+  ▼
+물리 화면 ── 인치당 픽셀(PPI)이 실제 선명도를 정한다
+```
+
+| 값 | 무엇인가 | 예 |
+| --- | --- | --- |
+| 논리 크기 | 레이아웃 단위의 화면 크기 | 375×667pt |
+| 배율(DPR) | 논리 1단위에 쓰는 픽셀 수 | 2 → 750×1334px로 렌더링 |
+| PPI | 물리 화면의 밀도 | 같은 2x라도 화면 크기에 따라 326ppi일 수도 다를 수도 있다 |
+
+**렌더링 해상도가 패널 해상도와 같다는 보장은 없다.** 예를 들어 iPhone 6~8 Plus는 414×736pt를 3x로 그린 1242×2208px 이미지를 실제 패널 1080×1920px에 맞춰 약 1.15배 줄여 보여 줬다. 그래서 「픽셀 단위로 딱 맞춘」 1px 선이 흐려질 수 있다. 이미지 후보를 고를 때는 DPR만 보면 되고, PPI나 패널 해상도는 브라우저가 알아서 처리한다.
 
 ### x 서술자: 픽셀 밀도
 

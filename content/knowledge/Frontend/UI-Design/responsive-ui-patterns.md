@@ -1,14 +1,15 @@
 ---
 title: "반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표"
 concept: "Responsive UI Patterns"
-summary: "작은 화면의 디자인은 큰 화면을 줄인 것이 아니고, 큰 화면은 작은 화면을 늘린 것이 아니다. 좁은 화면에서 공간이 모자라면 먼저 숨기지 않고 보이게 다듬고, 다음은 가로로 넘겨 보는 오버플로 패턴, 마지막이 버튼으로 여닫는 점진적 공개다. 캐러셀은 좁은 화면에서만 가로 스크롤로 두고 넓은 화면에서는 그리드로 펼친다."
+summary: "작은 화면의 디자인은 큰 화면을 줄인 것이 아니고, 큰 화면은 작은 화면을 늘린 것이 아니다. 좁은 화면에서 공간이 모자라면 먼저 숨기지 않고 보이게 다듬고, 다음은 가로로 넘겨 보는 오버플로 패턴, 마지막이 버튼으로 여닫는 점진적 공개다. 캐러셀은 좁은 화면에서만 가로 스크롤로 두고 넓은 화면에서는 그리드로 펼친다. 데이터 표는 첫 열 고정·카드로 쌓기·열 숨기기 중 사용 목적에 맞춰 고르고, 페이지는 Mostly Fluid·Column Drop 같은 레이아웃 패턴으로 바꾼다."
 tags: ["design", "design-pattern", "responsive", "mobile", "layout"]
 source: other
-date: "2026-10-17"
-sources: ["https://web.dev/learn/design/ui-patterns", "https://web.dev/learn/design/interaction"]
+date: "2026-10-21"
+sources: ["https://web.dev/learn/design/ui-patterns", "https://web.dev/learn/design/interaction", "https://css-tricks.com/responsive-data-table-roundup/", "http://bradfrost.github.io/this-is-responsive/patterns.html"]
 ---
 
 > web.dev의 「[Learn Responsive Design](https://web.dev/learn/design)」 강좌의 User interface patterns·Interaction 모듈을 바탕으로 재구성한 노트다.
+> 데이터 표 패턴과 레이아웃 패턴은 「[Responsive Data Table Roundup](https://css-tricks.com/responsive-data-table-roundup/)」과 「[Responsive Patterns](http://bradfrost.github.io/this-is-responsive/patterns.html)」을 바탕으로 보강했다.
 
 ## 같은 HTML, 다른 모습
 
@@ -78,6 +79,38 @@ sources: ["https://web.dev/learn/design/ui-patterns", "https://web.dev/learn/des
 ```
 
 스크롤되는 영역은 키보드로도 스크롤할 수 있어야 한다. 감싸는 요소에 `tabindex="0"`과 이름(`role="region"` + `aria-labelledby`)을 주는 방법은 [[css-overflow-scroll|CSS 오버플로와 스크롤]]에 있다.
+
+가로 스크롤 말고도 좁은 화면용 표 패턴이 여럿 있다. **사용자가 표로 무엇을 하는지**(행끼리 비교하나, 한 행을 자세히 보나)에 맞춰 고른다.
+
+| 패턴 | 방법 | 맞는 때 | 주의 |
+| --- | --- | --- | --- |
+| 첫 열 고정 + 가로 스크롤 | 첫 열(행 이름)에 `position: sticky; inset-inline-start: 0` | 행끼리 값을 비교할 때. 표 구조가 그대로다 | 고정 열에 배경색을 줘야 겹친 글이 비치지 않는다 |
+| 행을 카드로 쌓기 | 좁을 때 `tr`·`td`를 `display: block`으로 바꾸고 `td::before { content: attr(data-label) }`로 열 이름을 붙인다 | 한 행(주문, 사람)을 하나씩 읽을 때 | 세로로 길어진다. `display`를 바꾸면 일부 브라우저가 표 의미를 잃으므로 `role="table"`·`row`·`cell`을 명시한다 |
+| 덜 중요한 열 숨기기 | 우선순위 낮은 열을 좁은 화면에서 감추고 「열 선택」 토글로 다시 보이게 | 열이 많고 중요도가 갈릴 때 | 정보를 영영 감추지 않는다. 반드시 되돌릴 방법을 둔다 |
+| 요약 + 전체 보기 | 좁은 화면엔 축약 표와 「전체 표 보기」 링크 | 표가 매우 클 때 | 한 단계가 더 생긴다 |
+| 차트로 바꾸기 | 같은 데이터를 막대·원 그래프로 | 추세가 핵심일 때 | 정확한 값 조회는 표만 못하다. 큰 화면에도 함께 보여 주는 편이 낫다 |
+
+```css
+@container (inline-size < 40rem) {
+  .data-table thead { position: absolute; clip-path: inset(50%); }   /* 머리글은 스크린 리더용으로만 */
+  .data-table tr, .data-table td { display: block; }
+  .data-table td::before { content: attr(data-label) ": "; font-weight: 600; }
+}
+```
+
+## 레이아웃 패턴
+
+페이지 전체가 화면 폭에 따라 바뀌는 방식에도 이름 붙은 패턴이 있다.
+
+| 패턴 | 동작 |
+| --- | --- |
+| 거의 유동(Mostly Fluid) | 넓을 때는 최대 폭에 여백만 늘고, 좁아지면 열이 하나씩 아래로 쌓인다 |
+| 열 떨어뜨리기(Column Drop) | 다단 열이 좁아질 때마다 하나씩 아래로 떨어져 결국 한 열이 된다 |
+| 레이아웃 전환(Layout Shifter) | 브레이크포인트마다 배치 자체를 다시 짠다. 가장 유연하지만 손이 많이 간다 |
+| 미세 조정(Tiny Tweaks) | 한 열 그대로 두고 글자 크기·여백만 조금씩 바꾼다 |
+| 화면 밖(Off Canvas) | 덜 쓰는 영역(메뉴, 필터)을 화면 옆에 두고 버튼으로 밀어 넣는다 |
+
+이 패턴 대부분은 지금 미디어 쿼리 없이 `flex-wrap`이나 `grid-template-columns: repeat(auto-fit, minmax(…))`만으로도 만든다([[responsive-design#미디어 쿼리가 필요 없을 때|미디어 쿼리가 필요 없을 때]]).
 
 ## 입력 장치를 가정하지 않기
 

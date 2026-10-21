@@ -4,11 +4,11 @@ concept: "Semantic HTML"
 summary: "태그로 모양이 아니라 의미를 표시하는 시맨틱 HTML. 랜드마크 태그, 제목 계층(h1~h6), <article>과 <section>을 언제 쓰는지, 요소의 암묵적 역할과 role 속성의 한계를 접근성 관점에서 정리했다. 아웃라인 알고리즘은 구현되지 않았으니 제목 수준은 직접 매긴다."
 tags: ["html", "semantic", "a11y", "frontend", "seo"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://webactually.com/2020/03/03/%3Csection%3E%EC%9D%84-%EB%B2%84%EB%A6%AC%EA%B3%A0-HTML5-%3Carticle%3E%EC%9D%84-%EC%8D%A8%EC%95%BC-%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0/", "https://developer.mozilla.org/en-US/blog/h1-element-styles/", "https://web.dev/learn/html/semantic-html", "https://web.dev/learn/html/headings-and-sections"]
+date: "2026-10-21"
+sources: ["https://webactually.com/2020/03/03/%3Csection%3E%EC%9D%84-%EB%B2%84%EB%A6%AC%EA%B3%A0-HTML5-%3Carticle%3E%EC%9D%84-%EC%8D%A8%EC%95%BC-%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0/", "https://developer.mozilla.org/en-US/blog/h1-element-styles/", "https://web.dev/learn/html/semantic-html", "https://web.dev/learn/html/headings-and-sections", "http://html5doctor.com/lets-talk-about-semantics/"]
 ---
 
-> 「`<article>` 대 `<section>`」 부분은 브루스 로슨(Bruce Lawson)의 「Why You Should Choose HTML5 `<article>` Over `<section>`」(Smashing Magazine, 2020.01)을 웹액츄얼리 코리아가 번역한 글(2020.03)을 바탕으로 재구성했다. 「암묵적 역할과 접근성 트리」와 랜드마크가 되는 조건은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Semantic HTML」·「Headings and sections」 모듈을 바탕으로 보강했다.
+> 「`<article>` 대 `<section>`」 부분은 브루스 로슨(Bruce Lawson)의 「Why You Should Choose HTML5 `<article>` Over `<section>`」(Smashing Magazine, 2020.01)을 웹액츄얼리 코리아가 번역한 글(2020.03)을 바탕으로 재구성했다. 「암묵적 역할과 접근성 트리」와 랜드마크가 되는 조건은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Semantic HTML」·「Headings and sections」 모듈을 바탕으로 보강했다. 「요소 이름은 어디서 왔나」는 HTML5 Doctor의 「[Let’s Talk about Semantics](http://html5doctor.com/lets-talk-about-semantics/)」를 바탕으로 보강했다.
 
 ## 시맨틱 HTML이란
 
@@ -114,6 +114,22 @@ HTML5 명세에는 **아웃라인 알고리즘**이 있었다. `<section>`을 �
 <aside aria-label="간단 요약">…</aside>        <!-- 성격이 보조 정보라면 -->
 <div role="region" aria-label="간단 요약">…</div> <!-- 차선. 네이티브 태그가 ARIA보다 낫다 -->
 ```
+
+## 요소 이름은 어디서 왔나
+
+`<nav>`, `<header>`, `<footer>`, `<article>` 같은 HTML5 요소 이름은 새로 지어낸 말이 아니다. Google·Opera 등이 실제 웹 페이지를 조사해 **개발자가 class·id로 가장 많이 쓰던 이름**을 골라 요소로 만들었다.
+
+**요소의 의미는 이름이 아니라 명세의 정의가 정한다.** `<article>`의 정의는 「독립적으로 완결된 구성물」이다. 그래서 글뿐 아니라 댓글도 `<article>`이고, 댓글은 글 `<article>` 안에 중첩한 `<article>`로 표시한다. 별도의 `<comment>` 요소가 없는 이유다. 잡지 기사가 아니라 「옷 한 벌(article of clothing)」처럼 따로 떼어 놓아도 완결된 단위로 생각하면 된다.
+
+새 요소가 명세에 들어가려면 세 가지를 보여야 한다.
+
+1. 실제 사용 사례
+2. 지금 개발자들이 그 빈자리를 어떻게 우회하고 있는지
+3. 기존 요소로는 안 되는 이유
+
+의미가 기존 요소와 조금만 다른 요소를 계속 더하면 브라우저도 작성자도 따라가기 어려워진다. 표준 요소로 담기지 않는 의미(상품, 리뷰, 이벤트)는 새 태그가 아니라 마이크로데이터·JSON-LD 같은 구조화 데이터로 덧붙인다([[structured-content|구조화된 콘텐츠]]).
+
+어느 요소가 맞는지 오래 고민하게 된다면 `<div>`로 두고 나중에 고쳐도 된다. 마크업은 쉽게 바꿀 수 있다. 과거 IE 8 이하는 모르는 요소에 스타일을 적용하지 않아 html5shiv 스크립트가 필요했지만, 지금은 모든 브라우저가 HTML5 요소를 안다.
 
 ## 자주 하는 실수
 
