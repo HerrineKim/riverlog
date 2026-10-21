@@ -5,6 +5,7 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize, { defaultSchema, type Options as Schema } from "rehype-sanitize";
 import rehypeSlug from "rehype-slug";
 import rehypeStringify from "rehype-stringify";
+import remarkCjkFriendly from "remark-cjk-friendly/parseOnly";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -49,6 +50,8 @@ function rehypeFigures() {
 const processor = unified()
   .use(remarkParse)
   .use(remarkGfm)
+  // CommonMark drops **bold** when a Korean particle follows punctuation inside the markers (e.g. **「A」**는)
+  .use(remarkCjkFriendly)
   .use(remarkObsidian)
   .use(remarkRehype, { allowDangerousHtml: true })
   .use(rehypeRaw)
