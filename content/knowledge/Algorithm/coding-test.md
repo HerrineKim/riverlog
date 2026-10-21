@@ -1,14 +1,14 @@
 ---
 title: "코딩 테스트 접근법"
 concept: "Coding Test"
-summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법, 랜덤 비교 테스트로 반례 찾기, 파이썬 실전 팁."
-tags: ["coding-test", "algorithm", "python", "problem-solving"]
+summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법, 랜덤 비교 테스트로 반례 찾기, 파이썬·자바스크립트 실전 팁."
+tags: ["coding-test", "algorithm", "python", "javascript", "problem-solving"]
 source: mixed
-date: "2026-10-16"
-sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%99%84%EC%A3%BC%ED%95%98%EC%A7%80%20%EB%AA%BB%ED%95%9C%20%EC%84%A0%EC%88%98.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%B4%EB%A7%98%EB%8C%80%EB%A1%9C%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/3%EC%A7%84%EB%B2%95%20%EB%92%A4%EC%A7%91%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EC%A0%95%EC%88%98%EC%82%AC%EC%9D%B4%EC%9D%98%20%ED%95%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/2016%EB%85%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EA%B0%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EB%8D%94%ED%95%98%EA%B8%B0.md"]
 ---
 
-> 반례 찾기와 파이썬 표준 라이브러리 팁 일부는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Python&C] 맞왜틀 이제 그만, 반례 생성기!」, 「코딩테스트를 위한 python 문법」을 바탕으로 보강했다.
+> 반례 찾기와 파이썬 표준 라이브러리 팁 일부는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Python&C] 맞왜틀 이제 그만, 반례 생성기!」, 「코딩테스트를 위한 python 문법」을 바탕으로 보강했다. 자바스크립트 실전 팁은 「[Frontend_TIL: 알고리즘](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)」의 문제 풀이에서 반복되는 패턴만 뽑아 보강했다.
 
 코딩 테스트에서 시간이 부족해지는 이유는 대개 타이핑이 느려서가 아니라, 설계 없이 코드부터 쓰다가 중간에 방향을 잃기 때문이다. 아래는 문제를 풀 때 따르는 순서와 자주 쓰는 실전 팁이다.
 
@@ -146,6 +146,27 @@ s = input().rstrip()                # readline은 줄바꿈 문자를 포함하�
 - 문자열을 반복해서 이어 붙일 때는 리스트에 모은 뒤 `''.join()`
 - 출력이 많으면 `print('\n'.join(map(str, result)))`로 한 번에 출력
 - 리스트를 공백으로 구분해 한 줄에 출력할 때는 `print(*arr)`. `*`는 iterable을 개별 인자로 풀어 넘기는 언패킹 연산자다. 딕셔너리는 `**`로 키워드 인자로 풀 수 있다(`'{y}-{m}'.format(**info)`). 이때 이미 넘긴 인자와 같은 키가 겹치면 `TypeError`가 난다.
+
+## 자바스크립트 실전 팁
+
+```js
+// Node.js에서 표준 입력 전체 읽기
+const input = require('fs').readFileSync(0, 'utf8').trim().split('\n')
+const [n, m] = input[0].split(' ').map(Number)
+```
+
+| 상황 | 쓰는 것 | 함정 |
+| --- | --- | --- |
+| 숫자 정렬 | `arr.sort((a, b) => a - b)` | 비교 함수 없는 `sort()`는 **문자열로** 비교한다(`[10, 9, 1]` → `[1, 10, 9]`) |
+| 원본을 지키며 정렬 | `arr.toSorted(cmp)`(ES2023) 또는 `[...arr].sort(cmp)` | `sort`는 원본을 바꾼다 |
+| 여러 기준 정렬 | `(a, b) => a[n].localeCompare(b[n]) \|\| a.localeCompare(b)` | 첫 기준이 같으면 `0`이 나와 `\|\|` 뒤로 넘어간다 |
+| 개수 세기 | `const cnt = new Map(); for (const x of arr) cnt.set(x, (cnt.get(x) ?? 0) + 1)` | 「참가자 중 완주 못 한 한 명」처럼 **두 목록의 차이**는 한쪽을 세고 다른 쪽으로 빼면 O(n). 둘 다 정렬해 비교하면 O(n log n) |
+| 중복 제거 | `[...new Set(arr)]` | 매번 `includes`로 확인하면 O(n²) |
+| 진법 변환 | `n.toString(3)`, `parseInt('1021', 3)` | 자릿수 뒤집기도 문자열로 한다: `parseInt([...n.toString(3)].reverse().join(''), 3)` |
+| 연속 정수의 합 | `(a + b) * (Math.abs(a - b) + 1) / 2` | 반복문 없이 O(1). 큰 수는 `Number.MAX_SAFE_INTEGER`를 넘는지 보고 `BigInt` |
+| 문자 개수 | `str.split('8').length - 1`, `[...str].filter((c) => c === '8').length` | 정규식 `match`는 결과가 없으면 `null`을 돌려준다 |
+| 요일·날짜 | 월별 일수 배열을 누적해 `% 7`, 또는 `new Date(y, m - 1, d).getDay()` | `Date`의 월은 0부터 센다 |
+| 문자열 이어 붙이기 | 배열에 모아 `join('')` | 반복문 안의 `+=`도 엔진이 최적화하지만 출력이 크면 `join`이 안전하다 |
 
 ## 핵심 정리
 

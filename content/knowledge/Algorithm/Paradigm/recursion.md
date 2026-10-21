@@ -115,4 +115,4 @@ print(lcm(192, 162))  # 5184
 - 호출은 스택에 쌓이고 역순으로 끝난다.
 - 점화식으로 표현되는 문제(팩토리얼, GCD, 트리 탐색)에 특히 잘 맞는다.
 
-관련 노트: [[dfs|DFS]], [[stack|스택]], [[divide-and-conquer|분할 정복]], [[dynamic-programming|동적 계획법]], [[functions|함수와 this]]
+관련 노트: [[dfs|DFS]], [[stack|스택]], [[divide-and-conquer|분할 정복]], [[dynamic-programming|동적 계획법]], [[functions|함수와 this]], [[number-theory-basics|정수론 기초: 소수·최대공약수·합동식]]

@@ -4,9 +4,11 @@ concept: "Big O"
 summary: "입력 크기가 커질 때 알고리즘의 연산량이 어떻게 늘어나는지를 최고차항으로 표현하는 방법과, 상한(O)·하한(Ω)·딱 맞는 범위(Θ)의 차이."
 tags: ["algorithm", "complexity", "big-o", "big-omega", "big-theta"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0"]
+date: "2026-10-21"
+sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "http://bigocheatsheet.com/"]
 ---
+
+> 노션 정리를 바탕으로, 자료구조 연산과 정렬 알고리즘의 복잡도 표는 「[Big-O Cheat Sheet](http://bigocheatsheet.com/)」를 바탕으로 보강했다.
 
 ## 알고리즘이란
 
@@ -96,6 +98,38 @@ function addUpToFast(n) {
 | O(2ⁿ), O(n!) | 지수·팩토리얼 | 부분집합·순열 완전 탐색 |
 
 O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!) 순으로 느려진다. 그래프로 그리면 O(n²)부터는 n이 조금만 커져도 거의 수직으로 치솟는다.
+
+### 자료구조 연산의 복잡도
+
+자료구조를 고를 때는 **어떤 연산을 자주 하느냐**를 본다. 평균과 최악이 다른 구조는 최악이 언제 오는지도 함께 기억한다.
+
+| 자료구조 | 접근 | 탐색 | 삽입 | 삭제 | 최악이 되는 때 |
+| --- | --- | --- | --- | --- | --- |
+| 배열 | O(1) | O(n) | O(n) | O(n) | 중간 삽입·삭제는 뒤 원소를 민다. 동적 배열 끝 추가는 분할 상환 O(1) |
+| 스택·큐 | O(n) | O(n) | O(1) | O(1) | 맨 위·양 끝만 다룬다 |
+| 연결 리스트(단일·이중) | O(n) | O(n) | O(1) | O(1) | 삽입·삭제 O(1)은 위치를 이미 알 때다. 위치를 찾는 데 O(n) |
+| 해시 테이블 | — | 평균 O(1) | 평균 O(1) | 평균 O(1) | 충돌이 몰리면 O(n) |
+| 이진 탐색 트리 | O(log n) | O(log n) | O(log n) | O(log n) | 정렬된 순서로 넣으면 한쪽으로 기울어 O(n) |
+| 균형 트리(레드-블랙, AVL, B-트리) | O(log n) | O(log n) | O(log n) | O(log n) | 최악도 O(log n). DB 인덱스가 B-트리를 쓰는 이유 |
+| 스킵 리스트 | O(log n) | O(log n) | O(log n) | O(log n) | 확률적 구조라 최악은 O(n) |
+| 이진 힙 | 최솟값 O(1) | O(n) | O(log n) | 최솟값 O(log n) | — |
+
+공간은 모두 O(n)이다(스킵 리스트는 최악 O(n log n)).
+
+### 정렬 알고리즘의 복잡도
+
+| 알고리즘 | 최선 | 평균 | 최악 | 추가 공간 | 안정 |
+| --- | --- | --- | --- | --- | --- |
+| 퀵 정렬 | O(n log n) | O(n log n) | O(n²) | O(log n) | 아니오 |
+| 병합 정렬 | O(n log n) | O(n log n) | O(n log n) | O(n) | 예 |
+| 힙 정렬 | O(n log n) | O(n log n) | O(n log n) | O(1) | 아니오 |
+| 팀소트(Timsort) | O(n) | O(n log n) | O(n log n) | O(n) | 예 |
+| 삽입 정렬 | O(n) | O(n²) | O(n²) | O(1) | 예 |
+| 선택 정렬 | O(n²) | O(n²) | O(n²) | O(1) | 아니오 |
+| 버블 정렬 | O(n) | O(n²) | O(n²) | O(1) | 예 |
+| 계수·기수 정렬 | O(n + k) | O(n + k), O(nk) | O(n + k), O(nk) | O(n + k) | 예 |
+
+비교 기반 정렬은 최악 O(n log n)보다 빠를 수 없다. 계수·기수 정렬은 값의 범위 k나 자릿수에 기대어 이 하한을 넘는다. Python `sorted`와 Java 객체 정렬은 팀소트, V8의 `Array.prototype.sort`도 팀소트를 쓴다. 각 정렬의 동작은 [[elementary-sorts|기본 정렬]], [[merge-quick-sort|병합 정렬과 퀵 정렬]]에 있다.
 
 ## 공간 복잡도
 
