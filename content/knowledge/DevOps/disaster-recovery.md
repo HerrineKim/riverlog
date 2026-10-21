@@ -5,10 +5,10 @@ summary: "데이터센터 하나가 통째로 사라져도 서비스를 이어 �
 tags: ["devops", "infra", "architecture", "database", "monitoring"]
 source: other
 date: "2026-10-20"
-sources: ["https://brunch.co.kr/@chadwick/49", "https://www.kakaocorp.com/page/detail/9843", "https://www.kakaocorp.com/page/detail/11097", "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html"]
+sources: ["https://brunch.co.kr/@chadwick/49", "https://www.kakaocorp.com/page/detail/9843", "https://www.kakaocorp.com/page/detail/11097", "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html", "https://bytebytego.com/guides/cloud-disaster-recovery-strategies"]
 ---
 
-> 채드윅의 「[카카오가 직접 회고한 1015 장애 사태 원인과 대책](https://brunch.co.kr/@chadwick/49)」(2022.12)을 바탕으로, 카카오의 공식 발표([재발 방지 대책](https://www.kakaocorp.com/page/detail/9843), [데이터센터 안산](https://www.kakaocorp.com/page/detail/11097))와 AWS 「[Disaster Recovery of Workloads on AWS](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html)」 백서로 일반화한 노트다.
+> 채드윅의 「[카카오가 직접 회고한 1015 장애 사태 원인과 대책](https://brunch.co.kr/@chadwick/49)」(2022.12)을 바탕으로, 카카오의 공식 발표([재발 방지 대책](https://www.kakaocorp.com/page/detail/9843), [데이터센터 안산](https://www.kakaocorp.com/page/detail/11097))와 AWS 「[Disaster Recovery of Workloads on AWS](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html)」 백서로 일반화한 노트다. 전략별 RTO·RPO 범위는 ByteByteGo의 System Design 101 가이드 「[Cloud Disaster Recovery Strategies](https://bytebytego.com/guides/cloud-disaster-recovery-strategies)」로 보강했다.
 
 ## 고가용성과 재해 복구
 
@@ -18,7 +18,7 @@ sources: ["https://brunch.co.kr/@chadwick/49", "https://www.kakaocorp.com/page/d
 | 재해 복구(DR, Disaster Recovery) | 화재·정전·지진·대규모 오조작으로 **사이트 전체**가 사라지는 일 | 물리적으로 떨어진 다른 데이터센터·리전에 데이터와 실행 환경을 둔다 |
 | 사업 연속성 계획(BCP) | 사람·조직·고객 대응까지 포함한 사업 중단 | DR을 포함하는 상위 계획. 누가 무엇을 결정하는지까지 정한다 |
 
-**한 데이터센터 안에서 완벽하게 이중화해도, 그 건물이 멈추면 아무 소용이 없다.** HA와 DR은 따로 설계해야 한다.
+**한 데이터센터 안에서 완벽하게 이중화해도, 그 건물이 멈추면 아무 소용이 없다.** HA와 DR은 따로 설계해야 한다. 노드 단위의 이중화 구조(주-백업, 주-보조, 리더 없는 복제)와 장애 감지는 [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]]에 있다.
 
 ## 목표부터 정한다: RTO와 RPO
 
@@ -44,6 +44,15 @@ RTO·RPO가 0에 가까울수록 비용과 복잡도는 가파르게 오른다. 
 | 파일럿 라이트(Pilot Light) | DB 복제본 같은 핵심 데이터 계층만 켜져 있고 앱 서버는 꺼져 있다 | 앱 서버를 띄우고 늘린다 |
 | 웜 스탠바이(Warm Standby) | 작은 규모로 전체가 돌고 있다 | 용량만 늘린다. 축소판이라도 즉시 트래픽을 받을 수 있다 |
 | 액티브-액티브(Multi-site Active/Active) | 모든 사이트가 평소에도 트래픽을 나눠 받는다 | 죽은 사이트로 가는 트래픽만 뺀다. 전환이라는 단계가 거의 없다 |
+
+전략별로 기대할 수 있는 RTO·RPO의 대략적인 범위는 다음과 같다. 실제 값은 자동화 수준과 데이터 동기화 주기로 정해진다.
+
+| 전략 | 일반적인 RTO | 일반적인 RPO |
+| --- | --- | --- |
+| 백업·복원 | 수 시간 ~ 수일 | 마지막으로 성공한 백업 시점까지 (수 시간) |
+| 파일럿 라이트 | 수 분 ~ 수 시간 | 데이터 동기화 주기에 달렸다 |
+| 웜 스탠바이 | 수 분 ~ 수 시간 | 최근 수 분 ~ 수 시간 |
+| 멀티 사이트 | 거의 즉시 (수 분 이내) | 수 초 이내 |
 
 앞의 셋은 **액티브-스탠바이(active/passive)** 계열이다. 평소에는 주 사이트만 일하고, 장애 때 대기 사이트를 **승격(promote)** 한다. 대기 사이트를 운영 규모 그대로 켜 두되 트래픽은 주지 않는 형태는 **핫 스탠바이**라 부른다.
 
@@ -96,4 +105,4 @@ RTO·RPO가 0에 가까울수록 비용과 복잡도는 가파르게 오른다. 
 - 모니터링·인증·VPN·배포 도구처럼 **복구에 쓰는 도구**를 서비스와 같은 수준으로 다중화한다.
 - 전환은 자동화하고, 실제처럼 훈련해서 검증한다. 해 보지 않은 전환은 동작하지 않는다고 가정한다.
 
-관련 노트: [[aws-cloud-basics|AWS 클라우드 기초]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[transaction|트랜잭션과 회복]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]]
+관련 노트: [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[aws-cloud-basics|AWS 클라우드 기초]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[transaction|트랜잭션과 회복]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]]

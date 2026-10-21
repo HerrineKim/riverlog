@@ -1,14 +1,14 @@
 ---
 title: "Dockerfile 작성과 컨테이너의 PID 1"
 concept: "Dockerfile"
-summary: "이미지와 컨테이너의 관계, 베이스 이미지(Alpine·Debian) 고르기, RUN·CMD·ENTRYPOINT의 차이, 컨테이너가 바로 꺼지는 이유와 PID 1·좀비 프로세스 문제(tini·--init), Dockerfile을 디버깅하는 방법."
+summary: "이미지와 컨테이너의 관계, 베이스 이미지(Alpine·Debian) 고르기, RUN·CMD·ENTRYPOINT의 차이, 컨테이너가 바로 꺼지는 이유와 PID 1·좀비 프로세스 문제(tini·--init), Dockerfile을 디버깅하는 방법, 멀티 스테이지·.dockerignore·비root 사용자·캐시 순서 같은 이미지 모범 사례."
 tags: ["docker", "devops", "container", "infra"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "https://80000coding.notion.site/be3f7cdb6d2f4e868fb6968740be0256", "https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "https://80000coding.notion.site/d6e6ca38d41347baa80ba1b4f40886ab", "https://docs.docker.com/reference/dockerfile/", "https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/"]
+sources: ["https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "https://80000coding.notion.site/be3f7cdb6d2f4e868fb6968740be0256", "https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "https://80000coding.notion.site/d6e6ca38d41347baa80ba1b4f40886ab", "https://docs.docker.com/reference/dockerfile/", "https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/", "https://bytebytego.com/guides/9-docker-best-practices-you-must-know", "https://docs.docker.com/build/building/best-practices/", "https://www.44bits.io/ko/post/how-docker-image-work", "https://www.44bits.io/ko/post/easy-deploy-with-docker"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[inception] 인셉션 테스트 가이드라인」, 「Inception 참고자료」, 「[Inception] docker orchestration with docker-compose」, 「Inception 공부할때 유용했던 링크들」을 바탕으로 과제 풀이를 빼고 Docker 일반 개념만 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[inception] 인셉션 테스트 가이드라인」, 「Inception 참고자료」, 「[Inception] docker orchestration with docker-compose」, 「Inception 공부할때 유용했던 링크들」을 바탕으로 과제 풀이를 빼고 Docker 일반 개념만 재구성한 노트다. 「이미지 모범 사례」는 ByteByteGo의 System Design 101 가이드 「[9 Docker Best Practices You Must Know](https://bytebytego.com/guides/9-docker-best-practices-you-must-know)」를 Docker 공식 문서로 확인해 보강했다. 층과 OverlayFS, 태그·다이제스트, 배포 흐름은 「[만들면서 이해하는 도커(Docker) 이미지의 구조](https://www.44bits.io/ko/post/how-docker-image-work)」, 「[도커(Docker) 입문편](https://www.44bits.io/ko/post/easy-deploy-with-docker)」으로 보강했다.
 
 ## 이미지와 컨테이너
 
@@ -20,6 +20,27 @@ sources: ["https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "h
 | 수명 | 바뀌지 않는다(불변) | 지우면 안의 변경도 사라진다. 남길 데이터는 볼륨에 둔다 |
 
 Docker Hub의 공식 이미지(`nginx`, `mariadb`)를 그대로 쓸 수도 있고, Dockerfile로 직접 빌드한 커스텀 이미지를 레지스트리에 올려 쓸 수도 있다. VM과의 차이는 [[vm-vs-container|VM과 컨테이너]]에 있다.
+
+### 층(layer)과 OverlayFS
+
+이미지는 빌드 단계마다 생긴 **파일 변경분을 한 층씩** 쌓은 것이다. `RUN`·`COPY`·`ADD`처럼 파일을 바꾸는 명령이 층을 만들고, `CMD`·`ENV`·`EXPOSE` 같은 메타데이터 명령은 파일을 바꾸지 않는다. 층들을 하나의 디렉터리처럼 겹쳐 보여 주는 것이 **유니온 마운트**이고, 리눅스 커널의 OverlayFS(Docker의 기본 스토리지 드라이버 `overlay2`)가 이를 구현한다.
+
+```text
+merged    ← 컨테이너가 보는 최종 파일 시스템
+  ▲
+upperdir  ← 컨테이너의 쓰기 층 (컨테이너마다 하나, 지우면 사라짐)
+lowerdir  ← 이미지의 읽기 전용 층들 (여러 컨테이너·이미지가 공유)
+```
+
+| 동작 | 일어나는 일 |
+| --- | --- |
+| 하위 층 파일 수정 | 파일을 upperdir로 **복사한 뒤** 고친다(copy-on-write). 원래 층은 그대로다. 큰 파일을 조금만 고쳐도 통째로 복사되므로, 자주 쓰는 데이터는 볼륨에 둔다 |
+| 하위 층 파일 삭제 | upperdir에 **whiteout** 표시 파일을 만들어 가린다. 아래 층에서는 지워지지 않으므로, 앞 층에서 추가한 파일을 뒷 층에서 지워도 이미지 크기는 줄지 않는다 |
+| 같은 베이스 이미지 | 아래 층을 공유해 디스크와 내려받는 양이 준다. 같은 이미지로 컨테이너를 여럿 띄워도 읽기 전용 층은 하나다 |
+
+- `docker history <이미지>`로 층별 크기를, `docker diff <컨테이너>`로 쓰기 층의 변경을 본다.
+- **태그는 바꿀 수 있는 이름표, 다이제스트는 내용의 해시다.** `nginx:latest`는 언제든 다른 이미지를 가리킬 수 있고 최신 버전을 보장하지도 않는다. 운영 배포는 명시적 버전 태그나 `nginx@sha256:…` 다이제스트로 고정한다.
+- 배포 흐름은 **build → push(레지스트리) → pull(서버) → run**이다. Apple Silicon Mac에서 빌드한 이미지는 기본이 ARM64라 AMD64 서버에서 돌지 않으므로 `docker buildx build --platform linux/amd64`(또는 멀티 플랫폼)로 빌드한다.
 
 ## Dockerfile 기본 명령
 
@@ -96,11 +117,47 @@ docker exec -it app /bin/sh               # 실행 중인 컨테이너 안에 �
 - `docker attach`는 PID 1의 표준 입출력에 붙는 것이라 빠져나오다 컨테이너를 멈출 수 있다. 안을 살펴볼 때는 `exec`을 쓴다.
 - 설정을 바꿀 때마다 `exec`으로 들어가 고치지 말고, 파일을 `COPY`하도록 Dockerfile에 반영해 **`docker run`만으로 같은 상태가 재현되게** 한다.
 
+## 이미지 모범 사례
+
+좋은 이미지는 **작고, 재현되고, 권한이 적고, 빨리 빌드된다.**
+
+| 원칙 | 방법 | 이유 |
+| --- | --- | --- |
+| 공식·검증된 베이스 | Docker 공식 이미지나 검증된 배포자의 이미지에서 시작한다 | 보안 패치가 꾸준히 나온다 |
+| 버전 고정 | `node:22-alpine`처럼 태그를 명시한다. 더 엄격하게는 다이제스트(`@sha256:…`)로 고정한다 | 기본 태그 `latest`는 언제 무엇을 가리킬지 몰라 빌드가 재현되지 않는다 |
+| 멀티 스테이지 빌드 | 빌드용 스테이지에서 컴파일하고, 실행 스테이지에는 결과물만 복사한다 | 컴파일러·개발 의존성이 최종 이미지에 남지 않아 작고 안전하다 |
+| `.dockerignore` | `.git`, `node_modules`, 로그, `.env`를 빌드 컨텍스트에서 뺀다 | 빌드가 빨라지고, 비밀 파일이 이미지에 들어가는 사고를 막는다 |
+| 최소 권한 사용자 | `USER` 명령으로 root가 아닌 사용자로 실행한다 | 컨테이너가 뚫려도 피해 범위가 줄어든다 |
+| 설정은 환경 변수로 | 환경마다 다른 값은 이미지에 굽지 않고 실행할 때 `ENV`·`-e`·`env_file`로 넣는다. 비밀 값은 비밀 저장소나 BuildKit secret mount를 쓴다 | 같은 이미지를 개발·스테이징·운영에 그대로 쓴다 |
+| 캐시를 살리는 순서 | 덜 바뀌는 단계(의존성 목록 복사·설치)를 위에, 자주 바뀌는 단계(소스 복사)를 아래에 둔다 | 한 층이 바뀌면 그 아래 층은 모두 다시 빌드된다 |
+| 라벨 | `LABEL org.opencontainers.image.source=…`처럼 출처·버전·관리자를 붙인다 | 레지스트리에서 이미지를 찾고 관리하기 쉽다 |
+| 취약점 스캔 | CI에서 Trivy, Docker Scout 같은 스캐너로 검사한다 | 알려진 취약점을 배포 전에 잡는다 |
+
+```dockerfile
+# 빌드 스테이지
+FROM node:22-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./   # 의존성 목록 먼저 → 캐시 재사용
+RUN npm ci
+COPY . .                                 # 소스는 나중에
+RUN npm run build
+
+# 실행 스테이지: 결과물만
+FROM node:22-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+USER node                                # root가 아닌 사용자
+CMD ["node", "dist/server.js"]
+```
+
 ## 정리
 
 - 이미지는 불변 템플릿, 컨테이너는 그 실행이다. 데이터는 볼륨에 둔다.
 - `RUN`은 빌드 때, `ENTRYPOINT`·`CMD`는 시작 때 실행된다. 시작 명령은 배열 형식으로 쓴다.
 - 서버는 포그라운드로 실행해야 컨테이너가 꺼지지 않는다. 무한 대기 꼼수는 장애를 숨긴다.
 - PID 1 문제는 tini·dumb-init이나 `--init`으로 푼다.
+- 버전을 고정하고, 멀티 스테이지·`.dockerignore`로 작게, root가 아닌 사용자로, 캐시가 살도록 순서를 짠다.
 
 관련 노트: [[vm-vs-container|VM과 컨테이너]], [[docker-compose|Docker Compose: 여러 컨테이너 묶어 띄우기]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]]

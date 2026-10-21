@@ -1,14 +1,14 @@
 ---
 title: "CI/CD"
 concept: "CI/CD"
-summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지 이어 주는(CD) 파이프라인의 개념, Docker와 함께 쓰는 흐름, GitHub Actions 예시와 CI 비밀 값 관리."
+summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지 이어 주는(CD) 파이프라인의 개념과 단계, dev·QA·UAT·운영으로 산출물을 승격하는 흐름, Docker와 함께 쓰는 흐름, GitHub Actions 예시와 CI 비밀 값 관리."
 tags: ["ci-cd", "devops", "docker", "github", "automation"]
 source: notion
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions"]
+sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production"]
 ---
 
-> 「GitHub Actions 예시」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「DevOps 간단 정리」, 「Github Action을 이용해 코드 검사 자동화하기」를 바탕으로 보강한 노트다.
+> 「GitHub Actions 예시」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「DevOps 간단 정리」, 「Github Action을 이용해 코드 검사 자동화하기」를 바탕으로 보강한 노트다. 「파이프라인 단계」와 「환경 승격」은 ByteByteGo의 System Design 101 가이드 「[CI/CD Pipeline Explained in Simple Terms](https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms)」, 「[CI/CD Simplified Visual Guide](https://bytebytego.com/guides/cicd-simplified-visual-guide)」, 「[How do Companies Ship Code to Production?](https://bytebytego.com/guides/how-do-companies-ship-code-to-production)」를 바탕으로 보강했다.
 
 배포 과정은 사람이 손으로 할수록 **휴먼 에러**가 잦다. 빌드 명령을 빠뜨리거나, 테스트를 건너뛰거나, 엉뚱한 서버에 올리는 식이다. CI/CD는 이 과정을 파이프라인으로 자동화해 매번 같은 절차가 실행되게 만든다.
 
@@ -20,6 +20,35 @@ CI/CD는 개발과 운영의 협업 문화인 DevOps의 핵심 수단으로, 개
 | --- | --- | --- |
 | **CI** (Continuous Integration, 지속적 통합) | 여러 개발자의 변경을 자주 main에 합치고 그때마다 자동 검증 | 푸시·MR마다 빌드, 린트, 테스트 실행 |
 | **CD** (Continuous Delivery/Deployment, 지속적 제공/배포) | 검증된 결과물을 언제든 배포 가능한 상태로 만들고(Delivery), 나아가 자동 배포까지(Deployment) | 이미지 빌드·레지스트리 푸시, 스테이징/운영 배포 |
+
+두 CD의 차이는 **운영 배포 직전에 사람의 승인이 있느냐**다. 지속적 제공은 운영 배포를 버튼 하나로 할 수 있는 상태까지 자동화하고, 지속적 배포는 그 버튼까지 없앤다.
+
+## 파이프라인 단계
+
+소프트웨어 개발 수명 주기(SDLC)의 개발 → 테스트 → 배포 → 운영 단계를 CI/CD가 자동으로 잇는다. 어느 단계에서든 실패하면 개발자에게 바로 알려 고치게 하는 **빠른 피드백**이 목적이다.
+
+```text
+커밋·push
+  → CI 서버가 변경 감지, 빌드 시작
+  → 컴파일, 단위·통합 테스트, 커버리지·정적 분석 게이트
+  → 결과를 개발자에게 알림 (실패하면 여기서 멈추고 개발로 되돌림)
+  → 성공하면 산출물(아티팩트·이미지)을 저장소에 보관
+  → 스테이징에 배포, E2E·추가 테스트
+  → 승인(지속적 제공) 또는 자동(지속적 배포)으로 운영 배포
+```
+
+### 환경 승격
+
+여러 팀이 함께 개발하는 조직은 **같은 산출물**을 환경마다 차례로 올리며(승격, promotion) 검증한다.
+
+| 환경 | 누가 무엇을 확인하나 |
+| --- | --- |
+| dev | 개발자가 통합된 결과를 빠르게 확인한다 |
+| QA (팀·기능별로 여러 개) | QA가 기능·회귀·성능 테스트를 한다. 기능을 독립적으로 시험하려고 환경을 나눈다 |
+| UAT (사용자 인수 테스트) | 실제 사용자·현업이 요구 사항대로 동작하는지 확인한다. 통과하면 릴리스 후보가 된다 |
+| production | 일정에 맞춰 배포하고, SRE·운영이 모니터링한다 |
+
+환경마다 다시 빌드하지 않고 **한 번 빌드한 산출물을 그대로 승격**해야 "QA에서 본 것이 운영에 나간 것"이 보장된다. 환경마다 다른 것은 설정뿐이어야 한다. 운영에 올리는 방식(롤링·블루-그린·카나리)은 [[deployment-strategies|배포 전략]]에 있다.
 
 ## Docker와 함께 쓰는 흐름
 
@@ -92,7 +121,8 @@ Vercel·Netlify 같은 배포 플랫폼은 저장소를 연결하면 푸시마�
 
 - CI = 합칠 때마다 자동 빌드·테스트, CD = 검증된 결과물을 자동으로 배포 가능/배포.
 - Docker 이미지를 파이프라인의 산출물로 삼으면 테스트한 환경 그대로 배포된다.
+- 한 번 빌드한 산출물을 dev → QA → UAT → 운영으로 승격한다. 환경마다 다른 것은 설정뿐이다.
 - 비밀 값은 CI 변수로 관리한다.
 - GitHub Actions는 `on` + `jobs`로 쓰고, 브랜치 보호의 필수 검사로 걸어야 강제력이 생긴다.
 
-관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[tdd|프론트엔드에서의 TDD]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[test-run-stages|테스트를 돌리는 시점: 로컬, PR, CI]]
+관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[tdd|프론트엔드에서의 TDD]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[test-run-stages|테스트를 돌리는 시점: 로컬, PR, CI]], [[deployment-strategies|배포 전략]], [[devops-sre-platform-engineering|DevOps, SRE, 플랫폼 엔지니어링, NoOps]]
