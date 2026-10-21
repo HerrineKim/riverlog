@@ -5,7 +5,7 @@ summary: "머신 러닝은 데이터의 분포를 배워 예측하는 일이다.
 tags: ["ai", "machine-learning", "python", "data-science"]
 source: other
 date: "2026-10-20"
-sources: ["https://webactually.com/2021/01/15/%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B%9D-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0/", "https://blog.gregbrockman.com/how-i-became-a-machine-learning-practitioner"]
+sources: ["https://webactually.com/2021/01/15/%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B%9D-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0/", "https://blog.gregbrockman.com/how-i-became-a-machine-learning-practitioner", "https://developers.google.com/machine-learning/glossary/?hl=ko", "https://developers.google.com/machine-learning/crash-course?hl=ko", "https://www.youtube.com/channel/UCueLU1pCvFlM8Y8sth7a6RQ/videos"]
 ---
 
 > Alvin Wan의 「머신 러닝 시작하기」(웹액츄얼리 번역, 2021.01)를 바탕으로 재구성한 노트다.
@@ -115,6 +115,12 @@ sources: ["https://webactually.com/2021/01/15/%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B
 | scikit-learn | 회귀·분류·군집 등 고전 기법을 바로 쓰는 라이브러리 |
 | PyTorch | 신경망과 딥러닝 |
 | Jupyter | 실험과 시각화를 한 문서에서([[jupyter-notebook\|Jupyter Notebook]]) |
+
+## 더 읽을거리
+
+- [Google 머신러닝 단기집중과정](https://developers.google.com/machine-learning/crash-course?hl=ko): 선형·로지스틱 회귀와 분류, 수치·범주형 데이터 다루기, 일반화와 과적합, 신경망·임베딩·LLM 입문, 프로덕션 ML 시스템과 공정성까지 영상·인터랙티브 시각화·실습으로 다루는 무료 강좌.
+- [Google 머신러닝 용어집](https://developers.google.com/machine-learning/glossary/?hl=ko): ML·AI 용어를 알파벳순으로 정의한 한국어 용어집.
+- [김성범 교수(고려대 산업경영공학부) 유튜브 채널](https://www.youtube.com/channel/UCueLU1pCvFlM8Y8sth7a6RQ/videos): 「핵심 머신러닝」 강의 시리즈.
 
 ## 정리
 

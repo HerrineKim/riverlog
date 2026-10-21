@@ -140,4 +140,4 @@ pd.DataFrame(rows).to_csv("blog.csv", index=False, encoding="utf-8-sig")
 - 선택자는 바뀐다. 여러 개를 두고, 빈 값이 나오면 선택자부터 의심한다.
 - 예외는 글 단위로 잡고, 한 글 = dict 한 개로 모아 CSV로 저장한다.
 
-관련 노트: [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[rest-api|REST API]]
+관련 노트: [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[rest-api|REST API]], [[web-scraping-strategy|웹 크롤링 전략]]

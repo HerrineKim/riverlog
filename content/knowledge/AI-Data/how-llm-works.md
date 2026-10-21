@@ -5,10 +5,11 @@ summary: "대규모 언어 모델은 '지금까지의 글에 이어질 그럴듯
 tags: ["ai", "llm", "deep-learning", "nlp", "machine-learning"]
 source: other
 date: "2026-10-20"
-sources: ["https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/", "https://blog.pragmaticengineer.com/how-does-chatgpt-work/", "https://www.youtube.com/watch?v=zjkBMFhNj_g"]
+sources: ["https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/", "https://blog.pragmaticengineer.com/how-does-chatgpt-work/", "https://www.youtube.com/watch?v=zjkBMFhNj_g", "https://bytebytego.com/guides/how-does-chatgpt-work", "https://bytebytego.com/guides/chatgpt-timeline", "https://bytebytego.com/guides/deepseek-1-pager"]
 ---
 
 > Stephen Wolfram의 「[What Is ChatGPT Doing … and Why Does It Work?](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)」(2023.02)를 바탕으로, OpenAI Applied 팀이 설명한 「[How does ChatGPT work?](https://blog.pragmaticengineer.com/how-does-chatgpt-work/)」(The Pragmatic Engineer, 2024.04)의 비유와 Andrej Karpathy의 강연 「[Intro to Large Language Models](https://www.youtube.com/watch?v=zjkBMFhNj_g)」(2023.11)를 더해, 추론 모델처럼 그 뒤 바뀐 사실은 2026년 기준으로 고쳐 재구성한 노트다.
+> 보상 모델 단계, 서비스 앞뒤의 모더레이션, MoE·GRPO, 역사는 ByteByteGo의 System Design 101 가이드 「[How does ChatGPT work?](https://bytebytego.com/guides/how-does-chatgpt-work)」, 「[ChatGPT Timeline](https://bytebytego.com/guides/chatgpt-timeline)」, 「[DeepSeek 1-Pager](https://bytebytego.com/guides/deepseek-1-pager)」를 바탕으로 보강했다.
 
 ## LLM이 하는 일
 
@@ -161,6 +162,45 @@ Llama 2처럼 기본 모델과 어시스턴트 모델을 함께 공개하면, �
 
 모델 간 순위는 LMArena(옛 Chatbot Arena) 같은 리더보드가 매긴다. 사용자가 이름을 가린 두 모델의 답 중 나은 것을 고르면, 체스처럼 Elo 점수를 계산한다. 대체로 비공개 모델이 앞서고 공개 가중치 모델이 뒤쫓는다.
 
+### RLHF의 세 단계
+
+사후 학습의 고전적인 틀(InstructGPT·초기 ChatGPT)은 세 단계다.
+
+```text
+① 지도 미세 조정(SFT)   질문 → 모범 답변 쌍으로 기본 모델을 미세 조정
+② 보상 모델 학습        같은 질문에 대한 여러 답을 사람이 좋은 순서로 매김 → 그 순위를 맞히는 보상 모델
+③ 강화 학습            모델이 답을 쓰면 보상 모델이 점수를 매기고, 점수가 오르도록 정책을 갱신(PPO)
+```
+
+PPO(Proximal Policy Optimization)는 정책을 한 번에 너무 많이 바꾸지 않게 제한하는 강화 학습 알고리즘이다([[reinforcement-learning|강화 학습]]). 지금은 선호 쌍에서 바로 학습하는 DPO처럼 보상 모델을 따로 두지 않는 방법도 함께 쓴다.
+
+### 효율을 높이는 설계: MoE와 GRPO
+
+공개 가중치 추론 모델(DeepSeek-R1 등)이 널리 알린 두 기법이 있다.
+
+| 기법 | 원리 | 얻는 것 |
+| --- | --- | --- |
+| **MoE** (Mixture of Experts) | 피드포워드 층을 여러 「전문가」 서브네트워크로 나누고, 라우터가 토큰마다 일부 전문가만 고른다 | 전체 매개변수는 크지만 토큰 하나에 **일부만 계산**하므로, 같은 계산량으로 더 큰 모델을 쓴다. 대신 전체 가중치를 올려 둘 메모리는 필요하다 |
+| **GRPO** (Group Relative Policy Optimization) | 같은 질문에 답을 여러 개 뽑아, 그 묶음 안의 **상대 점수**(평균보다 나은가)를 이점(advantage)으로 쓴다 | PPO가 필요로 하는 별도의 가치(크리틱) 모델이 없어 메모리와 계산이 준다. 수학·코드처럼 정답을 자동 판정할 수 있는 보상과 잘 맞는다 |
+
+GRPO처럼 검증 가능한 보상으로 강화 학습을 크게 돌리면, 사람이 쓴 사고 과정 예시 없이도 모델이 긴 추론을 스스로 익힌다. 아래 「자기 개선」의 2단계에 해당한다.
+
+## 서비스로 감싸기: 모더레이션
+
+챗봇 서비스는 모델 하나가 아니다. 모델 앞뒤로 안전 장치를 둔다.
+
+```text
+사용자 입력 ─▶ 입력 모더레이션 ──통과──▶ 모델 ─▶ 출력 모더레이션 ──통과──▶ 사용자
+                   │ 위반                          │ 위반
+                   └────────────▶ 정해 둔 거절·안내 응답 ◀┘
+```
+
+- 입력 쪽은 정책 위반 요청을 걸러 모델까지 보내지 않는다.
+- 출력 쪽은 생성된 답이 유해·편향·민감 정보를 담지 않았는지 다시 검사한다.
+- 걸리면 모델 답 대신 미리 정해 둔 템플릿 응답을 보여 준다.
+
+모더레이션 분류기만으로는 우회 공격을 다 막지 못한다. 공격 유형과 방어는 [[llm-security-attacks|LLM 보안 공격]]에 있다.
+
 ## 왜 작동하나
 
 LLM이 그럴듯한 글을 쓴다는 사실은 기술보다 언어에 대해 더 많은 것을 말해 준다. **사람의 언어와 그 밑의 사고는 생각보다 규칙적이고 계산적으로 얕다.** 에세이 쓰기는 어려워 보였지만, 신경망이 통계적 규칙성만으로 재현할 수 있을 만큼의 구조였다.
@@ -206,6 +246,18 @@ LLM이 그럴듯한 글을 쓴다는 사실은 기술보다 언어에 대해 더
 이 모두를 묶으면 LLM은 챗봇이 아니라 **새 운영체제의 커널**처럼 보인다. 텍스트를 읽고 쓰고, 검색하고, 도구를 부르고, 보고 듣고 말하며, 오래 생각한다. 컨텍스트 창은 RAM이고, 커널은 필요한 정보를 컨텍스트 창에 들이고 내보낸다. Windows·macOS 옆에 Linux 생태계가 있듯 비공개 모델 옆에 공개 가중치 생태계가 있다. 자세한 대응표는 [[harness-engineering|프롬프트에서 하네스로]]에 있고, 이 새 스택에 따라온 보안 문제는 [[llm-security-attacks|LLM 보안 공격]]에 있다.
 
 **LLM은 "무엇이 자연스러운가"에 강하고, 도구는 "무엇이 참인가"에 강하다.** 둘을 묶는 것이 에이전트 설계의 기본 발상이다. 에이전트가 스스로 도는 구조는 [[loop-engineering|루프 엔지니어링]]에 있다.
+
+## 역사: 규칙에서 트랜스포머까지
+
+| 시기 | 흐름 |
+| --- | --- |
+| 1950~60년대 | 사람이 규칙을 직접 쓰는 **규칙 기반** 시스템 |
+| 1980년대~ | 데이터로 분류 규칙을 배우는 **머신 러닝**. 데이터 규모는 작았다 |
+| 1990~2010년대 | **신경망**의 부상. 이미지는 CNN, 언어 같은 순서 데이터는 RNN(LSTM), 생성은 생성자·판별자가 겨루는 GAN |
+| 2017 | 「Attention Is All You Need」의 **트랜스포머**. 순서대로 처리하던 RNN과 달리 문장 전체를 병렬로 학습해 학습 시간이 크게 줄었다 |
+| 2018~ | 트랜스포머를 거대한 데이터로 사전 학습한 GPT 계열과 BERT. 규모를 키울수록 성능이 오르는 흐름이 이어진다 |
+| 2022~ | 사람 피드백 강화 학습으로 다듬은 **대화형 어시스턴트**(ChatGPT)가 대중화된다 |
+| 2024~ | 답하기 전에 길게 생각하는 **추론 모델**, 도구를 쓰며 스스로 일하는 에이전트 |
 
 ## 정리
 

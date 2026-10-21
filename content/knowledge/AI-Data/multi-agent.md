@@ -5,10 +5,27 @@ summary: "여러 AI 에이전트가 조사·작성·검토·실행 역할을 나
 tags: ["ai", "llm", "agent", "architecture"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://riverkim.kr/331", "https://learn.microsoft.com/en-us/agent-framework/overview/", "https://code.claude.com/docs/en/sub-agents"]
+sources: ["https://riverkim.kr/331", "https://learn.microsoft.com/en-us/agent-framework/overview/", "https://code.claude.com/docs/en/sub-agents", "https://bytebytego.com/guides/what-is-an-ai-agent"]
 ---
 
 > riverkim.kr에 쓴 카드뉴스(2026.07)를 다시 정리한 노트다.
+> 에이전트 하나의 정의와 특성은 ByteByteGo의 System Design 101 가이드 「[What is an AI Agent?](https://bytebytego.com/guides/what-is-an-ai-agent)」를 바탕으로 보강했다.
+
+## AI 에이전트란
+
+AI 에이전트(AI agent)는 **환경을 인식하고, 정보를 모으고, 그 정보로 정해진 목표를 이루기 위한 행동을 스스로 고르는 소프트웨어**다. LLM 에이전트에서는 LLM이 정보 처리와 의사 결정을 맡는다.
+
+| 특성 | 의미 |
+| --- | --- |
+| 자율성 | 사람이 매번 지시하지 않아도 행동한다. 중요한 지점에는 사람 확인(human in the loop)을 둘 수 있다 |
+| 기억 | 사용자 선호와 지식을 저장해 개인화하고, 대화 밖에서도 진행 상황을 이어 간다 |
+| 인식 | 환경에서 들어오는 정보(파일, 화면, API 응답)를 받아 해석한다 |
+| 도구 사용 | 웹 검색, 코드 실행, API 호출 같은 도구로 실제 일을 한다 |
+| 협업 | 다른 에이전트나 사람과 함께 일한다 |
+
+고전 AI의 분류로는 규칙에만 반응하는 **단순 반사형**, 내부 상태를 두는 **모델 기반 반사형**, 목표를 기준으로 행동을 고르는 **목표 기반**, 결과의 효용을 비교하는 **효용 기반**, 경험으로 나아지는 **학습형** 에이전트로 나눈다([[reinforcement-learning|강화 학습]]의 에이전트도 같은 뜻이다).
+
+시스템 구성은 에이전트 하나가 개인 비서처럼 일하는 **단일 에이전트**, 여러 에이전트가 협력하거나 경쟁하는 **멀티 에이전트**, 에이전트와 사람이 함께 일하는 **사람-기계 협업**으로 나뉜다. 아래는 멀티 에이전트를 다룬다.
 
 ## 멀티 에이전트란
 
@@ -105,4 +122,4 @@ sources: ["https://riverkim.kr/331", "https://learn.microsoft.com/en-us/agent-fr
 - 에이전트가 늘면 비용과 지연도 는다. 필요한 만큼만 나눈다.
 - **멀티 에이전트의 핵심은 분업과 연결이다.**
 
-관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[loop-engineering|루프 엔지니어링]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]]
+관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[loop-engineering|루프 엔지니어링]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[harness-engineering|프롬프트에서 하네스로]]

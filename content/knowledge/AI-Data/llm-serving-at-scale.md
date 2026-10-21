@@ -107,4 +107,4 @@ GPU 공급이 수요를 따라가지 못하면 여러 지역·데이터 센터�
 - GPU 사용률 대신 배치 크기와 KV 캐시 사용률을 본다.
 - GPU가 모자라면 오토스케일도 엣지 배치도 통하지 않는다. 남는 길은 효율이다.
 
-관련 노트: [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[scale-and-intelligence-utility|스케일과 지능 유틸리티]], [[cache-friendly-code|캐시를 고려한 코드]], [[web-scalability-components|웹 확장성의 구성 요소: 한 장으로 보는 웹 아키텍처]]
+관련 노트: [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[scale-and-intelligence-utility|스케일과 지능 유틸리티]], [[cache-friendly-code|캐시를 고려한 코드]], [[web-scalability-components|웹 확장성의 구성 요소: 한 장으로 보는 웹 아키텍처]], [[ml-model-serving|머신러닝 모델 서빙]]

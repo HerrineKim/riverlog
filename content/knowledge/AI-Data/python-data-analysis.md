@@ -5,8 +5,10 @@ summary: "데이터를 구하고 처리한 뒤 탐색적 데이터 분석(EDA)�
 tags: ["data-science", "python", "eda", "visualization"]
 source: notion
 date: "2026-10-13"
-sources: ["https://pandas.pydata.org/", "https://pola.rs/"]
+sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas"]
 ---
+
+> 노션 정리를 바탕으로 재구성하고, pandas로 표 합치기는 ByteByteGo의 System Design 101 가이드 「[5 Functions to Merge Data with Pandas](https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas)」를 바탕으로 pandas 공식 문서 기준으로 보강한 노트다.
 
 파이썬은 데이터 수집부터 분석·시각화까지 한 언어로 처리할 수 있는 생태계를 갖추고 있어 데이터 분석의 기본 언어로 쓰인다. 분석은 대략 **데이터 구하기 → 처리와 분석 → 탐색·시각화 → 개선**의 흐름으로 진행된다.
 
@@ -25,7 +27,7 @@ sources: ["https://pandas.pydata.org/", "https://pola.rs/"]
 - **크롤링 프레임워크**: `scrapy`
 - **브라우저 자동화**(JavaScript로 그려지는 페이지): `selenium`
 - **파싱**: `BeautifulSoup`, `lxml`, `json`
-- **기사 본문 추출**: `newspaper4k` — [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]]
+- **기사 본문 추출**: `newspaper4k` — [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[data-pipeline-basics|데이터 파이프라인과 저장소 용어]]
 
 ```python
 import requests
@@ -87,6 +89,22 @@ df.describe()          # 숫자 열의 요약 통계
 df.groupby("region")["amount"].sum().sort_values(ascending=False)
 ```
 
+#### pandas로 표 합치기
+
+| 함수 | 합치는 방식 | 쓰임 |
+| --- | --- | --- |
+| `pd.concat([a, b])` | 위아래(`axis=0`) 또는 옆으로(`axis=1`) 이어 붙인다 | 샤드별·날짜별로 나뉜 같은 구조의 표 합치기 |
+| `a.merge(b, on="key", how=...)` | **열 값**을 키로 SQL 조인처럼 합친다. `how`는 `inner`(기본)·`left`·`right`·`outer` | 키가 같은 서로 다른 도메인의 데이터 결합 |
+| `a.join(b)` | **인덱스**를 키로 합친다. 기본은 left 조인 | 인덱스가 이미 맞춰진 표에 열 붙이기 |
+| `a.combine(b, func)` | 같은 위치의 셀끼리 함수로 계산해 합친다. `combine_first`는 `a`의 빈칸을 `b`로 채운다 | 두 출처 중 작은 값 고르기, 결측치 보완 같은 정제 |
+
+과거에는 행을 덧붙일 때 `DataFrame.append`를 썼지만 pandas 2.0에서 없어졌다. 지금은 `pd.concat`을 쓴다. 크롤러처럼 행이 계속 늘어나면 리스트에 모았다가 마지막에 한 번 `concat`하는 편이 빠르다.
+
+```python
+orders.merge(users, left_on="user_id", right_on="id", how="left")
+pd.concat([df_jan, df_feb], ignore_index=True)
+```
+
 ## 2. EDA: 탐색적 데이터 분석
 
 **EDA(Exploratory Data Analysis)** 는 본격적인 모델링 전에 시각화, 요약 통계, 간단한 모델 등으로 데이터를 여러 각도에서 살펴보며 **이해하는** 과정이다.
@@ -127,6 +145,7 @@ df.groupby("region")["amount"].sum().sort_values(ascending=False)
 ## 더 공부하기
 
 - 커뮤니티: PyCon, PyData, JupyterCon
+- 학습 지도: 「[I want to study Data Science](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki)」 위키는 데이터 분석가·엔지니어·ML 엔지니어·과학자 직무 구분과 Git·리눅스·파이썬·선형대수부터 비전·NLP·추천·MLOps까지의 공부 목록, 데이터셋·포트폴리오 자료를 모아 둔다.
 - 책: 『파이썬 라이브러리를 활용한 데이터 분석』, 『파이썬 데이터 사이언스 핸드북』, 『밑바닥부터 시작하는 데이터 과학』
 
 관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-journalism|데이터 저널리즘 실무]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[location-estimation|데이터의 위치 추정]], [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]]

@@ -5,10 +5,11 @@ summary: "웹 AI는 모델이 어디서 도나(브라우저 / 서버)와 얼마�
 tags: ["ai", "llm", "architecture", "web", "performance"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/ai/platform", "https://web.dev/learn/ai/glossary", "https://developer.chrome.com/docs/ai/built-in-apis"]
+sources: ["https://web.dev/learn/ai/platform", "https://web.dev/learn/ai/glossary", "https://developer.chrome.com/docs/ai/built-in-apis", "https://bytebytego.com/guides/the-open-source-ai-stack"]
 ---
 
 > web.dev의 「[Learn AI](https://web.dev/learn/ai)」 강좌 중 「Pick your platform」 모듈을 바탕으로 재구성한 노트다.
+> 자체 호스팅 스택의 계층은 ByteByteGo의 System Design 101 가이드 「[The Open Source AI Stack](https://bytebytego.com/guides/the-open-source-ai-stack)」을 바탕으로 보강했다.
 
 ## 두 축, 네 가지 선택지
 
@@ -105,6 +106,33 @@ AI 기능을 어디에 올릴지는 속도·비용·확장성·신뢰를 함께 
 | 보안 | 공격 면이 둘이다. 로컬과 클라우드 엔드포인트 모두 단단히 |
 
 팀이 작거나 핵심 기능이 아니면 이 복잡도를 들이지 않는 편이 낫다.
+
+## 오픈소스로 쌓는 서버 AI 스택
+
+자체 호스팅을 고르면 관리형 API가 대신해 주던 계층을 직접 채워야 한다. 계층마다 오픈소스 선택지가 있다.
+
+```text
+프론트엔드        채팅·검색 UI
+   │
+백엔드·오케스트레이션  API 서버, 프롬프트·도구 호출·RAG 흐름 조립
+   │                 │
+모델 접근·서빙      임베딩·RAG     ─▶  데이터·검색 저장소
+   │
+LLM (공개 가중치)
+```
+
+| 계층 | 하는 일 | 예 |
+| --- | --- | --- |
+| 프론트엔드 | 대화·스트리밍 UI, 배포 | Next.js, Streamlit(파이썬으로 빠른 데모) |
+| 백엔드 · 오케스트레이션 | API, 프롬프트 체인, 도구 호출, 워크플로 | FastAPI, LangChain, LlamaIndex |
+| 모델 접근 · 서빙 | 모델 내려받기, 로컬 실행, 고성능 추론 서버 | Hugging Face(모델 허브), Ollama(로컬 실행), vLLM(서빙) |
+| 임베딩 · RAG | 문서를 벡터로 바꾸고 관련 조각을 찾아 프롬프트에 넣는다 | 오픈 임베딩 모델(Nomic, Jina 등) |
+| 데이터 · 검색 | 원본과 벡터를 저장하고 근접 이웃을 찾는다 | Postgres + pgvector, Milvus, Weaviate, FAISS(라이브러리) |
+| LLM | 생성 | Llama, Mistral, Qwen, Gemma, Phi 같은 공개 가중치 모델 |
+
+- 모델 순위는 빠르게 바뀌므로 특정 모델에 묶이지 않게 **모델 접근 계층을 추상화**한다. Ollama·vLLM 모두 OpenAI 호환 API를 제공해 교체가 쉽다.
+- 벡터 저장소는 이미 Postgres를 쓰면 pgvector부터 시작하고, 규모가 커질 때 전용 벡터 DB를 검토한다.
+- 「오픈소스」라도 모델 가중치의 라이선스(상업적 이용 조건)는 모델마다 다르다.
 
 ## 정리
 

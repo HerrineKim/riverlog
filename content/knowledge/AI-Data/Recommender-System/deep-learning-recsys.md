@@ -5,10 +5,10 @@ summary: "아이템이 수십만~수억 개일 때 쓰는 딥러닝 추천의 2�
 tags: ["ai", "deep-learning", "recommender-system", "embedding", "mlops"]
 source: other
 date: "2026-10-20"
-sources: ["https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EA%B0%9C%EC%9D%B8%ED%99%94-%EC%B6%94%EC%B2%9C-1eda682c2e8c", "https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-in-production-fa623877e56a", "https://navercorp.com/media/pressReleasesDetail?seq=29610", "https://navercorp.com/media/pressReleasesDetail?seq=29595", "https://engineering.linecorp.com/ko/blog/a-new-challenge-for-line-timeline-1/", "https://byline.network/2026/04/17_28182764/", "https://research.google/pubs/pub45530/"]
+sources: ["https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EA%B0%9C%EC%9D%B8%ED%99%94-%EC%B6%94%EC%B2%9C-1eda682c2e8c", "https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-in-production-fa623877e56a", "https://navercorp.com/media/pressReleasesDetail?seq=29610", "https://navercorp.com/media/pressReleasesDetail?seq=29595", "https://engineering.linecorp.com/ko/blog/a-new-challenge-for-line-timeline-1/", "https://byline.network/2026/04/17_28182764/", "https://research.google/pubs/pub45530/", "https://bytebytego.com/guides/how-does-twitter-recommend-tweets"]
 ---
 
-> 당근마켓의 「[딥러닝 개인화 추천](https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EA%B0%9C%EC%9D%B8%ED%99%94-%EC%B6%94%EC%B2%9C-1eda682c2e8c)」·「[딥러닝 추천 시스템 in production](https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-in-production-fa623877e56a)」(2019), 네이버 AiRS·AiTEMS 발표 자료(2017), LINE 「[Timeline의 새로운 도전 1편](https://engineering.linecorp.com/ko/blog/a-new-challenge-for-line-timeline-1/)」(2020)을 바탕으로, 이후의 흐름은 2026년 공개 내용으로 보강해 재구성한 노트다.
+> 당근마켓의 「[딥러닝 개인화 추천](https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EA%B0%9C%EC%9D%B8%ED%99%94-%EC%B6%94%EC%B2%9C-1eda682c2e8c)」·「[딥러닝 추천 시스템 in production](https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-in-production-fa623877e56a)」(2019), 네이버 AiRS·AiTEMS 발표 자료(2017), LINE 「[Timeline의 새로운 도전 1편](https://engineering.linecorp.com/ko/blog/a-new-challenge-for-line-timeline-1/)」(2020)을 바탕으로, 이후의 흐름은 2026년 공개 내용으로 보강해 재구성한 노트다. 피드의 다단계 파이프라인은 ByteByteGo의 System Design 101 가이드 「[How does Twitter recommend "For You" Timeline](https://bytebytego.com/guides/how-does-twitter-recommend-tweets)」를 바탕으로 덧붙였다.
 
 ## 왜 딥러닝으로 가나
 
@@ -40,6 +40,20 @@ sources: ["https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EA%B0%9C%EC%9D
 | --- | --- | --- | --- |
 | 후보 생성 | 최근 소비 이력, 지역 등 일부 특성 | 사용자 벡터 → 가까운 아이템 수백 개 | 원리는 행렬 분해와 같다. 사용자 벡터를 신경망으로 만든다는 점만 다르다 |
 | 랭킹 | 사용자·아이템·문맥 특성 전부 | 아이템별 점수 | 내적이 아니라 신경망 출력으로 점수를 내는 회귀 모델이다 |
+
+### 피드 추천의 다단계 파이프라인
+
+소셜 피드처럼 후보 풀이 거대하고 응답 시간이 짧아야 하는 서비스는 2단계를 더 잘게 나눈다. 공개된 X(옛 Twitter)의 「For You」 타임라인 알고리즘이 대표 예다.
+
+| 단계 | 하는 일 | 후보 수 감각 |
+| --- | --- | --- |
+| 후보 수집(candidate sourcing) | 팔로우 관계 그래프, 임베딩 유사도 등 여러 소스에서 후보를 모은다 | 수억 → 수천 |
+| 전역 필터링 | 차단·뮤트, 안전 정책, 이미 본 글을 거른다 | 수천 → 1~2천 |
+| 점수 매기기·랭킹 | 신경망이 참여(좋아요·답글·재게시) 확률을 예측해 점수를 낸다 | |
+| 다양성 필터 | 한 작성자·한 주제가 몰리지 않게 섞는다 | |
+| 혼합(mixing) | 광고, 팔로우 추천 같은 다른 모듈과 섞어 최종 피드를 만든다 | 수십 |
+
+**단계마다 계산 비용이 커지는 만큼 후보 수를 줄여서**, 전체를 짧은 응답 시간 안에 끝낸다.
 
 ### 후보 모델 학습: 다음 아이템 맞히기
 
