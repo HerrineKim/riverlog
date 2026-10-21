@@ -98,4 +98,4 @@ sources: ["https://webactually.com/2013/05/24/%eb%82%b4-%ed%94%84%eb%a1%9c%ec%a0
 - 견적 전에 예산과 진짜 성공 기준을 묻고, 견적서에는 숫자의 근거를 쓴다.
 - 모든 시간을 기록하고, 유지보수·교육은 처음부터 계약에 넣는다.
 
-관련 노트: [[service-contract-tips|업체·전문가와 거래할 때]], [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]], [[wordpress|워드프레스]]
+관련 노트: [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]], [[wordpress|워드프레스]]
