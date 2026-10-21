@@ -167,4 +167,4 @@ body { font-family: "Elena", Georgia, serif; }   /* 폴백을 반드시 둔다 *
 - 웹폰트는 WOFF2 + `format()` 힌트 + 폴백 글꼴 + `font-display`.
 - 규칙보다 실제 기기에서 읽어 보는 것이 우선이다.
 
-관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[accessible-css-typography|접근성을 위한 CSS와 타이포그래피]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[logical-properties|쓰기 모드와 논리적 속성]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[web-font-performance|웹 폰트 성능 최적화]]
+관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[accessible-css-typography|접근성을 위한 CSS와 타이포그래피]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[logical-properties|쓰기 모드와 논리적 속성]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[web-font-performance|웹 폰트 성능 최적화]], [[line-height-vertical-align|line-height와 vertical-align]]

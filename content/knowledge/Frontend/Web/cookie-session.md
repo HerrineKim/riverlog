@@ -5,10 +5,11 @@ summary: "상태가 없는 HTTP에서 브라우저와 서버가 사용자를 기
 tags: ["http", "web", "browser", "security"]
 source: til
 date: "2026-10-20"
-sources: ["https://ko.javascript.info/cookie", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies", "https://web.dev/learn/privacy/third-parties", "https://privacysandbox.google.com/blog/privacy-sandbox-next-steps"]
+sources: ["https://ko.javascript.info/cookie", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies", "https://web.dev/learn/privacy/third-parties", "https://privacysandbox.google.com/blog/privacy-sandbox-next-steps", "https://bytebytego.com/guides/what-are-the-differences-between-cookies-and-sessions", "https://bytebytego.com/guides/http-cookies-explained-with-a-simple-diagram", "https://bytebytego.com/guides/what-is-a-cookie"]
 ---
 
 > TIL을 정리하고, 서드파티 쿠키 부분은 web.dev의 「[Learn Privacy](https://web.dev/learn/privacy)」 강좌와 Privacy Sandbox 공식 발표로 보강했다.
+> 쿠키와 세션 비교표는 ByteByteGo의 System Design 101 가이드 「[What are the differences between cookies and sessions?](https://bytebytego.com/guides/what-are-the-differences-between-cookies-and-sessions)」, 「[What is a cookie?](https://bytebytego.com/guides/what-is-a-cookie)」를 바탕으로 보탰다.
 
 HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토콜이라, 그대로는 "방금 로그인한 그 사용자"를 기억하지 못한다. **쿠키(Cookie)** 는 서버가 브라우저에 보내 저장시키는 작은 데이터 조각으로, 이후 같은 서버에 요청할 때마다 함께 전송되어 상태를 유지하게 해 준다. **세션(Session)** 은 쿠키를 이용해 상태를 서버 쪽에 보관하는 방식이다.
 
@@ -89,6 +90,16 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 ## 세션
 
 세션 방식은 민감한 정보를 쿠키에 직접 담지 않는다. 서버가 세션 데이터를 저장하고, 브라우저에는 그 데이터를 찾을 **세션 ID**만 쿠키로 준다. 로그인부터 조회까지의 흐름은 [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]]에 있다.
+
+| 구분 | 쿠키에 값을 직접 담기 | 세션 |
+| --- | --- | --- |
+| 데이터 위치 | 사용자 기기 | 서버(메모리·Redis·DB). 쿠키에는 세션 ID만 |
+| 크기 | 쿠키당 약 4KB | 서버 저장소가 허락하는 만큼 |
+| 서버 조회 | 필요 없다. 요청에 이미 실려 온다 | 요청마다 세션 ID로 저장소를 조회한다 |
+| 변조·노출 | 사용자가 읽고 고칠 수 있다. 쓰려면 서명·암호화가 필요하다 | 사용자는 ID만 본다 |
+| 사용자 통제 | 브라우저에서 쿠키를 막거나 지울 수 있다 | 쿠키가 막히면 세션 ID도 전달되지 않는다 |
+
+쿠키에 값을 직접 담는 방식은 언어 설정·테마처럼 **노출돼도 괜찮고 서버가 매번 DB를 보지 않아도 되는 선호값**에 맞다. 로그인 상태나 권한처럼 신뢰해야 하는 값은 세션(또는 서명된 토큰)으로 둔다.
 
 로그아웃할 때는 서버의 세션을 지우고, 응답에 `Clear-Site-Data: "cookies", "storage"`를 붙여 브라우저에 남은 쿠키·저장소까지 지운다([[privacy-data-minimization|데이터 최소화와 프라이버시 실천]]).
 

@@ -5,10 +5,10 @@ summary: "정적 사이트 생성기(SSG)는 마크다운 콘텐츠와 템플릿
 tags: ["frontend", "web", "rendering", "performance", "devops"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2021/01/14/%EC%A0%95%EC%A0%81-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%83%9D%EC%84%B1%EA%B8%B0-Eleventy%EB%A1%9C-%EC%9B%8C%EB%93%9C%ED%94%84%EB%A0%88%EC%8A%A4-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%98%AE%EA%B8%B0/", "https://www.11ty.dev/docs/", "https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022"]
+sources: ["https://webactually.com/2021/01/14/%EC%A0%95%EC%A0%81-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%83%9D%EC%84%B1%EA%B8%B0-Eleventy%EB%A1%9C-%EC%9B%8C%EB%93%9C%ED%94%84%EB%A0%88%EC%8A%A4-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%98%AE%EA%B8%B0/", "https://www.11ty.dev/docs/", "https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022", "https://wormwlrm.github.io/2022/02/25/Migration-Journey-from-Jekyll-to-Gatsby.html"]
 ---
 
-> Scott Dawson의 「정적 사이트 생성기 Eleventy로 워드프레스 사이트 옮기기」(웹액츄얼리 번역, 2021.01)를 바탕으로 재구성한 노트다.
+> Scott Dawson의 「정적 사이트 생성기 Eleventy로 워드프레스 사이트 옮기기」(웹액츄얼리 번역, 2021.01)를 바탕으로 재구성한 노트다. 「[Jekyll에서 Gatsby로 떠나는 마이그레이션 여정](https://wormwlrm.github.io/2022/02/25/Migration-Journey-from-Jekyll-to-Gatsby.html)」의 내용을 더해 보강했다.
 
 ## 정적 사이트 생성기란
 
@@ -68,6 +68,19 @@ SSG로 만든 정적 파일(Markup)에 JavaScript와 외부 API를 더해 동적
 6. **임베드·이미지는 플러그인으로**: 유튜브 URL을 플레이어로 바꾸는 플러그인, 빌드 때 여러 크기·형식을 만들어 `srcset`을 붙이는 이미지 플러그인을 쓴다([[responsive-images|반응형 이미지]]).
 7. **폼·도메인·HTTPS**: 문의 폼은 호스팅의 폼 기능이나 서버리스 함수로, 커스텀 도메인과 인증서는 호스팅이 자동으로 처리한다.
 8. **URL 유지**: 옛 주소가 바뀌면 301 리다이렉트를 설정해 검색 순위와 외부 링크를 지킨다([[seo-basics|SEO 기초]]).
+
+### SSG끼리 갈아탈 때 지킬 것
+
+WordPress가 아니라 SSG에서 다른 SSG로 옮길 때도(Jekyll → Astro·Eleventy·Next.js 등) 같은 함정이 있다.
+
+| 지킬 것 | 방법 |
+| --- | --- |
+| **공개 URL** | 외부 링크와 검색 순위는 URL에 묶여 있다. 새 폴더 구조를 쓰더라도 빌드 설정(라우트 생성, slug 가공)으로 옛 URL 형식을 그대로 재현하고, 바꿀 수밖에 없으면 301 리다이렉트를 건다 |
+| 글과 자산의 위치 | 글마다 이미지를 같은 폴더에 두면 관리가 쉽다. 대신 옮길 때 경로가 모두 바뀌므로 이동과 링크 치환을 스크립트로 자동화한다 |
+| 사용자별 설정 | 정적 빌드는 모든 방문자에게 같은 HTML을 준다. 다크 모드 같은 개인 설정은 클라이언트에서 적용한다 |
+| 테마 깜박임(FOUC) | 설정을 읽어 적용하는 짧은 인라인 스크립트를 `<head>`에 넣어 본문이 그려지기 전에 실행한다. 색은 CSS 변수로 두고 `data-theme` 속성 하나로 바꾸면 컴포넌트마다 분기할 필요가 없다([[dark-mode-theming\|다크 모드와 테마]]) |
+| 빌드 결과 검증 | 개발 서버와 프로덕션 빌드는 동작이 다를 수 있다. 배포 전에 빌드 산출물을 직접 띄워 본다 |
+| 완료 기준 | 접근성·SEO·성능 점수(Lighthouse)를 옮기기 전과 비교한다. 무거운 이미지 최적화는 CI에서 돌린다 |
 
 ## 정리
 

@@ -225,4 +225,6 @@ new RegExp(`https?://${RegExp.escape(domain)}/`, 'g');
 - `match`는 실패하면 `null`이고, `g` 정규식의 `test`·`exec`는 `lastIndex` 상태를 가진다.
 - 입력값은 반드시 `RegExp.escape()`를 거쳐 패턴에 넣는다.
 
+더 읽을거리: 「[불규칙 속에서 규칙을 찾아내는 정규표현식](https://evan-moon.github.io/2020/07/24/about-regular-expression/)」, 「[정규표현식, 이렇게 시작하자!](https://heropy.blog/2018/10/28/regexp/)」
+
 관련 노트: [[regexp-engine|정규식 엔진: 탐욕·게으름·전후방탐색·백트래킹]], [[arrays-and-objects|배열·객체·문자열 다루기]], [[ecmascript-tc39|ECMAScript 표준과 TC39 프로세스]], [[iterators-and-generators|이터레이터와 제너레이터]]

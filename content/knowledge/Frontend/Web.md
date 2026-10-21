@@ -31,6 +31,7 @@ date: "2026-10-13"
 - [폼 스타일링](/knowledge/dictionary/frontend/web/form-styling): 글자 크기·테두리·탭 영역 기준, select와 base-select, 체크박스·라디오 숨김 기법, accent-color, field-sizing
 - [DOM](/knowledge/dictionary/frontend/web/dom): 브라우저가 문서를 객체 트리로 표현하는 방식, DOM tree와 노드 종류, BOM
 - [Intersection Observer와 관찰자 API](/knowledge/dictionary/frontend/web/intersection-observer): 스크롤 이벤트 대신 보이는지 묻기, root·rootMargin·threshold, 무한 스크롤·지연 로딩 패턴, ResizeObserver·MutationObserver
+- [브라우저 아키텍처: 다중 프로세스, 내비게이션, 렌더러 스레드, 입력 처리](/knowledge/dictionary/frontend/web/browser-architecture): 프로세스 분리와 사이트 격리, 내비게이션과 커밋, 메인·컴포지터·래스터 스레드, 입력 이벤트와 passive 리스너
 - [브라우저 렌더링 과정](/knowledge/dictionary/frontend/web/browser-rendering): 브라우저 구성 요소, DOM·CSSOM → 렌더 트리 → 레이아웃(리플로우) → 페인팅, 스크립트·CSS의 차단, 강제 동기 레이아웃, 리렌더링 비용
 - [스크립트·스타일 로딩 순서와 점진적 렌더링](/knowledge/dictionary/frontend/web/script-loading): script·async·defer·module의 실행 시점, CSS는 head·스크립트는 defer인 이유와 예외, FOUC, 점진적 렌더링 기법
 - [반응형 이미지: srcset·sizes와 picture](/knowledge/dictionary/frontend/web/responsive-images): 크기만 다르면 srcset·sizes, 자르기·형식 대체는 picture, sizes 근삿값, 이미지 CDN·CMS 자동화, sizes 근삿값·sizes="auto", 픽셀 밀도, picture 규칙
@@ -41,10 +42,12 @@ date: "2026-10-13"
 - [SPA와 CSR·SSR](/knowledge/dictionary/frontend/web/spa-csr-ssr): 단일 페이지 애플리케이션과 렌더링 주체·시점에 따른 차이(CSR·SSR·SSG·ISR)
 - [웹 개발에 대한 이상한 믿음들](/knowledge/dictionary/frontend/web/web-dev-myths): 브라우저 엔지니어·표준 제정자·개발자가 웹을 잘 안다는 믿음, SPA·MPA·JS 없는 사이트·빌드 단계에 대한 단정, 내 웹이 웹 전체는 아니다
 - [정적 사이트 생성기와 Jamstack](/knowledge/dictionary/frontend/web/static-site-generator): 빌드 때 HTML 만들기, 도구 고르기(Eleventy·Hugo·Astro·Next.js), WordPress에서 옮기는 흐름
+- [AMP: 규칙으로 빠르게 만드는 모바일 페이지](/knowledge/dictionary/frontend/web/amp-pages): HTML 제약·전용 런타임·캐시 CDN, 비판과 Core Web Vitals로 옮겨 간 흐름
 - [스트리밍 SSR](/knowledge/dictionary/frontend/web/streaming-ssr): Suspense 경계 단위로 HTML을 나눠 보내는 SSR, 선택적 hydration, 상태 코드·버퍼링 제약, React 18 이후의 발전
 - [웹 아키텍처의 다음 전환](/knowledge/dictionary/frontend/web/webs-next-transition): MPA → PEMPA → SPA → PESPA, 코드가 어디에 사는지로 본 아키텍처 변화
 - [SEO 기초](/knowledge/dictionary/frontend/web/seo-basics): 크롤링·색인 흐름, robots.txt와 사이트맵, 메타 태그·canonical, 301·302 리다이렉트, 렌더링 방식
 - [다국어 페이지: lang·hreflang과 국제화](/knowledge/dictionary/frontend/web/multilingual-pages): 언어별 URL, Accept-Language와 언어 선택기, lang·dir·translate·hreflang, 문자열 연결 금지·Intl·텍스트 길이·RTL 같은 i18n 주의점
+- [프론트엔드 출시 전 체크리스트](/knowledge/dictionary/frontend/web/frontend-launch-checklist): head·HTML·CSS·이미지·폰트·JS·보안·성능·접근성·SEO 점검표와 자동화
 - [프론트엔드 성능 최적화: 언제, 무엇을](/knowledge/dictionary/frontend/web/frontend-performance-strategy): 측정·p95 기준·트레이드오프, 초기 로딩의 세 원인(대역폭·지연 시간·JS 실행), 실제 성능과 체감 성능, 파생 상태와 리렌더링 범위
 - [웹 성능 지표와 Lighthouse](/knowledge/dictionary/frontend/web/web-vitals): FCP·LCP·INP·CLS 기준값, LCP 후보·INP 세 구간·CLS 세션 창, 실험실·필드 데이터와 web-vitals 라이브러리, Lighthouse
 - [TTFB 줄이기: 리디렉션·HTML 캐시·압축·CDN](/knowledge/dictionary/frontend/web/ttfb-optimization): 리디렉션 체인, 짧은 캐시와 ETag 재검증, Server-Timing, Brotli 정적·동적 압축, CDN 엣지

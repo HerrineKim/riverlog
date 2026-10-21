@@ -94,3 +94,5 @@ button svg {
 - 인라인 SVG는 `currentColor`와 `em` 크기로 글자를 따라가게 한다.
 
 관련 노트: [[ui-elements-glossary|UI 요소 용어집: 입력·내비게이션·정보·컨테이너]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[dark-mode-theming|테마와 다크 모드 구현]], [[image-formats|웹 이미지 형식]], [[icon-usability|아이콘 사용성]]
+
+더 읽을거리: 오픈소스 UI 아이콘 세트 — [Eva Icons](https://akveo.github.io/eva-icons/#/)

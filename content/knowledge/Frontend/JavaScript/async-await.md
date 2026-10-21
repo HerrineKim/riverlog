@@ -5,10 +5,10 @@ summary: "Promise를 동기 코드처럼 읽히게 해 주는 async/await 문법
 tags: ["javascript", "async", "promise", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://wesbos.com/javascript/12-advanced-flow-control/70-async-await", "https://wesbos.com/javascript/12-advanced-flow-control/71-async-await-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/72-async-await-prompt-ui", "https://web.dev/learn/javascript/control-flow", "https://ko.javascript.info/async-await", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await"]
+sources: ["https://wesbos.com/javascript/12-advanced-flow-control/70-async-await", "https://wesbos.com/javascript/12-advanced-flow-control/71-async-await-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/72-async-await-prompt-ui", "https://web.dev/learn/javascript/control-flow", "https://ko.javascript.info/async-await", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await", "https://joshua1988.github.io/web-development/javascript/js-async-await/"]
 ---
 
-> 직접 정리한 내용에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Control flow」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「async와 await」 글을 함께 참고해 재구성한 노트다.
+> 직접 정리한 내용에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Control flow」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「async와 await」 글, 「[자바스크립트 async와 await](https://joshua1988.github.io/web-development/javascript/js-async-await/)」를 함께 참고해 재구성한 노트다.
 
 `async`/`await`(ES2017)는 Promise 위에 얹은 문법이다. Promise의 결과를 `then`으로 받는 대신 **변수에 바로 담아** 동기 코드처럼 위에서 아래로 읽히게 작성할 수 있다. 원래 콜백이 만드는 깊은 들여쓰기(콜백 지옥)를 해결하려던 흐름의 마지막 단계다. Promise 자체는 [콜백과 Promise](/knowledge/dictionary/frontend/javascript/callback-and-promise) 노트 참고.
 

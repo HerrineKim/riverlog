@@ -5,10 +5,10 @@ summary: "TypeScript 팀 컨벤션 문서의 규칙을 주제별로 묶었다. �
 tags: ["typescript", "javascript", "frontend", "collaboration"]
 source: other
 date: "2026-10-17"
-sources: ["https://ko.javascript.info/coding-style", "https://ko.javascript.info/ninja-code"]
+sources: ["https://ko.javascript.info/coding-style", "https://ko.javascript.info/ninja-code", "https://github.com/wisedog/typescript-coding-guide"]
 ---
 
-> 한국어로 쓰인 어느 TypeScript 팀 코딩 컨벤션 문서를 바탕으로 재구성하고, 코드 모양과 읽기 어려운 코드 패턴은 javascript.info(모던 JavaScript 튜토리얼)의 「코딩 스타일」, 「닌자 코드」 글로 보강한 노트다.
+> 한국어로 쓰인 TypeScript 코딩 컨벤션 문서(예: 「[TypeScript 코딩 가이드 (규칙 80개)](https://github.com/wisedog/typescript-coding-guide)」)를 바탕으로 재구성하고, 코드 모양과 읽기 어려운 코드 패턴은 javascript.info(모던 JavaScript 튜토리얼)의 「코딩 스타일」, 「닌자 코드」 글로 보강한 노트다.
 
 ## 코딩 컨벤션이란
 

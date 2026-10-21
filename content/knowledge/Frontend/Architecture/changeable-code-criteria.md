@@ -5,10 +5,10 @@ summary: "좋은 프론트엔드 코드는 변경하기 쉬운 코드다. 가독
 tags: ["frontend", "clean-code", "architecture", "code-review"]
 source: other
 date: "2026-10-17"
-sources: ["https://www.youtube.com/watch?v=1Vn8et-MdaI", "https://frontend-fundamentals.com/code-quality/code/", "https://frontend-fundamentals.com/code-quality/code/community/good-discussions"]
+sources: ["https://www.youtube.com/watch?v=1Vn8et-MdaI", "https://frontend-fundamentals.com/code-quality/code/", "https://frontend-fundamentals.com/code-quality/code/community/good-discussions", "https://www.steveonstuff.com/2022/01/27/no-such-thing-as-clean-code"]
 ---
 
-> 토스의 「[Frontend Fundamentals: 코드 품질](https://frontend-fundamentals.com/code-quality/)」 문서를 바탕으로 재구성한 노트다. 기준별 전략은 하위 네 노트에 나눠 정리했다. 품질을 챙기는 이유와 타이밍은 토스 「모닥불」 EP.1 「[토스에서 말하는 “가독성 좋은 코드”란 무엇일까?](https://www.youtube.com/watch?v=1Vn8et-MdaI)」(2024.06)를 더했다.
+> 토스의 「[Frontend Fundamentals: 코드 품질](https://frontend-fundamentals.com/code-quality/)」 문서를 바탕으로 재구성한 노트다. 기준별 전략은 하위 네 노트에 나눠 정리했다. 품질을 챙기는 이유와 타이밍은 토스 「모닥불」 EP.1 「[토스에서 말하는 “가독성 좋은 코드”란 무엇일까?](https://www.youtube.com/watch?v=1Vn8et-MdaI)」(2024.06)를 더했다. 「[There's No Such Thing as Clean Code](https://www.steveonstuff.com/2022/01/27/no-such-thing-as-clean-code)」의 내용을 더해 보강했다.
 
 ## 좋은 코드란
 
@@ -27,6 +27,17 @@ sources: ["https://www.youtube.com/watch?v=1Vn8et-MdaI", "https://frontend-funda
 - [[code-predictability|예측 가능성을 높이는 전략]]
 - [[code-cohesion|응집도를 높이는 전략]]
 - [[code-coupling|결합도를 낮추는 전략]]
+
+### 「깨끗한 코드」라는 말 대신
+
+「깨끗하다(clean)」, 「좋다」는 결론처럼 들리지만 근거가 되지 못한다. 코드는 가독성, 테스트 용이성, 성능, 유지보수성처럼 **서로 다른 이유로** 좋을 수 있고, 그 이유들은 자주 충돌한다. 그래서 리뷰와 설계 논의에서는 막연한 품질 형용사 대신 **구체적인 성질을 이름으로 부른다.**
+
+| 막연한 말 | 구체적인 말 |
+| --- | --- |
+| 이 코드가 더 깨끗하다 | 이 코드는 의존성을 주입받아 **테스트하기 쉽다**, 상태가 **캡슐화**돼 있다, 이름만으로 **예측 가능**하다 |
+| 이게 더 좋은 구조다 | 함께 바뀌는 코드가 한곳에 있어 **응집도**가 높다. 대신 한 단계를 건너 읽어야 한다(비용) |
+
+「이 프로젝트에 필요한 것은 깨끗한 코드」가 아니라 「이 프로젝트에 필요한 것은 ___한 코드」라고 빈칸을 채운다. 무엇이 좋아지는지, 그 대가는 무엇인지까지 말해야 판단이 된다.
 
 ## 네 기준은 서로 부딪힌다
 

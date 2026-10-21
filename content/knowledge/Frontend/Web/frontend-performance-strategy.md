@@ -5,10 +5,11 @@ summary: "최적화는 측정한 뒤에, 최악의 사용자(p95·p99)를 기준
 tags: ["frontend", "performance", "web", "react"]
 source: other
 date: "2026-10-18"
-sources: ["https://www.youtube.com/watch?v=upUON56UEYo"]
+sources: ["https://www.youtube.com/watch?v=upUON56UEYo", "https://bytebytego.com/guides/how-to-load-your-websites-at-lightning-speed", "https://medium.com/myrealtrip-product/fe-website-perf-part1-6ae5b10e3433"]
 ---
 
-> 토스 「모닥불」 EP.9 「[프론트엔드 서비스 최적화? 토스에서는 '이렇게' 합니다!](https://www.youtube.com/watch?v=upUON56UEYo)」(2024.12, 박서진·박건영·조유성)를 바탕으로 재구성한 노트다. 각 기법의 자세한 방법은 연결한 노트에 있다.
+> 토스 「모닥불」 EP.9 「[프론트엔드 서비스 최적화? 토스에서는 '이렇게' 합니다!](https://www.youtube.com/watch?v=upUON56UEYo)」(2024.12, 박서진·박건영·조유성)를 바탕으로 재구성한 노트다. 각 기법의 자세한 방법은 연결한 노트에 있다. 측정 조건과 성능 예산은 마이리얼트립의 「[웹사이트 성능 측정 및 최적화 Part 1. 리소스 로딩](https://medium.com/myrealtrip-product/fe-website-perf-part1-6ae5b10e3433)」으로 보강했다.
+> 로딩 기법 모음 표는 ByteByteGo의 System Design 101 가이드 「[Frontend Performance Optimization](https://bytebytego.com/guides/how-to-load-your-websites-at-lightning-speed)」을 바탕으로 보강했다.
 
 ## 언제 최적화하나
 
@@ -19,6 +20,25 @@ sources: ["https://www.youtube.com/watch?v=upUON56UEYo"]
 - **개발 환경은 사용자보다 빠르다.** 가장 좋은 컴퓨터, 와이파이, 휴대폰으로 테스트하면 실제 사용자가 겪는 느림이 보이지 않는다. 네트워크·CPU 스로틀링과 저사양 기기로 확인한다.
 - **평균·중간값(p50)이 아니라 p95·p99를 본다.** 사용자는 평범하게 빠를 때는 성능을 기억하지 않고, 아주 느렸던 순간을 기억한다. 엘리베이터 안이나 해외 로밍처럼 최악의 상황에서 한 번 크게 느리면 "이 서비스는 느리다"는 낙인이 찍힌다.
 - **최적화는 트레이드오프다.** 사용자의 시간을 줄였다면 무엇인가를 희생한 것이다. 메모리, 코드 양, 복잡도, 개발자의 시간 중 무엇을 내주고 무엇을 얻는지 따져 고른다.
+
+### 측정 조건부터 정한다
+
+「3초 안에 뜬다」 같은 말은 네트워크와 캐시 상태를 빼면 의미가 없다. **서비스에서 가장 답답할 사용자**를 정하고 그 조건으로 잰다.
+
+| 정할 것 | 예 |
+| --- | --- |
+| 대상 환경 | 모바일 + 제한된 대역폭(해외 로밍 등). DevTools 네트워크 스로틀링(예: Fast 4G·3G 프리셋)과 CPU 스로틀링 |
+| 캐시 상태 | 첫 방문자 기준이면 Network 패널의 Disable cache |
+| 핵심 영역(hero element) | 방문 목적을 이루는 영역(검색창, 상품 정보)이 언제 보이나. 아래쪽 추천 영역은 나중에 불러와도 된다 |
+
+핵심 영역이 아닌 데이터는 서버 렌더링에서 빼고 클라이언트에서 필요할 때 요청하며, 그동안 스켈레톤으로 자리를 채운다([[loading-ui|로딩 UI]]).
+
+### 성능 예산
+
+**성능 예산(performance budget)** 은 넘지 않기로 팀이 합의한 한도다. 번들 크기, 이미지 총량, 특정 네트워크에서의 LCP 같은 값으로 정한다. 한 번 줄인 성능은 기능이 붙으며 다시 늘어나므로, CI에서 자동으로 확인해야 지켜진다.
+
+- 번들 크기: `size-limit` 같은 도구로 파일별 상한을 두고 초과하면 빌드를 실패시킨다. 번들 구성은 `rollup-plugin-visualizer`·`webpack-bundle-analyzer`로 본다. 이미지·폰트를 base64로 번들에 넣는 인라인 기준을 너무 크게 잡으면 번들이 부푼다.
+- 지표: Lighthouse CI의 `budget.json`·assertion으로 PR마다 검사한다([[web-vitals|웹 성능 지표와 Lighthouse]]).
 
 ## 느림을 둘로 나눈다
 
@@ -50,6 +70,21 @@ sources: ["https://www.youtube.com/watch?v=upUON56UEYo"]
 **한 번에 다 가져올 필요도 없다.** 배고픈 10명 몫을 먼저 가져오고 기다릴 수 있는 90명 몫은 나중에 가져오듯, 첫 화면에 꼭 필요한 번들을 먼저 받고 상호작용 뒤에 나오거나 당장 보이지 않는 부분은 동적 `import()`로 미룬다([[code-splitting|자바스크립트 코드 분할]], [[lazy-loading|지연 로딩]]). 단 **잘못 쪼개면** 첫 화면에 필요한 리소스가 늦게 와서 오히려 어색한 화면이 된다. 쪼개는 기준을 아는 것이 핵심이다.
 
 지연이 어디서 얼마나 생기는지는 [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]]에 있다.
+
+### 로딩 기법 한눈에 보기
+
+세 원인 중 무엇을 줄이느냐로 기법을 묶으면 다음과 같다.
+
+| 기법 | 하는 일 | 줄이는 것 | 자세히 |
+| --- | --- | --- | --- |
+| 압축 | 전송 전에 파일을 줄인다(gzip·Brotli, minify) | 대역폭 | [[image-compression\|이미지 압축]] |
+| 트리 셰이킹 | 쓰이지 않는 코드를 번들에서 뺀다 | 대역폭, JS 실행 | [[bundlers-and-vite\|번들러와 Vite]] |
+| 코드 분할 | 큰 번들을 작은 조각으로 나눠 필요한 것만 받는다 | 대역폭, JS 실행 | [[code-splitting\|자바스크립트 코드 분할]] |
+| 동적 import | 사용자 행동이 있을 때 모듈을 불러온다 | 초기 대역폭 | [[code-splitting\|자바스크립트 코드 분할]] |
+| 우선순위 로딩 | 첫 화면(above the fold)과 핵심 리소스를 먼저 받는다 | 체감 지연 | [[lcp-optimization\|LCP 최적화]] |
+| 프리로드 | 이 페이지에서 곧 쓸 리소스를 일찍 받기 시작한다 | 지연 | [[resource-hints\|리소스 힌트]] |
+| 프리패치 | 다음 페이지에서 쓸 법한 리소스를 한가할 때 받아 둔다 | 다음 이동의 지연 | [[resource-hints\|리소스 힌트]] |
+| 선택적 렌더링(윈도잉) | 긴 목록에서 화면에 보이는 항목만 DOM으로 그린다 | 렌더링·메모리 | [[lazy-loading\|지연 로딩]] |
 
 ## 런타임: 실제 성능과 체감 성능
 
@@ -87,4 +122,4 @@ sources: ["https://www.youtube.com/watch?v=upUON56UEYo"]
 - 런타임은 긴 작업을 **줄여** 실제 성능을, **쪼개** 체감 성능을 올린다.
 - React에서는 파생 값을 상태로 두지 말고, 리렌더링 범위를 바뀌는 곳으로 좁힌다.
 
-관련 노트: [[web-vitals|웹 성능 지표와 Lighthouse]], [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]], [[code-splitting|자바스크립트 코드 분할]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인과 추적]], [[devtools-performance|DevTools로 성능·메모리 분석하기]]
+관련 노트: [[web-vitals|웹 성능 지표와 Lighthouse]], [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]], [[code-splitting|자바스크립트 코드 분할]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인과 추적]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[amp-pages|AMP]]

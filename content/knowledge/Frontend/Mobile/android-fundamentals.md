@@ -5,10 +5,11 @@ summary: "Android 앱 개발에서 자주 헷갈리는 세 가지. UI 상태를 
 tags: ["mobile", "android", "kotlin", "reactive"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/ea28527e359249d1a3fa91af87374b4e", "https://developer.android.com/topic/libraries/architecture/livedata", "https://developer.android.com/kotlin/flow/stateflow-and-sharedflow", "https://developer.android.com/google/play/requirements/target-sdk"]
+sources: ["https://80000coding.notion.site/ea28527e359249d1a3fa91af87374b4e", "https://developer.android.com/topic/libraries/architecture/livedata", "https://developer.android.com/kotlin/flow/stateflow-and-sharedflow", "https://developer.android.com/google/play/requirements/target-sdk", "https://engineering.linecorp.com/ko/blog/introduce-android-fetcher-swift-implementation/", "https://developer.android.com/topic/architecture/data-layer/offline-first"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「Android 기술 면접 확인하세요. livedata, rxjava, context, postvalue, setvalue, minsdk, targetsdk」를 바탕으로 재구성한 노트다.
+> 캐시 먼저 보여 주는 데이터 로딩(Fetcher) 부분은 LINE Engineering 블로그의 「[간편하게 서버 데이터를 로딩하는 Fetcher, Swift로 구현하기](https://engineering.linecorp.com/ko/blog/introduce-android-fetcher-swift-implementation/)」를 바탕으로, Android 공식 문서의 「[Build an offline-first app](https://developer.android.com/topic/architecture/data-layer/offline-first)」으로 확인해 보강했다.
 
 Android 앱은 화면(Activity·Fragment·Composable)이 회전·백그라운드 전환으로 수시로 만들어지고 사라진다. 그래서 **상태를 화면보다 오래 사는 곳(ViewModel)에 두고, 화면은 그 상태를 관찰만 하는** 구조가 기본이다. 이 노트는 그 관찰 도구, 시스템 자원에 접근하는 열쇠인 Context, 그리고 앱이 지원하는 OS 범위를 정하는 SDK 버전을 다룬다.
 
@@ -50,6 +51,28 @@ val state by viewModel.uiState.collectAsStateWithLifecycle()
 | 연속 호출 | 매번 관찰자에게 전달 | 반영 전에 여러 번 부르면 **마지막 값만** 전달된다 |
 
 `postValue` 직후 `getValue()`를 읽으면 아직 옛 값일 수 있다. 백그라운드에서 계산한 결과를 넘길 때만 `postValue`를 쓰고, 코루틴이라면 `withContext(Dispatchers.Main)`에서 `setValue`하거나 StateFlow의 `value`(스레드 안전)를 쓰는 편이 예측 가능하다.
+
+### 캐시 먼저, 네트워크 다음: 로컬을 단일 진실 공급원으로
+
+서버 데이터를 보여 주는 화면은 대개 같은 요구를 가진다. 오프라인이어도 **캐시된 내용을 즉시** 보여 주고, 서버에서 새 값을 받아 오고, 다른 화면에서 같은 데이터가 바뀌어도 함께 갱신되어야 한다. 이 로직을 화면마다 짜지 않고 재사용 모듈(Fetcher, Repository)로 묶는다.
+
+```text
+fetch()
+  ├─ 1. 로컬 저장소(DB·메모리)의 값을 먼저 내보낸다     → UI: 캐시 + 로딩 표시
+  ├─ 2. 원격 API 호출
+  │     ├─ 성공 → 로컬 저장소에 쓴다                     (UI에 직접 주지 않는다)
+  │     └─ 실패 → 캐시는 그대로 두고 에러 상태만 알린다  → UI: 캐시 + 에러 안내
+  └─ 3. UI는 로컬 저장소를 관찰한다 → 저장소가 바뀌면 어디서 바꿨든 UI가 갱신된다
+```
+
+| 설계 요소 | 내용 |
+| --- | --- |
+| 상태 | `loading` · `success` · `error`. 각 상태가 **캐시 데이터를 함께** 실어, 오래된 데이터 + 로딩 표시 같은 조합을 그릴 수 있다 |
+| 단일 진실 공급원(single source of truth) | UI는 네트워크 응답이 아니라 로컬 저장소만 본다. 원격 결과도 저장소를 거쳐 들어온다 |
+| 제네릭 구성 | 원격 호출, 로컬 읽기·관찰·쓰기를 함수(클로저)로 주입받아 데이터 타입과 무관하게 쓴다 |
+| 수명 | 구독은 첫 fetch가 끝나도 유지해 이후 로컬 변경을 받는다. 화면이 보일 때 구독하고 사라질 때 해제한다(Rx의 `Disposable`, 코루틴의 `lifecycleScope`) |
+
+Android에서는 Room이 `Flow`로 테이블 변경을 내보내므로, Repository가 Room `Flow`를 UI에 주고 네트워크 결과는 Room에 쓰는 구성이 공식 권장(오프라인 우선 앱)이다. iOS에서는 같은 구조를 RxSwift·Combine과 Core Data·SwiftData 같은 저장소로 만든다.
 
 ## Context
 

@@ -3,9 +3,12 @@ title: "State와 useState"
 concept: "State"
 summary: "컴포넌트가 스스로 관리하는 변하는 데이터인 state, useState와 함수형 업데이트, 공통 부모로 state 끌어올리기."
 tags: ["react", "state", "hooks", "frontend"]
-source: til
+source: mixed
 date: "2026-10-13"
+sources: ["https://edykim.com/ko/post/learn-react-before-using-redux/"]
 ---
+
+> 개인 TIL을 바탕으로, state 내리기와 라이브러리 전에 해 볼 순서는 「[React에서 Redux 전에 배워야 할 8가지](https://edykim.com/ko/post/learn-react-before-using-redux/)」를 바탕으로 더한 노트다.
 
 **State**는 컴포넌트 안에서 관리되는, 시간에 따라 변하는 데이터다. props가 바깥에서 넘겨받는 값(함수의 매개변수)이라면, state는 컴포넌트 내부에 선언한 변수에 해당한다. 일반 변수와 달리 state를 바꾸면 **React가 컴포넌트를 다시 렌더링**해 화면에 반영한다. "데이터가 바뀔 때마다 직접 다시 그리는" 대신 "데이터를 React에 맡겨 두고 바뀌면 알아서 그리게" 하는 것이 React의 핵심이다.
 
@@ -92,10 +95,26 @@ function Preview({ text }) {
 
 데이터의 출처가 하나가 되어 두 컴포넌트의 값이 어긋날 수 없다. 섭씨·화씨 입력창처럼 같은 값을 다른 단위로 보여 줄 때도, 부모는 값 하나만 갖고 다른 단위는 렌더링 중에 계산한다.
 
+## State 내리기와 고르는 순서
+
+끌어올리기의 반대도 있다. state를 **실제로 쓰는 가장 아래 컴포넌트로 내리면**(colocation) 중간 컴포넌트가 쓰지도 않는 props를 전달하지 않고, 바뀔 때 다시 그려지는 범위도 좁아진다. 모달의 열림 여부를 페이지 최상단에 두었다면 모달을 여는 버튼 근처로 내린다.
+
+전역 상태 라이브러리를 꺼내기 전에 React만으로 해 볼 순서가 있다.
+
+| 순서 | 방법 | 쓰는 때 |
+| --- | --- | --- |
+| 1 | 지역 state, 필요한 곳으로 내리기 | 한 컴포넌트와 그 자식만 쓴다 |
+| 2 | 가장 가까운 공통 부모로 끌어올리기 | 형제가 같은 값을 쓴다 |
+| 3 | 합성으로 전달 단계 줄이기 | 중간 컴포넌트가 props를 넘기기만 한다. `children`으로 바로 끼운다([[composition\|합성]]) |
+| 4 | [[context\|Context]] | 트리 곳곳에서 같은 값(테마, 로그인 사용자)을 읽는다 |
+| 5 | 서버 상태 라이브러리, 전역 스토어 | 서버 데이터 캐시, 멀리 떨어진 컴포넌트가 자주 바꾸는 값([[react-state-management\|상태 관리]]) |
+
+Redux·MobX 같은 라이브러리도 내부는 이 위에 서 있다. 스토어를 Context로 트리에 내려 주고, 컴포넌트를 구독시켜 바뀔 때 다시 그린다. 그래서 지역 state와 끌어올리기를 먼저 익혀야 라이브러리가 무엇을 대신하는지 보인다.
+
 ## 정리
 
 - state = 컴포넌트가 관리하는 변하는 값. 바꿀 때는 항상 setter.
 - 이전 값에 의존하면 함수형 업데이트, 객체·배열은 새로 만들어서 넘긴다.
-- 여러 컴포넌트가 공유하는 값은 가장 가까운 공통 부모로 끌어올린다. 더 멀리 공유해야 하면 [[context|Context]].
+- 여러 컴포넌트가 공유하는 값은 가장 가까운 공통 부모로 끌어올리고, 한 곳에서만 쓰는 값은 쓰는 곳으로 내린다. 더 멀리 공유해야 하면 [[context|Context]].
 
 관련 노트: [[hooks|Hooks]], [[forms|폼]], [[context|Context]], [[redux|Redux와 react-redux]]

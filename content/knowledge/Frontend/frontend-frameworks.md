@@ -5,10 +5,10 @@ summary: "React·Vue 다음으로 많이 쓰이는 프레임워크들의 특징�
 tags: ["frontend", "javascript", "architecture"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/315", "https://velog.io/@teo/왜-Svelte스벨트를-좋아하나요", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS"]
+sources: ["https://riverkim.kr/315", "https://velog.io/@teo/왜-Svelte스벨트를-좋아하나요", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://ui.toast.com/weekly-pick/ko_20191002/", "https://poiemaweb.com/angular-component-data-binding", "https://angular.kr"]
 ---
 
-> riverkim.kr에 쓴 글(2025.06)과 테오(teo)의 「[왜 Svelte(스벨트)를 좋아하나요?](https://velog.io/@teo/왜-Svelte스벨트를-좋아하나요)」(2021.12)를 바탕으로 재구성한 노트다.
+> riverkim.kr에 쓴 글(2025.06)과 테오(teo)의 「[왜 Svelte(스벨트)를 좋아하나요?](https://velog.io/@teo/왜-Svelte스벨트를-좋아하나요)」(2021.12)를 바탕으로 재구성한 노트다. Svelte 템플릿 문법은 TOAST UI의 「[처음 만나는 Svelte](https://ui.toast.com/weekly-pick/ko_20191002/)」, Angular 데이터 바인딩은 PoiemaWeb의 「[Angular 데이터 바인딩](https://poiemaweb.com/angular-component-data-binding)」으로 보강했다.
 
 ## 얼마나 쓰이나
 
@@ -43,11 +43,24 @@ React·Vue·Angular는 브라우저에서 돌아가는 **런타임 라이브러�
 - 상용구(boilerplate)가 없고 문법이 HTML·CSS·JS 그대로다. 퍼블리셔가 만든 `.html`을 확장자만 바꿔도 동작해, HTML·CSS만 아는 사람도 바로 적응한다.
 - `<style>`에 쓴 CSS가 자동으로 컴포넌트 범위로 갇힌다(scoped CSS). CSS-in-JS 라이브러리 없이 CSS 변수로 JS 값과 연동한다.
 - Svelte 5(2024)부터 반응성을 **룬(rune)** 으로 명시한다. `$state`·`$derived`·`$effect`가 컴파일러에 주는 표시이고, 내부는 시그널(signal)로 바뀌었다. 과거(Svelte 3·4)에는 컴포넌트 최상단의 `let` 대입 자체가 반응형이었고 파생 값은 `$:` 문법으로 썼다. 룬은 `.svelte.ts` 파일에서도 쓸 수 있어 컴포넌트 밖으로 상태를 꺼내기 쉬워졌다.
+- 한 `.svelte` 파일에 `<script>`, 마크업, `<style>`을 함께 쓴다. 템플릿은 `{표현식}` 보간, `{#each}`·`{#if}` 블록, `bind:value`·`bind:checked` 양방향 바인딩, `class:done={item.done}` 조건부 클래스를 쓴다. 이벤트는 Svelte 5부터 `onclick={handler}`처럼 평범한 속성이고, 과거에는 `on:click` 지시어와 `on:submit|preventDefault` 같은 수식어를 썼다.
 - 약점은 **작은 커뮤니티**다. 베스트 프랙티스와 라이브러리가 적어 필요한 것을 직접 만들 일이 많다. 성능이 아니라 생태계 문제다. 컴파일러 접근은 React Compiler(2025년 1.0)처럼 주류 프레임워크도 흡수했다. React Compiler는 `useMemo`·`useCallback` 같은 메모이제이션을 빌드 시점에 자동으로 넣는다.
 
 ### Angular 2+
 
 Angular 2부터 TypeScript 지원과 컴포넌트 기반 구조로 크게 바뀌었다. 1.x(AngularJS)와 구분하려고 Angular 2+라고 불렀고, 지금은 그냥 Angular라고 부른다. 라우팅·폼·HTTP 같은 기능을 프레임워크가 기본 제공해 선택할 것이 적다. 반응성의 중심은 RxJS에서 **Signals**로 옮겨 갔고, Angular 21(2025.11)부터 새 프로젝트는 Zone.js 없이(zoneless) 변경을 감지하는 것이 기본이다.
+
+템플릿과 컴포넌트 클래스를 잇는 **데이터 바인딩**은 문법으로 방향을 표시한다.
+
+| 바인딩 | 방향 | 문법 |
+| --- | --- | --- |
+| 보간(interpolation) | 클래스 → 템플릿 | `{{ expression }}` |
+| 프로퍼티 바인딩 | 클래스 → 템플릿 | `[property]="expression"` |
+| 어트리뷰트·클래스·스타일 바인딩 | 클래스 → 템플릿 | `[attr.aria-label]`, `[class.active]`, `[style.width.px]` |
+| 이벤트 바인딩 | 템플릿 → 클래스 | `(event)="handler($event)"` |
+| 양방향 바인딩 | 양쪽 | `[(ngModel)]="value"` (FormsModule 필요) |
+
+양방향 바인딩은 별도 기능이 아니라 프로퍼티 바인딩 `[x]`와 이벤트 바인딩 `(xChange)`를 합친 축약 문법("banana in a box")이다. 컴포넌트에서는 시그널 기반 `model()` 입력으로 같은 것을 만든다. 한국어 공식 문서는 [angular.kr](https://angular.kr)에 있다.
 
 ### Preact
 

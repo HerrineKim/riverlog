@@ -15,8 +15,10 @@ date: "2026-10-13"
 - [React Native 기초와 스타일링](/knowledge/dictionary/frontend/mobile/react-native-basics): 동작 원리, Expo, 코어 컴포넌트, StyleSheet와 Flexbox, onPress·onChangeText, ScrollView vs FlatList, Pressable·Modal
 - [React Native 실무 팁](/knowledge/dictionary/frontend/mobile/react-native-practical-tips): KeyboardAvoidingView, AsyncStorage, ADB 실기기 연결, Snackbar
 - [React Native OTA 업데이트와 CodePush](/knowledge/dictionary/frontend/mobile/codepush): 스토어 심사 없는 번들 교체, 채널 배포와 승격, EAS Update와 App Center 종료 이후의 선택지
+- [모바일 앱 출시 과정](/knowledge/dictionary/frontend/mobile/mobile-app-release): 개발자 등록, 빌드와 베타·회귀 테스트, 정책 준수, ASO, 스토어 제출과 단계적 출시
 - [Flutter의 구조와 위젯 트리](/knowledge/dictionary/frontend/mobile/flutter-architecture): 프레임워크·엔진·임베더 세 층, 프레임워크 라이브러리, Widget·Element·RenderObject 트리, Key가 필요한 이유, 패키지·플러그인 배포
 - [Dart 핵심 문법](/knowledge/dictionary/frontend/mobile/dart-language): final과 const, 건전한 널 안전성, Future·Stream과 async*·sync* 제너레이터
 - [Flutter UI 실전 기법](/knowledge/dictionary/frontend/mobile/flutter-ui-techniques): 화면 일부만 바꾸는 중첩 Navigator, CustomPaint와 Path, Text.rich, 네이티브 스플래시
 - [Swift Codable](/knowledge/dictionary/frontend/mobile/swift-codable): Encodable·Decodable, JSONEncoder·JSONDecoder, CodingKeys와 snake_case 변환
+- [UICollectionView 커스텀 레이아웃](/knowledge/dictionary/frontend/mobile/ios-collection-view-layout): 채팅방 같은 목록, prepare()에서 속성 계산·캐시, 이진 탐색 영역 질의, 보조 뷰
 - [Android 핵심 개념](/knowledge/dictionary/frontend/mobile/android-fundamentals): LiveData·StateFlow·RxJava, setValue와 postValue, Application·Activity Context, minSdk·targetSdk·compileSdk

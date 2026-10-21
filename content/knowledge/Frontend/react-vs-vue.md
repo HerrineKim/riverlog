@@ -5,7 +5,7 @@ summary: "같은 범주(컴포넌트 기반 선언형 UI, 가상 DOM)에 속하�
 tags: ["frontend", "react", "vue", "javascript"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/f27f6183052343e1ab908f8175bd4a88", "https://vuejs.org/guide/extras/rendering-mechanism", "https://react.dev/learn/start-a-new-react-project"]
+sources: ["https://80000coding.notion.site/f27f6183052343e1ab908f8175bd4a88", "https://vuejs.org/guide/extras/rendering-mechanism", "https://react.dev/learn/start-a-new-react-project", "https://github.com/sudheerj/vuejs-interview-questions-korean/blob/master/README.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「React와 Vue의 장단점 비교」를 바탕으로 재구성한 노트다.
@@ -60,5 +60,7 @@ React의 상태와 리렌더링은 [[state|State]], [[re-rendering|리렌더링]
 - React = JSX + 불변 상태 + 다시 렌더링해서 비교. Vue = 템플릿 + 반응형 상태 + 의존성 추적.
 - Vue의 `v-model`은 양방향 바인딩처럼 보이는 문법 설탕이다.
 - 생태계 범위가 다르다. Vue는 공식 도구 한 벌, React는 코어 + 프레임워크·커뮤니티 선택.
+
+Vue 개념을 질문으로 점검하려면 [Vue.js 면접 질문 모음(한국어)](https://github.com/sudheerj/vuejs-interview-questions-korean/blob/master/README.md)을 본다. Vue 2 시절 질문이 섞여 있으므로 Options API·필터·이벤트 버스 같은 항목은 Vue 3 문서와 대조한다.
 
 관련 노트: [[frontend-frameworks|React와 Vue 말고: 다른 프론트엔드 프레임워크]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]], [[tech-stack-selection|기술 스택 고르기]]

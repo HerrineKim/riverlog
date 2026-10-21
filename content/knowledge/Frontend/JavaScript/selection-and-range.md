@@ -5,10 +5,10 @@ summary: "문서의 일부를 가리키는 Range(시작·끝 경계점)와 사�
 tags: ["javascript", "dom", "browser", "form", "frontend"]
 source: other
 date: "2026-10-17"
-sources: ["https://ko.javascript.info/selection-range", "https://developer.mozilla.org/en-US/docs/Web/API/Selection", "https://developer.mozilla.org/en-US/docs/Web/API/CSS_Custom_Highlight_API"]
+sources: ["https://ko.javascript.info/selection-range", "https://developer.mozilla.org/en-US/docs/Web/API/Selection", "https://developer.mozilla.org/en-US/docs/Web/API/CSS_Custom_Highlight_API", "https://taegon.kim/archives/9658"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「Selection and Range」 글을 바탕으로, 최신 API는 MDN으로 확인해 재구성한 노트다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「Selection and Range」 글을 바탕으로, 최신 API는 MDN으로 확인해 재구성한 노트다. 입력란 커서의 화면 좌표 구하기는 「[SVG, JS, CSS로 만드는 라이언 로그인 폼](https://taegon.kim/archives/9658)」으로 보강했다.
 
 ## 두 가지 선택 API
 
@@ -138,6 +138,32 @@ input.setRangeText(`**${input.value.slice(input.selectionStart, input.selectionE
 ```
 
 입력란 안의 선택은 문서의 Selection과 별개다. 명세상 `document`의 `selectionchange`는 입력란 안의 선택에 일어나지 않아야 하므로 기대지 않는다. `value`를 통째로 바꾸면 커서가 끝으로 튀므로, 입력 중에 값을 고칠 때는 `setRangeText`나 위치를 저장했다가 되돌리는 방식을 쓴다([[form-usability|더 나은 폼을 만드는 팁]]의 커서 빼앗지 않기).
+
+### 커서의 화면 좌표 구하기
+
+`selectionStart`는 **몇 번째 글자**인지만 알려 준다. 커서가 화면의 어느 픽셀에 있는지는 API가 없어서 **거울 요소(mirror div)** 로 잰다. 입력란을 따라가는 눈동자, 커서 옆에 뜨는 자동완성·멘션 팝업이 이 방법을 쓴다.
+
+```javascript
+function caretOffset(input) {
+  const mirror = document.createElement('div')
+  const style = getComputedStyle(input)
+  // 글자 폭에 영향을 주는 스타일을 복사한다
+  for (const prop of ['font', 'letterSpacing', 'padding', 'border', 'boxSizing', 'width', 'whiteSpace']) {
+    mirror.style[prop] = style[prop]
+  }
+  Object.assign(mirror.style, { position: 'absolute', visibility: 'hidden', top: '0', left: '0' })
+  mirror.textContent = input.value.slice(0, input.selectionStart)
+  const marker = document.createElement('span')
+  marker.textContent = '\u200b' // 폭 0 문자로 커서 자리를 표시
+  mirror.append(marker)
+  document.body.append(mirror)
+  const x = marker.offsetLeft - input.scrollLeft
+  mirror.remove()
+  return x // 입력란 왼쪽 기준 픽셀
+}
+```
+
+입력란 자체의 위치는 `getBoundingClientRect()`로 더한다. 두 점(예: 캐릭터 얼굴 중심과 커서) 사이 각도는 `Math.atan2(dy, dx)`로 구해 `transform: rotate()`에 넣는다.
 
 ## 선택 막기
 

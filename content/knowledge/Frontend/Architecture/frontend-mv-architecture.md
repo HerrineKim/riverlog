@@ -5,10 +5,10 @@ summary: "MVC·MVP·MVVM의 구조와 차이, 웹 프론트엔드의 아키텍�
 tags: ["frontend", "architecture", "state", "design-pattern"]
 source: other
 date: "2026-10-14"
-sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://yozm.wishket.com/magazine/detail/1663/", "https://beomy.tistory.com/43"]
+sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://yozm.wishket.com/magazine/detail/1663/", "https://beomy.tistory.com/43", "https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns", "https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html"]
 ---
 
-> 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08, 요즘IT 재게재)를 바탕으로 재구성하고, 「MVC·MVP·MVVM 비교」는 beomy의 「[MVC, MVP, MVVM 비교](https://beomy.tistory.com/43)」(2018.09)로 보강한 노트다.
+> 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08, 요즘IT 재게재)를 바탕으로 재구성하고, MVVM-C·VIPER는 ByteByteGo의 System Design 101 가이드 「[MVC, MVP, MVVM, VIPER Patterns](https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns)」로, 「MVC·MVP·MVVM 비교」는 beomy의 「[MVC, MVP, MVVM 비교](https://beomy.tistory.com/43)」(2018.09)로 보강한 노트다. 단방향 아키텍처의 변형은 「[단방향 사용자 인터페이스 아키텍쳐](https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html)」(André Staltz 글의 번역)로 보강했다.
 
 ## 아키텍처란
 
@@ -35,6 +35,17 @@ MVVM  입력 → View ─명령→ ViewModel ⇄ Model
 | 약점 | View가 Model에 기대므로 앱이 커질수록 얽힌다 | View와 Presenter가 1:1로 단단히 묶이고 Presenter가 비대해진다 | ViewModel 설계가 어렵고, 바인딩이 많으면 흐름을 추적하기 어렵다 |
 
 MVVM은 명령(Command) 패턴과 데이터 바인딩이라는 두 장치로 의존을 끊는다. 웹에서는 Knockout·AngularJS가 시작이었고 Vue의 반응형 템플릿이 같은 모양이다. 모바일에서는 Android Jetpack의 ViewModel, SwiftUI의 `@Observable` 객체가 MVVM 구조로 쓰인다. MVP는 Android가 공식 ViewModel을 내기 전에 많이 쓰였다.
+
+### 모바일에서 더 나눈 변형: MVVM-C와 VIPER
+
+모든 패턴에 View가 있고 대부분 Model이 있다. 차이는 둘 사이의 **번역자**(Controller, Presenter, ViewModel)를 어떻게 나누느냐다. 번역자가 커지면 다루기 어려워지므로, 모바일(특히 iOS)에서는 역할을 더 잘게 쪼갠 변형이 나왔다.
+
+| 패턴 | 더한 것 | 푸는 문제 |
+| --- | --- | --- |
+| MVVM-C | **Coordinator**: 화면 전환(내비게이션)만 맡는 객체 | ViewModel이나 ViewController가 다음 화면을 직접 만들고 띄우느라 서로 얽히는 것 |
+| VIPER | View, **Interactor**(유스케이스·비즈니스 로직), Presenter(표시 로직), **Entity**(데이터 모델), **Router**(화면 전환) | Massive View Controller. 책임을 다섯으로 나눠 각각 따로 테스트한다 |
+
+쪼갤수록 테스트와 분업은 쉬워지지만 파일과 보일러플레이트가 늘어난다. 작은 화면에 VIPER는 과하다.
 
 ## 웹 프론트엔드 아키텍처의 변천
 
@@ -124,6 +135,22 @@ const Counter = () => {
 ### 재사용 컴포넌트는 여전히 유효하다
 
 계층 맨 아래의 독립적인 UI 컴포넌트를 조립하는 전략은 그대로다. 문제는 중간 계층이다. 중간 컴포넌트는 대개 재사용되지도 않으면서 비즈니스 로직을 떠안아 거대해진다. **어차피 재사용하지 못할 컴포넌트라면 비즈니스 모듈에 의존하더라도 언제든 갈아 끼울 수 있게** 만드는 편이 변화에 강하다.
+
+## 단방향 아키텍처의 변형들
+
+Flux 이후 나온 단방향 UI 아키텍처들은 모두 **사용자 이벤트 → 상태 변경 → 렌더링**이라는 같은 순환을 갖고, 그 순환을 어떻게 쪼개느냐만 다르다. 여기서 「View」는 화면 출력에만 쓰는 말이고, 이벤트에서 렌더링까지의 전체를 UI 프로그램이라 부른다.
+
+| 아키텍처 | 구성 | 특징 |
+| --- | --- | --- |
+| Flux | Action · Dispatcher · Store · View | 계층 구조는 View 쪽에만 있고, Store와 Dispatcher가 전체를 조율한다 |
+| Redux | 단일 Store · Reducer · Middleware | 상태 변경을 「이전 상태 + 액션 → 새 상태」인 순수 함수로 제한한다. 미들웨어로 dispatch를 확장한다 |
+| BEST | Behavior · Event · State · Tree | 렌더링 트리, 상태, 이벤트 리스너, 상태에 따라 달라지는 동작을 나눠 이벤트 처리를 렌더링에서 떼어 낸다 |
+| MVU (Elm) | Model · view 함수 · update 함수 | 모두 순수 함수다. 각 부분을 그대로 중첩할 수 있어 컴포넌트를 조각으로 떼어 내기 쉽다 |
+| MVI (Cycle.js) | Intent · Model · View, 모두 스트림 | 입력·모델·렌더링을 Observable 스트림으로 이어 흐름이 코드에 드러난다. 스트림 라이브러리에 강하게 의존한다 |
+
+- **프랙탈 구조**: 하위 컴포넌트가 앱 전체와 같은 모양(MVU 안의 MVU)이면, 앱을 통째로 더 큰 앱의 컴포넌트로 재사용할 수 있다.
+- **드라이버**: Cycle.js는 DOM뿐 아니라 HTTP 같은 바깥 세계도 입력·출력 스트림으로 맞춰 UI 프로그램에 연결한다. 부수 효과를 프로그램 밖 드라이버로 밀어내 본체를 순수하게 유지한다.
+- 입력과 출력의 모양만 정해 두고 내부 구조(Flux든 MVU든)는 자유롭게 두면 여러 아키텍처를 섞어 쓸 수 있지만, 팀에 줄 구조 지침이 사라져 일관성이 떨어질 수 있다.
 
 ## 정리
 

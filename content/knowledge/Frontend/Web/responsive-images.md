@@ -5,10 +5,10 @@ summary: "같은 이미지를 크기만 바꿔 줄 때는 srcset·sizes로 브�
 tags: ["frontend", "html", "performance", "web", "mobile"]
 source: other
 date: "2026-10-17"
-sources: ["https://webactually.com/2020/07/13/html-%EB%B0%98%EC%9D%91%ED%98%95-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%AC%B8%EB%B2%95-%EA%B0%80%EC%9D%B4%EB%93%9C/", "https://webactually.com/2013/11/04/%ec%9a%b0%eb%a6%ac%ec%97%90%ea%b2%8c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9d%b4%eb%af%b8%ec%a7%80%ea%b0%80-%ed%95%84%ec%9a%94%ed%95%9c-%ec%9d%b4%ec%9c%a0/", "https://webactually.com/2016/01/19/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4-%ec%bd%94%ec%96%b4-4-4%ec%97%90-%ec%83%81%eb%a5%99%ed%95%9c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9d%b4%eb%af%b8%ec%a7%80/", "https://webactually.com/2014/08/18/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%98-%ed%98%84%ec%9e%ac/", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://webactually.com/2016/02/23/%ed%8e%ad%ea%b7%84%eb%9e%9c%eb%8d%a4%ed%95%98%ec%9a%b0%ec%8a%a4-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%ec%97%90%ec%84%9c-%ec%9a%b0%eb%a6%ac%ea%b0%80-%eb%b0%b0%ec%9a%b8/", "https://web.dev/learn/images/history", "https://web.dev/learn/images/responsive-images", "https://web.dev/learn/images/descriptive", "https://web.dev/learn/images/prescriptive", "https://web.dev/learn/images/automating", "https://web.dev/learn/images/cms", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img"]
+sources: ["https://webactually.com/2020/07/13/html-%EB%B0%98%EC%9D%91%ED%98%95-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%AC%B8%EB%B2%95-%EA%B0%80%EC%9D%B4%EB%93%9C/", "https://webactually.com/2013/11/04/%ec%9a%b0%eb%a6%ac%ec%97%90%ea%b2%8c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9d%b4%eb%af%b8%ec%a7%80%ea%b0%80-%ed%95%84%ec%9a%94%ed%95%9c-%ec%9d%b4%ec%9c%a0/", "https://webactually.com/2016/01/19/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%88%ec%8a%a4-%ec%bd%94%ec%96%b4-4-4%ec%97%90-%ec%83%81%eb%a5%99%ed%95%9c-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9d%b4%eb%af%b8%ec%a7%80/", "https://webactually.com/2014/08/18/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9-%eb%94%94%ec%9e%90%ec%9d%b8%ec%9d%98-%ed%98%84%ec%9e%ac/", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://webactually.com/2016/02/23/%ed%8e%ad%ea%b7%84%eb%9e%9c%eb%8d%a4%ed%95%98%ec%9a%b0%ec%8a%a4-%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%ec%97%90%ec%84%9c-%ec%9a%b0%eb%a6%ac%ea%b0%80-%eb%b0%b0%ec%9a%b8/", "https://web.dev/learn/images/history", "https://web.dev/learn/images/responsive-images", "https://web.dev/learn/images/descriptive", "https://web.dev/learn/images/prescriptive", "https://web.dev/learn/images/automating", "https://web.dev/learn/images/cms", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img", "https://velog.io/@chris/the-css-background-image-property-as-an-anti-pattern"]
 ---
 
-> CSS-Tricks의 「HTML 반응형 이미지 문법 가이드」(웹액츄얼리 번역, 2020.07)를 중심으로 Tim Kadlec·Tim Evko·Stéphanie Walter·Benjie Moss의 반응형 이미지 관련 글(웹액츄얼리 번역, 2013~2016)을 더해 재구성한 노트다. 브라우저의 후보 선택 과정은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 문항으로, 픽셀 밀도·`sizes` 계산·`<picture>` 규칙은 web.dev 「[Learn Images](https://web.dev/learn/images)」 강좌의 반응형 이미지 모듈로 보강했다. 브라우저 지원은 MDN으로 확인했다.
+> CSS-Tricks의 「HTML 반응형 이미지 문법 가이드」(웹액츄얼리 번역, 2020.07)를 중심으로 Tim Kadlec·Tim Evko·Stéphanie Walter·Benjie Moss의 반응형 이미지 관련 글(웹액츄얼리 번역, 2013~2016)을 더해 재구성한 노트다. 브라우저의 후보 선택 과정은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 문항으로, 픽셀 밀도·`sizes` 계산·`<picture>` 규칙은 web.dev 「[Learn Images](https://web.dev/learn/images)」 강좌의 반응형 이미지 모듈로 보강했다. 브라우저 지원은 MDN으로 확인했다. CSS 배경 이미지의 한계는 「[안티 패턴으로서의 CSS background-image 속성](https://velog.io/@chris/the-css-background-image-property-as-an-anti-pattern)」(번역)으로 보강했다.
 
 ## 왜 필요한가
 
@@ -185,6 +185,18 @@ CSS로 잘라 보여 주면 보이지 않는 부분까지 내려받는다. 아�
 CMS가 자동으로 넣는 기본 `sizes`는 테마 레이아웃을 모른다. WordPress의 기본값 `(max-width: Npx) 100vw, Npx`는 "원본보다 큰 파일은 받지 않는다"는 보장만 한다. 테마 개발자가 필터 훅(`wp_calculate_image_sizes`)으로 실제 레이아웃에 맞는 값을 넣어야 제 효과가 난다.
 
 ## CSS 배경 이미지와 임베드
+
+**콘텐츠 이미지는 `background-image`로 넣지 않는다.** 장식이 아닌 이미지를 CSS 배경으로 넣으면 잃는 것이 많다.
+
+| 잃는 것 | 이유 |
+| --- | --- |
+| 접근성 | 대체 텍스트를 줄 방법이 없고 스크린 리더가 무시한다 |
+| 검색 노출 | 이미지 검색이 CSS 배경 이미지를 콘텐츠로 색인하지 않는다 |
+| 로딩 속도 | CSS를 받고 파싱하고 그 요소의 스타일을 계산해야 요청이 시작된다. 프리로드 스캐너가 찾지 못해 LCP 이미지라면 특히 늦다([[lcp-optimization\|LCP 최적화]]) |
+| 반응형·지연 로딩 | `srcset`·`sizes`·`loading="lazy"`·`fetchpriority`를 쓸 수 없다 |
+| 운영 | 이미지 URL이 CSS에 박혀 CMS·CDN 주소가 바뀌면 다시 빌드해야 한다 |
+
+`background-size: cover`로 자르던 효과는 `<img>` + `object-fit: cover`로 같게 낼 수 있다. 의미 없는 순수 장식(패턴, 질감)만 배경으로 둔다.
 
 - 배경 이미지는 미디어 쿼리로 `background-image`를 바꾸면 조건에 맞는 하나만 받는다(`<picture>`의 CSS판). 밀도별 선택은 `image-set()`으로 한다.
 - 박스 안에서 자르거나 채우는 것은 `object-fit`·`object-position`으로 한다.

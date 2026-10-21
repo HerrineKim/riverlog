@@ -5,7 +5,7 @@ summary: "TypeScript는 JavaScript에 타입 검사와 자동완성을 더한 �
 tags: ["typescript", "javascript", "frontend", "type-system", "tools"]
 source: other
 date: "2026-10-20"
-sources: ["https://www.heropy.dev/p/WhqSC8", "https://velog.io/@teo/typescript", "https://www.typescriptlang.org/docs/handbook/intro.html", "https://www.typescriptlang.org/docs/handbook/utility-types.html"]
+sources: ["https://www.heropy.dev/p/WhqSC8", "https://velog.io/@teo/typescript", "https://www.typescriptlang.org/docs/handbook/intro.html", "https://www.typescriptlang.org/docs/handbook/utility-types.html", "https://basarat.gitbooks.io/typescript/content/", "https://ahnheejong.gitbook.io/ts-for-jsdev/", "https://www.typescriptlang.org/ko/docs/handbook/intro.html"]
 ---
 
 > HEROPY의 「[한눈에 보는 타입스크립트](https://www.heropy.dev/p/WhqSC8)」(2020.01 작성, 2026.08 갱신)를 바탕으로, 역사와 익히는 순서는 테오(teo)의 「[Typescript는 어떻게 공부해야 하나요?](https://velog.io/@teo/typescript)」(2022.02)로 보강해 재구성한 노트다.
@@ -196,6 +196,13 @@ function area(s: Shape) {
 4. **백엔드 스키마를 `interface`로.** `Promise<User>`를 반환하게 하면 API 응답 필드가 자동완성되고, 제네릭과 유틸리티 타입을 자연스럽게 만난다. 길어지는 콜백 타입은 `type`으로 빼서 이름을 붙인다.
 5. **유니언과 좁히기.** `User | null`을 조건문으로 좁히는 것이 중급의 관문이다. 핸드북의 Narrowing·Utility Types는 정독하지 말고 필요할 때 찾는다.
 6. **`strict: true`로 에러 0.** `as`·`any`·복잡한 타입 곡예가 생겼다면, 원래 쓰려던 JavaScript에 **최소한으로만 덧붙인 타입**인지 되묻는다.
+
+
+| 더 읽을거리 | 쓰는 때 |
+| --- | --- |
+| [TypeScript Handbook](https://www.typescriptlang.org/ko/docs/handbook/intro.html) | 공식 문서. 막히는 개념을 찾아 읽는다 |
+| [TypeScript Deep Dive](https://basarat.gitbook.io/typescript/) | 컴파일러 옵션, 타입 시스템의 세부 동작, 흔한 함정 |
+| [자바스크립트 개발자를 위한 타입스크립트](https://ahnheejong.gitbook.io/ts-for-jsdev/) | JavaScript를 아는 상태에서 한국어로 처음부터 읽는 입문서 |
 
 ## 정리
 

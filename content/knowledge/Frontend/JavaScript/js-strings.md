@@ -5,10 +5,10 @@ summary: "JavaScript 문자열은 UTF-16 코드 단위의 나열이고 바꿀 �
 tags: ["javascript", "frontend", "data-structure", "i18n", "styling"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://ko.javascript.info/string", "https://opencollective.com/styled-components/updates", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter"]
+sources: ["https://ko.javascript.info/string", "https://opencollective.com/styled-components/updates", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter", "https://github.com/moonformeli/TIL/blob/master/hangul_unicode.md"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「문자열」, 「자료형」, 「원시값의 메서드」 글을 바탕으로, ES2022 이후 추가된 메서드는 MDN으로 확인해 재구성한 노트다. 템플릿 리터럴과 태그드 템플릿은 노션에 정리해 둔 내용을 합쳤다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「문자열」, 「자료형」, 「원시값의 메서드」 글을 바탕으로, ES2022 이후 추가된 메서드는 MDN으로 확인해 재구성한 노트다. 템플릿 리터럴과 태그드 템플릿은 노션에 정리해 둔 내용을 합쳤다. 한글의 코드 영역은 「[한글 인코딩과 자바스크립트](https://github.com/moonformeli/TIL/blob/master/hangul_unicode.md)」를 바탕으로 더했다.
 
 ## 문자열이란
 
@@ -215,6 +215,33 @@ const count = [...seg.segment('👨‍👩‍👧가')].length // 2
 ```
 
 `normalize()`의 기본 형식은 `'NFC'`(합친 형태)다. 사용자 입력을 저장·비교·검색하기 전에 NFC로 맞춘다. macOS에서 온 파일 이름처럼 조합형(NFD)이 섞여 들어오는 경우가 흔하다.
+
+#### 한글의 세 가지 코드
+
+한글은 같은 모양이 세 군데 코드 영역에 있다. `replace`·`includes`·정규식은 **모양이 아니라 코드**로 비교하므로, 어느 영역의 글자인지 모르면 검색과 치환이 조용히 실패한다.
+
+| 영역 | 범위 | 예: ㅅ / 스 | 생기는 곳 |
+| --- | --- | --- | --- |
+| 완성형 음절 | U+AC00–U+D7A3 (11,172자) | `스` = U+C2A4 | 보통의 키보드 입력, NFC |
+| 첫가끝 자모(조합용) | U+1100–U+11FF | `ᄉ` = U+1109, 뒤에 모음 `ᅳ` U+1173이 붙는다 | NFD로 분해된 문자열. macOS 파일 이름 |
+| 호환 자모 | U+3131–U+318E | `ㅅ` = U+3145 | 자음·모음 하나만 따로 쓸 때 |
+
+완성형 음절은 초성 19 × 중성 21 × 종성 28(받침 없음 포함) 조합을 순서대로 늘어놓은 것이라 계산으로 분해·조립한다. 초성 검색이나 받침 유무에 따른 조사(은/는) 선택이 이 계산을 쓴다.
+
+```javascript
+const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'
+function decompose(ch) {
+  const n = ch.normalize('NFC').charCodeAt(0) - 0xac00
+  if (n < 0 || n > 11171) return null              // 완성형 음절이 아니다
+  return { cho: CHO[Math.floor(n / 588)],          // 588 = 21 × 28
+           jung: Math.floor((n % 588) / 28),       // 중성 번호
+           jong: n % 28 }                          // 0이면 받침 없음
+}
+decompose('강')  // { cho: 'ㄱ', jung: 0, jong: 21 }  — 21번 종성이 ㅇ
+const josa = (w) => (decompose(w.at(-1))?.jong ? '은' : '는')
+```
+
+**입력은 받는 즉시 `normalize('NFC')`로 맞추고, 그다음에 비교·저장·분해한다.** 업로드 파일 이름, 다른 OS에서 붙여 넣은 텍스트, 외부 API 응답이 NFD로 들어오는 대표적인 경로다. 과거에는 `escape`·`unescape`로 코드를 들여다봤지만 둘 다 표준에서 권장하지 않는 레거시 함수다. 코드 확인은 `codePointAt(0).toString(16)`으로 한다.
 
 ## 정리
 

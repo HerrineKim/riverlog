@@ -4,11 +4,11 @@ concept: "Design System"
 summary: "디자인 시스템은 팀이 같은 UI를 같은 규칙으로 만들게 하는 원칙·스타일·컴포넌트·문서의 묶음이다. 무엇으로 이루어지는지, 작은 팀도 필요한 이유와 도입 시점, 감사→기준 합의→파운데이션·컴포넌트 정리→개발 합의→QA로 이어지는 구축 절차, 토큰과 컴포넌트를 중앙 모노레포에서 패키지로 배포하는 구조까지 정리했다."
 tags: ["design-system", "frontend", "collaboration", "design", "monorepo"]
 source: mixed
-sources: ["https://www.inflearn.com/pages/infmation-64-20231017", "https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333", "https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564", "https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/"]
+sources: ["https://www.inflearn.com/pages/infmation-64-20231017", "https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333", "https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564", "https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/", "https://tech.socarcorp.kr/design/2020/07/31/component-01.html", "https://medium.com/@kykkjh2984/%EC%BD%94%EB%93%9C%EB%A1%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-design-system-b04bb916a02b"]
 date: "2026-10-13"
 ---
 
-> 인프런 「[그래서, 디자인 시스템이 대체 뭔데?](https://www.inflearn.com/pages/infmation-64-20231017)」(2023.10), 크몽 블로그 「[크몽 디자인 시스템 v.2.0 구축기](https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333)」(2023.11), 유니크굿 「[리얼월드 스튜디오 디자인 시스템 제작기 #1](https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564)」(2022.03)로 보강한 노트다.
+> 인프런 「[그래서, 디자인 시스템이 대체 뭔데?](https://www.inflearn.com/pages/infmation-64-20231017)」(2023.10), 크몽 블로그 「[크몽 디자인 시스템 v.2.0 구축기](https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333)」(2023.11), 유니크굿 「[리얼월드 스튜디오 디자인 시스템 제작기 #1](https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564)」(2022.03)로 보강한 노트다. 컴포넌트 이름과 속성 축은 쏘카 기술 블로그 「[컴포넌트, 제대로 만들어 쉽게 쓰자! (1탄)](https://tech.socarcorp.kr/design/2020/07/31/component-01.html)」과 「[코드로 만드는 Design System](https://medium.com/@kykkjh2984/%EC%BD%94%EB%93%9C%EB%A1%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-design-system-b04bb916a02b)」으로 보강했다.
 
 ## 디자인 시스템이란
 
@@ -81,6 +81,34 @@ date: "2026-10-13"
 - **아이콘**: 선 굵기·모서리·격자를 맞춰 전부 다시 다듬고, `키워드-모양-색` 같은 규칙으로 이름을 지어 디자인 파일과 코드에서 같은 이름으로 찾게 한다.
 - **드물게 쓰는 컴포넌트**(예: 플로팅 버튼)는 시스템에 넣지 않고 화면별로 대응할 수 있다. 시스템에는 자주, 여러 곳에서 쓰는 것부터 넣는다.
 
+### 컴포넌트 이름과 속성 축
+
+흩어진 컴포넌트를 통합할 때는 **무엇이 다르면 다른 컴포넌트이고, 무엇이 다르면 옵션인가**부터 정한다.
+
+| 구분 | 기준 | 예 |
+| --- | --- | --- |
+| 고정 속성 → 다르면 새 컴포넌트 | 형태, 텍스트 스타일, 높이처럼 거의 바뀌지 않는 것 | 둥근 버튼과 각진 버튼은 별개 |
+| 가변 속성 → 옵션(prop) | 자주 바뀌는 것. 주로 색 | 같은 버튼의 테마 색 |
+
+버튼이라면 대개 세 축의 조합으로 정리된다.
+
+| 축 | 값 | 영향 |
+| --- | --- | --- |
+| `size` | small · medium · large | 높이, 글자·아이콘 크기, 내부 여백 |
+| `variant` | contained · outlined · text | 채움·테두리 같은 스타일 |
+| `color` | primary · 보조 색 두세 개 | 같은 모양 안의 강조 차이 |
+
+축마다 값을 **적게 제한**해야 「같은 목소리」를 낸다. 축이 정해지면 각 prop을 클래스나 스타일 변형으로 바꾸는 구현은 단순하다. 기존 버튼 사용법과 크게 다르지 않게 만들어야 이전(migration)이 쉽다. 크기는 높이를 고정하고 너비는 기기 폭에 맞춰 늘어나게 둔다.
+
+이름 규칙:
+
+- 용도보다 **형태**를 기준으로 짓고, 컴포넌트 종류(`Button`)를 이름 끝에 둔다.
+- `BTN` 같은 약어를 쓰지 않는다. 짧되 필요한 정보는 다 담는다.
+- 팀마다 다르게 부르던 이름을 먼저 모두 모아 하나로 정한다. 같은 대상을 다르게 부르는 것이 소통 비용의 가장 큰 원인이다.
+- 눌림(pressed) 같은 상태도 컴포넌트 정의에 넣어, 화면마다 따로 확인하지 않게 한다.
+
+다크 모드에서 기본 색이 1:1로 대응하지 않으면 **컴포넌트 전용 색 토큰**을 두기도 한다. 당장은 편하지만 컴포넌트 수만큼 토큰이 불어나므로, 결국 의미 토큰 체계로 모아야 한다. 컴포넌트의 주 사용자는 디자이너이므로 **디자이너가 설계를 주도하고 개발자가 리뷰하는** 방식이 체계를 오래 유지하기 쉽다. 디자이너가 개발 환경을 갖추고 컴포넌트 골격 코드를 직접 쓰는 팀도 있다.
+
 ## 코드로 배포하기
 
 여러 프로젝트가 같은 버튼·색·간격을 쓰게 하려면 각 저장소에 스타일을 복사하지 말고 **한 곳에서 만들어 패키지로 배포**한다.
@@ -145,4 +173,4 @@ AI 코딩 도구가 읽는 팀 규칙 파일(`SKILL.md`)도 같은 구조로 중
 - 이름은 색이 아니라 역할·형태로 짓고, 컴포넌트는 모양과 바꿀 수 있는 동작을 함께 정의한다.
 - 토큰 → 컴포넌트 → Storybook을 중앙에서 관리해 패키지로 배포하고, **한 번 만들고 끝이 아니라 버전을 올리며 계속 다듬는다.**
 
-관련 노트: [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[accessible-design-process|디자인 단계의 접근성]], [[product-language-design-system|제품 언어로서의 디자인 시스템: 토큰, 기능과 형태, 컴포넌트 API]]
+관련 노트: [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[accessible-design-process|디자인 단계의 접근성]], [[product-language-design-system|제품 언어로서의 디자인 시스템: 토큰, 기능과 형태, 컴포넌트 API]], [[visual-design-tips|개발자를 위한 시각 디자인 요령]]

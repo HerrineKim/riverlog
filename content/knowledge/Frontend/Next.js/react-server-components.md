@@ -5,10 +5,10 @@ summary: "서버가 컴포넌트 트리를 렌더링해 HTML이 아니라 직렬
 tags: ["react", "nextjs", "frontend", "rendering", "performance"]
 source: other
 date: "2026-10-20"
-sources: ["https://x.com/hewonjeong/status/1743629443346968724", "https://yceffort.kr/2022/01/how-react-server-components-work", "https://react.dev/reference/rsc/server-components", "https://www.joshwcomeau.com/react/server-components/"]
+sources: ["https://x.com/hewonjeong/status/1743629443346968724", "https://yceffort.kr/2022/01/how-react-server-components-work", "https://react.dev/reference/rsc/server-components", "https://www.joshwcomeau.com/react/server-components/", "https://roy-jung.github.io/250323-react-server-components"]
 ---
 
-> yceffort의 「[리액트 서버 컴포넌트의 동작 방식](https://yceffort.kr/2022/01/how-react-server-components-work)」(2022.01)을 바탕으로 React 19 문서와 대조해 재구성한 노트다. 「왜 필요했나」, 「서버 컴포넌트는 다시 렌더링되지 않는다」, 「클라이언트 경계」는 Josh W. Comeau의 「[Making Sense of React Server Components](https://www.joshwcomeau.com/react/server-components/)」(2023.09, 2025.05 갱신)로 보강했다. 「서버에서 출발한 컴포넌트 모델」은 Dan Abramov의 X 타래를 @hewonjeong이 번역한 [타래](https://x.com/hewonjeong/status/1743629443346968724)(2024.01)를 바탕으로 했다.
+> yceffort의 「[리액트 서버 컴포넌트의 동작 방식](https://yceffort.kr/2022/01/how-react-server-components-work)」(2022.01)을 바탕으로 React 19 문서와 대조해 재구성한 노트다. 「왜 필요했나」, 「서버 컴포넌트는 다시 렌더링되지 않는다」, 「클라이언트 경계」는 Josh W. Comeau의 「[Making Sense of React Server Components](https://www.joshwcomeau.com/react/server-components/)」(2023.09, 2025.05 갱신)로 보강했다. 「서버에서 출발한 컴포넌트 모델」은 Dan Abramov의 X 타래를 @hewonjeong이 번역한 [타래](https://x.com/hewonjeong/status/1743629443346968724)(2024.01)를 바탕으로 했다. Payload의 리소스 힌트 줄은 「[리액트 서버 컴포넌트 톺아보기](https://roy-jung.github.io/250323-react-server-components)」를 바탕으로 더했다.
 
 ## React Server Components란
 
@@ -103,6 +103,7 @@ RSC Payload(내부 이름 Flight)는 `ID:값` 한 줄이 하나의 청크인 텍
 | 표기 | 뜻 |
 | --- | --- |
 | `I` 줄 | 클라이언트 컴포넌트 모듈 참조 (파일, 청크, export 이름) |
+| `HL` 줄 | CSS·폰트 같은 리소스 힌트. 브라우저가 내용보다 먼저 받기 시작한다 |
 | `$L1` | 1번 청크를 가리키는 지연(lazy) 참조. 아직 안 왔으면 그 자리에서 suspend한다 |
 | `$S…` | `react.suspense` 같은 심벌 |
 | `$@` | Promise. 클라이언트에서 `use()`로 읽는다 |

@@ -5,10 +5,22 @@ summary: "속성 암기보다 먼저 익혀야 할 CSS의 핵심 개념(캐스�
 tags: ["css", "browser", "rendering", "layout", "frontend"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/", "https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade", "https://web.dev/learn/css/the-cascade"]
+sources: ["https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/", "https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/Cascade", "https://web.dev/learn/css/the-cascade", "https://bytebytego.com/guides/what-is-css-cascading-style-sheets"]
 ---
 
-> Rachel Andrew의 「[CSS를 배우는 방법](https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/)」(2019.02)과 Greg Whitworth의 「[중괄호에서 픽셀로](https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/)」(Braces to Pixels, 2019.01, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다. 캐스케이드의 출처·중요도는 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 The cascade 모듈로 보강했다.
+> Rachel Andrew의 「[CSS를 배우는 방법](https://webactually.com/2019/02/08/css%eb%a5%bc-%eb%b0%b0%ec%9a%b0%eb%8a%94-%eb%b0%a9%eb%b2%95/)」(2019.02)과 Greg Whitworth의 「[중괄호에서 픽셀로](https://webactually.com/2019/01/31/%ec%a4%91%ea%b4%84%ed%98%b8%ec%97%90%ec%84%9c-%ed%94%bd%ec%85%80%eb%a1%9c-2/)」(Braces to Pixels, 2019.01, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다. 캐스케이드의 출처·중요도는 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 The cascade 모듈로, CSS의 역할 개관은 ByteByteGo의 System Design 101 가이드 「[What is CSS?](https://bytebytego.com/guides/what-is-css-cascading-style-sheets)」로 보강했다.
+
+## CSS가 하는 일
+
+CSS(Cascading Style Sheets)는 **HTML 요소를 화면에 어떻게 그릴지 기술하는 스타일 언어**다. 초기 웹에서는 HTML이 내용과 모양을 함께 맡았다. CSS는 **구조(HTML)와 표현(CSS)을 분리**해, 색 구성을 바꿀 때 CSS 파일만 고치면 되게 했다.
+
+| 역할 | 내용 | 상세 노트 |
+| --- | --- | --- |
+| 규칙 | 선택자로 요소를 고르고, 속성 선언으로 모양을 정한다 (`p { color: blue; }`) | [[css-basics\|CSS 기초]], [[selectors\|선택자]] |
+| 캐스케이드 | 규칙이 충돌하면 출처·중요도·특정도·순서로 이길 규칙을 정한다 | 아래 「캐스케이드」 |
+| 레이아웃 | 표나 float 꼼수 대신 Flexbox·Grid로 배치한다 | [[flexbox\|Flexbox]], [[css-grid\|CSS Grid]] |
+| 애니메이션 | `transition`과 `@keyframes`로 자바스크립트 없이 상태 변화를 움직인다 | [[css-animation\|CSS 애니메이션]] |
+| 반응형 | 화면 크기·해상도에 맞춰 레이아웃과 스타일을 바꾼다 | [[responsive-design\|반응형 디자인]] |
 
 ## 속성보다 원리
 

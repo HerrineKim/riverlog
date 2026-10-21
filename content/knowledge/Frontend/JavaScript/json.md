@@ -5,10 +5,10 @@ summary: "JSON은 언어와 무관한 데이터 교환용 텍스트 형식이다
 tags: ["javascript", "frontend", "api", "data-structure"]
 source: other
 date: "2026-10-17"
-sources: ["https://ko.javascript.info/json", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/rawJSON", "https://www.rfc-editor.org/rfc/rfc8259"]
+sources: ["https://ko.javascript.info/json", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/rawJSON", "https://www.rfc-editor.org/rfc/rfc8259", "https://wormwlrm.github.io/2019/12/04/Why-JSON-parse-is-faster-than-object-literal.html"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「JSON과 메서드」 글을 바탕으로, 이후 추가된 기능은 MDN으로 확인해 재구성한 노트다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「JSON과 메서드」 글을 바탕으로, 이후 추가된 기능은 MDN으로 확인해 재구성한 노트다. 파싱 속도 비교는 「[왜 JSON.parse로 객체를 선언하는 방법이 더 빠를까?](https://wormwlrm.github.io/2019/12/04/Why-JSON-parse-is-faster-than-object-literal.html)」를 바탕으로 더했다.
 
 ## JSON이란
 
@@ -116,6 +116,17 @@ JSON.stringify({ id: JSON.rawJSON(data.id.toString()) }) // '{"id":1234567890123
 ```
 
 지원 범위가 넉넉하지 않은 환경에서는 처음부터 서버가 큰 ID를 문자열로 내려 주는 것이 가장 단순하다.
+
+### 큰 데이터는 JSON.parse가 더 빨리 읽힌다
+
+번들에 큰 정적 데이터(설정, 사전, 초기 상태)를 실어야 할 때는 객체 리터럴보다 **`JSON.parse('…')` 문자열이 더 빨리 처리된다.**
+
+| | 객체 리터럴 `{ "a": 1, … }` | `JSON.parse('{"a":1,…}')` |
+| --- | --- | --- |
+| 파서가 보는 것 | 키·값·괄호마다 토큰. 중첩될수록 늘어난다 | 호출식 하나와 문자열 리터럴 하나 |
+| 문맥 판단 | `{`가 객체인지, 구조 분해인지, 블록인지 뒤를 봐야 안다 | JSON 문법은 단순해 「객체 시작이거나 오류」뿐이다 |
+
+차이는 수백 KB 이상의 **큰 데이터에서만** 의미가 있다. 손으로 바꾸지 않는다. webpack과 Vite는 `.json` 모듈을 이 형태로 바꿔 내보낼 수 있으므로(Vite는 `json.stringify` 옵션) 큰 데이터는 `.json` 파일로 분리해 `import`한다. `Date`·`Map`·`undefined`처럼 JSON이 표현하지 못하는 값이 있으면 적용할 수 없다. 서버가 그린 HTML에 초기 상태를 실을 때도 같은 이유로 `JSON.parse`와 문자열을 쓴다([[spa-csr-ssr|SPA와 CSR·SSR]]).
 
 ## JSON으로 복사하지 않는다
 

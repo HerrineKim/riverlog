@@ -1,14 +1,14 @@
 ---
 title: "반응형 프로그래밍과 RxJS"
 concept: "Reactive Programming"
-summary: "반응형 프로그래밍은 데이터 흐름과 변경 전파에 초점을 둔 선언적 패러다임이다. 스프레드시트와 웹 프레임워크로 개념을 잡고, Pull에서 Push로, 제어의 역전으로 비동기를 단순하게 보는 법, 이벤트를 배열처럼 다루는 RxJS의 Observable과 연산자, 실무에서 막히는 소스 만들기와 Hot·Cold를 정리한다."
+summary: "반응형 프로그래밍은 데이터 흐름과 변경 전파에 초점을 둔 선언적 패러다임이다. 스프레드시트와 웹 프레임워크로 개념을 잡고, Pull에서 Push로, 제어의 역전으로 비동기를 단순하게 보는 법, 이벤트를 배열처럼 다루는 RxJS의 Observable과 연산자, 실무에서 막히는 소스 만들기와 Hot·Cold, Vue·MobX·시그널이 쓰는 의존성 추적(읽을 때 구독, 쓸 때 통지)의 원리를 정리한다."
 tags: ["javascript", "frontend", "async", "programming-paradigm"]
 source: other
 date: "2026-10-20"
-sources: ["https://velog.io/@teo/reactive-programming", "https://velog.io/@teo/rxjs"]
+sources: ["https://velog.io/@teo/reactive-programming", "https://velog.io/@teo/rxjs", "https://ui.toast.com/weekly-pick/ko_20190531/"]
 ---
 
-> 테오(teo)의 「[프로그래밍 패러다임과 반응형 프로그래밍 그리고 Rx](https://velog.io/@teo/reactive-programming)」(2022.02)와 「[Rxjs 한번 배워보실래요?](https://velog.io/@teo/rxjs)」(2022.10)를 바탕으로 재구성한 노트다.
+> 테오(teo)의 「[프로그래밍 패러다임과 반응형 프로그래밍 그리고 Rx](https://velog.io/@teo/reactive-programming)」(2022.02)와 「[Rxjs 한번 배워보실래요?](https://velog.io/@teo/rxjs)」(2022.10)를 바탕으로 재구성한 노트다. 의존성 추적의 원리는 「[0.7KB로 Vue와 같은 반응형 시스템 만들기](https://ui.toast.com/weekly-pick/ko_20190531/)」를 바탕으로 더했다.
 
 ## 패러다임이란
 
@@ -110,6 +110,63 @@ fromEvent(window, 'click').pipe(
 | 연산자보다 **소스**가 문제 | 이벤트는 프레임워크 핸들러가, Ajax는 값 하나라 Promise가 이미 맡고 있다. 연산자를 배워도 쓸 Observable이 없다 | 계속 값이 들어오는 것부터 감싼다. 실시간 DB(Firebase) 구독이 좋은 첫 소스다 |
 | Hot과 Cold | Promise는 만들자마자 실행되고 결과를 공유한다(Hot). Observable은 기본이 지연 평가라 **구독할 때마다 새로 실행**된다(Cold) | API를 Observable로 감싸 여러 곳에서 구독하면 요청이 중복된다. 공유가 필요하면 Subject를 쓴다 |
 | Subject 고르기 | 시점이 중요한 이벤트·동작 → `Subject`, 마지막 결과를 계속 공유할 값 → `BehaviorSubject` | 상태 관리의 기반이 된다 |
+
+## 의존성 추적: 반응형 상태의 원리
+
+Rx가 이벤트 **흐름**을 다룬다면, Vue의 반응성·MobX·시그널(Solid, Angular Signals, Svelte 5 runes)은 **값**을 다룬다. 「`total`은 `price × qty`다」라고 선언해 두면, `price`가 바뀔 때 `total`과 그것을 그리는 화면이 저절로 갱신된다. 이벤트 방식처럼 「price가 바뀌면 total을 다시 계산하라」는 리스너를 손으로 달지 않는다. **누가 무엇에 의존하는지를 실행하면서 기록**하기 때문이다.
+
+두 동작이 전부다.
+
+| 동작 | 언제 | 하는 일 |
+| --- | --- | --- |
+| 의존성 수집(track) | 속성을 **읽을 때**(getter) | 지금 실행 중인 관찰자(effect)를 그 속성의 구독자 목록에 넣는다 |
+| 변경 통지(trigger) | 속성을 **쓸 때**(setter) | 그 속성의 구독자를 다시 실행한다 |
+
+```javascript
+let current = null                                 // 지금 실행 중인 관찰자
+
+function observable(obj) {
+  const subs = new Map()                           // 속성 → 관찰자 Set
+  return new Proxy(obj, {
+    get(target, key) {
+      if (current) {
+        if (!subs.has(key)) subs.set(key, new Set())
+        subs.get(key).add(current)                 // track
+      }
+      return target[key]
+    },
+    set(target, key, value) {
+      target[key] = value
+      subs.get(key)?.forEach((fn) => fn())         // trigger
+      return true
+    },
+  })
+}
+
+function observe(fn) {
+  const run = () => { const prev = current; current = run; try { fn() } finally { current = prev } }
+  run()
+}
+
+const cart = observable({ price: 1000, qty: 2 })
+observe(() => { totalEl.textContent = cart.price * cart.qty })   // 처음 실행하며 price·qty를 구독
+cart.qty = 3                                                     // 자동으로 다시 그린다
+```
+
+`Proxy` 대신 `Object.defineProperty`로 속성마다 getter·setter를 거는 방식도 있다. Vue 2가 그랬고, 그래서 나중에 추가한 속성과 배열 인덱스 변경을 감지하지 못했다. Vue 3는 `Proxy`로 객체 전체를 가로채 이 한계를 없앴다([[proxy-and-reflect|Proxy와 Reflect]]).
+
+장난감 구현을 실제로 쓰려면 다음을 더 풀어야 한다.
+
+| 문제 | 해결 |
+| --- | --- |
+| 첫 실행 때 타지 않은 `if` 분기의 값은 구독되지 않는다 | 관찰자를 다시 실행할 때마다 구독을 지우고 **새로 수집**한다 |
+| 관찰자 안에서 다른 관찰자가 돈다(계산 값이 계산 값을 읽는다) | `current`를 스택으로 관리한다(위 코드의 `prev`) |
+| 사라진 컴포넌트의 관찰자가 남아 메모리가 샌다 | `observe`가 **구독 해제 함수**를 돌려주고 언마운트 때 부른다 |
+| 계산 값(computed)을 매번 다시 계산한다 | getter를 관찰자로 감싸 결과를 캐시하고, 입력이 바뀔 때만 무효로 한다 |
+| 값 여러 개를 바꾸면 그때마다 다시 그린다 | 통지를 모아 마이크로태스크에서 한 번에 실행한다(batch) |
+| 10만 건 배열의 원소마다 Proxy를 씌우면 느리다 | 큰 컬렉션은 반응형으로 만들지 않고 통째로 교체하거나 수동으로 통지한다(Vue의 `shallowRef`, MobX의 `observable.ref`) |
+
+React는 이 방식을 쓰지 않는다. 상태를 바꾸면 컴포넌트를 다시 실행해 결과를 비교한다. 두 모델의 차이는 [[react-vs-vue|React와 Vue]]에 있다. 시그널을 언어 표준으로 넣자는 TC39 제안도 진행 중이다.
 
 ## 한계
 

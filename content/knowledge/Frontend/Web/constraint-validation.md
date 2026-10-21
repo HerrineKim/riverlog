@@ -5,10 +5,10 @@ summary: "브라우저 내장 검증은 HTML 속성(required·type·minlength·p
 tags: ["frontend", "html", "form", "validation", "javascript", "css"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/forms/validation", "https://web.dev/learn/forms/javascript", "https://web.dev/learn/forms/attributes", "https://web.dev/articles/payment-and-address-form-best-practices", "https://web.dev/articles/sign-in-form-best-practices", "https://developer.mozilla.org/en-US/docs/Web/API/ValidityState", "https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement/setCustomValidity", "https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/pattern"]
+sources: ["https://web.dev/learn/forms/validation", "https://web.dev/learn/forms/javascript", "https://web.dev/learn/forms/attributes", "https://web.dev/articles/payment-and-address-form-best-practices", "https://web.dev/articles/sign-in-form-best-practices", "https://developer.mozilla.org/en-US/docs/Web/API/ValidityState", "https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement/setCustomValidity", "https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/pattern", "https://jeonghwan-kim.github.io/dev/2020/06/08/html5-form-validation.html"]
 ---
 
-> web.dev의 「[Learn Forms](https://web.dev/learn/forms)」 강좌 중 「Help users enter the right data in forms」, 「JavaScript」, 「Form attributes in depth」 모듈을 바탕으로, API 이름과 Baseline 상태는 MDN으로 확인해 재구성한 노트다.
+> web.dev의 「[Learn Forms](https://web.dev/learn/forms)」 강좌 중 「Help users enter the right data in forms」, 「JavaScript」, 「Form attributes in depth」 모듈을 바탕으로, API 이름과 Baseline 상태는 MDN으로 확인해 재구성한 노트다. 직접 그린 오류 영역과 내장 검증의 한계는 「[HTML5 폼 검증에 대해 정리해 보자](https://jeonghwan-kim.github.io/dev/2020/06/08/html5-form-validation.html)」를 바탕으로 더했다.
 
 ## 제약 검증이란
 
@@ -122,6 +122,35 @@ email.addEventListener('invalid', validateEmail);
 ```
 
 **`setCustomValidity()`로 넣은 메시지는 스스로 사라지지 않는다.** 값이 고쳐졌을 때 빈 문자열로 지우지 않으면 칸이 영원히 무효로 남아 폼이 제출되지 않는다. 그래서 `invalid`만이 아니라 `input`에서도 다시 판정한다.
+
+### 풍선 대신 직접 그린 오류 영역
+
+브라우저 풍선은 모양을 바꿀 수 없다. 검증은 브라우저에 맡기고 표시만 직접 하려면 **`invalid` 이벤트에서 `preventDefault()`** 를 부른다. 풍선만 사라지고 제출 차단은 그대로 남는다.
+
+```js
+const messages = {            // ValidityState 키 → 사이트 문구
+  valueMissing: '필수 항목이다.',
+  typeMismatch: '형식이 맞지 않는다.',
+  tooShort: '더 길게 입력한다.',
+  patternMismatch: '허용하지 않는 글자가 있다.',
+};
+const getMessage = (el) => {
+  const key = Object.keys(messages).find((k) => el.validity[k]);
+  return key ? messages[key] : el.validationMessage;   // 사전에 없으면 브라우저 문구
+};
+
+input.addEventListener('invalid', (e) => {
+  e.preventDefault();                       // 브라우저 풍선 끄기
+  errorEl.textContent = getMessage(input);
+});
+input.addEventListener('input', () => {     // 고치는 즉시 갱신
+  errorEl.textContent = input.validity.valid ? '' : getMessage(input);
+});
+```
+
+`ValidityState` 키를 메시지 사전의 키로 쓰면 규칙별 문구를 한곳에서 관리한다. 오류 영역은 `aria-describedby`로 입력 칸과 잇는다.
+
+내장 검증만으로 부족한 경우도 있다. **서버에 물어봐야 하는 규칙**(아이디 중복)과 **한 칸의 값에 따라 다른 칸의 필수 여부가 바뀌는 규칙**은 속성으로 표현할 수 없다. 이때는 `setCustomValidity()`로 같은 흐름에 끼워 넣거나, React Hook Form처럼 검증 상태를 관리하는 라이브러리를 쓴다([[react-hook-form|React Hook Form]]). 라이브러리를 쓰더라도 `novalidate`로 끄기만 하지 말고 `required`·`type` 같은 속성은 남겨 둔다. 모바일 키보드 종류와 자동 완성이 그 속성에 기댄다.
 
 ### 「비밀번호 확인」처럼 칸끼리 비교하는 규칙
 

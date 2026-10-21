@@ -5,10 +5,10 @@ summary: "설치된 PWA는 브라우저 탭이 아니라 자기 창을 가진다
 tags: ["frontend", "web", "pwa", "css", "ux", "mobile"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/pwa/foundations", "https://web.dev/learn/pwa/app-design", "https://web.dev/learn/pwa/windows", "https://web.dev/learn/pwa/getting-started", "https://web.dev/learn/pwa/enhancements"]
+sources: ["https://web.dev/learn/pwa/foundations", "https://web.dev/learn/pwa/app-design", "https://web.dev/learn/pwa/windows", "https://web.dev/learn/pwa/getting-started", "https://web.dev/learn/pwa/enhancements", "https://design.google/library/offline-design/"]
 ---
 
-> web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 기초·앱 디자인·창 관리 모듈을 바탕으로 재구성한 노트다.
+> web.dev의 「[Learn PWA](https://web.dev/learn/pwa)」 강좌의 기초·앱 디자인·창 관리 모듈을 바탕으로 재구성한 노트다. 오프라인 상태 UI는 Google Design의 「[Designing for Offline](https://design.google/library/offline-design/)」으로 보강했다.
 
 ## 기초: 모든 맥락을 먼저 생각한다
 
@@ -23,6 +23,21 @@ PWA는 결국 웹사이트라서 기초가 같다. 다만 **설치되면 창 크
 | 빠르고 좋은 경험 | 실사용자 데이터로 LCP·INP·CLS를 잰다([[web-vitals\|웹 성능 지표와 Lighthouse]]) |
 
 **화면 크기로 사용자를 추측하지 않는다.** 320px라고 터치폰이 아니고, 데스크톱 PWA는 다른 작업 옆 좁은 창에 떠 있을 수 있다. 설치된 데스크톱 PWA는 **200×100 CSS 픽셀**까지 줄어든다. 어떤 모바일 뷰포트보다 작다. 이 **미니 모드**를 새 브레이크포인트로 보고 재생 컨트롤, 요약 수치, 빠른 동작만 보여 준다. 폴더블, 태블릿이 된 노트북, 독에 꽂은 휴대폰까지 하나의 디자인이 흘러가야 한다. 반응형 기법은 [[responsive-design|반응형 디자인]]에 있다.
+
+## 오프라인 상태를 보여 주는 UI
+
+오프라인 지원은 캐시 전략만으로 끝나지 않는다. 연결이 끊기거나 느린 상황을 **사용자가 알고, 기다리고, 미리 대비할 수 있게** 화면이 알려 줘야 한다. 통신비가 소득에서 큰 비중을 차지하거나 연결이 자주 끊기는 지역의 사용자에게는 특히 중요하다.
+
+| 상황 | 화면이 할 일 |
+| --- | --- |
+| 기기가 오프라인 | 「인터넷 연결 없음」처럼 **글로** 알린다. 아이콘만으로는 부족하다 |
+| 콘텐츠를 오프라인용으로 받아 둠 | 그 항목에 오프라인 표시(아이콘 + 「오프라인」 레이블)를 단다. 받아 둔 것만 모아 보는 곳을 홈 탭처럼 찾기 쉬운 자리에 둔다 |
+| 내려받기 전 | 파일 크기를 보여 줘 데이터 비용을 판단하게 한다 |
+| 내려받는 중 | 남은 시간을 보여 주고 일시 정지·취소를 허용한다. 끝나면 완료를 분명히 알린다 |
+| 저장 공간 | 받아 둔 항목을 쉽게 지우게 하고, 지우면 얼마나 비는지 보여 준다 |
+| 연결이 필요한 동작(검색, 전송) | 실패로 끝내지 말고 **큐에 넣고** 「연결되면 보낼게요」 같은 한 줄 알림(스낵바)을 띄운다. 연결이 돌아오면 완료를 알린다 |
+
+오프라인 화면을 오류 페이지로만 보지 않는다. 받아 둔 콘텐츠를 보여 주거나 간단한 놀거리를 두면 기다림이 가치 있는 시간이 된다. 연결 상태는 `navigator.onLine`과 `online`·`offline` 이벤트로 감지하되, `true`가 실제 인터넷 연결을 보장하지는 않으므로 요청 실패도 함께 처리한다. 동작을 큐에 넣었다가 보내는 구현은 [[pwa-offline-storage|PWA 오프라인 저장]]의 Background Sync에 있다.
 
 ## 창과 아이콘
 

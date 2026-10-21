@@ -5,10 +5,11 @@ summary: "비밀번호를 넘기지 않고 다른 서비스의 자원 접근 권
 tags: ["security", "web", "auth", "oauth", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/323", "https://www.rfc-editor.org/rfc/rfc9700", "https://80000coding.notion.site/7e32a39070024199bf98063452f5fcb3"]
+sources: ["https://riverkim.kr/323", "https://www.rfc-editor.org/rfc/rfc9700", "https://80000coding.notion.site/7e32a39070024199bf98063452f5fcb3", "https://bytebytego.com/guides/oauth-2-explained-with-siple-terms", "https://bytebytego.com/guides/oauth-20-flows", "https://bytebytego.com/guides/v1what-is-sso-single-sign-on", "https://www.rfc-editor.org/rfc/rfc8628"]
 ---
 
 > SSO 섹션에 팔만코딩경(42Seoul 커뮤니티 위키)의 「싱글 사인온 (Single Sign On)」을 재구성해 더한 노트다.
+> 그랜트 유형과 중앙 인증 서버의 SSO 흐름은 ByteByteGo의 System Design 101 가이드 「[OAuth 2.0 Flows](https://bytebytego.com/guides/oauth-20-flows)」, 「[OAuth 2.0 Explained With Simple Terms](https://bytebytego.com/guides/oauth-2-explained-with-siple-terms)」, 「[What is SSO](https://bytebytego.com/guides/v1what-is-sso-single-sign-on)」를 바탕으로 재구성해 보탰다.
 
 ## OAuth 2.0이란
 
@@ -47,6 +48,21 @@ OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 
 - **PKCE**: 인가 코드를 중간에 가로채도 `code_verifier`가 없으면 토큰으로 바꿀 수 없다.
 - 과거 SPA에 쓰던 Implicit 방식(토큰을 URL로 바로 받음)과 사용자 비밀번호를 앱이 직접 받는 Password 방식은 **쓰지 않는다.**
 
+## 그랜트 유형: 상황별 토큰 받는 법
+
+OAuth 2.0은 클라이언트가 토큰을 받는 방법(grant type)을 여러 개 정의한다. 누가 자원의 주인이고 클라이언트가 비밀을 지킬 수 있느냐에 따라 고른다.
+
+| 그랜트 | 흐름 | 쓰는 곳 | 지금의 위치 |
+| --- | --- | --- | --- |
+| Authorization Code (+PKCE) | 사용자 동의 후 인가 코드를 받고, 그 코드를 토큰으로 바꾼다 | 사용자가 있는 모든 앱(웹·SPA·모바일) | **기본값** |
+| Client Credentials | 클라이언트가 자기 `client_id`·`client_secret`으로 바로 토큰을 받는다. 사용자가 없다 | 서버 간 통신(배치 작업, 마이크로서비스 호출) | 권장. 비밀을 지킬 수 있는 서버에서만 |
+| Device Authorization (RFC 8628) | 기기가 짧은 코드를 보여 주면 사용자가 휴대폰·PC에서 그 코드를 입력해 승인한다 | 키보드가 불편한 TV·콘솔·CLI | 권장 |
+| Refresh Token | 만료된 Access Token을 새로 받는다 | 위 그랜트로 받은 Refresh Token이 있을 때 | 권장. 회전과 함께 |
+| Implicit | 인가 코드 없이 Access Token을 리다이렉트 URL로 바로 받는다 | 과거의 SPA | **폐기**. 토큰이 URL·히스토리에 남는다. OAuth 2.1에서 빠진다 |
+| Resource Owner Password | 앱이 사용자 아이디·비밀번호를 직접 받아 토큰으로 바꾼다 | 과거의 1st-party 앱 | **폐기**. 비밀번호를 넘기지 않는다는 OAuth의 목적과 반대다 |
+
+OAuth 토큰 하나로 할 수 있는 일은 세 갈래다. 여러 서비스에 한 번에 로그인(SSO, 실제 인증은 OIDC), 여러 시스템에 걸친 권한 공유, 사용자가 허락한 범위만큼의 프로필 조회다.
+
 ## 토큰
 
 | 토큰 | 용도 | 특징 |
@@ -74,6 +90,24 @@ OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 
 | 인증 대행 | 에이전트가 사용자의 각 서비스 계정 정보를 보관했다가 대신 로그인해 준다 | 인증 방식을 고칠 수 없는 레거시 시스템 |
 | 인증 정보 전달 | IdP가 인증 후 토큰·어설션을 발급하고, 각 서비스는 그것을 검증해 사용자를 확인한다 | 웹 SSO의 표준 방식 |
 
+중앙 인증 서버(CAS, Central Authentication Service 계열)를 두는 SSO의 흐름은 이렇다.
+
+```text
+[서비스 A 첫 방문]
+사용자 → 서비스 A: 로그인 안 됨 → SSO 서버로 리다이렉트
+SSO 서버: 전역 세션 없음 → 로그인 페이지 → 자격 증명 확인
+SSO 서버: 전역 세션(SSO 도메인 쿠키) 생성 + 서비스 A용 토큰 발급 → A로 리다이렉트
+서비스 A → SSO 서버: 토큰 유효한가? → "유효" (SSO 서버는 A를 로그인된 서비스로 기록)
+서비스 A: 자기 로컬 세션을 만들고 자원 응답
+
+[서비스 B 방문]
+사용자 → 서비스 B: 로그인 안 됨 → SSO 서버로 리다이렉트
+SSO 서버: 전역 세션 있음 → 비밀번호 없이 B용 토큰 발급 → B로 리다이렉트
+서비스 B → SSO 서버: 토큰 검증 → "유효" → 자원 응답
+```
+
+핵심은 **전역 세션(SSO 서버)과 로컬 세션(각 서비스)이 따로 있다**는 점이다. SSO 서버가 어떤 서비스에 토큰을 줬는지 기록해 두기 때문에, 로그아웃할 때 그 목록의 서비스들에 로컬 세션 종료를 알릴 수 있다.
+
 인증 정보 전달 방식의 표준 프로토콜은 둘이다. 웹·모바일의 새 서비스는 **OIDC**(위의 ID Token 흐름), 기업용 레거시 시스템은 XML 기반 **SAML 2.0**을 많이 쓴다. 사용자가 IdP에 한 번 로그인하면 IdP 도메인에 세션 쿠키가 남으므로, 다른 서비스가 IdP로 보내도 다시 비밀번호를 묻지 않고 바로 토큰을 돌려준다.
 
 | 장점 | 주의 |
@@ -93,7 +127,7 @@ OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 
 ## 정리
 
 - OAuth 2.0은 비밀번호 대신 토큰으로 권한을 위임하는 인가 표준이다.
-- 지금의 기본 흐름은 Authorization Code + PKCE, 그리고 state 검증이다.
+- 지금의 기본 흐름은 Authorization Code + PKCE, 그리고 state 검증이다. 사용자가 없는 서버 간 호출은 Client Credentials, 입력이 불편한 기기는 Device 그랜트를 쓴다. Implicit과 Password 그랜트는 폐기됐다.
 - 로그인(인증)은 OAuth 위의 OIDC가 맡는다. OIDC·SAML로 IdP 한 곳에 인증을 모으면 SSO가 된다.
 - **토큰을 어디에 두느냐가 프론트엔드 보안의 핵심**이다.
 

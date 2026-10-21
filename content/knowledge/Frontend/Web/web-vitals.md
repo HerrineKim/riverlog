@@ -5,10 +5,10 @@ summary: "FCP·LCP·INP·CLS·TTFB 같은 웹 성능 지표의 뜻과 기준값,
 tags: ["performance", "web", "frontend", "browser"]
 source: mixed
 date: "2026-10-17"
-sources: ["https://web.dev/articles/vitals", "https://web.dev/blog/lcp-and-inp-are-now-baseline-newly-available", "https://web.dev/articles/lcp", "https://web.dev/articles/inp", "https://web.dev/articles/cls", "https://web.dev/learn/performance/why-speed-matters", "https://velog.io/@jiseung/Why-Site-Speed-Matters"]
+sources: ["https://web.dev/articles/vitals", "https://web.dev/blog/lcp-and-inp-are-now-baseline-newly-available", "https://web.dev/articles/lcp", "https://web.dev/articles/inp", "https://web.dev/articles/cls", "https://web.dev/learn/performance/why-speed-matters", "https://velog.io/@jiseung/Why-Site-Speed-Matters", "https://bytebytego.com/guides/top-9-website-performance-metrics-you-cannot-ignore"]
 ---
 
-> web.dev의 지표 문서(「[Web Vitals](https://web.dev/articles/vitals)」, 「[LCP](https://web.dev/articles/lcp)」, 「[INP](https://web.dev/articles/inp)」, 「[CLS](https://web.dev/articles/cls)」)와 「[Learn Performance](https://web.dev/learn/performance)」 강좌의 「왜 속도가 중요한가」 모듈을 바탕으로 재구성한 노트다. 「속도를 정하는 요인」은 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」(Cloudflare 학습 센터 정리)로 보강했다.
+> web.dev의 지표 문서(「[Web Vitals](https://web.dev/articles/vitals)」, 「[LCP](https://web.dev/articles/lcp)」, 「[INP](https://web.dev/articles/inp)」, 「[CLS](https://web.dev/articles/cls)」)와 「[Learn Performance](https://web.dev/learn/performance)」 강좌의 「왜 속도가 중요한가」 모듈을 바탕으로 재구성한 노트다. 「속도를 정하는 요인」은 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」(Cloudflare 학습 센터 정리)로 보강했다. 「그 밖의 로딩 지표」는 ByteByteGo의 System Design 101 가이드 「[Top 9 Website Performance Metrics You Cannot Ignore](https://bytebytego.com/guides/top-9-website-performance-metrics-you-cannot-ignore)」를 바탕으로 보강했다.
 
 웹 성능 지표는 「빠르다」를 숫자로 말하기 위한 측정값이다. 기준값은 구글 web.dev가 정한다. 용어의 짧은 정의는 [[web-glossary|용어집]]에 있다.
 
@@ -48,6 +48,20 @@ sources: ["https://web.dev/articles/vitals", "https://web.dev/blog/lcp-and-inp-a
 
 - 2024년 3월에 INP가 FID(First Input Delay)를 대신했다. FID는 **첫 입력의 대기 시간**만 쟀고, INP는 페이지를 쓰는 동안 일어난 **모든 상호작용**의 대기·처리·표시 시간 전체를 잰다.
 - LCP와 INP는 2025년 12월 Safari 26.2가 지원하면서 주요 브라우저 모두에서 잴 수 있게 됐다(Baseline). CLS는 아직 Chromium 계열에서만 잰다.
+
+### 그 밖의 로딩 지표
+
+Core Web Vitals 말고도 원인을 좁힐 때 보는 지표가 있다. 대부분 DevTools 네트워크 탭과 Lighthouse 보고서에 나온다.
+
+| 지표 | 무엇을 재나 | 읽는 법 |
+| --- | --- | --- |
+| 로드 시간 (`load` 이벤트) | 이미지·스타일시트를 포함해 모든 리소스를 받을 때까지 | 사용자가 체감하는 시점과 거리가 있어 단독으로는 약하다 |
+| DOMContentLoaded (DCL) | HTML을 받아 파싱하고 DOM을 다 만들 때까지. 이미지·스타일시트를 기다리지 않는다(동기 스크립트는 기다린다) | 동기 스크립트가 많으면 늦어진다([[page-lifecycle-events\|페이지 생명주기 이벤트]]) |
+| 첫 화면(above the fold) 로드 시간 | 스크롤 없이 보이는 영역이 다 그려질 때까지 | 사용자가 계속 볼지를 정하는 구간. LCP가 이를 대신하는 표준 지표다 |
+| 요청 수 | 페이지를 다 띄우는 데 필요한 HTTP 요청 개수 | 적을수록 왕복이 준다. HTTP/2 이후로는 개수보다 **요청 체인(워터폴)의 깊이**가 더 중요하다 |
+| 페이지 크기 | 모든 리소스의 전송 바이트 합 | 느린 회선에서 대역폭 병목을 드러낸다 |
+| RTT (왕복 시간) | 요청이 서버에 갔다가 응답이 돌아오는 시간 | 거리와 회선 품질. CDN과 연결 재사용으로 줄인다 |
+| 렌더링 차단 리소스 수 | 첫 페인트 전에 반드시 받아야 하는 CSS·동기 스크립트 | 많을수록 FCP가 늦어진다([[script-loading\|스크립트·스타일 로딩 순서]]) |
 
 ### 지표의 생애 주기
 

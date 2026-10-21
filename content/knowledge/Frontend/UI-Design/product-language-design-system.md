@@ -5,10 +5,10 @@ summary: "디자인 시스템을 범용 UI 라이브러리가 아니라 회사�
 tags: ["frontend", "design-system", "ui", "react", "css", "accessibility"]
 source: other
 date: "2026-10-20"
-sources: ["https://www.youtube.com/watch?v=obQvttzgSzY", "https://github.com/daangn/seed-design", "https://help.figma.com/hc/en-us/articles/15339657135383-Guide-to-variables-in-Figma"]
+sources: ["https://www.youtube.com/watch?v=obQvttzgSzY", "https://github.com/daangn/seed-design", "https://help.figma.com/hc/en-us/articles/15339657135383-Guide-to-variables-in-Figma", "https://blog.banksalad.com/tech/banksalad-product-language-ios/"]
 ---
 
-> FEConf 2023 발표 「[크로스 플랫폼 디자인 시스템, 1.5년의 기록](https://www.youtube.com/watch?v=obQvttzgSzY)」(당근 디자인 시스템 팀)을 바탕으로 재구성한 노트다.
+> FEConf 2023 발표 「[크로스 플랫폼 디자인 시스템, 1.5년의 기록](https://www.youtube.com/watch?v=obQvttzgSzY)」(당근 디자인 시스템 팀)을 바탕으로 재구성한 노트다. 공통 언어로서의 제품 언어와 iOS 구현 방식은 뱅크샐러드 기술 블로그의 「[Banksalad Product Language를 소개합니다](https://blog.banksalad.com/tech/banksalad-product-language-ios/)」로 보강했다.
 
 ## 범용 디자인 시스템과 제품 언어
 
@@ -113,6 +113,21 @@ Figma 컴포넌트 프레임 안의 토큰 정의(DSL) = 진실의 원천
 ```
 
 「Figma → 개발」 순서를 「공통 인터페이스 → Figma와 개발」로 바꾸는 것이다. 핵심은 **Figma도 개발과 같은 하나의 구현체로 취급하는 것**이다. 디자이너와 협업하는 일반적인 방법은 [[working-with-designers|디자이너와 함께 일하기]]에 있다.
+
+### 이름과 단위를 맞추는 공통 언어
+
+제품 언어는 디자인팀만의 규칙이 아니라 **제품을 만드는 모든 직군이 함께 쓰는 언어**다. 직군마다 UI를 쪼개는 단위와 부르는 이름이 다르면 같은 것을 다르게 부르고 다른 것을 같은 이름으로 불러 소통 비용이 커진다.
+
+| 방법 | 효과 |
+| --- | --- |
+| 명세가 부족하면 **동작하는 코드(PoC)부터** 만들어 플랫폼별 결과를 나란히 비교한다 | 합의할 지점(예: 컨테이너가 어떤 속성·메서드를 가져야 하나)이 문서보다 빨리 드러난다 |
+| 개발자가 디자인 파일의 편집용 사본을 직접 열어 본다 | 자동 생성된 스펙 화면에 가려진 의도(오토 레이아웃, 컴포넌트 변형)를 정확히 읽는다 |
+| 디자인 도구 개념과 플랫폼 개념을 대응시킨다 | Figma 컴포넌트 ↔ 클래스·컴포넌트, 오토 레이아웃 ↔ 스택 뷰·Flexbox |
+| 코드 구조가 디자인 계층을 그대로 따르게 한다 | 디자인이 바뀔 때 고칠 범위를 예측하기 쉽다. 선언적 API(SwiftUI·Compose·React)가 이 목적에 맞는다 |
+| 레이아웃만 맡는 컨테이너와 내용을 그리는 자식을 나눈다 | 구조가 명확하고 조합이 쉽다 |
+| 비슷해 보여도 쓰임이 다르면 성급히 상속·추상화하지 않는다 | 일부 중복을 허용해 의존을 끊는 편이 나을 때가 많다 |
+
+검증용 앱을 둘로 나누면 좋다. 하나는 컴포넌트별 카탈로그와 스냅샷 테스트용(웹의 Storybook에 해당), 다른 하나는 실제 조합 화면을 가짜 데이터로 재현하는 용도다. 빌드가 오래 걸리는 본 앱 대신 여기서 UI를 짧은 주기로 고친 뒤 옮긴다.
 
 ## 일관성과 유연성을 함께 주는 API
 

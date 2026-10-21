@@ -5,10 +5,10 @@ summary: "배열의 주요 메서드, length가 가장 큰 인덱스 + 1인 이�
 tags: ["javascript", "data-structure", "frontend"]
 source: mixed
 date: "2026-10-17"
-sources: ["https://riverkim.kr/74", "https://riverkim.kr/164", "https://riverkim.kr/177", "https://riverkim.kr/183", "https://riverkim.kr/176", "https://riverkim.kr/104", "https://yozm.wishket.com/magazine/detail/1585/", "https://wesbos.com/javascript/08-data-types/objects", "https://wesbos.com/javascript/08-data-types/arrays", "https://wesbos.com/javascript/08-data-types/46-array-cardio-static-methods", "https://wesbos.com/javascript/08-data-types/47-array-cardio-instance-methods", "https://wesbos.com/javascript/08-data-types/48-array-cardio-callback-methods-and-function-generation", "https://wesbos.com/javascript/09-gettin-loopy/49-looping-and-iterating-array-foreach", "https://wesbos.com/javascript/09-gettin-loopy/50-looping-and-iterating-mapping", "https://wesbos.com/javascript/09-gettin-loopy/51-looping-and-iterating-filter-find-and-higher-order-functions", "https://wesbos.com/javascript/09-gettin-loopy/52-looping-and-iterating-reduce", "https://wesbos.com/javascript/09-gettin-loopy/53-looping-and-iterating-reduce-exercise", "https://web.dev/learn/javascript/data-types/string", "https://web.dev/learn/javascript/objects", "https://web.dev/learn/javascript/objects/property-accessors", "https://web.dev/learn/javascript/collections/indexed", "https://ko.javascript.info/object", "https://ko.javascript.info/array", "https://ko.javascript.info/array-methods", "https://ko.javascript.info/keys-values-entries"]
+sources: ["https://riverkim.kr/74", "https://riverkim.kr/164", "https://riverkim.kr/177", "https://riverkim.kr/183", "https://riverkim.kr/176", "https://riverkim.kr/104", "https://yozm.wishket.com/magazine/detail/1585/", "https://wesbos.com/javascript/08-data-types/objects", "https://wesbos.com/javascript/08-data-types/arrays", "https://wesbos.com/javascript/08-data-types/46-array-cardio-static-methods", "https://wesbos.com/javascript/08-data-types/47-array-cardio-instance-methods", "https://wesbos.com/javascript/08-data-types/48-array-cardio-callback-methods-and-function-generation", "https://wesbos.com/javascript/09-gettin-loopy/49-looping-and-iterating-array-foreach", "https://wesbos.com/javascript/09-gettin-loopy/50-looping-and-iterating-mapping", "https://wesbos.com/javascript/09-gettin-loopy/51-looping-and-iterating-filter-find-and-higher-order-functions", "https://wesbos.com/javascript/09-gettin-loopy/52-looping-and-iterating-reduce", "https://wesbos.com/javascript/09-gettin-loopy/53-looping-and-iterating-reduce-exercise", "https://web.dev/learn/javascript/data-types/string", "https://web.dev/learn/javascript/objects", "https://web.dev/learn/javascript/objects/property-accessors", "https://web.dev/learn/javascript/collections/indexed", "https://ko.javascript.info/object", "https://ko.javascript.info/array", "https://ko.javascript.info/array-methods", "https://ko.javascript.info/keys-values-entries", "https://ui.toast.com/weekly-pick/ko_20190515/"]
 ---
 
-> 개인 TIL과 요즘IT 글을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(문자열·객체·인덱스 컬렉션 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「객체」, 「배열」, 「배열과 메서드」, 「Object.keys, values, entries」 글을 함께 참고해 보강했다.
+> 개인 TIL과 요즘IT 글을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(문자열·객체·인덱스 컬렉션 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「객체」, 「배열」, 「배열과 메서드」, 「Object.keys, values, entries」 글을 함께 참고해 보강했다. lodash 대체표는 「[Lodash의 대체재로서의 순수 자바스크립트 함수](https://ui.toast.com/weekly-pick/ko_20190515/)」를 바탕으로 최신 메서드를 더해 정리했다.
 
 데이터를 가공하는 코드의 대부분은 배열과 객체를 다루는 코드다. 특히 `map`, `filter`, `reduce` 같은 **배열 헬퍼 메서드**와 ES6 객체 문법은 React 코드에서 매일 쓰인다.
 
@@ -151,6 +151,27 @@ const byType = Object.groupBy(inventory, (item) => item.type) // { shirt: [...],
 `reduceRight`는 같은 일을 오른쪽 끝부터 한다.
 
 요소마다 결과가 하나씩 필요하면 `map`, 여러 조각을 **하나로 합쳐야** 하면 `reduce`를 쓴다. 바깥 변수를 두고 `forEach`로 더하는 방식은 함수 밖 상태를 바꾸는 부수 효과라 `reduce`보다 추적하기 어렵다.
+
+### lodash 대신 네이티브로
+
+lodash의 상당수 함수는 언어에 들어왔다. 네이티브로 되면 의존성과 번들이 줄고, 읽는 사람이 라이브러리 어휘를 몰라도 된다.
+
+| lodash | 네이티브 |
+| --- | --- |
+| `_.find`, `_.filter`, `_.some`, `_.every`, `_.includes` | 같은 이름의 배열 메서드 |
+| `_.uniq(arr)` | `[...new Set(arr)]` |
+| `_.compact(arr)` | `arr.filter(Boolean)` |
+| `_.head`, `_.tail`, `_.last` | `const [first, ...rest] = arr`, `arr.at(-1)` |
+| `_.flatten`, `_.flatMap` | `arr.flat()`, `arr.flatMap(fn)` |
+| `_.groupBy` | `Object.groupBy(arr, fn)`, 키가 객체면 `Map.groupBy` |
+| `_.sortBy` | `arr.toSorted((a, b) => a.price - b.price)` |
+| `_.range(n)` | `Array.from({ length: n }, (_, i) => i)` |
+| `_.get(obj, 'a.b.c')` | `obj?.a?.b?.c` |
+| `_.pick(obj, keys)` | `Object.fromEntries(keys.map((k) => [k, obj[k]]))` |
+| `_.cloneDeep` | `structuredClone(obj)` ([[variables-and-types\|변수와 타입]]) |
+| `_.debounce`, `_.throttle` | 짧게 직접 구현하거나 라이브러리를 유지한다([[debounce-throttle\|Debounce와 Throttle]]) |
+
+**네이티브가 늘 더 빠르지는 않다.** 엔진과 데이터 크기에 따라 lodash 구현이 이기기도 한다. 기준은 속도보다 단순함이다. 깊은 병합(`_.merge`)처럼 네이티브에 없는 기능이 필요하면 lodash를 쓰되 `lodash-es`나 개별 함수 import로 쓰는 것만 번들에 넣는다.
 
 ## 객체
 

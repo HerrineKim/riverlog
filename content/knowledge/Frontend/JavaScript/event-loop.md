@@ -5,10 +5,10 @@ summary: "싱글 스레드인 JavaScript가 렌더링과 나눠 쓰는 메인 �
 tags: ["javascript", "async", "browser", "frontend"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://riverkim.kr/324", "https://riverkim.kr/114", "https://web.dev/learn/javascript/appendix", "https://ko.javascript.info/event-loop", "https://ko.javascript.info/microtask-queue", "https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask"]
+sources: ["https://riverkim.kr/324", "https://riverkim.kr/114", "https://web.dev/learn/javascript/appendix", "https://ko.javascript.info/event-loop", "https://ko.javascript.info/microtask-queue", "https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask", "https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/", "https://www.youtube.com/watch?v=8aGhZQkoFbQ", "http://latentflip.com/loupe/"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리하고, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌 부록의 메인 스레드·콜 스택 설명과 javascript.info(모던 JavaScript 튜토리얼)의 「이벤트 루프와 매크로태스크, 마이크로태스크」, 「마이크로태스크」 글로 보강한 노트다.
+> riverkim.kr에 쓴 글들을 다시 정리하고, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌 부록의 메인 스레드·콜 스택 설명과 javascript.info(모던 JavaScript 튜토리얼)의 「이벤트 루프와 매크로태스크, 마이크로태스크」, 「마이크로태스크」 글로 보강한 노트다. 작업 쪼개기와 취소는 LINE 엔지니어링 블로그의 「[매끄러운 경험을 위한 JavaScript 비동기 처리](https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/)」를 바탕으로 더했다.
 
 ## 싱글 스레드와 블로킹
 
@@ -110,6 +110,32 @@ console.log('4')
 | 진행률 표시 | 같은 방식으로 쪼개고 조각마다 DOM을 갱신한다 | 태스크 사이에 렌더링이 일어나므로 진행 상태가 보인다. `queueMicrotask`로 쪼개면 렌더링 기회가 없어 끝난 뒤에야 한 번에 보인다 |
 | 이벤트가 끝까지 처리된 뒤에 할 일 | 핸들러 안에서 `setTimeout(fn)` | 버블링이 모든 조상까지 끝난 뒤에 실행된다. 커스텀 이벤트를 원래 이벤트 처리 뒤에 발생시킬 때 쓴다 |
 
+쪼갤 작업은 **제너레이터**로 쓰면 깔끔하다. 처리 로직은 한 덩어리로 두고 `yield`로 쉬어 갈 자리만 표시한 뒤, 바깥의 실행기가 태스크 단위로 `next()`를 부른다. 실행기가 손에 쥐고 있으니 **취소도 쉽다.** 검색어 입력처럼 새 입력이 오면 진행 중인 작업을 버리고 마지막 입력의 결과만 DOM에 반영한다.
+
+```javascript
+function runChunked(gen) {
+  let cancelled = false
+  const step = () => {
+    if (cancelled) return
+    const start = performance.now()
+    while (performance.now() - start < 8) {      // 한 조각은 프레임 예산의 절반쯤
+      if (gen.next().done) return
+    }
+    setTimeout(step)                              // 다음 태스크로 양보
+  }
+  step()
+  return () => { cancelled = true }               // 취소 함수
+}
+
+let cancel = () => {}
+input.addEventListener('input', () => {
+  cancel()                                        // 이전 검색은 버린다
+  cancel = runChunked(filterItems(input.value))   // filterItems는 항목마다 yield하는 제너레이터
+})
+```
+
+**마이크로태스크로는 양보할 수 없다.** 마이크로태스크 큐는 빌 때까지 비우고서야 다음 태스크와 렌더링으로 넘어가므로, Promise 체인이 계속 새 마이크로태스크를 넣으면 클릭도 렌더링도 굶는다. 쪼개도 메인 스레드에 남는 계산이 크면 [[web-workers|Web Worker]]로 옮긴다. 다만 워커는 DOM을 못 만지므로, 비용이 DOM 갱신 쪽에 있으면 갱신량 자체를 줄여야 한다.
+
 긴 작업을 쪼개는 기준과 `scheduler.yield()` 같은 양보 방법은 [[inp-optimization|INP 최적화]]에 있다.
 
 ### 처리되지 않은 거부의 판정 시점
@@ -138,5 +164,8 @@ console.log('4')
 
 - [콜 스택, 콜백 큐, 이벤트 루프](https://www.sungikchoi.com/blog/call-stack-callback-queue-event-loop/)
 - [자바스크립트 Promise 쉽게 이해하기](https://joshua1988.github.io/web-development/javascript/promise-for-beginners/)
+- [What the heck is the event loop anyway?](https://www.youtube.com/watch?v=8aGhZQkoFbQ) — 콜 스택·태스크 큐·렌더링을 그림으로 보여 주는 JSConf EU 2014 강연
+- [Loupe](http://latentflip.com/loupe/) — 코드를 넣으면 콜 스택과 콜백 큐의 움직임을 단계별로 보여 주는 시각화 도구
+- [매끄러운 경험을 위한 JavaScript 비동기 처리](https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/) — 제너레이터로 작업 쪼개기, 워커 위임
 
 관련 노트: [[callback-and-promise|콜백과 Promise]], [[async-await|async/await]], [[debounce-throttle|Debounce와 Throttle]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[browser-rendering|브라우저 렌더링 과정]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]], [[timers|타이머]]

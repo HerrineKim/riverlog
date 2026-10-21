@@ -5,10 +5,10 @@ summary: "JavaScript의 표준 ECMA-262를 누가 어떻게 정하는지 정리�
 tags: ["javascript", "frontend", "ecmascript", "history"]
 source: other
 date: "2026-10-17"
-sources: ["https://ko.javascript.info/intro", "https://ko.javascript.info/manuals-specifications", "https://ko.javascript.info/polyfills", "https://80000coding.notion.site/702242eb995e4cb2b7ca68cd66c64d7a", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://tc39.es/process-document/", "https://github.com/tc39/proposals/blob/main/finished-proposals.md"]
+sources: ["https://ko.javascript.info/intro", "https://ko.javascript.info/manuals-specifications", "https://ko.javascript.info/polyfills", "https://80000coding.notion.site/702242eb995e4cb2b7ca68cd66c64d7a", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://tc39.es/process-document/", "https://github.com/tc39/proposals/blob/main/finished-proposals.md", "https://auth0.com/blog/a-brief-history-of-javascript/"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「ECMAScript와 ECMAScript 2022의 제안 알아보기」, 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「자바스크립트란?」, 「매뉴얼과 명세서」, 「폴리필」 글을 더해 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「ECMAScript와 ECMAScript 2022의 제안 알아보기」, 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「자바스크립트란?」, 「매뉴얼과 명세서」, 「폴리필」 글을 더해 재구성한 노트다. 초기 연표는 「[A Brief History of JavaScript](https://auth0.com/blog/a-brief-history-of-javascript/)」를 바탕으로 더했다.
 
 **ECMAScript**는 JavaScript의 핵심 문법과 내장 객체를 정의한 언어 표준이다. 규격 문서의 번호는 **ECMA-262**이고, ECMA International의 기술 위원회 **TC39**가 관리한다. JavaScript는 이 표준을 구현한 언어이고, 브라우저의 DOM이나 Node.js의 `fs`처럼 실행 환경이 덧붙이는 API는 ECMAScript 바깥이다.
 
@@ -21,6 +21,18 @@ sources: ["https://ko.javascript.info/intro", "https://ko.javascript.info/manual
 | 브라우저·런타임 엔진 | V8, SpiderMonkey, JavaScriptCore가 제안을 구현해 실제로 쓸 수 있게 만든다 |
 
 표준이 먼저 있고 JavaScript가 나온 것이 아니다. 1995년 Netscape가 브라우저를 제어하는 스크립트 언어로 JavaScript를 만들었고, Microsoft의 JScript 같은 변종이 생기자 1996년 Netscape가 ECMA에 표준화를 맡겼다. 그 결과가 1997년의 ECMAScript 1판이다.
+
+```text
+1995.05 Mocha ─ Brendan Eich가 Netscape에서 짧은 기간에 만든 프로토타입 → LiveScript
+1995.12 JavaScript로 개명 ─ Java는 큰 컴포넌트, JavaScript는 작은 브라우저 스크립트라는 역할 분담
+1996    Microsoft JScript(IE 3) ─ 구현 차이로 오랜 브라우저 호환성 문제의 시작
+1997    ES1 ─ 1998 ES2(ISO 표준과 맞춤) ─ 1999 ES3(정규식, try/catch)
+2000년대 AJAX 확산 ─ ES4(클래스·모듈·정적 타입까지 넣은 대개편) 논쟁으로 정체
+2008    오슬로 회의: ES4 폐기, 작은 개정 ES3.1과 장기 계획 Harmony로 정리
+2009    ES3.1이 ES5로 ─ 2011 ES5.1 ─ 2015 Harmony의 성과가 ES2015로
+```
+
+ES4의 실패가 지금의 운영 방식을 만들었다. 큰 판을 한 번에 합의하려다 10년을 잃은 뒤로, **제안을 하나씩 단계별로 통과시키고 준비된 것만 매년 판에 싣는다.**
 
 ## TC39 프로세스: 제안이 표준이 되기까지
 

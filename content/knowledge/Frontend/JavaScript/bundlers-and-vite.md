@@ -5,10 +5,10 @@ summary: "모듈 없이 태어난 JavaScript가 CommonJS·AMD·ES 모듈을 거�
 tags: ["frontend", "javascript", "tools", "performance"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://vite.dev/blog/announcing-vite8", "https://vite.dev/config/build-options#build-target", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/81-bundling-and-building-with-parcel"]
+sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://vite.dev/blog/announcing-vite8", "https://vite.dev/config/build-options#build-target", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/81-bundling-and-building-with-parcel", "https://joshua1988.github.io/webpack-guide/"]
 ---
 
-> 테오(teo)의 「[Vite 이야기 (feat. Svelte)](https://velog.io/@teo/vite)」(2022.07)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다.
+> 테오(teo)의 「[Vite 이야기 (feat. Svelte)](https://velog.io/@teo/vite)」(2022.07)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다. webpack 설정의 뼈대는 「[웹팩 핸드북](https://joshua1988.github.io/webpack-guide/)」의 목차를 따라 더했다.
 
 ## 번들러가 필요한 이유
 
@@ -50,6 +50,20 @@ sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-
 | Snowpack | esbuild의 속도를 실무에 쓰려는 시도 (아래) |
 | Vite | Snowpack의 개념과 기존 번들러 기능을 한데 모은 프론트엔드 빌드 도구 |
 | Rolldown | Rollup 호환 API를 가진 **Rust** 번들러. Vite 8부터 esbuild와 Rollup을 함께 대체한다 |
+
+### webpack 설정의 뼈대
+
+번들러 설정은 대부분 webpack이 정한 네 개념의 변형이다. Vite·Rollup 설정을 읽을 때도 같은 틀로 보면 된다.
+
+| 개념 | 하는 일 | Vite·Rollup에서 |
+| --- | --- | --- |
+| entry | 의존성 그래프를 그리기 시작할 파일 | `index.html`의 `<script type="module">`, 번들러 옵션의 `input` |
+| output | 결과 파일 이름·경로. `[contenthash]`로 캐시 무효화 | `build.outDir`, 번들러 옵션의 `output` |
+| loader | JS가 아닌 파일(TS, CSS, 이미지)을 모듈로 바꾸는 **파일 단위 변환** | 플러그인의 `transform` 훅이 맡는다 |
+| plugin | 번들 결과 전체에 개입한다(HTML 생성, 압축, 환경 변수 주입) | 플러그인 |
+| mode | `development`·`production`에 따라 압축·소스 맵·최적화 기본값을 바꾼다 | `vite`(dev)와 `vite build` |
+
+개발 서버, HMR(Hot Module Replacement: 새로고침 없이 바뀐 모듈만 교체), 소스 맵이 개발 편의를 맡는다. 소스 맵으로 번들을 원본 파일로 디버깅하는 법은 [[devtools-debugging|DevTools 디버깅]]에 있다.
 
 ## 느린 빌드를 푸는 두 가지 길
 

@@ -164,6 +164,8 @@ button.addEventListener('click', async () => {
 
 Node.js가 먼저 쓰던 모듈 형식이 CommonJS(`const x = require('x')`, `module.exports = …`)다. 문서에서 `require`를 보면 `import x from 'x'`로 옮겨 쓰면 된다. 지금 Node.js는 ES 모듈을 기본 지원하고(`"type": "module"` 또는 `.mjs`), Node.js 20.19·22.12부터는 플래그 없이 CommonJS에서 (top-level await가 없는) ES 모듈을 `require()`로 불러올 수도 있다. 표준 모듈(2015) 이전에는 require.js의 AMD, Node.js의 CommonJS, 둘을 함께 지원하려는 UMD가 쓰였다. 형식이 생겨난 순서는 [[bundlers-and-vite|번들러의 역사와 Vite]]에 있다.
 
+두 형식은 **순환 의존**에서 다르게 깨진다. CommonJS는 실행이 덜 끝난 모듈의 빈 `module.exports`를 넘겨 나중에 `is not a function`이 나고, ES 모듈은 바인딩이 살아 있어 나중에 채워진 값이 보이지만 최상위에서 바로 쓰면 초기화 전 접근 오류가 난다. 원인과 해결은 [[express-project-architecture|Express 프로젝트 구조]]의 「순환 의존을 피한다」에 있다.
+
 ## 모듈 이전: 모듈 패턴
 
 ES 모듈 이전에는 즉시 실행 함수와 클로저로 private 변수를 숨기는 **모듈 패턴**을 썼다. 지금은 파일 자체가 스코프인 ES 모듈이 그 역할을 맡는다([[js-design-patterns|JavaScript 디자인 패턴]] 참고).

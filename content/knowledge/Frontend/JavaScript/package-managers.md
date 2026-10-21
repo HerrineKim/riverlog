@@ -5,10 +5,10 @@ summary: "패키지 설치·업데이트·의존성 관리를 맡는 패키지 �
 tags: ["javascript", "nodejs", "frontend", "tools"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.org/api/corepack.html", "https://pnpm.io/settings", "https://yarnpkg.com/blog", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/82-using-open-source-npm-packages", "https://wesbos.com/javascript/01-the-basics/code-quality-tooling-with-prettier-and-eslint"]
+sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.org/api/corepack.html", "https://pnpm.io/settings", "https://yarnpkg.com/blog", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/82-using-open-source-npm-packages", "https://wesbos.com/javascript/01-the-basics/code-quality-tooling-with-prettier-and-eslint", "http://jeonghwan-kim.github.io/series/2019/12/09/frontend-dev-env-npm.html"]
 ---
 
-> riverkim.kr에 쓴 글들을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고해 재구성한 노트다.
+> riverkim.kr에 쓴 글들을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고해 재구성한 노트다. 설치 방식 비교와 `package.json` 필드는 「[프론트엔드 개발 환경의 이해: NPM](https://jeonghwan-kim.github.io/series/2019/12/09/frontend-dev-env-npm.html)」을 바탕으로 더했다.
 
 ## 패키지 매니저란
 
@@ -36,6 +36,18 @@ npx eslint .                   # 전역 설치 없이 프로젝트(또는 임시
 - `node_modules` 안의 파일은 **직접 고치지 않는다.** 다음 설치 때 덮어써진다. 폴더는 언제 지워도 `npm install`로 다시 만들 수 있다. 패키지를 꼭 고쳐야 하면 `pnpm patch`나 `patch-package`로 패치 파일을 남긴다.
 - `package.json`의 `scripts`에 명령을 적어 두면 `npm run dev`처럼 실행한다. `start`·`test`는 `run` 없이 `npm start`·`npm test`로 줄여 쓴다. 스크립트 안에서는 `node_modules/.bin`의 명령을 경로 없이 쓸 수 있어 도구를 전역 설치할 필요가 없다.
 - 패키지를 고를 때는 관리 상태(최근 릴리스, 이슈 대응), 번들 크기, **필요한 함수만 가져올 수 있는지**(`import { format } from 'date-fns'`처럼 named import로 트리 셰이킹되는지)를 본다. `fetch`, `structuredClone`, `Intl` 같은 내장 API로 충분하면 패키지를 더하지 않는다. 날짜 라이브러리의 예는 [[date-libraries|날짜 라이브러리]]에 있다.
+
+### 왜 CDN이나 직접 내려받기 대신 매니저인가
+
+| 방식 | 장점 | 단점 |
+| --- | --- | --- |
+| CDN `<script>` | 설치 없이 바로 쓴다 | CDN 장애·변조에 그대로 노출된다. 버전 관리가 HTML에 흩어진다 |
+| 파일 직접 내려받기 | 외부 서버와 무관하다 | 업데이트와 호환성 확인이 전부 수작업이다 |
+| 패키지 매니저 | 이름·버전 범위가 `package.json`에, 정확한 버전이 lock 파일에 남는다 | 레지스트리와 공급망을 신뢰해야 한다(아래 보안 기본값) |
+
+`package.json`은 프로젝트 이름(`name`)·버전(`version`), 실행 명령(`scripts`), 의존성(`dependencies`, `devDependencies`)을 적는 매니페스트다. `main`·`exports`는 패키지를 **라이브러리로 배포할 때** 진입점을 알리는 필드라 앱 프로젝트에서는 보통 비워 둔다. `npm init -y`로 기본값 파일을 만든다.
+
+`npm install react`가 `"react": "^19.2.0"`처럼 **캐럿(`^`) 범위**로 기록하는 것은 npm의 기본값이다. `^`는 같은 MAJOR 안, `~`는 같은 MINOR 안의 업데이트를 허용한다. 범위 규칙과 0.x의 예외는 [[semantic-versioning|유의적 버전]]에 있다.
 
 ## 세 가지 매니저 비교
 

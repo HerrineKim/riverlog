@@ -5,7 +5,7 @@ summary: "웹 표준(HTML·CSS·JavaScript·DOM)에서 TypeScript, React와 메�
 tags: ["frontend", "roadmap", "career"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://miryang.dev/blog/how-studied-frontend", "https://roadmap.sh/frontend", "https://www.zerocho.com"]
+sources: ["https://miryang.dev/blog/how-studied-frontend", "https://roadmap.sh/frontend", "https://www.zerocho.com", "https://poiemaweb.com/", "https://github.com/yjs03057/33-js-concepts", "https://github.com/lydiahallie/javascript-questions/blob/master/ko-KR/README-ko_KR.md", "https://ui.toast.com/fe-guide/ko", "https://github.com/naver/fe-news", "https://ko.javascript.info", "https://developer.mozilla.org/ko/docs/A_re-introduction_to_JavaScript"]
 ---
 
 > MiryangJung의 「내가 프론트엔드를 학습한 방법」(2022.05), roadmap.sh의 Frontend 로드맵, 제로초(ZeroCho)의 프론트엔드 로드맵 다이어그램을 바탕으로 재구성한 노트다.
@@ -85,10 +85,14 @@ HTML → CSS → JavaScript → DOM·브라우저 → Git/GitHub → TypeScript
 | 단계 | 자료 |
 | --- | --- |
 | 웹 표준 전반 | [MDN Web Docs](https://developer.mozilla.org/ko/), [web.dev](https://web.dev/learn) |
-| JavaScript | [모던 JavaScript 튜토리얼](https://ko.javascript.info/), 『모던 자바스크립트 Deep Dive』 |
+| 웹 기초 입문 | [PoiemaWeb](https://poiemaweb.com/) — HTML·CSS·JavaScript·TypeScript를 한국어로 처음부터 |
+| JavaScript | [모던 JavaScript 튜토리얼](https://ko.javascript.info/), 『모던 자바스크립트 Deep Dive』, [MDN JavaScript 재입문](https://developer.mozilla.org/ko/docs/Web/JavaScript/Language_overview) |
+| JavaScript 개념 점검 | [33 JS Concepts](https://github.com/yjs03057/33-js-concepts)(호출 스택·클로저·this·이벤트 루프 등 33개 주제의 읽을거리 목록), [JavaScript Questions](https://github.com/lydiahallie/javascript-questions/blob/master/ko-KR/README-ko_KR.md)(출력 예측 퀴즈) |
+| 실무 관례 | [Frontend Fundamentals](https://frontend-fundamentals.com/)(변경하기 쉬운 코드의 기준, [[changeable-code-criteria\|좋은 코드의 기준]]), [TOAST UI FE 개발 가이드](https://ui.toast.com/fe-guide/ko)(코딩 컨벤션·안티 패턴·정적 분석·디버깅·번들러·테스트) |
 | TypeScript | [TypeScript 핸드북](https://www.typescriptlang.org/docs/handbook/intro.html) |
 | React·Next.js | [react.dev](https://react.dev/learn), [Next.js 공식 문서](https://nextjs.org/docs) |
 | 전체 지도 | [roadmap.sh Frontend](https://roadmap.sh/frontend) |
+| 소식 따라가기 | [NAVER FE News](https://github.com/naver/fe-news) — 매달 첫 주 수요일에 나오는 프론트엔드 기술 소식 큐레이션 |
 
 ## 정리
 
@@ -98,4 +102,4 @@ HTML → CSS → JavaScript → DOM·브라우저 → Git/GitHub → TypeScript
 - 단계마다 작은 프로젝트를 만들고, 잘 만든 코드를 읽고, 막힌 것과 푼 것을 기록한다.
 - 낯선 용어는 [[web-glossary|프론트엔드 웹 개발 용어집]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[frontend-career-tracks|프론트엔드 엔지니어의 세 가지 성장 트랙]]에서 자리를 잡는다.
 
-관련 노트: [[frontend-developer-role|프론트엔드 개발자의 업무 범위와 역량]], [[tech-stack-selection|기술 스택 고르기]], [[web-glossary|프론트엔드 웹 개발 용어집]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]]
+관련 노트: [[frontend-developer-role|프론트엔드 개발자의 업무 범위와 역량]], [[tech-stack-selection|기술 스택 고르기]], [[web-glossary|프론트엔드 웹 개발 용어집]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[frontend-launch-checklist|프론트엔드 출시 전 체크리스트]]

@@ -5,10 +5,10 @@ summary: "언제 끝날지 모르는 비동기 작업의 결과를 다루는 콜
 tags: ["javascript", "async", "promise", "frontend"]
 source: til
 date: "2026-10-12"
-sources: ["https://riverkim.kr/220", "https://wesbos.com/javascript/12-advanced-flow-control/67-promises", "https://wesbos.com/javascript/12-advanced-flow-control/68-promises-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/69-refactoring-callback-hell-to-promise-land", "https://ko.javascript.info/callbacks", "https://ko.javascript.info/promise-basics", "https://ko.javascript.info/promise-chaining", "https://ko.javascript.info/promise-error-handling", "https://ko.javascript.info/promise-api", "https://ko.javascript.info/promisify", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/try"]
+sources: ["https://riverkim.kr/220", "https://wesbos.com/javascript/12-advanced-flow-control/67-promises", "https://wesbos.com/javascript/12-advanced-flow-control/68-promises-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/69-refactoring-callback-hell-to-promise-land", "https://ko.javascript.info/callbacks", "https://ko.javascript.info/promise-basics", "https://ko.javascript.info/promise-chaining", "https://ko.javascript.info/promise-error-handling", "https://ko.javascript.info/promise-api", "https://ko.javascript.info/promisify", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/try", "https://developers.google.com/web/fundamentals/primers/promises?hl=ko", "https://web.dev/articles/promises", "https://joshua1988.github.io/web-development/javascript/promise-for-beginners/"]
 ---
 
-> riverkim.kr에 쓴 글을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「콜백」, 「프라미스」, 「프라미스 체이닝」, 「프라미스와 에러 핸들링」, 「프라미스 API」, 「프라미스화」 글을 함께 참고해 재구성한 노트다.
+> riverkim.kr에 쓴 글을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「콜백」, 「프라미스」, 「프라미스 체이닝」, 「프라미스와 에러 핸들링」, 「프라미스 API」, 「프라미스화」 글을 함께 참고해 재구성한 노트다. `then`의 두 번째 인자와 `catch`의 차이, 동시에 시작해 순서대로 보여 주는 패턴은 web.dev의 「[JavaScript Promise 소개](https://web.dev/articles/promises)」와 「[자바스크립트 Promise 쉽게 이해하기](https://joshua1988.github.io/web-development/javascript/promise-for-beginners/)」를 바탕으로 더했다.
 
 서버 요청, 타이머처럼 **언제 끝날지 모르는 작업**은 비동기로 실행된다. 비동기 작업을 기다리지 않고 다음 코드가 먼저 실행되기 때문에, 결과를 받아 쓰려면 별도의 방법이 필요하다. JavaScript는 이를 위해 **콜백 → Promise → async/await** 순서로 발전해 왔다. 이 노트는 앞의 두 가지를 다루고, async/await는 [다음 노트](/knowledge/dictionary/frontend/javascript/async-await)에서 다룬다.
 
@@ -116,7 +116,12 @@ promise
   .finally(() => console.log('끝'))     // 성공·실패와 관계없이 항상
 ```
 
-- `then(onFulfilled, onRejected)`처럼 두 번째 인자로 실패도 처리할 수 있지만, 보통 `then`은 성공만, 실패는 `catch`로 처리한다. `catch(f)`는 `then(null, f)`의 줄임이다.
+- `then(onFulfilled, onRejected)`처럼 두 번째 인자로 실패도 처리할 수 있지만, 보통 `then`은 성공만, 실패는 `catch`로 처리한다. `catch(f)`는 `then(null, f)`의 줄임이다. 이유는 범위다. **`then(f1, f2)`의 `f2`는 같은 `then`의 `f1`이 던진 에러를 잡지 못한다.** `then(f1).catch(f2)`는 `f1`을 포함해 앞 단계 어디서 난 에러든 잡는다.
+
+```javascript
+p.then(parse, handleError)          // parse가 throw하면 handleError는 모른다
+p.then(parse).catch(handleError)    // parse의 에러도 잡는다
+```
 - `finally` 핸들러는 인자를 받지 않아 성공인지 실패인지 모른다. 로딩 표시 해제처럼 "어쨌든 끝나면 할 일"에 쓴다. 결과값이나 에러는 `finally`를 **그대로 통과해** 다음 `then`·`catch`로 간다(`finally` 안에서 에러를 던지면 그 에러로 바뀐다).
 - 이미 settled된 Promise에 `then`을 달아도 핸들러는 실행된다. 구독하기 전에 결과가 나왔어도 놓치지 않는다. 다만 핸들러는 늘 **비동기로**, 현재 코드가 끝난 뒤 마이크로태스크로 실행된다([[event-loop|이벤트 루프]]).
 - 한 Promise에 `then`을 여러 번 달 수 있다. 콜백은 하나만 넘길 수 있었지만 Promise는 결과를 받을 쪽을 몇 개든 붙인다.
@@ -256,6 +261,15 @@ const ok = results.filter((r) => r.status === 'fulfilled').map((r) => r.value)
 - 결과 배열의 순서는 **완료 순서가 아니라 전달한 순서**를 따른다. Promise가 아닌 값이 섞여 있어도 그대로 결과에 들어간다.
 - 동시에 보내면 전체 시간이 가장 느린 요청 하나의 시간에 가까워지고, 실패도 가장 먼저 실패한 요청에서 바로 드러난다.
 - `all`이 거부돼도 나머지 작업이 취소되는 것은 아니다. 결과만 버려진다. Promise에는 **취소라는 개념이 없다.** 실제로 요청을 멈추려면 `AbortController`를 쓴다([[ajax|AJAX와 HTTP 요청]]).
+- **동시에 시작하고, 순서대로 보여 준다.** 글의 장(chapter)처럼 순서가 중요한 목록은 요청을 한꺼번에 보내 두고 결과를 순서대로 기다리며 붙이면, 전체 시간은 줄고 앞부분은 먼저 보인다.
+
+  ```javascript
+  const pending = urls.map((url) => fetch(url).then((r) => r.json())) // 모두 동시에 출발
+  for (const p of pending) render(await p)                             // 도착 순서와 무관하게 순서대로 표시
+  ```
+
+  기다리는 동안 뒤쪽 요청이 먼저 실패하면 아직 아무도 그 Promise를 기다리지 않아 「처리되지 않은 거부」 경고가 날 수 있다. 실패를 확실히 다뤄야 하면 각 Promise에 `.catch`를 미리 달거나 `Promise.allSettled`로 모은다.
+
 - 인자는 배열뿐 아니라 **이터러블**이면 된다. 데이터 배열을 `map`으로 Promise 배열로 바꿔 넘기는 `Promise.all(ids.map(fetchUser))`가 가장 흔한 형태다.
 
 ### 이미 정해진 Promise 만들기

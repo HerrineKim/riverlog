@@ -5,10 +5,10 @@ summary: "식은 값을 만들어 내는 코드이고, 문은 무언가를 하�
 tags: ["javascript", "frontend", "react", "jsx"]
 source: other
 date: "2026-10-17"
-sources: ["https://www.joshwcomeau.com/javascript/statements-vs-expressions/", "https://wesbos.com/javascript/01-the-basics/variables-and-statements", "https://web.dev/learn/javascript/introduction", "https://web.dev/learn/javascript/appendix", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar", "https://ko.javascript.info/structure", "https://ko.javascript.info/javascript-specials"]
+sources: ["https://www.joshwcomeau.com/javascript/statements-vs-expressions/", "https://wesbos.com/javascript/01-the-basics/variables-and-statements", "https://web.dev/learn/javascript/introduction", "https://web.dev/learn/javascript/appendix", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar", "https://ko.javascript.info/structure", "https://ko.javascript.info/javascript-specials", "https://bakyeono.net/post/2018-01-19-javascript-use-semicolon-or-not.html"]
 ---
 
-> Josh W. Comeau의 「[Statements Vs. Expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)」(2025.08 갱신)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(소개·부록 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「코드 구조」, 「기본 문법 요약」 글을 함께 참고했다.
+> Josh W. Comeau의 「[Statements Vs. Expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)」(2025.08 갱신)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(소개·부록 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「코드 구조」, 「기본 문법 요약」 글을 함께 참고했다. 세미콜론 논쟁은 「[자바스크립트, 세미콜론을 써야 하나 말아야 하나](https://bakyeono.net/post/2018-01-19-javascript-use-semicolon-or-not.html)」를 바탕으로 더했다.
 
 ## 식과 문
 
@@ -59,7 +59,14 @@ data.forEach((item) => console.log(item)); // for문은 없지만, 이 줄 전�
 - **끊어 읽는 경우**: `return`, `break`, `continue`, `throw`, `yield`, 후위 `++`·`--` 앞뒤의 정해진 자리에 줄바꿈이 오면 무조건 세미콜론이 들어간다. `return` 바로 뒤에서 줄을 바꾸고 객체를 쓰면 `undefined`가 반환되고, `throw` 뒤에서 줄을 바꾸면 SyntaxError다.
 - 한 줄에 두 문을 쓰면 ASI가 끼어들 줄바꿈이 없으므로 직접 세미콜론으로 나눠야 한다(`let a = 2 a + 3`은 SyntaxError).
 
-세미콜론을 쓸지 말지는 팀 스타일이고, 어느 쪽이든 Prettier 같은 포매터가 일관되게 맞춰 주면 위 함정을 대부분 피한다([[eslint-prettier|ESLint와 Prettier 설정]]).
+세미콜론을 쓸지 말지는 오래된 논쟁이다.
+
+| 관점 | 근거 |
+| --- | --- |
+| 쓴다 | ASI 규칙을 다 외우기 어렵다. 명시해 두면 읽는 사람이 규칙을 몰라도 된다. 언어에 새 문법이 들어올 때 생략 스타일이 새 함정을 만날 수 있다고 TC39가 경고한 적이 있다 |
+| 생략한다 | 실제로 지킬 규칙은 「`(`·`[`·`` ` ``로 시작하는 줄 앞에 `;`」 하나뿐이다. `return` 줄바꿈 함정은 세미콜론을 써도 똑같이 생긴다. 문제는 세미콜론이 아니라 **줄을 어디서 바꾸느냐**다 |
+
+어느 쪽이든 **사람이 기억하지 말고 도구에 맡긴다.** Prettier가 고른 스타일로 일관되게 맞추고(`semi: false`면 필요한 곳에 `;`를 앞에 붙여 준다), ESLint의 `no-unexpected-multiline`이 의도치 않게 이어진 줄을 잡는다([[eslint-prettier|ESLint와 Prettier 설정]]).
 
 ### 공백과 대소문자
 

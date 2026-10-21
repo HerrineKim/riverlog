@@ -5,10 +5,10 @@ summary: "웹 폰트는 레이아웃이 필요로 할 때에야 요청되는 늦
 tags: ["performance", "css", "web", "frontend", "typography"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/performance/optimize-web-fonts", "https://web.dev/articles/optimize-cls", "https://web.dev/articles/optimize-lcp"]
+sources: ["https://web.dev/learn/performance/optimize-web-fonts", "https://web.dev/articles/optimize-cls", "https://web.dev/articles/optimize-lcp", "https://d2.naver.com/helloworld/4969726", "https://www.44bits.io/ko/post/optimization_webfont_with_pyftsubnet"]
 ---
 
-> web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Optimize web fonts」 모듈을 바탕으로 재구성한 노트다. `@font-face` 선언 문법과 타이포그래피는 [[web-typography|웹 타이포그래피]]에 있다.
+> web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Optimize web fonts」 모듈을 바탕으로 재구성한 노트다. `@font-face` 선언 문법과 타이포그래피는 [[web-typography|웹 타이포그래피]]에 있다. 한글 서브셋과 FOIT·FOUT 부분은 NAVER D2의 「[웹 폰트 사용과 최적화의 최근 동향](https://d2.naver.com/helloworld/4969726)」과 44BITS의 「[웹폰트 경량화 - 폰트툴즈의 pyftsubset을 사용한 폰트 서브셋 만들기](https://www.44bits.io/ko/post/optimization_webfont_with_pyftsubnet)」로 보강했다.
 
 ## 웹 폰트가 성능에 주는 영향
 
@@ -73,9 +73,27 @@ WOFF2는 모든 현대 브라우저가 지원하고 WOFF보다 최대 30% 작다
 }
 ```
 
+### 한글 폰트 서브셋
+
+한글 음절은 조합 가능한 것만 **11,172자**라 한글 폰트는 영문 폰트보다 수십 배 크다. 실제로 쓰는 글자는 훨씬 적으므로, 흔히 KS X 1001(완성형)의 **2,350자**에 자모·영문·숫자·문장 부호·자주 쓰는 특수문자를 더한 목록으로 서브셋을 만든다. 배포되는 한글 웹 폰트 상당수가 이미 이 범위의 서브셋판을 함께 준다.
+
+```bash
+pip install fonttools brotli   # WOFF2 출력에 brotli가 필요하다
+pyftsubset NotoSansKR-Regular.otf \
+  --text-file=glyphs.txt \
+  --layout-features='*' \
+  --flavor=woff2 \
+  --output-file=NotoSansKR-Regular.subset.woff2
+```
+
+- `--text-file`은 남길 글자 목록 파일(줄바꿈은 무시), `--layout-features='*'`는 커닝·합자 같은 OpenType 기능을 유지한다.
+- `--text="가나다"`로 글자를 직접 주거나 `--unicodes=U+AC00-D7A3`처럼 범위로 줄 수도 있다.
+- 범위를 너무 좁히면 사용자 입력·고유명사에서 빠진 글자가 폴백 글꼴로 섞여 보인다. 본문용은 넉넉하게, 제목·로고처럼 글자가 정해진 곳만 공격적으로 줄인다.
+- Google Fonts는 한글 폰트를 사용 빈도 분석으로 100여 개 조각으로 나누고 조각마다 `unicode-range`를 붙여 내려준다. 페이지에 실제로 나온 글자가 속한 조각만 받는다. 자체 호스팅에서도 같은 방식으로 나눌 수 있다.
+
 ## 3. 렌더링: font-display 고르기
 
-웹 폰트를 쓰는 글자는 기본적으로 폰트가 올 때까지 **숨겨진다.** `font-display`가 이 동작을 정한다.
+웹 폰트를 쓰는 글자는 기본적으로 폰트가 올 때까지 **숨겨진다.** 글자가 안 보였다가 나타나는 것을 **FOIT**(Flash of Invisible Text), 대체 폰트로 보였다가 바뀌는 것을 **FOUT**(Flash of Unstyled Text)라고 부른다. 강조하려고 웹 폰트를 입힌 단어가 FOIT 동안 빠져 보이면 문장의 뜻이 바뀌기도 한다. `font-display`가 둘 중 어느 쪽을 택할지 정한다. 과거에는 Font Face Observer 같은 라이브러리로 폰트 로딩을 감지해 클래스를 바꾸는 식으로 FOUT를 흉내 냈지만, 지금은 `font-display`와 CSS Font Loading API(`document.fonts`)로 충분하다.
 
 | 값 | 동작 | 맞는 곳 |
 | --- | --- | --- |

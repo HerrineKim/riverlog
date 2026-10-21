@@ -5,10 +5,10 @@ summary: "사용자 데이터를 남이 읽지 못하게 하는 세 겹의 암�
 tags: ["privacy", "security", "http", "web", "javascript"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/privacy/encryption", "https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto"]
+sources: ["https://web.dev/learn/privacy/encryption", "https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto", "https://bytebytego.com/guides/is-telegram-secure", "https://core.telegram.org/api/end-to-end"]
 ---
 
-> web.dev의 「[Learn Privacy](https://web.dev/learn/privacy)」 강좌의 암호화 모듈을 바탕으로 재구성한 노트다.
+> web.dev의 「[Learn Privacy](https://web.dev/learn/privacy)」 강좌의 암호화 모듈을 바탕으로 재구성하고, 메신저 사례는 ByteByteGo의 System Design 101 가이드 「[Is Telegram Secure?](https://bytebytego.com/guides/is-telegram-secure)」로 덧붙인 노트다.
 
 ## 세 겹의 암호화
 
@@ -64,6 +64,17 @@ const shareUrl = `${location.origin}/s/${id}#key=${jwk.k}` // 키는 fragment에
 - 직접 암호 알고리즘을 구현하지 않는다. 브라우저 내장 `crypto.subtle`(SubtleCrypto)을 쓴다.
 - fragment는 서버 로그에는 안 남지만 방문 기록·화면 공유·복사한 링크에는 남는다. 링크 자체가 비밀번호다.
 - 같은 페이지의 서드파티 스크립트는 `location.hash`를 읽을 수 있다. E2EE 페이지에는 서드파티 스크립트를 싣지 않는다.
+
+### 메신저의 기본 채팅은 E2EE인가
+
+「암호화된 메신저」라도 **서버가 키를 가지면 E2EE가 아니다.** 텔레그램이 대표 예다.
+
+| 채팅 종류 | 암호화 방식 | 서버가 읽을 수 있나 |
+| --- | --- | --- |
+| 일반 1:1·그룹 채팅(클라우드 채팅) | 클라이언트-서버 구간 암호화. 서버에 암호화해 저장하되, 데이터와 키를 나눠 여러 나라의 데이터 센터에 둔다 | 원리상 가능하다. 공격자가 여러 곳의 조각과 키를 모두 얻기 어렵게 만들었을 뿐이다 |
+| 비밀 채팅(secret chat) | E2EE | 불가능하다. 대신 1:1만 되고, 그 기기에 묶여 다른 기기와 동기화되지 않으며, 지원하는 클라이언트가 제한된다 |
+
+Signal, WhatsApp처럼 **모든 채팅을 기본으로 E2EE** 하는 메신저도 있다. 「안전한가」를 따질 때는 전송 구간 암호화인지, 서버가 키를 쥐는지, E2EE가 기본값인지를 구분해 묻는다.
 
 ### 한계
 

@@ -100,4 +100,4 @@ struct Landmark: Codable {
 - `JSONEncoder().encode(값)`, `JSONDecoder().decode(타입.self, from: data)`. 둘 다 `throws`다.
 - 키 이름 차이는 `keyDecodingStrategy`로 일괄, `CodingKeys`로 개별 처리한다. 없을 수 있는 키는 옵셔널로 둔다.
 
-관련 노트: [[mobile-frameworks|모바일 앱 프레임워크 비교]], [[dart-language|Dart 핵심 문법]]
+관련 노트: [[mobile-frameworks|모바일 앱 프레임워크 비교]], [[dart-language|Dart 핵심 문법]], [[ios-collection-view-layout|UICollectionView 커스텀 레이아웃]]

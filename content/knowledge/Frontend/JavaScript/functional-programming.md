@@ -5,10 +5,10 @@ summary: "함수형 프로그래밍을 순수 함수·불변성·선언적 패�
 tags: ["javascript", "frontend", "functional-programming", "programming-paradigm"]
 source: other
 date: "2026-10-20"
-sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://ko.javascript.info/currying-partials", "https://www.youtube.com/watch?v=vK1DazRK_a0"]
+sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://ko.javascript.info/currying-partials", "https://www.youtube.com/watch?v=vK1DazRK_a0", "https://evan-moon.github.io/2020/01/27/safety-function-composition/", "https://evan-moon.github.io/2020/01/05/what-is-immutable/"]
 ---
 
-> 테오(teo)의 「[다시 쓰는 함수형 프로그래밍](https://velog.io/@teo/functional-programming)」(2022.05)과 「[함수형 프로그래밍을 배워보자!](https://velog.io/@teo/functional-programming-study)」(2023.01)를 바탕으로 재구성한 노트다. 용어 틀은 에릭 노먼드의 『쏙쏙 들어오는 함수형 코딩』(Grokking Simplicity)에서 왔다.
+> 테오(teo)의 「[다시 쓰는 함수형 프로그래밍](https://velog.io/@teo/functional-programming)」(2022.05)과 「[함수형 프로그래밍을 배워보자!](https://velog.io/@teo/functional-programming-study)」(2023.01)를 바탕으로 재구성한 노트다. 용어 틀은 에릭 노먼드의 『쏙쏙 들어오는 함수형 코딩』(Grokking Simplicity)에서 왔다. 펑터와 불변성의 비용은 「[어떻게 하면 안전하게 함수를 합성할 수 있을까?](https://evan-moon.github.io/2020/01/27/safety-function-composition/)」, 「[변하지 않는 상태를 유지하는 방법, 불변성(Immutable)](https://evan-moon.github.io/2020/01/05/what-is-immutable/)」를 바탕으로 보강했다.
 > 명령형과 선언형 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로 더한 노트다.
 > 커링과 부분 적용은 javascript.info(모던 JavaScript 튜토리얼)의 「커링」 글을 바탕으로 더했다.
 > 상태를 줄이고·모으고·미루는 법과 데이터 주도 프로그래밍은 Rafal Dittwald의 Clojure/north 2019 발표 「[Solving Problems the Clojure Way](https://www.youtube.com/watch?v=vK1DazRK_a0)」를 바탕으로 더했다.
@@ -99,6 +99,10 @@ JavaScript는 객체·배열을 참조로 넘긴다. 계산 안에서 `arr.push(
 | 방어적 복사(깊은 복사) | 고칠 수 없는 라이브러리가 인자를 변경할 때 | `structuredClone(obj)`로 사본을 넘긴다 |
 
 중첩 객체를 카피 온 라이트로 바꾸면 스프레드가 겹겹이 쌓인다. JavaScript가 불변 문법을 지원하지 않아서다. immer, Immutable.js 같은 라이브러리가 이 빈자리를 메운다.
+
+- `const`는 **재할당**만 막는다. 객체 내부 값은 그대로 바꿀 수 있다. 불변성은 이름이 아니라 메모리의 값을 바꾸지 않는 것이다.
+- React와 Redux는 `Object.is`로 이전·다음 상태를 **참조 비교**해 변화를 감지한다. 원본을 고치면 참조가 같아 변화를 놓치므로 새 객체를 만들어 돌려준다.
+- 비용도 있다. 생성 비용이 큰 인스턴스(오디오 노드, 대형 버퍼)를 매번 새로 만들면 느려지고, 변경을 전제로 설계된 객체지향 API와는 맞지 않는다. 그런 곳은 변경을 한 모듈 안에 가두고 바깥에는 불변처럼 보이게 한다.
 
 ## 3. 계층형 설계와 추상화 벽
 
@@ -248,6 +252,28 @@ function partial(func, ...bound) {
 - 커링 헬퍼는 `fn.length`(선언된 매개변수 수)로 인자가 다 모였는지 판단한다. 그래서 **매개변수 개수가 고정된 함수**에만 쓴다. rest 매개변수(`...args`)와, 기본값이 있는 첫 매개변수부터 뒤의 매개변수는 `length`에 세지 않아 의도대로 동작하지 않는다.
 - 커링은 **자주 바뀌지 않는 인자를 앞에** 둘 때 쓸모가 있다. 설정·날짜·로그 레벨처럼 한 번 정하면 반복되는 인자를 고정해 두고, 매번 달라지는 데이터는 마지막에 받는다. `map(logNow('INFO'))`처럼 고차 함수에 바로 넘길 수 있는 인자 하나짜리 함수가 나오는 것도 장점이다.
 - 함수를 이어 붙이는 `pipe`·`compose`가 인자 하나짜리 함수를 기대하므로, 함수형 라이브러리는 데이터를 마지막 인자로 받고 자동으로 커링한다.
+
+## 8. 펑터와 Maybe: 실패할 수 있는 함수를 안전하게 합성한다
+
+두 함수를 합성하려면 앞 함수의 출력 타입이 뒤 함수의 입력 타입과 맞아야 한다. 그런데 순수 함수라도 빈 문자열을 받으면 `undefined`를 돌려주는 식으로 **예상 밖의 값**을 낼 수 있고, 그 값이 다음 함수로 흘러가면 합성 전체가 깨진다. 호출할 때마다 `if (x == null)`을 넣으면 검사가 곳곳에 흩어진다.
+
+해법은 값을 **상자(문맥)에 담고, 검사를 상자 안에 한 번만** 두는 것이다.
+
+| 개념 | 뜻 | JavaScript에서 |
+| --- | --- | --- |
+| **펑터(Functor)** | 값을 감싼 상자. `map`으로 안의 값을 바꾸고 **새 상자**를 돌려준다. 상자의 구조는 그대로다 | `Array.prototype.map`, `Promise.then`(값이 나중에 생기는 상자) |
+| **Maybe** | 값이 있을 수도 없을 수도 있는 상자. `Just(x)`는 `map`을 적용하고, `Nothing`은 `map`을 무시하고 자기 자신을 돌려준다 | 옵셔널 체이닝 `a?.b?.c`가 같은 생각의 문법 버전이다 |
+| **모나드(Monad)** | 상자를 돌려주는 함수를 이어 붙일 때 상자가 겹치지 않게 펴 주는(`flatMap`, `chain`) 상자 | `Array.prototype.flatMap`, 중첩 Promise를 자동으로 펴는 `then` |
+
+```js
+const Just = (x) => ({ map: (f) => Maybe(f(x)), get: () => x });
+const Nothing = { map: () => Nothing, get: () => undefined };
+const Maybe = (x) => (x == null ? Nothing : Just(x));
+
+Maybe(user).map((u) => u.profile).map((p) => p.name).get(); // 중간이 비어도 터지지 않는다
+```
+
+중간마다 검사하지 않고 **합성에만 집중**한 뒤 마지막에 한 번 결과를 확인한다. 실패 이유까지 전달하려면 성공·실패 두 갈래를 갖는 `Either`(`Result`) 상자를 쓰고, 이 방식으로 오류 처리를 이어 붙이는 것을 철도 지향 프로그래밍(Railway Oriented Programming)이라 부른다.
 
 ## 한계: 왜 널리 쓰이지 못하나
 

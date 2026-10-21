@@ -1,12 +1,14 @@
 ---
 title: "React Hooks"
 concept: "Hooks"
-summary: "함수 컴포넌트에서 state·생명주기·메모이제이션을 쓰게 해 주는 API와 그 규칙, 커스텀 훅."
+summary: "함수 컴포넌트에서 state·생명주기·메모이제이션을 쓰게 해 주는 API와 그 규칙, 커스텀 훅. useEffect를 생명주기가 아니라 동기화로 보는 관점, deps를 줄이는 법, 요청 경쟁 상태 처리까지."
 tags: ["react", "hooks", "state", "lifecycle", "frontend"]
-source: til
+source: mixed
 date: "2026-10-13"
-sources: ["https://react.dev/reference/react/hooks", "https://react.dev/blog/2025/10/01/react-19-2", "https://react.dev/blog/2025/10/07/react-compiler-1"]
+sources: ["https://react.dev/reference/react/hooks", "https://react.dev/blog/2025/10/01/react-19-2", "https://react.dev/blog/2025/10/07/react-compiler-1", "https://rinae.dev/posts/a-complete-guide-to-useeffect-ko"]
 ---
+
+> React 공식 문서를 바탕으로, effect를 동기화로 보는 관점과 deps를 줄이는 법은 Dan Abramov의 「A Complete Guide to useEffect」 번역 「[useEffect 완벽 가이드](https://rinae.dev/posts/a-complete-guide-to-useeffect-ko)」를 바탕으로 더한 노트다.
 
 **Hook**은 함수 컴포넌트가 클래스 컴포넌트의 기능(state, 생명주기 등)을 쓸 수 있게 해 주는 함수다. React 16.8(2019)에 추가되었고, 지금은 함수 컴포넌트 + Hooks가 React의 표준 작성 방식이다. 기존 클래스 컴포넌트를 굳이 Hooks로 다시 쓸 필요는 없다.
 
@@ -81,6 +83,42 @@ useEffect(() => {
 
 - effect 안에서 읽는 state·props는 모두 deps에 넣는다. 빠뜨리면 오래된 값에 갇힌다.
 - 개발 모드의 StrictMode는 cleanup 누락을 찾으려고 마운트 직후 한 번 더 정리·실행해 본다. 자세한 내용은 [[lifecycle#StrictMode의 이중 실행|생명주기]]에 있다.
+
+### 렌더마다 자기 값을 가진다
+
+컴포넌트 함수는 렌더마다 다시 호출된다. 그 렌더의 props·state는 **그 렌더 안에서 바뀌지 않는 상수**이고, 그 안에서 만든 이벤트 핸들러·타이머 콜백·effect는 모두 그 상수를 클로저로 붙잡는다. 클릭하고 3초 뒤 `alert(count)`를 띄우면, 그사이 count가 올라도 클릭한 렌더의 값이 나온다. 버그가 아니라 정확한 동작이다.
+
+그래서 effect는 「마운트 때 한 번」, 「업데이트 때」 같은 **생명주기 사건이 아니라 동기화**로 생각한다. 「지금 props·state에 맞춰 React 바깥(문서 제목, 구독, 타이머, 외부 위젯)을 맞춘다」는 선언이다. 몇 번째 렌더이든 같은 props면 같은 결과가 되어야 하고, 첫 렌더만 특별 취급하는 effect는 대개 설계가 어긋났다는 신호다. cleanup도 **자신이 만들어진 렌더의 값**으로 실행된다. `roomId`가 1에서 2로 바뀌면 cleanup은 1번 방 연결을 끊는다.
+
+### deps에 거짓말하지 않는다
+
+deps는 「effect가 쓰는 반응형 값의 목록」이다. 다시 돌기 싫어서 값을 빼면 effect가 첫 렌더의 값에 갇힌다. **deps를 줄이고 싶으면 목록이 아니라 코드를 바꿔 effect가 그 값을 쓰지 않게 만든다.** 누락은 `eslint-plugin-react-hooks`의 `exhaustive-deps` 규칙이 잡는다.
+
+| 상황 | 바꾸는 법 |
+| --- | --- |
+| 이전 state로 다음 state를 계산한다 (`setCount(count + 1)`) | 함수형 업데이트 `setCount(c => c + 1)`. effect가 `count`를 읽지 않게 된다 |
+| 여러 state가 얽혀 갱신된다 | `useReducer`로 바꾸고 effect는 `dispatch({ type: 'tick' })`만 한다. `dispatch`는 렌더마다 같아 deps에 넣어도 다시 돌지 않는다 |
+| effect 안에서만 쓰는 함수 | 함수를 effect **안으로** 옮긴다 |
+| 컴포넌트 값과 무관한 함수 | 컴포넌트 **밖으로** 뺀다 |
+| 여러 곳에서 쓰는 함수·객체 | `useCallback`·`useMemo`로 필요한 값이 바뀔 때만 새로 만든다 |
+| 읽기만 하고 반응하지 않을 값 | 아래 `useEffectEvent` |
+
+### 늦게 온 응답이 최신 값을 덮는다
+
+`id`가 1 → 2로 빠르게 바뀌면 두 요청이 겹치고, 1번 응답이 늦게 오면 화면이 1번 데이터로 덮인다(경쟁 상태). cleanup에서 이전 요청을 무효로 만든다.
+
+```jsx
+useEffect(() => {
+  const controller = new AbortController()
+  fetch(`/api/items/${id}`, { signal: controller.signal })
+    .then((r) => r.json())
+    .then(setItem)
+    .catch((e) => { if (e.name !== 'AbortError') setError(e) })
+  return () => controller.abort()   // id가 바뀌면 이전 요청 취소
+}, [id])
+```
+
+취소할 수 없는 비동기 작업이면 `let ignore = false`를 두고 cleanup에서 `ignore = true`로 바꿔 늦은 결과를 버린다. effect 함수 자체를 `async`로 만들지 않는다. cleanup 대신 Promise를 돌려주게 되기 때문이다. 데이터 가져오기를 effect로 직접 짜면 캐시·재시도·중복 제거까지 손으로 해야 하므로 실무에서는 [[tanstack-query|TanStack Query]] 같은 라이브러리나 프레임워크의 데이터 로딩을 쓴다.
 
 ### useEffectEvent: 반응하지 않을 값 분리
 

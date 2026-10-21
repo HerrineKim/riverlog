@@ -97,4 +97,4 @@ sources: ["https://vercel.com/blog/latency-numbers-every-web-developer-should-kn
 
 더 많은 어림 숫자는 Napkin Math 같은 자료가 정리해 두었다.
 
-관련 노트: [[cdn|CDN]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[webs-next-transition|웹 아키텍처의 다음 전환]], [[memory-hierarchy|메모리 계층]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[ttfb-optimization|TTFB 줄이기]]
+관련 노트: [[cdn|CDN]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[webs-next-transition|웹 아키텍처의 다음 전환]], [[memory-hierarchy|메모리 계층]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[ttfb-optimization|TTFB 줄이기]], [[backend-latency-optimization|백엔드 지연 시간 줄이기]]

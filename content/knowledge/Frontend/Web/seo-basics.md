@@ -5,10 +5,10 @@ summary: "검색 엔진이 페이지를 크롤링·색인·순위 매기는 흐�
 tags: ["seo", "web", "html", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://x.com/azarchick/status/1757102271115166148", "https://developers.google.com/search/docs/crawling-indexing/links-crawlable", "https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://velog.io/@jiseung/Why-Site-Speed-Matters"]
+sources: ["https://x.com/azarchick/status/1757102271115166148", "https://developers.google.com/search/docs/crawling-indexing/links-crawlable", "https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://velog.io/@jiseung/Why-Site-Speed-Matters", "https://bytebytego.com/guides/making-sense-of-search-engine-optimization", "https://developers.google.com/search/docs/crawling-indexing/url-structure"]
 ---
 
-> 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트다. hreflang 항목은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 다국어 페이지 노트와 연결했다. 「순위를 정하는 요소」는 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」 부록으로 보강했다. 「링크와 버튼을 구분한다」는 Kristina Azarenko의 [X 타래](https://x.com/azarchick/status/1757102271115166148)(2024.02)를 Google 검색 센터 문서로 확인해 보강했다.
+> 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트다. hreflang 항목은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 다국어 페이지 노트와 연결했다. 「순위를 정하는 요소」는 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」 부록으로 보강했다. 「링크와 버튼을 구분한다」는 Kristina Azarenko의 [X 타래](https://x.com/azarchick/status/1757102271115166148)(2024.02)를 Google 검색 센터 문서로 확인해 보강했다. 「색인 단계에서 일어나는 일」과 「크롤러가 읽기 쉬운 사이트 구조」는 ByteByteGo의 System Design 101 가이드 「[Making Sense of Search Engine Optimization](https://bytebytego.com/guides/making-sense-of-search-engine-optimization)」을 Google URL 구조 가이드로 확인해 보강했다.
 
 검색 엔진 최적화(SEO, Search Engine Optimization)는 검색 결과에서 페이지가 잘 발견되고 높은 순위에 오르도록 콘텐츠와 구조를 다듬는 일이다. 콘텐츠의 질이 가장 중요하지만, **검색 엔진이 페이지를 읽을 수 있게 만드는 것**은 프론트엔드의 몫이다. 관련 용어의 짧은 정의는 [[web-glossary|용어집]]에 있다.
 
@@ -26,6 +26,23 @@ sources: ["https://x.com/azarchick/status/1757102271115166148", "https://develop
 | 렌더링 | 본문이 JS 실행 뒤에야 생김 | SSR·SSG로 HTML에 본문을 담는다 |
 | 색인 | 같은 내용이 여러 URL에 있음, `noindex` | canonical을 지정하고 메타 로봇을 확인한다 |
 | 순위 | 느린 페이지, 모바일 미대응 | [[web-vitals\|웹 성능 지표]]와 [[responsive-design\|반응형]]을 챙긴다 |
+
+### 색인 단계에서 일어나는 일
+
+크롤러가 가져온 HTML은 그대로 저장되지 않고 전처리를 거친다.
+
+1. HTML 태그와 a·an·the 같은 **불용어(stop word)**, 면책 문구처럼 본문과 무관한 잡음을 걷어 낸다.
+2. 남은 키워드로 문서 → 단어의 **정방향 색인**과 단어 → 문서의 **역색인**을 만든다([[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]]).
+3. 페이지에서 나가는 링크와 들어오는 링크를 세어 **링크 관계**를 계산한다. 들어오는 링크는 순위 신호가 된다.
+
+사용자가 검색하면 이 색인과 순위 알고리즘으로 결과를 정렬한다.
+
+### 크롤러가 읽기 쉬운 사이트 구조
+
+- 크롤러가 읽지 못하는 요소(프레임, 플러그인 콘텐츠, 끝없이 파라미터가 붙는 동적 URL)를 줄인다.
+- 사이트 계층을 얕게 둔다. 중요한 페이지는 홈에서 몇 번의 클릭 안에 닿아야 한다.
+- URL은 짧고 내용을 설명하게 쓰고 키워드를 넣는다. 단어 구분은 밑줄(`_`) 대신 **하이픈(`-`)** 을 쓴다. 검색 엔진은 하이픈을 단어 경계로 보지만 밑줄로 이은 단어는 한 단어로 읽을 수 있다.
+- 키워드는 사업과 관련 있고, **검색량은 많은데 경쟁 페이지는 적은** 것을 고른다.
 
 ## 순위를 정하는 요소
 

@@ -5,10 +5,10 @@ summary: "사용자 입력 장치가 만드는 DOM 이벤트. 클릭 한 번이 
 tags: ["javascript", "dom", "event", "pointer", "browser"]
 source: other
 date: "2026-10-17"
-sources: ["https://ko.javascript.info/mouse-events-basics", "https://ko.javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave", "https://ko.javascript.info/mouse-drag-and-drop", "https://ko.javascript.info/pointer-events", "https://ko.javascript.info/keyboard-events", "https://wesbos.com/javascript/05-events/accessibility-gotchas-and-keyboard-codes", "https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events"]
+sources: ["https://ko.javascript.info/mouse-events-basics", "https://ko.javascript.info/mousemove-mouseover-mouseout-mouseenter-mouseleave", "https://ko.javascript.info/mouse-drag-and-drop", "https://ko.javascript.info/pointer-events", "https://ko.javascript.info/keyboard-events", "https://wesbos.com/javascript/05-events/accessibility-gotchas-and-keyboard-codes", "https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events", "https://ui.toast.com/weekly-pick/ko_20220106"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「마우스 이벤트」, 「Moving the mouse」, 「드래그 앤 드롭과 마우스 이벤트」, 「Pointer events」, 「Keyboard: keydown and keyup」 글을 바탕으로, 브라우저 지원은 MDN으로 확인해 재구성한 노트다. 키보드 이벤트 일부는 Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트에서 옮겨 왔다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「마우스 이벤트」, 「Moving the mouse」, 「드래그 앤 드롭과 마우스 이벤트」, 「Pointer events」, 「Keyboard: keydown and keyup」 글을 바탕으로, 브라우저 지원은 MDN으로 확인해 재구성한 노트다. 키보드 이벤트 일부는 Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트에서 옮겨 왔다. 터치가 만드는 호환 마우스 이벤트는 TOAST UI의 「[터치와 클릭, 우리 깐부잖아](https://ui.toast.com/weekly-pick/ko_20220106)」로 보강했다.
 
 이벤트 전파·위임·기본 동작 같은 공통 모델은 [[dom-events|DOM 이벤트]]에, 키보드 접근성과 포커스 관리 원칙은 [[keyboard-accessibility|키보드 접근성과 포커스 관리]]에 있다. 이 노트는 입력 장치별 이벤트의 세부만 다룬다.
 
@@ -98,6 +98,23 @@ table.addEventListener('mouseout', (e) => {
   current = null
 })
 ```
+
+## 터치가 만드는 호환 마우스 이벤트
+
+마우스 이벤트만 듣는 옛 페이지도 터치 기기에서 동작하도록, 브라우저는 단순한 탭 뒤에 **호환 마우스 이벤트**를 흉내 내 보낸다.
+
+```text
+touchstart → (touchmove) → touchend → mousemove → mousedown → mouseup → click
+```
+
+| 문제 | 원인 | 대응 |
+| --- | --- | --- |
+| 한 번 탭했는데 핸들러가 두 번 돈다 | 터치 이벤트와 뒤따르는 마우스 이벤트를 둘 다 듣는다 | 포인터 이벤트 하나로 통일한다. 터치 이벤트를 꼭 써야 하면 `touchend`에서 `preventDefault()`로 호환 마우스 이벤트를 막는다 |
+| 탭과 `click` 사이 약 300ms 지연 | 더블 탭 확대인지 기다린다 | `<meta name="viewport" content="width=device-width">`가 있으면 현대 모바일 브라우저는 지연을 없앤다. 요소 단위로는 `touch-action: manipulation`(더블 탭 확대만 끔) |
+| 탭으로 닫은 레이어 **아래 요소가 클릭된다**(고스트 클릭) | 지연된 `click`이 레이어가 사라진 뒤 그 좌표의 요소에 간다 | 지연을 없애고, 닫기를 `click`에서 처리하거나 터치 쪽에서 `preventDefault()` |
+| `touchstart`·`touchmove`에서 `preventDefault()`가 안 먹는다 | `window`·`document`·`body`에 단 이 리스너는 기본이 passive다 | 스크롤 차단은 CSS `touch-action`으로, 리스너가 꼭 막아야 하면 요소에 직접 `{ passive: false }`로 단다 |
+
+`TouchEvent`는 좌표를 이벤트 자체가 아니라 `Touch` 목록에 담는다. `touches`(화면 위 모든 손가락), `targetTouches`(이 요소에서 시작한 손가락), `changedTouches`(이번 이벤트로 바뀐 손가락, `touchend`에서는 여기에만 남는다)를 구분해 쓴다. 이런 차이 때문에 새 코드는 아래의 포인터 이벤트를 쓴다. 입력이 컴포지터를 거쳐 처리되는 과정과 passive의 이유는 [[browser-architecture|브라우저 아키텍처]]에 있다.
 
 ## 포인터 이벤트
 

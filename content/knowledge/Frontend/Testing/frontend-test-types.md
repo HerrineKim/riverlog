@@ -5,10 +5,10 @@ summary: "정적·단위·통합·E2E 테스트가 각각 무엇을 확인하는
 tags: ["testing", "frontend", "javascript", "tdd"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8B%A8%EC%9C%84", "https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0", "https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html", "https://web.dev/learn/testing/get-started/test-types", "https://web.dev/learn/testing/get-started/what-to-test", "https://web.dev/learn/testing/get-started/what-testing-is"]
+sources: ["https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8B%A8%EC%9C%84", "https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0", "https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html", "https://web.dev/learn/testing/get-started/test-types", "https://web.dev/learn/testing/get-started/what-to-test", "https://web.dev/learn/testing/get-started/what-testing-is", "https://www.integer.blog/practical-test-pyramid/"]
 ---
 
-> 이현호의 「[테스트를 처음 공부하는 프론트엔드 개발자의 개념 다지기](https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0)」(2022.06)와 김정환의 「[자스민으로 프론트엔드 테스트 코드 작성하기](https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html)」(2017.03)를 바탕으로 재구성한 노트다. 테스트 작성 원칙은 Yoni Goldberg의 「[JavaScript Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md)」에서, 폴더 역할별 테스트 단위는 김승규의 「[내가 생각하는 프론트엔드 테스트 단위](https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8B%A8%EC%9C%84)」(2023.06)에서 뽑았다. 테스트 우선순위, 전략의 모양, 목적별 테스트 종류는 web.dev의 「[Learn Testing](https://web.dev/learn/testing)」 강좌로 보강했다.
+> 이현호의 「[테스트를 처음 공부하는 프론트엔드 개발자의 개념 다지기](https://velog.io/@leehyunho2001/%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%A5%BC-%EC%B2%98%EC%9D%8C-%EA%B3%B5%EB%B6%80%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EA%B0%9C%EB%85%90-%EB%8B%A4%EC%A7%80%EA%B8%B0)」(2022.06)와 김정환의 「[자스민으로 프론트엔드 테스트 코드 작성하기](https://jeonghwan-kim.github.io/tool/2017/03/28/jasmine.html)」(2017.03)를 바탕으로 재구성한 노트다. 테스트 작성 원칙은 Yoni Goldberg의 「[JavaScript Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md)」에서, 폴더 역할별 테스트 단위는 김승규의 「[내가 생각하는 프론트엔드 테스트 단위](https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8B%A8%EC%9C%84)」(2023.06)에서 뽑았다. 테스트 우선순위, 전략의 모양, 목적별 테스트 종류는 web.dev의 「[Learn Testing](https://web.dev/learn/testing)」 강좌로 보강했다. 「[실용적인 테스트 피라미드](https://www.integer.blog/practical-test-pyramid/)」의 내용을 더해 보강했다.
 
 ## 프론트엔드 테스트란
 
@@ -76,11 +76,15 @@ sources: ["https://velog.io/@gyulog/%EB%82%B4%EA%B0%80-%EC%83%9D%EA%B0%81%ED%95%
 | 회귀(regression) | 기존 기능이 그대로이고 고친 버그가 돌아오지 않았나 | 버그를 재현하는 테스트를 먼저 쓰고 고친 뒤 남겨 두면 회귀 테스트가 된다([[tdd\|TDD]]) |
 | 시각(visual) | 스크린숏을 기준 이미지와 비교 | 실제 브라우저가 필요하다. 컴포넌트를 여러 화면 폭으로 그리는 하네스를 둔다. 무관한 변경(새 기능, OS의 이모지 렌더링)에도 깨지므로 너무 엄격해지기 쉽다 |
 | API | 내가 제공하는 API, 또는 내가 쓰는 외부 API의 계약 | 시스템을 통째로 붙이지 않고 경계만 본다. 실제 외부 서비스에 붙이면 불안정하다 |
+| 계약(contract) | 서비스 사이의 요청·응답 형식이 서로의 기대와 맞나 | 소비자 주도 계약 테스트(CDC): 소비자가 기대하는 응답을 테스트로 적어 공급자에게 넘기고, 공급자는 이를 CI에서 계속 돌린다. Pact가 대표 도구다. 양쪽을 통째로 띄우는 E2E 없이 경계가 깨지는 것을 잡는다 |
+| 탐색적(exploratory) | 자동화가 놓친 품질 문제 | 사람이 직접 써 보며 찾는다. 찾은 버그는 자동화 테스트로 옮겨 재발을 막는다 |
 | 인수(acceptance) | 제품이 사용자 요구를 만족하는가 | 사람이 하거나 [[a11y-driven-testing\|접근성 기반 테스트]]처럼 기획서를 자동화한다 |
 | 퍼즈(fuzz) | 무작위·잘못된 입력에도 죽지 않나 | 무작위 입력을 「카오스 테스트」라 부르기도 한다. 생성 입력은 프로퍼티 기반 테스트로([[js-testing-best-practices\|모범 사례]]) |
 | 장애(failure) | 네트워크 끊김·의존 서비스 실패에 통제된 방식으로 반응하나 | MSW로 오류 응답, Playwright의 오프라인 모드 |
 | 빌드 | 빌드 산출물이 생기고 기대한 내용이 들어 있나 | 정적 사이트·CMS 출력처럼 산출물이 복잡할 때 |
 | 부하·스트레스(load·stress) | 운영 시스템이 큰 트래픽을 견디나 | 시스템 설계 쪽 관심사다 |
+
+**같은 로직을 여러 층에서 반복 검증하지 않는다.** 아래 층에서 이미 확인한 분기는 위 층에서 다시 쓰지 않고, 위 층은 아래 층이 볼 수 없는 연결만 본다. 고유한 가치를 더하지 않는 테스트는 지운다.
 
 E2E는 테스트용 사용자로 로그인해 핵심 동작을 하고 최종 상태를 확인하는 식으로 짠다. 범위를 줄이려면 테스트 환경 플래그로 로그인을 건너뛰는 식으로 일부를 가짜로 둔다. 테스트가 데이터베이스에 남긴 데이터는 다음 실패의 원인을 흐리므로 테스트마다 정리한다.
 
@@ -174,4 +178,4 @@ test('저장된 토큰이 있으면 로그인 상태다', () => {
 - 테스트는 짧고 읽기 쉽게: 이름에 대상·상황·기대 결과, 본문은 AAA.
 - 기본 조합은 TypeScript·ESLint + Vitest + Testing Library + MSW + Playwright다.
 
-관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[test-run-stages|테스트를 돌리는 시점]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]], [[test-environment|테스트 실행 환경]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[test-primitives|테스트의 기본 요소]], [[static-analysis|정적 분석]]
+관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[test-run-stages|테스트를 돌리는 시점]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]], [[test-environment|테스트 실행 환경]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[test-primitives|테스트의 기본 요소]], [[static-analysis|정적 분석]], [[backend-testing|백엔드 테스트]]

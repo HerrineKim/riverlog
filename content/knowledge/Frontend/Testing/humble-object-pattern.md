@@ -5,10 +5,10 @@ summary: "목은 비용에 따라 네트워크 목·전역 목·스파이·더�
 tags: ["testing", "frontend", "architecture", "typescript", "design-pattern"]
 source: other
 date: "2026-10-13"
-sources: ["https://d2.naver.com/helloworld/9921217"]
+sources: ["https://d2.naver.com/helloworld/9921217", "https://www.slideshare.net/ifkakao/kakao-fe-meetup-vue-test-re"]
 ---
 
-> 서동유의 「[테스트는 어떻게 좋은 코드를 만드는가(feat. 험블 객체 패턴)](https://d2.naver.com/helloworld/9921217)」(NAVER D2, 2025.03)를 바탕으로 재구성한 노트다.
+> 서동유의 「[테스트는 어떻게 좋은 코드를 만드는가(feat. 험블 객체 패턴)](https://d2.naver.com/helloworld/9921217)」(NAVER D2, 2025.03)를 바탕으로 재구성한 노트다. 프레임워크 생명주기와 기존 코드에 테스트를 붙이는 순서는 카카오 FE 밋업 발표 「[바닥부터 시작하는 Vue 테스트와 리팩토링](https://www.slideshare.net/ifkakao/kakao-fe-meetup-vue-test-re)」을 바탕으로 더했다.
 
 ## 테스트가 갈수록 고통스러워지는 이유
 
@@ -108,6 +108,10 @@ expect(saved).toEqual(['90점'])
 | 시간·난수 (`Date.now`, `Math.random`) | 시계·난수 공급자를 인자로 받는다 |
 | 브라우저 API (`IntersectionObserver`, `matchMedia`, 위치) | 얇은 훅이나 어댑터 |
 | 렌더링 | 로직은 훅·순수 함수로, 컴포넌트는 결과를 그리기만 한다 |
+| 프레임워크가 부르는 코드(생명주기 훅, `useEffect`, Vue의 `mounted`) | 훅 본문은 이름 붙은 메서드·함수 호출 한 줄로 줄인다. 언제 불릴지는 프레임워크가 정하지만, 무엇을 하는지는 그 함수만 따로 테스트한다 |
+| 템플릿·JSX 안의 식 | 계산은 computed·순수 함수로 옮기고 그 값을 검증한다. 값이 화면에 제대로 붙는지는 적은 수의 렌더링·E2E 테스트가 맡는다 |
+
+이미 운영 중인 코드에 테스트를 붙일 때도 같은 방향으로 간다. **리팩터링과 기능 추가를 한 커밋에 섞지 않고**, 먼저 「컴포넌트가 만들어진다」 → 「데이터가 맞다」 → 「부모·자식이 props와 이벤트로 주고받는다」 순으로 안전망을 쌓은 뒤 구조를 바꾼다. 테스트 더블을 컴포넌트 정의(전역)에 붙였다면 다음 테스트로 새지 않게 복원하고, 테스트마다 새로 만드는 인스턴스에 붙였다면 복원할 필요가 없다.
 
 ## 정리
 

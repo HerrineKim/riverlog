@@ -5,10 +5,11 @@ summary: "여러 언어로 페이지를 제공할 때 언어마다 URL을 나누
 tags: ["html", "i18n", "seo", "web", "frontend"]
 source: other
 date: "2026-10-15"
-sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://www.w3.org/International/questions/qa-html-language-declarations", "https://developers.google.com/search/docs/specialty/international/localized-versions", "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites", "https://web.dev/learn/html/document-structure", "https://web.dev/learn/html/inline-text"]
+sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https://www.w3.org/International/questions/qa-html-language-declarations", "https://developers.google.com/search/docs/specialty/international/localized-versions", "https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites", "https://web.dev/learn/html/document-structure", "https://web.dev/learn/html/inline-text", "https://bytebytego.com/guides/how-do-we-design-a-system-for-internationalization"]
 ---
 
 > Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」 중 다국어 페이지 문항 두 개를 바탕으로, W3C 국제화 문서와 Google 검색 센터 문서로 확인해 재구성한 노트다. 인용 부호·방향 격리·루비 요소는 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌를 바탕으로 보강했다.
+> 시간대·통화·법인 같은 시스템 쪽 국제화는 ByteByteGo의 System Design 101 가이드 「[How do we design a system for internationalization?](https://bytebytego.com/guides/how-do-we-design-a-system-for-internationalization)」를 바탕으로 보탰다.
 
 ## 두 가지 일: 국제화와 현지화
 
@@ -86,6 +87,18 @@ CSS에서는 `:lang(fr)`이나 `[lang|="fr"]`로 언어별 스타일을 준다. 
 | 글꼴과 글자 크기 | 언어마다 필요한 글꼴과 알맞은 크기가 다르다. `:lang()`으로 나눈다(→ [[responsive-design\|반응형 디자인과 다국어 타이포그래피]]) |
 | 색·아이콘·이름의 문화 차이 | 색과 손짓 아이콘의 의미는 문화마다 다르다. 이름·주소·전화번호 입력 폼은 한 형식을 강제하지 않는다 |
 | 인코딩 | 모든 문서와 데이터는 UTF-8로 저장·전송한다 |
+
+### 시스템 쪽 국제화: 텍스트 밖의 것들
+
+해외 시장에 서비스를 내면 화면 번역만으로 끝나지 않는다. 백엔드와 사업 구조도 나라별 차이를 받아야 한다.
+
+| 영역 | 설계 |
+| --- | --- |
+| 문구 관리 | 모든 문구를 코드 밖 번역 시스템(리소스 파일, 번역 관리 도구)에 둔다. 코드에 안내 문구를 직접 쓰지 않는다. 서버가 만드는 이메일·알림·오류 메시지도 같은 원칙이다 |
+| 시간대 | **저장과 표시를 분리한다.** DB와 백엔드는 UTC 타임스탬프로 저장·계산하고, 화면에서만 사용자 시간대로 바꿔 보여 준다. "매일 오전 9시" 같은 예약은 UTC가 아니라 사용자 시간대 기준으로 저장한다 |
+| 통화 | **표시 통화와 정산 통화를 나눠 정의한다.** 가격 표시는 현지 통화로, 정산은 법인의 기준 통화로 한다. 환율을 조회·고정하는 환전(FX) 서비스를 두고, 금액은 부동소수점이 아니라 최소 단위 정수나 고정 소수로 다룬다 |
+| 법인과 회계 | 나라별로 법인을 따로 세우면 세금·회계 기준이 다르다. 여러 장부 방식과 법인 간 자금 관리를 지원해야 한다 |
+| 지역별 업무 규칙 | 결제 수단, 주소 형식, 영업일, 규제가 나라마다 다르다. 이런 규칙을 코드 곳곳의 `if (country == ...)`로 흩뜨리지 말고 지역별 설정·전략으로 분리한다 |
 
 ## 정리
 

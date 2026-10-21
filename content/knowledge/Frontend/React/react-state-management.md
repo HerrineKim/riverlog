@@ -5,10 +5,10 @@ summary: "상태를 종류(로컬·서버·URL·폼·전역 클라이언트)로 
 tags: ["react", "state", "frontend", "architecture", "performance"]
 source: other
 date: "2026-10-15"
-sources: ["https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%ED%9D%90%EB%A6%84-6e5ed0022e39", "https://frontendmastery.com/posts/the-new-wave-of-react-state-management/"]
+sources: ["https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%ED%9D%90%EB%A6%84-6e5ed0022e39", "https://frontendmastery.com/posts/the-new-wave-of-react-state-management/", "https://techblog.woowahan.com/2599/"]
 ---
 
-> 「[리액트 상태 관리의 새로운 흐름](https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%ED%9D%90%EB%A6%84-6e5ed0022e39)」을 바탕으로 재구성한 노트다. 원 자료는 Frontend Mastery의 「The new wave of React state management」(2022.06)다.
+> 「[리액트 상태 관리의 새로운 흐름](https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%ED%9D%90%EB%A6%84-6e5ed0022e39)」을 바탕으로 재구성한 노트다. 원 자료는 Frontend Mastery의 「The new wave of React state management」(2022.06)다. MobX는 우아한형제들 기술 블로그의 「[React에서 mobx 경험기 (Redux와 비교기)](https://techblog.woowahan.com/2599/)」를 바탕으로 더했다.
 
 ## 먼저 상태의 종류를 나눈다
 
@@ -48,7 +48,7 @@ sources: ["https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%
 | --- | --- | --- | --- |
 | 스토어(top-down) | 큰 상태 하나를 만들고 필요한 조각을 selector로 꺼낸다 | Redux Toolkit, Zustand | selector로 수동 |
 | atom(bottom-up) | 가장 작은 상태 단위(atom)를 만들고 조합해 파생 상태 그래프를 만든다 | Jotai | atom 단위 구독 |
-| proxy | 평범한 객체처럼 바꾸면, 읽은 속성만 추적해 다시 그린다 | Valtio | 자동 |
+| proxy·observable | 평범한 객체처럼 바꾸면, 읽은 속성만 추적해 다시 그린다 | Valtio, MobX | 자동 |
 
 ```js
 // 스토어: Zustand
@@ -66,6 +66,17 @@ const state = proxy({ count: 0 })
 const snap = useSnapshot(state)   // 읽은 속성만 추적
 state.count++                     // 변경하듯 쓴다
 ```
+
+**MobX**는 observable 방식의 원조 격이다. 개념이 넷뿐이다.
+
+| 개념 | 역할 | Redux에 대응하는 것 |
+| --- | --- | --- |
+| observable | 추적 대상 상태. 직접 바꾼다 | 스토어 state (불변으로 교체) |
+| action | 상태를 바꾸는 메서드. 바꾸는 길을 하나로 모은다 | action + reducer |
+| computed | 다른 observable에서 계산한 값. 입력이 같으면 다시 계산하지 않는다 | memoized selector |
+| reaction·`observer` | observable이 바뀌면 실행되는 부수 효과. `observer`로 감싼 컴포넌트는 렌더 중 읽은 값이 바뀔 때만 다시 그린다 | `useSelector` 구독 |
+
+Redux가 「새 객체로 교체하고 비교한다」면 MobX는 「바꾼 것을 관찰한다」. 그래서 불변성 코드와 연결 코드가 거의 없고, 상태와 로직을 **도메인별 스토어 클래스**에 함께 두는 객체지향 구조와 잘 맞는다. 대신 무엇이 언제 다시 그려지는지가 암묵적이라, 관찰이 끊기는 경우(구조 분해로 값만 꺼내 넘김, `observer` 누락)를 알아야 한다. 동작 원리는 [[reactive-programming|반응형 프로그래밍]]의 「의존성 추적」과 같다.
 
 atom 방식을 알린 Recoil은 2025년 1월 저장소가 보관됐고, 같은 모델은 Jotai가 잇는다. 어느 쪽이 정답은 아니다. 액션·미들웨어·DevTools 같은 구조가 필요하면 스토어, 상태가 잘게 흩어져 있고 파생 값이 많으면 atom, 변경하듯 쓰는 것이 자연스러운 도메인이면 proxy가 맞다. Redux가 언제 맞는지는 [[redux|Redux와 react-redux]]의 「언제 Redux를 쓰나」에 있다.
 

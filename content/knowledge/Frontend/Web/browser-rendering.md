@@ -5,10 +5,10 @@ summary: "브라우저의 구성 요소와, HTML을 DOM으로·CSS를 CSSOM으�
 tags: ["frontend", "browser", "dom", "rendering", "performance"]
 source: mixed
 date: "2026-10-17"
-sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/", "https://d2.naver.com/helloworld/59361", "https://wormwlrm.github.io/2021/03/27/How-browsers-work.html", "https://web.dev/learn/performance/understanding-the-critical-path"]
+sources: ["https://web.dev/articles/critical-rendering-path", "https://web.dev/articles/howbrowserswork", "https://developer.mozilla.org/ko/docs/Web/Performance/How_browsers_work", "https://webactually.com/2020/06/22/%EC%84%9C%EB%B2%84%EC%97%90%EC%84%9C-%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EB%A1%9C/", "https://d2.naver.com/helloworld/59361", "https://wormwlrm.github.io/2021/03/27/How-browsers-work.html", "https://web.dev/learn/performance/understanding-the-critical-path", "https://bytebytego.com/guides/how-does-the-browser-render-a-web-page"]
 ---
 
-> 브라우저 구조·파서·레이아웃 최적화 부분은 Tali Garsiel의 「[브라우저는 어떻게 동작하는가?](https://d2.naver.com/helloworld/59361)」(NAVER D2 번역, 2012.05)와 재그지그의 「[프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)」(2021.03)을 바탕으로 재구성한 노트다. 첫 렌더링이 기다리는 자원은 web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Understanding the critical path」 모듈로 보강했다.
+> 브라우저 구조·파서·레이아웃 최적화 부분은 Tali Garsiel의 「[브라우저는 어떻게 동작하는가?](https://d2.naver.com/helloworld/59361)」(NAVER D2 번역, 2012.05)와 재그지그의 「[프론트엔드 개발자라면 알고 있어야 할 브라우저의 동작 과정](https://wormwlrm.github.io/2021/03/27/How-browsers-work.html)」(2021.03)을 바탕으로 재구성한 노트다. 첫 렌더링이 기다리는 자원은 web.dev의 「[Learn Performance](https://web.dev/learn/performance)」 강좌 중 「Understanding the critical path」 모듈로 보강했다. 전체 흐름 요약은 ByteByteGo의 System Design 101 가이드 「[How Browsers Render Web Pages](https://bytebytego.com/guides/how-does-the-browser-render-a-web-page)」도 참고했다.
 
 ## 한눈에 보기
 
@@ -208,4 +208,4 @@ background-color → background-image → border → 자식 → outline
 - HTML 파서는 오류를 표준대로 고치며 점진적으로 파싱한다. CSS는 끝까지 받아야 해서 렌더링을 막고, 속성 없는 `<script>`는 파싱을 막는다.
 - 브라우저는 더티 비트로 레이아웃을 모아 처리한다. **레이아웃 값 읽기와 스타일 쓰기를 섞지 않는 것**이 이 최적화를 살리는 방법이다.
 
-관련 노트: [[dom|DOM]], [[html|HTML]], [[event-loop|이벤트 루프]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[lcp-optimization|LCP 최적화]], [[inp-optimization|INP 최적화]], [[dom-geometry|요소 크기·스크롤·좌표]]
+관련 노트: [[dom|DOM]], [[html|HTML]], [[event-loop|이벤트 루프]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[re-rendering|리렌더링 원인 추적하기]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[devtools-performance|DevTools로 성능·메모리 분석하기]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[lcp-optimization|LCP 최적화]], [[inp-optimization|INP 최적화]], [[dom-geometry|요소 크기·스크롤·좌표]], [[browser-architecture|브라우저 아키텍처]]
