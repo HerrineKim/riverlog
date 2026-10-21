@@ -5,10 +5,11 @@ summary: "시각·청각·운동·인지·발작과 전정·말하기 장애 사
 tags: ["accessibility", "frontend", "ux", "html"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/intro/", "https://webaim.org/articles/visual/", "https://webaim.org/articles/visual/blind", "https://webaim.org/articles/visual/lowvision", "https://webaim.org/articles/visual/colorblind", "https://webaim.org/articles/auditory/", "https://webaim.org/articles/auditory/auditorydisabilities", "https://webaim.org/articles/auditory/culture", "https://webaim.org/articles/motor/", "https://webaim.org/articles/motor/motordisabilities", "https://webaim.org/articles/motor/assistive", "https://webaim.org/articles/cognitive/", "https://webaim.org/articles/cognitive/design", "https://webaim.org/articles/cognitive/activity", "https://webaim.org/articles/cognitive/cognitive_too_little/", "https://webaim.org/articles/cognitive/conceptualize/", "https://webaim.org/articles/framework/", "https://webaim.org/articles/seizure/", "https://webaim.org/articles/design/", "https://webaim.org/articles/userperspective/", "https://webaim.org/articles/gonewild/", "https://web.dev/learn/accessibility/why", "https://web.dev/learn/accessibility/test-assistive-technology"]
+sources: ["https://webaim.org/intro/", "https://webaim.org/articles/visual/", "https://webaim.org/articles/visual/blind", "https://webaim.org/articles/visual/lowvision", "https://webaim.org/articles/visual/colorblind", "https://webaim.org/articles/auditory/", "https://webaim.org/articles/auditory/auditorydisabilities", "https://webaim.org/articles/auditory/culture", "https://webaim.org/articles/motor/", "https://webaim.org/articles/motor/motordisabilities", "https://webaim.org/articles/motor/assistive", "https://webaim.org/articles/cognitive/", "https://webaim.org/articles/cognitive/design", "https://webaim.org/articles/cognitive/activity", "https://webaim.org/articles/cognitive/cognitive_too_little/", "https://webaim.org/articles/cognitive/conceptualize/", "https://webaim.org/articles/framework/", "https://webaim.org/articles/seizure/", "https://webaim.org/articles/design/", "https://webaim.org/articles/userperspective/", "https://webaim.org/articles/gonewild/", "https://web.dev/learn/accessibility/why", "https://web.dev/learn/accessibility/test-assistive-technology", "https://webaim.org/presentations/2024/january/", "https://webaim.org/projects/screenreadersurvey11/"]
 ---
 
 > WebAIM의 「[Introduction to Web Accessibility](https://webaim.org/intro/)」, 「[Visual Disabilities](https://webaim.org/articles/visual/)」, 「[Auditory Disabilities](https://webaim.org/articles/auditory/)」, 「[Motor Disabilities](https://webaim.org/articles/motor/)」, 「[Cognitive Disabilities](https://webaim.org/articles/cognitive/)」, 「[Seizure and Vestibular Disorders](https://webaim.org/articles/seizure/)」, 「[Considering the User Perspective](https://webaim.org/articles/userperspective/)」, 「[Web Accessibility Gone Wild](https://webaim.org/articles/gonewild/)」 등을 바탕으로 재구성하고, 말하기 장애·일시적 장애와 보조 기술 분류는 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 필요성·보조 기술 테스트 편으로 보강한 노트다.
+> 스크린 리더 사용자의 구성과 포인터를 쓰는 운동 장애 사용자 부분은 WebAIM의 교육 자료 「[Web Accessibility Training](https://webaim.org/presentations/2024/january/)」(Jon Whiting·Jared Smith, 2024.01)을 바탕으로 보강하고, 수치는 「[Screen Reader User Survey #11](https://webaim.org/projects/screenreadersurvey11/)」(2026)로 확인했다.
 
 ## 왜 장애 유형으로 보나
 
@@ -73,6 +74,8 @@ sources: ["https://webaim.org/intro/", "https://webaim.org/articles/visual/", "h
 - 농맹인은 스크린 리더 출력을 **점자 디스플레이**(핀이 오르내리며 점자를 만드는 장치)로 손끝으로 읽는다.
 - 스크린 리더는 이미지를 해석하지 못한다. 그래서 이미지에는 대체 텍스트가, 화면 배치로 보이던 관계에는 시맨틱 구조가 필요하다.
 - 마우스는 눈과 손의 협응이 필요해 쓸 수 없다. **모든 기능이 키보드로 되어야 한다**([[keyboard-accessibility|키보드 접근성과 포커스 관리]]).
+
+**스크린 리더 사용자가 모두 전맹은 아니다.** WebAIM 스크린 리더 사용자 설문 #11(2026)에서 응답자(복수 선택)의 83.2%가 전맹, 18.0%가 저시력, 3.0%가 인지·학습 장애를 꼽았고, 5%가량은 장애 없이 스크린 리더를 쓴다. 화면을 보면서 소리로 듣는 사용자가 적지 않으므로 **보이는 것과 들리는 것이 같아야 한다**(보이는 레이블이 접근 가능한 이름에 들어가야 하는 이유. [[aria-basics|ARIA와 접근 가능한 이름]]).
 
 ### 저시력: 확대와 대비
 
@@ -149,6 +152,8 @@ sources: ["https://webaim.org/intro/", "https://webaim.org/articles/visual/", "h
 | 관절염 | 통증으로 미세 조작이 어렵고 금방 지친다 |
 | 파킨슨병, 본태성 떨림 | 조절되지 않는 떨림. 목소리까지 떨려 음성 인식이 안 될 때도 있다 |
 
+**운동 장애 사용자가 모두 키보드만 쓰는 것은 아니다.** 손재주가 떨어지거나 떨림·만성 통증이 있는 사람 상당수는 마우스·터치스크린을 그대로 쓰되 정확히 겨누기 어렵다. 시선 추적처럼 마우스처럼 동작하는 보조 기술도 있고, 음성 제어로 화면의 이름을 말해 누르는 사람도 있다. 그래서 키보드 지원과 함께 **누를 대상의 크기와 간격**, 드래그·경로 제스처의 대안이 필요하다. 키보드를 쓰는 쪽은 스크린 리더 사용자, 일부 저시력 사용자, 포인팅 장치가 가능하지만 느리거나 아픈 운동 장애 사용자, 그리고 효율을 위해 쓰는 숙련 사용자다.
+
 ### 보조 기술
 
 보조 기술은 수천 가지지만 대부분 **키보드를 쓰거나 키보드 동작을 흉내 내거나, 마우스·터치 입력을 대신한다.** 그래서 개발자가 할 일은 특정 입력 방식에 기대지 않는 것이다.
@@ -167,7 +172,7 @@ sources: ["https://webaim.org/intro/", "https://webaim.org/articles/visual/", "h
 | 어려움 | 해결 |
 | --- | --- |
 | 마우스를 쓰지 못한다 | 모든 기능을 키보드로. Tab으로 링크와 컨트롤을 끝까지 돌아 본다 |
-| 마우스·키보드를 정확히 다루지 못한다 | 클릭 대상을 크게, 위치는 고정. 삭제처럼 되돌릴 수 없는 동작은 확인을 묻는다. 한 글자 단축키는 끄거나 바꿀 수 있게 한다 |
+| 마우스·키보드를 정확히 다루지 못한다 | 클릭 대상을 크게, 위치는 고정. 대상은 24×24 CSS px 이상이거나, 대상마다 가운데에 지름 24px 원을 그렸을 때 원끼리·다른 대상과 겹치지 않을 만큼 떨어뜨린다(2.5.8, AA. 44×44는 AAA인 2.5.5). 삭제처럼 되돌릴 수 없는 동작은 확인을 묻는다. 한 글자 단축키는 끄거나 바꿀 수 있게 한다 |
 | 음성 인식을 쓴다 | 마우스 흉내는 느리다. 키보드로 다 되게 하고, 링크·버튼 텍스트를 구체적으로 쓴다 |
 | 보조 기술을 오래 쓰면 지친다 | 긴 링크 목록·반복 메뉴를 건너뛸 수단을 준다 |
 | 기기를 직접 움직이거나 돌리지 못한다 | 가로·세로 방향을 모두 지원한다. 흔들기 같은 기기 동작이나 스와이프·드래그 같은 경로 제스처만으로 되는 기능을 두지 않는다 |

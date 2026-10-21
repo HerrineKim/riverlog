@@ -5,10 +5,11 @@ summary: "네이티브 요소가 없는 복합 위젯을 스크린 리더가 이
 tags: ["frontend", "accessibility", "aria", "html", "javascript"]
 source: other
 date: "2026-10-18"
-sources: ["https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3", "https://www.w3.org/WAI/ARIA/apg/patterns/", "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html", "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html"]
+sources: ["https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3", "https://www.w3.org/WAI/ARIA/apg/patterns/", "https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus.html", "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html", "https://webaim.org/presentations/2024/january/"]
 ---
 
 > AOA11Y(Academy Of Accessibility)의 강의 연재 「[항공사의 ARIA 적용 사례 살펴보기](https://www.youtube.com/playlist?list=PLtaz5vK7MbK0wauPYD9VtgkwX2Bx_Ygo3)」(2019~, 1~36탄)를 바탕으로 재구성하고, 현재 W3C ARIA Authoring Practices Guide(APG)에 맞춰 보강한 노트다.
+> 토스트의 포커스와 알림 대기열 부분은 WebAIM의 교육 자료 「[Web Accessibility Training](https://webaim.org/presentations/2024/january/)」(Jon Whiting·Jared Smith, 2024.01)을 바탕으로 보강했다.
 
 ## 왜 복합 위젯이 문제인가
 
@@ -256,6 +257,8 @@ APG 툴팁 패턴은 트리거에 `aria-describedby`로 `role="tooltip"` 요소�
 화면 구석에 잠깐 떴다 사라지는 피드백이다(Material Design의 명칭이 스낵바).
 
 - 시간이 지나면 사라지므로 **반드시 알아야 할 정보나 꼭 필요한 동작을 담지 않는다.** 시간 제한 콘텐츠는 WCAG 2.2.1 Timing Adjustable에 걸린다. 중요한 내용이면 사라지지 않게 하거나 사용자가 닫을 때까지 둔다.
+- 저절로 사라지는 메시지에는 **포커스를 옮기지 않는다.** 사라지는 순간 포커스가 문서 처음으로 튄다.
+- 메시지가 연달아 나오면 화면 밖에 둔 알림 영역 하나에 **차례로 넣어**(대기열) 앞 알림이 끝난 뒤 다음을 읽게 한다. 토스트마다 라이브 영역을 따로 만들면 서로 끊고 겹친다.
 - 기본은 `role="status"`(polite)다. 읽던 것을 끊는 `role="alert"`는 즉시 알아야 할 때만 쓴다. 「30D 좌석이 선택됨」처럼 방금 한 행동의 확인은 polite면 충분하다.
 - 라이브 영역 컨테이너는 미리 두고 내용만 넣는다. 안의 각 줄에 `role="alert"`를 또 다는 식으로 중복하지 않는다.
 - 「실행 취소」 같은 동작 버튼은 진짜 `<button>`으로 만들고 이름을 준다. DOM에서 **트리거 버튼 바로 뒤**에 넣으면 Tab 한 번으로 닿는다. 아이콘뿐인 닫기 버튼에도 이름을 준다.

@@ -5,10 +5,11 @@ summary: "스크린 리더 테스트는 읽는 순서, 대체 텍스트, 제목�
 tags: ["accessibility", "frontend", "testing", "aria", "ux"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/articles/screenreader_testing/", "https://webaim.org/articles/nvda/", "https://webaim.org/articles/jaws/", "https://webaim.org/articles/voiceover/", "https://webaim.org/articles/voiceover/mobile", "https://webaim.org/articles/talkback/", "https://webaim.org/articles/narrator/", "https://webaim.org/articles/dolphin/", "https://webaim.org/projects/screenreadersurvey11/", "https://webaim.org/projects/screenreadersurvey10/", "https://support.google.com/accessibility/android/answer/6151827", "https://support.microsoft.com/en-us/windows/appendix-b-narrator-keyboard-commands-and-touch-gestures-8bdab3f4-b3e9-4554-7f28-8b15bd37410a", "https://support.apple.com/guide/voiceover/turn-voiceover-on-or-off-vo2682/mac", "https://support.apple.com/guide/voiceover/vo35709/mac", "https://www.freedomscientific.com/Content/Documents/Manuals/JAWS/Keystrokes.pdf", "https://web.dev/learn/accessibility/test-assistive-technology", "https://web.dev/learn/accessibility/patterns"]
+sources: ["https://webaim.org/articles/screenreader_testing/", "https://webaim.org/articles/nvda/", "https://webaim.org/articles/jaws/", "https://webaim.org/articles/voiceover/", "https://webaim.org/articles/voiceover/mobile", "https://webaim.org/articles/talkback/", "https://webaim.org/articles/narrator/", "https://webaim.org/articles/dolphin/", "https://webaim.org/projects/screenreadersurvey11/", "https://webaim.org/projects/screenreadersurvey10/", "https://support.google.com/accessibility/android/answer/6151827", "https://support.microsoft.com/en-us/windows/appendix-b-narrator-keyboard-commands-and-touch-gestures-8bdab3f4-b3e9-4554-7f28-8b15bd37410a", "https://support.apple.com/guide/voiceover/turn-voiceover-on-or-off-vo2682/mac", "https://support.apple.com/guide/voiceover/vo35709/mac", "https://www.freedomscientific.com/Content/Documents/Manuals/JAWS/Keystrokes.pdf", "https://web.dev/learn/accessibility/test-assistive-technology", "https://web.dev/learn/accessibility/patterns", "https://webaim.org/presentations/2024/january/"]
 ---
 
 > WebAIM의 「[Testing with Screen Readers: Questions and Answers](https://webaim.org/articles/screenreader_testing/)」, 스크린 리더별 평가 가이드([NVDA](https://webaim.org/articles/nvda/), [JAWS](https://webaim.org/articles/jaws/), [VoiceOver](https://webaim.org/articles/voiceover/), [iOS VoiceOver](https://webaim.org/articles/voiceover/mobile), [TalkBack](https://webaim.org/articles/talkback/), [Narrator](https://webaim.org/articles/narrator/), [Dolphin](https://webaim.org/articles/dolphin/)), 「[Screen Reader User Survey #11](https://webaim.org/projects/screenreadersurvey11/)」을 바탕으로 재구성하고, JAWS·VoiceOver·TalkBack·Narrator 단축키는 Freedom Scientific·Apple·Google·Microsoft 공식 문서로 확인하고, 테스트 목표와 플랫폼별 조합은 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 보조 기술 테스트 편으로 보강한 노트다.
+> 위젯 role과 입력 모드 부분은 WebAIM의 교육 자료 「[Web Accessibility Training](https://webaim.org/presentations/2024/january/)」(Jon Whiting·Jared Smith, 2024.01)을 바탕으로 보강했다.
 
 ## 스크린 리더 테스트란
 
@@ -111,6 +112,7 @@ Windows 스크린 리더는 **읽기 모드**와 **입력 모드**를 오간다.
 | Dolphin | Dolphin Cursor | Forms Mode |
 
 - 텍스트 입력란이나 위젯으로 Tab하면 자동으로 입력 모드가 되고, NVDA·JAWS는 높은 비프음으로 알린다. 나오면 낮은 비프음과 함께 읽기 모드로 돌아온다.
+- `tree`, `slider`, `grid`, `tabpanel`, `menu` 같은 위젯 role은 스크린 리더를 입력(애플리케이션) 모드로 바꾼다. 그러면 H·F 같은 탐색 키가 페이지로 넘어가므로, 위젯이 role에 맞는 키 조작을 모두 구현했는지와 사용자가 모드가 바뀐 것을 알 수 있는지 확인한다. 위젯은 Windows 스크린 리더를 **켠 상태와 끈 상태 모두**로 시험한다.
 - **잘 만든 위젯이라면 수동 전환이 필요 없다.** 테스트 중에 모드를 직접 바꿔야만 조작된다면 위젯의 role이나 키보드 처리를 의심한다.
 
 ### 스크린 리더별 메모

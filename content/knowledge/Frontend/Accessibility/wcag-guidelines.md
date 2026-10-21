@@ -5,10 +5,11 @@ summary: "WCAG는 인지·운용·이해·견고(POUR) 네 원칙 아래 13개 �
 tags: ["accessibility", "frontend", "html", "aria", "testing"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/articles/pour/", "https://webaim.org/articles/pour/perceivable", "https://webaim.org/articles/pour/operable", "https://webaim.org/articles/pour/understandable", "https://webaim.org/articles/pour/robust", "https://webaim.org/standards/wcag/", "https://webaim.org/standards/wcag/checklist", "https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/", "https://www.w3.org/WAI/standards-guidelines/wcag/wcag3-intro/", "https://web.dev/learn/accessibility/measure", "https://web.dev/learn/accessibility/why", "https://www.w3.org/WAI/news/2025-10-21/wcag22-iso", "https://www.deque.com/blog/en-301-549-v4-1-1-is-final-what-changed-what-it-means-and-what-you-should-do/"]
+sources: ["https://webaim.org/articles/pour/", "https://webaim.org/articles/pour/perceivable", "https://webaim.org/articles/pour/operable", "https://webaim.org/articles/pour/understandable", "https://webaim.org/articles/pour/robust", "https://webaim.org/standards/wcag/", "https://webaim.org/standards/wcag/checklist", "https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/", "https://www.w3.org/WAI/standards-guidelines/wcag/wcag3-intro/", "https://web.dev/learn/accessibility/measure", "https://web.dev/learn/accessibility/why", "https://www.w3.org/WAI/news/2025-10-21/wcag22-iso", "https://www.deque.com/blog/en-301-549-v4-1-1-is-final-what-changed-what-it-means-and-what-you-should-do/", "https://webaim.org/presentations/2024/january/", "https://www.federalregister.gov/documents/2026/04/20/2026-07663/extension-of-compliance-dates-for-nondiscrimination-on-the-basis-of-disability-accessibility-of-web"]
 ---
 
 > WebAIM의 「[Constructing a POUR Website](https://webaim.org/articles/pour/)」, 「[Web Content Accessibility Guidelines](https://webaim.org/standards/wcag/)」, 「[WCAG 2 Checklist](https://webaim.org/standards/wcag/checklist)」를 바탕으로, 버전 정보는 W3C WAI의 「[What's New in WCAG 2.2](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/)」와 「[WCAG 3 Introduction](https://www.w3.org/WAI/standards-guidelines/wcag/wcag3-intro/)」으로 확인해 재구성한 노트다. 표준 고르기와 원칙별 점검 질문은 web.dev의 「[Learn Accessibility](https://web.dev/learn/accessibility)」 강좌(측정·필요성 편)로 보강했다.
+> 미국 법 부분은 WebAIM의 교육 자료 「[Web Accessibility Training](https://webaim.org/presentations/2024/january/)」(Jon Whiting·Jared Smith, 2024.01)을 바탕으로 보강하고, ADA Title II 준수 기한은 미국 연방 관보의 [2026년 임시 최종 규칙](https://www.federalregister.gov/documents/2026/04/20/2026-07663/extension-of-compliance-dates-for-nondiscrimination-on-the-basis-of-disability-accessibility-of-web)으로 확인했다.
 
 ## WCAG란
 
@@ -48,7 +49,7 @@ WCAG는 **기법이 아니라 결과**를 정한다. "이 태그를 써라"가 �
 | 지역 | 기준 |
 | --- | --- |
 | EU | 유럽 접근성법(European Accessibility Act)이 2025년 6월 28일부터 시행돼 EU에서 파는 전자상거래·은행·전자책 같은 디지털 서비스에 접근성을 요구한다. 기술 기준은 유럽 표준 EN 301 549다. 현재 효력이 있는 V3.2.1(2021)은 WCAG 2.1 AA를 따르고, WCAG 2.2 AA로 기준을 올린 V4.1.1이 2026년 9월 발행돼 EU 관보 등재(2026년 말 예정)를 기다리고 있다 |
-| 미국 | 연방 기관과 그 조달은 재활법 508조(WCAG 2.0 AA 기준), 주·지방 정부는 ADA(미국 장애인법) Title II(2024년 법무부 규칙이 WCAG 2.1 AA를 기준으로 정했다)가 근거다. 민간 사업장은 ADA Title III가 근거지만 웹 기술 기준을 명시하지 않아 소송이 주된 압력 수단이고, 소송은 전자상거래 사이트와 앱에 몰린다 |
+| 미국 | 연방 기관과 그 조달은 재활법 508조(WCAG 2.0 AA 기준)가 근거다. ADA(미국 장애인법)는 고용(Title I), 주·지방 정부(Title II), 민간 공중 시설(Title III)을 나눠 규율한다. Title II는 2024년 법무부 규칙이 웹·모바일 앱 기준을 WCAG 2.1 AA로 정했고, 2026년 4월 임시 최종 규칙으로 준수 기한이 1년씩 늦춰져 인구 5만 이상 기관은 2027년 4월 26일, 5만 미만 기관과 특별구는 2028년 4월 26일까지 맞춰야 한다(기준 자체는 그대로다). Title III는 웹 기술 기준을 명시하지 않아 소송이 주된 압력 수단이고, 소송은 대개 WCAG 2.0·2.1 AA를 잣대로 삼으며 전자상거래 사이트와 앱에 몰린다 |
 | 한국 | 장애인차별금지법과 한국형 웹 콘텐츠 접근성 지침(KWCAG) |
 | 그 밖 | 캐나다·영국·일본·호주 등도 공공·민간을 함께 규율하는 법을 둔다. 나라별 목록은 W3C의 [Web Accessibility Laws & Policies](https://www.w3.org/WAI/policies/)에 있다 |
 

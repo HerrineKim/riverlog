@@ -5,10 +5,11 @@ summary: "대체 텍스트는 이미지가 그 자리에서 하는 일을 글로
 tags: ["accessibility", "frontend", "html", "writing", "ux"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/techniques/images/", "https://webaim.org/techniques/alttext/", "https://webaim.org/techniques/hypertext/", "https://webaim.org/techniques/hypertext/link_text", "https://webaim.org/techniques/hypertext/hypertext_links", "https://webaim.org/techniques/writing/", "https://web.dev/learn/accessibility/images", "https://web.dev/learn/accessibility/test-automated"]
+sources: ["https://webaim.org/techniques/images/", "https://webaim.org/techniques/alttext/", "https://webaim.org/techniques/hypertext/", "https://webaim.org/techniques/hypertext/link_text", "https://webaim.org/techniques/hypertext/hypertext_links", "https://webaim.org/techniques/writing/", "https://web.dev/learn/accessibility/images", "https://web.dev/learn/accessibility/test-automated", "https://webaim.org/presentations/2024/january/"]
 ---
 
 > WebAIM의 「[Accessible Images](https://webaim.org/techniques/images/)」, 「[Alternative Text](https://webaim.org/techniques/alttext/)」, 「[Links and Hypertext](https://webaim.org/techniques/hypertext/)」, 「[Writing Clearly and Simply](https://webaim.org/techniques/writing/)」 등을 바탕으로 WCAG 2.2 기준으로 재구성하고, 이미지 분류와 복잡한 이미지 처리는 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 이미지 편으로 보강한 노트다.
+> 빈 `alt`와 없는 `alt`의 차이, 묘사가 필요한 경우, `title` 중복 부분은 WebAIM의 교육 자료 「[Web Accessibility Training](https://webaim.org/presentations/2024/january/)」(Jon Whiting·Jared Smith, 2024.01)을 바탕으로 보강했다.
 
 ## 대체 텍스트란
 
@@ -24,13 +25,13 @@ sources: ["https://webaim.org/techniques/images/", "https://webaim.org/technique
 | 바로 옆의 본문·캡션 | 주변 글이 이미 같은 내용을 말할 때. 이미지는 `alt=""` |
 | 별도 설명(표, 연결된 페이지) | 차트·지도처럼 짧은 alt로 담을 수 없을 때 |
 
-**모든 `<img>`에는 `alt` 속성이 있어야 한다.** 비우더라도(`alt=""`) 있어야 한다. 속성이 아예 없으면 스크린 리더가 파일 이름이나 URL을 읽는다.
+**모든 `<img>`에는 `alt` 속성이 있어야 한다.** 비우더라도(`alt=""`) 있어야 한다. 속성이 아예 없으면 스크린 리더가 파일 이름이나 URL을 읽는다. **빈 `alt`는 「장식이거나 대체 내용이 바로 옆에 있다」는 선언**이고, 속성이 없는 것은 판단을 안 했다는 뜻이라 보조 기술마다 다르게 처리한다. 그래서 CMS·문서 편집기(WordPress, Word 등)에도 이미지를 장식으로 표시하는 기능이 있어야 하고, 작성자는 그것을 써야 한다.
 
 ## alt를 쓰는 원칙
 
 | 원칙 | 내용 |
 | --- | --- |
-| 정확하고 동등하게 | 이미지가 주는 내용과 기능을 그대로 전한다 |
+| 정확하고 동등하게 | 이미지가 주는 **내용과 기능**을 그대로 전한다. 겉모습 묘사는 모습 자체가 내용일 때(미술 작품, 천체 사진)만 드물게 필요하고, 그때도 긴 묘사는 alt가 아니라 캡션이나 별도 텍스트 설명으로 넘긴다 |
 | 짧게 | 보통 몇 단어, 길어야 한두 문장. 정해진 글자 수 제한은 없다 |
 | 겹치지 않게 | 바로 옆 글이 이미 말한 내용을 되풀이하지 않는다 |
 | 「~의 이미지」 빼기 | 스크린 리더가 이미 「그래픽」, 「이미지」라고 알린다. 사진·삽화·회화라는 종류가 의미 있을 때만 쓴다 |
@@ -148,7 +149,7 @@ WCAG 2.4.4 링크 목적(맥락 안에서, A)은 링크 텍스트와 그 주변 
 <a href="/articles/a11y-intro">더 보기<span class="visually-hidden">: 접근성 개론</span></a>
 ```
 
-`title` 속성은 마우스를 올려야 보이고 키보드·터치 사용자에게는 거의 전달되지 않으므로 링크 설명을 맡기지 않는다. 시각적 숨김 클래스는 [[accessible-css-typography|접근성을 위한 CSS와 타이포그래피]]에 있다.
+`title` 속성은 마우스를 올려야 보이고 키보드·터치 사용자에게는 거의 전달되지 않으므로 링크 설명을 맡기지 않는다. 링크 텍스트나 `alt`를 `title`에 되풀이하면 스크린 리더가 같은 말을 두 번 읽는다([[aria-basics|ARIA와 접근 가능한 이름]]). 시각적 숨김 클래스는 [[accessible-css-typography|접근성을 위한 CSS와 타이포그래피]]에 있다.
 
 ### 목적지 알리기
 

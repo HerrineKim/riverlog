@@ -5,10 +5,11 @@ summary: "동영상과 오디오에는 소리를 글로 바꾼 자막, 소리와
 tags: ["accessibility", "frontend", "html", "media", "ux"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/techniques/captions/", "https://webaim.org/techniques/captions/realtime", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/track", "https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API/Web_Video_Text_Tracks_Format", "https://web.dev/learn/accessibility/video-audio", "https://www.w3.org/WAI/media/av/description/"]
+sources: ["https://webaim.org/techniques/captions/", "https://webaim.org/techniques/captions/realtime", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/track", "https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API/Web_Video_Text_Tracks_Format", "https://web.dev/learn/accessibility/video-audio", "https://www.w3.org/WAI/media/av/description/", "https://webaim.org/presentations/2024/january/"]
 ---
 
 > WebAIM의 「[Captions, Transcripts, and Audio Descriptions](https://webaim.org/techniques/captions/)」, 「[Real-time Captioning](https://webaim.org/techniques/captions/realtime)」을 바탕으로 재구성하고, `<track>`과 WebVTT는 MDN의 「[track 요소](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/track)」, 「[WebVTT 형식](https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API/Web_Video_Text_Tracks_Format)」으로 확인해 덧붙이고, 대본 제공 방법과 수어 통역은 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 동영상·오디오 편으로 보강한 노트다.
+> 농맹 사용자를 위한 대본 권고, 녹화 자막 제작 방법, 화면 공유 설명 요령은 WebAIM의 교육 자료 「[Web Accessibility Training](https://webaim.org/presentations/2024/january/)」(Jon Whiting·Jared Smith, 2024.01)을 바탕으로 보강했다.
 
 ## 멀티미디어의 대체 수단
 
@@ -59,7 +60,7 @@ sources: ["https://webaim.org/techniques/captions/", "https://webaim.org/techniq
 | 1.2.8 미디어 대체 수단(녹화) | AAA | 동영상 전체의 대본 |
 | 1.2.9 오디오 전용(실시간) | AAA | 실시간 오디오의 텍스트 대안 |
 
-AA를 목표로 하면 녹화 동영상에는 **자막과 음성 해설**, 오디오 전용에는 **대본**, 실시간 동영상에는 **실시간 자막**이 필요하다. 자동 재생되는 소리를 끄는 기준(1.4.2)과 움직임 기준은 [[color-motion-accessibility|색과 움직임의 접근성]]에 있다.
+AA를 목표로 하면 녹화 동영상에는 **자막과 음성 해설**, 오디오 전용에는 **대본**, 실시간 동영상에는 **실시간 자막**이 필요하다. 기준상 화면 정보까지 담은 대본(서술형 대본, descriptive transcript)은 AAA지만, **농맹 사용자에게는 대본이 미디어에 닿는 유일한 길**이므로 AA를 목표로 할 때도 함께 두는 것을 권한다. 시각장애 사용자가 쓸 수 있는 콘텐츠는 대개 농맹 사용자도 점자로 쓸 수 있고, 미디어만 예외이기 때문이다. 자동 재생되는 소리를 끄는 기준(1.4.2)과 움직임 기준은 [[color-motion-accessibility|색과 움직임의 접근성]]에 있다.
 
 ## 자막의 품질: 동기화·동등·접근 가능
 
@@ -71,6 +72,7 @@ AA를 목표로 하면 녹화 동영상에는 **자막과 음성 해설**, 오�
 
 - 화자가 둘 이상이면 누가 말하는지 표시한다.
 - 의미 있는 소리만 넣는다. 「[긴장감 도는 음악]」은 넣고, 의미 없는 배경 소음은 뺀다.
+- 녹화 콘텐츠의 자막은 대본을 먼저 쓰고 시간을 맞추거나(type, then sync), 자동 음성 인식 결과를 사람이 고쳐 만든다. 실시간 방식은 아래 「실시간 자막」에 있다.
 - 자동 생성 자막은 초안이다. **사람이 검수해 고친 뒤에야** 동등한 자막이 된다. 고유명사, 전문용어, 문장 부호에서 특히 틀린다. 오인식이 많은 자동 자막은 농인 시청자에게 자막이 없는 것보다 나쁠 수 있다. 틀린 내용을 믿게 되기 때문이다.
 
 ## 대본
@@ -111,6 +113,7 @@ AA를 목표로 하면 녹화 동영상에는 **자막과 음성 해설**, 오�
 - 「보시는 것처럼」 대신 화면의 목록을 소리 내어 읽는다.
 - 「여기를 누르고 여기를 누르세요」 대신 「오른쪽 위 설정 버튼을 누른다」처럼 무엇을 누르는지 말한다.
 - 화면에 새 글이나 그림이 나오면 발표자가 그 내용을 말한다.
+- 화면 공유로 조작을 보여 줄 때는 **동작 + 이름 + 모양 + 위치**를 함께 말한다. 「홈 탭의 글꼴 영역에 있는, 지우개 달린 A 모양의 '모든 서식 지우기'를 누른다」처럼 말하면 화면을 못 보는 사람도, 아이콘만 보는 사람도 따라온다.
 
 `<track kind="descriptions">`로 시간 맞춤 해설 텍스트(보통 WebVTT)를 붙일 수 있다. HTML은 이 트랙을 화면이 안 보일 때 **음성으로 합성해 읽히도록** 정해 두었지만, W3C WAI는 텍스트 해설이 **그것을 소리 내어 읽는 미디어 플레이어에서만** 통한다고 안내한다. 쓰려면 플레이어가 지원하는지 먼저 확인하고, 해설이 대사 사이에 다 들어가지 않으면 해설 동안 영상을 멈추는 플레이어 설정이 필요하다.
 

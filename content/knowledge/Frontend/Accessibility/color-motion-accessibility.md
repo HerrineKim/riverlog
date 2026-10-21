@@ -5,10 +5,11 @@ summary: "저시력·색각 결핍 사용자는 스크린 리더가 아니라 �
 tags: ["accessibility", "frontend", "css", "design", "ux"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2020/04/27/%EC%A0%91%EA%B7%BC%EC%84%B1-%EC%A2%8B%EC%9D%80-svg-%ED%8C%A8%ED%84%B4%EC%9D%84-%EB%84%98%EC%96%B4%EC%84%A0-%ED%8F%AC%EC%9A%A9%EC%84%B1/", "https://webactually.com/2020/07/09/%EC%83%89%EA%B0%81-%EA%B2%B0%ED%95%8D-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%9D%98-%EC%82%B6/", "https://webaim.org/articles/contrast/", "https://webaim.org/articles/contrast/evaluating", "https://webaim.org/resources/contrastchecker/", "https://webaim.org/resources/linkcontrastchecker/", "https://web.dev/learn/accessibility/color-contrast", "https://web.dev/learn/accessibility/motion", "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast"]
+sources: ["https://webactually.com/2020/04/27/%EC%A0%91%EA%B7%BC%EC%84%B1-%EC%A2%8B%EC%9D%80-svg-%ED%8C%A8%ED%84%B4%EC%9D%84-%EB%84%98%EC%96%B4%EC%84%A0-%ED%8F%AC%EC%9A%A9%EC%84%B1/", "https://webactually.com/2020/07/09/%EC%83%89%EA%B0%81-%EA%B2%B0%ED%95%8D-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%9D%98-%EC%82%B6/", "https://webaim.org/articles/contrast/", "https://webaim.org/articles/contrast/evaluating", "https://webaim.org/resources/contrastchecker/", "https://webaim.org/resources/linkcontrastchecker/", "https://web.dev/learn/accessibility/color-contrast", "https://web.dev/learn/accessibility/motion", "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast", "https://webaim.org/presentations/2024/january/"]
 ---
 
 > 웹액츄얼리가 번역한 캐리 피셔(Carie Fisher)의 「[접근성 좋은 SVG – 패턴을 넘어선 포용성](https://webactually.com/2020/04/27/%EC%A0%91%EA%B7%BC%EC%84%B1-%EC%A2%8B%EC%9D%80-svg-%ED%8C%A8%ED%84%B4%EC%9D%84-%EB%84%98%EC%96%B4%EC%84%A0-%ED%8F%AC%EC%9A%A9%EC%84%B1/)」(2020.04)과 노아 글루시엔(Noah Glushien)의 「[색각 결핍 디자이너의 삶](https://webactually.com/2020/07/09/%EC%83%89%EA%B0%81-%EA%B2%B0%ED%95%8D-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%9D%98-%EC%82%B6/)」(2020.07)을 바탕으로 재구성하고, 대비 계산·기준·평가 방법은 WebAIM의 「[Contrast and Color Accessibility](https://webaim.org/articles/contrast/)」(평가 편 포함)와 「[Contrast Checker](https://webaim.org/resources/contrastchecker/)」·「[Link Contrast Checker](https://webaim.org/resources/linkcontrastchecker/)」 설명으로 보강하고, 사용자 설정 미디어 쿼리와 움직임 기본값은 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 색과 대비·애니메이션 편으로 덧붙인 노트다.
+> 상태 변화의 대비, 목록 분류의 색 대안, 문서 속 링크 부분은 WebAIM의 교육 자료 「[Web Accessibility Training](https://webaim.org/presentations/2024/january/)」(Jon Whiting·Jared Smith, 2024.01)을 바탕으로 보강했다.
 
 ## 왜 색과 움직임인가
 
@@ -39,6 +40,7 @@ WCAG 성공 기준 1.4.1(색 사용)은 색이 정보 전달·행동 지시·반
 | 폼 오류 | 아이콘과 오류 문구 |
 | 링크 | 밑줄 (없애려면 아래 「밑줄 없는 링크」의 세 조건) |
 | 차트·지도 | 데이터 레이블, 패턴·모양, 색맹 친화 팔레트 |
+| 목록 안의 분류 (먹어도 되는 버섯과 독버섯을 글자색으로만 구분) | 목록을 둘로 나눠 각각 제목을 달거나, 대체 텍스트가 있는 아이콘을 붙인다. 굵게·기울임은 화면에서는 단서가 되지만 스크린 리더 대부분이 읽지 않아 대안이 못 된다 |
 | 라벨·태그 | 무늬나 모양 (Trello의 색각 결핍 모드는 라벨에 줄무늬·물방울 같은 패턴을 더한다) |
 
 데이터 시각화는 색에 가장 크게 기대는 영역이라 특히 주의한다. 색을 없앨 필요는 없다. 문제 조합을 피하고 모든 데이터에 레이블을 붙이면 된다. 「초록 버튼을 눌러 계속」처럼 **안내 문구가 색을 가리키는 것**도 같은 실수다.
@@ -55,7 +57,7 @@ WCAG 성공 기준 1.4.1(색 사용)은 색이 정보 전달·행동 지시·반
 | 링크 색 vs 배경, 본문 색 vs 배경 | 각각 4.5:1 이상 (1.4.3, 큰 텍스트는 3:1) |
 | 마우스 호버와 키보드 포커스 | 색이 아닌 표시(보통 밑줄)가 나타난다 |
 
-세 비율을 한꺼번에 맞추기는 생각보다 어렵다. 어두운 글자·밝은 배경 조합이라면 본문 색을 더 어둡게 하거나 배경을 더 밝게 해야 맞는 경우가 많다. 내비게이션 메뉴처럼 위치와 모양으로 링크임이 분명한 곳은 이 조건의 대상이 아니다. 대부분은 **밑줄을 남기는 편이 가장 간단하다.**
+세 비율을 한꺼번에 맞추기는 생각보다 어렵다. 어두운 글자·밝은 배경 조합이라면 본문 색을 더 어둡게 하거나 배경을 더 밝게 해야 맞는 경우가 많다. 내비게이션 메뉴처럼 위치와 모양으로 링크임이 분명한 곳은 이 조건의 대상이 아니다. 대부분은 **밑줄을 남기는 편이 가장 간단하다.** Word·PowerPoint 같은 전자 문서는 호버·포커스 때 밑줄을 띄울 방법이 없으므로 문서 속 링크는 밑줄을 남긴다.
 
 ## 원칙 2. 대비를 지킨다
 
@@ -114,6 +116,12 @@ WCAG 성공 기준 1.4.1(색 사용)은 색이 정보 전달·행동 지시·반
 "필수"인지는 **그 그래픽이 사라지면 정보나 기능이 바뀌는가**로 판단한다. 홈 버튼으로 쓰는 집 모양 SVG 아이콘은 필수다. 예를 들어 배경 `#cccccc`에 선 `#8f8f8f`는 약 2:1이라 미달이고, 선을 `#717171`로 조금 어둡게 하면 3:1을 넘는다. 같은 접근성 패턴(숨긴 텍스트 "Home")을 써도 색 하나로 통과 여부가 갈린다.
 
 WebAIM이 해마다 상위 100만 개 홈페이지를 검사하는 WebAIM Million에서 **낮은 텍스트 대비는 매년 가장 흔한 오류**다. 2026년 보고서에서는 홈페이지의 83.9%에서 발견됐다.
+
+### 상태 변화도 색만으로 보여 주지 않는다
+
+1.4.11은 각 상태가 **인접 색과** 3:1을 넘는지만 본다. 상태끼리의 차이는 묻지 않는다. 그래서 체크박스 테두리가 기본 회색에서 포커스 때 파랑으로만 바뀌면, 두 색이 모두 배경과 3:1을 넘어도 색을 구분하지 못하는 사람에게는 상태 변화가 보이지 않는다. 1.4.1(색 사용)과 1.4.11 사이의 이 빈틈은 **상태 사이에도 3:1 차이를 두거나**(2.4.13 포커스 표시 모양이 포커스에 요구하는 방식) 두께·모양 변화(굵은 외곽선, 밑줄)를 더해 메운다. 키보드 포커스는 아예 별도 외곽선을 두르는 편이 가장 확실하다.
+
+이 때문에 컴포넌트 하나도 재야 할 곳이 많다. 「약관에 동의한다」 체크박스 하나만 해도 라벨 텍스트, 체크박스 경계, 체크 표시, 포커스 표시를 기본·호버·포커스·선택 상태마다 재면 **열다섯 번이 넘는다.**
 
 ### 대비 평가 방법
 

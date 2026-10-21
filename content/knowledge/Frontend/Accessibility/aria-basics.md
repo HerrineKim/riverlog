@@ -5,10 +5,11 @@ summary: "ARIA는 HTML로 표현할 수 없는 role·state·property를 접근�
 tags: ["frontend", "accessibility", "aria", "html", "javascript"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/techniques/aria/", "https://webaim.org/articles/label-name/", "https://www.w3.org/TR/html-aam-1.0/", "https://web.dev/learn/accessibility/aria-html", "https://web.dev/learn/accessibility/javascript", "https://www.w3.org/TR/html-aria/", "https://webaim.org/projects/million/"]
+sources: ["https://webaim.org/techniques/aria/", "https://webaim.org/articles/label-name/", "https://www.w3.org/TR/html-aam-1.0/", "https://web.dev/learn/accessibility/aria-html", "https://web.dev/learn/accessibility/javascript", "https://www.w3.org/TR/html-aria/", "https://webaim.org/projects/million/", "https://webaim.org/presentations/2024/january/"]
 ---
 
 > WebAIM의 「[Introduction to ARIA](https://webaim.org/techniques/aria/)」, 「[Decoding Label and Name for Accessibility](https://webaim.org/articles/label-name/)」을 바탕으로, 이름·설명 계산 순서는 W3C [HTML-AAM](https://www.w3.org/TR/html-aam-1.0/)으로 확인해 재구성한 노트다. HTML과 ARIA를 섞는 원칙과 프레임워크의 라이브 영역 처리는 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 ARIA·JavaScript 편과 W3C 「[ARIA in HTML](https://www.w3.org/TR/html-aria/)」로 보강했다.
+> 네이티브 상태와의 충돌, 숨긴 참조 텍스트, 아이콘 이름 붙이기, `title` 중복 부분은 WebAIM의 교육 자료 「[Web Accessibility Training](https://webaim.org/presentations/2024/january/)」(Jon Whiting·Jared Smith, 2024.01)을 바탕으로 보강했다.
 
 ## ARIA란
 
@@ -36,6 +37,7 @@ W3C의 「ARIA in HTML」은 HTML과 ARIA를 섞을 때 세 가지를 경계한�
 | --- | --- | --- |
 | 기본 role 덮어쓰기 | `<h2 role="tab">`: 제목 의미가 사라진다. `<a role="heading">`: 링크가 제목이 된다 | `<div role="tab"><h2>…</h2></div>`처럼 감싼다. 링크는 링크로 두고 이름을 구체적으로 준다 |
 | 중복 | `<ul role="list">` | 보통 `<ul>`이면 된다. 예외: Safari는 `list-style: none`인 목록을 `<nav>` 밖에서 목록으로 노출하지 않으므로 이때만 `role="list"`를 덧붙인다([[accessible-page-structure\|접근 가능한 페이지 구조]]) |
+| 네이티브 동작·상태와 충돌 | `<input type="checkbox" role="radio">`: 브라우저는 체크박스로 동작하는데 스크린 리더는 라디오로 알린다. `<input type="checkbox" aria-checked="false">`: HTML의 `checked`와 ARIA 상태가 어긋날 수 있다 | role은 브라우저 동작을 바꾸지 못하니 동작에 맞는 요소를 고른다. 네이티브 상태는 HTML 속성(`checked`, `disabled`, `required`)으로만 둔다 |
 | 예상 못 한 부작용 | `<details>` 안의 `<summary role="button">` | `<summary>`에는 role을 주지 않는다(HTML이 허용하지 않는다) |
 
 환경 제약 때문에 더 넓은 보조 기술 지원이 필요하거나, 아직 지원이 고르지 않은 HTML 기능의 대비책으로 ARIA를 함께 쓰는 것은 괜찮다. 그때도 실제 보조 기술로 확인한다.
@@ -100,7 +102,7 @@ HTML의 `<label>` 요소와 WCAG의 「레이블」, HTML의 `name` 속성과 �
 
 | 순위 | 출처 | 해당 요소 | 비고 |
 | --- | --- | --- | --- |
-| 0 | `hidden`, `display: none`, `aria-hidden="true"` | 모든 요소 | 트리에서 빠져 이름 자체가 없다. 단 `aria-labelledby`가 가리키는 숨은 요소의 텍스트는 이름으로 쓰인다 |
+| 0 | `hidden`, `display: none`, `aria-hidden="true"` | 모든 요소 | 트리에서 빠져 이름 자체가 없다. 숨긴 `<label>`도 읽히지 않는다. 단 `aria-labelledby`·`aria-describedby`가 가리키는 숨은 요소의 텍스트는 이름·설명으로 **읽힌다** |
 | 1 | `aria-labelledby` | 이름을 가질 수 있는 모든 요소 | id 여러 개를 적으면 그 순서로 이어 붙인다. 가리킨 요소의 링크·목록 같은 의미는 사라지고 글자만 남는다 |
 | 2 | `aria-label` | 같음 | 화면에 보이지 않는 문자열 |
 | 3 | 네이티브 레이블 | 입력 → 연결된 `<label>`, `<img>` → `alt`, `<fieldset>` → 첫 `<legend>`, `<table>` → `<caption>`, `<input type="submit">` → `value`, `<figure>` → `<figcaption>` | `<label>`이 여럿이면 DOM 순서로 이어 붙인다 |
@@ -116,7 +118,12 @@ HTML의 `<label>` 요소와 WCAG의 「레이블」, HTML의 `name` 속성과 �
 
 <!-- 좋음: 보이는 텍스트를 살리고 정보를 덧붙인다 -->
 <a href="apply.pdf">지원서 내려받기 <span class="visually-hidden">(PDF)</span></a>
+
+<!-- 아이콘 span을 이미지로 만들어 이름을 준다 (span 그대로는 aria-label이 금지된다) -->
+<a href="apply.pdf">지원서 내려받기 <span class="pdf-icon" role="img" aria-label="(PDF)"></span></a>
 ```
+
+CSS `::before`/`::after`로 넣은 아이콘 폰트 글리프도 최신 스크린 리더는 읽으려 든다. 의미 있는 아이콘이면 `<i class="pdf" role="img" aria-label="PDF"></i>`처럼 이미지로 만들거나, 아이콘만 든 버튼이면 버튼에 `aria-label`을 준다.
 
 `visually-hidden` 같은 화면 밖 텍스트 기법은 [[accessible-css-typography|접근성을 위한 CSS와 타이포그래피]]에 있다.
 
@@ -136,7 +143,9 @@ HTML의 `<label>` 요소와 WCAG의 「레이블」, HTML의 `name` 속성과 �
 </section>
 ```
 
-ARIA 레이블과 설명은 스크린 리더가 **한 줄로 흘려 읽는다.** 본문 텍스트처럼 단어·글자 단위로 멈춰 살펴볼 수 없으니 짧게 쓴다.
+ARIA 레이블과 설명은 스크린 리더가 **한 줄로 흘려 읽는다.** 본문 텍스트처럼 단어·글자 단위로 멈춰 살펴볼 수 없으니 짧게 쓴다. 가리킨 요소의 목록·링크 같은 구조도 사라지므로, 여러 줄짜리 입력 조건 목록 전체를 `aria-describedby`로 잇기보다 짧은 요약 한 줄을 잇고 목록은 본문으로 읽게 둔다. 또 `aria-label`의 문자열은 브라우저 자동 번역에서 빠지기 쉽다. 다국어 사용자가 많으면 보이는 텍스트를 가리키는 `aria-labelledby`나 시각적으로 숨긴 텍스트가 안전하다.
+
+숨긴 요소도 참조되면 읽힌다는 점은 함정이 된다. 오류 문구를 `display: none`으로 미리 그려 두고 `aria-describedby`로 이어 두면, 오류가 없을 때도 스크린 리더는 「이미 쓰는 아이디다」를 설명으로 읽는다. 오류가 생길 때 참조를 붙이거나 문구를 넣는다.
 
 ## Label in Name: 보이는 글자가 이름에 들어가야 한다
 
@@ -167,7 +176,7 @@ WCAG 2.5.3 Label in Name(A)은 **글자가 보이는 컨트롤의 접근 가능�
 <p id="pw-rule">8자 이상, 숫자를 하나 넣는다</p>
 ```
 
-`aria-description`은 ARIA 1.3에 들어가는 속성이라 보이는 텍스트를 가리키는 `aria-describedby`가 우선이다. `title`은 이름이나 설명으로 자주 읽혀 내용이 중복되기 쉬우므로 아껴 쓴다.
+`aria-description`은 ARIA 1.3에 들어가는 속성이라 보이는 텍스트를 가리키는 `aria-describedby`가 우선이다. `title`은 이름이나 설명으로 자주 읽혀 내용이 중복되기 쉬우므로 아껴 쓴다. 마우스를 올려야 보이는 툴팁이라 키보드·터치 사용자는 볼 수 없고, 링크 텍스트나 `alt`를 되풀이한 `title`(「더 알아보기: ＜alt와 같은 문장＞」)은 스크린 리더가 같은 말을 두 번 읽게 만든다. 다른 이름 후보가 전혀 없을 때의 마지막 수단으로만 쓴다.
 
 ## 라이브 영역: 포커스 없이 바뀐 내용 알리기
 
