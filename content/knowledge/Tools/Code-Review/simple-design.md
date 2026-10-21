@@ -124,4 +124,4 @@ Simple Design만으로 부족하면 『리팩터링』의 **나쁜 냄새(code s
 - 미래 변화를 근거로 중복을 남기지 않는다. 남긴다면 이유는 비용이고, 해를 끼치기 시작할 때 없앤다.
 - 품질은 속도를 위한 수단이다. 부족하면 나쁜 냄새 목록을, 코드로 안 되면 비즈니스 규칙을 본다.
 
-관련 노트: [[refactoring-principles|리팩터링 원칙]], [[principles|코드 리뷰 원칙과 체크리스트]], [[tdd|프론트엔드에서의 TDD]]
+관련 노트: [[refactoring-principles|리팩터링 원칙]], [[principles|코드 리뷰 원칙과 체크리스트]], [[tdd|프론트엔드에서의 TDD]], [[easy-to-delete-code|삭제하기 쉬운 코드]]

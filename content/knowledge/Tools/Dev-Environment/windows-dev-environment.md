@@ -5,10 +5,10 @@ summary: "터미널·셸의 뜻과 CMD·PowerShell·Git Bash의 차이, Windows�
 tags: ["tools", "cli", "git", "productivity"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/231", "https://riverkim.kr/142", "https://riverkim.kr/85"]
+sources: ["https://riverkim.kr/231", "https://riverkim.kr/142", "https://riverkim.kr/85", "https://nomadcoders.co/windows-setup-for-developers/"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트다.
+> riverkim.kr에 쓴 글들을 다시 정리한 노트다. 「[개발자를 위한 윈도우 셋업](https://nomadcoders.co/windows-setup-for-developers/)」의 내용을 더해 보강했다.
 
 Windows에서 웹 개발을 시작하면 macOS·Linux 중심으로 쓰인 문서와 어긋나는 부분이 몇 군데 생긴다. 어떤 터미널을 쓸지, Git을 어떻게 설치할지, 줄바꿈 문자가 왜 린트 오류를 내는지가 대표적이다.
 
@@ -64,6 +64,21 @@ ESLint에 Prettier를 붙인 프로젝트를 Windows에서 열면 모든 줄 끝
 | 해결 2 | 저장소 전체를 LF로 통일한다. `git config --global core.autocrlf false`로 변환을 끄거나 `.gitattributes`에 `* text=auto eol=lf`를 두고, 에디터의 줄바꿈도 LF로 맞춘다 |
 
 팀에 Windows와 macOS 사용자가 섞여 있다면 **해결 2처럼 저장소 단위로 LF를 강제**해야 사람마다 diff가 통째로 바뀌는 일을 막을 수 있다. 관련 논의는 [Stack Overflow: Why do I keep getting Delete 'cr'](https://stackoverflow.com/questions/53516594/why-do-i-keep-getting-delete-cr-prettier-prettier)에 있다.
+
+## WSL 2 기반 개발 환경 구성
+
+리눅스 서버와 같은 도구 체인이 필요하면 Windows 위에 리눅스 개발 환경을 통째로 올린다. 흔한 구성은 다음과 같다.
+
+| 층 | 구성 | 메모 |
+| --- | --- | --- |
+| 터미널 | Windows Terminal | WSL 배포판, PowerShell, Git Bash를 탭으로 함께 띄운다 |
+| 리눅스 | WSL 2 + Ubuntu | `wsl --install`로 설치한다 |
+| 셸 | zsh + Oh My Zsh, 프롬프트 테마 | bash를 그대로 써도 된다. 프롬프트는 Starship 같은 도구로 꾸민다 |
+| 언어 런타임 | nvm(Node), pyenv(Python) 등 버전 관리자 | 시스템 패키지 대신 버전 관리자로 설치해야 프로젝트마다 버전을 바꾸기 쉽다 |
+| Git | Git + GitHub CLI(`gh`) | WSL 안에 따로 설치한다. Windows 쪽 Git과 설정이 별개다 |
+| 에디터 | VS Code + WSL 확장 | Windows의 VS Code가 WSL 안의 폴더를 연다 |
+
+**프로젝트는 WSL 파일 시스템(`~/`) 안에 둔다.** `/mnt/c` 아래 Windows 드라이브에서 작업하면 파일 접근이 운영체제 경계를 넘어 빌드·`npm install`·파일 감시가 크게 느려진다.
 
 ## 정리
 

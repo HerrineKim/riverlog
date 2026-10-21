@@ -4,12 +4,14 @@ concept: "Git Config"
 summary: "개발자들이 실제로 켜 두는 git config 옵션을 pull·merge·rebase·diff·전역 설정별로 묶었다. 대부분 기본값의 불편함을 고치는 한 줄 설정이다."
 tags: ["git", "version-control", "config", "tools"]
 source: other
-date: "2026-10-14"
-sources: ["https://news.hada.io/topic?id=13405", "https://jvns.ca/blog/2024/02/16/popular-git-config-options/", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://80000coding.notion.site/19c283f564a6492d98945e4558a990d7"]
+date: "2026-10-21"
+sources: ["https://news.hada.io/topic?id=13405", "https://jvns.ca/blog/2024/02/16/popular-git-config-options/", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://80000coding.notion.site/19c283f564a6492d98945e4558a990d7", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://git-scm.com/docs/git-config", "https://johngrib.github.io/wiki/git-alias/", "https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md"]
 ---
 
 > GeekNews의 「[인기 있는 Git 설정 옵션들](https://news.hada.io/topic?id=13405)」(2024.02)을 바탕으로 재구성한 노트다. 원 자료는 Julia Evans의 「[Popular git config options](https://jvns.ca/blog/2024/02/16/popular-git-config-options/)」다.
 > 「커밋 작성자와 GitHub 기여 그래프」, 「alias」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「GitHub 이메일 교체 시 잔디가 사라지는 현상」, 「git - 사소한 꿀팁」을 바탕으로 보강했다.
+> 「설정 범위」와 일부 옵션은 arslanbilal의 「[Git and Git Flow Cheat Sheet](https://github.com/arslanbilal/git-cheat-sheet)」와 mingrammer의 「[Git Tips](https://github.com/mingrammer/git-tips)」를 바탕으로 보강했다.
+> 「셸 alias와 함수 패턴」은 「[git alias](https://johngrib.github.io/wiki/git-alias/)」를, `credential.helper`는 「[Git Flight Rules](https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md)」를 바탕으로 보강했다.
 
 ## Git 설정이란
 
@@ -19,7 +21,23 @@ Git의 동작 대부분은 `git config`로 바꿀 수 있다. 개발자들이 �
 git config --global <이름> <값>     # 설정 (~/.gitconfig에 저장)
 git config --global --unset <이름>  # 해제
 git config --list                   # 현재 설정 확인
+git config --global --edit          # 설정 파일을 편집기로 열기
 ```
+
+Git 2.46부터는 하위 명령 형식(`git config list`, `git config get <이름>`, `git config set <이름> <값>`, `git config unset <이름>`)도 쓸 수 있다. 위의 옛 형식도 그대로 동작한다.
+
+### 설정 범위
+
+같은 이름의 설정이 여러 곳에 있으면 **좁은 범위가 이긴다.**
+
+| 범위 | 파일 | 옵션 | 적용 대상 |
+| --- | --- | --- | --- |
+| system | `/etc/gitconfig` (설치 위치에 따라 다름) | `--system` | 그 컴퓨터의 모든 사용자 |
+| global | `~/.gitconfig` 또는 `~/.config/git/config` | `--global` | 내 모든 저장소 |
+| local | `<저장소>/.git/config` | `--local` (저장소 안에서의 기본값) | 그 저장소 |
+| worktree | `<저장소>/.git/config.worktree` | `--worktree` | 작업 트리 하나 (`extensions.worktreeConfig`를 켰을 때) |
+
+`git config --list --show-origin --show-scope`로 각 값이 어느 파일·범위에서 왔는지 본다.
 
 ## Pull과 Merge
 
@@ -67,6 +85,9 @@ git rebase -i main           # autosquash가 켜져 있으면 자동으로 제�
 | `core.pager delta` | diff·log·show를 [delta](https://github.com/dandavison/delta)로 문법 강조해서 본다 |
 | `commit.verbose true` | 커밋 메시지 편집기에 전체 diff를 함께 띄운다 |
 | `help.autocorrect 10` | 오타 명령을 1초(10 = 0.1초 단위) 뒤 자동 실행한다. `prompt`면 묻는다 |
+| `core.editor "code --wait"` | 커밋 메시지·rebase 편집기 지정 (기본은 `$EDITOR` 또는 vi) |
+| `merge.tool <도구>` | `git mergetool`이 띄울 병합 도구 |
+| `color.ui auto` | 터미널일 때만 색을 입힌다(기본값). `false`면 끈다 |
 
 ## 전역·환경별 설정
 
@@ -77,7 +98,10 @@ git rebase -i main           # autosquash가 켜져 있으면 자동으로 제�
 | `user.useConfigOnly true` | 이메일을 명시하지 않은 저장소에서 커밋을 막는다. 여러 계정을 쓸 때 실수 방지 |
 | `url."git@github.com:".insteadOf "https://github.com/"` | HTTPS 주소를 SSH 주소로 자동 치환한다 |
 | `core.autocrlf false` | 줄바꿈(CRLF↔LF) 자동 변환을 끈다. 팀 규칙은 `.gitattributes`로 정하는 편이 낫다 |
+| `credential.helper` | HTTPS 인증 정보를 저장할 곳. macOS는 `osxkeychain`, Windows·Linux는 Git Credential Manager(`manager`)가 보통이고, `cache --timeout=3600`은 메모리에 잠시만 둔다. 평문 파일에 저장하는 `store`는 피한다 |
 | `transfer.fsckobjects true` | 주고받는 객체의 손상을 검사한다 |
+| `core.ignorecase false` | 대소문자를 구분하지 않는 파일 시스템(macOS·Windows 기본)에서 `File.ts` → `file.ts` 같은 이름 변경을 감지하게 한다. 파일 이름 대소문자만 바꿀 때는 설정보다 `git mv`가 안전하다 |
+| `core.fileMode false` | 실행 권한 비트 변경을 무시한다. 권한을 제대로 다루지 못하는 파일 시스템에서 모든 파일이 수정됨으로 뜰 때 |
 
 ```ini
 # ~/.gitconfig — 회사 폴더에서만 회사 이메일 쓰기
@@ -106,6 +130,31 @@ git config --global alias.l "log --graph --abbrev-commit --pretty=format:'%C(red
 
 이제 `git l`이 브랜치 그래프와 해시·참조·메시지·상대 시각·작성자를 한 줄씩 색을 입혀 보여 준다.
 
+#### 셸 alias와 함수 패턴
+
+alias 값이 `!`로 시작하면 git 하위 명령이 아니라 **셸 명령**으로 실행된다. 파이프와 명령 치환을 쓸 수 있고, 저장소 최상위 폴더에서 실행된다.
+
+```ini
+[alias]
+  s    = status -sb
+  cur  = branch --show-current                         # 현재 브랜치 이름
+  # 인자가 필요하면 함수를 선언하고 바로 부른다: git sync upstream
+  sync = "!f() { git fetch \"$1\" && git reset --hard \"$1/$(git branch --show-current)\"; }; f"
+  # fzf로 고르기: 브랜치를 골라 이동, 파일을 여러 개 골라 add
+  sw   = "!git switch $(git branch | grep -v '^\\*' | fzf | awk '{print $1}')"
+  a    = "!git add $(git status -s | fzf -m | awk '{print $2}')"
+  aliases = "!git config --get-regexp '^alias\\.' | sed 's/^alias\\.//'"
+```
+
+| 형태 | 쓰임 |
+| --- | --- |
+| `이름 = 하위 명령` | 긴 옵션 줄이기 |
+| `이름 = "!셸 명령"` | 파이프·명령 치환·다른 도구와 연결 |
+| `이름 = "!f() { ...; }; f"` | `$1` 같은 인자 받기, 분기 |
+| fzf와 연결 | 브랜치·파일·태그를 목록에서 골라 넘기기, `--preview`로 미리 보기 |
+
+`reset --hard`나 브랜치 삭제처럼 되돌릴 수 없는 명령을 alias로 감싸면 실수가 한 단어로 줄어든다. 위험한 alias는 확인 단계를 넣거나 만들지 않는다.
+
 서브모듈을 쓰면 `submodule.recurse true`, `status.submoduleSummary true`, `diff.submodule log`도 자주 언급된다.
 
 ## 정리
@@ -114,4 +163,4 @@ git config --global alias.l "log --graph --abbrev-commit --pretty=format:'%C(red
 - 여러 계정을 쓰면 `includeIf`와 `user.useConfigOnly`로 커밋 이메일 실수를 막는다.
 - 설정은 기기마다 따로라서, `~/.gitconfig`를 dotfiles로 관리하면 여러 기기에서 같은 환경을 유지할 수 있다.
 
-관련 노트: [[git-basics|기본 명령과 파일 상태]], [[merge|브랜치 병합]], [[git-undo-and-rewrite|되돌리기와 이력 다루기]]
+관련 노트: [[git-basics|기본 명령과 파일 상태]], [[merge|브랜치 병합]], [[git-undo-and-rewrite|되돌리기와 이력 다루기]], [[stash-worktree-clean|stash, worktree, clean]]

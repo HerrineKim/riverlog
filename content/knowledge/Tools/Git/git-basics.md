@@ -1,14 +1,16 @@
 ---
 title: "Git 기본 명령과 파일 상태"
 concept: "Git Basics"
-summary: "저장소를 만들고 add·commit으로 버전을 기록하며, 파일이 untracked·modified·staged·committed 상태를 오가는 흐름. 커밋을 식별하는 해시도 함께 다룬다."
+summary: "저장소를 만들고 add·commit으로 버전을 기록하며, 파일이 untracked·modified·staged·committed 상태를 오가는 흐름, 작업 디렉터리·스테이징·로컬·원격 네 곳 사이에서 명령이 코드를 옮기는 방식. 커밋을 식별하는 해시도 함께 다룬다."
 tags: ["git", "version-control", "cli"]
 source: til
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/2ea16c6dc08341c1a13339e30fe8ac49"]
+date: "2026-10-21"
+sources: ["https://80000coding.notion.site/2ea16c6dc08341c1a13339e30fe8ac49", "https://bytebytego.com/guides/how-does-git-work", "https://bytebytego.com/guides/git-workflow", "https://bytebytego.com/guides/git-commands-cheat-sheet", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://blog.outsider.ne.kr/1247", "https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md"]
 ---
 
-> 「git add -p」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「git 변경사항 잘게 쪼개서 add 하기」를 바탕으로 보강했다.
+> 「git add -p」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「git 변경사항 잘게 쪼개서 add 하기」를 바탕으로 보강했다. 「원격까지 네 곳」은 ByteByteGo의 System Design 101 가이드 「[How Git Works](https://bytebytego.com/guides/how-does-git-work)」, 「[How does Git Work?](https://bytebytego.com/guides/git-workflow)」, 「[Git Commands Cheat Sheet](https://bytebytego.com/guides/git-commands-cheat-sheet)」를 바탕으로 보강했다.
+> 「차이 보기」, 「파일 옮기기와 추적 그만하기」는 arslanbilal의 「[Git and Git Flow Cheat Sheet](https://github.com/arslanbilal/git-cheat-sheet)」와 mingrammer의 「[Git Tips](https://github.com/mingrammer/git-tips)」를 바탕으로 보강했다.
+> 「git add -p」의 `a`·`d`와 `-N`, 「커밋 전에 diff 보기」는 「[git add -p 와 git commit -v 의 사용](https://blog.outsider.ne.kr/1247)」과 「[Git Flight Rules](https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md)」를 바탕으로 보강했다.
 
 Git으로 버전을 남기는 과정은 결국 **"작업한 파일을 골라서(add) 스냅숏으로 기록(commit)"** 하는 일의 반복이다. 이 흐름과 각 단계에서 파일이 어떤 상태인지 알면 대부분의 `git status` 메시지를 읽을 수 있다.
 
@@ -23,6 +25,33 @@ Git으로 버전을 남기는 과정은 결국 **"작업한 파일을 골라서(
 ![Git의 세 영역](/images/til/ETC/Git/git.assets/image-20220113101851253.png)
 
 Staging Area와 Repository는 `.git` 폴더 안에서 관리되는 논리적 공간이다. 즉 `.git` 폴더를 지우면 **모든 버전 기록이 사라지니** 주의해야 한다.
+
+### 원격까지 네 곳: 명령은 코드를 옮기는 일
+
+흔히 코드가 "내 컴퓨터"와 "GitHub" 두 곳에 있다고 생각하지만, 로컬에만 세 곳이 있어 **코드는 모두 네 곳**에 있다. Git 명령 대부분은 이 네 곳 사이에서 변경을 옮기는 일이다.
+
+```text
+ Working Directory ──add──▶ Staging Area ──commit──▶ Local Repo ──push──▶ Remote Repo
+        ▲                        │                       ▲  │                  │
+        │◀── restore --staged ───┘                       │  └──── fetch ◀──────┘
+        │◀──────────── switch / checkout / merge ─────────┘
+        │◀──────────────────── pull (= fetch + merge) ─────────────────────────┘
+                           clone: Remote Repo 전체를 처음 복사해 와 네 곳을 만든다
+```
+
+| 명령 | 어디에서 어디로 |
+| --- | --- |
+| `git add` | 작업 디렉터리 → 스테이징 영역 |
+| `git commit` | 스테이징 영역 → 로컬 저장소 |
+| `git push` | 로컬 저장소 → 원격 저장소 |
+| `git fetch` | 원격 저장소 → 로컬 저장소(원격 추적 브랜치만 갱신, 작업 디렉터리는 그대로) |
+| `git pull` | 원격 → 로컬 저장소 → 작업 디렉터리(fetch 뒤 merge 또는 rebase) |
+| `git switch`·`checkout` | 로컬 저장소의 특정 브랜치·커밋 → 작업 디렉터리 |
+| `git restore --staged <파일>` | 스테이징을 취소(스테이징 영역 → 작업 디렉터리로 되돌림) |
+| `git restore <파일>` | 작업 디렉터리의 변경을 버리고 마지막 스테이징·커밋 상태로 |
+| `git diff` / `git diff --staged` | 작업 디렉터리 vs 스테이징 / 스테이징 vs 마지막 커밋 |
+
+`git restore`와 `git switch`는 하는 일이 너무 많던 `git checkout`을 나눈 명령이다. 과거 자료의 `git checkout -- <파일>`, `git reset <파일>`은 각각 `git restore <파일>`, `git restore --staged <파일>`과 같다. 이미 만든 커밋을 되돌리는 `revert`·`reset`은 [[git-undo-and-rewrite|Git 되돌리기와 이력 다루기]]에 있다.
 
 ## 파일의 상태(라이프 사이클)
 
@@ -67,15 +96,21 @@ $ git add .                # 현재 디렉터리의 모든 변경
 | `y` / `n` | 이 헝크를 스테이징 / 건너뛰기 |
 | `s` | 헝크가 크면 더 작게 쪼개기 |
 | `e` | 헝크를 편집기로 열어 줄 단위로 고르기 |
+| `a` / `d` | 이 파일의 남은 헝크를 모두 스테이징 / 모두 건너뛰기 |
 | `q` | 나머지는 건너뛰고 끝내기 |
 | `?` | 전체 도움말 |
 
 `git restore -p`(되돌리기), `git reset -p`(스테이징 취소), `git stash -p`도 같은 방식으로 일부만 고른다.
 
+`add -p`는 **추적 중인 파일의 변경만** 보여 준다. 새 파일의 일부만 담으려면 먼저 `git add -N <파일>`(intent-to-add)로 "빈 파일이 추가될 예정"이라고 알린 뒤 `git add -p <파일>`을 쓴다.
+
+`git add .`이나 `git commit -am`은 무엇이 들어가는지 보지 않고 담는다. 디버그 코드나 다른 작업이 섞여 들어가는 가장 흔한 경로이므로, **`add -p`로 헝크를 확인하며 담고 `git commit -v`로 커밋 직전에 diff를 한 번 더 보는 습관**이 커밋을 논리적 단위로 나누는 데도 도움이 된다(항상 켜려면 `commit.verbose true`).
+
 ### 커밋: `git commit`
 
 ```bash
 $ git commit -m "Add login form"
+$ git commit -am "Fix typo"      # 추적 중인 파일의 수정을 add 없이 바로 커밋 (새 파일은 안 들어간다)
 ```
 
 커밋 메시지는 **이 버전에서 무엇이 바뀌었는지** 드러나도록 쓴다. `-m` 없이 실행하면 에디터(기본 Vim)가 열리고, 메시지를 쓴 뒤 `Esc` → `:wq` 로 저장·종료한다.
@@ -100,7 +135,20 @@ Untracked files:                    # Git이 추적하지 않는 새 파일
         d.txt
 ```
 
-`status` 출력은 위의 세 영역과 그대로 대응한다. 안내 문구에 나오는 `git restore --staged`(스테이징 취소)와 `git restore`(작업 내용 되돌리기)도 함께 기억해 두면 좋다.
+`git status -sb`는 같은 내용을 한 줄씩 짧게 보여 준다(앞 칸이 staged, 뒤 칸이 unstaged 상태). `status` 출력은 위의 세 영역과 그대로 대응한다. 안내 문구에 나오는 `git restore --staged`(스테이징 취소)와 `git restore`(작업 내용 되돌리기)도 함께 기억해 두면 좋다.
+
+### 차이 보기: `git diff`
+
+`git diff`는 **어느 두 영역을 비교하느냐**에 따라 결과가 다르다. "diff가 비어 있다"는 대부분 이미 add한 변경을 그냥 `git diff`로 봤기 때문이다.
+
+| 명령 | 비교 대상 |
+| --- | --- |
+| `git diff` | Staging Area ↔ Working Directory (아직 add 안 한 변경) |
+| `git diff --staged` (= `--cached`) | HEAD ↔ Staging Area (다음 커밋에 들어갈 변경) |
+| `git diff HEAD` | HEAD ↔ Working Directory (둘 다) |
+| `git diff main..feature` | 두 브랜치 끝 사이 |
+| `git diff --word-diff` | 줄 대신 단어 단위로 (문서 수정에 편하다) |
+| `git diff --name-only` / `--stat` | 바뀐 파일 이름만 / 파일별 변경량 |
 
 ### 이력 보기: `git log`
 
@@ -110,9 +158,33 @@ $ git log --oneline             # 한 줄 요약
 $ git log --oneline --all --graph   # 모든 브랜치를 그래프로
 ```
 
+이력을 조건으로 걸러 찾는 방법(작성자·기간·메시지·코드 검색, blame, bisect)은 [[git-history-search|Git 이력 검색]]에 있다.
+
 #### 커밋 해시
 
 로그의 각 커밋 앞에 붙는 40자리 16진수가 **커밋 해시(SHA-1)** 이다. 전 세계 어디서 만든 커밋이든 충돌 없이 구분할 만큼 큰 값이라서, 평소에는 `git log --oneline`에 보이는 앞 7자리 정도만 써도 충분하다. Git은 SHA-256 저장소도 지원하며, Git 3.0부터는 새 저장소의 기본 해시를 SHA-256(64자리)으로 바꿀 예정이다([Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)).
+
+### 파일 옮기기와 추적 그만하기
+
+```bash
+$ git mv old.txt new.txt          # 이름 바꾸기 = 옮기고 옛 경로 삭제를 한 번에 스테이징
+$ git rm a.txt                    # 파일을 지우고 삭제를 스테이징
+$ git rm --cached secret.env      # 파일은 남기고 Git 추적만 끊는다
+```
+
+Git은 파일만 추적하고 **빈 폴더는 추적하지 않는다.** 빈 폴더를 저장소에 남기려면 안에 `.gitkeep` 같은 빈 파일을 하나 둔다(이름은 관례일 뿐 Git이 특별히 다루지 않는다).
+
+`.gitignore`는 **아직 추적하지 않는 파일**에만 적용된다. 이미 커밋한 파일을 나중에 `.gitignore`에 넣어도 계속 추적된다. 이때는 추적을 끊고 다시 커밋한다.
+
+```bash
+$ git rm -r --cached .            # 인덱스를 비우고 (파일은 그대로)
+$ git add .                       # .gitignore를 반영해 다시 담는다
+$ git commit -m "Stop tracking ignored files"
+```
+
+이력에 남은 내용은 그대로이므로, 비밀 값이었다면 [[git-undo-and-rewrite|되돌리기와 이력 다루기]]의 민감 정보 절차를 따른다. 어떤 규칙 때문에 무시되는지는 `git check-ignore -v <파일>`로 본다.
+
+> 추적 중인 파일의 로컬 수정만 숨기려고 `git update-index --assume-unchanged`나 `--skip-worktree`를 쓰는 팁이 돌지만, 공식 문서는 이 용도로 쓰지 말라고 한다(원래 성능 힌트·희소 체크아웃용이라 pull·switch 때 예기치 않게 동작한다). 로컬 설정은 추적하지 않는 별도 파일(`config.local` 등)로 분리한다.
 
 ## 자주 쓰는 셸 명령
 
@@ -132,5 +204,7 @@ $ rm -rf dir        # 폴더와 하위 파일 모두 삭제 (주의)
 - 버전 기록 = `add`로 고르고 `commit`으로 남긴다.
 - `git status`의 세 구역(staged / not staged / untracked)은 Staging Area · Working Directory · 미추적 파일에 대응한다.
 - `.git` 폴더가 곧 저장소다. 지우면 이력이 사라진다.
+- `git diff`는 add 전, `git diff --staged`는 add 후의 변경이다.
+- 코드는 작업 디렉터리·스테이징·로컬 저장소·원격 저장소 네 곳에 있고, 명령은 그 사이를 옮긴다.
 
-관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]], [[git-internals|Git의 내부 구조]]
+관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]], [[git-internals|Git의 내부 구조]], [[git-history-search|Git 이력 검색]], [[stash-worktree-clean|stash, worktree, clean]], [[git-undo-and-rewrite|Git 되돌리기와 이력 다루기]]

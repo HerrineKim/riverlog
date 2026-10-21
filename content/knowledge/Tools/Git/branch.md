@@ -4,8 +4,11 @@ concept: "Branch"
 summary: "원본에 영향을 주지 않고 독립적으로 작업할 수 있도록 커밋 흐름을 나누는 Git의 핵심 기능."
 tags: ["git", "version-control", "branch"]
 source: mixed
-date: "2026-10-20"
+date: "2026-10-21"
+sources: ["https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://git-scm.com/docs/git-tag", "https://git-scm.com/docs/git-branch"]
 ---
+
+> 「브랜치 관리」, 「태그」 부분은 arslanbilal의 「[Git and Git Flow Cheat Sheet](https://github.com/arslanbilal/git-cheat-sheet)」와 mingrammer의 「[Git Tips](https://github.com/mingrammer/git-tips)」를 바탕으로 보강했다.
 
 브랜치(branch)는 나뭇가지처럼 작업 흐름을 여러 갈래로 나누어 **서로 독립적으로 개발**할 수 있게 해 주는 기능이다. Git의 브랜치는 특정 커밋을 가리키는 가벼운 포인터일 뿐이라서, 만들고 이동하는 비용이 거의 없다.
 
@@ -42,6 +45,8 @@ Git 2.23(2019)에서 추가된 명령으로, 예전에 `git checkout`이 하던 
 $ git switch <브랜치>         # 다른 브랜치로 이동
 $ git switch -c <브랜치>      # 새로 만들면서 바로 이동
 $ git switch -               # 직전 브랜치로 돌아가기
+$ git switch -c <브랜치> <시작점>  # 다른 브랜치·커밋·태그에서 따서 만들기
+$ git switch --detach v1.2.0  # 브랜치 없이 특정 커밋·태그로 (detached HEAD)
 ```
 
 | 예전 방식 (`checkout`) | 새 방식 |
@@ -91,6 +96,55 @@ $ git log --oneline --graph --all
 
 ![갈라진 브랜치](/images/til/ETC/Git/md-images/44.png)
 
+## 브랜치 관리
+
+```bash
+$ git branch -m <새 이름>                  # 현재 브랜치 이름 바꾸기 (-m <옛 이름> <새 이름>도 가능)
+$ git branch -vv                           # 각 브랜치의 마지막 커밋과 추적 중인 원격 브랜치, 앞섬·뒤처짐
+$ git branch -u origin/<브랜치>             # 업스트림(추적 원격 브랜치) 지정
+$ git branch --merged main                 # main에 이미 합쳐진 브랜치 → 지워도 된다
+$ git branch --no-merged main              # 아직 안 합쳐진 브랜치 → 진행 중인 작업
+$ git branch --sort=-committerdate         # 최근 커밋 순으로
+$ git push origin --delete <브랜치>         # 원격 브랜치 삭제
+$ git fetch --prune                        # 원격에서 지워진 브랜치의 origin/* 참조 정리
+```
+
+합쳐진 로컬 브랜치를 한 번에 지울 때는 목록을 먼저 눈으로 확인한다.
+
+```bash
+$ git branch --merged main | grep -vE '^[*+]|^ *main$'               # 지울 후보 확인
+$ git branch --merged main | grep -vE '^[*+]|^ *main$' | xargs git branch -d
+```
+
+`-d`는 합쳐지지 않은 브랜치를 거부하므로 안전망이 된다. squash나 rebase로 합친 브랜치는 커밋이 달라져 `--merged`에 잡히지 않으니 직접 `-D`로 지운다.
+
+이력이 전혀 없는 새 브랜치(문서 사이트용 `gh-pages` 같은 것)는 `git switch --orphan <브랜치>`로 만든다.
+
+## 태그: 움직이지 않는 이름표
+
+브랜치는 새 커밋을 따라 움직이는 포인터이고, **태그(tag)는 한 커밋에 고정된 이름표**다. 주로 릴리스 버전(`v1.2.0`)을 표시한다. 버전 번호 규칙은 [[semantic-versioning|유의적 버전(SemVer)]]에 있다.
+
+| 종류 | 만드는 법 | 담는 것 | 쓰임 |
+| --- | --- | --- | --- |
+| 경량(lightweight) 태그 | `git tag v1.2.0` | 커밋 해시만 (브랜치처럼 참조 하나) | 개인용 임시 표시 |
+| 주석(annotated) 태그 | `git tag -a v1.2.0 -m "Release 1.2.0"` | 작성자·날짜·메시지를 담은 태그 객체 | **릴리스에는 이쪽** |
+| 서명 태그 | `git tag -s v1.2.0 -m "..."` | 주석 태그 + GPG/SSH 서명 | 배포물의 출처 검증 |
+
+```bash
+$ git tag                         # 목록 (git tag -l "v1.*" 로 패턴 검색)
+$ git tag -n                      # 메시지와 함께
+$ git tag -a v1.2.0 <커밋>         # 지난 커밋에 나중에 달기
+$ git show v1.2.0                 # 태그 정보와 커밋
+$ git push origin v1.2.0          # 태그는 push에 자동으로 따라가지 않는다
+$ git push --follow-tags          # 올리는 커밋에 달린 주석 태그만 함께
+$ git tag -d v1.2.0               # 로컬 태그 삭제
+$ git push origin --delete v1.2.0 # 원격 태그 삭제
+```
+
+- `git push --tags`는 로컬의 **모든** 태그를 올리므로 실험용 태그까지 새어 나간다. `--follow-tags`(또는 설정 `push.followTags true`)가 안전하다.
+- 이미 공유한 태그는 옮기지 않는다. 다른 사람의 로컬 태그는 자동으로 바뀌지 않아 같은 이름이 서로 다른 커밋을 가리키게 된다. 잘못 단 릴리스는 새 버전 번호로 다시 낸다.
+- 태그를 체크아웃하면 브랜치가 아니므로 detached HEAD가 된다. 그 버전에서 고칠 게 있으면 `git switch -c hotfix/1.2.1 v1.2.0`처럼 브랜치를 딴다.
+
 ## 주의: 추적되지 않는 파일은 브랜치를 따라다닌다
 
 `feature` 브랜치에서 `test.txt`를 만들고 `git add` 하지 않은 채 `git switch master` 하면, `test.txt`가 `master`에도 그대로 남아 있다.
@@ -103,6 +157,7 @@ $ git log --oneline --graph --all
 
 - 브랜치 = 커밋을 가리키는 가벼운 포인터, HEAD = 현재 브랜치를 가리키는 포인터.
 - `git switch -c`로 만들고 이동, 작업 후 병합, 병합한 브랜치는 `-d`로 삭제.
-- 이동 전에는 untracked/modified 파일이 없는지 확인한다.
+- 이동 전에는 untracked/modified 파일이 없는지 확인한다. 작업을 잠시 치울 때는 `stash`, 다른 브랜치를 나란히 열 때는 `worktree`([[stash-worktree-clean|stash, worktree, clean]]).
+- 릴리스는 주석 태그로 표시하고, 태그는 따로 push한다.
 
-관련 노트: [[merge|브랜치 병합]], [[github-collaboration|GitHub 협업 저장소 설정]]
+관련 노트: [[merge|브랜치 병합]], [[github-collaboration|GitHub 협업 저장소 설정]], [[branching-strategies|브랜치 전략]], [[stash-worktree-clean|작업 중인 변경 다루기: stash, worktree, clean]], [[semantic-versioning|유의적 버전(SemVer)]]

@@ -4,11 +4,12 @@ concept: "Git Internals"
 summary: ".git 폴더 안의 objects(blob·tree·commit)와 index가 add·commit 때 어떻게 만들어지는지, 내용 기반 해시(체크섬)로 데이터를 관리하고 변경분이 아닌 스냅숏을 저장하는 원리."
 tags: ["git", "version-control", "computer-science"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/7267f19f53594799a7405d0f316fb589", "https://git-scm.com/book/ko/v2/Git%EC%9D%98-%EB%82%B4%EB%B6%80-Git-%EA%B0%9C%EC%B2%B4"]
+date: "2026-10-21"
+sources: ["https://80000coding.notion.site/7267f19f53594799a7405d0f316fb589", "https://git-scm.com/book/ko/v2/Git%EC%9D%98-%EB%82%B4%EB%B6%80-Git-%EA%B0%9C%EC%B2%B4", "https://github.com/mingrammer/git-tips", "https://jusths.tistory.com/64", "https://johngrib.github.io/wiki/git-tutorial/"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「그림으로 Git의 내부구조 파악하기」를 바탕으로 재구성한 노트다. 바탕 자료는 『팀 개발을 위한 Git, GitHub 시작하기』(한빛미디어)와 Pro Git의 「Git의 내부」 장이다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「그림으로 Git의 내부구조 파악하기」를 바탕으로 재구성한 노트다. 바탕 자료는 『팀 개발을 위한 Git, GitHub 시작하기』(한빛미디어)와 Pro Git의 「Git의 내부」 장이다. 「직접 들여다보기」의 일부 명령은 mingrammer의 「[Git Tips](https://github.com/mingrammer/git-tips)」를 바탕으로 보강했다.
+> 「객체 파일의 위치」, 「직접 객체 만들어 보기」, 「커밋 그래프」는 「[.git - 쩜깃의 이해](https://jusths.tistory.com/64)」와 「[git tutorial](https://johngrib.github.io/wiki/git-tutorial/)」을 바탕으로 보강했다.
 
 ## 왜 내부를 알아야 하나
 
@@ -54,6 +55,22 @@ main ──▶ commit c3 ──▶ tree ──┬─ README.md → blob a1
          commit c2 ──▶ tree ...
 ```
 
+### 객체 파일의 위치
+
+객체는 해시 앞 두 글자를 폴더 이름, 나머지를 파일 이름으로 해서 `.git/objects/ab/cdef…`에 zlib으로 압축해 저장된다. 수많은 객체가 한 폴더에 몰리지 않게 나눈 것이다. 시간이 지나 `git gc`가 돌면 이 낱개 객체들이 `.git/objects/pack/`의 pack 파일로 묶인다.
+
+### 직접 객체 만들어 보기
+
+Git은 결국 **내용을 넣으면 해시를 돌려주는 키-값 저장소**다. 빈 저장소에서 확인할 수 있다.
+
+```bash
+echo "hello" | git hash-object -w --stdin   # 저장하고 해시를 받는다 (-w가 없으면 계산만)
+git cat-file -p <해시>                       # 해시로 내용을 꺼낸다 → hello
+git cat-file -p HEAD                         # 커밋 객체: tree, parent, author, committer, 메시지
+```
+
+서명한 커밋이면 커밋 객체 안에 `gpgsig` 헤더로 서명이 함께 들어 있다.
+
 ## 체크섬: 내용으로 이름 짓기
 
 `78981922613b2afb...` 같은 40자 16진수는 객체 내용의 **SHA-1 해시(체크섬)** 다. Git은 무엇이든 저장하기 전에 해시를 구하고, 그 해시를 키로 모든 데이터를 찾는다.
@@ -62,6 +79,19 @@ main ──▶ commit c3 ──▶ tree ──┬─ README.md → blob a1
 - 내용이 1비트라도 바뀌면 해시가 달라지므로, 저장된 데이터가 손상되거나 몰래 바뀌면 바로 드러난다.
 - 커밋 해시는 부모 해시를 포함해 계산되므로, 과거 커밋 하나를 고치면 그 뒤 모든 커밋의 해시가 바뀐다. rebase가 "커밋을 새로 만든다"고 하는 이유다.
 - Git은 SHA-256 저장소도 지원하며, Git 3.0부터 새 저장소의 기본값을 SHA-256으로 바꿀 예정이다.
+
+## 커밋 그래프와 참조
+
+커밋은 부모만 가리키고 자식은 모른다. 그래서 이력 전체는 **방향 비순환 그래프(DAG)** 가 된다. 일반 커밋은 부모가 하나, merge 커밋은 둘 이상이다.
+
+| 참조 | 파일 | 움직이나 |
+| --- | --- | --- |
+| 브랜치 | `.git/refs/heads/<이름>` | 그 브랜치에서 커밋할 때마다 새 커밋으로 |
+| 태그 | `.git/refs/tags/<이름>` | 움직이지 않는다 |
+| 원격 추적 브랜치 | `.git/refs/remotes/origin/<이름>` | fetch할 때 |
+| HEAD | `.git/HEAD` | 보통 `ref: refs/heads/main`처럼 브랜치를 가리키고, 커밋을 직접 가리키면 detached HEAD |
+
+각 참조가 지나온 위치는 `.git/logs/`의 reflog에 남는다. 이것이 잘못된 reset·rebase 뒤에도 커밋을 되찾을 수 있는 이유다([[git-undo-and-rewrite|되돌리기와 이력 다루기]]).
 
 ## 변경분이 아니라 스냅숏
 
@@ -75,7 +105,15 @@ git cat-file -p <hash>      # 객체 내용 출력
 git cat-file -p HEAD^{tree} # 현재 커밋의 최상위 tree
 git ls-files --stage        # 인덱스에 적힌 경로와 blob 해시
 git hash-object README.md   # 이 파일이 blob이 되면 받을 해시
+git ls-tree -r --name-only HEAD   # 이 커밋의 tree에 든 모든 파일 경로
+git rev-parse HEAD          # 참조(브랜치·태그·HEAD~2 등)를 커밋 해시로 풀기
+git rev-parse --abbrev-ref HEAD   # 현재 브랜치 이름
+git rev-parse --show-toplevel     # 저장소 최상위 폴더 경로 (스크립트에서 유용)
+git count-objects -vH       # 느슨한 객체·pack 개수와 디스크 사용량
+git gc                      # 느슨한 객체를 pack으로 묶고 도달할 수 없는 객체 정리
 ```
+
+`git gc`는 보통 Git이 알아서(`gc --auto`) 돌린다. 직접 `git gc --prune=now`를 돌리면 reflog에도 없는 객체가 즉시 사라져 복구할 길이 없어지므로, 이력을 지운 직후가 아니면 손으로 돌릴 일은 드물다.
 
 ## 정리
 

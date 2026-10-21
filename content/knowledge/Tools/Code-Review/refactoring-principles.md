@@ -5,10 +5,10 @@ summary: "마틴 파울러 『리팩터링』(2판) 1·2장에서 뽑은 원칙.
 tags: ["code-review", "clean-code", "testing", "software-engineering"]
 source: mixed
 date: "2026-10-12"
-sources: ["https://riverkim.kr/240", "https://riverkim.kr/274"]
+sources: ["https://riverkim.kr/240", "https://riverkim.kr/274", "https://helloworld.kurly.com/blog/fix-style-with-command/"]
 ---
 
-> 마틴 파울러의 『리팩터링』(2판) 1~2장을 읽으며 riverkim.kr에 남긴 메모를 다시 정리한 노트다. 책: [[books/ripaektoring|리팩토링]]
+> 마틴 파울러의 『리팩터링』(2판) 1~2장을 읽으며 riverkim.kr에 남긴 메모를 다시 정리한 노트다. 책: [[books/ripaektoring|리팩토링]] 「[새로 입사한 개발자가 프로젝트에 기여하는 방법 한 가지](https://helloworld.kurly.com/blog/fix-style-with-command/)」의 내용을 더해 보강했다.
 
 ## 리팩터링이란
 
@@ -41,6 +41,30 @@ sources: ["https://riverkim.kr/240", "https://riverkim.kr/274"]
 - 함수의 반환값을 담는 변수는 항상 `result`라고 이름 붙인다. 역할이 바로 보인다.
 - JavaScript 같은 동적 타입 언어에서는 매개변수 이름에 타입을 드러낸다. 역할이 뚜렷하지 않은 매개변수는 `aPerformance`처럼 부정관사를 붙인다.
 - 한 번만 쓰는 임시 변수는 밖에 두지 말고 쓰는 자리에 바로 넣는다(**변수 인라인**). 함수 추출이 쉬워진다.
+
+## 컨벤션 위반을 대량으로 고칠 때
+
+스타일 가이드 위반이 코드베이스 전체에 퍼져 있으면 한 번에 다 고치고 싶어진다. 그러나 포매터를 전체에 일괄 적용하면 `git blame` 이력이 덮이고 리뷰할 수 없는 거대한 변경이 생긴다.
+
+| 원칙 | 내용 |
+| --- | --- |
+| **보이스카우트 규칙** | 「캠프장은 처음 왔을 때보다 깨끗하게 해 두고 떠난다.」 작업하다 만난 곳을 조금씩 정리한다 |
+| 규칙은 도구에 담는다 | 팀 규약을 린터·정적 분석 설정 파일(ESLint, Checkstyle 등)에 담아 모두 같은 기준으로 검사한다. 새 프로젝트는 경고 0을 유지한다 |
+| 위험이 낮은 규칙부터 | 동작에 영향이 없는 규칙(공백, import 순서)부터 고치고, 영향이 큰 규칙은 나중에 |
+| 주제별로 작은 PR | 규칙 하나당 PR 하나. 리뷰와 병합이 쉽다 |
+| 규칙의 예외부터 확인 | 원문 가이드를 다시 읽어 예외 조건까지 파악한 뒤 고친다 |
+
+정규식으로 일괄 치환할 때는 순서를 지킨다.
+
+```text
+1. 검색(grep, rg)으로 대상 범위를 먼저 확인
+2. 치환(sed 등) — 백업을 남기거나 Git 작업 트리가 깨끗한 상태에서
+3. diff로 결과 검증
+4. 테스트 실행
+5. 백업 파일을 빼고 커밋
+```
+
+이력을 덮는 일괄 포맷 커밋을 꼭 해야 한다면 그 커밋을 `.git-blame-ignore-revs`에 등록해 `git blame`에서 건너뛰게 한다.
 
 ## 정리
 

@@ -4,13 +4,15 @@ concept: "Git Undo"
 summary: "reflog로 지나온 상태를 찾아 되돌리는 법과 상황별 복구 레시피(마지막 커밋 고치기, 다른 브랜치에 잘못한 커밋 옮기기, 파일 하나 되돌리기, 원격 상태로 초기화), reset·revert로 커밋을 되돌리고, cherry-pick으로 커밋 하나를 옮기며, 진행 중인 merge·rebase를 --abort로 취소하고, 푸시한 민감 정보·작성자를 filter-repo로 정리하는 방법. 공유된 이력이면 revert, 내 로컬 이력이면 reset이 기본이다."
 tags: ["git", "version-control", "cli", "collaboration"]
 source: mixed
-date: "2026-10-14"
-sources: ["https://riverkim.kr/61", "https://riverkim.kr/107", "https://riverkim.kr/305", "https://80000coding.notion.site/bf2a95caa3a84a98a6878270c98268bb", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository", "https://ohshitgit.com/"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/61", "https://riverkim.kr/107", "https://riverkim.kr/305", "https://80000coding.notion.site/bf2a95caa3a84a98a6878270c98268bb", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository", "https://ohshitgit.com/", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md", "https://parksb.github.io/article/28.html"]
 ---
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트다.
 > 「이미 푸시한 이력에서 지워야 할 때」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「깃허브에서 잘못 올린 PR 완전히 삭제하기 (2) - 커밋」, 「GitHub 이메일 교체 시 잔디가 사라지는 현상」을 바탕으로 보강했다.
 > 「상황별 복구 레시피」는 Katie Sylor-Miller의 「[Oh Shit, Git!?!](https://ohshitgit.com/)」([한국어판](https://ohshitgit.com/ko))을 바탕으로 지금의 `switch`·`restore` 명령으로 고쳐 썼다.
+> `reset --keep`, 지운 파일 되살리기, 작성자 고치기, `rebase --onto`, merge 커밋 되돌리기는 arslanbilal의 「[Git and Git Flow Cheat Sheet](https://github.com/arslanbilal/git-cheat-sheet)」와 mingrammer의 「[Git Tips](https://github.com/mingrammer/git-tips)」를 바탕으로 보강했다.
+> `ORIG_HEAD`, 지운 브랜치 되살리기, 커밋에서 파일 하나 빼기, 브랜치 전체를 커밋 하나로 합치기는 「[Git Flight Rules](https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md)」(한국어판)와 「[Git 사용 중 자주 만나는 이슈 정리](https://parksb.github.io/article/28.html)」를 바탕으로 보강했다.
 
 Git을 쓰다 보면 커밋을 되돌리거나, 다른 브랜치의 이력을 내 브랜치로 옮겨야 할 때가 생긴다. 기본 흐름(`add` → `commit` → `push`)은 [[git-basics|Git 기본 명령과 파일 상태]]와 [[remote-github|원격 저장소와 GitHub]]에 있고, 이 노트는 **이미 만든 이력을 고치는 명령**만 모았다.
 
@@ -33,6 +35,7 @@ Git을 쓰다 보면 커밋을 되돌리거나, 다른 브랜치의 이력을 �
 | `--soft` | 되감는다 | 남기고, **staged** 상태 | 커밋 몇 개를 하나로 다시 묶을 때 |
 | `--mixed` (기본값) | 되감는다 | 남기고, **unstaged** 상태 | 커밋을 다시 나눠 담을 때 |
 | `--hard` | 되감는다 | **모두 버린다** | 그 커밋 이후 작업을 완전히 지울 때 |
+| `--keep` | 되감는다 | 커밋 안 한 로컬 수정은 **지키고**, 되감기와 겹치는 파일이 있으면 멈춘다 | `--hard`처럼 되감되 작업 중인 수정은 잃고 싶지 않을 때 |
 
 ```bash
 git reset --soft HEAD~1   # 마지막 커밋만 취소, 변경은 스테이징에 그대로
@@ -47,6 +50,7 @@ force push로 원격 브랜치가 덮어써진 경우에도 **내 로컬에는 �
 
 - **이미 push해서 다른 사람이 받아 간 커밋**은 revert로 되돌린다. reset 후 force push하면 동료의 로컬 이력과 어긋난다.
 - 아직 나만 가진 로컬 커밋이면 reset이 더 간단하다.
+- **merge 커밋**을 되돌릴 때는 어느 부모를 기준으로 남길지 `-m`으로 정한다. `git revert -m 1 <merge 커밋>`은 첫 부모(합쳐 받은 쪽, 보통 `main`) 기준으로 PR 전체를 취소한다. 같은 브랜치를 나중에 다시 합치려면 그 revert 커밋을 먼저 revert해야 한다.
 
 ## cherry-pick: 커밋 하나만 가져오기
 
@@ -112,6 +116,73 @@ git restore --source=a1b2c3d -- path/to/file    # 그 시점 내용으로 되돌
 
 과거에는 `git checkout a1b2c3d -- path/to/file`을 썼다. Git 2.23부터 `checkout`의 두 역할이 브랜치 이동(`switch`)과 파일 복원(`restore`)으로 나뉘었다. 몇 커밋 전의 커밋 하나를 통째로 되돌리는 것은 `git revert <해시>`다.
 
+### 방금 한 merge·rebase·reset을 통째로 취소: ORIG_HEAD
+
+merge, rebase, reset처럼 HEAD를 크게 옮기는 명령은 옮기기 직전 위치를 `ORIG_HEAD`에 적어 둔다. 끝난 직후라면 reflog를 뒤질 필요 없이 바로 돌아간다.
+
+```bash
+git reset --hard ORIG_HEAD
+```
+
+다른 명령을 더 실행하면 `ORIG_HEAD`가 덮어써지므로 그때는 reflog를 쓴다.
+
+### 지운 브랜치 되살리기
+
+브랜치를 지워도 커밋은 한동안 남는다. reflog에서 그 브랜치의 마지막 커밋을 찾아 브랜치를 다시 만든다.
+
+```bash
+git reflog                          # "checkout: moving from deleted-branch" 근처의 해시
+git branch deleted-branch <해시>
+```
+
+### 마지막 커밋에서 파일 하나 빼기
+
+```bash
+git rm --cached path/to/file        # 작업 트리의 파일은 남기고
+git commit --amend --no-edit        # 커밋에서만 뺀다
+```
+
+### 브랜치의 커밋 전체를 하나로
+
+```bash
+git reset --soft main               # main 이후의 변경을 모두 스테이징 상태로 남기고
+git commit -m "Add payment flow"    # 커밋 하나로 다시 만든다
+```
+
+인터랙티브 rebase로 `squash`를 여러 줄 고치는 것보다 빠르다. 아직 push하지 않은 커밋만 다듬으려면 `git rebase -i @{u}`로 범위를 업스트림 이후로 한정한다.
+
+### 지운 파일 되살리기
+
+```bash
+git log --diff-filter=D --oneline -- path/to/file    # 이 파일을 지운 커밋 찾기
+git restore --source=<지운 커밋>^ -- path/to/file      # 그 직전(^) 커밋의 내용으로 복원
+```
+
+### 커밋 작성자 고치기 (최근 커밋)
+
+```bash
+git commit --amend --author="Name <me@example.com>" --no-edit   # 작성자만 바꾸기
+git commit --amend --reset-author --no-edit                     # 지금 user.name·email로 다시 찍기
+```
+
+여러 커밋이면 `git rebase -i`에서 해당 커밋을 `edit`으로 멈추고 위 명령을 반복하거나, 이력 전체라면 아래의 `filter-repo --mailmap`을 쓴다.
+
+### 브랜치의 뿌리를 옮기기: rebase --onto
+
+`feature-b`를 `feature-a` 위에서 땄는데 `feature-a`가 아직 머지되지 않았고, `feature-b`만 `main`으로 옮기고 싶을 때다.
+
+```text
+전:  main ─A                     후:  main ─A─B'─C'   (feature-b)
+           └─X─Y (feature-a)                └─X─Y   (feature-a)
+                └─B─C (feature-b)
+```
+
+```bash
+git rebase --onto main feature-a feature-b   # feature-a 이후의 커밋(B, C)만 main 위로
+```
+
+형식은 `git rebase --onto <새 뿌리> <옛 뿌리> [브랜치]`이고, 옛 뿌리 **이후의** 커밋만 옮긴다.
+
 ### 다 포기하고 원격 상태로 초기화
 
 ```bash
@@ -121,7 +192,7 @@ git reset --hard origin/main   # 로컬 커밋과 변경을 원격과 똑같이
 git clean -d --force           # 추적하지 않는 파일·폴더까지 삭제
 ```
 
-**되돌릴 수 없는 명령이다.** `git clean`은 먼저 `-n`(dry run)으로 무엇이 지워지는지 확인한다. 폴더를 지우고 다시 clone하는 것과 결과가 같지만 설정과 다른 브랜치는 남는다.
+**되돌릴 수 없는 명령이다.** `git clean`은 먼저 `-n`(dry run)으로 무엇이 지워지는지 확인한다(옵션별 범위는 [[stash-worktree-clean|stash, worktree, clean]]). 폴더를 지우고 다시 clone하는 것과 결과가 같지만 설정과 다른 브랜치는 남는다.
 
 ## 이미 푸시한 이력에서 지워야 할 때
 
@@ -166,4 +237,4 @@ filter-repo는 안전장치로 실행 뒤 `origin` 원격을 지우므로 `git r
 - [Git 특정 버전으로 되돌렸다가 돌아오기](https://mintaku.tistory.com/12)
 - [진행중이던 merge 작업 취소하기](https://nochoco-lee.tistory.com/83)
 
-관련 노트: [[merge|Git 브랜치 병합]], [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]], [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]]
+관련 노트: [[merge|Git 브랜치 병합]], [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]], [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[stash-worktree-clean|작업 중인 변경 다루기: stash, worktree, clean]], [[git-history-search|Git 이력 검색]]

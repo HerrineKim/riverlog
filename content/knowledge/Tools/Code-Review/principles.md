@@ -5,12 +5,12 @@ summary: "코드 리뷰를 왜 하는지(품질이 비용을 낮추는 이유, �
 tags: ["code-review", "collaboration", "clean-code", "career"]
 source: notion
 date: "2026-10-11"
-sources: ["https://riverkim.kr/194", "https://riverkim.kr/184", "https://www.youtube.com/watch?v=TAPviNhFuSg", "https://github.com/ryanmcdermott/code-review-tips"]
+sources: ["https://riverkim.kr/194", "https://riverkim.kr/184", "https://www.youtube.com/watch?v=TAPviNhFuSg", "https://github.com/ryanmcdermott/code-review-tips", "https://engineering.linecorp.com/ko/blog/effective-codereview/", "https://wnsgml972.github.io/devops/2020/05/17/CodeReview1/"]
 ---
 
 코드 리뷰는 내가 쓴 코드의 문제를 혼자서는 다 찾을 수 없기 때문에 하는 일이다. 누구의 코드든 다른 사람의 눈을 거치면 사용자에게 닿기 전에 더 많은 버그를 잡을 수 있다. 완벽한 단 하나의 프로세스는 없으니 팀에 맞는 방식을 찾되, **정기적으로** 하는 것이 가장 중요하다.
 
-> 백명석의 「[한번 듣고 평생 써먹는 코드 리뷰 노하우](https://www.youtube.com/watch?v=TAPviNhFuSg)」(OKKY 세미나, 2022.01) 강연을 함께 정리했다. 체크리스트는 Ryan McDermott의 [code-review-tips](https://github.com/ryanmcdermott/code-review-tips)를 바탕으로 재구성했다.
+> 백명석의 「[한번 듣고 평생 써먹는 코드 리뷰 노하우](https://www.youtube.com/watch?v=TAPviNhFuSg)」(OKKY 세미나, 2022.01) 강연을 함께 정리했다. 체크리스트는 Ryan McDermott의 [code-review-tips](https://github.com/ryanmcdermott/code-review-tips)를 바탕으로 재구성했다. 팀 정착 부분은 「[효과적인 코드 리뷰를 위해서](https://engineering.linecorp.com/ko/blog/effective-codereview/)」, 「[개발자 Code Review 가이드](https://wnsgml972.github.io/devops/2020/05/17/CodeReview1/)」를 바탕으로 보강했다.
 
 ## 왜 코드 리뷰를 하나
 
@@ -166,6 +166,10 @@ const isUserMentioned = (user) => mentionedUsers.has(user)
 | PR이냐 페어 프로그래밍이냐 | PR은 처리량이 좋지만 지연이 길고, [[pair-programming\|페어 프로그래밍]]은 지연이 없지만 둘이 묶인다. 내성적이고 비동기에 익숙한 팀은 PR이, 즉각 대화를 선호하는 팀은 페어가 맞다. 글로 설명이 길어지면 만나서 같이 본다 |
 | 의견이 맞서 교착된다 | 텍스트로 계속 다투지 말고 화상이나 대면으로 이야기한다. 그래도 안 되면 **인정**(치명적이지 않으면 넘어간다)하거나 팀장에게 **에스컬레이션**한다. 오늘의 품질보다 계속 함께 일할 관계가 남는다 |
 | 완벽한 설계를 요구하고 싶다 | 완벽이 아니라 지금 할 수 있는 최선을 고른다. 지적한 설계 문제가 실제 문제가 되는지는 측정해 봐야 안다 |
+| 무엇이 반려 사유인지 매번 다툰다 | 실패한 테스트, 스타일 위반, PR 규칙(크기·설명) 위반처럼 **반려 기준을 미리 합의**해 둔다. 필수가 아닌 제안은 `Nit:`을 붙여 작성자가 고르게 한다 |
+| 「나중에 정리할게요」 | 나중은 대개 오지 않는다. 리뷰에서 나온 정리는 머지 전에 끝내는 것을 기본으로 하고, 정말 미룰 때는 이슈로 남긴다 |
+| 리뷰어가 코드를 이해하지 못한다 | 이해하지 못한 코드는 승인하지 않는다. 진전이 없으면 그 영역을 아는 리뷰어를 찾는다 |
+| 리뷰가 품질을 높이는지 모르겠다 | 결함 추이와 함께 배포 빈도, 변경 리드 타임, 변경 실패율, 복구 시간(MTTR)을 본다. 개별 수치보다 **추세**를 보고, 커밋마다 품질 지표를 자동으로 알려 즉시 고치게 한다 |
 | 처음 도입한다 | 리더의 관심과 의지가 필요하다. 바로 효과가 나지 않으니 익숙해질 때까지 꾸준히 투자하고, 좋은 리뷰 사례를 공유하고, 리팩터링·도구 사용을 직접 보여 줘 따라 하고 싶게 만든다 |
 
 리뷰를 해도 버그는 생긴다. 리뷰는 버그가 없음을 증명하지 못하고, 결함을 찾을 확률을 높일 뿐이다. 리뷰에서 자주 언급되는 기법을 익히려면 『리팩터링』, 『레거시 코드 활용 전략』, 『단위 테스트』가 좋다.

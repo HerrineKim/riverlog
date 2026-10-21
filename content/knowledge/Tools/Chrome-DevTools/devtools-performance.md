@@ -5,10 +5,10 @@ summary: "Performance 패널의 실시간 지표 화면과 트레이스 녹화·
 tags: ["devtools", "tools", "performance", "memory", "debugging", "frontend"]
 source: other
 date: "2026-10-15"
-sources: ["https://developer.chrome.com/docs/devtools/performance", "https://developer.chrome.com/docs/devtools/performance/overview", "https://developer.chrome.com/docs/devtools/performance/reference", "https://developer.chrome.com/docs/devtools/performance/annotations", "https://developer.chrome.com/docs/devtools/performance/save-trace", "https://developer.chrome.com/docs/devtools/performance/selector-stats", "https://developer.chrome.com/docs/devtools/performance/nodejs", "https://developer.chrome.com/docs/devtools/performance/timeline-reference", "https://developer.chrome.com/docs/devtools/performance-monitor", "https://developer.chrome.com/docs/devtools/rendering", "https://developer.chrome.com/docs/devtools/rendering/performance", "https://developer.chrome.com/docs/devtools/layers", "https://developer.chrome.com/docs/devtools/coverage", "https://developer.chrome.com/docs/devtools/memory", "https://developer.chrome.com/docs/devtools/memory-problems", "https://developer.chrome.com/docs/devtools/memory-problems/get-started", "https://developer.chrome.com/docs/devtools/memory-problems/heap-snapshots", "https://developer.chrome.com/docs/devtools/memory-problems/allocation-profiler", "https://developer.chrome.com/docs/devtools/memory-inspector", "https://developer.chrome.com/docs/devtools/lighthouse"]
+sources: ["https://developer.chrome.com/docs/devtools/performance", "https://developer.chrome.com/docs/devtools/performance/overview", "https://developer.chrome.com/docs/devtools/performance/reference", "https://developer.chrome.com/docs/devtools/performance/annotations", "https://developer.chrome.com/docs/devtools/performance/save-trace", "https://developer.chrome.com/docs/devtools/performance/selector-stats", "https://developer.chrome.com/docs/devtools/performance/nodejs", "https://developer.chrome.com/docs/devtools/performance/timeline-reference", "https://developer.chrome.com/docs/devtools/performance-monitor", "https://developer.chrome.com/docs/devtools/rendering", "https://developer.chrome.com/docs/devtools/rendering/performance", "https://developer.chrome.com/docs/devtools/layers", "https://developer.chrome.com/docs/devtools/coverage", "https://developer.chrome.com/docs/devtools/memory", "https://developer.chrome.com/docs/devtools/memory-problems", "https://developer.chrome.com/docs/devtools/memory-problems/get-started", "https://developer.chrome.com/docs/devtools/memory-problems/heap-snapshots", "https://developer.chrome.com/docs/devtools/memory-problems/allocation-profiler", "https://developer.chrome.com/docs/devtools/memory-inspector", "https://developer.chrome.com/docs/devtools/lighthouse", "https://engineering.linecorp.com/ko/blog/vue-memory-leak-analysis/"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다. SPA 라우트 전환 누수는 LINE Engineering의 「[Vue 컴포넌트 – 메모리 누수 분석하기](https://engineering.linecorp.com/ko/blog/vue-memory-leak-analysis/)」로 보강했다.
 
 이 노트는 DevTools로 **측정하고 원인을 찾는 절차**를 다룬다. LCP·INP·CLS 같은 지표의 뜻과 기준값, Lighthouse의 개념은 [[web-vitals|웹 성능 지표와 Lighthouse]]에, 레이아웃·페인트·합성의 원리는 [[browser-rendering|브라우저 렌더링 과정]]에 있다.
 
@@ -179,6 +179,30 @@ CPU 사용량, JS 힙 크기, DOM 노드·이벤트 리스너·문서·프레임
 **할당 타임라인**은 녹화 중 약 50ms마다 스냅샷을 찍는다. 파란 막대는 끝까지 살아남은 할당, 회색은 수거된 할당이다. 파란 막대 구간을 드래그하면 그때 할당된 생성자만 남는다. **할당 샘플링** 결과는 기본으로 Heavy (Bottom Up) 뷰라 가장 많이 할당한 함수가 위에 온다. 잦은 GC를 확인한 뒤 어디서 할당하는지 찾을 때 쓴다.
 
 `ArrayBuffer`·`TypedArray`·`DataView`, Wasm의 `WebAssembly.Memory` 바이트를 직접 보려면 소스 패널에서 멈춘 뒤 범위의 버퍼 옆 아이콘으로 **메모리 검사기**를 연다.
+
+### SPA: 라우트 전환 누수
+
+SPA는 페이지를 새로 불러오지 않으므로, 화면을 떠난 컴포넌트가 해제되지 않으면 라우트를 오갈수록 메모리가 쌓인다.
+
+```text
+1. Performance 녹화(메모리 체크) 중 같은 라우트 왕복을 여러 번 반복
+   └─ JS 힙·DOM 노드 그래프가 GC 뒤에도 계단식으로 오르면 누수
+2. 라우트 이동 전후 힙 스냅샷 → 클래스 필터에 컴포넌트 이름(또는 Detached)
+   └─ 정상: 현재 라우트의 요소 + 직전 라우트의 분리된 요소 정도만 남는다
+   └─ 그 밖에 떠난 화면의 컴포넌트 인스턴스가 남아 있으면 누수
+3. 누수 라우트의 최상위 컴포넌트에서 자식 컴포넌트를 하나씩 빼며 다시 측정
+   └─ 해제되지 않는 컴포넌트를 좁혀 간다. 원인이 여러 개일 수 있으니 하나 찾고 멈추지 않는다
+```
+
+| 흔한 원인 | 해제 방법 |
+| --- | --- |
+| 전역 객체(`window`, 이벤트 버스)에 단 리스너 | 컴포넌트 해제 훅(`onUnmounted`, `useEffect` 정리 함수)에서 제거. `AbortController`의 `signal`로 한 번에 떼어도 된다 |
+| `setInterval`·`setTimeout`, 구독(웹소켓, 옵저버) | 해제 훅에서 `clear*`·`unsubscribe`·`disconnect` |
+| 싱글턴·모듈 스코프 캐시가 컴포넌트·DOM 참조를 보관 | 라우트 전환 때 비우거나 `WeakMap`·`WeakRef`로 보관 |
+| 부모·자식 인스턴스를 서로 참조 | 하나가 남으면 연결된 트리 전체가 남는다. 해제 시 참조를 끊는다 |
+| 클로저가 큰 객체·DOM을 붙잡음 | 필요한 값만 캡처한다 |
+
+GC가 무엇을 도달 가능하다고 보는지는 [[garbage-collection|가비지 컬렉션]]에 있다.
 
 ## Lighthouse 실행
 

@@ -5,14 +5,29 @@ summary: "ed에서 vi, Vim, Neovim으로 이어진 모드형 편집기의 계보
 tags: ["tools", "vim", "editor", "cli", "productivity"]
 source: other
 date: "2026-10-20"
-sources: ["https://80000coding.notion.site/216dcb7b968742abbf4028ae8e6b8caa", "https://80000coding.notion.site/014aa6329e3e4e39bf1b8fe1688a9f84", "https://80000coding.notion.site/7cf061c6a49541a4a80a747a3a3fe2d8", "https://80000coding.notion.site/2a61bdb018be4efdaf5709ecc66df1cf", "https://neovim.io/doc/user/pack.html", "https://80000coding.notion.site/dd6588a1d7ef4b3aa0db79d7adc18166", "https://80000coding.notion.site/218c91e14b80407595157742bc83c876", "https://80000coding.notion.site/c4cf772432664fc1aa87c148509cbfec", "https://80000coding.notion.site/494c23d5d9464f13abdaca40f7eb5c2f", "https://80000coding.notion.site/3d0b8132613349cd9387a4ec8ebdb0e2", "https://80000coding.notion.site/6e7153c06a9941b2b318cc591a38d78f", "https://neovim.io/doc/user/lua.html#vim.hl.on_yank()"]
+sources: ["https://80000coding.notion.site/216dcb7b968742abbf4028ae8e6b8caa", "https://80000coding.notion.site/014aa6329e3e4e39bf1b8fe1688a9f84", "https://80000coding.notion.site/7cf061c6a49541a4a80a747a3a3fe2d8", "https://80000coding.notion.site/2a61bdb018be4efdaf5709ecc66df1cf", "https://neovim.io/doc/user/pack.html", "https://80000coding.notion.site/dd6588a1d7ef4b3aa0db79d7adc18166", "https://80000coding.notion.site/218c91e14b80407595157742bc83c876", "https://80000coding.notion.site/c4cf772432664fc1aa87c148509cbfec", "https://80000coding.notion.site/494c23d5d9464f13abdaca40f7eb5c2f", "https://80000coding.notion.site/3d0b8132613349cd9387a4ec8ebdb0e2", "https://80000coding.notion.site/6e7153c06a9941b2b318cc591a38d78f", "https://neovim.io/doc/user/lua.html#vim.hl.on_yank()", "https://johngrib.github.io/wiki/two-views-of-vim/", "https://johngrib.github.io/wiki/vim/auto-completion/", "https://johngrib.github.io/wiki/my-wiki/"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「ed에서 vi/vim을 거쳐 neovim까지」, 「생산성 향상을 위한 Vim 커스터마이징」, 「man 페이지를 vim으로 열어보자!」, 「[Vimium] 웹브라우저를 Vim 처럼.」을 바탕으로 재구성한 노트다. 「편집 기술」은 같은 위키의 「vim 잡기술 - listchars」, 「vim 잡기술 - fold」, 「vim에서 연속된 숫자 입력하기」, 「vim 잡기술 - 조건부 키맵핑?!」, 「neovim 간단 꿀팁 - 복사한부분 하이라이팅」, 「Vim에서 마우스 드래그로 텍스트 복붙하기」를 바탕으로 보강했다.
+> 「Vim의 문법」, 「자동 완성」, 「Vim으로 개인 위키 쓰기」는 johngrib 위키의 「[Vim, 두 가지 관점](https://johngrib.github.io/wiki/two-views-of-vim/)」, 「[Vim 자동완성 기능 사용하기](https://johngrib.github.io/wiki/vim/auto-completion/)」, 「[Vimwiki + Jekyll + Github.io로 나만의 위키를 만들자](https://johngrib.github.io/wiki/my-wiki/)」를 바탕으로, 완성 명령은 Vim 도움말(`:help ins-completion`)로 확인해 보강했다.
 
 ## Vim이란
 
 Vim은 **모드(mode)를 나눠 키 입력의 의미를 바꾸는 터미널 텍스트 편집기**다. 입력 모드에서는 글자를 쓰고, 노멀 모드에서는 같은 키가 이동·삭제·복사 명령이 된다. 마우스 없이 손을 홈 row에 둔 채 편집할 수 있고, 거의 모든 유닉스 계열 서버에 `vi`가 깔려 있어 SSH로 접속한 환경에서도 바로 쓸 수 있다. Git 커밋 메시지의 기본 편집기도 대개 Vim이다.
+
+### Vim의 문법: 동사 + 대상
+
+노멀 모드 명령은 외울 단축키 목록이 아니라 **조합하는 언어**다. 기본 형태는 `[횟수] 동사 [대상]`이다.
+
+| 요소 | 예 |
+| --- | --- |
+| 동사(operator) | `d` 삭제, `c` 바꾸기, `y` 복사, `>` 들여쓰기, `gU` 대문자로 |
+| 대상(motion) | `w` 다음 단어, `$` 줄 끝, `fa` 다음 `a`까지, `}` 문단 끝 |
+| 텍스트 객체 | `iw` 단어 안, `i"` 따옴표 안, `ap` 문단 전체, `it` 태그 안 |
+
+`dw`(단어 삭제), `3dw`(세 단어 삭제), `d3fa`(세 번째 `a`까지 삭제), `ciw`(단어를 바꿔 쓰기)처럼 동사 몇 개와 대상 몇 개만 알아도 조합이 곱으로 늘어난다. 수식 키를 겹쳐 누르는 IDE 단축키와 달리 규칙이 일정해 외울 것이 적다. 명령 하나는 텍스트를 바꾸는 함수이므로, `.`으로 마지막 변경을 반복하고, 매크로(`qa`…`q`, `@a`)로 새 동사를 만들고, `:g/패턴/normal @a`로 맞는 줄마다 적용할 수 있다.
+
+Vim은 편집기이면서 **플랫폼**이기도 하다. 세션으로 작업별 창 배치를 저장하고, `:%!column -t`처럼 버퍼를 외부 명령으로 걸러 표 정리·계산을 맡기고, Vimscript·Lua로 자기 작업 흐름(블로그, 할 일 관리, 위키)을 만든다.
 
 ## 계보: ed → vi → Vim → Neovim
 
@@ -158,6 +173,32 @@ Vim의 복사는 기본적으로 Vim 내부 레지스터에만 들어가서 다�
 | `set mouse=a` | 마우스 선택을 Vim이 받아 비주얼 모드로 다룸 |
 
 Vim은 `+clipboard` 기능을 넣고 빌드한 버전에서만 된다(`vim --version | grep clipboard`로 확인). Neovim은 macOS에서는 바로, Linux에서는 `xclip`·`wl-clipboard` 같은 도구가 있으면 된다.
+
+### 7. 플러그인 없이 자동 완성
+
+입력 모드에서 플러그인 없이 쓸 수 있는 완성이 있다.
+
+| 키 | 완성 대상 |
+| --- | --- |
+| `Ctrl-n` / `Ctrl-p` | `complete` 옵션에 정한 출처의 단어(다음·이전 후보) |
+| `Ctrl-x Ctrl-l` | 줄 전체 |
+| `Ctrl-x Ctrl-f` | 파일 이름·경로 (`~/` 뒤에서 누르면 홈 디렉터리 항목) |
+| `Ctrl-x Ctrl-k` | `dictionary` 옵션의 사전 파일 단어 |
+| `Ctrl-x Ctrl-]` | 태그 파일(ctags)의 식별자 |
+| `Ctrl-x Ctrl-o` | 옴니 완성. 파일 형식별 함수나 LSP가 문맥에 맞는 후보를 준다 |
+| `Ctrl-x s` | 맞춤법 교정 후보 |
+
+`complete` 옵션은 단어를 어디서 찾을지 정한다. 기본값 `.,w,b,u,t,i`는 현재 버퍼, 다른 창, 열린 버퍼, 닫힌 버퍼, 태그, include 파일 순이다. 메뉴 동작은 `completeopt`(예: `menuone,noselect`)로 정한다. Neovim은 LSP 클라이언트를 내장해 언어 서버 기반 완성을 쓸 수 있다.
+
+자주 틀리는 말이나 긴 문구는 완성 대신 약어(`:iabbrev teh the`)로 바로 펼친다.
+
+### 8. Vim으로 개인 위키 쓰기
+
+Vimwiki 플러그인은 단어 위에서 Enter를 누르면 그 이름의 문서와 링크를 함께 만든다. 문서를 마크다운으로 쓰고 git 저장소에 두면 기기 간 동기화와 변경 이력이 따라오고, 정적 사이트 생성기(Jekyll 등)와 GitHub Pages로 그대로 공개 사이트가 된다.
+
+- 문서 머리의 front matter에 수정일·상위 문서·태그를 두고, 저장 시 수정일 갱신, 커밋 전 훅(pre-commit)으로 메타데이터·목록 생성을 자동화한다.
+- 링크 문법은 편집기와 사이트 양쪽이 인식하는 형식으로 통일한다. 형식이 섞이면 이름 바꾸기 같은 기능이 깨진다.
+- 외부에 올린 이미지는 서비스 정책이 바뀌면 사라지므로 커밋할 때 저장소로 내려받아 둔다.
 
 ## 편집기 밖에서 Vim 쓰기
 

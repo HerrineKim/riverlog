@@ -4,9 +4,11 @@ concept: "Merge"
 summary: "갈라진 브랜치를 하나로 합치는 방법으로, Fast-Forward·3-Way Merge·Merge Conflict 세 가지 상황이 있다."
 tags: ["git", "version-control", "branch", "merge"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://wizardzines.com/comics/merge-commits/"]
+date: "2026-10-21"
+sources: ["https://wizardzines.com/comics/merge-commits/", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips"]
 ---
+
+> 「충돌을 다루는 도구」는 arslanbilal의 「[Git and Git Flow Cheat Sheet](https://github.com/arslanbilal/git-cheat-sheet)」와 mingrammer의 「[Git Tips](https://github.com/mingrammer/git-tips)」를 바탕으로 보강했다.
 
 브랜치에서 작업을 마치면 그 결과를 기본 브랜치에 반영해야 한다. 이를 **병합(merge)** 이라고 하며, 두 브랜치의 이력이 어떻게 갈라져 있는지에 따라 Git의 동작이 달라진다.
 
@@ -133,6 +135,19 @@ $ git log --oneline --all --graph
 
 병합을 포기하려면 `git merge --abort`를 쓴다([[git-undo-and-rewrite|Git 되돌리기와 이력 다루기]] 참고).
 
+### 충돌을 다루는 도구
+
+| 하고 싶은 일 | 명령 |
+| --- | --- |
+| 충돌 중인 파일만 나열 | `git diff --name-only --diff-filter=U` |
+| 한쪽 버전을 통째로 고르기 | `git restore --ours <파일>` / `git restore --theirs <파일>` 후 `git add` (예전 형식은 `git checkout --ours`) |
+| 그래픽 병합 도구로 풀기 | `git config --global merge.tool <도구>` 후 `git mergetool` (VS Code, meld, vimdiff 등) |
+| 해결한 파일이 삭제된 쪽이 맞을 때 | `git rm <파일>` |
+| 같은 충돌을 다시 풀지 않기 | `git config --global rerere.enabled true` ([[git-config-options\|자주 쓰는 Git 설정 옵션]]) |
+| 갈라지기 전 원본까지 보며 풀기 | `git config --global merge.conflictstyle zdiff3` |
+
+rebase 중의 충돌에서는 `--ours`와 `--theirs`의 뜻이 **반대**가 된다. rebase는 기준 브랜치 위에 내 커밋을 하나씩 다시 얹는 일이라, 그 순간 `ours`는 기준 브랜치 쪽이고 `theirs`는 내 커밋 쪽이다.
+
 ## Merge Commit의 함정
 
 > Julia Evans의 만화 「[merge commits](https://wizardzines.com/comics/merge-commits/)」(wizard zines)를 요약·재구성한 부분이다.
@@ -175,4 +190,4 @@ $ git show --remerge-diff <커밋 ID>
 
 > 참고: 병합 대신 `git rebase`로 이력을 일직선으로 만드는 방법은 [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]]에 정리했다.
 
-관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]], [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]]
+관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]], [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]], [[branching-strategies|브랜치 전략]]

@@ -5,10 +5,10 @@ summary: "Chrome DevTools Sources 패널로 JavaScript를 디버깅하는 법. �
 tags: ["devtools", "debugging", "frontend", "javascript", "browser", "tools"]
 source: other
 date: "2026-10-17"
-sources: ["https://developer.chrome.com/docs/devtools/javascript?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/breakpoints?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/reference?hl=ko", "https://developer.chrome.com/docs/devtools/sources?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/snippets?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/source-maps?hl=ko", "https://developer.chrome.com/docs/devtools/settings/ignore-list?hl=ko", "https://developer.chrome.com/docs/devtools/x-google-ignore-list?hl=ko", "https://developer.chrome.com/docs/devtools/workspaces?hl=ko", "https://developer.chrome.com/docs/devtools/settings/workspace?hl=ko", "https://developer.chrome.com/docs/devtools/overrides?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/disable?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/background-services?hl=ko", "https://developer.chrome.com/docs/devtools/wasm?hl=ko", "https://developer.chrome.com/docs/devtools/recorder/overview?hl=ko", "https://developer.chrome.com/docs/devtools/recorder/reference?hl=ko", "https://yozm.wishket.com/magazine/detail/1585/", "https://ko.javascript.info/debugging-chrome", "https://ko.javascript.info/devtools"]
+sources: ["https://developer.chrome.com/docs/devtools/javascript?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/breakpoints?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/reference?hl=ko", "https://developer.chrome.com/docs/devtools/sources?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/snippets?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/source-maps?hl=ko", "https://developer.chrome.com/docs/devtools/settings/ignore-list?hl=ko", "https://developer.chrome.com/docs/devtools/x-google-ignore-list?hl=ko", "https://developer.chrome.com/docs/devtools/workspaces?hl=ko", "https://developer.chrome.com/docs/devtools/settings/workspace?hl=ko", "https://developer.chrome.com/docs/devtools/overrides?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/disable?hl=ko", "https://developer.chrome.com/docs/devtools/javascript/background-services?hl=ko", "https://developer.chrome.com/docs/devtools/wasm?hl=ko", "https://developer.chrome.com/docs/devtools/recorder/overview?hl=ko", "https://developer.chrome.com/docs/devtools/recorder/reference?hl=ko", "https://yozm.wishket.com/magazine/detail/1585/", "https://ko.javascript.info/debugging-chrome", "https://ko.javascript.info/devtools", "https://subicura.com/2018/02/14/javascript-debugging.html"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「개발자 콘솔」, 「Chrome으로 디버깅하기」 글을 더해 재구성한 노트다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「개발자 콘솔」, 「Chrome으로 디버깅하기」 글과 「[크롬 개발자 도구를 이용한 자바스크립트 디버깅](https://subicura.com/2018/02/14/javascript-debugging.html)」을 더해 재구성한 노트다.
 
 ## 왜 console.log 대신 중단점인가
 
@@ -28,6 +28,7 @@ DevTools는 `F12`(macOS `Cmd+Opt+I`, 콘솔로 바로 열기는 `Cmd+Opt+J`)로 
 | --- | --- | --- |
 | 멈출 줄을 정확히 안다 | 코드 줄 | 줄 번호 클릭 (파란 표시) |
 | 코드에서 바로 멈추고 싶다 | `debugger;` 문 | 소스 코드 |
+| 한 줄에 이어진 호출 중 하나 | 인라인(열) | 줄 중단점을 건 뒤 그 줄에 뜨는 화살표 표시 중 원하는 위치를 클릭. `a().then(b).then(c)`나 압축된 한 줄 코드에서 |
 | 루프에서 특정 경우만 | 조건부 | 줄 번호 우클릭 → 조건부 중단점 추가 (주황 `?`) |
 | 멈추지 않고 값만 남기기 | 로그포인트 | 줄 번호 우클릭 → Logpoint 추가 (분홍 `..`). `"합계 " + sum, obj`처럼 `console.log` 인수 문법 |
 | 누가 이 요소를 바꾸나 | DOM 변경 | Elements에서 요소 우클릭 → 중단 → 하위 트리 수정·속성 수정·노드 삭제 |
@@ -59,6 +60,7 @@ DevTools는 `F12`(macOS `Cmd+Opt+I`, 콘솔로 바로 열기는 `Cmd+Opt+J`)로 
 | Scope | Local·Closure·Global 변수. **값을 더블클릭해 바꿀 수 있다** |
 | Watch | `typeof sum` 같은 임의의 식을 등록. 단계마다 갱신된다 |
 | Console | 멈춘 스코프에서 식을 평가한다. `parseInt(a) + parseInt(b)`처럼 수정안을 먼저 시험한다 |
+| 전역 변수로 저장 | Scope·콘솔의 값을 우클릭 → 「Store as global variable」. `temp1` 같은 이름으로 남아 재개한 뒤에도 콘솔에서 계속 만진다 |
 | Call Stack | 여기까지 온 호출 경로. 항목을 누르면 그 호출 위치로 간다. 우클릭으로 **프레임 다시 시작**, 「Copy stack trace」 |
 | Threads | 웹 워커·서비스 워커 컨텍스트로 전환 |
 
