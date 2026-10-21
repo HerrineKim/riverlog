@@ -19,6 +19,7 @@ date: "2026-10-14"
 - [파이프라인과 병렬 처리](Computer-Science/Computer-Architecture/pipeline-and-parallelism.md) — 병렬 처리 분류, 파이프라인과 해저드, 벡터 처리
 - [현대 CPU의 마이크로아키텍처](Computer-Science/Computer-Architecture/cpu-microarchitecture.md) — μop과 비순차·슈퍼스칼라 실행, 실행 포트, 분기 예측과 분기 없는 코드, SMT
 - [컴퓨터 산술 연산](Computer-Science/Computer-Architecture/computer-arithmetic.md) — 데이터 형식별 덧셈·뺄셈, 곱셈·나눗셈 알고리즘, 부동 소수점과 BCD 연산
+- [부동소수점 오차: 반올림·비교·누적](Computer-Science/Computer-Architecture/floating-point-arithmetic.md) — 0.1 + 0.2의 이유, 반올림 모드, ulp와 상대 오차 비교, 흡수·상쇄와 Kahan 합산, decimal 타입
 - [입출력 구조](Computer-Science/Computer-Architecture/io-organization.md) — 입출력 인터페이스, 인터럽트 우선순위, DMA, 직렬 통신
 - [메모리 계층 구조](Computer-Science/Computer-Architecture/memory-hierarchy.md) — 메모리 계층, 주기억·보조기억 장치, RAID
 - [캐시 메모리와 MMU](Computer-Science/Computer-Architecture/cache-and-virtual-memory.md) — 캐시 매핑과 쓰기 정책, 하드웨어 관점의 MMU(재배치·공유·보호)와 보호 필드

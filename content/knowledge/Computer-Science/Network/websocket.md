@@ -5,10 +5,10 @@ summary: "한 번 맺은 연결로 서버와 브라우저가 양방향 실시간
 tags: ["network", "websocket", "realtime", "frontend", "http"]
 source: mixed
 date: "2026-10-12"
-sources: ["https://bytebytego.com/guides/shortlong-polling-sse-websocket"]
+sources: ["https://bytebytego.com/guides/shortlong-polling-sse-websocket", "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers"]
 ---
 
-> 여러 자료를 종합한 노트에, 실시간 통신 방식 비교를 ByteByteGo의 System Design 101 가이드 「[Short/long polling, SSE, WebSocket](https://bytebytego.com/guides/shortlong-polling-sse-websocket)」으로 보강했다.
+> 여러 자료를 종합한 노트에, 실시간 통신 방식 비교를 ByteByteGo의 System Design 101 가이드 「[Short/long polling, SSE, WebSocket](https://bytebytego.com/guides/shortlong-polling-sse-websocket)」으로 보강했다. 핸드셰이크 검증과 프레임 구조는 MDN의 「[Writing WebSocket servers](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers)」를 바탕으로 보강했다.
 
 ## WebSocket이란
 
@@ -34,6 +34,21 @@ Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=
 ```
 
 HTTP와 같은 80·443 포트를 쓰므로 방화벽을 통과하기 쉽다. 연결 후에는 HTTP 헤더가 붙지 않아 메시지당 오버헤드가 작다.
+
+서버는 `Sec-WebSocket-Key` 값에 고정 GUID `258EAFA5-E914-47DA-95CA-C5AB0DC85B11`을 이어 붙여 SHA-1 해시를 구하고 Base64로 인코딩한 값을 `Sec-WebSocket-Accept`로 돌려준다. 보안 장치가 아니라 **상대가 정말 WebSocket을 이해하는 서버인지**(캐시된 HTTP 응답이 아닌지) 확인하는 절차다. 서버는 `Origin` 헤더를 검사해 허용한 사이트에서 온 연결만 받는다. WebSocket에는 CORS가 적용되지 않으므로 이 검사를 빠뜨리면 다른 사이트가 사용자의 쿠키로 연결을 맺는다(Cross-Site WebSocket Hijacking).
+
+### 프레임
+
+연결 뒤 데이터는 프레임 단위로 오간다.
+
+| 필드 | 뜻 |
+| --- | --- |
+| FIN | 메시지의 마지막 프레임인가. 큰 메시지는 여러 프레임으로 쪼개 보낸다 |
+| opcode | `0x1` 텍스트(UTF-8), `0x2` 바이너리, `0x0` 이어지는 조각, `0x8` 종료, `0x9` ping, `0xA` pong |
+| MASK + 마스킹 키 | **클라이언트 → 서버 프레임은 반드시 4바이트 키로 XOR 마스킹한다.** 서버는 마스킹되지 않은 클라이언트 프레임이 오면 연결을 끊는다. 중간 프록시가 프레임을 HTTP로 오해해 캐시를 오염시키는 공격을 막기 위한 장치다 |
+| 페이로드 길이 | 7비트. 126이면 다음 16비트, 127이면 다음 64비트가 실제 길이다 |
+
+ping을 받으면 같은 데이터로 pong을 돌려줘야 한다. 종료는 양쪽이 close 프레임(상태 코드 `1000` 정상, `1001` 떠남 등)을 주고받은 뒤 TCP를 닫는다. 직접 구현할 일은 드물고 Node.js의 `ws`, 각 언어의 검증된 라이브러리를 쓴다. Node.js 22부터는 클라이언트용 `WebSocket`이 전역으로 들어 있다.
 
 ## 브라우저 API
 

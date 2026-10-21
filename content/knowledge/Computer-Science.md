@@ -20,6 +20,7 @@ date: "2026-10-13"
 - [개발자가 빠지는 함정 모음](Computer-Science/developer-traps.md) — CSS·유니코드·부동소수점·시간·SQL·동시성·Git 등에서 직관과 다르게 동작하는 지점
 - [달력과 시간에 대한 개발자의 착각](Computer-Science/calendar-fallacies.md) — 하루·주·달·해·시간대·서머타임에 대한 흔한 가정과 그것을 깨는 실제 사례
 - [소프트웨어 비대화](Computer-Science/software-bloat.md) — 하드웨어가 빨라져도 체감 속도가 그대로인 이유, 의존성·계층·임시방편이 쌓이는 원인과 효율을 기본값으로 두는 태도
+- [소프트웨어 복잡성: 본질적 복잡성과 우발적 복잡성](Computer-Science/software-complexity.md) — 상태·제어 흐름·코드 양이라는 원인, 단순함과 쉬움의 차이, 피하고 분리하라는 처방
 - [베지어 곡선](Computer-Science/bezier-curve.md) — 선형 보간을 겹친 드 카스텔조 알고리즘, 2·3차 곡선 식과 행렬 표현, 펜 툴·SVG·CSS의 곡선
 - [변환 행렬: 이동·크기·회전과 동차 좌표](Computer-Science/transformation-matrix.md) — 그래픽스의 2D·3D 변환 행렬, 기준점·임의 축 변환의 합성, 곱하는 순서와 투영
 - [양자역학 기초: 이중 슬릿, 중첩, 얽힘](Computer-Science/quantum-mechanics-basics.md) — 파동-입자 이중성, 양자 중첩과 얽힘, 양자역학에 대한 흔한 오해

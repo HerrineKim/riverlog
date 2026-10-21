@@ -1,16 +1,17 @@
 ---
 title: "네트워크 계층 프로토콜"
 concept: "IP"
-summary: "IPv4 헤더와 단편화(MTU), 주소 체계, 서브넷 계산과 라우팅 테이블(최장 프리픽스 일치), ARP 동작 과정·RARP, ICMP와 ping·traceroute, IGMP, IPv6, NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 프로토콜과 회선·패킷 교환 방식 정리."
+summary: "IPv4 헤더와 단편화(MTU), 주소 체계(클래스와 CIDR), 서브넷 계산과 라우팅 테이블(최장 프리픽스 일치), ARP 동작 과정·RARP, DHCP 주소 할당(DORA·임대), ICMP와 ping·traceroute, IGMP, IPv6, NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 프로토콜과 회선·패킷 교환 방식 정리."
 tags: ["network", "ip", "routing", "certificate"]
 source: notion
-sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://bytebytego.com/guides/ipv4-vs-ipv6", "https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible", "https://dataportal.kr/14", "https://no1.technology/13", "https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/"]
+sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://bytebytego.com/guides/ipv4-vs-ipv6", "https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible", "https://dataportal.kr/14", "https://no1.technology/13", "https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md"]
 date: "2026-10-21"
 ---
 
 > 고무오리 CS 스터디의 네트워크 학습 노트(IP 주소, ARP, IPv4·ICMP, NAT와 포트 포워딩)를 바탕으로 재구성한 노트다. 서브넷 계산·라우팅 테이블·NAT 분류 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「netpractice를 위한 네트워크 통신 기초 - 1. LAN 통신」, 「- 2. WAN 통신」, 「포트 포워딩, NAT, IP Masquerade 뭐가 다른거지?」, 「Network에 대한 정리(3)」을 바탕으로 보강했다.
 > IPv4와 IPv6의 헤더 비교와 전환 기술은 ByteByteGo의 System Design 101 가이드 「[IPv4 vs. IPv6: Differences](https://bytebytego.com/guides/ipv4-vs-ipv6)」, NAT의 동작 흐름은 「[How NAT Enabled the Internet](https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible)」을 바탕으로 보강했다.
 > BGP 하이재킹과 SDN 부분은 「[Facebook을 다운 시킨 원인, BGP hijacking이 무엇인가?](https://dataportal.kr/14)」, 「[소프트웨어 정의 네트워킹(SDN)](https://no1.technology/13)」을 바탕으로, 2021년 Facebook 장애 경위는 Meta 엔지니어링 블로그의 「[More details about the October 4 outage](https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/)」로 확인해 보강했다.
+> IP 주소 클래스·서브네팅과 DHCP는 「[Frontend_TIL: 네트워크 계층의 역활과 IP의 구조](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md)」, 「[라우터와 서브넷](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md)」, 「[ICMP, DHCP](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md)」을 바탕으로 보강했다.
 
 네트워크 계층(3계층)은 여러 네트워크를 거쳐 패킷을 목적지 호스트까지 보내는 일을 한다. 핵심인 IP는 "최선을 다해 전달하지만 보장은 하지 않는" 프로토콜이고, 주변 프로토콜들이 주소 변환·오류 보고·경로 선택을 돕는다.
 
@@ -65,8 +66,18 @@ PC의 네트워크 설정에는 보통 세 값이 들어간다.
 | 서브넷 마스크 | IP 주소에서 어디까지가 **네트워크 대역**이고 어디부터가 **호스트**인지 규정 |
 | 기본 게이트웨이 | 외부 네트워크와 통신할 때 거쳐 가는 출입구(라우터) 주소 |
 
-- **Classful 주소**: A·B·C 클래스처럼 정해진 크기로 네트워크를 나눠 쓰는 방식. 대역이 경직되어 IP 주소가 낭비·부족해지는 문제가 있었다.
-- **Classless 주소**: 서브넷 마스크로 네트워크 부분과 호스트 부분을 자유롭게 나눈다(CIDR).
+- **Classful 주소**: A·B·C 클래스처럼 정해진 크기로 네트워크를 나눠 쓰는 방식. 대역이 경직되어 IP 주소가 낭비·부족해지는 문제가 있었다. 첫 옥텟의 앞 비트로 클래스를 정했다.
+
+  | 클래스 | 첫 비트 | 범위 | 기본 마스크 | 네트워크당 호스트 |
+  | --- | --- | --- | --- | --- |
+  | A | `0` | `0.0.0.0` ~ `127.255.255.255` | `/8` | 2²⁴ − 2 (약 1,677만) |
+  | B | `10` | `128.0.0.0` ~ `191.255.255.255` | `/16` | 2¹⁶ − 2 (65,534) |
+  | C | `110` | `192.0.0.0` ~ `223.255.255.255` | `/24` | 2⁸ − 2 (254) |
+  | D | `1110` | `224.0.0.0` ~ `239.255.255.255` | — | 멀티캐스트 |
+  | E | `1111` | `240.0.0.0` ~ `255.255.255.255` | — | 예약(연구용) |
+
+  C 클래스 하나(254개)는 회사에 모자라고 B 클래스 하나(65,534개)는 너무 커서 낭비가 심했다. 1993년 CIDR 도입 뒤로 클래스는 주소를 읽는 관용 표현으로만 남았다.
+- **Classless 주소**: 서브넷 마스크로 네트워크 부분과 호스트 부분을 자유롭게 나눈다(CIDR). 받은 대역을 팀별 크기에 맞게 더 잘게 나누는 것이 **서브네팅**이다. 예를 들어 `/24` 하나를 `/25` 두 개(각 126대)로 쪼갤 수 있다. 쪼갤수록 서브넷마다 네트워크·브로드캐스트 주소 2개와 게이트웨이 주소 1개를 빼야 하므로, 호스트 3대짜리 망이라도 주소는 최소 6개(`/29`) 필요하다.
 - **공인 IP와 사설 IP**: 인터넷에서는 공인 IP로만 통신하고, 외부에서는 내부의 사설 IP 대역이 보이지 않는다. 공인 IP 하나 뒤에 여러 사설 IP 기기를 둘 수 있게 해 주는 것이 아래의 NAT다.
 
 ### 서브넷 계산
@@ -153,10 +164,32 @@ ip neigh            # Linux의 현행 명령 (IPv6 이웃 탐색 결과도 함�
 
 ARP는 요청하지 않은 응답도 받아들이기 때문에, 위조된 응답으로 캐시를 오염시키는 **ARP 스푸핑(ARP Cache Poisoning)** 공격에 취약하다. 스푸핑·스니핑 같은 공격 기법은 [[security|정보 시스템 보안]]에 정리했다.
 
+## 주소 할당: DHCP
+
+IP 주소를 주는 방법은 관리자가 직접 넣는 **정적 할당**과 서버가 자동으로 나눠 주는 **동적 할당**이 있다. 서버·라우터처럼 주소가 바뀌면 안 되는 장비는 정적으로, 수가 많고 주소가 바뀌어도 되는 PC·휴대폰은 DHCP(Dynamic Host Configuration Protocol)로 받는다. DHCP는 IP 주소와 함께 서브넷 마스크, 기본 게이트웨이, DNS 서버 주소까지 한 번에 내려준다. 가정용 공유기에는 DHCP 서버가 들어 있다.
+
+주소는 영구히 주지 않고 **임대(lease)** 기간을 붙여 빌려준다. 할당은 네 단계(DORA)다. UDP 위에서 클라이언트는 68번, 서버는 67번 포트를 쓴다.
+
+```text
+클라이언트 (아직 IP 없음)                 DHCP 서버
+  DHCPDISCOVER  ── 브로드캐스트 ──▶         "DHCP 서버 있나요?"
+               ◀── DHCPOFFER ──            "192.168.0.23 어때요?"
+  DHCPREQUEST   ── 브로드캐스트 ──▶         "그 주소 쓸게요" (다른 서버의 제안은 거절된다)
+               ◀── DHCPACK ────            "확정. 임대 기간은 N시간"
+```
+
+| 단계 | 동작 |
+| --- | --- |
+| 갱신 | 임대 기간의 절반(T1)이 지나면 같은 서버에 DHCPREQUEST를 유니캐스트로 보내 연장한다. 87.5%(T2)까지 답이 없으면 아무 서버에나 브로드캐스트로 요청한다 |
+| 해제 | 더 쓰지 않을 때 DHCPRELEASE로 주소를 돌려준다. 보내지 않고 꺼져도 임대가 끝나면 회수된다 |
+| 실패 | 서버를 못 찾으면 OS가 `169.254.0.0/16` 링크 로컬 주소를 스스로 붙인다. 이 주소가 보이면 DHCP 문제다 |
+
+DISCOVER는 브로드캐스트라 라우터를 넘지 못한다. 서버가 다른 네트워크에 있으면 라우터가 **DHCP 릴레이**로 요청을 전달한다.
+
 ## ICMP와 IGMP
 
 - **ICMP**: IP의 비신뢰성을 보완해 **오류·제어 메시지를 출발지에 보고**한다(해결은 하지 않음). 대표 도구가 `ping`, `traceroute`.
-  - 주요 타입: 8 Echo Request, 0 Echo Reply, 3 Destination Unreachable, 5 Redirect, 11 Time Exceeded
+  - 주요 타입은 질의·정보용(8 Echo Request, 0 Echo Reply)과 오류 보고용(3 Destination Unreachable, 5 Redirect, 11 Time Exceeded, 12 Parameter Problem)으로 나뉜다. 오류 메시지에 대해서는 다시 ICMP 오류를 보내지 않는다.
   - ICMP 메시지는 IP 패킷의 페이로드에 실린다(Protocol = 1). 헤더는 Type, Code, Checksum으로 시작한다. Type이 큰 분류, Code가 세부 이유다(예: Type 3의 Code 1 호스트 도달 불가, Code 3 포트 도달 불가, Code 4 단편화 필요).
 
 ICMP로 동작하는 두 도구는 다음과 같다.

@@ -37,6 +37,7 @@ date: "2026-10-14"
 - [책임 주도 설계: 협력·책임·메시지](Computer-Science/Programming-Languages/responsibility-driven-design.md) — 메시지를 먼저 정하고 책임을 가진 객체 고르기, 인터페이스는 메시지 집합
 - [GoF 디자인 패턴](Computer-Science/Programming-Languages/gof-design-patterns.md) — 생성·구조·행위 패턴이 푸는 문제와 비유, 과용의 비용
 - [좋은 코드를 위한 열 가지 원칙](Computer-Science/Programming-Languages/coding-principles.md) — 규약·주석·견고함·SOLID·테스트 용이성·적당한 추상화, 원칙끼리 부딪칠 때의 판단
+- [같은 문제, 열다섯 가지 설계: 상태와 결합을 다루는 법](Computer-Science/Programming-Languages/state-and-decoupling-designs.md) — 터틀 그래픽을 클래스·순수 함수·의존성 주입·상태 모나드·이벤트 소싱·인터프리터 등으로 구현하며 상태 소유와 결합 비교
 
 ### Java와 Go
 

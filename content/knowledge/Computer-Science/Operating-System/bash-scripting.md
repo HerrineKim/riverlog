@@ -5,10 +5,12 @@ summary: "Bash 스크립트를 쓸 때 필요한 문법을 한곳에 모았다. 
 tags: ["linux", "shell", "cli", "os", "automation"]
 source: other
 date: "2026-10-21"
-sources: ["https://blog.gaerae.com/2015/01/bash-hello-world.html", "https://devhints.io/bash.html", "https://github.com/jlevy/the-art-of-command-line/blob/master/README-ko.md", "https://github.com/Idnan/bash-guide", "https://wiki.kldp.org/HOWTO/html/Adv-Bash-Scr-HOWTO/", "https://www.gnu.org/software/bash/manual/bash.html"]
+sources: ["https://blog.gaerae.com/2015/01/bash-hello-world.html", "https://devhints.io/bash.html", "https://github.com/jlevy/the-art-of-command-line/blob/master/README-ko.md", "https://github.com/Idnan/bash-guide", "https://wiki.kldp.org/HOWTO/html/Adv-Bash-Scr-HOWTO/", "https://www.gnu.org/software/bash/manual/bash.html", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/GIt/git%20bash%20%EB%8B%A8%EC%B6%95%ED%91%9C%ED%98%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/GIt/git%20history.md"]
 ---
 
 > 「[Bash 입문자를 위한 핵심 요약 정리 (Shell Script)](https://blog.gaerae.com/2015/01/bash-hello-world.html)」, 「[The Art of Command Line](https://github.com/jlevy/the-art-of-command-line/blob/master/README-ko.md)」을 바탕으로, 문법은 GNU Bash 매뉴얼로 확인해 재구성한 노트다. 더 찾아볼 때는 「[Bash scripting cheatsheet](https://devhints.io/bash.html)」, 「[bash-guide](https://github.com/Idnan/bash-guide)」, 「[고급 Bash 스크립팅 가이드](https://wiki.kldp.org/HOWTO/html/Adv-Bash-Scr-HOWTO/)」를 쓴다.
+>
+> `alias`와 히스토리 번호 실행은 「[Frontend_TIL: git bash 단축표현](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/GIt/git%20bash%20%EB%8B%A8%EC%B6%95%ED%91%9C%ED%98%84.md)」, 「[git history](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/GIt/git%20history.md)」를 바탕으로 보강했다.
 
 ## 스크립트의 뼈대
 
@@ -146,7 +148,8 @@ trap 'rm -rf "$tmp"' EXIT     # 정상 종료든 오류든 임시 파일 정리
 
 | 습관 | 내용 |
 | --- | --- |
-| 히스토리 검색 | `Ctrl-R`로 지난 명령을 찾고, `!!`(직전 명령), `!$`(직전 명령의 마지막 인자)를 쓴다 |
+| 히스토리 검색 | `Ctrl-R`로 지난 명령을 찾고, `!!`(직전 명령), `!$`(직전 명령의 마지막 인자)를 쓴다. `history \| grep git`으로 번호를 찾아 `!번호`로 다시 실행한다 |
+| `alias` | 자주 치는 명령에 짧은 이름을 붙인다. `alias gs="git status"`를 `~/.bashrc`(zsh는 `~/.zshrc`)에 적고 `source ~/.bashrc`나 새 셸로 적용한다. `=` 앞뒤에 공백을 넣지 않고, 공백이 있는 명령은 따옴표로 감싼다. git 하위 명령만 줄일 거면 `git config alias.*`도 된다([[git-config-options\|Git 설정 옵션]]) |
 | `xargs` | 앞 명령 출력을 인자로 넘긴다. `-P 8`로 병렬, `-0`과 `find -print0`으로 공백 안전 |
 | 프로세스 치환 | `diff <(sort a.txt) <(sort b.txt)`: 명령 출력을 파일처럼 넘긴다 |
 | 집합 연산 | `sort a b \| uniq`(합집합), `sort a b \| uniq -d`(교집합), `sort a b b \| uniq -u`(a - b) |

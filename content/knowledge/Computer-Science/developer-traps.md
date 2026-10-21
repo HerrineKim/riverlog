@@ -1,22 +1,22 @@
 ---
 title: "개발자가 빠지는 함정 모음"
 concept: "Developer Traps"
-summary: "CSS·유니코드·부동소수점·시간·SQL·동시성·React·Git·네트워크 등에서 직관과 다르게 동작해 버그를 만드는 지점을 분야별로 묶었다. 공통 교훈은 '기본값과 경계를 믿지 말고, 표현과 비교의 기준을 명시하라'다."
+summary: "CSS·유니코드·부동소수점·시간·SQL·동시성·React·Git·네트워크 등에서 직관과 다르게 동작해 버그를 만드는 지점을 분야별로 묶고, 이름·주소·전화번호·이메일 같은 현실 데이터에 대한 착각(Falsehoods)을 덧붙였다. 공통 교훈은 '기본값과 경계를 믿지 말고, 표현과 비교의 기준을 명시하라'다."
 tags: ["computer-science", "frontend", "backend", "database", "tips"]
 source: other
-date: "2026-10-12"
-sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers"]
+date: "2026-10-21"
+sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers", "https://github.com/kdeldycke/awesome-falsehood", "https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/", "https://www.mjt.me.uk/posts/falsehoods-programmers-believe-about-addresses/", "https://github.com/google/libphonenumber/blob/master/FALSEHOODS.md", "https://beesbuzz.biz/code/439-Falsehoods-programmers-believe-about-email"]
 ---
 
-> qouteall의 글 「[Traps to Developers](https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers)」(2026.10 갱신판)를 바탕으로 재구성한 노트다.
+> qouteall의 글 「[Traps to Developers](https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers)」(2026.10 갱신판)를 바탕으로 재구성한 노트다. 현실 데이터에 대한 착각은 「[Awesome Falsehood](https://github.com/kdeldycke/awesome-falsehood)」 목록과 거기 실린 「[Falsehoods Programmers Believe About Names](https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/)」, 「[… About Addresses](https://www.mjt.me.uk/posts/falsehoods-programmers-believe-about-addresses/)」, 「[… About Phone Numbers](https://github.com/google/libphonenumber/blob/master/FALSEHOODS.md)」, 「[… About Email](https://beesbuzz.biz/code/439-Falsehoods-programmers-believe-about-email)」을 바탕으로 보강했다.
 
 ## 함정이란
 
 여기서 함정(trap)은 **문법상 문제없고 대부분 잘 돌아가지만, 특정 조건에서 직관과 다르게 동작하는 지점**이다. 컴파일러도 린터도 잡아 주지 않는다. 그래서 한 번 겪어 보거나 미리 알고 있어야 피할 수 있다.
 
-함정은 언어·도구마다 수백 가지지만, 대부분 **몇 가지 원인**으로 묶인다. 아래는 원인별 분류와 분야별 대표 항목이다.
+함정은 언어·도구마다 수백 가지지만, 대부분 **몇 가지 원인**으로 묶인다. 아래는 원인별 분류, 코드 분야별 대표 항목, 그리고 이름·주소처럼 **현실 데이터를 모델링할 때 하는 착각**이다.
 
-## 함정이 생기는 다섯 가지 원인
+## 함정이 생기는 여섯 가지 원인
 
 | 원인 | 설명 | 대표 예 |
 | --- | --- | --- |
@@ -25,6 +25,7 @@ sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers"]
 | 숨은 기본값 | 아무것도 안 쓰면 적용되는 규칙이 예상과 다르다 | `min-width: auto`, `content-box`, MySQL 대소문자 무시 정렬 |
 | 참조·공유 | 같은 객체를 여럿이 가리키다 한쪽 변경이 퍼진다 | Python 기본 인자, Go `append`, React 의존성 배열 |
 | 순서·시점 | 실행 순서나 시간이 보장되지 않는다 | 해시맵 순회 순서, TOCTOU, DST로 반복되는 한 시간 |
+| 현실의 다양성 | 사람·장소·제도가 개발자가 아는 예보다 훨씬 다양하다 | 이름 칸 길이 제한, 우편번호 정규식, 국가 = 국가 번호 하나 |
 
 ## 분야별 대표 함정
 
@@ -57,6 +58,7 @@ sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers"]
 - JS 숫자는 double이라 2^53−1을 넘는 정수 ID가 조용히 바뀐다. BigInt나 문자열로 다룬다.
 - 같음 비교는 허용 오차로 한다. 값이 크면 상대 오차를 쓴다.
 - 매 프레임 변환을 누적하면 오차가 커진다. 원래 값에서 다시 계산한다.
+- 반올림 모드, 상대 오차 비교, 흡수·상쇄와 Kahan 합산은 [[floating-point-arithmetic|부동소수점 오차: 반올림·비교·누적]]에 있다.
 
 ### 4. 시간
 
@@ -127,11 +129,32 @@ sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers"]
 - YAML에서 따옴표 없는 `NO`는 false가 된다.
 - 문자열 정렬에서는 "10"이 "9"보다 앞선다.
 
+## 현실 데이터에 대한 착각
+
+「Falsehoods programmers believe about …」(프로그래머가 믿는 착각) 목록은 2010년 이름에 관한 글에서 시작해 시간, 주소, 전화번호, 이메일, 통화, 지도, 파일 경로까지 번졌다. 형식은 늘 같다. **「당연히 이렇겠지」라는 가정을 나열하고, 그 하나하나에 실제 반례가 있다**는 것이다. 이 가정이 스키마·검증 규칙·정규식으로 굳으면 반례에 해당하는 사람은 가입도 결제도 못 한다.
+
+| 대상 | 흔한 착각 | 실제 |
+| --- | --- | --- |
+| 사람 이름 | 누구나 정확히 하나의 이름이 있고, 성과 이름으로 나뉘며, 바뀌지 않고, ASCII로 쓰이고, 일정 길이 안에 들어간다 | 이름이 여럿이거나 없는 사람, 성이 없는 문화, 결혼·개명으로 바뀌는 이름, 성과 이름 순서가 다른 언어, 대소문자만 다른 이름이 있다. 성이 `Null`인 사람은 문자열 `"null"`을 빈 값으로 처리하는 시스템에서 사라진다. 금칙어 사전에도 실제 이름이 들어 있다 |
+| 우편 주소 | 주소에는 건물 번호가 있고, 번호는 숫자이며, 0이나 음수는 없고, 한 거리에 같은 번호는 하나다 | 번호 없는 건물(Royal Opera House), `1A`·`4-5` 같은 번호, `0`번지, 같은 거리 이름·번호가 몇 km 떨어진 두 마을에 있다. 홍콩 주소는 도로 번호와 단지 번호를 함께 쓰고, 일본 주소는 여섯 덩어리의 숫자로 된다. 코스타리카는 랜드마크 기준으로 쓴다 |
+| 전화번호 | 사람마다 번호가 하나 있고, 번호가 사람을 식별하며, 재사용되지 않고, 숫자로만 되어 있다 | 번호는 공유·이전·재할당된다. 국가 번호 하나가 여러 나라를 덮고(+1은 미국·캐나다·카리브해 여러 나라), 한 나라가 국가 번호를 여럿 쓰기도 한다. 유효한 번호의 앞부분이 또 다른 유효한 번호일 수 있다. **전화번호는 숫자가 아니다**: 앞의 0이 의미가 있으므로 정수로 저장하지 않는다 |
+| 이메일 | 누구나 주소가 하나 있고, 바뀌지 않으며, 한 사람의 것이고, 글자·숫자·`.`·`_`·`-`만 쓴다 | `^_^@example.com`도 유효하다. 반송되지 않았다고 유효한 것도, 반송됐다고 영원히 무효인 것도 아니다. `+태그`를 마음대로 지우면 다른 주소가 된다. 로컬 부분의 대소문자를 구분할지는 받는 서버가 정한다. 도메인(`.edu`, `.fr`)으로 신분·언어를 추측할 수 없다 |
+| 시간 | 하루는 24시간, 시간대는 정시 단위, 시계는 앞으로만 간다 | [[calendar-fallacies\|달력과 시간에 대한 개발자의 착각]]에 따로 모았다 |
+| 네트워크 | 네트워크는 믿을 만하고 지연은 0이다 | [[distributed-time-and-failure\|분산 시스템의 시간과 장애]]의 8가지 착각 |
+
+대응 원칙은 이렇다.
+
+- **필요한 만큼만 구조화한다.** 이름은 「성/이름」 대신 자유 입력 칸 하나(필요하면 「부를 이름」 칸 추가), 주소도 국가별 형식을 강제하지 말고 자유 입력 줄을 허용한다.
+- **직접 검증 규칙을 만들지 않는다.** 전화번호는 Google `libphonenumber`, 주소는 `libaddressinput`처럼 국가별 데이터를 가진 라이브러리를 쓰고, 이메일은 형식 검사보다 **확인 메일**로 검증한다.
+- 사람을 식별하는 키로 이름·전화번호·이메일을 쓰지 않는다. 시스템이 발급한 ID를 쓰고, 연락 수단은 바뀔 수 있는 속성으로 둔다.
+- 테스트 데이터에 다양한 실제 사례(비 ASCII 이름, 아주 긴 이름, 따옴표·`<`가 든 이름)를 넣는다. 「Big List of Naughty Strings」 같은 목록을 쓸 수 있다. 회사 이름에 `<`·`>`를 허용하는 나라도 있어 출력 이스케이프를 빠뜨리면 XSS가 된다.
+
 ## 정리
 
-- 함정 대부분은 **표현의 한계, 없음의 모호함, 숨은 기본값, 공유 참조, 보장되지 않는 순서** 중 하나로 설명된다. 새 언어·도구를 배울 때 이 다섯 가지를 먼저 확인하면 많은 버그를 미리 막는다.
+- 함정 대부분은 **표현의 한계, 없음의 모호함, 숨은 기본값, 공유 참조, 보장되지 않는 순서, 현실의 다양성** 중 하나로 설명된다. 새 언어·도구를 배울 때 이 여섯 가지를 먼저 확인하면 많은 버그를 미리 막는다.
+- 이름·주소·전화번호·이메일에는 「당연한」 규칙이 없다. 구조를 덜 강제하고, 검증은 전용 라이브러리와 확인 절차에 맡긴다.
 - 돈·시간·텍스트처럼 "당연해 보이는" 값일수록 저장 형식과 비교 기준을 명시한다.
 - 운영 환경의 DB 마이그레이션, 비밀값 푸시, 타임아웃 없는 호출은 되돌리기 어렵다. 실행 전에 한 번 더 확인할 목록으로 둔다.
 - 전부 외울 필요는 없다. 이상한 버그를 만났을 때 이 목록부터 훑어보는 체크리스트로 쓰면 된다.
 
-관련 노트: [[data-representation|데이터 표현]], [[process-synchronization|프로세스 동기화]], [[principles|코드 리뷰 원칙과 체크리스트]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]]
+관련 노트: [[data-representation|데이터 표현]], [[floating-point-arithmetic|부동소수점 오차]], [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]], [[payment-address-forms|결제·주소 폼]], [[process-synchronization|프로세스 동기화]], [[principles|코드 리뷰 원칙과 체크리스트]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]]

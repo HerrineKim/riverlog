@@ -1,14 +1,14 @@
 ---
 title: "메모리 계층 구조"
 concept: "Memory Hierarchy"
-summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 저장 장치를 계층으로 묶는 구조와 RAM의 종류, 하드 디스크·플래시 메모리(SSD), RAID, 연관 메모리."
+summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 저장 장치를 계층으로 묶는 구조와 RAM의 종류(SRAM·DRAM의 셀 구조, DRAM의 행·열 접근 타이밍과 순차 접근이 빠른 이유, NUMA), 하드 디스크·플래시 메모리(SSD), RAID, 연관 메모리."
 tags: ["computer-architecture", "memory", "storage", "raid"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/"]
 ---
 
-> 노션 정리를 바탕으로, 계층별 역할은 ByteByteGo의 System Design 101 가이드 「[Types of Memory](https://bytebytego.com/guides/types-of-memory)」, 「[Types of Memory and Storage](https://bytebytego.com/guides/types-of-memory-and-storage)」로 보강했다.
+> 노션 정리를 바탕으로, 계층별 역할은 ByteByteGo의 System Design 101 가이드 「[Types of Memory](https://bytebytego.com/guides/types-of-memory)」, 「[Types of Memory and Storage](https://bytebytego.com/guides/types-of-memory-and-storage)」로, SRAM·DRAM의 구조와 DRAM 접근 타이밍·NUMA는 Ulrich Drepper의 「[What every programmer should know about memory, Part 1](https://lwn.net/Articles/250967/)」(2007)로 보강했다.
 
 빠른 메모리는 비싸고 작으며, 큰 메모리는 느리다. 그래서 컴퓨터는 여러 종류의 저장 장치를 **계층**으로 쌓고, 자주 쓰는 데이터를 위쪽에 두는 방식으로 "빠르면서도 큰" 메모리처럼 보이게 만든다.
 
@@ -61,6 +61,41 @@ RAM은 전원이 꺼지면 내용이 사라지는 **휘발성** 저장 장치다
 | SRAM (Static) | 전원만 있으면 데이터가 유지되고 DRAM보다 빠르다. 집적도가 낮고 전력 소모가 크며 비싸다 | 캐시 메모리 |
 | SDRAM (Synchronous) | 클럭에 동기화되어 클럭마다 CPU와 데이터를 주고받는 DRAM. SDR SDRAM이라고도 한다 | 주기억장치 |
 | DDR SDRAM (Double Data Rate) | 한 클럭에 두 번 데이터를 주고받아 대역폭을 두 배로 넓힌 SDRAM. DDR2·DDR3·DDR4·DDR5로 갈수록 대역폭이 넓어진다. 2026년 기준 새 데스크톱·서버는 DDR5(JEDEC 규격 최대 8800MT/s), 노트북·스마트폰은 저전력판 LPDDR5·LPDDR5X를 쓴다 | 주기억장치 |
+
+### SRAM과 DRAM이 다른 이유
+
+| | SRAM | DRAM |
+| --- | --- | --- |
+| 한 비트 | 트랜지스터 6개(서로 물린 인버터 두 쌍) | 트랜지스터 1개 + 커패시터 1개 |
+| 유지 | 전원만 있으면 그대로 | 커패시터의 전하가 새므로(leakage) **64ms마다 재충전**(refresh). 재충전 중인 행은 읽을 수 없다 |
+| 읽기 | 신호가 곧바로 나온다 | 읽으면 전하가 빠지고, 신호가 약해 감지 증폭기가 필요하며, 충·방전에 시간이 걸린다 |
+| 크기·값 | 셀이 커서 비싸다 | 셀이 작고 규칙적이라 촘촘히 싸게 만든다 |
+
+그래서 빠르지만 비싼 SRAM은 CPU 캐시에, 느리지만 싼 DRAM은 주기억장치에 쓴다. **주기억장치는 원리적으로 느리다**는 것이 캐시를 고려해 코드를 짜야 하는 출발점이다([[cache-friendly-code|캐시를 고려한 코드]]).
+
+### DRAM 접근은 왜 느리고, 왜 순서대로 읽으면 빠른가
+
+DRAM 칩의 셀은 행과 열의 격자다. 주소선을 아끼려고 주소를 **두 번에 나눠** 보낸다.
+
+```text
+1. RAS(행 주소 선택): 행 주소를 보내 한 행 전체를 감지 증폭기로 연다
+   ── tRCD(RAS→CAS 지연) 기다림
+2. CAS(열 주소 선택): 열 주소를 보낸다
+   ── CL(CAS 지연) 기다림
+3. 데이터 전송: 한 번에 여러 워드를 연속 전송(burst) → 캐시 라인 하나를 채운다
+4. 다른 행을 열려면 지금 행을 닫고 프리차지
+   ── tRP(행 프리차지 시간), 행을 연 뒤 최소 tRAS가 지나야 닫을 수 있다
+```
+
+모듈 사양의 `CL-tRCD-tRP-tRAS`(예: `2-3-2-8`) 숫자가 이 대기 클럭 수다.
+
+- 이미 열린 행 안에서는 RAS 없이 **CAS만 다시 보내면** 되므로, 연속 주소를 읽는 순차 접근이 훨씬 빠르다. 행을 계속 바꾸는 무작위 접근은 프리차지·활성화 대기가 매번 붙는다.
+- 버스의 최고 속도는 「전송만 계속할 때」의 값이다. 행을 바꿀 때마다 쉬는 클럭이 생겨, 이론상 6.4GB/s인 버스가 무작위 접근에서는 1.8GB/s까지 떨어지는 예도 있다.
+- DDR은 클럭의 올라가는 쪽과 내려가는 쪽에서 모두 전송해 셀 배열의 주파수를 올리지 않고 대역폭을 늘린다. 대역폭은 늘지만 **첫 데이터가 나오기까지의 지연은 줄지 않는다.** 메모리 지연이 세대가 바뀌어도 약 100ns 근처에 머무는 이유다.
+
+### NUMA: 모든 메모리가 같은 거리에 있지 않다
+
+과거 PC는 모든 CPU가 하나의 버스(FSB)로 노스브리지의 메모리 컨트롤러에 붙어, 메모리 대역폭을 모두가 나눠 썼다. 지금은 **메모리 컨트롤러가 CPU 안에** 들어 있고 소켓마다 자기 메모리가 붙는다. 소켓이 둘 이상인 서버에서는 다른 소켓의 메모리를 읽으려면 소켓 간 연결을 건너야 하므로 더 느리다. 이를 **NUMA**(Non-Uniform Memory Access)라 하고, 추가 비용을 NUMA 계수라 한다. 대역폭은 소켓 수만큼 늘지만, 스레드와 그 스레드가 쓰는 메모리를 같은 노드에 두어야 빠르다(Linux `numactl`, 첫 접근 시 할당되는 first-touch 정책).
 
 ### 칩 예시
 

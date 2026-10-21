@@ -1,14 +1,14 @@
 ---
 title: "캐시를 고려한 코드"
 concept: "Cache Locality"
-summary: "프로그래머가 캐시를 직접 제어할 수 없는 대신 접근 패턴으로 성능을 끌어내는 방법. 캐시 라인과 하드웨어 프리페처, 배열과 연결 리스트의 실제 차이, 넌템포럴 저장과 쓰기 결합 버퍼, 캐시 일관성(MESI)과 거짓 공유, TLB shootdown, 캐시 효과를 걸러 내는 마이크로벤치마크 방법을 정리한다."
+summary: "프로그래머가 캐시를 직접 제어할 수 없는 대신 접근 패턴으로 성능을 끌어내는 방법. 캐시 라인과 하드웨어 프리페처, 행렬 곱의 전치·블로킹, 배열과 연결 리스트의 실제 차이, 넌템포럴 저장과 쓰기 결합 버퍼, 캐시 일관성(MESI)과 거짓 공유, TLB shootdown, 캐시 효과를 걸러 내는 마이크로벤치마크 방법을 정리한다."
 tags: ["computer-architecture", "cache", "performance", "memory", "concurrency"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/10a0a4524e46409b83a73ccd65e432a1", "https://80000coding.notion.site/551ed68537b2480caaa38f4996e26c4f", "https://80000coding.notion.site/ed9d632385a240a8a553297ba68db7fd", "https://80000coding.notion.site/5f1a4f9f25d14a3b9236e6d6cc9f8bb8", "https://80000coding.notion.site/4805f6aca90f440797c337f3a939d4fd", "https://80000coding.notion.site/f6cc395bb7834e8f9a117a7172a15bc6", "https://80000coding.notion.site/0fb3911bd066455e9a65d61b7b6671c4"]
+date: "2026-10-21"
+sources: ["https://80000coding.notion.site/10a0a4524e46409b83a73ccd65e432a1", "https://80000coding.notion.site/551ed68537b2480caaa38f4996e26c4f", "https://80000coding.notion.site/ed9d632385a240a8a553297ba68db7fd", "https://80000coding.notion.site/5f1a4f9f25d14a3b9236e6d6cc9f8bb8", "https://80000coding.notion.site/4805f6aca90f440797c337f3a939d4fd", "https://80000coding.notion.site/f6cc395bb7834e8f9a117a7172a15bc6", "https://80000coding.notion.site/0fb3911bd066455e9a65d61b7b6671c4", "https://akkadia.org/drepper/cpumemory.pdf"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「캐시 메모리는 프로그래머가 제어하지 않는지 궁금한다.」, 「SIMD Non-temporal Hint (w/ LFB,BUS,DMA)」, 「Cache Coherence Bottleneck (false sharing)」, 「배열 vs 연결리스트」, 「bool은 자료형이 뭘까」, 「DB구현에서 왜 Memory Mapped File을 안쓸까」, 「CPP09 시간 측정 노이즈 제거하기」를 바탕으로 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「캐시 메모리는 프로그래머가 제어하지 않는지 궁금한다.」, 「SIMD Non-temporal Hint (w/ LFB,BUS,DMA)」, 「Cache Coherence Bottleneck (false sharing)」, 「배열 vs 연결리스트」, 「bool은 자료형이 뭘까」, 「DB구현에서 왜 Memory Mapped File을 안쓸까」, 「CPP09 시간 측정 노이즈 제거하기」를 바탕으로 재구성한 노트다. 행렬 곱 사례는 Ulrich Drepper의 「[What Every Programmer Should Know About Memory](https://akkadia.org/drepper/cpumemory.pdf)」(2007) 6장을 바탕으로 더했다.
 
 캐시의 매핑 방식과 쓰기 정책 같은 하드웨어 구조는 [[cache-and-virtual-memory|캐시 메모리와 MMU]]에 있다. 이 노트는 **코드를 쓰는 쪽에서** 캐시를 어떻게 다뤄야 하는지를 다룬다.
 
@@ -40,6 +40,19 @@ for (int j = 0; j < N; j++)
 ```
 
 측정하면 보통 **행 우선 < 열 우선 ≪ 무작위** 순이다. 열 우선도 간격이 일정해 프리페처가 따라오므로 생각보다 덜 느리다. 진짜로 느린 것은 예측할 수 없는 무작위 접근이다. C는 행 우선 저장이고, Fortran·MATLAB은 열 우선이다.
+
+### 행렬 곱: 같은 연산, 열 배 차이
+
+`res[i][j] += mul1[i][k] * mul2[k][j]`는 `mul2`를 열 방향으로 훑어 매번 다른 캐시 라인을 건드린다. 계산량(O(n³))은 그대로 두고 접근 순서만 바꿔도 결과가 크게 달라진다. 1000×1000 `double` 행렬 곱을 Core 2에서 잰 결과다.
+
+| 버전 | 바꾼 것 | 사이클(상대) |
+| --- | --- | --- |
+| 단순 구현 | 없음 | 100% |
+| 전치 | `mul2`를 먼저 전치해 두 행렬 모두 행 방향으로 읽는다. 전치용 메모리가 더 든다 | 23.4% |
+| 블로킹(타일링) | 캐시 라인 크기만큼의 작은 블록 단위로 i·j·k를 돌아, 한 번 올린 라인을 다 쓰고 버린다. 추가 메모리가 없다 | 17.3% |
+| 블로킹 + SIMD | SSE2로 `double` 두 개를 한 명령에 처리한다 | 9.47% |
+
+캐시 라인 크기는 하드코딩하지 말고 `sysconf(_SC_LEVEL1_DCACHE_LINESIZE)`(Linux)나 `std::hardware_destructive_interference_size`(C++17)로 얻는다. 실제로는 BLAS·Eigen 같은 라이브러리가 이 최적화를 이미 해 두었으니 직접 짜기 전에 라이브러리를 쓴다.
 
 ## 배열 vs 연결 리스트
 

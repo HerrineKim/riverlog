@@ -1,15 +1,16 @@
 ---
 title: "네트워크 기초"
 concept: "Network Basics"
-summary: "네트워크의 정의와 분류(LAN·WAN, 연결 형태), 통신 방식, 프로토콜과 패킷의 캡슐화, 네트워크 장비(스위치·라우터·AP·공유기), 2계층 이더넷과 MAC 주소, 스위치의 MAC 학습과 홉마다 바뀌는 프레임."
+summary: "네트워크의 정의와 분류(LAN·WAN, 연결 형태), 통신 방식, 프로토콜과 표준 기구, 패킷의 캡슐화, 네트워크 장비(허브·스위치·라우터·AP·공유기)와 가정·기업·클라우드의 배치, 1계층 전송 매체와 CSMA/CD, 2계층의 회선·흐름·오류 제어, 이더넷과 MAC 주소, 스위치의 MAC 학습과 홉마다 바뀌는 프레임."
 tags: ["network", "lan", "ethernet", "packet", "protocol"]
 source: notion
-sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://app.notion.com/p/7b2a147be0b54d499f6e1617865fa855", "https://80000coding.notion.site/881854082fa847818b417648d8d05612", "https://80000coding.notion.site/1f0bc84be25e461d9c50c1caddcf479a", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://80000coding.notion.site/875cb26a017f43d2a0ab58915fd21686", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man", "https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast", "https://bytebytego.com/guides/how-is-data-transmitted-between-applications", "https://d2.naver.com/helloworld/47667", "https://d2.naver.com/helloworld/7847943"]
-date: "2026-10-14"
+sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://app.notion.com/p/7b2a147be0b54d499f6e1617865fa855", "https://80000coding.notion.site/881854082fa847818b417648d8d05612", "https://80000coding.notion.site/1f0bc84be25e461d9c50c1caddcf479a", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://80000coding.notion.site/875cb26a017f43d2a0ab58915fd21686", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man", "https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast", "https://bytebytego.com/guides/how-is-data-transmitted-between-applications", "https://d2.naver.com/helloworld/47667", "https://d2.naver.com/helloworld/7847943", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EC%9D%98%20%EB%B0%8F%20%EC%97%AD%EC%82%AC.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%9E%A5%EB%B9%84%EC%99%80%20%EC%BC%80%EC%9D%B4%EB%B8%94.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A7%81%ED%81%AC%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%A7%81%ED%81%AC%20%EC%8A%A4%EC%9C%84%EC%B9%98%EC%99%80%20ARP.md"]
+date: "2026-10-21"
 ---
 
 > 고무오리 CS 스터디의 네트워크 학습 노트(네트워크와 모델, 데이터 통신)를 바탕으로 재구성한 노트다. 네트워크 장비와 스위치·라우터의 프레임 처리 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「Network에 대한 정리(1)~(4)」, 「netpractice를 위한 네트워크 통신 기초 - 1. LAN 통신」을 바탕으로 보강했다. 네트워크 크기 분류(PAN·MAN)와 애니캐스트는 ByteByteGo의 System Design 101 가이드 「[What are the differences between WAN, LAN, PAN and MAN?](https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man)」, 「[Unicast vs Broadcast vs Multicast vs Anycast](https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast)」로 보강했다. 커널과 NIC를 지나는 데이터 경로는 「[Data Transmission Between Applications](https://bytebytego.com/guides/how-is-data-transmitted-between-applications)」를 바탕으로 보강했다.
 > 커널 네트워크 스택의 자료구조와 수신 처리 부분은 NAVER D2의 「[TCP/IP 네트워크 스택 이해하기](https://d2.naver.com/helloworld/47667)」를, 지연 시간의 구성과 네트워크 에뮬레이션은 「[글로벌 네트워크 에뮬레이터 prism_pacman 소개](https://d2.naver.com/helloworld/7847943)」를 바탕으로 보강했다.
+> 표준 기구, 장비 배치, 물리 계층(매체·이중 방식·CSMA/CD), 2계층의 부계층과 회선·흐름·오류 제어, 스위치 에이징은 「[Frontend_TIL: 네트워크 정의 및 역사](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EC%9D%98%20%EB%B0%8F%20%EC%97%AD%EC%82%AC.md)」, 「[네트워크 구조](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B5%AC%EC%A1%B0.md)」, 「[물리계층 역활과 기능](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md)」, 「[물리계층 장비와 케이블](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%9E%A5%EB%B9%84%EC%99%80%20%EC%BC%80%EC%9D%B4%EB%B8%94.md)」, 「[데이터링크 역활과 기능](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A7%81%ED%81%AC%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md)」, 「[데이터 링크 스위치와 ARP](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%A7%81%ED%81%AC%20%EC%8A%A4%EC%9C%84%EC%B9%98%EC%99%80%20ARP.md)」를 바탕으로 보강했다.
 
 네트워크는 여러 노드(컴퓨터 같은 시스템)가 데이터를 공유할 수 있도록 연결한 디지털 전기 통신망이다. 분산된 컴퓨터를 통신망으로 묶고, 노드 간 연결을 통해 서로 데이터를 주고받는다. 우리가 매일 쓰는 인터넷도 문서·그림·영상 같은 데이터를 공유하게 해 주는 네트워크 통신망 중 하나일 뿐이다.
 
@@ -23,6 +24,8 @@ date: "2026-10-14"
 | LAN (Local Area Network) | 가까운 지역을 하나로 묶은 근거리 통신망 | 같은 회사·사무실·집 안의 컴퓨터, 공유 프린터·파일 서버 |
 | MAN (Metropolitan Area Network) | LAN보다 넓고 WAN보다 좁은, 도시나 큰 캠퍼스 규모의 망 | 대학 캠퍼스 여러 곳 연결, 도시 단위 초고속망, 시내 관공서 연결 |
 | WAN (Wide Area Network) | 국가·대륙처럼 멀리 떨어진 곳들을 묶은 네트워크. 여러 LAN 대역을 서로 연결한 것 | 인터넷, 다국적 기업의 지사 연결 |
+
+떨어진 LAN들을 전용선 대신 인터넷 같은 공중망 위에서 **암호화한 터널로 묶어 하나의 사설망처럼** 쓰는 것이 VPN(Virtual Private Network)이다([[proxy|프록시와 VPN의 차이]]).
 
 ### 연결 형태(토폴로지)에 따른 분류
 
@@ -65,6 +68,15 @@ date: "2026-10-14"
 
 프로토콜들은 역할별 계층으로 쌓여 있다. OSI 7계층과 TCP/IP 4계층의 비교는 [[osi-7-layer|OSI 7계층]]에 있다.
 
+프로토콜은 표준 기구가 정한다.
+
+| 기구 | 맡는 표준 |
+| --- | --- |
+| ISO (국제표준화기구) | OSI 참조 모델 |
+| IEEE (전기전자공학자협회) | 주로 LAN. 이더넷(802.3), 무선 LAN(802.11) |
+| ITU-T (국제전기통신연합 표준화 부문) | 주로 WAN·전화망 |
+| IETF (인터넷 엔지니어링 태스크포스) | 인터넷 프로토콜(IP, TCP, HTTP). 결과물이 RFC 문서다([[rfc-requirement-levels\|RFC 요구 수준 표기]]) |
+
 ## 패킷과 캡슐화
 
 **패킷**은 네트워크에서 전달되는 데이터를 통칭하는 말로, 여러 제어 정보(누가 누구에게, 무엇을 요청하는지)와 사용자 데이터로 이루어진 하나의 블록이다.
@@ -85,25 +97,80 @@ date: "2026-10-14"
 | 장비 | 동작 계층 | 하는 일 |
 | --- | --- | --- |
 | 랜카드(NIC) | 1·2계층 | 컴퓨터와 전송 매체를 잇고, 디지털 데이터와 전기·전파 신호를 서로 바꾼다. MAC 주소를 가진다. OS의 장치 드라이버가 제어한다 |
-| 스위치 | 2계층 | 여러 기기를 묶어 하나의 LAN을 만들고, MAC 주소를 보고 프레임을 해당 포트로만 보낸다 |
+| 리피터·허브 | 1계층 | 신호를 증폭해 다시 내보낸다. 허브는 받은 신호를 **모든 포트로** 뿌린다. 지금은 스위치로 대체되어 거의 쓰지 않는다 |
+| 스위치 | 2계층 | 여러 기기를 묶어 하나의 LAN을 만들고, MAC 주소를 보고 프레임을 해당 포트로만 보낸다. 라우팅 기능까지 넣은 것을 L3 스위치, 포트 번호까지 보고 서버에 나눠 주는 것을 L4 스위치(로드 밸런서)라 부른다 |
 | 라우터 | 3계층 | **서로 다른 네트워크를 잇고** IP 주소를 보고 다음 경로를 고른다. 인터페이스(포트)마다 다른 네트워크에 속하고 각각 IP·MAC 주소를 가진다 |
 | 무선 AP | 2계층 | 무선 기기를 유선 네트워크에 연결한다 |
 | 인터넷 공유기 | 2~3계층 | 스위치 + 라우터 + 무선 AP + NAT·DHCP를 한 기기에 담은 가정용 장비 |
 
 기술적으로 "하나의 네트워크"는 **라우터를 거치지 않고 닿는 범위**다. 같은 스위치에 꽂혀 있어도 IP 대역이 다르면 서로 직접 통신하지 못하고 라우터를 거쳐야 한다.
 
+### 장비가 놓이는 모양
+
+| 규모 | 경로 | 특징 |
+| --- | --- | --- |
+| 가정 | 인터넷 → ISP → 모뎀 → 공유기 → PC·휴대폰 | ISP가 공인 IP 하나를 주고, 공유기가 NAT·DHCP로 여러 기기에 사설 IP를 나눠 준다 |
+| 기업 | 인터넷 → ISP 전용선 → 라우터 → 방화벽 → ① L3 백본 스위치 → 팀별 L2 스위치 → PC ② L4 로드 밸런서 → **DMZ**의 공개 서버 | 외부에 공개할 서버는 내부망과 분리한 DMZ에 두고, 로드 밸런서로 부하를 나눈다([[load-balancer\|로드 밸런서]]). 요즘 방화벽은 라우팅도 겸한다 |
+| 클라우드(AWS) | 인터넷 → Route 53(DNS) → 인터넷 게이트웨이 → VPC → ELB → 보안 그룹 → EC2(Auto Scaling) | 라우터·스위치·방화벽을 VPC, 보안 그룹 같은 논리 자원으로 설정한다. Auto Scaling은 부하에 따라 **서버 수**를 늘리고 줄인다 |
+
+## 1계층: 비트를 신호로 바꾸기
+
+물리 계층은 2계층이 만든 프레임의 비트를 **전기·빛·전파 신호로 바꿔(인코딩) 보내고**, 받은 신호를 다시 비트로 되돌린다. 데이터의 뜻이나 오류는 따지지 않는다. 커넥터, 송수신 회로, NIC의 PHY 칩이 하드웨어로 이 일을 한다.
+
+| 매체 | 신호 | 케이블·규격 | 특징 |
+| --- | --- | --- | --- |
+| 구리선(전기) | 전압 변화 | UTP·STP 꼬임쌍선(8가닥, 2가닥씩 꼬아 4쌍), 동축 케이블 | 꼬는 이유는 전자기 간섭을 줄여 속도·거리를 늘리기 위해서다. STP는 차폐막을 더한 것이고, 값이 싼 UTP를 주로 쓴다 |
+| 광섬유(빛) | 빛의 패턴 | 싱글 모드(장거리, 예: LX), 멀티 모드(단거리, 예: SX) | 전자기 간섭이 없어 장거리·고속이다. 데이터센터·백본·통신사 구간에 쓴다 |
+| 무선(전파) | 전파 | Wi-Fi(IEEE 802.11) | 주파수 대역과 규격에 따라 속도·도달 거리가 다르다 |
+
+이더넷 규격 이름은 `속도 + 전송 방식 + 매체`로 읽는다. `1000BASE-T`는 1000Mbps, 베이스밴드(BASE) 전송, 꼬임쌍선(T)이다. 마지막이 숫자면 최대 거리(`10BASE5` = 500m), 글자면 케이블·광 종류(`1000BASE-SX`)다.
+
+### 전송 방향과 충돌
+
+| 방식 | 뜻 | 예 |
+| --- | --- | --- |
+| 단방향(Simplex) | 한쪽으로만 보낸다 | 방송 |
+| 반이중(Half Duplex) | 양쪽 다 보내지만 동시에는 못 한다 | 무전기, 허브 |
+| 전이중(Full Duplex) | 동시에 주고받는다 | 전화, 스위치 포트 |
+
+허브처럼 매체 하나를 여럿이 나눠 쓰면 동시에 보낼 때 신호가 부딪친다. 유선 이더넷은 이를 **CSMA/CD**로 다뤘다.
+
+1. Carrier Sense: 보내기 전에 누가 보내고 있는지 듣는다.
+2. Multiple Access: 조용하면 보낸다.
+3. Collision Detection: 보내는 중 충돌을 감지하면 멈추고 충돌 신호를 알린 뒤, 무작위 시간을 기다렸다 다시 시도한다.
+
+스위치가 포트마다 전이중 링크를 주면서 충돌 자체가 사라져, 지금 유선 이더넷에서 CSMA/CD는 사실상 쓰이지 않는다. 무선 LAN은 충돌을 감지할 수 없어 미리 피하는 CSMA/CA를 쓴다.
+
+### 단위와 성능 지표
+
+- 회선 속도는 **비트**(bps), 데이터 크기는 **바이트**로 센다. 1Gbps 회선으로 1GB 파일을 받으면 이론상 8초다.
+- 대역폭(아래 「성능을 정하는 두 값」)이 링크의 최대치라면 **처리량(throughput)** 은 실제로 처리된 양이다. 대역폭이 차선 수라면 처리량은 실제로 지나간 차의 수다.
+- **백플레인(backplane)** 은 스위치·방화벽 같은 장비가 내부에서 처리할 수 있는 최대 용량이다. 장비는 패킷마다 검사 비용이 들어서, 같은 대역에서도 **작은 패킷이 많을수록 처리량이 떨어진다.** 장비 사양의 처리량은 패킷 크기(64·512·1518바이트 등)별로 따로 본다.
+
 ## 2계층: 같은 LAN 안에서 주고받기
 
 ### 2계층이 하는 일
 
-- 하나의 네트워크 대역(LAN) 안에 있는 노드들끼리 데이터를 전달한다.
-- **오류 제어**(전달한 데이터에 오류가 있는지)와 **흐름 제어**를 수행한다.
+- 하나의 네트워크 대역(LAN) 안에서 **물리적으로 인접한 노드**끼리 데이터를 프레임 단위로 전달한다.
+- 비트 묶음의 시작과 끝을 정해 프레임을 만들고(**프레이밍**), **오류 제어**와 **흐름 제어**를 수행한다.
 - 2계층 통신은 같은 LAN 안에서만 쓰인다. 다른 네트워크 대역과 통신하려면 반드시 3계층 주소와 프로토콜을 거쳐야 한다([[network-layer|네트워크 계층]]).
+
+2계층은 두 부계층으로 나뉜다. **MAC**(Media Access Control)은 1계층 쪽에서 매체 접근과 MAC 주소를, **LLC**(Logical Link Control)는 3계층 쪽에서 상위 프로토콜과의 연결을 맡는다. NIC와 그 드라이버가 구현한다.
+
+| 기능 | 하는 일 | 방식 |
+| --- | --- | --- |
+| 프레이밍 | 상위 데이터에 헤더(주소·타입)와 트레일러(오류 검출)를 붙인다 | 아래 이더넷 프레임 |
+| 회선 제어 | 누가 언제 보낼지 정해 충돌을 막는다 | 1:1은 ENQ/ACK(보내도 되나 묻고 승인받기), 1:N은 폴링(주국이 차례로 묻기)·셀렉션 |
+| 흐름 제어 | 빠른 송신자가 느린 수신자를 넘치게 하지 않는다 | Stop-and-Wait(프레임 하나 보내고 ACK 기다리기, 재전송 중복은 1비트 순서 번호로 구분), 슬라이딩 윈도(ACK 없이 윈도 크기만큼 연속 전송) |
+| 오류 제어 | 손상·분실을 감지하고 다시 보낸다(ARQ) | Stop-and-Wait ARQ, Go-Back-N, Selective Repeat |
+
+흐름·오류 제어의 원리는 TCP도 같다. 슬라이딩 윈도와 Go-Back-N·Selective Repeat의 비교는 [[transport-layer|전송 계층]]에 있다. 이더넷 자체는 FCS로 오류를 **검출해 버리기만** 하고 재전송은 TCP 같은 상위 계층에 맡긴다.
 
 ### MAC 주소
 
 - 물리적인 네트워크 장비마다 부여된 고유한 **물리 주소**
-- 16진수 12자리, 총 **6바이트**(16진수 두 자리 = 1바이트). 예: `AA:AA:AA:AA:AA:AA`
+- 16진수 12자리, 총 **6바이트**(48비트, 16진수 두 자리 = 1바이트). 예: `AA:AA:AA:AA:AA:AA`
+- 앞 3바이트는 제조사 식별 번호(**OUI**, IEEE가 할당), 뒤 3바이트는 제조사가 장비마다 붙인다. 요즘 휴대폰·노트북은 사생활 보호를 위해 Wi-Fi 네트워크마다 무작위 MAC을 쓰기도 한다.
 
 ### 이더넷 프레임 헤더
 
@@ -117,6 +184,8 @@ date: "2026-10-14"
 
 프레임 끝에는 오류 검출용 FCS(Frame Check Sequence, CRC 값) 4바이트가 트레일러로 붙는다. 받는 쪽은 FCS가 맞지 않으면 프레임을 버린다.
 
+페이로드는 **46~1500바이트**다. 46바이트보다 짧으면 뒤를 패딩으로 채워 최소 프레임 크기(64바이트)를 맞춘다. 충돌을 감지할 시간을 확보하려던 CSMA/CD 시절의 규칙이다. 최대 1500바이트가 이더넷의 MTU다.
+
 ### 스위치의 MAC 주소 학습
 
 스위치는 포트와 그 포트 너머 MAC 주소의 대응을 **MAC 주소 테이블**에 기록한다. 처음에는 비어 있고, 프레임이 들어올 때마다 배운다.
@@ -126,6 +195,10 @@ date: "2026-10-14"
 | 프레임이 들어옴 | 출발지 MAC과 들어온 포트를 테이블에 기록(학습) |
 | 목적지 MAC이 테이블에 있음 | 그 포트로만 보낸다(필터링·포워딩) |
 | 목적지 MAC을 모름, 또는 브로드캐스트(`FF:FF:FF:FF:FF:FF`) | 들어온 포트를 뺀 모든 포트로 보낸다(**플러딩**) |
+| 목적지가 들어온 포트와 같은 쪽 | 다른 포트로 보내지 않고 버린다(필터링) |
+| 일정 시간 그 MAC에서 프레임이 없음 | 테이블 항목을 지운다(**에이징**, 기본 300초가 흔하다). 기기가 다른 포트로 옮겨 가도 따라가고, 테이블 메모리를 아낀다 |
+
+허브는 모든 포트가 한 충돌 도메인이지만, 스위치는 **포트마다 충돌 도메인을 나눈다.** 브로드캐스트는 여전히 모든 포트로 가므로 브로드캐스트 도메인은 라우터(또는 VLAN)로 나눈다.
 
 받은 기기는 목적지 MAC이 자기 것이 아니면 프레임을 버린다. 스위치 자체는 프레임을 중계할 뿐 그 통신의 출발지·목적지가 아니므로 통신용 MAC·IP 주소가 필요 없다(관리용 주소는 따로 있을 수 있다).
 

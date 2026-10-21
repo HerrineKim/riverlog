@@ -4,11 +4,11 @@ concept: "Calendrical Fallacies"
 summary: "하루는 24시간, 1년은 12개월, 시간대는 정시 단위, 날짜는 빠짐없이 이어진다는 가정이 모두 틀리는 사례를 날·주, 달력 체계, 윤년·연도, 시간대, 서머타임으로 묶고, 윤초와 여러 시간 표현(UTC·TAI·GPS 시간·Unix 시간·TrueTime), 리프 스미어를 덧붙였다. 결론은 직접 계산하지 말고 검증된 날짜 라이브러리와 IANA tz 데이터에 맡기라는 것이다."
 tags: ["computer-science", "timezone", "tips", "software-engineering"]
 source: other
-date: "2026-10-13"
-sources: ["https://yourcalendricalfallacyis.com/", "https://bytebytego.com/guides/do-you-know-why-meta-google-and-amazon-all-stop-using-leap-seconds", "https://developers.google.com/time/smear"]
+date: "2026-10-21"
+sources: ["https://yourcalendricalfallacyis.com/", "https://bytebytego.com/guides/do-you-know-why-meta-google-and-amazon-all-stop-using-leap-seconds", "https://developers.google.com/time/smear", "https://unix4lyfe.org/time/"]
 ---
 
-> Dave DeLong의 「[Your Calendrical Fallacy Is…](https://yourcalendricalfallacyis.com/)」를 바탕으로 재구성한 노트다. 윤초와 시간 표현은 ByteByteGo의 System Design 101 가이드 「[Why Meta, Google, and Amazon Stop Using Leap Seconds](https://bytebytego.com/guides/do-you-know-why-meta-google-and-amazon-all-stop-using-leap-seconds)」와 [Google Public NTP의 리프 스미어 문서](https://developers.google.com/time/smear)로 보강했다.
+> Dave DeLong의 「[Your Calendrical Fallacy Is…](https://yourcalendricalfallacyis.com/)」를 바탕으로 재구성한 노트다. 윤초와 시간 표현은 ByteByteGo의 System Design 101 가이드 「[Why Meta, Google, and Amazon Stop Using Leap Seconds](https://bytebytego.com/guides/do-you-know-why-meta-google-and-amazon-all-stop-using-leap-seconds)」와 [Google Public NTP의 리프 스미어 문서](https://developers.google.com/time/smear)로, 시스템 시계와 시각 저장 원칙은 Emil Mikulic의 「[Some notes about time](https://unix4lyfe.org/time/)」으로 보강했다.
 
 ## 왜 착각이 생기나
 
@@ -106,7 +106,15 @@ sources: ["https://yourcalendricalfallacyis.com/", "https://bytebytego.com/guide
 Google·AWS·Meta 같은 대형 인프라는 윤초를 한 번에 넣지 않고 **리프 스미어(leap smear)** 로 처리한다. 윤초 전후 수십 시간에 걸쳐 시계를 아주 조금씩 늦춰 1초를 흩어 넣는다. Google은 윤초 전날 정오부터 다음 날 정오까지 24시간 동안 선형으로 늦춘다. 그러면 `23:59:60`도, 같은 초의 반복도 생기지 않는다.
 
 - 스미어 중에는 시계가 실제 UTC와 최대 0.5초까지 어긋난다. **스미어하는 NTP 서버와 하지 않는 서버를 섞어 쓰지 않는다.**
-- 분산 시스템에서 이벤트 순서를 벽시계로 정하면 윤초·NTP 보정·스미어에 모두 흔들린다. 순서는 논리 시계(Lamport 시계, 벡터 시계)나 단조 증가 ID로 정하고, 경과 시간은 단조 시계로 잰다([[time-and-timers|운영체제의 시간과 타이머]]).
+- 분산 시스템에서 이벤트 순서를 벽시계로 정하면 윤초·NTP 보정·스미어에 모두 흔들린다. 순서는 논리 시계(Lamport 시계, 벡터 시계)나 단조 증가 ID로 정하고, 경과 시간은 단조 시계로 잰다([[time-and-timers|운영체제의 시간과 타이머]], [[distributed-time-and-failure|분산 시스템의 시간과 장애]]).
+
+### 시스템 시계는 틀리고, 뛴다
+
+- 시스템 시계는 부정확하다. 수정 진동자의 속도가 온도에 따라 달라져 「시계의 1초」가 실제 1초와 다르고 그 차이도 변한다. 네트워크의 다른 컴퓨터는 **각자 다르게** 틀린다.
+- NTP는 두 방법으로 시계를 맞춘다. **스텝**(step)은 시각을 한 번에 앞뒤로 점프시키고, **슬루**(slew)는 시계를 조금 빠르거나 느리게 돌려 서서히 맞춘다. 슬루가 덜 해롭지만 작은 오차에만 쓸 수 있다. 큰 오차는 스텝으로 고치므로 **벽시계는 뒤로 갈 수 있다.** 프로그램은 이를 견디게 짠다.
+- 윤초는 6개월 전쯤에야 예고되므로, 6개월 넘게 남은 일정을 초 단위로 정확히 계산할 수 없다. NTP 서버는 `leapfile` 설정으로 다가오는 윤초를 알리지만, 대부분의 말단 서버는 상위 서버가 맞게 처리하기를 기대할 뿐이다.
+- POSIX의 Unix 시간은 윤초를 **직전 초를 한 번 더 반복**하는 방식으로 처리한다(`59.75 → 59.00 → … → 00.00`). 그래서 매일이 정확히 86,400초가 되어 윤초 표 없이 날짜를 계산할 수 있지만, 윤초 순간을 표현할 수 없고 시각이 뒤로 간다.
+- 상대론 효과도 실제로 있다. GPS 위성의 시계는 속도와 중력에 의한 시간 차이를 보정한다.
 
 ## 코드에서 지킬 것
 
@@ -115,7 +123,11 @@ Google·AWS·Meta 같은 대형 인프라는 윤초를 한 번에 넣지 않고 
 | 날짜 계산을 직접 구현하지 않는다 | 위의 예외를 다 아는 사람은 없다. ICU, 언어 표준 라이브러리, 검증된 날짜 라이브러리를 쓴다 |
 | 시간대는 오프셋이 아니라 IANA 이름(`Asia/Seoul`)으로 저장한다 | 오프셋은 날짜에 따라 바뀐다 |
 | tz 데이터를 최신으로 유지한다 | 규칙이 며칠 전 통보로 바뀐다 |
-| 저장은 UTC, 표시할 때만 현지 시각 | 같은 현지 시각이 두 번 있거나 아예 없는 경우를 피한다 |
+| 저장은 UTC, 표시할 때만 현지 시각 | 같은 현지 시각이 두 번 있거나 아예 없는 경우를 피한다. **시간대는 표현 계층의 문제**이므로 코드 대부분은 Unix 시간(UTC 타임스탬프)만 주고받는다 |
+| 사람이 읽을 시각(로그 등)은 타임스탬프와 **함께** 저장한다 | 문자열만 남기면 다시 계산할 수 없다 |
+| 표시하거나 직렬화할 때는 항상 오프셋을 붙인다 | 오프셋 없는 `2026-10-21 09:00`은 어느 순간인지 알 수 없다. `2026-10-21T09:00:00+09:00`(RFC 3339)처럼 쓴다 |
+| 경과 시간은 단조 시계로 잰다 | 벽시계는 NTP 보정으로 뒤로 갈 수 있다(`clock_gettime(CLOCK_MONOTONIC)`, `performance.now()`) |
+| DB의 시각 타입이 오프셋을 저장하는지 확인한다 | MySQL `DATETIME`은 `YYYY-MM-DD HH:MM:SS`만 저장하고 오프셋이 없어, 세션 `time_zone`이 바뀌면 같은 값이 다른 순간이 된다. `TIMESTAMP`는 UTC로 저장하지만 2038년 문제가 있다. PostgreSQL은 `timestamptz`를 쓴다 |
 | "하루 = 86,400초"로 날짜를 더하지 않는다 | 서머타임 경계에서 하루가 밀린다. "1일 더하기"는 달력 연산으로 한다 |
 | 주의 시작, 주말, 달력 체계는 로케일에서 가져온다 | 하드코딩하면 다른 나라 사용자에게 틀린다 |
 

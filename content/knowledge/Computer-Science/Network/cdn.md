@@ -1,14 +1,15 @@
 ---
 title: "CDN"
 concept: "CDN"
-summary: "전 세계 엣지 서버에 콘텐츠를 캐시해 사용자 가까운 곳에서 응답하는 CDN. 동작 방식, 얻는 것, 캐시 무효화와 프론트엔드 배포에서의 쓰임을 정리한다."
+summary: "전 세계 엣지 서버에 콘텐츠를 캐시해 사용자 가까운 곳에서 응답하는 CDN. 동작 방식, 얻는 것과 비용·위험, 캐시 무효화와 프론트엔드 배포에서의 쓰임을 정리한다."
 tags: ["network", "cdn", "cache", "web", "frontend"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://bytebytego.com/guides/what-is-cdn-content-delivery-network", "https://bytebytego.com/guides/how-does-cnd-work", "https://bytebytego.com/guides/why-are-content-delivery-networks-cdn-so-popular", "https://bytebytego.com/guides/a-beginner's-guide-to-cdn-content-delivery-network"]
+date: "2026-10-21"
+sources: ["https://bytebytego.com/guides/what-is-cdn-content-delivery-network", "https://bytebytego.com/guides/how-does-cnd-work", "https://bytebytego.com/guides/why-are-content-delivery-networks-cdn-so-popular", "https://bytebytego.com/guides/a-beginner's-guide-to-cdn-content-delivery-network", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/cdn.md", "https://developer.chrome.com/blog/http-cache-partitioning"]
 ---
 
 > 여러 자료를 종합한 노트에, ByteByteGo의 System Design 101 가이드 「[What is CDN?](https://bytebytego.com/guides/what-is-cdn-content-delivery-network)」, 「[How Does CDN Work?](https://bytebytego.com/guides/how-does-cnd-work)」, 「[Why are CDNs so Popular?](https://bytebytego.com/guides/why-are-content-delivery-networks-cdn-so-popular)」, 「[A Beginner's Guide to CDN](https://bytebytego.com/guides/a-beginner's-guide-to-cdn-content-delivery-network)」의 DNS 라우팅·계층 구조·요청 라우팅 내용을 보강했다.
+> 「비용과 위험」은 「[Must-Know-About-Frontend: CDN](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/cdn.md)」을 바탕으로 보강했다.
 
 ## CDN이란
 
@@ -86,6 +87,16 @@ DNS 기반 CDN에서는 내 도메인을 CDN 도메인의 **별칭(CNAME)** 으�
 | 가용성 | 트래픽 폭증이나 DDoS를 분산해 흡수한다 |
 | 부가 기능 | HTTPS 종료, 압축(gzip·Brotli), 이미지 변환, WAF |
 
+## 비용과 위험
+
+| 위험 | 내용 | 대응 |
+| --- | --- | --- |
+| 비용 | 전송량·요청 수·부가 기능(이미지 변환, WAF)마다 과금된다 | 캐시 적중률을 높여 오리진 전송량과 함께 줄인다 |
+| 의존과 장애 | CDN 사업자 장애가 곧 서비스 장애다. 회사·국가 방화벽이 CDN 도메인을 막으면 그 사용자에게는 자원이 안 온다 | 중요한 서비스는 멀티 CDN이나 오리진 직접 경로를 둔다 |
+| 커버리지 | 사용자 지역에 PoP가 없으면 먼 엣지를 거쳐 오히려 느려질 수 있다 | 사용자 분포에 맞는 사업자를 고른다 |
+| 배포 복잡도 | 배포마다 오래된 사본을 어떻게 비울지 정해야 한다 | 아래 「캐시 무효화」. 올릴 대상을 정적 자산 위주로 고르는 것도 같은 이유다 |
+| 공용 CDN의 착각 | cdnjs·jsDelivr 같은 공용 CDN으로 라이브러리를 받으면 「다른 사이트가 받아 둔 캐시를 공유한다」는 이점이 있었지만, 2020년 전후 주요 브라우저가 HTTP 캐시를 사이트별로 분리해 사라졌다. 대신 다른 출처로 연결을 하나 더 연다 | 라이브러리는 번들에 넣어 자기 출처·자기 CDN에서 내려 준다. 외부에서 받는다면 `integrity`(SRI)를 건다 |
+
 ## 무엇을 올리나
 
 - **정적 자산**: JS 번들, CSS, 폰트, 이미지, 영상. 가장 효과가 크다.
@@ -109,5 +120,6 @@ DNS 기반 CDN에서는 내 도메인을 CDN 도메인의 **별칭(CNAME)** 으�
 - 사용자를 가까운 엣지로 보내는 길은 DNS(CNAME + GSLB)와 애니캐스트다.
 - 보관 정책은 결국 HTTP 캐시 헤더로 정해진다.
 - **해시 붙은 정적 파일은 길게, HTML은 짧게**가 기본 전략이다.
+- 대가는 비용과 사업자 의존이다. 공용 CDN의 캐시 공유 이점은 브라우저의 캐시 분리로 사라졌으니 라이브러리는 자기 출처에서 내려 준다.
 
 관련 노트: [[http-cache|HTTP 캐시]], [[dns|DNS]], [[nextjs|Next.js]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[image-cdn|이미지 CDN과 Accept 헤더 협상]], [[caching-strategies|캐시 전략]]
