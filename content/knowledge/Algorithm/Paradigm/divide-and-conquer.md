@@ -65,4 +65,4 @@ print(power(2, 10))  # 1024
 - 하위 문제가 겹치면 동적 계획법, 겹치지 않으면 분할 정복
 - 병합 정렬, 퀵 정렬, 이진 탐색, 빠른 거듭제곱이 대표 예시
 
-관련 노트: [[recursion|재귀 함수]], [[dynamic-programming|동적 계획법]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[binary-search|이분 탐색]]
+관련 노트: [[recursion|재귀 함수]], [[dynamic-programming|동적 계획법]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[binary-search|이분 탐색]], [[fourier-transform|푸리에 변환]]

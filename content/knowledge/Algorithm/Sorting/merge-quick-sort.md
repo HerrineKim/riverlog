@@ -5,10 +5,11 @@ summary: "분할 정복으로 평균 O(n log n)에 정렬하는 두 대표 알�
 tags: ["algorithm", "sorting", "divide-and-conquer", "python"]
 source: mixed
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/21cb57a3681b404da4ac8ab0e7289bc0"]
+sources: ["https://80000coding.notion.site/21cb57a3681b404da4ac8ab0e7289bc0", "https://johngrib.github.io/wiki/algorithm/quick-sort/"]
 ---
 
 > 자바 정렬 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JAVA] Sort 사용 (Arrays, Collections)」을 바탕으로 보강했다.
+> 퀵 정렬의 피벗 선택과 실전 개선은 「[퀵 정렬 (Quick Sort)](https://johngrib.github.io/wiki/algorithm/quick-sort/)」를 바탕으로 보강했다.
 
 병합 정렬과 퀵 정렬은 모두 **분할 정복**으로 리스트를 나눠 정렬한다. 차이는 실제 작업이 어디서 일어나느냐다. 병합 정렬은 **합치는 단계**에서, 퀵 정렬은 **나누는 단계**에서 정렬이 이뤄진다.
 
@@ -87,6 +88,18 @@ def quick_sort_inplace(arr, start=0, end=None):
 - **최악 O(n²)**: 피벗이 매번 최솟값이나 최댓값일 때(예: 이미 정렬된 데이터에서 첫 원소를 피벗으로 고르는 경우). 피벗을 무작위나 중간값으로 고르면 완화된다.
 - 제자리 분할 시 추가 메모리가 적고, 캐시 효율이 좋아 실제로 매우 빠르다.
 - 불안정 정렬
+
+### 최악을 피하는 실전 개선
+
+퀵 정렬은 1959년 토니 호어(Tony Hoare)가 고안했다. 위의 제자리 분할처럼 양 끝에서 두 포인터가 다가오며 자리가 틀린 원소를 맞바꾸는 방식이 호어 분할 계열이다. 실제 라이브러리 구현은 여기에 몇 가지를 더한다.
+
+| 개선 | 내용 |
+| --- | --- |
+| 무작위화 | 피벗을 무작위로 고르거나 입력을 먼저 섞는다. 입력 순서와 무관하게 기대 O(n log n)이 되어, 정렬된 입력으로 최악을 유도하는 공격을 막는다 |
+| 세 값의 중앙값(median-of-three) | 처음·가운데·끝 값의 중앙값을 피벗으로. 비교가 조금 늘지만 분할이 고르게 된다 |
+| 3-way 분할 | 피벗보다 작음·같음·큼 세 구역으로 나눈다. 중복 키가 많으면 같은 구역을 다시 정렬하지 않아 거의 선형까지 빨라진다(Bentley·McIlroy, 1993) |
+| 작은 구간은 삽입 정렬 | 원소가 수~수십 개 이하로 줄면 재귀 비용이 더 크므로 삽입 정렬로 넘긴다 |
+| 깊이 제한 | 재귀가 너무 깊어지면 힙 정렬로 바꿔 최악 O(n log n)을 보장한다. C++ `std::sort`가 쓰는 인트로 정렬(introsort)이다 |
 
 ## 정렬 알고리즘 비교
 

@@ -12,3 +12,5 @@ date: "2026-10-14"
 - [선형 점화식의 일반항](Algorithm/Math/linear-recurrence.md) — 생성함수·특성방정식·행렬 대각화로 일반항 구하기, 행렬 거듭제곱
 - [벡터공간과 부분공간](Algorithm/Math/vector-space.md) — 벡터공간의 공리, 부분공간 판정, 합공간·직합, 생성공간(span)
 - [벡터 내적·외적과 거리](Algorithm/Math/vector-geometry.md) — 법선 벡터와 점·초평면 거리, CCW와 계산 기하
+- [수학적 최적화와 정수 계획법](Algorithm/Math/integer-programming.md) — 결정 변수·제약 조건·목적 함수로 적어 솔버에 맡기기, 정수 선형 계획법 모델링 예
+- [푸리에 변환](Algorithm/Math/fourier-transform.md) — 신호를 주파수 성분으로 분해, DFT와 FFT, 스펙트럼과 위상, 주파수 영역 필터링

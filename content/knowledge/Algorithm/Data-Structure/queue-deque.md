@@ -5,10 +5,10 @@ summary: "먼저 넣은 것을 먼저 꺼내는 큐(FIFO)와, 양쪽 끝에서 �
 tags: ["data-structure", "queue", "deque", "python"]
 source: mixed
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/6b362391f808445f8e5f1e1f017c1bfb"]
+sources: ["https://80000coding.notion.site/6b362391f808445f8e5f1e1f017c1bfb", "https://bytebytego.com/guides/explaining-the-4-most-commonly-used-types-of-queues-in-a-single-diagram"]
 ---
 
-> 원형 버퍼로 덱을 만드는 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[push_swap] Linked List 말고 Circular Queue를 이용하여 Stack을 구현해보자!」를 바탕으로 보강했다.
+> 원형 버퍼로 덱을 만드는 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[push_swap] Linked List 말고 Circular Queue를 이용하여 Stack을 구현해보자!」를 바탕으로 보강했다. 시스템에서 쓰는 큐의 네 가지 종류는 ByteByteGo의 System Design 101 가이드 「[Explaining the 4 Most Commonly Used Types of Queues](https://bytebytego.com/guides/explaining-the-4-most-commonly-used-types-of-queues-in-a-single-diagram)」로 보강했다.
 
 ## 큐 (Queue)
 
@@ -132,6 +132,17 @@ int  pop_back(t_deque *d)  { d->len--; return d->data[idx(d, d->len)]; }
 
 - 앞뒤 양쪽에서 넣고 빼야 하는 경우 (회전, 슬라이딩 윈도우 최댓값, 0-1 BFS)
 - 파이썬에서 큐가 필요할 때의 기본 선택
+
+## 시스템에서 쓰는 큐 네 가지
+
+| 종류 | 동작 | 시스템에서의 예 |
+| --- | --- | --- |
+| FIFO 큐 | 뒤에 넣고 앞에서 꺼낸다 | 결제 결과가 온 순서대로 알림 메일을 보낸다. 메시지 큐의 기본 모양이다 |
+| 원형 큐(링 버퍼) | 고정 크기 배열의 끝과 처음을 잇는다. 메모리를 새로 할당하지 않는다 | 저지연 시스템의 스레드 간 통신. 금융 거래 시스템의 LMAX Disruptor가 링 버퍼로 컴포넌트끼리 메시지를 주고받는다. 오디오·네트워크 버퍼, 최근 N개 로그 보관 |
+| 우선순위 큐 | 들어온 순서가 아니라 우선순위가 높은 것부터 꺼낸다. 보통 힙으로 구현한다 | 응급실 환자 분류, 작업 스케줄러, 다익스트라. [[heap-priority-queue\|힙과 우선순위 큐]] |
+| 덱 | 양 끝에서 넣고 뺀다. FIFO와 LIFO를 모두 흉내 낸다 | 작업 훔치기(work stealing) 스케줄러, 슬라이딩 윈도 최댓값, 실행 취소 기록 |
+
+여러 서비스 사이에서 메시지를 주고받는 분산 큐는 [[message-queue-kafka|메시지 큐와 Kafka]]에 있다.
 
 ## 핵심 정리
 

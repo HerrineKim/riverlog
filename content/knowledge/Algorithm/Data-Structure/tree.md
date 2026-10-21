@@ -5,10 +5,11 @@ summary: "계층 구조를 표현하는 트리의 용어, 이진 트리의 종�
 tags: ["algorithm", "data-structure", "tree", "binary-search"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/23197e31a7274fc5960543cbfbee51b5", "https://80000coding.notion.site/303234d626784a398781d3997f7b1e2d", "https://80000coding.notion.site/a1c81b8e4538437abcb713184174052d", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b"]
+sources: ["https://80000coding.notion.site/23197e31a7274fc5960543cbfbee51b5", "https://80000coding.notion.site/303234d626784a398781d3997f7b1e2d", "https://80000coding.notion.site/a1c81b8e4538437abcb713184174052d", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://zeddios.tistory.com/237"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[자료구조] 트리」, 「이진 트리 (기초)」, 「균형 이진 탐색 트리 AVL」, 「ALV tree 찢어버리기」를 바탕으로 재구성한 노트다.
+> 레드-블랙 트리 부분은 「[Red-Black Tree](https://zeddios.tistory.com/237)」를 바탕으로 보강했다.
 
 트리(Tree)는 **계층 관계를 표현하는 비선형 자료구조**다. 노드 하나가 여러 자식을 가지는 1:N 관계가 반복된다. 그래프의 관점에서 보면 **사이클이 없는 연결 그래프**이고, 노드가 n개면 간선은 정확히 n-1개다. 파일 시스템, DOM, 조직도, 힙, 구문 트리가 모두 트리다.
 
@@ -147,6 +148,28 @@ def insert(node, key):
 
 AVL은 균형 조건이 엄격해 탐색이 빠른 대신 삽입·삭제 때 회전이 잦다. 조건을 느슨하게 한 **레드-블랙 트리**는 회전이 적어 언어 표준 라이브러리의 정렬된 맵(C++ `std::map`, Java `TreeMap`)에 쓰인다. 디스크처럼 한 번 읽는 비용이 큰 곳에서는 한 노드에 키를 여러 개 담는 **B 트리·B+ 트리**를 쓴다.
 
+### 레드-블랙 트리
+
+레드-블랙 트리는 노드에 빨강·검정 색을 칠하고 **색 규칙으로 높이를 제한**하는 균형 BST다.
+
+| 규칙 | 내용 |
+| --- | --- |
+| 루트 | 검정이다 |
+| 외부 노드(NIL 리프) | 모두 검정이다 |
+| 빨강 연속 금지 | 빨강 노드의 자식은 검정이다(Double Red 금지) |
+| 검정 깊이 | 어느 리프에서 루트까지 가도 지나는 검정 노드 수가 같다 |
+
+가장 짧은 경로는 검정만, 가장 긴 경로는 검정·빨강이 번갈아 나오므로 **가장 긴 경로가 가장 짧은 경로의 2배를 넘지 못한다.** 그래서 높이가 O(log n)으로 묶인다.
+
+새 노드는 **빨강으로 삽입**한다(검정 깊이를 깨지 않게). 부모도 빨강이면 Double Red가 되고, **삼촌(부모의 형제)의 색**으로 처리가 갈린다.
+
+| 삼촌 | 처리 | 비용 |
+| --- | --- | --- |
+| 검정 | **재구조화(restructuring)**: 자신·부모·조부모를 정렬해 가운데 값을 검정 부모로 올리고, 나머지 둘을 빨강 자식으로. 회전 1~2번과 같다 | O(1), 한 번으로 끝난다 |
+| 빨강 | **색 바꾸기(recoloring)**: 부모·삼촌을 검정, 조부모를 빨강으로(루트면 다시 검정). 조부모에서 Double Red가 다시 생길 수 있어 위로 반복한다 | 한 단계 O(1), 최악 O(log n) |
+
+삽입 전체는 O(log n)이고 회전은 최대 2번이다. AVL보다 덜 엄격하게 균형을 잡는 대신 수정 때 회전이 적다.
+
 ## 정리
 
 - 트리 = 사이클 없는 연결 그래프. 노드 n개, 간선 n-1개
@@ -154,4 +177,4 @@ AVL은 균형 조건이 엄격해 탐색이 빠른 대신 삽입·삭제 때 회
 - 중위 순회는 BST를 정렬 순서로 읽는다. 레벨 순회는 BFS다.
 - BST 연산은 O(높이)이므로 **균형이 성능의 전부**다. AVL은 BF를 -1~1로 유지하며 네 가지 회전으로 균형을 잡는다.
 
-관련 노트: [[data-structures|기초 자료구조(CS50)]], [[heap-priority-queue|힙과 우선순위 큐]], [[graph-basics|그래프의 기본]], [[recursion|재귀 함수]]
+관련 노트: [[data-structures|기초 자료구조(CS50)]], [[heap-priority-queue|힙과 우선순위 큐]], [[graph-basics|그래프의 기본]], [[recursion|재귀 함수]], [[behavior-tree|비헤이비어 트리]]

@@ -4,11 +4,11 @@ concept: "Basic Data Structures"
 summary: "배열과 realloc 크기 조정 비용, 연결 리스트(C 구조체·Kotlin 예제)와 둘 중 고르는 기준, 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 얕은 복사와 깊은 복사."
 tags: ["data-structure", "cs50", "linked-list", "hash-table", "tree"]
 source: notion
-sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b"]
+sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/"]
 date: "2026-10-13"
 ---
 
-> 하버드 CS50의 자료구조 강의와 고무오리 CS 스터디의 CS50 정리 노트를 바탕으로 재구성한 노트다. 배열과 연결 리스트 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「배열과 리스트 중 어떤 것을 사용해야 할까?」, 「[Push Swap 완전 정복] 00. 문제 분석 - locality.」, 트라이의 삽입·자동 완성은 「ALV tree 찢어버리기」를 바탕으로 보강했다.
+> 하버드 CS50의 자료구조 강의와 고무오리 CS 스터디의 CS50 정리 노트를 바탕으로 재구성한 노트다. 배열과 연결 리스트 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「배열과 리스트 중 어떤 것을 사용해야 할까?」, 「[Push Swap 완전 정복] 00. 문제 분석 - locality.」, 트라이의 삽입·자동 완성은 「ALV tree 찢어버리기」를 바탕으로 보강했다. 언어 라이브러리 속 자료구조는 ByteByteGo의 System Design 101 가이드 「[Java Collection Hierarchy](https://bytebytego.com/guides/java-collection-hierarchy)」, 「[10 Key Data Structures We Use Every Day](https://bytebytego.com/guides/10-key-data-structures-we-use-every-day)」로 보강했다.
 
 자료구조는 데이터를 메모리에 어떻게 배치하고 연결하느냐의 문제다. 배열처럼 연속된 공간을 쓰면 접근은 빠르지만 크기를 바꾸기 어렵고, [[pointers-and-memory|포인터]]로 흩어진 공간을 이으면 크기는 자유롭지만 접근이 느려진다. 예제는 C와 Kotlin으로 든다.
 
@@ -130,6 +130,37 @@ C에서 `char *t = s;`가 문자열이 아니라 **주소만 복사**하는 것�
 
 Kotlin data class의 `copy()`나 `super.clone()`처럼 언어가 주는 복사는 대개 얕은 복사다. 리스트 같은 참조 타입 필드는 직접 새로 복사해야 깊은 복사가 된다.
 
+## 언어 라이브러리 속 자료구조: Java 컬렉션
+
+실무에서는 자료구조를 직접 짜기보다 언어가 주는 구현을 고른다. Java 컬렉션 프레임워크(JCF)는 **인터페이스로 연산을 정하고, 구현 클래스로 내부 자료구조를 정하는** 구조라 이 관계가 잘 보인다.
+
+```text
+Iterable ── for-each로 순회할 수 있다
+  └─ Collection ── 추가·삭제·포함 여부 같은 기본 연산
+       ├─ List   순서 있음, 중복 허용
+       │    ├─ ArrayList    동적 배열
+       │    └─ LinkedList   이중 연결 리스트 (Deque도 구현)
+       ├─ Set    중복 없음
+       │    ├─ HashSet        해시 테이블
+       │    ├─ LinkedHashSet  해시 테이블 + 삽입 순서
+       │    └─ TreeSet        레드-블랙 트리, 정렬 유지 (SortedSet)
+       └─ Queue  한쪽에서 넣고 꺼냄
+            ├─ PriorityQueue  힙
+            └─ Deque ── ArrayDeque  원형 배열, 스택·큐 모두 대용
+
+Map (Collection과 별개 계층) ── 키-값
+  ├─ HashMap        해시 테이블
+  ├─ LinkedHashMap  해시 테이블 + 순서 (LRU 캐시 구현에 쓰인다)
+  └─ TreeMap        레드-블랙 트리, 키 정렬
+```
+
+- 고르는 기준은 이 노트의 복잡도 표와 같다. 인덱스 접근이 많으면 `ArrayList`, 정렬된 순회가 필요하면 `TreeMap`·`TreeSet`, 순서가 상관없으면 `HashMap`·`HashSet`이다.
+- `Stack`·`Vector`·`Hashtable`은 초기 버전의 동기화된 클래스라 지금은 `ArrayDeque`, `ArrayList`, `HashMap`(동시성이 필요하면 `ConcurrentHashMap`)을 쓴다.
+- Java 21부터는 처음·끝 원소 접근을 통일한 `SequencedCollection`·`SequencedMap` 인터페이스가 계층에 들어갔다.
+- 변수 타입은 인터페이스(`List<String> list = new ArrayList<>()`)로 선언해 구현을 바꾸기 쉽게 한다.
+
+자료구조가 실제 소프트웨어의 어디에 쓰이는지는 [[real-world-algorithms|현실 시스템을 움직이는 알고리즘과 자료구조]]에 있다.
+
 ## 핵심 정리
 
 | 자료구조 | 탐색 | 삽입 | 특징 |
@@ -141,3 +172,8 @@ Kotlin data class의 `copy()`나 `super.clone()`처럼 언어가 주는 복사�
 | 트라이 | O(k) ≈ O(1) | O(k) | 메모리를 많이 씀 |
 
 복잡도 표기 자체는 [[big-o|빅오 표기법과 시간 복잡도]]에 정리했다.
+
+## 더 읽을거리
+
+- [VisuAlgo](https://visualgo.net): 정렬, 연결 리스트, 힙, BST, 그래프 탐색, 최단 경로, 네트워크 플로까지 자료구조·알고리즘의 동작을 애니메이션으로 단계별로 보여 준다.
+- [Dictionary of Algorithms and Data Structures](https://xlinux.nist.gov/dads/): 미국 NIST가 운영하는 알고리즘·자료구조·대표 문제 용어 사전. 용어의 정확한 정의를 찾을 때 쓴다.
