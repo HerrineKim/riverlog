@@ -5,10 +5,11 @@ import Comments from "@/components/Comments";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
 import Toc, { MobileToc } from "@/components/Toc";
+import EntryLayout, { ScrollReset } from "@/components/knowledge/EntryLayout";
 import TreeNav from "@/components/knowledge/TreeNav";
 import { formatDate } from "@/lib/format";
 import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, tagHref, type KNode } from "@/lib/knowledge";
-import { extractToc } from "@/lib/markdown";
+import { extractToc, splitLeadingQuote } from "@/lib/markdown";
 
 // Only the pages generated at build time exist; anything else is a real 404.
 export const dynamicParams = false;
@@ -38,6 +39,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
   const trail = getTrail(node);
   const doc = node.doc;
   const toc = doc ? extractToc(doc.body) : [];
+  const { lead, rest } = splitLeadingQuote(doc?.body ?? "");
   const color = categoryColor(node.category);
   const siblings = trail.length > 1 ? trail[trail.length - 2].children : tree.children;
   const idx = siblings.findIndex((s) => s.id === node.id);
@@ -46,17 +48,18 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
 
   return (
     <>
-      <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 pt-8 pb-24 sm:px-6 lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[15rem_minmax(0,1fr)_13rem]">
-        <aside aria-label="사전 탐색" className="hidden lg:block">
-          <div className="sticky top-20 max-h-[calc(100dvh-6rem)] overflow-y-auto pr-2 pb-8">
+      <EntryLayout
+        sidebar={
+          <>
             <Link href={KNOWLEDGE_BASE} className="mb-4 flex items-center gap-2 text-sm text-muted hover:text-accent">
               <span aria-hidden>←</span> 사전 전체
             </Link>
             <TreeNav tree={tree} currentId={node.id} />
-          </div>
-        </aside>
-
-        <main className="min-w-0">
+          </>
+        }
+        toc={<Toc items={toc} />}
+      >
+        <ScrollReset key={node.id} />
           <nav aria-label="경로" className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
             <Link href={KNOWLEDGE_BASE} className="hover:text-accent">
               사전
@@ -111,7 +114,18 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
           {doc && (
             <article className="mt-8">
               <MobileToc items={toc} className="mb-8 xl:hidden" />
-              <Prose markdown={doc.body} />
+              {lead && (
+                <details className="group mb-8 rounded-xl border border-line bg-bg-elev text-sm">
+                  <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 font-medium text-fg [&::-webkit-details-marker]:hidden">
+                    출처와 참고
+                    <svg viewBox="0 0 16 16" className="ml-auto size-3 text-muted transition group-open:rotate-180" fill="currentColor" aria-hidden>
+                      <path d="M3.5 6 8 10.5 12.5 6z" />
+                    </svg>
+                  </summary>
+                  <Prose markdown={lead} className="px-4 pb-4 text-sm text-muted prose-p:my-2" />
+                </details>
+              )}
+              <Prose markdown={rest} />
               {doc.sources.length > 0 && (
                 <div className="mt-14 rounded-xl border border-line bg-bg-elev p-4 text-sm text-muted">
                   <p className="font-medium text-fg">원본 기록</p>
@@ -140,14 +154,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
               {next && <Pager node={next} dir="next" />}
             </nav>
           )}
-        </main>
-
-        <div className="hidden xl:block">
-          <div className="sticky top-20">
-            <Toc items={toc} />
-          </div>
-        </div>
-      </div>
+      </EntryLayout>
       <SiteFooter />
     </>
   );

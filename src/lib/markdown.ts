@@ -74,6 +74,17 @@ export async function renderMarkdown(markdown: string, { figures = false }: { fi
   return String(await (figures ? figureProcessor : processor).process(markdown));
 }
 
+/**
+ * Splits off the blockquote(s) a note opens with (source and context lines), unquoted,
+ * so the page can tuck them away. `lead` is empty when the body doesn't start with a quote.
+ */
+export function splitLeadingQuote(markdown: string): { lead: string; rest: string } {
+  const m = markdown.match(/^\s*((?:>.*(?:\n|$))+(?:\n*>.*(?:\n|$))*)/);
+  if (!m) return { lead: "", rest: markdown };
+  const lead = m[1].replace(/^> ?/gm, "").trim();
+  return { lead, rest: markdown.slice(m[0].length) };
+}
+
 /** h2/h3 headings with the same ids rehype-slug generates. */
 export function extractToc(markdown: string): TocItem[] {
   const slugger = new GithubSlugger();
