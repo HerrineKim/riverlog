@@ -85,4 +85,4 @@ Terraform은 2023년 라이선스를 BSL로 바꿨고, 이를 계기로 오픈�
 - 구성 관리는 「있는 서버를 맞추는 것」, IaC는 「서버를 만드는 것」까지다.
 - GitOps는 Git을 원하는 상태의 원천으로 두고 실제 상태를 끌어와 맞춘다.
 
-관련 노트: [[twelve-factor-app|12요소 앱]], [[terraform-workflow|Terraform: 코드로 클라우드 인프라 만들기]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[vm-vs-container|VM과 컨테이너]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로]], [[ci-cd|CI/CD]], [[aws-cloud-basics|AWS 클라우드 기초]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]]
+관련 노트: [[twelve-factor-app|12요소 앱]], [[terraform-workflow|Terraform: 코드로 클라우드 인프라 만들기]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[vm-vs-container|VM과 컨테이너]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로]], [[ci-cd|CI/CD]], [[aws-cloud-basics|AWS 클라우드 기초]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[serverless-architecture|서버리스 아키텍처]]

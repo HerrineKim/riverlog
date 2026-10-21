@@ -51,7 +51,7 @@ NoOps         코드 → (빌드·배포·확장·모니터링은 클라우드 �
 
 ### 플랫폼 엔지니어링
 
-팀마다 쿠버네티스·CI·관측 설정을 따로 익히면 인지 부담이 커진다. **플랫폼 엔지니어링은 이 공통 기반을 내부 개발자 플랫폼(IDP, Internal Developer Platform)으로 만들어 제품처럼 제공한다.** 개발자는 검증된 기본 경로(골든 패스)를 따라 템플릿으로 서비스를 만들고, 셀프서비스로 배포·환경 생성을 한다. 플랫폼 팀은 개발자를 고객으로 보고 사용성을 개선한다. Backstage 같은 개발자 포털이 대표 도구다.
+팀마다 쿠버네티스·CI·관측 설정을 따로 익히면 인지 부담이 커진다. **플랫폼 엔지니어링은 이 공통 기반을 내부 개발자 플랫폼(IDP, Internal Developer Platform)으로 만들어 제품처럼 제공한다.** 개발자는 검증된 기본 경로(골든 패스)를 따라 템플릿으로 서비스를 만들고, 셀프서비스로 배포·환경 생성을 한다. IDP의 구성, 포털과 플랫폼의 차이, 골든 패스의 성질은 [[platform-engineering|플랫폼 엔지니어링]]에 있다.
 
 ### NoOps
 
@@ -92,4 +92,4 @@ NoOps         코드 → (빌드·배포·확장·모니터링은 클라우드 �
 - 배포가 빨라질수록 테스트는 개발자의 일이 되고, 품질 조직은 도구를 만든다.
 - 도구와 절차는 회사의 단계에 맞춰 늘린다.
 
-관련 노트: [[ci-cd|CI/CD]], [[deployment-strategies|배포 전략]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[test-run-stages|테스트를 돌리는 시점: 로컬, PR, CI]], [[incident-postmortem|장애 대응과 포스트모템]]
+관련 노트: [[platform-engineering|플랫폼 엔지니어링]], [[ci-cd|CI/CD]], [[deployment-strategies|배포 전략]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[test-run-stages|테스트를 돌리는 시점: 로컬, PR, CI]], [[incident-postmortem|장애 대응과 포스트모템]]

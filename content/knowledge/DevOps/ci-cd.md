@@ -4,11 +4,13 @@ concept: "CI/CD"
 summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지 이어 주는(CD) 파이프라인의 개념과 단계, dev·QA·UAT·운영으로 산출물을 승격하는 흐름, Docker와 함께 쓰는 흐름, GitHub Actions 예시와 CI 비밀 값 관리."
 tags: ["ci-cd", "devops", "docker", "github", "automation"]
 source: notion
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production"]
+date: "2026-10-21"
+sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule"]
 ---
 
 > 「GitHub Actions 예시」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「DevOps 간단 정리」, 「Github Action을 이용해 코드 검사 자동화하기」를 바탕으로 보강한 노트다. 「파이프라인 단계」와 「환경 승격」은 ByteByteGo의 System Design 101 가이드 「[CI/CD Pipeline Explained in Simple Terms](https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms)」, 「[CI/CD Simplified Visual Guide](https://bytebytego.com/guides/cicd-simplified-visual-guide)」, 「[How do Companies Ship Code to Production?](https://bytebytego.com/guides/how-do-companies-ship-code-to-production)」를 바탕으로 보강했다.
+>
+> 「PR에 테스트 커버리지 보이기」, 「상태 배지와 예약 실행」은 cheese10yun의 「[github-project-management](https://github.com/cheese10yun/github-project-management)」을 바탕으로, Travis CI 설정을 GitHub Actions 기준으로 바꿔 보강했다.
 
 배포 과정은 사람이 손으로 할수록 **휴먼 에러**가 잦다. 빌드 명령을 빠뜨리거나, 테스트를 건너뛰거나, 엉뚱한 서버에 올리는 식이다. CI/CD는 이 과정을 파이프라인으로 자동화해 매번 같은 절차가 실행되게 만든다.
 
@@ -97,6 +99,35 @@ jobs:
 
 **브랜치 보호 규칙과 연결**하면 효과가 커진다. main에 직접 push를 막아 PR을 강제하고, 이 워크플로를 **필수 상태 검사(required status check)** 로 지정하면 검사를 통과한 코드만 main에 들어간다. 여기에 리뷰 승인까지 필수로 걸면 실수로 깨진 코드가 올라가는 일을 미리 막는다([[github-collaboration|GitHub 협업 저장소 설정]]).
 
+### PR에 테스트 커버리지 보이기
+
+리뷰 흐름은 **PR 생성 → CI 빌드·테스트 → 통과한 코드만 리뷰 → 머지**다. 빌드가 깨진 코드는 리뷰하지 않는다. 같은 CI에서 커버리지를 재서 PR마다 보여 주면, 테스트 없이 들어온 변경이 바로 드러난다.
+
+```yaml
+      - run: npm test -- --coverage          # lcov 등 커버리지 리포트 생성
+      - uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+```
+
+- Codecov·Coveralls 같은 서비스가 리포트를 받아 PR에 **기준 브랜치 대비 변화(change from base)** 를 코멘트와 상태 검사로 남긴다. 줄었으면 `-`로 표시되고, 기준치 아래면 검사를 실패시킬 수도 있다. 외부 서비스 없이 리포트를 아티팩트로 올리거나 잡 요약(`$GITHUB_STEP_SUMMARY`)에 쓰는 방법도 있다.
+- 전체 커버리지 숫자보다 **변경분의 커버리지**를 지키는 편이 현실적이다. 기존 코드를 한 번에 올리지 못해도 새 코드부터 테스트가 붙는다.
+- 토큰·웹훅 URL은 설정 파일에 적지 않고 **Secrets**에 둔다. 공개 저장소의 설정 파일에 들어간 토큰은 커밋 이력에 영구히 남는다.
+
+### 상태 배지와 예약 실행
+
+- 워크플로 실행 화면의 **Create status badge**가 README에 붙일 마크다운을 준다. 주소는 `https://github.com/<owner>/<repo>/actions/workflows/<파일>.yml/badge.svg?branch=main` 꼴이다. 커버리지 배지는 커버리지 서비스가 준다.
+- `on.schedule`의 `cron`으로 주기 작업(정리 배치, 의존성 점검, 알림)을 돌린다. 시각은 **UTC**, 최소 간격은 5분이고 기본 브랜치의 워크플로 파일만 쓴다. 부하가 몰리는 정각에는 지연되거나 빠질 수 있다.
+
+```yaml
+on:
+  schedule:
+    - cron: '0 0 * * 1'      # 매주 월요일 00:00 UTC (한국 09:00)
+  workflow_dispatch:         # 수동 실행도 열어 둔다
+```
+
+과거 공개 저장소의 CI는 GitHub 밖의 **Travis CI**(`.travis.yml`)가 흔했고, 지금은 저장소에 내장된 GitHub Actions가 그 자리를 대신한다.
+
 ## 대표 CI/CD 도구
 
 | 도구 | 특징 |
@@ -125,4 +156,4 @@ Vercel·Netlify 같은 배포 플랫폼은 저장소를 연결하면 푸시마�
 - 비밀 값은 CI 변수로 관리한다.
 - GitHub Actions는 `on` + `jobs`로 쓰고, 브랜치 보호의 필수 검사로 걸어야 강제력이 생긴다.
 
-관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[tdd|프론트엔드에서의 TDD]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[test-run-stages|테스트를 돌리는 시점: 로컬, PR, CI]], [[deployment-strategies|배포 전략]], [[devops-sre-platform-engineering|DevOps, SRE, 플랫폼 엔지니어링, NoOps]]
+관련 노트: [[s3-cloudfront-static-hosting|S3·CloudFront로 정적 사이트 배포하기]], [[github-collaboration|GitHub 협업 저장소 설정]], [[tdd|프론트엔드에서의 TDD]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[test-run-stages|테스트를 돌리는 시점: 로컬, PR, CI]], [[deployment-strategies|배포 전략]], [[devops-sre-platform-engineering|DevOps, SRE, 플랫폼 엔지니어링, NoOps]]

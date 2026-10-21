@@ -96,4 +96,4 @@ Lambda가 빠르고 안전하게 돌아가는 이유는 네 가지 부품으로 
 - Firecracker 마이크로VM은 컨테이너만큼 빠르게 뜨면서 VM 수준으로 격리한다.
 - 이미지는 청크로 쪼개 필요한 부분만 가져오고, SnapStart는 초기화된 상태를 스냅숏으로 복원해 콜드 스타트를 줄인다.
 
-관련 노트: [[aws-cloud-basics|AWS 클라우드 기초]], [[virtualization|가상화와 하이퍼바이저]], [[cloud-native|클라우드 네이티브와 코드형 인프라]], [[vm-vs-container|VM과 컨테이너]]
+관련 노트: [[aws-cloud-basics|AWS 클라우드 기초]], [[virtualization|가상화와 하이퍼바이저]], [[cloud-native|클라우드 네이티브와 코드형 인프라]], [[vm-vs-container|VM과 컨테이너]], [[serverless-architecture|서버리스 아키텍처]]

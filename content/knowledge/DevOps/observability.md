@@ -5,10 +5,10 @@ summary: "관측 가능성의 세 기둥인 로그(개별 사건), 트레이스(
 tags: ["devops", "monitoring", "infra", "database", "architecture"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://bytebytego.com/guides/push-vs-pull-in-metrics-collecting-systems", "https://bytebytego.com/guides/choose-the-right-database-for-metric-collecting-system", "https://opentelemetry.io/docs/concepts/signals/", "https://prometheus.io/docs/introduction/overview/", "https://blog.banksalad.com/tech/url-status-checker"]
+sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://bytebytego.com/guides/push-vs-pull-in-metrics-collecting-systems", "https://bytebytego.com/guides/choose-the-right-database-for-metric-collecting-system", "https://opentelemetry.io/docs/concepts/signals/", "https://prometheus.io/docs/introduction/overview/", "https://blog.banksalad.com/tech/url-status-checker", "https://www.loggly.com/ultimate-guide/category/node/", "https://blog.risingstack.com/monitoring-nodejs-applications-nodejs-at-scale/", "https://learn.microsoft.com/en-us/azure/architecture/best-practices/monitoring"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Logging, Tracing, and Metrics](https://bytebytego.com/guides/logging-tracing-metrics)」, 「[Push vs Pull in Metrics Collection Systems](https://bytebytego.com/guides/push-vs-pull-in-metrics-collecting-systems)」, 「[Choose the Right Database for Metric Collection](https://bytebytego.com/guides/choose-the-right-database-for-metric-collecting-system)」를 바탕으로, OpenTelemetry·Prometheus 공식 문서로 확인해 재구성한 노트다. 합성 모니터링은 「[매출 손실을 줄여주는 외부링크 관제 Bot, URL Checker 개발기](https://blog.banksalad.com/tech/url-status-checker)」로 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[Logging, Tracing, and Metrics](https://bytebytego.com/guides/logging-tracing-metrics)」, 「[Push vs Pull in Metrics Collection Systems](https://bytebytego.com/guides/push-vs-pull-in-metrics-collecting-systems)」, 「[Choose the Right Database for Metric Collection](https://bytebytego.com/guides/choose-the-right-database-for-metric-collecting-system)」를 바탕으로, OpenTelemetry·Prometheus 공식 문서로 확인해 재구성한 노트다. 합성 모니터링은 「[매출 손실을 줄여주는 외부링크 관제 Bot, URL Checker 개발기](https://blog.banksalad.com/tech/url-status-checker)」로 보강했다. 로그 작성 규칙과 런타임 지표는 Loggly의 「[Node.js Logging: The Ultimate Guide](https://www.loggly.com/ultimate-guide/category/node/)」, RisingStack의 「[The Definitive Guide for Monitoring Node.js Applications](https://blog.risingstack.com/monitoring-nodejs-applications-nodejs-at-scale/)」, Microsoft의 「[Monitoring and diagnostics guidance](https://learn.microsoft.com/en-us/azure/architecture/best-practices/monitoring)」를 바탕으로 보강했다.
 
 ## 관측 가능성이란
 
@@ -39,6 +39,17 @@ sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://byte
 - 양이 가장 많으므로 보존 기간과 레벨을 정해 비용을 관리한다.
 - 서버 한 대의 로그를 셸 명령으로 훑는 법은 [[linux-commands|자주 쓰는 리눅스 명령어 지도]]에 있다.
 
+#### 로그를 쓰는 규칙
+
+| 규칙 | 내용 |
+| --- | --- |
+| 레벨을 나눈다 | `fatal`(프로세스가 죽는다) · `error`(요청 하나가 실패) · `warn`(이상하지만 처리됨) · `info`(업무 사건: 주문 생성, 배포) · `debug`·`trace`(개발용). 운영 기본은 `info`, 장애 때만 일시적으로 낮춘다 |
+| 문장 대신 필드 | `"user 42 paid 9900"`이 아니라 `{"msg":"payment","userId":42,"amount":9900}`. 필드로 검색·집계한다 |
+| 요청을 잇는 ID | 요청 ID·트레이스 ID를 모든 로그 줄에 넣는다. 비동기 콜백을 건너도 유지되게 Node.js는 `AsyncLocalStorage`로 문맥을 들고 다닌다 |
+| 표준 출력으로 | 앱은 파일 회전·전송을 하지 않고 stdout에 쓴다. 수집은 플랫폼(에이전트, 컨테이너 런타임)이 맡는다([[twelve-factor-app\|12요소 앱]]) |
+| 비밀은 남기지 않는다 | 비밀번호, 토큰, 카드 번호, 개인 정보는 로거 단계에서 가린다(redact) |
+| 비싸지 않게 | 동기 파일 쓰기나 `console.log` 남발은 이벤트 루프를 막는다. Node.js에서는 JSON을 빠르게 비동기로 쓰는 pino가 흔하고, winston은 전송 대상(transport) 설정이 유연하다. HTTP 접근 로그는 미들웨어(pino-http, morgan)로 남긴다 |
+
 ### 트레이스
 
 트레이스는 **스팬(span)** 의 트리다. 스팬 하나가 "서비스 B의 DB 조회, 120ms" 같은 한 구간이고, 요청이 서비스 경계를 넘을 때 트레이스 ID를 헤더(W3C `traceparent`)로 넘겨 같은 트레이스로 묶는다. 요청이 많은 서비스는 일부만 저장하는 샘플링을 쓴다.
@@ -52,6 +63,17 @@ sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://byte
 ```
 
 메트릭 하나는 **이름 + 라벨 + (시각, 값) 목록**이다. `http_requests_total{service="order", status="500"}`처럼 라벨 조합마다 별도 시계열이 생기므로, 사용자 ID처럼 값이 무한한 것을 라벨에 넣으면 시계열 수(카디널리티)가 폭발한다.
+
+무엇을 잴지는 층마다 다르다. 서비스 층은 요청 수·오류율·지연(RED: Rate, Errors, Duration), 자원 층은 사용률·포화·오류(USE)를 기본으로 본다. 런타임 층은 언어마다 고유한 지표가 있다. Node.js라면 다음이다.
+
+| 지표 | 왜 보나 | 얻는 법 |
+| --- | --- | --- |
+| 이벤트 루프 지연·사용률 | 단일 스레드라 동기 작업 하나가 모든 요청을 늦춘다 | `perf_hooks.monitorEventLoopDelay()`, `performance.eventLoopUtilization()` |
+| 힙 사용량과 GC 시간 | 메모리 누수는 **힙이 계단식으로 계속 늘고 GC 시간도 함께 늘다가** 한도에 닿아 프로세스가 죽는 모양으로 나타난다 | `process.memoryUsage()`, 힙 스냅숏 두 개(`v8.writeHeapSnapshot()`)를 Chrome DevTools 비교 모드로 열어 늘어난 객체를 찾는다 |
+| CPU 프로파일 | 느려진 원인 함수 찾기 | `node --cpu-prof`, APM의 연속 프로파일링 |
+| 의존성 취약점 | npm 패키지가 공격 경로가 된다 | `npm audit`, Dependabot([[devsecops\|DevSecOps]]) |
+
+프로세스 지표만으로는 사용자가 실제로 접속되는지 모르므로, 여러 지역에서 외부 검사(아래 합성 모니터링)를 함께 둔다.
 
 ## OpenTelemetry: 세 신호를 한 표준으로
 
