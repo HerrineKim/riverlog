@@ -1,14 +1,14 @@
 ---
 title: "Node.js 런타임과 OS 차이 다루기"
 concept: "Node.js"
-summary: "브라우저 밖에서 JavaScript를 실행하는 런타임 Node.js가 무엇이고 어디에 강한지, 그리고 Windows·macOS 차이로 깨지는 환경 변수 설정과 파일 경로를 cross-env와 path 모듈로 해결하는 방법."
+summary: "브라우저 밖에서 JavaScript를 실행하는 런타임 Node.js가 무엇이고 어디에 강한지, Node의 설계를 반성하며 나온 Deno(권한·ES 모듈·TypeScript·웹 표준 API)와 Bun이 무엇을 바꿨는지, 그리고 Windows·macOS 차이로 깨지는 환경 변수 설정과 파일 경로를 cross-env와 path 모듈로 해결하는 방법."
 tags: ["nodejs", "backend", "javascript", "config"]
 source: mixed
 date: "2026-10-12"
-sources: ["https://riverkim.kr/167", "https://riverkim.kr/158", "https://riverkim.kr/230"]
+sources: ["https://riverkim.kr/167", "https://riverkim.kr/158", "https://riverkim.kr/230", "https://blog.ull.im/engineering/2019/04/14/deno-ryan-dahl-2019-04-04.html", "https://docs.deno.com/runtime/fundamentals/security/", "https://nodejs.org/api/permissions.html"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트다.
+> riverkim.kr에 쓴 글들을 다시 정리하고, Deno 부분은 「[Node 제작자가 만든 Deno : 자바스크립트의 새로운 접근](https://blog.ull.im/engineering/2019/04/14/deno-ryan-dahl-2019-04-04.html)」을 바탕으로 Deno·Node 공식 문서와 대조해 더한 노트다.
 
 ## Node.js란
 
@@ -21,6 +21,20 @@ sources: ["https://riverkim.kr/167", "https://riverkim.kr/158", "https://riverki
 | 맞지 않는 일 | 영상 인코딩처럼 CPU를 오래 붙잡는 계산. 싱글 스레드가 막혀 다른 요청까지 느려진다 |
 
 Node.js 위에서 서버를 만드는 프레임워크가 **Express**(사실상 표준인 최소 프레임워크)와 **NestJS**(Express·Fastify 위에 모듈·DI 구조를 얹은 프레임워크)다. Express는 자유도가 높고, NestJS는 아키텍처를 프레임워크가 정해 주어 팀원마다 구조가 통일된다([[NestJS|NestJS]]).
+
+## Node 이후의 런타임: Deno와 Bun
+
+Node.js를 만든 Ryan Dahl은 Node의 설계에서 아쉬운 점을 짚고 **Deno**를 새로 만들었다. 그 문제의식이 지금 런타임 경쟁의 축이다.
+
+| Node의 아쉬운 점 | Deno의 답 | 지금의 Node |
+| --- | --- | --- |
+| 스크립트가 파일·네트워크·환경 변수에 **무제한 접근**한다 | 기본 차단, `--allow-read=./data`·`--allow-net=api.example.com`처럼 범위를 좁혀 허락한다(`-A`는 전부) | `--permission` 플래그로 켜는 권한 모델이 22.13·23.5부터 안정 단계다. 플래그를 주지 않으면 여전히 무제한이다 |
+| `node_modules`와 중앙 레지스트리에 묶인 모듈 해석, CommonJS와 ES 모듈의 공존 | ES 모듈만 쓰고 URL·`jsr:`·`npm:` 지정자로 가져온다 | ESM과 CJS를 함께 지원한다. `require(esm)`이 가능해졌다 |
+| TypeScript를 따로 빌드해야 한다 | TypeScript를 바로 실행한다 | 타입 제거(type stripping)로 `.ts`를 바로 실행한다([[typescript-basics\|TypeScript 기초]]) |
+| 표준 라이브러리가 얇아 작은 유틸까지 패키지로 받는다 | 검수된 표준 라이브러리(`@std/*`)와 포매터·린터·테스트 러너 내장 | `node:test`, `fetch`, `--env-file`, `--watch`를 내장했다 |
+| 브라우저와 API가 다르다 | `fetch`, `URL`, `import.meta` 같은 **웹 표준 API**를 우선한다 | 웹 표준 API를 점점 들이고 있다 |
+
+Deno 2는 `package.json`과 npm 패키지를 그대로 쓸 수 있게 해 Node 생태계와의 벽을 낮췄다. **Bun**은 JavaScriptCore 엔진 위에 런타임·패키지 매니저·번들러·테스트 러너를 한 실행 파일로 묶어 속도를 앞세운다. 세 런타임 모두 서로의 장점을 흡수하는 중이라, 새 프로젝트에서 고를 때는 **배포 환경 지원**과 **쓰려는 npm 패키지의 호환성**을 먼저 확인한다.
 
 ## OS 차이로 깨지는 두 가지
 

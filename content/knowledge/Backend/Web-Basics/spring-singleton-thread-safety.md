@@ -105,4 +105,4 @@ server:
 - 빈에는 불변 의존성과 설정만 두고, 요청 상태는 매개변수로 흘린다.
 - Tomcat은 NIO 커넥터로 연결과 스레드를 분리한다. 스레드가 모자라면 느린 I/O부터 고치고, 가상 스레드를 검토한다.
 
-관련 노트: [[singleton-service-pattern|Express 싱글톤 패턴과 서비스 패턴]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[module|NestJS Module과 Provider: 의존성 주입과 캡슐화]], [[process-and-thread|프로세스와 스레드]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]]
+관련 노트: [[singleton-service-pattern|Express 싱글톤 패턴과 서비스 패턴]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[module|NestJS Module과 Provider: 의존성 주입과 캡슐화]], [[process-and-thread|프로세스와 스레드]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[spring-application-design|스프링 애플리케이션 설계]]

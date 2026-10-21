@@ -77,6 +77,8 @@ sources: ["https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://ro
 - **GraphQL**은 스키마로 타입을 정의하고 클라이언트가 원하는 필드를 질의한다. 구독(subscription)으로 실시간 갱신도 받는다.
 - **gRPC**는 `.proto`로 서비스와 메시지를 정의해 여러 언어의 코드를 생성하는 RPC 방식이다. 자세한 내용은 [[grpc|gRPC: Protocol Buffers로 정의하는 RPC]]에 있다.
 
+SOAP·WebSocket·Webhook까지 포함한 비교와 API 학습 주제 지도는 [[api-architectural-styles|API 아키텍처 스타일]], GraphQL의 도입 패턴은 [[graphql|GraphQL]]에 있다.
+
 ## 백엔드 개발자의 태도
 
 | 대신 | 이렇게 |

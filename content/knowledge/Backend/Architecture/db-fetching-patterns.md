@@ -93,4 +93,4 @@ async function buildPostSummary(post) {
 
 한 웹 요청 안에서 같은 데이터를 두 번 가져올 일은 거의 없으므로 DB 읽기를 사실상 전부 캐시한다. 수명은 **웹 요청 하나**로 제한해 메모리 걱정, 오래된 데이터, 사용자 간 데이터 섞임을 함께 피한다.
 
-관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[orm-queryset|Django ORM과 QuerySet]], [[web-scalability-components|웹 확장성의 구성 요소]], [[developer-traps|개발자가 빠지는 함정 모음]]
+관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[orm-queryset|Django ORM과 QuerySet]], [[web-scalability-components|웹 확장성의 구성 요소]], [[developer-traps|개발자가 빠지는 함정 모음]], [[jpa-persistence-context|JPA와 영속성 컨텍스트]]

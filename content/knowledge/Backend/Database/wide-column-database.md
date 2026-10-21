@@ -5,10 +5,10 @@ summary: "Cassandra·ScyllaDB 같은 와이드 컬럼 DB는 파티션 키로 데
 tags: ["backend", "database", "nosql", "performance", "storage", "raid"]
 source: other
 date: "2026-10-20"
-sources: ["https://discord.com/blog/how-discord-stores-trillions-of-messages", "https://betterprogramming.pub/what-scylladb-is-and-why-you-should-care-58cb35af6cd7", "https://discord.com/blog/how-discord-supercharges-network-disks-for-extreme-low-latency", "https://www.scylladb.com/2024/12/18/license/", "https://www.scylladb.com/2025/04/08/announcing-scylladb-2025-1"]
+sources: ["https://discord.com/blog/how-discord-stores-trillions-of-messages", "https://betterprogramming.pub/what-scylladb-is-and-why-you-should-care-58cb35af6cd7", "https://discord.com/blog/how-discord-supercharges-network-disks-for-extreme-low-latency", "https://www.scylladb.com/2024/12/18/license/", "https://www.scylladb.com/2025/04/08/announcing-scylladb-2025-1", "https://bytebytego.com/guides/how-discord-stores-trillions-of-messages"]
 ---
 
-> Discord 엔지니어링 블로그의 「[How Discord Stores Trillions of Messages](https://discord.com/blog/how-discord-stores-trillions-of-messages)」(2023.03), 「[How Discord Supercharges Network Disks for Extreme Low Latency](https://discord.com/blog/how-discord-supercharges-network-disks-for-extreme-low-latency)」(2022.08)와 Mottakin Chowdhury의 「[What ScyllaDB Is and Why You Should Care](https://betterprogramming.pub/what-scylladb-is-and-why-you-should-care-58cb35af6cd7)」(2022.06)를 바탕으로 재구성하고, ScyllaDB의 라이선스와 데이터 분산 방식은 공식 발표로 최신화한 노트다.
+> Discord 엔지니어링 블로그의 「[How Discord Stores Trillions of Messages](https://discord.com/blog/how-discord-stores-trillions-of-messages)」(2023.03), 「[How Discord Supercharges Network Disks for Extreme Low Latency](https://discord.com/blog/how-discord-supercharges-network-disks-for-extreme-low-latency)」(2022.08)와 Mottakin Chowdhury의 「[What ScyllaDB Is and Why You Should Care](https://betterprogramming.pub/what-scylladb-is-and-why-you-should-care-58cb35af6cd7)」(2022.06)를 바탕으로 재구성하고, ScyllaDB의 라이선스와 데이터 분산 방식은 공식 발표로 최신화한 노트다. ByteByteGo의 System Design 101 가이드 「[How Discord Stores Trillions of Messages](https://bytebytego.com/guides/how-discord-stores-trillions-of-messages)」도 참고했다.
 
 ## 와이드 컬럼 DB란
 

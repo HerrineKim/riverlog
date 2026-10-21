@@ -1,12 +1,14 @@
 ---
 title: "REST API 설계"
 concept: "REST API"
-summary: "자원을 URI로 표현하고 HTTP 메서드로 행위를 나타내는 API 설계 방식과 그 규칙."
+summary: "자원을 URI로 표현하고 HTTP 메서드로 행위를 나타내는 API 설계 방식과 그 규칙. REST의 여섯 제약, URI 규칙, 멱등 키·버전·일괄 처리·질의 규칙 같은 실무 설계 팁까지."
 tags: ["http", "api", "rest", "backend"]
 source: til
 date: "2026-10-12"
-sources: ["https://riverkim.kr/308"]
+sources: ["https://riverkim.kr/308", "https://bytebytego.com/guides/8-tips-for-efficient-api-design", "https://bytebytego.com/guides/how-do-we-design-effective-and-safe-apis", "https://bytebytego.com/guides/rest-api-cheatsheet", "https://bytebytego.com/guides/how-does-rest-api-work", "https://blog.npcode.com/2017/04/03/rest의-representation이란-무엇인가/", "https://sanghaklee.tistory.com/57", "https://evan-moon.github.io/2020/04/07/about-restful-api/", "https://1ambda.github.io/javascripts/rest-api-put-vs-post/"]
 ---
+
+> 「실무 설계 팁」 섹션은 ByteByteGo의 System Design 101 가이드 「[8 Tips for Efficient API Design](https://bytebytego.com/guides/8-tips-for-efficient-api-design)」, 「[How to Design Effective and Safe APIs](https://bytebytego.com/guides/how-do-we-design-effective-and-safe-apis)」, 「[REST API Cheatsheet](https://bytebytego.com/guides/rest-api-cheatsheet)」, 「[How does REST API work?](https://bytebytego.com/guides/how-does-rest-api-work)」을 바탕으로 보강했다. 「리소스와 표현」은 「[REST의 representation이란 무엇인가](https://blog.npcode.com/2017/04/03/rest의-representation이란-무엇인가/)」와 「[프론트엔드와 백엔드가 소통하는 엔드포인트, RESTful API](https://evan-moon.github.io/2020/04/07/about-restful-api/)」, 오류 응답 규칙은 「[RESTful API 설계 가이드](https://sanghaklee.tistory.com/57)」, POST와 PUT의 위치 결정은 「[REST API에서 PUT과 POST의 차이](https://1ambda.github.io/javascripts/rest-api-put-vs-post/)」로 보강했다.
 
 REST(Representational State Transfer)는 **자원(Resource)을 이름(URI)으로 구분하고, 그 자원의 상태를 HTTP로 주고받는** 아키텍처 스타일이다. REST 원칙을 따르는 API를 REST API(또는 RESTful API)라 부른다. 프론트엔드와 백엔드가 같은 규칙으로 대화하므로 API를 보지 않고도 의도를 짐작할 수 있다는 것이 가장 큰 장점이다.
 
@@ -38,7 +40,7 @@ REST(Representational State Transfer)는 **자원(Resource)을 이름(URI)으로
 | PUT | 리소스를 **통째로** 교체하거나, 없으면 그 URI로 생성 | 대상 URI를 정확히 알아야 한다 (`PUT /cats/3`) | 멱등. 같은 내용으로 몇 번을 덮어써도 결과가 같다 |
 | PATCH | 리소스의 **일부**만 수정. 생성은 하지 않는다 | 대상 URI를 정확히 알아야 한다 | 보장되지 않음. "나이 +1"처럼 상대적 변경이면 보낼 때마다 결과가 달라진다 |
 
-PUT으로 일부 필드만 보내면 빠진 필드가 비워질 수 있다. 필드 몇 개만 고치는 화면이라면 PATCH가 의도에 맞다. ([POST, PUT, PATCH의 차이점, 토스페이먼츠 개발자센터](https://docs.tosspayments.com/blog/rest-api-post-put-patch))
+**리소스의 위치를 누가 정하느냐**로도 갈린다. POST는 서버가 새 리소스의 URI를 정해 `201 Created`와 `Location` 헤더로 알려 주고, PUT은 클라이언트가 URI를 지정한다. PUT으로 일부 필드만 보내면 빠진 필드가 비워질 수 있다. 필드 몇 개만 고치는 화면이라면 PATCH가 의도에 맞다. ([POST, PUT, PATCH의 차이점, 토스페이먼츠 개발자센터](https://docs.tosspayments.com/blog/rest-api-post-put-patch))
 
 ## REST의 특징
 
@@ -47,6 +49,27 @@ PUT으로 일부 필드만 보내면 빠진 필드가 비워질 수 있다. 필�
 3. **Cacheable**: HTTP 캐시 기능을 그대로 활용할 수 있다.
 4. **Layered System**: 클라이언트는 중간에 프록시·로드밸런서가 있어도 알 필요가 없다.
 5. **Uniform Interface**: URI와 메서드로 자원을 다루는 일관된 인터페이스.
+6. **Code on Demand** (선택): 서버가 실행 가능한 코드(스크립트)를 내려보내 클라이언트 기능을 넓힐 수 있다. 여섯 제약 중 유일하게 선택 사항이다.
+
+균일한 인터페이스에는 응답에 다음에 할 수 있는 행동의 링크를 담는 **HATEOAS**(Hypermedia as the Engine of Application State)도 포함된다. 엄밀한 REST는 이것까지 요구하지만, 실무의 JSON API 대부분은 링크 없이 문서로 대신한다.
+
+## 리소스와 표현
+
+REST에서 서버가 주고받는 것은 **리소스 자체가 아니라 리소스의 표현(representation)** 이다. 리소스는 「3번 고양이」나 「환영 문서」처럼 URI로 가리키는 개념이고, 표현은 그 리소스의 **특정 시점 상태**를 특정 형식으로 담은 것이다. REST의 이름도 여기서 왔다. 애플리케이션의 상태(State)를 표현(Representation)으로 전송(Transfer)한다는 뜻이다.
+
+| 구성 | 뜻 | 예 |
+| --- | --- | --- |
+| 표현 데이터 | 실제로 전달되는 내용 | `{"name": "blue"}`, `hello` |
+| 표현 메타데이터 | 그 데이터를 해석하는 정보 | `Content-Type: application/json`, `Content-Language: ko` |
+
+한 리소스에 표현이 여러 개(JSON·XML, 한국어·영어)일 수 있다. 하나를 고르는 과정이 **내용 협상(content negotiation)** 이다.
+
+| 방식 | 동작 |
+| --- | --- |
+| 사전 협상(proactive) | 클라이언트가 `Accept`, `Accept-Language` 같은 헤더로 선호를 밝히면 서버가 고른다. 대부분이 이 방식이다 |
+| 사후 협상(reactive) | 서버가 선택지 목록(각각 다른 URI)을 주고 클라이언트가 고른다 |
+
+요청·응답 본문은 성공이든 오류든 모두 어떤 리소스의 표현이다. 이 구분을 알면 URI에 `.json` 같은 확장자를 넣지 않고 헤더로 형식을 고르는 이유가 이해된다.
 
 ## URI 설계 규칙
 
@@ -81,7 +104,31 @@ PUT으로 일부 필드만 보내면 빠진 필드가 비워질 수 있다. 필�
 | 대상 없음 | `404 Not Found` |
 | 목록이 비어 있음 | `200 OK` + 빈 배열 `[]` (빈 목록은 정상 상태이므로 404로 처리하지 않는다) |
 
+오류 응답은 다음 규칙을 따른다.
+
+- **실패를 `200 OK`로 보내고 본문으로 성공 여부를 알리지 않는다.** 캐시·모니터링·클라이언트 라이브러리가 모두 상태 코드를 보고 동작한다.
+- `400`에는 어느 필드가, 어떤 값 때문에, 왜 틀렸는지를 담는다.
+- `405 Method Not Allowed`에는 `Allow` 헤더로 허용 메서드를 알린다. 업무 규칙상 지금 처리할 수 없는 요청(이미 취소된 주문 결제 등)은 `409 Conflict`, 요청이 너무 많으면 `429 Too Many Requests`와 `Retry-After`를 쓴다.
+- 세부 오류는 상태 코드를 반복하지 말고 본문에 애플리케이션 오류 코드와 설명 링크로 준다. 표준 형식으로는 `application/problem+json`(RFC 9457)이 있다.
+- `5xx`의 내부 정보(스택 트레이스, 쿼리)는 노출하지 않는다.
+
 Django에서 이 설계를 구현하는 방법은 [[drf-serializer|DRF Serializer와 관계 표현]]에서 다룬다.
+
+## 실무 설계 팁
+
+**API 설계는 URL 경로 설계만이 아니다.** 자원 이름과 식별자, 경로 패턴을 고르는 일과 함께 헤더(인증, 멱등 키, 캐시), 게이트웨이의 레이트 리밋 규칙까지 계약의 일부로 설계한다.
+
+| 팁 | 내용 | 예 |
+| --- | --- | --- |
+| 도메인 모델에서 경로를 뽑는다 | 경로 구조는 도메인의 엔티티와 소속 관계를 따른다 | 장바구니 → `/carts/{cartId}/items/{itemId}` |
+| 메서드를 몇 개로 줄인다 | 팀이 쓰는 메서드와 의미를 정해 둔다. PATCH의 부분 수정 형식처럼 해석이 갈리는 부분은 미리 합의한다 | GET·POST·PUT·DELETE + 합의한 PATCH |
+| 멱등성을 미리 설계한다 | GET·PUT·DELETE는 원래 멱등이다. POST는 클라이언트가 보낸 **멱등 키**로 같은 요청을 한 번만 처리하게 만든다 | `Idempotency-Key: 6f1c…` 헤더, 서버는 키별 결과를 저장해 재시도에 같은 응답 |
+| 상태 코드를 몇 개로 정한다 | 쓰는 코드 집합을 정해 두면 클라이언트 분기가 단순해진다 | 200·201·204·400·401·403·404·409·429·500 |
+| 처음부터 버전을 둔다 | 호환이 깨지는 변경을 새 버전으로 낼 길을 열어 둔다([[semantic-versioning\|유의적 버전]]) | `/v1/orders`, 또는 `Accept` 헤더의 버전 |
+| 의미가 드러나는 경로 | 문서에서 찾기 쉽고 이름만으로 뜻이 통한다 | `/users/{id}/orders` |
+| 일괄 처리는 경로 끝에 키워드 | 여러 건을 한 번에 다루는 엔드포인트를 구분한다 | `POST /orders/batch` |
+| 질의 규칙을 통일한다 | 페이지네이션·정렬·필터의 파라미터 이름과 형식을 모든 목록 API에서 같게 한다([[api-pagination\|API 페이지네이션]]) | `?status=paid&sort=-created_at&limit=20&cursor=…` |
+| 인증 방식을 정한다 | Basic 인증은 피하고 토큰(JWT), OAuth, API 키, 요청 서명 중 소비자에 맞게 고른다([[api-request-signing\|HMAC 요청 서명]]) | `Authorization: Bearer …` |
 
 ## REST 이전: SOAP
 
@@ -104,6 +151,8 @@ REST 이전의 웹 서비스는 이 세 기술을 묶어 썼다. SOAP은 메시�
 - PUT은 전체 교체(멱등), PATCH는 부분 수정(멱등 보장 안 됨), POST는 생성·기타 작업(멱등 아님)이다.
 - 응답에는 적절한 상태 코드(200, 201, 400, 401, 404 …)를 함께 돌려준다.
 
-관련 노트: [[Computer-Science/Network/http|HTTP 프로토콜]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[web-services-and-it-trends|웹 서비스와 IT 신기술 용어]], [[drf-serializer|DRF Serializer와 관계 표현]], [[grpc|gRPC]]
+관련 노트: [[api-architectural-styles|API 아키텍처 스타일]], [[graphql|GraphQL]], [[api-pagination|API 페이지네이션]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[web-services-and-it-trends|웹 서비스와 IT 신기술 용어]], [[drf-serializer|DRF Serializer와 관계 표현]], [[grpc|gRPC]]
+
+더 읽을거리: 「[그런 REST API로 괜찮은가](https://www.youtube.com/watch?v=RP_f5dMoHFc)」(DEVIEW 2017 영상)
 
 참고: [Microsoft REST API 디자인 가이드](https://learn.microsoft.com/ko-kr/azure/architecture/best-practices/api-design)

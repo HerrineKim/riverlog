@@ -5,16 +5,35 @@ summary: "gRPC는 .proto 파일로 서비스 계약을 정의하고, 생성된 �
 tags: ["backend", "api", "http", "grpc", "microservices"]
 source: other
 date: "2026-10-18"
-sources: ["https://www.itworld.co.kr/article/3567853/", "https://grpc.io/docs/", "https://connectrpc.com/docs/introduction"]
+sources: ["https://www.itworld.co.kr/article/3567853/", "https://grpc.io/docs/", "https://connectrpc.com/docs/introduction", "https://bytebytego.com/guides/what-is-grpc", "https://bytebytego.com/guides/how-does-grpc-work"]
 ---
 
-> ITWorld의 「REST의 현실적인 대안, gRPC 프로토콜의 이해」(2023.08)를 바탕으로 재구성한 노트다.
+> ITWorld의 「REST의 현실적인 대안, gRPC 프로토콜의 이해」(2023.08)를 바탕으로 재구성한 노트다. 호출 흐름은 ByteByteGo의 System Design 101 가이드 「[What is gRPC?](https://bytebytego.com/guides/what-is-grpc)」, 「[How does gRPC work?](https://bytebytego.com/guides/how-does-grpc-work)」로 보강했다.
 
 ## gRPC란
 
 gRPC는 구글이 오픈소스로 공개한 **원격 프로시저 호출(RPC, Remote Procedure Call)** 프레임워크다. 다른 서버의 메서드를 로컬 비동기 함수처럼 부른다. 메시지는 **Protocol Buffers(protobuf)** 로 직렬화한 이진 데이터이고, 전송은 **HTTP/2** 위에서 한다. 연결 하나에서 여러 요청을 동시에 주고받고 양방향 스트리밍을 할 수 있다.
 
 핵심은 **계약이 먼저**라는 점이다. 서비스 정의 파일(`.proto`)이 곧 API 표면이고, 서버와 클라이언트는 그 정의에서 생성한 코드(스텁, stub)로 통신한다. 스텁이 직렬화와 I/O를 맡으므로 개발자는 비즈니스 로직만 쓴다.
+
+## 호출 흐름
+
+RPC가 「원격」인 이유는 호출하는 쪽과 실행하는 쪽이 **다른 서버**에 있기 때문이다. 그래도 호출하는 코드에서는 로컬 함수처럼 보인다. 흔한 구성은 바깥에는 REST를, 서비스끼리는 gRPC를 쓰는 것이다.
+
+```text
+[클라이언트] ──REST(JSON)──▶ [주문 서비스 = gRPC 클라이언트]
+                                │ ① 스텁 호출: payment.Charge(req)
+                                │ ② protobuf로 이진 인코딩
+                                │ ③ HTTP/2 프레임으로 전송
+                                ▼
+                         [결제 서비스 = gRPC 서버]
+                                │ ④ 디코딩 → 서버 구현 함수 실행
+                                │ ⑤ 결과를 인코딩해 같은 연결로 응답
+                                ▼
+[클라이언트] ◀──REST(JSON)── [주문 서비스] ⑥ 디코딩한 결과로 응답 조립
+```
+
+인코딩·전송·디코딩은 모두 생성된 스텁과 gRPC 런타임이 맡는다. 이진 인코딩과 HTTP/2의 연결 재사용 덕분에 같은 데이터를 JSON over HTTP/1.1로 보낼 때보다 메시지가 작고 빠르다. 인증, 로드 밸런싱, 타임아웃(deadline) 전파 같은 기능도 프레임워크가 제공한다.
 
 ## 서비스 정의
 
@@ -94,7 +113,7 @@ client.squareNumber({ value: Number(process.argv[2]) }, (err, res) => {
 | 디버깅 | curl·브라우저로 바로 본다 | grpcurl·Postman 같은 전용 도구 |
 | 설정 부담 | 낮다 | 코드 생성과 정의 파일 관리가 든다 |
 
-API 스타일 전체(REST·GraphQL·gRPC) 비교는 [[backend-developer-roadmap|백엔드 개발자 로드맵]]에 있다.
+API 스타일 전체(SOAP·REST·GraphQL·gRPC·WebSocket·Webhook) 비교는 [[api-architectural-styles|API 아키텍처 스타일]]에 있다.
 
 ## 브라우저에서 쓰기
 
@@ -119,4 +138,4 @@ gRPC는 HTTP 트레일러(trailers)로 상태를 전달하는데, 브라우저�
 - 대가는 코드 생성 단계와 정의 파일 관리, 그리고 브라우저 제약이다.
 - **내부 서비스 간 통신은 gRPC, 공개·브라우저 API는 REST**가 기본 선택지다.
 
-관련 노트: [[rest-api|REST API 설계]], [[backend-developer-roadmap|백엔드 개발자 로드맵]], [[http-web-architecture|웹 앱의 요청·응답 구조]]
+관련 노트: [[api-architectural-styles|API 아키텍처 스타일]], [[rest-api|REST API 설계]], [[backend-developer-roadmap|백엔드 개발자 로드맵]], [[http-web-architecture|웹 앱의 요청·응답 구조]]

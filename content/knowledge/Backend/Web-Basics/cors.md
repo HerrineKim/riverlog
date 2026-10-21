@@ -5,8 +5,10 @@ summary: "다른 출처(origin)의 프론트엔드가 API를 호출할 수 있�
 tags: ["http", "security", "backend", "nestjs"]
 source: til
 date: "2026-10-12"
-sources: ["https://riverkim.kr/111", "https://riverkim.kr/112"]
+sources: ["https://riverkim.kr/111", "https://riverkim.kr/112", "https://evan-moon.github.io/2020/05/21/about-cors/", "https://developer.mozilla.org/ko/docs/Web/HTTP/Access_control_CORS"]
 ---
+
+> 요청 시나리오·인증 요청·개발 프록시 부분은 「[CORS는 왜 이렇게 우리를 힘들게 하는걸까?](https://evan-moon.github.io/2020/05/21/about-cors/)」와 MDN 「[교차 출처 리소스 공유 (CORS)](https://developer.mozilla.org/ko/docs/Web/HTTP/Access_control_CORS)」를 바탕으로 보강했다.
 
 프론트엔드(`http://localhost:3000`)에서 백엔드(`http://localhost:8000`)로 회원가입 요청을 보내면 브라우저 콘솔에 CORS 에러가 뜨는 경우가 많다. 이는 서버 오류가 아니라 **브라우저의 보안 장치**다.
 
@@ -26,6 +28,39 @@ sources: ["https://riverkim.kr/111", "https://riverkim.kr/112"]
 | `No 'Access-Control-Allow-Origin' header is present on the requested resource.` | 응답(또는 preflight 응답)에 허용 출처 헤더가 없다. 서버에서 해당 출처를 허용하도록 설정한다 |
 
 네트워크 탭에 같은 URL로 `OPTIONS` 요청이 하나 더 보이는 것은 정상이다.
+
+### 출처를 비교하는 주체는 브라우저
+
+- 서버는 대개 요청을 정상 처리하고 응답을 돌려준다. **응답을 스크립트에 넘길지 막을지는 브라우저가** `Origin` 요청 헤더와 `Access-Control-Allow-Origin` 응답 헤더를 비교해 정한다. 그래서 같은 API가 Postman이나 서버 간 호출에서는 잘 되는데 브라우저에서만 막힌다. CORS는 브라우저 구현의 규칙이다.
+- 막힌 요청도 서버에는 도달했을 수 있다. 단순 요청이라면 서버의 부수 효과(데이터 변경)는 이미 일어났을 수 있으므로, CORS를 CSRF 방어로 착각하지 않는다([[web-security|웹 보안]]).
+- `<img>`, `<script>`, `<link>`로 다른 출처 자원을 불러오는 것은 허용된다. 이때는 `no-cors` 모드라 응답을 JS가 읽을 수 없으므로 CORS 우회 수단이 되지 못한다.
+
+### 세 가지 요청 시나리오
+
+| 시나리오 | 조건 | 흐름 |
+| --- | --- | --- |
+| 단순 요청(simple request) | 메서드가 `GET`·`HEAD`·`POST`, 헤더는 `Accept`·`Accept-Language`·`Content-Language`·`Content-Type` 같은 안전 목록만, `Content-Type`은 `application/x-www-form-urlencoded`·`multipart/form-data`·`text/plain` 중 하나 | 예비 요청 없이 본 요청을 보내고 응답 헤더로 판단한다 |
+| 예비 요청(preflight) | 위 조건을 하나라도 벗어남. `application/json`, `Authorization` 헤더를 쓰면 대부분 여기에 해당 | `OPTIONS`로 먼저 묻고, 허용되면 본 요청 |
+| 인증 정보 포함 요청 | `fetch`의 `credentials: 'include'`, `XMLHttpRequest.withCredentials = true`로 쿠키·인증 헤더를 실어 보냄 | 아래 추가 조건을 모두 만족해야 응답을 읽을 수 있다 |
+
+인증 정보 포함 요청의 추가 조건:
+
+- `Access-Control-Allow-Origin`에 `*`가 아닌 **정확한 출처**를 적는다.
+- `Access-Control-Allow-Credentials: true`를 보낸다.
+- `Access-Control-Allow-Headers`·`Allow-Methods`·`Expose-Headers`에도 `*`를 쓸 수 없고 이름을 나열한다.
+- 쿠키 자체가 실리려면 쿠키의 `SameSite`·`Secure` 설정도 맞아야 한다([[cookie-session|쿠키와 세션]]).
+
+### 그 밖의 응답 헤더
+
+| 헤더 | 쓰임 |
+| --- | --- |
+| `Access-Control-Max-Age` | 예비 요청 결과를 캐시할 초. 같은 요청마다 `OPTIONS`가 반복되는 것을 줄인다. 브라우저마다 상한이 있다 |
+| `Access-Control-Expose-Headers` | JS에서 읽게 허용할 응답 헤더. 기본으로는 `Content-Type` 등 몇 개만 읽힌다 |
+| `Vary: Origin` | 요청 출처에 따라 `Allow-Origin` 값을 바꿔 준다면 붙인다. CDN·브라우저 캐시가 다른 출처의 응답을 재사용하지 않게 한다 |
+
+### 개발 환경의 프록시
+
+로컬 개발에서는 Vite `server.proxy`나 webpack-dev-server `proxy`로 API 요청을 개발 서버가 대신 보내게 하면, 브라우저가 보기에는 같은 출처라 CORS가 생기지 않는다. 운영 환경에는 이 프록시가 없으므로, 리버스 프록시로 프론트엔드와 API를 같은 출처에 두거나 서버에 CORS를 제대로 설정한다.
 
 ## NestJS에서 설정하기
 
@@ -49,6 +84,7 @@ bootstrap();
 
 - CORS 에러는 브라우저가 내는 것이며, 해결은 **서버에서 허용 출처를 설정**하는 것이다.
 - 운영 환경에서는 허용할 프론트엔드 출처를 구체적으로 적는다.
+- 단순 요청이 아니면 `OPTIONS` 예비 요청이 먼저 간다. 쿠키를 실으려면 정확한 출처 + `Allow-Credentials: true`가 필요하다.
 
 관련 노트: [[ajax|AJAX와 HTTP 요청]], [[web-security|웹 보안: CSRF와 XSS]], [[api-security|API 보안 체크리스트]]
 

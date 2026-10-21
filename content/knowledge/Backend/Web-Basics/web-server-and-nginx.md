@@ -1,14 +1,14 @@
 ---
 title: "웹 서버, WAS, 그리고 Nginx"
 concept: "Web Server"
-summary: "정적 자원을 내주는 웹 서버(Apache·Nginx)와 동적 처리를 맡는 WAS(Tomcat 등)의 역할 분담, 리버스 프록시·로드밸런싱, 그리고 Nginx의 location·rewrite·proxy_pass로 404를 다른 서버로 넘기는 설정."
+summary: "정적 자원을 내주는 웹 서버(Apache·Nginx)와 동적 처리를 맡는 WAS(Tomcat 등)의 역할 분담, 리버스 프록시·로드밸런싱, Nginx의 마스터-워커 구조와 겸하는 역할(웹 서버·프록시·캐시·TLS 종료), 그리고 Nginx의 location·rewrite·proxy_pass로 404를 다른 서버로 넘기는 설정."
 tags: ["backend", "web", "http", "architecture", "devops"]
 source: mixed
 date: "2026-10-12"
-sources: ["https://riverkim.kr/249", "https://riverkim.kr/310"]
+sources: ["https://riverkim.kr/249", "https://riverkim.kr/310", "https://bytebytego.com/guides/why-is-nginx-so-popular", "https://bytebytego.com/guides/top-6-most-commonly-used-server-types"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리한 노트다.
+> riverkim.kr에 쓴 글들을 다시 정리한 노트다. 「Nginx의 마스터-워커 구조」는 ByteByteGo의 System Design 101 가이드 「[Why is Nginx so Popular?](https://bytebytego.com/guides/why-is-nginx-so-popular)」를, 「서버의 종류」는 「[Top 6 Most Commonly Used Server Types](https://bytebytego.com/guides/top-6-most-commonly-used-server-types)」를 바탕으로 보강했다.
 
 ## 웹 서버와 WAS
 
@@ -32,6 +32,29 @@ WAS 앞에 웹 서버를 두면 그 웹 서버가 **리버스 프록시**가 된
 | --- | --- | --- |
 | 처리 방식 | 클라이언트(연결)마다 프로세스·스레드를 따로 만든다 | 이벤트 기반으로 적은 수의 워커가 많은 연결을 처리한다 |
 | 장점 | 오래 쓰여 안정적이고 모듈 생태계가 넓다 | 동시 접속이 많아도 메모리·CPU 부담이 적다 |
+
+### Nginx의 마스터-워커 구조
+
+Nginx가 널리 쓰이는 이유는 **마스터-워커 프로세스 모델**에 있다.
+
+```text
+master 프로세스  ─ 설정 읽기·검증, 포트 열기, 워커 생성·감시, 무중단 설정 재적재(reload)
+  ├─ worker 1   ─ 이벤트 루프 하나로 수천 개 연결을 논블로킹 I/O로 처리
+  ├─ worker 2      (보통 CPU 코어 수만큼 띄운다)
+  └─ worker N
+```
+
+- 워커는 연결마다 스레드를 만들지 않고, epoll 같은 I/O 다중화로 준비된 연결만 골라 처리한다. 원리는 [[event-loop-server|비동기 서버의 이벤트 루프]]에 있다.
+- 워커 하나가 죽어도 마스터가 새로 띄우고, `nginx -s reload`는 새 설정의 워커를 띄운 뒤 옛 워커가 처리 중인 요청을 마치고 내려가게 해 끊김 없이 설정을 바꾼다.
+
+이 구조 덕분에 Nginx 하나가 여러 역할을 겸한다.
+
+| 역할 | 하는 일 |
+| --- | --- |
+| 고성능 웹 서버 | 정적 파일을 적은 자원으로 빠르게 내준다 |
+| 리버스 프록시·로드 밸런서 | 뒤쪽 여러 서버로 요청을 나눈다(라운드 로빈, 최소 연결, IP 해시) |
+| 콘텐츠 캐시 | 뒤쪽 서버의 응답을 디스크·메모리에 저장해 같은 요청에 바로 답한다 |
+| SSL/TLS 종료 | HTTPS 암호화를 앞단에서 풀어 뒤쪽 서버는 평문 HTTP만 다루게 한다 |
 
 ### Tomcat과 Spring 배포
 
@@ -66,11 +89,25 @@ server {
 
 기존 설정에 404 처리(불필요한 슬래시 제거, 소문자 변환 후 `/404.html` 보여 주기 등)가 이미 있다면, 그 폴백 지점에서 대상만 새 서버로 바꾸면 된다.
 
+## 서버의 종류
+
+"서버"는 역할로 부르는 이름이다. 웹 서버 말고도 인터넷을 받치는 서버가 여럿 있다.
+
+| 종류 | 하는 일 | 자세히 |
+| --- | --- | --- |
+| 웹 서버 | 웹 사이트를 호스팅하고 HTTP로 콘텐츠를 내준다 | 이 노트 |
+| 메일 서버 | 메일을 보내고(SMTP) 받고(IMAP·POP3) 다른 메일 서버로 전달한다 | [[daemon-and-systemd\|데몬과 systemd]]의 메일 서버 예 |
+| DNS 서버 | 도메인 이름을 IP 주소로 바꿔 준다 | [[dns\|DNS]] |
+| 프록시 서버 | 클라이언트와 다른 서버 사이에서 중계한다. 보안, 캐싱, 익명성 | [[proxy\|프록시]] |
+| FTP 서버 | 네트워크로 파일을 주고받게 한다. 지금은 암호화된 SFTP·HTTPS 업로드가 주로 쓰인다 | |
+| 오리진 서버 | 콘텐츠의 원본을 가진 서버. CDN 엣지 서버가 여기서 받아 캐시해 사용자 가까이서 내준다 | [[cdn\|CDN]] |
+
 ## 정리
 
 - 웹 서버는 정적 자원과 앞단 관리(프록시·캐시·로드밸런싱·헬스 체크)를, WAS는 동적 처리를 맡는다.
 - Apache는 연결마다 프로세스·스레드, Nginx는 이벤트 기반이라 동시 접속에 강하다.
+- Nginx는 마스터가 설정과 워커를 관리하고, 워커가 이벤트 루프로 연결을 처리한다. 그래서 웹 서버·프록시·캐시·TLS 종료를 한 프로세스 묶음으로 겸한다.
 - Spring Boot는 Tomcat을 내장한 jar로 배포하는 것이 일반적이다.
 - Nginx에서는 `location`으로 묶고, `rewrite`로 경로를 바꾸고, `proxy_pass`로 다른 서버에 넘긴다.
 
-관련 노트: [[http-web-architecture|웹 앱의 요청·응답 구조]], [[vm-vs-container|VM과 컨테이너]], [[web-scalability-components|웹 확장성의 구성 요소]], [[cdn|CDN]], [[spring-singleton-thread-safety|스프링의 싱글톤 빈과 요청 스레드]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]]
+관련 노트: [[http-web-architecture|웹 앱의 요청·응답 구조]], [[vm-vs-container|VM과 컨테이너]], [[web-scalability-components|웹 확장성의 구성 요소]], [[cdn|CDN]], [[spring-singleton-thread-safety|스프링의 싱글톤 빈과 요청 스레드]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]]

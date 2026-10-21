@@ -5,10 +5,10 @@ summary: "웹 검색엔진은 크롤러가 링크 그래프를 따라 페이지�
 tags: ["backend", "search", "algorithm", "data-structure", "graph", "seo"]
 source: other
 date: "2026-10-17"
-sources: ["https://tali.kr/2188", "https://xo.dev/articles/how-search-engine-works", "https://idlab.tistory.com/8", "https://m.blog.naver.com/hoebok/20147866069", "https://developers.google.com/search/docs/fundamentals/how-search-works", "https://developers.google.com/search/docs/appearance/ranking-systems-guide", "https://www.google.com/search/howsearchworks/how-search-works/rigorous-testing/", "https://www.navercorp.com/media/pressReleasesDetail?seq=31528"]
+sources: ["https://tali.kr/2188", "https://xo.dev/articles/how-search-engine-works", "https://idlab.tistory.com/8", "https://m.blog.naver.com/hoebok/20147866069", "https://developers.google.com/search/docs/fundamentals/how-search-works", "https://developers.google.com/search/docs/appearance/ranking-systems-guide", "https://www.google.com/search/howsearchworks/how-search-works/rigorous-testing/", "https://www.navercorp.com/media/pressReleasesDetail?seq=31528", "https://bytebytego.com/guides/how-do-search-engines-work"]
 ---
 
-> TALI.KR의 「구글이 직접 말하는 검색엔진의 원리」(2023.08), blurfx의 「[검색 엔진은 어떻게 작동하는가](https://xo.dev/articles/how-search-engine-works)」(2023.04), idLAB의 「네이버 검색엔진의 특징과 알고리즘」(2020.12), 네이버의 「네이버 통합검색의 원리」(2007, 블로그 재게시본)를 바탕으로 재구성하고, 구글 검색 센터 문서와 네이버 보도자료(2024.02)로 최신화한 노트다. 역인덱스를 만드는 과정과 TF-IDF·BM25 공식은 [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]]에 있다.
+> TALI.KR의 「구글이 직접 말하는 검색엔진의 원리」(2023.08), blurfx의 「[검색 엔진은 어떻게 작동하는가](https://xo.dev/articles/how-search-engine-works)」(2023.04), idLAB의 「네이버 검색엔진의 특징과 알고리즘」(2020.12), 네이버의 「네이버 통합검색의 원리」(2007, 블로그 재게시본)를 바탕으로 재구성하고, 구글 검색 센터 문서와 네이버 보도자료(2024.02)로 최신화한 노트다. 크롤링·색인·서빙의 3단계 뼈대는 ByteByteGo의 System Design 101 가이드 「[How Do Search Engines Work?](https://bytebytego.com/guides/how-do-search-engines-work)」를 함께 참고했다. 역인덱스를 만드는 과정과 TF-IDF·BM25 공식은 [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]]에 있다.
 
 ## 웹 검색엔진이란
 
@@ -167,5 +167,7 @@ PR(p) = (1 − d) / N  +  d × Σ PR(q) / L(q)      q: p를 링크한 페이지
 - 색인은 중복을 묶어 대표 URL을 고르고, 샤딩된 역인덱스에 문서 속성·링크·품질 신호를 함께 담는다.
 - 랭킹은 역인덱스 교집합 → BM25·정적 점수 → 모델 재정렬의 다단계이며, PageRank는 그중 링크 신호 하나다.
 - 네이버는 컬렉션·스마트블록 단위로 결과를 묶고 블록 순서까지 랭킹한다. 구글과 네이버 모두 신뢰·관련성·의도를 조합한다.
+
+더 읽을거리: 「[쉽게 설명한 구글의 페이지 랭크 알고리즘](https://sungmooncho.com/2012/08/26/pagerank/)」
 
 관련 노트: [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]], [[seo-basics|SEO 기초: 크롤링부터 메타 태그까지]], [[google-search-operators|구글 검색 연산자]], [[bfs|너비 우선 탐색 (BFS)]], [[graph-basics|그래프의 기본과 표현 방법]], [[heap-priority-queue|힙과 우선순위 큐]], [[text-similarity|문자열·문서 유사도: 편집 거리와 코사인 유사도]], [[web-crawler-at-scale|대규모 웹 크롤러 설계]]

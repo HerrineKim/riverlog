@@ -5,10 +5,10 @@ summary: "확장 가능한 웹 애플리케이션을 이루는 구성 요소(DNS
 tags: ["backend", "architecture", "scalability", "cache", "msa", "security"]
 source: other
 date: "2026-10-20"
-sources: ["https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db"]
+sources: ["https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db", "https://bytebytego.com/guides/10-essential-components-of-a-production-web-application", "https://bytebytego.com/guides/8-must-know-scalability-strategies", "https://bytebytego.com/guides/a-crash-course-on-architectural-scalability", "https://bytebytego.com/guides/how-to-scale-a-website-to-support-millions-of-users"]
 ---
 
-> Olga Mitroshyna의 「[Software Architecture & System Design: I wish I had known about this earlier…](https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db)」(2022.05)를 바탕으로 재구성한 노트다. 원 자료는 Artur Ejsmont의 책 『Web Scalability for Startup Engineers』(2015)다.
+> Olga Mitroshyna의 「[Software Architecture & System Design: I wish I had known about this earlier…](https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db)」(2022.05)를 바탕으로 재구성한 노트다. 운영 요소(CI/CD, 모니터링, 알림)는 ByteByteGo의 System Design 101 가이드 「[10 Essential Components of a Production Web Application](https://bytebytego.com/guides/10-essential-components-of-a-production-web-application)」로, 확장의 병목·전략과 단계별 성장 과정은 같은 가이드의 「[8 Must-Know Scalability Strategies](https://bytebytego.com/guides/8-must-know-scalability-strategies)」, 「[A Crash Course on Architectural Scalability](https://bytebytego.com/guides/a-crash-course-on-architectural-scalability)」, 「[Scaling Websites for Millions of Users](https://bytebytego.com/guides/how-to-scale-a-website-to-support-millions-of-users)」로 보강했다. 원 자료는 Artur Ejsmont의 책 『Web Scalability for Startup Engineers』(2015)다.
 
 ## 확장성이란
 
@@ -51,6 +51,16 @@ sources: ["https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had
 | ⑩ | CDN | 정적 파일을 사용자 가까이에서 내준다. [[cdn\|CDN]] |
 | ⑪ | 큐 워커 | 큐의 메시지를 꺼내 처리하는 별도 서버 |
 
+지도에 그려지지 않지만 운영 중인 웹 애플리케이션에 빠지지 않는 요소가 셋 더 있다.
+
+| 구성 요소 | 하는 일 |
+| --- | --- |
+| CI/CD 파이프라인 | 코드를 빌드·테스트해 서버 인스턴스에 배포한다. 지도의 모든 서버는 이 파이프라인으로 바뀐다 |
+| 모니터링 | 로그와 지표를 모아 시스템이 정상인지 분석한다. 에러 추적(Sentry), 지표 수집과 대시보드(Prometheus, Grafana) |
+| 알림 | 문제가 생기면 메신저·온콜 도구로 개발자에게 바로 알린다 |
+
+로드 밸런서와 리버스 프록시의 역할 차이는 [[load-balancer|로드 밸런서]]와 [[api-gateway|API 게이트웨이]]에 정리했다.
+
 ### 3-Tier로 줄여 보기
 
 지도를 세 티어로 줄이면 흔히 말하는 3-Tier 아키텍처다. 모든 기능이 애플리케이션 하나에 들어 있으면 **모놀리식(monolithic)** 이라 한다.
@@ -72,6 +82,45 @@ FE/BE 구분은 Presentation과 「나머지 전부」로 나눈 모델이다. �
 | 데이터 분할(data partitioning) | 데이터 집합을 키 기준으로 쪼개 여러 서버에 둔다 | 효과가 크지만 복잡도가 가장 높다 |
 
 **복제부터 시도하고, 기능 분할과 데이터 분할은 필요해질 때 한다.** 기능 분할은 엔지니어가 10~20명을 넘어 팀이 나뉠 때쯤 의미가 생긴다.
+
+### 확장을 막는 병목
+
+확장성은 「부하가 늘 때 **비용 대비 효과가 맞는 전략을 반복해서** 적용할 수 있는가」로도 볼 수 있다. 같은 전략을 반복할 수 없거나 그 비용이 감당할 수 없게 되는 지점이 확장의 한계다. 그 한계를 만드는 병목은 셋이다.
+
+| 병목 | 왜 막히나 | 푸는 원칙 |
+| --- | --- | --- |
+| 중앙 집중 구성 요소 | 하나뿐인 DB·락·코디네이터가 처리량 상한이자 단일 장애점이 된다 | 무상태로 만들고 복제·분할한다 |
+| 지연이 큰 구성 요소 | 느린 외부 호출·무거운 계산이 요청 경로를 붙잡는다 | 비동기 처리, 캐시 |
+| 강한 결합 | 한 구성 요소만 늘릴 수 없고 함께 늘려야 한다 | 느슨한 결합, 메시지 큐 |
+
+그래서 확장 전략은 대부분 **무상태(statelessness), 느슨한 결합(loose coupling), 비동기 처리(asynchronous processing)** 세 원칙의 구현이다.
+
+| 전략 | 하는 일 |
+| --- | --- |
+| 무상태 서비스 | 서버가 특정 요청의 데이터를 들고 있지 않아 아무 서버나 요청을 받는다 |
+| 수평 확장 | 서버를 더해 일을 나눈다 |
+| 로드 밸런싱 | 요청을 여러 서버에 고르게 나눈다 |
+| 오토스케일링 | 실시간 트래픽에 맞춰 서버 수를 자동으로 늘리고 줄인다 |
+| 캐시 | 반복되는 요청을 메모리에서 답해 DB 부하를 줄인다 |
+| DB 복제 | 읽기를 여러 노드로 나누고 중복성을 높인다 |
+| 샤딩 | 데이터를 나눠 쓰기와 읽기를 모두 늘린다 |
+| 비동기 처리 | 오래 걸리는 작업을 백그라운드 워커로 넘겨 요청 경로를 비운다 |
+
+### 단계별로 커지는 과정
+
+서버 한 대에서 시작한 서비스는 대개 이 순서로 커진다. 단계마다 그때의 병목 하나를 푼다.
+
+```text
+1. 서버 한 대 (앱 + DB)
+2. 앱 서버와 DB 서버 분리            ← 자원 경쟁 해소
+3. 앱 서버 여러 대                   ← 앱 처리량 한계
+4. 앞에 로드 밸런서                  ← 서버 간 부하 분배
+5. 읽기 복제본으로 읽기·쓰기 분리     ← DB 읽기 병목
+6. 캐시 계층 추가, DB 분할            ← DB 한 대의 한계 (수직 확장은 상한이 있다)
+7. 기능별 서비스로 분리(SOA·MSA)      ← 팀과 기능의 결합
+```
+
+DB 쪽에서 무엇을 먼저 쓸지(인덱스·커넥션 풀·복제본·파티셔닝·샤딩의 순서)는 [[database-scaling|데이터베이스 확장과 성능 최적화]]에 있다.
 
 기능 분할의 끝인 MSA(Micro Service Architecture)에서는 데이터 흐름에 새 요소가 생긴다.
 
@@ -237,4 +286,6 @@ HTTP 캐시는 **읽기 관통(read-through)** 방식이다. 클라이언트는 
 - 캐시는 적중률이 전부이고, 읽기가 많은 곳에 둔다. 느린 일은 메시지 큐로 비동기 처리한다.
 - **확장성은 부품을 늘리는 기술이면서, 자동화와 작은 팀으로 사람의 한계를 넘는 기술이다.**
 
-관련 노트: [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[database-sharding|데이터베이스 샤딩]], [[http-web-architecture|웹 앱의 요청·응답 구조]]
+더 읽을거리: 「[10만명 접속을 허용하는 시스템 만들기](https://brunch.co.kr/@jowlee/102)」(한 서버에서 관리형 DB·로드 밸런서·CDN·캐시·읽기 복제본으로 단계적으로 키우는 과정), 「[Awesome Scalability](https://github.com/binhnguyennus/awesome-scalability)」(확장성·가용성·안정성·성능 사례 글 모음)
+
+관련 노트: [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[event-driven-architecture|이벤트 기반 아키텍처 설계]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[database-sharding|데이터베이스 샤딩]], [[http-web-architecture|웹 앱의 요청·응답 구조]]

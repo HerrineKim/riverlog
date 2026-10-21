@@ -5,7 +5,10 @@ summary: "SQL 명령어 분류(DDL·DML·DCL)와 관계형 데이터베이스에
 tags: ["sql", "database", "mysql", "sqlite", "certificate"]
 source: mixed
 date: "2026-10-20"
+sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/"]
 ---
+
+> 여러 자료를 종합한 노트에, SQL 다섯 분류는 ByteByteGo의 System Design 101 가이드 「[What is the Best Way to Learn SQL?](https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql)」를, JOIN은 「[How do SQL Joins Work?](https://bytebytego.com/guides/how-do-sql-joins-work)」를 바탕으로 보강했다.
 
 SQL(Structured Query Language)은 RDBMS에서 데이터를 관리하기 위해 설계된 언어다. ORM을 쓰더라도 실제로 DB에 전달되는 것은 SQL이므로, 기본 문법을 알면 ORM이 만드는 쿼리를 이해하고 문제를 진단할 수 있다.
 
@@ -18,6 +21,18 @@ SQL(Structured Query Language)은 RDBMS에서 데이터를 관리하기 위해 �
 | DDL (정의어) | 스키마·테이블·뷰·인덱스 등 구조 정의 | `CREATE`, `ALTER`, `DROP`, `TRUNCATE` |
 | DML (조작어) | 데이터 조회·삽입·수정·삭제 | `SELECT`, `INSERT`, `UPDATE`, `DELETE` |
 | DCL (제어어) | 권한과 트랜잭션 제어 | `GRANT`, `REVOKE`, `COMMIT`, `ROLLBACK` |
+
+분류를 더 잘게 나누면 다섯 가지다. 조회만 따로 **DQL**(질의어, `SELECT`), 트랜잭션 제어를 따로 **TCL**(`COMMIT`, `ROLLBACK`, `SAVEPOINT`)로 둔다.
+
+| 5분류 | 명령어 | 주로 쓰는 사람 |
+| --- | --- | --- |
+| DDL | `CREATE`, `ALTER`, `DROP` | 백엔드 개발자, DBA |
+| DQL | `SELECT` | 모두. 데이터 분석가는 이것이 대부분이다 |
+| DML | `INSERT`, `UPDATE`, `DELETE` | 백엔드 개발자 |
+| DCL | `GRANT`, `REVOKE` | DBA, 운영 |
+| TCL | `COMMIT`, `ROLLBACK` | 백엔드 개발자 |
+
+역할에 따라 필요한 범위가 다르므로, 분석이 목적이면 DQL(조회·집계·조인)부터 깊게 익힌다.
 
 `GRANT`는 사용자에게 권한을 부여하고 `REVOKE`는 회수한다. `COMMIT`·`ROLLBACK`·`SAVEPOINT`는 트랜잭션 제어어(TCL)로 따로 나누기도 한다([[transaction|트랜잭션과 회복]]). SQL은 「무엇을 원하는지」만 적는 비절차적 언어이고, 그 바탕인 관계대수는 「어떻게 구할지」를 연산 순서로 적는 절차적 언어다([[sql-and-relational-algebra|관계대수와 DB 설계]]).
 
@@ -110,6 +125,28 @@ WHERE 판매액 > 1000000      -- 행 조건: 그룹 만들기 전
 GROUP BY 광역시
 HAVING COUNT(*) >= 4;       -- 그룹 조건: 집계 후
 ```
+
+## JOIN: 테이블 합치기
+
+JOIN은 두 테이블을 공통 열(대개 외래 키)로 이어 붙인다. 종류는 **짝이 없는 행을 어느 쪽에서 살리느냐**로 갈린다.
+
+```sql
+SELECT o.id, c.name
+FROM orders o
+LEFT JOIN customers c ON o.customer_id = c.id;
+```
+
+| 종류 | 결과 | 짝이 없을 때 |
+| --- | --- | --- |
+| `INNER JOIN` | 양쪽 모두에 짝이 있는 행만 | 버린다 |
+| `LEFT JOIN` | 왼쪽 테이블의 모든 행 + 오른쪽의 짝 | 오른쪽 열을 `NULL`로 채운다 |
+| `RIGHT JOIN` | 오른쪽 테이블의 모든 행 + 왼쪽의 짝 | 왼쪽 열을 `NULL`로 채운다 |
+| `FULL OUTER JOIN` | 어느 한쪽에라도 있는 모든 행 | 없는 쪽을 `NULL`로 채운다. MySQL은 지원하지 않아 `LEFT`와 `RIGHT`의 `UNION`으로 만든다 |
+
+- `RIGHT JOIN`은 테이블 순서를 바꾼 `LEFT JOIN`과 같아서 실무에서는 `LEFT JOIN`으로 통일하는 경우가 많다.
+- "짝이 없는 행만" 찾으려면 `LEFT JOIN` 후 `WHERE 오른쪽.id IS NULL`로 거른다(예: 주문이 없는 고객).
+- 조건 없이 모든 조합을 만드는 `CROSS JOIN`, 같은 테이블끼리 잇는 셀프 조인도 있다. 관계대수의 조인 연산은 [[sql-and-relational-algebra|관계대수와 DB 설계]]에 있다.
+- 조인 종류를 벤 다이어그램으로 고르고 해당 SQL을 바로 받아 보려면 「[SQL Joins Visualizer](https://sql-joins.leopard.in.ua/)」가 편하다.
 
 ## 핵심 정리
 

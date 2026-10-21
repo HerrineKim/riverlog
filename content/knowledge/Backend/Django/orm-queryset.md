@@ -3,7 +3,8 @@ title: "Django ORM과 QuerySet"
 concept: "ORM"
 summary: "Django ORM으로 SQL 없이 객체 문법으로 CRUD·조건 조회·정렬·집계를 수행하는 방법과, 각 API가 어떤 SQL이 되는지 대응표로 정리한다."
 tags: ["django", "orm", "database", "sql"]
-source: til
+sources: ["https://django-orm-cookbook-ko.readthedocs.io/en/latest/index.html", "https://docs.djangoproject.com/en/stable/ref/models/querysets/"]
+source: mixed
 date: "2026-10-13"
 ---
 
@@ -78,11 +79,31 @@ Article.objects.annotate(
 
 필수 필드를 빼고 생성하면 `NOT NULL constraint failed`, 이미 있는 id로 넣으면 `UNIQUE constraint failed`가 난다. ORM이 SQL로 번역할 뿐이라 오류도 DB의 것이 그대로 올라온다.
 
+## 자주 쓰는 추가 기법
+
+| 하고 싶은 것 | ORM | 요점 |
+| --- | --- | --- |
+| 같은 행의 다른 필드와 비교·계산 | `filter(balance__gt=F('age'))`, `update(balance=F('balance') + 100)` | `F`는 값을 파이썬으로 가져오지 않고 SQL 안에서 계산한다. 동시 갱신 경쟁도 피한다 |
+| 조건 제외 | `exclude(country='KR')` | `WHERE NOT (...)` |
+| 서브쿼리 | `annotate(last=Subquery(Order.objects.filter(user=OuterRef('pk')).values('created')[:1]))` | `OuterRef`로 바깥 쿼리의 행을 참조한다 |
+| 쿼리셋 합치기 | `qs1.union(qs2)`, `qs1 \| qs2` | `union`은 SQL `UNION`이라 같은 컬럼 구성이 필요하다 |
+| 필요한 컬럼만 | `values_list('id', flat=True)`, `only('name')` | 큰 텍스트 컬럼을 읽지 않는다 |
+| 중복 제거 | `values('country').distinct()` | |
+| 여러 행 한 번에 생성 | `bulk_create([...])` | INSERT 한 번. `save()`와 시그널을 거치지 않는다 |
+| 정방향 FK를 조인으로 함께 | `select_related('team')` | 1:1·N:1을 JOIN 한 번으로. N+1을 막는다 |
+| 역방향·M:N을 묶어서 | `prefetch_related('orders')` | 별도 쿼리 한 번에 `IN (...)`으로 모아 붙인다 |
+| 대소문자 무시 정렬 | `order_by(Lower('name'))` | DB 함수(`django.db.models.functions`)를 정렬·주석에 쓴다 |
+| DB에서 다시 읽기 | `obj.refresh_from_db()` | `F`로 갱신한 뒤 실제 값을 볼 때 |
+| 쿼리 횟수 고정 | `self.assertNumQueries(2, func)` | N+1이 다시 생기면 테스트가 실패한다 |
+
+모델 필드의 `null=True`는 DB 컬럼이 NULL을 허용한다는 뜻이고, `blank=True`는 폼 검증에서 빈 값을 허용한다는 뜻이다. 문자열 필드는 NULL과 빈 문자열 두 가지 "없음"이 생기지 않도록 `null` 없이 `blank=True`만 쓰는 것이 관례다. 질문 단위의 레시피 모음은 「[장고 ORM 요리책](https://django-orm-cookbook-ko.readthedocs.io/en/latest/index.html)」에 있다.
+
 ## 핵심 정리
 
 - `Model.objects`(Manager) → QuerySet API(`all`, `filter`, `get`, `order_by`, `values` …).
 - 단건은 `get(pk=)`, 다건·조건은 `filter()`, OR은 `Q`.
 - 전체 집계는 `aggregate`(dict 반환), 그룹별 계산은 `values().annotate()`.
 - 의심스러우면 `queryset.query`로 SQL을 본다.
+- 연관은 `select_related`(정방향 JOIN)·`prefetch_related`(역방향 IN 묶음)로 N+1을 막고, `assertNumQueries`로 고정한다.
 
-관련 노트: [[sql-basics|SQL 기초]], [[model-migration|Django Model과 Migration]], [[relationships|Django 모델 관계 (1:1, 1:N, M:N)]]
+관련 노트: [[sql-basics|SQL 기초]], [[model-migration|Django Model과 Migration]], [[relationships|Django 모델 관계 (1:1, 1:N, M:N)]], [[jpa-persistence-context|JPA와 영속성 컨텍스트]]

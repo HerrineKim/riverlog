@@ -5,10 +5,11 @@ summary: "로그인 상태를 서버 저장소에 두는 세션 방식과, 서�
 tags: ["backend", "auth", "security", "jwt", "http"]
 source: other
 date: "2026-10-17"
-sources: ["https://80000coding.notion.site/8016475c9c904c8ea1c4100af15728f3", "https://dev.gmarket.com/45"]
+sources: ["https://80000coding.notion.site/8016475c9c904c8ea1c4100af15728f3", "https://dev.gmarket.com/45", "https://bytebytego.com/guides/token-cookie-session", "https://bytebytego.com/guides/session-cookie-jwt-token-sso-and-oauth-2", "https://bytebytego.com/guides/explaining-sessions-tokens-jwt-sso-and-oauth-in-one-diagram", "https://bytebytego.com/guides/what's-the-difference-between-session-based-authentication-and-jwts", "https://bytebytego.com/guides/jwt-101-key-to-stateless-authentication", "https://bytebytego.com/guides/explaining-json-web-token-jwt-to-a-10-year-old-kid", "https://bytebytego.com/guides/cookies-vs-sessions-vs-jwt-vs-paseto", "https://github.com/paseto-standard/paseto-spec"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「세션과 토큰 기반 인증방식」을 바탕으로 재구성하고, G마켓 기술 블로그의 「[인증/인가는 어디에 어떻게 구현해야 할까?](https://dev.gmarket.com/45)」(2022.09)로 다중 서버 세션 부분을 보탠 노트다.
+> 신원 관리 방식의 계보, JWT 서명 방식, PASETO 부분은 ByteByteGo의 System Design 101 가이드 「[Token, Cookie, Session](https://bytebytego.com/guides/token-cookie-session)」, 「[JWT 101](https://bytebytego.com/guides/jwt-101-key-to-stateless-authentication)」, 「[Cookies vs Sessions vs JWT vs PASETO](https://bytebytego.com/guides/cookies-vs-sessions-vs-jwt-vs-paseto)」 등을 바탕으로 재구성해 보탰다.
 
 ## 왜 인증 방식이 필요한가
 
@@ -25,6 +26,20 @@ HTTP는 상태가 없다(stateless). 요청마다 "이 사람이 아까 로그�
 | 수평 확장 | 서버 간 세션 공유 필요(Redis 등) | 비밀키·공개키만 공유하면 된다 |
 | 요청 크기 | 작다 | 토큰이 길어 요청마다 수백 바이트 이상 |
 | 잘 맞는 곳 | 같은 도메인의 웹 앱, 즉시 무효화가 중요한 서비스 | 모바일 앱, 여러 서비스가 같은 신원을 쓰는 API, MSA |
+
+### 신원 관리 방식의 계보
+
+로그인은 세 단계로 나뉜다. **식별(identification)** 은 "나는 누구다"라고 밝히는 것, **인증(authentication)** 은 그 주장이 맞는지 확인하는 것, **인가(authorization)** 는 확인된 사용자에게 권한을 주는 것이다. 아래 방식들은 대부분 앞의 둘을 다루고, OAuth 2.0만 인가 위임을 다룬다. 단순한 것부터 차례로 쌓였다.
+
+| 방식 | 동작 | 해결한 것 | 남은 한계 |
+| --- | --- | --- | --- |
+| HTTP Basic (`WWW-Authenticate`) | 브라우저가 띄운 창에 아이디·비밀번호를 넣고, 요청마다 Base64로 실어 보낸다 | 가장 단순한 인증 | 로그아웃·만료 같은 로그인 수명 주기를 서버가 제어할 수 없다. 내부 도구 외에는 거의 쓰지 않는다 |
+| 세션-쿠키 | 서버가 세션을 저장하고 브라우저는 세션 ID만 쿠키로 든다 | 로그인 수명을 서버가 제어 | 쿠키는 브라우저 중심이라 모바일 앱·여러 도메인에서 다루기 번거롭다 |
+| 토큰 | 신원을 담은 토큰을 클라이언트가 들고 `Authorization` 헤더로 보낸다 | 브라우저 밖 클라이언트와 호환 | 토큰 형식·검증 방식이 제각각이다 |
+| JWT | 토큰 형식을 표준화하고 서명을 토큰 안에 넣는다 | 서버가 세션 저장 없이 검증 | 즉시 무효화가 어렵다(아래 대책 참고) |
+| SSO | 중앙 인증 서버 한 곳에 로그인하면 여러 서비스가 그 결과를 믿는다 | 한 번 로그인으로 여러 사이트 | 중앙 서버가 단일 장애점이 된다 → [[oauth2\|OAuth 2.0]]의 SSO 섹션 |
+| OAuth 2.0 | 비밀번호 대신 범위가 제한된 토큰으로 다른 서비스의 자원 접근을 위임 | 제3자 앱에 비밀번호를 주지 않는다 | 인증은 그 위의 OIDC가 맡는다 → [[oauth2\|OAuth 2.0]] |
+| QR 코드 로그인 | PC 화면의 QR에 일회용 난수 토큰을 담고, 이미 로그인된 휴대폰이 스캔해 그 토큰을 승인한다 | PC에서 비밀번호를 치지 않는다 | 토큰 수명을 짧게, 승인 화면에 어느 기기·위치의 요청인지 보여 줘야 피싱을 막는다 |
 
 ## 세션 기반 인증
 
@@ -75,6 +90,38 @@ Header와 Payload는 **인코딩**일 뿐이라 누구나 디코딩해 읽을 �
 - Payload는 암호화되지 않는다. 비밀번호, 개인정보는 넣지 않는다.
 - 서버가 상태를 갖지 않으므로 확장이 쉽고, 여러 서비스가 같은 공개키로 토큰을 검증할 수 있다.
 
+### 클레임의 종류
+
+| 종류 | 의미 | 예 |
+| --- | --- | --- |
+| 등록된 클레임(registered) | 표준(RFC 7519)이 이름과 뜻을 정해 둔 것. 선택 사항이지만 쓰면 뜻을 지킨다 | `iss`(발급자), `sub`, `aud`(대상 서비스), `exp`, `nbf`(이전엔 무효), `iat`, `jti` |
+| 공개 클레임(public) | 여러 시스템이 함께 쓰려고 IANA에 등록하거나 URI로 충돌을 피한 이름 | OIDC의 `email`, `name` |
+| 비공개 클레임(private) | 발급자와 소비자가 합의해 쓰는 이름 | `role`, `tenantId` |
+
+검증하는 쪽은 서명뿐 아니라 `exp`·`nbf`·`iss`·`aud`까지 확인한다. 특히 `aud`를 보지 않으면 다른 서비스용으로 발급된 토큰이 내 서비스에서 통한다.
+
+### 서명 방식: 대칭과 비대칭
+
+| 방식 | 알고리즘 예 | 서명 키 / 검증 키 | 맞는 상황 |
+| --- | --- | --- | --- |
+| 대칭 서명 | HS256 (HMAC-SHA256) | 같은 비밀키 하나 | 발급과 검증을 같은 서버(또는 신뢰하는 한 팀)가 할 때. 검증하는 모든 곳이 비밀키를 가져야 하므로 그중 하나만 새도 토큰을 위조할 수 있다 |
+| 비대칭 서명 | RS256(RSA), ES256(ECDSA), EdDSA | 개인키로 서명, 공개키로 검증 | 인증 서버 한 곳이 발급하고 여러 서비스가 검증할 때. 공개키는 JWKS(`/.well-known/jwks.json`)로 배포하고 `kid`로 키를 교체한다 |
+
+**검증할 알고리즘은 서버가 정해 둔다.** 토큰 Header의 `alg`를 그대로 믿으면 `alg: none`(서명 없음)이나, RS256 공개키를 HS256 비밀키로 착각하게 만드는 **알고리즘 혼동(algorithm confusion)** 공격에 뚫린다. 라이브러리에 허용 알고리즘 목록을 명시한다.
+
+## PASETO: 설정 실수를 줄인 대안
+
+**PASETO(Platform-Agnostic Security Tokens)** 는 JWT의 이런 함정을 없애려고 만든 토큰 형식이다. 알고리즘을 Header에서 고르게 하지 않고 **버전(`v4`)과 용도(`local`·`public`)가 암호 방식을 고정**한다.
+
+| 구분 | JWT(JOSE) | PASETO |
+| --- | --- | --- |
+| 알고리즘 선택 | 토큰의 `alg`로 지정. 선택지가 많아 잘못 고르거나 검증을 빼먹기 쉽다 | 버전이 정한다. 예: `v4.local`은 대칭 암호화, `v4.public`은 Ed25519 서명 |
+| 페이로드 | 서명만 하면 누구나 읽는다(암호화하려면 JWE를 따로 쓴다) | `local`은 암호화까지 하므로 내용이 숨겨진다 |
+| `none` 같은 위험한 선택지 | 표준에 있다 | 없다 |
+| 생태계 | OIDC·OAuth와 맞물려 사실상 표준 | 라이브러리·IdP 지원이 JWT보다 좁다 |
+
+토큰을 자체 시스템 안에서만 주고받는다면 PASETO가 실수 여지를 줄인다. OIDC처럼 외부 표준과 맞물리는 곳에서는 JWT를 쓰되 허용 알고리즘을 고정한다.
+
 ## 토큰 방식의 약점과 대책
 
 토큰은 **발급하면 만료될 때까지 유효**하다. 탈취당하면 서버가 막을 방법이 없다는 것이 가장 큰 약점이다. 그래서 실무에서는 아래 대책을 조합한다.
@@ -106,6 +153,7 @@ Header와 Payload는 **인코딩**일 뿐이라 누구나 디코딩해 읽을 �
 - 세션은 상태를 서버에, 토큰은 상태를 토큰 안에 둔다. 차이는 **즉시 무효화**와 **확장성** 사이의 거래다.
 - 세션 ID는 의미 없는 열쇠라 유출돼도 정보는 안전하지만, 열쇠 자체를 훔치면 위장할 수 있다.
 - JWT의 Payload는 누구나 읽는다. 서명은 위변조 검증용이지 암호화가 아니다.
+- 검증 쪽은 허용 알고리즘을 고정하고 `exp`·`iss`·`aud`까지 확인한다. 설정 실수를 구조적으로 막고 싶으면 PASETO를 검토한다.
 - 토큰을 쓰면 짧은 Access Token과 회전하는 Refresh Token을 함께 쓰고, 브라우저에서는 HttpOnly 쿠키를 우선 고려한다.
 - 같은 도메인의 웹 앱만 있다면 세션, 모바일·다중 서비스 API라면 토큰이 기본 선택이다.
 

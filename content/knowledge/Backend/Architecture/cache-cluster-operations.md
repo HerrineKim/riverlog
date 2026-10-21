@@ -80,4 +80,4 @@ sources: ["https://medium.com/coupang-engineering/lessons-learned-from-operating
 - 「가장 빠른 노드」 라우팅은 쏠림을 만든다. 무작위 분산이 더 고르다.
 - 핫 키는 짧은 TTL의 로컬 캐시로 흡수하고, GC를 고려해 바이트 배열로 저장한다.
 
-관련 노트: [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[http-cache|HTTP 캐시]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]]
+관련 노트: [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[http-cache|HTTP 캐시]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[caching-strategies|캐시 전략]], [[redis|Redis]]

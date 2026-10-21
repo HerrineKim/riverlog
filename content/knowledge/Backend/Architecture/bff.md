@@ -5,10 +5,10 @@ summary: "프론트엔드 하나마다 그 화면에 맞춘 중간 서버를 두
 tags: ["backend", "architecture", "frontend", "graphql", "nextjs"]
 source: other
 date: "2026-10-20"
-sources: ["https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/"]
+sources: ["https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/", "https://zuminternet.github.io/ZUM-Mobile-NodeJS/"]
 ---
 
-> 카카오엔터테인먼트 박수빈(cheese)의 글 「[카카오페이지는 BFF(Backend For Frontend)를 어떻게 적용했을까?](https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/)」(2022.03)를 요약·재구성한 노트다.
+> 카카오엔터테인먼트 박수빈(cheese)의 글 「[카카오페이지는 BFF(Backend For Frontend)를 어떻게 적용했을까?](https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/)」(2022.03)를 요약·재구성한 노트다. SSR·캐시 역할은 「[모바일 줌 SpringBoot → NodeJS 전환기 (feat. VueJS SSR)](https://zuminternet.github.io/ZUM-Mobile-NodeJS/)」를 바탕으로 더했다.
 
 ## BFF란
 
@@ -35,6 +35,10 @@ MSA 환경에서 Web·Android·iOS가 공용 API에 직접 붙으면, 각 플랫
 | CORS | 다른 출처 API를 브라우저가 직접 부른다 | 같은 출처의 BFF가 대신 부른다 |
 | 인증 | 플랫폼마다 다른 인증을 억지로 통합한다 | 플랫폼별 BFF가 각자 처리한다 |
 | 조율 비용 | 여러 플랫폼 스펙을 API 하나에 맞춘다 | 플랫폼마다 자기 BFF를 고친다 |
+| 첫 화면과 SEO | 브라우저가 JS를 받은 뒤에야 데이터를 부른다 | 조합한 데이터로 HTML을 서버에서 그려 보낸다([[spa-csr-ssr\|SSR]]) |
+| 반복 호출 비용 | 같은 API 응답을 요청마다 다시 받는다 | 화면용 응답을 캐시한다 |
+
+**비즈니스 로직은 도메인 API에 두고, BFF는 조합·가공·표현 로직만 맡는다.** 그래야 BFF가 가벼워지고 플랫폼별로 늘려도 규칙이 갈라지지 않는다. BFF마다 반복되는 API 응답 캐시(키, 갱신 주기, 캐시하지 않을 조건)는 데코레이터나 공용 모듈로 한 번 표준화해 둔다. Express처럼 자유도가 높은 프레임워크로 BFF를 여럿 만들면 구조가 프로젝트마다 갈리므로 TypeScript와 공용 규약으로 맞춘다([[express-project-architecture|Express 프로젝트 구조]]).
 
 ## 예시: 두 API를 하나로
 

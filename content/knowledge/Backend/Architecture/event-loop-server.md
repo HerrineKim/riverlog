@@ -5,10 +5,10 @@ summary: "연결마다 프로세스·스레드를 붙이던 다중 접속 서버
 tags: ["backend", "concurrency", "io", "network", "performance", "java"]
 source: other
 date: "2026-10-17"
-sources: ["https://engineering.linecorp.com/ko/blog/do-not-block-the-event-loop-part1", "https://engineering.linecorp.com/ko/blog/do-not-block-the-event-loop-part2", "https://engineering.linecorp.com/ko/blog/do-not-block-the-event-loop-part3", "https://armeria.dev/docs/advanced/threading-model", "https://openjdk.org/jeps/444", "https://openjdk.org/jeps/491"]
+sources: ["https://engineering.linecorp.com/ko/blog/do-not-block-the-event-loop-part1", "https://engineering.linecorp.com/ko/blog/do-not-block-the-event-loop-part2", "https://engineering.linecorp.com/ko/blog/do-not-block-the-event-loop-part3", "https://armeria.dev/docs/advanced/threading-model", "https://openjdk.org/jeps/444", "https://openjdk.org/jeps/491", "http://homoefficio.github.io/2020/08/10/Java-NIO-FileChannel-%EA%B3%BC-DirectByteBuffer", "https://openjdk.org/jeps/454"]
 ---
 
-> 김종민의 「[비동기 서버에서 이벤트 루프를 블록하면 안 되는 이유](https://engineering.linecorp.com/ko/blog/do-not-block-the-event-loop-part1)」 1~3부(LINE Engineering, 2022.09~10)를 바탕으로 재구성하고, Armeria 스레드 모델과 Java 가상 스레드는 공식 문서로 보강한 노트다.
+> 김종민의 「[비동기 서버에서 이벤트 루프를 블록하면 안 되는 이유](https://engineering.linecorp.com/ko/blog/do-not-block-the-event-loop-part1)」 1~3부(LINE Engineering, 2022.09~10)를 바탕으로 재구성하고, Armeria 스레드 모델과 Java 가상 스레드는 공식 문서로, NIO 버퍼 종류는 「[Java NIO FileChannel 과 DirectByteBuffer](http://homoefficio.github.io/2020/08/10/Java-NIO-FileChannel-%EA%B3%BC-DirectByteBuffer)」로 보강한 노트다.
 
 ## 이벤트 루프 서버란
 
@@ -57,6 +57,18 @@ Java 1.4의 **NIO(New I/O)** 가 JVM에서 멀티플렉싱을 쓰는 표준 API�
 - 관심 이벤트는 `OP_ACCEPT`·`OP_CONNECT`·`OP_READ`·`OP_WRITE`이고 `|`로 조합한다.
 - `select()`는 준비된 채널이 생길 때까지 막히고, `select(timeout)`은 시간 제한을 두고, `selectNow()`는 바로 돌아온다.
 - 논블로킹 채널에서 `accept()`는 `null`을, `read()`는 0바이트를 돌려줄 수 있으므로 반환값을 늘 확인한다.
+
+### 힙 버퍼와 다이렉트 버퍼
+
+| 종류 | 위치 | 특징 |
+| --- | --- | --- |
+| `HeapByteBuffer` (`allocate`) | JVM 힙 | GC가 관리한다. 할당이 싸다. GC가 객체를 옮길 수 있어 OS에 주소를 그대로 넘기지 못한다 |
+| `DirectByteBuffer` (`allocateDirect`) | 힙 밖 네이티브 메모리 | OS·DMA가 바로 읽고 쓴다. 할당·해제가 비싸다 |
+| `MappedByteBuffer` (`FileChannel.map`) | 파일을 매핑한 네이티브 메모리 | 파일 일부를 메모리처럼 다룬다 |
+
+- **힙 버퍼로 채널 I/O를 하면 JDK가 내부에서 임시 다이렉트 버퍼를 만들어 한 번 더 복사한다.** 임시 버퍼는 스레드별 캐시에 보관해 재사용하지만, 크기가 제각각이면 캐시가 맞지 않아 할당·해제가 반복된다.
+- 다이렉트 버퍼의 네이티브 메모리는 그 버퍼 객체가 GC될 때 풀린다. 힙에 여유가 있어 GC가 늦게 돌면 네이티브 메모리가 먼저 차서 `OutOfMemoryError: Direct buffer memory`가 난다. `-XX:MaxDirectMemorySize`는 상한일 뿐 회수를 앞당기지 않는다.
+- 그래서 큰 파일·소켓 I/O가 잦으면 다이렉트 버퍼를 **직접 할당해 오래 재사용**한다. 내부 API(`sun.nio.ch.DirectBuffer.cleaner()`)로 강제 해제하는 방법은 JDK 9 모듈 캡슐화 이후 막혔다. 해제 시점을 코드로 정해야 하면 Java 22에 정식화된 FFM API의 `Arena`로 네이티브 메모리를 할당하고 `close()`로 바로 돌려준다.
 
 ## Reactor 패턴: 루프와 핸들러를 나눈다
 
@@ -136,4 +148,4 @@ Java 21(JEP 444)에 정식 도입된 **가상 스레드**는 블로킹 호출을
 
 **이벤트 루프 위의 코드는 "곧 돌려준다"는 약속을 지켜야 한다.**
 
-관련 노트: [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[process-and-thread|프로세스와 스레드]], [[spring-singleton-thread-safety|스프링의 싱글톤 빈과 요청 스레드]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]]
+관련 노트: [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[process-and-thread|프로세스와 스레드]], [[spring-singleton-thread-safety|스프링의 싱글톤 빈과 요청 스레드]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]], [[spring-application-design|스프링 애플리케이션 설계]]
