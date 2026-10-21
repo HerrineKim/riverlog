@@ -44,7 +44,9 @@ date: "2026-10-14"
 - [Express 미들웨어](/knowledge/dictionary/backend/express/express-middleware): 로깅·파싱·에러 처리를 맡는 함수 체인
 - [Express 싱글톤 패턴과 서비스 패턴](/knowledge/dictionary/backend/express/singleton-service-pattern): 서버 클래스와 서비스 파일 분리
 - [Express 프로젝트 구조: 3계층, 이벤트, DI, 로더](/knowledge/dictionary/backend/express/express-project-architecture): 라우트·서비스·데이터 접근 계층, 이벤트 발행, 의존성 주입, 로더
+- [Koa: 미들웨어만 남긴 Node.js 웹 프레임워크](/knowledge/dictionary/backend/express/koa): 미들웨어와 ctx만 둔 코어, await next()의 양파 모델, 라우터·바디 파서 붙이기, 컨트롤러 분리
 - [Node.js 런타임과 OS 차이 다루기](/knowledge/dictionary/backend/express/nodejs-runtime): Node.js의 강점, Deno·Bun, cross-env·path
+- [Node.js 스트림: 데이터를 조각으로 흘려 처리하기](/knowledge/dictionary/backend/express/node-streams): Readable·Writable·Duplex·Transform, 흐름·일시정지 모드, 백프레셔와 highWaterMark, pipeline, for await
 
 ### NestJS
 
@@ -99,6 +101,7 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 
 **분산·메시징·데이터**
 
+- [분산 시스템의 시간과 장애: 8가지 착각부터 논리 시계까지](/knowledge/dictionary/backend/architecture/distributed-time-and-failure): 비동기와 부분 장애, 분산 컴퓨팅의 8가지 착각, happened-before와 논리 시계, 합의·CRDT
 - [분산 시스템의 통신·데이터 흐름 패턴](/knowledge/dictionary/backend/architecture/distributed-system-patterns): 요청-응답·발행-구독·경쟁 소비자·클레임 체크, 데이터 흐름 패턴
 - [메시지 큐와 Kafka](/knowledge/dictionary/backend/architecture/message-queue-kafka): 큐 선택 기준, MQ → RabbitMQ → Kafka → Pulsar, 토픽·파티션·컨슈머 그룹
 - [이벤트 기반 아키텍처 설계](/knowledge/dictionary/backend/architecture/event-driven-architecture): 이벤트 발행·구독으로 결합 낮추기, 이벤트 설계와 순서·중복 처리
@@ -115,6 +118,7 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [소프트웨어 아키텍처 패턴](/knowledge/dictionary/backend/architecture/software-architecture-patterns): 계층형·클라이언트-서버·이벤트 기반·마이크로커널·헥사고날
 - [도메인 주도 설계(DDD)](/knowledge/dictionary/backend/architecture/domain-driven-design): 유비쿼터스 언어, 바운디드 컨텍스트, 애그리거트
 - [마이크로서비스 아키텍처](/knowledge/dictionary/backend/architecture/microservices-architecture): 기능 단위 서비스 분리, 서비스별 데이터·배포, 운영 구성 요소
+- [클라우드 설계 패턴](/knowledge/dictionary/backend/architecture/cloud-design-patterns): 발레 키, 큐 기반 부하 평준화, 파이프와 필터, 외부 설정 저장소, 헬스 엔드포인트, 연합 ID, 백그라운드 작업
 - [아키텍처와 API 계층의 진화: 모놀리스에서 페더레이션까지](/knowledge/dictionary/backend/architecture/api-layer-evolution): 모놀리스 → 마이크로서비스 → 매크로서비스, BFF·GraphQL 페더레이션
 - [API 게이트웨이](/knowledge/dictionary/backend/architecture/api-gateway): 라우팅·인증·레이트 리밋·응답 조합, 리버스 프록시·로드 밸런서와 차이
 - [BFF (Backend For Frontend)](/knowledge/dictionary/backend/architecture/bff): 화면별 중간 서버로 API 묶기·가공, Next.js BFF

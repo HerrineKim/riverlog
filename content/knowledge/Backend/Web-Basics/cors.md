@@ -4,11 +4,12 @@ concept: "CORS"
 summary: "다른 출처(origin)의 프론트엔드가 API를 호출할 수 있도록 서버가 허용 범위를 알려 주는 브라우저 보안 정책."
 tags: ["http", "security", "backend", "nestjs"]
 source: til
-date: "2026-10-12"
-sources: ["https://riverkim.kr/111", "https://riverkim.kr/112", "https://evan-moon.github.io/2020/05/21/about-cors/", "https://developer.mozilla.org/ko/docs/Web/HTTP/Access_control_CORS"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/111", "https://riverkim.kr/112", "https://evan-moon.github.io/2020/05/21/about-cors/", "https://developer.mozilla.org/ko/docs/Web/HTTP/Access_control_CORS", "https://react.vlpt.us/redux-middleware/09-cors-and-proxy.html", "https://vite.dev/config/server-options#server-proxy", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/security/sop.md"]
 ---
 
-> 요청 시나리오·인증 요청·개발 프록시 부분은 「[CORS는 왜 이렇게 우리를 힘들게 하는걸까?](https://evan-moon.github.io/2020/05/21/about-cors/)」와 MDN 「[교차 출처 리소스 공유 (CORS)](https://developer.mozilla.org/ko/docs/Web/HTTP/Access_control_CORS)」를 바탕으로 보강했다.
+> 요청 시나리오·인증 요청·개발 프록시 부분은 「[CORS는 왜 이렇게 우리를 힘들게 하는걸까?](https://evan-moon.github.io/2020/05/21/about-cors/)」와 MDN 「[교차 출처 리소스 공유 (CORS)](https://developer.mozilla.org/ko/docs/Web/HTTP/Access_control_CORS)」를 바탕으로 보강했다. 개발 프록시 설정 예시는 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[CORS 와 Webpack DevServer Proxy](https://react.vlpt.us/redux-middleware/09-cors-and-proxy.html)」를 바탕으로 보강했다.
+> 출처 판정 예와 CORS 밖의 우회 방법은 「[Must-Know-About-Frontend: 동일 출처 정책](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/security/sop.md)」을 바탕으로 보강했다.
 
 프론트엔드(`http://localhost:3000`)에서 백엔드(`http://localhost:8000`)로 회원가입 요청을 보내면 브라우저 콘솔에 CORS 에러가 뜨는 경우가 많다. 이는 서버 오류가 아니라 **브라우저의 보안 장치**다.
 
@@ -18,6 +19,17 @@ sources: ["https://riverkim.kr/111", "https://riverkim.kr/112", "https://evan-mo
 - 브라우저는 기본적으로 스크립트가 **다른 출처의 리소스를 읽는 것을 막는다**(Same-Origin Policy).
 - CORS(Cross-Origin Resource Sharing)는 서버가 응답 헤더(`Access-Control-Allow-Origin` 등)로 "이 출처는 허용한다"고 알려 줘서 그 제한을 풀어 주는 방식이다.
 - 즉, 내가 서비스하지 않는 사이트가 마음대로 API를 호출하지 못하게 막고, **어떤 사이트에서 API를 쓸 수 있을지** 서버가 정하는 장치다.
+
+`http://website.com/ex/ex.html`에서 보낸 요청의 출처 판정:
+
+| 요청 대상 | 같은 출처? | 이유 |
+| --- | --- | --- |
+| `http://website.com/ex1/data.json` | 같다 | 경로는 출처에 들어가지 않는다 |
+| `http://website.com:81/ex/ex.html` | 다르다 | 포트 |
+| `https://website.com/ex/ex.html` | 다르다 | 프로토콜 |
+| `http://api.website.com/ex/` | 다르다 | 호스트(서브도메인도 다른 호스트다) |
+
+CORS 말고도 출처를 넘는 방법이 있지만 쓰임이 다르다. 창·iframe끼리는 양쪽이 동의하는 `postMessage`를 쓰고, 서브도메인끼리 `document.domain`을 맞추던 방법은 폐기 예정이라 크롬에서 기본으로 동작하지 않는다([[windows-and-frames|창과 프레임]]). `<script>`로 콜백을 실행시키던 JSONP는 CORS 이전의 우회법이다([[ajax|AJAX]]). 서버 응답 헤더를 고칠 수 없으면 같은 출처의 프록시가 대신 요청한다(아래 「개발 환경의 프록시」).
 
 ### Preflight와 OPTIONS 메서드
 
@@ -61,6 +73,29 @@ sources: ["https://riverkim.kr/111", "https://riverkim.kr/112", "https://evan-mo
 ### 개발 환경의 프록시
 
 로컬 개발에서는 Vite `server.proxy`나 webpack-dev-server `proxy`로 API 요청을 개발 서버가 대신 보내게 하면, 브라우저가 보기에는 같은 출처라 CORS가 생기지 않는다. 운영 환경에는 이 프록시가 없으므로, 리버스 프록시로 프론트엔드와 API를 같은 출처에 두거나 서버에 CORS를 제대로 설정한다.
+
+```ts
+// vite.config.ts
+export default defineConfig({
+  server: {
+    proxy: {
+      '/api': { target: 'http://localhost:4000', changeOrigin: true }, // /api/posts → http://localhost:4000/api/posts
+    },
+  },
+})
+```
+
+```ts
+// 코드는 도메인 없이 상대 경로로 요청한다: 개발에서는 현재 출처(localhost:5173)로 가서 프록시를 탄다
+const res = await fetch('/api/posts')
+
+// 운영에서 API 도메인이 다르면(예: 서비스 example.com, API api.example.com) 환경별로 기준 주소만 바꾼다
+const BASE_URL = import.meta.env.DEV ? '' : 'https://api.example.com'
+```
+
+- 개발 프록시를 쓰면 백엔드가 개발용 CORS 설정을 따로 둘 필요가 없다.
+- 운영에서도 프론트엔드와 API를 같은 도메인으로 서비스하면 상대 경로 그대로 배포한다.
+- 과거 CRA에서는 `package.json`에 `"proxy": "http://localhost:4000"` 한 줄로 같은 일을 했다.
 
 ## NestJS에서 설정하기
 

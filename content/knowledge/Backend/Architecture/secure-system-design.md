@@ -1,14 +1,14 @@
 ---
 title: "보안 시스템 설계: 원칙과 민감 데이터 관리"
 concept: "Secure System Design"
-summary: "보안 설계는 기밀성·무결성·가용성(CIA)을 지키는 일이고, 인증·인가·암호화·네트워크·컨테이너·API·서드파티·감사·사고 대응·재해 복구를 처음부터 기본값으로 넣는 것이다. 민감 데이터는 분류하고, 전송·저장 중 암호화하고, 키를 분리 관리하고, 비식별화하고, 최소 권한과 수명 주기로 접근을 좁힌다."
+summary: "보안 설계는 기밀성·무결성·가용성(CIA)을 지키는 일이고, 인증·인가·암호화·네트워크·컨테이너·API·서드파티·감사·사고 대응·재해 복구를 처음부터 기본값으로 넣는 것이다. 웹 앱의 대표 위험은 OWASP Top 10(2025)으로 점검한다. 민감 데이터는 분류하고, 전송·저장 중 암호화하고, 키를 분리 관리하고, 비식별화하고, 최소 권한과 수명 주기로 접근을 좁힌다."
 tags: ["security", "backend", "architecture", "privacy"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/cybersecurity-101-in-one-picture", "https://bytebytego.com/guides/how-do-we-design-a-secure-system", "https://bytebytego.com/guides/how-do-we-manage-sensitive-data-in-a-system", "https://www.nist.gov/cyberframework"]
+sources: ["https://bytebytego.com/guides/cybersecurity-101-in-one-picture", "https://bytebytego.com/guides/how-do-we-design-a-secure-system", "https://bytebytego.com/guides/how-do-we-manage-sensitive-data-in-a-system", "https://www.nist.gov/cyberframework", "https://owasp.org/www-project-top-ten/", "https://top10.owasp.org/2025/0x00_2025-Introduction/"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Cybersecurity 101](https://bytebytego.com/guides/cybersecurity-101-in-one-picture)」, 「[How to Design a Secure System](https://bytebytego.com/guides/how-do-we-design-a-secure-system)」, 「[How do we manage sensitive data in a system?](https://bytebytego.com/guides/how-do-we-manage-sensitive-data-in-a-system)」를 바탕으로 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[Cybersecurity 101](https://bytebytego.com/guides/cybersecurity-101-in-one-picture)」, 「[How to Design a Secure System](https://bytebytego.com/guides/how-do-we-design-a-secure-system)」, 「[How do we manage sensitive data in a system?](https://bytebytego.com/guides/how-do-we-manage-sensitive-data-in-a-system)」를 바탕으로 재구성한 노트다. 웹 애플리케이션 위험 순위는 「[OWASP Top 10](https://owasp.org/www-project-top-ten/)」 2025년판 [소개 문서](https://top10.owasp.org/2025/0x00_2025-Introduction/)로 보강했다.
 
 ## 무엇을 지키나: CIA
 
@@ -49,6 +49,26 @@ sources: ["https://bytebytego.com/guides/cybersecurity-101-in-one-picture", "htt
 | 서드파티 관리 | 외부 업체·SDK에 넘기는 데이터와 권한이 최소인가 | |
 | 사고 대응 | 탐지 → 격리 → 복구 → 사후 분석 절차와 연락망이 있나 | |
 | 재해 복구 | RTO·RPO 목표와 복구 연습 | [[disaster-recovery\|고가용성과 재해 복구 설계]] |
+
+### OWASP Top 10: 웹 애플리케이션 위험 순위
+
+OWASP(Open Worldwide Application Security Project) Top 10은 실제 취약점 데이터와 업계 설문을 모아 **웹 애플리케이션에서 가장 치명적인 위험 열 가지**를 정한 인식 표준이다. 보안 코딩 교육과 점검의 출발점으로 쓴다. 최신판은 2025년판(여덟 번째)이다.
+
+| 순위 | 위험(2025) | 내용 | 2021년판 대비 |
+| --- | --- | --- | --- |
+| A01 | 접근 통제 실패(Broken Access Control) | 권한 없는 데이터·기능에 접근. 다른 사용자 ID로 조회(IDOR), 관리자 API 노출 | 유지. SSRF를 흡수했다 |
+| A02 | 보안 설정 오류(Security Misconfiguration) | 기본 계정·불필요한 기능·과한 에러 메시지·클라우드 권한 설정 실수 | 5위 → 2위 |
+| A03 | 소프트웨어 공급망 실패(Software Supply Chain Failures) | 의존성·빌드 시스템·배포 인프라의 침해 | **신설**(옛 「취약하고 오래된 구성 요소」를 넓혔다) |
+| A04 | 암호화 실패(Cryptographic Failures) | 평문 전송·저장, 약한 알고리즘, 잘못된 키 관리 | 2위 → 4위 |
+| A05 | 인젝션(Injection) | SQL·명령어·XSS처럼 입력이 코드로 해석된다 | 3위 → 5위 |
+| A06 | 안전하지 않은 설계(Insecure Design) | 위협 모델링 없이 설계 단계부터 빠진 통제 | 4위 → 6위 |
+| A07 | 인증 실패(Authentication Failures) | 크리덴셜 스터핑, 약한 비밀번호 정책, 세션 관리 결함 | 이름에서 「식별」이 빠졌다 |
+| A08 | 소프트웨어·데이터 무결성 실패 | 서명 검증 없는 업데이트, 신뢰할 수 없는 직렬화 데이터 | 유지 |
+| A09 | 보안 로깅·경보 실패(Security Logging & Alerting Failures) | 기록은 있어도 경보가 없어 침해를 늦게 안다 | 「모니터링」이 「경보」로 바뀌었다 |
+| A10 | 예외 상황 처리 미흡(Mishandling of Exceptional Conditions) | 잘못된 에러 처리, 논리 오류, 비정상 상황에서 열린 채 실패(fail open) | **신설** |
+
+- 2021년판 10위였던 SSRF는 A01로, 「취약하고 오래된 구성 요소」는 A03으로 합쳐졌다.
+- 브라우저 쪽 인젝션(XSS)과 CSRF 방어는 [[web-security|웹 보안: CSRF와 XSS]]에, API에 특화된 목록(OWASP API Security Top 10)은 [[api-security|API 보안 체크리스트]]에, LLM 앱 목록은 [[llm-security-attacks|LLM 보안 공격: 탈옥, 프롬프트 인젝션, 데이터 중독]]에 있다.
 
 ### 프레임워크
 

@@ -97,4 +97,4 @@ sources: ["https://bytebytego.com/guides/top-6-cloud-messaging-patterns", "https
 - 이벤트 소싱은 이벤트 로그를 진실의 원천으로 두고, 상태는 파생 뷰로 만든다. 대가는 최종 일관성이다.
 - 서비스를 넘는 트랜잭션은 사가와 보상 트랜잭션으로, 상호 배제는 분산 락과 펜싱 토큰으로 푼다.
 
-관련 노트: [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[message-queue-kafka|메시지 큐와 Kafka]], [[microservices-architecture|마이크로서비스 아키텍처]], [[web-scalability-components|웹 확장성의 구성 요소]], [[resiliency-patterns|장애 확산을 막는 복원력 패턴]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[bff|BFF]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]]
+관련 노트: [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[message-queue-kafka|메시지 큐와 Kafka]], [[microservices-architecture|마이크로서비스 아키텍처]], [[web-scalability-components|웹 확장성의 구성 요소]], [[resiliency-patterns|장애 확산을 막는 복원력 패턴]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[bff|BFF]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]], [[cloud-design-patterns|클라우드 설계 패턴]], [[distributed-time-and-failure|분산 시스템의 시간과 장애: 8가지 착각부터 논리 시계까지]]

@@ -5,10 +5,10 @@ summary: "큰 시스템을 비즈니스 기능 단위의 작은 서비스로 나
 tags: ["backend", "architecture", "msa", "scalability", "api"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-does-a-typical-microservice-architecture-look-like", "https://bytebytego.com/guides/9-essential-components-of-a-production-microservice-application", "https://bytebytego.com/guides/9-best-practices-for-building-microservices", "https://bytebytego.com/guides/9-best-practices-for-developing-microservices", "https://bytebytego.com/guides/orchestration-vs-choreography-microservices", "https://bytebytego.com/guides/is-microservice-architecture-the-silver-bullet", "https://bytebytego.com/guides/amazon-prime-video-monitoring-service", "http://channy.creation.net/articles/microservices-by-james_lewes-martin_fowler", "https://www.uber.com/blog/microservice-architecture/", "https://www.slideshare.net/arawnkr/ss-195979955", "http://guruble.com/마이크로서비스microservice-아키텍처-그것이-뭣이-중헌디/"]
+sources: ["https://bytebytego.com/guides/what-does-a-typical-microservice-architecture-look-like", "https://bytebytego.com/guides/9-essential-components-of-a-production-microservice-application", "https://bytebytego.com/guides/9-best-practices-for-building-microservices", "https://bytebytego.com/guides/9-best-practices-for-developing-microservices", "https://bytebytego.com/guides/orchestration-vs-choreography-microservices", "https://bytebytego.com/guides/is-microservice-architecture-the-silver-bullet", "https://bytebytego.com/guides/amazon-prime-video-monitoring-service", "http://channy.creation.net/articles/microservices-by-james_lewes-martin_fowler", "https://www.uber.com/blog/microservice-architecture/", "https://www.slideshare.net/arawnkr/ss-195979955", "http://guruble.com/마이크로서비스microservice-아키텍처-그것이-뭣이-중헌디/", "https://microservices.io/patterns/index.html", "https://microservices.io/patterns/microservices.html", "https://microservices.io/patterns/monolithic.html", "https://microservices.io/patterns/decomposition/decompose-by-business-capability.html", "https://microservices.io/patterns/decomposition/decompose-by-subdomain.html", "https://microservices.io/patterns/data/database-per-service.html", "https://microservices.io/patterns/data/shared-database.html", "https://microservices.io/patterns/client-side-discovery.html", "https://microservices.io/patterns/server-side-discovery.html", "https://microservices.io/patterns/service-registry.html", "https://microservices.io/patterns/microservice-chassis.html", "https://microservices.io/patterns/externalized-configuration.html", "https://microservices.io/patterns/communication-style/rpi.html", "https://microservices.io/patterns/deployment/service-per-container.html", "https://microservices.io/patterns/deployment/service-deployment-platform.html"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Typical Microservice Architecture](https://bytebytego.com/guides/what-does-a-typical-microservice-architecture-look-like)」, 「[9 Essential Components of a Production Microservice Application](https://bytebytego.com/guides/9-essential-components-of-a-production-microservice-application)」, 「[9 Best Practices for Building Microservices](https://bytebytego.com/guides/9-best-practices-for-building-microservices)」, 「[9 Best Practices for Developing Microservices](https://bytebytego.com/guides/9-best-practices-for-developing-microservices)」, 「[Orchestration vs. Choreography in Microservices](https://bytebytego.com/guides/orchestration-vs-choreography-microservices)」, 「[Is Microservice Architecture the Silver Bullet?](https://bytebytego.com/guides/is-microservice-architecture-the-silver-bullet)」, 「[Amazon Prime Video Monitoring Service](https://bytebytego.com/guides/amazon-prime-video-monitoring-service)」를 바탕으로 재구성한 노트다. 공통 특성은 James Lewis·Martin Fowler의 「[Microservices](http://channy.creation.net/articles/microservices-by-james_lewes-martin_fowler)」(번역), 도메인 단위 묶기는 「[Introducing Domain-Oriented Microservice Architecture](https://www.uber.com/blog/microservice-architecture/)」, 모듈러 모놀리스는 「[잘 키운 모노리스 하나 열 마이크로서비스 안 부럽다](https://www.slideshare.net/arawnkr/ss-195979955)」, 분리 신호는 「[마이크로서비스 아키텍처. 그것이 뭣이 중헌디?](http://guruble.com/마이크로서비스microservice-아키텍처-그것이-뭣이-중헌디/)」로 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[Typical Microservice Architecture](https://bytebytego.com/guides/what-does-a-typical-microservice-architecture-look-like)」, 「[9 Essential Components of a Production Microservice Application](https://bytebytego.com/guides/9-essential-components-of-a-production-microservice-application)」, 「[9 Best Practices for Building Microservices](https://bytebytego.com/guides/9-best-practices-for-building-microservices)」, 「[9 Best Practices for Developing Microservices](https://bytebytego.com/guides/9-best-practices-for-developing-microservices)」, 「[Orchestration vs. Choreography in Microservices](https://bytebytego.com/guides/orchestration-vs-choreography-microservices)」, 「[Is Microservice Architecture the Silver Bullet?](https://bytebytego.com/guides/is-microservice-architecture-the-silver-bullet)」, 「[Amazon Prime Video Monitoring Service](https://bytebytego.com/guides/amazon-prime-video-monitoring-service)」를 바탕으로 재구성한 노트다. 공통 특성은 James Lewis·Martin Fowler의 「[Microservices](http://channy.creation.net/articles/microservices-by-james_lewes-martin_fowler)」(번역), 도메인 단위 묶기는 「[Introducing Domain-Oriented Microservice Architecture](https://www.uber.com/blog/microservice-architecture/)」, 모듈러 모놀리스는 「[잘 키운 모노리스 하나 열 마이크로서비스 안 부럽다](https://www.slideshare.net/arawnkr/ss-195979955)」, 분리 신호는 「[마이크로서비스 아키텍처. 그것이 뭣이 중헌디?](http://guruble.com/마이크로서비스microservice-아키텍처-그것이-뭣이-중헌디/)」로 보강했다. 설계 결정 패턴은 microservices.io의 「[A pattern language for microservices](https://microservices.io/patterns/index.html)」 가운데 분해(비즈니스 역량·하위 도메인), 데이터(서비스별 DB·공유 DB), 서비스 발견(클라이언트 측·서버 측·레지스트리), 섀시·외부화된 설정, 배포 패턴을 바탕으로 보강했다.
 
 ## 마이크로서비스란
 
@@ -51,7 +51,7 @@ API 게이트웨이 ──▶ 인증 서버(Identity Provider)
 | 구성 요소 | 역할 | 대표 도구 |
 | --- | --- | --- |
 | API 게이트웨이 | 클라이언트의 단일 진입점. 라우팅, 필터링, 인증 위임, 부하 분산 | Kong, Spring Cloud Gateway, 클라우드 관리형 게이트웨이 |
-| 서비스 레지스트리·디스커버리 | 서비스 인스턴스의 주소를 등록하고 찾는다 | Consul, Eureka, ZooKeeper, Kubernetes Service |
+| 서비스 레지스트리·디스커버리 | 서비스 인스턴스의 주소를 등록하고 찾는다. 클라이언트 측·서버 측 방식은 아래 「서로를 어떻게 찾나」 | Consul, Eureka, ZooKeeper, Kubernetes Service |
 | 서비스 계층 | 비즈니스 기능 하나씩을 맡은 서비스. 인스턴스를 여러 개 띄운다 | Spring Boot, NestJS 등 |
 | 인증·인가 서버 | 신원 확인과 접근 제어를 한곳에서 | Keycloak, Microsoft Entra ID, Okta |
 | 데이터 저장소 | 서비스별 DB | PostgreSQL, MySQL 등 |
@@ -68,7 +68,7 @@ API 게이트웨이 ──▶ 인증 서버(Identity Provider)
 | --- | --- |
 | **실패를 전제로 설계한다** | 분산 시스템은 반드시 어딘가 실패한다. 서킷 브레이커, 벌크헤드(자원 격리), 우아한 성능 저하(graceful degradation)로 장애가 번지지 않게 한다 |
 | 작게, 한 가지 책임 | 서비스 하나는 한 가지 일을 잘한다. 경계는 [[domain-driven-design\|도메인 주도 설계]]의 바운디드 컨텍스트로 잡는다 |
-| **데이터는 서비스가 소유한다** | 서비스마다 저장소를 따로 둔다. 다른 서비스의 DB를 직접 읽지 않고 API나 이벤트로 받는다. 그래야 서비스가 독립적으로 진화한다 |
+| **데이터는 서비스가 소유한다** | 서비스마다 저장소를 따로 둔다. 다른 서비스의 DB를 직접 읽지 않고 API나 이벤트로 받는다. 그래야 서비스가 독립적으로 진화한다. 공유 DB와의 비교는 아래 「데이터를 어떻게 두나」 |
 | 가벼운 프로토콜 | REST, gRPC, 메시지 브로커로 통신한다([[grpc\|gRPC]]) |
 | 상태 없는 서비스 | 상태는 DB·캐시에 두고 인스턴스는 언제든 늘리고 줄일 수 있게 한다 |
 | 복원력 패턴 | 재시도 정책, 캐싱, 속도 제한(rate limiting)으로 가용성을 높인다 |
@@ -102,6 +102,58 @@ API 게이트웨이 ──▶ 인증 서버(Identity Provider)
 | 장애 | 오케스트레이터가 단일 장애 지점이 되므로 고가용성이 필요하다 | 단일 장애 지점은 없지만 전체 흐름이 눈에 안 보인다 |
 
 워크플로 엔진(Netflix Conductor, Temporal 등)이 오케스트레이터 역할을 한다. 이벤트 기반 협업은 [[web-scalability-components|웹 확장성의 구성 요소]]의 이벤트 기반 아키텍처와 같은 생각이다.
+
+## 패턴 언어로 본 설계 결정
+
+마이크로서비스를 고르면 따라오는 결정들은 「문제 → 해법 → 대가」 모양의 패턴으로 정리되어 있다(microservices.io의 패턴 언어). 결정마다 선택지가 둘 이상이다.
+
+### 어떻게 나누나
+
+| 기준 | 방법 | 예(온라인 상점) |
+| --- | --- | --- |
+| 비즈니스 역량(business capability) | 회사가 가치를 만드는 **일** 단위로 나눈다. 조직도와 비슷하게 나오고, 업무가 바뀌지 않는 한 경계가 안정적이다 | 상품 카탈로그, 재고, 주문, 배송 |
+| 하위 도메인(subdomain) | [[domain-driven-design\|DDD]]의 하위 도메인마다 서비스를 둔다. 하위 도메인은 **핵심**(차별화 요소, 직접 만든다), **지원**(필요하지만 차별화는 아님, 외주 가능), **일반**(어디나 같음, 기성품을 쓴다)으로 나뉜다 | 핵심: 추천·가격, 일반: 결제·인증은 외부 서비스 |
+
+둘 다 기술 계층(UI·DB)이 아니라 업무로 나누는 것이 핵심이다. 경계를 찾는 출발점은 조직 구조와 핵심 도메인 객체다.
+
+### 데이터를 어떻게 두나
+
+| | 서비스별 데이터베이스(database per service) | 공유 데이터베이스(shared database) |
+| --- | --- | --- |
+| 방법 | 서비스의 데이터는 그 서비스의 API로만 접근한다 | 여러 서비스가 한 DB를 직접 읽고 쓴다 |
+| 얻는 것 | 느슨한 결합. 서비스마다 맞는 저장소(검색은 Elasticsearch, 그래프는 Neo4j) | 익숙한 ACID 트랜잭션과 조인 |
+| 치르는 것 | 여러 서비스에 걸친 트랜잭션·조인이 어렵다 → [[distributed-data-patterns\|사가, CQRS, API 조합]] | 스키마 변경이 다른 서비스를 깨뜨리고, 한 서비스의 무거운 쿼리가 다른 서비스를 느리게 한다. 사실상 분산 모놀리스 |
+
+「서비스별 DB」가 서버를 서비스마다 하나씩 띄우라는 뜻은 아니다. 관계형 DB라면 비용이 낮은 순서로 **서비스 전용 테이블 → 서비스 전용 스키마 → 서비스 전용 DB 서버**를 고른다. 어느 쪽이든 서비스마다 다른 DB 계정과 권한(grant)을 줘서 남의 테이블을 직접 읽지 못하게 막는다. 막지 않으면 결국 누군가 API를 우회한다.
+
+### 서로를 어떻게 찾나
+
+인스턴스는 자동 확장·재배포로 IP가 계속 바뀐다. 그래서 **서비스 레지스트리**(인스턴스 주소 목록)를 두고 호출 때 찾는다.
+
+| | 클라이언트 측 발견(client-side discovery) | 서버 측 발견(server-side discovery) |
+| --- | --- | --- |
+| 흐름 | 클라이언트가 레지스트리에 물어 인스턴스를 고르고 직접 호출한다 | 클라이언트는 고정 주소의 라우터(로드 밸런서)로 보내고, 라우터가 레지스트리를 보고 넘긴다 |
+| 장점 | 홉이 하나 적다. 클라이언트가 똑똑한 부하 분산을 한다 | 클라이언트 코드가 단순하다. 언어마다 라이브러리가 필요 없다 |
+| 단점 | 언어·프레임워크마다 발견 로직이 필요하다 | 라우터를 따로 운영·이중화해야 한다 |
+| 예 | Eureka + Spring Cloud LoadBalancer(과거에는 Netflix Ribbon) | AWS ELB, 쿠버네티스 Service(kube-proxy), 서비스 메시의 사이드카 |
+
+레지스트리에 등록하는 방법도 둘이다. 인스턴스가 시작·종료 때 스스로 등록·해제하고 하트비트를 보내는 **자기 등록**, 배포 플랫폼이 대신 등록하는 **서드파티 등록**이다. 쿠버네티스는 플랫폼이 등록하고 DNS로 찾게 해서, 대부분 별도 레지스트리 없이 서버 측 발견을 쓴다.
+
+### 공통 관심사를 어떻게 처리하나
+
+| 패턴 | 내용 |
+| --- | --- |
+| 외부화된 설정(externalized configuration) | DB 자격 증명·다른 서비스 주소 같은 설정을 코드 밖(환경 변수, 설정 서비스)에서 받는다. 같은 빌드를 모든 환경에 그대로 배포한다. [[cloud-design-patterns\|클라우드 설계 패턴]]의 외부 설정 저장소와 같은 생각이다 |
+| 마이크로서비스 섀시(microservice chassis) | 설정, 로깅, 헬스 체크, 메트릭, 트레이싱, 서비스 발견 같은 공통 기능을 프레임워크로 묶어 새 서비스가 바로 갖추게 한다. Spring Boot + Spring Cloud, Go kit, Micronaut 등. 언어가 섞이면 언어마다 섀시가 필요해, 네트워크 관심사는 **서비스 메시**(사이드카)로 옮기는 추세다 |
+| 원격 프로시저 호출(remote procedure invocation) | REST·gRPC로 동기 요청-응답. 단순하지만 호출하는 동안 상대가 살아 있어야 한다. 대안은 메시지 기반 비동기 통신이다 |
+
+### 어디에 배포하나
+
+| 패턴 | 내용 |
+| --- | --- |
+| 컨테이너당 서비스 인스턴스 하나 | 서비스를 컨테이너 이미지로 묶고 인스턴스마다 컨테이너 하나를 띄운다. 기술 스택을 캡슐화하고 자원을 제한한다. 지금의 기본값이다 |
+| 서비스 배포 플랫폼 | 서비스를 배포·확장·관리하는 자동화 플랫폼에 맡긴다. 쿠버네티스, 관리형 컨테이너 서비스(ECS, Cloud Run) |
+| 서버리스 배포 | 함수 단위로 올리고 요청당 과금받는다. [[serverless-architecture\|서버리스 아키텍처]] |
 
 ## 마이크로서비스의 공통 특성
 

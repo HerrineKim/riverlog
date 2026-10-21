@@ -1,15 +1,16 @@
 ---
 title: "백엔드 지연 시간 줄이기: 숫자 감각과 기법"
 concept: "Latency Optimization"
-summary: "메모리·SSD·네트워크·DB 커밋이 대략 몇 나노초~밀리초인지 자릿수 감각을 먼저 잡고, API 지연을 줄이는 기법(인덱스, 캐시, 페이지네이션, 비동기 로깅·처리, 압축, 커넥션 풀, 로드 밸런싱, CDN)을 무엇을 줄이는지 기준으로 정리한다. 극단적 저지연 시스템의 원칙은 「크리티컬 패스에서 일을 줄인다」 하나다."
+summary: "메모리·SSD·네트워크·DB 커밋·LLM 호출이 대략 몇 나노초~초인지 자릿수 감각(Jeff Dean의 원형 표, 해마다 줄지 않는 왕복 지연, 봉투 뒷면 계산)을 먼저 잡고, API 지연을 줄이는 기법(인덱스, 캐시, 페이지네이션, 비동기 로깅·처리, 압축, 커넥션 풀, 로드 밸런싱, CDN)을 무엇을 줄이는지 기준으로 정리한다. 극단적 저지연 시스템의 원칙은 「크리티컬 패스에서 일을 줄인다」 하나다."
 tags: ["backend", "performance", "architecture", "cache", "network"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/which-latency-numbers-should-you-know", "https://bytebytego.com/guides/top-5-common-ways-to-improve-api-performance", "https://bytebytego.com/guides/top-5-strategies-to-reduce-latency", "https://bytebytego.com/guides/low-latency-stock-exchange", "https://bytebytego.com/guides/what-is-a-stop-loss-order-and-how-does-it-work", "https://bytebytego.com/guides/design-stock-exchange"]
+sources: ["https://bytebytego.com/guides/which-latency-numbers-should-you-know", "https://bytebytego.com/guides/top-5-common-ways-to-improve-api-performance", "https://bytebytego.com/guides/top-5-strategies-to-reduce-latency", "https://bytebytego.com/guides/low-latency-stock-exchange", "https://bytebytego.com/guides/what-is-a-stop-loss-order-and-how-does-it-work", "https://bytebytego.com/guides/design-stock-exchange", "https://gist.github.com/jboner/2841832", "https://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf", "https://people.eecs.berkeley.edu/~rcs/research/interactive_latency.html"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Which Latency Numbers Should You Know?](https://bytebytego.com/guides/which-latency-numbers-should-you-know)」, 「[Top 5 Common Ways to Improve API Performance](https://bytebytego.com/guides/top-5-common-ways-to-improve-api-performance)」, 「[Top 5 Strategies to Reduce Latency](https://bytebytego.com/guides/top-5-strategies-to-reduce-latency)」, 「[Low Latency Stock Exchange](https://bytebytego.com/guides/low-latency-stock-exchange)」, 「[What is a Stop-Loss Order?](https://bytebytego.com/guides/what-is-a-stop-loss-order-and-how-does-it-work)」를 바탕으로 재구성한 노트다.
 > 거래소 주문의 단계별 흐름은 같은 가이드의 「[Design Stock Exchange](https://bytebytego.com/guides/design-stock-exchange)」를 바탕으로 보탰다.
+> 원형 표와 봉투 뒷면 계산은 Jonas Bonér의 gist 「[Latency Numbers Every Programmer Should Know](https://gist.github.com/jboner/2841832)」, Jeff Dean의 LADIS 2009 기조연설 「[Designs, Lessons and Advice from Building Large Distributed Systems](https://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf)」, 연도별 추세는 「[Interactive Latency Infographics](https://people.eecs.berkeley.edu/~rcs/research/interactive_latency.html)」를 바탕으로 보강했다.
 
 ## 왜 숫자 감각이 필요한가
 
@@ -36,6 +37,63 @@ sources: ["https://bytebytego.com/guides/which-latency-numbers-should-you-know",
 ```text
 L1 1ns ─×100─▶ RAM 100ns ─×100─▶ 네트워크 10µs ─×10─▶ SSD 100µs ─×10─▶ DB 커밋 1ms ─×100─▶ 대륙 간 100ms
 ```
+
+### 원형 표
+
+Jeff Dean이 2009년 강연에서 「모두가 알아야 할 숫자」로 내놓고 Peter Norvig의 표를 이어받은 원형은 이렇다. 공개 gist가 지금도 갱신되며, 2026년에는 LLM 행이 더해졌다.
+
+| 작업 | 지연 | 비교 |
+| --- | --- | --- |
+| L1 캐시 참조 | 0.5ns | |
+| 분기 예측 실패 | 5ns | |
+| L2 캐시 참조 | 7ns | L1의 14배 |
+| 뮤텍스 잠금·해제 | 25ns | |
+| 메인 메모리 참조 | 100ns | L2의 20배, L1의 200배 |
+| 1KB를 Snappy(구 Zippy)로 압축 | 3µs | |
+| 1Gbps 네트워크로 1KB 보내기 | 10µs | |
+| SSD에서 4KB 무작위 읽기 | 150µs | |
+| 메모리에서 1MB 순차 읽기 | 250µs | |
+| 같은 데이터센터 안 왕복 | 500µs | |
+| SSD에서 1MB 순차 읽기 | 1ms | 메모리의 4배 |
+| 디스크 탐색(seek) | 10ms | 데이터센터 왕복의 20배 |
+| 로컬 LLM이 토큰 하나 생성(소비자 GPU) | 15ms | |
+| 디스크에서 1MB 순차 읽기 | 20ms | 메모리의 80배, SSD의 20배 |
+| 프런티어 LLM이 출력 토큰 하나 생성 | 20ms | |
+| 캘리포니아 → 네덜란드 → 캘리포니아 패킷 왕복 | 150ms | |
+| 프런티어 LLM 첫 토큰까지(짧은 프롬프트, 캐시 없음) | 1s | |
+| 프런티어 LLM 짧은 응답(출력 약 100토큰) | 3s | |
+| 프런티어 LLM 긴 컨텍스트 프리필(입력 약 10만 토큰, 캐시 없음) | 10s | |
+
+LLM 호출 하나는 같은 데이터센터 왕복보다 수천~수만 배 느리다. 에이전트가 LLM을 순서대로 여러 번 부르면 그 자체가 워터폴이 되므로, 지연을 줄이려면 호출 수를 줄이거나 병렬로 돌리고 프롬프트 캐시를 쓴다.
+
+### 숫자는 해마다 다르게 변한다
+
+표의 값은 하드웨어 세대에 따라 바뀌지만 **모든 칸이 같은 속도로 줄지는 않는다.** 연도별로 값을 다시 그려 보는 [인터랙티브 버전](https://people.eecs.berkeley.edu/~rcs/research/interactive_latency.html)은 이 차이를 보여 준다.
+
+| 항목 | 추세 |
+| --- | --- |
+| CPU 클럭(캐시 참조) | 2005년 무렵까지 약 2년마다 두 배로 빨라지다가 약 3GHz에서 멈췄다. 이후 성능은 코어 수와 병렬성에서 나온다 |
+| 메모리 지연 | 약 100ns 근처에서 거의 그대로다. 대역폭만 는다 |
+| SSD 무작위 읽기 | 크게 줄다가 수십 µs 수준에서 평평해졌다 |
+| 디스크 탐색 | 10년에 절반 정도로 아주 느리게 준다. 기계 장치이기 때문이다 |
+| 네트워크·디스크·SSD **대역폭** | 꾸준히 늘어 「1MB 보내기·읽기」 칸은 계속 짧아진다 |
+| 데이터센터·대륙 간 **왕복** | 거의 변하지 않는다. 빛의 속도와 거리가 정하기 때문이다 |
+
+그래서 **대역폭 문제는 시간이 풀어 주지만 지연 문제는 풀어 주지 않는다.** 왕복 횟수를 줄이는 설계(배치, 병렬 요청, 사용자 가까이 두기)가 오래 유효하다. 같은 관점이 [[distributed-time-and-failure|분산 시스템의 시간과 장애]]의 「지연은 0이다」라는 착각이다.
+
+### 봉투 뒷면 계산
+
+숫자를 외우는 목적은 **만들어 보기 전에 설계를 비교**하는 것이다. 이미지 검색 결과 페이지에 썸네일 30개를 만드는 두 설계를 디스크 탐색 10ms, 디스크 읽기 30MB/s로 어림하면 이렇다.
+
+```text
+설계 1: 순서대로 읽어서 즉석에서 256KB 이미지의 썸네일 생성
+  30 × 10ms(탐색) + 30 × 256KB ÷ 30MB/s ≈ 560ms
+
+설계 2: 30개를 병렬로 읽기
+  10ms + 256KB ÷ 30MB/s ≈ 18ms   (편차를 감안하면 실제로는 30~60ms)
+```
+
+여기서 썸네일을 캐시할지, 미리 만들어 둘지 같은 변형을 다시 어림해 가장 유망한 설계를 고른다. 어림이 맞으려면 쓰는 부품(언어 라이브러리, 자료구조, DB, 저장소)의 **인터페이스뿐 아니라 구현도 대략 알아야** 한다. 감각을 기르는 데는 마이크로벤치마크를 직접 돌려 보는 것이 좋다.
 
 브라우저 쪽 숫자(렌더링 프레임 예산, 체감 한계, CDN 왕복)는 [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]]에 있다.
 

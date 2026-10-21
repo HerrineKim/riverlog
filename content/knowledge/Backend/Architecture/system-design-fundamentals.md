@@ -5,10 +5,10 @@ summary: "확장성·가용성·신뢰성·성능이라는 네 가지 품질 속
 tags: ["backend", "architecture", "scalability", "software-engineering", "design"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-system-designs", "https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide", "https://bytebytego.com/guides/top-5-trade-offs-in-system-designs", "https://bytebytego.com/guides/must-know-system-design-building-blocks", "https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean"]
+sources: ["https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-system-designs", "https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide", "https://bytebytego.com/guides/top-5-trade-offs-in-system-designs", "https://bytebytego.com/guides/must-know-system-design-building-blocks", "https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean", "https://learn.microsoft.com/en-us/azure/well-architected/", "https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[The Fantastic Four of System Design](https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design)」, 「[System Design Cheat Sheet](https://bytebytego.com/guides/system-design-cheat-sheet)」, 「[A cheat sheet for system designs](https://bytebytego.com/guides/a-cheat-sheet-for-system-designs)」, 「[System Design Blueprint](https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide)」, 「[Top 5 Trade-offs in System Designs](https://bytebytego.com/guides/top-5-trade-offs-in-system-designs)」, 「[Must Know System Design Building Blocks](https://bytebytego.com/guides/must-know-system-design-building-blocks)」, 「[CAP, BASE, SOLID, KISS](https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean)」를 바탕으로 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[The Fantastic Four of System Design](https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design)」, 「[System Design Cheat Sheet](https://bytebytego.com/guides/system-design-cheat-sheet)」, 「[A cheat sheet for system designs](https://bytebytego.com/guides/a-cheat-sheet-for-system-designs)」, 「[System Design Blueprint](https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide)」, 「[Top 5 Trade-offs in System Designs](https://bytebytego.com/guides/top-5-trade-offs-in-system-designs)」, 「[Must Know System Design Building Blocks](https://bytebytego.com/guides/must-know-system-design-building-blocks)」, 「[CAP, BASE, SOLID, KISS](https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean)」를 바탕으로 재구성한 노트다. 클라우드 설계의 기둥과 원칙은 Microsoft의 「[Azure Well-Architected Framework](https://learn.microsoft.com/en-us/azure/well-architected/)」, 「[Design principles for Azure applications](https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/)」로 보강했다.
 
 ## 시스템 설계란
 
@@ -71,6 +71,36 @@ SQL·NoSQL, 배치·스트림, 동기·비동기처럼 기술 선택에서 반�
 | | 고유 ID 생성기 | 여러 노드에서 겹치지 않는 ID를 만든다. [[distributed-unique-id\|분산 환경의 고유 ID 생성]] |
 | 관측·복원력 | 메트릭·로그·트레이스 | 시스템 내부 상태를 밖에서 본다 |
 | | 복원력 패턴 | 타임아웃·재시도·서킷 브레이커. [[resiliency-patterns\|장애 확산을 막는 복원력 패턴]] |
+
+## 클라우드 설계의 다섯 기둥과 원칙
+
+클라우드 제공자는 품질 속성을 **Well-Architected Framework**의 다섯 기둥으로 묶는다. AWS·Azure·Google Cloud가 같은 이름의 틀을 쓴다(AWS는 여섯 번째로 지속 가능성을 둔다). 설계 리뷰를 할 때 다섯 기둥을 하나씩 짚으면 빠진 것이 드러난다.
+
+| 기둥 | 목표 | 대표 수단 |
+| --- | --- | --- |
+| 신뢰성(Reliability) | 가동률·복구 목표(RTO·RPO)를 지킨다 | 이중화, 장애 모드 분석, 재해 복구([[disaster-recovery\|재해 복구]]) |
+| 보안(Security) | 기밀성·무결성을 지킨다 | 관리형 ID, 최소 권한, 암호화, 위협 모델링 |
+| 비용 최적화(Cost Optimization) | 예산 안에서 가치를 낸다 | 사용량 기반 확장, 예약 할인, 비용 태깅([[cloud-cost-optimization\|클라우드 비용 최적화]]) |
+| 운영 우수성(Operational Excellence) | 운영 중 문제를 줄인다 | IaC, CI/CD, 관측 가능성, 자동화 |
+| 성능 효율성(Performance Efficiency) | 수요 변화에 맞춘다 | 수평 확장, 캐시, 배포 전 부하 테스트 |
+
+기둥을 지키는 설계 원칙은 세 무리로 정리된다.
+
+| 무리 | 원칙 | 뜻 |
+| --- | --- | --- |
+| 핵심 | 스스로 회복하게(self-healing) | 실패를 감지해 자동으로 복구한다. 재시도, 헬스 체크, 서킷 브레이커, 벌크헤드 |
+| | 모든 것을 이중으로 | 단일 장애점을 없앤다. 로드 밸런서 뒤 여러 인스턴스, DB 복제본, 다중 영역·리전 |
+| | 조율을 줄인다 | 비동기로 잇고 최종 일관성을 받아들인다. 조율이 필요한 곳이 확장의 병목이다 |
+| | 수평 확장을 전제로 | 세션 고정(sticky session)을 피하고 지표 기반 자동 확장을 쓴다 |
+| | 한계를 기준으로 분할 | DB·네트워크·계산의 한계를 파티셔닝으로 피한다. 파티션 키는 핫스팟이 생기지 않게 고른다 |
+| 운영 | 운영을 위해 설계 | 로그·분산 추적·표준 메트릭을 처음부터 넣는다 |
+| | 관리형 서비스를 쓴다 | IaaS보다 PaaS. 운영 부담을 제공자에게 넘긴다 |
+| | ID 서비스를 쓴다 | 인증을 직접 만들지 않고 관리형 ID 플랫폼에 맡긴다 |
+| 전략 | 진화를 위해 설계 | 느슨한 결합, 버전이 있는 API로 서비스가 따로 바뀌게 한다 |
+| | 비즈니스 요구에서 출발 | RTO·SLA·SLO를 먼저 정하고 그에 맞춰 설계한다 |
+| | 장애 모드 분석(FMA) | 설계 단계에서 실패 지점을 찾아 위험·영향으로 점수를 매기고 대응을 정한다 |
+
+이 원칙을 구현하는 구체 패턴은 [[cloud-design-patterns|클라우드 설계 패턴]]과 [[resiliency-patterns|복원력 패턴]]에 있다.
 
 ## 설계 논의 체크리스트
 

@@ -1,14 +1,15 @@
 ---
 title: "SQL 기초"
 concept: "SQL"
-summary: "SQL 명령어 분류(DDL·DML·DCL)와 관계형 데이터베이스에서 데이터를 생성·조회·수정·삭제하고 조건·정렬·집계·그룹화하는 기본 문법, WHERE와 HAVING·DISTINCT·CROSS JOIN처럼 헷갈리기 쉬운 지점."
+summary: "SQL 명령어 분류(DDL·DML·DCL)와 테이블 구조 변경과 제약 조건(기본 키·외래 키·CASCADE, 자연 키와 대리 키), 뷰, 관계형 데이터베이스에서 데이터를 생성·조회·수정·삭제하고 조건·정렬·집계·그룹화하는 기본 문법, WHERE와 HAVING·DISTINCT·CROSS JOIN처럼 헷갈리기 쉬운 지점."
 tags: ["sql", "database", "mysql", "sqlite", "certificate"]
 source: mixed
-date: "2026-10-20"
-sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/"]
+date: "2026-10-21"
+sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md"]
 ---
 
 > 여러 자료를 종합한 노트에, SQL 다섯 분류는 ByteByteGo의 System Design 101 가이드 「[What is the Best Way to Learn SQL?](https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql)」를, JOIN은 「[How do SQL Joins Work?](https://bytebytego.com/guides/how-do-sql-joins-work)」를 바탕으로 보강했다.
+> 제약 조건·자연 키와 대리 키, 구조 변경과 DELETE·TRUNCATE·DROP, 뷰, CSV 가져오기는 「[Frontend_TIL: Constraint 제약조건](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md)」, 「[SQL문](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md)」, 「[CSV 파일로 테이블 생성](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md)」을 바탕으로 보강했다.
 
 SQL(Structured Query Language)은 RDBMS에서 데이터를 관리하기 위해 설계된 언어다. ORM을 쓰더라도 실제로 DB에 전달되는 것은 SQL이므로, 기본 문법을 알면 ORM이 만드는 쿼리를 이해하고 문제를 진단할 수 있다.
 
@@ -51,13 +52,70 @@ CREATE TABLE persons (
 );
 ```
 
-SQLite CLI에서는 메타 명령을 쓴다.
+MySQL은 `SHOW TABLES;`(테이블 목록), `DESC persons;`(열 구조), `SELECT DATABASE();`(지금 선택한 DB)로 구조를 확인한다. SQLite CLI에서는 메타 명령을 쓴다.
 
 ```bash
 sqlite3 db.sqlite3
 sqlite> .tables                        -- 테이블 목록
 sqlite> .mode csv
 sqlite> .import users.csv users_user   -- CSV를 테이블로 로드
+```
+
+MySQL에서 CSV를 넣을 때는 `LOAD DATA LOCAL INFILE 'users.csv' INTO TABLE users_user FIELDS TERMINATED BY ',' IGNORE 1 LINES;`를 쓴다(서버와 클라이언트 모두 `local_infile`을 켜야 한다). MySQL Workbench의 Table Data Import Wizard는 같은 일을 GUI로 하며, 구분자와 열 타입을 지정해 새 테이블을 만들 수도 있다. 엑셀 데이터도 CSV로 내보내면 SQL로 분석할 수 있다.
+
+### 구조 바꾸기
+
+```sql
+ALTER TABLE persons ADD memo TEXT;          -- 열 추가
+ALTER TABLE persons MODIFY memo VARCHAR(100); -- 열 타입 변경 (MySQL)
+ALTER TABLE persons DROP COLUMN memo;       -- 열 삭제
+ALTER DATABASE cats CHARACTER SET utf8mb4;  -- 기본 문자 집합 변경
+SHOW VARIABLES LIKE 'character_set_database';
+```
+
+MySQL의 `utf8`은 3바이트까지만 담는 옛 별칭이라 이모지가 깨진다. 문자 집합은 `utf8mb4`를 쓴다(MySQL 8.0부터 기본값).
+
+| 지우는 대상 | 명령 | 특징 |
+| --- | --- | --- |
+| 조건에 맞는 행 | `DELETE FROM t WHERE ...` | DML. 행마다 지우고 로그를 남겨 롤백할 수 있다. `WHERE`가 없으면 전부 지운다 |
+| 모든 행 (구조는 유지) | `TRUNCATE TABLE t` | DDL. 테이블을 비우고 새로 만드는 방식이라 빠르고, `AUTO_INCREMENT`도 처음으로 돌아간다. MySQL에서는 롤백되지 않는다 |
+| 테이블 자체 | `DROP TABLE t` | 구조와 데이터를 모두 없앤다 |
+
+### 제약 조건
+
+제약 조건(constraint)은 열에 들어갈 값을 DB가 직접 검사하게 하는 규칙이다. 애플리케이션 코드가 빠뜨려도 잘못된 데이터가 들어가지 않는다.
+
+| 제약 | 뜻 |
+| --- | --- |
+| `PRIMARY KEY` | 행을 하나로 식별한다. NULL과 중복을 허용하지 않는다. 테이블당 하나(여러 열을 묶은 복합 키도 하나로 친다) |
+| `NOT NULL` | 빈 값(NULL)을 허용하지 않는다 |
+| `UNIQUE` | 중복을 허용하지 않는다. NULL은 여러 개 들어갈 수 있다(DBMS마다 다름) |
+| `DEFAULT 값` | 값을 주지 않으면 기본값을 넣는다 |
+| `FOREIGN KEY ... REFERENCES` | 다른 테이블의 키만 값으로 허용한다(참조 무결성) |
+| `CHECK (조건)` | 조건식을 만족하는 값만 허용한다. MySQL은 8.0.16부터 실제로 검사한다 |
+
+```sql
+CREATE TABLE orders (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  status VARCHAR(20) NOT NULL DEFAULT 'pending',
+  CONSTRAINT fk_orders_user
+    FOREIGN KEY (user_id) REFERENCES users (id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+```
+
+**기본 키의 두 종류**: 이메일·주민번호처럼 원래 데이터에 있던 값을 키로 쓰면 **자연 키(natural key)**, 키로 쓰려고 따로 만든 일련번호를 쓰면 **대리 키(surrogate key)** 다. 자연 키는 바뀔 수 있고(이메일 변경) 개인정보가 섞이기 쉬워, 보통 대리 키를 기본 키로 두고 자연 키에는 `UNIQUE`를 건다. 대리 키는 `AUTO_INCREMENT`(PostgreSQL은 `GENERATED ... AS IDENTITY`)로 1씩 늘어나는 정수를 자동으로 넣는다. 여러 서버에서 ID를 만들어야 하면 UUID·Snowflake 같은 방식을 쓴다([[distributed-unique-id|분산 고유 ID]]).
+
+**외래 키의 동작**: 부모 행을 지우거나 키를 바꿀 때 자식 행을 어떻게 할지 정한다. `CASCADE`는 자식도 함께 지우거나 바꾸고, `SET NULL`은 자식의 외래 키를 NULL로, 기본값인 `RESTRICT`(`NO ACTION`)는 자식이 있으면 부모 변경을 막는다. `CASCADE`는 편하지만 한 번의 삭제가 여러 테이블로 번지므로 범위를 알고 쓴다.
+
+### 뷰
+
+뷰(view)는 `SELECT` 결과에 이름을 붙인 **가상 테이블**이다. 데이터를 따로 저장하지 않고, 조회할 때마다 정의된 쿼리를 실행한다. 복잡한 조인을 숨기거나 일부 열만 보여 주는 권한 경계로 쓴다. 집계·`DISTINCT`·조인이 들어간 뷰는 갱신할 수 없고, 뷰에 직접 인덱스를 걸 수 없다.
+
+```sql
+CREATE VIEW active_users AS
+SELECT id, first_name, country FROM users_user WHERE balance > 0;
 ```
 
 ## CRUD

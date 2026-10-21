@@ -5,10 +5,10 @@ summary: "GraphQL은 타입 스키마 위에서 클라이언트가 필요한 필
 tags: ["backend", "api", "graphql", "architecture", "http"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-graphql", "https://bytebytego.com/guides/rest-api-vs-graphql", "https://bytebytego.com/guides/graphql-adoption-patterns", "https://bytebytego.com/guides/how-does-graphql-work-in-the-real-world", "https://graphql.org/learn/", "https://tech.kakao.com/posts/364"]
+sources: ["https://bytebytego.com/guides/what-is-graphql", "https://bytebytego.com/guides/rest-api-vs-graphql", "https://bytebytego.com/guides/graphql-adoption-patterns", "https://bytebytego.com/guides/how-does-graphql-work-in-the-real-world", "https://graphql.org/learn/", "https://graphql.org/learn/queries/", "https://tech.kakao.com/posts/364", "https://graphql.org/learn/schema/"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[What is GraphQL?](https://bytebytego.com/guides/what-is-graphql)」, 「[REST API vs. GraphQL](https://bytebytego.com/guides/rest-api-vs-graphql)」, 「[GraphQL Adoption Patterns](https://bytebytego.com/guides/graphql-adoption-patterns)」, 「[How GraphQL Works at LinkedIn](https://bytebytego.com/guides/how-does-graphql-work-in-the-real-world)」을 바탕으로 재구성한 노트다. 스키마·리졸버·연산 이름과 변수는 「[GraphQL 개념잡기](https://tech.kakao.com/posts/364)」로 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[What is GraphQL?](https://bytebytego.com/guides/what-is-graphql)」, 「[REST API vs. GraphQL](https://bytebytego.com/guides/rest-api-vs-graphql)」, 「[GraphQL Adoption Patterns](https://bytebytego.com/guides/graphql-adoption-patterns)」, 「[How GraphQL Works at LinkedIn](https://bytebytego.com/guides/how-does-graphql-work-in-the-real-world)」을 바탕으로 재구성한 노트다. 스키마·리졸버·연산 이름과 변수는 「[GraphQL 개념잡기](https://tech.kakao.com/posts/364)」로 보강했다. 타입 시스템은 graphql.org의 「[Schemas and Types](https://graphql.org/learn/schema/)」로, 별칭·프래그먼트·지시어는 「[Queries](https://graphql.org/learn/queries/)」로 보강했다.
 
 ## GraphQL이란
 
@@ -46,10 +46,20 @@ query {
 | --- | --- |
 | 오브젝트 타입·필드 | `type Character { name: String! appearsIn: [Episode]! }`처럼 정의한다. 헤더 파일에 함수 시그니처를 적는 일과 비슷하다 |
 | 스칼라 타입 | `String`, `Int`, `Float`, `Boolean`, `ID` |
-| `!` / `[ ]` | 널 불가 / 목록 |
+| `!` / `[ ]` | 널 불가 / 목록. 위치에 따라 뜻이 다르다. `[String!]`은 목록은 null일 수 있지만 원소는 null이 아니고, `[String]!`은 목록은 항상 있지만 원소가 null일 수 있다 |
+| 열거형(`enum`) | 허용 값이 정해진 스칼라. `enum Episode { NEWHOPE EMPIRE JEDI }` |
+| 인터페이스(`interface`) | 여러 타입이 공유하는 필드 묶음. `type Human implements Character`. 질의에서 타입별 필드는 `... on Human { height }`(인라인 프래그먼트)로 고른다 |
+| 유니온(`union`) | 공통 필드 없이 「이 중 하나」인 타입. `union SearchResult = Human \| Droid \| Starship`. 검색 결과처럼 모양이 제각각일 때 쓴다 |
+| 입력 타입(`input`) | 뮤테이션 인자로 넘기는 객체. 출력용 `type`과 따로 정의한다. `input ReviewInput { stars: Int! commentary: String }` |
+| 사용자 정의 스칼라 | `scalar DateTime`처럼 선언하고 직렬화·검증은 서버 구현이 맡는다 |
+| 인자 | 필드마다 인자를 받는다. `height(unit: LengthUnit = METER): Float`처럼 기본값을 둔다 |
 | 리졸버 | 필드 값을 실제로 가져오는 함수. 파싱·검증은 라이브러리가 하지만 **데이터를 어디서 어떻게 가져올지는 직접 구현**한다. 그래서 DB, 다른 REST API, 캐시 등 어떤 소스든 붙일 수 있다 |
 | 연산 이름 | `query GetHero { … }`처럼 이름을 붙인 질의. 로그·모니터링에서 질의를 구분하고 등록된 쿼리의 키가 된다 |
 | 변수 | `query GetHero($id: ID!) { hero(id: $id) { name } }`처럼 값을 질의 밖에서 넣는다. 문자열을 이어 붙여 질의를 만들지 않으므로 캐시와 보안에 유리하다 |
+| 별칭(alias) | `empireHero: hero(episode: EMPIRE) { name }`처럼 결과 키 이름을 바꾼다. 같은 필드를 인자만 달리해 한 질의에서 두 번 부를 수 있다 |
+| 프래그먼트(fragment) | `fragment comparisonFields on Character { name friends { name } }`로 필드 묶음을 정의하고 `...comparisonFields`로 재사용한다. 컴포넌트마다 자기가 쓰는 필드를 프래그먼트로 선언하는 방식(Relay, Apollo)의 기반이다 |
+| `__typename` | 결과마다 실제 타입 이름을 받는다. 인터페이스·유니언 결과를 클라이언트가 구분하고 캐시 키를 만들 때 쓴다 |
+| 지시어(directive) | `friends @include(if: $withFriends)`, `@skip(if: …)`처럼 변수로 필드를 넣고 뺀다. 질의 문자열을 조작하지 않고 모양을 바꾼다 |
 
 쿼리와 뮤테이션은 내부 실행 방식이 거의 같고, 읽기와 쓰기를 나누는 규약이다. 차이는 뮤테이션의 최상위 필드가 **순서대로** 실행된다는 점이다(쿼리는 병렬로 실행될 수 있다).
 
