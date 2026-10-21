@@ -45,8 +45,8 @@
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
-  --font-sans: var(--font-body), "Apple SD Gothic Neo", system-ui, sans-serif;
-  --font-display: var(--font-display), var(--font-body), serif;
+  --font-sans: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", system-ui, sans-serif;
+  --font-display: var(--font-display), "Pretendard Variable", serif;
   --font-mono: var(--font-code), ui-monospace, monospace;
 }
 

@@ -1,15 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans_KR, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
+// Self-hosted Pretendard, split by unicode-range so a page only fetches the Hangul it shows
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import SiteHeader from "@/components/SiteHeader";
 import { site } from "@/lib/site";
 import "./globals.css";
 
-const body = IBM_Plex_Sans_KR({
-  variable: "--font-body",
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-  display: "swap",
-});
 const display = Instrument_Serif({
   variable: "--font-display",
   weight: "400",
@@ -44,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="ko"
       data-theme="dark"
       suppressHydrationWarning
-      className={`${body.variable} ${display.variable} ${code.variable} h-full antialiased`}
+      className={`${display.variable} ${code.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
