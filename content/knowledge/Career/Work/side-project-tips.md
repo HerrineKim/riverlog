@@ -5,15 +5,23 @@ summary: "꾸준히 하나는 굴리기, 내 불편에서 아이디어 찾기, �
 tags: ["career", "growth", "productivity", "side-project"]
 source: other
 date: "2026-10-20"
-sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM", "https://webactually.com/2015/04/17/%ed%95%9c%ea%b3%84%ec%97%90%ec%84%9c-%ec%9d%b4%ec%96%b4%ec%a7%84-%eb%82%98%ec%9d%98-%ec%95%b1%ec%8a%a4%ed%86%a0%ec%96%b4-%ec%84%b1%ea%b3%b5%ea%b3%bc-%ec%8b%a4%ed%8c%a8-%ec%9d%b4%ec%95%bc%ea%b8%b0/", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view"]
+sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM", "https://webactually.com/2015/04/17/%ed%95%9c%ea%b3%84%ec%97%90%ec%84%9c-%ec%9d%b4%ec%96%b4%ec%a7%84-%eb%82%98%ec%9d%98-%ec%95%b1%ec%8a%a4%ed%86%a0%ec%96%b4-%ec%84%b1%ea%b3%b5%ea%b3%bc-%ec%8b%a4%ed%8c%a8-%ec%9d%b4%ec%95%bc%ea%b8%b0/", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://techblog.woowahan.com/2590/", "https://wormwlrm.github.io/2019/10/13/Kwakcheolyong-Image-Creator-Development-Story.html", "https://wormwlrm.github.io/2022/05/07/Bamboo-Forest-Slack-App.html", "https://cho.sh/ko/w/5ADC58", "https://api.slack.com/interactivity/handling"]
 ---
 
 > Chris Yang의 「[당신의 사이드 프로젝트를 위한 10가지 팁](https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects)」(2019.08)을 바탕으로 재구성한 노트다. 원 자료는 Traversy Media의 영상 「[10 Tips For Starting & Creating Side Projects](https://www.youtube.com/watch?v=eCAj3mWFpNM)」다. 출시 이후의 원칙은 웹액츄얼리가 번역한 「한계에서 이어진 나의 앱스토어 성공과 실패 이야기」(2015.04)를 바탕으로 덧붙였다.
 > 「내가 쓸 것을 내가 만든다」, MVP·MMP·MLP, 빌드 인 퍼블릭은 배휘동의 발표 자료 「나날이 발전하고픈 개발자를 위한 AI 활용법」(2025.08) 2부를 바탕으로 더했다.
+> 업무에서 얻기 어려운 경험, 「빨리 내고 관찰한다」, 「이름과 상표를 먼저 점검한다」는 「[프로젝트가 장난이야?!](https://techblog.woowahan.com/2590/)」, 「[곽철용 짤 생성기, 이렇게 만들어졌습니다](https://wormwlrm.github.io/2019/10/13/Kwakcheolyong-Image-Creator-Development-Story.html)」(2019.10), 「[임금님 귀는 당나귀 귀! 대나무숲 슬랙 앱 만들기](https://wormwlrm.github.io/2022/05/07/Bamboo-Forest-Slack-App.html)」(2022.05), 「[마이크로소프트에게 내용증명 받고 23만 유저 앱 삭제한 건에 대하여](https://cho.sh/ko/w/5ADC58)」를 바탕으로 보강했다.
 
 ## 사이드 프로젝트가 필요한 이유
 
 사이드 프로젝트는 대부분 실패한다. 그래도 계속 하는 이유는 **상사도 클라이언트도 없는 유일한 개발**이기 때문이다. 기술을 마음대로 고르고, 배우고 싶은 것을 배우고, 만들고 싶은 것을 만든다. 본업에 지쳐 열정이 식을 때 동기를 지켜 주는 장치다.
+
+업무에서 얻기 어려운 경험도 사이드 프로젝트에서 얻는다.
+
+- **원리를 직접 구현해 본다.** 안정성이 중요한 업무에서는 라이브러리를 그대로 쓸 뿐 직접 만들어 볼 기회가 적다. 개인 프로젝트에서는 동작 원리를 파 볼 수 있다.
+- **새 기술을 먼저 시험한다.** 업무에는 검증되고 스스로 문제를 풀 수 있을 만큼 익은 기술만 들인다. 그 검증 장소가 사이드 프로젝트다.
+- **설계부터 배포·운영까지 한 바퀴 돈다.** 인프라를 직접 다루지 않는 자리라도 전 과정을 알면 설계와 문제 해결의 질이 오른다. 비용이 제약이 되므로 목적에 맞는 규모를 고르는 연습도 된다.
+- 여럿이 할 때는 할 일 목록만 나누지 말고 **목적과 배경을 공유**한다. 맥락 없이 쪼갠 작업은 의도가 전달되지 않는다.
 
 흔한 아이디어도 **특정 집단이라는 틈새**에 맞추면 새로운 제품이 된다. 특정 가수의 팬만을 위한 데이팅 사이트가 그런 예다.
 
@@ -77,6 +85,21 @@ sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projec
 | 처음부터 세계용으로 | 다국어를 지원하지 않으면 해외 사용자를 놓친다. 날짜·시간은 특히 위험하다. 서머타임으로 자정이 없는 날, 윤일, 음력·이슬람력 같은 다른 달력이 있으니 직접 계산하지 말고 OS의 날짜 라이브러리를 쓴다. 주말·근무 시간도 문화와 야간 근무 여부에 따라 다르다 |
 | 작은 디테일에 공을 들인다 | 사람들은 기능 목록보다 로딩 애니메이션 같은 작은 즐거움을 기억한다 |
 | 업데이트를 끊지 않는다 | 업데이트가 멈추면 버그와 OS 변화로 신뢰를 잃고 사용자가 빠르게 떠난다. 매일 쓰는 앱이라면 시간이 지나며 어떻게 개선할지까지 계획한다 |
+
+### 빨리 내고 관찰한다
+
+- 만들기 전에 비슷한 서비스가 있는지 검색해 빈자리를 확인한다.
+- 화제성이 있는 아이디어는 **핵심 기능 하나만으로 빨리** 낸다. 타이밍이 지나면 완성도가 높아도 쓰이지 않는다.
+- 다운로드·공유 버튼 같은 핵심 행동에 이벤트 추적을 붙여 얼마나, 언제 쓰이는지 본다.
+- 출시 뒤 실제 사용자가 헤매는 지점을 보고 바로 고친다. 범용 메뉴에 숨긴 기능은 잘 못 찾으므로 명시적인 버튼으로 꺼낸다.
+- 기존 유료 도구가 인원수 과금으로 부담스럽고 요구가 단순하면 **작은 사내 도구를 직접 만드는 것**도 좋은 사이드 프로젝트다. 메신저 봇처럼 플랫폼에 붙는 앱은 응답 시한(예: Slack 상호작용은 3초 안에 확인 응답)을 먼저 확인하고, 무거운 작업 전에 즉시 응답하는 구조로 짠다. 로컬 터널은 개발용으로만 쓰고 운영은 별도 호스팅에 올린다.
+
+### 이름과 상표를 먼저 점검한다
+
+- **남의 브랜드명·로고를 앱 이름이나 아이콘에 넣지 않는다.** 「OO용 클라이언트」처럼 원 브랜드를 그대로 쓰면 출처 혼동을 이유로 상표권자의 경고를 받을 수 있다.
+- 상대 서비스에 도움이 된다는 논리나 무료·오픈소스라는 사실이 상표 문제를 막아 주지 않는다. 큰 회사는 브랜드 보호 업체로 침해를 체계적으로 찾는다.
+- 경고장에는 짧은 대응 기한이 붙는 경우가 많다. 받으면 바로 검토하고, 판단이 필요하면 전문가와 상담한다.
+- 공개 배포 전에 이름을 상표 검색(한국은 KIPRIS, 미국은 USPTO)으로 확인하고, 연동 대상의 브랜드 가이드라인을 읽는다.
 
 ## AI 도구와 사이드 프로젝트
 
@@ -153,8 +176,9 @@ AI 코딩 도구로 프로토타입을 만드는 비용이 크게 줄었다. 그
 - 모르는 기술은 배우고, 막히면 사람을 구한다.
 - 코딩보다 **랜딩 페이지가 먼저**다. 반응을 보고 만든다.
 - 출시 후에는 기능을 늘리기보다 핵심 하나를 다듬고, 업데이트를 끊지 않는다.
+- 빨리 내고 사용 데이터를 본다. 이름에 남의 상표를 쓰지 않는다.
 - 내가 쓸 것을 내가 만든다. 불편 일기로 아이디어를 모으고, 가장 고통스럽고 만들기 쉬운 단계부터.
 - MVP·MMP·MLP를 처음부터 함께: 쓸 만하고, 돈 낼 만하고, 자랑할 만하게.
 - 빌드 인 퍼블릭은 What이 아니라 Why와 How를 공유하고, 유입과 전환으로 성과를 본다.
 
-관련 노트: [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]
+관련 노트: [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]], [[startup-engineering|초기 스타트업과 창업]]

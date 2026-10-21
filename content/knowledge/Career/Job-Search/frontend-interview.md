@@ -5,10 +5,10 @@ summary: "프론트엔드 면접은 알고리즘보다 도메인 지식과 실�
 tags: ["career", "interview", "job-search", "frontend"]
 source: other
 date: "2026-10-17"
-sources: ["https://www.frontendinterviewhandbook.com/kr/introduction"]
+sources: ["https://www.frontendinterviewhandbook.com/kr/introduction", "https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91"]
 ---
 
-> Yangshun Tay의 「[Front End Interview Handbook](https://www.frontendinterviewhandbook.com/kr/introduction)」(2026.10 갱신)을 바탕으로 재구성한 노트다.
+> Yangshun Tay의 「[Front End Interview Handbook](https://www.frontendinterviewhandbook.com/kr/introduction)」(2026.10 갱신)을 바탕으로 재구성한 노트다. 퀴즈 주제 표는 「[프론트엔드 개발자 인터뷰 후기 (면접 질문 정리)](https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91)」를 참고해 보강했다.
 
 ## 프론트엔드 면접의 특징
 
@@ -66,6 +66,18 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 ### 퀴즈
 
 전형 초반에 많이 나온다. 정답이 분명해 비개발자도 채점할 수 있기 때문이다. 시니어에게는 「React는 어떻게 동작하나, 가상 DOM은 무엇을 푸나」, 「왜 X 대신 Y 라이브러리를 골랐나」처럼 정답이 없는 질문이 나온다. 암기보다 **개념 이해와 실제 적용 경험**으로 준비한다.
+
+자주 나오는 퀴즈 주제는 다음과 같다.
+
+| 영역 | 주제 |
+| --- | --- |
+| JavaScript | 호이스팅과 실행 컨텍스트, 클로저, `this` 바인딩, 프로토타입, 이벤트 루프, `async`/`await` |
+| 브라우저·DOM | `<!DOCTYPE>`의 역할, `meta` 태그, `script` 위치와 `defer`·`async`, 이벤트 버블링·캡처링, 렌더링 과정 |
+| CSS | 박스 모델, 레이아웃(Flexbox·Grid), CSS 애니메이션과 JS 애니메이션의 차이 |
+| 네트워크 | CORS가 생기는 이유와 해결 방법, 캐시, HTTP 메서드와 상태 코드 |
+| 라우팅 | SPA에서 해시(`#`) 라우팅과 History API의 차이 |
+
+`float` 해제나 JSONP 같은 질문도 나오지만, 각각 Flexbox·Grid와 CORS로 대체된 레거시 기법이라 왜 대체됐는지까지 설명할 수 있으면 된다.
 
 ## 프론트엔드 시스템 디자인과 RADIO
 

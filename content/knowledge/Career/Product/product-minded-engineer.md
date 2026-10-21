@@ -71,4 +71,4 @@ PO(Product Owner)는 제품이 **무엇을, 왜** 만들어야 하는지 책임�
 - 출시 후 데이터 확인까지가 일이다.
 - 목적 조직에서 개발자는 Why·What을 함께 정하는 구성원이고, OKR(방향)과 애자일(걷는 법)은 한 쌍이다.
 
-관련 노트: [[collaborative-developer|협업을 잘하는 개발자]], [[agile-sprint|애자일과 스프린트]], [[project-process|프로젝트 진행 순서]], [[working-with-designers|디자이너와 함께 일하기]]
+관련 노트: [[collaborative-developer|협업을 잘하는 개발자]], [[agile-sprint|애자일과 스프린트]], [[project-process|프로젝트 진행 순서]], [[working-with-designers|디자이너와 함께 일하기]], [[feature-factory|기능 공장]]

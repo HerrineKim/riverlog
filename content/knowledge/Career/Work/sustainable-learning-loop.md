@@ -5,10 +5,11 @@ summary: "개발 학습은 의지로 버티는 1년이 아니라 수십 년 이�
 tags: ["career", "growth", "learning", "study-method", "productivity"]
 source: other
 date: "2026-10-17"
-sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "https://www.f-lab.kr/blog/developer-tech-article-zip", "https://www.slideshare.net/utilforever/ss-251900268", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view"]
+sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "https://www.f-lab.kr/blog/developer-tech-article-zip", "https://www.slideshare.net/utilforever/ss-251900268", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://jojoldu.tistory.com/402", "https://evan-moon.github.io/2019/08/26/how-does-developer-study/", "https://www.slideshare.net/deview/ss-58739254", "https://www.popit.kr/si-%EA%B0%9C%EB%B0%9C-10%EB%85%84%EC%B0%A8%EC%9D%B8%EB%8D%B0-%EC%BD%94%EB%93%9C-%EC%A2%80-%EB%B4%90%EC%A3%BC%EC%84%B8%EC%9A%94/"]
 ---
 
 > F-Lab 블로그의 「[지속가능한 개발자 성장 스킬 5가지](https://www.f-lab.kr/blog/sustainable-developer-growth-skills)」(2022.12)와 「[주니어 개발자들이 읽으면 좋은 테크 아티클 모음](https://www.f-lab.kr/blog/developer-tech-article-zip)」(2023.05), 옥찬호의 고려대 컴퓨터학과 특강 「[대학생 때 알았더라면 좋았을 것들](https://www.slideshare.net/utilforever/ss-251900268)」(2022) 슬라이드를 바탕으로 재구성한 노트다.
+> 매일 커밋에 대한 관점, 「무엇을 배울지 고르기」, 공부하는 방법 일부는 「[일일커밋의 효용성](https://jojoldu.tistory.com/402)」, 「[개발자가 공부로 살아남는 방법](https://evan-moon.github.io/2019/08/26/how-does-developer-study/)」(2019.08), DEVIEW 발표 「[개발을 잘하고 싶어요](https://www.slideshare.net/deview/ss-58739254)」, 「[SI 개발 10년차인데 코드 좀 봐주세요](https://www.popit.kr/si-%EA%B0%9C%EB%B0%9C-10%EB%85%84%EC%B0%A8%EC%9D%B8%EB%8D%B0-%EC%BD%94%EB%93%9C-%EC%A2%80-%EB%B4%90%EC%A3%BC%EC%84%B8%EC%9A%94/)」를 바탕으로 보강했다.
 > 「AI 시대의 학습」은 배휘동의 발표 자료 「나날이 발전하고픈 개발자를 위한 AI 활용법」(2025.08) 3부를 바탕으로 더했다.
 
 ## 왜 「지속 가능」이 먼저인가
@@ -16,6 +17,15 @@ sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "http
 개발은 사용자가 늘고, 데이터가 쌓이고, 기능이 붙을수록 새 문제가 생기는 일이다. 그래서 공부가 끝나지 않는다. **끝나지 않는 공부에서는 강도보다 지속성이 이긴다.**
 
 「매일 커밋(GitHub 잔디 심기)」이 좋은 반례다. 강한 의지로 몇 달은 버틸 수 있지만 평생 하기는 어렵다. 게다가 성장을 커밋 하나로만 재게 만든다. 설계, 독서, 코드 리뷰, 오픈소스 읽기, 하루에 끝나지 않는 개발도 모두 학습이다. 측정하기 쉬운 틀에 노력을 끼워 맞추면 지치고, 지치면 멈춘다. 필요한 것은 **10년, 20년의 개발 인생에 녹아드는 습관**이다.
+
+매일 커밋을 두고는 관점이 갈린다.
+
+| 관점 | 근거 |
+| --- | --- |
+| 보이는 지표가 습관을 붙잡는다 | 반복 작업은 성과가 눈에 보일 때 이어진다. 커밋 기록, 연속 일수처럼 **눈에 보이는 지표와 목표 숫자**를 정하고 매일 확인하면 게임처럼 동기가 생긴다. 지표가 없는 개인 프로젝트·스터디일수록 쉽게 버려진다. 며칠 빠지거나 편법을 써도 이어 가는 것이 중요하다 |
+| 지표가 학습을 왜곡한다 | 커밋으로 잴 수 없는 학습(설계, 독서, 리뷰)이 밀리고, 숫자를 지키는 것 자체가 목적이 되면 지친다 |
+
+둘을 합치면 **지표는 습관의 시동 장치로 쓰되, 성장의 정의로 삼지 않는다.**
 
 ## 다섯 단계 루프
 
@@ -76,6 +86,19 @@ sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "http
 
 분야별 책 목록은 [[tech-reading-list|개발 분야별 추천 도서]]에 있다.
 
+### 무엇을 배울지 고르기
+
+기술은 다 배울 수 없다. 학습이 어려운 이유는 기술 자체보다 **무엇부터 배울지 정하기 어려워서**인 경우가 많다.
+
+| 질문 | 판단 |
+| --- | --- |
+| 유행인가, 오래 쓰일 기반인가 | 빠르게 바뀌는 도구보다 오래 가는 기초(언어, 네트워크, 자료구조, 설계)에 시간을 더 쓴다. 프레임워크는 시대의 요구에 따라 바뀐다 |
+| 지금 필요한가 | 당장 만들 것에 필요한 기술은 바로, 아닌 것은 목록에만 둔다 |
+| 왜 배우는지 설명할 수 있나 | 「다들 쓰니까」가 아니라 내 기준으로 이유를 댈 수 있어야 한다 |
+
+- **만들 결과물을 먼저 정한다.** 목표가 모호하면 어디서 끝내야 할지 몰라 지치고, 배운 것을 쓸 곳이 없어 흥미가 떨어진다.
+- **여러 주제를 얕게 훑기보다 한 주제를 끝낸다.**
+
 ### 공부하는 방법
 
 | 방법 | 뜻 |
@@ -84,6 +107,10 @@ sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "http
 | 설명해 보기(자기 교수법) | 남에게 설명하듯 말해 보면 막히는 지점이 곧 빈틈이다 |
 | 흐름 따라 공부하기 | 개념을 낱개로 외우지 않고 잇는다. 힙(heap)이라면 정의 → 연산 → 시간 복잡도 → 배열로 구현하는 이유까지 한 줄로 따라간다 |
 | 점을 이어 선으로 | 이론과 실무는 따로 있지 않다. 2차원 배열을 행 우선으로 도느냐 열 우선으로 도느냐가 캐시 지역성 때문에 속도를 바꾸는 것처럼, 이론은 실무 코드에서 다시 만난다([[cache-friendly-code\|캐시를 고려한 코드]]) |
+| 「왜」를 꼬리 물기 | 익숙한 개념도 「왜 그런가」를 연달아 물어 동작 원리와 하위 개념까지 내려간다. 같은 기능만 반복 구현하면 연차가 쌓여도 실력이 멈춘다. 실무에서 만난 문제를 출발점으로 삼으면 따로 하는 공부보다 깊다 |
+| 아는 문제로 바꾸기 | 새 문제를 이미 풀이법이 알려진 문제로 환원한다. 복잡하면 핵심만 남긴 단순한 모델로 시작해 변수를 하나씩 더하고, 큰 프로그램은 작은 함수 단위 동작으로 쪼개 이해한다 |
+| 안다고 생각한 것 다시 보기 | 시간이 지나 복습하면 전에는 안 보이던 것이 보인다 |
+| 가장 약한 요소부터 | 개발 능력은 기초 지식, 문제 환원, 구현 숙련, 도구 이해 같은 여러 능력의 조합이다. 가장 부족한 요소를 채우면 전체가 함께 오른다 |
 | 언어 하나는 깊게 | 한 언어로 작동하게 → 낫게 → 빠르게 만드는 단계를 끝까지 겪으면 다음 언어는 빨리 익힌다 |
 
 분야를 아직 못 정했다면 여러 분야를 가볍게 시도해 맞는 것을 찾는다. 로드맵은 방향을 잡는 용도이지 모두 외울 목록이 아니다.
@@ -185,4 +212,4 @@ AI를 잘 쓰는 사람들의 습관도 같은 방향이다. 새 모델이 나�
 - AI 도구는 따라가지 말고 관심 카테고리만 흘러들어오게 한다. 결과보다 결과를 만드는 법(생성형 지식)을 배운다.
 - 계획은 언제·어디서·무엇을까지 정한 구현 의도로 세운다.
 
-관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]], [[tech-reading-list|개발 분야별 추천 도서]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[missing-semester|The Missing Semester: CS 교육에서 빠진 도구 학기]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]
+관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]], [[tech-reading-list|개발 분야별 추천 도서]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[missing-semester|The Missing Semester: CS 교육에서 빠진 도구 학기]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]], [[learning-to-code-stages|개발 배우기의 네 단계와 넘는 법]], [[tech-blogging|개발자 기술 블로그]]

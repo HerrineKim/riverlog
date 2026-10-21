@@ -1,11 +1,14 @@
 ---
 title: "개발 분야별 추천 도서"
 concept: "Reading List"
-summary: "CS 기초, 알고리즘, 설계·코드 품질, 프론트엔드·UX, 언어·도구, 일하는 방식·커리어까지 분야별 개발 서적과 각 분야의 입문 경로."
+summary: "CS 기초, 알고리즘, 설계·코드 품질, DevOps·SRE, 프론트엔드·UX, 언어·도구, 일하는 방식·커리어까지 분야별 개발 서적과 각 분야의 입문 경로, 그리고 분산 시스템을 바꾼 고전 논문."
 tags: ["career", "books", "computer-science", "software-engineering"]
 source: notion
 date: "2026-10-13"
+sources: ["https://bytebytego.com/guides/some-devops-books-i-find-enlightening", "https://bytebytego.com/guides/10-books-for-software-developers", "https://bytebytego.com/guides/25-papers-that-completely-transformed-the-computer-world", "https://johngrib.github.io/wiki/my-favorite-books/"]
 ---
+
+> 「DevOps·SRE」 줄은 ByteByteGo의 System Design 101 가이드 「[Some DevOps Books I Find Enlightening](https://bytebytego.com/guides/some-devops-books-i-find-enlightening)」을, 알고리즘 교과서와 도메인 주도 설계는 「[10 Books for Software Developers](https://bytebytego.com/guides/10-books-for-software-developers)」를 바탕으로 보강했다. 「분산 시스템 고전 논문」은 「[25 Papers That Completely Transformed the Computer World](https://bytebytego.com/guides/25-papers-that-completely-transformed-the-computer-world)」를 바탕으로 주제별로 묶었다. 일부 고전·도구 책은 「[나의 성장을 도와준 고마운 책들](https://johngrib.github.io/wiki/my-favorite-books/)」을 참고해 더했다.
 
 개발 서적을 분야별로 묶은 목록이다. 분야마다 첫 줄에 어디서 시작하면 좋은지 적고, 같은 줄 안에서는 입문서 → 심화서 순으로 둔다.
 
@@ -28,16 +31,31 @@ date: "2026-10-13"
 | --- | --- |
 | 교양 | 누워서 읽는 알고리즘, 미래를 바꾼 아홉 가지 알고리즘, 알고리즘 인생을 계산하다, 마스터 알고리즘, 알고리즘이 보이는 그림책 |
 | 코딩 테스트 | 이것이 취업을 위한 코딩테스트다 with 파이썬, 파이썬 알고리즘 인터뷰, Do it! 알고리즘 코딩 테스트(자바), 한 권으로 끝내는 코딩테스트, 코딩 인터뷰 완전 분석 |
-| 이론·문제 해결 | 알고리즘 문제 해결 전략, 프로그래밍 콘테스트 챌린징, TOP CODER 알고리즘 트레이닝, 문제로 풀어보는 알고리즘 |
+| 이론·문제 해결 | Introduction to Algorithms(CLRS, 교과서), 알고리즘 문제 해결 전략, 로젠의 이산수학, 프로그래밍 콘테스트 챌린징, TOP CODER 알고리즘 트레이닝, 문제로 풀어보는 알고리즘 |
 | 언어별 | 자바스크립트 자료구조와 알고리즘, 자바로 배우는 핵심 자료구조와 알고리즘, 고전 컴퓨터 알고리즘 인 파이썬, C로 구현한 알고리즘 |
 
 ## 설계·코드 품질
 
 | 분야 | 입문 경로 | 책 |
 | --- | --- | --- |
-| 클린 코드·리팩터링·테스트 | 읽기 쉬운 코드 원칙에서 시작해 리팩터링과 TDD로 간다 | 읽기 좋은 코드가 좋은 코드다, 클린 코드, 리팩터링, 켄트 벡의 구현 패턴, 테스트 주도 개발, 클린 코드를 위한 테스트 주도 개발, 탐험적 테스팅, 레거시 코드 활용 전략, 코드 컴플리트 2 |
-| 객체지향·디자인 패턴 | 개념서로 역할·책임·협력을 이해한 뒤 패턴서를 읽는다 | 객체지향의 사실과 오해 → 오브젝트, 헤드 퍼스트 디자인 패턴 → GoF의 디자인 패턴, A Philosophy of Software Design, 객체에서 함수로 |
+| 클린 코드·리팩터링·테스트 | 읽기 쉬운 코드 원칙에서 시작해 리팩터링과 TDD로 간다 | 읽기 좋은 코드가 좋은 코드다, 클린 코드, 리팩터링, 켄트 벡의 구현 패턴, 테스트 주도 개발, 클린 코드를 위한 테스트 주도 개발, 탐험적 테스팅, 레거시 코드 활용 전략, 코드 컴플리트 2, 프로그래밍 수련법(The Practice of Programming) |
+| 객체지향·디자인 패턴 | 개념서로 역할·책임·협력을 이해한 뒤 패턴서를 읽는다 | 객체지향의 사실과 오해 → 오브젝트, 헤드 퍼스트 디자인 패턴 → GoF의 디자인 패턴, A Philosophy of Software Design, 객체에서 함수로, 도메인 주도 설계(에릭 에반스) |
 | 아키텍처 | 의존성 원칙을 익힌 뒤 대규모 시스템 설계와 운영으로 넓힌다 | 클린 아키텍처, 클린 소프트웨어, 가상 면접 사례로 배우는 대규모 시스템 설계 기초, 파이썬으로 살펴보는 아키텍처 패턴, 마이크로서비스 아키텍처 구축, 마이크로서비스 구축과 운영, 플랫폼 엔지니어링, Release의 모든 것 |
+| DevOps·SRE | 소설로 흐름의 문제를 체감한 뒤, 실천 안내서와 측정 연구로 간다 | The Phoenix Project(피닉스 프로젝트) → The DevOps Handbook, Effective DevOps, Continuous Delivery, Accelerate, Site Reliability Engineering(구글 SRE 책) |
+
+## 분산 시스템 고전 논문
+
+대규모 시스템의 설계 원칙은 대부분 몇 편의 논문에서 시작했다. 책으로 큰 그림을 잡은 뒤(데이터 중심 애플리케이션 설계), 관심 있는 주제의 원 논문을 읽는다.
+
+| 주제 | 논문 | 무엇을 바꿨나 |
+| --- | --- | --- |
+| 시간과 합의 | Time, Clocks, and the Ordering of Events (Lamport), Raft | 분산 환경에서 사건의 순서를 정하는 논리 시계, 이해하기 쉬운 합의 알고리즘 |
+| 분산 저장소 | Google File System, Bigtable, Dynamo, Cassandra | 값싼 장비 위의 대용량 파일 시스템, 와이드 컬럼 저장소, 가용성 우선의 키-값 저장소와 일관된 해싱 |
+| 분산 DB | Spanner, Amazon Aurora, FoundationDB, MyRocks | 전역 분산 트랜잭션(TrueTime), 로그만 복제하는 클라우드 DB, 결정론적 시뮬레이션 테스트, LSM 트리 저장 엔진 |
+| 데이터 처리 | MapReduce, Kafka, Apache Flink | 대규모 병렬 배치 처리, 로그 기반 메시징, 배치와 스트림을 한 엔진으로 |
+| 운영 인프라 | Borg, Shard Manager, Dapper, Monarch, Scaling Memcache at Facebook | 클러스터 관리(Kubernetes의 원형), 범용 샤드 관리, 분산 트레이싱, 인메모리 시계열 DB, 대규모 캐시 운영 |
+| 권한·통신 | Zanzibar, Thrift | 전역 권한(ACL) 시스템, 언어 중립 RPC 코드 생성 |
+| 그 밖의 전환점 | Go To Statement Considered Harmful, Bitcoin, Attention Is All You Need, WTF(Who to Follow), A Comprehensive Survey on Vector Databases | 구조적 프로그래밍, P2P 전자 화폐, 트랜스포머, 그래프 기반 추천, 벡터 DB |
 
 ## 프론트엔드·UX
 
@@ -50,7 +68,7 @@ date: "2026-10-13"
 
 ## 언어·도구
 
-쓰는 언어의 관용구를 다루는 책을 먼저 고른다. 프로그래머를 위한 파이썬, Two Scoops of Django, Node.js 디자인 패턴 바이블, Effective C#, Kubernetes in Action, 다양한 언어로 배우는 정규표현식, 유닉스의 탄생, 리눅스 그냥 재미로.
+쓰는 언어의 관용구를 다루는 책을 먼저 고른다. 프로그래머를 위한 파이썬, Two Scoops of Django, Node.js 디자인 패턴 바이블, Effective C#, Kubernetes in Action, 이펙티브 자바, Practical Vim, Pro Git, 리눅스 커맨드라인 완벽 입문서, 다양한 언어로 배우는 정규표현식, 유닉스의 탄생, 리눅스 그냥 재미로.
 
 ## 일하는 방식·커리어
 
@@ -60,8 +78,8 @@ date: "2026-10-13"
 | --- | --- |
 | 개발 문화 | 함께 자라기, 익스트림 프로그래밍, 실용주의 프로그래머, Software Engineering at Google, 소프트웨어 장인 |
 | 커리어 | 육각형 개발자, 커리어 스킬, 소프트웨어 엔지니어 가이드북, 요즘 개발자, 오늘부터 개발자, 필독! 개발자 온보딩 가이드, 프로그래머의 길 멘토에게 묻다 |
-| 리더십·매니지먼트 | 실리콘 밸리의 팀장들, 개발 7년차 매니저 1일차, 안녕하세요 오늘부터 매니저입니다, 개발자를 넘어 기술 리더로 가는 길, 스태프 엔지니어 |
+| 리더십·매니지먼트 | 실리콘 밸리의 팀장들, 개발 7년차 매니저 1일차, 안녕하세요 오늘부터 매니저입니다, 개발자를 넘어 기술 리더로 가는 길, 스태프 엔지니어, 테크니컬 리더(제럴드 와인버그), 컨설팅의 비밀 |
 | 협업 | 오늘도 개발자가 안 된다고 말했다, 개발자의 글쓰기, 데이터 분석과 비판적 사고 |
-| 고전·에세이 | 맨먼스 미신, 피플웨어, 프로그래밍 심리학, 프로그래머의 뇌, 해커와 화가, 조엘 온 소프트웨어, 클린 코더, 프로그래머 열정을 말하다, 죽을 때까지 코딩하며 사는 법, 컴퓨터 과학이 여는 세계, 오늘날 우리는 컴퓨터라 부른다 |
+| 고전·에세이 | 맨먼스 미신, 피플웨어, 프로그래밍 심리학, 프로그래머의 뇌, 해커와 화가, 조엘 온 소프트웨어, 클린 코더, 프로그래머 열정을 말하다, 죽을 때까지 코딩하며 사는 법, 컴퓨터 과학이 여는 세계, 오늘날 우리는 컴퓨터라 부른다, 프로젝트가 서쪽으로 간 까닭은, 더 골(The Goal), 괴델 에셔 바흐, 추측과 논박(칼 포퍼) |
 
 관련 노트: [[growing-at-work|회사에서 빠르게 성장하는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[finding-dev-references|개발 자료 잘 찾는 법]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]]

@@ -5,10 +5,10 @@ summary: "애자일의 핵심은 만들고-보여주고-피드백 받고-방향�
 tags: ["career", "agile", "collaboration", "process", "product"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/agile-feedback-game", "https://velog.io/@teo/scrum-sprint", "https://velog.io/@teo/sprint-and-mind", "https://velog.io/@teo/google-sprint-1", "https://velog.io/@teo/google-sprint-10", "https://velog.io/@teo/google-sprint-15", "https://asana.com/ko/resources/waterfall-vs-agile", "https://asana.com/ko/resources/iterative-process"]
+sources: ["https://velog.io/@teo/agile-feedback-game", "https://velog.io/@teo/scrum-sprint", "https://velog.io/@teo/sprint-and-mind", "https://velog.io/@teo/google-sprint-1", "https://velog.io/@teo/google-sprint-10", "https://velog.io/@teo/google-sprint-15", "https://asana.com/ko/resources/waterfall-vs-agile", "https://asana.com/ko/resources/iterative-process", "https://techblog.woowahan.com/2677/"]
 ---
 
-> 테오(teo)의 애자일·스크럼·스프린트 글과 「테오의 스프린트」 회고(2021~2024)를 요약·재구성한 노트다. 방법론 비교는 Asana의 「[애자일 프로젝트 관리 리소스](https://asana.com/ko/resources/agile)」 아티클들을 함께 참고했다.
+> 테오(teo)의 애자일·스크럼·스프린트 글과 「테오의 스프린트」 회고(2021~2024)를 요약·재구성한 노트다. 방법론 비교는 Asana의 「[애자일 프로젝트 관리 리소스](https://asana.com/ko/resources/agile)」 아티클들을 함께 참고했다. 「[팀 문화의 탄생](https://techblog.woowahan.com/2677/)」의 내용을 더해 보강했다.
 
 ## 애자일이란
 
@@ -95,6 +95,7 @@ sources: ["https://velog.io/@teo/agile-feedback-game", "https://velog.io/@teo/sc
 | 데일리 스크럼 | 한 일·할 일·막힌 일을 공유한다. 당장 과제가 없는 디자이너도 참석해 맥락을 잃지 않게 한다 |
 | 주간 데모 + 회고 | 금요일쯤 다 같이 결과물을 보고 회고한다. 중간 데모가 스프린트의 가장 큰 힘이다 |
 | 4Ls 회고 | Liked(좋았던 것)·Learned(배운 것)·Lacked(아쉬운 것)·Longed for(바랐던 것)를 각자 적고, 투표로 고른 주제를 함께 이야기한다 |
+| KPT 회고 | Keep(이어 갈 것)·Problem(문제)·Try(시도할 것). Try는 「소통을 잘하자」 같은 다짐이 아니라 바로 실행할 수 있는 행동으로, 남이 아니라 **내가 바꿀 수 있는 것**에서 찾는다. 투표로 2~3개만 고르고 각각 담당자를 정해 보이는 곳에 둔다 |
 | 이슈 개수 제한 | QA 시기 한 사람이 쥔 이슈가 6~7개를 넘으면 대응력이 떨어진다. 기획이 우선순위를 계속 재조정해 집중하게 한다 |
 
 - 스프린트를 "못 지키면" 피드백한다는 발상부터 목표치를 정하는 실수다. 회고에서 스스로 돌아보면 충분하고, 따로 지적하면 방어만 남는다.

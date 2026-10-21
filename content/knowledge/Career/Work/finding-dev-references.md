@@ -5,7 +5,7 @@ summary: "막혔을 때 자료를 찾는 순서: 영어 검색과 관용 키워�
 tags: ["career", "search", "productivity", "tips", "growth"]
 source: other
 date: "2026-10-14"
-sources: ["https://teqoo.tistory.com/277", "https://reactflow.dev/learn/layouting/sub-flows"]
+sources: ["https://teqoo.tistory.com/277", "https://reactflow.dev/learn/layouting/sub-flows", "https://devhints.io/"]
 ---
 
 > 개발세탁소의 「[개발 자료 잘 찾는 개발자 되기](https://teqoo.tistory.com/277)」(2022.04)를 바탕으로 재구성한 노트다.
@@ -78,6 +78,10 @@ PKDrawing 문서  → dataRepresentation() -> Data   그림을 Data로 내보낸
 
 예: React Flow에서 플로우 안에 플로우를 넣는 중첩 기능은 처음에 없었고, 이슈에서 요청과 포크 구현이 먼저 공유됐다. 지금은 **서브 플로우(Sub Flows)** 로 정식 지원한다. 자식 노드에 `parentId`(11.11 이전 이름은 `parentNode`)를 주면 부모 기준 좌표로 배치되고 부모와 함께 움직인다. 이슈에서 "개발 중"이던 기능이 나중에 릴리즈되는 경우가 많으므로, 오래된 이슈를 봤다면 최신 문서와 변경 로그를 다시 확인한다.
 
+## 빠르게 다시 찾아보는 자료
+
+이미 아는 도구의 문법을 잊었을 때는 공식 문서 전체보다 **치트시트**가 빠르다. [Devhints](https://devhints.io/)는 언어·프레임워크·CLI(Bash, Git, Docker, React 등)의 자주 쓰는 문법을 한 페이지씩 모은 치트시트 모음이다. 치트시트로 실마리를 잡고, 세부 동작은 공식 문서에서 확인한다.
+
 ## 정리
 
 - 영어로, `how to`·`programmatically`·`dynamically` 같은 관용 키워드로 검색한다.
@@ -86,4 +90,4 @@ PKDrawing 문서  → dataRepresentation() -> Data   그림을 Data로 내보낸
 - 문서로 부족하면 정의로 이동해 소스를 읽고, 그래도 막히면 저장소의 이슈·PR을 뒤진다.
 - 찾은 답은 이슈 답변이나 PR로 돌려준다.
 
-관련 노트: [[google-search-operators|구글 검색 연산자]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]], [[reputation-building|실력만으로는 부족하다: 명성 쌓기와 커뮤니티 기여]]
+관련 노트: [[google-search-operators|구글 검색 연산자]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]], [[reputation-building|실력만으로는 부족하다: 명성 쌓기와 커뮤니티 기여]], [[open-source-maintenance|오픈소스 프로젝트 운영]]

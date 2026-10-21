@@ -97,4 +97,4 @@ sources: ["https://asana.com/ko/resources/agile", "https://asana.com/ko/resource
 - 산출물마다 약속이 있다: 제품 목표, 스프린트 목표, 완료의 정의.
 - 스프린트 백로그는 고정된 계약이 아니라 개발자의 살아 있는 계획이다. 지키는 것은 목표다.
 
-관련 노트: [[agile-sprint|애자일과 스프린트]], [[backlog-and-estimation|백로그와 추정]], [[kanban-lean-flow|칸반과 린: 흐름과 낭비]], [[effective-meetings|회의 잘하는 법]], [[github-issue-workflow|GitHub 이슈·프로젝트로 진행 상황 관리하기]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[product-minded-engineer|제품 중심 개발자]]
+관련 노트: [[agile-sprint|애자일과 스프린트]], [[backlog-and-estimation|백로그와 추정]], [[kanban-lean-flow|칸반과 린: 흐름과 낭비]], [[effective-meetings|회의 잘하는 법]], [[github-issue-workflow|GitHub 이슈·프로젝트로 진행 상황 관리하기]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[product-minded-engineer|제품 중심 개발자]], [[shape-up|Shape Up]], [[spotify-model|스포티파이 모델]]

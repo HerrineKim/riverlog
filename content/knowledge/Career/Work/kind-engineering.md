@@ -5,10 +5,10 @@ summary: "친절은 예의 바름(nice)이 아니라 상대에게 관심을 쏟�
 tags: ["career", "collaboration", "communication", "code-review", "growth"]
 source: other
 date: "2026-10-15"
-sources: ["https://kind.engineering/"]
+sources: ["https://kind.engineering/", "https://edykim.com/ko/post/tech-has-a-toxic-tone-problem-lets-fix-it/"]
 ---
 
-> Evan Smith의 「[Kind Engineering: How To Engineer Kindness](https://kind.engineering/)」를 바탕으로 재구성한 노트다.
+> Evan Smith의 「[Kind Engineering: How To Engineer Kindness](https://kind.engineering/)」를 바탕으로 재구성한 노트다. 「[기술 업계의 독성 말투 문제, 고칩시다!](https://edykim.com/ko/post/tech-has-a-toxic-tone-problem-lets-fix-it/)」의 내용을 더해 보강했다.
 
 ## 친절이란
 
@@ -79,6 +79,18 @@ PR은 변화를 다루는 가장 강력한 비동기 도구다. 체크박스 채
 | 신뢰(Credibility) | 전문성과 겸손을 함께 보인다. 구체적인 조언과 함께 잘된 점도 짚는다 |
 | 논리(Logic) | 어떻게 그 결론에 이르렀는지 보여 준다. 상대가 빠진 맥락이나 허점을 찾을 수 있게 한다 |
 
+## 5. 독성 말투 세 가지
+
+친절의 반대편에는 기술 업계에 흔한 **독성 말투**가 있다. 질문·답변·리뷰·오픈소스 기여를 위축시켜 팀 생산성과 커뮤니티를 함께 깎는다.
+
+| 유형 | 모습 | 바꾸는 법 |
+| --- | --- | --- |
+| **거들먹거림** | 초보 질문에 짜증 내기, 비전공·부트캠프 출신 깎아내리기, 「비개발자」로 다른 직군 낮추기, 설명 대신 검색 링크만 던지기 | 처음 배울 때를 떠올려 쉬운 말과 자료로 설명한다. 상대가 더 잘 아는 영역이 있음을 인정한다. 리더는 이런 행동에 보상하지 않는다 |
+| **기계적 말투** | 감정과 맥락 없이 결함만 짚기, 장애·서비스 종료 소식을 공감 없이 전하기 | 강점을 먼저 인정하고, 단정 대신 질문으로 묻는다(「이 제목을 고른 이유를 설명해 줄 수 있나요?」). 신뢰 관계에 맞춰 전달 방식을 고른다 |
+| **비관적 말투** | 검토 없이 「안 될 거야」, 「확장 안 돼」, 한 번의 실패를 모든 시도에 일반화, 습관적 반대 | 확신 대신 우려와 근거를 나눈다. 「맞아요, 그리고…」로 장점을 먼저 보고 보완점을 더한다. 과거 실패가 도구 탓인지 당시 맥락 탓인지 따져 본다 |
+
+사람은 위협을 느끼면 분석력과 창의성이 떨어진다. 말투를 고치는 것은 예의의 문제가 아니라 **팀이 생각하는 능력**의 문제다. 자기 피로나 불안이 말투에 섞이고 있지 않은지도 점검한다.
+
 ## 정리
 
 - 친절은 예의가 아니라 관여다. 상대가 있는 자리에서 그를 돕는다.
@@ -87,4 +99,4 @@ PR은 변화를 다루는 가장 강력한 비동기 도구다. 체크박스 채
 - 심리적 안전감은 피드백을 먼저 청하고, 포용하고, 탓하지 않고, 실패에서 배우는 데서 나온다.
 - 피드백은 받을 땐 듣고 고마워하고 시간을 두며, 줄 땐 감정·신뢰·논리를 챙긴다.
 
-관련 노트: [[collaborative-developer|협업을 잘하는 개발자]], [[review-communication|코드 리뷰 커뮤니케이션]], [[pair-programming|페어 프로그래밍]], [[growing-at-work|회사에서 빠르게 성장하는 법]]
+관련 노트: [[collaborative-developer|협업을 잘하는 개발자]], [[review-communication|코드 리뷰 커뮤니케이션]], [[pair-programming|페어 프로그래밍]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[tech-lead-transition|개발자에서 리더로]]
