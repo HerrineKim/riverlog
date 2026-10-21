@@ -47,6 +47,17 @@ function rehypeFigures() {
   };
 }
 
+/** Note images load as they scroll into view; some posts carry dozens of full-size photos. */
+function rehypeLazyImages() {
+  return (tree: HastRoot) => {
+    visit(tree, "element", (node: Element) => {
+      if (node.tagName !== "img") return;
+      node.properties.loading = "lazy";
+      node.properties.decoding = "async";
+    });
+  };
+}
+
 const processor = unified()
   .use(remarkParse)
   .use(remarkGfm)
@@ -57,6 +68,7 @@ const processor = unified()
   .use(rehypeRaw)
   // Notes come from imported TIL/Notion pages; raw HTML keeps its markup but loses scripts, handlers and js: URLs
   .use(rehypeSanitize, sanitizeSchema)
+  .use(rehypeLazyImages)
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, { behavior: "wrap" })
   .use(rehypePrettyCode, {

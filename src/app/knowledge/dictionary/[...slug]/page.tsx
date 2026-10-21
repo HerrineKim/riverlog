@@ -9,6 +9,7 @@ import EntryLayout, { ScrollReset } from "@/components/knowledge/EntryLayout";
 import TreeNav from "@/components/knowledge/TreeNav";
 import { formatDate } from "@/lib/format";
 import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, tagHref, type KNode } from "@/lib/knowledge";
+import { toNav } from "@/lib/knowledge-lite";
 import { extractToc, splitLeadingQuote } from "@/lib/markdown";
 
 // Only the pages generated at build time exist; anything else is a real 404.
@@ -54,7 +55,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
             <Link href={KNOWLEDGE_BASE} className="mb-4 flex items-center gap-2 text-sm text-muted hover:text-accent">
               <span aria-hidden>←</span> 사전 전체
             </Link>
-            <TreeNav tree={tree} currentId={node.id} />
+            <TreeNav tree={toNav(tree)} currentHref={node.href} />
           </>
         }
         toc={<Toc items={toc} />}

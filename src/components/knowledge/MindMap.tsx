@@ -1,6 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useMemo, type ComponentProps } from "react";
+import { unpackGraph, type PackedGraph } from "@/lib/graph-wire";
 
 const MindMapCanvas = dynamic(() => import("./MindMapCanvas"), {
   ssr: false,
@@ -11,4 +13,9 @@ const MindMapCanvas = dynamic(() => import("./MindMapCanvas"), {
   ),
 });
 
-export default MindMapCanvas;
+type Props = Omit<ComponentProps<typeof import("./MindMapCanvas").default>, "data"> & { data: PackedGraph };
+
+export default function MindMap({ data, ...rest }: Props) {
+  const graph = useMemo(() => unpackGraph(data), [data]);
+  return <MindMapCanvas data={graph} {...rest} />;
+}

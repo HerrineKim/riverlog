@@ -1,4 +1,4 @@
-import type { LiteNode } from "@/components/knowledge/types";
+import type { LiteNode, NavNode } from "@/components/knowledge/types";
 import { categoryColor, type KNode } from "./knowledge";
 
 export function toLite(n: KNode): LiteNode {
@@ -16,5 +16,18 @@ export function toLite(n: KNode): LiteNode {
     isDoc: !!n.doc,
     docCount: n.docCount,
     children: n.children.map(toLite),
+  };
+}
+
+/** The sidebar tree with only what it draws; every note page ships it, so leaves carry just a name and a link. */
+export function toNav(n: KNode): NavNode {
+  if (!n.children.length) return { name: n.name, href: n.href };
+  return {
+    name: n.name,
+    href: n.href,
+    isDoc: !!n.doc || undefined,
+    docCount: n.docCount,
+    color: n.depth === 1 ? categoryColor(n.category) : undefined,
+    children: n.children.map(toNav),
   };
 }
