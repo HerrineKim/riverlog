@@ -5,10 +5,10 @@ summary: "초기 스타트업 엔지니어는 아키텍처부터 고객 대화·
 tags: ["career", "startup", "product", "growth"]
 source: other
 date: "2026-10-21"
-sources: ["https://nephtyws.github.io/story/what-is-a-founding-engineer/", "http://tkim.co/2019/05/30/%ea%b0%9c%eb%b0%9c%ec%9e%90%ea%b0%80-%ec%b0%bd%ec%97%85%ed%95%a0-%eb%95%8c-%ec%9c%a0%ec%9d%98%ed%95%b4%ec%95%bc-%ed%95%a0-%ec%84%b8-%ea%b0%80%ec%a7%80/", "https://jong10.com/2025/01/23/the-failure-of-my-first-product.html"]
+sources: ["https://nephtyws.github.io/story/what-is-a-founding-engineer/", "http://tkim.co/2019/05/30/%ea%b0%9c%eb%b0%9c%ec%9e%90%ea%b0%80-%ec%b0%bd%ec%97%85%ed%95%a0-%eb%95%8c-%ec%9c%a0%ec%9d%98%ed%95%b4%ec%95%bc-%ed%95%a0-%ec%84%b8-%ea%b0%80%ec%a7%80/", "https://jong10.com/2025/01/23/the-failure-of-my-first-product.html", "https://qotoqot.com/blog/founder-skills/"]
 ---
 
-> 「[초기 스타트업에서 엔지니어로 일한다는 것은](https://nephtyws.github.io/story/what-is-a-founding-engineer/)」(2025.03), 「[개발자가 창업할 때 유의해야 할 세 가지](http://tkim.co/2019/05/30/%ea%b0%9c%eb%b0%9c%ec%9e%90%ea%b0%80-%ec%b0%bd%ec%97%85%ed%95%a0-%eb%95%8c-%ec%9c%a0%ec%9d%98%ed%95%b4%ec%95%bc-%ed%95%a0-%ec%84%b8-%ea%b0%80%ec%a7%80/)」(2019.05), 「[내 첫 제품 실패기](https://jong10.com/2025/01/23/the-failure-of-my-first-product.html)」(2025.01)를 바탕으로 재구성한 노트다.
+> 「[초기 스타트업에서 엔지니어로 일한다는 것은](https://nephtyws.github.io/story/what-is-a-founding-engineer/)」(2025.03), 「[개발자가 창업할 때 유의해야 할 세 가지](http://tkim.co/2019/05/30/%ea%b0%9c%eb%b0%9c%ec%9e%90%ea%b0%80-%ec%b0%bd%ec%97%85%ed%95%a0-%eb%95%8c-%ec%9c%a0%ec%9d%98%ed%95%b4%ec%95%bc-%ed%95%a0-%ec%84%b8-%ea%b0%80%ec%a7%80/)」(2019.05), 「[내 첫 제품 실패기](https://jong10.com/2025/01/23/the-failure-of-my-first-product.html)」(2025.01)를 바탕으로 재구성한 노트다. UX·지원·마케팅·검색 노출 원칙은 「[What you should know as a founder of a software company](https://qotoqot.com/blog/founder-skills/)」로 보강했다.
 
 ## 파운딩 엔지니어란
 
@@ -71,6 +71,11 @@ sources: ["https://nephtyws.github.io/story/what-is-a-founding-engineer/", "http
 | **매몰비용에 묶이지 않는다** | 중단·전환 기준을 미리 정해 둔다 |
 | **단가와 응대 부담** | 싼 상품을 많은 고객에게 파는 것보다 비싼 상품을 적은 고객에게 파는 쪽이 운영이 가벼울 수 있다 |
 | **짧게 여러 번** | 성공 확률이 낮다는 전제에서 작은 제품을 자주 내 학습 횟수를 늘린다 |
+| **UX는 검증된 패턴을 따른다** | 새로운 시장 참여자에게 나쁜 사용 경험은 치명적이다. 남다르려고 다르게 만드는 것이 최악이다. 잘된 제품의 패턴을 따르고, 실제 사용자가 쓰는 모습을 보며 지식의 저주를 줄인다 |
+| **비주얼은 템플릿으로 시작한다** | 디자인 역량이 없으면 맞춤 디자인에 큰돈을 쓰기보다 좋은 템플릿을 쓴다. 형태가 기능(UX)을 해치면 안 된다 |
+| **고객 지원은 창업자의 무기다** | 얼굴 없는 대기업과 달리 창업자가 직접 빠르고 인간적으로 답할 수 있다. 모든 기능 요청을 받아들이라는 뜻이 아니라 문제에 공감하고 돕겠다는 태도다 |
+| **마케팅은 홍보만이 아니다** | 제품·가격·유통·홍보(4P) 전체가 마케팅이다. 「누가 고객이고 어디서 만나나, 돈을 낼 만큼 심각한 문제인가, 가격은, 경쟁자는(없다면 왜 없나)」를 만들기 전에 묻는다. 좋은 제품이 입소문으로 저절로 퍼진다는 생각은 대개 틀린다. 소프트웨어는 보통 이메일과 콘텐츠 마케팅이 잘 맞는 채널이다 |
+| **검색 노출은 관련성·품질·권위** | 관련성과 품질은 롱테일 검색어를 노린 유용한 글과 빠른 로딩으로 얻는다. 권위는 이미 권위 있는 사이트의 링크로만 얻어 가장 어렵다. 댓글·프로필·유료 게시물 링크(nofollow)는 쳐 주지 않는다([[seo-basics\|SEO 기초]]) |
 
 ## 정리
 

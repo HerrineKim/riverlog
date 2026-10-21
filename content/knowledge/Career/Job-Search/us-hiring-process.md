@@ -4,7 +4,7 @@ concept: "US Tech Hiring"
 summary: "미국 개발자 채용은 레주메·LinkedIn 준비부터 오퍼 협상까지 10단계로 흐른다. 지원 경로별 통과 가능성, 리크루터·하이어링 매니저의 역할, ATS가 실제로 하는 일, 7초 스캔과 Yes/Maybe/No 분류, 일찍 지원해야 하는 이유를 정리했다."
 tags: ["career", "job-search", "resume", "interview"]
 source: other
-date: "2026-10-17"
+date: "2026-10-21"
 sources: ["https://www.resume.guide/ko/intro"]
 ---
 
@@ -28,7 +28,7 @@ sources: ["https://www.resume.guide/ko/intro"]
 | 6. Live Coding | Final Round(On-site, Full Loop)의 일부. 알고리즘·자료구조 |
 | 7. System Design | 경력이 많을수록 비중이 커진다. 주니어는 Live Coding으로 대체되기도 한다 |
 | 8. Behavioral | Culture Fit 평가. HM·팀원 인터뷰로 대체되기도 한다 |
-| 9. 오퍼 협상 | 연봉·주식·시작일 협상. **오퍼 2개 이상**이 있어야 협상력이 생긴다. 레퍼런스 체크가 이 즈음 있다 |
+| 9. 오퍼 협상 | 연봉·주식·시작일 협상. **오퍼 2개 이상**이 있어야 협상력이 생긴다. 레퍼런스 체크가 이 즈음 있다. 원칙은 [[job-offer-negotiation\|연봉 협상]] |
 | 10. 최종 선택 | 오퍼 레터 서명 후 백그라운드 체크. 해고가 많은 시기엔 서명 뒤에도 취소될 수 있다 |
 
 4단계까지는 「이 사람에게 면접관들의 시간을 쓸 가치가 있나」를 거르는 과정이다. HM이 엔지니어링 매니저 업무를 병행하므로 OA로 기본기를 먼저 확인한다.

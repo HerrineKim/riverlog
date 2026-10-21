@@ -4,11 +4,11 @@ concept: "Backlog Estimation"
 summary: "큰 목표를 에픽과 사용자 스토리로 쪼개고(3C, INVEST, 인수 기준), 스토리 포인트와 플래닝 포커로 상대 크기를 추정하고, 속도와 번다운·번업 차트로 진척을 본다. 각 도구는 계획을 돕는 설명 지표이지 성과 지표가 아니라는 점이 핵심이다."
 tags: ["career", "agile", "scrum", "product", "process"]
 source: other
-date: "2026-10-15"
-sources: ["https://asana.com/ko/resources/agile", "https://asana.com/ko/resources/agile-epic", "https://asana.com/ko/resources/user-stories", "https://asana.com/ko/resources/product-backlog", "https://asana.com/ko/resources/planning-poker", "https://asana.com/ko/resources/sprint-velocity", "https://asana.com/ko/resources/burndown-chart"]
+date: "2026-10-21"
+sources: ["https://asana.com/ko/resources/agile", "https://asana.com/ko/resources/agile-epic", "https://asana.com/ko/resources/user-stories", "https://asana.com/ko/resources/product-backlog", "https://asana.com/ko/resources/planning-poker", "https://asana.com/ko/resources/sprint-velocity", "https://asana.com/ko/resources/burndown-chart", "https://slides.com/mr-mig/se101"]
 ---
 
-> Asana의 「[애자일 프로젝트 관리 리소스](https://asana.com/ko/resources/agile)」 아티클들을 바탕으로 재구성한 노트다.
+> Asana의 「[애자일 프로젝트 관리 리소스](https://asana.com/ko/resources/agile)」 아티클들을 바탕으로 재구성한 노트다. 시간 추정의 곱하기 경험칙은 Alexey Migutsky의 발표 자료 「[Software Engineering 101](https://slides.com/mr-mig/se101)」을 바탕으로 더했다.
 
 ## 일의 계층
 
@@ -91,6 +91,21 @@ As a [role], I want [goal], so that [benefit].
 
 - 숫자가 피보나치처럼 벌어지는 것은 **클수록 불확실하다**는 뜻이다. 13을 넘으면 정밀하게 맞추지 말고 쪼갠다.
 - 가장 큰 가치는 숫자가 아니라 **4번의 대화**다. 높게 부른 사람은 남이 못 본 위험을, 낮게 부른 사람은 더 쉬운 방법을 알고 있는 경우가 많다.
+
+### 시간으로 추정해야 할 때: 구현 시간에 곱하기
+
+외주 견적이나 출시일처럼 시간 추정이 필요할 때는 **사람이 그나마 추정할 수 있는 것이 구현 시간뿐이고, 그것도 낙관적**이라는 점에서 출발한다.
+
+| 작업의 단계 | 몫 |
+| --- | --- |
+| 구현 | 30% |
+| 테스트 | 30% |
+| 로깅·지표 | 10% |
+| 설계·리팩터링 | 30% |
+
+구현이 전체의 3분의 1이므로 **현실적인 태스크 추정 ≈ 구현 추정 × 3**이다. 곱하는 수는 경험에 따라 다르다. 태스크 하나는 2주를 넘지 않게 쪼갠다.
+
+프로젝트는 에픽 → 스토리 → 태스크로 나눠 태스크마다 낙관적으로 추정하고, 모르는 부분에는 **시간 상자를 둔 조사(spike)** 를 넣고, 위험을 더한다. 스토리 하나가 4주를 넘으면 추정하지 말고 먼저 조사한다. 경험칙으로 **현실 일정 ≈ 낙관 경로 × 3.14 + 2주**다. 더해야 할 위험은 버스 팩터(한 사람만 아는 지식), 병가, 휴가·공휴일, 실수, 설계 오류다.
 
 ## 속도와 진척 차트
 

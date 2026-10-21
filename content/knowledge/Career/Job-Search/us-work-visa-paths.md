@@ -4,11 +4,11 @@ concept: "US Work Visa"
 summary: "미국 취업의 가장 큰 벽은 영어나 실력이 아니라 취업 비자다. H-1B 추첨의 구조와 2026년부터 바뀐 임금 가중 추첨, 미국 학위 → OPT → H-1B, 캐나다 지사 → L-1 전근, 영주권 같은 현실적인 경로와 지금 할 수 있는 준비를 정리했다."
 tags: ["career", "job-search", "us-career", "visa"]
 source: other
-date: "2026-10-20"
-sources: ["https://velog.io/@diogenes0803/미국-개발자가-알려주는-미국으로-가는-가장-현실적인-방법", "https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations", "https://www.uscis.gov/newsroom/alerts/h-1b-faq", "https://www.gtlaw.com/en/insights/2026/2/uscis-finalizes-wage-weighted-h-1b-cap-selection-rule-effective-feb-27-2026"]
+date: "2026-10-21"
+sources: ["https://velog.io/@diogenes0803/미국-개발자가-알려주는-미국으로-가는-가장-현실적인-방법", "https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations", "https://www.uscis.gov/newsroom/alerts/h-1b-faq", "https://www.gtlaw.com/en/insights/2026/2/uscis-finalizes-wage-weighted-h-1b-cap-selection-rule-effective-feb-27-2026", "https://relocate.me/blog/job-relocation/landing-a-tech-job-abroad-7-simple-tips/"]
 ---
 
-> 시애틀의 개발자 Hojune Yoo의 「[미국 개발자가 알려주는 미국으로 가는 가장 현실적인 방법](https://velog.io/@diogenes0803/미국-개발자가-알려주는-미국으로-가는-가장-현실적인-방법)」(2022.06)을 바탕으로, 비자 제도는 USCIS 발표와 이민법 자료로 2026년 기준으로 고쳐 재구성한 노트다.
+> 시애틀의 개발자 Hojune Yoo의 「[미국 개발자가 알려주는 미국으로 가는 가장 현실적인 방법](https://velog.io/@diogenes0803/미국-개발자가-알려주는-미국으로-가는-가장-현실적인-방법)」(2022.06)을 바탕으로, 비자 제도는 USCIS 발표와 이민법 자료로 2026년 기준으로 고쳐 재구성한 노트다. 해외에서 지원하는 요령은 Relocate.me의 「[Landing a (tech) job abroad: 7 simple tips](https://relocate.me/blog/job-relocation/landing-a-tech-job-abroad-7-simple-tips/)」로 보강했다.
 
 ## 왜 비자가 먼저인가
 
@@ -57,6 +57,7 @@ H-1B는 학사 이상 학위(또는 동등 경력)가 필요한 전문직 비자
 | LinkedIn 프로필 | 영어권에서 일할 의향과 미국 취업 관심을 드러낸다. 미국 리크루터는 LinkedIn으로 먼저 연락한다. 일상 회화 수준이면 충분하고, 문법 실수는 크게 문제 되지 않는다 |
 | 재미 한인 개발자 커뮤니티 | 지역별 한인 IT 전문가 모임이 멘토링·모의 면접·행사를 연다. 온라인 행사는 한국에서도 참여할 수 있다 |
 | 리크루터·헤드헌터 연결 | 지금 열린 자리가 없어도 연락해 둔다. 연결이 나중의 기회가 된다([[resume-writing#리크루터에게 먼저 보내는 메일\|리크루터에게 보내는 영문 이메일]]) |
+| 해외에서 지원하는 요령 | 레주메 첫머리를 「비자 스폰서가 필요하다」로 시작하지 않는다. 리크루터는 15초 안에 첫 몇 문장과 굵은 글씨만 훑으므로 기술과 성과를 먼저 보여 주고 비자는 뒤에 적는다. 그 지역에 머물 날짜를 알리면(여행과 면접을 묶기) 현장 면접 기회가 는다. LinkedIn 위치를 옮겨 갈 지역으로 바꾸면 그 지역 리크루터 검색에 걸린다. 처음부터 해외 채용을 하는 회사가 모인 이주 전문 채용 보드를 쓴다 |
 | 코딩 인터뷰 | 경력이 길어도 면접은 알고리즘 문제로 본다. 백준·프로그래머스로 기초를 다지고 LeetCode를 **영어로 설명하며** 푼다 |
 
 ## 정리

@@ -1,14 +1,14 @@
 ---
 title: "소프트웨어 문서화: 네 가지 문서 유형과 코드에서 문서 만들기"
 concept: "Diátaxis"
-summary: "소프트웨어 문서는 목적에 따라 튜토리얼·하우투 가이드·레퍼런스·해설의 네 유형으로 나뉘고(Diátaxis), 한 문서는 한 유형만 따른다. 레퍼런스는 코드 구조를 따라 주석에서 자동 생성해 코드와 어긋나지 않게 한다. 무엇은 이름으로, 왜는 기록으로 남긴다."
+summary: "소프트웨어 문서는 목적에 따라 튜토리얼·하우투 가이드·레퍼런스·해설의 네 유형으로 나뉘고(Diátaxis), 한 문서는 한 유형만 따른다. 레퍼런스는 코드 구조를 따라 주석에서 자동 생성해 코드와 어긋나지 않게 한다. 무엇은 이름으로, 왜는 기록으로 남긴다. 프로젝트의 입구인 README에 담을 것과 README를 먼저 쓰는 README 주도 개발도 다룬다."
 tags: ["writing", "collaboration", "software-engineering", "api"]
 source: other
 date: "2026-10-21"
-sources: ["http://blog.weirdx.io/post/60414", "https://diataxis.fr/", "https://engineering.linecorp.com/ko/blog/comments-parsing-api-documentation/", "https://techblog.woowahan.com/2677/"]
+sources: ["http://blog.weirdx.io/post/60414", "https://diataxis.fr/", "https://engineering.linecorp.com/ko/blog/comments-parsing-api-documentation/", "https://techblog.woowahan.com/2677/", "http://tom.preston-werner.com/2010/08/23/readme-driven-development.html", "https://changelog.com/posts/top-ten-reasons-why-i-wont-use-your-open-source-project", "https://github.com/zalando/zalando-howto-open-source/blob/master/READMEtemplate.md"]
 ---
 
-> Daniele Procida의 「What nobody tells you about documentation」 번역 「[문서화에 대해 아무도 말해주지 않는 것들](http://blog.weirdx.io/post/60414)」, 「[주석 분석기를 이용한 간단한 API 문서화 방법](https://engineering.linecorp.com/ko/blog/comments-parsing-api-documentation/)」, 「[팀 문화의 탄생](https://techblog.woowahan.com/2677/)」을 바탕으로 재구성한 노트다. 네 유형 분류는 이후 [Diátaxis](https://diataxis.fr/)라는 이름의 프레임워크로 정리됐다.
+> Daniele Procida의 「What nobody tells you about documentation」 번역 「[문서화에 대해 아무도 말해주지 않는 것들](http://blog.weirdx.io/post/60414)」, 「[주석 분석기를 이용한 간단한 API 문서화 방법](https://engineering.linecorp.com/ko/blog/comments-parsing-api-documentation/)」, 「[팀 문화의 탄생](https://techblog.woowahan.com/2677/)」을 바탕으로 재구성한 노트다. 네 유형 분류는 이후 [Diátaxis](https://diataxis.fr/)라는 이름의 프레임워크로 정리됐다. README 부분은 「[Readme Driven Development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html)」, 「[Top ten reasons why I won't use your open source project](https://changelog.com/posts/top-ten-reasons-why-i-wont-use-your-open-source-project)」, 「[Zalando's README Template](https://github.com/zalando/zalando-howto-open-source/blob/master/READMEtemplate.md)」을 바탕으로 보강했다.
 
 ## 문서가 실패하는 이유
 
@@ -72,11 +72,33 @@ sources: ["http://blog.weirdx.io/post/60414", "https://diataxis.fr/", "https://e
 
 **같은 질문이 반복되면** 질문한 사람이 아니라 문서와 소통 방식에 빈틈이 있다는 신호다. 새로 합류한 사람의 질문은 문서를 검증할 가장 좋은 재료다.
 
+## README: 프로젝트의 첫 문서
+
+README는 저장소를 연 사람이 **가장 먼저, 대개 유일하게** 읽는 문서다. 네 유형으로 치면 짧은 해설(무엇·왜) + 최소 튜토리얼(설치·첫 실행) + 다른 문서로 가는 입구다. README가 없거나, 무엇을 하는 프로젝트인지 첫 문단에서 말하지 않거나, 라이선스가 불분명하면 사람들은 쓰지도 기여하지도 않는다.
+
+| 섹션 | 담을 것 |
+| --- | --- |
+| 이름과 한 줄 소개 | 무엇을 하고 어떤 문제를 푸는가. 개발 상태(실험·안정·유지보수 중단), 배지, 가능하면 스크린샷·데모 |
+| 왜 있나 | 비슷한 프로젝트와 무엇이 다른가, 영감을 받은 곳·포크 원본 |
+| 시작하기 | 요구 사항, 설치, 설정, 실행. 복사해 붙이면 되는 명령으로 |
+| 사용 예 | 가장 흔한 쓰임 한두 개의 코드. 나머지는 문서 사이트·`examples/`로 링크 |
+| 더 알기 | 버전 정책, 자주 나는 오류, 테스트 실행법 |
+| 기여하기 | 기여 안내(`CONTRIBUTING.md`), 코드 스타일, 커밋 메시지 형식, 기여자 |
+| 도움 받을 곳 | 이슈·토론·채팅 채널 |
+| 라이선스 | `LICENSE` 파일과 한 줄 요약. 라이선스가 없으면 법적으로 아무도 쓸 수 없다 |
+
+모든 섹션이 필요하지는 않다. 작은 라이브러리는 소개·설치·사용 예·라이선스면 충분하다.
+
+### README 주도 개발
+
+**README를 코드보다 먼저 쓰는** 방식이다(Readme Driven Development). 공개 API와 쓰는 법을 글로 먼저 써 보면, 코드를 고칠 부담 없이 설계를 몇 번이고 바꿔 볼 수 있다. 팀이라면 구현이 끝나기 전에 다른 사람이 그 인터페이스에 맞춰 일을 시작할 수 있고, 말로 빙빙 돌던 논의가 글 하나를 놓고 구체적으로 바뀐다. 설계 문서를 README 한 파일로 제한하므로 긴 명세가 폭포수처럼 불어나는 것도 막는다. 나중에 쓰는 README는 동기가 떨어진 상태라 중요한 내용을 빠뜨리기 쉽다는 점에서도 먼저 쓰는 편이 낫다.
+
 ## 정리
 
 - 문서는 튜토리얼·하우투·레퍼런스·해설 네 종류이고, 섞지 않는다.
 - 레퍼런스는 코드에서 생성해 동작과 일치시킨다.
 - 이름이 「무엇」을, 기록이 「왜」를 맡는다.
 - 반복되는 질문은 문서를 고칠 신호다.
+- README는 무엇·왜·설치·사용 예·라이선스를 첫 화면에 담는 입구다. 코드보다 먼저 쓰면 설계 도구가 된다.
 
-관련 노트: [[finding-dev-references|개발 자료 찾는 법]], [[swagger|Swagger]], [[js-comments|JavaScript 주석]], [[eco-writing-rules|에코 글쓰기 규칙]]
+관련 노트: [[open-source-maintenance|오픈소스 운영]], [[markdown|마크다운]], [[finding-dev-references|개발 자료 찾는 법]], [[swagger|Swagger]], [[js-comments|JavaScript 주석]], [[eco-writing-rules|에코 글쓰기 규칙]]

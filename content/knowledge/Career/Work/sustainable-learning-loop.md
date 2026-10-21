@@ -4,12 +4,12 @@ concept: "Learning Loop"
 summary: "개발 학습은 의지로 버티는 1년이 아니라 수십 년 이어지는 습관이어야 한다. 정보 습득 → 학습 → 정리 → 실습 → 적용의 다섯 단계, 기술 블로그를 고르고 읽는 법, 메타인지·설명해 보기·흐름 따라 공부하기 같은 공부법, 틈새 시간과 선택과 집중으로 루프를 유지하는 법을 정리했다. AI 도구를 다 따라가지 않고 흘러들어오게 하는 법, 생성형 지식과 고수에게 배우는 질문, 구현 의도로 실행하는 법도 정리했다."
 tags: ["career", "growth", "learning", "study-method", "productivity"]
 source: other
-date: "2026-10-17"
-sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "https://www.f-lab.kr/blog/developer-tech-article-zip", "https://www.slideshare.net/utilforever/ss-251900268", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://jojoldu.tistory.com/402", "https://evan-moon.github.io/2019/08/26/how-does-developer-study/", "https://www.slideshare.net/deview/ss-58739254", "https://www.popit.kr/si-%EA%B0%9C%EB%B0%9C-10%EB%85%84%EC%B0%A8%EC%9D%B8%EB%8D%B0-%EC%BD%94%EB%93%9C-%EC%A2%80-%EB%B4%90%EC%A3%BC%EC%84%B8%EC%9A%94/"]
+date: "2026-10-21"
+sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "https://www.f-lab.kr/blog/developer-tech-article-zip", "https://www.slideshare.net/utilforever/ss-251900268", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://jojoldu.tistory.com/402", "https://evan-moon.github.io/2019/08/26/how-does-developer-study/", "https://www.slideshare.net/deview/ss-58739254", "https://www.popit.kr/si-%EA%B0%9C%EB%B0%9C-10%EB%85%84%EC%B0%A8%EC%9D%B8%EB%8D%B0-%EC%BD%94%EB%93%9C-%EC%A2%80-%EB%B4%90%EC%A3%BC%EC%84%B8%EC%9A%94/", "https://norvig.com/21-days.html"]
 ---
 
 > F-Lab 블로그의 「[지속가능한 개발자 성장 스킬 5가지](https://www.f-lab.kr/blog/sustainable-developer-growth-skills)」(2022.12)와 「[주니어 개발자들이 읽으면 좋은 테크 아티클 모음](https://www.f-lab.kr/blog/developer-tech-article-zip)」(2023.05), 옥찬호의 고려대 컴퓨터학과 특강 「[대학생 때 알았더라면 좋았을 것들](https://www.slideshare.net/utilforever/ss-251900268)」(2022) 슬라이드를 바탕으로 재구성한 노트다.
-> 매일 커밋에 대한 관점, 「무엇을 배울지 고르기」, 공부하는 방법 일부는 「[일일커밋의 효용성](https://jojoldu.tistory.com/402)」, 「[개발자가 공부로 살아남는 방법](https://evan-moon.github.io/2019/08/26/how-does-developer-study/)」(2019.08), DEVIEW 발표 「[개발을 잘하고 싶어요](https://www.slideshare.net/deview/ss-58739254)」, 「[SI 개발 10년차인데 코드 좀 봐주세요](https://www.popit.kr/si-%EA%B0%9C%EB%B0%9C-10%EB%85%84%EC%B0%A8%EC%9D%B8%EB%8D%B0-%EC%BD%94%EB%93%9C-%EC%A2%80-%EB%B4%90%EC%A3%BC%EC%84%B8%EC%9A%94/)」를 바탕으로 보강했다.
+> 매일 커밋에 대한 관점, 「무엇을 배울지 고르기」, 공부하는 방법 일부는 「[일일커밋의 효용성](https://jojoldu.tistory.com/402)」, 「[개발자가 공부로 살아남는 방법](https://evan-moon.github.io/2019/08/26/how-does-developer-study/)」(2019.08), DEVIEW 발표 「[개발을 잘하고 싶어요](https://www.slideshare.net/deview/ss-58739254)」, 「[SI 개발 10년차인데 코드 좀 봐주세요](https://www.popit.kr/si-%EA%B0%9C%EB%B0%9C-10%EB%85%84%EC%B0%A8%EC%9D%B8%EB%8D%B0-%EC%BD%94%EB%93%9C-%EC%A2%80-%EB%B4%90%EC%A3%BC%EC%84%B8%EC%9A%94/)」를 바탕으로 보강했다. 10년 법칙과 의도적 연습은 Peter Norvig의 「[Teach Yourself Programming in Ten Years](https://norvig.com/21-days.html)」를 바탕으로 더했다.
 > 「AI 시대의 학습」은 배휘동의 발표 자료 「나날이 발전하고픈 개발자를 위한 AI 활용법」(2025.08) 3부를 바탕으로 더했다.
 
 ## 왜 「지속 가능」이 먼저인가
@@ -26,6 +26,21 @@ sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "http
 | 지표가 학습을 왜곡한다 | 커밋으로 잴 수 없는 학습(설계, 독서, 리뷰)이 밀리고, 숫자를 지키는 것 자체가 목적이 되면 지친다 |
 
 둘을 합치면 **지표는 습관의 시동 장치로 쓰되, 성장의 정의로 삼지 않는다.**
+
+### 전문성에는 10년이 걸린다
+
+「24시간 만에 배우는 ○○」로 얻는 것은 문법을 아는 정도의 겉핥기다. 체스·음악·운동·연구 같은 여러 분야에서 전문성은 대략 **10년(또는 1만 시간)** 의 연습으로 생긴다는 연구가 반복해서 나왔다. 시간만 쌓는다고 되지는 않는다. 효과가 있는 것은 **의도적 연습(deliberate practice)** 이다. 지금 능력보다 조금 어려운 과제를 정하고, 하면서 결과를 분석하고, 실수를 고치고, 반복한다. 경험이 많은 사람도 이렇게 해야 실력이 오른다.
+
+| 프로그래밍에 옮기면 | 왜 |
+| --- | --- |
+| 재미를 잃지 않는다 | 10년을 버티는 연료다 |
+| 직접 짠다 | 가장 좋은 학습은 해 보는 것이다. 잘 정의된 과제, 알맞은 난이도, 피드백, 반복과 수정 기회가 필요하다 |
+| 다른 프로그래머와 이야기하고 남의 코드를 읽는다 | 어떤 책이나 강좌보다 중요하다 |
+| 어떤 프로젝트에선 가장 잘하는 사람, 어떤 프로젝트에선 가장 못하는 사람이 된다 | 앞에서는 이끄는 법을, 뒤에서는 고수가 하는 일과 하기 싫어하는 일을 배운다 |
+| 남이 떠난 프로그램을 이해하고 고친다 | 다음 사람이 유지보수하기 쉬운 설계를 고민하게 된다 |
+| 언어를 여섯 개쯤 익힌다 | 클래스 추상화(Java), 함수 추상화(Haskell·ML), 구문 추상화(Lisp), 선언적 명세(Prolog), 병렬(Go·Clojure)을 강조하는 언어를 하나씩 고른다([[programming-paradigms\|프로그래밍 패러다임]]) |
+| 컴퓨터의 시간 감각을 안다 | 명령 하나, 메모리 읽기(캐시 적중·미스), 디스크 연속 읽기·탐색에 걸리는 시간의 자릿수를 안다([[memory-hierarchy\|메모리 계층]]) |
+| 표준화 논의에 한 번 참여한다 | 2칸·4칸 들여쓰기 논쟁이라도, 사람들이 언어에서 무엇을 왜 얼마나 강하게 원하는지 배운다. 그리고 빨리 빠져나온다 |
 
 ## 다섯 단계 루프
 
