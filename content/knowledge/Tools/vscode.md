@@ -4,15 +4,27 @@ concept: "VS Code"
 summary: "settings.json과 설정 동기화, launch.json으로 C 프로그램 디버깅, 브라우저에서 저장소를 여는 github.dev, 생산성을 올리는 확장 프로그램까지 VS Code를 쓰며 알아 두면 좋은 기능 모음."
 tags: ["tools", "ide", "vscode", "productivity"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/9822b952339f49bb8c417a852bfe9b3e", "https://80000coding.notion.site/b06e3c86359c4d528dfe752e1569e4ad", "https://80000coding.notion.site/97dd08bde65843029c77e4ab2d660047", "https://80000coding.notion.site/f55cced001f74015be57953854bf88e0", "https://80000coding.notion.site/e975e8a22e054a08bb38bb868c2dab7f", "https://code.visualstudio.com/docs/configure/settings-sync"]
+date: "2026-10-21"
+sources: ["https://80000coding.notion.site/9822b952339f49bb8c417a852bfe9b3e", "https://80000coding.notion.site/b06e3c86359c4d528dfe752e1569e4ad", "https://80000coding.notion.site/97dd08bde65843029c77e4ab2d660047", "https://80000coding.notion.site/f55cced001f74015be57953854bf88e0", "https://80000coding.notion.site/e975e8a22e054a08bb38bb868c2dab7f", "https://code.visualstudio.com/docs/configure/settings-sync", "https://react.vlpt.us/basic/27-useful-tools.html", "https://code.visualstudio.com/docs/editing/userdefinedsnippets", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/VScode%20%EB%8B%A8%EC%B6%95%ED%82%A4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/%ED%84%B0%EB%AF%B8%EB%84%90%EC%97%90%EC%84%9C%20vscode%EC%97%AC%EB%8A%94%20%EB%B0%A9%EB%B2%95%28code%20.%20%EC%A0%81%EC%9A%A9%20%ED%95%98%EB%8A%94%EB%B2%95%29.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Vscode%20Javascript%20%EC%9E%90%EB%8F%99%EC%99%84%EC%84%B1%20%EC%95%88%EB%90%A0%EB%95%8C.md", "https://code.visualstudio.com/docs/configure/command-line"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「VS Code 설정 동기화하기」, 「VScode에서 디버깅 하는 간단한 방법」, 「github.dev로 간단하게 코드 살펴보기」, 「VS Code extensions for Flutter」, 「VS Code에서 Flutter Icon 검색 팁」을 바탕으로 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「VS Code 설정 동기화하기」, 「VScode에서 디버깅 하는 간단한 방법」, 「github.dev로 간단하게 코드 살펴보기」, 「VS Code extensions for Flutter」, 「VS Code에서 Flutter Icon 검색 팁」을 바탕으로 재구성한 노트다. 「창·파일 오가기」와 「내장 확장을 꺼서 생기는 문제」는 「[Frontend_TIL: VScode 단축키](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/VScode%20%EB%8B%A8%EC%B6%95%ED%82%A4.md)」, 「[터미널에서 vscode여는 방법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/%ED%84%B0%EB%AF%B8%EB%84%90%EC%97%90%EC%84%9C%20vscode%EC%97%AC%EB%8A%94%20%EB%B0%A9%EB%B2%95%28code%20.%20%EC%A0%81%EC%9A%A9%20%ED%95%98%EB%8A%94%EB%B2%95%29.md)」, 「[Vscode Javascript 자동완성 안될때](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Vscode%20Javascript%20%EC%9E%90%EB%8F%99%EC%99%84%EC%84%B1%20%EC%95%88%EB%90%A0%EB%95%8C.md)」를 바탕으로 보강했다.
+> 사용자 스니펫은 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[리액트 개발 할 때 사용하면 편리한 도구들](https://react.vlpt.us/basic/27-useful-tools.html)」을 바탕으로 보강했다.
 
 ## VS Code란
 
 Visual Studio Code는 Microsoft가 만든 무료 코드 편집기다. 편집기 자체는 가볍고, 언어 지원·디버거·린터 같은 기능은 **확장 프로그램(extension)** 으로 더해 IDE처럼 쓴다. 대부분의 기능은 **명령 팔레트**(`⇧⌘P`, Windows·Linux는 `Ctrl+Shift+P`)에서 이름으로 찾아 실행한다.
+
+### 창·파일 오가기
+
+| 동작 | macOS | Windows·Linux |
+| --- | --- | --- |
+| 파일 이름으로 열기(Quick Open) | `⌘P` | `Ctrl+P` (Windows에서는 `Ctrl+E`도 같다) |
+| 새 창 | `⇧⌘N` | `Ctrl+Shift+N` |
+| 폴더 열기 | `⌘O` | `Ctrl+K Ctrl+O` |
+| 최근 폴더·작업 영역으로 전환 | `⌃R` | `Ctrl+R` |
+
+터미널에서 `code .`로 현재 폴더를 열려면 명령 팔레트에서 **Shell Command: Install 'code' command in PATH**를 한 번 실행한다(macOS). Windows와 Linux 설치 프로그램은 기본으로 PATH에 넣는다. `code -r .`은 지금 창에서, `code -d a b`는 두 파일을 비교해 연다.
 
 ## 설정: settings.json
 
@@ -36,6 +48,29 @@ Visual Studio Code는 Microsoft가 만든 무료 코드 편집기다. 편집기 
 ```
 
 편집기와 상관없이 팀 전체의 들여쓰기·줄바꿈 규칙을 맞추려면 저장소 루트에 `.editorconfig`를 두는 방법도 있다. VS Code는 EditorConfig 확장을 설치하면 이 파일을 읽는다.
+
+## 사용자 스니펫
+
+자주 치는 코드 뼈대는 단축어로 만들어 둔다. 명령 팔레트에서 **Snippets: Configure Snippets**를 열고 언어(예: `javascriptreact`, `typescriptreact`)를 고르면 그 언어용 JSON 파일이 열린다. 프로젝트 전용이면 `.vscode/*.code-snippets`에 둔다.
+
+```json
+{
+  "React function component": {
+    "prefix": "fc",
+    "body": [
+      "function ${TM_FILENAME_BASE}() {",
+      "  return <div>${1}</div>",
+      "}",
+      "",
+      "export default ${TM_FILENAME_BASE}"
+    ],
+    "description": "파일 이름으로 함수 컴포넌트 만들기"
+  }
+}
+```
+
+- `${TM_FILENAME_BASE}`는 확장자를 뺀 현재 파일 이름, `${1}`·`${2}`는 Tab으로 차례로 옮겨 가는 커서 자리, `$0`은 마지막 커서 자리다.
+- 마켓의 스니펫 확장은 쓰지 않는 단축어까지 딸려 오므로, 자주 쓰는 몇 개만 직접 만드는 편이 깔끔하다. 기존 코드를 JSON `body` 배열로 바꾸는 일은 snippet generator 웹 도구에 맡기면 편하다.
 
 ## 설정 동기화 (Settings Sync)
 
@@ -100,6 +135,10 @@ GitHub 저장소 페이지에서 **`.` 키**를 누르거나 주소의 `github.c
 | EditorConfig | `.editorconfig` 규칙을 편집기에 적용 |
 
 언어별 공식 확장도 있다. Flutter 확장을 설치하면 Dart 확장이 함께 깔리고 저장 시 포매팅·자동 수정이 켜진다. 자동 완성 목록(IntelliSense, `⌃Space`)에서 항목 오른쪽의 `>`를 누르면 상세 정보가 펼쳐지는데, Flutter의 `Icons.*` 항목은 여기서 아이콘 모양을 미리 볼 수 있다.
+
+### 내장 확장을 꺼서 생기는 문제
+
+JavaScript·TypeScript 자동 완성, 정의로 이동, 오류 표시는 따로 설치하지 않아도 되는 **내장(built-in) 확장** 「TypeScript and JavaScript Language Features」가 맡는다. 경고 알림을 보고 이것을 꺼 버리면 `document`·`Array`·`Math`까지 모든 JS·TS 자동 완성이 사라진다. 확장 탭 검색창에 `@builtin`을 입력하면 내장 확장 목록이 나오고, 거기서 다시 켠다. 마크다운 미리보기·Git·Emmet도 내장 확장이라 같은 방식으로 되살린다.
 
 ## 정리
 

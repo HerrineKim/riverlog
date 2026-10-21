@@ -1,14 +1,14 @@
 ---
 title: "브랜치 전략: Git Flow, GitHub Flow, 트렁크 기반 개발"
 concept: "Branching Strategy"
-summary: "팀이 브랜치를 어떻게 나누고 언제 합치는지 정한 규칙. 릴리스 주기가 긴 제품에 맞는 Git Flow(main·develop·feature·release·hotfix), 지속 배포에 맞는 GitHub Flow(main + 짧은 기능 브랜치 + PR), 하루 단위로 trunk에 합치는 트렁크 기반 개발을 비교하고 고르는 기준과 git-flow 도구의 현재 상태를 정리했다."
+summary: "팀이 브랜치를 어떻게 나누고 언제 합치는지 정한 규칙. 릴리스 주기가 긴 제품에 맞는 Git Flow(main·develop·feature·release·hotfix), 지속 배포에 맞는 GitHub Flow(main + 짧은 기능 브랜치 + PR), 하루 단위로 trunk에 합치는 트렁크 기반 개발을 비교하고 고르는 기준과 git-flow 도구의 현재 상태, 중앙 집중·기능 브랜치·포크 워크플로의 차이를 정리했다."
 tags: ["git", "branch", "collaboration", "ci-cd", "version-control"]
 source: other
 date: "2026-10-21"
-sources: ["https://github.com/arslanbilal/git-cheat-sheet", "https://nvie.com/posts/a-successful-git-branching-model/", "https://docs.github.com/en/get-started/using-github/github-flow", "https://trunkbaseddevelopment.com/", "https://github.com/gittower/git-flow-next"]
+sources: ["https://github.com/arslanbilal/git-cheat-sheet", "https://nvie.com/posts/a-successful-git-branching-model/", "https://docs.github.com/en/get-started/using-github/github-flow", "https://trunkbaseddevelopment.com/", "https://github.com/gittower/git-flow-next", "https://www.atlassian.com/git/tutorials/comparing-workflows", "https://guides.github.com/introduction/flow/"]
 ---
 
-> arslanbilal의 「[Git and Git Flow Cheat Sheet](https://github.com/arslanbilal/git-cheat-sheet)」의 Git Flow 부분을 뼈대로, Vincent Driessen의 「A successful Git branching model」, GitHub Docs의 GitHub flow, trunkbaseddevelopment.com을 참고해 재구성한 노트다.
+> arslanbilal의 「[Git and Git Flow Cheat Sheet](https://github.com/arslanbilal/git-cheat-sheet)」의 Git Flow 부분을 뼈대로, Vincent Driessen의 「A successful Git branching model」, GitHub Docs의 GitHub flow, trunkbaseddevelopment.com을 참고해 재구성한 노트다. 저장소 구성별 워크플로는 Atlassian의 「[Comparing Git workflows](https://www.atlassian.com/git/tutorials/comparing-workflows)」를 바탕으로 보강했다.
 
 ## 브랜치 전략이란
 
@@ -20,6 +20,18 @@ sources: ["https://github.com/arslanbilal/git-cheat-sheet", "https://nvie.com/po
 | --- | --- |
 | 배포 주기 | 하루에도 여러 번 배포하나, 버전을 정해 몇 주·몇 달마다 출시하나 |
 | 동시에 지원하는 버전 수 | 늘 최신 하나만 운영하나(웹 서비스), 여러 버전을 함께 고쳐 줘야 하나(설치형 소프트웨어, 라이브러리) |
+
+## 저장소를 어떻게 나누나: 중앙 저장소와 포크
+
+브랜치 전략과 별개로 **누가 어느 원격 저장소에 push하나**도 워크플로를 가른다. 다음 절의 세 전략은 모두 이 표의 2번(기능 브랜치) 위에 규칙을 더한 것이다.
+
+| 워크플로 | 구조 | 맞는 곳 |
+| --- | --- | --- |
+| 1. 중앙 집중(Centralized) | 중앙 저장소 하나, 브랜치는 `main` 하나. 모두 `main`에 직접 커밋하고 push 전에 `git pull --rebase origin main`으로 남의 커밋 위에 자기 커밋을 다시 쌓는다 | SVN에서 넘어오는 작은 팀. 사람이 늘면 충돌 해결이 병목이 된다 |
+| 2. 기능 브랜치(Feature Branch) | 중앙 저장소 하나, 기능마다 브랜치. `main`에는 PR로만 합친다 | 대부분의 팀. 리뷰와 CI를 붙이기 쉽다 |
+| 3. 포크(Forking) | **기여자마다 서버 쪽 저장소(포크)가 따로 있다.** 자기 포크에 push하고, 원본(`upstream`)으로 PR을 보낸다. 관리자만 원본에 쓸 수 있다 | 오픈 소스처럼 신뢰할 수 없는 다수가 기여하는 곳 |
+
+포크 워크플로에서는 원격이 둘이다. `origin`은 자기 포크, `upstream`은 원본이다. 원본의 변경은 `git fetch upstream` 후 자기 브랜치에 합친다. 기여 절차는 [[open-source-contribution|오픈 소스 기여]]에 있다.
 
 ## 세 가지 대표 전략
 
@@ -114,6 +126,12 @@ git push origin main develop --tags # finish는 로컬에서만 일어나므로 
             └─ 아니오 → GitHub Flow
 ```
 
+어느 전략·워크플로를 고르든 공통 지침은 셋이다.
+
+- **브랜치를 짧게 산다.** 오래 떨어져 있을수록 `main`과 멀어져 합칠 때 충돌이 커진다.
+- **되돌리기를 작고 단순하게.** 작은 PR, 기능 플래그로 위험한 변경을 끌 수 있게 하고, `main`에 합치기 전에 테스트를 통과시킨다.
+- **출시 주기에 맞춘다.** 하루 여러 번 배포하면 `main`을 늘 배포 가능하게, 몇 주마다 출시하면 릴리스 브랜치·태그로 버전을 고정한다.
+
 ## 전략과 함께 정할 것
 
 | 항목 | 정하는 내용 | 관련 노트 |
@@ -129,6 +147,7 @@ git push origin main develop --tags # finish는 로컬에서만 일어나므로 
 - 브랜치 전략은 배포 주기와 동시에 지원하는 버전 수로 고른다.
 - Git Flow는 버전 출시형 제품용이다. 브랜치가 많고 양방향 병합이 필요하다. 도구를 쓴다면 지금은 git-flow-next다.
 - GitHub Flow는 `main` + 짧은 브랜치 + PR이 전부다. 대부분의 웹 서비스에 충분하다.
+- 저장소 축은 따로다. 팀은 중앙 저장소 + 기능 브랜치, 오픈 소스는 기여자마다 포크를 두고 `upstream`으로 PR을 보낸다.
 - 트렁크 기반 개발은 하루 단위로 합치고 미완성 기능은 플래그로 숨긴다. 자동 테스트가 받쳐 줘야 한다.
 - **어느 전략이든 핵심은 작업 브랜치를 짧게 유지하는 것이다.** 브랜치가 오래 살수록 합치는 비용이 커진다.
 

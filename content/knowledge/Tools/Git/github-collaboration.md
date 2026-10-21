@@ -1,11 +1,16 @@
 ---
 title: "GitHub 협업 저장소 설정"
 concept: "Branch Protection"
-summary: "팀 저장소를 처음 세팅할 때 할 일: 협업자·브랜치 보호 규칙·CODEOWNERS·이슈/PR 템플릿·라벨, 그리고 PR 알림 도구와 기능별 브랜치 습관."
+summary: "팀 저장소를 처음 세팅할 때 할 일: 협업자·브랜치 보호 규칙·CODEOWNERS·이슈/PR 템플릿(마크다운 템플릿과 YAML 이슈 폼, config.yml)·라벨, 그리고 PR 알림 도구와 기능별 브랜치 습관."
 tags: ["git", "github", "collaboration", "code-review"]
-source: notion
-date: "2026-10-14"
+source: mixed
+date: "2026-10-21"
+sources: ["https://robinpowered.com/blog/best-practice-system-for-organizing-and-tagging-github-issues/", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms"]
 ---
+
+> 직접 정리한 내용에, 라벨 그룹 설계는 「[How we organize GitHub issues: A simple styleguide for tagging](https://robinpowered.com/blog/best-practice-system-for-organizing-and-tagging-github-issues/)」을 바탕으로 보강했다.
+>
+> 「이슈·PR 템플릿」은 cheese10yun의 「[github-project-management](https://github.com/cheese10yun/github-project-management)」을 바탕으로, 이슈 폼은 GitHub Docs로 확인해 보강했다.
 
 여러 사람이 한 저장소에서 일하려면 "누가 무엇을 리뷰하고, 무엇이 통과해야 머지되는지"를 저장소 설정으로 정해 두는 것이 좋다. 사람의 기억 대신 규칙이 지켜 주기 때문이다. 아래는 그 저장소 세팅 순서다.
 
@@ -48,9 +53,83 @@ git remote add origin <내 원격 저장소 주소>
 /api/            @alice @bob
 ```
 
+## 이슈·PR 템플릿
+
+자주 쓰는 이슈 양식을 `.github/ISSUE_TEMPLATE/`에 두면 **New issue**를 누를 때 고르는 메뉴가 뜬다. Settings → General → Features → Issues의 **Set up templates**로 만들거나 파일을 직접 커밋한다.
+
+![이슈 템플릿 등록](https://github.com/cheese10yun/github/blob/master/images/issue-template-rg.gif?raw=true)
+
+![템플릿으로 이슈 만들기](https://github.com/cheese10yun/github/blob/master/images/add-new-issue.gif?raw=true)
+
+```text
+.github/
+├── ISSUE_TEMPLATE/
+│   ├── bug_report.yml        # 이슈 폼 (YAML)
+│   ├── feature_request.md    # 마크다운 템플릿
+│   └── config.yml            # 템플릿 선택 화면 설정
+└── pull_request_template.md  # PR 본문 기본값
+```
+
+| 형식 | 생김새 | 특징 |
+| --- | --- | --- |
+| 마크다운 템플릿 (`.md`) | 맨 위 `---` 사이 YAML 머리말(`name`·`about`·`title`·`labels`·`assignees`) + 본문 뼈대 | 본문이 그대로 입력란에 채워진다. 작성자가 지워 버려도 막을 수 없다. 머리말을 지우면 선택 메뉴에 나오지 않는다 |
+| **이슈 폼** (`.yml`) | `body`에 입력란(`textarea`·`input`·`dropdown`·`checkboxes`)을 선언 | 칸마다 설명·자리표시자·필수 여부(`validations.required`)를 준다. 제출하면 칸 제목이 소제목인 마크다운이 된다. 이슈 유형·라벨·프로젝트를 자동으로 붙인다 |
+
+버그 보고는 재현에 필요한 정보를 빠뜨리지 않게 폼으로 받는다. 백엔드라면 응답 본문과 서버 로그 칸을 둔다.
+
+```yaml
+# .github/ISSUE_TEMPLATE/bug_report.yml
+name: 버그 보고
+description: 기대와 다르게 동작하는 것을 알린다
+type: Bug
+labels: ["status: triage"]
+body:
+  - type: textarea
+    id: symptom
+    attributes: { label: 증상, description: 무엇이 어떻게 잘못됐나 }
+    validations: { required: true }
+  - type: textarea
+    id: steps
+    attributes: { label: 재현 순서, placeholder: "1. ...\n2. ..." }
+    validations: { required: true }
+  - type: textarea
+    id: response
+    attributes: { label: 응답 본문, render: json }
+  - type: textarea
+    id: log
+    attributes: { label: 서버 로그, render: shell }
+  - type: dropdown
+    id: browser
+    attributes: { label: 브라우저, options: [Chrome, Safari, Firefox, Edge], multiple: true }
+```
+
+```yaml
+# .github/ISSUE_TEMPLATE/config.yml
+blank_issues_enabled: false          # 템플릿 없이 빈 이슈를 못 만들게
+contact_links:
+  - name: 질문은 Discussions로
+    url: https://github.com/owner/repo/discussions
+    about: 사용법 질문은 이슈 대신 여기에
+```
+
+- **PR 템플릿**은 `.github/pull_request_template.md` 하나가 기본값으로 채워진다. 무엇을 왜 바꿨는지, 관련 이슈(`Closes #42`), 영향 범위(모듈·화면), 테스트 방법, 스크린숏 칸을 둔다. `PULL_REQUEST_TEMPLATE/` 폴더에 여러 개를 두면 자동 선택되지 않고 PR URL에 `?template=이름.md`를 붙여야 한다.
+- 템플릿은 기본 브랜치에 있어야 적용된다. organization의 `.github` 저장소에 두면 템플릿이 없는 모든 저장소의 기본값이 된다.
+
 ## 라벨
 
 이슈·PR을 분류하는 라벨을 팀에서 의미 있게 정한다. 예: 기능 추가, 기능 개선, 오류 수정, 리팩터링, 환경 설정, 질문, 클린업, 제안.
+
+라벨은 낱개로 늘리지 말고 **축(그룹)별로 묶어 색을 같게** 한다. 그룹이 같으면 이름이 달라도 목록에서 한눈에 갈린다. 이슈 종류(Task·Bug·Feature)는 이제 GitHub의 **이슈 유형**이 맡으므로, 라벨은 그 밖의 축에 쓴다.
+
+| 축 | 라벨 예 | 뜻 |
+| --- | --- | --- |
+| 영역(platform) | `ios`, `android`, `api` | 저장소가 여러 부분을 다룰 때 이슈가 사는 곳 |
+| 문제(problem) | `bug`, `ux-bug` | 제품이 망가진 느낌을 준다. 운영 환경이면 최우선 |
+| 성격 | `chore`(폴더 정리·단위 변환처럼 필요하지만 영향 작은 일), `improvement`(기존 기능 개선), `addition`(새 화면·엔드포인트) | 일의 크기와 위험을 가늠한다 |
+| 환경 | `staging`, `production` | 어느 서버 환경에서 발견됐나 |
+| 상태 | `needs-discussion`(논의해야 할 일이 정해진다. 기능 아이디어의 출발점), `blocked`(선행 조건 대기), `wontfix`·`duplicate`(조치 없음) | 보드의 열로 다 표현되지 않는 상태 |
+
+**모든 저장소에 같은 라벨 세트**를 쓴다. 저장소를 옮겨 다녀도 이슈 쓰는 법을 다시 배울 필요가 없고, 새 팀원은 한 번 익혀 어디서나 쓴다.
 
 라벨 목록을 JSON 파일로 관리하면 여러 저장소에 한 번에 적용할 수 있다.
 

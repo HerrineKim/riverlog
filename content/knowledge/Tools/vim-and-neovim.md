@@ -4,12 +4,14 @@ concept: "Vim"
 summary: "ed에서 vi, Vim, Neovim으로 이어진 모드형 편집기의 계보와 두 편집기의 차이, 설정 파일과 플러그인 관리, 공백 표시·접기·연속 숫자·<expr> 매핑·복사 강조·시스템 클립보드 같은 편집 기술, 편집기 밖에서 Vim 키를 쓰는 방법(man 페이지, Vimium)."
 tags: ["tools", "vim", "editor", "cli", "productivity"]
 source: other
-date: "2026-10-20"
-sources: ["https://80000coding.notion.site/216dcb7b968742abbf4028ae8e6b8caa", "https://80000coding.notion.site/014aa6329e3e4e39bf1b8fe1688a9f84", "https://80000coding.notion.site/7cf061c6a49541a4a80a747a3a3fe2d8", "https://80000coding.notion.site/2a61bdb018be4efdaf5709ecc66df1cf", "https://neovim.io/doc/user/pack.html", "https://80000coding.notion.site/dd6588a1d7ef4b3aa0db79d7adc18166", "https://80000coding.notion.site/218c91e14b80407595157742bc83c876", "https://80000coding.notion.site/c4cf772432664fc1aa87c148509cbfec", "https://80000coding.notion.site/494c23d5d9464f13abdaca40f7eb5c2f", "https://80000coding.notion.site/3d0b8132613349cd9387a4ec8ebdb0e2", "https://80000coding.notion.site/6e7153c06a9941b2b318cc591a38d78f", "https://neovim.io/doc/user/lua.html#vim.hl.on_yank()", "https://johngrib.github.io/wiki/two-views-of-vim/", "https://johngrib.github.io/wiki/vim/auto-completion/", "https://johngrib.github.io/wiki/my-wiki/"]
+date: "2026-10-21"
+sources: ["https://80000coding.notion.site/216dcb7b968742abbf4028ae8e6b8caa", "https://80000coding.notion.site/014aa6329e3e4e39bf1b8fe1688a9f84", "https://80000coding.notion.site/7cf061c6a49541a4a80a747a3a3fe2d8", "https://80000coding.notion.site/2a61bdb018be4efdaf5709ecc66df1cf", "https://neovim.io/doc/user/pack.html", "https://80000coding.notion.site/dd6588a1d7ef4b3aa0db79d7adc18166", "https://80000coding.notion.site/218c91e14b80407595157742bc83c876", "https://80000coding.notion.site/c4cf772432664fc1aa87c148509cbfec", "https://80000coding.notion.site/494c23d5d9464f13abdaca40f7eb5c2f", "https://80000coding.notion.site/3d0b8132613349cd9387a4ec8ebdb0e2", "https://80000coding.notion.site/6e7153c06a9941b2b318cc591a38d78f", "https://neovim.io/doc/user/lua.html#vim.hl.on_yank()", "https://johngrib.github.io/wiki/two-views-of-vim/", "https://johngrib.github.io/wiki/vim/auto-completion/", "https://johngrib.github.io/wiki/my-wiki/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/E325%3A%20ATTENTION%20%EC%97%90%EB%9F%AC%20%EC%B2%98%EB%A6%AC.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「ed에서 vi/vim을 거쳐 neovim까지」, 「생산성 향상을 위한 Vim 커스터마이징」, 「man 페이지를 vim으로 열어보자!」, 「[Vimium] 웹브라우저를 Vim 처럼.」을 바탕으로 재구성한 노트다. 「편집 기술」은 같은 위키의 「vim 잡기술 - listchars」, 「vim 잡기술 - fold」, 「vim에서 연속된 숫자 입력하기」, 「vim 잡기술 - 조건부 키맵핑?!」, 「neovim 간단 꿀팁 - 복사한부분 하이라이팅」, 「Vim에서 마우스 드래그로 텍스트 복붙하기」를 바탕으로 보강했다.
 > 「Vim의 문법」, 「자동 완성」, 「Vim으로 개인 위키 쓰기」는 johngrib 위키의 「[Vim, 두 가지 관점](https://johngrib.github.io/wiki/two-views-of-vim/)」, 「[Vim 자동완성 기능 사용하기](https://johngrib.github.io/wiki/vim/auto-completion/)」, 「[Vimwiki + Jekyll + Github.io로 나만의 위키를 만들자](https://johngrib.github.io/wiki/my-wiki/)」를 바탕으로, 완성 명령은 Vim 도움말(`:help ins-completion`)로 확인해 보강했다.
+>
+> 「스왑 파일과 `E325: ATTENTION`」은 「[Frontend_TIL: E325: ATTENTION 에러 처리](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/E325%3A%20ATTENTION%20%EC%97%90%EB%9F%AC%20%EC%B2%98%EB%A6%AC.md)」를 바탕으로 Vim 도움말(`:help E325`)로 확인해 보강했다.
 
 ## Vim이란
 
@@ -217,6 +219,19 @@ Vim의 검색·복사·색 구성을 그대로 쓸 수 있고, 본문의 다른 
 
 Vimium은 Chrome·Edge용 확장이다. `f`를 누르면 클릭할 수 있는 모든 링크에 글자 힌트가 붙어 키보드로 누를 수 있고, `j`/`k`로 스크롤, `H`/`L`로 뒤로·앞으로 간다. `?`로 전체 단축키를 본다. Firefox에는 같은 계열의 Vimium-FF, Tridactyl이 있다.
 
+## 스왑 파일과 `E325: ATTENTION`
+
+Vim은 파일을 열면 편집 내용을 **스왑 파일**에 계속 기록한다. Vim에서는 같은 폴더의 숨김 파일 `.파일이름.swp`, Neovim에서는 `~/.local/state/nvim/swap/` 아래에 생긴다. 정상 종료하면 지워지고, 터미널이 강제로 닫히거나 프로세스가 죽으면 남는다. 다음에 같은 파일을 열 때 남은 스왑 파일을 발견하면 `E325: ATTENTION` 경고와 함께 고르게 한다.
+
+| 선택 | 쓰는 때 |
+| --- | --- |
+| `(O)pen Read-Only` | 다른 Vim이 정말 그 파일을 열고 있을 때. 경고의 `process ID`가 아직 살아 있으면 이 경우다 |
+| `(R)ecover` | 저장 못 하고 죽은 편집 내용을 되살린다. 확인 후 저장하고, 남은 스왑 파일은 지운다 |
+| `(D)elete it` | 되살릴 것이 없을 때 스왑 파일을 지우고 연다 |
+| `(E)dit anyway` · `(Q)uit` · `(A)bort` | 무시하고 열기 / 닫기 |
+
+Git이 커밋 메시지를 Vim으로 받다가 끊기면 `.git/.COMMIT_EDITMSG.swp`가 남아 다음 `git commit`마다 이 경고가 뜬다. `D`를 고르거나, 경고에 적힌 경로의 파일을 `rm`으로 지운다. 숨김 파일이라 `ls -a`로 봐야 보인다.
+
 ## 정리
 
 - Vim은 모드를 나눠 같은 키로 입력과 명령을 오가는 편집기이고, vi의 후계다.
@@ -225,5 +240,6 @@ Vimium은 Chrome·Edge용 확장이다. `f`를 누르면 클릭할 수 있는 �
 - 공백은 `listchars`로 드러내고, 긴 파일은 `foldmethod`로 접고, 숫자 수열은 `g Ctrl-a`나 `:put=range()`로 넣는다.
 - `<expr>` 매핑으로 상황에 따라 다르게 동작하는 키를 만들고, 다른 앱과 주고받는 복사는 `+` 레지스터를 쓴다.
 - `MANPAGER`와 Vimium으로 Vim 키를 매뉴얼과 브라우저까지 넓힐 수 있다.
+- `E325: ATTENTION`은 스왑 파일이 남았다는 뜻이다. 다른 Vim이 열고 있지 않으면 복구하거나 지운다.
 
 관련 노트: [[tmux|tmux]], [[vscode|VS Code 설정과 활용]]

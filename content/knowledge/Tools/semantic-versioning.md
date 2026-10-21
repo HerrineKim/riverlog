@@ -5,10 +5,10 @@ summary: "MAJOR.MINOR.PATCH 세 숫자로 변경의 성격(호환 깨짐, 기능
 tags: ["tools", "version-control", "api", "javascript"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-do-version-numbers-mean", "https://semver.org/", "https://semver.org/lang/ko/"]
+sources: ["https://bytebytego.com/guides/what-do-version-numbers-mean", "https://semver.org/", "https://semver.org/lang/ko/", "https://nodesource.com/blog/semver-a-primer/", "https://docs.npmjs.com/cli/v11/using-npm/semver"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[What do version numbers mean?](https://bytebytego.com/guides/what-do-version-numbers-mean)」을 바탕으로, 세부 규칙은 [SemVer 2.0.0 명세](https://semver.org/)로 확인해 재구성한 노트다. 「[유의적 버전 명세 2.0.0(한국어)](https://semver.org/lang/ko/)」의 내용을 더해 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[What do version numbers mean?](https://bytebytego.com/guides/what-do-version-numbers-mean)」을 바탕으로, 세부 규칙은 [SemVer 2.0.0 명세](https://semver.org/)로 확인해 재구성한 노트다. 「[유의적 버전 명세 2.0.0(한국어)](https://semver.org/lang/ko/)」의 내용을 더해 보강했다. 범위 문법과 범위가 필요한 이유는 NodeSource의 「[Semver: A Primer](https://nodesource.com/blog/semver-a-primer/)」를 바탕으로, npm의 semver 문서로 확인해 보강했다.
 
 ## SemVer란
 
@@ -66,6 +66,15 @@ npm의 `package.json`은 SemVer를 믿고 업데이트 범위를 적는다.
 | `~1.2.3` | `>=1.2.3 <1.3.0` | PATCH 업데이트만 |
 | `^1.2.3` | `>=1.2.3 <2.0.0` | MAJOR가 같으면 허용 (npm 기본) |
 | `^0.2.3` | `>=0.2.3 <0.3.0` | 0.x에서는 MINOR를 MAJOR처럼 취급 |
+| `^0.0.3` | `>=0.0.3 <0.0.4` | 0.0.x에서는 사실상 고정 |
+| `2`, `2.x`, `2.*` | `>=2.0.0 <3.0.0` | 빈 자리는 무엇이든(X-범위) |
+| `1.2.3 - 2.3.4` | `>=1.2.3 <=2.3.4` | 하이픈 범위. 양 끝 포함 |
+| `>=1.2.0 <1.5.0`, `^1.0.0 \|\| ^2.0.0` | 적은 그대로 | 비교 연산자를 공백(AND)과 `\|\|`(OR)로 조합 |
+| `*`, `latest` | 아무 버전 | MAJOR가 바뀌어도 받으므로 쓰지 않는다 |
+
+프리릴리스 버전(`1.3.0-beta.1`)은 범위에 들어가도 기본으로 고르지 않는다. 범위 쪽에 같은 `MAJOR.MINOR.PATCH`의 프리릴리스가 적혀 있을 때만(`^1.3.0-beta.0`) 후보가 된다. 안정 버전을 쓰는 사용자가 실수로 베타를 받지 않게 하려는 규칙이다.
+
+`~`·`^` 같은 표기는 SemVer 명세가 아니라 **패키지 매니저가 정한 문법**이다(npm은 Ruby Bundler에서 가져왔다). 범위가 쓸모 있는 이유는 **깊은 의존성의 버그 수정이 저절로 전파되기** 때문이다. 내 앱 → A → B → C로 이어진 의존에서 C가 패치를 내면, 모두 `^`로 적어 둔 한 A·B가 새로 게시하지 않아도 다음 설치에서 고친 C가 들어온다. 모든 의존성을 정확한 버전으로 고정하면 이 사슬이 끊긴다. 문제 있는 버전을 냈다면 패치를 낸 뒤 `npm deprecate pkg@"<1.2.4" "보안 문제, 1.2.4로 올리세요"`로 경고를 단다.
 
 범위는 "호환된다고 약속된 만큼"만 열어 두는 장치다. 하지만 **약속을 지키는지는 라이브러리 작성자에게 달려 있다.** 그래서 잠금 파일(`package-lock.json` 등)로 실제 설치 버전을 고정하고, 업데이트는 테스트를 거쳐 올린다([[package-managers|패키지 매니저]]).
 

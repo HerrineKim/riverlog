@@ -4,13 +4,31 @@ concept: "Markdown"
 summary: "간단한 기호만으로 제목·목록·코드·링크·표 등을 표현하는 경량 마크업 언어의 기본 문법과 Mermaid 다이어그램, markdownlint."
 tags: ["markdown", "writing", "documentation"]
 source: mixed
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/85df6351e0bd4b0c88c07431df7515df"]
+date: "2026-10-21"
+sources: ["https://80000coding.notion.site/85df6351e0bd4b0c88c07431df7515df", "https://daringfireball.net/projects/markdown/syntax", "https://guides.github.com/features/mastering-markdown/", "https://githubengineering.com/a-formal-spec-for-github-markdown/"]
 ---
 
-> 「Mermaid」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「노션에서 다이어그램 만들기」를 바탕으로 보강했다.
+> 「Mermaid」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「노션에서 다이어그램 만들기」를 바탕으로 보강했다. 설계 원칙과 표준은 「[Markdown: Syntax](https://daringfireball.net/projects/markdown/syntax)」와 GitHub의 「[Mastering Markdown](https://guides.github.com/features/mastering-markdown/)」을 바탕으로 보강했다. GFM 명세의 공개 배경은 「[A formal spec for GitHub Flavored Markdown](https://githubengineering.com/a-formal-spec-for-github-markdown/)」을 바탕으로 더했다.
 
 Markdown은 `#`, `-`, `*` 같은 간단한 기호로 문서 구조를 표현하는 **경량 마크업 언어**다. README, TIL, 블로그, 기술 문서 대부분이 Markdown으로 쓰이고, 결국 HTML로 변환되어 보인다.
+
+## 설계 원칙과 표준
+
+**Markdown의 최우선 목표는 변환하지 않은 원문 그대로도 읽히는 것이다.** 기호는 이메일에서 사람들이 쓰던 관습(`*강조*`, `>` 인용, `-` 목록)에서 가져왔다. 그래서 렌더러 없이 터미널에서 열어도 문서 구조가 보인다.
+
+| 규칙 | 내용 |
+| --- | --- |
+| HTML 섞어 쓰기 | Markdown에 없는 것은 HTML 태그를 그대로 쓴다. 단 `<div>`, `<table>` 같은 블록 태그 **안의** Markdown 문법은 원래 명세에서 처리되지 않는다(앞뒤에 빈 줄을 두면 처리하는 렌더러가 많다) |
+| 문단과 줄바꿈 | 빈 줄이 문단을 나눈다. 줄 끝에서 Enter만 치면 같은 문단으로 이어진다. 강제 줄바꿈은 줄 끝 공백 두 칸이나 `<br>` |
+| 특수 문자 | `&`, `<`는 자동으로 HTML 엔티티가 된다. 문법 기호를 글자로 쓰려면 백슬래시로 이스케이프한다: `` \* \_ \` \# \[ \] `` |
+
+| 표준·방언 | 내용 |
+| --- | --- |
+| 원래 Markdown(2004) | John Gruber의 문법 문서와 Perl 스크립트. 모호한 경우가 많아 렌더러마다 결과가 달랐다 |
+| **CommonMark** | 그 모호함을 없앤 명세와 테스트 모음. 대부분의 현대 렌더러가 기준으로 삼는다 |
+| **GFM**(GitHub Flavored Markdown) | CommonMark에 표, 작업 목록(`- [ ]`), 취소선(`~~`), 자동 링크를 더한 GitHub의 명세. 2017년 형식 명세와 C 참조 구현(cmark-gfm)을 공개해, 다른 도구도 GitHub과 같은 결과로 미리 보기를 만들 수 있게 됐다. GitHub에서는 여기에 `@멘션`, `#이슈번호` 참조, 언어 지정 코드 블록 하이라이트, Mermaid, 경고 블록(`> [!NOTE]`)이 더해진다 |
+
+표·취소선·작업 목록은 원래 Markdown에 없는 GFM 확장이라 다른 도구에서는 안 보일 수 있다.
 
 ## 제목 (Heading)
 

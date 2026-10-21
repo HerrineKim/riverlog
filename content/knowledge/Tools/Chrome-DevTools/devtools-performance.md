@@ -4,11 +4,11 @@ concept: "DevTools Performance"
 summary: "Performance 패널의 실시간 지표 화면과 트레이스 녹화·읽기(메인 트랙, 플레임 차트, Bottom-up·Call tree, 긴 작업, 인사이트, 주석, 저장·공유, 선택기 통계), 성능 모니터, 렌더링 탭과 레이어 패널, 커버리지, 메모리 패널로 누수·팽창·잦은 GC를 찾는 절차, Lighthouse 실행법을 정리한다."
 tags: ["devtools", "tools", "performance", "memory", "debugging", "frontend"]
 source: other
-date: "2026-10-15"
-sources: ["https://developer.chrome.com/docs/devtools/performance", "https://developer.chrome.com/docs/devtools/performance/overview", "https://developer.chrome.com/docs/devtools/performance/reference", "https://developer.chrome.com/docs/devtools/performance/annotations", "https://developer.chrome.com/docs/devtools/performance/save-trace", "https://developer.chrome.com/docs/devtools/performance/selector-stats", "https://developer.chrome.com/docs/devtools/performance/nodejs", "https://developer.chrome.com/docs/devtools/performance/timeline-reference", "https://developer.chrome.com/docs/devtools/performance-monitor", "https://developer.chrome.com/docs/devtools/rendering", "https://developer.chrome.com/docs/devtools/rendering/performance", "https://developer.chrome.com/docs/devtools/layers", "https://developer.chrome.com/docs/devtools/coverage", "https://developer.chrome.com/docs/devtools/memory", "https://developer.chrome.com/docs/devtools/memory-problems", "https://developer.chrome.com/docs/devtools/memory-problems/get-started", "https://developer.chrome.com/docs/devtools/memory-problems/heap-snapshots", "https://developer.chrome.com/docs/devtools/memory-problems/allocation-profiler", "https://developer.chrome.com/docs/devtools/memory-inspector", "https://developer.chrome.com/docs/devtools/lighthouse", "https://engineering.linecorp.com/ko/blog/vue-memory-leak-analysis/"]
+date: "2026-10-21"
+sources: ["https://developer.chrome.com/docs/devtools/performance", "https://developer.chrome.com/docs/devtools/performance/overview", "https://developer.chrome.com/docs/devtools/performance/reference", "https://developer.chrome.com/docs/devtools/performance/annotations", "https://developer.chrome.com/docs/devtools/performance/save-trace", "https://developer.chrome.com/docs/devtools/performance/selector-stats", "https://developer.chrome.com/docs/devtools/performance/nodejs", "https://developer.chrome.com/docs/devtools/performance/timeline-reference", "https://developer.chrome.com/docs/devtools/performance-monitor", "https://developer.chrome.com/docs/devtools/rendering", "https://developer.chrome.com/docs/devtools/rendering/performance", "https://developer.chrome.com/docs/devtools/layers", "https://developer.chrome.com/docs/devtools/coverage", "https://developer.chrome.com/docs/devtools/memory", "https://developer.chrome.com/docs/devtools/memory-problems", "https://developer.chrome.com/docs/devtools/memory-problems/get-started", "https://developer.chrome.com/docs/devtools/memory-problems/heap-snapshots", "https://developer.chrome.com/docs/devtools/memory-problems/allocation-profiler", "https://developer.chrome.com/docs/devtools/memory-inspector", "https://developer.chrome.com/docs/devtools/lighthouse", "https://engineering.linecorp.com/ko/blog/vue-memory-leak-analysis/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/Chrome%20Performance%20%ED%8C%A8%EB%84%90%EB%A1%9C%20%20bottleneck%20%ED%98%84%EC%83%81%20%EB%B6%84%EC%84%9D.md"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다. SPA 라우트 전환 누수는 LINE Engineering의 「[Vue 컴포넌트 – 메모리 누수 분석하기](https://engineering.linecorp.com/ko/blog/vue-memory-leak-analysis/)」로 보강했다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다. SPA 라우트 전환 누수는 LINE Engineering의 「[Vue 컴포넌트 – 메모리 누수 분석하기](https://engineering.linecorp.com/ko/blog/vue-memory-leak-analysis/)」로 보강했다. 무거운 함수를 찾는 예는 「[Frontend_TIL: Chrome Performance 패널로 bottleneck 현상 분석](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%84%B1%EB%8A%A5%20%EC%B5%9C%EC%A0%81%ED%99%94/Chrome%20Performance%20%ED%8C%A8%EB%84%90%EB%A1%9C%20%20bottleneck%20%ED%98%84%EC%83%81%20%EB%B6%84%EC%84%9D.md)」을 바탕으로 보강했다.
 
 이 노트는 DevTools로 **측정하고 원인을 찾는 절차**를 다룬다. LCP·INP·CLS 같은 지표의 뜻과 기준값, Lighthouse의 개념은 [[web-vitals|웹 성능 지표와 Lighthouse]]에, 레이아웃·페인트·합성의 원리는 [[browser-rendering|브라우저 렌더링 과정]]에 있다.
 
@@ -94,6 +94,17 @@ CPU 4배 느림으로 녹화 → CPU 차트가 꽉 참, 요약 탭은 대부분 
 ```
 
 고치는 법은 [[browser-rendering|브라우저 렌더링 과정]]의 강제 동기 레이아웃과 `transform`·`opacity` 애니메이션이다. 고친 뒤 다시 녹화해 이벤트가 줄었는지 비교한다.
+
+### 예: 렌더링을 늦추는 무거운 함수
+
+```text
+로드를 녹화 → 번들 JS가 도착한 뒤 Main에 컴포넌트 이름(App, ViewPage …)이 쌓인 긴 작업
+  └─ 플레임 차트 맨 아래에 같은 함수(removeSpecialCharacter)가 넓게 반복
+       └─ Bottom-up에서 자체 시간 순 정렬 → 이 함수가 1위
+            └─ 소스 링크: 특수문자 14개마다 문자열 전체를 훑으며 substring으로 새 문자열을 만든다
+```
+
+문자 집합 × 문자열 길이만큼 돌면서 매번 문자열을 새로 만드는 O(n·m) 루프였다. 정규식 한 번(`` str.replace(/[#_*~&;![\]`>\n=-]/g, '') ``)으로 바꾸면 긴 작업이 크게 준다. 플레임 차트에서 **넓고 아래에 깔린 막대**, Bottom-up에서 **자체 시간이 큰 함수**가 고칠 곳이다.
 
 ### 주석, 저장, 공유
 
