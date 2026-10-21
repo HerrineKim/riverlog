@@ -1,14 +1,14 @@
 ---
 title: "네트워크 계층 프로토콜"
 concept: "IP"
-summary: "IP와 주소 체계, 서브넷 계산과 라우팅 테이블(최장 프리픽스 일치), ARP·RARP, ICMP, IGMP, IPv6, NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 프로토콜과 회선·패킷 교환 방식 정리."
+summary: "IPv4 헤더와 단편화(MTU), 주소 체계, 서브넷 계산과 라우팅 테이블(최장 프리픽스 일치), ARP 동작 과정·RARP, ICMP와 ping·traceroute, IGMP, IPv6, NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 프로토콜과 회선·패킷 교환 방식 정리."
 tags: ["network", "ip", "routing", "certificate"]
 source: notion
-sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef"]
-date: "2026-10-14"
+sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef"]
+date: "2026-10-21"
 ---
 
-> 서브넷 계산·라우팅 테이블·NAT 분류 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「netpractice를 위한 네트워크 통신 기초 - 1. LAN 통신」, 「- 2. WAN 통신」, 「포트 포워딩, NAT, IP Masquerade 뭐가 다른거지?」, 「Network에 대한 정리(3)」을 바탕으로 보강했다.
+> 고무오리 CS 스터디의 네트워크 학습 노트(IP 주소, ARP, IPv4·ICMP, NAT와 포트 포워딩)를 바탕으로 재구성한 노트다. 서브넷 계산·라우팅 테이블·NAT 분류 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「netpractice를 위한 네트워크 통신 기초 - 1. LAN 통신」, 「- 2. WAN 통신」, 「포트 포워딩, NAT, IP Masquerade 뭐가 다른거지?」, 「Network에 대한 정리(3)」을 바탕으로 보강했다.
 
 네트워크 계층(3계층)은 여러 네트워크를 거쳐 패킷을 목적지 호스트까지 보내는 일을 한다. 핵심인 IP는 "최선을 다해 전달하지만 보장은 하지 않는" 프로토콜이고, 주변 프로토콜들이 주소 변환·오류 보고·경로 선택을 돕는다.
 
@@ -16,11 +16,42 @@ date: "2026-10-14"
 
 - 출발지·목적지 IP 주소를 지정하고 최적 경로로 패킷을 전달한다.
 - **비신뢰성·비연결성**: 도착·순서를 보장하지 않는다. 신뢰성은 상위 계층(TCP)이 맡는다.
-- 헤더 주요 필드
-  - **IHL**: 헤더 길이를 4바이트 단위로 표시 (옵션 없는 20바이트 → 5)
-  - **Flags**: Reserved, DF(Don't Fragment), MF(More Fragments)로 단편화를 제어
-  - TTL, 프로토콜, 체크섬, 출발지·목적지 주소 등
 - 서로 다른 LAN을 연결하려면 **라우터**가 필요하다.
+
+### IPv4 헤더
+
+옵션이 없으면 20바이트다. 이더넷 프레임에서는 Ethernet Type `0x0800`이 "페이로드는 IPv4"라는 표시다.
+
+| 필드 | 크기 | 설명 |
+| --- | --- | --- |
+| Version | 4비트 | IPv4면 4 |
+| IHL | 4비트 | 헤더 길이를 4바이트 단위로 표시 (옵션 없는 20바이트 → 5) |
+| DSCP·ECN (옛 이름 TOS) | 8비트 | 서비스 품질 표시와 혼잡 알림 |
+| Total Length | 16비트 | 헤더 + 데이터 전체 길이 (최대 65,535바이트) |
+| Identification | 16비트 | 원래 데이터그램 번호. 조각들이 같은 값을 가져 재조립 단위가 된다 |
+| Flags | 3비트 | Reserved, **DF**(Don't Fragment, 쪼개지 마라), **MF**(More Fragments, 뒤에 조각이 더 있다) |
+| Fragment Offset | 13비트 | 이 조각이 원래 데이터의 어디서 시작하는지. **8바이트 단위** |
+| TTL | 8비트 | 라우터를 지날 때마다 1씩 줄고 0이 되면 버린다. 경로가 꼬여도 패킷이 영원히 돌지 않게 한다 |
+| Protocol | 8비트 | 페이로드의 상위 프로토콜. 1 ICMP, 6 TCP, 17 UDP |
+| Header Checksum | 16비트 | 헤더만 검사한다. TTL이 바뀌므로 홉마다 다시 계산한다 |
+| Source·Destination Address | 각 32비트 | 출발지·목적지 IP 주소 |
+
+### 단편화(Fragmentation)와 MTU
+
+링크마다 한 번에 실을 수 있는 최대 크기 **MTU**(Maximum Transmission Unit)가 있다. 이더넷은 보통 1500바이트다. 패킷이 다음 링크의 MTU보다 크면 IPv4는 패킷을 조각으로 나눈다.
+
+예: 데이터 3,980바이트(헤더 포함 4,000바이트)를 MTU 1500 링크로 보낼 때. 조각마다 20바이트 헤더가 붙으므로 데이터는 1,480바이트(8의 배수)씩 실린다.
+
+| 조각 | 데이터 | Fragment Offset | MF |
+| --- | --- | --- | --- |
+| 1 | 1,480바이트 (0~1479) | 0 | 1 |
+| 2 | 1,480바이트 (1480~2959) | 185 (1480 ÷ 8) | 1 |
+| 3 | 1,020바이트 (2960~3979) | 370 (2960 ÷ 8) | 0 |
+
+- 세 조각은 같은 Identification 값을 가진다. **재조립은 최종 목적지 호스트만** 한다. 중간 라우터는 조각을 합치지 않는다.
+- 조각 하나만 잃어도 데이터그램 전체를 버린다. 그래서 단편화는 성능과 신뢰성 모두에 불리하다.
+- 그래서 보통 DF를 켜고 **경로 MTU 탐색**(PMTUD)을 한다. DF가 켜진 패킷이 MTU를 넘으면 라우터가 버리고 ICMP "Fragmentation Needed"(Type 3, Code 4)로 허용 크기를 알려 준다. 송신 측은 그 크기에 맞춰 다시 보낸다. TCP는 연결 수립 때 MSS(최대 세그먼트 크기)를 맞춰 애초에 단편화가 일어나지 않게 한다.
+- **IPv6에서는 라우터가 단편화하지 않는다.** 출발지 호스트만 단편화 확장 헤더로 나눌 수 있고, 너무 큰 패킷에는 라우터가 ICMPv6 "Packet Too Big"을 돌려보낸다.
 
 ### IP 주소와 PC의 네트워크 설정
 
@@ -74,11 +105,49 @@ IP 주소와 서브넷 마스크를 비트 AND 하면 **네트워크 주소**가
 | ARP | IP 주소 → MAC 주소 | 요청은 브로드캐스트, 응답은 유니캐스트. 결과를 ARP 캐시에 일정 기간 저장 |
 | RARP | MAC 주소 → IP 주소 | 디스크 없는 시스템이 자기 IP를 얻을 때 사용. 지금은 BOOTP·DHCP로 대체 |
 
-```bash
-arp -a    # ARP 캐시 보기
-arp -d    # 항목 삭제
-arp -s    # 정적 항목 추가
+### ARP가 필요한 이유와 동작 과정
+
+IP 패킷도 실제로 링크를 건너려면 이더넷 프레임에 담겨야 하고, 프레임에는 목적지 **MAC 주소**가 있어야 한다. 보내는 쪽은 상대의 IP만 알기 때문에 ARP로 MAC 주소를 알아낸다.
+
+```text
+1. 목적지 IP가 같은 네트워크인지 서브넷 마스크로 판단
+   - 같은 네트워크 → 목적지 IP의 MAC을 찾는다
+   - 다른 네트워크 → 기본 게이트웨이 IP의 MAC을 찾는다
+2. ARP 캐시에 있으면 바로 사용
+3. 없으면 ARP 요청을 브로드캐스트
+   프레임 목적지 FF:FF:FF:FF:FF:FF, "192.168.0.10 가진 사람 MAC 알려 줘"
+4. 해당 IP를 가진 호스트만 ARP 응답을 유니캐스트로 회신
+   (요청자의 IP·MAC도 자기 캐시에 기록)
+5. 요청자는 결과를 ARP 캐시에 저장하고 프레임을 보낸다
 ```
+
+다른 네트워크로 가는 패킷에서 ARP로 찾는 것은 **최종 목적지가 아니라 다음 홉(게이트웨이)의 MAC**이다. 그래서 IP 주소는 끝까지 같고 MAC 주소는 홉마다 바뀐다([[network-basics|네트워크 기초]]).
+
+### ARP 패킷 구조
+
+이더넷 프레임의 Ethernet Type `0x0806`이 ARP라는 표시다. ARP는 IP 헤더 없이 이더넷 프레임에 바로 실린다.
+
+| 필드 | 크기 | 설명 |
+| --- | --- | --- |
+| Hardware Type | 2바이트 | 2계층 종류. 이더넷은 1 |
+| Protocol Type | 2바이트 | 찾으려는 주소의 프로토콜. IPv4는 `0x0800` |
+| Hardware·Protocol Address Length | 각 1바이트 | MAC 6, IPv4 4 |
+| Opcode | 2바이트 | 1 요청, 2 응답 |
+| Sender MAC·IP | 6 + 4바이트 | 보내는 쪽 주소 |
+| Target MAC·IP | 6 + 4바이트 | 찾는 대상. 요청에서는 Target MAC을 모르므로 `00:00:00:00:00:00` |
+
+자기 IP를 대상으로 스스로 보내는 **Gratuitous ARP**는 IP 충돌을 확인하거나, 주소가 바뀐 사실을 이웃의 캐시에 미리 알릴 때 쓴다.
+
+### ARP 캐시(테이블) 확인
+
+```bash
+arp -a              # ARP 캐시 보기 (Windows·macOS·Linux)
+arp -d <IP>         # 항목 삭제
+arp -s <IP> <MAC>   # 정적 항목 추가
+ip neigh            # Linux의 현행 명령 (IPv6 이웃 탐색 결과도 함께 보인다)
+```
+
+캐시 항목은 동적 항목과 직접 넣은 정적 항목으로 나뉜다. 동적 항목은 일정 시간이 지나면 지워지고 다시 ARP 요청을 보낸다. IPv6에는 ARP가 없고 ICMPv6 기반 **이웃 탐색**(NDP)이 같은 일을 한다.
 
 ARP는 요청하지 않은 응답도 받아들이기 때문에, 위조된 응답으로 캐시를 오염시키는 **ARP 스푸핑(ARP Cache Poisoning)** 공격에 취약하다. 스푸핑·스니핑 같은 공격 기법은 [[security|정보 시스템 보안]]에 정리했다.
 
@@ -86,6 +155,17 @@ ARP는 요청하지 않은 응답도 받아들이기 때문에, 위조된 응답
 
 - **ICMP**: IP의 비신뢰성을 보완해 **오류·제어 메시지를 출발지에 보고**한다(해결은 하지 않음). 대표 도구가 `ping`, `traceroute`.
   - 주요 타입: 8 Echo Request, 0 Echo Reply, 3 Destination Unreachable, 5 Redirect, 11 Time Exceeded
+  - ICMP 메시지는 IP 패킷의 페이로드에 실린다(Protocol = 1). 헤더는 Type, Code, Checksum으로 시작한다. Type이 큰 분류, Code가 세부 이유다(예: Type 3의 Code 1 호스트 도달 불가, Code 3 포트 도달 불가, Code 4 단편화 필요).
+
+ICMP로 동작하는 두 도구는 다음과 같다.
+
+| 도구 | 동작 | 알 수 있는 것 |
+| --- | --- | --- |
+| `ping` | Echo Request(8)를 보내고 Echo Reply(0)를 기다린다 | 상대에 도달하는지, 왕복 시간(RTT), 손실률 |
+| `traceroute` (Windows `tracert`) | TTL을 1, 2, 3…으로 늘려 가며 보낸다. TTL이 0이 된 라우터가 Time Exceeded(11)를 돌려보내므로 홉마다 라우터 주소가 드러난다 | 목적지까지 거치는 라우터 경로와 구간별 지연 |
+
+- 유닉스 계열 `traceroute`는 기본으로 높은 번호의 UDP 포트로 보내고, 목적지에 닿으면 Port Unreachable(Type 3, Code 3)이 와서 끝을 안다. Windows `tracert`는 ICMP Echo를 쓴다.
+- 방화벽이 ICMP를 막으면 ping이 실패해도 서비스는 정상일 수 있다. 응답이 없다는 것만으로 "죽었다"고 단정하지 않는다.
 - **IGMP**: 멀티캐스트 그룹의 가입·탈퇴를 관리한다.
 
 ## IPv6

@@ -5,7 +5,10 @@ summary: "scanf로 표준 입력을 받고, fopen·fprintf·fread·fclose로 파
 tags: ["c", "io", "file", "cs50", "os"]
 source: notion
 date: "2026-10-14"
+sources: ["https://app.notion.com/p/2ec02d23df41457bbf156d5d1c7da595"]
 ---
+
+> 하버드 CS50(부스트코스) 5강(메모리)의 파일 쓰기·읽기 부분과 고무오리 CS 스터디의 CS50 정리 노트를 바탕으로 재구성한 노트다.
 
 C에서 입력과 파일 처리는 모두 포인터를 기반으로 한다. `scanf`는 값을 저장할 **주소**를 받고, 파일은 `FILE *` 포인터로 다룬다.
 

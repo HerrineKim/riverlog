@@ -1,11 +1,14 @@
 ---
 title: "전송 계층: 포트, TCP, UDP"
 concept: "Transport Layer"
-summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계, 연결 지향 TCP의 헤더·플래그·3-way handshake·순서 번호 규칙·상태 전이, 비연결형 UDP, 그리고 TCP와 UDP의 비교."
+summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계(임시 포트 범위 포함), 연결 지향 TCP의 헤더·플래그·3-way handshake·순서 번호 규칙·상태 전이·4-way handshake와 TIME_WAIT, 비연결형 UDP, 그리고 TCP와 UDP의 비교."
 tags: ["network", "transport-layer", "tcp", "udp", "port", "handshake"]
 source: notion
-date: "2026-10-20"
+sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df"]
+date: "2026-10-21"
 ---
+
+> 고무오리 CS 스터디의 네트워크 학습 노트(전송 계층과 포트, UDP, TCP 장)를 바탕으로 재구성한 노트다.
 
 네트워크 계층(IP)이 데이터를 **목적지 호스트**까지 보내 준다면, 전송 계층(4계층)은 그 호스트 안의 **어느 프로세스**에게 줄지 결정하고 필요하면 신뢰성을 보장한다. 이때 프로세스를 구분하는 번호가 포트 번호다.
 
@@ -33,6 +36,9 @@ TCP의 헤더, 3-way handshake, 상태 전이는 아래 「TCP」 절에, UDP는
 - 특정 프로세스와 특정 프로세스가 통신하기 위해 사용하는 16비트(2바이트) 번호, 0~65535.
 - 하나의 포트는 동시에 하나의 프로세스만 점유할 수 있지만, 한 프로세스는 여러 포트를 쓸 수 있다.
 - 관례적으로 정해진 번호가 있지만 강제는 아니다. 예를 들어 웹 서버는 보통 80번을 쓰지만 다른 포트로도 열 수 있다.
+- TCP와 UDP의 포트 공간은 따로다. TCP 53과 UDP 53은 서로 다른 포트다.
+- 연결 하나는 **(프로토콜, 출발지 IP, 출발지 포트, 목적지 IP, 목적지 포트)** 다섯 값으로 구분된다. 그래서 서버의 443 포트 하나로 수많은 클라이언트 연결을 동시에 받을 수 있다.
+- "한 포트는 한 프로세스"는 기본 동작이다. Linux의 `SO_REUSEPORT`처럼 여러 소켓이 같은 포트를 나눠 받게 하는 옵션도 있다.
 
 ### 포트 번호 범위
 
@@ -41,6 +47,8 @@ TCP의 헤더, 3-way handshake, 상태 전이는 아래 「TCP」 절에, UDP는
 | Well-known | 0 ~ 1023 | 널리 알려진 서비스용 |
 | Registered | 1024 ~ 49151 | 특정 애플리케이션이 등록해 사용 |
 | Dynamic (Private) | 49152 ~ 65535 | 클라이언트가 임시로 사용 |
+
+클라이언트가 연결할 때 OS가 자동으로 고르는 출발지 포트를 **임시 포트**(ephemeral port)라고 한다. 범위는 OS마다 다르다. Windows와 macOS는 IANA 권고대로 49152~65535를 쓰고, Linux는 기본 32768~60999를 쓴다(`sysctl net.ipv4.ip_local_port_range`로 확인). 한 대상에 짧은 연결을 아주 많이 맺으면 이 범위가 바닥날 수 있다.
 
 ### 자주 보는 Well-known 포트
 
@@ -142,11 +150,27 @@ ACK를 받지 못하면 송신 측은 해당 데이터를 재전송한다. 이�
 | SYN_SENT | 클라이언트가 SYN을 보낸 뒤 응답을 기다림 (active open) |
 | SYN_RECEIVED | 서버가 SYN을 받고 SYN+ACK를 보낸 상태 |
 | ESTABLISHED | 연결 수립 완료, 데이터 송수신 가능 |
-| FIN_WAIT, CLOSE_WAIT, TIME_WAIT 등 | 연결 종료 과정의 상태들 |
+| FIN_WAIT, CLOSE_WAIT, TIME_WAIT 등 | 연결 종료 과정의 상태들 (아래 4-way handshake) |
 
 흐름: 서버는 항상 `LISTEN`이어야 요청을 받을 수 있고, 클라이언트가 SYN을 보내면 `SYN_SENT` → 서버는 `SYN_RECEIVED` → 마지막 ACK 후 양쪽 `ESTABLISHED`.
 
-연결 종료는 보통 FIN → ACK → FIN → ACK의 **4-way handshake**로 이루어진다.
+### 4-Way Handshake (연결 종료)
+
+TCP는 양방향 통신이라 **방향마다 따로 닫는다.** 그래서 종료는 FIN과 ACK가 두 번씩 오가는 4단계다. 먼저 닫는 쪽(active close)은 클라이언트일 수도, 서버일 수도 있다.
+
+| 단계 | 패킷 | 먼저 닫는 쪽 상태 | 나중에 닫는 쪽 상태 |
+| --- | --- | --- | --- |
+| 1 | A → B: FIN | ESTABLISHED → FIN_WAIT_1 | |
+| 2 | B → A: ACK | FIN_WAIT_2 | CLOSE_WAIT (아직 보낼 데이터를 마저 보낼 수 있다) |
+| 3 | B → A: FIN | | LAST_ACK |
+| 4 | A → B: ACK | TIME_WAIT → (대기 후) CLOSED | CLOSED |
+
+**TIME_WAIT**는 마지막 ACK를 보낸 쪽이 바로 닫지 않고 MSL(세그먼트 최대 수명)의 2배 동안 기다리는 상태다. 이유는 두 가지다.
+
+- 마지막 ACK가 사라지면 상대가 FIN을 다시 보낸다. 그때 다시 ACK를 보내려면 연결 정보가 남아 있어야 한다.
+- 늦게 도착한 옛 연결의 세그먼트가 같은 포트 조합으로 새로 맺은 연결에 섞이지 않게 한다.
+
+Linux는 TIME_WAIT를 60초로 고정해 둔다. 짧은 연결이 많은 서버에서 TIME_WAIT 소켓이 쌓이는 것은 정상 동작이다. 연결을 재사용(keep-alive, 커넥션 풀)하면 줄어든다. 반대로 CLOSE_WAIT가 계속 쌓이면 애플리케이션이 소켓을 `close()`하지 않는다는 신호다.
 
 ### 흐름·혼잡·오류 제어
 
@@ -167,6 +191,8 @@ UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프�
 | 길이 | 2바이트 | 헤더 + 데이터 전체 길이 |
 | 체크섬 | 2바이트 | 헤더와 데이터의 오류 검출 |
 
+체크섬은 IPv4에서는 선택이라 0이면 검사하지 않는다는 뜻이고, IPv6에서는 필수다(IPv6 헤더에 체크섬이 없기 때문이다). 오류를 찾으면 UDP는 그 데이터그램을 조용히 버릴 뿐 재전송하지 않는다.
+
 ### UDP가 어울리는 경우
 
 - 오류가 조금 있어도 **빠른 응답**이 더 중요한 경우: 실시간 음성·영상, 게임
@@ -180,7 +206,7 @@ UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프�
 
 - 전송 계층은 포트 번호로 호스트 안의 프로세스를 구분한다. Well-known 0~1023, 동적 49152~65535.
 - TCP 연결 수립 = SYN → SYN+ACK → ACK. 응답의 SEQ는 받은 ACK, 응답의 ACK는 받은 SEQ + 데이터 크기.
-- TCP의 중요 플래그는 SYN·ACK·FIN·RST, 중요 상태는 LISTEN·ESTABLISHED. 종료는 4-way handshake.
+- TCP의 중요 플래그는 SYN·ACK·FIN·RST, 중요 상태는 LISTEN·ESTABLISHED. 종료는 방향마다 닫는 4-way handshake이고, 먼저 닫은 쪽은 TIME_WAIT로 잠시 기다린다.
 - UDP는 포트와 체크섬만 얹은 8바이트 헤더로, 신뢰성이 필요하면 QUIC처럼 위 계층에서 구현한다.
 
 관련 노트: [[network-layer|네트워크 계층 프로토콜]], [[osi-7-layer|OSI 7계층]], [[http|HTTP 프로토콜]], [[security|정보 시스템 보안]]

@@ -5,7 +5,7 @@ summary: "파일과 디렉터리, 파티션, open() 동작, 파일 보호와 마
 tags: ["os", "file-system", "system-call"]
 source: notion
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/81f0b873a067440083175c15cef70664"]
+sources: ["https://app.notion.com/p/e69581b5aa37458fb37d0a5fc4680921", "https://80000coding.notion.site/81f0b873a067440083175c15cef70664"]
 ---
 
 > 「하드 링크와 심볼릭 링크」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「하드링크 / 심볼릭링크」를 바탕으로 보강했다.

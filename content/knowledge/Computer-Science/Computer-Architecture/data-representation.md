@@ -4,11 +4,11 @@ concept: "Data Representation"
 summary: "컴퓨터가 숫자와 문자를 비트로 저장하는 방식: 진법과 변환, KB와 KiB, 문자 코드, 보수와 부호 확장, 고정·부동 소수점(IEEE 754 단정밀도·배정밀도의 범위와 특수값), 패리티와 해밍 코드."
 tags: ["computer-architecture", "binary", "floating-point", "encoding"]
 source: notion
-date: "2026-10-12"
-sources: ["https://riverkim.kr/188", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e"]
+date: "2026-10-21"
+sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e"]
 ---
 
-> 진법 변환·KiB·부호 확장·IEEE 754 세부·해밍 코드 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「원리를 알면 까먹지 않을 10진법을 2진법으로 변환하는 방법」, 「KB(킬로바이트)와 KiB(키비바이트)」, 「Unsigned char와 Char의 차이」, 「실수의 비트 표현 방법」, 「JavaScript에서 표현할 수 있는 수의 범위와 부동소수점」, 「Parity Bit (패리티 비트)」, 「Born2BeRoot를 진행하며 궁금했던 부분들」을 바탕으로 보강했다.
+> 진법 변환·KiB·부호 확장·IEEE 754 세부·해밍 코드 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「원리를 알면 까먹지 않을 10진법을 2진법으로 변환하는 방법」, 「KB(킬로바이트)와 KiB(키비바이트)」, 「Unsigned char와 Char의 차이」, 「실수의 비트 표현 방법」, 「JavaScript에서 표현할 수 있는 수의 범위와 부동소수점」, 「Parity Bit (패리티 비트)」, 「Born2BeRoot를 진행하며 궁금했던 부분들」을 바탕으로 보강했다. 보수로 하는 뺄셈은 고무오리 CS 스터디의 『컴퓨터 시스템 구조』(Mano) 정리를 바탕으로 보강했다.
 
 컴퓨터는 모든 정보를 0과 1로 저장한다. 정수, 실수, 문자를 어떤 규칙으로 비트에 담는지 알아야 오버플로우나 부동 소수점 오차 같은 현상을 이해할 수 있다.
 
@@ -59,6 +59,25 @@ CPU는 뺄셈을 따로 구현하지 않고 **보수를 더하는 방식**으로
 | --- | --- | --- |
 | (r-1)의 보수 | 각 자리를 (r-1)에서 뺌 | 9의 보수: 99999 − 12389 = 87610 / 1의 보수: 0001111 → 1110000 |
 | r의 보수 | (r-1)의 보수 + 1 | 10의 보수: 87611 / 2의 보수: 0001111 → 1110001 |
+
+### 보수로 하는 뺄셈 (부호 없는 수)
+
+n자리 수 M − N은 **M에 N의 r의 보수를 더해서** 구한다. M + (rⁿ − N)이므로 결과는 M과 N의 크기에 따라 갈린다.
+
+| 경우 | 덧셈 결과 | 답 |
+| --- | --- | --- |
+| M ≥ N | 맨 앞에서 캐리(end carry)가 나온다 | 캐리를 버린 나머지가 M − N |
+| M < N | 캐리가 나오지 않는다. 합은 (N − M)의 r의 보수다 | 합의 r의 보수를 다시 구하고 음수 부호를 붙인다 |
+
+```text
+72532 − 13250     72532 + 86750 (13250의 10의 보수) = 1 59282 → 캐리 버림 →  59282
+13250 − 72532     13250 + 27468 (72532의 10의 보수) =   40718 → 캐리 없음 → −(40718의 10의 보수) = −59282
+
+1010100 − 1000011   1010100 + 0111101 = 1 0010001 → 캐리 버림 →  0010001
+1000011 − 1010100   1000011 + 0101100 =   1101111 → 캐리 없음 → −(2의 보수) = −0010001
+```
+
+부호 있는 2의 보수 표현에서는 이 판단이 필요 없다. 부호 비트까지 그대로 더하고 캐리는 버린다(아래 고정 소수점 참고).
 
 ## 고정 소수점: 정수 표현
 

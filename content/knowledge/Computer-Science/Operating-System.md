@@ -18,7 +18,7 @@ date: "2026-10-14"
 - [셸이 명령을 실행하는 방식](Computer-Science/Operating-System/shell-pipeline.md) — 토큰화·파싱·확장, fork·execve, pipe·dup2로 잇는 파이프라인, heredoc과 서브셸
 - [데몬과 systemd](Computer-Science/Operating-System/daemon-and-systemd.md) — 데몬과 세션, SysV 이중 fork, systemd 유닛·서비스, cron을 대체하는 타이머
 - [프로세스 상태와 CPU 스케줄링](Computer-Science/Operating-System/process-scheduling.md) — 프로세스 상태, CPU 스케줄링 알고리즘과 성능 척도, 다중 프로세서·실시간 스케줄링
-- [프로세스 동기화](Computer-Science/Operating-System/process-synchronization.md) — 경쟁 상태, 임계 구역 문제, 세마포어, 고전적인 동기화 문제
+- [프로세스 동기화](Computer-Science/Operating-System/process-synchronization.md) — 경쟁 상태, 임계 구역 문제, 피터슨 알고리즘과 Test-and-Set, 세마포어, 고전적인 동기화 문제
 - [POSIX 스레드와 동기화 API](Computer-Science/Operating-System/pthread-sync-api.md) — pthread 생성·join, 뮤텍스와 조건 변수, POSIX 세마포어, 원자 명령어와 스핀락
 - [동시성·병렬·비동기·논블로킹과 동시성 모델](Computer-Science/Operating-System/concurrency-models.md) — 네 용어 구분, 코루틴·그린 스레드·가상 스레드, Reactor·Proactor, CSP와 액터, Go·Tokio·BEAM 스케줄러, GIL
 - [교착 상태](Computer-Science/Operating-System/deadlock.md) — 교착 상태의 발생 조건과 예방·회피·탐지·무시

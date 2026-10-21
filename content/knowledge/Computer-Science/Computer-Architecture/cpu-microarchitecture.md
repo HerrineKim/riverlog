@@ -46,6 +46,7 @@ RISC 계열(ARM)은 명령어 길이가 고정이라 해독이 단순하지만, 
 
 | 장치 | 하는 일 |
 | --- | --- |
+| 마이크로코드 ROM (Intel은 MSROM) | μop이 많이 필요한 복잡한 명령어(문자열 반복 명령 등)는 디코더 대신 여기서 μop 시퀀스를 꺼낸다. 교재의 [[basic-computer-design\|마이크로프로그램 제어]]가 남은 부분이다 |
 | μop 캐시 (Intel은 DSB) | 이미 해독한 μop을 명령어 주소로 찾아 재사용. 맞으면 비싼 디코더를 건너뛴다 |
 | 루프 스트림 감지기 (LSD) | μop 큐 안에서 작은 루프를 감지해 같은 μop을 반복 공급. DSB보다 가깝지만 아주 작은 루프만 담는다 |
 | 마이크로 퓨전 | 로드+연산처럼 자주 붙는 μop 둘을 하나로 묶어 큐 슬롯과 디코더 대역폭을 아낀다. 실행 단계에서는 다시 나뉜다 |
@@ -118,4 +119,4 @@ C·C++에는 `cmov`를 직접 쓰는 문법이 없다. 간단한 삼항 연산�
 - 분기 예측 실패는 수십 사이클 손실이다. 무작위 분기는 조건부 이동이나 비트 연산으로 없앤다.
 - **마이크로 최적화는 측정 도구로 병목을 확인한 뒤에 한다.** 세대마다 답이 바뀐다.
 
-관련 노트: [[pipeline-and-parallelism|파이프라인과 병렬 처리]], [[cpu-instructions|CPU와 명령어 구조]], [[cache-friendly-code|캐시를 고려한 코드]], [[computer-system-basics|컴퓨터 시스템의 기본 구성]]
+관련 노트: [[pipeline-and-parallelism|파이프라인과 병렬 처리]], [[cpu-instructions|CPU와 명령어 구조]], [[cache-friendly-code|캐시를 고려한 코드]], [[computer-system-basics|컴퓨터 시스템의 기본 구성]], [[basic-computer-design|기본 컴퓨터의 구조와 설계]]

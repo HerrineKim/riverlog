@@ -4,8 +4,11 @@ concept: "OSI Model"
 summary: "네트워크 통신을 일곱 단계로 나눈 OSI 참조 모델과 각 계층의 역할, 대표 프로토콜, TCP/IP 4계층과의 대응, 캡슐화와 계층별 PDU."
 tags: ["network", "osi", "protocol", "certificate"]
 source: notion
+sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b"]
 date: "2026-10-13"
 ---
+
+> 고무오리 CS 스터디의 네트워크 학습 노트(네트워크와 모델)를 바탕으로 재구성한 노트다.
 
 OSI(Open Systems Interconnection) 모델은 네트워크 통신 과정을 일곱 개의 계층으로 나눈 참조 모델이다. 계층마다 맡은 일이 정해져 있어, 문제가 생기면 어느 계층의 문제인지 좁혀 갈 수 있고 각 계층을 독립적으로 바꿀 수 있다.
 

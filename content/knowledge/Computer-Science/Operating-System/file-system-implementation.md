@@ -5,6 +5,7 @@ summary: "연속·연결·인덱스 할당, UNIX 파일 시스템과 FAT, 빈 �
 tags: ["os", "file-system", "cache", "memory"]
 source: notion
 date: "2026-10-13"
+sources: ["https://app.notion.com/p/e69581b5aa37458fb37d0a5fc4680921"]
 ---
 
 [[file-system|파일 시스템]]의 인터페이스(open, read, write) 아래에서는 "파일 데이터를 디스크의 어느 블록에 어떻게 배치하고 찾을 것인가"라는 문제가 남는다. 이 노트는 그 구현 방법과, 디스크 I/O를 줄이기 위한 캐시 구조를 다룬다.

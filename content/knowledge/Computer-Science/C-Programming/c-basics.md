@@ -8,7 +8,7 @@ sources: ["https://app.notion.com/p/729504bbf3c14b94a2a8fc61be02bb5c", "https://
 date: "2026-10-13"
 ---
 
-> 하버드 CS50(부스트코스) 1~3강을 바탕으로 재구성한 노트다.
+> 하버드 CS50(부스트코스 「모두를 위한 컴퓨터 과학」) 1~3강과 고무오리 CS 스터디의 CS50 정리 노트를 바탕으로 재구성한 노트다.
 
 컴퓨터가 정보를 0과 1로 표현하는 방법, C 코드가 실행 파일이 되는 과정, 배열과 문자열이 메모리에 놓이는 방식을 다룬다. 이어지는 메모리 이야기는 [[pointers-and-memory|포인터와 메모리]]에 있다.
 
@@ -80,7 +80,7 @@ int scores[5];   // int 5개짜리 배열 — 20바이트가 연속으로 잡힌
 int main(void)
 {
     int n = get_int("Number of scores: ");
-    int scores[n];                       // 입력받은 크기의 배열 (가변 길이 배열)
+    int scores[n];                       // 입력받은 크기의 배열 (가변 길이 배열, VLA)
 
     for (int i = 0; i < n; i++)
     {
@@ -95,6 +95,8 @@ int main(void)
     printf("Average: %f\n", sum / (float) n);
 }
 ```
+
+가변 길이 배열(VLA)은 스택에 잡히므로 n이 크면 스택 오버플로우가 난다. C11부터는 컴파일러가 지원하지 않아도 되는 선택 기능이라 MSVC에서는 쓸 수 없다. 크기가 실행 중에 정해지고 클 수 있다면 `malloc`으로 힙에 잡는 것이 안전하다([[pointers-and-memory|포인터와 메모리]]).
 
 ## 문자열은 char의 배열
 

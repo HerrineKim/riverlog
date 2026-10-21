@@ -5,7 +5,7 @@ summary: "운영체제가 무엇이고 왜 필요한지, 커널 영역과 이중
 tags: ["os", "kernel", "linux", "computer-science"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://riverkim.kr/204", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a"]
+sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a"]
 ---
 
 > 「세 가지 핵심 주제」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] 개요 - 3가지 이야기」를 바탕으로 보강했다.

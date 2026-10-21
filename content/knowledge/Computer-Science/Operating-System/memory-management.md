@@ -4,7 +4,7 @@ concept: "Memory Management"
 summary: "논리·물리 주소와 주소 바인딩, MMU, 동적 로딩·링킹과 스와핑, 연속 할당과 단편화, 페이징(TLB·다단계 페이지 테이블)과 세그멘테이션."
 tags: ["os", "memory", "paging", "segmentation", "mmu"]
 source: notion
-date: "2026-10-12"
+date: "2026-10-21"
 sources: ["https://app.notion.com/p/4183234d082949c9b0b5ef03f60f4bb2", "https://riverkim.kr/196", "https://riverkim.kr/216"]
 ---
 
@@ -48,7 +48,7 @@ sources: ["https://app.notion.com/p/4183234d082949c9b0b5ef03f60f4bb2", "https://
 | 동적 로딩 (Dynamic Loading) | 프로세스 전체를 미리 올리지 않고, 해당 루틴이 **호출될 때** 메모리에 올린다. 오류 처리 루틴처럼 가끔 쓰는 코드가 많을 때 메모리 이용률이 좋아진다 | 프로그램 자체(OS는 라이브러리로 지원 가능) |
 | 오버레이 (Overlays) | 프로세스에서 실제 필요한 부분만 올린다. 프로세스가 메모리보다 클 때 쓰던 초창기 방식 | 프로그래머가 수작업(manual overlay), 매우 복잡 |
 | 스와핑 (Swapping) | 프로세스를 통째로 메모리에서 **backing store(swap area)** 로 쫓아냈다가 나중에 다시 올린다 | 운영체제(중기 스케줄러) |
-| 동적 링킹 (Dynamic Linking) | 라이브러리 연결을 실행 시간까지 미뤄, 공유 라이브러리(`.so`, DLL) 한 벌을 여러 프로세스가 함께 쓴다. 정적 링킹과의 비교는 [[gcc-compile-and-link\|GCC 컴파일과 링크]] | 운영체제 지원 필요 |
+| 동적 링킹 (Dynamic Linking) | 라이브러리 연결을 실행 시간까지 미뤄, 공유 라이브러리(`.so`, DLL) 한 벌을 여러 프로세스가 함께 쓴다. 호출 지점에는 루틴의 실제 위치를 찾아 주는 작은 코드(**stub**)만 두고, 라이브러리가 이미 메모리에 있으면 그 주소로, 없으면 디스크에서 읽어 와 연결한다(ELF의 PLT·GOT가 이 역할을 한다). 정적 링킹과의 비교는 [[gcc-compile-and-link\|GCC 컴파일과 링크]] | 운영체제 지원 필요 |
 
 ### 스와핑
 

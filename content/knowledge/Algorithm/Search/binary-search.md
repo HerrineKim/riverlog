@@ -1,15 +1,39 @@
 ---
 title: "이분 탐색"
 concept: "Binary Search"
-summary: "정렬된 데이터에서 탐색 범위를 절반씩 줄여 O(log n)에 원하는 값을 찾는 방법."
+summary: "정렬된 데이터에서 탐색 범위를 절반씩 줄여 O(log n)에 원하는 값을 찾는 방법. 앞에서부터 하나씩 보는 순차 탐색과 어느 쪽을 고를지도 다룬다."
 tags: ["algorithm", "search", "binary-search", "python"]
-source: til
+source: mixed
 date: "2026-10-14"
+sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0"]
 ---
+
+> 순차 탐색과 고르는 기준은 하버드 CS50(부스트코스) 4강(알고리즘)과 고무오리 CS 스터디의 CS50 정리 노트를 바탕으로 보강했다.
 
 ![순차 탐색과 이분 탐색 비교](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/05-%EC%9D%B4%EB%B6%84-%ED%83%90%EC%83%89-Binary-Search-.assets/binary-and-linear-search-animations.gif)
 
 이분 탐색(이진 탐색, Binary Search)은 **정렬되어 있는** 리스트에서 탐색 범위를 절반씩 좁혀 가며 데이터를 찾는 방법이다. 앞에서부터 하나씩 보는 순차 탐색이 O(n)인 데 비해, 이분 탐색은 매 단계 범위가 반으로 줄어 **O(log n)이다**. 100만 개 중에서도 약 20번 비교면 충분하다.
+
+## 순차 탐색과 비교
+
+**순차 탐색(선형 탐색, Linear Search)**은 첫 원소부터 끝까지 하나씩 비교한다. 정렬 여부와 상관없이 쓸 수 있고, 찾으면 바로 멈춘다.
+
+```python
+def linear_search(arr, target):
+    for i, x in enumerate(arr):
+        if x == target:
+            return i
+    return None
+```
+
+| | 순차 탐색 | 이분 탐색 |
+| --- | --- | --- |
+| 전제 | 없음 | 정렬되어 있어야 함 |
+| 최악 (상한) | O(n) | O(log n) |
+| 최선 (하한) | Ω(1), 첫 원소가 답 | Ω(1), 가운데 원소가 답 |
+| 적합한 경우 | 정렬되지 않은 데이터, 한두 번만 찾을 때, 원소가 적을 때 | 같은 데이터에서 여러 번 찾을 때 |
+
+정렬에 O(n log n)이 들기 때문에 **한 번만 찾는다면 정렬 후 이분 탐색보다 순차 탐색이 싸다.** 찾는 횟수가 많아지면 한 번 정렬해 두고 이분 탐색하는 쪽이 이긴다. 이름·전화번호처럼 여러 필드를 묶은 레코드는 구조체(또는 객체) 배열로 두고 키 필드를 비교해 찾는다.
 
 ## 동작 방식
 
