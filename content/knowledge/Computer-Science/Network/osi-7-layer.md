@@ -4,11 +4,12 @@ concept: "OSI Model"
 summary: "네트워크 통신을 일곱 단계로 나눈 OSI 참조 모델과 각 계층의 역할, 대표 프로토콜, TCP/IP 4계층과의 대응, 캡슐화와 계층별 PDU."
 tags: ["network", "osi", "protocol", "certificate"]
 source: notion
-sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b"]
+sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://bytebytego.com/guides/what-is-osi-model"]
 date: "2026-10-13"
 ---
 
 > 고무오리 CS 스터디의 네트워크 학습 노트(네트워크와 모델)를 바탕으로 재구성한 노트다.
+> 캡슐화 흐름과 계층을 나누는 이유는 ByteByteGo의 System Design 101 가이드 「[OSI Model Explained](https://bytebytego.com/guides/what-is-osi-model)」를 바탕으로 보강했다.
 
 OSI(Open Systems Interconnection) 모델은 네트워크 통신 과정을 일곱 개의 계층으로 나눈 참조 모델이다. 계층마다 맡은 일이 정해져 있어, 문제가 생기면 어느 계층의 문제인지 좁혀 갈 수 있고 각 계층을 독립적으로 바꿀 수 있다.
 
@@ -61,5 +62,18 @@ OSI(Open Systems Interconnection) 모델은 네트워크 통신 과정을 일곱
 | 3 네트워크 | IP + TCP + 데이터 | 패킷 |
 | 2 데이터 링크 | Ethernet + IP + TCP + 데이터 + FCS | 프레임 |
 | 1 물리 | 신호 | 비트 |
+
+HTTP 요청 하나가 장치 A에서 B로 가는 과정은 다음과 같다.
+
+```text
+장치 A (캡슐화)                                   장치 B (디캡슐화)
+[HTTP 헤더|데이터]                    응용            ▲ HTTP 헤더를 읽고 데이터 전달
+[TCP 헤더|HTTP|데이터]                전송 (포트·순서 번호) ▲ TCP 헤더 제거
+[IP 헤더|TCP|HTTP|데이터]             네트워크 (IP 주소)    ▲ IP 헤더 제거
+[MAC 헤더|IP|TCP|HTTP|데이터|FCS]     데이터 링크 (MAC 주소) ▲ MAC 헤더 제거
+010110...                            물리 ──── 전송 ────▶ 비트 수신
+```
+
+**계층을 나누는 이유**는 각 계층이 자기 헤더만 보고 일하게 하기 위해서다. 라우터는 IP 헤더만 보고 경로를 정하고, 그 안의 TCP 세그먼트나 HTTP 메시지가 무슨 뜻인지 알 필요가 없다. 그래서 한 계층의 기술(예: 유선 이더넷 → 와이파이)을 바꿔도 다른 계층은 그대로 쓴다.
 
 관련 노트: [[network-basics|네트워크 기초]], [[network-layer|네트워크 계층 프로토콜]], [[transport-layer|전송 계층: 포트, TCP, UDP]]

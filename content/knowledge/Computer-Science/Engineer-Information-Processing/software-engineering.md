@@ -5,7 +5,10 @@ summary: "정보처리기사에 반복 출제되는 모듈 결합도·응집도,
 tags: ["certificate", "software-engineering", "design-pattern", "uml"]
 source: notion
 date: "2026-10-20"
+sources: ["https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams"]
 ---
+
+> 클래스 다이어그램 표기는 ByteByteGo의 System Design 101 가이드 「[UML Class Diagrams Cheatsheet](https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams)」를 바탕으로 보강했다.
 
 좋은 소프트웨어 설계의 핵심은 "고치기 쉽고 다시 쓰기 쉬운 구조"다. 시험에서는 이를 모듈 독립성, 디자인 패턴, 모델링 도구, 그리고 개발 과정을 관리하는 기법(비용 산정, 형상 관리)으로 나눠 묻는다.
 
@@ -71,6 +74,31 @@ date: "2026-10-20"
 | 일반화(Generalization) | 상속 관계 |
 | 의존(Dependency) | 짧은 시간 동안 사용하는 관계 (점선) |
 | 실체화(Realization) | 인터페이스 구현 |
+
+### 클래스 다이어그램 표기
+
+클래스 다이어그램은 업계에서 설계를 공유할 때 가장 많이 쓰는 UML이다. 구성 요소와 표기는 다음과 같다.
+
+| 요소 | 뜻 | 표기 |
+| --- | --- | --- |
+| 클래스 | 객체의 속성과 행동을 정한 설계도 | 세 칸 상자: 이름 / 속성 / 메서드 |
+| 속성(Attribute) | 클래스의 데이터 필드 | `- name: String` |
+| 메서드(Method) | 클래스가 할 수 있는 행동 | `+ getName(): String` |
+| 인터페이스 | 구현 클래스가 반드시 제공할 메서드의 계약 | `<<interface>>` 스테레오타입 |
+| 열거형(Enumeration) | 이름 붙은 값의 집합(상품 분류, 월) | `<<enumeration>>` 스테레오타입 |
+| 접근 제한자 | 공개 범위 | `+` public, `-` private, `#` protected, `~` package |
+
+```text
+관계 화살표
+연관      A ───────▶ B
+집합      A ◇─────── B     (빈 마름모가 전체 쪽)
+합성      A ◆─────── B     (채운 마름모가 전체 쪽)
+상속      A ───────▷ B     (빈 삼각형이 부모 쪽, 실선)
+실체화    A - - - - ▷ B    (빈 삼각형이 인터페이스 쪽, 점선)
+의존      A - - - - > B    (점선 화살표)
+```
+
+GoF 패턴 대부분이 클래스 다이어그램으로 설명된다([[gof-design-patterns|GoF 디자인 패턴]]).
 
 ## 객체지향
 

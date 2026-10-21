@@ -1,14 +1,14 @@
 ---
 title: "달력과 시간에 대한 개발자의 착각"
 concept: "Calendrical Fallacies"
-summary: "하루는 24시간, 1년은 12개월, 시간대는 정시 단위, 날짜는 빠짐없이 이어진다는 가정이 모두 틀리는 사례를 날·주, 달력 체계, 윤년·연도, 시간대, 서머타임으로 묶었다. 결론은 직접 계산하지 말고 검증된 날짜 라이브러리와 IANA tz 데이터에 맡기라는 것이다."
+summary: "하루는 24시간, 1년은 12개월, 시간대는 정시 단위, 날짜는 빠짐없이 이어진다는 가정이 모두 틀리는 사례를 날·주, 달력 체계, 윤년·연도, 시간대, 서머타임으로 묶고, 윤초와 여러 시간 표현(UTC·TAI·GPS 시간·Unix 시간·TrueTime), 리프 스미어를 덧붙였다. 결론은 직접 계산하지 말고 검증된 날짜 라이브러리와 IANA tz 데이터에 맡기라는 것이다."
 tags: ["computer-science", "timezone", "tips", "software-engineering"]
 source: other
 date: "2026-10-13"
-sources: ["https://yourcalendricalfallacyis.com/"]
+sources: ["https://yourcalendricalfallacyis.com/", "https://bytebytego.com/guides/do-you-know-why-meta-google-and-amazon-all-stop-using-leap-seconds", "https://developers.google.com/time/smear"]
 ---
 
-> Dave DeLong의 「[Your Calendrical Fallacy Is…](https://yourcalendricalfallacyis.com/)」를 바탕으로 재구성한 노트다.
+> Dave DeLong의 「[Your Calendrical Fallacy Is…](https://yourcalendricalfallacyis.com/)」를 바탕으로 재구성한 노트다. 윤초와 시간 표현은 ByteByteGo의 System Design 101 가이드 「[Why Meta, Google, and Amazon Stop Using Leap Seconds](https://bytebytego.com/guides/do-you-know-why-meta-google-and-amazon-all-stop-using-leap-seconds)」와 [Google Public NTP의 리프 스미어 문서](https://developers.google.com/time/smear)로 보강했다.
 
 ## 왜 착각이 생기나
 
@@ -86,6 +86,28 @@ sources: ["https://yourcalendricalfallacyis.com/"]
 | 바뀌더라도 미리 알려 준다 | 2016년 이집트는 시행 사흘 전에 취소했고, 2023년 레바논은 연기 발표를 나흘 만에 뒤집었다 |
 | 서머타임은 1시간이다 | 호주 로드하우섬은 30분만 옮긴다. 2차 대전 때 영국은 2시간을 당겼다 |
 
+## 윤초와 시간 표현
+
+**윤초(leap second)** 는 원자시계로 세는 UTC를 조금씩 느려지는 지구 자전에 맞추려고 끼워 넣는 1초다. 윤초가 들어가는 날에는 `23:59:59` 다음이 `00:00:00`이 아니라 `23:59:60`이다. 1972년 이후 모두 양의 윤초로 27번 들어갔고, 마지막은 2016년 12월 31일이다. 2022년 국제도량형총회(CGPM)는 2035년까지 윤초를 폐지하기로 결의했다.
+
+`23:59:60`을 표현하지 못하는 시스템이 많아 윤초는 시간 처리 버그의 단골이다. 윤초를 신경 써야 하는지는 **어떤 시간 표현을 쓰느냐**에 달렸다.
+
+| 표현 | 정의 | 윤초 |
+| --- | --- | --- |
+| UTC | 원자시를 기반으로 하되 지구 자전과 0.9초 이내로 맞춘 세계 표준시 | 넣는다 |
+| GMT | 그리니치 평균 태양시. 일상에서는 UTC+0 시간대 이름으로 쓴다 | (UTC와 같게 취급) |
+| TAI | 국제원자시. 원자시계만으로 센다 | 없다. 2017년부터 TAI는 UTC보다 37초 앞선다 |
+| Unix 시간(epoch time) | 1970-01-01 00:00:00 UTC부터 흐른 초. 하루를 늘 86,400초로 센다 | 세지 않는다. 윤초 순간에는 같은 초가 두 번 나오거나 시계가 멈춘 것처럼 보인다 |
+| GPS 시간 | 1980-01-06부터 원자시계로 센다 | 없다. UTC보다 18초 앞선다 |
+| TrueTime | Google Spanner의 시간 API. 시각을 한 점이 아니라 `[가장 이른, 가장 늦은]` 구간으로 돌려준다. GPS 수신기와 원자시계로 불확실성을 몇 ms 안에 묶는다 | 스미어된 시간을 쓴다 |
+
+### 리프 스미어
+
+Google·AWS·Meta 같은 대형 인프라는 윤초를 한 번에 넣지 않고 **리프 스미어(leap smear)** 로 처리한다. 윤초 전후 수십 시간에 걸쳐 시계를 아주 조금씩 늦춰 1초를 흩어 넣는다. Google은 윤초 전날 정오부터 다음 날 정오까지 24시간 동안 선형으로 늦춘다. 그러면 `23:59:60`도, 같은 초의 반복도 생기지 않는다.
+
+- 스미어 중에는 시계가 실제 UTC와 최대 0.5초까지 어긋난다. **스미어하는 NTP 서버와 하지 않는 서버를 섞어 쓰지 않는다.**
+- 분산 시스템에서 이벤트 순서를 벽시계로 정하면 윤초·NTP 보정·스미어에 모두 흔들린다. 순서는 논리 시계(Lamport 시계, 벡터 시계)나 단조 증가 ID로 정하고, 경과 시간은 단조 시계로 잰다([[time-and-timers|운영체제의 시간과 타이머]]).
+
 ## 코드에서 지킬 것
 
 | 원칙 | 이유 |
@@ -103,6 +125,7 @@ sources: ["https://yourcalendricalfallacyis.com/"]
 - 시간대는 오프셋이 아니라 이력이다. 30분·45분 오프셋과 UTC+14도 있다.
 - 서머타임은 며칠 전 통보로 바뀌고, 1시간이 아닐 수도 있다.
 - 날짜 범위에도 빠진 날이 있을 수 있다.
+- 1분은 61초일 수 있다(윤초). Unix 시간은 윤초를 세지 않고, 대형 인프라는 리프 스미어로 흩어 넣는다.
 - 결론은 하나다. **직접 계산하지 말고 검증된 라이브러리와 최신 tz 데이터에 맡긴다.**
 
-관련 노트: [[timezone|자바스크립트에서 타임존 다루기]], [[developer-traps|개발자가 빠지는 함정 모음]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]]
+관련 노트: [[timezone|자바스크립트에서 타임존 다루기]], [[time-and-timers|운영체제의 시간과 타이머]], [[developer-traps|개발자가 빠지는 함정 모음]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]]

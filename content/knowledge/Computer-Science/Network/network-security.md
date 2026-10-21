@@ -1,0 +1,115 @@
+---
+title: "네트워크 보안: 방화벽, VPN, 계층별 공격"
+concept: "Network Security"
+summary: "방화벽은 정해 둔 규칙(포트·IP·프로토콜·연결 상태·애플리케이션)으로 트래픽을 걸러 내는 문지기이고, 패킷 필터에서 상태 추적·프록시·차세대 방화벽으로 발전했다. VPN은 공용망 위에 암호화된 터널을 만들어 원격 사용자나 지점을 사설망처럼 잇는다. OSI 계층마다 노리는 공격이 달라 방어도 계층별로 겹겹이 쌓는다."
+tags: ["network", "security", "osi", "infra"]
+source: other
+date: "2026-10-21"
+sources: ["https://bytebytego.com/guides/firewall-explained-to-kids-and-adults", "https://bytebytego.com/guides/top-6-firewall-use-cases", "https://bytebytego.com/guides/how-does-a-vpn-work", "https://bytebytego.com/guides/types-of-vpns", "https://bytebytego.com/guides/top-network-security-cheatsheet", "https://medium.com/watcha/watcha-%EC%82%AC%EB%82%B4-vpn-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-e04f946d3ccb"]
+---
+
+> ByteByteGo의 System Design 101 가이드 「[Firewall Explained to Kids and Adults](https://bytebytego.com/guides/firewall-explained-to-kids-and-adults)」, 「[Top 6 Firewall Use Cases](https://bytebytego.com/guides/top-6-firewall-use-cases)」, 「[How Does a VPN Work?](https://bytebytego.com/guides/how-does-a-vpn-work)」, 「[Types of VPNs](https://bytebytego.com/guides/types-of-vpns)」, 「[Top Network Security Cheatsheet](https://bytebytego.com/guides/top-network-security-cheatsheet)」를 바탕으로, 사내 VPN 설계는 「[WATCHA 사내 VPN 개발하기](https://medium.com/watcha/watcha-%EC%82%AC%EB%82%B4-vpn-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-e04f946d3ccb)」로 보강해 재구성한 노트다.
+
+## 방화벽
+
+**방화벽(firewall)** 은 네트워크 경계에서 들어오고 나가는 트래픽을 규칙에 따라 허용하거나 막는 장치·소프트웨어다. 사설망과 인터넷 사이의 문지기 역할을 한다.
+
+| 형태 | 위치 | 예 |
+| --- | --- | --- |
+| 호스트 기반(소프트웨어) | 기기 한 대 | 리눅스 `nftables`·`ufw`, OS 기본 방화벽 |
+| 네트워크 기반(하드웨어·가상 장비) | 네트워크 경계 | 사내 경계 방화벽, 클라우드 보안 그룹·네트워크 ACL |
+
+### 종류: 무엇을 보고 판단하나
+
+아래로 갈수록 더 많은 맥락을 보고, 그만큼 비용이 든다.
+
+| 종류 | 보는 것 | 특징 |
+| --- | --- | --- |
+| 패킷 필터 | 패킷 하나의 출발지·목적지 IP, 포트, 프로토콜 | 빠르다. 연결의 맥락은 모른다(무상태) |
+| 서킷 레벨 게이트웨이 | TCP 핸드셰이크가 정상인지 | 세션이 맞는지만 확인하고 내용은 보지 않는다 |
+| 상태 추적(stateful inspection) | 연결 테이블: 이 패킷이 이미 맺어진 연결에 속하나 | 안에서 나간 요청의 응답만 들여보내는 것이 기본 동작이 된다. 지금 방화벽의 기본 |
+| 애플리케이션 게이트웨이(프록시 방화벽) | HTTP 같은 응용 계층 내용 | 클라이언트 대신 연결을 맺어 내용까지 검사한다. 웹 방화벽(WAF)이 이 계열 |
+| 차세대 방화벽(NGFW) | 위 전부 + 애플리케이션 식별, 침입 방지(IPS), 심층 패킷 검사 | "포트 443"이 아니라 "어떤 앱의 트래픽인가"로 규칙을 건다 |
+
+### 규칙을 거는 기준
+
+| 기준 | 예 |
+| --- | --- |
+| 포트 | 웹 서버는 80·443만 연다 |
+| IP 주소 | 관리 포트는 사무실 IP에서만, 알려진 악성 IP는 차단 |
+| 프로토콜 | TCP 22(SSH)만 허용, ICMP는 제한 |
+| 시간 | 업무 시간 외에는 특정 시스템 접근 차단 |
+| 연결 상태 | 이미 맺어진 연결(`ESTABLISHED`)의 응답만 들인다 |
+| 애플리케이션 | 파일 공유·특정 메신저 트래픽 차단 |
+
+규칙의 출발점은 **기본 거부(default deny)** 다. 모두 막아 두고 필요한 것만 연다. 클라우드에서 DB의 보안 그룹을 앱 서버의 보안 그룹에서 오는 트래픽만 받도록 여는 것이 같은 원칙이다 → [[aws-cloud-basics|AWS 클라우드 기초]].
+
+## VPN
+
+**VPN(Virtual Private Network)** 은 인터넷 같은 공용망 위에 **암호화된 터널**을 만들어, 떨어진 기기나 네트워크를 같은 사설망에 있는 것처럼 잇는다.
+
+```text
+VPN 없이:  기기 ──(공용 Wi-Fi, ISP가 목적지를 봄)──> 웹사이트 (내 IP가 보임)
+
+VPN 사용:  기기 ══암호화 터널══> VPN 서버 ──> 웹사이트 (VPN 서버 IP가 보임)
+           1. 기기와 VPN 서버가 서로 인증하고 터널을 맺는다
+           2. 기기의 트래픽을 터널 안에서 암호화한다
+           3. VPN 서버가 풀어서 목적지로 보낸다. 목적지는 VPN 서버 IP를 본다
+```
+
+| 장점 | 단점 |
+| --- | --- |
+| 공용 Wi-Fi·ISP로부터 트래픽 내용과 목적지를 숨긴다 | 경유하는 만큼 느려질 수 있다 |
+| 원래 IP를 가린다 | 일부 서비스·국가가 VPN 트래픽을 차단한다 |
+| 사설망 자원(사내 시스템, VPC)에 원격 접속 | **VPN 제공자는 모든 트래픽을 볼 수 있다.** 신뢰를 ISP에서 VPN 업체로 옮길 뿐이다 |
+
+포워드 프록시와 무엇이 다른지는 [[proxy|프록시: 포워드 프록시와 리버스 프록시]]에 있다.
+
+### VPN의 종류
+
+| 기준 | 종류 | 설명 |
+| --- | --- | --- |
+| 연결 구조 | 원격 접속(remote access) | 사용자 기기 한 대가 회사망·VPC에 붙는다 |
+| | 사이트 간(site-to-site) | 지점 네트워크와 본사·클라우드 네트워크를 라우터끼리 상시 연결한다 |
+| 프로토콜 | IPsec | 네트워크 계층에서 동작하는 오래된 표준. 사이트 간 연결에 흔하다 |
+| | SSL/TLS VPN(OpenVPN 등) | TLS 위에서 동작해 방화벽을 잘 통과한다 |
+| | WireGuard | 코드가 작고 현대 암호만 쓰는 경량 프로토콜 |
+
+### 사내 VPN을 계정 체계에 붙이기
+
+VPN 전용 계정 DB(LDAP 등)를 따로 운영하거나 설정 파일·키를 나눠 주는 방식은 관리 부담과 유출 위험이 크다. 이미 쓰는 신원 공급자(Google Workspace·Okta 같은 SSO, 클라우드 IAM)로 인증하게 만들면 입·퇴사가 계정 하나로 정리된다.
+
+```text
+1. 인증: 사용자 → SSO(OAuth/OIDC) 또는 클라우드 IAM 확인 → 서명된 단기 토큰(JWT) 발급
+2. 연결: 클라이언트가 토큰을 VPN 서버에 제시 → 서버가 서명·만료 확인 → VPN IP·게이트웨이 설정을 내려 준다
+3. 터널: 클라이언트가 TUN 가상 장치를 만들고, IP 패킷을 TLS 채널(예: gRPC 스트림) 안에 실어 보낸다
+4. 유지: 끊기면 지수 백오프로 재연결, 토큰이 만료되면 연결을 끊는다
+```
+
+- 인증과 터널을 토큰으로 분리하면 인증 수단을 늘려도 터널 쪽은 그대로다.
+- 직군·역할마다 다른 VPN 그룹(클라우드 보안 그룹)으로 접근 범위를 나눈다.
+- TUN은 3계층(IP 패킷) 장치라서 연결·트래픽을 사용자 단위로 기록해 이상 징후를 볼 수 있다.
+
+전통적인 VPN은 터널 안에 들어오면 망 전체를 믿는 구조다. 그래서 사용자·기기·요청마다 다시 확인하는 **제로 트러스트 접근(ZTNA)** 이 사내 VPN을 대체하는 흐름이 있다.
+
+## OSI 계층별 공격
+
+공격은 계층마다 노리는 것이 다르다. 한 계층의 방어만으로는 부족하므로 계층마다 겹겹이 막는다([[osi-7-layer|OSI 7계층]]).
+
+| 계층 | 대표 공격 | 대표 방어 |
+| --- | --- | --- |
+| 7 응용 | 피싱, 악성 코드 주입(SQL 인젝션·XSS), 응용 계층 DDoS(HTTP 폭주) | 입력 검증, WAF, 레이트 리밋 → [[web-security\|웹 보안: CSRF와 XSS]] |
+| 6 표현 | 인코딩·디코딩 취약점, 포맷 스트링 공격, 직렬화 데이터 악용 | 검증된 파서, 정규화 후 검증 |
+| 5 세션 | 세션 하이재킹, 세션 고정, 무차별 대입 로그인 | 로그인 후 세션 ID 재발급, 시도 횟수 제한 → [[session-vs-token-auth\|세션 기반 인증과 토큰 기반 인증]] |
+| 4 전송 | 중간자 공격, SYN 플러드 | TLS, SYN 쿠키 |
+| 3 네트워크 | IP 스푸핑, 라우팅 테이블 조작, 볼류메트릭 DDoS | 출발지 검증 필터, 라우팅 보안, DDoS 방어 서비스 |
+| 2 데이터 링크 | MAC 스푸핑, ARP 스푸핑, VLAN 호핑 | 포트 보안, 동적 ARP 검사, VLAN 설정 점검 |
+| 1 물리 | 도청(선로 탭), 물리적 변조, 전자기 간섭 | 출입 통제, 케이블 보호, 전송 암호화 |
+
+## 정리
+
+- 방화벽은 기본 거부에서 시작해 포트·IP·프로토콜·상태·애플리케이션 기준으로 필요한 것만 연다. 지금의 기본은 상태 추적 방화벽이고, 응용 계층은 WAF·NGFW가 본다.
+- VPN은 공용망 위의 암호화 터널이다. 원격 접속과 사이트 간 연결로 나뉘고, 신뢰를 VPN 제공자에게 옮긴다는 점을 기억한다.
+- 공격은 계층마다 다르므로 방어도 계층마다 쌓는다.
+
+관련 노트: [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[osi-7-layer|OSI 7계층]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[security|정보 시스템 보안]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]]

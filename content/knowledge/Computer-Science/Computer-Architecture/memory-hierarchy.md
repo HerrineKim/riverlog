@@ -3,10 +3,12 @@ title: "메모리 계층 구조"
 concept: "Memory Hierarchy"
 summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 저장 장치를 계층으로 묶는 구조와 RAM의 종류, 하드 디스크·플래시 메모리(SSD), RAID, 연관 메모리."
 tags: ["computer-architecture", "memory", "storage", "raid"]
-source: notion
+source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc"]
+sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage"]
 ---
+
+> 노션 정리를 바탕으로, 계층별 역할은 ByteByteGo의 System Design 101 가이드 「[Types of Memory](https://bytebytego.com/guides/types-of-memory)」, 「[Types of Memory and Storage](https://bytebytego.com/guides/types-of-memory-and-storage)」로 보강했다.
 
 빠른 메모리는 비싸고 작으며, 큰 메모리는 느리다. 그래서 컴퓨터는 여러 종류의 저장 장치를 **계층**으로 쌓고, 자주 쓰는 데이터를 위쪽에 두는 방식으로 "빠르면서도 큰" 메모리처럼 보이게 만든다.
 
@@ -19,9 +21,20 @@ sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.you
   L2 / L3 캐시
   메인 메모리 (DRAM)
   보조 기억 장치 (SSD / HDD / RAID)
-  백업 저장소 (테이프 등)
+  원격 보조 저장소 (네트워크 스토리지, 클라우드 백업, 테이프)
          ▼ 느림 · 저렴 · 큼
 ```
+
+| 계층 | 역할 | 휘발성 |
+| --- | --- | --- |
+| 레지스터 | CPU 안의 아주 작은 저장소. 지금 계산 중인 값을 담는다 | 휘발 |
+| 캐시(L1~L3, SRAM) | CPU 가까이에서 자주 쓰는 메모리 내용을 복사해 둔다 | 휘발 |
+| 메인 메모리(DRAM) | 실행 중인 프로그램과 데이터 | 휘발 |
+| SSD | 반도체로 된 영속 저장소. 움직이는 부품이 없어 빠르다 | 비휘발 |
+| HDD | 회전하는 디스크와 헤드로 된 대용량 장기 저장소 | 비휘발 |
+| 원격 보조 저장소 | 네트워크로 접근하는 백업·보관용 저장소 | 비휘발 |
+
+시스템 설계에서도 같은 원리를 쓴다. 자주 읽는 데이터는 위 계층(메모리 캐시)에, 오래 보관할 데이터는 아래 계층(오브젝트 스토리지·아카이브)에 둔다. [[block-file-object-storage|블록·파일·오브젝트 스토리지]]
 
 ### 계층을 잇는 버스
 

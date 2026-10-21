@@ -5,11 +5,26 @@ summary: "프로세스의 문맥과 메모리 영역(코드·데이터·힙·스
 tags: ["os", "process", "thread", "pcb", "system-call"]
 source: notion
 date: "2026-10-14"
-sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/205", "https://velog.io/@raejoonee/프로세스와-스레드의-차이", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/32df4df48d7841f2bd84f71a2aba4547"]
+sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/205", "https://velog.io/@raejoonee/프로세스와-스레드의-차이", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/32df4df48d7841f2bd84f71a2aba4547", "https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread", "https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux"]
 ---
 
 > 노션 정리와 개발장의 「[프로세스와 스레드의 차이](https://velog.io/@raejoonee/프로세스와-스레드의-차이)」(2020.08)를 바탕으로 재구성한 노트다.
 > exec·wait 세부와 종료·좀비 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「프로세스 생성과 종료 함수」, 「exit() atexit() _exit() 뭐가 다른지 설명할 수 있어?」를 바탕으로 보강했다.
+> 프로그램·프로세스·스레드의 관계는 ByteByteGo의 System Design 101 가이드 「[Process vs Thread: Key Differences](https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread)」를 바탕으로 보강했다.
+>
+> IPC 수단 비교는 ByteByteGo의 System Design 101 가이드 「[Inter-Process Communication on Linux](https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux)」로 확인해 보강했다.
+
+먼저 세 개념의 관계를 잡는다.
+
+| 개념 | 정의 | 예 |
+| --- | --- | --- |
+| **프로그램** | 디스크에 저장된 명령어 묶음. 실행 파일 자체이며 수동적이다 | `chrome` 실행 파일 |
+| **프로세스** | 메모리에 올라와 실행 중인 프로그램. 주소 공간과 자원을 받는다 | 크롬은 탭·사이트마다 프로세스를 따로 띄운다. 프로그램 하나가 프로세스 여럿이 될 수 있다 |
+| **스레드** | 프로세스 안에서 CPU가 실행하는 가장 작은 단위. 같은 프로세스의 스레드끼리 메모리를 공유한다 | 문서 편집기에서 한 스레드는 입력을, 다른 스레드는 맞춤법 검사를 맡는다 |
+
+```text
+프로그램(디스크) ─ 적재 ─▶ 프로세스 1개 이상(메모리·자원 할당) ─▶ 각 프로세스 안에 스레드 1개 이상
+```
 
 **프로세스**는 실행 중인 프로그램이다. 디스크에 있던 실행 파일이 메모리에 올라와 CPU를 받을 수 있는 상태가 되면, 운영체제는 그것을 하나의 프로세스로 관리한다. 프로세스를 이해하려면 "지금 어디까지 실행했는가"를 나타내는 **문맥(context)** 을 알아야 한다.
 

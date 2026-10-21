@@ -4,11 +4,12 @@ concept: "Network Basics"
 summary: "네트워크의 정의와 분류(LAN·WAN, 연결 형태), 통신 방식, 프로토콜과 패킷의 캡슐화, 네트워크 장비(스위치·라우터·AP·공유기), 2계층 이더넷과 MAC 주소, 스위치의 MAC 학습과 홉마다 바뀌는 프레임."
 tags: ["network", "lan", "ethernet", "packet", "protocol"]
 source: notion
-sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://app.notion.com/p/7b2a147be0b54d499f6e1617865fa855", "https://80000coding.notion.site/881854082fa847818b417648d8d05612", "https://80000coding.notion.site/1f0bc84be25e461d9c50c1caddcf479a", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://80000coding.notion.site/875cb26a017f43d2a0ab58915fd21686", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4"]
+sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://app.notion.com/p/7b2a147be0b54d499f6e1617865fa855", "https://80000coding.notion.site/881854082fa847818b417648d8d05612", "https://80000coding.notion.site/1f0bc84be25e461d9c50c1caddcf479a", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://80000coding.notion.site/875cb26a017f43d2a0ab58915fd21686", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man", "https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast", "https://bytebytego.com/guides/how-is-data-transmitted-between-applications", "https://d2.naver.com/helloworld/47667", "https://d2.naver.com/helloworld/7847943"]
 date: "2026-10-14"
 ---
 
-> 고무오리 CS 스터디의 네트워크 학습 노트(네트워크와 모델, 데이터 통신)를 바탕으로 재구성한 노트다. 네트워크 장비와 스위치·라우터의 프레임 처리 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「Network에 대한 정리(1)~(4)」, 「netpractice를 위한 네트워크 통신 기초 - 1. LAN 통신」을 바탕으로 보강했다.
+> 고무오리 CS 스터디의 네트워크 학습 노트(네트워크와 모델, 데이터 통신)를 바탕으로 재구성한 노트다. 네트워크 장비와 스위치·라우터의 프레임 처리 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「Network에 대한 정리(1)~(4)」, 「netpractice를 위한 네트워크 통신 기초 - 1. LAN 통신」을 바탕으로 보강했다. 네트워크 크기 분류(PAN·MAN)와 애니캐스트는 ByteByteGo의 System Design 101 가이드 「[What are the differences between WAN, LAN, PAN and MAN?](https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man)」, 「[Unicast vs Broadcast vs Multicast vs Anycast](https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast)」로 보강했다. 커널과 NIC를 지나는 데이터 경로는 「[Data Transmission Between Applications](https://bytebytego.com/guides/how-is-data-transmitted-between-applications)」를 바탕으로 보강했다.
+> 커널 네트워크 스택의 자료구조와 수신 처리 부분은 NAVER D2의 「[TCP/IP 네트워크 스택 이해하기](https://d2.naver.com/helloworld/47667)」를, 지연 시간의 구성과 네트워크 에뮬레이션은 「[글로벌 네트워크 에뮬레이터 prism_pacman 소개](https://d2.naver.com/helloworld/7847943)」를 바탕으로 보강했다.
 
 네트워크는 여러 노드(컴퓨터 같은 시스템)가 데이터를 공유할 수 있도록 연결한 디지털 전기 통신망이다. 분산된 컴퓨터를 통신망으로 묶고, 노드 간 연결을 통해 서로 데이터를 주고받는다. 우리가 매일 쓰는 인터넷도 문서·그림·영상 같은 데이터를 공유하게 해 주는 네트워크 통신망 중 하나일 뿐이다.
 
@@ -18,8 +19,10 @@ date: "2026-10-14"
 
 | 구분 | 설명 | 예 |
 | --- | --- | --- |
-| LAN (Local Area Network) | 가까운 지역을 하나로 묶은 근거리 통신망 | 같은 회사·사무실 안의 컴퓨터들 |
-| WAN (Wide Area Network) | 멀리 떨어진 곳들을 묶은 네트워크. 여러 LAN 대역을 서로 연결한 것 | 인터넷 |
+| PAN (Personal Area Network) | 한 사람 주변 수 미터 안의 기기를 잇는 개인 통신망. 주로 블루투스 | 스마트폰과 이어폰·워치 연결, 컴퓨터와 휴대폰 동기화 |
+| LAN (Local Area Network) | 가까운 지역을 하나로 묶은 근거리 통신망 | 같은 회사·사무실·집 안의 컴퓨터, 공유 프린터·파일 서버 |
+| MAN (Metropolitan Area Network) | LAN보다 넓고 WAN보다 좁은, 도시나 큰 캠퍼스 규모의 망 | 대학 캠퍼스 여러 곳 연결, 도시 단위 초고속망, 시내 관공서 연결 |
+| WAN (Wide Area Network) | 국가·대륙처럼 멀리 떨어진 곳들을 묶은 네트워크. 여러 LAN 대역을 서로 연결한 것 | 인터넷, 다국적 기업의 지사 연결 |
 
 ### 연결 형태(토폴로지)에 따른 분류
 
@@ -33,9 +36,12 @@ date: "2026-10-14"
 
 | 방식 | 대상 | 비고 |
 | --- | --- | --- |
-| 유니캐스트 | 특정 대상 하나와 1:1 | 가장 많이 사용 |
-| 멀티캐스트 | 같은 네트워크 대역의 특정 다수와 1:N | |
-| 브로드캐스트 | 같은 네트워크 대역의 모든 대상 | ARP 요청 등 |
+| 유니캐스트 | 특정 대상 하나와 1:1 | 가장 많이 사용. HTTP, FTP, SMTP |
+| 멀티캐스트 | 가입한 그룹의 다수와 1:N | IPTV, 화상 회의, 시세 전송 |
+| 브로드캐스트 | 같은 네트워크 대역의 모든 대상 | ARP 요청, DHCP 탐색. 라우터를 넘지 않는다 |
+| 애니캐스트 | 같은 주소를 가진 여러 노드 중 **가장 가까운 하나**와 1:1 | DNS 루트 서버, CDN. 라우팅이 가장 가까운 곳으로 보내 주므로 지연이 줄고 한 곳이 죽어도 다른 곳이 받는다 |
+
+애니캐스트는 여러 지점이 **같은 IP 주소를 동시에 광고**하고, 라우터가 경로상 가장 가까운 지점으로 패킷을 보내는 방식이다. 보내는 쪽은 주소 하나만 알면 된다([[cdn|CDN]]).
 
 ## 프로토콜: 누구와 어떻게 통신할까
 
@@ -134,6 +140,78 @@ IP:     PC→서버     PC→서버      PC→서버    (변하지 않음, NAT �
 ```
 
 라우터는 받은 프레임의 이더넷 헤더를 떼고, 라우팅 테이블로 다음 홉을 정한 뒤, 다음 홉의 MAC 주소를 ARP로 알아내 새 이더넷 헤더를 붙여 보낸다([[network-layer|네트워크 계층 프로토콜]]).
+
+## 데이터가 커널과 NIC를 지나는 길
+
+애플리케이션이 보낸 메시지 하나는 운영체제 커널의 네트워크 스택과 NIC(Network Interface Card)를 지나 상대 애플리케이션까지 간다.
+
+```text
+보내는 서버                                  받는 서버
+[사용자 공간] 채팅 앱 send()                   채팅 앱 recv()  ← 사용자 공간으로 복사
+─────────────────────────────              ─────────────────────────────
+[커널] 소켓 송신 버퍼                          소켓 수신 버퍼
+   ↓ TCP 헤더 추가                              ↑ TCP 헤더 제거
+   ↓ IP 헤더 추가                               ↑ IP 헤더 제거
+   ↓ MAC 헤더 추가                              ↑ MAC 헤더 제거
+   ↓ qdisc (큐잉 규칙, 흐름 제어)                 ↑ ksoftirqd가 꺼냄 (소프트 인터럽트)
+   ↓ 링 버퍼                                    ↑ 링 버퍼  ← NIC가 CPU에 하드 인터럽트
+[NIC] ──▶ 라우터·스위치 여러 홉 ─────────────────▶ [NIC]
+```
+
+| 구간 | 하는 일 |
+| --- | --- |
+| 송신 버퍼 | `send()`는 데이터를 커널 버퍼에 복사하고 돌아온다. 실제 전송은 커널이 한다 |
+| 캡슐화 | 계층마다 헤더를 붙인다(위의 「패킷과 캡슐화」) |
+| qdisc | 리눅스의 큐잉 규칙(queueing discipline). 내보낼 패킷의 순서와 속도를 조절한다 |
+| 링 버퍼 | 커널과 NIC가 공유하는 원형 큐. NIC는 DMA로 여기서 직접 읽고 쓴다 |
+| 하드 → 소프트 인터럽트 | 수신 NIC가 CPU에 짧은 하드 인터럽트로 알리고, 무거운 처리는 소프트 인터럽트(`ksoftirqd`)로 미룬다. 트래픽이 많으면 인터럽트 대신 폴링(NAPI)으로 바꿔 처리한다 |
+| 역캡슐화와 복사 | 계층별로 헤더를 벗기고, 마지막에 사용자 공간으로 복사해 앱이 읽는다 |
+
+커널과 사용자 공간 사이의 복사를 줄이는 제로 카피(zero-copy)가 고성능 서버와 메시지 브로커의 핵심 최적화가 되는 이유가 여기 있다.
+
+### 스택 안을 더 들여다보기 (Linux)
+
+리눅스 네트워크 스택은 별도 스레드 없이 **이벤트(시스템 콜, 타이머, NIC 인터럽트)에 반응해 실행**된다. 송신은 `write()`를 부른 애플리케이션 스레드가 드라이버까지 내려가고, 수신은 인터럽트를 받은 CPU의 소프트 인터럽트가 TCP까지 끌어올린다.
+
+| 요소 | 역할 |
+| --- | --- |
+| 소켓 = 파일 | POSIX에서 소켓은 파일 디스크립터다. `file` → `socket` → TCP 연결 구조체로 포인터를 따라가면 드라이버까지 필요한 구조체를 모두 찾는다 |
+| TCP 제어 블록(TCB) | 연결 상태(LISTEN, ESTABLISHED, TIME_WAIT), 시퀀스 번호, 수신·혼잡 윈도, 재전송 타이머를 담는다. 리눅스에서는 `tcp_sock`이다. 연결 하나가 패킷 데이터를 빼고 수 KB를 쓴다 |
+| 연결 조회 해시 테이블 | 수신 패킷의 `<출발지 IP, 출발지 포트, 목적지 IP, 목적지 포트>`를 해시해 해당 TCB를 찾는다 |
+| 패킷 구조체 | 리눅스 `sk_buff`, BSD `mbuf`, Windows `NET_BUFFER_LIST`. 헤더 위치를 포인터로 가리켜 **헤더를 붙이고 떼는 일을 포인터 이동으로** 처리한다. 초당 수백만 개를 만들고 버리므로 전용 할당자를 쓴다 |
+| 라우팅 캐시 | 연결마다 라우팅 결과(다음 홉, 송신 NIC, 목적지 MAC)를 참조해 두어 패킷마다 다시 라우팅하지 않는다 |
+
+**패킷 캡처 위치**: `tcpdump`·Wireshark는 드라이버 바로 위에서 패킷을 복사한다. 체크섬 오프로드나 TSO를 쓰면 NIC가 그 뒤에 패킷을 고치므로, **캡처한 패킷은 실제로 선에 나가는 패킷과 다를 수 있다.**
+
+**한 CPU만 바쁜 현상**: 기본 동작에서는 인터럽트를 받은 CPU가 수신 패킷을 끝까지 처리한다. 수신이 많은 서버에서 CPU 하나만 소프트 인터럽트로 바쁜 이유다. 멀티 큐 NIC와 RSS(하드웨어가 흐름별로 큐·CPU를 나눔), RPS(소프트웨어로 나눔)로 분산한다.
+
+| 성능 기법 | 내용 |
+| --- | --- |
+| 체크섬 오프로드 | TCP·IP 체크섬 계산을 NIC가 맡는다 |
+| TSO·GSO / LRO·GRO | 송신은 큰 덩어리를 NIC(또는 드라이버 직전)에서 MSS 단위로 자르고, 수신은 작은 패킷을 합쳐 위로 올린다. 패킷당 처리 비용을 줄인다 |
+| 수신 버퍼 자동 조절 | 수신 소켓 버퍼 크기가 곧 TCP 수신 윈도다. 최신 커널은 이를 자동으로 키워 처리량을 맞춘다 |
+| qdisc와 traffic control | 드라이버 앞의 큐 규칙을 바꿔 지연·손실·속도 제한을 흉내 내거나 트래픽을 조절한다. 커널 기본값은 `pfifo_fast`이고, systemd를 쓰는 배포판은 대개 `fq_codel`을 기본으로 둔다 |
+| Netfilter | 처리 흐름 중간의 훅으로 방화벽·NAT를 구현한다(`iptables`, `nftables`) |
+
+## 성능을 정하는 두 값: 지연 시간과 대역폭
+
+| 값 | 뜻 |
+| --- | --- |
+| 지연 시간(latency) | 패킷 하나가 보낸 쪽에서 받는 쪽까지 가는 데 걸리는 시간 |
+| 대역폭(bandwidth) | 통신 채널이 단위 시간에 실어 나를 수 있는 최대 양 |
+
+지연 시간은 네 가지가 더해진 값이다.
+
+| 구성 요소 | 원인 | 줄이는 법 |
+| --- | --- | --- |
+| 전파 지연(propagation) | 신호가 거리를 이동하는 시간. 광섬유 속 빛은 진공의 약 2/3 속도라 대륙을 건너는 왕복은 이것만으로 수십~백수십 ms다 | 물리 법칙이라 못 줄인다. **서버를 사용자 가까이** 둔다([[cdn\|CDN]]) |
+| 전송 지연(transmission) | 패킷의 모든 비트를 링크에 싣는 시간. 링크 속도에 반비례 | 대역폭을 늘리거나 보낼 양을 줄인다 |
+| 처리 지연(processing) | 라우터가 헤더를 읽고 경로를 정하는 시간 | 대개 하드웨어가 처리해 작다 |
+| 큐잉 지연(queuing) | 라우터 버퍼에서 차례를 기다리는 시간 | 혼잡할수록 커지고 들쭉날쭉하다 |
+
+- 지연은 대륙 사이 해저 구간보다 **마지막 몇 km(last mile)**, 즉 사용자 기기에서 ISP 라우터까지에서 크게 생긴다. 무선망과 인프라가 약한 지역일수록 심하다. `traceroute`로 홉별 지연을 볼 수 있다.
+- 해외 네트워크의 문제는 평균 품질보다 **품질이 일정하지 않다는 것**이다. 최악 조건에 맞추면 전체 품질이 떨어지므로, 상황을 판단해 적응하는 로직(적응형 비트레이트 스트리밍 등)을 둔다.
+- 네트워크 조건은 실제 망에서는 고정할 수 없어 반복 시험이 어렵다. 그래서 측정한 지연·대역폭·손실 패턴을 **에뮬레이터로 재현**해 시험한다. 리눅스 `tc qdisc ... netem`(지연·손실·지터), 브라우저 개발자 도구의 네트워크 스로틀링이 같은 일을 한다.
 
 ## 핵심 정리
 

@@ -5,10 +5,10 @@ summary: "동시성(논리적으로 함께 진행)과 병렬(물리적으로 동
 tags: ["computer-science", "os", "concurrency", "async", "process", "performance"]
 source: other
 date: "2026-10-20"
-sources: ["https://black7375.tistory.com/90", "https://peps.python.org/pep-0703/", "https://openjdk.org/jeps/444"]
+sources: ["https://black7375.tistory.com/90", "https://peps.python.org/pep-0703/", "https://openjdk.org/jeps/444", "https://bytebytego.com/guides/concurrency-is-not-parallelism", "https://homoefficio.github.io/2017/02/19/Blocking-NonBlocking-Synchronous-Asynchronous/", "http://homoefficio.github.io/2019/02/02/Back-to-the-Essence-Concurrency-vs-Parallelism/"]
 ---
 
-> black7375의 「[동시성, 병렬, 비동기, 논블럭킹과 컨셉들](https://black7375.tistory.com/90)」(2022.06)을 바탕으로 재구성하고, 언어별 현황은 공식 문서로 최신화한 노트다.
+> black7375의 「[동시성, 병렬, 비동기, 논블럭킹과 컨셉들](https://black7375.tistory.com/90)」(2022.06)을 바탕으로 재구성하고, 언어별 현황은 공식 문서로 최신화한 노트다. 동시성과 병렬의 구분은 ByteByteGo의 System Design 101 가이드 「[Concurrency vs Parallelism](https://bytebytego.com/guides/concurrency-is-not-parallelism)」으로 보강했다. 네 조합의 함정과 I/O 다중화의 분류는 「[Blocking-NonBlocking-Synchronous-Asynchronous](https://homoefficio.github.io/2017/02/19/Blocking-NonBlocking-Synchronous-Asynchronous/)」와 「[Back to the Essence - Concurrency vs Parallelism](http://homoefficio.github.io/2019/02/02/Back-to-the-Essence-Concurrency-vs-Parallelism/)」으로 보강했다.
 
 ## 네 가지 용어 구분
 
@@ -24,6 +24,8 @@ sources: ["https://black7375.tistory.com/90", "https://peps.python.org/pep-0703/
 | | 논블로킹(non-blocking) | 호출하자마자 제어권을 돌려준다(준비 안 됐으면 "아직"이라고) |
 
 - 싱글 코어에서 시분할로 번갈아 실행해도 **동시성**은 있다. 반대로 싱글 코어라도 SIMD 명령은 데이터 여러 개를 **병렬**로 처리한다([[pipeline-and-parallelism|파이프라인과 병렬 처리]]).
+- **동시성은 구조(설계)의 문제이고, 병렬은 실행의 문제다.** 「동시성은 여러 일을 한꺼번에 *다루는* 것, 병렬은 여러 일을 한꺼번에 *하는* 것」이라는 Go 언어 설계자 롭 파이크의 구분이 이를 요약한다. 동시성으로 짜 둔 프로그램은 코어가 여럿이면 병렬로도 돌 수 있다.
+- 쓰임새도 갈린다. 동시성은 파일·네트워크·사용자 입력을 기다리는 **I/O 바운드** 작업에서 응답성을 지키는 데 이득이 크고, 병렬은 수치 계산·데이터 분석·이미지 처리 같은 **CPU 바운드** 작업의 처리량을 높인다.
 - 동기·비동기와 블로킹·논블로킹은 독립 축이라 네 조합이 모두 있다.
 
 | 조합 | 예 |
@@ -32,6 +34,10 @@ sources: ["https://black7375.tistory.com/90", "https://peps.python.org/pep-0703/
 | 동기 + 논블로킹 | `O_NONBLOCK` 소켓을 루프로 계속 확인(polling)한다 |
 | 비동기 + 논블로킹 | `fetch().then(...)`, `io_uring`. 바로 돌아오고 완료는 통지받는다 |
 | 비동기 + 블로킹 | 비동기 API를 호출해 놓고 바로 결과를 기다리며 멈춘다. 대개 실수다 |
+
+- **비동기 + 블로킹은 의도하지 않게 생긴다.** 이벤트 루프 위에 비동기로 짠 서버라도 경로 중간에 블로킹 드라이버(전통적인 JDBC, 동기 DB 클라이언트) 하나가 섞이면 그 구간에서 스레드가 멈춰 전체가 블로킹처럼 동작한다. 그래서 리액티브 스택은 R2DBC 같은 논블로킹 드라이버를 따로 쓰거나 블로킹 호출을 별도 스레드 풀로 격리한다.
+- `Future`를 받아 `isDone()`을 반복 확인하는 것은 동기 + 논블로킹(폴링)이다. 완료 콜백을 거는 `CompletableFuture`·Promise 체인이 비동기 + 논블로킹이다.
+- `select`·`epoll` 같은 I/O 다중화는 준비된 소켓이 생길 때까지 기다린다는 점에서 동기이고, 그 뒤의 소켓 읽기는 논블로킹이다. 그래서 보통 동기 + 논블로킹으로 분류한다(분류 방식은 문헌마다 갈린다).
 
 비동기가 늘 낫지는 않다. 순서대로 흘러가는 작업은 동기가 단순하고 효율적이다. 비동기는 작업이 **서로 독립적이거나 지연이 클 때** 이득이고, 순서 보장이 없고 오버헤드가 조금 있다.
 
@@ -158,4 +164,4 @@ JS가 언어 차원에서 공유 메모리 스레드를 두지 않는 이유도 
 
 **동시성 모델을 고를 때는 "무엇을 공유하고, 누가 전환을 결정하는가"부터 본다.**
 
-관련 노트: [[process-and-thread|프로세스와 스레드]], [[process-synchronization|프로세스 동기화]], [[pthread-sync-api|POSIX 스레드와 동기화 API]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]], [[async-await|async/await]], [[pipeline-and-parallelism|파이프라인과 병렬 처리]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[web-workers|웹 워커로 메인 스레드 비우기]]
+관련 노트: [[process-and-thread|프로세스와 스레드]], [[process-synchronization|프로세스 동기화]], [[pthread-sync-api|POSIX 스레드와 동기화 API]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]], [[async-await|async/await]], [[pipeline-and-parallelism|파이프라인과 병렬 처리]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[web-workers|웹 워커로 메인 스레드 비우기]], [[multithreading-patterns|멀티스레딩 디자인 패턴과 논블로킹 알고리즘]], [[go-language|Go 언어]], [[structured-concurrency|구조적 동시성]]

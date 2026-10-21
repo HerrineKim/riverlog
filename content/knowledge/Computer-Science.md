@@ -15,10 +15,11 @@ date: "2026-10-13"
 - [Network](Computer-Science/Network.md) — 네트워크 기초와 OSI 7계층, IP와 서브넷·라우팅·NAT, 전송 계층과 포트, TCP, HTTP·HTTPS, 프록시, 리눅스 네트워크 네임스페이스, RFC, WebRTC
 - [Database](Computer-Science/Database.md) — 데이터 모델, 트랜잭션, 정규화, SQL
 - [C-Programming](Computer-Science/C-Programming.md) — C 기초와 포인터, 자료형과 형 변환, 구조체·스코프·링키지, 입출력, gcc·make 빌드와 디버깅 도구, 호출 규약과 저수준 최적화, C의 역사와 표준
-- [Programming-Languages](Computer-Science/Programming-Languages.md) — C++ 문법·템플릿·STL·예외·vtable·메모리 풀, 추상 클래스와 인터페이스·위임·DTO/VO·클린 코드 같은 객체 지향 설계
+- [Programming-Languages](Computer-Science/Programming-Languages.md) — C++ 문법·템플릿·STL·예외·vtable·메모리 풀, Java·JVM과 Go, 언어의 계보·패러다임·실행 방식, 추상 클래스와 인터페이스·위임·DTO/VO·클린 코드·GoF 디자인 패턴 같은 객체 지향 설계
 - [Engineer-Information-Processing](Computer-Science/Engineer-Information-Processing.md) — 정보처리기사 실기의 반복 출제 개념 정리
 - [개발자가 빠지는 함정 모음](Computer-Science/developer-traps.md) — CSS·유니코드·부동소수점·시간·SQL·동시성·Git 등에서 직관과 다르게 동작하는 지점
 - [달력과 시간에 대한 개발자의 착각](Computer-Science/calendar-fallacies.md) — 하루·주·달·해·시간대·서머타임에 대한 흔한 가정과 그것을 깨는 실제 사례
+- [소프트웨어 비대화](Computer-Science/software-bloat.md) — 하드웨어가 빨라져도 체감 속도가 그대로인 이유, 의존성·계층·임시방편이 쌓이는 원인과 효율을 기본값으로 두는 태도
 - [베지어 곡선](Computer-Science/bezier-curve.md) — 선형 보간을 겹친 드 카스텔조 알고리즘, 2·3차 곡선 식과 행렬 표현, 펜 툴·SVG·CSS의 곡선
 - [변환 행렬: 이동·크기·회전과 동차 좌표](Computer-Science/transformation-matrix.md) — 그래픽스의 2D·3D 변환 행렬, 기준점·임의 축 변환의 합성, 곱하는 순서와 투영
 - [양자역학 기초: 이중 슬릿, 중첩, 얽힘](Computer-Science/quantum-mechanics-basics.md) — 파동-입자 이중성, 양자 중첩과 얽힘, 양자역학에 대한 흔한 오해

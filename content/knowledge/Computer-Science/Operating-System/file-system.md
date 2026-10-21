@@ -1,14 +1,14 @@
 ---
 title: "파일 시스템"
 concept: "File System"
-summary: "파일과 디렉터리, 파티션, open() 동작, 파일 보호와 마운트, 접근 방식 등 파일 시스템의 인터페이스."
+summary: "파일과 디렉터리, 파티션, 리눅스 디렉터리 구조(FHS), open() 동작, 파일 보호와 마운트, 접근 방식 등 파일 시스템의 인터페이스."
 tags: ["os", "file-system", "system-call"]
 source: notion
 date: "2026-10-14"
-sources: ["https://app.notion.com/p/e69581b5aa37458fb37d0a5fc4680921", "https://80000coding.notion.site/81f0b873a067440083175c15cef70664"]
+sources: ["https://app.notion.com/p/e69581b5aa37458fb37d0a5fc4680921", "https://80000coding.notion.site/81f0b873a067440083175c15cef70664", "https://bytebytego.com/guides/linux-file-system-explained", "https://refspecs.linuxfoundation.org/fhs.shtml"]
 ---
 
-> 「하드 링크와 심볼릭 링크」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「하드링크 / 심볼릭링크」를 바탕으로 보강했다.
+> 「하드 링크와 심볼릭 링크」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「하드링크 / 심볼릭링크」를 바탕으로 보강했다. 「리눅스 디렉터리 구조: FHS」는 ByteByteGo의 System Design 101 가이드 「[Linux File System Explained](https://bytebytego.com/guides/linux-file-system-explained)」를 바탕으로 보강했다.
 
 메모리는 **주소**로 접근하지만 파일은 **이름**으로 접근한다. 운영체제는 하드디스크·SSD·USB처럼 서로 다른 저장 장치를 "파일"이라는 같은 논리적 단위로 보이게 해 주는데, 이 일을 담당하는 부분이 파일 시스템이다.
 
@@ -41,6 +41,27 @@ UNIX 파일 시스템에서 파일의 실체는 **i-node**(소유자, 권한, �
 
 - **디렉터리**: 그 아래 있는 파일들의 이름과 메타데이터 일부를 내용으로 가지는 특별한 파일. 파일 찾기·생성·삭제, 목록 보기, 이름 변경, 파일 시스템 순회 같은 연산을 지원한다.
 - **파티션(논리 디스크)**: OS가 보는 디스크 단위. 하나의 물리 디스크를 여러 파티션으로 나누거나, 여러 물리 디스크를 하나의 파티션으로 묶을 수 있다. 각 파티션에는 파일 시스템을 설치하거나 스왑 영역 등 다른 용도로 쓸 수 있다.
+
+### 리눅스 디렉터리 구조: FHS
+
+리눅스는 루트(`/`)에서 시작하는 하나의 트리다. 어떤 배포판에서든 프로그램이 같은 위치에서 설정·라이브러리·로그를 찾을 수 있도록 **파일 시스템 계층 표준(FHS, Filesystem Hierarchy Standard)** 이 디렉터리마다 용도를 정한다. 1994년 처음 나온 뒤 리눅스 재단이 관리한다. 배포판마다 조금씩 다르게 따르기도 한다.
+
+| 디렉터리 | 용도 |
+| --- | --- |
+| `/bin`, `/sbin` | 기본 명령과 시스템 관리 명령. 지금 배포판 대부분은 `/usr/bin`, `/usr/sbin`으로 합치고 링크만 남긴다 |
+| `/etc` | 시스템·서비스 설정 파일 |
+| `/home` | 사용자별 홈 디렉터리. root의 홈은 `/root` |
+| `/usr` | 배포판이 설치한 프로그램·라이브러리·문서(읽기 위주) |
+| `/usr/local`, `/opt` | 관리자가 직접 설치한 소프트웨어, 독립 패키지 |
+| `/var` | 실행 중 크기가 변하는 데이터: 로그(`/var/log`), 캐시, 스풀, DB 파일 |
+| `/tmp` | 임시 파일. 재부팅 때 지워질 수 있다 |
+| `/dev` | 장치 파일(`/dev/sda`, `/dev/null`) |
+| `/proc`, `/sys` | 커널이 실시간으로 보여 주는 가상 파일 시스템(프로세스 정보, 커널 설정) |
+| `/boot` | 커널과 부트 로더 파일 |
+| `/lib` | 기본 명령이 쓰는 공유 라이브러리와 커널 모듈 |
+| `/mnt`, `/media` | 다른 파일 시스템을 임시로, 이동식 매체를 자동으로 마운트하는 자리 |
+
+`cd`로 옮겨 다니고 `ls`로 들여다보며 트리를 익히는 것이 가장 빠르다. 자주 쓰는 명령은 [[linux-commands|자주 쓰는 리눅스 명령어 지도]]에 있다.
 
 ## open()은 무슨 일을 하나
 
@@ -82,4 +103,4 @@ UNIX 계열에서 C 표준 라이브러리의 `fopen()`이 돌려주는 `FILE *`
 
 직접 접근이 가능한 매체라도, 데이터를 어떻게 관리하느냐(예: 연결 할당)에 따라 순차 접근만 가능할 수 있다. 디스크에 실제로 어떻게 저장하는지는 [[file-system-implementation|파일 시스템 구현]]에서 다룬다.
 
-관련 노트: [[file-system-implementation|파일 시스템 구현]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[linux-access-control|리눅스 접근 제어: DAC, MAC, sudo]]
+관련 노트: [[file-system-implementation|파일 시스템 구현]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[linux-access-control|리눅스 접근 제어: DAC, MAC, sudo]], [[linux-commands|자주 쓰는 리눅스 명령어 지도]]

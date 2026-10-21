@@ -5,11 +5,14 @@ summary: "HTTP를 TLS로 감싸 도청·변조·위장을 막는 HTTPS. 대칭�
 tags: ["network", "security", "http", "web", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishket.com/magazine/detail/1862/", "https://www.ssl.com/article/ssl-certificate-validity-changes-what-you-need-to-know/", "https://www.encryptionconsulting.com/x25519mlkem768-tls-deployment-guide/", "https://howhttps.works/"]
+sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishket.com/magazine/detail/1862/", "https://www.ssl.com/article/ssl-certificate-validity-changes-what-you-need-to-know/", "https://www.encryptionconsulting.com/x25519mlkem768-tls-deployment-guide/", "https://howhttps.works/", "https://bytebytego.com/guides/how-does-https-work", "https://bytebytego.com/guides/https-ssl-handshake-and-data-encryption-explained-to-kids", "https://bytebytego.com/guides/is-https-safe", "https://bytebytego.com/guides/symmetric-encryption-vs-asymmetric-encryption", "https://parksb.github.io/article/24.html", "https://brunch.co.kr/@mobiinside/1482", "https://engineering.linecorp.com/ko/blog/best-practices-to-secure-your-ssl-tls/"]
 ---
 
 > 핸드셰이크·HSTS 부분은 테크유람의 요즘IT 연재 「[안전한 웹을 위해 HTTPS 이해하기 ①HTTPS의 작동 원리](https://yozm.wishket.com/magazine/detail/1852/)」·「[②HTTPS를 강제하는 HSTS 기술](https://yozm.wishket.com/magazine/detail/1862/)」(2023.01)을 요약·재구성해 보강했다.
 > SSL·TLS 역사와 인증서 체인·검증 수준 부분은 DNSimple의 만화 「[How HTTPS Works](https://howhttps.works/)」(5화 연재)를 바탕으로 보강했다.
+> 신뢰 저장소를 이용한 중간자 가로채기 부분은 ByteByteGo의 System Design 101 가이드 「[Is HTTPS Safe?](https://bytebytego.com/guides/is-https-safe)」, 「[How does HTTPS work?](https://bytebytego.com/guides/how-does-https-work)」를 바탕으로 보강했다.
+> 패킷 캡처로 본 HTTP와 HTTPS의 차이는 「[HTTPS는 어떻게 다를까?](https://parksb.github.io/article/24.html)」를 바탕으로 보강했다.
+> TLS 1.3의 변경점과 서버 설정 점검은 「[보안 프로토콜 TLS 1.3](https://brunch.co.kr/@mobiinside/1482)」, 「[안전한 SSL/TLS를 운영하기 위해 알아야 하는 것들](https://engineering.linecorp.com/ko/blog/best-practices-to-secure-your-ssl-tls/)」을 바탕으로 보강했다.
 
 ## HTTPS란
 
@@ -22,6 +25,19 @@ HTTPS는 **HTTP 메시지를 TLS(Transport Layer Security)로 암호화해 주�
 | 기밀성 | 도청 | 대칭키 암호화 (AES, ChaCha20) |
 | 무결성 | 변조 | MAC·AEAD로 메시지 검증 |
 | 인증 | 서버 위장 | 인증 기관(CA)이 서명한 인증서 |
+
+### 패킷으로 보면: 숨는 것과 남는 것
+
+Wireshark로 같은 사이트의 HTTP와 HTTPS 트래픽을 잡아 보면 차이가 바로 보인다.
+
+| 항목 | HTTP | HTTPS |
+| --- | --- | --- |
+| 요청 경로·쿼리, 헤더(쿠키, User-Agent, Referer), 본문 | 그대로 보인다 | 암호화되어 `Application Data`로만 보인다 |
+| 서버 IP·포트, 패킷 크기·시각 | 보인다 | 보인다 |
+| 접속하는 도메인 | `Host` 헤더로 보인다 | TLS ClientHello의 **SNI**에 평문으로 남는다. ECH(Encrypted Client Hello)를 쓰면 숨겨진다 |
+| DNS 질의 | 평문 | 별개다. DoH·DoT를 써야 숨겨진다([[dns\|DNS]]) |
+
+즉 HTTPS는 **무엇을 주고받는지**는 숨기지만, **누가 어느 서버와 언제 얼마나** 통신하는지는 완전히 숨기지 못한다.
 
 TLS는 SSL(Secure Sockets Layer)을 개선한 후속 규격이다. 지금 쓰는 인증서는 거의 TLS용이지만 관습적으로 "SSL 인증서"라고 부른다.
 
@@ -102,6 +118,10 @@ Let's Encrypt 같은 무료 CA와 Vercel·Netlify 같은 호스팅이 인증서�
 - **공개키 방식은 키를 나눠 갖는 데만 쓴다.** 실제 데이터는 빠른 대칭키로 암호화한다.
 - 암호 묶음(cipher suite)은 키 교환·인증·암호화·무결성 검증에 쓸 알고리즘 조합이다. ClientHello에서 후보를 보내고 서버가 하나를 고른다.
 - TLS 1.3은 1-RTT로 핸드셰이크를 끝낸다(1.2는 2-RTT). HTTP/3는 QUIC 안에 TLS 1.3을 내장해 연결 수립을 더 줄인다.
+- 전에 접속한 서버라면 저장해 둔 사전 공유 키(PSK)로 첫 메시지에 데이터를 실어 보내는 **0-RTT**도 된다. 다만 0-RTT 데이터는 공격자가 그대로 **재전송(replay)** 할 수 있으므로, 서버는 GET처럼 여러 번 처리돼도 안전한 요청에만 허용한다.
+- 암호 묶음이 단순해졌다. 1.2는 키 교환·인증·암호화·MAC을 한 이름에 묶어 조합이 수백 개였지만, 1.3은 암호화(AEAD)와 해시만 묶음으로 고르고 키 교환·서명은 따로 협상한다. 암호화는 **AEAD(AES-GCM, ChaCha20-Poly1305)만** 남았고, RC4·CBC 모드·SHA-1·정적 RSA·DSA 같은 낡은 선택지는 빠졌다.
+- 서버는 핸드셰이크 전체에 서명하고, 다운그레이드를 탐지하는 값을 서버 난수에 심어 공격자가 약한 버전·암호로 협상하게 끼어드는 것을 막는다.
+- 오래된 중간 장비가 새 버전 번호를 보고 연결을 끊는 문제 때문에, 레코드의 버전 필드는 1.2로 두고 실제 버전은 `supported_versions` 확장으로 협상한다.
 - 키 교환에는 양자 컴퓨터에 대비한 **하이브리드 방식 X25519MLKEM768**(기존 X25519 + ML-KEM)이 쓰인다. Chrome·Edge·Firefox 최신판과 주요 CDN이 기본으로 협상하며, 대신 ClientHello가 1KB 넘게 커진다.
 
 ### 고전적인 흐름: RSA 키 교환 (TLS 1.2까지)
@@ -118,6 +138,22 @@ Let's Encrypt 같은 무료 CA와 Vercel·Netlify 같은 호스팅이 인증서�
 | 6. 통신 | 세션 키로 암호화해 주고받고, 끝나면 폐기한다. 세션이 살아 있으면 세션 ID로 핸드셰이크를 줄인다 |
 
 TLS 1.3은 이 RSA 키 교환을 없애고 (EC)DHE 키 교환만 남겼다. 서버 개인키가 나중에 유출돼도 지난 통신을 풀 수 없게(전방 비밀성) 하기 위해서다.
+
+## 서버 TLS 설정 점검
+
+직접 웹 서버(Nginx 등)에서 TLS를 끝낸다면 다음을 확인한다. 관리형 로드 밸런서·CDN을 쓰면 대부분 보안 정책 프리셋 하나를 고르는 일이 된다.
+
+| 항목 | 기준 |
+| --- | --- |
+| 프로토콜 | **TLS 1.2와 1.3만** 연다. SSL 3.0·TLS 1.0·1.1은 RFC 8996으로 폐기됐다. 끄기 전에 연동하는 외부 시스템·구형 클라이언트가 붙는지 핸드셰이크 시뮬레이션으로 확인한다 |
+| 암호 묶음 | 1.2에서는 (EC)DHE 키 교환 + AEAD(GCM, ChaCha20)만 남겨 전방 비밀성을 지킨다. 인증 없는(aNULL)·암호화 없는(eNULL)·EXPORT 등급·RC4·3DES는 뺀다 |
+| 인증서 체인 | 서버 인증서와 중간 인증서를 함께 보낸다(`fullchain.pem`). 중간 인증서가 빠지면 일부 클라이언트만 실패해 찾기 어렵다 |
+| 키 | RSA 2048비트 이상 또는 ECDSA P-256 |
+| 갱신 | ACME 클라이언트(certbot 등)로 자동 갱신하고 갱신 뒤 서버를 다시 읽게(reload) 한다. `--dry-run`으로 갱신 경로를 미리 시험한다 |
+| 인증서 투명성(CT) | 공개 CA는 발급 기록을 CT 로그에 남기고, 브라우저는 기록이 없는 인증서를 믿지 않는다. crt.sh 같은 검색으로 내 도메인에 몰래 발급된 인증서가 없는지 볼 수 있다([[web-pki-evolution\|웹 PKI의 변천: 인증서 생태계는 왜 바뀌었나]]) |
+| HSTS | 아래 절 참고 |
+
+설정은 Mozilla SSL Configuration Generator의 권장 프로필(intermediate)에서 시작하고, 공개 서버는 Qualys SSL Labs 서버 테스트나 `testssl.sh`로 점수와 약한 설정을 확인한다. 대규모 트래픽에서는 키 교환·서명 알고리즘 조합에 따라 핸드셰이크 CPU 비용이 달라지므로 실제 장비에서 측정한다.
 
 ## 프론트엔드가 신경 쓸 것
 
@@ -166,6 +202,26 @@ HSTS 헤더도 **처음 한 번은 받아야** 효과가 있다. preload 목록�
 | 서버 침해 | 서버 권한을 뺏기면 복호화된 데이터가 그대로 노출된다 | 서버 보안, 저장 데이터 암호화 |
 | 전송 구간 취약점 | 가짜 인증서 설치·잘못된 설정을 노린 중간자 공격 | 인증서 검증, HSTS |
 | 민감한 대화 | 서버(운영자)도 내용을 볼 수 있다 | **종단 간 암호화(E2EE)**: 보내는 기기에서 암호화해 받는 기기에서만 푼다 |
+
+### 신뢰 저장소가 열리면: 가로채기 프록시
+
+Fiddler·Charles·mitmproxy 같은 디버깅 도구는 HTTPS 트래픽을 평문으로 보여 준다. 암호가 깨진 것이 아니다. **클라이언트가 그 도구의 루트 인증서를 신뢰하도록 설치했기 때문**이다. 회사 보안 장비의 TLS 검사, 악성 프로그램이 심은 루트 인증서도 같은 원리다.
+
+```text
+클라이언트 ──TLS①── 중간 서버 ──TLS②── 실제 서버
+
+1. 클라이언트의 연결이 중간 서버로 간다(프록시 설정, DNS·라우팅 조작)
+2. 중간 서버가 실제 서버와 따로 TLS 연결을 맺고, 실제 인증서를 검증한다
+3. 중간 서버가 그 호스트 이름으로 즉석 발급한 인증서를 클라이언트에 준다
+   → 발급자가 신뢰 저장소에 있는 루트이므로 클라이언트 검증을 통과한다
+4. 두 구간은 서로 다른 세션 키를 쓴다. 중간 서버는 ①을 풀고, 읽고, ②로 다시 암호화한다
+```
+
+**전제 조건은 하나다. 중간자의 루트 인증서가 클라이언트의 신뢰 저장소에 들어 있어야 한다.** 그래서 대응도 신뢰를 좁히는 쪽이다.
+
+- 모르는 루트 인증서를 설치하지 않는다. 기기 관리 정책으로 설치된 루트가 있는지 확인한다.
+- 모바일 앱은 **인증서 고정(certificate pinning)** 으로 특정 공개키만 받아들일 수 있다. 다만 키 교체 때 앱이 먹통이 될 수 있어 백업 키를 함께 고정한다.
+- 정말 민감한 내용은 전송 구간 암호화에 기대지 않고 종단 간 암호화를 쓴다.
 
 ## 정리
 

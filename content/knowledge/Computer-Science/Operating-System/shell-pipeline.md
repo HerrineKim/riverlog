@@ -110,4 +110,4 @@ N개 명령의 파이프라인은 파이프 N−1개를 만든다. 첫 명령은
 - 파이프라인은 동시에 띄우고, 다 띄운 뒤 모두 거둔다.
 - `$?`는 마지막 파이프라인의 상태이고, 시그널로 죽으면 128+N이다.
 
-관련 노트: [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[process-and-thread|프로세스와 스레드]], [[unix-signals|UNIX 시그널]], [[system-structure|컴퓨터 시스템 구조와 인터럽트]]
+관련 노트: [[bash-scripting|Bash 스크립트 작성법]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[process-and-thread|프로세스와 스레드]], [[unix-signals|UNIX 시그널]], [[system-structure|컴퓨터 시스템 구조와 인터럽트]]

@@ -11,6 +11,12 @@ date: "2026-10-14"
 
 ## 하위 노트
 
+### 언어 일반
+
+- [프로그래밍 언어의 계보와 선택](Computer-Science/Programming-Languages/programming-language-evolution.md) — 언어의 세대 구분, Fortran·LISP부터 Rust·Go·Kotlin까지 이어진 문제의식, 언어별 에너지 효율
+- [프로그래밍 패러다임](Computer-Science/Programming-Languages/programming-paradigms.md) — 명령형·선언형·객체 지향·함수형·반응형·관점 지향·제네릭·동시성 프로그래밍 비교
+- [프로그램이 실행되기까지: 컴파일, 바이트코드, 인터프리터, GC](Computer-Science/Programming-Languages/how-programs-run.md) — 네이티브 컴파일·VM과 JIT·인터프리터, 실행 파일 적재, Java·Python·Go의 GC, WebAssembly
+
 ### C++
 
 - [C++ 기초 문법과 참조자](Computer-Science/Programming-Languages/cpp-basics.md) — 초기화와 L/R-value, 스트림, 헤더와 네임스페이스, 포인터와 참조자의 차이, switch fallthrough
@@ -28,3 +34,14 @@ date: "2026-10-14"
 - [위임 패턴과 Kotlin by](Computer-Science/Programming-Languages/kotlin-delegation.md) — 상속 대신 위임, 클래스·프로퍼티 위임, by lazy와 by viewModels()
 - [DTO와 VO, DAO와 Repository](Computer-Science/Programming-Languages/dto-vo-dao-repository.md) — 전송 객체와 값 객체, 테이블 중심 DAO와 도메인 중심 Repository
 - [클린 코드: 함수와 이름](Computer-Science/Programming-Languages/clean-code-functions-naming.md) — 작은 함수와 추상화 수준, 팩터리로 분기 가두기, 의미 있는 이름
+- [책임 주도 설계: 협력·책임·메시지](Computer-Science/Programming-Languages/responsibility-driven-design.md) — 메시지를 먼저 정하고 책임을 가진 객체 고르기, 인터페이스는 메시지 집합
+- [GoF 디자인 패턴](Computer-Science/Programming-Languages/gof-design-patterns.md) — 생성·구조·행위 패턴이 푸는 문제와 비유, 과용의 비용
+- [좋은 코드를 위한 열 가지 원칙](Computer-Science/Programming-Languages/coding-principles.md) — 규약·주석·견고함·SOLID·테스트 용이성·적당한 추상화, 원칙끼리 부딪칠 때의 판단
+
+### Java와 Go
+
+- [Java 코딩 컨벤션: Google 스타일과 캠퍼스 핵데이 규칙](Computer-Science/Programming-Languages/java-coding-convention.md) — 두 컨벤션 비교, 이름·import·중괄호·Javadoc 규칙, Checkstyle·EditorConfig 자동 적용
+- [Java 실무 관용구: Enum, null과 Optional, 예외, 날짜 API, 비동기](Computer-Science/Programming-Languages/java-idioms.md) — Enum에 행위 묶기, Optional 규칙, unchecked 예외 전환, java.time, CompletableFuture
+- [Java 직렬화와 Jackson](Computer-Science/Programming-Languages/java-serialization-jackson.md) — Serializable·serialVersionUID와 보안 문제, Jackson 어노테이션과 타입 정보 보존
+- [JVM 내부 구조: 컴파일, 클래스 로딩, 메모리 영역, GC 튜닝](Computer-Science/Programming-Languages/jvm-internals.md) — 바이트코드와 클래스 로딩, 런타임 데이터 영역, 세대별 GC, GC 로그·힙 덤프 진단
+- [Go 언어: 설계 원칙, 고루틴 런타임, GC, 프로젝트 구조](Computer-Science/Programming-Languages/go-language.md) — The Zen of Go, G·M·P 스케줄러, 동시 GC와 GOGC·GOMEMLIMIT, 계층별 프로젝트 구조

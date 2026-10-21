@@ -5,10 +5,11 @@ summary: "주소창에 URL을 입력한 뒤 화면이 그려지기까지의 흐�
 tags: ["network", "http", "web", "browser", "dns"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/320", "https://riverkim.kr/125", "https://riverkim.kr/135", "https://aws.amazon.com/ko/blogs/korea/what-happens-when-you-type-a-url-into-your-browser/"]
+sources: ["https://riverkim.kr/320", "https://riverkim.kr/125", "https://riverkim.kr/135", "https://aws.amazon.com/ko/blogs/korea/what-happens-when-you-type-a-url-into-your-browser/", "https://bytebytego.com/guides/what-happens-when-you-type-a-url-into-your-browser", "https://bytebytego.com/guides/what-happens-when-you-type-google", "https://parksb.github.io/article/36.html"]
 ---
 
-> riverkim.kr에 쓴 글들을 다시 정리하고, AWS 한국 블로그의 「[웹 브라우저에 URL을 입력하면 어떤 일이 생기나요?](https://aws.amazon.com/ko/blogs/korea/what-happens-when-you-type-a-url-into-your-browser/)」(2022.07)로 보강한 노트다.
+> riverkim.kr에 쓴 글들을 다시 정리하고, AWS 한국 블로그의 「[웹 브라우저에 URL을 입력하면 어떤 일이 생기나요?](https://aws.amazon.com/ko/blogs/korea/what-happens-when-you-type-a-url-into-your-browser/)」(2022.07), ByteByteGo의 System Design 101 가이드 「[What Happens When You Type a URL Into Your Browser?](https://bytebytego.com/guides/what-happens-when-you-type-a-url-into-your-browser)」, 「[What Happens When You Type google.com Into a Browser?](https://bytebytego.com/guides/what-happens-when-you-type-google)」로 보강한 노트다.
+> 네트워크에 처음 붙는 과정(Wi-Fi 연결, DHCP, ARP)은 「[인터넷이 동작하는 아주 구체적인 원리](https://parksb.github.io/article/36.html)」를 바탕으로 보강했다.
 
 ## 한눈에 보기
 
@@ -33,13 +34,26 @@ HTTP/3를 쓰는 서버라면 3·4단계가 UDP 위의 **QUIC 핸드셰이크 �
 | 단계 | 하는 일 | 자세히 |
 | --- | --- | --- |
 | URL 해석 | 도메인 뒤 슬래시(`/`) 이후의 **경로**는 서버 안의 특정 리소스(페이지, API 엔드포인트)를 가리킨다 | [[http\|HTTP 프로토콜]]의 URI·URL·URN |
-| DNS 조회 | 도메인에 대응하는 서버 **IP 주소**를 알아낸다. 브라우저와 OS가 여러 층의 캐시를 먼저 보고, 없을 때만 DNS 서버에 묻는다 | [[dns\|DNS]] |
+| DNS 조회 | 도메인에 대응하는 서버 **IP 주소**를 알아낸다. 브라우저 캐시 → OS 캐시 → 공유기(로컬 네트워크) 캐시 → ISP 리졸버 캐시 순으로 먼저 보고, 모두 없을 때만 리졸버가 루트 → TLD → 권한 있는 네임 서버 순으로 재귀 조회한다 | [[dns\|DNS]] |
 | TCP 연결 | TCP/IP로 서버와 연결한다. IP는 패킷을 목적지 주소까지 전달하고, TCP는 순서와 무결성을 책임진다 | [[transport-layer\|TCP]], [[network-layer\|네트워크 계층 프로토콜]] |
 | TLS 핸드셰이크 | HTTPS라면 브라우저와 서버가 암호화 키를 교환하고, 이후 데이터를 암호화해 주고받는다 | [[https\|HTTPS와 TLS]] |
 | HTTP 요청 | 요청 라인(메서드·경로·버전), 헤더(클라이언트 정보·인증·콘텐츠 타입), 필요하면 바디를 보낸다 | [[http\|HTTP 프로토콜]] |
 | 서버 처리 | 웹 서버가 받아 정적 파일을 내주거나 WAS로 넘겨 로직을 처리한다 | [[web-server-and-nginx\|웹 서버, WAS, 그리고 Nginx]] |
 | HTTP 응답 | 상태 라인(200, 404 등), 응답 헤더(캐시 정책·콘텐츠 타입·인코딩), 바디(HTML·JSON·이미지)를 돌려준다 | [[http-cache\|HTTP 캐시]] |
-| 렌더링 | 브라우저가 응답을 해석해 HTML 파싱, CSS 적용, JS 실행을 거쳐 화면을 그린다 | [[browser-rendering\|브라우저 렌더링 과정]] |
+| 렌더링 | 브라우저가 HTML을 토큰화·파싱해 DOM을, CSS로 CSSOM을 만들고, JS를 실행한 뒤 렌더 트리 → 레이아웃 → 페인트 순으로 화면을 그린다 | [[browser-rendering\|브라우저 렌더링 과정]] |
+
+## 그 전에: 네트워크에 붙기
+
+노트북을 막 켠 상태라면 DNS 조회보다 먼저 **자기 주소와 출구**를 알아야 한다.
+
+| 순서 | 일 | 내용 |
+| --- | --- | --- |
+| 1 | 무선 연결(IEEE 802.11) | AP가 주기적으로 보내는 비컨을 듣거나(수동 스캔) 직접 탐색 요청을 보내(능동 스캔) AP를 찾고, 연결(association) 요청·응답으로 링크를 맺는다 |
+| 2 | DHCP로 IP 받기 | 아직 IP가 없으므로 `0.0.0.0` → `255.255.255.255`(UDP 68 → 67) 브로드캐스트로 DISCOVER를 보낸다. OFFER → REQUEST → ACK를 거쳐 IP, 서브넷 마스크, 기본 게이트웨이, DNS 서버 주소를 받는다. 주소는 **임대(lease)** 라서 기간이 끝나기 전에 갱신한다 |
+| 3 | ARP로 게이트웨이 MAC 찾기 | 다른 네트워크로 가는 패킷은 게이트웨이(공유기·라우터)로 보내야 하므로, 게이트웨이 IP의 MAC 주소를 ARP 브로드캐스트로 알아낸다([[network-layer\|ARP]]) |
+| 4 | DNS 조회부터 | 이제 위의 「단계별 정리」가 시작된다 |
+
+패킷이 홉을 건널 때마다 **MAC 주소(링크 계층)는 다음 장비 것으로 바뀌고, IP 주소(종단 간)는 그대로**다. 통신사 네트워크와 구글 같은 다른 조직의 네트워크 사이 경로는 BGP가 정하고, 국가 간 트래픽은 해저 케이블을 지난다.
 
 ## 서버에 닿기까지 거치는 것
 

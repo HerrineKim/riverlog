@@ -5,8 +5,10 @@ summary: "프로세스들이 서로의 자원을 기다리며 멈추는 교착 �
 tags: ["os", "deadlock", "process", "synchronization"]
 source: notion
 date: "2026-10-12"
-sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://riverkim.kr/215"]
+sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://riverkim.kr/215", "https://bytebytego.com/guides/what-is-a-deadlock"]
 ---
+
+> 노션 정리를 바탕으로 재구성하고, 데이터베이스의 교착 상태 처리는 ByteByteGo의 System Design 101 가이드 「[What is a Deadlock?](https://bytebytego.com/guides/what-is-a-deadlock)」를 바탕으로 보강한 노트다.
 
 **교착 상태(deadlock)** 는 일련의 프로세스들이 서로가 가진 자원을 기다리며 모두 blocked 된 상태다. 예를 들어 두 프로세스가 각각 lock 하나씩을 쥔 채 상대방의 lock을 기다리면 둘 다 영원히 진행할 수 없다.
 
@@ -80,6 +82,29 @@ sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://
 ### 4. 무시 (Deadlock Ignorance)
 
 **타조 알고리즘(ostrich algorithm)이라고도** 한다. 교착 상태를 시스템이 책임지지 않는다. 교착 상태는 매우 드물게 일어나므로, 이를 막으려고 쓰는 오버헤드가 오히려 더 크다고 보는 것이다. 문제가 생기면 사용자가 프로세스를 직접 종료한다. **UNIX, Windows 등 대부분의 현대 범용 OS가 채택**한 방식이다.
+
+## 데이터베이스의 교착 상태
+
+DB에서는 프로세스 대신 **트랜잭션**이 행·테이블의 잠금(lock)을 서로 기다리며 교착 상태에 빠진다. 네 조건(Coffman 조건)은 똑같이 적용된다.
+
+```text
+트랜잭션 T1: UPDATE 계좌 A (A 잠금) → UPDATE 계좌 B (B 대기...)
+트랜잭션 T2: UPDATE 계좌 B (B 잠금) → UPDATE 계좌 A (A 대기...)
+```
+
+OS와 달리 DBMS는 교착 상태를 무시하지 않는다. **탐지하고 희생자를 골라 롤백**하는 것이 기본이다.
+
+| 대응 | 방법 |
+| --- | --- |
+| 탐지 | 트랜잭션 간 대기 관계를 wait-for graph로 보고 사이클을 찾는다. MySQL InnoDB는 즉시, PostgreSQL은 `deadlock_timeout`만큼 기다린 뒤 검사한다 |
+| 희생자 선택 | 사이클을 끊을 트랜잭션 하나를 고른다. 바꾼 행 수, 롤백 비용, 우선순위 등을 기준으로 삼으며 설정으로 조정할 수 있는 DB도 있다 |
+| 롤백 | 희생자 트랜잭션을 전체 또는 교착을 풀 만큼만 되돌리고 오류를 돌려준다 |
+| 재시도 | 애플리케이션은 교착 상태 오류를 받으면 트랜잭션을 **처음부터 다시 실행**하도록 짠다 |
+| 타임아웃 | 잠금을 너무 오래 기다리면 포기하고 롤백한다(`lock_timeout`, `innodb_lock_wait_timeout`) |
+| 예방: 잠금 순서 | 모든 트랜잭션이 같은 순서(예: 계좌 번호 오름차순)로 잠그면 순환 대기가 생기지 않는다. 실무에서 가장 효과적인 예방법이다 |
+| 예방: 짧은 트랜잭션 | 잠금을 쥔 시간을 줄이고, 트랜잭션 안에서 외부 API 호출 같은 느린 일을 하지 않는다 |
+
+트랜잭션의 잠금 규약은 [[transaction|트랜잭션과 회복]]에 있다.
 
 ## 핵심 정리
 

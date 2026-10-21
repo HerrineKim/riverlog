@@ -5,7 +5,10 @@ summary: "한 번 맺은 연결로 서버와 브라우저가 양방향 실시간
 tags: ["network", "websocket", "realtime", "frontend", "http"]
 source: mixed
 date: "2026-10-12"
+sources: ["https://bytebytego.com/guides/shortlong-polling-sse-websocket"]
 ---
+
+> 여러 자료를 종합한 노트에, 실시간 통신 방식 비교를 ByteByteGo의 System Design 101 가이드 「[Short/long polling, SSE, WebSocket](https://bytebytego.com/guides/shortlong-polling-sse-websocket)」으로 보강했다.
 
 ## WebSocket이란
 
@@ -55,6 +58,8 @@ ws.addEventListener("error", () => console.log("error"));
 | WebSocket | 양방향 | 연결 하나로 양쪽이 자유롭게 송신 | 채팅, 게임, 협업 편집 |
 | WebRTC | P2P | 서버를 거치지 않고 브라우저끼리 | 화상 통화, 파일 전송 |
 
+HTTP 서버는 브라우저에 먼저 연결을 걸 수 없다. 그래서 **누가 일을 하느냐**로 나눠 보면 정리가 쉽다. 폴링·롱 폴링은 **브라우저가 계속 물어서** 최신 데이터를 얻고, SSE·WebSocket은 **연결을 맺은 뒤 서버가 바로 밀어 준다.** 서버끼리 이벤트를 알릴 때는 같은 고민이 폴링과 웹훅의 선택이 된다([[webhook|웹훅과 폴링]]).
+
 **서버에서 받기만 하면 되면 SSE가 더 단순하다.** 양방향이 필요할 때 WebSocket을 고른다.
 
 ## 운영 시 주의점
@@ -72,4 +77,4 @@ ws.addEventListener("error", () => console.log("error"));
 - 서버 → 클라 단방향이면 SSE, 양방향이면 WebSocket, P2P면 WebRTC.
 - 재연결, 하트비트, 다중 서버 브로드캐스트를 함께 설계해야 실서비스에서 버틴다.
 
-관련 노트: [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름]], [[webrtc|WebRTC]], [[transport-layer|전송 계층: 포트, TCP, UDP]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[browser-realtime-apis|브라우저 실시간 통신: 롱 폴링, SSE, WebSocket 클라이언트]]
+관련 노트: [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름]], [[webrtc|WebRTC]], [[transport-layer|전송 계층: 포트, TCP, UDP]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[browser-realtime-apis|브라우저 실시간 통신: 롱 폴링, SSE, WebSocket 클라이언트]], [[webhook|웹훅과 폴링]], [[realtime-websocket-server|실시간 웹소켓 서버 설계]]

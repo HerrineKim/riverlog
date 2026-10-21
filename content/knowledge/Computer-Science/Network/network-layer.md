@@ -4,11 +4,13 @@ concept: "IP"
 summary: "IPv4 헤더와 단편화(MTU), 주소 체계, 서브넷 계산과 라우팅 테이블(최장 프리픽스 일치), ARP 동작 과정·RARP, ICMP와 ping·traceroute, IGMP, IPv6, NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 프로토콜과 회선·패킷 교환 방식 정리."
 tags: ["network", "ip", "routing", "certificate"]
 source: notion
-sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef"]
+sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://bytebytego.com/guides/ipv4-vs-ipv6", "https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible", "https://dataportal.kr/14", "https://no1.technology/13", "https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/"]
 date: "2026-10-21"
 ---
 
 > 고무오리 CS 스터디의 네트워크 학습 노트(IP 주소, ARP, IPv4·ICMP, NAT와 포트 포워딩)를 바탕으로 재구성한 노트다. 서브넷 계산·라우팅 테이블·NAT 분류 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「netpractice를 위한 네트워크 통신 기초 - 1. LAN 통신」, 「- 2. WAN 통신」, 「포트 포워딩, NAT, IP Masquerade 뭐가 다른거지?」, 「Network에 대한 정리(3)」을 바탕으로 보강했다.
+> IPv4와 IPv6의 헤더 비교와 전환 기술은 ByteByteGo의 System Design 101 가이드 「[IPv4 vs. IPv6: Differences](https://bytebytego.com/guides/ipv4-vs-ipv6)」, NAT의 동작 흐름은 「[How NAT Enabled the Internet](https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible)」을 바탕으로 보강했다.
+> BGP 하이재킹과 SDN 부분은 「[Facebook을 다운 시킨 원인, BGP hijacking이 무엇인가?](https://dataportal.kr/14)」, 「[소프트웨어 정의 네트워킹(SDN)](https://no1.technology/13)」을 바탕으로, 2021년 Facebook 장애 경위는 Meta 엔지니어링 블로그의 「[More details about the October 4 outage](https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/)」로 확인해 보강했다.
 
 네트워크 계층(3계층)은 여러 네트워크를 거쳐 패킷을 목적지 호스트까지 보내는 일을 한다. 핵심인 IP는 "최선을 다해 전달하지만 보장은 하지 않는" 프로토콜이고, 주변 프로토콜들이 주소 변환·오류 보고·경로 선택을 돕는다.
 
@@ -180,14 +182,47 @@ IPv4(32비트, 8비트씩 4부분)의 주소 고갈 문제를 해결하려고 �
 | --- | --- |
 | 유니캐스트, 멀티캐스트, **브로드캐스트** | 유니캐스트, 멀티캐스트, **애니캐스트**(가장 가까운 수신자 하나) |
 
+### IPv4와 IPv6 비교
+
+| 기준 | IPv4 | IPv6 |
+| --- | --- | --- |
+| 주소 길이 | 32비트, 약 43억 개 | 128비트, 사실상 고갈 걱정이 없는 수(2¹²⁸) |
+| 표기 | 점으로 나눈 10진수 4개 (`192.168.0.12`) | 콜론으로 나눈 16진수 8묶음 (`2001:db8::1`, 연속된 0은 `::`로 한 번 줄인다) |
+| 헤더 | 가변 길이(20~60바이트). 헤더 길이, 식별자·플래그·단편 오프셋, 헤더 체크섬, 옵션 등 필드가 많다 | **고정 40바이트**. 버전, 트래픽 클래스, 흐름 레이블, 페이로드 길이, 다음 헤더, 홉 제한, 출발지·목적지 주소만 둔다 |
+| 드물게 쓰는 기능 | 헤더 안의 옵션 필드 | **확장 헤더**로 분리해 필요할 때만 체인으로 붙인다 |
+| 체크섬 | 라우터가 홉마다 다시 계산 | 없다. 상위 계층(TCP·UDP)과 링크 계층에 맡긴다 |
+| 단편화 | 라우터도 쪼갤 수 있다 | 출발지만 쪼갠다. 라우터는 너무 큰 패킷을 버리고 ICMPv6로 알린다 |
+| 주소 설정 | 수동 또는 DHCP | 자동 구성(SLAAC) 또는 DHCPv6 |
+| NAT | 주소 부족 때문에 사실상 필수 | 원칙적으로 필요 없다. 기기마다 공인 주소를 줄 수 있다 |
+
+헤더를 고정 길이로 단순화하고 홉마다 하던 일(체크섬 재계산, 단편화)을 없앤 덕에 **라우터의 패킷 처리가 빨라진다.**
+
+### 전환 기술
+
+두 프로토콜은 서로 직접 통신할 수 없어서, 공존을 위한 방법이 필요하다.
+
+| 방식 | 동작 |
+| --- | --- |
+| **듀얼 스택** (dual stack) | 한 장비가 IPv4와 IPv6를 함께 돌린다. 상대가 IPv6를 지원하면 IPv6로, 아니면 IPv4로 통신한다. 가장 보편적인 방식이다 |
+| 터널링 | IPv6 패킷을 IPv4 패킷 안에 넣어 IPv4 구간을 건너간다(6in4 등) |
+| 변환 | NAT64 + DNS64처럼 경계에서 IPv6 ↔ IPv4 헤더를 바꿔 IPv6 전용 망이 IPv4 서버에 닿게 한다. 모바일 통신망에서 흔하다 |
+
 ## NAT (Network Address Translation)
 
 사설 IP와 공인 IP를 서로 변환하는 기술. 라우터가 패킷의 출발지·목적지 IP 주소와 TCP/UDP 포트 번호를 바꿔 기록하면서 여러 내부 기기가 하나의 공인 IP를 공유할 수 있게 한다. 즉 "특정 IP·포트로 가는 패킷을 다른 IP·포트로 바꿔 주는 것"이다. P2P 통신(예: [[webrtc|WebRTC]])에서는 NAT 뒤의 기기끼리 직접 연결하기 어려워 별도의 우회 기법이 필요하다.
 
+```text
+[노트북 192.168.0.10:51000] ──▶ 공유기(NAT) ──▶ 인터넷: 출발지 203.0.113.7:40001
+                                 │ 변환표에 기록: 192.168.0.10:51000 ↔ 203.0.113.7:40001
+[서버의 응답] 목적지 203.0.113.7:40001 ──▶ 공유기가 표를 보고 192.168.0.10:51000으로 되돌림
+```
+
 **목적**
 
-1. 공인 IP 주소 절약: 한정된 IPv4 주소 문제 해결
-2. 보안: 외부에서 내부 기기의 실제 주소가 보이지 않음
+1. 공인 IP 주소 절약: 한정된 IPv4 주소 문제 해결. NAT가 없었다면 IPv4 주소는 훨씬 일찍 바닥나 인터넷이 지금처럼 커지지 못했다
+2. 주소 공유: 집·회사의 여러 기기가 공인 IP 하나를 함께 쓴다
+3. 기본적인 방화벽 효과: 외부에서 내부 기기의 실제 주소가 보이지 않고, 안에서 시작하지 않은 연결은 들어오지 못한다
+4. 관리 편의: 내부 주소 체계를 바깥과 무관하게 설계하고 바꿀 수 있다
 
 **예: AWS NAT Gateway**
 
@@ -242,6 +277,49 @@ NAPT 표의 항목은 안에서 밖으로 나갈 때 생긴다. 그래서 **밖�
 | IGP (자율 시스템 내부) | RIP | 거리 벡터, 최대 15홉, 소규모 |
 | IGP | OSPF | 링크 상태, 대규모 네트워크에 적합 |
 | EGP (자율 시스템 간) | BGP | 인터넷 사업자(AS) 사이의 라우팅 |
+
+### BGP: 인터넷을 잇는 신뢰 기반 프로토콜
+
+**자율 시스템(AS, Autonomous System)** 은 한 조직이 관리하는 네트워크 묶음이다(통신사, 클라우드, 대형 서비스). 각 AS는 자기가 가진 IP 대역(prefix)을 이웃 AS에 **광고(announce)** 하고, 광고는 이웃을 타고 인터넷 전체로 퍼진다. 라우터는 받은 경로 중 정책과 AS 경로 길이로 최선 경로를 고른다.
+
+문제는 **광고를 기본적으로 믿는다**는 점이다.
+
+| 사고 유형 | 내용 |
+| --- | --- |
+| BGP 하이재킹 | 어떤 AS가 자기 것이 아닌 대역을 광고한다. 더 구체적인 대역이나 더 짧은 경로로 보이면 트래픽이 그쪽으로 빨려 간다. 도청·차단·암호화폐 탈취에 쓰였다 |
+| 경로 누출(route leak) | 설정 실수로 받은 경로를 광고하면 안 되는 이웃에 다시 광고해 트래픽이 엉뚱한 망으로 몰린다 |
+| 경로 철회(withdrawal) | 자기 대역 광고를 거두면 인터넷에서 그 대역으로 가는 길이 사라진다 |
+
+2021년 10월 Facebook(Meta) 장애는 세 번째에 가깝다. 백본 점검 명령이 데이터센터 사이 연결을 모두 끊었고, 백본이 끊긴 것을 감지한 DNS 서버들이 스스로 BGP 광고를 거두었다. 그 결과 Facebook의 DNS 서버에 아무도 닿지 못해 도메인 자체를 찾을 수 없게 되었고, 장애를 진단하는 사내 도구와 원격 접속 경로까지 같은 망에 의존해, 엔지니어가 데이터센터에 직접 가야 했다. **복구 경로가 장애 대상과 같은 의존성을 공유하면 안 된다**는 사례다.
+
+방어 수단은 다음과 같다.
+
+- **RPKI(ROV)**: 대역 소유자가 "이 대역은 이 AS만 광고할 수 있다"는 서명(ROA)을 등록하고, 라우터가 이를 검증해 맞지 않는 광고를 버린다. 주요 통신사·클라우드가 도입해 적용 범위가 넓어지고 있다.
+- **BGPsec·ASPA**: 출발지뿐 아니라 경로 전체가 정당한지 검증하려는 확장이다. 아직 널리 쓰이지 않는다.
+- 이웃 AS에서 받을 수 있는 대역을 필터로 제한하는 운영 관행(MANRS)도 함께 쓴다.
+
+### 제어 평면과 데이터 평면, SDN
+
+라우터·스위치의 일은 둘로 나뉜다.
+
+| 평면 | 하는 일 |
+| --- | --- |
+| 제어 평면(control plane) | 어디로 보낼지 정한다. 라우팅 프로토콜로 경로를 계산해 포워딩 테이블을 만든다 |
+| 데이터 평면(data plane) | 정해진 테이블대로 패킷을 실제로 전달한다 |
+
+전통적인 장비는 두 평면을 장비마다 함께 가지고 있어, 정책을 바꾸려면 장비를 하나씩 설정해야 한다. **SDN(Software-Defined Networking)** 은 제어 평면을 장비에서 떼어 **소프트웨어 컨트롤러**로 모으고, 장비는 데이터 평면만 맡게 한다.
+
+```text
+[응용: 자동화·모니터링·과금]
+        │  Northbound API (REST 등)
+   [SDN 컨트롤러]  ← 네트워크 전체를 한곳에서 프로그래밍
+        │  Southbound API (OpenFlow, NETCONF 등)
+[스위치] [스위치] [라우터]  ← 데이터 평면만
+```
+
+- 장점: 중앙 관리와 자동화, VM·컨테이너가 수시로 생기고 옮겨 다니는 클라우드에서 가상 네트워크를 빠르게 구성, 장비 벤더 종속 완화.
+- NFV(Network Function Virtualization)는 방화벽·로드 밸런서 같은 네트워크 기능을 전용 장비 대신 범용 서버의 소프트웨어로 돌리는 것으로, SDN과 짝을 이룬다.
+- 쿠버네티스의 CNI 플러그인, 클라우드의 VPC도 같은 생각, 즉 **선언한 정책을 컨트롤러가 데이터 평면에 내려보내는** 구조다.
 
 ## 데이터 교환 방식
 

@@ -5,11 +5,28 @@ summary: "Cache-Control, ETag·Last-Modified로 브라우저와 CDN이 응답을
 tags: ["network", "http", "cache", "browser", "frontend"]
 source: mixed
 date: "2026-10-12"
+sources: ["https://mingrammer.com/translation-the-hidden-components-of-web-caching/"]
 ---
+
+> 캐시가 놓이는 위치는 「[웹 캐싱의 숨겨진 요소들](https://mingrammer.com/translation-the-hidden-components-of-web-caching/)」(번역)을 바탕으로 보강했다.
 
 ## HTTP 캐시란
 
 HTTP 캐시는 **한 번 받은 응답을 저장해 두었다가 같은 요청에 재사용하는 것**이다. 네트워크 왕복을 아예 없애거나(신선한 캐시), 본문 전송만 생략한다(재검증). 캐시는 브라우저(private cache)와 CDN·프록시(shared cache) 두 곳에 생긴다.
+
+### 캐시가 놓이는 곳
+
+요청이 사용자에서 원본 서버까지 가는 길목마다 캐시가 있을 수 있다.
+
+| 위치 | 예 | HTTP 헤더를 따르나 |
+| --- | --- | --- |
+| 브라우저 캐시 | 메모리·디스크 캐시, 서비스 워커 캐시 | 브라우저 HTTP 캐시는 따른다. 서비스 워커 캐시는 코드가 정한다 |
+| 포워드 프록시 | 회사·ISP 프록시 | 공유 캐시라 `private` 응답은 저장하지 않는다 |
+| 엣지(CDN) | 사용자 가까운 PoP | `s-maxage`, `CDN-Cache-Control` 같은 공유 캐시용 지시어와 CDN 설정 |
+| 리버스 프록시·게이트웨이 | Nginx, Varnish | 서버 앞에서 응답을 저장. 설정이 헤더보다 우선할 수 있다 |
+| 애플리케이션 응답 캐시 | 서버 메모리, Redis | HTTP와 무관. 애플리케이션이 직접 무효화한다 |
+
+앞쪽 캐시가 맞을수록 왕복 시간(RTT), 서버 부하, 대역폭 비용이 함께 준다. 반대로 층이 많을수록 **무효화**가 어렵다. 배포 뒤 옛 응답이 남았다면 어느 층의 캐시인지부터 가린다. CDN은 [[cdn|CDN]], 프록시는 [[proxy|프록시]], 서버 쪽 캐시는 [[caching-strategies|캐싱 전략]]에 있다.
 
 어떻게 캐시할지는 **서버가 응답 헤더로 정한다.** 프론트엔드 개발자는 이 헤더를 읽고 배포 설정에서 고칠 수 있어야 한다.
 
@@ -67,4 +84,4 @@ HTTP 캐시는 **한 번 받은 응답을 저장해 두었다가 같은 요청�
 - `no-cache`는 "매번 확인", `no-store`는 "저장 금지"다.
 - **해시 파일은 1년 + immutable, HTML은 매번 재검증**이 기본이다.
 
-관련 노트: [[cdn|CDN]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[swr|SWR]], [[cache-and-virtual-memory|캐시 메모리와 MMU]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[image-cdn|이미지 CDN과 Accept 헤더 협상]]
+관련 노트: [[cdn|CDN]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[swr|SWR]], [[cache-and-virtual-memory|캐시 메모리와 MMU]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[image-cdn|이미지 CDN과 Accept 헤더 협상]], [[media-processing-pipeline|이미지·동영상 처리 서버 설계]]

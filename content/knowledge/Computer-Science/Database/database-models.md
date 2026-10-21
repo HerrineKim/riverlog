@@ -1,12 +1,14 @@
 ---
 title: "데이터베이스 모델: RDB, NoSQL, NewSQL"
 concept: "Database Model"
-summary: "관계형 DB의 특징과 한계, NoSQL 네 가지 유형과 CAP 정리, 둘의 장점을 합치려는 NewSQL을 비교하고, 프로젝트에서 무엇을 고를지와 PostgreSQL·MySQL의 차이를 정리."
+summary: "관계형 DB의 특징과 한계, NoSQL 네 가지 유형과 CAP 정리, 둘의 장점을 합치려는 NewSQL을 비교하고, 프로젝트에서 무엇을 고를지와 PostgreSQL·MySQL의 차이를 정리. 평면·계층·네트워크 모델에서 관계형까지의 계보와 분석용 스타·스노플레이크 스키마도 다룬다."
 tags: ["database", "rdbms", "nosql", "newsql", "sql", "mongodb"]
-source: notion
+source: mixed
 date: "2026-10-16"
-sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350"]
+sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html"]
 ---
+
+> 노션 정리를 바탕으로, 데이터 모델의 계보와 CAP 정리의 오해는 ByteByteGo의 System Design 101 가이드 「[Top 6 Database Models](https://bytebytego.com/guides/top-6-database-models)」, 「[CAP Theorem: One of the Most Misunderstood Terms](https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms)」로, PostgreSQL 구조와 문자열 비교 차이는 「[한 눈에 살펴보는 PostgreSQL](https://d2.naver.com/helloworld/227936)」, 「[MySQL 'a' = 'a '가 true인가?](http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html)」로 보강했다.
 
 데이터베이스는 데이터의 집합이고, 이를 저장·관리하는 소프트웨어가 **DBMS(Database Management System)**다. 데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
 
@@ -19,6 +21,41 @@ sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-8
 | 확장 | 주로 수직 확장(scale-up) | 수평 확장(scale-out) 용이 | 수평 확장 지원 |
 | 질의 | 표준 SQL, JOIN | 제품별 API | SQL |
 | 예 | MySQL, PostgreSQL, Oracle, SQL Server | MongoDB, Redis, Cassandra, Neo4j | Google Spanner, CockroachDB, TiDB, YugabyteDB |
+
+## 데이터 모델의 계보
+
+관계형 이전에도 데이터를 구조화하는 모델이 있었고, 관계형은 그 한계를 풀며 표준이 되었다.
+
+| 모델 | 구조 | 강점 | 한계 |
+| --- | --- | --- | --- |
+| 평면(flat) | 표 하나. 행은 레코드, 열은 속성 | 스프레드시트처럼 단순하다 | 엔터티 간 관계를 표현하지 못하고 중복이 많다 |
+| 계층(hierarchical) | 트리. 레코드마다 부모가 하나, 자식은 여럿 | 부모-자식 관계가 뚜렷한 데이터를 빨리 따라간다 | 다대다 관계를 표현하기 어렵고 구조가 경직된다 |
+| 네트워크(network) | 그래프. 레코드가 부모를 여럿 가질 수 있다 | 다대다 관계를 직접 표현한다 | 레코드 사이 포인터를 따라가는 질의를 코드로 짜야 해 복잡하다 |
+| **관계형(relational)** | 1970년 E. F. Codd가 제안. 테이블(릴레이션)과 키로 관계를 표현 | 정규화로 중복을 줄이고, SQL로 무엇을 원하는지만 선언한다. 다대다·복잡한 질의·트랜잭션 | 아래 「관계형 데이터베이스」 절 |
+
+계층·네트워크 모델의 발상은 사라지지 않았다. 문서형 DB는 계층(트리) 모델을, 그래프 DB는 네트워크 모델을 현대적으로 되살린 셈이다.
+
+### 분석용 모델: 스타 스키마와 스노플레이크 스키마
+
+데이터 웨어하우스(OLAP)에서는 정규화보다 **집계 쿼리를 빨리 돌리는 것**이 중요해 테이블을 다르게 배치한다.
+
+```text
+스타 스키마                              스노플레이크 스키마
+        [dim_날짜]                               [dim_날짜]
+            │                                       │
+[dim_상품]─[fact_매출]─[dim_매장]       [dim_카테고리]─[dim_상품]─[fact_매출]─[dim_매장]─[dim_지역]
+            │                                       │
+        [dim_고객]                               [dim_고객]
+```
+
+| 항목 | 스타 스키마 | 스노플레이크 스키마 |
+| --- | --- | --- |
+| 구조 | 가운데 **사실 테이블(fact)** 에 측정값(매출액, 수량)과 차원 키를 두고, 둘레에 **차원 테이블(dimension)** 을 하나씩 붙인다 | 차원 테이블을 정규화해 하위 차원 테이블로 더 쪼갠다 |
+| 조인 | 적다. 질의가 단순하고 빠르다 | 많다. 질의가 복잡해진다 |
+| 중복 | 차원 테이블에 중복이 있다 | 중복이 적고 저장 효율·정합성이 좋다 |
+| 맞는 곳 | 대부분의 분석·BI | 차원 테이블이 크거나 자주 바뀔 때 |
+
+어떤 질문에 어떤 DB를 쓰는지는 [[database-selection|용도별 데이터베이스와 고르는 법]]에 있다.
 
 ## 관계형 데이터베이스 (RDB)
 
@@ -48,7 +85,19 @@ PostgreSQL은 사용자 정의 타입, 테이블 상속, 배열·JSON 컬럼 같
 | 강점 | 복잡한 쿼리, 확장 기능(JSONB, 전문 검색 등) | 단순한 CRUD가 가볍고 빠르다 |
 | 쓰임 | Stack Overflow 개발자 설문에서 2023년부터 사용률 1위. Supabase·Neon 같은 관리형 서비스의 기본 엔진 | 국내 웹 서비스에서 오래 쓰여 레거시가 많다 |
 
-버전이 오르며 두 DB의 기능 격차는 많이 줄었고, 기본 기능이 비슷해 서로 옮기기도 어렵지 않다. GUI 클라이언트로 접속하는 방법은 [[dbeaver|DBeaver]]에 있다.
+버전이 오르며 두 DB의 기능 격차는 많이 줄었고, 기본 기능이 비슷해 서로 옮기기도 어렵지 않다.
+
+**PostgreSQL의 구조**: 클라이언트가 접속하면 postmaster(현재 이름은 postgres 서버 프로세스)가 **연결마다 백엔드 프로세스를 하나씩 띄운다.** 스레드가 아니라 프로세스라서 연결이 많아지면 메모리 부담이 크므로, 앞단에 PgBouncer 같은 커넥션 풀러를 두는 경우가 많다([[connection-pool|DB 커넥션 풀]]). 쿼리는 파싱 → 의미 분석 → **규칙(rule) 기반 재작성** → 실행 계획 선택 → 실행 순서로 처리된다. 타입·함수·인덱스 접근 방식까지 시스템 카탈로그에 정의할 수 있어 확장이 쉽고, PostGIS(공간), pgvector(벡터 검색), hstore(키-값) 같은 확장이 이 구조 위에 올라간다.
+
+**옮길 때 걸리는 차이: 문자열 끝 공백.** SQL 표준의 **PAD SPACE** 비교는 길이가 다른 두 문자열의 짧은 쪽 뒤에 공백을 채운 뒤 비교한다. 그래서 `'a' = 'a '`의 결과가 DB와 설정마다 다르다.
+
+| DB | 동작 |
+| --- | --- |
+| MySQL 5.7 이전·`PAD SPACE` 콜레이션 | 끝 공백을 무시해 참 |
+| MySQL 8.0 기본 콜레이션(`utf8mb4_0900_ai_ci`) | `NO PAD`라서 VARCHAR끼리는 거짓. CHAR 컬럼은 읽을 때 끝 공백을 지운다 |
+| PostgreSQL | CHAR(n)은 끝 공백을 무시하고, VARCHAR·TEXT는 공백까지 비교해 거짓 |
+
+DB를 옮기거나 둘을 섞어 쓸 때는 컬럼 타입(CHAR·VARCHAR)과 콜레이션을 함께 확인하고, 입력 단계에서 공백을 정리해 두는 편이 안전하다. GUI 클라이언트로 접속하는 방법은 [[dbeaver|DBeaver]]에 있다.
 
 ## NoSQL
 
@@ -91,6 +140,12 @@ PostgreSQL은 사용자 정의 타입, 테이블 상속, 배열·JSON 컬럼 같
 
 분할 내성은 분산 시스템에서 뺄 수 없으므로 실제 선택은 **CP**(분할 중에는 일부 요청을 거절하고 정확성을 지킨다)와 **AP**(일단 응답하고 나중에 맞춘다, 최종 일관성) 사이다. 분할이 없을 때도 지연 시간과 일관성을 맞바꾼다는 점까지 넣은 확장이 PACELC다. 많은 제품은 하나로 고정되지 않고 설정(복제 수, 읽기·쓰기 정족수)으로 조절한다.
 
+CAP은 자주 오해된다.
+
+- **「셋 중 둘을 고른다」는 표현은 거친 단순화다.** CAP이 금지하는 것은 「분할이 난 상황에서 완벽한 일관성과 완벽한 가용성을 동시에」뿐이다. 분할이 없을 때는 둘 다 가질 수 있다.
+- CAP의 C와 A는 **100%** 를 뜻한다. 실제 설계 논의는 분할이 없는 평소에 지연과 일관성을 어떻게 맞바꾸느냐(PACELC의 ELC)가 더 자주 문제가 된다.
+- **CAP만으로 DB를 고르지 않는다.** 채팅 메시지 저장에 Cassandra를 쓰는 이유는 AP라서가 아니라 쓰기 처리량, 파티션 단위 조회 같은 특성 때문이다. CAP은 트레이드오프를 따져 보게 하는 출발점이다.
+
 ## NewSQL
 
 RDB의 **ACID와 SQL**을 유지하면서 NoSQL 수준의 **수평 확장성과 성능**을 얻으려는 데이터베이스.
@@ -119,4 +174,4 @@ RDB의 **ACID와 SQL**을 유지하면서 NoSQL 수준의 **수평 확장성과 
 - **ORM**(Object-Relational Mapping): 테이블 행을 객체로 매핑한다. 예: Django ORM, TypeORM, Prisma
 - **ODM**(Object-Document Mapping): 문서를 객체로 매핑한다. 예: Mongoose
 
-관련 노트: [[sql-basics|SQL 기초]], [[mongodb|MongoDB 시작하기와 CRUD]], [[transaction|트랜잭션과 회복]], [[normalization|정규화와 반정규화]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[database-sharding|데이터베이스 샤딩]]
+관련 노트: [[sql-basics|SQL 기초]], [[mongodb|MongoDB 시작하기와 CRUD]], [[transaction|트랜잭션과 회복]], [[normalization|정규화와 반정규화]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[database-sharding|데이터베이스 샤딩]], [[database-selection|용도별 데이터베이스와 고르는 법]]

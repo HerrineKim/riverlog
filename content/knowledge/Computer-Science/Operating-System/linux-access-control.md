@@ -5,10 +5,10 @@ summary: "리눅스가 누가 무엇을 할 수 있는지 정하는 방식. 소�
 tags: ["os", "linux", "security", "devops"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/475d966a41884db380adcb3755a995b6", "https://80000coding.notion.site/82ab87b33eec4ea097349c918ac29301", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/369d9cf9c1a4418f8efb4943ea952da4", "https://www.sudo.ws/docs/man/sudoers.man/"]
+sources: ["https://80000coding.notion.site/475d966a41884db380adcb3755a995b6", "https://80000coding.notion.site/82ab87b33eec4ea097349c918ac29301", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/369d9cf9c1a4418f8efb4943ea952da4", "https://www.sudo.ws/docs/man/sudoers.man/", "https://bytebytego.com/guides/linux-file-permission-illustrated"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「AppArmor를 좀 더 알아보자!」, 「sudo를 비밀번호 없이 실행해보자」, 「서버 관리 맛보기」, 「여러분은 인터넷에 있는 파일을 의심해본 적이 있나요?!!」를 바탕으로 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「AppArmor를 좀 더 알아보자!」, 「sudo를 비밀번호 없이 실행해보자」, 「서버 관리 맛보기」, 「여러분은 인터넷에 있는 파일을 의심해본 적이 있나요?!!」를 바탕으로 재구성한 노트다. 소유자·그룹·기타의 권한 판단은 ByteByteGo의 System Design 101 가이드 「[Linux File Permissions Illustrated](https://bytebytego.com/guides/linux-file-permission-illustrated)」를 바탕으로 보강했다.
 
 ## 두 가지 접근 제어 모델
 
@@ -38,6 +38,7 @@ DAC만 있으면 root 권한을 탈취한 공격자가 시스템 전체를 갖�
 | w (2) | 내용 쓰기 | 안의 파일 만들기·지우기·이름 바꾸기 |
 | x (1) | 실행 | 들어가기(`cd`), 안의 파일에 접근 |
 
+- 파일마다 **소유자(owner)**·**그룹(group)**·**기타(other)** 세 주체에 각각 rwx를 준다. 커널은 접근하는 사용자가 소유자면 소유자 칸만, 아니고 그룹 구성원이면 그룹 칸만, 둘 다 아니면 기타 칸만 본다. 첫 번째로 맞는 칸에서 판단이 끝나므로, 소유자 칸이 그룹 칸보다 좁으면 소유자가 오히려 덜 할 수 있다.
 - `chmod 750 script.sh`, `chown alice:dev script.sh`로 바꾼다. 새 파일의 기본 권한은 `umask`가 빼는 비트로 정해진다.
 - 특수 비트: **setuid**(실행하는 동안 파일 소유자의 권한으로 동작, 예: `passwd`), **setgid**(그룹 권한으로, 디렉터리에 붙이면 새 파일이 그 그룹을 상속), **sticky**(`/tmp`처럼 남의 파일을 지울 수 없게).
 - setuid root 프로그램은 버그가 곧 권한 상승이므로 공격자가 가장 먼저 찾는 대상이다.
@@ -105,4 +106,4 @@ deploy   ALL          = (root) NOPASSWD:     /usr/bin/systemctl restart myapp
 - `NOPASSWD`는 특정 명령에만, 다른 명령을 띄울 수 있는 프로그램은 허용하지 않는다.
 - **최소 권한 원칙**: 필요한 사용자에게, 필요한 명령만, 필요한 동안만.
 
-관련 노트: [[file-system|파일 시스템]], [[virtualization|가상화와 하이퍼바이저]], [[security|정보 시스템 보안]], [[daemon-and-systemd|데몬과 systemd]]
+관련 노트: [[file-system|파일 시스템]], [[virtualization|가상화와 하이퍼바이저]], [[security|정보 시스템 보안]], [[daemon-and-systemd|데몬과 systemd]], [[linux-commands|자주 쓰는 리눅스 명령어 지도]]

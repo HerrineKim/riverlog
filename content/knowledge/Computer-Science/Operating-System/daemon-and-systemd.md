@@ -5,10 +5,12 @@ summary: "터미널과 분리되어 백그라운드에서 도는 데몬의 개�
 tags: ["os", "linux", "process", "devops", "infra"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/5e4cfeac0cae49eab170acdeab86beec", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/705db1daea764875a8b2a971a18b9097", "https://man7.org/linux/man-pages/man7/daemon.7.html", "https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html"]
+sources: ["https://80000coding.notion.site/5e4cfeac0cae49eab170acdeab86beec", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/705db1daea764875a8b2a971a18b9097", "https://man7.org/linux/man-pages/man7/daemon.7.html", "https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html", "https://bytebytego.com/guides/linux-boot-process-explained"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[linux] fork 그만, systemd를 이용해 데몬 생성하기」, 「서버 관리 맛보기」, 「[Born2beRoot] 보너스 서비스로 sendmail 어때요?」를 바탕으로 재구성한 노트다.
+>
+> 부팅 과정은 ByteByteGo의 System Design 101 가이드 「[Linux Boot Process Explained](https://bytebytego.com/guides/linux-boot-process-explained)」를 바탕으로 보강했다.
 
 ## 데몬이란
 
@@ -136,6 +138,23 @@ WantedBy=timers.target
 ## 데몬 예: 메일 서버
 
 메일 서버는 데몬의 전형적인 예다. 25번 포트에서 SMTP 연결을 기다리고, 받은 메일은 다른 서버로 넘기거나 `/var/mail/사용자`에 넣는다. 로그는 저널이나 `/var/log/mail.log`에 남는다. 다만 아무 서버나 Gmail 같은 곳으로 메일을 보내면 거부된다. 수신 측은 보낸 도메인이 SPF·DKIM·DMARC 레코드([[dns|DNS]])로 인증되는지 확인하고, 가정용·클라우드 IP의 25번 포트 발신은 막혀 있는 경우가 많다. 실서비스는 메일 발송 서비스를 쓴다.
+
+## 부팅 과정: 전원에서 로그인까지
+
+systemd가 PID 1로 뜨기까지와 그 이후의 흐름은 다음과 같다.
+
+| 단계 | 하는 일 |
+| --- | --- |
+| 1. 펌웨어 시작 | 전원이 들어오면 비휘발성 메모리의 BIOS 또는 UEFI 펌웨어가 실행되고 POST(Power-On Self Test)로 하드웨어를 점검한다 |
+| 2. 장치 탐지 | CPU, RAM, 저장 장치 같은 연결된 장치를 찾는다 |
+| 3. 부팅 장치 선택 | 정해진 순서대로 디스크, 네트워크(PXE), USB 등에서 부팅할 장치를 고른다 |
+| 4. 부트 로더 | GRUB 같은 부트 로더가 실행된다. 운영체제나 커널을 고르는 메뉴를 보여 주고, 커널과 초기 램디스크(initramfs)를 메모리에 올린다 |
+| 5. 커널 초기화 | 커널이 하드웨어를 초기화하고 루트 파일 시스템을 마운트한 뒤, 첫 사용자 공간 프로세스인 **systemd(PID 1)**를 실행한다 |
+| 6. 유닛 실행 | systemd가 기본 타깃(`default.target`, 보통 `multi-user.target`이나 `graphical.target`)에 필요한 유닛을 의존 관계에 따라 병렬로 띄운다. 남은 하드웨어 탐지, 파일 시스템 마운트, 서비스 시작이 여기서 일어난다 |
+| 7. 환경 구성 | 시작 스크립트와 설정이 실행돼 네트워크, 로그, 사용자 환경을 준비한다 |
+| 8. 로그인 | 로그인 프롬프트나 그래픽 로그인 화면이 뜨고 시스템이 준비된다 |
+
+`systemd-analyze blame`으로 부팅 중 어떤 유닛이 오래 걸렸는지 볼 수 있다.
 
 ## 정리
 

@@ -180,3 +180,5 @@ io.on('connection', (socket) => {
 - WebRTC = 미디어·데이터는 P2P, 하지만 **연결을 맺기 위한 시그널링은 직접 구현**해야 한다.
 - 교환하는 것: SDP(offer/answer)와 ICE candidate.
 - STUN으로 공인 주소를 알아내고, 안 되면 TURN으로 중계한다.
+
+관련 노트: [[voip-sip-rtp|VoIP 전화망: SIP, SDP, RTP]]

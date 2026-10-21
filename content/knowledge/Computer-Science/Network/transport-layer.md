@@ -4,11 +4,14 @@ concept: "Transport Layer"
 summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계(임시 포트 범위 포함), 연결 지향 TCP의 헤더·플래그·3-way handshake·순서 번호 규칙·상태 전이·4-way handshake와 TIME_WAIT, 비연결형 UDP, 그리고 TCP와 UDP의 비교."
 tags: ["network", "transport-layer", "tcp", "udp", "port", "handshake"]
 source: notion
-sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df"]
+sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df", "https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp", "https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data", "https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram", "https://bytebytego.com/guides/18-common-ports-worth-knowing", "https://roka88.dev/114", "https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/"]
 date: "2026-10-21"
 ---
 
 > 고무오리 CS 스터디의 네트워크 학습 노트(전송 계층과 포트, UDP, TCP 장)를 바탕으로 재구성한 노트다.
+> UDP의 쓰임, 게임의 신뢰성 UDP, 응용 프로토콜 표는 ByteByteGo의 System Design 101 가이드 「[Top 4 Most Popular Use Cases for UDP](https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp)」, 「[TCP vs UDP for Online Gaming](https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data)」, 「[Explaining 8 Popular Network Protocols in 1 Diagram](https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram)」, 「[18 Common Ports Worth Knowing](https://bytebytego.com/guides/18-common-ports-worth-knowing)」을 바탕으로 보강했다.
+> 흐름·오류·혼잡 제어의 세부 동작은 「[TCP의 흐름제어, 오류제어, 혼잡제어 개념에 대한 개요](https://roka88.dev/114)」를 바탕으로 보강했다.
+> 임시 포트 고갈과 소켓 옵션은 Cloudflare의 「[How to stop running out of ephemeral ports and start to love long-lived connections](https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/)」를 바탕으로 보강했다.
 
 네트워크 계층(IP)이 데이터를 **목적지 호스트**까지 보내 준다면, 전송 계층(4계층)은 그 호스트 안의 **어느 프로세스**에게 줄지 결정하고 필요하면 신뢰성을 보장한다. 이때 프로세스를 구분하는 번호가 포트 번호다.
 
@@ -50,20 +53,46 @@ TCP의 헤더, 3-way handshake, 상태 전이는 아래 「TCP」 절에, UDP는
 
 클라이언트가 연결할 때 OS가 자동으로 고르는 출발지 포트를 **임시 포트**(ephemeral port)라고 한다. 범위는 OS마다 다르다. Windows와 macOS는 IANA 권고대로 49152~65535를 쓰고, Linux는 기본 32768~60999를 쓴다(`sysctl net.ipv4.ip_local_port_range`로 확인). 한 대상에 짧은 연결을 아주 많이 맺으면 이 범위가 바닥날 수 있다.
 
+#### 임시 포트가 바닥날 때
+
+포트가 바닥나면 새 아웃바운드 연결이 `EADDRNOTAVAIL`("Cannot assign requested address")로 실패한다. 프록시·로드 밸런서처럼 **나가는 연결을 많이 맺는 서버**, WebSocket처럼 오래 가는 연결을 많이 쥔 서버에서 생긴다.
+
+- 연결은 4-튜플로 구분되므로, 원래는 **목적지가 다르면 같은 출발지 포트를 다시 써도 된다.** `connect()`만 부르면 커널이 이 공유를 해 준다.
+- 문제는 출발지 IP를 고르려고 `connect()` 전에 `bind()`를 부를 때다. `bind()` 시점에는 목적지를 모르므로 커널이 (출발지 IP, 포트) 쌍 자체를 독점하게 하고, 연결 수가 목적지와 상관없이 포트 범위(약 2.8만 개)에 묶인다.
+- **해결**: `bind()` 전에 `IP_BIND_ADDRESS_NO_PORT` 소켓 옵션을 켜면 포트 배정을 `connect()` 때로 미뤄 4-튜플 기준으로 공유한다. 출발지 포트까지 직접 정해야 하면 `SO_REUSEADDR`를 쓰되, 같은 4-튜플이 이미 있으면 `connect()`가 실패하므로 다른 포트로 재시도한다.
+- UDP는 같은 4-튜플 소켓이 겹쳐도 오류 없이 나중 소켓이 앞 소켓을 가리는 문제가 있어 더 까다롭다.
+- 그 밖의 수단: 포트 범위 넓히기(`ip_local_port_range`), 출발지 IP 늘리기, 연결 재사용(keep-alive, 커넥션 풀). TIME_WAIT 소켓을 강제로 없애는 방법은 프로토콜을 어기므로 쓰지 않는다.
+
 ### 자주 보는 Well-known 포트
 
 | 포트 | 서비스 | 설명 |
 | --- | --- | --- |
 | 20, 21/tcp | FTP | 파일 전송 (데이터, 제어) |
 | 22/tcp | SSH | 원격 접속 |
+| 23/tcp | Telnet | 암호화하지 않는 원격 접속. SSH로 대체됐다 |
 | 25/tcp | SMTP | 메일 전송 |
 | 53/udp·tcp | DNS | 도메인 → IP 조회 |
 | 69/udp | TFTP | 간단한 파일 전송 |
 | 80/tcp | HTTP | 웹 |
 | 110/tcp | POP3 | 메일 가져오기 |
 | 143/tcp | IMAP | 메일 가져오기(서버에 보관) |
+| 67, 68/udp | DHCP | IP 주소 자동 할당 (서버 67, 클라이언트 68) |
+| 123/udp | NTP | 시간 동기화 |
+| 139/tcp | NetBIOS | 윈도 네트워크의 이름·세션 서비스 |
 | 161/udp | SNMP | 네트워크 장비 관리 |
 | 443/tcp | HTTPS | 암호화된 웹 |
+| 445/tcp | SMB | 윈도 파일·프린터 공유 |
+
+Registered 범위에도 자주 보는 포트가 있다. 개발하다 보면 데이터베이스와 원격 접속 포트를 가장 많이 만난다.
+
+| 포트 | 서비스 | 설명 |
+| --- | --- | --- |
+| 1521/tcp | Oracle DB | 오라클 리스너 |
+| 3306/tcp | MySQL | MySQL·MariaDB |
+| 3389/tcp | RDP | 윈도 원격 데스크톱 |
+| 5432/tcp | PostgreSQL | PostgreSQL |
+
+Telnet(23), FTP(21), SMB(445), RDP(3389)처럼 평문이거나 공격이 잦은 포트는 인터넷에 직접 열지 않는다. DB 포트도 마찬가지로 내부망이나 보안 그룹으로 막아 두고 앱 서버에서만 접근하게 한다.
 
 ### 열린 포트와 연결 확인하기
 
@@ -178,6 +207,37 @@ Linux는 TIME_WAIT를 60초로 고정해 둔다. 짧은 연결이 많은 서버�
 - **혼잡 제어**: 네트워크가 막히면 전송 속도를 줄인다(슬로 스타트, 혼잡 회피 등). Linux의 기본 알고리즘은 CUBIC이고, 대역폭·RTT를 측정해 속도를 정하는 BBR도 쓴다.
 - **오류 제어**: 체크섬으로 오류를 검출하고, 손실된 세그먼트는 재전송한다.
 
+#### 실제로 보낼 수 있는 양
+
+송신 측이 ACK 없이 내보낼 수 있는 양은 **수신 윈도(rwnd)와 혼잡 윈도(cwnd) 중 작은 값**이다. 흐름 제어는 받는 쪽 버퍼를, 혼잡 제어는 중간 네트워크를 보호한다. 흐름 제어는 수신자가 윈도를 알려 주는 협업이고, 혼잡 제어는 송신자가 혼자 추정한다.
+
+```text
+보낼 수 있는 양 = min(rwnd, cwnd) − 아직 ACK 못 받은 양
+```
+
+- **Nagle 알고리즘**: ACK를 기다리는 데이터가 있으면 작은 세그먼트를 모아 보낸다. 헤더 낭비는 줄지만 지연이 생겨, 지연에 민감한 서비스는 `TCP_NODELAY`로 끈다.
+- **지연 ACK**: 다음 세그먼트가 올 때까지(최대 수백 ms) ACK를 미뤄 하나로 합친다. 순서가 어긋난 세그먼트가 오면 바로 ACK를 보내 빠른 재전송을 돕는다. Nagle과 지연 ACK가 겹치면 작은 요청·응답에서 눈에 띄는 지연이 생긴다.
+
+#### 오류 제어: 무엇을 다시 보내나
+
+| 방식 | ACK | 손실 시 재전송 |
+| --- | --- | --- |
+| Go-Back-N | 누적 ACK(여기까지 다 받았다) | 잃어버린 세그먼트부터 그 뒤 전부 |
+| Selective Repeat | 세그먼트별 ACK | 잃어버린 세그먼트만 |
+| 실제 TCP | 누적 ACK + **SACK 옵션** | 기본은 누적 ACK, SACK로 받은 구간을 알려 빠진 것만 보낸다 |
+
+손실은 **재전송 타이머(RTO) 만료** 또는 **중복 ACK 3개**로 알아챈다. 중복 ACK는 뒤 세그먼트는 도착했다는 뜻이므로 타이머를 기다리지 않고 바로 보낸다(빠른 재전송).
+
+#### 혼잡 제어: Reno의 세 단계
+
+| 단계 | cwnd 변화 | 넘어가는 조건 |
+| --- | --- | --- |
+| 슬로 스타트 | RTT마다 대략 두 배(지수 증가) | cwnd가 임계값(ssthresh)에 닿으면 혼잡 회피로 |
+| 혼잡 회피 | RTT마다 1 MSS씩(선형 증가) | 손실을 감지할 때까지 |
+| 빠른 회복 | 중복 ACK 3개 → ssthresh = cwnd/2, cwnd를 그 근처로 줄이고 계속 전송 | 새 ACK가 오면 혼잡 회피로 |
+
+RTO가 만료되면 더 심한 혼잡으로 보고 ssthresh를 절반으로, cwnd를 1로 되돌려 슬로 스타트부터 다시 한다. 늘릴 때는 더하고 줄일 때는 반으로 나누는 이 방식을 **AIMD(가산 증가·승산 감소)** 라고 한다. 이전 방식인 **Tahoe**는 빠른 회복이 없어 중복 ACK에도 cwnd를 처음으로 되돌렸고, Reno는 절반만 줄여 처리량이 덜 꺾인다. 지금 리눅스 기본인 CUBIC은 손실 뒤 cwnd를 3차 함수 모양으로 회복하고, BBR은 손실 대신 대역폭과 RTT 측정으로 속도를 정한다.
+
 ## UDP (User Datagram Protocol)
 
 UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프로토콜이다. 연결 설정도, 재전송도, 순서 보장도 없다. 대신 지연이 적고 가볍다.
@@ -201,6 +261,40 @@ UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프�
 - 주기적으로 정보를 뿌리는 경우: **RIP** 라우팅 정보 교환
 - 신뢰성이 필요하면 애플리케이션 계층에서 직접 구현한다 (예: QUIC은 UDP 위에서 신뢰성과 암호화를 제공하며, [[http|HTTP/3]]가 QUIC 위에서 동작한다).
 - 브라우저 간 실시간 통화([[webrtc|WebRTC]])도 미디어를 UDP로 보낸다.
+- 한 번에 여러 수신자에게 보내는 경우: 저지연 트레이딩의 **시세 멀티캐스트**. TCP는 1:1 연결이라 멀티캐스트를 할 수 없다([[backend-latency-optimization|백엔드 지연 시간 줄이기]]).
+- 작은 패킷을 자주 보내는 저전력 기기: **IoT** 센서 통신(CoAP 같은 UDP 기반 프로토콜).
+
+DNS도 보통 UDP를 쓰지만, 응답이 커서 잘리거나 영역 전송(zone transfer)을 할 때는 TCP로 넘어간다.
+
+### UDP 위에 신뢰성 얹기: 게임의 RUDP
+
+온라인 게임은 TCP를 그대로 쓰면 곤란하다. 패킷 하나가 사라지면 TCP는 그 뒤에 이미 도착한 패킷까지 붙잡고 재전송을 기다린다(head-of-line blocking). 그래서 흔히 **UDP 위에 필요한 만큼만 신뢰성을 직접 얹는다**(RUDP, Reliable UDP). 순서 번호와 확인(ACK), 재전송을 애플리케이션이 구현한다.
+
+```text
+서버                               클라이언트
+ 패킷0 (A가 발사) ───────────────▶  도착 → ACK 0
+ 패킷1 (B가 발사) ───────X          유실
+ 패킷2 (C가 발사) ───────────────▶  도착. 1이 빠졌으니 2는 버퍼에 보관 → ACK 2
+ (ACK 1이 안 옴 → 재전송)
+ 패킷1 ─────────────────────────▶  도착 → 1, 2를 함께 반영 → ACK 1
+```
+
+- 상태는 결국 맞춰지고(eventually synchronized), 유실이 없을 때는 TCP보다 지연이 훨씬 작다.
+- 위치처럼 **최신 값만 의미 있는 데이터**는 재전송하지 않고 다음 패킷으로 덮는다. 발사·피격처럼 꼭 전달돼야 하는 이벤트만 위처럼 신뢰성 있게 보낸다.
+- 같은 발상을 표준으로 만든 것이 QUIC이다. 스트림마다 따로 순서를 맞춰 한 스트림의 유실이 다른 스트림을 막지 않는다.
+
+## 전송 계층 위의 대표 응용 프로토콜
+
+| 프로토콜 | 전송 | 하는 일 |
+| --- | --- | --- |
+| HTTP/1.1 · HTTP/2 | TCP | 웹 리소스를 요청·응답하는 클라이언트-서버 프로토콜([[http\|HTTP]]) |
+| HTTPS | TCP + TLS | HTTP를 암호화한다([[https\|HTTPS]]) |
+| HTTP/3 | QUIC(UDP) | 연결 수립이 빠르고 패킷 유실이 다른 스트림을 막지 않는다. 네트워크가 바뀌는 모바일 환경에 유리하다 |
+| WebSocket | TCP | 한 연결로 양방향(full-duplex) 실시간 통신. 서버가 먼저 보낼(push) 수 있다([[websocket\|WebSocket]]) |
+| DNS | 주로 UDP | 도메인 이름을 IP로 바꾼다([[dns\|DNS]]) |
+| SMTP | TCP | 메일 서버끼리 메일을 전달한다 |
+| FTP | TCP | 파일 전송. 제어 연결과 데이터 연결을 따로 연다 |
+| WebRTC 미디어 | UDP | 브라우저 간 음성·영상([[webrtc\|WebRTC]]) |
 
 ## 핵심 정리
 
@@ -209,4 +303,4 @@ UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프�
 - TCP의 중요 플래그는 SYN·ACK·FIN·RST, 중요 상태는 LISTEN·ESTABLISHED. 종료는 방향마다 닫는 4-way handshake이고, 먼저 닫은 쪽은 TIME_WAIT로 잠시 기다린다.
 - UDP는 포트와 체크섬만 얹은 8바이트 헤더로, 신뢰성이 필요하면 QUIC처럼 위 계층에서 구현한다.
 
-관련 노트: [[network-layer|네트워크 계층 프로토콜]], [[osi-7-layer|OSI 7계층]], [[http|HTTP 프로토콜]], [[security|정보 시스템 보안]]
+관련 노트: [[network-layer|네트워크 계층 프로토콜]], [[osi-7-layer|OSI 7계층]], [[http|HTTP 프로토콜]], [[security|정보 시스템 보안]], [[dns|DNS]], [[websocket|WebSocket]]

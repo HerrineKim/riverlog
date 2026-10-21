@@ -5,10 +5,10 @@ summary: "클라이언트와 서버 사이에서 요청을 대신 주고받는 �
 tags: ["network", "http", "backend", "security", "infra"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/8f7f756919304866b8d7d8413d663406", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded"]
+sources: ["https://80000coding.notion.site/8f7f756919304866b8d7d8413d663406", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded", "https://bytebytego.com/guides/proxy-vs-reverse-proxy"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Proxy, Front Proxy, Reverse Proxy란?」을 바탕으로 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Proxy, Front Proxy, Reverse Proxy란?」을 바탕으로 재구성하고, ByteByteGo의 System Design 101 가이드 「[Proxy vs Reverse Proxy](https://bytebytego.com/guides/proxy-vs-reverse-proxy)」로 보강한 노트다.
 
 ## 프록시란
 
@@ -46,6 +46,8 @@ sources: ["https://80000coding.notion.site/8f7f756919304866b8d7d8413d663406", "h
 | 캐시·압축 | 정적 자원과 캐시 가능한 응답을 직접 응답한다. CDN은 전 세계에 흩어진 리버스 프록시 캐시다([[cdn\|CDN]]) |
 | 경로 라우팅 | `/api`는 API 서버로, 나머지는 프런트 서버로. 마이크로서비스나 컨테이너 환경에서 서비스 여러 개를 한 도메인 아래 묶는다 |
 
+리버스 프록시, 로드 밸런서, API 게이트웨이는 같은 자리에 서서 기능이 겹친다. 주된 목적으로 구분하면 리버스 프록시는 **서버를 숨기고 보호**, 로드 밸런서는 **고르게 나누기**, API 게이트웨이는 **API 호출의 라우팅과 정책**이다. 비교표는 [[api-gateway|API 게이트웨이]]에 있다.
+
 Nginx로 리버스 프록시를 설정하는 예는 [[web-server-and-nginx|웹 서버와 Nginx]]에 있다.
 
 ## 원래 클라이언트 IP 전달하기
@@ -78,4 +80,4 @@ Nginx로 리버스 프록시를 설정하는 예는 [[web-server-and-nginx|웹 �
 - 뒤쪽 서버는 `X-Forwarded-For`·`Forwarded`로 원래 클라이언트를 알지만, 신뢰하는 프록시가 붙인 값만 쓴다.
 - **오늘날 웹 서비스는 거의 다 리버스 프록시(또는 CDN) 뒤에 있다.**
 
-관련 노트: [[web-server-and-nginx|웹 서버와 Nginx]], [[network-layer|네트워크 계층 프로토콜]], [[cdn|CDN]], [[https|HTTPS와 TLS]]
+관련 노트: [[api-gateway|API 게이트웨이]], [[load-balancer|로드 밸런서]], [[web-server-and-nginx|웹 서버와 Nginx]], [[network-layer|네트워크 계층 프로토콜]], [[cdn|CDN]], [[https|HTTPS와 TLS]]

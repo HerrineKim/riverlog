@@ -5,10 +5,12 @@ summary: "컴퓨터가 숫자와 문자를 비트로 저장하는 방식: 진법
 tags: ["computer-architecture", "binary", "floating-point", "encoding"]
 source: notion
 date: "2026-10-21"
-sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e"]
+sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://bytebytego.com/guides/big-endian-vs-little-endian"]
 ---
 
 > 진법 변환·KiB·부호 확장·IEEE 754 세부·해밍 코드 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「원리를 알면 까먹지 않을 10진법을 2진법으로 변환하는 방법」, 「KB(킬로바이트)와 KiB(키비바이트)」, 「Unsigned char와 Char의 차이」, 「실수의 비트 표현 방법」, 「JavaScript에서 표현할 수 있는 수의 범위와 부동소수점」, 「Parity Bit (패리티 비트)」, 「Born2BeRoot를 진행하며 궁금했던 부분들」을 바탕으로 보강했다. 보수로 하는 뺄셈은 고무오리 CS 스터디의 『컴퓨터 시스템 구조』(Mano) 정리를 바탕으로 보강했다.
+>
+> 바이트 순서는 ByteByteGo의 System Design 101 가이드 「[Big Endian vs Little Endian](https://bytebytego.com/guides/big-endian-vs-little-endian)」을 바탕으로 보강했다.
 
 컴퓨터는 모든 정보를 0과 1로 저장한다. 정수, 실수, 문자를 어떤 규칙으로 비트에 담는지 알아야 오버플로우나 부동 소수점 오차 같은 현상을 이해할 수 있다.
 
@@ -178,6 +180,23 @@ JavaScript의 `Number`는 배정밀도 부동 소수점 하나뿐이다. 그래�
 ```
 
 비트 하나 정정(SEC)에 전체 패리티 하나를 더하면 두 비트 오류를 검출(SECDED)할 수 있다. 서버용 ECC 메모리가 이 방식이다.
+
+## 바이트 순서: 빅 엔디언과 리틀 엔디언
+
+여러 바이트로 된 값(예: 4바이트 정수 `0x12345678`)을 메모리에 놓는 순서를 **바이트 순서(byte order)** 또는 엔디언(endianness)이라 한다.
+
+```text
+주소        0x100  0x101  0x102  0x103
+빅 엔디언     12     34     56     78    ← 큰 자리(MSB)가 낮은 주소
+리틀 엔디언   78     56     34     12    ← 작은 자리(LSB)가 낮은 주소
+```
+
+| 방식 | 쓰는 곳 | 특징 |
+| --- | --- | --- |
+| 빅 엔디언 | 네트워크 프로토콜(그래서 「네트워크 바이트 순서」라고 부른다), 많은 파일 형식, 옛 PowerPC·Motorola 68k | 사람이 숫자를 쓰는 순서와 같아 덤프를 읽기 쉽다 |
+| 리틀 엔디언 | x86·x86-64, 대부분의 ARM 운영 환경 | 낮은 주소에서 하위 바이트부터 읽으므로 크기가 다른 정수로 바꿔 읽기 쉽다 |
+
+엔디언은 **서로 다른 시스템 사이에서 데이터를 주고받을 때** 문제가 된다. 리틀 엔디언 컴퓨터가 정수를 그대로 네트워크로 보내면 받는 쪽은 뒤집힌 값을 읽는다. 그래서 소켓 프로그래밍에서는 `htonl()`·`ntohl()`처럼 호스트 순서와 네트워크 순서를 바꾸는 함수를 쓰고, 바이너리 파일 형식은 어느 엔디언인지 명세에 적는다. JavaScript의 `DataView`가 엔디언을 인자로 받는 이유도 같다.
 
 ## 핵심 정리
 

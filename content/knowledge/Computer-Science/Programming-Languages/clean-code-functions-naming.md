@@ -5,10 +5,10 @@ summary: "『클린 코드』의 함수와 이름 규칙을 정리한다. 나쁜
 tags: ["clean-code", "oop", "code-review", "software-engineering", "design"]
 source: other
 date: "2026-10-20"
-sources: ["https://80000coding.notion.site/b43188a4f8554ab19c50401626c84dcd", "https://80000coding.notion.site/7a0a2aeb367a49e8874c403025687071", "https://google.github.io/styleguide/javaguide.html#s5-naming", "https://80000coding.notion.site/2d46fb01aa10486eae950074461d58d9", "https://80000coding.notion.site/a47f00c8e79143cf833283b4c0487eaf", "https://webactually.com/2018/02/06/%eb%aa%85%ed%99%95%ed%95%9c-%ec%bd%94%eb%93%9c-%ec%9e%91%ec%84%b1%eb%b2%95/"]
+sources: ["https://80000coding.notion.site/b43188a4f8554ab19c50401626c84dcd", "https://80000coding.notion.site/7a0a2aeb367a49e8874c403025687071", "https://google.github.io/styleguide/javaguide.html#s5-naming", "https://80000coding.notion.site/2d46fb01aa10486eae950074461d58d9", "https://80000coding.notion.site/a47f00c8e79143cf833283b4c0487eaf", "https://webactually.com/2018/02/06/%eb%aa%85%ed%99%95%ed%95%9c-%ec%bd%94%eb%93%9c-%ec%9e%91%ec%84%b1%eb%b2%95/", "https://github.com/qkraudghgh/clean-code-javascript-ko/blob/master/README.md", "https://github.com/738/clean-code-typescript", "https://var.gg/ko"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[클린코드] 함수는 작고 간결하게」, 「[클린코드] 2장 의미 있는 이름」, 「[클린코드] 1장 좋은코드와 나쁜코드」, 「동료들 뒷목 잡게 만드는 나쁜 프로그래밍 습관」을 바탕으로 재구성한 노트다. 원 자료는 로버트 C. 마틴의 『클린 코드』 1~3장이다. 명령-질의 분리는 Brandon Gregory의 「명확한 코드 작성법」(웹액츄얼리 번역, 2018.02)을 더했다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[클린코드] 함수는 작고 간결하게」, 「[클린코드] 2장 의미 있는 이름」, 「[클린코드] 1장 좋은코드와 나쁜코드」, 「동료들 뒷목 잡게 만드는 나쁜 프로그래밍 습관」을 바탕으로 재구성한 노트다. 원 자료는 로버트 C. 마틴의 『클린 코드』 1~3장이다. 명령-질의 분리는 Brandon Gregory의 「명확한 코드 작성법」(웹액츄얼리 번역, 2018.02)을 더했다. JavaScript·TypeScript 규칙은 「[자바스크립트에 적용한 클린코드](https://github.com/qkraudghgh/clean-code-javascript-ko/blob/master/README.md)」와 「[타입스크립트를 위한 클린코드](https://github.com/738/clean-code-typescript)」를 바탕으로 더했다.
 
 ## 나쁜 코드는 왜 비싼가
 
@@ -129,6 +129,7 @@ function saveFirstName(name) {
 
 - 컬렉션은 복수형(`members`)이 기본이고, `Map`처럼 대체할 말이 마땅치 않으면 `memberById`처럼 키를 드러내는 이름이 낫다.
 - 한 개념에 한 단어는 **팀 단위 합의**다. 프로젝트 초기에 용어집을 정해 두면 리뷰에서 이름 논쟁이 줄어든다.
+- 이름이 막히면 다른 프로젝트의 관례를 찾아본다. [var.gg](https://var.gg/ko) 같은 변수명 검색 도구는 오픈소스에서 실제로 쓰는 이름·약어 후보를 보여 주고 팀 용어집을 한곳에 모으게 돕는다.
 - 타입 접두사(헝가리안 표기법)를 금지하는 이 규칙과 반대로, C++ 게임 코드처럼 `m`·`b` 접두사를 표준으로 정한 팀도 있다. 어느 쪽이든 저장소 안에서 통일하는 것이 우선이다([[cpp-coding-style|C++ 코딩 표준과 clang-format]]).
 
 ## 피해야 할 습관
@@ -141,6 +142,26 @@ function saveFirstName(name) {
 | 함수 하나가 여러 일 | 함수 하나에 일 하나 |
 | 입력 검증 없음 | 경계에서 방어적으로 검사하고 일찍 반환한다 |
 | `null` 반환 | 빈 배열·기본 객체, 예외나 Result 타입을 쓰고 반환 타입에 드러낸다 |
+
+## JavaScript·TypeScript로 옮길 때
+
+같은 원칙이 JavaScript에서는 언어 기능으로 표현된다.
+
+| 원칙 | JavaScript에서 | 이유 |
+| --- | --- | --- |
+| 인수는 적게 | 인수가 셋 이상이면 **객체 하나**로 받고 매개변수에서 구조 분해한다 | 호출하는 쪽에서 이름이 보이고 순서를 외울 필요가 없다 |
+| 기본값을 명시 | `function f(name = 'guest')`. 설정 객체는 `{ ...defaults, ...options }` | `name \|\| 'guest'`는 `''`·`0`까지 덮어쓴다 |
+| 부수 효과를 숨기지 않는다 | 받은 배열·객체를 고치지 않고 복사본을 돌려준다(`toSorted`, 스프레드) | 호출한 쪽의 데이터가 몰래 바뀌지 않는다 |
+| 전역을 오염시키지 않는다 | `Array.prototype`에 메서드를 붙이지 않는다. 유틸 함수나 클래스로 둔다 | 다른 라이브러리·미래 표준과 이름이 부딪힌다 |
+| 조건을 이름으로 | `if (isEditable(doc))`처럼 조건식을 함수로 감싸고 **긍정형** 이름을 쓴다 | `!isNotEmpty`는 두 번 뒤집어 읽어야 한다 |
+| 타입 분기 대신 다형성 | `typeof`·`instanceof` 분기가 반복되면 같은 메서드를 가진 객체들로 바꾼다. 타입 검사가 많으면 TypeScript를 쓴다 | 새 타입을 더할 때 분기를 찾아다니지 않는다 |
+| 캡슐화 | 내부 상태는 `#private` 필드로 숨기고 getter·setter로 검증을 끼운다 | 바깥이 상태를 직접 바꾸지 못한다 |
+| 상속보다 합성 | `class`의 `extends`는 「is-a」가 분명할 때만 | 깊은 상속은 부모 변경이 자식 전체로 번진다 |
+| 비동기 | 콜백 대신 Promise, 체인 대신 `async`/`await` | 흐름이 위에서 아래로 읽힌다([[async-await\|async/await]]) |
+| 에러를 삼키지 않는다 | `catch`에서 `console.log`만 하고 넘어가지 않는다. 사용자에게 알리거나 에러 리포터로 보낸다 | 조용한 실패가 가장 찾기 어렵다 |
+| 주석 | 주석 처리한 코드, 변경 이력 주석, 구분선 주석을 남기지 않는다 | 이력은 Git이 가진다([[js-comments\|주석]]) |
+
+TypeScript에서는 여기에 타입으로 의도를 드러내는 규칙이 더해진다. `strict`(특히 `strictNullChecks`)를 켜고, 바꾸지 않을 값은 `readonly`·`ReadonlyArray<T>`·`as const`로 표시하고, 유니언·교차가 필요하면 `type`, 확장·구현할 객체 계약이면 `interface`를 쓴다. 세부 규칙은 [[typescript-coding-convention|TypeScript 코딩 컨벤션]]에 있다.
 
 ## Google Java 스타일의 이름 규칙
 
