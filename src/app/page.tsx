@@ -27,6 +27,7 @@ export default function AboutPage() {
   const posts = getAllPosts().slice(0, 3);
   const tree = getKnowledgeTree();
   const stats = knowledgeStats();
+  const NameTag = about.headline ? "p" : "h1";
 
   return (
     <>
@@ -47,16 +48,19 @@ export default function AboutPage() {
                 />
               )}
               <div className="min-w-0">
-                <p className="font-semibold text-fg-strong">
+                {/* Without a headline, the name is the page's h1 */}
+                <NameTag className="font-semibold text-fg-strong">
                   {site.nickname} <span className="font-normal text-muted">· {site.author}</span>
-                </p>
+                </NameTag>
                 {about.role && <p className="text-sm text-muted">{about.role}</p>}
               </div>
             </div>
 
-            <h1 className="mt-8 max-w-3xl font-display text-4xl leading-[1.08] text-fg-strong sm:text-6xl">
-              {about.headline}
-            </h1>
+            {about.headline && (
+              <h1 className="mt-8 max-w-3xl font-display text-4xl leading-[1.08] text-fg-strong sm:text-6xl">
+                {about.headline}
+              </h1>
+            )}
 
             <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-16">
               <div className="max-w-2xl">

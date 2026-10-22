@@ -64,10 +64,12 @@ export default async function WorkPage({ params }: PageProps<"/portfolio/[slug]"
                     <dd className="mt-0.5 leading-relaxed text-fg">{work.about}</dd>
                   </div>
                 )}
-                <div>
-                  <dt className="text-muted">기술</dt>
-                  <dd className="mt-0.5 leading-relaxed text-fg">{work.stack.join(", ")}</dd>
-                </div>
+                {work.stack.length > 0 && (
+                  <div>
+                    <dt className="text-muted">기술</dt>
+                    <dd className="mt-0.5 leading-relaxed text-fg">{work.stack.join(", ")}</dd>
+                  </div>
+                )}
               </dl>
             </div>
 

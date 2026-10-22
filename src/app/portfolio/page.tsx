@@ -7,7 +7,7 @@ import { getAllWorks, onTimeline, type Work } from "@/lib/portfolio";
 
 export const metadata: Metadata = {
   title: "Portfolio",
-  description: "SSAFY에서 개발을 배운 1년과 에이전시의 고객사 웹·앱부터 미국 핀테크의 성장 팀, 건설사 AX팀까지. 회사마다 풀었던 문제와 바뀐 숫자.",
+  description: "SSAFY에서 개발을 배운 1년과 에이전시의 고객사 웹·앱부터 미국 핀테크의 성장 팀, 건설사 AX팀을 거쳐 지금의 핀테크 기업 Taply까지. 회사마다 풀었던 문제와 바뀐 숫자.",
 };
 
 export default function PortfolioIndex() {
@@ -23,7 +23,7 @@ export default function PortfolioIndex() {
               에이전시에서 건설 현장까지
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-              개발을 처음 배운 SSAFY와 고객사 웹·앱을 만들던 첫 회사부터 미국 핀테크의 성장 팀, 건설사 AX팀까지. {works.filter(onTimeline).length}곳에서 맡은 {projectCount}개
+              개발을 처음 배운 SSAFY와 고객사 웹·앱을 만들던 첫 회사부터 미국 핀테크의 성장 팀, 건설사 AX팀을 거쳐 지금은 핀테크 기업 Taply에서 일합니다. {works.filter(onTimeline).length}곳에서 맡은 {projectCount}개
               프로젝트를 회사별로 모았습니다. 무엇이 문제였고, 무엇을 만들었고, 어떤 숫자가 바뀌었는지.
             </p>
             <CareerRiver works={works} />

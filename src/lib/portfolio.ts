@@ -17,7 +17,7 @@ export type Work = {
   role: string;
   period: string; // display text, e.g. "2023.06 – 2026.02"
   start: string; // YYYY-MM, newest first
-  end: string; // YYYY-MM; the timeline sizes each company by start → end
+  end: string; // YYYY-MM; the timeline sizes each company by start → end. "present" in frontmatter means the build month
   location?: string;
   summary: string;
   about?: string; // what the company does
@@ -42,7 +42,7 @@ export const getAllWorks = cachedRead((): Work[] =>
         role: String(data.role ?? ""),
         period: String(data.period ?? ""),
         start: String(data.start ?? ""),
-        end: String(data.end ?? data.start ?? ""),
+        end: data.end === "present" ? new Date().toISOString().slice(0, 7) : String(data.end ?? data.start ?? ""),
         location: data.location ? String(data.location) : undefined,
         summary: String(data.summary ?? ""),
         about: data.about ? String(data.about) : undefined,
