@@ -234,4 +234,4 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 - 승부는 이력서에서 보고, 포트폴리오는 이력서의 주장을 작업물로 증명하는 부록이다.
 - 개발자 포트폴리오는 결과보다 과정을, 저장소보다 커밋 링크와 데모 영상을 보여 주고 독자를 밖으로 내보내지 않는다.
 
-관련 노트: [[interview-attitude|면접 잘 보는 법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[working-with-designers|디자이너와 함께 일하기]]
+관련 노트: [[competency-mapping|업무 경험에서 나의 역량 찾기]], [[interview-attitude|면접 잘 보는 법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[working-with-designers|디자이너와 함께 일하기]]
