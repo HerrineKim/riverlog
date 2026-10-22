@@ -347,7 +347,7 @@ export function getQueryClient() {
 ```
 
 ```tsx
-// app/posts/page.tsx — 서버 컴포넌트
+// app/posts/page.tsx: 서버 컴포넌트
 export default async function PostsPage() {
   const queryClient = getQueryClient()
   await queryClient.prefetchQuery({ queryKey: ['posts'], queryFn: getPosts })

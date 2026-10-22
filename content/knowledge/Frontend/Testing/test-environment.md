@@ -68,7 +68,7 @@ export function bumpVersion(read: () => string, write: (s: string) => void) {
 jsdom과 happy-dom은 Node 안에서 DOM, 요소, 이벤트, 쿠키, `localStorage`를 흉내 낸다. Vitest의 기본 환경은 `node`라서 **직접 골라야 한다.**
 
 ```ts
-// vitest.config.ts — 프로젝트 전체
+// vitest.config.ts: 프로젝트 전체
 export default defineConfig({ test: { environment: 'jsdom' } })
 ```
 

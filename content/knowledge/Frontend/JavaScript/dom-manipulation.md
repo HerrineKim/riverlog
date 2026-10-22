@@ -274,7 +274,7 @@ jQuery(2006)가 다듬은 API 상당수가 그대로 표준 DOM에 들어왔다.
 
 | jQuery | 표준 DOM |
 | --- | --- |
-| `$('.a')` | `document.querySelectorAll('.a')` — `NodeList`는 `forEach`·`for…of`로 바로 순회한다 |
+| `$('.a')` | `document.querySelectorAll('.a')`: `NodeList`는 `forEach`·`for…of`로 바로 순회한다 |
 | `$el.remove()` / `.prepend()` / `.before()` / `.replaceWith()` | `el.remove()` / `el.prepend()` / `el.before()` / `el.replaceWith()` |
 | `$el.closest('div')` | `el.closest('div')` |
 | `$el.one('click', fn)` | `el.addEventListener('click', fn, { once: true })` |

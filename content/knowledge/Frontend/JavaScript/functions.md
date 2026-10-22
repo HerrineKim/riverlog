@@ -24,7 +24,7 @@ const user = { sayHi() { return 'hi' } }      // 메서드: 객체 속성에 담
 | 구분 | 선언식 | 표현식·화살표 함수 |
 | --- | --- | --- |
 | 이름 | 필수 | 생략 가능(익명). 브라우저가 변수 이름을 함수 이름으로 추론해 스택 트레이스에 보여 준다 |
-| 호이스팅 | 본문까지 끌어올려져 선언 전에 호출 가능 | 담긴 변수의 규칙을 따름 — `const`면 선언 전 호출 시 `ReferenceError` |
+| 호이스팅 | 본문까지 끌어올려져 선언 전에 호출 가능 | 담긴 변수의 규칙을 따름: `const`면 선언 전 호출 시 `ReferenceError` |
 
 호이스팅의 자세한 동작과 TDZ는 [[scope-and-closures|스코프와 클로저]]에 있다. **블록 `{}` 안의 함수 선언**은 strict mode에서 `let`처럼 그 블록에 갇히고, sloppy mode에서는 바깥 함수 스코프로 새어 나간다. 모드에 따라 동작이 갈리므로 블록 안에서 함수가 필요하면 `const f = () => {}`로 쓴다. 선언 전에 호출하는 코드는 읽는 흐름을 헷갈리게 하므로, 선언식을 쓰더라도 먼저 정의하고 나중에 부르는 편이 낫다.
 
@@ -38,7 +38,7 @@ const user = { sayHi() { return 'hi' } }      // 메서드: 객체 속성에 담
 const countdown = function tick(n) {
   if (n > 0) setTimeout(() => tick(n - 1), 1000) // 안에서는 자기 이름으로 재귀
 }
-typeof tick // 'undefined' — 바깥에서는 보이지 않는다
+typeof tick // 'undefined': 바깥에서는 보이지 않는다
 ```
 
 이름은 스택 트레이스에 찍혀 디버깅을 돕고, 담은 변수가 나중에 재할당돼도 자기 자신을 확실히 가리킨다.
@@ -94,7 +94,7 @@ function getFunc() {
   const value = 'test'
   return new Function('return typeof value')
 }
-getFunc()() // 'undefined' — 바깥 함수의 value를 보지 못한다
+getFunc()() // 'undefined': 바깥 함수의 value를 보지 못한다
 ```
 
 - 이렇게 만든 함수는 **만들어진 위치가 아니라 전역 스코프**를 바깥 환경으로 가진다. 그래서 지역 변수에 접근할 수 없고, 필요한 값은 매개변수로 넘긴다. JavaScript에서 클로저가 되지 않는 유일한 함수 생성 방식이다([[scope-and-closures|스코프와 클로저]]).
@@ -126,8 +126,8 @@ getFunc()() // 'undefined' — 바깥 함수의 value를 보지 못한다
 
 ```javascript
 const pair = (a, b) => [a, b]
-pair(1, 2, 3) // [1, 2] — 남는 인자는 무시
-pair(1)       // [1, undefined] — 모자란 인자는 undefined
+pair(1, 2, 3) // [1, 2]: 남는 인자는 무시
+pair(1)       // [1, undefined]: 모자란 인자는 undefined
 ```
 
 엔진은 인자의 **개수도 타입도 검사하지 않는다.** `add('a', 2)`도 에러 없이 `'a2'`가 된다. 잘못된 인자를 막으려면 함수 안에서 `typeof`로 확인해 에러를 던지거나, 정적 검사인 [[typescript-basics|TypeScript]]를 쓴다. 매개변수는 적을수록 이해하기 쉽다. 셋을 넘으면 순서를 외워야 하므로 아래 「기본값」 끝의 방법처럼 객체 하나로 받는다.
@@ -171,7 +171,7 @@ legacySum(1, 2, 3) // 6
 // rest: 남은 인자들을 배열로 모은다 (Python의 *args와 유사)
 const restOpr = (arg1, arg2, ...restArgs) => [arg1, arg2, restArgs]
 restOpr(1, 2, 3, 4, 5) // [1, 2, [3, 4, 5]]
-restOpr(1, 2)          // [1, 2, []] — 넘어온 인자가 없으면 빈 배열
+restOpr(1, 2)          // [1, 2, []]: 넘어온 인자가 없으면 빈 배열
 
 // spread: 배열을 펼쳐 개별 인자로 전달한다
 const sum3 = (a, b, c) => a + b + c
@@ -202,7 +202,7 @@ Math.max(1, ...arr1, 2, ...arr2) // 여러 번, 일반 인자와 섞어서도 �
 | `calc…` | 계산해 결과를 돌려준다 | 상태를 바꾸지 않는다 |
 | `create…` | 무언가를 만들어 돌려준다 | 만든 것을 문서에 붙이지 않는다 |
 | `check…`·`is…`·`has…` | 확인해 불리언을 돌려준다 | 결과 메시지를 띄우지 않는다 |
-| `show…` | 무언가를 보여 준다 | — |
+| `show…` | 무언가를 보여 준다 | - |
 
 **함수 하나는 이름이 말하는 일 하나만** 한다. 두 동작이 한곳에서 함께 필요하면 각각 함수로 만들고 셋째 함수에서 둘을 부른다. 길어진 함수를 `isPrime(n)`처럼 이름 붙은 작은 함수로 쪼개면 이름이 주석 역할을 한다(자기 설명적 코드). 원칙의 배경은 [[clean-code-functions-naming|클린 코드: 함수와 이름]]에 있다. 바깥 변수를 몰래 고치는 함수보다 **매개변수를 받아 반환값을 만드는 함수**가 읽고 테스트하기 쉽다.
 
@@ -274,7 +274,7 @@ this가 살아남는 것은 **점(또는 대괄호) 접근 바로 뒤에서 호�
 ```javascript
 const obj = {
   name: 'river',
-  arrow: () => this?.name,          // 바깥 this — obj가 아니다
+  arrow: () => this?.name,          // 바깥 this: obj가 아니다
   method() { return this.name },    // 'river'
   later() { return () => this.name }, // 메서드의 this를 물려받아 'river'
 }
@@ -298,10 +298,10 @@ const bill = {
   calculate(taxRate) { return this.total + this.total * taxRate },
 }
 const calc = bill.calculate
-calc(0.13)                                 // this를 잃음 — strict면 TypeError, 아니면 NaN
+calc(0.13)                                 // this를 잃음: strict면 TypeError, 아니면 NaN
 bill.calculate.bind(bill)(0.13)            // 1130
-bill.calculate.bind({ total: 500 }, 0.06)() // 530 — this와 인자를 미리 채운 함수
-bill.calculate.call({ total: 500 }, 0.06)   // 530 — 바로 실행
+bill.calculate.bind({ total: 500 }, 0.06)() // 530: this와 인자를 미리 채운 함수
+bill.calculate.call({ total: 500 }, 0.06)   // 530: 바로 실행
 
 const $ = document.querySelector             // $('p') → TypeError: Illegal invocation
 const $$ = document.querySelectorAll.bind(document) // 어디서 찾을지(document)를 고정

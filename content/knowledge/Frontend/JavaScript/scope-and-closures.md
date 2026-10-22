@@ -32,9 +32,9 @@ const first = 'wes'
 var age = 100
 function sayHi() {}
 
-first         // 'wes' — 다른 <script>나 콘솔에서도 보인다
-window.first  // undefined — let·const는 전역이지만 window에 붙지 않는다
-window.age    // 100 — var와 함수 선언은 window의 속성이 된다
+first         // 'wes': 다른 <script>나 콘솔에서도 보인다
+window.first  // undefined: let·const는 전역이지만 window에 붙지 않는다
+window.age    // 100: var와 함수 선언은 window의 속성이 된다
 ```
 
 전역 변수는 만들지 않는다. **변수의 생명주기는 그 스코프의 생명주기**다. 지역 변수는 함수 호출과 함께 생기고 끝나면 사라지지만, `var` 전역 변수는 전역 객체의 속성이라 페이지를 닫을 때까지 살아 있다.
@@ -60,11 +60,11 @@ if (true) {
   const cool = true
   var old = true
 }
-cool // ReferenceError — 블록 밖으로 못 나온다
-old  // true — var는 블록을 무시하고 함수(여기서는 전역)까지 샌다
+cool // ReferenceError: 블록 밖으로 못 나온다
+old  // true: var는 블록을 무시하고 함수(여기서는 전역)까지 샌다
 
 for (var i = 0; i < 3; i++) {}
-i    // 3 — 반복문 변수가 밖에 남는다. let이면 남지 않는다
+i    // 3: 반복문 변수가 밖에 남는다. let이면 남지 않는다
 ```
 
 `if`·`for` 없이 중괄호만 써도 블록이다. `{ const message = '안녕'; … }`처럼 감싸면 같은 이름을 다른 블록에서 다시 선언할 수 있어, 한 파일 안에서 작업 단위를 격리할 때 쓴다. `for (let i …)`의 괄호 안 변수는 중괄호 밖에 적혀 있지만 반복문 블록에 속한다.
@@ -102,7 +102,7 @@ function logDog() {
 }
 function go() {
   const dog = 'sunny'
-  logDog() // 'snickers' — logDog는 전역에 정의됐으니 전역의 dog를 본다
+  logDog() // 'snickers': logDog는 전역에 정의됐으니 전역의 dog를 본다
 }
 go()
 ```
@@ -123,17 +123,17 @@ go()
 | 함수 표현식·화살표 함수 | 담긴 변수의 규칙을 따른다 | `const`면 에러, `var`면 `TypeError: f is not a function` |
 
 ```javascript
-console.log(age) // undefined — 엔진은 var age; console.log(age); age = 10 처럼 처리한다
+console.log(age) // undefined: 엔진은 var age; console.log(age); age = 10 처럼 처리한다
 var age = 10
 ```
 
 같은 이름으로 함수 선언과 `var`가 함께 있으면 **함수 선언이 이긴다.** `var`의 선언만으로는 이미 등록된 함수를 덮지 않고, 대입문이 실행되는 순간에야 값이 바뀐다.
 
 ```javascript
-func()                                  // '함수 선언' — 아직 대입 전이다
+func()                                  // '함수 선언': 아직 대입 전이다
 var func = function () { console.log('함수 표현식') }
 function func() { console.log('함수 선언') }
-func()                                  // '함수 표현식' — 대입 뒤
+func()                                  // '함수 표현식': 대입 뒤
 ```
 
 선언을 먼저 등록하는 순서는 [[execution-context|실행 컨텍스트]]의 생성 단계에서 나온다.
@@ -164,7 +164,7 @@ function outer() {
   }
 }
 const innerFn = outer() // outer는 여기서 끝났다
-innerFn()               // 'outer' — 그래도 outerVar를 읽는다
+innerFn()               // 'outer': 그래도 outerVar를 읽는다
 ```
 
 안쪽 함수를 바깥 함수 안에서 바로 부르는 것은 단순한 스코프 체인이다. **바깥 함수가 끝난 뒤, 다른 곳에서 나중에 불릴 때** 클로저가 드러난다.
@@ -222,7 +222,7 @@ const hockey = createGame('Hockey')
 const soccer = createGame('Soccer')
 hockey() // 'Hockey 점수: 1'
 hockey() // 'Hockey 점수: 2'
-soccer() // 'Soccer 점수: 1' — 호출마다 별개의 score가 생긴다
+soccer() // 'Soccer 점수: 1': 호출마다 별개의 score가 생긴다
 ```
 
 `createGame`을 부를 때마다 새 렉시컬 환경이 만들어지므로 게임마다 독립된 `score`를 가진다. 클래스의 `#private` 필드([[class|class 문법]])와 같은 목적을 함수만으로 이룬다.

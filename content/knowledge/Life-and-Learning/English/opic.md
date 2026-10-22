@@ -37,7 +37,7 @@ OPIc(Oral Proficiency Interview - computer)은 미국외국어교육협회(ACTFL
 
 - `Here's the thing.` / `Let me tell you about ~` / `I gotta tell you ~`
 - `I don't know if you've heard about ~`
-- `Anyway, ~` — 짧은 배경 설명 뒤 본론(MP)으로 넘어갈 때
+- `Anyway, ~`: 짧은 배경 설명 뒤 본론(MP)으로 넘어갈 때
 - 의인화로 재치 더하기: `Now my bed is calling my name.`
 - 일반론에서 나로 전환: `For me, ~` / `As for me, ~`
 
@@ -59,15 +59,15 @@ OPIc(Oral Proficiency Interview - computer)은 미국외국어교육협회(ACTFL
 
 상대(아는 사람/모르는 사람)와 방식(대면/전화/드물게 자동응답기)이 바뀐다.
 
-**11번 — 질문하기**
+**11번: 질문하기**
 
 용건 → 질문 → (상대 답변 가정) 리액션 → 반복 → 감정 → 질문 두 개 더 → 감사 인사. 내내 긍정적인 반응을 유지한다.
 
-**12번 — 문제 해결**
+**12번: 문제 해결**
 
 "~할 수 있을까요?" → "왜 안 되죠?" → "아, X 때문이군요" → "That's too bad." → "그럼 대신 ~는 가능할까요?" → "다행이네요, 고마워요"
 
-**13번 — 관련 경험**
+**13번: 관련 경험**
 
 롤플레이에서 빠져나와 12번과 비슷한 실제 경험을 말한다. MP(어떤 문제, 느낀 점과 이유) → 간접 화법으로 상황 설명 → 해결 과정으로 마무리.
 

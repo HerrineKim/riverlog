@@ -29,11 +29,11 @@ sources: ["https://riverkim.kr/74", "https://riverkim.kr/164", "https://riverkim
 배열은 리터럴 `[1, 2, 3]`로 만든다. `new Array(1, 2, 3)`도 같은 결과지만 **인자가 숫자 하나일 때만 동작이 다르다.** `new Array(3)`은 `[3]`이 아니라 길이 3의 **빈 슬롯(empty slot)** 배열이다. 헷갈리므로 늘 리터럴을 쓴다.
 
 ```javascript
-const empty = new Array(3) // [ <3 empty items> ] — 길이만 3
-const holes = [1, , 3]     // [1, <1 empty item>, 3] — 쉼표 사이를 비워도 생긴다
+const empty = new Array(3) // [ <3 empty items> ], 길이만 3
+const holes = [1, , 3]     // [1, <1 empty item>, 3], 쉼표 사이를 비워도 생긴다
 holes.length               // 3
-holes.map((x) => x * 2)    // [2, <1 empty item>, 6] — map·forEach는 빈 슬롯을 건너뛴다
-for (const x of holes) {}  // 1, undefined, 3 — for...of는 undefined로 읽는다
+holes.map((x) => x * 2)    // [2, <1 empty item>, 6], map·forEach는 빈 슬롯을 건너뛴다
+for (const x of holes) {}  // 1, undefined, 3, for...of는 undefined로 읽는다
 ```
 
 빈 슬롯이 있는 배열을 **희소 배열(sparse array)** 이라 한다. 빈 슬롯은 `undefined`를 넣은 칸과 다르고, 메서드마다 건너뛰거나 `undefined`로 읽는 등 다르게 취급해서 버그를 만든다. 언어 초기 설계의 흔적이라 의도적으로 만들지 않는다. 미리 길이를 정해야 하면 `Array(n).fill(값)`이나 `Array.from({ length: n }, …)`으로 칸을 채운다.
@@ -245,7 +245,7 @@ function Btn({ buttonName }) {}                               // 매개변수에
 `...`은 자리에 따라 반대로 동작한다. **펼치는** spread는 함수 호출의 인자 자리, 배열 리터럴, 객체 리터럴 안에서만 쓸 수 있다. `const x = ...arr`처럼 단독으로는 못 쓴다. **모으는** rest는 구조 분해와 매개변수 자리에서 쓴다(rest 매개변수는 [[functions|함수와 this]]에 있다).
 
 ```javascript
-Math.max(...[3, 1, 2])           // 3 — 배열을 인자로 펼치기
+Math.max(...[3, 1, 2])           // 3, 배열을 인자로 펼치기
 const copy = [...arr]            // 배열 복사
 const merged = { ...a, ...b }    // 객체 병합(ES2018)
 const chars = [...'héllo']       // 문자열도 이터러블이라 펼쳐진다

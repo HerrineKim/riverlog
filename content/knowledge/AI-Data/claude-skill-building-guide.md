@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://riverkim.kr/328", "https://agentskills.io/specification", "https://code.claude.com/docs/en/skills"]
 ---
 
-> baho.dev의 글 「[Anthropic의 스킬 가이드를 읽혔다 — 챕터별 핵심 정리](https://baho.dev/blog/anthropic-skill-guide/)」(Jihye Song, 2026.02)를 요약·재구성한 노트다. 원 자료는 Anthropic이 공개한 PDF 「The Complete Guide to Building Skills for Claude」이고, 형식 규칙은 [Agent Skills 명세](https://agentskills.io/specification)와 [Claude Code 스킬 문서](https://code.claude.com/docs/en/skills)로 확인했다. 공식 예제는 [anthropics/skills](https://github.com/anthropics/skills) 저장소에 있다.
+> baho.dev의 글 「[Anthropic의 스킬 가이드를 읽혔다: 챕터별 핵심 정리](https://baho.dev/blog/anthropic-skill-guide/)」(Jihye Song, 2026.02)를 요약·재구성한 노트다. 원 자료는 Anthropic이 공개한 PDF 「The Complete Guide to Building Skills for Claude」이고, 형식 규칙은 [Agent Skills 명세](https://agentskills.io/specification)와 [Claude Code 스킬 문서](https://code.claude.com/docs/en/skills)로 확인했다. 공식 예제는 [anthropics/skills](https://github.com/anthropics/skills) 저장소에 있다.
 
 ## 스킬의 구조: 3단계 프로그레시브 디스클로저
 

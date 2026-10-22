@@ -124,7 +124,7 @@ API에서 자주 고르는 코드는 다음과 같다.
 | 301 / 308 | 영구 | 301은 브라우저가 POST를 GET으로 바꿀 수 있음, 308은 그대로 유지 | 도메인 이전, HTTP → HTTPS, 정규 주소(`www` 유무) 통일, 옛 URL 보존 |
 | 302 / 307 | 임시 | 302는 바뀔 수 있음, 307은 유지 | 점검 중 임시 페이지. 검색 엔진은 원래 URL을 유지한다 |
 | 303 See Other | 임시 | **항상 GET으로 바꿔** 따라간다 | POST 처리 뒤 결과 페이지로 보내 새로 고침해도 다시 제출되지 않게 하는 PRG(Post/Redirect/Get), 오래 걸리는 작업의 진행 상태 페이지 |
-| 300 Multiple Choices | 특수 | — | 여러 표현 중 고르게 할 때. 거의 쓰지 않는다 |
+| 300 Multiple Choices | 특수 | - | 여러 표현 중 고르게 할 때. 거의 쓰지 않는다 |
 
 리다이렉트 방법은 세 가지이고 **먼저 적용되는 순서**가 있다.
 
@@ -150,7 +150,7 @@ API에서 자주 고르는 코드는 다음과 같다.
 
 | 목적 | 헤더 |
 | --- | --- |
-| 본문 형식 | `Content-Type`(보내는 형식), `Accept`(받고 싶은 형식) — 둘로 형식을 정하는 것을 콘텐츠 협상이라 한다 |
+| 본문 형식 | `Content-Type`(보내는 형식), `Accept`(받고 싶은 형식). 둘로 형식을 정하는 것을 콘텐츠 협상이라 한다 |
 | 인증 | `Authorization`, `Cookie` / `Set-Cookie` |
 | 캐시 | `Cache-Control`, `ETag`, `If-None-Match`, `Last-Modified` ([[http-cache\|HTTP 캐시]]) |
 | 출처 간 요청 | `Origin`, `Access-Control-Allow-Origin` ([[cors\|CORS]]) |

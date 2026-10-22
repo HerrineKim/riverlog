@@ -50,7 +50,7 @@ export class CatsRepository {
 ```
 
 ```typescript
-// cats.module.ts — 프로바이더로 등록하고, 다른 모듈(Auth)에서도 쓰도록 export
+// cats.module.ts: 프로바이더로 등록하고, 다른 모듈(Auth)에서도 쓰도록 export
 @Module({
   imports: [MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }])],
   controllers: [CatsController],
@@ -61,7 +61,7 @@ export class CatsModule {}
 ```
 
 ```typescript
-// cats.service.ts — Model 대신 Repository를 주입
+// cats.service.ts: Model 대신 Repository를 주입
 @Injectable()
 export class CatsService {
   constructor(private readonly catsRepository: CatsRepository) {}

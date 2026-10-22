@@ -30,7 +30,7 @@ sources: ["https://yozm.wishket.com/magazine/detail/2374/", "https://react.dev/r
 | --- | --- | --- |
 | 조건문·반복문 안 | ✗ | ✓ |
 | 조기 `return` 뒤 | ✗ | ✓ |
-| `try`-`catch` 안 | — | ✗ (에러 바운더리로 처리) |
+| `try`-`catch` 안 | - | ✗ (에러 바운더리로 처리) |
 | 이벤트 핸들러, `map`·`filter` 콜백, 일반 헬퍼 함수 | ✗ | ✗ |
 | 클래스 컴포넌트 | ✗ | ✗ |
 

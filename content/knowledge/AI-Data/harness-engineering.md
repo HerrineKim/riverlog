@@ -8,7 +8,7 @@ date: "2026-10-20"
 sources: ["https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html", "https://arxiv.org/abs/2401.08500"]
 ---
 
-> Jonas Kim의 「[From Prompts to Harnesses — Four Years of AI Agentic Patterns](https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html)」(2026.04)를 바탕으로, 플로우 엔지니어링은 AlphaCodium 논문 「[Code Generation with AlphaCodium: From Prompt Engineering to Flow Engineering](https://arxiv.org/abs/2401.08500)」(2024.01)으로 확인해 재구성한 노트다.
+> Jonas Kim의 「[From Prompts to Harnesses: Four Years of AI Agentic Patterns](https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html)」(2026.04)를 바탕으로, 플로우 엔지니어링은 AlphaCodium 논문 「[Code Generation with AlphaCodium: From Prompt Engineering to Flow Engineering](https://arxiv.org/abs/2401.08500)」(2024.01)으로 확인해 재구성한 노트다.
 
 ## 세 단계와 하나의 원칙
 
@@ -92,7 +92,7 @@ Andrew Ng이 정리한 실무 프레임워크다.
 
 코드를 읽지 않고, 에러는 복사해 붙이고, 돌아가면 끝내는 방식이 **바이브 코딩(vibe coding)**이다. 프롬프트 엔지니어링의 논리적 극단이다. 원래 주말 프로젝트용이라는 단서가 붙었지만 실무로 번졌고, 데모에서 빛나던 MVP가 운영에서 무너지는 **숙취**가 뒤따랐다. 아무도 읽지 않은 코드는 아무도 고칠 수 없다.
 
-> LLM이 모든 코드를 썼더라도 사람이 리뷰하고 테스트했다면 그것은 바이브 코딩이 아니다. — Simon Willison
+> LLM이 모든 코드를 썼더라도 사람이 리뷰하고 테스트했다면 그것은 바이브 코딩이 아니다. (Simon Willison)
 
 핵심은 **누가 코드를 썼느냐가 아니라 엄밀함이 어디 있느냐**다. 바이브 코딩은 엄밀함의 세 원칙을 모두 어긴다.
 

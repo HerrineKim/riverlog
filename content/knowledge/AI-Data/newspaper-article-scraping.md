@@ -112,7 +112,7 @@ articles = source.download_articles()   # 멀티스레드로 받는다. 오래 �
 | --- | --- | --- |
 | `language` | 메타 태그로 자동 감지, 실패 시 영어 | 언어가 틀리면 본문이 빈 채로 나온다. 한국어는 `"ko"`로 지정 |
 | `browser_user_agent`, `headers` | 라이브러리 기본값 | 봇 차단 회피, 사이트 요구 헤더 |
-| `request_timeout`, `proxies` | — | `requests`에 그대로 전달된다 |
+| `request_timeout`, `proxies` | - | `requests`에 그대로 전달된다 |
 | `number_threads` | 10 | `download_articles()` 동시 스레드 수 |
 | `fetch_images` | `True` | 이미지 크기 확인을 끄면 빨라진다 |
 | `memoize_articles` | `True` | 본 기사 URL 캐시 |

@@ -61,7 +61,7 @@ String(r2)                      // "ample: italic and bol"
 | 한 번에 고르기 | `selectNode(node)`(노드 자체), `selectNodeContents(node)`(노드의 안쪽 전부) |
 | 접기·복사 | `collapse(toStart)`(한쪽 끝으로 접기), `cloneRange()` |
 | 내용 바꾸기 | `deleteContents()`, `extractContents()`(잘라 내어 `DocumentFragment`로), `cloneContents()`(복제해 `DocumentFragment`로), `insertNode(node)`(시작 위치에 넣기), `surroundContents(node)`(구간을 `node`로 감싸기) |
-| 위치 | `getBoundingClientRect()`, `getClientRects()` — 선택 영역 옆에 툴바를 띄울 때 |
+| 위치 | `getBoundingClientRect()`, `getClientRects()`: 선택 영역 옆에 툴바를 띄울 때 |
 
 `surroundContents`는 구간이 요소를 **반만 걸치면**(`<i>ita`처럼 여는 태그만 포함) 오류가 난다. 그럴 때는 `extractContents()`로 꺼내 감싼 뒤 `insertNode()`로 다시 넣는다.
 

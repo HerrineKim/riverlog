@@ -81,7 +81,7 @@ scss/
 - 황금률은 하나다. **팀이 모두 납득하는 구조를 고르고, 문서로 남긴다.**
 
 ```scss
-// main.scss — @import 대신 @use로 불러온다
+// main.scss: @import 대신 @use로 불러온다
 @use 'helpers/variables';
 @use 'base/reset';
 @use 'layout/header';

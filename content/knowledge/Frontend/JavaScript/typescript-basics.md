@@ -172,7 +172,7 @@ type UserName = User['name']; // 인덱스 접근 타입: string
 function first<T>(arr: T[]): T | undefined { return arr[0]; }
 function len<T extends { length: number }>(x: T) { return x.length; } // 제약 조건
 function list<const T extends readonly string[]>(items: T) { return items; }
-list(['Apple', 'Banana']); // readonly ['Apple', 'Banana'] — 호출 쪽에서 as const를 안 써도 된다
+list(['Apple', 'Banana']); // readonly ['Apple', 'Banana']: 호출 쪽에서 as const를 안 써도 된다
 
 type ElementOf<T> = T extends (infer U)[] ? U : never; // 조건부 타입 + infer
 ```

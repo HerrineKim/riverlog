@@ -53,7 +53,7 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 | 컬럼을 가공 `salary * 10 > 150000`, `FLOOR(v/2) = 2`, `DATE(created_at) = ...` | 가공한 값은 인덱스에 없어 못 쓴다 | 상수 쪽을 계산한다 `salary > 15000`, 범위로 바꾼다 `created_at >= ... AND < ...`. 꼭 필요하면 함수 기반 인덱스 |
 | 타입이 다른 값과 비교 (문자열 컬럼 = 숫자) | 암묵적 형 변환으로 못 쓴다 | 컬럼 타입에 맞춰 바인딩한다. JOIN 컬럼도 타입·크기를 맞춘다 |
 | `OR`로 다른 컬럼 묶기 | 풀 스캔이 되기 쉽다 | `UNION ALL`로 나누거나 각 컬럼 인덱스 병합을 확인한다 |
-| `IS NULL` | 인덱스 범위 스캔이 가능하다 | — |
+| `IS NULL` | 인덱스 범위 스캔이 가능하다 | - |
 
 ## ORDER BY·GROUP BY와 커버링 인덱스
 

@@ -17,7 +17,7 @@ sources: ["https://wesbos.com/javascript/08-data-types/maps", "https://developer
 ```javascript
 const prizes = new Map()
 prizes.set(100, 'Bear').set(200, 'Duck') // set은 Map을 반환해 이어 쓸 수 있다
-prizes.get(100)    // 'Bear' — 숫자 키 그대로
+prizes.get(100)    // 'Bear': 숫자 키 그대로
 prizes.has(300)    // false
 prizes.size        // 2
 prizes.delete(200) // true
@@ -35,7 +35,7 @@ prizes.delete(200) // true
 const person = { name: 'wes' }
 const notes = new Map([[person, 'Really cool']])
 notes.get(person)            // 'Really cool'
-notes.get({ name: 'wes' })   // undefined — 다른 객체
+notes.get({ name: 'wes' })   // undefined: 다른 객체
 ```
 
 ## 객체 vs Map

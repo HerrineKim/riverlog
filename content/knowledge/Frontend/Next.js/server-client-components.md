@@ -49,7 +49,7 @@ sources: ["https://nextjs.org/docs/app/getting-started/server-and-client-compone
 가장 흔한 모양이다. 페이지는 서버 컴포넌트로 두고 상호작용이 필요한 부분만 클라이언트로 만든다. 서버는 클라이언트 컴포넌트 자리에 **참조**와 직렬화한 props를 RSC Payload에 담아 보낸다.
 
 ```tsx
-// app/[id]/page.tsx — 서버 컴포넌트
+// app/[id]/page.tsx: 서버 컴포넌트
 import LikeButton from '@/app/ui/like-button'
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
@@ -73,7 +73,7 @@ export default function Modal({ children }: { children: React.ReactNode }) {
   return open ? <div>{children}</div> : <button onClick={() => setOpen(true)}>열기</button>
 }
 
-// app/page.tsx — 서버 컴포넌트가 조립한다
+// app/page.tsx: 서버 컴포넌트가 조립한다
 export default function Page() {
   return (
     <Modal>
@@ -97,7 +97,7 @@ export async function getUptime() {
 
 `'use server'` 함수를 클라이언트에서 import하면 실제 구현 대신 **참조(액션 ID + 디스패처)만** 번들에 들어가고, 호출하면 서버로 `POST` 요청이 간다. 서버 컴포넌트가 클라이언트 컴포넌트에 prop으로 넘길 수도 있다(일반 함수는 못 넘기지만 Server Function은 참조로 넘어간다). 폼 `action`이나 버튼 `formAction`에 넘기면 Server Action이라 부르고, 결과 데이터와 갱신된 UI가 한 번의 왕복으로 온다.
 
-### 7. 클라이언트 데이터를 서버로 보내 결과 받기 — 조회에는 주의
+### 7. 클라이언트 데이터를 서버로 보내 결과 받기: 조회에는 주의
 
 입력값으로 서버에서 검색해 결과를 받아오는 것도 Server Function으로 **할 수는 있다.** 하지만 다음 제약이 있다.
 

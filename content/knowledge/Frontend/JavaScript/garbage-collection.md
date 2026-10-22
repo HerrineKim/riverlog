@@ -27,8 +27,8 @@ JavaScript는 메모리를 직접 할당·해제하지 않는다. 값을 만들�
 ```javascript
 let user = { name: 'John' }
 let admin = user   // 참조가 둘
-user = null        // admin으로 아직 닿는다 — 남는다
-admin = null       // 이제 아무도 닿지 못한다 — 회수 대상
+user = null        // admin으로 아직 닿는다: 남는다
+admin = null       // 이제 아무도 닿지 못한다: 회수 대상
 ```
 
 **들어오는 참조만 중요하다.** 객체가 다른 객체를 가리키는 것(나가는 참조)은 자기 생존에 영향이 없다.
@@ -45,7 +45,7 @@ function marry(man, woman) {
 }
 
 let family = marry({ name: 'John' }, { name: 'Ann' })
-family = null // John과 Ann은 서로를 가리키지만 루트에서 닿지 않는다 — 둘 다 회수
+family = null // John과 Ann은 서로를 가리키지만 루트에서 닿지 않는다: 둘 다 회수
 ```
 
 ## 알고리즘

@@ -224,4 +224,4 @@ float 시절의 행 래퍼(row wrapper)나 12열 클래스 시스템을 그리�
 
 관련 노트: [[flexbox|Float와 Flexbox 레이아웃]], [[logical-properties|쓰기 모드와 논리적 속성]], [[css-progressive-enhancement|CSS 점진적 향상: 폴백과 피처 쿼리]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[box-model|박스 모델과 display]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]
 
-더 읽을거리: 게임으로 익히기 — [Grid Garden](https://cssgridgarden.com/#ko)
+더 읽을거리: 게임으로 익히기, [Grid Garden](https://cssgridgarden.com/#ko)

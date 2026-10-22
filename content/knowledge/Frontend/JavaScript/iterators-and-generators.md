@@ -26,7 +26,7 @@ const it = [1, 2, 3][Symbol.iterator]()
 it.next() // { value: 1, done: false }
 it.next() // { value: 2, done: false }
 it.next() // { value: 3, done: false }
-it.next() // { value: undefined, done: true } — 마지막 값을 지나친 다음 호출에서 done이 true
+it.next() // { value: undefined, done: true }: 마지막 값을 지나친 다음 호출에서 done이 true
 ```
 
 일반 객체 `{}`는 이터러블이 아니다. `for...of`에 넣으면 `TypeError: obj is not iterable`이고, `Object.entries(obj)`로 배열을 만든 뒤 돈다([[operators-and-control-flow|연산자와 제어문]]).
@@ -71,7 +71,7 @@ function* steps() {
 const gen = steps()   // 아무것도 출력되지 않는다
 gen.next()            // '시작' 출력 → { value: 'first', done: false }
 gen.next()            // '중간' 출력 → { value: 'second', done: false }
-gen.next()            // { value: 'end', done: true } — return 값은 done: true와 함께 온다
+gen.next()            // { value: 'end', done: true }: return 값은 done: true와 함께 온다
 gen.next()            // { value: undefined, done: true }
 ```
 
@@ -99,9 +99,9 @@ function* calc(start) {
   yield b * 2
 }
 const g = calc(2)
-g.next(99) // { value: 3 }  — 첫 next의 인자는 받을 yield가 없어서 버려진다
-g.next(5)  // { value: 15 } — a = 5
-g.next(10) // { value: 20 } — b = 10. 앞에서 내보낸 a + 10과 상관없이 yield 식 전체가 10이 된다
+g.next(99) // { value: 3 }: 첫 next의 인자는 받을 yield가 없어서 버려진다
+g.next(5)  // { value: 15 }: a = 5
+g.next(10) // { value: 20 }: b = 10. 앞에서 내보낸 a + 10과 상관없이 yield 식 전체가 10이 된다
 ```
 
 바깥 코드는 `next(x)`를 바로 부르지 않아도 된다. 제너레이터는 멈춘 채 기다리므로 `setTimeout(() => g.next(5), 1000)`처럼 나중에 값을 넣어도 된다. 이 양방향 통신이 async/await 이전에 co 같은 라이브러리가 "Promise를 yield하고 결과를 next로 돌려받는" 방식으로 비동기를 동기처럼 쓰던 원리다. 지금은 [[async-await|async/await]]가 같은 일을 언어 차원에서 한다.

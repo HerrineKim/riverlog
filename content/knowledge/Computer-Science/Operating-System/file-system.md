@@ -87,7 +87,7 @@ UNIX 계열에서 C 표준 라이브러리의 `fopen()`이 돌려주는 `FILE *`
 | 방법 | 특징 |
 | --- | --- |
 | Access Control Matrix | 사용자 × 파일 전체 권한을 표로 관리. 정확하지만 오버헤드가 큼 |
-| Grouping | owner / group / others 세 그룹 × rwx — 단 9비트로 표현 (UNIX 방식) |
+| Grouping | owner / group / others 세 그룹 × rwx, 단 9비트로 표현 (UNIX 방식) |
 | Password | 파일마다 비밀번호. 관리가 어려움 |
 
 대부분의 시스템은 Grouping을 쓴다. 예를 들어 `chmod 751 file`은 소유자 `rwx`, 그룹 `r-x`, 그 외 `--x`다.

@@ -49,7 +49,7 @@ s.match(/"[^"]+"/g); // ['"witch"', '"broom"']        제외 세트
 ```js
 const html = '<a href="link1" class="wrong">… <p style="" class="doc">';
 html.match(/<a href=".*?" class="doc">/g);    // <a href="link1" class="wrong">… <p style="" class="doc"> 까지 잘못 잡힌다
-html.match(/<a href="[^"]*" class="doc">/g);  // null — 정답
+html.match(/<a href="[^"]*" class="doc">/g);  // null: 정답
 ```
 
 `[^"]*`는 따옴표를 아예 넘지 못하므로 속성 값 하나 안에서만 움직인다. **「구분자가 나올 때까지」는 게으른 `.*?`보다 제외 세트 `[^구분자]*`로 쓴다.** 백트래킹도 적어 빠르다.

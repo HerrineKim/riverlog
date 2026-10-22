@@ -17,7 +17,7 @@ sources: ["https://ko.javascript.info/indexeddb", "https://developer.mozilla.org
 | | localStorage | IndexedDB |
 | --- | --- | --- |
 | 값 | 문자열만 | 구조화된 복제가 되는 거의 모든 값(객체, 배열, `Date`, `Map`·`Set`, `Blob`·`File`, `ArrayBuffer`) |
-| API | 동기 — 메인 스레드를 막는다 | 비동기 — 요청을 보내고 이벤트로 결과를 받는다 |
+| API | 동기: 메인 스레드를 막는다 | 비동기: 요청을 보내고 이벤트로 결과를 받는다 |
 | 검색 | 키 하나로만 | 키 범위 질의, 다른 필드의 인덱스, 커서 순회 |
 | 신뢰성 | 없음 | 트랜잭션: 묶은 작업이 모두 성공하거나 모두 취소된다 |
 | 용량 | 출처당 약 5MiB | 디스크 크기에 비례하는 큰 할당량 |
@@ -46,7 +46,7 @@ sources: ["https://ko.javascript.info/indexeddb", "https://developer.mozilla.org
 서버 DB와 달리 개발자가 사용자 기기의 DB에 직접 들어가 마이그레이션할 수 없다. 그래서 IndexedDB는 **버전 번호**를 내장한다. 코드가 요구하는 버전이 기기에 있는 버전보다 높으면 `upgradeneeded`가 발생하고, 그 안에서만 스키마를 바꿀 수 있다.
 
 ```javascript
-const req = indexedDB.open('mail', 3)          // (이름, 버전 — 양의 정수)
+const req = indexedDB.open('mail', 3)          // (이름, 버전: 양의 정수)
 
 req.onupgradeneeded = (event) => {             // DB가 없으면(oldVersion 0) 처음에도 온다
   const db = req.result
@@ -170,7 +170,7 @@ req.onsuccess = () => {
   const cursor = req.result
   if (!cursor) return                  // 끝
   console.log(cursor.key, cursor.primaryKey, cursor.value) // 인덱스 키(가격), 저장소 키(id), 값
-  cursor.continue()                    // 다음 건 — onsuccess가 다시 불린다
+  cursor.continue()                    // 다음 건: onsuccess가 다시 불린다
 }
 ```
 
@@ -186,7 +186,7 @@ req.onsuccess = () => {
 | --- | --- |
 | `request.onsuccess`·`onerror` | `await` + `try/catch`. 잡지 않은 거부는 `window`의 `unhandledrejection`으로 간다 |
 | `openRequest.onupgradeneeded` | `openDB(name, version, { upgrade(db, oldVersion, newVersion, tx) {…} })` |
-| `db.onversionchange` / `openRequest.onblocked` | `blocking()` / `blocked()` 콜백 — 위 「다른 탭과의 버전 충돌」을 그대로 처리한다 |
+| `db.onversionchange` / `openRequest.onblocked` | `blocking()` / `blocked()` 콜백: 위 「다른 탭과의 버전 충돌」을 그대로 처리한다 |
 | `transaction.oncomplete` | `await tx.done` |
 | `db.transaction(s).objectStore(s).get(k)` | `db.get(s, k)` (트랜잭션 하나짜리 단축 메서드) |
 | 네이티브 요청 객체가 필요할 때 | `idb`의 `unwrap(obj)` |

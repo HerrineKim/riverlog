@@ -42,7 +42,7 @@ python manage.py startapp articles   # 앱 이름은 보통 복수형
 ```
 
 ```python
-# settings.py — 반드시 "앱 생성 → 등록" 순서
+# settings.py: 반드시 "앱 생성 → 등록" 순서
 INSTALLED_APPS = [
     # 1. Local apps
     'articles',

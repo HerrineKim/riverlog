@@ -27,7 +27,7 @@ sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.
 - **크롤링 프레임워크**: `scrapy`
 - **브라우저 자동화**(JavaScript로 그려지는 페이지): `selenium`
 - **파싱**: `BeautifulSoup`, `lxml`, `json`
-- **기사 본문 추출**: `newspaper4k` — [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[data-pipeline-basics|데이터 파이프라인과 저장소 용어]]
+- **기사 본문 추출**: `newspaper4k`: [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[data-pipeline-basics|데이터 파이프라인과 저장소 용어]]
 
 ```python
 import requests

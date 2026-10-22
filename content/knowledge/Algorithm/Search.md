@@ -9,7 +9,7 @@ date: "2026-10-13"
 
 탐색은 많은 데이터나 가능한 경우의 수 중에서 원하는 답을 찾는 과정이다. 모든 경우를 다 보는 완전 탐색에서 출발해, 정렬된 데이터의 범위를 반씩 줄이는 이분 탐색, 그래프를 체계적으로 훑는 BFS·DFS로 이어진다.
 
-- [완전 탐색과 백트래킹](Algorithm/Search/brute-force.md) — 완전 탐색, 백트래킹, 순열·조합, 비트마스크
-- [이분 탐색](Algorithm/Search/binary-search.md) — 순차 탐색과의 비교, 정렬된 데이터에서 범위를 절반씩 줄이는 탐색, `bisect`, 파라메트릭 서치
-- [너비 우선 탐색 (BFS)](Algorithm/Search/bfs.md) — 가까운 곳부터 넓게 퍼지는 너비 우선 탐색, 격자 최단 거리
-- [깊이 우선 탐색 (DFS)](Algorithm/Search/dfs.md) — 한 갈래를 끝까지 파고드는 깊이 우선 탐색, 부분집합 탐색
+- [완전 탐색과 백트래킹](Algorithm/Search/brute-force.md): 완전 탐색, 백트래킹, 순열·조합, 비트마스크
+- [이분 탐색](Algorithm/Search/binary-search.md): 순차 탐색과의 비교, 정렬된 데이터에서 범위를 절반씩 줄이는 탐색, `bisect`, 파라메트릭 서치
+- [너비 우선 탐색 (BFS)](Algorithm/Search/bfs.md): 가까운 곳부터 넓게 퍼지는 너비 우선 탐색, 격자 최단 거리
+- [깊이 우선 탐색 (DFS)](Algorithm/Search/dfs.md): 한 갈래를 끝까지 파고드는 깊이 우선 탐색, 부분집합 탐색

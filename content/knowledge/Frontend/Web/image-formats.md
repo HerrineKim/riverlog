@@ -100,4 +100,4 @@ sources: ["https://web.dev/learn/images/history", "https://web.dev/learn/images/
 - JPEG XL은 지원이 빠르게 넓어지고 있지만 엣지가 빠져 있어 대체 없이 쓰지 않는다.
 - **형식은 출발점이다.** 압축 수준과 크기까지 맞춰야 이미지가 가벼워진다.
 
-관련 노트: [[image-compression|이미지 압축과 인코딩 자동화]], [[image-cdn|이미지 CDN과 Accept 헤더 협상]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[html-media-elements|이미지·오디오·비디오 임베드]], [[video-performance|동영상 성능: 형식·poster·자동 재생·임베드]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]]
+관련 노트: [[image-compression|이미지 압축과 인코딩 자동화]], [[image-cdn|이미지 CDN과 Accept 헤더 협상]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[html-media-elements|이미지·오디오·비디오 임베드]], [[video-performance|동영상 성능: 형식·poster·자동 재생·임베드]], [[animated-icon|Animated Icon: 영상을 투명 배경 아이콘으로 쓰기]]

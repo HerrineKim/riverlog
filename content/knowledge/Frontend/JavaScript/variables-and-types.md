@@ -109,9 +109,9 @@ JavaScript는 **동적 타입(dynamically typed)** 언어다. 값에는 타입�
 ```javascript
 const n = new Number(10)
 typeof n        // 'object'
-n + 5           // 15 — 연산에서는 값처럼 동작하지만
-n === 10        // false — 타입이 달라 일치 비교에 실패한다
-if (new Boolean(false)) {} // 실행된다 — 객체는 내용과 상관없이 truthy
+n + 5           // 15: 연산에서는 값처럼 동작하지만
+n === 10        // false: 타입이 달라 일치 비교에 실패한다
+if (new Boolean(false)) {} // 실행된다: 객체는 내용과 상관없이 truthy
 ```
 
 `Symbol`과 `BigInt`는 아예 `new`로 부를 수 없다(`TypeError`). `new Object(10)`도 `Number {10}`을 만든다. 배열·객체도 `new Array()`·`new Object()`보다 리터럴 `[]`·`{}`을 쓴다([[arrays-and-objects|배열·객체·문자열 다루기]]).
@@ -148,9 +148,9 @@ if (new Boolean(false)) {} // 실행된다 — 객체는 내용과 상관없이 
 **선언하지 않은 변수**는 undefined가 아니라 `ReferenceError: x is not defined`다. 값을 비울 때는 `undefined`가 아니라 `null`을 대입해 "일부러 비웠다"는 뜻을 남긴다. 객체 속성에서는 "처음부터 없는 속성"(`undefined`)과 "있었는데 일부러 비운 속성"(`null`)을 구분할 수 있고, 속성 자체가 있는지는 `'last' in obj`나 `Object.hasOwn(obj, 'last')`로 확인한다.
 
 ```javascript
-null === undefined // false — 타입이 다르다
-null == undefined  // true — 동등 비교에서는 서로만 같다
-1 + null           // 1 — null은 숫자 연산에서 0으로 변환
+null === undefined // false: 타입이 다르다
+null == undefined  // true: 동등 비교에서는 서로만 같다
+1 + null           // 1: null은 숫자 연산에서 0으로 변환
 1 + undefined      // NaN
 ```
 
@@ -174,8 +174,8 @@ const p2 = { first: 'wes' }
 const p3 = p1     // 객체를 복사한 것이 아니라 같은 객체를 가리킨다
 p3.first = 'Larry'
 p1.first          // 'Larry'
-p1 === p2         // false — 내용이 같아도 다른 객체
-p1 === p3         // true — 같은 객체
+p1 === p2         // false: 내용이 같아도 다른 객체
+p1 === p3         // true: 같은 객체
 ```
 
 | 상황 | 원시값 | 객체·배열 |

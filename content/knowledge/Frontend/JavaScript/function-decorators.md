@@ -66,7 +66,7 @@ const worker = {
   slow(x) { return x * this.factor },
 }
 worker.slow = cachingDecorator(worker.slow)
-worker.slow(3) // TypeError — 래퍼 안의 func(x)는 일반 함수 호출이라 this가 undefined
+worker.slow(3) // TypeError, 래퍼 안의 func(x)는 일반 함수 호출이라 this가 undefined
 ```
 
 `worker.slow(3)`을 부르면 **래퍼**의 `this`는 `worker`다. 문제는 래퍼가 원래 함수를 `func(x)`로 부르면서 그 `this`를 전달하지 않는다는 점이다. 래퍼는 받은 `this`와 인자를 **그대로** 원래 함수에 넘겨야 한다. 이것을 **콜 포워딩(call forwarding)** 이라 한다.

@@ -39,7 +39,7 @@ worker.postMessage(sab)
 // worker.js
 onmessage = ({ data }) => {
   const ia = new Int32Array(data)
-  ia[0] = 37 // 메인 스레드의 뷰에서도 37이 보인다 — 다만 "언제" 보이는지는 보장되지 않는다
+  ia[0] = 37 // 메인 스레드의 뷰에서도 37이 보인다: 다만 "언제" 보이는지는 보장되지 않는다
 }
 ```
 

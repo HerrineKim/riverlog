@@ -90,10 +90,10 @@ sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/
 **`== true`는 "truthy인가"를 묻는 비교가 아니다.** 불리언이 섞이면 `==`는 불리언을 먼저 **숫자**로 바꾼다(`true` → `1`). 그래서 truthy인 값도 `true`와 느슨하게 같지 않을 수 있다.
 
 ```javascript
-'1' == true          // true  — '1' → 1, true → 1
-'My string' == true  // false — 'My string' → NaN
-100 == true          // false — 100 !== 1
-[] == false          // true  — [] → '' → 0, false → 0. 그런데 []는 truthy다
+'1' == true          // true: '1' → 1, true → 1
+'My string' == true  // false: 'My string' → NaN
+100 == true          // false: 100 !== 1
+[] == false          // true: [] → '' → 0, false → 0. 그런데 []는 truthy다
 ```
 
 truthy 여부는 `if (x)`나 `Boolean(x)`로 확인하고, 불리언과 `==`로 비교하지 않는다.
@@ -112,8 +112,8 @@ truthy 여부는 `if (x)`나 `Boolean(x)`로 확인하고, 불리언과 `==`로 
 | SameValue | `Object.is`, `Object.defineProperty`가 값을 바꿨는지 볼 때 | 안 한다 | **같다** | **다르다** |
 
 ```javascript
-[NaN].indexOf(NaN)   // -1 — === 기준이라 못 찾는다
-[NaN].includes(NaN)  // true — SameValueZero
+[NaN].indexOf(NaN)   // -1: === 기준이라 못 찾는다
+[NaN].includes(NaN)  // true: SameValueZero
 new Set([NaN, NaN]).size // 1
 Object.is(-0, 0)     // false
 Object.is(NaN, 0 / 0) // true
@@ -124,13 +124,13 @@ Object.is(NaN, 0 / 0) // true
 `==`는 **추이성도 없다.** 두 쌍이 같아도 나머지 한 쌍은 다를 수 있다. 원시값과 래퍼 객체를 비교할 때도 두 연산자의 결과가 갈린다.
 
 ```javascript
-0 == ''                         // true  — '' → 0
-0 == '0'                        // true  — '0' → 0
-'' == '0'                       // false — 둘 다 문자열이라 변환 없이 비교
-' \t\r\n ' == 0                 // true  — 공백뿐인 문자열은 0이 된다
+0 == ''                         // true: '' → 0
+0 == '0'                        // true: '0' → 0
+'' == '0'                       // false: 둘 다 문자열이라 변환 없이 비교
+' \t\r\n ' == 0                 // true: 공백뿐인 문자열은 0이 된다
 
-'abc' == new String('abc')      // true  — 객체를 원시값으로 바꿔 비교
-'abc' === new String('abc')     // false — 타입이 string과 object로 다르다
+'abc' == new String('abc')      // true: 객체를 원시값으로 바꿔 비교
+'abc' === new String('abc')     // false: 타입이 string과 object로 다르다
 ```
 
 ### null·undefined와 크기 비교
@@ -138,10 +138,10 @@ Object.is(NaN, 0 / 0) // true
 `==`는 `null`·`undefined`를 숫자로 바꾸지 않고 **둘끼리만 같다**고 본다. 반면 `<`·`>`·`<=`·`>=`는 숫자로 바꾼다(`null` → `0`, `undefined` → `NaN`). 그래서 결과가 서로 모순돼 보인다.
 
 ```javascript
-null > 0         // false — 0 > 0
-null == 0        // false — null은 null·undefined하고만 같다
-null >= 0        // true  — 0 >= 0
-undefined > 0    // false — NaN과의 비교는 언제나 false
+null > 0         // false: 0 > 0
+null == 0        // false: null은 null·undefined하고만 같다
+null >= 0        // true: 0 >= 0
+undefined > 0    // false: NaN과의 비교는 언제나 false
 undefined == 0   // false
 ```
 
@@ -191,7 +191,7 @@ undefined == 0   // false
 | --- | --- |
 | `obj?.prop` | `user?.address?.street` |
 | `obj?.[expr]` | `user?.[key]` |
-| `fn?.()` | `user.admin?.()` — 메서드가 없으면 호출하지 않는다 |
+| `fn?.()` | `user.admin?.()`: 메서드가 없으면 호출하지 않는다 |
 
 - `user?.sayHi(x++)`에서 `user`가 없으면 `x++`도 실행되지 않는다.
 - 읽기와 `delete user?.name`에는 쓸 수 있지만 **대입의 왼쪽에는 못 쓴다**(`user?.name = 'x'`는 SyntaxError).
@@ -199,7 +199,7 @@ undefined == 0   // false
 - **없어도 되는 것에만 붙인다.** 반드시 있어야 할 `user`에 `user?.`를 쓰면 버그가 `undefined`로 조용히 묻힌다. `user.address?.street`처럼 선택적인 단계에만 쓴다.
 
 ```javascript
-'' || 'default'   // 'default' — 빈 문자열이 유효한 값이어도 덮어쓴다
+'' || 'default'   // 'default': 빈 문자열이 유효한 값이어도 덮어쓴다
 '' ?? 'default'   // ''
 const code = error.response?.data?.code // 중간이 없으면 TypeError 대신 undefined
 const name = document.querySelector('[name="first"]')?.value ?? ''

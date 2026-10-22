@@ -164,7 +164,7 @@ class PropertyRequiredError extends ValidationError {
 
 const err = new PropertyRequiredError('name')
 err instanceof PropertyRequiredError // true
-err instanceof ValidationError       // true — 부모 클래스로도 잡힌다
+err instanceof ValidationError       // true: 부모 클래스로도 잡힌다
 err instanceof Error                 // true
 ```
 

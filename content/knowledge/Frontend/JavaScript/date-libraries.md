@@ -16,7 +16,7 @@ JavaScript의 기본 `Date`는 API가 불편하고(월이 0부터 시작, 포맷
 
 ```javascript
 const moonLanding = new Date('July 20, 69 00:20:18')
-moonLanding.getMonth() // 6 — 7월인데 6이다 (1월이 0)
+moonLanding.getMonth() // 6, 7월인데 6이다 (1월이 0)
 ```
 
 | 메서드 | 범위 |
@@ -60,10 +60,10 @@ moonLanding.getMonth() // 6 — 7월인데 6이다 (1월이 0)
 `setFullYear`·`setMonth`·`setDate`·`setHours`…는 원본을 **직접 바꾼다**. 범위를 넘는 값을 넣으면 에러 대신 **넘친 만큼 다음 단위로 넘긴다(자동 고침, autocorrection).** 이 성질로 윤년·월말을 따지지 않고 날짜를 더하고 뺀다.
 
 ```javascript
-new Date(2013, 0, 32)           // 2013년 2월 1일 — 1월 32일은 2월 1일로
+new Date(2013, 0, 32)           // 2013년 2월 1일, 1월 32일은 2월 1일로
 const d = new Date(2016, 1, 28)
-d.setDate(d.getDate() + 2)      // 2016년 3월 1일 — 윤년도 알아서
-d.setDate(0)                    // 전달의 마지막 날 — 0일은 '1일의 하루 전'
+d.setDate(d.getDate() + 2)      // 2016년 3월 1일, 윤년도 알아서
+d.setDate(0)                    // 전달의 마지막 날, 0일은 '1일의 하루 전'
 d.setHours(0, 0, 0, 0)          // 그날 자정으로 맞추기
 ```
 

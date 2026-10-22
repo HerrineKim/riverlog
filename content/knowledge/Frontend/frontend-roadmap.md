@@ -90,14 +90,14 @@ HTML → CSS → JavaScript → DOM·브라우저 → Git/GitHub → TypeScript
 | 단계 | 자료 |
 | --- | --- |
 | 웹 표준 전반 | [MDN Web Docs](https://developer.mozilla.org/ko/), [web.dev](https://web.dev/learn) |
-| 웹 기초 입문 | [PoiemaWeb](https://poiemaweb.com/) — HTML·CSS·JavaScript·TypeScript를 한국어로 처음부터 |
+| 웹 기초 입문 | [PoiemaWeb](https://poiemaweb.com/): HTML·CSS·JavaScript·TypeScript를 한국어로 처음부터 |
 | JavaScript | [모던 JavaScript 튜토리얼](https://ko.javascript.info/), 『모던 자바스크립트 Deep Dive』, [MDN JavaScript 재입문](https://developer.mozilla.org/ko/docs/Web/JavaScript/Language_overview) |
 | JavaScript 개념 점검 | [33 JS Concepts](https://github.com/yjs03057/33-js-concepts)(호출 스택·클로저·this·이벤트 루프 등 33개 주제의 읽을거리 목록), [JavaScript Questions](https://github.com/lydiahallie/javascript-questions/blob/master/ko-KR/README-ko_KR.md)(출력 예측 퀴즈) |
 | 실무 관례 | [Frontend Fundamentals](https://frontend-fundamentals.com/)(변경하기 쉬운 코드의 기준, [[changeable-code-criteria\|좋은 코드의 기준]]), [TOAST UI FE 개발 가이드](https://ui.toast.com/fe-guide/ko)(코딩 컨벤션·안티 패턴·정적 분석·디버깅·번들러·테스트) |
 | TypeScript | [TypeScript 핸드북](https://www.typescriptlang.org/docs/handbook/intro.html) |
 | React·Next.js | [react.dev](https://react.dev/learn), [Next.js 공식 문서](https://nextjs.org/docs) |
 | 전체 지도 | [roadmap.sh Frontend](https://roadmap.sh/frontend) |
-| 소식 따라가기 | [NAVER FE News](https://github.com/naver/fe-news) — 매달 첫 주 수요일에 나오는 프론트엔드 기술 소식 큐레이션 |
+| 소식 따라가기 | [NAVER FE News](https://github.com/naver/fe-news): 매달 첫 주 수요일에 나오는 프론트엔드 기술 소식 큐레이션 |
 
 ## 정리
 

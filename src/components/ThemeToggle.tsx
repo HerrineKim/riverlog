@@ -17,7 +17,7 @@ export default function ThemeToggle() {
       title="테마 전환"
       className="grid size-9 place-items-center rounded-full border border-line text-muted transition hover:border-accent hover:text-accent"
     >
-      {/* moon in dark mode, sun in light mode — swapped purely with CSS so there is no hydration flash.
+      {/* moon in dark mode, sun in light mode; swapped purely with CSS so there is no hydration flash.
           The accessible name says what pressing it will do, and swaps the same way. */}
       <span className="sr-only hidden dark:block">라이트 모드로 전환</span>
       <span className="sr-only dark:hidden">다크 모드로 전환</span>

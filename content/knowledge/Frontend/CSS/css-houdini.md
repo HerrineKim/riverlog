@@ -43,7 +43,7 @@ CSS.paintWorklet.addModule('checkerboard.js')   // 워크릿 모듈 등록
 
 | API | 끼어드는 단계 | 하는 일 | 지원 |
 | --- | --- | --- | --- |
-| **Properties and Values** (`@property`, `CSS.registerProperty()`) | 스타일 | 커스텀 속성에 타입·상속 여부·초깃값을 준다 | **모든 주요 브라우저**(Chrome 85, Safari 16.4, Firefox 128 — Baseline 2024) |
+| **Properties and Values** (`@property`, `CSS.registerProperty()`) | 스타일 | 커스텀 속성에 타입·상속 여부·초깃값을 준다 | **모든 주요 브라우저**(Chrome 85, Safari 16.4, Firefox 128, Baseline 2024) |
 | **Typed OM** | 스타일 | CSS 값을 문자열이 아니라 타입 있는 객체로 읽고 쓴다 | Chromium 66, Safari 16.4. Firefox는 미지원 |
 | **Paint API** (`paint()`) | 페인트 | 배경·테두리·마스크 이미지를 캔버스 코드로 그린다 | Chromium 65만. Firefox·Safari 미지원 |
 | Layout API (`display: layout(…)`) | 레이아웃 | 자식 배치를 직접 계산한다(예: 메이슨리) | 출시된 브라우저 없음(Chromium 실험 플래그) |

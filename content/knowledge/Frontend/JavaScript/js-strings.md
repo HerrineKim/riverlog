@@ -67,7 +67,7 @@ const classes = `header ${
 
 ```typescript
 function describe(strings: TemplateStringsArray, person: string, age: number) {
-  // strings = ['that ', ' is a ', ''] — 마지막 표현식 뒤에도 빈 조각이 있다
+  // strings = ['that ', ' is a ', '']: 마지막 표현식 뒤에도 빈 조각이 있다
   const ageWord = age > 99 ? 'centenarian' : 'youngster'
   return `${strings[0]}${person}${strings[1]}${ageWord}`
 }
@@ -115,7 +115,7 @@ styled`
 모두 대소문자를 구분한다. **`indexOf`를 그대로 조건에 넣지 않는다.** 맨 앞에서 찾으면 `0`이라 falsy가 된다.
 
 ```javascript
-if ('Widget'.indexOf('Widget')) {}         // 실행되지 않는다 — 0은 falsy
+if ('Widget'.indexOf('Widget')) {}         // 실행되지 않는다: 0은 falsy
 if ('Widget'.indexOf('Widget') !== -1) {}  // 위치 비교는 -1과
 if ('Widget'.includes('Widget')) {}        // 포함 여부는 includes
 ```
@@ -128,12 +128,12 @@ if ('Widget'.includes('Widget')) {}        // 포함 여부는 includes
 | --- | --- | --- | --- |
 | `slice(start, end)` | 시작, 끝(미포함) | 뒤에서 센다 | 빈 문자열 |
 | `substring(start, end)` | 시작, 끝(미포함) | `0`으로 본다 | 두 값을 바꿔서 처리 |
-| `substr(start, length)` | 시작, **길이** | 시작만 뒤에서 센다 | — |
+| `substr(start, length)` | 시작, **길이** | 시작만 뒤에서 센다 | - |
 
 ```javascript
 'stringify'.slice(2, 6)     // 'ring'
 'stringify'.slice(-4, -1)   // 'gif'
-'stringify'.substring(6, 2) // 'ring' — slice(6, 2)는 ''
+'stringify'.substring(6, 2) // 'ring': slice(6, 2)는 ''
 ```
 
 **`slice`만 쓰면 된다.** 배열의 `slice`와 규칙이 같고 음수도 받는다. `substr`은 명세 부록 B(웹 호환용 레거시)에 있어 쓰지 않는다.
@@ -155,19 +155,19 @@ if ('Widget'.includes('Widget')) {}        // 포함 여부는 includes
 `<`, `>`는 문자열을 **코드 단위 값 순서**로 한 글자씩 비교한다. 사전 순과 비슷하지만 다르다.
 
 ```javascript
-'a' > 'Z'                 // true — 소문자(97~)가 대문자(65~)보다 뒤
-'Österreich' > 'Zealand'  // true — Ö(214)가 z(122)보다 뒤
-'Bee' > 'Be'              // true — 앞이 같으면 긴 쪽이 크다
+'a' > 'Z'                 // true: 소문자(97~)가 대문자(65~)보다 뒤
+'Österreich' > 'Zealand'  // true: Ö(214)가 z(122)보다 뒤
+'Bee' > 'Be'              // true: 앞이 같으면 긴 쪽이 크다
 ```
 
 사람이 기대하는 순서로 정렬하려면 **언어별 정렬 규칙(ECMA-402)** 을 쓴다.
 
 ```javascript
-'Österreich'.localeCompare('Zealand', 'de')  // 음수 — 앞에 온다
+'Österreich'.localeCompare('Zealand', 'de')  // 음수: 앞에 온다
 names.sort((a, b) => a.localeCompare(b, 'ko'))
 
 const collator = new Intl.Collator('ko', { numeric: true, sensitivity: 'base' })
-const files = ['파일10', '파일2'].sort(collator.compare) // ['파일2', '파일10'] — 숫자를 숫자로 비교
+const files = ['파일10', '파일2'].sort(collator.compare) // ['파일2', '파일10']: 숫자를 숫자로 비교
 ```
 
 `localeCompare`는 음수·0·양수를 돌려준다. 많은 값을 정렬할 때는 `Intl.Collator`를 한 번 만들어 `compare`를 재사용하는 편이 빠르다. `sensitivity: 'base'`면 대소문자·악센트를 무시하고 비교한다.
@@ -186,8 +186,8 @@ const files = ['파일10', '파일2'].sort(collator.compare) // ['파일2', '파
 
 ```javascript
 '😂'.length                  // 2
-'😂'[0]                      // '\uD83D' — 반쪽짜리
-'😂'.codePointAt(0)          // 128514 — 쌍을 합친 코드 포인트
+'😂'[0]                      // '\uD83D': 반쪽짜리
+'😂'.codePointAt(0)          // 128514: 쌍을 합친 코드 포인트
 String.fromCodePoint(128514) // '😂'
 [...'a😂'].length            // 2
 ```
@@ -211,7 +211,7 @@ const count = [...seg.segment('👨‍👩‍👧가')].length // 2
 
 ```javascript
 'Ṩ' === 'Ṩ'                          // false
-'Ṩ'.normalize() === 'Ṩ'.normalize()  // true — 'Ṩ' 하나로 합쳐진다
+'Ṩ'.normalize() === 'Ṩ'.normalize()  // true: 'Ṩ' 하나로 합쳐진다
 ```
 
 `normalize()`의 기본 형식은 `'NFC'`(합친 형태)다. 사용자 입력을 저장·비교·검색하기 전에 NFC로 맞춘다. macOS에서 온 파일 이름처럼 조합형(NFD)이 섞여 들어오는 경우가 흔하다.
@@ -237,7 +237,7 @@ function decompose(ch) {
            jung: Math.floor((n % 588) / 28),       // 중성 번호
            jong: n % 28 }                          // 0이면 받침 없음
 }
-decompose('강')  // { cho: 'ㄱ', jung: 0, jong: 21 }  — 21번 종성이 ㅇ
+decompose('강')  // { cho: 'ㄱ', jung: 0, jong: 21 }: 21번 종성이 ㅇ
 const josa = (w) => (decompose(w.at(-1))?.jong ? '은' : '는')
 ```
 

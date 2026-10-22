@@ -99,7 +99,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 ```
 
 ```typescript
-// auth/jwt/jwt.guard.ts — AuthGuard('jwt')가 위 Strategy를 자동 실행
+// auth/jwt/jwt.guard.ts: AuthGuard('jwt')가 위 Strategy를 자동 실행
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {}
 ```

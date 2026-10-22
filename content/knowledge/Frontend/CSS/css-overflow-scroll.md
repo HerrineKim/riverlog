@@ -25,7 +25,7 @@ sources: ["https://web.dev/learn/css/overflow", "https://developer.mozilla.org/e
 
 | 값 | 넘친 내용 | 스크롤바 | 스크롤 가능 |
 | --- | --- | --- | --- |
-| `visible` (기본) | 박스 밖으로 보인다 | 없음 | — |
+| `visible` (기본) | 박스 밖으로 보인다 | 없음 | - |
 | `hidden` | 패딩 상자에서 잘린다 | 없음 | 스크립트로는 가능 |
 | `clip` | 잘린다 | 없음 | **불가**(스크립트 포함) |
 | `scroll` | 잘린다 | 넘치지 않아도 **항상** | 가능 |

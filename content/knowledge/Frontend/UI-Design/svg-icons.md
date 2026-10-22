@@ -51,8 +51,8 @@ sources: ["https://web.dev/learn/design/icons", "https://developer.mozilla.org/e
 | 경우 | `<img>` | 인라인 `<svg>` |
 | --- | --- | --- |
 | 글 + 아이콘 (장식) | `alt=""` (빈 값. `alt`를 **빼면 안 된다**) | `aria-hidden="true"` |
-| 아이콘만 (단독) | `alt="메뉴"` — 모양(「가로줄 세 개」)이 아니라 **뜻**을 쓴다 | 버튼에 `aria-label="메뉴"`, 아이콘에 `aria-hidden="true"` |
-| 아이콘만, 다른 방식 | 버튼에 `aria-label="메뉴"`, 이미지는 `alt=""` | — |
+| 아이콘만 (단독) | `alt="메뉴"`: 모양(「가로줄 세 개」)이 아니라 **뜻**을 쓴다 | 버튼에 `aria-label="메뉴"`, 아이콘에 `aria-hidden="true"` |
+| 아이콘만, 다른 방식 | 버튼에 `aria-label="메뉴"`, 이미지는 `alt=""` | - |
 
 ```html
 <!-- 장식 -->
@@ -155,4 +155,4 @@ SMIL 애니메이션은 모든 방법에서 동작한다. 과거에는 `<embed>`
 
 관련 노트: [[ui-elements-glossary|UI 요소 용어집: 입력·내비게이션·정보·컨테이너]], [[accessible-images-links-text|대체 텍스트, 링크, 쉬운 글]], [[dark-mode-theming|테마와 다크 모드 구현]], [[image-formats|웹 이미지 형식]], [[icon-usability|아이콘 사용성]], [[css-animation|CSS 애니메이션: transition과 @keyframes]], [[canvas-2d|Canvas 2D API]]
 
-더 읽을거리: 오픈소스 UI 아이콘 세트 — [Eva Icons](https://akveo.github.io/eva-icons/#/)
+더 읽을거리: 오픈소스 UI 아이콘 세트: [Eva Icons](https://akveo.github.io/eva-icons/#/)

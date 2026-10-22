@@ -65,8 +65,8 @@ function NameForm() {
 | `textarea` | 자식 텍스트가 값 | `<textarea value={text} onChange={...} />` |
 | `select` | 선택할 `<option>`에 `selected` | `<select value={fruit} onChange={...}>`. `multiple`이면 `value`에 배열 |
 | checkbox | `checked` 속성 | `checked={state}`, 값은 `e.target.checked` |
-| `input type="file"` | — | 값이 읽기 전용이라 **비제어**. `ref`나 `e.target.files`로 꺼낸다 |
-| 여러 입력 | — | 객체 state 하나 + 각 입력의 `name` + 계산된 속성명으로 핸들러 하나에서 처리 |
+| `input type="file"` | - | 값이 읽기 전용이라 **비제어**. `ref`나 `e.target.files`로 꺼낸다 |
+| 여러 입력 | - | 객체 state 하나 + 각 입력의 `name` + 계산된 속성명으로 핸들러 하나에서 처리 |
 
 ```jsx
 const [form, setForm] = useState({ name: '', guests: 2, isGoing: true })

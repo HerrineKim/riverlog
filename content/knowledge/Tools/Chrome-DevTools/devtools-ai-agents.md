@@ -77,7 +77,7 @@ MCP 자체의 개념과 Claude Code에 서버를 붙이는 법은 [[claude-code-
 | --- | --- | --- |
 | `0` | 기능 허용 + 모델 개선에 데이터 사용 | 개인 사용자, 서드파티 관리 브라우저 |
 | `1` | 기능 허용, 모델 개선에는 쓰지 않음 | Chrome Enterprise, Workspace Education |
-| `2` | AI 기능과 진입점(Ask AI 메뉴 포함) 전부 끔 | — |
+| `2` | AI 기능과 진입점(Ask AI 메뉴 포함) 전부 끔 | - |
 
 기업은 Google 관리 콘솔에서 정책으로 설정한다. 개인은 Chrome을 모두 종료하고 권장 정책을 직접 넣은 뒤 `chrome://policy`에서 값이 `2`인지 확인한다.
 

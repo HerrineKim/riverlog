@@ -8,7 +8,7 @@ date: "2026-10-13"
 sources: ["https://velog.io/@teo/ai-and-developer", "https://velog.io/@teo/we-programmer", "https://velog.io/@teo/ai-era-developer-role", "https://www.youtube.com/watch?v=palpFFMKuSU"]
 ---
 
-> 테오(teo)의 「[AI 시대의 개발자: 현업 개발자의 솔직한 이야기](https://velog.io/@teo/ai-and-developer)」(2025.11), 「[우리, 프로그래머들 — .md로 코딩하는 시대](https://velog.io/@teo/we-programmer)」(2026.03), 「[더이상 사람이 코딩하지 않는 시대, 개발자는 무엇을 해야 할까?](https://velog.io/@teo/ai-era-developer-role)」(2026.06)를 바탕으로 재구성한 노트다.
+> 테오(teo)의 「[AI 시대의 개발자: 현업 개발자의 솔직한 이야기](https://velog.io/@teo/ai-and-developer)」(2025.11), 「[우리, 프로그래머들: .md로 코딩하는 시대](https://velog.io/@teo/we-programmer)」(2026.03), 「[더이상 사람이 코딩하지 않는 시대, 개발자는 무엇을 해야 할까?](https://velog.io/@teo/ai-era-developer-role)」(2026.06)를 바탕으로 재구성한 노트다.
 > 「주니어는 어떻게 시니어가 되나」는 Meri Williams의 LDX3 London 2025 발표 「[Rethinking growing engineers in the age of AI](https://www.youtube.com/watch?v=palpFFMKuSU)」를 바탕으로 더했다.
 
 ## 코딩 노동력이 병목이던 산업

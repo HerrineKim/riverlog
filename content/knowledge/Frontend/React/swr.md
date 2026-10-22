@@ -67,7 +67,7 @@ function NewsList() { const { news } = useNews(); return <ul>{news?.map((n) => <
 | --- | --- | --- |
 | `revalidate` | `true` | 갱신이 끝난 뒤 서버에 재검증할지 |
 | `populateCache` | `true` | 원격 변경 결과를 캐시에 쓸지 |
-| `optimisticData` | — | 요청 결과를 기다리지 않고 캐시에 먼저 넣을 값(또는 함수) |
+| `optimisticData` | - | 요청 결과를 기다리지 않고 캐시에 먼저 넣을 값(또는 함수) |
 | `rollbackOnError` | `true` | 원격 변경이 실패하면 캐시를 되돌릴지 |
 
 ### Optimistic UI

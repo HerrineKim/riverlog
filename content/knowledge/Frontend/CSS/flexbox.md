@@ -233,4 +233,4 @@ Flexbox는 한 방향, Grid는 행과 열을 동시에 다룬다. 어느 쪽을 
 
 관련 노트: [[css-grid|CSS 그리드 레이아웃]], [[logical-properties|쓰기 모드와 논리적 속성]], [[box-model|박스 모델과 display]], [[css-overflow-scroll|CSS 오버플로와 스크롤: 넘침 처리와 스크롤 스냅]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]
 
-더 읽을거리: 게임과 실험 도구로 익히기 — [Flexbox Froggy](https://flexboxfroggy.com/#ko), [flexbox.help](https://flexbox.help/)(속성을 바꿔 보며 결과 확인)
+더 읽을거리: 게임과 실험 도구로 익히기, [Flexbox Froggy](https://flexboxfroggy.com/#ko), [flexbox.help](https://flexbox.help/)(속성을 바꿔 보며 결과 확인)

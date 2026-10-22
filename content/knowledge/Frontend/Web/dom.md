@@ -173,7 +173,7 @@ const scrollToTop = () => {
 
 | 영역 | 예 |
 | --- | --- |
-| DOM 조작 | 문서(HTML) 요소 선택·생성·변경 — `document.title = 'Javascript'` |
+| DOM 조작 | 문서(HTML) 요소 선택·생성·변경: `document.title = 'Javascript'` |
 | BOM 조작 | `location`, `history`, `navigator` 등 브라우저 제어 |
 | JavaScript Core(ECMAScript) | 자료구조(Object, Array), 조건문, 반복문 등 언어 자체 |
 

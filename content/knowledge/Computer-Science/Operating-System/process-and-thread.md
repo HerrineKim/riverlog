@@ -175,7 +175,7 @@ else                perror("fork");       // -1: 실패
 | Message Queue | 예 | 양방향 | 메시지 단위로 넣고 꺼낸다 |
 | Socket | 예 | 양방향 | 다른 컴퓨터의 프로세스와도 통신 |
 | Signal | 예 | 단방향 | 데이터 없이 사건만 알린다([[unix-signals\|UNIX 시그널]]) |
-| Semaphore | 예 | — | 데이터 전달이 아니라 공유 자원 접근 제어 |
+| Semaphore | 예 | - | 데이터 전달이 아니라 공유 자원 접근 제어 |
 
 Shared Memory처럼 같은 데이터를 함께 쓰거나, 한 프로세스 안의 스레드들이 data 영역을 공유하면 경쟁 상태가 생길 수 있다. 이를 막는 방법은 [[process-synchronization|프로세스 동기화]]에서 다룬다.
 

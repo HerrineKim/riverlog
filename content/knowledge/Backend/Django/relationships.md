@@ -15,7 +15,7 @@ date: "2026-10-13"
 | 1:N | `ForeignKey` | 소유자 1 ↔ 자동차 N, 게시글 1 ↔ 댓글 N |
 | M:N | `ManyToManyField` | 책 ↔ 저자, 의사 ↔ 환자 |
 
-## 1:1 — `OneToOneField`
+## 1:1: `OneToOneField`
 
 ```python
 class Engine(models.Model):
@@ -31,7 +31,7 @@ class Car(models.Model):
 - `OneToOneField`: `engine.car` → 객체 하나
 - `ForeignKey(unique=True)`: `engine.car_set.all()` → (항상 0~1개인) QuerySet
 
-## 1:N — `ForeignKey`
+## 1:N: `ForeignKey`
 
 **N쪽 모델에** 1쪽 모델을 가리키는 외래 키를 둔다.
 
@@ -53,7 +53,7 @@ owner.car_set.all()       # 역참조: 소유자의 모든 차 (모델명_set)
 - `on_delete`: 참조 대상이 삭제될 때의 동작. `CASCADE`(함께 삭제), `PROTECT`(삭제 막기), `SET_NULL`(null로, `null=True` 필요) 등.
 - `related_name='cars'`를 주면 역참조 이름을 `owner.cars.all()`로 바꿀 수 있다.
 
-## M:N — `ManyToManyField`
+## M:N: `ManyToManyField`
 
 M:N은 두 테이블만으로는 표현할 수 없고, 양쪽 id를 짝지어 저장하는 **중개 테이블**이 필요하다.
 

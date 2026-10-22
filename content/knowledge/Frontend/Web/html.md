@@ -109,7 +109,7 @@ HTML 파서는 틀린 마크업에도 실패하지 않는다. 생략한 `</li>`,
 ```
 
 ```js
-el.dataset.reviewId   // "42" — data-review-id가 카멜케이스로 바뀐다
+el.dataset.reviewId   // "42": data-review-id가 카멜케이스로 바뀐다
 el.dataset.state = 'closed'
 ```
 

@@ -41,9 +41,9 @@ Object.getOwnPropertyDescriptor(user, 'name')
 
 Object.defineProperty(user, 'id', { value: 42 }) // 나머지는 전부 false
 user.id = 7
-user.id                    // 42 — sloppy mode에서는 조용히 무시된다
-Object.keys(user)          // ['name'] — enumerable: false라 안 나온다
-delete user.id             // false — configurable: false (strict mode에서는 TypeError)
+user.id                    // 42: sloppy mode에서는 조용히 무시된다
+Object.keys(user)          // ['name'], enumerable: false라 안 나온다
+delete user.id             // false, configurable: false (strict mode에서는 TypeError)
 ```
 
 | API | 하는 일 |
@@ -81,7 +81,7 @@ const temp = {
 temp.fahrenheit = 212
 temp.celsius   // 100
 Object.getOwnPropertyDescriptor(temp, 'fahrenheit')
-// { get: ƒ, set: ƒ, enumerable: true, configurable: true } — value·writable이 없다
+// { get: ƒ, set: ƒ, enumerable: true, configurable: true }: value·writable이 없다
 ```
 
 - getter만 있고 setter가 없으면 대입이 무시된다(strict mode에서는 `TypeError`).

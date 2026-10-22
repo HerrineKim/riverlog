@@ -154,7 +154,7 @@ export default { extends: ['@commitlint/config-conventional'] }
 Git hook은 저장소의 `.git/hooks/`에 이벤트 이름(`pre-commit`, `commit-msg`, `pre-push` 등)으로 둔 실행 파일이다. `git init`하면 `*.sample` 예제가 들어 있다. 다만 `.git/` 안은 커밋되지 않아 팀원에게 그대로 공유되지 않으므로, 설정 파일을 저장소에 두고 hook을 설치해 주는 도구를 쓴다. Node 프로젝트는 husky, 언어와 무관하게는 Python으로 만든 **pre-commit**이 대표적이다.
 
 ```yaml
-# .pre-commit-config.yaml — C/C++ 코드를 clang-format으로 검사
+# .pre-commit-config.yaml: C/C++ 코드를 clang-format으로 검사
 repos:
   - repo: https://github.com/pre-commit/mirrors-clang-format
     rev: v21.1.0          # 고정된 태그. pre-commit autoupdate로 갱신

@@ -38,7 +38,7 @@ JSON은 객체 리터럴보다 엄격하다. 파서를 단순하고 빠르게 �
 ```javascript
 JSON.stringify({ name: 'John', courses: ['html'], wife: null })
 // '{"name":"John","courses":["html"],"wife":null}'
-JSON.stringify('hi')  // '"hi"' — 원시값도 된다
+JSON.stringify('hi')  // '"hi"': 원시값도 된다
 ```
 
 중첩 객체·배열은 재귀적으로 따라 들어간다. 다만 JSON에 없는 값은 버리거나 바꾼다.
@@ -46,13 +46,13 @@ JSON.stringify('hi')  // '"hi"' — 원시값도 된다
 | 값 | 객체 속성일 때 | 배열 요소일 때 |
 | --- | --- | --- |
 | `undefined`, 함수, Symbol 값 | **속성째 빠진다** | `null` |
-| Symbol **키** 속성 | 빠진다 | — |
+| Symbol **키** 속성 | 빠진다 | - |
 | `NaN`, `Infinity` | `null` | `null` |
 | `Date` | `toJSON()`이 만든 ISO 문자열 | 같다 |
 | `Map`, `Set` | `{}`(내용이 사라진다) | 같다 |
 | `BigInt` | **`TypeError`** | 같다 |
 | 순환 참조 | **`TypeError: Converting circular structure to JSON`** | 같다 |
-| 열거 불가 속성, 프로토타입의 속성 | 빠진다 | — |
+| 열거 불가 속성, 프로토타입의 속성 | 빠진다 | - |
 
 그래서 `JSON.stringify` 왕복은 데이터를 조용히 잃는다. Date는 문자열이 되어 돌아오고, `undefined` 값을 가진 속성은 없던 일이 된다. Map은 `Object.fromEntries(map)`이나 `[...map]`으로 바꿔 보낸다([[map-and-set|Map과 Set]]). BigInt는 문자열로 바꾸거나 아래 `JSON.rawJSON`을 쓴다([[js-numbers|숫자와 Math]]).
 

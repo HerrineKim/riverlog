@@ -43,7 +43,7 @@ ORM(Object-Relational Mapping)은 객체지향 언어의 객체와 관계형 DB�
 from django.db.models import Avg, Count, Max, Q
 
 User.objects.filter(last_name='김').aggregate(Avg('age'), Max('age'))
-# {'age__avg': 28.2, 'age__max': 64} — 이름을 주려면 avg_value=Avg('age')
+# {'age__avg': 28.2, 'age__max': 64}: 이름을 주려면 avg_value=Avg('age')
 
 User.objects.values('country').annotate(num=Count('id'), avg_balance=Avg('balance'))
 ```

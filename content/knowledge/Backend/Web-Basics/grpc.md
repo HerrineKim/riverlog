@@ -91,7 +91,7 @@ server.bindAsync('0.0.0.0:50051', grpc.ServerCredentials.createInsecure(), () =>
 ```
 
 ```javascript
-// client.js — 정의를 불러오는 앞부분은 server.js와 같다
+// client.js: 정의를 불러오는 앞부분은 server.js와 같다
 const client = new myservice.NumberSquarer('localhost:50051', grpc.credentials.createInsecure());
 client.squareNumber({ value: Number(process.argv[2]) }, (err, res) => {
   console.log(res.value); // node client.js 7 → 49

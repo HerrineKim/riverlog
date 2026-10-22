@@ -40,7 +40,7 @@ Java로 개발하려면 먼저 **JDK(Java Development Kit)를** 설치하고, �
 ~/Library/Application Support/JetBrains/<버전>/idea.vmoptions
 
 -Xms512m     # 최소(초기) 힙
--Xmx2048m    # 최대 힙 — -Xms보다 작으면 JVM이 시작되지 않는다
+-Xmx2048m    # 최대 힙: -Xms보다 작으면 JVM이 시작되지 않는다
 ```
 
 ### 오류 창이 없을 때 원인 찾는 법

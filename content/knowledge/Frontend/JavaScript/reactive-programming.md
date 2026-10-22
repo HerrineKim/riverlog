@@ -55,7 +55,7 @@ sources: ["https://velog.io/@teo/reactive-programming", "https://velog.io/@teo/r
 화살표의 방향은 그대로 두고 **소유권을 뒤집는다.** Bar가 Foo의 이벤트를 구독하고 자기 상태는 자기가 바꾼다. 이것이 제어의 역전(Inversion of Control)이다.
 
 ```js
-// Bar.js — 상태 변경은 내 안에서
+// Bar.js: 상태 변경은 내 안에서
 Foo.onNetworkRequest((event) => incrementCounter(event.value));
 ```
 
@@ -131,7 +131,7 @@ suggestion1$.subscribe(renderSuggestion1)
 | 연산자 | 새 요청이 오면 | 쓰는 곳 |
 | --- | --- | --- |
 | `mergeMap`(옛 `flatMap`) | 이전 요청도 그대로 두고 모두 흘린다 | 순서와 무관한 병렬 작업 |
-| `switchMap` | **이전 요청을 취소**하고 최신 것만 | 검색어 자동완성, 새로고침 — 늦게 도착한 옛 응답이 화면을 덮는 경쟁 상태를 막는다 |
+| `switchMap` | **이전 요청을 취소**하고 최신 것만 | 검색어 자동완성, 새로고침: 늦게 도착한 옛 응답이 화면을 덮는 경쟁 상태를 막는다 |
 | `concatMap` | 이전 것이 끝날 때까지 줄 세운다 | 순서가 중요한 저장 요청 |
 | `exhaustMap` | 진행 중이면 새 것을 무시한다 | 중복 제출 방지 |
 

@@ -109,6 +109,6 @@ def recommend(words_list, target_idx, top_n=6):
 
 ## 참고 자료
 
-- [코사인 유사도(Cosine Similarity) — 딥 러닝을 이용한 자연어 처리 입문](https://wikidocs.net/24603)
+- [코사인 유사도(Cosine Similarity): 딥 러닝을 이용한 자연어 처리 입문](https://wikidocs.net/24603)
 
 관련 노트: [[dynamic-programming|동적 계획법]], [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[search-engine-basics|검색엔진의 원리]], [[nlp-pipeline|자연어 처리 파이프라인]], [[recsys-basics|추천 시스템 기초]]

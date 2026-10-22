@@ -77,7 +77,7 @@ class Declared {}                    // 선언: 같은 스코프에서 다시 �
 let Expr = class {}                  // 익명 클래스 표현식
 Expr = class Named {}                // 표현식은 변수에 다시 담을 수 있다
 Expr.name                            // 'Named'
-typeof Named                         // 'undefined' — 표현식의 이름은 클래스 안에서만 보인다
+typeof Named                         // 'undefined', 표현식의 이름은 클래스 안에서만 보인다
 
 function makeClass(greeting) {       // 클래스를 실행 중에 만들어 돌려준다
   return class {
@@ -107,7 +107,7 @@ class Counter {
   }
 }
 
-Counter.add(1, 3)         // 4 — 인스턴스 없이 클래스 이름으로 호출
+Counter.add(1, 3)         // 4, 인스턴스 없이 클래스 이름으로 호출
 new Counter().count       // 0
 ```
 
@@ -132,7 +132,7 @@ class Account {
 }
 
 const acc = new Account()
-acc.#balance          // SyntaxError — 파싱 단계에서 거부된다
+acc.#balance          // SyntaxError, 파싱 단계에서 거부된다
 ```
 
 - private 필드는 **본문에 미리 선언**해야 한다. 선언 없이 constructor에서 `this.#x = 1`로 새로 만들 수 없다.
@@ -227,10 +227,10 @@ class Child extends Parent {
   }
 }
 
-Child.family          // 'Kim' — 정적 멤버도 상속된다
+Child.family          // 'Kim', 정적 멤버도 상속된다
 Child.sayFamily()     // 'We are the Kims'
 const child = new Child()
-child.mother          // 'mother' — 인스턴스 필드
+child.mother          // 'mother', 인스턴스 필드
 ```
 
 - 자식 클래스는 부모의 **정적 멤버**와 **인스턴스 멤버**를 모두 물려받는다(`#private`만 예외다).
@@ -254,7 +254,7 @@ class Rabbit extends Animal {
   name = 'rabbit'
   kind() { return 'rabbit' }
 }
-new Rabbit() // 'animal' 'rabbit' — 필드는 부모 값, 메서드는 자식 것
+new Rabbit() // 'animal' 'rabbit', 필드는 부모 값, 메서드는 자식 것
 ```
 
 원인은 초기화 순서다. 기반 클래스의 필드는 constructor 실행 전에, **파생 클래스의 필드는 `super()`가 끝난 뒤에** 초기화된다. 부모 constructor가 도는 동안 자식 필드는 아직 없다. 부모 constructor에서 쓸 값이라면 필드 대신 메서드나 getter로 오버라이딩한다.
@@ -275,7 +275,7 @@ class PowerArray extends Array {
   isEmpty() { return this.length === 0 }
 }
 const arr = new PowerArray(1, 2, 5, 10)
-arr.filter((x) => x > 3).isEmpty() // false — filter 결과도 PowerArray다
+arr.filter((x) => x > 3).isEmpty() // false, filter 결과도 PowerArray다
 ```
 
 - `map`·`filter`·`slice` 같은 메서드는 결과 배열을 만들 때 `arr.constructor`를 따라가므로 결과도 하위 클래스 인스턴스가 된다. 정적 getter `static get [Symbol.species]() { return Array }`를 두면 결과를 일반 `Array`로 만들게 바꿀 수 있다. `Map`·`Set`·`Promise`도 같은 장치를 쓴다.

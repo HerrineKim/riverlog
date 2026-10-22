@@ -29,7 +29,7 @@ handler가 비어 있으면 Proxy는 **투명한 래퍼**다. 읽기·쓰기·�
 const target = {}
 const proxy = new Proxy(target, {})
 proxy.test = 5
-target.test       // 5 — 쓰기가 target에 전달됐다
+target.test       // 5: 쓰기가 target에 전달됐다
 for (const key in proxy) console.log(key) // 'test'
 ```
 
@@ -117,7 +117,7 @@ function delay(fn, ms) {
 }
 function sayHi(user) { console.log(`Hi, ${user}`) }
 sayHi = delay(sayHi, 3000)
-sayHi.length // 1 — 래퍼 함수였다면 0
+sayHi.length // 1: 래퍼 함수였다면 0
 ```
 
 한 객체를 여러 Proxy로 겹겹이 감싸 기능을 하나씩 덧입힐 수도 있다.
@@ -168,7 +168,7 @@ const userProxy = new Proxy(user, {
   get(target, prop) { return target[prop] }, // getter가 this = target(user)로 실행된다
 })
 const admin = { __proto__: userProxy, _name: 'Admin' }
-admin.name // 'Guest' — 'Admin'이어야 한다
+admin.name // 'Guest': 'Admin'이어야 한다
 ```
 
 `admin`에 `name`이 없으니 프로토타입인 `userProxy`에서 찾고, 트랩의 `target[prop]`은 getter를 `this = user`로 실행한다. 세 번째 인자 **receiver**에는 원래 접근한 객체(`admin`)가 들어 있다. getter는 호출하는 것이 아니라 읽는 것이라 `call`로 this를 넘길 수 없고, `Reflect.get(target, prop, receiver)`가 그 일을 한다. `set`의 receiver도 setter에 대해 같은 역할을 한다.

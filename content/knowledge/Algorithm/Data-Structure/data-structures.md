@@ -62,7 +62,7 @@ Kotlin에서는 객체 참조가 C의 포인터 역할을 한다.
 ```kotlin
 class Node(val value: String, var next: Node? = null)
 
-// prev 다음에 새 노드 끼워 넣기 — 포인터 두 개만 바꾸면 된다
+// prev 다음에 새 노드 끼워 넣기: 포인터 두 개만 바꾸면 된다
 fun addAfter(prev: Node, value: String) {
     prev.next = Node(value, prev.next)
 }

@@ -66,6 +66,7 @@ for (const arg of files) {
   const prose = content.replace(/```[\s\S]*?```/g, "").replace(/`[^`]*`|「[^」]*」|"[^"]*"|“[^”]*”/g, "");
   const polite = prose.match(/[^\s]*(습니다|입니다|세요|해요|예요|이에요)[.!?]?(?=\s|$)/gm);
   if (polite) warns.push(`polite speech (use 평서체 "~다"): ${[...new Set(polite)].slice(0, 3).join(" / ")}`);
+  if (content.includes("\u2014") || JSON.stringify(data).includes("\u2014")) warns.push("em dash found; use a colon, comma or parentheses instead");
 
   // Log-shaped notes: headings or title organized by date/session instead of topic
   const LOG = /\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}|\bday\s*\d+|\d+\s*(일차|주차|회차)|\bpjt\s*\d+|오늘|회고/i;

@@ -9,7 +9,7 @@ date: "2026-10-21"
 ---
 
 > 인프런 「[그래서, 디자인 시스템이 대체 뭔데?](https://www.inflearn.com/pages/infmation-64-20231017)」(2023.10), 크몽 블로그 「[크몽 디자인 시스템 v.2.0 구축기](https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333)」(2023.11), 유니크굿 「[리얼월드 스튜디오 디자인 시스템 제작기 #1](https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564)」(2022.03)로 보강한 노트다. 컴포넌트 이름과 속성 축은 쏘카 기술 블로그 「[컴포넌트, 제대로 만들어 쉽게 쓰자! (1탄)](https://tech.socarcorp.kr/design/2020/07/31/component-01.html)」과 「[코드로 만드는 Design System](https://medium.com/@kykkjh2984/%EC%BD%94%EB%93%9C%EB%A1%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-design-system-b04bb916a02b)」으로 보강했다.
-> 인터페이스 인벤토리와 시각 방향 정하기는 「[The Atomic Workflow — People, Process, And Making Design Systems Happen](https://www.smashingmagazine.com/atomic-design-workflow/)」을, 토큰의 출발은 「[What Are Design Tokens?](https://css-tricks.com/what-are-design-tokens/)」를 바탕으로 보강했다.
+> 인터페이스 인벤토리와 시각 방향 정하기는 「[The Atomic Workflow: People, Process, And Making Design Systems Happen](https://www.smashingmagazine.com/atomic-design-workflow/)」을, 토큰의 출발은 「[What Are Design Tokens?](https://css-tricks.com/what-are-design-tokens/)」를 바탕으로 보강했다.
 
 ## 디자인 시스템이란
 
@@ -198,4 +198,4 @@ AI 코딩 도구가 읽는 팀 규칙 파일(`SKILL.md`)도 같은 구조로 중
 - 이름은 색이 아니라 역할·형태로 짓고, 컴포넌트는 모양과 바꿀 수 있는 동작을 함께 정의한다.
 - 토큰 → 컴포넌트 → Storybook을 중앙에서 관리해 패키지로 배포하고, **한 번 만들고 끝이 아니라 버전을 올리며 계속 다듬는다.**
 
-관련 노트: [[storybook|Storybook]], [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[accessible-design-process|디자인 단계의 접근성]], [[product-language-design-system|제품 언어로서의 디자인 시스템: 토큰, 기능과 형태, 컴포넌트 API]], [[visual-design-tips|개발자를 위한 시각 디자인 요령]]
+관련 노트: [[storybook|Storybook]], [[design-tools-handoff|디자인 도구와 개발자 핸드오프]], [[atomic-design|Atomic Design과 컴포넌트 폴더 구조]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[animated-icon|Animated Icon: 영상을 투명 배경 아이콘으로 쓰기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ux-writing|UX 라이팅: 원칙, 가이드라인, 체크리스트]], [[accessible-design-process|디자인 단계의 접근성]], [[product-language-design-system|제품 언어로서의 디자인 시스템: 토큰, 기능과 형태, 컴포넌트 API]], [[visual-design-tips|개발자를 위한 시각 디자인 요령]]

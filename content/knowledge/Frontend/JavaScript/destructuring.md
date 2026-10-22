@@ -25,15 +25,15 @@ const [a, b, c] = 'abc'                 // 문자열도 이터러블
 const [one, two] = new Set([1, 2, 3])
 const { title, width } = { title: 'Menu', width: 100, height: 200 }
 
-const [x] = { x: 1 }   // TypeError: not iterable — 일반 객체는 이터러블이 아니다
-const { y } = null     // TypeError — null·undefined는 분해할 수 없다
+const [x] = { x: 1 }   // TypeError: not iterable, 일반 객체는 이터러블이 아니다
+const { y } = null     // TypeError, null·undefined는 분해할 수 없다
 ```
 
 ## 배열 패턴
 
 ```javascript
 const [name, , title] = ['Julius', 'Caesar', 'Consul', 'of Rome'] // 쉼표로 건너뛴다
-const [head, ...rest] = [1, 2, 3, 4]        // rest는 [2, 3, 4] — 새 배열
+const [head, ...rest] = [1, 2, 3, 4]        // rest는 [2, 3, 4], 새 배열
 const [p, q] = []                            // 둘 다 undefined, 에러 없음
 
 const user = {}
@@ -75,7 +75,7 @@ const { title: heading, ...others } = options              // others는 { height
 
 ```javascript
 let title, width
-{ title, width } = options     // SyntaxError — 블록으로 해석된다
+{ title, width } = options     // SyntaxError, 블록으로 해석된다
 ;({ title, width } = options)  // 괄호로 식임을 알린다
 ```
 

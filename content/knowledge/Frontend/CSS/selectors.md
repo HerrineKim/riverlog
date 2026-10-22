@@ -312,10 +312,10 @@ input, button, select, textarea { font: inherit; color: inherit; }  /* 폼 요�
 
 | 키워드 | 결과 | 쓰는 때 |
 | --- | --- | --- |
-| `inherit` | 부모의 계산값 | 예외 만들기: `.my-component strong { font-weight: inherit; }` — 컴포넌트 굵기가 바뀌어도 따라간다 |
-| `initial` | 속성의 **명세상 초깃값**(브라우저 기본 스타일 아님) | `aside strong { font-weight: initial; }` — `display: initial`은 `inline`이라 주의 |
+| `inherit` | 부모의 계산값 | 예외 만들기: `.my-component strong { font-weight: inherit; }`: 컴포넌트 굵기가 바뀌어도 따라간다 |
+| `initial` | 속성의 **명세상 초깃값**(브라우저 기본 스타일 아님) | `aside strong { font-weight: initial; }`: `display: initial`은 `inline`이라 주의 |
 | `unset` | 상속되는 속성이면 `inherit`, 아니면 `initial` | 어느 쪽인지 외우지 않고 지울 때: `margin: unset; color: unset;` |
-| `revert` | 작성자 스타일을 모두 취소하고 **사용자·브라우저 기본 스타일**로 | `aside p { padding: revert; }` — 브라우저 기본값으로 |
+| `revert` | 작성자 스타일을 모두 취소하고 **사용자·브라우저 기본 스타일**로 | `aside p { padding: revert; }`: 브라우저 기본값으로 |
 | `revert-layer` | **현재 레이어**의 값만 취소하고 이전 레이어 값으로 | 라이브러리를 낮은 레이어에 넣고 덮어쓴 값을 해제할 때 |
 
 `all` 속성은 거의 모든 속성을 한 번에 되돌린다. `aside p { all: unset; }`은 나중에 전역 `p` 규칙에 속성이 늘어나도 계속 지운다.

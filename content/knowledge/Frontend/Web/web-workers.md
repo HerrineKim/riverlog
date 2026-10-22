@@ -19,7 +19,7 @@ sources: ["https://web.dev/learn/performance/web-worker-overview", "https://web.
 ## 만들기와 메시지 주고받기
 
 ```js
-// main.js — 메인 스레드
+// main.js: 메인 스레드
 const worker = new Worker('/js/my-worker.js')            // 클래식 워커
 // const worker = new Worker('/js/my-worker.js', { type: 'module' })  // 모듈 워커
 
@@ -30,7 +30,7 @@ worker.postMessage('hi')
 ```
 
 ```js
-// my-worker.js — 워커 스레드. 전역은 window가 아니라 self
+// my-worker.js: 워커 스레드. 전역은 window가 아니라 self
 self.addEventListener('message', () => {
   self.postMessage('Hello, window!')
 })

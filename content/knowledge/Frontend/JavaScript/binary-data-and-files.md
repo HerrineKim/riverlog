@@ -32,7 +32,7 @@ const buffer = new ArrayBuffer(16)
 const u32 = new Uint32Array(buffer) // 같은 16바이트를 4바이트 정수 4개로 본다
 const u8 = new Uint8Array(buffer)   // 같은 16바이트를 1바이트 정수 16개로 본다
 u32[0] = 256
-u8[1]                               // 1 — 리틀 엔디언 기기에서 256 = 0x00000100
+u8[1]                               // 1, 리틀 엔디언 기기에서 256 = 0x00000100
 ```
 
 **뷰는 데이터를 갖지 않는다.** 여러 뷰가 한 버퍼를 공유하므로 한쪽에 쓰면 다른 쪽에서 보인다. TypedArray의 종류, `%TypedArray%` 공통 부모, 일반 배열과의 차이는 [[arrays-and-objects#형식화 배열(TypedArray)|배열과 객체의 형식화 배열 절]]에 있다. 여기서는 바이너리 처리에 필요한 동작만 정리한다.
@@ -64,8 +64,8 @@ TypedArray는 생성자가 형식을 정하고 배열 전체가 같은 형식이
 ```javascript
 const view = new DataView(new Uint8Array([255, 255, 255, 255]).buffer)
 view.getUint8(0)          // 255
-view.getUint16(0)         // 65535 — 기본은 빅 엔디언
-view.getUint32(0, true)   // 4294967295 — 두 번째 인자 true면 리틀 엔디언
+view.getUint16(0)         // 65535, 기본은 빅 엔디언
+view.getUint32(0, true)   // 4294967295, 두 번째 인자 true면 리틀 엔디언
 view.setUint32(0, 0)      // 네 바이트 모두 0
 ```
 
@@ -80,7 +80,7 @@ const buf = new ArrayBuffer(8, { maxByteLength: 64 }) // 늘릴 수 있는 버�
 buf.resize(32)                                        // 길이를 따라가는 뷰는 자동으로 커진다
 
 const moved = buf.transfer()    // 내용을 새 버퍼로 옮긴다
-buf.detached                    // true — 옛 버퍼는 길이 0, 더 쓸 수 없다
+buf.detached                    // true, 옛 버퍼는 길이 0, 더 쓸 수 없다
 ```
 
 `transfer()`는 워커에 `postMessage(data, [buffer])`로 버퍼를 넘길 때와 같은 「복사 없는 이동」을 코드 안에서 한다.
@@ -109,7 +109,7 @@ new TextDecoder('euc-kr').decode(bytes)          // 옛 한국어 인코딩 파�
 
 ```javascript
 const blob = new Blob(['<h1>hi</h1>'], { type: 'text/html' }) // 첫 인자는 반드시 배열
-const part = blob.slice(0, 4, 'text/plain')                   // (start, end, type) — 음수도 된다
+const part = blob.slice(0, 4, 'text/plain')                   // (start, end, type), 음수도 된다
 ```
 
 - `fetch`·`XMLHttpRequest`·`WebSocket.send`는 Blob을 그대로 본문으로 받는다. **Blob의 `type`이 요청의 `Content-Type`이 된다.**
@@ -123,8 +123,8 @@ const part = blob.slice(0, 4, 'text/plain')                   // (start, end, ty
 | --- | --- | --- |
 | 문자열 | `await blob.text()` (UTF-8) | `FileReader.readAsText` |
 | ArrayBuffer | `await blob.arrayBuffer()` | `FileReader.readAsArrayBuffer` |
-| Uint8Array | `await blob.bytes()` (Baseline 2026, 아니면 `new Uint8Array(await blob.arrayBuffer())`) | — |
-| 스트림 | `blob.stream()` → `ReadableStream` (큰 파일을 메모리에 다 올리지 않고 처리) | — |
+| Uint8Array | `await blob.bytes()` (Baseline 2026, 아니면 `new Uint8Array(await blob.arrayBuffer())`) | - |
+| 스트림 | `blob.stream()` → `ReadableStream` (큰 파일을 메모리에 다 올리지 않고 처리) | - |
 | data URL(base64) | `FileReader.readAsDataURL` | 같음 |
 
 `FileReader`가 여전히 필요한 경우는 data URL 변환, UTF-8이 아닌 인코딩으로 텍스트 읽기(`readAsText(blob, 'euc-kr')`, 또는 TextDecoder), 읽기 진행률(`progress` 이벤트)과 `abort()` 정도다. 이벤트는 `loadstart → progress → load | error | abort → loadend` 순이고 결과는 `reader.result`, 오류는 `reader.error`에 있다. 워커 안에서는 동기 버전 `FileReaderSync`도 쓸 수 있다.
@@ -166,7 +166,7 @@ bytes.toHex(); Uint8Array.fromHex('ff00')      // 16진 문자열도 같은 방�
 
 | 얻는 곳 | 코드 |
 | --- | --- |
-| 파일 입력 | `input.files` — 유사 배열 `FileList`. `multiple`이면 여러 개 |
+| 파일 입력 | `input.files`: 유사 배열 `FileList`. `multiple`이면 여러 개 |
 | 드래그 앤 드롭 | `drop` 이벤트의 `event.dataTransfer.files` |
 | 붙여넣기 | `paste` 이벤트의 `event.clipboardData.files` |
 | 직접 생성 | `new File([blob], 'photo.png', { type: 'image/png' })` |

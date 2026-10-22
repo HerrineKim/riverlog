@@ -76,7 +76,7 @@ sources: ["https://web.dev/learn/privacy/third-parties", "https://developer.mozi
 | `same-origin` | 전체 URL | 없음 | 없음 |
 | `strict-origin` | 출처만 | 출처만 | 없음 |
 | `no-referrer` | 없음 | 없음 | 없음 |
-| `unsafe-url` | 전체 URL | 전체 URL | 전체 URL — 쓰지 않는다 |
+| `unsafe-url` | 전체 URL | 전체 URL | 전체 URL(쓰지 않는다) |
 
 - 정책을 지정하지 않으면 `strict-origin-when-cross-origin`이 적용된다. 그래도 기본값에 기대지 말고 **명시**한다. 서드파티에 아무것도 주지 않으려면 `same-origin`이나 `no-referrer`.
 - 지정 방법은 세 가지다: 응답 헤더 `Referrer-Policy`, `<meta name="referrer" content="...">`, 요소별 `referrerpolicy` 속성(`<a>`, `<img>`, `<script>`, `<iframe>`).

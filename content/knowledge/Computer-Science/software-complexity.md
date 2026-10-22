@@ -8,7 +8,7 @@ date: "2026-10-21"
 sources: ["http://www.cs.unc.edu/techreports/86-020.pdf", "https://github.com/papers-we-love/papers-we-love/blob/master/design/out-of-the-tar-pit.pdf?raw=true", "https://www.infoq.com/presentations/Simple-Made-Easy", "https://github.com/matthiasn/talk-transcripts/blob/master/Hickey_Rich/SimpleMadeEasy.md"]
 ---
 
-> Fred Brooks의 「[No Silver Bullet — Essence and Accidents of Software Engineering](http://www.cs.unc.edu/techreports/86-020.pdf)」(1986), Ben Moseley·Peter Marks의 「[Out of the Tar Pit](https://github.com/papers-we-love/papers-we-love/blob/master/design/out-of-the-tar-pit.pdf?raw=true)」(2006), Rich Hickey의 「[Simple Made Easy](https://www.infoq.com/presentations/Simple-Made-Easy)」(Strange Loop, 2011) 강연과 [녹취록](https://github.com/matthiasn/talk-transcripts/blob/master/Hickey_Rich/SimpleMadeEasy.md)을 바탕으로 재구성한 노트다.
+> Fred Brooks의 「[No Silver Bullet: Essence and Accidents of Software Engineering](http://www.cs.unc.edu/techreports/86-020.pdf)」(1986), Ben Moseley·Peter Marks의 「[Out of the Tar Pit](https://github.com/papers-we-love/papers-we-love/blob/master/design/out-of-the-tar-pit.pdf?raw=true)」(2006), Rich Hickey의 「[Simple Made Easy](https://www.infoq.com/presentations/Simple-Made-Easy)」(Strange Loop, 2011) 강연과 [녹취록](https://github.com/matthiasn/talk-transcripts/blob/master/Hickey_Rich/SimpleMadeEasy.md)을 바탕으로 재구성한 노트다.
 
 ## 복잡성이란
 

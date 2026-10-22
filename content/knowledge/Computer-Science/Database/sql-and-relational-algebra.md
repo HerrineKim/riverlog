@@ -8,7 +8,7 @@ date: "2026-10-20"
 sources: ["https://bytebytego.com/guides/visualizing-a-sql-query", "https://medium.com/@khwsc1/%EB%B2%88%EC%97%AD-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%84%A4%EA%B3%84-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-b25792a0aa86", "https://brunch.co.kr/@toughrogrammer/17"]
 ---
 
-> 노션 정리를 바탕으로 재구성하고, SQL 실행 과정은 ByteByteGo의 System Design 101 가이드 「[Visualizing a SQL Query](https://bytebytego.com/guides/visualizing-a-sql-query)」를, 설계 절차는 Lucidchart 튜토리얼의 번역 「[데이터 구조와 설계 — 튜토리얼](https://medium.com/@khwsc1/%EB%B2%88%EC%97%AD-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%84%A4%EA%B3%84-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-b25792a0aa86)」와 「[개념 정리 - 데이터베이스 편](https://brunch.co.kr/@toughrogrammer/17)」을 바탕으로 보강한 노트다.
+> 노션 정리를 바탕으로 재구성하고, SQL 실행 과정은 ByteByteGo의 System Design 101 가이드 「[Visualizing a SQL Query](https://bytebytego.com/guides/visualizing-a-sql-query)」를, 설계 절차는 Lucidchart 튜토리얼의 번역 「[데이터 구조와 설계: 튜토리얼](https://medium.com/@khwsc1/%EB%B2%88%EC%97%AD-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%84%A4%EA%B3%84-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-b25792a0aa86)」와 「[개념 정리 - 데이터베이스 편](https://brunch.co.kr/@toughrogrammer/17)」을 바탕으로 보강한 노트다.
 
 관계대수는 관계형 데이터베이스의 질의를 연산으로 표현하는 수학적 체계이고, SQL은 그 위에 만든 표준 언어다. SQL은 "무엇을 원하는지"만 적는 비절차적 언어, 관계대수는 "어떻게 구할지"를 연산 순서로 적는 절차적 언어라는 차이가 있다.
 
@@ -22,8 +22,8 @@ SQL 명령어 분류(DDL·DML·DCL)와 문법, `WHERE`와 `HAVING` 같은 시험
 
 | 연산 | 기호 | 의미 |
 | --- | --- | --- |
-| Select | σ | 조건을 만족하는 **튜플(행)** 추출 — 수평 연산 |
-| Project | π | 지정한 **속성(열)** 만 추출, 중복 제거 — 수직 연산 |
+| Select | σ | 조건을 만족하는 **튜플(행)** 추출, 수평 연산 |
+| Project | π | 지정한 **속성(열)** 만 추출, 중복 제거, 수직 연산 |
 | Join | ⋈ | 공통 속성을 기준으로 두 릴레이션을 결합 |
 | Division | ÷ | R에서 S의 모든 값과 관련된 튜플을 찾아, S의 속성을 뺀 나머지만 남김 |
 

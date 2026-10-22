@@ -266,7 +266,7 @@ function partial(func, ...bound) {
 | 규칙 | 뜻 | 예 |
 | --- | --- | --- |
 | 데이터는 마지막(data-last) | 변환 함수를 먼저, 데이터를 나중에 받는다 | `_.map(arr, fn)` → `fp.map(fn)(arr)` |
-| 자동 커링 | 인자를 나눠 넘겨도 된다 | `const toNames = R.map(R.prop('name'))` — 데이터 없이 함수를 만든다(포인트 프리) |
+| 자동 커링 | 인자를 나눠 넘겨도 된다 | `const toNames = R.map(R.prop('name'))`: 데이터 없이 함수를 만든다(포인트 프리) |
 | 고정된 인자 수 | 선택 인자를 없애 커링이 예측 가능하다 | `fp.padStart(3)('a')`는 공백, 채울 문자는 `fp.padCharsStart('-')(3)('a')`로 따로 |
 | 콜백 인자 개수 제한 | `map` 콜백에 값 하나만 넘긴다 | `['6', '8', '10'].map(parseInt)`는 `parseInt('8', 1)`처럼 인덱스가 진법으로 들어가 `[6, NaN, 2]`다. `fp.map(parseInt)`는 `[6, 8, 10]` |
 | 불변 | 입력을 바꾸지 않고 새 값을 돌려준다 | `fp.set('a.b', 1)(obj)` |

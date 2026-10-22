@@ -69,7 +69,7 @@ Unix (벨 연구소, 1969)
 ├── System V (AT&T 상용) ── Solaris, AIX, HP-UX
 └── BSD (UC 버클리) ─────── FreeBSD, NetBSD, OpenBSD
                          └─ NeXTSTEP → Darwin → macOS (Mach 커널 + BSD 계층)
-Linux (1991, 리누스 토르발스) — 유닉스 코드를 쓰지 않고 새로 작성한 커널
+Linux (1991, 리누스 토르발스): 유닉스 코드를 쓰지 않고 새로 작성한 커널
 └── Debian, Ubuntu, Fedora, Android ...
 ```
 

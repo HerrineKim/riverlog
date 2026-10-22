@@ -30,14 +30,14 @@ npm run test:cov     # 커버리지
 | 파일 | 역할 | Express에 대응하면 |
 | --- | --- | --- |
 | `main.ts` | 앱 생성·전역 설정·서버 실행(`bootstrap`) | `app.ts`의 `listen` 부분 |
-| `app.module.ts` | 루트 모듈. 컨트롤러·프로바이더를 등록 | — |
+| `app.module.ts` | 루트 모듈. 컨트롤러·프로바이더를 등록 | - |
 | `app.controller.ts` | 라우트를 정의하는 컨트롤러 | `cats.route.ts` |
 | `app.service.ts` | 비즈니스 로직 | `cats.service.ts` |
 
 ## 요청이 처리되는 흐름
 
 ```typescript
-// 1. main.ts — bootstrap()으로 앱 실행
+// 1. main.ts: bootstrap()으로 앱 실행
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
@@ -49,7 +49,7 @@ bootstrap();
 ```
 
 ```typescript
-// 2. app.module.ts — 어떤 컨트롤러/프로바이더가 있는지 등록
+// 2. app.module.ts: 어떤 컨트롤러/프로바이더가 있는지 등록
 @Module({
   imports: [],
   controllers: [AppController],
@@ -59,7 +59,7 @@ export class AppModule {}
 ```
 
 ```typescript
-// 3. app.controller.ts — GET / 요청을 받아 서비스에 위임
+// 3. app.controller.ts: GET / 요청을 받아 서비스에 위임
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -72,7 +72,7 @@ export class AppController {
 ```
 
 ```typescript
-// 4. app.service.ts — 실제 로직
+// 4. app.service.ts: 실제 로직
 @Injectable()
 export class AppService {
   getHello(): string {

@@ -51,7 +51,7 @@ sources: ["https://web.dev/learn/css/borders", "https://web.dev/learn/css/shadow
 | `border-image-slice` | 위·오른쪽·아래·왼쪽에서 자를 거리. 이미지를 **모서리 4 + 변 4 + 가운데 1**의 아홉 조각으로 나눈다. `fill`을 붙이면 가운데 조각을 배경처럼 채운다 |
 | `border-image-width` | 테두리 이미지가 그려질 두께 |
 | `border-image-outset` | 테두리를 박스 바깥으로 밀어내는 거리 |
-| `border-image-repeat` | 변 조각을 채우는 방식. `stretch`(기본), `repeat`, `round`, `space` — `background-repeat`와 같은 뜻 |
+| `border-image-repeat` | 변 조각을 채우는 방식. `stretch`(기본), `repeat`, `round`, `space`: `background-repeat`와 같은 뜻 |
 
 ```css
 .frame {

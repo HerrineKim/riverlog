@@ -28,7 +28,7 @@ sources: ["https://web.dev/learn/privacy/third-parties", "https://privacysandbox
 | 사파리 (ITP) | **예외 없이 기본 차단** | 서드파티 localStorage·IndexedDB·서비스 워커·HTTP 캐시를 최상위 사이트별로 분할 | 개발자 메뉴의 ITP 디버그 모드 |
 | 파이어폭스 (ETP + Total Cookie Protection) | 기본으로 **사이트별 분할**(Firefox 103부터). 추적기로 분류된 도메인은 차단 | 저장소·네트워크 상태(HTTP 캐시, DNS, HSTS, 연결 풀 등)도 분할 | `about:protections`, 콘솔 메시지 |
 | 크롬 | **일반 창은 사용자 설정에 맡긴다**(기본 허용, 설정에서 차단 가능). 시크릿 창은 기본 차단 | 쿠키 분할은 CHIPS로 사이트가 선택 | DevTools Application > 쿠키, Issues 패널 |
-| 엣지 | 기본 허용. 추적 방지(Tracking Prevention)가 알려진 추적기를 막는다 | — | — |
+| 엣지 | 기본 허용. 추적 방지(Tracking Prevention)가 알려진 추적기를 막는다 | - | - |
 
 시크릿·비공개 모드는 기본값이 더 엄격하고, 쿠키를 막으면 `localStorage`까지 막히기도 한다.
 

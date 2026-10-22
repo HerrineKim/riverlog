@@ -31,7 +31,7 @@ WebXR은 **그리기를 하지 않는다.** 화면은 WebGL(또는 WebGPU)로 �
 | 자유도(DoF) | 3DoF는 회전만(고개 돌리기), 6DoF는 회전 + 위치(걸어 다니기). 기기와 기준 공간에 따라 다르다 |
 | 기준 공간 | `viewer`(머리 기준), `local`(시작 위치 기준, 앉은 경험), `local-floor`(바닥 높이 포함), `bounded-floor`(정해진 방 안), `unbounded`(넓은 공간 AR) |
 | 프레임 루프 | `window.requestAnimationFrame`이 아니라 `session.requestAnimationFrame`. 헤드셋 주사율(72~120Hz)에 맞춘다 |
-| 뷰 | `frame.getViewerPose(refSpace).views` — 눈마다 투영 행렬과 위치가 따로 온다. 같은 장면을 눈마다 한 번씩, 한 프레임버퍼의 왼쪽·오른쪽 절반에 그린다 |
+| 뷰 | `frame.getViewerPose(refSpace).views`: 눈마다 투영 행렬과 위치가 따로 온다. 같은 장면을 눈마다 한 번씩, 한 프레임버퍼의 왼쪽·오른쪽 절반에 그린다 |
 | 입력 소스 | 컨트롤러, 손(hand tracking), 화면 탭, 시선. `select`·`squeeze` 이벤트와 `targetRaySpace`로 가리키는 방향을 준다 |
 
 ```javascript

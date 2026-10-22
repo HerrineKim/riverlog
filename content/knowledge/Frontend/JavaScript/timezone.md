@@ -115,7 +115,7 @@ new Date(ms).toLocaleString('ko-KR', { timeZone: 'America/New_York' }); // 표�
 Temporal.Instant.fromEpochMilliseconds(ms)
   .toZonedDateTimeISO('America/New_York')
   .with({ day: 15 })
-  .toString(); // '2017-03-15T21:30:00-04:00[America/New_York]' — DST 오프셋이 자동으로 바뀐다
+  .toString(); // '2017-03-15T21:30:00-04:00[America/New_York]': DST 오프셋이 자동으로 바뀐다
 ```
 
 ## 정리

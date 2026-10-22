@@ -83,7 +83,7 @@ document.querySelectorAll('.card').forEach((card) => observer.observe(card))
 
 ## 다른 관찰자 API
 
-같은 **관찰자(Observer) 모양** — 생성자에 콜백, `observe()`로 등록, `disconnect()`로 해제 — 을 따르는 API가 더 있다.
+같은 **관찰자(Observer) 모양**(생성자에 콜백, `observe()`로 등록, `disconnect()`로 해제)을 따르는 API가 더 있다.
 
 | API | 알려 주는 것 | 쓰임 |
 | --- | --- | --- |

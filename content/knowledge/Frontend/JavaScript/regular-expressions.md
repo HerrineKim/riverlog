@@ -170,7 +170,7 @@ const found = text.match(/\d+/g) ?? [];       // null 대비
 ```js
 'John Smith'.replace(/(?<first>\w+) (?<last>\w+)/, '$<last>, $<first>'); // 'Smith, John'
 
-// 함수: (match, p1, …, pn, offset, input, groups) — 명명된 그룹이 있으면 groups가 마지막
+// 함수: (match, p1, …, pn, offset, input, groups), 명명된 그룹이 있으면 groups가 마지막
 '1kg 20kg'.replace(/(\d+)kg/g, (m, n) => `${n * 1000}g`);  // '1000g 20000g'
 ```
 
@@ -195,7 +195,7 @@ re.test('a');   // false! 1번 위치부터 찾았다. lastIndex → 0
 ```js
 const re = /\w+/y;
 re.lastIndex = 3;
-re.exec('let varName');   // null — 3번은 공백
+re.exec('let varName');   // null: 3번은 공백
 re.lastIndex = 4;
 re.exec('let varName');   // ['varName']
 ```

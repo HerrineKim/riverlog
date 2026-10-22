@@ -77,7 +77,7 @@ Future<int> fetchCount() async {
 }
 
 void main() async {
-  print(fetchCount());        // Instance of 'Future<int>' — 아직 결과가 아니다
+  print(fetchCount());        // Instance of 'Future<int>': 아직 결과가 아니다
   print(await fetchCount());  // 1
 }
 ```

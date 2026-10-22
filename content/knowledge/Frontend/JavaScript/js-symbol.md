@@ -17,7 +17,7 @@ sources: ["https://web.dev/learn/javascript/data-types/symbol", "https://web.dev
 ```javascript
 'id' === 'id'           // true
 Symbol() === Symbol()   // false
-Symbol('id') === Symbol('id') // false — 설명이 같아도 다르다
+Symbol('id') === Symbol('id') // false: 설명이 같아도 다르다
 
 const sym = Symbol('id')
 typeof sym              // 'symbol'
@@ -60,8 +60,8 @@ const a = Symbol.for('app.cache') // 없으면 만들어 등록하고, 있으면
 const b = Symbol.for('app.cache')
 a === b                       // true
 Symbol.keyFor(a)              // 'app.cache'
-Symbol.keyFor(Symbol('x'))    // undefined — 레지스트리에 없는 Symbol
-Symbol('k') === Symbol.for('k') // false — 설명과 레지스트리 키는 별개다
+Symbol.keyFor(Symbol('x'))    // undefined: 레지스트리에 없는 Symbol
+Symbol('k') === Symbol.for('k') // false: 설명과 레지스트리 키는 별개다
 ```
 
 레지스트리 키는 전역 이름 공간이므로 `'app.cache'`처럼 접두사를 붙여 충돌을 피한다. 등록된 Symbol은 다시 만들어 낼 수 있는 값이라 WeakMap의 키가 될 수 없다. 등록하지 않은 Symbol만 키로 쓸 수 있다([[map-and-set|Map과 Set]]).

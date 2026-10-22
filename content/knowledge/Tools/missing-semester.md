@@ -23,7 +23,7 @@ sources: ["https://missing.csail.mit.edu/", "https://missing.csail.mit.edu/2026/
 
 | 강의 | 핵심 개념 | 대표 도구 | 창고의 관련 노트 |
 | --- | --- | --- | --- |
-| 셸 입문 | 명령·인자·따옴표, `PATH`, 파이프와 리다이렉션, 엄격한 스크립트 | `grep` `sed` `find` `awk` `xargs` `jq` `shellcheck` | — |
+| 셸 입문 | 명령·인자·따옴표, `PATH`, 파이프와 리다이렉션, 엄격한 스크립트 | `grep` `sed` `find` `awk` `xargs` `jq` `shellcheck` | - |
 | 명령줄 환경 | 표준 스트림, 반환 코드, 시그널, 작업 제어, SSH, dotfiles | `fzf` `rg` `fd` `tldr` `ssh` `rsync` `tmux` | [[tmux\|tmux: 터미널 멀티플렉서]] |
 | 개발 환경과 도구 | 모달 편집, 언어 서버(LSP), 자동완성·인라인 채팅 | Vim, VS Code, Dev Containers, Remote SSH | [[vim-and-neovim\|Vim과 Neovim]], [[vscode\|VS Code 설정과 활용]] |
 | 디버깅과 프로파일링 | 로그·디버거·시스템 콜 추적, CPU·메모리 프로파일링, 벤치마크 | `gdb`/`lldb`/`pdb`, `strace`, ASan, `perf`, FlameGraph, `hyperfine` | [[Chrome-DevTools\|Chrome DevTools]] |

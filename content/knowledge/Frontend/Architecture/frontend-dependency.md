@@ -101,13 +101,13 @@ parsePhoneNumber(input, (s) => s.replace(/[^0-9-]/g, ''));   // 요구 변경
 | 2 | 공용 도메인 타입 `Post`를 분리하고 응답·컴포넌트가 모두 `Post`에 기댄다 | 의존 수는 늘지만 안정적이다 |
 
 ```ts
-// types.ts — 도메인 타입
+// types.ts: 도메인 타입
 type Post = { id: number; title: string; content: string; /* ... */ };
 
-// api — 응답은 도메인 타입 + 응답 고유 필드
+// api: 응답은 도메인 타입 + 응답 고유 필드
 type PostResponse = Post & { comments: Comment[] };
 
-// 컴포넌트 — 필요한 만큼 스스로 깎고 더한다
+// 컴포넌트: 필요한 만큼 스스로 깎고 더한다
 function PostDetail(props: { post?: Omit<Post, 'userId'>; readonly?: boolean }) {}
 ```
 

@@ -22,7 +22,7 @@ React에서는 **`<Suspense>` 경계가 조각을 나누는 단위**다. 경계 
 
 | 시기 | 변화 |
 | --- | --- |
-| React 17 이전 | `renderToString` — 문자열 한 덩어리, 전체를 기다림. 서버에서 Suspense를 쓸 수 없음 |
+| React 17 이전 | `renderToString`: 문자열 한 덩어리, 전체를 기다림. 서버에서 Suspense를 쓸 수 없음 |
 | React 18 (2022) | `renderToPipeableStream`·`renderToReadableStream` 도입. 스트리밍 + 선택적 hydration |
 | Next.js 13+ App Router | `loading.js`와 `<Suspense>`만으로 별도 설정 없이 스트리밍 |
 | React 19.2 (2025.10) | 부분 사전 렌더링(`prerender` → `resume`). Suspense 경계 공개를 묶어서 처리 |
@@ -92,7 +92,7 @@ HTML만 읽는 크롤러를 위해 Next.js는 user agent로 봇을 가려 `gener
 export default function Dashboard() {
   return (
     <div>
-      <h1>Dashboard</h1> {/* 정적 껍데기 — LCP 후보는 바깥에 */}
+      <h1>Dashboard</h1> {/* 정적 껍데기: LCP 후보는 바깥에 */}
       <Suspense fallback={<RevenueSkeleton />}>
         <Revenue /> {/* async 서버 컴포넌트 */}
       </Suspense>

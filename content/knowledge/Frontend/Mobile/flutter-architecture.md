@@ -34,10 +34,10 @@ sources: ["https://80000coding.notion.site/497dc9bfb79549dba4e2946ad868224b", "h
 │   Animation · Painting · Gestures            │
 │   Foundation                                 │  ← 저수준 유틸리티
 ├──────────────────────────────────────────────┤
-│ Engine (C++) — 렌더러(Impeller), Dart 런타임, │
+│ Engine (C++): 렌더러(Impeller), Dart 런타임,  │
 │   텍스트 레이아웃, 플랫폼 채널               │
 ├──────────────────────────────────────────────┤
-│ Embedder (플랫폼별) — Android(Java/C++),      │
+│ Embedder (플랫폼별): Android(Java/C++),       │
 │   iOS·macOS(Objective-C/Swift), Windows·Linux │
 └──────────────────────────────────────────────┘
 ```

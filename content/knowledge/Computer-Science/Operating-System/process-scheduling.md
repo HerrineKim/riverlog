@@ -29,7 +29,7 @@ sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://
 
 | 전이 | 원인 | 스케줄링 |
 | --- | --- | --- |
-| Dispatch: 준비 → 실행 | 스케줄러가 CPU를 할당 | — |
+| Dispatch: 준비 → 실행 | 스케줄러가 CPU를 할당 | - |
 | Block: 실행 → 대기 | I/O 요청 등 | 비선점 (스스로 반납) |
 | 실행 → 완료 | 프로세스 종료 | 비선점 |
 | Timeout: 실행 → 준비 | 타이머 인터럽트로 할당 시간 만료 | 선점 (강제로 빼앗음) |
@@ -133,8 +133,8 @@ ready 큐를 여러 줄로 나누고, 프로세스 종류에 따라 줄을 고�
 
 | 큐 | 대상 | 큐 안의 알고리즘 |
 | --- | --- | --- |
-| foreground | 대화형(interactive) 작업 — 응답이 빨라야 함 | RR |
-| background | 일괄 처리(batch) 작업 — 사람과 상호작용 없음 | FCFS |
+| foreground | 대화형(interactive) 작업, 응답이 빨라야 함 | RR |
+| background | 일괄 처리(batch) 작업, 사람과 상호작용 없음 | FCFS |
 
 큐끼리는 **고정 우선순위**(foreground를 모두 처리한 뒤 background, 낮은 큐는 기아 위험)나 **타임 슬라이스**(예: foreground 80%, background 20%)로 나눈다.
 

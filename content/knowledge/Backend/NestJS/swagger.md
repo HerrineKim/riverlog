@@ -57,7 +57,7 @@ export class ReadOnlyCatDto extends PickType(Cat, ['email', 'name'] as const) {
 ```
 
 ```typescript
-// cats.schema.ts — 스키마 필드에 붙여 두면 PickType으로 만든 DTO가 그대로 상속
+// cats.schema.ts: 스키마 필드에 붙여 두면 PickType으로 만든 DTO가 그대로 상속
 @ApiProperty({ example: 'cat@example.com', description: 'email', required: true })
 @Prop({ required: true, unique: true })
 @IsEmail()

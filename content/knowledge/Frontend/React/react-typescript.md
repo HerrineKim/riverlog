@@ -539,7 +539,7 @@ export const store = configureStore({ reducer: { counter: counterSlice.reducer, 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 
-// app/hooks.ts — store 파일과 분리해 순환 참조를 피한다 (react-redux 9.1+)
+// app/hooks.ts: store 파일과 분리해 순환 참조를 피한다 (react-redux 9.1+)
 import { useDispatch, useSelector } from 'react-redux'
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>()
 export const useAppSelector = useSelector.withTypes<RootState>()

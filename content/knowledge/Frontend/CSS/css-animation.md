@@ -155,7 +155,7 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 - 레이아웃이 바뀔 때 요소가 제자리를 찾아가는 효과
 - 재생 중 일시 정지·되감기 같은 제어
 
-이때는 브라우저 내장 **Web Animations API**(`element.animate()`)나 GSAP, Motion(옛 Framer Motion) 같은 라이브러리를 쓴다. 벡터 일러스트 애니메이션은 Lottie가 흔하다(→ [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]]).
+이때는 브라우저 내장 **Web Animations API**(`element.animate()`)나 GSAP, Motion(옛 Framer Motion) 같은 라이브러리를 쓴다. 벡터 일러스트 애니메이션은 Lottie가 흔하다(→ [[animated-icon|Animated Icon: 영상을 투명 배경 아이콘으로 쓰기]]).
 
 ## 정리
 
@@ -166,4 +166,4 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 
 **좋은 애니메이션은 눈에 띄지 않고, 상태가 바뀌었다는 사실만 알려 준다.**
 
-관련 노트: [[transform|transform: 이동·회전·확대·기울이기]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[browser-rendering|브라우저 렌더링 과정]], [[color-motion-accessibility|색과 움직임의 접근성]], [[animated-icon|Animated Icon — 영상을 투명 배경 아이콘으로 쓰기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[js-animation|JavaScript 애니메이션]], [[ui-motion-principles|UI 모션 디자인: 애니메이션 원칙, 모션 커브, 안무]]
+관련 노트: [[transform|transform: 이동·회전·확대·기울이기]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[browser-rendering|브라우저 렌더링 과정]], [[color-motion-accessibility|색과 움직임의 접근성]], [[animated-icon|Animated Icon: 영상을 투명 배경 아이콘으로 쓰기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[js-animation|JavaScript 애니메이션]], [[ui-motion-principles|UI 모션 디자인: 애니메이션 원칙, 모션 커브, 안무]]

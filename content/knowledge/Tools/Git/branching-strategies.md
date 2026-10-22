@@ -41,8 +41,8 @@ sources: ["https://github.com/arslanbilal/git-cheat-sheet", "https://nvie.com/po
 
 | 브랜치 | 어디서 딴다 | 어디로 합친다 | 역할 |
 | --- | --- | --- | --- |
-| `main` | — | — | 출시된 코드만. 출시마다 버전 태그를 단다 |
-| `develop` | `main` | — | 다음 출시를 위한 통합 브랜치 |
+| `main` | - | - | 출시된 코드만. 출시마다 버전 태그를 단다 |
+| `develop` | `main` | - | 다음 출시를 위한 통합 브랜치 |
 | `feature/*` | `develop` | `develop` | 기능 하나 |
 | `release/*` | `develop` | `main`과 `develop` | 출시 준비. 기능 추가는 멈추고 버그 수정·버전 번호·메타데이터만 |
 | `hotfix/*` | `main`(해당 버전 태그) | `main`과 `develop` | 운영 중인 버전의 긴급 수정 |

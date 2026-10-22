@@ -72,7 +72,7 @@ register() 호출
 ```
 
 ```javascript
-// sw.js — 별도 스레드에서 실행된다
+// sw.js: 별도 스레드에서 실행된다
 self.addEventListener('install', (event) => {
   event.waitUntil(/* 프리캐시 Promise */);
 });

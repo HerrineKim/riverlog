@@ -148,7 +148,7 @@ CMS 사용자가 여백을 만들려고 줄바꿈을 여러 번 넣으면, 첫 `
 | 전역 크기는 rem, 지역 크기는 em | 컴포넌트 안 여백은 `em`으로 글자 크기를 따라가게 | [[css-basics\|CSS 기초의 크기 단위]] |
 | 화면에 맞춰 변하는 글자 크기 | `clamp(1rem, 0.75rem + 1.5vw, 2rem)` | [[responsive-design\|반응형 디자인]], [[css-functions\|CSS 함수]] |
 | `margin-left`·`right` 대신 | `margin-inline` | [[logical-properties\|쓰기 모드와 논리적 속성]] |
-| 로컬 글꼴 먼저 찾기 | `src: local(…)` — 효과가 브라우저마다 다르다 | [[web-typography\|웹 타이포그래피]] |
+| 로컬 글꼴 먼저 찾기 | `src: local(…)`: 효과가 브라우저마다 다르다 | [[web-typography\|웹 타이포그래피]] |
 
 ## 이제 쓰지 않는 팁
 

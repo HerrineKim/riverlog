@@ -85,8 +85,8 @@ H == H' 이면 유효: 보낸 사람이 맞고, 문서는 바뀌지 않았다
 | 키 교환 | 도청자 앞에서 공유 비밀 만들기 | **상대가 누구인지.** 인증 없는 DH는 중간자 공격에 그대로 당한다 | X25519, ECDHE (+ 서명·인증서로 인증) |
 | 디지털 서명 | 서명자와 무결성, 부인 방지 | 기밀성 | Ed25519, ECDSA, RSA-PSS |
 | 키 유도 함수(KDF) | 비밀 하나에서 용도별 키 여러 개 | 입력이 약하면 결과도 약하다 | HKDF |
-| 비밀번호 해시(키 스트레칭) | 예측 가능한 비밀번호의 대입 비용을 올린다 | — | Argon2id, scrypt, bcrypt → [[password-storage\|비밀번호 저장]] |
-| CSPRNG | 예측할 수 없는 난수(키, nonce, 솔트, 토큰) | — | OS 제공 난수(`/dev/urandom`, `crypto.getRandomValues`, `secrets`) |
+| 비밀번호 해시(키 스트레칭) | 예측 가능한 비밀번호의 대입 비용을 올린다 | - | Argon2id, scrypt, bcrypt → [[password-storage\|비밀번호 저장]] |
+| CSPRNG | 예측할 수 없는 난수(키, nonce, 솔트, 토큰) | - | OS 제공 난수(`/dev/urandom`, `crypto.getRandomValues`, `secrets`) |
 
 - **암호화와 무결성을 따로 조립하지 않는다.** 직접 조합한다면 암호화한 뒤 암호문에 MAC을 붙이는(encrypt-then-MAC) 순서가 안전하지만, 처음부터 AEAD를 쓰는 편이 실수가 없다.
 - 해시 출력이 n비트면 생일 역설 때문에 충돌 공격은 약 n/2비트 강도다. 128비트 해시는 짧다. MD5·SHA-1은 충돌이 실제로 만들어졌으므로 보안 용도로 쓰지 않는다.

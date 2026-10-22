@@ -159,7 +159,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
           {byDate.map(({ node, trail }) => (
             <li key={node.id} className="grid gap-1 py-3 sm:grid-cols-[6.5rem_minmax(0,16rem)_1fr] sm:gap-6">
               <p className="text-sm text-muted tabular-nums">
-                <time dateTime={node[dateKey]}>{dateLabel(node[dateKey]) || "—"}</time>
+                <time dateTime={node[dateKey]}>{dateLabel(node[dateKey]) || "-"}</time>
                 {dateKey === "updated" && node.created && node.updated?.slice(0, 10) === node.created.slice(0, 10) && (
                   <span className="ml-1.5 text-xs text-accent">새 노트</span>
                 )}

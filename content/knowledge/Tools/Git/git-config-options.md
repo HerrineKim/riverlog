@@ -104,7 +104,7 @@ git rebase -i main           # autosquash가 켜져 있으면 자동으로 제�
 | `core.fileMode false` | 실행 권한 비트 변경을 무시한다. 권한을 제대로 다루지 못하는 파일 시스템에서 모든 파일이 수정됨으로 뜰 때 |
 
 ```ini
-# ~/.gitconfig — 회사 폴더에서만 회사 이메일 쓰기
+# ~/.gitconfig: 회사 폴더에서만 회사 이메일 쓰기
 [includeIf "gitdir:~/work/"]
   path = ~/.gitconfig-work
 ```

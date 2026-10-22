@@ -58,7 +58,7 @@ sources: ["https://riverkim.kr/240", "https://riverkim.kr/274", "https://hellowo
 
 ```text
 1. 검색(grep, rg)으로 대상 범위를 먼저 확인
-2. 치환(sed 등) — 백업을 남기거나 Git 작업 트리가 깨끗한 상태에서
+2. 치환(sed 등): 백업을 남기거나 Git 작업 트리가 깨끗한 상태에서
 3. diff로 결과 검증
 4. 테스트 실행
 5. 백업 파일을 빼고 커밋

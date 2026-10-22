@@ -62,8 +62,8 @@ blank 템플릿에서는 `App.js`가 시작 컴포넌트이고, `app.json`에 �
 | `TextInput` | 텍스트 입력 | `input` |
 | `Button` | 플랫폼 기본 버튼 | `button` |
 | `Image` | 이미지. 로컬 파일은 `source={require('./a.png')}` | `img` |
-| `ScrollView`, `FlatList` | 스크롤 영역, 목록 | — |
-| `Pressable`, `Modal` | 터치 감지, 오버레이 화면 | — |
+| `ScrollView`, `FlatList` | 스크롤 영역, 목록 | - |
+| `Pressable`, `Modal` | 터치 감지, 오버레이 화면 | - |
 
 웹보다 문법이 엄격하다. **문자열은 반드시 `<Text>` 안에** 있어야 하며, `<View>` 안에 바로 넣으면 에러가 난다.
 

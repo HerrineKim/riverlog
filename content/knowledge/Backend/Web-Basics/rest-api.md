@@ -25,10 +25,10 @@ REST(Representational State Transfer)는 **자원(Resource)을 이름(URI)으로
 
 | CRUD | 메서드 | 예시 |
 | --- | --- | --- |
-| Create | `POST` | `POST /cats` — 고양이 생성 |
+| Create | `POST` | `POST /cats`: 고양이 생성 |
 | Read | `GET` | `GET /cats`, `GET /cats/:id` |
-| Update(전체) | `PUT` | `PUT /cats/:id` — 전체 교체 |
-| Update(부분) | `PATCH` | `PATCH /cats/:id` — 일부 필드만 수정 |
+| Update(전체) | `PUT` | `PUT /cats/:id`: 전체 교체 |
+| Update(부분) | `PATCH` | `PATCH /cats/:id`: 일부 필드만 수정 |
 | Delete | `DELETE` | `DELETE /cats/:id` |
 
 ### POST, PUT, PATCH의 차이와 멱등성

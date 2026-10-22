@@ -235,7 +235,7 @@ ES 모듈로 옮길 때 바뀌는 것:
 
 | CommonJS | ES 모듈 |
 | --- | --- |
-| `require('./util')` | `import … from './util.js'` — **확장자와 `index.js`까지 써야 한다**(브라우저와 같은 규칙) |
+| `require('./util')` | `import … from './util.js'`: **확장자와 `index.js`까지 써야 한다**(브라우저와 같은 규칙) |
 | `__dirname`, `__filename` | `import.meta.dirname`, `import.meta.filename` |
 | `require.resolve(x)` | `import.meta.resolve(x)` |
 | `require.main === module` | `import.meta.main` |
@@ -256,8 +256,8 @@ CommonJS와 ES 모듈은 **순환 의존**에서 다르게 깨진다. CommonJS�
 
 ## 참고 자료
 
-- [모듈 내보내고 가져오기 — javascript.info](https://ko.javascript.info/import-export)
-- [default export를 피해야 하는 이유 — yceffort](https://yceffort.kr/2020/11/avoid-default-export)
-- [What is the benefit of prefer-default-export? — airbnb/javascript #1365](https://github.com/airbnb/javascript/issues/1365)
+- [모듈 내보내고 가져오기 (javascript.info)](https://ko.javascript.info/import-export)
+- [default export를 피해야 하는 이유 (yceffort)](https://yceffort.kr/2020/11/avoid-default-export)
+- [What is the benefit of prefer-default-export? (airbnb/javascript #1365)](https://github.com/airbnb/javascript/issues/1365)
 
 관련 노트: [[in-browser-preview-runtime|브라우저 안 빌드·프리뷰 환경]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[script-loading|스크립트·스타일 로딩 순서]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[js-design-patterns|JavaScript 디자인 패턴]], [[code-splitting|자바스크립트 코드 분할]]

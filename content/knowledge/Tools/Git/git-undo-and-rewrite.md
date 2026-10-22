@@ -212,7 +212,7 @@ git clean -d --force           # 추적하지 않는 파일·폴더까지 삭제
 잘못된 이메일로 커밋해 GitHub 기여 그래프에 집계되지 않을 때처럼 작성자를 바꿔야 하면 `.mailmap` 파일에 대응을 적고 filter-repo로 이력 전체에 적용한다.
 
 ```bash
-# .mailmap — "새 이름 <새 이메일> <옛 이메일>"
+# .mailmap: "새 이름 <새 이메일> <옛 이메일>"
 New Name <new@example.com> <old@example.com>
 ```
 

@@ -86,8 +86,8 @@ POST 폼에는 `{% csrf_token %}`을 넣는다. 이 태그는 토큰을 담은 `
 
 | context processor | 템플릿 변수 |
 | --- | --- |
-| `django.template.context_processors.request` | `request` — 현재 `HttpRequest` |
-| `django.contrib.auth.context_processors.auth` | `user` — 로그인한 User 또는 `AnonymousUser`, `perms` — 현재 사용자의 권한 |
+| `django.template.context_processors.request` | `request`: 현재 `HttpRequest` |
+| `django.contrib.auth.context_processors.auth` | `user`: 로그인한 User 또는 `AnonymousUser`, `perms`: 현재 사용자의 권한 |
 
 ```django
 {% if user.is_authenticated %}
@@ -104,6 +104,6 @@ POST 폼에는 `{% csrf_token %}`을 넣는다. 이 태그는 토큰을 담은 `
 - `UserCreationForm`·`AuthenticationForm`으로 회원가입·로그인을 빠르게 구현한다.
 - 템플릿의 `user` 변수는 auth context processor가 자동 제공한다.
 
-관련 노트: [[cookie-session|쿠키와 세션]], [[relationships|Django 모델 관계]] — 작성자·댓글 같은 1:N 설계
+관련 노트: [[cookie-session|쿠키와 세션]], [[relationships|Django 모델 관계]]: 작성자·댓글 같은 1:N 설계
 
 참고: [Django 인증 문서](https://docs.djangoproject.com/en/stable/topics/auth/default/)

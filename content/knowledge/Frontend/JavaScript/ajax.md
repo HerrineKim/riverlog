@@ -126,7 +126,7 @@ await axios.get('/api/users', { withCredentials: true })           // 다른 출
 | 설치 | 불필요 | 필요 |
 | JSON 처리 | `response.json()` 직접 호출 | 자동 |
 | HTTP 에러(4xx/5xx) | reject되지 않음, `response.ok` 확인 필요 | reject됨 → `catch`에서 `error.response`로 확인 |
-| 부가 기능 | — | 인터셉터, 기본 설정 인스턴스, 요청 취소 등 |
+| 부가 기능 | - | 인터셉터, 기본 설정 인스턴스, 요청 취소 등 |
 
 axios의 에러 객체에서 서버 응답은 `error.response?.data`처럼 옵셔널 체이닝으로 꺼내는 것이 안전하다(네트워크 오류면 `response`가 없다).
 
@@ -327,7 +327,7 @@ preflight와 서버 설정은 [[cors|CORS]]에 있다. 브라우저 코드 입�
 프론트 개발 서버에 프록시를 두면 브라우저는 같은 출처(프론트 개발 서버)로 요청하고, 개발 서버가 백엔드로 대신 전달한다.
 
 ```typescript
-// vite.config.ts — /api로 시작하는 요청을 백엔드(3095)로 전달
+// vite.config.ts: /api로 시작하는 요청을 백엔드(3095)로 전달
 export default defineConfig({
   server: {
     port: 3090,
@@ -373,4 +373,4 @@ CORS는 브라우저만 지키는 규칙이라 서버에서 보낸 요청에는 
 - 비밀 키와 최종 검증은 서버에 둔다. 브라우저 코드는 공개된다.
 - CORS는 브라우저 정책이다. 해결은 서버 설정, 개발 중 우회는 프록시.
 
-관련 노트: [[cors|CORS(서버 설정 관점)]], [[rest-api|REST API]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]] — axios로 받은 데이터를 스토어에 모으기, [[binary-data-and-files|바이너리 데이터와 파일]], [[browser-realtime-apis|브라우저 실시간 통신]]
+관련 노트: [[cors|CORS(서버 설정 관점)]], [[rest-api|REST API]], [[vuex|Vue 상태 관리: Pinia(옛 Vuex)]]: axios로 받은 데이터를 스토어에 모으기, [[binary-data-and-files|바이너리 데이터와 파일]], [[browser-realtime-apis|브라우저 실시간 통신]]

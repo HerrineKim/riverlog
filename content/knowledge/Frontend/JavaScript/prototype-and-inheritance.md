@@ -19,7 +19,7 @@ JavaScript의 모든 객체는 숨은 링크 `[[Prototype]]`으로 다른 객체
 ```javascript
 const names = ['wes', 'kait']
 const numbers = [1, 2, 3]
-names.filter === numbers.filter                // true — 같은 함수 하나를 공유한다
+names.filter === numbers.filter                // true: 같은 함수 하나를 공유한다
 Object.getPrototypeOf(names) === Array.prototype // true
 ```
 
@@ -42,7 +42,7 @@ Rosch의 실험에서 사람들은 '새'를 떠올릴 때 참새를 전형으로
 const sparrow = { wings: 2, canFly: true }
 const chicken = Object.create(sparrow)  // 설계도가 아니라 실제 객체를 원형으로 삼는다
 chicken.canFly = false                  // 원형은 그대로, 자기만 달라진다(섀도잉)
-chicken.wings                           // 2 — 원형에 위임
+chicken.wings                           // 2: 원형에 위임
 ```
 
 | 관점 | 근거 |
@@ -63,10 +63,10 @@ function Pizza(toppings = [], customer) {
   this.slices = 10
 }
 
-Pizza(['cheese'])               // undefined — new 없이 부르면 그냥 함수 호출이다
+Pizza(['cheese'])               // undefined: new 없이 부르면 그냥 함수 호출이다
 const pepperoni = new Pizza(['pepperoni'], 'wes')
 pepperoni instanceof Pizza      // true
-pepperoni.constructor === Pizza // true — 누가 만들었는지
+pepperoni.constructor === Pizza // true: 누가 만들었는지
 ```
 
 `new F(...args)`는 다음 순서로 동작한다.
@@ -88,7 +88,7 @@ pepperoni.constructor === Pizza // true — 누가 만들었는지
 function Pizza() {
   this.eat = function () { this.slices-- }
 }
-new Pizza().eat === new Pizza().eat // false — 피자 2만 개면 함수도 2만 개
+new Pizza().eat === new Pizza().eat // false: 피자 2만 개면 함수도 2만 개
 
 // ✓ 함수는 한 벌, 모든 인스턴스가 공유한다
 Pizza.prototype.eat = function () {
@@ -127,11 +127,11 @@ DOM 요소가 `span instanceof Node`이면서 `Element`이기도 한 것은 이 
 
 ```javascript
 Pizza.prototype.size = 'Large'
-pepperoni.size              // 'Large' — 프로토타입에서 찾음
+pepperoni.size              // 'Large': 프로토타입에서 찾음
 pepperoni.size = 'Medium'
-pepperoni.size              // 'Medium' — 인스턴스 속성이 가린다
-Object.hasOwn(pepperoni, 'size') // true — 자기 속성인지 확인
-'eat' in pepperoni          // true — in은 체인까지 본다
+pepperoni.size              // 'Medium': 인스턴스 속성이 가린다
+Object.hasOwn(pepperoni, 'size') // true: 자기 속성인지 확인
+'eat' in pepperoni          // true: in은 체인까지 본다
 ```
 
 ### 읽기만 체인을 타고, 쓰기는 자기에게 한다
@@ -179,7 +179,7 @@ Object.hasOwn(pepperoni, 'size') // true — 자기 속성인지 확인
 const dict = Object.create(null) // 프로토타입 없는 "아주 단순한" 객체
 dict['__proto__'] = '값'          // 평범한 데이터 속성으로 저장된다
 Object.keys(dict)                 // ['__proto__']
-String(dict)                      // TypeError — toString조차 상속받지 않는다
+String(dict)                      // TypeError: toString조차 상속받지 않는다
 ```
 
 임의의 키를 받는 저장소는 `Map`을 쓰거나 `Object.create(null)`로 만든다. `Object.keys(obj)`처럼 `Object.` 정적 메서드는 프로토타입이 없어도 쓸 수 있다. 같은 이유로 이미 만든 객체의 `[[Prototype]]`을 바꾸는 `setPrototypeOf`·`obj.__proto__ =`는 엔진의 속성 접근 최적화를 깨므로, 프로토타입은 **만들 때 한 번** 정한다.

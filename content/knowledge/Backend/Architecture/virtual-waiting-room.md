@@ -44,7 +44,7 @@ Sorted Set은 멤버마다 **점수(score)** 를 붙여 점수 순으로 정렬�
 | 줄 | 키 하나 (`waiting`) |
 | 사용자 | 멤버 (사용자 ID + 대상 상품 등) |
 | 도착 순서 | 점수 = 진입 시각(timestamp) |
-| 내 순번 | `ZRANK` — O(log N) |
+| 내 순번 | `ZRANK`: O(log N) |
 | 앞에서 N명 입장 | `ZRANGE 0 N-1`로 읽고 `ZREMRANGEBYRANK`로 지우거나, `ZPOPMIN`으로 한 번에 꺼낸다 |
 
 - RDB에서 매번 `ORDER BY`로 순번을 세는 것보다 훨씬 빠르다. 추가·순위 조회가 모두 O(log N)이다.

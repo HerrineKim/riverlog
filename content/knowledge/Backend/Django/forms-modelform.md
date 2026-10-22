@@ -26,7 +26,7 @@ date: "2026-10-13"
 어느 쪽이 더 낫다기보다 **용도에 따라** 고른다.
 
 ```python
-# forms.py — Form: 필드를 직접 정의 (사용자가 입력할 필드만)
+# forms.py: Form: 필드를 직접 정의 (사용자가 입력할 필드만)
 from django import forms
 
 class RecordForm(forms.Form):
@@ -36,7 +36,7 @@ class RecordForm(forms.Form):
 ```
 
 ```python
-# forms.py — ModelForm: Meta에 모델과 필드만 지정
+# forms.py: ModelForm: Meta에 모델과 필드만 지정
 from .models import Record
 
 class RecordForm(forms.ModelForm):
@@ -145,6 +145,6 @@ class RecordForm(forms.ModelForm):
 - view는 `if POST → is_valid → save → redirect / else → 빈 폼 → render` 패턴.
 - 검증 실패 시 입력값·에러가 담긴 폼을 그대로 다시 렌더링한다.
 
-관련 노트: [[web-security|웹 보안: CSRF와 XSS]] — `{% csrf_token %}`이 막는 공격, [[urls-views|Django URL과 View]] — render와 redirect
+관련 노트: [[web-security|웹 보안: CSRF와 XSS]]: `{% csrf_token %}`이 막는 공격, [[urls-views|Django URL과 View]]: render와 redirect
 
 참고: [Django Forms 문서](https://docs.djangoproject.com/en/stable/topics/forms/)

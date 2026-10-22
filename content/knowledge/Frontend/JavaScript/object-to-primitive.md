@@ -81,7 +81,7 @@ const user = {
 }
 String(user)  // '{name: "John"}'
 +user         // 1000
-user + 500    // 1500 — "default"를 숫자로 처리했다
+user + 500    // 1500: "default"를 숫자로 처리했다
 ```
 
 [[js-symbol|Symbol]]의 well-known symbol 중 하나로, 세 hint를 한곳에서 처리한다. 반드시 원시값을 돌려줘야 하고, 아니면 `TypeError`다.
@@ -96,7 +96,7 @@ const user = {
   toString() { return this.name },
 }
 String(user)   // 'John'
-user + 500     // 'John500' — valueOf가 객체 자신이라 toString까지 내려온다
+user + 500     // 'John500': valueOf가 객체 자신이라 toString까지 내려온다
 ```
 
 ### 실무 규칙

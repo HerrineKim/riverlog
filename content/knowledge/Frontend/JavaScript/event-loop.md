@@ -41,7 +41,7 @@ a 끝          → [전역]
 | 콜 스택 | 동기 코드를 쌓고 하나씩 실행 | 함수 호출 |
 | Web APIs | 시간이 걸리거나 이벤트 기반인 작업을 브라우저가 처리 | `setTimeout`, `fetch`/XHR, DOM 이벤트 감지, 스토리지 |
 | 큐(대기열) | 끝난 비동기 작업의 후속 콜백이 줄 서는 곳 | 타이머 콜백, `then` 콜백 |
-| 이벤트 루프 | 스택이 비면 큐에서 작업을 꺼내 스택에 올리는 조율자 | — |
+| 이벤트 루프 | 스택이 비면 큐에서 작업을 꺼내 스택에 올리는 조율자 | - |
 
 ## 흐름
 
@@ -61,8 +61,8 @@ JS 코드 실행 (콜 스택)
 
 | 큐 | 들어가는 작업 | 우선순위 |
 | --- | --- | --- |
-| 마이크로태스크 큐 | `Promise.then`/`catch`/`finally` 콜백, `await` 이후 코드, `queueMicrotask(fn)` | 높음 — 스택이 빌 때마다 **전부** 비운다 |
-| 태스크(매크로태스크) 큐 | `<script>` 실행 자체, `setTimeout`·`setInterval` 콜백, DOM 이벤트 핸들러(클릭·`mousemove` 등) | 낮음 — 마이크로태스크가 다 끝난 뒤 하나씩 |
+| 마이크로태스크 큐 | `Promise.then`/`catch`/`finally` 콜백, `await` 이후 코드, `queueMicrotask(fn)` | 높음: 스택이 빌 때마다 **전부** 비운다 |
+| 태스크(매크로태스크) 큐 | `<script>` 실행 자체, `setTimeout`·`setInterval` 콜백, DOM 이벤트 핸들러(클릭·`mousemove` 등) | 낮음: 마이크로태스크가 다 끝난 뒤 하나씩 |
 
 그래서 실행 순서는 작성 순서가 아니라 **어느 큐에 들어갔는지**로 정해진다.
 
@@ -164,8 +164,8 @@ input.addEventListener('input', () => {
 
 - [콜 스택, 콜백 큐, 이벤트 루프](https://www.sungikchoi.com/blog/call-stack-callback-queue-event-loop/)
 - [자바스크립트 Promise 쉽게 이해하기](https://joshua1988.github.io/web-development/javascript/promise-for-beginners/)
-- [What the heck is the event loop anyway?](https://www.youtube.com/watch?v=8aGhZQkoFbQ) — 콜 스택·태스크 큐·렌더링을 그림으로 보여 주는 JSConf EU 2014 강연
-- [Loupe](http://latentflip.com/loupe/) — 코드를 넣으면 콜 스택과 콜백 큐의 움직임을 단계별로 보여 주는 시각화 도구
-- [매끄러운 경험을 위한 JavaScript 비동기 처리](https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/) — 제너레이터로 작업 쪼개기, 워커 위임
+- [What the heck is the event loop anyway?](https://www.youtube.com/watch?v=8aGhZQkoFbQ): 콜 스택·태스크 큐·렌더링을 그림으로 보여 주는 JSConf EU 2014 강연
+- [Loupe](http://latentflip.com/loupe/): 코드를 넣으면 콜 스택과 콜백 큐의 움직임을 단계별로 보여 주는 시각화 도구
+- [매끄러운 경험을 위한 JavaScript 비동기 처리](https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/): 제너레이터로 작업 쪼개기, 워커 위임
 
 관련 노트: [[nodejs-runtime#Node.js의 이벤트 루프|Node.js의 이벤트 루프]], [[execution-context|실행 컨텍스트]], [[callback-and-promise|콜백과 Promise]], [[async-await|async/await]], [[debounce-throttle|Debounce와 Throttle]], [[js-engine-v8|JS 엔진과 V8 파이프라인]], [[browser-rendering|브라우저 렌더링 과정]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]], [[timers|타이머]]

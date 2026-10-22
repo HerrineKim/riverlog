@@ -1,5 +1,5 @@
 ---
-title: "Animated Icon — 영상을 투명 배경 아이콘으로 쓰기"
+title: "Animated Icon: 영상을 투명 배경 아이콘으로 쓰기"
 concept: "Animated Icon"
 summary: "Airbnb 스타일 3D 아이콘을 영상으로 만든 뒤, Lava 같은 투명 배경(알파 채널) 애니메이션 포맷으로 바꾸면 앱·웹에서 움직이는 아이콘으로 쓸 수 있다. 포맷별 선택지와 제작 흐름을 정리했다."
 tags: ["frontend", "design", "media", "mobile", "animation"]

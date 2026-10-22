@@ -68,7 +68,7 @@ export const config = { matcher: '/about/:path*' }
 Next.js 13의 App Router에서는 Pages Router의 `getServerSideProps`·`getStaticProps` 같은 `get~` 데이터 함수를 쓰지 않는다(Pages Router에서는 여전히 동작한다). 대신 **서버 컴포넌트를 `async` 함수로 만들고 그 안에서 바로 `fetch`** 한다. Next.js는 브라우저 표준 `fetch`를 확장해 캐싱·재검증 옵션을 붙였다.
 
 ```tsx
-// app/posts/page.tsx — 서버 컴포넌트
+// app/posts/page.tsx: 서버 컴포넌트
 export default async function PostsPage() {
   const res = await fetch('https://api.example.com/posts', {
     next: { revalidate: 60 }, // 60초마다 다시 가져오기 (ISR과 비슷)
@@ -111,7 +111,7 @@ export default async function PostsPage() {
 위의 `fetch` 옵션 방식은 공식 문서에서 **"이전 모델(Previous Model)"** 로 분류된다. Next.js 16에서는 `next.config.ts`에 `cacheComponents: true`를 켜는 **Cache Components** 모델이 도입되었고, `create-next-app` 기본값으로 만든 새 App Router 앱에는 이미 켜져 있다. 이 모델에서는 `fetch` 옵션 대신 **`'use cache'` 지시어**로 함수나 컴포넌트의 결과를 캐시하고, `cacheLife`로 수명을 정한다.
 
 ```tsx
-// app/lib/data.ts — 데이터 단위 캐시
+// app/lib/data.ts: 데이터 단위 캐시
 import { cacheLife } from 'next/cache'
 
 export async function getPosts() {

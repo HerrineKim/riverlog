@@ -39,7 +39,7 @@ sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f"]
 
 ![최대 힙과 최소 힙](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/14-%ED%9E%99-Heap-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90.assets/oP565GF.png)
 
-### 삽입 (push) — 아래에서 위로
+### 삽입 (push): 아래에서 위로
 
 1. 새 값을 트리의 맨 끝(배열의 마지막)에 넣는다.
 2. 부모와 비교해 힙 조건을 어기면 자리를 바꾼다.
@@ -47,7 +47,7 @@ sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f"]
 
 ![힙 삽입](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/14-%ED%9E%99-Heap-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90.assets/VeuoJbK.png)
 
-### 삭제 (pop) — 위에서 아래로
+### 삭제 (pop): 위에서 아래로
 
 1. 루트(우선순위가 가장 높은 값)를 꺼낸다.
 2. 맨 끝 노드를 비어 있는 루트 자리로 옮긴다.
@@ -58,7 +58,7 @@ sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f"]
 
 트리의 높이가 log n이므로 삽입·삭제 모두 O(log n), 최솟값(최댓값) 확인은 O(1)이다. 힙에서 원소를 하나씩 꺼내면 정렬이 되는데, 이것이 **힙 정렬**(O(n log n))이다.
 
-### 배열을 한 번에 힙으로 만들기 — O(n)
+### 배열을 한 번에 힙으로 만들기: O(n)
 
 원소 n개를 하나씩 push하면 O(n log n)이다. 대신 배열을 그대로 둔 채 **마지막 내부 노드 `(n-2)//2`부터 루트까지 거꾸로** 내려가며 각 노드에 "아래로 내리기(sift down)"를 하면 O(n)에 힙이 된다. 노드의 대부분은 아래쪽에 있어 내려갈 거리가 짧기 때문이다. 파이썬 `heapq.heapify`가 이 방식이다.
 

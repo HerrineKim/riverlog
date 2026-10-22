@@ -16,7 +16,7 @@ sources: ["https://web.dev/learn/forms/form-fields", "https://web.dev/learn/form
 
 | type | 용도 | 브라우저가 해 주는 것 |
 | --- | --- | --- |
-| `text` | 한 줄 텍스트 (기본값) | — |
+| `text` | 한 줄 텍스트 (기본값) | - |
 | `email` | 이메일 주소 | 형식이 아니면 제출 불가, 모바일에서 `@` 키보드 |
 | `password` | 비밀번호 | 입력값을 `•••`로 가림 |
 | `tel` | 전화번호 | 숫자 키패드. 형식 검증은 하지 않으므로 필요하면 `pattern` 사용 |

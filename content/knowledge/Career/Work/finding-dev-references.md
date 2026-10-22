@@ -34,9 +34,9 @@ sources: ["https://teqoo.tistory.com/277", "https://reactflow.dev/learn/layoutin
 
 결과가 너무 많거나 낡았으면 연산자로 좁힌다. 개발 검색에서 자주 쓰는 것은 셋이다.
 
-- `before:` / `after:` — 버전이 바뀐 API를 찾을 때. 옛 버전 호환 코드가 필요하면 그 버전이 쓰이던 기간으로 자른다(`camera2 api 21 before:2020`). 검색 결과 화면의 **도구 → 모든 날짜 → 기간 설정**으로도 지정한다.
-- `site:` — 믿을 만한 출처로 고정한다(`android view site:stackoverflow.com`).
-- `" "` — 반드시 들어가야 할 단어를 묶는다(`app developer roadmap "ios"`).
+- `before:` / `after:`: 버전이 바뀐 API를 찾을 때. 옛 버전 호환 코드가 필요하면 그 버전이 쓰이던 기간으로 자른다(`camera2 api 21 before:2020`). 검색 결과 화면의 **도구 → 모든 날짜 → 기간 설정**으로도 지정한다.
+- `site:`: 믿을 만한 출처로 고정한다(`android view site:stackoverflow.com`).
+- `" "`: 반드시 들어가야 할 단어를 묶는다(`app developer roadmap "ios"`).
 
 연산자 전체 목록은 [[google-search-operators|구글 검색 연산자]]에 있다.
 

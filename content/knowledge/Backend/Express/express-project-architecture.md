@@ -40,7 +40,7 @@ src/
 **서비스가 `req`·`res`를 받지 않는 것이 핵심이다.** 그래야 같은 서비스를 HTTP가 아닌 곳(CLI, 배치 작업, 메시지 소비자)에서도 부르고, 테스트에서 HTTP 객체 없이 호출할 수 있다. 라우터에서 핸들러를 서비스 파일로 옮기기만 하고 핸들러가 여전히 `res.send`를 부른다면 파일만 나뉜 것이다([[singleton-service-pattern|Express 싱글톤 패턴과 서비스 패턴]]).
 
 ```typescript
-// api/routes/user.ts — HTTP를 아는 유일한 층
+// api/routes/user.ts: HTTP를 아는 유일한 층
 route.post('/signup', validate(signupSchema), async (req, res, next) => {
   try {
     const { user, token } = await userService.signup(req.body);
