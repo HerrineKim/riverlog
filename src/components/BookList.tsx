@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
+import BookCover from "@/components/BookCover";
 import useSearchOnEnter from "@/hooks/useSearchOnEnter";
 
 export type BookRow = {
@@ -12,6 +13,7 @@ export type BookRow = {
   status: "read" | "reading" | "want";
   rating?: number;
   finished?: string;
+  cover?: string;
   hasReview: boolean;
 };
 
@@ -19,22 +21,42 @@ const STATUS: { key: "all" | BookRow["status"]; label: string }[] = [
   { key: "all", label: "전체" },
   { key: "reading", label: "읽는 중" },
   { key: "read", label: "다 읽음" },
-  { key: "want", label: "읽고 싶음" },
+  { key: "want", label: "안 읽음" },
 ];
 const STATUS_STYLE: Record<BookRow["status"], string> = {
   reading: "bg-accent-soft text-accent",
   read: "border border-line text-fg",
   want: "text-muted",
 };
-const STATUS_LABEL: Record<BookRow["status"], string> = { reading: "읽는 중", read: "다 읽음", want: "읽고 싶음" };
-// The shelf has ~1,000 books; rendering them all at once makes a 1MB page
+const STATUS_LABEL: Record<BookRow["status"], string> = { reading: "읽는 중", read: "다 읽음", want: "안 읽음" };
+// The shelf has ~1,900 books; rendering them all at once makes a 1MB page
 const PAGE = 60;
+type View = "gallery" | "list";
+const VIEW_KEY = "riverlog:books-view";
+// The chosen view is a per-browser convenience; storage may be unavailable
+function storedView(): View {
+  try {
+    return localStorage.getItem(VIEW_KEY) === "list" ? "list" : "gallery";
+  } catch {
+    return "gallery";
+  }
+}
+const noSubscribe = () => () => {};
 
 export default function BookList({ books }: { books: BookRow[] }) {
   const [status, setStatus] = useState<(typeof STATUS)[number]["key"]>("all");
   const [category, setCategory] = useState("all");
   const [onlyReviewed, setOnlyReviewed] = useState(false);
   const [limit, setLimit] = useState(PAGE);
+  const stored = useSyncExternalStore(noSubscribe, storedView, () => "gallery" as View);
+  const [chosen, setChosen] = useState<View>();
+  const view = chosen ?? stored;
+  const changeView = (v: View) => {
+    setChosen(v);
+    try {
+      localStorage.setItem(VIEW_KEY, v);
+    } catch {}
+  };
   const { query, draft, inputProps } = useSearchOnEnter(() => setLimit(PAGE));
   const q = query.toLowerCase();
   // Any filter change starts the list over from the top
@@ -104,37 +126,81 @@ export default function BookList({ books }: { books: BookRow[] }) {
         ))}
       </div>
 
-      <p className="mt-6 text-xs text-muted tabular-nums" aria-live="polite">
-        {shown.length}권
-        {draft.trim() && draft.trim() !== query && <span className="ml-1.5 text-accent">· Enter로 검색</span>}
-      </p>
-      <ul className="mt-2 divide-y divide-line border-y border-line">
-        {shown.slice(0, limit).map((b) => (
-          <li key={b.slug}>
-            <Link href={`/books/${b.slug}`} className="group grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1 py-4 sm:grid-cols-[minmax(0,1fr)_9rem_6rem_5.5rem]">
-              <div className="min-w-0">
-                <p className="truncate font-medium text-fg-strong group-hover:text-accent">
-                  {b.title}
+      <div className="mt-6 flex items-center justify-between gap-3">
+        <p className="text-xs text-muted tabular-nums" aria-live="polite">
+          {shown.length}권
+          {draft.trim() && draft.trim() !== query && <span className="ml-1.5 text-accent">· Enter로 검색</span>}
+        </p>
+        <div role="group" aria-label="보기 방식" className="flex rounded-full border border-line p-0.5 text-xs">
+          {(
+            [
+              ["gallery", "갤러리"],
+              ["list", "목록"],
+            ] as const
+          ).map(([v, label]) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => changeView(v)}
+              aria-pressed={view === v}
+              className={`rounded-full px-3 py-1 transition ${view === v ? "bg-accent font-medium text-accent-ink" : "text-muted hover:text-fg-strong"}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+      {view === "gallery" ? (
+        <ul className="mt-4 grid grid-cols-3 gap-x-4 gap-y-7 sm:grid-cols-4 md:grid-cols-5">
+          {shown.slice(0, limit).map((b) => (
+            <li key={b.slug}>
+              <Link href={`/books/${b.slug}`} className="group block">
+                <BookCover title={b.title} author={b.author} cover={b.cover} className="w-full transition group-hover:-translate-y-0.5 group-hover:shadow-md" />
+                <p className="mt-2 line-clamp-2 text-sm leading-snug font-medium text-fg-strong group-hover:text-accent">{b.title}</p>
+                <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted">
+                  <span className={`rounded-full px-1.5 py-px whitespace-nowrap ${STATUS_STYLE[b.status]}`}>{STATUS_LABEL[b.status]}</span>
                   {b.hasReview && (
-                    <span className="ml-2 align-middle text-[0.7rem] font-normal text-accent" title="독후감 있음">
-                      <span aria-hidden>✎</span> 독후감
+                    <span className="text-accent" title="독후감 있음">
+                      <span aria-hidden>✎</span>
+                      <span className="sr-only">독후감 있음</span>
                     </span>
                   )}
                 </p>
-                <p className="truncate text-sm text-muted">{b.author || "저자 정보 없음"}</p>
-              </div>
-              <span className="hidden truncate text-sm text-muted sm:block">{b.category}</span>
-              <span role="img" className="hidden text-sm tracking-tight text-accent sm:block" aria-label={b.rating ? `별점 5점 중 ${b.rating}점` : "별점 없음"}>
-                {b.rating ? "★".repeat(b.rating) + "☆".repeat(5 - b.rating) : <span className="text-muted">—</span>}
-              </span>
-              <span className={`justify-self-end rounded-full px-2.5 py-0.5 text-xs whitespace-nowrap ${STATUS_STYLE[b.status]}`}>
-                {STATUS_LABEL[b.status]}
-              </span>
-            </Link>
-          </li>
-        ))}
-        {shown.length === 0 && <li className="py-12 text-center text-muted">조건에 맞는 책이 없어요.</li>}
-      </ul>
+              </Link>
+            </li>
+          ))}
+          {shown.length === 0 && <li className="col-span-full py-12 text-center text-muted">조건에 맞는 책이 없어요.</li>}
+        </ul>
+      ) : (
+        <ul className="mt-2 divide-y divide-line border-y border-line">
+          {shown.slice(0, limit).map((b) => (
+            <li key={b.slug}>
+              <Link href={`/books/${b.slug}`} className="group grid grid-cols-[2.5rem_1fr_auto] items-center gap-x-4 gap-y-1 py-3 sm:grid-cols-[2.5rem_minmax(0,1fr)_9rem_6rem_5.5rem]">
+                <BookCover title={b.title} cover={b.cover} className="w-10 [&_p]:hidden" />
+                <div className="min-w-0">
+                  <p className="truncate font-medium text-fg-strong group-hover:text-accent">
+                    {b.title}
+                    {b.hasReview && (
+                      <span className="ml-2 align-middle text-[0.7rem] font-normal text-accent" title="독후감 있음">
+                        <span aria-hidden>✎</span> 독후감
+                      </span>
+                    )}
+                  </p>
+                  <p className="truncate text-sm text-muted">{b.author || "저자 정보 없음"}</p>
+                </div>
+                <span className="hidden truncate text-sm text-muted sm:block">{b.category}</span>
+                <span role="img" className="hidden text-sm tracking-tight text-accent sm:block" aria-label={b.rating ? `별점 5점 중 ${b.rating}점` : "별점 없음"}>
+                  {b.rating ? "★".repeat(b.rating) + "☆".repeat(5 - b.rating) : <span className="text-muted">-</span>}
+                </span>
+                <span className={`justify-self-end rounded-full px-2.5 py-0.5 text-xs whitespace-nowrap ${STATUS_STYLE[b.status]}`}>
+                  {STATUS_LABEL[b.status]}
+                </span>
+              </Link>
+            </li>
+          ))}
+          {shown.length === 0 && <li className="py-12 text-center text-muted">조건에 맞는 책이 없어요.</li>}
+        </ul>
+      )}
       {shown.length > limit && (
         <div className="mt-6 text-center">
           <button

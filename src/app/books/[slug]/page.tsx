@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import BookCover from "@/components/BookCover";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
-import { editUrl, getAllBooks, getBook, STATUS_LABEL } from "@/lib/books";
+import BookAdminControls from "@/components/admin/BookAdminControls";
+import { getAllBooks, getBook, STATUS_LABEL } from "@/lib/books";
 import { formatDate } from "@/lib/format";
 
 // Only the pages generated at build time exist; anything else is a real 404.
@@ -15,7 +17,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/books/[slug]">): Promise<Metadata> {
   const book = getBook((await params).slug);
-  return book ? { title: `${book.title} — 독후감` } : {};
+  return book ? { title: `${book.title} 독후감` } : {};
 }
 
 export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
@@ -29,10 +31,7 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
           <span aria-hidden>←</span> 책장
         </Link>
         <header className="mt-8 flex gap-6 border-b border-line pb-8">
-          {book.cover && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={book.cover} alt="" className="hidden h-40 w-28 shrink-0 rounded-md border border-line object-cover sm:block" />
-          )}
+          <BookCover title={book.title} author={book.author} cover={book.cover} className="w-24 shrink-0 sm:w-32" />
           <div className="min-w-0">
             <p className="text-sm text-muted">{book.category}</p>
             <h1 className="mt-2 text-3xl leading-tight font-bold text-balance text-fg-strong sm:text-4xl">{book.title}</h1>
@@ -59,20 +58,10 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
             </div>
           </div>
         </header>
+        <BookAdminControls slug={book.slug} status={book.status} hasReview={book.review.length > 0} />
 
         <section className="mt-10">
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="text-sm font-semibold tracking-[0.18em] text-muted uppercase">독후감</h2>
-            <a
-              href={editUrl(book.slug)}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted transition hover:border-accent hover:text-accent"
-            >
-              <span aria-hidden>✎</span> {book.review ? "독후감 수정" : "독후감 쓰기"}
-              <span className="sr-only">(GitHub, 새 창)</span>
-            </a>
-          </div>
+          <h2 className="text-sm font-semibold tracking-[0.18em] text-muted uppercase">독후감</h2>
           {book.review ? (
             <div className="mt-6">
               <Prose markdown={book.review} />
@@ -80,9 +69,6 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
           ) : (
             <div className="mt-6 rounded-2xl border border-dashed border-line p-8 text-center text-muted">
               <p>아직 독후감이 없어요.</p>
-              <p className="mt-1 text-sm">
-                「독후감 쓰기」를 누르면 GitHub에서 이 책의 마크다운 파일이 열려요. 본문에 감상을 적고 저장하면 사이트에 반영돼요.
-              </p>
             </div>
           )}
         </section>

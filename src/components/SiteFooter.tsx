@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { site } from "@/lib/site";
 import { SOCIAL_LINKS, SocialIcon } from "./SocialLinks";
 
@@ -7,6 +8,9 @@ export default function SiteFooter() {
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-8 text-sm text-muted sm:px-6">
         <p>
           © 2026 {site.author}
+          <Link href="/admin" className="ml-3 text-xs text-muted/70 hover:text-accent">
+            관리
+          </Link>
         </p>
         <ul className="flex items-center gap-1">
           {SOCIAL_LINKS.map((l) => (

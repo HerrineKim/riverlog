@@ -1,4 +1,3 @@
-import { site } from "./site";
 import { cachedRead, readSection, resolveAttachment, stringList } from "./vault";
 
 export type BookStatus = "read" | "reading" | "want";
@@ -16,7 +15,7 @@ export type Book = {
   review: string; // markdown 독후감, may be empty
 };
 
-export const STATUS_LABEL: Record<BookStatus, string> = { reading: "읽는 중", read: "다 읽음", want: "읽고 싶음" };
+export const STATUS_LABEL: Record<BookStatus, string> = { reading: "읽는 중", read: "다 읽음", want: "안 읽음" };
 const STATUS_ORDER: BookStatus[] = ["reading", "read", "want"];
 
 export const getAllBooks = cachedRead((): Book[] => {
@@ -49,9 +48,4 @@ export const getAllBooks = cachedRead((): Book[] => {
 
 export function getBook(slug: string): Book | undefined {
   return getAllBooks().find((b) => b.slug === decodeURIComponent(slug));
-}
-
-/** Opens the book's markdown file in GitHub's web editor; saving it triggers a redeploy. */
-export function editUrl(slug: string) {
-  return `${site.repo}/edit/main/content/books/${encodeURIComponent(slug)}.md`;
 }
