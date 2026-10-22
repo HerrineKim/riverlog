@@ -9,7 +9,7 @@ import remarkCjkFriendly from "remark-cjk-friendly/parseOnly";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
-import type { Element, Root as HastRoot } from "hast";
+import type { Element, ElementContent, Root as HastRoot } from "hast";
 import { unified } from "unified";
 import { visit } from "unist-util-visit";
 import { remarkObsidian } from "./wikilinks";
@@ -58,6 +58,46 @@ function rehypeLazyImages() {
   };
 }
 
+// Rough rendered width in em: CJK and emoji take a full em, everything else about half
+function emWidth(text: string) {
+  let w = 0;
+  for (const ch of text) w += /[\u1100-\u11ff\u2e80-\ua4cf\uac00-\ud7af\uf900-\ufaff\uff00-\uffef]|\p{Extended_Pictographic}/u.test(ch) ? 1 : 0.55;
+  return w;
+}
+
+function textOf(node: ElementContent): string {
+  if (node.type === "text") return node.value;
+  return node.type === "element" ? node.children.map(textOf).join("") : "";
+}
+
+/**
+ * Gives each table column a content-based minimum width (`--col-min` on its header cell) so narrow screens
+ * scroll the table instead of squeezing cells into a few characters per line. Aims for at most ~3 lines per
+ * cell, never narrower than the longest word, and caps at 15em; the CSS applies it only on small screens.
+ */
+function rehypeTableWidths() {
+  return (tree: HastRoot) => {
+    visit(tree, "element", (table: Element) => {
+      if (table.tagName !== "table") return;
+      const widths: number[] = [];
+      let header: Element | undefined;
+      visit(table, "element", (row: Element) => {
+        if (row.tagName !== "tr") return;
+        const cells = row.children.filter((c): c is Element => c.type === "element" && (c.tagName === "th" || c.tagName === "td"));
+        if (!header && cells.some((c) => c.tagName === "th")) header = row;
+        cells.forEach((cell, i) => {
+          const text = textOf(cell).trim();
+          const longestWord = Math.max(0, ...text.split(/\s+/).map(emWidth));
+          widths[i] = Math.max(widths[i] ?? 0, Math.min(Math.max(longestWord, emWidth(text) / 3), 15));
+        });
+      });
+      const ths = header?.children.filter((c): c is Element => c.type === "element") ?? [];
+      // +1.2em for the cell's horizontal padding (border-box)
+      ths.forEach((th, i) => (th.properties.style = `--col-min:${(Math.max(widths[i] ?? 0, 3) + 1.2).toFixed(1)}em`));
+    });
+  };
+}
+
 const processor = unified()
   .use(remarkParse)
   .use(remarkGfm)
@@ -69,6 +109,8 @@ const processor = unified()
   // Notes come from imported TIL/Notion pages; raw HTML keeps its markup but loses scripts, handlers and js: URLs
   .use(rehypeSanitize, sanitizeSchema)
   .use(rehypeLazyImages)
+  // After sanitize, which would strip the style attribute it adds
+  .use(rehypeTableWidths)
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, { behavior: "wrap" })
   .use(rehypePrettyCode, {

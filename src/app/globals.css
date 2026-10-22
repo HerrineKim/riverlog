@@ -139,6 +139,17 @@ body {
   display: block;
   overflow-x: auto;
 }
+/* Korean wraps at spaces, not between any two syllables */
+.prose-river :where(th, td) {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+/* On phones, columns keep the content-based width set at build time and the table scrolls sideways */
+@media (max-width: 767px) {
+  .prose-river :where(th) {
+    min-width: var(--col-min, auto);
+  }
+}
 .prose-river :where(details) {
   border: 1px solid var(--border);
   border-radius: 0.6rem;
