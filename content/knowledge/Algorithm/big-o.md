@@ -5,10 +5,11 @@ summary: "입력 크기가 커질 때 알고리즘의 연산량이 어떻게 늘
 tags: ["algorithm", "complexity", "big-o", "big-omega", "big-theta"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "http://bigocheatsheet.com/"]
+sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "http://bigocheatsheet.com/", "https://www.youtube.com/watch?v=rL8X2mlNHPM"]
 ---
 
 > 노션 정리를 바탕으로, 자료구조 연산과 정렬 알고리즘의 복잡도 표는 「[Big-O Cheat Sheet](http://bigocheatsheet.com/)」를 바탕으로 보강했다.
+> 「입력이 커질 때의 체감」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 ## 알고리즘이란
 
@@ -98,6 +99,20 @@ function addUpToFast(n) {
 | O(2ⁿ), O(n!) | 지수·팩토리얼 | 부분집합·순열 완전 탐색 |
 
 O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!) 순으로 느려진다. 그래프로 그리면 O(n²)부터는 n이 조금만 커져도 거의 수직으로 치솟는다.
+
+### 입력이 커질 때의 체감
+
+선택 정렬(O(n²))과 병합 정렬(O(n log n))에 같은 입력을 넣으면 차이가 숫자로 보인다.
+
+| n | n² | log₂ n | n log₂ n |
+| --- | --- | --- | --- |
+| 8 | 64 | 3 | 24 |
+| 80 | 6,400 | 약 6.3 | 약 506 |
+| 8,000 | 64,000,000 | 약 13 | 약 104,000 |
+
+- **O(n²)는 입력이 10배면 연산이 100배다.** 중첩 반복문이 n번 안에서 다시 n번 돌기 때문이다.
+- **O(log n)은 입력을 두 배로 늘려도 한 단계만 는다.** 반씩 나누는 횟수를 세는 것이라 8개는 3번, 16개는 4번이다. 입력이 1,000배(8 → 8,000)가 돼도 3단계가 13단계로 늘 뿐이다.
+- 가능한 순열을 모두 만들어 정렬된 것을 찾는 무차별 대입(brute force) 정렬은 O(n!)이다. n = 8이면 40,320가지로, 이미 n²의 600배가 넘는다.
 
 ### 자료구조 연산의 복잡도
 
