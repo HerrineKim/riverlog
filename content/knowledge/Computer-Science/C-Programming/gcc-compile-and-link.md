@@ -5,10 +5,11 @@ summary: "gcc/clang으로 단계별 결과물(.i .s .o)을 뽑는 옵션, 경고
 tags: ["c", "compile", "build", "tools", "linux"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/d5fa7c87192f4c6895ebaa4af5b9dbf5", "https://80000coding.notion.site/a45f1a4841e9455081208ae9ca3b54a1", "https://80000coding.notion.site/4c67b8c953df4afa8f4f9fe0094a4a6e", "https://80000coding.notion.site/4ff0a20c0d144de293102d73d3a0eb6e", "https://80000coding.notion.site/9fc02b4a89ef4d83b862badad55949a6", "https://80000coding.notion.site/4f84a0f3f7f3424d83e88d1132664476", "https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html"]
+sources: ["https://80000coding.notion.site/d5fa7c87192f4c6895ebaa4af5b9dbf5", "https://80000coding.notion.site/a45f1a4841e9455081208ae9ca3b54a1", "https://80000coding.notion.site/4c67b8c953df4afa8f4f9fe0094a4a6e", "https://80000coding.notion.site/4ff0a20c0d144de293102d73d3a0eb6e", "https://80000coding.notion.site/9fc02b4a89ef4d83b862badad55949a6", "https://80000coding.notion.site/4f84a0f3f7f3424d83e88d1132664476", "https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html", "https://www.youtube.com/watch?v=MYKFLepF1UM"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「GCC 컴파일러 개념 정리」, 「Libft 과제에서 만든 라이브러리(libft.a)를 사용해보자」, 「공유 라이브러리를 링크하는 방법」, 「헤더 중복 방지 기법 세 가지(#pragma once)」, 「POSIX cc, C 컴파일러」, 「컴파일만하면 다 해주는게 아니다.?! (어셈블러 찍먹)」을 GCC 공식 문서와 함께 재구성한 노트다.
+> 「단계별로 멈추기」 절의 목적 파일과 실행 파일의 차이는 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 
 ## 컴파일러 드라이버
 
@@ -26,6 +27,8 @@ sources: ["https://80000coding.notion.site/d5fa7c87192f4c6895ebaa4af5b9dbf5", "h
 | (없음) | 링크까지 | 실행 파일 (`-o`로 이름 지정, 기본 `a.out`) |
 
 `-c` 없이 `main`이 없는 파일을 컴파일하면 링커가 `undefined symbol: _main` 오류를 낸다. 여러 파일을 따로 `-c`로 컴파일한 뒤 오브젝트끼리 링크하는 것이 분할 컴파일이고, [[makefile|make]]는 바뀐 파일만 다시 `-c` 한다.
+
+`-E` 결과를 열어 보면 `#include <stdio.h>` 한 줄이 헤더 전체(`printf` 선언 포함)로 펼쳐져 수백 줄이 된다. `-c`로 만든 `.o`는 이미 기계어라 문자열 리터럴(`"hello"`)도 바이트로 들어 있지만, **목적 파일은 실행 파일이 아니다.** `main.c`가 `helper.c`의 `add()`를 부르면 `main.o`에는 `add`의 주소가 비어 있는 **미해결 심볼**이 남는다(`nm main.o`에서 `U`로 표시). 링커가 `main.o`와 `helper.o`, 표준 라이브러리를 묶으며 이 자리를 채워야 비로소 실행할 수 있다.
 
 `-S`로 뽑은 어셈블리를 고쳐 `cc main.s`로 다시 빌드할 수도 있다. 컴파일러가 만든 코드를 읽어 최적화가 어떻게 되었는지 확인할 때 주로 쓴다. 온라인 도구 Compiler Explorer(godbolt.org)가 같은 일을 브라우저에서 해 준다.
 

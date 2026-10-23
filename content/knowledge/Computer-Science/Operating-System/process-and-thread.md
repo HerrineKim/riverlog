@@ -5,7 +5,7 @@ summary: "프로세스의 문맥과 메모리 영역(코드·데이터·힙·스
 tags: ["os", "process", "thread", "pcb", "system-call"]
 source: notion
 date: "2026-10-14"
-sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/205", "https://velog.io/@raejoonee/프로세스와-스레드의-차이", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/32df4df48d7841f2bd84f71a2aba4547", "https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread", "https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux"]
+sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/205", "https://velog.io/@raejoonee/프로세스와-스레드의-차이", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/32df4df48d7841f2bd84f71a2aba4547", "https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread", "https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux", "https://www.youtube.com/watch?v=Jjfah3t_xWk", "https://www.youtube.com/watch?v=wz9C_vqME8g", "https://www.youtube.com/watch?v=zUGvpUtNlwI", "https://www.youtube.com/watch?v=XexLQRaKoTA", "https://www.youtube.com/watch?v=yTZ1ECY2Vjc"]
 ---
 
 > 노션 정리와 개발장의 「[프로세스와 스레드의 차이](https://velog.io/@raejoonee/프로세스와-스레드의-차이)」(2020.08)를 바탕으로 재구성한 노트다.
@@ -13,6 +13,7 @@ sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://
 > 프로그램·프로세스·스레드의 관계는 ByteByteGo의 System Design 101 가이드 「[Process vs Thread: Key Differences](https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread)」를 바탕으로 보강했다.
 >
 > IPC 수단 비교는 ByteByteGo의 System Design 101 가이드 「[Inter-Process Communication on Linux](https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux)」로 확인해 보강했다.
+> 「PCB」, 「리눅스에서는 둘 다 태스크」, 「코드로 직접 확인하기」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 
 먼저 세 개념의 관계를 잡는다.
 
@@ -38,9 +39,9 @@ sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://
 
 | 영역 | 담는 것 | 할당 |
 | --- | --- | --- |
-| 코드(텍스트) | 실행할 기계어 명령어. 읽기 전용 | 정적 (크기 고정) |
-| 데이터 | 전역·static 변수처럼 프로그램이 끝날 때까지 유지할 데이터 | 정적 |
-| 힙 | 프로그래머가 직접 할당하는 공간. 다 쓰면 반환해야 하며, 반환하지 않으면 **메모리 누수**가 된다 | 동적. 낮은 주소 → 높은 주소로 자란다 |
+| 코드(텍스트) | 실행할 기계어 명령어. 실행 중에 바뀔 일이 없으므로 쓰기가 금지된 읽기 전용 영역이다 | 정적 (크기 고정) |
+| 데이터 | 전역·static 변수처럼 프로그램이 끝날 때까지 유지할 데이터. 초기값이 없는 것은 BSS 영역에 따로 두기도 한다 | 정적 |
+| 힙 | 프로그래머가 직접 할당하는 공간. 다 쓰면 반환해야 하며, 반환하지 않으면 **메모리 누수**가 된다. C처럼 직접 반환하는 언어와 달리, 가비지 컬렉션이 있는 언어는 쓰지 않는 객체를 런타임이 회수한다 | 동적. 낮은 주소 → 높은 주소로 자란다 |
 | 스택 | 매개변수·지역 변수처럼 함수가 끝나면 사라질 임시 데이터. PUSH/POP으로 쌓고 뺀다 | 동적. 높은 주소 → 낮은 주소로 자란다 |
 
 힙과 스택이 서로를 향해 자라다 한계를 넘으면 오버플로우가 난다. C 코드에서 각 영역이 어떻게 쓰이는지는 [[pointers-and-memory|포인터와 메모리]]에 있다.
@@ -55,8 +56,10 @@ sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://
 | --- | --- |
 | OS 관리용 | 큐 연결 포인터, PID, 상태, 스케줄링 정보·우선순위 |
 | CPU 문맥 | PC, 레지스터 |
-| 메모리 | code·data·stack 영역의 위치 |
-| 파일 | 열어 둔 파일들 |
+| 메모리 | code·data·stack 영역의 위치. 베이스·한계 레지스터 값이나 페이지 테이블 정보로 기록한다([[virtual-memory\|가상 메모리]]) |
+| 파일 | 열어 둔 파일, 할당받은 입출력 장치 |
+
+레지스터 값을 PCB에 저장하는 이유는 **멈춘 자리에서 다시 시작하기** 위해서다. 타이머 인터럽트로 CPU를 빼앗긴 프로세스가 PC 값을 잃으면 다음 차례에 어느 명령어부터 실행할지 모르고, 범용 레지스터에 있던 연산 중간값을 잃으면 계산을 처음부터 다시 해야 한다. 담기는 항목은 운영체제마다 조금씩 다르다.
 
 ## 문맥 교환 (Context Switch)
 
@@ -76,7 +79,7 @@ PCB는 커널 data 영역의 큐(job·ready·device queue)에 매달려 관리�
 
 | 공유하는 것 (Task) | 스레드마다 따로 갖는 것 |
 | --- | --- |
-| Code 영역, Data 영역, Heap 영역, OS 자원(열린 파일 등) | PC, 레지스터 집합, Stack 영역 |
+| Code 영역, Data 영역, Heap 영역, OS 자원(열린 파일 등), PID | 스레드 ID, PC, 레지스터 집합, Stack 영역 |
 
 스택은 스레드마다 함수 호출 흐름이 독립적이라 따로 갖는다. 힙을 공유하므로 한 스레드가 `malloc`으로 만든 객체를 다른 스레드가 포인터로 바로 읽는다. 따로 갖는 것이 적어서 스레드는 생성과 문맥 교환이 가벼워 **경량 프로세스(Lightweight Process)** 라고도 부르고, 스레드가 하나뿐인 전통적인 프로세스는 **중량 프로세스(Heavyweight Process)** 라고 부른다.
 
@@ -109,6 +112,12 @@ PCB는 커널 data 영역의 큐(job·ready·device queue)에 매달려 관리�
 
 CPU의 하이퍼스레딩처럼 코어 하나가 명령어를 동시에 처리하는 **하드웨어 스레드**는 여기서 말하는 스레드와 다른 개념이다([[computer-system-basics|컴퓨터 시스템의 기본 구성]]).
 
+### 리눅스에서는 둘 다 태스크
+
+리눅스 커널은 프로세스와 스레드를 따로 구분하지 않고 둘 다 **태스크(task)** 라는 하나의 실행 문맥으로 다룬다. 새 태스크는 `clone()` 시스템 콜로 만들고, 이때 주는 플래그가 부모와 무엇을 공유할지 정한다. 주소 공간·파일 디스크립터·시그널 처리기를 모두 공유하면 스레드처럼, 아무것도 공유하지 않으면 프로세스처럼 동작한다. glibc의 `fork()`와 `pthread_create()`도 내부에서 `clone()` 계열 시스템 콜을 부른다.
+
+교과서는 흔히 "CPU를 할당받는 단위는 프로세스"라고 쓰지만, 현대 운영체제의 스케줄러가 실제로 고르는 대상은 스레드(커널 스레드)다. 스레드가 하나뿐인 프로세스라면 두 표현이 같다.
+
 ### 스레드 구현 방식
 
 | 방식 | 설명 |
@@ -121,7 +130,7 @@ CPU의 하이퍼스레딩처럼 코어 하나가 명령어를 동시에 처리�
 
 ### 생성
 
-부모 프로세스가 자식 프로세스를 만들어 **트리 형태의 계층 구조**가 생긴다. 자식은 부모와 다른 PID를 받고, 자식의 PCB에 부모의 PID인 **PPID**가 기록되기도 한다. 사용자 눈앞에서 실행되는 포그라운드 프로세스와 달리, 보이지 않는 곳에서 도는 백그라운드 프로세스를 유닉스에서는 **데몬**, 윈도우에서는 **서비스**라고 부른다.
+부모 프로세스가 자식 프로세스를 만들어 **트리 형태의 계층 구조**가 생긴다. 트리의 뿌리는 부팅 때 커널이 처음 띄우는 PID 1(리눅스는 systemd, macOS는 launchd)이고, 로그인 프로세스 → 셸(bash) → 셸에서 실행한 편집기(vim)처럼 아래로 뻗는다. 데몬도 PID 1의 자손이다([[daemon-and-systemd|데몬과 systemd]]). 지금의 트리는 `pstree`(macOS는 Homebrew로 설치)나 `ps -ef`의 PPID 열로 본다. Windows는 부모 PID를 기록하긴 하지만 이런 계층으로 프로세스를 관리하지는 않는다. 자식은 부모와 다른 PID를 받고, 자식의 PCB에 부모의 PID인 **PPID**가 기록되기도 한다. 사용자 눈앞에서 실행되는 포그라운드 프로세스와 달리, 보이지 않는 곳에서 도는 백그라운드 프로세스를 유닉스에서는 **데몬**, 윈도우에서는 **서비스**라고 부른다.
 
 - 생성은 ① 부모의 주소 공간과 PCB를 복사(`fork()`) → ② 그 공간에 새 프로그램을 덮어써 실행(`exec()`) 순이다. 주소 공간은 바로 복사하지 않고 공유하다가 **쓰기가 일어날 때 복사**한다(COW, Copy-On-Write).
 - 부모는 자식과 별개로 계속 실행하거나, 자식이 끝날 때까지 기다린다(`wait`).
@@ -163,6 +172,35 @@ else                perror("fork");       // -1: 실패
 - `exit()`: 프로세스를 종료한다. 코드에 명시하지 않아도 컴파일러가 `main`의 끝에 넣어 준다. 라이브러리 함수 `exit()`는 `atexit()`로 등록한 함수 실행 → stdio 버퍼 flush → 시스템 콜 `_exit()` 순으로 동작한다([[unix-file-io|UNIX 파일 입출력]]).
 - 자식이 끝나면 커널은 자원을 회수하지만 종료 상태는 부모가 `wait`로 거둘 때까지 남긴다. 거두지 않은 자식이 **좀비**, 부모가 먼저 끝난 자식이 **고아**(init이 입양)다. 부모는 `SIGCHLD`로 자식의 종료를 알고, `waitpid`와 `WIFEXITED` 같은 매크로로 종료 상태를 읽는다([[unix-signals|UNIX 시그널]]).
 
+## 코드로 직접 확인하기
+
+프로세스와 스레드의 차이는 PID와 스레드 ID를 찍어 보면 바로 보인다. 파이썬 표준 라이브러리로 확인하는 패턴은 다음과 같다. 다른 언어도 프로세스·스레드를 만드는 API만 다를 뿐 결과는 같다.
+
+```python
+import os, threading
+from multiprocessing import Process
+
+def work():
+    print("pid", os.getpid(), "ppid", os.getppid(), "tid", threading.get_native_id())
+
+if __name__ == "__main__":
+    print("parent pid", os.getpid())
+    for _ in range(3):
+        Process(target=work).start()            # 자식 프로세스 3개
+    for _ in range(3):
+        threading.Thread(target=work).start()   # 같은 프로세스 안의 스레드 3개
+```
+
+| 실행 단위 | `getpid()` | `getppid()` | `get_native_id()` |
+| --- | --- | --- | --- |
+| 자식 프로세스 | 저마다 다르다 | 모두 메인 프로세스의 PID | 저마다 다르다 |
+| 스레드 | 모두 메인 프로세스와 같다 | 메인 프로세스를 실행한 셸의 PID | 저마다 다르다 |
+
+- PID는 실행할 때마다 운영체제가 새로 준다. 같은 코드를 다시 돌리면 다른 번호가 나온다.
+- 동시에 실행되므로 출력 순서는 매번 달라질 수 있다.
+- `multiprocessing`은 플랫폼에 따라 `fork` 대신 새 인터프리터를 띄우는 방식(spawn 등)으로 자식을 만든다. 그래서 자식이 모듈을 다시 import해도 자식을 또 만들지 않도록 `if __name__ == "__main__":` 안에서 시작한다.
+- 이미 떠 있는 프로세스는 `ps`, `top`, Windows 작업 관리자의 세부 정보 탭으로 본다.
+
 ## 프로세스 간 협력
 
 프로세스는 서로의 주소 공간을 볼 수 없으므로 협력하려면 IPC(Interprocess Communication)를 쓴다. 크게 **커널을 거쳐 메시지를 주고받는 방식**(상대를 직접 지명하는 direct, mailbox·port를 거치는 indirect)과 **주소 공간 일부를 함께 매핑하는 공유 메모리**로 나뉜다.
@@ -175,6 +213,7 @@ else                perror("fork");       // -1: 실패
 | Message Queue | 예 | 양방향 | 메시지 단위로 넣고 꺼낸다 |
 | Socket | 예 | 양방향 | 다른 컴퓨터의 프로세스와도 통신 |
 | Signal | 예 | 단방향 | 데이터 없이 사건만 알린다([[unix-signals\|UNIX 시그널]]) |
+| File | 예 (파일 시스템) | 양방향 | 한 프로세스가 파일에 쓰고 다른 프로세스가 읽는 가장 단순한 방법. 동시 접근은 파일 잠금으로 조율한다 |
 | Semaphore | 예 | - | 데이터 전달이 아니라 공유 자원 접근 제어 |
 
 Shared Memory처럼 같은 데이터를 함께 쓰거나, 한 프로세스 안의 스레드들이 data 영역을 공유하면 경쟁 상태가 생길 수 있다. 이를 막는 방법은 [[process-synchronization|프로세스 동기화]]에서 다룬다.

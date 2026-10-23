@@ -5,13 +5,26 @@ summary: "운영체제가 무엇이고 왜 필요한지, 커널 영역과 이중
 tags: ["os", "kernel", "linux", "computer-science"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a", "https://bytebytego.com/guides/5-important-components-of-linux", "https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html", "https://brunch.co.kr/@toughrogrammer/15"]
+sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a", "https://bytebytego.com/guides/5-important-components-of-linux", "https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=1PEe33_INZc"]
 ---
 
 > 「세 가지 핵심 주제」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] 개요 - 3가지 이야기」를 바탕으로 보강했다. 리눅스 커널의 다섯 하위 시스템은 ByteByteGo의 System Design 101 가이드 「[5 Important Components of Linux](https://bytebytego.com/guides/5-important-components-of-linux)」를 바탕으로 보강했다.
 > 레스토랑 비유는 「[레스토랑에 비유해서 알아보는 운영체제](https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html)」를 바탕으로 보강했다. 학부 운영체제 과목의 전체 지도는 「[개념 정리 - 운영 체제 편](https://brunch.co.kr/@toughrogrammer/15)」을 함께 참고했다.
+> 「개발자가 운영체제를 알아야 하는 이유」 절과 자원의 정의는 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 
 운영체제(Operating System)는 컴퓨터 하드웨어 바로 위에 설치되어 사용자·응용 프로그램과 하드웨어를 연결하는 소프트웨어 계층이다. 사용자에게는 컴퓨터를 편하게 쓸 수 있는 환경을, 컴퓨터 입장에서는 한정된 자원을 효율적으로 나눠 주는 **자원 할당자** 역할을 한다.
+
+여기서 **자원(resource, 시스템 자원)** 은 프로그램이 실행되는 데 필요한 요소를 두루 가리키는 말이다. CPU·메모리·보조기억장치·입출력 장치 같은 하드웨어가 대표적이고, 파일이나 네트워크 패킷 같은 소프트웨어적인 것도 자원에 든다. 운영체제는 실행 중인 프로그램에 자원을 할당하고, 각 프로그램이 올바르게 실행되도록 돕는 특별한 프로그램이다.
+
+## 개발자가 운영체제를 알아야 하는 이유
+
+운영체제가 없다면 `1 + 2`의 결과를 화면에 찍는 프로그램조차 메모리의 빈 곳에 자신을 적재하는 코드, CPU에 덧셈을 시키는 코드, 모니터에 글자를 그리는 코드를 모두 직접 써야 한다. `printf`나 `print` 한 줄로 끝나는 이유는 그 함수가 내부에서 **운영체제에 출력을 부탁하기** 때문이다([[system-structure|시스템 콜]]). 응용 프로그램은 하드웨어를 직접 조작하지 않고 운영체제의 코드를 실행해 원하는 일을 맡긴다.
+
+| 관점 | 의미 |
+| --- | --- |
+| 프로그램을 위한 프로그램 | 프로그램이 메모리 몇 번지에 올라갔는지, CPU를 몇 번째로 얼마나 받았는지는 사용자가 의식하지 않는다. 운영체제는 사용자보다 **프로그램을 위해** 일한다. 그래서 프로그램을 만드는 사람이 알아야 한다 |
+| 문제를 가장 먼저 아는 곳 | 하드웨어와 맞닿아 있어서, 프로그램이 자원을 쓰다 문제가 생기면 운영체제가 가장 먼저 알아챈다 |
+| 개발자와 대화하는 창구 | 하드웨어는 고장 나면 멈출 뿐이지만, 운영체제는 오류 메시지로 무엇이 잘못됐는지 알려 준다. 운영체제를 알면 오류 메시지를 읽는 힘과 문제 해결력이 함께 오르고, 운영체제 지식이 있어야만 풀리는 오류도 있다 |
 
 ## 협의의 운영체제와 광의의 운영체제
 
