@@ -5,17 +5,20 @@ summary: "캐시의 주소 매핑(연관·직접·집합 연관)과 쓰기 정�
 tags: ["computer-architecture", "cache", "memory", "virtual-memory", "os"]
 source: notion
 date: "2026-10-12"
-sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://parksb.github.io/article/29.html"]
+sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://parksb.github.io/article/29.html", "https://www.youtube.com/watch?v=qLCP0PwRp_w"]
 ---
 
 > 교체 정책·성능 지표·캐시 친화적 코드는 「[캐시가 동작하는 아주 구체적인 원리](https://parksb.github.io/article/29.html)」로 보강했다.
+> 「캐시 메모리」 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 
 캐시와 가상 메모리는 같은 아이디어를 메모리 계층의 서로 다른 층에 적용한 것이다. 캐시는 "느린 메인 메모리를 빠르게", 가상 메모리는 "작은 메인 메모리를 크게" 보이게 만든다. 둘 다 프로그램이 최근에 쓴 데이터나 그 근처를 다시 쓰는 경향(**지역성**)에 기대고 있다. 이 노트는 그중 하드웨어가 담당하는 부분, 즉 캐시 회로와 MMU를 다룬다.
 
 ## 캐시 메모리
 
 - 메인 메모리보다 수십 배 빠르고 용량은 훨씬 작다.
-- 보통 L1·L2는 코어 안에, L3는 여러 코어가 공유하는 계층 구조다.
+- 보통 L1·L2는 코어 안에, L3는 여러 코어가 공유하는 계층 구조다. 코어에서 멀수록 크고 느리다(L1 < L2 < L3 < 메인 메모리).
+- L1은 다시 명령어만 담는 **L1I**와 데이터만 담는 **L1D**로 나누기도 한다(**분리형 캐시**, split cache). 명령어 인출과 데이터 접근이 한 캐시를 놓고 다투지 않아 L1을 더 빠르게 쓸 수 있다. L2부터는 보통 둘을 함께 담는 통합 캐시다.
+- 코어마다 L1·L2를 따로 두면 같은 주소의 사본이 여러 코어에 생겨, 한 코어가 값을 바꾸면 다른 코어의 사본과 어긋날 수 있다. 이를 맞추는 캐시 일관성(MESI)은 [[cache-friendly-code|캐시를 고려한 코드]]에 있다.
 - CPU는 주소만 내보낼 뿐, 데이터가 캐시에 있는지 메인 메모리에 있는지 신경 쓰지 않는다. 이를 연결하는 것이 **주소 매핑**이다.
   - **캐시 히트**: 캐시에 있음 → 바로 전달
   - **캐시 미스**: 없음 → 메인 메모리에서 가져와 캐시에 채움
