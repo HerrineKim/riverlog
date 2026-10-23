@@ -23,7 +23,12 @@ date: "2026-10-13"
 - [소프트웨어 복잡성: 본질적 복잡성과 우발적 복잡성](Computer-Science/software-complexity.md): 상태·제어 흐름·코드 양이라는 원인, 단순함과 쉬움의 차이, 피하고 분리하라는 처방
 - [베지어 곡선](Computer-Science/bezier-curve.md): 선형 보간을 겹친 드 카스텔조 알고리즘, 2·3차 곡선 식과 행렬 표현, 펜 툴·SVG·CSS의 곡선
 - [변환 행렬: 이동·크기·회전과 동차 좌표](Computer-Science/transformation-matrix.md): 그래픽스의 2D·3D 변환 행렬, 기준점·임의 축 변환의 합성, 곱하는 순서와 투영
+- [피드백 제어와 PID 제어기: 로봇이 목표값에 닿는 법](Computer-Science/feedback-control-pid.md): 로봇의 정의, 센서·오차·제어기·구동기의 음의 피드백 루프, 오버슈트, 비례·적분·미분 항, 상위 계획, 모라벡의 역설
+- [컴퓨터 그래픽스 렌더링 기초: 프레임버퍼에서 3D 래스터화까지](Computer-Science/graphics-rendering-basics.md): 래스터·벡터 스캔과 텍스트 모드, 프레임버퍼, 투영·삼각형 메시·스캔라인 채우기·안티앨리어싱, 화가 알고리즘과 Z 버퍼, 후면 컬링, 셰이딩·텍스처 매핑, GPU 병렬 처리
+- [데이터 압축: 무손실과 손실](Computer-Science/data-compression.md): 런 렝스 부호화, LZ 계열 사전 방식과 DEFLATE, 허프만 트리와 접두 부호, 압축 한계, 지각 부호화와 동영상의 움직임 보상
+- [그래픽 사용자 인터페이스: WIMP, 메타포, 이벤트 기반 프로그래밍](Computer-Science/graphical-user-interface.md): CLI와 GUI 비교, 창·아이콘·메뉴·포인터와 데스크톱 메타포, 위젯, 이벤트 처리 함수를 등록하는 GUI 프로그램 구조, WYSIWYG
 - [양자역학 기초: 이중 슬릿, 중첩, 얽힘](Computer-Science/quantum-mechanics-basics.md): 파동-입자 이중성, 양자 중첩과 얽힘, 양자역학에 대한 흔한 오해
+- [컴퓨터의 역사: 무엇이 무엇을 대체했나](Computer-Science/computing-history.md): 계산 도구에서 범용 기계로, 릴레이→진공관→트랜지스터→집적회로, 포토리소그래피와 무어의 법칙의 한계, 프로그램 입력 수단의 변천, 튜링 머신과 정지 문제, 개인용 컴퓨터가 보급된 조건
 - [양자 컴퓨터의 원리: 큐비트, 양자 알고리즘, 양자 게이트](Computer-Science/quantum-computing.md): 진폭 간섭으로 정답 확률 키우기, 블로흐 구면과 X·H·CNOT, 그로버·쇼어, 양자내성암호, 오류 정정
 
 ## 학습 순서와 자료
