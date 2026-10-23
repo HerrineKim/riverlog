@@ -140,4 +140,4 @@ sources: ["https://www.youtube.com/watch?v=mDqCC3i14bI", "https://www.youtube.co
 - 강화 학습은 보상만 주고 스스로 전략을 찾게 한다. 사람의 지식을 뺄수록 더 강해졌고, 한계는 시뮬레이터다.
 - 배운 앞쪽 층은 다른 문제로 옮겨 쓸 수 있다(전이 학습).
 
-관련 노트: [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[perceptron-mlp|퍼셉트론과 다층 퍼셉트론]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[reinforcement-learning|강화 학습: 에이전트·MDP·가치 함수와 알고리즘 분류]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]]
+관련 노트: [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[perceptron-mlp|퍼셉트론과 다층 퍼셉트론]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[reinforcement-learning|강화 학습: 에이전트·MDP·가치 함수와 알고리즘 분류]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]], [[computer-vision-basics|컴퓨터 비전 기초]]
