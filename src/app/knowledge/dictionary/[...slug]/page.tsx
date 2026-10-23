@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Comments from "@/components/Comments";
 import Prose from "@/components/Prose";
-import ScrollReset from "@/components/ScrollReset";
 import SiteFooter from "@/components/SiteFooter";
 import Toc, { MobileToc } from "@/components/Toc";
 import EntryLayout from "@/components/knowledge/EntryLayout";
@@ -61,7 +60,6 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
         }
         toc={<Toc items={toc} />}
       >
-        <ScrollReset key={node.id} />
           <nav aria-label="경로" className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
             <Link href={KNOWLEDGE_BASE} className="hover:text-accent">
               사전
