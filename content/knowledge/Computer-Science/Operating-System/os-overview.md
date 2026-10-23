@@ -5,12 +5,13 @@ summary: "운영체제가 무엇이고 왜 필요한지, 커널 영역과 이중
 tags: ["os", "kernel", "linux", "computer-science"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a", "https://bytebytego.com/guides/5-important-components-of-linux", "https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=1PEe33_INZc"]
+sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a", "https://bytebytego.com/guides/5-important-components-of-linux", "https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=1PEe33_INZc", "https://www.youtube.com/watch?v=26QPDBe-NB8"]
 ---
 
 > 「세 가지 핵심 주제」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] 개요 - 3가지 이야기」를 바탕으로 보강했다. 리눅스 커널의 다섯 하위 시스템은 ByteByteGo의 System Design 101 가이드 「[5 Important Components of Linux](https://bytebytego.com/guides/5-important-components-of-linux)」를 바탕으로 보강했다.
 > 레스토랑 비유는 「[레스토랑에 비유해서 알아보는 운영체제](https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html)」를 바탕으로 보강했다. 학부 운영체제 과목의 전체 지도는 「[개념 정리 - 운영 체제 편](https://brunch.co.kr/@toughrogrammer/15)」을 함께 참고했다.
 > 「개발자가 운영체제를 알아야 하는 이유」 절과 자원의 정의는 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 「커널 패닉」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 운영체제(Operating System)는 컴퓨터 하드웨어 바로 위에 설치되어 사용자·응용 프로그램과 하드웨어를 연결하는 소프트웨어 계층이다. 사용자에게는 컴퓨터를 편하게 쓸 수 있는 환경을, 컴퓨터 입장에서는 한정된 자원을 효율적으로 나눠 주는 **자원 할당자** 역할을 한다.
 
@@ -61,6 +62,10 @@ sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9a
 | 예 | UNIX, Linux, MS-DOS | MINIX, QNX(자동차·임베디드), seL4(정확성을 수학적으로 검증) | Windows NT 계열, macOS(XNU) |
 
 Linux는 단일형 커널이지만 장치 드라이버 같은 기능을 실행 중에 붙였다 뗄 수 있는 **적재 가능 커널 모듈(LKM)** 로 유연성을 보완한다.
+
+### 커널 패닉
+
+응용 프로그램은 오류가 나도 그 프로세스만 죽고 운영체제가 정리한다. 커널은 그럴 상위 관리자가 없다. 커널이 스스로 복구할 수 없는 오류(커널 코드의 잘못된 메모리 접근, 핵심 자료구조 손상 등)를 만나면, 계속 돌다 데이터를 더 망가뜨리지 않도록 **일부러 시스템을 멈춘다**. 이것이 커널 패닉(kernel panic)이다. 이름은 초기 UNIX 커널이 오류 복구 코드를 대부분 빼고 대신 부르던 `panic` 루틴에서 왔고, Linux 커널에도 같은 이름의 `panic()` 함수가 있다. Windows에서는 블루스크린으로 알려진 버그 체크(bug check)가 같은 역할을 한다. 단일형 커널에서는 드라이버 하나의 버그도 커널 패닉으로 이어진다.
 
 ## 운영체제의 목적과 역할
 
