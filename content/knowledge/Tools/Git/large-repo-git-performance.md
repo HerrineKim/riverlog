@@ -5,10 +5,10 @@ summary: "커밋 이력과 파일이 많은 모노레포에서 clone·checkout·
 tags: ["git", "tools", "performance", "version-control", "ci-cd"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/the-one-line-change-that-reduced-clone-times-by-a-whopping-99-says-pinterest", "https://bytebytego.com/guides/how-tiktok-manages-a-200k-file-frontend-monorepo", "https://git-scm.com/docs/git-clone", "https://git-scm.com/docs/git-sparse-checkout", "https://git-scm.com/docs/partial-clone", "https://git-scm.com/docs/scalar"]
+sources: ["https://bytebytego.com/guides/the-one-line-change-that-reduced-clone-times-by-a-whopping-99-says-pinterest", "https://bytebytego.com/guides/how-tiktok-manages-a-200k-file-frontend-monorepo", "https://git-scm.com/docs/git-clone", "https://git-scm.com/docs/git-sparse-checkout", "https://git-scm.com/docs/partial-clone", "https://git-scm.com/docs/scalar", "https://www.anthropic.com/engineering/redesigning-source-control"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[The one-line change that reduced clone times by 99% at Pinterest](https://bytebytego.com/guides/the-one-line-change-that-reduced-clone-times-by-a-whopping-99-says-pinterest)」, 「[How TikTok Manages a 200K File Frontend MonoRepo](https://bytebytego.com/guides/how-tiktok-manages-a-200k-file-frontend-monorepo)」를 바탕으로, 명령어는 Git 공식 문서로 확인해 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[The one-line change that reduced clone times by 99% at Pinterest](https://bytebytego.com/guides/the-one-line-change-that-reduced-clone-times-by-a-whopping-99-says-pinterest)」, 「[How TikTok Manages a 200K File Frontend MonoRepo](https://bytebytego.com/guides/how-tiktok-manages-a-200k-file-frontend-monorepo)」를 바탕으로, 명령어는 Git 공식 문서로 확인해 재구성한 노트다. 「서버 중심 버전 관리」 절은 Anthropic의 「[Redesigning source control](https://www.anthropic.com/engineering/redesigning-source-control)」(2026)을 바탕으로 더했다.
 
 ## 무엇이 느려지나
 
@@ -91,11 +91,46 @@ scalar clone <url>
 | CI 캐시된 작업 공간 | 기존 저장소에서 대상 ref만 `fetch` | 매번 clone하지 않는 것이 가장 빠르다 |
 | 개발자 PC | `--filter=blob:none` + 희소 체크아웃 + fsmonitor + maintenance (또는 `scalar clone`) | 이력은 온전히 쓰면서 받는 양과 작업 트리를 줄인다 |
 
+## 서버 중심 버전 관리 (초대형·에이전트 환경)
+
+위 방법들은 Git을 그대로 둔 채 받는 양만 줄인다. 규모가 더 극단으로 가면 Git의 **전제 자체**가 발목을 잡는다. Git은 모든 클라이언트가 이력 사본을 들고 오프라인에서 분산 작업한다고 가정하지만, 초대형 모노레포의 클라이언트는 상시 온라인 상태인 CI와 코딩 에이전트다. 사본을 통째로 들고 다닐 이유가 없다.
+
+### 한계에 부딪히는 지점
+
+- main 이력이 ~100GB에 이르고, CI가 하루 ~2,500만 번 체크아웃한다. 단순하게 매번 받으면 하루 600PB가 넘는 Git 트래픽이 추정된다.
+- 얕은·희소 클론, 내부 미러, seed 스냅샷으로 버텼지만, 병합량이 급증(2026년 5월 하루 ~2.5천 건 → 9월 3만 건+)하며 미러 방식이 한계에 다다랐다.
+- "오프라인 분산 사본"이라는 전제가 상시 온라인 클라이언트에는 순수한 낭비가 된다.
+
+### Scion: 이력을 서버가 맡는다
+
+이 환경을 겨냥해 이력·blame·커밋·병합·리베이스를 **서버**가 담당하고, 클라이언트는 제한된 캐시와 가상(sparse) 체크아웃만 드는 설계가 Scion이다.
+
+| 축 | 일반 Git | Scion |
+| --- | --- | --- |
+| 작업 단위 | 커밋(트리 전체를 가리키는 포인터) | changeset(첫 부모 대비 바뀐 파일 목록과 내용 주소 blob 포인터) |
+| ref 이동 | 커밋 생성과 묶여 있다 | changeset 생성과 분리, Spanner 단일 행 compare-and-swap으로 처리 |
+| blame·경로 이력·커밋그래프 skip list | 저장해 둔다 | 부모로부터 재귀로 계산하는 파생 데이터(즉시 또는 지연) |
+| 저장 형식 | packfile | 없음 → 저장소 유지 보수가 필요 없다 |
+| 전송 | packfile 협상 | 필요한 트리·blob만 개별 요청, 보유 객체를 공개하지 않는다 |
+
+- changeset은 write-ahead log에 쌓이고, 파일 내용은 내용 주소 blob으로 저장된다.
+- 전송이 개별 객체 요청이라 중단해도 재개하기 쉽고, 가상 체크아웃이 자연스럽게 따라온다.
+- 서버는 scion-server, 지역 scion-cache, 노드별 scion-daemon의 계층으로 나뉜다.
+
+### 한계
+
+- 범용 Git 대체가 아니다. **초대형·에이전트 모노레포에서만** 의미가 있다.
+- 코드 리뷰·검색·CI 전체를 함께 이 모델로 옮겨야 하고, 공개판은 내지 않는다.
+- 전역 잠금 병합 큐를 재현하지 못해, 병합 후·배포 전 테스트에 의존한다.
+- trunk 기반(첫 부모 기준) 작업을 전제한다.
+- 성능 수치(캐시 적중률 99%+, 미러 대비 CPU·메모리 200배 절감, 체크아웃 분→초, CI CPU ~25% 절감)는 자체 보고이며 외부 독립 검증은 아니다.
+
 ## 정리
 
 - 저장소가 커지는 축(이력, ref, 파일 내용, 작업 트리 파일 수)마다 처방이 다르다.
 - 얕은 클론만 하고 refspec을 지정하지 않으면 모든 브랜치를 받는다. CI 체크아웃에서는 받을 ref를 꼭 좁힌다.
 - 개발자 PC에는 blobless 부분 클론 + 희소 체크아웃 + fsmonitor가 무난하다.
 - **큰 저장소의 Git 성능은 "필요한 것만 받고, 필요한 것만 펼친다"로 요약된다.**
+- 규모가 극단에 이르면 받는 양을 줄이는 선을 넘어, 이력을 서버로 올리고 Git의 분산 전제를 버리는 재설계(Scion)까지 간다.
 
-관련 노트: [[remote-github|원격 저장소와 GitHub]], [[git-internals|Git 내부 구조]], [[git-config-options|Git 설정 옵션]], [[ci-cd|CI/CD]], [[package-managers|패키지 매니저]]
+관련 노트: [[remote-github|원격 저장소와 GitHub]], [[git-internals|Git 내부 구조]], [[monorepo-vs-polyrepo|모노레포와 폴리레포]], [[git-config-options|Git 설정 옵션]], [[ci-cd|CI/CD]], [[package-managers|패키지 매니저]]
