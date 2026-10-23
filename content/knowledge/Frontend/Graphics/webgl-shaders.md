@@ -120,4 +120,4 @@ Three.js는 `three/webgpu`의 `WebGPURenderer`로 WebGPU를 쓰고, 지원하지
 - WebGPU는 더 빠르고 컴퓨트 셰이더를 지원하는 후속 API다.
 - **프론트엔드 개발자에게 API 자체는 선택이고, 라이브러리와 기본 셰이더 개념이 실용적인 출발점이다.**
 
-관련 노트: [[threejs|Three.js로 웹에서 3D 그리기]], [[transformation-matrix|변환 행렬: 이동·크기·회전과 동차 좌표]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[canvas-2d|Canvas 2D API]], [[webxr|WebXR: 브라우저의 VR·AR]]
+관련 노트: [[threejs|Three.js로 웹에서 3D 그리기]], [[transformation-matrix|변환 행렬: 이동·크기·회전과 동차 좌표]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[canvas-2d|Canvas 2D API]], [[webxr|WebXR: 브라우저의 VR·AR]], [[graphics-rendering-basics|컴퓨터 그래픽스 렌더링 기초]]
