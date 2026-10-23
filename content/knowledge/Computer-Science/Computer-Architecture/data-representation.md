@@ -5,7 +5,7 @@ summary: "컴퓨터가 숫자와 문자를 비트로 저장하는 방식: 진법
 tags: ["computer-architecture", "binary", "floating-point", "encoding"]
 source: notion
 date: "2026-10-21"
-sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://bytebytego.com/guides/big-endian-vs-little-endian", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md", "https://www.joelonsoftware.com/articles/Unicode.html", "https://www.youtube.com/watch?v=peg8c6Gn-zc", "https://www.youtube.com/watch?v=upoRINMqlrw"]
+sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://bytebytego.com/guides/big-endian-vs-little-endian", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md", "https://www.joelonsoftware.com/articles/Unicode.html", "https://www.youtube.com/watch?v=peg8c6Gn-zc", "https://www.youtube.com/watch?v=upoRINMqlrw", "https://www.youtube.com/watch?v=1GSjbWt0c9M", "https://www.youtube.com/watch?v=KN8YgJnShPM"]
 ---
 
 > 진법 변환·KiB·부호 확장·IEEE 754 세부·해밍 코드 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「원리를 알면 까먹지 않을 10진법을 2진법으로 변환하는 방법」, 「KB(킬로바이트)와 KiB(키비바이트)」, 「Unsigned char와 Char의 차이」, 「실수의 비트 표현 방법」, 「JavaScript에서 표현할 수 있는 수의 범위와 부동소수점」, 「Parity Bit (패리티 비트)」, 「Born2BeRoot를 진행하며 궁금했던 부분들」을 바탕으로 보강했다. 보수로 하는 뺄셈은 고무오리 CS 스터디의 『컴퓨터 시스템 구조』(Mano) 정리를 바탕으로 보강했다.
@@ -13,6 +13,7 @@ sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109
 > 바이트 순서는 ByteByteGo의 System Design 101 가이드 「[Big Endian vs Little Endian](https://bytebytego.com/guides/big-endian-vs-little-endian)」을 바탕으로 보강했다.
 > 유니코드 평면과 UTF-16 대리 쌍은 「[Frontend_TIL: 아스키코드 와 유니코드](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md)」를 바탕으로, 코드 포인트와 인코딩의 구분은 Joel Spolsky의 「[The Absolute Minimum Every Software Developer Must Know About Unicode and Character Sets](https://www.joelonsoftware.com/articles/Unicode.html)」(2003)를 바탕으로 보강했다.
 > 「데이터의 종류와 진법」(워드), 「문자 코드」(EUC-KR 예, UTF-8 비트 틀) 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 「2진수 덧셈」 절과 「고정 소수점」의 비트 폭별 정수 범위, 「문자 코드」의 ASCII 제어 문자·상호 운용성, 「이미지와 소리의 표현」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 컴퓨터는 모든 정보를 0과 1로 저장한다. 정수, 실수, 문자를 어떤 규칙으로 비트에 담는지 알아야 오버플로우나 부동 소수점 오차 같은 현상을 이해할 수 있다.
 
@@ -44,13 +45,26 @@ n진수의 각 자리는 n의 거듭제곱이다. `1234 = 1×10³ + 2×10² + 3�
 
 나머지를 거꾸로 읽는 이유는 첫 나머지가 2⁰ 자리, 마지막 나머지가 가장 높은 자리이기 때문이다.
 
+### 2진수 덧셈
+
+10진 덧셈과 같은 규칙이다. 한 자리의 합이 그 진법의 기수를 넘으면 윗자리로 1을 올린다(carry). 2진에는 숫자 2가 없으므로 `1 + 1 = 10`(합 0, 올림 1), `1 + 1 + 1 = 11`(합 1, 올림 1)이다.
+
+```text
+  183      1 0 1 1 0 1 1 1
++  19    + 0 0 0 1 0 0 1 1
+-----    -----------------
+  202      1 1 0 0 1 0 1 0
+```
+
+이 자리별 규칙이 그대로 반가산기·전가산기 회로가 된다([[digital-logic-circuits|디지털 논리 회로와 부품]]).
+
 ## 문자 코드
 
 - **문자 집합**: 컴퓨터가 인식하고 표현할 수 있는 문자의 모음
 - **문자 인코딩**: 문자 집합의 문자를 0과 1로 바꾸는 것. 같은 문자 집합에도 인코딩 방식은 여러 가지일 수 있다
 - **문자 디코딩**: 0과 1로 된 문자 코드를 사람이 읽는 문자로 되돌리는 것
 
-- **ASCII**: 7비트(패리티 1비트를 붙여 8비트로 쓰기도 함). 숫자와 알파벳이 순서대로 배치되어 있다. 예: `A` = `100 0001`.
+- **ASCII**: 7비트(패리티 1비트를 붙여 8비트로 쓰기도 함). 128개 코드에 영문 대소문자, 숫자, 문장 부호와 함께 줄 바꿈(LF, 10)·캐리지 리턴(CR, 13) 같은 **제어 문자**(0~31, 127)를 담는다. 숫자와 알파벳이 순서대로 배치되어 있다. 예: `A` = 65 = `100 0001`, `a` = 97 = `110 0001`. 대소문자는 정확히 32(비트 하나) 차이라 비트 하나만 바꾸면 대소문자가 바뀐다. 서로 다른 회사의 컴퓨터가 같은 코드표를 쓰게 되면서 텍스트를 그대로 주고받을 수 있는 **상호 운용성**(interoperability)이 생겼다.
 - **EBCDIC**: IBM 메인프레임에서 쓰던 8비트 코드.
 - **확장 ASCII와 코드 페이지**: ASCII에 1비트를 더해 256개 문자를 표현한다. 128 아래는 모두 같지만 128~255에 무엇을 둘지는 지역마다 달라, 같은 바이트가 코드 페이지(DOS의 437·737·862, Windows-1252, ISO-8859-1 등)에 따라 다른 글자가 됐다. 여전히 한글을 담기엔 부족하다. 동아시아는 글자에 따라 1바이트나 2바이트를 쓰는 DBCS를 썼는데, 앞으로는 쉽게 읽어도 뒤로 한 글자 돌아가기가 어렵다.
 - **EUC-KR**: 대표적인 한글 **완성형** 인코딩. 초성·중성·종성이 모두 결합된 글자 하나에 2바이트(십육진수 네 자리) 코드를 준다. 예를 들어 `가`는 `B0A1`, `각`은 `B0A2`다. 약 2,350개 글자만 표현할 수 있어 `쀍` 같은 글자는 담지 못하고, 이 때문에 이름을 전산 시스템에 등록하지 못하는 문제도 생겼다. 이를 확장한 것이 마이크로소프트의 CP949다. (초성·중성·종성 각각에 비트열을 주고 조합하는 방식은 조합형이라 한다.)
@@ -106,6 +120,20 @@ UTF-8은 코드 포인트의 범위로 바이트 수를 정하고, 코드 포인
 
 HTML 표준은 새 문서에 UTF-8만 쓰도록 요구한다. 선언이 없으면 브라우저는 바이트 분포로 인코딩을 추측하는데, 추측은 틀릴 수 있다.
 
+## 이미지와 소리의 표현
+
+글자를 코드표로 숫자에 대응시키듯, 그림과 소리도 결국 **숫자의 긴 목록**이다. 어떤 규칙으로 늘어놓았는지는 파일 앞부분의 메타데이터(헤더)가 알려 준다([[file-system|파일 시스템]]의 「파일 형식」).
+
+| 대상 | 쪼개는 단위 | 단위마다 담는 값 | 크기를 정하는 것 |
+| --- | --- | --- | --- |
+| 이미지 | **픽셀(pixel)**: 화면을 이루는 작은 정사각형 점 | 빨강·초록·파랑(RGB) 세 채널의 세기. 채널당 8비트면 0~255 | 가로 × 세로 × 색 깊이(color depth, 픽셀당 비트 수) |
+| 소리 | **표본(sample)**: 1초를 잘게 나눈 시점의 순간 | 그 순간 공기 압력의 크기(진폭, amplitude) | 표본화율(초당 표본 수) × 표본당 비트 수 × 채널 수 × 길이 |
+
+- 화면의 RGB는 빛을 더할수록 밝아지는 **가산 혼합(additive color)** 이다. `(255, 255, 255)`는 흰색, `(0, 0, 0)`은 검정, `(255, 255, 0)`은 빨강과 초록을 섞은 노랑이다. 채널당 8비트, 픽셀당 24비트면 약 1,677만 색을 표현한다.
+- 압축하지 않은 1920×1080, 24비트 이미지는 1920 × 1080 × 3 ≈ 6.2MB다.
+- 압축하지 않은 CD 음질(44.1kHz, 16비트, 스테레오)은 초당 44,100 × 16 × 2 ≈ 1,411kbps, 1분에 약 10MB다. 아날로그 소리를 표본화·양자화하는 과정은 [[voip-sip-rtp|VoIP 전화망]]에 있다.
+- 이렇게 큰 원본을 줄이는 방법은 [[data-compression|데이터 압축]]에 있다.
+
 ## 보수 (Complement)
 
 CPU는 뺄셈을 따로 구현하지 않고 **보수를 더하는 방식**으로 처리한다.
@@ -147,6 +175,17 @@ n자리 수 M − N은 **M에 N의 r의 보수를 더해서** 구한다. M + (r�
 | 2의 보수 | `11110010` | 1의 보수 + 1, 대부분의 CPU가 사용 |
 
 2의 보수는 0이 하나뿐이고 덧셈 회로만으로 뺄셈이 되어 가장 널리 쓰인다.
+
+**비트 폭별 정수 범위** (부호 있는 쪽은 2의 보수)
+
+| 폭 | 부호 없음 | 부호 있음 |
+| --- | --- | --- |
+| 8비트 | 0 ~ 255 | −128 ~ 127 |
+| 16비트 | 0 ~ 65,535 | −32,768 ~ 32,767 |
+| 32비트 | 0 ~ 4,294,967,295 (약 43억) | −2,147,483,648 ~ 2,147,483,647 (약 ±21억) |
+| 64비트 | 0 ~ 약 1.8 × 10¹⁹ | 약 ±9.2 × 10¹⁸ |
+
+n비트는 2ⁿ가지 값을 담고, 부호 있는 수는 그 절반을 음수에 쓴다. 32비트 부호 있는 정수로는 세계 인구(80억 명대)도 담지 못해 큰 수량·ID·타임스탬프에 64비트를 쓴다. 메모리 주소도 같은 제약을 받는다. 32비트 주소는 2³²바이트 = 4GiB까지만 가리키므로, 메모리가 그보다 커지면서 64비트 주소가 필요해졌다.
 
 ### 같은 비트, 다른 해석: 부호 확장
 
