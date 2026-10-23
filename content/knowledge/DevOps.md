@@ -27,6 +27,7 @@ DevOps는 개발(Development)과 운영(Operations) 사이의 벽을 줄여, 코
 | --- | --- |
 | [CI/CD](/knowledge/dictionary/devops/ci-cd) | 지속적 통합·배포의 의미, Docker와 함께 쓰는 흐름, GitHub Actions 예시와 도구 |
 | [배포 전략: 롤링, 블루-그린, 카나리, 섀도, 피처 토글](/knowledge/dictionary/devops/deployment-strategies) | 다운타임·롤백 속도·비용·노출 범위로 비교한 배포 방식, 배포와 출시 분리 |
+| [내구성 워크플로와 Temporal](/knowledge/dictionary/devops/durable-workflow-temporal) | 스케줄 배치의 디스크 포화·알림 누락 문제, Workflow·Activity·서버·워커 구조, cron·Jenkins와의 역할 차이, 중복 실행 방지 같은 운영 주의점 |
 | [12요소 앱](/knowledge/dictionary/devops/twelve-factor-app) | 설정·백엔드 서비스·폐기 가능성·개발·운영 일치 같은 열두 원칙과 지금의 구현 |
 | [관측 가능성: 로그, 트레이스, 메트릭](/knowledge/dictionary/devops/observability) | 세 기둥의 차이, OpenTelemetry, 풀·푸시 수집, 시계열 DB |
 | [서버 장애 진단 패턴](/knowledge/dictionary/devops/server-incident-diagnosis) | load average·I/O 지표, 힙 덤프, 커넥션·DNS·쿼리·Redis 메모리 장애 유형 |
