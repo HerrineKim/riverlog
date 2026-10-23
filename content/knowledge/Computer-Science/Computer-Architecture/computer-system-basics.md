@@ -23,6 +23,8 @@ sources: ["https://riverkim.kr/187", "https://riverkim.kr/192", "https://www.you
 
 ## 컴퓨터의 발전 과정
 
+스위치 부품의 세대교체와 프로그램 입력 수단의 변천 같은 더 긴 흐름은 [[computing-history|컴퓨터의 역사]]에 있다.
+
 ### ENIAC (1946)
 
 - 에커트와 모클리가 만든, 프로그래밍이 가능한 초기 전자식 컴퓨터.
