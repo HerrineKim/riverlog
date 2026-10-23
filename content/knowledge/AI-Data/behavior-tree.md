@@ -83,4 +83,4 @@ Selector와 Sequence의 자식 순서에 **무작위·확률**을 섞으면 같�
 - 노드 간 데이터는 블랙보드로 주고받아 서브트리를 재사용한다.
 - FSM의 전이 폭증 없이 행동을 조립하는 것이 BT의 핵심 가치다.
 
-관련 노트: [[tree|트리와 이진 탐색 트리]], [[dfs|깊이 우선 탐색 (DFS)]], [[reinforcement-learning|강화 학습: 에이전트·MDP·가치 함수와 알고리즘 분류]]
+관련 노트: [[tree|트리와 이진 탐색 트리]], [[dfs|깊이 우선 탐색 (DFS)]], [[reinforcement-learning|강화 학습: 에이전트·MDP·가치 함수와 알고리즘 분류]], [[feedback-control-pid|피드백 제어와 PID 제어기]]
