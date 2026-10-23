@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Instrument_Serif, JetBrains_Mono } from "next/font/google";
 // Self-hosted Pretendard, split by unicode-range so a page only fetches the Hangul it shows
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
+import ScrollReset from "@/components/ScrollReset";
 import SiteHeader from "@/components/SiteHeader";
 import { site } from "@/lib/site";
 import "./globals.css";
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           본문으로 건너뛰기
         </a>
+        <ScrollReset />
         <SiteHeader />
         <div id="main-content" tabIndex={-1} className="flex flex-1 flex-col outline-none">
           {children}

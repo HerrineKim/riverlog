@@ -5,7 +5,7 @@ import Comments from "@/components/Comments";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
 import Toc, { MobileToc } from "@/components/Toc";
-import EntryLayout, { ScrollReset } from "@/components/knowledge/EntryLayout";
+import EntryLayout from "@/components/knowledge/EntryLayout";
 import TreeNav from "@/components/knowledge/TreeNav";
 import { formatDate } from "@/lib/format";
 import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, tagHref, type KNode } from "@/lib/knowledge";
@@ -60,7 +60,6 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
         }
         toc={<Toc items={toc} />}
       >
-        <ScrollReset key={node.id} />
           <nav aria-label="경로" className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
             <Link href={KNOWLEDGE_BASE} className="hover:text-accent">
               사전
