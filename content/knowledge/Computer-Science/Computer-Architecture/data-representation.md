@@ -5,13 +5,14 @@ summary: "컴퓨터가 숫자와 문자를 비트로 저장하는 방식: 진법
 tags: ["computer-architecture", "binary", "floating-point", "encoding"]
 source: notion
 date: "2026-10-21"
-sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://bytebytego.com/guides/big-endian-vs-little-endian", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md", "https://www.joelonsoftware.com/articles/Unicode.html"]
+sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://bytebytego.com/guides/big-endian-vs-little-endian", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md", "https://www.joelonsoftware.com/articles/Unicode.html", "https://www.youtube.com/watch?v=peg8c6Gn-zc", "https://www.youtube.com/watch?v=upoRINMqlrw"]
 ---
 
 > 진법 변환·KiB·부호 확장·IEEE 754 세부·해밍 코드 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「원리를 알면 까먹지 않을 10진법을 2진법으로 변환하는 방법」, 「KB(킬로바이트)와 KiB(키비바이트)」, 「Unsigned char와 Char의 차이」, 「실수의 비트 표현 방법」, 「JavaScript에서 표현할 수 있는 수의 범위와 부동소수점」, 「Parity Bit (패리티 비트)」, 「Born2BeRoot를 진행하며 궁금했던 부분들」을 바탕으로 보강했다. 보수로 하는 뺄셈은 고무오리 CS 스터디의 『컴퓨터 시스템 구조』(Mano) 정리를 바탕으로 보강했다.
 >
 > 바이트 순서는 ByteByteGo의 System Design 101 가이드 「[Big Endian vs Little Endian](https://bytebytego.com/guides/big-endian-vs-little-endian)」을 바탕으로 보강했다.
 > 유니코드 평면과 UTF-16 대리 쌍은 「[Frontend_TIL: 아스키코드 와 유니코드](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md)」를 바탕으로, 코드 포인트와 인코딩의 구분은 Joel Spolsky의 「[The Absolute Minimum Every Software Developer Must Know About Unicode and Character Sets](https://www.joelonsoftware.com/articles/Unicode.html)」(2003)를 바탕으로 보강했다.
+> 「데이터의 종류와 진법」(워드), 「문자 코드」(EUC-KR 예, UTF-8 비트 틀) 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 
 컴퓨터는 모든 정보를 0과 1로 저장한다. 정수, 실수, 문자를 어떤 규칙으로 비트에 담는지 알아야 오버플로우나 부동 소수점 오차 같은 현상을 이해할 수 있다.
 
@@ -28,6 +29,7 @@ sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109
 
 - **비트**는 0과 1을 나타내는 가장 작은 단위이고, n비트로 2^n가지 정보를 표현한다. 8비트가 1**바이트**다.
 - **KB와 KiB**: SI 접두어 KB·MB·GB는 1000배씩(10³), 이진 접두어 KiB·MiB·GiB는 1024배씩(2¹⁰) 커진다. 예전에는 KB를 1024바이트로 섞어 써서 "1TB 디스크가 931GB로 보이는" 혼란이 생겼고, 1998년 IEC가 이진 접두어를 따로 정했다. 디스크 제조사는 10진, 메모리와 많은 OS 도구는 2진을 쓴다. Linux `free -k`는 KiB, `free --kilo`는 KB다.
+- **워드(word)**: CPU가 한 번에 처리하는 정보의 크기다. 바이트처럼 고정된 값이 아니라 CPU마다 다르며, 64비트 CPU라면 1워드가 64비트다. 워드의 절반을 하프 워드, 같은 크기를 풀 워드, 두 배를 더블 워드라 한다. 다만 x86 어셈블리는 16비트 시절의 이름을 그대로 써서 `WORD`가 16비트, `DWORD`가 32비트, `QWORD`가 64비트다.
 - 이진수는 십진수와 헷갈리지 않게 수학에서는 `1101(2)`, 코드에서는 `0b1101`로 쓴다. 십육진수는 10~15를 A~F로 쓰고 `1A2B(16)` 또는 `0x1A2B`로 표기한다.
 - 십육진수를 많이 쓰는 이유는 이진수와 변환이 쉬워서다. 십육진수 한 자리는 이진수 4비트이므로 자리마다 4비트로 바꿔 이어 붙이면 된다. `0x1A2B` = `0001 1010 0010 1011`. 반대로 이진수는 네 자리씩 끊어 한 글자로 바꾼다.
 
@@ -51,7 +53,7 @@ n진수의 각 자리는 n의 거듭제곱이다. `1234 = 1×10³ + 2×10² + 3�
 - **ASCII**: 7비트(패리티 1비트를 붙여 8비트로 쓰기도 함). 숫자와 알파벳이 순서대로 배치되어 있다. 예: `A` = `100 0001`.
 - **EBCDIC**: IBM 메인프레임에서 쓰던 8비트 코드.
 - **확장 ASCII와 코드 페이지**: ASCII에 1비트를 더해 256개 문자를 표현한다. 128 아래는 모두 같지만 128~255에 무엇을 둘지는 지역마다 달라, 같은 바이트가 코드 페이지(DOS의 437·737·862, Windows-1252, ISO-8859-1 등)에 따라 다른 글자가 됐다. 여전히 한글을 담기엔 부족하다. 동아시아는 글자에 따라 1바이트나 2바이트를 쓰는 DBCS를 썼는데, 앞으로는 쉽게 읽어도 뒤로 한 글자 돌아가기가 어렵다.
-- **EUC-KR**: 대표적인 한글 **완성형** 인코딩. 초성·중성·종성이 모두 결합된 글자 하나에 2바이트(십육진수 네 자리) 코드를 준다. 약 2,350개 글자만 표현할 수 있어 `쀍` 같은 글자는 담지 못한다. 이를 확장한 것이 마이크로소프트의 CP949다. (초성·중성·종성 각각에 비트열을 주고 조합하는 방식은 조합형이라 한다.)
+- **EUC-KR**: 대표적인 한글 **완성형** 인코딩. 초성·중성·종성이 모두 결합된 글자 하나에 2바이트(십육진수 네 자리) 코드를 준다. 예를 들어 `가`는 `B0A1`, `각`은 `B0A2`다. 약 2,350개 글자만 표현할 수 있어 `쀍` 같은 글자는 담지 못하고, 이 때문에 이름을 전산 시스템에 등록하지 못하는 문제도 생겼다. 이를 확장한 것이 마이크로소프트의 CP949다. (초성·중성·종성 각각에 비트열을 주고 조합하는 방식은 조합형이라 한다.)
 - **Unicode**: ASCII로는 한글·한자 등을 표현할 수 없어 만든 전 세계 문자 집합. 유니코드 컨소시엄이 정한다. 실제 저장은 인코딩 방식에 따라 다르며, 웹에서 가장 많이 쓰는 **UTF-8**은 문자에 따라 1~4바이트를 쓰는 가변 길이 방식(ASCII 영역은 1바이트로 호환), UTF-16은 2 또는 4바이트를 쓴다.
 
 유니코드는 처음에 16비트(65,536자)면 충분하다고 보고 설계했다. 이 첫 영역이 **기본 다국어 평면**(BMP, `U+0000`~`U+FFFF`)이고, 한글 완성형 11,172자도 여기 있다. 모자라자 유니코드 2.0부터 평면을 17개(BMP + 보충 평면 16개, `U+10FFFF`까지 약 111만 자리)로 넓혔다. 이모지·옛 한자는 보충 평면에 있다.
@@ -72,6 +74,22 @@ UTF-16은 BMP 글자는 2바이트 하나로, 보충 평면 글자는 BMP 안에
 | UTF-8 | 1~4바이트 | `U+0000`~`U+007F`가 ASCII와 같은 1바이트라 영문 텍스트는 ASCII와 바이트가 똑같다. 바이트 순서 문제가 없다. 웹 페이지의 약 99%가 쓴다 |
 | UTF-16 | 2 또는 4바이트 | Windows·Java·JavaScript의 내부 문자열 형식. 바이트 순서가 둘이라 앞에 **BOM**(바이트 순서 표시 `U+FEFF`)을 붙여 구별한다: `FE FF`면 빅 엔디언, `FF FE`면 리틀 엔디언 |
 | UTF-32 | 4바이트 고정 | 인덱싱은 쉽지만 공간을 많이 쓴다 |
+
+UTF-8은 코드 포인트의 범위로 바이트 수를 정하고, 코드 포인트를 2진수로 바꿔 아래 틀의 `x` 자리에 뒤에서부터 채운다. 첫 바이트 앞의 1 개수가 전체 바이트 수이고, 이어지는 바이트는 모두 `10`으로 시작한다. 그래서 중간 바이트부터 읽어도 글자의 시작을 찾을 수 있다.
+
+| 코드 포인트 범위 | 바이트 | 비트 틀 |
+| --- | --- | --- |
+| `U+0000`~`U+007F` | 1 | `0xxxxxxx` |
+| `U+0080`~`U+07FF` | 2 | `110xxxxx 10xxxxxx` |
+| `U+0800`~`U+FFFF` | 3 | `1110xxxx 10xxxxxx 10xxxxxx` |
+| `U+10000`~`U+10FFFF` | 4 | `11110xxx 10xxxxxx 10xxxxxx 10xxxxxx` |
+
+```text
+'한' = U+D55C = 1101 010101 011100   (3바이트 범위)
+       1110 1101 | 10 010101 | 10 011100  →  ED 95 9C
+```
+
+한글 완성형 글자는 모두 3바이트 범위에 있어 UTF-8에서 3바이트, EUC-KR에서 2바이트다.
 
 과거의 UCS-2는 BMP만 담는 2바이트 고정 형식이었고 지금은 UTF-16으로 대체됐다. UTF-8도 처음 설계에서는 6바이트까지 썼지만 2003년 RFC 3629가 `U+10FFFF`까지만 쓰도록 4바이트로 제한했다. 레거시 인코딩(Windows-1252, ISO-8859-1, EUC-KR)으로도 유니코드 문자열을 저장할 수는 있지만 그 인코딩에 없는 글자는 `?`나 `�`로 바뀐다. UTF-8·16·32는 모든 코드 포인트를 담는다.
 
