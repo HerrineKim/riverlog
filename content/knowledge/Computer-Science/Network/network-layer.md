@@ -4,7 +4,7 @@ concept: "IP"
 summary: "IPv4 헤더와 단편화(MTU), 주소 체계(클래스와 CIDR), 서브넷 계산과 라우팅 테이블(최장 프리픽스 일치), ARP 동작 과정·RARP, DHCP 주소 할당(DORA·임대), ICMP와 ping·traceroute, IGMP, IPv6, NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 프로토콜과 회선·패킷 교환 방식 정리."
 tags: ["network", "ip", "routing", "certificate"]
 source: notion
-sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://bytebytego.com/guides/ipv4-vs-ipv6", "https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible", "https://dataportal.kr/14", "https://no1.technology/13", "https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md"]
+sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://bytebytego.com/guides/ipv4-vs-ipv6", "https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible", "https://dataportal.kr/14", "https://no1.technology/13", "https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0"]
 date: "2026-10-21"
 ---
 
@@ -12,6 +12,7 @@ date: "2026-10-21"
 > IPv4와 IPv6의 헤더 비교와 전환 기술은 ByteByteGo의 System Design 101 가이드 「[IPv4 vs. IPv6: Differences](https://bytebytego.com/guides/ipv4-vs-ipv6)」, NAT의 동작 흐름은 「[How NAT Enabled the Internet](https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible)」을 바탕으로 보강했다.
 > BGP 하이재킹과 SDN 부분은 「[Facebook을 다운 시킨 원인, BGP hijacking이 무엇인가?](https://dataportal.kr/14)」, 「[소프트웨어 정의 네트워킹(SDN)](https://no1.technology/13)」을 바탕으로, 2021년 Facebook 장애 경위는 Meta 엔지니어링 블로그의 「[More details about the October 4 outage](https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/)」로 확인해 보강했다.
 > IP 주소 클래스·서브네팅과 DHCP는 「[Frontend_TIL: 네트워크 계층의 역활과 IP의 구조](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md)」, 「[라우터와 서브넷](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md)」, 「[ICMP, DHCP](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md)」을 바탕으로 보강했다.
+> 「데이터 교환 방식」 절의 세 방식 비교는 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 네트워크 계층(3계층)은 여러 네트워크를 거쳐 패킷을 목적지 호스트까지 보내는 일을 한다. 핵심인 IP는 "최선을 다해 전달하지만 보장은 하지 않는" 프로토콜이고, 주변 프로토콜들이 주소 변환·오류 보고·경로 선택을 돕는다.
 
@@ -361,6 +362,8 @@ NAPT 표의 항목은 안에서 밖으로 나갈 때 생긴다. 그래서 **밖�
 | 회선 교환 | 통신 전에 물리적 경로를 확보해 전용선처럼 사용. 지연이 적지만 데이터가 없어도 회선을 점유 (전화) |
 | 메시지 교환 | 메시지 전체를 저장했다가 순서대로 전달. 지연이 큼 |
 | 패킷 교환 | 데이터를 일정 크기의 패킷으로 나눠 전송. 회선 효율이 높고 재전송 가능 (인터넷) |
+
+세 방식은 앞의 약점을 차례로 푼다. 회선 교환은 쓰지 않는 동안에도 선을 붙잡아 비싸고 유연하지 않다. 대신 대역폭을 혼자 다 쓸 수 있어 지금도 금융·군 시설은 전용 회선을 산다. 메시지 교환은 우편처럼 중간 지점마다 다음 목적지를 표로 골라 넘기므로 한 경로가 막혀도 돌아갈 수 있다. 하지만 큰 메시지가 한 구간을 통째로 지나가는 동안 그 구간이 묶여, 1KB짜리 메일도 대용량 파일 뒤에서 기다려야 한다. 패킷 교환은 메시지를 잘게 쪼개 이 막힘을 없애고, 패킷마다 남는 경로로 보낸다. 중앙 통제소가 없어 **한 지점이 무너져도 전체가 멈추지 않는다.**
 
 패킷 교환은 다시 두 가지로 나뉜다.
 
