@@ -5,10 +5,11 @@ summary: "명령형·선언형·객체 지향·함수형·반응형·관점 지�
 tags: ["programming-paradigm", "oop", "computer-science", "design", "paradigm"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/top-8-programming-paradigms", "https://bytebytego.com/guides/imperative-vs-functional-vs-object-oriented-programming", "https://bytebytego.com/guides/the-fundamental-pillars-of-object-oriented-programming", "https://bytebytego.com/guides/8-key-oop-concepts-every-developer-should-know", "https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf", "https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf"]
+sources: ["https://bytebytego.com/guides/top-8-programming-paradigms", "https://bytebytego.com/guides/imperative-vs-functional-vs-object-oriented-programming", "https://bytebytego.com/guides/the-fundamental-pillars-of-object-oriented-programming", "https://bytebytego.com/guides/8-key-oop-concepts-every-developer-should-know", "https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf", "https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf", "https://www.youtube.com/watch?v=l26oaHV7D40"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Top 8 Programming Paradigms](https://bytebytego.com/guides/top-8-programming-paradigms)」, 「[Imperative vs Functional vs Object-oriented Programming](https://bytebytego.com/guides/imperative-vs-functional-vs-object-oriented-programming)」, 「[The Fundamental Pillars of Object-Oriented Programming](https://bytebytego.com/guides/the-fundamental-pillars-of-object-oriented-programming)」, 「[8 Key OOP Concepts Every Developer Should Know](https://bytebytego.com/guides/8-key-oop-concepts-every-developer-should-know)」를 바탕으로 재구성한 노트다. 개념 묶음으로서의 패러다임은 Peter Van Roy의 「[Programming Paradigms for Dummies: What Every Programmer Should Know](https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf)」(2009)를, 구조적 프로그래밍은 Edsger Dijkstra의 「[Go To Statement Considered Harmful](https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf)」(1968)를 바탕으로 보강했다.
+> 「구조적 프로그래밍: goto를 없앤 첫 전환」 절의 기본 구성 요소 표와 함수 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 ## 패러다임이란
 
@@ -62,6 +63,17 @@ sources: ["https://bytebytego.com/guides/top-8-programming-paradigms", "https://
 ### 구조적 프로그래밍: goto를 없앤 첫 전환
 
 명령형 안에서도 가장 먼저 자리 잡은 규율은 **구조적 프로그래밍(structured programming)** 이다. 프로그램을 순차·선택(`if`)·반복(`while`)·프로시저 호출만으로 짜고 임의 점프 `goto`를 쓰지 않는다.
+
+이 네 재료는 거의 모든 언어가 갖춘 기본 구성 요소다.
+
+| 구성 요소 | 하는 일 | 형태 |
+| --- | --- | --- |
+| 순차(sequence) | 문(statement)을 위에서 아래로 하나씩 실행한다. 문을 짜는 규칙이 문법(syntax)이다 | 대입문 `c = a + b`. 오른쪽을 먼저 계산해 왼쪽 변수에 덮어쓰므로 `n = n + 1`이 성립한다 |
+| 선택(selection) | 조건식의 참·거짓에 따라 갈 길을 하나 고르고 지나간다 | `if … else` |
+| 반복(iteration) | 같은 문을 여러 번 실행한다. **조건 제어 반복**은 조건이 거짓이 될 때까지, **횟수 제어 반복**은 정해 둔 횟수만큼 돈다 | `while` / `for i in 1..n` |
+| 호출(procedure call) | 이름 붙인 코드 묶음을 불러 쓰고 결과를 돌려받는다. 언어에 따라 함수·메서드·서브루틴(subroutine)이라 부른다 | 매개변수로 값을 받고 `return`으로 돌려준다 |
+
+**함수는 코드 재사용 수단이자 추상화 단위다.** 같은 계산을 여러 곳에 복사하면 버그를 고칠 때 모든 복사본을 찾아야 한다. 함수로 묶으면 부르는 쪽은 이름과 매개변수·반환값만 알고 안의 반복문과 변수는 보지 않는다. 함수가 다른 함수를 부르며 층을 쌓기 때문에 큰 프로그램을 함수 단위로 나눠 여러 사람이 동시에 짤 수 있다. 자주 쓰는 함수를 미리 짜서 검증해 둔 묶음이 라이브러리(library)다. 함수를 얼마나 작게 나눌지는 [[clean-code-functions-naming|클린 코드: 함수와 이름]]에 있다.
 
 근거는 「실행 중인 프로세스의 진행 상황을 어떤 좌표로 설명할 수 있는가」다. 구조적 제어만 쓰면 지금 위치는 **코드 안의 위치(텍스트 인덱스)** 와 **호출 스택·반복 횟수(동적 인덱스)** 로 기술된다. 이 좌표는 프로그래머가 통제하지 않아도 정해지므로 변수 값이 무엇을 뜻하는지 해석할 기준이 된다. `goto`를 마구 쓰면 그런 좌표 체계를 찾기가 끔찍하게 어려워진다. 이 논증(Dijkstra, 1968)은 이후 「~ considered harmful」이라는 제목 관용구를 낳았다. 같은 논리를 동시성으로 옮긴 것이 [[structured-concurrency|구조적 동시성]]이다. C의 `goto cleanup`처럼 함수 안에서 한 방향으로만 뛰는 제한된 쓰임은 지금도 관용구로 남아 있다.
 
