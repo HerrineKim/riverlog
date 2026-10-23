@@ -5,16 +5,31 @@ summary: "셸이 한 줄의 명령을 토큰화·파싱·확장한 뒤 fork·exe
 tags: ["os", "process", "shell", "system-call", "linux"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/e416ec1f544444ac90afa1a45d95d448", "https://80000coding.notion.site/5b2650763f64428f80675deacc9b5b24", "https://www.gnu.org/software/bash/manual/bash.html", "https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html"]
+sources: ["https://80000coding.notion.site/e416ec1f544444ac90afa1a45d95d448", "https://80000coding.notion.site/5b2650763f64428f80675deacc9b5b24", "https://www.gnu.org/software/bash/manual/bash.html", "https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html", "https://www.youtube.com/watch?v=4RPtJ9UyHS0"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「다사다난했던 pipex 여정」, 「The Hitchhiker's Guide to the BIGSHELL」을 바탕으로 재구성한 노트다. 셸 문법의 기준은 POSIX Shell Command Language와 GNU Bash 매뉴얼이다.
+> 「터미널과 셸은 다르다」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 ## 셸은 무엇을 하는 프로그램인가
 
 셸은 **명령 한 줄을 읽어 프로세스를 만들고, 그 입출력을 연결해 주는 사용자 프로그램**이다. 커널 기능을 새로 제공하지 않는다. `fork`, `execve`, `wait`, `pipe`, `dup2`, `open` 같은 시스템 콜을 조합할 뿐이다. 그래서 셸을 이해하는 것은 UNIX 프로세스 모델을 이해하는 것과 같다.
 
 bash, zsh, dash는 모두 POSIX 셸 명세를 기준으로 각자 기능을 더한 구현이다.
+
+### 터미널과 셸은 다르다
+
+명령줄 인터페이스(CLI)는 사용자가 명령을 글자로 치고 엔터를 누르면 컴퓨터가 글자로 답하는, **글자를 주고받는 대화**다. 이 대화에는 두 역할이 있다.
+
+| 역할 | 하는 일 | 예 |
+| --- | --- | --- |
+| 터미널(terminal) | 키 입력을 글자로 보내고, 받은 글자를 화면에 그린다. 명령의 뜻은 모른다 | macOS Terminal·iTerm2, Windows Terminal, GNOME Terminal, SSH 클라이언트 창 |
+| 셸(shell) | 터미널에서 받은 한 줄을 해석해 프로그램을 실행하고, 결과를 터미널로 돌려보낸다 | bash, zsh, PowerShell |
+
+- 처음의 터미널은 전신용 타자기인 **텔레타이프(teletype)** 였다. 글자를 종이에 찍던 장치가 화면으로 바뀐 뒤에도 같은 글자 프로토콜을 그대로 써서, 컴퓨터는 상대가 종이인지 화면인지 구분하지 못했다. 유닉스가 터미널 장치를 TTY(`/dev/tty`)라 부르는 이유다.
+- 지금의 터미널 앱은 그 장치를 소프트웨어로 흉내 낸 **터미널 에뮬레이터**다. 커널이 만든 의사 터미널(pseudo-terminal, `/dev/pts/N`) 한 쌍의 한쪽을 에뮬레이터가, 다른 쪽을 셸이 쥐고 글자를 주고받는다. `Ctrl+C`가 시그널이 되는 것도 이 터미널 계층이 하는 일이다(아래 「대화형 셸과 시그널」).
+- 명령줄에서 `ls -l /tmp`의 `ls`는 명령, `-l`과 `/tmp`는 **인자(argument)** 다. 프로그램이 실행되면 그 프로그램이 끝날 때까지 터미널의 입출력을 넘겨받는다.
+- 글자만 주고받으므로 명령을 이어 붙이고 스크립트로 자동화하기 쉽고, 멀리 있는 서버에도 같은 방식으로 접속한다([[ssh|SSH]]). GUI와의 비교는 [[graphical-user-interface|그래픽 사용자 인터페이스]]에 있다.
 
 ## 한 줄이 실행되기까지
 
