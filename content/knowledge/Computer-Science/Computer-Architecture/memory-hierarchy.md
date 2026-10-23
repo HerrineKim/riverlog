@@ -1,14 +1,15 @@
 ---
 title: "메모리 계층 구조"
 concept: "Memory Hierarchy"
-summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 저장 장치를 계층으로 묶는 구조와 RAM의 종류(SRAM·DRAM의 셀 구조, DRAM의 행·열 접근 타이밍과 순차 접근이 빠른 이유, NUMA), 하드 디스크·플래시 메모리(SSD), RAID, 연관 메모리."
+summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 저장 장치를 계층으로 묶는 구조(계층별 지연 시간의 자릿수)와 RAM의 종류(SRAM·DRAM의 셀 구조, DRAM의 행·열 접근 타이밍과 순차 접근이 빠른 이유, NUMA), 하드 디스크·플래시 메모리(SSD), RAID, 연관 메모리."
 tags: ["computer-architecture", "memory", "storage", "raid"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/"]
+sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/", "https://www.youtube.com/watch?v=m2NfFJEvssY", "https://www.youtube.com/watch?v=lgFmNUG_Atw"]
 ---
 
 > 노션 정리를 바탕으로, 계층별 역할은 ByteByteGo의 System Design 101 가이드 「[Types of Memory](https://bytebytego.com/guides/types-of-memory)」, 「[Types of Memory and Storage](https://bytebytego.com/guides/types-of-memory-and-storage)」로, SRAM·DRAM의 구조와 DRAM 접근 타이밍·NUMA는 Ulrich Drepper의 「[What every programmer should know about memory, Part 1](https://lwn.net/Articles/250967/)」(2007)로 보강했다.
+> 「계층별 접근 시간의 자릿수」, 「하드 디스크의 구성」, 「플래시 메모리와 SSD」, 「RAID」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 
 빠른 메모리는 비싸고 작으며, 큰 메모리는 느리다. 그래서 컴퓨터는 여러 종류의 저장 장치를 **계층**으로 쌓고, 자주 쓰는 데이터를 위쪽에 두는 방식으로 "빠르면서도 큰" 메모리처럼 보이게 만든다.
 
@@ -33,6 +34,22 @@ sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.you
 | SSD | 반도체로 된 영속 저장소. 움직이는 부품이 없어 빠르다 | 비휘발 |
 | HDD | 회전하는 디스크와 헤드로 된 대용량 장기 저장소 | 비휘발 |
 | 원격 보조 저장소 | 네트워크로 접근하는 백업·보관용 저장소 | 비휘발 |
+
+### 계층별 접근 시간의 자릿수
+
+계층 사이의 속도 차이는 몇 배가 아니라 **몇 자릿수**다. Jeff Dean이 정리해 널리 퍼진 「모든 프로그래머가 알아야 할 지연 시간」 표의 대표값은 다음과 같다. 정확한 값은 하드웨어 세대마다 다르므로 자릿수만 본다.
+
+| 동작 | 대략의 시간 |
+| --- | --- |
+| L1 캐시 참조 | 0.5ns |
+| L2 캐시 참조 | 7ns |
+| 메인 메모리 참조 | 100ns |
+| 메모리에서 1MB 순차 읽기 | 250µs |
+| 하드 디스크 탐색(seek) | 10ms |
+| 하드 디스크에서 1MB 순차 읽기 | 20ms |
+| 캘리포니아 ↔ 네덜란드 패킷 왕복 | 150ms |
+
+L1 참조와 디스크 탐색은 약 2천만 배 차이다. 하드 디스크에서 1MB를 읽는 시간은 대륙 간 네트워크 왕복과 같은 자릿수다. 웹 쪽 지연 숫자는 [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]]에 있다.
 
 시스템 설계에서도 같은 원리를 쓴다. 자주 읽는 데이터는 위 계층(메모리 캐시)에, 오래 보관할 데이터는 아래 계층(오브젝트 스토리지·아카이브)에 둔다. [[block-file-object-storage|블록·파일·오브젝트 스토리지]]
 
@@ -116,6 +133,8 @@ DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한�
 - **헤드 / 암**: 헤드가 읽고 쓰며, 암(액추에이터)이 헤드를 원하는 트랙으로 옮긴다
 - **컨트롤러**: 기계 제어와 버스 인터페이스를 맡는 작은 컴퓨터
 
+플래터는 보통 여러 장이고 양면을 모두 쓴다. 면마다 헤드가 하나씩 있고, 모든 헤드는 한 디스크 암에 붙어 **함께** 움직인다. 그래서 연속된 데이터는 한 트랙을 다 채운 뒤 옆 트랙으로 가지 않고 **같은 실린더의 다른 면**에 이어서 기록한다. 헤드를 옮기지 않고(탐색 없이) 면만 바꿔 가며 읽을 수 있기 때문이다. 섹터 하나 이상을 묶은 단위를 블록이라 부르며, 파일 시스템은 이 블록 단위로 공간을 관리한다([[file-system-implementation|파일 시스템 구현]]).
+
 접근 시간(탐색 + 회전 지연 + 전송)과 용량 계산, 헤드 이동을 줄이는 스케줄링은 [[disk-scheduling|디스크 관리와 스케줄링]]에 있다.
 
 자기 테이프는 순차 접근만 가능하지만 용량당 가격이 싸고 오래 보관할 수 있어, 지금도 데이터센터의 백업·아카이브에 LTO 테이프가 쓰인다.
@@ -131,7 +150,7 @@ DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한�
 | TLC (Triple Level Cell) | 3 | 속도·수명·가격의 균형이 좋아 2026년 기준 소비자·서버 SSD의 주류 |
 | QLC (Quad Level Cell) | 4 | 가장 고밀도이고 용량 대비 싸지만, 쓰기 속도와 수명이 TLC보다 낮다. 대용량·읽기 위주 용도 |
 
-셀당 비트가 늘수록 용량은 커지고 속도·수명은 줄어든다. 실제 체감 속도는 셀보다 **인터페이스**가 크게 좌우한다. SATA SSD는 SATA 3(6Gb/s)에 묶여 순차 읽기가 약 550MB/s에 머물고, NVMe SSD는 PCIe 레인을 직접 써서 PCIe 4.0 제품이 약 7GB/s, PCIe 5.0 제품이 약 14GB/s대까지 나온다.
+셀당 비트가 늘수록 용량은 커지고 속도·수명은 줄어든다. 여기서 수명은 셀을 **쓰고 지울 수 있는 횟수**(P/E 사이클)다. 한 셀에 구분해야 할 전압 단계가 많아질수록 셀이 닳는 영향을 크게 받아, 같은 용량이라도 셀 종류에 따라 가격·속도·수명이 달라진다. 실제 체감 속도는 셀보다 **인터페이스**가 크게 좌우한다. SATA SSD는 SATA 3(6Gb/s)에 묶여 순차 읽기가 약 550MB/s에 머물고, NVMe SSD는 PCIe 레인을 직접 써서 PCIe 4.0 제품이 약 7GB/s, PCIe 5.0 제품이 약 14GB/s대까지 나온다.
 
 ```text
 셀 → 페이지 → 블록 → 플레인 → 다이
@@ -165,6 +184,19 @@ DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한�
 - RAID 1은 복구가 간단하지만 쓰기가 RAID 0보다 느리고, 같은 데이터를 두 번 저장하는 만큼 비용이 든다.
 - RAID 4는 완전한 복사본 대신 패리티만 따로 저장해 RAID 1보다 적은 디스크로 안전성을 얻는다. RAID 5는 그 패리티를 모든 디스크에 나눠 RAID 4의 병목을 없앤 것이다.
 - RAID 6은 쓰기 속도를 조금 희생하더라도 더 안전하게 보관하고 싶을 때 쓴다. 여러 레벨을 섞은 RAID 10, RAID 50 같은 구성(Nested RAID)도 있다.
+- 디스크 여러 장에 줄무늬처럼 나뉘어 놓인 데이터 조각을 **스트라이프**(stripe), 그렇게 나눠 저장하는 일을 **스트라이핑**이라 한다. 한 디스크에 연속으로 쓰는 조각의 크기(stripe size)는 RAID 볼륨을 만들 때 정한다.
+- 일반적인 패리티 비트는 오류를 **검출**만 하지만, RAID의 패리티는 나머지 디스크의 데이터와 XOR해 고장 난 디스크 한 장의 내용을 **복구**할 수 있다.
+- RAID는 메인보드 펌웨어(BIOS·UEFI 설정의 RAID 모드), 전용 RAID 컨트롤러, 운영체제의 소프트웨어 RAID([[disk-scheduling|디스크 관리와 스케줄링]]의 md) 중 어디서든 구성할 수 있다.
+
+| 가장 원하는 것 | 고를 만한 레벨 |
+| --- | --- |
+| 입출력 속도 | RAID 0 (데이터가 사라져도 되는 임시 작업 공간) |
+| 단순하고 확실한 복구 | RAID 1 |
+| 용량 효율과 안전성의 균형 | RAID 5 |
+| 디스크 두 장 고장까지 견디기 | RAID 6 |
+| 속도와 안전성 모두 | RAID 10 |
+
+RAID는 디스크 고장에 대비할 뿐 **백업이 아니다.** 실수로 지운 파일, 랜섬웨어, 컨트롤러 고장은 모든 디스크에 똑같이 반영된다.
 
 ## 연관 메모리 (Associative Memory)
 
