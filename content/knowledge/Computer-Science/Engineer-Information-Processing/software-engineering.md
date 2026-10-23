@@ -5,10 +5,11 @@ summary: "정보처리기사에 반복 출제되는 모듈 결합도·응집도,
 tags: ["certificate", "software-engineering", "design-pattern", "uml"]
 source: notion
 date: "2026-10-20"
-sources: ["https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams"]
+sources: ["https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams", "https://www.youtube.com/watch?v=O753uuutqH8"]
 ---
 
 > 클래스 다이어그램 표기는 ByteByteGo의 System Design 101 가이드 「[UML Class Diagrams Cheatsheet](https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams)」를 바탕으로 보강했다.
+> 「계층과 API」, 「버전 관리의 기본 동작」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 좋은 소프트웨어 설계의 핵심은 "고치기 쉽고 다시 쓰기 쉬운 구조"다. 시험에서는 이를 모듈 독립성, 디자인 패턴, 모델링 도구, 그리고 개발 과정을 관리하는 기법(비용 산정, 형상 관리)으로 나눠 묻는다.
 
@@ -24,6 +25,12 @@ sources: ["https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams"]
 ### Fan-in / Fan-out
 
 **Fan-in**은 어떤 모듈을 호출하는 상위 모듈 수(높으면 재사용성이 좋다), **Fan-out**은 어떤 모듈이 호출하는 하위 모듈 수다.
+
+### 계층과 API
+
+함수가 수십만 개로 늘면 함수 단위로도 관리가 안 된다. 관련 함수와 변수를 객체로 묶고, 객체 안에 다시 객체를 넣어 **계층**을 만든다. 자동차 소프트웨어라면 `Car` 안에 `Engine`, 그 안에 `CruiseControl`·`IgnitionControl`이 들어가고, 호출은 `car.engine.cruiseControl.setSpeed(55)`처럼 바깥에서 안으로 내려간다. 팀도 이 경계를 따라 나눈다.
+
+다른 팀이 만든 모듈을 쓸 때 기댈 것은 문서와 **API(Application Programming Interface)** 다. API는 모듈이 밖에 공개하는 함수와 데이터의 목록이다. `IgnitionControl`은 `setRPM()`을 public으로 열어 크루즈 컨트롤이 부를 수 있게 하고, 점화 플러그를 직접 점화하는 함수는 private으로 닫아 자기 안에서만 부른다. **필요한 것만 골라 공개하는 것이 정보 은닉**이다. 내부를 바꿔도 API가 같으면 쓰는 쪽은 고칠 것이 없으므로, 정보 은닉은 결합도를 낮추는 실제 수단이 된다.
 
 ## 디자인 패턴 (GoF)
 
@@ -154,5 +161,17 @@ LOC 계산 예: 총 30,000라인, 개발자 5명, 1인당 월 300라인이면 `3
 | 형상 통제 | 변경 요구를 검토·승인해 기준선(baseline)에 반영 |
 | 형상 감사 | 기준선의 무결성을 검증하고 공식 승인 |
 | 형상 기록 | 식별·통제·감사 결과를 기록하고 보고 |
+
+### 버전 관리의 기본 동작
+
+| 동작 | 뜻 |
+| --- | --- |
+| 저장소(repository) | 코드와 모든 변경 이력을 보관하는 곳 |
+| 체크아웃(checkout) | 저장소의 코드를 내 작업 공간으로 가져온다 |
+| 커밋(commit) | 확인을 마친 변경을 저장소에 기록해 다른 사람이 쓰게 한다 |
+| 되돌리기(revert, rollback) | 버그가 들어오면 전체나 일부를 이전의 안정 버전으로 되돌린다 |
+| 이력 추적 | 누가 언제 무엇을 바꿨는지 남긴다(`git log`, `git blame`) |
+
+동시 수정을 다루는 방식은 둘이다. 옛 중앙 집중식 도구는 파일을 체크아웃한 사람만 고치도록 **잠근다**(lock-modify-unlock). Git과 SVN의 기본 방식은 각자 고친 뒤 **병합한다**(copy-modify-merge). 어느 쪽이든 공유하는 주 브랜치는 늘 빌드되고 돌아가야 하므로 깨진 코드를 커밋하지 않는다.
 
 관련 노트: [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[oop-messaging|객체 지향의 본질: 메시징]], [[software-testing|소프트웨어 테스트]], [[Tools/Git/git-basics|Git 기초]]
