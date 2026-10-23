@@ -102,4 +102,4 @@ sources: ["https://bytebytego.com/guides/10-key-data-structures-we-use-every-day
 - 블룸 필터는 "확실히 없다"를 싸게 판정한다. 거짓 양성을 감수할 수 있는 곳에 쓴다.
 - 설계에서는 구현보다 **어떤 문제를 어떤 대가로 푸는지**를 설명할 수 있어야 한다.
 
-관련 노트: [[data-structures|기초 자료구조]], [[web-crawler-at-scale|대규모 웹 크롤러 설계]], [[database-sharding|데이터베이스 샤딩]], [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[big-o|빅오 표기법과 시간 복잡도]]
+관련 노트: [[data-structures|기초 자료구조]], [[web-crawler-at-scale|대규모 웹 크롤러 설계]], [[database-sharding|데이터베이스 샤딩]], [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[big-o|빅오 표기법과 시간 복잡도]], [[data-compression|데이터 압축: 무손실과 손실]]

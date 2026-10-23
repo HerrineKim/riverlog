@@ -5,20 +5,23 @@ summary: "인증기 앱의 6자리 코드(TOTP)는 등록 때 공유한 비밀 �
 tags: ["security", "auth", "backend", "cryptography", "web"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-does-google-authenticator-or-other-types-of-2-factor-authenticators-work", "https://bytebytego.com/guides/is-passkey-shaping-a-passwordless-future", "https://www.rfc-editor.org/rfc/rfc6238", "https://www.w3.org/TR/webauthn-3/"]
+sources: ["https://bytebytego.com/guides/how-does-google-authenticator-or-other-types-of-2-factor-authenticators-work", "https://bytebytego.com/guides/is-passkey-shaping-a-passwordless-future", "https://www.rfc-editor.org/rfc/rfc6238", "https://www.w3.org/TR/webauthn-3/", "https://www.youtube.com/watch?v=bPVaOlJ6ln0"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How Google Authenticator Works](https://bytebytego.com/guides/how-does-google-authenticator-or-other-types-of-2-factor-authenticators-work)」, 「[Is PassKey Shaping a Passwordless Future?](https://bytebytego.com/guides/is-passkey-shaping-a-passwordless-future)」를 바탕으로, TOTP 규격(RFC 6238)과 WebAuthn 명세로 확인해 재구성한 노트다.
+> 「인증 요소」 절의 요소별 약점은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 ## 인증 요소
 
 인증은 세 종류의 증거로 한다. **서로 다른 종류를 두 개 이상** 요구하면 다중 요소 인증(MFA)이다. 비밀번호 두 개는 같은 종류라 MFA가 아니다.
 
-| 요소 | 의미 | 예 |
-| --- | --- | --- |
-| 아는 것 | 기억하는 비밀 | 비밀번호, PIN |
-| 가진 것 | 소유한 기기·키 | 인증기 앱이 든 휴대폰, 보안 키, 패스키가 저장된 기기 |
-| 나 자신 | 생체 정보 | 지문, 얼굴 |
+| 요소 | 의미 | 예 | 약점 |
+| --- | --- | --- | --- |
+| 아는 것 | 기억하는 비밀 | 비밀번호, PIN | 추측·대입·유출된다. 4자리 PIN은 1만 가지뿐이라 시도 횟수를 막아도, 봇넷이 수만 계정에 흔한 PIN 하나씩만 넣어 보면 몇 개는 열린다 |
+| 가진 것 | 소유한 기기·키 | 인증기 앱이 든 휴대폰, 보안 키, 패스키가 저장된 기기 | 추측할 수 없고 원격 공격자가 손에 넣기 어렵다. 대신 가까이 있는 사람에게 도난·복제당한다 |
+| 나 자신 | 생체 정보 | 지문, 얼굴 | 판정이 **확률적**이다. 본인을 거부하거나(조명·모자) 남을 본인으로 받아들일 확률이 0이 아니다. 유출돼도 **바꿀 수 없다** |
+
+아는 것과 가진 것은 맞거나 틀리거나 둘 중 하나로 판정되지만, 생체는 센서 값이 매번 달라 임계값으로 판정한다. 그래서 패스키처럼 생체를 기기 잠금 해제에만 쓰고, 서버에는 생체 정보를 보내지 않는 구조가 안전하다.
 
 ## TOTP: 시간 기반 일회용 비밀번호
 

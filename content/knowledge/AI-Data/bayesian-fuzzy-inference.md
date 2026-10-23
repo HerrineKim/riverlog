@@ -126,4 +126,4 @@ P(x|ω₁) / P(x|ω₂)  >  [(c₂₁ − c₂₂)·P(ω₂)] / [(c₁₂ − c�
 - 퍼지 집합은 소속 함수, max/min 연산, max-min 합성으로 사람의 언어 규칙을 계산 가능하게 만든다.
 - **확률은 모르는 사실에 대한 믿음이고, 소속도는 정의 자체의 흐릿함이다.**
 
-관련 노트: [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[classification-metrics|분류 모델 성능 평가 지표]], [[decision-tree-ensemble|결정 트리와 앙상블]]
+관련 노트: [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[classification-metrics|분류 모델 성능 평가 지표]], [[decision-tree-ensemble|결정 트리와 앙상블]], [[intelligent-tutoring-system|지능형 튜터링 시스템과 베이지안 지식 추적]]

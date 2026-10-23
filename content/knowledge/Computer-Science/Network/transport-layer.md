@@ -4,7 +4,7 @@ concept: "Transport Layer"
 summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계(임시 포트 범위 포함), 연결 지향 TCP의 헤더·플래그·3-way handshake·순서 번호 규칙·상태 전이·4-way handshake와 TIME_WAIT, 비연결형 UDP, 그리고 TCP와 UDP의 비교."
 tags: ["network", "transport-layer", "tcp", "udp", "port", "handshake"]
 source: notion
-sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df", "https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp", "https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data", "https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram", "https://bytebytego.com/guides/18-common-ports-worth-knowing", "https://roka88.dev/114", "https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/"]
+sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df", "https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp", "https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data", "https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram", "https://bytebytego.com/guides/18-common-ports-worth-knowing", "https://roka88.dev/114", "https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/", "https://www.youtube.com/watch?v=AEaKrq3SpW8"]
 date: "2026-10-21"
 ---
 
@@ -12,6 +12,7 @@ date: "2026-10-21"
 > UDP의 쓰임, 게임의 신뢰성 UDP, 응용 프로토콜 표는 ByteByteGo의 System Design 101 가이드 「[Top 4 Most Popular Use Cases for UDP](https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp)」, 「[TCP vs UDP for Online Gaming](https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data)」, 「[Explaining 8 Popular Network Protocols in 1 Diagram](https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram)」, 「[18 Common Ports Worth Knowing](https://bytebytego.com/guides/18-common-ports-worth-knowing)」을 바탕으로 보강했다.
 > 흐름·오류·혼잡 제어의 세부 동작은 「[TCP의 흐름제어, 오류제어, 혼잡제어 개념에 대한 개요](https://roka88.dev/114)」를 바탕으로 보강했다.
 > 임시 포트 고갈과 소켓 옵션은 Cloudflare의 「[How to stop running out of ephemeral ports and start to love long-lived connections](https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/)」를 바탕으로 보강했다.
+> 「UDP」 절의 체크섬 계산 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 네트워크 계층(IP)이 데이터를 **목적지 호스트**까지 보내 준다면, 전송 계층(4계층)은 그 호스트 안의 **어느 프로세스**에게 줄지 결정하고 필요하면 신뢰성을 보장한다. 이때 프로세스를 구분하는 번호가 포트 번호다.
 
@@ -250,6 +251,8 @@ UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프�
 | 목적지 포트 | 2바이트 | 받는 프로세스 |
 | 길이 | 2바이트 | 헤더 + 데이터 전체 길이 |
 | 체크섬 | 2바이트 | 헤더와 데이터의 오류 검출 |
+
+체크섬은 이름 그대로 **데이터를 더한 값**이다. 송신 측은 의사 헤더(출발지·목적지 IP 등)와 UDP 헤더·데이터를 16비트씩 끊어 더하고, 16비트를 넘는 자리올림은 다시 아래에 더해 접은 뒤(1의 보수 합), 그 값을 뒤집어 넣는다. 수신 측이 같은 계산을 해서 맞지 않으면 전송 중 비트가 깨진 것이다. 단순 합이라 오류를 **검출**만 할 뿐 고칠 수는 없고, 두 비트가 서로 상쇄되게 깨지면 놓치기도 한다. TCP 체크섬도 같은 방식이다.
 
 체크섬은 IPv4에서는 선택이라 0이면 검사하지 않는다는 뜻이고, IPv6에서는 필수다(IPv6 헤더에 체크섬이 없기 때문이다). 오류를 찾으면 UDP는 그 데이터그램을 조용히 버릴 뿐 재전송하지 않는다.
 

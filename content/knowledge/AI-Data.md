@@ -23,11 +23,13 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [머신 러닝 기초: 네 단계 추상화](AI-Data/machine-learning-basics.md): 데이터 → 모델 → 손실 → 최적화, 지도·비지도, 최소제곱법, 과적합·MLE·MAP·정규화
 - [퍼셉트론과 다층 퍼셉트론](AI-Data/perceptron-mlp.md): 인공 뉴런·활성화 함수, 퍼셉트론 학습과 XOR 한계, MLP와 오류 역전파
 - [딥러닝 직관으로 이해하기: 신경망으로 숫자에서 패턴 찾기](AI-Data/deep-learning-intuition.md): 모든 것이 숫자인 컴퓨터, 규칙으로 못 적는 패턴, 프로그래밍과 학습의 차이, 층별 특징과 해석의 어려움, 강화 학습과 알파제로, 전이 학습
+- [컴퓨터 비전 기초: 커널과 합성곱에서 CNN까지](AI-Data/computer-vision-basics.md): 색 추적, 패치·커널·합성곱과 프리윗 에지 검출, Viola-Jones 얼굴 검출, 커널을 학습하는 CNN과 비전 트랜스포머, 랜드마크·표정·생체 인식
 - [결정 트리와 앙상블: 랜덤 포레스트와 부스팅](AI-Data/decision-tree-ensemble.md): 지니 불순도, 배깅과 부스팅 비교, 정형 데이터에 강한 트리 모델, 서버·엣지 배포
 - [분류 모델 성능 평가 지표](AI-Data/classification-metrics.md): 혼동 행렬, 정밀도·재현율·정확도·F1, 객체 탐지의 IoU·PR 곡선·AP·mAP
 - [서비스용 텍스트 분류 모델 만들기](AI-Data/text-classification-in-production.md): 라벨 기준, 노이즈 많은 텍스트 토큰화, 가벼운 모델, 클래스 불균형, 라벨 오류 찾기와 재학습, 다중 입력 모델
 - [머신러닝 모델 서빙](AI-Data/ml-model-serving.md): 동기 API와 큐 기반 비동기 워커, 가중치·이미지 분리, 배치 처리, 헬스 체크·배포 게이트, BentoML
 - [불확실한 지식으로 추론하기: 베이지안 분류기와 퍼지 추론](AI-Data/bayesian-fuzzy-inference.md): 베이즈 정리·최소 오류/위험 분류기·나이브 베이즈, 퍼지 집합·관계·논리
+- [지능형 튜터링 시스템과 베이지안 지식 추적](AI-Data/intelligent-tutoring-system.md): 생성 규칙·버그 규칙의 도메인 모델, 학생 모델, 숙달·추측·실수·전이 확률의 BKT 갱신식, 숙달 학습과 적응형 순서, LLM 튜터
 - [강화 학습: 에이전트·MDP·가치 함수와 알고리즘 분류](AI-Data/reinforcement-learning.md): 상태·행동·보상, MDP, 리턴·Q 함수·벨만 방정식, 모델 기반/프리·가치/정책·온/오프 정책
 - [비헤이비어 트리](AI-Data/behavior-tree.md): 틱마다 깊이 우선 평가, Success·Failure·Running, Sequence·Selector·Parallel과 데코레이터, FSM과 비교
 - [자연어 처리 파이프라인: 전처리부터 언어 모델까지](AI-Data/nlp-pipeline.md): 말뭉치 → 토큰화·정규화·인코딩 → 언어 모델(n-gram → 트랜스포머 → LLM) → 평가

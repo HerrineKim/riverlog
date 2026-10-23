@@ -56,4 +56,4 @@ sources: ["https://mytory.net/archives/13159", "https://www.nngroup.com/articles
 - 범용 아이콘이 아니면 레이블을 붙인다.
 - **연구·디자인에 투자할 여력이 없으면 텍스트 링크를 쓴다.**
 
-관련 노트: [[svg-icons|SVG 아이콘]], [[ux-writing|UX 라이팅]], [[ui-elements-glossary|UI 요소 용어집]]
+관련 노트: [[svg-icons|SVG 아이콘]], [[ux-writing|UX 라이팅]], [[ui-elements-glossary|UI 요소 용어집]], [[interface-psychology|인터페이스 심리학]]

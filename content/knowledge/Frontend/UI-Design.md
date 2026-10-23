@@ -23,6 +23,7 @@ UI 디자인 주제는 **화면이 어떻게 보이고 쓰이는가**를 다룬�
 - [UI 모션 디자인: 애니메이션 원칙, 모션 커브, 안무](Frontend/UI-Design/ui-motion-principles.md): 애니메이션 12원칙의 웹 적용, cubic-bezier 읽기, 겹친 애니메이션과 offset-path, 시차 안무, 60fps 규칙
 - [SVG 아이콘: 형식, 넣는 방법, 이름 붙이기, 스타일](Frontend/UI-Design/svg-icons.md): PNG 대신 SVG, img·배경·인라인 비교, symbol/use, 장식·단독 아이콘의 접근 가능한 이름, currentColor
 - [나쁜 아이콘과 좋은 아이콘: 아이콘 사용성](Frontend/UI-Design/icon-usability.md): 나쁜 아이콘 다섯 유형, 아이콘의 비용과 이점, 좋은 아이콘의 조건, 여력이 없으면 텍스트 링크
+- [인터페이스 심리학: 지각·인지·감정·사회적 반응](Frontend/UI-Design/interface-psychology.md): 밝기와 색상 인코딩, 청킹, 어포던스, 재인과 회상, 초보자·숙련자 경로, 감성 컴퓨팅, 시선과 자기 노출, 불쾌한 골짜기, 설계의 윤리
 - [반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표](Frontend/UI-Design/responsive-ui-patterns.md): 숨기기 전에 다듬기 → 오버플로 패턴 → 점진적 공개, 캐러셀↔그리드 혼합형, 넘치는 표, 입력 장치를 가정하지 않기
 - [전자상거래 UI 디자인](Frontend/UI-Design/ecommerce-ui.md): 구매 여정의 마찰 제거, 얕은 메뉴·필터·검색, 상품 페이지 첫 화면, 옵션별 선택 UI와 품절 표시, 재고 기반 가격 슬라이더
 - [제스처 기반 인터페이스](Frontend/UI-Design/gesture-interface.md): 대표 제스처, 콘텐츠 중심 화면, 시간·애니메이션 설계, 점진적 힌트, 시스템 제스처 충돌과 버튼 대안

@@ -5,10 +5,11 @@ summary: "AI Futures Project가 낸 초지능 도래 예측 시나리오. AI가 
 tags: ["ai", "agi", "ai-safety", "alignment", "forecasting"]
 source: other
 date: "2026-10-20"
-sources: ["https://ai-2027.com/", "https://ai-2027.com/summary", "https://ai-2027.com/research"]
+sources: ["https://ai-2027.com/", "https://ai-2027.com/summary", "https://ai-2027.com/research", "https://www.youtube.com/watch?v=5TNAz1HYg18"]
 ---
 
 > AI Futures Project(Daniel Kokotajlo, Eli Lifland, Thomas Larsen, Romeo Dean, 글 Scott Alexander)의 「[AI 2027](https://ai-2027.com/)」(2025.04)을 바탕으로 재구성한 노트다.
+> 「AI 연구 진전 배수」 절의 특이점과 S곡선 반론은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 ## AI 2027이란
 
@@ -66,6 +67,8 @@ sources: ["https://ai-2027.com/", "https://ai-2027.com/summary", "https://ai-202
 - 코딩을 완전히 자동화해도 전체 진전은 몇 배에 그친다. 실험에 쓸 **연산이 병목**이고, 연구 감각(무엇을 연구할지 고르는 능력)은 피드백이 길고 데이터가 적어 늦게 따라온다.
 
 시나리오의 배수는 Agent-1 약 2 → Agent-2 3 → Agent-3 4~10 → Agent-4 50으로 오른다. AI가 AI를 만드는 데 쓰이면서 진전이 **복리로** 붙는 것이 지능 폭발(intelligence explosion)이다.
+
+이런 폭주하는 기술 성장 끝에 인간 사회가 이전과 같은 방식으로 이어질 수 없는 지점을 **특이점(singularity)** 이라 한다. 1950년대 존 폰 노이만이 기술 진보의 가속을 두고 이 말을 처음 썼고, 이후 버너 빈지와 레이 커즈와일이 지능 폭발의 뜻으로 퍼뜨렸다. 반론은 진전이 지수 곡선이 아니라 **S곡선**이라는 것이다. 복잡도가 오를수록 다음 진전이 어려워지는 「복잡도 브레이크(complexity brake)」가 걸린다. 연산 능력을 지능의 잣대로 삼아 뇌와 칩을 비교하는 외삽도 근거가 약하다. 계산이 빠르다고 계단을 오르거나 빨래를 개지는 못한다. 그래서 이 시나리오처럼 **어떤 동역학(진전 배수, 연산 병목)이 작동하는지**를 따져 보는 편이 날짜를 맞히는 것보다 쓸모 있다.
 
 ### 작업 시간 지평과 이정표
 

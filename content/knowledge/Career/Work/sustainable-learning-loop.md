@@ -5,12 +5,13 @@ summary: "개발 학습은 의지로 버티는 1년이 아니라 수십 년 이�
 tags: ["career", "growth", "learning", "study-method", "productivity"]
 source: other
 date: "2026-10-21"
-sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "https://www.f-lab.kr/blog/developer-tech-article-zip", "https://www.slideshare.net/utilforever/ss-251900268", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://jojoldu.tistory.com/402", "https://evan-moon.github.io/2019/08/26/how-does-developer-study/", "https://www.slideshare.net/deview/ss-58739254", "https://www.popit.kr/si-%EA%B0%9C%EB%B0%9C-10%EB%85%84%EC%B0%A8%EC%9D%B8%EB%8D%B0-%EC%BD%94%EB%93%9C-%EC%A2%80-%EB%B4%90%EC%A3%BC%EC%84%B8%EC%9A%94/", "https://norvig.com/21-days.html"]
+sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "https://www.f-lab.kr/blog/developer-tech-article-zip", "https://www.slideshare.net/utilforever/ss-251900268", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://jojoldu.tistory.com/402", "https://evan-moon.github.io/2019/08/26/how-does-developer-study/", "https://www.slideshare.net/deview/ss-58739254", "https://www.popit.kr/si-%EA%B0%9C%EB%B0%9C-10%EB%85%84%EC%B0%A8%EC%9D%B8%EB%8D%B0-%EC%BD%94%EB%93%9C-%EC%A2%80-%EB%B4%90%EC%A3%BC%EC%84%B8%EC%9A%94/", "https://norvig.com/21-days.html", "https://www.youtube.com/watch?v=zTi3_l5h5PQ"]
 ---
 
 > F-Lab 블로그의 「[지속가능한 개발자 성장 스킬 5가지](https://www.f-lab.kr/blog/sustainable-developer-growth-skills)」(2022.12)와 「[주니어 개발자들이 읽으면 좋은 테크 아티클 모음](https://www.f-lab.kr/blog/developer-tech-article-zip)」(2023.05), 옥찬호의 고려대 컴퓨터학과 특강 「[대학생 때 알았더라면 좋았을 것들](https://www.slideshare.net/utilforever/ss-251900268)」(2022) 슬라이드를 바탕으로 재구성한 노트다.
 > 매일 커밋에 대한 관점, 「무엇을 배울지 고르기」, 공부하는 방법 일부는 「[일일커밋의 효용성](https://jojoldu.tistory.com/402)」, 「[개발자가 공부로 살아남는 방법](https://evan-moon.github.io/2019/08/26/how-does-developer-study/)」(2019.08), DEVIEW 발표 「[개발을 잘하고 싶어요](https://www.slideshare.net/deview/ss-58739254)」, 「[SI 개발 10년차인데 코드 좀 봐주세요](https://www.popit.kr/si-%EA%B0%9C%EB%B0%9C-10%EB%85%84%EC%B0%A8%EC%9D%B8%EB%8D%B0-%EC%BD%94%EB%93%9C-%EC%A2%80-%EB%B4%90%EC%A3%BC%EC%84%B8%EC%9A%94/)」를 바탕으로 보강했다. 10년 법칙과 의도적 연습은 Peter Norvig의 「[Teach Yourself Programming in Ten Years](https://norvig.com/21-days.html)」를 바탕으로 더했다.
 > 「AI 시대의 학습」은 배휘동의 발표 자료 「나날이 발전하고픈 개발자를 위한 AI 활용법」(2025.08) 3부를 바탕으로 더했다.
+> 「공부하는 방법」 표의 영상 강의 보는 법은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 ## 왜 「지속 가능」이 먼저인가
 
@@ -125,6 +126,7 @@ sources: ["https://www.f-lab.kr/blog/sustainable-developer-growth-skills", "http
 | 「왜」를 꼬리 물기 | 익숙한 개념도 「왜 그런가」를 연달아 물어 동작 원리와 하위 개념까지 내려간다. 같은 기능만 반복 구현하면 연차가 쌓여도 실력이 멈춘다. 실무에서 만난 문제를 출발점으로 삼으면 따로 하는 공부보다 깊다 |
 | 아는 문제로 바꾸기 | 새 문제를 이미 풀이법이 알려진 문제로 환원한다. 복잡하면 핵심만 남긴 단순한 모델로 시작해 변수를 하나씩 더하고, 큰 프로그램은 작은 함수 단위 동작으로 쪼개 이해한다 |
 | 안다고 생각한 것 다시 보기 | 시간이 지나 복습하면 전에는 안 보이던 것이 보인다 |
+| 영상 강의는 능동적으로 보기 | 재생 속도를 이해하고 곱씹을 여유가 있는 정도로 맞춘다. 어려운 곳에서 멈추고 방금 본 내용을 스스로 묻고 답하거나, 다음에 무엇이 나올지 예측한 뒤 확인한다. 영상 속 예제는 직접 따라 하고, 코드를 못 돌리면 종이에 의사 코드라도 쓴다. 틀어 두기만 하는 시청은 아는 느낌만 남긴다 |
 | 가장 약한 요소부터 | 개발 능력은 기초 지식, 문제 환원, 구현 숙련, 도구 이해 같은 여러 능력의 조합이다. 가장 부족한 요소를 채우면 전체가 함께 오른다 |
 | 언어 하나는 깊게 | 한 언어로 작동하게 → 낫게 → 빠르게 만드는 단계를 끝까지 겪으면 다음 언어는 빨리 익힌다 |
 

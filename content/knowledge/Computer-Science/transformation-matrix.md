@@ -119,4 +119,4 @@ M = T⁻¹ · Rx⁻¹ · Ry⁻¹ · Rz(ω) · Ry · Rx · T
 - 행렬 곱은 순서가 중요하며, 열 벡터 규약에서는 오른쪽 행렬이 먼저 적용된다.
 - **변환을 미리 하나의 행렬로 곱해 두는 것이 그래픽스 성능의 기본이다.**
 
-관련 노트: [[bezier-curve|베지어 곡선]], [[webgl-shaders|WebGL과 셰이더]]
+관련 노트: [[bezier-curve|베지어 곡선]], [[webgl-shaders|WebGL과 셰이더]], [[graphics-rendering-basics|컴퓨터 그래픽스 렌더링 기초]]

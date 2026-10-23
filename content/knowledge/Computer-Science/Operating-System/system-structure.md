@@ -5,12 +5,13 @@ summary: "모드 비트, 타이머, 장치 제어기, 인터럽트, 시스템 �
 tags: ["os", "interrupt", "system-call", "dma", "io"]
 source: notion
 date: "2026-10-21"
-sources: ["https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/82228175c0df477992b7b23e8afb8f16", "https://80000coding.notion.site/2287b35ba1644ade8d8015559f00fbe8", "https://80000coding.notion.site/99627aac4d8945a8bc45735301b4fb3d", "https://www.youtube.com/watch?v=3Yz7OnVUM28", "https://www.youtube.com/watch?v=R4j_hDQuBOc", "https://www.youtube.com/watch?v=BoJ1eaE5F-I"]
+sources: ["https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/82228175c0df477992b7b23e8afb8f16", "https://80000coding.notion.site/2287b35ba1644ade8d8015559f00fbe8", "https://80000coding.notion.site/99627aac4d8945a8bc45735301b4fb3d", "https://www.youtube.com/watch?v=3Yz7OnVUM28", "https://www.youtube.com/watch?v=R4j_hDQuBOc", "https://www.youtube.com/watch?v=BoJ1eaE5F-I", "https://www.youtube.com/watch?v=26QPDBe-NB8"]
 ---
 
 > 「시스템 콜과 라이브러리 함수」·「man 페이지」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「write는 라이브러리 함수가 아니다? 커널과 시스템 콜에 대해」, 「man」, 「[unix] 나만의 manpage 작성하기」를 바탕으로 보강했다.
 > 동기식 입출력의 구현 방식과 커널 주소 공간은 고무오리 CS 스터디의 KOCW 반효경 「운영체제」 강의 정리를 바탕으로 보강했다.
 > 「인터럽트」 절의 동기·비동기 구분과 예외 분류, 「모드 비트」 절의 슈퍼바이저 플래그와 시스템 콜 관찰 방법은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 「장치 제어기와 장치 드라이버」 절의 드라이버 추상화 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 운영체제가 어떻게 하드웨어를 통제하는지 이해하려면 먼저 컴퓨터 시스템의 구성 요소와, 이들이 **인터럽트**로 CPU와 소통하는 방식을 알아야 한다. 현대 운영체제는 "인터럽트에 의해 구동된다"고 할 만큼 인터럽트가 핵심이다.
 
@@ -44,7 +45,7 @@ sources: ["https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://
 ## 장치 제어기와 장치 드라이버
 
 - **장치 제어기(device controller)**: 각 I/O 장치를 통제하는 일종의 작은 CPU(하드웨어). 제어·상태 레지스터와 로컬 버퍼를 가진다. 실제 I/O는 장치와 로컬 버퍼 사이에서 일어나고, 끝나면 인터럽트로 CPU에 알린다.
-- **장치 드라이버(device driver)**: OS 코드 중 장치별 처리 루틴(소프트웨어).
+- **장치 드라이버(device driver)**: OS 코드 중 장치별 처리 루틴(소프트웨어). 제조사·모델마다 다른 하드웨어 세부를 드라이버가 감추고 OS는 표준화된 입출력 API만 내놓는다. 그래서 응용 프로그램은 "출력하라"는 같은 호출로 어떤 프린터에든 출력하고, 장치 모델별 코드를 직접 짜지 않는다.
 
 ## 인터럽트
 

@@ -5,11 +5,12 @@ summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 �
 tags: ["computer-architecture", "memory", "storage", "raid"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/", "https://www.youtube.com/watch?v=m2NfFJEvssY", "https://www.youtube.com/watch?v=lgFmNUG_Atw"]
+sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/", "https://www.youtube.com/watch?v=m2NfFJEvssY", "https://www.youtube.com/watch?v=lgFmNUG_Atw", "https://www.youtube.com/watch?v=TQCr9RV7twk"]
 ---
 
 > 노션 정리를 바탕으로, 계층별 역할은 ByteByteGo의 System Design 101 가이드 「[Types of Memory](https://bytebytego.com/guides/types-of-memory)」, 「[Types of Memory and Storage](https://bytebytego.com/guides/types-of-memory-and-storage)」로, SRAM·DRAM의 구조와 DRAM 접근 타이밍·NUMA는 Ulrich Drepper의 「[What every programmer should know about memory, Part 1](https://lwn.net/Articles/250967/)」(2007)로 보강했다.
 > 「계층별 접근 시간의 자릿수」, 「하드 디스크의 구성」, 「플래시 메모리와 SSD」, 「RAID」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 「매체마다 다른 접근 방식」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 빠른 메모리는 비싸고 작으며, 큰 메모리는 느리다. 그래서 컴퓨터는 여러 종류의 저장 장치를 **계층**으로 쌓고, 자주 쓰는 데이터를 위쪽에 두는 방식으로 "빠르면서도 큰" 메모리처럼 보이게 만든다.
 
@@ -92,7 +93,7 @@ RAM은 전원이 꺼지면 내용이 사라지는 **휘발성** 저장 장치다
 
 ### DRAM 접근은 왜 느리고, 왜 순서대로 읽으면 빠른가
 
-DRAM 칩의 셀은 행과 열의 격자다. 주소선을 아끼려고 주소를 **두 번에 나눠** 보낸다.
+DRAM 칩의 셀은 행과 열의 격자다(셀을 격자로 놓는 이유는 [[digital-logic-circuits|디지털 논리 회로와 부품]]의 「메모리 셀을 행렬로 배치하는 이유」). 주소선을 아끼려고 주소를 **두 번에 나눠** 보낸다.
 
 ```text
 1. RAS(행 주소 선택): 행 주소를 보내 한 행 전체를 감지 증폭기로 연다
@@ -166,6 +167,19 @@ DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한�
 | Invalid | 더 이상 쓰지 않는 쓰레기값이 들어 있다 |
 
 데이터를 고치면 새 내용은 Free 페이지에 쓰고 기존 페이지는 Invalid가 된다. Invalid 페이지가 쌓이면 SSD는 **가비지 컬렉션**으로 블록 안의 Valid 페이지만 새 블록으로 옮긴 뒤 기존 블록을 통째로 지운다.
+
+### 매체마다 다른 접근 방식
+
+RAM의 「임의 접근(random access)」은 **어느 주소든 같은 시간에 읽는다**는 뜻이다. 보조 기억 장치는 기록 원리에 따라 원하는 위치에 닿기까지의 대기가 다르고, 이 차이가 계층에서의 자리를 정한다. 접근 방식의 일반론(순차·직접)은 [[file-system|파일 시스템]]의 「접근 방식」에 있다.
+
+| 매체 | 기록 원리 | 원하는 위치에 닿는 법 | 접근을 늦추는 것 |
+| --- | --- | --- | --- |
+| 자기 테이프 | 긴 띠의 자성 방향 | **순차 접근**. 그 위치까지 감거나 되감는다 | 수백 m를 감는 시간 |
+| 하드 디스크 | 회전하는 원판 표면의 자성 방향 | 헤드를 트랙으로 옮기고, 원판이 돌아 섹터가 올 때까지 기다린다 | 탐색 시간 + 회전 지연(밀리초 단위) |
+| 광학 디스크(CD·DVD·블루레이) | 표면의 미세한 홈(pit)과 평면(land)이 레이저를 다르게 반사한다 | 하드 디스크처럼 회전하며 광학 헤드가 찾아간다 | 하드 디스크보다 느린 탐색. 레이저 파장이 짧을수록(CD → DVD → 블루레이) 홈을 촘촘히 새겨 용량이 커진다 |
+| SSD·플래시 | 셀에 가둔 전하 | 움직이는 부품 없이 주소로 바로 간다 | 탐색은 없지만 읽기 지연(수십 µs)이 DRAM(약 100ns)보다 두세 자릿수 길고, 쓰기는 위의 페이지·블록 규칙을 따른다 |
+
+움직이는 부품이 사라질수록 대기가 줄지만, 가장 빠른 SSD도 DRAM보다 느리다. 그래서 저장 기술이 바뀌어도 **작고 빠른 메모리 위에 크고 느린 저장소를 쌓는 계층 구조**는 그대로 남는다.
 
 ## RAID
 

@@ -5,10 +5,11 @@ summary: "AI 기능은 사용자에게 드러나는 정도에 따라 배경형(�
 tags: ["ai", "ux", "design", "frontend", "product", "llm"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/ai/ux-patterns", "https://web.dev/learn/ai/prompt-engineering"]
+sources: ["https://web.dev/learn/ai/ux-patterns", "https://web.dev/learn/ai/prompt-engineering", "https://www.youtube.com/watch?v=5TNAz1HYg18"]
 ---
 
 > web.dev의 「[Learn AI](https://web.dev/learn/ai)」 강좌 중 「UX patterns for web AI」 모듈을 바탕으로 재구성한 노트다.
+> 「배경형 AI」 절의 유비쿼터스 컴퓨팅은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 ## 노출의 세 단계
 
@@ -27,6 +28,8 @@ sources: ["https://web.dev/learn/ai/ux-patterns", "https://web.dev/learn/ai/prom
 ## 배경형 AI
 
 새 기능을 만들지 않고 기존 경험을 조용히 보강한다. 혼란과 실패 가능성이 가장 작다. 대신 유용성·신뢰성·우아한 성능 저하의 책임은 온전히 제품이 진다.
+
+이 방향의 원형은 마크 와이저가 1990년대에 제시한 **유비쿼터스 컴퓨팅(ubiquitous computing)** 이다. 컴퓨터가 가전·벽·옷 같은 모든 사물 안으로 들어가 의식하지 않고 쓰게 된다는 비전으로, 사람을 화면 앞에 붙잡아 두는 「극적인」 기계 대신 일상에 스며들어 **보이지 않는** 기계를 목표로 삼았다. 가장 깊은 기술은 사라져서 일상과 구별되지 않는다는 것이 핵심 주장이다. 알림으로 주의를 빼앗는 기능과 배경형 AI는 정반대 쪽에 있다.
 
 **언제 쓰나**
 

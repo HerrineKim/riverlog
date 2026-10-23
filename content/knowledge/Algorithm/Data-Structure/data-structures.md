@@ -4,18 +4,19 @@ concept: "Basic Data Structures"
 summary: "배열과 realloc 크기 조정 비용, 연결 리스트(C 구조체·Kotlin 예제)와 둘 중 고르는 기준, 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 얕은 복사와 깊은 복사."
 tags: ["data-structure", "cs50", "linked-list", "hash-table", "tree"]
 source: notion
-sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/"]
+sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/", "https://www.youtube.com/watch?v=DuDz6B4cqVc"]
 date: "2026-10-13"
 ---
 
 > 하버드 CS50의 자료구조 강의와 고무오리 CS 스터디의 CS50 정리 노트를 바탕으로 재구성한 노트다. 배열과 연결 리스트 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「배열과 리스트 중 어떤 것을 사용해야 할까?」, 「[Push Swap 완전 정복] 00. 문제 분석 - locality.」, 트라이의 삽입·자동 완성은 「ALV tree 찢어버리기」를 바탕으로 보강했다. 언어 라이브러리 속 자료구조는 ByteByteGo의 System Design 101 가이드 「[Java Collection Hierarchy](https://bytebytego.com/guides/java-collection-hierarchy)」, 「[10 Key Data Structures We Use Every Day](https://bytebytego.com/guides/10-key-data-structures-we-use-every-day)」로 보강했다.
+> 「다차원 배열과 구조체」 절과 배열 인덱스·연결 리스트 끝 표시·연결 리스트로 만든 스택과 큐 등 일부 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 자료구조는 데이터를 메모리에 어떻게 배치하고 연결하느냐의 문제다. 배열처럼 연속된 공간을 쓰면 접근은 빠르지만 크기를 바꾸기 어렵고, [[pointers-and-memory|포인터]]로 흩어진 공간을 이으면 크기는 자유롭지만 접근이 느려진다. 예제는 C와 Kotlin으로 든다.
 
 ## 배열 (Array)
 
 - **고정된 크기의 메모리 덩어리**다. 원소들이 **이웃한 공간(contiguous memory)** 에 할당된다.
-- 배열의 시작 주소(base address)는 첫 번째 원소가 있는 주소다. 인덱스로 위치를 바로 계산할 수 있어 **임의 접근(random access)** 이 O(1)이다.
+- 배열의 시작 주소(base address)는 첫 번째 원소가 있는 주소다. **인덱스는 시작 주소에서 몇 칸 떨어졌는지를 뜻하는 오프셋**이라 `i`번 원소의 주소는 `시작 주소 + i × 원소 크기`로 바로 계산된다. 그래서 **임의 접근(random access)** 이 O(1)이고, 첫 원소의 오프셋이 0이므로 대부분의 언어가 인덱스를 0부터 센다(인덱스 5는 여섯 번째 원소다).
 - 정렬되어 있다면 [[binary-search|이진 탐색]]으로 O(log n)에 찾을 수 있다.
 - C에서 `int arr[10];`처럼 선언한 배열은 한 번 만들면 크기를 바꿀 수 없다. 크기를 키우려면 `malloc`·`realloc`으로 힙에 공간을 잡아야 한다.
 
@@ -45,6 +46,17 @@ free(list);
 
 `realloc`이 복사를 대신해 줄 뿐, 뒤 공간이 비어 있지 않으면 새 공간을 잡고 원소를 모두 옮기는 비용은 그대로다.
 
+### 다차원 배열과 구조체
+
+배열을 바탕으로 두 가지 복합 구조를 만든다.
+
+| 구조 | 뜻 | 메모리 배치 |
+| --- | --- | --- |
+| 행렬(matrix), 다차원 배열 | 배열의 배열. 3×3 행렬은 길이 3짜리 배열 세 개이고, `m[2][1]`은 세 번째 줄의 두 번째 칸이다. 차원은 몇 개든 늘릴 수 있다 | C의 다차원 배열은 줄을 차례로 이어 붙인 **행 우선(row-major)** 연속 공간이다. 그래서 순회 순서가 성능을 가른다([[cache-friendly-code\|캐시를 고려한 코드]]). Java·Python의 배열의 배열(리스트의 리스트)은 줄마다 따로 할당된다 |
+| 구조체(struct) | 계좌 번호와 잔액처럼 관련된 변수 여러 개를 한 덩어리로 묶은 복합 자료형 | 구조체 배열도 원소가 연속 공간에 놓이고, `accounts[0]`으로 구조체 전체를 꺼낸 뒤 필드를 읽는다 |
+
+배열과 구조체 배열은 크기가 고정이고 중간에 끼워 넣기 어렵다. 구조체 안에 **다른 구조체를 가리키는 포인터**를 넣으면 이 제약을 벗어난다. 포인터가 하나면 연결 리스트, 둘 이상이면 트리, 아무 노드나 가리키면 그래프가 된다.
+
 ## 연결 리스트 (Linked List)
 
 원소를 연속된 곳에 두지 않고 **아무 빈 공간에 할당한 뒤, 다음 원소의 주소를 가리키게** 연결한다. 각 노드는 값과 다음 노드를 가리키는 포인터를 가진다. C에서는 구조체와 포인터로 노드를 만든다.
@@ -67,6 +79,8 @@ fun addAfter(prev: Node, value: String) {
     prev.next = Node(value, prev.next)
 }
 ```
+
+마지막 노드의 `next`는 `NULL`(Kotlin은 `null`)로 끝을 표시한다. 마지막 노드가 다시 첫 노드를 가리키면 **원형 연결 리스트(circular linked list)** 다. 노드들은 만들어진 시점에 따라 메모리 여기저기에 흩어져 있고, 순서는 오직 포인터가 정한다. 그래서 순서 바꾸기·자르기·나누기·뒤집기도 포인터만 고치면 된다.
 
 | 장점 | 단점 |
 | --- | --- |
@@ -117,7 +131,7 @@ fun addAfter(prev: Node, value: String) {
 
 ## 스택과 큐
 
-LIFO의 스택과 FIFO의 큐는 [[stack|스택]], [[queue-deque|큐와 덱]]에 따로 정리했다.
+둘 다 연결 리스트 위에 얹을 수 있다. 큐는 머리 노드를 가리키는 포인터를 다음 노드로 옮겨 꺼내고(dequeue), 꼬리에 노드를 이어 넣는다(enqueue). 꼬리 포인터를 따로 두지 않으면 넣을 때마다 끝까지 따라가야 해 O(n)이 된다. 스택은 머리 한쪽에서만 넣고(push) 꺼낸다(pop). LIFO의 스택과 FIFO의 큐는 [[stack|스택]], [[queue-deque|큐와 덱]]에 따로 정리했다.
 
 ## 얕은 복사와 깊은 복사
 

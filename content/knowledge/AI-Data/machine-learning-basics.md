@@ -5,11 +5,12 @@ summary: "머신 러닝은 데이터의 분포를 배워 예측하는 일이다.
 tags: ["ai", "machine-learning", "python", "data-science"]
 source: other
 date: "2026-10-20"
-sources: ["https://webactually.com/2021/01/15/%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B%9D-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0/", "https://blog.gregbrockman.com/how-i-became-a-machine-learning-practitioner", "https://developers.google.com/machine-learning/glossary/?hl=ko", "https://developers.google.com/machine-learning/crash-course?hl=ko", "https://www.youtube.com/channel/UCueLU1pCvFlM8Y8sth7a6RQ/videos"]
+sources: ["https://webactually.com/2021/01/15/%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B%9D-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0/", "https://blog.gregbrockman.com/how-i-became-a-machine-learning-practitioner", "https://developers.google.com/machine-learning/glossary/?hl=ko", "https://developers.google.com/machine-learning/crash-course?hl=ko", "https://www.youtube.com/channel/UCueLU1pCvFlM8Y8sth7a6RQ/videos", "https://www.youtube.com/watch?v=z-EtmaFJieY"]
 ---
 
 > Alvin Wan의 「머신 러닝 시작하기」(웹액츄얼리 번역, 2021.01)를 바탕으로 재구성한 노트다.
 > 소프트웨어 엔지니어가 머신 러닝 실무자가 되는 법은 그렉 브록만의 「[How I became a machine learning practitioner](https://blog.gregbrockman.com/how-i-became-a-machine-learning-practitioner)」(2019.07)를 바탕으로 더했다.
+> 「분류기: 특징과 결정 경계」 절과 좁은 AI·범용 AI 구분은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 ## 머신 러닝이란
 
@@ -22,6 +23,8 @@ sources: ["https://webactually.com/2021/01/15/%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B
 | 이상 탐지 | 100달러 결제가 들어오면 이상 거래로 표시한다 |
 | 추천 | 3달러를 쓴 사람에게 5달러 이하 상품을 보여 준다 |
 | 예측 | 정보가 없으면 다음 구매는 5달러 이하라고 예측한다 |
+
+흔히 섞어 쓰지만 머신 러닝은 **인공지능(AI)이라는 더 큰 목표 안의 기법 묶음**이다. 스팸 판별, 부정맥 진단, 다음 영상 추천처럼 한 가지 일만 잘하는 AI를 **좁은 AI(narrow AI, weak AI)**, 사람처럼 무엇이든 하는 AI를 **범용 AI(AGI, strong AI)** 라 한다. LLM은 한 모델이 번역·요약·코딩을 모두 해 이 경계를 흐렸지만, 사람 수준의 범용 AI가 이뤄졌는지는 합의가 없다.
 
 실제로는 입력 x를 출력으로 바꾸는 함수, 즉 **모델** `f(x)`를 배운다. `f(x) = ax`에서 `a`가 매개변수(parameter)다. 예측 `f(x)`와 정답(label) `y`의 차이를 재는 **손실 함수**를 정하고, 손실이 가장 작은 매개변수를 찾는다. 매개변수 후보가 무한하면 그 "찾는 방법"이 핵심 문제가 된다.
 
@@ -54,6 +57,23 @@ sources: ["https://webactually.com/2021/01/15/%EB%A8%B8%EC%8B%A0-%EB%9F%AC%EB%8B
 | | | 회귀: 연속값·확률을 낸다 | 이 환자의 발병 확률은? |
 | 비지도 학습 | 정답이 없다 | 군집화: 비슷한 것끼리 묶는다 | 비슷한 DNA 서열 |
 | | | 차원 축소: 핵심 특징만 남긴다 | 얼굴의 공통 특징 |
+
+### 분류기: 특징과 결정 경계
+
+분류(classification)를 하는 알고리즘을 **분류기(classifier)** 라 한다. 나방 두 종을 가려내는 분류기를 예로 들면 흐름은 이렇다.
+
+| 개념 | 뜻 | 나방 예 |
+| --- | --- | --- |
+| 특징(feature) | 대상을 쓸모 있게 요약한 값. 사진·소리 같은 원자료 대신 몇 개의 숫자로 줄인다 | 날개 길이, 무게 |
+| 레이블 데이터(labeled data) | 특징값에 정답을 붙인 학습 데이터 | 곤충학자가 잰 값 + 종 이름 |
+| 결정 경계(decision boundary) | 특징 공간을 클래스별 영역으로 자르는 선·면 | 「날개 45mm 미만이고 무게 0.75g 미만이면 A종」 |
+| 레이블 없는 데이터(unlabeled data) | 정답을 모르는 새 데이터. 특징을 재서 경계의 어느 쪽에 떨어지는지로 예측한다 | 숲에서 새로 잡은 나방 |
+
+- 두 종의 분포가 가운데서 겹치면 **어떤 경계도 100%가 될 수 없다.** 경계를 한쪽으로 옮기면 A를 B로 잘못 보는 수가 줄고 B를 A로 보는 수가 는다. 알고리즘의 일은 정답을 최대로, 오류를 최소로 하는 경계를 찾는 것이다. 어디서 맞고 틀렸는지는 혼동 행렬로 센다([[classification-metrics|분류 모델 성능 평가 지표]]).
+- 특징 공간을 축에 평행한 상자로 자르는 것이 **결정 트리**다. 코드로는 중첩된 if 문이 된다([[decision-tree-ensemble|결정 트리와 앙상블]]).
+- **서포트 벡터 머신(SVM)** 은 클래스 사이 여백(margin)이 가장 넓은 경계를 찾는다. 커널 함수를 쓰면 곡선·곡면 경계도 만든다.
+- 특징이 3개면 경계는 평면, 수백·수천 개면 **초평면(hyperplane)** 이 된다. 사람은 그릴 수도 상상할 수도 없지만 알고리즘은 같은 방식으로 찾는다.
+- 결정 트리와 SVM은 데이터로 확신 있는 결정을 내리는 **통계학**에 뿌리를 두고, 인공 신경망은 뇌의 뉴런에서 착안했다([[perceptron-mlp|퍼셉트론과 다층 퍼셉트론]]).
 
 ### 3·4. 최소제곱법으로 본 목표와 알고리즘
 
