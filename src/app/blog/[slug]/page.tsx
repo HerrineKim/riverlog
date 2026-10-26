@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Comments from "@/components/Comments";
+import JsonLd from "@/components/JsonLd";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
 import Toc, { MobileToc } from "@/components/Toc";
-import { getAllPosts, getPost } from "@/lib/blog";
+import { getAllPosts, getPost, type Post } from "@/lib/blog";
 import { formatDate } from "@/lib/format";
 import { extractToc } from "@/lib/markdown";
+import { articleLd, pageMeta } from "@/lib/seo";
 
 // Only the pages generated at build time exist; anything else is a real 404.
 export const dynamicParams = false;
@@ -18,8 +20,15 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): Promise<Metadata> {
   const post = getPost((await params).slug);
-  return post ? { title: post.title, description: post.description } : {};
+  return post ? pageMeta(postSeo(post)) : {};
 }
+
+const postSeo = (post: Post) => ({
+  title: post.title,
+  description: post.description,
+  path: `/blog/${post.slug}`,
+  article: { published: post.date, tags: post.tags },
+});
 
 export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
   const post = getPost((await params).slug);
@@ -29,6 +38,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
   return (
     <>
       <main>
+        <JsonLd data={articleLd(postSeo(post))} />
         <div className="river-grain">
           <header className="mx-auto max-w-3xl px-4 pt-14 pb-10 sm:px-6 sm:pt-20">
             <Link href="/blog" className="text-sm text-muted hover:text-accent">

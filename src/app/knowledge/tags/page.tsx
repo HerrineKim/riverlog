@@ -3,11 +3,9 @@ import SiteFooter from "@/components/SiteFooter";
 import TagCloud from "@/components/knowledge/TagCloud";
 import ViewSwitch from "@/components/knowledge/ViewSwitch";
 import { getTags, tagHref } from "@/lib/knowledge";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "지식 창고 · 태그",
-  description: "지식 창고의 노트를 태그로 찾아보기",
-};
+export const metadata: Metadata = pageMeta({ title: "지식 창고 · 태그", description: "지식 창고의 노트를 태그로 찾아보기", path: "/knowledge/tags" });
 
 export default function TagsPage() {
   const tags = getTags();

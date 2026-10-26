@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Prose from "@/components/Prose";
@@ -10,7 +11,10 @@ import SocialLinks from "@/components/SocialLinks";
 import { getAllPosts } from "@/lib/blog";
 import { formatDate } from "@/lib/format";
 import { categoryColor, getKnowledgeTree, knowledgeStats } from "@/lib/knowledge";
+import { pageMeta } from "@/lib/seo";
 import { site } from "@/lib/site";
+
+export const metadata: Metadata = pageMeta({ path: "/" });
 
 function getAbout() {
   const { data, content } = matter(fs.readFileSync(path.join(process.cwd(), "content/about.md"), "utf8"));

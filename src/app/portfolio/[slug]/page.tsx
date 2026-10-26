@@ -7,6 +7,7 @@ import SiteFooter from "@/components/SiteFooter";
 import Toc, { MobileToc } from "@/components/Toc";
 import { extractToc } from "@/lib/markdown";
 import { getAllWorks, getWork, type WorkKind } from "@/lib/portfolio";
+import { pageMeta } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -22,7 +23,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/portfolio/[slug]">): Promise<Metadata> {
   const work = getWork((await params).slug);
-  return work ? { title: `${work.company} · Portfolio`, description: work.summary } : {};
+  return work ? pageMeta({ title: `${work.company} · Portfolio`, description: work.summary, path: `/portfolio/${work.slug}` }) : {};
 }
 
 export default async function WorkPage({ params }: PageProps<"/portfolio/[slug]">) {

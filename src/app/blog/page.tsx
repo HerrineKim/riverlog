@@ -3,8 +3,9 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import { getAllPosts } from "@/lib/blog";
 import { formatDate } from "@/lib/format";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Blog" };
+export const metadata: Metadata = pageMeta({ title: "Blog", description: "River가 개발하며 겪고 배운 것을 적은 글", path: "/blog" });
 
 export default function BlogIndex() {
   const posts = getAllPosts();

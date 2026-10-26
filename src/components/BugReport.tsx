@@ -47,7 +47,7 @@ export default function BugReport() {
         type="button"
         onClick={open}
         title="버그 제보"
-        className="grid size-9 place-items-center rounded-full border border-line text-muted transition hover:border-accent hover:text-accent"
+        className="grid size-9 shrink-0 place-items-center rounded-full border border-line text-muted transition hover:border-accent hover:text-accent"
       >
         <span className="sr-only">버그 제보</span>
         <svg aria-hidden viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">

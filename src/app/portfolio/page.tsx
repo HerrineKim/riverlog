@@ -4,11 +4,13 @@ import Link from "next/link";
 import SiteFooter from "@/components/SiteFooter";
 import CareerRiver from "@/components/portfolio/CareerRiver";
 import { getAllWorks, onTimeline, type Work } from "@/lib/portfolio";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Portfolio",
   description: "SSAFY에서 개발을 배운 1년과 에이전시의 고객사 웹·앱부터 미국 핀테크의 성장 팀, 건설사 AX팀을 거쳐 지금의 핀테크 기업 Taply까지. 회사마다 풀었던 문제와 바뀐 숫자.",
-};
+  path: "/portfolio",
+});
 
 export default function PortfolioIndex() {
   const works = getAllWorks();
