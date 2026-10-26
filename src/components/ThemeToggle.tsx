@@ -15,7 +15,7 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggle}
       title="테마 전환"
-      className="grid size-9 place-items-center rounded-full border border-line text-muted transition hover:border-accent hover:text-accent"
+      className="grid size-9 shrink-0 place-items-center rounded-full border border-line text-muted transition hover:border-accent hover:text-accent"
     >
       {/* moon in dark mode, sun in light mode; swapped purely with CSS so there is no hydration flash.
           The accessible name says what pressing it will do, and swaps the same way. */}

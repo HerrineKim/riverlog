@@ -8,7 +8,7 @@ export default function SiteFooter() {
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-8 text-sm text-muted sm:px-6">
         <p>
           © 2026 {site.author}
-          <Link href="/admin" className="ml-3 text-xs text-muted/70 hover:text-accent">
+          <Link href="/admin" className="ml-3 text-xs text-muted hover:text-accent">
             관리
           </Link>
         </p>
