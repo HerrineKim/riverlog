@@ -4,8 +4,13 @@ import DictionaryBrowser from "@/components/knowledge/DictionaryBrowser";
 import ViewSwitch from "@/components/knowledge/ViewSwitch";
 import { getKnowledgeTree, knowledgeStats } from "@/lib/knowledge";
 import { toLite } from "@/lib/knowledge-lite";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "지식 창고 · 계층형 사전" };
+export const metadata: Metadata = pageMeta({
+  title: "지식 창고 · 계층형 사전",
+  description: "River가 정리한 개발·생활 지식 노트를 분야 → 주제 → 노트 순으로, 가나다·ABC 색인으로 찾아보기",
+  path: "/knowledge/dictionary",
+});
 
 export default function DictionaryPage() {
   const tree = getKnowledgeTree();

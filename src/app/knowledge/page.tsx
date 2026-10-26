@@ -4,8 +4,13 @@ import ViewSwitch from "@/components/knowledge/ViewSwitch";
 import { placeGraph } from "@/lib/graph-layout";
 import { packGraph } from "@/lib/graph-wire";
 import { categoryColor, getGraphData, getKnowledgeTree, knowledgeStats } from "@/lib/knowledge";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "지식 창고 · 3D 마인드맵" };
+export const metadata: Metadata = pageMeta({
+  title: "지식 창고 · 3D 마인드맵",
+  description: "River가 정리한 개발·생활 지식 노트를 분야별 3D 마인드맵으로 둘러보기",
+  path: "/knowledge",
+});
 
 export default function KnowledgeMapPage() {
   const data = packGraph(placeGraph(getGraphData()));

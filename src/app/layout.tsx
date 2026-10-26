@@ -21,9 +21,10 @@ export const metadata: Metadata = {
   title: { default: site.name, template: `%s · ${site.name}` },
   description: site.description,
   authors: [{ name: site.author, url: site.url }],
+  // Pages set their own canonical and og tags through pageMeta(); these cover the rest (404 etc.)
   alternates: { types: { "application/rss+xml": "/rss.xml" } },
   openGraph: { type: "website", siteName: site.name, locale: "ko_KR", title: site.name, description: site.description },
-  twitter: { card: "summary" },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {

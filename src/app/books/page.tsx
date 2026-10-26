@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import BookList from "@/components/BookList";
 import SiteFooter from "@/components/SiteFooter";
 import { getAllBooks } from "@/lib/books";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "Books" };
+export const metadata: Metadata = pageMeta({ title: "Books", description: "River가 읽었고, 읽는 중이고, 읽고 싶은 책과 독후감", path: "/books" });
 
 export default function BooksPage() {
   const books = getAllBooks();

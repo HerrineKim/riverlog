@@ -7,6 +7,7 @@ import SiteFooter from "@/components/SiteFooter";
 import BookAdminControls from "@/components/admin/BookAdminControls";
 import { getAllBooks, getBook, STATUS_LABEL } from "@/lib/books";
 import { formatDate } from "@/lib/format";
+import { pageMeta } from "@/lib/seo";
 
 // Only the pages generated at build time exist; anything else is a real 404.
 export const dynamicParams = false;
@@ -17,7 +18,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/books/[slug]">): Promise<Metadata> {
   const book = getBook((await params).slug);
-  return book ? { title: `${book.title} 독후감` } : {};
+  return book
+    ? pageMeta({ title: `${book.title} 독후감`, description: `${book.author}의 『${book.title}』를 읽고 남긴 기록`, path: `/books/${book.slug}` })
+    : {};
 }
 
 export default async function BookPage({ params }: PageProps<"/books/[slug]">) {

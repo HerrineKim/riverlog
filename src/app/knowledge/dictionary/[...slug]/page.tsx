@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Comments from "@/components/Comments";
+import JsonLd from "@/components/JsonLd";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
 import Toc, { MobileToc } from "@/components/Toc";
@@ -11,6 +12,7 @@ import { formatDate } from "@/lib/format";
 import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, tagHref, type KNode } from "@/lib/knowledge";
 import { toNav } from "@/lib/knowledge-lite";
 import { extractToc, splitLeadingQuote } from "@/lib/markdown";
+import { articleLd, pageMeta } from "@/lib/seo";
 
 // Only the pages generated at build time exist; anything else is a real 404.
 export const dynamicParams = false;
@@ -22,8 +24,15 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/knowledge/dictionary/[...slug]">): Promise<Metadata> {
   const node = getNode((await params).slug);
   if (!node) return {};
-  return { title: node.doc?.title ?? node.name, description: node.doc?.excerpt };
+  return pageMeta(noteSeo(node));
 }
+
+const noteSeo = (node: KNode) => ({
+  title: node.doc?.title ?? node.name,
+  description: node.doc?.excerpt,
+  path: node.href,
+  article: { published: node.doc?.date ?? node.doc?.created, modified: node.doc?.updated, tags: node.doc?.tags },
+});
 
 const SOURCE_LABEL = { til: "GitHub TIL", notion: "Notion", mixed: "GitHub TIL + Notion", other: "직접 작성" } as const;
 
@@ -60,18 +69,23 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
         }
         toc={<Toc items={toc} />}
       >
-          <nav aria-label="경로" className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
-            <Link href={KNOWLEDGE_BASE} className="hover:text-accent">
-              사전
-            </Link>
-            {trail.slice(0, -1).map((t) => (
-              <span key={t.id} className="flex items-center gap-1.5">
-                <span aria-hidden>/</span>
-                <Link href={t.href} className="hover:text-accent">
-                  {t.name}
+          {doc && <JsonLd data={articleLd(noteSeo(node))} />}
+          <nav aria-label="경로" className="text-sm text-muted">
+            <ol className="flex flex-wrap items-center gap-1.5">
+              <li>
+                <Link href={KNOWLEDGE_BASE} className="hover:text-accent">
+                  사전
                 </Link>
-              </span>
-            ))}
+              </li>
+              {trail.slice(0, -1).map((t) => (
+                <li key={t.id} className="flex items-center gap-1.5">
+                  <span aria-hidden>/</span>
+                  <Link href={t.href} className="hover:text-accent">
+                    {t.name}
+                  </Link>
+                </li>
+              ))}
+            </ol>
           </nav>
 
           <header className="mt-5 border-b border-line pb-7">

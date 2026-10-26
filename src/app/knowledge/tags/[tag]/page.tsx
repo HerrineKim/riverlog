@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteFooter from "@/components/SiteFooter";
 import { categoryColor, getTag, getTags, getTrail, tagHref, TAGS_BASE } from "@/lib/knowledge";
+import { pageMeta } from "@/lib/seo";
 
 // Only the pages generated at build time exist; anything else is a real 404.
 export const dynamicParams = false;
@@ -13,7 +14,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/knowledge/tags/[tag]">): Promise<Metadata> {
   const entry = getTag((await params).tag);
-  return entry ? { title: `#${entry.tag}`, description: `‘${entry.tag}’ 태그가 붙은 노트 ${entry.notes.length}개` } : {};
+  return entry
+    ? pageMeta({ title: `#${entry.tag}`, description: `‘${entry.tag}’ 태그가 붙은 노트 ${entry.notes.length}개`, path: `/knowledge/tags/${entry.tag.toLowerCase()}` })
+    : {};
 }
 
 export default async function TagPage({ params }: PageProps<"/knowledge/tags/[tag]">) {
