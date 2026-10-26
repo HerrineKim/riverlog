@@ -119,6 +119,8 @@ const movedNotes: Record<string, string> = {
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // The repo is public anyway, so shipping source maps costs nothing and makes production errors readable
+  productionBrowserSourceMaps: true,
   async redirects() {
     return Object.entries(movedNotes).map(([source, destination]) => ({ source, destination, permanent: true }));
   },
