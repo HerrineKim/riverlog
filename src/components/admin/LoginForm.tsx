@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 import { adminFetch } from "@/lib/admin/client";
 
-const input = "mt-1.5 w-full rounded-lg border border-line bg-bg-elev px-3 py-2 text-fg-strong outline-none focus:border-accent";
+const input = "mt-1.5 w-full rounded-lg min-h-11 border border-control bg-bg-elev px-3 py-2 text-fg-strong focus:border-accent";
 
 export default function LoginForm() {
   const router = useRouter();

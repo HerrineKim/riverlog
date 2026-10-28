@@ -36,7 +36,7 @@ function TocList({ items, active, onNavigate }: { items: TocItem[]; active?: str
             href={`#${t.id}`}
             onClick={onNavigate}
             aria-current={active === t.id ? "location" : undefined}
-            className={`-ml-px block leading-snug transition hover:text-accent ${
+            className={`-ml-px block leading-snug transition hover:text-accent pointer-coarse:flex pointer-coarse:min-h-11 pointer-coarse:items-center ${
               active === t.id ? "font-medium text-accent" : "text-muted"
             }`}
           >
@@ -53,7 +53,7 @@ export default function Toc({ items }: { items: TocItem[] }) {
   if (items.length < 2) return null;
   return (
     <nav aria-label="목차" className="text-sm">
-      <p className="mb-3 text-xs font-semibold tracking-[0.18em] text-muted uppercase">On this page</p>
+      <p className="mb-3 text-xs font-semibold text-muted">이 글의 목차</p>
       <TocList items={items} active={active} />
     </nav>
   );

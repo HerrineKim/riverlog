@@ -12,7 +12,7 @@ export default function Comments({ term }: { term: string }) {
   const theme = useTheme();
   return (
     <section aria-labelledby="comments-heading" className="mt-16 border-t border-line pt-10 [overflow-anchor:none]">
-      <h2 id="comments-heading" className="mb-6 text-sm font-semibold tracking-[0.18em] text-muted uppercase">
+      <h2 id="comments-heading" className="mb-6 text-sm font-semibold text-muted">
         댓글
       </h2>
       <Giscus

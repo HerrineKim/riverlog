@@ -34,7 +34,8 @@ export const viewport: Viewport = {
   ],
 };
 
-const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
+// A saved toggle choice wins; a first visit follows the OS, matching the browser bar color set by themeColor
+const themeScript = `(function(){var t;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t)})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

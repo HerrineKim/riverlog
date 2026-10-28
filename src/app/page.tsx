@@ -36,7 +36,8 @@ export default function AboutPage() {
   return (
     <>
       <main>
-        <section className="river-grain relative overflow-hidden border-b border-line/70">
+        <section className="relative overflow-hidden border-b border-line/70">
+          {/* The site's one river motif at page scale: the header mark, enlarged and faded behind the intro */}
           <RiverMark className="pointer-events-none absolute -right-24 -bottom-28 size-[28rem] text-accent opacity-[0.06]" />
           <div className="relative mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
             <div className="flex items-center gap-4">
@@ -71,8 +72,8 @@ export default function AboutPage() {
                 <Prose markdown={about.body} />
               </div>
               <section aria-labelledby="contact-heading" className="lg:pt-1">
-                <h2 id="contact-heading" className="mb-3 text-xs font-semibold tracking-[0.18em] text-muted uppercase">
-                  Contact & Subscribe
+                <h2 id="contact-heading" className="mb-3 text-xs font-semibold text-muted">
+                  연락·구독
                 </h2>
                 <SocialLinks />
               </section>
@@ -83,8 +84,8 @@ export default function AboutPage() {
         <section className="mx-auto grid max-w-6xl gap-14 px-4 py-16 sm:px-6 lg:grid-cols-2">
           <div>
             <div className="flex items-baseline justify-between">
-              <h2 className="text-sm font-semibold tracking-[0.18em] text-muted uppercase">최근 글</h2>
-              <Link href="/blog" className="text-sm text-muted hover:text-accent">
+              <h2 className="text-sm font-semibold text-muted">최근 글</h2>
+              <Link href="/blog" className="text-sm text-muted hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
                 전체 <span aria-hidden>→</span>
               </Link>
             </div>
@@ -106,7 +107,7 @@ export default function AboutPage() {
 
           <div>
             <div className="flex items-baseline justify-between">
-              <h2 className="text-sm font-semibold tracking-[0.18em] text-muted uppercase">지식 창고</h2>
+              <h2 className="text-sm font-semibold text-muted">지식 창고</h2>
               <p className="text-sm text-muted tabular-nums">
                 {stats.categories}개 분야 · {stats.notes}개 노트
               </p>
@@ -130,7 +131,7 @@ export default function AboutPage() {
             <ul className="mt-6 flex flex-wrap gap-2">
               {tree.children.map((c) => (
                 <li key={c.id}>
-                  <Link href={c.href} className="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-sm text-fg transition hover:border-accent">
+                  <Link href={c.href} className="flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-sm text-fg transition hover:border-accent pointer-coarse:min-h-11">
                     <span className="size-2 rounded-full" style={{ background: categoryColor(c.category) }} />
                     {c.name}
                     <span className="text-xs text-muted tabular-nums">{c.docCount}</span>
@@ -138,7 +139,7 @@ export default function AboutPage() {
                 </li>
               ))}
               <li>
-                <Link href="/knowledge/tags" className="flex items-center gap-1 rounded-full border border-dashed border-line px-3 py-1.5 text-sm text-muted transition hover:border-accent hover:text-accent">
+                <Link href="/knowledge/tags" className="flex items-center gap-1 rounded-full border border-dashed border-line px-3 py-1.5 pointer-coarse:min-h-11 text-sm text-muted transition hover:border-accent hover:text-accent">
                   # 태그로 찾기
                 </Link>
               </li>

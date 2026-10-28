@@ -190,7 +190,7 @@ export default function MindMapCanvas({
               {...inputProps}
               placeholder="노드 찾기 · #태그 (Enter)"
               aria-label="마인드맵에서 노드 찾기"
-              className="w-full rounded-full border border-line bg-bg-elev/85 px-4 py-2 text-sm text-fg-strong outline-none backdrop-blur placeholder:text-muted focus:border-accent"
+              className="w-full min-h-11 rounded-lg border border-control bg-bg-elev/95 px-4 py-2 text-sm text-fg-strong placeholder:text-muted focus:border-accent"
             />
             <p className="sr-only" aria-live="polite">
               {results ? `검색 결과 ${results.length}개${results.length ? ", 일치하는 노드만 강조했어요" : ""}` : ""}
@@ -199,12 +199,12 @@ export default function MindMapCanvas({
               <p className="mt-1.5 px-3 text-xs text-muted">Enter로 검색</p>
             )}
             {results && !selected && (
-              <div className="mt-2 overflow-hidden rounded-xl border border-line bg-bg-elev/95 text-sm shadow-xl backdrop-blur">
+              <div className="mt-2 overflow-hidden rounded-xl border border-line bg-bg-elev text-sm shadow-xl">
                 <p className="flex items-center justify-between gap-2 border-b border-line px-3 py-2 text-xs text-muted">
                   <span>
                     “{query}” {results.length ? `${results.length}개 일치` : "에 해당하는 노드가 없어요"}
                   </span>
-                  <button type="button" onClick={clear} className="hover:text-fg-strong">
+                  <button type="button" onClick={clear} className="-my-1 rounded-md px-2 py-1 hover:text-fg-strong pointer-coarse:min-h-11">
                     지우기
                   </button>
                 </p>
@@ -215,7 +215,7 @@ export default function MindMapCanvas({
                         <button
                           type="button"
                           onClick={() => select(r)}
-                          className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-accent-soft"
+                          className="flex w-full items-center gap-2 px-3 py-2 text-left hover:bg-accent-soft pointer-coarse:min-h-11"
                         >
                           <span className="size-2 shrink-0 rounded-full" style={{ background: r.color }} />
                           <span className="truncate text-fg-strong">{r.name}</span>
@@ -237,7 +237,7 @@ export default function MindMapCanvas({
                   const n = byId.get(c.id);
                   if (n) select(n);
                 }}
-                className="flex items-center gap-1.5 rounded-full border border-line bg-bg-elev/80 px-2.5 py-1 text-xs text-fg backdrop-blur transition hover:border-accent"
+                className="flex items-center gap-1.5 rounded-full border border-line bg-bg-elev/95 px-2.5 py-1 text-xs text-fg transition hover:border-accent pointer-coarse:min-h-11"
               >
                 <span className="size-2 rounded-full" style={{ background: c.color, boxShadow: `0 0 8px ${c.color}` }} />
                 {c.name}
@@ -258,7 +258,7 @@ export default function MindMapCanvas({
           <div
             role="region"
             aria-label="선택한 노드"
-            className="pointer-events-auto w-full max-w-sm rounded-2xl border border-line bg-bg-elev/90 p-4 shadow-2xl backdrop-blur-md"
+            className="pointer-events-auto w-full max-w-sm rounded-2xl border border-line bg-bg-elev p-4 shadow-2xl"
           >
             <p className="flex items-center gap-2 text-xs text-muted">
               <span className="size-2 rounded-full" style={{ background: selected.color }} />
@@ -272,7 +272,7 @@ export default function MindMapCanvas({
                   <li key={c.id}>
                     <button
                       onClick={() => select(c)}
-                      className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent"
+                      className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent pointer-coarse:min-h-11"
                     >
                       <span className="size-1.5 shrink-0 rounded-full" style={{ background: c.color }} />
                       <span className="truncate">{c.name}</span>
@@ -294,7 +294,7 @@ export default function MindMapCanvas({
                     <li key={c.id}>
                       <button
                         onClick={() => select(c)}
-                        className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent"
+                        className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent pointer-coarse:min-h-11"
                       >
                         <span className="size-1.5 shrink-0 rounded-full" style={{ background: c.color }} />
                         <span className="truncate">{c.name}</span>
@@ -312,11 +312,11 @@ export default function MindMapCanvas({
             )}
             <div className="mt-3 flex gap-2">
               {selected.href && (
-                <Link href={selected.href} className="rounded-full bg-accent px-3.5 py-1.5 text-sm font-medium text-accent-ink hover:opacity-90">
+                <Link href={selected.href} className="flex min-h-11 items-center gap-1 rounded-lg bg-accent px-4 text-sm font-medium text-accent-ink hover:opacity-90">
                   {selected.kind === "doc" ? "노트 열기" : "사전에서 보기"} <span aria-hidden>→</span>
                 </Link>
               )}
-              <button onClick={reset} className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted hover:text-fg-strong">
+              <button onClick={reset} className="min-h-11 rounded-lg border border-line px-4 text-sm text-muted hover:text-fg-strong">
                 전체 보기
               </button>
             </div>
@@ -325,11 +325,11 @@ export default function MindMapCanvas({
       )}
 
       {/* Zoom bar */}
-      <div role="group" aria-label="확대·축소" className="absolute right-4 bottom-20 flex flex-col items-center gap-1 rounded-full border border-line bg-bg-elev/85 p-1.5 shadow-lg backdrop-blur sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2">
+      <div role="group" aria-label="확대·축소" className="absolute right-4 bottom-20 flex flex-col items-center gap-1 rounded-full border border-line bg-bg-elev/95 p-1.5 shadow-lg sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2">
         <button
           onClick={() => zoomTo(zoom + 0.08)}
           aria-label="확대"
-          className="grid size-8 place-items-center rounded-full text-lg leading-none text-fg-strong hover:bg-accent-soft hover:text-accent"
+          className="grid size-8 place-items-center rounded-full text-lg pointer-coarse:size-11 leading-none text-fg-strong hover:bg-accent-soft hover:text-accent"
         >
           +
         </button>
@@ -348,14 +348,14 @@ export default function MindMapCanvas({
         <button
           onClick={() => zoomTo(zoom - 0.08)}
           aria-label="축소"
-          className="grid size-8 place-items-center rounded-full text-lg leading-none text-fg-strong hover:bg-accent-soft hover:text-accent"
+          className="grid size-8 place-items-center rounded-full text-lg pointer-coarse:size-11 leading-none text-fg-strong hover:bg-accent-soft hover:text-accent"
         >
           −
         </button>
       </div>
 
       {!selected && (
-        <p className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-bg-elev/70 px-3 py-1 text-xs whitespace-nowrap text-muted backdrop-blur">
+        <p className="pointer-events-none absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-full bg-bg-elev/90 px-3 py-1 text-xs whitespace-nowrap text-muted">
           <span className="hidden sm:inline">드래그해서 회전 · 오른쪽 드래그로 이동 · 스크롤이나 오른쪽 바로 확대 · 노드를 클릭해 초점 ·</span>
           <span className="inline-block h-px w-4 opacity-70" style={{ background: REFERENCE_COLOR[theme] }} />
           노트 간 링크

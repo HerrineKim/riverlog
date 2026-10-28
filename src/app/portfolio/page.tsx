@@ -8,7 +8,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
   title: "Portfolio",
-  description: "SSAFY에서 개발을 배운 1년과 에이전시의 고객사 웹·앱부터 미국 핀테크의 성장 팀, 건설사 AX팀을 거쳐 지금의 핀테크 기업 Taply까지. 회사마다 풀었던 문제와 바뀐 숫자.",
+  description: "SSAFY에서 개발을 배운 1년과 에이전시의 고객사 웹·앱부터 미국 핀테크의 성장 팀, 건설사 AX팀을 거쳐 지금의 핀테크 기업 Taply까지, 회사마다 풀었던 문제와 바뀐 숫자를 정리했습니다.",
   path: "/portfolio",
 });
 
@@ -19,14 +19,14 @@ export default function PortfolioIndex() {
   return (
     <>
       <main>
-        <section className="river-grain border-b border-line/70">
+        <section className="border-b border-line/70">
           <div className="mx-auto max-w-5xl px-4 pt-16 pb-14 sm:px-6 sm:pt-24">
             <h1 className="max-w-3xl text-4xl leading-[1.15] font-bold tracking-tight text-balance text-fg-strong sm:text-6xl">
               에이전시에서 건설 현장까지
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
               개발을 처음 배운 SSAFY와 고객사 웹·앱을 만들던 첫 회사부터 미국 핀테크의 성장 팀, 건설사 AX팀을 거쳐 지금은 핀테크 기업 Taply에서 일합니다. {works.filter(onTimeline).length}곳에서 맡은 {projectCount}개
-              프로젝트를 회사별로 모았습니다. 무엇이 문제였고, 무엇을 만들었고, 어떤 숫자가 바뀌었는지.
+              프로젝트를 회사별로 모았고, 프로젝트마다 문제와 만든 것, 바뀐 숫자를 적었습니다.
             </p>
             <CareerRiver works={works} />
           </div>
@@ -91,7 +91,7 @@ function WorkSection({ work: w }: { work: Work }) {
           <ul className="mt-10 grid gap-x-10 gap-y-5 sm:grid-cols-2">
             {w.projects.map((p) => (
               <li key={p.id}>
-                <Link href={`${href}#${p.id}`} className="group block">
+                <Link href={`${href}#${p.id}`} className="group block pointer-coarse:min-h-11">
                   <span className="font-semibold text-fg-strong transition group-hover:text-accent">{p.title}</span>
                   {p.summary && <span className="mt-1 block text-sm leading-relaxed text-muted">{p.summary}</span>}
                 </Link>
@@ -103,7 +103,7 @@ function WorkSection({ work: w }: { work: Work }) {
             <p className="text-sm text-muted">{w.stack.join(", ")}</p>
             <Link
               href={href}
-              className="shrink-0 rounded-full border border-line px-4 py-2 text-sm text-fg transition hover:border-accent hover:text-accent"
+              className="flex min-h-11 shrink-0 items-center rounded-lg border border-line px-4 text-sm text-fg transition hover:border-accent hover:text-accent"
             >
               {w.company} 자세히 보기
             </Link>

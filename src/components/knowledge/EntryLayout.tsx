@@ -49,7 +49,7 @@ export default function EntryLayout({ sidebar, children, toc }: { sidebar: React
             aria-expanded={!collapsed}
             aria-controls="dictionary-tree"
             title={collapsed ? "목록 펼치기" : "목록 접기"}
-            className={`mb-3 flex size-8 shrink-0 items-center justify-center rounded-md border border-line text-muted transition hover:border-accent hover:text-accent ${collapsed ? "" : "self-end"}`}
+            className={`mb-3 flex size-8 shrink-0 items-center justify-center rounded-md border border-line pointer-coarse:size-11 text-muted transition hover:border-accent hover:text-accent ${collapsed ? "" : "self-end"}`}
           >
             <span className="sr-only">{collapsed ? "목록 펼치기" : "목록 접기"}</span>
             <svg viewBox="0 0 16 16" className={`size-3.5 transition ${collapsed ? "rotate-180" : ""}`} fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>

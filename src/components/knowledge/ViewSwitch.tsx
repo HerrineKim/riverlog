@@ -7,7 +7,7 @@ export default function ViewSwitch({ active }: { active: View }) {
     <Link
       href={href}
       aria-current={active === key ? "page" : undefined}
-      className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm whitespace-nowrap transition sm:px-3.5 ${
+      className={`flex min-h-11 items-center gap-1.5 rounded-full px-3 text-sm whitespace-nowrap transition sm:px-3.5 ${
         active === key ? "bg-accent text-accent-ink font-medium" : "text-muted hover:text-fg-strong"
       }`}
     >
@@ -16,7 +16,7 @@ export default function ViewSwitch({ active }: { active: View }) {
     </Link>
   );
   return (
-    <div className="inline-flex rounded-full border border-line bg-bg-elev/80 p-1 backdrop-blur">
+    <div className="inline-flex rounded-full border border-line bg-bg-elev p-1">
       {item(
         "map",
         "/knowledge",

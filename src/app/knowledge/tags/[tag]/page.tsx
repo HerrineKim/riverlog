@@ -44,7 +44,7 @@ export default async function TagPage({ params }: PageProps<"/knowledge/tags/[ta
           <p className="mt-3 text-muted">노트 {entry.notes.length}개</p>
           {entry.related.length > 0 && (
             <div className="mt-5">
-              <p className="mb-2 text-xs font-semibold tracking-[0.16em] text-muted uppercase">함께 쓰인 태그</p>
+              <p className="mb-2 text-xs font-semibold text-muted">함께 쓰인 태그</p>
               <ul className="flex flex-wrap gap-1.5">
                 {entry.related.map((r) => (
                   <li key={r.tag}>

@@ -61,7 +61,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
       <EntryLayout
         sidebar={
           <>
-            <Link href={KNOWLEDGE_BASE} className="mb-4 flex items-center gap-2 text-sm text-muted hover:text-accent">
+            <Link href={KNOWLEDGE_BASE} className="mb-4 flex items-center gap-2 text-sm text-muted hover:text-accent pointer-coarse:min-h-11">
               <span aria-hidden>←</span> 사전 전체
             </Link>
             <TreeNav tree={toNav(tree)} currentHref={node.href} />
@@ -73,14 +73,14 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
           <nav aria-label="경로" className="text-sm text-muted">
             <ol className="flex flex-wrap items-center gap-1.5">
               <li>
-                <Link href={KNOWLEDGE_BASE} className="hover:text-accent">
+                <Link href={KNOWLEDGE_BASE} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
                   사전
                 </Link>
               </li>
               {trail.slice(0, -1).map((t) => (
                 <li key={t.id} className="flex items-center gap-1.5">
                   <span aria-hidden>/</span>
-                  <Link href={t.href} className="hover:text-accent">
+                  <Link href={t.href} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
                     {t.name}
                   </Link>
                 </li>
@@ -89,7 +89,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
           </nav>
 
           <header className="mt-5 border-b border-line pb-7">
-            <div className="flex items-center gap-2 text-xs font-semibold tracking-[0.16em] text-fg uppercase">
+            <div className="flex items-center gap-2 text-xs font-semibold text-fg">
               <span className="size-2 rounded-full" style={{ background: color, boxShadow: `0 0 10px ${color}` }} />
               {trail[0]?.name}
             </div>
@@ -116,7 +116,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
                   <Link
                     key={t}
                     href={tagHref(t)}
-                    className="rounded-full bg-accent-soft px-2.5 py-1 text-accent transition hover:bg-accent hover:text-accent-ink"
+                    className="rounded-full bg-accent-soft px-2.5 py-1 text-accent transition pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center hover:bg-accent hover:text-accent-ink"
                   >
                     #{t}
                   </Link>
@@ -185,7 +185,7 @@ function decodeSafe(s: string) {
 function ChildList({ node, hasDoc }: { node: KNode; hasDoc: boolean }) {
   return (
     <section className={hasDoc ? "mt-16" : "mt-8"}>
-      <h2 className="text-sm font-semibold tracking-[0.16em] text-muted uppercase">
+      <h2 className="text-sm font-semibold text-muted">
         이 주제의 항목 · {node.docCount - (hasDoc ? 1 : 0)}
       </h2>
       <ul className="mt-4 grid gap-3 sm:grid-cols-2">

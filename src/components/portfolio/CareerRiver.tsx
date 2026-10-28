@@ -33,7 +33,7 @@ export default function CareerRiver({ works }: { works: Work[] }) {
           const months = monthSpan(w.start, w.end);
           return (
             <li key={w.slug}>
-              <Link href={`#${w.slug}`} className="group grid items-center gap-x-4 gap-y-1.5 sm:grid-cols-[9rem_minmax(0,1fr)]">
+              <Link href={`#${w.slug}`} className="group grid items-center gap-x-4 gap-y-1.5 pointer-coarse:min-h-11 sm:grid-cols-[9rem_minmax(0,1fr)]">
                 <span className="truncate text-sm text-fg transition group-hover:text-accent sm:text-right">
                   {w.company}
                   <span className="ml-2 text-xs text-muted tabular-nums sm:hidden">{months}개월</span>

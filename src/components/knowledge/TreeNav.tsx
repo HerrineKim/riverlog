@@ -34,7 +34,7 @@ function Branch({ node, depth, currentHref }: { node: NavNode; depth: number; cu
     if (onPath) setOpen(true);
   }
 
-  const linkCls = `block truncate rounded-md px-2 py-1 transition ${
+  const linkCls = `block truncate rounded-md px-2 py-1 transition pointer-coarse:py-3 ${
     active ? "bg-accent-soft font-medium text-accent" : "text-muted hover:bg-bg-elev hover:text-fg-strong"
   }`;
 
@@ -51,7 +51,7 @@ function Branch({ node, depth, currentHref }: { node: NavNode; depth: number; cu
   return (
     <li>
       <details open={open} onToggle={(e) => setOpen(e.currentTarget.open)} className="group/branch">
-        <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-md px-1 py-1 text-fg hover:bg-bg-elev [&::-webkit-details-marker]:hidden">
+        <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-md px-1 py-1 text-fg hover:bg-bg-elev pointer-coarse:py-3 [&::-webkit-details-marker]:hidden">
           <svg viewBox="0 0 16 16" className="size-3 shrink-0 text-muted transition group-open/branch:rotate-90" fill="currentColor">
             <path d="M6 3.5 10.5 8 6 12.5z" />
           </svg>

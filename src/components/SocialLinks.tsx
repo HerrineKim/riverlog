@@ -43,9 +43,9 @@ export default function SocialLinks() {
             href={l.href}
             title={l.value}
             {...(l.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
-            className="group flex items-center gap-2.5 rounded-full border border-line bg-bg-elev py-1.5 pr-4 pl-1.5 text-sm text-fg transition hover:border-accent hover:text-accent lg:w-full"
+            className="group flex min-h-11 items-center gap-2.5 rounded-lg border border-line bg-bg-elev py-1.5 pr-4 pl-1.5 text-sm text-fg transition hover:border-accent hover:text-accent lg:w-full"
           >
-            <span className="grid size-7 shrink-0 place-items-center rounded-full bg-accent-soft text-accent">
+            <span className="grid size-7 shrink-0 place-items-center rounded-md bg-accent-soft text-accent">
               <SocialIcon name={l.key} className="size-3.5" />
             </span>
             <span className="truncate">{l.label}</span>

@@ -37,7 +37,7 @@ export default async function WorkPage({ params }: PageProps<"/portfolio/[slug]"
   return (
     <>
       <main>
-        <header className="river-grain border-b border-line/70">
+        <header className="border-b border-line/70">
           <div className="mx-auto max-w-6xl px-4 pt-14 pb-14 sm:px-6 sm:pt-20">
             <Link href={`/portfolio#${work.slug}`} className="text-sm text-muted hover:text-accent">
               포트폴리오로 돌아가기

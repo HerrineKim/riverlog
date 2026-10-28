@@ -20,8 +20,7 @@ export default function DictionaryPage() {
       <main className="mx-auto w-full max-w-5xl px-4 pt-12 pb-24 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="text-xs font-semibold tracking-[0.2em] text-accent uppercase">Knowledge · Dictionary</p>
-            <h1 className="mt-3 font-display text-5xl text-fg-strong sm:text-6xl">계층형 사전</h1>
+            <h1 className="font-display text-5xl text-fg-strong sm:text-6xl">계층형 사전</h1>
             <p className="mt-3 max-w-xl text-muted">
               {stats.categories}개 분야, {stats.notes}개의 노트를 분야 → 주제 → 노트 순으로 정리했어요. 가나다·ABC 색인으로도 찾을 수 있어요.
             </p>

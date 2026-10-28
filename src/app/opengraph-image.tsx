@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 // The default font only covers Latin, so the card stays in English
-export const alt = "riverlog — River's blog and knowledge base";
+export const alt = "riverlog · River's blog and knowledge base";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
