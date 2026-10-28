@@ -88,7 +88,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
           enterKeyHint="search"
           {...inputProps}
           placeholder="제목이나 저자로 찾기 (Enter)"
-          className="w-full rounded-full border border-line bg-bg-elev py-2 pr-4 pl-9 text-sm text-fg-strong outline-none placeholder:text-muted focus:border-accent"
+          className="w-full min-h-11 rounded-lg border border-control bg-bg-elev py-2 pr-4 pl-9 text-sm text-fg-strong placeholder:text-muted focus:border-accent"
         />
       </label>
       <div className="flex flex-wrap items-center gap-2">
@@ -98,14 +98,14 @@ export default function BookList({ books }: { books: BookRow[] }) {
             type="button"
             onClick={() => filter(setStatus)(s.key)}
             aria-pressed={status === s.key}
-            className={`rounded-full px-3.5 py-1.5 text-sm transition ${
+            className={`min-h-11 rounded-full px-3.5 text-sm transition ${
               status === s.key ? "bg-accent font-medium text-accent-ink" : "border border-line text-muted hover:text-fg-strong"
             }`}
           >
             {s.label} <span className="tabular-nums">{count(s.key)}</span>
           </button>
         ))}
-        <label className="ml-auto flex cursor-pointer items-center gap-2 text-sm text-muted">
+        <label className="ml-auto flex min-h-11 cursor-pointer items-center gap-2 text-sm text-muted">
           <input type="checkbox" checked={onlyReviewed} onChange={(e) => filter(setOnlyReviewed)(e.target.checked)} className="accent-[var(--accent)]" />
           독후감 있는 책만
         </label>
@@ -117,7 +117,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
             type="button"
             onClick={() => filter(setCategory)(c)}
             aria-pressed={category === c}
-            className={`rounded-md px-2.5 py-1 text-xs transition ${
+            className={`rounded-md px-2.5 py-1 text-xs transition pointer-coarse:min-h-11 ${
               category === c ? "bg-bg-elev text-fg-strong ring-1 ring-line" : "text-muted hover:text-fg"
             }`}
           >
@@ -143,7 +143,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
               type="button"
               onClick={() => changeView(v)}
               aria-pressed={view === v}
-              className={`rounded-full px-3 py-1 transition ${view === v ? "bg-accent font-medium text-accent-ink" : "text-muted hover:text-fg-strong"}`}
+              className={`min-h-11 rounded-full px-3.5 transition ${view === v ? "bg-accent font-medium text-accent-ink" : "text-muted hover:text-fg-strong"}`}
             >
               {label}
             </button>
@@ -206,7 +206,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
           <button
             type="button"
             onClick={() => setLimit((l) => l + PAGE * 2)}
-            className="rounded-full border border-line px-5 py-2 text-sm text-fg transition hover:border-accent hover:text-accent"
+            className="min-h-11 rounded-lg border border-line px-5 text-sm text-fg transition hover:border-accent hover:text-accent"
           >
             더 보기 <span className="text-muted tabular-nums">({shown.length - limit}권 남음)</span>
           </button>

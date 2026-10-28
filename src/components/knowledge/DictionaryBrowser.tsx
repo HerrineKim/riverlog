@@ -81,7 +81,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
 
   return (
     <div>
-      <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center gap-3 border-b border-line/70 bg-bg/85 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
+      <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center gap-3 border-b border-line/70 bg-bg px-4 py-3 sm:-mx-6 sm:px-6">
         <label className="relative min-w-0 flex-1 basis-full sm:basis-auto">
           <span className="sr-only">노트 검색</span>
           <svg viewBox="0 0 24 24" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted" fill="none" stroke="currentColor" strokeWidth="2">
@@ -93,7 +93,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
             enterKeyHint="search"
             {...inputProps}
             placeholder="용어, 주제로 찾기 · #태그 (Enter)"
-            className="w-full rounded-full border border-line bg-bg-elev py-2 pr-4 pl-9 text-sm text-fg-strong outline-none placeholder:text-muted focus:border-accent"
+            className="w-full min-h-11 rounded-lg border border-control bg-bg-elev py-2 pr-4 pl-9 text-sm text-fg-strong placeholder:text-muted focus:border-accent"
           />
         </label>
         <Segmented
@@ -143,7 +143,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
               <header className="flex items-baseline gap-3 border-b border-line pb-3">
                 <span className="size-2.5 translate-y-[-2px] rounded-full" style={{ background: cat.color, boxShadow: `0 0 12px ${cat.color}` }} />
                 <h2 className="text-2xl font-bold text-fg-strong">
-                  <Link href={cat.href} className="hover:text-accent">
+                  <Link href={cat.href} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
                     {cat.name}
                   </Link>
                 </h2>
@@ -207,7 +207,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
 function NoteTitle({ node, trail }: Flat) {
   return (
     <>
-      <Link href={node.href} className="font-medium text-fg-strong hover:text-accent">
+      <Link href={node.href} className="font-medium text-fg-strong hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
         {node.name}
       </Link>
       <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted">
@@ -228,7 +228,7 @@ function Entries({ nodes, visible, level }: { nodes: LiteNode[]; visible: (n: Li
           {docs.map((d) => (
             <div key={d.id} className="border-b border-line/50 py-3">
               <dt>
-                <Link href={d.href} className="font-medium text-fg-strong decoration-accent underline-offset-4 hover:text-accent hover:underline">
+                <Link href={d.href} className="font-medium text-fg-strong pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center decoration-accent underline-offset-4 hover:text-accent hover:underline">
                   {d.name}
                 </Link>
               </dt>
@@ -240,7 +240,7 @@ function Entries({ nodes, visible, level }: { nodes: LiteNode[]; visible: (n: Li
       {groups.map((g) => (
         <div key={g.id} className={`mt-7 ${level > 0 ? "border-l border-line pl-4" : ""}`}>
           <h3 className={`flex items-baseline gap-2 font-semibold text-fg-strong ${level === 0 ? "text-lg" : "text-base"}`}>
-            <Link href={g.href} className="hover:text-accent">
+            <Link href={g.href} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
               {g.name}
             </Link>
             <span className="text-xs font-normal text-muted tabular-nums">{g.docCount}</span>
@@ -272,7 +272,7 @@ function Segmented<T extends string>({
           type="button"
           aria-pressed={value === k}
           onClick={() => onChange(k)}
-          className={`rounded-full px-3 py-1 transition ${value === k ? "bg-bg-elev text-fg-strong shadow-sm ring-1 ring-line" : "text-muted hover:text-fg"}`}
+          className={`rounded-full px-3 py-1 transition pointer-coarse:min-h-11 ${value === k ? "bg-bg-elev text-fg-strong shadow-sm ring-1 ring-line" : "text-muted hover:text-fg"}`}
         >
           {text}
         </button>

@@ -9,6 +9,7 @@
   --bg-elev: #10161e;
   --bg-sunken: #070a0e;
   --border: #1d2733;
+  --control-border: #55667a; /* 3:1 on every dark surface, so field edges stay visible */
   --fg: #e4ebf2;
   --fg-strong: #f8fafc;
   --muted: #8a9aad;
@@ -24,6 +25,7 @@
   --bg-elev: #ffffff;
   --bg-sunken: #eceee9;
   --border: #dfe2dc;
+  --control-border: #80898f; /* 3:1 on every light surface */
   --fg: #1f2933;
   --fg-strong: #0b1219;
   --muted: #5f6b78;
@@ -39,6 +41,7 @@
   --color-bg-elev: var(--bg-elev);
   --color-bg-sunken: var(--bg-sunken);
   --color-line: var(--border);
+  --color-control: var(--control-border);
   --color-fg: var(--fg);
   --color-fg-strong: var(--fg-strong);
   --color-muted: var(--muted);
@@ -231,13 +234,6 @@ body {
   from {
     transform: scaleX(0);
   }
-}
-
-/* ---------- Decorative ---------- */
-.river-grain {
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, var(--accent-soft), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgb(125 211 252 / 0.06), transparent 70%);
 }
 
 @media (prefers-reduced-motion: reduce) {

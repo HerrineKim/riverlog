@@ -16,7 +16,7 @@ const STATUSES = [
 type Form = { title: string; author: string; category: string; status: string; rating: string; finished: string; cover: string; review: string };
 const EMPTY: Form = { title: "", author: "", category: "기타", status: "reading", rating: "", finished: "", cover: "", review: "" };
 
-const field = "mt-1.5 w-full rounded-lg border border-line bg-bg-elev px-3 py-2 text-fg-strong outline-none focus:border-accent";
+const field = "mt-1.5 w-full rounded-lg min-h-11 border border-control bg-bg-elev px-3 py-2 text-fg-strong focus:border-accent";
 
 /** Writes a new book (no slug) or edits one, reading the current file from GitHub so a pending deploy is not lost. */
 export default function BookEditor({ slug: initialSlug }: { slug?: string }) {

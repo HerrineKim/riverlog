@@ -52,7 +52,7 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
                   href={book.pdf}
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-full border border-line px-3 py-1 text-muted transition hover:border-accent hover:text-accent"
+                  className="inline-flex min-h-11 items-center gap-1 rounded-lg border border-line px-4 text-muted transition hover:border-accent hover:text-accent"
                 >
                   PDF 보기 <span aria-hidden>↗</span>
                   <span className="sr-only">(새 창)</span>
@@ -64,7 +64,7 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
         <BookAdminControls slug={book.slug} status={book.status} hasReview={book.review.length > 0} />
 
         <section className="mt-10">
-          <h2 className="text-sm font-semibold tracking-[0.18em] text-muted uppercase">독후감</h2>
+          <h2 className="text-sm font-semibold text-muted">독후감</h2>
           {book.review ? (
             <div className="mt-6">
               <Prose markdown={book.review} />

@@ -16,7 +16,7 @@ export default function TagCloud({ tags }: { tags: TagCount[] }) {
 
   return (
     <div>
-      <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center gap-3 border-b border-line/70 bg-bg/85 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
+      <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center gap-3 border-b border-line/70 bg-bg px-4 py-3 sm:-mx-6 sm:px-6">
         <label className="relative min-w-0 flex-1">
           <span className="sr-only">태그 검색</span>
           <span className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-sm text-muted" aria-hidden>
@@ -28,7 +28,7 @@ export default function TagCloud({ tags }: { tags: TagCount[] }) {
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Escape" && setQuery("")}
             placeholder="태그 이름으로 찾기…"
-            className="w-full rounded-full border border-line bg-bg-elev py-2 pr-4 pl-8 text-sm text-fg-strong outline-none placeholder:text-muted focus:border-accent"
+            className="w-full min-h-11 rounded-lg border border-control bg-bg-elev py-2 pr-4 pl-8 text-sm text-fg-strong placeholder:text-muted focus:border-accent"
           />
         </label>
         <span className="text-xs text-muted tabular-nums" aria-live="polite">
@@ -44,7 +44,7 @@ export default function TagCloud({ tags }: { tags: TagCount[] }) {
             <li key={t.tag}>
               <Link
                 href={t.href}
-                className={`inline-flex items-baseline gap-1.5 rounded-full border border-line px-3 py-1 text-fg transition hover:border-accent hover:text-accent ${SIZE[step(t.count)]}`}
+                className={`inline-flex items-baseline gap-1.5 rounded-full border border-line px-3 py-1 text-fg pointer-coarse:min-h-11 pointer-coarse:items-center transition hover:border-accent hover:text-accent ${SIZE[step(t.count)]}`}
               >
                 <span className="text-muted">#</span>
                 {t.tag}

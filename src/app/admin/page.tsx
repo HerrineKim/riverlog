@@ -9,8 +9,7 @@ export default async function AdminHome() {
     <>
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold tracking-[0.2em] text-accent uppercase">Admin</p>
-          <h1 className="mt-3 text-4xl font-bold text-fg-strong">관리</h1>
+          <h1 className="text-4xl font-bold text-fg-strong">관리</h1>
         </div>
         <LogoutButton />
       </div>

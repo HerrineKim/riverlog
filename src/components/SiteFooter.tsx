@@ -20,7 +20,7 @@ export default function SiteFooter() {
                 aria-label={l.href.startsWith("http") ? `${l.label} (새 창)` : l.label}
                 title={l.label}
                 {...(l.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
-                className="grid size-9 place-items-center rounded-full transition hover:bg-accent-soft hover:text-accent"
+                className="grid size-11 place-items-center rounded-full transition hover:bg-accent-soft hover:text-accent"
               >
                 <SocialIcon name={l.key} />
               </a>

@@ -13,11 +13,11 @@ export default function BookCover({ title, author, cover, className = "" }: { ti
   const hue = hash % 360;
   return (
     // The card is its own size container, so padding and type scale with the card (cqw), not the page
-    <div aria-hidden className={`${base} [container-type:inline-size]`} style={{ background: `linear-gradient(160deg, hsl(${hue} 38% 34%), hsl(${(hue + 40) % 360} 42% 22%))` }}>
+    <div aria-hidden className={`${base} [container-type:inline-size]`} style={{ background: `linear-gradient(160deg, hsl(${hue} 38% 30%), hsl(${(hue + 40) % 360} 42% 22%))` }}>
       <span className="absolute inset-y-0 left-[6%] w-px bg-white/15" />
       <div className="absolute inset-0 flex flex-col justify-between p-[9cqw] pl-[13cqw] text-white">
         <p className="line-clamp-5 text-[max(0.6rem,9cqw)] leading-snug font-semibold break-keep">{title}</p>
-        {author && <p className="line-clamp-2 text-[max(0.55rem,6.5cqw)] leading-snug text-white/75">{author}</p>}
+        {author && <p className="line-clamp-2 text-[max(0.55rem,6.5cqw)] leading-snug text-white/90">{author}</p>}
       </div>
     </div>
   );
