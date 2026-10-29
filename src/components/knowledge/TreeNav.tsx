@@ -52,7 +52,7 @@ function Branch({ node, depth, currentHref }: { node: NavNode; depth: number; cu
     <li>
       <details open={open} onToggle={(e) => setOpen(e.currentTarget.open)} className="group/branch">
         <summary className="flex cursor-pointer list-none items-center gap-1.5 rounded-md px-1 py-1 text-fg hover:bg-bg-elev pointer-coarse:py-3 [&::-webkit-details-marker]:hidden">
-          <svg viewBox="0 0 16 16" className="size-3 shrink-0 text-muted transition group-open/branch:rotate-90" fill="currentColor">
+          <svg viewBox="0 0 16 16" className="size-3 shrink-0 text-muted transition group-open/branch:rotate-90" fill="currentColor" aria-hidden>
             <path d="M6 3.5 10.5 8 6 12.5z" />
           </svg>
           {node.color && <span className="size-2 shrink-0 rounded-full" style={{ background: node.color }} />}

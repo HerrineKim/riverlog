@@ -46,7 +46,7 @@ export default function BookAdminControls({ slug, status: initial, hasReview }: 
               disabled={busy}
               aria-pressed={status === o.key}
               onClick={() => status !== o.key && run({ status: o.key }, () => setStatus(o.key))}
-              className={`min-h-10 rounded-full px-3 transition disabled:opacity-60 ${status === o.key ? "bg-accent font-medium text-accent-ink" : "text-muted hover:text-fg-strong"}`}
+              className={`min-h-11 rounded-full px-3 transition disabled:opacity-60 ${status === o.key ? "bg-accent font-medium text-accent-ink" : "text-muted hover:text-fg-strong"}`}
             >
               {o.label}
             </button>

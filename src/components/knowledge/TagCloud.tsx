@@ -2,12 +2,24 @@
 
 import Link from "next/link";
 import { useDeferredValue, useState } from "react";
+import useUrlState from "@/hooks/useUrlState";
 
 export type TagCount = { tag: string; count: number; href: string };
 
 /** All tags, biggest first, with an instant filter. Size steps with how many notes carry the tag. */
 export default function TagCloud({ tags }: { tags: TagCount[] }) {
-  const [query, setQuery] = useState("");
+  // The box filters as you type; the URL follows, so a filtered cloud can be shared
+  const [urlQuery, setUrlQuery] = useUrlState("q", "");
+  const [query, setQueryState] = useState(urlQuery);
+  const [shownUrl, setShownUrl] = useState(urlQuery);
+  if (urlQuery !== shownUrl) {
+    setShownUrl(urlQuery);
+    setQueryState(urlQuery);
+  }
+  const setQuery = (v: string) => {
+    setQueryState(v);
+    setUrlQuery(v);
+  };
   const q = useDeferredValue(query.trim().toLowerCase().replace(/^#/, ""));
   const shown = q ? tags.filter((t) => t.tag.includes(q)) : tags;
   const max = Math.max(1, ...tags.map((t) => t.count));
@@ -24,6 +36,7 @@ export default function TagCloud({ tags }: { tags: TagCount[] }) {
           </span>
           <input
             type="search"
+            autoComplete="off"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Escape" && setQuery("")}

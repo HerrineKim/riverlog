@@ -30,7 +30,7 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
   return (
     <>
       <main className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6 sm:py-20">
-        <Link href="/books" className="text-sm text-muted hover:text-accent">
+        <Link href="/books" className="text-sm text-muted hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
           <span aria-hidden>←</span> 책장
         </Link>
         <header className="mt-8 flex gap-6 border-b border-line pb-8">

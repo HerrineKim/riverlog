@@ -1,4 +1,7 @@
+import fs from "node:fs";
+import path from "node:path";
 import GithubSlugger from "github-slugger";
+import { imageSize } from "image-size";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeRaw from "rehype-raw";
@@ -47,13 +50,30 @@ function rehypeFigures() {
   };
 }
 
-/** Note images load as they scroll into view; some posts carry dozens of full-size photos. */
+/** Intrinsic size of an image under public/, read at build time; undefined for remote or missing files. */
+function localImageSize(src: string) {
+  if (!src.startsWith("/") || src.startsWith("//")) return;
+  try {
+    const { width, height } = imageSize(fs.readFileSync(path.join(process.cwd(), "public", decodeURI(src.split(/[?#]/)[0]))));
+    return width && height ? { width, height } : undefined;
+  } catch {
+    return;
+  }
+}
+
+/**
+ * Note images load as they scroll into view; some posts carry dozens of full-size photos.
+ * Local images also get width/height, so the page doesn't jump as each one arrives.
+ */
 function rehypeLazyImages() {
   return (tree: HastRoot) => {
     visit(tree, "element", (node: Element) => {
       if (node.tagName !== "img") return;
       node.properties.loading = "lazy";
       node.properties.decoding = "async";
+      if (node.properties.width || node.properties.height) return;
+      const size = localImageSize(String(node.properties.src ?? ""));
+      if (size) Object.assign(node.properties, size);
     });
   };
 }

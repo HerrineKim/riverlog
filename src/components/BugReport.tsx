@@ -60,7 +60,7 @@ export default function BugReport() {
         ref={dialogRef}
         aria-labelledby="bug-report-title"
         onClick={(e) => e.target === e.currentTarget && close()}
-        className="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-2xl border border-line bg-bg-elev p-0 text-fg shadow-2xl backdrop:bg-black/60"
+        className="m-auto w-[min(32rem,calc(100vw-2rem))] overscroll-contain rounded-2xl border border-line bg-bg-elev p-0 text-fg shadow-2xl backdrop:bg-black/60"
       >
         <form
           onSubmit={(e) => {
@@ -78,20 +78,24 @@ export default function BugReport() {
           <label className="flex flex-col gap-1.5 text-sm">
             <span className="font-medium text-fg-strong">한 줄 요약</span>
             <input
+              name="title"
+              autoComplete="off"
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="예: 마인드맵에서 검색 결과가 안 보여요"
+              placeholder="예: 마인드맵에서 검색 결과가 안 보여요…"
               className="rounded-lg min-h-11 border border-control bg-bg px-3 py-2 text-fg-strong placeholder:text-muted focus:border-accent"
             />
           </label>
           <label className="flex flex-col gap-1.5 text-sm">
             <span className="font-medium text-fg-strong">무슨 일이 있었나요</span>
             <textarea
+              name="details"
+              autoComplete="off"
               value={details}
               onChange={(e) => setDetails(e.target.value)}
               rows={5}
-              placeholder="어떻게 했더니 어떤 일이 생겼는지, 원래 기대한 동작은 무엇인지"
+              placeholder="어떻게 했더니 어떤 일이 생겼는지, 원래 기대한 동작은 무엇인지…"
               className="resize-y rounded-lg border border-control bg-bg px-3 py-2 text-fg-strong placeholder:text-muted focus:border-accent"
             />
           </label>
@@ -110,7 +114,7 @@ export default function BugReport() {
             >
               메일로 보내기
             </button>
-            <button type="submit" className="min-h-11 rounded-lg bg-accent px-4 text-sm font-medium text-accent-ink hover:opacity-90">
+            <button type="submit" className="min-h-11 rounded-lg bg-accent px-4 text-sm font-medium text-accent-ink transition hover:ring-2 hover:ring-accent hover:ring-offset-2 hover:ring-offset-bg-elev">
               GitHub 이슈로 보내기 <span aria-hidden>↗</span>
             </button>
           </div>

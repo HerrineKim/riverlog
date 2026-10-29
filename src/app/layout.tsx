@@ -5,6 +5,7 @@ import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import ScrollReset from "@/components/ScrollReset";
 import SiteHeader from "@/components/SiteHeader";
 import { site } from "@/lib/site";
+import { THEME_BG } from "@/lib/theme";
 import "./globals.css";
 
 const display = Instrument_Serif({
@@ -29,13 +30,14 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0a0e13" },
-    { media: "(prefers-color-scheme: light)", color: "#f6f7f4" },
+    { media: "(prefers-color-scheme: dark)", color: THEME_BG.dark },
+    { media: "(prefers-color-scheme: light)", color: THEME_BG.light },
   ],
 };
 
-// A saved toggle choice wins; a first visit follows the OS, matching the browser bar color set by themeColor
-const themeScript = `(function(){var t;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t)})()`;
+// A saved toggle choice wins; a first visit follows the OS. The browser bar color follows the same choice,
+// repainted once the theme-color metas (which may come after this script) are parsed
+const themeScript = `(function(){var t;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t);var c=${JSON.stringify(THEME_BG)}[t];function p(){document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}p();document.addEventListener("DOMContentLoaded",p)})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -57,7 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <ScrollReset />
         <SiteHeader />
-        <div id="main-content" tabIndex={-1} className="flex flex-1 flex-col outline-none">
+        <div id="main-content" tabIndex={-1} className="flex flex-1 flex-col">
           {children}
         </div>
       </body>

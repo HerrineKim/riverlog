@@ -41,7 +41,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
         <JsonLd data={articleLd(postSeo(post))} />
         <div>
           <header className="mx-auto max-w-3xl px-4 pt-14 pb-10 sm:px-6 sm:pt-20">
-            <Link href="/blog" className="text-sm text-muted hover:text-accent">
+            <Link href="/blog" className="text-sm text-muted hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
               <span aria-hidden>←</span> 모든 글
             </Link>
             <h1 className="mt-6 text-3xl leading-tight font-bold text-balance text-fg-strong sm:text-[2.6rem]">

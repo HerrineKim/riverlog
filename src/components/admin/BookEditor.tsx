@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, type MouseEvent, useEffect, useRef, useState } from "react";
 import BookCover from "@/components/BookCover";
 import { adminFetch, DEPLOY_NOTE } from "@/lib/admin/client";
 
@@ -24,18 +24,36 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
   // A new book becomes an edit once it is registered
   const [slug, setSlug] = useState(initialSlug);
   const [form, setForm] = useState<Form>(EMPTY);
+  // What was last loaded or saved; anything else is an unsaved edit
+  const [baseline, setBaseline] = useState<Form>(EMPTY);
   const [sha, setSha] = useState<string>();
   const [loading, setLoading] = useState(!!slug);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [saved, setSaved] = useState<string>();
+  const errorRef = useRef<HTMLParagraphElement>(null);
+  const dirty = JSON.stringify(form) !== JSON.stringify(baseline);
+
+  // Closing or reloading the tab with unsaved edits asks first
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
+
+  // A failed save moves focus to the error, so it is read out and not missed below the long textarea
+  useEffect(() => {
+    if (error) errorRef.current?.focus();
+  }, [error]);
 
   useEffect(() => {
     if (!initialSlug) return;
     adminFetch<Record<string, unknown> & { sha: string }>(`/api/admin/books/${initialSlug}`, { method: "GET" })
       .then((d) => {
         const str = (v: unknown) => (v === undefined || v === null ? "" : String(v));
-        setForm({
+        const loaded = {
           title: str(d.title),
           author: str(d.author),
           category: str(d.category) || "기타",
@@ -44,19 +62,31 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
           finished: str(d.finished),
           cover: str(d.cover),
           review: str(d.review),
-        });
+        };
+        setForm(loaded);
+        setBaseline(loaded);
         setSha(d.sha);
       })
-      .catch((e) => setMessage((e as Error).message))
+      .catch((e) => setError((e as Error).message))
       .finally(() => setLoading(false));
   }, [initialSlug]);
 
-  const set = (k: keyof Form) => (e: { target: { value: string } }) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const bind = (k: keyof Form) => ({
+    name: k,
+    autoComplete: "off",
+    value: form[k],
+    onChange: (e: { target: { value: string } }) => setForm((f) => ({ ...f, [k]: e.target.value })),
+  });
+
+  const leave = (e: MouseEvent) => {
+    if (dirty && !confirm("저장하지 않은 내용이 있어요. 이 페이지를 떠날까요?")) e.preventDefault();
+  };
 
   async function save(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
     setMessage("");
+    setError("");
     try {
       const body = { ...form, rating: form.rating ? Number(form.rating) : null };
       if (slug) {
@@ -72,9 +102,10 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
         setSaved(created);
         window.history.replaceState(null, "", `/admin/books/${created}`);
       }
+      setBaseline(form);
       setMessage(DEPLOY_NOTE);
     } catch (err) {
-      setMessage((err as Error).message);
+      setError((err as Error).message);
     } finally {
       setBusy(false);
     }
@@ -87,7 +118,7 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
       await adminFetch(`/api/admin/books/${slug}`, { method: "DELETE" });
       router.replace("/admin");
     } catch (err) {
-      setMessage((err as Error).message);
+      setError((err as Error).message);
       setBusy(false);
     }
   }
@@ -96,7 +127,7 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
 
   return (
     <form onSubmit={save}>
-      <Link href={slug ? `/books/${slug}` : "/admin"} className="text-sm text-muted hover:text-accent">
+      <Link href={slug ? `/books/${slug}` : "/admin"} onClick={leave} className="text-sm text-muted hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
         <span aria-hidden>←</span> {slug ? "책 페이지" : "관리"}
       </Link>
       <h1 className="mt-6 text-3xl font-bold text-fg-strong">{slug ? "책 · 독후감 편집" : "새 책 등록"}</h1>
@@ -106,15 +137,15 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block text-sm text-muted sm:col-span-2">
             제목
-            <input value={form.title} onChange={set("title")} required maxLength={200} className={field} />
+            <input {...bind("title")} required maxLength={200} className={field} />
           </label>
           <label className="block text-sm text-muted">
             저자
-            <input value={form.author} onChange={set("author")} maxLength={200} className={field} />
+            <input {...bind("author")} maxLength={200} className={field} />
           </label>
           <label className="block text-sm text-muted">
             분류
-            <select value={form.category} onChange={set("category")} className={field}>
+            <select {...bind("category")} className={field}>
               {[...new Set([...CATEGORIES, form.category])].map((c) => (
                 <option key={c}>{c}</option>
               ))}
@@ -122,7 +153,7 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
           </label>
           <label className="block text-sm text-muted">
             읽기 상태
-            <select value={form.status} onChange={set("status")} className={field}>
+            <select {...bind("status")} className={field}>
               {STATUSES.map(([v, l]) => (
                 <option key={v} value={v}>
                   {l}
@@ -132,7 +163,7 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
           </label>
           <label className="block text-sm text-muted">
             별점
-            <select value={form.rating} onChange={set("rating")} className={field}>
+            <select {...bind("rating")} className={field}>
               <option value="">없음</option>
               {[5, 4, 3, 2, 1].map((n) => (
                 <option key={n} value={n}>
@@ -143,11 +174,11 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
           </label>
           <label className="block text-sm text-muted">
             완독일
-            <input type="date" value={form.finished} onChange={set("finished")} className={field} />
+            <input type="date" {...bind("finished")} className={field} />
           </label>
           <label className="block text-sm text-muted">
             표지 이미지 주소
-            <input type="url" value={form.cover} onChange={set("cover")} placeholder="https://" maxLength={1000} className={field} />
+            <input type="url" {...bind("cover")} spellCheck={false} placeholder="https://example.com/cover.jpg…" maxLength={1000} className={field} />
           </label>
         </div>
       </div>
@@ -155,14 +186,18 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
       <label className="mt-8 block text-sm text-muted">
         독후감 (마크다운)
         <textarea
-          value={form.review}
-          onChange={set("review")}
+          {...bind("review")}
           rows={18}
           placeholder="감상을 적어 주세요. 비워 두면 독후감이 없는 책이 됩니다."
           className={`${field} font-mono text-sm leading-relaxed`}
         />
       </label>
 
+      {error && (
+        <p ref={errorRef} role="alert" tabIndex={-1} className="mt-4 text-sm text-red-500">
+          {error}
+        </p>
+      )}
       {message && (
         <p role="status" className="mt-4 text-sm text-muted">
           {message}
@@ -178,7 +213,7 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
       )}
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-        <button type="submit" disabled={busy} className="rounded-full bg-accent px-6 py-2.5 font-medium text-accent-ink transition disabled:opacity-60">
+        <button type="submit" disabled={busy} className="rounded-full bg-accent px-6 py-2.5 font-medium text-accent-ink transition hover:ring-2 hover:ring-accent hover:ring-offset-2 hover:ring-offset-bg disabled:opacity-60 disabled:hover:ring-0">
           {busy ? "저장 중…" : slug ? "저장" : "등록"}
         </button>
         {slug && (

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useSearchOnEnter from "@/hooks/useSearchOnEnter";
 import useTheme from "@/hooks/useTheme";
+import useUrlState from "@/hooks/useUrlState";
 import type { PlacedNode } from "@/lib/graph-layout";
 import type { GraphLink } from "@/lib/knowledge";
 import { makeMatcher } from "@/lib/search";
@@ -29,9 +30,13 @@ export default function MindMapCanvas({
   const [failed, setFailed] = useState(() => !webglAvailable());
   const theme = useTheme();
   const dark = theme === "dark";
-  const [selected, setSelected] = useState<PlacedNode | null>(null);
+  const byId = useMemo(() => new Map(data.nodes.map((n) => [n.id, n])), [data]);
+  // The focused node and the search live in the URL, so a view of the map can be shared
+  const [selectedId, setSelectedId] = useUrlState("node", "");
+  const selected = byId.get(selectedId) ?? null;
+  const setSelected = useCallback((node: PlacedNode | null) => setSelectedId(node?.id ?? ""), [setSelectedId]);
   // A new search drops the selection so its hits show
-  const { query, draft, inputProps, clear } = useSearchOnEnter(() => setSelected(null));
+  const { query, draft, inputProps, clear } = useSearchOnEnter("q", () => setSelected(null));
 
   const neighbors = useMemo(() => {
     const m = new Map<string, Set<string>>();
@@ -43,8 +48,6 @@ export default function MindMapCanvas({
     }
     return m;
   }, [data]);
-
-  const byId = useMemo(() => new Map(data.nodes.map((n) => [n.id, n])), [data]);
 
   // Note-to-note connections for the info card: explicit links first, then shared tags
   const connectionsOf = useMemo(() => {
@@ -93,11 +96,14 @@ export default function MindMapCanvas({
 
   const [zoom, setZoom] = useState(0.5);
 
-  const select = useCallback((node: PlacedNode) => {
-    setSelected(node);
-    sceneRef.current?.focusOn(node);
-  }, []);
-  const onBackground = useCallback(() => setSelected(null), []);
+  const select = useCallback(
+    (node: PlacedNode) => {
+      setSelected(node);
+      sceneRef.current?.focusOn(node);
+    },
+    [setSelected],
+  );
+  const onBackground = useCallback(() => setSelected(null), [setSelected]);
 
   // One scene per data set; it draws on demand and owns its canvas and label layer
   useEffect(() => {
@@ -112,11 +118,14 @@ export default function MindMapCanvas({
       return;
     }
     sceneRef.current = scene;
+    // A shared link opens on its node
+    const linked = byId.get(new URLSearchParams(location.search).get("node") ?? "");
+    if (linked) scene.focusOn(linked);
     return () => {
       scene.dispose();
       sceneRef.current = null;
     };
-  }, [data, failed, select, onBackground]);
+    }, [data, byId, failed, select, onBackground]);
 
   // Restyle on focus, search or theme changes: only color buffers are rewritten
   useEffect(() => {
@@ -159,7 +168,7 @@ export default function MindMapCanvas({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [setSelected]);
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -188,7 +197,7 @@ export default function MindMapCanvas({
               type="search"
               enterKeyHint="search"
               {...inputProps}
-              placeholder="노드 찾기 · #태그 (Enter)"
+              placeholder="노드나 #태그 찾기…"
               aria-label="마인드맵에서 노드 찾기"
               className="w-full min-h-11 rounded-lg border border-control bg-bg-elev/95 px-4 py-2 text-sm text-fg-strong placeholder:text-muted focus:border-accent"
             />
@@ -233,6 +242,7 @@ export default function MindMapCanvas({
           {categories.map((c) => (
             <li key={c.id}>
               <button
+                type="button"
                 onClick={() => {
                   const n = byId.get(c.id);
                   if (n) select(n);
@@ -271,6 +281,7 @@ export default function MindMapCanvas({
                 {childrenOf.get(selected.id)!.map((c) => (
                   <li key={c.id}>
                     <button
+                      type="button"
                       onClick={() => select(c)}
                       className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent pointer-coarse:min-h-11"
                     >
@@ -293,6 +304,7 @@ export default function MindMapCanvas({
                   {connectionsOf.get(selected.id)!.map(({ node: c, kind }) => (
                     <li key={c.id}>
                       <button
+                        type="button"
                         onClick={() => select(c)}
                         className="flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-fg hover:bg-accent-soft hover:text-accent pointer-coarse:min-h-11"
                       >
@@ -312,11 +324,11 @@ export default function MindMapCanvas({
             )}
             <div className="mt-3 flex gap-2">
               {selected.href && (
-                <Link href={selected.href} className="flex min-h-11 items-center gap-1 rounded-lg bg-accent px-4 text-sm font-medium text-accent-ink hover:opacity-90">
+                <Link href={selected.href} className="flex min-h-11 items-center gap-1 rounded-lg bg-accent px-4 text-sm font-medium text-accent-ink transition hover:ring-2 hover:ring-accent hover:ring-offset-2 hover:ring-offset-bg-elev">
                   {selected.kind === "doc" ? "노트 열기" : "사전에서 보기"} <span aria-hidden>→</span>
                 </Link>
               )}
-              <button onClick={reset} className="min-h-11 rounded-lg border border-line px-4 text-sm text-muted hover:text-fg-strong">
+              <button type="button" onClick={reset} className="min-h-11 rounded-lg border border-line px-4 text-sm text-muted hover:text-fg-strong">
                 전체 보기
               </button>
             </div>
@@ -327,6 +339,7 @@ export default function MindMapCanvas({
       {/* Zoom bar */}
       <div role="group" aria-label="확대·축소" className="absolute right-4 bottom-20 flex flex-col items-center gap-1 rounded-full border border-line bg-bg-elev/95 p-1.5 shadow-lg sm:top-1/2 sm:bottom-auto sm:-translate-y-1/2">
         <button
+          type="button"
           onClick={() => zoomTo(zoom + 0.08)}
           aria-label="확대"
           className="grid size-8 place-items-center rounded-full text-lg pointer-coarse:size-11 leading-none text-fg-strong hover:bg-accent-soft hover:text-accent"
@@ -346,6 +359,7 @@ export default function MindMapCanvas({
           style={{ writingMode: "vertical-lr", direction: "rtl" }}
         />
         <button
+          type="button"
           onClick={() => zoomTo(zoom - 0.08)}
           aria-label="축소"
           className="grid size-8 place-items-center rounded-full text-lg pointer-coarse:size-11 leading-none text-fg-strong hover:bg-accent-soft hover:text-accent"
