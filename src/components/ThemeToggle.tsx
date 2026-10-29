@@ -1,10 +1,13 @@
 "use client";
 
+import { paintThemeColor } from "@/lib/theme";
+
 export default function ThemeToggle() {
   function toggle() {
     const root = document.documentElement;
     const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
     root.setAttribute("data-theme", next);
+    paintThemeColor(next);
     try {
       localStorage.setItem("theme", next);
     } catch {}

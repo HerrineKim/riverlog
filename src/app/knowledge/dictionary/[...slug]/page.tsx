@@ -146,7 +146,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
                   <ul className="mt-2 space-y-1">
                     {doc.sources.map((s) => (
                       <li key={s} className="truncate">
-                        <a href={s} className="hover:text-accent" target="_blank" rel="noreferrer">
+                        <a href={s} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center" target="_blank" rel="noreferrer">
                           {sourceName(s)} <span aria-hidden>↗</span>
                           <span className="sr-only">(새 창)</span> <span className="text-muted">{decodeSafe(s).replace(/^https?:\/\//, "")}</span>
                         </a>
@@ -197,7 +197,7 @@ function ChildList({ node, hasDoc }: { node: KNode; hasDoc: boolean }) {
             >
               <span className="flex items-center gap-2 font-medium text-fg-strong group-hover:text-accent">
                 {c.children.length > 0 && (
-                  <svg viewBox="0 0 24 24" className="size-4 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="1.8">
+                  <svg viewBox="0 0 24 24" className="size-4 shrink-0 text-muted" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
                     <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                   </svg>
                 )}

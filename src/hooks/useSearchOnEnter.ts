@@ -1,20 +1,28 @@
 "use client";
 
 import { useState } from "react";
+import useUrlState from "./useUrlState";
 
 /**
- * A search box that only searches when Enter is pressed. `query` is the submitted value;
- * typing changes only the draft, emptying the box or pressing Escape clears the search.
+ * A search box that only searches when Enter is pressed. `query` is the submitted value, kept in the
+ * `param` query param; typing changes only the draft, emptying the box or pressing Escape clears the search.
  */
-export default function useSearchOnEnter(onSubmit?: (query: string) => void) {
-  const [draft, setDraft] = useState("");
-  const [query, setQuery] = useState("");
+export default function useSearchOnEnter(param: string, onSubmit?: (query: string) => void) {
+  const [query, setQuery] = useUrlState(param, "");
+  const [draft, setDraft] = useState(query);
+  // A query arriving from the URL (first load, back/forward) fills the box
+  const [shown, setShown] = useState(query);
+  if (query !== shown) {
+    setShown(query);
+    setDraft(query);
+  }
   const clear = () => {
     setDraft("");
     setQuery("");
   };
   const inputProps = {
     value: draft,
+    autoComplete: "off",
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
       setDraft(e.target.value);
       if (!e.target.value) setQuery("");

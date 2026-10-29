@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import useSearchOnEnter from "@/hooks/useSearchOnEnter";
+import useUrlState from "@/hooks/useUrlState";
+import { formatDate } from "@/lib/format";
 import { makeMatcher } from "@/lib/search";
 import type { LiteNode } from "./types";
 
@@ -21,9 +23,11 @@ function initialOf(title: string): string {
 }
 
 type Flat = { node: LiteNode; trail: string[] };
+type Mode = "tree" | "index" | "date";
 type DateKey = "created" | "updated";
 
-const dateLabel = (iso?: string) => (iso ? iso.slice(0, 10).replaceAll("-", ".") : "");
+/** A URL value, or the fallback when it isn't one of the allowed values. */
+const oneOf = <T extends string>(v: string, allowed: readonly T[], fallback: T): T => (allowed.includes(v as T) ? (v as T) : fallback);
 const byName = (x: Flat, y: Flat) => x.node.name.localeCompare(y.node.name, "ko", { numeric: true });
 
 function flatten(n: LiteNode, trail: string[], out: Flat[]) {
@@ -33,10 +37,14 @@ function flatten(n: LiteNode, trail: string[], out: Flat[]) {
 }
 
 export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
-  const { query, draft, inputProps } = useSearchOnEnter();
-  const [mode, setMode] = useState<"tree" | "index" | "date">("tree");
-  const [dateKey, setDateKey] = useState<DateKey>("created");
-  const [newestFirst, setNewestFirst] = useState(true);
+  // View, sort and search live in the URL, so "the index, filtered to #react" is a shareable link
+  const { query, draft, inputProps } = useSearchOnEnter("q");
+  const [modeParam, setMode] = useUrlState("view", "tree");
+  const [dateParam, setDateKey] = useUrlState("date", "created");
+  const [order, setOrder] = useUrlState("order", "new");
+  const mode = oneOf<Mode>(modeParam, ["tree", "index", "date"], "tree");
+  const dateKey = oneOf<DateKey>(dateParam, ["created", "updated"], "created");
+  const newestFirst = order !== "old";
 
   const all = useMemo(() => flatten(tree, [], []), [tree]);
   const matches = useMemo(() => {
@@ -84,7 +92,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
       <div className="sticky top-14 z-20 -mx-4 flex flex-wrap items-center gap-3 border-b border-line/70 bg-bg px-4 py-3 sm:-mx-6 sm:px-6">
         <label className="relative min-w-0 flex-1 basis-full sm:basis-auto">
           <span className="sr-only">노트 검색</span>
-          <svg viewBox="0 0 24 24" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg viewBox="0 0 24 24" className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
             <circle cx="11" cy="11" r="7" />
             <path d="m20 20-3.5-3.5" strokeLinecap="round" />
           </svg>
@@ -92,7 +100,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
             type="search"
             enterKeyHint="search"
             {...inputProps}
-            placeholder="용어, 주제로 찾기 · #태그 (Enter)"
+            placeholder="용어, 주제, #태그로 찾기…"
             className="w-full min-h-11 rounded-lg border border-control bg-bg-elev py-2 pr-4 pl-9 text-sm text-fg-strong placeholder:text-muted focus:border-accent"
           />
         </label>
@@ -120,7 +128,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
             <Segmented
               label="정렬 순서"
               value={newestFirst ? "new" : "old"}
-              onChange={(v) => setNewestFirst(v === "new")}
+              onChange={setOrder}
               options={[
                 ["new", "최신순"],
                 ["old", "오래된순"],
@@ -139,7 +147,7 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
       {mode === "tree" ? (
         <div className="mt-8 space-y-14">
           {tree.children.filter(visible).map((cat) => (
-            <section key={cat.id} id={`cat-${cat.id}`} className="scroll-mt-32">
+            <section key={cat.id} id={`cat-${cat.id}`} className="scroll-mt-32 [contain-intrinsic-size:auto_60rem] [content-visibility:auto]">
               <header className="flex items-baseline gap-3 border-b border-line pb-3">
                 <span className="size-2.5 translate-y-[-2px] rounded-full" style={{ background: cat.color, boxShadow: `0 0 12px ${cat.color}` }} />
                 <h2 className="text-2xl font-bold text-fg-strong">
@@ -157,9 +165,9 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
       ) : mode === "date" ? (
         <ol className="mt-8 divide-y divide-line/60">
           {byDate.map(({ node, trail }) => (
-            <li key={node.id} className="grid gap-1 py-3 sm:grid-cols-[6.5rem_minmax(0,16rem)_1fr] sm:gap-6">
+            <li key={node.id} className="grid gap-1 py-3 [contain-intrinsic-size:auto_5rem] [content-visibility:auto] sm:grid-cols-[7rem_minmax(0,16rem)_1fr] sm:gap-6">
               <p className="text-sm text-muted tabular-nums">
-                <time dateTime={node[dateKey]}>{dateLabel(node[dateKey]) || "-"}</time>
+                <time dateTime={node[dateKey]}>{formatDate(node[dateKey]) || "-"}</time>
                 {dateKey === "updated" && node.created && node.updated?.slice(0, 10) === node.created.slice(0, 10) && (
                   <span className="ml-1.5 text-xs text-accent">새 노트</span>
                 )}
@@ -173,16 +181,18 @@ export default function DictionaryBrowser({ tree }: { tree: LiteNode }) {
         </ol>
       ) : (
         <div className="mt-8">
-          <nav aria-label="색인 바로가기" className="mb-8 flex flex-wrap gap-1.5">
-            {index.map(([k]) => (
-              <a key={k} href={`#idx-${k}`} className="grid size-8 place-items-center rounded-md border border-line text-sm text-muted hover:border-accent hover:text-accent">
-                {k}
-              </a>
-            ))}
-          </nav>
+          {index.length > 0 && (
+            <nav aria-label="색인 바로가기" className="mb-8 flex flex-wrap gap-1.5">
+              {index.map(([k]) => (
+                <a key={k} href={`#idx-${k}`} className="grid size-8 place-items-center rounded-md border border-line text-sm text-muted hover:border-accent hover:text-accent pointer-coarse:size-11">
+                  {k}
+                </a>
+              ))}
+            </nav>
+          )}
           <div className="space-y-10">
             {index.map(([k, items]) => (
-              <section key={k} id={`idx-${k}`} className="scroll-mt-32">
+              <section key={k} id={`idx-${k}`} className="scroll-mt-32 [contain-intrinsic-size:auto_30rem] [content-visibility:auto]">
                 <h2 className="mb-3 font-display text-4xl text-accent">{k}</h2>
                 <dl className="divide-y divide-line/60">
                   {items.map(({ node, trail }) => (

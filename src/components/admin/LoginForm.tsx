@@ -30,7 +30,7 @@ export default function LoginForm() {
     <form onSubmit={submit} className="mt-8 space-y-4">
       <label className="block text-sm text-muted">
         아이디
-        <input name="username" autoComplete="username" required className={input} />
+        <input name="username" autoComplete="username" autoCapitalize="none" spellCheck={false} required className={input} />
       </label>
       <label className="block text-sm text-muted">
         비밀번호
@@ -41,7 +41,7 @@ export default function LoginForm() {
           {error}
         </p>
       )}
-      <button type="submit" disabled={busy} className="w-full rounded-full bg-accent py-2.5 font-medium text-accent-ink transition disabled:opacity-60">
+      <button type="submit" disabled={busy} className="w-full rounded-full bg-accent py-2.5 font-medium text-accent-ink transition hover:ring-2 hover:ring-accent hover:ring-offset-2 hover:ring-offset-bg disabled:opacity-60 disabled:hover:ring-0">
         {busy ? "확인 중…" : "로그인"}
       </button>
     </form>

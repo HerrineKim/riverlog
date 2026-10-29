@@ -27,11 +27,11 @@ export default async function TagPage({ params }: PageProps<"/knowledge/tags/[ta
     <>
       <main className="mx-auto w-full max-w-4xl px-4 pt-12 pb-24 sm:px-6">
         <nav aria-label="경로" className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
-          <Link href="/knowledge/dictionary" className="hover:text-accent">
+          <Link href="/knowledge/dictionary" className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
             사전
           </Link>
           <span aria-hidden>/</span>
-          <Link href={TAGS_BASE} className="hover:text-accent">
+          <Link href={TAGS_BASE} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
             태그
           </Link>
         </nav>
@@ -50,7 +50,7 @@ export default async function TagPage({ params }: PageProps<"/knowledge/tags/[ta
                   <li key={r.tag}>
                     <Link
                       href={tagHref(r.tag)}
-                      className="inline-flex items-baseline gap-1 rounded-full border border-line px-2.5 py-0.5 text-sm text-fg transition hover:border-accent hover:text-accent"
+                      className="inline-flex items-baseline gap-1 rounded-full border border-line px-2.5 py-0.5 text-sm text-fg transition hover:border-accent hover:text-accent pointer-coarse:min-h-11 pointer-coarse:items-center"
                     >
                       #{r.tag}
                       <span className="text-xs text-muted tabular-nums">{r.count}</span>
@@ -81,7 +81,7 @@ export default async function TagPage({ params }: PageProps<"/knowledge/tags/[ta
                     {n.doc.tags.map((t) =>
                       t.toLowerCase() === entry.tag ? null : (
                         <li key={t}>
-                          <Link href={tagHref(t)} className="rounded-full px-2 py-0.5 text-xs text-muted transition hover:bg-accent-soft hover:text-accent">
+                          <Link href={tagHref(t)} className="rounded-full px-2 py-0.5 text-xs text-muted transition hover:bg-accent-soft hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
                             #{t}
                           </Link>
                         </li>

@@ -39,7 +39,7 @@ export default async function WorkPage({ params }: PageProps<"/portfolio/[slug]"
       <main>
         <header className="border-b border-line/70">
           <div className="mx-auto max-w-6xl px-4 pt-14 pb-14 sm:px-6 sm:pt-20">
-            <Link href={`/portfolio#${work.slug}`} className="text-sm text-muted hover:text-accent">
+            <Link href={`/portfolio#${work.slug}`} className="text-sm text-muted hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
               포트폴리오로 돌아가기
             </Link>
             <div className="mt-10 grid gap-x-12 gap-y-6 lg:grid-cols-[minmax(0,1fr)_17rem]">
@@ -96,7 +96,6 @@ export default async function WorkPage({ params }: PageProps<"/portfolio/[slug]"
                 width={1600}
                 height={1000}
                 sizes="(min-width: 1024px) 48rem, 100vw"
-                priority
                 className="mb-12 h-auto w-full rounded-2xl border border-line"
               />
             )}

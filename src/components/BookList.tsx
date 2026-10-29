@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState, useSyncExternalStore } from "react";
 import BookCover from "@/components/BookCover";
 import useSearchOnEnter from "@/hooks/useSearchOnEnter";
+import useUrlState from "@/hooks/useUrlState";
 
 export type BookRow = {
   slug: string;
@@ -44,9 +45,11 @@ function storedView(): View {
 const noSubscribe = () => () => {};
 
 export default function BookList({ books }: { books: BookRow[] }) {
-  const [status, setStatus] = useState<(typeof STATUS)[number]["key"]>("all");
-  const [category, setCategory] = useState("all");
-  const [onlyReviewed, setOnlyReviewed] = useState(false);
+  // Filters live in the URL, so a filtered shelf can be shared or bookmarked
+  const [status, setStatus] = useUrlState("status", "all");
+  const [category, setCategory] = useUrlState("category", "all");
+  const [reviewed, setReviewed] = useUrlState("review", "");
+  const onlyReviewed = reviewed === "1";
   const [limit, setLimit] = useState(PAGE);
   const stored = useSyncExternalStore(noSubscribe, storedView, () => "gallery" as View);
   const [chosen, setChosen] = useState<View>();
@@ -57,7 +60,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
       localStorage.setItem(VIEW_KEY, v);
     } catch {}
   };
-  const { query, draft, inputProps } = useSearchOnEnter(() => setLimit(PAGE));
+  const { query, draft, inputProps } = useSearchOnEnter("q", () => setLimit(PAGE));
   const q = query.toLowerCase();
   // Any filter change starts the list over from the top
   const filter = <T,>(set: (v: T) => void) => (v: T) => {
@@ -87,7 +90,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
           type="search"
           enterKeyHint="search"
           {...inputProps}
-          placeholder="제목이나 저자로 찾기 (Enter)"
+          placeholder="제목이나 저자로 찾기…"
           className="w-full min-h-11 rounded-lg border border-control bg-bg-elev py-2 pr-4 pl-9 text-sm text-fg-strong placeholder:text-muted focus:border-accent"
         />
       </label>
@@ -106,7 +109,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
           </button>
         ))}
         <label className="ml-auto flex min-h-11 cursor-pointer items-center gap-2 text-sm text-muted">
-          <input type="checkbox" checked={onlyReviewed} onChange={(e) => filter(setOnlyReviewed)(e.target.checked)} className="accent-[var(--accent)]" />
+          <input type="checkbox" checked={onlyReviewed} onChange={(e) => filter(setReviewed)(e.target.checked ? "1" : "")} className="accent-[var(--accent)]" />
           독후감 있는 책만
         </label>
       </div>
