@@ -5,10 +5,11 @@ summary: "배열의 주요 메서드, length가 가장 큰 인덱스 + 1인 이�
 tags: ["javascript", "data-structure", "frontend"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://riverkim.kr/74", "https://riverkim.kr/164", "https://riverkim.kr/177", "https://riverkim.kr/183", "https://riverkim.kr/176", "https://riverkim.kr/104", "https://yozm.wishket.com/magazine/detail/1585/", "https://wesbos.com/javascript/08-data-types/objects", "https://wesbos.com/javascript/08-data-types/arrays", "https://wesbos.com/javascript/08-data-types/46-array-cardio-static-methods", "https://wesbos.com/javascript/08-data-types/47-array-cardio-instance-methods", "https://wesbos.com/javascript/08-data-types/48-array-cardio-callback-methods-and-function-generation", "https://wesbos.com/javascript/09-gettin-loopy/49-looping-and-iterating-array-foreach", "https://wesbos.com/javascript/09-gettin-loopy/50-looping-and-iterating-mapping", "https://wesbos.com/javascript/09-gettin-loopy/51-looping-and-iterating-filter-find-and-higher-order-functions", "https://wesbos.com/javascript/09-gettin-loopy/52-looping-and-iterating-reduce", "https://wesbos.com/javascript/09-gettin-loopy/53-looping-and-iterating-reduce-exercise", "https://web.dev/learn/javascript/data-types/string", "https://web.dev/learn/javascript/objects", "https://web.dev/learn/javascript/objects/property-accessors", "https://web.dev/learn/javascript/collections/indexed", "https://ko.javascript.info/object", "https://ko.javascript.info/array", "https://ko.javascript.info/array-methods", "https://ko.javascript.info/keys-values-entries", "https://ui.toast.com/weekly-pick/ko_20190515/", "https://dmitripavlutin.com/power-up-the-array-creation-in-javascript/"]
+sources: ["https://riverkim.kr/74", "https://riverkim.kr/164", "https://riverkim.kr/177", "https://riverkim.kr/183", "https://riverkim.kr/176", "https://riverkim.kr/104", "https://yozm.wishket.com/magazine/detail/1585/", "https://wesbos.com/javascript/08-data-types/objects", "https://wesbos.com/javascript/08-data-types/arrays", "https://wesbos.com/javascript/08-data-types/46-array-cardio-static-methods", "https://wesbos.com/javascript/08-data-types/47-array-cardio-instance-methods", "https://wesbos.com/javascript/08-data-types/48-array-cardio-callback-methods-and-function-generation", "https://wesbos.com/javascript/09-gettin-loopy/49-looping-and-iterating-array-foreach", "https://wesbos.com/javascript/09-gettin-loopy/50-looping-and-iterating-mapping", "https://wesbos.com/javascript/09-gettin-loopy/51-looping-and-iterating-filter-find-and-higher-order-functions", "https://wesbos.com/javascript/09-gettin-loopy/52-looping-and-iterating-reduce", "https://wesbos.com/javascript/09-gettin-loopy/53-looping-and-iterating-reduce-exercise", "https://web.dev/learn/javascript/data-types/string", "https://web.dev/learn/javascript/objects", "https://web.dev/learn/javascript/objects/property-accessors", "https://web.dev/learn/javascript/collections/indexed", "https://ko.javascript.info/object", "https://ko.javascript.info/array", "https://ko.javascript.info/array-methods", "https://ko.javascript.info/keys-values-entries", "https://ui.toast.com/weekly-pick/ko_20190515/", "https://dmitripavlutin.com/power-up-the-array-creation-in-javascript/", "https://github.com/lydiahallie/javascript-questions"]
 ---
 
 > 개인 TIL과 요즘IT 글을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(문자열·객체·인덱스 컬렉션 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「객체」, 「배열」, 「배열과 메서드」, 「Object.keys, values, entries」 글을 함께 참고해 보강했다. lodash 대체표는 「[Lodash의 대체재로서의 순수 자바스크립트 함수](https://ui.toast.com/weekly-pick/ko_20190515/)」를 바탕으로 최신 메서드를 더해 정리했다. 배열 생성 방법은 「[Power up the array creation in JavaScript](https://dmitripavlutin.com/power-up-the-array-creation-in-javascript/)」을 바탕으로 보강했다.
+> 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다.
 
 데이터를 가공하는 코드의 대부분은 배열과 객체를 다루는 코드다. 특히 `map`, `filter`, `reduce` 같은 **배열 헬퍼 메서드**와 ES6 객체 문법은 React 코드에서 매일 쓰인다.
 
@@ -135,7 +136,7 @@ students.filter(findByProp('grade', 3))
 
 `arr.reduce(callback[, initialValue])`에 넘기는 콜백을 **리듀서(reducer)** 라고 한다. 콜백은 `(acc, cur, idx, src)`를 받는다. **리듀서가 반환한 값이 다음 호출의 `acc`가 된다.** 반환을 잊으면 다음 회차의 `acc`는 `undefined`다.
 
-`initialValue`는 첫 호출 때 `acc`에 들어가는 값이다. 생략하면 첫 요소가 쓰이고, **빈 배열에 initialValue 없이 호출하면 에러**가 난다. 결과 타입이 드러나도록 늘 넘기는 편이 안전하다.
+`initialValue`는 첫 호출 때 `acc`에 들어가는 값이다. 생략하면 첫 요소가 `acc`가 되고 콜백은 **두 번째 요소부터** 호출된다. 그래서 반환을 잊은 `[1, 2, 3, 4].reduce((a, c) => console.log(a, c))`는 `1 2`, `undefined 3`, `undefined 4`를 찍는다. **빈 배열에 initialValue 없이 호출하면 에러**가 난다. 결과 타입이 드러나도록 늘 넘기는 편이 안전하다.
 
 ```javascript
 const total = inventory.reduce((sum, item) => sum + item.price, 0)
@@ -191,6 +192,8 @@ lodash의 상당수 함수는 언어에 들어왔다. 네이티브로 되면 의
 | 계산된 키 | `` { [`id_${n}`]: 1 } `` | 대괄호 안의 식을 평가한다. 템플릿 리터럴은 이 자리에서만 키가 된다(`` { `k`: 1 } ``은 SyntaxError) |
 
 **문자열이 아닌 키는 문자열로 바뀐다.** `obj[10]`과 `obj['10']`, `obj[false]`와 `obj['false']`는 같은 속성이다. 객체를 키로 넣으면 `'[object Object]'`가 되어 모두 한 칸에 겹친다. 진짜로 객체·숫자를 키로 쓰려면 [[map-and-set|Map]]이다.
+
+리터럴에 같은 키를 두 번 쓰면 에러 없이 **뒤의 값이 이긴다.** 순서는 처음 나온 자리를 지켜서 `{ a: 'one', b: 'two', a: 'three' }`는 `{ a: 'three', b: 'two' }`다.
 
 문을 시작하는 자리의 `{`는 블록으로 읽힌다. 그래서 콘솔에 `{ a: 1 }`만 치거나 화살표 함수에서 객체를 바로 반환할 때는 `({ a: 1 })`처럼 괄호로 감싼다([[statements-vs-expressions|문과 식]]). 변수에 대입할 때는 필요 없다. `new Object()`도 빈 객체를 만들지만 리터럴과 차이가 없고 리터럴은 만들면서 채울 수 있어 리터럴을 쓴다.
 
