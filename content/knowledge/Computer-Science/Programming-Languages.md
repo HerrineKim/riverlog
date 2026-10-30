@@ -35,6 +35,7 @@ date: "2026-10-14"
 - [DTO와 VO, DAO와 Repository](Computer-Science/Programming-Languages/dto-vo-dao-repository.md): 전송 객체와 값 객체, 테이블 중심 DAO와 도메인 중심 Repository
 - [클린 코드: 함수와 이름](Computer-Science/Programming-Languages/clean-code-functions-naming.md): 작은 함수와 추상화 수준, 팩터리로 분기 가두기, 의미 있는 이름
 - [책임 주도 설계: 협력·책임·메시지](Computer-Science/Programming-Languages/responsibility-driven-design.md): 메시지를 먼저 정하고 책임을 가진 객체 고르기, 인터페이스는 메시지 집합
+- [싱글턴 패턴](Computer-Science/Programming-Languages/singleton-pattern.md): 인스턴스를 하나로 제한하는 Java 구현 여섯 가지(DCL과 volatile, 홀더, enum)와 전역 상태의 단점
 - [GoF 디자인 패턴](Computer-Science/Programming-Languages/gof-design-patterns.md): 생성·구조·행위 패턴이 푸는 문제와 비유, 과용의 비용
 - [좋은 코드를 위한 열 가지 원칙](Computer-Science/Programming-Languages/coding-principles.md): 규약·주석·견고함·SOLID·테스트 용이성·적당한 추상화, 원칙끼리 부딪칠 때의 판단
 - [같은 문제, 열다섯 가지 설계: 상태와 결합을 다루는 법](Computer-Science/Programming-Languages/state-and-decoupling-designs.md): 터틀 그래픽을 클래스·순수 함수·의존성 주입·상태 모나드·이벤트 소싱·인터프리터 등으로 구현하며 상태 소유와 결합 비교
@@ -42,6 +43,7 @@ date: "2026-10-14"
 ### Java와 Go
 
 - [Java 코딩 컨벤션: Google 스타일과 캠퍼스 핵데이 규칙](Computer-Science/Programming-Languages/java-coding-convention.md): 두 컨벤션 비교, 이름·import·중괄호·Javadoc 규칙, Checkstyle·EditorConfig 자동 적용
+- [Java 언어 기본: 접근 제어자에서 스레드 안전 컬렉션까지](Computer-Science/Programming-Languages/java-language-basics.md): 접근 제어자, final·finalize, 오버로딩·오버라이딩, 오토박싱, 제네릭 타입 소거, 어노테이션, 동시성 컬렉션, ThreadLocal
 - [Java 실무 관용구: Enum, null과 Optional, 예외, 날짜 API, 비동기](Computer-Science/Programming-Languages/java-idioms.md): Enum에 행위 묶기, Optional 규칙, unchecked 예외 전환, java.time, CompletableFuture
 - [Java 직렬화와 Jackson](Computer-Science/Programming-Languages/java-serialization-jackson.md): Serializable·serialVersionUID와 보안 문제, Jackson 어노테이션과 타입 정보 보존
 - [JVM 내부 구조: 컴파일, 클래스 로딩, 메모리 영역, GC 튜닝](Computer-Science/Programming-Languages/jvm-internals.md): 바이트코드와 클래스 로딩, 런타임 데이터 영역, 세대별 GC, GC 로그·힙 덤프 진단
