@@ -4,11 +4,12 @@ concept: "Recursion"
 summary: "자기 자신을 다시 호출해 문제를 더 작은 같은 문제로 줄여 가는 함수와 그 종료 조건. 예제로 팩토리얼과 유클리드 호제법(최대공약수·최소공배수)을 다룬다."
 tags: ["algorithm", "recursion", "python"]
 source: mixed
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/78fab30ae56449158565b4808ffb9c25"]
+date: "2026-10-30"
+sources: ["https://80000coding.notion.site/78fab30ae56449158565b4808ffb9c25", "https://www.techinterviewhandbook.org/algorithms/recursion/"]
 ---
 
 > 유클리드 호제법의 복잡도와 최소공배수 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「유클리드 호제법으로 최대 공약수(GCD) 최소 공배수(LCM) 구하기」를 바탕으로 보강했다.
+> 기저 사례의 개수, 꼬리 호출 최적화, 경우 생성 주의점은 Tech Interview Handbook의 「[Recursion cheatsheet](https://www.techinterviewhandbook.org/algorithms/recursion/)」를 바탕으로 보강했다.
 
 재귀 함수(Recursive Function)는 **자기 자신을 다시 호출하는 함수**다. 큰 문제를 "같은 모양의 더 작은 문제"로 바꿔 표현할 수 있을 때 코드가 수학식처럼 간결해진다. DFS, 분할 정복, 백트래킹, 메모이제이션 DP의 기반이 된다.
 
@@ -108,6 +109,9 @@ print(lcm(192, 162))  # 5184
 - 호출마다 스택 프레임을 쌓으므로 반복문보다 느리고 메모리를 더 쓴다.
 - 같은 인자로 여러 번 호출되면(예: 피보나치) 지수 시간이 걸린다 → 메모이제이션(동적 계획법)으로 해결한다.
 - 깊은 재귀가 필요하면 `sys.setrecursionlimit()`으로 한도를 늘리되, 너무 깊으면 반복문으로 바꾼다.
+- **기저 사례의 개수**는 재귀 호출이 얼마나 멀리 내려가는지로 정한다. `f(n-1)`만 부르면 하나로 충분하지만, 피보나치처럼 `f(n-2)`까지 부르면 `f(0)`과 `f(1)` 두 개가 있어야 입력 범위 전체가 기저 사례에 닿는다. n = 0, n = 1을 테스트 케이스에 넣는다.
+- 재귀의 공간 복잡도는 호출 깊이만큼이라 **O(1)이 되지 않는다.** 예외는 꼬리 호출 최적화(TCO)다. 재귀 호출이 함수의 마지막 연산이면 현재 프레임을 재사용할 수 있는데, 이를 보장하는 언어는 Scheme 같은 일부뿐이다. Python과 Java는 하지 않고, JavaScript는 명세에 있지만 Safari(JavaScriptCore)만 구현했다. Kotlin `tailrec`, Scala `@tailrec`는 컴파일러가 반복문으로 바꾼다.
+- 순열·부분집합처럼 **모든 경우를 만드는** 문제는 재귀가 가장 자연스럽다. 중복 원소가 있으면 정렬한 뒤 같은 깊이에서 같은 값을 건너뛰어 중복 결과를 막는다([[brute-force|완전 탐색과 백트래킹]]).
 
 ## 핵심 정리
 

@@ -1,14 +1,15 @@
 ---
 title: "벡터 내적·외적과 거리"
 concept: "Dot and Cross Product"
-summary: "내적이 수직과 정사영을, 외적이 방향과 넓이를 알려 주는 원리. 법선 벡터로 점과 초평면 사이 거리 공식을 유도하고, 계산 기하에서 쓰는 CCW·점과 직선 거리 계산을 정리한다."
+summary: "내적이 수직과 정사영을, 외적이 방향과 넓이를 알려 주는 원리. 법선 벡터로 점과 초평면 사이 거리 공식을 유도하고, 계산 기하에서 쓰는 CCW·점과 직선 거리 계산, 제곱 거리 비교와 원·직사각형 겹침 판정을 정리한다."
 tags: ["math", "linear-algebra", "vector", "geometry", "algorithm"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/3e013958fe35447e83c2150c951abe49", "https://80000coding.notion.site/194ccf68b6044aa686032c778358d89e", "https://80000coding.notion.site/6241cb5bb0fd4c26be30cbd7c3870b67"]
+date: "2026-10-30"
+sources: ["https://80000coding.notion.site/3e013958fe35447e83c2150c951abe49", "https://80000coding.notion.site/194ccf68b6044aa686032c778358d89e", "https://80000coding.notion.site/6241cb5bb0fd4c26be30cbd7c3870b67", "https://www.techinterviewhandbook.org/algorithms/geometry/"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「점과 평면 사이의 거리」, 「Sweeping on plane.」, 「삼각형 내 점이 있는지 구별하는 법」을 바탕으로 재구성한 노트다.
+> 「자주 쓰는 판정」은 Tech Interview Handbook의 「[Geometry cheatsheet](https://www.techinterviewhandbook.org/algorithms/geometry/)」를 바탕으로 보강했다.
 
 ## 내적: 같은 방향 성분
 
@@ -102,6 +103,18 @@ def in_triangle(a, b, c, p):
 - `dot(d, p − p₀)`로 정렬하면 **직선을 따라간 위치** 순서가 된다.
 
 두 값을 (외적, 내적) 순으로 비교하면 직선을 평행 이동하며 점을 하나씩 넘기는 [[sweep-line|스위핑]]의 순서가 된다. 실제 거리가 아니라 순서만 필요하므로 `|d|`로 나누지 않는다. 그래서 정수 좌표라면 **정수 연산만으로** 정확하게 비교할 수 있다. 부동소수점 거리를 쓰면 같은 줄 위의 점이 오차로 갈라질 수 있다.
+
+## 자주 쓰는 판정
+
+기하는 대개 문제의 주제가 아니라 다른 알고리즘의 부품이다. 2차원에서 자주 쓰는 판정은 제곱근과 나눗셈 없이 할 수 있다.
+
+| 판정 | 방법 |
+| --- | --- |
+| 두 점의 거리 비교 | `dx² + dy²`끼리 비교한다. 제곱근은 단조 증가라 순서가 같으므로 계산할 필요가 없다. 원점에서 가장 가까운 k개 점은 이 값으로 [[heap-priority-queue\|크기 k 힙]]을 쓴다 |
+| 두 원이 겹치는가 | 중심 사이 거리의 제곱이 반지름 합의 제곱보다 작으면 겹친다: `dx² + dy² < (r1 + r2)²` |
+| 축에 평행한 두 직사각형이 겹치는가 | x축과 y축에서 **각각** 구간이 겹쳐야 한다: `a.left < b.right and b.left < a.right and a.bottom < b.top and b.bottom < a.top`. 1차원 구간 겹침([[sweep-line\|스위핑]])을 두 번 쓰는 셈이다 |
+
+변의 길이·넓이·좌표가 **0인 경우**가 가장 자주 놓치는 경계 사례다. 넓이 0인 직사각형, 반지름 0인 원, 원점 위의 점, 모서리만 닿는 경우를 겹침으로 칠지 먼저 정한다. 등호를 넣느냐가 답을 가른다.
 
 ## 정리
 

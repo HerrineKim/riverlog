@@ -1,14 +1,15 @@
 ---
 title: "큐와 덱"
 concept: "Queue"
-summary: "먼저 넣은 것을 먼저 꺼내는 큐(FIFO)와, 양쪽 끝에서 넣고 뺄 수 있는 덱."
+summary: "먼저 넣은 것을 먼저 꺼내는 큐(FIFO)와 양쪽 끝에서 넣고 뺄 수 있는 덱, 스택 두 개로 큐·큐로 스택 만들기, 구현에 따라 달라지는 덱의 임의 접근 비용."
 tags: ["data-structure", "queue", "deque", "python"]
 source: mixed
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/6b362391f808445f8e5f1e1f017c1bfb", "https://bytebytego.com/guides/explaining-the-4-most-commonly-used-types-of-queues-in-a-single-diagram"]
+sources: ["https://80000coding.notion.site/6b362391f808445f8e5f1e1f017c1bfb", "https://bytebytego.com/guides/explaining-the-4-most-commonly-used-types-of-queues-in-a-single-diagram", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
 ---
 
 > 원형 버퍼로 덱을 만드는 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[push_swap] Linked List 말고 Circular Queue를 이용하여 Stack을 구현해보자!」를 바탕으로 보강했다. 시스템에서 쓰는 큐의 네 가지 종류는 ByteByteGo의 System Design 101 가이드 「[Explaining the 4 Most Commonly Used Types of Queues](https://bytebytego.com/guides/explaining-the-4-most-commonly-used-types-of-queues-in-a-single-diagram)」로 보강했다.
+> 스택·큐로 서로를 만드는 방법과 덱의 임의 접근 구조는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」 질문이 묻는 개념으로 보강했다.
 
 ## 큐 (Queue)
 
@@ -36,6 +37,35 @@ sources: ["https://80000coding.notion.site/6b362391f808445f8e5f1e1f017c1bfb", "h
 
 - 들어온 순서대로 처리해야 하는 작업(대기열, 프린터 작업, 프로세스 스케줄링)
 - **BFS**: 가까운 노드부터 차례로 방문
+
+### 스택으로 큐, 큐로 스택 만들기
+
+**스택 두 개로 큐**를 만들 수 있다. 넣을 때는 `in` 스택에 push한다. 꺼낼 때 `out` 스택이 비어 있으면 `in`의 원소를 모두 옮겨 담는다. 옮기면서 순서가 뒤집혀 가장 먼저 들어온 원소가 `out`의 top에 온다.
+
+```python
+class TwoStackQueue:
+    def __init__(self):
+        self.inbox, self.outbox = [], []
+
+    def enqueue(self, x):
+        self.inbox.append(x)
+
+    def dequeue(self):
+        if not self.outbox:                  # 비었을 때만 한꺼번에 옮긴다
+            while self.inbox:
+                self.outbox.append(self.inbox.pop())
+        return self.outbox.pop()
+```
+
+옮기는 순간의 dequeue 한 번은 O(n)이지만, **원소 하나는 `in`에 한 번, `out`에 한 번만 들어간다.** 그래서 n번 연산의 총비용이 O(n)이고 연산당 **분할 상환 O(1)** 이다. `out`이 비지 않았는데 옮기면 순서가 섞이므로 「비었을 때만」이 핵심이다.
+
+**큐로 스택**을 만들 때는 push와 pop 중 하나가 O(n)이 된다. 큐는 앞뒤를 뒤집는 연산이 없어 분할 상환으로도 둘 다 O(1)로 만들 수 없다.
+
+| 방식 | push | pop |
+| --- | --- | --- |
+| push를 비싸게 | 새 원소를 빈 큐 q2에 넣고 q1의 원소를 모두 q2로 옮긴 뒤 q1·q2를 바꾼다. 큐 앞이 늘 최신 원소다. O(n) | 앞에서 꺼낸다. O(1) |
+| pop을 비싸게 | q1 뒤에 넣는다. O(1) | 마지막 하나만 남기고 q1의 원소를 q2로 옮긴 뒤, 남은 것을 꺼내고 q1·q2를 바꾼다. O(n) |
+| 큐 하나 | 뒤에 넣은 뒤 앞의 원소 n-1개를 꺼내 다시 뒤에 넣어(회전) 새 원소를 앞으로 보낸다. O(n) | 앞에서 꺼낸다. O(1) |
 
 ### 파이썬에서 큐 쓰기
 
@@ -73,7 +103,20 @@ print(queue.popleft())  # 4, front에서 삭제, O(1)
 | 양 끝 근처 인덱스 접근 (`d[0]`, `d[-1]`) | O(1) |
 | 중간 인덱스 접근·삽입·삭제 (`d[i]`, `insert`, `del`) | O(n) |
 
-> 참고: C++의 `std::deque`는 인덱스 접근이 O(1)인 등 구현이 다르다. 파이썬에서 임의 위치를 자주 읽어야 한다면 리스트가 낫고, 양 끝에서 넣고 빼는 일이 많다면 덱이 낫다.
+파이썬에서 임의 위치를 자주 읽어야 한다면 리스트가 낫고, 양 끝에서 넣고 빼는 일이 많다면 덱이 낫다.
+
+### 덱의 임의 접근이 O(1)이 되는 구조
+
+덱이라는 이름은 연산 목록일 뿐이라 **임의 접근(`d[i]`) 비용은 구현이 정한다.** 연결 리스트로만 이으면 O(n)이고, 원소 위치를 산술로 계산할 수 있는 배열 기반 구조면 O(1)이다.
+
+| 구현 | 구조 | `d[i]` |
+| --- | --- | --- |
+| C++ `std::deque` | 고정 크기 블록 여러 개 + 블록 주소를 담은 포인터 배열(map) | O(1). 첫 원소가 블록 안 오프셋 s에 있고 블록 크기가 B면 `map[(s + i) / B][(s + i) % B]`로 두 번만 따라간다 |
+| Rust `VecDeque`, 아래의 원형 버퍼 덱 | 배열 하나를 원형으로 쓴다 | O(1). `data[(front + i) % cap]` |
+| Java `ArrayDeque` | 원형 배열 | 구조상 O(1)이지만 인덱스로 읽는 메서드를 두지 않는다 |
+| Python `collections.deque` | 64칸 블록의 이중 연결 리스트 | 블록을 따라가야 해 양 끝에서 멀수록 느리다. 가운데는 O(n) |
+
+C++ `std::deque`는 앞에 넣을 때 맨 앞 블록에 빈칸이 없으면 **새 블록 하나를 앞에 붙이고 map에 주소만 추가**한다. 기존 원소는 움직이지 않는다. map이 꽉 차면 map(포인터 배열)만 더 큰 배열로 옮긴다. 그래서 양 끝 삽입은 O(1)이고, `std::vector`와 달리 양 끝에 넣어도 기존 원소를 가리키는 참조가 무효화되지 않는다(반복자는 무효화된다). 블록이 흩어져 있어 연속 메모리인 `vector`보다 순회가 조금 느리다.
 
 `deque(maxlen=n)`으로 만들면 크기가 n을 넘을 때 반대쪽 원소가 자동으로 밀려나서, 최근 n개만 유지하는 버퍼로도 쓸 수 있다.
 

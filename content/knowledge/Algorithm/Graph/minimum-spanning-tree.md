@@ -1,14 +1,15 @@
 ---
 title: "최소 신장 트리: 크루스칼과 프림"
 concept: "Minimum Spanning Tree"
-summary: "가중치 그래프의 모든 정점을 사이클 없이 가장 싸게 잇는 최소 신장 트리와, 간선을 고르는 크루스칼·정점을 넓혀 가는 프림 알고리즘의 동작·복잡도·선택 기준."
+summary: "가중치 그래프의 모든 정점을 사이클 없이 가장 싸게 잇는 최소 신장 트리와, 간선을 고르는 크루스칼·정점을 넓혀 가는 프림 알고리즘의 동작·복잡도·선택 기준, 결과가 늘 트리인 이유와 비연결 그래프의 최소 신장 숲."
 tags: ["algorithm", "graph", "greedy", "union-find", "heap"]
 source: other
 date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 자료구조 문서의 Minimum Spanning Tree 절을 바탕으로 재구성한 노트다.
+> 결과가 늘 트리인지에 대한 논증과 비연결 그래프의 경우는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 
 ## 최소 신장 트리란
 
@@ -94,6 +95,17 @@ def prim(n, adj):                # adj[u] = [(w, v)]
 
 코딩 테스트에서는 입력이 간선 목록으로 주어지는 경우가 많아 크루스칼이 짧고 실수가 적다.
 
+## 결과는 언제나 트리인가
+
+**입력이 연결 그래프면 그렇다.** 트리는 「사이클 없음 + 연결됨」이므로 두 알고리즘이 각각을 지키는지 보면 된다.
+
+| | 사이클이 없다 | 연결된다 |
+| --- | --- | --- |
+| 크루스칼 | 양 끝이 이미 같은 묶음인 간선, 즉 사이클을 만드는 간선은 버린다 | 끝났는데 묶음이 둘 이상 남았다고 하자. 입력이 연결 그래프이므로 두 묶음을 잇는 간선이 있다. 그 간선은 사이클을 만들지 않으므로 차례가 왔을 때 채택됐어야 한다. 모순이다 |
+| 프림 | 매번 트리 **밖**의 정점 하나와 그 정점으로 가는 간선 하나만 더한다. 안쪽 두 정점을 잇는 간선은 고르지 않는다 | 정점 k개·간선 k-1개의 연결 상태가 한 단계마다 유지된다. 연결 그래프면 트리 밖 정점으로 가는 간선이 늘 있어 V개까지 자란다 |
+
+그래서 결과는 정점 V개, 간선 V-1개인 트리다. **비연결 그래프**에서는 다르다. 크루스칼은 연결 요소마다 MST를 만들어 **최소 신장 숲(minimum spanning forest)** 을 돌려주고(간선 수 = V - 요소 수), 프림은 시작 정점이 속한 요소만 덮고 멈춘다. 그래서 크루스칼 결과의 간선 수가 V-1보다 적으면 「모두 잇는 것은 불가능」이라고 판정할 수 있다.
+
 ## 정리
 
 - MST = 모든 정점을 사이클 없이 잇는 V-1개 간선 중 가중치 합이 최소인 것
@@ -101,5 +113,6 @@ def prim(n, adj):                # adj[u] = [(w, v)]
 - 크루스칼: 간선 정렬 + Union-Find로 사이클 검사, O(E log E)
 - 프림: 트리에서 뻗는 가장 가벼운 간선을 힙으로 꺼낸다, O(E log V)
 - 희소 그래프·간선 목록이면 크루스칼, 밀집 그래프면 프림
+- 연결 그래프면 결과가 늘 트리다. 비연결 그래프에서 크루스칼은 최소 신장 숲을 만든다
 
 관련 노트: [[graph-basics|그래프의 기본과 표현 방법]], [[disjoint-set|서로소 집합 (Union-Find)]], [[greedy|그리디]], [[dijkstra|다익스트라 최단 경로]], [[heap-priority-queue|힙과 우선순위 큐]]

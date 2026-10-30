@@ -1,14 +1,15 @@
 ---
 title: "그리디 알고리즘"
 concept: "Greedy"
-summary: "매 선택의 순간마다 당장 가장 좋아 보이는 것을 골라 최종 해답에 도달하는 방법."
+summary: "매 선택의 순간마다 당장 가장 좋아 보이는 것을 골라 최종 해답에 도달하는 방법과 그 정당성 확인. 거스름돈과 로마 숫자 변환을 예로 든다."
 tags: ["algorithm", "paradigm", "greedy"]
 source: til
 date: "2026-10-14"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
 ---
 
 > 탐욕 선택 속성과 최적 부분 구조는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 알고리즘 문서를 바탕으로 보강했다.
+> 로마 숫자 변환 예시는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(손코딩) 질문이 묻는 개념으로 보강했다.
 
 그리디(Greedy, 탐욕법) 알고리즘은 여러 경우 중 하나를 골라야 할 때마다 **그 순간 가장 좋아 보이는 선택**을 하며 최종 해답에 도달하는 방법이다. 앞으로의 선택이나 지나간 선택을 다시 고려하지 않는다. 구현이 간단하고 빠르지만, **최적해를 항상 보장하지는 않는다**.
 
@@ -44,6 +45,26 @@ print(min_coins(960))  # 7
 500, 100, 50, 10원처럼 **큰 동전이 항상 작은 동전의 배수**인 화폐 체계에서는, 큰 동전 하나를 작은 동전 여러 개로 바꾸면 개수만 늘어난다. 그래서 큰 것부터 고르는 그리디가 최적이다.
 
 하지만 동전이 {500, 400, 100}이고 800원을 거슬러야 한다면, 그리디는 500 + 100 × 3 = 4개를 고르지만 최적은 400 × 2 = 2개다. 이런 경우에는 동적 계획법으로 풀어야 한다.
+
+## 예시: 로마 숫자로 바꾸기
+
+1~3999의 수를 로마 숫자로 바꾸는 것도 큰 값부터 고르는 그리디다. 핵심은 **빼기 표기(4 = IV, 9 = IX, 40 = XL, 90 = XC, 400 = CD, 900 = CM) 여섯 개를 값 표에 함께 넣는 것**이다. 그러면 「남은 수 이하인 가장 큰 값」을 반복해서 고르기만 하면 된다.
+
+```python
+TABLE = [(1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'), (100, 'C'), (90, 'XC'),
+         (50, 'L'), (40, 'XL'), (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'), (1, 'I')]
+
+def to_roman(n):
+    out = []
+    for value, sym in TABLE:
+        count, n = divmod(n, value)     # 이 값을 몇 번 쓸 수 있나
+        out.append(sym * count)
+    return ''.join(out)
+
+print(to_roman(944))   # CMXLIV
+```
+
+표의 크기가 고정이라 O(1)이다. 이 그리디가 맞는 이유는 로마 숫자가 사실상 **자리마다 독립된 십진 표기**이기 때문이다. 백의 자리 9는 늘 CM, 십의 자리 4는 늘 XL이라, 큰 값부터 고르면 자리별 표기가 그대로 나온다. 거꾸로 로마 숫자를 수로 바꿀 때는 왼쪽부터 읽으며 **다음 글자보다 작은 글자는 빼고 나머지는 더한다**(IV = -1 + 5).
 
 ## 그리디의 한계와 정당성 확인
 

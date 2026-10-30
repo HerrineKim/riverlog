@@ -5,10 +5,11 @@ summary: "일상 소프트웨어에서 자료구조가 쓰이는 곳(피드의 �
 tags: ["algorithm", "data-structure", "architecture", "scalability", "search"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://bytebytego.com/guides/algorithms-you-should-know-before-taking-system-design-interviews", "https://bytebytego.com/guides/the-9-algorithms-that-dominate-our-world", "https://bytebytego.com/guides/how-to-avoid-crawling-duplicate-urls-at-google-scale"]
+sources: ["https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://bytebytego.com/guides/algorithms-you-should-know-before-taking-system-design-interviews", "https://bytebytego.com/guides/the-9-algorithms-that-dominate-our-world", "https://bytebytego.com/guides/how-to-avoid-crawling-duplicate-urls-at-google-scale", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[10 Key Data Structures We Use Every Day](https://bytebytego.com/guides/10-key-data-structures-we-use-every-day)」, 「[Algorithms for System Design Interviews](https://bytebytego.com/guides/algorithms-you-should-know-before-taking-system-design-interviews)」, 「[The 9 Algorithms That Dominate Our World](https://bytebytego.com/guides/the-9-algorithms-that-dominate-our-world)」, 「[How to Avoid Crawling Duplicate URLs at Google Scale?](https://bytebytego.com/guides/how-to-avoid-crawling-duplicate-urls-at-google-scale)」를 바탕으로 재구성한 노트다.
+> 블룸 필터의 거짓 음성이 없는 이유와 거짓 양성률 식은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 
 ## 이 노트의 관점
 
@@ -72,10 +73,10 @@ sources: ["https://bytebytego.com/guides/10-key-data-structures-we-use-every-day
       2가 0 → "확실히 없다"
 ```
 
-- **거짓 음성은 없고 거짓 양성만 있다.** "없다"는 답은 항상 맞다. 크롤러가 새 URL을 가끔 놓치는 것은 감수할 수 있으므로 잘 맞는다.
-- 거짓 양성률은 비트 배열 크기, 해시 함수 개수, 넣은 원소 수로 정해진다. 기대 원소 수에 맞춰 크기를 미리 잡는다.
+- **거짓 음성은 없고 거짓 양성만 있다.** 비트는 0에서 1로 세우기만 하고 되돌리지 않으므로, 한 번 넣은 원소의 k칸은 언제까지나 1이다. 그래서 "없다"(어느 한 칸이 0)는 답은 항상 맞다. 반대로 "있다"는 **다른 원소들이 세운 비트가 우연히 k칸을 모두 덮었을 때도** 나오므로 틀릴 수 있다. 크롤러가 새 URL을 가끔 놓치는 것은 감수할 수 있으므로 잘 맞는다.
+- 거짓 양성률은 비트 배열 크기 m, 해시 함수 개수 k, 넣은 원소 수 n으로 정해진다. 근사식은 p ≈ (1 - e^(-kn/m))^k이고, 가장 낮아지는 k는 (m/n)·ln 2다. 이때 원소당 약 9.6비트면 1%, 14.4비트면 0.1%다. 원소가 기대보다 많이 들어오면 비율이 급격히 나빠지므로 기대 원소 수에 맞춰 크기를 미리 잡는다.
 - 해시 함수는 고르게 퍼지고 빨라야 한다. 암호 해시 대신 MurmurHash, xxHash 같은 비암호 해시를 쓴다.
-- 기본 블룸 필터는 원소를 지울 수 없다. 삭제가 필요하면 카운팅 블룸 필터나 쿠쿠 필터를 쓴다.
+- 기본 블룸 필터는 원소를 지울 수 없다. 지우려고 비트를 0으로 되돌리면 그 비트를 함께 쓰던 다른 원소가 "없다"로 나와 거짓 음성이 생긴다. 삭제가 필요하면 칸마다 비트 대신 카운터를 두는 카운팅 블룸 필터나 쿠쿠 필터를 쓴다.
 
 크롤러 전체 설계에서 블룸 필터가 놓이는 자리는 [[web-crawler-at-scale|대규모 웹 크롤러 설계]]에 있다.
 

@@ -1,14 +1,15 @@
 ---
 title: "KMP 문자열 검색 알고리즘"
 concept: "KMP"
-summary: "텍스트에서 패턴을 찾을 때 불일치가 나도 텍스트 포인터를 되돌리지 않는 KMP 알고리즘. 패턴의 접두사이자 접미사인 가장 긴 부분의 길이를 담은 실패 함수(pi 배열)로 점프할 위치를 정해 O(N + M)에 검색한다."
+summary: "텍스트에서 패턴을 찾을 때 불일치가 나도 텍스트 포인터를 되돌리지 않는 KMP 알고리즘. 패턴의 접두사이자 접미사인 가장 긴 부분의 길이를 담은 실패 함수(pi 배열)로 점프할 위치를 정해 O(N + M)에 검색한다. 롤링 해시로 창을 비교하는 라빈-카프와 다른 문자열 검색 알고리즘도 비교한다."
 tags: ["algorithm", "string", "coding-test", "python"]
 source: other
 date: "2026-10-21"
-sources: ["https://bowbowbow.tistory.com/6"]
+sources: ["https://bowbowbow.tistory.com/6", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
 ---
 
 > 「[KMP : 문자열 검색 알고리즘](https://bowbowbow.tistory.com/6)」을 바탕으로 재구성한 노트다.
+> 라빈-카프 절은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 
 ## KMP란
 
@@ -69,6 +70,40 @@ def kmp_search(text, p):
 
 `while`이 들어 있어도 전체가 선형인 이유는, `j`가 한 번에 최대 1씩만 늘고 `while`은 `j`를 줄이기만 하므로 **줄어드는 총량이 늘어난 총량을 넘을 수 없기** 때문이다(분할 상환 분석).
 
+## 라빈-카프: 롤링 해시로 비교하기
+
+라빈-카프(Rabin-Karp)는 글자를 하나씩 비교하는 대신 **길이 M인 창의 해시값**을 패턴의 해시값과 비교한다. 창을 한 칸 옮길 때 해시를 처음부터 다시 계산하지 않고, 빠지는 글자와 들어오는 글자만 반영해 O(1)에 갱신하는 것이 핵심이다(롤링 해시).
+
+```text
+H(s[i..i+M-1]) = s[i]·b^(M-1) + s[i+1]·b^(M-2) + … + s[i+M-1]   (mod q)
+한 칸 이동:  H' = (H − s[i]·b^(M-1))·b + s[i+M]                  (mod q)
+```
+
+```python
+def rabin_karp(t, p, b=256, q=1_000_000_007):
+    n, m = len(t), len(p)
+    if m > n:
+        return []
+    high = pow(b, m - 1, q)                 # 빠지는 글자에 곱할 b^(M-1)
+    hp = ht = 0
+    for i in range(m):
+        hp = (hp * b + ord(p[i])) % q
+        ht = (ht * b + ord(t[i])) % q
+    found = []
+    for i in range(n - m + 1):
+        if hp == ht and t[i:i + m] == p:    # 해시가 같으면 글자로 한 번 더 확인
+            found.append(i)
+        if i + m < n:
+            ht = ((ht - ord(t[i]) * high) * b + ord(t[i + m])) % q
+    return found
+```
+
+- 해시가 같아도 다른 문자열일 수 있으므로(충돌) **일치 후보만 글자로 확인**한다. 충돌이 드물면 평균 O(N + M), 충돌이 몰리면 최악 O(NM)이다. 모듈러 q를 큰 소수로 두고, 두 개의 서로 다른 (b, q)로 해시를 이중으로 쓰면 충돌이 사실상 사라진다.
+- 패턴이 여러 개라도 길이가 같으면 패턴 해시들을 집합에 넣고 창 해시를 집합에서 찾아 **한 번의 훑기**로 모두 찾는다. 표절 검사, 중복 문서 탐지가 이 방식이다.
+- 문자열 비교를 해시 비교로 바꾸는 발상이라 「길이 L인 부분 문자열 중 두 번 나오는 것이 있나」 같은 문제에서 이분 탐색과 함께 쓴다.
+
+문자열 집합을 저장하고 접두사로 찾는 구조는 트라이([[data-structures|기초 자료구조]]), 여러 패턴을 길이와 무관하게 동시에 찾는 것은 트라이에 실패 함수를 붙인 아호-코라식이다.
+
 ## 다른 문자열 검색과 비교
 
 | 알고리즘 | 시간 | 특징 |
@@ -85,4 +120,4 @@ def kmp_search(text, p):
 - pi[i] = 패턴 앞부분 `0..i`의 「접두사 = 접미사」 최대 길이.
 - pi 계산 O(M) + 검색 O(N). 실전 언어의 `find`·`in`은 대개 충분히 빠르므로, 코딩 테스트에서 최악 입력이 걸릴 때 KMP를 꺼낸다.
 
-관련 노트: [[coding-test|코딩 테스트 접근법]], [[big-o|빅오 표기법과 시간 복잡도]], [[brute-force|완전 탐색과 백트래킹]]
+관련 노트: [[coding-test|코딩 테스트 접근법]], [[big-o|빅오 표기법과 시간 복잡도]], [[brute-force|완전 탐색과 백트래킹]], [[hash-table|해시 테이블]], [[data-structures|기초 자료구조(트라이)]]

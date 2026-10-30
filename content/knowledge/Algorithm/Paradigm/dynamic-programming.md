@@ -4,12 +4,13 @@ concept: "Dynamic Programming"
 summary: "겹치는 하위 문제의 답을 한 번만 계산해 저장하고 재사용하여 큰 문제를 효율적으로 푸는 기법. 하위 문제를 찾는 연습(타일링)과 구간 DP(연쇄 행렬 곱셈)를 함께 다룬다."
 tags: ["algorithm", "paradigm", "dp", "recursion", "python"]
 source: mixed
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/78b2942f85504386947b4676704cd80c", "https://80000coding.notion.site/60c3d4d3f5694b47bdde9a65d30f3bc5", "https://80000coding.notion.site/4debdb98503347c09f8b4f9a7d2cfc2b", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md"]
+date: "2026-10-30"
+sources: ["https://80000coding.notion.site/78b2942f85504386947b4676704cd80c", "https://80000coding.notion.site/60c3d4d3f5694b47bdde9a65d30f3bc5", "https://80000coding.notion.site/4debdb98503347c09f8b4f9a7d2cfc2b", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://www.techinterviewhandbook.org/algorithms/dynamic-programming/"]
 ---
 
 > 하위 문제를 찾는 연습과 구간 DP는 팔만코딩경(42Seoul 커뮤니티 위키)의 「너희는 전혀 dp하고 있지 않아」, 「동적 계획법(Dynamic Programming) 개념과 구현 (feat. 2 x n 타일링)」, 「연쇄행렬 최소곱셈 알고리즘(Matrix chain multiplication)」을 바탕으로 보강했다.
 > 「다른 기법과 비교」의 세 기법 비교표는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 알고리즘 문서를 바탕으로 보강했다.
+> 2차원 DP 표를 두 줄로 줄이는 방법은 Tech Interview Handbook의 「[Dynamic programming cheatsheet](https://www.techinterviewhandbook.org/algorithms/dynamic-programming/)」를 바탕으로 보강했다.
 
 피보나치 수열을 재귀로 그대로 구하면 `fib(5)`를 구하려고 `fib(3)`을 두 번, `fib(2)`를 세 번 계산하는 식으로 **같은 연산이 반복**된다. 호출 수가 지수적으로(O(2ⁿ)) 늘어나는 이 낭비를 없애기 위해 고안된 것이 **동적 계획법(Dynamic Programming)이다**.
 
@@ -78,6 +79,8 @@ def fib_tab2(n):
         a, b = b, a + b
     return b
 ```
+
+2차원 DP도 같다. `dp[i][j]`가 바로 윗줄 `dp[i-1][…]`만 참조하면 표 전체 대신 **두 줄(이전 줄과 현재 줄)** 만 들고 번갈아 쓰면 공간이 O(nm)에서 O(m)으로 준다. 0/1 배낭처럼 같은 줄을 뒤에서부터 갱신하면 한 줄로도 된다. 다만 줄인 표에서는 지나간 상태가 지워지므로, 최적해 자체(어떤 원소를 골랐나)를 복원해야 하면 전체 표를 남긴다.
 
 | | Top-Down (메모이제이션) | Bottom-Up (타뷸레이션) |
 | --- | --- | --- |
