@@ -22,4 +22,4 @@ date: "2026-10-13"
 - [iOS 앱 기본 개념](/knowledge/dictionary/frontend/mobile/ios-app-fundamentals): 앱 실행 상태와 씬 생명 주기, 뷰 컨트롤러 생명 주기, 델리게이트·클로저·NotificationCenter, ARC와 weak·unowned, frame과 bounds, 데이터 저장
 - [Swift Codable](/knowledge/dictionary/frontend/mobile/swift-codable): Encodable·Decodable, JSONEncoder·JSONDecoder, CodingKeys와 snake_case 변환
 - [UICollectionView 커스텀 레이아웃](/knowledge/dictionary/frontend/mobile/ios-collection-view-layout): 채팅방 같은 목록, prepare()에서 속성 계산·캐시, 이진 탐색 영역 질의, 보조 뷰
-- [Android 핵심 개념](/knowledge/dictionary/frontend/mobile/android-fundamentals): LiveData·StateFlow·RxJava, setValue와 postValue, Application·Activity Context, minSdk·targetSdk·compileSdk
+- [Android 핵심 개념](/knowledge/dictionary/frontend/mobile/android-fundamentals): 4대 구성 요소와 인텐트, Activity 생명 주기와 구성 변경, Looper·Handler와 ANR, LiveData·StateFlow·RxJava, setValue와 postValue, Application·Activity Context, minSdk·targetSdk·compileSdk
