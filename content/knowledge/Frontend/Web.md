@@ -14,7 +14,7 @@ date: "2026-10-13"
 - [프론트엔드의 등장 배경](/knowledge/dictionary/frontend/web/frontend-history): Web 1.0·2.0, img·CGI·CSS·JavaScript·AJAX의 등장, Flash와 RIA의 흥망, 프론트엔드·백엔드 분리, React 이후 생태계 흐름
 - [HTML](/knowledge/dictionary/frontend/web/html): 문서 구조, DOCTYPE과 렌더링 모드, 요소와 속성, data-*, 속성 하나로 끝나는 기능(enterkeyhint·download·loading·integrity·popover 등), 시맨틱 태그, 표, form 속성, HTML5
 - [시맨틱 HTML과 문서 구조](/knowledge/dictionary/frontend/web/semantic-html): 랜드마크 태그, h1~h6 제목 계층, 구현되지 않은 아웃라인 알고리즘, article과 section 고르기
-- [문서 head와 메타데이터](/knowledge/dictionary/frontend/web/html-head-metadata): charset·viewport·title, link rel 종류, meta의 http-equiv·name, Open Graph와 SEO의 관계, base, 웹 앱 매니페스트
+- [문서 head와 메타데이터](/knowledge/dictionary/frontend/web/html-head-metadata): charset·viewport·title, 요소 순서, link rel 종류, meta의 http-equiv·name, Open Graph와 SEO의 관계, base, 웹 앱 매니페스트
 - [텍스트 의미 요소와 문자 참조](/knowledge/dictionary/frontend/web/html-text-elements): blockquote·q·cite, em·strong·mark·i·b·u·s, code·kbd·samp·data·time, abbr·dfn·ruby, br·hr·wbr, 문자 참조
 - [링크와 내비게이션 마크업](/knowledge/dictionary/frontend/web/html-links-navigation): href 형식, download, target과 noopener·이름 붙은 맥락, rel·ping, 건너뛰기 링크·목차·브레드크럼·전역 내비게이션
 - [목록과 표 마크업](/knowledge/dictionary/frontend/web/html-lists-tables): ul·ol·dl 규칙과 번호 속성, 표 구조·scope·headers·colspan, colgroup·col, 표 CSS
