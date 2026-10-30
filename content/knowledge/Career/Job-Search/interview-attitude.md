@@ -5,10 +5,11 @@ summary: "면접관은 말보다 태도를 먼저 읽는다. 눈 맞춤과 미�
 tags: ["career", "interview", "job-search", "communication"]
 source: other
 date: "2026-10-21"
-sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd"]
+sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md"]
 ---
 
 > 플라피나의 노션 강의록 「플라피나 면접팁 / 자소서팁」과 「심화편」, 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리를 바탕으로 재구성한 노트다. 회사를 면접하는 질문은 freeCodeCamp의 「[How to Interview as a Developer Candidate](https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd)」를 바탕으로 더했다.
+> 「주제별 질문 목록」과 프로젝트 질문·말로 꺼내 보기는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소의 Reverse Interview·Tip 문서를 바탕으로 보강했다.
 
 ## 면접은 소개팅이다
 
@@ -118,6 +119,22 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 | 관리자 | 개인 성과는 어떻게 재나요? 직원끼리 순위를 매기나요? 정기 회고를 하나요? | 평가 방식과 팀 문화. 상대 평가(stack ranking)는 협업을 해친다 |
 | 경영진 | 자금은 어떻게 조달했나요? 수익을 내나요? 보고 체계는 어떻게 되나요? | 회사의 지속 가능성. 재무를 직접 확인하는 법은 [[company-financial-check\|회사 재무 확인하기]] |
 
+#### 주제별 질문 목록
+
+질문 목록은 **전부 묻는 용도가 아니다.** 회사 블로그·채용 공고·기사로 검색해 알 수 있는 것은 빼고, 지원한 팀과 포지션에서 정말 궁금한 것 몇 개만 고른다.
+
+| 주제 | 고를 만한 질문 |
+| --- | --- |
+| 역할 | 이 포지션에서 「잘했다」의 기준은 무엇인가요? 온보딩은 어떻게 하나요? 온콜(on-call)이 있나요? 제 지원서에서 우려되는 점이 있나요? |
+| 기술 | 기획부터 배포까지 흐름은 어떻게 되나요? CI/CD와 테스트는 어떻게 하나요? 장애가 나면 누가 어떻게 대응하나요? 개발 문서와 의존성 보안 점검은 어떻게 하나요? |
+| 팀 | 우선순위와 일정은 누가 정하나요? 코드 리뷰는 어떻게 하나요? 팀이 아직 풀지 못한 문제는 무엇인가요? 장애 회고는 탓하지 않는(blameless) 방식인가요? |
+| 충돌 | 의견이 갈리면 어떻게 결정하나요? 감당할 수 없는 일정이 들어오면 어떻게 하나요? 경영진의 기대와 팀의 결과가 어긋나면 어떻게 되나요? |
+| 동료 | 여기서 일해서 가장 좋은 점과 바꾸고 싶은 점은 무엇인가요? |
+| 회사·사업 | 수익은 어디서 나고, 더 크는 데 방해되는 것은 무엇인가요? 승진·성장 경로와 학습 지원은 어떻게 되나요? |
+| 근무 형태·처우 | 원격과 사무실 근무 비율, 업무 장비 지원, 휴가·육아 휴직 정책은 어떻게 되나요? |
+
+처우·휴가처럼 민감한 주제는 보통 면접 단계보다 처우 협의 단계에서 인사 담당자에게 묻는 편이 낫다([[job-offer-negotiation|처우 협상]]).
+
 | 피할 질문 | 이유 |
 | --- | --- |
 | 「면접관님은 회사 생활 만족하세요?」 | 면접관에 따라 큰 감점, 심하면 바로 탈락 |
@@ -137,6 +154,10 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 ```
 
 ## 기술 질문 준비
+
+**프로젝트 질문에 가장 깊이 대비한다.** 서류에 쓴 프로젝트마다 그 기술을 왜 골랐는지, 장단점과 대안은 무엇인지, 가장 어려웠던 부분과 생산성을 높이려고 한 시도, 끝나고 부족했던 점과 그것을 어떻게 채웠는지를 말할 수 있어야 한다. 내가 맡은 부분은 빈틈없이 설명할 수 있게 준비한다.
+
+**읽기만 하지 말고 말로 꺼내 본다.** 글로 읽을 때는 다 아는 것 같아도 막상 소리 내어 답하면 막힌다. 실전처럼 말하거나 글로 써 보고, 가장 좋은 방법은 그 주제를 남에게 설명해 보는 것이다.
 
 기술면접에서 아주 어려운 내용이나 복잡한 코딩을 시키는 경우는 생각보다 적다. 알고리즘 책을 한 번 잘 보고 가고, **주요 알고리즘의 시간 복잡도([[big-o|빅오 표기법]])는 외워 간다.** 바로 답하는 지원자가 드물어 차이가 난다.
 
