@@ -1,14 +1,14 @@
 ---
 title: "Simple Design"
 concept: "Simple Design"
-summary: "코드 품질을 '가독성'·'깔끔함' 같은 느낌 대신 객관적 기준으로 다루기 위해 켄트 벡의 Simple Design을 '중복이 없으면서 최소한의 문법 요소로 구성된 코드'로 줄여 쓰는 방법. 중복 제거 시점, 비용과의 타협, 본질적 복잡성 다루기까지 정리한다."
+summary: "코드 품질을 '가독성'·'깔끔함' 같은 느낌 대신 객관적 기준으로 다루기 위해 켄트 벡의 Simple Design을 '중복이 없으면서 최소한의 문법 요소로 구성된 코드'로 줄여 쓰는 방법. 중복 제거 시점, 비용과의 타협, 본질적 복잡성 다루기, DRY·KISS·YAGNI와의 관계까지 정리한다."
 tags: ["code-review", "clean-code", "software-engineering", "agile"]
 source: other
 date: "2026-10-13"
-sources: ["https://youngrok.com/Simple%20Design"]
+sources: ["https://youngrok.com/Simple%20Design", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
 ---
 
-> 박영록의 위키 글 「[Simple Design](https://youngrok.com/Simple%20Design)」(2024.06)을 요약·재구성한 노트다.
+> 박영록의 위키 글 「[Simple Design](https://youngrok.com/Simple%20Design)」(2024.06)을 요약·재구성한 노트다. DRY·KISS·YAGNI 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」을 점검해 보강했다.
 
 ## 왜 객관적 기준이 필요한가
 
@@ -53,6 +53,18 @@ sources: ["https://youngrok.com/Simple%20Design"]
 - 여기에 전체 코드 분량(TLoC)까지 줄이면 더 좋다
 
 중복을 없애면 문법 요소는 어느 정도 늘 수밖에 없다. 기준은 **같은 중복을 더 적은 요소로 없애는 쪽**이다. 메서드 하나 추출로 끝나는 방법이 클래스나 상속 계층을 추가하는 방법보다 낫다.
+
+## DRY, KISS, YAGNI
+
+코드 품질 원칙으로 자주 묶어 부르는 세 약어는 Simple Design의 규칙과 겹친다.
+
+| 원칙 | 뜻 | Simple Design과의 관계 | 지나치면 |
+| --- | --- | --- | --- |
+| **DRY**(Don't Repeat Yourself) | 시스템 안의 모든 지식은 단 하나의 명확하고 권위 있는 표현을 가져야 한다. 『실용주의 프로그래머』에서 나왔다. 대상은 같은 글자의 코드가 아니라 **같은 지식**(규칙, 계산식, 상수, 스키마)이다 | 「중복이 없다」 | 우연히 모양만 같은 코드를 억지로 합쳐 서로 다른 이유로 바뀌는 코드를 묶는다 |
+| **KISS**(Keep It Simple, Stupid) | 같은 문제를 푸는 방법 중 가장 단순한 것을 고른다. 복잡도는 필요가 증명될 때만 더한다 | 「문법 요소가 최소다」 | 단순함을 핑계로 필요한 추상화나 오류 처리를 빼서, 중복이 쌓인다 |
+| **YAGNI**(You Aren't Gonna Need It) | 지금 필요하지 않은 기능·확장 지점·설정은 만들지 않는다. 익스트림 프로그래밍(XP)에서 나왔다 | 현재 요구에 충실한 설계 | 이미 알고 있는 요구까지 미뤄, 곧 다시 뜯어고친다 |
+
+셋은 서로를 견제한다. DRY만 밀면 추상화가 늘어 KISS와 부딪치고, 그 추상화가 미래 대비라면 YAGNI에 어긋난다. Simple Design은 이 충돌을 「**같은 중복을 더 적은 요소로** 없앤다」는 한 기준으로 정리한다. 시스템 설계 차원의 KISS는 [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]]의 약어 표에도 있다.
 
 ## 중복은 언제 없애나
 
@@ -121,7 +133,8 @@ Simple Design만으로 부족하면 『리팩터링』의 **나쁜 냄새(code s
 
 - "가독성"·"깔끔함" 같은 느낌 대신 판단 가능한 기준으로 이야기한다.
 - 기준은 한 줄: **중복이 없고, 문법 요소가 최소인 코드.** 숨은 중복도 찾는다.
+- DRY는 지식의 중복을, KISS는 불필요한 복잡도를, YAGNI는 오지 않은 요구를 경계한다. 셋이 부딪치면 더 적은 요소로 중복을 없애는 쪽을 고른다.
 - 미래 변화를 근거로 중복을 남기지 않는다. 남긴다면 이유는 비용이고, 해를 끼치기 시작할 때 없앤다.
 - 품질은 속도를 위한 수단이다. 부족하면 나쁜 냄새 목록을, 코드로 안 되면 비즈니스 규칙을 본다.
 
-관련 노트: [[refactoring-principles|리팩터링 원칙]], [[principles|코드 리뷰 원칙과 체크리스트]], [[tdd|프론트엔드에서의 TDD]], [[easy-to-delete-code|삭제하기 쉬운 코드]]
+관련 노트: [[refactoring-principles|리팩터링 원칙]], [[principles|코드 리뷰 원칙과 체크리스트]], [[tdd|프론트엔드에서의 TDD]], [[easy-to-delete-code|삭제하기 쉬운 코드]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]]

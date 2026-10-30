@@ -1,16 +1,17 @@
 ---
 title: "TypeScript: 개념과 문법 한눈에 보기"
 concept: "TypeScript"
-summary: "TypeScript는 JavaScript에 타입 검사와 자동완성을 더한 슈퍼셋이다. JavaScript가 정적 타입을 얻기까지의 역사와 흔한 오해, 실행 환경(tsc·Go로 다시 쓴 TypeScript 7·Vite·Node.js 타입 제거), 기본 타입과 any·unknown·never, 추론·단언·가드·satisfies, type과 interface, 제네릭, 함수 오버로드와 클래스 수식어, 모듈과 @types, 구분된 유니언, 표준 데코레이터, 유틸리티 타입을 표 중심으로 정리하고, 추론 → API 스키마 → 좁히기 → strict 순으로 익히는 순서를 덧붙인다."
+summary: "TypeScript는 JavaScript에 타입 검사와 자동완성을 더한 슈퍼셋이다. JavaScript가 정적 타입을 얻기까지의 역사와 흔한 오해, 실행 환경(tsc·Go로 다시 쓴 TypeScript 7·Vite·Node.js 타입 제거), 기본 타입과 any·unknown·never, 추론·단언·가드·satisfies, type과 interface, 제네릭, 함수 오버로드와 클래스 수식어, 모듈과 @types, 구분된 유니언, 표준 데코레이터(예전 방식과의 차이, 적용 순서), 유틸리티 타입을 표 중심으로 정리하고, 추론 → API 스키마 → 좁히기 → strict 순으로 익히는 순서를 덧붙인다."
 tags: ["typescript", "javascript", "frontend", "type-system", "tools"]
 source: other
 date: "2026-10-30"
-sources: ["https://www.heropy.dev/p/WhqSC8", "https://velog.io/@teo/typescript", "https://www.typescriptlang.org/docs/handbook/intro.html", "https://www.typescriptlang.org/docs/handbook/utility-types.html", "https://basarat.gitbooks.io/typescript/content/", "https://basarat.gitbook.io/typescript/type-system/type-inference", "https://basarat.gitbook.io/typescript/type-system/type-assertion", "https://basarat.gitbook.io/typescript/type-system/index-signatures", "https://basarat.gitbook.io/typescript/type-system/readonly", "https://basarat.gitbook.io/typescript/type-system/never", "https://basarat.gitbook.io/typescript/type-system/callable", "https://ahnheejong.gitbook.io/ts-for-jsdev/", "https://www.typescriptlang.org/ko/docs/handbook/intro.html", "https://jameshenry.blog/typescript-the-missing-introduction/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%281%29%20-%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%2C%20%20Annotaions.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%282%29%20-%20%ED%83%80%EC%9E%85%20%EC%B6%94%EB%A1%A0%2C%20%ED%83%80%EC%9E%85%20%EC%95%A8%EB%A6%AC%EC%96%B4%EC%8A%A4%2C%20%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%283%29%20-%20Union%2C%20Intersection%2C%20%EB%A6%AC%ED%84%B0%EB%9F%B4%20%ED%83%80%EC%9E%85%2C%20Enum%20%2C%20never%20%20%2CGenerics.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%285%29%20-%20%EC%BB%A8%EB%94%94%EC%85%94%EB%84%90%20%ED%83%80%EC%9E%85%2C%ED%95%A8%EC%88%98%20%EB%A9%94%EC%84%9C%EB%93%9C%20%ED%83%80%EC%9D%B4%ED%95%91%2C%20%EC%98%A4%EB%B2%84%EB%A1%9C%EB%94%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%287%29%20-%20satisfies%2C%20%ED%83%80%EC%9E%85%ED%99%95%EC%9E%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/Typescript%289%29%20-%20%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%EC%BB%B4%ED%8C%8C%EC%9D%BC.md", "https://medium.freecodecamp.com/why-use-static-types-in-javascript-part-1-8382da1e0adb", "https://flow.org/blog/2015/02/20/Flow-Comments/", "https://github.com/grab/front-end-guide"]
+sources: ["https://www.heropy.dev/p/WhqSC8", "https://velog.io/@teo/typescript", "https://www.typescriptlang.org/docs/handbook/intro.html", "https://www.typescriptlang.org/docs/handbook/utility-types.html", "https://basarat.gitbooks.io/typescript/content/", "https://basarat.gitbook.io/typescript/type-system/type-inference", "https://basarat.gitbook.io/typescript/type-system/type-assertion", "https://basarat.gitbook.io/typescript/type-system/index-signatures", "https://basarat.gitbook.io/typescript/type-system/readonly", "https://basarat.gitbook.io/typescript/type-system/never", "https://basarat.gitbook.io/typescript/type-system/callable", "https://ahnheejong.gitbook.io/ts-for-jsdev/", "https://www.typescriptlang.org/ko/docs/handbook/intro.html", "https://jameshenry.blog/typescript-the-missing-introduction/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%281%29%20-%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%2C%20%20Annotaions.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%282%29%20-%20%ED%83%80%EC%9E%85%20%EC%B6%94%EB%A1%A0%2C%20%ED%83%80%EC%9E%85%20%EC%95%A8%EB%A6%AC%EC%96%B4%EC%8A%A4%2C%20%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%283%29%20-%20Union%2C%20Intersection%2C%20%EB%A6%AC%ED%84%B0%EB%9F%B4%20%ED%83%80%EC%9E%85%2C%20Enum%20%2C%20never%20%20%2CGenerics.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%285%29%20-%20%EC%BB%A8%EB%94%94%EC%85%94%EB%84%90%20%ED%83%80%EC%9E%85%2C%ED%95%A8%EC%88%98%20%EB%A9%94%EC%84%9C%EB%93%9C%20%ED%83%80%EC%9D%B4%ED%95%91%2C%20%EC%98%A4%EB%B2%84%EB%A1%9C%EB%94%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%287%29%20-%20satisfies%2C%20%ED%83%80%EC%9E%85%ED%99%95%EC%9E%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/Typescript%289%29%20-%20%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%EC%BB%B4%ED%8C%8C%EC%9D%BC.md", "https://medium.freecodecamp.com/why-use-static-types-in-javascript-part-1-8382da1e0adb", "https://flow.org/blog/2015/02/20/Flow-Comments/", "https://github.com/grab/front-end-guide", "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html", "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-5.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/javascript.md"]
 ---
 
 > HEROPY의 「[한눈에 보는 타입스크립트](https://www.heropy.dev/p/WhqSC8)」(2020.01 작성, 2026.08 갱신)를 바탕으로, 역사와 익히는 순서는 테오(teo)의 「[Typescript는 어떻게 공부해야 하나요?](https://velog.io/@teo/typescript)」(2022.02)로 보강해 재구성한 노트다. 컴파일 타임과 런타임 구분은 「[TypeScript: the missing introduction](https://jameshenry.blog/typescript-the-missing-introduction/)」을 바탕으로 보강했다. 튜플·인덱스 시그니처·enum·제네릭의 함정·좁히기 연산자·오버로드 순서는 「[Frontend_TIL: TypeScript 시리즈](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/TypeScript)」를 바탕으로 보강했다. 정적 타입의 득실과 Flow는 「[Why use static types in JavaScript?](https://medium.freecodecamp.com/why-use-static-types-in-javascript-part-1-8382da1e0adb)」, 「[Flow Comments](https://flow.org/blog/2015/02/20/Flow-Comments/)」을 바탕으로 보강했다.
 > Grab의 「[Front End Guide](https://github.com/grab/front-end-guide)」를 바탕으로 보강했다.
 > 추론의 방향, 단언 규칙, 인덱스 시그니처, readonly, never, 호출 가능 타입은 basarat의 「[TypeScript Deep Dive](https://basarat.gitbook.io/typescript)」의 Type System 장을 바탕으로 보강했다.
+> 단언 함수, 추론되는 타입 서술어, 표준 데코레이터의 종류와 적용 순서는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/javascript.md)」의 질문을 계기로 TypeScript 5.0·5.5 릴리스 노트를 바탕으로 보강했다.
 
 ## TypeScript란
 
@@ -146,8 +147,12 @@ theme.spacing.toFixed(); // spacing은 여전히 number
 | `x instanceof Date` | 클래스 인스턴스 | 프로토타입 체인을 본다 |
 | `'swim' in animal` | 속성 유무로 구분되는 객체 유니언 | |
 | `Array.isArray(x)` | 배열 | |
+| `x !== null`, `x === undefined`, `if (x)` | 동등 비교·참 같은 값 검사로 `null`·`undefined`를 뺀다 | `if (x)`는 `0`·`''`도 걸러 낸다 |
 | `x.kind === 'circle'` | 구분자가 있는 유니언(아래 「구분된 유니언」) | |
 | `function isFish(x): x is Fish` | 사용자 정의 가드(타입 서술어) | **본문이 맞는지 검사하지 않는다.** `typeof value === 'string'`을 반환하면서 `value is number`라고 적어도 통과해 좁히기가 거꾸로 된다 |
+| `function assertIsString(x: unknown): asserts x is string` | 단언 함수: 조건이 틀리면 `throw`하고, **호출한 뒤의 코드**에서 `x`를 좁힌다. `asserts cond`는 조건식 자체를 참으로 둔다 | 화살표 함수를 담은 변수로 부르면 변수에 함수 타입을 명시해야 한다(TS2775) |
+
+TypeScript 5.5부터는 본문이 단순한 함수에서 타입 서술어를 **추론**한다. `arr.filter((x) => x !== undefined)`의 결과가 `(T | undefined)[]`가 아니라 `T[]`로 좁혀진다. 반환식이 `true`일 때만이 아니라 `false`일 때도 정확히 반대 타입이어야 추론되므로, `if (x)`처럼 `0`·`''`까지 거르는 검사는 서술어가 되지 않는다.
 
 `catch (e)`의 `e`는 `unknown`이다. `if (e as Error)`처럼 조건 안에서 단언한 타입은 그 식에서만 유효하므로, `if (e instanceof Error) e.message`로 좁힌다.
 
@@ -254,7 +259,40 @@ function area(s: Shape) {
 
 ## 데코레이터
 
-클래스와 멤버 위에 `@함수`로 붙여 동작을 바꾸거나 확장하는 함수다. TypeScript 5.0부터 **ECMAScript 표준 데코레이터**가 기본이고, 데코레이터는 `(value, context)`를 받는다. 인수가 필요하면 데코레이터를 반환하는 팩토리로 만들고, 여러 개를 겹치면 **아래에서 위로** 적용된다. NestJS·Angular 등이 쓰던 예전 방식은 `experimentalDecorators: true`가 필요하며 표준 방식과 섞어 쓸 수 없다.
+클래스와 그 멤버 위에 `@식`으로 붙여 정의를 **감싸거나 바꾸는 함수**다. 함수를 받아 래퍼를 돌려주는 [[function-decorators|데코레이터 패턴]]을 클래스 문법에 붙인 것이다. 로깅·권한 검사·의존성 등록·검증 규칙처럼 여러 클래스에 반복되는 관심사를 선언 한 줄로 붙일 때 쓴다.
+
+TypeScript에는 두 방식이 있고 한 프로젝트에서 섞어 쓸 수 없다.
+
+| | 표준 데코레이터 | 예전(실험적) 데코레이터 |
+| --- | --- | --- |
+| 켜는 법 | TypeScript 5.0부터 기본. 옵션이 필요 없다 | `experimentalDecorators: true` |
+| 근거 | TC39 데코레이터 제안 | TC39 초기 제안을 따른 TypeScript 자체 구현 |
+| 시그니처 | `(value, context)`: 대상과 `kind`·`name`·`static`·`private`·`addInitializer`·`metadata`를 담은 문맥 객체 | `(target, propertyKey, descriptor)`: 프로토타입과 속성 서술자 |
+| 꾸밀 수 있는 것 | 클래스, 메서드, getter·setter, 필드, `accessor` 필드 | 위에 더해 **매개변수** |
+| 타입 메타데이터 | `context.metadata`(5.2부터, `Symbol.metadata` 폴리필 필요). `emitDecoratorMetadata`는 동작하지 않는다 | `emitDecoratorMetadata` + `reflect-metadata`로 `design:type` 같은 타입 정보를 런타임에 남긴다 |
+| 쓰는 곳 | 새 코드 | 생성자 매개변수 데코레이터와 메타데이터 리플렉션으로 의존성을 주입하는 NestJS·TypeORM 같은 프레임워크 |
+
+데코레이터의 반환값이 원래 정의를 대신한다. 메서드 데코레이터는 새 함수를, 클래스 데코레이터는 새 클래스를 돌려준다. 필드 데코레이터는 값이 아직 없으므로 `value`가 `undefined`이고, 대신 초기값을 받아 바꾸는 함수를 돌려준다. 인수가 필요하면 데코레이터를 반환하는 **팩토리**(`@retry(3)`)로 만든다.
+
+```ts
+function logged<This, Args extends unknown[], R>(
+  target: (this: This, ...args: Args) => R,
+  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => R>,
+) {
+  const name = String(context.name);
+  return function (this: This, ...args: Args): R {
+    console.log(`${name} 호출`, args);
+    return target.call(this, ...args); // this를 그대로 넘긴다
+  };
+}
+
+class Calc {
+  @logged
+  add(a: number, b: number) { return a + b; }
+}
+```
+
+여러 개를 겹치면 데코레이터 **식은 위에서 아래로 평가**되고, 만들어진 데코레이터는 대상에 가까운 것부터 **아래에서 위로 적용**된다. `@a @b method()`는 `a(b(method))`다. `context.addInitializer(fn)`로 넘긴 함수는 인스턴스 멤버면 생성자에서, static 멤버나 클래스면 클래스 정의가 끝날 때 실행된다. 메서드에 `this`를 묶는 `@bound`가 이 훅으로 만든다.
 
 ## 유틸리티 타입
 
