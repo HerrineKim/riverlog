@@ -5,10 +5,11 @@ summary: "프로그래머가 캐시를 직접 제어할 수 없는 대신 접근
 tags: ["computer-architecture", "cache", "performance", "memory", "concurrency"]
 source: other
 date: "2026-10-21"
-sources: ["https://80000coding.notion.site/10a0a4524e46409b83a73ccd65e432a1", "https://80000coding.notion.site/551ed68537b2480caaa38f4996e26c4f", "https://80000coding.notion.site/ed9d632385a240a8a553297ba68db7fd", "https://80000coding.notion.site/5f1a4f9f25d14a3b9236e6d6cc9f8bb8", "https://80000coding.notion.site/4805f6aca90f440797c337f3a939d4fd", "https://80000coding.notion.site/f6cc395bb7834e8f9a117a7172a15bc6", "https://80000coding.notion.site/0fb3911bd066455e9a65d61b7b6671c4", "https://akkadia.org/drepper/cpumemory.pdf"]
+sources: ["https://80000coding.notion.site/10a0a4524e46409b83a73ccd65e432a1", "https://80000coding.notion.site/551ed68537b2480caaa38f4996e26c4f", "https://80000coding.notion.site/ed9d632385a240a8a553297ba68db7fd", "https://80000coding.notion.site/5f1a4f9f25d14a3b9236e6d6cc9f8bb8", "https://80000coding.notion.site/4805f6aca90f440797c337f3a939d4fd", "https://80000coding.notion.site/f6cc395bb7834e8f9a117a7172a15bc6", "https://80000coding.notion.site/0fb3911bd066455e9a65d61b7b6671c4", "https://akkadia.org/drepper/cpumemory.pdf", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「캐시 메모리는 프로그래머가 제어하지 않는지 궁금한다.」, 「SIMD Non-temporal Hint (w/ LFB,BUS,DMA)」, 「Cache Coherence Bottleneck (false sharing)」, 「배열 vs 연결리스트」, 「bool은 자료형이 뭘까」, 「DB구현에서 왜 Memory Mapped File을 안쓸까」, 「CPP09 시간 측정 노이즈 제거하기」를 바탕으로 재구성한 노트다. 행렬 곱 사례는 Ulrich Drepper의 「[What Every Programmer Should Know About Memory](https://akkadia.org/drepper/cpumemory.pdf)」(2007) 6장을 바탕으로 더했다.
+> 스누핑·디렉터리와 MOESI·MESIF, 데이터베이스의 캐시 활용 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 캐시의 매핑 방식과 쓰기 정책 같은 하드웨어 구조는 [[cache-and-virtual-memory|캐시 메모리와 MMU]]에 있다. 이 노트는 **코드를 쓰는 쪽에서** 캐시를 어떻게 다뤄야 하는지를 다룬다.
 
@@ -68,6 +69,8 @@ for (int j = 0; j < N; j++)
 
 연결 리스트가 필요하면 노드를 미리 큰 덩어리로 할당해 두고 나눠 쓰는 **메모리 풀**을 쓰면 할당 비용과 단편화를 함께 줄인다. 자료구조를 고를 때는 복잡도와 함께 **데이터가 메모리에 어떻게 놓이는지**를 본다. 같은 이유로 구조체 배열(AoS) 대신 필드별 배열(SoA)로 바꾸면 한 필드만 순회할 때 캐시를 덜 낭비한다.
 
+데이터베이스도 같은 원리로 빨라진다. 분석용 DB는 행이 아니라 **열 단위로 저장**해(컬럼 저장) 필요한 열만 연속으로 훑고, 한 행씩이 아니라 값 수천 개 묶음(벡터)으로 연산자를 실행해(벡터화 실행) 호출 비용을 줄이고 SIMD를 쓴다(DuckDB, ClickHouse). B+트리 노드를 캐시 라인·페이지 크기에 맞추고, 해시 조인에서 해시 테이블이 캐시보다 크면 파티션으로 나눠 캐시에 들어가게 하는 것도 캐시 미스를 줄이려는 설계다.
+
 ### 작은 타입이 유리한 이유
 
 현대 x86에서 8·16·32·64비트 정수 덧셈의 지연 시간은 같다. 차이는 메모리에서 난다. 작은 타입은 한 라인에 더 많이 들어가 캐시 적중률이 높다. 그래서 C·C++ 컴파일러는 `bool`을 1바이트로 둔다. 비트 하나로 줄이면 공간은 아끼지만 꺼낼 때 시프트·마스크 연산이 더 든다. 반대로 임베디드나 특정 연산에서는 결과가 달라질 수 있으므로 성능표를 보고 판단한다.
@@ -100,7 +103,14 @@ for (int j = 0; j < N; j++)
 | S (Shared) | 여러 코어가 같은 값을 가짐 |
 | I (Invalid) | 무효. 쓰려면 다시 가져와야 함 |
 
-한 코어가 쓰려면 다른 코어의 사본을 무효화해야 한다(스누핑이나 디렉터리로 알림). 무효화된 코어가 그 라인을 다시 읽으면 최신 값을 가진 코어로부터 받아 온다. 캐시 일관성은 **한 주소에 대한 읽기·쓰기 순서**를 맞출 뿐이다. `counter++` 같은 읽기-수정-쓰기의 원자성은 보장하지 않으므로 경쟁 상태는 여전히 동기화로 막아야 한다([[pthread-sync-api|POSIX 스레드와 동기화 API]]).
+한 코어가 쓰려면 다른 코어의 사본을 무효화해야 한다. 무효화된 코어가 그 라인을 다시 읽으면 최신 값을 가진 코어로부터 받아 온다. 알리는 방식은 둘이다.
+
+| 방식 | 동작 | 맞는 규모 |
+| --- | --- | --- |
+| 스누핑(snooping) | 모든 요청을 공유 버스·링에 뿌리고, 각 캐시가 엿듣다가 자기 사본이 걸리면 반응한다 | 코어가 적을 때. 코어가 늘면 방송 트래픽이 폭증한다 |
+| 디렉터리(directory) | 라인마다 어느 코어가 사본을 가졌는지 기록해 두고, 해당 코어에만 메시지를 보낸다 | 코어가 많은 서버 CPU, 멀티 소켓 |
+
+MESI에 상태를 하나 더한 변형도 있다. AMD의 **MOESI**는 O(Owned)를 더해, 수정된 라인을 메모리에 되쓰지 않은 채 다른 코어와 공유하고 O 상태인 코어가 요청에 답한다. 메모리 쓰기가 줄어든다. Intel의 **MESIF**는 F(Forward)를 더해 S 상태 사본 여럿 중 하나만 요청에 답하게 해 응답이 겹치지 않게 한다. 캐시 일관성은 **한 주소에 대한 읽기·쓰기 순서**를 맞출 뿐이다. `counter++` 같은 읽기-수정-쓰기의 원자성은 보장하지 않으므로 경쟁 상태는 여전히 동기화로 막아야 한다([[pthread-sync-api|POSIX 스레드와 동기화 API]]).
 
 **거짓 공유(false sharing)** 는 서로 다른 변수인데 **같은 캐시 라인**에 있어서 생기는 문제다. 두 스레드가 각자 자기 변수만 써도 라인 단위로 무효화가 오가며 라인이 코어 사이를 왕복한다.
 

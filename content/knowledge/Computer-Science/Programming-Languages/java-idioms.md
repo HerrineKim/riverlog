@@ -1,14 +1,14 @@
 ---
-title: "Java 실무 관용구: Enum, null과 Optional, 예외, 날짜 API, 비동기"
+title: "Java 실무 관용구: Enum, Optional, 예외와 자원, 날짜 API, 람다와 스트림, 비동기"
 concept: "Java Idioms"
-summary: "Java 코드를 안전하고 읽기 좋게 만드는 관용구를 주제별로 정리한다. 상수와 행위를 묶는 Enum, null을 API에서 몰아내는 방법과 Optional 규칙, checked 예외를 unchecked로 바꾸는 전략, Date·Calendar 대신 java.time, CompletableFuture 조합, 스트림과 반복문의 성능 차이를 다룬다."
+summary: "Java 코드를 안전하고 읽기 좋게 만드는 관용구를 주제별로 정리한다. 상수와 행위를 묶는 Enum, null을 API에서 몰아내는 방법과 Optional 규칙, checked 예외를 unchecked로 바꾸는 전략과 try-with-resources의 억제된 예외, Date·Calendar 대신 java.time, CompletableFuture 조합, 함수형 인터페이스·람다 캡처·메서드 참조 네 가지, 스트림의 지연 파이프라인과 병렬 스트림의 조건, 스트림과 반복문의 성능 차이를 다룬다."
 tags: ["java", "backend", "oop", "async", "convention"]
 source: other
 date: "2026-10-21"
-sources: ["https://techblog.woowahan.com/2527/", "https://www.slideshare.net/mobile/gyumee/null-142590829", "http://homoefficio.github.io/2019/10/03/Java-Optional-%EB%B0%94%EB%A5%B4%EA%B2%8C-%EC%93%B0%EA%B8%B0/", "https://cheese10yun.github.io/checked-exception/", "https://d2.naver.com/helloworld/645609", "https://brunch.co.kr/@springboot/267", "https://brunch.co.kr/@heracul/3", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/package-summary.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html"]
+sources: ["https://techblog.woowahan.com/2527/", "https://www.slideshare.net/mobile/gyumee/null-142590829", "http://homoefficio.github.io/2019/10/03/Java-Optional-%EB%B0%94%EB%A5%B4%EA%B2%8C-%EC%93%B0%EA%B8%B0/", "https://cheese10yun.github.io/checked-exception/", "https://d2.naver.com/helloworld/645609", "https://brunch.co.kr/@springboot/267", "https://brunch.co.kr/@heracul/3", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/package-summary.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/package-summary.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md"]
 ---
 
-> 「[Java Enum 활용기](https://techblog.woowahan.com/2527/)」, 「[자바에서 null을 안전하게 다루는 방법](https://www.slideshare.net/mobile/gyumee/null-142590829)」, 「[Java Optional 바르게 쓰기](http://homoefficio.github.io/2019/10/03/Java-Optional-%EB%B0%94%EB%A5%B4%EA%B2%8C-%EC%93%B0%EA%B8%B0/)」, 「[Checked Exception을 대하는 자세](https://cheese10yun.github.io/checked-exception/)」, 「[Java 날짜와 시간 API의 문제점과 JDK8에서 개선된 부분](https://d2.naver.com/helloworld/645609)」, 「[자바 비동기 프로그래밍을 위한 CompletableFuture 검토](https://brunch.co.kr/@springboot/267)」, 「[Java Lambda Expression과 성능](https://brunch.co.kr/@heracul/3)」 등을 바탕으로, API는 Java SE 공식 문서로 확인해 재구성한 노트다.
+> 「[Java Enum 활용기](https://techblog.woowahan.com/2527/)」, 「[자바에서 null을 안전하게 다루는 방법](https://www.slideshare.net/mobile/gyumee/null-142590829)」, 「[Java Optional 바르게 쓰기](http://homoefficio.github.io/2019/10/03/Java-Optional-%EB%B0%94%EB%A5%B4%EA%B2%8C-%EC%93%B0%EA%B8%B0/)」, 「[Checked Exception을 대하는 자세](https://cheese10yun.github.io/checked-exception/)」, 「[Java 날짜와 시간 API의 문제점과 JDK8에서 개선된 부분](https://d2.naver.com/helloworld/645609)」, 「[자바 비동기 프로그래밍을 위한 CompletableFuture 검토](https://brunch.co.kr/@springboot/267)」, 「[Java Lambda Expression과 성능](https://brunch.co.kr/@heracul/3)」 등을 바탕으로, API는 Java SE 공식 문서로 확인해 재구성한 노트다. try-with-resources, 함수형 인터페이스와 메서드 참조, 스트림의 동작과 병렬 처리는 fru1tworld/cs-basic 모의 면접 질문 목록의 Java 질문을 바탕으로 보강했다.
 
 ## Enum: 상수에 상태와 행위를 묶는다
 
@@ -91,6 +91,27 @@ try {
 - Spring의 `@Transactional`은 기본적으로 **unchecked 예외와 `Error`에서만 롤백**하고 checked 예외에서는 커밋한다. checked 예외로도 롤백하려면 `rollbackFor`를 지정한다.
 - 예외를 잡고 아무것도 하지 않는 빈 `catch`는 쓰지 않는다. 정말 무시해야 하면 이유를 주석으로 남긴다.
 
+### try-with-resources
+
+`try (자원 선언) { ... }`은 블록이 정상 종료하든 예외로 나가든 **선언한 자원의 `close()`를 자동으로 부른다**(Java 7). 자원은 `AutoCloseable`(또는 그 하위인 `Closeable`)을 구현해야 한다.
+
+```java
+try (var in = Files.newBufferedReader(src);
+     var out = Files.newBufferedWriter(dst)) {   // 여러 개면 선언의 역순으로 닫힌다: out → in
+    in.transferTo(out);
+}
+```
+
+컴파일러는 이를 `try`·`finally`로 펼친다. 핵심은 예외가 두 번 날 때의 처리다.
+
+| 상황 | 직접 쓴 `finally { close(); }` | try-with-resources |
+| --- | --- | --- |
+| 본문 예외 + `close()` 예외 | `close()` 예외가 본문 예외를 **덮어써** 진짜 원인이 사라진다 | 본문 예외를 던지고, `close()` 예외는 그 예외의 **억제된 예외(suppressed)** 로 붙인다(`getSuppressed()`) |
+| 자원이 `null` | `NullPointerException` | `close()`를 부르지 않는다 |
+| 자원 여러 개 | 중첩 `try`가 필요하다 | 하나의 선언에 나열한다 |
+
+Java 9부터는 이미 선언된 사실상 final 변수도 `try (in)`처럼 넣을 수 있다. `finalize()`와 달리 닫는 시점이 확정적이므로 파일·소켓·DB 커넥션·락은 항상 이 구문으로 정리한다.
+
 ## 날짜와 시간: java.time을 쓴다
 
 `java.util.Date`와 `Calendar`는 설계 결함 때문에 새 코드에서 쓰지 않는다. Java 8부터 표준인 **`java.time`(JSR-310)** 을 쓴다.
@@ -137,13 +158,73 @@ try {
 - 동기/비동기는 호출된 쪽이 결과를 언제 주느냐, 블로킹/논블로킹은 호출한 쪽이 기다리느냐의 구분이다. 비동기 API를 써도 `join`을 부르는 순간 블로킹이다. 개념 구분은 [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]]에 있다.
 - Java 21부터는 블로킹 코드를 그대로 두고 가상 스레드로 확장하는 방법도 있다. 콜백 조합이 필요한 곳에만 `CompletableFuture`를 쓴다.
 
+## 람다, 함수형 인터페이스, 메서드 참조
+
+**함수형 인터페이스(functional interface)는 추상 메서드가 정확히 하나인 인터페이스다.** Java에는 함수 타입이 따로 없어서, 람다식은 대상이 되는 함수형 인터페이스의 구현 객체로 취급된다(대상 타입, target typing). `@FunctionalInterface`를 붙이면 추상 메서드가 둘이 될 때 컴파일러가 잡아 준다. `default`·`static` 메서드는 몇 개든 있어도 된다.
+
+| `java.util.function` | 시그니처 | 쓰임 |
+| --- | --- | --- |
+| `Function<T, R>` | `R apply(T)` | 변환(`map`) |
+| `Supplier<T>` | `T get()` | 지연 생성(`orElseGet`) |
+| `Consumer<T>` | `void accept(T)` | 소비(`forEach`) |
+| `Predicate<T>` | `boolean test(T)` | 조건(`filter`) |
+| `UnaryOperator<T>`, `BinaryOperator<T>` | `T apply(T)`, `T apply(T, T)` | 같은 타입 연산(`reduce`) |
+| `IntFunction`, `ToLongFunction` 등 | 기본형 특화 | 박싱 비용을 피한다 |
+
+`Runnable`, `Callable`, `Comparator`도 함수형 인터페이스라 람다로 쓴다.
+
+```java
+Predicate<String> notBlank = s -> !s.isBlank();
+Function<String, Integer> len = String::length;
+Comparator<User> byAge = Comparator.comparingInt(User::age);
+```
+
+- 람다는 바깥의 지역 변수를 **사실상 final(effectively final)** 일 때만 캡처한다. 값을 복사해 담기 때문에, 바뀔 수 있는 변수를 허용하면 람다 안팎의 값이 어긋나기 때문이다. 필드는 캡처 대상이 아니라 `this`를 통해 읽으므로 제약이 없다.
+- 람다 안의 `this`는 람다를 감싼 객체다. 익명 클래스의 `this`는 익명 클래스 자신이다.
+- 람다는 익명 클래스로 컴파일되지 않는다. `invokedynamic`과 `LambdaMetafactory`로 처음 호출할 때 구현을 만들고 이후에는 재사용한다. 캡처가 없는 람다는 객체 하나를 계속 쓴다.
+- 람다 본문은 checked 예외를 던질 수 없다(`Function.apply`가 선언하지 않았으므로). unchecked로 감싸거나 예외를 던지는 함수형 인터페이스를 직접 정의한다.
+
+**메서드 참조**는 이미 있는 메서드를 그대로 넘기는 람다의 축약형이다.
+
+| 종류 | 형태 | 같은 람다 |
+| --- | --- | --- |
+| static 메서드 | `Integer::parseInt` | `s -> Integer.parseInt(s)` |
+| 특정 객체의 인스턴스 메서드 | `System.out::println`, `this::save` | `x -> System.out.println(x)` |
+| 임의 객체의 인스턴스 메서드 | `String::toUpperCase` | `s -> s.toUpperCase()` (첫 인자가 수신 객체) |
+| 생성자 | `ArrayList::new`, `int[]::new` | `() -> new ArrayList<>()` |
+
+## 스트림의 동작
+
+스트림은 컬렉션·배열·I/O 같은 소스의 원소를 `filter`·`map`·`collect` 같은 선언적 연산으로 처리하는 파이프라인이다. 데이터를 저장하지 않고 원본을 바꾸지 않으며, **한 번만 소비**할 수 있다.
+
+```text
+소스(Spliterator) ─▶ 중간 연산(filter, map, sorted …) ─▶ 최종 연산(collect, forEach, findFirst …)
+                        지연: 최종 연산 전엔 아무 일도 안 한다
+```
+
+- **지연 평가와 융합**: 중간 연산은 파이프라인 단계만 연결하고, 최종 연산이 불릴 때 원소 **하나씩** 모든 단계를 통과시킨다(수직 처리). `filter`→`map`이 리스트를 두 번 도는 것이 아니다.
+- **단락(short-circuit)**: `findFirst`, `anyMatch`, `limit`은 답이 나오면 나머지 원소를 보지 않는다. 그래서 `Stream.iterate`처럼 무한한 소스도 다룰 수 있다.
+- **상태 없는 연산과 상태 있는 연산**: `filter`·`map`은 원소 하나만 보지만 `sorted`·`distinct`는 앞 원소를 기억하거나 전부 모아야 해서 지연의 이점이 줄고 메모리를 쓴다.
+- 람다에 **부수 효과를 넣지 않는다.** 바깥 리스트에 `add`하지 말고 `collect(Collectors.toList())`·Java 16+의 `toList()`로 모은다.
+
+### 병렬 스트림
+
+`parallelStream()`이나 `.parallel()`은 소스의 `Spliterator`가 데이터를 반씩 쪼개고, 조각을 공용 `ForkJoinPool`의 작업 훔치기로 처리한 뒤 결과를 합친다([[java-concurrency|Java 동시성]]의 Fork/Join).
+
+| 빨라지는 조건 | 느려지거나 틀리는 조건 |
+| --- | --- |
+| 원소가 많고 원소당 계산이 무겁다(CPU 바운드) | 원소가 적거나 연산이 가볍다. 분할·병합 비용이 더 크다 |
+| 소스가 잘 쪼개진다(`ArrayList`, 배열, `IntStream.range`) | `LinkedList`, `Stream.iterate`, I/O 소스는 쪼개기 어렵다 |
+| 연산이 순서에 무관하고 결합 법칙을 만족한다(`sum`, `max`) | `findFirst`, `limit`, `forEachOrdered`처럼 순서를 지켜야 한다. 필요 없으면 `unordered()`나 `findAny` |
+| 상태 없는 순수 함수 | 공유 가변 상태를 고치면 경쟁 상태로 결과가 틀린다 |
+
+공용 풀은 JVM 전체가 나눠 쓰므로 병렬 스트림 안에서 블로킹 I/O를 하면 다른 병렬 작업까지 굶는다.
+
 ## 람다와 스트림의 성능
 
-- 람다는 익명 클래스로 컴파일되지 않는다. `invokedynamic`과 `LambdaMetafactory`로 처음 호출할 때 구현을 만들고 이후에는 재사용한다.
 - **순차 스트림은 단순 반복문보다 빠르지 않다.** 단순한 최댓값 찾기처럼 원소당 일이 적은 연산에서는 반복문이 몇 배 빠를 수 있다. JIT가 수십 년간 반복문을 최적화해 온 데 비해 스트림 파이프라인은 객체 할당과 간접 호출이 더 있다.
 - 원소당 작업이 무거우면(I/O, 파싱) 차이가 묻힌다. 스트림을 고르는 이유는 성능이 아니라 **선언적 가독성**이다.
 - 성능이 중요한 뜨거운 반복은 반복문으로 쓰고, 판단은 추측이 아니라 JMH 벤치마크로 한다.
-- 병렬 스트림(`parallelStream`)은 공용 ForkJoinPool을 쓰므로 위의 공용 풀 주의가 똑같이 적용된다.
 
 ## 정리
 
@@ -151,6 +232,9 @@ try {
 - null은 반환·매개변수에서 몰아내고, `Optional`은 반환 타입에만 쓴다.
 - checked 예외는 의미 있는 unchecked 예외로 전환하되 원인을 함께 넘긴다.
 - 날짜는 `java.time`의 불변 타입을 쓰고, 용도에 맞게 `Instant`·`LocalDate`·`ZonedDateTime`을 고른다.
+- 자원은 try-with-resources로 닫는다. `close()` 예외는 본문 예외의 억제된 예외로 붙는다.
+- 람다는 함수형 인터페이스의 구현이고 사실상 final 변수만 캡처한다. 메서드 참조는 그 축약이다.
+- 스트림은 최종 연산 때 원소 단위로 흐르는 지연 파이프라인이다. 병렬 스트림은 무겁고 잘 쪼개지는 순수 연산에만 쓴다.
 - `CompletableFuture`에는 전용 Executor를 주고, 스트림은 성능이 아니라 가독성을 위해 고른다.
 
-관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-serialization-jackson|Java 직렬화와 Jackson]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-application-design|스프링 애플리케이션 설계]], [[timezone|자바스크립트에서 타임존 다루기]], [[gof-design-patterns|GoF 디자인 패턴]]
+관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-concurrency|Java 동시성]], [[java-language-basics|Java 언어 기본]], [[java-serialization-jackson|Java 직렬화와 Jackson]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-application-design|스프링 애플리케이션 설계]], [[timezone|자바스크립트에서 타임존 다루기]], [[gof-design-patterns|GoF 디자인 패턴]]

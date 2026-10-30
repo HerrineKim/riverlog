@@ -5,10 +5,11 @@ summary: "C에는 클래스가 없지만 구조체, 함수 포인터, void 포�
 tags: ["c", "oop", "pointer", "data-structure", "struct"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/65cbd691258f411289c7305fd6b30922", "https://80000coding.notion.site/892137b4b3b44cf180f1f04ed7a7eed2", "https://80000coding.notion.site/107bc2ff145e427b9bd076b015908916"]
+sources: ["https://80000coding.notion.site/65cbd691258f411289c7305fd6b30922", "https://80000coding.notion.site/892137b4b3b44cf180f1f04ed7a7eed2", "https://80000coding.notion.site/107bc2ff145e427b9bd076b015908916", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「C에서 시작하는 객체생활.」, 「[C] 구조체 개념 정리 및 연결 리스트 구현」, 「atexit을 활용해 누수 확인하기」를 바탕으로 재구성한 노트다.
+> 정렬이 성능과 정확성에 주는 영향 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 ## 구조체
 
@@ -35,6 +36,16 @@ pp->x = 10;                       /* (*pp).x 와 같음 */
 struct { char c; int i; char d; }     → c ___ iiii d ___   = 12바이트
 struct { int i; char c; char d; }     → iiii c d __       =  8바이트
 ```
+
+정렬을 맞추는 이유는 성능과 정확성이다.
+
+| 정렬이 어긋나면 | 결과 |
+| --- | --- |
+| 값 하나가 캐시 라인·페이지 경계에 걸친다 | 한 번에 읽을 값을 두 라인(최악은 두 페이지)에서 읽어 합쳐야 해 느려진다. x86은 처리해 주지만 비용이 든다 |
+| 정렬을 요구하는 아키텍처 | 일부 RISC CPU와 SIMD 정렬 load 명령(`_mm_load_ps`)은 예외(`SIGBUS`)를 낸다 |
+| 원자 연산 | 원자성은 자연 정렬된 값에만 보장된다. x86에서 캐시 라인에 걸친 `lock` 명령은 버스 전체를 잠그는 split lock이 되어 다른 코어까지 느려진다 |
+
+그래서 `malloc`은 어떤 기본 타입에도 맞게 정렬된 주소(64비트 시스템에서 보통 16바이트)를 돌려주고, 더 큰 정렬이 필요하면 C11 `aligned_alloc`과 `alignas`를 쓴다. 스레드마다 쓰는 데이터를 캐시 라인 단위로 떼어 거짓 공유를 막는 것도 같은 도구로 한다([[cache-friendly-code|캐시를 고려한 코드]]).
 
 멤버를 큰 타입부터 나열하면 크기가 줄어든다. 패딩 때문에 구조체를 `memcmp`로 비교하거나 파일·네트워크에 그대로 쓰면 안 된다. 멤버의 위치는 `offsetof(type, member)`로 확인한다. `struct`, 멤버, 변수 이름이 서로 충돌하지 않는 이유는 [[c-scope-and-linkage|C의 스코프와 링키지]]의 이름 공간 부분에 있다.
 

@@ -1,18 +1,19 @@
 ---
-title: "Java 언어 기본: 접근 제어자에서 스레드 안전 컬렉션까지"
+title: "Java 언어 기본: 접근 제어자, static, 객체 비교, 제네릭, 리플렉션"
 concept: "Java Basics"
-summary: "Java 면접에서 자주 묻는 언어 기본기를 주제별로 정리한다. 접근 제어자, final·finally·finalize, 오버로딩과 오버라이딩, 업·다운캐스팅, ==·equals·hashCode와 문자열 상수 풀, 래퍼 클래스와 오토박싱, 제네릭과 타입 소거, 어노테이션의 보존 정책, 컬렉션 프레임워크와 스레드 안전 컬렉션, volatile·Atomic·Callable, ThreadLocal."
+summary: "Java 면접에서 자주 묻는 언어 기본기를 주제별로 정리한다. 접근 제어자, final·finally·finalize, static과 static final(C·C++의 static과 컴파일 시 처리 포함), 오버로딩과 오버라이딩, 업·다운캐스팅, ==·equals·hashCode와 문자열 상수 풀, String 계열, Comparable과 Comparator, 값 전달, 컴포지션, 래퍼 클래스와 오토박싱, 제네릭과 타입 소거, 리플렉션·어노테이션·동적 프록시."
 tags: ["java", "oop", "backend", "concurrency"]
 source: other
 date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Java/README.md", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html", "https://openjdk.org/jeps/421", "https://openjdk.org/jeps/506", "https://github.com/4z7l/tech_interview.zip/blob/main/%EC%A7%81%EB%AC%B4/JAVA.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20String%20StringBuilder%20StringBuffer%20%EC%B0%A8%EC%9D%B4.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Call%20by%20value%EC%99%80%20Call%20by%20reference.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20%EC%BB%B4%ED%8F%AC%EC%A7%80%EC%85%98%28Composition%29.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5BJava%5D%20Intrinsic%20Lock.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Java%20major%20feature%20changes.md"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Java/README.md", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html", "https://openjdk.org/jeps/421", "https://openjdk.org/jeps/506", "https://github.com/4z7l/tech_interview.zip/blob/main/%EC%A7%81%EB%AC%B4/JAVA.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20String%20StringBuilder%20StringBuffer%20%EC%B0%A8%EC%9D%B4.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Call%20by%20value%EC%99%80%20Call%20by%20reference.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20%EC%BB%B4%ED%8F%AC%EC%A7%80%EC%85%98%28Composition%29.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5BJava%5D%20Intrinsic%20Lock.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Java%20major%20feature%20changes.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 Java 문서를 바탕으로, Java SE 공식 문서와 JEP로 확인해 재구성한 노트다.
 > 업·다운캐스팅, 객체 비교와 문자열 상수 풀, volatile·Atomic·Callable은 4z7l의 「[tech_interview.zip](https://github.com/4z7l/tech_interview.zip)」 Java 문서를 바탕으로 보강했다.
 > String 계열 비교, 값 전달, 컴포지션, 고유 락과 wait·notify, 버전별 기능은 gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 저장소의 Language 문서를 바탕으로, OpenJDK JEP로 확인해 보강했다.
+> static, Comparable과 Comparator, 리플렉션·커스텀 어노테이션·동적 프록시는 fru1tworld/cs-basic 모의 면접 질문 목록의 Java·언어 기본 질문을 바탕으로 보강했다.
 
-JVM 구조와 GC는 [[jvm-internals|JVM 내부 구조]], Enum·Optional·예외 같은 실무 관용구는 [[java-idioms|Java 실무 관용구]], 코딩 규칙은 [[java-coding-convention|Java 코딩 컨벤션]]에 있다. 이 노트는 그 아래 깔린 언어 문법의 기본기를 다룬다.
+JVM 구조와 GC는 [[jvm-internals|JVM 내부 구조]], Enum·Optional·예외 같은 실무 관용구는 [[java-idioms|Java 실무 관용구]], 코딩 규칙은 [[java-coding-convention|Java 코딩 컨벤션]]에, 동시성은 [[java-concurrency|Java 동시성]]에, 버전별 새 기능은 [[modern-java-features|모던 Java 기능]]에 있다. 이 노트는 그 아래 깔린 언어 문법의 기본기를 다룬다.
 
 ## 접근 제어자
 
@@ -37,6 +38,48 @@ JVM 구조와 GC는 [[jvm-internals|JVM 내부 구조]], Enum·Optional·예외 
 | `final` 변수 | 키워드 | 한 번만 대입한다. 참조 변수면 **참조만 고정**되고 가리키는 객체의 내용은 바뀔 수 있다 |
 | `finally` | 블록 | `try`의 정상 종료·예외와 상관없이 마지막에 실행된다. 자원 정리는 `try-with-resources`(`AutoCloseable`)가 더 안전하다 |
 | `finalize()` | `Object`의 메서드 | GC가 객체를 회수하기 전에 부를 수도 있는 메서드. 호출 시점·실행 여부가 보장되지 않아 **Java 9에서 deprecated, Java 18(JEP 421)부터 제거 예정**이다. 대신 `try-with-resources`나 `java.lang.ref.Cleaner`를 쓴다 |
+
+## static
+
+**`static`은 멤버를 객체가 아니라 클래스에 속하게 한다.** 인스턴스를 만들지 않고 `클래스명.멤버`로 쓰고, 모든 인스턴스가 하나를 공유한다.
+
+| 대상 | 뜻 |
+| --- | --- |
+| static 필드 | 클래스당 하나. 클래스가 초기화될 때(`<clinit>`) 값이 정해지고 클래스가 언로드될 때까지 산다 |
+| static 메서드 | `this`가 없어 인스턴스 멤버를 직접 쓸 수 없다. 오버라이딩되지 않고 하위 클래스의 같은 시그니처는 **숨김(hiding)** 이다. 호출 대상은 컴파일 시점에 정해진다(`invokestatic`) |
+| static 블록 | 클래스 초기화 때 한 번 실행된다 |
+| static 중첩 클래스 | 바깥 인스턴스 참조를 갖지 않는다. 내부(inner) 클래스는 바깥 `this`를 숨은 필드로 붙잡아 누수의 원인이 되므로, 바깥 인스턴스가 필요 없으면 static으로 둔다 |
+| static import | `import static java.lang.Math.max;`로 클래스 이름 없이 쓴다 |
+
+**주의할 점**:
+
+- **공유 가변 상태다.** static 필드는 사실상 전역 변수라 여러 스레드가 함께 바꾸면 경쟁 상태가 생기고([[java-concurrency|Java 동시성]]), 테스트끼리 상태가 샌다.
+- **메모리 누수**: static 컬렉션에 넣은 객체는 클래스가 살아 있는 한 회수되지 않는다. 캐시라면 크기 제한을 둔다.
+- **테스트와 확장이 어렵다.** static 메서드는 오버라이딩·가짜 객체로 바꿔 끼울 수 없다. 상태 없는 유틸리티(`Math.max`)와 팩터리 메서드(`List.of`)에만 쓰고, 의존성이 있는 로직은 인스턴스로 만들어 주입한다.
+- 초기화 순서: static 필드 초기화와 static 블록은 **소스에 적힌 순서**대로 실행된다. 서로를 참조하면 아직 기본값(0, `null`)인 필드를 읽을 수 있다.
+
+### static, final, static final
+
+| 선언 | 개수 | 대입 | 쓰임 |
+| --- | --- | --- | --- |
+| `static int count` | 클래스당 하나 | 언제든 바꿀 수 있다 | 공유 카운터(동시성 주의) |
+| `final int id` | **객체마다** 하나 | 생성자가 끝나기 전 한 번 | 객체별로 다르지만 바뀌지 않는 값 |
+| `static final int MAX = 10` | 클래스당 하나 | 클래스 초기화 때 한 번 | 상수 |
+
+- 기본형·`String`에 컴파일 시점 상수식을 대입한 `static final`은 **상수 변수(constant variable)** 다. `javac`가 쓰는 곳마다 값을 **복사해 넣는다(인라이닝).** 그래서 상수를 정의한 클래스만 다시 컴파일하면, 그 상수를 쓰는 다른 클래스는 옛 값을 그대로 가진다. 함께 다시 빌드해야 한다.
+- `static final List<String> NAMES = new ArrayList<>()`는 참조만 고정된다. 내용까지 고정하려면 `List.of(...)`를 쓴다.
+
+### C·C++의 static
+
+같은 키워드가 C 계열에서는 두 가지 다른 뜻을 가진다.
+
+| 위치 | 뜻 |
+| --- | --- |
+| 함수 안의 지역 변수 | **저장 기간(storage duration)이 정적**이다. 스택이 아니라 데이터 영역에 놓여 함수가 끝나도 값이 유지되고, 처음 한 번만 초기화된다 |
+| 파일 수준 전역 변수·함수 | **내부 링크(internal linkage)**. 이 번역 단위(.c 파일) 안에서만 보이고 다른 파일에서 `extern`으로 쓸 수 없다 |
+| C++ 클래스 멤버 | Java와 같다. 클래스에 속하고 인스턴스 없이 쓴다 |
+
+**컴파일할 때의 처리**: static 저장 기간 변수는 프로그램 시작 전에 자리가 정해진다. 0이 아닌 초깃값이 있으면 실행 파일의 `.data` 섹션에, 0이거나 초깃값이 없으면 `.bss` 섹션에 들어가고 로더가 0으로 채운다. 이름이 같은 함수 안 static 변수끼리 충돌하지 않도록 컴파일러가 심볼 이름을 고유하게 바꾼다. 내부 링크인 static 함수·전역 변수는 목적 파일의 심볼 테이블에 **지역(local) 심볼**로 기록돼 링커가 다른 파일의 같은 이름과 연결하지 않는다(`nm`에서 소문자 `t`·`d`·`b`로 보인다). 그래서 파일마다 같은 이름의 static 함수를 둬도 충돌하지 않는다. 메모리 영역 배치는 [[gcc-compile-and-link|GCC 컴파일과 링크]]에 있다.
 
 ## 오버로딩과 오버라이딩
 
@@ -85,6 +128,26 @@ print(a);    // "animal" : 오버로딩, 변수의 정적 타입(Animal) 기준
 
 한 줄의 `a + b + c`는 컴파일러가 알아서 최적화하므로(Java 9부터 `invokedynamic` 기반 연결) 그대로 써도 된다. **반복문 안에서 `+=`로 이어 붙이면** 매번 새 문자열을 만들어 O(n²)이 되므로 `StringBuilder`를 쓴다.
 
+### Comparable과 Comparator
+
+| 비교 | `Comparable<T>` | `Comparator<T>` |
+| --- | --- | --- |
+| 패키지·메서드 | `java.lang`, `int compareTo(T o)` | `java.util`, `int compare(T a, T b)` |
+| 누가 구현하나 | 정렬될 **클래스 자신** | 클래스 **바깥**의 별도 객체(람다) |
+| 기준 개수 | 하나. 그 타입의 **자연 순서(natural ordering)** | 원하는 만큼. 상황별 정렬 기준 |
+| 쓰는 곳 | `Collections.sort(list)`, `TreeSet`, `TreeMap`의 기본 순서 | `list.sort(cmp)`, `new TreeSet<>(cmp)`, 고칠 수 없는 클래스 정렬 |
+
+```java
+record User(String name, int age) implements Comparable<User> {
+    public int compareTo(User o) { return Integer.compare(age, o.age); }   // 자연 순서: 나이
+}
+users.sort(Comparator.comparing(User::name)
+                     .thenComparing(User::age, Comparator.reverseOrder()));
+```
+
+- 반환값은 음수(앞), 0(같음), 양수(뒤)다. `a - b`로 빼면 오버플로가 날 수 있으므로 `Integer.compare`를 쓴다.
+- **`compareTo`가 0인 것과 `equals`가 참인 것은 일치시키는 편이 좋다.** `TreeSet`·`TreeMap`은 `equals`가 아니라 `compareTo`로 중복을 판단한다. `BigDecimal`의 `2.0`과 `2.00`은 `equals`는 거짓, `compareTo`는 0이라 `HashSet`과 `TreeSet`에서 원소 수가 다르다.
+
 ## 값 전달: Java는 언제나 call by value
 
 Java는 메서드 인자를 **항상 값으로 복사해 넘긴다.** 참조형 인자도 「객체를 가리키는 참조 값」이 복사될 뿐이다.
@@ -94,7 +157,7 @@ void rename(User u) { u.setName("B"); }   // 같은 객체를 고친다 → 호�
 void replace(User u) { u = new User("C"); } // 복사된 참조만 바꾼다 → 호출한 쪽은 그대로
 ```
 
-그래서 메서드 안에서 객체의 **내용**은 바꿀 수 있지만 호출한 쪽의 변수가 **다른 객체를 가리키게** 할 수는 없다. 두 변수를 바꾸는 `swap(a, b)`를 Java로 짤 수 없는 이유다. JavaScript·Python도 같은 방식이다([[variables-and-types|변수와 타입]]).
+그래서 메서드 안에서 객체의 **내용**은 바꿀 수 있지만 호출한 쪽의 변수가 **다른 객체를 가리키게** 할 수는 없다. 두 변수를 바꾸는 `swap(a, b)`를 Java로 짤 수 없는 이유다. JavaScript·Python도 같은 방식이다([[variables-and-types|변수와 타입]]). 이 방식을 따로 공유에 의한 호출(call by sharing)이라 부르며, 언어별 인자 전달 방식 비교는 [[programming-language-semantics|프로그래밍 언어 의미론]]에 있다.
 
 ## 상속보다 컴포지션
 
@@ -124,9 +187,27 @@ int x = list.get(0);    // 언박싱: intValue()
 - **와일드카드**: `List<? extends Number>`는 읽기 전용(생산자), `List<? super Integer>`는 쓰기용(소비자)이다. 「Producer Extends, Consumer Super(PECS)」로 외운다.
 - 제네릭은 **불공변**이다. `Integer`가 `Number`의 하위 타입이어도 `List<Integer>`는 `List<Number>`의 하위 타입이 아니다.
 
-## 어노테이션
+## 리플렉션, 어노테이션, 동적 프록시
 
-어노테이션은 코드에 붙이는 **메타데이터**다. 그 자체로는 동작하지 않고, 컴파일러·어노테이션 프로세서·프레임워크가 읽어서 의미를 부여한다(`@Override`, `@Deprecated`, Spring의 `@Transactional`, JPA의 `@Entity`).
+### 리플렉션
+
+**리플렉션(reflection)은 실행 중에 클래스의 구조(필드, 메서드, 생성자, 어노테이션)를 조회하고, 이름만으로 객체를 만들거나 메서드를 호출하는 API다.** 각 클래스는 로딩될 때 `Class` 객체가 만들어지고, 리플렉션은 이 메타데이터를 읽는다.
+
+```java
+Class<?> c = Class.forName("com.example.UserService");
+Object svc = c.getDeclaredConstructor().newInstance();
+Method m = c.getMethod("find", long.class);
+Object user = m.invoke(svc, 1L);
+Field f = c.getDeclaredField("repo"); f.setAccessible(true);   // private 접근
+```
+
+- **쓰는 곳**: 컴파일 시점에 모르는 클래스를 다뤄야 하는 프레임워크다. Spring의 의존성 주입과 빈 생성, JPA의 엔티티 매핑, Jackson의 직렬화, JUnit의 `@Test` 메서드 탐색, IDE·디버거가 그렇다.
+- **비용과 위험**: 컴파일 시점 타입 검사가 사라져 오류가 실행 중에 난다. 직접 호출보다 느리고(JIT 최적화가 덜 된다), `private`을 열어 캡슐화를 깬다. 모듈 시스템은 `opens`하지 않은 패키지의 깊은 리플렉션을 막는다([[modern-java-features|모던 Java 기능]]). 애플리케이션 코드에서는 인터페이스와 다형성으로 풀 수 있으면 리플렉션을 쓰지 않는다.
+- 반복 호출이 많으면 `MethodHandle`(`java.lang.invoke`)이 JIT에 더 잘 최적화된다.
+
+### 어노테이션
+
+어노테이션은 코드에 붙이는 **메타데이터**다. 그 자체로는 동작하지 않고, 컴파일러·어노테이션 프로세서·프레임워크가 읽어서 의미를 부여한다(`@Override`, `@Deprecated`, Spring의 `@Transactional`, JPA의 `@Entity`). 어노테이션 타입은 컴파일되면 `java.lang.annotation.Annotation`을 상속한 인터페이스가 된다.
 
 | `@Retention` | 남는 곳 | 읽는 쪽 |
 | --- | --- | --- |
@@ -134,69 +215,50 @@ int x = list.get(0);    // 언박싱: intValue()
 | `CLASS`(기본값) | 클래스 파일까지. 실행 중에는 없다 | 바이트코드 도구 |
 | `RUNTIME` | 실행 중에도 남는다 | 리플렉션으로 읽는 프레임워크(Spring, JPA, Jackson) |
 
-`@Target`으로 붙일 수 있는 위치(클래스, 메서드, 필드, 매개변수)를 정한다.
-
-## 컬렉션 프레임워크와 스레드 안전성
-
-컬렉션 프레임워크는 여러 데이터를 다루는 표준 인터페이스(`List`, `Set`, `Queue`/`Deque`, `Map`)와 구현체 묶음이다. 인터페이스 계층과 구현체 고르는 기준은 [[data-structures|기초 자료구조]]의 Java 컬렉션 절에, `HashMap` 내부는 [[hash-table|해시 테이블]]에 있다. `HashSet`은 내부적으로 값만 키로 쓰는 `HashMap`이다.
-
-여러 스레드가 같은 컬렉션을 고치면 기본 구현체(`ArrayList`, `HashMap`)는 깨진다. 선택지는 세 단계다.
-
-| 방식 | 예 | 특징 |
-| --- | --- | --- |
-| 옛 동기화 클래스 | `Vector`, `Hashtable`, `Stack` | 모든 메서드가 `synchronized`라 느리다. 새 코드에서는 쓰지 않는다 |
-| 동기화 래퍼 | `Collections.synchronizedList/Map/Set` | 객체 전체에 잠금 하나. 순회(iterator)할 때는 직접 `synchronized` 블록으로 감싸야 한다 |
-| 동시성 컬렉션(`java.util.concurrent`, Java 5부터) | `ConcurrentHashMap`, `CopyOnWriteArrayList`, `ConcurrentLinkedQueue`, `BlockingQueue` | 잠금을 잘게 나누거나 CAS를 써서 동시에 여러 스레드가 진행한다. `ConcurrentHashMap`은 Java 8부터 버킷 단위 잠금 + CAS다 |
-
-`ConcurrentHashMap`이라도 「읽고 → 판단하고 → 쓰기」를 따로 호출하면 그 사이에 끼어들 수 있다. `putIfAbsent`, `computeIfAbsent`, `merge` 같은 **원자적 복합 연산**을 쓴다.
-
-### synchronized와 공유 필드
-
-여러 스레드가 함께 쓰는 객체(싱글턴, Spring 빈)의 **필드에 요청별 상태를 두면 경쟁 상태**가 생긴다. 상태는 지역 변수·매개변수로 넘기는 것이 기본이다([[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]]).
-
-꼭 공유해야 하면 `synchronized`로 상호 배제한다. Java의 모든 객체는 **고유 락(intrinsic lock, 모니터 락)** 을 하나씩 갖고, `synchronized`는 그 락을 잡는다. 이미 그 락을 가진 스레드가 다시 들어가도 막히지 않는다(재진입, reentrancy). `count++`는 읽기·고치기·쓰기 세 단계라 원자적이지 않으므로 이런 보호가 필요하다. 메서드에 붙이면 그 인스턴스(`this`, `static`이면 클래스 객체) 전체를 잠그고, 블록으로 쓰면 지정한 객체로 지정한 구간만 잠근다. 잠그는 범위는 좁을수록 좋다.
-
-고유 락에는 조건 대기 장치도 붙어 있다. `synchronized` 블록 안에서 `wait()`는 락을 놓고 잠들고, `notify()`는 그 객체에서 기다리는 스레드 하나를, `notifyAll()`은 모두를 깨운다. 깨어난 스레드는 락을 다시 얻은 뒤 이어서 실행하므로, 조건은 `if`가 아니라 **`while`로 다시 검사**한다(가짜 깨어남 대비). 생산자-소비자 같은 대기는 지금은 `BlockingQueue`나 `Lock`·`Condition`으로 쓰는 편이 안전하다([[process-synchronization|프로세스 동기화]]의 모니터와 같은 구조다).
-
-### volatile, Atomic, 작업 인터페이스
-
-| 도구 | 보장 | 맞는 곳 |
-| --- | --- | --- |
-| `volatile` | 쓰기가 다른 스레드에 **바로 보인다**(가시성)와 재배치 금지. 원자성은 보장하지 않아 `count++`는 여전히 깨진다 | 한 스레드가 쓰고 여럿이 읽는 플래그, [[singleton-pattern\|DCL 싱글턴]] |
-| `synchronized`, `ReentrantLock` | 상호 배제 + 가시성 | 여러 필드를 함께 바꾸는 임계 구역 |
-| `AtomicInteger`, `AtomicReference`, `LongAdder` | 잠금 없이 CAS(compare-and-swap)로 단일 변수의 원자적 갱신 | 카운터, 상태 전환. 경합이 심한 카운터는 `LongAdder` |
-
-스레드에 넘기는 작업은 `Runnable`(반환값 없음, checked 예외를 던질 수 없음)과 `Callable<V>`(값을 돌려주고 예외를 던질 수 있음)이다. `ExecutorService.submit(callable)`은 `Future<V>`를 돌려주고, 결과를 조합하려면 [[java-idioms|CompletableFuture]]를 쓴다. Java 21부터는 I/O가 많은 작업에 `Executors.newVirtualThreadPerTaskExecutor()`로 가상 스레드를 쓴다.
-
-### ThreadLocal
-
-`ThreadLocal`은 **스레드마다 따로 보이는 변수**다. 같은 `ThreadLocal` 객체라도 `get()`은 현재 스레드가 `set()`한 값만 돌려준다. 요청 단위 사용자 정보, 트랜잭션 컨텍스트(Spring의 `TransactionSynchronizationManager`, `SecurityContextHolder`)처럼 매개변수로 계속 넘기기 번거로운 값에 쓴다.
+커스텀 어노테이션은 `@interface`로 선언하고 메타 어노테이션으로 성질을 정한다.
 
 ```java
-private static final ThreadLocal<User> CURRENT = new ThreadLocal<>();
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)            // 붙일 수 있는 위치: TYPE, FIELD, METHOD, PARAMETER ...
+public @interface Retry {
+    int times() default 3;             // 요소는 매개변수 없는 메서드 모양. 기본형·String·enum·Class·어노테이션·이들의 배열만
+}
 
-try {
-    CURRENT.set(user);
-    handle();                // 깊은 곳에서 CURRENT.get()
-} finally {
-    CURRENT.remove();        // 스레드 풀에서는 반드시 지운다
+for (Method m : target.getClass().getMethods()) {
+    Retry r = m.getAnnotation(Retry.class);          // 리플렉션으로 읽는다
+    if (r != null) runWithRetry(m, r.times());
 }
 ```
 
-- 스레드 풀의 스레드는 재사용되므로 `remove()`를 빼먹으면 **다음 요청이 이전 사용자의 값을 본다.** 값이 남아 메모리 누수도 된다.
-- Java 21의 가상 스레드는 수백만 개가 생길 수 있어 스레드마다 큰 값을 두는 `ThreadLocal`이 부담이 된다. Java 25에서 정식이 된 **`ScopedValue`**(JEP 506)는 정해진 범위 안에서만 보이는 불변 값을 넘겨 이 문제를 줄인다.
+`@Inherited`는 클래스 어노테이션을 하위 클래스가 물려받게 하고, `@Repeatable`은 같은 어노테이션을 여러 번 붙이게 한다. 실행 중 리플렉션 대신 **컴파일 시점**에 처리하려면 `javax.annotation.processing.Processor`(어노테이션 프로세서)를 만든다. 프로세서는 새 소스 파일을 생성할 수 있어 MapStruct, Dagger, QueryDSL이 이 방식으로 코드를 만든다(Lombok은 기존 AST를 고치는 비공식 방식이다).
 
-## LTS 버전별 주요 기능
+### 동적 프록시
 
-| 버전 | 주요 기능 |
-| --- | --- |
-| 8 (2014) | 람다, 스트림, 함수형 인터페이스, `Optional`, 인터페이스 `default` 메서드, `java.time`. PermGen을 없애고 Metaspace 도입 |
-| 11 (2018) | 9~11의 모듈 시스템, `var`(지역 변수 타입 추론), 불변 컬렉션 팩터리(`List.of`), 표준 `HttpClient`(HTTP/2), `String`의 `isBlank`·`strip`·`lines`. 9부터 기본 GC가 G1 |
-| 17 (2021) | `record`, `sealed` 클래스, `switch` 식, 텍스트 블록(`"""`), `instanceof` 패턴 매칭 |
-| 21 (2023) | 가상 스레드, `switch` 패턴 매칭과 레코드 패턴, 순서 있는 컬렉션(`SequencedCollection`의 `getFirst`·`reversed`) |
-| 25 (2025) | `ScopedValue`, 모듈 import 선언, 단순한 소스 파일과 인스턴스 `main`(클래스 선언 없이 실행), 생성자 본문에서 `super()` 앞에 문장 쓰기 |
+**동적 프록시는 실행 중에 인터페이스 구현 클래스를 만들어, 모든 메서드 호출을 한 처리기로 가로채는 장치다.** 로깅, 트랜잭션, 권한 검사처럼 여러 메서드에 같은 앞뒤 처리를 붙일 때 메서드마다 프록시 클래스를 손으로 짜지 않게 한다.
 
-`record`는 불변 데이터 운반 클래스로, 컴포넌트를 선언하면 생성자·접근자·`equals`·`hashCode`·`toString`을 만든다([[dto-vo-dao-repository|DTO와 VO]]). 스트림은 컬렉션을 `filter`·`map`·`collect` 같은 선언적 연산으로 처리하며, 최종 연산을 부르기 전까지 실행되지 않는 지연 평가이고 한 번만 소비할 수 있다(성능은 [[java-idioms|Java 실무 관용구]]). 대부분의 조직은 LTS 버전만 쓴다.
+```java
+UserService proxy = (UserService) Proxy.newProxyInstance(
+    UserService.class.getClassLoader(),
+    new Class<?>[] { UserService.class },
+    (p, method, args) -> {                         // InvocationHandler
+        long t = System.nanoTime();
+        try { return method.invoke(target, args); }  // 실제 객체에 위임
+        finally { log(method.getName(), System.nanoTime() - t); }
+    });
+```
+
+| 방식 | 원리 | 제약 |
+| --- | --- | --- |
+| JDK 동적 프록시(`java.lang.reflect.Proxy`) | 지정한 **인터페이스**를 구현하는 클래스를 실행 중 생성하고, 모든 호출을 `InvocationHandler.invoke`로 보낸다 | 인터페이스가 있어야 한다 |
+| 바이트코드 생성(CGLIB, ByteBuddy) | 대상 **클래스를 상속**한 하위 클래스를 생성해 메서드를 오버라이딩한다 | `final` 클래스·메서드는 가로채지 못한다 |
+
+Spring AOP는 둘 중 하나로 빈을 프록시로 감싸 `@Transactional`을 구현한다(Spring Boot는 기본으로 클래스 기반). 프록시는 **바깥에서 들어오는 호출만** 가로채므로, 같은 객체 안에서 `this.other()`로 부른 메서드에는 트랜잭션이 걸리지 않는다(자기 호출 문제). 횡단 관심사의 개념은 [[interceptor-aop|인터셉터와 AOP]]에 있다.
+
+## 컬렉션 프레임워크
+
+컬렉션 프레임워크는 여러 데이터를 다루는 표준 인터페이스(`List`, `Set`, `Queue`/`Deque`, `Map`)와 구현체 묶음이다. 인터페이스 계층과 `ArrayList`·`LinkedList` 같은 구현체 고르는 기준은 [[data-structures|기초 자료구조]]의 Java 컬렉션 절에, `HashMap`의 해시 충돌 처리와 트리화는 [[hash-table|해시 테이블]]에 있다. `HashSet`은 내부적으로 값만 키로 쓰는 `HashMap`이다. 여러 스레드가 함께 쓰는 컬렉션(`ConcurrentHashMap` 등)과 `synchronized`·`volatile`·`ThreadLocal`은 [[java-concurrency|Java 동시성]]에 있다.
+
+Java 8 이후 언어 기능(`record`, `sealed`, `var`, 패턴 매칭, 모듈)과 LTS 버전별 기능 표는 [[modern-java-features|모던 Java 기능]]에 있다.
 
 ## 정리
 
@@ -206,6 +268,7 @@ try {
 - `equals`를 재정의하면 `hashCode`도 함께 재정의한다. 문자열 리터럴은 상수 풀에서 공유된다
 - 래퍼 객체는 `equals`로 비교하고 `null` 언박싱을 조심한다. 제네릭은 컴파일 때만 있고 실행 중에는 소거된다
 - Java는 참조도 값으로 넘긴다. 반복문 문자열 조립은 `StringBuilder`, 기능 재사용은 상속보다 컴포지션
-- 공유 컬렉션은 `java.util.concurrent`의 구현체와 원자적 복합 연산을 쓰고, `ThreadLocal`은 `finally`에서 지운다
+- `static`은 클래스에 속한 공유 멤버다. 상수가 아니면 전역 상태처럼 조심하고, `static final` 상수는 쓰는 쪽에 인라이닝된다
+- 리플렉션은 실행 중 구조를 읽는 프레임워크용 도구이고, 동적 프록시는 인터페이스 호출을 가로채 횡단 관심사를 붙인다
 
-관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-idioms|Java 실무 관용구]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[singleton-pattern|싱글턴 패턴]]
+관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-concurrency|Java 동시성]], [[modern-java-features|모던 Java 기능]], [[java-idioms|Java 실무 관용구]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[singleton-pattern|싱글턴 패턴]]

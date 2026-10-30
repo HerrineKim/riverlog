@@ -1,11 +1,11 @@
 ---
 title: "데이터의 표현"
 concept: "Data Representation"
-summary: "컴퓨터가 숫자와 문자를 비트로 저장하는 방식: 진법과 변환, KB와 KiB, 문자 코드, 보수와 부호 확장, 고정·부동 소수점(IEEE 754 단정밀도·배정밀도의 범위와 특수값), 패리티와 해밍 코드."
+summary: "컴퓨터가 숫자와 문자를 비트로 저장하는 방식: 진법과 변환, KB와 KiB, 워드 크기와 32비트·64비트의 차이, 문자 코드, 보수와 부호 확장, 고정·부동 소수점(IEEE 754 단정밀도·배정밀도의 범위와 특수값), 패리티와 해밍 코드."
 tags: ["computer-architecture", "binary", "floating-point", "encoding"]
 source: notion
 date: "2026-10-21"
-sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://bytebytego.com/guides/big-endian-vs-little-endian", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md", "https://www.joelonsoftware.com/articles/Unicode.html", "https://www.youtube.com/watch?v=peg8c6Gn-zc", "https://www.youtube.com/watch?v=upoRINMqlrw", "https://www.youtube.com/watch?v=1GSjbWt0c9M", "https://www.youtube.com/watch?v=KN8YgJnShPM"]
+sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://bytebytego.com/guides/big-endian-vs-little-endian", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md", "https://www.joelonsoftware.com/articles/Unicode.html", "https://www.youtube.com/watch?v=peg8c6Gn-zc", "https://www.youtube.com/watch?v=upoRINMqlrw", "https://www.youtube.com/watch?v=1GSjbWt0c9M", "https://www.youtube.com/watch?v=KN8YgJnShPM", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
 ---
 
 > 진법 변환·KiB·부호 확장·IEEE 754 세부·해밍 코드 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「원리를 알면 까먹지 않을 10진법을 2진법으로 변환하는 방법」, 「KB(킬로바이트)와 KiB(키비바이트)」, 「Unsigned char와 Char의 차이」, 「실수의 비트 표현 방법」, 「JavaScript에서 표현할 수 있는 수의 범위와 부동소수점」, 「Parity Bit (패리티 비트)」, 「Born2BeRoot를 진행하며 궁금했던 부분들」을 바탕으로 보강했다. 보수로 하는 뺄셈은 고무오리 CS 스터디의 『컴퓨터 시스템 구조』(Mano) 정리를 바탕으로 보강했다.
@@ -14,6 +14,7 @@ sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109
 > 유니코드 평면과 UTF-16 대리 쌍은 「[Frontend_TIL: 아스키코드 와 유니코드](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md)」를 바탕으로, 코드 포인트와 인코딩의 구분은 Joel Spolsky의 「[The Absolute Minimum Every Software Developer Must Know About Unicode and Character Sets](https://www.joelonsoftware.com/articles/Unicode.html)」(2003)를 바탕으로 보강했다.
 > 「데이터의 종류와 진법」(워드), 「문자 코드」(EUC-KR 예, UTF-8 비트 틀) 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 「2진수 덧셈」 절과 「고정 소수점」의 비트 폭별 정수 범위, 「문자 코드」의 ASCII 제어 문자·상호 운용성, 「이미지와 소리의 표현」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> 「32비트와 64비트」 절은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」을 점검해 보강했다.
 
 컴퓨터는 모든 정보를 0과 1로 저장한다. 정수, 실수, 문자를 어떤 규칙으로 비트에 담는지 알아야 오버플로우나 부동 소수점 오차 같은 현상을 이해할 수 있다.
 
@@ -33,6 +34,22 @@ sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109
 - **워드(word)**: CPU가 한 번에 처리하는 정보의 크기다. 바이트처럼 고정된 값이 아니라 CPU마다 다르며, 64비트 CPU라면 1워드가 64비트다. 워드의 절반을 하프 워드, 같은 크기를 풀 워드, 두 배를 더블 워드라 한다. 다만 x86 어셈블리는 16비트 시절의 이름을 그대로 써서 `WORD`가 16비트, `DWORD`가 32비트, `QWORD`가 64비트다.
 - 이진수는 십진수와 헷갈리지 않게 수학에서는 `1101(2)`, 코드에서는 `0b1101`로 쓴다. 십육진수는 10~15를 A~F로 쓰고 `1A2B(16)` 또는 `0x1A2B`로 표기한다.
 - 십육진수를 많이 쓰는 이유는 이진수와 변환이 쉬워서다. 십육진수 한 자리는 이진수 4비트이므로 자리마다 4비트로 바꿔 이어 붙이면 된다. `0x1A2B` = `0001 1010 0010 1011`. 반대로 이진수는 네 자리씩 끊어 한 글자로 바꾼다.
+
+### 32비트와 64비트
+
+「32비트 CPU」, 「64비트 OS」의 비트 수는 **범용 레지스터의 폭**, 곧 워드 크기다. 레지스터 하나에 주소도 담으므로 이 폭이 포인터 크기와 가상 주소 공간의 크기를 함께 정한다.
+
+| 비교 | 32비트 (x86, IA-32) | 64비트 (x86-64, ARM64) |
+| --- | --- | --- |
+| 범용 레지스터 폭 | 32비트 | 64비트. 한 번에 64비트 정수를 계산한다 |
+| 범용 레지스터 수 | x86은 8개 | x86-64는 16개, ARM64는 31개. 함수 인자를 레지스터로 넘겨 메모리 접근이 준다 |
+| 포인터 크기 | 4바이트 | 8바이트 |
+| 가상 주소 공간 | 2³² = 4GB. 그중 일부는 커널 몫 | 이론상 2⁶⁴ = 16EB. x86-64는 실제로 48비트(256TB)나 57비트만 쓴다 |
+| C 데이터 모델 | ILP32: `int`·`long`·포인터가 모두 32비트 | Linux·macOS는 LP64(`long`·포인터 64비트), Windows는 LLP64(`long`은 32비트, `long long`·포인터만 64비트) |
+
+- 32비트에서 메모리가 4GB로 묶이는 이유는 주소를 32비트로 나타내 2³²개의 바이트 주소만 만들 수 있기 때문이다. 페이지 테이블 계산과 물리 메모리를 늘린 PAE는 [[memory-management|메모리 관리]]에 있다.
+- 64비트가 늘 이득은 아니다. 포인터가 두 배라 포인터가 많은 자료구조는 메모리와 캐시를 더 쓴다. 그래서 64비트 JVM은 힙이 32GB 미만이면 객체 참조를 32비트로 압축해 저장한다(compressed oops).
+- 64비트 OS는 32비트 프로그램을 호환 모드로 돌린다(Windows WoW64, Linux multilib). 반대로 32비트 OS는 64비트 프로그램을 돌리지 못한다.
 
 ### 10진수를 2진수로
 
@@ -292,6 +309,7 @@ JavaScript의 `Number`는 배정밀도 부동 소수점 하나뿐이다. 그래�
 
 ## 핵심 정리
 
+- 32비트·64비트는 레지스터 폭(워드)이고, 포인터 크기와 가상 주소 공간(4GB 대 사실상 무제한)을 함께 정한다.
 - 정수는 2의 보수, 실수는 IEEE 754 부동 소수점으로 저장한다.
 - 오버플로우는 같은 부호의 덧셈에서만 생기며, MSB 전후 캐리 비교로 검출한다.
 - 같은 비트도 타입에 따라 다르게 해석된다. 부호 있는 타입은 넓힐 때 부호 확장된다.
@@ -300,4 +318,4 @@ JavaScript의 `Number`는 배정밀도 부동 소수점 하나뿐이다. 그래�
 
 C에서 자료형별 크기와 문자를 숫자로 다루는 예(ASCII로 대소문자 바꾸기)는 [[c-basics|C 기초]]에 있다.
 
-관련 노트: [[developer-traps|개발자가 빠지는 함정 모음]], [[js-numbers|숫자와 Math]]
+관련 노트: [[developer-traps|개발자가 빠지는 함정 모음]], [[js-numbers|숫자와 Math]], [[memory-management|메모리 관리]]

@@ -16,6 +16,8 @@ date: "2026-10-14"
 - [프로그래밍 언어의 계보와 선택](Computer-Science/Programming-Languages/programming-language-evolution.md): 언어의 세대 구분, Fortran·LISP부터 Rust·Go·Kotlin까지 이어진 문제의식, 언어별 에너지 효율
 - [프로그래밍 패러다임](Computer-Science/Programming-Languages/programming-paradigms.md): 명령형·선언형·객체 지향·함수형·반응형·관점 지향·제네릭·동시성 프로그래밍 비교
 - [프로그램이 실행되기까지: 컴파일, 바이트코드, 인터프리터, GC](Computer-Science/Programming-Languages/how-programs-run.md): 네이티브 컴파일·VM과 JIT·인터프리터, 실행 파일 적재, Java·Python·Go의 GC, WebAssembly
+- [프로그래밍 언어 의미론: 구문, 바인딩, 람다 계산, 평가 전략](Computer-Science/Programming-Languages/programming-language-semantics.md): 구문과 의미론, AST, 연산·표시·공리적 의미론, 스코프와 클로저, 알파·베타와 변수 포획, 값·이름·필요·참조·공유에 의한 호출, CPS, Hoare 논리, 위생적 매크로
+- [타입 시스템: 검사, 추론, 다형성, 변성, 건전성](Computer-Science/Programming-Languages/type-systems.md): 정적·동적 검사, 단일화, 곱·합·재귀 타입과 Option·Result, 다형성 세 종류, 명목·구조·덕 타이핑, 변성, 완전성 검사, 진행과 보존
 
 ### C++
 
@@ -44,9 +46,13 @@ date: "2026-10-14"
 ### Java와 Go
 
 - [Java 코딩 컨벤션: Google 스타일과 캠퍼스 핵데이 규칙](Computer-Science/Programming-Languages/java-coding-convention.md): 두 컨벤션 비교, 이름·import·중괄호·Javadoc 규칙, Checkstyle·EditorConfig 자동 적용
-- [Java 언어 기본: 접근 제어자에서 스레드 안전 컬렉션까지](Computer-Science/Programming-Languages/java-language-basics.md): 접근 제어자, final·finalize, 오버로딩·오버라이딩, 오토박싱, 제네릭 타입 소거, 어노테이션, 동시성 컬렉션, ThreadLocal
-- [Java 실무 관용구: Enum, null과 Optional, 예외, 날짜 API, 비동기](Computer-Science/Programming-Languages/java-idioms.md): Enum에 행위 묶기, Optional 규칙, unchecked 예외 전환, java.time, CompletableFuture
+- [Java 언어 기본: 접근 제어자, static, 객체 비교, 제네릭, 리플렉션](Computer-Science/Programming-Languages/java-language-basics.md): 접근 제어자, final·finalize, 오버로딩·오버라이딩, 오토박싱, 제네릭 타입 소거, 어노테이션, 동시성 컬렉션, ThreadLocal
+- [Java 실무 관용구: Enum, Optional, 예외와 자원, 날짜 API, 람다와 스트림, 비동기](Computer-Science/Programming-Languages/java-idioms.md): Enum에 행위 묶기, Optional 규칙, unchecked 예외 전환, java.time, CompletableFuture
 - [Java 직렬화와 Jackson](Computer-Science/Programming-Languages/java-serialization-jackson.md): Serializable·serialVersionUID와 보안 문제, Jackson 어노테이션과 타입 정보 보존
-- [JVM 내부 구조: 컴파일, 클래스 로딩, 메모리 영역, GC 튜닝](Computer-Science/Programming-Languages/jvm-internals.md): 바이트코드와 클래스 로딩, 런타임 데이터 영역, 세대별 GC, GC 로그·힙 덤프 진단
-- [Python 언어 동작: 제너레이터, MRO, 메모리 관리, 덕 타이핑](Computer-Science/Programming-Languages/python-internals.md): 이터러블·이터레이터·제너레이터, C3 MRO와 super(), 참조 카운팅과 세대별 순환 수집, 누수 패턴, PyPy 추적 JIT, 덕 타이핑과 Protocol
-- [Go 언어: 설계 원칙, 고루틴 런타임, GC, 프로젝트 구조](Computer-Science/Programming-Languages/go-language.md): The Zen of Go, G·M·P 스케줄러, 동시 GC와 GOGC·GOMEMLIMIT, 계층별 프로젝트 구조
+- [JVM 내부 구조: 실행 엔진, 클래스 로딩, 메모리 영역, GC](Computer-Science/Programming-Languages/jvm-internals.md): 바이트코드와 클래스 로딩, 런타임 데이터 영역, 세대별 GC, GC 로그·힙 덤프 진단
+- [Python 언어 동작: 제너레이터, MRO, 메모리 관리, 동시성, 성능](Computer-Science/Programming-Languages/python-internals.md): 이터러블·이터레이터·제너레이터, C3 MRO와 super(), 참조 카운팅과 세대별 순환 수집, 누수 패턴, PyPy 추적 JIT, 덕 타이핑과 Protocol
+- [Go 언어: 설계 원칙, 타입, 에러 처리, 빌드와 테스트, GC](Computer-Science/Programming-Languages/go-language.md): The Zen of Go, G·M·P 스케줄러, 동시 GC와 GOGC·GOMEMLIMIT, 계층별 프로젝트 구조
+- [Java 동시성: 메모리 모델, 동기화, 스레드 풀, 가상 스레드](Computer-Science/Programming-Languages/java-concurrency.md): happens-before, synchronized·volatile·Atomic·Lock, ConcurrentHashMap, ThreadLocal과 ScopedValue, ThreadPoolExecutor, Fork/Join, 가상 스레드
+- [모던 Java 기능: 모듈, var, record, sealed, 패턴 매칭, switch 식](Computer-Science/Programming-Languages/modern-java-features.md): LTS별 기능 표, 모듈 시스템, var 제약, record·sealed, 패턴 매칭, switch 식, Sequenced Collections
+- [Python 언어 기본: 객체와 가변성, 함수, 데코레이터, 클래스, 타입 힌트, import](Computer-Science/Programming-Languages/python-language-basics.md): 가변·불변과 복사, 인자 종류, LEGB·nonlocal, 데코레이터, 컨텍스트 매니저, 매직 메서드, 디스크립터, 타입 힌트, import
+- [Go 동시성: 고루틴, 채널, select, context, sync](Computer-Science/Programming-Languages/go-concurrency.md): G·M·P 스케줄러, 채널 상태별 동작, select, context 취소 전파, sync와 atomic, 레이스 디텍터

@@ -5,7 +5,7 @@ summary: "프로세스의 문맥과 메모리 영역(코드·데이터·힙·스
 tags: ["os", "process", "thread", "pcb", "system-call"]
 source: notion
 date: "2026-10-14"
-sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/205", "https://velog.io/@raejoonee/프로세스와-스레드의-차이", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/32df4df48d7841f2bd84f71a2aba4547", "https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread", "https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux", "https://www.youtube.com/watch?v=Jjfah3t_xWk", "https://www.youtube.com/watch?v=wz9C_vqME8g", "https://www.youtube.com/watch?v=zUGvpUtNlwI", "https://www.youtube.com/watch?v=XexLQRaKoTA", "https://www.youtube.com/watch?v=yTZ1ECY2Vjc"]
+sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/205", "https://velog.io/@raejoonee/프로세스와-스레드의-차이", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/32df4df48d7841f2bd84f71a2aba4547", "https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread", "https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux", "https://www.youtube.com/watch?v=Jjfah3t_xWk", "https://www.youtube.com/watch?v=wz9C_vqME8g", "https://www.youtube.com/watch?v=zUGvpUtNlwI", "https://www.youtube.com/watch?v=XexLQRaKoTA", "https://www.youtube.com/watch?v=yTZ1ECY2Vjc", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md"]
 ---
 
 > 노션 정리와 개발장의 「[프로세스와 스레드의 차이](https://velog.io/@raejoonee/프로세스와-스레드의-차이)」(2020.08)를 바탕으로 재구성한 노트다.
@@ -14,6 +14,7 @@ sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://
 >
 > IPC 수단 비교는 ByteByteGo의 System Design 101 가이드 「[Inter-Process Communication on Linux](https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux)」로 확인해 보강했다.
 > 「PCB」, 「리눅스에서는 둘 다 태스크」, 「코드로 직접 확인하기」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 주소 공간의 배치·크기와 TCB, 「커널 스택에 남는 것」, 「문맥 교환의 비용과 줄이는 법」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 먼저 세 개념의 관계를 잡는다.
 
@@ -46,6 +47,49 @@ sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://
 
 힙과 스택이 서로를 향해 자라다 한계를 넘으면 오버플로우가 난다. C 코드에서 각 영역이 어떻게 쓰이는지는 [[pointers-and-memory|포인터와 메모리]]에 있다.
 
+### 주소 공간을 영역으로 나누는 이유
+
+영역마다 **권한·수명·크기 변화**가 다르기 때문이다. 코드는 읽기·실행만, 데이터·힙·스택은 읽기·쓰기만 허용하고 실행은 막아(NX 비트) 코드 변조와 스택에 심은 코드의 실행을 막는다. 권한은 페이지 단위로 붙으므로([[memory-management|메모리 관리]]) 성질이 같은 것끼리 모아야 한다. 읽기 전용인 코드 영역은 같은 프로그램을 실행하는 프로세스끼리 한 벌만 올려 공유하고, 크기가 고정된 영역과 실행 중에 자라는 힙·스택을 떨어뜨려 서로 침범하지 않게 한다.
+
+실제 배치는 교과서의 네 영역보다 하나가 더 있다. 힙과 스택 사이의 **메모리 매핑 영역**이다.
+
+```text
+높은 주소  커널 영역          ← 사용자 모드에서 접근 불가
+          스택 ↓             ← 메인 스레드 스택
+          메모리 매핑 영역    ← 공유 라이브러리, mmap한 파일, 공유 메모리, 다른 스레드의 스택
+          힙 ↑               ← brk로 늘리고, 큰 블록은 mmap으로 따로 받는다
+          BSS · 데이터
+낮은 주소  코드
+```
+
+IPC의 **공유 메모리**(`shm_open` + `mmap`, `shmat`)는 이 매핑 영역에 들어간다. 실행 중에 원하는 크기로 만들어 붙이는 것이라 크기가 고정된 데이터 영역에 둘 수 없고, 여러 프로세스의 페이지 테이블이 같은 물리 프레임을 가리키게 하는 것이 곧 mmap의 일이기 때문이다. 붙는 가상 주소는 프로세스마다 다를 수 있으므로 공유 메모리 안에는 포인터 대신 시작점으로부터의 오프셋을 저장한다. 실행 중인 프로세스의 실제 배치와 영역별 권한(`r-xp`, `rw-p`)은 Linux `/proc/<pid>/maps`, macOS `vmmap <pid>`로 본다.
+
+### 스택과 힙의 크기는 언제 정해지나
+
+그림의 빈 공간은 가상 주소일 뿐이다. 물리 메모리는 실제로 건드린 페이지에만 붙으므로 스택과 힙이 처음부터 큰 것은 아니다. 정해지는 것은 **얼마까지 자랄 수 있나**(한도)다.
+
+| 영역 | 정해지는 때 | 바꾸는 방법 |
+| --- | --- | --- |
+| 메인 스레드 스택 | `exec`할 때 자원 한도 `RLIMIT_STACK`이 상한이 되고, 쓰는 만큼 페이지가 붙으며 자란다. Linux 기본 한도는 보통 8MB | 실행 전에 셸에서 `ulimit -s`(사용자가 바꿀 수 있다), 프로그램에서 `setrlimit` |
+| 다른 스레드의 스택 | 스레드를 만들 때 고정 크기로 잡는다. glibc 기본값은 `RLIMIT_STACK` 값을 따르고, macOS 보조 스레드는 512KB | `pthread_attr_setstacksize`, Java `-Xss` |
+| 힙 | 미리 정하지 않는다. `malloc`이 모자랄 때마다 `brk`·`mmap`으로 늘린다 | `ulimit -v`(`RLIMIT_AS`), 언어 런타임 옵션(Java `-Xmx`) |
+
+스택 끝에는 접근하면 폴트가 나는 **가드 페이지**가 있어, 한도를 넘는 재귀는 다른 영역을 덮어쓰지 않고 `SIGSEGV`로 끝난다.
+
+### 스택이 힙보다 빠른 이유
+
+이미 캐시에 올라온 뒤 한 바이트를 읽는 속도는 둘이 같다. 차이는 **할당 비용과 지역성**에서 온다.
+
+| 비교 | 스택 | 힙 |
+| --- | --- | --- |
+| 할당·해제 | 스택 포인터를 더하고 빼는 명령 하나 | 할당자가 맞는 빈 블록을 찾고 메타데이터를 갱신한다. 멀티스레드면 잠금이나 스레드별 캐시가 필요하고, 모자라면 시스템 콜까지 간다 |
+| 캐시 | 늘 꼭대기 근처만 쓰므로 거의 항상 캐시에 있다 | 블록이 흩어져 있고 포인터를 거쳐 접근해 캐시 미스가 잦다 |
+| 수명 관리 | 함수가 끝나면 자동 | `free`나 가비지 컬렉션 |
+
+### 자료구조의 스택·힙과의 관계
+
+**스택 영역은 자료구조 스택과 같은 원리다.** 함수를 부르면 스택 프레임을 push하고 반환하면 pop하는 LIFO라서, 호출의 역순으로 정리된다([[calling-convention|호출 규약과 스택 프레임]]). **힙 영역은 자료구조 힙(우선순위 큐)과 관계가 없다.** 순서 없이 쌓아 둔 「더미」라는 뜻의 이름이고, 할당자는 빈 블록 목록(free list)이나 크기별 bin으로 공간을 관리한다.
+
 프로세스 상태(new, ready, running, blocked, suspended, terminated)와 전이는 [[process-scheduling|CPU 스케줄링]] 노트에 정리했다. `suspended`는 `blocked`와 달리 스와퍼 같은 **외부 요인**으로 정지된 상태라서, 외부에서 재개해 줘야 다시 active 상태가 된다.
 
 ## PCB (Process Control Block)
@@ -61,11 +105,44 @@ sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://
 
 레지스터 값을 PCB에 저장하는 이유는 **멈춘 자리에서 다시 시작하기** 위해서다. 타이머 인터럽트로 CPU를 빼앗긴 프로세스가 PC 값을 잃으면 다음 차례에 어느 명령어부터 실행할지 모르고, 범용 레지스터에 있던 연산 중간값을 잃으면 계산을 처음부터 다시 해야 한다. 담기는 항목은 운영체제마다 조금씩 다르다.
 
+스레드는 PCB를 통째로 따로 갖지 않고 **TCB(Thread Control Block)** 를 갖는다. TCB에는 스레드 ID, 상태, PC·레지스터, 스택 포인터, 스케줄링 우선순위처럼 스레드마다 다른 것만 담고, 주소 공간·열린 파일 같은 공유 자원은 프로세스의 PCB를 가리킨다. 사용자 수준 스레드라면 TCB는 커널이 아니라 스레드 라이브러리가 사용자 공간에 둔다. Linux는 스레드마다 `task_struct`를 하나씩 두고 같은 프로세스의 스레드들이 메모리 정보(`mm_struct`)와 파일 테이블을 함께 가리키게 해서, 스레드도 PCB를 하나씩 가진 셈이 된다(아래 「리눅스에서는 둘 다 태스크」).
+
 ## 문맥 교환 (Context Switch)
 
 CPU를 다른 프로세스로 넘기는 과정이다. 실행 중이던 프로세스의 문맥을 그 PCB에 저장하고, 새 프로세스의 PCB에서 문맥을 읽어 CPU에 복원한다.
 
 시스템 콜이나 인터럽트로 커널 모드에 들어갔다가 **같은 프로세스로 돌아오는 것은 문맥 교환이 아니다.** 이때도 PCB에 일부 정보를 저장하긴 하지만, 캐시를 비우는 것처럼 비용이 큰 작업은 하지 않는다. 문맥 교환은 사용자 프로세스가 바뀔 때만 일어난다.
+
+### 커널 스택에 남는 것
+
+교재 그림은 레지스터를 모두 PCB에 복사하는 것처럼 그리지만, 실제로는 대부분 그 스레드의 **커널 스택**에 놓인다(Linux x86-64 기준).
+
+```text
+1. 인터럽트·시스템 콜로 커널 진입
+   CPU가 사용자 스택 포인터, 플래그, 복귀 주소(PC)를 커널 스택에 자동으로 쌓는다
+   커널 진입 코드가 나머지 범용 레지스터를 이어서 쌓는다 → 트랩 프레임(struct pt_regs)
+2. 스케줄러가 다른 스레드를 고름 (switch_to)
+   callee-saved 레지스터를 커널 스택에 더 쌓고, 커널 스택 포인터를 태스크 구조체에 저장
+   새 스레드의 커널 스택 포인터로 바꾸고, 페이지 테이블 기준 레지스터(CR3)도 바꾼다(프로세스가 다를 때)
+3. 새 스레드는 자기 커널 스택에 남겨 둔 트랩 프레임을 꺼내 사용자 모드로 복귀
+```
+
+즉 PCB(태스크 구조체)는 레지스터 값을 직접 다 들고 있기보다 **저장된 커널 스택을 가리키는 포인터**를 갖는다.
+
+### 문맥 교환의 비용과 줄이는 법
+
+| 비용 | 내용 | 프로세스 사이 | 같은 프로세스의 스레드 사이 |
+| --- | --- | --- | --- |
+| 직접 비용 | 커널 진입·복귀, 레지스터 저장·복원, 스케줄러 실행 | 있음 | 있음 |
+| 주소 공간 전환 | 페이지 테이블 교체, TLB 무효화 | 있음 | 없음 |
+| 간접 비용 | 새 작업의 데이터가 캐시·TLB에 없어 한동안 미스가 이어진다 | 크다 | 작다. 공유 데이터는 캐시에 남는다 |
+
+대개 간접 비용이 직접 비용보다 크다. 줄이는 방법은 양쪽에 있다.
+
+| 쪽 | 방법 |
+| --- | --- |
+| 하드웨어 | TLB 항목에 주소 공간 식별자(x86 PCID, ARM ASID)를 붙여 전환 때 TLB를 비우지 않는다. SMT는 문맥 여러 벌을 코어에 동시에 두어 전환 없이 번갈아 실행한다 |
+| 소프트웨어 | 스레드 수를 코어 수 근처로 묶는 스레드 풀, 커널을 거치지 않고 사용자 공간에서 전환하는 코루틴·가상 스레드, 이벤트 루프로 블로킹 대기 자체를 없애기([[concurrency-models\|동시성 모델]]), CPU 친화도(affinity)로 스레드를 같은 코어에 묶어 캐시를 데운 채 유지 |
 
 ## 스케줄링 큐와 스케줄러
 

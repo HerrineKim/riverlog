@@ -5,11 +5,12 @@ summary: "캐시의 주소 매핑(연관·직접·집합 연관)과 쓰기 정�
 tags: ["computer-architecture", "cache", "memory", "virtual-memory", "os"]
 source: notion
 date: "2026-10-12"
-sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://parksb.github.io/article/29.html", "https://www.youtube.com/watch?v=qLCP0PwRp_w"]
+sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://parksb.github.io/article/29.html", "https://www.youtube.com/watch?v=qLCP0PwRp_w", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
 > 교체 정책·성능 지표·캐시 친화적 코드는 「[캐시가 동작하는 아주 구체적인 원리](https://parksb.github.io/article/29.html)」로 보강했다.
 > 「캐시 메모리」 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 캐시 계층별 역할, 라인 크기의 트레이드오프, 하드웨어 교체 정책 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 캐시와 가상 메모리는 같은 아이디어를 메모리 계층의 서로 다른 층에 적용한 것이다. 캐시는 "느린 메인 메모리를 빠르게", 가상 메모리는 "작은 메인 메모리를 크게" 보이게 만든다. 둘 다 프로그램이 최근에 쓴 데이터나 그 근처를 다시 쓰는 경향(**지역성**)에 기대고 있다. 이 노트는 그중 하드웨어가 담당하는 부분, 즉 캐시 회로와 MMU를 다룬다.
 
@@ -18,6 +19,14 @@ sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8
 - 메인 메모리보다 수십 배 빠르고 용량은 훨씬 작다.
 - 보통 L1·L2는 코어 안에, L3는 여러 코어가 공유하는 계층 구조다. 코어에서 멀수록 크고 느리다(L1 < L2 < L3 < 메인 메모리).
 - L1은 다시 명령어만 담는 **L1I**와 데이터만 담는 **L1D**로 나누기도 한다(**분리형 캐시**, split cache). 명령어 인출과 데이터 접근이 한 캐시를 놓고 다투지 않아 L1을 더 빠르게 쓸 수 있다. L2부터는 보통 둘을 함께 담는 통합 캐시다.
+- 계층마다 맡는 일이 다르다. 크기·지연은 세대마다 다르므로 자릿수로만 본다.
+
+| 계층 | 위치 | 크기 | 지연 | 역할 |
+| --- | --- | --- | --- | --- |
+| L1 | 코어마다, 명령어(L1I)·데이터(L1D) 분리 | 수십 KB | 4~5클럭 | 매 명령어가 쓰는 데이터를 거의 지연 없이 공급 |
+| L2 | 코어마다(일부 설계는 코어 몇 개가 공유) | 수백 KB~수 MB | 10~20클럭 | L1에서 놓친 것을 받아 주는 완충 |
+| L3 (LLC) | 칩의 모든 코어가 공유 | 수십 MB 이상 | 수십 클럭 | 코어 사이의 데이터 공유, 메모리 접근 줄이기 |
+
 - 코어마다 L1·L2를 따로 두면 같은 주소의 사본이 여러 코어에 생겨, 한 코어가 값을 바꾸면 다른 코어의 사본과 어긋날 수 있다. 이를 맞추는 캐시 일관성(MESI)은 [[cache-friendly-code|캐시를 고려한 코드]]에 있다.
 - CPU는 주소만 내보낼 뿐, 데이터가 캐시에 있는지 메인 메모리에 있는지 신경 쓰지 않는다. 이를 연결하는 것이 **주소 매핑**이다.
   - **캐시 히트**: 캐시에 있음 → 바로 전달
@@ -35,6 +44,8 @@ sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8
 
 블록 단위로 매핑할 때는 주소를 태그 / 인덱스(블록) / 블록 내 워드로 나눈다.
 
+블록(캐시 라인) 크기도 트레이드오프다. 라인을 키우면 미스 한 번에 이웃 데이터를 더 가져와 공간 지역성을 더 살리지만, 미스 페널티(전송 시간)가 커지고, 같은 용량에 담는 라인 수가 줄어 충돌 미스가 늘며, 서로 다른 변수가 한 라인에 묶이는 거짓 공유도 잦아진다. 대부분의 CPU는 64바이트에서 균형을 잡는다(Apple M 시리즈는 128바이트).
+
 ### 쓰기 정책
 
 | 정책 | 동작 | 특징 |
@@ -46,7 +57,7 @@ sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8
 
 ### 교체 정책과 성능 지표
 
-집합 연관·연관 매핑에서 집합이 꽉 차면 어떤 블록을 내보낼지 정해야 한다. 먼저 들어온 블록을 내보내는 FIFO, **가장 오래 쓰지 않은 블록을 내보내는 LRU**가 대표적이다. LRU는 운영체제의 페이지 교체와 소프트웨어 캐시에도 같은 생각으로 쓰인다.
+집합 연관·연관 매핑에서 집합이 꽉 차면 어떤 블록을 내보낼지 정해야 한다. 먼저 들어온 블록을 내보내는 FIFO, **가장 오래 쓰지 않은 블록을 내보내는 LRU**가 대표적이다. LRU는 운영체제의 페이지 교체와 소프트웨어 캐시에도 같은 생각으로 쓰인다. 다만 하드웨어는 모든 접근의 순서를 정확히 기록하기 비싸서, way가 많으면 트리 모양 비트로 근사한 **pseudo-LRU**나 한 번 쓰고 마는 데이터에 강한 RRIP 계열, 또는 무작위 교체를 쓴다. 참조 횟수를 세야 하는 LFU는 CPU 캐시에서 쓰지 않는다.
 
 캐시 성능은 히트율 하나보다 **평균 메모리 접근 시간(AMAT)** 으로 본다.
 

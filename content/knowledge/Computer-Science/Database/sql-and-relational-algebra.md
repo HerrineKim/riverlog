@@ -5,10 +5,10 @@ summary: "SQL의 바탕이 되는 관계대수 연산자(σ·π·⋈·÷와 집�
 tags: ["database", "sql", "relational-algebra", "certificate"]
 source: notion
 date: "2026-10-20"
-sources: ["https://bytebytego.com/guides/visualizing-a-sql-query", "https://medium.com/@khwsc1/%EB%B2%88%EC%97%AD-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%84%A4%EA%B3%84-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-b25792a0aa86", "https://brunch.co.kr/@toughrogrammer/17"]
+sources: ["https://bytebytego.com/guides/visualizing-a-sql-query", "https://medium.com/@khwsc1/%EB%B2%88%EC%97%AD-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%84%A4%EA%B3%84-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-b25792a0aa86", "https://brunch.co.kr/@toughrogrammer/17", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md"]
 ---
 
-> 노션 정리를 바탕으로 재구성하고, SQL 실행 과정은 ByteByteGo의 System Design 101 가이드 「[Visualizing a SQL Query](https://bytebytego.com/guides/visualizing-a-sql-query)」를, 설계 절차는 Lucidchart 튜토리얼의 번역 「[데이터 구조와 설계: 튜토리얼](https://medium.com/@khwsc1/%EB%B2%88%EC%97%AD-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%84%A4%EA%B3%84-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-b25792a0aa86)」와 「[개념 정리 - 데이터베이스 편](https://brunch.co.kr/@toughrogrammer/17)」을 바탕으로 보강한 노트다.
+> 노션 정리를 바탕으로 재구성하고, SQL 실행 과정은 ByteByteGo의 System Design 101 가이드 「[Visualizing a SQL Query](https://bytebytego.com/guides/visualizing-a-sql-query)」를, 설계 절차는 Lucidchart 튜토리얼의 번역 「[데이터 구조와 설계: 튜토리얼](https://medium.com/@khwsc1/%EB%B2%88%EC%97%AD-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%84%A4%EA%B3%84-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-b25792a0aa86)」와 「[개념 정리 - 데이터베이스 편](https://brunch.co.kr/@toughrogrammer/17)」을 바탕으로 보강한 노트다. 3단계 스키마와 데이터 독립성은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다.
 
 관계대수는 관계형 데이터베이스의 질의를 연산으로 표현하는 수학적 체계이고, SQL은 그 위에 만든 표준 언어다. SQL은 "무엇을 원하는지"만 적는 비절차적 언어, 관계대수는 "어떻게 구할지"를 연산 순서로 적는 절차적 언어라는 차이가 있다.
 
@@ -89,7 +89,26 @@ SQL 문 ─▶ ① 파싱 ─▶ ② 변환 ─▶ ③ 최적화 ─▶ ④ 실�
 
 ## 스키마와 인덱스
 
-- **스키마**: 데이터베이스의 구조와 제약 조건을 기술한 메타데이터의 집합. 외부(사용자 관점), 개념(전체 논리 구조), 내부(물리 저장 구조) 스키마로 나뉜다.
+- **스키마**: 데이터베이스의 구조(테이블, 컬럼, 타입)와 제약 조건, 관계를 기술한 메타데이터의 집합. 스키마는 자주 바뀌지 않는 「틀」이고, 어느 순간 들어 있는 실제 데이터는 **인스턴스**라고 한다. MySQL에서는 스키마와 데이터베이스가 같은 말이고, PostgreSQL에서는 한 데이터베이스 안에 여러 스키마(이름공간)를 둔다.
 - **인덱스**: `<키 값, 레코드 주소>` 쌍으로 이루어진 자료구조로, 검색 속도를 높인다. 파일 구조는 크게 순차, 인덱스, 해싱 방식이 있다. 대부분의 RDBMS는 인덱스를 B-트리 계열(B+ 트리)로 구현한다([[data-structures|기초 자료구조]]의 균형 트리 참고). B+ 트리를 쓰는 이유는 [[database-internals#인덱스 자료 구조|DB 내부 구조]], 복합 인덱스 순서와 실행 계획 읽기는 [[index-design|인덱스 설계와 쿼리 튜닝]]에 있다.
+
+### 3단계 스키마와 데이터 독립성
+
+ANSI/SPARC 구조는 스키마를 보는 관점에 따라 세 층으로 나눈다.
+
+| 층 | 무엇을 기술하나 | 예 |
+| --- | --- | --- |
+| 외부 스키마 | 사용자·응용 프로그램 하나가 보는 부분. 여러 개 있다(서브 스키마) | 뷰, 사용자별 권한이 걸린 컬럼 묶음 |
+| 개념 스키마 | 조직 전체의 논리 구조. 모든 엔터티·관계·제약 조건. DB당 하나 | 테이블 정의, 외래 키, 무결성 제약 |
+| 내부 스키마 | 저장 장치에 어떻게 놓이나. 레코드 형식, 인덱스, 파일 구성 | 인덱스, 파티션, 테이블스페이스 |
+
+층을 나누는 목적은 **데이터 독립성**이다. 층 사이에 매핑을 두어 아래층이 바뀌어도 위층을 고치지 않게 한다.
+
+| 독립성 | 뜻 | 예 |
+| --- | --- | --- |
+| 논리적 독립성 | 개념 스키마가 바뀌어도 외부 스키마·응용 프로그램은 그대로 | 테이블을 둘로 나눠도 같은 모양의 뷰를 제공하면 앱 코드는 그대로다 |
+| 물리적 독립성 | 내부 스키마가 바뀌어도 개념 스키마는 그대로 | 인덱스를 추가하거나 저장 장치를 바꿔도 SQL은 그대로다 |
+
+논리적 독립성은 물리적 독립성보다 지키기 어렵다. 컬럼을 지우거나 의미를 바꾸면 뷰로 감출 수 없는 경우가 많다.
 
 관련 노트: [[sql-basics|SQL 기초]], [[normalization|정규화와 반정규화]], [[transaction|트랜잭션과 회복]], [[database-models|데이터베이스 모델]], [[database-internals|DB 내부 구조]], [[index-design|인덱스 설계와 쿼리 튜닝]]

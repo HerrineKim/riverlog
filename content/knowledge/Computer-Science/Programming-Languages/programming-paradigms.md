@@ -1,15 +1,16 @@
 ---
 title: "프로그래밍 패러다임"
 concept: "Programming Paradigms"
-summary: "명령형·선언형·객체 지향·함수형·반응형·관점 지향·제네릭·동시성 프로그래밍이 각각 무엇을 중심에 두고 코드를 짜는지 비교한다. 패러다임을 레코드·클로저·동시성·이름 붙은 상태 같은 개념의 묶음으로 보는 관점, 관찰 가능한 비결정성과 상태 표현력이라는 두 축, 새 개념이 필요하다는 신호인 창조적 확장 원칙, goto를 없앤 구조적 프로그래밍, 명령형·함수형·객체 지향의 차이와 객체 지향의 네 기둥(추상화, 캡슐화, 상속, 다형성)을 정리한다."
+summary: "명령형·선언형·객체 지향·함수형·반응형·관점 지향·제네릭·동시성 프로그래밍이 각각 무엇을 중심에 두고 코드를 짜는지 비교한다. 패러다임을 레코드·클로저·동시성·이름 붙은 상태 같은 개념의 묶음으로 보는 관점, 관찰 가능한 비결정성과 상태 표현력이라는 두 축, 새 개념이 필요하다는 신호인 창조적 확장 원칙, goto를 없앤 구조적 프로그래밍, 명령형·함수형·객체 지향의 차이와 객체 지향의 네 기둥(추상화, 캡슐화, 상속, 다형성)을 정리한다. 함수형의 순수 함수·부수 효과·참조 투명성과 순수 함수가 스레드 안전한 이유, 클래스와 객체 지향이 같은 말이 아닌 이유도 다룬다."
 tags: ["programming-paradigm", "oop", "computer-science", "design", "paradigm"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/top-8-programming-paradigms", "https://bytebytego.com/guides/imperative-vs-functional-vs-object-oriented-programming", "https://bytebytego.com/guides/the-fundamental-pillars-of-object-oriented-programming", "https://bytebytego.com/guides/8-key-oop-concepts-every-developer-should-know", "https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf", "https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf", "https://www.youtube.com/watch?v=l26oaHV7D40"]
+sources: ["https://bytebytego.com/guides/top-8-programming-paradigms", "https://bytebytego.com/guides/imperative-vs-functional-vs-object-oriented-programming", "https://bytebytego.com/guides/the-fundamental-pillars-of-object-oriented-programming", "https://bytebytego.com/guides/8-key-oop-concepts-every-developer-should-know", "https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf", "https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf", "https://www.youtube.com/watch?v=l26oaHV7D40", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Top 8 Programming Paradigms](https://bytebytego.com/guides/top-8-programming-paradigms)」, 「[Imperative vs Functional vs Object-oriented Programming](https://bytebytego.com/guides/imperative-vs-functional-vs-object-oriented-programming)」, 「[The Fundamental Pillars of Object-Oriented Programming](https://bytebytego.com/guides/the-fundamental-pillars-of-object-oriented-programming)」, 「[8 Key OOP Concepts Every Developer Should Know](https://bytebytego.com/guides/8-key-oop-concepts-every-developer-should-know)」를 바탕으로 재구성한 노트다. 개념 묶음으로서의 패러다임은 Peter Van Roy의 「[Programming Paradigms for Dummies: What Every Programmer Should Know](https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf)」(2009)를, 구조적 프로그래밍은 Edsger Dijkstra의 「[Go To Statement Considered Harmful](https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf)」(1968)를 바탕으로 보강했다.
 > 「구조적 프로그래밍: goto를 없앤 첫 전환」 절의 기본 구성 요소 표와 함수 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> 「함수형 프로그래밍의 핵심 개념」 절과 클래스와 객체 지향의 관계는 fru1tworld/cs-basic 모의 면접 질문 목록의 객체지향·함수형 질문을 바탕으로 보강했다.
 
 ## 패러다임이란
 
@@ -105,6 +106,32 @@ total = sum(filter(lambda p: p > 100, prices))
 total = cart.total_of_items_over(100)
 ```
 
+## 함수형 프로그래밍의 핵심 개념
+
+| 개념 | 뜻 |
+| --- | --- |
+| 순수 함수(pure function) | 같은 입력에 항상 같은 출력을 내고, 부수 효과가 없다 |
+| 부수 효과(side effect) | 반환값 말고 바깥에 남기는 흔적. 전역·인자 객체 변경, 입출력, 네트워크, 로그, 현재 시각·난수 읽기, 예외로 흐름 바꾸기 |
+| 참조 투명성(referential transparency) | 식을 그 결과값으로 바꿔도 프로그램의 의미가 같다. 순수 함수 호출의 성질이다 |
+| 불변성(immutability) | 값을 고치지 않고 바뀐 새 값을 만든다. 구조 공유로 복사 비용을 줄인다 |
+| 일급·고차 함수 | 함수를 값처럼 넘기고 돌려준다. `map`·`filter`·`reduce`가 반복문 대신 흐름을 맡는다 |
+| 함수 합성(composition) | 작은 함수를 `f(g(x))`처럼 이어 큰 함수를 만든다 |
+
+**순수 함수가 함수형의 메커니즘 전체를 받친다.** 출력이 입력에만 달려 있으므로 함수 호출을 결과값으로 바꿔 생각할 수 있고(등식 추론), 결과를 캐시해도(메모이제이션), 호출 순서를 바꾸거나 미뤄도(지연 평가), 여러 코어에 나눠도(병렬화) 의미가 같다. 테스트는 입력과 기대 출력만 있으면 된다. 고차 함수와 합성도 조립하는 부품이 순수해야 조립 결과를 예측할 수 있다. 치환이 깨지는 예는 [[programming-language-semantics|프로그래밍 언어 의미론]]의 「순수성과 참조 투명성」에 있다.
+
+**부수 효과를 모두 없애는 것은 이상이 아니다.** 화면에 그리고, 파일에 쓰고, 요청에 답하는 것이 프로그램의 목적이라 효과가 없는 프로그램은 아무 일도 하지 않는다. 목표는 효과를 없애는 것이 아니라 **분리하고 경계로 모으는 것**이다. 계산은 순수 함수로 짜고, 입출력은 프로그램 가장자리의 얇은 층에 모은다(함수형 코어, 명령형 셸). Haskell은 효과를 `IO` 타입으로 표시해 이 분리를 타입으로 강제한다([[type-systems|타입 시스템]]의 효과 시스템). 성능이 중요한 곳에서는 지역 변수를 바꾸는 명령형 반복문이 더 단순하고 빠를 수도 있다. 바깥에서 관찰되지 않는 지역 변경은 함수의 순수성을 해치지 않는다.
+
+**순수 함수는 스레드 안전하다.** 경쟁 상태는 여러 스레드가 **공유 가변 상태**를 동시에 읽고 쓸 때 생기는데, 순수 함수는 공유 상태를 읽거나 쓰지 않고 인자와 지역 변수만 쓰므로(지역 변수는 스레드마다 스택에 따로 있다) 몇 개의 스레드가 동시에 불러도 서로 간섭하지 않는다. 락이 필요 없다. 단, 인자로 받은 **가변 객체를 다른 스레드가 동시에 고치고 있다면** 함수가 읽는 값 자체가 흔들리므로, 불변 데이터와 함께 써야 완전히 안전하다.
+
+**함수형 메커니즘을 쓰는 이유**:
+
+- **추론과 테스트**: 상태 변화를 따라가지 않고 함수 하나만 보고 이해한다. 버그 후보가 효과가 있는 경계로 좁혀진다.
+- **동시성과 병렬화**: 불변 데이터와 순수 함수는 락 없이 나눠 처리할 수 있다. 멀티코어와 분산 처리(MapReduce, Spark)의 기본 모델이다.
+- **조합과 재사용**: 고차 함수로 「무엇을 할지」를 인자로 넘겨 반복 구조를 한 번만 쓴다.
+- **선언적 표현**: 「어떻게」가 아니라 「무엇을」 쓰므로 의도가 드러난다.
+
+비용도 있다. 불변 갱신은 복사·할당이 늘고, 재귀와 고차 함수는 익숙하지 않은 사람에게 읽기 어렵다. 그래서 현대 언어는 순수 함수형으로 가기보다 람다·스트림·불변 컬렉션·`record` 같은 함수형 도구를 섞는다. JavaScript에서의 실천(액션·계산·데이터, 카피 온 라이트, 커링)은 [[functional-programming|함수형 프로그래밍]]에 있다.
+
 ## 객체 지향의 핵심 개념
 
 ### 구성 요소
@@ -123,7 +150,14 @@ total = cart.total_of_items_over(100)
 | **추상화(Abstraction)** | 구현 세부를 숨기고 꼭 필요한 특징만 드러낸다 | `Vehicle`에 추상 메서드 `stop()`만 둔다 |
 | **캡슐화(Encapsulation)** | 데이터와 메서드를 한 단위로 묶고 접근 제한자로 직접 접근을 막는다 | private 필드 + 공개 메서드 |
 | **상속(Inheritance)** | 기존 클래스(부모)의 속성과 메서드를 새 클래스(자식)가 물려받아 재사용한다 | `Car extends Vehicle` |
-| **다형성(Polymorphism)** | 같은 메시지에 객체마다 다르게 반응한다. 같은 상속 계보의 타입은 서로 바꿔 쓸 수 있다 | `vehicle.stop()`이 차와 자전거에서 다르게 동작 |
+| **다형성(Polymorphism)** | 같은 메시지에 객체마다 다르게 반응한다. 같은 상속 계보의 타입은 서로 바꿔 쓸 수 있다. 정적·동적 다형성의 구분은 [[type-systems\|타입 시스템]] | `vehicle.stop()`이 차와 자전거에서 다르게 동작 |
+
+### 클래스와 객체 지향은 같은 말이 아니다
+
+**클래스가 있다고 객체 지향 언어인 것도, 객체 지향 언어에 클래스가 꼭 있어야 하는 것도 아니다.**
+
+- 클래스 없는 객체 지향: JavaScript(ES2015 전)와 Self는 객체가 다른 객체를 **프로토타입**으로 삼아 직접 상속한다([[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]]). Go는 클래스·상속 없이 구조체, 메서드, 암묵적 인터페이스, 임베딩으로 캡슐화와 다형성을 얻는다([[go-language|Go 언어]]). 객체 지향의 본질을 메시징·캡슐화·늦은 바인딩으로 보면 클래스는 그 구현 수단의 하나일 뿐이다([[oop-messaging|객체 지향의 본질: 메시징]]).
+- 클래스가 있어도 객체 지향이 아닌 코드: Java로도 static 메서드와 데이터만 든 클래스로 절차적 코드를 짤 수 있다. C++·Python·Kotlin은 객체 지향을 지원하는 멀티 패러다임 언어다. 클래스는 데이터와 함수를 묶는 문법이고, 객체 지향은 책임을 가진 객체들이 메시지로 협력하는 설계 방식이다.
 
 상속은 재사용 수단이지만 결합을 강하게 만든다. 행동을 재사용하려면 상속보다 **조합(composition)**을 먼저 고려하는 것이 일반적인 원칙이다. 객체 지향을 클래스가 아니라 **메시지를 주고받는 객체**로 보는 관점은 [[oop-messaging|객체 지향의 본질: 메시징]]에, JavaScript에서의 객체 지향은 [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]]에 있다.
 
@@ -133,6 +167,8 @@ total = cart.total_of_items_over(100)
 - 패러다임은 레코드·클로저·동시성·이름 붙은 상태 같은 개념의 묶음이다. 비결정성과 상태는 필요할 때만 들인다. 코드 전체를 고쳐야 하는 일이 반복되면 개념이 하나 빠졌다는 신호다.
 - 명령형은 "어떻게", 선언형·함수형은 "무엇을" 쓴다. 객체 지향은 상태와 행동을 객체로 묶어 책임을 나눈다.
 - 함수형은 불변성과 순수 함수로 추론과 병렬화를 쉽게 하고, 객체 지향은 큰 도메인을 역할로 나누기 쉽게 한다.
+- 순수 함수는 공유 상태를 건드리지 않아 스레드 안전하다. 부수 효과는 없애는 것이 아니라 경계로 모은다.
+- 클래스는 객체 지향의 한 구현 수단이다. 프로토타입·구조체 기반 객체 지향도 있다.
 - 객체 지향의 네 기둥은 추상화, 캡슐화, 상속, 다형성이다. 상속보다 조합을 먼저 생각한다.
 
-관련 노트: [[software-complexity|소프트웨어 복잡성]], [[state-and-decoupling-designs|상태와 결합을 다루는 열다섯 가지 설계]], [[oop-messaging|객체 지향의 본질: 메시징]], [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[reactive-programming|반응형 프로그래밍과 RxJS]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[gof-design-patterns|GoF 디자인 패턴]], [[how-programs-run|프로그램이 실행되기까지]]
+관련 노트: [[software-complexity|소프트웨어 복잡성]], [[state-and-decoupling-designs|상태와 결합을 다루는 열다섯 가지 설계]], [[oop-messaging|객체 지향의 본질: 메시징]], [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[reactive-programming|반응형 프로그래밍과 RxJS]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[gof-design-patterns|GoF 디자인 패턴]], [[how-programs-run|프로그램이 실행되기까지]], [[programming-language-semantics|프로그래밍 언어 의미론]], [[functional-programming|함수형 프로그래밍]]

@@ -1,10 +1,10 @@
 ---
 title: "HTTP 프로토콜"
 concept: "HTTP"
-summary: "웹 통신 규약 HTTP의 요청·응답 메시지 형식, 아홉 가지 메서드와 안전·멱등, 상태 코드(API에서 자주 쓰는 코드와 비표준 코드), 헤더 종류, URL의 구성 요소와 URI·URL·URN의 차이, HTTP/1.1·2·3 비교와 HTTP/2가 빠른 이유."
+summary: "웹 통신 규약 HTTP의 Stateless·Connectionless 성질, 요청·응답 메시지 형식, 아홉 가지 메서드와 안전·멱등, 상태 코드(API에서 자주 쓰는 코드와 비표준 코드), 헤더 종류, URL의 구성 요소와 URI·URL·URN의 차이, HTTP/1.1·2·3 비교와 HTTP/2가 빠른 이유."
 tags: ["network", "http", "web", "application-layer"]
 source: notion
-sources: ["https://app.notion.com/p/49200e54fe6d461ab1ebc5180b35337b", "https://80000coding.notion.site/d0f4fab2a1ca49c8ad36a81fd2329fcb", "https://bytebytego.com/guides/top-9-http-request-methods", "https://bytebytego.com/guides/http-status-code-you-should-know", "https://bytebytego.com/guides/5-http-status-codes-that-should-never-have-been-created", "https://bytebytego.com/guides/important-things-about-http-headers-you-may-not-know", "https://bytebytego.com/guides/do-you-know-all-the-components-of-a-url", "https://bytebytego.com/guides/url-uri-urn-do-you-know-the-differences", "https://bytebytego.com/guides/http1-http2-http3", "https://bytebytego.com/guides/what-makes-http2-faster-than-http1", "https://blog.outsider.ne.kr/312", "https://evan-moon.github.io/2020/03/15/about-http-status-code/", "https://developer.mozilla.org/ko/docs/Web/HTTP/Redirections", "https://www.popit.kr/나만-모르고-있던-http2/", "https://evan-moon.github.io/2019/10/08/what-is-http3", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/http1.1-2.md", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Evolution_of_HTTP", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Connection_management_in_HTTP_1.x", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/MIME_types", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Compression", "https://mnot.net/blog/2016/ideal-http", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/HTTP%20%EC%83%81%ED%83%9C%20%EC%BD%94%EB%93%9C.md", "https://www.youtube.com/watch?v=guvsH5OFizE"]
+sources: ["https://app.notion.com/p/49200e54fe6d461ab1ebc5180b35337b", "https://80000coding.notion.site/d0f4fab2a1ca49c8ad36a81fd2329fcb", "https://bytebytego.com/guides/top-9-http-request-methods", "https://bytebytego.com/guides/http-status-code-you-should-know", "https://bytebytego.com/guides/5-http-status-codes-that-should-never-have-been-created", "https://bytebytego.com/guides/important-things-about-http-headers-you-may-not-know", "https://bytebytego.com/guides/do-you-know-all-the-components-of-a-url", "https://bytebytego.com/guides/url-uri-urn-do-you-know-the-differences", "https://bytebytego.com/guides/http1-http2-http3", "https://bytebytego.com/guides/what-makes-http2-faster-than-http1", "https://blog.outsider.ne.kr/312", "https://evan-moon.github.io/2020/03/15/about-http-status-code/", "https://developer.mozilla.org/ko/docs/Web/HTTP/Redirections", "https://www.popit.kr/나만-모르고-있던-http2/", "https://evan-moon.github.io/2019/10/08/what-is-http3", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/http1.1-2.md", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Evolution_of_HTTP", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Connection_management_in_HTTP_1.x", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/MIME_types", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Compression", "https://mnot.net/blog/2016/ideal-http", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/HTTP%20%EC%83%81%ED%83%9C%20%EC%BD%94%EB%93%9C.md", "https://www.youtube.com/watch?v=guvsH5OFizE", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
 date: "2026-10-21"
 ---
 
@@ -13,12 +13,24 @@ date: "2026-10-21"
 > HTTP/1.1 시절의 우회법은 「[Must-Know-About-Frontend: HTTP/1.1과 HTTP/2의 차이점](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/http1.1-2.md)」을 바탕으로 보강했다. HTTP의 역사·연결 관리·MIME 타입·압축은 MDN의 「[An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview)」, 「[Evolution of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Evolution_of_HTTP)」, 「[HTTP Messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages)」, 「[Connection management in HTTP/1.x](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Connection_management_in_HTTP_1.x)」, 「[MIME types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/MIME_types)」, 「[Compression in HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Compression)」, 왕복 줄이기는 Mark Nottingham의 「[Ideal HTTP Performance](https://mnot.net/blog/2016/ideal-http)」를 바탕으로 보강했다.
 > 202·401의 쓰임은 「[Frontend_TIL: HTTP 상태 코드](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/HTTP%20%EC%83%81%ED%83%9C%20%EC%BD%94%EB%93%9C.md)」를 바탕으로 보강했다.
 > 도입부의 웹과 인터넷 구분은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> Stateless·Connectionless, HTTP가 TCP를 쓰는 이유, 본문 달린 GET은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
 
 HTTP(HyperText Transfer Protocol)는 웹 통신을 위한 응용 계층 프로토콜이다. 이름은 HTML 문서 전송에서 왔지만, 이미지·JSON 등 웹 표준으로 정의된 여러 종류의 데이터를 주고받을 수 있다. 동작은 단순하게 **"요청하면 응답한다"**. 브라우저·프론트엔드·백엔드가 이 규약 위에서 어떻게 대화하는지는 [[http-web-architecture|웹 앱의 요청·응답 구조]]에 정리했다.
 
 **웹(World Wide Web)과 인터넷은 다르다.** 인터넷은 패킷을 실어 나르는 망이고, 웹은 메신저·게임처럼 그 위에서 도는 응용 하나다. 웹은 다른 문서로 건너가는 링크(하이퍼링크)를 품은 문서, 즉 **하이퍼텍스트**(hypertext)를 서로 잇는 거대한 분산 응용이며, 세 표준이 떠받친다. 문서마다 고유한 주소를 주는 **URL**, 하이퍼텍스트를 주고받는 **HTTP**, 텍스트에 제목·링크 같은 구조를 표시하는 **HTML**이다. 이 표준이 공개돼 있어서 누구나 웹 서버와 브라우저를 만들 수 있다.
 
-HTTP는 **Stateless**다. 각 요청은 이전 요청과 무관하게 독립적으로 처리되므로, 로그인 상태 같은 정보는 서버가 기억해 주지 않는다. 그래서 쿠키·세션·토큰으로 상태를 따로 이어 붙인다([[cookie-session|쿠키와 세션]]).
+## Stateless와 Connectionless
+
+HTTP를 설명하는 두 성질은 기억하지 않는 대상이 다르다.
+
+| 성질 | 뜻 | 대가 | 보완 |
+| --- | --- | --- | --- |
+| **Stateless**(무상태) | 서버가 요청 사이의 **대화 상태**를 프로토콜 차원에서 기억하지 않는다. 각 요청은 처리에 필요한 정보를 모두 담고 와서 따로 해석된다 | 로그인 여부처럼 이어지는 상태를 요청마다 다시 증명해야 한다 | 쿠키·세션·토큰으로 상태를 위 계층에 얹는다([[cookie-session\|쿠키와 세션]], [[session-vs-token-auth\|세션 기반 인증과 토큰 기반 인증]]) |
+| **Connectionless**(비연결) | 요청 하나에 응답 하나를 주고받으면 **연결을 끊는다**. HTTP/1.0의 기본 동작이다 | 요청마다 TCP(와 TLS) 핸드셰이크를 다시 해 왕복과 CPU가 낭비된다. 페이지 하나에 자원이 수십 개면 비용이 커진다 | HTTP/1.1의 지속 연결(keep-alive)이 기본이 되고, HTTP/2·3은 연결 하나에 요청을 섞어 보낸다. 아래 「연결 관리와 왕복 줄이기」 |
+
+**HTTP가 무상태를 고른 이유는 확장성과 단순함이다.** 서버가 클라이언트별 상태를 들고 있지 않으면 어느 서버가 어느 요청을 받아도 같은 답을 낼 수 있다. 그래서 로드 밸런서 뒤에 서버를 마음대로 늘리고, 한 대가 죽어도 다른 서버가 이어 받고, 중간 캐시·프록시가 요청 하나만 보고 응답을 재사용할 수 있다. 상태가 필요한 부분만 세션 저장소·토큰처럼 따로 관리하면 된다.
+
+지금의 HTTP는 연결을 재사용하므로 엄밀히는 Connectionless가 아니다. 하지만 **연결을 재사용해도 무상태는 그대로다.** 같은 연결로 온 두 요청도 서버는 서로 무관한 요청으로 해석한다.
 
 ## 요청 메시지
 
@@ -63,6 +75,17 @@ HTTP/1.1의 시작줄과 헤더는 각 줄을 **`\r\n`(CRLF)** 으로 끝내고,
 **안전(safe)** 은 서버의 상태를 바꾸지 않는다는 뜻이고, **멱등(idempotent)** 은 같은 요청을 여러 번 보내도 결과가 한 번 보낸 것과 같다는 뜻이다. 멱등한 요청은 네트워크 오류 때 그대로 재시도해도 된다. POST를 안전하게 재시도하는 법은 [[rest-api|REST API 설계]]의 멱등 키에 있다. TRACE는 쿠키 같은 헤더를 그대로 되돌려 주므로 운영 서버에서는 보통 꺼 둔다.
 
 **GET은 가져오기만 하고, 상태를 바꾸는 일은 POST 이상으로 한다.** 브라우저의 링크 미리 가져오기(prefetch), 검색 엔진 크롤러, 링크 미리보기 봇은 GET 링크를 사람 대신 마구 따라간다. `/delete?id=42` 같은 GET 링크로 삭제를 만들면 이런 도구가 지나가기만 해도 데이터가 사라진다. 반대로 GET으로 가져오는 자원은 URL만으로 공유·북마크·캐시할 수 있다. GET의 쿼리 문자열은 URL 길이 제한을 받고 서버 로그·브라우저 기록에 남으므로, 큰 데이터와 민감한 값은 본문으로 보낸다.
+
+**GET에 본문을 싣는 것은 문법상 막혀 있지 않지만 쓰지 않는다.** HTTP 표준(RFC 9110)은 GET 요청의 본문에 **정해진 의미가 없다**고 하고, 출처가 미리 합의하지 않았다면 보내지 말라고 한다. 의미가 없으니 처리가 제각각이다.
+
+| 구간 | 본문 달린 GET을 만나면 |
+| --- | --- |
+| 서버·프레임워크 | 본문을 무시하거나 요청을 거부(400)한다 |
+| 프록시·로드 밸런서 | 본문을 버리거나 연결을 끊는다. 요청 밀반입(request smuggling)의 틈이 되기도 한다 |
+| 캐시 | 캐시 키는 URL이라 본문이 다른 두 요청에 같은 응답을 준다 |
+| 브라우저 `fetch` | GET·HEAD에 `body`를 주면 `TypeError`를 던진다 |
+
+검색 조건이 너무 길어 URL에 담기 어려우면 POST로 「검색 요청」을 보낸다. 조회처럼 안전·멱등하면서 본문을 받는 메서드로 `QUERY`가 IETF에서 표준화 중이다.
 
 HTML `<form>`도 결국 HTTP 요청을 만드는 도구다. `action`에 보낼 URL을, `method`에 메서드를 지정하면 각 `<input>`의 `name`이 key, 입력값이 value가 되어 서버로 전달된다. 단, `<form>`의 `method`는 GET과 POST만 지원하므로 PUT·PATCH·DELETE는 JavaScript(`fetch`)로 보내야 한다.
 
@@ -223,6 +246,8 @@ fragment   reviews
 
 위의 텍스트 메시지 형식은 HTTP/1.1 기준이다. 메서드·상태 코드·헤더의 의미는 버전과 상관없이 같고, 메시지를 실어 나르는 방식만 다르다.
 
+**HTTP/1.1·2가 TCP 위에서 도는 이유는 메시지가 빠짐없이, 순서대로 도착해야 하기 때문이다.** HTML·JSON은 한 바이트만 빠지거나 뒤바뀌어도 해석할 수 없다. TCP가 재전송·순서 맞춤·흐름·혼잡 제어를 해 주므로 HTTP는 요청·응답의 의미만 정하면 된다. HTTP/3도 이 신뢰성을 포기하지 않았다. UDP 위의 QUIC이 같은 일을 사용자 공간에서 다시 구현했을 뿐이다(아래 「HTTP/3가 UDP를 고른 이유」).
+
 | 버전 | 전송 계층 | 특징 |
 | --- | --- | --- |
 | HTTP/0.9 (1991) | TCP | 요청은 `GET /page.html` 한 줄뿐이고 응답은 HTML 본문뿐이었다. 헤더·상태 코드·메서드 종류가 없었다 |
@@ -242,7 +267,7 @@ fragment   reviews
 | 파이프라이닝 | 응답을 기다리지 않고 요청을 연달아 보낸다 | 응답 순서가 고정이라 HOL blocking이 그대로이고, 오래된 프록시가 깨뜨려 브라우저가 켜지 않는다. HTTP/2 멀티플렉싱으로 대체됐다 |
 | 멀티플렉싱 | 한 연결 안에서 여러 스트림을 섞어 보낸다(HTTP/2·3) | 기본. 출처당 연결 하나면 충분하다. 아래 「HTTP/2가 빠른 이유」 |
 
-`Connection`, `Keep-Alive`는 **홉 단위(hop-by-hop)** 헤더다. 클라이언트–프록시 구간과 프록시–서버 구간의 연결 방식이 다를 수 있고, 프록시는 이 헤더를 다음 홉에 넘기지 않는다.
+`Connection`, `Keep-Alive`는 **홉 단위(hop-by-hop)** 헤더다. 클라이언트–프록시 구간과 프록시–서버 구간의 연결 방식이 다를 수 있고, 프록시는 이 헤더를 다음 홉에 넘기지 않는다. HTTP keep-alive는 「응답 뒤에 연결을 닫지 않고 다음 요청에 재사용한다」는 뜻이고, 이름이 같은 TCP keepalive(유휴 연결이 살아 있는지 확인하는 탐침)와는 다른 기능이다([[transport-layer|전송 계층]]의 「연결이 살아 있는지 확인하기」).
 
 연결을 여는 비용도 왕복이다. TCP 핸드셰이크 1 RTT에 TLS 1.2는 2 RTT를 더했고, TLS 1.3은 1 RTT(재방문은 0-RTT), QUIC은 TCP와 TLS 핸드셰이크를 합쳐 1 RTT(재방문 0-RTT)로 줄였다. 0-RTT 데이터는 재전송·재생(replay) 공격으로 두 번 도착할 수 있어 멱등한 요청에만 쓴다. 연결 수립을 기다리는 동안 필요한 자원을 미리 알리는 일은 `103 Early Hints`와 `preload`가 맡는다([[resource-hints|리소스 힌트]]).
 

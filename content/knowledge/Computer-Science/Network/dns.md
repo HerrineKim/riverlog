@@ -1,19 +1,28 @@
 ---
 title: "DNS"
 concept: "DNS"
-summary: "도메인 이름을 IP 주소로 바꿔 주는 DNS. 재귀·반복 질의 흐름, 주요 레코드 종류, TTL과 캐시, 프론트엔드에서 쓰는 dns-prefetch·preconnect를 정리한다."
+summary: "도메인 이름을 IP 주소로 바꿔 주는 DNS. UDP와 TCP를 쓰는 경우, 재귀·반복 질의 흐름과 hosts 파일의 우선순위, 손실 재시도, 주요 레코드 종류, TTL과 캐시(잘못된 캐시 바로잡기), 프론트엔드에서 쓰는 dns-prefetch·preconnect를 정리한다."
 tags: ["network", "dns", "web", "frontend"]
 source: mixed
 date: "2026-10-12"
-sources: ["https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work", "https://bytebytego.com/guides/dns-record-types-you-should-know", "https://bytebytego.com/guides/internet-traffic-routing-policies", "http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/"]
+sources: ["https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work", "https://bytebytego.com/guides/dns-record-types-you-should-know", "https://bytebytego.com/guides/internet-traffic-routing-policies", "http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
 ---
 
 > 여러 자료를 종합한 노트에, ByteByteGo의 System Design 101 가이드 「[How Does the DNS Lookup Work?](https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work)」, 「[DNS Record Types You Should Know](https://bytebytego.com/guides/dns-record-types-you-should-know)」의 서버 계층과 레코드 종류를 보강했다. DNS 라우팅 정책은 「[Internet Traffic Routing Policies](https://bytebytego.com/guides/internet-traffic-routing-policies)」로 보강했다.
 > DNS 프라이버시와 DoH 부분은 Mozilla 웹 기술 블로그의 「[만화로 보는 DNS over HTTPS](http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/)」를 바탕으로 보강했다.
+> DNS의 계층과 전송 프로토콜, hosts 파일 우선순위, 손실 재시도, 잘못된 캐시 처리는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
 
 ## DNS란
 
-DNS(Domain Name System)는 `example.com` 같은 **도메인 이름을 IP 주소로 바꿔 주는 분산 데이터베이스**다. 사람은 이름을 기억하고, 컴퓨터는 IP로 통신한다. 그 사이를 잇는 전화번호부 역할이다. 주로 UDP 53번 포트를 쓴다.
+DNS(Domain Name System)는 `example.com` 같은 **도메인 이름을 IP 주소로 바꿔 주는 분산 데이터베이스**다. 사람은 이름을 기억하고, 컴퓨터는 IP로 통신한다. 그 사이를 잇는 전화번호부 역할이다.
+
+DNS는 **응용 계층(7계층) 프로토콜**이고 53번 포트를 쓴다. 전송 계층은 상황에 따라 고른다.
+
+| 전송 | 쓰는 때 | 이유 |
+| --- | --- | --- |
+| UDP | 일반 질의·응답 | 질문 하나, 답 하나로 끝나 연결 수립 왕복이 아깝다. 리졸버 하나가 초당 수많은 질의를 처리하는데 연결 상태를 들고 있지 않아도 된다 |
+| TCP | 응답이 UDP 한도를 넘을 때, 영역 전송(AXFR·IXFR) | 원래 UDP 응답은 512바이트까지였다. EDNS(0)로 더 크게 보낼 수 있지만 단편화 문제로 1232바이트 안팎을 권장한다. 응답이 잘리면 서버가 헤더의 **TC(truncated) 비트**를 켜고, 클라이언트는 같은 질의를 TCP로 다시 보낸다. DNSSEC 서명이 붙으면 응답이 커져 TCP가 잦아진다 |
+| TLS·HTTPS | 암호화가 필요할 때 | DoT(853)·DoH(443). 아래 「DNS의 보안과 프라이버시」 |
 
 브라우저가 페이지를 열 때 가장 먼저 일어나는 네트워크 작업이 DNS 조회다. 조회가 느리면 그 뒤의 TCP·TLS 연결과 HTTP 요청이 모두 밀린다.
 
@@ -32,6 +41,10 @@ DNS(Domain Name System)는 `example.com` 같은 **도메인 이름을 IP 주소�
 - 브라우저 → 리졸버는 **재귀 질의**다. "답을 다 찾아서 줘"라고 맡긴다.
 - 리졸버 → 루트·TLD·권한 서버는 **반복 질의**다. 다음에 물을 곳을 받아 차례로 따라간다.
 - 캐시가 모두 빗나가면 조회 한 번에 보통 수십~100여 ms가 든다. 그래서 각 층의 캐시와 TTL이 중요하다.
+
+**hosts 파일이 DNS보다 먼저다.** OS의 이름 해석기는 `/etc/hosts`(Windows는 `C:\Windows\System32\drivers\etc\hosts`)를 먼저 보고, 거기 없을 때만 DNS 서버에 묻는다. Linux에서는 이 순서를 `/etc/nsswitch.conf`의 `hosts: files dns` 줄이 정한다. 그래서 hosts 파일은 개발 중 도메인을 로컬 서버로 돌리거나 특정 도메인을 막는 데 쓰이고, 악성 코드가 은행 도메인을 가짜 IP로 바꾸는 파밍(pharming)의 표적이 되기도 한다. 브라우저가 DoH를 켜고 자체 리졸버로 조회하면 OS 해석기를 건너뛸 수 있지만, 주요 브라우저는 hosts 파일 항목을 먼저 확인한다.
+
+**질의가 손실되면 재시도한다.** UDP에는 재전송이 없으므로 DNS 클라이언트가 직접 처리한다. 응답이 타임아웃(Linux `resolv.conf`의 기본 5초) 안에 오지 않으면 같은 질의를 다시 보내고, 설정된 다음 네임서버로 넘어가며 정해진 횟수(기본 2회)만큼 시도한다. 응답은 질의의 **16비트 ID**와 출발 포트로 짝을 맞추므로, 늦게 온 옛 응답이나 위조 응답을 거른다. 리졸버도 권한 서버 하나가 답하지 않으면 같은 영역의 다른 NS로 묻는다. 모두 실패하면 응용 프로그램은 `SERVFAIL`이나 타임아웃 오류를 받는다.
 
 ### 네임서버의 세 계층
 
@@ -67,6 +80,15 @@ DNS는 한 서버가 모든 이름을 알지 않고 **트리 모양으로 책임
 
 - TTL이 길면 조회가 빠르지만, IP를 바꿨을 때 반영이 늦다("DNS 전파에 시간이 걸린다").
 - 서버 이전 전에는 TTL을 미리 짧게 낮춰 두는 것이 관례다.
+- **없는 이름도 캐시된다**(negative caching). `NXDOMAIN` 응답은 그 영역 SOA 레코드가 정한 시간 동안 캐시되므로, 레코드를 새로 만들기 전에 한 번 조회했다면 그동안 계속 「없음」으로 보인다.
+
+캐시가 틀린 답을 들고 있을 때 바로잡는 방법은 **기다리거나, 그 캐시를 직접 비우거나, 위조를 막는 것**이다.
+
+| 원인 | 대응 |
+| --- | --- |
+| 레코드를 바꿨는데 옛 IP가 남음 | TTL이 지나면 저절로 새 값으로 바뀐다. 급하면 층마다 캐시를 비운다: 브라우저(`chrome://net-internals/#dns`), OS(macOS `sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder`, Windows `ipconfig /flushdns`, systemd-resolved `resolvectl flush-caches`), 공용 리졸버(Google·Cloudflare의 캐시 비우기 페이지) |
+| 옛 서버를 바로 끌 수 없음 | 이전 기간에는 옛 서버를 살려 두거나 새 서버로 프록시해, 옛 IP를 받은 클라이언트도 응답을 받게 한다 |
+| 캐시 오염(cache poisoning): 공격자가 위조 응답을 먼저 넣음 | 질의 ID와 출발 포트를 무작위로 해 맞히기 어렵게 하고, DNSSEC으로 서명을 검증해 위조 응답을 버린다. 오염된 항목은 리졸버 캐시를 비워 지운다 |
 
 ## DNS 라우팅 정책
 
@@ -79,7 +101,7 @@ DNS는 한 서버가 모든 이름을 알지 않고 **트리 모양으로 책임
 | 지리(geolocation) | 질의한 사용자의 위치(국가·대륙) | 지역별 콘텐츠·언어, 데이터 주권 규정 준수 |
 | 지연 시간(latency) | 사용자에게 지연이 가장 작은 리전 | 여러 리전에 배포한 서비스의 응답 속도 |
 | 가중치(weighted) | 정해 둔 비율대로 나눔 | 새 버전에 10%만 보내기, 리전 간 비율 조정 |
-| 다중 값 응답(multivalue) | 정상인 IP 여러 개를 함께 돌려주고 클라이언트가 고른다 | 간단한 분산. 로드 밸런서를 대신하지는 못한다 |
+| 다중 값 응답(multivalue) | 정상인 IP 여러 개를 함께 돌려주고 클라이언트가 고른다 | 간단한 분산. 순서를 돌려 가며 주는 DNS 라운드 로빈과 같은 발상이다. 로드 밸런서를 대신하지는 못한다 |
 
 DNS 라우팅은 **TTL만큼 캐시된다는 한계**가 있다. 장애 조치가 반영되는 속도는 TTL과 리졸버의 캐시에 달려 있어, 초 단위 전환은 로드 밸런서나 애니캐스트가 맡는다. 여러 지역에 걸친 분산(GSLB)은 [[load-balancer|로드 밸런서]]에 정리했다.
 

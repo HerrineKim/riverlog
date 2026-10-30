@@ -1,10 +1,10 @@
 ---
 title: "전송 계층: 포트, TCP, UDP"
 concept: "Transport Layer"
-summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계(임시 포트 범위 포함), 연결 지향 TCP의 헤더·플래그·3-way handshake·순서 번호 규칙·상태 전이·4-way handshake와 TIME_WAIT, 비연결형 UDP, 그리고 TCP와 UDP의 비교."
+summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계(임시 포트 범위 포함), 소켓과 역다중화, 연결 지향 TCP의 헤더·플래그·3-way handshake(SYN 쿠키, 0-RTT)·순서 번호 규칙·상태 전이·4-way handshake와 TIME_WAIT·강제 종료·keepalive, 비연결형 UDP와 체크섬, 그리고 TCP와 UDP의 비교."
 tags: ["network", "transport-layer", "tcp", "udp", "port", "handshake"]
 source: notion
-sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df", "https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp", "https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data", "https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram", "https://bytebytego.com/guides/18-common-ports-worth-knowing", "https://roka88.dev/114", "https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/", "https://www.youtube.com/watch?v=AEaKrq3SpW8"]
+sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df", "https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp", "https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data", "https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram", "https://bytebytego.com/guides/18-common-ports-worth-knowing", "https://roka88.dev/114", "https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/", "https://www.youtube.com/watch?v=AEaKrq3SpW8", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
 date: "2026-10-21"
 ---
 
@@ -13,6 +13,7 @@ date: "2026-10-21"
 > 흐름·오류·혼잡 제어의 세부 동작은 「[TCP의 흐름제어, 오류제어, 혼잡제어 개념에 대한 개요](https://roka88.dev/114)」를 바탕으로 보강했다.
 > 임시 포트 고갈과 소켓 옵션은 Cloudflare의 「[How to stop running out of ephemeral ports and start to love long-lived connections](https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/)」를 바탕으로 보강했다.
 > 「UDP」 절의 체크섬 계산 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> 소켓과 역다중화, 3-way handshake의 이유·동시 열기·SYN 쿠키·0-RTT, 강제 종료와 keepalive, 계층별 체크섬 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
 
 네트워크 계층(IP)이 데이터를 **목적지 호스트**까지 보내 준다면, 전송 계층(4계층)은 그 호스트 안의 **어느 프로세스**에게 줄지 결정하고 필요하면 신뢰성을 보장한다. 이때 프로세스를 구분하는 번호가 포트 번호다.
 
@@ -43,6 +44,29 @@ TCP의 헤더, 3-way handshake, 상태 전이는 아래 「TCP」 절에, UDP는
 - TCP와 UDP의 포트 공간은 따로다. TCP 53과 UDP 53은 서로 다른 포트다.
 - 연결 하나는 **(프로토콜, 출발지 IP, 출발지 포트, 목적지 IP, 목적지 포트)** 다섯 값으로 구분된다. 그래서 서버의 443 포트 하나로 수많은 클라이언트 연결을 동시에 받을 수 있다.
 - "한 포트는 한 프로세스"는 기본 동작이다. Linux의 `SO_REUSEPORT`처럼 여러 소켓이 같은 포트를 나눠 받게 하는 옵션도 있다.
+
+### 소켓과 역다중화
+
+**소켓**(socket)은 OS가 응용 프로그램에 내주는 통신 끝점이다. 프로세스는 소켓에 쓰고 읽기만 하고, 그 아래 TCP·UDP·IP 처리는 커널이 한다. POSIX에서 소켓은 파일 디스크립터 하나다. 포트는 소켓을 찾아가는 **번호**일 뿐이고, 소켓은 그 번호가 붙은 **커널 객체**(버퍼, 연결 상태, 상대 주소)다.
+
+| 구분 | 포트 | 소켓 |
+| --- | --- | --- |
+| 정체 | 16비트 숫자 | 커널 자료 구조, 프로세스에는 파일 디스크립터 |
+| 식별하는 것 | 호스트 안의 서비스(프로세스) | 통신 하나. TCP 연결 소켓은 5-튜플 전체로 구분된다 |
+| 개수 관계 | 서버 포트 443 하나 | 그 포트에 붙은 듣기 소켓 1개 + 연결마다 소켓 1개씩 |
+
+TCP 서버의 흐름은 `socket()` → `bind(443)` → `listen()` → `accept()`다. `listen()` 상태의 **듣기 소켓**은 연결 요청만 받고, `accept()`가 연결마다 **새 연결 소켓**을 만들어 돌려준다. 그래서 **연결 소켓들은 모두 같은 로컬 포트(443)를 공유**하고, 상대의 IP·포트로 서로 구분된다. 요청이 늘면 연결 소켓도 연결 수만큼 늘어난다. 상한은 포트 번호가 아니라 열린 파일 수(`ulimit -n`)와 소켓 버퍼 메모리이고, 서버는 커넥션 풀·keep-alive로 연결을 재사용하고 이벤트 루프(epoll)로 많은 소켓을 적은 스레드로 다룬다([[event-loop-server|이벤트 루프 서버]]). 클라이언트 쪽은 연결마다 다른 임시 포트를 받는다.
+
+**다중화(multiplexing)** 는 송신 측이 여러 소켓의 데이터에 포트 번호를 붙여 한 IP 경로로 내보내는 일이고, **역다중화(demultiplexing)** 는 수신 측이 도착한 세그먼트의 헤더를 보고 알맞은 소켓에 넘기는 일이다.
+
+```text
+NIC → IP 계층: 목적지 IP가 내 것인가, Protocol 필드(6 TCP / 17 UDP)로 상위 프로토콜 선택
+    → UDP: (목적지 IP, 목적지 포트)가 같은 소켓 하나로 보낸다. 출발지가 달라도 같은 소켓
+    → TCP: (출발지 IP, 출발지 포트, 목적지 IP, 목적지 포트)가 맞는 연결 소켓으로 보낸다
+           맞는 연결이 없고 SYN이면 그 포트의 듣기 소켓으로, 아무 소켓도 없으면 RST로 거절
+```
+
+WebSocket은 이름과 달리 이 OS 소켓과 다른 층이다. OS 소켓 위의 TCP 연결에서 도는 **응용 계층 프로토콜**이다([[websocket|WebSocket]]).
 
 ### 포트 번호 범위
 
@@ -152,7 +176,21 @@ TCP는 서로 다른 호스트의 프로그램이 데이터를 **안정적으로
    - SEQ = **101** (받은 ACK 값)
    - ACK = 2000 + 1 = **2001**
 
-이후 양쪽 모두 `ESTABLISHED` 상태가 되어 데이터를 주고받는다. SYN과 FIN은 데이터가 없어도 순서 번호를 1 소비하기 때문에 +1이 된다.
+이후 양쪽 모두 `ESTABLISHED` 상태가 되어 데이터를 주고받는다. SYN과 FIN은 데이터가 없어도 순서 번호를 1 소비하기 때문에 +1이 된다. SYN·ACK 같은 제어 정보는 별도 메시지가 아니라 **TCP 헤더의 플래그 비트**로 실린다. 그래서 2단계처럼 SYN과 ACK를 한 세그먼트에 함께 켤 수 있다.
+
+**왜 2-way가 아니라 3-way인가.** TCP는 양방향이라 **양쪽의 초기 순서 번호(ISN)가 모두 상대에게 확인돼야** 한다. 2단계에서 끝나면 서버의 ISN은 클라이언트가 받았는지 확인되지 않는다. 또 네트워크에 떠돌던 **옛 연결의 지연된 SYN**이 뒤늦게 도착하면, 서버는 그것만 보고 연결을 열어 자원을 잡아 둔다. 3단계에서는 클라이언트가 자기가 보낸 적 없는 SYN에 대한 SYN+ACK를 받으면 RST로 거절하므로 이런 유령 연결이 생기지 않는다.
+
+**동시 열기(simultaneous open).** 두 호스트가 서로의 포트로 거의 동시에 SYN을 보내도 연결은 하나 생긴다. 양쪽이 `SYN_SENT`에서 상대의 SYN을 받아 `SYN_RECEIVED`로 가고, 각자 SYN+ACK를 보낸 뒤 상대의 ACK를 받으면 `ESTABLISHED`가 된다. 세그먼트는 4개가 오간다. 출발지 포트를 임의로 고르는 일반 클라이언트에서는 드물고, 둘 다 NAT 뒤에 있는 P2P 연결을 뚫는 TCP 홀 펀칭이 이 동작을 이용한다.
+
+**SYN 플러딩(SYN flooding).** 서버는 SYN을 받으면 `SYN_RECEIVED` 상태의 반쯤 열린 연결을 대기열(backlog)에 넣고 마지막 ACK를 기다린다. 공격자가 출발지 IP를 위조한 SYN만 대량으로 보내면 대기열이 차서 정상 사용자의 연결을 받지 못한다. 대책인 **SYN 쿠키**는 대기열에 아무것도 저장하지 않고 연결 정보(주소·포트·시각·MSS)를 해시해 서버의 ISN에 담아 보낸다. 정상 클라이언트의 ACK에 돌아온 번호를 검증해 그때 연결을 만든다. Linux는 `net.ipv4.tcp_syncookies=1`이 기본이라 대기열이 넘칠 때 자동으로 SYN 쿠키로 바꾼다. 대규모 공격은 CDN·DDoS 방어 서비스가 앞단에서 흡수한다([[security|정보 시스템 보안]]).
+
+**왕복을 줄이는 0-RTT.** 3-way handshake는 데이터를 보내기 전에 1 RTT를 쓴다. 이를 줄이는 방법은 **처음 만난 상대에 대해서는 어렵고, 이전에 만난 상대의 정보를 재사용**하는 것이다.
+
+| 기법 | 동작 | 한계 |
+| --- | --- | --- |
+| TCP Fast Open (RFC 7413) | 첫 연결 때 서버가 준 쿠키를 다음 연결의 SYN에 실어 보내고, **SYN에 데이터도 함께 싣는다**. 서버는 쿠키가 맞으면 핸드셰이크가 끝나기 전에 데이터를 처리한다 | SYN에 데이터가 실린 패킷을 버리는 중간 장비가 많아 널리 쓰이지 못했다 |
+| TLS 1.3 0-RTT | 이전 세션의 사전 공유 키로 첫 비행에 암호화된 요청을 함께 보낸다 | 재생 공격 위험이 있어 멱등한 요청에만 쓴다 |
+| QUIC(HTTP/3) | 전송과 TLS 핸드셰이크를 합쳐 첫 연결 1 RTT, 재연결 0-RTT | UDP가 막힌 망에서는 TCP로 돌아간다([[http\|HTTP]]) |
 
 ### 데이터 전송 시 순서·확인 번호 규칙
 
@@ -168,9 +206,16 @@ TCP는 서로 다른 호스트의 프로그램이 데이터를 **안정적으로
 | Server → Client | 2001 | 201 (101 + 100) | 500바이트 |
 | Client → Server | 201 | 2501 (2001 + 500) | - |
 
-ACK를 받지 못하면 송신 측은 해당 데이터를 재전송한다. 이것이 TCP 신뢰성의 기본이다.
+ACK를 받지 못하면 송신 측은 해당 데이터를 재전송한다. 이것이 TCP 신뢰성의 기본이다. TCP가 신뢰성을 만드는 장치를 모으면 다음과 같다.
 
-> handshake 구조를 악용해 SYN만 대량으로 보내 연결 대기열을 채우는 공격이 SYN Flooding이다([[security|정보 시스템 보안]]).
+| 장치 | 막는 문제 |
+| --- | --- |
+| 순서 번호 | 순서 뒤바뀜, 중복 수신 |
+| 확인 응답(ACK)과 재전송 타이머 | 손실 |
+| 체크섬 | 비트 오류 검출(오류난 세그먼트는 버리고 재전송에 맡긴다) |
+| 흐름 제어(수신 윈도) | 받는 쪽 버퍼 넘침 |
+| 혼잡 제어(혼잡 윈도) | 네트워크 과부하로 인한 대량 손실 |
+| 연결 수립·종료 절차 | 옛 연결의 세그먼트 혼입, 반쯤 닫힌 연결 |
 
 ### 연결 상태 전이
 
@@ -201,6 +246,38 @@ TCP는 양방향 통신이라 **방향마다 따로 닫는다.** 그래서 종�
 - 늦게 도착한 옛 연결의 세그먼트가 같은 포트 조합으로 새로 맺은 연결에 섞이지 않게 한다.
 
 Linux는 TIME_WAIT를 60초로 고정해 둔다. 짧은 연결이 많은 서버에서 TIME_WAIT 소켓이 쌓이는 것은 정상 동작이다. 연결을 재사용(keep-alive, 커넥션 풀)하면 줄어든다. 반대로 CLOSE_WAIT가 계속 쌓이면 애플리케이션이 소켓을 `close()`하지 않는다는 신호다.
+
+종료용 세그먼트는 헤더의 **FIN 플래그**로 구별한다. 수신 측은 FIN을 받으면 상대가 더 보낼 데이터가 없다는 뜻으로 알고 응용 프로그램에 EOF(`read()`가 0 반환)를 전한다.
+
+#### 정상 종료와 강제 종료
+
+| 방식 | 동작 | 결과 |
+| --- | --- | --- |
+| 정상 종료(graceful close) | FIN을 보내 4-way handshake | 보낸 데이터가 모두 전달된 뒤 닫힌다. 먼저 닫은 쪽은 TIME_WAIT |
+| 강제 종료(abortive close) | **RST**를 보낸다. `SO_LINGER`를 켜고 대기 시간을 0으로 둔 뒤 `close()`하면 커널이 FIN 대신 RST를 보낸다 | 양쪽이 즉시 연결을 버린다. 버퍼에 남은 데이터는 버려지고 TIME_WAIT도 없다. 상대는 `ECONNRESET`(connection reset by peer)을 받는다 |
+
+RST는 4-way handshake를 기다릴 수 없을 때(비정상 상태 감지, 과부하 서버가 연결을 털어낼 때) 쓴다. 데이터 유실과 상대의 오류 처리를 감수하는 선택이라 평소 종료에는 쓰지 않는다. 닫힌 포트로 SYN이 오거나, 이미 사라진 연결로 세그먼트가 와도 커널이 RST로 답한다.
+
+#### 연결이 살아 있는지 확인하기
+
+상대가 FIN도 RST도 보내지 못하고 사라지면(전원이 꺼짐, 케이블이 뽑힘, 중간 NAT·방화벽이 연결 기록을 지움) 남은 쪽은 연결이 끊긴 것을 모른 채 `ESTABLISHED`로 남는다. 이런 **반쯤 열린 연결**(half-open)은 다음 중 하나로 드러난다.
+
+| 계기 | 동작 |
+| --- | --- |
+| 데이터를 보낼 때 | ACK가 오지 않아 재전송을 반복하다 한도(Linux `tcp_retries2` 기본 15회, 약 15분)를 넘으면 오류로 닫는다. 상대가 재부팅됐다면 모르는 연결이라 RST로 답해 바로 끊긴다 |
+| TCP keepalive | 유휴 연결에 주기적으로 빈 탐침 세그먼트를 보내고, 응답이 없으면 닫는다 |
+| 응용 계층 하트비트 | 응용 프로토콜이 ping 메시지와 타임아웃을 직접 둔다. WebSocket ping/pong, HTTP/2 PING 프레임, DB 드라이버의 연결 검사 |
+
+**TCP keepalive와 HTTP keep-alive는 이름만 같다.**
+
+| 구분 | TCP keepalive | HTTP keep-alive (지속 연결) |
+| --- | --- | --- |
+| 계층 | 전송 계층(커널) | 응용 계층(HTTP) |
+| 목적 | 유휴 연결이 **아직 살아 있는지** 확인 | 응답 뒤에도 연결을 **닫지 않고 다음 요청에 재사용** |
+| 켜는 법 | 소켓 옵션 `SO_KEEPALIVE`. Linux 기본값은 유휴 2시간(`tcp_keepalive_time` 7200초) 뒤 75초 간격으로 9번 탐침 | HTTP/1.1은 기본으로 켜져 있고 `Connection: close`로 끈다. `Keep-Alive: timeout=5` 헤더로 유휴 시간을 알린다 |
+| 끊는 쪽 | 응답 없는 상대를 감지해 커널이 닫는다 | 유휴 타임아웃이 지나면 서버·클라이언트가 닫는다 |
+
+기본 2시간은 너무 길어서, 장시간 연결을 쓰는 서버는 keepalive 간격을 소켓 옵션(`TCP_KEEPIDLE` 등)으로 줄이거나 응용 계층 하트비트를 따로 둔다. 중간 장비의 유휴 타임아웃(로드 밸런서·NAT는 보통 수십 초~수 분)보다 짧게 잡아야 연결이 몰래 끊기지 않는다.
 
 ### 흐름·혼잡·오류 제어
 
@@ -254,7 +331,18 @@ UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프�
 
 체크섬은 이름 그대로 **데이터를 더한 값**이다. 송신 측은 의사 헤더(출발지·목적지 IP 등)와 UDP 헤더·데이터를 16비트씩 끊어 더하고, 16비트를 넘는 자리올림은 다시 아래에 더해 접은 뒤(1의 보수 합), 그 값을 뒤집어 넣는다. 수신 측이 같은 계산을 해서 맞지 않으면 전송 중 비트가 깨진 것이다. 단순 합이라 오류를 **검출**만 할 뿐 고칠 수는 없고, 두 비트가 서로 상쇄되게 깨지면 놓치기도 한다. TCP 체크섬도 같은 방식이다.
 
-체크섬은 IPv4에서는 선택이라 0이면 검사하지 않는다는 뜻이고, IPv6에서는 필수다(IPv6 헤더에 체크섬이 없기 때문이다). 오류를 찾으면 UDP는 그 데이터그램을 조용히 버릴 뿐 재전송하지 않는다.
+체크섬은 IPv4에서는 선택이라 0이면 검사하지 않는다는 뜻이고, IPv6에서는 필수다(IPv6 헤더에 체크섬이 없기 때문이다). 오류를 찾으면 UDP는 그 데이터그램을 조용히 버릴 뿐 재전송하지 않는다. TCP는 체크섬이 필수이고, 깨진 세그먼트를 버린 뒤 ACK가 가지 않으니 송신 측 재전송으로 복구된다.
+
+같은 계산법의 체크섬이 계층마다 있지만 지키는 범위가 다르다.
+
+| 구분 | IPv4 헤더 체크섬 | TCP·UDP 체크섬 | 이더넷 FCS |
+| --- | --- | --- | --- |
+| 범위 | IP 헤더만 | 의사 헤더(IP 주소·프로토콜·길이) + 전송 헤더 + **데이터 전체** | 프레임 전체 |
+| 계산하는 곳 | **홉마다**: 라우터가 TTL을 줄이므로 매번 다시 계산 | **끝단에서만**: 송신 호스트가 만들고 수신 호스트가 검사 | 링크마다 |
+| 방식 | 16비트 1의 보수 합 | 16비트 1의 보수 합 | CRC-32(합보다 검출력이 높다) |
+| 실패 시 | 패킷 폐기 | 세그먼트 폐기(TCP는 재전송으로 복구) | 프레임 폐기 |
+
+세 체크섬 모두 **검출만 하고 정정하지 않는다.** 오류 정정 부호(FEC)는 재전송이 어려운 무선·위성 링크나 실시간 미디어에서 따로 쓴다.
 
 ### UDP가 어울리는 경우
 

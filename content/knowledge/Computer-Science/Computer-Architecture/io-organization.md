@@ -5,11 +5,12 @@ summary: "CPU와 주변 장치를 잇는 입출력 인터페이스와 장치 드
 tags: ["computer-architecture", "io", "interrupt", "dma"]
 source: notion
 date: "2026-10-14"
-sources: ["https://riverkim.kr/203", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://jihunn-kim.github.io/computer_architecture/computer_architecture_11/", "https://www.youtube.com/watch?v=1Pp6PJ1kSqI", "https://www.youtube.com/watch?v=RRgGVu8OCP4", "https://www.youtube.com/watch?v=wKQgERMe2pk"]
+sources: ["https://riverkim.kr/203", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://jihunn-kim.github.io/computer_architecture/computer_architecture_11/", "https://www.youtube.com/watch?v=1Pp6PJ1kSqI", "https://www.youtube.com/watch?v=RRgGVu8OCP4", "https://www.youtube.com/watch?v=wKQgERMe2pk", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
 > 노션 정리와 diadia blog의 「[컴퓨터 구조 요약 - 11. 입출력 구조](https://jihunn-kim.github.io/computer_architecture/computer_architecture_11/)」(2021.01)를 바탕으로 재구성한 노트다.
 > 「입출력 인터페이스와 장치 컨트롤러」, 「DMA와 입출력 프로세서」, 「레지스터로 장치를 직접 다루는 예」 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 「폴링과 인터럽트」, 「입출력 버퍼링」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 키보드, 디스크, 네트워크 카드 같은 주변 장치는 CPU보다 훨씬 느리고 데이터 형식도 제각각이다. 입출력 구조는 이 차이를 메우고, CPU가 기다리느라 시간을 낭비하지 않도록 하는 방법을 다룬다.
 
@@ -41,6 +42,35 @@ CPU와 주변 장치 사이의 통로를 컴퓨터 구조 교재는 **입출력 
 | 인터럽트 기반 입출력 | CPU는 명령만 내리고 다른 일을 하다가, 컨트롤러가 거는 인터럽트를 받아 처리한다 | 중간 |
 | DMA 입출력 | DMA 컨트롤러가 장치와 메모리 사이 전송을 맡고, 끝나면 인터럽트로 알린다 | 작음 |
 | 입출력 프로세서(IOP) | 자체 명령어 프로그램을 실행하는 입출력 전담 프로세서 | 가장 작음 |
+
+### 폴링과 인터럽트
+
+| 비교 | 폴링 | 인터럽트 |
+| --- | --- | --- |
+| 동작 | CPU가 장치의 상태 레지스터를 주기적으로 확인한다 | 장치가 준비되면 CPU에 신호를 보낸다 |
+| 장점 | 구현이 단순하다. 이벤트가 매우 잦으면 확인할 때마다 일이 있어 낭비가 적고 지연도 짧다 | 이벤트가 드물 때 CPU가 그동안 다른 일을 한다 |
+| 단점 | 이벤트가 드물면 확인이 헛수고라 CPU를 낭비한다 | 인터럽트마다 상태 저장·복원 비용이 든다. 너무 잦으면 처리만 하다 실제 일을 못 하는 인터럽트 폭주(livelock)가 생긴다 |
+
+그래서 고속 장치는 둘을 섞는다. Linux 네트워크 스택의 **NAPI**는 첫 패킷은 인터럽트로 받고, 트래픽이 많은 동안은 인터럽트를 끄고 폴링하다가 조용해지면 인터럽트로 돌아간다. DPDK 같은 사용자 공간 네트워킹과 초고속 NVMe 저장 장치의 폴링 모드는 아예 폴링만 쓴다.
+
+### 입출력 버퍼링
+
+버퍼는 속도나 전송 단위가 다른 두 쪽 사이에서 데이터를 잠시 담아 두는 메모리다. 다른 곳에 원본이 있는 데이터의 사본을 빠른 곳에 두는 캐시와 달리, 버퍼는 옮기는 도중의 데이터를 담는다.
+
+| 쓰는 이유 | 예 |
+| --- | --- |
+| 속도 차이 흡수 | 느린 장치가 데이터를 모으는 동안 CPU는 다른 일을 한다. 키보드 입력 버퍼, 프린터 스풀 |
+| 전송 단위 맞추기 | 바이트 단위로 쓰는 프로그램과 블록 단위로 읽고 쓰는 디스크·네트워크 사이 |
+| 호출 횟수 줄이기 | 작은 쓰기를 모아 한 번에 보낸다. stdio 버퍼 |
+| 복사 의미 지키기 | `write` 호출이 끝난 뒤 프로그램이 자기 버퍼를 고쳐도, 이미 커널 버퍼에 복사된 데이터는 바뀌지 않는다 |
+
+| 구조 | 동작 |
+| --- | --- |
+| 단일 버퍼 | 버퍼가 찰 때까지 채우고, 비우는 동안은 다음 데이터를 받지 못한다 |
+| 이중 버퍼 | 하나를 채우는 동안 다른 하나를 처리해 두 일을 겹친다. 화면 출력의 더블 버퍼링 |
+| 원형 버퍼(링 버퍼) | 생산자와 소비자가 같은 배열을 돌며 쓰고 읽는다. 네트워크 카드의 수신 링, `io_uring`의 제출·완료 큐 |
+
+운영체제가 두는 stdio 버퍼와 페이지 캐시의 두 층은 [[unix-file-io|UNIX 파일 입출력]]에 있다.
 
 ### 버스 구성과 I/O 주소
 

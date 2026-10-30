@@ -5,11 +5,12 @@ summary: "소스 코드가 명령어가 되는 과정, CPU 내부(ALU·제어장
 tags: ["computer-architecture", "cpu", "instruction-set", "interrupt"]
 source: notion
 date: "2026-10-12"
-sources: ["https://riverkim.kr/188", "https://riverkim.kr/191", "https://riverkim.kr/192", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://www.youtube.com/watch?v=3Yz7OnVUM28", "https://www.youtube.com/watch?v=lJwIERMo_N4", "https://www.youtube.com/watch?v=B8TDaBp3UWo", "https://www.youtube.com/watch?v=bWPHUi6BPxo", "https://www.youtube.com/watch?v=1I5ZMmrOfnA", "https://www.youtube.com/watch?v=zltgXvg6r3k", "https://www.youtube.com/watch?v=rtAlC5J1U40"]
+sources: ["https://riverkim.kr/188", "https://riverkim.kr/191", "https://riverkim.kr/192", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://www.youtube.com/watch?v=3Yz7OnVUM28", "https://www.youtube.com/watch?v=lJwIERMo_N4", "https://www.youtube.com/watch?v=B8TDaBp3UWo", "https://www.youtube.com/watch?v=bWPHUi6BPxo", "https://www.youtube.com/watch?v=1I5ZMmrOfnA", "https://www.youtube.com/watch?v=zltgXvg6r3k", "https://www.youtube.com/watch?v=rtAlC5J1U40", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md"]
 ---
 
 > 「반드시 알아야 할 레지스터」 절의 인터럽트를 넣은 명령어 사이클과 「RISC와 CISC」 절의 ISA 호환성 설명, 「소스 코드에서 명령어로」의 목적 코드와 「주소 지정 방식」의 비트 예시·방식별 비교는 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 「명령어 길이」, 「점프와 반복」 절과 「상태 플래그」의 비교 방법, 「RISC와 CISC」의 ISA 확장 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> 「x86과 ARM」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 CPU가 실행하는 것은 결국 메모리에 놓인 기계어 명령어다. 명령어가 피연산자를 어디서 가져오는지, 실행 흐름이 어떻게 바뀌는지를 이해하면 컴파일러와 운영체제가 하는 일도 함께 보이기 시작한다.
 
@@ -232,6 +233,24 @@ CISC는 복잡한 가변 길이 명령어로 적은 수의 명령어만으로 �
 ISA는 시간이 갈수록 커진다. 범용 명령어로 많은 클럭이 걸리는 일에 전용 회로와 전용 명령어를 더해 왔기 때문이다. x86에는 하드웨어 나눗셈에 이어 SIMD 확장(MMX → SSE → AVX)과 AES 암호화 명령어(AES-NI)가 붙었다. 한번 들어간 명령어는 그것을 쓰는 프로그램이 있어 **하위 호환을 위해 빼지 못한다.** 그래서 x86-64는 명령어와 그 변형이 수천 개에 이른다.
 
 이 표는 **설계 철학**의 비교다. 현대 x86 CPU는 CISC 명령어를 내부에서 RISC 같은 μop으로 쪼갠 뒤 파이프라인과 비순차 실행으로 처리하므로, 칩 내부 동작만 보면 둘의 차이는 크지 않다([[cpu-microarchitecture|현대 CPU의 마이크로아키텍처]]).
+
+### x86과 ARM
+
+| 비교 | x86-64 (Intel, AMD) | ARM64 (AArch64) |
+| --- | --- | --- |
+| 명령어 | CISC, 가변 길이(1~15바이트) | RISC, 고정 32비트 |
+| 범용 레지스터 | 16개 | 31개 |
+| 메모리 순서 모델 | 강함(TSO). 저장끼리, 읽기끼리의 순서가 다른 코어에도 유지된다 | 약함. 배리어 없이는 다른 코어에 보이는 순서가 바뀔 수 있다 |
+| SIMD | SSE, AVX, AVX-512 | NEON, SVE |
+| SMT | 대부분 지원(하이퍼스레딩) | Graviton·Ampere 같은 서버 칩은 코어당 스레드 하나 |
+| 사업 모델 | Intel·AMD가 설계하고 판다 | ARM이 ISA와 코어 설계를 라이선스하고 Apple·AWS·Qualcomm 등이 자기 칩을 만든다 |
+| 강점 | 높은 단일 코어 성능, 수십 년 쌓인 소프트웨어 호환성 | 전력 대비 성능, 용도에 맞춘 칩 설계 |
+
+메모리 순서 모델의 차이는 이식할 때 드러난다. x86에서 우연히 맞게 돌던 락 없는 코드가 ARM에서 깨질 수 있다([[pthread-sync-api|POSIX 스레드와 동기화 API]]의 「가시성·순서와 volatile」).
+
+**클라우드에서의 차이.** x86 인스턴스의 vCPU는 보통 하이퍼스레드 하나, 즉 물리 코어의 절반이다. AWS Graviton 같은 ARM 인스턴스의 vCPU는 물리 코어 하나라, 같은 vCPU 수에서 옆 스레드와 실행 유닛을 나눠 쓰지 않아 성능이 고르고, 같은 일을 더 싼 값과 적은 전력으로 처리하는 경우가 많다. 대신 x86 전용 바이너리나 AVX-512에 기댄 라이브러리는 다시 빌드하거나 대체해야 하고, 컨테이너 이미지는 `linux/amd64`와 `linux/arm64`를 함께 빌드(multi-arch)한다. JVM·인터프리터 위에서 도는 코드는 대개 그대로 옮겨진다. 그 밖에 클라우드 VM은 물리 서버의 캐시와 메모리 대역폭을 다른 고객과 나눠 써서 이웃 부하에 성능이 흔들리고(noisy neighbor), 큰 인스턴스는 여러 NUMA 노드에 걸치며([[memory-hierarchy|메모리 계층 구조]]), 버스트형 인스턴스(AWS T 계열)는 CPU 크레딧을 다 쓰면 기준 성능으로 묶인다. 가상화 자체는 [[virtualization|가상화]]에 있다.
+
+**서버 CPU의 방향.** 클럭 대신 코어 수를 늘린다. 작은 다이 여러 개(칩렛)를 한 패키지에 묶어 수율을 지키며 코어를 늘리고(AMD EPYC), 행렬 곱(Intel AMX)·암호화·압축 같은 자주 쓰는 일에 전용 명령어와 가속기를 넣고, 메모리 채널을 늘리고 CXL 같은 인터커넥트로 메모리를 확장해 코어 수에 맞는 대역폭을 댄다.
 
 ### 중첩 레지스터 윈도우
 

@@ -1,10 +1,10 @@
 ---
 title: "네트워크 기초"
 concept: "Network Basics"
-summary: "네트워크의 정의와 분류(LAN·WAN, 연결 형태), 통신 방식, 프로토콜과 표준 기구, 패킷의 캡슐화, 네트워크 장비(허브·스위치·라우터·AP·공유기)와 가정·기업·클라우드의 배치, 1계층 전송 매체와 CSMA/CD, 2계층의 회선·흐름·오류 제어, 이더넷과 MAC 주소, 스위치의 MAC 학습과 홉마다 바뀌는 프레임."
+summary: "네트워크의 정의와 분류(LAN·WAN, 연결 형태), 통신 방식, 프로토콜과 표준 기구, 패킷의 캡슐화, 네트워크 장비(허브·스위치·라우터·AP·공유기, L3 스위치와 라우터의 차이)와 가정·기업·클라우드의 배치, 1계층 전송 매체와 CSMA/CD, 2계층의 회선·흐름·오류 제어, 이더넷과 MAC 주소, 스위치의 MAC 학습과 홉마다 바뀌는 프레임."
 tags: ["network", "lan", "ethernet", "packet", "protocol"]
 source: notion
-sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://app.notion.com/p/7b2a147be0b54d499f6e1617865fa855", "https://80000coding.notion.site/881854082fa847818b417648d8d05612", "https://80000coding.notion.site/1f0bc84be25e461d9c50c1caddcf479a", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://80000coding.notion.site/875cb26a017f43d2a0ab58915fd21686", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man", "https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast", "https://bytebytego.com/guides/how-is-data-transmitted-between-applications", "https://d2.naver.com/helloworld/47667", "https://d2.naver.com/helloworld/7847943", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EC%9D%98%20%EB%B0%8F%20%EC%97%AD%EC%82%AC.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%9E%A5%EB%B9%84%EC%99%80%20%EC%BC%80%EC%9D%B4%EB%B8%94.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A7%81%ED%81%AC%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%A7%81%ED%81%AC%20%EC%8A%A4%EC%9C%84%EC%B9%98%EC%99%80%20ARP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0"]
+sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://app.notion.com/p/7b2a147be0b54d499f6e1617865fa855", "https://80000coding.notion.site/881854082fa847818b417648d8d05612", "https://80000coding.notion.site/1f0bc84be25e461d9c50c1caddcf479a", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://80000coding.notion.site/875cb26a017f43d2a0ab58915fd21686", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man", "https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast", "https://bytebytego.com/guides/how-is-data-transmitted-between-applications", "https://d2.naver.com/helloworld/47667", "https://d2.naver.com/helloworld/7847943", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EC%9D%98%20%EB%B0%8F%20%EC%97%AD%EC%82%AC.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%9E%A5%EB%B9%84%EC%99%80%20%EC%BC%80%EC%9D%B4%EB%B8%94.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A7%81%ED%81%AC%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%A7%81%ED%81%AC%20%EC%8A%A4%EC%9C%84%EC%B9%98%EC%99%80%20ARP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
 date: "2026-10-21"
 ---
 
@@ -12,6 +12,7 @@ date: "2026-10-21"
 > 커널 네트워크 스택의 자료구조와 수신 처리 부분은 NAVER D2의 「[TCP/IP 네트워크 스택 이해하기](https://d2.naver.com/helloworld/47667)」를, 지연 시간의 구성과 네트워크 에뮬레이션은 「[글로벌 네트워크 에뮬레이터 prism_pacman 소개](https://d2.naver.com/helloworld/7847943)」를 바탕으로 보강했다.
 > 표준 기구, 장비 배치, 물리 계층(매체·이중 방식·CSMA/CD), 2계층의 부계층과 회선·흐름·오류 제어, 스위치 에이징은 「[Frontend_TIL: 네트워크 정의 및 역사](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EC%9D%98%20%EB%B0%8F%20%EC%97%AD%EC%82%AC.md)」, 「[네트워크 구조](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B5%AC%EC%A1%B0.md)」, 「[물리계층 역활과 기능](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md)」, 「[물리계층 장비와 케이블](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%9E%A5%EB%B9%84%EC%99%80%20%EC%BC%80%EC%9D%B4%EB%B8%94.md)」, 「[데이터링크 역활과 기능](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A7%81%ED%81%AC%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md)」, 「[데이터 링크 스위치와 ARP](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%A7%81%ED%81%AC%20%EC%8A%A4%EC%9C%84%EC%B9%98%EC%99%80%20ARP.md)」를 바탕으로 보강했다.
 > 「전송 방향과 충돌」 절의 지수 백오프 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> L3 스위치와 라우터의 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 보강했다.
 
 네트워크는 여러 노드(컴퓨터 같은 시스템)가 데이터를 공유할 수 있도록 연결한 디지털 전기 통신망이다. 분산된 컴퓨터를 통신망으로 묶고, 노드 간 연결을 통해 서로 데이터를 주고받는다. 우리가 매일 쓰는 인터넷도 문서·그림·영상 같은 데이터를 공유하게 해 주는 네트워크 통신망 중 하나일 뿐이다.
 
@@ -105,6 +106,18 @@ date: "2026-10-21"
 | 인터넷 공유기 | 2~3계층 | 스위치 + 라우터 + 무선 AP + NAT·DHCP를 한 기기에 담은 가정용 장비 |
 
 기술적으로 "하나의 네트워크"는 **라우터를 거치지 않고 닿는 범위**다. 같은 스위치에 꽂혀 있어도 IP 대역이 다르면 서로 직접 통신하지 못하고 라우터를 거쳐야 한다.
+
+**L3 스위치와 라우터**는 둘 다 IP를 보고 네트워크 사이를 잇지만 놓이는 자리가 다르다.
+
+| 기준 | L3 스위치 | 라우터 |
+| --- | --- | --- |
+| 주 용도 | 사내 LAN 안에서 VLAN·서브넷 사이를 잇는 **내부 라우팅** | 사내망과 인터넷, 지사와 지사처럼 **서로 다른 망의 경계** 연결 |
+| 포워딩 | 전용 칩(ASIC)으로 처리해 포트 수가 많고 속도가 빠르다 | 범용 CPU와 전용 칩을 함께 써 처리량은 낮을 수 있지만 기능이 많다 |
+| 인터페이스 | 이더넷 포트 위주 | 이더넷 외에 광·전용선·셀룰러 같은 WAN 회선 |
+| 부가 기능 | 라우팅 프로토콜은 내부용(OSPF 등) 위주 | NAT, VPN, 방화벽 정책, BGP 같은 외부 라우팅, QoS |
+| 놓이는 곳 | 사내 백본(코어·분배 계층) | 망의 가장자리(엣지) |
+
+경계는 흐려지고 있어서, 고급 L3 스위치도 BGP를 하고 라우터도 스위칭 포트를 단다. 판단 기준은 「LAN 안의 빠른 서브넷 간 전달인가, 망 경계의 기능이 필요한가」다.
 
 ### 장비가 놓이는 모양
 

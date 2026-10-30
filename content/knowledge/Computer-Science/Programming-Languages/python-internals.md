@@ -1,16 +1,16 @@
 ---
-title: "Python 언어 동작: 제너레이터, MRO, 메모리 관리, 덕 타이핑"
+title: "Python 언어 동작: 제너레이터, MRO, 메모리 관리, 동시성, 성능"
 concept: "Python Internals"
-summary: "Python 면접 단골 주제를 언어 동작 기준으로 정리한다. 이터러블·이터레이터·제너레이터의 관계와 지연 평가, 다중 상속의 MRO(C3 선형화)와 super(), CPython의 참조 카운팅·세대별 순환 수집과 메모리 누수 패턴, PyPy의 추적 JIT, 덕 타이핑과 Protocol."
+summary: "Python의 런타임 동작을 정리한다. 이터러블·이터레이터·제너레이터의 관계와 지연 평가, 다중 상속의 MRO(C3 선형화)와 super(), CPython의 참조 카운팅·세대별 순환 수집과 메모리 누수 패턴, threading·multiprocessing·asyncio 비교와 이벤트 루프·TaskGroup, 측정에서 런타임 교체까지의 성능 최적화, CPython·PyPy(추적 JIT)·Jython(JVM, GIL 없음) 구현체 비교, 덕 타이핑과 Protocol."
 tags: ["python", "programming-language", "gc", "oop"]
 source: other
 date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Python/README.md", "https://docs.python.org/3/library/gc.html", "https://docs.python.org/3/howto/mro.html", "https://peps.python.org/pep-0442/", "https://peps.python.org/pep-0544/", "https://docs.python.org/3/whatsnew/3.14.html"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Python/README.md", "https://docs.python.org/3/library/gc.html", "https://docs.python.org/3/howto/mro.html", "https://peps.python.org/pep-0442/", "https://peps.python.org/pep-0544/", "https://docs.python.org/3/whatsnew/3.14.html", "https://docs.python.org/3/library/asyncio-task.html", "https://docs.python.org/3/library/concurrent.futures.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/python.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
-> jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 Python 문서를 바탕으로, Python 공식 문서와 PEP로 확인해 재구성한 노트다.
+> jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 Python 문서를 바탕으로, Python 공식 문서와 PEP로 확인해 재구성한 노트다. 동시성 도구 비교, asyncio, 성능 최적화, 구현체 비교는 fru1tworld/cs-basic 모의 면접 질문 목록의 Python·운영체제 질문을 바탕으로 보강했다.
 
-GIL과 free-threaded 빌드는 [[concurrency-models|동시성 모델]]의 「GIL과 스크립트 언어의 선택」 절에, 바이트코드 실행과 언어별 GC 비교는 [[how-programs-run|프로그램이 실행되기까지]]에, `sorted()`가 쓰는 Timsort는 [[merge-quick-sort|병합 정렬과 퀵 정렬]]에 있다.
+가변·불변 객체, 복사, 함수·데코레이터·클래스·import 같은 문법의 동작은 [[python-language-basics|Python 언어 기본]]에, GIL과 free-threaded 빌드는 [[concurrency-models|동시성 모델]]의 「GIL과 스크립트 언어의 선택」 절에, 바이트코드 실행과 언어별 GC 비교는 [[how-programs-run|프로그램이 실행되기까지]]에, `sorted()`가 쓰는 Timsort는 [[merge-quick-sort|병합 정렬과 퀵 정렬]]에 있다.
 
 ## 이터러블, 이터레이터, 제너레이터
 
@@ -99,14 +99,84 @@ GC가 있어도 **닿을 수 있는데 더는 쓰지 않는 객체**는 회수�
 
 과거에는 `__del__`을 정의한 객체가 순환에 끼면 수집기가 해제하지 못하고 `gc.garbage`에 남겼다. **Python 3.4(PEP 442)부터는 이런 순환도 회수**한다. 그래도 `__del__`은 실행 시점이 보장되지 않으므로 자원 정리는 `with` 문으로 한다. 누수 추적에는 `tracemalloc`의 스냅숏 비교를 쓴다.
 
-## PyPy가 CPython보다 빠른 이유
+## 동시성: threading, multiprocessing, asyncio
 
-| 구현 | 실행 방식 |
+GIL의 원리와 free-threaded 빌드는 [[concurrency-models|동시성 모델]]의 「GIL과 스크립트 언어의 선택」에 있다. 그 위에서 세 가지 도구를 고른다.
+
+| 비교 | `threading` | `multiprocessing` | `asyncio` |
+| --- | --- | --- | --- |
+| 실행 단위 | OS 스레드 | OS 프로세스 | 한 스레드 안의 코루틴 |
+| 전환 | OS가 선점. GIL은 일정 시간마다·I/O 대기 때 넘어간다 | OS가 선점 | **`await` 지점에서만** 협력적으로 |
+| 병렬 실행(CPU) | 기본 빌드에서는 안 된다(GIL) | 된다. 프로세스마다 인터프리터와 GIL | 안 된다 |
+| 메모리 공유 | 공유. 락이 필요하다 | 공유하지 않는다. 인자·결과를 pickle로 직렬화해 주고받는다 | 공유. 전환 지점이 명시적이라 락이 덜 필요하다 |
+| 비용 | 스레드당 수 MB 스택 예약, 수천 개가 한계 | 프로세스 생성·직렬화 비용이 크다 | 코루틴당 수 KB. 수만 개 동시 연결 |
+| 맞는 작업 | 블로킹 I/O 라이브러리(requests, DB 드라이버)를 그대로 쓰는 I/O 바운드 | **CPU 바운드**(계산, 이미지 처리) | 연결이 많은 I/O 바운드(웹 서버, 크롤러, 웹소켓) |
+| 고수준 API | `concurrent.futures.ThreadPoolExecutor` | `ProcessPoolExecutor` | `asyncio.TaskGroup`, `gather` |
+
+- I/O 바운드인데 쓰는 라이브러리가 동기식이면 스레드, 비동기 생태계(httpx, asyncpg, FastAPI)라면 asyncio를 고른다. CPU 바운드는 프로세스, 또는 GIL을 놓는 C 확장(NumPy)이나 free-threaded 빌드를 쓴다.
+- 3.14의 `concurrent.futures.InterpreterPoolExecutor`는 같은 프로세스 안의 서브인터프리터들로 병렬 실행한다. 프로세스보다 가볍고, 인터프리터끼리 객체를 공유하지 않는다.
+
+### asyncio와 비동기 프로그래밍
+
+**asyncio는 이벤트 루프 하나가 여러 코루틴을 번갈아 실행하는 단일 스레드 비동기 프레임워크다.** 코루틴이 I/O를 기다리며 `await`하면 제어를 이벤트 루프에 돌려주고, 루프는 준비된 다른 코루틴을 이어 실행한다. OS의 `epoll`·`kqueue`로 어떤 소켓이 준비됐는지 알아낸다(Reactor 패턴, [[concurrency-models|동시성 모델]]).
+
+```python
+import asyncio, httpx
+
+async def fetch(client, url):
+    r = await client.get(url)          # 기다리는 동안 다른 코루틴이 돈다
+    return r.status_code
+
+async def main(urls):
+    async with httpx.AsyncClient() as client:
+        async with asyncio.TaskGroup() as tg:              # 3.11+: 하나가 실패하면 나머지를 취소
+            tasks = [tg.create_task(fetch(client, u)) for u in urls]
+    return [t.result() for t in tasks]
+
+asyncio.run(main(["https://a.com", "https://b.com"]))
+```
+
+| 개념 | 뜻 |
 | --- | --- |
-| CPython | 소스를 바이트코드로 바꿔 인터프리터가 한 줄씩 해석한다. 3.11부터 자주 쓰는 연산을 타입에 맞게 바꾸는 적응형 인터프리터, 3.13부터 실험적 JIT가 들어왔다 |
-| PyPy | **추적 JIT(tracing JIT)**: 실행 중 자주 도는 **루프**의 실제 경로를 기록해 기계어로 컴파일한다. 메서드 단위로 컴파일하는 전통적 JIT와 단위가 다르다 |
+| 코루틴 함수 `async def` | 호출하면 본문을 실행하지 않고 **코루틴 객체**를 돌려준다(제너레이터와 같다). `await`하거나 태스크로 감싸야 실행된다 |
+| `await` | 어웨이터블(코루틴, 태스크, 퓨처)이 끝날 때까지 현재 코루틴을 멈추고 루프에 제어를 넘긴다 |
+| 태스크 `create_task` | 코루틴을 루프에 등록해 **동시에** 진행시킨다. 그냥 `await coro()`를 차례로 쓰면 순차 실행이다 |
+| `gather`, `TaskGroup` | 여러 태스크를 함께 기다린다. `TaskGroup`은 구조적 동시성을 따른다([[structured-concurrency\|구조적 동시성]]) |
+| `asyncio.timeout()`, `wait_for` | 시간 제한과 취소(`CancelledError`) |
 
-PyPy는 RPython(제약을 둔 Python)으로 인터프리터를 쓰고, RPython 툴체인이 그 인터프리터에 추적 JIT를 자동으로 붙여 C로 번역한다. 언어 규칙(인터프리터)과 최적화(JIT 생성기)를 분리한 구조라 다른 동적 언어 인터프리터에도 같은 툴체인을 쓸 수 있다. 순수 Python 루프가 많은 코드는 몇 배 빨라지지만, C 확장(NumPy 등) 호출이 많은 코드는 이득이 작거나 호환성 문제가 있다.
+- **이벤트 루프를 막으면 모든 코루틴이 멈춘다.** `async def` 안에서 `time.sleep`, `requests.get`, 무거운 계산을 부르면 그 동안 다른 코루틴이 돌지 못한다. 블로킹 함수는 `await asyncio.to_thread(f)`나 `loop.run_in_executor`로 스레드·프로세스 풀에 넘긴다.
+- 「함수 색깔」 문제: `async` 함수는 `async` 함수 안에서만 `await`할 수 있어 비동기가 호출 체인 전체로 번진다.
+- 제너레이터의 `yield`·`send`가 코루틴의 뿌리이고, `async`/`await` 문법은 3.5에 들어왔다.
+
+## 성능 최적화
+
+순서는 **측정 → 알고리즘 → 구현 → 런타임 교체**다. 추측으로 최적화하지 않는다.
+
+| 단계 | 방법 |
+| --- | --- |
+| 측정 | `cProfile`·`pstats`(함수별 시간), `timeit`(작은 코드 비교), `tracemalloc`(메모리), 샘플링 프로파일러 py-spy·Scalene(운영 중인 프로세스) |
+| 알고리즘·자료구조 | 리스트 `in`(O(n)) 대신 `set`·`dict`(O(1)), `collections.deque`로 양끝 삽입, `heapq`, `bisect`. 대부분의 큰 개선이 여기서 나온다 |
+| 내장과 표준 라이브러리 | 파이썬 반복문보다 C로 구현된 `sum`, `map`, `sorted`, `str.join`, `itertools`, 컴프리헨션이 빠르다. 문자열은 `+=` 대신 `"".join()` |
+| 인터프리터 비용 줄이기 | 반복문 안의 속성·전역 조회를 지역 변수로 빼기, `__slots__`로 인스턴스 메모리와 속성 접근 줄이기, `functools.cache`로 메모이제이션 |
+| 큰 데이터 | 제너레이터로 지연 처리, NumPy·pandas·Polars로 벡터화(반복을 C 수준으로 내린다) |
+| 병렬화 | CPU 바운드는 `multiprocessing`·free-threaded 빌드, I/O 바운드는 asyncio·스레드 |
+| 런타임·컴파일 | PyPy(아래), Cython·mypyc로 C 확장 컴파일, 뜨거운 부분만 Rust(PyO3)·C로 작성, Numba로 숫자 계산 JIT |
+
+CPython 자체도 빨라지고 있다. 3.11의 적응형 특수화 인터프리터가 일반 코드를 평균 25% 안팎 빠르게 했으므로, 버전을 올리는 것도 저렴한 최적화다.
+
+## 구현체: CPython, PyPy, Jython
+
+Python은 언어 명세이고, 그것을 실행하는 프로그램(구현체)은 여럿이다. 같은 소스라도 구현체에 따라 실행 과정, GIL 여부, 쓸 수 있는 라이브러리가 다르다.
+
+| 구현 | 실행 과정 | GIL | 메모리 관리 | 특징 |
+| --- | --- | --- | --- | --- |
+| CPython | 소스 → 바이트코드(`.pyc`) → C로 쓴 인터프리터가 해석. 3.11부터 자주 쓰는 연산을 타입에 맞게 바꾸는 적응형 인터프리터, 3.13부터 실험적 JIT | 있다. free-threaded 빌드(3.13 실험, 3.14부터 공식 지원)는 없다 | 참조 카운팅 + 순환 수집기 | 표준 구현. C 확장(NumPy 등) 생태계 전체를 쓴다 |
+| PyPy | 소스 → 바이트코드 → **추적 JIT(tracing JIT)** 가 자주 도는 루프의 실제 경로를 기록해 기계어로 컴파일 | 있다 | 추적형 세대별 GC(참조 카운팅이 아니라 해제 시점이 늦다) | 순수 Python 루프가 많으면 몇 배 빠르다 |
+| Jython | 소스 → **JVM 바이트코드** → JVM이 실행하고 HotSpot JIT가 컴파일 | **없다.** Python 스레드가 Java 스레드라 여러 코어에서 병렬로 돈다 | JVM GC | Java 클래스를 바로 import해 쓴다. C 확장은 못 쓰고, Python 2.7 문법까지만 지원한다 |
+
+PyPy는 RPython(제약을 둔 Python)으로 인터프리터를 쓰고, RPython 툴체인이 그 인터프리터에 추적 JIT를 자동으로 붙여 C로 번역한다. 언어 규칙(인터프리터)과 최적화(JIT 생성기)를 분리한 구조라 다른 동적 언어 인터프리터에도 같은 툴체인을 쓸 수 있다. 메서드 단위로 컴파일하는 전통적 JIT와 달리 컴파일 단위가 루프 경로다. C 확장 호출이 많은 코드는 이득이 작거나 호환성 문제가 있다.
+
+Jython에 GIL이 없는 이유는 객체 관리를 JVM에 맡기기 때문이다. CPython의 GIL은 참조 카운트와 인터프리터 내부 상태를 지키려고 있는데, Jython은 참조 카운팅을 하지 않고 JVM의 GC와 스레드 안전한 내부 자료구조를 쓴다. 대신 CPython C API에 묶인 라이브러리를 쓸 수 없고 Python 3를 따라가지 못해, JVM 위의 Python 3가 필요하면 GraalVM 기반의 GraalPy를 쓴다. .NET 위에서 도는 IronPython도 같은 구조로 GIL이 없다.
 
 ## 덕 타이핑
 
@@ -136,6 +206,9 @@ make_noise(42)                             # AttributeError: 실행해야 안다
 - 메서드 탐색은 C3 선형화로 만든 MRO를 따르고, `super()`는 MRO의 다음 클래스를 부른다
 - CPython은 참조 카운팅으로 즉시 해제하고, 순환 참조는 세대별 순환 수집기가 회수한다
 - 누수는 대개 가변 기본 인자, 무제한 캐시, 지우지 않은 참조에서 나온다
+- CPU 바운드는 프로세스, 블로킹 I/O는 스레드, 연결이 많은 I/O는 asyncio. 이벤트 루프 안에서는 블로킹 호출을 하지 않는다
+- 최적화는 프로파일링으로 병목을 찾은 뒤 자료구조와 내장 함수부터 바꾼다
+- 구현체마다 실행 과정이 다르다. CPython은 바이트코드 인터프리터, PyPy는 추적 JIT, Jython은 JVM 바이트코드로 바꿔 GIL 없이 돈다
 - 덕 타이핑은 타입보다 동작으로 판단하고, `Protocol`로 정적 검사를 더할 수 있다
 
-관련 노트: [[how-programs-run|프로그램이 실행되기까지]], [[concurrency-models|동시성 모델]], [[iterators-and-generators|이터레이터와 제너레이터]], [[garbage-collection|가비지 컬렉션과 메모리 누수]], [[merge-quick-sort|병합 정렬과 퀵 정렬]]
+관련 노트: [[python-language-basics|Python 언어 기본]], [[how-programs-run|프로그램이 실행되기까지]], [[structured-concurrency|구조적 동시성]], [[concurrency-models|동시성 모델]], [[iterators-and-generators|이터레이터와 제너레이터]], [[garbage-collection|가비지 컬렉션과 메모리 누수]], [[merge-quick-sort|병합 정렬과 퀵 정렬]]
