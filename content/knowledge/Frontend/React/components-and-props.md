@@ -5,10 +5,11 @@ summary: "UI를 재사용 가능한 조각으로 나누는 컴포넌트와, 부�
 tags: ["react", "component", "frontend"]
 source: til
 date: "2026-10-21"
-sources: ["https://riverkim.kr/102", "https://react.dev/blog/2024/04/25/react-19-upgrade-guide", "https://react.dev/blog/2024/12/05/react-19", "https://react.vlpt.us/basic/05-props.html", "https://react.vlpt.us/styling/01-sass.html"]
+sources: ["https://riverkim.kr/102", "https://react.dev/blog/2024/04/25/react-19-upgrade-guide", "https://react.dev/blog/2024/12/05/react-19", "https://react.vlpt.us/basic/05-props.html", "https://react.vlpt.us/styling/01-sass.html", "https://prepare-frontend-interview.vercel.app/react"]
 ---
 
 > 개인 TIL을 바탕으로, 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[props를 통해 컴포넌트에게 값 전달하기](https://react.vlpt.us/basic/05-props.html)」와 「[Sass](https://react.vlpt.us/styling/01-sass.html)」의 rest props 부분을 바탕으로 보강했다.
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 용어을 보강했다.
 
 **컴포넌트**는 화면을 독립적이고 재사용 가능한 조각으로 나눈 단위다. 개념적으로는 함수와 같아서, **props**라는 입력을 받아 화면에 무엇을 그릴지(React 엘리먼트)를 반환한다. 컴포넌트 하나당 파일 하나를 두면 모듈화도 쉬워진다.
 
@@ -34,7 +35,8 @@ function App() {
 
 - 컴포넌트 이름은 **반드시 대문자로 시작**한다. 소문자로 시작하면 React가 `<div>` 같은 HTML 태그로 해석한다.
 - 위처럼 작은 컴포넌트를 조합해 큰 화면을 만드는 것을 **합성(composition)** 이라 한다([합성](/knowledge/dictionary/frontend/react/composition) 참고).
-- 예전에는 state가 있으면 클래스, 없으면 함수 컴포넌트로 나눠 썼지만, Hooks 등장 이후로는 함수 컴포넌트가 표준이다.
+- 예전에는 state가 있으면 클래스, 없으면 함수 컴포넌트로 나눠 썼지만, Hooks 등장 이후로는 함수 컴포넌트가 표준이다. 클래스 컴포넌트는 옛 코드를 읽을 때만 만난다([[lifecycle|생명주기]]).
+- 공식 용어는 「함수형 컴포넌트(functional component)」가 아니라 **함수 컴포넌트(function component)**다. Hooks로 state와 effect를 갖는 컴포넌트는 함수형 프로그래밍의 순수 함수가 아니므로, 「함수로 정의한 컴포넌트」라는 뜻만 남긴 이름이다.
 
 ## Props
 
