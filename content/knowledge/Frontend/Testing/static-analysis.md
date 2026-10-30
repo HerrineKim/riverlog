@@ -96,4 +96,4 @@ export function fibonacci(n: number): number { /* ... */ }
 - 예외는 줄 단위로 드러내고, 늘 어기는 규칙은 끈다. 초기에 켤수록 싸다.
 - 런타임 데이터와 값의 정확성은 여전히 테스트가 맡는다.
 
-관련 노트: [[eslint-prettier|ESLint와 Prettier 설정]], [[typescript-basics|TypeScript 문법 한눈에 보기]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[js-testing-best-practices|JavaScript 테스트 모범 사례]]
+관련 노트: [[eslint-prettier|ESLint와 Prettier 설정]], [[typescript-basics|TypeScript 문법 한눈에 보기]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[typescript-project-config|TypeScript 프로젝트 설정]]
