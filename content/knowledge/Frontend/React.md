@@ -12,6 +12,7 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 ## 노트
 
 ### 기본 개념
+- [React 버전 변천사: 16부터 19.3까지](/knowledge/dictionary/frontend/react/react-version-history): Fiber·Hooks부터 Actions·서버 컴포넌트·ViewTransition까지 버전별 변경점, 제거된 레거시 API와 대체재
 - [JSX와 엘리먼트 렌더링](/knowledge/dictionary/frontend/react/jsx): JSX 문법 규칙, Babel 변환, React 엘리먼트와 불변성
 - [컴포넌트와 Props](/knowledge/dictionary/frontend/react/components-and-props): 함수 컴포넌트, props 전달, TypeScript로 props 타입 정하기, ref as prop
 - [React와 TypeScript](/knowledge/dictionary/frontend/react/react-typescript): props·children·ref 타입, ComponentProps로 요소 감싸기, 판별 유니언으로 props 제한, 제네릭 컴포넌트, 이벤트·훅 타입
