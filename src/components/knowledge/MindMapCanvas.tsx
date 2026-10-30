@@ -8,7 +8,7 @@ import useUrlState from "@/hooks/useUrlState";
 import type { PlacedNode } from "@/lib/graph-layout";
 import type { GraphLink } from "@/lib/knowledge";
 import { makeMatcher } from "@/lib/search";
-import { MindMapScene, REFERENCE_COLOR } from "./mindmap-scene";
+import { MindMapScene, REFERENCE_COLOR, toneFor } from "./mindmap-scene";
 
 type Category = { id: string; name: string; color: string; count: number };
 
@@ -249,7 +249,7 @@ export default function MindMapCanvas({
                 }}
                 className="flex items-center gap-1.5 rounded-full border border-line bg-bg-elev/95 px-2.5 py-1 text-xs text-fg transition hover:border-accent pointer-coarse:min-h-11"
               >
-                <span className="size-2 rounded-full" style={{ background: c.color, boxShadow: `0 0 8px ${c.color}` }} />
+                <span className="size-2 rounded-full" style={{ background: toneFor(c.color, dark), boxShadow: `0 0 8px ${toneFor(c.color, dark)}${dark ? "" : "66"}` }} />
                 {c.name}
                 <span className="text-muted tabular-nums">{c.count}</span>
               </button>
