@@ -40,6 +40,29 @@ const zoomToDist = (z: number) => Math.exp(Math.log(MAX_DIST) - Math.min(1, Math
 
 export const REFERENCE_COLOR = { dark: "#f5c26b", light: "#975a16" } as const; // light value doubles as label text, so ≥4.5:1
 const BG = { dark: "#070a0e", light: "#f3f4f0" } as const;
+// The category palette (lib/knowledge.ts) is pastel, made to glow on black; on a light background
+// those wash out, so light mode swaps each for a deeper tone of the same hue
+const LIGHT_TONES: Record<string, string> = {
+  "#5eead4": "#0d9488",
+  "#a78bfa": "#7c3aed",
+  "#fbbf24": "#d97706",
+  "#f472b6": "#db2777",
+  "#86efac": "#16a34a",
+  "#f87171": "#dc2626",
+  "#7dd3fc": "#0284c7",
+  "#c4b5fd": "#a855f7",
+  "#cbd5e1": "#64748b",
+  "#67e8f9": "#0891b2",
+  "#fda4af": "#e11d48",
+  "#bef264": "#65a30d",
+  "#fcd34d": "#ca8a04",
+};
+export const toneFor = (color: string, dark: boolean) => (dark ? color : (LIGHT_TONES[color.toLowerCase()] ?? color));
+// Edge colors; in light mode folder and same-tag edges take their category's tone instead of gray, and
+// all lines stay faint, so dense overlaps build up color rather than graying out
+const REFERENCE_EDGE = { dark: REFERENCE_COLOR.dark, light: "#d97706" } as const;
+const DARK_RELATED_EDGE = "#5b6b7d";
+const DARK_MEMBER_EDGE = "#3a4a5a";
 const FONT = "IBM Plex Sans KR, Apple SD Gothic Neo, sans-serif";
 const FOV = 50;
 const TAN_HALF_FOV = Math.tan(THREE.MathUtils.degToRad(FOV / 2));
@@ -243,8 +266,9 @@ export class MindMapScene {
       this.renderer.setClearColor(bg);
       const u = this.points.material.uniforms;
       u.uFogColor.value.copy(bg);
-      u.uGlow.value = dark ? 1 : 0;
-      u.uSprite.value = dark ? 2.4 : 1;
+      // Dark glows additively; light gets a soft halo instead
+      u.uGlow.value = dark ? 1 : 0.55;
+      u.uSprite.value = dark ? 2.4 : 1.7;
       this.points.material.blending = dark ? THREE.AdditiveBlending : THREE.NormalBlending;
       this.points.material.needsUpdate = true;
     }
@@ -253,7 +277,7 @@ export class MindMapScene {
     const rgba = this.points.geometry.getAttribute("rgba") as THREE.BufferAttribute;
     const col = new THREE.Color();
     this.nodes.forEach((n, i) => {
-      col.set(n.color);
+      col.set(toneFor(n.color, dark));
       const lit = style.isLit(n.id);
       rgba.setXYZW(i, col.r, col.g, col.b, lit ? (n.kind === "doc" ? 0.9 : 1) : dark ? 0.12 : 0.15);
     });
@@ -261,24 +285,25 @@ export class MindMapScene {
 
     // Edge colors; quiet in the overview, full strength only on the selected note's own links
     const lc = this.lines.geometry.getAttribute("color") as THREE.BufferAttribute;
-    const ref = new THREE.Color(REFERENCE_COLOR[theme]);
-    const related = new THREE.Color(dark ? "#5b6b7d" : "#8c968c");
-    const member = new THREE.Color(dark ? "#3a4a5a" : "#a9b1a4");
+    const ref = new THREE.Color(REFERENCE_EDGE[theme]);
+    const related = new THREE.Color(DARK_RELATED_EDGE);
     this.visibleLinks.forEach((l, i) => {
       const lit = style.isLinkLit(l);
       let alpha: number;
       if (l.kind === "reference") {
         col.copy(ref);
-        alpha = !style.dimmed ? 0.4 : lit ? 1 : 0.06;
+        alpha = !style.dimmed ? (dark ? 0.4 : 0.16) : lit ? (dark ? 1 : 0.85) : dark ? 0.06 : 0.04;
       } else if (l.kind === "related") {
-        col.copy(related);
-        alpha = !style.dimmed ? 0.18 : lit ? 0.5 : 0.05;
+        // Same-tag links are the densest layer; in light mode they carry their note's tone too
+        if (dark) col.copy(related);
+        else col.set(toneFor(this.nodes[this.byId.get(l.source)!].color, false));
+        alpha = !style.dimmed ? (dark ? 0.18 : 0.06) : lit ? 0.5 : dark ? 0.05 : 0.03;
       } else if (!style.dimmed) {
-        col.copy(member);
-        alpha = dark ? 0.35 : 0.5;
+        col.set(dark ? DARK_MEMBER_EDGE : toneFor(this.nodes[this.byId.get(l.target)!].color, false));
+        alpha = dark ? 0.35 : 0.14;
       } else {
-        col.set(this.nodes[this.byId.get(l.target)!].color);
-        alpha = lit ? 0.67 : 0.05;
+        col.set(toneFor(this.nodes[this.byId.get(l.target)!].color, dark));
+        alpha = lit ? 0.67 : dark ? 0.05 : 0.03;
       }
       const start = this.linkVerts[i];
       for (let v = 0; v < this.linkVertCount[i]; v++) lc.setXYZW(start + v, col.r, col.g, col.b, alpha);
