@@ -234,7 +234,7 @@ new Dog('바둑이').say() // '바둑이: 멍멍'
 
 `Dog.prototype = Animal.prototype`처럼 같은 객체를 넣으면 자식에 추가한 메서드가 부모에도 생기므로 `Object.create`로 한 단계 끼운다. `extends`는 이 과정에 정적 메서드 상속(`Object.setPrototypeOf(Dog, Animal)`)까지 해 준다.
 
-다만 `class`에는 함수로 흉내 낼 때 없는 차이가 있다. `new` 없이 부르면 `TypeError`가 나고, 본문은 자동으로 strict mode이며, 메서드는 열거되지 않고, 선언은 `let`처럼 TDZ에 놓인다. 새 코드에서는 생성자 함수 대신 `class`를 쓴다.
+다만 `class`에는 함수로 흉내 낼 때 없는 차이(`new` 없이 부르면 `TypeError`, 항상 strict mode, 메서드 열거 불가, TDZ)가 있다. 비교표는 [[class#문법적 설탕 이상인 지점|class 문법]]에 있다. 새 코드에서는 생성자 함수 대신 `class`를 쓴다.
 
 메서드를 콜백으로 넘기면(`addEventListener('click', this.showNext)`) 프로토타입에서 꺼낸 함수만 넘어가 `this`가 인스턴스가 아니게 된다. 해결법은 [[functions|함수와 this]]의 bind 절에 있다.
 
