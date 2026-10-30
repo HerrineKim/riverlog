@@ -38,7 +38,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [JavaScript 디자인 패턴: 생성 패턴](/knowledge/dictionary/frontend/javascript/js-design-patterns): 생성자·모듈·싱글톤·프로토타입 패턴과 프로토타입 기반 언어의 차이
 - [자바스크립트에서 타임존 다루기](/knowledge/dictionary/frontend/javascript/timezone): 타임존 ≠ 오프셋, 서머타임, IANA tz database, Date와 서버 간 시간 주고받기, 오프셋 계산의 한계
 - [TypeScript: 개념과 문법 한눈에 보기](/knowledge/dictionary/frontend/javascript/typescript-basics): 슈퍼셋이라는 본질과 타입을 얻기까지의 역사, 실행 환경(TypeScript 7·Node.js 타입 제거), any·unknown·never, 단언·가드·satisfies, type vs interface, 제네릭, 구분된 유니언, 데코레이터, 유틸리티 타입, 익히는 순서
-- [TypeScript 코딩 컨벤션](/knowledge/dictionary/frontend/javascript/typescript-coding-convention): 이름 짓기, 타입, 클래스, 배열 메서드, 에러 처리, 모듈 규칙을 필수·권장 등급과 이유로 정리
+- [TypeScript 코딩 컨벤션](/knowledge/dictionary/frontend/javascript/typescript-coding-convention): 이름 짓기, 타입, 클래스, 배열 메서드, 에러 처리, 모듈 규칙을 필수·권장 등급과 이유로 정리하고 Airbnb·Google 스타일 가이드와 갈리는 지점을 비교
 - [TypeScript로 동적인 코드에 정적 타입 입히기](/knowledge/dictionary/frontend/javascript/typescript-advanced-types): 리터럴 유니온, never, 제네릭, 템플릿 리터럴 타입, infer 재귀로 라우트 매개변수 추출
 - [TypeScript 타입 호환성](/knowledge/dictionary/frontend/javascript/typescript-type-compatibility): 값의 집합으로 보는 타입, 구조적 타이핑과 잉여 속성 검사, 유니언·인터섹션, 함수의 공변·반공변, 구분자
 - [TypeScript 타입 연산: 타입으로 타입 만들기](/knowledge/dictionary/frontend/javascript/typescript-type-operators): keyof·typeof·인덱스 접근, 매핑 타입, 조건부 타입과 infer, 분배 규칙, 템플릿 리터럴 타입, 유틸리티 타입 구현

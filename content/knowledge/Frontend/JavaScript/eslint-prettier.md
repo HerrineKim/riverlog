@@ -168,7 +168,7 @@ ESLint 8까지는 `.eslintrc.*` 파일이 기본이었다. ESLint 9(2024)에서 
 
 형식은 바뀌었지만 **"규칙 묶음을 가져오고 → 필요한 것만 덮어쓰고 → Prettier 충돌 규칙을 끈다"** 는 구조는 그대로다.
 
-한때 React 프로젝트에서는 `eslint-config-airbnb` 같은 엄격한 공유 설정을 얹는 일이 흔했다. 규칙이 많아 `react/jsx-filename-extension`처럼 팀 상황과 맞지 않는 규칙을 하나씩 꺼야 했다. 지금은 템플릿이 넣어 주는 `js.configs.recommended`, `typescript-eslint`, `eslint-plugin-react-hooks` 정도에서 시작해 필요한 규칙만 더하는 쪽이 보통이다. React 훅 규칙의 `exhaustive-deps` 경고는 에디터의 빠른 수정으로 빠진 의존성을 바로 채울 수 있다.
+한때 React 프로젝트에서는 `eslint-config-airbnb` 같은 엄격한 공유 설정을 얹는 일이 흔했다. 규칙이 많아 `react/jsx-filename-extension`처럼 팀 상황과 맞지 않는 규칙을 하나씩 꺼야 했다. 이 공식 패키지는 ESLint 8까지만 지원해 flat config에서는 바로 쓸 수 없다([[typescript-coding-convention#공개 스타일 가이드가 갈리는 지점|공개 스타일 가이드 비교]]). 지금은 템플릿이 넣어 주는 `js.configs.recommended`, `typescript-eslint`, `eslint-plugin-react-hooks` 정도에서 시작해 필요한 규칙만 더하는 쪽이 보통이다. React 훅 규칙의 `exhaustive-deps` 경고는 에디터의 빠른 수정으로 빠진 의존성을 바로 채울 수 있다.
 
 ## 정리
 
