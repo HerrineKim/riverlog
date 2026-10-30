@@ -5,10 +5,10 @@ summary: "스톡옵션은 주식이 아니라 정해진 행사가로 주식을 �
 tags: ["career", "job-search"]
 source: other
 date: "2026-10-21"
-sources: ["https://evan-moon.github.io/2021/12/04/what-is-stock-options/", "https://github.com/jlevy/og-equity-compensation", "https://blog.carta.com/equity-101-stock-option-basics/"]
+sources: ["https://evan-moon.github.io/2021/12/04/what-is-stock-options/", "https://github.com/jlevy/og-equity-compensation", "https://blog.carta.com/equity-101-stock-option-basics/", "https://www.techinterviewhandbook.org/understanding-compensation/"]
 ---
 
-> 「[개발자가 알아야 할 스톡옵션의 모든 것](https://evan-moon.github.io/2021/12/04/what-is-stock-options/)」을 바탕으로 한국 제도 기준으로 재구성한 노트다. 세율·비과세 한도 같은 수치는 해마다 바뀌므로 넣지 않았다. 계약 전에 회사와 세무 전문가, 국세청 안내로 확인한다. 미국 스타트업의 지분 보상은 「[The Open Guide to Equity Compensation](https://github.com/jlevy/og-equity-compensation)」과 Carta의 「[Equity 101: Stock Option Basics](https://blog.carta.com/equity-101-stock-option-basics/)」를 바탕으로 더했다.
+> 「[개발자가 알아야 할 스톡옵션의 모든 것](https://evan-moon.github.io/2021/12/04/what-is-stock-options/)」을 바탕으로 한국 제도 기준으로 재구성한 노트다. 세율·비과세 한도 같은 수치는 해마다 바뀌므로 넣지 않았다. 계약 전에 회사와 세무 전문가, 국세청 안내로 확인한다. 미국 스타트업의 지분 보상은 「[The Open Guide to Equity Compensation](https://github.com/jlevy/og-equity-compensation)」과 Carta의 「[Equity 101: Stock Option Basics](https://blog.carta.com/equity-101-stock-option-basics/)」를 바탕으로, 베스팅 일정 유형은 Tech Interview Handbook의 「[Understanding compensation](https://www.techinterviewhandbook.org/understanding-compensation/)」을 바탕으로 더했다.
 
 ## 스톡옵션이란
 
@@ -71,7 +71,8 @@ RSU(양도제한조건부주식)는 권리가 아니라 조건이 충족되면 *
 
 | 개념 | 내용 |
 | --- | --- |
-| 일반 일정 | **4년 베스팅, 1년 클리프**가 표준이다. 1년을 채우면 25%가 한 번에 베스팅되고 이후 매달 나눠 베스팅된다. 클리프는 한 달 일하고 주식을 사서 떠나는 것을 막는다 |
+| 일반 일정 | **4년 베스팅, 1년 클리프**가 표준이다. 1년을 채우면 25%가 한 번에 베스팅되고 이후 매달(또는 분기마다) 나눠 베스팅된다. 4,800주를 받았다면 1년째에 1,200주, 이후 3년간 매달 100주다. 클리프는 한 달 일하고 주식을 사서 떠나는 것을 막는다 |
+| 일정 유형 | 같은 4년 총액도 해마다 받는 몫이 다르다. **균등형**은 해마다 25%다(Meta는 클리프 없이 분기마다 나눠 준다). **뒤로 몰린 일정(back-loaded)**은 Amazon의 5/15/40/40처럼 앞 2년이 적어, 그 공백을 사이닝 보너스로 메운다. **앞으로 몰린 일정(front-loaded)**은 Google이 여러 차례 바꿔 온 38/32/20/10 같은 형태다. **1년 단위 부여**는 Lyft·Stripe처럼 첫해 몫만 주고 이후는 평가에 따라 해마다 새로 주는 방식이라, 추가 부여 정책을 확인해야 한다. 회사가 일정을 자주 바꾸므로 오퍼 문서의 일정이 기준이다 |
 | ISO와 NSO | 둘 다 스톡옵션이고 **세금 시점**이 다르다. NSO는 행사할 때 차익(시가 − 행사가)이 근로소득으로 과세되고 팔 때 다시 과세된다. ISO는 행사 후 1년, 부여 후 2년을 보유하면 팔 때만 양도소득으로 과세될 수 있다. ISO는 직원에게만 줄 수 있고, 어느 쪽을 줄지는 대개 회사가 정한다 |
 | 409A 평가와 FMV | 거래가 없는 비상장 주식의 공정 시장 가치(FMV)를 정하는 외부 평가다. 행사가와 세금 계산의 기준이 된다. 투자 라운드의 우선주 가격보다 보통 낮다 |
 | AMT 함정 | ISO는 행사 시점에 일반 소득세는 없어도, 행사가와 409A 가치의 차이가 **대체 최저세(AMT)** 계산에 들어간다. 주식을 팔 수 없는 상태에서 큰 세금 청구서를 받을 수 있다. 닷컴 버블 때 이것으로 파산한 사례가 있다 |

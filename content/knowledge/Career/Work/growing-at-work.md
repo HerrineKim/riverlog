@@ -148,4 +148,4 @@ AI가 코드와 글을 대신 만들어 주는 환경에서는 도구 이름이 
 - 첫 과제는 핵심부터 설계하고, 필수부터 끝내고, 진행을 공개한다.
 - 성과는 측정 방법을 먼저 정하고, 범주별로 평소에 기록한다.
 
-관련 노트: [[work-habits|사회 초년생을 위한 직장 생활 팁]], [[ai-era-developer|AI 시대 개발자의 역할]], [[side-project-tips|사이드 프로젝트 10가지 팁]], [[interview-attitude|면접 잘 보는 법]], [[reputation-building|실력만으로는 부족하다: 명성 쌓기와 커뮤니티 기여]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]], [[tech-lead-transition|개발자에서 리더로]], [[learning-to-code-stages|개발 배우기의 네 단계와 넘는 법]]
+관련 노트: [[work-habits|사회 초년생을 위한 직장 생활 팁]], [[ai-era-developer|AI 시대 개발자의 역할]], [[side-project-tips|사이드 프로젝트 10가지 팁]], [[interview-attitude|면접 잘 보는 법]], [[reputation-building|실력만으로는 부족하다: 명성 쌓기와 커뮤니티 기여]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]], [[tech-lead-transition|개발자에서 리더로]], [[learning-to-code-stages|개발 배우기의 네 단계와 넘는 법]], [[engineering-levels|엔지니어 레벨]]

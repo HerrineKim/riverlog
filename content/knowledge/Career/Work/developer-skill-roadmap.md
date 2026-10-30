@@ -83,4 +83,4 @@ sources: ["https://bytebytego.com/guides/11-steps-to-go-from-junior-to-senior-de
 - 풀스택은 요청 하나의 전 구간을 끝낼 수 있는 사람이고, 아키텍트는 기술 지식 위에 의사결정과 소통을 얹은 역할이다.
 - 표준을 알면 다른 시스템과 바로 연결된다.
 
-관련 노트: [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[frontend-roadmap|프론트엔드 학습 로드맵]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[tech-reading-list|개발 분야별 추천 도서]], [[tech-interview-prep|기술 면접 준비: 유형별 대비와 시스템 디자인 7단계]]
+관련 노트: [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[frontend-roadmap|프론트엔드 학습 로드맵]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[tech-reading-list|개발 분야별 추천 도서]], [[tech-interview-prep|기술 면접 준비: 유형별 대비와 시스템 디자인 7단계]], [[engineering-levels|엔지니어 레벨]]

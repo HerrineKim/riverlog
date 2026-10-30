@@ -4,12 +4,12 @@ concept: "Interview Attitude"
 summary: "면접관은 말보다 태도를 먼저 읽는다. 눈 맞춤과 미러링, 일찍 도착하기, 겸손과 감사, 결론부터 짧게 답하기, 이력서 숙지와 모르면 모른다고 하기, 실수를 빨리 인정하기, 압박 면접 대응, 역질문과 감점되는 질문, 감사 메일, 기술 질문 준비, 면접에서 피할 회사를 가려내는 신호까지 면접 전·중·후의 원칙을 정리한다."
 tags: ["career", "interview", "job-search", "communication"]
 source: other
-date: "2026-10-21"
-sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md"]
+date: "2026-10-30"
+sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md", "https://www.techinterviewhandbook.org/final-questions/"]
 ---
 
 > 플라피나의 노션 강의록 「플라피나 면접팁 / 자소서팁」과 「심화편」, 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리를 바탕으로 재구성한 노트다. 회사를 면접하는 질문은 freeCodeCamp의 「[How to Interview as a Developer Candidate](https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd)」를 바탕으로 더했다. 현직자 커피챗은 위니브의 「[프론트엔드 개발자 가이드](https://github.com/weniv/frontend-developer-guide)」를 바탕으로 더했다.
-> 「주제별 질문 목록」과 프로젝트 질문·말로 꺼내 보기는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소의 Reverse Interview·Tip 문서를 바탕으로 보강했다.
+> 「주제별 질문 목록」과 프로젝트 질문·말로 꺼내 보기는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소의 Reverse Interview·Tip 문서를 바탕으로 보강했다. 역질문의 의미와 면접관의 경험을 묻는 질문, 관리자·경영진 대상 질문은 Tech Interview Handbook의 「[Best end of interview questions to ask](https://www.techinterviewhandbook.org/final-questions/)」로 보강했다.
 
 ## 면접은 소개팅이다
 
@@ -98,12 +98,21 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 
 ## 마지막 역질문
 
-「마지막으로 질문 있나요?」에 대비해 회사와 일에 대한 질문을 준비한다.
+「마지막으로 질문 있나요?」는 기술 면접이든 인성 면접이든 거의 반드시 나온다. **사실상 질문이 아니라 질문하라는 신호**다. 질문이 없으면 이 자리에 관심이 적은 사람으로 보인다. 그리고 무엇을 묻는지가 내가 무엇을 중요하게 여기는지를 드러낸다. 잘 고른 질문은 좋은 인상을 남기는 거의 확실한 기회이자, 자리에 대해 더 알고 위험 신호를 찾아내는 기회다.
 
-- 합격한다면 어떤 일을 맡게 되나요? 함께 일할 사수는 어떤 분인가요?
+- 합격한다면 어떤 일을 맡게 되나요? 가장 가까이 일할 사람(사수)은 누구인가요?
 - 팀 구성과 남은 개발 일정은 어떻게 되나요?
-- 이 일에서 가장 중요한 것이 무엇이라고 보시나요?
+- 이 일에서 가장 중요한 것이 무엇이라고 보시나요? 이 자리에 사람을 뽑을 때 어떤 자질을 보시나요?
+- 제가 합류한다면 가장 먼저 풀어 주길 바라는 문제는 무엇인가요?
+- 저는 ○○ 분야 경험이 있습니다(없습니다). 이 자리에서 성공하는 데 그 경험이 얼마나 중요한가요?
 - 합격 가능성을 높이려면 무엇을 더 공부하면 좋을까요?
+
+면접관이 「좋은 질문이네요」 하고 잠시 생각하게 만드는 질문은 대개 **면접관 자신의 경험과 판단**을 묻는다. 회사 소개 자료로는 답할 수 없어서다.
+
+- 최근에 있었던 가장 큰 기술적 실수는 무엇이고, 어떻게 대응했고, 다시 일어나지 않게 무엇을 바꿨나요?
+- 초기에 내린 기술 결정 중 지금까지 가장 비싼 대가를 치르는 것은 무엇인가요?
+- 여기서 일하며 가장 보람 있었던, 또는 기술적으로 가장 복잡했던 프로젝트는 무엇인가요?
+- 여기서 일하면서 가장 답답한 점은 무엇인가요? 다른 회사에서 겪어 보지 못한 이 회사만의 점은요?
 
 ### 회사를 면접하는 질문
 
@@ -116,9 +125,15 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 | 엔지니어 | 무엇을 측정하나요? 버그는 어떻게 찾고 고치나요? | 응답 시간·오류율 같은 지표, 버그 트래커와 수정 기간. 측정할 이유를 모르면 나쁜 신호 |
 | 엔지니어 | 여기서 일하는 게 왜 좋아요? | 「일에서 보람을 느낀다」, 「동료가 똑똑하고 친절하다」, 「경영진이 엔지니어링을 존중한다」가 좋은 답. 「열심히 안 해도 된다」, 「큰 실수를 해도 상관없다」뿐이면 다른 곳을 본다 |
 | 엔지니어 | 다음 마감은 언제인가요? 새 개발 환경을 세팅하는 데 얼마나 걸리나요? | 마감 압박의 정도, 온보딩과 자동화 수준 |
-| 관리자 | 마지막으로 코드를 짠 게 언제인가요? 지금 팀의 가장 큰 과제는요? | 기술 감각과 팀이 처한 상황 |
-| 관리자 | 개인 성과는 어떻게 재나요? 직원끼리 순위를 매기나요? 정기 회고를 하나요? | 평가 방식과 팀 문화. 상대 평가(stack ranking)는 협업을 해친다 |
+| 엔지니어 | 새 기술은 어떻게 평가하고 최종 결정은 누가 하나요? 직접 만드는 편인가요, 외부 도구를 쓰는 편인가요? 지금 스택을 고른 이유는요? 기능 요청과 유지 보수에 자원을 어떻게 나누나요? | 기술 의사결정이 근거 있게 이뤄지는가, 유지 보수가 늘 뒤로 밀리는가 |
+| 관리자 | 마지막으로 코드를 짠 게 언제인가요? 지금 팀의 가장 큰 과제는요? 관리자는 기술 결정에서 어떤 역할을 하나요? | 기술 감각과 팀이 처한 상황 |
+| 관리자 | 새로 온 엔지니어는 어떻게 적응시키나요? 이 팀·프로젝트의 성공은 어떤 모습인가요? 지금 팀의 강점과 약점, 약점을 위해 하는 일은요? | 온보딩 수준과 팀이 스스로를 얼마나 객관적으로 보는가 |
+| 관리자 | 개인 성과는 어떻게 재나요? 직원끼리 순위를 매기나요? 1:1은 얼마나 자주 하나요? 정기 회고를 하나요? | 평가 방식과 팀 문화. 상대 평가(stack ranking)는 협업을 해친다 |
+| 관리자 | 시니어 두 명이 기술 문제로 맞서면 어떻게 하나요? 저성과자를 맡아 본 적이 있나요? 고성과자와 저성과자 중 어디에 시간을 더 쓰나요? 팀원 한 명에게 좋은 것과 팀에게 좋은 것이 어긋났던 때는요? 관리 철학은요? | 관리자의 갈등 처리와 사람 관리 방식. 관리자에게 인성 면접 질문을 되돌려 주는 셈이다 |
+| 경영진 | 다음에 할 일은 어떻게 정하나요? 지금 최우선은 새 기능, 새 제품, 기존 코드 안정화, 운영 부담 줄이기 중 무엇인가요? 주요 경쟁사와 차별점은요? | 회사의 방향과 우선순위가 현장의 말과 맞는가 |
 | 경영진 | 자금은 어떻게 조달했나요? 수익을 내나요? 보고 체계는 어떻게 되나요? | 회사의 지속 가능성. 재무를 직접 확인하는 법은 [[company-financial-check\|회사 재무 확인하기]] |
+
+관리자 대상 질문은 면접 중보다 **오퍼 전후의 팀 매칭이나 매니저 통화**(Google의 팀 매칭 단계처럼 리크루터가 잡아 주는 자리)에서 특히 쓸모 있다.
 
 #### 주제별 질문 목록
 
@@ -204,4 +219,4 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 - 역질문을 준비하고, 마음에 든 면접이면 감사 메일을 보낸다.
 - 떨어져도 짧은 시간 작은 영역에서 본 한 번의 평가일 뿐이다. 더 많이 준비하고 경험한 사람이 조금 더 운이 좋다.
 
-관련 노트: [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[resume-writing|합격하는 영문 레주메 작성법]], [[coding-test|코딩 테스트 접근법]], [[kind-engineering|친절한 엔지니어링]]
+관련 노트: [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[behavioral-interview-questions|인성 면접 준비]], [[behavioral-interview-rubrics|인성 면접 평가 기준]], [[resume-writing|합격하는 영문 레주메 작성법]], [[coding-test|코딩 테스트 접근법]], [[kind-engineering|친절한 엔지니어링]]
