@@ -5,11 +5,12 @@ summary: "여러 서버 앞에서 트래픽을 나눠 주는 로드 밸런서. �
 tags: ["backend", "architecture", "network", "infra", "scalability"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-a-load-balancer", "https://bytebytego.com/guides/key-use-cases-for-load-balancers", "https://bytebytego.com/guides/load-balancer-realistic-use-cases-you-may-not-know", "https://bytebytego.com/guides/top-6-load-balancing-algorithms", "https://d2.naver.com/helloworld/284659", "https://ziwon.github.io/post/modern-network-load-balancing-and-proxying/"]
+sources: ["https://bytebytego.com/guides/what-is-a-load-balancer", "https://bytebytego.com/guides/key-use-cases-for-load-balancers", "https://bytebytego.com/guides/load-balancer-realistic-use-cases-you-may-not-know", "https://bytebytego.com/guides/top-6-load-balancing-algorithms", "https://d2.naver.com/helloworld/284659", "https://ziwon.github.io/post/modern-network-load-balancing-and-proxying/", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Network/README.md"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[What is a Load Balancer?](https://bytebytego.com/guides/what-is-a-load-balancer)」, 「[Key Use Cases for Load Balancers](https://bytebytego.com/guides/key-use-cases-for-load-balancers)」, 「[Load Balancer Realistic Use Cases](https://bytebytego.com/guides/load-balancer-realistic-use-cases-you-may-not-know)」, 「[Top 6 Load Balancing Algorithms](https://bytebytego.com/guides/top-6-load-balancing-algorithms)」를 바탕으로, 패킷 전달 방식과 로드 밸런서 이중화는 「[L4/L7 스위치의 대안, 오픈 소스 로드 밸런서 HAProxy](https://d2.naver.com/helloworld/284659)」로 보강해 재구성한 노트다.
 > 배치 토폴로지, L4 구현 방식, 제어 평면 부분은 Matt Klein의 「Introduction to modern network load balancing and proxying」 번역 「[네트워크 로드 밸런싱 및 프록시 소개](https://ziwon.github.io/post/modern-network-load-balancing-and-proxying/)」를 바탕으로 보강했다.
+> 「DNS 라운드 로빈」은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 네트워크 문서를 바탕으로 보강했다.
 
 ## 로드 밸런서란
 
@@ -60,6 +61,19 @@ L4는 **연결 단위**로 나누기 때문에 HTTP/2·gRPC처럼 연결 하나�
 | 소프트웨어 | 일반 서버·VM·컨테이너에 설치 | Nginx, HAProxy, Envoy |
 | 클라우드 관리형 | 클라우드가 운영하고 자동으로 확장된다 | AWS Elastic Load Balancing, Google Cloud Load Balancing, Azure Load Balancer |
 | GSLB (Global Server Load Balancing) | 여러 지역의 데이터 센터 사이에서 나눈다. 보통 DNS나 애니캐스트로 구현 | 지역 장애 대비, 가까운 리전으로 보내기([[dns\|DNS 라우팅 정책]]) |
+
+### DNS 라운드 로빈
+
+로드 밸런서 없이 **한 도메인에 A 레코드를 여러 개** 두고, DNS 서버가 질의마다 IP 순서를 돌려 주는 가장 단순한 분산이다. 장비가 필요 없지만 한계가 분명하다.
+
+| 한계 | 이유 |
+| --- | --- |
+| 서버마다 공인 IP가 필요하다 | 클라이언트가 서버 IP로 직접 접속한다 |
+| 고르게 나뉘지 않는다 | 통신사 리졸버·프록시·브라우저·OS가 응답을 TTL 동안 캐시해, 같은 캐시 뒤의 사용자는 모두 같은 서버로 간다 |
+| 장애를 모른다 | DNS는 서버의 부하나 생사를 보지 않아 죽은 서버 IP도 계속 준다. TTL을 줄여도 캐시가 다 사라질 때까지 일부 요청은 실패한다 |
+| 세션 유지가 어렵다 | 다음 질의에서 다른 서버로 갈 수 있다 |
+
+그래서 DNS 단계에서는 가중치 응답, 헬스 체크와 연동한 장애 조치, 지역 기반 응답(Route 53 같은 관리형 DNS의 라우팅 정책)으로 단점을 보완하고, 데이터 센터 안의 세밀한 분산은 로드 밸런서가 맡는다.
 
 ## 분산 알고리즘
 
