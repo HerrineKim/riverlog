@@ -51,11 +51,6 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
               <time dateTime={post.date}>{formatDate(post.date)}</time>
               <span aria-hidden>·</span>
               <span>{post.readingMinutes}분 읽기</span>
-              {post.tags.map((t) => (
-                <span key={t} className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs text-accent">
-                  #{t}
-                </span>
-              ))}
             </div>
           </header>
         </div>
@@ -63,6 +58,15 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
           <article className="mx-auto w-full max-w-3xl min-w-0 lg:mr-0">
             <MobileToc items={toc} className="mb-8 lg:hidden" />
             <Prose markdown={post.body} />
+            {post.tags.length > 0 && (
+              <ul aria-label="태그" className="mt-12 flex flex-wrap gap-2 text-xs">
+                {post.tags.map((t) => (
+                  <li key={t} className="rounded-full bg-accent-soft px-2.5 py-0.5 text-accent">
+                    #{t}
+                  </li>
+                ))}
+              </ul>
+            )}
             <Comments term={`blog/${post.slug}`} />
           </article>
           <div className="hidden lg:block">

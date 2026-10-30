@@ -34,8 +34,6 @@ const noteSeo = (node: KNode) => ({
   article: { published: node.doc?.date ?? node.doc?.created, modified: node.doc?.updated, tags: node.doc?.tags },
 });
 
-const SOURCE_LABEL = { til: "GitHub TIL", notion: "Notion", mixed: "GitHub TIL + Notion", other: "직접 작성" } as const;
-
 function sourceName(url: string) {
   if (url.includes("notion")) return "Notion 원문";
   if (url.includes("github.com")) return "GitHub 원문";
@@ -98,7 +96,6 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
             </h1>
             {doc && (
               <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted">
-                <span className="rounded-full border border-line px-2.5 py-1">{SOURCE_LABEL[doc.source]}</span>
                 {doc.date && doc.date.slice(0, 10) !== doc.created?.slice(0, 10) && (
                   <span className="rounded-full border border-line px-2.5 py-1">작성 {formatDate(doc.date)}</span>
                 )}
@@ -112,15 +109,6 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
                     수정 <time dateTime={doc.updated}>{formatDate(doc.updated)}</time>
                   </span>
                 )}
-                {doc.tags.map((t) => (
-                  <Link
-                    key={t}
-                    href={tagHref(t)}
-                    className="rounded-full bg-accent-soft px-2.5 py-1 text-accent transition pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center hover:bg-accent hover:text-accent-ink"
-                  >
-                    #{t}
-                  </Link>
-                ))}
               </div>
             )}
           </header>
@@ -140,6 +128,20 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
                 </details>
               )}
               <Prose markdown={rest} />
+              {doc.tags.length > 0 && (
+                <ul aria-label="태그" className="mt-12 flex flex-wrap gap-2 text-xs">
+                  {doc.tags.map((t) => (
+                    <li key={t}>
+                      <Link
+                        href={tagHref(t)}
+                        className="rounded-full bg-accent-soft px-2.5 py-1 text-accent transition pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center hover:bg-accent hover:text-accent-ink"
+                      >
+                        #{t}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
               {doc.sources.length > 0 && (
                 <div className="mt-14 rounded-xl border border-line bg-bg-elev p-4 text-sm text-muted">
                   <p className="font-medium text-fg">원본 기록</p>
