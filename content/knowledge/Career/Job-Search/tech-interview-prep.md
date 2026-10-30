@@ -1,15 +1,15 @@
 ---
 title: "기술 면접 준비: 유형별 대비와 시스템 디자인 7단계"
 concept: "Tech Interview"
-summary: "개발자 기술 면접은 코딩, 시스템 디자인, 객체 지향 설계(OOD), 행동(behavioral) 면접으로 나뉜다. 유형별로 무엇을 보는지와 준비 자료를 정리하고, 시스템 디자인 면접을 요구 사항 확인 → 용량 추정 → 상위 설계 → DB 설계 → 인터페이스 설계 → 확장성 → 신뢰성의 7단계로 진행하는 법을 다룬다."
+summary: "개발자 기술 면접은 코딩, 시스템 디자인, 객체 지향 설계(OOD), 행동(behavioral) 면접으로 나뉜다. 유형별로 무엇을 보는지와 준비 자료, 퀴즈·온라인 코딩 테스트·과제·화상 면접·온사이트 같은 진행 형식별 대비, 면접 언어 고르기와 준비 기간을 정리하고, 시스템 디자인 면접을 요구 사항 확인 → 용량 추정 → 상위 설계 → DB 설계 → 인터페이스 설계 → 확장성 → 신뢰성의 7단계로 진행하는 법을 다룬다."
 tags: ["career", "interview", "job-search", "architecture", "algorithm"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss", "https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview", "https://jeinalog.tistory.com/30", "https://github.com/donnemartin/system-design-primer"]
+sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss", "https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview", "https://jeinalog.tistory.com/30", "https://github.com/donnemartin/system-design-primer", "https://www.techinterviewhandbook.org/software-engineering-interview-guide/"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How to Ace System Design Interviews](https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss)」, 「[Recommended Materials for Technical Interviews](https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview)」를 바탕으로 재구성한 노트다.
-> 「코딩 인터뷰 진행 원칙」은 「[구글 신입 엔지니어 인터뷰 준비 후기](https://jeinalog.tistory.com/30)」를 바탕으로 보강했다.
+> 진행 형식과 언어·준비 기간은 Tech Interview Handbook의 「[Software Engineer Interview Guide](https://www.techinterviewhandbook.org/software-engineering-interview-guide/)」로, 「코딩 인터뷰 진행 원칙」은 「[구글 신입 엔지니어 인터뷰 준비 후기](https://jeinalog.tistory.com/30)」를 바탕으로 보강했다.
 
 ## 면접 유형과 준비 자료
 
@@ -19,9 +19,28 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 | 시스템 디자인 | 모호한 요구를 구체화하고, 구성 요소를 조립하고, 트레이드오프를 설명하는 힘 | 『가상 면접 사례로 배우는 대규모 시스템 설계 기초』 1·2권, 『데이터 중심 애플리케이션 설계』, 설계 사례 강의 |
 | 객체 지향 설계(OOD) | 클래스와 책임을 나누고 관계를 그리는 힘. 주차장, 엘리베이터 같은 문제 | 『헤드 퍼스트 디자인 패턴』, OOD 문제 모음([[gof-design-patterns\|GoF 디자인 패턴]]) |
 | 행동(behavioral) | 협업, 갈등, 실패, 주도성에 대한 실제 경험 | STAR 기법(상황 → 과제 → 행동 → 결과)으로 사례를 미리 정리한다. Tech Interview Handbook 같은 공개 자료([[behavioral-interview-questions\|영어 면접 단골 질문 12가지]]) |
-| 모의 면접 | 실전 압박 속에서 말하며 푸는 연습 | 동료와 서로 면접관을 맡거나 모의 면접 플랫폼을 쓴다 |
+| 모의 면접 | 실전 압박 속에서 말하며 푸는 연습 | 동료와 서로 면접관을 맡거나, 현업 엔지니어와 익명으로 연습하는 모의 면접 플랫폼(interviewing.io 등)을 쓴다 |
 
 지원은 LinkedIn, Indeed 같은 채용 플랫폼과 회사 채용 페이지, 추천(referral)으로 한다. 미국 채용 절차는 [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], 프론트엔드 면접은 [[frontend-interview|프론트엔드 면접 유형과 준비법]]에 있다.
+
+## 진행 형식별 대비
+
+같은 코딩 문제라도 어떤 형식으로 보느냐에 따라 준비할 것이 다르다. 채용 단계의 순서는 [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]]에 있다.
+
+| 형식 | 빈도 | 특징 | 대비 |
+| --- | --- | --- | --- |
+| 퀴즈 | 가끔 | 초기 거르기. 리크루터나 자동 채점이 답이 정해진 질문을 낸다(비트 연산 결과, 버블 정렬의 시간 복잡도) | 자료구조·복잡도 같은 기본 개념을 짧게 답할 수 있게 한다 |
+| 온라인 코딩 테스트(OA) | 가끔 | 초반에 HackerRank 같은 플랫폼에서 혼자 푼다. **입력을 stdin에서 읽고 결과를 stdout으로 출력**해야 하는 경우가 많다 | LeetCode는 함수만 채우므로, 입출력을 직접 다루는 연습을 따로 해 둔다 |
+| 과제(take-home) | 드묾 | 항공편 목록 앱, 칸반 보드, 스네이크 게임처럼 큰 결과물로 설계 감각을 본다. 스타트업·작은 회사에 많다 | 동작보다 구조·테스트·README로 판단 과정을 보여 준다 |
+| 화상·전화 면접(phone screen) | 흔함 | Zoom·Meet 등으로 연결해 CoderPad, CodePen(프론트엔드), Google Docs 같은 공유 편집기에서 푼다. **코드를 실행할 수 없는 경우가 많다** | 실행 없이 손으로 예제를 따라가며 검증하는 연습(아래 「코딩 인터뷰 진행 원칙」) |
+| 온사이트(final round) | 거의 항상 | 몇 시간 동안 코딩·시스템 디자인·행동 면접을 여러 라운드 연달아 본다. 화이트보드나 본인 노트북을 쓰고, 직원과의 점심이 끼기도 한다 | 노트북을 쓰는 회사라면 편집기·언어 환경을 미리 세팅해 간다 |
+
+## 면접 언어와 준비 기간
+
+- **이미 잘 쓰는 언어로 본다.** Python, Java, C++, JavaScript가 가장 흔하다. 면접을 위해 새 언어를 익히는 것은 몇 주 이상 걸려 손해다. Python은 코드가 짧고 표준 라이브러리가 넓어 선호된다. 프론트엔드·모바일은 직군 언어(JavaScript, Swift, Kotlin)로 본다.
+- **코딩 면접 준비는 약 3개월, 주 11시간(하루 2~3시간)이 기준**이다. 기간이 짧으면 문제를 우선순위로 골라 주는 목록(Grind 75, Blind 75)을 쓴다. 문제 연습은 LeetCode가 면접에 가장 가깝고, HackerRank·Codeforces는 경시대회 쪽이다.
+- 서류 단계는 문제 풀이 실력보다 **이력서가 경력을 어떻게 보여 주느냐**로 갈린다([[resume-writing|합격하는 영문 레주메 작성법]]). 서류를 통과한 뒤에는 과거 성과보다 코딩 실력의 비중이 커진다.
+- 연봉 이야기는 과정 중 언제든 나올 수 있다. 원칙은 [[job-offer-negotiation|연봉 협상: 오퍼를 받은 뒤의 열 가지 원칙]]에 있다.
 
 ## 코딩 인터뷰 진행 원칙
 
@@ -69,6 +88,7 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 ## 더 볼 자료
 
 - [System Design Primer](https://github.com/donnemartin/system-design-primer): 시스템 설계 개념(확장성, 일관성, 캐시, DB, 비동기)과 면접 예제를 모은 공개 저장소. 플래시 카드와 문제별 풀이가 있다.
+- [Tech Interview Handbook](https://www.techinterviewhandbook.org/): 코딩 면접 기법, 3개월 학습 계획, 알고리즘 치트시트, Grind 75, 행동 면접 질문 모음을 모은 공개 가이드.
 - [Front End Interview Handbook](https://www.frontendinterviewhandbook.com/): 프론트엔드 면접 유형별 자료([[frontend-interview|프론트엔드 면접 유형과 준비법]]).
 - [블록체인 개발자 면접 오픈북](https://hamait.tistory.com/1054): 블록체인(비트코인·이더리움·하이퍼레저), 합의 알고리즘, 분산 시스템, 암호학, 언어별 심화 질문 목록.
 - [데이터 사이언스 인터뷰 질문 모음집](https://zzsza.github.io/data/2018/02/17/datascience-interivew-questions/): 통계·수학, 분석 일반, 머신러닝·딥러닝, 추천 시스템, DB, 시각화, 분산 처리, 개인정보까지 데이터 직군 면접 질문을 분야별로 모은 목록.
