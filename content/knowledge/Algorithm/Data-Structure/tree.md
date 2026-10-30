@@ -5,11 +5,12 @@ summary: "계층 구조를 표현하는 트리의 용어, 이진 트리의 종�
 tags: ["algorithm", "data-structure", "tree", "binary-search"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/23197e31a7274fc5960543cbfbee51b5", "https://80000coding.notion.site/303234d626784a398781d3997f7b1e2d", "https://80000coding.notion.site/a1c81b8e4538437abcb713184174052d", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://zeddios.tistory.com/237"]
+sources: ["https://80000coding.notion.site/23197e31a7274fc5960543cbfbee51b5", "https://80000coding.notion.site/303234d626784a398781d3997f7b1e2d", "https://80000coding.notion.site/a1c81b8e4538437abcb713184174052d", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://zeddios.tistory.com/237", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[자료구조] 트리」, 「이진 트리 (기초)」, 「균형 이진 탐색 트리 AVL」, 「ALV tree 찢어버리기」를 바탕으로 재구성한 노트다.
 > 레드-블랙 트리 부분은 「[Red-Black Tree](https://zeddios.tistory.com/237)」를 바탕으로 보강했다.
+> 레드-블랙 트리 삭제와 쓰임은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 자료구조 문서로 보강했다.
 
 트리(Tree)는 **계층 관계를 표현하는 비선형 자료구조**다. 노드 하나가 여러 자식을 가지는 1:N 관계가 반복된다. 그래프의 관점에서 보면 **사이클이 없는 연결 그래프**이고, 노드가 n개면 간선은 정확히 n-1개다. 파일 시스템, DOM, 조직도, 힙, 구문 트리가 모두 트리다.
 
@@ -169,6 +170,10 @@ AVL은 균형 조건이 엄격해 탐색이 빠른 대신 삽입·삭제 때 회
 | 빨강 | **색 바꾸기(recoloring)**: 부모·삼촌을 검정, 조부모를 빨강으로(루트면 다시 검정). 조부모에서 Double Red가 다시 생길 수 있어 위로 반복한다 | 한 단계 O(1), 최악 O(log n) |
 
 삽입 전체는 O(log n)이고 회전은 최대 2번이다. AVL보다 덜 엄격하게 균형을 잡는 대신 수정 때 회전이 적다.
+
+삭제도 먼저 BST 방식으로 지운다(자식이 둘이면 후계자 값을 옮기고 후계자를 지운다). **지운 노드가 빨강이면 규칙이 깨지지 않아 끝이다.** 검정이면 그 경로의 검정 깊이가 1 줄어드므로, 그 자리에 「검정 하나가 모자란」 표시(double black)를 두고 **형제의 색과 형제 자식의 색**에 따라 색 바꾸기나 회전으로 모자란 검정을 채운다. 삭제도 O(log n)이고 회전은 최대 3번이다.
+
+Java `TreeMap`·`TreeSet`, C++ `std::map`, 리눅스 커널의 스케줄러 실행 큐·가상 메모리 영역 관리가 레드-블랙 트리를 쓰고, Java `HashMap`도 충돌이 많은 버킷을 레드-블랙 트리로 바꾼다([[hash-table|해시 테이블]]).
 
 ## 정리
 
