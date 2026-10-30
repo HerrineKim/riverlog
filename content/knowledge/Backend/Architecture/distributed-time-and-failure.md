@@ -1,14 +1,14 @@
 ---
 title: "분산 시스템의 시간과 장애: 8가지 착각부터 논리 시계까지"
 concept: "Distributed Time and Failure"
-summary: "분산 시스템이 어려운 이유는 메시지가 늦게 오고(비동기) 부품이 일부만 고장 나기(부분 장애) 때문이다. 분산 컴퓨팅의 8가지 착각, 대규모 클러스터의 실제 장애 빈도, 전역 '지금'이 없다는 사실, Lamport의 happened-before와 논리 시계, 합의·CRDT로 조율 비용을 다루는 법을 정리한다."
+summary: "분산 시스템이 어려운 이유는 메시지가 늦게 오고(비동기) 부품이 일부만 고장 나기(부분 장애) 때문이다. 분산 컴퓨팅의 8가지 착각, 대규모 클러스터의 실제 장애 빈도, 전역 '지금'이 없다는 사실, Lamport의 happened-before와 논리 시계, 선형화 가능성부터 최종 일관성·세션 보장까지의 일관성 모델, 합의 문제와 비잔티움 장애·BFT, Raft의 리더 선출과 로그 복제, 합의·CRDT로 조율 비용을 다루는 법을 정리한다."
 tags: ["backend", "architecture", "distributed-system", "network", "database"]
 source: other
 date: "2026-10-21"
-sources: ["https://web.archive.org/web/2020/https://pages.cs.wisc.edu/~zuyu/files/fallacies.pdf", "https://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf", "https://www.microsoft.com/en-us/research/publication/time-clocks-ordering-events-distributed-system/", "https://queue.acm.org/detail.cfm?id=2745385", "https://aphyr.com/tags/jepsen"]
+sources: ["https://web.archive.org/web/2020/https://pages.cs.wisc.edu/~zuyu/files/fallacies.pdf", "https://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf", "https://www.microsoft.com/en-us/research/publication/time-clocks-ordering-events-distributed-system/", "https://queue.acm.org/detail.cfm?id=2745385", "https://aphyr.com/tags/jepsen", "https://raft.github.io/raft.pdf", "https://lamport.azurewebsites.net/pubs/byz.pdf", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
 ---
 
-> Arnon Rotem-Gal-Oz의 「[Fallacies of Distributed Computing Explained](https://web.archive.org/web/2020/https://pages.cs.wisc.edu/~zuyu/files/fallacies.pdf)」, Jeff Dean의 LADIS 2009 기조연설 「[Designs, Lessons and Advice from Building Large Distributed Systems](https://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf)」, Leslie Lamport의 논문 「[Time, Clocks, and the Ordering of Events in a Distributed System](https://www.microsoft.com/en-us/research/publication/time-clocks-ordering-events-distributed-system/)」(1978), Justin Sheehy의 「[There is No Now](https://queue.acm.org/detail.cfm?id=2745385)」(ACM Queue, 2015)를 바탕으로 재구성한 노트다.
+> Arnon Rotem-Gal-Oz의 「[Fallacies of Distributed Computing Explained](https://web.archive.org/web/2020/https://pages.cs.wisc.edu/~zuyu/files/fallacies.pdf)」, Jeff Dean의 LADIS 2009 기조연설 「[Designs, Lessons and Advice from Building Large Distributed Systems](https://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf)」, Leslie Lamport의 논문 「[Time, Clocks, and the Ordering of Events in a Distributed System](https://www.microsoft.com/en-us/research/publication/time-clocks-ordering-events-distributed-system/)」(1978), Justin Sheehy의 「[There is No Now](https://queue.acm.org/detail.cfm?id=2745385)」(ACM Queue, 2015)를 바탕으로 재구성한 노트다. 일관성 모델, 비잔티움 장애, Raft는 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 Diego Ongaro·John Ousterhout의 「[In Search of an Understandable Consensus Algorithm](https://raft.github.io/raft.pdf)」(2014), Lamport·Shostak·Pease의 「[The Byzantine Generals Problem](https://lamport.azurewebsites.net/pubs/byz.pdf)」(1982)로 채웠다.
 
 ## 분산 시스템이 어려운 이유
 
@@ -111,6 +111,120 @@ a → b도 b → a도 아니면 두 사건은 **동시적(concurrent)** 이다. 
 
 모든 노드가 같은 순서로 같은 명령을 처리하면 같은 상태에 도달한다. 이것이 **상태 기계 복제**(state machine replication)다. 논문은 이를 분산 상호 배제(누가 먼저 자원을 쓰나) 예로 보였고, 오늘날 Raft·Paxos 기반 시스템(etcd, ZooKeeper, Kafka KRaft)이 같은 원리로 로그 순서를 합의한다.
 
+## 일관성 모델
+
+**일관성 모델(consistency model)** 은 복제된 데이터를 여러 클라이언트가 읽고 쓸 때 「어떤 결과가 보일 수 있나」를 정한 약속이다. 강할수록 프로그래밍이 쉽고, 약할수록 조율이 적어 빠르고 가용하다.
+
+| 모델 | 약속 | 깨지면 보이는 것 | 비용 |
+| --- | --- | --- | --- |
+| **선형화 가능성(linearizability)** | 모든 연산이 호출과 응답 사이 어느 한 순간에 원자적으로 일어난 것처럼 보인다. 쓰기가 끝나면 그 뒤의 모든 읽기가 새 값을 본다. CAP의 C가 이것이다 | - | 합의나 단일 리더 경유. 분할 중에는 한쪽이 응답을 멈춘다 |
+| 순차 일관성(sequential) | 모든 클라이언트가 같은 전체 순서를 보고, 그 순서가 각 클라이언트의 연산 순서를 지킨다. 실제 시각과는 어긋날 수 있다 | 끝난 쓰기가 잠시 안 보일 수 있다 | 전체 순서 합의 |
+| 인과 일관성(causal) | 인과 관계가 있는 연산(happened-before)은 모두가 같은 순서로 본다. 동시적인 연산은 순서가 달라도 된다 | 댓글이 원글보다 먼저 보이는 일은 없다 | 의존성 추적(버전 벡터 등). 가용성을 크게 해치지 않는다 |
+| 세션 보장(session guarantees) | 한 클라이언트의 세션 안에서만 아래 네 가지를 지킨다 | 아래 표 | 라우팅·버전 토큰 정도 |
+| **최종 일관성(eventual)** | 새 쓰기가 멈추면 모든 복제본이 결국 같은 값에 수렴한다. 그 사이 무엇이 보일지는 약속하지 않는다 | 옛 값, 읽을 때마다 다른 값 | 가장 싸다 |
+
+세션 보장은 최종 일관성 시스템에서 사용자가 가장 자주 겪는 이상을 막는 실용적인 중간 단계다.
+
+| 보장 | 뜻 | 막는 이상 | 흔한 구현 |
+| --- | --- | --- | --- |
+| 자기 쓰기 읽기(read-your-writes) | 내가 쓴 것은 내 다음 읽기에 반드시 보인다 | 프로필을 고쳤는데 새로 고치면 옛 값 | 최근에 쓴 사용자의 읽기를 리더로 보낸다, 쓰기 버전을 기억해 그 버전 이상인 복제본에서 읽는다 |
+| 단조 읽기(monotonic reads) | 한 번 본 값보다 옛 값을 다시 보지 않는다 | 새 댓글이 보였다가 새로 고치니 사라진다(뒤처진 복제본으로 감) | 사용자를 같은 복제본에 고정한다 |
+| 단조 쓰기(monotonic writes) | 내 쓰기들이 쓴 순서대로 반영된다 | 「비밀번호 변경」 뒤 「옛 비밀번호로 되돌림」이 거꾸로 적용 | 세션별 쓰기 순번 |
+| 쓰기는 읽기를 따른다(writes-follow-reads) | 내가 읽은 값 뒤에 내 쓰기가 반영된다 | 질문을 못 본 복제본에 답글이 먼저 생긴다 | 읽은 버전을 쓰기에 실어 보낸다 |
+
+AP 시스템(분할 중에도 응답하는 시스템)이 줄 수 있는 것은 최종 일관성과 그 위의 세션·인과 보장까지다. 선형화 가능성이 필요하면 분할 중 일부 요청을 거절하는 CP 쪽을 고른다. CAP과 PACELC는 [[database-models|데이터베이스 모델]], 복제 지연 때문에 생기는 문제는 [[database-scaling|데이터베이스 확장과 성능 최적화]]에 있다.
+
+## 합의 문제
+
+**합의(consensus)** 는 여러 노드가 일부 고장이 나도 **하나의 값(또는 하나의 순서)에 모두 동의**하게 하는 문제다. 리더 선출, 분산 락, 원자적 커밋, 클러스터 멤버십, 그리고 무엇보다 **복제 로그의 순서**가 모두 합의로 풀린다. 앞 절의 상태 기계 복제가 합의 위에 서 있다.
+
+| 성질 | 뜻 |
+| --- | --- |
+| 합의(agreement) | 정상 노드는 모두 같은 값을 결정한다 |
+| 유효성(validity) | 결정된 값은 어떤 노드가 실제로 제안한 값이다 |
+| 종료(termination) | 정상 노드는 결국 결정한다. FLP 때문에 비동기 모델에서는 항상 보장할 수 없어, 실제 알고리즘은 타임아웃·무작위로 「대개」 끝나게 한다 |
+
+### 어떤 장애를 가정하나
+
+| 장애 모델 | 노드가 하는 일 | 견디려면 |
+| --- | --- | --- |
+| 중단(crash-stop) | 멈추고 다시 오지 않는다 | f개 고장에 2f+1개 노드(과반) |
+| 중단 후 복구(crash-recovery) | 멈췄다가 디스크의 상태를 들고 돌아온다 | 같다. 약속한 내용은 디스크에 써 둬야 한다 |
+| 누락(omission) | 메시지를 잃는다 | 재전송, 타임아웃 |
+| **비잔티움(Byzantine)** | 무엇이든 한다. 틀린 값, 노드마다 다른 말, 거짓말 | f개 고장에 **3f+1개** 노드 |
+
+### 비잔티움 장군 문제
+
+**비잔티움 장군 문제(Byzantine Generals Problem)** 는 Lamport·Shostak·Pease가 1982년에 정리한 문제다. 도시를 포위한 장군들이 전령으로만 연락하며 「모두 공격」이나 「모두 후퇴」 중 하나에 합의해야 하는데, 일부 장군이 배신자라 장군마다 다른 명령을 전한다. 충성스러운 장군들은 배신자가 있어도 같은 결정을 내려야 한다.
+
+결론은 서명 없는 메시지(구두 메시지)로는 **배신자가 전체의 3분의 1 이상이면 풀 수 없다**는 것이다. 장군 셋 중 하나가 배신하면, 나머지 둘은 서로 다른 말을 들었을 때 누가 거짓말쟁이인지 가릴 수 없다. 그래서 f명의 배신자를 견디려면 3f+1명이 필요하다. 메시지에 위조할 수 없는 서명을 붙이면 조건이 완화된다.
+
+이 문제가 중요한 것은 **고장 난 노드가 멈추지 않고 틀린 말을 하는** 경우를 가정하기 때문이다. 메모리·디스크 손상, 소프트웨어 버그, 해킹당한 노드, 그리고 서로를 믿지 않는 참여자가 그렇다.
+
+- 한 조직이 운영하는 데이터센터 안에서는 노드가 거짓말을 하지 않는다고 보고 **중단 장애 모델**을 쓴다. 손상은 체크섬으로 따로 잡는다. etcd, ZooKeeper, Kafka KRaft가 그렇다.
+- 누구나 참여하고 서로 믿지 않는 **블록체인**은 비잔티움 장애를 가정해야 한다. 비트코인은 작업 증명(PoW)으로 가장 많은 연산이 쌓인 체인을 따르게 해 확률적으로 합의한다(나카모토 합의). 참여자가 정해진 체인과 많은 지분 증명 체인은 PBFT 계열 BFT 알고리즘(Tendermint·CometBFT, HotStuff 등)으로 블록을 확정한다.
+
+### BFT 알고리즘과 Raft·Paxos
+
+**비잔티움 장애 허용(BFT, Byzantine Fault Tolerance)** 은 일부 노드가 임의로 행동해도 시스템이 올바르게 동작하는 성질이다. 대표 알고리즘 **PBFT(Practical BFT, 1999)** 는 리더(primary)가 순서를 제안하면(pre-prepare) 노드끼리 서로 확인 메시지를 돌리고(prepare), 다시 확정 메시지를 돌려(commit) 2f+1개의 일치하는 응답이 모이면 실행한다.
+
+| 비교 | PBFT 계열 (BFT) | Raft, Paxos (CFT) |
+| --- | --- | --- |
+| 가정하는 장애 | 비잔티움: 거짓말까지 | 중단: 멈추거나 메시지를 잃을 뿐 |
+| f개 고장을 견디는 노드 수 | 3f+1 | 2f+1 |
+| 결정에 필요한 응답 | 2f+1 (겹치는 부분에 정직한 노드가 최소 하나 있게) | 과반 f+1 |
+| 메시지 수 | 노드끼리 모두 주고받아 O(n²) | 리더와 팔로워 사이 O(n) |
+| 메시지 인증 | 서명·MAC으로 누가 무엇을 말했는지 증명 | 필요 없다(네트워크 보안은 별도) |
+| 리더를 믿나 | 믿지 않는다. 다른 노드가 리더의 제안을 서로 대조하고, 수상하면 리더를 교체(view change)한다 | 믿는다. 리더가 정한 순서를 그대로 따른다 |
+| 쓰임 | 허가형 블록체인, 서로 다른 조직 사이 원장 | etcd, ZooKeeper(Zab), Consul, Kafka KRaft, CockroachDB, TiKV |
+
+근본 차이는 **노드를 믿느냐**다. CFT는 「살아 있는 노드는 프로토콜대로 행동한다」를 믿어 과반만으로 충분하고, BFT는 그 믿음 없이 서로 교차 검증하느라 노드도 메시지도 더 든다.
+
+## Raft
+
+**Raft** 는 이해하기 쉬운 것을 목표로 2014년에 나온 합의 알고리즘이다. Paxos와 같은 보장을 주면서 문제를 리더 선출, 로그 복제, 안전성으로 나눴다. 시간은 **임기(term)** 라는 단조 증가 번호로 나뉘고, 임기마다 리더는 많아야 하나다.
+
+| 역할 | 하는 일 |
+| --- | --- |
+| 팔로워(follower) | 리더의 요청에만 응답한다. 모든 노드는 팔로워로 시작한다 |
+| 후보(candidate) | 리더가 없다고 판단해 표를 모으는 중인 노드 |
+| 리더(leader) | 클라이언트 요청을 받아 로그에 쓰고 팔로워에게 복제한다. 주기적으로 하트비트를 보낸다 |
+
+### 리더 선출
+
+```text
+팔로워: 선거 타임아웃(무작위, 논문 예시 150~300ms) 동안 하트비트를 못 받음
+  → 임기 +1, 후보가 되어 자기에게 투표, 모두에게 RequestVote
+각 노드: 한 임기에 한 표만, 먼저 온 후보에게 준다
+         단, 후보의 로그가 자기 로그보다 최신이 아니면 거절한다 (마지막 항목의 임기 → 인덱스 순으로 비교)
+  과반 득표 → 리더가 되어 즉시 하트비트(빈 AppendEntries)로 선거를 끝낸다
+  더 높거나 같은 임기의 리더 하트비트를 받음 → 팔로워로 돌아간다
+  표가 갈려 아무도 과반을 못 얻음 → 타임아웃 뒤 임기를 올려 다시 선거
+```
+
+- 타임아웃을 **무작위**로 잡기 때문에 대개 한 노드가 먼저 깨어나 표가 갈리는 일이 드물다.
+- 「로그가 더 최신인 후보에게만 투표」라는 제한 덕분에, 커밋된 항목을 모두 가진 노드만 리더가 된다(리더 완전성).
+- 과반이 있어야 리더가 서므로 네트워크가 갈라져도 소수 쪽은 리더를 뽑지 못한다. 옛 리더가 소수 쪽에 남아도 과반 확인을 못 받아 아무것도 커밋하지 못하고, 높은 임기를 보는 순간 물러난다. 이것이 스플릿 브레인을 막는 원리다([[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]]).
+
+### 로그 복제
+
+```text
+클라이언트 ──명령──▶ 리더: 로그에 (임기, 인덱스, 명령) 추가
+리더 ──AppendEntries(새 항목들, 직전 항목의 인덱스·임기, 리더의 커밋 인덱스)──▶ 팔로워들
+팔로워: 직전 항목이 내 로그와 맞으면 덧붙이고 성공 응답
+        안 맞으면 거절 → 리더가 한 칸씩 앞으로 물러나 다시 보내고, 맞는 지점 뒤의 어긋난 항목은 리더 것으로 덮어쓴다
+리더: 과반이 저장한 항목을 커밋 → 상태 기계에 적용 → 클라이언트에 응답
+팔로워: 다음 AppendEntries의 커밋 인덱스를 보고 자기 상태 기계에 적용
+```
+
+| 성질 | 뜻 |
+| --- | --- |
+| 로그 일치(log matching) | 두 로그가 같은 인덱스에 같은 임기의 항목을 가지면, 그 앞의 로그는 모두 같다. 직전 항목 검사가 이를 귀납적으로 지킨다 |
+| 커밋 규칙 | 리더는 **자기 임기의 항목**이 과반에 복제됐을 때 커밋한다. 그러면 그 앞 항목도 함께 커밋된다. 옛 임기의 항목을 복제 수만 세어 커밋하면 나중에 덮어써질 수 있어서다 |
+| 내구성 | 커밋은 과반이 디스크에 쓴 뒤이므로 소수가 죽어도 사라지지 않는다 |
+
+읽기도 그냥 리더가 답하면 자기가 이미 물러난 줄 모르는 옛 리더가 옛 값을 줄 수 있다. 그래서 선형화 가능한 읽기는 읽기 전에 과반과 하트비트를 주고받아 아직 리더인지 확인하거나(read index), 시계에 기댄 리스(lease)를 쓴다.
+
 ## 조율의 비용과 피하는 법
 
 합의 프로토콜(Paxos, Viewstamped Replication, Zab, Raft)은 논리적인 「지금」을 만들어 주지만 **계속 통신해야 한다.** 모든 사건의 순서를 조율하면 응답 지연은 최소 시스템 안 왕복 한 번(메시지 두 번)보다 짧아질 수 없고, 장애 중에는 진행이 멈출 수도 있다. 그래서 성능이 중요한 시스템은 「얼마나 적은 조율로 놀랍지 않은 동작을 줄 수 있나」를 찾는다.
@@ -131,6 +245,8 @@ a → b도 b → a도 아니면 두 사건은 **동시적(concurrent)** 이다. 
 - 8가지 착각(신뢰성, 지연 0, 무한 대역폭, 보안, 고정 토폴로지, 단일 관리자, 전송 비용 0, 균질성)은 모두 틀린다. 재시도·멱등성·큰 메시지·표준 형식으로 대응한다.
 - 규모가 커지면 장애는 매일 일어나고 서로 상관된다. 장애를 정상 경로로 설계한다.
 - 전역 「지금」은 없다. 최선의 시계도 ms 단위 오차가 있으므로 순서는 논리 시계(Lamport, 벡터, HLC)나 합의로 정한다.
+- 일관성 모델은 선형화 가능성에서 최종 일관성까지 이어지고, 그 사이의 인과·세션 보장(자기 쓰기 읽기, 단조 읽기)이 실용적인 타협점이다.
+- 합의는 과반(2f+1)으로 중단 장애를, 3f+1과 교차 검증으로 비잔티움 장애를 견딘다. Raft는 무작위 타임아웃 선거와 과반 복제로 로그 순서를 맞춘다.
 - 조율은 비싸다. 꼭 필요한 곳에만 합의를 쓰고, 나머지는 CRDT·멱등 연산처럼 순서가 필요 없는 설계로 뺀다.
 
 관련 노트: [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[distributed-system-patterns|분산 시스템의 통신·데이터 흐름 패턴]], [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]], [[backend-latency-optimization|백엔드 지연 시간 줄이기: 숫자 감각과 기법]]

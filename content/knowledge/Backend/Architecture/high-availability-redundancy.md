@@ -1,14 +1,14 @@
 ---
 title: "고가용성 이중화 구조와 장애 감지"
 concept: "High Availability"
-summary: "가용성을 나인(nines)으로 재는 법과 직렬·병렬 구성의 가용성 계산, 주-백업·주-보조·주-주·핫-핫·핫-웜·단일 리더·리더 없는 클러스터 같은 이중화 구조, 결함 허용 설계의 여섯 원칙, 하트비트로 노드 장애를 감지하는 방식들을 정리했다."
+summary: "가용성을 나인(nines)으로 재는 법과 직렬·병렬 구성의 가용성 계산, 주-백업·주-보조·주-주·핫-핫·핫-웜·단일 리더·리더 없는 클러스터 같은 이중화 구조, 결함 허용 설계의 여섯 원칙, 하트비트로 노드 장애를 감지하는 방식, 페일오버 절차와 비동기 복제의 유실, 스플릿 브레인을 막는 정족수·에포크·펜싱·리스를 정리했다."
 tags: ["backend", "architecture", "infra", "database", "monitoring"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-designing-fault-tolerant-systems", "https://bytebytego.com/guides/how-do-we-detect-node-failures-in-distributed-systems"]
+sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-designing-fault-tolerant-systems", "https://bytebytego.com/guides/how-do-we-detect-node-failures-in-distributed-systems", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[How to Design for High Availability](https://bytebytego.com/guides/how-do-we-design-for-high-availability)」, 「[System Design Cheat Sheet](https://bytebytego.com/guides/system-design-cheat-sheet)」, 「[A Cheat Sheet for Designing Fault-Tolerant Systems](https://bytebytego.com/guides/a-cheat-sheet-for-designing-fault-tolerant-systems)」, 「[How to Detect Node Failures in Distributed Systems](https://bytebytego.com/guides/how-do-we-detect-node-failures-in-distributed-systems)」를 바탕으로 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[How to Design for High Availability](https://bytebytego.com/guides/how-do-we-design-for-high-availability)」, 「[System Design Cheat Sheet](https://bytebytego.com/guides/system-design-cheat-sheet)」, 「[A Cheat Sheet for Designing Fault-Tolerant Systems](https://bytebytego.com/guides/a-cheat-sheet-for-designing-fault-tolerant-systems)」, 「[How to Detect Node Failures in Distributed Systems](https://bytebytego.com/guides/how-do-we-detect-node-failures-in-distributed-systems)」를 바탕으로 재구성한 노트다. 페일오버와 스플릿 브레인은 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다.
 
 ## 가용성이란
 
@@ -94,11 +94,52 @@ sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability"
 - **길면** 진짜 장애를 늦게 알아 그만큼 중단이 길어진다.
 - 그래서 「N번 연속 놓치면 장애」처럼 여러 번 관측해 판정하고, 판정 뒤에도 바로 지우기보다 의심(suspect) 상태를 거치게 한다.
 
+## 페일오버와 스플릿 브레인
+
+단일 리더 구조에서 리더가 죽으면 **쓰기가 멈춘다.** 복제본에서 읽기는 계속될 수 있지만, 새 리더가 서기 전까지 쓰기 요청은 실패하고 진행 중이던 트랜잭션은 결과를 알 수 없게 된다. 그래서 리더를 바꾸는 **페일오버(failover)** 를 자동화한다.
+
+```text
+1. 감지    하트비트·헬스 체크가 정해진 횟수만큼 실패하면 리더가 죽었다고 판정한다
+2. 선출    복제본 중 가장 최신 데이터를 가진 노드를 새 리더로 고른다
+           (합의로 뽑거나, 과반 감시자의 동의를 받는 조정자가 고른다)
+3. 재구성  클라이언트·프록시가 새 리더로 쓰기를 보내게 바꾼다 (DNS, 가상 IP, 프록시, 서비스 디스커버리)
+4. 강등    옛 리더가 돌아오면 새 리더의 팔로워로 들어오게 한다
+```
+
+| 도구 | 대상 | 조정 방식 |
+| --- | --- | --- |
+| Patroni | PostgreSQL | etcd·Consul·ZooKeeper의 리더 키(리스)를 쥔 노드가 주 DB가 된다 |
+| Orchestrator, MySQL InnoDB Cluster | MySQL | 토폴로지를 감시해 승격, 그룹 복제의 과반 합의 |
+| Redis Sentinel | Redis | 감시자 여럿이 정족수로 장애를 판정하고 승격한다([[cache-cluster-operations\|캐시 클러스터 운영과 장애 대응]]) |
+| Raft 내장 | etcd, Kafka KRaft, CockroachDB | 프로토콜 자체의 리더 선출 |
+
+### 비동기 복제와 데이터 유실
+
+비동기 복제에서 리더는 복제본이 받기 전에 클라이언트에게 성공을 돌려준다. 리더가 그 직후 죽으면, 새 리더로 승격된 복제본에는 **확인까지 받은 쓰기가 없다.** 옛 리더가 돌아와도 그 쓰기는 새 리더의 기록과 충돌하므로 대개 버려진다. 즉 비동기 복제의 페일오버는 RPO가 0이 아니다.
+
+- 버려진 쓰기를 이미 다른 시스템이 봤다면 더 위험하다. 새 리더가 자동 증가 ID를 다시 발급해 캐시나 외부 시스템에 남은 옛 ID와 다른 행이 같은 ID를 갖는 식으로 어긋난다.
+- 줄이는 방법: 복제본 최소 하나가 받은 뒤 응답하는 반동기·동기 복제, 승격 후보를 가장 앞선 복제본으로 고르기, 복제 지연이 큰 복제본은 후보에서 빼기. 복제 방식의 비교는 [[database-scaling|데이터베이스 확장과 성능 최적화]]에 있다.
+
+### 스플릿 브레인
+
+**스플릿 브레인(split-brain)** 은 두 노드가 동시에 자기가 리더라고 믿고 쓰기를 받는 상태다. 네트워크 분할, 긴 GC 멈춤, 너무 짧은 타임아웃 때문에 살아 있는 리더를 죽었다고 오판하면 생긴다. 두 쪽의 쓰기가 갈라져 나중에 합칠 수 없게 된다.
+
+| 방지책 | 원리 |
+| --- | --- |
+| 정족수(quorum) | 과반의 동의를 얻은 쪽만 리더가 된다. 과반은 하나뿐이므로 두 리더가 동시에 설 수 없다. 노드는 홀수(3, 5)로 두고, 두 곳뿐이면 제3의 위치에 감시자(witness)를 둔다 |
+| 임기·에포크 번호 | 리더가 바뀔 때마다 번호를 올리고, 모든 노드와 저장소가 낮은 번호의 명령을 거부한다(Raft의 term, Kafka의 leader epoch) |
+| 펜싱(fencing) | 옛 리더가 정말 아무것도 못 쓰게 막는다. 전원을 끄거나(STONITH, 「다른 노드의 머리를 쏴라」), 공유 스토리지 접근을 끊거나, 저장소가 오래된 펜싱 토큰의 쓰기를 거부하게 한다([[distributed-system-patterns\|분산 시스템의 통신·데이터 흐름 패턴]]의 분산 락) |
+| 리스(lease) | 리더 권한을 시간 제한으로 받고 과반으로 갱신한다. 갱신하지 못한 리더는 리스가 끝나면 스스로 쓰기를 멈추고, 새 리더는 옛 리스가 확실히 끝난 뒤에 선다. 시계가 크게 어긋나지 않는다는 가정이 붙는다 |
+
+정족수만으로는 「자기가 아직 리더인 줄 아는」 옛 리더의 쓰기를 막지 못한다. 그래서 **정족수로 새 리더를 뽑고, 에포크·펜싱으로 옛 리더의 쓰기를 거부**하는 두 겹을 함께 쓴다. 합의 알고리즘이 이를 어떻게 지키는지는 [[distributed-time-and-failure|분산 시스템의 시간과 장애]]의 Raft에 있다.
+
 ## 정리
 
 - 가용성은 나인으로 재고, 이중화는 곱으로 올리고 직렬 의존성은 곱으로 내린다.
 - 주-백업은 단순하지만 놀고, 주-보조는 읽기를 나누지만 옛 값을 줄 수 있고, 주-주는 처리량을 늘리지만 쓰기 충돌을 감수한다.
 - 리더 없는 복제는 `W + R > N` 정족수로 최신 값을 읽는다.
 - 장애 감지는 추정이다. 오판과 늦은 감지 사이에서 타임아웃과 판정 횟수를 고른다.
+- 페일오버는 감지 → 선출 → 재구성 → 강등이다. 비동기 복제면 확인된 쓰기를 잃을 수 있다.
+- 스플릿 브레인은 정족수로 새 리더를 뽑고 에포크·펜싱으로 옛 리더의 쓰기를 거부해 막는다.
 
 관련 노트: [[disaster-recovery|고가용성과 재해 복구 설계]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]], [[resiliency-patterns|장애 확산을 막는 복원력 패턴]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[distributed-system-patterns|분산 시스템의 통신·데이터 흐름 패턴]]

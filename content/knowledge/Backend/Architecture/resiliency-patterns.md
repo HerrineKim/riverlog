@@ -1,14 +1,14 @@
 ---
 title: "장애 확산을 막는 복원력 패턴"
 concept: "Resiliency Patterns"
-summary: "작은 오류가 연쇄 장애로 번지지 않게 하는 여덟 가지 패턴(타임아웃, 재시도, 서킷 브레이커, 속도 제한, 부하 차단, 벌크헤드, 배압, 크래시 허용)과, 재시도를 안전하게 만드는 백오프·지터 전략, 4xx·5xx별 재시도 규칙, 재시도의 전제 조건인 멱등성을 적용해야 하는 곳을 정리했다."
+summary: "작은 오류가 연쇄 장애로 번지지 않게 하는 여덟 가지 패턴(타임아웃, 재시도, 서킷 브레이커, 속도 제한, 부하 차단, 벌크헤드, 배압, 크래시 허용), 속도 제한 알고리즘의 개요, 벌크헤드 격리 방식과 배압 전략, 재시도를 안전하게 만드는 백오프·지터 전략, 4xx·5xx별 재시도 규칙, 재시도의 전제 조건인 멱등성을 적용해야 하는 곳을 정리했다."
 tags: ["backend", "architecture", "performance", "api", "async"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/resiliency-patterns", "https://bytebytego.com/guides/how-do-we-retry-on-failures", "https://bytebytego.com/guides/how-to-handle-web-request-error", "https://bytebytego.com/guides/top-6-cases-to-apply-idempotency"]
+sources: ["https://bytebytego.com/guides/resiliency-patterns", "https://bytebytego.com/guides/how-do-we-retry-on-failures", "https://bytebytego.com/guides/how-to-handle-web-request-error", "https://bytebytego.com/guides/top-6-cases-to-apply-idempotency", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Resiliency Patterns](https://bytebytego.com/guides/resiliency-patterns)」, 「[Retry Strategies for System Failures](https://bytebytego.com/guides/how-do-we-retry-on-failures)」, 「[How to Handle Web Request Errors](https://bytebytego.com/guides/how-to-handle-web-request-error)」, 「[Top 6 Cases to Apply Idempotency](https://bytebytego.com/guides/top-6-cases-to-apply-idempotency)」를 바탕으로 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[Resiliency Patterns](https://bytebytego.com/guides/resiliency-patterns)」, 「[Retry Strategies for System Failures](https://bytebytego.com/guides/how-do-we-retry-on-failures)」, 「[How to Handle Web Request Errors](https://bytebytego.com/guides/how-to-handle-web-request-error)」, 「[Top 6 Cases to Apply Idempotency](https://bytebytego.com/guides/top-6-cases-to-apply-idempotency)」를 바탕으로 재구성한 노트다. 속도 제한 알고리즘, 벌크헤드 격리 방식, 배압 전략은 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다.
 
 ## 복원력이란
 
@@ -29,7 +29,37 @@ sources: ["https://bytebytego.com/guides/resiliency-patterns", "https://bytebyte
 | 배압(back pressure) | 소비자가 처리 속도를 넘는 입력을 받지 않고 생산자에게 늦추라고 알린다 | 큐·메모리가 무한히 쌓이는 것 | 생산자도 늦출 방법(버퍼, 거절)을 갖고 있어야 한다 |
 | 크래시 허용(let it crash) | 이상한 상태를 고치려 하지 않고 프로세스를 죽인 뒤 감독자가 깨끗한 상태로 다시 띄운다(Erlang 감독 트리) | 오염된 상태로 계속 도는 것 | 재시작이 빠르고 상태가 밖에 있어야 한다 |
 
-서킷 브레이커의 세 상태(Closed·Open·Half-Open)와 구현 라이브러리는 [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]]에 있다.
+속도 제한·벌크헤드·배압의 구체적인 방식은 아래 절에 있다. 서킷 브레이커의 세 상태(Closed·Open·Half-Open)와 구현 라이브러리는 [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]]에 있다.
+
+## 속도 제한 알고리즘
+
+속도 제한은 키(API 키·사용자·IP)마다 일정 시간에 허용할 요청 수를 세는 문제다. 버스트를 받아 주는 **토큰 버킷**, 하류로 나가는 속도를 평탄하게 만드는 **리키 버킷**, 단순한 **고정 윈도 카운터**(경계에서 최대 2배 통과), 정확하지만 비싼 **슬라이딩 윈도 로그**, 카운터 두 개로 경계 문제를 줄이는 **슬라이딩 윈도 카운터**가 있다. 알고리즘별 비교표와 고르는 기준, 분산 환경의 원자적 카운팅, `429`·`Retry-After` 응답은 [[api-security#레이트 리밋 알고리즘|API 보안 체크리스트의 레이트 리밋 알고리즘]]에 있다. 복원력 관점에서는 엣지·게이트웨이에서 먼저 걸고, 서비스 안에서는 비싼 의존성 호출 앞에 건다.
+
+## 벌크헤드의 격리 방식
+
+| 방식 | 동작 | 장점 | 단점 |
+| --- | --- | --- | --- |
+| 스레드 풀 격리 | 의존성마다 전용 스레드 풀을 두고 호출을 그 풀에 넘긴다. 풀이 차면 즉시 거절한다 | 호출자 스레드가 묶이지 않고, 타임아웃이 지나면 호출자가 먼저 포기한다 | 스레드 전환과 큐 비용, 풀마다 스레드가 늘어난다 |
+| 세마포어 격리 | 호출자 스레드에서 실행하되 동시 호출 수를 세마포어로 제한한다 | 가볍다. 비동기·논블로킹 클라이언트와 잘 맞는다 | 블로킹 호출이 멈추면 호출자 스레드도 함께 묶인다. 타임아웃은 클라이언트 설정에 기대야 한다 |
+| 커넥션 풀 분리 | DB·외부 API마다 커넥션 풀을 따로 둔다 | 한 의존성이 커넥션을 다 써도 다른 쪽은 산다 | 전체 커넥션 수 관리가 복잡해진다 |
+| 인스턴스·클러스터 분리 | 중요한 기능이나 큰 고객을 별도 서버 묶음으로 처리한다. 극단적으로는 사용자를 셀(cell)로 나눠 셀마다 전체 스택을 둔다 | 장애와 시끄러운 이웃(noisy neighbor)이 다른 묶음으로 번지지 않는다 | 자원이 덜 공유되어 비용이 늘어난다 |
+
+Resilience4j는 `SemaphoreBulkhead`와 `ThreadPoolBulkhead`를 모두 제공한다. 풀 크기는 리틀의 법칙으로 어림한다. 필요한 동시 호출 수 ≈ 초당 요청 수 × 응답 시간(p99)이고, 여기에 여유를 조금 둔다. 크게 잡으면 격리가 무의미해지고, 작게 잡으면 정상 트래픽도 거절된다.
+
+## 배압 전략
+
+**배압(backpressure)** 은 하류가 감당할 수 있는 속도를 상류에 알려, 처리 속도보다 빠른 입력이 어딘가에 끝없이 쌓이지 않게 하는 것이다. 생산자를 늦출지, 쌓을지, 버릴지, 거절할지 중 하나를 고른다.
+
+| 전략 | 동작 | 맞는 곳 |
+| --- | --- | --- |
+| 수요 신호(pull) | 소비자가 처리할 수 있는 만큼만 요청한다. Reactive Streams의 `request(n)`, TCP 수신 윈도, Kafka 컨슈머의 `poll()` | 생산자를 늦출 수 있는 내부 파이프라인 |
+| 생산자 막기 | 크기가 정해진 큐가 차면 넣는 쪽이 기다린다(`BlockingQueue.put`, Kafka 프로듀서의 `buffer.memory`) | 생산자가 같은 프로세스·시스템 안에 있을 때 |
+| 제한된 버퍼 | 순간 폭주만 흡수할 크기의 버퍼를 둔다. **무한 버퍼는 배압이 아니라 메모리 부족을 미루는 것**이다 | 짧은 버스트 |
+| 버리기·샘플링 | 가장 새 것 또는 가장 오래된 것을 버리거나, 일부만 남긴다(Reactor의 `onBackpressureDrop`·`onBackpressureLatest`) | 지표, 위치·시세처럼 최신 값만 의미 있는 데이터 |
+| 거절 | 받지 않고 `429`·`503`과 `Retry-After`로 돌려보낸다. 부하 차단과 같다 | 외부 클라이언트처럼 생산자를 통제할 수 없을 때 |
+| 묶음 처리·확장 | 묶어서 처리해 처리량을 올리거나 소비자를 늘린다 | 병목이 소비자 자신일 때. 병목이 그 뒤의 DB면 소비자를 늘려도 소용없다 |
+
+배압은 **끝에서 끝까지 전달돼야** 의미가 있다. 중간 한 단계가 무한 큐로 다 받아 주면 그 앞쪽은 하류가 느리다는 사실을 모른 채 계속 밀어 넣는다. 그래서 모든 큐에 상한을 두고, 큐 길이와 대기 시간을 지표로 본다. Node.js 스트림의 `highWaterMark`와 `write()` 반환값은 [[node-streams|Node.js 스트림: 데이터를 조각으로 흘려 처리하기]]에 있다.
 
 ## 재시도 전략: 백오프와 지터
 
@@ -79,6 +109,8 @@ sources: ["https://bytebytego.com/guides/resiliency-patterns", "https://bytebyte
 - 복원력 패턴은 실패를 없애지 않고, 실패가 번지는 범위를 줄인다.
 - 모든 원격 호출에는 타임아웃을 건다. 타임아웃 없는 재시도와 백오프 없는 재시도는 장애를 키운다.
 - 재시도는 지수 백오프 + 지터 + 횟수 상한으로 한다. 4xx는 재시도하지 않는다.
+- 속도 제한은 버스트를 받아 주는 토큰 버킷과 경계 문제가 적은 슬라이딩 윈도 카운터가 흔하다.
+- 벌크헤드는 스레드 풀·세마포어·커넥션 풀·인스턴스 단위로 나누고, 배압은 모든 큐에 상한을 두고 끝까지 전달한다.
 - 재시도하려면 먼저 멱등하게 만든다. 결제·주문·메시지 소비는 고유 키로 중복을 거른다.
 
-관련 노트: [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[rest-api|REST API 설계 원칙]], [[virtual-waiting-room|대기열 시스템(가상 대기실) 설계]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]]
+관련 노트: [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[api-security|API 보안 체크리스트]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[rest-api|REST API 설계 원칙]], [[virtual-waiting-room|대기열 시스템(가상 대기실) 설계]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]]

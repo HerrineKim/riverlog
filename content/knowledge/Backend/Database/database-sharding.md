@@ -5,10 +5,10 @@ summary: "한 DB에 담기 어려울 만큼 커진 데이터를 같은 스키마
 tags: ["backend", "database", "architecture", "performance", "mysql"]
 source: other
 date: "2026-10-17"
-sources: ["https://dev.gmarket.com/61", "https://shardingsphere.apache.org/document/current/en/overview/", "https://www.mongodb.com/docs/manual/core/sharding-choose-a-shard-key/", "https://debezium.io/documentation/reference/stable/architecture.html", "https://bytebytego.com/guides/100x-postgres-scaling-at-figma", "https://bytebytego.com/guides/a-crash-course-in-database-sharding", "https://bytebytego.com/guides/key-concepts-to-understand-database-sharding", "https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained", "https://bytebytego.com/guides/consistent-hashing", "https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning"]
+sources: ["https://dev.gmarket.com/61", "https://shardingsphere.apache.org/document/current/en/overview/", "https://www.mongodb.com/docs/manual/core/sharding-choose-a-shard-key/", "https://debezium.io/documentation/reference/stable/architecture.html", "https://bytebytego.com/guides/100x-postgres-scaling-at-figma", "https://bytebytego.com/guides/a-crash-course-in-database-sharding", "https://bytebytego.com/guides/key-concepts-to-understand-database-sharding", "https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained", "https://bytebytego.com/guides/consistent-hashing", "https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning", "https://vitess.io/docs/overview/architecture/", "https://docs.citusdata.com/en/stable/get_started/concepts.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
 ---
 
-> G마켓 기술 블로그의 「[Sharded MySQL Cluster 도입 배경과 개발기](https://dev.gmarket.com/61)」(2022.12)를 바탕으로 재구성하고, ShardingSphere·MongoDB·Debezium 공식 문서로 최신화한 노트다. 단계별 확장 사례는 ByteByteGo의 System Design 101 가이드 「[100X Postgres Scaling at Figma](https://bytebytego.com/guides/100x-postgres-scaling-at-figma)」를 바탕으로 덧붙였다. 라우팅 알고리즘과 일관된 해싱은 같은 가이드의 「[A Crash Course on Database Sharding](https://bytebytego.com/guides/a-crash-course-in-database-sharding)」, 「[Key Concepts to Understand Database Sharding](https://bytebytego.com/guides/key-concepts-to-understand-database-sharding)」, 「[Top 4 Data Sharding Algorithms](https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained)」, 「[Consistent Hashing Explained](https://bytebytego.com/guides/consistent-hashing)」, 「[Vertical vs Horizontal Partitioning](https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning)」로 보강했다.
+> G마켓 기술 블로그의 「[Sharded MySQL Cluster 도입 배경과 개발기](https://dev.gmarket.com/61)」(2022.12)를 바탕으로 재구성하고, ShardingSphere·MongoDB·Debezium 공식 문서로 최신화한 노트다. 단계별 확장 사례는 ByteByteGo의 System Design 101 가이드 「[100X Postgres Scaling at Figma](https://bytebytego.com/guides/100x-postgres-scaling-at-figma)」를 바탕으로 덧붙였다. 라우팅 알고리즘과 일관된 해싱은 같은 가이드의 「[A Crash Course on Database Sharding](https://bytebytego.com/guides/a-crash-course-in-database-sharding)」, 「[Key Concepts to Understand Database Sharding](https://bytebytego.com/guides/key-concepts-to-understand-database-sharding)」, 「[Top 4 Data Sharding Algorithms](https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained)」, 「[Consistent Hashing Explained](https://bytebytego.com/guides/consistent-hashing)」, 「[Vertical vs Horizontal Partitioning](https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning)」로 보강했다. Vitess·Citus 구조와 재샤딩은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md)」의 질문을 실마리로 두 프로젝트의 공식 문서를 바탕으로 덧붙였다.
 
 ## 샤딩이란
 
@@ -18,9 +18,11 @@ sources: ["https://dev.gmarket.com/61", "https://shardingsphere.apache.org/docum
 
 | 용어 | 뜻 |
 | --- | --- |
-| 파티셔닝(partitioning) | 테이블을 나누는 일 전반. 보통 **한 DB 서버 안에서** 나누는 것을 가리킨다 |
-| 샤딩 | 수평 파티셔닝을 **여러 DB 서버에 걸쳐** 하는 것 |
+| 파티셔닝(partitioning) | 테이블을 나누는 일 전반. RDB 문맥에서는 보통 **한 DB 서버 안에서** 나누는 것(MySQL·PostgreSQL의 `PARTITION BY`)을 가리킨다. 앱과 쿼리는 그대로이고, 옵티마이저가 조건에 맞는 파티션만 읽는다(파티션 프루닝) |
+| 샤딩 | 수평 파티셔닝을 **여러 DB 서버에 걸쳐** 하는 것. 서버가 늘어 용량·쓰기도 늘지만, 라우팅과 서버 간 조인·트랜잭션 문제가 생긴다 |
 | 복제(replication) | 같은 데이터를 여러 서버에 복사한다. 읽기는 나눠지지만 쓰기와 용량은 그대로다 |
+
+분산 DB에서는 두 말을 섞어 쓴다. 여러 노드에 나뉜 조각을 MongoDB·Elasticsearch는 샤드, Kafka·Cassandra는 파티션, HBase는 리전(region), Bigtable은 태블릿(tablet)이라 부르지만 모두 같은 개념이다. 결국 구분의 기준은 이름이 아니라 **나눈 조각이 한 서버 안에 있나, 여러 서버에 퍼져 있나**다.
 
 ## 샤딩 전에 먼저 해 볼 것
 
@@ -113,7 +115,7 @@ PostgreSQL에서는 행이 많아질수록 VACUUM(죽은 튜플 정리) 비용�
 | 전체 조회·정렬·페이지네이션 | 모든 샤드에 묻고 결과를 합쳐야 한다(scatter-gather) | 키 없는 조회는 검색 엔진·집계용 저장소로 돌린다 |
 | 전역 고유 ID | 샤드마다 자동 증가하면 ID가 겹친다 | 분산 ID 생성기(Snowflake 방식 등), UUID |
 | 운영 | 백업·스키마 변경·모니터링이 샤드 수만큼 늘어난다 | 자동화와 미들웨어 |
-| 재샤딩(resharding) | 샤드 수나 키를 바꾸면 대량 이동이 필요하다 | 일관된 해싱·가상 버킷으로 이동량을 줄이고, CDC로 옮기는 동안 동기화한다 |
+| 재샤딩(resharding) | 샤드 수나 키를 바꾸면 대량 이동이 필요하다 | 일관된 해싱·가상 버킷으로 이동량을 줄이고, CDC로 옮기는 동안 동기화한다(아래 「재샤딩」) |
 
 ## 누가 라우팅하나: 샤딩 미들웨어
 
@@ -123,7 +125,7 @@ PostgreSQL에서는 행이 많아질수록 VACUUM(죽은 튜플 정리) 비용�
 | --- | --- | --- |
 | 애플리케이션 코드 | 직접 구현 | 자유롭지만 복잡도와 실수가 앱에 쌓인다 |
 | 드라이버·라이브러리 | ShardingSphere-JDBC | 앱 프로세스 안에서 SQL을 고쳐 각 샤드로 보낸다 |
-| 프록시 | ShardingSphere-Proxy, Vitess(MySQL) | 앱은 DB 하나에 붙은 것처럼 쓴다. 언어 제약이 없다 |
+| 프록시 | ShardingSphere-Proxy, Vitess(MySQL), Citus 코디네이터(PostgreSQL 확장) | 앱은 DB 하나에 붙은 것처럼 쓴다. 언어 제약이 없다 |
 | DB 자체 | MongoDB, 분산 SQL(CockroachDB, TiDB 등) | DB가 샤딩과 재배치를 직접 한다 |
 
 ### ShardingSphere
@@ -160,6 +162,19 @@ rules:
     tables: [category]                            # 모든 샤드에 복사할 작은 테이블
 ```
 
+### Vitess와 Citus
+
+RDB를 샤딩해 주는 미들웨어는 공통으로 **라우팅 계층 + 샤드 위치를 담은 메타데이터 + 그대로의 RDB 여러 대**로 이뤄진다. 라우팅 계층이 SQL을 파싱해 샤드 키 조건을 찾고, 메타데이터로 해당 샤드를 고른 뒤, 여러 샤드에 걸치면 쿼리를 샤드별 조각으로 나눠 보내고 결과를 합친다.
+
+| 항목 | Vitess (MySQL) | Citus (PostgreSQL) |
+| --- | --- | --- |
+| 형태 | MySQL 앞에 두는 별도 클러스터 시스템 | PostgreSQL 확장(extension) |
+| 라우팅 계층 | **vtgate**: MySQL 프로토콜을 말하는 무상태 프록시. 쿼리를 파싱해 샤드로 보내고 결과를 합친다. 여러 대를 띄워 수평 확장한다 | **코디네이터(coordinator) 노드**: 분산 테이블의 메타데이터를 갖고, 분산 플래너가 쿼리를 샤드별 조각으로 다시 써서 워커에 병렬로 보낸 뒤 결과를 합친다 |
+| 데이터 노드 | MySQL 인스턴스마다 붙는 **vttablet**: 그 MySQL을 관리하고, 커넥션 풀링·쿼리 보호(행 수 제한, 타임아웃)·복제 관리를 맡는다 | **워커(worker) 노드**: 샤드를 평범한 PostgreSQL 테이블(`orders_102008` 같은 이름)로 담는다 |
+| 샤드 위치 정보 | 토폴로지 서비스(etcd·ZooKeeper·Consul)에 저장. 테이블별 샤딩 규칙은 **VSchema**에 두고, 행을 키스페이스 ID로 바꾸는 함수를 **vindex**라 한다. 샤드는 키스페이스 ID의 구간을 맡는다 | 코디네이터의 메타데이터 테이블. 테이블마다 **분산 컬럼(distribution column)** 의 해시 구간이 샤드에 대응한다 |
+| 조인 대책 | 같은 키로 샤딩한 테이블은 한 샤드에서 조인. 작은 테이블은 참조 테이블로 복제 | 같은 분산 컬럼의 테이블을 같은 노드에 두는 **co-location**, 모든 노드에 복사하는 **참조 테이블(reference table)** |
+| 재샤딩 | 내장 VReplication으로 데이터를 복사·동기화하고 `Reshard`·`MoveTables` 워크플로로 트래픽을 전환한다 | 샤드를 노드 사이에서 옮기는 리밸런서(`citus_rebalance_start`)가 논리 복제로 무중단 이동한다 |
+
 ## 기존 DB에서 샤드 클러스터로 옮기기
 
 기존 DB를 원본(source)으로 두고 새 샤드 클러스터를 조회용으로 붙일 때는 두 가지가 필요하다.
@@ -177,6 +192,32 @@ rules:
 ### 2. 초기 적재와 동시 실행
 
 대량 적재를 「내보내기 시점 이후 변경분만 나중에 따라잡기」로 계획해도, 적재 중 복제 지연 등으로 시간이 길어지면 틈이 생긴다. **적재 작업과 실시간 동기화를 동시에 돌려도 결과가 같도록 쓰기를 upsert(있으면 갱신, 없으면 삽입)로 만든다.** 같은 행이 두 경로로 와도 최종 상태가 맞는다(멱등성).
+
+## 재샤딩
+
+**재샤딩(resharding)** 은 샤드의 개수나 경계, 샤드 키를 바꿔 데이터를 다시 나누는 일이다. 다음 때 필요하다.
+
+- 데이터나 쓰기가 늘어 샤드 한 대의 용량·처리량을 넘는다.
+- 특정 샤드에 데이터나 요청이 몰린다(핫 샤드). 범위 샤딩에서 최신 구간이 커지는 경우가 대표다.
+- 노드를 더하거나 빼서 서버 사이의 균형을 다시 맞춘다.
+- 샤드 키가 주요 쿼리와 맞지 않아 키 자체를 바꾼다. 가장 비싸다.
+
+### 다운타임 없이 재샤딩하기
+
+옮기는 동안에도 원본 샤드가 읽기·쓰기를 계속 받고, **복사 → 따라잡기 → 검증 → 짧은 전환** 순서로 진행한다. 앞의 「기존 DB에서 샤드 클러스터로 옮기기」와 같은 원리다.
+
+```text
+1. 새 샤드 배치를 만든다           원본 샤드는 계속 서비스
+2. 스냅숏 복사 + 로그 위치 기록     복사 시점의 binlog GTID·WAL LSN을 기억
+3. 그 위치부터 변경분을 재생        CDC·논리 복제로 지연이 거의 0이 될 때까지
+4. 검증                            행 수·체크섬 비교 (Vitess VDiff 등)
+5. 읽기 전환 → 쓰기 전환           쓰기를 아주 잠깐 멈추고 남은 지연을 비운 뒤 라우팅 정보를 바꾼다
+6. 역방향 복제 유지 후 정리         문제가 생기면 원래 샤드로 되돌린다. 안정되면 옛 샤드를 지운다
+```
+
+- 쓰기 중지는 라우팅 정보를 바꾸는 순간의 수 밀리초~수 초뿐이다. 그동안의 요청은 프록시가 잡아 두었다가 새 샤드로 보낸다.
+- 애플리케이션이 옛 샤드와 새 샤드에 **이중 쓰기**(dual write)를 하고 과거 데이터를 백필하는 방식도 있다. 두 쓰기 중 하나만 성공하는 경우를 맞춰야 해서, 로그 기반 복제보다 불일치가 생기기 쉽다.
+- 처음부터 물리 서버 수보다 훨씬 많은 **논리 샤드(가상 버킷)** 로 나눠 두면, 재샤딩은 버킷을 다른 서버로 옮기고 매핑만 바꾸는 일이 된다. 데이터를 다시 해시하지 않는다. MongoDB 밸런서의 청크 이동([[mongodb|MongoDB]]), Redis Cluster의 해시 슬롯 이동, Citus의 샤드 이동이 이 방식이다.
 
 ## 운영 함정: 첫 요청만 느리다
 
@@ -210,6 +251,8 @@ class ShardWarmUp {
 - 샤드 키는 카디널리티가 높고, 값이 고르게 퍼지고, 주요 쿼리가 포함하는 컬럼으로 고른다. 나중에 바꾸기 어렵다.
 - 모듈러는 고르게 퍼지지만 증설이 비싸고, 범위는 증설이 싸지만 쏠린다. 일관된 해싱과 가상 버킷은 증설 때 옮길 양을 줄인다.
 - 샤드 간 조인·트랜잭션·전체 조회가 어려워지므로, 한 요청이 한 샤드에서 끝나게 설계한다.
+- Vitess(vtgate·vttablet)와 Citus(코디네이터·워커)는 SQL을 파싱해 샤드로 나눠 보내고 결과를 합치는 라우팅 계층을 RDB 앞에 둔다.
+- 재샤딩은 복사 → 변경 재생 → 검증 → 짧은 전환 순서로 무중단으로 한다. 처음부터 논리 샤드를 많이 두면 재샤딩이 버킷 이동이 된다.
 - 이관할 때는 CDC로 변경을 따라가고 쓰기를 upsert로 만들며, 배포 후 첫 요청 지연은 워밍업으로 막는다.
 
 관련 노트: [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[transaction|트랜잭션과 회복]], [[sql-basics|SQL 기초]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]], [[mongodb|MongoDB 시작하기와 CRUD]], [[database-scaling|데이터베이스 확장과 성능 최적화]], [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]]

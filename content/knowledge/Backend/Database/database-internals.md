@@ -5,10 +5,10 @@ summary: "SQL 한 문장이 파서·옵티마이저·실행기·버퍼 관리자
 tags: ["database", "backend", "data-structure", "performance", "storage"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-is-a-sql-statement-executed-in-the-database", "https://bytebytego.com/guides/8-data-structures-that-power-your-databases", "https://bytebytego.com/guides/b-tree-vs", "https://www.postgresql.org/docs/current/indexes-types.html", "https://hugehoo-blog.vercel.app/blog/Database/B%20tree%20as%20Index"]
+sources: ["https://bytebytego.com/guides/how-is-a-sql-statement-executed-in-the-database", "https://bytebytego.com/guides/8-data-structures-that-power-your-databases", "https://bytebytego.com/guides/b-tree-vs", "https://www.postgresql.org/docs/current/indexes-types.html", "https://hugehoo-blog.vercel.app/blog/Database/B%20tree%20as%20Index", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://dev.mysql.com/doc/refman/8.4/en/storage-engines.html"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[How is a SQL Statement Executed in the Database?](https://bytebytego.com/guides/how-is-a-sql-statement-executed-in-the-database)」, 「[8 Data Structures That Power Your Databases](https://bytebytego.com/guides/8-data-structures-that-power-your-databases)」, 「[B-Tree vs. LSM-Tree](https://bytebytego.com/guides/b-tree-vs)」, 「[B+ 트리는 어쩌다 인덱스로 간택되었을까?](https://hugehoo-blog.vercel.app/blog/Database/B%20tree%20as%20Index)」를 바탕으로 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[How is a SQL Statement Executed in the Database?](https://bytebytego.com/guides/how-is-a-sql-statement-executed-in-the-database)」, 「[8 Data Structures That Power Your Databases](https://bytebytego.com/guides/8-data-structures-that-power-your-databases)」, 「[B-Tree vs. LSM-Tree](https://bytebytego.com/guides/b-tree-vs)」, 「[B+ 트리는 어쩌다 인덱스로 간택되었을까?](https://hugehoo-blog.vercel.app/blog/Database/B%20tree%20as%20Index)」를 바탕으로 재구성한 노트다. 스토리지 엔진, 규칙·비용 기반 옵티마이저, B-트리와 B+트리 비교, 공간 인덱스, PostgreSQL 인덱스 종류는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
 
 ## SQL 문장이 실행되는 과정
 
@@ -42,6 +42,31 @@ DB마다 구조는 다르지만 큰 흐름은 비슷하다. 앞쪽은 **무엇�
 | 트랜잭션 관리자 | **WAL(Write-Ahead Logging)**: 데이터 페이지보다 로그를 먼저 디스크에 남겨, 장애 뒤에도 커밋된 변경을 되살린다 |
 | 잠금 관리자 | 격리 수준과 ACID의 격리성을 지킨다. 잠금 종류와 MVCC는 [[transaction\|트랜잭션과 회복]]에 있다 |
 
+### 스토리지 엔진
+
+[5]~[8]처럼 **데이터를 실제로 디스크에 어떻게 놓고, 읽고, 쓰고, 잠그고, 장애에서 되살릴지**를 맡는 층을 스토리지 엔진(storage engine)이라 한다. 그 위의 SQL 층(파서·옵티마이저·실행기)은 「무엇을 원하나」를 해석하고, 엔진은 「행 하나 주세요」, 「이 행을 바꿔 주세요」 같은 요청을 처리한다.
+
+| 엔진이 정하는 것 | 예 |
+| --- | --- |
+| 저장 형식 | 행을 클러스터드 B+트리에 둘까(InnoDB), 힙 파일에 쌓을까(PostgreSQL), LSM 트리로 쓸까(RocksDB) |
+| 인덱스 구조 | 어떤 인덱스를 지원하나 |
+| 트랜잭션·잠금 | 트랜잭션 지원 여부, 잠금 단위(행·테이블), MVCC |
+| 회복 | redo·undo 로그, 크래시 복구 |
+| 캐시 | 버퍼 풀을 직접 관리하나, OS 페이지 캐시에 맡기나 |
+
+MySQL은 이 층을 **플러그인처럼 갈아 끼우는** 구조라 테이블마다 엔진을 고른다(`CREATE TABLE ... ENGINE=InnoDB`). 기본값인 InnoDB는 트랜잭션·행 잠금·크래시 복구를 갖췄고, 옛 MyISAM은 트랜잭션이 없고 테이블 잠금만 한다. 그 밖에 MEMORY, 그리고 RocksDB를 쓰는 MyRocks가 있다. PostgreSQL은 엔진이 하나로 정해져 있다(12부터 테이블 접근 방식 API로 다른 저장 방식을 붙일 수는 있다). MongoDB의 WiredTiger처럼 NoSQL도 같은 개념의 층을 가진다.
+
+### 옵티마이저: 규칙 기반과 비용 기반
+
+| 구분 | 규칙 기반(RBO, Rule-Based Optimizer) | 비용 기반(CBO, Cost-Based Optimizer) |
+| --- | --- | --- |
+| 계획을 고르는 법 | 접근 경로마다 정해진 우선순위를 따른다. 「기본 키로 한 행 > 인덱스 범위 > 풀 스캔」처럼 | 후보 계획마다 I/O·CPU 비용을 추정해 가장 싼 것을 고른다 |
+| 쓰는 정보 | 쿼리 모양과 인덱스 존재 여부 | **통계**: 행 수, 페이지 수, 컬럼의 고유값 수, 값 분포(히스토그램) |
+| 장점 | 결과가 예측 가능하고 늘 같다 | 데이터에 맞는 계획을 고른다. 행이 많이 걸리면 인덱스 대신 풀 스캔을 고르는 판단이 가능하다 |
+| 단점 | 데이터 분포를 몰라 인덱스가 오히려 느린 경우에도 인덱스를 쓴다 | 통계가 낡거나 추정이 틀리면 엉뚱한 계획을 고른다. 데이터가 바뀌면 계획도 바뀔 수 있다 |
+
+지금 주요 DBMS(MySQL, PostgreSQL, Oracle, SQL Server)는 모두 비용 기반이다. Oracle의 RBO는 10g부터 지원이 끝났다. 그래서 통계를 최신으로 유지하는 것(`ANALYZE TABLE`, PostgreSQL의 autovacuum이 함께 돌리는 ANALYZE)이 성능 관리의 일부다. 실행 계획을 읽는 법과 풀 스캔을 고르는 이유는 [[index-design|인덱스 설계와 쿼리 튜닝]]에 있다.
+
 ## 인덱스 자료 구조
 
 어떤 자료 구조가 맞는지는 **데이터가 메모리에 있나 디스크에 있나, 값의 형태(숫자·문자열·좌표·문서)가 무엇인가, 쓰기가 많나 읽기가 많나**에 달렸다.
@@ -69,6 +94,45 @@ DB마다 구조는 다르지만 큰 흐름은 비슷하다. 앞쪽은 **무엇�
 | 데이터 위치 | 모든 노드 | 리프에만. 내부 노드는 길잡이 키만 담아 더 많은 키가 들어간다 |
 
 M차 B+트리의 노드는 최소 ⌈M/2⌉개의 자식을 가지므로, 높이 h에서 담을 수 있는 키가 (M/2)^h 이상으로 늘어난다. 차수가 수백이면 수억 건도 높이 3~4 안에 들어가고, 루트와 상위 노드는 버퍼 풀에 상주하므로 실제 디스크 읽기는 한두 번이다. 모든 리프가 같은 깊이에 있어 어떤 키든 같은 비용으로 찾는다. 키가 길면 한 페이지에 들어가는 키 수가 줄어 트리가 높아지므로 **인덱스 키는 짧을수록 좋다.** 인덱스를 어떻게 설계할지는 [[index-design|인덱스 설계와 쿼리 튜닝]]에 있다.
+
+**B-트리와 B+트리**는 같은 계열이지만 데이터를 두는 곳이 다르다.
+
+| 항목 | B-트리 | B+트리 |
+| --- | --- | --- |
+| 값(또는 행 포인터) 위치 | 모든 노드 | 리프에만. 내부 노드는 길잡이 키만 둔다 |
+| 키 중복 | 키가 트리에 한 번만 나온다 | 내부 노드의 키가 리프에 다시 나온다 |
+| 점 조회 | 찾는 키가 위쪽 노드에 있으면 일찍 끝난다 | **늘 리프까지** 내려간다. 대신 비용이 일정하다 |
+| 범위·순차 조회 | 트리를 위아래로 오가며 순회해야 한다 | 리프의 연결 리스트를 옆으로 훑는다 |
+| 팬아웃 | 내부 노드에 값도 담아 작다 | 내부 노드에 키만 담아 크다. 트리가 더 낮다 |
+
+**B+트리가 늘 낫지는 않다.** 무작위 점 조회만 있는 작업에서는 위쪽에서 끝날 수 있는 B-트리가 유리할 수 있고, 내부 노드에 키를 한 번 더 저장하는 공간이 든다. 같음 조회만 필요하면 해시 인덱스가 더 빠르다. 그래도 DB는 범위 조회·정렬·순차 스캔이 흔하고 높이가 낮을수록 디스크 I/O가 줄어서 B+트리를 기본으로 쓴다. 현업에서 「B-트리 인덱스」라고 부르는 것도 실제로는 대부분 B+트리다.
+
+### 공간 인덱스: R-트리와 지오해시
+
+B+트리는 값을 **한 줄로 정렬**해야 쓸 수 있다. 위도·경도는 두 값이 함께 가까워야 「가까운 곳」이므로, 한쪽으로 정렬하면 다른 쪽 조건은 거르지 못한다. 그래서 공간 데이터는 따로 처리한다.
+
+| 방법 | 원리 | 쓰는 곳 |
+| --- | --- | --- |
+| **R-트리** | 가까운 객체들을 감싸는 최소 사각형(MBR)을 노드로 삼고, 그 사각형들을 다시 큰 사각형으로 묶는 균형 트리. 질의 영역과 겹치지 않는 사각형의 하위 트리는 통째로 건너뛴다 | MySQL InnoDB `SPATIAL INDEX`, PostGIS(GiST 위의 R-트리), 반경·영역 검색, 최근접 이웃 |
+| **지오해시(Geohash)** | 위도·경도 범위를 번갈아 반으로 나눈 비트를 섞어(interleave) base32 문자열로 만든다. 접두사가 같으면 같은 칸 안이다 | 2차원을 1차원 문자열로 바꾸므로 **일반 B+트리·키-값 저장소로 공간 검색**을 할 수 있다. Redis GEO는 52비트 지오해시를 정렬 집합의 점수로 쓴다 |
+| 쿼드트리, S2, H3 | 공간을 4분할하거나 구면 셀·육각형 격자로 나눈 셀 ID를 키로 쓴다 | 지도 서비스, 차량 배차 |
+
+지오해시는 칸 경계 문제가 있다. 바로 옆이라도 경계 건너편이면 접두사가 전혀 다를 수 있어서, 반경 검색은 내 칸과 **주변 8칸**을 함께 조회한 뒤 실제 거리로 다시 거른다. 칸 길이(문자열 자릿수)는 검색 반경에 맞춰 고른다.
+
+### PostgreSQL의 인덱스 종류
+
+PostgreSQL은 접근 방식(access method)을 골라 인덱스를 만든다(`CREATE INDEX ... USING gin (...)`).
+
+| 종류 | 구조 | 유리한 경우 |
+| --- | --- | --- |
+| B-tree (기본) | 균형 트리 | `=`, `<`, `>`, `BETWEEN`, `IN`, 정렬, 접두사 `LIKE 'abc%'`(C 콜레이션이나 `text_pattern_ops`) |
+| Hash | 해시 버킷 | `=`만. 키가 길 때 B-tree보다 작을 수 있다. 10부터 WAL에 기록돼 복제·복구에 안전하다 |
+| GiST | 범용 균형 트리 틀. R-트리 같은 구조를 그 위에 구현한다 | 기하·지리(PostGIS), 범위 타입의 겹침(`&&`), 최근접 이웃 정렬(`<->`), 배제 제약(예약 시간 겹침 금지) |
+| SP-GiST | 균형이 아닌 공간 분할 트리(쿼드트리, k-d 트리, 기수 트리) | 고르게 퍼지지 않은 데이터, 점 데이터, IP 주소, 전화번호 같은 접두사 |
+| GIN | 역색인. 값 하나가 여러 키(원소)를 가질 때 「키 → 행 목록」 | 배열 포함(`@>`), `jsonb` 검색, 전문 검색(`tsvector`), `pg_trgm`과 함께 쓰면 `LIKE '%abc%'`. 갱신이 느려 대기 목록(`fastupdate`)에 모았다가 반영한다 |
+| BRIN | 블록 범위마다 최솟값·최댓값 같은 요약만 저장 | 아주 크고 **물리 순서와 값 순서가 맞는** 테이블(추가만 하는 로그의 시각 컬럼). 인덱스가 수천 배 작지만 정확도는 블록 범위 단위다 |
+
+확장으로 더 붙는다. pgvector는 벡터 유사도 검색용 HNSW·IVFFlat 인덱스를 더한다.
 
 이 밖에 열 단위 저장에 쓰는 비트맵 인덱스, 「없음」을 빠르게 판정하는 블룸 필터, 벡터 유사도 검색용 HNSW 같은 그래프 인덱스도 있다.
 

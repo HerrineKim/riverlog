@@ -1,14 +1,14 @@
 ---
 title: "API 게이트웨이"
 concept: "API Gateway"
-summary: "클라이언트와 백엔드 서비스 사이의 단일 입구인 API 게이트웨이. 라우팅·인증·레이트 리밋·요청 변환·응답 조합·캐시 같은 기능, 요청 하나가 게이트웨이를 지나는 순서, 생태계·마켓플레이스·다중 플랫폼 같은 쓰임, 그리고 리버스 프록시·로드 밸런서와의 차이와 함께 쓰는 배치를 정리했다."
+summary: "클라이언트와 백엔드 서비스 사이의 단일 입구인 API 게이트웨이. 라우팅·인증·레이트 리밋·요청 변환·응답 조합·캐시 같은 기능, 요청 하나가 게이트웨이를 지나는 순서, 생태계·마켓플레이스·다중 플랫폼 같은 쓰임, 그리고 리버스 프록시·로드 밸런서·서비스 메시·공통 라이브러리와의 차이와 함께 쓰는 배치를 정리했다."
 tags: ["backend", "architecture", "api", "microservices", "infra"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/api-gateway-101", "https://bytebytego.com/guides/what-does-api-gateway-do", "https://bytebytego.com/guides/top-3-api-gateway-use-cases", "https://bytebytego.com/guides/what-are-the-differences-between-a-load-balancer-and-an-api-gateway", "https://bytebytego.com/guides/reverse-proxy-vs-api-gateway-vs-load-balancer"]
+sources: ["https://bytebytego.com/guides/api-gateway-101", "https://bytebytego.com/guides/what-does-api-gateway-do", "https://bytebytego.com/guides/top-3-api-gateway-use-cases", "https://bytebytego.com/guides/what-are-the-differences-between-a-load-balancer-and-an-api-gateway", "https://bytebytego.com/guides/reverse-proxy-vs-api-gateway-vs-load-balancer", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[API Gateway 101](https://bytebytego.com/guides/api-gateway-101)」, 「[What Does an API Gateway Do?](https://bytebytego.com/guides/what-does-api-gateway-do)」, 「[Top 3 API Gateway Use Cases](https://bytebytego.com/guides/top-3-api-gateway-use-cases)」, 「[Load Balancer vs. API Gateway](https://bytebytego.com/guides/what-are-the-differences-between-a-load-balancer-and-an-api-gateway)」, 「[Reverse Proxy vs. API Gateway vs. Load Balancer](https://bytebytego.com/guides/reverse-proxy-vs-api-gateway-vs-load-balancer)」를 바탕으로 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[API Gateway 101](https://bytebytego.com/guides/api-gateway-101)」, 「[What Does an API Gateway Do?](https://bytebytego.com/guides/what-does-api-gateway-do)」, 「[Top 3 API Gateway Use Cases](https://bytebytego.com/guides/top-3-api-gateway-use-cases)」, 「[Load Balancer vs. API Gateway](https://bytebytego.com/guides/what-are-the-differences-between-a-load-balancer-and-an-api-gateway)」, 「[Reverse Proxy vs. API Gateway vs. Load Balancer](https://bytebytego.com/guides/reverse-proxy-vs-api-gateway-vs-load-balancer)」를 바탕으로 재구성한 노트다. 서비스 메시·공통 라이브러리와의 비교는 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다.
 
 ## API 게이트웨이란
 
@@ -70,6 +70,21 @@ API 게이트웨이(API gateway)는 **클라이언트의 API 요청을 받는 �
 | 예 | Nginx | AWS NLB·ALB, HAProxy | Kong, AWS API Gateway, Apigee |
 
 로드 밸런서는 [[load-balancer|로드 밸런서]], 리버스 프록시는 [[proxy|프록시]]에 따로 정리했다. 하나의 제품이 셋을 겸하기도 한다. Nginx나 Envoy는 설정에 따라 세 역할을 모두 한다.
+
+### 서비스 메시, 공통 라이브러리와의 차이
+
+**서비스 메시(service mesh)** 는 서비스와 서비스 사이(east-west) 통신을 맡는 인프라 계층이다. 각 서비스 옆의 프록시(Envoy 같은 사이드카, 또는 Istio 앰비언트 모드처럼 노드 단위 프록시)가 **데이터 평면**으로 트래픽을 대신 주고받고, **제어 평면**(Istio의 istiod 등)이 라우팅 규칙·인증서·정책을 내려 준다. 애플리케이션 코드는 그대로 두고 mTLS, 재시도·타임아웃·서킷 브레이커, 트래픽 분할(카나리), 지표·트레이스를 얻는다.
+
+| 비교 | API 게이트웨이 | 서비스 메시 | 공통 라이브러리 (Spring Cloud 등) |
+| --- | --- | --- | --- |
+| 다루는 트래픽 | 외부 클라이언트 → 시스템(north-south) | 서비스 ↔ 서비스(east-west) | 서비스 ↔ 서비스 |
+| 위치 | 시스템 입구 한 곳 | 모든 서비스 옆(사이드카·노드 프록시) | 애플리케이션 프로세스 안 |
+| 주된 기능 | 인증, API 키·요금제, 클라이언트별 속도 제한, 요청 변환·조합 | 서비스 간 mTLS와 신원, 재시도·타임아웃·서킷 브레이커, 트래픽 분할, 균일한 관측 | 서비스 발견(Eureka), 클라이언트 부하 분산, 서킷 브레이커(Resilience4j), 설정 |
+| 언어 의존 | 없다 | 없다. 어떤 언어의 서비스든 같은 정책 | 있다. 언어·프레임워크마다 따로 구현 |
+| 바꾸는 방법 | 게이트웨이 설정 | 제어 평면 정책. 앱 재배포 없이 바뀐다 | 라이브러리 버전을 올리고 모든 서비스를 다시 배포 |
+| 비용 | 홉 하나와 단일 진입점 관리 | 프록시 홉마다 지연과 자원, 제어 평면 운영 | 앱 코드와 결합, 버전 파편화 |
+
+셋은 대체재가 아니라 층이 다르다. 외부 요청은 게이트웨이가 받고, 내부 호출은 메시나 라이브러리가 다룬다. 서비스가 한 언어로 몇 개뿐이면 라이브러리로 충분하고, 여러 언어의 서비스가 많아져 공통 정책을 코드 밖에서 강제해야 할 때 메시를 들인다. 사이드카와 제어 평면의 구조는 [[load-balancer|로드 밸런서]], 마이크로서비스의 공통 관심사 처리는 [[microservices-architecture|마이크로서비스 아키텍처]]에 있다.
 
 ## 함께 쓰는 배치
 
