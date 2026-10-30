@@ -5,7 +5,7 @@ summary: "Terraform은 원하는 인프라를 HCL 코드로 선언하면, 상태
 tags: ["devops", "infra", "aws", "automation", "ci-cd"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-does-terraform-turn-code-into-cloud", "https://developer.hashicorp.com/terraform/intro/core-workflow", "https://developer.hashicorp.com/terraform/language/state"]
+sources: ["https://bytebytego.com/guides/how-does-terraform-turn-code-into-cloud", "https://developer.hashicorp.com/terraform/intro/core-workflow", "https://developer.hashicorp.com/terraform/language/state", "https://newsroom.ibm.com/2025-02-27-ibm-completes-acquisition-of-hashicorp,-creates-comprehensive,-end-to-end-hybrid-cloud-platform"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How does Terraform turn Code into Cloud?](https://bytebytego.com/guides/how-does-terraform-turn-code-into-cloud)」를 바탕으로, HashiCorp 공식 문서로 확인해 재구성한 노트다.
@@ -80,7 +80,11 @@ merge  ─▶ 같은 plan을 apply (운영은 수동 승인 단계를 둔다)
 
 ## 역사
 
-Terraform은 2023년 라이선스가 오픈소스에서 BSL로 바뀌었고, 그 직전 버전에서 갈라진 오픈소스 포크 **OpenTofu**가 리눅스 재단에서 이어진다. 둘은 같은 HCL과 워크플로를 쓴다. 자세한 도구 변화는 [[startup-infra-decisions|스타트업 인프라 선택 원칙]]에 있다.
+| 시기 | 변화 |
+| --- | --- |
+| 2023.08 | 라이선스가 오픈소스(MPL 2.0)에서 BSL로 바뀌었다. 그 직전 버전에서 갈라진 오픈소스 포크 **OpenTofu**가 리눅스 재단에서 이어진다. 둘은 같은 HCL과 write → plan → apply 워크플로를 쓴다 |
+| 2024 | 관리형 실행 서비스 Terraform Cloud의 이름이 **HCP Terraform**으로 바뀌었다 |
+| 2025.02 | IBM이 HashiCorp 인수를 마쳤다. Terraform은 IBM 소프트웨어 제품군 안에서 이어진다 |
 
 ## 정리
 

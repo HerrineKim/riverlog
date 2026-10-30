@@ -5,7 +5,7 @@ summary: "데이터를 구하고 처리한 뒤 탐색적 데이터 분석(EDA)�
 tags: ["data-science", "python", "eda", "visualization"]
 source: notion
 date: "2026-10-13"
-sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas"]
+sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas", "https://playwright.dev/python/docs/intro"]
 ---
 
 > 노션 정리를 바탕으로 재구성하고, pandas로 표 합치기는 ByteByteGo의 System Design 101 가이드 「[5 Functions to Merge Data with Pandas](https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas)」를 바탕으로 pandas 공식 문서 기준으로 보강한 노트다.
@@ -25,7 +25,7 @@ sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.
 
 - **요청**: `requests`, `urllib3`
 - **크롤링 프레임워크**: `scrapy`
-- **브라우저 자동화**(JavaScript로 그려지는 페이지): `selenium`
+- **브라우저 자동화**(JavaScript로 그려지는 페이지): `playwright`, `selenium`. 새로 짜면 자동 대기와 헤드리스 실행이 기본인 Playwright를 먼저 고려한다
 - **파싱**: `BeautifulSoup`, `lxml`, `json`
 - **기사 본문 추출**: `newspaper4k`: [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[data-pipeline-basics|데이터 파이프라인과 저장소 용어]]
 

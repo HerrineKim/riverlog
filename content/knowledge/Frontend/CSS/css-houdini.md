@@ -5,7 +5,7 @@ summary: "브라우저 CSS 엔진의 파싱·스타일·레이아웃·페인트�
 tags: ["css", "browser", "rendering", "frontend"]
 source: other
 date: "2026-10-21"
-sources: ["https://developer.chrome.com/docs/css-ui/houdini", "https://www.smashingmagazine.com/2016/03/houdini-maybe-the-most-exciting-development-in-css-youve-never-heard-of/", "https://developer.mozilla.org/en-US/docs/Web/API/Houdini_APIs", "https://developer.mozilla.org/en-US/docs/Web/CSS/@property", "https://developer.mozilla.org/en-US/docs/Web/API/CSS_Typed_OM_API"]
+sources: ["https://developer.chrome.com/docs/css-ui/houdini", "https://www.smashingmagazine.com/2016/03/houdini-maybe-the-most-exciting-development-in-css-youve-never-heard-of/", "https://developer.mozilla.org/en-US/docs/Web/API/Houdini_APIs", "https://developer.mozilla.org/en-US/docs/Web/CSS/@property", "https://developer.mozilla.org/en-US/docs/Web/API/CSS_Typed_OM_API", "https://webkit.org/?p=17862"]
 ---
 
 > 「[Houdini - Demystifying CSS](https://developer.chrome.com/docs/css-ui/houdini)」와 「[Houdini: Maybe The Most Exciting Development In CSS You've Never Heard Of](https://www.smashingmagazine.com/2016/03/houdini-maybe-the-most-exciting-development-in-css-youve-never-heard-of/)」을 바탕으로, 지원 상태는 MDN 문서와 browser-compat-data(2026.10)로 확인해 재구성한 노트다.
@@ -108,7 +108,7 @@ Houdini가 꿈꾼 "모든 단계를 개발자에게 연다"는 그대로 이뤄�
 | Houdini로 하려던 일 | 지금의 네이티브 기능 |
 | --- | --- |
 | 스크롤에 묶인 합성 애니메이션(Animation Worklet) | 스크롤 기반 애니메이션 `animation-timeline: scroll()`·`view()`([[css-animation\|CSS 애니메이션]]) |
-| 메이슨리 레이아웃(Layout API) | CSS 메이슨리 레이아웃 제안(`display: grid-lanes`). 아직 일부 브라우저 실험 단계 |
+| 메이슨리 레이아웃(Layout API) | CSS 그리드 레인(`display: grid-lanes`). Safari 26.4가 먼저 정식 지원하고 Chromium·Firefox는 플래그 뒤에 있다. `@supports (display: grid-lanes)`로 점진적 향상 |
 | 커스텀 속성 애니메이션 | `@property`(모든 브라우저) |
 | 툴팁 위치 계산 | 앵커 위치 지정([[popover-anchor-positioning\|팝오버와 앵커 위치 지정]]) |
 

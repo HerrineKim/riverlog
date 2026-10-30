@@ -29,8 +29,8 @@ CSS 그리드·플렉스박스는 이제 모든 주요 브라우저가 지원한
 | 컨테이너 크기 쿼리 `@container`, 서브그리드, `:has()`, 네이티브 중첩, `oklch()`, `color-mix()` | 2023 |
 | 상대 색상 문법(`oklch(from …)`), `light-dark()`, `font-size-adjust`, `@property`, `@starting-style`·`transition-behavior`, `popover` 속성, 블록 레이아웃의 `align-content`, `round()` | 2024 |
 | 같은 문서 뷰 트랜지션(`document.startViewTransition()`, [[view-transitions\|View Transitions]]), `@scope`, `abs()`·`sign()` | 2025 |
-| 앵커 위치 지정([[popover-anchor-positioning\|팝오버와 앵커 위치 지정]]), `shape()` | 2026 |
-| `text-wrap: pretty` | 아직 아님 (2026년 10월 기준 Firefox 미지원) |
+| 앵커 위치 지정([[popover-anchor-positioning\|팝오버와 앵커 위치 지정]]), `shape()`, `text-box-trim` | 2026 |
+| `text-wrap: pretty`, 그리드 레인(`display: grid-lanes`, 메이슨리) | 아직 아님 (2026년 10월 기준 `pretty`는 Firefox 미지원, 그리드 레인은 Safari 26.4만 정식 지원) |
 
 최신 상태는 [web.dev Baseline](https://web.dev/baseline)과 [Can I use](https://caniuse.com/)에서 확인한다.
 

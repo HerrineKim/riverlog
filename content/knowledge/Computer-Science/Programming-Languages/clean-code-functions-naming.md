@@ -163,19 +163,9 @@ function saveFirstName(name) {
 
 TypeScript에서는 여기에 타입으로 의도를 드러내는 규칙이 더해진다. `strict`(특히 `strictNullChecks`)를 켜고, 바꾸지 않을 값은 `readonly`·`ReadonlyArray<T>`·`as const`로 표시하고, 유니언·교차가 필요하면 `type`, 확장·구현할 객체 계약이면 `interface`를 쓴다. 세부 규칙은 [[typescript-coding-convention|TypeScript 코딩 컨벤션]]에 있다.
 
-## Google Java 스타일의 이름 규칙
+## 언어별 표기 규칙
 
-| 대상 | 규칙 | 예 |
-| --- | --- | --- |
-| 패키지 | 소문자만, 밑줄 없음 | `com.example.deepspace` |
-| 클래스 | UpperCamelCase, 명사(구) | `AddressParser`, `ImmutableList` |
-| 인터페이스 | UpperCamelCase, 명사 또는 형용사 | `List`, `Readable` |
-| 테스트 클래스 | 대상 + `Test` | `MapTest` |
-| 메서드 | lowerCamelCase, 동사(구) | `sendMessage` |
-| 접근자·변경자·조건자 | `get`·`set`·`is` | `getName`, `isEmpty` |
-| 상수 | UPPER_SNAKE_CASE | `MAX_SIZE` |
-
-불리언 이름의 문법은 [[boolean-naming|불리언 변수 이름 짓기]] 노트에 따로 있다.
+이름의 표기(UpperCamelCase, lowerCamelCase, UPPER_SNAKE_CASE)와 품사 규칙(클래스는 명사, 메서드는 동사)은 언어 컨벤션이 정한다. Java는 [[java-coding-convention|Java 코딩 컨벤션]]의 「이름」 표를 따른다. 불리언 이름의 문법은 [[boolean-naming|불리언 변수 이름 짓기]] 노트에 따로 있다.
 
 ## 정리
 

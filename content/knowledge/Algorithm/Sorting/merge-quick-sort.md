@@ -1,11 +1,11 @@
 ---
 title: "병합 정렬과 퀵 정렬"
 concept: "Merge Sort"
-summary: "분할 정복으로 평균 O(n log n)에 정렬하는 두 대표 알고리즘과 정렬 알고리즘 비교."
+summary: "분할 정복으로 평균 O(n log n)에 정렬하는 두 대표 알고리즘과, 기본·팀소트·계수·기수 정렬까지 묶은 정렬 알고리즘 복잡도·안정성 비교."
 tags: ["algorithm", "sorting", "divide-and-conquer", "python"]
 source: mixed
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/21cb57a3681b404da4ac8ab0e7289bc0", "https://johngrib.github.io/wiki/algorithm/quick-sort/"]
+sources: ["https://80000coding.notion.site/21cb57a3681b404da4ac8ab0e7289bc0", "https://johngrib.github.io/wiki/algorithm/quick-sort/", "https://v8.dev/blog/array-sort"]
 ---
 
 > 자바 정렬 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JAVA] Sort 사용 (Arrays, Collections)」을 바탕으로 보강했다.
@@ -111,11 +111,15 @@ def quick_sort_inplace(arr, start=0, end=None):
 | 병합 | O(n log n) | O(n log n) | O(n log n) | O(n) | 안정 |
 | 퀵 | O(n log n) | O(n log n) | O(n²) | O(log n) | 불안정 |
 | 힙 | O(n log n) | O(n log n) | O(n log n) | O(1) | 불안정 |
+| 팀소트(Timsort) | O(n) | O(n log n) | O(n log n) | O(n) | 안정 |
 | 계수 | O(n + k) | O(n + k) | O(n + k) | O(n + k) | 안정 |
+| 기수 | O(nk) | O(nk) | O(nk) | O(n + k) | 안정 |
+
+비교 기반 정렬은 최악 O(n log n)보다 빠를 수 없다. 계수·기수 정렬은 비교 대신 값의 범위 k나 자릿수에 기대어 이 하한을 넘는다.
 
 ## 실전에서는
 
-파이썬의 `sorted()`와 `list.sort()`는 병합 정렬과 삽입 정렬을 섞은 **Timsort** 계열 알고리즘으로, 최악에도 O(n log n)이고 안정 정렬이다. (Python 3.11부터는 run을 합치는 순서를 정하는 규칙만 Powersort 방식으로 바뀌었고, 기본 구조는 같다.) 코딩 테스트에서는 직접 구현하기보다 내장 정렬에 `key`를 주어 쓰는 경우가 대부분이다.
+파이썬의 `sorted()`와 `list.sort()`는 병합 정렬과 삽입 정렬을 섞은 **Timsort** 계열 알고리즘으로, 최악에도 O(n log n)이고 안정 정렬이다. (Python 3.11부터는 run을 합치는 순서를 정하는 규칙만 Powersort 방식으로 바뀌었고, 기본 구조는 같다.) 코딩 테스트에서는 직접 구현하기보다 내장 정렬에 `key`를 주어 쓰는 경우가 대부분이다. 자바스크립트도 ES2019부터 명세가 `Array.prototype.sort`의 안정성을 요구하고, V8은 팀소트로 구현한다.
 
 ```python
 students = [("kim", 90), ("lee", 85), ("park", 90)]

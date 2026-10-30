@@ -313,7 +313,7 @@ const $$ = document.querySelectorAll.bind(document) // 어디서 찾을지(docum
 - **감싸는 함수와 `bind`는 시점이 다르다.** `setTimeout(() => user.sayHi(), 1000)`은 1초 뒤 **그때의** `user` 변수를 읽으므로, 그사이 `user`가 다른 객체로 바뀌면 바뀐 쪽을 부른다. `user.sayHi.bind(user)`는 bind하는 순간의 객체에 묶인다.
 - **묶인 함수는 다시 묶을 수 없다.** `f.bind(a).bind(b)`의 this는 여전히 `a`다. bind가 돌려준 함수는 원래 함수를 감싼 특수 객체(exotic object)라, 원래 함수에 붙인 커스텀 속성도 보이지 않는다.
 - 객체의 메서드를 한꺼번에 묶으려면 `for (const key in obj) if (typeof obj[key] === 'function') obj[key] = obj[key].bind(obj)`처럼 돈다(lodash `_.bindAll`).
-- `bind(null, 값)`으로 인자만 미리 채우는 부분 적용과, this는 그대로 두고 인자만 채우는 `partial` 헬퍼는 [[functional-programming#7. 커링과 부분 적용|함수형 프로그래밍]]에 있다. 래퍼가 받은 this와 인자를 원래 함수에 그대로 넘기는 콜 포워딩, 유사 배열에 배열 메서드를 빌려 쓰는 메서드 빌리기도 거기서 다룬다.
+- `bind(null, 값)`으로 인자만 미리 채우는 부분 적용과, this는 그대로 두고 인자만 채우는 `partial` 헬퍼는 [[functional-programming#7. 커링과 부분 적용|함수형 프로그래밍]]에 있다. 래퍼가 받은 this와 인자를 원래 함수에 그대로 넘기는 콜 포워딩, 유사 배열에 배열 메서드를 빌려 쓰는 메서드 빌리기는 [[function-decorators|데코레이터와 콜 포워딩]]에 있다.
 
 화살표 함수와 `bind`가 생기기 전에는 `const self = this`(또는 `that`, `_this`)로 this를 변수에 담아 콜백에서 클로저로 읽었다. 옛 코드에서 이런 이름이 보이면 이 우회법이다.
 

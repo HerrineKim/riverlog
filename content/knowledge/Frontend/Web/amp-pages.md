@@ -5,7 +5,7 @@ summary: "AMP(Accelerated Mobile Pages)는 HTML에 제약을 걸고(외부 JS �
 tags: ["frontend", "performance", "web", "mobile", "seo"]
 source: other
 date: "2026-10-21"
-sources: ["https://d2.naver.com/helloworld/6856597", "https://blog.outsider.ne.kr/1285", "https://amp.dev/"]
+sources: ["https://d2.naver.com/helloworld/6856597", "https://blog.outsider.ne.kr/1285", "https://amp.dev/", "https://developers.google.com/search/updates"]
 ---
 
 > NAVER D2의 「[AMP는 어떻게 웹 페이지의 성능을 높일 수 있나](https://d2.naver.com/helloworld/6856597)」와 Outsider의 「[나는 AMP를 좋아하지 않는다.](https://blog.outsider.ne.kr/1285)」를 바탕으로 재구성한 노트다.
@@ -18,7 +18,7 @@ sources: ["https://d2.naver.com/helloworld/6856597", "https://blog.outsider.ne.k
 | --- | --- |
 | AMP HTML | 일부 태그·속성을 금지하고 `<amp-img>` 같은 커스텀 엘리먼트를 쓰게 한 HTML 부분집합 |
 | AMP JS(런타임) | 자원 로딩 순서와 커스텀 엘리먼트의 레이아웃·렌더링 시점을 관리하는 라이브러리 |
-| AMP 캐시 | 유효한 AMP 페이지를 가져가 저장·최적화해 주는 프록시 CDN(Google AMP Cache 등). 페이지와 자원을 한 출처에서 내려준다 |
+| AMP 캐시 | 유효한 AMP 페이지를 가져가 저장·최적화해 주는 프록시 CDN(Google AMP Cache 등). 페이지와 자원을 한 출처에서 내려준다. Google 검색은 2026년 7월부터 캐시 대신 발행처의 AMP 페이지로 바로 보낸다 |
 
 ## 성능을 내는 규칙
 
@@ -28,13 +28,13 @@ AMP의 규칙은 [[browser-rendering|브라우저 렌더링 과정]]의 병목�
 | --- | --- |
 | 작성자 JS 금지, 런타임과 컴포넌트 스크립트는 모두 비동기 | 파서 차단 스크립트 |
 | 서드파티 JS는 샌드박스 iframe 안에서만 | 남의 코드가 메인 스레드·레이아웃을 붙잡는 것 |
-| CSS는 `<head>` 안 인라인 `<style>` 하나, 용량 상한(현재 75KB) | 렌더링 차단 CSS 요청과 비대한 스타일 계산 |
+| CSS는 `<head>` 안 인라인 `<style>` 하나, 용량 상한(75KB) | 렌더링 차단 CSS 요청과 비대한 스타일 계산 |
 | 이미지·광고·iframe은 **크기(또는 비율)를 반드시 명시** | 자원이 도착하기 전에 레이아웃을 확정해 레이아웃 이동(CLS) 방지 |
 | 확장 컴포넌트가 렌더링을 막지 않음 | 임베드 때문에 첫 렌더링이 늦어지는 것 |
 | 측정(읽기)을 모은 뒤 변경(쓰기) | 강제 동기 레이아웃(레이아웃 스래싱) |
 | 애니메이션은 `transform`·`opacity`만 | 레이아웃·페인트를 다시 도는 애니메이션 |
 | 뷰포트 근처 자원 우선, 나머지는 지연 로딩하되 미리 받아 둠 | 화면 밖 자원이 대역폭을 뺏는 것 |
-| 검색 결과에서 미리 렌더링(첫 화면 자원만) | 클릭 후 대기 시간 |
+| 검색 결과에서 캐시로 미리 렌더링(첫 화면 자원만). Google 검색은 2026년 7월 이 경로를 접었다 | 클릭 후 대기 시간 |
 
 규칙 대부분은 AMP가 아니어도 쓸 수 있는 일반 원칙이다. 자원 크기 명시는 [[cls-optimization|CLS 최적화]], 스크립트 배치는 [[script-loading|스크립트·스타일 로딩 순서]], 지연 로딩은 [[lazy-loading|지연 로딩]], 미리 연결·렌더링은 [[resource-hints|리소스 힌트]]에 있다.
 
@@ -54,7 +54,7 @@ AMP 컴포넌트는 [[web-components|웹 컴포넌트]]의 커스텀 엘리먼�
 
 ### 이후 바뀐 것
 
-- 원본 URL 문제는 **서명된 교환(Signed Exchanges, SXG)** 으로 일부 풀렸다. 캐시에서 받아도 주소창에 원본 URL이 보인다.
+- 과거에는 원본 URL 문제를 **서명된 교환(Signed Exchanges, SXG)** 으로 일부 풀었다(캐시에서 받아도 주소창에 원본 URL이 보였다). 2026년 7월 Google 검색은 AMP 뷰어·AMP 캐시·SXG 경로를 접고 사용자를 **발행처의 AMP 페이지로 바로** 보낸다. 그래서 URL 이원화와 캐시 서빙 문제는 검색 경로에서 사라졌다. 다음 페이지를 미리 받는 일은 [[resource-hints|Speculation Rules]]가 맡는다.
 - 2021년 Google 검색의 페이지 경험 업데이트로 뉴스 캐러셀의 AMP 요구와 AMP 배지가 없어졌다. 순위 신호는 AMP 여부가 아니라 **Core Web Vitals**다([[web-vitals|웹 성능 지표와 Lighthouse]]).
 - 그래서 새 프로젝트는 AMP를 따로 만들기보다 같은 원칙을 원본 페이지에 적용해 지표를 직접 맞추는 것이 일반적이다. AMP는 이메일용 AMP 같은 특수 용도에 남아 있다.
 

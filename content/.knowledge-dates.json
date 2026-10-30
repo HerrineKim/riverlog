@@ -133,7 +133,7 @@
  },
  "AI-Data/jupyter-notebook.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-15T17:29:26+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "AI-Data/llm-security-attacks.md": {
   "created": "2026-10-20T14:51:58+09:00",
@@ -201,7 +201,7 @@
  },
  "AI-Data/python-data-analysis.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "AI-Data/reinforcement-learning.md": {
   "created": "2026-10-14T10:57:28+09:00",
@@ -377,11 +377,11 @@
  },
  "Algorithm/Sorting/merge-quick-sort.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Algorithm/big-o.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:01+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Algorithm/coding-test.md": {
   "created": "2026-10-12T20:52:25+09:00",
@@ -445,7 +445,7 @@
  },
  "Backend/Architecture/caching-strategies.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Backend/Architecture/card-payment-network.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -569,7 +569,7 @@
  },
  "Backend/Architecture/web-scalability-components.md": {
   "created": "2026-10-20T11:04:43+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Backend/Database/block-file-object-storage.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -601,7 +601,7 @@
  },
  "Backend/Database/elasticsearch.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Backend/Database/flyway.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -621,7 +621,7 @@
  },
  "Backend/Database/prisma.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-13T19:54:33+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Backend/Database/redis.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -641,7 +641,7 @@
  },
  "Backend/Database/wide-column-database.md": {
   "created": "2026-10-17T19:04:42+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Backend/Django.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -765,7 +765,7 @@
  },
  "Backend/Web-Basics/api-architectural-styles.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Backend/Web-Basics/api-pagination.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -845,7 +845,7 @@
  },
  "Backend/backend-developer-roadmap.md": {
   "created": "2026-10-16T13:03:29+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Backend/backend-testing.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1169,7 +1169,7 @@
  },
  "Computer-Science/Computer-Architecture/cache-and-virtual-memory.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T12:47:45+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Computer-Science/Computer-Architecture/cache-friendly-code.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1245,11 +1245,11 @@
  },
  "Computer-Science/Engineer-Information-Processing/security.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Computer-Science/Engineer-Information-Processing/software-engineering.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Computer-Science/Engineer-Information-Processing/software-testing.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1369,7 +1369,7 @@
  },
  "Computer-Science/Operating-System/file-system-implementation.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Computer-Science/Operating-System/file-system.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1389,7 +1389,7 @@
  },
  "Computer-Science/Operating-System/linux-server-monitoring.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Computer-Science/Operating-System/memory-management.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -1461,7 +1461,7 @@
  },
  "Computer-Science/Programming-Languages/clean-code-functions-naming.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Computer-Science/Programming-Languages/coding-principles.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1509,7 +1509,7 @@
  },
  "Computer-Science/Programming-Languages/java-coding-convention.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Computer-Science/Programming-Languages/java-idioms.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1521,7 +1521,7 @@
  },
  "Computer-Science/Programming-Languages/jvm-internals.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Computer-Science/Programming-Languages/kotlin-delegation.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1625,7 +1625,7 @@
  },
  "DevOps/ci-cd.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "DevOps/cloud-cost-optimization.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1633,11 +1633,11 @@
  },
  "DevOps/cloud-native.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "DevOps/cloud-services-map.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "DevOps/deployment-strategies.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1661,7 +1661,7 @@
  },
  "DevOps/dockerfile.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "DevOps/durable-workflow-temporal.md": {
   "created": "2026-10-23T17:37:45+09:00",
@@ -1693,7 +1693,7 @@
  },
  "DevOps/s3-cloudfront-static-hosting.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "DevOps/server-incident-diagnosis.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1705,11 +1705,11 @@
  },
  "DevOps/startup-infra-decisions.md": {
   "created": "2026-10-12T21:39:27+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "DevOps/terraform-workflow.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "DevOps/twelve-factor-app.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1897,7 +1897,7 @@
  },
  "Frontend/CSS/css-houdini.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Frontend/CSS/css-in-js.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -1921,7 +1921,7 @@
  },
  "Frontend/CSS/css-progressive-enhancement.md": {
   "created": "2026-10-13T19:46:23+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Frontend/CSS/css-visual-effects.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -1945,7 +1945,7 @@
  },
  "Frontend/CSS/line-height-vertical-align.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Frontend/CSS/logical-properties.md": {
   "created": "2026-10-13T19:46:23+09:00",
@@ -1973,7 +1973,7 @@
  },
  "Frontend/CSS/responsive-design.md": {
   "created": "2026-10-13T14:45:25+09:00",
-  "updated": "2026-10-20T15:35:59+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Frontend/CSS/safe-area-foldable.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -2121,7 +2121,7 @@
  },
  "Frontend/JavaScript/functions.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Frontend/JavaScript/garbage-collection.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -2205,7 +2205,7 @@
  },
  "Frontend/JavaScript/prototype-and-inheritance.md": {
   "created": "2026-10-15T17:56:26+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Frontend/JavaScript/proxy-and-reflect.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -2221,7 +2221,7 @@
  },
  "Frontend/JavaScript/regular-expressions.md": {
   "created": "2026-10-17T23:13:05+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Frontend/JavaScript/responsible-javascript.md": {
   "created": "2026-10-13T19:48:50+09:00",
@@ -2529,7 +2529,7 @@
  },
  "Frontend/Testing/js-testing-best-practices.md": {
   "created": "2026-10-15T18:00:27+09:00",
-  "updated": "2026-10-30T12:03:37+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Frontend/Testing/static-analysis.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -2641,7 +2641,7 @@
  },
  "Frontend/Web/amp-pages.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Frontend/Web/browser-architecture.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -2657,7 +2657,7 @@
  },
  "Frontend/Web/browser-rendering.md": {
   "created": "2026-10-12T21:21:37+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Frontend/Web/browser-tracking-protection.md": {
   "created": "2026-10-17T23:13:04+09:00",
@@ -3061,7 +3061,7 @@
  },
  "Life-and-Learning/jeonse-housing-market.md": {
   "created": "2026-10-27T15:02:30+09:00",
-  "updated": "2026-10-27T15:02:30+09:00"
+  "updated": "2026-10-30T13:19:55+09:00"
  },
  "Life-and-Learning/memorization.md": {
   "created": "2026-10-11T22:24:49+09:00",
