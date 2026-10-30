@@ -91,7 +91,7 @@ Sitemap: https://example.com/sitemap.xml
 | `<meta name="viewport">` | 모바일 화면 너비에 맞춘다. 없으면 모바일 친화성에서 감점된다 |
 | `<meta name="robots" content="noindex">` | 색인하지 말라는 신호 |
 | `<link rel="canonical">` | 같은 내용이 여러 URL에 있을 때 대표 URL을 지정한다 |
-| `<meta property="og:*">` | 오픈 그래프. 메신저·SNS 공유 미리보기의 제목·이미지·설명 |
+| `<meta property="og:*">` | 오픈 그래프. 메신저·SNS 공유 미리보기의 제목·이미지·설명. 순위 요소는 아니고 공유 클릭률에 영향을 준다([[html-head-metadata#Open Graph와 SEO\|Open Graph와 SEO]]) |
 | `<link rel="alternate" hreflang="en">` | 다국어 페이지의 언어별 버전을 연결한다. 양방향 연결·`x-default` 규칙은 [[multilingual-pages\|다국어 페이지]]에 있다 |
 | `<link rel="icon">` | 파비콘. 탭과 모바일 검색 결과에 표시된다 |
 | `<script type="application/ld+json">` | schema.org 어휘의 구조화된 데이터. 기사·제품·FAQ·이동 경로(BreadcrumbList)·리뷰 등을 표시하면 검색 결과에 별점·가격 같은 **리치 결과**로 나올 수 있다. 순위 신호는 아니다([[structured-content\|구조화된 콘텐츠]]) |
