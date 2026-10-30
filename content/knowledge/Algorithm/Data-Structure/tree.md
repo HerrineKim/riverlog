@@ -182,4 +182,4 @@ Java `TreeMap`·`TreeSet`, C++ `std::map`, 리눅스 커널의 스케줄러 실�
 - 중위 순회는 BST를 정렬 순서로 읽는다. 레벨 순회는 BFS다.
 - BST 연산은 O(높이)이므로 **균형이 성능의 전부**다. AVL은 BF를 -1~1로 유지하며 네 가지 회전으로 균형을 잡는다.
 
-관련 노트: [[data-structures|기초 자료구조(CS50)]], [[heap-priority-queue|힙과 우선순위 큐]], [[graph-basics|그래프의 기본]], [[recursion|재귀 함수]], [[behavior-tree|비헤이비어 트리]]
+관련 노트: [[lowest-common-ancestor|최소 공통 조상 (LCA)]], [[data-structures|기초 자료구조(CS50)]], [[heap-priority-queue|힙과 우선순위 큐]], [[graph-basics|그래프의 기본]], [[recursion|재귀 함수]], [[behavior-tree|비헤이비어 트리]]
