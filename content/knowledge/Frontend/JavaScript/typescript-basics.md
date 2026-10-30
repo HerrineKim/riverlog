@@ -4,12 +4,13 @@ concept: "TypeScript"
 summary: "TypeScript는 JavaScript에 타입 검사와 자동완성을 더한 슈퍼셋이다. JavaScript가 정적 타입을 얻기까지의 역사와 흔한 오해, 실행 환경(tsc·Go로 다시 쓴 TypeScript 7·Vite·Node.js 타입 제거), 기본 타입과 any·unknown·never, 추론·단언·가드·satisfies, type과 interface, 제네릭, 함수 오버로드와 클래스 수식어, 모듈과 @types, 구분된 유니언, 표준 데코레이터, 유틸리티 타입을 표 중심으로 정리하고, 추론 → API 스키마 → 좁히기 → strict 순으로 익히는 순서를 덧붙인다."
 tags: ["typescript", "javascript", "frontend", "type-system", "tools"]
 source: other
-date: "2026-10-21"
-sources: ["https://www.heropy.dev/p/WhqSC8", "https://velog.io/@teo/typescript", "https://www.typescriptlang.org/docs/handbook/intro.html", "https://www.typescriptlang.org/docs/handbook/utility-types.html", "https://basarat.gitbooks.io/typescript/content/", "https://ahnheejong.gitbook.io/ts-for-jsdev/", "https://www.typescriptlang.org/ko/docs/handbook/intro.html", "https://jameshenry.blog/typescript-the-missing-introduction/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%281%29%20-%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%2C%20%20Annotaions.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%282%29%20-%20%ED%83%80%EC%9E%85%20%EC%B6%94%EB%A1%A0%2C%20%ED%83%80%EC%9E%85%20%EC%95%A8%EB%A6%AC%EC%96%B4%EC%8A%A4%2C%20%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%283%29%20-%20Union%2C%20Intersection%2C%20%EB%A6%AC%ED%84%B0%EB%9F%B4%20%ED%83%80%EC%9E%85%2C%20Enum%20%2C%20never%20%20%2CGenerics.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%285%29%20-%20%EC%BB%A8%EB%94%94%EC%85%94%EB%84%90%20%ED%83%80%EC%9E%85%2C%ED%95%A8%EC%88%98%20%EB%A9%94%EC%84%9C%EB%93%9C%20%ED%83%80%EC%9D%B4%ED%95%91%2C%20%EC%98%A4%EB%B2%84%EB%A1%9C%EB%94%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%287%29%20-%20satisfies%2C%20%ED%83%80%EC%9E%85%ED%99%95%EC%9E%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/Typescript%289%29%20-%20%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%EC%BB%B4%ED%8C%8C%EC%9D%BC.md", "https://medium.freecodecamp.com/why-use-static-types-in-javascript-part-1-8382da1e0adb", "https://flow.org/blog/2015/02/20/Flow-Comments/", "https://github.com/grab/front-end-guide"]
+date: "2026-10-30"
+sources: ["https://www.heropy.dev/p/WhqSC8", "https://velog.io/@teo/typescript", "https://www.typescriptlang.org/docs/handbook/intro.html", "https://www.typescriptlang.org/docs/handbook/utility-types.html", "https://basarat.gitbooks.io/typescript/content/", "https://basarat.gitbook.io/typescript/type-system/type-inference", "https://basarat.gitbook.io/typescript/type-system/type-assertion", "https://basarat.gitbook.io/typescript/type-system/index-signatures", "https://basarat.gitbook.io/typescript/type-system/readonly", "https://basarat.gitbook.io/typescript/type-system/never", "https://basarat.gitbook.io/typescript/type-system/callable", "https://ahnheejong.gitbook.io/ts-for-jsdev/", "https://www.typescriptlang.org/ko/docs/handbook/intro.html", "https://jameshenry.blog/typescript-the-missing-introduction/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%281%29%20-%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%2C%20%20Annotaions.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%282%29%20-%20%ED%83%80%EC%9E%85%20%EC%B6%94%EB%A1%A0%2C%20%ED%83%80%EC%9E%85%20%EC%95%A8%EB%A6%AC%EC%96%B4%EC%8A%A4%2C%20%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%283%29%20-%20Union%2C%20Intersection%2C%20%EB%A6%AC%ED%84%B0%EB%9F%B4%20%ED%83%80%EC%9E%85%2C%20Enum%20%2C%20never%20%20%2CGenerics.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%285%29%20-%20%EC%BB%A8%EB%94%94%EC%85%94%EB%84%90%20%ED%83%80%EC%9E%85%2C%ED%95%A8%EC%88%98%20%EB%A9%94%EC%84%9C%EB%93%9C%20%ED%83%80%EC%9D%B4%ED%95%91%2C%20%EC%98%A4%EB%B2%84%EB%A1%9C%EB%94%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%287%29%20-%20satisfies%2C%20%ED%83%80%EC%9E%85%ED%99%95%EC%9E%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/Typescript%289%29%20-%20%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%EC%BB%B4%ED%8C%8C%EC%9D%BC.md", "https://medium.freecodecamp.com/why-use-static-types-in-javascript-part-1-8382da1e0adb", "https://flow.org/blog/2015/02/20/Flow-Comments/", "https://github.com/grab/front-end-guide"]
 ---
 
 > HEROPY의 「[한눈에 보는 타입스크립트](https://www.heropy.dev/p/WhqSC8)」(2020.01 작성, 2026.08 갱신)를 바탕으로, 역사와 익히는 순서는 테오(teo)의 「[Typescript는 어떻게 공부해야 하나요?](https://velog.io/@teo/typescript)」(2022.02)로 보강해 재구성한 노트다. 컴파일 타임과 런타임 구분은 「[TypeScript: the missing introduction](https://jameshenry.blog/typescript-the-missing-introduction/)」을 바탕으로 보강했다. 튜플·인덱스 시그니처·enum·제네릭의 함정·좁히기 연산자·오버로드 순서는 「[Frontend_TIL: TypeScript 시리즈](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/TypeScript)」를 바탕으로 보강했다. 정적 타입의 득실과 Flow는 「[Why use static types in JavaScript?](https://medium.freecodecamp.com/why-use-static-types-in-javascript-part-1-8382da1e0adb)」, 「[Flow Comments](https://flow.org/blog/2015/02/20/Flow-Comments/)」을 바탕으로 보강했다.
 > Grab의 「[Front End Guide](https://github.com/grab/front-end-guide)」를 바탕으로 보강했다.
+> 추론의 방향, 단언 규칙, 인덱스 시그니처, readonly, never, 호출 가능 타입은 basarat의 「[TypeScript Deep Dive](https://basarat.gitbook.io/typescript)」의 Type System 장을 바탕으로 보강했다.
 
 ## TypeScript란
 
@@ -35,7 +36,7 @@ JavaScript는 짧은 스크립트용으로 만들어져 타입과 클래스를 �
 
 | 실행 방법 | 설명 |
 | --- | --- |
-| `tsc` | 공식 컴파일러. `tsconfig.json`의 `compilerOptions`(`strict`, `target`, `module` 등)를 따른다. TypeScript 7.0(2026.07)부터 컴파일러가 Go로 다시 쓰여 큰 프로젝트의 빌드가 8~12배 빨라졌다. Vue·Svelte·Angular 템플릿 검사처럼 컴파일러 API에 기대는 도구는 안정 API가 나올 때까지 TypeScript 6을 쓴다 |
+| `tsc` | 공식 컴파일러. `tsconfig.json`의 `compilerOptions`(`strict`, `target`, `module` 등)를 따른다. TypeScript 7.0(2026.07)부터 컴파일러가 Go로 다시 쓰여 큰 프로젝트의 빌드가 8~12배 빨라졌다. Vue·Svelte·Angular 템플릿 검사처럼 컴파일러 API에 기대는 도구는 안정 API가 나올 때까지 TypeScript 6을 쓴다(API는 7.1 베타, 2026.10에 들어왔다) |
 | Vite 등 번들러 | `.ts`를 바로 import한다. 번들러(Babel, esbuild 포함)는 타입을 **지우기만** 하므로 검사는 편집기와 `tsc --noEmit`이 따로 한다 |
 | Node.js | 22.18·23.6부터 플래그 없이 `node main.ts`로 실행한다(타입 제거, type stripping). 24.12·25.2부터 안정 단계다. `enum`처럼 런타임 코드가 생기는 문법은 지원하지 않으므로 `erasableSyntaxOnly` 옵션으로 막아 둔다. Deno·Bun도 TypeScript를 기본 실행한다 |
 | TypeScript Playground | 브라우저에서 바로 실험한다 |
@@ -55,7 +56,7 @@ JavaScript는 짧은 스크립트용으로 만들어져 타입과 클래스를 �
 
 JavaScript도 엄밀히는 엔진(V8 등)이 실행 직전에 컴파일한다. 선언보다 먼저 함수를 호출할 수 있는 것(호이스팅)이 한 줄씩 해석만 하는 언어가 아니라는 증거다. TypeScript는 그 앞에 **개발자가 직접 거치는 컴파일 단계**를 하나 더 둔 것이다.
 
-컴파일러는 코드를 토큰으로 자르고 **AST(추상 구문 트리)** 로 바꾼 뒤 그 위에서 타입을 검사한다. `tsc` 안에서는 스캐너(토큰) → 파서(AST) → 바인더(선언마다 심볼 생성) → 체커(심볼로 타입 검사) → 이미터(JavaScript·`.d.ts` 출력) 순서로 돈다. Babel·esbuild는 이 중 체커가 없어 타입을 지우기만 한다. 같은 AST가 편집기의 **언어 서버**(이름 일괄 바꾸기, 정의로 이동, 자동완성)와 린터·codemod의 바탕이다. 문자열 찾기·바꾸기와 달리 같은 이름의 다른 변수를 구별한다. AST 변환 원리는 [[babel|Babel과 AST 변환]]에 있다.
+컴파일러는 코드를 토큰으로 자르고 **AST(추상 구문 트리)** 로 바꾼 뒤 그 위에서 타입을 검사한다. Babel·esbuild에는 타입을 따지는 단계(바인더·체커)가 없어 타입을 지우기만 한다. 단계별 구조는 [[typescript-compiler-internals|TypeScript 컴파일러 내부 구조]]에 있다. 같은 AST가 편집기의 **언어 서버**(이름 일괄 바꾸기, 정의로 이동, 자동완성)와 린터·codemod의 바탕이다. 문자열 찾기·바꾸기와 달리 같은 이름의 다른 변수를 구별한다. AST 변환 원리는 [[babel|Babel과 AST 변환]]에 있다.
 
 정적 타입을 얹을 때 얻는 것과 치르는 것은 이렇다.
 
@@ -96,16 +97,26 @@ let add: (a: number, b: number) => number;
 | --- | --- | --- |
 | `any` | 검사를 **끈다**. 무엇이든 되고 무엇이든 할 수 있다 | 마이그레이션 중 임시로만 |
 | `unknown` | 무엇이든 될 수 있지만, **좁히기 전에는 아무것도 못 한다** | 외부 입력, `catch (e)` |
-| `never` | 값이 절대 없다 | 항상 throw하는 함수, 완전성 검사 |
+| `never` | 값이 절대 없다. 모든 타입의 하위 타입(bottom)이라 어디에나 대입되지만, `never`에는 `never`만 대입된다 | 항상 throw하는 함수, 완전성 검사. 단, 항상 throw하는 **함수 선언**의 반환 타입은 하위 호환 때문에 `void`로 추론되므로 `: never`를 적는다(함수 표현식은 `never`로 추론된다) |
 | `void` | 반환값을 쓰지 않는다. 함수 **타입**의 `void`는 값을 반환하는 함수도 받아 준다([[typescript-type-compatibility#void를 반환하는 함수 타입\|타입 호환성]]) | 반환 없는 함수, 반환값을 안 쓰는 콜백 |
 | `object` | 원시값이 아닌 것 | 거의 안 쓴다. 모양을 적는 편이 낫다 |
 | `enum` | 이름 붙은 상수 집합. 숫자 enum은 0부터(첫 값을 주면 그 값부터) 1씩 자동 증가하고, 문자열 enum은 멤버마다 값을 적어야 한다. **런타임 객체가 생긴다** | 새 코드에서는 리터럴 유니언이나 `as const` 객체를 선호한다 |
 
 `strict` 모드에서는 `null`·`undefined`가 다른 타입에 섞이지 않는다. 필요하면 `string | null`처럼 명시한다.
 
+`readonly`는 `const`와 다르다. `const`는 **변수**를 다시 대입하지 못하게 하고, `readonly`는 **속성**을 이 타입을 통해서는 바꾸지 못하게 한다. 같은 객체를 `readonly`가 없는 타입으로 받은 함수는 그대로 고칠 수 있다(별칭, aliasing). 배열은 `readonly number[]`(= `ReadonlyArray<number>`)로 받으면 `push`·`sort` 같은 변경 메서드가 사라진다. getter만 있는 클래스 속성은 자동으로 `readonly`다.
+
 ## 추론, 단언, 가드, satisfies
 
-타입은 되도록 **추론에 맡긴다.** 초기값이 있는 변수, 기본값이 있는 매개변수, 반환값은 대부분 추론된다.
+타입은 되도록 **추론에 맡긴다.** 초기값이 있는 변수, 기본값이 있는 매개변수, 반환값은 대부분 추론된다. 타입이 흐르는 방향은 세 가지다.
+
+| 방향 | 예 | 추론되는 것 |
+| --- | --- | --- |
+| 오른쪽 → 왼쪽 | `let n = 123`, `const { a } = obj` | 초기값·구조 분해에서 변수 타입 |
+| 아래 → 위 | `function add(a: number, b: number) { return a + b }` | `return` 문에서 반환 타입 |
+| 왼쪽 → 오른쪽 (문맥 타이핑) | `const f: (a: number) => void = (a) => {}`, `arr.map((x) => …)` | 함수 타입이 정해진 자리에서 콜백 매개변수 타입 |
+
+받을 문맥이 없는 매개변수(`const f = (a, b) => …`)는 추론되지 않아 `any`가 되고, `strict`에서는 오류다. 반환 타입도 타입 없는 JS 함수를 거치면 `any`가 퍼질 수 있어, 공개 함수는 반환 타입을 적어 두는 편이 안전하다. 객체 속성과 `let`의 문자열은 `string`으로 **넓혀** 추론되는데, 이 때문에 나는 오류는 [[typescript-error-messages#리터럴 넓히기|리터럴 넓히기]]에 있다.
 
 | 문법 | 역할 | 안전성 |
 | --- | --- | --- |
@@ -114,6 +125,8 @@ let add: (a: number, b: number) => number;
 | `{...} as User` | 단언: "내가 안다"고 컴파일러를 설득한다. 속성이 빠져도 통과한다 | 위험 |
 | `el!` | Non-null 단언: `null`·`undefined`가 아니라고 단언 | 위험 |
 | `as const` | 리터럴·`readonly`로 가장 좁게 추론 | 안전 |
+
+단언에도 규칙이 있다. `S as T`는 S와 T 중 한쪽이 다른 쪽의 하위 타입일 때만 허용된다(`Event as MouseEvent`는 되고 `Event as HTMLElement`는 TS2352). 정말 필요하면 `as unknown as T`로 두 번 단언한다. 옛 문법 `<T>x`는 JSX와 겹쳐 쓰지 않는다. 단언은 「캐스팅」이 아니다. 실행 중 값은 아무것도 바뀌지 않는다.
 
 `satisfies`는 변수에 타입 표기를 붙일 수 없는 **객체 안쪽 속성**을 검사할 때, 그리고 검사는 하되 `'red'` 같은 리터럴 타입을 잃고 싶지 않을 때 쓴다.
 
@@ -162,7 +175,16 @@ type UserKey = keyof User;    // 속성 이름의 유니언
 type UserName = User['name']; // 인덱스 접근 타입: string
 ```
 
-인덱스 시그니처가 있으면 이름을 적은 다른 속성도 그 값 타입을 따라야 한다. `[key: string]: number | boolean` 아래에 `name: string`을 두면 오류다. `keyof`·인덱스 접근·매핑 타입으로 타입에서 타입을 만드는 법은 [[typescript-type-operators|TypeScript 타입 연산]]에, `extends`와 `&`가 같은 속성의 충돌을 다르게 다루는 점은 [[typescript-type-compatibility|타입 호환성]]에 있다.
+**인덱스 시그니처**(`[key: string]: T`)는 이름을 미리 모르는 키의 값 타입을 정한다.
+
+- 키 타입은 `string`, `number`, `symbol`, 템플릿 리터럴 패턴(`` [key: `data-${string}`]: string ``)만 된다. 객체를 키로 쓰면 JavaScript가 `toString()`해 `'[object Object]'`가 되므로 TypeScript가 막는다.
+- 이름을 적은 다른 속성도 그 값 타입을 따라야 한다. `[key: string]: number | boolean` 아래에 `name: string`을 두면 오류다. `obj[k]`로 읽든 `obj.name`으로 읽든 같은 타입이 나와야 하기 때문이다.
+- `string`과 `number` 인덱서를 함께 두면 `number` 쪽 값 타입은 `string` 쪽의 하위 타입이어야 한다(숫자 키도 결국 문자열 키다).
+- 시그니처는 없는 키를 읽어도 `T`라고 답한다. `noUncheckedIndexedAccess`를 켜면 `T | undefined`가 된다([[typescript-project-config#엄격도: 편의와 건전성 사이|tsconfig]]).
+- 키가 정해진 집합이면 `Record<'a' | 'b', number>`나 매핑 타입이 낫다. 오타가 잉여 속성 오류로 잡힌다.
+- 이름 있는 속성과 임의 키를 한 객체에 섞지 않는다. `{ color?: string; [selector: string]: … }`에서는 `colour` 오타가 「그냥 선택자」로 통과한다. 임의 키는 `nest: { [selector: string]: … }`처럼 속성 하나 아래로 옮긴다.
+
+`keyof`·인덱스 접근·매핑 타입으로 타입에서 타입을 만드는 법은 [[typescript-type-operators|TypeScript 타입 연산]]에, `extends`와 `&`가 같은 속성의 충돌을 다르게 다루는 점은 [[typescript-type-compatibility|타입 호환성]]에 있다.
 
 ## 제네릭
 
@@ -194,6 +216,7 @@ type ElementOf<T> = T extends (infer U)[] ? U : never; // 조건부 타입 + inf
 - **명시적 this**: 첫 매개변수 자리에 `this: Window`처럼 쓰면 `this`의 타입을 정한다. 컴파일 결과에서는 사라진다.
 - **오버로드**: 시그니처를 여러 개 선언하고 구현은 하나만 둔다. 구현 시그니처는 밖에서 보이지 않으므로 모든 오버로드를 받을 만큼 넓게 적는다. 호출 시 **위에서부터 처음 맞는 시그니처**를 고르므로 좁은 시그니처를 먼저 둔다. `add(x: number, y: number): number`와 `add(x: string, y: string): string`을 두면 `add(1, '2')`는 오류가 된다. 유니언 매개변수로 충분하면 오버로드보다 유니언이 낫다.
 - **선택적 매개변수** `b?: number`는 필수 매개변수 뒤에만 둔다.
+- **호출 가능 타입**: 화살표 표기 `(x: number) => string` 대신 객체 표기로 쓰면 시그니처를 여러 개 둘 수 있다. `{ (x: string): string; (x: number): number }`는 오버로드된 함수, `{ new (): Foo }`는 `new`로 부르는 생성자, 시그니처와 속성을 섞은 `{ (): void; version: string }`은 속성이 달린 함수다.
 
 | 클래스 수식어 | 접근 |
 | --- | --- |
@@ -209,6 +232,7 @@ type ElementOf<T> = T extends (infer U)[] ? U : never; // 조건부 타입 + inf
 
 - `export type { User }`, `import type { User }`로 **타입만** 주고받으면 컴파일 결과에서 import가 지워진다.
 - JS로 쓰인 라이브러리는 `.d.ts` 선언 파일이 있어야 타입이 붙는다. 패키지에 없으면 커뮤니티 저장소 **DefinitelyTyped**의 `@types/패키지명`을 설치한다(`npm i -D @types/lodash`). 없으면 직접 `declare module 'x'`를 쓴다.
+- `tsconfig.json`의 모듈 해석(`bundler`·`nodenext`), `verbatimModuleSyntax`, 선언 공간, `declare global`과 `lib`·`types` 옵션은 [[typescript-project-config|TypeScript 프로젝트 설정]]에 있다.
 
 ## 구분된 유니언
 
@@ -270,4 +294,4 @@ function area(s: Shape) {
 
 **TypeScript의 문법은 결국 "값의 모양을 적고, 좁히고, 변형하는" 세 가지 일이다.**
 
-관련 노트: [[typescript-type-compatibility|TypeScript 타입 호환성]], [[typescript-type-operators|TypeScript 타입 연산]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[class|class 문법]], [[static-analysis|정적 분석: 실행하지 않고 검사하기]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]]
+관련 노트: [[typescript-type-compatibility|TypeScript 타입 호환성]], [[typescript-type-operators|TypeScript 타입 연산]], [[typescript-project-config|TypeScript 프로젝트 설정]], [[typescript-compiler-internals|TypeScript 컴파일러 내부 구조]], [[typescript-error-messages|TypeScript 오류 메시지 읽기와 흔한 오류]], [[typescript-practical-patterns|TypeScript 실용 패턴]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[class|class 문법]], [[static-analysis|정적 분석: 실행하지 않고 검사하기]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]]

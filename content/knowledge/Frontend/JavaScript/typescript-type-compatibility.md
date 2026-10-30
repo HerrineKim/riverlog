@@ -5,10 +5,10 @@ summary: "TypeScript의 타입은 값의 집합이고, 대입은 좁은 집합�
 tags: ["typescript", "type-system", "javascript", "frontend"]
 source: other
 date: "2026-10-21"
-sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%284%29%20-%20%20%EB%A7%B5%EB%93%9C%20%ED%83%80%EC%9E%85%28Mapped%20Types%29%2C%20%ED%85%9C%ED%94%8C%EB%A6%BF%20%EB%A6%AC%ED%84%B0%EB%9F%B4%20%ED%83%80%EC%9E%85%28Template%20Literal%20Types%29.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%286%29%20-%20%ED%95%A8%EC%88%98%EB%81%BC%EB%A6%AC%20%EB%8C%80%EC%9E%85.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%287%29%20-%20satisfies%2C%20%ED%83%80%EC%9E%85%ED%99%95%EC%9E%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%283%29%20-%20Union%2C%20Intersection%2C%20%EB%A6%AC%ED%84%B0%EB%9F%B4%20%ED%83%80%EC%9E%85%2C%20Enum%20%2C%20never%20%20%2CGenerics.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%288%29%20-%20%EC%9C%A0%ED%8B%B8%EB%A6%AC%ED%8B%B0%20%ED%83%80%EC%9E%85%2C%20%EC%BB%A4%EC%8A%A4%ED%85%80%20%EC%9C%A0%ED%8B%B8%EB%A6%AC%ED%8B%B0%20%ED%83%80%EC%9E%85.md", "https://www.typescriptlang.org/docs/handbook/type-compatibility.html", "https://www.typescriptlang.org/tsconfig/#strictFunctionTypes"]
+sources: ["https://basarat.gitbook.io/typescript/type-system/freshness", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%284%29%20-%20%20%EB%A7%B5%EB%93%9C%20%ED%83%80%EC%9E%85%28Mapped%20Types%29%2C%20%ED%85%9C%ED%94%8C%EB%A6%BF%20%EB%A6%AC%ED%84%B0%EB%9F%B4%20%ED%83%80%EC%9E%85%28Template%20Literal%20Types%29.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%286%29%20-%20%ED%95%A8%EC%88%98%EB%81%BC%EB%A6%AC%20%EB%8C%80%EC%9E%85.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%287%29%20-%20satisfies%2C%20%ED%83%80%EC%9E%85%ED%99%95%EC%9E%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%283%29%20-%20Union%2C%20Intersection%2C%20%EB%A6%AC%ED%84%B0%EB%9F%B4%20%ED%83%80%EC%9E%85%2C%20Enum%20%2C%20never%20%20%2CGenerics.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%288%29%20-%20%EC%9C%A0%ED%8B%B8%EB%A6%AC%ED%8B%B0%20%ED%83%80%EC%9E%85%2C%20%EC%BB%A4%EC%8A%A4%ED%85%80%20%EC%9C%A0%ED%8B%B8%EB%A6%AC%ED%8B%B0%20%ED%83%80%EC%9E%85.md", "https://www.typescriptlang.org/docs/handbook/type-compatibility.html", "https://www.typescriptlang.org/tsconfig/#strictFunctionTypes"]
 ---
 
-> 「[Frontend_TIL: TypeScript(4)·(6)·(7)](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/TypeScript)」의 객체·함수 대입, 타입 확장 부분을 바탕으로, [TypeScript 핸드북의 Type Compatibility](https://www.typescriptlang.org/docs/handbook/type-compatibility.html)로 확인해 재구성한 노트다. 문법 전반은 [[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]]에, 타입을 변형하는 연산은 [[typescript-type-operators|TypeScript 타입 연산]]에 있다.
+> 「[Frontend_TIL: TypeScript(4)·(6)·(7)](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/TypeScript)」의 객체·함수 대입, 타입 확장 부분을 바탕으로, [TypeScript 핸드북의 Type Compatibility](https://www.typescriptlang.org/docs/handbook/type-compatibility.html)로 확인해 재구성한 노트다. 신선도(freshness) 설명은 basarat의 「[TypeScript Deep Dive](https://basarat.gitbook.io/typescript)」의 Freshness 절로 보강했다. 문법 전반은 [[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]]에, 타입을 변형하는 연산은 [[typescript-type-operators|TypeScript 타입 연산]]에 있다.
 
 ## 타입은 값의 집합이다
 
@@ -50,13 +50,16 @@ employee = person   // 오류: position이 없다
 
 ### 잉여 속성 검사
 
-구조적 타이핑이라도 **객체 리터럴을 바로 대입할 때**는 대상에 없는 속성을 오류로 잡는다(excess property checking). 오타를 잡기 위한 예외 규칙이다.
+구조적 타이핑이라도 **객체 리터럴을 바로 대입할 때**는 대상에 없는 속성을 오류로 잡는다(excess property checking, 오류 코드 TS2353). 갓 만든 리터럴은 「신선(fresh)」하다고 보고, 변수에 담기거나 단언·확장되면 신선도가 사라져 검사도 하지 않는다. 그래서 신선도(freshness) 검사라고도 한다. 리터럴에만 이 검사를 하는 이유는, 그 자리에서 만든 객체의 남는 속성은 받는 쪽이 절대 읽지 않으므로 거의 언제나 오타나 API 오해이기 때문이다.
 
 ```ts
 const p1: Person = { name: 'a', age: 1, position: 'x' } // 오류: position은 Person에 없다
 const tmp = { name: 'a', age: 1, position: 'x' }
 const p2: Person = tmp                                    // OK: 리터럴이 아니면 검사하지 않는다
 ```
+
+- 선택적 속성만 있는 타입에서 특히 쓸모 있다. `{ name?: string }`에 `{ neme: 'x' }`를 넣으면 구조적으로는 통과하지만(모든 속성이 선택이라), 잉여 속성 검사가 오타를 잡는다. 일부 필드만 바꾸는 `setState`·`update(patch)` API를 「모든 속성 선택」으로 만들어도 안전한 이유다.
+- 추가 속성을 정말 허용하려면 인덱스 시그니처를 둔다: `{ foo: number; [key: string]: unknown }`.
 
 ## 유니언과 인터섹션의 넓이
 
