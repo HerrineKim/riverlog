@@ -34,17 +34,7 @@ sources: ["https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams", "
 
 ## 디자인 패턴 (GoF)
 
-| 분류 | 목적 | 대표 패턴 |
-| --- | --- | --- |
-| 생성 | 객체 생성 방식 | Singleton, Factory Method, Abstract Factory, Builder, Prototype |
-| 구조 | 클래스·객체 조합 | Adapter, Bridge, Composite, Decorator, Facade, Proxy |
-| 행위 | 객체 간 상호작용·책임 분배 | Observer, Strategy, Command, Iterator, Template Method, Interpreter |
-
-자주 나오는 패턴
-
-- **Singleton**: 인스턴스를 하나만 만들고 어디서든 같은 인스턴스를 쓰게 함. `getInstance()`를 여러 번 호출해도 같은 객체가 반환되므로 상태가 공유된다.
-- **Factory Method**: 상위 클래스는 객체 생성 인터페이스만 정의하고, 실제 생성은 서브 클래스가 결정.
-- **Observer**: 한 객체의 상태가 바뀌면 의존하는 객체들에 자동으로 알림이 가는 일대다 의존 관계.
+GoF 패턴 23개는 목적에 따라 **생성**(객체를 만드는 방식: Singleton, Factory Method, Builder 등), **구조**(객체를 조합하는 방식: Adapter, Decorator, Proxy 등), **행위**(객체가 협력하고 책임을 나누는 방식: Observer, Strategy, Template Method 등)로 나뉜다. 패턴별 비유·푸는 문제와 헷갈리는 짝은 [[gof-design-patterns|GoF 디자인 패턴]]에 있다.
 
 ## UML
 
@@ -73,18 +63,18 @@ sources: ["https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams", "
 | 상호작용 개요 | 여러 상호작용 다이어그램 사이의 제어 흐름 |
 | 타이밍 | 객체 상태 변화와 **시간 제약** |
 
-| 관계 | 의미 |
-| --- | --- |
-| 연관(Association) | 서로 관련이 있음 |
-| 집합(Aggregation) | 부분-전체지만 부분이 독립적으로 존재 가능 (빈 마름모) |
-| 합성(Composition) | 부분이 전체에 종속 (채운 마름모) |
-| 일반화(Generalization) | 상속 관계 |
-| 의존(Dependency) | 짧은 시간 동안 사용하는 관계 (점선) |
-| 실체화(Realization) | 인터페이스 구현 |
+| 관계 | 의미 | 표기 |
+| --- | --- | --- |
+| 연관(Association) | 서로 관련이 있음 | `A ───▶ B` 실선 |
+| 집합(Aggregation) | 부분-전체지만 부분이 독립적으로 존재 가능 | `A ◇─── B` 빈 마름모가 전체 쪽 |
+| 합성(Composition) | 부분이 전체에 종속 | `A ◆─── B` 채운 마름모가 전체 쪽 |
+| 일반화(Generalization) | 상속 관계 | `A ───▷ B` 실선, 빈 삼각형이 부모 쪽 |
+| 실체화(Realization) | 인터페이스 구현 | `A - - ▷ B` 점선, 빈 삼각형이 인터페이스 쪽 |
+| 의존(Dependency) | 짧은 시간 동안 사용하는 관계 | `A - - > B` 점선 화살표 |
 
 ### 클래스 다이어그램 표기
 
-클래스 다이어그램은 업계에서 설계를 공유할 때 가장 많이 쓰는 UML이다. 구성 요소와 표기는 다음과 같다.
+클래스 다이어그램은 업계에서 설계를 공유할 때 가장 많이 쓰는 UML이다. 관계 표기는 위 표와 같고, 나머지 구성 요소는 다음과 같다.
 
 | 요소 | 뜻 | 표기 |
 | --- | --- | --- |
@@ -94,16 +84,6 @@ sources: ["https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams", "
 | 인터페이스 | 구현 클래스가 반드시 제공할 메서드의 계약 | `<<interface>>` 스테레오타입 |
 | 열거형(Enumeration) | 이름 붙은 값의 집합(상품 분류, 월) | `<<enumeration>>` 스테레오타입 |
 | 접근 제한자 | 공개 범위 | `+` public, `-` private, `#` protected, `~` package |
-
-```text
-관계 화살표
-연관      A ───────▶ B
-집합      A ◇─────── B     (빈 마름모가 전체 쪽)
-합성      A ◆─────── B     (채운 마름모가 전체 쪽)
-상속      A ───────▷ B     (빈 삼각형이 부모 쪽, 실선)
-실체화    A - - - - ▷ B    (빈 삼각형이 인터페이스 쪽, 점선)
-의존      A - - - - > B    (점선 화살표)
-```
 
 GoF 패턴 대부분이 클래스 다이어그램으로 설명된다([[gof-design-patterns|GoF 디자인 패턴]]).
 

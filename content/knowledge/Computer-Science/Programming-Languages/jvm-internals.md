@@ -5,7 +5,7 @@ summary: "javac가 만든 바이트코드가 클래스 로딩(로딩·링크·�
 tags: ["java", "jvm", "memory", "performance", "computer-science"]
 source: other
 date: "2026-10-21"
-sources: ["https://github.com/HomoEfficio/dev-tips/blob/master/Back%20to%20the%20Essence%20-%20Java%20%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C%20%EC%8B%A4%ED%96%89%EA%B9%8C%EC%A7%80%20-%20(1).md", "https://github.com/HomoEfficio/dev-tips/blob/master/Back%20to%20the%20Essence%20-%20Java%20%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C%20%EC%8B%A4%ED%96%89%EA%B9%8C%EC%A7%80%20-%20(2).md", "https://yaboong.github.io/java/2018/05/26/java-memory-management/", "https://yaboong.github.io/java/2018/06/09/java-garbage-collection/", "https://12bme.tistory.com/543?category=785013", "https://brunch.co.kr/@springboot/367", "https://blog.jetbrains.com/kr/2020/05/25-things-we-love-about-java-ko/", "https://javaalmanac.io/", "https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-5.html", "https://openjdk.org/jeps/158"]
+sources: ["https://github.com/HomoEfficio/dev-tips/blob/master/Back%20to%20the%20Essence%20-%20Java%20%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C%20%EC%8B%A4%ED%96%89%EA%B9%8C%EC%A7%80%20-%20(1).md", "https://github.com/HomoEfficio/dev-tips/blob/master/Back%20to%20the%20Essence%20-%20Java%20%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C%20%EC%8B%A4%ED%96%89%EA%B9%8C%EC%A7%80%20-%20(2).md", "https://yaboong.github.io/java/2018/05/26/java-memory-management/", "https://yaboong.github.io/java/2018/06/09/java-garbage-collection/", "https://12bme.tistory.com/543?category=785013", "https://brunch.co.kr/@springboot/367", "https://blog.jetbrains.com/kr/2020/05/25-things-we-love-about-java-ko/", "https://javaalmanac.io/", "https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-5.html", "https://openjdk.org/jeps/158", "https://openjdk.org/jeps/490"]
 ---
 
 > 「[Java 컴파일에서 실행까지 (1)](https://github.com/HomoEfficio/dev-tips/blob/master/Back%20to%20the%20Essence%20-%20Java%20%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C%20%EC%8B%A4%ED%96%89%EA%B9%8C%EC%A7%80%20-%20(1).md)」·「[(2)](https://github.com/HomoEfficio/dev-tips/blob/master/Back%20to%20the%20Essence%20-%20Java%20%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C%20%EC%8B%A4%ED%96%89%EA%B9%8C%EC%A7%80%20-%20(2).md)」, 「[자바 메모리 관리 - 스택 & 힙](https://yaboong.github.io/java/2018/05/26/java-memory-management/)」, 「[Java Garbage Collection](https://yaboong.github.io/java/2018/06/09/java-garbage-collection/)」, 「[자바 최적화 - GC 로깅](https://12bme.tistory.com/543?category=785013)」, 「[Java Collections Heap Dump 분석](https://brunch.co.kr/@springboot/367)」, 「[JetBrains가 사랑하는 Java의 25가지 특징](https://blog.jetbrains.com/kr/2020/05/25-things-we-love-about-java-ko/)」 등을 바탕으로, 명령과 옵션은 JVM 명세와 JEP로 확인해 재구성한 노트다.
@@ -96,7 +96,7 @@ Young ─ Eden ─▶ Survivor 0 ⇄ Survivor 1 ─(나이 ≥ 임계값)─▶ 
 | Stop-the-world | GC 작업 중 애플리케이션 스레드를 멈추는 구간. 수집기마다 길이와 빈도가 다르다 |
 
 - 코드에서 `System.gc()`를 부르지 않는다. Full GC를 유발할 수 있고, JVM이 무시할 수도 있다.
-- 이 세대 구분은 개념이다. G1은 힙을 같은 크기의 영역(region) 여럿으로 나누고 각 영역에 Eden·Survivor·Old 역할을 붙인다. ZGC는 JDK 21부터 세대 모드를 지원하고 JDK 23부터 세대 모드가 기본이다.
+- 이 세대 구분은 개념이다. G1은 힙을 같은 크기의 영역(region) 여럿으로 나누고 각 영역에 Eden·Survivor·Old 역할을 붙인다. ZGC는 JDK 21부터 세대 모드를 지원했고, JDK 23에서 기본이 된 뒤 JDK 24에서 비세대 모드가 제거되어 지금은 세대 모드만 있다(JEP 490).
 
 ## GC 로그로 진단하기
 

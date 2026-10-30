@@ -41,8 +41,11 @@ sources: ["https://google.github.io/styleguide/javaguide.html", "https://naver.g
 | 대상 | 표기 | 예 |
 | --- | --- | --- |
 | 패키지 | 소문자만, 단어를 붙여 쓴다 | `com.example.orderservice` |
-| 클래스·인터페이스·enum·record | UpperCamelCase | `OrderService` |
-| 메서드·변수·매개변수 | lowerCamelCase | `findOrder`, `orderId` |
+| 클래스·enum·record | UpperCamelCase, 명사(구) | `OrderService`, `ImmutableList` |
+| 인터페이스 | UpperCamelCase, 명사 또는 형용사 | `List`, `Readable` |
+| 메서드 | lowerCamelCase, 동사(구) | `findOrder`, `sendMessage` |
+| 접근자·변경자·조건자 | `get`·`set`·`is` 접두사 | `getName`, `isEmpty` |
+| 변수·매개변수 | lowerCamelCase | `orderId` |
 | 상수(`static final`이고 깊게 불변) | UPPER_SNAKE_CASE | `MAX_RETRY` |
 | 타입 변수 | 대문자 한 글자, 또는 이름 + `T` | `T`, `RequestT` |
 | 테스트 클래스 | 대상 + `Test` | `OrderServiceTest` |
