@@ -13,7 +13,7 @@ sources: ["https://riverkim.kr/91", "https://riverkim.kr/265", "https://nodejs.o
 
 ## 패키지 매니저란
 
-패키지 매니저는 프로젝트에 필요한 외부 패키지를 **설치·업데이트·삭제하고, 패키지끼리의 의존성을 관리**하는 도구다. 자바스크립트 프로젝트는 수십~수백 개의 패키지에 기대기 때문에, 어떤 버전이 설치됐는지 기록하고 누구의 컴퓨터에서든 같은 의존성을 재현하는 일이 중요하다.
+패키지 매니저는 프로젝트에 필요한 외부 패키지를 **설치·업데이트·삭제하고, 패키지끼리의 의존성을 관리**하는 도구다. 설치 한 번이 컴퓨터와 앱에 무엇을 바꾸는지는 [[what-npm-install-does|npm install이 하는 일]]에 있다. 자바스크립트 프로젝트는 수십~수백 개의 패키지에 기대기 때문에, 어떤 버전이 설치됐는지 기록하고 누구의 컴퓨터에서든 같은 의존성을 재현하는 일이 중요하다.
 
 | 파일 | 역할 |
 | --- | --- |
@@ -142,4 +142,4 @@ npm cache verify && npm cache clean --force && rm -rf package-lock.json && npm i
 - 한 프로젝트에는 한 매니저, lock 파일은 커밋한다.
 - EINTEGRITY는 해시 불일치다. 캐시를 비우고 lock 파일을 다시 만든다.
 
-관련 노트: [[small-modules|작은 모듈 철학과 npm 의존성]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[eslint-prettier|ESLint와 Prettier 설정]], [[ci-cd|CI/CD]], [[windows-dev-environment|Windows 개발 환경]]
+관련 노트: [[what-npm-install-does|npm install이 하는 일]], [[small-modules|작은 모듈 철학과 npm 의존성]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[eslint-prettier|ESLint와 Prettier 설정]], [[ci-cd|CI/CD]], [[windows-dev-environment|Windows 개발 환경]]

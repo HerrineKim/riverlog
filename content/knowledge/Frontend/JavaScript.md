@@ -82,6 +82,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 ### 라이브러리
 - [날짜 라이브러리](/knowledge/dictionary/frontend/javascript/date-libraries): 0부터 시작하는 월 같은 기본 Date의 함정, Moment.js 이후의 대안, date-fns와 Day.js 비교, 표준 API Temporal의 지원 현황
 - [패키지 매니저: npm, yarn, pnpm](/knowledge/dictionary/frontend/javascript/package-managers): lock 파일의 역할, 매니저 비교와 고르는 기준, packageManager와 Corepack, 설치 스크립트 차단, npm EINTEGRITY 오류 해결
+- [npm install이 하는 일](/knowledge/dictionary/frontend/javascript/what-npm-install-does): 설치 단계(해석·캐시·node_modules·lock 파일·설치 스크립트), 로컬·전역 설치가 바꾸는 위치, 앱 번들·배포에 들어가는 것, 되돌리는 법
 - [번들러의 역사와 Vite](/knowledge/dictionary/frontend/javascript/bundlers-and-vite): CommonJS·AMD·ES 모듈에서 번들러로, esbuild와 Snowpack이 푼 느린 빌드, Vite의 개발·배포 이원 구조
 - [webpack 동작 원리](/knowledge/dictionary/frontend/javascript/webpack): 의존성 그래프, 로더 적용 순서, Define·Provide 같은 플러그인, shimming, 스코프 호이스팅, HMR, Rollup과 차이
 - [Babel과 AST 변환](/knowledge/dictionary/frontend/javascript/babel): parse → transform → generate, 플러그인·프리셋 순서, preset-env와 core-js, visitor 패턴, codemod
