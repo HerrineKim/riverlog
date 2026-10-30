@@ -114,4 +114,4 @@ for a, b, cost in edges:
 - 인접 행렬은 O(V²) 메모리·O(1) 연결 확인, 인접 리스트는 O(V + E) 메모리·빠른 이웃 순회
 - 문제를 보면 먼저 격자형인지, 간선 목록형인지 판단한다.
 
-관련 노트: [[bfs|BFS]], [[dfs|DFS]], [[dijkstra|다익스트라]], [[disjoint-set|서로소 집합]], [[articulation-point|단절점과 단절선]], [[euler-circuit|오일러 회로]], [[tree|트리와 이진 탐색 트리]]
+관련 노트: [[bfs|BFS]], [[dfs|DFS]], [[dijkstra|다익스트라]], [[minimum-spanning-tree|최소 신장 트리]], [[disjoint-set|서로소 집합]], [[articulation-point|단절점과 단절선]], [[euler-circuit|오일러 회로]], [[tree|트리와 이진 탐색 트리]]

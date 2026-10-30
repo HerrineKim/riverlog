@@ -11,5 +11,6 @@ date: "2026-10-14"
 
 - [그래프의 기본과 표현 방법](Algorithm/Graph/graph-basics.md): 그래프 용어, 인접 행렬과 인접 리스트, 문제 유형
 - [다익스트라 최단 경로](Algorithm/Graph/dijkstra.md): 음이 아닌 가중치 그래프의 단일 출발점 최단 경로
+- [최소 신장 트리: 크루스칼과 프림](Algorithm/Graph/minimum-spanning-tree.md): 모든 정점을 가장 싸게 잇는 MST, 간선을 고르는 크루스칼과 정점을 넓히는 프림
 - [단절점과 단절선](Algorithm/Graph/articulation-point.md): 지우면 그래프가 끊어지는 정점·간선을 DFS 한 번으로 찾기
 - [오일러 경로와 오일러 회로](Algorithm/Graph/euler-circuit.md): 모든 간선을 한 번씩 지나는 경로의 존재 조건과 히어홀저 알고리즘
