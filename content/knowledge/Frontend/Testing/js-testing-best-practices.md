@@ -1,14 +1,14 @@
 ---
 title: "JavaScript 테스트 모범 사례"
 concept: "Testing Best Practices"
-summary: "'테스트는 보자마자 이해되게 단순하게'라는 황금률에서 나오는 원칙들을 한곳에 모았다. 테스트 이름·AAA·블랙박스·테스트 대역 고르기·현실적인 데이터와 프로퍼티 기반 테스트·스냅숏, 프런트엔드와 E2E, 백엔드 컴포넌트·계약 테스트, 커버리지와 뮤테이션 테스트, CI에서 지킬 것까지."
+summary: "'테스트는 보자마자 이해되게 단순하게'라는 황금률에서 나오는 원칙들을 한곳에 모았다. 테스트 이름·AAA·블랙박스·테스트 대역 고르기, 현실적인 데이터와 필요한 것만 드러내기, 프런트엔드와 E2E, 백엔드 컴포넌트 테스트와 HTTP 가로채기·장애 시나리오·검증할 결과 다섯 가지·DB 정리 전략, 커버리지와 뮤테이션 테스트, CI에서 지킬 것까지."
 tags: ["testing", "frontend", "javascript", "ci", "tdd"]
 source: other
-date: "2026-10-15"
-sources: ["https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md"]
+date: "2026-10-30"
+sources: ["https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.md", "https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md"]
 ---
 
-> Yoni Goldberg의 「[JavaScript & Node.js Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md)」(한국어판)를 바탕으로 재구성한 노트다. 도구는 2026년 기준으로 바꿔 적었다.
+> Yoni Goldberg의 「[JavaScript & Node.js Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices)」(영문판과 [한국어판](https://github.com/goldbergyoni/javascript-testing-best-practices/blob/master/readme.kr.md))를 바탕으로 재구성한 노트다. 도구는 2026년 기준으로 바꿔 적었다.
 
 ## 황금률: 린(lean)한 테스트
 
@@ -18,25 +18,27 @@ sources: ["https://github.com/goldbergyoni/javascript-testing-best-practices/blo
 
 ## 테스트 하나를 쓰는 법
 
-### 1. 이름에 세 가지를 담는다
+### 1. 이름에 세 가지를 담고, 두 단계 이상으로 묶는다
 
-무엇을(대상), 어떤 상황에서(시나리오), 무엇을 기대하는지(결과). 실패한 테스트 이름만 읽고도 무엇이 깨졌는지 알 수 있어야 한다.
+무엇을(대상), 어떤 상황에서(시나리오), 무엇을 기대하는지(결과). 실패한 테스트 이름만 읽고도 무엇이 깨졌는지 알 수 있어야 한다. 테스트 보고서는 코드를 모르는 사람(QA, 배포 담당, 2년 뒤의 나)도 읽는다.
 
 ```js
-describe('주문 서비스', () => {
-  describe('상품 추가', () => {
-    test('가격이 없으면 상태 400을 돌려준다', async () => { /* ... */ })
+describe('주문 서비스', () => {          // 대상
+  describe('가격이 없을 때', () => {     // 상황
+    test('상태 400을 돌려준다', async () => { /* ... */ })   // 기대
   })
 })
 ```
 
+`describe`를 최소 두 단계(대상 → 상황)로 두면 보고서가 계층으로 묶인다. 100개 중 7개가 실패해도 같은 상황 아래 모여 있으면 원인 자리가 바로 보인다. 대상·상황·행동 계층(Describe-Context-It)은 [[backend-testing|백엔드 테스트]]에, given-when-then 같은 다른 구조도 같은 목적이다.
+
 ### 2. AAA로 나누고, 단언은 제품의 언어로
 
-준비(Arrange) → 실행(Act) → 검증(Assert)을 빈 줄로 나눈다. 검증은 반복문·조건문 대신 선언적인 단언으로 쓴다. `expect(admins).not.toContain(user)`처럼 읽히는 BDD 스타일이면 QA·기획자도 읽는다.
+준비(Arrange) → 실행(Act) → 검증(Assert)을 빈 줄로 나눈다. 실행과 검증은 대개 한 줄이다. 검증은 반복문·조건문 대신 선언적인 단언으로 쓴다. `expect(admins).not.toContain(user)`처럼 읽히는 BDD 스타일이면 QA·기획자도 읽는다. 같은 검증이 자주 반복되면 커스텀 매처(`expect.extend`)로 만든다.
 
 ### 3. 블랙박스로 테스트한다
 
-공개된 동작과 결과만 검증한다. 내부 메서드·상태를 직접 확인하면 동작이 같아도 리팩터링할 때마다 깨지는 **거짓 양성**이 생긴다. 컴포넌트의 행위 중심 검증은 [[frontend-test-types|프론트엔드 테스트의 종류와 도구]]에 있다.
+공개된 동작과 결과만 검증한다. 공개 동작을 검증하면 내부 구현도 함께 검증된다. 내부 메서드·상태를 직접 확인하면 동작이 같아도 리팩터링할 때마다 깨지는 **거짓 양성**이 생기고, 경보가 잦아지면 팀은 CI 실패를 무시하기 시작한다. 컴포넌트의 행위 중심 검증은 [[frontend-test-types|프론트엔드 테스트의 종류와 도구]]에 있다.
 
 ### 4. 테스트 대역은 요구사항 기준으로 고른다
 
@@ -50,9 +52,24 @@ describe('주문 서비스', () => {
 
 대역의 종류와 줄이는 설계는 [[humble-object-pattern|험블 객체 패턴]]에 있다.
 
-### 5. 현실적인 데이터, 다양한 조합
+### 5. 데이터: 현실적으로, 다양하게, 필요한 것만 드러나게
 
-`'foo'` 같은 입력은 버그를 숨긴다. `@faker-js/faker`로 실제와 비슷한 데이터를 만들고, 입력 공간이 넓으면 **프로퍼티 기반 테스트**로 수백 가지 조합을 자동 생성해 성질(property)을 검증한다.
+| 원칙 | 방법 |
+| --- | --- |
+| `'foo'`를 쓰지 않는다 | `'foo'` 같은 입력은 공백·특수 문자에서 터지는 버그를 숨긴다. `@faker-js/faker`로 실제와 비슷한 데이터를 만든다 |
+| 입력 조합을 기계가 만들게 한다 | 입력 공간이 넓으면 **프로퍼티 기반 테스트**로 수백 가지 조합을 자동 생성해 성질(property)을 검증한다(fast-check) |
+| 결과에 영향을 주는 값만 테스트 안에 보인다 | 긴 JSON을 테스트마다 붙여 넣지도, 헬퍼 뒤로 통째로 숨기지도 않는다. 공통 부분은 팩토리로 빼고 **결과를 정하는 값만 인자로 드러낸다** |
+
+세 번째 원칙을 어기면 **미스터리 게스트(mystery guest)**가 생긴다. 보이지 않는 데이터가 결과를 정해서, 테스트를 읽어도 왜 그 결과가 기대되는지 알 수 없다.
+
+```js
+// 왜 409인지 테스트만 읽고 안다
+const request = factorTransfer({ userCredit: 100, transferAmount: 200 })
+const response = await new TransferService({ disallowOvercharge: true }).transfer(request)
+expect(response.status).toBe(409)
+```
+
+프로퍼티 기반 테스트는 이렇게 쓴다.
 
 ```js
 import fc from 'fast-check'
@@ -70,9 +87,8 @@ test('어떤 상품이든 추가하면 장바구니 개수가 1 늘어난다', (
 
 | 원칙 | 이유 |
 | --- | --- |
-| 스냅숏은 짧게, 가능하면 인라인(`toMatchInlineSnapshot`) | 2,000줄짜리 외부 스냅숏은 아무도 읽지 않고 갱신만 누른다 |
-| 데이터는 테스트마다 직접 만든다 | 전역 시드 데이터에 기대면 테스트끼리 얽혀 순서에 따라 깨진다 |
-| 에러는 잡지 말고 기대한다 | `try/catch` 대신 `await expect(fn()).rejects.toThrow(…)` |
+| 스냅숏은 짧게(3~7줄), 가능하면 인라인(`toMatchInlineSnapshot`) | 2,000줄짜리 외부 스냅숏은 아무도 읽지 않고 갱신만 누른다. 값이 아니라 스키마(필드 구조)를 보거나 거의 안 바뀌는 문서일 때만 긴 스냅숏을 허용한다 |
+| 에러는 잡지 말고 기대한다 | `try/catch` 대신 `await expect(fn()).rejects.toThrow(AppError)`. 에러 종류를 알려 주는 속성(`code: 'InvalidInput'`)까지 단언한다 |
 | 태그로 나눈다 | `#fast`·`#smoke` 같은 태그로 저장할 때는 빠른 테스트만, CI에서는 전부 돌린다(Vitest `--testNamePattern`, Playwright `--grep`) |
 | 고치기 전에 실패하는 테스트부터 | 버그를 찾으면 그 버그를 잡는 테스트를 먼저 쓴다. 모든 테스트는 한 번 실패하는 것을 확인한다([[tdd\|TDD]]) |
 | 환경에 기대지 않는다 | 경로·OS·타임존·현재 시각을 고정한다([[test-run-stages\|테스트를 돌리는 시점]]) |
@@ -81,32 +97,99 @@ test('어떤 상품이든 추가하면 장바구니 개수가 1 늘어난다', (
 
 | 원칙 | 방법 |
 | --- | --- |
-| 화면 세부와 데이터를 분리해 검증 | 애니메이션·스타일이 아니라 사용자가 보는 데이터만 단언한다 |
-| 바뀌지 않는 기준으로 요소를 찾는다 | CSS 클래스가 아니라 role·레이블·텍스트([[a11y-driven-testing\|접근성 기반 UI 테스트]]). 마지막 수단이 `data-testid` |
-| 얕은 렌더링 대신 실제처럼 렌더링 | 자식까지 렌더링하고 사용자처럼 조작한다(Testing Library + user-event) |
-| `sleep`을 쓰지 않는다 | `findBy*`·`waitFor`, Playwright의 자동 대기와 web-first 단언(`await expect(locator).toBeVisible()`) |
-| 느리고 불안정한 백엔드는 가로챈다 | 컴포넌트·통합 테스트에서는 MSW나 Playwright `page.route`로 응답을 고정한다 |
-| E2E는 적게, 핵심 흐름만 | 시스템 전체를 지나는 테스트는 느리고 깨지기 쉽다. 결제·가입 같은 핵심 경로만 |
-| 로그인은 한 번만 | 로그인 상태를 저장해 재사용한다(Playwright `storageState`) |
-| 스모크 테스트 | 모든 페이지를 한 번씩 열어 에러 없이 뜨는지만 확인하는 가벼운 E2E를 배포 직후 돌린다 |
-| 네트워크로 어떻게 전달되는지도 본다 | Lighthouse·Web Vitals로 실제 로딩 성능을 측정한다([[web-vitals\|Core Web Vitals]]) |
+| 화면 세부와 데이터를 분리해 검증 | 애니메이션·스타일이 아니라 사용자가 보는 데이터만 단언하고, 테스트에서는 애니메이션을 끈다. 그렇다고 렌더링을 건너뛰고 스토어·서비스만 테스트하면 데이터가 화면에 닿지 않는 버그를 놓친다 |
+| 바뀌지 않는 기준으로 요소를 찾는다 | CSS 클래스가 아니라 role·레이블·텍스트([[a11y-driven-testing\|접근성 기반 UI 테스트]]). 마지막 수단이 `data-testid`이고, 이 속성이 있으면 팀 모두가 테스트가 쓰는 요소임을 안다 |
+| 얕은 렌더링 대신 실제처럼 렌더링 | 자식까지 렌더링하고 사용자처럼 조작한다(Testing Library + user-event). 자식이 아주 많은 큰 부모는 테스트를 몇 개만 두고 자식 쪽에 더 쓴다. 느리거나 설정이 복잡한 자식 하나만 가짜로 바꾼다 |
+| `sleep`을 쓰지 않는다 | `findBy*`·`waitFor`, Playwright의 자동 대기와 web-first 단언(`await expect(locator).toBeVisible()`). 시간에 기대는 코드는 가짜 타이머로 시계를 당긴다([[test-primitives\|테스트의 기본 요소]]) |
+| 느리고 불안정한 백엔드는 가로챈다 | 컴포넌트·통합 테스트에서는 MSW나 Playwright `page.route`로 응답을 고정하고, 빈 결과·오류 응답 같은 경우도 만들어 본다([[api-mocking\|API 모킹]]) |
+| 시스템 전체 E2E는 적게 | 실제 백엔드까지 지나는 E2E는 프런트-백엔드 스키마 불일치, 서비스 사이 메시지 오류, 배포 실패를 잡지만 느리고 하나만 깨져도 전체가 실패한다. 운영과 비슷한 스테이징에서 1~10개 정도만 둔다 |
+| 로그인은 한 번만 | 로그인 상태를 저장해 재사용한다(Playwright `storageState`). 토큰은 공유해도, 테스트가 읽고 쓰는 레코드는 테스트마다 만든다 |
+| 사이트맵 스모크 테스트 | 모든 페이지를 한 번씩 열어 에러 없이 뜨는지만 확인하는 E2E 하나를 배포 직후·개발 중에 돌린다. 특정 경로만 번들링이 깨진 것까지 잡는다 |
+| 네트워크로 어떻게 전달되는지도 본다 | Lighthouse(CI에서는 Lighthouse CI)·Web Vitals로 로딩 성능을 개발·CI에서 재고, 운영에서는 실사용자 측정과 합성 모니터링으로 상시 본다([[web-vitals\|Core Web Vitals]]) |
+| 보이는 모양도 자동으로 확인 | 기능 테스트가 통과해도 내용이 겹치거나 가려질 수 있다. 시각 회귀 테스트로 스크린숏을 기준 이미지와 비교한다(Playwright `toHaveScreenshot`, Storybook + Chromatic, Percy, Applitools). 상세는 [[frontend-test-types\|테스트의 종류]] |
+| 테스트를 살아 있는 문서로 | 사람이 읽는 문장으로 쓴 인수 테스트(Cucumber의 Gherkin, [[a11y-driven-testing\|접근성 기반 테스트]])는 기획자가 읽고 합의하는 요구사항이 된다. 컴포넌트는 [[storybook\|Storybook]]으로 상태별 카탈로그를 공유한다 |
 
 ## 백엔드
 
-- **단위 테스트와 피라미드에만 머물지 않는다.** 단위·컴포넌트·계약·E2E·성능·보안 테스트를 위험에 맞게 섞는다.
-- **컴포넌트 테스트가 가장 효율적일 때가 많다.** API를 프로세스 안에서 띄우고 HTTP로 호출한다(`supertest`). DB는 실제 엔진을 Docker(Testcontainers)로 띄우고, 외부 서비스만 가로챈다(`nock`, MSW). 빠르면서 여러 계층을 함께 덮는다.
-- **API 소비자를 깨뜨리지 않는다.** 소비자가 기대하는 요청·응답을 계약으로 남기고 제공자가 그 계약을 검증하는 **계약 테스트**(Pact)를 쓴다. OpenAPI 스키마 검증도 같은 목적이다.
-- **미들웨어는 따로 테스트한다.** 요청·응답 객체를 가짜로 만들어 함수 하나로 검증하면 서버 전체를 띄우지 않아도 된다.
-- 장애 상황(프로세스 종료, 메모리 부족, 의존 서비스 지연)에서 버티는지는 카오스 테스트로 확인한다.
+### 테스트 종류를 위험에 맞춰 고른다
+
+단위 테스트와 피라미드에만 머물지 않는다. 로직이 거의 없고 메시지 큐·DB를 잇는 통합 중심 서비스라면 단위 테스트에 예산을 몰 이유가 없다. 「API가 자주 깨진다 → 계약 테스트」처럼 실제 위험에서 출발해 단위·컴포넌트·계약·E2E·성능·보안·퍼즈·뮤테이션을 포트폴리오처럼 섞는다. 전략의 모양(피라미드·트로피·벌집)은 [[frontend-test-types|테스트의 종류]]에 있다.
+
+### 컴포넌트 테스트: 서비스 하나를 바깥에서
+
+단위보다 크고 E2E보다 작은 **컴포넌트 테스트**가 가장 효율적일 때가 많다.
+
+| 경계 | 처리 |
+| --- | --- |
+| 서비스 자신(API, 로직, DB) | 진짜로 쓴다. API는 프로세스 안에서 띄우고 HTTP로 호출한다(`supertest`). DB는 운영과 같은 엔진을 Docker(Testcontainers)로 띄운다 |
+| 다른 서비스·외부 API | **네트워크 수준에서 가로챈다**(nock, MSW). 코드 속 함수를 목으로 바꾸지 않으므로 테스트가 블랙박스로 남는다. `nock.disableNetConnect()`로 새는 호출을 막는다 |
+
+가로채기의 진짜 가치는 **시나리오를 만들 수 있다**는 데 있다. 공급자가 주는 Docker 가짜 서버나 샌드박스 환경은 설정은 쉽지만 원하는 응답을 골라 낼 수 없다. 반대로 가로채기는 상대 서비스가 바뀐 것을 알지 못하므로 계약 테스트나 소수의 E2E로 보완한다.
+
+### 행복·불행 경로 너머: 통합 지점의 장애
+
+오류 응답(500)만이 아니라 **네트워크 수준 이상**까지 흉내 낸다.
+
+| 시나리오 | 확인할 것 |
+| --- | --- |
+| 응답 지연, 타임아웃 | 타임아웃 뒤 올바른 경로로 가나. HTTP 클라이언트 기본 타임아웃이 생각보다 길지 않나 |
+| 일시적 실패(503 + `Retry-After` 뒤 200) | 재시도로 결국 성공하나 |
+| 계속 실패 | 서킷 브레이커가 열리고 오류를 제대로 보고하나 |
+| 경쟁 조건 | 응답 순서가 바뀌어도 결과가 같나 |
+
+nock은 `.delay()`·`.replyWithError()`, MSW는 `delay()`·`HttpResponse.error()`로 만든다. 지켜야 할 패턴 자체는 [[resiliency-patterns|복원력 패턴]]에 있다.
+
+### 검증할 결과 다섯 가지
+
+동작 하나(API 호출 등)를 일으킨 뒤, 바깥에서 보이는 결과를 다섯 범주로 점검한다. 어떻게 동작했는지가 아니라 무엇이 일어났는지를 본다.
+
+| 결과 | 확인할 것 |
+| --- | --- |
+| 응답 | 데이터가 맞나, 스키마와 HTTP 상태가 맞나 |
+| 새 상태 | **공개적으로 조회할 수 있는** 데이터가 바뀌었나(같은 API로 다시 읽어 본다) |
+| 외부 호출 | SMS·이메일·결제처럼 밖으로 나가는 호출이 일어났나 |
+| 메시지 큐 | 기대한 메시지가 큐에 들어갔나 |
+| 관측 가능성 | 실패 시 오류 처리, 로그, 지표가 남나. 운영자(SRE)도 사용자다 |
+
+ID·생성 시각처럼 미리 알 수 없는 값은 **존재와 타입**을 단언한다. 계약이 그 필드를 약속했다면 빠지는 것도 버그다. 응답 전체를 OpenAPI 문서와 대조하는 검증도 같은 목적이다.
+
+```js
+expect(response).toMatchObject({
+  status: 200,
+  data: { id: expect.any(Number), mode: 'approved' },
+})
+```
+
+### DB 데이터: 테스트마다 만들고, 정리 시점을 정한다
+
+**전역 시드·픽스처에 기대지 않는다.** 테스트마다 필요한 레코드를 직접 넣고 그 레코드에만 작용한다. 시드를 공유하면 한 테스트의 수정이 다른 테스트를 깨뜨린다. 성능이 꼭 문제라면 데이터를 바꾸지 않는 조회 테스트에만 시드를 쓴다.
+
+정리 시점은 테스트를 쓰는 방식을 정한다.
+
+| 전략 | 장점 | 단점 |
+| --- | --- | --- |
+| 테스트마다 정리(after-each) | 빈 테이블에서 시작해 행 수를 세는 단언도 쉽다 | 병렬 실행 시 한 프로세스가 지우는 사이 다른 프로세스가 실패한다. 실패 뒤 DB를 봐도 데이터가 없다 |
+| **전체가 끝난 뒤 정리(after-all, 권장)** | 병렬 실행에 그대로 맞는다. 실패한 데이터가 남아 조사하기 쉽다. 데이터가 많아 운영과 비슷하다 | 다른 레코드가 수천 개 있다고 가정하고 써야 한다. 「테이블이 비었다」가 아니라 「내가 넣은 이 레코드가 없다」를 단언한다 |
+
+트랜잭션 롤백으로 격리하는 방법은 관계형 DB에서만 되고, 코드 안에 트랜잭션이 중첩되면 복잡해진다.
+
+### 그 밖의 백엔드 기법
+
+| 기법 | 방법 |
+| --- | --- |
+| 계약 테스트 | API 소비자를 깨뜨리지 않는다. 가장 단순한 방법은 제공자가 타입(TypeScript 타입 패키지, OpenAPI에서 생성한 클라이언트)을 배포해 소비자가 코딩 시점에 검증받는 것이다. 더 강한 방법은 소비자 주도 계약 테스트(Pact): [[frontend-test-types\|테스트의 종류]] |
+| 미들웨어 단독 테스트 | 미들웨어는 작지만 모든 요청에 영향을 준다. 서버를 띄우지 않고 `{ req, res }`를 가짜로 만들어 함수 하나로 검증한다(`node-mocks-http`로 `res.statusCode` 단언) |
+| 카오스 테스트 | 로직이 아니라 인프라 장애를 본다. 플랫폼 수준은 서버·파드를 무작위로 죽이는 Chaos Monkey·kube-monkey, 요즘은 Chaos Mesh·LitmusChaos·AWS FIS. Node 수준은 처리되지 않은 예외·거부된 Promise, 힙 한도 초과, 이벤트 루프 막힘, API가 50% 느려질 때 모니터링이 알아채는지 |
 
 ## 테스트의 효과 측정
 
 | 지표·도구 | 쓰는 법 | 주의 |
 | --- | --- | --- |
-| 커버리지 | CI에 임계값(흔히 80% 안팎)을 걸고, 새 코드가 커버리지를 떨어뜨리면 알린다 | 목표 수치는 도메인마다 다르다. 100%는 비용이 크다 |
-| 커버리지 리포트 | 한 번도 실행되지 않은 분기, 이상하게 자주 불리는 코드를 찾는다 | 줄이 실행됐다고 검증된 것은 아니다 |
-| 뮤테이션 테스트 | 코드를 일부러 바꾼 변이체(`>`→`>=` 등)를 만들어 테스트가 잡아내는지 본다(StrykerJS) | 느리다. 핵심 모듈에만 |
-| 테스트 린트 | `@vitest/eslint-plugin`·`eslint-plugin-jest`·`eslint-plugin-testing-library`로 단언 없는 테스트, 남겨 둔 `.only`, 잘못된 쿼리를 막는다 | |
+| 커버리지 | CI에 임계값(흔히 80% 안팎)을 걸고, 새 코드가 커버리지를 떨어뜨리면 알린다. 모듈별로 다른 임계값도 건다(Vitest `coverage.thresholds`에 glob 패턴) | 목표 수치는 도메인마다 다르다. 10~30%는 너무 낮고, 100%는 비용이 커 핵심 경로보다 구석을 보게 만든다 |
+| 커버리지 리포트 | 한 번도 실행되지 않은 분기, 이상하게 자주 불리는 코드를 찾는다. QA·운영에서 커버리지를 켜고 돌리면 「항상 쓰인다고 믿은 코드가 실제로는 안 불린다」 같은 사실이 드러난다 | 줄이 실행됐다고 검증된 것은 아니다 |
+| 뮤테이션 테스트 | 코드를 일부러 바꾼 변이체(`===`→`!==` 등)를 만들어 테스트가 잡아내는지(killed) 살아남는지(survived) 본다(StrykerJS, Vitest·Jest 러너 지원) | 느리다. 핵심 모듈에만 |
+| 테스트 린트 | `@vitest/eslint-plugin`·`eslint-plugin-jest`·`eslint-plugin-mocha`·`eslint-plugin-testing-library`로 단언 없는 테스트, 남겨 둔 `.only`·`.skip`, 잘못된 쿼리를 막는다 | |
+| 정적 분석 플랫폼 | 린트를 넘어 여러 파일에 걸친 중복, 복잡도, 이슈 추이를 본다(SonarQube, Qlty: 옛 Code Climate Quality). CI 품질 게이트로 건다 | ESLint·TypeScript의 기본은 [[static-analysis\|정적 분석]] |
 
 **커버리지는 실행 여부만 알려 준다.** 단언 없이 함수를 부르기만 해도 100%가 나온다. 뮤테이션 점수가 테스트가 실제로 무엇을 지키는지 더 잘 보여 준다.
 
@@ -114,22 +197,33 @@ test('어떤 상품이든 추가하면 장바구니 개수가 1 늘어난다', (
 
 | 할 일 | 도구 예 |
 | --- | --- |
-| 린트를 넉넉히 켜고, 린트 에러가 있으면 빌드를 멈춘다 | ESLint + 보안·접근성 플러그인 ([[eslint-prettier\|ESLint와 Prettier]]) |
-| 로컬에서 CI와 같은 검사를 빨리 돌린다 | watch 모드, `lint-staged` + Git 훅 |
-| E2E는 운영과 비슷한 환경에서 | 프리뷰 배포, Docker Compose로 띄운 실제 의존성 |
-| 테스트를 병렬로 | Vitest·Playwright 기본 병렬, CI 샤딩(`--shard`) |
-| 라이선스·취약점 검사 | `npm audit`, Dependabot·Socket·Snyk, 라이선스 검사기 |
-| 의존성 업데이트 자동화 | Renovate, Dependabot |
-| 여러 런타임 버전에서 | CI 빌드 매트릭스(Node 지원 버전들) |
+| 린트를 넉넉히 켜고, 린트 에러가 있으면 빌드를 멈춘다 | ESLint + `eslint-plugin-promise`·`eslint-plugin-security`·접근성 플러그인, `@typescript-eslint/only-throw-error`(Error가 아닌 값을 던져 스택 트레이스를 잃는 실수) ([[eslint-prettier\|ESLint와 Prettier]]) |
+| 로컬에서 CI와 같은 검사를 한 명령으로 빨리 돌린다 | `npm run quality` 같은 스크립트 하나에 테스트·린트·취약점 검사를 병렬로 묶고 하나라도 실패하면 0이 아닌 종료 코드, watch 모드, `lint-staged` + Git 훅(husky) |
+| E2E는 운영과 비슷한 환경에서 | 프리뷰 배포, Docker Compose로 띄운 실제 의존성, LocalStack(클라우드 서비스 에뮬레이터), kind·k3d·minikube 같은 축소 Kubernetes |
+| 테스트를 병렬로 | Vitest·Playwright 기본 병렬, CI 샤딩(`--shard`). 테스트가 서로 독립이어야 한다 |
+| 라이선스·취약점 검사 | `npm audit`, Dependabot·Socket·Snyk, `license-checker-rseidelsohn`이나 GitHub dependency review의 허용 라이선스 목록([[open-source-licenses\|오픈소스 라이선스]]) |
+| 의존성 업데이트 자동화 | Renovate, Dependabot. 갓 나온 버전이 오염됐을 위험을 피하려 **유예 기간**을 둔다(Renovate `minimumReleaseAge`, Dependabot `cooldown`, pnpm `minimumReleaseAge`) |
+| 여러 런타임·설정 조합에서 | CI 빌드 매트릭스(지원하는 Node 버전 × DB 종류) |
+
+파이프라인 자체를 짤 때의 원칙:
+
+- 설정은 선언형으로 쓰고, Docker를 기본 지원하는 CI를 고른다.
+- **빨리 실패한다.** 린트·단위 테스트 같은 빠른 검사를 첫 단계에 묶어 커밋한 사람에게 바로 알린다.
+- 테스트·커버리지·뮤테이션 리포트와 로그 같은 산출물을 쉽게 훑어볼 수 있게 남긴다.
+- 기능 브랜치 커밋과 main PR처럼 이벤트마다 파이프라인을 나누고, 공통 단계는 재사용한다.
+- 비밀 값은 파이프라인 정의에 넣지 않고 비밀 저장소에서 가져온다.
+- 릴리스 빌드에서 버전을 명시적으로 올리거나, 올렸는지 확인한다.
+- **한 번 빌드한 산출물(Docker 이미지 등)로 모든 검사를 한다.**
+- 빌드 사이에 상태가 남지 않는 일회용 환경에서 돌린다. `node_modules` 캐시 정도만 예외다.
 
 자세한 파이프라인 구성은 [[ci-cd|CI/CD]]에 있다.
 
 ## 정리
 
 - 테스트는 단순하고 짧게, 보자마자 이해되게 쓴다. 나머지 원칙은 모두 여기서 나온다.
-- 이름에 대상·상황·기대를 담고, AAA로 나누고, 공개된 동작만 검증한다.
-- 대역은 요구사항을 확인할 때만 쓰고, 내부 호출을 세는 목은 피한다.
-- 데이터는 현실적으로, 테스트마다 따로. 입력이 넓으면 프로퍼티 기반 테스트를 쓴다.
+- 이름에 대상·상황·기대를 담고, AAA로 나누고, 공개된 동작만 검증한다. 결과를 정하는 데이터는 테스트 안에 보이게 둔다.
+- 대역은 요구사항을 확인할 때만 쓰고, 내부 호출을 세는 목은 피한다. 외부 서비스는 네트워크에서 가로채 지연·타임아웃·일시 실패까지 흉내 낸다.
+- 백엔드 동작은 응답·새 상태·외부 호출·메시지·관측 가능성 다섯 가지 결과로 검증한다. DB 데이터는 테스트마다 만들고 정리는 전체가 끝난 뒤에 한다.
 - E2E는 핵심 흐름만, `sleep` 대신 자동 대기. 커버리지는 하한선일 뿐이고 뮤테이션 테스트가 테스트의 힘을 잰다.
 
-관련 노트: [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[humble-object-pattern|험블 객체 패턴]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[tdd|프론트엔드에서의 TDD]], [[ci-cd|CI/CD]], [[test-primitives|테스트의 기본 요소]], [[test-run-stages|테스트를 돌리는 시점]]
+관련 노트: [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[backend-testing|백엔드 테스트]], [[humble-object-pattern|험블 객체 패턴]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[tdd|프론트엔드에서의 TDD]], [[ci-cd|CI/CD]], [[test-primitives|테스트의 기본 요소]], [[test-run-stages|테스트를 돌리는 시점]], [[resiliency-patterns|복원력 패턴]]
