@@ -47,4 +47,5 @@ date: "2026-10-14"
 - [Java 실무 관용구: Enum, null과 Optional, 예외, 날짜 API, 비동기](Computer-Science/Programming-Languages/java-idioms.md): Enum에 행위 묶기, Optional 규칙, unchecked 예외 전환, java.time, CompletableFuture
 - [Java 직렬화와 Jackson](Computer-Science/Programming-Languages/java-serialization-jackson.md): Serializable·serialVersionUID와 보안 문제, Jackson 어노테이션과 타입 정보 보존
 - [JVM 내부 구조: 컴파일, 클래스 로딩, 메모리 영역, GC 튜닝](Computer-Science/Programming-Languages/jvm-internals.md): 바이트코드와 클래스 로딩, 런타임 데이터 영역, 세대별 GC, GC 로그·힙 덤프 진단
+- [Python 언어 동작: 제너레이터, MRO, 메모리 관리, 덕 타이핑](Computer-Science/Programming-Languages/python-internals.md): 이터러블·이터레이터·제너레이터, C3 MRO와 super(), 참조 카운팅과 세대별 순환 수집, 누수 패턴, PyPy 추적 JIT, 덕 타이핑과 Protocol
 - [Go 언어: 설계 원칙, 고루틴 런타임, GC, 프로젝트 구조](Computer-Science/Programming-Languages/go-language.md): The Zen of Go, G·M·P 스케줄러, 동시 GC와 GOGC·GOMEMLIMIT, 계층별 프로젝트 구조
