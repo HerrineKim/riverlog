@@ -1,16 +1,18 @@
 ---
 title: "CI/CD"
 concept: "CI/CD"
-summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지 이어 주는(CD) 파이프라인의 개념과 단계, dev·QA·UAT·운영으로 산출물을 승격하는 흐름, Docker와 함께 쓰는 흐름, GitHub Actions 예시와 CI 비밀 값 관리."
+summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지 이어 주는(CD) 파이프라인의 개념과 단계, dev·QA·UAT·운영으로 산출물을 승격하는 흐름, 파이프라인 설계 시 고려할 것, GitHub Actions 예시와 CI 비밀 값 관리, Docker 이미지 빌드·태그 전략·층 캐시·보안 스캔 게이트·Testcontainers."
 tags: ["ci-cd", "devops", "docker", "github", "automation"]
 source: notion
 date: "2026-10-21"
-sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule", "https://github.com/actions/checkout/releases", "https://github.com/codecov/codecov-action/releases"]
+sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule", "https://github.com/actions/checkout/releases", "https://github.com/codecov/codecov-action/releases", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/build/ci/github-actions/", "https://docs.docker.com/build/cache/backends/", "https://testcontainers.com/"]
 ---
 
 > 「GitHub Actions 예시」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「DevOps 간단 정리」, 「Github Action을 이용해 코드 검사 자동화하기」를 바탕으로 보강한 노트다. 「파이프라인 단계」와 「환경 승격」은 ByteByteGo의 System Design 101 가이드 「[CI/CD Pipeline Explained in Simple Terms](https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms)」, 「[CI/CD Simplified Visual Guide](https://bytebytego.com/guides/cicd-simplified-visual-guide)」, 「[How do Companies Ship Code to Production?](https://bytebytego.com/guides/how-do-companies-ship-code-to-production)」를 바탕으로 보강했다.
 >
 > 「PR에 테스트 커버리지 보이기」, 「상태 배지와 예약 실행」은 cheese10yun의 「[github-project-management](https://github.com/cheese10yun/github-project-management)」을 바탕으로, Travis CI 설정을 GitHub Actions 기준으로 바꿔 보강했다.
+>
+> 「파이프라인을 설계할 때 고려할 것」과 이미지 빌드·캐시·스캔·Testcontainers는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(CI/CD), 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」 항목이 묻는 개념을 Docker 공식 문서로 확인해 보강했다.
 
 배포 과정은 사람이 손으로 할수록 **휴먼 에러**가 잦다. 빌드 명령을 빠뜨리거나, 테스트를 건너뛰거나, 엉뚱한 서버에 올리는 식이다. CI/CD는 이 과정을 파이프라인으로 자동화해 매번 같은 절차가 실행되게 만든다.
 
@@ -52,16 +54,19 @@ CI/CD는 개발과 운영의 협업 문화인 DevOps의 핵심 수단으로, 개
 
 환경마다 다시 빌드하지 않고 **한 번 빌드한 산출물을 그대로 승격**해야 "QA에서 본 것이 운영에 나간 것"이 보장된다. 환경마다 다른 것은 설정뿐이어야 한다. 운영에 올리는 방식(롤링·블루-그린·카나리)은 [[deployment-strategies|배포 전략]]에 있다.
 
-## Docker와 함께 쓰는 흐름
+### 파이프라인을 설계할 때 고려할 것
 
-```text
-git push
-  → CI: 의존성 설치 → 린트/테스트 → docker build
-  → 이미지에 태그를 붙여 레지스트리(GitLab Container Registry 등)에 push
-  → CD: 서버(또는 오케스트레이터)가 새 이미지를 pull 해서 컨테이너 교체
-```
-
-[[vm-vs-container|컨테이너]] 이미지는 "빌드된 결과물 + 실행 환경"을 하나로 묶으므로, CI에서 테스트한 것과 똑같은 것이 운영에서 실행된다고 보장한다.
+| 고려 사항 | 원칙 |
+| --- | --- |
+| 피드백 속도 | 빠른 검사(린트, 단위 테스트)를 앞에, 느린 검사(E2E)를 뒤에 둔다. 독립 job은 병렬로, 의존성·빌드는 캐시로 줄인다. 10분 안팎을 넘으면 개발자가 결과를 기다리지 않게 된다 |
+| 재현성 | 의존성 잠금 파일, 고정된 러너 이미지·도구 버전. 같은 커밋은 같은 결과를 내야 한다 |
+| 불변 산출물 | 한 번 빌드해 고유 버전(커밋 해시)을 붙이고 모든 환경에 같은 것을 올린다 |
+| 품질 게이트 | 테스트·커버리지·정적 분석·보안 스캔의 통과 기준을 정해 실패하면 멈춘다. 브랜치 보호의 필수 검사로 건다 |
+| 비밀 관리 | 비밀은 CI의 비밀 저장소에, 클라우드 인증은 장기 키 대신 OIDC 단기 자격 증명으로. 포크 PR에는 비밀을 넘기지 않는다 |
+| 불안정한 테스트 | 가끔 실패하는 테스트는 파이프라인 신뢰를 무너뜨린다. 격리해 고치고, 재시도로 덮지 않는다 |
+| 롤백 | 배포만큼 되돌리기도 자동화한다. 이전 산출물을 다시 배포하거나 플래그를 끈다. DB 변경은 확장-축소 순서로 나눈다 |
+| 배포 후 확인 | 스모크 테스트, 오류율·지연 지표로 자동 판정(카나리 분석) |
+| 관측과 감사 | 누가 언제 무엇을 배포했는지 남기고, 배포 시점을 대시보드에 표시한다 |
 
 ## GitHub Actions 예시
 
@@ -128,6 +133,98 @@ on:
 
 과거 공개 저장소의 CI는 GitHub 밖의 **Travis CI**(`.travis.yml`)가 흔했고, 지금은 저장소에 내장된 GitHub Actions가 그 자리를 대신한다.
 
+## Docker와 함께 쓰는 흐름
+
+```text
+git push
+  → CI: 의존성 설치 → 린트/테스트 → docker build
+  → 이미지에 태그를 붙여 레지스트리(GitLab Container Registry 등)에 push
+  → CD: 서버(또는 오케스트레이터)가 새 이미지를 pull 해서 컨테이너 교체
+```
+
+[[vm-vs-container|컨테이너]] 이미지는 "빌드된 결과물 + 실행 환경"을 하나로 묶으므로, CI에서 테스트한 것과 똑같은 것이 운영에서 실행된다고 보장한다. 블루-그린·롤링 배포에서 Docker의 역할도 여기서 나온다. 교체 단위가 **불변 이미지 태그**라서, 새 버전 컨테이너를 옛 버전 옆에 띄워 헬스 체크를 통과시킨 뒤 트래픽을 옮기고, 문제가 생기면 이전 태그의 컨테이너로 즉시 되돌린다. 서버에 접속해 파일을 덮어쓰는 방식과 달리 두 버전이 깨끗하게 공존한다.
+
+### GitHub Actions에서 이미지 빌드·푸시
+
+```yaml
+name: image
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+permissions:
+  contents: read
+  packages: write                      # GHCR에 푸시
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4          # BuildKit 빌더
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v6               # 태그 자동 생성
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=sha                                  # sha-3f9c2a1
+            type=semver,pattern={{version}}           # v1.4.2 태그 → 1.4.2
+            type=semver,pattern={{major}}.{{minor}}   # → 1.4
+      - uses: docker/build-push-action@v7
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha                        # GitHub Actions 캐시에서 층 불러오기
+          cache-to: type=gha,mode=max                 # 중간 스테이지 층까지 저장
+```
+
+**태그 전략**은 두 가지를 함께 쓴다. 모든 빌드에는 커밋 해시 태그를 붙여 어떤 코드인지 추적하고, 릴리스 태그(`v1.4.2`)를 푸시하면 시맨틱 버전 태그를 더한다. 배포 매니페스트는 커밋 해시나 버전 같은 불변 태그를 가리키고, `latest`나 브랜치 태그로 배포하지 않는다. 태그의 성격은 [[dockerfile|Dockerfile 노트]]의 「태그 전략」에 있다.
+
+### CI의 층 캐시
+
+CI 러너는 매번 빈 상태로 시작해 로컬 층 캐시가 없다. 그대로 두면 매 빌드가 처음부터 다시 빌드된다.
+
+| 방법 | 동작 |
+| --- | --- |
+| `cache-to`/`cache-from: type=gha` | GitHub Actions 캐시 저장소에 층을 저장하고 다음 빌드에서 불러온다 |
+| `type=registry,ref=…:buildcache` | 레지스트리의 별도 태그에 캐시를 둔다. 러너·CI 종류와 무관하게 공유된다 |
+| `mode=max` | 최종 이미지 층뿐 아니라 빌드 스테이지의 중간 층까지 저장한다. 멀티 스테이지 빌드에서 효과가 크다 |
+| Dockerfile의 캐시 친화적 순서, `RUN --mount=type=cache` | 원격 캐시가 있어도 순서가 나쁘면 맞지 않는다 |
+
+### 이미지 보안 스캔 게이트
+
+```yaml
+      - uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true          # 고칠 패치가 없는 취약점은 제외
+          exit-code: "1"                # 발견하면 job 실패 → 배포 중단
+```
+
+빌드한 이미지를 푸시 전이나 직후에 스캔하고, 심각도 기준을 넘으면 파이프라인을 멈춘다. 결과를 SARIF로 올리면 GitHub 보안 탭에 모인다. 같은 단계에서 SBOM 생성과 Cosign 서명을 하고, 배포 쪽(쿠버네티스 어드미션 정책)에서 서명을 검증하면 파이프라인을 거치지 않은 이미지가 운영에 들어가지 못한다. 공급망 보안의 전체 그림은 [[devsecops|DevSecOps]]와 [[docker-container-operations|Docker 컨테이너 운영]]에 있다.
+
+### 테스트 환경: Compose와 Testcontainers
+
+| 방식 | 동작 | 맞는 곳 |
+| --- | --- | --- |
+| CI의 서비스 컨테이너, Compose | 파이프라인 시작 시 DB·Redis 컨테이너를 띄우고 테스트가 접속한다 | 모든 테스트가 같은 외부 의존성을 공유해도 될 때 |
+| Testcontainers | 테스트 코드가 라이브러리로 컨테이너를 직접 띄우고, 끝나면 지운다. 무작위 포트를 받아 테스트끼리 충돌하지 않는다 | 통합 테스트마다 깨끗한 실제 DB·브로커가 필요할 때. 목(mock)이나 H2 같은 대체 DB가 실제 DB와 다르게 동작하는 문제를 없앤다 |
+
+```java
+@Container
+static PostgreSQLContainer<?> db = new PostgreSQLContainer<>("postgres:17");
+// db.getJdbcUrl()로 접속. 테스트가 끝나면 컨테이너가 정리된다
+```
+
+Testcontainers는 Java·Go·Node.js·Python·.NET 등에 구현이 있고, 실행하려면 테스트 환경에서 Docker API에 접근할 수 있어야 한다. CI에서 Docker 데몬을 쓰려고 Docker in Docker나 호스트 소켓 마운트를 쓰면 권한 문제가 따르므로([[docker-container-operations|Docker 컨테이너 운영]]의 「Docker in Docker」), GitHub Actions의 호스트 러너처럼 Docker가 이미 있는 러너를 쓰거나 원격 컨테이너 실행 환경을 쓴다.
+
 ## 대표 CI/CD 도구
 
 | 도구 | 특징 |
@@ -151,7 +248,8 @@ Vercel·Netlify 같은 배포 플랫폼은 저장소를 연결하면 푸시마�
 ## 핵심 정리
 
 - CI = 합칠 때마다 자동 빌드·테스트, CD = 검증된 결과물을 자동으로 배포 가능/배포.
-- Docker 이미지를 파이프라인의 산출물로 삼으면 테스트한 환경 그대로 배포된다.
+- Docker 이미지를 파이프라인의 산출물로 삼으면 테스트한 환경 그대로 배포된다. 커밋 해시·버전 태그를 붙이고, 원격 층 캐시로 빌드를 줄이고, 스캔 게이트를 건다.
+- 파이프라인은 빠른 피드백, 재현성, 품질 게이트, 비밀 관리, 롤백까지 함께 설계한다.
 - 한 번 빌드한 산출물을 dev → QA → UAT → 운영으로 승격한다. 환경마다 다른 것은 설정뿐이다.
 - 비밀 값은 CI 변수로 관리한다.
 - GitHub Actions는 `on` + `jobs`로 쓰고, 브랜치 보호의 필수 검사로 걸어야 강제력이 생긴다.

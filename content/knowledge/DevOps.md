@@ -18,8 +18,16 @@ DevOps는 개발(Development)과 운영(Operations) 사이의 벽을 줄여, 코
 | [VM과 컨테이너](/knowledge/dictionary/devops/vm-vs-container) | VM과 Docker 컨테이너 비교, 오케스트레이션·오토 스케일링과 쿠버네티스가 표준이 된 이유 |
 | [Dockerfile 작성과 컨테이너의 PID 1](/knowledge/dictionary/devops/dockerfile) | 이미지와 컨테이너, RUN·CMD·ENTRYPOINT, Alpine vs Debian, 컨테이너가 바로 꺼지는 이유와 tini |
 | [Docker Compose](/knowledge/dictionary/devops/docker-compose) | compose.yaml의 주요 키, 네트워크 드라이버, named volume·bind mount, 점검 명령 |
+| [Docker 네트워크와 볼륨](/knowledge/dictionary/devops/docker-network-volume) | 네트워크 드라이버와 bridge 원리, 사용자 정의 네트워크·내장 DNS, -p와 EXPOSE, 통신 제한, 볼륨·바인드 마운트·tmpfs, 볼륨 수명·드라이버, 스토리지 드라이버 |
+| [Docker 컨테이너 운영: 자원 제한, 보안, 로그, 장애 진단](/knowledge/dictionary/devops/docker-container-operations) | cgroups 자원 제한과 CPU 스로틀링·OOM, 비root·rootless·capability·seccomp, Docker 소켓·DinD 위험, 로그 회전, 종료 코드·재시작 정책·정리 |
 | [쿠버네티스 구조와 핵심 개념](/knowledge/dictionary/devops/kubernetes-architecture) | 컨트롤 플레인과 노드의 구성 요소, 파드·워크로드 리소스, 서비스 네 유형, 디자인 패턴, kubectl |
 | [쿠버네티스 위 웹 서비스의 요청 경로](/knowledge/dictionary/devops/kubernetes-request-path) | 로드 밸런서·게이트웨이·서비스 메시를 거쳐 파드에 닿는 요청 경로, Terraform·Helm·Istio·Prometheus·Grafana의 역할 |
+| [쿠버네티스 워크로드와 파드 생명주기](/knowledge/dictionary/devops/kubernetes-workloads) | 파드 단계와 컨테이너 상태, 재시작 정책, 프로브, 사이드카·앰버서더·어댑터·초기화 컨테이너, Deployment·StatefulSet·DaemonSet·Job·CronJob |
+| [쿠버네티스 네트워킹: 서비스, DNS, Ingress, NetworkPolicy](/knowledge/dictionary/devops/kubernetes-networking) | CNI, kube-proxy 모드, 서비스 유형 세부, CoreDNS, 이그레스, Ingress·Gateway API, NetworkPolicy, Istio·Linkerd, 연결 문제 진단 |
+| [쿠버네티스 저장소와 설정: PV·PVC, ConfigMap, Secret](/knowledge/dictionary/devops/kubernetes-storage-config) | 볼륨 유형, 접근 모드·회수 정책, StorageClass·CSI, ConfigMap·Secret 주입과 보안 수준, 외부 비밀 저장소, 변경 반영 문제 |
+| [쿠버네티스 스케줄링과 자원 관리, 오토스케일링](/knowledge/dictionary/devops/kubernetes-scheduling-resources) | 어피니티·토폴로지 분산·테인트, requests·limits와 QoS, LimitRange·ResourceQuota·PriorityClass, HPA·VPA·Cluster Autoscaler |
+| [쿠버네티스 보안: 인증, RBAC, 서비스 계정, 파드 보안](/knowledge/dictionary/devops/kubernetes-security) | 인증 방식과 kubeconfig, RBAC와 최소 권한, 서비스 계정 토큰, securityContext, Pod Security Standards·Admission |
+| [쿠버네티스 운영: Helm, 업그레이드, 관측, 장애 진단, 오퍼레이터, GitOps](/knowledge/dictionary/devops/kubernetes-operations) | Helm 차트·훅, 버전 업그레이드·etcd 백업, drain·PDB, 로그·지표, CrashLoopBackOff·ImagePullBackOff·kubectl debug, CRD·오퍼레이터, Argo CD·Flux, 멀티 클러스터 |
 
 ### 배포·운영
 
