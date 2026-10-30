@@ -1,14 +1,15 @@
 ---
 title: "Java 언어 기본: 접근 제어자에서 스레드 안전 컬렉션까지"
 concept: "Java Basics"
-summary: "Java 면접에서 자주 묻는 언어 기본기를 주제별로 정리한다. 접근 제어자, final·finally·finalize, 오버로딩과 오버라이딩, 래퍼 클래스와 오토박싱, 제네릭과 타입 소거, 어노테이션의 보존 정책, 컬렉션 프레임워크와 스레드 안전 컬렉션, ThreadLocal."
+summary: "Java 면접에서 자주 묻는 언어 기본기를 주제별로 정리한다. 접근 제어자, final·finally·finalize, 오버로딩과 오버라이딩, 업·다운캐스팅, ==·equals·hashCode와 문자열 상수 풀, 래퍼 클래스와 오토박싱, 제네릭과 타입 소거, 어노테이션의 보존 정책, 컬렉션 프레임워크와 스레드 안전 컬렉션, volatile·Atomic·Callable, ThreadLocal."
 tags: ["java", "oop", "backend", "concurrency"]
 source: other
 date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Java/README.md", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html", "https://openjdk.org/jeps/421", "https://openjdk.org/jeps/506"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Java/README.md", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html", "https://openjdk.org/jeps/421", "https://openjdk.org/jeps/506", "https://github.com/4z7l/tech_interview.zip/blob/main/%EC%A7%81%EB%AC%B4/JAVA.md"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 Java 문서를 바탕으로, Java SE 공식 문서와 JEP로 확인해 재구성한 노트다.
+> 업·다운캐스팅, 객체 비교와 문자열 상수 풀, volatile·Atomic·Callable은 4z7l의 「[tech_interview.zip](https://github.com/4z7l/tech_interview.zip)」 Java 문서를 바탕으로 보강했다.
 
 JVM 구조와 GC는 [[jvm-internals|JVM 내부 구조]], Enum·Optional·예외 같은 실무 관용구는 [[java-idioms|Java 실무 관용구]], 코딩 규칙은 [[java-coding-convention|Java 코딩 컨벤션]]에 있다. 이 노트는 그 아래 깔린 언어 문법의 기본기를 다룬다.
 
@@ -58,6 +59,20 @@ print(a);    // "animal" : 오버로딩, 변수의 정적 타입(Animal) 기준
 ```
 
 `@Override`를 붙이면 시그니처가 어긋났을 때 컴파일러가 잡아 준다. `static`·`private` 메서드는 오버라이딩되지 않는다(하위 클래스의 같은 이름은 숨김, hiding).
+
+업캐스팅(하위 객체를 상위 타입 변수에 담기, `Animal a = new Dog()`)은 자동이고 항상 안전하다. 다운캐스팅(`(Dog) a`)은 실제 객체가 그 타입일 때만 성공하고 아니면 `ClassCastException`이므로, Java 16부터는 패턴 매칭 `if (a instanceof Dog d)`로 검사와 형 변환을 한 번에 한다.
+
+## 객체 비교: ==, equals, hashCode
+
+| 비교 | 무엇을 보나 |
+| --- | --- |
+| `==` | 기본형은 값, 참조형은 **같은 객체(같은 참조)인가** |
+| `equals()` | **논리적으로 같은가.** `Object`의 기본 구현은 `==`와 같고, `String`·래퍼·`record`처럼 값 의미가 있는 클래스가 재정의한다 |
+| `hashCode()` | 해시 컬렉션이 버킷을 고를 때 쓰는 정수. 객체 메모리 주소가 아니다(기본 구현은 JVM이 만든 식별 해시) |
+
+**`equals`를 재정의하면 `hashCode`도 반드시 재정의한다.** 「`equals`가 같으면 `hashCode`도 같아야 한다」는 규약을 어기면 `HashMap`·`HashSet`이 같은 객체를 다른 버킷에서 찾아 중복을 허용하거나 못 찾는다([[hash-table|해시 테이블]]). 반대로 `hashCode`가 같다고 `equals`가 같을 필요는 없다(충돌). Java 16의 `record`는 둘을 컴포넌트 기준으로 자동 생성한다.
+
+문자열 리터럴 `"abc"`는 힙 안의 **문자열 상수 풀(string pool)** 에 한 번만 만들어져 같은 리터럴이 같은 객체를 공유한다. `new String("abc")`는 풀과 별개로 매번 새 객체를 만든다. 그래서 `"abc" == "abc"`는 `true`, `"abc" == new String("abc")`는 `false`다. 문자열은 항상 `equals`로 비교하고, `intern()`은 풀의 객체를 돌려준다. `String`이 불변이라 이런 공유가 안전하다.
 
 ## 래퍼 클래스와 오토박싱
 
@@ -115,6 +130,16 @@ int x = list.get(0);    // 언박싱: intValue()
 
 꼭 공유해야 하면 `synchronized`로 상호 배제한다. 메서드에 붙이면 그 인스턴스(`this`, `static`이면 클래스 객체) 전체를 잠그고, 블록으로 쓰면 지정한 객체로 지정한 구간만 잠근다. 잠그는 범위는 좁을수록 좋다.
 
+### volatile, Atomic, 작업 인터페이스
+
+| 도구 | 보장 | 맞는 곳 |
+| --- | --- | --- |
+| `volatile` | 쓰기가 다른 스레드에 **바로 보인다**(가시성)와 재배치 금지. 원자성은 보장하지 않아 `count++`는 여전히 깨진다 | 한 스레드가 쓰고 여럿이 읽는 플래그, [[singleton-pattern\|DCL 싱글턴]] |
+| `synchronized`, `ReentrantLock` | 상호 배제 + 가시성 | 여러 필드를 함께 바꾸는 임계 구역 |
+| `AtomicInteger`, `AtomicReference`, `LongAdder` | 잠금 없이 CAS(compare-and-swap)로 단일 변수의 원자적 갱신 | 카운터, 상태 전환. 경합이 심한 카운터는 `LongAdder` |
+
+스레드에 넘기는 작업은 `Runnable`(반환값 없음, checked 예외를 던질 수 없음)과 `Callable<V>`(값을 돌려주고 예외를 던질 수 있음)이다. `ExecutorService.submit(callable)`은 `Future<V>`를 돌려주고, 결과를 조합하려면 [[java-idioms|CompletableFuture]]를 쓴다. Java 21부터는 I/O가 많은 작업에 `Executors.newVirtualThreadPerTaskExecutor()`로 가상 스레드를 쓴다.
+
 ### ThreadLocal
 
 `ThreadLocal`은 **스레드마다 따로 보이는 변수**다. 같은 `ThreadLocal` 객체라도 `get()`은 현재 스레드가 `set()`한 값만 돌려준다. 요청 단위 사용자 정보, 트랜잭션 컨텍스트(Spring의 `TransactionSynchronizationManager`, `SecurityContextHolder`)처럼 매개변수로 계속 넘기기 번거로운 값에 쓴다.
@@ -138,6 +163,7 @@ try {
 - 접근 제어자는 `public` > `protected` > package-private > `private` 순으로 좁아지고, 모듈은 패키지 단위로 한 번 더 막는다
 - `final`은 고정, `finally`는 정리 블록, `finalize`는 제거 예정이라 쓰지 않는다
 - 오버로딩은 컴파일 시점 정적 타입, 오버라이딩은 실행 시점 실제 타입으로 고른다
+- `equals`를 재정의하면 `hashCode`도 함께 재정의한다. 문자열 리터럴은 상수 풀에서 공유된다
 - 래퍼 객체는 `equals`로 비교하고 `null` 언박싱을 조심한다. 제네릭은 컴파일 때만 있고 실행 중에는 소거된다
 - 공유 컬렉션은 `java.util.concurrent`의 구현체와 원자적 복합 연산을 쓰고, `ThreadLocal`은 `finally`에서 지운다
 

@@ -5,10 +5,11 @@ summary: "반응형 프로그래밍은 데이터 흐름과 변경 전파에 초�
 tags: ["javascript", "frontend", "async", "programming-paradigm"]
 source: other
 date: "2026-10-21"
-sources: ["https://velog.io/@teo/reactive-programming", "https://velog.io/@teo/rxjs", "https://ui.toast.com/weekly-pick/ko_20190531/", "https://gist.github.com/staltz/868e7e9bc2a7b8c1f754", "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/when"]
+sources: ["https://velog.io/@teo/reactive-programming", "https://velog.io/@teo/rxjs", "https://ui.toast.com/weekly-pick/ko_20190531/", "https://gist.github.com/staltz/868e7e9bc2a7b8c1f754", "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/when", "https://github.com/4z7l/tech_interview.zip/blob/main/%EC%A7%81%EB%AC%B4/RxJava.md"]
 ---
 
 > 테오(teo)의 「[프로그래밍 패러다임과 반응형 프로그래밍 그리고 Rx](https://velog.io/@teo/reactive-programming)」(2022.02)와 「[Rxjs 한번 배워보실래요?](https://velog.io/@teo/rxjs)」(2022.10)를 바탕으로 재구성한 노트다. 의존성 추적의 원리는 「[0.7KB로 Vue와 같은 반응형 시스템 만들기](https://ui.toast.com/weekly-pick/ko_20190531/)」를 바탕으로 더했다. 요청·응답을 스트림으로 다루는 예와 flatMap 계열 연산자는 「[The introduction to Reactive Programming you've been missing](https://gist.github.com/staltz/868e7e9bc2a7b8c1f754)」을 바탕으로 RxJS 7 연산자로 옮겨 보강했다.
+> 배압과 RxJava 스케줄러는 4z7l의 「[tech_interview.zip](https://github.com/4z7l/tech_interview.zip)」 RxJava 문서를 바탕으로 보강했다.
 
 ## 패러다임이란
 
@@ -147,6 +148,8 @@ suggestion1$.subscribe(renderSuggestion1)
 | 연산자보다 **소스**가 문제 | 이벤트는 프레임워크 핸들러가, Ajax는 값 하나라 Promise가 이미 맡고 있다. 연산자를 배워도 쓸 Observable이 없다 | 계속 값이 들어오는 것부터 감싼다. 실시간 DB(Firebase) 구독이 좋은 첫 소스다 |
 | Hot과 Cold | Promise는 만들자마자 실행되고 결과를 공유한다(Hot). Observable은 기본이 지연 평가라 **구독할 때마다 새로 실행**된다(Cold) | API를 Observable로 감싸 여러 곳에서 구독하면 요청이 중복된다. 공유가 필요하면 Subject를 쓴다 |
 | Subject 고르기 | 시점이 중요한 이벤트·동작 → `Subject`, 마지막 결과를 계속 공유할 값 → `BehaviorSubject` | 상태 관리의 기반이 된다 |
+| 배압(backpressure) | 생산 속도를 소비가 못 따라가면 버퍼가 쌓여 메모리가 터진다(OOM). RxJS는 배압 프로토콜이 없다 | RxJS는 `throttleTime`·`debounceTime`·`sampleTime`·`bufferTime`으로 흘려보낼 양을 줄인다. RxJava는 배압을 모르는 `Observable`과 따로, 소비자가 요청한 만큼만 받는 `Flowable`(전략: BUFFER·DROP·LATEST)을 두고, Kotlin `Flow`는 수집이 끝날 때까지 생산이 멈추는 일시 중단으로 배압을 처리한다 |
+| 스레드 고르기(RxJava) | `subscribeOn`은 소스가 도는 스레드, `observeOn`은 그 뒤 연산자가 도는 스레드를 정한다 | I/O는 스레드를 재사용하는 `Schedulers.io()`, 계산은 코어 수만큼인 `Schedulers.computation()`. 요청마다 스레드를 만드는 `newThread()`는 스레드가 폭증할 수 있다 |
 
 ## 의존성 추적: 반응형 상태의 원리
 
