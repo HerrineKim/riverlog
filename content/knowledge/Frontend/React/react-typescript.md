@@ -207,6 +207,8 @@ countdownRef.current?.start()   // 타입 추론된다
 
 React 18까지는 `forwardRef<HTMLButtonElement, Props>((props, ref) => <button ref={ref} ... />)`로 감쌌다. 제네릭 매개변수가 `<Ref 대상, Props>` 순서라 헷갈렸고, `forwardRef`로 감싼 컴포넌트는 **제네릭을 잃어서** `declare module 'react'`로 `forwardRef`를 다시 선언하거나 ref를 `listRef` 같은 다른 이름의 prop으로 받는 우회가 필요했다. `ref`가 prop이 되면서 이 문제가 사라졌다. `createRef<HTMLDivElement>()`는 클래스 컴포넌트의 필드에 쓴다.
 
+더 오래된 문자열 ref(`ref="input"` + `this.refs.input`)와 `ReactDOM.findDOMNode`는 React 19에서 제거됐다.
+
 ## HTML 요소 감싸기
 
 `<button>`의 모든 props를 받으면서 기능을 더한 `<Button>`은 `ComponentProps`를 확장한다. 자기 prop만 꺼내고 나머지를 펼친다.

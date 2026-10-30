@@ -28,6 +28,7 @@ const securityHeaders = [
 
 // Knowledge notes that moved to another folder (2026-10). Old URLs keep working.
 const movedNotes: Record<string, string> = {
+  "/knowledge/dictionary/career/job-search/react-interview-questions": "/knowledge/dictionary/career/job-search/frontend-interview",
   "/knowledge/dictionary/frontend/ui-design/web-accessibility": "/knowledge/dictionary/frontend/accessibility",
   "/knowledge/dictionary/frontend/ui-design/color-motion-accessibility": "/knowledge/dictionary/frontend/accessibility/color-motion-accessibility",
   "/knowledge/dictionary/frontend/nextjs": "/knowledge/dictionary/frontend/next-js/nextjs",
