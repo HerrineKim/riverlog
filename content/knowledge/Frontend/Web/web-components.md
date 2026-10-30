@@ -183,6 +183,8 @@ this._internals.states.add('open');        // my-menu:state(open) { … }
 
 ## Shadow DOM: 캡슐화
 
+React의 가상 DOM과 이름만 비슷하다. Shadow DOM은 마크업·스타일을 **캡슐화**하는 브라우저 표준이고, 가상 DOM은 화면을 JS 객체로 비교해 **DOM 갱신을 줄이는** 라이브러리 기법이다([[ui-change-detection|UI 변경 감지]]). 둘은 함께 쓸 수도 있다.
+
 ```text
 <star-rating>            ← 섀도 호스트(shadow host)
   #shadow-root (open)    ← 섀도 루트(shadow root)

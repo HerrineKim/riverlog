@@ -57,6 +57,8 @@ const Chart = lazy(() => import('./Chart'))
 // <Suspense fallback={<Spinner />}><Chart /></Suspense>
 ```
 
+`lazy`는 모듈의 **default export**만 컴포넌트로 받는다. named export라면 `lazy(() => import('./charts').then((m) => ({ default: m.LineChart })))`처럼 default로 바꿔 넘기거나, 다시 내보내는 작은 모듈을 둔다.
+
 - 라우트 단위 분할은 대부분의 프레임워크 라우터가 기본으로 한다. 그 다음 후보는 모달·에디터·차트처럼 **누른 뒤에만 쓰는 큰 기능**이다.
 
 ### 미리 받기: 나눈 청크의 첫 클릭 비용

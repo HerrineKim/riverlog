@@ -65,6 +65,8 @@ function Toggle() {
 
 핸들러는 브라우저 이벤트를 감싼 **SyntheticEvent**를 받는다. 브라우저마다 다른 이벤트를 같은 인터페이스로 다룰 수 있게 해 주며, `e.target`, `e.preventDefault()`, `e.stopPropagation()` 등 DOM 이벤트와 같은 API를 가진다.
 
+React는 요소마다 리스너를 달지 않고 **루트에 위임**한다. React 17부터 위임 대상이 `document`에서 `createRoot`를 부른 루트 컨테이너로 바뀌어, 한 페이지에 여러 React 앱이나 다른 라이브러리가 섞여도 이벤트가 서로 간섭하지 않는다. 캡처 단계에서 받으려면 `onClickCapture`처럼 `Capture`를 붙인다([[dom-events|DOM 이벤트]]).
+
 ```jsx
 function Form() {
   const handleSubmit = (e) => {

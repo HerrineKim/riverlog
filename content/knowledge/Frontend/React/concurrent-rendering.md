@@ -14,6 +14,8 @@ sources: ["https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-st
 
 React 18 이전의 렌더링은 한번 시작하면 끝까지 멈추지 않았다. 검색 결과 목록처럼 무거운 화면을 다시 그리는 동안에는 입력창에 글자가 늦게 찍혔다. **동시성 렌더링(concurrent rendering)**은 업데이트에 우선순위를 둔다.
 
+실험 단계에서는 앱 전체를 켜는 「async mode」, 이어서 「concurrent mode」라고 불렀다. React 18은 모드를 없애고, `createRoot`로 만든 앱에서 `startTransition` 같은 **동시성 기능**을 쓴 업데이트만 끊을 수 있게 했다.
+
 | 업데이트 | 예 | 처리 |
 | --- | --- | --- |
 | 급한 업데이트 | 입력, 클릭, 호버에 대한 즉각 반응 | 바로 렌더링한다 |
