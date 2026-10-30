@@ -1,15 +1,16 @@
 ---
 title: "인덱스 설계와 쿼리 튜닝"
 concept: "Index Design"
-summary: "인덱스는 정렬이다. 카디널리티와 복합 인덱스 컬럼 순서, 인덱스를 못 타게 만드는 조건, EXPLAIN 접근 유형 읽는 법, ORDER BY·GROUP BY·커버링 인덱스, 빠른 쿼리를 위한 체크리스트, MongoDB의 ESR 규칙까지 정리했다."
+summary: "인덱스는 정렬이다. 카디널리티와 복합 인덱스 컬럼 순서, 유니크·외래 키 인덱스, 인덱스를 못 타게 만드는 조건, EXPLAIN 접근 유형 읽는 법, 조인 방식(중첩 루프·해시·정렬 병합)과 조인 순서, ORDER BY·GROUP BY·커버링 인덱스, 빠른 쿼리를 위한 체크리스트, NoSQL의 인덱스와 MongoDB의 ESR 규칙까지 정리했다."
 tags: ["database", "mysql", "sql", "performance", "nosql"]
 source: other
 date: "2026-10-21"
-sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/", "https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073", "https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html", "https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/", "https://www.mongodb.com/docs/manual/tutorial/equality-sort-range-guideline/", "https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md"]
+sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/", "https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073", "https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html", "https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/", "https://www.mongodb.com/docs/manual/tutorial/equality-sort-range-guideline/", "https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://dev.mysql.com/doc/refman/8.4/en/nested-loop-joins.html", "https://dev.mysql.com/doc/refman/8.4/en/hash-joins.html"]
 ---
 
 > 「[Mysql 인덱스 정리 및 팁](https://jojoldu.tistory.com/243)」, 「[MySQL Workbench의 VISUAL EXPLAIN으로 인덱스 동작 확인하기](https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/)」, 「[쿼리 최적화: 빠른 쿼리를 위한 7가지 체크리스트](https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073)」, 「[MongoDB Index 설계 전략](https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html)」, 「[MySQL performance-schema-instruments 사용에 따른 성능 영향 실험](https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/)」을 바탕으로, MySQL·MongoDB 공식 문서로 확인해 재구성한 노트다.
 > 「클러스터드 인덱스와 보조 인덱스」는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로, MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
+> 유니크 인덱스·외래 키 인덱스, 조인 방식, 정렬 처리, NoSQL의 인덱스는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
 
 ## 인덱스는 정렬이다
 
@@ -21,7 +22,24 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 | INSERT | 인덱스마다 정렬 위치를 찾아 넣어야 하므로 느려진다 |
 | UPDATE·DELETE | 대상 행을 **찾는** 단계는 빨라지고, 인덱스를 **고치는** 단계는 느려진다. 인덱스 없는 컬럼으로 대량 삭제하면 매우 느리다 |
 
-인덱스가 많을수록 쓰기·저장 공간 비용이 늘고, 옵티마이저가 엉뚱한 인덱스를 고를 여지도 커진다. 테이블당 인덱스는 실제 쿼리 패턴에 필요한 만큼만 둔다.
+인덱스가 많을수록 쓰기·저장 공간 비용이 늘고, 옵티마이저가 엉뚱한 인덱스를 고를 여지도 커진다. 테이블당 인덱스는 실제 쿼리 패턴에 필요한 만큼만 둔다. 쓰기가 잦은 테이블에 인덱스를 아끼라는 말은 이 비용 때문이다.
+
+**쓰기 비용은 인덱스에 들어 있는 컬럼만큼만 생긴다.** 인덱스에 넣지 않은 컬럼을 고치는 `UPDATE`는 보조 인덱스를 건드리지 않는다.
+
+- InnoDB는 클러스터드 인덱스(행 자체)만 고친다. 보조 인덱스는 인덱스 키나 기본 키가 바뀔 때만 고친다.
+- PostgreSQL은 UPDATE마다 새 튜플을 만들어 원래는 모든 인덱스에 새 항목이 필요하다. 인덱스 컬럼이 안 바뀌고 같은 페이지에 빈자리가 있으면 **HOT 갱신**으로 인덱스를 건드리지 않는다. 그래서 갱신이 잦은 테이블은 `fillfactor`를 낮춰 페이지에 여유를 둔다.
+- `INSERT`·`DELETE`는 행 전체가 생기거나 사라지므로 모든 인덱스를 고친다.
+
+### 유니크 인덱스
+
+`UNIQUE` 제약을 걸면 DB는 그 컬럼에 **유니크 인덱스**를 만들어 중복을 검사한다. 성능 차이는 읽기와 쓰기에서 반대로 나타난다.
+
+| 작업 | 유니크 인덱스 | 일반 인덱스 |
+| --- | --- | --- |
+| `WHERE col = ?` 조회 | 많아야 한 행이므로 하나 찾으면 멈춘다. 옵티마이저도 결과가 한 행임을 알아 조인 순서·접근 방식(`const`, `eq_ref`)을 더 잘 고른다 | 같은 값이 더 있는지 다음 키까지 확인한다 |
+| `INSERT`·키 `UPDATE` | 중복이 없는지 인덱스를 **먼저 읽어 확인**해야 한다. InnoDB는 이 때문에 변경 버퍼(change buffer)로 쓰기를 미룰 수 없다 | 확인 없이 넣는다. InnoDB는 디스크에 없는 페이지면 변경 버퍼에 모아 뒀다가 나중에 반영한다 |
+
+같음 조회가 몇 행에서 멈추는 차이는 작아서, 읽기 성능을 위해 `UNIQUE`를 붙이지는 않는다. **값이 실제로 유일해야 하면 붙이고**, 그 대가로 쓰기 때 확인 비용을 낸다. 유니크 인덱스는 중복 검사를 위해 키 범위에 잠금을 거는 경우가 있어 동시 삽입에서 대기·교착이 생기기도 한다.
 
 ## 클러스터드 인덱스와 보조 인덱스
 
@@ -32,9 +50,11 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 | 조회 | 리프에서 바로 행을 읽는다. 범위 조회에 강하다 | 인덱스로 찾은 뒤 실제 행을 한 번 더 읽는다 |
 
 - 기본 키(primary key)에 만든 인덱스를 primary index, 나머지 컬럼의 인덱스를 secondary index라고도 한다. 기본 키는 유일하고 NULL이 없어 물리 정렬 기준으로 알맞다.
-- **MySQL InnoDB**는 테이블 자체가 기본 키 순서의 B+트리(클러스터드 인덱스)다. 기본 키가 없으면 첫 번째 `NOT NULL UNIQUE` 인덱스를, 그것도 없으면 숨은 행 ID를 쓴다. 보조 인덱스 리프에는 **기본 키 값**이 들어 있어, 보조 인덱스 조회는 「보조 인덱스 → 기본 키 → 클러스터드 인덱스」 두 번 찾기가 된다. 기본 키가 길면 모든 보조 인덱스가 같이 커진다.
+- **MySQL InnoDB**는 테이블 자체가 기본 키 순서의 B+트리(클러스터드 인덱스)다. 그래서 기본 키 없이 만든 테이블도 클러스터드 인덱스가 있다. 기본 키가 없으면 첫 번째 `NOT NULL UNIQUE` 인덱스를, 그것도 없으면 6바이트짜리 숨은 행 ID(`GEN_CLUST_INDEX`)를 만들어 쓴다. 숨은 행 ID는 인스턴스 전체가 공유하는 카운터에서 받으므로 경합이 생기고 쿼리에 쓸 수도 없다. MySQL 8.0.30부터는 `sql_generate_invisible_primary_key`를 켜면 기본 키 없는 테이블에 보이지 않는 자동 증가 컬럼(`my_row_id`)을 기본 키로 붙인다. 복제(행 기반)에서도 기본 키가 없으면 복제본이 행을 찾느라 느려지므로 늘 명시적인 기본 키를 둔다. 보조 인덱스 리프에는 **기본 키 값**이 들어 있어, 보조 인덱스 조회는 「보조 인덱스 → 기본 키 → 클러스터드 인덱스」 두 번 찾기가 된다. 기본 키가 길면 모든 보조 인덱스가 같이 커진다.
 - **PostgreSQL**은 행을 힙(heap)에 순서 없이 쌓고 모든 인덱스가 행 위치(TID)를 가리키는 보조 인덱스다. `CLUSTER` 명령은 한 번 정렬해 줄 뿐 이후 삽입 순서는 유지하지 않는다. SQL Server는 클러스터드 인덱스를 직접 고른다.
 - 클러스터드 키 값이 바뀌면 행이 물리적으로 옮겨진다. 그래서 기본 키는 바뀌지 않고, 짧고, **단조 증가하는 값**(자동 증가, 시간순 UUIDv7)이 좋다. 무작위 UUIDv4는 삽입마다 B+트리 중간 페이지를 쪼개(page split) 쓰기가 느려지고 인덱스가 부푼다([[distributed-unique-id|분산 고유 ID]]).
+- **기본 키는 인덱스인가**: 기본 키는 「유일하고 NULL이 없다」는 **제약**이고, 인덱스는 빨리 찾기 위한 **자료 구조**다. 모든 RDBMS는 기본 키 제약을 검사하려고 유니크 인덱스를 자동으로 만들므로 실제로는 늘 인덱스가 딸려 있다. InnoDB에서는 그 인덱스가 테이블 자체(클러스터드)이고, PostgreSQL에서는 보조 인덱스 하나다.
+- **외래 키와 인덱스**: 외래 키도 제약이다. 참조되는 부모 쪽 컬럼은 기본 키나 유니크여야 하므로 이미 인덱스가 있다. 참조하는 **자식 쪽 컬럼**의 인덱스는 DB마다 다르다. InnoDB는 외래 키 컬럼에 인덱스가 없으면 자동으로 만든다. PostgreSQL은 만들지 않으므로 직접 만들어야 한다. 이 인덱스가 없으면 부모 행을 지우거나 키를 바꿀 때마다 자식 테이블 전체를 훑어 참조를 확인하고, 그동안 잠금도 넓게 걸린다. 조인 컬럼이기도 하므로 대개 만든다.
 - 삭제·갱신이 반복되면 인덱스 페이지에 빈 공간과 지운 표시가 쌓여 인덱스가 실제 데이터보다 커진다. MySQL은 `OPTIMIZE TABLE`, PostgreSQL은 `VACUUM`·`REINDEX`로 정리한다.
 
 ## 무엇을 인덱스로 잡나
@@ -74,9 +94,16 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 
 - **ORDER BY**: 인덱스 순서대로 읽으면 정렬 작업(filesort)이 사라진다. `LIMIT`이 작을 때 특히 유리하다. 반대로 WHERE에 맞는 행이 드물면 인덱스를 오래 훑어야 하므로, LIMIT이 크면 WHERE용 인덱스가 나을 수 있다.
 - **GROUP BY**: 인덱스가 이미 정렬된 상태를 주므로 임시 테이블과 filesort가 사라진다.
+- **인덱스가 없을 때**: ORDER BY는 조건에 맞는 행을 모두 읽은 뒤 정렬 버퍼(MySQL `sort_buffer_size`, PostgreSQL `work_mem`)에서 정렬한다. 버퍼를 넘으면 조각별로 정렬해 디스크 임시 파일에 쓰고 병합하는 외부 정렬이 되어 느려진다. GROUP BY는 그룹 키를 담은 임시 테이블(해시)을 만들거나 정렬한 뒤 묶는다. `LIMIT`이 있어도 전체를 읽어야 상위 N개를 알 수 있다(상위 N개만 유지하는 힙 정렬로 메모리는 줄인다).
+
+| ORDER BY 처리 | 인덱스 있음 | 인덱스 없음 |
+| --- | --- | --- |
+| 읽는 행 | `LIMIT`만큼 읽고 멈출 수 있다 | 조건에 맞는 행 전부 |
+| 정렬 | 없다. 인덱스 순서대로 읽는다 | 메모리 정렬, 넘치면 디스크 병합 정렬 |
+| EXPLAIN 표시 | `Using index` 또는 표시 없음 | `Using filesort` (PostgreSQL은 `Sort` 노드) |
 - WHERE 조건과 ORDER BY를 함께 만족하도록 복합 인덱스 순서를 짜면 테이블 접근과 정렬을 모두 줄인다.
 - **커버링 인덱스(covering index)**: 쿼리에 필요한 컬럼이 모두 인덱스에 있으면 테이블 행을 읽지 않는다. 오프셋 페이지네이션을 빠르게 하는 데도 쓴다([[api-pagination|API 페이지네이션]]).
-- **정렬 방향**: MySQL 8.0부터 내림차순 인덱스(`INDEX (a ASC, b DESC)`)를 실제로 저장한다. 방향이 섞인 정렬(`ORDER BY a, b DESC`)도 정렬 없이 처리하고, 역방향 스캔보다 정방향 스캔이 빠르므로 자주 쓰는 정렬 방향으로 인덱스를 만든다.
+- **정렬 방향**: B+트리의 리프 페이지는 앞뒤로 이어진 이중 연결 리스트라서, 오름차순 인덱스로도 `ORDER BY a DESC`를 정렬 없이 처리한다. 리프를 뒤에서부터 읽는 **역방향 스캔**이다. 다만 InnoDB는 페이지 안의 레코드가 한 방향으로만 이어져 있어 역방향 스캔이 정방향보다 조금 느리다. MySQL 8.0부터 내림차순 인덱스(`INDEX (a ASC, b DESC)`)를 실제로 저장한다. 방향이 섞인 정렬(`ORDER BY a, b DESC`)도 정렬 없이 처리하고, 역방향 스캔보다 정방향 스캔이 빠르므로 자주 쓰는 정렬 방향으로 인덱스를 만든다.
 
 ## EXPLAIN으로 확인하기
 
@@ -95,8 +122,55 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 - `EXPLAIN FORMAT=JSON`의 `used_key_parts`로 복합 인덱스 중 실제로 쓴 컬럼을 본다. 일부만 쓰인다면 인덱스를 나누는 편이 낫다.
 - `EXPLAIN ANALYZE`(MySQL 8.0.18+)는 실제로 실행해 예측 행 수와 실제 행 수를 함께 보여 준다. 예측이 크게 틀리면 `ANALYZE TABLE`로 통계를 갱신한다.
 - 데이터가 특정 값에 몰려 있으면 옵티마이저가 인덱스를 버리고 풀 스캔을 고르기도 한다. 이론보다 실제 데이터 분포로 확인한다.
-- JOIN은 대개 **중첩 루프 조인**이다. 바깥(드라이빙) 테이블의 행마다 안쪽 테이블을 찾으므로 **안쪽 테이블의 조인 컬럼에 인덱스**가 있어야 한다.
 - PostgreSQL은 `EXPLAIN (ANALYZE, BUFFERS)`로 같은 확인을 한다.
+
+| 명령 | 쿼리 실행 | 보여 주는 것 |
+| --- | --- | --- |
+| `EXPLAIN` | 하지 않는다 | 옵티마이저가 고른 계획과 **추정** 행 수·비용 |
+| `EXPLAIN ANALYZE` | **실제로 실행한다** | 계획 + 단계별 실제 행 수·시간·반복 횟수. 추정과 실제의 차이로 통계 문제를 찾는다 |
+| `ANALYZE TABLE`(MySQL), `ANALYZE`(PostgreSQL) | - | 계획이 아니라 **통계를 다시 모으는** 별개의 명령이다 |
+
+`EXPLAIN ANALYZE`는 실제로 실행하므로 `UPDATE`·`DELETE`에 쓰면 데이터가 바뀐다. 트랜잭션 안에서 실행하고 롤백한다.
+
+### 풀 스캔을 고르는 이유
+
+인덱스가 있어도 옵티마이저가 풀 테이블 스캔을 고르는 것은 대개 **그쪽이 더 싸다고 추정했기 때문**이다.
+
+| 이유 | 설명 |
+| --- | --- |
+| 조건에 맞는 행이 많다 | 보조 인덱스로 찾으면 행마다 테이블(클러스터드 인덱스·힙)을 따로 읽는 **무작위 I/O**가 생긴다. 읽을 행이 테이블의 상당 부분이면 처음부터 순서대로 읽는 순차 I/O가 빠르다 |
+| 테이블이 작다 | 몇 페이지짜리 테이블은 인덱스를 거치는 비용이 더 크다 |
+| 통계가 낡았거나 분포가 치우쳤다 | 추정 행 수가 틀리면 잘못 고른다. 통계를 갱신하거나 히스토그램(MySQL `ANALYZE TABLE ... UPDATE HISTOGRAM`)을 만든다 |
+| 인덱스를 쓸 수 없는 조건이다 | 컬럼 가공, 타입 불일치, 앞쪽 와일드카드(「인덱스를 못 타게 만드는 조건」) |
+
+정말 인덱스가 나은데 잘못 고른다면 힌트(`FORCE INDEX`, `USE INDEX`)로 강제할 수 있지만, 데이터 분포가 바뀌면 힌트가 독이 되므로 통계와 쿼리를 먼저 고친다.
+
+## 조인 방식
+
+SQL의 `JOIN` 종류(INNER, LEFT 등)는 결과의 모양이고, DB가 실제로 두 입력을 맞추는 **물리 조인 알고리즘**은 따로 있다. 옵티마이저가 입력 크기와 인덱스를 보고 고른다.
+
+| 방식 | 동작 | 유리할 때 | 약점 |
+| --- | --- | --- | --- |
+| **중첩 루프 조인**(Nested Loop) | 바깥 입력의 행마다 안쪽 입력에서 짝을 찾는다 | 바깥 결과가 작고 **안쪽 조인 컬럼에 인덱스**가 있을 때. 첫 행을 빨리 낸다(`LIMIT`) | 안쪽에 인덱스가 없으면 바깥 행 수 × 안쪽 행 수만큼 비교한다 |
+| **해시 조인**(Hash) | 작은 쪽으로 조인 키의 해시 테이블을 만들고(build), 큰 쪽을 훑으며 찾는다(probe) | 인덱스 없는 큰 테이블끼리의 같음 조인. 분석 쿼리 | 해시 테이블이 메모리를 넘으면 디스크로 나눠 쓴다. 같음 조건에만 맞다 |
+| **정렬 병합 조인**(Sort Merge) | 두 입력을 조인 키로 정렬한 뒤 두 포인터로 나란히 훑는다 | 두 입력이 이미 정렬돼 있을 때(인덱스 순서). 범위 조건 조인 | 정렬되지 않았으면 정렬 비용이 크다 |
+
+- MySQL은 중첩 루프가 기본이고, 8.0.18부터 해시 조인을 쓴다(8.0.20부터 인덱스 없는 조인의 블록 중첩 루프를 대체). 정렬 병합 조인은 없다. PostgreSQL·Oracle·SQL Server는 세 가지를 모두 쓴다.
+- **드라이빙 테이블**(driving, outer)은 중첩 루프에서 바깥 루프를 도는 쪽이고, **드리븐 테이블**(driven, inner)은 행마다 찾아지는 쪽이다. 드리븐 쪽은 바깥 행 수만큼 탐색되므로 그 조인 컬럼에 인덱스가 있어야 한다. 옵티마이저는 WHERE로 거른 뒤 **결과가 작은 쪽을 드라이빙**으로, **인덱스로 찾을 수 있는 쪽을 드리븐**으로 두는 순서를 비용으로 고른다. `LEFT JOIN`은 왼쪽 행을 모두 살려야 하므로 순서를 바꿀 여지가 줄어든다.
+- 인덱스가 성능을 가르는 것은 주로 중첩 루프다. 드리븐 쪽 인덱스가 있으면 탐색 한 번이 O(log N)이고, 없으면 풀 스캔이 바깥 행 수만큼 반복된다. 해시 조인은 인덱스 없이도 각 입력을 한 번씩만 읽는다.
+
+**세 테이블 이상**의 조인도 한 번에 두 입력씩 처리한다. `(A ⋈ B)`의 중간 결과가 다음 조인의 바깥 입력이 되어 `C`와 조인되는 식이다.
+
+```text
+      ⋈            중간 결과(A⋈B)가 C의 드라이빙 입력이 된다
+     / \
+    ⋈   C          첫 조인의 결과가 크면 그 뒤 모든 조인이 무거워진다
+   / \
+  A   B
+```
+
+- 조인 순서의 경우의 수는 테이블 수의 팩토리얼로 늘어난다. 옵티마이저는 테이블이 많으면 전부 따지지 않는다. MySQL은 탐욕적 탐색 깊이(`optimizer_search_depth`)를 두고, PostgreSQL은 `join_collapse_limit`(기본 8)를 넘는 명시적 JOIN 순서를 재배치하지 않으며 테이블이 `geqo_threshold`(기본 12)개 이상이면 유전 알고리즘으로 근사한다.
+- 행 수 추정 오차는 조인마다 곱해져 커진다. 그래서 조인이 많을수록 엉뚱한 순서·방식을 고를 위험이 커진다. **가장 많이 거르는 조인을 먼저** 하도록 조건을 두고, 중간 결과가 큰 단계를 `EXPLAIN ANALYZE`로 찾는다.
 
 ## 빠른 쿼리 체크리스트
 
@@ -117,7 +191,20 @@ MySQL `performance_schema`는 서버 곳곳의 계측 지점(instrument)에서 �
 - InnoDB 내부 지표(`information_schema.innodb_metrics`)는 상대적으로 부담이 작다.
 - 느린 쿼리를 찾는 첫 단계는 보통 슬로 쿼리 로그와 `sys` 스키마의 요약 뷰다.
 
-## MongoDB 인덱스
+## NoSQL의 인덱스
+
+NoSQL도 인덱스를 둔다. 다만 저장 구조가 다르므로 **무엇으로 찾을 수 있나**가 제품마다 크게 다르다.
+
+| 제품 | 기본 접근 | 보조 인덱스 |
+| --- | --- | --- |
+| MongoDB | `_id` 인덱스(B-트리) | 단일·복합·다중 키(배열)·텍스트·지리 공간·TTL 인덱스. RDB와 가장 비슷하다 |
+| Redis | 키로만 찾는다. 키 공간 자체가 해시 테이블이다 | 기본 자료구조에는 없다. 정렬 집합·집합으로 「값 → 키」 목록을 직접 관리하거나, Redis 8에 포함된 질의 엔진(옛 RediSearch)의 `FT.CREATE`로 해시·JSON 필드 인덱스를 만든다 |
+| Cassandra·ScyllaDB | 파티션 키 해시로 노드를 찾고, 파티션 안은 클러스터링 키 순서 | 보조 인덱스는 모든 노드에 물어야 해 제한적으로 쓴다. 대신 조회 패턴마다 테이블을 따로 만든다([[wide-column-database\|와이드 컬럼 DB]]) |
+| DynamoDB | 파티션 키(+ 정렬 키) | 전역·로컬 보조 인덱스(GSI·LSI). GSI는 비동기로 갱신되는 별도 테이블이다 |
+
+RDB 인덱스와 다른 점은 셋이다. 분산 저장이라 **파티션 키를 모르면 모든 노드를 뒤져야** 하고, 보조 인덱스가 원본과 비동기로 맞춰지는 경우가 있으며, 조인이 없으므로 인덱스도 조회 패턴 하나하나에 맞춰 설계한다.
+
+### MongoDB
 
 문서 DB도 원리는 같다. 인덱스는 정렬된 B-트리이고, 필드 순서와 접두사(prefix) 규칙이 그대로 적용된다.
 

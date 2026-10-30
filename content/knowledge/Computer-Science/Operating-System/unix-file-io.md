@@ -5,10 +5,11 @@ summary: "프로세스가 파일·파이프·소켓을 정수 하나(파일 디�
 tags: ["os", "file-system", "system-call", "c", "io"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/d45aa46eb8e44cb6b21bbf0e66b36cfb", "https://80000coding.notion.site/b2ce62a9502c408b9a76262263a3b8b6", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/f6cc395bb7834e8f9a117a7172a15bc6", "https://80000coding.notion.site/340d53d7bfb54f8b9df0d9acab3002a3", "https://80000coding.notion.site/44f89332af544b1e9fe25d9b6e76f1e2", "https://80000coding.notion.site/10981a9a178f440e98bfcba1d9c90bb6", "https://80000coding.notion.site/f217ea68a2da4e9da1f503e66f0b705e"]
+sources: ["https://80000coding.notion.site/d45aa46eb8e44cb6b21bbf0e66b36cfb", "https://80000coding.notion.site/b2ce62a9502c408b9a76262263a3b8b6", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/f6cc395bb7834e8f9a117a7172a15bc6", "https://80000coding.notion.site/340d53d7bfb54f8b9df0d9acab3002a3", "https://80000coding.notion.site/44f89332af544b1e9fe25d9b6e76f1e2", "https://80000coding.notion.site/10981a9a178f440e98bfcba1d9c90bb6", "https://80000coding.notion.site/f217ea68a2da4e9da1f503e66f0b705e", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] File I/O」, 「파일 디스크립터(file descriptor)」, 「exit() atexit() _exit() 뭐가 다른지 설명할 수 있어?」, 「DB구현에서 왜 Memory Mapped File을 안쓸까」, 「파일 입출력: read()」, 「리눅스가 파일을 다루는 방식」, 「아니 그래서 printf 버퍼 관리가 뭔데…!!」, 「libft, 깨고 나니 보이는 것들」을 바탕으로 재구성한 노트다.
+> 언어 파일 API의 버퍼링 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 ## 파일 디스크립터란
 
@@ -120,6 +121,8 @@ printf ─▶ [stdio 사용자 버퍼] ─fflush─▶ write() ─▶ [커널 �
 
 - `write()`가 성공해도 **디스크에 기록됐다는 뜻은 아니다.** 데이터는 페이지 캐시에 있고 커널이 나중에 내려 쓴다. 정전에도 남아야 하는 데이터(DB 로그 등)는 `fsync()`까지 해야 한다.
 - `close()`는 어느 버퍼도 디스크로 강제하지 않는다.
+
+언어가 주는 파일 API도 같은 두 층 구조다. Python의 `open()`은 사용자 공간 버퍼를 둔 `BufferedReader`·`BufferedWriter`(텍스트 모드면 그 위에 인코딩을 맡는 `TextIOWrapper`)를 돌려주고, Java의 `BufferedReader`·`BufferedWriter`는 기본 8192자 버퍼에 모았다가 한 번에 `read`·`write` 시스템 콜을 부른다. 버퍼 없는 `FileInputStream.read()`로 한 바이트씩 읽으면 바이트마다 시스템 콜이 나간다. 어느 언어든 그 아래에서는 같은 커널 페이지 캐시를 거친다.
 
 ### stdio 버퍼링 모드
 

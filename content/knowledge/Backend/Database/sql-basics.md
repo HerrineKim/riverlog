@@ -5,13 +5,14 @@ summary: "SQL 명령어 분류(DDL·DML·DCL)와 테이블 구조 변경과 제�
 tags: ["sql", "database", "mysql", "sqlite", "certificate"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md"]
+sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md"]
 ---
 
 > 여러 자료를 종합한 노트에, SQL 다섯 분류는 ByteByteGo의 System Design 101 가이드 「[What is the Best Way to Learn SQL?](https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql)」를, JOIN은 「[How do SQL Joins Work?](https://bytebytego.com/guides/how-do-sql-joins-work)」를 바탕으로 보강했다.
 > 제약 조건·자연 키와 대리 키, 구조 변경과 DELETE·TRUNCATE·DROP, 뷰, CSV 가져오기는 「[Frontend_TIL: Constraint 제약조건](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md)」, 「[SQL문](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md)」, 「[CSV 파일로 테이블 생성](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md)」을 바탕으로 보강했다.
 > 「파라미터 바인딩과 Prepared Statement」는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로 보강했다.
 > 키의 종류와 저장 프로시저는 gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 저장소의 Database 문서를 바탕으로 보강했다.
+> 기본 키 변경, 외래 키의 NULL, 갱신 가능한 뷰, COUNT의 동작은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다.
 
 SQL(Structured Query Language)은 RDBMS에서 데이터를 관리하기 위해 설계된 언어다. ORM을 쓰더라도 실제로 DB에 전달되는 것은 SQL이므로, 기본 문법을 알면 ORM이 만드는 쿼리를 이해하고 문제를 진단할 수 있다.
 
@@ -119,11 +120,32 @@ CREATE TABLE orders (
 
 **기본 키의 두 종류**: 이메일·주민번호처럼 원래 데이터에 있던 값을 키로 쓰면 **자연 키(natural key)**, 키로 쓰려고 따로 만든 일련번호를 쓰면 **대리 키(surrogate key)** 다. 자연 키는 바뀔 수 있고(이메일 변경) 개인정보가 섞이기 쉬워, 보통 대리 키를 기본 키로 두고 자연 키에는 `UNIQUE`를 건다. 대리 키는 `AUTO_INCREMENT`(PostgreSQL은 `GENERATED ... AS IDENTITY`)로 1씩 늘어나는 정수를 자동으로 넣는다. 여러 서버에서 ID를 만들어야 하면 UUID·Snowflake 같은 방식을 쓴다([[distributed-unique-id|분산 고유 ID]]).
 
+**기본 키도 바꿀 수는 있다.** `UPDATE ... SET id = ...`는 문법상 허용되고, 새 값이 유일하고 NULL이 아니면 성공한다. 하지만 바꾸지 않는 것이 원칙이다.
+
+| 바꿀 때 생기는 일 | 이유 |
+| --- | --- |
+| 참조하는 자식 행이 있으면 막히거나 함께 바뀐다 | 외래 키의 `ON UPDATE` 규칙을 따른다(기본은 막는다) |
+| 비용이 크다 | InnoDB처럼 기본 키가 클러스터드 인덱스인 엔진에서는 행을 지우고 새 위치에 다시 넣는 것과 같고, 기본 키를 담은 모든 보조 인덱스도 고친다 |
+| DB 밖의 참조가 깨진다 | URL, 캐시 키, 로그, 다른 서비스에 퍼진 ID는 `CASCADE`로 따라오지 않는다 |
+
+그래서 기본 키는 의미 없는 대리 키로 두고, 바뀔 수 있는 값은 일반 컬럼에 둔다.
+
 **외래 키의 동작**: 부모 행을 지우거나 키를 바꿀 때 자식 행을 어떻게 할지 정한다. `CASCADE`는 자식도 함께 지우거나 바꾸고, `SET NULL`은 자식의 외래 키를 NULL로, 기본값인 `RESTRICT`(`NO ACTION`)는 자식이 있으면 부모 변경을 막는다. `CASCADE`는 편하지만 한 번의 삭제가 여러 테이블로 번지므로 범위를 알고 쓴다.
+
+**외래 키 컬럼은 NULL을 가질 수 있다.** NULL은 「참조하는 부모가 없음」을 뜻하고, 참조 무결성 검사를 하지 않는다. 담당자가 아직 배정되지 않은 주문처럼 **선택적 관계**를 표현하는 방법이다. 관계가 필수라면 외래 키 컬럼에 `NOT NULL`을 함께 건다. 여러 컬럼으로 된 외래 키는 한 컬럼이라도 NULL이면 기본 매칭 방식(`MATCH SIMPLE`)에서 검사를 건너뛴다.
 
 ### 뷰
 
-뷰(view)는 `SELECT` 결과에 이름을 붙인 **가상 테이블**이다. 데이터를 따로 저장하지 않고, 조회할 때마다 정의된 쿼리를 실행한다. 복잡한 조인을 숨기거나 일부 열만 보여 주는 권한 경계로 쓴다. 집계·`DISTINCT`·조인이 들어간 뷰는 갱신할 수 없고, 뷰에 직접 인덱스를 걸 수 없다.
+뷰(view)는 `SELECT` 결과에 이름을 붙인 **가상 테이블**이다. 데이터를 따로 저장하지 않고, 조회할 때마다 정의된 쿼리를 실행한다. 복잡한 조인을 숨기거나 일부 열만 보여 주는 권한 경계로 쓴다. 뷰에 직접 인덱스를 걸 수 없다.
+
+**뷰를 고치면 원본 테이블이 바뀐다.** 뷰에는 데이터가 없으므로, 뷰에 대한 `INSERT`·`UPDATE`·`DELETE`는 밑에 있는 테이블의 행에 적용된다. 다만 뷰의 행 하나가 원본 테이블의 행 하나로 정확히 대응할 때만 가능하다.
+
+| 갱신 가능한 뷰 | 갱신할 수 없는 뷰 |
+| --- | --- |
+| 테이블 하나에서 행을 거르고 열을 고른 단순한 뷰 | 집계 함수, `GROUP BY`, `DISTINCT`, `UNION`이 들어간 뷰 |
+| - | 계산된 열(그 열만 못 고친다), 원본의 `NOT NULL` 열을 빼서 `INSERT`할 값이 없는 뷰 |
+
+조인 뷰는 DBMS마다 다르다. MySQL은 한 테이블에만 영향을 주는 조인 뷰 갱신을 일부 허용하고, PostgreSQL은 단순 뷰만 자동으로 갱신하며 나머지는 `INSTEAD OF` 트리거로 직접 정의한다. 뷰 조건 밖으로 나가는 행을 넣거나 고치지 못하게 하려면 `WITH CHECK OPTION`을 붙인다. 결과를 실제로 저장하는 구체화된 뷰는 [[database-scaling|데이터베이스 확장과 성능 최적화]]에 있다.
 
 ```sql
 CREATE VIEW active_users AS
@@ -179,7 +201,16 @@ SELECT country, COUNT(*) FROM users_user GROUP BY country;   -- 지역별 인원
 SELECT country, COUNT(*) FROM users_user GROUP BY country HAVING COUNT(*) >= 10;
 ```
 
-`COUNT`, `SUM`, `AVG`, `MAX`, `MIN`은 여러 행을 하나의 값으로 요약한다. `GROUP BY`는 지정한 열 값이 같은 행끼리 묶어 그룹마다 집계한다. 그룹에 조건을 걸 때는 `WHERE`가 아니라 `HAVING`을 쓴다.
+`COUNT`, `SUM`, `AVG`, `MAX`, `MIN`은 여러 행을 하나의 값으로 요약한다. 집계 함수는 NULL을 건너뛴다.
+
+| 형태 | 세는 것 |
+| --- | --- |
+| `COUNT(*)` | 행 수. 값은 보지 않는다 |
+| `COUNT(1)` | `COUNT(*)`와 같다. 모든 행에 대해 상수 1이 NULL이 아니므로 결과도 실행 계획도 같다 |
+| `COUNT(col)` | `col`이 NULL이 아닌 행 수. 결과가 다를 수 있다 |
+| `COUNT(DISTINCT col)` | NULL이 아닌 서로 다른 값의 수. 정렬이나 해시로 중복을 지워야 해 비싸다 |
+
+`COUNT(*)`가 느린 이유는 행 수를 따로 저장하지 않기 때문이다. MVCC에서는 트랜잭션마다 보이는 행이 달라 「현재 행 수」가 하나로 정해지지 않으므로, InnoDB와 PostgreSQL은 실제로 행을 센다. InnoDB는 가장 작은 보조 인덱스를 훑어 세고, PostgreSQL은 가시성 맵이 깨끗하면 인덱스 전용 스캔으로 센다. 행 수를 테이블 메타데이터에 두는 MyISAM은 조건 없는 `COUNT(*)`가 즉시 끝난다. 정확한 값이 필요 없으면 통계의 추정치(`information_schema.TABLES.TABLE_ROWS`, `pg_class.reltuples`)나 별도 카운터 테이블을 쓴다. `GROUP BY`는 지정한 열 값이 같은 행끼리 묶어 그룹마다 집계한다. 그룹에 조건을 걸 때는 `WHERE`가 아니라 `HAVING`을 쓴다.
 
 ### 헷갈리기 쉬운 지점
 

@@ -5,10 +5,11 @@ summary: "음이 아닌 가중치 그래프에서 한 정점으로부터 모든 
 tags: ["algorithm", "graph", "shortest-path", "heap", "greedy"]
 source: til
 date: "2026-10-13"
-sources: ["https://www.youtube.com/watch?v=rL8X2mlNHPM"]
+sources: ["https://www.youtube.com/watch?v=rL8X2mlNHPM", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
 ---
 
 > 「비교」 절의 복잡도 개선 흐름은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> 다른 최단 경로 알고리즘으로 가는 안내는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문을 바탕으로 보강했다.
 
 다익스트라(Dijkstra) 알고리즘은 **한 출발 정점에서 다른 모든 정점까지의 최단 거리**를 구한다. 간선 가중치가 모두 같다면 BFS로 충분하지만, 가중치가 서로 다르면 "먼저 도착한 경로"가 최단이라는 보장이 없으므로 다익스트라가 필요하다.
 
@@ -23,7 +24,7 @@ sources: ["https://www.youtube.com/watch?v=rL8X2mlNHPM"]
 3. 그 정점을 거쳐 이웃으로 가는 거리 `dist[now] + cost`가 기존 `dist[next]`보다 짧으면 갱신한다.
 4. 모든 정점이 확정될 때까지 2~3을 반복한다.
 
-2단계에서 고른 정점의 거리는 그 순간 **최종 최단 거리로 확정**된다. 가중치가 음수가 아니라면 다른 경로로 돌아와서 더 짧아질 수 없기 때문이다. 그래서 다익스트라는 **음의 가중치가 있으면 쓸 수 없다**. 음수 간선이 있으면 벨만-포드 알고리즘을 쓴다.
+2단계에서 고른 정점의 거리는 그 순간 **최종 최단 거리로 확정**된다. 가중치가 음수가 아니라면 다른 경로로 돌아와서 더 짧아질 수 없기 때문이다. 그래서 다익스트라는 **음의 가중치가 있으면 쓸 수 없다**. 음수 간선이 있으면 벨만-포드 알고리즘을 쓴다. 조건별로 어떤 최단 경로 알고리즘을 고르는지는 [[shortest-path|최단 경로 알고리즘 고르기]]에 있다.
 
 BFS가 큐로 "가까운 순서"를 보장한다면, 다익스트라는 **우선순위 큐(최소 힙)로** "누적 거리가 짧은 순서"를 보장한다고 이해하면 된다.
 
@@ -123,4 +124,4 @@ for i in range(1, n + 1):
 - 음의 가중치가 없을 때만 정확하다.
 - `heapq`로 구현하면 O(E log V), 힙에서 꺼낸 거리가 낡았으면 건너뛴다.
 
-관련 노트: [[bfs|BFS]], [[heap-priority-queue|힙과 우선순위 큐]], [[greedy|그리디]], [[graph-basics|그래프의 기본]]
+관련 노트: [[bfs|BFS]], [[heap-priority-queue|힙과 우선순위 큐]], [[greedy|그리디]], [[graph-basics|그래프의 기본]], [[shortest-path|최단 경로 알고리즘 고르기]]

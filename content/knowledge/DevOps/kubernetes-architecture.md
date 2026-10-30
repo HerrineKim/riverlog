@@ -5,10 +5,10 @@ summary: "쿠버네티스는 원하는 상태를 선언하면 컨트롤 플레�
 tags: ["devops", "kubernetes", "infra", "container", "design-pattern"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-k8s-kubernetes", "https://bytebytego.com/guides/top-4-kubernetes-service-types-in-one-diagram", "https://bytebytego.com/guides/top-10-k8s-design-patterns", "https://bytebytego.com/guides/the-ultimate-kubernetes-command-cheatsheet", "https://bytebytego.com/guides/kubernetes-periodic-table", "https://bytebytego.com/guides/kubernetes-tools-ecosystem", "https://bytebytego.com/guides/kubernetes-tools-stack-wheel", "https://kubernetes.io/docs/concepts/overview/components/", "https://kubernetes.io/docs/concepts/services-networking/service/", "https://subicura.com/2019/05/19/kubernetes-basic-1.html", "https://coffeewhale.com/k8s/network/2019/04/19/k8s-network-01/", "https://buttondown.com/nelhage/archive/two-reasons-kubernetes-is-so-complex/"]
+sources: ["https://bytebytego.com/guides/what-is-k8s-kubernetes", "https://bytebytego.com/guides/top-4-kubernetes-service-types-in-one-diagram", "https://bytebytego.com/guides/top-10-k8s-design-patterns", "https://bytebytego.com/guides/the-ultimate-kubernetes-command-cheatsheet", "https://bytebytego.com/guides/kubernetes-periodic-table", "https://bytebytego.com/guides/kubernetes-tools-ecosystem", "https://bytebytego.com/guides/kubernetes-tools-stack-wheel", "https://kubernetes.io/docs/concepts/overview/components/", "https://kubernetes.io/docs/concepts/services-networking/service/", "https://subicura.com/2019/05/19/kubernetes-basic-1.html", "https://coffeewhale.com/k8s/network/2019/04/19/k8s-network-01/", "https://buttondown.com/nelhage/archive/two-reasons-kubernetes-is-so-complex/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[What is Kubernetes (k8s)?](https://bytebytego.com/guides/what-is-k8s-kubernetes)」, 「[Top 4 Kubernetes Service Types](https://bytebytego.com/guides/top-4-kubernetes-service-types-in-one-diagram)」, 「[Top 10 Kubernetes Design Patterns](https://bytebytego.com/guides/top-10-k8s-design-patterns)」, 「[Kubernetes Command Cheatsheet](https://bytebytego.com/guides/the-ultimate-kubernetes-command-cheatsheet)」, 「[Kubernetes Periodic Table](https://bytebytego.com/guides/kubernetes-periodic-table)」, 「[Kubernetes Tools Ecosystem](https://bytebytego.com/guides/kubernetes-tools-ecosystem)」, 「[Kubernetes Tools Stack Wheel](https://bytebytego.com/guides/kubernetes-tools-stack-wheel)」을 바탕으로, 구성 요소는 쿠버네티스 공식 문서로 확인해 재구성한 노트다. 파드 생성 흐름은 「[쿠버네티스 시작하기 - 쿠버네티스란 무엇인가?](https://subicura.com/2019/05/19/kubernetes-basic-1.html)」, 파드 네트워킹은 「[쿠버네티스 네트워킹 이해하기#1: Pods](https://coffeewhale.com/k8s/network/2019/04/19/k8s-network-01/)」, 복잡성의 이유는 「[Two reasons Kubernetes is so complex](https://buttondown.com/nelhage/archive/two-reasons-kubernetes-is-so-complex/)」로 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[What is Kubernetes (k8s)?](https://bytebytego.com/guides/what-is-k8s-kubernetes)」, 「[Top 4 Kubernetes Service Types](https://bytebytego.com/guides/top-4-kubernetes-service-types-in-one-diagram)」, 「[Top 10 Kubernetes Design Patterns](https://bytebytego.com/guides/top-10-k8s-design-patterns)」, 「[Kubernetes Command Cheatsheet](https://bytebytego.com/guides/the-ultimate-kubernetes-command-cheatsheet)」, 「[Kubernetes Periodic Table](https://bytebytego.com/guides/kubernetes-periodic-table)」, 「[Kubernetes Tools Ecosystem](https://bytebytego.com/guides/kubernetes-tools-ecosystem)」, 「[Kubernetes Tools Stack Wheel](https://bytebytego.com/guides/kubernetes-tools-stack-wheel)」을 바탕으로, 구성 요소는 쿠버네티스 공식 문서로 확인해 재구성한 노트다. 파드 생성 흐름은 「[쿠버네티스 시작하기 - 쿠버네티스란 무엇인가?](https://subicura.com/2019/05/19/kubernetes-basic-1.html)」, 파드 네트워킹은 「[쿠버네티스 네트워킹 이해하기#1: Pods](https://coffeewhale.com/k8s/network/2019/04/19/k8s-network-01/)」, 복잡성의 이유는 「[Two reasons Kubernetes is so complex](https://buttondown.com/nelhage/archive/two-reasons-kubernetes-is-so-complex/)」로, 구성 요소의 동작(API 서버 처리 단계, etcd 쿼럼, 스케줄링 단계, 컨트롤러, CRI)은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[Kubernetes](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md)」 항목을 공식 문서로 확인해 보강했다.
 
 ## 쿠버네티스란
 
@@ -45,6 +45,54 @@ sources: ["https://bytebytego.com/guides/what-is-k8s-kubernetes", "https://byteb
 | | 컨테이너 런타임 | 컨테이너를 실제로 실행한다(containerd, CRI-O 등 CRI 구현체) |
 
 운영 환경에서는 컨트롤 플레인을 여러 대에 나눠 두고 노드도 여러 대로 구성해 장애를 견딘다. 관리형 쿠버네티스(EKS·GKE·AKS)는 컨트롤 플레인을 클라우드가 맡는다.
+
+### 구성 요소의 동작
+
+**kube-apiserver**는 상태를 갖지 않는 REST 서버다. 요청 하나는 다음 단계를 거쳐 etcd에 저장되고, 저장된 변경은 watch로 구독 중인 컨트롤러·스케줄러·kubelet에 스트리밍된다. 여러 대를 띄워 로드 밸런서 뒤에 둘 수 있다.
+
+```text
+요청 → 인증(누구인가: 인증서·토큰·OIDC) → 인가(할 수 있나: RBAC)
+     → 변경 어드미션(기본값 주입, 사이드카 주입) → 스키마 검증 → 검증 어드미션(정책 검사)
+     → etcd 저장 → watch 중인 구성 요소에 이벤트 전달
+```
+
+인증·인가의 세부는 [[kubernetes-security|쿠버네티스 보안]]에 있다.
+
+**etcd**는 Raft 합의로 복제되는 키-값 저장소다. 쓰기는 과반수(quorum)가 기록해야 확정되므로 멤버는 3·5대처럼 홀수로 두고, 3대면 1대, 5대면 2대 장애까지 견딘다. 과반수를 잃으면 클러스터 상태를 바꿀 수 없다(이미 떠 있는 파드는 계속 돈다). etcd에는 모든 오브젝트와 Secret이 들어 있어, etcd를 잃으면 클러스터 정의 전체를 잃는다. 그래서 **정기 스냅숏 백업이 클러스터 복구의 마지막 수단**이다. 백업·복구 명령은 [[kubernetes-operations|쿠버네티스 운영]]에 있다.
+
+**kube-scheduler**는 `spec.nodeName`이 빈 파드를 하나씩 골라 노드를 정한다.
+
+| 단계 | 하는 일 | 예 |
+| --- | --- | --- |
+| 필터링(Filtering) | 파드를 놓을 수 **없는** 노드를 걸러 낸다 | 남은 자원이 requests보다 적음, nodeSelector·어피니티 불일치, 톨러레이션 없는 테인트, 포트 충돌 |
+| 점수 매기기(Scoring) | 남은 후보에 플러그인별 점수를 매겨 가장 높은 노드를 고른다 | 자원 균형, 이미지가 이미 있는 노드, 선호 어피니티, 토폴로지 분산 |
+| 바인딩(Binding) | 고른 노드를 API 서버에 기록한다 | 이후 그 노드의 kubelet이 실행 |
+
+후보가 하나도 없으면 파드는 Pending으로 남고, 우선순위가 높으면 낮은 파드를 밀어내는 선점(preemption)을 시도한다. 배치 조건을 거는 방법은 [[kubernetes-scheduling-resources|쿠버네티스 스케줄링과 자원 관리]]에 있다.
+
+**kube-controller-manager**는 여러 컨트롤러를 한 프로세스로 묶어 돌린다.
+
+| 컨트롤러 | 맞추는 상태 |
+| --- | --- |
+| Deployment · ReplicaSet | ReplicaSet 생성·교체, 파드 수를 replicas에 맞춤 |
+| StatefulSet · DaemonSet · Job · CronJob | 각 워크로드의 파드 생성 규칙 |
+| Node | 노드 하트비트 감시, 응답 없는 노드에 테인트를 붙여 파드 축출 |
+| EndpointSlice | 서비스 셀렉터에 맞고 Ready인 파드 주소 목록 갱신 |
+| ServiceAccount · Namespace | 기본 서비스 계정 생성, 지운 네임스페이스의 리소스 정리 |
+| 가비지 컬렉터 | ownerReference가 가리키는 주인이 사라진 오브젝트 삭제 |
+
+**cloud-controller-manager**는 클라우드 API에 의존하는 컨트롤러를 따로 떼어 낸 것이다. LoadBalancer 서비스가 생기면 클라우드 로드 밸런서를 만들고(서비스 컨트롤러), 노드가 클라우드에서 사라졌는지 확인해 노드 오브젝트를 지우고(노드 컨트롤러), VPC 라우팅을 설정한다(라우트 컨트롤러). 클라우드마다 구현을 따로 두므로 쿠버네티스 본체에 클라우드별 코드가 없다.
+
+**kubelet**은 API 서버에서 자기 노드에 배정된 파드 명세를 받아 CRI로 런타임에 컨테이너 생성을 맡기고, 프로브를 실행하고, 파드·노드 상태를 API 서버에 보고한다. 컨테이너가 죽으면 restartPolicy에 따라 다시 띄운다. API 서버 없이 노드의 매니페스트 디렉터리(`/etc/kubernetes/manifests`)만 보고 띄우는 **스태틱 파드**도 있는데, kubeadm은 컨트롤 플레인 구성 요소를 이 방식으로 띄운다.
+
+**CRI(Container Runtime Interface)** 는 kubelet이 런타임을 부르는 gRPC 규격이다. 쿠버네티스 1.24에서 Docker 엔진용 어댑터(dockershim)가 제거되어, 지금은 CRI를 직접 구현한 런타임을 쓴다. Docker로 빌드한 이미지도 OCI 표준 이미지라 그대로 돈다.
+
+| 런타임 | 특징 |
+| --- | --- |
+| containerd | Docker에서 떼어 낸 범용 런타임. CRI 플러그인 내장. EKS·GKE·AKS의 기본 |
+| CRI-O | 쿠버네티스 전용으로 만든 최소 런타임. 쿠버네티스 버전과 함께 릴리스된다. OpenShift의 기본 |
+
+두 런타임 모두 실제 컨테이너 생성은 runc 같은 OCI 저수준 런타임에 맡긴다. kube-proxy와 CNI는 [[kubernetes-networking|쿠버네티스 네트워킹]]에 있다.
 
 ### 조정 루프: 쿠버네티스의 기본 동작
 
@@ -84,7 +132,7 @@ kubectl apply (Deployment) ─▶ API 서버 ─▶ etcd에 저장
 
 ## 파드와 워크로드 리소스
 
-**파드(Pod)는 쿠버네티스가 다루는 가장 작은 단위다.** 컨테이너 하나 이상의 묶음으로, 파드 안 컨테이너들은 IP 하나와 네트워크 네임스페이스를 공유해 `localhost`로 통신하고 볼륨을 함께 쓴다. 파드는 언제든 죽고 새로 생기는 일회용이라, 직접 만들기보다 워크로드 리소스가 관리하게 한다.
+**파드(Pod)는 쿠버네티스가 다루는 가장 작은 단위다.** 컨테이너 하나 이상의 묶음으로, 파드 안 컨테이너들은 IP 하나와 네트워크 네임스페이스를 공유해 `localhost`로 통신하고 볼륨을 함께 쓴다. 파드는 언제든 죽고 새로 생기는 일회용이라, 직접 만들기보다 워크로드 리소스가 관리하게 한다. 컨테이너가 아니라 파드를 단위로 삼는 이유는 **반드시 같은 노드에서 함께 떠야 하는 컨테이너 묶음**(앱과 로그 전달기, 앱과 프록시)을 하나로 스케줄하고 수명·네트워크·볼륨을 공유시키기 위해서다. 보통은 파드 하나에 앱 컨테이너 하나를 두고, 보조 컨테이너만 곁들인다.
 
 **파드가 네트워크를 공유하는 방법**: 파드마다 아무 일도 하지 않는 **pause 컨테이너**가 먼저 떠서 네트워크 네임스페이스를 만들고 쥐고 있다. 앱 컨테이너들은 그 네임스페이스에 합류하므로 IP와 포트 공간을 공유한다. 그래서 같은 파드 안의 두 컨테이너는 `localhost`로 통신하지만, **같은 포트를 둘이 열 수는 없다.** 앱 컨테이너가 재시작돼도 파드 IP는 pause 컨테이너가 유지한다. 파드 네임스페이스는 veth 쌍으로 노드의 브리지에 연결되고, 노드마다 겹치지 않는 파드 대역을 받아 노드 사이 라우팅(또는 오버레이)으로 다른 노드의 파드와 통신한다. 이 배선은 CNI 플러그인(Calico, Cilium 등)이 맡는다. 네임스페이스와 veth의 원리는 [[linux-network-namespace|리눅스 네트워크 네임스페이스와 ip 명령]]에 있다.
 
@@ -97,7 +145,7 @@ kubectl apply (Deployment) ─▶ API 서버 ─▶ etcd에 저장
 | ConfigMap / Secret | 설정과 비밀 값을 이미지 밖에서 주입 |
 | PersistentVolumeClaim | 파드가 죽어도 남는 저장소 요청 |
 
-요청 경로에서 Service·HPA·Helm이 맡는 역할은 [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로]]에 있다.
+파드 생명주기, 프로브, 각 워크로드의 세부 설정은 [[kubernetes-workloads|쿠버네티스 워크로드와 파드 생명주기]], 볼륨과 설정 주입은 [[kubernetes-storage-config|쿠버네티스 저장소와 설정]]에 있다. 요청 경로에서 Service·HPA·Helm이 맡는 역할은 [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로]]에 있다.
 
 ## 서비스: 파드를 네트워크에 노출하는 네 가지 방법
 
@@ -115,7 +163,7 @@ ClusterIP ⊂ NodePort ⊂ LoadBalancer   (앞의 것을 포함하며 범위를 
 ```
 
 - `clusterIP: None`으로 만든 **헤드리스 서비스**는 가상 IP 없이 DNS로 파드 주소를 직접 돌려준다. StatefulSet이 파드별 고정 이름을 얻는 방법이다.
-- HTTP 호스트·경로 단위의 라우팅은 서비스가 아니라 Ingress나 Gateway API가 맡는다.
+- HTTP 호스트·경로 단위의 라우팅은 서비스가 아니라 Ingress나 Gateway API가 맡는다. 서비스가 패킷을 파드로 보내는 원리(kube-proxy), DNS, Ingress, NetworkPolicy는 [[kubernetes-networking|쿠버네티스 네트워킹]]에 있다.
 
 ## 쿠버네티스 디자인 패턴
 
@@ -189,4 +237,4 @@ kubectl create secret generic db --from-literal=password=...
 - 서비스 유형은 ClusterIP → NodePort → LoadBalancer 순으로 노출 범위를 넓히고, ExternalName은 외부 이름을 가리킨다.
 - 설계는 프로브·자원 선언 같은 기초 패턴부터 지킨다. 그래야 플랫폼이 자동으로 관리할 수 있다.
 
-관련 노트: [[vm-vs-container|VM과 컨테이너]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[deployment-strategies|배포 전략]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[linux-network-namespace|리눅스 네트워크 네임스페이스와 ip 명령]]
+관련 노트: [[vm-vs-container|VM과 컨테이너]], [[kubernetes-workloads|쿠버네티스 워크로드]], [[kubernetes-networking|쿠버네티스 네트워킹]], [[kubernetes-scheduling-resources|쿠버네티스 스케줄링과 자원 관리]], [[kubernetes-security|쿠버네티스 보안]], [[kubernetes-operations|쿠버네티스 운영]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[deployment-strategies|배포 전략]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[linux-network-namespace|리눅스 네트워크 네임스페이스와 ip 명령]]

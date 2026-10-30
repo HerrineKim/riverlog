@@ -5,11 +5,12 @@ summary: "프로세스 상태 전이, CPU burst와 성능 척도, 선점·비선
 tags: ["os", "process", "scheduling", "certificate"]
 source: notion
 date: "2026-10-13"
-sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/206", "https://80000coding.notion.site/b271bc9865be47228299a087dc014f3c", "https://80000coding.notion.site/b5ed3d3e0d3048cba1563f9617f7c27e", "https://www.youtube.com/watch?v=CdrozYcVccE", "https://www.youtube.com/watch?v=w1z6WCyMdhQ"]
+sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/206", "https://80000coding.notion.site/b271bc9865be47228299a087dc014f3c", "https://80000coding.notion.site/b5ed3d3e0d3048cba1563f9617f7c27e", "https://www.youtube.com/watch?v=CdrozYcVccE", "https://www.youtube.com/watch?v=w1z6WCyMdhQ", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
 > 「실제 운영체제의 스케줄러」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「프로세스 스케줄링을 이해해보자」, 「[OS] CPU scheduling algorithm」을 바탕으로 보강했다.
 > 「왜 CPU 스케줄링이 필요한가」, 「스케줄링 큐와 스케줄러의 종류」, 「비선점 스케줄링」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 비선점 전이, 현대 OS의 스케줄러 구성, FCFS의 쓰임새 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 여러 프로세스가 하나의 CPU를 나눠 쓰려면 "지금 누구에게 CPU를 줄 것인가"를 정하는 규칙이 필요하다. 이것이 CPU 스케줄링이며, 프로세스의 상태 변화를 이해해야 스케줄링이 언제 일어나는지도 이해할 수 있다. 프로세스의 구조와 PCB, 스레드는 [[process-and-thread|프로세스와 스레드]]에 따로 정리했다.
 
@@ -35,6 +36,8 @@ sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://
 | 실행 → 완료 | 프로세스 종료 | 비선점 |
 | Timeout: 실행 → 준비 | 타이머 인터럽트로 할당 시간 만료 | 선점 (강제로 빼앗음) |
 | Wake up: 대기 → 준비 | I/O 완료. 더 높은 우선순위가 생기면 실행 중인 것을 빼앗는다 | 선점 |
+
+비선점 스케줄링에는 Timeout(실행 → 준비) 전이도, 깨어난 프로세스가 실행 중인 것을 빼앗는 전이도 없다. 실행 중인 프로세스는 끝나거나 스스로 대기 상태로 갈 때만 CPU를 내놓는다.
 
 > 교착 상태(deadlock)는 별도의 상태라기보다, 프로세스들이 서로가 가진 자원을 기다리며 영원히 대기하는 상황이다. 자세한 내용은 [[deadlock|교착 상태]] 참고.
 
@@ -78,6 +81,8 @@ sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://
 | 장기(Job) 스케줄러 | new 상태 중 어떤 프로세스에 메모리를 줄지(ready 큐로 보낼지) | 메모리에 올라가는 프로세스 수(멀티프로그래밍 정도)를 조절. 시분할 시스템에는 보통 없음 |
 | 중기 스케줄러(Swapper) | 어떤 프로세스에게서 메모리를 빼앗을지 | 메모리가 부족하면 프로세스를 통째로 디스크로 내보냄(swap out). 시분할 시스템이 쓰는 방식 |
 
+현대 범용 OS(Linux, Windows, macOS)에는 장기 스케줄러가 따로 없다. 새 프로세스는 만들어지는 즉시 ready가 된다. 메모리가 부족할 때도 프로세스를 통째로 내보내는 중기 스케줄링 대신 페이지 단위의 교체와 스왑으로 버티고([[virtual-memory|가상 메모리]]), 그래도 모자라면 Linux는 OOM killer가 프로세스를 골라 끝낸다. 교재의 suspended 상태가 실제로는 「페이지 대부분이 스왑으로 나간 프로세스」로 나타나는 셈이다.
+
 보통 "CPU 스케줄링"이라 하면 단기 스케줄링을 말하고, 이 노트의 나머지도 단기 스케줄러의 알고리즘을 다룬다. 스케줄링 대상인 프로세스의 문맥과 PCB는 [[process-and-thread|프로세스와 스레드]]에 있다.
 
 ## 성능 척도
@@ -98,7 +103,7 @@ sources: ["https://app.notion.com/p/b4e5a65c93af450b80413c9d70234ed0", "https://
 
 | 알고리즘 | 규칙 | 특징 |
 | --- | --- | --- |
-| FCFS (FIFO) | 도착 순서대로 | 단순하지만 긴 작업이 먼저 오면 뒤의 짧은 작업이 모두 오래 기다린다(**호위 효과**, convoy effect) |
+| FCFS (FIFO) | 도착 순서대로 | 단순하지만 긴 작업이 먼저 오면 뒤의 짧은 작업이 모두 오래 기다린다(**호위 효과**, convoy effect). 대신 문맥 교환이 가장 적고 기아가 없어, 작업 길이가 비슷한 일괄 처리나 도착 순서를 지켜야 하는 큐(프린터 스풀, 실시간 클래스의 `SCHED_FIFO`)에 맞는다 |
 | SJF | 실행 시간이 가장 짧은 작업부터 | 평균 대기 시간 최소, 긴 작업은 기아(starvation) 위험 |
 | HRN | 응답 비율이 높은 작업부터 | SJF의 긴 작업 불리함을 보완 |
 

@@ -1,11 +1,14 @@
 ---
 title: "구간 합과 접두사 합"
 concept: "Prefix Sum"
-summary: "앞에서부터의 누적 합을 미리 구해 두고, 임의 구간의 합을 뺄셈 한 번으로 구하는 기법."
+summary: "앞에서부터의 누적 합을 미리 구해 두고, 임의 구간의 합을 뺄셈 한 번으로 구하는 기법. 접미사·곱 변형과 해시를 곁들여 합이 k인 부분 배열을 세는 방법."
 tags: ["algorithm", "prefix-sum", "array", "python"]
-source: til
-date: "2026-10-13"
+source: mixed
+date: "2026-10-30"
+sources: ["https://www.techinterviewhandbook.org/algorithms/array/"]
 ---
+
+> 「변형: 접미사, 곱, 해시」는 Tech Interview Handbook의 「[Array cheatsheet](https://www.techinterviewhandbook.org/algorithms/array/)」 전처리 절을 바탕으로 보강했다.
 
 **구간 합 문제**는 연속으로 나열된 N개의 수에서 특정 구간 [Left, Right]의 합을 구하는 문제다. 예를 들어 {10, 20, 30, 40, 50}에서 2번째부터 4번째 수의 합은 20 + 30 + 40 = 90이다.
 
@@ -47,10 +50,33 @@ from itertools import accumulate
 prefix_sum = [0] + list(accumulate(data))
 ```
 
+## 변형: 접미사, 곱, 해시
+
+같은 「미리 누적해 두기」를 방향과 연산만 바꿔 쓴다.
+
+| 변형 | 방법 | 예 |
+| --- | --- | --- |
+| 접미사 합·곱 | 뒤에서부터 누적한다. 왼쪽 정보와 오른쪽 정보가 모두 필요하면 접두사·접미사 배열을 하나씩 만든다 | 자기 자신을 뺀 나머지의 곱: `왼쪽 곱[i] × 오른쪽 곱[i]`. 나눗셈을 쓰지 않으므로 0이 섞여도 맞고 O(n)이다. 결과 배열에 왼쪽 곱을 채운 뒤 오른쪽 곱을 변수 하나로 곱해 가면 추가 공간 O(1) |
+| 접두사 합 + 해시 | 지금까지의 접두사 합이 몇 번 나왔는지 해시에 센다. `P[j] - P[i] = k`이면 `(i, j]` 구간의 합이 k다 | 합이 k인 연속 부분 배열의 개수를 O(n)에. 값에 **음수가 섞여** [[two-pointers\|슬라이딩 윈도우]]를 쓸 수 없을 때 쓴다 |
+
+```python
+from collections import defaultdict
+
+def count_subarrays_with_sum(nums, k):
+    seen = defaultdict(int)
+    seen[0] = 1                    # 빈 접두사: 처음부터 시작하는 구간
+    total = count = 0
+    for x in nums:
+        total += x
+        count += seen[total - k]   # 앞에서 total - k였던 지점마다 합이 k인 구간 하나
+        seen[total] += 1
+    return count
+```
+
 ## 핵심 정리
 
 - 접두사 합 = 처음부터 i번째까지의 누적 합
 - 구간 합 = `P[R] - P[L-1]`, 쿼리당 O(1)
 - 배열 값이 바뀌지 않는(정적인) 경우에 적합하다. 값이 자주 바뀌면 펜윅 트리·세그먼트 트리 같은 자료구조가 필요하다.
 
-관련 노트: [[dynamic-programming|동적 계획법]], [[coding-test|코딩 테스트 접근법]]
+관련 노트: [[dynamic-programming|동적 계획법]], [[two-pointers|투 포인터와 슬라이딩 윈도우]], [[coding-test|코딩 테스트 접근법]]

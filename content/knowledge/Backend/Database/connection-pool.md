@@ -5,10 +5,10 @@ summary: "커넥션 풀은 DB 연결을 미리 만들어 빌려주고 돌려받�
 tags: ["database", "backend", "performance", "spring"]
 source: other
 date: "2026-10-21"
-sources: ["https://d2.naver.com/helloworld/5102792", "https://techblog.woowahan.com/2584/", "https://github.com/brettwooldridge/HikariCP"]
+sources: ["https://d2.naver.com/helloworld/5102792", "https://techblog.woowahan.com/2584/", "https://github.com/brettwooldridge/HikariCP", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md"]
 ---
 
-> 「[Commons DBCP 이해하기](https://d2.naver.com/helloworld/5102792)」, 「[JDBC로 실행되는 SQL에 자동으로 프로젝트 정보 주석 남기기](https://techblog.woowahan.com/2584/)」를 바탕으로, 설정 이름은 HikariCP 공식 문서로 확인해 재구성한 노트다.
+> 「[Commons DBCP 이해하기](https://d2.naver.com/helloworld/5102792)」, 「[JDBC로 실행되는 SQL에 자동으로 프로젝트 정보 주석 남기기](https://techblog.woowahan.com/2584/)」를 바탕으로, 설정 이름은 HikariCP 공식 문서로 확인해 재구성한 노트다. 연결이 만들어지는 과정은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다.
 
 ## 커넥션 풀이란
 
@@ -18,6 +18,22 @@ DB 연결을 맺는 데는 TCP 연결, 인증, 세션 초기화가 든다. 요�
 요청 스레드 ──getConnection()──▶ [ 풀: 유휴 연결 ▢▢▢ | 사용 중 ■■ ] ──▶ DB
             ◀── close() = 반납 ──┘
 ```
+
+### 연결 하나가 만들어지는 과정
+
+애플리케이션은 DB 프로토콜을 직접 다루지 않고 **드라이버**(JDBC 드라이버, `psycopg`, `mysql2` 등)를 통해 연결한다.
+
+```text
+1. 설정 읽기    URL(jdbc:postgresql://host:5432/app), 사용자, 비밀번호, 옵션
+2. TCP 연결     DNS 조회 → 3-way handshake (원격이면 왕복 1번 이상)
+3. TLS          설정했다면 TLS 핸드셰이크 (왕복이 더 든다)
+4. 핸드셰이크·인증  서버 버전·기능 교환, 인증 방식 협상(MySQL caching_sha2_password, PostgreSQL SCRAM-SHA-256)
+5. 세션 준비    서버가 세션을 만든다(PostgreSQL은 연결마다 백엔드 프로세스를 fork, MySQL은 스레드 할당)
+               문자 집합, 시간대, 자동 커밋, 격리 수준 같은 세션 변수 설정
+6. 쿼리 송수신  이후 같은 연결로 쿼리를 보내고 결과를 받는다
+```
+
+Java에서는 `DriverManager.getConnection()`이 이 과정을 매번 처음부터 하고, 실무에서는 `DataSource` 인터페이스 뒤에 커넥션 풀 구현체를 둬서 이미 만들어진 연결을 꺼내 준다. 2~5단계가 요청마다 반복되는 비용이 풀을 쓰는 이유다.
 
 애플리케이션 코드의 `close()`는 실제로 연결을 끊지 않고 풀에 돌려준다. 풀은 DB 앞의 **방파제** 역할도 한다. 풀 크기가 동시에 DB로 가는 쿼리 수의 상한이 되므로, 잘 잡으면 일부의 문제가 전체로 번지지 않고, 잘못 잡으면 풀 자체가 병목이 된다.
 

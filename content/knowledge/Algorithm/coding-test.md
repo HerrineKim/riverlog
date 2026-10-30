@@ -1,25 +1,27 @@
 ---
 title: "코딩 테스트 접근법"
 concept: "Coding Test"
-summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법, 랜덤 비교 테스트로 반례 찾기, 파이썬·자바스크립트 실전 팁."
+summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법, 랜덤 비교 테스트로 반례 찾기, 막혔을 때 접근을 찾는 관점과 이론상 최선 복잡도(BTTC)를 기준으로 시간·공간을 줄이는 최적화 기법, 파이썬·자바스크립트 실전 팁."
 tags: ["coding-test", "algorithm", "python", "javascript", "problem-solving"]
 source: mixed
-date: "2026-10-21"
-sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%99%84%EC%A3%BC%ED%95%98%EC%A7%80%20%EB%AA%BB%ED%95%9C%20%EC%84%A0%EC%88%98.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%B4%EB%A7%98%EB%8C%80%EB%A1%9C%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/3%EC%A7%84%EB%B2%95%20%EB%92%A4%EC%A7%91%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EC%A0%95%EC%88%98%EC%82%AC%EC%9D%B4%EC%9D%98%20%ED%95%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/2016%EB%85%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EA%B0%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EB%8D%94%ED%95%98%EA%B8%B0.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md"]
+date: "2026-10-30"
+sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%99%84%EC%A3%BC%ED%95%98%EC%A7%80%20%EB%AA%BB%ED%95%9C%20%EC%84%A0%EC%88%98.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%B4%EB%A7%98%EB%8C%80%EB%A1%9C%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/3%EC%A7%84%EB%B2%95%20%EB%92%A4%EC%A7%91%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EC%A0%95%EC%88%98%EC%82%AC%EC%9D%B4%EC%9D%98%20%ED%95%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/2016%EB%85%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EA%B0%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EB%8D%94%ED%95%98%EA%B8%B0.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://www.techinterviewhandbook.org/coding-interview-techniques/", "https://www.techinterviewhandbook.org/algorithms/study-cheatsheet/", "https://www.techinterviewhandbook.org/algorithms/math/", "https://www.techinterviewhandbook.org/algorithms/interval/"]
 ---
 
 > 반례 찾기와 파이썬 표준 라이브러리 팁 일부는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Python&C] 맞왜틀 이제 그만, 반례 생성기!」, 「코딩테스트를 위한 python 문법」을 바탕으로 보강했다. 자바스크립트 실전 팁은 「[Frontend_TIL: 알고리즘](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)」의 문제 풀이에서 반복되는 패턴만 뽑아 보강했다.
-> 「막혔을 때 바꿔 보는 관점」은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 알고리즘 문서의 코딩 테스트 팁과 전략적 접근 절을 바탕으로 보강했다.
+> 「막혔을 때 바꿔 보는 관점」은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 알고리즘 문서의 코딩 테스트 팁과 전략적 접근 절을, 「풀이 최적화」와 자료구조 신호는 Tech Interview Handbook의 「[Coding Interview Techniques](https://www.techinterviewhandbook.org/coding-interview-techniques/)」를 바탕으로 보강했다.
+> 문제 풀이 순서의 조건 확정, 「자주 하는 선택」 일부와 「놓치기 쉬운 경계 사례」는 Tech Interview Handbook의 「[Algorithms study cheatsheets](https://www.techinterviewhandbook.org/algorithms/study-cheatsheet/)」와 주제별 치트시트(배열·행렬·연결 리스트·트리·그래프·구간·수학 등)의 코너 케이스 절을 바탕으로 보강했다.
 
 코딩 테스트에서 시간이 부족해지는 이유는 대개 타이핑이 느려서가 아니라, 설계 없이 코드부터 쓰다가 중간에 방향을 잃기 때문이다. 아래는 문제를 풀 때 따르는 순서와 자주 쓰는 실전 팁이다.
 
 ## 문제 풀이 순서
 
-1. **주석으로 먼저 설계한다.** 풀이 단계를 한국어 주석으로 적고, 그 아래에 코드를 채운다.
-2. **떠오르는 테스트 케이스(TC)를 적어 둔다.** 특히 경계 조건(최솟값, 최댓값, 빈 입력, 정답이 없는 경우)을 미리 적는다.
-3. **주석을 읽으며 코딩한다.** 설계와 구현을 분리하면 실수가 줄고 막혔을 때 어디서 막혔는지 바로 보인다.
-4. **감정도 적는다.** "여기 헷갈림", "시간 초과 걱정" 같은 메모가 나중에 복습할 때 약점을 알려 준다.
-5. **다 풀면 정리한다.** 불필요한 디버깅 코드는 지우고 TC와 핵심 아이디어만 남긴다.
+1. **비어 있는 조건을 확정한다.** 문제는 일부러 덜 정해져 있는 경우가 많다. 중복 값이 있는가, 입력이 늘 유효한가, 문자 집합과 대소문자 구분은 어떤가, 끝점이 맞닿은 구간은 겹친 것인가, 시간·공간 제약이 있는가를 묻거나 가정으로 적어 둔다.
+2. **주석으로 먼저 설계한다.** 풀이 단계를 한국어 주석으로 적고, 그 아래에 코드를 채운다.
+3. **떠오르는 테스트 케이스(TC)를 적어 둔다.** 특히 경계 조건(최솟값, 최댓값, 빈 입력, 정답이 없는 경우)을 미리 적는다. 입력 유형별 목록은 아래 「놓치기 쉬운 경계 사례」에 있다.
+4. **주석을 읽으며 코딩한다.** 설계와 구현을 분리하면 실수가 줄고 막혔을 때 어디서 막혔는지 바로 보인다.
+5. **감정도 적는다.** "여기 헷갈림", "시간 초과 걱정" 같은 메모가 나중에 복습할 때 약점을 알려 준다.
+6. **다 풀면 정리한다.** 불필요한 디버깅 코드는 지우고 TC와 핵심 아이디어만 남긴다. 면접처럼 시간이 정해진 자리에서 일부러 단순하게 처리한 부분(정규식 대신 `split` 등)이 있으면, 제약이 없을 때 어떻게 바꿀지 말로 덧붙인다.
 
 ```python
 # 1. 입력: N(≤ 100,000), 수열 A
@@ -40,14 +42,14 @@ sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.ti
 | 반드시 | 스택·큐·덱·해시 | LIFO·FIFO, 평균 O(1) 조회. 자료구조 선택이 곧 풀이인 문제 | [[stack\|스택]], [[queue-deque\|큐와 덱]] |
 | 반드시 | 우선순위 큐 / 힙 | 넣은 순서와 상관없이 우선순위가 높은 값이 먼저 나온다 | [[heap-priority-queue\|힙과 우선순위 큐]] |
 | 반드시 | 동적 계획법 | 반복되는 부분 답을 저장해 재사용한다 | [[dynamic-programming\|동적 계획법]] |
-| 반드시 | 투 포인터, 누적합 | 구간 탐색, 구간 합을 O(1)에 | [[prefix-sum\|누적합]] |
+| 반드시 | 투 포인터, 누적합 | 구간 탐색, 구간 합을 O(1)에 | [[two-pointers\|투 포인터]], [[prefix-sum\|누적합]] |
 | 반드시 | 이분 탐색 | 정렬된 범위나 「답의 범위」를 절반씩 버린다 | [[binary-search\|이분 탐색]] |
 | 반드시 | 구현·시뮬레이션, 문자열 | 요구 사항을 그대로 옮기는 문제 | |
 | 반드시 | 에라토스테네스의 체, 유클리드 호제법 | 소수 판별, 최대공약수·최소공배수 | |
 | 자주 | 다익스트라, 플로이드-워셜 | 한 점에서 모든 점, 모든 점 사이 최단 거리 | [[dijkstra\|다익스트라]] |
 | 자주 | 유니온 파인드, 크루스칼·프림 | 같은 집합 판별, 최소 신장 트리(크루스칼은 간선을 정렬해 고르고, 프림은 정점에서 뻗어 나간다) | [[disjoint-set\|서로소 집합]] |
 | 자주 | LIS, LCS, 진법 변환 | 대표 DP 유형과 수 표현 | [[longest-increasing-subsequence\|LIS]] |
-| 여유 있으면 | 위상 정렬, 트라이, KMP·라빈-카프·보이어-무어, 비트마스킹, 세그먼트 트리 | 선후 관계, 문자열 검색, 상태 압축, 구간 질의 | |
+| 여유 있으면 | 위상 정렬, 트라이, KMP·라빈-카프·보이어-무어, 비트마스킹, 세그먼트 트리 | 선후 관계, 문자열 검색, 상태 압축, 구간 질의 | [[topological-sort\|위상 정렬]], [[kmp-algorithm\|KMP]], [[bit-manipulation\|비트 연산]] |
 
 ## 연습 방법
 
@@ -121,6 +123,33 @@ for _ in range(10_000):                 # 재귀 대신 반복문: 깊이 제한
 - **정렬 후 매 순간 최선의 선택이 정당함** → 그리디
 - **정렬된 데이터에서 찾기, "최댓값/최솟값을 구하라"** → 이분 탐색, 파라메트릭 서치
 - **구간 합 쿼리가 많음** → 누적 합
+- **조회가 느림** → 해시 맵. 면접 문제에서 가장 자주 쓰는 자료구조다([[hash-table|해시 테이블]])
+- **개체 사이의 관계로 주어진 데이터** → 그래프로 모델링([[graph-basics|그래프]]). 선후 관계면 위상 정렬([[topological-sort|위상 정렬]])
+- **괄호·수식처럼 중첩된 문자열 파싱** → 스택
+- **우선순위에 따른 스케줄링, 상위·하위 K개, 중앙값** → 힙
+- **문자열 집합의 접두사 검색** → 트라이([[data-structures|기초 자료구조]])
+- **연속 구간, 정렬된 배열의 쌍** → 투 포인터·슬라이딩 윈도우([[two-pointers|투 포인터와 슬라이딩 윈도우]]), 뒤에서부터 순회
+- **거듭제곱·제곱근·나눗셈을 O(n)보다 빠르게** → 지수를 반씩 줄이는 반복 제곱, 답을 반씩 좁히는 이분 탐색
+- **같은 함수가 여러 번 호출됨(서버 API 등)** → 입력을 한 번 전처리(정렬, 해시, 트라이, 접두사 합)해 두고 호출마다 재사용
+- **연산마다 O(1)이 필요함** → 자료구조를 조합한다. LRU 캐시는 해시 맵 + 이중 연결 리스트로 조회·갱신이 모두 O(1)이다
+
+## 놓치기 쉬운 경계 사례
+
+정답 코드가 틀리는 입력은 대개 정해져 있다. 입력 유형을 보고 아래 경우를 TC에 넣는다.
+
+| 입력 | 확인할 경우 |
+| --- | --- |
+| 배열·문자열 | 빈 입력, 원소 1개와 2개, 모두 같은 값, 중복 값, 모두 다른 값. 인덱스가 범위를 벗어나지 않는가(off-by-one) |
+| 행렬 | 빈 행렬(행이 0개, 또는 첫 행의 길이가 0), 1×1, 한 행 또는 한 열뿐인 행렬 |
+| 연결 리스트 | `head`가 `null`, 노드 1개와 2개, 사이클(있을 수 있는지 먼저 묻는다) |
+| 트리 | 빈 트리, 노드 1개, 한쪽으로만 뻗은 편향 트리, 음수 값 노드(경로 합 문제) |
+| 그래프 | 빈 그래프, 정점 1~2개, **연결되지 않은 그래프**, 사이클 |
+| 구간 | 구간 0개·1개, 겹치지 않는 구간, 다른 구간에 완전히 포함된 구간, 똑같은 구간, 끝점이 맞닿은 `[1, 2]`, `[2, 3]` |
+| 스택·큐·힙 | 비어 있을 때 꺼내기, 원소 1~2개 |
+| 수 | 0으로 나누기·나머지, 정수 오버플로·언더플로, 음수, 실수 오차, 0과 1 같은 항등원 |
+| 재귀 | n = 0, n = 1. 재귀 호출이 `f(n-2)`까지 내려가면 기저 사례도 두 개 필요하다 |
+
+고정 폭 정수 언어(C·C++·Java)에서는 오버플로를 처리하거나 적어도 가능성을 언급한다. 정수 문자열·리스트를 이어 붙이는 코드는 타입이 섞이지 않았는지도 본다.
 
 ## 막혔을 때 바꿔 보는 관점
 
@@ -128,7 +157,9 @@ for _ in range(10_000):                 # 재귀 대신 반복문: 깊이 제한
 
 | 관점 | 해 보는 것 |
 | --- | --- |
-| 예제를 그린다 | 너무 작지 않은 **중간 크기 예제**를 손으로 풀어 본다. 작은 예제의 답은 일반화되지 않을 때가 많다 |
+| 예제를 그린다 | 너무 작지 않은 **중간 크기 예제**를 손으로 풀어 본다. 작은 예제의 답은 일반화되지 않을 때가 많다. 트리·그래프·행렬·연결 리스트는 단계별 상태를 그림으로 그린다(행렬 나선형 순회는 방향을 그려 보면 규칙이 보인다). 예제를 여러 개 만들어 두면 끝난 뒤 테스트 케이스로 쓴다 |
+| 손으로 푼다 | 코드 없이 사람이 푸는 절차를 말로 적는다. 그 절차를 모든 예제에 통하는 규칙으로 다듬으면 그대로 코드가 된다. 이진 탐색 트리 검증은 「왼쪽 서브트리는 모두 루트보다 작고 오른쪽은 모두 크다를 노드마다 확인」이라는 손 풀이에서 출발한다 |
+| 쪼갠다 | 큰 문제는 상위 함수를 먼저 쓰고 독립된 하위 함수로 나눈다. Group Anagrams는 「문자열을 해시하기」와 「해시로 묶기」 두 함수로 나뉜다. 다 못 짜도 접근이 있다는 것은 보인다. 최적 풀이는 이 추상화를 깨고 한 번에 처리해야 할 때도 있다 |
 | 기법을 대입한다(하향식) | 정렬·이분 탐색, 분할 정복, DP, 그리디, 재귀, 특정 자료구조(배열, 스택·큐, 해시, 트리, 힙, 그래프)를 하나씩 대입해 맞는지 본다 |
 | 비슷한 문제를 떠올린다 | 겉모양보다 핵심 연산이 같은 예전 문제를 찾고 그 풀이를 고친다 |
 | 작게·특수하게 줄인다 | 경계값, 특수한 경우, 단순화한 버전부터 풀고 범위를 넓힌다 |
@@ -137,6 +168,65 @@ for _ in range(10_000):                 # 재귀 대신 반복문: 깊이 제한
 | 순서를 강제한다 | 순서가 없는 선택을 정렬된 순서로 고정하면 경우의 수가 줄어든다 |
 | 뒤에서부터 본다 | 마지막 상태에서 거꾸로 오면 선택지가 줄어드는 문제가 있다 |
 | 되돌아간다 | 몇 분을 써도 진전이 없는 접근은 버리고 다른 방법으로 간다 |
+
+## 풀이 최적화: 더 빠르게, 더 작게
+
+동작하는 풀이를 찾은 뒤에는 「더 나은 방법이 있나」를 따진다. 면접관이 「더 잘할 수 있을까요?」라고 묻는 지점이다.
+
+### 이론상 최선 복잡도(BTTC)부터 정한다
+
+**이론상 최선 시간 복잡도**(Best Theoretical Time Complexity, BTTC)는 어떤 풀이로도 넘을 수 없는 하한이다. 대개 「입력을 적어도 한 번은 봐야 한다」에서 나온다.
+
+| 문제 | BTTC | 이유 |
+| --- | --- | --- |
+| 배열의 합 | O(n) | 모든 값을 한 번은 본다 |
+| 애너그램 묶기(단어 n개, 최대 길이 k) | O(nk) | 모든 단어의 모든 글자를 본다 |
+| 행렬의 섬 개수(n×m) | O(nm) | 모든 칸을 본다 |
+| 정렬된 배열에서 값 찾기 / 최댓값 | O(log n) / O(1) | 정렬이라는 조건이 하한을 바꾼다. 이진 탐색, 마지막 원소 |
+
+- 최적 풀이는 지금 풀이와 BTTC 사이에 있다. **BTTC보다 빠른 풀이를 찾느라 시간을 쓰지 않는다.** BTTC를 면접관에게 말하는 것도 좋은 신호다.
+- 문제의 조건(정렬됨, 범위 제한)을 놓치면 BTTC를 잘못 잡는다.
+- 이미 BTTC인데 더 최적화하라고 하면, 대개 **같은 복잡도에서 일을 덜 하기**(두 번 훑던 것을 한 번에)나 **공간 줄이기**를 묻는 것이다.
+
+### 시간 줄이기
+
+| 기법 | 내용 | 예 |
+| --- | --- | --- |
+| 겹치는 계산 재사용 | 완전 탐색은 같은 연산을 반복한다. 앞의 결과를 저장해 쓴다. DP가 대표지만 전처리로 푸는 문제도 있다 | Product of Array Except Self: `result[i]`와 `result[i+1]`의 곱이 대부분 겹친다. 앞쪽·뒤쪽 누적 곱 배열로 O(n²) → O(n) ([[prefix-sum\|누적합]]) |
+| 자료구조 바꾸기 | 조회가 병목이면 해시 테이블로 O(1)에 | K Closest Points: 전부 정렬하면 O(n log n), 크기 K로 제한한 힙을 쓰면 O(n log k) |
+| 불필요한 작업 걷어내기 | 복잡도는 같아도 코드 품질로 평가된다 | 아래 목록 |
+
+불필요한 작업의 흔한 모양은 다음과 같다.
+
+- **중복 조건**: `not arr and len(arr) == 0`, `x < 5 and x < 10`은 뒤 조건이 필요 없다.
+- **조건 순서**: `or`는 빠르거나 참일 가능성이 높은 쪽을, `and`는 거짓일 가능성이 높은 쪽을 앞에 둔다(단락 평가).
+- **반복 호출 캐싱**: 함수 안에서 바뀌지 않는 `len(array)` 같은 값은 변수에 한 번 담는다.
+- **조기 종료**: 답이 정해지면 바로 `return`한다. 긴장하면 가장 자주 잊는다.
+- **반복문 안 작업 줄이기**: 반복마다 같은 값을 다시 계산하지 않는다(루프 밖으로 꺼낸다).
+- **지연 평가**: 필요할 때까지 계산·초기화를 미룬다. 입력이 비었으면 해시 테이블도 만들지 않는다.
+
+```python
+def contains_string(search_term, strings):
+    if not strings:                       # 지연: 빈 입력이면 아무것도 계산하지 않는다
+        return False
+    target = search_term.lower()          # 반복문 밖으로: 매번 lower()하지 않는다
+    for s in strings:
+        if s.lower() == target:
+            return True                   # 조기 종료
+    return False
+```
+
+### 공간 줄이기
+
+보통 시간이 공간보다 중요하다. 최적 시간에 도달한 뒤 추가 공간을 줄이라는 요청이 온다.
+
+| 기법 | 내용 | 예 |
+| --- | --- | --- |
+| 입력을 제자리에서 바꾸기 | 새 배열 대신 입력 배열을 덮어써 O(1) 추가 공간으로 | Sort Colors(네덜란드 국기 문제): 새 배열이면 공간 O(n), 제자리 정렬이면 O(1) |
+| 입력 배열을 해시 테이블처럼 쓰기 | 값의 존재를 인덱스 위치의 부호로 표시한다 | First Missing Positive: 4가 있으면 `nums[4]`를 음수로 바꾼다 |
+| 자료구조 바꾸기 | 같은 정보를 더 촘촘히 저장하는 구조를 고른다 | 접두사로 시작하는 문자열 개수 세기는 트라이가 저장과 질의 모두 효율적이다 |
+
+입력을 바꾸는 기법은 **면접용**이다. 실무에서 입력 변경은 코드를 읽고 유지하기 어렵게 만든다. 뒤에서 원래 입력이 필요하면 되돌릴 수 없게 망가뜨리지 않는다. 면접에서도 입력을 바꿔도 되는지 먼저 묻는다.
 
 ## 파이썬 실전 팁
 
@@ -189,7 +279,8 @@ const [n, m] = input[0].split(' ').map(Number)
 
 - 주석 설계 → TC 작성 → 구현 → 정리 순서로 푼다.
 - N의 범위에서 허용 복잡도를 역산해 알고리즘을 고른다.
+- 최적화는 이론상 최선 복잡도(BTTC)를 하한으로 잡고, 겹치는 계산 재사용·자료구조 교체·불필요한 작업 제거 순으로 본다.
 - 막히면 30분·1시간·2시간 기준으로 풀이를 보고, 1주 뒤 다시 푼다.
 - `sys.stdin.readline`, `deque`, `heapq`, `setrecursionlimit`은 기본 장비다.
 
-관련 노트: [[big-o|빅오 표기법]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[bfs|BFS]], [[dijkstra|다익스트라]], [[dynamic-programming|동적 계획법]], [[greedy|그리디]], [[binary-search|이분 탐색]], [[prefix-sum|접두사 합]], [[interview-attitude|면접 잘 보는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[kmp-algorithm|KMP 문자열 검색 알고리즘]]
+관련 노트: [[big-o|빅오 표기법]], [[tech-interview-prep|기술 면접 준비]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[two-pointers|투 포인터와 슬라이딩 윈도우]], [[bfs|BFS]], [[dijkstra|다익스트라]], [[dynamic-programming|동적 계획법]], [[greedy|그리디]], [[binary-search|이분 탐색]], [[prefix-sum|접두사 합]], [[interview-attitude|면접 잘 보는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[kmp-algorithm|KMP 문자열 검색 알고리즘]]

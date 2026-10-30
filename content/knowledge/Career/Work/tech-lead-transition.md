@@ -75,4 +75,4 @@ sources: ["https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mist
 - 1:1 면담, 사람에 맞춘 업무 배정, 근거 있는 피드백, 문서화된 규칙이 팀을 키운다.
 - 기술 지표가 아니라 사람의 신호를 읽는 감각을 기른다.
 
-관련 노트: [[kind-engineering|친절한 엔지니어링]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[effective-meetings|회의 잘하는 법]], [[collaborative-developer|협업을 잘하는 개발자]]
+관련 노트: [[kind-engineering|친절한 엔지니어링]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[effective-meetings|회의 잘하는 법]], [[collaborative-developer|협업을 잘하는 개발자]], [[engineering-levels|엔지니어 레벨]]

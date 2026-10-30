@@ -1,14 +1,14 @@
 ---
 title: "프론트엔드에서의 TDD"
 concept: "TDD"
-summary: "실패하는 테스트를 먼저 쓰고 통과시킨 뒤 리팩터링하는 TDD를 프론트엔드에 적용하는 방법. 목표와 사이클, 이점과 오해, 테스트하기 좋은 코드, Testing Library 예제, 현실적인 도입 순서."
+summary: "실패하는 테스트를 먼저 쓰고 통과시킨 뒤 리팩터링하는 TDD를 프론트엔드에 적용하는 방법. 목표와 사이클, 이점과 오해, BDD와의 차이(Given-When-Then, 이중 루프), 테스트하기 좋은 코드, Testing Library 예제, 현실적인 도입 순서."
 tags: ["testing", "tdd", "react", "jest"]
 source: til
 date: "2026-10-13"
-sources: ["https://zuminternet.github.io/zum-comment-component/", "https://martinfowler.com/articles/is-tdd-dead/"]
+sources: ["https://zuminternet.github.io/zum-comment-component/", "https://martinfowler.com/articles/is-tdd-dead/", "https://dannorth.net/introducing-bdd/", "https://cucumber.io/docs/gherkin/reference/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
 ---
 
-> 레거시 교체 부분은 「[댓글 모듈 레거시 걷어내기 with TDD](https://zuminternet.github.io/zum-comment-component/)」를 바탕으로 보강했다. TDD 논쟁 부분은 「[Is TDD Dead?](https://martinfowler.com/articles/is-tdd-dead/)」를 바탕으로 정리했다.
+> 레거시 교체 부분은 「[댓글 모듈 레거시 걷어내기 with TDD](https://zuminternet.github.io/zum-comment-component/)」를 바탕으로 보강했다. TDD 논쟁 부분은 「[Is TDD Dead?](https://martinfowler.com/articles/is-tdd-dead/)」를 바탕으로 정리했다. 「TDD와 BDD」는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」의 질문을 계기로 Dan North의 「[Introducing BDD](https://dannorth.net/introducing-bdd/)」와 Cucumber의 Gherkin 문서를 바탕으로 보강했다.
 
 ## TDD란
 
@@ -38,6 +38,31 @@ sources: ["https://zuminternet.github.io/zum-comment-component/", "https://marti
 | **미래의 큰 버그를 현재의 작은 실패로** 끌어온다. 덩어리가 작을 때 고치는 편이 싸다 | 공짜. 단기적으로는 도입 비용이 크고, 효과는 늦게 나타난다 |
 
 테스트가 일정에서 가장 먼저 밀려나는 이유도 마지막 줄에 있다. 그래서 도입은 전략이 필요하다(아래 「도입 전략」).
+
+## TDD와 BDD
+
+**BDD(Behavior Driven Development, 행위 주도 개발)** 는 TDD에서 갈라져 나온 방식이다. TDD를 하던 개발자들이 「무엇을 테스트해야 하나」, 「테스트 이름을 어떻게 짓나」에서 막히자, 테스트를 **시스템이 해야 할 행위의 명세**로 보고 개발자가 아닌 사람도 읽을 수 있는 말로 쓰자는 제안(Dan North, 2006)에서 시작했다.
+
+| | TDD | BDD |
+| --- | --- | --- |
+| 출발점 | 코드 단위의 기대값: 이 함수에 이 입력을 주면 이 출력 | 사용자·비즈니스 관점의 행위: 이 상황에서 이렇게 하면 이렇게 된다 |
+| 읽는 사람 | 개발자 | 기획자·QA·개발자 모두 |
+| 쓰는 말 | 프로그래밍 언어의 단언(`expect(sum(1, 2)).toBe(3)`) | 도메인 용어로 쓴 시나리오. **Given(전제) · When(행동) · Then(결과)** |
+| 주된 수준 | 단위 테스트 | 인수(acceptance) 테스트, 기능 단위 시나리오 |
+| 목적 | 작은 단계로 설계를 이끌고 리팩터링 안전망을 만든다 | 무엇을 만들지 팀이 같은 이해를 갖고, 그 합의를 실행 가능한 명세로 남긴다 |
+| 대표 도구 | Vitest, Jest, JUnit | Cucumber(Gherkin), playwright-bdd, RSpec·Jasmine 스타일의 `describe`·`it` |
+
+```gherkin
+Feature: 할 일 목록
+  Scenario: 할 일을 추가한다
+    Given 할 일이 하나도 없다
+    When "장보기"를 입력하고 추가 버튼을 누른다
+    Then 목록에 "장보기"가 보인다
+```
+
+Gherkin 문장 하나하나는 단계 정의(step definition) 코드와 연결되어 실제로 실행된다. 같은 생각을 테스트 코드 안에서만 쓰면 `describe('할 일이 없으면')`·`it('추가한 할 일을 보여 준다')`처럼 맥락과 행위로 이름을 짓는 **BDD 스타일**이 된다.
+
+둘은 경쟁 관계가 아니다. 바깥에서 실패하는 인수 테스트(BDD 시나리오)를 하나 쓰고, 그것을 통과시키려고 안쪽에서 단위 테스트로 Red → Green → Refactor를 여러 번 도는 **이중 루프(double loop)** 로 함께 쓴다. BDD 시나리오로 기획을 태스크로 나누는 방법은 [[bdd-sdd-task-design|BDD·SDD로 기획서를 태스크로 나누기]]에 있다.
 
 ## 테스트하기 좋은 코드
 
@@ -91,7 +116,7 @@ export default function Item({ task, onComplete }) {
 **Refactor.** 테스트가 초록인 상태에서 이름·구조를 다듬는다. 다음 테스트("할 일이 없으면 안내 문구를 보여 준다")로 넘어가 같은 사이클을 반복한다.
 
 - 요소는 `getByRole`·`getByText`처럼 **사용자가 화면을 찾는 방식**으로 찾는다. 역할로 찾을 수 있게 마크업하는 법은 [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]]에 있다.
-- 상황별로 묶고 싶으면 `describe('할 일이 없으면', ...)`처럼 맥락을 이름으로 쓴다(BDD 스타일).
+- 상황별로 묶고 싶으면 `describe('할 일이 없으면', ...)`처럼 맥락을 이름으로 쓴다(BDD 스타일, 위 「TDD와 BDD」).
 
 ## 도입 전략
 
@@ -142,6 +167,7 @@ TDD의 효용을 두고 켄트 벡, 마틴 파울러, 데이비드 하이네마�
 ## 정리
 
 - TDD = Red(실패하는 테스트) → Green(통과) → Refactor. 목표는 작동하는 깔끔한 코드.
+- BDD는 테스트를 Given-When-Then으로 쓴 행위 명세로 보고 팀 전체가 읽게 한다. 바깥 BDD 루프와 안쪽 TDD 루프로 함께 쓴다.
 - TDD는 설계를 유도하는 지뢰 탐지기이지 완벽함의 보장이 아니다.
 - 핵심은 테스트 가능한 코드다. 관심사를 나누고, 상태 로직은 커스텀 훅·순수 함수로 뺀다.
 - 컴포넌트는 `user-event`와 `getByRole`로 사용자처럼 테스트하고, store 연결은 실제 store로 통합 테스트한다.

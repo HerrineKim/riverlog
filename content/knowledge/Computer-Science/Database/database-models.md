@@ -5,10 +5,10 @@ summary: "관계형 DB의 특징과 한계, NoSQL 네 가지 유형과 CAP 정�
 tags: ["database", "rdbms", "nosql", "newsql", "sql", "mongodb"]
 source: mixed
 date: "2026-10-16"
-sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html"]
+sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md"]
 ---
 
-> 노션 정리를 바탕으로, 데이터 모델의 계보와 CAP 정리의 오해는 ByteByteGo의 System Design 101 가이드 「[Top 6 Database Models](https://bytebytego.com/guides/top-6-database-models)」, 「[CAP Theorem: One of the Most Misunderstood Terms](https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms)」로, PostgreSQL 구조와 문자열 비교 차이는 「[한 눈에 살펴보는 PostgreSQL](https://d2.naver.com/helloworld/227936)」, 「[MySQL 'a' = 'a '가 true인가?](http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html)」로 보강했다.
+> 노션 정리를 바탕으로, 데이터 모델의 계보와 CAP 정리의 오해는 ByteByteGo의 System Design 101 가이드 「[Top 6 Database Models](https://bytebytego.com/guides/top-6-database-models)」, 「[CAP Theorem: One of the Most Misunderstood Terms](https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms)」로, PostgreSQL 구조와 문자열 비교 차이는 「[한 눈에 살펴보는 PostgreSQL](https://d2.naver.com/helloworld/227936)」, 「[MySQL 'a' = 'a '가 true인가?](http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html)」로 보강했다. RDB와 NoSQL의 비용 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다.
 
 데이터베이스는 데이터의 집합이고, 이를 저장·관리하는 소프트웨어가 **DBMS(Database Management System)**다. 데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
 
@@ -158,6 +158,27 @@ RDB의 **ACID와 SQL**을 유지하면서 NoSQL 수준의 **수평 확장성과 
 ## 무엇을 고를까
 
 판단 기준은 **데이터가 테이블에 담기는 쪽이 유리한지, 문서에 담기는 쪽이 유리한지**다.
+
+### RDB가 무거워지는 지점과 NoSQL이 치르는 대가
+
+**NoSQL이 늘 빠른 것은 아니다.** NoSQL은 RDB가 기본으로 제공하는 기능 일부를 빼서 그 비용을 아낀다. 빠진 기능이 워크로드에 필요하면 결국 애플리케이션이 그 비용을 다시 치른다.
+
+| RDB가 기본으로 치르는 비용 | 어디서 부하가 되나 | NoSQL의 선택 |
+| --- | --- | --- |
+| 정규화된 스키마와 JOIN | 화면 하나를 그리려고 여러 테이블을 조인한다. 데이터가 커지면 조인 비용과 실행 계획의 변동이 커진다 | 함께 읽는 데이터를 문서·파티션 하나에 모아 둔다(반정규화). 대신 중복 데이터를 함께 고쳐야 한다 |
+| 다중 행 ACID 트랜잭션, 잠금, MVCC | 쓰기마다 WAL·undo 기록, 잠금 경합, 옛 버전 정리 비용 | 단일 문서·단일 키 원자성으로 제한하거나 최종 일관성을 택한다 |
+| 스키마·제약 조건 검사 | 외래 키·유니크·CHECK를 쓰기마다 검사한다. 큰 테이블의 스키마 변경이 무겁다 | 스키마를 강제하지 않는다. 검증 책임이 애플리케이션으로 간다 |
+| 범용 질의(임의 조건·집계) | 어떤 질의든 받기 위해 옵티마이저·인덱스를 갖춘다 | 키·파티션으로 접근하는 정해진 질의만 빠르다. 질의 패턴이 바뀌면 데이터를 다시 짜야 한다 |
+| 단일 노드 중심 설계 | 쓰기와 용량이 한 서버의 한계에 묶인다 | 처음부터 파티셔닝·복제를 전제로 해 수평 확장이 쉽다 |
+
+| NoSQL의 강점 | NoSQL의 약점 |
+| --- | --- |
+| 수평 확장과 대량 쓰기 처리량 | 여러 엔터티에 걸친 트랜잭션·조인이 약하거나 없다 |
+| 스키마 변경 없이 필드를 더하는 유연함 | 데이터 정합성(중복 데이터 동기화, 참조 무결성)을 앱이 책임진다 |
+| 키·파티션 단위 조회의 예측 가능한 지연 | 미리 정하지 않은 질의·집계가 비싸다 |
+| 데이터 모양(문서·그래프·시계열)에 맞는 모델 | 제품마다 질의 언어와 일관성 모델이 달라 학습·이전 비용이 크다 |
+
+그래서 NoSQL을 고르는 근거는 「빠르다」가 아니라 **워크로드의 모양**이다. 접근 패턴이 키 중심으로 정해져 있고, 쓰기량이나 데이터 양이 한 서버를 넘고, 다중 엔터티 트랜잭션이 거의 필요 없을 때 NoSQL이 이득이다. 반대로 질의가 다양하고 정합성이 중요한 데이터는 RDB가 싸다.
 
 | 상황 | 유리한 쪽 |
 | --- | --- |

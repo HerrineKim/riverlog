@@ -5,11 +5,12 @@ summary: "프로세스들이 서로의 자원을 기다리며 멈추는 교착 �
 tags: ["os", "deadlock", "process", "synchronization"]
 source: notion
 date: "2026-10-12"
-sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://riverkim.kr/215", "https://bytebytego.com/guides/what-is-a-deadlock", "https://www.youtube.com/watch?v=Kcv0_Yb8Rqw", "https://www.youtube.com/watch?v=zQDNXklvdUw"]
+sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://riverkim.kr/215", "https://bytebytego.com/guides/what-is-a-deadlock", "https://www.youtube.com/watch?v=Kcv0_Yb8Rqw", "https://www.youtube.com/watch?v=zQDNXklvdUw", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
 > 노션 정리를 바탕으로 재구성하고, 데이터베이스의 교착 상태 처리는 ByteByteGo의 System Design 101 가이드 「[What is a Deadlock?](https://bytebytego.com/guides/what-is-a-deadlock)」를 바탕으로 보강한 노트다.
 > 「식사하는 철학자 문제」, 「자원 할당 그래프」, 「회피」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 네 조건이 필요 조건인 이유 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 **교착 상태(deadlock)** 는 일련의 프로세스들이 서로가 가진 자원을 기다리며 모두 blocked 된 상태다. 예를 들어 두 프로세스가 각각 lock 하나씩을 쥔 채 상대방의 lock을 기다리면 둘 다 영원히 진행할 수 없다.
 
@@ -41,6 +42,8 @@ sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://
 | 비선점 (No Preemption) | 프로세스는 자원을 스스로 내놓을 뿐, 강제로 빼앗기지 않음 |
 | 보유 대기 (Hold and Wait) | 자원을 가진 채로 다른 자원을 기다리며, 가진 것을 놓지 않음 |
 | 순환 대기 (Circular Wait) | 자원을 기다리는 프로세스들 사이에 사이클이 형성됨 |
+
+네 조건은 **필요 조건**이라 하나만 빠져도 교착 상태가 생기지 않는다. 순환 대기가 없으면 「누가 누구를 기다리나」를 따라가다 결국 아무것도 기다리지 않는 프로세스에 닿고, 그 프로세스가 끝나 자원을 내놓으면 사슬이 차례로 풀린다. 선점이 되면 자원을 빼앗아 사슬을 끊을 수 있고, 보유 대기가 없으면 기다리는 프로세스는 아무것도 쥐고 있지 않아 남을 막지 않는다. 상호 배제가 없으면 애초에 기다릴 일이 없다. 반대로 네 조건이 다 성립해도 자원 인스턴스가 여러 개면 교착 상태가 아닐 수 있다(아래 자원 할당 그래프). 처리 방법 중 「예방」이 바로 이 조건 하나를 깨는 방식이다.
 
 ## 자원 할당 그래프
 

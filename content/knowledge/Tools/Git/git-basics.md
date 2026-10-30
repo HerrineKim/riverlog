@@ -1,18 +1,41 @@
 ---
 title: "Git 기본 명령과 파일 상태"
 concept: "Git Basics"
-summary: "저장소를 만들고 add·commit으로 버전을 기록하며, 파일이 untracked·modified·staged·committed 상태를 오가는 흐름, 작업 디렉터리·스테이징·로컬·원격 네 곳 사이에서 명령이 코드를 옮기는 방식. 커밋을 식별하는 해시도 함께 다룬다."
+summary: "Git이 분산 버전 관리 시스템으로서 중앙 집중식(SVN)과 다른 점, 저장소를 만들고 add·commit으로 버전을 기록하며, 파일이 untracked·modified·staged·committed 상태를 오가는 흐름, 작업 디렉터리·스테이징·로컬·원격 네 곳 사이에서 명령이 코드를 옮기는 방식. 커밋을 식별하는 해시도 함께 다룬다."
 tags: ["git", "version-control", "cli"]
 source: til
 date: "2026-10-21"
-sources: ["https://80000coding.notion.site/2ea16c6dc08341c1a13339e30fe8ac49", "https://bytebytego.com/guides/how-does-git-work", "https://bytebytego.com/guides/git-workflow", "https://bytebytego.com/guides/git-commands-cheat-sheet", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://blog.outsider.ne.kr/1247", "https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md"]
+sources: ["https://80000coding.notion.site/2ea16c6dc08341c1a13339e30fe8ac49", "https://bytebytego.com/guides/how-does-git-work", "https://bytebytego.com/guides/git-workflow", "https://bytebytego.com/guides/git-commands-cheat-sheet", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://blog.outsider.ne.kr/1247", "https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md", "https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
 ---
 
 > 「git add -p」 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「git 변경사항 잘게 쪼개서 add 하기」를 바탕으로 보강했다. 「원격까지 네 곳」은 ByteByteGo의 System Design 101 가이드 「[How Git Works](https://bytebytego.com/guides/how-does-git-work)」, 「[How does Git Work?](https://bytebytego.com/guides/git-workflow)」, 「[Git Commands Cheat Sheet](https://bytebytego.com/guides/git-commands-cheat-sheet)」를 바탕으로 보강했다.
 > 「차이 보기」, 「파일 옮기기와 추적 그만하기」는 arslanbilal의 「[Git and Git Flow Cheat Sheet](https://github.com/arslanbilal/git-cheat-sheet)」와 mingrammer의 「[Git Tips](https://github.com/mingrammer/git-tips)」를 바탕으로 보강했다.
 > 「git add -p」의 `a`·`d`와 `-N`, 「커밋 전에 diff 보기」는 「[git add -p 와 git commit -v 의 사용](https://blog.outsider.ne.kr/1247)」과 「[Git Flight Rules](https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md)」를 바탕으로 보강했다.
+> 「Git이란: 분산 버전 관리」는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」의 질문을 계기로 Pro Git의 「[About Version Control](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control)」을 바탕으로 보강했다.
 
 Git으로 버전을 남기는 과정은 결국 **"작업한 파일을 골라서(add) 스냅숏으로 기록(commit)"** 하는 일의 반복이다. 이 흐름과 각 단계에서 파일이 어떤 상태인지 알면 대부분의 `git status` 메시지를 읽을 수 있다.
+
+## Git이란: 분산 버전 관리
+
+**버전 관리 시스템(VCS)** 은 파일의 변경 이력을 기록해 두고, 원하는 시점으로 되돌리거나 여러 사람의 변경을 합치게 해 주는 도구다. 이력을 어디에 두느냐로 세 가지로 나뉜다.
+
+| 방식 | 이력이 있는 곳 | 예 | 특징 |
+| --- | --- | --- | --- |
+| 로컬 VCS | 내 컴퓨터의 데이터베이스 | RCS | 혼자 쓸 때만 맞다. 협업이 안 된다 |
+| 중앙 집중식(CVCS) | 중앙 서버 하나. 클라이언트는 최신 파일만 받는다 | SVN, CVS, Perforce | 관리가 단순하고 권한 통제가 쉽다. 서버가 죽으면 커밋·이력 조회가 멈추고, 서버 디스크를 잃으면 이력도 잃는다 |
+| 분산(DVCS) | **모든 클론이 전체 이력의 사본**을 가진다 | Git, Mercurial | 커밋·브랜치·로그·diff를 네트워크 없이 로컬에서 한다. 어느 클론으로든 저장소를 복원할 수 있다 |
+
+Git은 분산 버전 관리 시스템이고, 다른 VCS와 구분되는 성질이 몇 가지 있다.
+
+| 성질 | 뜻 | 자세히 |
+| --- | --- | --- |
+| 스냅숏 저장 | 커밋마다 변경분(delta)이 아니라 그 시점 전체 파일 구조를 가리킨다. 바뀌지 않은 파일은 이전 것을 재사용한다 | [[git-internals\|Git의 내부 구조]] |
+| 내용 기반 해시 | 모든 객체를 내용의 해시(SHA-1, 새 저장소는 SHA-256도 선택 가능)로 식별해 몰래 바뀐 데이터를 알아챈다 | [[git-internals\|Git의 내부 구조]] |
+| 가벼운 브랜치 | 브랜치는 커밋 하나를 가리키는 포인터라 만들고 바꾸는 비용이 거의 없다. 그래서 기능마다 브랜치를 따는 작업 방식이 가능하다 | [[branch\|Git 브랜치]] |
+| 스테이징 영역 | 작업 디렉터리와 커밋 사이에 「다음 커밋에 넣을 것」을 고르는 단계가 하나 더 있다 | 아래 「세 개의 영역」 |
+| 대부분 로컬 작업 | 원격과 통신하는 명령은 `clone`·`fetch`·`pull`·`push` 정도다 | [[remote-github\|원격 저장소와 GitHub]] |
+
+Git은 도구이고 GitHub·GitLab은 Git 저장소를 호스팅하며 PR·이슈 같은 협업 기능을 얹은 서비스다.
 
 ## 세 개의 영역
 
@@ -201,6 +224,7 @@ $ rm -rf dir        # 폴더와 하위 파일 모두 삭제 (주의)
 
 ## 핵심 정리
 
+- Git은 모든 클론이 전체 이력을 가지는 분산 버전 관리 시스템이고, 변경분이 아니라 스냅숏을 기록한다.
 - 버전 기록 = `add`로 고르고 `commit`으로 남긴다.
 - `git status`의 세 구역(staged / not staged / untracked)은 Staging Area · Working Directory · 미추적 파일에 대응한다.
 - `.git` 폴더가 곧 저장소다. 지우면 이력이 사라진다.

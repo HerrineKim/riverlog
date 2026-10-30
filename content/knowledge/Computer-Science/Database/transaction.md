@@ -1,15 +1,16 @@
 ---
 title: "트랜잭션과 회복"
 concept: "Transaction"
-summary: "트랜잭션의 ACID 특성, 이를 지키기 위한 병행 제어·고립화 수준·회복 기법을 연결해서 정리. MVCC가 스냅숏으로 읽는 방식, 잠금의 종류와 단위, 비관적·낙관적 잠금까지 다룬다."
+summary: "트랜잭션의 ACID 특성, 이를 지키기 위한 병행 제어·고립화 수준·회복 기법을 연결해서 정리. MVCC가 스냅숏으로 읽는 방식과 InnoDB·PostgreSQL의 구현 차이(undo·VACUUM), 스냅숏 격리·쓰기 스큐·SSI, 잠금의 종류와 단위, 비관적·낙관적 잠금, 2PC와 사가까지 다룬다."
 tags: ["database", "transaction", "acid", "certificate", "concurrency"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebytego.com/guides/what-are-database-isolation-levels", "https://bytebytego.com/guides/what-are-the-differences-among-database-locks", "https://bytebytego.com/guides/pessimistic-vs-optimistic-locking", "https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html", "https://d2.naver.com/helloworld/407507", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md"]
+sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebytego.com/guides/what-are-database-isolation-levels", "https://bytebytego.com/guides/what-are-the-differences-among-database-locks", "https://bytebytego.com/guides/pessimistic-vs-optimistic-locking", "https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html", "https://d2.naver.com/helloworld/407507", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://www.postgresql.org/docs/current/transaction-iso.html", "https://www.postgresql.org/docs/current/routine-vacuuming.html"]
 ---
 
 > 노션 정리를 바탕으로, MVCC·잠금의 종류·비관적/낙관적 잠금은 ByteByteGo의 System Design 101 가이드 「[What does ACID mean?](https://bytebytego.com/guides/what-does-acid-mean)」, 「[What are Database Isolation Levels?](https://bytebytego.com/guides/what-are-database-isolation-levels)」, 「[What are the Differences Among Database Locks?](https://bytebytego.com/guides/what-are-the-differences-among-database-locks)」, 「[Pessimistic vs Optimistic Locking](https://bytebytego.com/guides/pessimistic-vs-optimistic-locking)」로, 버퍼 정책·로그·재시작 복구는 「[DBMS는 어떻게 트랜잭션을 관리할까?](https://d2.naver.com/helloworld/407507)」로 보강했다.
 > 트랜잭션의 상태와 DB 교착 상태는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로 보강했다.
+> 스냅숏 격리와 쓰기 스큐, SSI, InnoDB와 PostgreSQL의 MVCC 비교, VACUUM, 분산 트랜잭션, 비정상 종료 시 잠금 해제는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 PostgreSQL·MySQL 공식 문서로 확인해 보강했다.
 
 트랜잭션은 데이터베이스에서 **하나의 논리적 작업 단위**다. 계좌 이체처럼 "출금"과 "입금"이 둘 다 되거나 둘 다 안 되어야 하는 작업을 묶는다. 트랜잭션이 지켜야 할 네 가지 성질(ACID)과, DBMS가 각 성질을 보장하는 수단을 짝지어 기억하면 이해가 쉽다.
 
@@ -61,6 +62,21 @@ sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebyte
 
 잠금과 트랜잭션은 목적이 다르다. **잠금은 동시에 같은 자원을 고치지 못하게 하는 동시성 제어 수단**이고, **트랜잭션은 작업 묶음이 전부 반영되거나 전혀 반영되지 않게 하는 정합성 단위**다. 쿼리가 하나뿐인 작업도 트랜잭션이다.
 
+## 언제 트랜잭션으로 묶나
+
+대부분의 DBMS는 **자동 커밋(autocommit)** 이 기본이라, 명시적으로 묶지 않은 문장 하나하나가 각자 트랜잭션으로 실행되고 바로 커밋된다. 그래서 「트랜잭션을 건다」는 말은 **여러 문장을 한 단위로 묶는다**는 뜻이다.
+
+| 상황 | 묶는 이유 |
+| --- | --- |
+| 계좌 이체, 주문 생성 + 재고 차감 + 결제 기록 | 여러 쓰기가 전부 되거나 전부 안 되어야 한다(원자성) |
+| 읽은 값을 보고 쓰는 작업(잔액 확인 후 차감) | 읽기와 쓰기 사이에 다른 트랜잭션이 끼어들지 못하게 잠금·격리 수준을 함께 쓴다 |
+| 여러 테이블을 읽어 한 시점의 보고서를 만든다 | 문장마다 다른 시점을 보면 합계가 맞지 않는다. 한 트랜잭션의 스냅숏으로 읽는다 |
+
+**읽기만 하는 작업에도 트랜잭션이 필요할 수 있다.** `SELECT` 한 문장은 그 자체로 한 시점의 일관된 결과를 보므로 따로 묶지 않아도 된다. 하지만 서로 맞아야 하는 `SELECT`를 여러 번 하면, 그 사이 커밋된 변경 때문에 결과끼리 어긋난다. 이때는 Repeatable Read 이상의 트랜잭션으로 묶어 같은 스냅숏을 읽는다.
+
+- **읽기 전용 트랜잭션**(`START TRANSACTION READ ONLY`, `SET TRANSACTION READ ONLY`)은 쓰기를 막고, DB가 최적화할 여지를 준다. InnoDB는 읽기 전용 트랜잭션에 트랜잭션 ID를 할당하지 않는다. Spring의 `@Transactional(readOnly = true)`는 JPA의 변경 감지·flush를 건너뛰고, 설정에 따라 읽기 복제본으로 보내는 기준이 된다.
+- **긴 읽기 트랜잭션은 비싸다.** 오래된 스냅숏을 쥐고 있는 동안 옛 버전을 지울 수 없어, InnoDB는 undo 로그가, PostgreSQL은 죽은 튜플이 쌓인다(아래 「MVCC 구현 비교」).
+
 ## 병행 제어 (Concurrency Control)
 
 여러 트랜잭션이 동시에 실행될 때 결과가 순차 실행한 것과 같도록 보장한다.
@@ -81,7 +97,14 @@ sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebyte
 | Repeatable Read | 방지 | 방지 | 발생 |
 | Serializable | 방지 | 방지 | 방지 |
 
-위 표는 SQL 표준의 정의다. 실제 DBMS는 MVCC로 구현해 표준보다 강하게 막는 경우가 있다. 예를 들어 PostgreSQL은 Read Uncommitted를 Read Committed처럼 다루고 Repeatable Read에서도 팬텀을 막는다. MySQL InnoDB의 기본값은 Repeatable Read, PostgreSQL·Oracle의 기본값은 Read Committed다.
+위 표는 SQL 표준의 정의다. 표준은 「이 수준에서 막아야 할 현상」만 정하고 구현 방법은 정하지 않는다. 그래서 **모든 DBMS가 네 수준을 그대로 구현하지는 않는다.** 잠금 기반이 아니라 MVCC로 만든 DB는 더러운 읽기를 허용할 이유가 없고(옛 버전을 읽으면 되므로), 표준보다 강한 수준으로 올려 처리한다.
+
+| DBMS | 지원 수준과 실제 동작 | 기본값 |
+| --- | --- | --- |
+| MySQL InnoDB | 네 수준 모두. Repeatable Read는 일반 읽기를 스냅숏으로 하고, 잠금 읽기·쓰기에는 넥스트 키 잠금을 걸어 팬텀을 대부분 막는다. Serializable은 자동 커밋이 아닐 때 일반 `SELECT`를 `SELECT ... FOR SHARE`로 바꾼다 | Repeatable Read |
+| PostgreSQL | 네 수준을 받지만 Read Uncommitted는 Read Committed로 동작한다. Repeatable Read는 스냅숏 격리라 팬텀도 막는다. Serializable은 SSI | Read Committed |
+| Oracle | Read Committed와 Serializable 두 가지(와 Read Only)만 있다. Oracle의 Serializable은 실제로는 스냅숏 격리라 쓰기 스큐가 생긴다 | Read Committed |
+| SQL Server | 네 수준 + `SNAPSHOT`. `READ_COMMITTED_SNAPSHOT` 옵션을 켜면 Read Committed도 잠금 대신 버전으로 읽는다 | Read Committed |
 
 ### MVCC가 스냅숏으로 읽는 방식
 
@@ -104,7 +127,92 @@ A가 커밋한 뒤에도 B(Repeatable Read)는 처음 만든 읽기 뷰를 계�
 | Read Committed | **문장마다** 새로 만든다 | 같은 트랜잭션 안에서도 다른 트랜잭션이 커밋한 새 값이 보인다 |
 | Repeatable Read | 트랜잭션의 **첫 읽기 때 한 번** 만든다 | 트랜잭션 내내 같은 스냅숏을 본다 |
 
-PostgreSQL은 undo 로그 대신 테이블 안에 옛 튜플 버전을 남기고(`xmin`·`xmax`로 생성·삭제 트랜잭션 표시), 나중에 VACUUM이 정리한다. MVCC는 **읽기**의 충돌을 없앨 뿐이고, 같은 행을 동시에 **쓰는** 충돌은 여전히 잠금으로 막는다.
+MVCC는 **읽기**의 충돌을 없앨 뿐이고, 같은 행을 동시에 **쓰는** 충돌은 여전히 잠금으로 막는다.
+
+### InnoDB의 undo와 redo
+
+InnoDB는 변경 하나에 두 종류의 로그를 남긴다. 이름이 비슷하지만 목적이 반대다.
+
+| 구분 | redo 로그 | undo 로그 |
+| --- | --- | --- |
+| 담는 것 | 페이지를 **어떻게 바꿨나**(변경 후 정보, 물리적) | 바꾸기 **전 값**(되돌리는 데 필요한 정보, 논리적) |
+| 목적 | 지속성: 커밋됐지만 데이터 파일에 아직 안 쓰인 변경을 재시작 때 다시 적용 | 원자성: 롤백. 그리고 MVCC: 다른 트랜잭션에 옛 버전을 보여 준다 |
+| 위치 | 고정 크기의 순환 파일. 8.0.30부터 `innodb_redo_log_capacity`로 크기를 정하고 `#innodb_redo` 디렉터리에 둔다 | undo 테이블스페이스(기본 2개) 안의 롤백 세그먼트 |
+| 지우는 때 | 체크포인트로 해당 페이지가 디스크에 내려가면 그 구간을 재사용한다 | 커밋 뒤에도 그 버전을 볼 읽기 뷰가 남아 있으면 유지한다. 아무도 안 보게 되면 **퍼지(purge) 스레드**가 지운다 |
+
+삭제도 바로 지우지 않고 「지움 표시」만 한 뒤 퍼지가 정리한다. 오래 열린 트랜잭션이 있으면 퍼지가 멈춰 undo가 쌓이고(`SHOW ENGINE INNODB STATUS`의 History list length가 늘어난다), 버전 체인이 길어져 읽기도 느려진다.
+
+### MVCC 구현 비교: InnoDB와 PostgreSQL
+
+| 항목 | MySQL InnoDB | PostgreSQL |
+| --- | --- | --- |
+| 옛 버전이 있는 곳 | undo 로그. 테이블에는 최신 버전만 있다 | **테이블(힙) 안**. UPDATE는 새 튜플을 추가하고 옛 튜플에 `xmax`를 적는다 |
+| 버전 판단 | 행의 `DB_TRX_ID`와 읽기 뷰 | 튜플의 `xmin`(만든 트랜잭션)·`xmax`(지운 트랜잭션)와 스냅숏 |
+| 옛 버전 정리 | 퍼지 스레드 | **VACUUM** |
+| 인덱스 | 보조 인덱스는 기본 키를 가리켜 행이 바뀌어도 그대로인 경우가 많다 | 인덱스가 튜플 위치를 가리키므로 UPDATE마다 인덱스 항목도 새로 생길 수 있다. 인덱스 컬럼이 안 바뀌고 같은 페이지에 자리가 있으면 **HOT(Heap-Only Tuple)** 갱신으로 인덱스를 건드리지 않는다 |
+| 롤백 | undo를 적용해 되돌린다 | 되돌릴 것이 없다. 중단된 트랜잭션의 튜플은 커밋 기록(`pg_xact`)상 중단으로 보여 그냥 안 보인다 |
+| 약점 | 긴 트랜잭션이 undo를 키운다 | 갱신이 잦은 테이블이 죽은 튜플로 부푼다(bloat) |
+
+### VACUUM과 autovacuum
+
+PostgreSQL에서 UPDATE·DELETE가 남긴 옛 튜플은 어떤 스냅숏에서도 보이지 않게 되면 **죽은 튜플(dead tuple)** 이 된다. VACUUM이 하는 일은 넷이다.
+
+| 일 | 이유 |
+| --- | --- |
+| 죽은 튜플 공간을 재사용 가능으로 표시 | 공간을 비워 테이블이 끝없이 커지지 않게 한다. 일반 VACUUM은 파일을 줄이지 않고 그 안을 재사용한다 |
+| 가시성 맵(visibility map) 갱신 | 모든 튜플이 보이는 페이지를 표시해 인덱스 전용 스캔이 힙을 읽지 않게 한다 |
+| 트랜잭션 ID 동결(freeze) | 트랜잭션 ID는 32비트라 한 바퀴 돌면 과거가 미래처럼 보인다(wraparound). 오래된 튜플을 「언제나 과거」로 표시해 막는다 |
+| 통계 갱신(`VACUUM ANALYZE`) | 옵티마이저가 쓰는 통계를 새로 만든다 |
+
+`VACUUM FULL`은 테이블을 새로 써서 파일 크기를 줄이지만 그동안 배타 잠금을 잡아 읽기·쓰기를 모두 막는다. 운영 중에는 pg_repack 같은 도구를 쓴다.
+
+**autovacuum**은 이 일을 자동으로 한다. 런처 프로세스가 테이블을 살피다가 죽은 튜플 수가 `autovacuum_vacuum_threshold`(기본 50) + `autovacuum_vacuum_scale_factor`(기본 0.2) × 행 수를 넘으면 워커가 VACUUM을, 비슷한 기준으로 ANALYZE를 돌린다.
+
+| 문제 상황 | 원인 | 대응 |
+| --- | --- | --- |
+| 큰 테이블이 부푼다 | 기준이 행 수의 20%라 1억 행 테이블은 2천만 개가 쌓여야 돈다 | 그 테이블만 `scale_factor`를 낮춘다(`ALTER TABLE ... SET (autovacuum_vacuum_scale_factor = 0.01)`) |
+| VACUUM이 돌아도 줄지 않는다 | 오래 열린 트랜잭션, 쓰이지 않는 복제 슬롯, 남은 준비된 트랜잭션이 옛 스냅숏을 붙잡고 있다 | `pg_stat_activity`의 `xact_start`로 긴 트랜잭션을 찾고 `idle_in_transaction_session_timeout`을 건다 |
+| 갑자기 I/O가 튄다 | VACUUM이 많은 페이지를 읽고 쓴다. 비용 제한(`autovacuum_vacuum_cost_limit`)이 낮으면 반대로 따라잡지 못한다 | 비용 한도와 워커 수를 부하에 맞춘다 |
+| 강제 VACUUM이 끝나지 않는다 | wraparound가 가까우면 꺼 둔 테이블에도 공격적인 동결 VACUUM이 돈다. 끝까지 못 하면 DB가 새 트랜잭션 ID 발급을 거부한다 | 평소에 동결이 따라가도록 autovacuum을 끄지 않는다 |
+
+### 스냅숏 격리와 쓰기 스큐
+
+**스냅숏 격리(Snapshot Isolation, SI)** 는 트랜잭션이 시작한 시점의 커밋된 데이터만 보는 격리 방식이다. 읽기는 스냅숏에서 하므로 잠금을 걸지 않고, 쓰기 충돌은 **먼저 커밋한 쪽이 이긴다(first-committer-wins)**. 같은 행을 두 트랜잭션이 고치면 뒤에 커밋하려는 쪽이 실패한다. SQL 표준의 네 수준에는 없는 이름이고, PostgreSQL의 Repeatable Read가 이것이다.
+
+| 비교 | Read Committed | 스냅숏 격리 |
+| --- | --- | --- |
+| 스냅숏을 잡는 때 | 문장마다 | 트랜잭션의 첫 읽기 때 한 번 |
+| 같은 트랜잭션에서 다시 읽기 | 그사이 커밋된 값이 보인다(반복 불가능한 읽기) | 처음 본 값을 계속 본다 |
+| 같은 행 동시 갱신 | 먼저 쓴 쪽의 커밋을 기다렸다가 최신 값에 다시 적용한다. 갱신 손실이 생길 수 있다 | 뒤에 커밋하는 쪽이 직렬화 오류로 실패한다(PostgreSQL) |
+| 쓰기 스큐 | 생긴다 | **생긴다** |
+
+InnoDB의 Repeatable Read는 순수한 스냅숏 격리와 다르다. 일반 `SELECT`는 스냅숏을 읽지만 `UPDATE`·`SELECT ... FOR UPDATE`는 **가장 최신 커밋 버전(current read)** 을 읽고 고친다. 그래서 충돌로 실패하지 않는 대신, 스냅숏으로 읽은 값을 보고 계산해 쓰면 갱신 손실이 날 수 있다.
+
+**쓰기 스큐(write skew)** 는 두 트랜잭션이 **같은 조건을 읽고, 서로 다른 행을 고쳐서** 둘이 합쳐지면 조건이 깨지는 현상이다. 고친 행이 다르니 쓰기 충돌 검사에 걸리지 않는다.
+
+```text
+규칙: 당직 의사는 최소 1명 (현재 A, B 두 명이 당직)
+
+T1(A): SELECT count(*) FROM oncall WHERE on_duty → 2   T2(B): SELECT count(*) ... → 2
+T1: 2명이니 빠져도 된다 → UPDATE oncall SET on_duty=false WHERE doctor='A'
+                                                     T2: UPDATE ... WHERE doctor='B'
+T1 COMMIT, T2 COMMIT  → 당직 0명. 둘 다 각자의 스냅숏에서는 옳았다
+```
+
+막는 방법은 세 가지다. 판단 근거가 된 행을 `SELECT ... FOR UPDATE`로 잠그거나, 충돌을 표현하는 행(당직표 한 행 같은 잠금용 행)을 두어 실제 쓰기 충돌로 바꾸거나, Serializable 격리를 쓴다.
+
+### SSI: 직렬화 가능한 스냅숏 격리
+
+PostgreSQL의 Serializable(9.1부터)은 **SSI(Serializable Snapshot Isolation)** 다. 스냅숏 격리 위에 「트랜잭션 사이의 읽기-쓰기 의존」을 추적하는 장치를 더해, 직렬 실행으로는 나올 수 없는 결과가 될 위험이 보이면 한쪽을 중단시킨다.
+
+| 항목 | 스냅숏 격리 | SSI |
+| --- | --- | --- |
+| 읽기 | 스냅숏, 잠금 없음 | 스냅숏 + 읽은 범위를 **SIREAD 잠금**(술어 잠금)으로 기록. 이 잠금은 아무도 막지 않고 의존 관계를 찾는 데만 쓴다 |
+| 감지 | 같은 행을 쓴 충돌만 | 내가 읽은 것을 남이 고치는 읽기-쓰기 의존(rw-conflict)이 순환을 만들 수 있는 모양(연속된 두 rw 의존)이 보이면 중단 |
+| 쓰기 스큐 | 생긴다 | 막는다. 한 트랜잭션이 `could not serialize access`(SQLSTATE `40001`)로 실패한다 |
+| 비용 | 낮다 | 추적 비용과 오탐에 의한 중단이 있다. **애플리케이션이 재시도**해야 한다 |
+
+잠금으로 Serializable을 만드는 방식(2PL)은 읽기도 다른 쓰기를 막지만, SSI는 아무것도 막지 않고 낙관적으로 진행하다 위험할 때만 중단한다. 읽기 전용 트랜잭션은 `READ ONLY DEFERRABLE`로 선언하면 중단될 일이 없는 스냅숏을 기다렸다가 받는다.
 
 ## 잠금의 종류와 단위
 
@@ -188,6 +296,58 @@ INSERT INTO a VALUES (1);  -- T2의 잠금 대기
 - 충돌로 실패한 트랜잭션은 **재시도 로직**을 둔다.
 - 트랜잭션 범위도 꼭 필요한 코드로 좁힌다. 트랜잭션이 길면 DB 커넥션을 오래 붙잡아 [[connection-pool|커넥션 풀]]이 바닥나고 다른 요청이 커넥션을 기다린다.
 
+### 잠금을 쥔 클라이언트가 사라지면
+
+DB의 잠금은 **트랜잭션에 묶여 있고, 트랜잭션은 세션(연결)에 묶여 있다.** 그래서 잠금이 영원히 남는 일은 대개 일어나지 않는다.
+
+| 상황 | DB의 처리 |
+| --- | --- |
+| 애플리케이션 프로세스가 죽었다 | OS가 TCP 연결을 닫는다. 서버는 세션을 끝내며 열린 트랜잭션을 **롤백하고 잠금을 푼다** |
+| 네트워크가 조용히 끊겼다 | 서버는 연결이 살아 있는 줄 안다. TCP keepalive(PostgreSQL `tcp_keepalives_idle` 등)나 유휴 연결 타임아웃(MySQL `wait_timeout`)이 끊긴 연결을 찾아낸 뒤 롤백한다. 그때까지 잠금이 남는다 |
+| 클라이언트는 살아 있는데 트랜잭션을 연 채 멈췄다 | DB 입장에서는 정상이라 잠금이 계속 남는다. 가장 위험한 경우다 |
+
+마지막 경우는 시간 제한으로 막는다.
+
+| 장치 | 효과 |
+| --- | --- |
+| 잠금 대기 시간 제한 (MySQL `innodb_lock_wait_timeout` 기본 50초, PostgreSQL `lock_timeout`) | **기다리는 쪽**이 포기하게 한다. 잠금을 쥔 쪽은 그대로다 |
+| 트랜잭션 안 유휴 시간 제한 (PostgreSQL `idle_in_transaction_session_timeout`) | 트랜잭션을 연 채 놀고 있는 세션을 끊어 잠금을 푼다 |
+| 문장 실행 시간 제한 (PostgreSQL `statement_timeout`, MySQL `max_execution_time`은 SELECT만) | 오래 도는 쿼리를 끊는다 |
+| 수동 정리 | 잠금을 쥔 세션을 찾아(MySQL `performance_schema.data_locks`·`information_schema.innodb_trx`, PostgreSQL `pg_locks`·`pg_stat_activity`) `KILL`이나 `pg_terminate_backend()`로 끊는다 |
+
+DB 밖에서 만든 분산 락(Redis 키 등)은 세션이 없으므로 **만료 시간(TTL)을 반드시 둔다.** 만료 뒤에 옛 주인이 늦게 쓰는 일을 막으려면 락을 얻을 때마다 커지는 번호(펜싱 토큰)를 함께 쓴다.
+
+## 분산 트랜잭션
+
+한 DB의 ACID는 그 서버 안에서만 성립한다. 주문 DB와 결제 DB처럼 여러 저장소에 걸친 작업을 하나로 묶으려면 다른 장치가 필요하다.
+
+### 2단계 커밋 (2PC)
+
+**코디네이터**가 참여자(각 DB)에게 두 단계로 묻는다.
+
+```text
+1단계 준비(prepare)  코디네이터 ── "커밋할 수 있나?" ──▶ 참여자들
+                     참여자: 변경을 로그에 남기고 잠금을 쥔 채 "예/아니오" 투표
+2단계 확정(commit)   모두 "예" → 코디네이터가 커밋 결정을 기록하고 "커밋" 전달
+                     하나라도 "아니오"·응답 없음 → "롤백" 전달
+```
+
+- 준비에 「예」라고 답한 참여자는 혼자 결정할 수 없다. **코디네이터가 2단계 직전에 죽으면 참여자는 잠금을 쥔 채 결과를 기다린다(in-doubt).** 2PC가 블로킹 프로토콜이라 불리는 이유다.
+- 모든 참여자를 기다리므로 가장 느린 참여자가 전체 지연을 정하고, 하나만 죽어도 전체가 실패한다.
+- 표준 인터페이스는 X/Open **XA**다. MySQL은 `XA START ... XA PREPARE ... XA COMMIT`, PostgreSQL은 `PREPARE TRANSACTION`(기본값 `max_prepared_transactions = 0`이라 켜야 쓴다)을 제공한다. 남겨진 준비된 트랜잭션은 잠금과 VACUUM을 막으므로 감시한다.
+- Spanner·CockroachDB 같은 분산 SQL도 내부적으로 2PC를 쓰되, 참여자 각각을 합의(Raft·Paxos)로 복제해 코디네이터 장애에도 결정이 사라지지 않게 한다.
+
+### 사가와 최종 일관성
+
+마이크로서비스처럼 참여자가 서로 다른 팀·기술의 서비스면 2PC의 잠금과 결합을 견디기 어렵다. 그래서 하나의 큰 트랜잭션 대신 **로컬 트랜잭션의 연쇄**로 나누고, 중간에 실패하면 앞 단계를 취소하는 **보상 트랜잭션**을 실행하는 **사가(saga)** 를 쓴다. 격리성을 포기하는 대신 가용성을 얻는다. 사가의 구현(오케스트레이션·코레오그래피)과 아웃박스 패턴은 [[distributed-data-patterns|데이터 관리 패턴]]에 있다.
+
+| 비교 | 2PC | 사가 |
+| --- | --- | --- |
+| 일관성 | 강한 일관성(원자적 커밋) | 최종 일관성. 중간 상태가 남에게 보인다 |
+| 잠금 | 준비부터 확정까지 쥔다 | 단계마다 로컬 트랜잭션으로 짧게 |
+| 실패 처리 | 롤백 | 보상 트랜잭션(환불, 재고 복구)을 직접 설계 |
+| 맞는 곳 | 한 조직이 관리하는 소수의 DB | 서비스 경계를 넘는 긴 업무 흐름 |
+
 ## 회복 기법 (Recovery)
 
 장애가 났을 때 DB를 일관된 상태로 되돌린다. 로그에 기록된 정보로 **REDO**(커밋된 작업을 다시 반영)와 **UNDO**(커밋 안 된 작업을 취소)를 수행한다.
@@ -228,6 +388,17 @@ DBMS는 데이터를 고정 크기 **페이지** 단위로 읽고 쓰며, 메모
 1. **WAL(Write-Ahead Logging)**: 데이터 페이지가 디스크에 쓰이기 전에 그 변경의 UNDO 정보가 먼저 로그에 쓰여야 한다.
 2. 커밋이 끝나기 전에 그 트랜잭션의 REDO 정보가 로그 파일에 쓰여야 한다.
 
+**PostgreSQL의 WAL**은 `pg_wal` 디렉터리에 16MB 세그먼트 파일로 쌓인다. PostgreSQL은 undo 로그가 없으므로(옛 버전이 힙에 남는다) WAL은 REDO 정보만 담는다.
+
+| 역할 | 동작 |
+| --- | --- |
+| 크래시 복구 | 마지막 **체크포인트**(`checkpoint_timeout` 기본 5분, `max_wal_size` 기본 1GB 중 먼저 닿는 쪽)의 시작 지점부터 WAL을 다시 적용한다. 체크포인트 뒤 페이지를 처음 고칠 때는 페이지 전체를 WAL에 남겨(`full_page_writes`) 반쯤 쓰인 페이지(torn page)도 복구한다 |
+| 물리 복제 | 스트리밍 복제는 WAL 레코드를 그대로 대기 서버로 보내 다시 적용한다. `synchronous_standby_names`를 정하면 커밋이 대기 서버의 확인을 기다린다 |
+| 논리 복제 · CDC | `wal_level = logical`이면 WAL을 행 단위 변경으로 해석(논리 디코딩)해 다른 DB나 Debezium 같은 CDC 도구로 보낸다 |
+| 시점 복구(PITR) | 베이스 백업 + 보관(archive)한 WAL을 원하는 시각까지 적용한다 |
+
+복제 슬롯이 WAL을 붙잡고 있는데 소비자가 멈추면 `pg_wal`이 디스크를 채운다. 쓰지 않는 슬롯은 지운다.
+
 ### 커밋 비용 줄이기
 
 커밋 시간의 대부분은 로그를 쓰고 `fsync`로 디스크 반영을 기다리는 시간이다.
@@ -265,5 +436,7 @@ DBMS는 데이터를 고정 크기 **페이지** 단위로 읽고 쓰며, 메모
 - 지연 갱신은 REDO만, 즉시 갱신은 REDO + UNDO. 실제 DBMS는 STEAL + ¬FORCE라서 WAL 로그로 둘 다 한다.
 - MVCC는 버전을 남겨 읽기와 쓰기가 서로 막지 않게 하고, 쓰기끼리의 충돌은 잠금으로 막는다.
 - 경쟁이 몰리는 데이터는 비관적 잠금, 충돌이 드문 데이터는 낙관적 잠금이 맞다.
+- 스냅숏 격리도 쓰기 스큐를 막지 못한다. 막으려면 판단 근거 행을 잠그거나 SSI(PostgreSQL Serializable)를 쓴다.
+- 여러 DB에 걸친 작업은 2PC(강한 일관성, 블로킹) 또는 사가(보상 트랜잭션, 최종 일관성)로 묶는다.
 
 로킹으로 상호 배제를 구현하는 발상은 운영체제의 [[process-synchronization|프로세스 동기화]]와 같고, 트랜잭션끼리 서로의 잠금을 기다리면 [[deadlock|교착 상태]]가 생길 수 있다. SQL이 실행될 때 잠금 관리자가 어디에 끼는지는 [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]]에 있다.

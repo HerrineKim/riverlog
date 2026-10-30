@@ -5,10 +5,10 @@ summary: "인스턴스를 만들 수 없는 추상 클래스와, 구현할 행�
 tags: ["oop", "design-pattern", "software-engineering", "computer-science"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/6b1c657ef1284851a66fe008c3709bbf", "https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html"]
+sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/python.md", "https://80000coding.notion.site/6b1c657ef1284851a66fe008c3709bbf", "https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「추상 클래스와 인터페이스」를 바탕으로 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「추상 클래스와 인터페이스」를 바탕으로 재구성한 노트다. 인터페이스 정적 메서드와 디폴트 메서드 충돌 규칙, Python의 ABC는 fru1tworld/cs-basic 모의 면접 질문 목록의 Java·Python 질문을 바탕으로 보강했다.
 
 ## 추상화에서 출발한다
 
@@ -78,6 +78,10 @@ public interface Thinkable {
 }
 ```
 
+- **정적 메서드**는 인터페이스 이름으로만 부른다(`Comparator.naturalOrder()`, `List.of()`). 구현 클래스나 그 인스턴스로는 부를 수 없고 상속되지도 않는다. 별도 유틸리티 클래스(`Collections`) 없이 인터페이스 곁에 팩터리와 도우미를 두는 용도다.
+- **디폴트 메서드 충돌 규칙**: 같은 시그니처의 구현이 여러 곳에서 오면 ① 클래스(또는 상위 클래스)에 정의된 메서드가 이긴다 ② 그다음 더 구체적인(하위) 인터페이스의 디폴트가 이긴다 ③ 그래도 둘 이상 남으면 컴파일 오류이고, 구현 클래스가 재정의하며 `A.super.m()`으로 하나를 골라 부른다.
+- 디폴트 메서드는 `Object`의 `equals`·`hashCode`·`toString`을 재정의할 수 없다. 상태가 없으므로 다른 추상 메서드를 조합하는 편의 기능에 쓴다.
+
 ## 무엇이 다른가
 
 | 항목 | 추상 클래스 | 인터페이스 |
@@ -112,6 +116,7 @@ public class Human extends Animal implements Thinkable, Comparable<Human> { ... 
 | C++ | 순수 가상 함수(`= 0`)가 있는 클래스 | 별도 문법 없음. 순수 가상 함수만 있는 클래스로 표현 ([[cpp-virtual-functions\|가상 함수와 vtable]]) |
 | Kotlin | `abstract class` | `interface`. 기본 구현과 추상 프로퍼티 가능, 상태(backing field)는 불가 |
 | TypeScript | `abstract class` | `interface`. 컴파일 후 사라지는 타입 정보 |
+| Python | `abc.ABC`를 상속하고 `@abstractmethod`를 붙인다. 추상 메서드를 모두 구현하지 않은 하위 클래스는 **인스턴스를 만들 때** `TypeError` | 별도 문법 없음. 추상 메서드만 둔 ABC를 쓰거나, 상속 없이 메서드 모양만 맞추면 되는 `typing.Protocol`(정적 검사기용, [[python-internals\|덕 타이핑]]). ABC의 `register()`로 상속 없이 가상 하위 클래스를 등록할 수도 있다 |
 
 ## 정리
 

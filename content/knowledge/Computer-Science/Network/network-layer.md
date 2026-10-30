@@ -1,10 +1,10 @@
 ---
 title: "네트워크 계층 프로토콜"
 concept: "IP"
-summary: "IPv4 헤더와 단편화(MTU), 주소 체계(클래스와 CIDR), 서브넷 계산과 라우팅 테이블(최장 프리픽스 일치), ARP 동작 과정·RARP, DHCP 주소 할당(DORA·임대), ICMP와 ping·traceroute, IGMP, IPv6, NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 프로토콜과 회선·패킷 교환 방식 정리."
+summary: "IPv4 헤더와 단편화(MTU), 주소 체계(클래스와 CIDR), 서브넷 계산과 라우팅 테이블(최장 프리픽스 일치), 라우팅과 포워딩(RIB·FIB, 라우터의 포워딩 과정), ARP 동작 과정·RARP, DHCP 주소 할당(DORA·옵션·임대·예약), ICMP와 ping·traceroute, IGMP, IPv6, NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 알고리즘(거리 벡터·링크 상태·경로 벡터)과 라우팅 프로토콜, 회선·패킷 교환 방식 정리."
 tags: ["network", "ip", "routing", "certificate"]
 source: notion
-sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://bytebytego.com/guides/ipv4-vs-ipv6", "https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible", "https://dataportal.kr/14", "https://no1.technology/13", "https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0"]
+sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://bytebytego.com/guides/ipv4-vs-ipv6", "https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible", "https://dataportal.kr/14", "https://no1.technology/13", "https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
 date: "2026-10-21"
 ---
 
@@ -13,6 +13,7 @@ date: "2026-10-21"
 > BGP 하이재킹과 SDN 부분은 「[Facebook을 다운 시킨 원인, BGP hijacking이 무엇인가?](https://dataportal.kr/14)」, 「[소프트웨어 정의 네트워킹(SDN)](https://no1.technology/13)」을 바탕으로, 2021년 Facebook 장애 경위는 Meta 엔지니어링 블로그의 「[More details about the October 4 outage](https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/)」로 확인해 보강했다.
 > IP 주소 클래스·서브네팅과 DHCP는 「[Frontend_TIL: 네트워크 계층의 역활과 IP의 구조](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md)」, 「[라우터와 서브넷](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md)」, 「[ICMP, DHCP](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md)」을 바탕으로 보강했다.
 > 「데이터 교환 방식」 절의 세 방식 비교는 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> 서브넷 마스크 표기, 라우팅과 포워딩·라우터의 포워딩 과정, 라우팅 알고리즘 비교, DHCP의 계층·옵션·임대 기간·예약은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
 
 네트워크 계층(3계층)은 여러 네트워크를 거쳐 패킷을 목적지 호스트까지 보내는 일을 한다. 핵심인 IP는 "최선을 다해 전달하지만 보장은 하지 않는" 프로토콜이고, 주변 프로토콜들이 주소 변환·오류 보고·경로 선택을 돕는다.
 
@@ -85,6 +86,16 @@ PC의 네트워크 설정에는 보통 세 값이 들어간다.
 
 IP 주소와 서브넷 마스크를 비트 AND 하면 **네트워크 주소**가 나온다. 네트워크 주소가 같은 두 호스트는 같은 네트워크라 라우터 없이 직접 통신하고, 다르면 게이트웨이로 보내야 한다. 마스크는 앞에서부터 연속한 1의 개수로 줄여 쓴다(CIDR 표기, `/24` = `255.255.255.0`).
 
+마스크를 쓰는 방식은 세 가지이고 뜻은 같다.
+
+| 표기 | 예 (같은 마스크) |
+| --- | --- |
+| 점으로 나눈 10진수 | `255.255.255.192` |
+| CIDR 접두사 길이 | `/26` |
+| 2진수 | `11111111.11111111.11111111.11000000` |
+
+**마스크의 1은 앞에서부터 끊김 없이 이어져야 한다.** `255.0.255.0`(`11111111.00000000.11111111.00000000`)처럼 1과 0이 섞인 마스크는 옛 RFC 950이 금지하지는 않았지만, CIDR(RFC 4632)이 접두사 길이로만 대역을 표현하면서 쓸 수 없게 됐다. 최장 프리픽스 일치, 경로 요약(aggregation) 같은 라우팅 동작이 모두 「앞 n비트」를 전제로 하므로, 지금의 OS와 장비는 이런 마스크를 설정 단계에서 거부한다. 방화벽 ACL의 와일드카드 마스크(`0.0.0.255`, 1이 「무시할 비트」)는 서브넷 마스크가 아니라 별개의 표기다.
+
 | 예: `112.231.114.130/29` | 값 |
 | --- | --- |
 | 마스크 | `255.255.255.248` (호스트 부분 3비트 → 블록 크기 8) |
@@ -111,6 +122,33 @@ IP 주소와 서브넷 마스크를 비트 AND 하면 **네트워크 주소**가
 - 어느 규칙에도 맞지 않고 기본 경로도 없으면 패킷을 버리고 ICMP "Destination Unreachable"을 돌려보낸다.
 - 통신은 양방향이다. 가는 길뿐 아니라 **돌아오는 경로**도 상대 쪽 라우팅 테이블에 있어야 응답이 온다.
 - 리눅스에서는 `ip route`로 확인한다([[linux-network-namespace|리눅스 네트워크 네임스페이스와 ip 명령]]).
+
+### 라우팅과 포워딩
+
+| 구분 | 라우팅(routing) | 포워딩(forwarding) |
+| --- | --- | --- |
+| 질문 | 목적지까지 **어떤 경로**로 갈까 | 이 패킷을 **어느 출력 인터페이스**로 내보낼까 |
+| 범위 | 네트워크 전체 | 라우터 한 대 안 |
+| 시간 단위 | 초~분(경로가 바뀔 때) | 나노초~마이크로초(패킷마다) |
+| 구현 | 제어 평면: 라우팅 프로토콜(OSPF, BGP)이 소프트웨어로 계산 | 데이터 평면: 전용 칩(ASIC)이 테이블을 찾아 전달 |
+| 결과물 | 라우팅 테이블(RIB) | 포워딩 테이블(FIB) |
+
+라우팅 프로토콜이 배운 경로를 모은 것이 **RIB**(Routing Information Base)이고, 그중 실제로 쓸 최선 경로만 뽑아 빨리 찾도록 다시 담은 것이 **FIB**(Forwarding Information Base)다. FIB 항목은 `목적지 프리픽스 → 다음 홉 IP, 출력 인터페이스`이고, 다음 홉의 MAC 주소를 담은 인접 테이블(ARP 결과)과 짝을 이룬다. 장비는 최장 프리픽스 일치를 빠르게 하려고 트라이(trie) 구조나 TCAM(모든 항목을 한 번에 비교하는 메모리)을 쓴다.
+
+라우터 한 대가 패킷 하나를 포워딩하는 과정은 다음과 같다.
+
+```text
+1. 입력 포트: 프레임 수신 → FCS 검사 → 목적지 MAC이 내 인터페이스면 이더넷 헤더를 벗긴다
+2. IP 헤더 검사: 버전·헤더 체크섬 확인, 목적지가 라우터 자신이면 위 계층으로 올린다
+3. TTL을 1 줄인다 → 0이면 버리고 ICMP Time Exceeded를 출발지에 보낸다
+4. 헤더 체크섬을 다시 계산한다 (TTL이 바뀌었으므로)
+5. FIB에서 목적지 IP로 최장 프리픽스 일치 → 다음 홉과 출력 인터페이스 결정 (없으면 ICMP Destination Unreachable)
+6. 출력 링크 MTU보다 크면 단편화하거나, DF가 켜졌으면 버리고 ICMP로 알린다
+7. ARP 캐시에서 다음 홉의 MAC을 찾아 새 이더넷 헤더를 씌운다 (출발지 MAC = 출력 인터페이스)
+8. 출력 큐에 넣는다. 큐가 넘치면 버린다(혼잡 손실)
+```
+
+IP 주소는 끝까지 그대로이고 **MAC 주소만 홉마다 바뀐다**([[network-basics|네트워크 기초]]의 「홉마다 바뀌는 MAC, 그대로인 IP」).
 
 ## 주소 변환: ARP와 RARP
 
@@ -167,7 +205,25 @@ ARP는 요청하지 않은 응답도 받아들이기 때문에, 위조된 응답
 
 ## 주소 할당: DHCP
 
-IP 주소를 주는 방법은 관리자가 직접 넣는 **정적 할당**과 서버가 자동으로 나눠 주는 **동적 할당**이 있다. 서버·라우터처럼 주소가 바뀌면 안 되는 장비는 정적으로, 수가 많고 주소가 바뀌어도 되는 PC·휴대폰은 DHCP(Dynamic Host Configuration Protocol)로 받는다. DHCP는 IP 주소와 함께 서브넷 마스크, 기본 게이트웨이, DNS 서버 주소까지 한 번에 내려준다. 가정용 공유기에는 DHCP 서버가 들어 있다.
+IP 주소를 주는 방법은 관리자가 직접 넣는 **정적 할당**과 서버가 자동으로 나눠 주는 **동적 할당**이 있다. 서버·라우터처럼 주소가 바뀌면 안 되는 장비는 정적으로, 수가 많고 주소가 바뀌어도 되는 PC·휴대폰은 DHCP(Dynamic Host Configuration Protocol)로 받는다. 가정용 공유기에는 DHCP 서버가 들어 있다.
+
+DHCP는 **UDP 위에서 도는 응용 계층(7계층) 프로토콜**이다. 하는 일이 IP 주소 설정이라 3계층으로 착각하기 쉽지만, 메시지는 UDP 데이터그램에 실려 오간다. UDP를 쓰는 이유는 다음과 같다.
+
+- 주소를 받기 전의 클라이언트는 자기 IP도, 서버의 IP도 모른다. 출발지 `0.0.0.0`, 목적지 `255.255.255.255`로 **브로드캐스트**해야 하는데, TCP는 상대 하나와 연결을 맺어야 해서 브로드캐스트를 할 수 없다.
+- 요청·응답이 몇 개의 짧은 메시지라 연결 수립 비용이 아깝다. 손실은 클라이언트가 타임아웃 뒤 다시 보내는 것으로 충분하다.
+
+주소 말고도 여러 설정을 **옵션**으로 함께 내려준다.
+
+| 옵션 번호 | 내용 |
+| --- | --- |
+| 1 | 서브넷 마스크 |
+| 3 | 기본 게이트웨이(라우터) |
+| 6 | DNS 서버 주소 |
+| 15 | 도메인 이름(검색 접미사) |
+| 42 | NTP 서버 |
+| 51 | 임대 기간 |
+| 66·67 | 네트워크 부팅(PXE)용 TFTP 서버와 부트 파일 |
+| 121 | 추가 정적 경로 |
 
 주소는 영구히 주지 않고 **임대(lease)** 기간을 붙여 빌려준다. 할당은 네 단계(DORA)다. UDP 위에서 클라이언트는 68번, 서버는 67번 포트를 쓴다.
 
@@ -186,6 +242,10 @@ IP 주소를 주는 방법은 관리자가 직접 넣는 **정적 할당**과 �
 | 실패 | 서버를 못 찾으면 OS가 `169.254.0.0/16` 링크 로컬 주소를 스스로 붙인다. 이 주소가 보이면 DHCP 문제다 |
 
 DISCOVER는 브로드캐스트라 라우터를 넘지 못한다. 서버가 다른 네트워크에 있으면 라우터가 **DHCP 릴레이**로 요청을 전달한다.
+
+**임대 기간은 표준이 정한 값이 없고 서버 관리자가 정한다.** 기기가 자주 바뀌는 카페·공항 Wi-Fi는 수십 분~몇 시간으로 짧게 잡아 주소를 빨리 회수하고, 사무실·가정처럼 기기가 고정된 망은 하루~며칠로 길게 잡아 갱신 트래픽을 줄인다. Windows Server DHCP의 기본값은 8일이고, 가정용 공유기는 보통 하루 안팎이다.
+
+**공유기의 「고정 IP 할당」은 DHCP 예약**(reservation)이다. 프로토콜은 그대로 DHCP지만, 서버가 특정 **MAC 주소**(또는 클라이언트 식별자)에는 늘 같은 주소를 주도록 표에 묶어 둔다. 기기는 평소처럼 DORA로 주소를 받으므로 기기 쪽 설정은 바꿀 필요가 없다. 이와 별개로 ISP가 공유기에 주는 공인 IP는 대개 유동이라, 바깥에서 집에 접속하려면 고정 IP 상품이나 DDNS(주소가 바뀔 때마다 도메인의 A 레코드를 갱신)를 쓴다. 요즘 휴대폰·노트북은 Wi-Fi마다 **무작위 MAC**을 쓰므로, 예약을 걸려면 그 네트워크에서 무작위화를 끈다.
 
 ## ICMP와 IGMP
 
@@ -303,8 +363,18 @@ NAPT 표의 항목은 안에서 밖으로 나갈 때 생긴다. 그래서 **밖�
 
 - **정적 라우팅**: 관리자가 경로를 직접 입력
 - **동적 라우팅**: 라우터 간 정보 교환으로 자동 결정
-  - **거리 벡터**: 거쳐 가는 라우터 수(홉 수) 기준 (예: RIP)
-  - **링크 상태**: 대역폭·지연 등 링크 상태 기준, 다익스트라 알고리즘으로 최단 경로 계산 (예: OSPF)
+
+동적 라우팅의 경로 계산 알고리즘은 **누가 무엇을 아느냐**로 갈린다.
+
+| 구분 | 거리 벡터(distance vector) | 링크 상태(link state) | 경로 벡터(path vector) |
+| --- | --- | --- | --- |
+| 아는 범위 | 이웃이 알려 준 「목적지별 거리」만 안다 | 망 전체의 지도(모든 링크와 비용)를 안다 | 목적지까지 거치는 AS 목록 전체 |
+| 교환하는 것 | 자기 라우팅 테이블 전체를 **이웃에게** 주기적으로 | 자기 링크 상태(LSA)를 **모두에게** 범람(flooding)시킨다, 바뀔 때만 | 경로와 속성을 이웃 AS에 |
+| 계산 | 벨만-포드: 「이웃까지 비용 + 이웃이 말한 거리」의 최솟값 | 다익스트라: 지도로 각자 최단 경로 트리를 계산 | 정책과 경로 길이로 선택 |
+| 수렴 | 느리다. 링크가 끊기면 서로의 옛 정보를 믿고 거리를 1씩 늘려 가는 **무한 계수**(count to infinity) 문제가 있어 최대 홉(RIP은 15)과 스플릿 호라이즌으로 막는다 | 빠르다. 대신 메모리·CPU를 더 쓴다 | 경로에 자기 AS가 있으면 버려 루프를 막는다 |
+| 예 | RIP | OSPF, IS-IS | BGP |
+
+다익스트라 알고리즘 자체는 [[dijkstra|다익스트라 최단 경로]]에 정리했다.
 
 | 구분 | 프로토콜 | 특징 |
 | --- | --- | --- |

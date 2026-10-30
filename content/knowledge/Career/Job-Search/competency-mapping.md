@@ -72,4 +72,4 @@ date: "2026-10-22"
 - 관찰은 **비교(남보다 쉬웠던 것 = 재능)** 와 **흥미(시키지 않아도 한 것 = 노력)** 로 나눠 적는다.
 - 여러 경험에서 되풀이되는 키워드가 핵심 역량이고, 자기소개서·이력서·면접의 축이 된다.
 
-관련 노트: [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[behavioral-interview-questions|영어 면접 단골 질문 12가지]], [[growing-at-work|회사에서 빠르게 성장하는 법]]
+관련 노트: [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[behavioral-interview-questions|인성 면접 준비]], [[growing-at-work|회사에서 빠르게 성장하는 법]]

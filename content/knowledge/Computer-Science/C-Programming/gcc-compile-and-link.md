@@ -5,11 +5,12 @@ summary: "gcc/clang으로 단계별 결과물(.i .s .o)을 뽑는 옵션, 경고
 tags: ["c", "compile", "build", "tools", "linux"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/d5fa7c87192f4c6895ebaa4af5b9dbf5", "https://80000coding.notion.site/a45f1a4841e9455081208ae9ca3b54a1", "https://80000coding.notion.site/4c67b8c953df4afa8f4f9fe0094a4a6e", "https://80000coding.notion.site/4ff0a20c0d144de293102d73d3a0eb6e", "https://80000coding.notion.site/9fc02b4a89ef4d83b862badad55949a6", "https://80000coding.notion.site/4f84a0f3f7f3424d83e88d1132664476", "https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html", "https://www.youtube.com/watch?v=MYKFLepF1UM"]
+sources: ["https://80000coding.notion.site/d5fa7c87192f4c6895ebaa4af5b9dbf5", "https://80000coding.notion.site/a45f1a4841e9455081208ae9ca3b54a1", "https://80000coding.notion.site/4c67b8c953df4afa8f4f9fe0094a4a6e", "https://80000coding.notion.site/4ff0a20c0d144de293102d73d3a0eb6e", "https://80000coding.notion.site/9fc02b4a89ef4d83b862badad55949a6", "https://80000coding.notion.site/4f84a0f3f7f3424d83e88d1132664476", "https://gcc.gnu.org/onlinedocs/gcc/Option-Summary.html", "https://www.youtube.com/watch?v=MYKFLepF1UM", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「GCC 컴파일러 개념 정리」, 「Libft 과제에서 만든 라이브러리(libft.a)를 사용해보자」, 「공유 라이브러리를 링크하는 방법」, 「헤더 중복 방지 기법 세 가지(#pragma once)」, 「POSIX cc, C 컴파일러」, 「컴파일만하면 다 해주는게 아니다.?! (어셈블러 찍먹)」을 GCC 공식 문서와 함께 재구성한 노트다.
 > 「단계별로 멈추기」 절의 목적 파일과 실행 파일의 차이는 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 「링커와 로더」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 ## 컴파일러 드라이버
 
@@ -93,6 +94,32 @@ cc main.o -lft -lftprintf   # 실패: ft를 지나간 뒤에야 ftprintf가 ft�
 | 시스템 경로에 설치 | `/usr/local/lib`에 두고 리눅스는 `ldconfig` |
 
 `ldd app`(리눅스)이나 `otool -L app`(macOS)으로 실행 파일이 어떤 공유 라이브러리를 요구하는지 확인한다. 동적 링킹된 함수는 호출 자리에 작은 **stub**(ELF에서는 PLT 항목)을 거친다. 처음 호출될 때 실제 주소를 찾아 GOT에 채우고, 이후 호출은 바로 간다(지연 바인딩). 라이브러리 코드 페이지는 물리 메모리에 한 벌만 올라가 여러 프로세스가 공유한다([[memory-management|메모리 관리]]).
+
+## 링커와 로더
+
+| 구분 | 링커 (`ld`) | 로더 |
+| --- | --- | --- |
+| 언제 | 빌드할 때 | 실행할 때 |
+| 입력 → 출력 | 목적 파일 여러 개와 라이브러리 → 실행 파일 | 실행 파일 → 메모리 위의 프로세스 이미지 |
+| 하는 일 | **심볼 해석**(미해결 심볼을 정의와 짝짓는다), **재배치**(각 목적 파일의 코드·데이터를 한 주소 공간에 배치하고 주소 참조를 고친다) | 실행 파일의 세그먼트를 주소 공간에 매핑하고, 스택에 인자와 환경 변수를 놓고, 공유 라이브러리를 적재·연결한 뒤 진입점으로 점프한다 |
+| 대표 오류 | `undefined reference`, `multiple definition` | `cannot open shared object file` |
+
+리눅스 ELF에서 로더의 일은 커널과 사용자 공간 프로그램이 나눠 맡는다.
+
+```text
+fork()   부모를 복제해 자식 프로세스를 만든다. 아직 같은 프로그램이다
+execve() 커널이 로더 1단계를 맡는다
+         ├─ 기존 주소 공간을 버리고, ELF 헤더대로 코드·데이터 세그먼트를 mmap한다
+         │  (실제 내용은 요구 페이징으로 처음 접근할 때 읽힌다)
+         ├─ 스택에 argc, argv, envp, 보조 벡터를 놓는다
+         └─ PT_INTERP에 적힌 동적 로더(/lib64/ld-linux-x86-64.so.2)를 매핑하고 그쪽으로 점프
+ld.so    사용자 공간의 동적 로더가 2단계를 맡는다
+         └─ 필요한 .so를 찾아 매핑하고 재배치(GOT 채우기), 초기화 함수 실행 → _start → main
+```
+
+- 그래서 「`fork`·`exec`로 프로세스를 적재한다」와 「로더가 적재한다」는 같은 이야기다. `fork`가 프로세스라는 그릇을 만들고, `exec`가 커널의 로더를 불러 그 그릇에 새 프로그램을 채운다([[process-and-thread|프로세스와 스레드]]). 정적으로 링크한 실행 파일은 `PT_INTERP`가 없어 커널이 곧바로 진입점으로 보낸다.
+- `fork` 없이 적재하는 길도 있다. `posix_spawn`은 생성과 적재를 한 번에 하고(glibc는 내부적으로 `clone` + `exec`), Windows의 `CreateProcess`도 마찬가지다. 실행 중에 라이브러리를 더 올리는 `dlopen`은 ld.so가 맡는 실행 중 적재다.
+- 언어 구현마다 실행 전 단계가 어떻게 다른지(네이티브 컴파일, 바이트코드 + JIT, 인터프리터)는 [[how-programs-run|프로그램이 실행되기까지]]에 있다.
 
 ## 헤더 중복 포함 방지
 

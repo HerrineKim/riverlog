@@ -76,7 +76,8 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [와이드 컬럼 DB와 대규모 메시지 저장](/knowledge/dictionary/backend/database/wide-column-database): 파티션 키·클러스터링 키, 조절 가능한 일관성, Cassandra·ScyllaDB
 - [블록·파일·오브젝트 스토리지](/knowledge/dictionary/backend/database/block-file-object-storage): 세 저장 방식 비교, 오브젝트 스토리지와 이레이저 코딩
 - [검색엔진의 원리: 역인덱스와 랭킹](/knowledge/dictionary/backend/database/search-engine-basics): 토큰화와 역인덱스, TF-IDF·BM25, 한국어 형태소 분석
-- [Elasticsearch와 ELK 스택](/knowledge/dictionary/backend/database/elasticsearch): Lucene 기반 분산 검색·분석 엔진, 인덱스·샤드·세그먼트, ELK 로그 파이프라인
+- [Elasticsearch와 ELK 스택](/knowledge/dictionary/backend/database/elasticsearch): Lucene 기반 분산 검색·분석 엔진, 인덱스·샤드·세그먼트, 노드 역할·복제·일관성, ILM·데이터 티어·스냅숏, 운영 진단(429·디스크 워터마크), ELK 로그 파이프라인
+- [Elasticsearch 검색: 매핑·분석기·Query DSL](/knowledge/dictionary/backend/database/elasticsearch-search): 동적·명시적 매핑과 nested, 분석기, Query DSL(match·term·bool·multi_match), BM25·부스팅, 집계, search_after·PIT 페이지네이션
 - [웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리](/knowledge/dictionary/backend/database/web-search-engine): URL 프런티어, PageRank, 샤딩된 역인덱스, 질의 처리
 
 ### Architecture
@@ -104,6 +105,8 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [분산 시스템의 시간과 장애: 8가지 착각부터 논리 시계까지](/knowledge/dictionary/backend/architecture/distributed-time-and-failure): 비동기와 부분 장애, 분산 컴퓨팅의 8가지 착각, happened-before와 논리 시계, 합의·CRDT
 - [분산 시스템의 통신·데이터 흐름 패턴](/knowledge/dictionary/backend/architecture/distributed-system-patterns): 요청-응답·발행-구독·경쟁 소비자·클레임 체크, 데이터 흐름 패턴
 - [메시지 큐와 Kafka](/knowledge/dictionary/backend/architecture/message-queue-kafka): 큐 선택 기준, MQ → RabbitMQ → Kafka → Pulsar, 토픽·파티션·컨슈머 그룹
+- [Kafka 운영: 복제, 컨슈머 그룹, 튜닝, 모니터링](/knowledge/dictionary/backend/architecture/kafka-operations): ISR·acks·min.insync, KRaft, 리밸런스·오프셋·랙, 컴팩션, 보안, 지표와 병목 진단
+- [분산 트랜잭션: 2PC와 사가](/knowledge/dictionary/backend/architecture/distributed-transaction): 2PC의 블로킹, 보상 트랜잭션 설계, 중간 상태와 시맨틱 락
 - [이벤트 기반 아키텍처 설계](/knowledge/dictionary/backend/architecture/event-driven-architecture): 이벤트 발행·구독으로 결합 낮추기, 이벤트 설계와 순서·중복 처리
 - [데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성](/knowledge/dictionary/backend/architecture/distributed-data-patterns): 흩어진 데이터를 맞추는 패턴, 사가와 아웃박스
 
@@ -142,5 +145,6 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [이미지·동영상 처리 서버 설계](/knowledge/dictionary/backend/architecture/media-processing-pipeline): 사전 생성과 온디맨드 리사이징, 캐시·CDN, 트랜스코딩 파이프라인
 - [실시간 공동 편집: OT와 CRDT](/knowledge/dictionary/backend/architecture/collaborative-editing): 연산 단위 전송, OT와 CRDT 비교
 - [대규모 웹 크롤러 설계](/knowledge/dictionary/backend/architecture/web-crawler-at-scale): 예의 제약, 도메인 샤드 노드, 프런티어
+- [URL 단축기 설계](/knowledge/dictionary/backend/architecture/url-shortener-design): 301·302, 고유 ID+Base62, 캐시 중심 읽기 경로
 
 배포·운영 자동화는 [DevOps](/knowledge/dictionary/devops)에서 다룬다. 이론적 배경은 [[Computer-Science/Network|네트워크]]와 [[Computer-Science/Database|데이터베이스]] 노트에 있다.

@@ -5,13 +5,14 @@ summary: "모드 비트, 타이머, 장치 제어기, 인터럽트, 시스템 �
 tags: ["os", "interrupt", "system-call", "dma", "io"]
 source: notion
 date: "2026-10-21"
-sources: ["https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/82228175c0df477992b7b23e8afb8f16", "https://80000coding.notion.site/2287b35ba1644ade8d8015559f00fbe8", "https://80000coding.notion.site/99627aac4d8945a8bc45735301b4fb3d", "https://www.youtube.com/watch?v=3Yz7OnVUM28", "https://www.youtube.com/watch?v=R4j_hDQuBOc", "https://www.youtube.com/watch?v=BoJ1eaE5F-I", "https://www.youtube.com/watch?v=26QPDBe-NB8"]
+sources: ["https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/82228175c0df477992b7b23e8afb8f16", "https://80000coding.notion.site/2287b35ba1644ade8d8015559f00fbe8", "https://80000coding.notion.site/99627aac4d8945a8bc45735301b4fb3d", "https://www.youtube.com/watch?v=3Yz7OnVUM28", "https://www.youtube.com/watch?v=R4j_hDQuBOc", "https://www.youtube.com/watch?v=BoJ1eaE5F-I", "https://www.youtube.com/watch?v=26QPDBe-NB8", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
 > 「시스템 콜과 라이브러리 함수」·「man 페이지」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「write는 라이브러리 함수가 아니다? 커널과 시스템 콜에 대해」, 「man」, 「[unix] 나만의 manpage 작성하기」를 바탕으로 보강했다.
 > 동기식 입출력의 구현 방식과 커널 주소 공간은 고무오리 CS 스터디의 KOCW 반효경 「운영체제」 강의 정리를 바탕으로 보강했다.
 > 「인터럽트」 절의 동기·비동기 구분과 예외 분류, 「모드 비트」 절의 슈퍼바이저 플래그와 시스템 콜 관찰 방법은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 「장치 제어기와 장치 드라이버」 절의 드라이버 추상화 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> 「시스템 콜은 번호로 구분한다」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 운영체제가 어떻게 하드웨어를 통제하는지 이해하려면 먼저 컴퓨터 시스템의 구성 요소와, 이들이 **인터럽트**로 CPU와 소통하는 방식을 알아야 한다. 현대 운영체제는 "인터럽트에 의해 구동된다"고 할 만큼 인터럽트가 핵심이다.
 
@@ -78,6 +79,20 @@ CPU 쪽에서 보면 명령어를 실행하다 그 명령어 때문에 생기는
 2. 트랩이 발생해 인터럽트 벡터의 해당 위치로 이동하고, 모드가 커널 모드로 바뀐다.
 3. OS가 올바른 요청인지 확인한 뒤 I/O를 수행한다.
 4. 완료되면 제어권을 시스템 콜 다음 명령으로 돌려준다.
+
+### 시스템 콜은 번호로 구분한다
+
+커널 진입 명령은 하나뿐이므로, 어떤 시스템 콜인지는 함수 이름이 아니라 **번호**로 알린다. 커널은 시스템 콜 번호를 인덱스로 하는 표(Linux의 `sys_call_table`)를 두고, 트랩이 들어오면 정해진 레지스터의 번호로 처리 함수를 찾아 부른다.
+
+| Linux 아키텍처 | 진입 명령 | 번호 | 인자 | 반환값 |
+| --- | --- | --- | --- | --- |
+| x86-64 | `syscall` | `rax` | `rdi`, `rsi`, `rdx`, `r10`, `r8`, `r9` | `rax` |
+| ARM64 | `svc #0` | `x8` | `x0`~`x5` | `x0` |
+
+- 같은 시스템 콜도 아키텍처마다 번호가 다르다. x86-64 Linux에서 `read`는 0, `write`는 1이다. C에서는 `<sys/syscall.h>`의 `SYS_write` 같은 상수로 쓰고, 전체 표는 커널 소스의 `syscall_64.tbl`에 있다. 과거 32비트 x86은 `int 0x80` 소프트웨어 인터럽트로 진입했다.
+- 실패하면 커널은 음수 오류 번호(`-ENOENT` 등)를 돌려주고, libc 래퍼가 이를 `errno`에 넣은 뒤 -1을 반환한다.
+- 래퍼 함수가 없는 시스템 콜도 `syscall(SYS_gettid)`처럼 번호로 직접 부를 수 있다.
+- 한번 정한 번호는 바꾸지 않는다. 바꾸면 이미 컴파일된 프로그램이 엉뚱한 시스템 콜을 부르게 되므로, 사용자 공간 ABI를 깨지 않는다는 Linux 원칙의 한 예다.
 
 ### 동기식 vs 비동기식 입출력
 

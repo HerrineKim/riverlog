@@ -5,11 +5,12 @@ summary: "공유 데이터에 동시에 접근할 때 생기는 경쟁 상태, �
 tags: ["os", "process", "synchronization", "semaphore", "race-condition"]
 source: notion
 date: "2026-10-21"
-sources: ["https://app.notion.com/p/0bf3e529b09e4d4b896e90f1c8203882", "https://riverkim.kr/210", "https://www.youtube.com/watch?v=0YDjblJn30k", "https://www.youtube.com/watch?v=4u13f9Umq7Y"]
+sources: ["https://app.notion.com/p/0bf3e529b09e4d4b896e90f1c8203882", "https://riverkim.kr/210", "https://www.youtube.com/watch?v=0YDjblJn30k", "https://www.youtube.com/watch?v=4u13f9Umq7Y", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
 > 「임계 구역 문제의 해법」 절은 고무오리 CS 스터디의 KOCW 반효경 「운영체제」 강의 정리를 바탕으로 보강했다.
 > 「경쟁 상태」, 「세마포어」, 「모니터」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
+> 뮤텍스와 이진 세마포어의 차이, 우선순위 역전 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 여러 실행 주체가 같은 데이터를 동시에 읽고 쓰면, 실행 순서에 따라 결과가 달라지는 문제가 생긴다. 프로세스 동기화는 이런 **공유 데이터의 일관성**을 지키기 위해 협력하는 프로세스들의 실행 순서를 정해 주는 메커니즘이다. 이름은 프로세스 동기화지만 스레드처럼 실행 문맥을 가진 실행 단위는 모두 대상이다.
 
@@ -199,6 +200,17 @@ P2가 먼저 CPU를 받아도 `S = 0`이라 기다리게 되므로, 어느 쪽�
 | --- | --- | --- |
 | Counting semaphore | 0 이상의 임의의 정수 | 여러 개인 자원의 개수 관리 |
 | Binary semaphore (mutex) | 0 또는 1 | 상호 배제(lock) |
+
+이진 세마포어는 뮤텍스처럼 쓸 수 있지만 같은 것은 아니다. 차이는 **소유권**이다.
+
+| 비교 | 뮤텍스 | 이진 세마포어 |
+| --- | --- | --- |
+| 소유권 | 잠근 스레드만 풀 수 있다 | 소유자가 없어 아무 스레드나 V(signal)를 부를 수 있다 |
+| 주 용도 | 상호 배제 | 다른 스레드에 알리는 신호(실행 순서 제어). 상호 배제에도 쓸 수 있다 |
+| 우선순위 역전 대응 | 누가 쥐고 있는지 알므로 **우선순위 상속**을 걸 수 있다(`PTHREAD_PRIO_INHERIT`) | 소유자를 몰라 걸 수 없다 |
+| 그 밖의 기능 | 같은 스레드의 재귀 잠금, 소유 스레드가 죽은 것을 알리는 robust 뮤텍스(`EOWNERDEAD`) | 없음 |
+
+**우선순위 역전**은 낮은 우선순위 작업이 락을 쥔 채 중간 우선순위 작업에 밀려, 그 락을 기다리는 높은 우선순위 작업까지 무한정 늦어지는 현상이다. 1997년 화성 탐사선 패스파인더가 이 때문에 계속 재부팅됐고, 뮤텍스의 우선순위 상속을 켜서 고쳤다. 우선순위 상속은 락을 쥔 작업의 우선순위를 기다리는 작업 중 가장 높은 것까지 잠시 올려 준다.
 
 ### 교착 상태와 기아
 

@@ -14,4 +14,5 @@ date: "2026-10-14"
 - [동적 계획법 (DP)](Algorithm/Paradigm/dynamic-programming.md): 겹치는 하위 문제의 답을 저장해 재사용하기
 - [그리디 알고리즘](Algorithm/Paradigm/greedy.md): 매 순간 가장 좋아 보이는 선택을 하기
 - [스위핑 (Sweep Line)](Algorithm/Paradigm/sweep-line.md): 정렬한 뒤 한 번 훑으며 답을 갱신하기, 구간 겹침과 평면 분할
+- [투 포인터와 슬라이딩 윈도우](Algorithm/Paradigm/two-pointers.md): 양 끝에서 좁히기, 같은 방향 윈도우, 빠른·느린 포인터로 O(n²)을 O(n)으로, 회문 판정과 중심 확장
 - [최장 증가 부분 수열 (LIS)](Algorithm/Paradigm/longest-increasing-subsequence.md): O(n²) DP와 이분 탐색을 쓰는 O(n log n) 풀이, 수열 복원

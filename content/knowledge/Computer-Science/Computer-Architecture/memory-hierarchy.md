@@ -5,12 +5,13 @@ summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 �
 tags: ["computer-architecture", "memory", "storage", "raid"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/", "https://www.youtube.com/watch?v=m2NfFJEvssY", "https://www.youtube.com/watch?v=lgFmNUG_Atw", "https://www.youtube.com/watch?v=TQCr9RV7twk"]
+sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/", "https://www.youtube.com/watch?v=m2NfFJEvssY", "https://www.youtube.com/watch?v=lgFmNUG_Atw", "https://www.youtube.com/watch?v=TQCr9RV7twk", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md"]
 ---
 
 > 노션 정리를 바탕으로, 계층별 역할은 ByteByteGo의 System Design 101 가이드 「[Types of Memory](https://bytebytego.com/guides/types-of-memory)」, 「[Types of Memory and Storage](https://bytebytego.com/guides/types-of-memory-and-storage)」로, SRAM·DRAM의 구조와 DRAM 접근 타이밍·NUMA는 Ulrich Drepper의 「[What every programmer should know about memory, Part 1](https://lwn.net/Articles/250967/)」(2007)로 보강했다.
 > 「계층별 접근 시간의 자릿수」, 「하드 디스크의 구성」, 「플래시 메모리와 SSD」, 「RAID」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 「매체마다 다른 접근 방식」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> 「메모리 대역폭」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 빠른 메모리는 비싸고 작으며, 큰 메모리는 느리다. 그래서 컴퓨터는 여러 종류의 저장 장치를 **계층**으로 쌓고, 자주 쓰는 데이터를 위쪽에 두는 방식으로 "빠르면서도 큰" 메모리처럼 보이게 만든다.
 
@@ -110,6 +111,17 @@ DRAM 칩의 셀은 행과 열의 격자다(셀을 격자로 놓는 이유는 [[d
 - 이미 열린 행 안에서는 RAS 없이 **CAS만 다시 보내면** 되므로, 연속 주소를 읽는 순차 접근이 훨씬 빠르다. 행을 계속 바꾸는 무작위 접근은 프리차지·활성화 대기가 매번 붙는다.
 - 버스의 최고 속도는 「전송만 계속할 때」의 값이다. 행을 바꿀 때마다 쉬는 클럭이 생겨, 이론상 6.4GB/s인 버스가 무작위 접근에서는 1.8GB/s까지 떨어지는 예도 있다.
 - DDR은 클럭의 올라가는 쪽과 내려가는 쪽에서 모두 전송해 셀 배열의 주파수를 올리지 않고 대역폭을 늘린다. 대역폭은 늘지만 **첫 데이터가 나오기까지의 지연은 줄지 않는다.** 메모리 지연이 세대가 바뀌어도 약 100ns 근처에 머무는 이유다.
+
+### 메모리 대역폭
+
+**대역폭**은 단위 시간에 옮길 수 있는 데이터 양이고, 첫 데이터까지 걸리는 **지연**과는 다른 축이다.
+
+```text
+채널 하나의 최대 대역폭 = 전송 속도(MT/s) × 버스 폭(8바이트)
+DDR5-6400 채널 하나: 6400 × 10⁶ × 8B = 51.2GB/s
+```
+
+CPU는 메모리 채널을 여러 개 두어 대역폭을 더한다. 데스크톱은 2채널, 서버 CPU는 소켓당 8~12채널이다. 그래도 코어가 늘수록 코어 하나에 돌아가는 몫은 줄어든다. 큰 배열을 한 번씩 훑기만 하는 작업(스트리밍, 복사, 계산이 적은 벡터 연산)은 CPU가 아니라 대역폭이 상한을 정하는 **메모리 바운드** 작업이라, 코어를 늘려도 빨라지지 않는다. 가져온 바이트당 계산량을 늘리는 블로킹, 데이터를 작게 만드는 압축·작은 타입, 같은 NUMA 노드의 메모리를 쓰게 하는 배치가 대책이다([[cache-friendly-code|캐시를 고려한 코드]]). GPU와 AI 가속기가 DRAM을 칩 옆에 쌓은 HBM을 쓰는 이유도 대역폭이다.
 
 ### NUMA: 모든 메모리가 같은 거리에 있지 않다
 

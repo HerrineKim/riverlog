@@ -5,10 +5,10 @@ summary: "프론트엔드 면접은 알고리즘보다 도메인 지식과 실�
 tags: ["career", "interview", "job-search", "frontend"]
 source: other
 date: "2026-10-17"
-sources: ["https://www.frontendinterviewhandbook.com/kr/introduction", "https://www.frontendinterviewhandbook.com/introduction", "https://www.frontendinterviewhandbook.com/coding/javascript-utility-function", "https://www.frontendinterviewhandbook.com/coding/build-front-end-user-interfaces", "https://www.frontendinterviewhandbook.com/coding/algorithms", "https://www.frontendinterviewhandbook.com/trivia", "https://www.frontendinterviewhandbook.com/front-end-system-design/ui-components", "https://www.frontendinterviewhandbook.com/front-end-system-design/applications", "https://www.frontendinterviewhandbook.com/behavioral", "https://www.frontendinterviewhandbook.com/resume", "https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91"]
+sources: ["https://www.frontendinterviewhandbook.com/kr/introduction", "https://www.frontendinterviewhandbook.com/introduction", "https://www.frontendinterviewhandbook.com/coding/javascript-utility-function", "https://www.frontendinterviewhandbook.com/coding/build-front-end-user-interfaces", "https://www.frontendinterviewhandbook.com/coding/algorithms", "https://www.frontendinterviewhandbook.com/trivia", "https://www.frontendinterviewhandbook.com/front-end-system-design/ui-components", "https://www.frontendinterviewhandbook.com/front-end-system-design/applications", "https://www.frontendinterviewhandbook.com/behavioral", "https://www.frontendinterviewhandbook.com/resume", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91"]
 ---
 
-> Yangshun Tay·GreatFrontEnd의 「[Front End Interview Handbook](https://www.frontendinterviewhandbook.com/introduction)」([한국어판](https://www.frontendinterviewhandbook.com/kr/introduction), 2026.10 갱신)을 바탕으로 재구성한 노트다. 퀴즈 주제 표는 「[프론트엔드 개발자 인터뷰 후기 (면접 질문 정리)](https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91)」를 참고해 보강했다.
+> Yangshun Tay·GreatFrontEnd의 「[Front End Interview Handbook](https://www.frontendinterviewhandbook.com/introduction)」([한국어판](https://www.frontendinterviewhandbook.com/kr/introduction), 2026.10 갱신)을 바탕으로 재구성한 노트다. 퀴즈 주제 표는 「[프론트엔드 개발자 인터뷰 후기 (면접 질문 정리)](https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91)」를 참고해 보강했다. 페이지 재현 문제는 Tech Interview Handbook의 「[Interview Formats](https://www.techinterviewhandbook.org/interview-formats-top-companies/)」로 보강했다.
 
 ## 프론트엔드 면접의 특징
 
@@ -72,6 +72,7 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 | 위젯 | 신호등, 디지털 시계, 스톱워치, 전송 목록(Transfer List) |
 | 앱 | 할 일 목록, 정렬·필터 되는 데이터 테이블, 파일 탐색기, 칸반 보드 |
 | 게임 | 틱택토, 두더지 잡기, Wordle, 고급으로 테트리스·스네이크 |
+| 페이지 재현 | 주어진 명세대로 그 회사 서비스의 실제 페이지 한 화면을 픽셀 단위로 똑같이 만든다 |
 
 구현 전후로 아래를 짚는다. 다 구현할 필요는 없지만 **범위를 면접관과 먼저 확인**하고, 못 한 것은 말로 언급한다.
 
@@ -142,7 +143,7 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 ## 비헤이비어럴과 레주메
 
 - 코딩·설계를 잘하고도 **비헤이비어럴에서 떨어지는** 경우가 있다. 시니어일수록 비중이 크다. 협업, 소통, 갈등 해결, 멘토링을 본다.
-- 준비할 것: 이력서의 모든 항목을 설명할 수 있게 한다. 내가 한 일과 그 결과를 구체적 사례로 말한다. 과거를 스스로 비판하고 배운 점을 말한다. 지금 일에서 좋은 점과 이직 이유를 정리해 둔다. 질문별 답 요소는 [[behavioral-interview-questions|영어 면접 단골 질문 12가지]]에 있다.
+- 준비할 것: 이력서의 모든 항목을 설명할 수 있게 한다. 내가 한 일과 그 결과를 구체적 사례로 말한다. 과거를 스스로 비판하고 배운 점을 말한다. 지금 일에서 좋은 점과 이직 이유를 정리해 둔다. 질문별 답 요소는 [[behavioral-interview-questions|인성 면접 준비]]에 있다.
 - 레주메는 처음부터 만들기보다 검증된 템플릿에서 시작한다. ATS에서 제대로 파싱되는지 확인한다. 내용을 **일반 텍스트 파일에 붙여 넣어** 빠진 항목, 깨진 글자, 뒤섞인 섹션이 없는지 보거나, OpenResume 같은 무료 파서로 검사한다. 쓰는 법은 [[resume-writing|합격하는 영문 레주메 작성법]], ATS는 [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]]에 있다.
 
 ## 정리

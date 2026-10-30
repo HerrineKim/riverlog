@@ -5,11 +5,12 @@ summary: "로그인 상태를 서버 저장소에 두는 세션 방식과, 서�
 tags: ["backend", "auth", "security", "jwt", "http"]
 source: other
 date: "2026-10-17"
-sources: ["https://80000coding.notion.site/8016475c9c904c8ea1c4100af15728f3", "https://dev.gmarket.com/45", "https://bytebytego.com/guides/token-cookie-session", "https://bytebytego.com/guides/session-cookie-jwt-token-sso-and-oauth-2", "https://bytebytego.com/guides/explaining-sessions-tokens-jwt-sso-and-oauth-in-one-diagram", "https://bytebytego.com/guides/what's-the-difference-between-session-based-authentication-and-jwts", "https://bytebytego.com/guides/jwt-101-key-to-stateless-authentication", "https://bytebytego.com/guides/explaining-json-web-token-jwt-to-a-10-year-old-kid", "https://bytebytego.com/guides/cookies-vs-sessions-vs-jwt-vs-paseto", "https://github.com/paseto-standard/paseto-spec"]
+sources: ["https://80000coding.notion.site/8016475c9c904c8ea1c4100af15728f3", "https://dev.gmarket.com/45", "https://bytebytego.com/guides/token-cookie-session", "https://bytebytego.com/guides/session-cookie-jwt-token-sso-and-oauth-2", "https://bytebytego.com/guides/explaining-sessions-tokens-jwt-sso-and-oauth-in-one-diagram", "https://bytebytego.com/guides/what's-the-difference-between-session-based-authentication-and-jwts", "https://bytebytego.com/guides/jwt-101-key-to-stateless-authentication", "https://bytebytego.com/guides/explaining-json-web-token-jwt-to-a-10-year-old-kid", "https://bytebytego.com/guides/cookies-vs-sessions-vs-jwt-vs-paseto", "https://github.com/paseto-standard/paseto-spec", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「세션과 토큰 기반 인증방식」을 바탕으로 재구성하고, G마켓 기술 블로그의 「[인증/인가는 어디에 어떻게 구현해야 할까?](https://dev.gmarket.com/45)」(2022.09)로 다중 서버 세션 부분을 보탠 노트다.
 > 신원 관리 방식의 계보, JWT 서명 방식, PASETO 부분은 ByteByteGo의 System Design 101 가이드 「[Token, Cookie, Session](https://bytebytego.com/guides/token-cookie-session)」, 「[JWT 101](https://bytebytego.com/guides/jwt-101-key-to-stateless-authentication)」, 「[Cookies vs Sessions vs JWT vs PASETO](https://bytebytego.com/guides/cookies-vs-sessions-vs-jwt-vs-paseto)」 등을 바탕으로 재구성해 보탰다.
+> 무상태 HTTP와 세션의 관계, 서명 계산식, 토큰 탈취 대응은 「fru1tworld/cs-basic 모의 면접 질문 목록」([네트워크](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md), [기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md))의 질문을 기준으로 빠진 개념을 보강했다.
 
 ## 왜 인증 방식이 필요한가
 
@@ -51,6 +52,8 @@ HTTP는 상태가 없다(stateless). 요청마다 "이 사람이 아까 로그�
 5. 서버: 저장소에서 sid 조회 → 사용자 확인 → 응답
 ```
 
+**세션은 HTTP의 무상태성과 모순되지 않는다.** 무상태는 HTTP **프로토콜**이 요청 사이를 기억하지 않는다는 뜻이고, 세션은 그 위의 **응용**이 상태를 따로 저장하는 것이다. 요청은 여전히 세션 ID라는 필요한 정보를 매번 담고 오며, 서버는 그 ID로 저장소를 찾아 처리한다. 대가는 무상태가 주던 장점 일부를 다시 내주는 것이다. 웹 서버 자체는 무상태로 두고 상태를 공용 세션 저장소 한 곳에 모으면, 서버를 늘리는 자유는 지키고 저장소의 가용성만 따로 책임지면 된다. 토큰 방식은 상태를 클라이언트 쪽 토큰에 넣어 저장소마저 없앤 것이지만, 즉시 무효화를 위해 결국 일부 상태(차단 목록, 리프레시 토큰)를 다시 둔다.
+
 - 세션 ID는 무작위 문자열이라 **유출돼도 개인정보는 드러나지 않는다.** 다만 탈취하면 그 사용자로 위장할 수 있다(세션 하이재킹).
 - 로그인 직후 세션 ID를 새로 발급해 **세션 고정(session fixation)** 공격을 막는다.
 - 사용자마다 저장소 항목이 생기므로 동시 접속자가 많으면 저장소가 부담이 된다.
@@ -84,6 +87,16 @@ Header와 Payload는 **인코딩**일 뿐이라 누구나 디코딩해 읽을 �
 3. 클라이언트: 토큰 보관
 4. 이후 요청: Authorization: Bearer <token>
 5. 서버: 서명 검증(HS256은 같은 비밀키, RS256·ES256은 공개키) + exp 확인 → 응답
+```
+
+서명은 Header와 Payload를 **각각 Base64URL로 인코딩해 `.`으로 이은 문자열**에 서명 알고리즘을 적용하고, 그 결과를 다시 Base64URL로 인코딩해 만든다.
+
+```text
+signingInput = base64url(header) + "." + base64url(payload)
+HS256:  signature = base64url( HMAC-SHA256(signingInput, 비밀키) )
+RS256:  signature = base64url( RSA-PKCS1-v1_5-Sign(SHA-256(signingInput), 개인키) )
+ES256:  signature = base64url( ECDSA-P256-Sign(SHA-256(signingInput), 개인키) )
+JWT = signingInput + "." + signature
 ```
 
 - **서명은 복호화하는 것이 아니라 검증하는 것**이다. 서버는 받은 Header·Payload로 서명을 다시 계산해 일치하는지 본다. 비밀키가 없으면 Payload를 고친 뒤 맞는 서명을 만들 수 없다.
@@ -133,8 +146,19 @@ Header와 Payload는 **인코딩**일 뿐이라 누구나 디코딩해 읽을 �
 | 리프레시 토큰 | 짧은 Access Token + 긴 Refresh Token. Access가 만료되면 Refresh로 재발급 | Refresh Token을 서버에 저장·관리해야 한다 |
 | 리프레시 토큰 회전 | 재발급할 때마다 Refresh Token도 새로 주고 옛것은 폐기. **이미 쓴 토큰이 다시 오면 탈취로 보고 그 계열 전체를 무효화** | 구현이 복잡하다 |
 | 차단 목록 | 로그아웃·비밀번호 변경 시 토큰 ID(`jti`)를 만료 때까지 차단 | 결국 서버 저장소 조회가 생긴다 |
+| 서명 키 교체 | 키가 샜거나 대량 탈취가 의심되면 서명 키를 바꿔(`kid` 교체) 그 키로 발급한 토큰을 한꺼번에 무효화 | 모든 사용자가 다시 로그인한다 |
+| 발신자 제약 토큰 | 토큰을 클라이언트의 키에 묶는다. **DPoP**(RFC 9449)는 요청마다 클라이언트 개인키로 서명한 증명을 함께 보내게 해, 토큰만 훔쳐서는 쓸 수 없게 한다. 서버 간에는 mTLS 인증서에 묶는다 | 클라이언트가 키를 관리해야 하고 지원하는 인가 서버가 아직 적다 |
 
 리프레시 토큰을 서버에 두는 순간 "완전한 무상태"라는 JWT의 장점은 일부 사라진다. 대신 **원할 때 강제로 로그아웃시킬 수 있다.** 대부분의 서비스는 이 거래를 받아들인다.
+
+탈취된 토큰의 종류에 따라 대응 순서가 다르다.
+
+| 탈취된 것 | 피해 범위 | 대응 |
+| --- | --- | --- |
+| Access Token | 남은 수명(수 분~수십 분) 동안 그 권한(scope)으로 API 호출 | 수명이 짧아 피해 시간이 제한된다. 급하면 `jti` 차단 목록에 올리고, 그 사용자의 리프레시 토큰 계열을 끊어 재발급을 막는다. 대량이면 서명 키를 교체한다 |
+| Refresh Token | 새 Access Token을 계속 발급받아 오래 위장 | 서버가 저장한 리프레시 토큰을 폐기하고 사용자의 모든 세션을 끊는다. **회전과 재사용 감지**가 있으면 정상 사용자와 공격자 중 늦게 쓴 쪽의 요청이 「이미 쓴 토큰」으로 걸려 계열 전체가 자동 폐기된다. 비밀번호 변경을 유도하고, 리프레시 토큰은 HttpOnly 쿠키·기기 바인딩으로 애초에 꺼내기 어렵게 둔다 |
+
+공통으로, 이상 징후(다른 국가·기기에서의 재발급, 짧은 시간의 대량 호출)를 감지해 재인증을 요구하는 장치가 탈취를 알아채는 계기가 된다.
 
 ## 토큰을 어디에 보관하나 (브라우저)
 

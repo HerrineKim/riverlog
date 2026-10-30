@@ -1,14 +1,15 @@
 ---
 title: "스위핑 (Sweep Line)"
 concept: "Sweep Line"
-summary: "데이터를 정렬해 한 방향으로 한 번만 훑으며 답을 갱신하는 기법. 겹치는 구간 세기와 평면을 직선으로 나누는 기하 문제를 예로 든다."
+summary: "데이터를 정렬해 한 방향으로 한 번만 훑으며 답을 갱신하는 기법. 구간 겹침 판정·병합 같은 구간 문제의 기본 부품, 겹치는 구간 세기와 평면을 직선으로 나누는 기하 문제를 예로 든다."
 tags: ["algorithm", "paradigm", "sorting", "problem-solving", "geometry"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/a001c3e811794f45866f8d150f6d7b48", "https://80000coding.notion.site/194ccf68b6044aa686032c778358d89e"]
+date: "2026-10-30"
+sources: ["https://80000coding.notion.site/a001c3e811794f45866f8d150f6d7b48", "https://80000coding.notion.site/194ccf68b6044aa686032c778358d89e", "https://www.techinterviewhandbook.org/algorithms/interval/"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「싹~ 쓸어버려 sweeping!」, 「Sweeping on plane.」을 바탕으로 재구성한 노트다.
+> 「구간 문제의 기본 부품」은 Tech Interview Handbook의 「[Interval cheatsheet](https://www.techinterviewhandbook.org/algorithms/interval/)」를 바탕으로 보강했다.
 
 ## 스위핑이란
 
@@ -30,6 +31,32 @@ sources: ["https://80000coding.notion.site/a001c3e811794f45866f8d150f6d7b48", "h
 | 모든 쌍을 비교하면 O(n²)인데 n이 크다 | 겹치는 선분 쌍, 가장 가까운 두 점 |
 
 1차원 구간 문제, 회의실 배정, 그리고 2차원 기하 문제에서 자주 나온다.
+
+## 구간 문제의 기본 부품
+
+구간(interval) 문제는 `[[1, 2], [4, 7]]`처럼 시작·끝 두 값으로 된 쌍의 배열을 다룬다. 겹치는 경우의 수가 많아 헷갈리지만 부품은 몇 개 안 된다.
+
+| 부품 | 코드 | 설명 |
+| --- | --- | --- |
+| 시작점 순 정렬 | `intervals.sort(key=lambda x: x[0])` | 거의 모든 구간 문제의 첫 단계다. 정렬하면 겹칠 수 있는 구간이 이웃하게 된다 |
+| 두 구간이 겹치는가 | `a[0] < b[1] and b[0] < a[1]` | 「한쪽이 다른 쪽보다 완전히 앞」이 아니면 겹친다. 끝점이 맞닿는 것도 겹침으로 치려면 `<`를 `<=`로 바꾼다 |
+| 겹치는 두 구간 합치기 | `[min(a[0], b[0]), max(a[1], b[1])]` | 정렬 후에는 앞 구간의 시작이 이미 작으므로 끝만 `max`로 늘린다 |
+
+```python
+def merge_intervals(intervals):
+    intervals.sort(key=lambda x: x[0])
+    merged = []
+    for s, e in intervals:
+        if merged and s <= merged[-1][1]:      # 맞닿은 끝점도 합친다
+            merged[-1][1] = max(merged[-1][1], e)
+        else:
+            merged.append([s, e])
+    return merged
+```
+
+**먼저 확인할 조건**은 `[1, 2]`와 `[2, 3]`처럼 끝점이 맞닿은 구간을 겹친 것으로 보는지, 그리고 `[a, b]`에서 항상 `a < b`인지다. 등호 하나가 답을 바꾼다. 경계 사례로는 구간 0개·1개, 다른 구간 안에 완전히 들어간 구간(끝을 `max`로 갱신하지 않으면 틀린다), 똑같은 구간이 여럿인 경우를 넣는다.
+
+겹치지 않게 남길 수 있는 최대 구간 수(제거할 최소 구간 수)는 **끝점 순으로 정렬**하는 [[greedy|그리디]]로 푼다. 회의실 배정과 같은 문제다.
 
 ## 예제 1: 가장 많이 겹치는 선분 수
 

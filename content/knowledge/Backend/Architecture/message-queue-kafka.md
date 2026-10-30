@@ -1,14 +1,14 @@
 ---
 title: "메시지 큐와 Kafka"
 concept: "Message Queue"
-summary: "메시지 큐를 고르는 기준과 IBM MQ → RabbitMQ → Kafka → Pulsar로 이어진 구조 변화, Kafka의 토픽·파티션·컨슈머 그룹 구조와 빠른 이유(순차 I/O, 제로 카피), 전달 보장 수준(at-most/at-least/exactly once)과 메시지가 유실되는 지점별 대책을 정리했다."
+summary: "메시지 큐를 고르는 기준과 IBM MQ → RabbitMQ → Kafka → Pulsar로 이어진 구조 변화, Kafka의 토픽·파티션·컨슈머 그룹 구조와 빠른 이유(순차 I/O, 제로 카피), 전달 보장 수준(at-most/at-least/exactly once)과 메시지가 유실되는 지점별 대책, Kafka와 RabbitMQ의 차이, 처리 실패와 DLQ, Kafka Connect·Streams·스키마 레지스트리 생태계를 정리했다."
 tags: ["backend", "architecture", "queue", "streaming", "msa"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/types-of-message-queue", "https://bytebytego.com/guides/how-do-message-queue-architectures-evolve", "https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss", "https://bytebytego.com/guides/why-is-kafka-fast", "https://bytebytego.com/guides/delivery-semantics", "https://bytebytego.com/guides/can-kafka-lose-messages", "https://bytebytego.com/guides/top-5-kafka-use-cases", "https://kafka.apache.org/documentation/", "https://godekdls.github.io/Apache%20Kafka/design/", "https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/", "https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/", "https://ryan-han.com/post/server/activemq_virtual_destinations/"]
+sources: ["https://bytebytego.com/guides/types-of-message-queue", "https://bytebytego.com/guides/how-do-message-queue-architectures-evolve", "https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss", "https://bytebytego.com/guides/why-is-kafka-fast", "https://bytebytego.com/guides/delivery-semantics", "https://bytebytego.com/guides/can-kafka-lose-messages", "https://bytebytego.com/guides/top-5-kafka-use-cases", "https://kafka.apache.org/documentation/", "https://godekdls.github.io/Apache%20Kafka/design/", "https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/", "https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/", "https://ryan-han.com/post/server/activemq_virtual_destinations/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/messaging/kafka.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Types of Message Queue](https://bytebytego.com/guides/types-of-message-queue)」, 「[Message Queue Evolution](https://bytebytego.com/guides/how-do-message-queue-architectures-evolve)」, 「[The Ultimate Kafka 101](https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss)」, 「[Why is Kafka Fast](https://bytebytego.com/guides/why-is-kafka-fast)」, 「[Delivery Semantics](https://bytebytego.com/guides/delivery-semantics)」, 「[Can Kafka Lose Messages?](https://bytebytego.com/guides/can-kafka-lose-messages)」, 「[Top 5 Kafka Use Cases](https://bytebytego.com/guides/top-5-kafka-use-cases)」를 바탕으로, 설정 기본값은 Apache Kafka 공식 문서로 확인해 재구성한 노트다. 운영 설계와 구독 모델은 「[아파치 카프카 레퍼런스: 설계](https://godekdls.github.io/Apache%20Kafka/design/)」(공식 문서 번역), 「[Kafka 운영자가 말하는 처음 접하는 Kafka](https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/)」, 「[LINE에서 Kafka를 사용하는 방법](https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/)」, 「[ActiveMQ의 Virtual Destinations를 활용한 메세지 로드밸런싱](https://ryan-han.com/post/server/activemq_virtual_destinations/)」으로 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[Types of Message Queue](https://bytebytego.com/guides/types-of-message-queue)」, 「[Message Queue Evolution](https://bytebytego.com/guides/how-do-message-queue-architectures-evolve)」, 「[The Ultimate Kafka 101](https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss)」, 「[Why is Kafka Fast](https://bytebytego.com/guides/why-is-kafka-fast)」, 「[Delivery Semantics](https://bytebytego.com/guides/delivery-semantics)」, 「[Can Kafka Lose Messages?](https://bytebytego.com/guides/can-kafka-lose-messages)」, 「[Top 5 Kafka Use Cases](https://bytebytego.com/guides/top-5-kafka-use-cases)」를 바탕으로, 설정 기본값은 Apache Kafka 공식 문서로 확인해 재구성한 노트다. 운영 설계와 구독 모델은 「[아파치 카프카 레퍼런스: 설계](https://godekdls.github.io/Apache%20Kafka/design/)」(공식 문서 번역), 「[Kafka 운영자가 말하는 처음 접하는 Kafka](https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/)」, 「[LINE에서 Kafka를 사용하는 방법](https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/)」, 「[ActiveMQ의 Virtual Destinations를 활용한 메세지 로드밸런싱](https://ryan-han.com/post/server/activemq_virtual_destinations/)」으로 보강했다. Kafka와 RabbitMQ 비교, 정확히 한 번 처리, DLQ, Kafka Connect·Streams·스키마 레지스트리는 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다.
 
 ## 메시지 큐란
 
@@ -49,7 +49,24 @@ sources: ["https://bytebytego.com/guides/types-of-message-queue", "https://byteb
 
 오래된 메시지를 싼 오브젝트 스토리지로 내려 보관하는 **계층형 저장(tiered storage)** 은 Pulsar가 먼저 기본으로 내세웠고, Kafka도 3.6부터 정식 기능으로 들어왔다.
 
-**큐(queue)와 로그(log)의 차이**가 고르는 기준이 된다. 큐는 「작업을 한 소비자에게 한 번 넘기고 지운다」, 로그는 「일어난 일을 순서대로 남기고 여러 소비자가 각자 읽는다」.
+**큐(queue)와 로그(log)의 차이**가 고르는 기준이 된다. 큐는 「작업을 한 소비자에게 한 번 넘기고 지운다」, 로그는 「일어난 일을 순서대로 남기고 여러 소비자가 각자 읽는다」. 그래서 처리할 **작업(커맨드)** 을 워커에게 나눠 줄 때는 메시지 큐가, 일어난 **사실(이벤트)** 을 여러 시스템이 각자 읽고 다시 읽어야 할 때는 이벤트 스트림이 맞는다. 커맨드와 이벤트의 구분은 [[event-driven-architecture|이벤트 기반 아키텍처 설계]]에 있다.
+
+### Kafka와 RabbitMQ
+
+| 비교 | RabbitMQ | Kafka |
+| --- | --- | --- |
+| 모델 | 메시지 브로커. 익스체인지가 큐로 라우팅한다 | 분산 커밋 로그. 토픽을 파티션으로 나눠 저장한다 |
+| 소비 후 메시지 | 확인(ack)하면 큐에서 지운다 | 지우지 않는다. 보존 기간·크기·컴팩션 기준으로만 정리한다 |
+| 전달 방식 | 브로커가 소비자에게 민다(push). 프리페치 수로 미리 보낼 양을 정한다 | 소비자가 당겨 간다(pull) |
+| 진행 상태 | 메시지마다 ack·nack. 브로커가 상태를 안다 | 소비자 그룹이 파티션별 오프셋 하나만 커밋한다 |
+| 다시 읽기 | 소비한 메시지는 없다(스트림 큐는 예외) | 오프셋을 되돌려 언제든 다시 읽는다. 새 소비자가 과거부터 읽을 수 있다 |
+| 순서 | 큐 하나에 소비자 하나일 때 순서가 지켜진다 | 파티션 안에서 지켜진다 |
+| 라우팅 | direct·topic·fanout·headers 익스체인지로 유연하다 | 토픽과 키 기반 파티션 선택 정도다. 복잡한 분기는 소비자나 스트림 처리가 한다 |
+| 큐 기능 | 우선순위 큐, 메시지별 TTL, 지연 재전달, 데드 레터 익스체인지를 브로커가 지원한다 | 기본은 없다. 재시도 토픽·DLQ를 애플리케이션이나 커넥터가 만든다 |
+| 처리량·보관 | 메시지가 큐에 쌓이지 않을 때 가장 빠르다. 짧게 머무는 작업 메시지에 맞다 | 순차 I/O와 배치로 대용량을 오래 보관하며 처리한다 |
+| 맞는 곳 | 작업 분배, 요청-응답형 비동기 처리, 메시지별 라우팅 | 이벤트 스트리밍, 데이터 파이프라인, 여러 시스템이 같은 데이터를 읽는 허브 |
+
+둘의 경계는 좁아지고 있다. RabbitMQ는 Raft로 복제하는 쿼럼 큐(quorum queue)와 로그처럼 다시 읽는 스트림(stream)을 지원하고, Kafka는 공유 그룹(share group, 「Queues for Kafka」)으로 파티션 하나를 여러 소비자가 레코드 단위로 확인하며 나눠 읽는 큐 방식을 4.2에서 정식 기능으로 넣었다.
 
 ### 점대점과 발행·구독을 함께 쓰기
 
@@ -117,7 +134,29 @@ Producer ──▶ Topic "orders"
 | **at-least once** (최소 한 번) | 유실은 없지만 중복될 수 있다. 확인을 못 받으면 다시 보낸다 | 소비자가 중복을 걸러야 한다 | 대부분의 업무 이벤트. 메시지마다 고유 키를 두고 DB 유니크 제약이나 처리 기록으로 중복을 막는다 |
 | **exactly once** (정확히 한 번) | 유실도 중복도 없다 | 구현이 가장 어렵고 성능 비용이 크다 | 결제·거래·회계처럼 중복이 허용되지 않고, 하위 시스템이 멱등성을 지원하지 않을 때 |
 
-실무에서 정확히 한 번은 대개 **「최소 한 번 전달 + 멱등한 처리」** 로 만든다. Kafka는 멱등 프로듀서(브로커가 재전송 중복을 걸러 낸다)와 트랜잭션(여러 파티션 쓰기와 오프셋 커밋을 한 단위로 묶고, 소비자는 `isolation.level=read_committed`로 커밋된 것만 읽는다)으로 **Kafka 안에서의** 정확히 한 번을 지원한다. Kafka 밖의 DB나 외부 API까지 포함하면 그쪽 쓰기도 멱등하게 만들어야 한다. 멱등성을 적용하는 방법은 [[resiliency-patterns|장애 확산을 막는 복원력 패턴]]에 있다.
+### 정확히 한 번이 어려운 이유
+
+보낸 쪽은 확인 응답이 오지 않았을 때 **메시지가 안 간 것인지, 처리됐는데 응답만 잃은 것인지** 구별할 수 없다([[distributed-time-and-failure|분산 시스템의 시간과 장애]]). 다시 보내면 중복이 생기고, 안 보내면 유실이 생긴다. 소비자 쪽도 같다. 「처리」와 「처리했다는 기록(오프셋 커밋, ack)」은 서로 다른 시스템에 쓰는 두 동작이라, 둘 사이에 죽으면 둘 중 하나만 남는다. 그래서 네트워크 전달만으로는 정확히 한 번을 만들 수 없고, **최소 한 번 전달 + 멱등한 처리**(같은 메시지를 여러 번 처리해도 결과가 한 번과 같게)로 **효과상 정확히 한 번(effectively once)** 을 만든다.
+
+| 수단 | 막는 것 |
+| --- | --- |
+| 멱등 처리 | 메시지 ID나 업무 키를 처리 기록 테이블·유니크 제약으로 걸러 중복 적용을 막는다. 「값을 X로」 같은 절대 갱신, upsert |
+| 처리와 기록을 한 트랜잭션에 | 처리 결과와 「어디까지 처리했나」(오프셋, 처리한 메시지 ID)를 같은 DB 트랜잭션에 쓴다 |
+| 발행 쪽 원자성 | DB 변경과 이벤트 발행을 아웃박스로 묶는다([[distributed-data-patterns\|데이터 관리 패턴]]) |
+
+### Kafka의 정확히 한 번(EOS)
+
+Kafka는 **읽고-처리하고-쓰는(consume-transform-produce) 흐름이 Kafka 안에서 닫혀 있을 때** 정확히 한 번을 보장한다.
+
+| 구성 요소 | 동작 |
+| --- | --- |
+| 멱등 프로듀서 | 프로듀서 ID와 파티션별 일련번호로 브로커가 재전송 중복을 버린다. 기본으로 켜져 있다 |
+| 트랜잭션 | `transactional.id`를 준 프로듀서가 `beginTransaction()` → 여러 파티션에 쓰기 → `sendOffsetsToTransaction()`으로 읽은 쪽 오프셋 커밋까지 → `commitTransaction()`. 쓰기와 오프셋이 함께 확정되거나 함께 버려진다 |
+| 좀비 차단(fencing) | 같은 `transactional.id`로 새 인스턴스가 뜨면 에포크가 올라, 죽은 줄 알았던 옛 인스턴스의 쓰기를 브로커가 거부한다 |
+| `read_committed` 소비 | 컨슈머가 `isolation.level=read_committed`면 커밋된 트랜잭션의 메시지만 읽고, 중단된 트랜잭션의 메시지는 건너뛴다 |
+| Kafka Streams | `processing.guarantee=exactly_once_v2` 설정 하나로 위 과정을 프레임워크가 해 준다 |
+
+Kafka 밖의 DB나 외부 API에 쓰는 순간 이 보장은 끝난다. 그쪽은 멱등한 쓰기나 「결과와 오프셋을 같은 DB 트랜잭션에 저장」으로 맞춘다([[kafka-operations|Kafka 운영]]의 오프셋 관리). 멱등성을 적용하는 방법은 [[resiliency-patterns|장애 확산을 막는 복원력 패턴]]에 있다.
 
 ## 메시지는 어디서 유실되나
 
@@ -135,7 +174,7 @@ Producer ──▶ Topic "orders"
 | 브로커 | 디스크 기록은 성능을 위해 비동기로 flush된다. 복제본이 부족한 상태에서 리더가 죽으면 아직 복제되지 않은 메시지가 사라진다 | 복제 계수 3, `min.insync.replicas=2` 이상, `unclean.leader.election.enable=false`(기본값). 내구성은 fsync가 아니라 **복제**로 확보한다 |
 | 컨슈머 | 자동 커밋은 처리 전에 오프셋을 커밋할 수 있다. 처리 도중 컨슈머가 죽으면 그 메시지는 다시 읽히지 않는다 | 자동 커밋을 끄고 **처리한 뒤 커밋**한다. 처리 루프에서는 비동기 커밋으로 처리량을 지키고, 종료·예외 처리에서는 동기 커밋으로 마지막 오프셋을 확실히 남긴다 |
 
-처리한 뒤 커밋하면 커밋 직전에 죽었을 때 같은 메시지를 다시 처리한다. 즉 **유실을 막으면 중복이 생기므로** 소비자 처리를 멱등하게 만드는 것이 한 세트다.
+처리한 뒤 커밋하면 커밋 직전에 죽었을 때 같은 메시지를 다시 처리한다. 즉 **유실을 막으면 중복이 생기므로** 소비자 처리를 멱등하게 만드는 것이 한 세트다. `acks`와 `min.insync.replicas` 조합별로 쓰기가 성공·실패하는 조건, 오프셋 커밋 방식의 비교는 [[kafka-operations|Kafka 운영: 복제, 컨슈머 그룹, 튜닝, 모니터링]]에 있다.
 
 ## Kafka가 쓰이는 곳
 
@@ -146,16 +185,134 @@ Producer ──▶ Topic "orders"
 | 모니터링·알림 | 지표를 모아 실시간 집계하고 임계값을 넘으면 알린다 |
 | CDC(변경 데이터 캡처) | DB 변경 로그를 Kafka 토픽으로 흘려 캐시·검색 인덱스·데이터 웨어하우스를 맞춘다. [[distributed-data-patterns\|데이터 관리 패턴]] |
 | 시스템 이전 | 옛 시스템과 새 시스템에 같은 이벤트를 흘려 결과를 비교하며 점진적으로 옮긴다 |
+| 마이크로서비스 연동 | 서비스마다 자기 DB의 변경을 아웃박스로 발행하고(주문 서비스 → `orders` 토픽, 키는 주문 ID), 결제·배송·알림 서비스가 각자 컨슈머 그룹으로 구독해 사가를 이어 가거나 자기 조회 모델을 만든다. [[event-driven-architecture\|이벤트 기반 아키텍처 설계]], [[distributed-transaction\|분산 트랜잭션: 2PC와 사가]] |
+
+### 스트림 처리와 배치 처리
+
+| 비교 | 배치 처리 | 스트림 처리 |
+| --- | --- | --- |
+| 입력 | 끝이 있는 데이터(bounded). 하루치 파일, 테이블 전체 | 끝이 없는 데이터(unbounded). 계속 들어오는 이벤트 |
+| 결과가 나오는 때 | 작업이 끝난 뒤 한꺼번에 | 이벤트가 들어올 때마다, 또는 윈도가 닫힐 때마다 |
+| 지연·처리량 | 지연은 길지만 한 번에 많이 처리해 효율이 좋다 | 지연이 짧지만 상태·순서·늦은 이벤트를 다뤄야 한다 |
+| 시간 | 처리 시점에 데이터가 다 있다 | 이벤트 시간(event time)과 처리 시간이 다르다. 늦게 온 이벤트를 윈도에 얼마나 기다려 줄지(워터마크) 정한다 |
+
+Kafka는 둘 다의 입력이 된다. 보존 기간 동안 로그가 남아 있으므로 같은 토픽을 스트림 처리기(Kafka Streams, Flink)가 실시간으로 읽고, 배치 작업이 오프셋 범위를 정해 한꺼번에 읽을 수도 있다. 로직을 바꾸면 오프셋을 되돌려 **로그를 다시 재생해 결과를 새로 만드는** 것도 된다. 배치 계층과 실시간 계층을 따로 두는 람다 아키텍처 대신 스트림 하나와 재생으로 둘을 대신하는 구조를 카파 아키텍처(Kappa architecture)라고 한다. 배치·스트림·ETL의 일반 용어는 [[data-pipeline-basics|데이터 파이프라인과 저장소 용어]]에 있다.
+
+### NoSQL 저장소로 내보낼 때
+
+Kafka 토픽을 MongoDB·Cassandra·Elasticsearch 같은 저장소에 싱크할 때 맞출 것은 다음과 같다.
+
+| 고려할 것 | 이유와 방법 |
+| --- | --- |
+| 멱등한 쓰기 | 전달은 최소 한 번이다. 삽입(insert) 대신 Kafka 메시지 키를 문서 ID·기본 키로 쓰는 **upsert**로 써서 재전달돼도 결과가 같게 한다 |
+| 순서 | 순서는 파티션 안에서만 지켜진다. 같은 엔터티의 변경은 같은 키로 보내야 저장소에 순서대로 반영된다. 재시도 토픽으로 돌린 메시지는 뒤에 온 메시지보다 늦게 쓰일 수 있으므로 버전·타임스탬프로 옛 값이 새 값을 덮지 않게 한다 |
+| 삭제 | 값이 없는 tombstone을 저장소의 삭제로 옮길지 정한다 |
+| 쓰기 속도 | 저장소의 쓰기 한도를 넘으면 컨슈머가 묶어 쓰고(bulk), 속도를 늦추거나 `pause()`로 잠시 멈춘다. 저장소가 느려 랙이 쌓이면 컨슈머를 늘려도 저장소만 더 바빠진다 |
+| 스키마 | 메시지 스키마와 저장소의 문서·컬럼 구조를 어떻게 대응시킬지, 필드가 늘 때 어떻게 할지 정한다 |
+
+직접 컨슈머를 짜기보다 Kafka Connect 싱크 커넥터(MongoDB, Cassandra, Elasticsearch 커넥터)를 쓰면 오프셋·재시도·DLQ를 프레임워크가 맡는다.
+
+## 처리 실패와 DLQ
+
+소비자가 메시지를 처리하다 실패하면 무한히 다시 시도할 수도, 버릴 수도 없다. 실패를 **종류별로** 나눠 다룬다.
+
+| 실패 종류 | 예 | 처리 |
+| --- | --- | --- |
+| 일시적 실패 | 하류 API 타임아웃, DB 잠금 | 백오프를 두고 재시도한다 |
+| 영구적 실패(독 메시지, poison message) | 역직렬화 오류, 필수 필드 누락, 업무 규칙 위반 | 재시도해도 같으므로 바로 **데드 레터 큐(DLQ)** 로 보낸다 |
+
+Kafka에는 브로커가 제공하는 DLQ가 없다. 실패한 메시지를 **별도 토픽에 쓰는 것**이 DLQ다.
+
+```text
+orders ──컨슈머──▶ 처리 실패
+                    ├─ 일시적 → orders.retry.1m → orders.retry.10m → (그래도 실패)
+                    └─ 영구적 ───────────────────────────────────────▶ orders.dlt
+                                                                         │
+                                                  원인 수정 뒤 재처리 도구가 원래 토픽으로 다시 보낸다
+```
+
+| 방식 | 동작 | 대가 |
+| --- | --- | --- |
+| 막는 재시도(blocking) | 실패한 메시지를 그 자리에서 몇 번 재시도한 뒤 DLQ로 보낸다 | 그동안 그 파티션 전체가 멈춘다. 순서는 지켜진다 |
+| 막지 않는 재시도(non-blocking) | 실패한 메시지를 지연 시간이 다른 재시도 토픽으로 넘기고 원래 파티션은 계속 처리한다 | 처리가 막히지 않지만 **같은 키의 순서가 깨진다** |
+
+- DLQ 메시지에는 원래 토픽·파티션·오프셋, 예외 종류·메시지, 실패 시각을 헤더로 붙여 원인을 추적하고 재처리할 수 있게 한다.
+- DLQ는 쌓이기만 하면 소용없다. 적재량에 경보를 걸고, 원인을 고친 뒤 다시 흘려보낼 재처리 경로를 처음부터 만든다.
+- Spring for Apache Kafka는 `DefaultErrorHandler` + `DeadLetterPublishingRecoverer`(막는 재시도)와 `@RetryableTopic`(재시도 토픽 체인)을 제공한다. Kafka Connect는 싱크 커넥터에 `errors.tolerance=all`과 `errors.deadletterqueue.topic.name`을 주면 변환·직렬화에 실패한 레코드를 DLQ 토픽으로 보낸다.
+
+## Kafka 생태계: Connect, Streams, 스키마 레지스트리
+
+| 구성 요소 | 하는 일 |
+| --- | --- |
+| Kafka Connect | 코드 없이 설정만으로 외부 시스템과 Kafka 사이에 데이터를 옮기는 프레임워크 |
+| Kafka Streams | 애플리케이션 안에 넣어 쓰는 스트림 처리 Java 라이브러리 |
+| ksqlDB | Kafka Streams 위에서 SQL로 스트림 처리를 하는 Confluent의 서버. Confluent Community License라 Apache Kafka 프로젝트에 속하지 않는다 |
+| 스키마 레지스트리 | 메시지 스키마를 등록·버전 관리하고 호환성을 검사하는 서버. Confluent Schema Registry, Apicurio Registry가 있다 |
+
+### Kafka Connect
+
+```text
+원천 DB ──▶ [소스 커넥터] ──▶ Kafka 토픽 ──▶ [싱크 커넥터] ──▶ 검색 엔진·DW·NoSQL
+            (Debezium 등)                   (Elasticsearch, JDBC, S3 등)
+```
+
+| 개념 | 뜻 |
+| --- | --- |
+| 워커(worker) | 커넥터를 실행하는 프로세스. 단독(standalone) 모드는 한 프로세스에 오프셋을 로컬 파일로 두고, 분산(distributed) 모드는 워커 여러 대가 작업을 나누고 설정·오프셋·상태를 Kafka 내부 토픽에 저장해 워커가 죽으면 다른 워커가 이어받는다 |
+| 커넥터·태스크 | 커넥터가 일을 태스크 여러 개로 나누고, 태스크가 실제로 데이터를 옮긴다. `tasks.max`로 병렬도를 정한다 |
+| 컨버터(converter) | Kafka 바이트와 Connect 내부 레코드를 서로 바꾼다. JSON, Avro, Protobuf(스키마 레지스트리 연동) |
+| SMT(single message transform) | 레코드 하나씩 가볍게 바꾼다. 필드 이름 바꾸기, 마스킹, 토픽 라우팅 |
+
+파이프라인은 REST API로 커넥터 설정(JSON)을 등록해 만든다. 맞는 커넥터가 없으면 직접 만든다.
+
+| 종류 | 구현할 것 |
+| --- | --- |
+| 소스 커넥터 | `SourceConnector`(설정 검증, 태스크 설정 나누기) + `SourceTask.poll()`. `poll()`이 돌려주는 `SourceRecord`에 **소스 파티션과 소스 오프셋**(예: 테이블 이름, 마지막으로 읽은 ID)을 넣으면 Connect가 저장했다가 재시작 때 그 위치부터 읽게 해 준다 |
+| 싱크 커넥터 | `SinkConnector` + `SinkTask.put()`(받은 레코드 묶음 쓰기)·`flush()`. 오프셋 커밋은 Connect가 한다 |
+| 공통 | 설정 항목을 `ConfigDef`로 선언하고, JAR를 워커의 `plugin.path`에 둔다. 단순한 변형만 필요하면 커넥터 대신 SMT를 만든다 |
+
+### Kafka Streams와 상태 저장소
+
+Kafka Streams는 별도 클러스터 없이 **애플리케이션 인스턴스를 늘리는 것으로 확장**하는 라이브러리다. 입력 토픽의 파티션이 처리 단위(태스크)가 되고, 같은 `application.id`를 쓰는 인스턴스들이 컨슈머 그룹처럼 태스크를 나눈다.
+
+| 개념 | 뜻 |
+| --- | --- |
+| KStream / KTable | 이벤트 하나하나의 흐름 / 키별 최신 값의 테이블. 컴팩션 토픽은 KTable로 읽는다 |
+| 상태 저장소(state store) | 집계·조인·윈도 계산의 중간 상태. 태스크마다 로컬에 둔다. 기본은 디스크 기반 RocksDB이고 인메모리 저장소도 고를 수 있다 |
+| 변경 로그 토픽(changelog) | 상태 저장소의 모든 변경을 컴팩션 토픽에 함께 써 둔다. 인스턴스가 죽으면 태스크를 받은 인스턴스가 이 토픽을 재생해 상태를 복원한다 |
+| 대기 복제본(standby replica) | `num.standby.replicas`(기본 0)만큼 다른 인스턴스가 변경 로그를 미리 따라 읽어 둔다. 장애 때 복원 시간이 거의 없어진다 |
+| 대화형 쿼리(interactive query) | 상태 저장소를 애플리케이션이 직접 조회해 API로 내준다 |
+
+상태가 클수록 장애 뒤 변경 로그 재생이 오래 걸린다. 대기 복제본, 로컬 상태 디렉터리(`state.dir`)를 재시작 뒤에도 남기는 배포, 정적 멤버십으로 태스크가 다른 인스턴스로 옮겨 다니지 않게 하는 것이 복원 시간을 줄인다.
+
+| 비교 | Kafka Streams | ksqlDB |
+| --- | --- | --- |
+| 형태 | Java·Kotlin 라이브러리. 내 애플리케이션 안에서 돈다 | 별도 서버 클러스터. SQL 문으로 스트림·테이블을 정의한다 |
+| 표현력 | 임의 코드, 외부 호출, 세밀한 상태 제어 | SQL로 표현되는 필터·변환·집계·조인 |
+| 맞는 곳 | 업무 로직이 들어간 스트림 처리 서비스 | 탐색, 간단한 실시간 집계·변환, SQL에 익숙한 팀 |
+
+### 스키마 레지스트리
+
+생산자와 소비자는 서로 다른 시기에 배포된다. 메시지 형식이 말없이 바뀌면 소비자가 역직렬화에 실패하거나 필드를 잘못 읽는다. 스키마 레지스트리는 **토픽별 스키마 버전을 한곳에 두고 호환성 규칙을 강제한다.**
+
+```text
+프로듀서: 스키마 등록(호환성 검사 통과해야 등록) → 스키마 ID 받음 → [매직 바이트][스키마 ID 4바이트][Avro 바이트] 전송
+컨슈머:   메시지 앞의 스키마 ID로 레지스트리에서 스키마를 받아(캐시) 역직렬화
+```
+
+- 메시지마다 스키마 전체가 아니라 ID만 실어 크기를 줄인다.
+- 호환성 규칙(backward, forward, full)을 어기는 변경은 **등록 단계에서 거절**되므로, 깨지는 배포가 운영에 나가기 전에 막힌다. 규칙의 뜻과 안전한 변경 방법은 [[distributed-data-patterns|데이터 관리 패턴]]의 스키마 진화에 있다.
+- Avro, Protobuf, JSON Schema를 지원한다.
 
 ## 운영 설계: 공유 클러스터와 보존 정책
 
 | 주제 | 내용 |
 | --- | --- |
 | 풀(pull) 방식 | 브로커가 밀어 넣지 않고 컨슈머가 자기 속도로 가져간다. 느린 컨슈머가 과부하에 빠지지 않고, 롱 폴링으로 빈 요청을 줄인다. 오프셋을 되돌리면 과거 데이터를 다시 처리할 수 있다 |
-| 보존(retention) | 읽혀도 지우지 않고 기간·크기 기준으로 보관한다. 그래서 같은 토픽을 분산 작업 큐로도, 변경 이벤트를 여러 하위 서비스에 퍼뜨리는 데이터 허브로도 쓴다 |
-| 로그 컴팩션(log compaction) | 키마다 **최신 값만 남기고** 옛 값을 정리한다. 상태 복원, DB 변경 구독, 이벤트 소싱의 스냅샷에 쓴다 |
+| 보존(retention) | 읽혀도 지우지 않고 기간·크기 기준으로 보관한다. 그래서 같은 토픽을 분산 작업 큐로도, 변경 이벤트를 여러 하위 서비스에 퍼뜨리는 데이터 허브로도 쓴다. 세그먼트 단위 삭제와 기본값은 [[kafka-operations\|Kafka 운영]]에 있다 |
+| 로그 컴팩션(log compaction) | 키마다 **최신 값만 남기고** 옛 값을 정리한다. 상태 복원, DB 변경 구독, 이벤트 소싱의 스냅샷에 쓴다. tombstone과 동작 규칙은 [[kafka-operations\|Kafka 운영]]에 있다 |
 | 공유 클러스터 | 서비스마다 클러스터를 따로 두면 운영 비용이 서비스 수만큼 는다. 하나의 큰 클러스터에 데이터를 모으면 탐색·접근 방식이 통일되고 운영 역량을 집중할 수 있다 |
-| 멀티 테넌트 보호 | 악의가 없어도 설정 실수 하나가 공유 클러스터 전체를 느리게 한다. 요청마다 **클라이언트를 식별**할 수 있게 하고, 클라이언트별 **쿼터**(네트워크 대역폭, 브로커 요청 처리 시간)를 건다 |
+| 멀티 테넌트 보호 | 악의가 없어도 설정 실수 하나가 공유 클러스터 전체를 느리게 한다. 요청마다 **클라이언트를 식별**할 수 있게 하고, 클라이언트별 **쿼터**(네트워크 대역폭, 브로커 요청 처리 시간)를 건다. 이름 접두사와 접두사 ACL로 테넌트를 나누는 법은 [[kafka-operations\|Kafka 운영]]의 보안에 있다 |
 | 요청 수가 비용이다 | 브로커 부하는 데이터 양보다 **요청 수**에 더 민감하다. 프로듀서 배치(`linger.ms`, `batch.size`)로 레코드를 묶어 요청당 오버헤드를 줄인다 |
 | 파티션과 순서 | 토픽 전체 순서가 꼭 필요하면 파티션을 하나로 둬야 하지만 병렬성을 잃는다. 대개 순서가 필요한 단위(주문 ID 등)를 키로 써서 그 키 안에서만 순서를 지킨다 |
 | 복제 계수 | 브로커 수에 맞춰 복제본이 고르게 흩어지게 정한다. 보통 3이다 |
@@ -167,7 +324,9 @@ Producer ──▶ Topic "orders"
 - 속도는 순차 I/O, 페이지 캐시, 제로 카피, 배치에서 나온다.
 - 유실을 막으려면 프로듀서 `acks=all`·멱등성, 브로커 복제·`min.insync.replicas`, 컨슈머 「처리 후 커밋」을 함께 맞춘다.
 - 정확히 한 번은 최소 한 번 전달에 멱등한 처리를 더해 만든다.
+- 처리 실패는 일시적·영구적으로 나눠 재시도 토픽과 DLQ로 보내고, 재처리 경로를 함께 만든다.
+- 외부 시스템 연동은 Kafka Connect, 상태 있는 스트림 처리는 Kafka Streams, 형식 계약은 스키마 레지스트리가 맡는다.
 
 더 읽을거리: 「[스케일아웃없이 순간 급증하는 주문 처리하기 (Microservice with Kafka)](https://tv.naver.com/v/11212897)」(영상)
 
-관련 노트: [[event-driven-architecture|이벤트 기반 아키텍처 설계]], [[web-scalability-components|웹 확장성의 구성 요소: 한 장으로 보는 웹 아키텍처]], [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[realtime-recsys|실시간 추천과 실험: 밴딧, 피드백 지연, A/B 테스트]], [[virtual-waiting-room|대기열 시스템(가상 대기실) 설계]], [[queue-deque|큐와 덱]]
+관련 노트: [[kafka-operations|Kafka 운영: 복제, 컨슈머 그룹, 튜닝, 모니터링]], [[event-driven-architecture|이벤트 기반 아키텍처 설계]], [[web-scalability-components|웹 확장성의 구성 요소: 한 장으로 보는 웹 아키텍처]], [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[realtime-recsys|실시간 추천과 실험: 밴딧, 피드백 지연, A/B 테스트]], [[virtual-waiting-room|대기열 시스템(가상 대기실) 설계]], [[queue-deque|큐와 덱]]

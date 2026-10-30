@@ -5,10 +5,11 @@ summary: "C에서 스레드를 다루는 POSIX pthread API와 동기화 도구. 
 tags: ["os", "thread", "concurrency", "c", "process"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/b7c35daad31e4f7f9573caa31685dbf5", "https://80000coding.notion.site/001f68841ca94386a7d90e4a35116cea", "https://80000coding.notion.site/126dc22073ec453b91d981e3a5b680f2", "https://80000coding.notion.site/0e912b650f404936b211f9c9a4b6880f"]
+sources: ["https://80000coding.notion.site/b7c35daad31e4f7f9573caa31685dbf5", "https://80000coding.notion.site/001f68841ca94386a7d90e4a35116cea", "https://80000coding.notion.site/126dc22073ec453b91d981e3a5b680f2", "https://80000coding.notion.site/0e912b650f404936b211f9c9a4b6880f", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] Thread 와 Mutex의 개념과 관련 함수」, 「[OS] Synchronization Examples」, 「원자성이란 무엇인가?」, 「mutex 동작원리」를 바탕으로 재구성한 노트다.
+> futex 설명과 「가시성·순서와 volatile」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 
 경쟁 상태, 임계 구역 조건, 세마포어의 개념과 고전적인 동기화 문제는 [[process-synchronization|프로세스 동기화]]에 있다. 이 노트는 그 개념을 **실제 코드에서 어떤 API로 쓰는지**를 다룬다.
 
@@ -57,7 +58,19 @@ pthread_mutex_destroy(&m);   // 더 쓰지 않을 때
 - `pthread_mutex_trylock`: 잠겨 있으면 기다리지 않고 `EBUSY`를 반환한다. 교착을 피하며 다른 일을 하고 싶을 때 쓴다.
 - 같은 스레드가 두 번 잠그면 기본 뮤텍스는 교착된다. 필요하면 `PTHREAD_MUTEX_RECURSIVE` 속성을 쓴다.
 - 여러 뮤텍스를 잡을 때는 **모든 스레드가 같은 순서로** 잡는다. 순서가 엇갈리면 [[deadlock|교착 상태]]가 생긴다.
-- Linux의 뮤텍스는 futex 위에 구현된다. 경쟁이 없으면 커널에 들어가지 않고 사용자 공간의 원자 연산만으로 끝나서 싸다.
+- Linux의 뮤텍스는 futex 위에 구현되어, 경쟁이 없으면 커널에 들어가지 않는다(아래).
+
+잠금을 커널이 관리하면 잠든 스레드를 스케줄러에서 빼 CPU를 낭비하지 않지만, 잠그고 풀 때마다 시스템 콜(모드 전환) 비용을 낸다. 스핀락은 시스템 콜이 없지만 기다리는 동안 CPU를 태운다. Linux의 뮤텍스는 둘을 합친 **futex**(fast userspace mutex) 위에 구현된다.
+
+```text
+잠금 상태 = 사용자 공간의 정수 하나
+lock:   CAS(0 → 1) 성공      → 끝. 커널에 들어가지 않는다 (빠른 경로)
+        실패(이미 잠김)       → "대기자 있음"으로 표시하고 futex(FUTEX_WAIT) 시스템 콜로 잠든다
+unlock: 대기자 표시가 없으면  → 정수만 0으로. 시스템 콜 없음
+        대기자가 있으면       → futex(FUTEX_WAKE)로 하나를 깨운다
+```
+
+경쟁이 없는 대부분의 경우는 원자 연산 한 번으로 끝나고, 실제로 기다려야 할 때만 커널을 부른다. glibc는 여기에 잠깐 스핀하다 잠드는 단계를 더한다(아래 「커널 안의 동기화」의 스핀 설명). Windows의 `SRWLOCK`·`WaitOnAddress`, macOS의 `os_unfair_lock`도 같은 발상이다.
 
 ## 조건 변수
 
@@ -108,6 +121,25 @@ x86에서 원자 연산은 명령어 앞의 `lock` 접두어로 표시된다(`lo
 | 버퍼 비우기 | 스토어 버퍼와 쓰기 결합 버퍼를 비워야 결과가 즉시 다른 코어에 보인다 |
 
 그래도 잠금 하나로 감싸는 것보다는 훨씬 싸다. 카운터 하나라면 뮤텍스 대신 `atomic_int`로 충분하다. 캐시 수준의 비용은 [[cache-friendly-code|캐시를 고려한 코드]]를 본다.
+
+## 가시성·순서와 volatile
+
+원자성만으로는 부족하다. 한 스레드가 쓴 값이 다른 스레드에 **언제 보이는지**(가시성)와 **어떤 순서로 보이는지**(순서)도 맞아야 한다. 컴파일러는 값을 레지스터에 담아 두고 메모리를 다시 읽지 않거나 접근 순서를 바꾸고, CPU도 스토어 버퍼와 비순차 실행으로 순서를 바꾼다. x86은 저장끼리·읽기끼리의 순서를 지키는 비교적 강한 모델(TSO)이고 ARM은 더 약해서, 배리어 없이 짠 코드가 x86에서만 우연히 맞게 돌기도 한다.
+
+| 수단 | 보장 |
+| --- | --- |
+| 메모리 배리어(펜스) | 앞뒤 메모리 접근의 재정렬을 막는다. x86 `mfence`, ARM `dmb`, C11 `atomic_thread_fence` |
+| 원자 변수의 메모리 순서 | C11·C++의 `memory_order_acquire`·`release`·`seq_cst`. release로 쓴 값을 acquire로 읽은 스레드는 그 앞의 쓰기도 모두 본다 |
+| 뮤텍스 | 잠금은 acquire, 해제는 release 의미를 가진다. 해제 전에 쓴 값은 다음에 잠근 스레드에 보인다 |
+
+`volatile`은 언어마다 뜻이 다르다.
+
+| 언어 | 뜻 | 스레드 동기화에 쓸 수 있나 |
+| --- | --- | --- |
+| C·C++ | 그 변수의 읽기·쓰기를 생략하거나 레지스터에 캐시하지 말고 **매번 메모리에 접근**하라는 컴파일러 지시. 메모리 맵 I/O 레지스터([[io-organization\|입출력 구조]]), 시그널 핸들러와 주고받는 `volatile sig_atomic_t` 플래그용 | 아니다. 원자성도, CPU 수준의 순서도 보장하지 않으며 스레드 사이의 데이터 경쟁은 여전히 정의되지 않은 동작이다. `_Atomic`·`std::atomic`을 쓴다 |
+| Java·C# | 읽기·쓰기가 다른 스레드에 바로 보이고 앞뒤 접근과 순서가 섞이지 않는다(Java는 happens-before 관계) | 상태 플래그 하나를 알리는 데는 된다. `count++` 같은 읽기-수정-쓰기는 여전히 원자적이지 않아 `AtomicInteger`나 락이 필요하다 |
+
+정리하면 멀티코어에서의 동기화는 세 층이 함께 맞아야 성립한다. **캐시 일관성**이 같은 주소의 사본을 맞추고, **원자 명령**이 읽기-수정-쓰기 동안 라인을 독점하고, **메모리 순서(배리어)** 가 여러 주소에 대한 접근이 보이는 순서를 정한다.
 
 ## 커널 안의 동기화
 

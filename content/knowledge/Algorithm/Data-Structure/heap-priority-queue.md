@@ -1,14 +1,16 @@
 ---
 title: "힙과 우선순위 큐"
 concept: "Heap"
-summary: "우선순위가 가장 높은 원소를 O(log n)에 넣고 꺼낼 수 있게 해 주는 완전 이진 트리 기반 자료구조."
+summary: "우선순위가 가장 높은 원소를 O(log n)에 넣고 꺼낼 수 있게 해 주는 완전 이진 트리 기반 자료구조, 편향되지 않는 이유와 힙 정렬, 크기 k짜리 힙으로 상위 k개를 O(n log k)에 구하는 방법."
 tags: ["data-structure", "heap", "priority-queue", "python"]
 source: mixed
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f"]
+date: "2026-10-30"
+sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f", "https://www.techinterviewhandbook.org/algorithms/heap/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
 ---
 
 > 구현 방식 비교와 O(n) 힙 만들기는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[자료구조] 우선순위큐와 힙」을 바탕으로 보강했다.
+> 상위 k개를 크기 k짜리 힙으로 구하는 절은 Tech Interview Handbook의 「[Heap cheatsheet](https://www.techinterviewhandbook.org/algorithms/heap/)」를 바탕으로 보강했다.
+> 편향되지 않는 이유와 힙 정렬의 안정성은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 
 ## 우선순위 큐
 
@@ -56,7 +58,19 @@ sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f"]
 
 ![힙 삭제](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/14-%ED%9E%99-Heap-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84-%ED%81%90.assets/6dimHpq.png)
 
-트리의 높이가 log n이므로 삽입·삭제 모두 O(log n), 최솟값(최댓값) 확인은 O(1)이다. 힙에서 원소를 하나씩 꺼내면 정렬이 되는데, 이것이 **힙 정렬**(O(n log n))이다.
+트리의 높이가 log n이므로 삽입·삭제 모두 O(log n), 최솟값(최댓값) 확인은 O(1)이다.
+
+### 이진 탐색 트리와 달리 편향되지 않는 이유
+
+BST는 **값이 위치를 정한다.** 정렬된 순서로 넣으면 새 값이 매번 같은 쪽 끝으로 가서 한쪽으로 뻗는다. 힙은 반대로 **위치가 먼저 정해진다.** 삽입은 언제나 배열의 다음 칸(마지막 레벨의 왼쪽부터 빈자리)에, 삭제는 언제나 마지막 칸의 원소를 루트로 옮기는 것으로 시작한다. 그 뒤 값은 부모-자식 사이의 순서만 맞추며 위아래로 자리를 바꿀 뿐 트리 모양은 바꾸지 않는다. 그래서 어떤 순서로 넣어도 모양이 늘 완전 이진 트리이고 높이가 ⌊log₂ n⌋로 고정된다. 대신 힙은 형제 사이에 순서가 없어 임의 값 탐색이 O(n)이다. 「가장 큰(작은) 것」만 빨리 알면 되는 구조다.
+
+### 힙 정렬
+
+배열을 O(n)에 최대 힙으로 만든 뒤(아래 절), 루트(최댓값)를 배열 끝 원소와 맞바꾸고 힙 크기를 1 줄여 루트에서 sift down하기를 n-1번 반복하면 오름차순 정렬이 된다.
+
+- 시간은 최선·평균·최악 모두 **O(n log n)**, 추가 공간 O(1)인 제자리 정렬이다.
+- **불안정 정렬**이다. 루트와 끝 원소를 맞바꾸는 장거리 교환 때문에 값이 같은 원소의 앞뒤가 바뀔 수 있다.
+- 최악이 보장되는 대신 메모리를 띄엄띄엄 오가 캐시 효율이 낮아, 실제로는 퀵 정렬보다 느리다. 그래서 인트로 정렬이 퀵 정렬의 재귀가 너무 깊어질 때의 대비책으로 쓴다([[merge-quick-sort|병합 정렬과 퀵 정렬]]).
 
 ### 배열을 한 번에 힙으로 만들기: O(n)
 
@@ -147,6 +161,27 @@ q.put((1, "apple"))
 q.put((3, "banana"))
 print(q.get()[1])  # apple
 ```
+
+## 상위 k개: 크기 k짜리 힙
+
+문제에 「가장 큰(작은) k개」, 「k번째로 큰 값」, 「가장 가까운 k개 점」이 나오면 힙을 떠올린다. 핵심은 **반대쪽 힙을 크기 k로 유지**하는 것이다.
+
+- 가장 **큰** k개를 구할 때는 **최소** 힙에 하나씩 넣고, 크기가 k를 넘으면 가장 작은 것을 뺀다. 끝까지 남은 k개가 답이고, 루트가 k번째로 큰 값이다.
+- 전체를 정렬하면 O(n log n)이지만 이 방식은 **O(n log k)**, 공간 O(k)다. 데이터가 스트림으로 들어와도 그대로 쓸 수 있다.
+
+```python
+import heapq
+
+def k_largest(nums, k):
+    heap = []
+    for x in nums:
+        heapq.heappush(heap, x)
+        if len(heap) > k:
+            heapq.heappop(heap)        # 가장 작은 값을 버린다
+    return heap                        # heap[0]이 k번째로 큰 값
+```
+
+`heapq.nlargest(k, nums)`, `heapq.nsmallest(k, nums, key=...)`가 같은 일을 한다. 데이터가 모두 메모리에 있고 k번째 값 하나만 필요하면 퀵 정렬의 분할을 한쪽에만 적용하는 **퀵 셀렉트**가 평균 O(n)으로 더 빠르다([[merge-quick-sort|병합 정렬과 퀵 정렬]]). 「빈도 상위 k개」는 [[hash-table|해시 테이블]]로 빈도를 센 뒤 (빈도, 값) 쌍으로 같은 방법을 쓴다.
 
 ## 핵심 정리
 

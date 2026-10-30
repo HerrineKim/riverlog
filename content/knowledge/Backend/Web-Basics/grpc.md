@@ -1,14 +1,14 @@
 ---
 title: "gRPC: Protocol Buffers로 정의하는 RPC"
 concept: "gRPC"
-summary: "gRPC는 .proto 파일로 서비스 계약을 정의하고, 생성된 스텁으로 원격 메서드를 로컬 함수처럼 부르는 HTTP/2 기반 이진 RPC 프레임워크다. 네 가지 호출 방식, Node.js 예제, REST와의 비교, 브라우저 제약과 도입 판단 기준을 정리했다."
+summary: "gRPC는 .proto 파일로 서비스 계약을 정의하고, 생성된 스텁으로 원격 메서드를 로컬 함수처럼 부르는 HTTP/2 기반 이진 RPC 프레임워크다. Protocol Buffers의 태그·varint 직렬화와 JSON 비교, 네 가지 호출 방식, Node.js 예제, REST와의 비교, 브라우저 제약과 도입 판단 기준을 정리했다."
 tags: ["backend", "api", "http", "grpc", "microservices"]
 source: other
 date: "2026-10-18"
-sources: ["https://www.itworld.co.kr/article/3567853/", "https://grpc.io/docs/", "https://connectrpc.com/docs/introduction", "https://bytebytego.com/guides/what-is-grpc", "https://bytebytego.com/guides/how-does-grpc-work"]
+sources: ["https://www.itworld.co.kr/article/3567853/", "https://grpc.io/docs/", "https://connectrpc.com/docs/introduction", "https://bytebytego.com/guides/what-is-grpc", "https://bytebytego.com/guides/how-does-grpc-work", "https://protobuf.dev/programming-guides/encoding/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
 ---
 
-> ITWorld의 「REST의 현실적인 대안, gRPC 프로토콜의 이해」(2023.08)를 바탕으로 재구성한 노트다. 호출 흐름은 ByteByteGo의 System Design 101 가이드 「[What is gRPC?](https://bytebytego.com/guides/what-is-grpc)」, 「[How does gRPC work?](https://bytebytego.com/guides/how-does-grpc-work)」로 보강했다.
+> ITWorld의 「REST의 현실적인 대안, gRPC 프로토콜의 이해」(2023.08)를 바탕으로 재구성한 노트다. 호출 흐름은 ByteByteGo의 System Design 101 가이드 「[What is gRPC?](https://bytebytego.com/guides/what-is-grpc)」, 「[How does gRPC work?](https://bytebytego.com/guides/how-does-grpc-work)」로 보강했다. Protocol Buffers의 직렬화 방식은 공식 문서 「[Encoding](https://protobuf.dev/programming-guides/encoding/)」을 바탕으로, 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 보강했다.
 
 ## gRPC란
 
@@ -51,6 +51,40 @@ message Number {
 ```
 
 필드 뒤 숫자(`= 1`)는 이진 인코딩에 쓰는 필드 번호다. 한 번 배포한 번호는 바꾸지 않아야 이전 버전 클라이언트와 호환된다.
+
+### Protocol Buffers의 직렬화 방식
+
+protobuf 메시지는 **필드 이름 없이 「태그 + 값」 쌍을 이어 붙인** 바이트열이다. 태그는 `(필드 번호 << 3) | 와이어 타입` 하나의 정수다.
+
+| 와이어 타입 | 값 | 쓰는 타입 |
+| --- | --- | --- |
+| 0 VARINT | 가변 길이 정수 | `int32`, `int64`, `uint`, `bool`, `enum` |
+| 1 I64 | 고정 8바이트 | `fixed64`, `double` |
+| 2 LEN | 길이 + 바이트 | `string`, `bytes`, 중첩 메시지, packed repeated |
+| 5 I32 | 고정 4바이트 | `fixed32`, `float` |
+
+**varint**는 바이트마다 7비트에 값을 담고 맨 위 비트로 「뒤에 더 있다」를 표시한다. 작은 수는 1바이트로 끝난다. 음수가 잦은 필드는 `sint32`를 쓰면 지그재그 인코딩으로 작은 절댓값을 짧게 담는다(`int32`의 음수는 10바이트가 된다).
+
+```text
+message Number { int32 value = 1; }   value = 150
+
+JSON  {"value":150}          13바이트
+proto 08 96 01                3바이트
+      08    = 태그 (1 << 3) | 0   → 필드 1, VARINT
+      96 01 = 150: 두 바이트의 아래 7비트(0010110, 0000001)를 순서를 뒤집어 이으면 0000001 0010110
+```
+
+| 기준 | Protocol Buffers | JSON |
+| --- | --- | --- |
+| 크기 | 필드 이름 대신 번호, 숫자는 varint라 작다 | 이름이 매번 반복되고 숫자도 문자열이다 |
+| 속도 | 스키마로 생성한 코드가 바로 읽고 써서 빠르다 | 텍스트 파싱과 타입 변환이 든다 |
+| 스키마 | `.proto`가 필수다. 타입이 컴파일 시점에 검사된다 | 없어도 된다. 형식 검증은 JSON Schema 등을 따로 붙인다 |
+| 호환성 | 모르는 필드 번호는 건너뛰어 앞뒤 호환이 된다. 번호 재사용·타입 변경만 피하면 된다(지운 번호는 `reserved`) | 관대한 읽기로 비슷하게 하지만 규칙은 팀 약속이다 |
+| 사람이 읽기 | 스키마 없이는 해석할 수 없다. `protoc --decode`나 디버깅 도구가 필요하다 | 그대로 읽고 고친다 |
+| 브라우저·생태계 | 브라우저 기본 지원이 없어 라이브러리가 필요하다 | 어디서나 기본 지원 |
+| 표현력 | 기본값(0, 빈 문자열)은 전송하지 않아 「값이 0」과 「값 없음」이 구분되지 않는다. 구분하려면 `optional`이나 래퍼 타입을 쓴다 | `null`과 필드 없음을 구분할 수 있다 |
+
+내부 서비스 간 통신처럼 양쪽이 스키마를 공유하고 성능이 중요하면 protobuf, 공개 API·브라우저·사람이 직접 보는 데이터는 JSON이 맞는다. protobuf는 JSON과 서로 바꾸는 표준 매핑도 있어, 게이트웨이에서 JSON으로 노출하기 쉽다.
 
 ## 네 가지 호출 방식
 

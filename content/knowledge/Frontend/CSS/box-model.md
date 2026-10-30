@@ -10,7 +10,7 @@ sources: ["https://mytory.net/archives/16246", "https://developer.mozilla.org/en
 
 > 직접 정리한 TIL에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Box Model·Spacing·Layout 모듈을 더해 보강한 노트다.
 > 「블록 서식 맥락(BFC)」은 「[Must-Know-About-Frontend: Block Formatting Context](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/bfc.md)」를 MDN으로 확인해 보강했다.
-> 음수 margin과 box-sizing 계산은 「[Frontend_TIL: margin negative](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/margin%20negative.md)」·「[box-sizing: border-box를 사용하는 이유](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/box-sizing%3A%20border-box%EB%A5%BC%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md)」, box-sizing 상속 패턴은 「[CSS Protips](https://github.com/AllThingsSmitty/css-protips)」를 바탕으로 보강했다.
+> 음수 margin과 box-sizing 계산은 「[Frontend_TIL: margin negative](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/margin%20negative.md)」·「[box-sizing: border-box를 사용하는 이유](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/box-sizing%3A%20border-box%EB%A5%BC%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md)」, box-sizing 상속 패턴과 블록 방향 `auto` margin은 「[AllThingsSmitty의 css-protips](https://github.com/AllThingsSmitty/css-protips)」를 바탕으로 보강했다.
 
 CSS의 첫 번째 원칙은 **모든 요소는 네모(박스)** 라는 것이다. 요소의 실제 크기와 요소 사이 간격은 박스 모델로 계산되고, 그 박스가 한 줄을 차지할지 옆으로 나란히 놓일지는 `display`가 결정한다.
 
@@ -57,6 +57,14 @@ margin: 10px 20px 30px 40px; /* 상 | 우 | 하 | 좌 (시계 방향, TRouBLe로
 
 - `margin`·`padding`의 `%`는 방향과 상관없이 **컨테이닝 블록의 너비**(가로쓰기 기준 인라인 크기)를 기준으로 한다. `margin-top: 50%`도 부모 너비의 절반이다.
 - `margin: auto`는 남은 공간을 그 방향으로 다 가져간다. 너비가 정해진 블록에 `margin-inline: auto`를 주면 가운데 정렬되고, 플렉스 아이템에 `margin-inline-start: auto`를 주면 그 아이템부터 끝으로 밀려난다.
+- 블록 방향의 `auto`는 다르다. 일반 흐름의 블록에서 `margin-block: auto`(위·아래 `auto`)는 **0으로 계산**되어 세로 가운데 정렬이 되지 않는다. 블록 방향 `auto`가 남은 공간을 가져가는 것은 플렉스·그리드 아이템과 절대 위치 요소뿐이고, 일반 블록은 부모 쪽 정렬로 푼다.
+
+| 맥락 | 세로 가운데 정렬 |
+| --- | --- |
+| 플렉스·그리드 아이템 | `margin: auto` 하나로 두 축 모두 가운데. 부모의 `align-items`보다 우선한다 |
+| 절대·고정 위치 요소 | `inset: 0; margin: auto`에 크기(`block-size` 또는 `fit-content`)를 정해 줘야 한다 |
+| 일반 블록 컨테이너 | margin 대신 부모에 `align-content: center`. 블록 레이아웃의 `align-content`는 2024년부터 모든 주요 브라우저가 지원한다 |
+
 - 음수 margin은 방향에 따라 하는 일이 다르다. **위·왼쪽(시작쪽)** 음수는 요소 자신을 그 방향으로 끌어 옮기고, **아래·오른쪽(끝쪽)** 음수는 자신은 그대로 두고 **뒤따르는 요소를 끌어당겨** 겹치게 한다. 공간보다 크면 요소가 겹친다.
 
 ```css
