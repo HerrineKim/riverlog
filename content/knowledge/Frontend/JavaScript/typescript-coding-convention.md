@@ -5,10 +5,10 @@ summary: "TypeScript 팀 컨벤션 문서의 규칙을 주제별로 묶었다. �
 tags: ["typescript", "javascript", "frontend", "collaboration"]
 source: other
 date: "2026-10-30"
-sources: ["https://ko.javascript.info/coding-style", "https://ko.javascript.info/ninja-code", "https://github.com/wisedog/typescript-coding-guide", "https://typescript-eslint.io/getting-started/typed-linting"]
+sources: ["https://ko.javascript.info/coding-style", "https://ko.javascript.info/ninja-code", "https://github.com/wisedog/typescript-coding-guide", "https://typescript-eslint.io/getting-started/typed-linting", "https://basarat.gitbook.io/typescript/styleguide"]
 ---
 
-> 한국어로 쓰인 TypeScript 코딩 컨벤션 문서(예: 「[TypeScript 코딩 가이드 (규칙 80개)](https://github.com/wisedog/typescript-coding-guide)」)를 바탕으로 재구성하고, 코드 모양과 읽기 어려운 코드 패턴은 javascript.info(모던 JavaScript 튜토리얼)의 「코딩 스타일」, 「닌자 코드」 글로 보강한 노트다.
+> 한국어로 쓰인 TypeScript 코딩 컨벤션 문서(예: 「[TypeScript 코딩 가이드 (규칙 80개)](https://github.com/wisedog/typescript-coding-guide)」)를 바탕으로 재구성하고, 코드 모양과 읽기 어려운 코드 패턴은 javascript.info(모던 JavaScript 튜토리얼)의 「코딩 스타일」, 「닌자 코드」 글로 보강한 노트다. 접두사 없는 인터페이스 이름, `null`·`undefined` 관례, 배열 표기, 따옴표는 basarat의 「[TypeScript Deep Dive](https://basarat.gitbook.io/typescript)」의 StyleGuide로 보강했다.
 
 ## 코딩 컨벤션이란
 
@@ -28,8 +28,11 @@ sources: ["https://ko.javascript.info/coding-style", "https://ko.javascript.info
 | 변수, 매개변수, 함수, 메서드, 속성 | camelCase |
 | 글로벌 상수, 클래스 내부 불변값 | `UPPER_SNAKE_CASE` (`ONE_HOUR_IN_MS`) |
 | 타입 매개변수 | 대문자 한 글자(`T`, `U`) 또는 PascalCase |
+| enum 멤버, `as const` 상수 객체의 키 | PascalCase (`Color.Red`, `SyntaxKind.StringLiteral`) |
+| 파일 | camelCase(`utils.ts`) 또는 kebab-case 중 팀이 하나로. 컴포넌트를 내보내는 파일은 프레임워크 관례대로 PascalCase(`Accordion.tsx`) |
 | 사용하지 않는 변수·매개변수 | 앞에 `_`를 붙인다. 그 외에는 앞뒤 `_`를 쓰지 않는다 |
 
+- **인터페이스에 `I` 접두사를 붙이지 않는다**(권장). `IUser`가 아니라 `User`다. 표준 라이브러리도 `Window`, `Document`처럼 접두사 없이 쓴다. 타입과 인터페이스를 이름으로 구별할 이유가 없다.
 - 식별자는 영문, 숫자, `_`만 쓰는 것이 원칙이다(권장). JS는 유니코드 식별자를 허용해서 `const 인사말 = '안녕'`도 동작한다. 다만 `미징수_보수_세금액`처럼 영어로 옮기면 오히려 읽기 어려운 도메인 용어라면 **한글 식별자도 팀 합의로 허용할 수 있다**.
 - `$` 접두사(jQuery)와 `$` 접미사(Observable)는 팀이 합의하면 허용한다.
 - 대문자 상수는 언어가 불변을 보장해서가 아니라 **"고치지 말라"는 신호**다. 객체 상수는 속성을 바꿀 수 있다.
@@ -50,9 +53,13 @@ sources: ["https://ko.javascript.info/coding-style", "https://ko.javascript.info
 | 할당 주체 | JS 엔진 | 개발자 |
 | `typeof` | `"undefined"` | `"object"` |
 
+- 「없음」의 기본값은 `undefined`로 하고, `null`은 API나 관례가 요구할 때(JSON 값, DOM의 `getElementById`, Node.js 콜백의 `cb(null, data)`) 쓴다(권장). 아예 둘 다 피하고 `{ valid: boolean; value?: T }`처럼 상태를 담은 객체를 돌려주는 방법도 있다.
+- 둘을 한 번에 거를 때는 `x == null`(또는 `x != null`)을 쓴다. `0`·`''`·`false`까지 걸러지는 `if (!x)`와 다르다. 객체라면 truthy 검사(`if (error)`)로 충분하다.
 - 둘을 **구분해서 쓴다**(필수). 둘 다 falsy라 `if`로는 같아 보이지만, ORM 같은 라이브러리는 `undefined` 필드는 건너뛰고 `null` 필드는 컬럼을 `NULL`로 덮어쓴다.
 - **타입 별칭에 `null`·`undefined`를 넣지 않는다**(필수). `type OS = 'Windows' | 'MacOS' | undefined`는 앱 전체에 "없을 수도 있음"을 퍼뜨린다. 필요한 곳에서 `name?: OS`처럼 국소적으로 붙인다.
 - `| undefined` 대신 선택적 표시 `?`를 쓴다(필수).
+
+- 배열 타입은 `Foo[]`로 쓴다(권장). `Array<Foo>`보다 짧고 `[]`가 눈에 바로 들어온다. 요소 타입이 복잡할 때만 `Array<{ id: string } | null>`처럼 쓴다(typescript-eslint `array-type`).
 
 ### any와 unknown
 
@@ -221,6 +228,7 @@ try {
 | 줄 길이 | 80~120자 중 팀이 정한다 | 긴 조건은 연산자 단위로 줄을 나누고, 긴 문자열은 템플릿 리터럴로 |
 | 들여쓰기 | 스페이스 2칸(또는 4칸) | 탭과 섞지 않는다 |
 | 빈 줄 | 선언·반복·반환처럼 논리 단위 사이에 한 줄 | 빈 줄 없이 아홉 줄 넘게 이어 쓰지 않는다 |
+| 따옴표 | 작은따옴표(`'`), 따옴표가 섞이면 백틱 | 다수 JS 스타일 가이드의 관례. JSON을 자주 옮겨 붙이는 팀은 큰따옴표를 고르기도 한다 |
 | 세미콜론 | 쓰거나 안 쓰거나 일관되게 | 안 쓰는 스타일(StandardJS)은 `(`·`[`로 시작하는 줄 앞에 `;`([[statements-vs-expressions\|문과 식]]) |
 
 ### 중첩을 줄인다
