@@ -5,7 +5,7 @@ summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지
 tags: ["ci-cd", "devops", "docker", "github", "automation"]
 source: notion
 date: "2026-10-21"
-sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule"]
+sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule", "https://github.com/actions/checkout/releases", "https://github.com/codecov/codecov-action/releases"]
 ---
 
 > 「GitHub Actions 예시」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「DevOps 간단 정리」, 「Github Action을 이용해 코드 검사 자동화하기」를 바탕으로 보강한 노트다. 「파이프라인 단계」와 「환경 승격」은 ByteByteGo의 System Design 101 가이드 「[CI/CD Pipeline Explained in Simple Terms](https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms)」, 「[CI/CD Simplified Visual Guide](https://bytebytego.com/guides/cicd-simplified-visual-guide)」, 「[How do Companies Ship Code to Production?](https://bytebytego.com/guides/how-do-companies-ship-code-to-production)」를 바탕으로 보강했다.
@@ -76,14 +76,14 @@ jobs:
   lint:
     runs-on: ubuntu-latest # GitHub가 제공하는 실행 환경(러너)
     steps:
-      - uses: actions/checkout@v6        # 저장소 코드를 내려받는 공개 액션
+      - uses: actions/checkout@v7        # 저장소 코드를 내려받는 공개 액션
       - run: pip install ruff            # 셸 명령 실행
       - run: ruff check .
   build:
     runs-on: ubuntu-latest
     needs: lint            # lint가 성공해야 실행. 없으면 job끼리 병렬 실행
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: make
 ```
 
@@ -105,7 +105,7 @@ jobs:
 
 ```yaml
       - run: npm test -- --coverage          # lcov 등 커버리지 리포트 생성
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 ```

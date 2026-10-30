@@ -5,7 +5,7 @@ summary: "빌드한 SPA·정적 사이트를 AWS에 올리는 표준 구성. 비
 tags: ["aws", "cdn", "deployment", "ci-cd", "devops", "frontend"]
 source: other
 date: "2026-10-21"
-sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/AWS%20s3%2C%20CloudFront%2C%20Route53%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EB%B0%B0%ED%8F%AC.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/CI%2CCD%20%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0%20with%20GitHub%20Action%2C%20aws%20s3%2C%20route53%2C%20ACM.md", "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html", "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html", "https://github.com/aws-actions/configure-aws-credentials", "https://github.com/grab/front-end-guide"]
+sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/AWS%20s3%2C%20CloudFront%2C%20Route53%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EB%B0%B0%ED%8F%AC.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/CI%2CCD%20%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0%20with%20GitHub%20Action%2C%20aws%20s3%2C%20route53%2C%20ACM.md", "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html", "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cnames-and-https-requirements.html", "https://github.com/aws-actions/configure-aws-credentials", "https://github.com/grab/front-end-guide", "https://github.com/actions/checkout/releases", "https://github.com/actions/setup-node/releases"]
 ---
 
 > 「[Frontend_TIL: AWS s3, CloudFront, Route53 프론트엔드 배포](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/AWS%20s3%2C%20CloudFront%2C%20Route53%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EB%B0%B0%ED%8F%AC.md)」와 「[CI/CD 구축하기 with GitHub Action, aws s3, route53, ACM](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/CI%2CCD%20%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0%20with%20GitHub%20Action%2C%20aws%20s3%2C%20route53%2C%20ACM.md)」를 바탕으로, AWS 공식 문서로 확인해 재구성한 노트다.
@@ -110,8 +110,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm

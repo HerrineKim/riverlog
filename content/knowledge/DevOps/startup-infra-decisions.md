@@ -52,7 +52,7 @@ sources: ["https://cep.dev/posts/every-infrastructure-decision-i-endorse-or-regr
 | 항목 | 변화 |
 | --- | --- |
 | 커뮤니티 Ingress NGINX | 2026년 3월 유지보수가 끝났다. 쿠버네티스는 후속으로 **Gateway API**를 권한다([[kubernetes-request-path\|요청 경로 노트]]) |
-| Terraform | 2023년 라이선스가 BSL로 바뀌었고, 오픈소스 포크 **OpenTofu**가 리눅스 재단에서 이어진다. Terraform Cloud는 2024년 HCP Terraform으로 이름이 바뀌었다 |
+| Terraform | 라이선스가 BSL로 바뀌어 오픈소스 포크 **OpenTofu**가 함께 쓰인다. Terraform Cloud는 HCP Terraform이 됐다([[terraform-workflow#역사\|Terraform의 역사]]) |
 
 ## 정리
 

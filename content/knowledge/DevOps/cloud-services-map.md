@@ -5,7 +5,7 @@ summary: "세 주요 클라우드의 서비스를 컴퓨팅·스토리지·데�
 tags: ["devops", "cloud", "aws", "infra"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/aws-services-cheat-sheet", "https://bytebytego.com/guides/what-are-the-most-important-aws-services-to-learn", "https://bytebytego.com/guides/aws-services-evolution", "https://bytebytego.com/guides/azure-services-cheat-sheet", "https://bytebytego.com/guides/cloud-comparison-cheat-sheet", "https://bytebytego.com/guides/cloud-load-balancer-cheat-sheet", "https://bytebytego.com/guides/big-data-pipeline-cheatsheet-for-aws-azure-and-google-cloud", "https://bytebytego.com/guides/cloud-monitoring-cheat-sheet"]
+sources: ["https://bytebytego.com/guides/aws-services-cheat-sheet", "https://bytebytego.com/guides/what-are-the-most-important-aws-services-to-learn", "https://bytebytego.com/guides/aws-services-evolution", "https://bytebytego.com/guides/azure-services-cheat-sheet", "https://bytebytego.com/guides/cloud-comparison-cheat-sheet", "https://bytebytego.com/guides/cloud-load-balancer-cheat-sheet", "https://bytebytego.com/guides/big-data-pipeline-cheatsheet-for-aws-azure-and-google-cloud", "https://bytebytego.com/guides/cloud-monitoring-cheat-sheet", "https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[AWS Services Cheat Sheet](https://bytebytego.com/guides/aws-services-cheat-sheet)」, 「[Most Important AWS Services to Learn](https://bytebytego.com/guides/what-are-the-most-important-aws-services-to-learn)」, 「[AWS Services Evolution](https://bytebytego.com/guides/aws-services-evolution)」, 「[Azure Services Cheat Sheet](https://bytebytego.com/guides/azure-services-cheat-sheet)」, 「[Cloud Comparison Cheat Sheet](https://bytebytego.com/guides/cloud-comparison-cheat-sheet)」, 「[Cloud Load Balancer Cheat Sheet](https://bytebytego.com/guides/cloud-load-balancer-cheat-sheet)」, 「[Big Data Pipeline Cheatsheet](https://bytebytego.com/guides/big-data-pipeline-cheatsheet-for-aws-azure-and-google-cloud)」, 「[Cloud Monitoring Cheat Sheet](https://bytebytego.com/guides/cloud-monitoring-cheat-sheet)」을 바탕으로 재구성한 노트다. 서비스 이름은 바뀌는 일이 잦으므로 쓰기 전에 각 클라우드의 공식 문서로 확인한다.
@@ -20,7 +20,7 @@ sources: ["https://bytebytego.com/guides/aws-services-cheat-sheet", "https://byt
 | --- | --- | --- | --- |
 | 가상 서버 | EC2 | Virtual Machines | Compute Engine |
 | 관리형 Kubernetes | EKS | AKS | GKE |
-| 서버리스 컨테이너 | ECS on Fargate, App Runner | Container Apps | Cloud Run |
+| 서버리스 컨테이너 | ECS on Fargate(ECS Express Mode) | Container Apps | Cloud Run |
 | 서버리스 함수 | Lambda | Functions | Cloud Run functions |
 | 객체 스토리지 | S3 | Blob Storage | Cloud Storage |
 | 블록 스토리지 | EBS | Managed Disks | Persistent Disk |
@@ -39,6 +39,8 @@ sources: ["https://bytebytego.com/guides/aws-services-cheat-sheet", "https://byt
 | 모니터링·로그·트레이스 | CloudWatch, X-Ray | Azure Monitor, Application Insights | Cloud Monitoring, Cloud Logging, Cloud Trace |
 | IaC | CloudFormation, CDK | ARM 템플릿, Bicep | Infrastructure Manager(Terraform 기반) |
 | 관리형 ML 플랫폼 | SageMaker | Azure Machine Learning | Vertex AI |
+
+AWS App Runner는 2026년 4월 30일부터 신규 고객을 받지 않는다. 컨테이너 이미지 하나로 Fargate 서비스·ALB·오토 스케일링을 한 번에 만들어 주는 ECS Express Mode가 후속 선택지다.
 
 같은 범주라도 세부 기능과 한계는 다르다. 특히 NoSQL(DynamoDB·Cosmos DB·Firestore)은 데이터 모델과 일관성 옵션이 서로 많이 다르다.
 

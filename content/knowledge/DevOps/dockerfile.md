@@ -5,7 +5,7 @@ summary: "이미지와 컨테이너의 관계, 베이스 이미지(Alpine·Debia
 tags: ["docker", "devops", "container", "infra"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "https://80000coding.notion.site/be3f7cdb6d2f4e868fb6968740be0256", "https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "https://80000coding.notion.site/d6e6ca38d41347baa80ba1b4f40886ab", "https://docs.docker.com/reference/dockerfile/", "https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/", "https://bytebytego.com/guides/9-docker-best-practices-you-must-know", "https://docs.docker.com/build/building/best-practices/", "https://www.44bits.io/ko/post/how-docker-image-work", "https://www.44bits.io/ko/post/easy-deploy-with-docker"]
+sources: ["https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "https://80000coding.notion.site/be3f7cdb6d2f4e868fb6968740be0256", "https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "https://80000coding.notion.site/d6e6ca38d41347baa80ba1b4f40886ab", "https://docs.docker.com/reference/dockerfile/", "https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/", "https://bytebytego.com/guides/9-docker-best-practices-you-must-know", "https://docs.docker.com/build/building/best-practices/", "https://www.44bits.io/ko/post/how-docker-image-work", "https://www.44bits.io/ko/post/easy-deploy-with-docker", "https://github.com/nodejs/Release", "https://alpinelinux.org/releases/"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[inception] 인셉션 테스트 가이드라인」, 「Inception 참고자료」, 「[Inception] docker orchestration with docker-compose」, 「Inception 공부할때 유용했던 링크들」을 바탕으로 과제 풀이를 빼고 Docker 일반 개념만 재구성한 노트다. 「이미지 모범 사례」는 ByteByteGo의 System Design 101 가이드 「[9 Docker Best Practices You Must Know](https://bytebytego.com/guides/9-docker-best-practices-you-must-know)」를 Docker 공식 문서로 확인해 보강했다. 층과 OverlayFS, 태그·다이제스트, 배포 흐름은 「[만들면서 이해하는 도커(Docker) 이미지의 구조](https://www.44bits.io/ko/post/how-docker-image-work)」, 「[도커(Docker) 입문편](https://www.44bits.io/ko/post/easy-deploy-with-docker)」으로 보강했다.
@@ -45,7 +45,7 @@ lowerdir  ← 이미지의 읽기 전용 층들 (여러 컨테이너·이미지�
 ## Dockerfile 기본 명령
 
 ```dockerfile
-FROM alpine:3.22                         # 베이스 이미지 (태그를 고정한다)
+FROM alpine:3.24                         # 베이스 이미지 (태그를 고정한다)
 RUN apk add --no-cache nginx             # 빌드할 때 실행 → 결과가 이미지 층으로 남음
 COPY conf/default.conf /etc/nginx/http.d/default.conf
 WORKDIR /var/www/html                    # 이후 명령의 작업 디렉터리
@@ -105,7 +105,7 @@ CMD ["php-fpm83", "-F"]
 ## Dockerfile 디버깅 요령
 
 ```bash
-docker run -it --rm alpine:3.22 /bin/sh   # 임시 컨테이너에서 명령을 먼저 시험
+docker run -it --rm alpine:3.24 /bin/sh   # 임시 컨테이너에서 명령을 먼저 시험
 docker build -t myapp .                   # 빌드
 docker run -d --name app -p 8080:80 myapp # -d: 백그라운드 실행, 터미널을 돌려받는다
 docker ps -a                              # STATUS가 Up인지, Exited(코드)인지
@@ -124,7 +124,7 @@ docker exec -it app /bin/sh               # 실행 중인 컨테이너 안에 �
 | 원칙 | 방법 | 이유 |
 | --- | --- | --- |
 | 공식·검증된 베이스 | Docker 공식 이미지나 검증된 배포자의 이미지에서 시작한다 | 보안 패치가 꾸준히 나온다 |
-| 버전 고정 | `node:22-alpine`처럼 태그를 명시한다. 더 엄격하게는 다이제스트(`@sha256:…`)로 고정한다 | 기본 태그 `latest`는 언제 무엇을 가리킬지 몰라 빌드가 재현되지 않는다 |
+| 버전 고정 | `node:24-alpine`처럼 태그를 명시한다. 더 엄격하게는 다이제스트(`@sha256:…`)로 고정한다 | 기본 태그 `latest`는 언제 무엇을 가리킬지 몰라 빌드가 재현되지 않는다 |
 | 멀티 스테이지 빌드 | 빌드용 스테이지에서 컴파일하고, 실행 스테이지에는 결과물만 복사한다 | 컴파일러·개발 의존성이 최종 이미지에 남지 않아 작고 안전하다 |
 | `.dockerignore` | `.git`, `node_modules`, 로그, `.env`를 빌드 컨텍스트에서 뺀다 | 빌드가 빨라지고, 비밀 파일이 이미지에 들어가는 사고를 막는다 |
 | 최소 권한 사용자 | `USER` 명령으로 root가 아닌 사용자로 실행한다 | 컨테이너가 뚫려도 피해 범위가 줄어든다 |
@@ -135,7 +135,7 @@ docker exec -it app /bin/sh               # 실행 중인 컨테이너 안에 �
 
 ```dockerfile
 # 빌드 스테이지
-FROM node:22-alpine AS build
+FROM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./   # 의존성 목록 먼저 → 캐시 재사용
 RUN npm ci
@@ -143,7 +143,7 @@ COPY . .                                 # 소스는 나중에
 RUN npm run build
 
 # 실행 스테이지: 결과물만
-FROM node:22-alpine
+FROM node:24-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist

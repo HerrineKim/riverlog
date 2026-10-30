@@ -63,7 +63,7 @@ IaC는 **인프라에 소프트웨어 개발 관행을 적용한 것**이다. �
 | 구성 관리 | 서버 안의 패키지·설정을 원하는 상태로 맞춘다 | Ansible, Chef, Puppet |
 | GitOps | Git 저장소를 원하는 상태의 원천으로 두고, 클러스터가 그 상태를 끌어와 맞춘다 | Argo CD, Flux |
 
-Terraform은 2023년 라이선스를 BSL로 바꿨고, 이를 계기로 오픈소스 포크인 OpenTofu가 리눅스 재단 아래 생겼다. 둘은 문법이 거의 같다. write → plan → apply 흐름과 상태 파일은 [[terraform-workflow|Terraform: 코드로 클라우드 인프라 만들기]]에 있다.
+Terraform의 write → plan → apply 흐름과 상태 파일, 오픈소스 포크 OpenTofu와의 관계는 [[terraform-workflow|Terraform: 코드로 클라우드 인프라 만들기]]에 있다.
 
 **GitOps**는 IaC를 한 단계 더 밀어붙인다. 사람이 `kubectl apply`나 `terraform apply`를 직접 치지 않고, Git에 병합하면 에이전트가 실제 상태를 Git의 선언에 맞춘다. 실제 상태가 선언과 달라지는 드리프트(drift)도 같은 방식으로 되돌린다.
 
