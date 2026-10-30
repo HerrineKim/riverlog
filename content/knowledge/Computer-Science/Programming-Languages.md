@@ -31,6 +31,7 @@ date: "2026-10-14"
 
 - [객체 지향의 본질: 메시징](Computer-Science/Programming-Languages/oop-messaging.md): 앨런 케이가 본 OOP의 본질(메시징·캡슐화·늦은 바인딩)과 클래스·상속이 본질이 아닌 이유
 - [추상 클래스와 인터페이스](Computer-Science/Programming-Languages/abstract-class-vs-interface.md): is-a와 can-do, 템플릿 메서드와 훅, Java 8 디폴트 메서드, 고르는 기준
+- [Kotlin 핵심 문법: 널 안전성, 클래스 종류, 지연 초기화, 스코프 함수](Computer-Science/Programming-Languages/kotlin-basics.md): 널 안전성, data·sealed·object·companion object, lateinit과 by lazy, 스코프 함수 비교
 - [위임 패턴과 Kotlin by](Computer-Science/Programming-Languages/kotlin-delegation.md): 상속 대신 위임, 클래스·프로퍼티 위임, by lazy와 by viewModels()
 - [DTO와 VO, DAO와 Repository](Computer-Science/Programming-Languages/dto-vo-dao-repository.md): 전송 객체와 값 객체, 테이블 중심 DAO와 도메인 중심 Repository
 - [클린 코드: 함수와 이름](Computer-Science/Programming-Languages/clean-code-functions-naming.md): 작은 함수와 추상화 수준, 팩터리로 분기 가두기, 의미 있는 이름
