@@ -5,11 +5,12 @@ summary: "웹 표준(HTML·CSS·JavaScript·DOM)에서 TypeScript, React와 메�
 tags: ["frontend", "roadmap", "career"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/frontEnd/%EC%8B%A4%EB%A0%A5%EC%9E%88%EB%8A%94%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EA%B0%9C%EB%B0%9C%EC%9E%90.md", "https://miryang.dev/blog/how-studied-frontend", "https://roadmap.sh/frontend", "https://www.zerocho.com", "https://poiemaweb.com/", "https://github.com/yjs03057/33-js-concepts", "https://github.com/lydiahallie/javascript-questions/blob/master/ko-KR/README-ko_KR.md", "https://ui.toast.com/fe-guide/ko", "https://github.com/naver/fe-news", "https://ko.javascript.info", "https://developer.mozilla.org/ko/docs/A_re-introduction_to_JavaScript"]
+sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/frontEnd/%EC%8B%A4%EB%A0%A5%EC%9E%88%EB%8A%94%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EA%B0%9C%EB%B0%9C%EC%9E%90.md", "https://miryang.dev/blog/how-studied-frontend", "https://roadmap.sh/frontend", "https://www.zerocho.com", "https://poiemaweb.com/", "https://github.com/yjs03057/33-js-concepts", "https://github.com/lydiahallie/javascript-questions/blob/master/ko-KR/README-ko_KR.md", "https://ui.toast.com/fe-guide/ko", "https://github.com/naver/fe-news", "https://ko.javascript.info", "https://developer.mozilla.org/ko/docs/A_re-introduction_to_JavaScript", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md"]
 ---
 
 > MiryangJung의 「내가 프론트엔드를 학습한 방법」(2022.05), roadmap.sh의 Frontend 로드맵, 제로초(ZeroCho)의 프론트엔드 로드맵 다이어그램을 바탕으로 재구성한 노트다.
 > 「공부하는 방법」의 범위 좁히기·기술이 생긴 이유 읽기·원문 따라가기는 「[Frontend_TIL: 실력있는 프론트엔드 개발자](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/frontEnd/%EC%8B%A4%EB%A0%A5%EC%9E%88%EB%8A%94%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EA%B0%9C%EB%B0%9C%EC%9E%90.md)」를 바탕으로 보강했다.
+> Git과 디자인 도구를 병행하는 줄기는 위니브의 「[프론트엔드 개발자 가이드](https://github.com/weniv/frontend-developer-guide)」를 바탕으로 보강했다.
 
 프론트엔드는 배울 것이 많아 보이지만, **앞 단계가 다음 단계의 토대**가 되도록 순서를 잡으면 수월하다. 라이브러리보다 웹 표준이 먼저이고, 프레임워크는 하나만 깊게 익힌 뒤 범주로 넓힌다.
 
@@ -36,6 +37,8 @@ HTML → CSS → JavaScript → DOM·브라우저 → Git/GitHub → TypeScript
 
 - HTML(구조)·CSS(모양)·JavaScript(동작)는 하나씩 끝내기보다 **한 과목의 1·2·3교시처럼 함께** 익힌다. CSS에서는 Flexbox와 Grid를 꼭 짚는다.
 - JavaScript는 문법을 넘어 실행 컨텍스트·[[scope-and-closures|스코프와 클로저]], [[prototype-and-inheritance|프로토타입]], [[callback-and-promise|Promise]], 콜 스택과 [[event-loop|이벤트 루프]]까지 이해해야 다음 단계가 막히지 않는다.
+- 순서표의 Git은 배우는 위치일 뿐이다. 첫 HTML 파일부터 저장소에 커밋하며 쓰면 명령이 손에 익고, 그 기록이 그대로 포트폴리오가 된다. GUI 클라이언트를 쓰더라도 기본 명령은 안다.
+- 디자인 줄기는 별도로 병행한다. Figma 시안에서 간격·폰트·컴포넌트 속성을 읽어 CSS로 옮기는 일은 프론트엔드의 기본 업무다([[design-tools-handoff|디자인 도구와 개발자 핸드오프]]).
 - CSS 프레임워크는 CSS를 익힌 뒤에 고른다. 유틸리티 클래스 방식의 Tailwind CSS가 주류다.
 - 프레임워크는 React·Vue·Svelte·Angular 중 하나를 깊게 익힌다. 모두 "데이터로 컴포넌트를 렌더링한다"는 같은 범주라 하나를 알면 나머지는 빨리 배운다([[tech-stack-selection|기술 스택 고르기]]).
 - 서버·DB는 "프론트엔드가 소비하는 데이터가 어디서 오는지"를 이해하는 수준에서 시작해도 충분하다.
