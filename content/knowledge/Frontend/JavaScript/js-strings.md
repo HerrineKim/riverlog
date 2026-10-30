@@ -5,10 +5,11 @@ summary: "JavaScript 문자열은 UTF-16 코드 단위의 나열이고 바꿀 �
 tags: ["javascript", "frontend", "data-structure", "i18n", "styling"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://ko.javascript.info/string", "https://opencollective.com/styled-components/updates", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter", "https://github.com/moonformeli/TIL/blob/master/hangul_unicode.md"]
+sources: ["https://ko.javascript.info/string", "https://opencollective.com/styled-components/updates", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter", "https://github.com/moonformeli/TIL/blob/master/hangul_unicode.md", "https://github.com/lydiahallie/javascript-questions"]
 ---
 
 > javascript.info(모던 JavaScript 튜토리얼)의 「문자열」, 「자료형」, 「원시값의 메서드」 글을 바탕으로, ES2022 이후 추가된 메서드는 MDN으로 확인해 재구성한 노트다. 템플릿 리터럴과 태그드 템플릿은 노션에 정리해 둔 내용을 합쳤다. 한글의 코드 영역은 「[한글 인코딩과 자바스크립트](https://github.com/moonformeli/TIL/blob/master/hangul_unicode.md)」를 바탕으로 더했다.
+> 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다.
 
 ## 문자열이란
 
@@ -144,7 +145,7 @@ if ('Widget'.includes('Widget')) {}        // 포함 여부는 includes
 | --- | --- |
 | `toUpperCase()` / `toLowerCase()` | 대소문자. 로케일 규칙이 필요하면 `toLocaleUpperCase('tr')` |
 | `trim()` / `trimStart()` / `trimEnd()` | 앞뒤 공백·줄바꿈 제거 |
-| `padStart(n, ch)` / `padEnd(n, ch)` | 길이 `n`까지 채운다. `'7'.padStart(2, '0')` → `'07'` |
+| `padStart(n, ch)` / `padEnd(n, ch)` | 길이 `n`까지 채운다. `'7'.padStart(2, '0')` → `'07'`. `ch`를 빼면 공백으로 채우고, `n`이 원래 길이 이하면 그대로 돌려준다(`'abc'.padStart(2)` → `'abc'`) |
 | `repeat(n)` | `n`번 반복 |
 | `replace(a, b)` / `replaceAll(a, b)` | 처음 하나 / 전부 교체(ES2021). 정규식도 받는다([[regular-expressions\|정규 표현식]]) |
 | `split(sep, limit)` / 배열의 `join(sep)` | 문자열 ↔ 배열 |
