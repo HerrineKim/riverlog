@@ -253,4 +253,4 @@ try {
 - 커스텀 에러는 `Error`를 상속하고 `super(message, options)`와 `name`을 챙긴다. 종류는 `instanceof`로 가린다.
 - 저수준 에러는 추상 에러로 감싸 `cause`에 원인을 남긴다. 잡히지 않은 에러는 전역 핸들러에서 스택·URL·릴리스와 함께 수집 서버로 보낸다.
 
-관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[frontend-error-handling|프런트엔드 에러 핸들링]], [[class|class 문법]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[callback-and-promise|콜백과 Promise]], [[strict-mode|strict mode]]
+관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[frontend-error-handling|프런트엔드 에러 핸들링]], [[class|class 문법]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[callback-and-promise|콜백과 Promise]], [[strict-mode|strict mode]], [[typescript-practical-patterns#예외 대신 Result 반환|TypeScript의 Result 반환 패턴]]
