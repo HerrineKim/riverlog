@@ -105,6 +105,8 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 | 네트워크 | CORS가 생기는 이유와 해결, 캐시, HTTP 메서드와 상태 코드 | [[cors\|CORS]], [[http-cache\|HTTP 캐시]] |
 | 라우팅 | SPA에서 해시 라우팅과 History API의 차이 | [[client-side-routing\|클라이언트 사이드 라우팅]] |
 
+React 퀴즈는 질문이 많아 [[react-interview-questions|React 면접 질문]]에 주제별로 따로 모았다.
+
 `float` 해제나 JSONP 같은 질문도 나오지만, 각각 Flexbox·Grid와 CORS로 대체된 레거시 기법이라 왜 대체됐는지까지 설명할 수 있으면 된다.
 
 ## 프론트엔드 시스템 디자인과 RADIO
@@ -152,4 +154,4 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 - UI 코딩은 범위를 먼저 합의하고, 극단적 입력·네트워크·접근성·보안을 짚는다.
 - 시스템 디자인은 RADIO로 대화를 이끌고, 최적화 단계에서 깊이를 보여 준다.
 
-관련 노트: [[interview-attitude|면접 잘 보는 법]], [[tech-interview-prep|기술 면접 준비]], [[coding-test|코딩 테스트 접근법]], [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[debounce-throttle|Debounce와 Throttle]], [[Accessibility|웹 접근성]], [[web-security|웹 보안: CSRF와 XSS]]
+관련 노트: [[interview-attitude|면접 잘 보는 법]], [[react-interview-questions|React 면접 질문]], [[tech-interview-prep|기술 면접 준비]], [[coding-test|코딩 테스트 접근법]], [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[debounce-throttle|Debounce와 Throttle]], [[Accessibility|웹 접근성]], [[web-security|웹 보안: CSRF와 XSS]]
