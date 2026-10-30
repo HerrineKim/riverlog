@@ -5,11 +5,12 @@ summary: "LLM이 코드 작성을 맡게 되면서 개발자의 일은 모호한
 tags: ["ai", "llm", "career", "agent", "growth"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/ai-and-developer", "https://velog.io/@teo/we-programmer", "https://velog.io/@teo/ai-era-developer-role", "https://www.youtube.com/watch?v=palpFFMKuSU"]
+sources: ["https://velog.io/@teo/ai-and-developer", "https://velog.io/@teo/we-programmer", "https://velog.io/@teo/ai-era-developer-role", "https://www.youtube.com/watch?v=palpFFMKuSU", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md"]
 ---
 
 > 테오(teo)의 「[AI 시대의 개발자: 현업 개발자의 솔직한 이야기](https://velog.io/@teo/ai-and-developer)」(2025.11), 「[우리, 프로그래머들: .md로 코딩하는 시대](https://velog.io/@teo/we-programmer)」(2026.03), 「[더이상 사람이 코딩하지 않는 시대, 개발자는 무엇을 해야 할까?](https://velog.io/@teo/ai-era-developer-role)」(2026.06)를 바탕으로 재구성한 노트다.
 > 「주니어는 어떻게 시니어가 되나」는 Meri Williams의 LDX3 London 2025 발표 「[Rethinking growing engineers in the age of AI](https://www.youtube.com/watch?v=palpFFMKuSU)」를 바탕으로 더했다.
+> 「길러야 할 역량」의 작은 CTO 역할은 위니브의 「[프론트엔드 개발자 가이드](https://github.com/weniv/frontend-developer-guide)」를 바탕으로 보강했다.
 
 ## 코딩 노동력이 병목이던 산업
 
@@ -90,6 +91,8 @@ LLM과의 작업은 **여러 주사위를 던지고 원하는 눈은 고정한 �
 | 추상적 요구를 구체적 명세로 | "로그인 만들어 줘"가 아니라 프레임워크·암호화 방식·응답 코드까지 말한다. 전공 지식이 있어야 가능하다 |
 | 맥락과 의도를 전하는 소통 | "리뷰해 줘"가 아니라 "동시 결제 중복 처리 때문에 트랜잭션을 넣었으니 race condition을 봐 줘" |
 | 서비스 한 바퀴를 끝까지 | 인증·배포·로그·DB까지 전체 흐름을 한 번은 겪어야 무엇을 맡기고 무엇을 직접 볼지 판단한다 |
+| 작은 CTO처럼 결정하기 | 혼자 일해도 스택·아키텍처를 정하고, 기술 부채를 관리하고, 일을 나눠 AI에 맡길 입력과 받을 출력을 정한다. 문제 크기에 비해 **과하지 않은 기술**을 고르는 것까지가 결정이다 |
+| 결과의 가치를 설명하기 | 만든 것이 사업에서 어떤 가치를 내는지 스스로 평가하고 말할 수 있어야 결과에 책임질 수 있다. 결과물을 먼저 만들고 그 과정에서 코드를 배우는 순서가 가능해진 만큼 이 판단의 비중이 커졌다 |
 | 목적이 먼저인 사고 | "AI로 뭘 해 볼까"가 아니라 "이 번거로운 배포 과정을 어떻게 없앨까" |
 | 큰 문제와 내 스킬 하나 | 작은 문제에서는 요구사항·문서·검수 기준의 필요가 드러나지 않는다. 반복하는 일 하나를 골라 스킬로 만들고, 전후 차이를 체감한다 |
 | 코드 밖으로 시야 넓히기 | GitHub 이슈·PR·위키, 문서·캘린더·메신저까지 AI가 다룰 수 있는 범위로 본다 |

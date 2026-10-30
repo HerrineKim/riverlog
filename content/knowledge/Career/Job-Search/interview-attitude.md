@@ -5,10 +5,10 @@ summary: "면접관은 말보다 태도를 먼저 읽는다. 눈 맞춤과 미�
 tags: ["career", "interview", "job-search", "communication"]
 source: other
 date: "2026-10-21"
-sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md"]
+sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md"]
 ---
 
-> 플라피나의 노션 강의록 「플라피나 면접팁 / 자소서팁」과 「심화편」, 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리를 바탕으로 재구성한 노트다. 회사를 면접하는 질문은 freeCodeCamp의 「[How to Interview as a Developer Candidate](https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd)」를 바탕으로 더했다.
+> 플라피나의 노션 강의록 「플라피나 면접팁 / 자소서팁」과 「심화편」, 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리를 바탕으로 재구성한 노트다. 회사를 면접하는 질문은 freeCodeCamp의 「[How to Interview as a Developer Candidate](https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd)」를 바탕으로 더했다. 현직자 커피챗은 위니브의 「[프론트엔드 개발자 가이드](https://github.com/weniv/frontend-developer-guide)」를 바탕으로 더했다.
 > 「주제별 질문 목록」과 프로젝트 질문·말로 꺼내 보기는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소의 Reverse Interview·Tip 문서를 바탕으로 보강했다.
 
 ## 면접은 소개팅이다
@@ -47,6 +47,7 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 | 1시간 일찍 근처에 도착한다 | 지각이나 숨찬 입장으로 면접을 망치지 않는다. 음료 잔을 쥐고 들어가면 손 떨림이 감춰진다 |
 | 외모를 챙긴다 | 머리·옷·향까지 챙기면 자신감이 생기고 긴장이 덜하다 |
 | 보여 줄 물건을 하나 가져간다 | 말로 다 못 하는 것을 보여 준다. 개발자라면 직접 만든 서비스 화면이나 기술 노트 |
+| 현직자와 먼저 커피챗을 한다 | 지인이나 커뮤니티로 닿는 현직자가 있으면 면접 전에 짧게 만난다. 팀의 스택, 면접 방식, 일하는 분위기를 알면 준비 범위가 좁아지고 역질문도 구체적이 된다 |
 | 회사를 미리 공부한다 | 입사 후 하고 싶은 일을 구체적으로 말하려면 필요하다. 「최선을 다하겠습니다」보다 「A나 B를 하고 싶다」가 낫고, 그 업무에 자리가 있으면 채용 가능성도 높아진다 |
 | 코드를 직접 볼 수 있는 링크를 낸다 | 이름 있는 오픈소스 기여는 큰 가점이다. 개인 저장소도 관심사와 코드 스타일을 보여 준다 |
 | 이력서에 쓴 것을 전부 숙지한다 | 내가 쓴 프로젝트·기술에 대한 질문은 바로 답이 나와야 한다. 설계 이유가 기억나지 않으면 이력서 전체의 신뢰가 무너진다 |

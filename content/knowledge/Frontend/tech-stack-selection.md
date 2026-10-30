@@ -5,11 +5,12 @@ summary: "기술 스택은 혼자가 아니라 함께 쓰는 것이라 커뮤니
 tags: ["frontend", "career", "architecture", "growth"]
 source: other
 date: "2026-10-21"
-sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://risingstars.js.org/", "https://github.com/grab/front-end-guide"]
+sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://risingstars.js.org/", "https://github.com/grab/front-end-guide", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md"]
 ---
 
 > 테오(teo)의 「[2024 프론트엔드 기술스택 이야기](https://velog.io/@teo/2024-frontend-techstack)」(2024.04)를 바탕으로 재구성한 노트다.
 > Grab의 「[Front End Guide](https://github.com/grab/front-end-guide)」를 바탕으로 보강했다.
+> 「캐즘을 넘었는지 알아보는 법」의 통계·채용 공고 확인은 위니브의 「[프론트엔드 개발자 가이드](https://github.com/weniv/frontend-developer-guide)」를 바탕으로 보강했다.
 
 ## 기술 스택이란
 
@@ -38,6 +39,8 @@ sources: ["https://velog.io/@teo/2024-frontend-techstack", "https://velog.io/@te
 ### 캐즘을 넘었는지 알아보는 법
 
 혁신가는 "이런 새 문제를 풀 수 있다"고 말한다. 주류가 된 기술은 **알려진 문제의 해결 과정이 공유된다**. 학원 커리큘럼, 취업 블로그, TIL에 등장하면 확실히 넘은 것이다.
+
+수치로 확인할 때는 해마다 나오는 개발자 설문의 사용률과 만족도 추이를 본다. [Stack Overflow Developer Survey](https://survey.stackoverflow.co/)는 언어·프레임워크 전반을, [State of JavaScript](https://stateofjs.com/)·[State of CSS](https://stateofcss.com/)는 프론트엔드 도구를 써 본 사람의 재사용 의향까지 보여 주고, [GitHub Octoverse](https://octoverse.github.com/)는 저장소 활동량으로 생태계 규모를 보여 준다. 사용률은 높은데 만족도가 떨어지는 도구는 레거시로 넘어가는 중이다. 취업 준비라면 가고 싶은 회사 목록을 먼저 뽑아 **채용 공고에 적힌 스택**을 모으는 것이 가장 직접적인 기준이다.
 
 ## 고르는 기준
 
