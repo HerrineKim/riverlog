@@ -5,10 +5,11 @@ summary: "변수를 어디서 쓸 수 있는지 정하는 스코프(전역·모�
 tags: ["javascript", "frontend", "scope", "closure", "function"]
 source: other
 date: "2026-10-21"
-sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/closure.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/scope.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/hoisting.md", "https://wesbos.com/javascript/03-the-tricky-bits/scope", "https://wesbos.com/javascript/03-the-tricky-bits/hoisting", "https://wesbos.com/javascript/03-the-tricky-bits/closures", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures", "https://developer.mozilla.org/en-US/docs/Glossary/Hoisting", "https://web.dev/learn/javascript/data-types/variable", "https://ko.javascript.info/closure", "https://ko.javascript.info/var", "https://ko.javascript.info/global-object", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%81%B4%EB%A1%9C%EC%A0%80.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%A0%84%EC%97%AD%20%EB%B3%80%EC%88%98%EC%9D%98%20%EB%AC%B8%EC%A0%9C%EC%A0%90.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%8A%A4%EC%BD%94%ED%94%84.md"]
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/closure.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/scope.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/hoisting.md", "https://wesbos.com/javascript/03-the-tricky-bits/scope", "https://wesbos.com/javascript/03-the-tricky-bits/hoisting", "https://wesbos.com/javascript/03-the-tricky-bits/closures", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures", "https://developer.mozilla.org/en-US/docs/Glossary/Hoisting", "https://web.dev/learn/javascript/data-types/variable", "https://ko.javascript.info/closure", "https://ko.javascript.info/var", "https://ko.javascript.info/global-object", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%81%B4%EB%A1%9C%EC%A0%80.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%A0%84%EC%97%AD%20%EB%B3%80%EC%88%98%EC%9D%98%20%EB%AC%B8%EC%A0%9C%EC%A0%90.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%8A%A4%EC%BD%94%ED%94%84.md", "https://github.com/lydiahallie/javascript-questions"]
 ---
 
 > Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로 재구성하고, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Variables」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「변수의 유효범위와 클로저」, 「오래된 var」, 「전역 객체」 글로 보강한 노트다. 「[Frontend_TIL: 클로저](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%81%B4%EB%A1%9C%EC%A0%80.md)」, 「[Frontend_TIL: 호이스팅](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%98%B8%EC%9D%B4%EC%8A%A4%ED%8C%85.md)」, 「[Frontend_TIL: 전역 변수의 문제점](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%A0%84%EC%97%AD%20%EB%B3%80%EC%88%98%EC%9D%98%20%EB%AC%B8%EC%A0%9C%EC%A0%90.md)」을 바탕으로 보강했다. 「[Must-Know-About-Frontend: 클로저](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/closure.md)」, 「[Must-Know-About-Frontend: 스코프](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/scope.md)」, 「[Must-Know-About-Frontend: 호이스팅](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/hoisting.md)」의 내용을 더해 보강했다. 「[Frontend_TIL: 스코프](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%8A%A4%EC%BD%94%ED%94%84.md)」을 바탕으로 보강했다.
+> 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다.
 
 ## 스코프란
 
@@ -36,6 +37,8 @@ first         // 'wes': 다른 <script>나 콘솔에서도 보인다
 window.first  // undefined: let·const는 전역이지만 window에 붙지 않는다
 window.age    // 100: var와 함수 선언은 window의 속성이 된다
 ```
+
+브라우저의 `window`에는 `name`·`status`처럼 처음부터 있는 속성이 많다. 그래서 선언하지 않은 `name`을 읽어도 `ReferenceError` 대신 `''`가 나와 오타가 가려진다. Node.js에서는 같은 코드가 `ReferenceError`다.
 
 전역 변수는 만들지 않는다. **변수의 생명주기는 그 스코프의 생명주기**다. 지역 변수는 함수 호출과 함께 생기고 끝나면 사라지지만, `var` 전역 변수는 전역 객체의 속성이라 페이지를 닫을 때까지 살아 있다.
 
@@ -67,7 +70,17 @@ for (var i = 0; i < 3; i++) {}
 i    // 3: 반복문 변수가 밖에 남는다. let이면 남지 않는다
 ```
 
-`if`·`for` 없이 중괄호만 써도 블록이다. `{ const message = '안녕'; … }`처럼 감싸면 같은 이름을 다른 블록에서 다시 선언할 수 있어, 한 파일 안에서 작업 단위를 격리할 때 쓴다. `for (let i …)`의 괄호 안 변수는 중괄호 밖에 적혀 있지만 반복문 블록에 속한다.
+`if`·`for` 없이 중괄호만 써도 블록이다. `{ const message = '안녕'; … }`처럼 감싸면 같은 이름을 다른 블록에서 다시 선언할 수 있어, 한 파일 안에서 작업 단위를 격리할 때 쓴다. `for (let i …)`의 괄호 안 변수는 중괄호 밖에 적혀 있지만 반복문 블록에 속한다. `catch (err)`의 매개변수도 그 `catch` 블록에만 있는 변수라, 바깥에 같은 이름이 있으면 가리기만 하고 바꾸지 않는다.
+
+```javascript
+let x, y
+try { throw new Error() } catch (x) {
+  x = 1             // catch의 x
+  y = 2             // 바깥 y
+}
+x // undefined
+y // 2
+```
 
 `var`의 다른 성질도 이 "블록 무시"에서 나온다. 같은 스코프에서 **다시 선언해도 에러가 없고**(두 번째 `var`는 무시되고 대입만 일어난다), 실행되지 않는 `if (false) { var x }` 안의 선언도 함수 맨 위로 끌어올려진다. 아주 초기의 JavaScript에는 블록 단위 스코프가 없었기 때문이다. 옛 코드를 `let`으로 바꿀 때 이 차이 때문에 에러가 날 수 있다.
 

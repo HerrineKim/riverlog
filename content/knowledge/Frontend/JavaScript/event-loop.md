@@ -5,10 +5,11 @@ summary: "싱글 스레드인 JavaScript가 렌더링과 나눠 쓰는 메인 �
 tags: ["javascript", "async", "browser", "frontend"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/event-loop.md", "https://riverkim.kr/324", "https://riverkim.kr/114", "https://web.dev/learn/javascript/appendix", "https://ko.javascript.info/event-loop", "https://ko.javascript.info/microtask-queue", "https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask", "https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/", "https://www.youtube.com/watch?v=8aGhZQkoFbQ", "http://latentflip.com/loupe/"]
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/event-loop.md", "https://riverkim.kr/324", "https://riverkim.kr/114", "https://web.dev/learn/javascript/appendix", "https://ko.javascript.info/event-loop", "https://ko.javascript.info/microtask-queue", "https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask", "https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/", "https://www.youtube.com/watch?v=8aGhZQkoFbQ", "http://latentflip.com/loupe/", "https://github.com/lydiahallie/javascript-questions"]
 ---
 
 > riverkim.kr에 쓴 글들을 다시 정리하고, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌 부록의 메인 스레드·콜 스택 설명과 javascript.info(모던 JavaScript 튜토리얼)의 「이벤트 루프와 매크로태스크, 마이크로태스크」, 「마이크로태스크」 글로 보강한 노트다. 작업 쪼개기와 취소는 LINE 엔지니어링 블로그의 「[매끄러운 경험을 위한 JavaScript 비동기 처리](https://engineering.linecorp.com/ko/blog/dont-block-the-event-loop/)」를 바탕으로 더했다. 「[Must-Know-About-Frontend: 이벤트 루프](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/event-loop.md)」의 내용을 더해 보강했다.
+> 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다.
 
 ## 싱글 스레드와 블로킹
 
@@ -75,6 +76,27 @@ console.log('4')
 ```
 
 이미 이행된 Promise의 `then`도 즉시 실행되지 않는다. 핸들러는 **언제나** 마이크로태스크 큐를 거치므로 현재 코드가 끝난 뒤에 돈다. 어떤 코드를 핸들러 뒤에 실행하고 싶으면 체인에 `.then`을 하나 더 붙인다. 명세에서는 이 큐를 PromiseJobs라고 부르고, V8을 비롯한 엔진에서 마이크로태스크 큐라고 부른다.
+
+`then` 체인은 **단계마다 마이크로태스크 하나**를 쓰고, `await` 뒤의 코드도 마이크로태스크 하나로 이어진다. 그래서 같은 Promise를 기다려도 체인이 긴 쪽이 늦게 끝나고, `await`가 풀린 뒤의 동기 코드는 그 자리에서 이어 실행된다.
+
+```javascript
+const p = Promise.resolve('P')
+
+function viaThen() {
+  setTimeout(() => console.log('timeout 1'))
+  p.then((v) => v).then((v) => console.log(`${v} then`)) // 두 단계
+  console.log('sync 1')
+}
+async function viaAwait() {
+  const v = await p                                      // 한 단계
+  console.log(`${v} await`)
+  setTimeout(() => console.log('timeout 2'))
+  console.log('sync 2')
+}
+viaThen()
+viaAwait()
+// sync 1 → P await → sync 2 → P then → timeout 1 → timeout 2
+```
 
 ### 한 바퀴의 순서
 

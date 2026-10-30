@@ -5,10 +5,11 @@ summary: "ES6 class로 객체의 틀을 정의하는 방법: 선언과 표현식
 tags: ["javascript", "oop", "frontend"]
 source: mixed
 date: "2026-10-17"
-sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493", "https://riverkim.kr/178", "https://riverkim.kr/256", "https://web.dev/learn/javascript/classes", "https://web.dev/learn/javascript/classes/extends", "https://web.dev/learn/javascript/classes/class-fields", "https://web.dev/learn/javascript/classes/static-initialization-blocks", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks", "https://ko.javascript.info/class", "https://ko.javascript.info/class-inheritance", "https://ko.javascript.info/static-properties-methods", "https://ko.javascript.info/private-protected-properties-methods", "https://ko.javascript.info/extend-natives", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species"]
+sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493", "https://riverkim.kr/178", "https://riverkim.kr/256", "https://web.dev/learn/javascript/classes", "https://web.dev/learn/javascript/classes/extends", "https://web.dev/learn/javascript/classes/class-fields", "https://web.dev/learn/javascript/classes/static-initialization-blocks", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks", "https://ko.javascript.info/class", "https://ko.javascript.info/class-inheritance", "https://ko.javascript.info/static-properties-methods", "https://ko.javascript.info/private-protected-properties-methods", "https://ko.javascript.info/extend-natives", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species", "https://github.com/lydiahallie/javascript-questions"]
 ---
 
 > 직접 정리한 내용에 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 클래스 모듈과 javascript.info(모던 JavaScript 튜토리얼)의 클래스 글(「클래스와 기본 문법」, 「클래스 상속」, 「정적 메서드와 정적 프로퍼티」, 「private, protected 프로퍼티와 메서드」, 「내장 클래스 확장하기」)을 더해, MDN으로 확인해 보강한 노트다. 프론트엔드에서의 쓰임은 이문기의 「[프론트엔드에서 클래스와 즉시 실행 함수 쓰기](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493)」(2023.08)를 더했다.
+> 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다.
 
 **class**는 같은 모양의 객체를 찍어 내기 위한 템플릿이다. 데이터, 그 데이터를 다루는 메서드를 한 블록에 묶고, 이들을 통틀어 클래스의 **멤버**라고 한다. ES5까지는 생성자 함수와 프로토타입 체인으로 구현했고, ES6(2015)에서 `class`가 도입됐다. 내부 동작은 여전히 프로토타입 기반이라 `typeof MyClass`는 `'function'`이다.
 
@@ -87,6 +88,8 @@ function makeClass(greeting) {       // 클래스를 실행 중에 만들어 돌
 ```
 
 클래스 선언은 TDZ 규칙을 따르므로 선언 줄보다 위에서 `new`하면 `Cannot access 'X' before initialization`이다. 표현식은 담긴 변수(`let`·`const`)의 규칙을 따른다.
+
+클래스 선언이 만드는 이름은 `let`처럼 **재할당은 된다.** `class Person {}` 뒤에 `Person = class Other {}`를 쓰면 이후 `new Person()`은 `Other`의 인스턴스다. 반대로 클래스 본문 안에서 보이는 자기 이름은 `const`라서, 메서드 안의 `Person = 1`은 `TypeError`다.
 
 ## 클래스 필드
 
@@ -309,6 +312,7 @@ account.balance           // 100
 - getter는 반드시 값을 `return`해야 하고, setter는 인자를 하나 받는다.
 - getter·setter는 인스턴스가 아니라 `prototype`에 접근자 속성으로 정의되어 모든 인스턴스가 공유한다([[property-descriptors|속성 설명자]]).
 - getter만 두고 setter를 두지 않으면 읽기 전용이 된다. class 본문은 strict mode라 대입하면 `TypeError`다.
+- 반대로 setter만 두면 쓰기만 되고, 읽으면 에러 없이 `undefined`다. setter가 `return`한 값은 버려진다(대입식의 값은 언제나 오른쪽 값이다).
 
 ## 프론트엔드에서 클래스를 꺼낼 때
 

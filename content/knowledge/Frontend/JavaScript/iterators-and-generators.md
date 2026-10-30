@@ -5,10 +5,11 @@ summary: "for...of·spread·구조 분해가 공통으로 쓰는 약속인 이�
 tags: ["javascript", "frontend", "function", "async"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/javascript/control-flow", "https://web.dev/learn/javascript/data-types/symbol", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator", "https://ko.javascript.info/generators", "https://ko.javascript.info/async-iterators-generators", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync"]
+sources: ["https://web.dev/learn/javascript/control-flow", "https://web.dev/learn/javascript/data-types/symbol", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Iterator", "https://ko.javascript.info/generators", "https://ko.javascript.info/async-iterators-generators", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync", "https://github.com/lydiahallie/javascript-questions"]
 ---
 
 > web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Control flow」 모듈 중 Iterators·Generator functions 절을 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「제너레이터」, 「async 이터레이터와 제너레이터」 글을 더하고 MDN으로 확인해 재구성한 노트다.
+> 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다.
 
 ## 이터러블과 이터레이터
 
@@ -188,6 +189,7 @@ new Map([['a', 1], ['b', 2]]).values().reduce((a, b) => a + b)        // 3
 - `next()`가 꼭 `async` 메서드일 필요는 없다. Promise만 돌려주면 된다. `async`로 쓰면 안에서 `await`를 쓸 수 있어 편하다.
 - spread `[...x]`와 그냥 `for...of`는 `Symbol.iterator`만 찾으므로 비동기 이터러블에 쓰면 `TypeError`다. 배열로 모으려면 `await Array.fromAsync(x)`(Baseline 2024)를 쓴다.
 - `for await...of`는 동기 이터러블도 받는다. 원소가 Promise면 하나씩 기다리며 순서대로 꺼낸다.
+- 비동기 제너레이터의 `yield`는 내보내기 전에 값을 `await`한다. `yield Promise.resolve(1)`을 `for await`나 `await gen.next()`로 받으면 Promise가 아니라 `1`이 나온다.
 
 페이지네이션 API를 끝까지 읽는 것이 대표적인 쓰임이다. 다음 페이지 URL을 따라가는 로직을 제너레이터 안에 숨기면 쓰는 쪽은 원소를 하나씩 받기만 한다.
 

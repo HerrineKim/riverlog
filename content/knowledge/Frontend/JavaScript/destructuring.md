@@ -5,10 +5,11 @@ summary: "배열·이터러블은 순서로, 객체는 이름으로 값을 꺼�
 tags: ["javascript", "frontend", "data-structure"]
 source: other
 date: "2026-10-17"
-sources: ["https://ko.javascript.info/destructuring-assignment", "https://ko.javascript.info/keys-values-entries", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring"]
+sources: ["https://ko.javascript.info/destructuring-assignment", "https://ko.javascript.info/keys-values-entries", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring", "https://github.com/lydiahallie/javascript-questions"]
 ---
 
 > javascript.info(모던 JavaScript 튜토리얼)의 「구조 분해 할당」, 「Object.keys, values, entries」 글을 바탕으로, MDN으로 확인해 재구성한 노트다.
+> 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다.
 
 ## 구조 분해란
 
@@ -77,6 +78,15 @@ const { title: heading, ...others } = options              // others는 { height
 let title, width
 { title, width } = options     // SyntaxError, 블록으로 해석된다
 ;({ title, width } = options)  // 괄호로 식임을 알린다
+```
+
+할당 패턴의 대상은 변수뿐 아니라 **대입할 수 있는 자리면 무엇이든** 된다. 객체 속성이나 배열 칸에 바로 담을 수 있다.
+
+```javascript
+const user = {}
+;[user.first, user['last']] = ['Lydia', 'Hallie'] // { first: 'Lydia', last: 'Hallie' }
+const list = ['a', 'b', 'c']
+;({ item: list[3] } = { item: 'd' })              // list는 ['a', 'b', 'c', 'd']
 ```
 
 ## 기본값 규칙
