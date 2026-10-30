@@ -13,5 +13,6 @@ date: "2026-10-14"
 - [큐와 덱](Algorithm/Data-Structure/queue-deque.md): 선입선출(FIFO) 큐와 양쪽에서 넣고 빼는 덱, BFS의 기반
 - [힙과 우선순위 큐](Algorithm/Data-Structure/heap-priority-queue.md): 우선순위가 가장 높은 원소를 빠르게 꺼내는 힙
 - [서로소 집합 (Union-Find)](Algorithm/Data-Structure/disjoint-set.md): 원소들을 서로소 집합으로 묶는 Union-Find, 크루스칼과 병목 경로
+- [해시 테이블](Algorithm/Data-Structure/hash-table.md): 해시 함수, 개방 주소법과 분리 연결법, 적재율과 리사이즈, 언어별 구현
 - [트리와 이진 탐색 트리](Algorithm/Data-Structure/tree.md): 트리 용어, 이진 트리의 종류와 배열 표현, 순회, BST와 AVL 회전
 - [기초 자료구조: 배열에서 트라이까지](Algorithm/Data-Structure/data-structures.md): 배열·연결 리스트·이진 탐색 트리·해시 테이블·트라이의 구조와 C 구현 (CS50)
