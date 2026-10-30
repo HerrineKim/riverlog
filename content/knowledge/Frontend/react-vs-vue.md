@@ -5,10 +5,11 @@ summary: "같은 범주(컴포넌트 기반 선언형 UI, 가상 DOM)에 속하�
 tags: ["frontend", "react", "vue", "javascript"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/f27f6183052343e1ab908f8175bd4a88", "https://vuejs.org/guide/extras/rendering-mechanism", "https://react.dev/learn/start-a-new-react-project", "https://github.com/sudheerj/vuejs-interview-questions-korean/blob/master/README.md"]
+sources: ["https://80000coding.notion.site/f27f6183052343e1ab908f8175bd4a88", "https://vuejs.org/guide/extras/rendering-mechanism", "https://react.dev/learn/start-a-new-react-project", "https://github.com/sudheerj/vuejs-interview-questions-korean/blob/master/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Web/Vue/Vue.js%20%EB%9D%BC%EC%9D%B4%ED%94%84%EC%82%AC%EC%9D%B4%ED%81%B4%20%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「React와 Vue의 장단점 비교」를 바탕으로 재구성한 노트다.
+> 생명 주기 행은 gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 Vue 라이프사이클 문서를 바탕으로, Vue 3 공식 문서로 확인해 보강했다.
 
 **React**(Meta와 커뮤니티가 관리)와 **Vue**(Evan You와 커뮤니티가 관리)는 둘 다 **데이터로 컴포넌트를 렌더링하는 선언형 UI 도구**다. 상태를 바꾸면 화면은 도구가 알아서 갱신하고, 화면은 재사용 가능한 컴포넌트를 조립해 만든다. 같은 범주라 하나를 깊게 알면 다른 하나는 빨리 익힌다([[tech-stack-selection|기술 스택 고르기]]). 차이는 **상태 변화를 어떻게 감지하느냐**와 **UI를 무엇으로 쓰느냐**에서 갈린다.
 
@@ -27,6 +28,7 @@ sources: ["https://80000coding.notion.site/f27f6183052343e1ab908f8175bd4a88", "h
 | 상태와 변경 감지 | 상태는 **불변**으로 다룬다. `setState`로 새 값을 넘기면 그 컴포넌트를 다시 렌더링한다 | 상태는 **반응형 객체**(`ref`, `reactive`)다. 값을 바로 고치면 Proxy가 의존성을 추적해 그 값을 쓰는 곳만 갱신한다 |
 | 불필요한 렌더링 | 부모가 렌더링되면 자식도 함께 렌더링된다. React Compiler(또는 `memo`·`useMemo`)로 줄인다 | 의존성 추적 덕분에 기본적으로 필요한 컴포넌트만 갱신된다 |
 | 가상 DOM 비교 | 트리 전체를 비교 | 컴파일러가 템플릿의 정적 부분을 미리 표시해 동적인 곳만 비교한다 |
+| 생명 주기 | `useEffect`의 실행과 정리 함수로 마운트·갱신·언마운트를 한꺼번에 다룬다([[lifecycle\|컴포넌트 생명주기]]) | 단계마다 훅이 따로 있다. Composition API는 `setup()`(옛 `beforeCreate`·`created` 자리) → `onBeforeMount` → `onMounted`(DOM 접근 가능) → `onBeforeUpdate` → `onUpdated` → `onBeforeUnmount` → `onUnmounted`. Vue 2의 `beforeDestroy`·`destroyed`는 Vue 3에서 `beforeUnmount`·`unmounted`로 이름이 바뀌었다 |
 | 폼 입력 | 값과 `onChange`를 직접 연결하는 제어 컴포넌트 | `v-model`이 값 바인딩과 이벤트 처리를 한 번에 해 주는 문법 설탕 |
 | 공식 범위 | 코어만. 라우터·상태 관리는 커뮤니티 선택. 새 앱은 Next.js나 React Router 같은 프레임워크로 시작하는 것을 공식 문서가 권한다 | 라우터(Vue Router)·상태 관리(Pinia)·빌드 도구(Vite)를 공식 팀이 함께 관리한다. 풀스택은 Nuxt |
 | 모바일 | React Native로 네이티브 앱까지 같은 모델을 쓴다 | 공식 네이티브 솔루션은 없다. Capacitor·Ionic 같은 하이브리드나 NativeScript를 쓴다 |
