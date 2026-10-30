@@ -1,14 +1,14 @@
 ---
 title: "문서 head와 메타데이터"
 concept: "HTML head"
-summary: "<head>는 화면에 보이지 않지만 인코딩·제목·뷰포트·스타일·스크립트·아이콘·대체 버전·대표 URL·검색과 SNS 미리보기 정보를 모두 담는다. 모든 페이지에 넣을 다섯 줄, link의 rel 종류, meta의 세 갈래(charset·http-equiv·name), Open Graph, base의 함정, 웹 앱 매니페스트로 정리한다."
+summary: "<head>는 화면에 보이지 않지만 인코딩·제목·뷰포트·스타일·스크립트·아이콘·대체 버전·대표 URL·검색과 SNS 미리보기 정보를 모두 담는다. 모든 페이지에 넣을 다섯 줄, link의 rel 종류, meta의 세 갈래(charset·http-equiv·name), Open Graph와 SEO의 관계, 미리보기가 안 나오는 이유, base의 함정, 웹 앱 매니페스트로 정리한다."
 tags: ["html", "frontend", "web", "seo", "performance"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/learn/html/metadata", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta"]
+sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/learn/html/metadata", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta", "https://www.youtube.com/watch?v=Bat8HyGzkU8", "https://ogp.me/", "https://developers.google.com/search/docs/crawling-indexing/special-tags", "https://developers.google.com/search/docs/appearance/site-names"]
 ---
 
-> web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Document structure」와 「Metadata」 모듈을 바탕으로, 브라우저 지원은 MDN으로 확인해 재구성한 노트다.
+> web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Document structure」와 「Metadata」 모듈을 바탕으로, 브라우저 지원은 MDN으로 확인해 재구성한 노트다. 「Open Graph와 SEO」는 freeCodeCamp Concepts의 「[What is the role of the Open graph tags and how does it affect SEO?](https://www.youtube.com/watch?v=Bat8HyGzkU8)」(2025.04)를 바탕으로 [Open Graph 프로토콜](https://ogp.me/)과 Google 검색 센터 문서로 확인해 보강했다.
 
 ## head가 하는 일
 
@@ -116,10 +116,33 @@ sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/lear
 <meta property="og:url" content="https://example.com/">
 ```
 
+프로토콜이 정한 필수 속성은 `og:title`, `og:type`, `og:image`, `og:url` 네 개다. `og:type`이 없으면 `website`로 본다. 글은 `article`, 사람은 `profile`처럼 고른다.
+
+| 속성 | 쓰임 |
+| --- | --- |
+| `og:url` | 카드의 **대표 URL**. 파라미터가 붙은 주소로 공유돼도 좋아요·공유 수가 이 URL로 모인다. `<link rel="canonical">`과 같은 값을 쓴다 |
+| `og:site_name` | 카드 위의 사이트 이름 |
+| `og:locale` | `ko_KR`처럼 `언어_지역` 형식. 기본값은 `en_US` |
+| `og:image:width`, `og:image:height` | 크기를 미리 알려 주면 처음 공유할 때도 이미지가 바로 그려진다. 가로 1200 × 세로 630(1.91:1)이 사실상 표준이다 |
+| `og:image:alt` | 이미지 내용 설명(캡션이 아니다) |
+
 - `og:image`는 프로토콜까지 넣은 **절대 URL**이다.
-- 카드 이미지도 이미지다. `og:image:alt`로 대체 텍스트를 준다.
 - X(옛 Twitter)는 `twitter:card`, `twitter:title` 같은 `name="twitter:*"` 태그를 따로 읽고, 없으면 Open Graph 값으로 대신한다. 접두사로 표준 `name`과 충돌을 피한다.
 - URL 파라미터마다 다른 카드를 내보내 공유 경로를 추적하거나 문구를 바꿀 수 있다.
+
+### 미리보기가 안 나올 때
+
+| 증상 | 원인 | 해결 |
+| --- | --- | --- |
+| SPA에서 카드가 비거나 모든 페이지가 같은 카드 | SNS·메신저의 미리보기 봇은 대부분 **JavaScript를 실행하지 않고** 처음 받은 HTML만 읽는다. 클라이언트에서 넣은 태그는 보이지 않는다 | 서버 렌더링·정적 생성으로 HTML에 태그를 넣는다. Next.js는 `metadata`의 `openGraph` 필드와 `opengraph-image` 파일 규칙으로 페이지마다 태그·이미지를 만든다 |
+| 태그를 고쳤는데 옛 카드가 나온다 | 플랫폼이 처음 긁어 간 결과를 캐시한다 | Meta의 Sharing Debugger, LinkedIn Post Inspector로 다시 긁게 한다. 이미지 파일 이름을 바꾸는 것도 방법이다 |
+| 이미지가 안 나온다 | 상대 URL, 로그인·봇 차단 뒤의 이미지, 너무 큰 파일 | 공개된 절대 URL로, 적당한 크기로 둔다 |
+
+### Open Graph와 SEO
+
+**Open Graph는 검색 순위 요소가 아니다.** Google이 지원하는 meta 태그 목록에 `og:*`는 없고, 지원하지 않는 meta는 무시한다고 명시한다. 검색 결과의 제목과 요약은 `<title>`과 `description`, 본문에서 만든다. 예외로 사이트 이름을 정할 때는 `WebSite` 구조화된 데이터를 가장 중요하게 보고, `og:site_name`도 참고한다.
+
+영향은 간접적이다. 잘 만든 카드는 SNS·메신저에서 **클릭률과 공유를 늘려** 방문과 링크를 만들고, 그 결과가 검색 노출로 이어질 수 있다. 반대로 카드가 깨지면 링크가 공유돼도 눌리지 않는다. 그래서 `og:*`는 검색 최적화가 아니라 **공유 최적화**로 다루고, 검색용 `<title>`·`description`은 따로 챙긴다. 검색 쪽 메타 태그는 [[seo-basics#메타 태그|SEO 기초]]에 있다.
 
 ## base: 기본 URL과 target
 
@@ -146,7 +169,7 @@ sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/lear
 - `charset`(맨 앞), `viewport`, `title`, `<html lang>`, DOCTYPE은 모든 페이지에 넣는다.
 - `<link rel>`은 관계다. 스타일·아이콘·매니페스트·번역본·대표 URL을 각각 다른 `rel`로 잇는다.
 - meta는 `charset`·`http-equiv`·`name` 세 갈래이고, `refresh`와 `keywords`는 쓰지 않는다.
-- SNS 카드는 Open Graph(`property="og:*"`)로 정하고 이미지에 alt를 준다.
+- SNS 카드는 Open Graph(`property="og:*"`)로 정하고 이미지에 alt를 준다. 태그는 서버가 내려 준 HTML에 있어야 하고, 검색 순위가 아니라 공유 클릭률에 영향을 준다.
 - `<base>`는 같은 페이지 앵커까지 바꾸니 피한다. 앱 정보는 매니페스트에 모은다.
 
 head는 보이지 않지만, 페이지가 검색·공유·설치되는 모든 순간에 먼저 읽힌다.
