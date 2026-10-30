@@ -1,14 +1,14 @@
 ---
 title: "TypeScript 코딩 컨벤션"
 concept: "TS Convention"
-summary: "TypeScript 팀 컨벤션 문서의 규칙을 주제별로 묶었다. 이름 짓기, 타입, 선언, 클래스, 표현식, 제어문, 함수, 에러 처리, 내장 객체, 모듈 규칙을 필수·권장과 이유까지 함께 정리하고, 중괄호·줄 길이·빈 줄·중첩 줄이기·헬퍼 함수 위치 같은 코드 모양과 유지보수를 괴롭히는 패턴(닌자 코드) 목록을 더했다."
+summary: "TypeScript 팀 컨벤션 문서의 규칙을 주제별로 묶었다. 이름 짓기, 타입, 선언, 클래스, 표현식, 제어문, 함수, 에러 처리, 내장 객체, 모듈 규칙을 필수·권장과 이유까지 함께 정리하고, 중괄호·줄 길이·빈 줄·중첩 줄이기·헬퍼 함수 위치 같은 코드 모양과 유지보수를 괴롭히는 패턴(닌자 코드) 목록을 더했다. Airbnb JavaScript 스타일 가이드의 객체·함수·형 변환 규칙과, 공개 스타일 가이드끼리 갈리는 지점(export default, for...of, ++, getter, 약어 표기)도 비교했다."
 tags: ["typescript", "javascript", "frontend", "collaboration"]
 source: other
 date: "2026-10-30"
-sources: ["https://ko.javascript.info/coding-style", "https://ko.javascript.info/ninja-code", "https://github.com/wisedog/typescript-coding-guide", "https://typescript-eslint.io/getting-started/typed-linting", "https://basarat.gitbook.io/typescript/styleguide"]
+sources: ["https://ko.javascript.info/coding-style", "https://ko.javascript.info/ninja-code", "https://github.com/wisedog/typescript-coding-guide", "https://typescript-eslint.io/getting-started/typed-linting", "https://basarat.gitbook.io/typescript/styleguide", "https://github.com/airbnb/javascript", "https://google.github.io/styleguide/jsguide.html"]
 ---
 
-> 한국어로 쓰인 TypeScript 코딩 컨벤션 문서(예: 「[TypeScript 코딩 가이드 (규칙 80개)](https://github.com/wisedog/typescript-coding-guide)」)를 바탕으로 재구성하고, 코드 모양과 읽기 어려운 코드 패턴은 javascript.info(모던 JavaScript 튜토리얼)의 「코딩 스타일」, 「닌자 코드」 글로 보강한 노트다. 접두사 없는 인터페이스 이름, `null`·`undefined` 관례, 배열 표기, 따옴표는 basarat의 「[TypeScript Deep Dive](https://basarat.gitbook.io/typescript)」의 StyleGuide로 보강했다.
+> 한국어로 쓰인 TypeScript 코딩 컨벤션 문서(예: 「[TypeScript 코딩 가이드 (규칙 80개)](https://github.com/wisedog/typescript-coding-guide)」)를 바탕으로 재구성하고, 코드 모양과 읽기 어려운 코드 패턴은 javascript.info(모던 JavaScript 튜토리얼)의 「코딩 스타일」, 「닌자 코드」 글로 보강한 노트다. 접두사 없는 인터페이스 이름, `null`·`undefined` 관례, 배열 표기, 따옴표는 basarat의 「[TypeScript Deep Dive](https://basarat.gitbook.io/typescript)」의 StyleGuide로, 객체·함수·형 변환 규칙과 가이드 비교는 「[Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)」로 보강했다.
 
 ## 코딩 컨벤션이란
 
@@ -36,6 +36,7 @@ sources: ["https://ko.javascript.info/coding-style", "https://ko.javascript.info
 - 식별자는 영문, 숫자, `_`만 쓰는 것이 원칙이다(권장). JS는 유니코드 식별자를 허용해서 `const 인사말 = '안녕'`도 동작한다. 다만 `미징수_보수_세금액`처럼 영어로 옮기면 오히려 읽기 어려운 도메인 용어라면 **한글 식별자도 팀 합의로 허용할 수 있다**.
 - `$` 접두사(jQuery)와 `$` 접미사(Observable)는 팀이 합의하면 허용한다.
 - 대문자 상수는 언어가 불변을 보장해서가 아니라 **"고치지 말라"는 신호**다. 객체 상수는 속성을 바꿀 수 있다.
+- **`this`를 변수에 담지 않는다**(권장). `const self = this`, `that = this` 대신 화살표 함수나 `bind`로 `this`를 이어받는다.
 - 이름에 의미를 담는다. `whId`, `nErr`, `pcCounter` 같은 사내·모호한 약어 대신 `warehouseId`, `errorCount`를 쓴다. `IP`처럼 누구나 아는 약어는 괜찮다. `n`, `i`는 10~15줄 정도의 좁은 범위에서만 허용한다.
 
 ## 2. 타입
@@ -89,6 +90,8 @@ let payload: any;
 
 - **`var` 대신 `const`·`let`**(필수, ESLint `no-var`). `var`는 함수 범위라 블록 안에서 같은 이름을 다시 선언해도 조용히 덮어쓴다.
 - **다시 대입하지 않는 변수는 `const`**(필수, ESLint `prefer-const`). 그러면 `let`이 「이 값은 바뀐다」는 신호가 된다.
+- **대입을 사슬로 잇지 않는다**(필수, ESLint `no-multi-assign`). `let a = b = c = 1`에서 `let`은 `a`에만 붙고 `b`, `c`는 암묵적 전역 변수가 된다(엄격 모드에서는 `ReferenceError`).
+- **선언하고 쓰지 않는 변수를 남기지 않는다**(필수, ESLint `no-unused-vars`). 리팩터링하다 남은 흔적이라 읽는 사람이 쓰임새를 찾아 헤맨다.
 - **한 줄에 변수 하나**만 선언한다. `let x: number = 1, name = 'triangle'`은 타입 표기가 첫 변수에만 붙는다. 변수마다 주석을 달기도 어렵고, IDE 툴팁도 첫 변수에만 뜬다.
 
 ## 4. 클래스
@@ -104,7 +107,9 @@ let payload: any;
 
 ## 5. 표현식
 
-- **삼항 연산자는 한 단계까지만** 쓴다(권장). 중첩되면 `if...else`로 푼다.
+- **삼항 연산자는 한 단계까지만** 쓴다(권장, ESLint `no-nested-ternary`). 중첩되면 `if...else`로 푼다. `x ? true : false`, `a ? a : b`처럼 필요 없는 삼항은 `!!x`, `a || b`(또는 `a ?? b`)로 줄인다(`no-unneeded-ternary`).
+- **연산자를 섞을 때는 괄호로 묶는다**(권장, ESLint `no-mixed-operators`). `a && b || c`, `a ** b - 5 % d`는 우선순위를 외워야 읽힌다. `+`·`-`·`*`·`/`처럼 산술 우선순위가 익숙한 조합은 예외다.
+- **불리언은 줄여 쓰고, 문자열·숫자는 명시적으로 비교한다**(권장). `if (isValid === true)` 대신 `if (isValid)`지만, `if (name)`과 `if (collection.length)` 대신 `if (name !== '')`, `if (collection.length > 0)`로 쓴다. 빈 문자열과 `0`이 조건을 바꾸는 순간이 코드에 드러난다.
 - **부동소수점을 `===`로 비교하지 않는다**(필수). `0.1 + 0.2 !== 0.3`이다. 차이가 허용 오차보다 작은지 비교한다. `Number.EPSILON`은 1 근처에서의 오차라서 큰 값을 비교할 때는 허용 오차도 그 크기에 맞춰 키운다.
 
 ```ts
@@ -114,7 +119,7 @@ const equal = (x: number, y: number, tolerance = Number.EPSILON) =>
 equal(1000.1 + 1000.2, 2000.3, 2000 * Number.EPSILON); // true
 ```
 
-- **단항 `+`로 숫자를 변환할 때 조심한다**(권장). `'123f'` 같은 입력은 조용히 `NaN`이 된다.
+- **단항 `+`로 숫자를 변환할 때 조심한다**(권장). `'123f'` 같은 입력은 조용히 `NaN`이 된다(아래 「형 변환」).
 - 객체를 만들 때는 일관되게 `new`를 붙인다.
 - **`==` 대신 `===`**(필수, ESLint `eqeqeq`). `==`는 형 변환 규칙을 외워야 읽힌다. 예외로 `x == null`은 `null`과 `undefined`를 한 번에 거르는 관용구라 허용하는 팀이 많다(`eqeqeq`의 `{ null: 'ignore' }`).
 - **스프레드 피연산자는 순회 가능한 값**이어야 한다(필수). 배열 스프레드에 `false`·`null`·`undefined`가 오면 런타임 에러가 난다. 객체 스프레드는 이런 값을 그냥 무시한다. `?? []`로 기본값을 준다.
@@ -123,11 +128,36 @@ equal(1000.1 + 1000.2, 2000.3, 2000 * Number.EPSILON); // true
 - **스프레드는 얕은 복사다**(필수). `[...matrix]`는 바깥 배열만 새로 만들고 안쪽 배열은 원본과 공유한다. 중첩된 값을 복사하려면 `structuredClone()`을 쓴다(권장). `JSON.parse(JSON.stringify(x))`는 결과가 `any`가 되고 `Date`·`Map`이 깨진다. `structuredClone`은 타입을 유지하고 `Date`·`Map`·`Set`도 복사하지만, 함수가 들어 있으면 `DataCloneError`를 던진다.
 - **인스턴스를 만든 뒤 속성을 추가·삭제하지 않는다**(참고). V8은 같은 모양의 객체끼리 히든 클래스(Hidden Class)를 공유해 속성 위치를 빨리 찾는다. 나중에 속성을 붙이면 히든 클래스가 새로 생기고 JIT 최적화가 깨진다. 빈 객체를 해시맵처럼 쓰며 키를 계속 붙이는 경우가 대표적이다.
 
+### 객체 리터럴
+
+| 규칙 | 등급 | 예 |
+| --- | --- | --- |
+| 메서드·속성 축약형을 쓰고, 축약 속성은 객체 앞쪽에 모은다 | 권장 (`object-shorthand`) | `{ name, age, greet() {} }` |
+| 키에 따옴표는 식별자로 쓸 수 없는 키에만 | 권장 (`quote-props`) | `{ foo: 1, 'data-blah': 2 }` |
+| 동적 키는 만들 때 계산된 속성 이름으로 한 번에 | 권장 | `{ id, [getKey('enabled')]: true }` |
+| `hasOwnProperty` 같은 `Object.prototype` 메서드를 객체에서 직접 부르지 않는다 | 필수 (`no-prototype-builtins`) | `obj.hasOwnProperty(k)` 대신 `Object.hasOwn(obj, k)`. `Object.create(null)`로 만든 객체나 같은 이름의 속성을 가진 객체에서 깨진다 |
+| 얕은 복사는 `Object.assign` 대신 객체 스프레드, 속성 빼기는 나머지 문법 | 권장 (`prefer-object-spread`) | `const { a, ...rest } = copy`. `Object.assign(original, { c: 3 })`는 원본을 바꾼다 |
+| 거듭제곱은 `Math.pow` 대신 `**` | 권장 (`prefer-exponentiation-operator`) | `2 ** 10` |
+| 속성은 점 표기, 변수로 접근할 때만 대괄호 | 권장 (`dot-notation`) | `luke.jedi`, `luke[prop]` |
+
+### 형 변환
+
+형 변환은 **문장 첫머리에서 이름 있는 함수로** 한다. 뜻이 바로 보이고, `+`·`''`를 이용한 암묵 변환이 섞이지 않는다.
+
+| 대상 | 쓸 것 | 피할 것 |
+| --- | --- | --- |
+| 문자열 | `String(x)` | `x + ''` (`valueOf`를 먼저 부른다), `x.toString()` (`null`·`undefined`에서 에러), `new String(x)` |
+| 숫자 | `Number(x)`, 문자열 파싱은 `Number.parseInt(x, 10)` | 단항 `+x`, 진법 없는 `parseInt(x)`(ESLint `radix`), `new Number(x)` |
+| 불리언 | `Boolean(x)` 또는 `!!x` | `new Boolean(x)` |
+
+비트 연산(`x >> 0`)은 32비트 정수로 잘려서 `2147483648 >> 0`이 `-2147483648`이 된다. 성능 때문에 쓴다면 이유를 주석으로 남긴다.
+
 ## 6. 제어문
 
 ### 블록과 switch
 
 - 반복문과 조건문 본문에는 중괄호를 쓴다. 한 줄짜리 `if`만 경우에 따라 허용한다.
+- **`let`·`const`·`function`·`class`를 선언하는 `case`는 중괄호로 감싼다**(필수, ESLint `no-case-declarations`). 선언은 `switch` 블록 전체에 보이지만 초기화는 그 `case`에 들어왔을 때만 되어, 다른 `case`에서 접근하면 TDZ 에러가 난다.
 - **`switch`에는 `default`를 반드시 쓴다**(필수, ESLint `default-case`). 예상 못한 값을 잡는다. 할 일이 없어도 `default: // pass`를 써 두면 누락이 아니라 의도임이 드러난다.
 - **내용이 있는 `case`는 `break`·`return`·`throw`로 끝낸다**(권장, ESLint `no-fallthrough`, tsconfig `noFallthroughCasesInSwitch`). 비어 있는 `case`를 여러 개 겹쳐 같은 처리로 흘려보내는 것은 괜찮다.
 - `case`가 두세 개뿐이면 `if...else`를 고려하고, 반대로 `else if`가 세 개 이상 이어지면 `switch`를 고려한다.
@@ -144,6 +174,8 @@ equal(1000.1 + 1000.2, 2000.3, 2000 * Number.EPSILON); // true
 
 ### 조건식
 
+- **`if` 블록이 `return`으로 끝나면 `else`를 쓰지 않는다**(권장, ESLint `no-else-return`). 이어지는 코드가 곧 `else`다. 「중첩을 줄인다」의 이른 반환과 같은 원칙이다.
+- **`&&`·`||`를 `if` 대신 쓰지 않는다**(권장, ESLint `no-unused-expressions`). `!isRunning && startRunning()`은 식이 아니라 문으로 쓴 것이라 의도가 흐려진다. `if (!isRunning) startRunning()`으로 쓴다.
 - 조건이 세 개 이상 엮이면 `isYoungGiants(age, weight, height)`처럼 이름 있는 함수로 뽑는다.
 - **부정 연산자와 부정형 이름을 줄인다**(권장). `!user.notAuthorized || !user.isNotAdmin`은 이중 부정이다. `user.authorized || user.isAdmin`이 바로 읽힌다.
 
@@ -163,7 +195,11 @@ function createUser({ id, name, age }: Readonly<UserParams>) {
 }
 ```
 
-- **객체 매개변수는 `Readonly<T>`로 받는다**(권장). 함수 안에서 인자를 고치면 호출한 쪽 원본까지 바뀐다.
+- **매개변수를 고치거나 다시 대입하지 않는다**(필수, ESLint `no-param-reassign`). 객체 인자를 고치면 호출한 쪽 원본까지 바뀌고, 다시 대입하면 `arguments`와 엔진 최적화가 어긋난다. 타입으로는 객체 매개변수를 `Readonly<T>`로 받아 막는다(권장).
+- **`arguments` 대신 나머지 매개변수 `...args`**(필수, ESLint `prefer-rest-params`). `arguments`는 배열이 아니라 유사 배열이고 화살표 함수에는 없다. 가변 인자 호출도 `fn.apply(null, args)` 대신 `fn(...args)`다(`prefer-spread`).
+- **기본값은 기본 매개변수 문법으로, 맨 뒤에 둔다**(권장, ESLint `default-param-last`). `opts = opts || {}`는 `0`·`''`를 걸러 버린다. 기본값 식에 `b = a++` 같은 부수 효과를 넣지 않는다.
+- **콜백처럼 이름 없는 함수가 필요하면 화살표 함수**(권장, ESLint `prefer-arrow-callback`). 바깥 `this`를 그대로 쓴다. 본문이 식 하나면 중괄호와 `return`을 생략하고, 매개변수에는 늘 괄호를 친다(`arrow-parens`).
+- **`if`·`while` 블록 안에서 함수를 선언하지 않는다**(필수, ESLint `no-inner-declarations`). 필요하면 `const fn = () => {}`처럼 변수에 담는다.
 - 반환 타입을 명시한다. 의도가 드러나고, 구현이 바뀌어 반환 타입이 어긋나면 컴파일러가 바로 알려 준다. 복잡한 함수에서는 추론이 빗나가는 것도 막는다.
 
 ## 8. 에러 처리
@@ -189,6 +225,8 @@ try {
 | --- | --- |
 | `map` 콜백은 요소 변환만 한다. 바깥 변수 누적은 `reduce`로 따로 한다 | 필수 |
 | `map`의 반환값을 버릴 거면 `forEach`나 `for...of`를 쓴다 | 필수 |
+| 배열 메서드 콜백(`map`·`filter`·`reduce` 등)은 값을 반환한다. 본문이 식 하나면 생략해도 된다 | 필수 (`array-callback-return`) |
+| 이터러블은 스프레드(`[...set]`)로, 유사 배열은 `Array.from(arrayLike)`로 배열로 바꾼다. 바꾸면서 매핑하면 중간 배열이 없는 `Array.from(x, fn)` | 권장 |
 | `Array` 생성자를 쓰지 않는다. `new Array(2)`는 빈 칸 2개, `new Array(2, 3)`은 `[2, 3]`이다 | 필수 |
 | `forEach` 콜백에서 값을 반환하지 않는다. 결과가 버려지고 반복을 멈추지도 않는다 | 필수 |
 | `forEach`에 `async` 콜백을 넣지 않는다. Promise를 기다리지 않는다 | 필수 |
@@ -215,6 +253,9 @@ try {
 - **JSDoc 본문은 마크다운으로 렌더링된다**(참고). 줄바꿈만 하면 툴팁에서 한 줄로 붙는다. 목록은 `-`로 쓴다.
 - **`namespace`를 쓰지 않는다**(필수). ES 모듈 이전의 기능이다. IIFE로 남아 트리 셰이킹이 안 된다.
 - **`export default`를 쓰지 않는다**(필수). named export는 잘못된 이름으로 import하면 에러가 나고, default export는 아무 이름으로 받아도 통과해서 이름이 제각각이 된다.
+- **같은 경로는 한 번만 import한다**(필수, ESLint `import/no-duplicates`). import 문은 모두 파일 맨 위에 둔다(`import/first`).
+- **`export let`처럼 바뀌는 바인딩을 내보내지 않는다**(필수, ESLint `import/no-mutable-exports`). 가져간 쪽에서 값이 바뀌는 것을 예측할 수 없다. 상수나 함수만 내보낸다.
+- **`// FIXME:`는 고쳐야 할 문제, `// TODO:`는 해야 할 해결책**에 단다(권장). 주석은 `//` 뒤에 한 칸 띄우고(`spaced-comment`), 대상 코드 위 줄에 쓴다.
 - tsconfig에서 `strict`를 켠다(필수). 소스 파일은 UTF-8로 저장한다. `euc-kr`은 쓰지 않는다.
 
 ## 11. 코드 모양
@@ -276,6 +317,27 @@ export default defineConfig(
 ```
 
 이 노트의 규칙 상당수가 여기에 이미 들어 있다(`no-explicit-any`, `prefer-const`, `eqeqeq`, `no-namespace`, `switch-exhaustiveness-check`). 타입 정보를 쓰는 규칙은 TypeScript 컴파일러 API로 돌아가므로, 안정 API가 없는 TypeScript 7.0에서는 `typescript@6` 패키지를 함께 둔다. 스타일 논쟁의 기준은 늘 두 질문이다. **"더 읽기 쉬운가?", "실수를 더 줄이는가?"**
+
+### 공개 스타일 가이드가 갈리는 지점
+
+대부분의 규칙(`const`, `===`, `eval` 금지, 래퍼 객체 금지)은 가이드끼리 같다. 갈리는 것은 아래 같은 선택이고, 어느 쪽이든 **근거를 알고 하나로 정하면** 된다.
+
+| 항목 | 이 노트의 기본값 | Airbnb | 그 밖의 가이드 |
+| --- | --- | --- | --- |
+| 세미콜론 | 일관되게 | 쓴다 | Google 쓴다, StandardJS 안 쓴다 |
+| 줄 길이 | 80~120 중 하나 | 100자 | Google 80자 |
+| 여러 줄 끝의 쉼표 | 포매터 기본값(Prettier는 `all`) | 붙인다. diff가 한 줄로 줄고 줄 순서를 바꾸기 쉽다 | Google도 줄바꿈이 있으면 붙인다 |
+| 내보내기 | named export만 | 내보내는 것이 하나면 `export default`(`import/prefer-default-export`), 파일 이름도 그 이름과 같게 | Google JS는 default export 금지 |
+| 반복문 | `for...of` 허용 | `for...of`·`for...in` 금지(`no-restricted-syntax`). 부수 효과 없는 `map`·`filter`·`reduce`와 `Object.keys`·`entries`로 돈다. 제너레이터도 쓰지 않는다 | Google은 `for...of`를 우선 쓰고 `for...in`은 사전형 객체에만 |
+| `++`·`--` | 허용 | 금지(`no-plusplus`), `num += 1`. ASI로 앞 줄과 붙는 함정과 전위·후위 혼동을 막는다 | 대부분 허용 |
+| 함수 정의 | 선언문(호이스팅으로 헬퍼를 아래에 둔다) | 이름 있는 함수 표현식 `const short = function longName() {}`(`func-style`). 정의 전에 쓰는 것을 막고 스택 추적에 이름을 남긴다 | |
+| getter·setter | 허용 | 금지. 부수 효과가 숨어 테스트가 어렵다고 보고 `getAge()`·`setAge()` 메서드로 쓴다 | |
+| `_` 접두사 | 쓰지 않는 변수에만 | 아예 금지(`no-underscore-dangle`). 비공개라는 뜻으로 써도 실제로는 공개다 | |
+| 대문자 상수 | 전역 상수와 불변값 | 내보내는(`export const`) 불변값에만. 파일 안의 `const`는 camelCase | |
+| 약어 | camelCase 단어처럼(`HttpRequest`) | 전부 대문자나 전부 소문자(`HTTPRequests`, `httpRequests`, `SMSContainer`) | Google은 단어처럼 소문자로 바꾼 뒤 첫 글자만 대문자(`xmlHttpRequest`, `supportsIpv6OnIos`) |
+| 이벤트 데이터 | - | 값 하나가 아니라 객체로 넘긴다(`trigger('listingUpdated', { listingId })`). 나중에 필드를 더해도 핸들러를 고치지 않는다 | |
+
+Airbnb 가이드의 공백 규칙(들여쓰기, 괄호·중괄호 안 공백, 줄 끝 공백 등 19장)은 ESLint가 v8.53에서 폐기한 서식 규칙이라 지금은 Prettier가 맡는다. 공식 공유 설정 `eslint-config-airbnb`(React 포함)·`eslint-config-airbnb-base`는 peer 의존성이 ESLint 7·8에 머물러 있어 flat config(ESLint 9 이후)에서는 바로 쓸 수 없다. Airbnb 규칙을 그대로 쓰려면 커뮤니티가 flat config로 옮긴 `eslint-config-airbnb-extended`를 쓰고, 아니면 이 노트처럼 필요한 규칙만 골라 `eslint.config.js`에 켠다.
 
 ## 12. 피할 코드: 닌자 코드 목록
 
