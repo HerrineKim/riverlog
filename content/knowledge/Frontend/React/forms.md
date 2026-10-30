@@ -5,10 +5,11 @@ summary: "입력값을 React state로 관리하는 제어 컴포넌트, 여러 �
 tags: ["react", "form", "state", "frontend"]
 source: til
 date: "2026-10-21"
-sources: ["https://react.dev/blog/2024/12/05/react-19", "https://react.dev/reference/react/useActionState", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Controlled%20components.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/map%20function%20%EC%82%AC%EC%9A%A9%EC%8B%9C%2C%20radio%20input%20%EC%B2%AB%EB%B2%88%EC%A7%B8%20input%EC%9D%84%20default%20checked%20%EA%B0%92%EC%9C%BC%EB%A1%9C%20%ED%95%98%EB%8A%94%EB%B2%95.md"]
+sources: ["https://react.dev/blog/2024/12/05/react-19", "https://react.dev/reference/react/useActionState", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Controlled%20components.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/map%20function%20%EC%82%AC%EC%9A%A9%EC%8B%9C%2C%20radio%20input%20%EC%B2%AB%EB%B2%88%EC%A7%B8%20input%EC%9D%84%20default%20checked%20%EA%B0%92%EC%9C%BC%EB%A1%9C%20%ED%95%98%EB%8A%94%EB%B2%95.md", "https://prepare-frontend-interview.vercel.app/react"]
 ---
 
 > 「[Frontend_TIL: Controlled components](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Controlled%20components.md)」와 「[map function 사용시 radio input 첫번째를 default checked로 하는법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/map%20function%20%EC%82%AC%EC%9A%A9%EC%8B%9C%2C%20radio%20input%20%EC%B2%AB%EB%B2%88%EC%A7%B8%20input%EC%9D%84%20default%20checked%20%EA%B0%92%EC%9C%BC%EB%A1%9C%20%ED%95%98%EB%8A%94%EB%B2%95.md)」을 바탕으로 보강했다.
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 제어·비제어의 장단점을 보강했다.
 
 HTML의 `<input>`, `<textarea>`, `<select>`는 원래 스스로 값을 기억한다. React에서는 보통 이 값을 state로 옮겨, React가 값을 통제하게 만든다. 이렇게 값이 React의 통제를 받는 폼 요소를 **제어 컴포넌트(Controlled Component)** 라고 한다.
 
@@ -57,6 +58,15 @@ function NameForm() {
 ```
 
 `checked={i === 0}`으로 쓰면 제어 컴포넌트가 되어 `onChange` 없이는 다른 항목을 고를 수 없다. 한 요소에 `value`와 `defaultValue`를 함께 주지 않는다.
+
+| | 제어 | 비제어 |
+| --- | --- | --- |
+| 값의 주인 | React state | DOM |
+| 값 읽기 | 렌더링 중 언제든 state로 | 제출할 때 `FormData`·`ref`로 |
+| 리렌더링 | 키를 칠 때마다 | 입력 중에는 없다 |
+| 잘 맞는 일 | 실시간 검증, 입력 가공, 값에 따라 바뀌는 UI(버튼 활성화, 다른 칸 채우기) | 제출 때 한 번만 값을 쓰는 폼, 파일 입력(`<input type="file">`은 늘 비제어), 입력이 많아 리렌더링이 부담인 폼 |
+
+기본은 제어 컴포넌트다. 입력이 많은 폼은 비제어 방식을 바탕으로 한 [[react-hook-form|react-hook-form]]이 리렌더링을 줄여 주고, 아래 폼 액션도 `FormData`를 받으므로 비제어 입력과 잘 맞는다.
 
 ## 요소별·여러 입력 다루기
 

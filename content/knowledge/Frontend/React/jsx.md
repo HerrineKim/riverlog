@@ -5,10 +5,11 @@ summary: "JavaScript 안에서 HTML처럼 UI를 선언하는 JSX 문법과, 그 
 tags: ["react", "jsx", "javascript", "frontend"]
 source: til
 date: "2026-10-21"
-sources: ["https://riverkim.kr/134", "https://riverkim.kr/299", "https://react.vlpt.us/basic/01-concept.html", "https://react.vlpt.us/basic/03-first-component.html", "https://react.vlpt.us/basic/04-jsx.html"]
+sources: ["https://riverkim.kr/134", "https://riverkim.kr/299", "https://react.vlpt.us/basic/01-concept.html", "https://react.vlpt.us/basic/03-first-component.html", "https://react.vlpt.us/basic/04-jsx.html", "https://prepare-frontend-interview.vercel.app/react", "https://react.dev/learn/creating-a-react-app"]
 ---
 
 > 개인 TIL을 바탕으로, 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[리액트는 어쩌다 만들어졌을까?](https://react.vlpt.us/basic/01-concept.html)」·「[JSX의 기본 규칙](https://react.vlpt.us/basic/04-jsx.html)」을 바탕으로 보강했다.
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 라이브러리와 프레임워크의 차이을 보강했다.
 
 **JSX(JavaScript XML)** 는 JavaScript 안에 HTML과 비슷한 마크업을 쓸 수 있게 한 확장 문법이다. 공식 JavaScript 문법이 아니라서 브라우저가 직접 이해하지 못하고, **Babel**이 일반 JavaScript(`React.createElement` 호출)로 변환한다. 마크업과 로직을 한 파일에서 함께 다룰 수 있어 읽고 쓰기 쉽다.
 
@@ -47,6 +48,10 @@ document.getElementById('decrease').onclick = () => {
 ![상태 변경 → 가상 DOM 렌더링 → 비교 → 바뀐 부분만 실제 DOM에 패치](https://i.imgur.com/u6YnxUS.png)
 
 부모가 리렌더링되면 자식도 함께 다시 렌더링(가상 DOM 계산)되지만, 실제 DOM이 바뀌는 곳은 결과가 달라진 노드뿐이다. 다시 렌더링 자체를 줄이는 방법은 [[re-rendering|리렌더링 원인과 추적]]에, 두 트리를 비교하는 규칙과 그에 따라 state가 유지·초기화되는 원리는 [[reconciliation|재조정과 state 보존]]에 있다.
+
+### 라이브러리인가, 프레임워크인가
+
+React는 스스로를 **UI 라이브러리**라 부른다. 앱의 흐름은 내 코드가 쥐고, 화면을 그릴 때 React를 부른다. 라우팅·데이터 가져오기·빌드는 React가 정하지 않아 따로 고른다. 프레임워크는 반대로 뼈대와 규칙을 정해 두고 **내 코드를 호출한다**(제어의 역전, [[web-glossary|웹 용어 사전]]). 그래서 React 공식 문서는 새 앱을 Next.js·React Router 같은 프레임워크 위에서 시작하도록 권하고, 프레임워크 없이 쓰려면 Vite 같은 빌드 도구로 직접 구성한다([[tooling|React 빌드 환경 직접 구성하기]]).
 
 ## JSX 문법 규칙
 

@@ -5,10 +5,11 @@ summary: "UI 프레임워크의 핵심 문제는 상태를 화면으로 투영�
 tags: ["frontend", "architecture", "rendering", "react", "state"]
 source: other
 date: "2026-10-21"
-sources: ["http://teropa.info/blog/2015/03/02/change-and-its-detection-in-javascript-frameworks.html", "https://blog.risingstack.com/functional-ui-and-components-as-higher-order-functions/", "https://gist.github.com/duivvv/2ba00d413b8ff7bc1fa5a2e51c61ba43"]
+sources: ["http://teropa.info/blog/2015/03/02/change-and-its-detection-in-javascript-frameworks.html", "https://blog.risingstack.com/functional-ui-and-components-as-higher-order-functions/", "https://gist.github.com/duivvv/2ba00d413b8ff7bc1fa5a2e51c61ba43", "https://prepare-frontend-interview.vercel.app/react"]
 ---
 
 > Tero Parviainen의 「[Change And Its Detection In JavaScript Frameworks](http://teropa.info/blog/2015/03/02/change-and-its-detection-in-javascript-frameworks.html)」(2015)를 뼈대로, 「[Functional UI and Components as Higher Order Functions](https://blog.risingstack.com/functional-ui-and-components-as-higher-order-functions/)」와 「[What is React Fiber?](https://gist.github.com/duivvv/2ba00d413b8ff7bc1fa5a2e51c61ba43)」를 더해 재구성한 노트다.
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 Fiber의 두 트리 구조을 보강했다.
 
 ## 문제: 상태를 화면에 투영하기
 
@@ -63,9 +64,12 @@ React는 서버 렌더링 시절처럼 **매번 전부 다시 그린다**는 단
 | 개념 | 내용 |
 | --- | --- |
 | fiber | 컴포넌트 하나에 대응하는 작업 단위 객체. 호출 스택 대신 연결 리스트로 트리를 걸어, 중간에 멈췄다 이어 갈 수 있다 |
+| 두 트리(더블 버퍼링) | 화면에 반영된 **current** 트리와 이번 갱신을 계산하는 **workInProgress** 트리를 둔다. 같은 자리의 두 fiber는 `alternate`로 서로를 가리켜 객체를 재사용한다. commit이 끝나면 루트의 `current` 포인터만 바꿔 두 트리의 역할을 맞바꾼다 |
 | 점진적 렌더링 | 렌더 작업을 잘게 나눠 여러 프레임에 펼친다. 스케줄러가 짧은 간격(기본 5ms 안팎)마다 브라우저에 제어를 돌려준다 |
 | 두 단계 | **render 단계**(무엇이 바뀌는지 계산)는 멈추고·버리고·다시 할 수 있다. **commit 단계**(DOM 반영)는 화면이 어긋나지 않게 한 번에 동기로 끝낸다 |
 | 우선순위 | 입력 같은 급한 갱신이 화면 전환 같은 느린 갱신을 앞지른다. 새 갱신이 오면 진행 중인 낮은 우선순위 작업을 버리고 다시 시작한다 |
+
+흔히 「가상 DOM」이라 부르는 것은 이 fiber 트리다. current 트리의 호스트 fiber는 `stateNode`로 실제 DOM 노드를 붙잡고 있어 화면과 1:1로 맞물린다. render 단계는 workInProgress 트리만 고치므로 계산 도중에 버려도 화면은 그대로다. 두 트리의 차이가 commit 단계의 DOM 변경 목록이 된다.
 
 Fiber가 깐 바닥 위에 React 18(2022)이 **동시성 기능**을 열었다. `createRoot`로 만든 앱에서 `startTransition`·`useTransition`으로 감싼 갱신은 급하지 않은 갱신이 되어 입력을 막지 않고, `useDeferredValue`는 값의 갱신을 늦춘다. Suspense의 스트리밍 SSR과 선택적 hydration도 같은 기반이다. 긴 작업을 쪼개 메인 스레드를 비우는 일반 기법은 [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]]에 있다.
 

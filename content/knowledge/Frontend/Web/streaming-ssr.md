@@ -5,10 +5,11 @@ summary: "HTML을 한 번에 다 만들어 보내지 않고 Suspense 경계 단�
 tags: ["frontend", "react", "rendering", "performance", "web"]
 source: other
 date: "2026-10-13"
-sources: ["https://react.dev/reference/react-dom/server", "https://react.dev/blog/2025/10/01/react-19-2", "https://nextjs.org/docs/app/guides/streaming"]
+sources: ["https://react.dev/reference/react-dom/server", "https://react.dev/blog/2025/10/01/react-19-2", "https://nextjs.org/docs/app/guides/streaming", "https://prepare-frontend-interview.vercel.app/react", "https://react.dev/blog/2024/04/25/react-19-upgrade-guide"]
 ---
 
 > React 공식 문서(react-dom/server, React 19.2 릴리스 노트)와 Next.js 16 「Streaming」 가이드를 바탕으로 재구성한 노트다.
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 React 19 기준 SSR API 목록을 보강했다.
 
 ## 스트리밍 SSR이란
 
@@ -27,6 +28,16 @@ React에서는 **`<Suspense>` 경계가 조각을 나누는 단위**다. 경계 
 | Next.js 13+ App Router | `loading.js`와 `<Suspense>`만으로 별도 설정 없이 스트리밍 |
 | React 19.2 (2025.10) | 부분 사전 렌더링(`prerender` → `resume`). Suspense 경계 공개를 묶어서 처리 |
 | Next.js 16 Cache Components | 정적 껍데기는 빌드 때 만들어 CDN에서, 동적 부분은 요청 때 스트리밍 |
+
+| API | 쓰임 |
+| --- | --- |
+| `renderToPipeableStream` | Node.js 스트림으로 스트리밍 SSR |
+| `renderToReadableStream` | Web Streams 환경(Deno, 엣지 런타임, 최신 Node.js)의 스트리밍 SSR |
+| `prerender`·`prerenderToNodeStream` (`react-dom/static`) | 데이터가 모두 준비될 때까지 기다려 정적 HTML 생성(SSG) |
+| `renderToString`·`renderToStaticMarkup` | 레거시. Suspense를 기다리지 않고 문자열 한 덩어리를 만든다 |
+| `hydrateRoot` (`react-dom/client`) | 브라우저에서 서버 HTML을 이어받아 hydration |
+
+React 19에서 옛 Node 스트림 API인 `renderToNodeStream`·`renderToStaticNodeStream`과 클라이언트의 `ReactDOM.hydrate`는 제거됐다. 옛 코드에서 보면 각각 `renderToPipeableStream`(정적 결과가 필요하면 `onAllReady`까지 기다린다)과 `hydrateRoot`로 바꾼다.
 
 React 문서는 `renderToString`·`renderToStaticMarkup`을 **레거시(Legacy)** API로 분류한다. 스트리밍 API보다 기능이 제한되기 때문이다. 핵심 원리(Suspense 경계, 선택적 hydration, HTTP 상태 코드 제약)는 React 18 때와 같다. 달라진 점은 렌더링 시점이다. 요청마다 처음부터 렌더링하고 스트리밍하던 것이 **정적 부분은 미리 만들고 동적 부분만 이어서 스트리밍하는 방식**으로 진화했다.
 
