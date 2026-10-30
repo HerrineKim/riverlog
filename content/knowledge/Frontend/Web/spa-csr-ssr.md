@@ -5,11 +5,12 @@ summary: "한 페이지에서 필요한 부분만 다시 그리는 SPA와, 렌�
 tags: ["web", "rendering", "spa", "seo"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://riverkim.kr/257", "https://riverkim.kr/321", "https://junilhwang.github.io/TIL/Javascript/Design/Vanilla-JS-Server-Side-Rendering/", "https://zuminternet.github.io/ZUM-Mobile-NodeJS/", "https://github.com/grab/front-end-guide"]
+sources: ["https://riverkim.kr/257", "https://riverkim.kr/321", "https://junilhwang.github.io/TIL/Javascript/Design/Vanilla-JS-Server-Side-Rendering/", "https://zuminternet.github.io/ZUM-Mobile-NodeJS/", "https://github.com/grab/front-end-guide", "https://prepare-frontend-interview.vercel.app/react", "https://react.dev/reference/react-dom/client/hydrateRoot"]
 ---
 
 > 개인 TIL을 바탕으로, SSR의 뼈대는 「[프레임워크 없이 만드는 SSR](https://junilhwang.github.io/TIL/Javascript/Design/Vanilla-JS-Server-Side-Rendering/)」, 「[모바일 줌 SpringBoot → NodeJS 전환기 (feat. VueJS SSR)](https://zuminternet.github.io/ZUM-Mobile-NodeJS/)」를 바탕으로 더한 노트다.
 > Grab의 「[Front End Guide](https://github.com/grab/front-end-guide)」를 바탕으로 보강했다.
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 hydration 불일치을 보강했다.
 
 **SPA(Single Page Application)** 는 처음에 한 번만 페이지를 받아 오고, 이후에는 서버에서 새 페이지 전체를 받지 않고 **현재 페이지의 필요한 부분만 동적으로 다시 그리는** 웹 애플리케이션이다. 화면 전환이 매끄러워 네이티브 앱과 비슷한 사용자 경험을 준다. SPA는 주로 CSR 방식으로 동작하므로, CSR과 SSR의 차이를 함께 이해해야 한다.
 
@@ -51,7 +52,15 @@ MPA에서 SPA로, 다시 서버와 클라이언트가 역할을 나누는 구조
 
 ### Hydration
 
-React·Next.js 같은 프레임워크의 SSR은 전통적인 SSR과 한 단계가 다르다. 서버가 그린 HTML은 아직 이벤트가 연결되지 않은 "보이기만 하는" 화면이다. 브라우저가 JS를 받아 이 HTML에 이벤트 핸들러와 상태를 붙여 살아 있는 앱으로 만드는 과정을 **hydration**이라고 한다. 그래서 첫 화면은 빠르게 보이지만, JS가 실행되기 전까지는 버튼이 반응하지 않을 수 있다.
+React·Next.js 같은 프레임워크의 SSR은 전통적인 SSR과 한 단계가 다르다. 서버가 그린 HTML은 아직 이벤트가 연결되지 않은 "보이기만 하는" 화면이다. 브라우저가 JS를 받아 이 HTML에 이벤트 핸들러와 상태를 붙여 살아 있는 앱으로 만드는 과정을 **hydration**이라고 한다. 그래서 첫 화면은 빠르게 보이지만, JS가 실행되기 전까지는 버튼이 반응하지 않을 수 있다. 「보이는 시점」과 「반응하는 시점」 사이의 이 간격이 SSR의 대가이고, 지금은 TBT·INP 같은 지표로 잰다([[web-vitals|Core Web Vitals]]).
+
+hydration은 서버 HTML이 클라이언트의 첫 렌더링과 **같을 것이라 믿고 이어받는** 과정이다. 결과가 다르면 불일치(hydration mismatch) 오류가 나고, React는 그 구간을 클라이언트에서 다시 그린다.
+
+| 흔한 원인 | 해결 |
+| --- | --- |
+| `typeof window !== 'undefined'` 분기, `localStorage`·`matchMedia` 같은 브라우저 전용 값으로 다르게 그림 | 첫 렌더링은 서버와 같게 두고 `useEffect` 안에서 값을 읽어 한 번 더 그린다 |
+| `Date.now()`·`Math.random()`·로캘에 따른 날짜 표기 | 서버에서 계산한 값을 props로 넘기고, id는 `useId`로 만든다 |
+| 잘못된 HTML 중첩(`<p>` 안의 `<div>`), 브라우저 확장이 끼워 넣은 속성 | 마크업을 고친다. 피할 수 없는 텍스트 차이(타임스탬프)만 그 요소에 `suppressHydrationWarning`을 단다 |
 
 ### 프레임워크를 걷어 내면 보이는 SSR의 뼈대
 
