@@ -5,10 +5,11 @@ summary: "ES 모듈의 named·default export와 여러 import·다시 내보내�
 tags: ["javascript", "frontend", "typescript"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/module.md", "https://riverkim.kr/174", "https://riverkim.kr/120", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/78-modules", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/79-currency-module-refactor", "https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require", "https://ko.javascript.info/modules-intro", "https://ko.javascript.info/import-export", "https://ko.javascript.info/modules-dynamic-imports", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta", "https://github.com/myshov/history-of-javascript/tree/master/4_evolution_of_js_modularity", "https://ponyfoo.com/articles/es6-modules-in-depth", "https://jakearchibald.com/2017/es-modules-in-browsers/", "https://hackernoon.com/node-js-tc-39-and-modules-a1118aecf95e", "https://nodejs.org/api/esm.html"]
+sources: ["https://basarat.gitbook.io/typescript/main-1/defaultisbad", "https://basarat.gitbook.io/typescript/main-1/barrel", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/module.md", "https://riverkim.kr/174", "https://riverkim.kr/120", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/78-modules", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/79-currency-module-refactor", "https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require", "https://ko.javascript.info/modules-intro", "https://ko.javascript.info/import-export", "https://ko.javascript.info/modules-dynamic-imports", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta", "https://github.com/myshov/history-of-javascript/tree/master/4_evolution_of_js_modularity", "https://ponyfoo.com/articles/es6-modules-in-depth", "https://jakearchibald.com/2017/es-modules-in-browsers/", "https://hackernoon.com/node-js-tc-39-and-modules-a1118aecf95e", "https://nodejs.org/api/esm.html"]
 ---
 
 > riverkim.kr에 쓴 글들을 다시 정리하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「모듈 소개」, 「모듈 내보내고 가져오기」, 「동적으로 모듈 가져오기」 글을 함께 참고해 재구성한 노트다. CommonJS·AMD·UMD 비교는 「[Must-Know-About-Frontend: 모듈 시스템](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/module.md)」을 바탕으로 보강했다. 로드 단계, CommonJS 래퍼 함수, Node.js의 형식 판별과 상호 운용은 「[Node.js, TC-39, and Modules](https://hackernoon.com/node-js-tc-39-and-modules-a1118aecf95e)」, 「[ECMAScript modules in browsers](https://jakearchibald.com/2017/es-modules-in-browsers/)」, 「[ES6 Modules in Depth](https://ponyfoo.com/articles/es6-modules-in-depth)」, 「[The Evolution of JavaScript Modularity](https://github.com/myshov/history-of-javascript/tree/master/4_evolution_of_js_modularity)」을 바탕으로 Node.js 공식 [ECMAScript modules 문서](https://nodejs.org/api/esm.html)로 최신화해 보강했다.
+> default export의 단점과 배럴은 basarat의 「[TypeScript Deep Dive](https://basarat.gitbook.io/typescript)」의 TIPs(Avoid Export Default, Barrel)로 보강했다.
 
 ## 모듈과 export
 
@@ -73,6 +74,9 @@ import Whatever from './User.js' // 이것도 동작한다
 | 이름 | 가져오는 쪽에서 아무 이름이나 붙일 수 있어 이름이 제각각이 된다 | 이름이 틀리면 에러가 난다 |
 | 리팩터링·검색 | 이름이 달라 일괄 변경과 검색이 어렵다 | 에디터 자동 import·이름 변경이 잘 된다 |
 | 트리 셰이킹 | 객체로 묶어 default로 내보내면 일부만 쓰기 어렵다 | 쓰는 것만 번들에 남기기 쉽다 |
+| 발견성 | `import X from 'm'`에서는 default가 있는지 자동완성이 알려 주지 않는다 | `import { }` 안에서 내보낸 이름이 자동완성된다 |
+| CommonJS·동적 import | `require('m').default`, `(await import('m')).default`처럼 `.default`를 거친다 | `const { Foo } = await import('m')`로 바로 꺼낸다 |
+| 다시 내보내기 | `export * from`에 빠져서 `export { default as Foo } from`을 따로 써야 한다 | `export * from`에 포함된다 |
 
 Airbnb 스타일 가이드의 `import/prefer-default-export` 규칙을 두고도 GitHub에서 오래 논쟁이 있었다. 팀 TypeScript 컨벤션 중에는 `export default`를 아예 금지하는 경우도 있다([[typescript-coding-convention|TypeScript 코딩 컨벤션]]). 정답이 있는 문제가 아니라 **팀 안에서 한 방식으로 통일하는 것**이 중요하다.
 
@@ -101,6 +105,8 @@ Airbnb 스타일 가이드의 `import/prefer-default-export` 규칙을 두고도
 | `export { default } from './user.js'` | default를 default로 |
 | `export * from './user.js'` | 모든 named export. **default는 빠진다** |
 | `export * as auth from './auth.js'` | 모든 export를 네임스페이스 하나로 (ES2020) |
+
+대표 파일 하나가 여러 모듈을 다시 내보내 한 입구로 모은 것을 **배럴(barrel)** 이라 한다(`components/index.ts`에 `export * from './Button'` …). 쓰는 쪽은 `import { Button, Modal } from './components'` 한 줄이면 된다. 대신 배럴 하나를 import하면 번들러와 테스트 러너가 그 안의 **모든 모듈을 읽고 평가**해야 해서, 큰 앱 내부에 배럴을 깊게 겹치면 개발 서버 시작·HMR·테스트가 느려지고 순환 참조가 생기기 쉽다. 그래서 배럴은 패키지의 공개 진입점에만 두고, 앱 내부에서는 파일을 직접 import하는 편이 낫다(Next.js의 `optimizePackageImports`가 이 문제를 라이브러리 쪽에서 풀어 주는 설정이다).
 
 `export User from './user.js'`는 문법 오류다. default를 다시 내보낼 때 이런 예외를 챙겨야 해서, 다시 내보내기가 많은 코드베이스는 named export를 선호한다.
 
