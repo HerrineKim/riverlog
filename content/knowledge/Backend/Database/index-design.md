@@ -5,10 +5,11 @@ summary: "인덱스는 정렬이다. 카디널리티와 복합 인덱스 컬럼 
 tags: ["database", "mysql", "sql", "performance", "nosql"]
 source: other
 date: "2026-10-21"
-sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/", "https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073", "https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html", "https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/", "https://www.mongodb.com/docs/manual/tutorial/equality-sort-range-guideline/", "https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html"]
+sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/", "https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073", "https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html", "https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/", "https://www.mongodb.com/docs/manual/tutorial/equality-sort-range-guideline/", "https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md"]
 ---
 
 > 「[Mysql 인덱스 정리 및 팁](https://jojoldu.tistory.com/243)」, 「[MySQL Workbench의 VISUAL EXPLAIN으로 인덱스 동작 확인하기](https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/)」, 「[쿼리 최적화: 빠른 쿼리를 위한 7가지 체크리스트](https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073)」, 「[MongoDB Index 설계 전략](https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html)」, 「[MySQL performance-schema-instruments 사용에 따른 성능 영향 실험](https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/)」을 바탕으로, MySQL·MongoDB 공식 문서로 확인해 재구성한 노트다.
+> 「클러스터드 인덱스와 보조 인덱스」는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로, MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
 
 ## 인덱스는 정렬이다
 
@@ -21,6 +22,20 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 | UPDATE·DELETE | 대상 행을 **찾는** 단계는 빨라지고, 인덱스를 **고치는** 단계는 느려진다. 인덱스 없는 컬럼으로 대량 삭제하면 매우 느리다 |
 
 인덱스가 많을수록 쓰기·저장 공간 비용이 늘고, 옵티마이저가 엉뚱한 인덱스를 고를 여지도 커진다. 테이블당 인덱스는 실제 쿼리 패턴에 필요한 만큼만 둔다.
+
+## 클러스터드 인덱스와 보조 인덱스
+
+| 구분 | 클러스터드 인덱스(clustered) | 보조 인덱스(secondary, non-clustered) |
+| --- | --- | --- |
+| 리프에 든 것 | **행 데이터 자체**. 테이블이 이 키 순서로 물리적으로 저장된다 | 인덱스 키 + 행을 찾아갈 포인터 |
+| 테이블당 개수 | 1개 | 여러 개 |
+| 조회 | 리프에서 바로 행을 읽는다. 범위 조회에 강하다 | 인덱스로 찾은 뒤 실제 행을 한 번 더 읽는다 |
+
+- 기본 키(primary key)에 만든 인덱스를 primary index, 나머지 컬럼의 인덱스를 secondary index라고도 한다. 기본 키는 유일하고 NULL이 없어 물리 정렬 기준으로 알맞다.
+- **MySQL InnoDB**는 테이블 자체가 기본 키 순서의 B+트리(클러스터드 인덱스)다. 기본 키가 없으면 첫 번째 `NOT NULL UNIQUE` 인덱스를, 그것도 없으면 숨은 행 ID를 쓴다. 보조 인덱스 리프에는 **기본 키 값**이 들어 있어, 보조 인덱스 조회는 「보조 인덱스 → 기본 키 → 클러스터드 인덱스」 두 번 찾기가 된다. 기본 키가 길면 모든 보조 인덱스가 같이 커진다.
+- **PostgreSQL**은 행을 힙(heap)에 순서 없이 쌓고 모든 인덱스가 행 위치(TID)를 가리키는 보조 인덱스다. `CLUSTER` 명령은 한 번 정렬해 줄 뿐 이후 삽입 순서는 유지하지 않는다. SQL Server는 클러스터드 인덱스를 직접 고른다.
+- 클러스터드 키 값이 바뀌면 행이 물리적으로 옮겨진다. 그래서 기본 키는 바뀌지 않고, 짧고, **단조 증가하는 값**(자동 증가, 시간순 UUIDv7)이 좋다. 무작위 UUIDv4는 삽입마다 B+트리 중간 페이지를 쪼개(page split) 쓰기가 느려지고 인덱스가 부푼다([[distributed-unique-id|분산 고유 ID]]).
+- 삭제·갱신이 반복되면 인덱스 페이지에 빈 공간과 지운 표시가 쌓여 인덱스가 실제 데이터보다 커진다. MySQL은 `OPTIMIZE TABLE`, PostgreSQL은 `VACUUM`·`REINDEX`로 정리한다.
 
 ## 무엇을 인덱스로 잡나
 
