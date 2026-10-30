@@ -5,7 +5,7 @@ summary: "같은 font-size라도 글꼴마다 높이가 다른 이유(em 사각�
 tags: ["frontend", "css", "layout", "typography"]
 source: other
 date: "2026-10-21"
-sources: ["https://wit.nts-corp.com/2017/09/25/4903", "https://iamvdo.me/en/blog/css-font-metrics-line-height-and-vertical-align", "https://developer.mozilla.org/en-US/docs/Web/CSS/text-box-trim"]
+sources: ["https://wit.nts-corp.com/2017/09/25/4903", "https://iamvdo.me/en/blog/css-font-metrics-line-height-and-vertical-align", "https://developer.mozilla.org/en-US/docs/Web/CSS/text-box-trim", "https://caniuse.com/css-text-box-trim"]
 ---
 
 > Vincent De Oliveira의 「[CSS에 대한 깊은 이해: 폰트 매트릭스, line-height와 vertical-align](https://wit.nts-corp.com/2017/09/25/4903)」(NTS 번역, 원문 「[Deep dive CSS: font metrics, line-height and vertical-align](https://iamvdo.me/en/blog/css-font-metrics-line-height-and-vertical-align)」)을 바탕으로 재구성한 노트다. 줄 간격을 얼마로 잡을지 같은 가독성 문제는 [[web-typography|웹 타이포그래피]]에 있다.
@@ -82,7 +82,7 @@ ascent와 descent의 비율이 글꼴마다 달라 기준선 위치도 다르다
 
 ### 글자 위아래 여백 깎기
 
-`text-box-trim`·`text-box-edge`(축약 `text-box`)는 첫 줄 위와 마지막 줄 아래의 반 행간과 글꼴 여백을 잘라, 대문자 높이나 기준선에 딱 맞춰 정렬하게 한다. Chromium과 Safari가 지원한다. 지원하지 않는 브라우저에서는 무시되므로 점진적 향상으로 쓸 수 있다.
+`text-box-trim`·`text-box-edge`(축약 `text-box`)는 첫 줄 위와 마지막 줄 아래의 반 행간과 글꼴 여백을 잘라, 대문자 높이나 기준선에 딱 맞춰 정렬하게 한다. Chrome 133·Safari 18.2에 이어 2026년 Firefox 154가 지원하면서 모든 주요 브라우저에서 쓸 수 있다(Baseline 2026). 옛 브라우저에서는 무시되므로 점진적 향상으로 쓴다.
 
 ```css
 h1, .button { text-box: trim-both cap alphabetic; }

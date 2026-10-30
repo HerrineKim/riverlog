@@ -5,7 +5,7 @@ summary: "유동 그리드·유동 미디어·미디어 쿼리라는 세 요소�
 tags: ["css", "frontend", "mobile", "typography"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://ethanmarcotte.com/wrote/responsive-design-at-15/", "https://spoqa.github.io/2016/06/03/localize-type-setting.html", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries", "https://web.dev/learn/css/container-queries", "https://web.dev/learn/design", "https://web.dev/learn/design/intro", "https://web.dev/learn/design/media-queries", "https://web.dev/learn/design/macro-layouts", "https://web.dev/learn/design/micro-layouts", "https://web.dev/learn/design/typography", "https://web.dev/learn/design/responsive-images", "https://web.dev/learn/design/accessibility", "https://web.dev/learn/design/internationalization"]
+sources: ["https://ethanmarcotte.com/wrote/responsive-design-at-15/", "https://spoqa.github.io/2016/06/03/localize-type-setting.html", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries", "https://web.dev/learn/css/container-queries", "https://caniuse.com/css-container-queries", "https://web.dev/learn/design", "https://web.dev/learn/design/intro", "https://web.dev/learn/design/media-queries", "https://web.dev/learn/design/macro-layouts", "https://web.dev/learn/design/micro-layouts", "https://web.dev/learn/design/typography", "https://web.dev/learn/design/responsive-images", "https://web.dev/learn/design/accessibility", "https://web.dev/learn/design/internationalization"]
 ---
 
 반응형 디자인(Responsive Design)은 한 벌의 HTML·CSS가 휴대폰부터 큰 모니터까지 **어떤 화면에서도 읽기 좋게** 보이도록 만드는 방식이다. 브레이크포인트·모바일 퍼스트·해상도·폴드 같은 용어의 짧은 정의는 [[web-glossary|프론트엔드 용어집]]에 있다.
@@ -58,7 +58,7 @@ sources: ["https://ethanmarcotte.com/wrote/responsive-design-at-15/", "https://s
 
 > 이 절은 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Container queries 모듈을 바탕으로 보강했다.
 
-미디어 쿼리는 뷰포트를 묻고, 컨테이너 쿼리(`@container`)는 **조상 요소의 크기**를 묻는다. 같은 가입 폼이 넓은 본문에서는 가로로, 좁은 사이드바에서는 세로로 놓이게 할 수 있다. 2023년부터 모든 주요 브라우저가 지원한다.
+미디어 쿼리는 뷰포트를 묻고, 컨테이너 쿼리(`@container`)는 **조상 요소의 크기**를 묻는다. 같은 가입 폼이 넓은 본문에서는 가로로, 좁은 사이드바에서는 세로로 놓이게 할 수 있다. 2023년 2월부터 모든 주요 브라우저가 지원하고(Baseline 2023), 30개월이 지난 2025년 8월 Widely available이 됐다. 폴백 없이 써도 된다.
 
 두 단계다. 컨테이너를 정하고, 그 자손에 조건부 스타일을 쓴다.
 
