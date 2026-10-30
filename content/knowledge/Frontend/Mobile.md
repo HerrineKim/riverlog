@@ -19,6 +19,7 @@ date: "2026-10-13"
 - [Flutter의 구조와 위젯 트리](/knowledge/dictionary/frontend/mobile/flutter-architecture): 프레임워크·엔진·임베더 세 층, 프레임워크 라이브러리, Widget·Element·RenderObject 트리, Key가 필요한 이유, 패키지·플러그인 배포
 - [Dart 핵심 문법](/knowledge/dictionary/frontend/mobile/dart-language): final과 const, 건전한 널 안전성, Future·Stream과 async*·sync* 제너레이터
 - [Flutter UI 실전 기법](/knowledge/dictionary/frontend/mobile/flutter-ui-techniques): 화면 일부만 바꾸는 중첩 Navigator, CustomPaint와 Path, Text.rich, 네이티브 스플래시
+- [iOS 앱 기본 개념](/knowledge/dictionary/frontend/mobile/ios-app-fundamentals): 앱 실행 상태와 씬 생명 주기, 뷰 컨트롤러 생명 주기, 델리게이트·클로저·NotificationCenter, ARC와 weak·unowned, frame과 bounds, 데이터 저장
 - [Swift Codable](/knowledge/dictionary/frontend/mobile/swift-codable): Encodable·Decodable, JSONEncoder·JSONDecoder, CodingKeys와 snake_case 변환
 - [UICollectionView 커스텀 레이아웃](/knowledge/dictionary/frontend/mobile/ios-collection-view-layout): 채팅방 같은 목록, prepare()에서 속성 계산·캐시, 이진 탐색 영역 질의, 보조 뷰
-- [Android 핵심 개념](/knowledge/dictionary/frontend/mobile/android-fundamentals): LiveData·StateFlow·RxJava, setValue와 postValue, Application·Activity Context, minSdk·targetSdk·compileSdk
+- [Android 핵심 개념](/knowledge/dictionary/frontend/mobile/android-fundamentals): 4대 구성 요소와 인텐트, Activity 생명 주기와 구성 변경, Looper·Handler와 ANR, LiveData·StateFlow·RxJava, setValue와 postValue, Application·Activity Context, minSdk·targetSdk·compileSdk

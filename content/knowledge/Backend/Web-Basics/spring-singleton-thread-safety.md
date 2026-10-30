@@ -5,10 +5,11 @@ summary: "스프링 빈은 하나뿐인데 동시에 들어온 수많은 요청�
 tags: ["backend", "spring", "thread", "concurrency", "design-pattern"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/80fdeed4c57b440b9f5bedd62d2dd493"]
+sources: ["https://80000coding.notion.site/80fdeed4c57b440b9f5bedd62d2dd493", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Web/Spring/%5BSpring%5D%20Bean%20Scope.md"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「스프링의 싱글톤과 멀티 스레딩」을 바탕으로 재구성한 노트다.
+> 「다른 빈 스코프」는 gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 저장소의 Spring Bean Scope 문서를 바탕으로, Spring 공식 문서로 확인해 보강했다.
 
 ## 질문: 객체는 하나인데 요청은 동시에 수천 개
 
@@ -18,6 +19,21 @@ sources: ["https://80000coding.notion.site/80fdeed4c57b440b9f5bedd62d2dd493"]
 2. 요청마다 다른 데이터는 객체의 필드가 아니라 **각 스레드의 스택(지역 변수, 매개변수)** 에 있다.
 
 싱글톤 패턴 자체의 장단점은 [[singleton-service-pattern|싱글톤 패턴과 서비스 패턴]]에, 스레드의 개념은 [[process-and-thread|프로세스와 스레드]]에 있다.
+
+### 다른 빈 스코프
+
+싱글톤 말고도 빈마다 수명을 정할 수 있다(`@Scope`).
+
+| 스코프 | 인스턴스 | 쓰는 곳 |
+| --- | --- | --- |
+| `singleton`(기본) | 컨테이너에 하나 | 상태 없는 서비스·리포지토리 |
+| `prototype` | 요청(주입·`getBean`)할 때마다 새로 | 상태를 가진 짧은 객체. 컨테이너는 만들기만 하고 소멸 콜백을 부르지 않는다 |
+| `request` | HTTP 요청마다 하나 | 요청 단위 컨텍스트 |
+| `session` | HTTP 세션마다 하나 | 로그인 사용자별 장바구니 |
+| `application` | `ServletContext`마다 하나 | 웹 애플리케이션 전역 값 |
+| `websocket` | 웹소켓 세션마다 하나 | 연결별 상태 |
+
+싱글톤 빈에 `prototype`이나 `request` 빈을 그냥 주입하면 **주입 시점에 한 번만** 들어가 계속 같은 객체를 쓴다. 매번 새 객체가 필요하면 `ObjectProvider<T>`로 꺼내거나, `request`·`session` 빈에 `proxyMode = ScopedProxyMode.TARGET_CLASS`를 줘 프록시를 주입한다. 옛 `globalSession` 스코프는 포틀릿용이라 Spring 5에서 없어졌다.
 
 ## 요청이 스레드를 만나는 과정
 
@@ -105,4 +121,4 @@ server:
 - 빈에는 불변 의존성과 설정만 두고, 요청 상태는 매개변수로 흘린다.
 - Tomcat은 NIO 커넥터로 연결과 스레드를 분리한다. 스레드가 모자라면 느린 I/O부터 고치고, 가상 스레드를 검토한다.
 
-관련 노트: [[singleton-service-pattern|Express 싱글톤 패턴과 서비스 패턴]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[module|NestJS Module과 Provider: 의존성 주입과 캡슐화]], [[process-and-thread|프로세스와 스레드]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[spring-application-design|스프링 애플리케이션 설계]]
+관련 노트: [[singleton-pattern|싱글턴 패턴]], [[java-language-basics|Java 언어 기본(ThreadLocal)]], [[singleton-service-pattern|Express 싱글톤 패턴과 서비스 패턴]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[module|NestJS Module과 Provider: 의존성 주입과 캡슐화]], [[process-and-thread|프로세스와 스레드]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[spring-application-design|스프링 애플리케이션 설계]]

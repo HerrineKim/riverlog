@@ -80,7 +80,7 @@ u.name = "Kim"   // name:  -> Kim 출력
 
 | 위임 | 동작 |
 | --- | --- |
-| `by lazy { ... }` | 처음 읽을 때 람다를 실행해 값을 만들고, 이후에는 저장된 값을 돌려준다. 기본은 스레드 안전(synchronized) |
+| `by lazy { ... }` | 처음 읽을 때 람다를 실행해 값을 만들고, 이후에는 저장된 값을 돌려준다. 기본은 스레드 안전(synchronized). `lateinit`과의 차이는 [[kotlin-basics\|Kotlin 핵심 문법]] |
 | `Delegates.observable(초깃값) { ... }` | 값이 바뀔 때마다 콜백 호출 |
 | `Delegates.vetoable(초깃값) { ... }` | 콜백이 `false`를 돌려주면 변경을 거부 |
 | `by map` | 프로퍼티를 맵의 같은 이름 키에서 읽는다 (JSON 같은 동적 데이터) |
@@ -110,4 +110,4 @@ class MainActivity : ComponentActivity() {
 - 프로퍼티 위임은 getter/setter를 `getValue`/`setValue`를 가진 객체에 맡긴다.
 - `by lazy`, `Delegates.observable`, `by viewModels()`가 모두 프로퍼티 위임이다.
 
-관련 노트: [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[js-design-patterns|JavaScript 디자인 패턴: 생성 패턴]], [[mobile-frameworks|모바일 앱 프레임워크 비교]]
+관련 노트: [[kotlin-basics|Kotlin 핵심 문법]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[js-design-patterns|JavaScript 디자인 패턴: 생성 패턴]], [[mobile-frameworks|모바일 앱 프레임워크 비교]]

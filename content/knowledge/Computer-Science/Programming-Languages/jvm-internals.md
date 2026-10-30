@@ -151,4 +151,4 @@ MAT의 Leak Suspects 보고서가 retained heap이 큰 객체를 먼저 보여 �
 - GC는 세대 가설로 젊은 영역을 자주 청소한다. 튜닝은 할당률을 줄이는 코드 수정이 먼저다.
 - GC 로그는 늘 켜 두고, 누수는 힙 덤프의 retained heap으로 찾는다.
 
-관련 노트: [[how-programs-run|프로그램이 실행되기까지]], [[garbage-collection|가비지 컬렉션과 메모리 누수]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[java-idioms|Java 실무 관용구]], [[java-build-tools|Java 빌드 도구와 IntelliJ 실행 오류]], [[memory-management|메모리 관리]]
+관련 노트: [[how-programs-run|프로그램이 실행되기까지]], [[garbage-collection|가비지 컬렉션과 메모리 누수]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[java-idioms|Java 실무 관용구]], [[java-language-basics|Java 언어 기본]], [[java-build-tools|Java 빌드 도구와 IntelliJ 실행 오류]], [[memory-management|메모리 관리]]

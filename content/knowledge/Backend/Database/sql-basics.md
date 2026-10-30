@@ -5,11 +5,13 @@ summary: "SQL 명령어 분류(DDL·DML·DCL)와 테이블 구조 변경과 제�
 tags: ["sql", "database", "mysql", "sqlite", "certificate"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md"]
+sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md"]
 ---
 
 > 여러 자료를 종합한 노트에, SQL 다섯 분류는 ByteByteGo의 System Design 101 가이드 「[What is the Best Way to Learn SQL?](https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql)」를, JOIN은 「[How do SQL Joins Work?](https://bytebytego.com/guides/how-do-sql-joins-work)」를 바탕으로 보강했다.
 > 제약 조건·자연 키와 대리 키, 구조 변경과 DELETE·TRUNCATE·DROP, 뷰, CSV 가져오기는 「[Frontend_TIL: Constraint 제약조건](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md)」, 「[SQL문](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md)」, 「[CSV 파일로 테이블 생성](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md)」을 바탕으로 보강했다.
+> 「파라미터 바인딩과 Prepared Statement」는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로 보강했다.
+> 키의 종류와 저장 프로시저는 gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 저장소의 Database 문서를 바탕으로 보강했다.
 
 SQL(Structured Query Language)은 RDBMS에서 데이터를 관리하기 위해 설계된 언어다. ORM을 쓰더라도 실제로 DB에 전달되는 것은 SQL이므로, 기본 문법을 알면 ORM이 만드는 쿼리를 이해하고 문제를 진단할 수 있다.
 
@@ -104,6 +106,16 @@ CREATE TABLE orders (
     ON DELETE CASCADE ON UPDATE CASCADE
 );
 ```
+
+**키의 종류**: 관계형 모델에서 행을 구분하는 기준을 키라고 한다.
+
+| 키 | 뜻 |
+| --- | --- |
+| 슈퍼키(super key) | 행을 **유일하게** 식별하는 속성 집합. 군더더기 속성이 섞여도 된다 |
+| 후보키(candidate key) | 유일성에 **최소성**까지 갖춘 슈퍼키. 속성 하나라도 빼면 유일하지 않다 |
+| 기본 키(primary key) | 후보키 중 대표로 고른 하나. NULL·중복 불가 |
+| 대체키(alternate key) | 기본 키로 고르지 않은 나머지 후보키. 보통 `UNIQUE`를 건다 |
+| 외래 키(foreign key) | 다른 테이블의 기본 키(또는 후보키)를 참조하는 속성 |
 
 **기본 키의 두 종류**: 이메일·주민번호처럼 원래 데이터에 있던 값을 키로 쓰면 **자연 키(natural key)**, 키로 쓰려고 따로 만든 일련번호를 쓰면 **대리 키(surrogate key)** 다. 자연 키는 바뀔 수 있고(이메일 변경) 개인정보가 섞이기 쉬워, 보통 대리 키를 기본 키로 두고 자연 키에는 `UNIQUE`를 건다. 대리 키는 `AUTO_INCREMENT`(PostgreSQL은 `GENERATED ... AS IDENTITY`)로 1씩 늘어나는 정수를 자동으로 넣는다. 여러 서버에서 ID를 만들어야 하면 UUID·Snowflake 같은 방식을 쓴다([[distributed-unique-id|분산 고유 ID]]).
 
@@ -205,6 +217,55 @@ LEFT JOIN customers c ON o.customer_id = c.id;
 - "짝이 없는 행만" 찾으려면 `LEFT JOIN` 후 `WHERE 오른쪽.id IS NULL`로 거른다(예: 주문이 없는 고객).
 - 조건 없이 모든 조합을 만드는 `CROSS JOIN`, 같은 테이블끼리 잇는 셀프 조인도 있다. 관계대수의 조인 연산은 [[sql-and-relational-algebra|관계대수와 DB 설계]]에 있다.
 - 조인 종류를 벤 다이어그램으로 고르고 해당 SQL을 바로 받아 보려면 「[SQL Joins Visualizer](https://sql-joins.leopard.in.ua/)」가 편하다.
+
+## 저장 프로시저
+
+**저장 프로시저(stored procedure)** 는 여러 SQL 문과 변수·조건문·반복문을 묶어 DB 안에 이름을 붙여 저장한 프로그램이다. 애플리케이션은 이름과 인자만 보내 호출한다.
+
+```sql
+-- MySQL
+CREATE PROCEDURE transfer(IN from_id INT, IN to_id INT, IN amount INT)
+BEGIN
+  START TRANSACTION;
+  UPDATE account SET balance = balance - amount WHERE id = from_id;
+  UPDATE account SET balance = balance + amount WHERE id = to_id;
+  COMMIT;
+END;
+
+CALL transfer(1, 2, 10000);
+```
+
+| 장점 | 단점 |
+| --- | --- |
+| 여러 쿼리를 한 번의 호출로 보내 네트워크 왕복이 준다 | 비즈니스 로직이 DB에 흩어져 버전 관리·코드 리뷰·테스트가 어렵다 |
+| 실행 권한만 주고 테이블 직접 접근을 막을 수 있다 | 문법(PL/SQL, T-SQL, PL/pgSQL)이 DBMS마다 달라 이식성이 낮다 |
+| 데이터 가까이에서 대량 처리를 한다 | 디버깅 도구가 빈약하고, DB 서버의 CPU를 쓰므로 확장이 어렵다 |
+
+그래서 일반 웹 서비스는 로직을 애플리케이션에 두고, 프로시저는 대량 배치·정산처럼 데이터 가까이에서 돌아야 이득인 곳에 제한적으로 쓰는 경우가 많다. 값을 돌려주는 것은 함수(`FUNCTION`), 이벤트에 자동으로 실행되는 것은 트리거(`TRIGGER`)다.
+
+## 파라미터 바인딩과 Prepared Statement
+
+애플리케이션에서 사용자 입력을 SQL 문자열에 이어 붙이면 **SQL 인젝션**이 생긴다. 입력이 `' OR '1'='1`이면 조건이 항상 참이 된다. 해결책은 SQL 틀과 값을 분리해 보내는 **파라미터 바인딩**이다.
+
+```java
+// 위험: 문자열 연결 (Statement)
+stmt.executeQuery("SELECT * FROM users WHERE email = '" + email + "'");
+
+// 안전: 자리표시자 + 바인딩 (PreparedStatement)
+PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
+ps.setString(1, email);
+ps.executeQuery();
+```
+
+| 구분 | Statement | Prepared Statement |
+| --- | --- | --- |
+| SQL과 값 | 하나의 문자열로 합친다 | 틀(`?`, `$1`, `:name`)을 먼저 보내고 값은 따로 보낸다 |
+| 인젝션 | 직접 이스케이프하지 않으면 취약하다 | 값이 SQL 문법으로 해석되지 않아 안전하다 |
+| 반복 실행 | 매번 파싱·계획 | 파싱(드라이버·DB에 따라 실행 계획까지)을 재사용할 수 있다 |
+
+- 성능 이득은 부차적이다. 쿼리 시간은 대부분 행을 읽는 데 들고 파싱은 작은 몫이다. **인젝션 방어가 Prepared Statement를 쓰는 주된 이유**다.
+- 바인딩할 수 있는 것은 **값**뿐이다. 테이블·컬럼 이름, `ORDER BY` 방향은 자리표시자로 못 넣으므로 허용 목록(allowlist)으로 검사한다.
+- JPA·Prisma·Django ORM 같은 ORM과 쿼리 빌더는 기본적으로 바인딩을 쓴다. 원시 SQL 기능(`raw`, `$queryRawUnsafe`, 문자열 포매팅)에서 다시 위험해진다.
 
 ## 핵심 정리
 

@@ -1,13 +1,16 @@
 ---
-title: "기본 정렬: 버블·선택·삽입·계수 정렬"
+title: "기본 정렬: 버블·선택·삽입·계수·기수 정렬"
 concept: "Elementary Sorts"
-summary: "구현이 단순한 O(n²) 비교 정렬 세 가지와, 값의 범위가 작을 때 쓰는 계수 정렬."
+summary: "구현이 단순한 O(n²) 비교 정렬 세 가지와, 비교 없이 정렬하는 계수 정렬·기수 정렬(LSD·MSD)."
 tags: ["algorithm", "sorting", "complexity", "python"]
 source: til
 date: "2026-10-14"
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md"]
 ---
 
-정렬 알고리즘의 성능은 보통 **빅오 표기법**으로 최선·평균·최악의 경우를 나눠 비교한다. 이 노트의 버블·선택·삽입 정렬은 원리가 단순한 대신 평균 O(n²)이라 데이터가 많으면 느리다. 계수 정렬은 비교 없이 개수를 세서 O(n + k)에 정렬한다.
+> 기수 정렬 절은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 알고리즘 문서를 바탕으로 보강했다.
+
+정렬 알고리즘의 성능은 보통 **빅오 표기법**으로 최선·평균·최악의 경우를 나눠 비교한다. 이 노트의 버블·선택·삽입 정렬은 원리가 단순한 대신 평균 O(n²)이라 데이터가 많으면 느리다. 계수 정렬은 비교 없이 개수를 세서 O(n + k)에, 기수 정렬은 자릿수마다 계수 정렬을 반복해 O(d·(n + b))에 정렬한다.
 
 ## 버블 정렬 (Bubble Sort)
 
@@ -102,9 +105,36 @@ def counting_sort_stable(arr, max_num):
 - 시간 복잡도: O(n + k) (k = 최댓값)
 - 공간 복잡도: O(n + k). 값의 범위가 크면(예: 최댓값 10억) 쓸 수 없다.
 
+## 기수 정렬 (Radix Sort)
+
+값 전체가 아니라 **자릿수(기수, radix) 하나씩** 안정 정렬을 반복한다. 자릿수마다 0~9 같은 작은 범위만 다루므로 각 단계는 계수 정렬로 O(n + b)에 끝난다(b = 기수의 종류 수). 자릿수가 d개면 전체는 **O(d·(n + b))** 다.
+
+| 방식 | 순서 | 특징 |
+| --- | --- | --- |
+| LSD(Least Significant Digit) | 일의 자리부터 위로 | 단계마다 **안정 정렬**이어야 앞 자리 결과가 유지된다. 모든 자리를 다 돌아야 결과가 나온다. 구현이 단순해 보통 기수 정렬이라 하면 LSD다 |
+| MSD(Most Significant Digit) | 가장 높은 자리부터 아래로 | 버킷으로 나눈 뒤 버킷 안을 재귀로 정렬한다. 앞 자리만으로 갈리면 일찍 끝나 문자열 사전순 정렬에 맞지만 버킷 관리에 메모리가 더 든다 |
+
+```python
+def radix_sort_lsd(arr):          # 음이 아닌 정수
+    exp = 1
+    while max(arr) // exp > 0:
+        buckets = [[] for _ in range(10)]
+        for x in arr:             # 넣은 순서를 지키므로 안정적이다
+            buckets[(x // exp) % 10].append(x)
+        arr = [x for b in buckets for x in b]
+        exp *= 10
+    return arr
+
+print(radix_sort_lsd([170, 45, 75, 90, 802, 24, 2, 66]))
+# [2, 24, 45, 66, 75, 90, 170, 802]
+```
+
+- 비교 정렬의 하한 O(n log n)을 넘을 수 있지만, **자릿수 d가 작고 고정된 키**(정수, 같은 길이 문자열)에서만 이득이다. 길이가 제각각이면 짧은 키를 채우는 처리가 필요하다.
+- 음수는 부호를 따로 처리하고, 부동소수점은 비트 표현을 변환해야 한다.
+
 ## 한눈에 비교
 
-버블·선택·삽입은 O(n²), 계수 정렬은 O(n + k)이고, 선택 정렬만 불안정 정렬이다. 병합·퀵 정렬까지 포함한 복잡도·안정성 비교표는 [[merge-quick-sort|병합 정렬과 퀵 정렬]]에 하나로 모았다.
+버블·선택·삽입은 O(n²), 계수 정렬은 O(n + k), 기수 정렬은 O(d·(n + b))이고, 선택 정렬만 불안정 정렬이다. 병합·퀵 정렬까지 포함한 복잡도·안정성 비교표는 [[merge-quick-sort|병합 정렬과 퀵 정렬]]에 하나로 모았다.
 
 **안정 정렬**이란 값이 같은 원소들의 원래 순서가 정렬 후에도 유지되는 정렬이다.
 
@@ -113,5 +143,6 @@ def counting_sort_stable(arr, max_num):
 - 버블·선택·삽입은 O(n²), 작은 입력이나 학습용
 - 삽입 정렬은 거의 정렬된 데이터에서 O(n)에 가깝다.
 - 값의 범위가 작은 정수라면 계수 정렬이 O(n + k)로 가장 빠르다.
+- 자릿수가 고정된 키는 기수 정렬(LSD)로 자릿수마다 안정 정렬을 반복한다.
 
 관련 노트: [[big-o|빅오 표기법]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[merge-insertion-sort|병합 삽입 정렬(이진 삽입)]]

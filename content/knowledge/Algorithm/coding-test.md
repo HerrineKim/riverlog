@@ -5,10 +5,11 @@ summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 
 tags: ["coding-test", "algorithm", "python", "javascript", "problem-solving"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%99%84%EC%A3%BC%ED%95%98%EC%A7%80%20%EB%AA%BB%ED%95%9C%20%EC%84%A0%EC%88%98.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%B4%EB%A7%98%EB%8C%80%EB%A1%9C%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/3%EC%A7%84%EB%B2%95%20%EB%92%A4%EC%A7%91%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EC%A0%95%EC%88%98%EC%82%AC%EC%9D%B4%EC%9D%98%20%ED%95%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/2016%EB%85%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EA%B0%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EB%8D%94%ED%95%98%EA%B8%B0.md"]
+sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%99%84%EC%A3%BC%ED%95%98%EC%A7%80%20%EB%AA%BB%ED%95%9C%20%EC%84%A0%EC%88%98.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%B4%EB%A7%98%EB%8C%80%EB%A1%9C%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/3%EC%A7%84%EB%B2%95%20%EB%92%A4%EC%A7%91%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EC%A0%95%EC%88%98%EC%82%AC%EC%9D%B4%EC%9D%98%20%ED%95%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/2016%EB%85%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EA%B0%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EB%8D%94%ED%95%98%EA%B8%B0.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md"]
 ---
 
 > 반례 찾기와 파이썬 표준 라이브러리 팁 일부는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Python&C] 맞왜틀 이제 그만, 반례 생성기!」, 「코딩테스트를 위한 python 문법」을 바탕으로 보강했다. 자바스크립트 실전 팁은 「[Frontend_TIL: 알고리즘](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)」의 문제 풀이에서 반복되는 패턴만 뽑아 보강했다.
+> 「막혔을 때 바꿔 보는 관점」은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 알고리즘 문서의 코딩 테스트 팁과 전략적 접근 절을 바탕으로 보강했다.
 
 코딩 테스트에서 시간이 부족해지는 이유는 대개 타이핑이 느려서가 아니라, 설계 없이 코드부터 쓰다가 중간에 방향을 잃기 때문이다. 아래는 문제를 풀 때 따르는 순서와 자주 쓰는 실전 팁이다.
 
@@ -120,6 +121,22 @@ for _ in range(10_000):                 # 재귀 대신 반복문: 깊이 제한
 - **정렬 후 매 순간 최선의 선택이 정당함** → 그리디
 - **정렬된 데이터에서 찾기, "최댓값/최솟값을 구하라"** → 이분 탐색, 파라메트릭 서치
 - **구간 합 쿼리가 많음** → 누적 합
+
+## 막혔을 때 바꿔 보는 관점
+
+풀이가 떠오르지 않으면 문제를 다른 모양으로 바꿔 본다.
+
+| 관점 | 해 보는 것 |
+| --- | --- |
+| 예제를 그린다 | 너무 작지 않은 **중간 크기 예제**를 손으로 풀어 본다. 작은 예제의 답은 일반화되지 않을 때가 많다 |
+| 기법을 대입한다(하향식) | 정렬·이분 탐색, 분할 정복, DP, 그리디, 재귀, 특정 자료구조(배열, 스택·큐, 해시, 트리, 힙, 그래프)를 하나씩 대입해 맞는지 본다 |
+| 비슷한 문제를 떠올린다 | 겉모양보다 핵심 연산이 같은 예전 문제를 찾고 그 풀이를 고친다 |
+| 작게·특수하게 줄인다 | 경계값, 특수한 경우, 단순화한 버전부터 풀고 범위를 넓힌다 |
+| 단순한 풀이부터 | 완전 탐색으로 맞는 답을 먼저 만들고 중복 계산을 찾아 줄인다 |
+| 식으로 쓴다 | 조건을 수식·점화식으로 옮기면 DP나 수학 풀이가 보인다 |
+| 순서를 강제한다 | 순서가 없는 선택을 정렬된 순서로 고정하면 경우의 수가 줄어든다 |
+| 뒤에서부터 본다 | 마지막 상태에서 거꾸로 오면 선택지가 줄어드는 문제가 있다 |
+| 되돌아간다 | 몇 분을 써도 진전이 없는 접근은 버리고 다른 방법으로 간다 |
 
 ## 파이썬 실전 팁
 

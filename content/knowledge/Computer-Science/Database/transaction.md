@@ -5,10 +5,11 @@ summary: "트랜잭션의 ACID 특성, 이를 지키기 위한 병행 제어·�
 tags: ["database", "transaction", "acid", "certificate", "concurrency"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebytego.com/guides/what-are-database-isolation-levels", "https://bytebytego.com/guides/what-are-the-differences-among-database-locks", "https://bytebytego.com/guides/pessimistic-vs-optimistic-locking", "https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html", "https://d2.naver.com/helloworld/407507"]
+sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebytego.com/guides/what-are-database-isolation-levels", "https://bytebytego.com/guides/what-are-the-differences-among-database-locks", "https://bytebytego.com/guides/pessimistic-vs-optimistic-locking", "https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html", "https://d2.naver.com/helloworld/407507", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md"]
 ---
 
 > 노션 정리를 바탕으로, MVCC·잠금의 종류·비관적/낙관적 잠금은 ByteByteGo의 System Design 101 가이드 「[What does ACID mean?](https://bytebytego.com/guides/what-does-acid-mean)」, 「[What are Database Isolation Levels?](https://bytebytego.com/guides/what-are-database-isolation-levels)」, 「[What are the Differences Among Database Locks?](https://bytebytego.com/guides/what-are-the-differences-among-database-locks)」, 「[Pessimistic vs Optimistic Locking](https://bytebytego.com/guides/pessimistic-vs-optimistic-locking)」로, 버퍼 정책·로그·재시작 복구는 「[DBMS는 어떻게 트랜잭션을 관리할까?](https://d2.naver.com/helloworld/407507)」로 보강했다.
+> 트랜잭션의 상태와 DB 교착 상태는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로 보강했다.
 
 트랜잭션은 데이터베이스에서 **하나의 논리적 작업 단위**다. 계좌 이체처럼 "출금"과 "입금"이 둘 다 되거나 둘 다 안 되어야 하는 작업을 묶는다. 트랜잭션이 지켜야 할 네 가지 성질(ACID)과, DBMS가 각 성질을 보장하는 수단을 짝지어 기억하면 이해가 쉽다.
 
@@ -34,6 +35,31 @@ sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebyte
 | `COMMIT` | 트랜잭션 결과를 DB에 영구 반영 |
 | `ROLLBACK` | 트랜잭션 실행 이전 상태로 되돌림 |
 | `SAVEPOINT` | 롤백할 중간 지점 지정 (`ROLLBACK TO 이름`) |
+
+## 트랜잭션의 상태
+
+```text
+            ┌──────────────── 오류 ───────────────┐
+            │                                     ▼
+ 시작 ──▶ 활동(Active) ──마지막 연산 끝──▶ 부분 완료 ──기록 성공──▶ 완료(Committed)
+            │                     (Partially Committed)
+            └──오류──▶ 실패(Failed) ◀──── 커밋 중 오류 ┘
+                          │
+                          ▼ ROLLBACK
+                       철회(Aborted) ──▶ 재시작 또는 종료
+```
+
+| 상태 | 뜻 |
+| --- | --- |
+| 활동(Active) | 연산을 실행하는 중 |
+| 부분 완료(Partially Committed) | 마지막 연산까지 실행했고 **커밋 처리만 남은** 상태. 변경은 아직 버퍼에만 있을 수 있다 |
+| 완료(Committed) | 커밋 기록(로그)이 디스크에 남아 결과가 확정된 상태 |
+| 실패(Failed) | 오류로 더 진행할 수 없음을 알게 된 상태 |
+| 철회(Aborted) | 롤백으로 시작 전 상태로 되돌린 상태. 다시 시작하거나 버린다 |
+
+부분 완료와 완료의 차이는 **지속성이 보장됐는가**다. 부분 완료 상태에서 장애가 나면 커밋 로그를 쓰지 못한 것이므로 실패로 가서 철회된다.
+
+잠금과 트랜잭션은 목적이 다르다. **잠금은 동시에 같은 자원을 고치지 못하게 하는 동시성 제어 수단**이고, **트랜잭션은 작업 묶음이 전부 반영되거나 전혀 반영되지 않게 하는 정합성 단위**다. 쿼리가 하나뿐인 작업도 트랜잭션이다.
 
 ## 병행 제어 (Concurrency Control)
 
@@ -133,11 +159,34 @@ UPDATE product SET stock = 9, version = version + 1
 WHERE id = 1 AND version = 3;   -- 영향받은 행이 0이면 누군가 먼저 고쳤다 → 다시 읽고 재시도
 ```
 
+### DB의 교착 상태
+
+두 트랜잭션이 각자 잠금을 쥔 채 상대의 잠금을 기다리면 **교착 상태(deadlock)** 다. InnoDB는 쓰기(INSERT·UPDATE·DELETE)에 행 잠금을 걸므로 테이블 접근 순서만 엇갈려도 생긴다.
+
+```sql
+-- T1                               -- T2
+BEGIN; INSERT INTO b VALUES (1);    BEGIN; INSERT INTO a VALUES (1);
+INSERT INTO a VALUES (1);  -- T2의 잠금 대기
+                                    INSERT INTO b VALUES (1);  -- T1의 잠금 대기
+-- ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction
+```
+
+대부분의 DBMS는 대기 그래프(wait-for graph)로 교착을 **스스로 감지해 한쪽(보통 되돌릴 작업이 적은 쪽)을 롤백**한다. MySQL은 `innodb_deadlock_detect`(기본 켜짐)와 `SHOW ENGINE INNODB STATUS`의 `LATEST DETECTED DEADLOCK`, PostgreSQL은 `deadlock_timeout`(기본 1초) 뒤 검사로 알린다. 감지는 피해를 줄일 뿐이므로 애플리케이션은 오류 코드를 보고 **트랜잭션 전체를 재시도**해야 한다.
+
+| 빈도를 낮추는 방법 | 이유 |
+| --- | --- |
+| 모든 트랜잭션이 **같은 순서로** 테이블·행에 접근한다 | 순환 대기가 생기지 않는다(여러 행이면 기본 키 순으로 정렬해 갱신) |
+| 트랜잭션을 짧게, 자주 커밋한다 | 잠금을 쥔 시간이 줄어 겹칠 확률이 준다 |
+| 필요 없는 `SELECT ... FOR UPDATE`를 줄인다 | 읽기에도 쓰기 잠금이 걸린다 |
+| 조건 컬럼에 인덱스를 둔다 | 인덱스가 없으면 InnoDB가 훑은 행 전체에 잠금을 걸어 범위가 커진다 |
+| 경쟁이 심하면 테이블 잠금 등으로 직렬화한다 | 동시성은 떨어지지만 교착은 사라진다 |
+
 잠금을 쓸 때의 원칙은 공통이다.
 
 - 잠금은 **가능한 짧게** 잡는다. 트랜잭션 안에서 외부 API 호출처럼 오래 걸리는 일을 하지 않는다.
 - 잠금은 **가능한 작은 단위**(테이블보다 행)로 건다.
 - 충돌로 실패한 트랜잭션은 **재시도 로직**을 둔다.
+- 트랜잭션 범위도 꼭 필요한 코드로 좁힌다. 트랜잭션이 길면 DB 커넥션을 오래 붙잡아 [[connection-pool|커넥션 풀]]이 바닥나고 다른 요청이 커넥션을 기다린다.
 
 ## 회복 기법 (Recovery)
 

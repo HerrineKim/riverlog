@@ -68,4 +68,4 @@ iOS 13부터는 `UICollectionViewCompositionalLayout`(섹션·그룹·아이템�
 - 셀 밖 요소는 보조·장식 뷰로, 셀에 넘길 추가 정보는 속성 하위 클래스로.
 - 표준 배치는 컴포지셔널 레이아웃과 디퍼블 데이터 소스가 먼저다.
 
-관련 노트: [[swift-codable|Swift Codable: JSON 인코딩과 디코딩]], [[mobile-frameworks|모바일 앱 프레임워크 비교: 네이티브·하이브리드·크로스 플랫폼]], [[binary-search|이분 탐색]]
+관련 노트: [[ios-app-fundamentals|iOS 앱 기본 개념]], [[swift-codable|Swift Codable: JSON 인코딩과 디코딩]], [[mobile-frameworks|모바일 앱 프레임워크 비교: 네이티브·하이브리드·크로스 플랫폼]], [[binary-search|이분 탐색]]
