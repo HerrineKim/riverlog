@@ -43,6 +43,7 @@ JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이
 - [TypeScript 타입 호환성](/knowledge/dictionary/frontend/javascript/typescript-type-compatibility): 값의 집합으로 보는 타입, 구조적 타이핑과 잉여 속성 검사, 유니언·인터섹션, 함수의 공변·반공변, 구분자
 - [TypeScript 타입 연산: 타입으로 타입 만들기](/knowledge/dictionary/frontend/javascript/typescript-type-operators): keyof·typeof·인덱스 접근, 매핑 타입, 조건부 타입과 infer, 분배 규칙, 템플릿 리터럴 타입, 유틸리티 타입 구현
 - [TypeScript 프로젝트 설정: tsconfig·모듈 해석·선언 파일](/knowledge/dictionary/frontend/javascript/typescript-project-config): 컴파일 컨텍스트, TypeScript 6·7 기본값과 폐기 옵션, strict 계열, bundler·nodenext 해석, verbatimModuleSyntax, 타입·값 선언 공간, declare·declare global·lib·@types
+- [TypeScript 컴파일러 내부 구조](/knowledge/dictionary/frontend/javascript/typescript-compiler-internals): 스캐너·파서·바인더·체커·이미터, AST와 트리비아, 심볼과 심볼 테이블, 지연 검사와 진단, 소스맵, Go로 옮긴 TypeScript 7
 - [ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md): 품질은 ESLint, 모양은 Prettier로 역할 나누기, 저장 시 자동 수정 에디터 설정, flat config 읽는 법과 ESLint 10에서 제거된 `.eslintrc`
 - [strict mode(엄격 모드)](/knowledge/dictionary/frontend/javascript/strict-mode): "use strict" 켜는 법, 모듈·class 자동 적용, 암묵적 전역·조용한 실패·this가 바뀌는 동작
 - [속성 설명자](/knowledge/dictionary/frontend/javascript/property-descriptors): writable·enumerable·configurable, getter·setter 접근자, defineProperty 기본값, freeze·seal
