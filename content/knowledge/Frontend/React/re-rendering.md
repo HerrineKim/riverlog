@@ -5,10 +5,24 @@ summary: "리렌더링을 일으키는 원인, React.memo가 효과 없는 경�
 tags: ["react", "rendering", "performance", "debugging", "frontend"]
 source: notion
 date: "2026-10-13"
-sources: ["https://react.dev/learn/react-compiler"]
+sources: ["https://react.dev/learn/react-compiler", "https://prepare-frontend-interview.vercel.app/react"]
 ---
 
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 리렌더링 조건을 보강했다.
+
 React 컴포넌트는 **state가 바뀌거나, 부모가 렌더링되거나, 구독한 Context·외부 스토어 값이 바뀌면** 다시 렌더링된다. 리렌더링 자체는 나쁜 것이 아니지만, 값이 그대로인데 여러 번 다시 그려진다면 원인을 찾아 줄일 수 있다. `React.memo`를 여기저기 씌우기보다 **렌더링을 일으키는 원인을 먼저 찾는다**. 메모이제이션 API 자체는 [Hooks](/knowledge/dictionary/frontend/react/hooks)의 메모이제이션 절 참고.
+
+## 무엇이 리렌더링을 일으키나
+
+| 일어난 일 | 리렌더링 | 비고 |
+| --- | --- | --- |
+| 자기 state 갱신 | 된다 | 새 값이 이전 값과 `Object.is`로 같으면 건너뛴다(bail out). 확인하려고 컴포넌트를 한 번 더 호출할 수는 있지만 자식으로 내려가지 않는다. 객체를 직접 고쳐 같은 참조를 넘기면 바뀐 것이 보이지 않는다([[state\|State와 useState]]) |
+| 부모 리렌더링 | 된다 | props가 그대로여도 다시 호출된다. 「props가 바뀌어서」 다시 그려지는 것도 결국 부모가 렌더링했기 때문이다. `memo`가 막는 것이 이 경우다 |
+| 구독한 Context 값 변경 | 된다 | Provider `value`의 참조가 바뀌면 그 Context를 읽는 컴포넌트 전부. `memo`로 막지 못한다([[context\|Context]]) |
+| 외부 스토어 변경 | 된다 | `useSyncExternalStore`나 `useSelector`가 고른 값이 바뀔 때 |
+| `ref.current` 변경 | 안 된다 | 렌더링과 상관없는 값을 담는 상자다([[hooks\|Hooks]]의 useRef 절) |
+| 일반 변수·props 객체를 직접 수정 | 안 된다 | React가 바뀐 줄 알 방법이 없다 |
+| 클래스 컴포넌트의 `forceUpdate()` | 된다 | 비교 없이 강제로 다시 그린다. 함수 컴포넌트에는 대응 API가 없다 |
 
 ## React.memo가 효과 없는 경우
 
