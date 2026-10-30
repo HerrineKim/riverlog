@@ -175,4 +175,4 @@ const [n, m] = input[0].split(' ').map(Number)
 - 막히면 30분·1시간·2시간 기준으로 풀이를 보고, 1주 뒤 다시 푼다.
 - `sys.stdin.readline`, `deque`, `heapq`, `setrecursionlimit`은 기본 장비다.
 
-관련 노트: [[big-o|빅오 표기법]], [[bfs|BFS]], [[dijkstra|다익스트라]], [[dynamic-programming|동적 계획법]], [[greedy|그리디]], [[binary-search|이분 탐색]], [[prefix-sum|접두사 합]], [[interview-attitude|면접 잘 보는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[kmp-algorithm|KMP 문자열 검색 알고리즘]]
+관련 노트: [[big-o|빅오 표기법]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[bfs|BFS]], [[dijkstra|다익스트라]], [[dynamic-programming|동적 계획법]], [[greedy|그리디]], [[binary-search|이분 탐색]], [[prefix-sum|접두사 합]], [[interview-attitude|면접 잘 보는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[kmp-algorithm|KMP 문자열 검색 알고리즘]]
