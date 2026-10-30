@@ -129,4 +129,4 @@ function use<T>(usable: Promise<T> | Context<T>): T
 - React 19의 async 전환이 Actions(`useActionState`, `<form action>`, `useOptimistic`)의 바탕이다. `await` 뒤 업데이트는 다시 감싼다.
 - 입력값 자체는 전환으로 바꾸지 않는다. 미루는 것은 그 값으로 만드는 무거운 결과다.
 
-관련 노트: [[hooks|React Hooks]], [[react-use-hook|use 훅과 리액트 비동기 처리]], [[forms|폼과 제어 컴포넌트]], [[re-rendering|리렌더링 원인과 추적]], [[ui-engineering-problems|UI 엔지니어링의 열두 가지 문제]], [[streaming-ssr|스트리밍 SSR]], [[react-typescript|React와 TypeScript]]
+관련 노트: [[react-version-history|React 버전 변천사]], [[hooks|React Hooks]], [[react-use-hook|use 훅과 리액트 비동기 처리]], [[forms|폼과 제어 컴포넌트]], [[re-rendering|리렌더링 원인과 추적]], [[ui-engineering-problems|UI 엔지니어링의 열두 가지 문제]], [[streaming-ssr|스트리밍 SSR]], [[react-typescript|React와 TypeScript]]

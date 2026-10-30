@@ -80,4 +80,4 @@ Fiber가 깐 바닥 위에 React 18(2022)이 **동시성 기능**을 열었다. 
 - 불변 데이터는 「바뀌지 않았다」를 참조 비교 한 번으로 알려 주는 탈출구다.
 - 프레임워크는 시그널과 컴파일러 쪽으로 모이고 있다. React는 가상 DOM을 유지하면서 Fiber로 작업을 쪼개고 컴파일러로 비교를 줄인다.
 
-관련 노트: [[reactive-programming|반응형 프로그래밍과 RxJS]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름: MVC에서 MVI까지]], [[re-rendering|리렌더링 원인과 추적]], [[frontend-frameworks|React와 Vue 말고: Svelte, Angular, Preact, Alpine.js, HTMX]], [[browser-rendering|브라우저 렌더링 과정]]
+관련 노트: [[react-version-history|React 버전 변천사]], [[reactive-programming|반응형 프로그래밍과 RxJS]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름: MVC에서 MVI까지]], [[re-rendering|리렌더링 원인과 추적]], [[frontend-frameworks|React와 Vue 말고: Svelte, Angular, Preact, Alpine.js, HTMX]], [[browser-rendering|브라우저 렌더링 과정]]
