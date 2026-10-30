@@ -5,7 +5,7 @@ summary: "Elasticsearch는 Lucene 위에 만든 분산 검색·분석 엔진이�
 tags: ["backend", "search", "database", "monitoring", "architecture"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-do-we-learn-elasticsearch", "https://bytebytego.com/guides/top-6-elasticsearch-use-cases", "https://bytebytego.com/guides/what-is-elk-stack-and-why-is-it-so-popular-for-log-management"]
+sources: ["https://bytebytego.com/guides/how-do-we-learn-elasticsearch", "https://bytebytego.com/guides/top-6-elasticsearch-use-cases", "https://bytebytego.com/guides/what-is-elk-stack-and-why-is-it-so-popular-for-log-management", "https://techcrunch.com/2024/09/16/aws-brings-opensearch-under-the-linux-foundation-umbrella", "https://lwn.net/Articles/990517"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How to Learn Elasticsearch](https://bytebytego.com/guides/how-do-we-learn-elasticsearch)」, 「[Top 6 Elasticsearch Use Cases](https://bytebytego.com/guides/top-6-elasticsearch-use-cases)」, 「[What is ELK Stack and Why is it Popular?](https://bytebytego.com/guides/what-is-elk-stack-and-why-is-it-so-popular-for-log-management)」을 바탕으로 재구성한 노트다.
@@ -75,7 +75,7 @@ ELK는 **Elasticsearch, Logstash, Kibana**의 머리글자다. 수집기 Beats�
 - 변환이 단순하면 Logstash 없이 Beats(또는 Elastic Agent)가 Elasticsearch로 바로 보내고, 파싱은 Elasticsearch의 ingest pipeline에서 한다.
 - 로그 데이터는 시간이 지날수록 덜 읽으므로, 날짜별 인덱스와 수명 주기 정책(ILM)으로 오래된 인덱스를 싼 저장소로 옮기거나 지운다.
 
-AWS가 주도하는 포크 **OpenSearch**(+ OpenSearch Dashboards)도 같은 구조로 쓴다. 지표·트레이스까지 묶은 관측성(observability) 도구로는 Grafana 계열(Loki·Prometheus) 같은 대안도 흔하다.
+**OpenSearch**(+ OpenSearch Dashboards)도 같은 구조로 쓴다. 2021년 Elastic이 라이선스를 비공개 쪽(SSPL·Elastic License)으로 바꾸자 AWS가 갈라낸 포크이고, 2024년 9월부터 리눅스 재단 산하 OpenSearch Software Foundation이 관리한다. Elasticsearch도 2024년 8월 AGPL을 라이선스 선택지에 다시 넣어 오픈소스로 돌아왔다. 지표·트레이스까지 묶은 관측성(observability) 도구로는 Grafana 계열(Loki·Prometheus) 같은 대안도 흔하다.
 
 ## 정리
 

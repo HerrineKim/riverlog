@@ -55,17 +55,9 @@ CREATE TABLE messages (
 
 ## 저장 엔진: LSM 트리
 
-Cassandra와 ScyllaDB는 **LSM 트리(Log-Structured Merge tree)** 계열 저장 엔진을 쓴다.
+Cassandra와 ScyllaDB는 **LSM 트리(Log-Structured Merge tree)** 계열 저장 엔진을 쓴다. 쓰기는 커밋 로그와 메모테이블에 먼저 하고, 메모테이블이 차면 불변 파일인 SSTable로 내린 뒤 컴팩션으로 병합한다. 구조와 B-트리와의 비교(읽기·쓰기·공간 증폭)는 [[database-internals#B-트리와 LSM 트리|DB 내부 구조]]에 있다. 와이드 컬럼 DB 운영에서 특히 드러나는 점은 다음과 같다.
 
-```text
-쓰기 → 커밋 로그(순차 기록, 장애 대비) + 메모테이블(메모리)
-         └─ 가득 차면 → SSTable(불변 파일)로 디스크에 내림
-읽기 → 메모테이블 + 여러 SSTable을 모두 확인해 합침
-컴팩션 → SSTable을 주기적으로 병합하고 지운 데이터(툼스톤)를 정리
-```
-
-- **쓰기는 싸고 읽기는 비싸다.** 읽기는 여러 SSTable을 뒤져야 한다.
-- 컴팩션이 밀리면 SSTable이 쌓여 읽기가 점점 느려진다.
+- **쓰기는 싸고 읽기는 비싸다.** 컴팩션이 밀리면 SSTable이 쌓여 읽기가 점점 느려진다.
 - 삭제는 즉시 지우지 않고 **툼스톤(tombstone)** 표시를 남긴다. 컴팩션 전까지는 툼스톤도 읽어야 하므로, 삭제가 많은 구간은 스캔이 매우 느려진다.
 
 ## Cassandra와 ScyllaDB

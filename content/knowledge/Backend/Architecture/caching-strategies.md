@@ -42,16 +42,16 @@ sources: ["https://bytebytego.com/guides/cache-systems-every-developer-should-kn
 
 | 층 | 캐시하는 것 | 자세히 |
 | --- | --- | --- |
-| 클라이언트 | HTTP 응답. 서버가 헤더로 신선도를 정하고 브라우저가 재사용한다 | [[http-cache\|HTTP 캐시]] |
+| 클라이언트 | HTTP 응답(서버가 헤더로 신선도를 정하고 브라우저가 재사용한다), 앱이 직접 넣는 객체 캐시(localStorage, IndexedDB, 앱 메모리). 네트워크 요청 자체를 없앤다 | [[http-cache\|HTTP 캐시]] |
 | CDN | 이미지·CSS·JS 같은 정적 파일, 일부 동적 응답 | [[cdn\|CDN]] |
-| 로드 밸런서·리버스 프록시 | 자주 요청되는 응답을 백엔드까지 가지 않고 돌려준다 | [[web-server-and-nginx\|웹 서버와 Nginx]] |
+| 로드 밸런서·리버스 프록시 | 자주 요청되는 응답을 백엔드까지 가지 않고 돌려준다(Nginx, Varnish). 회사망·ISP의 공유 캐싱 프록시([[proxy\|프록시]])도 같은 자리지만 HTTPS가 보편화되며 비중이 크게 줄었다 | [[web-server-and-nginx\|웹 서버와 Nginx]] |
 | 메시지 브로커 | Kafka처럼 보존 기간 동안 메시지를 디스크에 쌓아 두고, 소비자가 제 속도로 다시 읽게 한다 | |
-| 서비스 | 프로세스 메모리(로컬 캐시), 큰 데이터는 로컬 디스크 | [[cache-cluster-operations\|캐시 클러스터 운영과 장애 대응]] |
-| 분산 캐시 | 여러 서버가 함께 보는 키-값 저장소 | [[redis\|Redis]] |
+| 서비스 | 프로세스 메모리(로컬 캐시), 큰 데이터는 로컬 디스크. 가장 빠르지만 서버마다 내용이 달라 무효화가 어렵다 | [[cache-cluster-operations\|캐시 클러스터 운영과 장애 대응]] |
+| 분산 캐시 | 여러 서버가 함께 보는 키-값 저장소(Redis, Valkey, Memcached). 대규모 서비스의 기본이다 | [[redis\|Redis]] |
 | 검색엔진 | 역인덱스. 원본 DB를 검색하기 좋은 모양으로 바꾼 사본이다 | [[elasticsearch\|Elasticsearch와 ELK 스택]] |
 | DB | 버퍼 풀(디스크 페이지의 메모리 사본), 머티리얼라이즈드 뷰(무거운 쿼리 결과를 미리 저장) | |
 
-HTTP 캐시·객체 캐시의 종류와 위치는 [[web-scalability-components|웹 확장성의 구성 요소]]에서도 다룬다.
+HTTP 캐시는 **읽기 관통(read-through)** 방식이다. 클라이언트는 캐시에 묻고, 캐시가 답하지 못할 때만 캐시가 서비스에 묻는다. 웹 아키텍처 전체에서 캐시가 놓이는 자리는 [[web-scalability-components|웹 확장성의 구성 요소]]에 있다.
 
 ## 읽기·쓰기 패턴
 

@@ -64,20 +64,13 @@ sources: ["https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://ro
 
 ## API 스타일: REST · GraphQL · gRPC
 
-| 항목 | REST | GraphQL | gRPC |
-| --- | --- | --- | --- |
-| 단위 | 리소스(URI) + HTTP 메서드 | 단일 엔드포인트(`/graphql`)에 질의 | 서비스의 메서드 호출(RPC) |
-| 데이터 형식 | 주로 JSON | JSON | Protocol Buffers(이진) |
-| 전송 | HTTP/1.1·2 | HTTP | HTTP/2. 연결 하나로 여러 요청을 동시에 |
-| 강점 | 단순하고 캐시가 쉽다. 어디서나 쓴다 | 클라이언트가 필요한 필드만 받는다. 과다·과소 조회가 없다 | 빠르고 스키마가 강하다. 양방향 스트리밍 |
-| 약점 | 화면마다 필요한 데이터가 다르면 요청이 늘거나 남는다 | HTTP 캐시가 어렵고 서버 쿼리 비용 통제가 필요하다 | 브라우저에서 바로 쓰기 어렵다 |
-| 잘 맞는 곳 | 공개 API, 일반 웹 서비스 | 화면이 다양한 앱, 여러 데이터를 묶는 게이트웨이 | 내부 마이크로서비스 간 통신 |
+백엔드가 외부에 내놓는 API는 대개 이 셋 중 하나다. 통신 단위·형식·강점과 약점, 고르는 기준을 SOAP·WebSocket·Webhook과 함께 비교한 표는 [[api-architectural-styles|API 아키텍처 스타일]]에 있다.
 
 - **REST**는 표준 규격이 아니라 아키텍처 스타일이다. 상태 없음(stateless), 캐시 가능 여부 명시, 균일한 인터페이스가 핵심이다. 설계 규칙은 [[rest-api|REST API]]에 있다.
 - **GraphQL**은 스키마로 타입을 정의하고 클라이언트가 원하는 필드를 질의한다. 구독(subscription)으로 실시간 갱신도 받는다.
 - **gRPC**는 `.proto`로 서비스와 메시지를 정의해 여러 언어의 코드를 생성하는 RPC 방식이다. 자세한 내용은 [[grpc|gRPC: Protocol Buffers로 정의하는 RPC]]에 있다.
 
-SOAP·WebSocket·Webhook까지 포함한 비교와 API 학습 주제 지도는 [[api-architectural-styles|API 아키텍처 스타일]], GraphQL의 도입 패턴은 [[graphql|GraphQL]]에 있다.
+GraphQL의 도입 패턴은 [[graphql|GraphQL]]에 있다.
 
 ## 백엔드 개발자의 태도
 
