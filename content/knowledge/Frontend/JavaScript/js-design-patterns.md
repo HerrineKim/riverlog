@@ -1,14 +1,14 @@
 ---
 title: "JavaScript 디자인 패턴: 생성 패턴"
 concept: "JS Design Patterns"
-summary: "객체를 만드는 방식을 다루는 생성 패턴 중 생성자·모듈·싱글톤·프로토타입 패턴을 JavaScript 코드로 정리하고, 프로토타입 기반 언어라서 달라지는 점을 짚는다. 단일 상속을 보완해 여러 클래스에 동작을 섞어 넣는 믹스인(Object.assign 방식, 클래스 팩토리 방식, 이벤트 믹스인)도 함께 다룬다."
+summary: "객체를 만드는 방식을 다루는 생성 패턴 중 생성자·모듈·싱글톤·프로토타입 패턴을 JavaScript 코드로 정리하고, 프로토타입 기반 언어라서 달라지는 점을 짚는다. 단일 상속을 보완해 여러 클래스에 동작을 섞어 넣는 믹스인(Object.assign 방식, 클래스 팩토리 방식, 이벤트 믹스인)과 관찰자 패턴을 독립 클래스로 만든 이벤트 이미터 구현도 함께 다룬다."
 tags: ["javascript", "design-pattern", "oop", "frontend"]
 source: mixed
 date: "2026-10-17"
-sources: ["https://riverkim.kr/316", "https://ko.javascript.info/mixins", "https://ko.javascript.info/class-inheritance"]
+sources: ["https://riverkim.kr/316", "https://ko.javascript.info/mixins", "https://ko.javascript.info/class-inheritance", "https://www.frontendinterviewhandbook.com/coding/javascript-utility-function"]
 ---
 
-> 『자바스크립트 + 리액트 디자인 패턴』(한빛미디어)의 생성 패턴 부분을 바탕으로 재구성하고, 믹스인은 javascript.info(모던 JavaScript 튜토리얼)의 「믹스인」 글로 보강한 노트다.
+> 『자바스크립트 + 리액트 디자인 패턴』(한빛미디어)의 생성 패턴 부분을 바탕으로 재구성하고, 믹스인은 javascript.info(모던 JavaScript 튜토리얼)의 「믹스인」 글로 보강한 노트다. 이벤트 이미터 구현은 「[Front End Interview Handbook](https://www.frontendinterviewhandbook.com/coding/javascript-utility-function)」의 JavaScript 코딩 문제를 참고했다.
 
 ## 생성 패턴이란
 
@@ -151,6 +151,36 @@ class Post extends Serializable(Timestamped(Model)) {}
 
 여러 객체가 "무슨 일이 일어났다"를 알리고 구독받는 기능은 대표적인 믹스인 소재다. `on(name, handler)`로 구독, `off(name, handler)`로 해제, `trigger(name, ...args)`로 등록된 핸들러를 모두 부르는 메서드를 객체 믹스인으로 만들어 `Menu.prototype`에 복사하면, 메뉴가 `select` 이벤트를 내보내고 다른 객체가 반응할 수 있다. 관찰자(Observer) 패턴을 믹스인으로 나눠 준 것이다.
 
+같은 구조를 독립 클래스로 만든 것이 **이벤트 이미터(Event Emitter)** 다. 면접의 JavaScript 코딩 문제로 자주 나온다.
+
+```javascript
+class EventEmitter {
+  #listeners = new Map() // 이벤트 이름 → 핸들러 Set
+
+  on(name, handler) {
+    if (!this.#listeners.has(name)) this.#listeners.set(name, new Set())
+    this.#listeners.get(name).add(handler)
+    return () => this.off(name, handler) // 구독 해제 함수를 돌려준다
+  }
+
+  off(name, handler) {
+    this.#listeners.get(name)?.delete(handler)
+  }
+
+  once(name, handler) {
+    const off = this.on(name, (...args) => { off(); handler(...args) })
+    return off
+  }
+
+  emit(name, ...args) {
+    // 복사본을 돈다: 핸들러 안에서 on/off가 불려도 이번 발행은 흔들리지 않는다
+    for (const handler of [...(this.#listeners.get(name) ?? [])]) handler.apply(this, args)
+  }
+}
+```
+
+짚을 지점은 세 가지다. 핸들러를 `Set`에 두면 같은 함수의 중복 등록이 막힌다(중복을 허용하려면 배열). `emit` 중에 구독이 바뀌어도 안전하도록 **복사본을 순회**한다. `on`이 해제 함수를 돌려주면 익명 함수도 해제할 수 있다.
+
 브라우저와 Node.js에서는 직접 만들 필요 없이 표준 `EventTarget`을 상속하면 같은 일을 한다(`class Menu extends EventTarget`, `menu.dispatchEvent(new CustomEvent('select', { detail }))`). 다만 이미 다른 부모가 있으면 상속할 수 없으니, 그때 믹스인이 필요하다. `CustomEvent`는 [[dom-events|DOM 이벤트]]에 있다.
 
 ## 정리
@@ -159,5 +189,6 @@ class Post extends Serializable(Timestamped(Model)) {}
 - 싱글톤은 쓸 수 있지만 객체 리터럴로 충분한지 먼저 본다.
 - 프로토타입 패턴은 JavaScript 상속의 본모습이다. 복제가 아니라 위임이라는 점을 기억한다.
 - 단일 상속으로 부족하면 믹스인으로 메서드를 섞는다. 객체를 `Object.assign`으로 복사하거나, 부모를 받아 확장 클래스를 돌려주는 함수로 만든다.
+- 관찰자 패턴은 이벤트 이미터(`on`·`off`·`once`·`emit`)로 구현한다. 발행 중 구독 변경에 대비해 복사본을 순회한다.
 
-관련 노트: [[class|class 문법]], [[prototype-and-inheritance|프로토타입과 상속]], [[es-modules|모듈: export와 import]], [[singleton-service-pattern|Express 싱글톤 패턴과 서비스 패턴]], [[software-engineering|디자인 패턴(GoF)]]
+관련 노트: [[gof-design-patterns|GoF 디자인 패턴]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[class|class 문법]], [[prototype-and-inheritance|프로토타입과 상속]], [[es-modules|모듈: export와 import]], [[singleton-service-pattern|Express 싱글톤 패턴과 서비스 패턴]], [[software-engineering|디자인 패턴(GoF)]]
