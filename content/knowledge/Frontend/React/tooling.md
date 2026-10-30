@@ -105,7 +105,7 @@ module.exports = {
 ### tsconfig 메모
 
 - `lib: ["ES2020", "DOM"]`, `module: "esnext"`처럼 최신 문법으로 작성하되, `target`은 구형 브라우저까지 고려해 낮게 잡을 수 있다.
-- `baseUrl`과 `paths`로 경로 별칭을 지정하면 `../../layouts/App` 대신 `@layouts/App`처럼 쓸 수 있다. webpack에도 `resolve.alias`를 같은 내용으로 맞춰 줘야 한다.
+- `paths`로 경로 별칭을 지정하면 `../../layouts/App` 대신 `@layouts/App`처럼 쓸 수 있다(`"@layouts/*": ["./src/layouts/*"]`). 예전에는 `baseUrl`을 함께 썼지만 TypeScript 6에서 폐기됐다. 별칭은 타입 검사에만 적용되므로 webpack에도 `resolve.alias`를 같은 내용으로 맞춘다([[typescript-project-config#module과 moduleResolution|TypeScript 프로젝트 설정]]).
 - `@types/xxx` 패키지는 원래 JavaScript로 작성된 라이브러리에 다른 사람이 타입 정의를 붙여 둔 것이다. 타입이 헷갈리면 에디터의 "Go to Type Definition"으로 정의를 직접 읽는다.
 
 빌드 환경을 잡은 뒤 `pages`·`layouts`·`components`·`hooks` 같은 폴더를 어떻게 나누는지는 [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]]에 있다.
