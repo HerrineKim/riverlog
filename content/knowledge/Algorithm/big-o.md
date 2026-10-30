@@ -133,18 +133,7 @@ O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!) 순으로 느려�
 
 ### 정렬 알고리즘의 복잡도
 
-| 알고리즘 | 최선 | 평균 | 최악 | 추가 공간 | 안정 |
-| --- | --- | --- | --- | --- | --- |
-| 퀵 정렬 | O(n log n) | O(n log n) | O(n²) | O(log n) | 아니오 |
-| 병합 정렬 | O(n log n) | O(n log n) | O(n log n) | O(n) | 예 |
-| 힙 정렬 | O(n log n) | O(n log n) | O(n log n) | O(1) | 아니오 |
-| 팀소트(Timsort) | O(n) | O(n log n) | O(n log n) | O(n) | 예 |
-| 삽입 정렬 | O(n) | O(n²) | O(n²) | O(1) | 예 |
-| 선택 정렬 | O(n²) | O(n²) | O(n²) | O(1) | 아니오 |
-| 버블 정렬 | O(n) | O(n²) | O(n²) | O(1) | 예 |
-| 계수·기수 정렬 | O(n + k) | O(n + k), O(nk) | O(n + k), O(nk) | O(n + k) | 예 |
-
-비교 기반 정렬은 최악 O(n log n)보다 빠를 수 없다. 계수·기수 정렬은 값의 범위 k나 자릿수에 기대어 이 하한을 넘는다. Python `sorted`와 Java 객체 정렬은 팀소트, V8의 `Array.prototype.sort`도 팀소트를 쓴다. 각 정렬의 동작은 [[elementary-sorts|기본 정렬]], [[merge-quick-sort|병합 정렬과 퀵 정렬]]에 있다.
+최선·평균·최악, 추가 공간, 안정성을 한 표로 비교한 것은 [[merge-quick-sort#정렬 알고리즘 비교|병합 정렬과 퀵 정렬]]에 있다. 비교 기반 정렬은 최악 O(n log n)이 하한이고, Python `sorted`, Java 객체 정렬, V8의 `Array.prototype.sort`는 팀소트를 쓴다.
 
 ## 공간 복잡도
 
