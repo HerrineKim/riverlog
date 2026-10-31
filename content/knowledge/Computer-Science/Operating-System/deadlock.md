@@ -138,9 +138,14 @@ flowchart LR
 
 DB에서는 프로세스 대신 **트랜잭션**이 행·테이블의 잠금(lock)을 서로 기다리며 교착 상태에 빠진다. 네 조건(Coffman 조건)은 똑같이 적용된다.
 
-```text
-트랜잭션 T1: UPDATE 계좌 A (A 잠금) → UPDATE 계좌 B (B 대기...)
-트랜잭션 T2: UPDATE 계좌 B (B 잠금) → UPDATE 계좌 A (A 대기...)
+```mermaid
+flowchart LR
+  subgraph t1["트랜잭션 T1"]
+    t1a["UPDATE 계좌 A (A 잠금)"] --> t1b["UPDATE 계좌 B (B 대기...)"]
+  end
+  subgraph t2["트랜잭션 T2"]
+    t2a["UPDATE 계좌 B (B 잠금)"] --> t2b["UPDATE 계좌 A (A 대기...)"]
+  end
 ```
 
 OS와 달리 DBMS는 교착 상태를 무시하지 않는다. **탐지하고 희생자를 골라 롤백**하는 것이 기본이다.

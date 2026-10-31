@@ -39,11 +39,11 @@ sources: ["https://bytebytego.com/guides/how-to-deploy-services", "https://byteb
 
 ### 롤링
 
-```text
-v1 v1 v1 v1      ← 시작
-v2 v1 v1 v1      ← 하나 교체, 헬스 체크 통과 후 다음
-v2 v2 v1 v1
-v2 v2 v2 v2      ← 완료
+```mermaid
+flowchart TB
+  A["v1 v1 v1 v1<br>← 시작"] --> B["v2 v1 v1 v1<br>← 하나 교체, 헬스 체크 통과 후 다음"]
+  B --> C["v2 v2 v1 v1"]
+  C --> D["v2 v2 v2 v2<br>← 완료"]
 ```
 
 배포하는 동안 두 버전이 함께 응답한다. 그래서 API와 DB 스키마는 옛 버전과 새 버전이 동시에 읽고 써도 깨지지 않아야 한다.

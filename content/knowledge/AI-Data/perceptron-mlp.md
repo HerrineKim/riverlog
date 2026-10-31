@@ -76,10 +76,13 @@ XOR은 (0,0)·(1,1)이 한 부류, (0,1)·(1,0)이 다른 부류다. 평면 위�
 
 다층 퍼셉트론(Multi-Layer Perceptron)은 입력층과 출력층 사이에 **은닉층(hidden layer)** 을 둔다. 층과 층 사이 노드가 모두 연결되어 있어 완전 연결 층(fully connected layer)이라고도 한다.
 
-```text
-입력층 x (d+1)  ──U──▶  은닉층 z (p+1)  ──V──▶  출력층 o (c)
-                 u_ij: 입력 i → 은닉 j        v_jk: 은닉 j → 출력 k
+```mermaid
+flowchart LR
+  X["입력층 x (d+1)"] -->|"U<br/>u_ij: 입력 i → 은닉 j"| Z["은닉층 z (p+1)"]
+  Z -->|"V<br/>v_jk: 은닉 j → 출력 k"| O["출력층 o (c)"]
+```
 
+```text
 z_j = τ( Σᵢ u_ij·xᵢ )         o_k = τ( Σⱼ v_jk·z_j )
 ```
 

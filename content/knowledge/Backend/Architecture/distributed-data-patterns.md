@@ -85,13 +85,26 @@ COMMIT
 
 일반적인 CRUD 설계는 **현재 상태**를 저장하고 덮어쓴다. **이벤트 소싱(event sourcing)** 은 상태를 바꾼 **이벤트를 추가 전용으로 저장**하고, 현재 상태는 이벤트를 처음부터 차례로 적용해 계산한다.
 
-```text
-CRUD                         이벤트 소싱
-orders 테이블                 order_events (추가만 한다)
-┌────┬────────┐               1. OrderPlaced   {id: 7, amount: 30000}
-│ id │ status │               2. PaymentDone   {id: 7}
-│  7 │ PAID   │ ← 덮어씀       3. OrderShipped  {id: 7}
-└────┴────────┘               현재 상태 = fold(이벤트들) → SHIPPED
+CRUD: orders 테이블
+
+```mermaid
+flowchart TB
+  subgraph row1[" "]
+    direction LR
+    h1["id"] ~~~ h2["status"]
+  end
+  subgraph row2[" "]
+    direction LR
+    v1["7"] ~~~ v2["PAID<br/>← 덮어씀"]
+  end
+  row1 ~~~ row2
+```
+
+이벤트 소싱: order_events (추가만 한다)
+
+```mermaid
+flowchart LR
+  E1["1. OrderPlaced<br>{id: 7, amount: 30000}"] --> E2["2. PaymentDone<br>{id: 7}"] --> E3["3. OrderShipped<br>{id: 7}"] --> F["현재 상태 = fold(이벤트들)"] --> S["SHIPPED"]
 ```
 
 | 항목 | CRUD | 이벤트 소싱 |

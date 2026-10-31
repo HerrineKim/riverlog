@@ -25,8 +25,9 @@ sources: ["https://webactually.com/2020/05/20/%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%
 
 ## 학습 순서
 
-```text
-터미널·에디터 ─→ Git으로 첫 기여 ─→ 시맨틱 HTML·CSS 기초 ─→ 공학 개념(토큰·컴포넌트·DRY) ─→ CSS 방법론 ─→ 그다음
+```mermaid
+flowchart LR
+  A["터미널·에디터"] --> B["Git으로 첫 기여"] --> C["시맨틱 HTML·CSS 기초"] --> D["공학 개념(토큰·컴포넌트·DRY)"] --> E["CSS 방법론"] --> F["그다음"]
 ```
 
 ### 1. 터미널: 키보드로 파일을 다룬다

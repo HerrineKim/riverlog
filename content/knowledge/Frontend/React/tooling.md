@@ -49,9 +49,10 @@ React 코드는 그대로 브라우저에서 돌지 않는다. JSX와 최신 문
 
 ### webpack 핵심 개념
 
-```text
-entry(시작 파일) ──▶ module.rules(로더로 변환) ──▶ output(결과 번들)
-                         plugins(빌드 중 부가 작업)
+```mermaid
+flowchart LR
+  E["entry(시작 파일)"] --> M["module.rules(로더로 변환)"] --> O["output(결과 번들)"]
+  P["plugins(빌드 중 부가 작업)"]
 ```
 
 - `entry`: `{ app: './client' }` → `output.filename: '[name].js'`이면 `[name]`이 `app`으로 바뀌어 `dist/app.js`가 생성된다. 키를 여러 개 두면 결과 번들도 여러 개 나온다(페이지마다 번들이 따로 필요한 MPA). 값에 배열을 주면 여러 파일을 번들 하나로 합친다.

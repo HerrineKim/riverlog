@@ -21,11 +21,12 @@ sources: ["https://riverkim.kr/127"]
 
 편집 거리(Edit Distance, 레벤슈타인 거리)는 한 문자열을 다른 문자열로 바꾸는 데 필요한 **삽입·삭제·교체의 최소 횟수**다. 값이 작을수록 두 문자열이 비슷하다.
 
-```text
-kitten → sitten   (k를 s로 교체)
-sitten → sittin   (e를 i로 교체)
-sittin → sitting  (g 삽입)
-→ 편집 거리 3
+```mermaid
+flowchart LR
+  A["kitten"] -->|"k를 s로 교체"| B["sitten"]
+  B -->|"e를 i로 교체"| C["sittin"]
+  C -->|"g 삽입"| D["sitting"]
+  D --> R["편집 거리 3"]
 ```
 
 두 문자열의 앞부분끼리 비교한 결과를 표에 채워 나가는 **동적 계획법**으로 O(m×n)에 구한다.

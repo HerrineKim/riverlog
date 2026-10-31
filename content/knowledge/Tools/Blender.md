@@ -78,8 +78,9 @@ Blender는 마우스 드래그보다 **"단축키 + 축 + 수치"** 조합으로
 
 ## 모델링 이후의 흐름
 
-```text
-Shading(표면 다듬기) → Material/Texture(색·질감) → UV(전개도) → Rigging(뼈 심기)
+```mermaid
+flowchart LR
+    A["Shading(표면 다듬기)"] --> B["Material/Texture(색·질감)"] --> C["UV(전개도)"] --> D["Rigging(뼈 심기)"]
 ```
 
 | 단계 | 하는 일 | 방법·주의 |

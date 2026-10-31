@@ -18,10 +18,9 @@ sources: ["https://velog.io/@teo/folder-structure"]
 
 ## 1부. 일반적인 구조가 되기까지
 
-```text
-역할 기반 ─▶ 역할 안 세분화 ─▶ Atomic Design ─▶ UI / 도메인 분리 ─▶ 페이지 독립
-(components,   (파일이 많아짐)     (계층만으로는      (도메인 축 발견)      (파일 기반 라우팅)
- hooks, ...)                       분류 불가)
+```mermaid
+flowchart LR
+  A["역할 기반<br>(components, hooks, ...)"] --> B["역할 안 세분화<br>(파일이 많아짐)"] --> C["Atomic Design<br>(계층만으로는 분류 불가)"] --> D["UI / 도메인 분리<br>(도메인 축 발견)"] --> E["페이지 독립<br>(파일 기반 라우팅)"]
 ```
 
 ### 1. 역할 기반 구조

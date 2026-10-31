@@ -19,9 +19,14 @@ sources: ["https://www.techinterviewhandbook.org/engineering-levels/", "https://
 
 ## 레벨별 기대치
 
-```text
-주니어 → 엔지니어 → 시니어 → 스태프 → 시니어 스태프 → 프린시플 → Distinguished
- 개인       개인·팀      팀       여러 팀     조직·회사        회사·업계       업계
+```mermaid
+flowchart LR
+  L1["주니어<br/>개인"] --> L2["엔지니어<br/>개인·팀"]
+  L2 --> L3["시니어<br/>팀"]
+  L3 --> L4["스태프<br/>여러 팀"]
+  L4 --> L5["시니어 스태프<br/>조직·회사"]
+  L5 --> L6["프린시플<br/>회사·업계"]
+  L6 --> L7["Distinguished<br/>업계"]
 ```
 
 | 레벨 | 영향 범위 | 일의 크기 | 기대 역할 | 통상 경력 |

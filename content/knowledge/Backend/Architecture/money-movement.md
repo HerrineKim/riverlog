@@ -37,10 +37,16 @@ sources: ["https://bytebytego.com/guides/money-movement", "https://bytebytego.co
 
 ### 세 층
 
-```text
-거래 층(transaction)      : 온라인 구매가 일어나는 곳 (쇼핑몰, PayPal)     ┐
-지급·청산 층(payment/clearing): 지급 지시와 상계가 일어나는 곳 (청산 기관)  ┘ 정보 흐름
-결제 층(settlement)       : 실제 돈이 움직이는 곳 (결제 은행의 준비금 계좌)    자금 흐름
+```mermaid
+flowchart TB
+  subgraph INFO["정보 흐름"]
+    T["거래 층(transaction)<br>온라인 구매가 일어나는 곳 (쇼핑몰, PayPal)"]
+    P["지급·청산 층(payment/clearing)<br>지급 지시와 상계가 일어나는 곳 (청산 기관)"]
+  end
+  subgraph FUND["자금 흐름"]
+    S["결제 층(settlement)<br>실제 돈이 움직이는 곳 (결제 은행의 준비금 계좌)"]
+  end
+  T ~~~ P ~~~ S
 ```
 
 **정보 흐름과 자금 흐름은 분리돼 있다.** 정보 흐름에서는 한 계좌에서 빠지고 다른 계좌에 더해진 것처럼 보이지만, 실제 돈은 하루가 끝날 때 결제 은행에서 움직인다. 둘이 비동기로 움직이므로 **각 단계마다 대사(reconciliation)** 가 필요하다. 대사의 실무는 [[payment-system|결제 시스템 설계]]에서 다룬다.

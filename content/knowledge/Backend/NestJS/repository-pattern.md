@@ -9,8 +9,9 @@ date: "2026-10-13"
 
 기존 구조는 `Controller → Service → DB`였다. 리포지토리 패턴은 서비스와 DB 사이에 **데이터 접근만 담당하는 중개자(Repository)를** 둔다.
 
-```text
-Controller → Service (비즈니스 로직) → Repository (데이터 접근) → DB
+```mermaid
+flowchart LR
+  n1["Controller"] --> n2["Service<br/>(비즈니스 로직)"] --> n3["Repository<br/>(데이터 접근)"] --> n4["DB"]
 ```
 
 필수는 아니며, 프로젝트 규모와 상황에 맞게 적용한다.

@@ -104,12 +104,15 @@ flowchart TB
 
 디자인을 먼저 하고 구현하는 방식에서 생기는 **순환 참조**다. 디자인은 어떤 상태가 생길지 미리 알기 어려워 개발에 의존하고, 개발은 디자인이 나와야 코드를 쓸 수 있다고 여겨 디자인에 의존한다. 코드에서 의존 방향을 인터페이스로 뒤집듯, 일하는 방식에도 **공통 인터페이스**를 둔다. 앞의 해부에서 공통 관심사는 구조, 상태, 맥락이다.
 
-```text
-① 디자이너 + 개발자: 간단한 스케치로 구조와 상태 옵션을 함께 정한다 (= 공통 인터페이스)
-② 개발자: 구조에서 기능·접근성에 의미 있는 것만 남기고 상태 전이를 정리
-         → 헤드리스 컴포넌트 구현 (또는 기존 라이브러리)
-③ 디자이너: 상태 옵션에 맞춰 구조대로 컴포넌트를 디자인
-④ 개발자: 디자인으로 스타일을 쓰고 헤드리스 컴포넌트와 결합 → Figma와 동기화된 컴포넌트
+```mermaid
+flowchart TB
+  S1["① 디자이너 + 개발자<br/>간단한 스케치로 구조와 상태 옵션을 함께 정한다 (= 공통 인터페이스)"]
+  S2["② 개발자<br/>구조에서 기능·접근성에 의미 있는 것만 남기고 상태 전이를 정리"]
+  S2b["헤드리스 컴포넌트 구현 (또는 기존 라이브러리)"]
+  S3["③ 디자이너<br/>상태 옵션에 맞춰 구조대로 컴포넌트를 디자인"]
+  S4["④ 개발자<br/>디자인으로 스타일을 쓰고 헤드리스 컴포넌트와 결합"]
+  S4b["Figma와 동기화된 컴포넌트"]
+  S1 --> S2 --> S2b --> S3 --> S4 --> S4b
 ```
 
 「Figma → 개발」 순서를 「공통 인터페이스 → Figma와 개발」로 바꾸는 것이다. 즉 Figma도 개발과 같은 하나의 구현체로 취급한다. 디자이너와 협업하는 일반적인 방법은 [[working-with-designers|디자이너와 함께 일하기]]에 있다.
@@ -156,14 +159,15 @@ flowchart TB
 
 CSS와 JavaScript는 언어가 달라 훅처럼 래퍼를 쓸 수 없다. 대신 하나의 스키마에서 CSS와 CSS-in-JS 코드를 함께 생성해 둘이 어긋나지 않게 한다.
 
-```text
-스키마
-  구조:     부품 네 개 (예: root, control, icon, label)
-  시각 옵션: size = large → root.height 32px / medium → 24px   (Stitches·cva의 variants와 비슷한 표현)
-  상태 옵션: [data-checked] → control.background = primary
-     ↓ 생성
-  CSS:      구조와 시각 옵션에서 규칙대로 만든 클래스명, 상태는 PostCSS 중첩으로 선택자 생성
-  JS:       CheckboxVariantProps 타입 + 시각 옵션을 부품별 클래스명으로 바꾸는 함수
+```mermaid
+flowchart TB
+  subgraph Schema["스키마"]
+    A["구조: 부품 네 개 (예: root, control, icon, label)"]
+    B["시각 옵션: size = large → root.height 32px / medium → 24px<br/>(Stitches·cva의 variants와 비슷한 표현)"]
+    C["상태 옵션: [data-checked] → control.background = primary"]
+  end
+  Schema -- "생성" --> CSS["CSS<br/>구조와 시각 옵션에서 규칙대로 만든 클래스명, 상태는 PostCSS 중첩으로 선택자 생성"]
+  Schema -- "생성" --> JS["JS<br/>CheckboxVariantProps 타입 + 시각 옵션을 부품별 클래스명으로 바꾸는 함수"]
 ```
 
 `data-checked` 같은 선택자는 HTML이 알아서 넣어 주지 않으므로, DOM 바인딩에서 control에 상태를 데이터 속성으로 내보내는 코드를 더한다. 상태 옵션이 기능과 형태의 공통 관심사였음을 생각하면 당연히 생기는 코드다.

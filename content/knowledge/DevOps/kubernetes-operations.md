@@ -130,15 +130,19 @@ Helm은 훅 Job이 끝날 때까지 기다리고, 실패하면 릴리스도 실�
 
 ### 절차
 
-```text
-1. 준비: 릴리스 노트의 제거된 API·동작 변경 확인 (쓰는 매니페스트·차트에 제거될 apiVersion이 있는지 점검)
-         etcd 백업, 애드온(CNI, CoreDNS, CSI, Ingress 컨트롤러)의 호환 버전 확인, 스테이징에서 먼저
-2. 컨트롤 플레인: 첫 노드에서 kubeadm upgrade plan → kubeadm upgrade apply v1.36.x
-                 나머지 컨트롤 플레인 노드에서 kubeadm upgrade node, kubelet·kubectl 올리기
-3. 애드온: CNI 등 업그레이드
-4. 워커 노드 (한 대씩, 또는 새 버전 노드를 추가하고 옛 노드를 빼는 방식)
-   kubectl drain → kubeadm·kubelet 패키지 업그레이드 → kubelet 재시작 → kubectl uncordon
-5. 확인: 노드 버전, 파드 상태, 지표·알림
+```mermaid
+flowchart TB
+  S1["1. 준비<br>릴리스 노트의 제거된 API·동작 변경 확인<br>(쓰는 매니페스트·차트에 제거될 apiVersion이 있는지 점검)<br>etcd 백업, 애드온(CNI, CoreDNS, CSI, Ingress 컨트롤러)의 호환 버전 확인, 스테이징에서 먼저"]
+  subgraph CP["2. 컨트롤 플레인"]
+    C1["첫 노드에서 kubeadm upgrade plan"] --> C2["kubeadm upgrade apply v1.36.x"]
+    C2 --> C3["나머지 컨트롤 플레인 노드에서<br>kubeadm upgrade node, kubelet·kubectl 올리기"]
+  end
+  S3["3. 애드온<br>CNI 등 업그레이드"]
+  subgraph WK["4. 워커 노드 (한 대씩, 또는 새 버전 노드를 추가하고 옛 노드를 빼는 방식)"]
+    W1["kubectl drain"] --> W2["kubeadm·kubelet 패키지 업그레이드"] --> W3["kubelet 재시작"] --> W4["kubectl uncordon"]
+  end
+  S5["5. 확인<br>노드 버전, 파드 상태, 지표·알림"]
+  S1 --> CP --> S3 --> WK --> S5
 ```
 
 관리형 쿠버네티스는 컨트롤 플레인 업그레이드를 버튼 하나로 해 주고, 노드는 노드 그룹을 새 버전 이미지로 롤링 교체한다. 그래도 제거된 API 점검과 애드온 호환성 확인은 사용자 몫이다. 노드를 제자리에서 고치지 않고 교체하는 방식이 되돌리기 쉽다.

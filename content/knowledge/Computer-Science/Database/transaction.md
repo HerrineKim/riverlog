@@ -119,14 +119,17 @@ MVCC는 행을 덮어쓰지 않고 **새 버전을 만들고 옛 버전을 남�
 - 각 행에는 숨은 컬럼이 있다. 마지막으로 고친 트랜잭션 ID(`DB_TRX_ID`)와, undo 로그의 이전 버전을 가리키는 롤 포인터(`DB_ROLL_PTR`)다. 버전들이 포인터로 이어진 체인이 된다.
 - 읽는 트랜잭션은 **읽기 뷰(read view)** 를 만든다. 「이 시점에 커밋되지 않았던 트랜잭션 ID 목록」이다. 행의 트랜잭션 ID가 그 목록에 있거나 더 나중이면 보이지 않으므로, 롤 포인터를 따라 보이는 버전까지 거슬러 올라간다.
 
-```text
-balance 행의 버전 체인
-  [trx 201, balance=200] ──roll_ptr──▶ [trx 200, balance=100] (커밋됨)
-     ▲ 트랜잭션 A가 수정 중(미커밋)
-
-트랜잭션 B의 읽기 뷰: 201은 미커밋 → 건너뛰고 trx 200 버전을 읽는다 → 100
-A가 커밋한 뒤에도 B(Repeatable Read)는 처음 만든 읽기 뷰를 계속 써서 100을 본다
+```mermaid
+flowchart LR
+  subgraph chain["balance 행의 버전 체인"]
+    v201["trx 201, balance=200"] -->|"roll_ptr"| v200["trx 200, balance=100<br/>(커밋됨)"]
+  end
+  ta["트랜잭션 A가 수정 중(미커밋)"] --> v201
+  rb["트랜잭션 B의 읽기 뷰"] -.->|"201은 미커밋 → 건너뛰고"| v201
+  rb -->|"trx 200 버전을 읽는다 → 100"| v200
 ```
+
+A가 커밋한 뒤에도 B(Repeatable Read)는 처음 만든 읽기 뷰를 계속 써서 100을 본다.
 
 | 수준 | 읽기 뷰를 만드는 때 | 결과 |
 | --- | --- | --- |
@@ -196,13 +199,22 @@ InnoDB의 Repeatable Read는 순수한 스냅숏 격리와 다르다. 일반 `SE
 
 **쓰기 스큐(write skew)** 는 두 트랜잭션이 **같은 조건을 읽고, 서로 다른 행을 고쳐서** 둘이 합쳐지면 조건이 깨지는 현상이다. 고친 행이 다르니 쓰기 충돌 검사에 걸리지 않는다.
 
-```text
-규칙: 당직 의사는 최소 1명 (현재 A, B 두 명이 당직)
-
-T1(A): SELECT count(*) FROM oncall WHERE on_duty → 2   T2(B): SELECT count(*) ... → 2
-T1: 2명이니 빠져도 된다 → UPDATE oncall SET on_duty=false WHERE doctor='A'
-                                                     T2: UPDATE ... WHERE doctor='B'
-T1 COMMIT, T2 COMMIT  → 당직 0명. 둘 다 각자의 스냅숏에서는 옳았다
+```mermaid
+sequenceDiagram
+  participant T1 as T1(A)
+  participant DB as oncall
+  participant T2 as T2(B)
+  Note over T1,T2: 규칙: 당직 의사는 최소 1명 (현재 A, B 두 명이 당직)
+  T1->>DB: SELECT count(*) FROM oncall WHERE on_duty
+  DB-->>T1: 2
+  T2->>DB: SELECT count(*) ...
+  DB-->>T2: 2
+  Note over T1: 2명이니 빠져도 된다
+  T1->>DB: UPDATE oncall SET on_duty=false WHERE doctor='A'
+  T2->>DB: UPDATE ... WHERE doctor='B'
+  T1->>DB: COMMIT
+  T2->>DB: COMMIT
+  Note over T1,T2: 당직 0명. 둘 다 각자의 스냅숏에서는 옳았다
 ```
 
 막는 방법은 세 가지다. 판단 근거가 된 행을 `SELECT ... FOR UPDATE`로 잠그거나, 충돌을 표현하는 행(당직표 한 행 같은 잠금용 행)을 두어 실제 쓰기 충돌로 바꾸거나, Serializable 격리를 쓴다.
@@ -429,11 +441,12 @@ DBMS는 데이터를 고정 크기 **페이지** 단위로 읽고 쓰며, 메모
 
 장애 뒤 재시작할 때 ARIES 계열 DBMS는 다음 순서로 복구한다.
 
-```text
-1. 분석: 마지막 검사점부터 로그 끝까지 훑어 복구 시작점과 미완료 트랜잭션을 찾는다
-2. REDO: 시작점부터 장애 직전까지 모든 로그를 다시 적용한다 (실패한 트랜잭션 것도)
-         → "역사를 반복"해 장애 시점 상태를 그대로 재현한다
-3. UNDO: 로그를 거꾸로 훑으며 미완료 트랜잭션을 철회한다
+```mermaid
+flowchart TB
+  a["1. 분석<br/>마지막 검사점부터 로그 끝까지 훑어 복구 시작점과 미완료 트랜잭션을 찾는다"]
+  r["2. REDO<br/>시작점부터 장애 직전까지 모든 로그를 다시 적용한다 (실패한 트랜잭션 것도)<br/>→ #quot;역사를 반복#quot;해 장애 시점 상태를 그대로 재현한다"]
+  u["3. UNDO<br/>로그를 거꾸로 훑으며 미완료 트랜잭션을 철회한다"]
+  a --> r --> u
 ```
 
 - 페이지마다 마지막으로 반영된 로그의 **page LSN**을 적어 두어, 이미 반영된 로그는 건너뛴다.

@@ -16,8 +16,9 @@ sources: ["https://web.dev/learn/performance/general-html-performance", "https:/
 
 TTFB는 다음 시간을 모두 포함한다.
 
-```text
-리디렉션 → 서비스 워커 시작 → DNS → TCP·TLS 연결 → 요청 → 서버 처리 → 첫 바이트 도착
+```mermaid
+flowchart LR
+  a["리디렉션"] --> b["서비스 워커 시작"] --> c["DNS"] --> d["TCP·TLS 연결"] --> e["요청"] --> f["서버 처리"] --> g["첫 바이트 도착"]
 ```
 
 연결 단계의 비용은 [[url-to-page|브라우저에 URL을 입력하면 일어나는 일]]에, 회선별 왕복 시간은 [[frontend-latency-numbers|지연 시간 숫자]]에 있다.

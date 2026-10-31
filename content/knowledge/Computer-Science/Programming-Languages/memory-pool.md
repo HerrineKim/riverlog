@@ -62,13 +62,18 @@ public:
 
 고정 풀의 한계는 **용량이 처음에 정해진다**는 것이다. 최대 사용량을 아는 프로그램이면 충분하지만, 모르면 풀이 꽉 찬 순간 할당이 실패한다.
 
-```text
-VariablePool
- ├─ chunk 0: FixedPool  (가득 참)
- ├─ chunk 1: FixedPool  (빈 칸 있음) ← 여기서 할당
- └─ 모두 가득 차면 chunk 2를 새로 malloc해 목록에 추가
+```mermaid
+flowchart TB
+    vp["VariablePool"] --> c0["chunk 0: FixedPool<br>(가득 참)"]
+    vp --> c1["chunk 1: FixedPool<br>(빈 칸 있음) ← 여기서 할당"]
+    vp --> c2["모두 가득 차면 chunk 2를<br>새로 malloc해 목록에 추가"]
+```
 
-블록 = [ chunk 번호 | 데이터 ]   ← 해제 시 앞쪽 헤더를 읽어 어느 청크로 돌려줄지 안다
+블록 하나의 구조:
+
+```mermaid
+flowchart LR
+    hdr["chunk 번호<br/>← 해제 시 앞쪽 헤더를 읽어 어느 청크로 돌려줄지 안다"] ~~~ data["데이터"]
 ```
 
 각 블록 앞에 출신 청크 번호를 붙여 두면 `free`할 때 주소 몇 바이트 앞만 읽어 올바른 청크로 돌려보낼 수 있다.

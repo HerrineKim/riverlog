@@ -104,12 +104,21 @@ class Form {
 
 경로를 찾는 순서는 이렇다.
 
-```text
-import { x } from './util'        상대 경로: 현재 파일 기준으로 util.ts → util.tsx → util.d.ts → util/index.ts …
-import { y } from 'pkg/sub'       패키지: ./node_modules/pkg → ../node_modules/pkg → … 루트까지 올라간다
-                                   찾은 패키지에서 package.json의 exports(types 조건) → types → main 순으로 본다
-import { z } from '@app/z'        paths 별칭: tsconfig의 paths로 바꾼 뒤 위 규칙
-import { w } from '#/w'           subpath imports: package.json의 imports 필드 (bundler·nodenext)
+상대 경로와 패키지 이름은 이렇게 찾는다.
+
+```mermaid
+flowchart LR
+  x["import { x } from './util'"] -->|"상대 경로: 현재 파일 기준으로"| x1["util.ts"] --> x2["util.tsx"] --> x3["util.d.ts"] --> x4["util/index.ts"] --> x5["…"]
+  y["import { y } from 'pkg/sub'"] -->|"패키지"| y1["./node_modules/pkg"] --> y2["../node_modules/pkg"] --> y3["… 루트까지 올라간다"]
+  y3 -->|"찾은 패키지에서 package.json을 이 순으로 본다"| y4["exports(types 조건)"] --> y5["types"] --> y6["main"]
+```
+
+별칭과 subpath imports는 이렇게 찾는다.
+
+```mermaid
+flowchart LR
+  z["import { z } from '@app/z'"] -->|"paths 별칭"| z1["tsconfig의 paths로 바꾼 뒤"] --> z2["위 규칙"]
+  w["import { w } from '#/w'"] -->|"subpath imports"| w1["package.json의 imports 필드<br/>(bundler·nodenext)"]
 ```
 
 - `paths`는 **타입 검사용 별칭일 뿐** 실행 코드의 경로를 바꾸지 않는다. 번들러의 `resolve.alias`나 `package.json`의 `imports`도 같이 맞춘다. 번들러와 Node.js가 모두 이해하는 `imports`(`"#/*": "./src/*"`)가 가장 이식성이 좋다.

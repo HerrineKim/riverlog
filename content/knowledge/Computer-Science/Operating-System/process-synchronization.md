@@ -26,14 +26,17 @@ sources: ["https://app.notion.com/p/0bf3e529b09e4d4b896e90f1c8203882", "https://
 
 계좌 잔액으로 보면 더 분명하다. 잔액이 10만 원일 때 A는 2만 원을, B는 5만 원을 더한다. 기대하는 결과는 17만 원이다.
 
-```text
-A: 잔액 읽기 (10만)  → 2만 더하기 (12만)
-        ── 문맥 교환 ──
-B: 잔액 읽기 (10만)  → 5만 더하기 (15만)
-        ── 문맥 교환 ──
-A: 저장 → 잔액 12만
-        ── 문맥 교환 ──
-B: 저장 → 잔액 15만   // A의 입금이 사라진다
+```mermaid
+sequenceDiagram
+    participant A
+    participant B
+    Note over A: 잔액 읽기 (10만) → 2만 더하기 (12만)
+    A->>B: 문맥 교환
+    Note over B: 잔액 읽기 (10만) → 5만 더하기 (15만)
+    B->>A: 문맥 교환
+    Note over A: 저장 → 잔액 12만
+    A->>B: 문맥 교환
+    Note over B: 저장 → 잔액 15만<br>A의 입금이 사라진다
 ```
 
 A의 "읽고 더하고 저장"이 끝나기 전에 B가 같은 잔액에 접근했기 때문이다. A가 잔액을 다루는 동안에는 B가 문맥 교환으로 CPU를 받더라도 기다려야 한다.
@@ -174,13 +177,26 @@ Block/Wakeup에서 `value`가 음수이면 그 절댓값이 기다리는 프로�
 
 자원이 2개(`S = 2`)이고 P1, P2, P3 순서로 들어오는 경우를 따라가면 다음과 같다.
 
-```text
-P1: P(S) → S = 1, 진입
-P2: P(S) → S = 0, 진입
-P3: P(S) → S = -1, 대기 큐로 (block)
-P1: V(S) → S = 0, 기다리던 P3를 깨움 (wakeup) → P3 진입
-P2: V(S) → S = 1
-P3: V(S) → S = 2   // 처음 값으로 돌아온다
+```mermaid
+sequenceDiagram
+    participant P1
+    participant P2
+    participant P3
+    participant S as 세마포어 S
+    P1->>S: P(S)
+    Note over S: S = 1, P1 진입
+    P2->>S: P(S)
+    Note over S: S = 0, P2 진입
+    P3->>S: P(S)
+    Note over S: S = -1, P3는 대기 큐로 (block)
+    P1->>S: V(S)
+    Note over S: S = 0
+    S->>P3: 기다리던 P3를 깨움 (wakeup)
+    Note over P3: P3 진입
+    P2->>S: V(S)
+    Note over S: S = 1
+    P3->>S: V(S)
+    Note over S: S = 2, 처음 값으로 돌아온다
 ```
 
 ### 세마포어로 실행 순서 제어하기

@@ -222,10 +222,21 @@ flowchart TB
 
 ### 로그 컴팩션
 
-```text
-컴팩션 전:  K1=a  K2=b  K1=c  K3=d  K2=null  K1=e
-컴팩션 후:              K3=d  K2=null  K1=e     (K2=null은 tombstone, 일정 시간 뒤 사라진다)
-오프셋:      0     1     2     3     4        5  → 남은 레코드의 오프셋은 그대로다
+```mermaid
+flowchart TB
+  subgraph row1[" "]
+    direction LR
+    r1["컴팩션 전"] ~~~ a0["K1=a"] ~~~ a1["K2=b"] ~~~ a2["K1=c"] ~~~ a3["K3=d"] ~~~ a4["K2=null"] ~~~ a5["K1=e"]
+  end
+  subgraph row2[" "]
+    direction LR
+    r2["컴팩션 후"] ~~~ s1[" "] ~~~ s2[" "] ~~~ s3[" "] ~~~ b3["K3=d"] ~~~ b4["K2=null<br/>(tombstone, 일정 시간 뒤 사라진다)"] ~~~ b5["K1=e"]
+  end
+  subgraph row3[" "]
+    direction LR
+    r3["오프셋<br/>남은 레코드의 오프셋은 그대로다"] ~~~ o0["0"] ~~~ o1["1"] ~~~ o2["2"] ~~~ o3["3"] ~~~ o4["4"] ~~~ o5["5"]
+  end
+  row1 ~~~ row2 ~~~ row3
 ```
 
 | 규칙 | 내용 |
@@ -290,13 +301,11 @@ ACL이 하나도 없는 자원은 기본적으로 거부된다(`allow.everyone.i
 
 브로커를 내릴 때는 **통제된 종료(controlled shutdown, 기본 켜짐)** 가 그 브로커가 리더인 파티션의 리더십을 미리 다른 ISR로 옮긴다. 그래서 갑자기 죽을 때보다 사용 불가 시간이 짧다.
 
-```text
-for 브로커 in 클러스터:
-  1. 브로커를 정상 종료한다 (리더십이 먼저 옮겨진다)
-  2. 바이너리·설정을 바꾸고 다시 띄운다
-  3. UnderReplicatedPartitions가 0이 될 때까지 기다린다  ← 이걸 건너뛰면 다음 브로커를 내릴 때 ISR이 부족해진다
-  4. 다음 브로커로
-업그레이드라면 모든 브로커를 올린 뒤 메타데이터 버전을 올린다 (kafka-features.sh upgrade)
+```mermaid
+flowchart TB
+  L["for 브로커 in 클러스터"] --> S1["1. 브로커를 정상 종료한다<br>(리더십이 먼저 옮겨진다)"] --> S2["2. 바이너리·설정을 바꾸고 다시 띄운다"] --> S3["3. UnderReplicatedPartitions가 0이 될 때까지 기다린다<br>이걸 건너뛰면 다음 브로커를 내릴 때 ISR이 부족해진다"] --> S4["4. 다음 브로커로"]
+  S4 --> S1
+  S4 -- "업그레이드라면 모든 브로커를 올린 뒤" --> U["메타데이터 버전을 올린다<br>(kafka-features.sh upgrade)"]
 ```
 
 복제 계수 3, `min.insync.replicas=2`면 브로커 한 대가 내려가도 `acks=all` 쓰기가 계속된다. 한 번에 두 대를 내리면 쓰기가 멈추는 파티션이 생긴다. 메타데이터 버전을 마지막에 올리는 이유는 그 전까지 옛 버전으로 되돌릴 수 있게 하기 위해서다. 클러스터 자체를 바꿔야 하면 MirrorMaker 2로 새 클러스터에 데이터를 복제해 두고 클라이언트를 옮긴다.

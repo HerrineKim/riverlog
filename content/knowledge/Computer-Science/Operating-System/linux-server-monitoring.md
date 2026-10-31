@@ -46,13 +46,14 @@ sources: ["https://www.mimul.com/blog/linux-server-operations/", "https://brunch
 
 ### 메모리가 바닥날 때 벌어지는 일
 
-```text
-1. 프로세스가 메모리를 더 쓴다 → 커널이 페이지 캐시를 회수해 넘겨준다 (buff/cache 감소)
-2. 캐시가 거의 없다 → 실행 파일·라이브러리 코드 페이지까지 쫓겨난다
-   → 프로세스가 돌 때마다 코드를 디스크에서 다시 읽는다 (vmstat의 bi 급증)
-   → 시스템 전체가 극도로 느려진다. ls 하나에 몇 초 (스래싱)
-3. 그래도 모자라면 OOM Killer가 점수(oom_score)가 높은 프로세스를 죽인다
-   → dmesg에 "Out of memory: Killed process ..." 기록
+```mermaid
+flowchart TB
+  s1["1. 프로세스가 메모리를 더 쓴다"] --> s1b["커널이 페이지 캐시를 회수해 넘겨준다<br/>(buff/cache 감소)"]
+  s1b --> s2["2. 캐시가 거의 없다"] --> s2b["실행 파일·라이브러리 코드 페이지까지 쫓겨난다"]
+  s2b --> s2c["프로세스가 돌 때마다 코드를 디스크에서 다시 읽는다<br/>(vmstat의 bi 급증)"]
+  s2c --> s2d["시스템 전체가 극도로 느려진다. ls 하나에 몇 초 (스래싱)"]
+  s2d --> s3["3. 그래도 모자라면 OOM Killer가 점수(oom_score)가 높은 프로세스를 죽인다"]
+  s3 --> s3b["dmesg에 #quot;Out of memory: Killed process ...#quot; 기록"]
 ```
 
 - 스왑이 있으면 2단계에서 잘 안 쓰는 익명 메모리를 디스크로 내려 버티지만, 디스크 I/O 비용이 든다. 스왑 없이 운영하면 OOM이 빨리 온다.

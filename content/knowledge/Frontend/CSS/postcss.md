@@ -14,8 +14,11 @@ sources: ["https://www.smashingmagazine.com/2015/12/introduction-to-postcss/", "
 
 PostCSS는 **JS 플러그인으로 CSS를 변환하는 도구**다. CSS를 파싱해 추상 구문 트리(AST)로 만들고, 플러그인이 그 트리를 고친 뒤 다시 CSS 문자열로 내보낸다. PostCSS 자체는 API일 뿐 아무 변환도 하지 않는다. 기능은 전부 플러그인에서 나온다. Autoprefixer를 만든 Andrey Sitnik이 만들었고, 소스 맵을 함께 만든다.
 
-```text
-CSS 문자열 ─ 파서 ─▶ AST ─ 플러그인 1 ─ 플러그인 2 ─ … ─▶ 문자열화 ─▶ CSS + 소스 맵
+```mermaid
+flowchart LR
+  src["CSS 문자열"] --> parser["파서"] --> ast["AST"]
+  ast --> pl1["플러그인 1"] --> pl2["플러그인 2"] --> more["…"]
+  more --> str["문자열화"] --> out["CSS + 소스 맵"]
 ```
 
 "후처리기(post-processor)"라는 이름과 달리, 빌드 단계에서 확장 문법을 CSS로 바꾼다는 점에서 전처리기와 같은 자리에 선다.
