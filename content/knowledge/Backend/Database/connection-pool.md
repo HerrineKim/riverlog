@@ -14,23 +14,23 @@ sources: ["https://d2.naver.com/helloworld/5102792", "https://techblog.woowahan.
 
 DB 연결을 맺는 데는 TCP 연결, 인증, 세션 초기화가 든다. 요청마다 연결을 새로 맺으면 그 비용을 매번 치르고, 동시 요청이 몰리면 DB가 감당할 수 없는 수의 연결이 생긴다. **커넥션 풀**은 연결을 미리 만들어 두고 빌려준 뒤 돌려받아 재사용한다.
 
-```text
-요청 스레드 ──getConnection()──▶ [ 풀: 유휴 연결 ▢▢▢ | 사용 중 ■■ ] ──▶ DB
-            ◀── close() = 반납 ──┘
+```mermaid
+flowchart LR
+  t["요청 스레드"] -->|"getConnection()"| pool["풀: 유휴 연결 ▢▢▢ | 사용 중 ■■"] --> db["DB"]
+  t -->|"close() = 반납"| pool
 ```
 
 ### 연결 하나가 만들어지는 과정
 
 애플리케이션은 DB 프로토콜을 직접 다루지 않고 **드라이버**(JDBC 드라이버, `psycopg`, `mysql2` 등)를 통해 연결한다.
 
-```text
-1. 설정 읽기    URL(jdbc:postgresql://host:5432/app), 사용자, 비밀번호, 옵션
-2. TCP 연결     DNS 조회 → 3-way handshake (원격이면 왕복 1번 이상)
-3. TLS          설정했다면 TLS 핸드셰이크 (왕복이 더 든다)
-4. 핸드셰이크·인증  서버 버전·기능 교환, 인증 방식 협상(MySQL caching_sha2_password, PostgreSQL SCRAM-SHA-256)
-5. 세션 준비    서버가 세션을 만든다(PostgreSQL은 연결마다 백엔드 프로세스를 fork, MySQL은 스레드 할당)
-               문자 집합, 시간대, 자동 커밋, 격리 수준 같은 세션 변수 설정
-6. 쿼리 송수신  이후 같은 연결로 쿼리를 보내고 결과를 받는다
+```mermaid
+flowchart TB
+  S1["1. 설정 읽기<br/>URL(jdbc:postgresql://host:5432/app), 사용자, 비밀번호, 옵션"] --> S2["2. TCP 연결<br/>DNS 조회 → 3-way handshake (원격이면 왕복 1번 이상)"]
+  S2 --> S3["3. TLS<br/>설정했다면 TLS 핸드셰이크 (왕복이 더 든다)"]
+  S3 --> S4["4. 핸드셰이크·인증<br/>서버 버전·기능 교환, 인증 방식 협상(MySQL caching_sha2_password, PostgreSQL SCRAM-SHA-256)"]
+  S4 --> S5["5. 세션 준비<br/>서버가 세션을 만든다(PostgreSQL은 연결마다 백엔드 프로세스를 fork, MySQL은 스레드 할당)<br/>문자 집합, 시간대, 자동 커밋, 격리 수준 같은 세션 변수 설정"]
+  S5 --> S6["6. 쿼리 송수신<br/>이후 같은 연결로 쿼리를 보내고 결과를 받는다"]
 ```
 
 Java에서는 `DriverManager.getConnection()`이 이 과정을 매번 처음부터 하고, 실무에서는 `DataSource` 인터페이스 뒤에 커넥션 풀 구현체를 둬서 이미 만들어진 연결을 꺼내 준다. 2~5단계가 요청마다 반복되는 비용이 풀을 쓰는 이유다.
@@ -63,11 +63,12 @@ Java에서는 `DriverManager.getConnection()`이 이 과정을 매번 처음부�
 
 풀이 비었을 때 연결을 기다리는 주체는 **요청을 처리하는 스레드**다.
 
-```text
-DB가 느려짐 → 연결 반납이 늦어짐 → 풀이 빔
-  → 새 요청 스레드가 connectionTimeout 동안 대기
-    → 대기 스레드가 쌓여 웹 서버 스레드 풀이 고갈
-      → DB와 상관없는 요청까지 전부 멈춤
+```mermaid
+flowchart TB
+  a["DB가 느려짐"] --> b["연결 반납이 늦어짐"] --> c["풀이 빔"]
+  c --> d["새 요청 스레드가 connectionTimeout 동안 대기"]
+  d --> e["대기 스레드가 쌓여 웹 서버 스레드 풀이 고갈"]
+  e --> f["DB와 상관없는 요청까지 전부 멈춤"]
 ```
 
 - 대기 시간이 길면 장애가 **전체 서비스 정지로 번진다.** 게다가 오래 기다려 응답해도 사용자는 이미 떠난 뒤다.

@@ -5,10 +5,10 @@ summary: "PR을 합칠 때 merge 커밋, squash, rebase·인터랙티브 rebase�
 tags: ["git", "version-control", "merge", "branch"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/git-merge-vs-git-rebate", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://evan-moon.github.io/2019/08/30/commit-history-merge-strategy"]
+sources: ["https://bytebytego.com/guides/git-merge-vs-git-rebate", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://evan-moon.github.io/2019/08/30/commit-history-merge-strategy", "https://gist.github.com/mitchellh/319019b1b8aac9110fcfb1862e0c97fb"]
 ---
 
-> Mitchell Hashimoto가 gist에 올린 것으로 알려진 merge·squash·rebase에 대한 글을 바탕으로 재구성한 노트다. 팀마다 기본 전략이 다를 수 있는 실무 기준이다. rebase의 황금률은 ByteByteGo의 System Design 101 가이드 「[Git Merge vs. Git Rebase](https://bytebytego.com/guides/git-merge-vs-git-rebate)」를 바탕으로 보강했다. 인터랙티브 rebase 명령표는 arslanbilal의 「[Git and Git Flow Cheat Sheet](https://github.com/arslanbilal/git-cheat-sheet)」와 mingrammer의 「[Git Tips](https://github.com/mingrammer/git-tips)」를 바탕으로 보강했다.
+> Mitchell Hashimoto가 gist에 올린 「[Merge vs. Rebase vs. Squash](https://gist.github.com/mitchellh/319019b1b8aac9110fcfb1862e0c97fb)」를 바탕으로 재구성한 노트다. 팀마다 기본 전략이 다를 수 있는 실무 기준이다. rebase의 황금률은 ByteByteGo의 System Design 101 가이드 「[Git Merge vs. Git Rebase](https://bytebytego.com/guides/git-merge-vs-git-rebate)」를 바탕으로 보강했다. 인터랙티브 rebase 명령표는 arslanbilal의 「[Git and Git Flow Cheat Sheet](https://github.com/arslanbilal/git-cheat-sheet)」와 mingrammer의 「[Git Tips](https://github.com/mingrammer/git-tips)」를 바탕으로 보강했다.
 > 「호스팅 서비스의 병합 버튼」은 「[merge, squash, rebase 전략과 커밋 히스토리](https://evan-moon.github.io/2019/08/30/commit-history-merge-strategy)」를 바탕으로 보강했다.
 
 ## 정답은 하나가 아니다
@@ -46,11 +46,22 @@ merge 안의 커밋:  +50/-50      → "아, 여기다" 하고 바로 찾음 (�
 
 `git rebase main`은 내 브랜치가 **마치 최신 main에서 시작한 것처럼** 시작점을 옮긴다. merge가 기준 브랜치의 변경을 merge 커밋 하나로 합치는 것과 달리, rebase는 내 커밋들을 최신 main 뒤에 하나씩 다시 쌓는다.
 
-```text
-merge:   main ─A─B─C──────M      (M = merge 커밋)
-               └─X─Y─┘
-rebase:  main ─A─B─C─X'─Y'       (X, Y가 새 커밋 X', Y'로 다시 만들어짐)
+merge:
+
+```mermaid
+flowchart LR
+    main["main"] --- A["A"] --> B["B"] --> C["C"] --> M["M<br/>(M = merge 커밋)"]
+    A --> X["X"] --> Y["Y"] --> M
 ```
+
+rebase:
+
+```mermaid
+flowchart LR
+    main["main"] --- A["A"] --> B["B"] --> C["C"] --> X2["X'"] --> Y2["Y'"]
+```
+
+(X, Y가 새 커밋 X', Y'로 다시 만들어짐)
 
 | 장점 | 주의 |
 | --- | --- |

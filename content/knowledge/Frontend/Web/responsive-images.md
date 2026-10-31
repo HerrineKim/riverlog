@@ -35,14 +35,10 @@ sources: ["https://webactually.com/2020/07/13/html-%EB%B0%98%EC%9D%91%ED%98%95-%
 
 기기가 화면을 그리는 과정을 나눠 보면 세 값이 서로 다르다는 것이 보인다. iOS의 포인트(point)와 Android의 dp는 CSS 픽셀과 같은 **논리 단위**다.
 
-```text
-레이아웃 (논리 단위: pt·dp·CSS px)
-  │  × 배율(scale factor, 1x·2x·3x) = DPR
-  ▼
-렌더링된 비트맵 (논리 크기 × 배율)
-  │  패널 해상도와 다르면 축소·확대(다운샘플링)
-  ▼
-물리 화면 ── 인치당 픽셀(PPI)이 실제 선명도를 정한다
+```mermaid
+flowchart TB
+  a["레이아웃<br/>(논리 단위: pt·dp·CSS px)"] -->|"× 배율(scale factor, 1x·2x·3x) = DPR"| b["렌더링된 비트맵<br/>(논리 크기 × 배율)"]
+  b -->|"패널 해상도와 다르면 축소·확대(다운샘플링)"| c["물리 화면<br/>인치당 픽셀(PPI)이 실제 선명도를 정한다"]
 ```
 
 | 값 | 무엇인가 | 예 |
@@ -152,7 +148,7 @@ CSS의 `calc()`처럼 `+`·`-` 양옆에 공백이 있어야 한다(`calc(100vw 
 | 고른 `<source>`의 `srcset`은 `<img>`에 있던 것처럼 쓰인다 | 그래서 `<img>`의 `sizes`가 `<source>` 후보에도 적용된다 |
 | `<picture>`를 모르는 브라우저는 `<picture>`·`<source>`를 무시한다 | `<img src>`만 보이므로 안전하게 대체된다 |
 
-CSS로 잘라 보여 주면 보이지 않는 부분까지 내려받는다. 아트 디렉션은 잘린 파일 자체를 따로 주는 것이 핵심이다.
+CSS로 잘라 보여 주면 보이지 않는 부분까지 내려받는다. 아트 디렉션은 잘린 파일 자체를 따로 준다.
 
 ```html
 <picture>
@@ -235,9 +231,9 @@ CMS가 자동으로 넣는 기본 `sizes`는 테마 레이아웃을 모른다. W
 ## 정리
 
 - 크기만 다르면 `srcset` + `sizes`, 그림이나 형식이 다르면 `<picture>`.
-- `sizes`는 뷰포트가 아니라 **레이아웃에서의 이미지 폭**이다. 근삿값으로 충분하다.
+- `sizes`는 뷰포트가 아니라 레이아웃에서의 이미지 폭이다. 근삿값으로 충분하다.
 - 형식 대체는 효율 좋은 `<source>`를 먼저 둔다.
 - 이미지 변형은 CDN·프레임워크·CMS에 맡기되, 자동 `sizes`는 레이아웃에 맞게 고친다.
-- 크기만 맞춰도 작은 화면의 이미지 용량이 크게 준다. **반응형 레이아웃이면 반응형 이미지도 기본이다.**
+- 크기만 맞춰도 작은 화면의 이미지 용량이 크게 준다. 반응형 레이아웃이면 반응형 이미지도 기본이다.
 
 관련 노트: [[image-formats|웹 이미지 형식]], [[image-compression|이미지 압축과 인코딩 자동화]], [[image-cdn|이미지 CDN과 Accept 헤더 협상]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[html|HTML 기초와 HTML5]], [[html-media-elements|이미지·오디오·비디오 임베드]], [[lcp-optimization|LCP 최적화]], [[cls-optimization|CLS 최적화]]

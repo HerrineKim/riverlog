@@ -193,8 +193,9 @@ DevTools Performance 패널에서는 보라색 Layout 이벤트에 강제 리플
 
 한 블록은 CSS 명세가 정한 순서로 칠해진다.
 
-```text
-background-color → background-image → border → 자식 → outline
+```mermaid
+flowchart LR
+  A["background-color"] --> B["background-image"] --> C["border"] --> D["자식"] --> E["outline"]
 ```
 
 그래서 큰 배경 이미지를 지정하면 이미지가 도착하기 전까지 배경색이 먼저 보인다. 요소 사이의 순서는 `z-index`가 만드는 쌓임 맥락(stacking context)을 따라 낮은 것부터 그린다. 쌓임 맥락은 [[how-css-works|CSS가 동작하는 방식]]에 있다.

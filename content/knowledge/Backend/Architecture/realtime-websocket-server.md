@@ -24,9 +24,11 @@ sources: ["https://engineering.linecorp.com/ko/blog/the-architecture-behind-chat
 
 ## 구조
 
-```text
-기존 서비스 ─이벤트─▶ 브로커(Kafka 등) ─▶ 메시지 가공기 ─▶ Pub/Sub(Redis 등) ─┬─▶ 웹소켓 서버 A ─▶ 클라이언트들
-                                                                         └─▶ 웹소켓 서버 B ─▶ 클라이언트들
+```mermaid
+flowchart LR
+  svc["기존 서비스"] -->|"이벤트"| br["브로커(Kafka 등)"] --> proc["메시지 가공기"] --> ps["Pub/Sub(Redis 등)"]
+  ps --> wa["웹소켓 서버 A"] --> ca["클라이언트들"]
+  ps --> wb["웹소켓 서버 B"] --> cb["클라이언트들"]
 ```
 
 1. 클라이언트는 웹소켓으로 연결하고 보고 있는 페이지(방)를 구독한다.

@@ -200,6 +200,6 @@ const blob = await new Promise((r) => canvas.toBlob(r, 'image/webp', 0.8)) // (�
 - 문자열과 바이트는 TextEncoder(UTF-8)·TextDecoder로 잇는다. 청크 디코딩에는 `stream: true`.
 - Blob은 타입이 붙은 불변 바이너리, File은 이름이 붙은 Blob이다. 네트워크 API는 둘 다 그대로 받는다.
 - 읽기는 `blob.text()`·`arrayBuffer()`·`stream()`이 기본이고, `FileReader`는 data URL과 진행률이 필요할 때만 쓴다.
-- object URL은 빠르지만 **다 쓰면 `revokeObjectURL`** 한다.
+- object URL은 빠르지만 다 쓰면 `revokeObjectURL`한다.
 
 관련 노트: [[arrays-and-objects|배열과 객체]], [[ajax|AJAX와 HTTP 요청]], [[audio-recording|React에서 음성 녹음하기]], [[web-workers|웹 워커로 메인 스레드 비우기]], [[indexeddb|IndexedDB]]

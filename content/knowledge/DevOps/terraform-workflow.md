@@ -14,21 +14,17 @@ sources: ["https://bytebytego.com/guides/how-does-terraform-turn-code-into-cloud
 
 **Terraform은 클라우드 자원을 코드로 선언하고, 그 선언대로 만들고 고치고 지우는 코드형 인프라(IaC, Infrastructure as Code) 도구다.** 콘솔에서 손으로 누르던 일을 코드로 남기면 리뷰·버전 관리·재현이 가능해진다. HCL이라는 선언형 언어를 쓰고, **제공자(provider)** 플러그인을 통해 AWS·GCP·Azure·쿠버네티스·DNS 서비스 등 API가 있는 거의 모든 대상을 다룬다.
 
-선언형이라는 점이 핵심이다. "서버를 하나 만들어라"가 아니라 "서버가 하나 있어야 한다"고 쓰면, Terraform이 지금 상태와의 차이를 계산해 필요한 생성·변경·삭제만 한다.
+Terraform은 선언형이다. "서버를 하나 만들어라"가 아니라 "서버가 하나 있어야 한다"고 쓰면, Terraform이 지금 상태와의 차이를 계산해 필요한 생성·변경·삭제만 한다.
 
 ## 흐름: write → plan → apply
 
-```text
-① Write   .tf 파일에 자원·제공자·변수 선언 (모듈 재사용)
-   │
-② Init    terraform init  ─ 제공자 플러그인·모듈 내려받기, 백엔드 연결
-   │
-③ Plan    terraform plan  ─ 원하는 상태(코드) vs 현재 상태(상태 파일 + 실제 조회)
-   │                        → "+ 생성 / ~ 변경 / - 삭제" 목록을 보여 줌
-   │                        (CI에서 PR마다 실행해 리뷰에 붙인다)
-④ Apply   terraform apply ─ 계획대로 제공자 API 호출 → 자원 생성·변경·삭제
-   │                        → 상태 파일 갱신
-⑤ 인프라 준비 완료.  다음 변경은 ①부터 다시
+```mermaid
+flowchart TB
+  w["① Write<br/>.tf 파일에 자원·제공자·변수 선언 (모듈 재사용)"] --> i["② Init: terraform init<br/>제공자 플러그인·모듈 내려받기, 백엔드 연결"]
+  i --> p["③ Plan: terraform plan<br/>원하는 상태(코드) vs 현재 상태(상태 파일 + 실제 조회)<br/>→ #quot;+ 생성 / ~ 변경 / - 삭제#quot; 목록을 보여 줌<br/>(CI에서 PR마다 실행해 리뷰에 붙인다)"]
+  p --> a["④ Apply: terraform apply<br/>계획대로 제공자 API 호출 → 자원 생성·변경·삭제<br/>→ 상태 파일 갱신"]
+  a --> r["⑤ 인프라 준비 완료"]
+  r -->|"다음 변경은 ①부터 다시"| w
 ```
 
 ```hcl
@@ -70,9 +66,12 @@ resource "aws_s3_bucket" "assets" {
 
 ## CI에서 운영하기
 
-```text
-PR 생성 ─▶ fmt·validate ─▶ plan 결과를 PR 코멘트로 ─▶ 리뷰·승인
-merge  ─▶ 같은 plan을 apply (운영은 수동 승인 단계를 둔다)
+```mermaid
+flowchart LR
+  pr["PR 생성"] --> fv["fmt·validate"]
+  fv --> pc["plan 결과를 PR 코멘트로"]
+  pc --> rv["리뷰·승인"]
+  merge["merge"] --> ap["같은 plan을 apply<br/>(운영은 수동 승인 단계를 둔다)"]
 ```
 
 - 사람의 노트북이 아니라 **파이프라인만 apply 권한**을 갖게 하면 누가 언제 무엇을 바꿨는지 Git 이력에 남는다.

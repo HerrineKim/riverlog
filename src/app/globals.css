@@ -151,6 +151,25 @@ body {
   font-size: 0.85em;
   line-height: 1.7;
 }
+/* Mermaid: the source shows as code until MermaidDiagrams swaps in the SVG; wide diagrams scroll instead of shrinking */
+.prose-river .mermaid-diagram {
+  margin-block: 1.75em;
+}
+.prose-river .mermaid-diagram[data-rendered] .mermaid-source {
+  display: none;
+}
+.prose-river .mermaid-svg {
+  overflow-x: auto;
+  padding: 1.25rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  text-align: center;
+}
+.prose-river .mermaid-svg svg {
+  display: inline-block;
+  max-width: none;
+  height: auto;
+}
 .prose-river :where(img) {
   border-radius: 0.6rem;
   border: 1px solid var(--border);

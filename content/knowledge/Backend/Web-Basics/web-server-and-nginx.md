@@ -5,14 +5,14 @@ summary: "정적 자원을 내주는 웹 서버(Apache·Nginx)와 동적 처리�
 tags: ["backend", "web", "http", "architecture", "devops"]
 source: mixed
 date: "2026-10-12"
-sources: ["https://riverkim.kr/249", "https://riverkim.kr/310", "https://bytebytego.com/guides/why-is-nginx-so-popular", "https://bytebytego.com/guides/top-6-most-commonly-used-server-types"]
+sources: ["https://riverkim.kr/249", "https://riverkim.kr/310", "https://bytebytego.com/guides/why-is-nginx-so-popular", "https://bytebytego.com/guides/top-6-most-commonly-used-server-types", "https://httpd.apache.org/docs/2.4/mod/event.html"]
 ---
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트다. 「Nginx의 마스터-워커 구조」는 ByteByteGo의 System Design 101 가이드 「[Why is Nginx so Popular?](https://bytebytego.com/guides/why-is-nginx-so-popular)」를, 「서버의 종류」는 「[Top 6 Most Commonly Used Server Types](https://bytebytego.com/guides/top-6-most-commonly-used-server-types)」를 바탕으로 보강했다.
 
 ## 웹 서버와 WAS
 
-웹 서비스의 서버 쪽은 보통 두 층으로 나뉜다. **앞단의 웹 서버가 요청을 받고, 뒤에서 WAS가 실제 로직을 처리한다.**
+웹 서비스의 서버 쪽은 보통 두 층으로 나뉜다. 앞단의 웹 서버가 요청을 받고, 뒤에서 WAS가 실제 로직을 처리한다.
 
 | 구분 | 웹 서버 | WAS (Web Application Server) |
 | --- | --- | --- |
@@ -30,18 +30,24 @@ WAS 앞에 웹 서버를 두면 그 웹 서버가 **리버스 프록시**가 된
 
 | | Apache | Nginx |
 | --- | --- | --- |
-| 처리 방식 | 클라이언트(연결)마다 프로세스·스레드를 따로 만든다 | 이벤트 기반으로 적은 수의 워커가 많은 연결을 처리한다 |
+| 처리 방식 | 전통적으로 연결마다 프로세스(prefork)나 스레드(worker)를 하나씩 붙인다. 2.4의 event MPM은 keep-alive 연결을 리스너 스레드의 이벤트 처리로 넘긴다 | 이벤트 기반으로 적은 수의 워커가 많은 연결을 처리한다 |
 | 장점 | 오래 쓰여 안정적이고 모듈 생태계가 넓다 | 동시 접속이 많아도 메모리·CPU 부담이 적다 |
 
 ### Nginx의 마스터-워커 구조
 
 Nginx가 널리 쓰이는 이유는 **마스터-워커 프로세스 모델**에 있다.
 
-```text
-master 프로세스  ─ 설정 읽기·검증, 포트 열기, 워커 생성·감시, 무중단 설정 재적재(reload)
-  ├─ worker 1   ─ 이벤트 루프 하나로 수천 개 연결을 논블로킹 I/O로 처리
-  ├─ worker 2      (보통 CPU 코어 수만큼 띄운다)
-  └─ worker N
+```mermaid
+flowchart TB
+  m["master 프로세스<br/>설정 읽기·검증, 포트 열기, 워커 생성·감시, 무중단 설정 재적재(reload)"]
+  subgraph workers["보통 CPU 코어 수만큼 띄운다"]
+    w1["worker 1<br/>이벤트 루프 하나로 수천 개 연결을 논블로킹 I/O로 처리"]
+    w2["worker 2"]
+    wn["worker N"]
+  end
+  m --> w1
+  m --> w2
+  m --> wn
 ```
 
 - 워커는 연결마다 스레드를 만들지 않고, epoll 같은 I/O 다중화로 준비된 연결만 골라 처리한다. 원리는 [[event-loop-server|비동기 서버의 이벤트 루프]]에 있다.
@@ -65,7 +71,7 @@ master 프로세스  ─ 설정 읽기·검증, 포트 열기, 워커 생성·�
 
 ## Nginx 설정 기초: 404를 다른 서버로 넘기기
 
-예를 들어 워드프레스 사이트를 Next.js 사이트로 **점진적으로** 옮기는 중이라고 하자. 아직 워드프레스가 서빙하는 페이지도 있으니, 요청은 먼저 기존 서버에서 찾아보고 **404가 나면 새 사이트의 404 페이지로 프록시**해야 한다. Nginx는 언어가 아니라 자체 지시어(directive)로 설정한다.
+예를 들어 워드프레스 사이트를 Next.js 사이트로 점진적으로 옮기는 중이라고 하자. 아직 워드프레스가 서빙하는 페이지도 있으니, 요청은 먼저 기존 서버에서 찾아보고 **404가 나면 새 사이트의 404 페이지로 프록시**해야 한다. Nginx는 언어가 아니라 자체 지시어(directive)로 설정한다.
 
 ```nginx
 server {
@@ -105,7 +111,7 @@ server {
 ## 정리
 
 - 웹 서버는 정적 자원과 앞단 관리(프록시·캐시·로드밸런싱·헬스 체크)를, WAS는 동적 처리를 맡는다.
-- Apache는 연결마다 프로세스·스레드, Nginx는 이벤트 기반이라 동시 접속에 강하다.
+- Apache는 전통적으로 연결마다 프로세스(prefork)나 스레드(worker)를 붙이고 2.4의 event MPM은 keep-alive 연결만 이벤트로 넘긴다. Nginx는 처음부터 이벤트 기반이라 동시 접속에 강하다.
 - Nginx는 마스터가 설정과 워커를 관리하고, 워커가 이벤트 루프로 연결을 처리한다. 그래서 웹 서버·프록시·캐시·TLS 종료를 한 프로세스 묶음으로 겸한다.
 - Spring Boot는 Tomcat을 내장한 jar로 배포하는 것이 일반적이다.
 - Nginx에서는 `location`으로 묶고, `rewrite`로 경로를 바꾸고, `proxy_pass`로 다른 서버에 넘긴다.

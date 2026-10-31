@@ -48,6 +48,4 @@ sources: ["https://www.jeremiahlee.com/posts/failed-squad-goals/"]
 - 매트릭스 구조는 팀 안의 책임 공백을 만들었다.
 - 자율은 정렬(우선순위·지표·프로세스)이 있을 때만 작동한다.
 
-조직 모델은 복사하는 것이 아니라 맥락에 맞춰 설계하는 것이다.
-
 관련 노트: [[scrum-framework|스크럼]], [[agile-sprint|애자일과 스프린트]], [[shape-up|Shape Up]], [[eoa-essence-of-agility|애자일의 본질]]

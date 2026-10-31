@@ -56,13 +56,15 @@ CTR과 열독률을 섞어 랭킹하면 1인당 페이지뷰는 조금 줄고 �
 
 ## 실시간 추천 시스템 구조
 
-```text
-사용자 노출·클릭 이벤트
-   → 메시지 큐 (Kafka: 대량 메시지를 복제해 안전하게 저장)
-   → 스트림 처리 (Flink, Kafka Streams, Spark Streaming: 결과를 학습에 반영)  ─┐
-   → 배치 처리 (실시간일 필요 없는 집계)                                       ─┴→ 결합해 랭킹
-   → 무상태 추천 서버 (비동기 병렬 처리)
-   → 분산 NoSQL 저장소 (노드 추가·복제가 쉬운 것)
+```mermaid
+flowchart TB
+  ev["사용자 노출·클릭 이벤트"] --> mq["메시지 큐<br/>(Kafka: 대량 메시지를 복제해 안전하게 저장)"]
+  mq --> stream["스트림 처리<br/>(Flink, Kafka Streams, Spark Streaming: 결과를 학습에 반영)"]
+  mq --> batch["배치 처리<br/>(실시간일 필요 없는 집계)"]
+  stream --> rank["결합해 랭킹"]
+  batch --> rank
+  rank --> srv["무상태 추천 서버<br/>(비동기 병렬 처리)"]
+  srv --> db["분산 NoSQL 저장소<br/>(노드 추가·복제가 쉬운 것)"]
 ```
 
 | 목표 | 설계 |

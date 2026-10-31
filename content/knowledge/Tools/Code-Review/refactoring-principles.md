@@ -8,7 +8,7 @@ date: "2026-10-12"
 sources: ["https://riverkim.kr/240", "https://riverkim.kr/274", "https://helloworld.kurly.com/blog/fix-style-with-command/"]
 ---
 
-> 마틴 파울러의 『리팩터링』(2판) 1~2장을 읽으며 riverkim.kr에 남긴 메모를 다시 정리한 노트다. 책: [[books/ripaektoring|리팩토링]] 「[새로 입사한 개발자가 프로젝트에 기여하는 방법 한 가지](https://helloworld.kurly.com/blog/fix-style-with-command/)」의 내용을 더해 보강했다.
+> 마틴 파울러의 『리팩터링』(2판) 1~2장을 읽으며 riverkim.kr에 남긴 메모를 다시 정리한 노트다. 책: [[books/ripaektoring|리팩토링]]. 「[새로 입사한 개발자가 프로젝트에 기여하는 방법 한 가지](https://helloworld.kurly.com/blog/fix-style-with-command/)」의 내용을 더해 보강했다.
 
 ## 리팩터링이란
 

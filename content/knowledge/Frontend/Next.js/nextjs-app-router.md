@@ -16,11 +16,13 @@ Next.js 13에서 도입된 **App Router**(`app/` 디렉터리)는 Pages Router�
 
 `app/` 아래 컴포넌트는 기본이 **React Server Component(RSC)** 다. 상호작용이 필요한 곳만 `'use client'`로 클라이언트 컴포넌트를 만들고, 서버가 경로를 해석해 그 결과(RSC payload)를 내려보내므로 클라이언트가 라우터 지도 전체를 받을 필요가 없다. 두 종류의 컴포넌트를 어떻게 섞을 수 있고 무엇이 안 되는지는 [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]에 정리했다.
 
-```text
-요청 /dashboard ──▶ 서버: 경로 해석 → 서버 컴포넌트 렌더링(데이터 fetch 포함)
-                          │  RSC payload (+ 클라이언트 컴포넌트 JS 참조)
-                          ▼
-                    브라우저: 'use client' 부분만 hydration
+```mermaid
+flowchart TB
+  req["요청 /dashboard"] --> res
+  subgraph srv["서버"]
+    res["경로 해석"] --> rend["서버 컴포넌트 렌더링(데이터 fetch 포함)"]
+  end
+  rend -->|"RSC payload (+ 클라이언트 컴포넌트 JS 참조)"| br["브라우저: 'use client' 부분만 hydration"]
 ```
 
 ## 내비게이션
@@ -45,13 +47,12 @@ Next.js 13에서 도입된 **App Router**(`app/` 디렉터리)는 Pages Router�
 
 ### 이동이 일어나는 순서
 
-```text
-<Link> 클릭 또는 router.push()
-  └─ 주소창 URL 갱신
-      └─ 클라이언트 캐시에 쓸 수 있는 결과가 있나?
-          ├─ 있음 → 캐시를 재사용, 바뀐 구획(segment)만 렌더링
-          └─ 없음 → 서버에서 바뀐 구획의 RSC Payload를 받아 옴
-                     (받는 동안 loading UI 표시)
+```mermaid
+flowchart TB
+  clk["#lt;Link#gt; 클릭 또는 router.push()"] --> url["주소창 URL 갱신"]
+  url --> q{"클라이언트 캐시에 쓸 수 있는 결과가 있나?"}
+  q -->|"있음"| hit["캐시를 재사용, 바뀐 구획(segment)만 렌더링"]
+  q -->|"없음"| miss["서버에서 바뀐 구획의 RSC Payload를 받아 옴<br/>(받는 동안 loading UI 표시)"]
 ```
 
 - **부분 렌더링(partial rendering)**: 공유 레이아웃은 이동해도 다시 받거나 다시 렌더링하지 않는다. 바뀐 페이지 구획만 교체하므로 레이아웃의 **클라이언트 상태가 유지**된다.
@@ -87,11 +88,19 @@ export default async function Page() {
 
 순차 요청은 앞 요청이 끝나야 다음이 시작되는 **폭포(waterfall)** 를 만든다. 의도한 게 아니라면 로딩만 길어진다.
 
-```text
-순차:  getArtist ████████
-                         getAlbums ████████        → 두 시간의 합
-병렬:  getArtist ████████
-       getAlbums ████████                          → 긴 쪽 하나의 시간
+순차: 하나가 끝나야 다음이 시작된다.
+
+```mermaid
+flowchart LR
+  s1["getArtist"] --> s2["getAlbums"] --> s3["두 시간의 합"]
+```
+
+병렬: 둘이 함께 시작한다.
+
+```mermaid
+flowchart LR
+  p1["getArtist"] --> p3["긴 쪽 하나의 시간"]
+  p2["getAlbums"] --> p3
 ```
 
 ```tsx
@@ -130,11 +139,16 @@ HTML을 Suspense 경계 단위로 나눠 보내는 원리와 상태 코드·버�
 
 같은 렌더링 중에 여러 컴포넌트가 **같은 URL·옵션의 GET `fetch`** 를 부르면 실제 요청은 한 번만 나간다(request memoization). 그래서 현재 사용자 정보처럼 여러 곳에서 필요한 데이터를 props로 내려보내지 않고 각자 가져와도 된다. POST 요청은 중복 제거되지 않는다.
 
-```text
-한 번의 렌더링
-├─ Layout   fetch('/api/user') ─┐
-├─ Page     fetch('/api/user') ─┼─▶ 실제 요청 1번, 결과를 나눠 받는다
-└─ Sidebar  fetch('/api/user') ─┘
+```mermaid
+flowchart LR
+  subgraph rr["한 번의 렌더링"]
+    lay["Layout<br/>fetch('/api/user')"]
+    pg["Page<br/>fetch('/api/user')"]
+    sb["Sidebar<br/>fetch('/api/user')"]
+  end
+  lay --> one["실제 요청 1번, 결과를 나눠 받는다"]
+  pg --> one
+  sb --> one
 ```
 
 ### React `cache()`

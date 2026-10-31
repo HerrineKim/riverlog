@@ -191,13 +191,12 @@ innerFn()               // 'outer': 그래도 outerVar를 읽는다
 | 환경 레코드(Environment Record) | 그 스코프의 변수를 속성처럼 담는다. "변수를 바꾼다"는 이 레코드의 속성을 바꾸는 것이다 |
 | 바깥 환경 참조(outer) | 한 단계 바깥 렉시컬 환경을 가리킨다. 전역 환경의 바깥은 `null`이다. 이 연결이 스코프 체인이다 |
 
-```text
-counter() 호출 시          makeCounter() 호출 때 만든 환경        전역 환경
-┌──────────────┐  outer   ┌──────────────┐   outer   ┌────────────────────────┐  outer
-│ (지역 변수 없음) │ ───────▶ │ count: 0     │ ────────▶ │ makeCounter, counter │ ──────▶ null
-└──────────────┘          └──────────────┘           └────────────────────────┘
-                              ▲
-                     counter.[[Environment]]
+```mermaid
+flowchart LR
+  e1["counter() 호출 시<br/>(지역 변수 없음)"] -->|"outer"| e2["makeCounter() 호출 때 만든 환경<br/>count: 0"]
+  e2 -->|"outer"| e3["전역 환경<br/>makeCounter, counter"]
+  e3 -->|"outer"| nul["null"]
+  env["counter.[[Environment]]"] -.-> e2
 ```
 
 1. 스크립트·블록·함수 호출이 시작되면 새 렉시컬 환경이 만들어지고, 안에서 선언한 이름이 **미리 등록**된다. 함수 선언문은 이때 바로 함수로 초기화되고, `let`·`const`는 "초기화되지 않음(uninitialized)" 상태로 남는다. 이 상태가 아래의 TDZ다.

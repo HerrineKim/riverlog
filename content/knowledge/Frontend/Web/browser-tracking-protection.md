@@ -14,9 +14,22 @@ sources: ["https://web.dev/learn/privacy/third-parties", "https://privacysandbox
 
 서드파티 쿠키는 광고·로그인·사기 탐지에도 쓰이지만, 한 도메인이 여러 사이트에 심은 ID로 사용자를 따라다니는 **사이트 간 추적**의 기본 도구다. 브라우저는 정당한 사용과 추적을 구별할 수 없으므로, 쿠키·저장소를 막거나 **최상위 사이트별로 분할(partitioning)** 하는 쪽을 택했다. 분할하면 같은 위젯이라도 `a.example` 안과 `b.example` 안에서 서로 다른 저장소를 보므로 사용자를 이을 수 없다.
 
-```text
-분할 없음:  widget.example 쿠키 1개 ── a.example 안에서도, b.example 안에서도 같은 값 → 추적 가능
-분할:       (a.example, widget.example) 쿠키 / (b.example, widget.example) 쿠키 → 서로 못 봄
+분할 없음:
+
+```mermaid
+flowchart LR
+  A["a.example 안에서"] --> W["widget.example 쿠키 1개"]
+  B["b.example 안에서"] --> W
+  W --> R["같은 값 → 추적 가능"]
+```
+
+분할:
+
+```mermaid
+flowchart LR
+  A["a.example 안에서"] --> WA["(a.example, widget.example) 쿠키"]
+  B["b.example 안에서"] --> WB["(b.example, widget.example) 쿠키"]
+  WA -. "서로 못 봄" .- WB
 ```
 
 이 차단은 사이트가 고를 수 없는 **브라우저 정책**이다. 서드파티 의존성이 막혀 초기화가 끝나지 않는 식으로 페이지가 깨질 수 있다.

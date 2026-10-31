@@ -14,7 +14,7 @@ sources: ["https://web.dev/learn/css/anchor-positioning", "https://web.dev/learn
 
 | 기능 | 해결하는 문제 | 지원 |
 | --- | --- | --- |
-| `popover` 속성 | 열고 닫기, 다른 팝오버와의 관계, Esc·바깥 클릭으로 닫기, **최상위 레이어**(z-index 경쟁 없음) | auto·manual은 Baseline 2024. `hint`는 Chrome 151·Firefox 153부터, Safari는 미지원 |
+| `popover` 속성 | 열고 닫기, 다른 팝오버와의 관계, Esc·바깥 클릭으로 닫기, **최상위 레이어**(z-index 경쟁 없음) | auto·manual은 Baseline 2024. `hint`는 Chrome 151·Firefox 153부터(Chrome 133~150·Firefox 149~152는 이전 명세를 부분 구현), Safari는 기술 미리 보기에만 있다 |
 | 앵커 위치 지정 | 다른 요소 옆에 붙이기, 화면 밖으로 나가면 위치 바꾸기 | 2026년 1월 Firefox 147로 모든 주요 브라우저(Baseline 2026) |
 
 과거에는 두 일을 Popper·Floating UI 같은 JS 라이브러리가 했다. 지금은 HTML 속성과 CSS만으로 된다.
@@ -51,7 +51,7 @@ JS로는 `el.showPopover()`, `hidePopover()`, `togglePopover()`를 부른다. `s
 [popover]::backdrop { background: rgb(0 0 0 / 10%); }
 ```
 
-- `::backdrop`은 팝오버 아래 깔리는 가상 요소다. 뒤 페이지가 여전히 조작 가능하므로 **진하게 가리거나 흐리게 만들지 않는다.**
+- `::backdrop`은 팝오버 아래 깔리는 가상 요소다. 뒤 페이지가 여전히 조작 가능하므로 진하게 가리거나 흐리게 만들지 않는다.
 - 기본 위치는 `margin: auto`로 화면 가운데다. 앵커에 붙이려면 `margin: unset`(또는 0)으로 지운다.
 
 ### 열고 닫기 애니메이션
@@ -90,12 +90,21 @@ JS로는 `el.showPopover()`, `hidePopover()`, `togglePopover()`를 부른다. `s
 
 `position-area`는 앵커의 네 변과 원래 컨테이닝 블록이 만드는 **3×3 격자**의 칸을 고른다. 고른 칸이 새 컨테이닝 블록이 되므로, 그 안에서 `margin`·`padding`의 `%`도 그 칸 기준이다.
 
-```text
- start/start │ start/center │ start/end
-─────────────┼──────────────┼───────────
- center/start│   [앵커]      │ center/end
-─────────────┼──────────────┼───────────
- end/start   │ end/center   │ end/end
+```mermaid
+flowchart TB
+  subgraph row1[" "]
+    direction LR
+    ss["start/start"] ~~~ sc["start/center"] ~~~ se["start/end"]
+  end
+  subgraph row2[" "]
+    direction LR
+    cs["center/start"] ~~~ anchor["[앵커]"] ~~~ ce["center/end"]
+  end
+  subgraph row3[" "]
+    direction LR
+    es["end/start"] ~~~ ec["end/center"] ~~~ ee["end/end"]
+  end
+  row1 ~~~ row2 ~~~ row3
 ```
 
 | 키워드 | 예 | 뜻 |

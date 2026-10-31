@@ -16,13 +16,34 @@ sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇
 
 ## MVC·MVP·MVVM 비교
 
-UI 소프트웨어의 본질은 데이터를 화면에 그리고, 사용자가 동작하면 데이터가 바뀌고, 다시 화면이 바뀌는 것이다. 화면 문제와 데이터 문제는 성격이 다르므로 둘을 나눠 **한쪽 수정이 다른 쪽으로 번지지 않게** 한다. 세 패턴 모두 Model(화면이 아닌 데이터: JS 객체, API 응답, 서버 DB)과 View(최종 HTML·CSS)는 같고, **둘 사이를 잇는 세 번째 역할**과 의존 방향이 다르다.
+UI 소프트웨어의 본질은 데이터를 화면에 그리고, 사용자가 동작하면 데이터가 바뀌고, 다시 화면이 바뀌는 것이다. 화면 문제와 데이터 문제는 성격이 다르므로 둘을 나눠 한쪽 수정이 다른 쪽으로 번지지 않게 한다. 세 패턴 모두 Model(화면이 아닌 데이터: JS 객체, API 응답, 서버 DB)과 View(최종 HTML·CSS)는 같고, 둘 사이를 잇는 세 번째 역할과 의존 방향이 다르다.
 
-```text
-MVC   입력 → Controller ─갱신→ Model ←─읽기── View   (Controller는 View를 고르기만 한다)
-MVP   입력 → View ⇄ Presenter ⇄ Model              (View와 Model은 서로 모른다)
-MVVM  입력 → View ─명령→ ViewModel ⇄ Model
-             View ←─데이터 바인딩── ViewModel       (ViewModel은 View를 모른다)
+MVC (Controller는 View를 고르기만 한다)
+
+```mermaid
+flowchart LR
+  input["입력"] --> ctrl["Controller"]
+  ctrl -->|"갱신"| model["Model"]
+  view["View"] -->|"읽기"| model
+```
+
+MVP (View와 Model은 서로 모른다)
+
+```mermaid
+flowchart LR
+  input["입력"] --> view["View"]
+  view <--> pres["Presenter"]
+  pres <--> model["Model"]
+```
+
+MVVM (ViewModel은 View를 모른다)
+
+```mermaid
+flowchart LR
+  input["입력"] --> view["View"]
+  view -->|"명령"| vm["ViewModel"]
+  vm <--> model["Model"]
+  vm -->|"데이터 바인딩"| view
 ```
 
 | | MVC | MVP | MVVM |
@@ -45,7 +66,7 @@ MVC와 MVP는 하나의 정해진 구조가 아니라 여러 변형을 묶는 �
 | MVP: 수동적 뷰(Passive View) | View는 위젯만 두고 표시 로직까지 전부 Presenter가 한다. Presenter가 View의 setter를 하나하나 호출한다 | View를 테스트할 수 없는 환경에서 테스트 범위를 최대로 넓힐 때 |
 | MVP: 감독 컨트롤러(Supervising Controller) | 단순한 표시는 View가 선언적 바인딩으로 직접 하고, 바인딩으로 안 되는 복잡한 로직만 Presenter가 맡는다 | 바인딩 기능이 있는 UI 툴킷 |
 | 프레젠테이션 모델(Presentation Model) | View의 상태와 동작을 View와 무관한 클래스에 모으고 View가 그것과 동기화한다 | MVVM의 원형. MVVM은 이 동기화를 바인딩 엔진이 자동으로 한다 |
-| Model 2 (서버 MVC) | 요청마다 Controller가 Model을 부르고 View 템플릿을 한 번 그려 응답한다. View는 **요청이 끝나면 사라진다** | Rails·Spring MVC·Django 같은 서버 프레임워크. 상태는 세션·DB에 둔다 |
+| Model 2 (서버 MVC) | 요청마다 Controller가 Model을 부르고 View 템플릿을 한 번 그려 응답한다. View는 요청이 끝나면 사라진다 | Rails·Spring MVC·Django 같은 서버 프레임워크. 상태는 세션·DB에 둔다 |
 
 원래 MVC(Smalltalk)는 **오래 살아 있는 View**를 가정하고 사용자 입력도 View로 들어온다. 서버의 Model 2는 HTTP가 상태 없는 프로토콜이라 View가 매 요청마다 새로 만들어지는 **일회용 View**이고, Controller → View 한 방향만 있다. 같은 MVC라는 이름이지만 브라우저(오래 사는 View)와 서버(일회용 View)에서 요구가 정반대라, 같은 코드를 양쪽에서 돌리는 동형(isomorphic) JavaScript에서는 MVC를 그대로 옮기기 어려웠다. View가 Model을 직접 참조하지 않는 MVP·MVVM 계열이 양쪽에 맞추기 쉬웠다. 실제 라이브러리도 정의와 다르다. Backbone은 MVC를 표방했지만 View가 Model을 직접 바꿨다.
 
@@ -62,23 +83,22 @@ MVC와 MVP는 하나의 정해진 구조가 아니라 여러 변형을 묶는 �
 
 ## 웹 프론트엔드 아키텍처의 변천
 
-```text
-서버 MVC ─▶ jQuery MVC ─▶ MVVM ─▶ 컴포넌트 + Container-Presenter
-                                          │ props drilling
-                                          ▼
-                    Flux·Redux (뷰와 상태 관리 분리, 단방향)
-                                          │ 보일러플레이트 과다
-                          ┌───────────────┼────────────────┐
-                          ▼               ▼                ▼
-                  Context·hooks   가벼운 전역 스토어   서버 상태 관리
-                                  (Zustand, Jotai)    (TanStack Query, SWR)
+```mermaid
+flowchart TB
+  a["서버 MVC"] --> b["jQuery MVC"]
+  b --> c["MVVM"]
+  c --> d["컴포넌트 + Container-Presenter"]
+  d -->|"props drilling"| e["Flux·Redux<br/>(뷰와 상태 관리 분리, 단방향)"]
+  e -->|"보일러플레이트 과다"| f1["Context·hooks"]
+  e -->|"보일러플레이트 과다"| f2["가벼운 전역 스토어<br/>(Zustand, Jotai)"]
+  e -->|"보일러플레이트 과다"| f3["서버 상태 관리<br/>(TanStack Query, SWR)"]
 ```
 
 | 단계 | Model / View / Controller | 바뀐 점과 남은 불편 |
 | --- | --- | --- |
 | 서버 MVC (Rails, PHP, JSP) | DB / 클라이언트 전체 / 서버 라우터 | 프론트엔드라는 개념이 없던 시절 |
-| jQuery | Ajax 데이터 / HTML·CSS / JS(jQuery) | 핵심은 DOM 탐색·조작, 이벤트, Ajax. 바뀐 곳을 **일일이 찾아 고쳐야** 했다 |
-| MVVM (Knockout, AngularJS → React, Vue, Svelte) | 같음 / 템플릿 / **바인딩** | 서버 템플릿처럼 **선언적으로** 쓰고 DOM 조작은 프레임워크가 맡는다. 화면을 그리기 위한 모델만 다룬다는 뜻에서 ViewModel |
+| jQuery | Ajax 데이터 / HTML·CSS / JS(jQuery) | 핵심은 DOM 탐색·조작, 이벤트, Ajax. 바뀐 곳을 일일이 찾아 고쳐야 했다 |
+| MVVM (Knockout, AngularJS → React, Vue, Svelte) | 같음 / 템플릿 / **바인딩** | 서버 템플릿처럼 선언적으로 쓰고 DOM 조작은 프레임워크가 맡는다. 화면을 그리기 위한 모델만 다룬다는 뜻에서 ViewModel |
 | 컴포넌트, Container-Presenter | 로직은 Container, 표시는 Presenter | 재사용을 위해 로직을 위로 모으자 중간 컴포넌트가 쓰지도 않는 props를 나르게 됐다(**props drilling**) |
 | Flux·Redux | Store / 하나의 큰 View / Action·Dispatch·Reducer | 비즈니스 로직을 컴포넌트 계층에서 떼어 냈다. 이때부터 **상태 관리**라고 부른다. 대신 학습 곡선과 장황한 문법 |
 | Context·hooks | 공통 조상이 데이터를 제공 | 새 개념 없이 props drilling만 막는다 |
@@ -91,7 +111,7 @@ Redux 이후 진영마다 비슷한 도구가 나왔다. Vue의 Vuex(지금은 [
 
 ### props drilling이 드러낸 문제
 
-**컴포넌트 계층과 데이터 계층은 모양이 다르다.** 독립과 재사용을 위해 컴포넌트를 나눴는데, 데이터를 나르려고 중간 컴포넌트에 props를 뚫다 보니 오히려 위아래 컴포넌트가 더 단단히 묶였다. Facebook이 Flux를 발표하며 "MVC의 양방향이 문제"라고 한 것도, 정확히는 MVC 자체가 아니라 **컴포넌트 단위로 모델이 파편화되는 경계 문제**였다.
+**컴포넌트 계층과 데이터 계층은 모양이 다르다.** 독립과 재사용을 위해 컴포넌트를 나눴는데, 데이터를 나르려고 중간 컴포넌트에 props를 뚫다 보니 오히려 위아래 컴포넌트가 더 단단히 묶였다. Facebook이 Flux를 발표하며 "MVC의 양방향이 문제"라고 한 것도, 정확히는 MVC 자체가 아니라 컴포넌트 단위로 모델이 파편화되는 경계 문제였다.
 
 ## MVI: 흐름을 아키텍처로 정리하기
 
@@ -106,10 +126,11 @@ MVI(Model-View-Intent)는 웹의 cycle.js에서 먼저 나온 개념이 Android�
 | Intent | 사용자 이벤트를 **어떤 데이터 변화인지**로 해석해 전달 |
 | Model | 전달받은 요청대로 데이터를 바꾸고, 변화를 감지해 전파 |
 
-```text
-   ┌──────────── 데이터 시각화 ────────────┐
-   ▼                                        │
- View ── 이벤트 ──▶ Intent ── 액션 ──▶ Model
+```mermaid
+flowchart LR
+  view["View"] -->|"이벤트"| intent["Intent"]
+  intent -->|"액션"| model["Model"]
+  model -->|"데이터 시각화"| view
 ```
 
 ### 특징
@@ -121,7 +142,7 @@ MVI(Model-View-Intent)는 웹의 cycle.js에서 먼저 나온 개념이 Android�
 | 비즈니스 로직이 뷰에 의존하지 않는다 | UI 요구 변화에 유연하고 따로 테스트하기 쉽다 |
 | 상태가 뷰 생명주기와 무관 | 마운트·언마운트에 따른 동기화 문제가 없다 |
 
-뷰는 모델에서 읽는 Query와 모델을 바꾸는 Command를 필요한 대로 조립한다. 뷰는 비즈니스 로직에 의존하지만 **뷰끼리는 느슨하게** 묶인다.
+뷰는 모델에서 읽는 Query와 모델을 바꾸는 Command를 필요한 대로 조립한다. 뷰는 비즈니스 로직에 의존하지만 뷰끼리는 느슨하게 묶인다.
 
 ```tsx
 // Model: 데이터 변화는 여기서만
@@ -143,15 +164,15 @@ const Counter = () => {
 
 ### Reducer가 필요한 이유
 
-이벤트 핸들러 안에서 `setVisible`, `setCount`, `setTodos`를 줄줄이 부르면 쓰기는 쉽다. 그런데 디버깅은 결과에서 원인으로 **거꾸로** 추적하는 일이다. 데이터를 바꾸는 코드가 뷰 곳곳에 흩어져 있으면 추적이 어렵고, 모델이 뷰에 묶인다. **뷰는 의도만 보내고 변환은 모델에 모으면** 응집도가 올라가고 뷰와 로직이 느슨해진다.
+이벤트 핸들러 안에서 `setVisible`, `setCount`, `setTodos`를 줄줄이 부르면 쓰기는 쉽다. 그런데 디버깅은 결과에서 원인으로 거꾸로 추적하는 일이다. 데이터를 바꾸는 코드가 뷰 곳곳에 흩어져 있으면 추적이 어렵고, 모델이 뷰에 묶인다. 뷰는 의도만 보내고 변환은 모델에 모으면 응집도가 올라가고 뷰와 로직이 느슨해진다.
 
 ### 재사용 컴포넌트는 여전히 유효하다
 
-계층 맨 아래의 독립적인 UI 컴포넌트를 조립하는 전략은 그대로다. 문제는 중간 계층이다. 중간 컴포넌트는 대개 재사용되지도 않으면서 비즈니스 로직을 떠안아 거대해진다. **어차피 재사용하지 못할 컴포넌트라면 비즈니스 모듈에 의존하더라도 언제든 갈아 끼울 수 있게** 만드는 편이 변화에 강하다.
+계층 맨 아래의 독립적인 UI 컴포넌트를 조립하는 전략은 그대로다. 문제는 중간 계층이다. 중간 컴포넌트는 대개 재사용되지도 않으면서 비즈니스 로직을 떠안아 거대해진다. 어차피 재사용하지 못할 컴포넌트라면 비즈니스 모듈에 의존하더라도 언제든 갈아 끼울 수 있게 만드는 편이 변화에 강하다.
 
 ## 단방향 아키텍처의 변형들
 
-Flux 이후 나온 단방향 UI 아키텍처들은 모두 **사용자 이벤트 → 상태 변경 → 렌더링**이라는 같은 순환을 갖고, 그 순환을 어떻게 쪼개느냐만 다르다. 여기서 「View」는 화면 출력에만 쓰는 말이고, 이벤트에서 렌더링까지의 전체를 UI 프로그램이라 부른다.
+Flux 이후 나온 단방향 UI 아키텍처들은 모두 사용자 이벤트 → 상태 변경 → 렌더링이라는 같은 순환을 갖고, 그 순환을 어떻게 쪼개느냐만 다르다. 여기서 「View」는 화면 출력에만 쓰는 말이고, 이벤트에서 렌더링까지의 전체를 UI 프로그램이라 부른다.
 
 | 아키텍처 | 구성 | 특징 |
 | --- | --- | --- |
@@ -161,7 +182,7 @@ Flux 이후 나온 단방향 UI 아키텍처들은 모두 **사용자 이벤트 
 | MVU (Elm) | Model · view 함수 · update 함수 | 모두 순수 함수다. 각 부분을 그대로 중첩할 수 있어 컴포넌트를 조각으로 떼어 내기 쉽다 |
 | MVI (Cycle.js) | Intent · Model · View, 모두 스트림 | 입력·모델·렌더링을 Observable 스트림으로 이어 흐름이 코드에 드러난다. 스트림 라이브러리에 강하게 의존한다 |
 
-**Flux에서 Redux로 줄어든 과정**은 이렇다. Flux에서 Store는 액션에만 반응해 바뀌고 공개 setter 없이 getter만 둔다. 액션은 `{ type: 'delete-todo', todoID }`처럼 **구현 단계가 아니라 일어난 일을 의미 있게** 이름 붙인다(`delete-user`를 `clear-user-data`, `refresh-credentials`로 쪼개지 않는다). Redux는 핫 리로딩과 시간 여행 디버깅을 하려고 Store에서 구독·등록 같은 부수 효과를 빼냈다. 남은 Store의 핵심은 `(state, action) => newState`라는 순수 함수, 곧 **reducer**다. reducer들을 루트 reducer 하나로 합치자 액션을 Store마다 나눠 주던 Dispatcher가 필요 없어졌다. 컴포넌트 트리에 루트가 하나인 것처럼 상태 트리에도 루트가 하나가 됐고, 이 모양은 Elm Architecture(Model·view·update)와 같다. 상태가 불변이고 갱신이 순수 함수라 액션 기록을 다시 재생하면 어느 시점의 상태든 재현된다.
+Flux에서 Redux로 줄어든 과정은 이렇다. Flux에서 Store는 액션에만 반응해 바뀌고 공개 setter 없이 getter만 둔다. 액션은 `{ type: 'delete-todo', todoID }`처럼 구현 단계가 아니라 일어난 일을 의미 있게 이름 붙인다(`delete-user`를 `clear-user-data`, `refresh-credentials`로 쪼개지 않는다). Redux는 핫 리로딩과 시간 여행 디버깅을 하려고 Store에서 구독·등록 같은 부수 효과를 빼냈다. 남은 Store의 핵심은 `(state, action) => newState`라는 순수 함수, 곧 **reducer**다. reducer들을 루트 reducer 하나로 합치자 액션을 Store마다 나눠 주던 Dispatcher가 필요 없어졌다. 컴포넌트 트리에 루트가 하나인 것처럼 상태 트리에도 루트가 하나가 됐고, 이 모양은 Elm Architecture(Model·view·update)와 같다. 상태가 불변이고 갱신이 순수 함수라 액션 기록을 다시 재생하면 어느 시점의 상태든 재현된다.
 
 - **프랙탈 구조**: 하위 컴포넌트가 앱 전체와 같은 모양(MVU 안의 MVU)이면, 앱을 통째로 더 큰 앱의 컴포넌트로 재사용할 수 있다.
 - **드라이버**: Cycle.js는 DOM뿐 아니라 HTTP 같은 바깥 세계도 입력·출력 스트림으로 맞춰 UI 프로그램에 연결한다. 부수 효과를 프로그램 밖 드라이버로 밀어내 본체를 순수하게 유지한다.
@@ -170,9 +191,9 @@ Flux 이후 나온 단방향 UI 아키텍처들은 모두 **사용자 이벤트 
 ## 정리
 
 - 아키텍처는 불편에서 나온 규칙이 굳은 것이다. **분류**와 **인터페이스**를 함께 본다.
-- 웹 프론트엔드는 DOM 조작 자동화(MVVM) → 컴포넌트 → 상태 관리 분리(Flux) → 가벼운 스토어·시그널·서버 상태로 움직였다. 원동력은 **컴포넌트 계층과 데이터 계층이 다르다**는 문제였다.
+- 웹 프론트엔드는 DOM 조작 자동화(MVVM) → 컴포넌트 → 상태 관리 분리(Flux) → 가벼운 스토어·시그널·서버 상태로 움직였다. 원동력은 컴포넌트 계층과 데이터 계층이 다르다는 문제였다.
 - MVI는 그 흐름의 요약이다. 뷰는 의도를 보내고, 모델만 데이터를 바꾸고, 변화는 한 방향으로 돈다.
 - 실제 라이브러리는 어느 이름에도 딱 맞지 않는다(AngularJS는 아예 MVW, Model-View-Whatever라 불렀다). MV* 계열이 수렴해 온 방향은 단방향 데이터 흐름, 선언적으로 바뀐 Controller, 뷰와 비즈니스 로직의 분리, 반응형 변화 전파, 서버 연동 자체를 상태로 다루기, 작게 시작해 필요할 때 복잡해지는 도구다.
-- 새 라이브러리를 볼 때는 이름이 아니라 **어떤 불편을 풀었는지**로 판단한다.
+- 새 라이브러리를 볼 때는 이름이 아니라 어떤 불편을 풀었는지로 판단한다.
 
 관련 노트: [[redux|Redux와 react-redux]], [[getting-started-mtv|Django 시작하기와 MTV 패턴]], [[context|Context와 전역 상태]], [[tanstack-query|TanStack Query(React Query)]], [[react-state-management|리액트 상태 관리의 흐름과 고르는 기준]], [[frontend-folder-structure|프론트엔드 폴더 구조의 진화]], [[feature-sliced-design|Feature-Sliced Design]], [[ui-change-detection|UI 변경 감지]]

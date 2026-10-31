@@ -7,7 +7,7 @@ source: other
 date: "2026-10-13"
 ---
 
-> 당근 테크 블로그의 「프롬프트 한 줄로 화면이 나오는 시대, '당근스러운 화면'을 만드는 법」(2026.04, 당근 디자인 시스템 팀)을 바탕으로 **에이전틱 코딩 기법**으로 일반화해 재구성한 노트다. 예시 코드는 이해를 돕기 위해 새로 작성했다.
+> 당근 테크 블로그의 「프롬프트 한 줄로 화면이 나오는 시대, '당근스러운 화면'을 만드는 법」(2026.04, 당근 디자인 시스템 팀)을 바탕으로 에이전틱 코딩 기법으로 일반화해 재구성한 노트다. 예시 코드는 이해를 돕기 위해 새로 작성했다.
 
 ## 문제: "그럴듯한 화면" ≠ "우리 제품다운 화면"
 
@@ -35,9 +35,9 @@ CLI 단계의 세 문제는 원인이 같다. **"생성" 앞뒤로 아무것도 
 
 ## 생성 앞뒤를 감싸는 6단계 루프
 
-```text
-Clarify → Memory Read → Cases → Generate → Verify → Memory Write
- 역질문     과거 결정     유사 레퍼런스   코드 생성    자동 채점    결정 축적
+```mermaid
+flowchart LR
+  c["Clarify<br/>역질문"] --> mr["Memory Read<br/>과거 결정"] --> cs["Cases<br/>유사 레퍼런스"] --> g["Generate<br/>코드 생성"] --> v["Verify<br/>자동 채점"] --> mw["Memory Write<br/>결정 축적"]
 ```
 
 | 단계 | 해결하는 문제 |
@@ -136,10 +136,11 @@ async function runCodingAgent(spec: DesignSpec) {
 
 "중고거래에선 CTA를 항상 brandSolid로" 같은 교정을 매 세션 반복하지 않도록 메모리를 두 층으로 나눈다. **한 번의 교정은 로그로만, 반복된 패턴만 규칙이 된다.**
 
-```text
-생성마다 스펙의 decisions → decision-log.jsonl (로그, raw)
-   └─ 같은 패턴이 임계치 이상 반복 → principles.json (도메인별 원칙, curated)
-         └─ 새 세션의 Memory Read 단계에서 자동 주입
+```mermaid
+flowchart TB
+  gen["생성마다 스펙의 decisions"] --> log["decision-log.jsonl (로그, raw)"]
+  log -->|"같은 패턴이 임계치 이상 반복"| pr["principles.json (도메인별 원칙, curated)"]
+  pr -->|"새 세션의 Memory Read 단계에서 자동 주입"| mr["Memory Read"]
 ```
 
 ## 정리: 내 작업에 적용할 체크리스트

@@ -28,13 +28,13 @@ TLS의 원리(대칭키·공개키, 핸드셰이크, HSTS)는 [[https|HTTPS와 T
 
 ## 옛 웹 PKI가 동작하던 방식
 
-```text
-루트 CA (브라우저·OS의 루트 저장소에 내장)
-   └─ 중간 CA ─ 서명 → 사이트 인증서
-            ↑
-   CA는 매년 WebTrust 감사를 통과하면 루트 저장소에 남는다
-   규칙(Baseline Requirements)은 CA/브라우저 포럼에서 합의로 바꾼다
+```mermaid
+flowchart LR
+    root["루트 CA<br/>(브라우저·OS의 루트 저장소에 내장)"] --> mid["중간 CA"] -->|"서명"| site["사이트 인증서"]
 ```
+
+- CA는 매년 WebTrust 감사를 통과하면 루트 저장소에 남는다
+- 규칙(Baseline Requirements)은 CA/브라우저 포럼에서 합의로 바꾼다
 
 - **감사의 이해 상충**: CA가 감사인을 직접 고르고 돈을 냈다. 1년에 한 번 감사만 통과하면 됐다.
 - **CA/브라우저 포럼**(2005~): CA와 브라우저가 함께 최소 규칙(Baseline Requirements)을 정하는 자율 규제 기구다. 규칙을 바꾸려면 CA 쪽 표결도 통과해야 했으므로, 현상 유지로 이익을 보는 쪽이 사실상 거부권을 가졌다.
@@ -66,9 +66,15 @@ TLS의 원리(대칭키·공개키, 핸드셰이크, HSTS)는 [[https|HTTPS와 T
 | 신원 증명 | 인증서와 개인키(서명) |
 | 세션 키 합의 | 세션마다 새로 만드는 일회용 키로 (EC)DHE 키 교환 |
 
-```text
-클라이언트: 비밀 a 생성 → g^a 전송          서버: 비밀 b 생성 → g^b 전송
-            양쪽 모두 g^ab를 계산 (관찰자는 g^a, g^b만 보고 g^ab를 구할 수 없다: 이산 로그 문제)
+```mermaid
+sequenceDiagram
+    participant C as 클라이언트
+    participant S as 서버
+    Note over C: 비밀 a 생성
+    C->>S: g^a 전송
+    Note over S: 비밀 b 생성
+    S->>C: g^b 전송
+    Note over C,S: 양쪽 모두 g^ab를 계산<br/>(관찰자는 g^a, g^b만 보고 g^ab를 구할 수 없다: 이산 로그 문제)
 ```
 
 공유 비밀은 어느 쪽도 전송하지 않는다. 개인키가 세션 키 계산에 쓰이지 않으므로 **개인키가 유출돼도 과거 통신은 풀리지 않는다.** 유출은 여전히 나쁘지만(위장 가능) 재앙은 아니게 됐고, 개인키를 자동화 도구로 옮기고 자주 바꾸는 것이 현실적인 선택이 됐다. TLS 1.3은 RSA 키 교환을 없애 전방 비밀성을 강제한다.
@@ -95,13 +101,15 @@ OCSP는 CA/브라우저 포럼 규칙에서 선택 사항이 됐고, Let's Encry
 
 Let's Encrypt는 ISRG(비영리)가 운영하는 무료 CA이고, ACME(RFC 8555)는 그 발급 절차를 표준화한 프로토콜이다. 처음부터 **무료, 짧은 수명, 사람 없는 자동화**를 목표로 했다.
 
-```text
-ACME 클라이언트 ── 주문(example.com) ──▶ CA
-               ◀── 챌린지: 도메인을 통제함을 증명하라
-   HTTP-01:  http://example.com/.well-known/acme-challenge/<토큰> 에 파일을 둔다
-   DNS-01:   _acme-challenge.example.com TXT 레코드를 둔다 (와일드카드는 이것만)
-   TLS-ALPN-01: 443 포트의 TLS 핸드셰이크로 증명한다
-               ── CSR 제출 ──▶ CA ── 인증서 발급 (몇 초)
+```mermaid
+sequenceDiagram
+    participant A as ACME 클라이언트
+    participant CA as CA
+    A->>CA: 주문(example.com)
+    CA->>A: 챌린지: 도메인을 통제함을 증명하라
+    Note over A: HTTP-01: http://example.com/.well-known/acme-challenge/#lt;토큰#gt; 에 파일을 둔다<br/>DNS-01: _acme-challenge.example.com TXT 레코드를 둔다 (와일드카드는 이것만)<br/>TLS-ALPN-01: 443 포트의 TLS 핸드셰이크로 증명한다
+    A->>CA: CSR 제출
+    CA->>A: 인증서 발급 (몇 초)
 ```
 
 - CA들은 "기업은 자동화를 감당할 수 없다"고 반대했지만, Let's Encrypt는 지금 웹에서 가장 많은 인증서를 발급하는 CA다. ACME는 거의 모든 CA·호스팅·로드 밸런서가 지원하는 표준이 됐다.
@@ -122,7 +130,7 @@ ACME 클라이언트 ── 주문(example.com) ──▶ CA
 
 ## 짧은 수명이 운영에 주는 일
 
-수동 갱신은 1년에 한 번이면 달력 알림으로 버텼다. 47일이면 인증서 하나에 1년에 8번 이상이고, 인증서가 수십 장이면 수백 번이 된다. **수동 갱신은 끝났다.**
+수동 갱신은 1년에 한 번이면 달력 알림으로 버텼다. 47일이면 인증서 하나에 1년에 8번 이상이고, 인증서가 수십 장이면 수백 번이 된다. 수동 갱신으로는 감당할 수 없다.
 
 갱신 자동화만으로는 부족하다. 장애는 대개 **배포**에서 난다. 새 인증서를 모든 서버·장치에 맞는 형식으로 넣고 서비스를 다시 읽게 하는 일이다.
 

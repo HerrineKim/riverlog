@@ -35,11 +35,9 @@ React 코드는 그대로 브라우저에서 돌지 않는다. JSX와 최신 문
 
 ## Create React App은 역사가 되었다
 
-**CRA**(`npx create-react-app`)는 webpack·Babel·ESLint 설정을 내장해 명령 하나로 React 프로젝트를 만들어 주던 스캐폴딩 도구였다. 설정을 바꾸려면 되돌릴 수 없는 `eject`를 해야 해서 실무에서는 잘 쓰이지 않았고, 2025년 공식적으로 지원이 종료되었다. 새 프로젝트는 Vite(`npm create vite@latest`)나 Next.js로 시작한다. CRA 시절 코드를 읽을 때 `npm start`·`npm run build`·`REACT_APP_` 접두사가 나오면 이 도구의 흔적이다.
+**CRA**(`npx create-react-app`)는 webpack·Babel·ESLint 설정을 내장해 명령 하나로 React 프로젝트를 만들어 주던 스캐폴딩 도구였다. 설정을 바꾸려면 되돌릴 수 없는 `eject`를 해야 했고, 2025년 공식적으로 지원이 종료되었다. 새 프로젝트는 Vite(`npm create vite@latest`)나 Next.js로 시작한다. CRA 시절 코드를 읽을 때 `npm start`·`npm run build`·`REACT_APP_` 접두사가 나오면 이 도구의 흔적이다.
 
 ## 직접 구성하기: webpack + Babel + TypeScript
-
-각 도구가 무엇을 하는지가 핵심이다.
 
 | 파일/도구 | 역할 |
 | --- | --- |
@@ -51,9 +49,10 @@ React 코드는 그대로 브라우저에서 돌지 않는다. JSX와 최신 문
 
 ### webpack 핵심 개념
 
-```text
-entry(시작 파일) ──▶ module.rules(로더로 변환) ──▶ output(결과 번들)
-                         plugins(빌드 중 부가 작업)
+```mermaid
+flowchart LR
+  E["entry(시작 파일)"] --> M["module.rules(로더로 변환)"] --> O["output(결과 번들)"]
+  P["plugins(빌드 중 부가 작업)"]
 ```
 
 - `entry`: `{ app: './client' }` → `output.filename: '[name].js'`이면 `[name]`이 `app`으로 바뀌어 `dist/app.js`가 생성된다. 키를 여러 개 두면 결과 번들도 여러 개 나온다(페이지마다 번들이 따로 필요한 MPA). 값에 배열을 주면 여러 파일을 번들 하나로 합친다.
@@ -113,7 +112,7 @@ module.exports = {
 ## 라우팅과 코드 스플리팅
 
 - `react-router`로 URL과 페이지 컴포넌트를 연결한다. 앱을 `BrowserRouter`로 감싸고 경로를 정의한다. (참고: v6부터 `Switch` → `Routes`, `Redirect` → `Navigate`, `component={X}` → `element={<X />}`로 바뀌었다. v7부터 `react-router` 패키지 하나로 합쳐졌고, v8에서는 호환용 `react-router-dom`도 빠졌다. [react-router 레이아웃](/knowledge/dictionary/frontend/react/react-router-layout) 참고.)
-- 코드 스플리팅: 페이지별로 번들을 나눠, 회원가입 페이지에 들어온 사람은 회원가입에 필요한 JS만 받게 한다. `React.lazy` + `Suspense` 또는 `@loadable/component`를 쓴다. 첫 화면이 3초 안에 떠야 사용자가 떠나지 않는다는 점을 기억해 둔다.
+- 코드 스플리팅: 페이지별로 번들을 나눠, 회원가입 페이지에 들어온 사람은 회원가입에 필요한 JS만 받게 한다. `React.lazy` + `Suspense` 또는 `@loadable/component`를 쓴다.
 
 ## 환경 변수
 

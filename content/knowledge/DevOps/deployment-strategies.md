@@ -5,14 +5,14 @@ summary: "새 버전을 운영에 올리는 방식을 다운타임·롤백 속�
 tags: ["devops", "ci-cd", "kubernetes", "infra"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-to-deploy-services", "https://bytebytego.com/guides/kubernetes-deployment-strategies", "https://bytebytego.com/guides/top-5-most-used-deployment-strategies", "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "https://bytebytego.com/guides/possible-experiment-platform-architecture", "https://brunch.co.kr/@springboot/283"]
+sources: ["https://bytebytego.com/guides/how-to-deploy-services", "https://bytebytego.com/guides/kubernetes-deployment-strategies", "https://bytebytego.com/guides/top-5-most-used-deployment-strategies", "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "https://bytebytego.com/guides/possible-experiment-platform-architecture", "https://brunch.co.kr/@springboot/283", "https://sre.google/sre-book/introduction/"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Deployment Strategies](https://bytebytego.com/guides/how-to-deploy-services)」, 「[Kubernetes Deployment Strategies](https://bytebytego.com/guides/kubernetes-deployment-strategies)」, 「[Top 5 Most-Used Deployment Strategies](https://bytebytego.com/guides/top-5-most-used-deployment-strategies)」, 「[Possible Experiment Platform Architecture](https://bytebytego.com/guides/possible-experiment-platform-architecture)」를 바탕으로 재구성한 노트다. 「[개발자를 위한 A/B 테스트 해시 샘플링](https://brunch.co.kr/@springboot/283)」의 내용을 더해 보강했다.
 
 ## 배포 전략이란
 
-**배포 전략은 옛 버전을 새 버전으로 바꾸는 순서와 범위를 정하는 방법이다.** 배포는 장애가 가장 자주 시작되는 순간이라, 전략은 결국 다음 네 가지를 어떻게 맞바꿀지의 선택이다.
+**배포 전략은 옛 버전을 새 버전으로 바꾸는 순서와 범위를 정하는 방법이다.** 배포 같은 변경은 장애가 자주 시작되는 지점이라(Google SRE는 장애의 약 70%가 운영 중인 시스템의 변경에서 온다고 본다, [SRE 책 서론](https://sre.google/sre-book/introduction/)), 전략은 결국 다음 네 가지를 어떻게 맞바꿀지의 선택이다.
 
 | 기준 | 질문 |
 | --- | --- |
@@ -33,59 +33,63 @@ sources: ["https://bytebytego.com/guides/how-to-deploy-services", "https://byteb
 | 피처 토글(Feature Toggle) | 코드는 배포해 두고 기능을 설정으로 켜고 끈다 | 없음 | 즉시(토글 끄기) | 토글 관리 부담 | 배포와 출시를 분리할 때 |
 | A/B 테스트 | 여러 버전을 사용자 집단별로 동시에 노출해 지표를 비교한다 | 없음 | 집단 비율 조정 | 실험 플랫폼 | 기능·UX 결정 |
 
-여러 서비스를 **한꺼번에** 올리는 다중 서비스 동시 배포는 빅뱅을 서비스 단위로 넓힌 것이다. 구현은 쉽지만 서비스 간 의존성을 따로 시험할 수 없고 안전하게 되돌리기도 어렵다.
+여러 서비스를 한꺼번에 올리는 다중 서비스 동시 배포는 빅뱅을 서비스 단위로 넓힌 것이다. 구현은 쉽지만 서비스 간 의존성을 따로 시험할 수 없고 안전하게 되돌리기도 어렵다.
 
 ## 전략별 흐름
 
 ### 롤링
 
-```text
-v1 v1 v1 v1      ← 시작
-v2 v1 v1 v1      ← 하나 교체, 헬스 체크 통과 후 다음
-v2 v2 v1 v1
-v2 v2 v2 v2      ← 완료
+```mermaid
+flowchart TB
+  A["v1 v1 v1 v1<br>← 시작"] --> B["v2 v1 v1 v1<br>← 하나 교체, 헬스 체크 통과 후 다음"]
+  B --> C["v2 v2 v1 v1"]
+  C --> D["v2 v2 v2 v2<br>← 완료"]
 ```
 
-배포하는 동안 **두 버전이 함께 응답한다.** 그래서 API와 DB 스키마는 옛 버전과 새 버전이 동시에 읽고 써도 깨지지 않아야 한다.
+배포하는 동안 두 버전이 함께 응답한다. 그래서 API와 DB 스키마는 옛 버전과 새 버전이 동시에 읽고 써도 깨지지 않아야 한다.
 
 ### 블루-그린
 
-```text
-           ┌─▶ Blue  (v1, 현재 운영)
-라우터 ────┤
-           └ ─ Green (v2, 배포·검증 완료 대기)
-
-전환: 라우터가 Green을 가리키게 바꾼다 → 문제가 생기면 Blue로 되돌린다
+```mermaid
+flowchart LR
+  router["라우터"] --> blue["Blue (v1, 현재 운영)"]
+  router -.-> green["Green (v2, 배포·검증 완료 대기)"]
 ```
 
-전환 직전까지 Green을 운영과 같은 조건에서 시험할 수 있고, 롤백은 스위치를 되돌리는 것뿐이다. 대신 **운영급 환경을 두 벌** 유지해야 하고, DB처럼 상태가 있는 계층은 두 환경이 공유하므로 스키마 호환 문제가 그대로 남는다.
+전환: 라우터가 Green을 가리키게 바꾼다 → 문제가 생기면 Blue로 되돌린다
+
+전환 직전까지 Green을 운영과 같은 조건에서 시험할 수 있고, 롤백은 스위치를 되돌리는 것뿐이다. 대신 운영급 환경을 두 벌 유지해야 하고, DB처럼 상태가 있는 계층은 두 환경이 공유하므로 스키마 호환 문제가 그대로 남는다.
 
 ### 카나리
 
-```text
-사용자 100%
-  ├─ 95% ─▶ v1
-  └─  5% ─▶ v2   ← 오류율·지연 시간 비교
-               괜찮으면 5% → 25% → 50% → 100%
-               나빠지면 0%로 되돌린다
+```mermaid
+flowchart LR
+  users["사용자 100%"] -->|"95%"| v1["v1"]
+  users -->|"5%"| v2["v2"]
+  v2 --> cmp{"오류율·지연 시간 비교"}
+  cmp -->|"괜찮으면"| up["5% → 25% → 50% → 100%"]
+  cmp -->|"나빠지면"| zero["0%로 되돌린다"]
 ```
 
-별도 스테이징 대신 **운영에서 작게 시험한다.** 블루-그린보다 싸지만, 비율을 단계마다 올리면서 두 버전의 지표를 비교하는 감시 체계가 있어야 한다. 이 판단을 자동화한 것이 점진적 배포(progressive delivery) 도구다.
+별도 스테이징 대신 운영에서 작게 시험한다. 블루-그린보다 싸지만, 비율을 단계마다 올리면서 두 버전의 지표를 비교하는 감시 체계가 있어야 한다. 이 판단을 자동화한 것이 점진적 배포(progressive delivery) 도구다.
 
 ### 섀도
 
-```text
-요청 ──▶ v1 ──▶ 응답 (사용자에게)
-  └ 복제 ─▶ v2 ──▶ 응답 버림 (지표·결과만 비교)
+```mermaid
+flowchart LR
+  req["요청"] --> v1["v1"]
+  v1 --> res1["응답 (사용자에게)"]
+  req -->|"복제"| v2["v2"]
+  v2 --> res2["응답 버림 (지표·결과만 비교)"]
 ```
 
-사용자에게 아무 영향 없이 실 트래픽으로 성능과 동작을 검증한다. 가장 복잡한 전략이다. 새 버전이 결제·메일 발송·DB 쓰기 같은 **부수 효과를 두 번 일으키지 않도록** 외부 의존성을 가짜(mock) 서비스로 막아야 한다.
+사용자에게 아무 영향 없이 실 트래픽으로 성능과 동작을 검증한다. 가장 복잡한 전략이다. 새 버전이 결제·메일 발송·DB 쓰기 같은 부수 효과를 두 번 일으키지 않도록 외부 의존성을 가짜(mock) 서비스로 막아야 한다.
 
 ### 피처 토글과 A/B 테스트
 
 **배포(deploy)와 출시(release)는 다른 일이다.** 배포는 코드를 서버에 올리는 것이고, 출시는 사용자가 기능을 보게 하는 것이다. 피처 토글은 꺼진 채로 코드를 먼저 배포하고, 출시는 설정을 바꾸는 일로 만든다. 그래서 미완성 기능도 main에 자주 합칠 수 있고, 문제가 생기면 재배포 없이 끈다. 다 쓴 토글은 지우지 않으면 분기가 쌓여 코드가 읽기 어려워진다.
 
-A/B 테스트는 토글 위에서 돌아가는 **실험**이다. 카나리가 "새 버전이 안전한가"를 무작위 일부로 확인한다면, A/B 테스트는 "어느 버전이 더 나은가"를 정해진 사용자 집단끼리 비교한다. 실험용 기능이 의도치 않게 전체에 노출되지 않도록 노출 대상을 통제해야 한다.
+A/B 테스트는 토글 위에서 돌아가는 실험이다. 카나리가 "새 버전이 안전한가"를 무작위 일부로 확인한다면, A/B 테스트는 "어느 버전이 더 나은가"를 정해진 사용자 집단끼리 비교한다. 실험용 기능이 의도치 않게 전체에 노출되지 않도록 노출 대상을 통제해야 한다.
 
 실험을 자주 돌리는 조직은 이를 **실험 플랫폼**으로 만든다. 구성 요소는 넷이다.
 
@@ -115,7 +119,7 @@ A/B 테스트는 토글 위에서 돌아가는 **실험**이다. 카나리가 "�
 
 ## 두 버전이 공존할 때의 DB
 
-롤링·블루-그린·카나리는 모두 **옛 버전과 새 버전이 같은 DB를 함께 쓰는 시간**이 있다. 컬럼 이름을 바꾸는 식의 파괴적 변경은 한 번에 하지 않고 확장-축소(expand-contract) 순서로 나눈다.
+롤링·블루-그린·카나리는 모두 옛 버전과 새 버전이 같은 DB를 함께 쓰는 시간이 있다. 컬럼 이름을 바꾸는 식의 파괴적 변경은 한 번에 하지 않고 확장-축소(expand-contract) 순서로 나눈다.
 
 ```text
 1. 확장: 새 컬럼 추가 (옛 코드는 모름, 새 코드는 둘 다 씀)
@@ -129,6 +133,6 @@ A/B 테스트는 토글 위에서 돌아가는 **실험**이다. 카나리가 "�
 - 기본은 롤링이고, 되돌리기가 중요하면 블루-그린, 운영에서 작게 시험하려면 카나리, 사용자 영향 없이 검증하려면 섀도를 쓴다.
 - 피처 토글은 배포와 출시를 떼어 내어 롤백을 설정 변경으로 만든다.
 - 두 버전이 공존하는 전략은 API와 스키마의 하위 호환이 전제다.
-- **배포 전략은 관측과 짝이다.** 지표를 보지 못하면 카나리도 그냥 느린 빅뱅이다.
+- 배포 전략은 관측과 짝이다. 지표를 보지 못하면 카나리도 그냥 느린 빅뱅이다.
 
 관련 노트: [[ci-cd|CI/CD]], [[kubernetes-architecture|쿠버네티스 구조와 핵심 개념]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[flyway|Flyway로 DB 마이그레이션 관리하기]]

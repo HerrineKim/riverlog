@@ -58,9 +58,9 @@ sources: ["https://web.dev/learn/performance/lazy-load-images-and-iframe-element
 
 퍼사드(facade)는 **진짜처럼 보이는 가벼운 대체 UI**를 먼저 보여 주고, 사용자가 상호작용할 때 진짜 임베드로 바꾸는 패턴이다. 사용자가 끝내 누르지 않으면 임베드의 자원은 한 번도 받지 않는다.
 
-```text
-처음:     [썸네일 이미지 + ▶ 버튼]        ← 이미지 한 장
-클릭하면: <iframe src="youtube…?autoplay=1">  ← 이때 플레이어 JS 전부
+```mermaid
+flowchart LR
+  a["처음: [썸네일 이미지 + ▶ 버튼]<br/>← 이미지 한 장"] -->|"클릭하면"| b["#lt;iframe src=#quot;youtube…?autoplay=1#quot;#gt;<br/>← 이때 플레이어 JS 전부"]
 ```
 
 | 대상 | 퍼사드 | 바꾸는 시점 |

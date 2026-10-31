@@ -5,7 +5,7 @@ summary: "태그로 모양이 아니라 의미를 표시하는 시맨틱 HTML. �
 tags: ["html", "semantic", "a11y", "frontend", "seo"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://webactually.com/2020/03/03/%3Csection%3E%EC%9D%84-%EB%B2%84%EB%A6%AC%EA%B3%A0-HTML5-%3Carticle%3E%EC%9D%84-%EC%8D%A8%EC%95%BC-%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0/", "https://developer.mozilla.org/en-US/blog/h1-element-styles/", "https://web.dev/learn/html/semantic-html", "https://web.dev/learn/html/headings-and-sections", "http://html5doctor.com/lets-talk-about-semantics/"]
+sources: ["https://webactually.com/2020/03/03/%3Csection%3E%EC%9D%84-%EB%B2%84%EB%A6%AC%EA%B3%A0-HTML5-%3Carticle%3E%EC%9D%84-%EC%8D%A8%EC%95%BC-%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0/", "https://developer.mozilla.org/en-US/blog/h1-element-styles/", "https://web.dev/learn/html/semantic-html", "https://web.dev/learn/html/headings-and-sections", "http://html5doctor.com/lets-talk-about-semantics/", "https://webaim.org/projects/screenreadersurvey8/"]
 ---
 
 > 「`<article>` 대 `<section>`」 부분은 브루스 로슨(Bruce Lawson)의 「Why You Should Choose HTML5 `<article>` Over `<section>`」(Smashing Magazine, 2020.01)을 웹액츄얼리 코리아가 번역한 글(2020.03)을 바탕으로 재구성했다. 「암묵적 역할과 접근성 트리」와 랜드마크가 되는 조건은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Semantic HTML」·「Headings and sections」 모듈을 바탕으로 보강했다. 「요소 이름은 어디서 왔나」는 HTML5 Doctor의 「[Let’s Talk about Semantics](http://html5doctor.com/lets-talk-about-semantics/)」를 바탕으로 보강했다.
@@ -33,7 +33,7 @@ sources: ["https://webactually.com/2020/03/03/%3Csection%3E%EC%9D%84-%EB%B2%84%E
 | `<article>` | 그 자체로 완결되어 따로 떼어 써도 되는 내용 | 글 단위 |
 | `<section>` | 제목이 있는 일반적인 구역 | 이름(label)이 있을 때만 영역(region)으로 안내된다 |
 
-랜드마크는 눈에 보이는 변화가 없다. 그래서 비용은 거의 없고 스크린 리더 사용자에게 효과가 크다. 다만 **많을수록 좋은 것은 아니다.** 랜드마크가 너무 많으면 페이지 구조가 오히려 소음이 된다. 큰 덩어리에만 쓰고, `<main>` 안의 중요한 하위 구역 두세 개 정도에만 이름 붙인 `<section>`을 둔다.
+랜드마크는 눈에 보이는 변화가 없다. 그래서 비용은 거의 없고 스크린 리더 사용자에게 효과가 크다. 다만 랜드마크가 너무 많으면 페이지 구조가 오히려 소음이 된다. 큰 덩어리에만 쓰고, `<main>` 안의 중요한 하위 구역 두세 개 정도에만 이름 붙인 `<section>`을 둔다.
 
 연락처는 `<address>`로 감싼다. 이름과 달리 우편 주소 전용이 아니라 **사람이나 조직의 연락 정보**를 뜻한다.
 
@@ -83,7 +83,7 @@ HTML5 명세에는 **아웃라인 알고리즘**이 있었다. `<section>`을 �
 - 아웃라인 알고리즘은 2022년 HTML 명세에서 삭제됐다. 중첩된 `<h1>`을 작게 그리던 기본 스타일도 2025년 Firefox 140을 시작으로 주요 브라우저가 걷어 내, 지금은 어디에 있든 `<h1>`은 같은 크기로 그려진다.
 - 제목 수준은 `<h1>`~`<h6>`로 직접 표시한다.
 
-스크린 리더 사용자는 제목 구조에 크게 기댄다. WebAIM의 8차 스크린 리더 사용자 조사에서 응답자 86.1%가 제목 구조를 아는 것이 유용하다고 답했다.
+스크린 리더 사용자는 제목 구조에 크게 기댄다. WebAIM의 [8차 스크린 리더 사용자 조사](https://webaim.org/projects/screenreadersurvey8/)(2019)에서 응답자 86.1%가 제목 수준이 매우 또는 다소 유용하다고 답했다.
 
 ```html
 <!-- 나쁨: section 중첩을 믿고 모두 h1 -->
@@ -107,7 +107,7 @@ HTML5 명세에는 **아웃라인 알고리즘**이 있었다. `<section>`을 �
 | 예 | 블로그 글, 뉴스 기사, 댓글, 상품 카드, 위젯 | 글 안의 「소개」, 「사용법」 같은 장 |
 | 효과 | 애플 watchOS 읽기 모드가 본문으로 인식한다. 안의 `<header>`에 작성자·날짜를 두면 함께 표시된다 | 이름이 없으면 스크린 리더가 존재를 알리지 않는다 |
 
-정리하면, 아웃라인 알고리즘이 없으니 `<section>`은 대부분 `<div>`와 다를 바 없다. 독립적인 내용이면 `<article>`을 쓴다. 스크린 리더 사용자가 **구역의 시작과 끝을 알아야 할 때만** 이름을 붙인 `<section>`을 쓴다.
+아웃라인 알고리즘이 없으니 `<section>`은 대부분 `<div>`와 다를 바 없다. 독립적인 내용이면 `<article>`을 쓴다. 스크린 리더 사용자가 **구역의 시작과 끝을 알아야 할 때만** 이름을 붙인 `<section>`을 쓴다.
 
 ```html
 <section aria-label="간단 요약">…</section>   <!-- 들어가고 나올 때 안내되고, 건너뛸 수 있다 -->

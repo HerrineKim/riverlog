@@ -5,7 +5,7 @@ summary: "주판·기계식 계산기에서 범용 기계의 구상, 릴레이�
 tags: ["computer-science", "history", "computer-architecture", "semiconductor", "computability"]
 source: other
 date: "2026-10-23"
-sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo", "https://www.youtube.com/watch?v=tpIctyqH29Q", "https://www.youtube.com/watch?v=O5nskjZ_GoI", "https://www.youtube.com/watch?v=LN0ucKNX0hc", "https://www.youtube.com/watch?v=nwDq4adJwzM", "https://www.youtube.com/watch?v=7TycxwFmdB0", "https://www.youtube.com/watch?v=6-tKOHICqrI", "https://www.youtube.com/watch?v=m8i38Yq1wX4", "https://www.youtube.com/watch?v=M5BZou6C01w"]
+sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo", "https://www.youtube.com/watch?v=tpIctyqH29Q", "https://www.youtube.com/watch?v=O5nskjZ_GoI", "https://www.youtube.com/watch?v=LN0ucKNX0hc", "https://www.youtube.com/watch?v=nwDq4adJwzM", "https://www.youtube.com/watch?v=7TycxwFmdB0", "https://www.youtube.com/watch?v=6-tKOHICqrI", "https://www.youtube.com/watch?v=m8i38Yq1wX4", "https://www.youtube.com/watch?v=M5BZou6C01w", "https://en.wikipedia.org/wiki/Apple_A17_Pro", "https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing", "https://www.sec.gov/Archives/edgar/data/0000937966/000162828026011378/asml-20251231.htm", "https://www.tsmc.com/english/dedicatedFoundry/technology/logic/l_2nm"]
 ---
 
 > CrashCourse의 「[Crash Course Computer Science](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo)」(2017~2018) 강의 중 컴퓨팅의 역사를 다룬 편을 바탕으로 재구성한 노트다. 반도체 공정의 현황은 2026년 기준으로 고쳐 썼다.
@@ -68,16 +68,17 @@ sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZB
 
 초기 IC는 아주 작은 개별 부품을 한 패키지에 담은 것이라 트랜지스터를 5개 남짓밖에 넣지 못했다. 이를 넘어선 공정이 **빛으로 패턴을 옮기는 포토리소그래피(photolithography)**다. 기본 동작 몇 가지를 반복해 복잡한 회로를 만든다.
 
-```text
-실리콘 웨이퍼(wafer)
- 1. 산화막을 입힌다 (보호막)
- 2. 감광제(photoresist)를 바른다
- 3. 포토마스크(photomask)를 대고 빛을 쬔다 → 빛 받은 감광제만 녹는 성질로 바뀐다
- 4. 녹은 감광제를 씻어 내고, 드러난 산화막을 산으로 식각(etch)한다 → 실리콘이 드러난다
- 5. 남은 감광제를 지운다
- 6. 드러난 실리콘에 인(P) 같은 기체를 고온으로 스며들게 해 전기적 성질을 바꾼다 (도핑, doping)
- 7. 다른 마스크로 1~6을 반복해 영역을 겹겹이 만든다
- 8. 금속층을 입히고(metallization) 다시 마스크·식각으로 배선만 남긴다
+```mermaid
+flowchart TB
+    w["실리콘 웨이퍼(wafer)"] --> s1["1. 산화막을 입힌다 (보호막)"]
+    s1 --> s2["2. 감광제(photoresist)를 바른다"]
+    s2 --> s3["3. 포토마스크(photomask)를 대고 빛을 쬔다<br>→ 빛 받은 감광제만 녹는 성질로 바뀐다"]
+    s3 --> s4["4. 녹은 감광제를 씻어 내고, 드러난 산화막을 산으로 식각(etch)한다<br>→ 실리콘이 드러난다"]
+    s4 --> s5["5. 남은 감광제를 지운다"]
+    s5 --> s6["6. 드러난 실리콘에 인(P) 같은 기체를 고온으로 스며들게 해<br>전기적 성질을 바꾼다 (도핑, doping)"]
+    s6 --> s7["7. 다른 마스크로 1~6을 반복해 영역을 겹겹이 만든다"]
+    s7 -->|"반복"| s1
+    s7 --> s8["8. 금속층을 입히고(metallization)<br>다시 마스크·식각으로 배선만 남긴다"]
 ```
 
 - 같은 공정으로 저항·커패시터도 만들고 배선까지 한 번에 그린다. 마스크 한 장이 수백만 개의 세부를 동시에 찍는다.
@@ -96,7 +97,7 @@ sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZB
 | 1990 무렵 | 100만 개를 넘음 |
 | 2000 무렵 | 수천만 개 |
 | 2010 무렵 | 10억 개 안팎 |
-| 2020년대 중반 | 스마트폰 칩도 수백억 개. 대형 AI 가속기는 다이 여러 개를 한 패키지에 묶어 수천억 개 |
+| 2020년대 중반 | 스마트폰 칩도 200억 개 안팎(Apple A17 Pro 190억 개). 대형 AI 가속기는 다이 두 개를 한 패키지에 묶어 2,000억 개를 넘음(NVIDIA Blackwell 2,080억 개) |
 
 트랜지스터가 작아지면 개수만 느는 것이 아니다. 옮길 전하가 줄어 **더 빨리 전환되고 전력을 덜 쓰며**, 회로가 촘촘해져 신호 지연이 줄고 클럭을 올릴 수 있었다. IC 값도 1962년 평균 50달러에서 1968년 2달러 수준으로 떨어졌고, 같은 효과가 CPU뿐 아니라 RAM·그래픽 카드·SSD·카메라 센서에 두루 미쳤다. 수십억 개의 트랜지스터는 사람이 배치할 수 없어, 1970년대부터 높은 수준의 설계(예: 캐시 한 덩어리)를 회로로 바꿔 주는 **논리 합성(logic synthesis)** 같은 칩 설계 자동화 소프트웨어가 설계를 맡는다.
 
@@ -104,8 +105,8 @@ sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZB
 
 | 한계 | 원인 | 업계의 대응 |
 | --- | --- | --- |
-| 빛의 파장 | 포토마스크 패턴을 투영하는 빛의 파장보다 훨씬 작은 선은 그리기 어렵다 | 파장을 줄여 왔다. 첨단 공정은 파장 13.5nm의 **극자외선(EUV)** 노광을 쓰고, 렌즈 개구수를 키운 High-NA EUV 도입이 다음 단계로 진행 중이다 |
-| 양자 터널링(quantum tunneling) | 전극 사이가 원자 수십 개 거리로 좁아지면 전자가 장벽을 뚫고 새어 나간다. **전류가 새는 스위치는 좋은 스위치가 아니다** | 게이트가 채널을 감싸는 면을 늘렸다. 평면 → 핀펫(FinFET) → 채널 사방을 감싸는 **GAA(gate-all-around) 나노시트**. TSMC의 2nm(N2)가 2025년 4분기 GAA로 양산에 들어갔다 |
+| 빛의 파장 | 포토마스크 패턴을 투영하는 빛의 파장보다 훨씬 작은 선은 그리기 어렵다 | 파장을 줄여 왔다. 첨단 공정은 파장 13.5nm의 **극자외선(EUV)** 노광을 쓰고, 렌즈 개구수를 0.33에서 0.55로 키운 High-NA EUV는 ASML이 2025년 양산용 장비(EXE:5200B)를 처음 출하해 도입 초기 단계다 |
+| 양자 터널링(quantum tunneling) | 전극 사이가 원자 수십 개 거리로 좁아지면 전자가 장벽을 뚫고 새어 나간다. 전류가 새면 스위치로 제 역할을 못 한다 | 게이트가 채널을 감싸는 면을 늘렸다. 평면 → 핀펫(FinFET) → 채널 사방을 감싸는 **GAA(gate-all-around) 나노시트**. TSMC의 2nm(N2)가 2025년 4분기 GAA로 양산에 들어갔다 |
 | 전력과 열 | 작아질수록 전력 밀도가 일정하게 유지된다는 데너드 스케일링이 2000년대 중반 깨졌다 | 클럭 대신 코어 수를 늘렸다([[computer-system-basics#클럭과 멀티코어\|클럭과 멀티코어]]) |
 
 - 「3nm」, 「2nm」 같은 공정 이름은 이제 실제 게이트 길이가 아니라 **세대를 가리키는 이름**이다. 밀도 향상 폭도 세대마다 예전보다 작다.
@@ -168,19 +169,18 @@ sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZB
 
 **정지 문제(halting problem)**는 「프로그램과 입력을 주면, 실행하지 않고도 그 프로그램이 멈출지 영원히 돌지 판정하는 알고리즘이 있는가」다. 튜링은 모순으로 「없다」를 보였다.
 
-```text
-가정: 어떤 프로그램 P와 입력 I에 대해 언제나 「멈춘다/안 멈춘다」를 답하는 기계 H가 있다
-
-반대(Bizarro) 기계 B(x)를 만든다
-  - 입력 x를 복제해 H(x, x)를 묻는다 (프로그램 x에 자기 자신을 입력으로)
-  - H가 「멈춘다」고 하면 → B는 무한 루프를 돈다
-  - H가 「안 멈춘다」고 하면 → B는 멈춘다
-
-B에 B 자신을 넣으면
-  - H(B, B) = 멈춘다   → B는 무한 루프 → 안 멈춘다  (모순)
-  - H(B, B) = 안 멈춘다 → B는 멈춘다              (모순)
-
-∴ H는 존재할 수 없다
+```mermaid
+flowchart TB
+    a["가정: 어떤 프로그램 P와 입력 I에 대해 언제나<br>「멈춘다/안 멈춘다」를 답하는 기계 H가 있다"] --> b["반대(Bizarro) 기계 B(x)를 만든다"]
+    b --> q["입력 x를 복제해 H(x, x)를 묻는다<br>(프로그램 x에 자기 자신을 입력으로)"]
+    q -->|"H가 「멈춘다」고 하면"| q1["B는 무한 루프를 돈다"]
+    q -->|"H가 「안 멈춘다」고 하면"| q2["B는 멈춘다"]
+    q1 --> self["B에 B 자신을 넣으면"]
+    q2 --> self
+    self -->|"H(B, B) = 멈춘다"| x1["B는 무한 루프 → 안 멈춘다 (모순)"]
+    self -->|"H(B, B) = 안 멈춘다"| x2["B는 멈춘다 (모순)"]
+    x1 --> c["∴ H는 존재할 수 없다"]
+    x2 --> c
 ```
 
 튜링 머신이 모든 계산을 표현하므로, 이 결과는 **시간과 메모리를 아무리 늘려도 계산으로 풀 수 없는 문제가 있다**는 뜻이다. 결정 문제의 답도 여기서 나온다.

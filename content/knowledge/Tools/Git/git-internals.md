@@ -13,7 +13,7 @@ sources: ["https://80000coding.notion.site/7267f19f53594799a7405d0f316fb589", "h
 
 ## 왜 내부를 알아야 하나
 
-`add`, `commit`만 쓸 때는 몰라도 되지만, reset·rebase·복구처럼 이력을 다루는 명령은 내부 구조를 알면 훨씬 덜 무섭다. Git의 핵심은 단순하다. **내용을 해시로 이름 붙인 객체를 쌓아 두고, 그 객체를 가리키는 포인터를 옮기는 것**이다.
+`add`, `commit`만 쓸 때는 몰라도 되지만, reset·rebase·복구처럼 이력을 다루는 명령은 내부 구조를 알면 훨씬 덜 무섭다. Git이 하는 일은 단순하다. **내용을 해시로 이름 붙인 객체를 쌓아 두고, 그 객체를 가리키는 포인터를 옮긴다.**
 
 ## 작업 폴더의 세 부분
 
@@ -48,11 +48,15 @@ my-project/                 ← 작업 폴더
 
 `git commit`은 인덱스를 바탕으로 tree를 만들고, 그 tree를 가리키는 commit 객체를 만든 다음, 현재 브랜치 파일(`refs/heads/main`)의 해시를 새 커밋으로 바꾼다.
 
-```text
-main ──▶ commit c3 ──▶ tree ──┬─ README.md → blob a1
-             │                └─ src/      → tree ── app.js → blob b7
-             ▼ parent
-         commit c2 ──▶ tree ...
+```mermaid
+flowchart LR
+    main["main"] --> c3["commit c3"]
+    c3 --> t1["tree"]
+    t1 -->|"README.md"| a1["blob a1"]
+    t1 -->|"src/"| t2["tree"]
+    t2 -->|"app.js"| b7["blob b7"]
+    c3 -->|"parent"| c2["commit c2"]
+    c2 --> t3["tree ..."]
 ```
 
 ### 객체 파일의 위치

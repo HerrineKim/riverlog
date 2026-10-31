@@ -14,15 +14,28 @@ sources: ["https://bytebytego.com/guides/polling-vs-webhooks", "https://bytebyte
 
 결제 대행사, 배송 업체, Git 호스팅처럼 **다른 서비스에서 일어난 일을 내 서버가 알아야 할 때**가 있다. 결제가 완료됐는지, 배송이 출발했는지, 푸시가 들어왔는지. 방법은 둘이다.
 
-```text
 폴링: 내가 계속 묻는다
-  내 서버 ──"새 소식 있어?"──▶ 외부 서비스   (없음)
-  내 서버 ──"새 소식 있어?"──▶ 외부 서비스   (없음)
-  내 서버 ──"새 소식 있어?"──▶ 외부 서비스   (결제 완료!)
+
+```mermaid
+sequenceDiagram
+  participant M as 내 서버
+  participant E as 외부 서비스
+  M->>E: 새 소식 있어?
+  E-->>M: 없음
+  M->>E: 새 소식 있어?
+  E-->>M: 없음
+  M->>E: 새 소식 있어?
+  E-->>M: 결제 완료!
+```
 
 웹훅: 일이 생기면 상대가 부른다
-  (사전에) 내 서버 ──"이 URL로 알려 줘"──▶ 외부 서비스
-  (이벤트 발생) 외부 서비스 ──POST /webhooks/payment──▶ 내 서버
+
+```mermaid
+sequenceDiagram
+  participant M as 내 서버
+  participant E as 외부 서비스
+  M->>E: (사전에) 이 URL로 알려 줘
+  E->>M: (이벤트 발생) POST /webhooks/payment
 ```
 
 웹훅(webhook)은 **역방향 API**, 또는 HTTP 콜백이다. 내가 엔드포인트를 만들어 상대에게 등록해 두면, 상대가 이벤트를 HTTP 요청(보통 JSON을 담은 POST)으로 보내 준다.
@@ -57,11 +70,12 @@ sources: ["https://bytebytego.com/guides/polling-vs-webhooks", "https://bytebyte
 | 순서 가정 금지 | 이벤트가 발생 순서대로 오지 않을 수 있다. 이벤트의 시각이나 버전을 보고 최신 상태만 반영하거나, 필요하면 원본 API를 다시 조회한다 |
 | HTTPS | 본문에 민감 정보가 실리므로 암호화된 엔드포인트만 등록한다 |
 
-```text
-POST /webhooks/payment
-  ├─ 서명·타임스탬프 검증 실패 → 400/401, 끝
-  ├─ 이벤트 ID가 이미 처리됨  → 200, 끝 (중복)
-  └─ 큐에 넣고 즉시 200 ──▶ 워커가 주문 상태 갱신
+```mermaid
+flowchart TB
+  p["POST /webhooks/payment"] -->|"서명·타임스탬프 검증 실패"| r1["400/401, 끝"]
+  p -->|"이벤트 ID가 이미 처리됨"| r2["200, 끝 (중복)"]
+  p --> q["큐에 넣고 즉시 200"]
+  q --> w["워커가 주문 상태 갱신"]
 ```
 
 ## 브라우저 쪽의 대응 관계

@@ -50,9 +50,17 @@ public:
 
 ## 생성과 소멸 순서
 
-```text
-생성:  기반 클래스 → 멤버(선언 순서) → 파생 클래스 생성자 본문
-소멸:  파생 클래스 소멸자 본문 → 멤버(선언 역순) → 기반 클래스
+```mermaid
+flowchart TB
+  subgraph ctor["생성"]
+    direction LR
+    c1["기반 클래스"] --> c2["멤버(선언 순서)"] --> c3["파생 클래스 생성자 본문"]
+  end
+  subgraph dtor["소멸"]
+    direction LR
+    d1["파생 클래스 소멸자 본문"] --> d2["멤버(선언 역순)"] --> d3["기반 클래스"]
+  end
+  ctor ~~~ dtor
 ```
 
 파생 생성자가 기반 생성자를 고르지 않으면 기반의 **기본 생성자**가 불린다. 기반에 기본 생성자가 없으면 컴파일 오류이므로 초기화 리스트에서 `Vehicle(6)`처럼 명시한다. 이 순서 때문에 생성·소멸 도중에는 가상 함수가 파생 쪽으로 가지 않는다(아래 「생성자·소멸자에서 가상 함수를 부르면」).
@@ -91,12 +99,17 @@ s->area();   // Shape::area가 아니라 Circle::area가 불린다
 | vtable | 클래스마다 하나, 읽기 전용 데이터 영역 | 그 클래스가 쓸 가상 함수들의 주소 배열 |
 | vptr | 객체마다 하나, 보통 객체 맨 앞 | 자기 클래스의 vtable을 가리키는 포인터 |
 
-```text
-Circle 객체                 Circle의 vtable
-┌──────────┐               ┌───────────────────┐
-│ vptr ────┼─────────────▶ │ [0] Circle::area  │
-│ r        │               │ [1] Circle::~Circle│
-└──────────┘               └───────────────────┘
+```mermaid
+flowchart LR
+    subgraph obj["Circle 객체"]
+        vptr["vptr"]
+        r["r"]
+    end
+    subgraph vt["Circle의 vtable"]
+        s0["[0] Circle::area"]
+        s1["[1] Circle::~Circle"]
+    end
+    vptr --> s0
 ```
 
 `s->area()`는 컴파일 후 대략 다음 세 단계가 된다.
@@ -113,9 +126,18 @@ call rax             ; this(s)를 첫 인자로 넘겨 호출한다
 
 **생성과 소멸 도중의 객체는 아직(또는 이미) 파생 타입이 아니다.** 그래서 컴파일러는 각 단계에서 vptr을 그 단계 클래스의 vtable로 바꿔 끼운다.
 
-```text
-생성:  Base 생성자 진입 → vptr = Base vtable → Derived 생성자 진입 → vptr = Derived vtable
-소멸:  Derived 소멸자 실행 → Base 소멸자 진입 → vptr = Base vtable → Base 멤버 정리
+생성:
+
+```mermaid
+flowchart LR
+  c1["Base 생성자 진입"] --> c2["vptr = Base vtable"] --> c3["Derived 생성자 진입"] --> c4["vptr = Derived vtable"]
+```
+
+소멸:
+
+```mermaid
+flowchart LR
+  d1["Derived 소멸자 실행"] --> d2["Base 소멸자 진입"] --> d3["vptr = Base vtable"] --> d4["Base 멤버 정리"]
 ```
 
 기반 소멸자가 돌 때 파생의 멤버는 이미 파괴되었다. 이때 파생 구현을 부르면 죽은 멤버에 접근하게 되므로, 언어가 일부러 기반 구현을 부르게 만든 것이다.
@@ -177,12 +199,12 @@ C++은 기반 클래스를 여럿 둘 수 있다(`class C : public A, public B`)
 
 ### 다이아몬드 문제와 가상 상속
 
-```text
-        Device
-       /      \
-  Scanner    Printer
-       \      /
-     MultiFunction
+```mermaid
+flowchart TD
+  dev["Device"] --- sc["Scanner"]
+  dev --- pr["Printer"]
+  sc --- mf["MultiFunction"]
+  pr --- mf
 ```
 
 `Scanner`와 `Printer`가 둘 다 `Device`를 상속하면 `MultiFunction` 안에 `Device`가 **두 벌** 생겨 멤버 접근이 모호하고 상태도 갈라진다.

@@ -57,11 +57,12 @@ route.post('/signup', validate(signupSchema), async (req, res, next) => {
 
 가입 한 번에 분석 이벤트 전송, 환영 메일, 외부 CRM 등록이 따라붙으면 `signup`이 비대해지고 단일 책임 원칙을 어긴다. 서비스는 **핵심 작업을 끝낸 뒤 이벤트만 발행**하고, 부수 작업은 구독자가 각자 맡는다.
 
-```text
-UserService.signup ─ DB 저장 ─ emit('user.signup', user)
-                                   ├─ subscribers/analytics
-                                   ├─ subscribers/mailer
-                                   └─ subscribers/crm
+```mermaid
+flowchart LR
+  signup["UserService.signup"] --> save["DB 저장"] --> emit["emit('user.signup', user)"]
+  emit --> analytics["subscribers/analytics"]
+  emit --> mailer["subscribers/mailer"]
+  emit --> crm["subscribers/crm"]
 ```
 
 - 구독자는 각자 에러를 처리한다. 한 구독자의 실패가 가입 자체를 실패시키지 않는다.

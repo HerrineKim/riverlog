@@ -14,16 +14,28 @@ sources: ["https://bytebytego.com/guides/how-do-c++-java-python-work", "https://
 
 CPU는 기계어만 실행한다. 사람이 쓴 소스 코드를 기계어로 바꾸는 시점과 방법에 따라 언어 구현이 세 갈래로 나뉜다.
 
-```text
-네이티브 컴파일     소스 ──컴파일러──▶ 기계어 ─────────────────▶ CPU
-(C, C++, Go, Rust)          (빌드 시점에 한 번)
+네이티브 컴파일 (C, C++, Go, Rust)
 
-바이트코드 + VM     소스 ──컴파일러──▶ 바이트코드 ──VM 해석──▶ CPU
-(Java, C#, Kotlin)                          └──JIT: 자주 쓰는 코드를
-                                                 실행 중 기계어로 ──▶ CPU
+```mermaid
+flowchart LR
+  s1["소스"] -->|"컴파일러<br/>(빌드 시점에 한 번)"| m1["기계어"]
+  m1 --> cpu1["CPU"]
+```
 
-인터프리터          소스 ──인터프리터가 실행 중에 읽고 실행──▶ CPU
-(Python, Ruby, JS*)
+바이트코드 + VM (Java, C#, Kotlin)
+
+```mermaid
+flowchart LR
+  s2["소스"] -->|"컴파일러"| b2["바이트코드"]
+  b2 -->|"VM 해석"| cpu2["CPU"]
+  b2 -->|"JIT: 자주 쓰는 코드를 실행 중 기계어로"| cpu2
+```
+
+인터프리터 (Python, Ruby, JS*)
+
+```mermaid
+flowchart LR
+  s3["소스"] -->|"인터프리터가 실행 중에 읽고 실행"| cpu3["CPU"]
 ```
 
 | 방식 | 장점 | 단점 |
@@ -82,8 +94,16 @@ Java의 메서드 영역(Metaspace)처럼 클래스 메타데이터도 클래스
 
 참조 카운팅에서 두 객체가 서로를 가리키면, 바깥에서 둘을 가리키는 참조가 모두 사라져도 각자의 카운트가 1로 남아 영원히 해제되지 않는다.
 
-```text
-외부 → [A] ⇄ [B]        외부 참조를 끊으면   [A](1) ⇄ [B](1)   ← 아무도 쓰지 않는데 남는다
+```mermaid
+flowchart LR
+  subgraph before[" "]
+    ext["외부"] --> a1["A"]
+    a1 <--> b1["B"]
+  end
+  subgraph after["아무도 쓰지 않는데 남는다"]
+    a2["A (1)"] <--> b2["B (1)"]
+  end
+  before -->|"외부 참조를 끊으면"| after
 ```
 
 Swift·Objective-C의 ARC에서는 이를 **retain cycle**(강한 참조 순환)이라 부른다. 자식이 부모를, 델리게이트가 소유자를, 클로저가 자기를 소유한 객체(`self`)를 강하게 붙잡을 때 흔히 생긴다. 해결은 언어마다 같은 원리다. **순환의 한쪽을 카운트를 올리지 않는 약한 참조로 만든다.**
@@ -128,11 +148,14 @@ JavaScript 엔진의 도달 가능성과 누수 패턴은 [[garbage-collection|�
 
 **WebAssembly(Wasm)는 브라우저가 실행하는 저수준 바이너리 명령어 형식이다.** 오랫동안 브라우저에서 돌릴 수 있는 언어는 JavaScript뿐이었다. Wasm은 C, C++, Rust 같은 언어를 컴파일할 수 있는 공통 목표를 제공한다.
 
-```text
-C / C++ / Rust 소스 ──컴파일러(Emscripten, rustc 등)──▶ .wasm 바이너리
-                                                          │
-브라우저: JavaScript가 .wasm을 불러옴 ──▶ Wasm 엔진이 기계어로 컴파일해 실행
-                                    ◀──▶ JS와 함수를 주고받음
+```mermaid
+flowchart TB
+  src["C / C++ / Rust 소스"] -->|"컴파일러(Emscripten, rustc 등)"| wasm[".wasm 바이너리"]
+  subgraph br["브라우저"]
+    js["JavaScript가 .wasm을 불러옴"] --> eng["Wasm 엔진이 기계어로 컴파일해 실행"]
+    eng <-->|"JS와 함수를 주고받음"| js
+  end
+  wasm --> js
 ```
 
 | 쓰임 | 이유 |

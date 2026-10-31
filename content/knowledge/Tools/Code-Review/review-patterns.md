@@ -157,8 +157,5 @@ props가 많다는 것은 관리하고 파악해야 할 지점이 많다는 뜻�
 | state 직접 수정 | `map` + spread로 새 객체 |
 | props 과다 | 데이터 + 콜백 한두 개로 |
 | 입력 많은 폼의 state 범벅 | `FormData`로 제출 시 한 번에 읽기 |
-| 디바이스 대응 스타일에 `px` | `rem`(또는 프로젝트의 rem 변환 함수) |
-| 날짜 문자열 잘라 붙이기 | 프로젝트 날짜 라이브러리의 `format()`([[date-libraries\|날짜 라이브러리]]) |
-| 흔한 기능의 구조를 처음부터 설계 | 잘 짜인 예제 코드를 먼저 보고 시작 |
 
 관련 노트: [[async-await|async/await와 비동기 에러 처리]], [[forms|폼과 제어 컴포넌트]], [[principles|코드 리뷰 원칙]], [[typescript-coding-convention|TypeScript 코딩 컨벤션]], [[boolean-naming|불리언 변수 이름 짓기]]

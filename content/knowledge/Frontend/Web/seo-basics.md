@@ -5,7 +5,7 @@ summary: "검색 엔진이 페이지를 크롤링·색인·순위 매기는 흐�
 tags: ["seo", "web", "html", "frontend"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://x.com/azarchick/status/1757102271115166148", "https://developers.google.com/search/docs/crawling-indexing/links-crawlable", "https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://velog.io/@jiseung/Why-Site-Speed-Matters", "https://bytebytego.com/guides/making-sense-of-search-engine-optimization", "https://developers.google.com/search/docs/crawling-indexing/url-structure", "https://developers.google.com/search/docs/fundamentals/seo-starter-guide", "https://www.hobo-web.co.uk/seo-tutorial/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/SEO%20%EA%B0%9C%EB%85%90%20%EB%B0%8F%20%ED%96%A5%EC%83%81%EB%B0%A9%EB%B2%95.md", "https://web.archive.org/web/2019/https://katemats.com/blog/what-every-programmer-should-know-about-seo"]
+sources: ["https://x.com/azarchick/status/1757102271115166148", "https://developers.google.com/search/docs/crawling-indexing/links-crawlable", "https://webactually.com/2015/04/09/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ea%b2%80%ec%83%89%ec%97%94%ec%a7%84-%ec%b5%9c%ec%a0%81%ed%99%94/", "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://velog.io/@jiseung/Why-Site-Speed-Matters", "https://bytebytego.com/guides/making-sense-of-search-engine-optimization", "https://developers.google.com/search/docs/crawling-indexing/url-structure", "https://developers.google.com/search/docs/fundamentals/seo-starter-guide", "https://www.hobo-web.co.uk/seo-tutorial/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/SEO%20%EA%B0%9C%EB%85%90%20%EB%B0%8F%20%ED%96%A5%EC%83%81%EB%B0%A9%EB%B2%95.md", "https://web.archive.org/web/2019/https://katemats.com/blog/what-every-programmer-should-know-about-seo", "https://vercel.com/blog/the-rise-of-the-ai-crawler"]
 ---
 
 > 「모바일 우선 색인과 반응형 SEO」 부분은 Bryson Meunier의 「반응형 웹사이트를 위한 검색엔진 최적화」(웹액츄얼리 번역, 2015.04)를 바탕으로 보강한 노트다. hreflang 항목은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 바탕으로 다국어 페이지 노트와 연결했다. 「순위를 정하는 요소」는 jiseung의 「[Why Site Speed Matters](https://velog.io/@jiseung/Why-Site-Speed-Matters)」 부록으로 보강했다. 「링크와 버튼을 구분한다」는 Kristina Azarenko의 [X 타래](https://x.com/azarchick/status/1757102271115166148)(2024.02)를 Google 검색 센터 문서로 확인해 보강했다. 「색인 단계에서 일어나는 일」과 「크롤러가 읽기 쉬운 사이트 구조」는 ByteByteGo의 System Design 101 가이드 「[Making Sense of Search Engine Optimization](https://bytebytego.com/guides/making-sense-of-search-engine-optimization)」을 Google URL 구조 가이드로 확인해 보강했다. 「흔한 오해」와 색인 확인·제목 링크·스니펫·rel 링크 속성 내용은 Google의 「[SEO 기본 가이드](https://developers.google.com/search/docs/fundamentals/seo-starter-guide)」(옛 「Search Engine Optimization Starter Guide」 PDF의 현행판)와 Hobo의 「[SEO Tutorial For Beginners](https://www.hobo-web.co.uk/seo-tutorial/)」를 바탕으로 보강했다.
@@ -15,10 +15,12 @@ sources: ["https://x.com/azarchick/status/1757102271115166148", "https://develop
 
 ## 검색 엔진이 일하는 순서
 
-```text
-크롤링(Crawl) → 렌더링 → 색인(Index) → 순위(Rank) → 검색 결과 노출
- 봇이 링크를 따라   JS 실행 후   내용을 저장하고   질의마다 관련도와
- 페이지를 내려받음   최종 DOM 확보   분류              품질로 정렬
+```mermaid
+flowchart LR
+  a["크롤링(Crawl)<br/>봇이 링크를 따라 페이지를 내려받음"] --> b["렌더링<br/>JS 실행 후 최종 DOM 확보"]
+  b --> c["색인(Index)<br/>내용을 저장하고 분류"]
+  c --> d["순위(Rank)<br/>질의마다 관련도와 품질로 정렬"]
+  d --> e["검색 결과 노출"]
 ```
 
 | 단계 | 막히는 원인 | 프론트엔드가 할 일 |
@@ -63,7 +65,7 @@ sources: ["https://x.com/azarchick/status/1757102271115166148", "https://develop
 - 이미지는 관련 있는 글 가까이에 두고 `alt`를 쓴다. 이미지 검색에서 처음 사이트를 찾는 사용자도 많다.
 - 광고나 자사 CTA가 본문(main content)을 화면 아래로 밀어내지 않게 한다.
 - 링크 신호를 넘기고 싶지 않은 링크에는 이유를 표시한다. 사용자 생성 콘텐츠에는 `rel="ugc"`, 광고·제휴에는 `rel="sponsored"`, 그 밖에는 `rel="nofollow"`.
-- **키워드 채우기(keyword stuffing)** 처럼 순위를 노리고 키워드를 부자연스럽게 반복하는 블랙햇 기법은 스팸 정책 위반이라 효과가 없고 오히려 불이익을 받는다. 조작적 링크 구매 같은 기법으로 받은 불이익은 원인을 고친 뒤에도 회복에 6~12개월 이상 걸릴 수 있고, 예전 순위로 돌아온다는 보장도 없다.
+- **키워드 채우기(keyword stuffing)** 처럼 순위를 노리고 키워드를 부자연스럽게 반복하는 블랙햇 기법은 스팸 정책 위반이라 효과가 없고 오히려 불이익을 받는다. 조작적 링크 구매 같은 기법으로 받은 불이익은 원인을 고친 뒤에도 알고리즘에 반영되기까지 오래 걸린다. Hobo가 인용한 Google 존 뮬러의 2018년 답변은 「6~12개월이면 안전한 쪽」이라 했고, 몇 년간 회복하지 못하는 사이트도 있다고 했다.
 - 바꾼 것이 순위에 반영되기까지 몇 시간에서 몇 달이 걸린다. 몇 주는 기다린 뒤 효과를 판단한다.
 
 ## robots.txt와 사이트맵
@@ -130,7 +132,7 @@ Sitemap: https://example.com/sitemap.xml
 
 | 방식 | 봇이 처음 받는 HTML | SEO |
 | --- | --- | --- |
-| CSR | 거의 빈 `<div id="root">` | 구글은 JS를 실행해 읽지만 렌더링 대기열을 거쳐 늦어질 수 있다. SNS 미리보기 봇과 대부분의 AI 크롤러는 JS를 실행하지 않아 내용을 못 읽는다 |
+| CSR | 거의 빈 `<div id="root">` | 구글은 JS를 실행해 읽지만 렌더링 대기열을 거쳐 늦어질 수 있다. SNS 미리보기 봇과 GPTBot·ClaudeBot·PerplexityBot 같은 AI 크롤러는 JS를 실행하지 않아 내용을 못 읽는다([Vercel 조사](https://vercel.com/blog/the-rise-of-the-ai-crawler), 2024.12) |
 | SSR / SSG | 본문이 채워진 HTML | 가장 안전하다 |
 
 자세한 차이는 [[spa-csr-ssr|SPA와 CSR·SSR]]에 있다.

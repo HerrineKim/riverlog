@@ -28,12 +28,12 @@ sources: ["https://engineering.linecorp.com/ko/blog/behavior-tree/"]
 
 ## 노드의 종류
 
-```text
-              [Selector]                 ← 하나라도 성공하면 성공
-             /          \
-      [Sequence]       [Action: 순찰]    ← 앞 가지가 실패하면 순찰
-      /        \
-[Cond: 적 보임?] [Action: 공격]          ← 모두 성공해야 성공
+```mermaid
+flowchart TB
+  Sel["[Selector]<br/>하나라도 성공하면 성공"] --> Seq["[Sequence]<br/>모두 성공해야 성공"]
+  Sel --> Patrol["[Action: 순찰]<br/>앞 가지가 실패하면 순찰"]
+  Seq --> Cond["[Cond: 적 보임?]"]
+  Seq --> Attack["[Action: 공격]"]
 ```
 
 | 분류 | 노드 | 동작 |

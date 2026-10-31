@@ -39,14 +39,16 @@ Elasticsearch는 **Apache Lucene 검색 라이브러리를 여러 서버에 나�
 
 인덱스는 문서를 담는 논리적 이름이고, 실제 저장은 샤드 단위로 노드에 흩어진다. 문서가 어느 주 샤드로 갈지는 `hash(_routing) % 주 샤드 수`로 정한다. `_routing`의 기본값은 `_id`다. 이 식 때문에 **주 샤드 수는 인덱스를 만들 때 정하면 바꿀 수 없다**(바꾸려면 split·shrink API나 재색인).
 
-```text
-클러스터
- └─ 인덱스 (RDB의 테이블에 해당)
-     ├─ 주 샤드 0 ──복제──▶ 복제 샤드 0   (서로 다른 노드에 둔다)
-     ├─ 주 샤드 1 ──복제──▶ 복제 샤드 1
-     └─ ...
-          └─ 샤드 하나 = Lucene 인덱스 하나
-               └─ 세그먼트들 (불변 파일, 백그라운드에서 병합)
+```mermaid
+flowchart TB
+  cluster["클러스터"] --> index["인덱스 (RDB의 테이블에 해당)"]
+  index --> p0["주 샤드 0"]
+  index --> p1["주 샤드 1"]
+  index --> more["..."]
+  p0 -->|"복제 (서로 다른 노드에 둔다)"| r0["복제 샤드 0"]
+  p1 -->|"복제 (서로 다른 노드에 둔다)"| r1["복제 샤드 1"]
+  more --> lucene["샤드 하나 = Lucene 인덱스 하나"]
+  lucene --> seg["세그먼트들 (불변 파일, 백그라운드에서 병합)"]
 ```
 
 ### 주 샤드와 복제 샤드
@@ -76,16 +78,18 @@ Elasticsearch는 **Apache Lucene 검색 라이브러리를 여러 서버에 나�
 
 ### 쓰기 경로와 세그먼트
 
-```text
-색인 요청 → 조정 노드 → 라우팅으로 주 샤드 결정
-  주 샤드: 메모리 버퍼에 쓰고 트랜스로그(translog)에 기록
-     └─ 같은 작업을 동기화된 복제본(in-sync copies)에 전달 → 모두 성공하면 응답
-  refresh (기본 1초): 버퍼를 새 세그먼트로 만들어 검색에 보이게 한다
-  flush: 세그먼트를 디스크에 확정(Lucene commit)하고 트랜스로그를 비운다
-  merge: 작은 세그먼트를 백그라운드에서 큰 것으로 합친다
+```mermaid
+flowchart TB
+  req["색인 요청"] --> coord["조정 노드"] --> route["라우팅으로 주 샤드 결정"]
+  route --> primary["주 샤드: 메모리 버퍼에 쓰고 트랜스로그(translog)에 기록"]
+  primary -->|"같은 작업을 전달"| replicas["동기화된 복제본(in-sync copies)"]
+  replicas -->|"모두 성공하면"| resp["응답"]
+  primary --> refresh["refresh (기본 1초): 버퍼를 새 세그먼트로 만들어 검색에 보이게 한다"]
+  primary --> flush["flush: 세그먼트를 디스크에 확정(Lucene commit)하고 트랜스로그를 비운다"]
+  primary --> merge["merge: 작은 세그먼트를 백그라운드에서 큰 것으로 합친다"]
 ```
 
-- **문서가 들어오면** 메모리 버퍼에 모였다가 **refresh**(기본 1초)로 새 세그먼트가 되어 검색에 보인다. 그래서 「실시간」이 아니라 **거의 실시간**(near real-time)이다. `refresh_interval`을 따로 정하지 않은 인덱스는 30초 넘게 검색이 없으면 다음 검색 때까지 refresh를 미룬다.
+- 문서가 들어오면 메모리 버퍼에 모였다가 **refresh**(기본 1초)로 새 세그먼트가 되어 검색에 보인다. 그래서 「실시간」이 아니라 **거의 실시간**(near real-time)이다. `refresh_interval`을 따로 정하지 않은 인덱스는 30초 넘게 검색이 없으면 다음 검색 때까지 refresh를 미룬다.
 - **트랜스로그**는 refresh·flush 전의 변경을 장애에서 되살리는 로그다. 기본값(`index.translog.durability: request`)은 요청마다 fsync한 뒤 응답한다. DB의 WAL과 같은 역할이다.
 - **세그먼트는 한 번 쓰면 바꾸지 않는다.** 수정은 새 문서를 쓰고 옛 문서에 삭제 표시를 하는 방식이다. 쓰기를 순차 추가로 바꾸고 나중에 합치는 발상은 LSM 트리와 같다.
 - 각 세그먼트의 **용어 사전**(term dictionary)은 정렬된 용어 목록이고, 그 앞에 접두사를 압축한 FST(유한 상태 변환기) 색인을 둬서 메모리에 올린 채 빠르게 찾는다.
@@ -387,9 +391,9 @@ ELK는 **Elasticsearch, Logstash, Kibana**의 머리글자다. 수집기 Beats�
 | **Elasticsearch** | 로그를 색인·저장한다 |
 | **Kibana** | 검색, 대시보드, 시각화, 그리고 클러스터 관리(ILM·보안·Dev Tools) 화면 |
 
-```text
-서버들의 Beats ─▶ (Kafka 등 메시지 큐) ─▶ Logstash ─▶ Elasticsearch ─▶ Kibana
-  수집            생산·소비 속도 분리        파싱·변환     색인·저장        검색·대시보드
+```mermaid
+flowchart LR
+  beats["서버들의 Beats<br/>수집"] --> mq["(Kafka 등 메시지 큐)<br/>생산·소비 속도 분리"] --> ls["Logstash<br/>파싱·변환"] --> es["Elasticsearch<br/>색인·저장"] --> kb["Kibana<br/>검색·대시보드"]
 ```
 
 - 로그 양이 많으면 Beats와 Logstash 사이에 **메시지 큐를 끼워** 생산자와 소비자를 분리한다. Logstash가 잠시 밀려도 로그를 잃지 않는다.
@@ -417,7 +421,7 @@ PUT _ingest/pipeline/nginx-logs
 - 색인 요청에 `?pipeline=이름`을 붙이거나 인덱스 설정 `index.default_pipeline`으로 지정한다.
 - Logstash와 비교하면 별도 서버가 필요 없지만, 변환 비용이 데이터 노드 CPU를 쓰므로 양이 많으면 전용 ingest 노드를 둔다. 여러 목적지로 보내거나 복잡한 상태 처리가 필요하면 Logstash가 맞다.
 
-**OpenSearch**(+ OpenSearch Dashboards)도 같은 구조로 쓴다. 2021년 Elastic이 라이선스를 비공개 쪽(SSPL·Elastic License)으로 바꾸자 AWS가 갈라낸 포크이고, 2024년 9월부터 리눅스 재단 산하 OpenSearch Software Foundation이 관리한다. Elasticsearch도 2024년 8월 AGPL을 라이선스 선택지에 다시 넣어 오픈소스로 돌아왔다. 지표·트레이스까지 묶은 관측성(observability) 도구로는 Grafana 계열(Loki·Prometheus) 같은 대안도 흔하다.
+**OpenSearch**(+ OpenSearch Dashboards)도 같은 구조로 쓴다. 2021년 Elastic이 라이선스를 소스는 공개하지만 OSI 승인 오픈소스는 아닌 쪽(SSPL·Elastic License)으로 바꾸자 AWS가 갈라낸 포크이고, 2024년 9월부터 리눅스 재단 산하 OpenSearch Software Foundation이 관리한다. Elasticsearch도 2024년 8월 AGPL을 라이선스 선택지에 다시 넣어 오픈소스로 돌아왔다. 지표·트레이스까지 묶은 관측성(observability) 도구로는 Grafana 계열(Loki·Prometheus) 같은 대안도 흔하다.
 
 ## 정리
 

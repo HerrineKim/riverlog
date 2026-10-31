@@ -36,11 +36,14 @@ sources: ["https://dart.fss.or.kr/", "https://www.smes.go.kr/venturein/pbntc/sea
 
 ### 벤처인에서 찾는 순서
 
-```text
-smes.go.kr/venturein
-  └─ 공시·통계 → 벤처확인기업 공시
-       └─ 기업명(또는 사업자번호·대표자명) 검색
-            └─ 기업 선택 → 재무정보 탭 → 손익계산서
+```mermaid
+flowchart TB
+  site["smes.go.kr/venturein"] --> menu["공시·통계"]
+  menu --> pub["벤처확인기업 공시"]
+  pub --> search["기업명(또는 사업자번호·대표자명) 검색"]
+  search --> pick["기업 선택"]
+  pick --> tab["재무정보 탭"]
+  tab --> pl["손익계산서"]
 ```
 
 ## 무엇을 보나
@@ -64,7 +67,5 @@ smes.go.kr/venturein
 - 외부감사 대상(네 기준 중 둘 이상, 또는 자산·매출 500억 이상)이면 DART, 벤처기업이면 벤처인에서 재무제표를 본다.
 - 매출 추이, 영업손실의 방향, 현금 대비 손실(런웨이), 자본잠식 여부를 본다.
 - 숫자는 과거이고 적자는 맥락이 있다. 면접에서 런웨이와 다음 투자 계획을 직접 묻는 것으로 보완한다.
-
-대외 활동의 크기가 아니라 매출과 현금의 흐름이 회사의 지금 상태를 말해 준다.
 
 관련 노트: [[interview-attitude|면접 잘 보는 법]], [[decision-making|의사결정 체크리스트]], [[investor-ir-deck|투자자가 보는 IR 자료]], [[stock-options|스톡옵션]]

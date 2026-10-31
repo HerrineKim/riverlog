@@ -5,7 +5,7 @@ summary: "정적 사이트 생성기(SSG)는 마크다운 콘텐츠와 템플릿
 tags: ["frontend", "web", "rendering", "performance", "devops"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2021/01/14/%EC%A0%95%EC%A0%81-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%83%9D%EC%84%B1%EA%B8%B0-Eleventy%EB%A1%9C-%EC%9B%8C%EB%93%9C%ED%94%84%EB%A0%88%EC%8A%A4-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%98%AE%EA%B8%B0/", "https://www.11ty.dev/docs/", "https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022", "https://wormwlrm.github.io/2022/02/25/Migration-Journey-from-Jekyll-to-Gatsby.html"]
+sources: ["https://webactually.com/2021/01/14/%EC%A0%95%EC%A0%81-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%83%9D%EC%84%B1%EA%B8%B0-Eleventy%EB%A1%9C-%EC%9B%8C%EB%93%9C%ED%94%84%EB%A0%88%EC%8A%A4-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%98%AE%EA%B8%B0/", "https://www.11ty.dev/docs/", "https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022", "https://wormwlrm.github.io/2022/02/25/Migration-Journey-from-Jekyll-to-Gatsby.html", "https://almanac.httparchive.org/en/2021/jamstack"]
 ---
 
 > Scott Dawson의 「정적 사이트 생성기 Eleventy로 워드프레스 사이트 옮기기」(웹액츄얼리 번역, 2021.01)를 바탕으로 재구성한 노트다. 「[Jekyll에서 Gatsby로 떠나는 마이그레이션 여정](https://wormwlrm.github.io/2022/02/25/Migration-Journey-from-Jekyll-to-Gatsby.html)」의 내용을 더해 보강했다.
@@ -14,10 +14,21 @@ sources: ["https://webactually.com/2021/01/14/%EC%A0%95%EC%A0%81-%EC%82%AC%EC%9D
 
 정적 사이트 생성기(Static Site Generator, SSG)는 **콘텐츠(주로 마크다운)와 템플릿을 빌드 때 합쳐 완성된 HTML 파일을 만드는 도구**다. 요청이 올 때마다 페이지를 조립하는 CMS와 반대다.
 
-```text
-CMS (WordPress)                         SSG
-요청 ─▶ PHP 실행 ─▶ DB 쿼리             빌드: 마크다운 + 템플릿 ─▶ HTML 파일
-     ─▶ 템플릿 병합 ─▶ HTML 응답        요청 ─▶ CDN이 파일을 그대로 응답
+CMS (WordPress)
+
+```mermaid
+flowchart LR
+  n1["요청"] --> n2["PHP 실행"] --> n3["DB 쿼리"] --> n4["템플릿 병합"] --> n5["HTML 응답"]
+```
+
+SSG
+
+```mermaid
+flowchart LR
+  subgraph build["빌드"]
+    b1["마크다운 + 템플릿"] --> b2["HTML 파일"]
+  end
+  r1["요청"] --> r2["CDN이 파일을 그대로 응답"]
 ```
 
 대부분의 방문자가 같은 콘텐츠를 본다면, 매 요청마다 DB를 거칠 이유가 없다. 렌더링 방식 전체(CSR·SSR·SSG·ISR)의 비교는 [[spa-csr-ssr|SPA와 CSR·SSR]]에 있다.
@@ -45,7 +56,7 @@ SSG로 만든 정적 파일(Markup)에 JavaScript와 외부 API를 더해 동적
 | Astro | Node.js | 정적 HTML이 기본이고, 필요한 부분만 React·Vue 컴포넌트로 hydration하는 아일랜드 구조 |
 | Next.js | React | 정적 생성과 서버 렌더링·RSC를 페이지 단위로 섞는다. 앱 같은 상호작용에 맞다 |
 
-**콘텐츠 사이트에 SPA 프레임워크를 쓰면 JS 비용을 치른다.** 실측 데이터에서 Gatsby·Next.js처럼 React 런타임을 싣는 SSG는 Hugo·Jekyll보다 JS를 수백 KB 더 보내고 Core Web Vitals 통과율도 낮았다. 블로그·문서·소개 사이트라면 JS를 기본으로 보내지 않는 도구부터 고려한다([[responsible-javascript|책임감 있는 자바스크립트]]). Next.js도 서버 컴포넌트를 쓰면 상호작용이 없는 부분의 JS는 보내지 않는다([[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]).
+**콘텐츠 사이트에 SPA 프레임워크를 쓰면 JS 비용을 치른다.** HTTP Archive의 [Web Almanac 2021 Jamstack 장](https://almanac.httparchive.org/en/2021/jamstack)에서 Gatsby·Next.js처럼 React 런타임을 싣는 SSG는 모바일 중앙값 기준 JS가 약 700KB로 Hugo·Jekyll(약 150KB)보다 수백 KB 많았고, Core Web Vitals 통과율도 낮았다. 블로그·문서·소개 사이트라면 JS를 기본으로 보내지 않는 도구부터 고려한다([[responsible-javascript|책임감 있는 자바스크립트]]). Next.js도 서버 컴포넌트를 쓰면 상호작용이 없는 부분의 JS는 보내지 않는다([[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]).
 
 ## Eleventy의 구성 요소
 
@@ -88,6 +99,6 @@ WordPress가 아니라 SSG에서 다른 SSG로 옮길 때도(Jekyll → Astro·E
 - 단점은 재빌드와 편집 경험이다. 헤드리스 CMS와 증분 빌드로 보완한다.
 - 콘텐츠 사이트에는 JS를 기본으로 보내지 않는 Eleventy·Hugo·Astro가, 앱에 가까우면 Next.js가 맞다.
 - Eleventy의 뼈대는 front matter·레이아웃·컬렉션·필터·플러그인이다.
-- **콘텐츠가 대부분 같은 사람에게 같은 모습이라면, 미리 만들어 두는 것이 가장 빠른 렌더링이다.**
+- 콘텐츠가 대부분 같은 사람에게 같은 모습이라면, 미리 만들어 두는 것이 가장 빠른 렌더링이다.
 
 관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[responsible-javascript|책임감 있는 자바스크립트]], [[nextjs|Next.js를 쓰는 이유]], [[markdown|Markdown 문법]]

@@ -12,7 +12,7 @@ sources: ["https://developer.mozilla.org/en-US/docs/WebAssembly/Concepts", "http
 
 ## WebAssembly란
 
-**WebAssembly(Wasm)는 컴파일 대상으로 설계된 저수준 바이트코드 형식이다.** 사람이 직접 쓰기보다 C·C++·Rust·Go·Kotlin 같은 언어를 컴파일해 만든다. 브라우저의 JavaScript 엔진 안에서 **JavaScript와 같은 가상 머신, 같은 보안 모델(동일 출처·권한 정책)** 으로 돌고, 거의 네이티브에 가까운 속도를 낸다.
+**WebAssembly**(Wasm)는 컴파일 대상으로 설계된 저수준 바이트코드 형식이다. 사람이 직접 쓰기보다 C·C++·Rust·Go·Kotlin 같은 언어를 컴파일해 만든다. 브라우저의 JavaScript 엔진 안에서 **JavaScript와 같은 가상 머신, 같은 보안 모델(동일 출처·권한 정책)** 으로 돌고, 거의 네이티브에 가까운 속도를 낸다.
 
 **JavaScript를 대체하지 않고 보완한다.** 앱의 뼈대·UI·생태계는 JavaScript가, 무거운 계산(영상·이미지 처리, 3D, 물리, 압축, 암호화, 기존 C++ 엔진 이식)은 Wasm이 맡는 식이다. Wasm은 DOM에 직접 손대지 못하고, 웹 API는 JavaScript를 거쳐 부른다.
 

@@ -44,10 +44,14 @@ sources: ["https://velog.io/@teo/behavior-driven-development-schema-driven-devel
 
 ## 프론트엔드 프로그램의 두 흐름
 
-```text
-데이터(상태) ──render──▶ 화면 ──▶ 사용자
-     ▲                              │
-     └──── 액션 ◀── 의도 ◀── 행동 ──┘
+```mermaid
+flowchart LR
+  data["데이터(상태)"] -->|"render"| screen["화면"]
+  screen --> user["사용자"]
+  user --> act["행동"]
+  act --> intent["의도"]
+  intent --> action["액션"]
+  action --> data
 ```
 
 프로그램은 이 순환이다. 정의할 것은 **데이터**와 **사용자 행동** 두 가지이고, 각각에 맞는 방법이 있다.
@@ -65,13 +69,13 @@ sources: ["https://velog.io/@teo/behavior-driven-development-schema-driven-devel
 2. **then**: 그 동작의 예상 결과를 적는다. 가능한 한 촘촘하게, **데이터가 바뀌는 단위**로 쪼갠다.
 3. **given**: 같은 동작인데 결과가 달라지는 조건을 찾는다.
 
-```text
-given  일정 생성 버튼이 활성화된 상태에서
-when   '일정 생성' 버튼을 클릭하면
-then   → 일정 정보를 서버에 저장한다
-       → 생성 창을 닫는다
-       → 새 일정을 화면에 보여 준다
-       → 해당 일정을 선택 상태로 만든다
+```mermaid
+flowchart LR
+  G["given: 일정 생성 버튼이 활성화된 상태에서"] --> W["when: '일정 생성' 버튼을 클릭하면"]
+  W -->|"then"| T1["일정 정보를 서버에 저장한다"]
+  W -->|"then"| T2["생성 창을 닫는다"]
+  W -->|"then"| T3["새 일정을 화면에 보여 준다"]
+  W -->|"then"| T4["해당 일정을 선택 상태로 만든다"]
 ```
 
 **then 하나가 태스크 하나다.** 완료된 then 개수 / 전체 then 개수가 곧 진척률이 된다. 그러려면 then 크기가 비슷해야 하는데, 크기는 "몇 개의 데이터가 바뀌고 몇 개의 API를 쓰는가"로 가늠한다. 상위 목적은 `As a … I want … So that …` 형식의 스토리로 묶는다.

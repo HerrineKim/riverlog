@@ -27,18 +27,33 @@ sources: ["https://bytebytego.com/guides/how-does-google-authenticator-or-other-
 
 Google Authenticator 같은 인증기 앱의 6자리 숫자는 **TOTP(Time-based One-Time Password, RFC 6238)** 다. 서버와 앱이 같은 비밀 키를 나눠 갖고, 각자 현재 시각으로 같은 숫자를 계산한다. 네트워크로 코드를 받는 것이 아니므로 앱은 오프라인에서도 동작한다.
 
-```text
-[1단계: 등록]
-사용자가 2단계 인증 켜기
-서버: 비밀 키 생성 → 사용자 계정에 (암호화해) 저장
-서버 → 화면: otpauth://totp/발급자:사용자?secret=...&issuer=... 를 QR 코드로 표시
-인증기 앱: QR 스캔 → 비밀 키를 기기에 저장
-사용자: 앱에 뜬 코드를 한 번 입력해 등록 확인
+1단계: 등록
 
-[2단계: 로그인]
-앱:   코드 = HOTP(비밀 키, floor(현재 Unix 시각 / 30))  → 6자리 표시
-사용자: 비밀번호 + 코드 입력
-서버: 저장된 비밀 키로 같은 계산 → 일치하면 통과
+```mermaid
+sequenceDiagram
+  participant U as 사용자
+  participant S as 서버
+  participant D as 화면
+  participant A as 인증기 앱
+  U->>S: 2단계 인증 켜기
+  Note over S: 비밀 키 생성 → 사용자 계정에 (암호화해) 저장
+  S->>D: otpauth://totp/발급자:사용자?secret=...&issuer=... 를 QR 코드로 표시
+  A->>D: QR 스캔
+  Note over A: 비밀 키를 기기에 저장
+  U->>S: 앱에 뜬 코드를 한 번 입력해 등록 확인
+```
+
+2단계: 로그인
+
+```mermaid
+sequenceDiagram
+  participant A as 앱
+  participant U as 사용자
+  participant S as 서버
+  Note over A: 코드 = HOTP(비밀 키, floor(현재 Unix 시각 / 30))
+  A-->>U: 6자리 표시
+  U->>S: 비밀번호 + 코드 입력
+  Note over S: 저장된 비밀 키로 같은 계산 → 일치하면 통과
 ```
 
 - HOTP는 비밀 키와 카운터로 HMAC을 계산해 6자리로 자른 것이고, TOTP는 그 카운터를 **30초 단위 시각**으로 바꾼 것이다.
@@ -58,16 +73,28 @@ SMS 코드는 번호 이동·유심 복제 공격에 약해 TOTP보다 약한 �
 
 **패스키(passkey)** 는 FIDO2·WebAuthn 표준의 공개키 자격 증명이다. 비밀번호와 TOTP는 모두 **서버와 사용자가 같은 비밀을 나눠 갖는다**는 약점이 있다. 패스키는 서버에 공개키만 둔다.
 
-```text
-[등록]
-서버 → 브라우저: 챌린지(난수), 사이트 ID(rp.id = example.com)
-기기(인증기): 생체·PIN으로 사용자 확인 → 이 사이트 전용 키 쌍 생성
-기기 → 서버: 공개키 + 자격 증명 ID (개인키는 기기 밖으로 나가지 않는다)
+등록
 
-[로그인]
-서버 → 브라우저: 새 챌린지
-기기: 생체·PIN으로 잠금 해제 → 개인키로 (챌린지 + 출처 정보) 서명
-서버: 저장된 공개키로 서명 검증 → 로그인
+```mermaid
+sequenceDiagram
+  participant S as 서버
+  participant B as 브라우저
+  participant D as 기기(인증기)
+  S->>B: 챌린지(난수), 사이트 ID(rp.id = example.com)
+  Note over D: 생체·PIN으로 사용자 확인 → 이 사이트 전용 키 쌍 생성
+  D->>S: 공개키 + 자격 증명 ID (개인키는 기기 밖으로 나가지 않는다)
+```
+
+로그인
+
+```mermaid
+sequenceDiagram
+  participant S as 서버
+  participant B as 브라우저
+  participant D as 기기(인증기)
+  S->>B: 새 챌린지
+  Note over D: 생체·PIN으로 잠금 해제 → 개인키로 (챌린지 + 출처 정보) 서명
+  Note over S: 저장된 공개키로 서명 검증 → 로그인
 ```
 
 | 성질 | 의미 |

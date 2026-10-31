@@ -9,7 +9,7 @@ sources: ["https://riverkim.kr/102", "https://react.dev/blog/2024/04/25/react-19
 ---
 
 > 개인 TIL을 바탕으로, 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[props를 통해 컴포넌트에게 값 전달하기](https://react.vlpt.us/basic/05-props.html)」와 「[Sass](https://react.vlpt.us/styling/01-sass.html)」의 rest props 부분을 바탕으로 보강했다.
-> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 용어을 보강했다.
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 용어를 보강했다.
 
 **컴포넌트**는 화면을 독립적이고 재사용 가능한 조각으로 나눈 단위다. 개념적으로는 함수와 같아서, **props**라는 입력을 받아 화면에 무엇을 그릴지(React 엘리먼트)를 반환한다. 컴포넌트 하나당 파일 하나를 두면 모듈화도 쉬워진다.
 

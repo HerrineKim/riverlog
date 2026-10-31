@@ -16,17 +16,21 @@ webpack은 **정적 모듈 번들러**다. 진입점(entry)에서 시작해 `imp
 
 - 번들러가 왜 생겼는지, 계보와 Vite로의 흐름은 [[bundlers-and-vite|번들러의 역사와 Vite]]에 있다. 여기서는 webpack 자체의 동작을 다룬다.
 - 설정 파일 없이도 돈다(4.0부터). 기본 entry는 `./src/index.js`, 기본 output은 `./dist/main.js`다.
-- 지금 판은 **webpack 5**다. 최신 5.x는 CSS와 HTML을 내장 지원해 로더 없이도 이해한다.
+- 지금 판은 **webpack 5**다. 최신 5.x는 CSS와 HTML 모듈을 **실험 기능**(`experiments.css`·`experiments.html`)으로 내장 지원하고, 5.109.0부터 기본값이 `'auto'`라 따로 로더를 두지 않으면 로더 없이도 처리한다([experiments](https://webpack.js.org/configuration/experiments/)).
 - 같은 설정·플러그인 API를 Rust로 다시 구현한 **Rspack**이 있어, 큰 webpack 프로젝트는 설정을 거의 그대로 옮겨 빌드 속도를 얻는다.
 
 ## 빌드 과정
 
-```text
-entry ─▶ resolve(경로 찾기) ─▶ loader 체인(파일 → 모듈) ─▶ 그래프에 추가 ─▶ (모든 import에 반복)
-                                                         │
-plugins: 컴파일 단계마다 훅으로 개입 ───────────────────────┤
-                                                         ▼
-                      chunk로 나누기 ─▶ 최적화(트리 셰이킹·스코프 호이스팅·압축) ─▶ output(번들 + runtime + manifest)
+```mermaid
+flowchart TB
+  entry["entry"] --> res["resolve(경로 찾기)"]
+  res --> ld["loader 체인(파일 → 모듈)"]
+  ld --> g["그래프에 추가"]
+  g -->|"모든 import에 반복"| res
+  g --> ch["chunk로 나누기"]
+  plug["plugins: 컴파일 단계마다 훅으로 개입"] --> ch
+  ch --> opt["최적화(트리 셰이킹·스코프 호이스팅·압축)"]
+  opt --> out["output(번들 + runtime + manifest)"]
 ```
 
 | 단계 | 내용 |
@@ -88,11 +92,15 @@ webpack도 `ModuleConcatenationPlugin`으로 같은 일을 한다. 이것이 **�
 
 HMR(Hot Module Replacement)은 **앱이 실행 중인 채로 바뀐 모듈만 교체**한다. 새로고침하면 날아가는 앱 상태(폼 입력, 열린 모달)가 남고, CSS는 DevTools에서 고치는 것처럼 즉시 반영된다.
 
-```text
-파일 저장 → 컴파일러가 update 생성: [이전 해시].hot-update.json(manifest) + [청크].[이전 해시].hot-update.js
-          → 브라우저의 HMR runtime이 check(manifest 요청) → 바뀐 청크 다운로드
-          → apply: 바뀐 모듈을 invalid 표시 → 처리기를 찾아 위로 버블링
-          → dispose 핸들러 실행 후 옛 모듈 제거 → accept 핸들러 호출
+```mermaid
+flowchart TB
+  n1["파일 저장"] --> n2["컴파일러가 update 생성<br/>[이전 해시].hot-update.json(manifest) + [청크].[이전 해시].hot-update.js"]
+  n2 --> n3["브라우저의 HMR runtime이 check(manifest 요청)"]
+  n3 --> n4["바뀐 청크 다운로드"]
+  n4 --> n5["apply: 바뀐 모듈을 invalid 표시"]
+  n5 --> n6["처리기를 찾아 위로 버블링"]
+  n6 --> n7["dispose 핸들러 실행 후 옛 모듈 제거"]
+  n7 --> n8["accept 핸들러 호출"]
 ```
 
 | 개념 | 내용 |

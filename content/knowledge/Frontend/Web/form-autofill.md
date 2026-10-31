@@ -19,10 +19,10 @@ sources: ["https://web.dev/learn/forms/auto", "https://web.dev/learn/forms/autof
 
 ## 브라우저가 칸을 알아보는 방법
 
-```text
-1. autocomplete 값이 있으면 그것을 믿는다      ← 가장 확실
-2. 없으면 휴리스틱: name · id · type · label 글자 · 주변 문맥
-3. 둘 다 애매하면 아무것도 제안하지 않는다
+```mermaid
+flowchart TB
+  a["1. autocomplete 값이 있으면 그것을 믿는다<br/>(가장 확실)"] -->|"없으면"| b["2. 휴리스틱: name · id · type · label 글자 · 주변 문맥"]
+  b -->|"둘 다 애매하면"| c["3. 아무것도 제안하지 않는다"]
 ```
 
 휴리스틱은 브라우저마다 다르고 보장되지 않는다. 그래서 **autocomplete를 명시하고, name·id·type도 같은 뜻으로 맞춘다.**
@@ -98,7 +98,7 @@ sources: ["https://web.dev/learn/forms/auto", "https://web.dev/learn/forms/autof
 | 다른 사람의 정보를 받는 칸(관리자가 회원 정보를 입력) | 내 정보가 섞여 들어간다 |
 
 - **로그인 칸에서는 `off`가 대개 무시된다.** 대부분의 브라우저는 비밀번호 관리자를 위해 로그인 폼의 `off`를 따르지 않는다. 막으려 하지 말고 맞는 토큰을 준다.
-- 확신이 없으면 끄지 않는다. 끄는 것은 **그것이 사용자에게 도움이 된다고 확신할 때만**이다.
+- 끄는 것이 사용자에게 도움이 된다고 **확신할 때만** 끈다.
 - 일회용 코드 칸에는 `off`가 아니라 `one-time-code`를 준다. 그래야 SMS로 온 코드를 키보드가 제안한다([[sign-in-sign-up-forms|로그인·가입 폼과 인증 입력]]).
 
 ## 채워진 칸 스타일링: :autofill

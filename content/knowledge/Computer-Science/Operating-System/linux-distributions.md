@@ -53,7 +53,7 @@ RHEL은 GPL 등 오픈소스 라이선스의 소프트웨어로 만들어지므�
 | 2014 | Red Hat이 CentOS 프로젝트와 상표를 인수 |
 | 2019 | CentOS 8과 함께 CentOS Stream 발표 |
 | 2020.12 | CentOS Linux를 끝내고 Stream에 집중한다고 발표 |
-| 2021.12 | CentOS Linux 8 지원 종료 (예정보다 8년 앞당김) |
+| 2021.12 | CentOS Linux 8 지원 종료 (원래 2029년까지 지원할 예정이었다) |
 | 2024.06 | CentOS Linux 7 지원 종료. CentOS Linux 계열 완전 종료 |
 
 **CentOS Stream은 RHEL의 클론이 아니다.** 다음 RHEL 마이너 버전에 들어갈 변경이 먼저 반영되는 **업스트림**이다. 즉 RHEL보다 조금 앞서 가는 개발 브랜치다. 그래서 "RHEL과 똑같은 무료 OS"를 원하던 사용자들이 대안으로 옮겨 갔다.

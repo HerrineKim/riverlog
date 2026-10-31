@@ -64,14 +64,17 @@ GUI 화면은 **위젯(widget)** 이라는 재사용 부품을 조립해 만든�
 
 CLI 프로그램은 대체로 위에서 아래로 실행되고, 입력이 필요한 곳에서 기다린다. GUI 프로그램은 다르다. 사용자가 언제 어느 버튼을 누를지, 어떤 순서로 메뉴를 고를지 알 수 없다. 그래서 GUI는 **이벤트 기반 프로그래밍(event-driven programming)** 으로 짠다. 코드는 정해진 순서로 흐르지 않고, **사건(event)이 일어날 때마다 그 사건에 연결된 함수가 불린다.**
 
-```text
-초기화
-  ├─ GUI API로 창을 만든다 (제목, 크기)
-  ├─ 창 안에 위젯을 놓는다 (어느 창에, 기본 글자, x·y 위치, 너비·높이)
-  └─ 위젯의 이벤트에 처리 함수를 등록한다 ("이 버튼의 click은 roll()이 처리한다")
-이벤트 루프 (운영체제·툴킷이 돌린다)
-  ├─ 클릭·키 입력·스크롤·창 크기 변경을 큐에 쌓는다
-  └─ 하나씩 꺼내 등록된 처리 함수(event handler)를 부른다
+```mermaid
+flowchart TB
+  subgraph init["초기화"]
+    i1["GUI API로 창을 만든다<br/>(제목, 크기)"] --> i2["창 안에 위젯을 놓는다<br/>(어느 창에, 기본 글자, x·y 위치, 너비·높이)"]
+    i2 --> i3["위젯의 이벤트에 처리 함수를 등록한다<br/>(#quot;이 버튼의 click은 roll()이 처리한다#quot;)"]
+  end
+  subgraph loop["이벤트 루프 (운영체제·툴킷이 돌린다)"]
+    l1["클릭·키 입력·스크롤·창 크기 변경을 큐에 쌓는다"] --> l2["하나씩 꺼내 등록된 처리 함수(event handler)를 부른다"]
+    l2 --> l1
+  end
+  init --> loop
 ```
 
 브라우저에서는 같은 구조가 DOM 이벤트로 나타난다.
@@ -110,16 +113,16 @@ AWT는 운영체제마다 위젯이 달라 어디서나 같은 모양을 내기 
 
 ### 컴포넌트 트리
 
-```text
-java.awt.Component          화면에 그려지고 이벤트를 받는 모든 것
-└─ java.awt.Container       다른 컴포넌트를 담을 수 있다
-   ├─ javax.swing.JComponent    경량 컴포넌트의 공통 부모
-   │  ├─ JPanel                 다른 컴포넌트를 묶는 범용 상자
-   │  ├─ JLabel, JButton, JCheckBox, JTextField, JTextArea, JList ...
-   │  └─ JMenuBar, JMenu, JMenuItem
-   └─ java.awt.Window
-      ├─ JFrame                 제목 표시줄이 있는 최상위 창
-      └─ JDialog                대화상자
+```mermaid
+flowchart TD
+  comp["java.awt.Component<br>화면에 그려지고 이벤트를 받는 모든 것"] --> cont["java.awt.Container<br>다른 컴포넌트를 담을 수 있다"]
+  cont --> jc["javax.swing.JComponent<br>경량 컴포넌트의 공통 부모"]
+  cont --> win["java.awt.Window"]
+  jc --> panel["JPanel<br>다른 컴포넌트를 묶는 범용 상자"]
+  jc --> ctrls["JLabel, JButton, JCheckBox, JTextField, JTextArea, JList ..."]
+  jc --> menu["JMenuBar, JMenu, JMenuItem"]
+  win --> frame["JFrame<br>제목 표시줄이 있는 최상위 창"]
+  win --> dlg["JDialog<br>대화상자"]
 ```
 
 - **최상위 컨테이너**(`JFrame`, `JDialog`)만 운영체제 창이 되고, 나머지는 그 안에 담겨야 보인다. 최상위 컨테이너의 내용은 **콘텐트 팬(content pane)**에 담기며 `frame.add(c)`는 콘텐트 팬에 넣는 단축 문법이다.
@@ -193,7 +196,7 @@ public class Counter {
 - CLI는 기억해서 입력하고, GUI는 보고 알아본다. CLI는 조합·자동화·원격에, GUI는 배우기 쉬움과 직접 조작에 강하다.
 - 데스크톱 GUI는 창·아이콘·메뉴·포인터(WIMP)와, 화면을 책상에 빗댄 데스크톱 메타포로 짜인다. 메타포는 파일 시스템을 감추는 추상화다.
 - 화면은 실제 물건을 본뜬 위젯을 조립해 만든다.
-- **GUI 프로그램은 이벤트 기반이다. 위젯의 이벤트에 처리 함수를 등록하면 이벤트 루프가 사건마다 그 함수를 부른다.**
+- GUI 프로그램은 이벤트 기반이다. 위젯의 이벤트에 처리 함수를 등록하면 이벤트 루프가 사건마다 그 함수를 부른다.
 - GUI 툴킷(Swing)은 화면을 컨테이너 트리로 짜고, 배치는 좌표 대신 레이아웃 관리자에, 처리는 소스에 등록한 리스너(옵저버)에 맡긴다. 화면 변경은 UI 스레드(EDT)에서만 하고 오래 걸리는 일은 밖으로 뺀다.
 
 관련 노트: [[ui-elements-glossary|UI 요소 용어집]], [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]], [[dom-events|DOM 이벤트: 전파, 위임, 커스텀 이벤트]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[graphics-rendering-basics|컴퓨터 그래픽스 렌더링 기초]], [[gesture-interface|제스처 기반 인터페이스]], [[java-concurrency|Java 동시성]], [[gof-design-patterns|GoF 디자인 패턴]]

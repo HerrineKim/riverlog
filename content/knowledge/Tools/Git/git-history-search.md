@@ -151,6 +151,6 @@ git bisect run npm test        # 종료 코드 0 = good, 1~127(125 제외) = bad
 - 지금 코드면 `git grep`, 코드가 언제 생겼나면 `log -S`/`-G`, 범위의 변천사면 `log -L`, 줄의 마지막 수정이면 `blame`, 버그 시작점이면 `bisect`.
 - 범위 표기 `A..B`(B에만 있는 것)와 `A...B`(한쪽에만 있는 것)를 구분하면 "어디에 무엇이 있나" 질문이 대부분 풀린다.
 - 포매팅 커밋은 `.git-blame-ignore-revs`로 blame에서 뺀다.
-- **이력 검색은 커밋이 작고 메시지가 좋을 때 가장 잘 된다.** 좋은 커밋 습관([[commit-convention|커밋 컨벤션]])이 곧 검색 품질이다.
+- 이력 검색은 커밋이 작고 메시지가 좋을 때 가장 잘 된다. 커밋 습관은 [[commit-convention|커밋 컨벤션]]에 있다.
 
 관련 노트: [[git-basics|Git 기본 명령과 파일 상태]], [[git-undo-and-rewrite|Git 되돌리기와 이력 다루기]], [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]], [[commit-convention|커밋 컨벤션과 자동 검사]], [[binary-search|이분 탐색]]

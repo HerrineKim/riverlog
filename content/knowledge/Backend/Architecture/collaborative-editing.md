@@ -14,26 +14,28 @@ sources: ["https://bytebytego.com/guides/how-to-design-google-docs", "https://cr
 
 두 사람이 같은 문장을 동시에 고치면, 각자의 화면에서는 자기 편집이 먼저 적용된 상태다. 서로의 편집을 그냥 받아 적용하면 **위치가 어긋나** 두 화면의 결과가 달라진다.
 
-```text
-원문: "abc"
-Alice: 0번 위치에 "X" 삽입 → "Xabc"
-Bob:   2번 위치의 "c" 삭제  → "ab"
-
-Bob의 화면에 Alice의 연산을 그대로 적용: "Xab"   (맞음)
-Alice의 화면에 Bob의 "2번 삭제"를 그대로 적용: "Xbc" (틀림: c가 아니라 b가 지워짐)
-→ Bob의 연산을 "3번 삭제"로 바꿔 적용해야 "Xab"로 수렴한다
+```mermaid
+flowchart TB
+  O["원문: #quot;abc#quot;"] -- "Alice: 0번 위치에 #quot;X#quot; 삽입" --> A["#quot;Xabc#quot;"]
+  O -- "Bob: 2번 위치의 #quot;c#quot; 삭제" --> B["#quot;ab#quot;"]
+  B -- "Bob의 화면에 Alice의 연산을 그대로 적용" --> BR["#quot;Xab#quot;<br>(맞음)"]
+  A -- "Alice의 화면에 Bob의 #quot;2번 삭제#quot;를 그대로 적용" --> AW["#quot;Xbc#quot;<br>(틀림: c가 아니라 b가 지워짐)"]
+  A -- "Bob의 연산을 #quot;3번 삭제#quot;로 바꿔 적용" --> AR["#quot;Xab#quot;로 수렴한다"]
 ```
 
 공동 편집의 목표는 **모든 참여자의 문서가 결국 같은 상태로 수렴**하고, 각자의 의도가 보존되는 것이다.
 
 ## 시스템 구조
 
-```text
-클라이언트들 ──(편집 연산)──> WebSocket 서버 ──> 메시지 큐 ──> 파일 연산 서버
-     ▲                                                       │ 충돌 해결 알고리즘으로
-     └──────────(변환된 연산 브로드캐스트)────────────────────┘ 연산 변환·적용
-
-저장소: 파일 메타데이터(제목, 권한) / 파일 내용(스냅숏) / 연산 기록(로그)
+```mermaid
+flowchart LR
+  cl["클라이언트들"] -->|"편집 연산"| ws["WebSocket 서버"] --> mq["메시지 큐"] --> fo["파일 연산 서버<br/>충돌 해결 알고리즘으로 연산 변환·적용"]
+  fo -->|"변환된 연산 브로드캐스트"| cl
+  subgraph store["저장소"]
+    meta["파일 메타데이터(제목, 권한)"]
+    body["파일 내용(스냅숏)"]
+    log["연산 기록(로그)"]
+  end
 ```
 
 - 클라이언트는 문서 전체가 아니라 **연산(삽입·삭제·서식)** 을 보낸다. 작고 자주 보낼 수 있다.

@@ -28,15 +28,20 @@ sources: ["https://github.com/charsyam/simple_search_engine", "https://xo.dev/ar
 
 ## 두 과정: 색인과 질의
 
-```text
 색인(Indexing)
-  데이터 소스(웹·파일·DB) → 수집(크롤링) → 원본 저장
-                                  └→ 분석(토큰화·정규화) → 역인덱스
+
+```mermaid
+flowchart LR
+  src["데이터 소스(웹·파일·DB)"] --> crawl["수집(크롤링)"] --> raw["원본 저장"]
+  crawl --> analyze["분석(토큰화·정규화)"] --> inv["역인덱스"]
+```
 
 질의(Query)
-  사용자 질의어 → 같은 분석 → 역인덱스 조회 → 랭킹(점수) → 결과
-                                              ↑
-                                  클릭 로그 등으로 랭킹 평가·개선
+
+```mermaid
+flowchart LR
+  q["사용자 질의어"] --> an["같은 분석"] --> lookup["역인덱스 조회"] --> rank["랭킹(점수)"] --> res["결과"]
+  log["클릭 로그 등으로 랭킹 평가·개선"] --> rank
 ```
 
 **질의어도 색인과 똑같은 분석 과정을 거쳐야 한다.** 색인할 때 소문자로 바꿨다면 질의어도 소문자로 바꿔야 일치한다.

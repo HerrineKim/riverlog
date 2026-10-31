@@ -130,7 +130,7 @@ JavaScript 프레임워크 이전에는 DOM에 데이터를 두는 주된 방법
 
 ### 속성 하나로 끝나는 기능
 
-꽤 많은 기능이 **속성 하나로 끝난다.** JavaScript로 다시 만들기 전에 HTML에 이미 있는지부터 확인한다. HTML 속성은 브라우저가 이미 구현해 둔 기능의 스위치다.
+꽤 많은 기능이 속성 하나로 끝난다. JavaScript로 다시 만들기 전에 HTML에 이미 있는지부터 확인한다. HTML 속성은 브라우저가 이미 구현해 둔 기능의 스위치다.
 
 | 속성 | 붙는 곳 | 하는 일 | 자세히 |
 | --- | --- | --- | --- |
@@ -150,11 +150,9 @@ JavaScript 프레임워크 이전에는 DOM에 데이터를 두는 주된 방법
 | `disablepictureinpicture` | `<video>` | PIP 버튼을 숨긴다 | |
 | `popover` | 모든 요소 | JavaScript 없이 팝오버를 열고 닫는다. 바깥 클릭·Esc 닫기가 기본이다 | [[popover-anchor-positioning\|팝오버와 앵커 위치 지정]] |
 
-`cite`·`datetime`·`integrity`처럼 화면에 안 보이는 속성은 기계와 미래의 나를 위한 정보다.
-
 ## 시맨틱 태그
 
-의미 없는 `div`로만 영역을 나누는 대신, 영역의 **의미**를 드러내는 태그를 쓴다. `header`, `nav`, `main`, `section`, `article`, `aside`, `footer`가 대표적이다. 개발자, 검색 엔진, 스크린 리더 모두에게 의미 있는 구조를 전달하고 **SEO**와 접근성의 기본이 된다. 태그별 의미, 제목 계층, `<article>`과 `<section>`을 고르는 법은 [[semantic-html|시맨틱 HTML과 문서 구조]]에 정리했다.
+의미 없는 `div`로만 영역을 나누는 대신, 영역의 **의미**를 드러내는 태그를 쓴다. `header`, `nav`, `main`, `section`, `article`, `aside`, `footer`가 대표적이다. 개발자, 검색 엔진, 스크린 리더 모두에게 의미 있는 구조를 전달하고 SEO와 접근성의 기본이 된다. 태그별 의미, 제목 계층, `<article>`과 `<section>`을 고르는 법은 [[semantic-html|시맨틱 HTML과 문서 구조]]에 정리했다.
 
 ## 자주 쓰는 태그
 

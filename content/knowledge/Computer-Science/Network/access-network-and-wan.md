@@ -119,10 +119,9 @@ ATM의 셀 크기가 48바이트로 어정쩡한 것은 음성 지연을 줄이�
 | LSR (Label Switch Router) | 영역 안에서 레이블만 보고 전달하는 라우터 |
 | LSP (Label Switched Path) | Ingress에서 Egress까지 정해 둔 경로. 여러 플로우가 함께 쓸 수 있다 |
 
-```text
-       Ingress LER          LSR          LSR         Egress LER
-IP ──▶ [LSP 결정,     ──▶ [17 → 22] ──▶ [22 → 9] ──▶ [레이블 제거, ──▶ IP
-        레이블 17 push]     swap          swap        IP 라우팅] pop
+```mermaid
+flowchart LR
+  ip1["IP"] --> ing["Ingress LER<br>LSP 결정, 레이블 17 push"] --> l1["LSR<br>17 → 22 swap"] --> l2["LSR<br>22 → 9 swap"] --> eg["Egress LER<br>레이블 제거(pop), IP 라우팅"] --> ip2["IP"]
 ```
 
 - **push**: Ingress LER가 IP 헤더를 한 번만 보고 LSP를 정해 레이블을 끼워 넣는다.

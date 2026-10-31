@@ -17,7 +17,7 @@ sources: ["https://frontend-fundamentals.com/code-quality/code/"]
 | 전략 | 깨지는 신호 |
 | --- | --- |
 | 이름 겹치지 않게 관리하기 | 같은 이름인데 미묘하게 다른 일을 한다 |
-| 같은 종류의 함수는 반환 타입 통일하기 | 비슷한 훅마다 쓸 때마다 반환 타입을 확인한다 |
+| 같은 종류의 함수는 반환 타입 통일하기 | 비슷한 훅을 쓸 때마다 반환 타입을 확인한다 |
 | 숨은 로직 드러내기 | 이름에 없는 부수 효과가 일어난다 |
 
 ## 1. 이름 겹치지 않게 관리하기
@@ -73,7 +73,7 @@ if (!result.ok) {
 }
 ```
 
-typescript-eslint의 `strict-boolean-expressions` 규칙을 켜면 객체를 조건식에 넣는 실수를 컴파일 단계에서 잡을 수 있다.
+typescript-eslint의 `strict-boolean-expressions` 규칙을 켜면 객체를 조건식에 넣는 실수를 린트 단계에서 잡을 수 있다.
 
 ## 3. 숨은 로직 드러내기
 

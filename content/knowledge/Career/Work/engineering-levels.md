@@ -19,9 +19,14 @@ sources: ["https://www.techinterviewhandbook.org/engineering-levels/", "https://
 
 ## 레벨별 기대치
 
-```text
-주니어 → 엔지니어 → 시니어 → 스태프 → 시니어 스태프 → 프린시플 → Distinguished
- 개인       개인·팀      팀       여러 팀     조직·회사        회사·업계       업계
+```mermaid
+flowchart LR
+  L1["주니어<br/>개인"] --> L2["엔지니어<br/>개인·팀"]
+  L2 --> L3["시니어<br/>팀"]
+  L3 --> L4["스태프<br/>여러 팀"]
+  L4 --> L5["시니어 스태프<br/>조직·회사"]
+  L5 --> L6["프린시플<br/>회사·업계"]
+  L6 --> L7["Distinguished<br/>업계"]
 ```
 
 | 레벨 | 영향 범위 | 일의 크기 | 기대 역할 | 통상 경력 |
@@ -72,7 +77,7 @@ sources: ["https://www.techinterviewhandbook.org/engineering-levels/", "https://
 | **IC(Individual Contributor)** | 기술로 낸 영향: 설계, 핵심 시스템, 기술 방향 | 스태프 → 시니어 스태프 → 프린시플 → Distinguished |
 | **매니저** | 팀이 낸 성과: 채용, 성장, 실행 | 엔지니어링 매니저 → 시니어 매니저 → 디렉터 → VP |
 
-- 건강한 조직은 두 트랙을 **같은 레벨·같은 보상으로 나란히** 둔다. 그래야 매니저가 되지 않아도 승진할 수 있다. 엔지니어 10명이 넘으면 커리어 사다리를, 30명이 넘으면 IC와 매니저 트랙을 나눠 두는 것이 건강한 엔지니어링 문화의 기준으로 꼽힌다.
+- 건강한 조직은 두 트랙을 **같은 레벨·같은 보상으로 나란히** 둔다. 그래야 매니저가 되지 않아도 승진할 수 있다. Tech Interview Handbook의 [회사 고르기 체크리스트](https://www.techinterviewhandbook.org/choosing-between-companies/)는 엔지니어가 10명을 넘으면 커리어 사다리를, 30명을 넘으면 IC와 매니저 트랙을 나란히 갖췄는지 보라고 한다.
 - 매니저 트랙으로 옮길 때 바꿔야 할 것은 [[tech-lead-transition|개발자에서 리더로]]에 있다. 두 트랙 사이를 오가는 것도 경력의 한 경로다.
 
 ## 커리어 사다리 자료

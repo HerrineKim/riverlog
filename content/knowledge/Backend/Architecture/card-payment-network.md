@@ -37,17 +37,29 @@ sources: ["https://bytebytego.com/guides/how-does-visa-work-when-we-swipe-a-cred
 
 카드 결제는 **두 번 나눠서** 일어난다. 긁는 순간에는 승인만 하고, 돈은 나중에 묶음으로 움직인다.
 
-```text
-[승인(authorization)] 카드를 긁는 순간
-  카드 → POS 단말 → 매입사 → 카드 네트워크 → 발급사
-                                              └ 한도 확인, 승인 시 금액을 묶어 둠(hold)
-  승인/거절 ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ← ┘
+승인(authorization): 카드를 긁는 순간
 
-[매입·정산(capture & settlement)] 하루 영업이 끝난 뒤
-  가맹점 "매입" → 매입사에 거래 묶음(batch) 전송 → 카드 네트워크
-  카드 네트워크: 여러 매입사의 거래를 청산(clearing)해 발급사별 청산 파일 발송
-  발급사: 청산 파일 확인 → 매입사로 대금 이체
-  매입사 → 가맹점 계좌로 입금
+```mermaid
+flowchart LR
+  card["카드"] --> pos["POS 단말"] --> acq["매입사"] --> net["카드 네트워크"] --> iss["발급사<br/>한도 확인, 승인 시 금액을 묶어 둠(hold)"]
+  iss -->|"승인/거절"| card
+```
+
+매입·정산(capture & settlement): 하루 영업이 끝난 뒤
+
+```mermaid
+sequenceDiagram
+  participant m as 가맹점
+  participant acq as 매입사
+  participant net as 카드 네트워크
+  participant iss as 발급사
+  m->>acq: #quot;매입#quot;: 거래 묶음(batch) 전송
+  acq->>net: 거래 묶음(batch)
+  Note over net: 여러 매입사의 거래를 청산(clearing)
+  net->>iss: 발급사별 청산 파일 발송
+  Note over iss: 청산 파일 확인
+  iss->>acq: 대금 이체
+  acq->>m: 가맹점 계좌로 입금
 ```
 
 - **청산(clearing)** 은 서로 상계되는 거래를 순액으로 줄여 실제 이체 건수를 줄이는 과정이다. 청산과 결제(settlement)의 차이는 [[money-movement|자금 이동]]에서 자세히 다룬다.
@@ -75,12 +87,12 @@ sources: ["https://bytebytego.com/guides/how-does-visa-work-when-we-swipe-a-cred
 
 ## 토큰 결제: Apple Pay와 Google Pay
 
-간편결제의 핵심은 **실제 카드 번호(PAN)를 가맹점에 넘기지 않고 대체 값(토큰)을 쓰는 것**이다. 토큰이 유출돼도 다른 곳에서 쓸 수 없다. 두 서비스는 토큰을 어디에 두느냐가 다르다.
+간편결제는 **실제 카드 번호(PAN)를 가맹점에 넘기지 않고 대체 값(토큰)을 쓴다.** 토큰이 유출돼도 다른 곳에서 쓸 수 없다. 두 서비스는 토큰을 어디에 두느냐가 다르다.
 
 | 단계 | Apple Pay | Google Pay |
 | --- | --- | --- |
 | 카드 등록 | Apple은 카드 정보를 저장하지 않고 카드 네트워크·발급사에 넘긴다. 발급된 **기기 계정 번호(DAN, Device Account Number)** 토큰을 기기의 보안 칩(Secure Element)에 저장한다 | 카드 정보를 Google 서버에 저장하고, 기기에는 결제 토큰을 내려 준다. 매장 결제용으로는 네트워크 토큰을 쓴다 |
-| 결제 | 기기가 DAN과 거래마다 바뀌는 암호값(cryptogram)을 가맹점에 보내고, 가맹점은 이를 매입사·네트워크로 보낸다 | 가맹점이 받은 결제 토큰을 Google·네트워크가 해석해 실제 카드로 결제를 진행한다 |
+| 결제 | 기기가 DAN과 거래마다 바뀌는 암호값(cryptogram)을 가맹점에 보내고, 가맹점은 이를 매입사·네트워크로 보낸다 | 가맹점이 받은 결제 토큰을 Google·네트워크가 해석해 실제 카드로 결제한다 |
 | 결과 | 카드 번호가 Apple 서버와 가맹점 어디에도 남지 않는다 | 카드 정보가 Google 서버에 있으므로 Google이 중개자 역할을 한다 |
 
 둘 다 생체 인증으로 결제를 허락하고, 거래마다 일회용 암호값을 붙여 재사용을 막는다.
@@ -96,17 +108,35 @@ QR 결제는 **누가 QR을 보여 주는가**와 **QR이 고정인가 매번 �
 
 ### 「스캔해서 결제」 흐름 (가맹점 제시형 + 동적 QR)
 
-```text
-[QR 생성] 1초 이내
-  계산대: 합계 확정, 주문 ID 생성 → "결제" 클릭
-  가맹점 서버 → PSP: 주문 ID + 금액
-  PSP: DB에 저장, QR 코드 URL 생성 → 결제 게이트웨이 → 가맹점 → 계산대 화면에 QR 표시
+QR 생성: 1초 이내
 
-[결제]
-  고객 지갑 앱: QR 스캔 → 금액 확인 → "결제"
-  지갑 앱 → PSP: 이 QR을 결제했다
-  PSP 결제 게이트웨이: QR을 "결제됨"으로 표시 → 지갑 앱에 성공 응답
-  PSP → 가맹점: 결제 완료 통지
+```mermaid
+sequenceDiagram
+  participant pos as 계산대
+  participant m as 가맹점 서버
+  participant psp as PSP
+  participant gw as 결제 게이트웨이
+  Note over pos: 합계 확정, 주문 ID 생성 → #quot;결제#quot; 클릭
+  m->>psp: 주문 ID + 금액
+  Note over psp: DB에 저장, QR 코드 URL 생성
+  psp->>gw: QR 코드 URL
+  gw->>m: QR 코드 URL
+  m->>pos: 계산대 화면에 QR 표시
+```
+
+결제
+
+```mermaid
+sequenceDiagram
+  participant w as 고객 지갑 앱
+  participant psp as PSP
+  participant gw as PSP 결제 게이트웨이
+  participant m as 가맹점
+  Note over w: QR 스캔 → 금액 확인 → #quot;결제#quot;
+  w->>psp: 이 QR을 결제했다
+  Note over gw: QR을 #quot;결제됨#quot;으로 표시
+  gw-->>w: 성공 응답
+  psp->>m: 결제 완료 통지
 ```
 
 QR 하나가 주문 하나에 묶이므로 PSP는 **같은 QR이 두 번 결제되지 않게** 상태를 확인한다. [[payment-system|결제 시스템]]의 멱등성과 같은 문제다.
@@ -117,6 +147,6 @@ QR 하나가 주문 하나에 묶이므로 PSP는 **같은 QR이 두 번 결제�
 - 카드 네트워크는 수많은 발급사·매입사 사이의 일대일 정산을 대신하고 수수료를 받는다.
 - 가맹점 수수료는 매입사 마진, 교환 수수료(발급사), 네트워크 이용료로 나뉜다. 발급사 몫이 큰 것은 신용 위험과 자금 부담을 지기 때문이다.
 - 간편결제는 카드 번호 대신 토큰과 일회용 암호값을 쓴다. Apple Pay는 기기에, Google Pay는 서버에 카드 정보를 둔다.
-- **QR 결제는 "누가 보여 주나 × 정적·동적" 네 가지이고, 동적 QR은 주문 단위 일회용이라 안전하다.**
+- QR 결제는 "누가 보여 주나 × 정적·동적" 네 가지이고, 동적 QR은 주문 단위 일회용이라 안전하다.
 
 관련 노트: [[payment-system|결제 시스템 설계]], [[money-movement|자금 이동: 청산과 결제]], [[payment-address-forms|결제·주소 폼]], [[security|정보 시스템 보안(공격 기법과 암호)]]

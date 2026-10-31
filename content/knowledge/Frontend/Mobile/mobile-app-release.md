@@ -26,21 +26,16 @@ JavaScript 번들만 바꾸는 수정은 심사 없이 OTA로 보낼 수 있는 
 
 ## 출시 흐름
 
-```text
-1. 등록·개발      Apple Developer Program / Google Play Console 가입
-                  iOS: Swift(·Objective-C) / Android: Kotlin(·Java), 또는 크로스 플랫폼
-       ↓
-2. 빌드·테스트    서명된 릴리스 빌드 → 자동화 테스트 → 릴리스 후보(RC) 빌드
-       ↓
-3. QA            내부 테스트(도그푸딩) → 외부 베타 → 회귀 테스트
-       ↓
-4. 내부 승인      이해관계자 승인, 스토어 가이드라인·법규 준수, 보안·개인정보 검토
-       ↓
-5. ASO           제목·설명·키워드, 스크린샷·아이콘, 릴리스 노트
-       ↓
-6. 스토어 제출    App Store Connect / Google Play Console → 심사 → 반려 시 수정 후 재제출
-       ↓
-7. 출시          승인 후 출시일을 맞춰 두 플랫폼에 공개, 단계적 출시로 비율을 늘린다
+```mermaid
+flowchart TB
+  s1["1. 등록·개발<br/>Apple Developer Program / Google Play Console 가입<br/>iOS: Swift(·Objective-C) / Android: Kotlin(·Java), 또는 크로스 플랫폼"]
+  s2["2. 빌드·테스트<br/>서명된 릴리스 빌드 → 자동화 테스트 → 릴리스 후보(RC) 빌드"]
+  s3["3. QA<br/>내부 테스트(도그푸딩) → 외부 베타 → 회귀 테스트"]
+  s4["4. 내부 승인<br/>이해관계자 승인, 스토어 가이드라인·법규 준수, 보안·개인정보 검토"]
+  s5["5. ASO<br/>제목·설명·키워드, 스크린샷·아이콘, 릴리스 노트"]
+  s6["6. 스토어 제출<br/>App Store Connect / Google Play Console → 심사 → 반려 시 수정 후 재제출"]
+  s7["7. 출시<br/>승인 후 출시일을 맞춰 두 플랫폼에 공개, 단계적 출시로 비율을 늘린다"]
+  s1 --> s2 --> s3 --> s4 --> s5 --> s6 --> s7
 ```
 
 ## 단계별 핵심

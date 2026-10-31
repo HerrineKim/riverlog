@@ -69,14 +69,15 @@ Elasticsearch에서 검색 품질과 성능은 세 가지가 정한다. **매핑
 
 **분석기(analyzer)** 는 `text` 필드 값을 토큰으로 바꾸는 파이프라인이다. 색인할 때와 검색할 때 같은 분석을 거쳐야 토큰이 맞는다.
 
-```text
-원문 "<b>Quick</b> Foxes 달렸다"
-  │ 1. 문자 필터(char filter)    0개 이상: HTML 태그 제거, 문자 치환
-  ▼   "Quick Foxes 달렸다"
-  │ 2. 토크나이저(tokenizer)     정확히 1개: 문자열을 토큰으로 쪼갠다
-  ▼   [Quick] [Foxes] [달렸다]
-  │ 3. 토큰 필터(token filter)   0개 이상, 순서대로: 소문자화, 불용어 제거, 어간 추출, 동의어
-  ▼   [quick] [fox] [달리]
+```mermaid
+flowchart TB
+  t0["원문 #quot;#lt;b#gt;Quick#lt;/b#gt; Foxes 달렸다#quot;"]
+  t1["#quot;Quick Foxes 달렸다#quot;"]
+  t2["[Quick] [Foxes] [달렸다]"]
+  t3["[quick] [fox] [달리]"]
+  t0 -->|"1. 문자 필터(char filter)<br/>0개 이상: HTML 태그 제거, 문자 치환"| t1
+  t1 -->|"2. 토크나이저(tokenizer)<br/>정확히 1개: 문자열을 토큰으로 쪼갠다"| t2
+  t2 -->|"3. 토큰 필터(token filter)<br/>0개 이상, 순서대로: 소문자화, 불용어 제거, 어간 추출, 동의어"| t3
 ```
 
 | 단계 | 대표 구성 요소 |

@@ -5,7 +5,7 @@ summary: "로봇은 컴퓨터 제어로 물리 세계에서 일련의 동작을 
 tags: ["computer-science", "robotics", "control", "algorithm"]
 source: other
 date: "2026-10-23"
-sources: ["https://www.youtube.com/watch?v=3XkL0qQ21Oo"]
+sources: ["https://www.youtube.com/watch?v=3XkL0qQ21Oo", "https://research.google/blog/deep-learning-for-robots-learning-from-large-scale-interaction/"]
 ---
 
 > CrashCourse의 「Crash Course Computer Science」 #37 「Robots」(2017)를 바탕으로 재구성한 노트다.
@@ -25,13 +25,12 @@ sources: ["https://www.youtube.com/watch?v=3XkL0qQ21Oo"]
 
 레일 위를 오가는 집게를 원하는 위치로 보내는 가장 단순한 방법은 「도착했나? 아니면 계속 간다」를 반복하는 것이다. 측정한 위치와 원하는 위치의 차이를 **줄이는** 쪽으로 움직이므로 **음의 피드백 루프(negative feedback loop)** 라 한다.
 
-```text
-        목표값(setpoint)
-             │
-             ▼
-   ┌──▶ 오차 = 목표 − 측정 ──▶ 제어기 ──▶ 구동기(모터, 펌프, 히터) ──▶ 실제 세계
-   │                                                                  │
-   └──────────────────────── 센서(위치, 압력, 온도) ◀──────────────────┘
+```mermaid
+flowchart LR
+  sp["목표값(setpoint)"] --> err["오차 = 목표 − 측정"]
+  err --> ctl["제어기"] --> act["구동기<br/>(모터, 펌프, 히터)"] --> world["실제 세계"]
+  world --> sen["센서<br/>(위치, 압력, 온도)"]
+  sen --> err
 ```
 
 | 구성 요소 | 역할 |
@@ -68,11 +67,13 @@ u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt
 
 제어 루프는 위치·속도 같은 값을 **주어진 목표값으로 맞추는** 일만 한다. 목표값 자체는 상위 로봇 소프트웨어가 정한다. 감지한 장애물을 돌아가는 경로를 그리고, 「공 집기」 같은 작업을 단순한 동작의 순서로 쪼갠다.
 
-```text
-작업 계획      공을 집는다 → 접근, 손 벌리기, 잡기, 들어 올리기
-  └ 경로 계획  장애물을 피하는 궤적의 점들
-      └ 제어 루프   각 관절이 다음 점의 각도에 닿도록 PID
-          └ 구동기  모터 전류
+```mermaid
+flowchart TB
+  task["작업 계획<br/>공을 집는다 → 접근, 손 벌리기, 잡기, 들어 올리기"]
+  path["경로 계획<br/>장애물을 피하는 궤적의 점들"]
+  loop["제어 루프<br/>각 관절이 다음 점의 각도에 닿도록 PID"]
+  act["구동기<br/>모터 전류"]
+  task --> path --> loop --> act
 ```
 
 상위 행동을 조립하는 데는 [[behavior-tree|비헤이비어 트리]]가 쓰인다. ROS 2의 주행 스택이 대표적이다.
@@ -81,7 +82,7 @@ u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt
 
 로봇은 심해 바닥에 가고 화성을 10년 넘게 돌아다녔지만, 사람에게 하찮은 일이 오히려 어렵다. 두 발로 걷기, 문 열기, 부서뜨리지 않고 물건 집기, 티셔츠 입기, 개 쓰다듬기처럼 **생각 없이 하는 감각·운동 기술이 체스보다 어렵다**는 관찰을 모라벡의 역설(Moravec's paradox)이라 한다.
 
-- 이 벽을 넘는 유력한 방법은 학습이다. 여러 로봇 팔이 물건 집기를 시행착오로 수천 시간 연습해 실패율을 절반으로 줄인 실험처럼, 로봇은 쉬지 않고 여러 대가 동시에 연습한다([[reinforcement-learning|강화 학습]]).
+- 이 벽을 넘는 유력한 방법은 학습이다. 구글 연구진이 로봇 팔 14대에 물건 집기를 약 3,000 로봇-시간 연습시킨 실험에서, 카메라 피드백으로 동작을 고쳐 가는 학습 모델의 실패율은 18%로 개루프 방식(34%)의 절반쯤이었다([Google Research, 2016](https://research.google/blog/deep-learning-for-robots-learning-from-large-scale-interaction/)). 이처럼 로봇은 쉬지 않고 여러 대가 동시에 연습한다([[reinforcement-learning|강화 학습]]).
 - **자율 주행차**는 입력이 가속·감속·조향뿐이라 제어 자체는 단순하다. 어려운 것은 차선·표지판 읽기, 차·보행자·자전거의 움직임 예측 같은 인식이고, 근접 센서와 [[computer-vision-basics|컴퓨터 비전]]에 크게 기댄다.
 - 사람처럼 생기고 행동하는 안드로이드는 인공지능·비전·자연어 처리를 모두 합쳐야 하는 목표다. 사람을 너무 닮으면 불쾌한 골짜기에 빠진다([[interface-psychology|인터페이스 심리학]]).
 
@@ -97,6 +98,6 @@ u(t) = Kp·e(t) + Ki·∫e(t)dt + Kd·de(t)/dt
 - 제어의 기본은 센서 → 오차 → 제어기 → 구동기로 도는 음의 피드백 루프다.
 - 관성과 외란 때문에 단순한 루프는 지나치고 흔들린다. PID는 지금의 오차(P), 쌓인 오차(I), 오차의 변화율(D)을 가중합해 이를 다룬다.
 - 제어 루프는 목표값을 맞추고, 목표값은 경로·작업 계획 같은 상위 소프트웨어가 정한다.
-- **사람에게 쉬운 감각·운동 기술이 로봇에게는 가장 어렵다. 그 벽은 학습과 비전으로 조금씩 넘고 있다.**
+- 사람에게 쉬운 감각·운동 기술이 로봇에게는 가장 어렵다. 그 벽은 학습과 비전으로 조금씩 넘고 있다.
 
 관련 노트: [[behavior-tree|비헤이비어 트리]], [[reinforcement-learning|강화 학습]], [[computer-vision-basics|컴퓨터 비전 기초]], [[interface-psychology|인터페이스 심리학]]

@@ -12,7 +12,7 @@ sources: ["https://web.dev/learn/pwa/web-app-manifest", "https://web.dev/learn/p
 
 ## 매니페스트란
 
-**웹 앱 매니페스트(Web App Manifest)는 앱이 설치됐을 때 어떻게 보이고 동작할지를 브라우저에 알려 주는 JSON 파일이다.** head에서 `<link rel="manifest">`로 거는 방법과 meta 태그 대신 매니페스트를 쓰는 이유는 [[html-head-metadata|문서 head와 메타데이터]]에 있다.
+**웹 앱 매니페스트**(Web App Manifest)는 앱이 설치됐을 때 어떻게 보이고 동작할지를 브라우저에 알려 주는 JSON 파일이다. head에서 `<link rel="manifest">`로 거는 방법과 meta 태그 대신 매니페스트를 쓰는 이유는 [[html-head-metadata|문서 head와 메타데이터]]에 있다.
 
 - 앱 하나에 매니페스트 하나. 보통 루트에 두고, **설치할 수 있는 모든 HTML 페이지**에서 링크한다.
 - 확장자는 `.webmanifest`를 권장한다. 이름은 자유지만 `application/manifest+json`(또는 JSON 계열 MIME)으로 서빙해야 한다. 옛 앱은 `manifest.json`을 많이 쓴다.
@@ -89,10 +89,15 @@ sources: ["https://web.dev/learn/pwa/web-app-manifest", "https://web.dev/learn/p
 | `minimal-ui` | 뒤로·새로고침 같은 최소 UI | Android·데스크톱. **iOS·iPadOS는 지원하지 않는다** |
 | `browser` | 설치한 브라우저의 일반 탭 | 별도 창이 아니다 |
 
-```text
-기본 대체 순서: fullscreen → standalone → minimal-ui → browser
-display_override: ["window-controls-overlay", "tabbed", "minimal-ui"] 를 먼저 평가하고,
-                  지원하는 값이 없으면 display로 내려간다
+```mermaid
+flowchart LR
+  subgraph ov["display_override: 먼저 평가"]
+    o1["window-controls-overlay"] --> o2["tabbed"] --> o3["minimal-ui"]
+  end
+  subgraph df["display: 기본 대체 순서"]
+    d1["fullscreen"] --> d2["standalone"] --> d3["minimal-ui"] --> d4["browser"]
+  end
+  o3 -->|"지원하는 값이 없으면 display로 내려간다"| d1
 ```
 
 `window-controls-overlay`(제목 표시줄 영역을 앱이 그린다)와 `tabbed`(앱 창 안의 탭) 같은 새 값은 `display`가 아니라 `display_override`에 넣는다. 모르는 브라우저가 앱을 망가뜨리지 않게 하려는 구조다.

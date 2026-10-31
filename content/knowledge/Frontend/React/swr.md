@@ -95,9 +95,20 @@ await mutate(sendChat(newChat), {
 | `false` | 비로그인 | 로그인 페이지로 보낸다 |
 | 사용자 객체 | 로그인됨 | 로그인·회원가입 페이지에 왔다면 앱 안으로 돌려보낸다 |
 
-```text
-로그인  POST /api/users/login (쿠키 발급) → mutate()        → 내 정보 재요청, data 채워짐
-로그아웃 POST /api/users/logout            → mutate(false, { revalidate: false }) → 즉시 비로그인
+로그인
+
+```mermaid
+flowchart LR
+  li["POST /api/users/login<br/>(쿠키 발급)"] --> lm["mutate()"]
+  lm --> lr["내 정보 재요청, data 채워짐"]
+```
+
+로그아웃
+
+```mermaid
+flowchart LR
+  lo["POST /api/users/logout"] --> om["mutate(false, { revalidate: false })"]
+  om --> or1["즉시 비로그인"]
 ```
 
 ```tsx

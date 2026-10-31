@@ -75,10 +75,9 @@ HTTPS는 둘을 섞는다. **공개키로 대칭키(세션 키)를 안전하게 
 
 CA가 되려면 엄격한 보안 요건과 정기 감사를 통과해 **루트 저장소**(root store)에 들어가야 한다. Apple, Microsoft, Mozilla(Firefox), Google(Chrome)이 각자 루트 저장소를 관리하고 OS·브라우저에 미리 넣어 둔다.
 
-```text
-루트 인증서 (루트 저장소에 내장, 오프라인 보관)
-   └─ 서명 → 중간 인증서 (CA가 평소 발급에 사용)
-                └─ 서명 → 사이트 인증서 (example.com)
+```mermaid
+flowchart TB
+  rt["루트 인증서<br/>(루트 저장소에 내장, 오프라인 보관)"] -->|"서명"| md["중간 인증서<br/>(CA가 평소 발급에 사용)"] -->|"서명"| st["사이트 인증서<br/>(example.com)"]
 ```
 
 - 브라우저는 사이트 인증서에서 시작해 서명한 인증서를 차례로 따라 올라간다. **끝이 신뢰하는 루트에 닿으면** 사슬 전체를 믿고, 닿지 못하면 경고를 띄운다.
@@ -105,13 +104,15 @@ Let's Encrypt 같은 무료 CA와 Vercel·Netlify 같은 호스팅이 인증서�
 
 ## TLS 핸드셰이크 (TLS 1.3 기준)
 
-```text
-브라우저                                서버
-  │ ClientHello (지원 암호, 키 교환 값) ─▶ │
-  │ ◀─ ServerHello (키 교환 값) + 인증서 + Finished
-  │   [양쪽이 같은 세션 키를 계산]           │
-  │ Finished ─────────────────────────▶ │
-  │ ◀═══════ 암호화된 HTTP 요청·응답 ══════▶ │
+```mermaid
+sequenceDiagram
+  participant B as 브라우저
+  participant S as 서버
+  B->>S: ClientHello (지원 암호, 키 교환 값)
+  S->>B: ServerHello (키 교환 값) + 인증서 + Finished
+  Note over B,S: 양쪽이 같은 세션 키를 계산
+  B->>S: Finished
+  B<<->>S: 암호화된 HTTP 요청·응답
 ```
 
 - ClientHello에 키 교환 값(key_share)을 미리 실어 보내므로 왕복 한 번에 세션 키가 나온다. **ServerHello 이후의 핸드셰이크(인증서 포함)는 이미 암호화된다.**
@@ -207,14 +208,26 @@ HSTS 헤더도 **처음 한 번은 받아야** 효과가 있다. preload 목록�
 
 Fiddler·Charles·mitmproxy 같은 디버깅 도구는 HTTPS 트래픽을 평문으로 보여 준다. 암호가 깨진 것이 아니다. **클라이언트가 그 도구의 루트 인증서를 신뢰하도록 설치했기 때문**이다. 회사 보안 장비의 TLS 검사, 악성 프로그램이 심은 루트 인증서도 같은 원리다.
 
-```text
-클라이언트 ──TLS①── 중간 서버 ──TLS②── 실제 서버
+```mermaid
+flowchart LR
+  cl["클라이언트"] ---|"TLS①"| mid["중간 서버"] ---|"TLS②"| sv["실제 서버"]
+```
 
-1. 클라이언트의 연결이 중간 서버로 간다(프록시 설정, DNS·라우팅 조작)
-2. 중간 서버가 실제 서버와 따로 TLS 연결을 맺고, 실제 인증서를 검증한다
-3. 중간 서버가 그 호스트 이름으로 즉석 발급한 인증서를 클라이언트에 준다
-   → 발급자가 신뢰 저장소에 있는 루트이므로 클라이언트 검증을 통과한다
-4. 두 구간은 서로 다른 세션 키를 쓴다. 중간 서버는 ①을 풀고, 읽고, ②로 다시 암호화한다
+```mermaid
+sequenceDiagram
+  participant CL as 클라이언트
+  participant MID as 중간 서버
+  participant SV as 실제 서버
+  CL->>MID: 1. 연결이 중간 서버로 간다(프록시 설정, DNS·라우팅 조작)
+  MID->>SV: 2. 따로 TLS 연결을 맺는다
+  SV-->>MID: 실제 인증서
+  Note over MID: 실제 인증서를 검증한다
+  MID-->>CL: 3. 그 호스트 이름으로 즉석 발급한 인증서
+  Note over CL: 발급자가 신뢰 저장소에 있는 루트이므로 클라이언트 검증을 통과한다
+  Note over CL,SV: 4. 두 구간은 서로 다른 세션 키를 쓴다
+  CL->>MID: TLS① 구간
+  Note over MID: ①을 풀고, 읽고, ②로 다시 암호화한다
+  MID->>SV: TLS② 구간
 ```
 
 **전제 조건은 하나다. 중간자의 루트 인증서가 클라이언트의 신뢰 저장소에 들어 있어야 한다.** 그래서 대응도 신뢰를 좁히는 쪽이다.

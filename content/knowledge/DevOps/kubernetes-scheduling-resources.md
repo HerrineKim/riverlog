@@ -121,7 +121,7 @@ tolerations:
 | `node.kubernetes.io/network-unavailable` | 노드 네트워크가 준비되지 않음 | NoSchedule |
 | `node.kubernetes.io/unschedulable` | `kubectl cordon` | NoSchedule |
 
-파드에는 not-ready·unreachable에 대한 300초 톨러레이션이 기본으로 붙는다. 그래서 노드가 죽어도 **약 5분 뒤에야** 다른 노드로 옮겨진다. 빨리 옮겨야 하는 서비스는 `tolerationSeconds`를 줄인다.
+파드에는 not-ready·unreachable에 대한 300초 톨러레이션이 기본으로 붙는다. 그래서 노드가 죽어도 약 5분 뒤에야 다른 노드로 옮겨진다. 빨리 옮겨야 하는 서비스는 `tolerationSeconds`를 줄인다.
 
 ## 자원 선언: requests와 limits
 
@@ -155,7 +155,7 @@ CPU는 압축 가능한 자원이라 넘쳐도 느려질 뿐이고, 메모리는
 
 ## QoS 클래스
 
-쿠버네티스는 requests·limits 설정으로 파드의 QoS 클래스를 정한다. 노드 메모리가 부족할 때 **누구를 먼저 축출하고 OOM에서 먼저 죽일지**의 기준이다.
+쿠버네티스는 requests·limits 설정으로 파드의 QoS 클래스를 정한다. 노드 메모리가 부족할 때 누구를 먼저 축출하고 OOM에서 먼저 죽일지의 기준이다.
 
 | 클래스 | 조건 | 압박 시 |
 | --- | --- | --- |
@@ -311,9 +311,15 @@ AWS 등에서 쓰는 **Karpenter**는 미리 정한 노드 그룹 대신 Pending
 
 ### 셋을 함께 쓸 때
 
-```text
-부하 증가 → HPA가 파드를 늘림 → 자리가 없어 Pending → Cluster Autoscaler가 노드 추가
-         → 노드 준비(수 분) → 파드 배치 → Ready → 부하 분산
+```mermaid
+flowchart TB
+  a["부하 증가"] --> b["HPA가 파드를 늘림"]
+  b --> c["자리가 없어 Pending"]
+  c --> d["Cluster Autoscaler가 노드 추가"]
+  d --> e["노드 준비(수 분)"]
+  e --> f["파드 배치"]
+  f --> g["Ready"]
+  g --> h["부하 분산"]
 ```
 
 - **HPA와 VPA를 같은 CPU·메모리 지표에 함께 걸지 않는다.** VPA가 requests를 키우면 사용률이 낮아져 HPA가 파드를 줄이고, 그러면 사용량이 다시 올라 서로 싸운다. HPA를 커스텀 지표로 걸거나, VPA는 `Off`로 권고치만 본다.

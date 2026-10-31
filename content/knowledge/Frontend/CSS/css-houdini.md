@@ -12,22 +12,22 @@ sources: ["https://developer.chrome.com/docs/css-ui/houdini", "https://www.smash
 
 ## Houdini란
 
-Houdini는 W3C TAG와 CSS 작업 그룹의 합동 태스크포스, 그리고 그곳에서 만든 **저수준 API 묶음**의 이름이다. 목표는 지금까지 브라우저만 다루던 CSS 엔진 내부 단계를 개발자에게 열어, **CSS를 JS처럼 확장·폴리필할 수 있게** 하는 것이다.
+Houdini는 W3C TAG와 CSS 작업 그룹의 합동 태스크포스, 그리고 그곳에서 만든 **저수준 API 묶음**의 이름이다. 목표는 지금까지 브라우저만 다루던 CSS 엔진 내부 단계를 개발자에게 열어, CSS를 JS처럼 확장·폴리필할 수 있게 하는 것이다.
 
 ## 왜 필요했나: CSS 폴리필이 어려운 이유
 
 JS의 새 기능은 제안 단계에서도 Babel·폴리필로 바로 쓴다. CSS는 표준화와 모든 브라우저 구현을 기다려야 했다. CSS를 CSS로 폴리필하기 어렵고, JS로 하려면 렌더링 파이프라인에 손댈 곳이 거의 없기 때문이다.
 
-```text
-HTML 파싱 ─ CSS 파싱 ─ 캐스케이드 ─ 레이아웃 ─ 페인트 ─ 합성
-   DOM ✓      CSSOM △     ✗          ✗         ✗        ✗
+```mermaid
+flowchart LR
+  A["HTML 파싱<br>DOM ✓"] --- B["CSS 파싱<br>CSSOM △"] --- C["캐스케이드<br>✗"] --- D["레이아웃<br>✗"] --- E["페인트<br>✗"] --- F["합성<br>✗"]
 ```
 
-- 개발자가 온전히 다룰 수 있는 곳은 DOM뿐이다. CSSOM은 **모르는 규칙·선언을 버리고**, 다른 출처 스타일시트는 보여 주지 않는다.
-- 그래서 CSS 폴리필은 `<style>`·`<link>`를 직접 받아 **자체 파서와 캐스케이드**를 돌린 뒤 DOM을 고친다. 크고 버그가 많다.
+- 개발자가 온전히 다룰 수 있는 곳은 DOM뿐이다. CSSOM은 모르는 규칙·선언을 버리고, 다른 출처 스타일시트는 보여 주지 않는다.
+- 그래서 CSS 폴리필은 `<style>`·`<link>`를 직접 받아 자체 파서와 캐스케이드를 돌린 뒤 DOM을 고친다. 크고 버그가 많다.
 - DOM을 고치면 브라우저가 캐스케이드·레이아웃·페인트·합성을 처음부터 다시 한다. 스크롤·리사이즈마다 돌면 성능이 무너진다.
 
-Houdini는 각 단계에 공식 훅을 달아, 폴리필과 새 기능 실험이 **엔진 안에서** 돌게 하려 했다. 렌더링 단계 자체는 [[browser-rendering|브라우저 렌더링 과정]]에 있다.
+Houdini는 각 단계에 공식 훅을 달아, 폴리필과 새 기능 실험이 엔진 안에서 돌게 하려 했다. 렌더링 단계 자체는 [[browser-rendering|브라우저 렌더링 과정]]에 있다.
 
 ## 기반: 워크릿(Worklet)
 
@@ -103,7 +103,7 @@ registerPaint('checkerboard', class {
 
 ## 결과적으로 무엇이 남았나
 
-Houdini가 꿈꾼 "모든 단계를 개발자에게 연다"는 그대로 이뤄지지 않았다. 대신 Houdini가 풀려던 사용 사례 상당수는 **네이티브 CSS 기능**으로 들어왔다.
+Houdini가 꿈꾼 "모든 단계를 개발자에게 연다"는 그대로 이뤄지지 않았다. 대신 Houdini가 풀려던 사용 사례 상당수는 네이티브 CSS 기능으로 들어왔다.
 
 | Houdini로 하려던 일 | 지금의 네이티브 기능 |
 | --- | --- |
@@ -112,12 +112,12 @@ Houdini가 꿈꾼 "모든 단계를 개발자에게 연다"는 그대로 이뤄�
 | 커스텀 속성 애니메이션 | `@property`(모든 브라우저) |
 | 툴팁 위치 계산 | 앵커 위치 지정([[popover-anchor-positioning\|팝오버와 앵커 위치 지정]]) |
 
-실무에서 쓸 수 있는 것은 **`@property`는 어디서나, Typed OM과 Paint API는 점진적 향상으로**다.
+실무에서는 `@property`를 어디서나 쓰고, Typed OM과 Paint API는 점진적 향상으로 쓴다.
 
 ## 정리
 
 - Houdini는 CSS 엔진의 각 단계에 훅을 달아, CSS도 JS처럼 폴리필·확장할 수 있게 하려는 API 묶음이다.
-- 모든 주요 브라우저에 들어간 것은 `@property`(타입 있는 커스텀 속성)뿐이고, Typed OM은 Firefox가, Paint API는 Chromium만 지원한다.
+- 모든 주요 브라우저에 들어간 것은 `@property`(타입 있는 커스텀 속성)뿐이고, Typed OM은 Firefox가 지원하지 않고, Paint API는 Chromium만 지원한다.
 - Layout·Animation Worklet이 노린 문제는 스크롤 기반 애니메이션·앵커 위치 지정 같은 네이티브 기능이 대신 풀고 있다.
 
 관련 노트: [[browser-rendering|브라우저 렌더링 과정]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[css-progressive-enhancement|CSS 점진적 향상: 폴백과 피처 쿼리]], [[how-css-works|CSS가 동작하는 방식: 핵심 개념과 픽셀이 되기까지]]

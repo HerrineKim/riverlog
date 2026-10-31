@@ -15,7 +15,7 @@ sources: ["https://news.hada.io/topic?id=13405", "https://jvns.ca/blog/2024/02/1
 
 ## Git 설정이란
 
-Git의 동작 대부분은 `git config`로 바꿀 수 있다. 개발자들이 즐겨 켜 두는 옵션은 대부분 **기본값이 불편해서 생기는 실수**(의도치 않은 merge 커밋, 읽기 힘든 충돌 표시)를 한 줄로 막는 옵션이 많다.
+Git의 동작 대부분은 `git config`로 바꿀 수 있다. 개발자들이 즐겨 켜 두는 옵션 중에는 **기본값이 불편해서 생기는 실수**(의도치 않은 merge 커밋, 읽기 힘든 충돌 표시)를 한 줄로 막는 것이 많다.
 
 ```bash
 git config --global <이름> <값>     # 설정 (~/.gitconfig에 저장)

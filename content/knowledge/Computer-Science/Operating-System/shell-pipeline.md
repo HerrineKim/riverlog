@@ -33,10 +33,9 @@ bash, zsh, dash는 모두 POSIX 셸 명세를 기준으로 각자 기능을 더�
 
 ## 한 줄이 실행되기까지
 
-```text
-입력 ─▶ 토큰화 ─▶ 파싱(트리) ─▶ 확장 ─▶ 리다이렉션 ─▶ 실행
-        word·operator  리스트·파이프라인·  $변수·$?·    open·dup2    빌트인 or
-                       단순 명령·서브셸    단어 분리·*    heredoc      fork+execve
+```mermaid
+flowchart LR
+    in["입력"] --> tok["토큰화<br/>word·operator"] --> parse["파싱(트리)<br/>리스트·파이프라인·<br/>단순 명령·서브셸"] --> exp["확장<br/>$변수·$?·<br/>단어 분리·*"] --> redir["리다이렉션<br/>open·dup2<br/>heredoc"] --> run["실행<br/>빌트인 or<br/>fork+execve"]
 ```
 
 | 단계 | 하는 일 | 예 |
@@ -71,11 +70,12 @@ bash, zsh, dash는 모두 POSIX 셸 명세를 기준으로 각자 기능을 더�
 
 `pipe(fd)`는 커널 버퍼 하나와 fd 두 개를 만든다. **`fd[0]`은 읽는 끝, `fd[1]`은 쓰는 끝**이다. `cmd1 | cmd2`는 다음 순서로 만든다.
 
-```text
-셸: pipe(fd)
- ├─ fork ─▶ 자식1: dup2(fd[1], 1); close(fd[0]); close(fd[1]); execve(cmd1)
- ├─ fork ─▶ 자식2: dup2(fd[0], 0); close(fd[0]); close(fd[1]); execve(cmd2)
- └─ 셸:    close(fd[0]); close(fd[1]); waitpid(자식1); waitpid(자식2)
+```mermaid
+flowchart TB
+    sh["셸: pipe(fd)"]
+    sh -->|"fork"| c1["자식1: dup2(fd[1], 1); close(fd[0]); close(fd[1]); execve(cmd1)"]
+    sh -->|"fork"| c2["자식2: dup2(fd[0], 0); close(fd[0]); close(fd[1]); execve(cmd2)"]
+    sh --> p["셸: close(fd[0]); close(fd[1]); waitpid(자식1); waitpid(자식2)"]
 ```
 
 N개 명령의 파이프라인은 파이프 N−1개를 만든다. 첫 명령은 입력 파일→파이프, 가운데는 이전 파이프→다음 파이프, 마지막은 파이프→출력 파일로 연결한다. 부모는 다음 자식을 만든 뒤 **이전 파이프의 읽는 끝**을 닫는다.

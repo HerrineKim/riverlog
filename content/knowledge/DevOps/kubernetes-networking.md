@@ -10,7 +10,7 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 > fru1tworld/cs-basic 모의 면접 질문 목록의 「[Kubernetes](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md)」 항목이 묻는 개념을 쿠버네티스·Gateway API·Istio 공식 문서로 확인해 정리한 노트다.
 
-서비스 네 유형의 개요는 [[kubernetes-architecture|쿠버네티스 구조와 핵심 개념]]에, 클러스터 밖에서 파드까지의 요청 경로와 사이드카·앰비언트 메시의 비교는 [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로]]에 있다. 이 노트는 각 계층이 **어떻게** 동작하는지를 다룬다.
+서비스 네 유형의 개요는 [[kubernetes-architecture|쿠버네티스 구조와 핵심 개념]]에, 클러스터 밖에서 파드까지의 요청 경로와 사이드카·앰비언트 메시의 비교는 [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로]]에 있다. 이 노트는 각 계층이 어떻게 동작하는지를 다룬다.
 
 ## 네트워크 모델과 CNI
 
@@ -33,12 +33,16 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 ### EndpointSlice와 kube-proxy
 
-서비스의 ClusterIP는 **어느 인터페이스에도 붙어 있지 않은 가상 IP**다. 핑에 응답하지 않는 것도 그래서다. 실제 전달은 두 구성 요소가 나눠 맡는다.
+서비스의 ClusterIP는 어느 인터페이스에도 붙어 있지 않은 가상 IP다. 핑에 응답하지 않는 것도 그래서다. 실제 전달은 두 구성 요소가 나눠 맡는다.
 
-```text
-EndpointSlice 컨트롤러: 셀렉터에 맞고 Ready인 파드 IP:포트 목록을 EndpointSlice에 기록
-kube-proxy (노드마다):   Service·EndpointSlice를 watch → 노드 커널에 규칙을 심음
-파드가 10.96.0.10:80 으로 보냄 → 커널 규칙이 목적지를 10.244.2.7:8080 (파드 하나)로 DNAT
+```mermaid
+flowchart TB
+  esc["EndpointSlice 컨트롤러"] -->|"셀렉터에 맞고 Ready인 파드 IP:포트 목록을 기록"| es["EndpointSlice"]
+  svc["Service"] -->|"watch"| kp["kube-proxy (노드마다)"]
+  es -->|"watch"| kp
+  kp -->|"규칙을 심음"| kr["노드 커널 규칙"]
+  pod["파드"] -->|"10.96.0.10:80 으로 보냄"| kr
+  kr -->|"목적지를 DNAT"| dst["10.244.2.7:8080 (파드 하나)"]
 ```
 
 kube-proxy 자체는 패킷을 중계하지 않는다. 커널에 규칙만 심고, 전달은 커널이 한다.
@@ -60,7 +64,7 @@ kube-proxy 자체는 패킷을 중계하지 않는다. 커널에 규칙만 심�
 | ExternalName | 프록시나 IP 없이 클러스터 DNS가 지정한 외부 도메인으로 CNAME을 돌려준다. 클러스터 밖 DB를 클러스터 안 이름으로 부르다가, 나중에 클러스터 안으로 옮겨도 클라이언트 설정을 바꾸지 않게 한다. HTTP Host 헤더·TLS 인증서 이름은 원래 도메인과 달라질 수 있어 주의한다 |
 | 헤드리스 (`clusterIP: None`) | 가상 IP와 kube-proxy 규칙이 없고, DNS가 Ready 파드들의 IP를 A 레코드로 바로 돌려준다. StatefulSet 멤버를 이름으로 찾는 방법이다([[kubernetes-workloads\|쿠버네티스 워크로드]]) |
 
-`externalTrafficPolicy`는 외부 트래픽의 경로를 정한다. `Cluster`(기본)는 어느 노드로 들어와도 아무 파드로 보내지만 다른 노드로 한 번 더 건너가고 출발지 IP가 노드 IP로 바뀐다(SNAT). `Local`은 파드가 있는 노드만 트래픽을 받아 **클라이언트 IP를 보존**하고 홉을 줄이는 대신, 노드별 파드 수가 고르지 않으면 부하가 치우친다.
+`externalTrafficPolicy`는 외부 트래픽의 경로를 정한다. `Cluster`(기본)는 어느 노드로 들어와도 아무 파드로 보내지만 다른 노드로 한 번 더 건너가고 출발지 IP가 노드 IP로 바뀐다(SNAT). `Local`은 파드가 있는 노드만 트래픽을 받아 클라이언트 IP를 보존하고 홉을 줄이는 대신, 노드별 파드 수가 고르지 않으면 부하가 치우친다.
 
 ## DNS: 이름으로 서비스 찾기
 
@@ -83,10 +87,13 @@ options ndots:5
 
 ## 파드에서 외부로 나가는 트래픽
 
-```text
-파드(10.244.2.7) → 노드의 라우팅 → 노드에서 SNAT(masquerade): 출발지를 노드 IP로
-  → (프라이빗 서브넷이면) NAT 게이트웨이에서 공인 IP로 다시 변환 → 외부 서비스
-응답은 변환 테이블(conntrack)을 거슬러 파드로 돌아온다
+```mermaid
+flowchart TB
+  pod["파드(10.244.2.7)"] --> rt["노드의 라우팅"]
+  rt --> snat["노드에서 SNAT(masquerade):<br/>출발지를 노드 IP로"]
+  snat -->|"(프라이빗 서브넷이면)"| nat["NAT 게이트웨이에서 공인 IP로 다시 변환"]
+  nat --> ext["외부 서비스"]
+  ext -.->|"응답은 변환 테이블(conntrack)을 거슬러 파드로 돌아온다"| pod
 ```
 
 외부 서비스가 IP 허용 목록을 요구하면 출발지가 노드마다 달라지므로, NAT 게이트웨이의 고정 IP나 CNI·서비스 메시의 이그레스 게이트웨이로 나가는 경로를 하나로 모은다. VPC 쪽 NAT 게이트웨이는 [[aws-vpc-networking|AWS VPC 네트워크 구성]]에 있다.
@@ -186,9 +193,15 @@ RBAC가 **쿠버네티스 API에 대한 사람·프로그램의 접근**을 제�
 
 **서비스 메시는 서비스 간 트래픽을 프록시 계층에 통과시켜, 앱 코드를 고치지 않고 트래픽 제어·보안(mTLS)·관측을 붙이는 인프라 계층**이다. 서비스가 많아지면 재시도·타임아웃·서킷 브레이커·인증·지표를 언어마다 라이브러리로 넣기 어려워 플랫폼으로 내린다.
 
-```text
-컨트롤 플레인 (istiod)  ── 설정·인증서 배포 (xDS) ──▶ 데이터 플레인 프록시들
-                                                     앱 A ⇄ 프록시 ⇄ (mTLS) ⇄ 프록시 ⇄ 앱 B
+```mermaid
+flowchart TB
+  cp["컨트롤 플레인 (istiod)"] -->|"설정·인증서 배포 (xDS)"| dp
+  subgraph dp["데이터 플레인 프록시들"]
+    direction LR
+    appa["앱 A"] <--> p1["프록시"]
+    p1 <-->|"mTLS"| p2["프록시"]
+    p2 <--> appb["앱 B"]
+  end
 ```
 
 사이드카 프록시는 iptables 규칙(또는 CNI 플러그인)으로 파드의 들고 나는 트래픽을 모두 가로채, 앱은 평문으로 `http://b`를 불러도 프록시끼리 mTLS로 통신한다. 사이드카와 앰비언트(노드 공용 프록시) 방식의 비교는 [[kubernetes-request-path|요청 경로 노트]]에 있다.

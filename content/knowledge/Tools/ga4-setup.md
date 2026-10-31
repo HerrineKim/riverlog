@@ -5,7 +5,7 @@ summary: "GA4 계정·속성을 만들고 gtag.js 또는 Google Tag Manager(Goog
 tags: ["analytics", "ga4", "marketing", "web"]
 source: notion
 date: "2026-10-13"
-sources: ["https://support.google.com/tagmanager/answer/13543899", "https://developers.google.com/tag-platform/security/guides/consent"]
+sources: ["https://support.google.com/tagmanager/answer/13543899", "https://developers.google.com/tag-platform/security/guides/consent", "https://support.google.com/analytics/answer/16388466"]
 ---
 
 **Google Analytics 4(GA4)** 는 웹사이트·앱의 사용자 행동을 이벤트 단위로 수집해 분석하는 도구이다. 이전 버전인 Universal Analytics(UA)는 2023년 7월 데이터 수집이 종료되어, 지금은 GA4가 표준이다. 이론보다 실제 사이트에 태그를 붙여 보며 익히는 것이 빠르다.
@@ -18,7 +18,7 @@ sources: ["https://support.google.com/tagmanager/answer/13543899", "https://deve
 | 속성 (Property) | 분석할 웹사이트(또는 앱) |
 | 데이터 스트림 | 속성 안에서 실제 데이터가 들어오는 경로(웹/iOS/Android) |
 
-속성을 만들 때 **업종 카테고리** 선택이 보고서 구성에 영향을 주므로 신경 써서 고른다(예: 쇼핑몰이면 "쇼핑").
+속성을 만들 때 고르는 **업종 카테고리**는 벤치마킹에서 비교 대상이 되는 기본 동종 업계 그룹을 정하는 데 쓰이므로 사이트에 맞게 고른다(예: 쇼핑몰이면 "쇼핑"). 동종 그룹은 나중에 벤치마킹 화면에서 바꿀 수 있다([Analytics 고객센터: 벤치마킹](https://support.google.com/analytics/answer/16388466)).
 
 ## 태그 설치 방법 1: gtag.js 직접 삽입
 

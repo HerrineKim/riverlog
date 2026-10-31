@@ -5,7 +5,7 @@ summary: "AI를 가끔 꺼내 쓰는 도구가 아니라 리서치·기획·구�
 tags: ["ai", "llm", "claude-code", "agentic-coding", "productivity", "career"]
 source: other
 date: "2026-10-20"
-sources: ["https://drive.google.com/file/d/1SJ7-1YXo4r4pkHDuMdKLR9NtgbUsSRoZ/view", "https://addyo.substack.com/p/the-ai-native-software-engineer", "https://arxiv.org/abs/2503.14499", "https://arxiv.org/abs/2502.12115", "https://arxiv.org/abs/2502.05167"]
+sources: ["https://drive.google.com/file/d/1SJ7-1YXo4r4pkHDuMdKLR9NtgbUsSRoZ/view", "https://addyo.substack.com/p/the-ai-native-software-engineer", "https://arxiv.org/abs/2503.14499", "https://arxiv.org/abs/2502.12115", "https://arxiv.org/abs/2502.05167", "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/"]
 ---
 
 > 하용호의 강의 자료 「[AI로 개발을 어떻게 가속화하는가: 드디어 열린 입코딩 시대](https://drive.google.com/file/d/1SJ7-1YXo4r4pkHDuMdKLR9NtgbUsSRoZ/view)」(2025.07)와 Addy Osmani의 「[The AI-Native Software Engineer](https://addyo.substack.com/p/the-ai-native-software-engineer)」(2025.07)를 바탕으로 재구성한 노트다.
@@ -14,10 +14,9 @@ sources: ["https://drive.google.com/file/d/1SJ7-1YXo4r4pkHDuMdKLR9NtgbUsSRoZ/vie
 
 AI 네이티브 엔지니어(AI-native software engineer)는 AI를 **일상 업무 전체에 깔린 협업자**로 다룬다. 작업마다 「AI가 이걸 더 빠르게, 더 잘, 또는 다르게 할 수 있나」를 먼저 묻는다. 개발자의 시간은 코딩보다 그 바깥에서 더 많이 쓰이므로, 빨라지려면 모든 단계에 AI가 들어가야 한다.
 
-```text
-리서치 → 스펙 논의 → 아키텍처 설계 → 구현 → QA·디버깅 → 운영·장애 대응 → 코드 리뷰
-                                      ▲
-                          흔히 "코딩"이라 부르는 부분
+```mermaid
+flowchart LR
+  r["리서치"] --> s["스펙 논의"] --> a["아키텍처 설계"] --> i["구현<br/>(흔히 #quot;코딩#quot;이라 부르는 부분)"] --> q["QA·디버깅"] --> o["운영·장애 대응"] --> cr["코드 리뷰"]
 ```
 
 이 방식에서 일의 산출물은 **코드 + AI에게 먹일 자료**(요구 사항, 규칙, 도메인 지식)다. 둘을 함께 버전 관리하고 함께 키운다. **경험이 많을수록 AI에게 맥락을 잘 주므로 결과도 좋다.** AI는 실력을 대체하지 않고 증폭한다.
@@ -81,11 +80,12 @@ AI 소식은 몇 달이면 절반이 바뀐다. 매번 따라잡기보다 **어�
 
 코딩 에이전트에게 맡길 지시를 쓰는 일도 AI에게 맡긴다.
 
-```text
-1. "이런 걸 만들 거야. 제품 요구 사항(PRD)을 써 줘"     → prd.md
-2. "이 PRD로 세부 작업 목록을 만들어 줘"                → tasklist.md
-3. 두 파일을 프로젝트에 두고, 규칙 파일에서 항상 참조하게 한다
-4. "Day 1 작업 시작" 식으로 잘라서 맡긴다
+```mermaid
+flowchart TB
+  S1["1. #quot;이런 걸 만들 거야. 제품 요구 사항(PRD)을 써 줘#quot;"] --> F1["prd.md"]
+  F1 --> S2["2. #quot;이 PRD로 세부 작업 목록을 만들어 줘#quot;"] --> F2["tasklist.md"]
+  F2 --> S3["3. 두 파일을 프로젝트에 두고, 규칙 파일에서 항상 참조하게 한다"]
+  S3 --> S4["4. #quot;Day 1 작업 시작#quot; 식으로 잘라서 맡긴다"]
 ```
 
 - 기간을 주면 날짜별 할 일로 나눠 주어 잘라서 지시하기 편하다. "주니어 개발자에게 줄 수준으로" 요청하면 더 잘게 쪼개진다.
@@ -113,9 +113,18 @@ AI 개발이 지속 가능한지는 지시의 크기와 규칙의 양에서 갈�
 
 TDD에서 테스트와 코드가 함께 자라듯, AI와 일할 때는 **규칙과 코드가 함께 자란다.**
 
-```text
-TDD:   테스트를 쓴다 → 코드를 쓴다 → 테스트와 코드가 함께 자란다
-RGD:   AI에게 시킨다 → 이상한 행동을 관찰한다 → 원하는 방향의 규칙을 더한다 → 규칙과 코드가 함께 자란다
+TDD:
+
+```mermaid
+flowchart LR
+  t1["테스트를 쓴다"] --> t2["코드를 쓴다"] --> t3["테스트와 코드가 함께 자란다"]
+```
+
+RGD:
+
+```mermaid
+flowchart LR
+  r1["AI에게 시킨다"] --> r2["이상한 행동을 관찰한다"] --> r3["원하는 방향의 규칙을 더한다"] --> r4["규칙과 코드가 함께 자란다"]
 ```
 
 - 규칙에는 코딩 스타일뿐 아니라 그 프로젝트에 필요한 지식도 담는다.
@@ -199,7 +208,7 @@ AI는 얼개는 잘 잡지만 논리 오류는 잘 못 잡는다. **코드를 �
 | [SWE-Lancer](https://arxiv.org/abs/2502.12115)(OpenAI, 2025) | 실제 프리랜서 과제에서, 직접 구현하는 과제보다 여러 제안 중 나은 것을 고르는 관리자 과제의 성공률이 높았다 |
 | [METR 작업 길이](https://arxiv.org/abs/2503.14499)(2025) | AI가 50% 확률로 완수하는 작업의 길이(사람 기준 소요 시간)가 약 7개월마다 두 배로 늘었다 |
 
-**한 번에 맡기는 작업을 AI가 감당할 크기 안으로 쪼개야** 성공률이 오른다. AI가 더 긴 일을 맡을수록 사람이 맡는 일의 단위도 커진다. AI 도구가 오히려 개발을 느리게 했다는 연구도 있는데, 도구만 얹고 일하는 방식은 그대로였던 경우다. **일하는 방식 자체를 AI 친화적으로 재편해야** 효과가 난다.
+**한 번에 맡기는 작업을 AI가 감당할 크기 안으로 쪼개야** 성공률이 오른다. AI가 더 긴 일을 맡을수록 사람이 맡는 일의 단위도 커진다. [METR의 2025년 실험](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)에서는 숙련 오픈소스 개발자 16명이 AI 도구를 쓸 때 오히려 19% 더 오래 걸렸다. **일하는 방식 자체를 AI 친화적으로 재편해야** 효과가 난다.
 
 ### 트레이드오프 사이의 선택자
 

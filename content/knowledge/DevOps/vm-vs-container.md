@@ -22,6 +22,8 @@ sources: ["https://riverkim.kr/313", "https://80000coding.notion.site/95596b1b15
 | 비용·밀도 | 무겁고 비싸서 한 서버에 많이 못 올림 | 가벼워서 같은 자원에 훨씬 많이 실행 |
 | 격리 수준 | 강함 (OS까지 분리) | 상대적으로 약함 (커널 공유) |
 
+크기와 시작 속도는 대략적인 규모이며, 이미지와 하이퍼바이저에 따라 크게 달라진다.
+
 - 가상화로 보면 VM은 하드웨어를 가상화하는 **하이퍼바이저 기반 가상화**, 컨테이너는 커널 하나를 여러 격리 공간으로 나누는 **운영체제 수준 가상화**다. Docker는 후자에 속한다. Docker가 널리 채택된 이유는 격리 자체보다 **이미지라는 배포 형식**에 있다. 실행 환경을 통째로 담은 이미지를 레지스트리로 주고받아 「내 컴퓨터에서는 되는데」 문제를 없애고, 수 초 만에 뜨며, 같은 서버에 더 많이 올려 비용을 줄인다.
 - 강한 격리가 필요할 때(믿을 수 없는 코드 실행, 보안 경계가 중요한 개발 환경)는 여전히 VM을 쓴다. 같은 커널을 쓰는 컨테이너끼리의 간섭을 막는 방법은 [[docker-container-operations|Docker 컨테이너 운영]]에 있다. 컨테이너가 커널을 공유하며 무엇으로 격리하는지(네임스페이스·cgroups)와 하이퍼바이저의 원리는 [[virtualization|가상화와 하이퍼바이저]]에 있다.
 - 실무에서는 둘을 함께 쓴다. 클라우드 VM(예: AWS EC2) 위에 여러 컨테이너를 올리는 식이다.
@@ -49,13 +51,26 @@ Docker는 클라이언트-서버 구조다. 터미널에서 치는 `docker` 명�
 
 클라이언트와 데몬은 **REST API**로 통신한다. 기본 통로는 유닉스 소켓 `/var/run/docker.sock`이고, 원격 데몬은 TLS로 보호한 TCP(2376)나 SSH(`DOCKER_HOST=ssh://user@host`)로 연결한다. `docker context`로 여러 데몬을 바꿔 가며 쓴다. 인증 없는 TCP(2375)를 열면 누구나 호스트 root를 얻으므로 열지 않는다.
 
-```text
-Docker 클라이언트 ──REST API──▶ Docker 호스트                  ◀──pull/push──▶ 레지스트리
-  docker build                  dockerd (데몬)                                Docker Hub,
-  docker pull                     ├ 이미지                                      비공개 레지스트리
-  docker run                      ├ 컨테이너
-                                  ├ 네트워크
-                                  └ 볼륨
+```mermaid
+flowchart LR
+  subgraph client["Docker 클라이언트"]
+    c1["docker build"]
+    c2["docker pull"]
+    c3["docker run"]
+  end
+  subgraph host["Docker 호스트"]
+    dd["dockerd (데몬)"]
+    dd --> img["이미지"]
+    dd --> ctr["컨테이너"]
+    dd --> net["네트워크"]
+    dd --> vol["볼륨"]
+  end
+  subgraph reg["레지스트리"]
+    hub["Docker Hub"]
+    priv["비공개 레지스트리"]
+  end
+  client -->|"REST API"| host
+  host <-->|"pull/push"| reg
 ```
 
 `docker run nginx` 한 줄은 다음 순서로 실행된다.
@@ -70,11 +85,13 @@ Docker 클라이언트 ──REST API──▶ Docker 호스트                 
 
 데몬은 컨테이너를 직접 만들지 않고 아래 계층에 맡긴다.
 
-```text
-docker CLI ─REST─▶ dockerd ─gRPC─▶ containerd ─▶ containerd-shim ─▶ runc ─▶ 컨테이너 프로세스
-                   (빌드, 네트워크,   (이미지 받기·저장,   (컨테이너마다 하나,   (네임스페이스·cgroups를
-                    볼륨, API)         컨테이너 수명 관리)    runc가 끝난 뒤 남아   만들고 프로세스를 실행한 뒤
-                                                            입출력·종료 코드 관리)  종료)
+```mermaid
+flowchart TB
+  cli["docker CLI"] -->|"REST"| dd["dockerd<br/>(빌드, 네트워크, 볼륨, API)"]
+  dd -->|"gRPC"| ctd["containerd<br/>(이미지 받기·저장, 컨테이너 수명 관리)"]
+  ctd --> shim["containerd-shim<br/>(컨테이너마다 하나, runc가 끝난 뒤 남아 입출력·종료 코드 관리)"]
+  shim --> runc["runc<br/>(네임스페이스·cgroups를 만들고 프로세스를 실행한 뒤 종료)"]
+  runc --> proc["컨테이너 프로세스"]
 ```
 
 | 구성 요소 | 역할 |
@@ -122,7 +139,7 @@ Docker는 OCI 이미지를 만들고 OCI 런타임(runc)으로 실행하는 도�
 | --- | --- | --- |
 | 설치·학습 | Docker 엔진에 내장. `docker swarm init` 한 줄, Compose 파일 문법(`docker stack deploy`) | 구성 요소가 많고 개념이 넓다. 보통 관리형 서비스를 쓴다 |
 | 기능 | 서비스 복제, 롤링 업데이트, overlay 네트워크, 라우팅 메시, 암호화된 secrets | 그에 더해 오토스케일링, 세밀한 스케줄링, 확장 API(CRD·오퍼레이터), 정책·보안 기능 |
-| 생태계 | 작다 | 사실상 표준. 클라우드·도구 지원이 압도적 |
+| 생태계 | 작다 | 사실상 표준. 주요 클라우드가 관리형 서비스(EKS·GKE·AKS)를 제공한다 |
 | 맞는 곳 | 서버 몇 대의 작은 팀, Compose를 그대로 여러 서버로 넓히고 싶을 때 | 서비스가 많고 자동화·확장이 중요한 조직 |
 
 ### AWS ECS로 보는 오케스트레이션 용어
@@ -151,7 +168,8 @@ MSA는 기능을 독립적으로 배포 가능한 서비스들로 쪼갠 구조�
 | 서비스 단위로 빌드·배포·롤백·확장 | 서비스 간 통신이 네트워크를 타므로 지연·부분 장애·재시도 설계가 필요하다 |
 | 개발 환경을 Compose로 똑같이 재현 | 컨테이너는 쉽게 사라지므로 상태(DB, 파일)를 밖에 두고, 로그·지표·트레이스를 중앙에서 모아야 원인을 찾는다 |
 | 오케스트레이터가 배치·복구를 자동화 | 서비스 디스커버리, 설정·비밀 관리, 서비스 간 보안(mTLS)을 플랫폼에서 해결해야 한다 |
- MSA의 구성 요소와 도입 시 주의점은 [[web-scalability-components|웹 확장성의 구성 요소]]의 「확장의 세 축」에 정리했다.
+
+MSA의 구성 요소와 도입 시 주의점은 [[web-scalability-components|웹 확장성의 구성 요소]]의 「확장의 세 축」에 정리했다.
 
 ## 핵심 정리
 

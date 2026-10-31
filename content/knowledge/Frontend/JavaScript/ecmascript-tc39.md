@@ -22,14 +22,19 @@ sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/
 
 표준이 먼저 있고 JavaScript가 나온 것이 아니다. 1995년 Netscape가 브라우저를 제어하는 스크립트 언어로 JavaScript를 만들었고, Microsoft의 JScript 같은 변종이 생기자 1996년 Netscape가 ECMA에 표준화를 맡겼다. 그 결과가 1997년의 ECMAScript 1판이다.
 
-```text
-1995.05 Mocha ─ Brendan Eich가 Netscape에서 짧은 기간에 만든 프로토타입 → LiveScript
-1995.12 JavaScript로 개명 ─ Java는 큰 컴포넌트, JavaScript는 작은 브라우저 스크립트라는 역할 분담
-1996    Microsoft JScript(IE 3) ─ 구현 차이로 오랜 브라우저 호환성 문제의 시작
-1997    ES1 ─ 1998 ES2(ISO 표준과 맞춤) ─ 1999 ES3(정규식, try/catch)
-2000년대 AJAX 확산 ─ ES4(클래스·모듈·정적 타입까지 넣은 대개편) 논쟁으로 정체
-2008    오슬로 회의: ES4 폐기, 작은 개정 ES3.1과 장기 계획 Harmony로 정리
-2009    ES3.1이 ES5로 ─ 2011 ES5.1 ─ 2015 Harmony의 성과가 ES2015로
+```mermaid
+timeline
+  1995.05 : Mocha — Brendan Eich가 Netscape에서 짧은 기간에 만든 프로토타입 → LiveScript
+  1995.12 : JavaScript로 개명 — Java는 큰 컴포넌트, JavaScript는 작은 브라우저 스크립트라는 역할 분담
+  1996 : Microsoft JScript(IE 3) — 구현 차이로 오랜 브라우저 호환성 문제의 시작
+  1997 : ES1
+  1998 : ES2(ISO 표준과 맞춤)
+  1999 : ES3(정규식, try/catch)
+  2000년대 : AJAX 확산 — ES4(클래스·모듈·정적 타입까지 넣은 대개편) 논쟁으로 정체
+  2008 : 오슬로 회의#58; ES4 폐기, 작은 개정 ES3.1과 장기 계획 Harmony로 정리
+  2009 : ES3.1이 ES5로
+  2011 : ES5.1
+  2015 : Harmony의 성과가 ES2015로
 ```
 
 ES4의 실패가 지금의 운영 방식을 만들었다. 큰 판을 한 번에 합의하려다 10년을 잃은 뒤로, **제안을 하나씩 단계별로 통과시키고 준비된 것만 매년 판에 싣는다.**

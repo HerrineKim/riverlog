@@ -12,10 +12,13 @@ sources: ["https://www.smashingmagazine.com/2015/12/introduction-to-postcss/", "
 
 ## PostCSS란
 
-PostCSS는 **CSS를 JS로 변환하는 도구**다. CSS를 파싱해 추상 구문 트리(AST)로 만들고, 플러그인이 그 트리를 고친 뒤 다시 CSS 문자열로 내보낸다. PostCSS 자체는 API일 뿐 아무 변환도 하지 않는다. 기능은 전부 플러그인에서 나온다. Autoprefixer를 만든 Andrey Sitnik이 만들었고, 소스 맵을 함께 만든다.
+PostCSS는 **JS 플러그인으로 CSS를 변환하는 도구**다. CSS를 파싱해 추상 구문 트리(AST)로 만들고, 플러그인이 그 트리를 고친 뒤 다시 CSS 문자열로 내보낸다. PostCSS 자체는 API일 뿐 아무 변환도 하지 않는다. 기능은 전부 플러그인에서 나온다. Autoprefixer를 만든 Andrey Sitnik이 만들었고, 소스 맵을 함께 만든다.
 
-```text
-CSS 문자열 ─ 파서 ─▶ AST ─ 플러그인 1 ─ 플러그인 2 ─ … ─▶ 문자열화 ─▶ CSS + 소스 맵
+```mermaid
+flowchart LR
+  src["CSS 문자열"] --> parser["파서"] --> ast["AST"]
+  ast --> pl1["플러그인 1"] --> pl2["플러그인 2"] --> more["…"]
+  more --> str["문자열화"] --> out["CSS + 소스 맵"]
 ```
 
 "후처리기(post-processor)"라는 이름과 달리, 빌드 단계에서 확장 문법을 CSS로 바꾼다는 점에서 전처리기와 같은 자리에 선다.
@@ -63,11 +66,11 @@ postcss-preset-env는 기능마다 표준화 단계(stage 0 실험 ~ 4 안정)�
 
 ### 미래 문법을 미리 쓸 때의 위험
 
-"내일의 CSS를 오늘 쓴다"는 말은 매력적이지만, 스펙은 구현되기 전에 바뀐다. 실제로 커스텀 속성 믹스인 `@apply`는 플러그인으로 한때 유행했다가 스펙에서 폐기됐다. 낮은 stage 기능은 **언젠가 내 코드를 다시 고쳐야 할 수 있다**는 뜻이다. 변환의 한계는 [[css-progressive-enhancement|CSS 점진적 향상]]에 있다.
+"내일의 CSS를 오늘 쓴다"는 말은 매력적이지만, 스펙은 구현되기 전에 바뀐다. 실제로 커스텀 속성 믹스인 `@apply`는 플러그인으로 한때 유행했다가 스펙에서 폐기됐다. 낮은 stage 기능을 쓰면 언젠가 내 코드를 다시 고쳐야 할 수 있다. 변환의 한계는 [[css-progressive-enhancement|CSS 점진적 향상]]에 있다.
 
 ## 지금의 역할 분담
 
-PostCSS는 여전히 넓게 쓰이지만, 변환·접두사·압축을 한 번에 하는 **Lightning CSS**(Rust로 작성, Parcel 팀)가 같은 자리를 빠르게 넘겨받고 있다.
+PostCSS는 여전히 넓게 쓰이지만, 변환·접두사·압축을 한 번에 하는 **Lightning CSS**(Rust로 작성, Parcel 팀)가 같은 자리의 대안으로 쓰인다. Tailwind CSS v4는 내부에 채택했고, Vite는 실험적 옵션으로 지원한다.
 
 | 도구 | 기본 CSS 처리 |
 | --- | --- |

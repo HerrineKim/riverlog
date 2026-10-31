@@ -1,18 +1,18 @@
 ---
 title: "CSS 함수: calc()·clamp()와 수학 함수"
 concept: "CSS Functions"
-summary: "CSS 함수는 인자를 받아 값을 돌려주는 내장 기능이다. 직접 정의할 수는 없지만 중첩해 쓸 수 있다. 값을 꺼내는 var()·attr()·url(), 단위를 섞어 계산하는 calc()·min()·max()·clamp(), 삼각·지수·부호 함수, 도형 함수, 변형 함수를 용도별로 묶고 브라우저 지원 범위를 정리한다."
+summary: "CSS 함수는 인자를 받아 값을 돌려주는 내장 기능이다. 중첩해 쓸 수 있고, `@function`으로 직접 정의하는 기능은 아직 Chromium 계열만 지원한다. 값을 꺼내는 var()·attr()·url(), 단위를 섞어 계산하는 calc()·min()·max()·clamp(), 삼각·지수·부호 함수, 도형 함수, 변형 함수를 용도별로 묶고 브라우저 지원 범위를 정리한다."
 tags: ["css", "frontend", "responsive"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/css/functions", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units/CSS_Value_Functions", "https://developer.mozilla.org/en-US/docs/Web/CSS/sign", "https://developer.mozilla.org/en-US/docs/Web/CSS/round"]
+sources: ["https://web.dev/learn/css/functions", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Values_and_Units/CSS_Value_Functions", "https://developer.mozilla.org/en-US/docs/Web/CSS/sign", "https://developer.mozilla.org/en-US/docs/Web/CSS/round", "https://developer.chrome.com/blog/new-in-chrome-139", "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@function"]
 ---
 
 > web.dev의 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Functions 모듈을 바탕으로, 브라우저 지원은 MDN 호환성 데이터로 확인해 재구성한 노트다.
 
 ## CSS 함수란
 
-CSS 함수는 `이름(인자)` 꼴로 값을 계산해 돌려주는 내장 기능이다. **개발자가 새 함수를 정의할 수는 없다.** 대신 `calc(var(--x) * 2)`처럼 함수끼리 중첩할 수 있다. 대부분 같은 인자면 같은 결과를 내는 순수 함수이고, 참조한 값(`var()`, `currentColor`, 뷰포트 크기)이 바뀌면 다시 계산된다.
+CSS 함수는 `이름(인자)` 꼴로 값을 계산해 돌려주는 내장 기능이다. `calc(var(--x) * 2)`처럼 함수끼리 중첩할 수 있다. 개발자가 `@function` 규칙으로 새 함수를 정의하는 기능도 Chrome 139(2025.08)부터 나왔지만, Firefox·Safari는 아직 지원하지 않아 [Baseline이 아니다](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@function). 대부분 같은 인자면 같은 결과를 내는 순수 함수이고, 참조한 값(`var()`, `currentColor`, 뷰포트 크기)이 바뀌면 다시 계산된다.
 
 | 분류 | 함수 | 자세히 |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ h1 { font-size: clamp(2rem, 1rem + 3vw, 3rem); }
 .card-title { font-size: calc(2 * var(--base-size)); }
 ```
 
-`clamp()`의 선호값에 `vw`만 쓰지 않고 `rem`을 더하는 이유는 **확대(zoom) 때문이다.** `vw`는 확대해도 크기가 그대로라, 글자가 뷰포트에만 묶이면 사용자가 확대해도 커지지 않는다. `rem`을 섞으면 사용자 글꼴 설정과 확대가 반영된다.
+`clamp()`의 선호값에 `vw`만 쓰지 않고 `rem`을 더하는 이유는 확대(zoom) 때문이다. `vw`는 확대해도 크기가 그대로라, 글자가 뷰포트에만 묶이면 사용자가 확대해도 커지지 않는다. `rem`을 섞으면 사용자 글꼴 설정과 확대가 반영된다.
 
 ## 고급 수학 함수
 
@@ -84,7 +84,7 @@ h1 { font-size: clamp(2rem, 1rem + 3vw, 3rem); }
 
 ## 정리
 
-- CSS 함수는 내장된 것만 쓰지만 서로 중첩할 수 있다.
+- CSS 함수는 서로 중첩할 수 있다. 사용자 정의 함수(`@function`)는 아직 Chromium 계열에서만 쓸 수 있다.
 - 단위를 섞어야 하면 `calc()`, 상한·하한이면 `min()`·`max()`, 범위 안에서 유동적이면 `clamp()`.
 - 유동 글자 크기에는 `vw`에 `rem`을 섞어 확대를 존중한다.
 - 삼각·지수·반올림 함수는 모든 주요 브라우저가 지원한다. `abs()`·`sign()`도 2025년부터 쓸 수 있다.

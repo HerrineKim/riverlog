@@ -35,12 +35,18 @@ SQL 중심으로 개발하면 필드 하나를 추가할 때 INSERT·SELECT·UPD
 
 ### 엔티티의 네 가지 상태
 
-```text
-new ──persist()──▶ 영속(managed) ──detach()/clear()/close()──▶ 준영속(detached)
-                       │  ▲                                       │
-                remove()│  └──────────── merge() (새 영속 객체 반환) ─┘
-                       ▼
-                    삭제(removed) ──flush/commit──▶ DELETE
+```mermaid
+stateDiagram-v2
+  state "new" as newState
+  state "영속(managed)" as managed
+  state "준영속(detached)" as detached
+  state "삭제(removed)" as removed
+  state "DELETE" as deleted
+  newState --> managed : persist()
+  managed --> detached : detach()/clear()/close()
+  detached --> managed : merge() (새 영속 객체 반환)
+  managed --> removed : remove()
+  removed --> deleted : flush/commit
 ```
 
 | 상태 | 뜻 |
@@ -96,7 +102,7 @@ Lombok 사용 기준은 [[spring-application-design|스프링 애플리케이션
 
 ## 대량 데이터 읽기: 배치와 no-offset
 
-Spring Batch의 `JpaPagingItemReader`는 `LIMIT ... OFFSET ...`으로 페이지를 읽는다. **OFFSET은 건너뛸 행을 모두 읽고 버리므로 뒤 페이지일수록 느려진다.** 수십만 건을 넘으면 마지막 페이지 하나에 수 초가 걸린다.
+Spring Batch의 `JpaPagingItemReader`는 `LIMIT ... OFFSET ...`으로 페이지를 읽는다. **OFFSET은 건너뛸 행을 모두 읽고 버리므로 뒤 페이지일수록 느려진다.**
 
 | 방식 | 다음 페이지 조건 | 성능 | 제약 |
 | --- | --- | --- | --- |

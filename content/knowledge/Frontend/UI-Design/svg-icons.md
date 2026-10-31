@@ -69,7 +69,7 @@ sources: ["https://web.dev/learn/design/icons", "https://developer.mozilla.org/e
 
 ## 스타일: 글자색을 따라가게
 
-인라인 SVG의 도형은 다른 요소처럼 선택자로 칠할 수 있다. 색을 직접 적기보다 `currentColor`로 **부모의 글자색을 물려받게** 하면, 호버·포커스·다크 모드에서 규칙을 따로 쓰지 않아도 된다.
+인라인 SVG의 도형은 다른 요소처럼 선택자로 칠할 수 있다. 색을 직접 적기보다 `currentColor`로 부모의 글자색을 물려받게 하면, 호버·포커스·다크 모드에서 규칙을 따로 쓰지 않아도 된다.
 
 ```css
 button { color: blue; }

@@ -16,10 +16,12 @@ sources: ["https://bytebytego.com/guides/what-is-a-load-balancer", "https://byte
 
 로드 밸런서(load balancer)는 **들어오는 트래픽을 여러 서버에 나눠 보내는 장치나 소프트웨어**다. 클라이언트는 로드 밸런서의 주소 하나만 알고, 그 뒤에 서버가 몇 대 있는지, 어느 서버가 죽었는지는 모른다.
 
-```text
-                       ┌─▶ [서버 A]  healthy
-[클라이언트] ─▶ [로드 밸런서] ─▶ [서버 B]  healthy
-                       └─✕ [서버 C]  unhealthy → 풀에서 제외
+```mermaid
+flowchart LR
+  c["클라이언트"] --> lb["로드 밸런서"]
+  lb --> a["서버 A<br/>healthy"]
+  lb --> b["서버 B<br/>healthy"]
+  lb --x cc["서버 C<br/>unhealthy → 풀에서 제외"]
 ```
 
 서버 한 대로 버티는 수직 확장에는 한계가 있다. 로드 밸런서는 **같은 서버를 여러 대 두는 수평 확장**을 가능하게 하는 첫 부품이다.

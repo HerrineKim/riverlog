@@ -60,11 +60,13 @@ TCP 서버의 흐름은 `socket()` → `bind(443)` → `listen()` → `accept()`
 
 **다중화(multiplexing)** 는 송신 측이 여러 소켓의 데이터에 포트 번호를 붙여 한 IP 경로로 내보내는 일이고, **역다중화(demultiplexing)** 는 수신 측이 도착한 세그먼트의 헤더를 보고 알맞은 소켓에 넘기는 일이다.
 
-```text
-NIC → IP 계층: 목적지 IP가 내 것인가, Protocol 필드(6 TCP / 17 UDP)로 상위 프로토콜 선택
-    → UDP: (목적지 IP, 목적지 포트)가 같은 소켓 하나로 보낸다. 출발지가 달라도 같은 소켓
-    → TCP: (출발지 IP, 출발지 포트, 목적지 IP, 목적지 포트)가 맞는 연결 소켓으로 보낸다
-           맞는 연결이 없고 SYN이면 그 포트의 듣기 소켓으로, 아무 소켓도 없으면 RST로 거절
+```mermaid
+flowchart TB
+    nic["NIC"] --> ip["IP 계층<br/>목적지 IP가 내 것인가, Protocol 필드로 상위 프로토콜 선택"]
+    ip -->|"17 UDP"| udp["UDP: (목적지 IP, 목적지 포트)가 같은 소켓 하나로 보낸다<br/>출발지가 달라도 같은 소켓"]
+    ip -->|"6 TCP"| tcp["TCP: (출발지 IP, 출발지 포트, 목적지 IP, 목적지 포트)가<br/>맞는 연결 소켓으로 보낸다"]
+    tcp -->|"맞는 연결이 없고 SYN이면"| listen["그 포트의 듣기 소켓으로"]
+    tcp -->|"아무 소켓도 없으면"| rst["RST로 거절"]
 ```
 
 WebSocket은 이름과 달리 이 OS 소켓과 다른 층이다. OS 소켓 위의 TCP 연결에서 도는 **응용 계층 프로토콜**이다([[websocket|WebSocket]]).
@@ -400,13 +402,19 @@ DNS도 보통 UDP를 쓰지만, 응답이 커서 잘리거나 영역 전송(zone
 
 온라인 게임은 TCP를 그대로 쓰면 곤란하다. 패킷 하나가 사라지면 TCP는 그 뒤에 이미 도착한 패킷까지 붙잡고 재전송을 기다린다(head-of-line blocking). 그래서 흔히 **UDP 위에 필요한 만큼만 신뢰성을 직접 얹는다**(RUDP, Reliable UDP). 순서 번호와 확인(ACK), 재전송을 애플리케이션이 구현한다.
 
-```text
-서버                               클라이언트
- 패킷0 (A가 발사) ───────────────▶  도착 → ACK 0
- 패킷1 (B가 발사) ───────X          유실
- 패킷2 (C가 발사) ───────────────▶  도착. 1이 빠졌으니 2는 버퍼에 보관 → ACK 2
- (ACK 1이 안 옴 → 재전송)
- 패킷1 ─────────────────────────▶  도착 → 1, 2를 함께 반영 → ACK 1
+```mermaid
+sequenceDiagram
+    participant S as 서버
+    participant C as 클라이언트
+    S->>C: 패킷0 (A가 발사)
+    Note over C: 도착 → ACK 0
+    S-xC: 패킷1 (B가 발사)
+    Note over C: 유실
+    S->>C: 패킷2 (C가 발사)
+    Note over C: 도착. 1이 빠졌으니 2는 버퍼에 보관 → ACK 2
+    Note over S: ACK 1이 안 옴 → 재전송
+    S->>C: 패킷1
+    Note over C: 도착 → 1, 2를 함께 반영 → ACK 1
 ```
 
 - 상태는 결국 맞춰지고(eventually synchronized), 유실이 없을 때는 TCP보다 지연이 훨씬 작다.

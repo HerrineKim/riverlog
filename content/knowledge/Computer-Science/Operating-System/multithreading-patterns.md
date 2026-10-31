@@ -28,15 +28,31 @@ sources: ["https://bytebytego.com/guides/top-6-multithreading-design-patterns-yo
 | **배리어(Barrier)** | 스레드들이 정해진 지점에 모두 도착할 때까지 기다린 뒤 함께 다음 단계로 | 단계별로 맞춰 진행해야 하는 병렬 작업 | 반복 수치 계산, 병렬 시뮬레이션의 각 스텝 |
 | **읽기-쓰기 락(Read-Write Lock)** | 읽기는 여럿이 동시에, 쓰기는 하나만 배타적으로 | 읽기가 대부분인데 단일 락이 읽기끼리도 막는 낭비 | 설정 캐시, 읽기 위주 자료구조 |
 
-```text
-생산자-소비자                  스레드 풀
-                              
-생산자 ─▶ ┌──────────┐          요청 ─▶ ┌─────┐ ─▶ 작업자 1
-생산자 ─▶ │ 블로킹 큐 │ ─▶ 소비자   요청 ─▶ │ 큐  │ ─▶ 작업자 2
-          └──────────┘ ─▶ 소비자   요청 ─▶ └─────┘ ─▶ 작업자 3
-   큐가 차면 생산자가,                    (스레드를 재사용한다)
-   비면 소비자가 기다린다
+생산자-소비자
+
+```mermaid
+flowchart LR
+    pr1["생산자"] --> q["블로킹 큐"]
+    pr2["생산자"] --> q
+    q --> co1["소비자"]
+    q --> co2["소비자"]
 ```
+
+큐가 차면 생산자가, 비면 소비자가 기다린다.
+
+스레드 풀
+
+```mermaid
+flowchart LR
+    r1["요청"] --> tq["큐"]
+    r2["요청"] --> tq
+    r3["요청"] --> tq
+    tq --> w1["작업자 1"]
+    tq --> w2["작업자 2"]
+    tq --> w3["작업자 3"]
+```
+
+(스레드를 재사용한다)
 
 - 스레드 풀의 크기를 정하는 법은 아래 「스레드 풀의 크기」에 있다.
 - 퓨처·프로미스는 JavaScript의 `Promise`, Java의 `CompletableFuture`, Python의 `concurrent.futures`로 쓴다. 이벤트 루프 기반의 비동기와의 관계는 [[concurrency-models|동시성 모델]]에 있다.
@@ -170,7 +186,7 @@ CAS는 "메모리 값이 기대한 값과 같을 때만 새 값으로 바꾼다"
 
 ## 멀티스레드 프로그램 설계 규칙
 
-패턴을 고르기 전에, 프로그램을 어떻게 쪼갤지 정하는 일반 규칙이다. Intel의 병렬화 가이드에서 정리된 여덟 가지가 널리 인용된다.
+패턴을 고르기 전에, 프로그램을 어떻게 쪼갤지 정하는 일반 규칙이다. Intel의 Clay Breshears가 「[8 Simple Rules for Designing Threaded Applications](https://jacobfilipp.com/DrDobbs/2008webarticles/print09b6.html)」(Dr. Dobb's, 2008)에서 정리한 여덟 가지다.
 
 | 규칙 | 내용 |
 | --- | --- |

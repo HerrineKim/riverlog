@@ -78,14 +78,15 @@ sources: ["https://web.dev/learn/images/history", "https://web.dev/learn/images/
 
 ## 무엇을 고르나
 
-```text
-아이콘·로고·다이어그램처럼 도형으로 그릴 수 있나?
- ├─ 예 → SVG (SVG가 없으면 WebP + PNG 대체)
- └─ 아니오(래스터)
-     ├─ 사진·그라데이션 → AVIF → WebP → JPEG 순으로 대체
-     ├─ 스크린숏·선화·글자가 든 그림 → 무손실(WebP 무손실 또는 PNG). 손실 압축은 글자 주변에 번짐이 보인다
-     ├─ 반투명이 필요 → AVIF·WebP, 대체는 PNG (JPEG는 알파 채널이 없다)
-     └─ 움직이는 그림 → 동영상(<video>) 또는 애니메이션 AVIF·WebP. GIF는 피한다
+```mermaid
+flowchart TB
+  q{"아이콘·로고·다이어그램처럼<br/>도형으로 그릴 수 있나?"}
+  q -->|"예"| svg["SVG<br/>(SVG가 없으면 WebP + PNG 대체)"]
+  q -->|"아니오"| r["래스터"]
+  r -->|"사진·그라데이션"| a["AVIF → WebP → JPEG 순으로 대체"]
+  r -->|"스크린숏·선화·글자가 든 그림"| b["무손실(WebP 무손실 또는 PNG)<br/>손실 압축은 글자 주변에 번짐이 보인다"]
+  r -->|"반투명이 필요"| c["AVIF·WebP, 대체는 PNG<br/>(JPEG는 알파 채널이 없다)"]
+  r -->|"움직이는 그림"| d["동영상(#lt;video#gt;) 또는 애니메이션 AVIF·WebP<br/>GIF는 피한다"]
 ```
 
 - **원본은 무손실로 보관한다.** 저장소나 CMS에는 큰 PNG 같은 정본을 두고, 배포용 AVIF·WebP·JPEG는 도구가 그때그때 만든다. 손실 형식을 다시 손실 압축하면 아티팩트가 쌓인다.
@@ -98,6 +99,6 @@ sources: ["https://web.dev/learn/images/history", "https://web.dev/learn/images/
 - 사진은 AVIF → WebP → JPEG 순서로 주고, 판단은 `<picture type>`이나 `Accept` 협상에 맡긴다.
 - PNG는 반투명 단순 그림과 원본 보관용, GIF는 쓸 곳이 거의 없다.
 - JPEG XL은 지원이 빠르게 넓어지고 있지만 엣지가 빠져 있어 대체 없이 쓰지 않는다.
-- **형식은 출발점이다.** 압축 수준과 크기까지 맞춰야 이미지가 가벼워진다.
+- 형식은 출발점이다. 압축 수준과 크기까지 맞춰야 이미지가 가벼워진다.
 
 관련 노트: [[image-compression|이미지 압축과 인코딩 자동화]], [[image-cdn|이미지 CDN과 Accept 헤더 협상]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[html-media-elements|이미지·오디오·비디오 임베드]], [[video-performance|동영상 성능: 형식·poster·자동 재생·임베드]], [[animated-icon|Animated Icon: 영상을 투명 배경 아이콘으로 쓰기]], [[data-compression|데이터 압축: 무손실과 손실]]

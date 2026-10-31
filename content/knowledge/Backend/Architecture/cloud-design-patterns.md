@@ -42,11 +42,16 @@ sources: ["https://learn.microsoft.com/en-us/azure/architecture/patterns/", "htt
 
 **앱이 파일을 직접 중계하지 않고, 특정 리소스에 대한 짧은 수명의 제한된 토큰을 발급해 클라이언트가 스토리지와 직접 주고받게 하는 패턴이다.** 이름은 차 키 전체 대신 주차 요원에게 건네는 발레 키에서 왔다.
 
-```text
-1. 클라이언트 → 앱: "photo.jpg 올릴게요"
-2. 앱: 권한 확인 → 토큰 생성 (대상: uploads/u42/photo.jpg, 권한: 쓰기만, 유효: 5분)
-3. 앱 → 클라이언트: 토큰이 붙은 URL
-4. 클라이언트 → 스토리지: 그 URL로 직접 PUT   ← 앱 서버는 바이트를 만지지 않는다
+```mermaid
+sequenceDiagram
+  participant c as 클라이언트
+  participant app as 앱
+  participant st as 스토리지
+  c->>app: 1. #quot;photo.jpg 올릴게요#quot;
+  Note over app: 2. 권한 확인 → 토큰 생성<br/>(대상: uploads/u42/photo.jpg, 권한: 쓰기만, 유효: 5분)
+  app-->>c: 3. 토큰이 붙은 URL
+  c->>st: 4. 그 URL로 직접 PUT
+  Note over app,st: 앱 서버는 바이트를 만지지 않는다
 ```
 
 | 구현 | 예 |
@@ -73,12 +78,9 @@ sources: ["https://learn.microsoft.com/en-us/azure/architecture/patterns/", "htt
 
 **작업과 그 작업이 부르는 서비스 사이에 큐를 버퍼로 두어, 들쭉날쭉한 요청을 서비스가 감당할 수 있는 일정한 속도로 바꾸는 패턴이다.**
 
-```text
-요청 생성 속도:  ▁▇▁▁█▂▁▇   (폭주)
-                   │
-                 [ 큐 ]       ← 넘치는 만큼 쌓인다
-                   │
-서비스 처리 속도: ▄▄▄▄▄▄▄▄   (일정)
+```mermaid
+flowchart TB
+  A["요청 생성 속도: ▁▇▁▁█▂▁▇<br>(폭주)"] --> Q["큐<br>넘치는 만큼 쌓인다"] --> B["서비스 처리 속도: ▄▄▄▄▄▄▄▄<br>(일정)"]
 ```
 
 | 얻는 것 | 내용 |
@@ -99,10 +101,11 @@ sources: ["https://learn.microsoft.com/en-us/azure/architecture/patterns/", "htt
 
 **복잡한 처리를 한 가지 일만 하는 필터로 쪼개고, 필터를 파이프(대개 큐)로 이어 파이프라인을 만드는 패턴이다.** 필터는 서로를 모르고 입력·출력 형식만 안다. 그래서 순서를 바꾸거나, 다른 파이프라인에서 재사용하거나, 느린 필터만 인스턴스를 늘릴 수 있다.
 
-```text
-업로드 ─▶ [형식 검사] ─▶ [바이러스 검사] ─▶ [썸네일 생성] ─▶ [메타데이터 저장]
-              │                                  └ CPU 많이 씀 → 이 필터만 GPU·여러 인스턴스
-              └ 다른 파이프라인(문서 업로드)에서도 재사용
+```mermaid
+flowchart LR
+  up["업로드"] --> f1["형식 검사"] --> f2["바이러스 검사"] --> f3["썸네일 생성"] --> f4["메타데이터 저장"]
+  f1 -.- r1["다른 파이프라인(문서 업로드)에서도 재사용"]
+  f3 -.- r3["CPU 많이 씀 → 이 필터만 GPU·여러 인스턴스"]
 ```
 
 - 파이프라인 전체 속도는 **가장 느린 필터**가 정한다.
@@ -153,12 +156,12 @@ sources: ["https://learn.microsoft.com/en-us/azure/architecture/patterns/", "htt
 | 에이전트(Agent) | 원격 서비스 호출 하나를 감싼다. 재시도와 오류 처리를 맡고, 재시도마다 **같은 식별자**를 넘겨 하류가 중복을 걸러 내게 한다 |
 | 감독자(Supervisor) | 주기적으로 상태 저장소를 훑어 기한을 넘기거나 실패한 단계를 찾고, 재시도나 보상(되돌리기)을 **요청**한다. 직접 실행하지는 않는다 |
 
-```text
-스케줄러 ──요청──▶ 에이전트 ──▶ 원격 서비스
-   │                (재시도, 멱등 ID)
-   └─ 단계 상태 기록 ─▶ [상태 저장소] ◀─ 주기적 점검 ─ 감독자
-                                              │
-                         재시도·보상 요청 ◀────┘
+```mermaid
+flowchart LR
+  sch["스케줄러"] -->|"요청"| ag["에이전트<br/>(재시도, 멱등 ID)"] --> rs["원격 서비스"]
+  sch -->|"단계 상태 기록"| st["상태 저장소"]
+  sup["감독자"] -->|"주기적 점검"| st
+  sup --> rq["재시도·보상 요청"]
 ```
 
 - 감독자도 죽을 수 있으므로 여러 개를 두되 한 번에 하나만 일하게 [[distributed-system-patterns|리더 선출]]을 쓴다.
@@ -202,11 +205,16 @@ sources: ["https://learn.microsoft.com/en-us/azure/architecture/patterns/", "htt
 
 **앱이 사용자 인증을 직접 하지 않고 신뢰하는 외부 ID 제공자(IdP)에게 맡기는 패턴이다.** 사용자는 앱마다 다른 계정을 만들지 않고, 퇴사자 계정은 IdP 한 곳에서 막으면 모든 앱에서 막힌다.
 
-```text
-1. 서비스는 IdP(또는 토큰 발급 서비스 STS)를 미리 신뢰한다
-2. 사용자 → IdP: 로그인
-3. IdP → 사용자: 클레임(누구인지, 역할, 권한)이 담긴 서명된 토큰
-4. 사용자 → 서비스: 토큰 제시 → 서비스는 서명을 검증하고 클레임으로 인가
+```mermaid
+sequenceDiagram
+  participant u as 사용자
+  participant idp as IdP(또는 토큰 발급 서비스 STS)
+  participant s as 서비스
+  Note over idp,s: 1. 서비스는 IdP(또는 STS)를 미리 신뢰한다
+  u->>idp: 2. 로그인
+  idp-->>u: 3. 클레임(누구인지, 역할, 권한)이 담긴 서명된 토큰
+  u->>s: 4. 토큰 제시
+  Note over s: 서명을 검증하고 클레임으로 인가
 ```
 
 - 앱은 토큰 속 **클레임으로 인가**한다(클레임 기반 접근 제어). 인증과 인가가 분리된다.

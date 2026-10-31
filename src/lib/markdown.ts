@@ -118,6 +118,23 @@ function rehypeTableWidths() {
   };
 }
 
+/**
+ * ```mermaid blocks become a figure holding the source; MermaidDiagrams draws the SVG in the browser.
+ * Without JS the source stays readable as a plain code block. Runs before rehype-pretty-code would highlight it.
+ */
+function rehypeMermaid() {
+  return (tree: HastRoot) => {
+    visit(tree, "element", (node: Element) => {
+      const code = node.tagName === "pre" ? node.children.find((c): c is Element => c.type === "element" && c.tagName === "code") : undefined;
+      const classes = code?.properties.className;
+      if (!code || !Array.isArray(classes) || !classes.includes("language-mermaid")) return;
+      node.tagName = "figure";
+      node.properties = { className: ["mermaid-diagram"] };
+      node.children = [{ type: "element", tagName: "pre", properties: { className: ["mermaid-source"] }, children: [{ type: "text", value: textOf(code).trim() }] }];
+    });
+  };
+}
+
 const processor = unified()
   .use(remarkParse)
   .use(remarkGfm)
@@ -133,6 +150,7 @@ const processor = unified()
   .use(rehypeTableWidths)
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, { behavior: "wrap" })
+  .use(rehypeMermaid)
   .use(rehypePrettyCode, {
     // github-light's comment/string/orange tokens fall below 4.5:1; the high-contrast variant passes
     theme: { dark: "github-dark-dimmed", light: "github-light-high-contrast" },

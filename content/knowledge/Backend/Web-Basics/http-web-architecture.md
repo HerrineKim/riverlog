@@ -30,16 +30,21 @@ sources: ["https://80000coding.notion.site/4067d0d41c1c49a9b01c0433a7c07cbc"]
 
 공용 사물함 대여 서비스에서 "회원 A가 32번 사물함 대여"를 누르면 이렇게 흐른다.
 
-```text
-브라우저 ─ POST /lent/cabinets/32  { user: "A" } ─► 웹 서버
-  웹 서버   : 요청을 받아 해석하고 WAS(애플리케이션)로 넘긴다
-  WAS       : 라우터가 URL·메서드를 보고 핸들러를 고른다
-              └ 대여 서비스.대여하기(A, 32)
-                  ├ 32번이 이미 대여 중인가?        ← DB 조회
-                  ├ A가 이용 정지 상태인가?          ← DB 조회
-                  └ 둘 다 아니면 대여 기록 생성       ← DB 저장
-  WAS → 웹 서버 → 브라우저 : 201 Created { cabinet: 32, until: ... }
-브라우저 : 응답 데이터로 화면의 사물함 상태를 다시 그린다
+```mermaid
+sequenceDiagram
+  participant B as 브라우저
+  participant W as 웹 서버
+  participant A as WAS
+  participant D as DB
+  B->>W: POST /lent/cabinets/32 { user: "A" }
+  W->>A: 요청을 받아 해석하고 WAS(애플리케이션)로 넘긴다
+  Note over A: 라우터가 URL·메서드를 보고 핸들러를 고른다<br/>대여 서비스.대여하기(A, 32)
+  A->>D: 32번이 이미 대여 중인가? (DB 조회)
+  A->>D: A가 이용 정지 상태인가? (DB 조회)
+  A->>D: 둘 다 아니면 대여 기록 생성 (DB 저장)
+  A-->>W: 201 Created { cabinet: 32, until: ... }
+  W-->>B: 201 Created { cabinet: 32, until: ... }
+  Note over B: 응답 데이터로 화면의 사물함 상태를 다시 그린다
 ```
 
 - 백엔드 개발 시간의 대부분은 가운데 상자, 즉 **비즈니스 로직**에 쓰인다. 비즈니스 로직은 "이미 대여 중이면 거절", "연체자는 대여 불가"처럼 **서비스의 정책을 코드로 옮긴 것**이다.

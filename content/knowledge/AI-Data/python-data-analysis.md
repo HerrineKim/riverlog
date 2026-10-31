@@ -5,7 +5,7 @@ summary: "데이터를 구하고 처리한 뒤 탐색적 데이터 분석(EDA)�
 tags: ["data-science", "python", "eda", "visualization"]
 source: notion
 date: "2026-10-13"
-sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas", "https://playwright.dev/python/docs/intro", "고려사이버대학교 데이터 시각화 강의(최대영 교수, 2024 여름계절학기)"]
+sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas", "https://playwright.dev/python/docs/intro", "https://pola.rs/posts/benchmarks/", "고려사이버대학교 데이터 시각화 강의(최대영 교수, 2024 여름계절학기)"]
 ---
 
 > 노션 정리를 바탕으로 재구성하고, pandas로 표 합치기는 ByteByteGo의 System Design 101 가이드 「[5 Functions to Merge Data with Pandas](https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas)」를 바탕으로 pandas 공식 문서 기준으로 보강한 노트다.
@@ -78,8 +78,8 @@ top5 = sorted(movies, key=lambda m: m["vote_average"], reverse=True)[:5]   # 내
 | 라이브러리 | 특징 |
 | --- | --- |
 | NumPy | 같은 타입 값만 담는 다차원 배열과 배열 연산. 파이썬 리스트보다 빠르고 메모리를 덜 쓴다. pandas·머신 러닝 라이브러리의 바탕 |
-| pandas | 1차원 Series와 2차원 DataFrame으로 행·열 데이터를 다루는 표준 라이브러리. 생태계(시각화·머신 러닝 라이브러리)와 가장 잘 맞물린다 |
-| Polars | Rust로 만든 DataFrame. 멀티코어와 지연 실행(lazy)으로 pandas보다 훨씬 빠르고 메모리를 덜 쓴다. 큰 데이터에 먼저 고려한다 |
+| pandas | 1차원 Series와 2차원 DataFrame으로 행·열 데이터를 다루는 파이썬 데이터 분석의 표준 라이브러리. 생태계(시각화·머신 러닝 라이브러리)와 가장 잘 맞물린다 |
+| Polars | Rust로 만든 DataFrame. 멀티코어와 지연 실행(lazy)으로 pandas보다 빠르고 메모리를 덜 쓴다. Polars 팀의 [PDS-H 벤치마크](https://pola.rs/posts/benchmarks/)(2025.5, SF-10)에서는 pandas보다 약 38배(인메모리)~94배(스트리밍) 빨랐다. 큰 데이터에 먼저 고려한다 |
 | DuckDB | 파일(CSV·Parquet)과 DataFrame에 바로 SQL을 던지는 내장형 분석 DB |
 
 ```python
@@ -109,7 +109,7 @@ pd.concat([df_jan, df_feb], ignore_index=True)
 
 ## 2. EDA: 탐색적 데이터 분석
 
-**EDA(Exploratory Data Analysis)** 는 본격적인 모델링 전에 시각화, 요약 통계, 간단한 모델 등으로 데이터를 여러 각도에서 살펴보며 **이해하는** 과정이다.
+**EDA(Exploratory Data Analysis)** 는 본격적인 모델링 전에 시각화, 요약 통계, 간단한 모델 등으로 데이터를 여러 각도에서 살펴보며 이해하는 과정이다.
 
 - 데이터의 구조와 분포 이해
 - 트렌드와 패턴 파악
@@ -127,9 +127,9 @@ EDA는 데이터 분석 방법 네 갈래 중 첫 번째에 속한다.
 
 ## 3. 시각화
 
-시각화는 "예뻐서"가 아니라 **사람이 이해하기 쉽게 전달하기 위해** 한다. 패턴을 알아보는 인간의 능력을 활용하는 방법이자, EDA의 핵심 단계다. 다만 기술적 분석에만 쓰이지 않는다. 모델 결과를 해석하는 설명 가능한 AI(XAI)까지 분석 전 과정에 쓰인다.
+시각화는 "예뻐서"가 아니라 사람이 이해하기 쉽게 전달하기 위해 한다. 패턴을 알아보는 인간의 능력을 활용하는 방법이자, EDA의 핵심 단계다. 다만 기술적 분석에만 쓰이지 않는다. 모델 결과를 해석하는 설명 가능한 AI(XAI)까지 분석 전 과정에 쓰인다.
 
-- **늘 최선인 차트는 없다.** 데이터 특성과 목적에 맞게 여러 방식으로 그려 본 뒤 사람이 고른다.
+- 늘 최선인 차트는 없다. 데이터 특성과 목적에 맞게 여러 방식으로 그려 본 뒤 사람이 고른다.
 - 그림만 두지 말고 핵심 통계치·숫자를 함께 보여 줄 때 전달력이 높다.
 - 결과를 올바르게 읽고 해석하는 데이터 리터러시도 함께 길러야 한다.
 
@@ -154,7 +154,7 @@ Altair처럼 그래픽 문법을 API로 옮긴 라이브러리의 바탕은 [[da
 
 - **프로파일링**: 어디가 느린지 먼저 재고 고친다. 측정 방법은 Jupyter 매직 명령 정리([[jupyter-notebook#알아 두면 좋은 기능|Jupyter Notebook]])에 있다.
 - **GPU 가속**: CUDA, cuDF(GPU 기반 DataFrame)
-- **더 빠른 DataFrame**: Polars, DuckDB로 바꾸는 것만으로 단일 머신에서 수십 배 빨라지는 경우가 많다
+- **더 빠른 DataFrame**: Polars, DuckDB로 바꾸는 것만으로 단일 머신에서 크게 빨라질 수 있다. 배수는 작업과 데이터 크기에 따라 다르다
 - **병렬·분산 처리**: Dask, Ray, Spark(PySpark) (메모리보다 큰 데이터 처리)
 - **JIT 컴파일**: Numba(숫자 계산 루프), PyPy(순수 파이썬 코드)
 

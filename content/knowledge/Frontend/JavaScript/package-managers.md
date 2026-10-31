@@ -62,7 +62,7 @@ npx eslint .                   # 전역 설치 없이 프로젝트(또는 임시
 | --- | --- | --- | --- |
 | 출발 | 최초의 Node.js 패키지 매니저 | Facebook이 주도해 npm의 속도·일관성·보안 문제를 보완하려고 만듦 | "performant npm". 디스크 효율을 목표로 만든 매니저 |
 | 설치 | Node.js에 기본 포함 | 별도 설치 | 별도 설치 |
-| 특징 | 가장 오래되어 생태계·자료가 가장 많다 | Yarn 2 이후(berry, 현재 4.x)는 Plug'n'Play·제로 인스톨 같은 새 방식을 지원한다. Rust로 다시 쓴 Yarn 6이 준비 중이다. 1.x(classic)는 유지보수만 한다 | 패키지를 **전역 저장소에 한 번만 저장**하고 프로젝트에서는 링크로 연결해 디스크와 설치 시간을 아낀다. 모노레포 workspace 지원이 강하다 |
+| 특징 | 가장 오래되어 생태계·자료가 가장 많다 | Yarn 2 이후(berry, 현재 4.x)는 Plug'n'Play·제로 인스톨 같은 새 방식을 지원한다. Rust로 다시 쓴 Yarn 6이 프리뷰 단계다([Yarn 6 Preview](https://yarnpkg.dev/blog/2026-01-28-yarn-6-preview/)). 1.x(classic)는 유지보수만 한다 | 패키지를 **전역 저장소에 한 번만 저장**하고 프로젝트에서는 링크로 연결해 디스크와 설치 시간을 아낀다. 모노레포 workspace 지원이 강하다 |
 | lock 파일 | `package-lock.json` | `yarn.lock` | `pnpm-lock.yaml` |
 
 런타임 **Bun**도 npm 호환 패키지 매니저(`bun install`, lock 파일 `bun.lock`)를 내장하고 있어 설치 속도를 앞세운 네 번째 선택지가 됐다.
@@ -104,7 +104,7 @@ npm 패키지 탈취·악성 배포 사고가 잦아지면서, 설치 중에 의
 | 매니저 | 동작 |
 | --- | --- |
 | pnpm 10+ | 의존성 빌드 스크립트를 기본으로 실행하지 않는다. 허용할 패키지만 `onlyBuiltDependencies`에 적는다 |
-| Yarn 4 (4.14+) | `enableScripts` 기본값이 `false`다 |
+| Yarn 4 (4.14+) | `enableScripts` 기본값이 `false`다([4.14 발표](https://bsky.app/profile/yarnpkg.dev/post/3mjoarxwb6k2u), 2026.04) |
 | npm | 기본으로 실행한다. `--ignore-scripts`나 `.npmrc`의 `ignore-scripts=true`로 끈다 |
 
 lock 파일을 커밋하고 CI에서는 `npm ci`·`pnpm install --frozen-lockfile`처럼 lock 파일을 바꾸지 않는 명령을 쓰는 것도 같은 맥락이다.

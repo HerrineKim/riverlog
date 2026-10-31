@@ -39,12 +39,17 @@ sources: ["https://80000coding.notion.site/80fdeed4c57b440b9f5bedd62d2dd493", "h
 
 Spring Boot 웹 앱(Spring MVC)은 **내장 Tomcat**이 서블릿 컨테이너 겸 WAS 역할을 한다.
 
-```text
-클라이언트 요청 ─► Tomcat 커넥터(NIO)가 연결 수락
-                   └ 요청 처리 스레드 풀에서 스레드 하나 배정 (http-nio-8080-exec-N)
-                       └ DispatcherServlet ─► Controller ─► Service ─► Repository
-                                                  (모두 싱글톤 빈, 모든 스레드가 공유)
-                   ◄ 응답을 쓰면 스레드는 풀로 돌아간다
+```mermaid
+flowchart TB
+  req["클라이언트 요청"] --> tc["Tomcat 커넥터(NIO)가 연결 수락"]
+  tc --> th["요청 처리 스레드 풀에서 스레드 하나 배정<br/>(http-nio-8080-exec-N)"]
+  th --> ds["DispatcherServlet"]
+  ds --> ctl
+  subgraph beans["모두 싱글톤 빈, 모든 스레드가 공유"]
+    ctl["Controller"] --> svc["Service"]
+    svc --> repo["Repository"]
+  end
+  repo --> done["응답을 쓰면 스레드는 풀로 돌아간다"]
 ```
 
 | 구성 요소 | 역할 |

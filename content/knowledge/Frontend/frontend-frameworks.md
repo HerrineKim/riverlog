@@ -90,15 +90,15 @@ HTML 요소에 `x-data`, `x-on`, `x-show` 같은 속성으로 상태와 이벤�
 
 새 프레임워크는 대개 앞선 것의 불편을 고치며 나왔다. MVC·MVVM 같은 패턴 자체는 [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]]에 있다.
 
-```text
-jQuery (DOM 직접 조작)
-  └ Knockout.js ─ MVVM, 템플릿과 데이터 바인딩의 시작
-      └ AngularJS (구글) ─ 모듈·라우터·HTTP까지 갖춘 풀패키지. 값이 바뀔 때마다 전체를 검사하는 dirty checking이라 무거웠다
-          ├ React (페이스북) ─ JSX와 가상 DOM. SSR로 SEO 약점을 풀며 아젠다를 선점했다
-          ├ Vue ─ AngularJS의 불편을 걷어 내고 dirty checking을 getter/setter 반응성으로 바꿨다. 문서가 뛰어났다
-          ├ Angular 2+ ─ AngularJS와 호환되지 않는 재작성. TypeScript·데코레이터·DI 기반, 객체지향에 익숙한 개발자에게 맞는다
-          └ Polymer ─ 웹 표준 Web Components 기반
-              └ Svelte ─ 라이브러리가 아니라 컴파일러
+```mermaid
+flowchart TB
+  jq["jQuery<br/>(DOM 직접 조작)"] --> ko["Knockout.js<br/>MVVM, 템플릿과 데이터 바인딩의 시작"]
+  ko --> ajs["AngularJS (구글)<br/>모듈·라우터·HTTP까지 갖춘 풀패키지.<br/>값이 바뀔 때마다 전체를 검사하는 dirty checking이라 무거웠다"]
+  ajs --> re["React (페이스북)<br/>JSX와 가상 DOM.<br/>SSR로 SEO 약점을 풀며 아젠다를 선점했다"]
+  ajs --> vue["Vue<br/>AngularJS의 불편을 걷어 내고<br/>dirty checking을 getter/setter 반응성으로 바꿨다.<br/>문서가 뛰어났다"]
+  ajs --> ng["Angular 2+<br/>AngularJS와 호환되지 않는 재작성.<br/>TypeScript·데코레이터·DI 기반,<br/>객체지향에 익숙한 개발자에게 맞는다"]
+  ajs --> poly["Polymer<br/>웹 표준 Web Components 기반"]
+  poly --> sv["Svelte<br/>라이브러리가 아니라 컴파일러"]
 ```
 
 AngularJS가 "더는 업데이트하지 않겠다"고 선언하고 Angular 2가 늦어지는 사이 사용자 대부분이 React와 Vue로 옮겨 갔다. 이후 React가 점유율에서 크게 앞서면서 번들러·라이브러리·백엔드 프레임워크까지 React 중심으로 만들어지고 있다. 프레임워크를 고르는 기준은 [[tech-stack-selection|기술 스택 고르기]]에 있다.

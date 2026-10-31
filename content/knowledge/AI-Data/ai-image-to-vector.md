@@ -12,9 +12,11 @@ sources: ["https://helpx.adobe.com/illustrator/using/image-trace.html"]
 
 미드저니 같은 이미지 생성 AI는 **래스터(픽셀) 이미지**를 만든다. 로고·아이콘·스티커·인쇄물에 쓰려면 크기를 마음대로 바꾸고 색과 모양을 고칠 수 있는 **벡터**가 필요하다. 생성 이미지를 바로 벡터화하면 해상도가 낮고 경계에 노이즈가 많아 패스가 울퉁불퉁하고 조각이 잔뜩 생긴다. 중간에 업스케일을 끼우면 이 문제가 대부분 사라진다.
 
-```text
-Midjourney          →  Image upscaler           →  Illustrator Image Trace  →  Expand
-래스터 원본 생성        해상도를 키우고 경계 정리      픽셀 경계를 패스로 근사       편집 가능한 패스로 확정
+```mermaid
+flowchart LR
+  A["Midjourney<br/>래스터 원본 생성"] --> B["Image upscaler<br/>해상도를 키우고 경계 정리"]
+  B --> C["Illustrator Image Trace<br/>픽셀 경계를 패스로 근사"]
+  C --> D["Expand<br/>편집 가능한 패스로 확정"]
 ```
 
 | 단계 | 하는 일 | 결과에 주는 영향 |

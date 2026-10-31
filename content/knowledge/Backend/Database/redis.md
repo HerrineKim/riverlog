@@ -234,11 +234,11 @@ EVAL "local v = tonumber(redis.call('GET', KEYS[1]) or '0')
 
 **RDB는 fork와 COW로 만든다.**
 
-```text
-메인 프로세스 ── fork() ──▶ 자식(bgsave): 메모리를 공유한 채 RDB 파일로 기록
-     │
-     └─ 그동안 쓰기가 오면 바뀌는 페이지만 복사해서(Copy-On-Write) 거기에 쓴다
-        → 자식은 fork 시점의 일관된 스냅샷을 그대로 본다
+```mermaid
+flowchart TB
+  main["메인 프로세스"] -->|"fork()"| child["자식(bgsave): 메모리를 공유한 채 RDB 파일로 기록"]
+  main --> cow["그동안 쓰기가 오면 바뀌는 페이지만 복사해서(Copy-On-Write) 거기에 쓴다"]
+  cow --> snap["자식은 fork 시점의 일관된 스냅샷을 그대로 본다"]
 ```
 
 fork 자체는 페이지 테이블을 복사하므로 메모리가 클수록 순간 멈춤이 길어지고, 쓰기가 많으면 COW 복사본 때문에 메모리가 일시적으로 늘어난다([[process-and-thread|프로세스와 스레드]]의 `fork()`).
@@ -259,12 +259,14 @@ fork 자체는 페이지 테이블을 복사하므로 메모리가 클수록 순
 
 ## 구조의 진화: 단일 → 복제 → 센티널 → 클러스터
 
-```text
-단일 인스턴스        재시작하면 데이터가 사라지고 트래픽이 DB로 쏟아진다
-   │ + RDB·AOF      디스크에 남겨 재시작 후 복구
-   │ + 복제         주(primary)가 읽기·쓰기, 복제본(replica)이 주를 따라간다
-   │ + 센티널        주를 감시하다가 죽으면 복제본을 주로 승격(자동 장애 조치)
-   ▼ + 클러스터      데이터를 샤딩해 여러 주 노드에 나눈다
+```mermaid
+flowchart TB
+  single["단일 인스턴스<br/>재시작하면 데이터가 사라지고 트래픽이 DB로 쏟아진다"]
+  persist["+ RDB·AOF<br/>디스크에 남겨 재시작 후 복구"]
+  repl["+ 복제<br/>주(primary)가 읽기·쓰기, 복제본(replica)이 주를 따라간다"]
+  sentinel["+ 센티널<br/>주를 감시하다가 죽으면 복제본을 주로 승격(자동 장애 조치)"]
+  cluster["+ 클러스터<br/>데이터를 샤딩해 여러 주 노드에 나눈다"]
+  single --> persist --> repl --> sentinel --> cluster
 ```
 
 | 단계 | 해결하는 문제 | 남는 문제 |
@@ -278,14 +280,13 @@ fork 자체는 페이지 테이블을 복사하므로 메모리가 클수록 순
 
 ### 복제가 동작하는 방식
 
-```text
-복제본 ── PSYNC <replication ID> <offset> ──▶ 주
-  ├─ 주의 복제 백로그(repl-backlog-size, 기본 1MB)에 그 offset 이후가 남아 있다
-  │     → 부분 재동기화: 빠진 명령만 보낸다
-  └─ 처음 연결이거나 백로그를 넘었다
-        → 전체 재동기화: 주가 RDB 스냅샷을 만들어(fork) 보내고,
-          그동안 들어온 쓰기는 버퍼에 모았다가 이어서 보낸다
-이후   주가 실행한 쓰기 명령을 복제 스트림으로 계속 흘려보낸다
+```mermaid
+flowchart TB
+  replica["복제본"] -->|"PSYNC #lt;replication ID#gt; #lt;offset#gt;"| primary["주"]
+  primary -->|"주의 복제 백로그(repl-backlog-size, 기본 1MB)에 그 offset 이후가 남아 있다"| partial["부분 재동기화: 빠진 명령만 보낸다"]
+  primary -->|"처음 연결이거나 백로그를 넘었다"| full["전체 재동기화: 주가 RDB 스냅샷을 만들어(fork) 보내고,<br/>그동안 들어온 쓰기는 버퍼에 모았다가 이어서 보낸다"]
+  partial --> after["이후: 주가 실행한 쓰기 명령을 복제 스트림으로 계속 흘려보낸다"]
+  full --> after
 ```
 
 - 복제는 **비동기**다. 주는 쓰기에 응답한 뒤 복제본에 보낸다. 복제본은 기본적으로 읽기 전용이고, 읽기 부하를 나누거나 장애 조치 후보가 된다.
@@ -310,13 +311,14 @@ fork 자체는 페이지 테이블을 복사하므로 메모리가 클수록 순
 
 센티널은 주·복제본과 별개로 도는 감시 프로세스이고, 서로 다른 장애 영역에 **3개 이상(홀수)** 둔다.
 
-```text
-1. 센티널 하나가 down-after-milliseconds 동안 주의 응답을 못 받음 → 주관적 다운(SDOWN)
-2. quorum 수 이상의 센티널이 동의 → 객관적 다운(ODOWN)
-3. 센티널 과반의 투표로 장애 조치를 맡을 리더 센티널을 뽑는다
-4. 리더가 복제본 하나를 고른다(replica-priority, 복제 offset이 앞선 것 순)
-   → REPLICAOF NO ONE으로 승격, 나머지 복제본이 새 주를 따르게 한다
-5. 클라이언트는 센티널에 새 주 주소를 묻는다 (SENTINEL get-master-addr-by-name)
+```mermaid
+flowchart TB
+  s1["1. 센티널 하나가 down-after-milliseconds 동안 주의 응답을 못 받음"] --> sdown["주관적 다운(SDOWN)"]
+  sdown --> s2["2. quorum 수 이상의 센티널이 동의"] --> odown["객관적 다운(ODOWN)"]
+  odown --> s3["3. 센티널 과반의 투표로 장애 조치를 맡을 리더 센티널을 뽑는다"]
+  s3 --> s4["4. 리더가 복제본 하나를 고른다(replica-priority, 복제 offset이 앞선 것 순)"]
+  s4 --> promote["REPLICAOF NO ONE으로 승격, 나머지 복제본이 새 주를 따르게 한다"]
+  promote --> s5["5. 클라이언트는 센티널에 새 주 주소를 묻는다 (SENTINEL get-master-addr-by-name)"]
 ```
 
 quorum은 「장애로 판정하는 데 필요한 수」이고, 실제 장애 조치는 센티널 **과반**이 살아 있어야 진행된다. 그래서 소수 쪽으로 분할된 센티널은 장애 조치를 하지 못한다.

@@ -44,18 +44,17 @@ sources: ["https://bytebytego.com/guides/6-software-architectural-patterns-you-m
 
 ## 헥사고날 아키텍처의 모양
 
-```text
-            [ REST 어댑터 ]   [ CLI 어댑터 ]
-                   │              │
-              ┌────▼──────────────▼────┐
-              │  입력 포트(유스케이스)     │
-              │                        │
-              │      도메인 핵심          │   ← 프레임워크·DB를 모른다
-              │                        │
-              │  출력 포트(저장소 인터페이스)│
-              └────┬──────────────┬────┘
-                   │              │
-           [ PostgreSQL 어댑터 ] [ 외부 결제 API 어댑터 ]
+```mermaid
+flowchart TB
+  rest["REST 어댑터"] --> inp
+  cli["CLI 어댑터"] --> inp
+  subgraph core["도메인 핵심 (프레임워크·DB를 모른다)"]
+    inp["입력 포트(유스케이스)"]
+    out["출력 포트(저장소 인터페이스)"]
+    inp ~~~ out
+  end
+  out --- pg["PostgreSQL 어댑터"]
+  out --- pay["외부 결제 API 어댑터"]
 ```
 
 - **의존 방향은 항상 안쪽(도메인)을 향한다.** 어댑터가 포트를 구현하고, 도메인은 구체 기술을 모른다.

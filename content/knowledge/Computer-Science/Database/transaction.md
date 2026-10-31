@@ -58,15 +58,21 @@ COMMIT;                     -- A=7000, B=11000 확정
 
 ## 트랜잭션의 상태
 
-```text
-            ┌──────────────── 오류 ───────────────┐
-            │                                     ▼
- 시작 ──▶ 활동(Active) ──마지막 연산 끝──▶ 부분 완료 ──기록 성공──▶ 완료(Committed)
-            │                     (Partially Committed)
-            └──오류──▶ 실패(Failed) ◀──── 커밋 중 오류 ┘
-                          │
-                          ▼ ROLLBACK
-                       철회(Aborted) ──▶ 재시작 또는 종료
+```mermaid
+stateDiagram-v2
+  direction LR
+  active: 활동(Active)
+  partial: 부분 완료(Partially Committed)
+  committed: 완료(Committed)
+  failed: 실패(Failed)
+  aborted: 철회(Aborted)
+  [*] --> active: 시작
+  active --> partial: 마지막 연산 끝
+  partial --> committed: 기록 성공
+  active --> failed: 오류
+  partial --> failed: 커밋 중 오류
+  failed --> aborted: ROLLBACK
+  aborted --> [*]: 재시작 또는 종료
 ```
 
 | 상태 | 뜻 |
@@ -140,14 +146,17 @@ MVCC는 행을 덮어쓰지 않고 **새 버전을 만들고 옛 버전을 남�
 - 각 행에는 숨은 컬럼이 있다. 마지막으로 고친 트랜잭션 ID(`DB_TRX_ID`)와, undo 로그의 이전 버전을 가리키는 롤 포인터(`DB_ROLL_PTR`)다. 버전들이 포인터로 이어진 체인이 된다.
 - 읽는 트랜잭션은 **읽기 뷰(read view)** 를 만든다. 「이 시점에 커밋되지 않았던 트랜잭션 ID 목록」이다. 행의 트랜잭션 ID가 그 목록에 있거나 더 나중이면 보이지 않으므로, 롤 포인터를 따라 보이는 버전까지 거슬러 올라간다.
 
-```text
-balance 행의 버전 체인
-  [trx 201, balance=200] ──roll_ptr──▶ [trx 200, balance=100] (커밋됨)
-     ▲ 트랜잭션 A가 수정 중(미커밋)
-
-트랜잭션 B의 읽기 뷰: 201은 미커밋 → 건너뛰고 trx 200 버전을 읽는다 → 100
-A가 커밋한 뒤에도 B(Repeatable Read)는 처음 만든 읽기 뷰를 계속 써서 100을 본다
+```mermaid
+flowchart LR
+  subgraph chain["balance 행의 버전 체인"]
+    v201["trx 201, balance=200"] -->|"roll_ptr"| v200["trx 200, balance=100<br/>(커밋됨)"]
+  end
+  ta["트랜잭션 A가 수정 중(미커밋)"] --> v201
+  rb["트랜잭션 B의 읽기 뷰"] -.->|"201은 미커밋 → 건너뛰고"| v201
+  rb -->|"trx 200 버전을 읽는다 → 100"| v200
 ```
+
+A가 커밋한 뒤에도 B(Repeatable Read)는 처음 만든 읽기 뷰를 계속 써서 100을 본다.
 
 | 수준 | 읽기 뷰를 만드는 때 | 결과 |
 | --- | --- | --- |
@@ -217,13 +226,22 @@ InnoDB의 Repeatable Read는 순수한 스냅숏 격리와 다르다. 일반 `SE
 
 **쓰기 스큐(write skew)** 는 두 트랜잭션이 **같은 조건을 읽고, 서로 다른 행을 고쳐서** 둘이 합쳐지면 조건이 깨지는 현상이다. 고친 행이 다르니 쓰기 충돌 검사에 걸리지 않는다.
 
-```text
-규칙: 당직 의사는 최소 1명 (현재 A, B 두 명이 당직)
-
-T1(A): SELECT count(*) FROM oncall WHERE on_duty → 2   T2(B): SELECT count(*) ... → 2
-T1: 2명이니 빠져도 된다 → UPDATE oncall SET on_duty=false WHERE doctor='A'
-                                                     T2: UPDATE ... WHERE doctor='B'
-T1 COMMIT, T2 COMMIT  → 당직 0명. 둘 다 각자의 스냅숏에서는 옳았다
+```mermaid
+sequenceDiagram
+  participant T1 as T1(A)
+  participant DB as oncall
+  participant T2 as T2(B)
+  Note over T1,T2: 규칙: 당직 의사는 최소 1명 (현재 A, B 두 명이 당직)
+  T1->>DB: SELECT count(*) FROM oncall WHERE on_duty
+  DB-->>T1: 2
+  T2->>DB: SELECT count(*) ...
+  DB-->>T2: 2
+  Note over T1: 2명이니 빠져도 된다
+  T1->>DB: UPDATE oncall SET on_duty=false WHERE doctor='A'
+  T2->>DB: UPDATE ... WHERE doctor='B'
+  T1->>DB: COMMIT
+  T2->>DB: COMMIT
+  Note over T1,T2: 당직 0명. 둘 다 각자의 스냅숏에서는 옳았다
 ```
 
 막는 방법은 세 가지다. 판단 근거가 된 행을 `SELECT ... FOR UPDATE`로 잠그거나, 충돌을 표현하는 행(당직표 한 행 같은 잠금용 행)을 두어 실제 쓰기 충돌로 바꾸거나, Serializable 격리를 쓴다.
@@ -316,7 +334,7 @@ INSERT INTO a VALUES (1);  -- T2의 잠금 대기
 -- ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction
 ```
 
-대부분의 DBMS는 대기 그래프(wait-for graph)로 교착을 **스스로 감지해 한쪽(보통 되돌릴 작업이 적은 쪽)을 롤백**한다. MySQL은 `innodb_deadlock_detect`(기본 켜짐)와 `SHOW ENGINE INNODB STATUS`의 `LATEST DETECTED DEADLOCK`, PostgreSQL은 `deadlock_timeout`(기본 1초) 뒤 검사로 알린다. 감지는 피해를 줄일 뿐이므로 애플리케이션은 오류 코드를 보고 **트랜잭션 전체를 재시도**해야 한다.
+대부분의 DBMS는 대기 그래프(wait-for graph)로 교착을 스스로 감지해 한쪽(보통 되돌릴 작업이 적은 쪽)을 롤백한다. MySQL은 `innodb_deadlock_detect`(기본 켜짐)와 `SHOW ENGINE INNODB STATUS`의 `LATEST DETECTED DEADLOCK`, PostgreSQL은 `deadlock_timeout`(기본 1초) 뒤 검사로 알린다. 감지는 피해를 줄일 뿐이므로 애플리케이션은 오류 코드를 보고 **트랜잭션 전체를 재시도**해야 한다.
 
 희생자를 얼마나 되돌리는지는 DBMS마다 다르다. InnoDB는 희생자 트랜잭션 전체를 롤백하고, PostgreSQL은 트랜잭션을 실패 상태로 만들어 `ROLLBACK`만 받는다. Oracle은 `ORA-00060: deadlock detected`를 받은 쪽의 **교착을 일으킨 문장 하나만** 롤백하고 트랜잭션과 그 앞의 변경·잠금은 남긴다. 그래서 Oracle 애플리케이션은 오류를 받은 뒤 직접 `ROLLBACK`(또는 남은 작업을 정리하고 `COMMIT`)해야 상대 트랜잭션이 풀린다.
 
@@ -364,11 +382,21 @@ DB 밖에서 만든 분산 락(Redis 키 등)은 세션이 없으므로 **만료
 
 **코디네이터**가 참여자(각 DB)에게 두 단계로 묻는다.
 
-```text
-1단계 준비(prepare)  코디네이터 ── "커밋할 수 있나?" ──▶ 참여자들
-                     참여자: 변경을 로그에 남기고 잠금을 쥔 채 "예/아니오" 투표
-2단계 확정(commit)   모두 "예" → 코디네이터가 커밋 결정을 기록하고 "커밋" 전달
-                     하나라도 "아니오"·응답 없음 → "롤백" 전달
+```mermaid
+sequenceDiagram
+  participant C as 코디네이터
+  participant P as 참여자들
+  Note over C,P: 1단계 준비(prepare)
+  C->>P: 커밋할 수 있나?
+  Note over P: 변경을 로그에 남기고 잠금을 쥔 채 투표
+  P-->>C: 예/아니오
+  Note over C,P: 2단계 확정(commit)
+  alt 모두 "예"
+    Note over C: 커밋 결정을 기록
+    C->>P: 커밋
+  else 하나라도 "아니오"·응답 없음
+    C->>P: 롤백
+  end
 ```
 
 - 준비에 「예」라고 답한 참여자는 혼자 결정할 수 없다. **코디네이터가 2단계 직전에 죽으면 참여자는 잠금을 쥔 채 결과를 기다린다(in-doubt).** 2PC가 블로킹 프로토콜이라 불리는 이유다.
@@ -452,11 +480,12 @@ DBMS는 데이터를 고정 크기 **페이지** 단위로 읽고 쓰며, 메모
 
 장애 뒤 재시작할 때 ARIES 계열 DBMS는 다음 순서로 복구한다.
 
-```text
-1. 분석: 마지막 검사점부터 로그 끝까지 훑어 복구 시작점과 미완료 트랜잭션을 찾는다
-2. REDO: 시작점부터 장애 직전까지 모든 로그를 다시 적용한다 (실패한 트랜잭션 것도)
-         → "역사를 반복"해 장애 시점 상태를 그대로 재현한다
-3. UNDO: 로그를 거꾸로 훑으며 미완료 트랜잭션을 철회한다
+```mermaid
+flowchart TB
+  a["1. 분석<br/>마지막 검사점부터 로그 끝까지 훑어 복구 시작점과 미완료 트랜잭션을 찾는다"]
+  r["2. REDO<br/>시작점부터 장애 직전까지 모든 로그를 다시 적용한다 (실패한 트랜잭션 것도)<br/>→ #quot;역사를 반복#quot;해 장애 시점 상태를 그대로 재현한다"]
+  u["3. UNDO<br/>로그를 거꾸로 훑으며 미완료 트랜잭션을 철회한다"]
+  a --> r --> u
 ```
 
 - 페이지마다 마지막으로 반영된 로그의 **page LSN**을 적어 두어, 이미 반영된 로그는 건너뛴다.

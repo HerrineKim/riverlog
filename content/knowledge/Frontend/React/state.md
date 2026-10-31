@@ -138,12 +138,11 @@ const next = produce(state, (draft) => {
 
 여러 컴포넌트가 **같은 데이터**를 보여 줘야 한다면, 각자 state를 갖지 말고 **가장 가까운 공통 부모**에 state를 하나만 두고 props로 내린다. 자식은 값과 변경 함수만 받는다.
 
-```text
-        Parent  ← state는 여기 하나만 (single source of truth)
-       /      \
-  value, onChange   value
-     /              \
- InputA            Preview
+```mermaid
+flowchart TB
+  Parent["Parent<br/>state는 여기 하나만 (single source of truth)"]
+  Parent -- "value, onChange" --> InputA["InputA"]
+  Parent -- "value" --> Preview["Preview"]
 ```
 
 ```jsx

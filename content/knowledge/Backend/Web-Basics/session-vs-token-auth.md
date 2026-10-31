@@ -44,12 +44,18 @@ HTTP는 상태가 없다(stateless). 요청마다 "이 사람이 아까 로그�
 
 ## 세션 기반 인증
 
-```text
-1. POST /login (아이디·비밀번호)
-2. 서버: 검증 성공 → 세션 저장소에 { sessionId: userId, 만료 } 저장
-3. 응답: Set-Cookie: sid=abc123; HttpOnly; Secure; SameSite=Lax
-4. 이후 요청: 브라우저가 Cookie: sid=abc123 를 자동 첨부
-5. 서버: 저장소에서 sid 조회 → 사용자 확인 → 응답
+```mermaid
+sequenceDiagram
+  participant B as 브라우저
+  participant S as 서버
+  participant R as 세션 저장소
+  B->>S: 1. POST /login (아이디·비밀번호)
+  S->>R: 2. 검증 성공 → { sessionId: userId, 만료 } 저장
+  S-->>B: 3. Set-Cookie: sid=abc123#59; HttpOnly#59; Secure#59; SameSite=Lax
+  B->>S: 4. 이후 요청: Cookie: sid=abc123 (브라우저가 자동 첨부)
+  S->>R: 5. 저장소에서 sid 조회
+  Note over S: 사용자 확인
+  S-->>B: 응답
 ```
 
 **세션은 HTTP의 무상태성과 모순되지 않는다.** 무상태는 HTTP **프로토콜**이 요청 사이를 기억하지 않는다는 뜻이고, 세션은 그 위의 **응용**이 상태를 따로 저장하는 것이다. 요청은 여전히 세션 ID라는 필요한 정보를 매번 담고 오며, 서버는 그 ID로 저장소를 찾아 처리한다. 대가는 무상태가 주던 장점 일부를 다시 내주는 것이다. 웹 서버 자체는 무상태로 두고 상태를 공용 세션 저장소 한 곳에 모으면, 서버를 늘리는 자유는 지키고 저장소의 가용성만 따로 책임지면 된다. 토큰 방식은 상태를 클라이언트 쪽 토큰에 넣어 저장소마저 없앤 것이지만, 즉시 무효화를 위해 결국 일부 상태(차단 목록, 리프레시 토큰)를 다시 둔다.
@@ -81,12 +87,17 @@ JWT(JSON Web Token)는 `header.payload.signature` 세 부분을 `.`으로 이은
 
 Header와 Payload는 **인코딩**일 뿐이라 누구나 디코딩해 읽을 수 있다([jwt.io](https://jwt.io/)). 위변조를 막는 것은 Signature뿐이다. NestJS에서 Passport로 구현하는 방법은 [[auth-jwt-passport|NestJS JWT 인증과 Passport]]에 있다.
 
-```text
-1. POST /login
-2. 서버: 검증 성공 → Payload { sub: userId, exp } 에 비밀키로 서명해 Access Token 발급
-3. 클라이언트: 토큰 보관
-4. 이후 요청: Authorization: Bearer <token>
-5. 서버: 서명 검증(HS256은 같은 비밀키, RS256·ES256은 공개키) + exp 확인 → 응답
+```mermaid
+sequenceDiagram
+  participant C as 클라이언트
+  participant S as 서버
+  C->>S: 1. POST /login
+  Note over S: 2. 검증 성공 → Payload { sub: userId, exp } 에 비밀키로 서명
+  S-->>C: Access Token 발급
+  Note over C: 3. 토큰 보관
+  C->>S: 4. 이후 요청: Authorization: Bearer #lt;token#gt;
+  Note over S: 5. 서명 검증(HS256은 같은 비밀키, RS256·ES256은 공개키) + exp 확인
+  S-->>C: 응답
 ```
 
 서명은 Header와 Payload를 **각각 Base64URL로 인코딩해 `.`으로 이은 문자열**에 서명 알고리즘을 적용하고, 그 결과를 다시 Base64URL로 인코딩해 만든다.

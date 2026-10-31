@@ -153,7 +153,7 @@ $ git log      # 원격의 이력이 그대로 들어 있다
 
 - 로컬 저장소를 시작하는 방법은 두 가지: **새로 만들거나(`init`) 복제하거나(`clone`)**.
 - clone한 저장소에서 커밋은 자유롭게 할 수 있지만, push는 그 저장소에 **쓰기 권한(collaborator 초대 등)** 이 있어야 가능하다.
-- 모든 사람이 전체 이력을 가진다는 점이 바로 *분산* 버전 관리의 의미다.
+- 모든 사람이 전체 이력을 가진다는 점이 바로 분산 버전 관리의 의미다.
 - 이력이나 파일이 너무 커서 clone이 느리면 얕은 클론(`--depth`), 단일 브랜치, 부분 클론(`--filter=blob:none`), 희소 체크아웃으로 받는 양을 줄인다([[large-repo-git-performance|대형 저장소에서 Git 빠르게 쓰기]]).
 
 ## 다른 서비스로 옮기기: 미러링
@@ -180,7 +180,7 @@ $ git subtree add --prefix=fdf https://example.com/fdf.git master           # �
 $ git subtree add --prefix=fdf https://example.com/fdf.git master --squash  # 커밋 하나로 합쳐 가져오기
 ```
 
-`--prefix`는 새로 만들 폴더 이름이다. 이후에도 원래 저장소와 주고받으려면 `git subtree pull`/`push`를 쓰고, 한 번 합치고 끝이면 `add`만으로 충분하다. 하위 폴더를 외부 저장소의 특정 커밋에 *연결*해 두는 방식인 `git submodule`과 달리, subtree는 파일을 저장소 안에 실제로 복사하므로 clone하는 사람이 추가 명령을 몰라도 된다. 하위 폴더만 다른 브랜치로 내보낼 때도 쓴다(`git subtree push --prefix=docs origin gh-pages`).
+`--prefix`는 새로 만들 폴더 이름이다. 이후에도 원래 저장소와 주고받으려면 `git subtree pull`/`push`를 쓰고, 한 번 합치고 끝이면 `add`만으로 충분하다. 하위 폴더를 외부 저장소의 특정 커밋에 연결해 두는 방식인 `git submodule`과 달리, subtree는 파일을 저장소 안에 실제로 복사하므로 clone하는 사람이 추가 명령을 몰라도 된다. 하위 폴더만 다른 브랜치로 내보낼 때도 쓴다(`git subtree push --prefix=docs origin gh-pages`).
 
 ### 외부 저장소를 특정 커밋으로 연결하기: `git submodule`
 

@@ -90,6 +90,6 @@ sources: ["https://blog.ull.im/engineering/2019/03/10/logs-on-git.html"]
 - 관사와 동명사를 빼고, 부정은 `Don't`로 쓴다.
 - Fix(틀린 것)와 Update(멀쩡한 것), Add(새것)와 Make(기존 동작), Prevent(차단)와 Avoid(회피)를 구분한다.
 
-**커밋 메시지가 한 문장으로 안 써지면 메시지가 아니라 커밋을 쪼갈 때다.**
+커밋 메시지가 한 문장으로 안 써지면 메시지가 아니라 커밋을 쪼갤 때다.
 
 관련 노트: [[commit-convention|커밋 컨벤션과 자동 검사]], [[git-basics|Git 기본 명령과 파일 상태]], [[boolean-naming|불리언 변수 이름 짓기]]

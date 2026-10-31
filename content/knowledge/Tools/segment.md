@@ -8,13 +8,13 @@ date: "2026-10-13"
 sources: ["https://www.twilio.com/docs/segment", "https://www.twilio.com/docs/segment/unify"]
 ---
 
-**Segment**(Twilio Segment)는 서비스에서 일어나는 일(가입, 클릭, 결제 등)을 표준 형식의 메시지로 만들어 **여러 도구로 한 번에 보내 주는** 고객 데이터 플랫폼(CDP)이다. GA, 광고 픽셀, 이메일 마케팅 도구마다 추적 코드를 따로 심는 대신 Segment 코드 하나만 심고, 어디로 보낼지는 Segment 대시보드에서 켜고 끈다. 공식 문서는 [Twilio Docs](https://www.twilio.com/docs/segment)로 옮겨졌다.
+**Segment**(Twilio Segment)는 서비스에서 일어나는 일(가입, 클릭, 결제 등)을 표준 형식의 메시지로 만들어 여러 도구로 한 번에 보내 주는 고객 데이터 플랫폼(CDP)이다. GA, 광고 픽셀, 이메일 마케팅 도구마다 추적 코드를 따로 심는 대신 Segment 코드 하나만 심고, 어디로 보낼지는 Segment 대시보드에서 켜고 끈다. 공식 문서는 [Twilio Docs](https://www.twilio.com/docs/segment)로 옮겨졌다.
 
 ## 기본 구조
 
-```text
-Source(수집) ──► Segment ──► Destination(전송)
- 웹·앱·서버·클라우드 툴       GA, 광고 픽셀, CRM, Warehouse ...
+```mermaid
+flowchart LR
+    A["Source(수집)<br>웹·앱·서버·클라우드 툴"] --> B["Segment"] --> C["Destination(전송)<br>GA, 광고 픽셀, CRM, Warehouse ..."]
 ```
 
 | 용어 | 의미 |

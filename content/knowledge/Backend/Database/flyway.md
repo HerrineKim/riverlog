@@ -33,11 +33,13 @@ db/migration/
 ├── V1__create_user_table.sql
 ├── V2__add_email_to_user.sql
 └── V3__create_post_table.sql
+```
 
-flyway migrate
-→ DB의 이력 테이블(flyway_schema_history)을 확인
-→ 아직 적용되지 않은 버전만 번호 순서대로 실행
-→ 실행한 버전과 체크섬을 이력 테이블에 기록
+```mermaid
+flowchart TB
+  cmd["flyway migrate"] --> s1["DB의 이력 테이블(flyway_schema_history)을 확인"]
+  s1 --> s2["아직 적용되지 않은 버전만 번호 순서대로 실행"]
+  s2 --> s3["실행한 버전과 체크섬을 이력 테이블에 기록"]
 ```
 
 - 파일 이름 규칙은 `V<버전>__<설명>.sql`(밑줄 두 개)이다.
@@ -55,7 +57,7 @@ Spring Boot처럼 의존성만 추가하면 애플리케이션 시작 시 자동
 
 - Flyway는 스키마 변경을 버전 붙은 SQL 파일로 관리하는 프레임워크 독립적인 마이그레이션 도구다.
 - 이력 테이블을 보고 적용되지 않은 버전만 순서대로 실행한다.
-- 손으로 DB를 고치는 실수를 막고, 변경 이력과 환경 간 스키마를 일치시키는 것이 핵심 가치다.
+- 손으로 DB를 고치는 실수를 막고, 변경 이력을 남기고, 환경 간 스키마를 일치시킨다.
 - 적용된 파일은 수정하지 말고 새 버전을 추가한다.
 
 관련 노트: [[model-migration|Django Model과 Migration]], [[prisma|Prisma 커서로 이전·다음 항목 찾기]], [[sql-basics|SQL 기초]]

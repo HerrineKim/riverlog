@@ -35,9 +35,9 @@ sources: ["https://bytebytego.com/guides/types-of-message-queue", "https://byteb
 
 ## 구조의 변화: 큐에서 로그로
 
-```text
-전통 메시지 큐 ──▶ 브로커 라우팅 큐 ──▶ 분산 로그 ──▶ 서빙·저장 분리
-  (IBM MQ)         (RabbitMQ)          (Kafka)         (Pulsar)
+```mermaid
+flowchart LR
+  a["전통 메시지 큐<br/>(IBM MQ)"] --> b["브로커 라우팅 큐<br/>(RabbitMQ)"] --> c["분산 로그<br/>(Kafka)"] --> d["서빙·저장 분리<br/>(Pulsar)"]
 ```
 
 | 세대 | 대표 | 구조 | 잘 맞는 곳 |
@@ -81,15 +81,25 @@ sources: ["https://bytebytego.com/guides/types-of-message-queue", "https://byteb
 
 Kafka는 분산 이벤트 저장소이자 스트리밍 플랫폼이다. 원래 대규모 로그 처리를 위해 만들어져, 메시지를 보존 기간이 끝날 때까지 남겨 두고 소비자가 자기 속도로 끌어가게(pull) 한다.
 
-```text
-Producer ──▶ Topic "orders"
-               ├─ Partition 0: [0][1][2][3][4] ...  ← 리더는 Broker 1, 복제본은 Broker 2·3
-               ├─ Partition 1: [0][1][2] ...        ← 리더는 Broker 2
-               └─ Partition 2: [0][1][2][3] ...     ← 리더는 Broker 3
-                        │
-                        ▼
-          Consumer Group A: 컨슈머 a1(P0), a2(P1, P2)
-          Consumer Group B: 컨슈머 b1(P0, P1, P2)    ← 같은 데이터를 독립적으로 읽는다
+```mermaid
+flowchart TB
+  prod["Producer"] --> topic["Topic #quot;orders#quot;"]
+  topic --> p0["Partition 0: [0][1][2][3][4] ...<br/>리더는 Broker 1, 복제본은 Broker 2·3"]
+  topic --> p1["Partition 1: [0][1][2] ...<br/>리더는 Broker 2"]
+  topic --> p2["Partition 2: [0][1][2][3] ...<br/>리더는 Broker 3"]
+  subgraph ga["Consumer Group A"]
+    a1["컨슈머 a1"]
+    a2["컨슈머 a2"]
+  end
+  subgraph gb["Consumer Group B (같은 데이터를 독립적으로 읽는다)"]
+    b1["컨슈머 b1"]
+  end
+  p0 --> a1
+  p1 --> a2
+  p2 --> a2
+  p0 --> b1
+  p1 --> b1
+  p2 --> b1
 ```
 
 | 개념 | 뜻 |
@@ -114,12 +124,18 @@ Producer ──▶ Topic "orders"
 | 배치·압축 | 여러 메시지를 묶어 보내고 묶음 단위로 압축해 요청 수와 바이트를 줄인다 |
 | 파티션 병렬화 | 파티션 단위로 브로커·컨슈머에 나눠 수평 확장한다 |
 
-```text
 일반 전송 (복사 4번, 문맥 전환 여러 번)
-  디스크 → OS 페이지 캐시 → 애플리케이션 버퍼 → 소켓 버퍼 → NIC
+
+```mermaid
+flowchart LR
+  d["디스크"] --> pc["OS 페이지 캐시"] --> ab["애플리케이션 버퍼"] --> sb["소켓 버퍼"] --> nic["NIC"]
+```
 
 제로 카피 (sendfile)
-  디스크 → OS 페이지 캐시 ─────────────────────────────▶ NIC
+
+```mermaid
+flowchart LR
+  d["디스크"] --> pc["OS 페이지 캐시"] --> nic["NIC"]
 ```
 
 제로 카피는 브로커가 저장한 바이트를 그대로 내보낼 수 있을 때만 된다. TLS로 암호화해 보내면 사용자 공간에서 암호화해야 하므로 이 이점이 사라진다.
@@ -162,10 +178,20 @@ Kafka 밖의 DB나 외부 API에 쓰는 순간 이 보장은 끝난다. 그쪽�
 
 「Kafka는 메시지를 잃지 않는다」는 설정이 맞을 때의 이야기다. 유실은 세 구간에서 생긴다.
 
-```text
-[프로듀서]  send() → 레코드 누산기(버퍼) → 송신 스레드 → 
-[브로커]    리더 페이지 캐시 → (비동기 flush) 디스크, 팔로워 복제 →
-[컨슈머]    poll() → 처리 → 오프셋 커밋
+```mermaid
+flowchart LR
+  subgraph prod["프로듀서"]
+    send["send()"] --> acc["레코드 누산기(버퍼)"] --> th["송신 스레드"]
+  end
+  subgraph broker["브로커"]
+    pc["리더 페이지 캐시"] -->|"비동기 flush"| disk["디스크"]
+    pc --> rep["팔로워 복제"]
+  end
+  subgraph cons["컨슈머"]
+    poll["poll()"] --> proc["처리"] --> commit["오프셋 커밋"]
+  end
+  th --> pc
+  broker --> poll
 ```
 
 | 구간 | 유실 원인 | 대책 |
@@ -223,12 +249,12 @@ Kafka 토픽을 MongoDB·Cassandra·Elasticsearch 같은 저장소에 싱크할 
 
 Kafka에는 브로커가 제공하는 DLQ가 없다. 실패한 메시지를 **별도 토픽에 쓰는 것**이 DLQ다.
 
-```text
-orders ──컨슈머──▶ 처리 실패
-                    ├─ 일시적 → orders.retry.1m → orders.retry.10m → (그래도 실패)
-                    └─ 영구적 ───────────────────────────────────────▶ orders.dlt
-                                                                         │
-                                                  원인 수정 뒤 재처리 도구가 원래 토픽으로 다시 보낸다
+```mermaid
+flowchart LR
+  orders["orders"] -->|"컨슈머"| fail["처리 실패"]
+  fail -->|"일시적"| r1["orders.retry.1m"] --> r10["orders.retry.10m"] --> still["(그래도 실패)"]
+  fail -->|"영구적"| dlt["orders.dlt"]
+  dlt -->|"원인 수정 뒤 재처리 도구가 원래 토픽으로 다시 보낸다"| orders
 ```
 
 | 방식 | 동작 | 대가 |
@@ -251,9 +277,9 @@ orders ──컨슈머──▶ 처리 실패
 
 ### Kafka Connect
 
-```text
-원천 DB ──▶ [소스 커넥터] ──▶ Kafka 토픽 ──▶ [싱크 커넥터] ──▶ 검색 엔진·DW·NoSQL
-            (Debezium 등)                   (Elasticsearch, JDBC, S3 등)
+```mermaid
+flowchart LR
+  src["원천 DB"] --> sc["소스 커넥터<br/>(Debezium 등)"] --> t["Kafka 토픽"] --> sk["싱크 커넥터<br/>(Elasticsearch, JDBC, S3 등)"] --> dst["검색 엔진·DW·NoSQL"]
 ```
 
 | 개념 | 뜻 |
@@ -295,9 +321,14 @@ Kafka Streams는 별도 클러스터 없이 **애플리케이션 인스턴스를
 
 생산자와 소비자는 서로 다른 시기에 배포된다. 메시지 형식이 말없이 바뀌면 소비자가 역직렬화에 실패하거나 필드를 잘못 읽는다. 스키마 레지스트리는 **토픽별 스키마 버전을 한곳에 두고 호환성 규칙을 강제한다.**
 
-```text
-프로듀서: 스키마 등록(호환성 검사 통과해야 등록) → 스키마 ID 받음 → [매직 바이트][스키마 ID 4바이트][Avro 바이트] 전송
-컨슈머:   메시지 앞의 스키마 ID로 레지스트리에서 스키마를 받아(캐시) 역직렬화
+```mermaid
+flowchart LR
+  subgraph p["프로듀서"]
+    p1["스키마 등록<br/>(호환성 검사 통과해야 등록)"] --> p2["스키마 ID 받음"] --> p3["[매직 바이트][스키마 ID 4바이트][Avro 바이트] 전송"]
+  end
+  subgraph c["컨슈머"]
+    c1["메시지 앞의 스키마 ID로 레지스트리에서<br/>스키마를 받아(캐시) 역직렬화"]
+  end
 ```
 
 - 메시지마다 스키마 전체가 아니라 ID만 실어 크기를 줄인다.

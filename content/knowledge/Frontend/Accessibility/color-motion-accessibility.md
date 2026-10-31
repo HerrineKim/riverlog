@@ -5,7 +5,7 @@ summary: "저시력·색각 결핍 사용자는 스크린 리더가 아니라 �
 tags: ["accessibility", "frontend", "css", "design", "ux"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2020/04/27/%EC%A0%91%EA%B7%BC%EC%84%B1-%EC%A2%8B%EC%9D%80-svg-%ED%8C%A8%ED%84%B4%EC%9D%84-%EB%84%98%EC%96%B4%EC%84%A0-%ED%8F%AC%EC%9A%A9%EC%84%B1/", "https://webactually.com/2020/07/09/%EC%83%89%EA%B0%81-%EA%B2%B0%ED%95%8D-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%9D%98-%EC%82%B6/", "https://webaim.org/articles/contrast/", "https://webaim.org/articles/contrast/evaluating", "https://webaim.org/resources/contrastchecker/", "https://webaim.org/resources/linkcontrastchecker/", "https://web.dev/learn/accessibility/color-contrast", "https://web.dev/learn/accessibility/motion", "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast", "https://webaim.org/presentations/2024/january/"]
+sources: ["https://webactually.com/2020/04/27/%EC%A0%91%EA%B7%BC%EC%84%B1-%EC%A2%8B%EC%9D%80-svg-%ED%8C%A8%ED%84%B4%EC%9D%84-%EB%84%98%EC%96%B4%EC%84%A0-%ED%8F%AC%EC%9A%A9%EC%84%B1/", "https://webactually.com/2020/07/09/%EC%83%89%EA%B0%81-%EA%B2%B0%ED%95%8D-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%9D%98-%EC%82%B6/", "https://webaim.org/articles/contrast/", "https://webaim.org/articles/contrast/evaluating", "https://webaim.org/resources/contrastchecker/", "https://webaim.org/resources/linkcontrastchecker/", "https://web.dev/learn/accessibility/color-contrast", "https://web.dev/learn/accessibility/motion", "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast", "https://webaim.org/presentations/2024/january/", "https://www.epilepsy.org.uk/info/seizure-triggers/photosensitive-epilepsy"]
 ---
 
 > 웹액츄얼리가 번역한 캐리 피셔(Carie Fisher)의 「[접근성 좋은 SVG – 패턴을 넘어선 포용성](https://webactually.com/2020/04/27/%EC%A0%91%EA%B7%BC%EC%84%B1-%EC%A2%8B%EC%9D%80-svg-%ED%8C%A8%ED%84%B4%EC%9D%84-%EB%84%98%EC%96%B4%EC%84%A0-%ED%8F%AC%EC%9A%A9%EC%84%B1/)」(2020.04)과 노아 글루시엔(Noah Glushien)의 「[색각 결핍 디자이너의 삶](https://webactually.com/2020/07/09/%EC%83%89%EA%B0%81-%EA%B2%B0%ED%95%8D-%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%9D%98-%EC%82%B6/)」(2020.07)을 바탕으로 재구성하고, 대비 계산·기준·평가 방법은 WebAIM의 「[Contrast and Color Accessibility](https://webaim.org/articles/contrast/)」(평가 편 포함)와 「[Contrast Checker](https://webaim.org/resources/contrastchecker/)」·「[Link Contrast Checker](https://webaim.org/resources/linkcontrastchecker/)」 설명으로 보강하고, 사용자 설정 미디어 쿼리와 움직임 기본값은 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 색과 대비·애니메이션 편으로 덧붙인 노트다.
@@ -13,7 +13,7 @@ sources: ["https://webactually.com/2020/04/27/%EC%A0%91%EA%B7%BC%EC%84%B1-%EC%A2
 
 ## 왜 색과 움직임인가
 
-접근성을 스크린 리더 대응으로만 생각하기 쉽다. 하지만 **저시력과 색각 결핍 인구(색각 결핍만 약 3억 명으로 추정)는 전맹보다 훨씬 많다.** 이들은 스크린 리더 대신 화면 확대, 브라우저 글자 크기, 사용자 스타일시트로 **화면을 직접 본다.** 그래서 이들에게는 마크업보다 색과 대비가 중요하다.
+접근성을 스크린 리더 대응으로만 생각하기 쉽다. 하지만 **저시력과 색각 결핍 인구(글루시엔의 글에 따르면 색각 결핍만 약 3억 명)는 전맹보다 훨씬 많다.** 이들은 스크린 리더 대신 화면 확대, 브라우저 글자 크기, 사용자 스타일시트로 화면을 직접 본다. 그래서 이들에게는 마크업보다 색과 대비가 중요하다.
 
 움직임도 같다. 자동으로 움직이는 요소는 ADHD 같은 주의력 장애가 있는 사람의 집중을 깨고, 전정 장애가 있는 사람에게 어지럼과 구역질을, 광과민성 사용자에게 발작을 일으킬 수 있다.
 
@@ -137,7 +137,7 @@ WebAIM이 해마다 상위 100만 개 홈페이지를 검사하는 WebAIM Millio
 | 도구 | 쓰임 | 한계 |
 | --- | --- | --- |
 | WebAIM Contrast Checker | 두 색을 넣으면 일반·큰 텍스트 AA/AAA와 비텍스트 AA 통과 여부를 보여 준다. 명도 슬라이더로 통과하는 색을 찾고, 투명도도 넣을 수 있다. 결과 링크에 `&api`를 붙이면 JSON으로 받는다 | 색 값은 직접 구해야 한다 |
-| WebAIM Link Contrast Checker | 링크·본문·배경 세 색의 관계를 한 번에 잰다(아래 「밑줄 없는 링크」) | 큰 텍스트·AAA는 보지 않는다 |
+| WebAIM Link Contrast Checker | 링크·본문·배경 세 색의 관계를 한 번에 잰다(위 「밑줄 없는 링크」) | 큰 텍스트·AAA는 보지 않는다 |
 | WAVE | 페이지의 텍스트 대비를 자동으로 표시하고, 밝게·어둡게 조정해 통과 색을 제안한다 | 배경 이미지·그라데이션·투명도·이미지 속 텍스트는 못 잡는다 |
 | 브라우저 DevTools | 요소 검사의 색 선택기에 대비비와 AA/AAA 선이 나온다(사용법은 [[devtools-elements-css\|DevTools로 DOM과 CSS 다루기]]) | 상태별 색은 상태를 강제로 켜고 봐야 한다 |
 | Colour Contrast Analyser (TPGi) | Windows·macOS 앱. 화면 어디서든 스포이트로 색을 집는다. 이미지 속 텍스트, PDF·Word 문서에 강하다 | 웹 페이지는 WAVE·DevTools가 더 빠르다 |
@@ -168,7 +168,7 @@ APCA(Accessible Perceptual Contrast Algorithm)는 글자 크기·굵기와 밝�
 }
 ```
 
-**다크 모드(`prefers-color-scheme`)**는 빛에 민감한 사람(광선공포증, 편두통)에게 도움이 된다. 반대로 밝은 테마가 더 잘 읽히는 사람도 있으니 선택권이 핵심이다. 다크 모드가 대비 검사를 대신하지는 않는다.
+밝은 테마가 더 잘 읽히는 사람도 있으니 다크 모드(`prefers-color-scheme`)는 강요하지 않고 고를 수 있게 둔다. 다크 모드가 대비 검사를 대신하지는 않는다.
 
 SVG의 선·채움 색을 마크업에 하드코딩하지 말고 CSS로 제어하면 테마 대응이 쉽다.
 
@@ -215,7 +215,7 @@ OS 설정은 이름과 방향이 제각각이다. macOS·iOS는 「동작 줄이
 
 OS 설정만으로는 「필요 없는 움직임만 끄고 잘 만든 움직임은 보고 싶은」 중간 선택이 안 된다. 사이트 안에 애니메이션 켜기/끄기 토글을 두고, 그 기본값도 **끔**으로 하면 사용자가 직접 고른다.
 
-광과민성 뇌전증은 뇌전증 환자의 약 3%에 해당한다. 초당 세 번 넘는 번쩍임은 금지이고(2.3.1), 밝고 어두운 배경이 빠르게 바뀌는 콘텐츠는 PEAT로 검사한다.
+광과민성 뇌전증은 뇌전증 환자의 약 3~5%에 해당한다([Epilepsy Action](https://www.epilepsy.org.uk/info/seizure-triggers/photosensitive-epilepsy)). 초당 세 번 넘는 번쩍임은 금지이고(2.3.1), 밝고 어두운 배경이 빠르게 바뀌는 콘텐츠는 PEAT로 검사한다.
 
 ## 테스트는 실제 사람과
 

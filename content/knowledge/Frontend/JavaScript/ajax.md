@@ -247,11 +247,13 @@ function upload(file, onProgress) {
 
 연결이 끊긴 큰 파일 업로드를 처음부터 다시 하지 않으려면 **서버가 실제로 받은 바이트 수**를 기준으로 이어 보낸다. `xhr.upload.onprogress`의 숫자는 브라우저가 보낸 양이지 서버가 저장한 양이 아니므로(중간 프록시 버퍼, 서버 프로세스 중단) 재개 기준이 될 수 없다.
 
-```text
-1. 파일 식별자 만들기   fileId = 사용자 + file.name + file.size + file.lastModified
-2. 서버에 묻기         GET /upload/status (X-File-Id) → 받은 바이트 수 startByte (없으면 0)
-3. 나머지 보내기       POST /upload (X-File-Id, X-Start-Byte) 본문 = file.slice(startByte)
-4. 서버               기록된 크기가 startByte와 같은지 확인하고 파일 끝에 덧붙인다
+```mermaid
+flowchart TB
+  s1["1. 파일 식별자 만들기<br/>fileId = 사용자 + file.name + file.size + file.lastModified"]
+  s2["2. 서버에 묻기<br/>GET /upload/status (X-File-Id) → 받은 바이트 수 startByte (없으면 0)"]
+  s3["3. 나머지 보내기<br/>POST /upload (X-File-Id, X-Start-Byte) 본문 = file.slice(startByte)"]
+  s4["4. 서버<br/>기록된 크기가 startByte와 같은지 확인하고 파일 끝에 덧붙인다"]
+  s1 --> s2 --> s3 --> s4
 ```
 
 진행률은 `startByte + e.loaded`로 표시한다. 직접 만들기보다 재개 업로드 프로토콜 **tus**나 클라우드 스토리지의 재개·멀티파트 업로드 API(S3 multipart, GCS resumable)를 쓰는 것이 일반적이다. HTTP 표준으로 재개 업로드를 정하는 IETF 작업도 진행 중이다.

@@ -14,10 +14,12 @@ sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%EB%
 
 ## 공통 구조
 
-```text
-뷰포트 (overflow: hidden; 보여 줄 크기)
-└─ 트랙 (display: flex; transform: translateX(…); 슬라이드 전부를 가로로)
-   └─ 슬라이드 × n
+```mermaid
+flowchart TB
+  n1["뷰포트<br/>(overflow: hidden; 보여 줄 크기)"]
+  n2["트랙<br/>(display: flex; transform: translateX(…); 슬라이드 전부를 가로로)"]
+  n3["슬라이드 × n"]
+  n1 --> n2 --> n3
 ```
 
 뷰포트는 창 역할만 하고, 트랙 전체를 `transform`으로 옮긴다. `left`가 아니라 `transform`을 쓰는 이유는 레이아웃을 다시 계산하지 않고 합성만으로 움직이기 때문이다([[css-animation|CSS 애니메이션]]).
@@ -26,13 +28,28 @@ sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%EB%
 
 마지막에서 「다음」을 누르면 첫 장으로 **되감기듯 거꾸로** 달려가면 어색하다. 그래서 양끝에 반대편 슬라이드를 하나씩 복제해 둔다.
 
-```text
-트랙: [5′] [1] [2] [3] [4] [5] [1′]
-인덱스: 0    1   2   3   4   5   6      처음 위치는 1 (translateX(-100%))
+트랙 구성:
 
-5에서 다음 → 6(1′)으로 평소처럼 0.5초 이동
-          → transitionend에서 전환을 끄고 1로 순간 이동 (화면은 똑같아 보인다)
-1에서 이전 → 0(5′)으로 이동 → 끝나면 전환 없이 5로 점프
+```mermaid
+flowchart LR
+  s0["5′<br/>인덱스 0"]
+  s1["1<br/>인덱스 1 · 처음 위치 (translateX(-100%))"]
+  s2["2<br/>인덱스 2"]
+  s3["3<br/>인덱스 3"]
+  s4["4<br/>인덱스 4"]
+  s5["5<br/>인덱스 5"]
+  s6["1′<br/>인덱스 6"]
+  s0 ~~~ s1 ~~~ s2 ~~~ s3 ~~~ s4 ~~~ s5 ~~~ s6
+```
+
+끝에서 넘어갈 때:
+
+```mermaid
+flowchart LR
+  a5["5"] -->|"다음 · 평소처럼 0.5초 이동"| a6["6 (1′)"]
+  a6 -->|"transitionend에서 전환을 끄고 순간 이동<br/>(화면은 똑같아 보인다)"| a1["1"]
+  b1["1"] -->|"이전 · 이동"| b0["0 (5′)"]
+  b0 -->|"끝나면 전환 없이 점프"| b5["5"]
 ```
 
 ```tsx
@@ -91,7 +108,7 @@ const pages = Array.from({ length: Math.ceil(items.length / 4) }, (_, p) => item
 
 ## 자동으로 흐르는 마키: 목록을 두 번
 
-로고 띠처럼 쉬지 않고 한 방향으로 흐르는 슬라이더는 JavaScript 없이 만든다. **같은 목록을 두 번 이어 붙이고**, 트랙을 정확히 절반(목록 하나 길이)만큼 옮긴 뒤 처음으로 되돌아가게 반복한다. 되돌아간 순간의 화면은 두 번째 목록의 시작과 같아서 이음매가 보이지 않는다.
+로고 띠처럼 쉬지 않고 한 방향으로 흐르는 슬라이더는 JavaScript 없이 만든다. 같은 목록을 두 번 이어 붙이고, 트랙을 정확히 절반(목록 하나 길이)만큼 옮긴 뒤 처음으로 되돌아가게 반복한다. 되돌아간 순간의 화면은 두 번째 목록의 시작과 같아서 이음매가 보이지 않는다.
 
 ```css
 .marquee {

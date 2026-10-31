@@ -62,9 +62,14 @@ sources: ["https://webactually.com/2020/12/17/%EC%A0%91%EA%B7%BC%EC%84%B1%EA%B3%
 
 지금 브라우저는 DOM을 파싱해 화면을 그리는 동시에 **접근성 트리(accessibility tree)**를 만든다. 트리의 노드는 role(버튼), name(버튼 텍스트), state(포커스됨) 같은 속성을 갖고, 스크린 리더는 이 값을 읽는다.
 
-```text
-HTML ──파싱──→ DOM ──┬──→ 렌더링 → 화면
-                     └──→ 접근성 트리 → 접근성 API → 스크린 리더 · 점자 장치
+```mermaid
+flowchart LR
+  html["HTML"] -->|"파싱"| dom["DOM"]
+  dom --> render["렌더링"]
+  render --> screen["화면"]
+  dom --> tree["접근성 트리"]
+  tree --> api["접근성 API"]
+  api --> at["스크린 리더 · 점자 장치"]
 ```
 
 - `h1`~`h6`는 heading 노드가 된다. 스크린 리더 사용자가 가장 흔히 쓰는 정보 탐색 방법이 제목 훑기다.

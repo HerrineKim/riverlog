@@ -16,14 +16,14 @@ TypeScript 컴파일러는 코드를 **읽어서(구문), 뜻을 따지고(의�
 
 **문법(syntax)과 의미(semantics)는 다르다.** `const foo: number = 'not a number'`는 문법적으로 완벽하다. 파서는 문제없이 트리를 만든다. 틀린 것은 뜻이고, 그것은 체커가 잡는다.
 
-```text
-소스 코드 ──scanner──▶ 토큰 열 ──parser──▶ AST (SourceFile)
-                                              │
-                                   binder ────┤  AST 노드 ↔ Symbol 연결
-                                              ▼
-                              checker: AST + Symbol로 타입 검사 ──▶ 진단(오류 목록)
-                                              │
-                              emitter: AST + checker의 판단 ──▶ .js · .d.ts · .map
+```mermaid
+flowchart TB
+  src["소스 코드"] -->|"scanner"| tok["토큰 열"]
+  tok -->|"parser"| ast["AST (SourceFile)"]
+  ast -->|"binder<br/>AST 노드 ↔ Symbol 연결"| chk["checker: AST + Symbol로 타입 검사"]
+  chk --> diag["진단(오류 목록)"]
+  chk --> emit["emitter: AST + checker의 판단"]
+  emit --> out[".js · .d.ts · .map"]
 ```
 
 | 단계 | 입력 → 출력 | 하는 일 | 찾아내는 오류 |

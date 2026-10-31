@@ -148,7 +148,7 @@ html { box-sizing: border-box; }
 *, *::before, *::after { box-sizing: inherit; }
 ```
 
-요소마다 섞어 쓰면 크기 계산이 엉키므로 **모든 요소에 같은 방식**을 적용한다. `*`에 `border-box`를 직접 주는 대신 위처럼 `html`에서 `inherit`으로 물려받게 하면, `content-box`를 전제로 만든 외부 위젯을 감싼 요소에 `box-sizing: content-box` 한 줄만 주어도 그 안이 통째로 바뀐다. 이 규칙은 보통 CSS 리셋에 들어간다([[css-practical-tips|CSS 실전 팁]]).
+요소마다 섞어 쓰면 크기 계산이 엉키므로 모든 요소에 같은 방식을 적용한다. `*`에 `border-box`를 직접 주는 대신 위처럼 `html`에서 `inherit`으로 물려받게 하면, `content-box`를 전제로 만든 외부 위젯을 감싼 요소에 `box-sizing: content-box` 한 줄만 주어도 그 안이 통째로 바뀐다. 이 규칙은 보통 CSS 리셋에 들어간다([[css-practical-tips|CSS 실전 팁]]).
 
 ## 간격 주는 방법 고르기
 
@@ -163,7 +163,7 @@ html { box-sizing: border-box; }
 
 `gap`은 값 하나면 행·열 모두, 두 값이면 `row-gap column-gap` 순이다.
 
-간격은 **일관된 척도**를 정하고 지킨다. 거터(gutter)는 늘 `20px`, 흐름 콘텐츠 사이는 `1em`처럼 정해 커스텀 속성으로 토큰화하면 한 곳에서 바꿀 수 있다([[design-system|디자인 시스템: 구성, 도입, 구축과 배포]]).
+간격은 일관된 척도를 정하고 지킨다. 거터(gutter)는 늘 `20px`, 흐름 콘텐츠 사이는 `1em`처럼 정해 커스텀 속성으로 토큰화하면 한 곳에서 바꿀 수 있다([[design-system|디자인 시스템: 구성, 도입, 구축과 배포]]).
 
 ```css
 :root { --gutter: 1.25rem; --flow-space: 1em; }
@@ -183,7 +183,7 @@ CSS의 두 번째 원칙: **display에 따라 크기와 배치가 달라진다.*
 | `none` | - | 화면에서 제거되어 **공간도 차지하지 않음** | - |
 
 - `display`는 두 가지를 정한다. **바깥**: 형제와 블록처럼 줄을 바꾸며 놓일지, 인라인처럼 문장 속에 놓일지. **안쪽**: 자식을 일반 흐름·플렉스·그리드 중 무엇으로 배치할지. `display: flex`는 바깥은 블록, 자식은 플렉스 아이템이다.
-- 인라인 요소의 위아래 margin·padding은 그려지지만 주변 줄이 **자리를 비켜 주지 않는다.** `inline-block`은 문장 속에 놓이면서도 위아래 여백을 존중받는다.
+- 인라인 요소의 위아래 margin·padding은 그려지지만 주변 줄이 자리를 비켜 주지 않는다. `inline-block`은 문장 속에 놓이면서도 위아래 여백을 존중받는다.
 - `inline`·`inline-block` 요소 사이에는 HTML 소스의 줄바꿈·들여쓰기가 **공백 한 칸**(약 4px)으로 그려진다. `inline-block`으로 메뉴를 나란히 놓으면 생기는 틈의 원인이다. 블록은 공백을 무시한다. 간격을 정확히 통제하려면 부모를 플렉스로 만들고 `gap`을 쓴다.
 - 블록 요소 안에는 인라인 요소가 들어갈 수 있다. (대표 블록: `div`, `p`, `ul`, `h1`… / 대표 인라인: `span`, `a`, `img`, `strong`…)
 - `visibility: hidden`은 `display: none`과 달리 **공간은 차지하면서** 보이지만 않게 한다.

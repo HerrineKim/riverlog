@@ -14,23 +14,26 @@ sources: ["https://blog.mathpresso.com/modern-frontend-infrastructure-overview-9
 
 ## 요청 경로 한눈에
 
-```text
-브라우저
-  │
-External Load Balancer        ─ 클라우드가 만든 공인 IP
-  │
-Ingress / Gateway             ─ 클러스터 입구. TLS 종료, 호스트·경로 라우팅
-  │                              (Istio Ingress Gateway, Kubernetes Gateway API 구현체)
-API Gateway (선택)             ─ 인증, 레이트 리밋, L7 라우팅 (Kong 등)
-  │
-Service                       ─ 같은 앱의 여러 파드로 로드 밸런싱
-  │
-Pod ┬ 프록시 (사이드카 또는 노드 프록시) ─ 트래픽 관측·보안·재시도
-    └ 앱 컨테이너 (예: Next.js 서버)
-  │
-응답은 같은 길을 거슬러 나간다
+```mermaid
+flowchart TB
+  browser["브라우저"] --> lb["External Load Balancer<br/>클라우드가 만든 공인 IP"]
+  lb --> ing["Ingress / Gateway<br/>클러스터 입구. TLS 종료, 호스트·경로 라우팅<br/>(Istio Ingress Gateway, Kubernetes Gateway API 구현체)"]
+  ing --> apigw["API Gateway (선택)<br/>인증, 레이트 리밋, L7 라우팅 (Kong 등)"]
+  apigw --> svc["Service<br/>같은 앱의 여러 파드로 로드 밸런싱"]
+  svc --> px
+  subgraph pod["Pod"]
+    px["프록시 (사이드카 또는 노드 프록시)<br/>트래픽 관측·보안·재시도"] --> app["앱 컨테이너 (예: Next.js 서버)"]
+  end
+```
 
-관측: 각 프록시의 지표 ──scrape──▶ Prometheus ──query──▶ Grafana 대시보드
+응답은 같은 길을 거슬러 나간다.
+
+관측:
+
+```mermaid
+flowchart LR
+  m["각 프록시의 지표"] -->|"scrape"| prom["Prometheus"]
+  prom -->|"query"| graf["Grafana 대시보드"]
 ```
 
 ## 구성 요소
@@ -93,7 +96,7 @@ Istio는 Prometheus용 지표 노출을 기본으로 켜 두기 때문에, Prome
 
 - 요청은 로드 밸런서 → 게이트웨이 → (API 게이트웨이) → 서비스 → 파드의 프록시 → 앱 순으로 흐르고, 프록시마다 지표가 쌓인다.
 - Terraform은 클라우드 자원을, Kubernetes는 컨테이너를, Helm은 리소스 묶음을, 서비스 메시는 서비스 간 트래픽을 맡는다.
-- 클러스터 입구는 Ingress에서 **Gateway API**로, 서비스 메시는 사이드카에서 **앰비언트** 방식으로 옮겨 가고 있다.
+- 클러스터 입구는 Ingress에서 Gateway API로, 서비스 메시는 사이드카에서 앰비언트 방식으로 옮겨 가고 있다.
 - 서버에서 도는 프론트엔드 코드가 늘수록, 요청 경로와 지표를 직접 읽을 줄 아는 것이 성능 작업의 출발점이다.
 
 관련 노트: [[vm-vs-container|VM과 컨테이너]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[ci-cd|CI/CD]]

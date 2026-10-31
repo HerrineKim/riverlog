@@ -125,7 +125,7 @@ try (var in = Files.newBufferedReader(src);
 }
 ```
 
-컴파일러는 이를 `try`·`finally`로 펼친다. 핵심은 예외가 두 번 날 때의 처리다.
+컴파일러는 이를 `try`·`finally`로 펼친다. 직접 쓴 `finally`와 달라지는 곳은 예외가 두 번 날 때의 처리다.
 
 | 상황 | 직접 쓴 `finally { close(); }` | try-with-resources |
 | --- | --- | --- |
@@ -220,9 +220,9 @@ Comparator<User> byAge = Comparator.comparingInt(User::age);
 
 스트림은 컬렉션·배열·I/O 같은 소스의 원소를 `filter`·`map`·`collect` 같은 선언적 연산으로 처리하는 파이프라인이다. 데이터를 저장하지 않고 원본을 바꾸지 않으며, **한 번만 소비**할 수 있다.
 
-```text
-소스(Spliterator) ─▶ 중간 연산(filter, map, sorted …) ─▶ 최종 연산(collect, forEach, findFirst …)
-                        지연: 최종 연산 전엔 아무 일도 안 한다
+```mermaid
+flowchart LR
+    src["소스(Spliterator)"] --> mid["중간 연산(filter, map, sorted …)<br>지연: 최종 연산 전엔 아무 일도 안 한다"] --> term["최종 연산(collect, forEach, findFirst …)"]
 ```
 
 - **지연 평가와 융합**: 중간 연산은 파이프라인 단계만 연결하고, 최종 연산이 불릴 때 원소 **하나씩** 모든 단계를 통과시킨다(수직 처리). `filter`→`map`이 리스트를 두 번 도는 것이 아니다.

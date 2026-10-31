@@ -130,7 +130,7 @@ scalar clone <url>
 - 저장소가 커지는 축(이력, ref, 파일 내용, 작업 트리 파일 수)마다 처방이 다르다.
 - 얕은 클론만 하고 refspec을 지정하지 않으면 모든 브랜치를 받는다. CI 체크아웃에서는 받을 ref를 꼭 좁힌다.
 - 개발자 PC에는 blobless 부분 클론 + 희소 체크아웃 + fsmonitor가 무난하다.
-- **큰 저장소의 Git 성능은 "필요한 것만 받고, 필요한 것만 펼친다"로 요약된다.**
+- 큰 저장소에서는 필요한 것만 받고, 필요한 것만 펼친다.
 - 규모가 극단에 이르면 받는 양을 줄이는 선을 넘어, 이력을 서버로 올리고 Git의 분산 전제를 버리는 재설계(Scion)까지 간다.
 
 관련 노트: [[remote-github|원격 저장소와 GitHub]], [[git-internals|Git 내부 구조]], [[monorepo-vs-polyrepo|모노레포와 폴리레포]], [[git-config-options|Git 설정 옵션]], [[ci-cd|CI/CD]], [[package-managers|패키지 매니저]]

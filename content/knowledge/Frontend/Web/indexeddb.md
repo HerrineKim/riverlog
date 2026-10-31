@@ -27,13 +27,13 @@ sources: ["https://ko.javascript.info/indexeddb", "https://developer.mozilla.org
 
 ## 구조
 
-```text
-출처(https://app.com)
- └─ 데이터베이스 "mail" (version 3)
-     ├─ 객체 저장소 "messages"  keyPath: "id"      ← 테이블에 해당
-     │    ├─ 인덱스 "by_date"   keyPath: "date"
-     │    └─ 인덱스 "by_label"  keyPath: "labels", multiEntry
-     └─ 객체 저장소 "drafts"    autoIncrement
+```mermaid
+flowchart TB
+  origin["출처(https://app.com)"] --> db["데이터베이스 #quot;mail#quot; (version 3)"]
+  db --> s1["객체 저장소 #quot;messages#quot;<br/>keyPath: #quot;id#quot;<br/>← 테이블에 해당"]
+  s1 --> i1["인덱스 #quot;by_date#quot;<br/>keyPath: #quot;date#quot;"]
+  s1 --> i2["인덱스 #quot;by_label#quot;<br/>keyPath: #quot;labels#quot;, multiEntry"]
+  db --> s2["객체 저장소 #quot;drafts#quot;<br/>autoIncrement"]
 ```
 
 - **객체 저장소(object store)**: 값을 담는 곳. 이름과 달리 원시값도 담는다. 값마다 고유한 **키**가 있고, 저장소는 늘 **키 순으로 정렬**되어 있다.
@@ -199,9 +199,9 @@ IndexedDB는 Cache Storage 등과 출처 단위 할당량을 나눠 쓰고, 기�
 
 ## 정리
 
-- IndexedDB는 구조화된 값을 키로 저장하는 **출처별 트랜잭션 DB**다. 오프라인·대용량에 쓰고, 작은 설정값은 localStorage로 충분하다.
-- 스키마는 **버전을 올리고 `upgradeneeded`에서만** 바꾼다. 다른 탭을 위해 `versionchange`에서 연결을 닫는다.
-- 트랜잭션은 **자동 커밋**된다. 중간에 `fetch`를 기다리지 말고, 데이터를 먼저 준비한 뒤 한 번에 쓴다. 완료는 `complete`(`tx.done`)로 확인한다.
+- IndexedDB는 구조화된 값을 키로 저장하는 출처별 트랜잭션 DB다. 오프라인·대용량에 쓰고, 작은 설정값은 localStorage로 충분하다.
+- 스키마는 버전을 올리고 `upgradeneeded`에서만 바꾼다. 다른 탭을 위해 `versionchange`에서 연결을 닫는다.
+- 트랜잭션은 자동 커밋된다. 중간에 `fetch`를 기다리지 말고, 데이터를 먼저 준비한 뒤 한 번에 쓴다. 완료는 `complete`(`tx.done`)로 확인한다.
 - 키 범위·인덱스로 찾고, 큰 데이터는 커서로 돈다.
 - 코드는 idb 같은 Promise 래퍼로 쓰되 자동 커밋 규칙은 똑같이 지킨다. 데이터는 지워질 수 있다는 전제로 설계한다.
 

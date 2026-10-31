@@ -43,15 +43,12 @@ React 문서는 `renderToString`·`renderToStaticMarkup`을 **레거시(Legacy)*
 
 ## 동작 흐름
 
-```text
-요청
- └─ 첫 청크: 정적 껍데기(static shell)
- │    <head>·CSS·JS 링크, 레이아웃, 내비게이션,
- │    Suspense fallback 자리 <template id="B:0">
- │    → 브라우저가 바로 그리고 CSS·JS 다운로드 시작
- ├─ 다음 청크: 컴포넌트 payload (hydration용)
- ├─ +1s: 경계 0 완료 → <div hidden id="S:0">완성된 HTML</div> + 교체 스크립트
- └─ +3s: 경계 1 완료 → <div hidden id="S:1">…</div> + 교체 스크립트
+```mermaid
+flowchart TB
+  n0["요청"] --> n1["첫 청크: 정적 껍데기(static shell)<br/>#lt;head#gt;·CSS·JS 링크, 레이아웃, 내비게이션,<br/>Suspense fallback 자리 #lt;template id=#quot;B:0#quot;#gt;"]
+  n1 -->|"브라우저가 바로 그리고 CSS·JS 다운로드 시작"| n2["다음 청크: 컴포넌트 payload (hydration용)"]
+  n2 --> n3["+1s: 경계 0 완료<br/>#lt;div hidden id=#quot;S:0#quot;#gt;완성된 HTML#lt;/div#gt; + 교체 스크립트"]
+  n3 --> n4["+3s: 경계 1 완료<br/>#lt;div hidden id=#quot;S:1#quot;#gt;…#lt;/div#gt; + 교체 스크립트"]
 ```
 
 - 교체 스크립트는 인라인이라 **JS 번들이나 hydration을 기다리지 않고** 바로 fallback을 바꾼다.
@@ -126,6 +123,6 @@ export default function Dashboard() {
 - 지금의 흐름은 **정적 껍데기를 최대한 키우고(캐시) Suspense 경계는 동적 데이터 바로 옆에 두는 것**이다.
 - 대가도 있다. 상태 코드를 나중에 바꿀 수 없고, 프록시·CDN 버퍼링에 약하며, 경계를 잘못 두면 LCP·CLS가 나빠진다.
 
-결론: 어디서 렌더링할지보다 **어디에 Suspense 경계를 둘지**가 렌더링 전략의 핵심 결정이 되었다.
+어디서 렌더링할지보다 어디에 Suspense 경계를 둘지가 렌더링 전략의 핵심 결정이 되었다.
 
 관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]], [[nextjs|Next.js를 쓰는 이유]], [[react-use-hook|use 훅과 리액트 비동기 처리]], [[browser-rendering|브라우저 렌더링 과정]]

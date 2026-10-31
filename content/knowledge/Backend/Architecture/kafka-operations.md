@@ -78,15 +78,14 @@ ISR이 **복제의 일관성 단위**다. 쓰기 확인, 리더 선출, 컨슈�
 
 ### 브로커 장애 조치
 
-```text
-브로커 2 다운
-  → 활성 컨트롤러가 하트비트 끊김을 감지 (broker.session.timeout.ms, 기본 9초)
-  → 브로커 2가 리더였던 파티션마다 ISR에 남은 복제본 중 새 리더를 뽑는다
-  → 메타데이터 로그에 기록, 브로커들이 따라 읽는다
-  → 프로듀서·컨슈머는 NOT_LEADER_OR_FOLLOWER 오류를 받고 메타데이터를 새로 받아 새 리더로 재시도한다
-브로커 2 복구
-  → 팔로워로 돌아와 따라잡고 ISR에 다시 들어간다
-  → 선호 리더 선출(auto.leader.rebalance.enable)이 리더 자리를 원래 배치로 되돌린다
+```mermaid
+flowchart TB
+  d["브로커 2 다운"] --> d1["활성 컨트롤러가 하트비트 끊김을 감지<br/>(broker.session.timeout.ms, 기본 9초)"]
+  d1 --> d2["브로커 2가 리더였던 파티션마다<br/>ISR에 남은 복제본 중 새 리더를 뽑는다"]
+  d2 --> d3["메타데이터 로그에 기록, 브로커들이 따라 읽는다"]
+  d3 --> d4["프로듀서·컨슈머는 NOT_LEADER_OR_FOLLOWER 오류를 받고<br/>메타데이터를 새로 받아 새 리더로 재시도한다"]
+  r["브로커 2 복구"] --> r1["팔로워로 돌아와 따라잡고 ISR에 다시 들어간다"]
+  r1 --> r2["선호 리더 선출(auto.leader.rebalance.enable)이<br/>리더 자리를 원래 배치로 되돌린다"]
 ```
 
 리더가 한 브로커에 몰리면 그 브로커만 바빠지므로, 장애 뒤에는 **선호 리더(preferred leader)** 로 리더를 되돌리는 것까지가 복구다. 활성 컨트롤러가 죽으면 쿼럼 안에서 Raft 선거로 새 활성 컨트롤러를 뽑는다.
@@ -223,10 +222,21 @@ ISR이 **복제의 일관성 단위**다. 쓰기 확인, 리더 선출, 컨슈�
 
 ### 로그 컴팩션
 
-```text
-컴팩션 전:  K1=a  K2=b  K1=c  K3=d  K2=null  K1=e
-컴팩션 후:              K3=d  K2=null  K1=e     (K2=null은 tombstone, 일정 시간 뒤 사라진다)
-오프셋:      0     1     2     3     4        5  → 남은 레코드의 오프셋은 그대로다
+```mermaid
+flowchart TB
+  subgraph row1[" "]
+    direction LR
+    r1["컴팩션 전"] ~~~ a0["K1=a"] ~~~ a1["K2=b"] ~~~ a2["K1=c"] ~~~ a3["K3=d"] ~~~ a4["K2=null"] ~~~ a5["K1=e"]
+  end
+  subgraph row2[" "]
+    direction LR
+    r2["컴팩션 후"] ~~~ s1[" "] ~~~ s2[" "] ~~~ s3[" "] ~~~ b3["K3=d"] ~~~ b4["K2=null<br/>(tombstone, 일정 시간 뒤 사라진다)"] ~~~ b5["K1=e"]
+  end
+  subgraph row3[" "]
+    direction LR
+    r3["오프셋<br/>남은 레코드의 오프셋은 그대로다"] ~~~ o0["0"] ~~~ o1["1"] ~~~ o2["2"] ~~~ o3["3"] ~~~ o4["4"] ~~~ o5["5"]
+  end
+  row1 ~~~ row2 ~~~ row3
 ```
 
 | 규칙 | 내용 |
@@ -291,13 +301,11 @@ ACL이 하나도 없는 자원은 기본적으로 거부된다(`allow.everyone.i
 
 브로커를 내릴 때는 **통제된 종료(controlled shutdown, 기본 켜짐)** 가 그 브로커가 리더인 파티션의 리더십을 미리 다른 ISR로 옮긴다. 그래서 갑자기 죽을 때보다 사용 불가 시간이 짧다.
 
-```text
-for 브로커 in 클러스터:
-  1. 브로커를 정상 종료한다 (리더십이 먼저 옮겨진다)
-  2. 바이너리·설정을 바꾸고 다시 띄운다
-  3. UnderReplicatedPartitions가 0이 될 때까지 기다린다  ← 이걸 건너뛰면 다음 브로커를 내릴 때 ISR이 부족해진다
-  4. 다음 브로커로
-업그레이드라면 모든 브로커를 올린 뒤 메타데이터 버전을 올린다 (kafka-features.sh upgrade)
+```mermaid
+flowchart TB
+  L["for 브로커 in 클러스터"] --> S1["1. 브로커를 정상 종료한다<br>(리더십이 먼저 옮겨진다)"] --> S2["2. 바이너리·설정을 바꾸고 다시 띄운다"] --> S3["3. UnderReplicatedPartitions가 0이 될 때까지 기다린다<br>이걸 건너뛰면 다음 브로커를 내릴 때 ISR이 부족해진다"] --> S4["4. 다음 브로커로"]
+  S4 --> S1
+  S4 -- "업그레이드라면 모든 브로커를 올린 뒤" --> U["메타데이터 버전을 올린다<br>(kafka-features.sh upgrade)"]
 ```
 
 복제 계수 3, `min.insync.replicas=2`면 브로커 한 대가 내려가도 `acks=all` 쓰기가 계속된다. 한 번에 두 대를 내리면 쓰기가 멈추는 파티션이 생긴다. 메타데이터 버전을 마지막에 올리는 이유는 그 전까지 옛 버전으로 되돌릴 수 있게 하기 위해서다. 클러스터 자체를 바꿔야 하면 MirrorMaker 2로 새 클러스터에 데이터를 복제해 두고 클라이언트를 옮긴다.
@@ -339,16 +347,14 @@ for 브로커 in 클러스터:
 
 ### 프로듀서 전송이 느릴 때: 어느 쪽 병목인가
 
-```text
-record-queue-time-avg 높음, bufferpool-wait-ratio > 0
-  → 레코드가 누산기에서 오래 기다린다: 프로듀서 쪽
-    (송신이 못 따라감, 배치가 작아 요청이 너무 많음, buffer.memory 부족, 직렬화·압축 CPU)
-request-latency-avg 높음
-  → 보낸 요청의 왕복이 느리다: 네트워크나 브로커 쪽. 브로커 Produce TotalTimeMs를 쪼개 본다
-      RequestQueueTimeMs 높음 → 요청 처리 스레드 포화 (num.io.threads, RequestHandlerAvgIdlePercent)
-      LocalTimeMs 높음        → 리더의 디스크 쓰기가 느리다
-      RemoteTimeMs 높음       → acks=all에서 팔로워 복제를 기다린다 (느린 팔로워, ISR 문제)
-      ResponseSendTimeMs 높음 → 네트워크 스레드나 대역폭 포화
+```mermaid
+flowchart LR
+  p["record-queue-time-avg 높음,<br/>bufferpool-wait-ratio #gt; 0"] --> pc["레코드가 누산기에서 오래 기다린다: 프로듀서 쪽<br/>(송신이 못 따라감, 배치가 작아 요청이 너무 많음,<br/>buffer.memory 부족, 직렬화·압축 CPU)"]
+  l["request-latency-avg 높음"] --> lc["보낸 요청의 왕복이 느리다: 네트워크나 브로커 쪽<br/>브로커 Produce TotalTimeMs를 쪼개 본다"]
+  lc --> q["RequestQueueTimeMs 높음"] --> qc["요청 처리 스레드 포화<br/>(num.io.threads, RequestHandlerAvgIdlePercent)"]
+  lc --> lt["LocalTimeMs 높음"] --> ltc["리더의 디스크 쓰기가 느리다"]
+  lc --> rt["RemoteTimeMs 높음"] --> rtc["acks=all에서 팔로워 복제를 기다린다<br/>(느린 팔로워, ISR 문제)"]
+  lc --> rs["ResponseSendTimeMs 높음"] --> rsc["네트워크 스레드나 대역폭 포화"]
 ```
 
 배치 크기 평균(`batch-size-avg`)과 요청당 레코드 수(`records-per-request-avg`)가 작으면 브로커가 아니라 배치 설정부터 고친다.

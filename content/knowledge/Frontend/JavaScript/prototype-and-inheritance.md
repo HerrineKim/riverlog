@@ -107,14 +107,14 @@ Pizza.prototype.describe = function () {
 
 ## 프로토타입 체인과 섀도잉
 
-```text
-pepperoni ──▶ Pizza.prototype ──▶ Object.prototype ──▶ null
-{toppings,     {eat, describe,      {toString,
- customer,      constructor}         hasOwnProperty …}
- slices}
+```mermaid
+flowchart LR
+  p["pepperoni<br/>{toppings, customer, slices}"] --> pp["Pizza.prototype<br/>{eat, describe, constructor}"] --> op["Object.prototype<br/>{toString, hasOwnProperty …}"] --> nul["null"]
+```
 
-span ──▶ HTMLSpanElement.prototype ──▶ HTMLElement.prototype ──▶ Element.prototype
-     ──▶ Node.prototype ──▶ EventTarget.prototype ──▶ Object.prototype ──▶ null
+```mermaid
+flowchart LR
+  s["span"] --> hs["HTMLSpanElement.prototype"] --> he["HTMLElement.prototype"] --> el["Element.prototype"] --> nd["Node.prototype"] --> et["EventTarget.prototype"] --> op["Object.prototype"] --> nul["null"]
 ```
 
 - `pepperoni.toppings`는 인스턴스에서 바로 찾는다.
@@ -245,10 +245,12 @@ new Dog('바둑이').say() // '바둑이: 멍멍'
 
 내장 객체도 같은 규칙을 따른다. **메서드는 `Array.prototype`·`Date.prototype` 같은 프로토타입에, 데이터(배열 요소, 객체의 속성, 날짜 값)는 객체 자신에** 둔다.
 
-```text
-[1, 2, 3] ──▶ Array.prototype ──▶ Object.prototype ──▶ null
-function f ──▶ Function.prototype ──▶ Object.prototype ──▶ null
-{} ──────────────────────────────▶ Object.prototype ──▶ null
+```mermaid
+flowchart LR
+  arr["[1, 2, 3]"] --> ap["Array.prototype"] --> op["Object.prototype"]
+  fn["function f"] --> fp["Function.prototype"] --> op
+  obj["{}"] --> op
+  op --> nul["null"]
 ```
 
 - `{}`는 `new Object()`의 줄임이라 `Object.prototype`에 이어지고, `'[object Object]'`를 만드는 `toString`도 거기서 온다. 모든 내장 체인의 꼭대기에는 `Object.prototype`이 있고 그 위는 `null`이다.
@@ -259,7 +261,7 @@ function f ──▶ Function.prototype ──▶ Object.prototype ──▶ nul
 
 ## 내장 프로토타입은 고치지 않는다
 
-`String.prototype`이나 `Array.prototype`에도 메서드를 넣거나 덮어쓸 수 있다. 하지만 **페이지의 모든 코드가 같은 프로토타입을 공유**하므로, 한 곳에서 `toUpperCase`를 바꾸면 그 동작을 믿는 라이브러리가 모두 깨진다. 이렇게 내장 객체를 고치는 것을 몽키 패치라 하며, 표준화에도 걸림돌이 된다. 2018년 MooTools가 넣어 둔 `Array.prototype.flatten` 때문에 표준 메서드 이름이 `flat`으로 바뀐 일이 대표적이다.
+`String.prototype`이나 `Array.prototype`에도 메서드를 넣거나 덮어쓸 수 있다. 하지만 **페이지의 모든 코드가 같은 프로토타입을 공유**하므로, 한 곳에서 `toUpperCase`를 바꾸면 그 동작을 믿는 라이브러리가 모두 깨진다. 이렇게 내장 객체를 고치는 것을 몽키 패치라 하며, 표준화에도 걸림돌이 된다. MooTools가 오래전에 넣어 둔 `Array.prototype.flatten`과 충돌해 2018년 표준 메서드 이름이 `flat`으로 바뀐 일([#SmooshGate](https://developer.chrome.com/blog/smooshgate))이 대표적이다.
 
 예외는 **폴리필(polyfill)** 이다. 표준에 이미 있지만 오래된 브라우저에 없는 기능을, 표준과 똑같은 동작으로 **없을 때만** 채운다.
 

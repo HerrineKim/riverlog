@@ -72,11 +72,13 @@ MongoDB는 샤딩을 DB 안에 내장한다. 샤딩된 클러스터(sharded clus
 | **config server** | 클러스터 메타데이터(어떤 샤드 키 구간이 어느 샤드에 있나, 클러스터 설정)를 저장한다. 레플리카 셋으로 운영한다. 8.0부터는 config server가 애플리케이션 데이터도 담는 config shard 구성이 가능하다 |
 | **mongos** | 쿼리 라우터. 애플리케이션은 mongos에만 접속한다. config server의 메타데이터를 캐시해, 쿼리에 샤드 키가 있으면 해당 샤드로만 보내고(targeted), 없으면 모든 샤드에 보내 결과를 합친다(scatter-gather) |
 
-```text
-앱 ──▶ mongos (여러 대, 무상태) ──▶ shard A (레플리카 셋)
-            │ 메타데이터 캐시      ──▶ shard B (레플리카 셋)
-            ▼                     ──▶ shard C (레플리카 셋)
-     config server (레플리카 셋)
+```mermaid
+flowchart LR
+  app["앱"] --> mongos["mongos (여러 대, 무상태)"]
+  mongos --> a["shard A (레플리카 셋)"]
+  mongos --> b["shard B (레플리카 셋)"]
+  mongos --> c["shard C (레플리카 셋)"]
+  mongos -->|"메타데이터 캐시"| cfg["config server (레플리카 셋)"]
 ```
 
 샤드 키는 범위(ranged) 또는 해시(hashed)로 고른다. 범위는 범위 조회가 한 샤드에서 끝나지만 단조 증가 키면 쓰기가 마지막 샤드로 몰리고, 해시는 고르게 퍼지는 대신 범위 조회가 모든 샤드로 간다. 샤드 키를 고르는 기준은 [[database-sharding|데이터베이스 샤딩]]에 있다. 잘못 고른 키는 `reshardCollection`(5.0부터)으로 무중단으로 바꿀 수 있지만, 컬렉션 전체를 다시 쓰는 무거운 작업이다.

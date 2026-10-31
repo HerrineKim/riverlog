@@ -165,6 +165,6 @@ DevTools는 **마크업이 보조 기술에 어떻게 노출되나**를 잘 잡�
 - CSS가 안 먹으면 스타일 창의 표시(흐림·취소선·경고·정보 아이콘)로 원인 종류를 가르고, 계산됨 탭에서 승자를 확인한다.
 - 상태 강제와 배지 오버레이로 "그때만 보이는" 스타일과 레이아웃을 붙잡아 둔다.
 - DevTools 수정은 새로고침하면 사라진다. 변경사항 패널에서 복사해 코드로 옮긴다.
-- **결국 DevTools는 지금 렌더링된 결과를 보여 주는 거울이다.** 고칠 곳은 소스에 있다.
+- DevTools는 지금 렌더링된 결과를 보여 줄 뿐이고, 고칠 곳은 소스에 있다.
 
 관련 노트: [[Chrome-DevTools|Chrome DevTools]], [[devtools-console|DevTools Console 활용]], [[devtools-debugging|DevTools로 JavaScript 디버깅하기]], [[devtools-device-emulation|DevTools로 기기·환경 에뮬레이션하기]], [[how-css-works|CSS가 동작하는 방식]], [[Accessibility|웹 접근성]]

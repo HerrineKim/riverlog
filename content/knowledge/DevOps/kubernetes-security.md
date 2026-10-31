@@ -12,11 +12,12 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 쿠버네티스 보안은 두 갈래다. 하나는 **API 서버에 누가 무엇을 할 수 있나**(인증·인가), 다른 하나는 **컨테이너가 노드에서 무엇을 할 수 있나**(파드 보안)다. 파드 사이 네트워크 접근은 NetworkPolicy가 맡으며 [[kubernetes-networking|쿠버네티스 네트워킹]]에 있다. Secret의 보안 수준은 [[kubernetes-storage-config|쿠버네티스 저장소와 설정]]에 있다.
 
-```text
-API 요청 → 인증(Authentication): 누구인가
-        → 인가(Authorization): 이 동작을 해도 되나 (RBAC)
-        → 어드미션(Admission): 내용이 정책에 맞나 (Pod Security Admission, 정책 엔진)
-        → etcd 저장
+```mermaid
+flowchart TB
+  a["API 요청"] --> b["인증(Authentication): 누구인가"]
+  b --> c["인가(Authorization): 이 동작을 해도 되나 (RBAC)"]
+  c --> d["어드미션(Admission): 내용이 정책에 맞나<br/>(Pod Security Admission, 정책 엔진)"]
+  d --> e["etcd 저장"]
 ```
 
 ## 인증: 누구인가
@@ -125,7 +126,7 @@ roleRef: { kind: Role, name: deployer, apiGroup: rbac.authorization.k8s.io }
 **서비스 계정(ServiceAccount)은 파드 안에서 도는 프로세스의 신원**이다. 컨트롤러, CI 러너, 클러스터 정보를 읽는 앱처럼 API 서버를 부르는 프로그램이 이 신원으로 인증하고, RBAC로 권한을 받는다.
 
 - 네임스페이스마다 `default` 서비스 계정이 자동으로 생기고, 지정하지 않은 파드는 이것을 쓴다. 앱별로 만들어 `spec.serviceAccountName`으로 지정한다.
-- kubelet은 파드에 **투사된(projected) 토큰**을 `/var/run/secrets/kubernetes.io/serviceaccount/`(토큰, CA 인증서, 네임스페이스 파일)에 넣는다. 이 토큰은 대상(audience)과 만료 시간이 있고, kubelet이 만료 전에 갱신하며, **파드가 지워지면 무효가 된다.**
+- kubelet은 파드에 **투사된(projected) 토큰**을 `/var/run/secrets/kubernetes.io/serviceaccount/`(토큰, CA 인증서, 네임스페이스 파일)에 넣는다. 이 토큰은 대상(audience)과 만료 시간이 있고, kubelet이 만료 전에 갱신하며, 파드가 지워지면 무효가 된다.
 - 쿠버네티스 1.24부터 서비스 계정마다 만료 없는 토큰 Secret을 자동으로 만들지 않는다. 클러스터 밖에서 쓸 토큰이 필요하면 `kubectl create token <서비스 계정> --duration=1h`로 짧게 발급한다.
 - 같은 토큰을 클라우드 IAM과 연동해(EKS IRSA·Pod Identity, GKE Workload Identity) 파드에 클라우드 권한을 준다. 노드 IAM 역할에 권한을 몰아주지 않는다.
 
@@ -214,7 +215,7 @@ metadata:
 | `audit` | 허용하되 API 서버 감사 로그에 기록한다 | 운영 중인 위반을 조용히 파악 |
 | `warn` | 허용하되 요청한 사용자(kubectl)에게 경고를 돌려준다 | 개발자에게 미리 알림 |
 
-`enforce`는 파드에만 적용되므로, Deployment를 만들 때는 성공하고 ReplicaSet이 파드를 만들 때 실패한다. `warn`·`audit`은 워크로드 리소스의 파드 템플릿에도 적용되어 Deployment 단계에서 경고가 보인다. 그래서 흔한 도입 순서는 **warn·audit으로 restricted를 걸어 위반을 모으고 → 고친 뒤 enforce를 올리는 것**이다.
+`enforce`는 파드에만 적용되므로, Deployment를 만들 때는 성공하고 ReplicaSet이 파드를 만들 때 실패한다. `warn`·`audit`은 워크로드 리소스의 파드 템플릿에도 적용되어 Deployment 단계에서 경고가 보인다. 그래서 흔한 도입 순서는 warn·audit으로 restricted를 걸어 위반을 모으고 → 고친 뒤 enforce를 올리는 것이다.
 
 세 단계보다 세밀한 규칙(허용 레지스트리, 필수 라벨, `latest` 태그 금지)은 CEL로 쓰는 ValidatingAdmissionPolicy나 Kyverno·OPA Gatekeeper 같은 정책 엔진이 맡는다.
 

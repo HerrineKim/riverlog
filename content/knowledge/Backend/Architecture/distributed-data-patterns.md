@@ -31,18 +31,14 @@ sources: ["https://bytebytego.com/guides/how-do-we-manage-data", "https://byteby
 
 **CDC(Change Data Capture)** 는 DB에서 일어난 삽입·수정·삭제를 잡아 다른 시스템으로 실시간 전달하는 기법이다. 애플리케이션은 평소처럼 DB에 쓰기만 하고, 나머지는 CDC가 맡는다.
 
-```text
-앱 ──INSERT/UPDATE/DELETE──▶ 원본 DB
-                               │ 트랜잭션 로그 (MySQL binlog, PostgreSQL WAL)
-                               ▼
-                         소스 커넥터 (Debezium)
-                               │ 변경 이벤트 (before / after / op)
-                               ▼
-                         Kafka 토픽
-                               │
-            ┌──────────────────┼──────────────────┐
-            ▼                  ▼                  ▼
-       싱크: 검색 인덱스    싱크: 캐시(Redis)    싱크: 데이터 웨어하우스
+```mermaid
+flowchart TB
+  app["앱"] -->|"INSERT/UPDATE/DELETE"| db["원본 DB"]
+  db -->|"트랜잭션 로그 (MySQL binlog, PostgreSQL WAL)"| src["소스 커넥터 (Debezium)"]
+  src -->|"변경 이벤트 (before / after / op)"| k["Kafka 토픽"]
+  k --> s1["싱크: 검색 인덱스"]
+  k --> s2["싱크: 캐시(Redis)"]
+  k --> s3["싱크: 데이터 웨어하우스"]
 ```
 
 | 방식 | 동작 | 특징 |
@@ -89,13 +85,26 @@ COMMIT
 
 일반적인 CRUD 설계는 **현재 상태**를 저장하고 덮어쓴다. **이벤트 소싱(event sourcing)** 은 상태를 바꾼 **이벤트를 추가 전용으로 저장**하고, 현재 상태는 이벤트를 처음부터 차례로 적용해 계산한다.
 
-```text
-CRUD                         이벤트 소싱
-orders 테이블                 order_events (추가만 한다)
-┌────┬────────┐               1. OrderPlaced   {id: 7, amount: 30000}
-│ id │ status │               2. PaymentDone   {id: 7}
-│  7 │ PAID   │ ← 덮어씀       3. OrderShipped  {id: 7}
-└────┴────────┘               현재 상태 = fold(이벤트들) → SHIPPED
+CRUD: orders 테이블
+
+```mermaid
+flowchart TB
+  subgraph row1[" "]
+    direction LR
+    h1["id"] ~~~ h2["status"]
+  end
+  subgraph row2[" "]
+    direction LR
+    v1["7"] ~~~ v2["PAID<br/>← 덮어씀"]
+  end
+  row1 ~~~ row2
+```
+
+이벤트 소싱: order_events (추가만 한다)
+
+```mermaid
+flowchart LR
+  E1["1. OrderPlaced<br>{id: 7, amount: 30000}"] --> E2["2. PaymentDone<br>{id: 7}"] --> E3["3. OrderShipped<br>{id: 7}"] --> F["현재 상태 = fold(이벤트들)"] --> S["SHIPPED"]
 ```
 
 | 항목 | CRUD | 이벤트 소싱 |
@@ -106,7 +115,7 @@ orders 테이블                 order_events (추가만 한다)
 | 버그 수정 후 | 이미 망가진 상태를 고쳐야 한다 | 로직을 고친 뒤 이벤트를 다시 재생해 상태를 다시 만든다 |
 | 조회 | 테이블을 바로 읽는다 | 이벤트를 읽기용 모델로 투영(projection)해야 한다. 그래서 보통 CQRS와 함께 쓴다 |
 
-이벤트 소싱의 핵심은 **결정성(determinism)** 이다. 같은 이벤트를 같은 순서로 적용하면 언제나 같은 상태가 나와야 한다. 그래서 이벤트 적용 로직 안에서 현재 시각·난수·외부 호출을 쓰지 않고, 필요한 값은 이벤트에 담는다.
+이벤트 소싱은 **결정성(determinism)** 을 전제로 한다. 같은 이벤트를 같은 순서로 적용하면 언제나 같은 상태가 나와야 한다. 그래서 이벤트 적용 로직 안에서 현재 시각·난수·외부 호출을 쓰지 않고, 필요한 값은 이벤트에 담는다.
 
 | 다루어야 할 것 | 방법 |
 | --- | --- |
@@ -151,14 +160,12 @@ orders 테이블                 order_events (추가만 한다)
 
 CQS는 코드 수준 규칙이라 어디에나 적용해도 해가 없지만, CQRS는 구조를 나누는 결정이라 쓸 곳을 고른다.
 
-```text
-명령 ──▶ 쓰기 모델 (정규화 DB / 이벤트 저장소)
-              │ 변경 이벤트 (CDC 또는 이벤트 발행)
-              ▼
-         투영기(projector)
-              │
-              ▼
-조회 ◀── 읽기 모델 (비정규화 테이블, 검색 인덱스, 캐시)
+```mermaid
+flowchart TB
+  cmd["명령"] --> w["쓰기 모델 (정규화 DB / 이벤트 저장소)"]
+  w -->|"변경 이벤트 (CDC 또는 이벤트 발행)"| p["투영기(projector)"]
+  p --> r["읽기 모델 (비정규화 테이블, 검색 인덱스, 캐시)"]
+  r --> q["조회"]
 ```
 
 ### 쓰는 이유와 비용
@@ -229,7 +236,7 @@ CQS는 코드 수준 규칙이라 어디에나 적용해도 해가 없지만, CQ
 | 조합 | 모습 |
 | --- | --- |
 | CQRS만 | 쓰기는 일반 RDB에 현재 상태를 저장하고, CDC나 이벤트로 읽기 모델을 따로 만든다. 가장 흔하다 |
-| 이벤트 소싱만 | 이벤트 저장소에서 집합체 상태를 재생해 쓰고 읽는다. 목록·검색 같은 조회가 매우 불편해서 실제로는 드물다 |
+| 이벤트 소싱만 | 이벤트 저장소에서 집합체 상태를 재생해 쓰고 읽는다. 목록·검색 같은 조회가 불편해서 실제로는 드물다 |
 | 둘 다 | 이벤트 저장소가 쓰기 모델, 그 이벤트 스트림이 읽기 모델들의 입력이다 |
 
 함께 쓰면 역할이 맞물린다. 이벤트 소싱은 「무엇이 일어났나」를 잃지 않는 쓰기 모델을 주고, CQRS는 그 이벤트로 조회에 맞는 뷰를 여러 개 만든다. 이벤트 소싱의 약점인 조회를 CQRS가 메우고, CQRS의 「읽기 모델을 어떻게 동기화·재구축하나」를 이벤트 재생이 푼다. 새 화면이 필요하면 새 투영기를 만들어 처음부터 이벤트를 재생하면 과거 데이터까지 담긴 읽기 모델이 생긴다. ETL·스트림 처리와 함께 본 데이터 흐름 패턴 지도는 [[distributed-system-patterns|분산 시스템의 통신·데이터 흐름 패턴]]에 있다.

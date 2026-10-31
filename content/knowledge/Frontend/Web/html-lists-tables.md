@@ -16,7 +16,7 @@ sources: ["https://web.dev/learn/html/lists", "https://web.dev/learn/html/tables
 | --- | --- | --- |
 | 순서가 없는 항목 | `<ul>` | 재료, 메뉴, 강사 소개 카드 |
 | 순서·번호가 의미인 항목 | `<ol>` | 조리 순서, 브레드크럼, 법 조항 |
-| 이름–값 쌍 | `<dl>` | 용어집, 상품 사양, 발표 슬라이드처럼 항목마다 제목과 설명이 붙는 내용 |
+| 이름·값 쌍 | `<dl>` | 용어집, 상품 사양, 발표 슬라이드처럼 항목마다 제목과 설명이 붙는 내용 |
 | 행과 열을 **비교·정렬·계산·교차 참조**하는 데이터 | `<table>` | 성적표, 요금 비교 |
 | 썸네일 격자, 여러 단 배치 | 목록 + CSS 그리드·다단 | 이미지 갤러리 |
 
@@ -67,7 +67,7 @@ sources: ["https://web.dev/learn/html/lists", "https://web.dev/learn/html/tables
 
 ### 설명 목록 dl
 
-`<dl>`은 설명 용어 `<dt>`와 설명 `<dd>`의 묶음이다. 옛 이름은 정의 목록(definition list)이었지만 용어 정의 말고도 모든 이름–값 쌍에 쓰도록 이름이 바뀌었다.
+`<dl>`은 설명 용어 `<dt>`와 설명 `<dd>`의 묶음이다. 옛 이름은 정의 목록(definition list)이었지만 용어 정의 말고도 모든 이름·값 쌍에 쓰도록 이름이 바뀌었다.
 
 ```html
 <dl>
@@ -91,16 +91,16 @@ sources: ["https://web.dev/learn/html/lists", "https://web.dev/learn/html/tables
 
 ### 구성 요소와 순서
 
-```text
-<table>
-  ├─ <caption>        표의 이름. 있으면 반드시 첫 자식
-  ├─ <colgroup>       열 묶음 (안에 <col>)
-  ├─ <thead>          머리글 행 묶음
-  ├─ <tbody>          본문 행 묶음 (여러 개 가능)
-  └─ <tfoot>          꼬리말 행 묶음
-       └─ <tr>        행
-            ├─ <th>   머리글 셀
-            └─ <td>   데이터 셀
+```mermaid
+flowchart TB
+  table["#lt;table#gt;"] --> caption["#lt;caption#gt;<br/>표의 이름. 있으면 반드시 첫 자식"]
+  table --> colgroup["#lt;colgroup#gt;<br/>열 묶음 (안에 #lt;col#gt;)"]
+  table --> thead["#lt;thead#gt;<br/>머리글 행 묶음"]
+  table --> tbody["#lt;tbody#gt;<br/>본문 행 묶음 (여러 개 가능)"]
+  table --> tfoot["#lt;tfoot#gt;<br/>꼬리말 행 묶음"]
+  tfoot --> tr["#lt;tr#gt;<br/>행"]
+  tr --> th["#lt;th#gt;<br/>머리글 셀"]
+  tr --> td["#lt;td#gt;<br/>데이터 셀"]
 ```
 
 | 요소 | 핵심 |
@@ -160,7 +160,7 @@ sources: ["https://web.dev/learn/html/lists", "https://web.dev/learn/html/tables
 ## 정리
 
 - `<ul>`·`<ol>`의 자식은 `<li>`뿐, 중첩은 `<li>` 안에서. 번호가 의미면 `type`·`start`·`reversed`·`value`.
-- 이름–값 쌍은 `<dl>`, 쌍을 묶을 때는 `<div>`.
+- 이름·값 쌍은 `<dl>`, 쌍을 묶을 때는 `<div>`.
 - 표는 데이터에만. `<caption>` 첫 자식 → `<colgroup>` → `<thead>` → `<tbody>` → `<tfoot>` 순서다.
 - 머리글은 `<th>`와 `scope`, 복잡하면 `headers`. 하지만 먼저 표를 단순하게 만든다.
 - 열 스타일은 `<col>`로 일부만 되고, 나머지 표 모양은 CSS로 정한다.

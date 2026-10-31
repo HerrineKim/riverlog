@@ -23,10 +23,12 @@ sources: ["https://web.dev/learn/ai/evaluation-driven-development", "https://web
 | 테스트를 쓰는 효과 | 기능 동작이 분명해진다 | 평가 기준을 정하며 모호한 과제가 구체화된다 |
 | 루프 | Red → Green → Refactor | 정의 → 기준선 → 평가 → 최적화 → (반복) |
 
-```text
-문제 정의 ─→ 기준선 프롬프트 ─→ 평가 체계 ─→ 평가 ⇄ 최적화
-                                              ↑
-                              운영 로그·사용자 피드백 → 새 테스트 케이스
+```mermaid
+flowchart LR
+  p["문제 정의"] --> b["기준선 프롬프트"] --> s["평가 체계"] --> e["평가"]
+  e --> o["최적화"]
+  o --> e
+  logs["운영 로그·사용자 피드백"] --> tc["새 테스트 케이스"] --> s
 ```
 
 결정적 테스트에 익숙해도 좋은 AI 경험에는 감각이 필요하다. 사용자에 대한 공감, 어조와 명료함에 대한 민감도, 모델을 창작 협업자로 대하는 태도가 프롬프트를 낫게 만든다. TDD의 사이클 자체는 [[tdd|프론트엔드에서의 TDD]]에 있다.
@@ -103,7 +105,5 @@ sources: ["https://web.dev/learn/ai/evaluation-driven-development", "https://web
 - 심판은 코드 · 사람 · LLM을 섞는다. 평가자는 수보다 도메인 맥락이 중요하다.
 - 프롬프트·지표·테스트 입력은 코드처럼 버전 관리하고 CI에서 회귀를 막는다.
 - 증상 하나를 막는 좁은 규칙보다 상위 지시를 고친다.
-
-프롬프트의 명료함과 신뢰성은 **여러 번의 평가와 수정 끝에야** 나온다.
 
 관련 노트: [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[predictive-vs-generative-ai|예측형 AI와 생성형 AI]], [[tdd|프론트엔드에서의 TDD]], [[loop-engineering|루프 엔지니어링]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]]

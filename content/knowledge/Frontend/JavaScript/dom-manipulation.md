@@ -103,6 +103,7 @@ img.addEventListener('load', () => console.log(img.naturalWidth))
 ```
 
 - 이미지 크기처럼 **리소스가 받아진 뒤에야 정해지는 값**은 그 요소의 `load` 이벤트 뒤에 읽는다.
+
 브라우저는 HTML을 파싱할 때 **그 요소의 표준 어트리뷰트만** 같은 이름의 DOM 속성으로 만든다. `<body something="x">`의 `body.something`은 `undefined`다. `type`은 `<input>`에서는 표준이지만 `<body>`에서는 아니다. 표준이 아닌 것은 `getAttribute`로만 읽힌다. `el.attributes`는 모든 어트리뷰트를 `name`·`value`를 가진 `Attr` 객체 컬렉션으로 준다.
 
 | | DOM 속성(property) | 어트리뷰트(attribute) |
