@@ -146,6 +146,6 @@ Java 21(JEP 444)에 정식 도입된 **가상 스레드**는 블로킹 호출을
 - Reactor 패턴은 기다리고 디스패치하는 루프(Reactor)와 처리하는 핸들러를 나눈다. 그 Reactor가 이벤트 루프다.
 - 이벤트 루프 스레드 하나가 여러 연결을 맡으므로, 핸들러의 블로킹 I/O·긴 계산은 그 연결 전부를 멈춘다. 블로킹 작업은 별도 스레드 풀로, 긴 계산은 쪼개거나 워커로 보낸다.
 
-**이벤트 루프 위의 코드는 "곧 돌려준다"는 약속을 지켜야 한다.**
+이벤트 루프 위의 코드는 "곧 돌려준다"는 약속을 지켜야 한다.
 
 관련 노트: [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[process-and-thread|프로세스와 스레드]], [[spring-singleton-thread-safety|스프링의 싱글톤 빈과 요청 스레드]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]], [[spring-application-design|스프링 애플리케이션 설계]]

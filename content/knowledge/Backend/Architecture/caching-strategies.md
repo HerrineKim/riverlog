@@ -78,7 +78,7 @@ Write-around  : 앱 ─────────▶ DB      (캐시는 다음 읽
 Write-back    : 앱 ─▶ 캐시 ··▶ DB     (비동기·일괄 반영)
 ```
 
-**패턴은 섞어 쓴다.** 가장 흔한 조합은 **cache-aside + write-around**다. 쓸 때 DB를 갱신하고 캐시 키를 지우면(invalidate), 다음 읽기가 최신 값을 다시 채운다. 키를 「갱신」하지 않고 「삭제」하는 이유는 동시에 들어온 두 쓰기가 캐시에 순서를 뒤바꿔 남기는 경쟁을 줄이기 위해서다.
+패턴은 섞어 쓴다. 가장 흔한 조합은 **cache-aside + write-around**다. 쓸 때 DB를 갱신하고 캐시 키를 지우면(invalidate), 다음 읽기가 최신 값을 다시 채운다. 키를 「갱신」하지 않고 「삭제」하는 이유는 동시에 들어온 두 쓰기가 캐시에 순서를 뒤바꿔 남기는 경쟁을 줄이기 위해서다.
 
 Write-back은 조회수·좋아요처럼 **잃어도 치명적이지 않고 쓰기가 폭주하는 값**에 어울린다. 하드웨어의 CPU 캐시도 같은 쓰기 정책 구분을 쓴다([[cache-and-virtual-memory|캐시 메모리와 가상 메모리]]).
 
@@ -136,6 +136,6 @@ Write-back은 조회수·좋아요처럼 **잃어도 치명적이지 않고 쓰�
 - 읽기는 cache-aside가 기본이고, 쓰기는 **DB 갱신 + 캐시 키 삭제**(write-around 계열)가 가장 흔하다. Write-back은 빠르지만 잃을 수 있는 값에만 쓴다.
 - 교체 정책은 LRU가 기본값이고, 스캔에 약한 점을 SLRU·LFU 계열이 보완한다. TTL은 정책이라기보다 안전망이다.
 - 캐시 장애는 DB 장애로 번진다. TTL 지터, null 캐싱과 블룸 필터, single-flight, 이중화와 서킷 브레이커로 막는다.
-- **캐시는 나중에 붙일 수 있다.** 측정해서 적중률이 나올 곳에만 넣는다.
+- 캐시는 나중에 붙일 수 있다. 측정해서 적중률이 나올 곳에만 넣는다.
 
 관련 노트: [[redis|Redis]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[web-scalability-components|웹 확장성의 구성 요소]], [[http-cache|HTTP 캐시]], [[cdn|CDN]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[backend-latency-optimization|백엔드 지연 시간 줄이기]]
