@@ -7,7 +7,7 @@ source: mixed
 date: "2026-10-20"
 ---
 
-JavaScript는 브라우저 화면을 **동적으로** 만들기 위한 언어이며, 브라우저(BOM)와 그 안의 문서(DOM)를 조작할 수 있는 유일한 언어다. 언어의 핵심 문법은 **ECMAScript** 표준으로 정의된다. ECMA International이 ECMA-262 규격으로 정의한 언어가 ECMAScript이고, 2015년에 발표된 6번째 판(ES6, ES2015)부터 `let`/`const`, 화살표 함수, Promise, 클래스 같은 현대적 문법이 대거 들어왔고, 이후 해마다 새 판(ES2016, ES2017 …)이 나온다.
+JavaScript는 브라우저 화면을 동적으로 만들기 위한 언어이며, 브라우저(BOM)와 그 안의 문서(DOM)를 조작할 수 있는 유일한 언어다. 언어의 핵심 문법은 **ECMAScript** 표준으로 정의된다. ECMA International이 ECMA-262 규격으로 정의한 언어가 ECMAScript이고, 2015년에 발표된 6번째 판(ES6, ES2015)부터 `let`/`const`, 화살표 함수, Promise, 클래스 같은 현대적 문법이 대거 들어왔고, 이후 해마다 새 판(ES2016, ES2017 …)이 나온다.
 
 ## 노트
 

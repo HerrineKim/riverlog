@@ -22,7 +22,7 @@ sources: ["https://dev.gmarket.com/61", "https://shardingsphere.apache.org/docum
 | 샤딩 | 수평 파티셔닝을 **여러 DB 서버에 걸쳐** 하는 것. 서버가 늘어 용량·쓰기도 늘지만, 라우팅과 서버 간 조인·트랜잭션 문제가 생긴다 |
 | 복제(replication) | 같은 데이터를 여러 서버에 복사한다. 읽기는 나눠지지만 쓰기와 용량은 그대로다 |
 
-분산 DB에서는 두 말을 섞어 쓴다. 여러 노드에 나뉜 조각을 MongoDB·Elasticsearch는 샤드, Kafka·Cassandra는 파티션, HBase는 리전(region), Bigtable은 태블릿(tablet)이라 부르지만 모두 같은 개념이다. 결국 구분의 기준은 이름이 아니라 **나눈 조각이 한 서버 안에 있나, 여러 서버에 퍼져 있나**다.
+분산 DB에서는 두 말을 섞어 쓴다. 여러 노드에 나뉜 조각을 MongoDB·Elasticsearch는 샤드, Kafka·Cassandra는 파티션, HBase는 리전(region), Bigtable은 태블릿(tablet)이라 부르지만 모두 같은 개념이다. 구분의 기준은 이름이 아니라 **나눈 조각이 한 서버 안에 있나, 여러 서버에 퍼져 있나**다.
 
 ## 샤딩 전에 먼저 해 볼 것
 

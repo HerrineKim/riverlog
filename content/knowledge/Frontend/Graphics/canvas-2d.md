@@ -120,7 +120,6 @@ onmessage = ({ data }) => {
 - 고해상도 화면에서는 실제 픽셀 수를 `devicePixelRatio`배로 키우고 `ctx.scale()`한다.
 - 미리 그리기, 레이어 분리, 정수 좌표, 바뀐 곳만 다시 그리기로 프레임을 지킨다. 무거우면 OffscreenCanvas로 워커에 넘긴다.
 - 그린 내용은 보조 기술에 보이지 않으므로 핵심 정보는 HTML로도 준다.
-
-**도형이 많고 매 프레임 바뀌면 Canvas, 적고 상호작용·확대가 중요하면 SVG.**
+- 도형이 많고 매 프레임 바뀌면 Canvas, 적고 상호작용·확대가 중요하면 SVG.
 
 관련 노트: [[webgl-shaders|WebGL과 셰이더]], [[threejs|Three.js로 웹에서 3D 그리기]], [[svg-icons|SVG 아이콘]], [[web-workers|웹 워커로 메인 스레드 비우기]], [[media-capture-web-audio|미디어 캡처와 Web Audio API]]

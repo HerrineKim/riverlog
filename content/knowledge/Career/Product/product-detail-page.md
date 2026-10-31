@@ -82,6 +82,4 @@ sources: ["https://brunch.co.kr/@designmydesign/4"]
 - 스펙보다 혜택, 누끼보다 사용 장면, 로고보다 이야기를 보여 준다.
 - 9단계는 기본값이다. 강점을 위로 올리고 채널에 맞게 고친다.
 
-**상세페이지는 디자인 결과물이기 전에 고객의 질문에 차례로 답하는 대화다.**
-
 관련 노트: [[ecommerce-ui|전자상거래 UI 디자인]], [[Accessibility|웹 접근성]], [[content-strategy|콘텐츠 전략과 핵심 모델]], [[working-with-designers|디자이너와 함께 일하기: 역할·채용·협업]]

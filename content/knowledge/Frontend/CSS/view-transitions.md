@@ -12,7 +12,7 @@ sources: ["https://web.dev/learn/css/view-transitions-spas", "https://developer.
 
 ## View Transitions란
 
-SPA는 페이지를 새로 받지 않고 JS로 DOM을 바꾼다([[spa-csr-ssr|SPA와 CSR·SSR]]). 그래서 새 내용이 그냥 **툭 바뀐다.** 옛 화면을 페이드아웃하면서 새 화면을 페이드인하려면 두 화면이 잠깐 동시에 있어야 하는데, 옛 DOM은 이미 교체돼 사라졌다. View Transitions API는 브라우저가 옛 화면의 **스냅숏**을 남겨 이 문제를 푼다.
+SPA는 페이지를 새로 받지 않고 JS로 DOM을 바꾼다([[spa-csr-ssr|SPA와 CSR·SSR]]). 그래서 새 내용이 그냥 툭 바뀐다. 옛 화면을 페이드아웃하면서 새 화면을 페이드인하려면 두 화면이 잠깐 동시에 있어야 하는데, 옛 DOM은 이미 교체돼 사라졌다. View Transitions API는 브라우저가 옛 화면의 **스냅숏**을 남겨 이 문제를 푼다.
 
 | 종류 | 시작 방법 | 지원 |
 | --- | --- | --- |
@@ -79,7 +79,7 @@ html:active-view-transition-type(forwards) {
 
 ## 특정 요소 이어 움직이기
 
-목록의 썸네일이 상세 화면의 큰 이미지로 **날아가는** 효과는 두 요소에 같은 `view-transition-name`을 준다. 브라우저가 옛 위치·크기에서 새 위치·크기로 그룹을 움직이고, 이름 없는 나머지는 교차 페이드한다.
+목록의 썸네일이 상세 화면의 큰 이미지로 날아가는 효과는 두 요소에 같은 `view-transition-name`을 준다. 브라우저가 옛 위치·크기에서 새 위치·크기로 그룹을 움직이고, 이름 없는 나머지는 교차 페이드한다.
 
 ```css
 .album-art { view-transition-name: album-art; }

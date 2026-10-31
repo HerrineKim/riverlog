@@ -197,6 +197,6 @@ npx jscodeshift -t rm-merge.js src/                 # 적용 후 diff를 리뷰�
 - 플러그인이 프리셋보다 먼저, 플러그인은 앞→뒤, 프리셋은 뒤→앞으로 돈다.
 - `preset-env`는 `targets`·browserslist 기준으로 필요한 변환만 넣는다. 폴리필은 Babel 8에서 `babel-plugin-polyfill-corejs3`가 맡는다.
 - 플러그인은 visitor 객체와 `path`·`scope`로 쓰고, 순회 횟수를 줄인다.
-- **같은 AST 원리를 소스에 한 번 적용하면 codemod다.** 대규모 리팩터링은 정규식이 아니라 jscodeshift 같은 AST 도구로 한다.
+- 같은 AST 원리를 소스에 한 번 적용하면 codemod다. 대규모 리팩터링은 정규식이 아니라 jscodeshift 같은 AST 도구로 한다.
 
 관련 노트: [[ecmascript-tc39|ECMAScript 표준과 TC39 프로세스]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[webpack|webpack 동작 원리]], [[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]], [[eslint-prettier|ESLint와 Prettier 설정]], [[static-analysis|정적 분석]], [[typescript-compiler-internals|TypeScript 컴파일러 내부 구조]]

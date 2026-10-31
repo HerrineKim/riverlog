@@ -79,7 +79,7 @@ sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-
 배포 모드:  A + B + C ─ 번들러(Snowpack은 webpack, Vite 7까지는 Rollup, Vite 8은 Rolldown) ─ bundle.js
 ```
 
-Snowpack이 이 두 길을 합쳤다. esbuild로 개발 모드를 돌리고 실제 번들은 webpack으로 만들어, 새로고침 없이 고친 모듈만 바꾸는 **HMR(Hot Module Replacement)** 을 강력하게 제공했다. 하지만 webpack 연동에 버그가 있고 로더 호환이 불안정했다. Snowpack은 2022년 개발이 중단됐고 그 자리를 Vite가 이어받았다.
+Snowpack이 이 두 길을 합쳤다. esbuild로 개발 모드를 돌리고 실제 번들은 webpack으로 만들어, 새로고침 없이 고친 모듈만 바꾸는 **HMR(Hot Module Replacement)** 을 제공했다. 하지만 webpack 연동에 버그가 있고 로더 호환이 불안정했다. Snowpack은 2022년 개발이 중단됐고 그 자리를 Vite가 이어받았다.
 
 ## Vite
 
