@@ -1,14 +1,15 @@
 ---
 title: "싱글턴 패턴"
 concept: "Singleton"
-summary: "인스턴스를 하나만 두는 싱글턴 패턴의 목적과 Java 구현 방식(이른 초기화, synchronized, DCL과 volatile, 홀더 클래스, enum)을 스레드 안전성과 비용으로 비교하고, 전역 상태가 되는 단점과 DI 컨테이너·모듈로 대신하는 방법을 정리한다."
-tags: ["design-pattern", "java", "oop", "concurrency"]
+summary: "인스턴스를 하나만 두는 싱글턴 패턴의 목적과 Java 구현 방식(이른 초기화, synchronized, DCL과 volatile, 홀더 클래스, enum)을 스레드 안전성과 비용으로 비교하고, C++의 함수 안 static(Meyers 싱글턴)과 복사 금지, 전역 상태가 되는 단점과 DI 컨테이너·모듈로 대신하는 방법을 정리한다."
+tags: ["design-pattern", "java", "cpp", "oop", "concurrency"]
 source: other
-date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DesignPattern/README.md"]
+date: "2026-10-31"
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DesignPattern/README.md", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 디자인 패턴 문서의 Singleton 절을 바탕으로, Java 메모리 모델 기준으로 확인해 재구성한 노트다.
+> C++ 구현은 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 OOP 면접 정리를 바탕으로 보강했다.
 
 ## 싱글턴이란
 
@@ -116,6 +117,32 @@ JVM이 enum 상수를 하나만 만들도록 보장하고, **직렬화·역직�
 
 직렬화되는 클래스 싱글턴은 역직렬화 때 새 객체가 생기므로 `readResolve()`로 기존 인스턴스를 돌려줘야 한다. enum은 이 처리가 필요 없다.
 
+## C++ 구현: 함수 안 static
+
+C++에서도 세 요소는 같다. 다만 C++11부터는 **함수 안 `static` 지역 변수의 초기화를 언어가 스레드 안전하게 한 번만 해 주므로**(magic statics), DCL 같은 장치 없이 짧게 끝난다. Scott Meyers가 소개해 **Meyers 싱글턴**이라 부른다.
+
+```cpp
+class Logger {
+public:
+    static Logger& instance() {
+        static Logger inst;          // 처음 호출될 때 한 번만 생성. 동시에 불려도 안전하다
+        return inst;
+    }
+    Logger(const Logger&) = delete;              // 복사로 두 번째 객체가 생기는 것을 막는다
+    Logger& operator=(const Logger&) = delete;
+    void log(std::string_view msg);
+private:
+    Logger() = default;              // 바깥에서 생성 금지
+    ~Logger() = default;             // 바깥에서 delete 금지. 프로그램 종료 때 자동 소멸
+};
+
+Logger::instance().log("start");
+```
+
+- 생성자뿐 아니라 **복사 생성자와 복사 대입도 지워야** 한다. 빠뜨리면 `Logger copy = Logger::instance();`로 두 번째 인스턴스가 생긴다. 생성·소멸을 `private`로 막는 의미는 [[cpp-basics#private 생성자와 소멸자|private 생성자와 소멸자]]에 있다.
+- 포인터를 `new`로 만들어 `static Logger* inst`에 두는 방식은 해제 시점이 없고 스레드 안전도 직접 챙겨야 해서 쓰지 않는다.
+- 함수 안 `static` 객체는 프로그램이 끝날 때 생성의 역순으로 소멸한다. 다른 정적 객체의 소멸자가 이미 사라진 싱글턴을 부르면 문제가 되므로, 소멸자에서 다른 싱글턴에 기대지 않는다.
+
 ## 단점과 대안
 
 싱글턴은 사실상 **전역 상태**다.
@@ -135,6 +162,7 @@ JVM이 enum 상수를 하나만 만들도록 보장하고, **직렬화·역직�
 - 멀티스레드에서 단순 지연 초기화는 인스턴스가 둘 생길 수 있다
 - DCL은 `volatile` 없이는 반쯤 만들어진 객체를 노출한다
 - 클래스로 만든다면 홀더 클래스, 직렬화까지 막으려면 enum이 기본 선택이다
+- C++은 함수 안 `static` 지역 변수로 만들고 복사 생성자·복사 대입을 `= delete`로 지운다
 - 테스트와 의존 관리를 위해 직접 구현보다 DI 컨테이너의 싱글턴 스코프를 먼저 고려한다
 
-관련 노트: [[gof-design-patterns|GoF 디자인 패턴]], [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]], [[java-language-basics|Java 언어 기본]], [[process-synchronization|프로세스 동기화]]
+관련 노트: [[gof-design-patterns|GoF 디자인 패턴]], [[cpp-basics|C++ 기초]], [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]], [[java-language-basics|Java 언어 기본]], [[process-synchronization|프로세스 동기화]]
