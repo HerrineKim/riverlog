@@ -24,11 +24,12 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 ### bridge 네트워크의 동작
 
-```text
-컨테이너 A (172.18.0.2) ─veth─┐
-                               ├─ 리눅스 브리지 (호스트의 가상 스위치) ─ 호스트 네트워크 ─ 인터넷
-컨테이너 B (172.18.0.3) ─veth─┘                   ↑ 나갈 때 출발지를 호스트 IP로 (MASQUERADE)
-                                                  ↑ 들어올 때 -p 규칙으로 컨테이너로 (DNAT)
+```mermaid
+flowchart LR
+  ca["컨테이너 A (172.18.0.2)"] ---|"veth"| br["리눅스 브리지<br/>(호스트의 가상 스위치)"]
+  cb["컨테이너 B (172.18.0.3)"] ---|"veth"| br
+  br ---|"나갈 때 출발지를 호스트 IP로 (MASQUERADE)<br/>들어올 때 -p 규칙으로 컨테이너로 (DNAT)"| host["호스트 네트워크"]
+  host --- inet["인터넷"]
 ```
 
 - 컨테이너마다 네트워크 네임스페이스가 있고, veth 쌍의 한쪽은 컨테이너 안 `eth0`, 다른 쪽은 호스트의 브리지에 꽂힌다. 기본 bridge 네트워크의 브리지가 `docker0`다.

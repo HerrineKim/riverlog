@@ -35,11 +35,11 @@ sources: ["https://80000coding.notion.site/94f23792f49b4c63a6701af578e74de1", "h
 
 ## 글로벌 인프라
 
-```text
-리전(Region)          서울(ap-northeast-2), 버지니아 북부(us-east-1) ...
-└─ 가용 영역(AZ)      리전마다 보통 3개 이상. 서로 물리적으로 떨어져 있고 저지연 링크로 연결
-   └─ 데이터 센터     AZ 하나는 하나 이상의 데이터 센터
-엣지 로케이션          전 세계 수백 곳. CloudFront(CDN)·Route 53(DNS)이 사용자 가까이서 응답
+```mermaid
+flowchart TB
+  r["리전(Region)<br/>서울(ap-northeast-2), 버지니아 북부(us-east-1) ..."] --> az["가용 영역(AZ)<br/>리전마다 보통 3개 이상. 서로 물리적으로 떨어져 있고 저지연 링크로 연결"]
+  az --> dc["데이터 센터<br/>AZ 하나는 하나 이상의 데이터 센터"]
+  el["엣지 로케이션<br/>전 세계 수백 곳. CloudFront(CDN)·Route 53(DNS)이 사용자 가까이서 응답"]
 ```
 
 - 2026년 기준 39개 리전, 120여 개 AZ가 운영되며 계속 늘고 있다([AWS 공식 현황](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)).
@@ -87,8 +87,11 @@ Amazon EC2는 크기를 고를 수 있는 가상 서버(인스턴스)다. OS부�
 
 운영 DB는 퍼블릭 액세스를 끄고 VPC 안에만 둔다. 이때는 같은 VPC의 EC2(배스천 호스트)를 거쳐 **SSH 터널**로 접속한다. RDS 보안 그룹의 인바운드 소스는 내 IP가 아니라 **배스천의 보안 그룹**으로 지정한다.
 
-```text
-DB 클라이언트 ──▶ localhost:3307 ══SSH══▶ EC2(배스천) ──▶ RDS 엔드포인트:3306
+```mermaid
+flowchart LR
+  c["DB 클라이언트"] --> l["localhost:3307"]
+  l ==>|"SSH"| b["EC2(배스천)"]
+  b --> r["RDS 엔드포인트:3306"]
 ```
 
 ```bash

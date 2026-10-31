@@ -18,13 +18,15 @@ sources: ["https://bytebytego.com/guides/what-is-devsecops", "https://bytebytego
 
 ## 단계별로 넣는 것
 
-```text
-설계 ─> 코드 ─> 빌드 ─> 테스트 ─> 배포 ─> 운영
- │       │       │        │        │       │
- 위협    시크릿   SCA      DAST     IaC     모니터링
- 모델링  스캔     SAST     QA 연동  검사    취약점 관리
-         리뷰     이미지            서명    사고 대응
-                  스캔              검증
+```mermaid
+flowchart LR
+  a["설계"] --> b["코드"] --> c["빌드"] --> d["테스트"] --> e["배포"] --> f["운영"]
+  a -.- a1["위협 모델링"]
+  b -.- b1["시크릿 스캔<br/>리뷰"]
+  c -.- c1["SCA<br/>SAST<br/>이미지 스캔"]
+  d -.- d1["DAST<br/>QA 연동"]
+  e -.- e1["IaC 검사<br/>서명 검증"]
+  f -.- f1["모니터링<br/>취약점 관리<br/>사고 대응"]
 ```
 
 | 개념 | 하는 일 | 예 |

@@ -16,11 +16,13 @@ sources: ["https://www.pagerduty.com/blog/what-is-chatops/", "https://www.atlass
 
 ChatOps는 도구를 대화의 한가운데에 둔다. 각자 터미널에서 조용히 치던 명령이 모두가 보는 방에서 실행되고, 결과가 그 자리에 남는다.
 
-```text
-사람: /deploy api production
-  └▶ 채팅 플랫폼 ─▶ 봇·앱(권한 확인, 명령 해석)
-                       └▶ 실행 백엔드(CI/CD, 배포 서버, 클라우드 API)
-                                └▶ 진행·결과를 같은 채널에 보고 ◀── 모니터링·알림도 같은 채널로
+```mermaid
+flowchart TB
+  user["사람: /deploy api production"] --> chat["채팅 플랫폼"]
+  chat --> bot["봇·앱<br/>(권한 확인, 명령 해석)"]
+  bot --> be["실행 백엔드<br/>(CI/CD, 배포 서버, 클라우드 API)"]
+  be --> rep["진행·결과를 같은 채널에 보고"]
+  mon["모니터링·알림"] -->|"같은 채널로"| rep
 ```
 
 ## 구성 요소

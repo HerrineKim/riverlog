@@ -16,21 +16,18 @@ sources: ["https://bytebytego.com/guides/what-is-k8s-kubernetes", "https://byteb
 
 ## 클러스터 구조
 
-```text
-┌──────────────── 컨트롤 플레인 ────────────────┐
-│  kube-apiserver ◀── kubectl, 다른 모든 구성 요소 │
-│     │                                          │
-│     ├── etcd (클러스터 상태 저장)               │
-│     ├── kube-scheduler (파드 → 노드 배정)       │
-│     └── kube-controller-manager (상태 맞추기)   │
-└──────────────────────┬─────────────────────────┘
-                       │ API 호출
-     ┌─────────────────┼─────────────────┐
-  [노드 1]          [노드 2]          [노드 N]
-  kubelet           kubelet           ...
-  kube-proxy        kube-proxy
-  컨테이너 런타임    컨테이너 런타임
-  파드 파드         파드
+```mermaid
+flowchart TB
+  subgraph cp["컨트롤 플레인"]
+    api["kube-apiserver"]
+    api --- etcd["etcd (클러스터 상태 저장)"]
+    api --- sch["kube-scheduler (파드 → 노드 배정)"]
+    api --- cm["kube-controller-manager (상태 맞추기)"]
+  end
+  clients["kubectl, 다른 모든 구성 요소"] --> api
+  cp ---|"API 호출"| w1["노드 1<br/>kubelet<br/>kube-proxy<br/>컨테이너 런타임<br/>파드 파드"]
+  cp ---|"API 호출"| w2["노드 2<br/>kubelet<br/>kube-proxy<br/>컨테이너 런타임<br/>파드"]
+  cp ---|"API 호출"| wn["노드 N<br/>..."]
 ```
 
 | 위치 | 구성 요소 | 역할 |
@@ -50,10 +47,15 @@ sources: ["https://bytebytego.com/guides/what-is-k8s-kubernetes", "https://byteb
 
 **kube-apiserver**는 상태를 갖지 않는 REST 서버다. 요청 하나는 다음 단계를 거쳐 etcd에 저장되고, 저장된 변경은 watch로 구독 중인 컨트롤러·스케줄러·kubelet에 스트리밍된다. 여러 대를 띄워 로드 밸런서 뒤에 둘 수 있다.
 
-```text
-요청 → 인증(누구인가: 인증서·토큰·OIDC) → 인가(할 수 있나: RBAC)
-     → 변경 어드미션(기본값 주입, 사이드카 주입) → 스키마 검증 → 검증 어드미션(정책 검사)
-     → etcd 저장 → watch 중인 구성 요소에 이벤트 전달
+```mermaid
+flowchart TB
+  a["요청"] --> b["인증<br/>누구인가: 인증서·토큰·OIDC"]
+  b --> c["인가<br/>할 수 있나: RBAC"]
+  c --> d["변경 어드미션<br/>기본값 주입, 사이드카 주입"]
+  d --> e["스키마 검증"]
+  e --> f["검증 어드미션<br/>정책 검사"]
+  f --> g["etcd 저장"]
+  g --> h["watch 중인 구성 요소에 이벤트 전달"]
 ```
 
 인증·인가의 세부는 [[kubernetes-security|쿠버네티스 보안]]에 있다.
@@ -96,25 +98,26 @@ sources: ["https://bytebytego.com/guides/what-is-k8s-kubernetes", "https://byteb
 
 ### 조정 루프: 쿠버네티스의 기본 동작
 
-```text
-원하는 상태 (etcd에 저장된 선언)
-        │ 비교
-실제 상태 (노드가 보고)
-        │ 다르면
-컨트롤러가 행동 (파드 생성·삭제·재시작)
-        └── 다시 비교 (무한 반복)
+```mermaid
+flowchart TB
+  desired["원하는 상태<br/>(etcd에 저장된 선언)"] -->|"비교"| actual["실제 상태<br/>(노드가 보고)"]
+  actual -->|"다르면"| act["컨트롤러가 행동<br/>(파드 생성·삭제·재시작)"]
+  act -->|"다시 비교 (무한 반복)"| desired
 ```
 
 명령형으로 "파드를 하나 띄워라"가 아니라 선언형으로 "파드는 3개여야 한다"고 쓰는 이유가 이 루프다. 이 원리를 사용자 정의 리소스로 넓힌 것이 아래 디자인 패턴의 컨트롤러·오퍼레이터 패턴이다.
 
 구성 요소끼리는 서로 직접 부르지 않는다. 모두 API 서버를 통해 etcd의 상태를 읽고 쓰며, 자기가 맡은 오브젝트만 지켜본다(watch). 파드 하나가 뜨는 과정도 그렇다.
 
-```text
-kubectl apply (Deployment) ─▶ API 서버 ─▶ etcd에 저장
-  Deployment 컨트롤러: "ReplicaSet이 없네" → ReplicaSet 생성
-  ReplicaSet 컨트롤러: "파드가 모자라네" → 노드 미지정 파드 생성
-  스케줄러: "노드 미지정 파드가 있네" → 자원·조건에 맞는 노드를 적어 넣음
-  그 노드의 kubelet: "내게 배정된 파드가 있네" → 런타임으로 컨테이너 실행, 상태 보고
+```mermaid
+flowchart TB
+  a["kubectl apply (Deployment)"] --> b["API 서버"]
+  b --> c["etcd에 저장"]
+  c --> d["Deployment 컨트롤러: #quot;ReplicaSet이 없네#quot;"]
+  d -->|"ReplicaSet 생성"| e["ReplicaSet 컨트롤러: #quot;파드가 모자라네#quot;"]
+  e -->|"노드 미지정 파드 생성"| f["스케줄러: #quot;노드 미지정 파드가 있네#quot;"]
+  f -->|"자원·조건에 맞는 노드를 적어 넣음"| g["그 노드의 kubelet: #quot;내게 배정된 파드가 있네#quot;"]
+  g --> h["런타임으로 컨테이너 실행, 상태 보고"]
 ```
 
 새 기능을 넣어도 "상태를 지켜보고 맞추는 컨트롤러 하나"를 더하는 것으로 끝나는 구조라 확장이 쉽다.

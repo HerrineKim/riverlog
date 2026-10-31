@@ -27,25 +27,29 @@ sources: ["https://bytebytego.com/guides/typical-aws-network-architecture-in-one
 
 ## 한 장의 구성도
 
-```text
-            인터넷                  원격 근무자              사내 데이터센터
-              │                        │                        │
-     ① 인터넷 게이트웨이        ② Client VPN 엔드포인트   ③ 가상 프라이빗 게이트웨이
-              │                        │                  (Site-to-Site VPN / Direct Connect)
-┌─────────────┴────────────── VPC A (리전) ──────────────────────┴──────────┐
-│  AZ-a                                AZ-b                                  │
-│  ┌ 퍼블릭 서브넷 ┐                    ┌ 퍼블릭 서브넷 ┐                     │
-│  │ ALB, NAT GW  │                    │ ALB, NAT GW  │                     │
-│  └──────────────┘                    └──────────────┘                     │
-│  ┌ 프라이빗 서브넷 ┐                  ┌ 프라이빗 서브넷 ┐                   │
-│  │ 앱 서버, DB    │                  │ 앱 서버, DB    │                   │
-│  └───────────────┘                  └───────────────┘                   │
-│        │ ⑥ 게이트웨이 엔드포인트 → S3·DynamoDB                              │
-│        │ ⑦ 인터페이스 엔드포인트 → 다른 AWS 서비스                            │
-│        │ ⑧ PrivateLink → SaaS·다른 계정의 서비스                             │
-└────────┼──────────────────────────────────────────────────────────────────┘
-         ├── ④ VPC 피어링 ── VPC B
-         └── ⑤ Transit Gateway ── VPC C, VPC D, VPN, 다른 계정 …
+```mermaid
+flowchart TB
+  inet["인터넷"] --- igw["① 인터넷 게이트웨이"]
+  remote["원격 근무자"] --- cvpn["② Client VPN 엔드포인트"]
+  onprem["사내 데이터센터"] --- vgw["③ 가상 프라이빗 게이트웨이<br/>(Site-to-Site VPN / Direct Connect)"]
+  subgraph vpca["VPC A (리전)"]
+    subgraph aza["AZ-a"]
+      puba["퍼블릭 서브넷<br/>ALB, NAT GW"]
+      priva["프라이빗 서브넷<br/>앱 서버, DB"]
+    end
+    subgraph azb["AZ-b"]
+      pubb["퍼블릭 서브넷<br/>ALB, NAT GW"]
+      privb["프라이빗 서브넷<br/>앱 서버, DB"]
+    end
+  end
+  igw --- vpca
+  cvpn --- vpca
+  vgw --- vpca
+  vpca -->|"⑥ 게이트웨이 엔드포인트"| s3["S3·DynamoDB"]
+  vpca -->|"⑦ 인터페이스 엔드포인트"| awssvc["다른 AWS 서비스"]
+  vpca -->|"⑧ PrivateLink"| saas["SaaS·다른 계정의 서비스"]
+  vpca ---|"④ VPC 피어링"| vpcb["VPC B"]
+  vpca ---|"⑤ Transit Gateway"| tgw["VPC C, VPC D, VPN, 다른 계정 …"]
 ```
 
 ## 연결 방법

@@ -12,11 +12,22 @@ sources: ["https://bytebytego.com/guides/devops-vs-sre-vs-paltform-engg", "https
 
 ## 개발과 운영을 잇는 방식의 변화
 
-```text
-전통적 SDLC   코드 │ 빌드 │ 테스트 │ 릴리스 │ 모니터링     ← 단계마다 다른 팀, 넘겨주기(hand-off)
-                 ▼       ▼        ▼         ▼
-DevOps        코드 → 빌드 → 테스트 → 릴리스 → 모니터링 → (반복)  ← 한 팀이 자동화로 순환
-NoOps         코드 → (빌드·배포·확장·모니터링은 클라우드 관리형 서비스)
+```mermaid
+flowchart TB
+  subgraph sdlc["전통적 SDLC: 단계마다 다른 팀, 넘겨주기(hand-off)"]
+    direction LR
+    s1["코드"] --> s2["빌드"] --> s3["테스트"] --> s4["릴리스"] --> s5["모니터링"]
+  end
+  subgraph devops["DevOps: 한 팀이 자동화로 순환"]
+    direction LR
+    d1["코드"] --> d2["빌드"] --> d3["테스트"] --> d4["릴리스"] --> d5["모니터링"]
+    d5 -->|"반복"| d1
+  end
+  subgraph noops["NoOps"]
+    direction LR
+    o1["코드"] --> o2["빌드·배포·확장·모니터링은 클라우드 관리형 서비스"]
+  end
+  sdlc --> devops
 ```
 
 전통적인 방식은 단계마다 담당 조직이 따로 있어 일이 벽을 넘을 때마다 기다리고 책임이 흩어진다. 아래 네 가지는 이 벽을 줄이는 서로 다른 접근이다. 서로 대체재가 아니라 층위가 다른 개념이라 함께 쓰인다.

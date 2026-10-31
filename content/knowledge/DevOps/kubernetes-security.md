@@ -12,11 +12,12 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 쿠버네티스 보안은 두 갈래다. 하나는 **API 서버에 누가 무엇을 할 수 있나**(인증·인가), 다른 하나는 **컨테이너가 노드에서 무엇을 할 수 있나**(파드 보안)다. 파드 사이 네트워크 접근은 NetworkPolicy가 맡으며 [[kubernetes-networking|쿠버네티스 네트워킹]]에 있다. Secret의 보안 수준은 [[kubernetes-storage-config|쿠버네티스 저장소와 설정]]에 있다.
 
-```text
-API 요청 → 인증(Authentication): 누구인가
-        → 인가(Authorization): 이 동작을 해도 되나 (RBAC)
-        → 어드미션(Admission): 내용이 정책에 맞나 (Pod Security Admission, 정책 엔진)
-        → etcd 저장
+```mermaid
+flowchart TB
+  a["API 요청"] --> b["인증(Authentication): 누구인가"]
+  b --> c["인가(Authorization): 이 동작을 해도 되나 (RBAC)"]
+  c --> d["어드미션(Admission): 내용이 정책에 맞나<br/>(Pod Security Admission, 정책 엔진)"]
+  d --> e["etcd 저장"]
 ```
 
 ## 인증: 누구인가

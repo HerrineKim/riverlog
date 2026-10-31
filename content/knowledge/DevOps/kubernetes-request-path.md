@@ -14,23 +14,26 @@ sources: ["https://blog.mathpresso.com/modern-frontend-infrastructure-overview-9
 
 ## 요청 경로 한눈에
 
-```text
-브라우저
-  │
-External Load Balancer        ─ 클라우드가 만든 공인 IP
-  │
-Ingress / Gateway             ─ 클러스터 입구. TLS 종료, 호스트·경로 라우팅
-  │                              (Istio Ingress Gateway, Kubernetes Gateway API 구현체)
-API Gateway (선택)             ─ 인증, 레이트 리밋, L7 라우팅 (Kong 등)
-  │
-Service                       ─ 같은 앱의 여러 파드로 로드 밸런싱
-  │
-Pod ┬ 프록시 (사이드카 또는 노드 프록시) ─ 트래픽 관측·보안·재시도
-    └ 앱 컨테이너 (예: Next.js 서버)
-  │
-응답은 같은 길을 거슬러 나간다
+```mermaid
+flowchart TB
+  browser["브라우저"] --> lb["External Load Balancer<br/>클라우드가 만든 공인 IP"]
+  lb --> ing["Ingress / Gateway<br/>클러스터 입구. TLS 종료, 호스트·경로 라우팅<br/>(Istio Ingress Gateway, Kubernetes Gateway API 구현체)"]
+  ing --> apigw["API Gateway (선택)<br/>인증, 레이트 리밋, L7 라우팅 (Kong 등)"]
+  apigw --> svc["Service<br/>같은 앱의 여러 파드로 로드 밸런싱"]
+  svc --> px
+  subgraph pod["Pod"]
+    px["프록시 (사이드카 또는 노드 프록시)<br/>트래픽 관측·보안·재시도"] --> app["앱 컨테이너 (예: Next.js 서버)"]
+  end
+```
 
-관측: 각 프록시의 지표 ──scrape──▶ Prometheus ──query──▶ Grafana 대시보드
+응답은 같은 길을 거슬러 나간다.
+
+관측:
+
+```mermaid
+flowchart LR
+  m["각 프록시의 지표"] -->|"scrape"| prom["Prometheus"]
+  prom -->|"query"| graf["Grafana 대시보드"]
 ```
 
 ## 구성 요소
