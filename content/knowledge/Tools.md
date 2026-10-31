@@ -7,7 +7,7 @@ source: mixed
 date: "2026-10-14"
 ---
 
-좋은 도구를 제대로 쓰는 것은 실력만큼이나 생산성을 좌우한다. 이 분야에는 코드를 관리하는 Git과 GitHub 협업 설정, 코드 리뷰, 개발 환경 설정, 브라우저에서 웹 페이지를 검사·디버깅하는 Chrome DevTools부터 문서 작성용 Markdown·LaTeX, 편집기 Vim·VS Code와 터미널 도구 tmux, 팀 업무를 관리하는 Jira, 웹 분석 도구 GA4·Segment, DB 클라이언트, 스프레드시트, 로우 코드 내부 도구 Retool, CMS 워드프레스, 3D 모델링 도구 Blender, 영상 인코딩 도구 Compressor까지 모았다. 각 노트는 "무엇을 왜 쓰는지 → 핵심 사용법 → 실무 팁" 순서로 정리되어 있다.
+이 분야에는 코드를 관리하는 Git과 GitHub 협업 설정, 코드 리뷰, 개발 환경 설정, 브라우저에서 웹 페이지를 검사·디버깅하는 Chrome DevTools부터 문서 작성용 Markdown·LaTeX, 편집기 Vim·VS Code와 터미널 도구 tmux, 팀 업무를 관리하는 Jira, 웹 분석 도구 GA4·Segment, DB 클라이언트, 스프레드시트, 로우 코드 내부 도구 Retool, CMS 워드프레스, 3D 모델링 도구 Blender, 영상 인코딩 도구 Compressor까지 모았다. 각 노트는 "무엇을 왜 쓰는지 → 핵심 사용법 → 실무 팁" 순서로 정리되어 있다.
 
 ## 하위 주제
 

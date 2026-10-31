@@ -83,7 +83,7 @@ ESLint에 Prettier를 붙인 프로젝트를 Windows에서 열면 모든 줄 끝
 ## 정리
 
 - 터미널은 명령을 입력하는 창, 셸은 그 명령을 해석하는 프로그램이다.
-- Windows에서는 Git Bash를 쓰면 bash 기반 문서를 그대로 따라 하기 쉽다. 리눅스와 같은 환경이 필요하면 WSL 2를 쓴다. PowerShell은 CMD를 대체하는 강력한 Windows 셸이다.
+- Windows에서는 Git Bash를 쓰면 bash 기반 문서를 그대로 따라 하기 쉽다. 리눅스와 같은 환경이 필요하면 WSL 2를 쓴다. PowerShell은 CMD를 대체한 Windows 기본 셸이다.
 - Git 설치 때 에디터와 기본 브랜치 이름(`main`)만 직접 고른다.
 - `Delete ␍`는 CRLF와 LF의 충돌이다. 혼자면 `endOfLine: "auto"`, 팀이면 저장소 단위로 LF 통일.
 

@@ -149,6 +149,6 @@ git push origin main develop --tags # finish는 로컬에서만 일어나므로 
 - GitHub Flow는 `main` + 짧은 브랜치 + PR이 전부다. 대부분의 웹 서비스에 충분하다.
 - 저장소 축은 따로다. 팀은 중앙 저장소 + 기능 브랜치, 오픈 소스는 기여자마다 포크를 두고 `upstream`으로 PR을 보낸다.
 - 트렁크 기반 개발은 하루 단위로 합치고 미완성 기능은 플래그로 숨긴다. 자동 테스트가 받쳐 줘야 한다.
-- **어느 전략이든 핵심은 작업 브랜치를 짧게 유지하는 것이다.** 브랜치가 오래 살수록 합치는 비용이 커진다.
+- 어느 전략이든 작업 브랜치는 짧게 유지한다. 브랜치가 오래 살수록 합치는 비용이 커진다.
 
 관련 노트: [[branch|Git 브랜치]], [[merge|Git 브랜치 병합]], [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]], [[github-collaboration|GitHub 협업 저장소 설정]], [[ci-cd|CI/CD]], [[deployment-strategies|배포 전략]]

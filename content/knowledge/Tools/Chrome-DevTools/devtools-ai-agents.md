@@ -136,7 +136,9 @@ codex mcp add chrome-devtools -- npx chrome-devtools-mcp@latest
 | 민감 헤더 가리기 | `--redactNetworkHeaders` |
 | JS 실행 도구 끄기 | `--javascriptEvaluation=false` |
 | 기본 끔인 도구 묶음 켜기 | `--memoryDebugging`, `--categoryExtensions`, `--categoryPwa`, `--categoryExperimentalThirdParty`, `--categoryExperimentalWebmcp` |
-| 이동·스크립트 실행·스크린샷 도구만 | `--slim` | 전체 목록은 [구성 문서](https://developer.chrome.com/docs/devtools/agents/get-started/configuration?hl=ko)와 GitHub 저장소에 있다.
+| 이동·스크립트 실행·스크린샷 도구만 | `--slim` |
+
+전체 목록은 [구성 문서](https://developer.chrome.com/docs/devtools/agents/get-started/configuration?hl=ko)와 GitHub 저장소에 있다.
 
 ### 자동 연결: 내가 쓰던 브라우저 넘겨주기
 

@@ -99,7 +99,7 @@ Initialized empty Git repository in /Users/me/first/.git/
 
 현재 폴더에 `.git` 디렉터리가 생기고, 터미널 프롬프트에 `(master)` 처럼 현재 브랜치가 표시된다.
 
-> 참고: GitHub는 2020년 10월부터 새 저장소의 기본 브랜치를 `main`으로 만든다([GitHub Changelog](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/)). 반면 Git 2.x의 `git init`은 설정이 없으면 여전히 `master`를 만들고 힌트 메시지를 띄우며, 다음 메이저 버전인 Git 3.0부터 `main`이 기본이 될 예정이다(출시일 미정, [Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)). 지금 바로 맞추려면 `git config --global init.defaultBranch main` (Git 2.28+)으로 설정한다. 이름이 바뀐 배경은 master/slave 같은 용어가 노예제를 떠올리게 한다는 문제 제기이다. GitHub는 이런 문화적 민감성(cultural sensitivity)을 고려해 기본값을 `main`으로 바꿨고, 저장소를 다른 서비스로 미러링할 계획이라면 양쪽의 기본 브랜치 이름을 맞춰 두는 편이 안전한다([[remote-github|원격 저장소와 GitHub]]의 미러링 참고). 이 노트의 예시는 `master`를 쓰므로, `main`을 쓰는 저장소라면 이름만 바꿔 읽으면 된다.
+> 참고: GitHub는 2020년 10월부터 새 저장소의 기본 브랜치를 `main`으로 만든다([GitHub Changelog](https://github.blog/changelog/2020-10-01-the-default-branch-for-newly-created-repositories-is-now-main/)). 반면 Git 2.x의 `git init`은 설정이 없으면 여전히 `master`를 만들고 힌트 메시지를 띄우며, 다음 메이저 버전인 Git 3.0부터 `main`이 기본이 될 예정이다(출시일 미정, [Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)). 지금 바로 맞추려면 `git config --global init.defaultBranch main` (Git 2.28+)으로 설정한다. 이름이 바뀐 배경은 master/slave 같은 용어가 노예제를 떠올리게 한다는 문제 제기이다. GitHub는 이런 문화적 민감성(cultural sensitivity)을 고려해 기본값을 `main`으로 바꿨고, 저장소를 다른 서비스로 미러링할 계획이라면 양쪽의 기본 브랜치 이름을 맞춰 두는 편이 안전하다([[remote-github|원격 저장소와 GitHub]]의 미러링 참고). 이 노트의 예시는 `master`를 쓰므로, `main`을 쓰는 저장소라면 이름만 바꿔 읽으면 된다.
 
 ### 스테이징: `git add`
 
