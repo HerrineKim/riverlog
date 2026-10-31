@@ -1,14 +1,15 @@
 ---
 title: "이메일 전달 과정: SMTP, IMAP, 발신자 인증"
 concept: "Email Delivery"
-summary: "이메일은 우편처럼 릴레이된다. 메일 클라이언트(MUA)가 보낸 메일을 발신 서버(MTA)가 DNS MX 레코드로 수신 서버를 찾아 SMTP로 넘기고, 수신 서버(MDA)가 메일함에 넣으면 받는 사람의 클라이언트가 IMAP·POP3로 가져온다. 위조를 막기 위해 SPF·DKIM·DMARC로 발신자를 인증한다."
+summary: "이메일은 우편처럼 릴레이된다. 메일 클라이언트(MUA)가 보낸 메일을 발신 서버(MTA)가 DNS MX 레코드로 수신 서버를 찾아 SMTP(서버 간 25, 제출 587·465)로 넘기고, 수신 서버(MDA)가 메일함에 넣으면 받는 사람의 클라이언트가 IMAP·POP3로 가져온다. 위조를 막기 위해 SPF·DKIM·DMARC로 발신자를 인증한다."
 tags: ["network", "protocol", "dns", "security"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-is-email-delivered", "https://bytebytego.com/guides/design-gmail"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/how-is-email-delivered", "https://bytebytego.com/guides/design-gmail", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How is email delivered?](https://bytebytego.com/guides/how-is-email-delivered)」, 「[Design Gmail](https://bytebytego.com/guides/design-gmail)」을 바탕으로 재구성한 노트다.
+> SMTP 포트별 용도와 POP3의 동작 모드는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 네트워크 면접 정리를 바탕으로 보강했다.
 
 ## 우편과 같은 구조
 
@@ -33,12 +34,23 @@ flowchart TB
 - 받는 서버를 찾는 열쇠는 DNS의 **MX 레코드**다 → [[dns|DNS]]
 - 수신 서버가 잠시 받지 못하면 발신 MTA는 큐에 두고 몇 시간~며칠 동안 재시도한다. 그래서 이메일은 즉시성이 아니라 **결국 도착**을 보장하는 저장 후 전달(store-and-forward) 방식이다.
 
+### SMTP 포트
+
+SMTP는 TCP 위에서 동작하고, 무엇을 하느냐에 따라 포트가 갈린다.
+
+| 포트 | 용도 | 암호화 |
+| --- | --- | --- |
+| 25 | **서버끼리 릴레이**(MTA → MTA) | STARTTLS로 올린다. 스팸 발송을 막으려 많은 ISP·클라우드가 일반 회선의 25번 송신을 막는다 |
+| 587 | 클라이언트의 **제출**(submission, MUA → 발신 MTA). 로그인 필수 | 평문으로 연결한 뒤 STARTTLS로 올린다 |
+| 465 | 클라이언트의 제출 | 처음부터 TLS로 연결한다(implicit TLS). 한때 폐기됐다가 RFC 8314가 제출용으로 권장하며 되살렸다 |
+
 ### IMAP과 POP3
 
 | 구분 | IMAP | POP3 |
 | --- | --- | --- |
-| 메일 위치 | 서버에 남긴다. 클라이언트는 사본·상태를 동기화 | 기본적으로 내려받고 서버에서 지운다 |
+| 메일 위치 | 서버에 남긴다. 클라이언트는 사본·상태를 동기화 | 내려받은 뒤 서버에서 지우는 삭제 모드가 기본이고, 서버에 남겨 두는 유지 모드도 있다 |
 | 여러 기기 | 읽음·폴더 상태가 모든 기기에 맞춰진다 | 기기마다 따로 논다 |
+| 포트 | 143(STARTTLS), 993(TLS) | 110(STARTTLS), 995(TLS) |
 | 지금의 기본 | 대부분의 클라이언트 | 오프라인 보관용 일부 |
 
 Gmail 웹·앱은 자체 API로 서버와 통신하고, IMAP·POP3는 외부 클라이언트용으로 제공한다.
