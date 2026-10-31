@@ -14,7 +14,7 @@ sources: ["https://bytebytego.com/guides/how-does-terraform-turn-code-into-cloud
 
 **Terraform은 클라우드 자원을 코드로 선언하고, 그 선언대로 만들고 고치고 지우는 코드형 인프라(IaC, Infrastructure as Code) 도구다.** 콘솔에서 손으로 누르던 일을 코드로 남기면 리뷰·버전 관리·재현이 가능해진다. HCL이라는 선언형 언어를 쓰고, **제공자(provider)** 플러그인을 통해 AWS·GCP·Azure·쿠버네티스·DNS 서비스 등 API가 있는 거의 모든 대상을 다룬다.
 
-선언형이라는 점이 핵심이다. "서버를 하나 만들어라"가 아니라 "서버가 하나 있어야 한다"고 쓰면, Terraform이 지금 상태와의 차이를 계산해 필요한 생성·변경·삭제만 한다.
+Terraform은 선언형이다. "서버를 하나 만들어라"가 아니라 "서버가 하나 있어야 한다"고 쓰면, Terraform이 지금 상태와의 차이를 계산해 필요한 생성·변경·삭제만 한다.
 
 ## 흐름: write → plan → apply
 

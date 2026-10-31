@@ -30,7 +30,7 @@ sources: ["https://biggwang.github.io/2019/08/31/Spring/IoC,%20DI란%20무엇일
 
 ## Service와 ServiceImpl
 
-`MemberService` 인터페이스 + `MemberServiceImpl` 구현을 습관처럼 짝지어 만드는 관행이 있다. **인터페이스의 가치는 구현을 숨기고 여러 구현을 바꿔 끼우는 데 있으므로, 구현이 영원히 하나라면 이득이 거의 없다.**
+`MemberService` 인터페이스 + `MemberServiceImpl` 구현을 습관처럼 짝지어 만드는 관행이 있다. 인터페이스의 가치는 구현을 숨기고 여러 구현을 바꿔 끼우는 데 있으므로, 구현이 영원히 하나라면 이득이 거의 없다.
 
 - 인터페이스는 **책임 하나**를 표현할 때 의미가 있다. 예를 들어 `ChangePasswordService`에 "인증 코드로 변경", "기존 비밀번호로 변경" 두 구현이 있는 경우다.
 - 조회·수정·삭제를 모두 담은 거대한 `XxxService`는 인터페이스로 감싸도 결합도가 줄지 않는다. 먼저 `MemberFindService`, `MemberUpdateService`처럼 작은 클래스로 쪼갠다.
@@ -94,7 +94,7 @@ sources: ["https://biggwang.github.io/2019/08/31/Spring/IoC,%20DI란%20무엇일
 
 ## 멀티모듈 설계
 
-하나의 저장소에서 여러 애플리케이션(API 서버, 배치, 어드민)을 만들 때 Gradle 멀티모듈로 나눈다. **가장 흔한 실패는 모든 것을 넣는 `common` 모듈이다.**
+하나의 저장소에서 여러 애플리케이션(API 서버, 배치, 어드민)을 만들 때 Gradle 멀티모듈로 나눈다. 가장 흔한 실패는 모든 것을 넣는 `common` 모듈이다.
 
 | `common` 모듈의 문제 | 결과 |
 | --- | --- |
