@@ -61,7 +61,7 @@ set -g base-index 1        # 창 번호를 1부터
 ## 정리
 
 - tmux는 터미널 하나에서 세션·창·패인을 나누고, 세션을 터미널과 떼어 살려 둔다.
-- 원격 서버 작업의 핵심 이점은 **연결이 끊겨도 작업과 화면이 남는다**는 것이다.
+- 원격 서버 작업의 핵심 이점은 연결이 끊겨도 작업과 화면이 남는다는 것이다.
 - 모든 키는 프리픽스(`Ctrl-b`) 다음에 누른다. `d`로 떼고 `tmux attach`로 다시 붙는다.
 
 관련 노트: [[vim-and-neovim|Vim과 Neovim]], [[missing-semester|The Missing Semester: CS 교육에서 빠진 도구 학기]]
