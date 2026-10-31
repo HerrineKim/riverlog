@@ -48,14 +48,23 @@ sources: ["https://bytebytego.com/guides/firewall-explained-to-kids-and-adults",
 
 **VPN(Virtual Private Network)** 은 인터넷 같은 공용망 위에 **암호화된 터널**을 만들어, 떨어진 기기나 네트워크를 같은 사설망에 있는 것처럼 잇는다.
 
-```text
-VPN 없이:  기기 ──(공용 Wi-Fi, ISP가 목적지를 봄)──> 웹사이트 (내 IP가 보임)
+VPN 없이:
 
-VPN 사용:  기기 ══암호화 터널══> VPN 서버 ──> 웹사이트 (VPN 서버 IP가 보임)
-           1. 기기와 VPN 서버가 서로 인증하고 터널을 맺는다
-           2. 기기의 트래픽을 터널 안에서 암호화한다
-           3. VPN 서버가 풀어서 목적지로 보낸다. 목적지는 VPN 서버 IP를 본다
+```mermaid
+flowchart LR
+    d1["기기"] -->|"공용 Wi-Fi, ISP가 목적지를 봄"| w1["웹사이트<br/>(내 IP가 보임)"]
 ```
+
+VPN 사용:
+
+```mermaid
+flowchart LR
+    d2["기기"] ==>|"암호화 터널"| v["VPN 서버"] --> w2["웹사이트<br/>(VPN 서버 IP가 보임)"]
+```
+
+1. 기기와 VPN 서버가 서로 인증하고 터널을 맺는다
+2. 기기의 트래픽을 터널 안에서 암호화한다
+3. VPN 서버가 풀어서 목적지로 보낸다. 목적지는 VPN 서버 IP를 본다
 
 | 장점 | 단점 |
 | --- | --- |

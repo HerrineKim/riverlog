@@ -14,10 +14,12 @@ sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%EB%
 
 ## 공통 구조
 
-```text
-뷰포트 (overflow: hidden; 보여 줄 크기)
-└─ 트랙 (display: flex; transform: translateX(…); 슬라이드 전부를 가로로)
-   └─ 슬라이드 × n
+```mermaid
+flowchart TB
+  n1["뷰포트<br/>(overflow: hidden; 보여 줄 크기)"]
+  n2["트랙<br/>(display: flex; transform: translateX(…); 슬라이드 전부를 가로로)"]
+  n3["슬라이드 × n"]
+  n1 --> n2 --> n3
 ```
 
 뷰포트는 창 역할만 하고, 트랙 전체를 `transform`으로 옮긴다. `left`가 아니라 `transform`을 쓰는 이유는 레이아웃을 다시 계산하지 않고 합성만으로 움직이기 때문이다([[css-animation|CSS 애니메이션]]).

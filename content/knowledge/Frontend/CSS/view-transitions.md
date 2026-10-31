@@ -41,12 +41,16 @@ function navigate(update) {
 
 전환 중에는 가상 요소 트리가 생긴다. 일반 CSS 애니메이션 속성으로 꾸민다.
 
-```text
-::view-transition
-└─ ::view-transition-group(root)          위치·크기 변화
-   └─ ::view-transition-image-pair(root)
-      ├─ ::view-transition-old(root)      떠나는 화면 스냅숏
-      └─ ::view-transition-new(root)      들어오는 화면
+```mermaid
+flowchart TB
+  n1["::view-transition"]
+  n2["::view-transition-group(root)<br/>위치·크기 변화"]
+  n3["::view-transition-image-pair(root)"]
+  n4["::view-transition-old(root)<br/>떠나는 화면 스냅숏"]
+  n5["::view-transition-new(root)<br/>들어오는 화면"]
+  n1 --> n2 --> n3
+  n3 --> n4
+  n3 --> n5
 ```
 
 ```css

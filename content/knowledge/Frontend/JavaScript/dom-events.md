@@ -58,10 +58,16 @@ elem.addEventListener('mouseup', menu)
 
 버튼 안의 `<strong>`을 클릭하면 `strong`만 클릭된 것이 아니다. 버튼, `body`, `html`, `document`, `window`도 함께 클릭된 것으로 본다. 이벤트는 세 단계로 트리를 오간다.
 
-```text
-window → document → html → body → button → strong   ① 캡처: 위에서 아래로 내려간다
-                                            strong   ② 타깃: 실제로 클릭된 요소
-strong → button → body → html → document → window   ③ 버블: 아래에서 위로 올라간다
+```mermaid
+flowchart LR
+  subgraph cap["① 캡처: 위에서 아래로 내려간다"]
+    c1["window"] --> c2["document"] --> c3["html"] --> c4["body"] --> c5["button"]
+  end
+  t["strong<br/>② 타깃: 실제로 클릭된 요소"]
+  subgraph bub["③ 버블: 아래에서 위로 올라간다"]
+    b1["button"] --> b2["body"] --> b3["html"] --> b4["document"] --> b5["window"]
+  end
+  c5 --> t --> b1
 ```
 
 - 리스너는 기본적으로 **버블 단계**에서 실행된다. 그래서 안쪽 요소의 리스너가 먼저, 바깥 요소의 리스너가 나중에 실행된다.

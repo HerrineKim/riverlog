@@ -16,11 +16,11 @@ sources: ["https://developers.google.com/web/updates/2018/05/welcome-to-immersiv
 
 WebXR은 **그리기를 하지 않는다.** 화면은 WebGL(또는 WebGPU)로 직접 그린다. WebXR은 「어느 위치에서 어느 방향을 보고 있나」와 「어느 버퍼에 그리면 되나」를 알려 준다. 그래서 실무에서는 Three.js(`renderer.xr`, `VRButton`·`ARButton`), Babylon.js, A-Frame 같은 엔진 위에서 쓴다.
 
-```text
-기기 탐색 → 세션 요청(사용자 동작) → 기준 공간 → XR 프레임 루프 ─┐
-                                                     ↑        │ 매 프레임: 머리 자세 → 눈마다 뷰 → WebGL로 그리기
-                                                     └────────┘
-세션 종료(사용자·앱) → 페이지로 돌아온다
+```mermaid
+flowchart LR
+  n1["기기 탐색"] --> n2["세션 요청(사용자 동작)"] --> n3["기준 공간"] --> n4["XR 프레임 루프"]
+  n4 -->|"매 프레임: 머리 자세 → 눈마다 뷰 → WebGL로 그리기"| n4
+  n4 --> n5["세션 종료(사용자·앱)"] --> n6["페이지로 돌아온다"]
 ```
 
 ## 핵심 개념

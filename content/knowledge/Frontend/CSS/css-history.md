@@ -30,12 +30,24 @@ CSS 문법 자체는 어렵지 않다. 어려운 것은 무엇이 좋은 CSS인�
 
 ## 연대표
 
-```text
-1990 HTML ─ 1996 CSS ─ 2003 CSS Zen Garden ─ 2006 Sass ─ 2008 jQuery·Ajax
- ─ 2013 React·BEM·Flexbox ─ 2014 Zeplin ─ 2015 IE11 기능 업데이트 중단·CSS Modules
- ─ 2016 styled-components ─ 2017 Tailwind·CSS 변수·Grid ─ 2020 Figma 1위
- ─ 2021~ 온디맨드 Atomic CSS ─ 2022 IE11 지원 종료 ─ 2022~23 @layer·컨테이너 쿼리·네이티브 중첩·:has()
- ─ 2025 Tailwind v4·@scope ─ 2026 앵커 위치 지정
+```mermaid
+timeline
+  1990 : HTML
+  1996 : CSS
+  2003 : CSS Zen Garden
+  2006 : Sass
+  2008 : jQuery·Ajax
+  2013 : React·BEM·Flexbox
+  2014 : Zeplin
+  2015 : IE11 기능 업데이트 중단·CSS Modules
+  2016 : styled-components
+  2017 : Tailwind·CSS 변수·Grid
+  2020 : Figma 1위
+  2021~ : 온디맨드 Atomic CSS
+  2022 : IE11 지원 종료
+  2022~23 : @layer·컨테이너 쿼리·네이티브 중첩·#58;has()
+  2025 : Tailwind v4·@scope
+  2026 : 앵커 위치 지정
 ```
 
 ### 문서의 시대: 인라인 스타일에서 시맨틱까지

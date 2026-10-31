@@ -38,10 +38,11 @@ sources: ["https://app.notion.com/p/4183234d082949c9b0b5ef03f60f4bb2", "https://
 
 논리 주소를 물리 주소로 바꿔 주는 하드웨어다. 가장 단순한 방식은 프로세스의 물리 시작 주소를 담은 **relocation(base) 레지스터**와 주소 공간 크기를 담은 **limit 레지스터**를 쓴다. 쓸 수 있는 물리 주소는 `base 이상, base + limit 미만`이고, 벗어나면 트랩으로 막는다(메모리 보호).
 
-```text
-논리 주소 < limit ?
-  ├─ 아니오 → trap(addressing error): 운영체제가 원인을 확인
-  └─ 예     → 물리 주소 = 논리 주소 + relocation 레지스터
+```mermaid
+flowchart TB
+    q{"논리 주소 #lt; limit ?"}
+    q -->|"아니오"| trap["trap(addressing error)<br/>운영체제가 원인을 확인"]
+    q -->|"예"| ok["물리 주소 = 논리 주소 + relocation 레지스터"]
 ```
 
 예: 논리 주소 공간이 0~3000인 프로세스가 물리 메모리 14000번지에 올라가 있다면, 논리 주소 346은 14346이 된다. 사용자 프로그램은 논리 주소만 다루고 실제 물리 주소는 볼 수도, 알 필요도 없다.

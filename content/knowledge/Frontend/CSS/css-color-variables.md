@@ -71,12 +71,13 @@ getComputedStyle(el).getPropertyValue('--color').trim();         // 캐스케이
 
 ## 색상을 세 단계로 나눈다
 
-```text
-팔레트 (값 그 자체)          --green-500, --gray-700, --red-500
-   │  어떤 역할에 어떤 색을 쓸지 고른다
-기능 색상 (역할)             --color-primary, --color-text, --color-danger
-   │  컴포넌트가 상태별로 가져다 쓴다
-컴포넌트 색상 (지역 변수)    --button-bg, --input-border
+```mermaid
+flowchart TB
+  n1["팔레트 (값 그 자체)<br/>--green-500, --gray-700, --red-500"]
+  n2["기능 색상 (역할)<br/>--color-primary, --color-text, --color-danger"]
+  n3["컴포넌트 색상 (지역 변수)<br/>--button-bg, --input-border"]
+  n1 -->|"어떤 역할에 어떤 색을 쓸지 고른다"| n2
+  n2 -->|"컴포넌트가 상태별로 가져다 쓴다"| n3
 ```
 
 ### 1. 팔레트

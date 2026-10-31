@@ -24,9 +24,11 @@ Babel은 변환기이기 전에 **정적 분석 도구 모음**이다. 코드를
 
 ## 세 단계: parse → transform → generate
 
-```text
-소스 코드 ── parse ──▶ AST ── transform ──▶ 새 AST ── generate ──▶ 새 코드 + 소스 맵
-            (토큰화 → 구문 분석)   (플러그인이 노드를 추가·수정·삭제)   (깊이 우선으로 문자열을 다시 쓴다)
+```mermaid
+flowchart LR
+  n1["소스 코드"] -->|"parse<br/>(토큰화 → 구문 분석)"| n2["AST"]
+  n2 -->|"transform<br/>(플러그인이 노드를 추가·수정·삭제)"| n3["새 AST"]
+  n3 -->|"generate<br/>(깊이 우선으로 문자열을 다시 쓴다)"| n4["새 코드 + 소스 맵"]
 ```
 
 | 단계 | 하는 일 |
@@ -38,15 +40,22 @@ Babel은 변환기이기 전에 **정적 분석 도구 모음**이다. 코드를
 
 `function square(n) { return n * n }`의 AST는 이렇게 생겼다. 모든 노드에 `type`이 있고, 자식 노드를 속성으로 가진다.
 
-```text
-FunctionDeclaration
-├─ id: Identifier (name: "square")
-├─ params: [Identifier (name: "n")]
-└─ body: BlockStatement
-   └─ ReturnStatement
-      └─ argument: BinaryExpression (operator: "*")
-         ├─ left: Identifier (name: "n")
-         └─ right: Identifier (name: "n")
+```mermaid
+flowchart TB
+  n1["FunctionDeclaration"]
+  n2["id: Identifier (name: #quot;square#quot;)"]
+  n3["params: [Identifier (name: #quot;n#quot;)]"]
+  n4["body: BlockStatement"]
+  n5["ReturnStatement"]
+  n6["argument: BinaryExpression (operator: #quot;*#quot;)"]
+  n7["left: Identifier (name: #quot;n#quot;)"]
+  n8["right: Identifier (name: #quot;n#quot;)"]
+  n1 --> n2
+  n1 --> n3
+  n1 --> n4
+  n4 --> n5 --> n6
+  n6 --> n7
+  n6 --> n8
 ```
 
 Babel의 AST는 표준 형식 **ESTree**를 조금 고친 것이다. [AST Explorer](https://astexplorer.net/)에 코드를 붙이면 노드 구조를 바로 볼 수 있다. 플러그인이나 codemod를 쓸 때 가장 먼저 여는 도구다.
