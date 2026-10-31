@@ -78,6 +78,6 @@ Nginx로 리버스 프록시를 설정하는 예는 [[web-server-and-nginx|웹 �
 - 포워드 프록시는 클라이언트를, 리버스 프록시는 서버를 대리한다.
 - 리버스 프록시는 로드 밸런싱, TLS 종료, 캐시, 정책 일원화를 한곳에 모은다.
 - 뒤쪽 서버는 `X-Forwarded-For`·`Forwarded`로 원래 클라이언트를 알지만, 신뢰하는 프록시가 붙인 값만 쓴다.
-- **오늘날 웹 서비스는 거의 다 리버스 프록시(또는 CDN) 뒤에 있다.**
+- 오늘날 웹 서비스는 거의 다 리버스 프록시(또는 CDN) 뒤에 있다.
 
 관련 노트: [[api-gateway|API 게이트웨이]], [[load-balancer|로드 밸런서]], [[web-server-and-nginx|웹 서버와 Nginx]], [[network-layer|네트워크 계층 프로토콜]], [[cdn|CDN]], [[https|HTTPS와 TLS]]

@@ -279,7 +279,7 @@ INSERT INTO a VALUES (1);  -- T2의 잠금 대기
 -- ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction
 ```
 
-대부분의 DBMS는 대기 그래프(wait-for graph)로 교착을 **스스로 감지해 한쪽(보통 되돌릴 작업이 적은 쪽)을 롤백**한다. MySQL은 `innodb_deadlock_detect`(기본 켜짐)와 `SHOW ENGINE INNODB STATUS`의 `LATEST DETECTED DEADLOCK`, PostgreSQL은 `deadlock_timeout`(기본 1초) 뒤 검사로 알린다. 감지는 피해를 줄일 뿐이므로 애플리케이션은 오류 코드를 보고 **트랜잭션 전체를 재시도**해야 한다.
+대부분의 DBMS는 대기 그래프(wait-for graph)로 교착을 스스로 감지해 한쪽(보통 되돌릴 작업이 적은 쪽)을 롤백한다. MySQL은 `innodb_deadlock_detect`(기본 켜짐)와 `SHOW ENGINE INNODB STATUS`의 `LATEST DETECTED DEADLOCK`, PostgreSQL은 `deadlock_timeout`(기본 1초) 뒤 검사로 알린다. 감지는 피해를 줄일 뿐이므로 애플리케이션은 오류 코드를 보고 **트랜잭션 전체를 재시도**해야 한다.
 
 | 빈도를 낮추는 방법 | 이유 |
 | --- | --- |
