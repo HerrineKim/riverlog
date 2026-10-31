@@ -35,20 +35,30 @@ sources: ["https://bytebytego.com/guides/how-do-we-design-a-chat-application-lik
 
 ## 흐름
 
-```text
-[로그인]
-Alice ──WebSocket──> 채팅 서버 A
-채팅 서버 A ──> 접속 상태 서비스: Alice 온라인, 서버 A
-접속 상태 서비스 ──> Alice의 친구들에게 "Alice 온라인" 알림
+로그인
 
-[1:1 메시지]
-1. Alice가 Bob에게 전송 → 채팅 서버 A
-2. 시퀀스 서비스가 메시지 ID 부여 → 메시지 저장소에 저장 (여기서 전송 확정)
-3. 동기화 큐로 Bob 쪽에 전달 요청
-4. 접속 상태 확인
-   - Bob 온라인 → Bob이 붙은 채팅 서버 B → WebSocket으로 전달
-   - Bob 오프라인 → 푸시 서버 → Bob의 기기에 알림
-5. Bob이 나중에 접속하면 마지막으로 받은 ID 이후 메시지를 저장소에서 가져온다
+```mermaid
+sequenceDiagram
+  participant alice as Alice
+  participant a as 채팅 서버 A
+  participant pres as 접속 상태 서비스
+  participant fr as Alice의 친구들
+  alice->>a: WebSocket
+  a->>pres: Alice 온라인, 서버 A
+  pres->>fr: #quot;Alice 온라인#quot; 알림
+```
+
+1:1 메시지
+
+```mermaid
+flowchart TB
+  s1["1. Alice가 Bob에게 전송 → 채팅 서버 A"] --> s2["2. 시퀀스 서비스가 메시지 ID 부여 → 메시지 저장소에 저장<br/>(여기서 전송 확정)"]
+  s2 --> s3["3. 동기화 큐로 Bob 쪽에 전달 요청"]
+  s3 --> s4{"4. 접속 상태 확인"}
+  s4 -->|"Bob 온라인"| b["Bob이 붙은 채팅 서버 B"] -->|"WebSocket으로 전달"| bob["Bob"]
+  s4 -->|"Bob 오프라인"| push["푸시 서버"] --> dev["Bob의 기기에 알림"]
+  s5["5. Bob이 나중에 접속하면 마지막으로 받은 ID 이후 메시지를 저장소에서 가져온다"]
+  dev --> s5
 ```
 
 **저장이 먼저, 전달은 그다음**이다. 실시간 전달은 실패할 수 있으므로, 재접속 때 "마지막으로 받은 메시지 ID 이후"를 조회하는 동기화가 최종 안전망이다.

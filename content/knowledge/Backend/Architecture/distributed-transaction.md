@@ -26,15 +26,17 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system
 
 **2단계 커밋(two-phase commit)** 은 코디네이터(coordinator) 하나가 참여자(participant)들의 커밋을 두 단계로 조율하는 프로토콜이다. 표준 인터페이스가 XA이고, PostgreSQL의 `PREPARE TRANSACTION`, MySQL의 `XA START … XA PREPARE … XA COMMIT`이 참여자 쪽 구현이다.
 
-```text
-코디네이터                       참여자 A, B, C
-   │ ── 1단계: PREPARE ──────────▶ 작업을 디스크에 기록하고 잠금을 쥔 채
-   │ ◀─ YES / NO ──────────────── 「커밋할 수 있다」고 약속(투표)
-   │
-   │  (결정을 자기 로그에 기록)
-   │  모두 YES → COMMIT, 하나라도 NO·무응답 → ABORT
-   │ ── 2단계: COMMIT / ABORT ───▶ 결정대로 확정하고 잠금을 푼다
-   │ ◀─ ACK ─────────────────────
+```mermaid
+sequenceDiagram
+  participant co as 코디네이터
+  participant p as 참여자 A, B, C
+  co->>p: 1단계: PREPARE
+  Note over p: 작업을 디스크에 기록하고 잠금을 쥔 채<br/>「커밋할 수 있다」고 약속(투표)
+  p-->>co: YES / NO
+  Note over co: 결정을 자기 로그에 기록<br/>모두 YES → COMMIT, 하나라도 NO·무응답 → ABORT
+  co->>p: 2단계: COMMIT / ABORT
+  Note over p: 결정대로 확정하고 잠금을 푼다
+  p-->>co: ACK
 ```
 
 YES로 투표한 참여자는 그 뒤로 **혼자서는 커밋도 취소도 할 수 없다.** 코디네이터의 결정을 기다려야 한다. 이 약속 덕분에 원자성이 지켜진다.
@@ -56,10 +58,18 @@ YES로 투표한 참여자는 그 뒤로 **혼자서는 커밋도 취소도 할 
 
 **사가(saga)** 는 긴 업무를 **서비스별 로컬 트랜잭션의 연쇄**로 나누고, 중간 단계가 실패하면 이미 끝난 단계를 **보상 트랜잭션(compensating transaction)** 으로 거꾸로 되돌리는 패턴이다. 1987년 DB 논문에서 오래 걸리는 트랜잭션(long-lived transaction)을 위해 나온 개념이다.
 
-```text
-정상:  T1 주문 생성(PENDING) → T2 결제 승인 → T3 재고 차감 → T4 주문 확정(APPROVED)
-실패:  T1 → T2 → T3 실패
-       ← C2 결제 취소(환불) ← C1 주문 거절(REJECTED)
+정상:
+
+```mermaid
+flowchart LR
+  t1["T1 주문 생성(PENDING)"] --> t2["T2 결제 승인"] --> t3["T3 재고 차감"] --> t4["T4 주문 확정(APPROVED)"]
+```
+
+실패:
+
+```mermaid
+flowchart LR
+  t1["T1"] --> t2["T2"] --> t3["T3 실패"] --> c2["C2 결제 취소(환불)"] --> c1["C1 주문 거절(REJECTED)"]
 ```
 
 | 비교 | 2PC | 사가 |

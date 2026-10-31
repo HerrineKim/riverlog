@@ -37,15 +37,17 @@ sources: ["https://bytebytego.com/guides/8-key-concepts-in-ddd", "https://byteby
 | **애그리거트(Aggregate)** | 함께 변경되어야 하는 엔티티와 값 객체의 묶음. **변경과 저장의 단위**다 | 주문 + 주문 항목들 + 배송지 |
 | 애그리거트 루트 | 애그리거트의 대표 엔티티. 바깥에서는 루트를 통해서만 내부를 바꾼다 | 주문 |
 
-```text
-┌───────── 주문 애그리거트 ─────────┐
-│  Order (루트, id=42)              │ ← 바깥은 이것만 참조
-│   ├─ OrderLine (엔티티)           │
-│   ├─ OrderLine (엔티티)           │
-│   └─ ShippingAddress (값 객체)    │
-└──────────────────────────────────┘
-불변식(총액 = 항목 합)은 루트가 지킨다
+```mermaid
+flowchart TB
+  ext["바깥"] -->|"이것만 참조"| root
+  subgraph agg["주문 애그리거트"]
+    root["Order (루트, id=42)"] --> l1["OrderLine (엔티티)"]
+    root --> l2["OrderLine (엔티티)"]
+    root --> addr["ShippingAddress (값 객체)"]
+  end
 ```
+
+불변식(총액 = 항목 합)은 루트가 지킨다
 
 값 객체와 DTO의 차이는 [[dto-vo-dao-repository|DTO, VO, DAO, Repository]]에 있다.
 

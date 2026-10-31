@@ -31,18 +31,14 @@ sources: ["https://bytebytego.com/guides/how-do-we-manage-data", "https://byteby
 
 **CDC(Change Data Capture)** 는 DB에서 일어난 삽입·수정·삭제를 잡아 다른 시스템으로 실시간 전달하는 기법이다. 애플리케이션은 평소처럼 DB에 쓰기만 하고, 나머지는 CDC가 맡는다.
 
-```text
-앱 ──INSERT/UPDATE/DELETE──▶ 원본 DB
-                               │ 트랜잭션 로그 (MySQL binlog, PostgreSQL WAL)
-                               ▼
-                         소스 커넥터 (Debezium)
-                               │ 변경 이벤트 (before / after / op)
-                               ▼
-                         Kafka 토픽
-                               │
-            ┌──────────────────┼──────────────────┐
-            ▼                  ▼                  ▼
-       싱크: 검색 인덱스    싱크: 캐시(Redis)    싱크: 데이터 웨어하우스
+```mermaid
+flowchart TB
+  app["앱"] -->|"INSERT/UPDATE/DELETE"| db["원본 DB"]
+  db -->|"트랜잭션 로그 (MySQL binlog, PostgreSQL WAL)"| src["소스 커넥터 (Debezium)"]
+  src -->|"변경 이벤트 (before / after / op)"| k["Kafka 토픽"]
+  k --> s1["싱크: 검색 인덱스"]
+  k --> s2["싱크: 캐시(Redis)"]
+  k --> s3["싱크: 데이터 웨어하우스"]
 ```
 
 | 방식 | 동작 | 특징 |
@@ -151,14 +147,12 @@ orders 테이블                 order_events (추가만 한다)
 
 CQS는 코드 수준 규칙이라 어디에나 적용해도 해가 없지만, CQRS는 구조를 나누는 결정이라 쓸 곳을 고른다.
 
-```text
-명령 ──▶ 쓰기 모델 (정규화 DB / 이벤트 저장소)
-              │ 변경 이벤트 (CDC 또는 이벤트 발행)
-              ▼
-         투영기(projector)
-              │
-              ▼
-조회 ◀── 읽기 모델 (비정규화 테이블, 검색 인덱스, 캐시)
+```mermaid
+flowchart TB
+  cmd["명령"] --> w["쓰기 모델 (정규화 DB / 이벤트 저장소)"]
+  w -->|"변경 이벤트 (CDC 또는 이벤트 발행)"| p["투영기(projector)"]
+  p --> r["읽기 모델 (비정규화 테이블, 검색 인덱스, 캐시)"]
+  r --> q["조회"]
 ```
 
 ### 쓰는 이유와 비용

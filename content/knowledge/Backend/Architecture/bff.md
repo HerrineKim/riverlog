@@ -14,11 +14,22 @@ sources: ["https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/", "htt
 
 **BFF(Backend For Frontend)는** 프론트엔드 하나마다 그 화면에 맞춰 두는 **중간 서버**다. 데이터를 통합·가공해 프론트엔드를 백엔드에서 떼어 놓고, 이상적으로는 프론트엔드 개발자가 만든다.
 
-```text
-일반 구조                       BFF 구조
-Web ─┐                          Web ─── Web BFF ─┐
-iOS ─┼─▶ 공용 API들              iOS ─── iOS BFF ─┼─▶ 공용 API들
-And ─┘                          And ─── And BFF ─┘
+일반 구조
+
+```mermaid
+flowchart LR
+  web["Web"] --> api["공용 API들"]
+  ios["iOS"] --> api
+  and["And"] --> api
+```
+
+BFF 구조
+
+```mermaid
+flowchart LR
+  web["Web"] --- wb["Web BFF"] --> api["공용 API들"]
+  ios["iOS"] --- ib["iOS BFF"] --> api
+  and["And"] --- ab["And BFF"] --> api
 ```
 
 **프론트엔드 하나에 BFF 하나**가 원칙이라, 지원하는 플랫폼이 하나뿐이면 굳이 둘 이유가 약하다.

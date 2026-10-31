@@ -33,11 +33,13 @@ sources: ["https://bytebytego.com/guides/cache-systems-every-developer-should-kn
 
 요청이 지나가는 거의 모든 층에 캐시가 있다.
 
-```text
-브라우저 ─▶ CDN ─▶ 로드 밸런서 ─▶ 서비스 ─▶ 분산 캐시 ─▶ DB
- HTTP 캐시   엣지 캐시   응답 캐시    로컬 메모리    Redis 등     버퍼 풀
-                                    (+ 디스크)                 머티리얼라이즈드 뷰
-           옆길: 메시지 브로커(디스크에 보존), 검색엔진(색인 = 질의용 사본)
+```mermaid
+flowchart LR
+  b["브라우저<br/>HTTP 캐시"] --> cdn["CDN<br/>엣지 캐시"] --> lb["로드 밸런서<br/>응답 캐시"] --> svc["서비스<br/>로컬 메모리 (+ 디스크)"] --> dc["분산 캐시<br/>Redis 등"] --> db["DB<br/>버퍼 풀, 머티리얼라이즈드 뷰"]
+  subgraph side["옆길"]
+    mb["메시지 브로커 (디스크에 보존)"]
+    se["검색엔진 (색인 = 질의용 사본)"]
+  end
 ```
 
 | 층 | 캐시하는 것 | 자세히 |
@@ -72,10 +74,17 @@ HTTP 캐시는 **읽기 관통(read-through)** 방식이다. 클라이언트는 
 | **Write-around** | DB에만 쓰고 캐시는 건너뛴다(또는 해당 키를 지운다) | 다음 읽기에서 맞춰진다 | 작다 | 방금 쓴 값을 바로 읽으면 미스가 난다 |
 | **Write-back** (write-behind) | 캐시에만 쓰고 완료. DB에는 나중에 모아서 쓴다 | 낮다 | 가장 작다 | DB 반영 전에 캐시가 죽으면 **데이터를 잃는다** |
 
-```text
-Write-through : 앱 ─▶ 캐시 ─▶ DB      (둘 다 끝나야 응답)
-Write-around  : 앱 ─────────▶ DB      (캐시는 다음 읽기 때 채움)
-Write-back    : 앱 ─▶ 캐시 ··▶ DB     (비동기·일괄 반영)
+```mermaid
+flowchart LR
+  subgraph wt["Write-through (둘 다 끝나야 응답)"]
+    a1["앱"] --> c1["캐시"] --> d1["DB"]
+  end
+  subgraph wa["Write-around (캐시는 다음 읽기 때 채움)"]
+    a2["앱"] --> d2["DB"]
+  end
+  subgraph wb["Write-back (비동기·일괄 반영)"]
+    a3["앱"] --> c3["캐시"] -.-> d3["DB"]
+  end
 ```
 
 패턴은 섞어 쓴다. 가장 흔한 조합은 **cache-aside + write-around**다. 쓸 때 DB를 갱신하고 캐시 키를 지우면(invalidate), 다음 읽기가 최신 값을 다시 채운다. 키를 「갱신」하지 않고 「삭제」하는 이유는 동시에 들어온 두 쓰기가 캐시에 순서를 뒤바꿔 남기는 경쟁을 줄이기 위해서다.
