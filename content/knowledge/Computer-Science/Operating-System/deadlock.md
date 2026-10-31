@@ -4,14 +4,15 @@ concept: "Deadlock"
 summary: "프로세스들이 서로의 자원을 기다리며 멈추는 교착 상태의 4가지 발생 조건, 자원 할당 그래프, 예방·회피(은행원 알고리즘)·탐지와 복구·무시."
 tags: ["os", "deadlock", "process", "synchronization"]
 source: notion
-date: "2026-10-12"
-sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://riverkim.kr/215", "https://bytebytego.com/guides/what-is-a-deadlock", "https://www.youtube.com/watch?v=Kcv0_Yb8Rqw", "https://www.youtube.com/watch?v=zQDNXklvdUw", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
+date: "2026-10-31"
+sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://riverkim.kr/215", "https://bytebytego.com/guides/what-is-a-deadlock", "https://www.youtube.com/watch?v=Kcv0_Yb8Rqw", "https://www.youtube.com/watch?v=zQDNXklvdUw", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > 노션 정리를 바탕으로 재구성하고, 데이터베이스의 교착 상태 처리는 ByteByteGo의 System Design 101 가이드 「[What is a Deadlock?](https://bytebytego.com/guides/what-is-a-deadlock)」를 바탕으로 보강한 노트다.
 > 「식사하는 철학자 문제」, 「자원 할당 그래프」, 「회피」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 네 조건이 필요 조건인 이유 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 > 회피의 프로세스 시작 거부와 안전성 검사 절차, 탐지 알고리즘을 부르는 시점은 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
+> 「코드로 재현하기」 절과 순환 대기·보유 대기의 관계는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 OS 면접 정리를 바탕으로 보강했다.
 
 **교착 상태(deadlock)** 는 일련의 프로세스들이 서로가 가진 자원을 기다리며 모두 blocked 된 상태다. 예를 들어 두 프로세스가 각각 lock 하나씩을 쥔 채 상대방의 lock을 기다리면 둘 다 영원히 진행할 수 없다.
 
@@ -44,7 +45,42 @@ sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://
 | 보유 대기 (Hold and Wait) | 자원을 가진 채로 다른 자원을 기다리며, 가진 것을 놓지 않음 |
 | 순환 대기 (Circular Wait) | 자원을 기다리는 프로세스들 사이에 사이클이 형성됨 |
 
-네 조건은 **필요 조건**이라 하나만 빠져도 교착 상태가 생기지 않는다. 순환 대기가 없으면 「누가 누구를 기다리나」를 따라가다 결국 아무것도 기다리지 않는 프로세스에 닿고, 그 프로세스가 끝나 자원을 내놓으면 사슬이 차례로 풀린다. 선점이 되면 자원을 빼앗아 사슬을 끊을 수 있고, 보유 대기가 없으면 기다리는 프로세스는 아무것도 쥐고 있지 않아 남을 막지 않는다. 상호 배제가 없으면 애초에 기다릴 일이 없다. 반대로 네 조건이 다 성립해도 자원 인스턴스가 여러 개면 교착 상태가 아닐 수 있다(아래 자원 할당 그래프). 처리 방법 중 「예방」이 바로 이 조건 하나를 깨는 방식이다.
+네 조건은 **필요 조건**이라 하나만 빠져도 교착 상태가 생기지 않는다. 순환 대기가 없으면 「누가 누구를 기다리나」를 따라가다 결국 아무것도 기다리지 않는 프로세스에 닿고, 그 프로세스가 끝나 자원을 내놓으면 사슬이 차례로 풀린다. 선점이 되면 자원을 빼앗아 사슬을 끊을 수 있고, 보유 대기가 없으면 기다리는 프로세스는 아무것도 쥐고 있지 않아 남을 막지 않는다. 상호 배제가 없으면 애초에 기다릴 일이 없다. 반대로 네 조건이 다 성립해도 자원 인스턴스가 여러 개면 교착 상태가 아닐 수 있다(아래 자원 할당 그래프). 처리 방법 중 「예방」이 바로 이 조건 하나를 깨는 방식이다. 네 조건이 완전히 독립적이지는 않다. 순환 대기가 있으면 사이클 위의 모든 프로세스가 자원을 쥔 채 다른 자원을 기다리는 것이므로 **순환 대기는 보유 대기를 포함한다.**
+
+## 코드로 재현하기
+
+두 스레드가 락 두 개를 **반대 순서로** 잡으면 네 조건이 모두 갖춰진다. Java로 쓰면 다음과 같다.
+
+```java
+public class DeadlockDemo {
+    static final Object A = new Object(), B = new Object();
+
+    public static void main(String[] args) {
+        new Thread(() -> {
+            synchronized (A) {
+                sleep(100);              // 상대가 B를 잡을 시간을 준다
+                synchronized (B) { System.out.println("T1 done"); }
+            }
+        }).start();
+        new Thread(() -> {
+            synchronized (B) {
+                sleep(100);
+                synchronized (A) { System.out.println("T2 done"); }
+            }
+        }).start();
+    }
+    static void sleep(long ms) { try { Thread.sleep(ms); } catch (InterruptedException e) {} }
+}
+```
+
+| 조건 | 코드에서 |
+| --- | --- |
+| 상호 배제 | `synchronized` 모니터 락은 한 스레드만 쥔다 |
+| 보유 대기 | A를 쥔 채 B를 기다린다 |
+| 비선점 | JVM은 남이 쥔 모니터 락을 빼앗지 않는다 |
+| 순환 대기 | T1은 T2의 B를, T2는 T1의 A를 기다린다 |
+
+프로그램은 아무것도 출력하지 않고 멈춘다. `jstack <pid>`(또는 `jcmd <pid> Thread.print`)로 스레드 덤프를 뜨면 JVM이 사이클을 찾아 `Found one Java-level deadlock`과 두 스레드가 기다리는 락을 보여 준다. 고치는 방법은 아래 예방의 순환 대기 깨기와 같다. 두 스레드가 모두 A → B 순서로 잡거나, `ReentrantLock.tryLock(timeout)`으로 기다림에 한도를 두어 실패하면 쥔 락을 놓고 다시 시도한다.
 
 ## 자원 할당 그래프
 
