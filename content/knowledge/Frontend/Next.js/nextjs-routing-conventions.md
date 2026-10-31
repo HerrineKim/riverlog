@@ -5,7 +5,7 @@ summary: "App Router는 폴더가 URL 세그먼트, 특수 파일이 그 세그�
 tags: ["nextjs", "react", "routing", "frontend"]
 source: other
 date: "2026-10-21"
-sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%283%29%20-%20Routing%2C%20Custom%20Errors%2C%20%EC%9E%AC%EC%82%AC%EC%9A%A9%20%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%20Structure%2C%20Private%20folders.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%284%29%20-%20Route%20Groups%2C%20Layouts%2C%20Metadata.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%285%29%20-%20Navigation%2C%20template.js%2C%20error.js.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%286%29%20-%20Parallel%20Routes%2CUnmatched%20Routes%2CDefault.js%2C%20Conditional%20Routes.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%287%29%20-%20Route%20Handlers.md", "https://nextjs.org/docs/app/getting-started/project-structure", "https://nextjs.org/docs/app/api-reference/file-conventions/parallel-routes", "https://nextjs.org/docs/app/api-reference/file-conventions/intercepting-routes", "https://nextjs.org/docs/app/api-reference/file-conventions/route", "https://nextjs.org/docs/app/api-reference/functions/generate-metadata", "https://nextjs.org/docs/app/guides/upgrading/version-16"]
+sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%283%29%20-%20Routing%2C%20Custom%20Errors%2C%20%EC%9E%AC%EC%82%AC%EC%9A%A9%20%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%20Structure%2C%20Private%20folders.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%284%29%20-%20Route%20Groups%2C%20Layouts%2C%20Metadata.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%285%29%20-%20Navigation%2C%20template.js%2C%20error.js.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%286%29%20-%20Parallel%20Routes%2CUnmatched%20Routes%2CDefault.js%2C%20Conditional%20Routes.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%287%29%20-%20Route%20Handlers.md", "https://nextjs.org/docs/app/getting-started/project-structure", "https://nextjs.org/docs/app/api-reference/file-conventions/parallel-routes", "https://nextjs.org/docs/app/api-reference/file-conventions/intercepting-routes", "https://nextjs.org/docs/app/api-reference/file-conventions/route", "https://nextjs.org/docs/app/api-reference/functions/generate-metadata", "https://nextjs.org/docs/app/guides/upgrading/version-16", "https://nextjs.org/docs/app/api-reference/file-conventions/error"]
 ---
 
 > 「[Frontend_TIL: Next.js](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/Tool)」 연재 3~7편(라우팅, 레이아웃·메타데이터, template·error, 병렬 라우트, Route Handler)을 바탕으로, Next.js 16 공식 문서로 확인해 재구성한 노트다.
@@ -52,7 +52,7 @@ app/blog/_components/…      라우팅 안 됨
 - **`error`는 같은 세그먼트의 `layout`·`template`을 감싸지 않는다.** 레이아웃에서 난 에러는 한 단계 위의 `error`가 잡는다. 루트 레이아웃 에러는 `global-error`만 잡는다.
 - 에러가 나도 경계 바깥의 레이아웃은 그대로 살아 있어, 내비게이션·입력 상태가 유지된 채 그 구획만 대체 UI로 바뀐다.
 
-`error` 컴포넌트는 `error`와 복구 함수를 받는다. Next.js 16.4 기준으로는 데이터를 다시 가져와 다시 그리는 `retry()`를 쓰고, 다시 가져오지 않고 에러 상태만 지우는 `reset()`은 특별한 경우에만 쓴다. 이전 버전 예제에는 `reset()`만 나온다.
+`error` 컴포넌트는 `error`와 복구 함수를 받는다. [공식 문서](https://nextjs.org/docs/app/api-reference/file-conventions/error)에 따르면 Next.js 16.3부터 안정화된 `retry()`로 데이터를 다시 가져와 다시 그리고, 다시 가져오지 않고 에러 상태만 지우는 `reset()`은 특별한 경우에만 쓴다(16.2에서는 `unstable_retry`). 이전 버전 예제에는 `reset()`만 나온다.
 
 ```tsx
 'use client' // 에러 경계는 클라이언트 컴포넌트여야 한다
