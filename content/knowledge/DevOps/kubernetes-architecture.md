@@ -4,11 +4,11 @@ concept: "Kubernetes"
 summary: "쿠버네티스는 원하는 상태를 선언하면 컨트롤 플레인이 노드의 컨테이너를 그 상태로 계속 맞추는 오케스트레이터다. 컨트롤 플레인(API 서버·etcd·스케줄러·컨트롤러 매니저)과 노드(kubelet·kube-proxy·런타임)의 역할, 파드와 워크로드 리소스, 서비스 네 가지 유형, 쿠버네티스 디자인 패턴, 자주 쓰는 kubectl 명령, 생태계 도구 지도를 정리한다."
 tags: ["devops", "kubernetes", "infra", "container", "design-pattern"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-k8s-kubernetes", "https://bytebytego.com/guides/top-4-kubernetes-service-types-in-one-diagram", "https://bytebytego.com/guides/top-10-k8s-design-patterns", "https://bytebytego.com/guides/the-ultimate-kubernetes-command-cheatsheet", "https://bytebytego.com/guides/kubernetes-periodic-table", "https://bytebytego.com/guides/kubernetes-tools-ecosystem", "https://bytebytego.com/guides/kubernetes-tools-stack-wheel", "https://kubernetes.io/docs/concepts/overview/components/", "https://kubernetes.io/docs/concepts/services-networking/service/", "https://subicura.com/2019/05/19/kubernetes-basic-1.html", "https://coffeewhale.com/k8s/network/2019/04/19/k8s-network-01/", "https://buttondown.com/nelhage/archive/two-reasons-kubernetes-is-so-complex/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/what-is-k8s-kubernetes", "https://bytebytego.com/guides/top-4-kubernetes-service-types-in-one-diagram", "https://bytebytego.com/guides/top-10-k8s-design-patterns", "https://bytebytego.com/guides/the-ultimate-kubernetes-command-cheatsheet", "https://bytebytego.com/guides/kubernetes-periodic-table", "https://bytebytego.com/guides/kubernetes-tools-ecosystem", "https://bytebytego.com/guides/kubernetes-tools-stack-wheel", "https://kubernetes.io/docs/concepts/overview/components/", "https://kubernetes.io/docs/concepts/services-networking/service/", "https://subicura.com/2019/05/19/kubernetes-basic-1.html", "https://coffeewhale.com/k8s/network/2019/04/19/k8s-network-01/", "https://buttondown.com/nelhage/archive/two-reasons-kubernetes-is-so-complex/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md", "https://github.com/remotty/documents.docker.co.kr", "https://docs.redhat.com/en/documentation/openshift_container_platform/", "https://cloud.google.com/kubernetes-engine/docs/concepts/kubernetes-engine-overview", "https://blog.2dal.com/2017/03/07/kubernetes/", "http://slides.com/subicura/coreos-study#/", "http://manseok.blogspot.kr/2014/10/coreos.html", "http://www.moreagile.net/2014/07/docker-coreos.html", "http://felixblog.tistory.com/110", "http://blog.llogs.org/?p=102", "http://www.moreagile.net/2014/05/ContainersAtScale.html"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[What is Kubernetes (k8s)?](https://bytebytego.com/guides/what-is-k8s-kubernetes)」, 「[Top 4 Kubernetes Service Types](https://bytebytego.com/guides/top-4-kubernetes-service-types-in-one-diagram)」, 「[Top 10 Kubernetes Design Patterns](https://bytebytego.com/guides/top-10-k8s-design-patterns)」, 「[Kubernetes Command Cheatsheet](https://bytebytego.com/guides/the-ultimate-kubernetes-command-cheatsheet)」, 「[Kubernetes Periodic Table](https://bytebytego.com/guides/kubernetes-periodic-table)」, 「[Kubernetes Tools Ecosystem](https://bytebytego.com/guides/kubernetes-tools-ecosystem)」, 「[Kubernetes Tools Stack Wheel](https://bytebytego.com/guides/kubernetes-tools-stack-wheel)」을 바탕으로, 구성 요소는 쿠버네티스 공식 문서로 확인해 재구성한 노트다. 파드 생성 흐름은 「[쿠버네티스 시작하기 - 쿠버네티스란 무엇인가?](https://subicura.com/2019/05/19/kubernetes-basic-1.html)」, 파드 네트워킹은 「[쿠버네티스 네트워킹 이해하기#1: Pods](https://coffeewhale.com/k8s/network/2019/04/19/k8s-network-01/)」, 복잡성의 이유는 「[Two reasons Kubernetes is so complex](https://buttondown.com/nelhage/archive/two-reasons-kubernetes-is-so-complex/)」로, 구성 요소의 동작(API 서버 처리 단계, etcd 쿼럼, 스케줄링 단계, 컨트롤러, CRI)은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[Kubernetes](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md)」 항목을 공식 문서로 확인해 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[What is Kubernetes (k8s)?](https://bytebytego.com/guides/what-is-k8s-kubernetes)」, 「[Top 4 Kubernetes Service Types](https://bytebytego.com/guides/top-4-kubernetes-service-types-in-one-diagram)」, 「[Top 10 Kubernetes Design Patterns](https://bytebytego.com/guides/top-10-k8s-design-patterns)」, 「[Kubernetes Command Cheatsheet](https://bytebytego.com/guides/the-ultimate-kubernetes-command-cheatsheet)」, 「[Kubernetes Periodic Table](https://bytebytego.com/guides/kubernetes-periodic-table)」, 「[Kubernetes Tools Ecosystem](https://bytebytego.com/guides/kubernetes-tools-ecosystem)」, 「[Kubernetes Tools Stack Wheel](https://bytebytego.com/guides/kubernetes-tools-stack-wheel)」을 바탕으로, 구성 요소는 쿠버네티스 공식 문서로 확인해 재구성한 노트다. 파드 생성 흐름은 「[쿠버네티스 시작하기 - 쿠버네티스란 무엇인가?](https://subicura.com/2019/05/19/kubernetes-basic-1.html)」, 파드 네트워킹은 「[쿠버네티스 네트워킹 이해하기#1: Pods](https://coffeewhale.com/k8s/network/2019/04/19/k8s-network-01/)」, 복잡성의 이유는 「[Two reasons Kubernetes is so complex](https://buttondown.com/nelhage/archive/two-reasons-kubernetes-is-so-complex/)」로, 구성 요소의 동작(API 서버 처리 단계, etcd 쿼럼, 스케줄링 단계, 컨트롤러, CRI)은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[Kubernetes](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md)」 항목을 공식 문서로 확인해 보강했다. 배포판과 관리형 서비스의 비교는 오픈 컨테이너 코리아 밋업 발표 「[k8s / OpenShift / GKE](https://github.com/remotty/documents.docker.co.kr)」를 Red Hat·Google Cloud 문서로 최신화해 보강했다. 역사와 컨테이너 전용 OS는 「[Kubernetes](https://blog.2dal.com/2017/03/07/kubernetes/)」, 「[CoreOS 스터디](http://slides.com/subicura/coreos-study#/)」, 「[가벼운 리눅스 CoreOS](http://manseok.blogspot.kr/2014/10/coreos.html)」, 「[Docker 전용 경량 리눅스 CoreOS](http://www.moreagile.net/2014/07/docker-coreos.html)」, 「[Windows PC에 CoreOS, Docker 설치하기 (1)](http://felixblog.tistory.com/110)」, 「[QEMU 환경에서 CoreOS 구동하기](http://blog.llogs.org/?p=102)」, 「[구글의 클라우드 컴퓨팅 아키텍처](http://www.moreagile.net/2014/05/ContainersAtScale.html)」를 공식 문서로 최신화해 보강했다.
 
 ## 쿠버네티스란
 
@@ -217,6 +217,36 @@ kubectl create configmap app-config --from-file=config.yaml
 kubectl create secret generic db --from-literal=password=...
 ```
 
+## 배포판과 관리형 서비스
+
+**쿠버네티스는 모든 것을 갖춘 PaaS가 아니다.** 컨테이너를 배치하고 살려 두는 핵심만 제공하고, 소스 코드를 이미지로 만드는 빌드, 앱 카탈로그, 로그·모니터링·알림, 기술 지원은 들어 있지 않다. 이 빈칸을 채워 묶은 것이 배포판(distribution)과 관리형 서비스다.
+
+| | 쿠버네티스 직접 설치 (kubeadm 등) | OpenShift | 관리형 쿠버네티스 (GKE·EKS·AKS) |
+| --- | --- | --- | --- |
+| 성격 | 업스트림 그대로 | Red Hat의 기업용 배포판. 쿠버네티스 + 개발자 플랫폼 | 클라우드가 컨트롤 플레인을 운영 |
+| 설치·운영 부담 | 설치는 가볍지만 업그레이드·etcd·인증서 등 운영을 모두 직접 | 설치가 무겁고 구독료가 들지만 운영 기능이 갖춰져 있다 | 가장 적다. 클러스터를 명령 하나(`gcloud container clusters create`)로 만든다 |
+| 소스 → 이미지 | 직접 구성 | S2I(Source-to-Image)·빌드 설정 내장 | 클라우드 빌드 서비스(Cloud Build, CodeBuild) 연동 |
+| 이미지 레지스트리 | 직접 구성 | 내장 레지스트리 | 클라우드 레지스트리(Artifact Registry, ECR, ACR) |
+| 로그·모니터링 | 직접 구성 | Prometheus 기반 모니터링·로깅 스택 내장 | 클라우드 관측 서비스(Cloud Logging·Monitoring, CloudWatch) |
+| 그 밖에 | - | 웹 콘솔, 프로젝트(네임스페이스+권한) 단위 팀 관리, Route, OperatorHub, 강한 기본 보안(비root 강제) | 노드 자동 업그레이드·복구, 클라우드 IAM 연동. GKE Autopilot·EKS Auto Mode는 노드까지 맡긴다 |
+| 지원 | 커뮤니티 | Red Hat 구독 | 클라우드 지원 플랜 |
+| 맞는 곳 | 학습, 특수한 온프레미스 | 온프레미스·하이브리드에서 플랫폼을 통째로 갖추려는 조직 | 클라우드를 쓰는 대부분 |
+
+OpenShift의 커뮤니티 업스트림은 OKD다(과거 이름은 OpenShift Origin). GKE는 처음 Google Container Engine이라는 이름으로 나왔다가 Google Kubernetes Engine으로 바뀌었다. 직접 설치든 관리형이든 위 빈칸을 플랫폼 팀이 채워 개발자에게 내미는 것이 [[platform-engineering|플랫폼 엔지니어링]]이다.
+
+### 컨테이너 전용 OS
+
+노드에 올라가는 OS도 컨테이너에 맞춰 줄어들었다. 시작은 **CoreOS Container Linux**(2013)였다. 패키지 관리자 없이 앱을 모두 컨테이너로 돌리고, etcd·systemd·fleet으로 클러스터를 이뤘다.
+
+| 특징 | 내용 |
+| --- | --- |
+| 읽기 전용에 가까운 최소 OS | 셸과 런타임 정도만 둔다. 노드에 직접 패키지를 깔지 않는다 |
+| A/B 파티션 업데이트 | 쓰지 않는 루트 파티션에 새 OS를 쓰고 재부팅으로 전환한다. 문제가 생기면 이전 파티션으로 되돌린다 |
+| 첫 부팅 때 한 번 구성 | 과거 cloud-config(YAML)에서 지금은 Ignition(Butane으로 작성)으로 사용자·SSH 키·유닛을 넣는다. 그 뒤로는 노드를 고치지 않고 교체한다 |
+| 릴리스 채널 | Stable·Beta·Alpha 채널로 자동 업데이트 속도를 고른다 |
+
+CoreOS사는 2018년 Red Hat에 인수됐고 Container Linux는 2020년 5월 지원이 끝났다. 뒤를 Fedora CoreOS, OpenShift 노드용 RHEL CoreOS, 포크인 Flatcar Container Linux가 잇고, AWS Bottlerocket, 쿠버네티스 전용 Talos Linux도 같은 계열이다. 같은 생각은 [[packer-machine-image|불변 인프라]]를 OS 단위로 적용한 것이다.
+
 ## 생태계 지도
 
 쿠버네티스 자체는 핵심 기능만 갖고, 나머지는 플러그인과 주변 도구가 채운다. 구성 요소가 100개가 넘어 원소 주기율표처럼 정리한 지도가 있을 정도다. 도구 이름은 자주 바뀌므로 범주로 기억하고, 범주마다 무엇이 필요한지에서 출발해 고른다.
@@ -231,6 +261,20 @@ kubectl create secret generic db --from-literal=password=...
 | 관측 | 지표·로그·트레이스 | Prometheus, Grafana, OpenTelemetry, Loki, Jaeger |
 | 보안 | 이미지 스캔, 정책 강제, 런타임 탐지 | Trivy, OPA Gatekeeper·Kyverno, Falco |
 | 저장소 | 상태 있는 워크로드의 볼륨 | CSI 드라이버, Rook·Ceph, Longhorn |
+
+## 역사
+
+| 시기 | 변화 |
+| --- | --- |
+| 2003~ | 구글이 사내에서 Borg(뒤에 Omega)로 모든 서비스를 컨테이너로 돌렸다. 파드, 서비스, 라벨, 파드마다 IP를 주는 모델이 여기서 왔다 |
+| 2014.06 | 쿠버네티스(그리스어로 「조타수」, K와 s 사이 8글자를 줄여 k8s)를 오픈소스로 공개. Microsoft, IBM, Red Hat, CoreOS, Mesosphere 등이 곧 합류했다 |
+| 2015.07 | 1.0 출시와 함께 CNCF에 기증되어 첫 프로젝트가 됐다 |
+| 2016~2017 | PetSet → StatefulSet, ScheduledJob → CronJob으로 이름이 바뀌고, ReplicationController 대신 ReplicaSet·Deployment가 표준이 됐다. 노드는 한때 minion, 컨트롤 플레인은 master라 불렀다 |
+| 2017~2018 | Swarm·Mesos/Marathon·Nomad와의 오케스트레이터 경쟁이 쿠버네티스로 정리됐다. CoreOS의 fleet(systemd 유닛을 클러스터에 배치하던 도구)도 개발을 멈췄고, 그 배치 규칙(`Conflicts`, `MachineOf`)은 파드 안티어피니티·어피니티로 이어진다([[kubernetes-scheduling-resources\|쿠버네티스 스케줄링과 자원 관리]]) |
+| 2020 | rkt 런타임 저장소가 보관 처리됐다 |
+| 2022 | 1.24에서 dockershim이 제거되어 containerd·CRI-O가 CRI로 직접 붙는다 |
+
+etcd도 바뀌었다. 초기 v2 API는 디렉터리형 키와 TTL(`etcdctl set /foo bar --ttl 60`, `ls`)을 썼고, 지금의 v3는 평평한 키 공간에 접두사 조회(`etcdctl put`, `get --prefix`, `watch`)와 TTL 대신 리스(lease)를 쓴다. v2 API는 제거됐다. 초기 클러스터는 `discovery.etcd.io` 토큰으로 서로를 찾아 형성했다.
 
 ## 정리
 

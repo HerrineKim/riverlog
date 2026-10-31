@@ -4,11 +4,11 @@ concept: "Docker Compose"
 summary: "compose.yaml 하나로 웹 서버·애플리케이션·DB 컨테이너를 정의하고 함께 띄우는 Docker Compose의 최상위 구성, 서비스 주요 키, 환경 변수 관리(.env·environment·env_file 우선순위), depends_on과 healthcheck로 시작 순서 제어, 네트워크 분리, 볼륨 공유, 여러 파일 겹치기, 스케일링, secrets, 점검 명령."
 tags: ["docker", "devops", "container", "infra"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "https://80000coding.notion.site/be3f7cdb6d2f4e868fb6968740be0256", "https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "https://80000coding.notion.site/d6e6ca38d41347baa80ba1b4f40886ab", "https://docs.docker.com/reference/compose-file/", "https://docs.docker.com/engine/storage/volumes/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/compose/how-tos/environment-variables/envvars-precedence/", "https://docs.docker.com/compose/how-tos/multiple-compose-files/merge/", "https://docs.docker.com/compose/how-tos/startup-order/"]
+date: "2026-10-31"
+sources: ["https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "https://80000coding.notion.site/be3f7cdb6d2f4e868fb6968740be0256", "https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "https://80000coding.notion.site/d6e6ca38d41347baa80ba1b4f40886ab", "https://docs.docker.com/reference/compose-file/", "https://docs.docker.com/engine/storage/volumes/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/compose/how-tos/environment-variables/envvars-precedence/", "https://docs.docker.com/compose/how-tos/multiple-compose-files/merge/", "https://docs.docker.com/compose/how-tos/startup-order/", "https://gist.github.com/anarcher/a6727f8948a0452239a3", "http://slides.com/seapy/fig-use-story", "http://junolab.blogspot.kr/2014/09/fig-docker-fig-django.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Inception] docker orchestration with docker-compose」, 「Inception 참고자료」, 「[inception] 인셉션 테스트 가이드라인」, 「Inception 공부할때 유용했던 링크들」을 바탕으로 과제 풀이를 빼고 Compose 일반 개념만 재구성한 노트다. 환경 변수 우선순위, 시작 순서, 파일 겹치기, 스케일링, secrets는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」 항목이 묻는 개념을 Docker 공식 문서로 확인해 보강했다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Inception] docker orchestration with docker-compose」, 「Inception 참고자료」, 「[inception] 인셉션 테스트 가이드라인」, 「Inception 공부할때 유용했던 링크들」을 바탕으로 과제 풀이를 빼고 Compose 일반 개념만 재구성한 노트다. 환경 변수 우선순위, 시작 순서, 파일 겹치기, 스케일링, secrets는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」 항목이 묻는 개념을 Docker 공식 문서로 확인해 보강했다. Compose의 전신 fig는 「[fig 사용하기](https://gist.github.com/anarcher/a6727f8948a0452239a3)」, 「[fig 사용기](http://slides.com/seapy/fig-use-story)」, 「[Fig: Docker를 이용한 배포 툴](http://junolab.blogspot.kr/2014/09/fig-docker-fig-django.html)」로 보강했다.
 
 ## Docker Compose란
 
@@ -17,6 +17,7 @@ sources: ["https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "h
 - 한 대의 호스트에서 여러 컨테이너를 묶어 관리한다. 여러 서버에 걸친 배치·자동 복구는 쿠버네티스 같은 오케스트레이터의 몫이다([[vm-vs-container|VM과 컨테이너]]).
 - 현재 Compose는 Docker CLI 플러그인 `docker compose`(띄어쓰기)다. 예전의 독립 실행 파일 `docker-compose`(하이픈)는 지원이 끝났다.
 - 파일 맨 위의 `version:` 키는 더 이상 쓰이지 않는다. 적어도 무시되고 경고만 나온다.
+- 과거에는 Orchard의 **fig**(`fig.yml`, `fig up`)였다. 2014년 Docker가 Orchard를 인수해 fig가 Python으로 된 Compose v1(`docker-compose`)이 되었고, 지금의 Go로 다시 쓴 v2 플러그인으로 이어졌다. 당시 서비스끼리는 `links`로 잇고 데이터는 `volumes_from`으로 공유했는데, 둘 다 레거시가 되어 기본 네트워크의 서비스 이름 DNS와 이름 있는 볼륨으로 바뀌었다. 여러 호스트로 넓히는 일은 Compose가 아니라 Swarm 스택과 쿠버네티스의 몫으로 정리됐다.
 
 | 최상위 키 | 정의하는 것 |
 | --- | --- |

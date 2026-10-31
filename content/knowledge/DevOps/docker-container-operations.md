@@ -4,11 +4,11 @@ concept: "Container Operations"
 summary: "cgroups로 CPU·메모리·I/O·PID를 제한하는 옵션과 CPU 스로틀링·OOM의 원리, 컨테이너 격리를 보강하는 비root 실행·rootless 모드·capability·seccomp·AppArmor·SELinux, Docker 소켓과 Docker in Docker의 위험, 비밀 값 전달과 이미지 스캔·서명, 로깅 드라이버와 로그 회전, docker stats·events·Prometheus 모니터링, 종료 코드·재시작 정책·exec·diff·cp·prune을 이용한 장애 진단을 정리한다."
 tags: ["docker", "devops", "container", "security", "monitoring"]
 source: other
-date: "2026-10-30"
-sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://docs.docker.com/engine/containers/resource_constraints/", "https://docs.docker.com/engine/security/", "https://docs.docker.com/engine/security/rootless/", "https://docs.docker.com/engine/security/seccomp/", "https://docs.docker.com/engine/logging/configure/", "https://docs.docker.com/engine/containers/start-containers-automatically/", "https://www.docker.com/blog/docker-content-trust-retirement-and-migration-guidance/"]
+date: "2026-10-31"
+sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://docs.docker.com/engine/containers/resource_constraints/", "https://docs.docker.com/engine/security/", "https://docs.docker.com/engine/security/rootless/", "https://docs.docker.com/engine/security/seccomp/", "https://docs.docker.com/engine/logging/configure/", "https://docs.docker.com/engine/containers/start-containers-automatically/", "https://www.docker.com/blog/docker-content-trust-retirement-and-migration-guidance/", "https://github.com/remotty/documents.docker.co.kr", "https://docs.docker.com/engine/security/protect-access/", "https://github.com/docker/docker-bench-security", "https://www.cisecurity.org/benchmark/docker", "http://slides.com/subicura/docker-tip", "http://slides.com/anarcher/docker-2014-11-30-springsprout#/", "https://dayone.me/16REzOh", "http://blog.iolo.kr/509", "http://blog.nacyot.com/articles/2014-01-27-easy-deploy-with-docker/", "https://docs.docker.com/engine/logging/drivers/fluentd/"]
 ---
 
-> fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(가상화 및 컨테이너) 항목이 묻는 개념을 Docker 공식 문서로 확인해 정리한 노트다.
+> fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(가상화 및 컨테이너) 항목이 묻는 개념을 Docker 공식 문서로 확인해 정리한 노트다. 데몬 API 노출과 CIS 벤치마크 점검은 오픈 컨테이너 코리아 밋업 발표 「[Docker Security](https://github.com/remotty/documents.docker.co.kr)」로 보강했다. 로그 수집의 변천, 컨테이너에 SSH를 넣지 않는 이유, cAdvisor 실행은 「[Docker 배포할 때 알면 좋은 팁](http://slides.com/subicura/docker-tip)」, 「[도커 사용에 유용한 유틸리티와 팁](http://slides.com/anarcher/docker-2014-11-30-springsprout#/)」, 「[Docker 컨테이너 안에 SSHD를 실행하면 안 되는 이유](https://dayone.me/16REzOh)」, 「[도커 컨테이너에 터미널로 접속하기](http://blog.iolo.kr/509)」, 「[도커 튜토리얼: 깐 김에 배포까지](http://blog.nacyot.com/articles/2014-01-27-easy-deploy-with-docker/)」로 보강했다.
 
 컨테이너는 호스트 커널을 공유하는 프로세스다. 그래서 운영의 핵심 질문은 한 컨테이너가 이웃과 호스트에 얼마나 영향을 줄 수 있나(자원, 보안)와 문제가 났을 때 무엇을 보나(로그, 지표, 상태)다. 컨테이너를 격리하는 커널 기능(네임스페이스, cgroups)의 개요는 [[virtualization|가상화와 하이퍼바이저]]에 있다.
 
@@ -149,6 +149,18 @@ docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE \
 | CI에서 이미지를 빌드해야 한다 | 데몬 없이 빌드하는 도구(rootless BuildKit, Buildah), 원격 빌더 |
 | 사용자에게 Docker를 쓰게 해야 한다 | rootless 모드 |
 
+### 데몬 API 노출
+
+Docker 데몬(dockerd)은 root로 돌고, 데몬 API를 부를 수 있으면 호스트 root와 같다. 그래서 **API는 기본값인 유닉스 소켓(`/var/run/docker.sock`)으로만 열고, 신뢰하는 사용자만 접근하게 한다.**
+
+| 원격 접근 방법 | 평가 |
+| --- | --- |
+| `-H tcp://0.0.0.0:2375` (TLS 없는 TCP) | **하지 않는다.** 포트에 닿는 누구나 호스트 root가 된다. 인터넷에 열린 2375 포트는 채굴 악성 코드의 단골 침입 경로다 |
+| TCP + TLS 상호 인증 (`2376`, `--tlsverify`) | 클라이언트 인증서가 있는 쪽만 접속한다. 인증서 발급·회전을 관리해야 한다 |
+| SSH (`DOCKER_HOST=ssh://user@host`, `docker context`) | 이미 있는 SSH 키와 접근 통제를 그대로 쓴다. 원격 관리는 이 방법이 가장 간단하다 |
+
+같은 이유로 Docker 호스트에는 데몬과 컨테이너 외의 관리 도구·서비스를 되도록 올리지 않는다. 호스트에서 도는 것이 많을수록 데몬까지 닿는 길이 늘어난다.
+
 ### Docker in Docker
 
 **Docker in Docker(DinD)는 컨테이너 안에서 또 하나의 Docker 데몬을 돌리는 것**이다. 공식 `docker:dind` 이미지가 있어 CI에서 격리된 Docker 환경이 필요할 때 쓴다. 가상화와 달리 바깥 컨테이너와 안쪽 컨테이너가 같은 호스트 커널을 쓰므로 「Docker 위의 Docker」는 가능하지만 대가가 있다.
@@ -185,7 +197,18 @@ docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE \
 | 취약점 스캔 | Trivy, Grype, Docker Scout, Snyk가 OS 패키지와 언어 의존성을 CVE DB와 대조한다. 새 CVE는 계속 나오므로 배포 후에도 레지스트리의 이미지를 다시 스캔한다 |
 | 서명과 출처 | Sigstore Cosign·Notation으로 서명하고, 배포 시 서명과 빌드 출처 증명(provenance), SBOM을 검증한다 |
 
-**이미지 서명**은 이미지가 정해진 빌드 파이프라인에서 나왔고 그 뒤로 바뀌지 않았음을 보장한다. 레지스트리가 뚫리거나 태그가 다른 이미지로 바뀌어도 서명 검증에서 걸린다. Docker의 옛 서명 기능 **Docker Content Trust**(`DOCKER_CONTENT_TRUST=1`, Notary v1 기반)는 2025년부터 폐기 절차에 들어갔고, 서명은 Cosign·Notation으로 옮겨 가고 있다. CI에서 스캔을 거는 방법은 [[ci-cd|CI/CD]]에 있다.
+**이미지 서명**은 이미지가 정해진 빌드 파이프라인에서 나왔고 그 뒤로 바뀌지 않았음을 보장한다. 레지스트리가 뚫리거나 태그가 다른 이미지로 바뀌어도 서명 검증에서 걸린다. Docker의 옛 서명 기능 **Docker Content Trust**(`DOCKER_CONTENT_TRUST=1`, Notary v1 기반)는 2025년부터 폐기 절차에 들어갔고, 서명은 Cosign·Notation으로 옮겨 가고 있다. CI에서 스캔을 거는 방법은 [[ci-cd|CI/CD]]에 있다. 과거에는 Docker Cloud의 Docker Security Scanning이 레지스트리에 올린 이미지를 층별로 스캔했고, 그 역할은 Docker Scout로 넘어갔다.
+
+### 호스트·설정 점검: CIS Docker Benchmark
+
+**CIS Docker Benchmark**는 호스트 설정, 데몬 설정, 데몬 파일 권한, 이미지·빌드, 컨테이너 런타임, 운영 절차에 걸친 보안 권고를 항목별로 정리한 기준이다. 오픈소스 스크립트 **docker-bench-security**가 이 항목을 호스트에서 자동 점검해 `PASS`·`WARN`으로 보여 준다.
+
+```bash
+git clone https://github.com/docker/docker-bench-security.git
+cd docker-bench-security && sudo sh docker-bench-security.sh
+```
+
+경고가 나오는 대표 항목은 TLS 없는 TCP 소켓, 비root가 아닌 컨테이너, `--privileged`, 자원 제한 없음, 호스트 네트워크·PID 네임스페이스 공유, 헬스체크 없음 같은 것으로, 이 노트의 위 항목들과 겹친다. 쿠버네티스는 같은 기관의 CIS Kubernetes Benchmark와 kube-bench가 대응한다.
 
 ## 로그
 
@@ -203,6 +226,8 @@ docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE \
 | `none` | 버림 | - |
 
 원격 드라이버를 써도 Docker가 로컬 캐시를 함께 남겨(dual logging) `docker logs`로 볼 수 있다. 드라이버가 느릴 때 앱이 로그 쓰기에서 막히지 않게 `mode: non-blocking`과 버퍼 크기를 줄 수 있다(버퍼가 차면 로그를 버린다).
+
+중앙 수집은 두 길이 있다. 로깅 드라이버로 컨테이너마다 수집기에 바로 보내거나(`--log-driver fluentd --log-opt fluentd-address=...`), 노드마다 수집 에이전트(Fluent Bit, Vector, OpenTelemetry Collector)를 하나 띄워 `/var/lib/docker/containers/*/*-json.log`를 읽게 한다. 후자는 파일 이름의 컨테이너 ID로 태그를 붙이고 컨테이너 메타데이터를 덧붙인다. 파일에만 로그를 쓰는 앱(예: nginx의 `/var/log/nginx`)은 stdout·stderr로 심볼릭 링크를 걸거나(공식 nginx 이미지 방식), 로그 디렉터리를 볼륨으로 빼서 에이전트가 읽게 한다. 과거에는 로깅 드라이버가 없어(1.6에서 도입) 호스트의 logrotate(`copytruncate`)로 JSON 로그 파일을 잘랐다.
 
 ```bash
 docker logs -f --tail 100 --since 30m -t api    # 따라가기, 마지막 100줄, 30분 전부터, 시각 표시
@@ -241,6 +266,16 @@ docker run --log-opt max-size=10m --log-opt max-file=3 myapi:1.0   # 컨테이�
 | node-exporter | 호스트 OS 지표 |
 | Docker 데몬 지표 | `daemon.json`의 `metrics-addr`로 엔진 자체 지표 노출 |
 | 앱 `/metrics` | 요청 수·지연·오류 같은 애플리케이션 지표 |
+
+cAdvisor는 cgroup 통계를 읽어야 하므로 호스트 경로를 읽기 전용으로 마운트해 띄운다.
+
+```bash
+docker run -d --name cadvisor -p 8080:8080 \
+  -v /:/rootfs:ro -v /var/run:/var/run:ro -v /sys:/sys:ro -v /var/lib/docker/:/var/lib/docker:ro \
+  ghcr.io/google/cadvisor   # v0.53.0 이전 버전은 gcr.io/cadvisor/cadvisor
+```
+
+쿠버네티스에서는 kubelet에 cAdvisor가 들어 있어 따로 띄우지 않는다. 컨테이너 모니터링이 갖춰야 할 것은 정량 지표(CPU·메모리·I/O), 생명주기 이벤트(시작·종료·OOM), 임계치 알림의 세 가지다.
 
 Prometheus가 이 대상들을 주기적으로 긁어 와 저장하고, Grafana로 대시보드를 만들고, Alertmanager로 「메모리가 한도의 90%」, 「재시작 반복」 같은 알림을 보낸다. 수집 구조는 [[observability|관측 가능성]]에 있다.
 
@@ -318,6 +353,19 @@ docker top api                             # 컨테이너 안 프로세스 목�
 - `docker diff`로 예상 밖의 파일 생성(침입 흔적, 컨테이너 안에 쌓이는 로그·캐시)을 찾는다.
 - 셸이 없는 distroless 이미지는 도구 컨테이너를 같은 네임스페이스에 붙인다: `docker run -it --rm --pid container:api --network container:api nicolaka/netshoot`.
 - `exec`로 고친 내용은 컨테이너를 다시 만들면 사라진다. 원인을 찾으면 Dockerfile이나 설정에 반영한다.
+
+#### 컨테이너에 SSH를 넣지 않는다
+
+백업, 로그 보기, 재시작, 설정 변경, `strace`·`gdb` 디버깅은 모두 컨테이너 밖에서 할 수 있다. 컨테이너에 sshd를 넣으면 생기는 문제가 더 크다.
+
+| 문제 | 내용 |
+| --- | --- |
+| 키 관리 | 키를 이미지에 구우면 교체할 때마다 재빌드, 볼륨에 두면 권한·공유 문제 |
+| 공격 면 | 모든 컨테이너가 sshd 보안 패치 대상이 된다 |
+| 프로세스 관리 | Docker는 주 프로세스 하나만 본다. sshd와 앱을 함께 돌리려면 supervisord 같은 관리자가 필요하고, 앱이 죽어도 컨테이너는 살아 있게 된다 |
+| 접근 통제 | 조직의 원격 접근·감사 정책과 따로 놀게 된다 |
+
+대신 `docker exec`(1.3에서 도입. 그 전에는 `nsenter --target <PID> --mount --uts --ipc --net --pid`로 네임스페이스에 들어갔다), 쿠버네티스의 `kubectl exec`·`kubectl debug`를 쓴다. 일회성 작업(DB 마이그레이션)은 같은 이미지로 `docker run --rm ... bin/rake db:migrate`처럼 별도 컨테이너를 띄운다([[twelve-factor-app|12요소 앱]]의 관리 프로세스). 컨테이너 자체가 SSH 서버인 경우만 예외다. 원칙은 「컨테이너 하나에 관심사 하나」다. 여러 프로세스가 꼭 필요하면 tini 같은 init을 PID 1로 두고([[dockerfile|Dockerfile]]), 보조 기능은 사이드카 컨테이너로 나눈다.
 
 ### 디스크 정리
 

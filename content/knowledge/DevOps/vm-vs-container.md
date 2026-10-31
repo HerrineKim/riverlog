@@ -4,11 +4,11 @@ concept: "Container"
 summary: "OS 전체를 가상화하는 VM과 애플리케이션 단위로 격리하는 Docker 컨테이너의 차이, Docker의 핵심 개념과 클라이언트·데몬·레지스트리 구조, dockerd·containerd·runc 런타임 계층과 OCI 표준, Docker와 쿠버네티스의 관계, 컨테이너가 많아질 때 필요한 오케스트레이션·오토 스케일링(Swarm·Kubernetes·ECS), MSA에서의 장단점을 다룬다."
 tags: ["docker", "devops", "infra", "msa"]
 source: notion
-date: "2026-10-20"
-sources: ["https://riverkim.kr/313", "https://80000coding.notion.site/95596b1b156b4451bd3e7d20d9e664eb", "https://bytebytego.com/guides/how-does-docker-work", "https://bytebytego.com/guides/top-8-must-know-docker-concepts", "https://www.44bits.io/ko/post/container-orchestration-101-with-docker-and-aws-elastic-container-service", "https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://opencontainers.org/", "https://docs.docker.com/get-started/docker-overview/"]
+date: "2026-10-31"
+sources: ["https://riverkim.kr/313", "https://80000coding.notion.site/95596b1b156b4451bd3e7d20d9e664eb", "https://bytebytego.com/guides/how-does-docker-work", "https://bytebytego.com/guides/top-8-must-know-docker-concepts", "https://www.44bits.io/ko/post/container-orchestration-101-with-docker-and-aws-elastic-container-service", "https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://opencontainers.org/", "https://docs.docker.com/get-started/docker-overview/", "https://github.com/remotty/documents.docker.co.kr", "https://attic.apache.org/projects/mesos.html", "http://yisangwook.tumblr.com/post/89030483989/docker-misconceptions", "http://anarcher.bitbucket.org/2014-06-19-docker-deployment.html", "http://www.zdnet.co.kr/news/news_view.asp?artice_id=20140721102612", "http://usefulparadigm.com/2014/02/10/building-devenv-on-osx-using-docker/", "http://blog.iolo.kr/511", "http://blog.nacyot.com/articles/2014-02-11-dokcer-08-on-macosx/", "http://seapy.com/2078", "http://felixblog.tistory.com/111", "http://slides.com/pengun/deck", "https://speakerdeck.com/anarcher/about-docker-swarm", "https://github.com/subicura/docker-swarm-demo", "http://www.slideshare.net/Remotty/amazon-ec2-container-service-in-action", "https://github.com/anarcher/talks/tree/master/2016/intro-infrakit", "http://www.itworld.co.kr/tags/64073/%EB%8F%84%EC%BB%A4/88457", "http://www.itworld.co.kr/tags/64073/%EB%8F%84%EC%BB%A4/89034", "http://www.yongbok.net/blog/apache-mesos-cluster-resource-management/", "http://blog.llogs.org/?p=118"]
 ---
 
-> 쿠버네티스의 내력은 팔만코딩경(42Seoul 커뮤니티 위키)의 「쿠버네티스에 대한 흥미로운 사실들 24가지」를 바탕으로 보강한 노트다. 원 자료는 다큐멘터리 「Kubernetes: The Documentary」다. Docker의 핵심 개념과 구조는 ByteByteGo의 System Design 101 가이드 「[How does Docker work?](https://bytebytego.com/guides/how-does-docker-work)」, 「[Top 8 Must-Know Docker Concepts](https://bytebytego.com/guides/top-8-must-know-docker-concepts)」를 바탕으로 보강했다. ECS 용어는 「[AWS ECS로 시작하는 컨테이너 오케스트레이션](https://www.44bits.io/ko/post/container-orchestration-101-with-docker-and-aws-elastic-container-service)」, 컨테이너가 필요한 배경은 「[초보를 위한 도커 안내서 - 도커란 무엇인가?](https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html)」로 보강했다. 런타임 계층과 OCI, 데몬 통신, Swarm 비교, MSA에서의 장단점은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」 항목이 묻는 개념을 공식 문서로 확인해 보강했다.
+> 쿠버네티스의 내력은 팔만코딩경(42Seoul 커뮤니티 위키)의 「쿠버네티스에 대한 흥미로운 사실들 24가지」를 바탕으로 보강한 노트다. 원 자료는 다큐멘터리 「Kubernetes: The Documentary」다. Docker의 핵심 개념과 구조는 ByteByteGo의 System Design 101 가이드 「[How does Docker work?](https://bytebytego.com/guides/how-does-docker-work)」, 「[Top 8 Must-Know Docker Concepts](https://bytebytego.com/guides/top-8-must-know-docker-concepts)」를 바탕으로 보강했다. ECS 용어는 「[AWS ECS로 시작하는 컨테이너 오케스트레이션](https://www.44bits.io/ko/post/container-orchestration-101-with-docker-and-aws-elastic-container-service)」, 컨테이너가 필요한 배경은 「[초보를 위한 도커 안내서 - 도커란 무엇인가?](https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html)」로 보강했다. 런타임 계층과 OCI, 데몬 통신, Swarm 비교, MSA에서의 장단점은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」 항목이 묻는 개념을 공식 문서로 확인해 보강했다. Mesos의 구조는 오픈 컨테이너 코리아 밋업 발표 「[분산 커널 기반의 컨테이너 관리 시스템](https://github.com/remotty/documents.docker.co.kr)」을 바탕으로, 현재 상태는 Apache Attic 기록으로 확인했다. Docker 도입의 오해와 전제, macOS·Windows에서의 구조, 클래식 Swarm과 swarm 모드, ECS 태스크 정의, Infrakit, Mesos의 자원 제안은 「[Docker 에 대한 오해](http://yisangwook.tumblr.com/post/89030483989/docker-misconceptions)」, 「[Docker deployment](http://anarcher.bitbucket.org/2014-06-19-docker-deployment.html)」, 「['도커'에 개발·운영이 함께 흥분한 이유](http://www.zdnet.co.kr/news/news_view.asp?artice_id=20140721102612)」, 「[OSX에서 Docker로 개발환경 구성하기](http://usefulparadigm.com/2014/02/10/building-devenv-on-osx-using-docker/)」, 「[맥에서 터미널만으로 docker 사용하기](http://blog.iolo.kr/511)」, 「[도커 0.8 맥에서 설치하기](http://blog.nacyot.com/articles/2014-02-11-dokcer-08-on-macosx/)」, 「[Mac에서 Docker 사용하기](http://seapy.com/2078)」, 「[Windows PC에 CoreOS, Docker 설치하기 (2)](http://felixblog.tistory.com/111)」, 「[Kitematic 소개](http://slides.com/pengun/deck)」, 「[About Docker Swarm](https://speakerdeck.com/anarcher/about-docker-swarm)」, 「[docker-swarm-demo](https://github.com/subicura/docker-swarm-demo)」, 「[Amazon EC2 Container Service in Action](http://www.slideshare.net/Remotty/amazon-ec2-container-service-in-action)」, 「[Intro Infrakit](https://github.com/anarcher/talks/tree/master/2016/intro-infrakit)」, IT World의 쿠버네티스 기사 두 편([1](http://www.itworld.co.kr/tags/64073/%EB%8F%84%EC%BB%A4/88457), [2](http://www.itworld.co.kr/tags/64073/%EB%8F%84%EC%BB%A4/89034)), 「[Apache Mesos: Cluster Resource Management](http://www.yongbok.net/blog/apache-mesos-cluster-resource-management/)」, 「[Apache Mesos 설치하기](http://blog.llogs.org/?p=118)」로 보강했다.
 
 서비스를 서버에 올리는 방식은 물리 서버 → 가상 머신(VM) → 컨테이너로 발전해 왔다. 한 서버에 여러 프로그램을 올리면 OS·라이브러리 버전이 충돌하고 포트가 겹치며, 피하려고 서버를 늘리면 자원이 남는다. 컨테이너는 실행 환경 전체를 이미지 하나로 묶어 어느 서버에서든 같은 방식으로 돌게 한다. 컨테이너는 가볍고 빠르게 늘리고 줄일 수 있어, MSA·오토 스케일링과 함께 쓰이는 현재의 기본 배포 단위가 되었다.
 
@@ -27,6 +27,17 @@ sources: ["https://riverkim.kr/313", "https://80000coding.notion.site/95596b1b15
 - 가상화로 보면 VM은 하드웨어를 가상화하는 **하이퍼바이저 기반 가상화**, 컨테이너는 커널 하나를 여러 격리 공간으로 나누는 **운영체제 수준 가상화**다. Docker는 후자에 속한다. Docker가 널리 채택된 이유는 격리 자체보다 **이미지라는 배포 형식**에 있다. 실행 환경을 통째로 담은 이미지를 레지스트리로 주고받아 「내 컴퓨터에서는 되는데」 문제를 없애고, 수 초 만에 뜨며, 같은 서버에 더 많이 올려 비용을 줄인다.
 - 강한 격리가 필요할 때(믿을 수 없는 코드 실행, 보안 경계가 중요한 개발 환경)는 여전히 VM을 쓴다. 같은 커널을 쓰는 컨테이너끼리의 간섭을 막는 방법은 [[docker-container-operations|Docker 컨테이너 운영]]에 있다. 컨테이너가 커널을 공유하며 무엇으로 격리하는지(네임스페이스·cgroups)와 하이퍼바이저의 원리는 [[virtualization|가상화와 하이퍼바이저]]에 있다.
 - 실무에서는 둘을 함께 쓴다. 클라우드 VM(예: AWS EC2) 위에 여러 컨테이너를 올리는 식이다.
+
+### 흔한 오해와 도입 전제
+
+| 오해 | 실제 |
+| --- | --- |
+| Docker를 쓰면 시스템 지식이 덜 필요하다 | 운영하려면 레지스트리 보안, 무중단 배포와 롤백, 여러 호스트 네트워크, 로그, DB 데이터 관리, PID 1·신호를 제대로 다루는 이미지 작성을 따로 알아야 한다 |
+| 컨테이너 하나에 프로세스 하나만 둬야 한다 | 원칙은 「관심사 하나」에 가깝다. ssh·cron·앱을 잘게 쪼개기보다 앱·DB·캐시처럼 역할 단위로 나눈다 |
+| Docker가 있으면 구성 관리·프로비저닝 도구가 필요 없다 | 이미지 안의 설정은 줄지만, 호스트를 만들고 배포·오케스트레이션하는 도구는 여전히 필요하다(Terraform, 쿠버네티스·관리형 서비스) |
+| 일관성과 속도는 Docker로만 얻는다 | 구성 관리 도구, 골든 이미지, 패키지 버전 고정으로도 얻는다. 이미 잘 도는 자동화가 있으면 옮기는 이득이 생각보다 작다 |
+
+도입 전에 갖출 것은 최소 권한 접근(키 로그인, 방화벽), 복구해 본 오프사이트 백업, 자동화된 구성·배포, 핵심 서비스 모니터링이다. 이것 없이 컨테이너부터 올리면 운영 위험만 커진다. 도입의 이득은 이식성(환경 차이를 설정 변수 몇 개로 줄임)과 반복성(이미지·컨테이너를 빨리 만들어 CI/CD에 유리)이다.
 
 ## Docker
 
@@ -49,7 +60,9 @@ sources: ["https://riverkim.kr/313", "https://80000coding.notion.site/95596b1b15
 
 Docker는 클라이언트-서버 구조다. 터미널에서 치는 `docker` 명령은 클라이언트일 뿐이고, 실제 일은 호스트의 **데몬(dockerd)** 이 API 요청을 받아 한다. 데몬은 이미지 빌드, 컨테이너 생성, 네트워크·볼륨 관리, 레지스트리와의 통신을 맡는다.
 
-클라이언트와 데몬은 **REST API**로 통신한다. 기본 통로는 유닉스 소켓 `/var/run/docker.sock`이고, 원격 데몬은 TLS로 보호한 TCP(2376)나 SSH(`DOCKER_HOST=ssh://user@host`)로 연결한다. `docker context`로 여러 데몬을 바꿔 가며 쓴다. 인증 없는 TCP(2375)를 열면 누구나 호스트 root를 얻으므로 열지 않는다.
+클라이언트와 데몬은 **REST API**로 통신한다. 기본 통로는 유닉스 소켓 `/var/run/docker.sock`이고, 원격 데몬은 TLS로 보호한 TCP(2376)나 SSH(`DOCKER_HOST=ssh://user@host`)로 연결한다. `docker context`로 여러 데몬을 바꿔 가며 쓴다. 인증 없는 TCP(2375)를 열면 누구나 호스트 root를 얻으므로 열지 않는다. 같은 이유로 `docker` 그룹에 사용자를 넣는 것은 sudo 없는 root 권한을 주는 것과 같다.
+
+macOS·Windows에는 리눅스 커널이 없으므로 **경량 리눅스 VM 안에서 데몬이 돌고, 호스트의 CLI가 그 데몬에 붙는다.** Docker Desktop이 이 VM과 포트 포워딩·파일 공유를 감춰 준다. 그래도 「포트와 바인드 마운트 경로는 데몬이 도는 머신 기준」이라는 원리는 그대로라, 원격 데몬이나 VM 위 컨테이너에서는 호스트 → VM → 컨테이너로 포워딩이 두 번 걸리고 마운트할 수 있는 경로도 공유된 디렉터리로 한정된다. 과거에는 boot2docker(Tiny Core Linux VM, 2014) → Docker Toolbox·docker-machine(2015) → Docker for Mac/Windows(2016) 순으로 바뀌었고, boot2docker 시절엔 `localhost` 대신 VM IP(`boot2docker ip`)로 접속해야 했다. 그 시절 GUI였던 Kitematic과 Toolbox는 보관 처리됐고, 지금은 Docker Desktop 외에 OrbStack, Colima, Rancher Desktop, Podman Desktop이 같은 구조를 쓴다.
 
 ```mermaid
 flowchart LR
@@ -142,6 +155,22 @@ Docker는 OCI 이미지를 만들고 OCI 런타임(runc)으로 실행하는 도�
 | 생태계 | 작다 | 사실상 표준. 주요 클라우드가 관리형 서비스(EKS·GKE·AKS)를 제공한다 |
 | 맞는 곳 | 서버 몇 대의 작은 팀, Compose를 그대로 여러 서버로 넓히고 싶을 때 | 서비스가 많고 자동화·확장이 중요한 조직 |
 
+지금의 Swarm은 Docker 1.12(2016)에 엔진에 들어간 **swarm 모드**(SwarmKit)다. 과거의 **클래식 Swarm**(2015)은 Docker API를 그대로 흉내 내는 프록시라 `docker -H tcp://swarm:port`로 클러스터를 엔진 하나처럼 다뤘고, 노드 목록은 외부 디스커버리(etcd·Consul·ZooKeeper)에 뒀다. 스케줄링은 필터(라벨 제약, 헬스, 포트 충돌)로 후보를 거른 뒤 전략(binpack: 꽉 채우기, spread: 고르게, random)으로 골랐다. 이 「거르고 고른다」 구조는 쿠버네티스 스케줄러의 필터·점수 단계와 같다. 클래식 Swarm 저장소는 2020년 보관 처리됐다.
+
+```bash
+docker swarm init --advertise-addr 10.0.0.1                 # 매니저. 상태는 Raft로 /var/lib/docker/swarm에
+docker swarm join --token <토큰> 10.0.0.1:2377               # 워커 합류
+docker service create --name web -p 8080:80 --replicas 3 nginx:1.27
+docker service update --update-parallelism 1 --image nginx:1.28 web   # 롤링 업데이트
+docker service create --constraint 'node.role == manager' ...       # 배치 제약
+docker stack deploy -c compose.yaml shop                     # Compose 파일을 클러스터에 배포
+```
+
+- `-p`로 공개한 포트는 **인그레스 라우팅 메시**라서 어느 노드 IP로 들어와도 해당 서비스의 태스크로 분산된다.
+- overlay 네트워크 안에서 서비스 이름(`web`)은 가상 IP 하나로, `tasks.web`은 태스크 IP 목록으로 풀린다.
+- 이미지에 `HEALTHCHECK`가 있으면 헬스 체크를 통과한 태스크만 트래픽을 받아, 롤링 업데이트가 끊김 없이 이어진다.
+- `docker secret create`로 만든 비밀은 붙인 서비스의 컨테이너에만 `/run/secrets/<이름>` 파일로 들어간다.
+
 ### AWS ECS로 보는 오케스트레이션 용어
 
 오케스트레이터마다 이름은 달라도 개념은 비슷하다. ECS의 용어로 보면 다음과 같다.
@@ -154,9 +183,13 @@ Docker는 OCI 이미지를 만들고 OCI 런타임(runc)으로 실행하는 도�
 | 서비스 | 태스크를 지정한 수만큼 유지하고, 죽으면 다시 띄우고, 로드 밸런서에 붙인다. 레플리카형과 호스트마다 하나씩인 데몬형이 있다 | Deployment, DaemonSet |
 | 실행 기반 | EC2(인스턴스를 직접 관리, ecs-agent가 클러스터에 등록) 또는 Fargate(서버 관리 없이 태스크 단위 과금) | 노드 |
 
+태스크 정의(JSON)에서 `cpu`는 1024가 vCPU 1개인 단위, `memory`는 MiB다. `essential: true`인 컨테이너가 죽으면 태스크 전체가 멈춘다. 네트워크 모드는 태스크마다 ENI(VPC IP)를 주는 `awsvpc`가 기본 선택지이고 Fargate는 이것만 쓴다. 옛 `links`·`volumesFrom`은 `bridge` 모드에서만 쓰는 레거시다.
+
 태스크를 직접 실행하면 죽어도 다시 뜨지 않는다. 웹 서버처럼 계속 떠 있어야 하는 것은 서비스로 띄운다. 스케줄러가 어느 호스트에 놓을지 정하므로 **어떤 호스트에서 돌아도 되게** 만든다(로컬 디스크·고정 IP에 기대지 않는다). 이미지는 ECR 같은 비공개 레지스트리에 두고 IAM으로 권한을 준다.
 
 쿠버네티스는 구글이 사내 클러스터 관리 시스템 **Borg**를 운영한 경험을 바탕으로 2014년 오픈 소스로 공개했다. 이듬해 중립 재단 **CNCF**에 기증되면서 여러 기업이 기여했고, 기술보다 이 중립성과 거대한 생태계 덕분에 Swarm·Mesos를 제치고 표준이 됐다.
+
+**Apache Mesos**는 UC 버클리에서 나온 클러스터 자원 관리자로, 여러 서버의 CPU·메모리·디스크를 하나의 자원 풀로 묶는 「데이터센터 커널」을 표방했다. 마스터는 ZooKeeper로 리더를 뽑아 이중화하고, 에이전트가 보고한 자원을 **프레임워크**(컨테이너용 Marathon, Hadoop·Spark 등)에 제안하면 프레임워크가 그 안에서 작업을 배치하는 2단계 스케줄링을 썼다. 배치·빅데이터 작업을 대량으로 돌리는 데 강했지만 범용 서비스 배포에서 쿠버네티스에 밀렸고, 2025년 은퇴해 Apache Attic으로 옮겨졌다. Mesos의 마스터는 에이전트가 보고한 자원(예: 4 CPU, 4GB)을 프레임워크에 **제안(offer)** 하고, 프레임워크가 그 자원으로 돌릴 작업을 골라 돌려보내면 마스터가 에이전트에 넘겼다. 중앙 스케줄러가 필터·점수로 바로 노드를 고르는 쿠버네티스와 대비되는 설계다. Mesos를 상용화한 Mesosphere는 2019년 D2iQ로 이름을 바꾸고 쿠버네티스로 옮겨 갔다. Docker의 인프라 관리 도구 Infrakit(뒤에 DeployKit)는 원하는 인프라 상태를 JSON으로 선언하면 인스턴스·그룹·플레이버 플러그인이 실제 상태를 계속 맞추는 조정 루프 도구였고, 이 역시 2018년 보관 처리됐다. 같은 조정 루프는 지금 쿠버네티스 컨트롤러와 Cluster API, 클라우드 오토 스케일링 그룹이 맡는다. Swarm은 Docker 엔진의 swarm 모드로 남아 있다.
 
 ## MSA와의 관계
 

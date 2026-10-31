@@ -4,11 +4,11 @@ concept: "Dockerfile"
 summary: "이미지와 컨테이너의 관계와 층 구조, Dockerfile 명령(RUN·CMD·ENTRYPOINT 조합, COPY·ADD, ARG·ENV, WORKDIR, USER, HEALTHCHECK), 베이스 이미지(Debian·Alpine·distroless·scratch) 고르기, 컨테이너가 바로 꺼지는 이유와 PID 1·좀비 프로세스 문제(tini·--init), 디버깅 요령, 멀티 스테이지 빌드·빌드 캐시·BuildKit, 태그 전략·레지스트리·댕글링 이미지·save·load 같은 이미지 관리."
 tags: ["docker", "devops", "container", "infra"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "https://80000coding.notion.site/be3f7cdb6d2f4e868fb6968740be0256", "https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "https://80000coding.notion.site/d6e6ca38d41347baa80ba1b4f40886ab", "https://docs.docker.com/reference/dockerfile/", "https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/", "https://bytebytego.com/guides/9-docker-best-practices-you-must-know", "https://docs.docker.com/build/building/best-practices/", "https://www.44bits.io/ko/post/how-docker-image-work", "https://www.44bits.io/ko/post/easy-deploy-with-docker", "https://github.com/nodejs/Release", "https://alpinelinux.org/releases/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/build/buildkit/", "https://docs.docker.com/build/cache/"]
+date: "2026-10-31"
+sources: ["https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "https://80000coding.notion.site/be3f7cdb6d2f4e868fb6968740be0256", "https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "https://80000coding.notion.site/d6e6ca38d41347baa80ba1b4f40886ab", "https://docs.docker.com/reference/dockerfile/", "https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/", "https://bytebytego.com/guides/9-docker-best-practices-you-must-know", "https://docs.docker.com/build/building/best-practices/", "https://www.44bits.io/ko/post/how-docker-image-work", "https://www.44bits.io/ko/post/easy-deploy-with-docker", "https://github.com/nodejs/Release", "https://alpinelinux.org/releases/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/build/buildkit/", "https://docs.docker.com/build/cache/", "http://slides.com/subicura/docker-tip", "http://slides.com/anarcher/docker-2014-11-30-springsprout#/", "http://slides.com/seapy/rails-on-docker#/", "http://slides.com/meoooh/setup-ghost-via-docker#/", "https://gist.github.com/anarcher/150b303e4abdf1af09c4", "https://slides.com/seapy/docker-registry", "http://junolab.blogspot.kr/2014/10/swift-docker-registry.html", "http://judekim.tistory.com/15", "http://judekim.tistory.com/16", "http://judekim.tistory.com/19", "https://gist.github.com/nacyot/8366310", "https://bestna.wordpress.com/2014/11/10/docker-container-run-%EC%9D%B4%EC%95%BC%EA%B8%B0/", "http://www.dorajistyle.pe.kr/2015/01/docker.html", "https://dayone.me/1740z5r", "https://dayone.me/1agvzvw", "http://seapy.com/2081", "http://seapy.com/2084", "http://blog.nacyot.com/articles/2014-08-08-rails-on-docker/", "http://blog.nacyot.com/articles/2014-05-08-docker-registry-introduction/", "https://distribution.github.io/distribution/", "https://docs.docker.com/build/cache/invalidation/"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[inception] 인셉션 테스트 가이드라인」, 「Inception 참고자료」, 「[Inception] docker orchestration with docker-compose」, 「Inception 공부할때 유용했던 링크들」을 바탕으로 과제 풀이를 빼고 Docker 일반 개념만 재구성한 노트다. 「이미지 모범 사례」는 ByteByteGo의 System Design 101 가이드 「[9 Docker Best Practices You Must Know](https://bytebytego.com/guides/9-docker-best-practices-you-must-know)」를 Docker 공식 문서로 확인해 보강했다. 층과 OverlayFS, 태그·다이제스트, 배포 흐름은 「[만들면서 이해하는 도커(Docker) 이미지의 구조](https://www.44bits.io/ko/post/how-docker-image-work)」, 「[도커(Docker) 입문편](https://www.44bits.io/ko/post/easy-deploy-with-docker)」으로 보강했다. 명령별 세부, 베이스 이미지 비교, 멀티 스테이지·빌드 캐시·BuildKit, 이미지 관리는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」 항목이 묻는 개념을 Docker 공식 문서로 확인해 보강했다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[inception] 인셉션 테스트 가이드라인」, 「Inception 참고자료」, 「[Inception] docker orchestration with docker-compose」, 「Inception 공부할때 유용했던 링크들」을 바탕으로 과제 풀이를 빼고 Docker 일반 개념만 재구성한 노트다. 「이미지 모범 사례」는 ByteByteGo의 System Design 101 가이드 「[9 Docker Best Practices You Must Know](https://bytebytego.com/guides/9-docker-best-practices-you-must-know)」를 Docker 공식 문서로 확인해 보강했다. 층과 OverlayFS, 태그·다이제스트, 배포 흐름은 「[만들면서 이해하는 도커(Docker) 이미지의 구조](https://www.44bits.io/ko/post/how-docker-image-work)」, 「[도커(Docker) 입문편](https://www.44bits.io/ko/post/easy-deploy-with-docker)」으로 보강했다. 명령별 세부, 베이스 이미지 비교, 멀티 스테이지·빌드 캐시·BuildKit, 이미지 관리는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」 항목이 묻는 개념을 Docker 공식 문서로 확인해 보강했다. 셸 기본 환경의 함정, ONBUILD, 초기화 스크립트 패턴, 선택적 캐시 무효화, 사설 레지스트리는 Docker Korea 커뮤니티 발표 자료와 블로그 글(「[Docker 배포할 때 알면 좋은 팁](http://slides.com/subicura/docker-tip)」, 「[도커 사용에 유용한 유틸리티와 팁](http://slides.com/anarcher/docker-2014-11-30-springsprout#/)」, 「[Rails on Docker](http://slides.com/seapy/rails-on-docker#/)」, 「[Ghost 블로그 5분 설치](http://slides.com/meoooh/setup-ghost-via-docker#/)」, 「[Docker mini-containers](https://gist.github.com/anarcher/150b303e4abdf1af09c4)」, 「[Docker Registry](https://slides.com/seapy/docker-registry)」, 「[Swift를 저장소로 쓰는 Docker Registry](http://junolab.blogspot.kr/2014/10/swift-docker-registry.html)」, 「[docker를 이해하기 위하여 #1](http://judekim.tistory.com/15)」·「[#2](http://judekim.tistory.com/16)」, 「[Repositories in docker](http://judekim.tistory.com/19)」, 「[Docker 치트 시트](https://gist.github.com/nacyot/8366310)」, 「[Docker container run 이야기](https://bestna.wordpress.com/2014/11/10/docker-container-run-%EC%9D%B4%EC%95%BC%EA%B8%B0/)」, 「[Docker](http://www.dorajistyle.pe.kr/2015/01/docker.html)」, 「[좋은 Docker 이미지 만들기](https://dayone.me/1740z5r)」, 「[본격적으로 쓰는 Docker](https://dayone.me/1agvzvw)」, 「[Dockerfile에 bitbucket 접근 권한 설정](http://seapy.com/2081)」, 「[Docker로 Rails 쉽게 배포하기](http://seapy.com/2084)」, 「[도커로 루비 온 레일스 배포하기](http://blog.nacyot.com/articles/2014-08-08-rails-on-docker/)」, 「[도커 레지스트리 설치하기](http://blog.nacyot.com/articles/2014-05-08-docker-registry-introduction/)」)를 Docker·Distribution 공식 문서로 최신화해 보강했다.
 
 ## 이미지와 컨테이너
 
@@ -18,6 +18,16 @@ sources: ["https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "h
 | 비유 | 클래스, 설치 디스크 | 인스턴스, 설치된 프로그램 |
 | 만드는 법 | `docker build`(Dockerfile) 또는 Docker Hub에서 `docker pull` | `docker run <이미지>` |
 | 수명 | 바뀌지 않는다(불변) | 지우면 안의 변경도 사라진다. 남길 데이터는 볼륨에 둔다 |
+
+이미지와 컨테이너의 관계는 실행 파일과 프로세스의 관계와 같다. 이미지 하나로 컨테이너를 여럿 만든다. 컨테이너 안에서 실행한 명령은 실제로는 호스트의 프로세스이고(`ps`로 보면 `containerd-shim`·`runc` 아래에 있다), 격리만 되어 있을 뿐이다.
+
+| 명령 | 동작 |
+| --- | --- |
+| `docker run` | `create`(컨테이너 만들기) + `start`(주 프로세스 실행). `--rm`이면 끝날 때 컨테이너를 지운다 |
+| `docker stop` · `kill` | `stop`은 SIGTERM 후 유예 시간(기본 10초)이 지나면 SIGKILL, `kill`은 바로 SIGKILL |
+| `docker start` | 멈춘 컨테이너를 다시 시작한다. 쓰기 층의 파일은 멈춘 시점 그대로지만 메모리 상태는 없다 |
+| `docker rm` · `rmi` | `rm`은 컨테이너, `rmi`는 이미지. 그 이미지로 만든 컨테이너가 멈춘 상태로라도 남아 있으면 `rmi`가 거부되므로 컨테이너부터 지운다 |
+| `docker commit` | 컨테이너의 쓰기 층을 굳혀 새 이미지로 만든다. 무엇을 어떻게 바꿨는지 남지 않아 재현이 안 되므로 디버깅용으로만 쓰고, 이미지는 Dockerfile로 짓는다. commit·import로 만든 이미지는 CMD·EXPOSE 같은 메타데이터가 비어 있다(`--change`로 채운다) |
 
 Docker Hub의 공식 이미지(`nginx`, `mariadb`)를 그대로 쓸 수도 있고, Dockerfile로 직접 빌드한 커스텀 이미지를 레지스트리에 올려 쓸 수도 있다. VM과의 차이는 [[vm-vs-container|VM과 컨테이너]]에 있다.
 
@@ -91,6 +101,10 @@ ENTRYPOINT와 CMD를 함께 쓰면 **CMD가 ENTRYPOINT의 기본 인자**가 된
 | `HEALTHCHECK` | 컨테이너 안에서 주기적으로 명령을 실행해 상태(starting·healthy·unhealthy)를 매긴다 |
 | `EXPOSE` | 듣는 포트를 문서로 표시한다. 실제 공개는 `-p`([[docker-network-volume\|Docker 네트워크와 볼륨]]) |
 | `LABEL` | 이미지 메타데이터(출처, 버전) |
+| `SHELL` | 셸 형식 명령(`RUN apt-get ...`)을 실행할 셸. 기본은 `["/bin/sh", "-c"]`라 `source`, 배열 같은 bash 문법이 안 된다. `SHELL ["/bin/bash", "-o", "pipefail", "-c"]`로 바꾼다 |
+| `ONBUILD` | 이 이미지를 **부모로 쓰는 자식 빌드**의 `FROM` 직후에 실행할 명령을 심어 둔다. `ONBUILD COPY . /app`, `ONBUILD RUN bundle install`을 둔 프레임워크 베이스를 만들면 자식 Dockerfile은 `FROM` 한 줄로 끝난다. 하지만 자식이 그 앞에 시스템 라이브러리를 깔 수 없고 동작이 숨겨져 예측하기 어려워, Docker 공식 이미지의 `-onbuild` 변형은 폐기됐다. 지금은 명시적인 멀티 스테이지 Dockerfile이나 Buildpacks를 쓴다 |
+
+`MAINTAINER`는 폐기됐다. 관리자 정보는 `LABEL org.opencontainers.image.authors=...`로 적는다.
 
 ARG 값은 `docker history`에 남으므로 **비밀 값을 ARG·ENV로 넘기지 않는다.** 빌드에 토큰이 필요하면 BuildKit의 secret mount를 쓴다(아래 「BuildKit」).
 
@@ -108,6 +122,15 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=20s --retries=3 \
 
 HEALTHCHECK 결과는 `docker ps`의 상태와 Compose의 `depends_on: condition: service_healthy`에 쓰인다. Docker 자체는 unhealthy 컨테이너를 재시작하지 않는다(Swarm은 교체한다). 쿠버네티스는 이 명령을 무시하고 자기 프로브를 쓴다([[kubernetes-workloads\|쿠버네티스 워크로드]]). 검사 명령에 쓸 도구(curl, wget)가 이미지에 있어야 한다.
 
+### 셸과 기본 환경의 함정
+
+| 함정 | 원인 | 해결 |
+| --- | --- | --- |
+| `RUN source ~/.profile`이 실패한다 | 셸 형식 RUN은 `/bin/sh -c`로 돈다. sh에는 `source`가 없다 | `SHELL`로 bash 지정, 또는 `. ~/.profile && ...` |
+| 앞 RUN에서 바꾼 환경이 다음 RUN에 없다 | RUN마다 새 셸이다. `cd`, `export`, `source`가 이어지지 않는다 | `WORKDIR`, `ENV`를 쓰거나 한 RUN 안에서 `&&`로 잇는다 |
+| 설치 스크립트가 프로필을 못 찾는다 | 사용자를 지정하지 않으면 `HOME`이 기대와 다를 수 있다(옛 이미지는 `/`) | `ENV HOME=/root`처럼 명시하거나 `USER`를 지정한다 |
+| 로그 시각이 9시간 어긋난다 | 컨테이너 기본 시간대는 UTC다 | `tzdata`를 설치하고 `ENV TZ=Asia/Seoul`. 서버 로그는 UTC로 두고 보는 쪽에서 변환하는 편이 낫다 |
+
 ## 베이스 이미지 고르기
 
 | 베이스 | 크기 | 내용 | 맞는 경우 | 주의 |
@@ -120,7 +143,7 @@ HEALTHCHECK 결과는 `docker ps`의 상태와 Compose의 `depends_on: condition
 
 **distroless 이미지**는 앱 실행에 필요한 런타임만 남기고 셸·패키지 관리자·유틸리티를 뺀 이미지다(구글의 `gcr.io/distroless/*`, Chainguard 이미지 등). 보안 측면에서는 공격자가 컨테이너에 들어와도 쓸 도구가 없고, 스캔에 걸릴 패키지가 적어 취약점 수가 크게 준다. 성능 측면에서는 이미지가 작아 내려받기·시작이 빠르다. 대신 디버깅이 불편해 멀티 스테이지 빌드와 함께 쓴다.
 
-고르는 기준은 호환성(glibc·musl), 크기와 공격 표면, 디버깅 편의, 보안 패치가 꾸준히 나오는가다. 어느 쪽이든 `latest` 대신 버전 태그를 고정해야 빌드가 재현된다. 신뢰할 수 있는 베이스를 고르고 관리하는 방법은 [[docker-container-operations|Docker 컨테이너 운영]]의 「이미지 공급망」에 있다.
+고르는 기준은 호환성(glibc·musl), 크기와 공격 표면, 디버깅 편의, 보안 패치가 꾸준히 나오는가다. 여러 이미지가 같은 베이스를 쓰면 그 층은 디스크와 레지스트리에 한 번만 저장되므로, 팀 공통 베이스(언어 런타임·공통 라이브러리)를 두고 서비스 이미지를 그 위에 얹으면 베이스 크기의 부담이 줄어든다. 어느 쪽이든 `latest` 대신 버전 태그를 고정해야 빌드가 재현된다. 신뢰할 수 있는 베이스를 고르고 관리하는 방법은 [[docker-container-operations|Docker 컨테이너 운영]]의 「이미지 공급망」에 있다.
 
 ## 컨테이너가 바로 꺼지는 이유
 
@@ -128,6 +151,20 @@ HEALTHCHECK 결과는 `docker ps`의 상태와 Compose의 `depends_on: condition
 
 - `nginx`, `php-fpm`, `mysqld`처럼 기본적으로 백그라운드(데몬)로 빠지는 서버는 실행 직후 PID 1이 끝나 버린다. `nginx -g 'daemon off;'`, `php-fpm -F`(`--nodaemonize`)처럼 포그라운드 실행 옵션을 줘야 한다.
 - `tail -f /dev/null`, `sleep infinity`, `while true` 같은 무한 대기로 컨테이너를 살려 두는 것은 꼼수다. 실제 서비스가 죽어도 컨테이너는 살아 있어 장애를 감춘다.
+
+CMD는 하나뿐이라 「DB 계정·초기 데이터를 만드는 스크립트」와 「DB 서버 실행」을 둘 다 하려면 **엔트리포인트 스크립트 하나에서 초기화를 마친 뒤 마지막 줄에서 서버를 `exec`로 포그라운드 실행**한다. `exec`를 써야 서버가 셸 대신 PID 1이 되어 신호를 받는다.
+
+```sh
+#!/bin/sh
+set -e
+if [ ! -d /var/lib/mysql/mysql ]; then   # 첫 실행일 때만 초기화
+  mysqld --initialize-insecure
+  # 비밀번호는 환경 변수로 받고, 없으면 생성해 로그로 알려 준다
+fi
+exec mysqld "$@"
+```
+
+공식 `mysql`·`mariadb`·`postgres` 이미지의 `docker-entrypoint.sh`가 이 패턴의 정식판이다. `/docker-entrypoint-initdb.d/`에 `.sql`·`.sh`를 넣으면 데이터 디렉터리가 비어 있는 첫 기동 때 한 번만 실행된다.
 
 ## PID 1과 좀비 프로세스
 
@@ -162,6 +199,8 @@ docker exec -it app /bin/sh               # 실행 중인 컨테이너 안에 �
 - 패키지 이름·버전은 배포판마다 다르므로 `apk search`·`apt-cache search`로 임시 컨테이너에서 확인한 뒤 Dockerfile에 옮긴다.
 - `docker attach`는 PID 1의 표준 입출력에 붙는 것이라 빠져나오다 컨테이너를 멈출 수 있다. 안을 살펴볼 때는 `exec`을 쓴다.
 - 설정을 바꿀 때마다 `exec`으로 들어가 고치지 말고, 파일을 `COPY`하도록 Dockerfile에 반영해 `docker run`만으로 같은 상태가 재현되게 한다.
+- **빌드가 중간에 실패하면** `docker build --progress=plain`으로 각 단계의 전체 출력을 본다. 실패 직전 상태로 들어가 보려면 그 앞까지를 스테이지로 끊어 `--target`으로 빌드한 뒤 `docker run -it` 한다. BuildKit의 `docker buildx debug`(실험 기능)는 실패한 단계에서 셸을 열어 준다. 과거의 레거시 빌더는 단계마다 중간 이미지 ID를 남겨, 실패 직전 ID로 `docker run -it <id> sh` 하던 방식이었다.
+- `docker run`은 `-p 호스트:컨테이너`로 고정 포트를, `-P`로 EXPOSE한 포트를 임의의 호스트 포트에 연다. 열린 포트는 `docker port <컨테이너>`로 확인한다.
 
 ## 이미지 모범 사례
 
@@ -236,12 +275,15 @@ Docker는 명령마다 결과 층을 캐시하고, 다음 빌드에서 같은 �
 - `.dockerignore`로 `.git`, 로그, 빌드 산출물을 빼서 쓸데없는 파일 변경이 COPY 캐시를 깨지 않게 한다. 빌드 컨텍스트 전송도 빨라진다.
 - `apt-get update && apt-get install -y ... && rm -rf /var/lib/apt/lists/*`처럼 갱신과 설치를 한 RUN에 묶는다. 나누면 update 층이 캐시되어 오래된 패키지 목록으로 설치한다.
 - 강제로 새로 빌드하려면 `docker build --no-cache`, 베이스 이미지를 새로 받으려면 `--pull`.
+- **일부만 새로 빌드**하려면 캐시를 깨고 싶은 단계 바로 앞에 `ARG CACHEBUST`를 두고 `--build-arg CACHEBUST=$(date +%s)`로 값을 바꾼다. 그 아래 단계만 다시 실행된다. 특정 스테이지만 캐시를 무시하려면 `--no-cache-filter <스테이지>`를 쓴다.
+- `apt-get install nginx=1.24.0-2ubuntu7`처럼 패키지 버전까지 고정하면 재빌드 결과가 덜 흔들린다. 그래도 Dockerfile은 빌드 시점의 외부 저장소에 따라 결과가 달라지므로, **재현성의 기준은 Dockerfile이 아니라 빌드된 이미지(다이제스트)** 다. 이미지를 산출물로 보관한다.
 
 ### 레이어 수와 크기 줄이기
 
 | 방법 | 이유 |
 | --- | --- |
 | 관련된 RUN을 `&&`로 묶고 같은 RUN 안에서 임시 파일을 지운다 | 다음 층에서 지우면 앞 층에 그대로 남는다(whiteout) |
+| 내려받아 바로 풀기: `curl -fsSL <url>.tar.gz \| tar xz -C /opt` | 압축 파일을 디스크에 남기지 않는다 |
 | `--no-install-recommends`, `apk add --no-cache` | 권장 패키지와 패키지 캐시를 남기지 않는다 |
 | 멀티 스테이지와 작은 실행 베이스 | 빌드 도구를 통째로 버린다 |
 | 큰 정적 파일은 이미지 대신 오브젝트 스토리지·볼륨에 | 이미지를 작게 유지 |
@@ -269,6 +311,8 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
     go build -o /out/app ./cmd/app
 ```
+
+사설 Git 저장소에서 의존성을 받아야 할 때 **개인 키를 `COPY`·`ADD`로 넣지 않는다.** 다음 단계에서 지워도 층에 남아, 이미지를 받은 누구나 꺼낼 수 있다. `RUN --mount=type=ssh git clone ...`을 쓰고 `docker build --ssh default`로 에이전트를 넘긴다. 키가 꼭 필요하면 읽기 전용 배포 키로 권한을 줄인다. 같은 이유로 에셋 컴파일(`rails assets:precompile`, `npm run build`)처럼 빌드에서 한 번 할 일은 컨테이너가 뜰 때마다 CMD에서 하지 말고 빌드 스테이지에서 끝낸다. 비밀이 필요하면 빌드 시크릿으로 넘긴다.
 
 ## 이미지 관리
 
@@ -314,6 +358,14 @@ docker pull ghcr.io/acme/api:1.4.2                              # 로컬에 없�
 
 이미지 이름의 첫 부분이 레지스트리 주소이고, 생략하면 Docker Hub(`docker.io`)다.
 
+| 용어 | 뜻 |
+| --- | --- |
+| 레지스트리(registry) | 저장소들을 호스팅하는 서버. HTTP API(OCI Distribution Spec)로 push·pull을 받는다 |
+| 저장소(repository) | 같은 이름의 이미지 묶음. `nginx`, `acme/api` |
+| 태그(tag) | 저장소 안의 특정 이미지를 가리키는 이름표. `1.4.2`, `latest` |
+
+슬래시 없는 이름(`ubuntu`)은 Docker가 관리하는 공식 이미지(`docker.io/library/ubuntu`), `user/repo`는 사용자 이미지라 신뢰는 사용하는 쪽의 몫이다. 이름 앞에 `호스트:포트/`를 붙이면 그 레지스트리로 간다. 로컬에 없는 이미지는 `docker run`이 자동으로 pull한다.
+
 | | Docker Hub (공개) | 비공개 레지스트리 |
 | --- | --- | --- |
 | 예 | `docker.io/library/nginx` | AWS ECR, GCP Artifact Registry, GitHub Container Registry, Harbor(자체 호스팅) |
@@ -321,6 +373,24 @@ docker pull ghcr.io/acme/api:1.4.2                              # 로컬에 없�
 | 주의 | 익명·무료 계정은 내려받기 횟수 제한이 있다 | 인증 토큰 관리(ECR 토큰은 12시간 만료), 비용 |
 
 공개 이미지는 Docker Hub에서, 사내 서비스 이미지는 비공개 레지스트리에 두고, 외부 이미지도 풀스루 캐시·미러로 비공개 레지스트리를 거쳐 받으면 횟수 제한과 외부 장애를 피한다.
+
+#### 사설 레지스트리 직접 띄우기
+
+오픈소스 레지스트리 **Distribution**(CNCF 프로젝트, Docker Hub의 `registry` 이미지)을 띄우면 된다.
+
+```bash
+docker run -d -p 5000:5000 --name registry \
+  -e REGISTRY_STORAGE=s3 -e REGISTRY_STORAGE_S3_BUCKET=my-images -e REGISTRY_STORAGE_S3_REGION=ap-northeast-2 \
+  registry:3
+docker tag api:1.4.2 localhost:5000/api:1.4.2
+docker push localhost:5000/api:1.4.2
+```
+
+- 저장소 백엔드는 로컬 디스크 외에 S3·GCS·Azure Blob 등을 `config.yml`이나 `REGISTRY_` 환경 변수로 고른다.
+- 기본으로 인증과 UI가 없다. 운영에서는 TLS와 인증(htpasswd, 토큰)을 붙이거나, UI·권한·스캔·복제가 있는 Harbor를 쓴다. TLS 없는 레지스트리는 클라이언트 데몬의 `daemon.json`에 `insecure-registries`로 등록해야 쓸 수 있다(사내 테스트 용도만).
+- 레지스트리를 직접 운영하면 백업·용량·가용성까지 떠안는다. 대부분은 관리형 레지스트리를 쓰고 CI가 봇 계정·저장소별 권한으로 push하게 하며, 자체 레지스트리는 풀스루 캐시로만 두는 편이 낫다.
+
+과거에는 Python으로 만든 v1 레지스트리(`docker-registry`)를 썼고 S3 설정을 `SETTINGS_FLAVOR=s3` 같은 환경 변수로 줬다. 이를 Go로 다시 쓴 v2 API의 Distribution이 대체했다.
 
 ### 댕글링 이미지와 정리
 

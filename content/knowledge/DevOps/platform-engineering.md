@@ -4,11 +4,11 @@ concept: "Platform Engineering"
 summary: "플랫폼 엔지니어링은 개발팀마다 반복되는 인프라·배포·보안 작업을 내부 개발자 플랫폼(IDP)이라는 내부 제품으로 묶어 셀프서비스로 제공하는 일이다. 개발자를 고객으로 보는 제품 관점, IDP의 다섯 구성 요소와 플랫폼 오케스트레이터, 포털과 플랫폼의 차이, 골든 패스(포장된 길)의 네 가지 성질과 설계법, 최소 실행 가능 플랫폼에서 시작해 키우는 방식을 정리한다."
 tags: ["devops", "infra", "automation", "software-engineering", "productivity"]
 source: other
-date: "2026-10-21"
-sources: ["https://learn.microsoft.com/en-us/platform-engineering/what-is-platform-engineering", "https://www.atlassian.com/developer-experience/platform-engineering", "https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/", "https://www.atlassian.com/developer-experience/internal-developer-platform", "https://backstage.spotify.com/learn/onboarding-software-to-backstage/setting-up-software-templates/11-spotify-templates/", "https://www.redhat.com/en/topics/devops/golden-paths"]
+date: "2026-10-31"
+sources: ["https://learn.microsoft.com/en-us/platform-engineering/what-is-platform-engineering", "https://www.atlassian.com/developer-experience/platform-engineering", "https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/", "https://www.atlassian.com/developer-experience/internal-developer-platform", "https://backstage.spotify.com/learn/onboarding-software-to-backstage/setting-up-software-templates/11-spotify-templates/", "https://www.redhat.com/en/topics/devops/golden-paths", "http://blog.nacyot.com/articles/2014-01-30-deploying-application-with-dokku/", "https://dokku.com/docs/"]
 ---
 
-> Microsoft Learn의 「[What is platform engineering?](https://learn.microsoft.com/en-us/platform-engineering/what-is-platform-engineering)」, Atlassian의 「[What is Platform Engineering?](https://www.atlassian.com/developer-experience/platform-engineering)」·「[Internal Developer Platform Guide](https://www.atlassian.com/developer-experience/internal-developer-platform)」, internaldeveloperplatform.org의 「[What is an Internal Developer Platform?](https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/)」, Spotify Backstage의 「[Software Templates at Spotify](https://backstage.spotify.com/learn/onboarding-software-to-backstage/setting-up-software-templates/11-spotify-templates/)」, Red Hat의 「[What is a golden path for software development?](https://www.redhat.com/en/topics/devops/golden-paths)」을 바탕으로 재구성한 노트다.
+> Microsoft Learn의 「[What is platform engineering?](https://learn.microsoft.com/en-us/platform-engineering/what-is-platform-engineering)」, Atlassian의 「[What is Platform Engineering?](https://www.atlassian.com/developer-experience/platform-engineering)」·「[Internal Developer Platform Guide](https://www.atlassian.com/developer-experience/internal-developer-platform)」, internaldeveloperplatform.org의 「[What is an Internal Developer Platform?](https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/)」, Spotify Backstage의 「[Software Templates at Spotify](https://backstage.spotify.com/learn/onboarding-software-to-backstage/setting-up-software-templates/11-spotify-templates/)」, Red Hat의 「[What is a golden path for software development?](https://www.redhat.com/en/topics/devops/golden-paths)」을 바탕으로 재구성한 노트다. 작은 규모의 자체 호스팅 PaaS는 「[도쿠(Dokku)로 만드는 미니 히로쿠(Heroku)](http://blog.nacyot.com/articles/2014-01-30-deploying-application-with-dokku/)」를 Dokku 공식 문서로 최신화해 보강했다.
 
 ## 플랫폼 엔지니어링이란
 
@@ -58,6 +58,19 @@ flowchart TB
 ```
 
 **포털은 플랫폼이 아니다.** Backstage 같은 개발자 포털은 플랫폼 기능을 찾아 쓰는 UI 인터페이스 하나일 뿐이다. IDP라고 하면 그 아래 플랫폼 층 전체를 가리킨다. 개발자가 익숙한 방식으로 쓰도록 UI, CLI, API, 코드 기반 명세(예: Score)처럼 인터페이스를 여러 개 열어 둔다.
+
+### 작은 규모의 선택지: 자체 호스팅 PaaS
+
+플랫폼 팀을 둘 규모가 아니면 Heroku식 `git push` 배포를 서버 한두 대에 직접 차리는 방법이 있다. **Dokku**가 대표적이다.
+
+```bash
+dokku apps:create shop                          # 서버에서
+dokku domains:set shop shop.example.com
+git remote add dokku dokku@server:shop           # 개발 머신에서
+git push dokku main                              # 빌드팩·Dockerfile로 빌드 → 컨테이너 실행 → nginx 라우팅
+```
+
+push하면 Procfile로 프로세스 유형을 알아내 빌드하고 컨테이너를 띄운 뒤 nginx가 `앱이름.도메인`으로 라우팅한다(와일드카드 DNS가 필요하다). Let's Encrypt 같은 기능은 플러그인으로 붙인다. 같은 계열로 CapRover, Coolify, Kamal이 있다. 서버 한 대에 묶이는 한계가 있으므로 팀과 서비스가 늘면 위의 IDP로 옮겨 간다.
 
 ## 골든 패스: 포장된 길
 

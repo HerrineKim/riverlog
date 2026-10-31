@@ -4,11 +4,11 @@ concept: "Twelve-Factor App"
 summary: "클라우드에서 확장·배포·운영하기 쉬운 애플리케이션을 만드는 열두 가지 원칙(코드베이스, 의존성, 설정, 백엔드 서비스, 빌드·릴리스·실행, 프로세스, 포트 바인딩, 동시성, 폐기 가능성, 개발·운영 일치, 로그, 관리 프로세스)을 각 원칙이 막는 문제와 지금의 구현 방식으로 정리했다."
 tags: ["devops", "backend", "architecture", "cloud", "software-engineering"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/the-12-factor-app", "https://12factor.net/"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/the-12-factor-app", "https://12factor.net/", "http://the-twelve-factor-app.herokuapp.com/", "http://blog.nacyot.com/articles/2014-08-08-rails-on-docker/", "http://slides.com/seapy/rails-on-docker#/"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[The 12-Factor App](https://bytebytego.com/guides/the-12-factor-app)」을 바탕으로, 원 문서 「[The Twelve-Factor App](https://12factor.net/)」으로 확인해 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[The 12-Factor App](https://bytebytego.com/guides/the-12-factor-app)」을 바탕으로, 원 문서 「[The Twelve-Factor App](https://12factor.net/)」으로 확인해 재구성한 노트다. 컨테이너에서 원칙을 지키는 방법은 12요소 앱 한국어 번역(「[The Twelve-Factor App](http://the-twelve-factor-app.herokuapp.com/)」), 「[도커로 루비 온 레일스 배포하기](http://blog.nacyot.com/articles/2014-08-08-rails-on-docker/)」, 「[Rails on Docker](http://slides.com/seapy/rails-on-docker#/)」로 보강했다.
 
 ## 12요소 앱이란
 
@@ -32,6 +32,17 @@ sources: ["https://bytebytego.com/guides/the-12-factor-app", "https://12factor.n
 | X | 개발·운영 일치(Dev/prod parity) | 개발·스테이징·운영의 시간·사람·도구 차이를 최소로 줄인다 | 운영에서만 나는 버그 | 같은 컨테이너 이미지, 로컬에서도 같은 종류의 DB |
 | XI | 로그(Logs) | 로그를 파일로 관리하지 않고 표준 출력에 **이벤트 스트림**으로 흘린다. 수집·보관은 실행 환경이 맡는다 | 서버가 사라지면 로그도 사라진다 | stdout → 로그 수집기(Fluent Bit 등) → 중앙 저장소 |
 | XII | 관리 프로세스(Admin processes) | 마이그레이션·일회성 스크립트는 같은 코드·설정으로 **별도의 일회성 프로세스**로 돌린다 | 운영 서버에 접속해 손으로 고친다 | Kubernetes Job, 배포 파이프라인의 마이그레이션 단계 |
+
+### 컨테이너에서 지키는 법
+
+컨테이너는 서버 파일 시스템에 들어가 로그를 꺼내는 모델이 아니라서 12요소를 어기면 바로 티가 난다.
+
+| 원칙 | 컨테이너에서 |
+| --- | --- |
+| III 설정 | `docker run -e DATABASE_URL=postgres://... -e SECRET_KEY_BASE=...`처럼 이미지 하나에 환경 변수만 바꿔 여러 환경에 올린다. 많은 프레임워크가 `DATABASE_URL`이 있으면 설정 파일보다 먼저 쓴다 |
+| VIII 동시성 | Procfile의 프로세스 유형(web, worker)을 컨테이너 하나 안에서 foreman 같은 관리자로 함께 돌리지 않고, 유형마다 별도 컨테이너·서비스로 띄워 따로 늘린다 |
+| XI 로그 | 운영 모드에서 로그를 파일에만 쓰는 앱은 `docker logs`에 아무것도 안 나온다. stdout으로 바꾼다(Rails는 `RAILS_LOG_TO_STDOUT`) |
+| XII 관리 프로세스 | 같은 이미지로 일회용 컨테이너를 띄운다: `docker run --rm -e DATABASE_URL=... app:1.4 bin/rails db:migrate`, `docker compose run --rm`, 쿠버네티스 Job |
 
 ## 원칙끼리의 관계
 

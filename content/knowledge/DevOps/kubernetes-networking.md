@@ -4,11 +4,11 @@ concept: "Kubernetes Networking"
 summary: "파드마다 IP를 주는 네트워크 모델과 CNI, 서비스의 가상 IP가 kube-proxy(iptables·nftables·IPVS) 규칙으로 파드에 닿는 원리, 서비스 유형별 세부 동작, CoreDNS와 이름 해석, 외부로 나가는 트래픽, Ingress·Gateway API, NetworkPolicy, 서비스 메시(Istio·Linkerd), 연결·DNS 문제 진단을 정리한다."
 tags: ["devops", "kubernetes", "network", "infra", "msa"]
 source: other
-date: "2026-10-30"
-sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md", "https://kubernetes.io/docs/concepts/services-networking/", "https://kubernetes.io/docs/reference/networking/virtual-ips/", "https://kubernetes.io/docs/concepts/services-networking/network-policies/", "https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/", "https://gateway-api.sigs.k8s.io/", "https://istio.io/latest/docs/concepts/", "https://www.k8s.dev/resources/keps/5495/"]
+date: "2026-10-31"
+sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md", "https://kubernetes.io/docs/concepts/services-networking/", "https://kubernetes.io/docs/reference/networking/virtual-ips/", "https://kubernetes.io/docs/concepts/services-networking/network-policies/", "https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/", "https://gateway-api.sigs.k8s.io/", "https://istio.io/latest/docs/concepts/", "https://www.k8s.dev/resources/keps/5495/", "https://github.com/remotty/documents.docker.co.kr"]
 ---
 
-> fru1tworld/cs-basic 모의 면접 질문 목록의 「[Kubernetes](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md)」 항목이 묻는 개념을 쿠버네티스·Gateway API·Istio 공식 문서로 확인해 정리한 노트다.
+> fru1tworld/cs-basic 모의 면접 질문 목록의 「[Kubernetes](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md)」 항목이 묻는 개념을 쿠버네티스·Gateway API·Istio 공식 문서로 확인해 정리한 노트다. 포트 매핑 방식과 파드별 IP 방식의 비교는 오픈 컨테이너 코리아 밋업 발표 「[분산 커널 기반의 컨테이너 관리 시스템](https://github.com/remotty/documents.docker.co.kr)」으로 보강했다.
 
 서비스 네 유형의 개요는 [[kubernetes-architecture|쿠버네티스 구조와 핵심 개념]]에, 클러스터 밖에서 파드까지의 요청 경로와 사이드카·앰비언트 메시의 비교는 [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로]]에 있다. 이 노트는 각 계층이 어떻게 동작하는지를 다룬다.
 
@@ -19,6 +19,8 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 1. 모든 파드는 클러스터 안에서 고유한 IP를 가진다.
 2. 모든 파드는 다른 노드의 파드와도 **NAT 없이** 그 IP로 통신한다.
 3. 노드의 에이전트(kubelet 등)는 그 노드의 모든 파드와 통신한다.
+
+이 모델은 그 전의 **포트 매핑 방식**이 남긴 문제를 피하려는 것이다. Docker 기본 브리지처럼 컨테이너가 호스트 IP를 함께 쓰고 호스트 포트를 매핑받으면, 같은 서비스라도 인스턴스마다 `10.0.0.2:9000`, `10.0.0.3:8722`처럼 포트가 제각각이 된다. 클라이언트는 DNS SRV 레코드로 포트까지 조회해야 하고, HTTP는 프록시가 Host 헤더로 분기해 줄 수 있지만 MySQL·Redis처럼 포트를 고정해 쓰는 프로토콜은 다루기 어렵다. 파드마다 IP를 주면 모든 파드가 VM처럼 원래 포트(3306, 6379)를 그대로 쓰고, 이름은 A 레코드 조회로 충분하다. 대가는 노드마다 파드 대역을 나누고 노드 사이 경로를 관리하는 일이며, 그것을 CNI가 맡는다.
 
 쿠버네티스는 이 모델을 직접 구현하지 않고 **CNI(Container Network Interface)** 플러그인에 맡긴다. 파드가 만들어질 때 런타임이 CNI 플러그인을 호출하면, 플러그인이 파드의 네트워크 네임스페이스에 veth 인터페이스를 만들고 IP를 배정(IPAM)하고 노드 사이 경로를 잡는다. 같은 노드 안 파드끼리는 노드의 브리지나 라우팅으로, 다른 노드의 파드와는 라우팅(BGP 등)이나 오버레이(VXLAN 캡슐화)로 통신한다. 파드 안에서 네트워크를 공유하는 pause 컨테이너는 [[kubernetes-architecture|구조 노트]], veth와 네임스페이스의 원리는 [[linux-network-namespace|리눅스 네트워크 네임스페이스와 ip 명령]]에 있다.
 
