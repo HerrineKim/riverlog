@@ -88,6 +88,6 @@ WordPress가 아니라 SSG에서 다른 SSG로 옮길 때도(Jekyll → Astro·E
 - 단점은 재빌드와 편집 경험이다. 헤드리스 CMS와 증분 빌드로 보완한다.
 - 콘텐츠 사이트에는 JS를 기본으로 보내지 않는 Eleventy·Hugo·Astro가, 앱에 가까우면 Next.js가 맞다.
 - Eleventy의 뼈대는 front matter·레이아웃·컬렉션·필터·플러그인이다.
-- **콘텐츠가 대부분 같은 사람에게 같은 모습이라면, 미리 만들어 두는 것이 가장 빠른 렌더링이다.**
+- 콘텐츠가 대부분 같은 사람에게 같은 모습이라면, 미리 만들어 두는 것이 가장 빠른 렌더링이다.
 
 관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[responsible-javascript|책임감 있는 자바스크립트]], [[nextjs|Next.js를 쓰는 이유]], [[markdown|Markdown 문법]]

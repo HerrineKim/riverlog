@@ -12,7 +12,7 @@ sources: ["https://web.dev/learn/pwa/service-workers", "https://web.dev/learn/pw
 
 ## 서비스 워커란
 
-**서비스 워커(Service Worker)는 PWA와 서버 사이에 끼는 미들웨어다.** 자기 스코프 안에서 나가는 요청을 가로채, 오프라인일 때도 다음 셋 중 하나로 응답한다.
+**서비스 워커**(Service Worker)는 PWA와 서버 사이에 끼는 미들웨어다. 자기 스코프 안에서 나가는 요청을 가로채, 오프라인일 때도 다음 셋 중 하나로 응답한다.
 
 | 응답 방식 | 예 |
 | --- | --- |

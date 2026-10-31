@@ -10,9 +10,9 @@ sources: ["https://riverkim.kr/257", "https://riverkim.kr/321", "https://junilhw
 
 > 개인 TIL을 바탕으로, SSR의 뼈대는 「[프레임워크 없이 만드는 SSR](https://junilhwang.github.io/TIL/Javascript/Design/Vanilla-JS-Server-Side-Rendering/)」, 「[모바일 줌 SpringBoot → NodeJS 전환기 (feat. VueJS SSR)](https://zuminternet.github.io/ZUM-Mobile-NodeJS/)」를 바탕으로 더한 노트다.
 > Grab의 「[Front End Guide](https://github.com/grab/front-end-guide)」를 바탕으로 보강했다.
-> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 hydration 불일치을 보강했다.
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 hydration 불일치를 보강했다.
 
-**SPA(Single Page Application)** 는 처음에 한 번만 페이지를 받아 오고, 이후에는 서버에서 새 페이지 전체를 받지 않고 **현재 페이지의 필요한 부분만 동적으로 다시 그리는** 웹 애플리케이션이다. 화면 전환이 매끄러워 네이티브 앱과 비슷한 사용자 경험을 준다. SPA는 주로 CSR 방식으로 동작하므로, CSR과 SSR의 차이를 함께 이해해야 한다.
+**SPA(Single Page Application)** 는 처음에 한 번만 페이지를 받아 오고, 이후에는 서버에서 새 페이지 전체를 받지 않고 현재 페이지의 필요한 부분만 동적으로 다시 그리는 웹 애플리케이션이다. 화면 전환이 매끄러워 네이티브 앱과 비슷한 사용자 경험을 준다. SPA는 주로 CSR 방식으로 동작하므로, CSR과 SSR의 차이를 함께 이해해야 한다.
 
 ## SPA의 등장 배경
 

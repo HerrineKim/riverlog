@@ -12,7 +12,7 @@ sources: ["https://web.dev/learn/pwa/web-app-manifest", "https://web.dev/learn/p
 
 ## 매니페스트란
 
-**웹 앱 매니페스트(Web App Manifest)는 앱이 설치됐을 때 어떻게 보이고 동작할지를 브라우저에 알려 주는 JSON 파일이다.** head에서 `<link rel="manifest">`로 거는 방법과 meta 태그 대신 매니페스트를 쓰는 이유는 [[html-head-metadata|문서 head와 메타데이터]]에 있다.
+**웹 앱 매니페스트**(Web App Manifest)는 앱이 설치됐을 때 어떻게 보이고 동작할지를 브라우저에 알려 주는 JSON 파일이다. head에서 `<link rel="manifest">`로 거는 방법과 meta 태그 대신 매니페스트를 쓰는 이유는 [[html-head-metadata|문서 head와 메타데이터]]에 있다.
 
 - 앱 하나에 매니페스트 하나. 보통 루트에 두고, **설치할 수 있는 모든 HTML 페이지**에서 링크한다.
 - 확장자는 `.webmanifest`를 권장한다. 이름은 자유지만 `application/manifest+json`(또는 JSON 계열 MIME)으로 서빙해야 한다. 옛 앱은 `manifest.json`을 많이 쓴다.

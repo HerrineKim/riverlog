@@ -126,6 +126,6 @@ export default function Dashboard() {
 - 지금의 흐름은 **정적 껍데기를 최대한 키우고(캐시) Suspense 경계는 동적 데이터 바로 옆에 두는 것**이다.
 - 대가도 있다. 상태 코드를 나중에 바꿀 수 없고, 프록시·CDN 버퍼링에 약하며, 경계를 잘못 두면 LCP·CLS가 나빠진다.
 
-결론: 어디서 렌더링할지보다 **어디에 Suspense 경계를 둘지**가 렌더링 전략의 핵심 결정이 되었다.
+어디서 렌더링할지보다 어디에 Suspense 경계를 둘지가 렌더링 전략의 핵심 결정이 되었다.
 
 관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[nextjs-app-router|Next.js App Router의 내비게이션과 데이터 가져오기]], [[nextjs|Next.js를 쓰는 이유]], [[react-use-hook|use 훅과 리액트 비동기 처리]], [[browser-rendering|브라우저 렌더링 과정]]

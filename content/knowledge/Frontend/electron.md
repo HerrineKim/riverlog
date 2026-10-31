@@ -12,7 +12,7 @@ sources: ["http://jlord.us/essential-electron/", "https://www.electronjs.org/doc
 
 ## Electron이란
 
-**Electron은 Chromium(화면)과 Node.js(파일·네트워크·OS 접근)를 한 실행 파일에 묶은 데스크톱 앱 런타임이다.** 여기에 파일 열기 대화 상자, 알림, 트레이 아이콘, 메뉴 같은 OS 기능 API를 더한다. 한 코드베이스로 macOS·Windows·Linux 앱을 만들고 Mac App Store·Microsoft Store에도 올릴 수 있다.
+**Electron**은 Chromium(화면)과 Node.js(파일·네트워크·OS 접근)를 한 실행 파일에 묶은 데스크톱 앱 런타임이다. 여기에 파일 열기 대화 상자, 알림, 트레이 아이콘, 메뉴 같은 OS 기능 API를 더한다. 한 코드베이스로 macOS·Windows·Linux 앱을 만들고 Mac App Store·Microsoft Store에도 올릴 수 있다.
 
 | 얻는 것 | 대가 |
 | --- | --- |
