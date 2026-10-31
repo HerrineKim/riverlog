@@ -10,7 +10,7 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 > fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」 항목이 묻는 개념을 Docker 공식 문서로 확인해 정리한 노트다.
 
-컨테이너는 기본적으로 네트워크와 파일 시스템이 격리되어 있다. 이 노트는 그 격리를 **어떻게 열고 잇는가**를 다룬다. Compose에서 이를 선언하는 방법은 [[docker-compose|Docker Compose: 여러 컨테이너 묶어 띄우기]]에, 이미지 층과 쓰기 층의 구조는 [[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]]에 있다.
+컨테이너는 기본적으로 네트워크와 파일 시스템이 격리되어 있다. 이 노트는 그 격리를 어떻게 열고 잇는가를 다룬다. Compose에서 이를 선언하는 방법은 [[docker-compose|Docker Compose: 여러 컨테이너 묶어 띄우기]]에, 이미지 층과 쓰기 층의 구조는 [[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]]에 있다.
 
 ## 네트워크 드라이버
 
@@ -123,7 +123,7 @@ docker run --rm -it --network container:api nicolaka/netshoot   # 대상 컨테�
 ### 볼륨을 권장하는 이유
 
 - 호스트 경로에 의존하지 않아 어느 서버에서나 같은 설정으로 쓴다.
-- 빈 볼륨을 컨테이너 디렉터리에 마운트하면 **이미지의 그 디렉터리 내용이 볼륨으로 복사된다.** 바인드 마운트는 이미지 내용을 가린다.
+- 빈 볼륨을 컨테이너 디렉터리에 마운트하면 이미지의 그 디렉터리 내용이 볼륨으로 복사된다. 바인드 마운트는 이미지 내용을 가린다.
 - `docker volume` 명령으로 만들고 지우고 백업한다. 드라이버로 원격 스토리지를 붙일 수 있다.
 - Docker Desktop(macOS·Windows)에서는 VM 안에 있어 바인드 마운트보다 훨씬 빠르다.
 - 호스트의 다른 프로세스가 실수로 건드릴 일이 적다.
@@ -172,7 +172,7 @@ DB는 파일 복사보다 DB 자체의 덤프·백업 도구가 일관성을 보
 
 ### 볼륨 드라이버
 
-볼륨 드라이버는 볼륨 데이터를 **어디에 저장할지** 정한다. 기본 `local` 드라이버는 호스트 디스크에 두지만, 옵션으로 NFS·CIFS 같은 네트워크 파일 시스템을 마운트할 수도 있다.
+볼륨 드라이버는 볼륨 데이터를 어디에 저장할지 정한다. 기본 `local` 드라이버는 호스트 디스크에 두지만, 옵션으로 NFS·CIFS 같은 네트워크 파일 시스템을 마운트할 수도 있다.
 
 ```bash
 docker volume create --driver local \
@@ -209,7 +209,7 @@ docker run --read-only --tmpfs /tmp myapp:1.0     # 컨테이너 루트 파일 �
 | `vfs` | 테스트용 | copy-on-write 없이 층마다 전체 복사. 느리고 디스크를 많이 쓴다 |
 | `aufs` · `devicemapper` | 제거됨 | 과거 Ubuntu·RHEL의 기본값이었다 |
 
-선택 기준은 단순하다. **특별한 이유가 없으면 기본값을 쓴다.** 쓰기가 많은 데이터는 어떤 스토리지 드라이버를 써도 copy-on-write 비용이 있으므로 볼륨에 둔다.
+특별한 이유가 없으면 기본값을 쓴다. 쓰기가 많은 데이터는 어떤 스토리지 드라이버를 써도 copy-on-write 비용이 있으므로 볼륨에 둔다.
 
 ## 정리
 

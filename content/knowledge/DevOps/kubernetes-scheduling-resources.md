@@ -121,7 +121,7 @@ tolerations:
 | `node.kubernetes.io/network-unavailable` | 노드 네트워크가 준비되지 않음 | NoSchedule |
 | `node.kubernetes.io/unschedulable` | `kubectl cordon` | NoSchedule |
 
-파드에는 not-ready·unreachable에 대한 300초 톨러레이션이 기본으로 붙는다. 그래서 노드가 죽어도 **약 5분 뒤에야** 다른 노드로 옮겨진다. 빨리 옮겨야 하는 서비스는 `tolerationSeconds`를 줄인다.
+파드에는 not-ready·unreachable에 대한 300초 톨러레이션이 기본으로 붙는다. 그래서 노드가 죽어도 약 5분 뒤에야 다른 노드로 옮겨진다. 빨리 옮겨야 하는 서비스는 `tolerationSeconds`를 줄인다.
 
 ## 자원 선언: requests와 limits
 
@@ -155,7 +155,7 @@ CPU는 압축 가능한 자원이라 넘쳐도 느려질 뿐이고, 메모리는
 
 ## QoS 클래스
 
-쿠버네티스는 requests·limits 설정으로 파드의 QoS 클래스를 정한다. 노드 메모리가 부족할 때 **누구를 먼저 축출하고 OOM에서 먼저 죽일지**의 기준이다.
+쿠버네티스는 requests·limits 설정으로 파드의 QoS 클래스를 정한다. 노드 메모리가 부족할 때 누구를 먼저 축출하고 OOM에서 먼저 죽일지의 기준이다.
 
 | 클래스 | 조건 | 압박 시 |
 | --- | --- | --- |

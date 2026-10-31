@@ -39,8 +39,6 @@ React 코드는 그대로 브라우저에서 돌지 않는다. JSX와 최신 문
 
 ## 직접 구성하기: webpack + Babel + TypeScript
 
-각 도구가 무엇을 하는지가 핵심이다.
-
 | 파일/도구 | 역할 |
 | --- | --- |
 | `package.json` | `npm init`으로 생성. `react`, `react-dom`, `typescript`, `@types/react` 등 설치 |

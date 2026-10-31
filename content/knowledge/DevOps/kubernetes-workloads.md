@@ -40,7 +40,7 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 ### 재시작 정책(restartPolicy)
 
-restartPolicy는 파드 안 컨테이너가 끝났을 때 **같은 노드의 kubelet이 다시 띄울지**를 정한다. 파드를 다른 노드로 옮기는 것은 컨트롤러의 일이라 이 정책과 별개다.
+restartPolicy는 파드 안 컨테이너가 끝났을 때 같은 노드의 kubelet이 다시 띄울지를 정한다. 파드를 다른 노드로 옮기는 것은 컨트롤러의 일이라 이 정책과 별개다.
 
 | 값 | 동작 | 쓰임 |
 | --- | --- | --- |

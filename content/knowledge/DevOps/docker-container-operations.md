@@ -10,11 +10,11 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 > fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(가상화 및 컨테이너) 항목이 묻는 개념을 Docker 공식 문서로 확인해 정리한 노트다.
 
-컨테이너는 호스트 커널을 공유하는 프로세스다. 그래서 운영의 핵심 질문은 **한 컨테이너가 이웃과 호스트에 얼마나 영향을 줄 수 있나**(자원, 보안)와 **문제가 났을 때 무엇을 보나**(로그, 지표, 상태)다. 컨테이너를 격리하는 커널 기능(네임스페이스, cgroups)의 개요는 [[virtualization|가상화와 하이퍼바이저]]에 있다.
+컨테이너는 호스트 커널을 공유하는 프로세스다. 그래서 운영의 핵심 질문은 한 컨테이너가 이웃과 호스트에 얼마나 영향을 줄 수 있나(자원, 보안)와 문제가 났을 때 무엇을 보나(로그, 지표, 상태)다. 컨테이너를 격리하는 커널 기능(네임스페이스, cgroups)의 개요는 [[virtualization|가상화와 하이퍼바이저]]에 있다.
 
 ## 자원 제한: cgroups
 
-**cgroups(control groups)는 프로세스 묶음이 쓰는 CPU·메모리·I/O·프로세스 수를 제한하고 측정하는 리눅스 커널 기능**이다. 네임스페이스가 「무엇이 보이나」를 격리한다면 cgroups는 「얼마나 쓸 수 있나」를 제한한다. Docker는 컨테이너마다 cgroup을 만들고, 실행 옵션을 그 cgroup의 값(cgroup v2의 `cpu.max`, `memory.max`, `io.max`, `pids.max`)으로 옮긴다. 아무 옵션도 주지 않으면 **제한이 없어** 컨테이너 하나가 호스트 자원을 모두 쓸 수 있다.
+**cgroups(control groups)는 프로세스 묶음이 쓰는 CPU·메모리·I/O·프로세스 수를 제한하고 측정하는 리눅스 커널 기능**이다. 네임스페이스가 「무엇이 보이나」를 격리한다면 cgroups는 「얼마나 쓸 수 있나」를 제한한다. Docker는 컨테이너마다 cgroup을 만들고, 실행 옵션을 그 cgroup의 값(cgroup v2의 `cpu.max`, `memory.max`, `io.max`, `pids.max`)으로 옮긴다. 아무 옵션도 주지 않으면 제한이 없어 컨테이너 하나가 호스트 자원을 모두 쓸 수 있다.
 
 ```bash
 docker run -d --name api \
@@ -57,7 +57,7 @@ docker run -d --name api \
 
 ### CPU 스로틀링: 호스트가 한가한데 느린 이유
 
-`--cpus`(쿠버네티스의 CPU limits)는 「코어 몇 개」가 아니라 **주기마다 쓸 수 있는 CPU 시간**이다. `--cpus=1`인 컨테이너에서 스레드 4개가 동시에 돌면 100ms 쿼터를 25ms 만에 다 쓰고, 나머지 75ms는 호스트 CPU가 놀고 있어도 멈춘다. 평균 CPU 사용률은 낮아 보이는데 응답 지연의 꼬리(p99)가 튄다.
+`--cpus`(쿠버네티스의 CPU limits)는 「코어 몇 개」가 아니라 주기마다 쓸 수 있는 CPU 시간이다. `--cpus=1`인 컨테이너에서 스레드 4개가 동시에 돌면 100ms 쿼터를 25ms 만에 다 쓰고, 나머지 75ms는 호스트 CPU가 놀고 있어도 멈춘다. 평균 CPU 사용률은 낮아 보이는데 응답 지연의 꼬리(p99)가 튄다.
 
 ```bash
 cat /sys/fs/cgroup/cpu.stat          # 컨테이너 안에서 (cgroup v2)
@@ -88,7 +88,7 @@ docker stats --no-stream --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\
 
 ### 컨테이너의 위험 요소
 
-컨테이너는 커널을 공유하므로 **격리의 강도는 커널과 설정에 달려 있다.** 같은 호스트의 컨테이너가 서로 간섭하는 길과 막는 방법을 정리하면 다음과 같다.
+컨테이너는 커널을 공유하므로 격리의 강도는 커널과 설정에 달려 있다. 같은 호스트의 컨테이너가 서로 간섭하는 길과 막는 방법을 정리하면 다음과 같다.
 
 | 위험 | 막는 방법 |
 | --- | --- |
@@ -141,7 +141,7 @@ docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE \
 
 ### Docker 소켓 마운트의 위험
 
-`-v /var/run/docker.sock:/var/run/docker.sock`은 컨테이너에 **Docker API 전체**를 준다. 그 컨테이너는 `docker run --privileged -v /:/host`로 호스트 루트 파일 시스템을 마운트한 새 컨테이너를 띄울 수 있으므로, 소켓 접근은 **호스트 root 권한과 같다.** 소켓을 `:ro`로 마운트해도 API 호출은 막히지 않는다. 같은 이유로 `docker` 그룹에 사용자를 넣는 것도 root를 주는 것이다.
+`-v /var/run/docker.sock:/var/run/docker.sock`은 컨테이너에 Docker API 전체를 준다. 그 컨테이너는 `docker run --privileged -v /:/host`로 호스트 루트 파일 시스템을 마운트한 새 컨테이너를 띄울 수 있으므로, 소켓 접근은 **호스트 root 권한과 같다.** 소켓을 `:ro`로 마운트해도 API 호출은 막히지 않는다. 같은 이유로 `docker` 그룹에 사용자를 넣는 것도 root를 주는 것이다.
 
 | 필요 | 대안 |
 | --- | --- |
@@ -180,7 +180,7 @@ docker run --cap-drop=ALL --cap-add=NET_BIND_SERVICE \
 | 단계 | 방법 |
 | --- | --- |
 | 신뢰할 수 있는 베이스 | Docker 공식 이미지, 검증된 배포자, 하드닝 이미지(Docker Hardened Images, Chainguard), distroless. 작을수록 취약점이 적다 |
-| 고정과 갱신 | 태그·다이제스트로 고정하되, 베이스의 보안 패치를 받으려고 **정기적으로 다시 빌드**한다. Dependabot·Renovate가 베이스 태그 갱신 PR을 만든다 |
+| 고정과 갱신 | 태그·다이제스트로 고정하되, 베이스의 보안 패치를 받으려고 정기적으로 다시 빌드한다. Dependabot·Renovate가 베이스 태그 갱신 PR을 만든다 |
 | 사내 레지스트리 | 외부 이미지를 미러링하고 스캔을 통과한 것만 쓰게 한다 |
 | 취약점 스캔 | Trivy, Grype, Docker Scout, Snyk가 OS 패키지와 언어 의존성을 CVE DB와 대조한다. 새 CVE는 계속 나오므로 배포 후에도 레지스트리의 이미지를 다시 스캔한다 |
 | 서명과 출처 | Sigstore Cosign·Notation으로 서명하고, 배포 시 서명과 빌드 출처 증명(provenance), SBOM을 검증한다 |
@@ -210,7 +210,7 @@ docker logs -f --tail 100 --since 30m -t api    # 따라가기, 마지막 100줄
 
 ### 로그 회전과 디스크 포화 예방
 
-기본 `json-file`은 회전하지 않아 오래 도는 컨테이너의 로그가 `/var/lib/docker/containers/<id>/<id>-json.log`에 무한히 쌓인다. 디스크가 차면 그 호스트의 **모든 컨테이너**와 데몬이 쓰기 실패로 멈춘다.
+기본 `json-file`은 회전하지 않아 오래 도는 컨테이너의 로그가 `/var/lib/docker/containers/<id>/<id>-json.log`에 무한히 쌓인다. 디스크가 차면 그 호스트의 모든 컨테이너와 데몬이 쓰기 실패로 멈춘다.
 
 ```json
 // /etc/docker/daemon.json: 이후 새로 만드는 컨테이너에 적용

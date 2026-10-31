@@ -93,7 +93,7 @@ allowVolumeExpansion: true
 
 ## ConfigMap
 
-ConfigMap은 **비밀이 아닌 설정을 키-값으로 저장**한다. 크기는 1MiB까지다.
+ConfigMap은 비밀이 아닌 설정을 키-값으로 저장한다. 크기는 1MiB까지다.
 
 ```bash
 kubectl create configmap app --from-literal=LOG_LEVEL=info          # 키-값 직접
@@ -112,7 +112,7 @@ kubectl create configmap app --from-env-file=app.env                # KEY=VALUE 
 
 ## Secret
 
-Secret은 비밀번호·토큰·인증서처럼 **민감한 값**을 담는다. 쓰는 방법(환경 변수, 볼륨)은 ConfigMap과 같지만 다루는 방식이 다르다.
+Secret은 비밀번호·토큰·인증서처럼 민감한 값을 담는다. 쓰는 방법(환경 변수, 볼륨)은 ConfigMap과 같지만 다루는 방식이 다르다.
 
 | | ConfigMap | Secret |
 | --- | --- | --- |

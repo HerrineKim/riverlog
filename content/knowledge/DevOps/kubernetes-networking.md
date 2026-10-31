@@ -10,7 +10,7 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 > fru1tworld/cs-basic 모의 면접 질문 목록의 「[Kubernetes](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md)」 항목이 묻는 개념을 쿠버네티스·Gateway API·Istio 공식 문서로 확인해 정리한 노트다.
 
-서비스 네 유형의 개요는 [[kubernetes-architecture|쿠버네티스 구조와 핵심 개념]]에, 클러스터 밖에서 파드까지의 요청 경로와 사이드카·앰비언트 메시의 비교는 [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로]]에 있다. 이 노트는 각 계층이 **어떻게** 동작하는지를 다룬다.
+서비스 네 유형의 개요는 [[kubernetes-architecture|쿠버네티스 구조와 핵심 개념]]에, 클러스터 밖에서 파드까지의 요청 경로와 사이드카·앰비언트 메시의 비교는 [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로]]에 있다. 이 노트는 각 계층이 어떻게 동작하는지를 다룬다.
 
 ## 네트워크 모델과 CNI
 
@@ -33,7 +33,7 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 ### EndpointSlice와 kube-proxy
 
-서비스의 ClusterIP는 **어느 인터페이스에도 붙어 있지 않은 가상 IP**다. 핑에 응답하지 않는 것도 그래서다. 실제 전달은 두 구성 요소가 나눠 맡는다.
+서비스의 ClusterIP는 어느 인터페이스에도 붙어 있지 않은 가상 IP다. 핑에 응답하지 않는 것도 그래서다. 실제 전달은 두 구성 요소가 나눠 맡는다.
 
 ```text
 EndpointSlice 컨트롤러: 셀렉터에 맞고 Ready인 파드 IP:포트 목록을 EndpointSlice에 기록
@@ -60,7 +60,7 @@ kube-proxy 자체는 패킷을 중계하지 않는다. 커널에 규칙만 심�
 | ExternalName | 프록시나 IP 없이 클러스터 DNS가 지정한 외부 도메인으로 CNAME을 돌려준다. 클러스터 밖 DB를 클러스터 안 이름으로 부르다가, 나중에 클러스터 안으로 옮겨도 클라이언트 설정을 바꾸지 않게 한다. HTTP Host 헤더·TLS 인증서 이름은 원래 도메인과 달라질 수 있어 주의한다 |
 | 헤드리스 (`clusterIP: None`) | 가상 IP와 kube-proxy 규칙이 없고, DNS가 Ready 파드들의 IP를 A 레코드로 바로 돌려준다. StatefulSet 멤버를 이름으로 찾는 방법이다([[kubernetes-workloads\|쿠버네티스 워크로드]]) |
 
-`externalTrafficPolicy`는 외부 트래픽의 경로를 정한다. `Cluster`(기본)는 어느 노드로 들어와도 아무 파드로 보내지만 다른 노드로 한 번 더 건너가고 출발지 IP가 노드 IP로 바뀐다(SNAT). `Local`은 파드가 있는 노드만 트래픽을 받아 **클라이언트 IP를 보존**하고 홉을 줄이는 대신, 노드별 파드 수가 고르지 않으면 부하가 치우친다.
+`externalTrafficPolicy`는 외부 트래픽의 경로를 정한다. `Cluster`(기본)는 어느 노드로 들어와도 아무 파드로 보내지만 다른 노드로 한 번 더 건너가고 출발지 IP가 노드 IP로 바뀐다(SNAT). `Local`은 파드가 있는 노드만 트래픽을 받아 클라이언트 IP를 보존하고 홉을 줄이는 대신, 노드별 파드 수가 고르지 않으면 부하가 치우친다.
 
 ## DNS: 이름으로 서비스 찾기
 

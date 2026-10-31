@@ -23,7 +23,7 @@ sources: ["https://bytebytego.com/guides/typical-aws-network-architecture-in-one
 | 보안 그룹 | 인스턴스(네트워크 인터페이스) 단위의 상태 기반(stateful) 방화벽. 허용 규칙만 있다 |
 | 네트워크 ACL | 서브넷 단위의 상태 없는(stateless) 방화벽. 허용·거부 규칙이 있다 |
 
-서비스를 견고하게 하려면 **서브넷을 여러 AZ에 하나씩 만들어** 자원을 나눠 둔다. 보안 그룹으로 RDS 접속을 여는 실습은 [[aws-cloud-basics|AWS 클라우드 기초]]에 있다.
+서비스를 견고하게 하려면 서브넷을 여러 AZ에 하나씩 만들어 자원을 나눠 둔다. 보안 그룹으로 RDS 접속을 여는 실습은 [[aws-cloud-basics|AWS 클라우드 기초]]에 있다.
 
 ## 한 장의 구성도
 
@@ -71,7 +71,7 @@ sources: ["https://bytebytego.com/guides/typical-aws-network-architecture-in-one
 
 ## 비용과 보안에서 볼 것
 
-- NAT 게이트웨이는 시간당 요금과 처리 데이터량 요금이 붙는다. 프라이빗 서브넷이 S3를 많이 읽으면 **게이트웨이 엔드포인트로 NAT를 우회**해 비용을 줄인다. [[cloud-cost-optimization|클라우드 비용 최적화와 숨은 비용]]
+- NAT 게이트웨이는 시간당 요금과 처리 데이터량 요금이 붙는다. 프라이빗 서브넷이 S3를 많이 읽으면 게이트웨이 엔드포인트로 NAT를 우회해 비용을 줄인다. [[cloud-cost-optimization|클라우드 비용 최적화와 숨은 비용]]
 - AZ를 넘는 트래픽, 리전을 넘는 트래픽은 과금된다. 자주 통신하는 자원은 같은 AZ에 둘지 가용성과 비용을 견줘 정한다.
 - DB와 앱 서버는 프라이빗 서브넷에 두고, 인터넷에서 들어오는 길은 ALB 하나로 좁힌다.
 - NAT의 동작 원리는 [[network-layer|네트워크 계층 프로토콜]]에 있다.

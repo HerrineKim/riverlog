@@ -24,7 +24,7 @@ sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://byte
 | 답하는 질문 | 무슨 일이 있었나 | 어디서 느려졌나 | 지금 정상인가, 추세는 어떤가 |
 | 대표 구성 | ELK(Elasticsearch·Logstash·Kibana), Loki | Jaeger, Tempo, Zipkin | Prometheus + Grafana, InfluxDB |
 
-세 신호는 따로 볼 때보다 **이어질 때** 힘이 크다. 메트릭 알림으로 이상을 알아채고, 트레이스로 느린 구간을 찾고, 그 구간의 로그로 원인을 읽는다. 이를 위해 로그에 트레이스 ID를 함께 남긴다.
+세 신호는 따로 볼 때보다 이어질 때 힘이 크다. 메트릭 알림으로 이상을 알아채고, 트레이스로 느린 구간을 찾고, 그 구간의 로그로 원인을 읽는다. 이를 위해 로그에 트레이스 ID를 함께 남긴다.
 
 ## 각 신호의 수집 구조
 
@@ -69,7 +69,7 @@ sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://byte
 | 지표 | 왜 보나 | 얻는 법 |
 | --- | --- | --- |
 | 이벤트 루프 지연·사용률 | 단일 스레드라 동기 작업 하나가 모든 요청을 늦춘다 | `perf_hooks.monitorEventLoopDelay()`, `performance.eventLoopUtilization()` |
-| 힙 사용량과 GC 시간 | 메모리 누수는 **힙이 계단식으로 계속 늘고 GC 시간도 함께 늘다가** 한도에 닿아 프로세스가 죽는 모양으로 나타난다 | `process.memoryUsage()`, 힙 스냅숏 두 개(`v8.writeHeapSnapshot()`)를 Chrome DevTools 비교 모드로 열어 늘어난 객체를 찾는다 |
+| 힙 사용량과 GC 시간 | 메모리 누수는 힙이 계단식으로 계속 늘고 GC 시간도 함께 늘다가 한도에 닿아 프로세스가 죽는 모양으로 나타난다 | `process.memoryUsage()`, 힙 스냅숏 두 개(`v8.writeHeapSnapshot()`)를 Chrome DevTools 비교 모드로 열어 늘어난 객체를 찾는다 |
 | CPU 프로파일 | 느려진 원인 함수 찾기 | `node --cpu-prof`, APM의 연속 프로파일링 |
 | 의존성 취약점 | npm 패키지가 공격 경로가 된다 | `npm audit`, Dependabot([[devsecops\|DevSecOps]]) |
 
@@ -117,15 +117,15 @@ sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://byte
 | 범용 NoSQL(Cassandra, Bigtable) | 시계열을 담을 수는 있지만, 확장 가능한 스키마를 직접 설계하려면 내부 구조를 깊이 알아야 한다([[wide-column-database\|와이드 컬럼 DB]]) |
 | **시계열 DB** | 시간순 압축, 라벨 색인, 다운샘플링·보존 정책, 시간 창 질의 언어(PromQL 등)를 기본으로 갖는다. Prometheus TSDB, InfluxDB, TimescaleDB, VictoriaMetrics 등 |
 
-검증된 시계열 DB가 많으므로 **저장소를 직접 만들거나 범용 DB를 억지로 맞추지 않는다.**
+검증된 시계열 DB가 많으므로 저장소를 직접 만들거나 범용 DB를 억지로 맞추지 않는다.
 
 ## 합성 모니터링: 사용자 화면으로 확인하기
 
-로그·메트릭·트레이스는 **내 시스템 안**의 신호다. 결제 대행 페이지, 제휴사 이벤트 페이지처럼 남이 운영하는 외부 링크가 깨져도 사용자에게는 내 서비스의 장애로 보인다. 이런 곳은 **합성 모니터링(synthetic monitoring)**, 곧 스크립트가 사용자처럼 주기적으로 접속해 결과를 확인하는 방식으로 지킨다.
+로그·메트릭·트레이스는 내 시스템 안의 신호다. 결제 대행 페이지, 제휴사 이벤트 페이지처럼 남이 운영하는 외부 링크가 깨져도 사용자에게는 내 서비스의 장애로 보인다. 이런 곳은 **합성 모니터링(synthetic monitoring)**, 곧 스크립트가 사용자처럼 주기적으로 접속해 결과를 확인하는 방식으로 지킨다.
 
 | 결정 | 방법 |
 | --- | --- |
-| 무엇을 비교하나 | HTML·DOM을 비교하면 타임스탬프·문구 같은 무의미한 변화에도 울린다. **헤드리스 브라우저로 찍은 스크린샷을 기준 이미지와 픽셀 비교**하고, 차이 비율이 임계값을 넘을 때만 이상으로 본다(시각적 회귀 감지) |
+| 무엇을 비교하나 | HTML·DOM을 비교하면 타임스탬프·문구 같은 무의미한 변화에도 울린다. 헤드리스 브라우저로 찍은 스크린샷을 기준 이미지와 픽셀 비교하고, 차이 비율이 임계값을 넘을 때만 이상으로 본다(시각적 회귀 감지) |
 | 동적 콘텐츠 | 자동 회전 배너처럼 매번 바뀌는 요소가 있으면 허용 오차를 넉넉히 잡거나 그 영역을 가린다 |
 | 캡처 시점 | 로딩이 끝나기 전에 찍으면 거짓 경보가 난다. 네트워크 유휴 같은 명확한 대기 조건을 둔다 |
 | 신호 구분 | 연결 차단·타임아웃은 화면 변화와 다른 종류의 이상이므로 따로 분류해 알린다 |
