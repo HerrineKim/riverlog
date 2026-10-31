@@ -37,7 +37,7 @@ sources: ["https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-de
 
 ## 다섯 가지 트레이드오프
 
-**정답인 설계는 없고, 무엇을 얻으려고 무엇을 내주는지가 있을 뿐이다.**
+정답인 설계는 없고, 무엇을 얻으려고 무엇을 내주는지가 있을 뿐이다.
 
 | 트레이드오프 | 한쪽을 높이면 | 판단 기준 |
 | --- | --- | --- |

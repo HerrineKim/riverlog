@@ -12,7 +12,7 @@ sources: ["https://web.dev/learn/pwa/service-workers", "https://web.dev/learn/pw
 
 ## 서비스 워커란
 
-**서비스 워커(Service Worker)는 PWA와 서버 사이에 끼는 미들웨어다.** 자기 스코프 안에서 나가는 요청을 가로채, 오프라인일 때도 다음 셋 중 하나로 응답한다.
+**서비스 워커**(Service Worker)는 PWA와 서버 사이에 끼는 미들웨어다. 자기 스코프 안에서 나가는 요청을 가로채, 오프라인일 때도 다음 셋 중 하나로 응답한다.
 
 | 응답 방식 | 예 |
 | --- | --- |
@@ -62,13 +62,14 @@ if ('serviceWorker' in navigator) {
 
 ## 생명주기
 
-```text
-register() 호출
-  └─ 다운로드·파싱 ── 문법 오류나 첫 실행 중 예외 → 실패, 끝
-       └─ install 이벤트 (버전마다 한 번) ── 프리캐시를 여기서
-            └─ (옛 워커가 클라이언트를 쥐고 있으면) waiting
-                 └─ activate 이벤트 ── 옛 캐시 정리를 여기서
-                      └─ 다음 내비게이션부터 fetch·push 등 처리
+```mermaid
+flowchart TB
+  n1["register() 호출"] --> n2["다운로드·파싱"]
+  n2 -->|"문법 오류나 첫 실행 중 예외"| fail["실패, 끝"]
+  n2 --> n3["install 이벤트 (버전마다 한 번)<br/>프리캐시를 여기서"]
+  n3 -->|"옛 워커가 클라이언트를 쥐고 있으면"| n4["waiting"]
+  n4 --> n5["activate 이벤트<br/>옛 캐시 정리를 여기서"]
+  n5 --> n6["다음 내비게이션부터 fetch·push 등 처리"]
 ```
 
 ```javascript

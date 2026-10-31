@@ -26,12 +26,14 @@ sources: ["https://bytebytego.com/guides/airbnb-artchitectural-evolution", "http
 
 모놀리스를 쪼갤 때 서비스를 기능별로만 나누면 서로 아무렇게나 호출하는 그물이 된다. 숙박 플랫폼 사례(Airbnb)는 **호출 방향이 한쪽으로 흐르는 층**으로 나눴다.
 
-```text
-클라이언트 → 게이트웨이
-  └→ 표현 서비스(presentation): 여러 서비스 데이터를 모아 화면용으로 가공
-       └→ 중간 계층 서비스(middle tier): 데이터 층에 안 맞는 핵심 비즈니스 로직
-            └→ 파생 데이터 서비스(derived data): 데이터 서비스를 읽어 기본 규칙 적용
-                 └→ 데이터 서비스(data): 엔티티 읽기·쓰기의 유일한 입구 → DB
+```mermaid
+flowchart TB
+  c["클라이언트"] --> g["게이트웨이"]
+  g --> p["표현 서비스(presentation)<br/>여러 서비스 데이터를 모아 화면용으로 가공"]
+  p --> m["중간 계층 서비스(middle tier)<br/>데이터 층에 안 맞는 핵심 비즈니스 로직"]
+  m --> d["파생 데이터 서비스(derived data)<br/>데이터 서비스를 읽어 기본 규칙 적용"]
+  d --> s["데이터 서비스(data)<br/>엔티티 읽기·쓰기의 유일한 입구"]
+  s --> db["DB"]
 ```
 
 - **데이터 서비스가 엔티티의 유일한 입구**라서, 다른 서비스가 DB를 직접 건드리지 않는다.
@@ -55,12 +57,10 @@ sources: ["https://bytebytego.com/guides/airbnb-artchitectural-evolution", "http
 
 영상 스트리밍 사례(Netflix)는 중간에 **BFF(Backend For Frontend)** 단계를 거쳤다.
 
-```text
-단일 API 게이트웨이
-  → 문제: TV·모바일·웹 클라이언트마다 필요한 데이터가 조금씩 다르다
-BFF: 클라이언트 팀이 자기 화면용 집계 스크립트를 작성(게이트웨이는 프록시로 물러남)
-  → 문제: UI 개발자가 서버 스크립트와 리액티브 프로그래밍까지 떠안는다
-GraphQL 페더레이션: 도메인 팀이 서브그래프를 소유, 클라이언트는 하나의 그래프에 질의
+```mermaid
+flowchart TB
+  g["단일 API 게이트웨이"] -->|"문제: TV·모바일·웹 클라이언트마다 필요한 데이터가 조금씩 다르다"| b["BFF: 클라이언트 팀이 자기 화면용 집계 스크립트를 작성<br/>(게이트웨이는 프록시로 물러남)"]
+  b -->|"문제: UI 개발자가 서버 스크립트와 리액티브 프로그래밍까지 떠안는다"| q["GraphQL 페더레이션: 도메인 팀이 서브그래프를 소유,<br/>클라이언트는 하나의 그래프에 질의"]
 ```
 
 BFF 자체는 [[bff|BFF]], GraphQL과 페더레이션 도입 패턴은 [[graphql|GraphQL]]에서 다룬다.
@@ -92,10 +92,9 @@ BFF 자체는 [[bff|BFF]], GraphQL과 페더레이션 도입 패턴은 [[graphql
 
 Zapier, IFTTT, n8n 같은 노코드 통합 도구는 수많은 SaaS의 API를 하나의 **트리거-액션(trigger-action)** 모델로 감싼 「API의 API」다.
 
-```text
-트리거: 앱 A에서 이벤트 발생(웹훅 수신 또는 주기적 폴링)
-  → 필터·데이터 변환(필드 매핑)
-  → 액션: 앱 B·C의 API 호출
+```mermaid
+flowchart LR
+  t["트리거: 앱 A에서 이벤트 발생<br/>(웹훅 수신 또는 주기적 폴링)"] --> f["필터·데이터 변환<br/>(필드 매핑)"] --> a["액션: 앱 B·C의 API 호출"]
 ```
 
 - 각 서비스의 인증(OAuth 토큰)과 API 차이를 커넥터가 흡수한다.

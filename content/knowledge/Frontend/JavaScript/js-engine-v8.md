@@ -23,22 +23,17 @@ MDN은 JS를 "가벼운 인터프리터(또는 JIT 컴파일) 언어"로 정의�
 
 ## V8 엔진의 파이프라인
 
-```text
-JS 소스
-  │
-  ▼
-Parser ── 어휘 분석(토큰화) → 구문 분석(SyntaxError는 여기서) → AST
-  │
-  ▼
-Ignition (인터프리터) ── AST → 바이트코드 생성 → 실행 ★실제 코드 실행
-  │                        └ 실행하며 프로파일링·피드백 수집
-  ▼ 자주 실행될수록 다음 단계로
-Sparkplug (베이스라인 컴파일러) ── 바이트코드 → 기계어, 거의 즉시
-  ▼
-Maglev    (중간 단계 최적화 컴파일러) ── 피드백 기반으로 빠르게 "충분히 좋은" 기계어
-  ▼
-TurboFan  (최상위 최적화 컴파일러) ── 가장 뜨거운 코드만 공격적으로 최적화
-                                      └ 가정이 깨지면 역최적화
+```mermaid
+flowchart TB
+  src["JS 소스"]
+  parser["Parser<br/>어휘 분석(토큰화) → 구문 분석(SyntaxError는 여기서) → AST"]
+  ign["Ignition (인터프리터)<br/>AST → 바이트코드 생성 → 실행 ★실제 코드 실행<br/>실행하며 프로파일링·피드백 수집"]
+  spark["Sparkplug (베이스라인 컴파일러)<br/>바이트코드 → 기계어, 거의 즉시"]
+  mag["Maglev (중간 단계 최적화 컴파일러)<br/>피드백 기반으로 빠르게 #quot;충분히 좋은#quot; 기계어"]
+  turbo["TurboFan (최상위 최적화 컴파일러)<br/>가장 뜨거운 코드만 공격적으로 최적화<br/>가정이 깨지면 역최적화"]
+  src --> parser --> ign
+  ign -->|"자주 실행될수록 다음 단계로"| spark
+  spark --> mag --> turbo
 ```
 
 | 단계 | 하는 일 | 알아 둘 점 |
@@ -115,8 +110,9 @@ delete a.y                       // 사전 모드로 떨어질 수 있다
 
 TS → JS는 고수준 언어에서 고수준 언어로 바꾸므로 **트랜스파일**, TSC는 소스 대 소스 컴파일러라고도 부른다. 이 과정은 컴파일 타임에 끝나고, 결과 JS는 런타임에 위의 V8 파이프라인을 탄다.
 
-```text
-.ts ─ Scanner(토큰화) ─ Parser(AST) ─ Binder(심볼 생성) ─ Checker(타입 검사) ─ Emitter(.js 출력)
+```mermaid
+flowchart LR
+  n1[".ts"] --> n2["Scanner<br/>(토큰화)"] --> n3["Parser<br/>(AST)"] --> n4["Binder<br/>(심볼 생성)"] --> n5["Checker<br/>(타입 검사)"] --> n6["Emitter<br/>(.js 출력)"]
 ```
 
 | 도구 | 하는 일 | 타입 검사 |

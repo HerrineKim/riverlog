@@ -10,7 +10,7 @@ sources: ["https://web.dev/learn/forms/form-fields", "https://web.dev/learn/form
 
 > 「type 고르기: 쓸 곳과 피할 곳」 부분은 Drew McLellan의 「HTML5 입력 양식: 어디쯤 왔을까?」(웹액츄얼리 번역, 2019.03)를 바탕으로 보강한 노트다. 「선택 컨트롤 고르기」와 「inputmode」는 web.dev의 「[Learn Forms](https://web.dev/learn/forms)」 강좌 중 「Form fields in depth」, 「Form attributes in depth」 모듈을 바탕으로, 값 목록은 MDN으로 확인해 보강했다.
 
-`<input>`은 `type` 하나로 텍스트 칸, 체크박스, 날짜 선택기, 버튼까지 완전히 다른 컨트롤이 된다. 알맞은 type을 고르면 브라우저가 **형식 검증, 모바일 키보드, 선택 UI**를 공짜로 제공한다. 폼과 input의 기본 문법은 [[html|HTML 기초와 HTML5]] 노트에 있고, 여기서는 입력 요소를 용도별로 모았다.
+`<input>`은 `type` 하나로 텍스트 칸, 체크박스, 날짜 선택기, 버튼까지 완전히 다른 컨트롤이 된다. 알맞은 type을 고르면 브라우저가 형식 검증, 모바일 키보드, 선택 UI를 공짜로 제공한다. 폼과 input의 기본 문법은 [[html|HTML 기초와 HTML5]] 노트에 있고, 여기서는 입력 요소를 용도별로 모았다.
 
 ## 텍스트 입력
 

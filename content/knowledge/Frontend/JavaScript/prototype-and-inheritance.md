@@ -107,14 +107,14 @@ Pizza.prototype.describe = function () {
 
 ## 프로토타입 체인과 섀도잉
 
-```text
-pepperoni ──▶ Pizza.prototype ──▶ Object.prototype ──▶ null
-{toppings,     {eat, describe,      {toString,
- customer,      constructor}         hasOwnProperty …}
- slices}
+```mermaid
+flowchart LR
+  p["pepperoni<br/>{toppings, customer, slices}"] --> pp["Pizza.prototype<br/>{eat, describe, constructor}"] --> op["Object.prototype<br/>{toString, hasOwnProperty …}"] --> nul["null"]
+```
 
-span ──▶ HTMLSpanElement.prototype ──▶ HTMLElement.prototype ──▶ Element.prototype
-     ──▶ Node.prototype ──▶ EventTarget.prototype ──▶ Object.prototype ──▶ null
+```mermaid
+flowchart LR
+  s["span"] --> hs["HTMLSpanElement.prototype"] --> he["HTMLElement.prototype"] --> el["Element.prototype"] --> nd["Node.prototype"] --> et["EventTarget.prototype"] --> op["Object.prototype"] --> nul["null"]
 ```
 
 - `pepperoni.toppings`는 인스턴스에서 바로 찾는다.
@@ -245,10 +245,12 @@ new Dog('바둑이').say() // '바둑이: 멍멍'
 
 내장 객체도 같은 규칙을 따른다. **메서드는 `Array.prototype`·`Date.prototype` 같은 프로토타입에, 데이터(배열 요소, 객체의 속성, 날짜 값)는 객체 자신에** 둔다.
 
-```text
-[1, 2, 3] ──▶ Array.prototype ──▶ Object.prototype ──▶ null
-function f ──▶ Function.prototype ──▶ Object.prototype ──▶ null
-{} ──────────────────────────────▶ Object.prototype ──▶ null
+```mermaid
+flowchart LR
+  arr["[1, 2, 3]"] --> ap["Array.prototype"] --> op["Object.prototype"]
+  fn["function f"] --> fp["Function.prototype"] --> op
+  obj["{}"] --> op
+  op --> nul["null"]
 ```
 
 - `{}`는 `new Object()`의 줄임이라 `Object.prototype`에 이어지고, `'[object Object]'`를 만드는 `toString`도 거기서 온다. 모든 내장 체인의 꼭대기에는 `Object.prototype`이 있고 그 위는 `null`이다.

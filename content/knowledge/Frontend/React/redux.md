@@ -26,10 +26,12 @@ Redux는 Facebook이 제안한 **Flux 패턴**의 대표 구현이다. 데이터
 | Store | 상태를 관리하는 곳 | store 하나(슬라이스로 나눔) |
 | View | Store의 데이터를 UI로 보여 준다 | React 컴포넌트 |
 
-```text
-컴포넌트 ──dispatch(action)──▶ reducer(state, action) ──▶ 새 state ──▶ store
-    ▲                                                                    │
-    └──────────────────── useSelector로 읽기 ◀───────────────────────────┘
+```mermaid
+flowchart LR
+  c["컴포넌트"] -->|"dispatch(action)"| r["reducer(state, action)"]
+  r --> s["새 state"]
+  s --> st["store"]
+  st -->|"useSelector로 읽기"| c
 ```
 
 작은 규모라면 라이브러리 없이 `useReducer` + [[context|Context]]로 같은 흐름을 만들 수 있다.

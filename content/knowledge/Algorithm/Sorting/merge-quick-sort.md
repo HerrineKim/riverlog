@@ -12,11 +12,11 @@ sources: ["https://80000coding.notion.site/21cb57a3681b404da4ac8ab0e7289bc0", "h
 > 퀵 정렬의 피벗 선택과 실전 개선은 「[퀵 정렬 (Quick Sort)](https://johngrib.github.io/wiki/algorithm/quick-sort/)」를 바탕으로 보강했다.
 > 상향식 병합 정렬, 퀵 셀렉트, 다른 언어의 표준 정렬, 외부 정렬은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(손코딩) 질문이 묻는 개념으로 보강했다.
 
-병합 정렬과 퀵 정렬은 모두 **분할 정복**으로 리스트를 나눠 정렬한다. 차이는 실제 작업이 어디서 일어나느냐다. 병합 정렬은 **합치는 단계**에서, 퀵 정렬은 **나누는 단계**에서 정렬이 이뤄진다.
+병합 정렬과 퀵 정렬은 모두 분할 정복으로 리스트를 나눠 정렬한다. 차이는 실제 작업이 어디서 일어나느냐다. 병합 정렬은 **합치는 단계**에서, 퀵 정렬은 **나누는 단계**에서 정렬이 이뤄진다.
 
 ## 병합 정렬 (Merge Sort)
 
-리스트를 **균등한 크기의 두 부분으로 나누고**, 각각을 재귀적으로 정렬한 뒤, 정렬된 두 리스트를 하나로 합친다.
+리스트를 균등한 크기의 두 부분으로 나누고, 각각을 재귀적으로 정렬한 뒤, 정렬된 두 리스트를 하나로 합친다.
 
 ```python
 def merge_sort(arr):
@@ -43,13 +43,13 @@ def merge_sort(arr):
 print(merge_sort([5, 3, 8, 1, 9, 2]))  # [1, 2, 3, 5, 8, 9]
 ```
 
-- 리스트를 반씩 나누므로 깊이는 log n, 각 깊이에서 합치는 데 O(n) → **항상 O(n log n)**
+- 리스트를 반씩 나누므로 깊이는 log n, 각 깊이에서 합치는 데 O(n) → 항상 O(n log n)
 - 합칠 때 추가 배열이 필요해 공간 복잡도 O(n)
 - 안정 정렬. 연결 리스트 정렬이나 외부 정렬(아래 절)에도 적합하다.
 
 ### 재귀 없이: 상향식 병합 정렬
 
-병합 정렬은 재귀 없이 반복문으로도 짤 수 있다. 크기 1짜리 구간을 이웃끼리 합쳐 크기 2로, 다시 4, 8, …로 **폭을 두 배씩 늘리며** 합친다(bottom-up). 나누는 단계가 필요 없고, 호출 스택 대신 바깥 반복이 log n번 돈다.
+병합 정렬은 재귀 없이 반복문으로도 짤 수 있다. 크기 1짜리 구간을 이웃끼리 합쳐 크기 2로, 다시 4, 8, …로 폭을 두 배씩 늘리며 합친다(bottom-up). 나누는 단계가 필요 없고, 호출 스택 대신 바깥 반복이 log n번 돈다.
 
 ```python
 def merge_sort_bottom_up(a):
@@ -72,7 +72,7 @@ def merge_sort_bottom_up(a):
 
 ## 퀵 정렬 (Quick Sort)
 
-**피벗(pivot)을** 하나 고르고, 피벗보다 작은 값과 큰 값으로 리스트를 나눈 뒤(크기가 같지 않을 수 있다), 각 부분을 재귀적으로 정렬해 이어 붙인다.
+피벗(pivot)을 하나 고르고, 피벗보다 작은 값과 큰 값으로 리스트를 나눈 뒤(크기가 같지 않을 수 있다), 각 부분을 재귀적으로 정렬해 이어 붙인다.
 
 ```python
 def quick_sort(arr):
@@ -85,7 +85,7 @@ def quick_sort(arr):
     return quick_sort(lesser) + equal + quick_sort(greater)
 ```
 
-위 코드는 이해하기 쉬운 버전이라 새 리스트를 계속 만든다. 실제 구현은 배열 안에서 원소를 교환해 나누는 **제자리(in-place) 분할**을 쓴다.
+위 코드는 이해하기 쉬운 버전이라 새 리스트를 계속 만든다. 실제 구현은 배열 안에서 원소를 교환해 나누는 제자리(in-place) 분할을 쓴다.
 
 ```python
 def quick_sort_inplace(arr, start=0, end=None):
@@ -127,7 +127,7 @@ def quick_sort_inplace(arr, start=0, end=None):
 
 ### 퀵 셀렉트: 정렬하지 않고 k번째 값 찾기
 
-배열 전체를 정렬하지 않고 **k번째로 작은(큰) 값**이나 **중앙값**만 구할 때는 퀵 정렬의 분할을 쓰되 **답이 있는 한쪽만** 재귀한다. 이것이 퀵 셀렉트(Quickselect, 호어의 선택 알고리즘)다.
+배열 전체를 정렬하지 않고 k번째로 작은(큰) 값이나 중앙값만 구할 때는 퀵 정렬의 분할을 쓰되 답이 있는 한쪽만 재귀한다. 이것이 퀵 셀렉트(Quickselect, 호어의 선택 알고리즘)다.
 
 ```python
 import random
@@ -163,7 +163,7 @@ print(quickselect(nums[:], len(nums) // 2))   # 5 (정렬하면 1 2 4 5 7 9)
 | 퀵 셀렉트 | 평균 O(n), 최악 O(n²) | 분할 한 번에 평균 절반만 남아 n + n/2 + n/4 + … ≈ 2n이다 |
 | 중앙값의 중앙값(median of medians) | 최악 O(n) | 다섯 개씩 묶은 중앙값들의 중앙값을 피벗으로 써 분할이 일정 비율 이상 고르도록 보장한다. 상수가 커서 실무에서는 퀵 셀렉트를 쓰다 너무 깊어질 때의 대비책으로 둔다 |
 
-**k번째로 큰 값**은 `n - k`번째로 작은 값이다. 원소 수가 짝수일 때 중앙값이 가운데 두 값의 평균이면 두 번 선택하거나, 한 번 선택한 뒤 오른쪽 구간의 최솟값을 찾는다. C++ `std::nth_element`, NumPy `np.partition`이 이 계열이다.
+k번째로 큰 값은 `n - k`번째로 작은 값이다. 원소 수가 짝수일 때 중앙값이 가운데 두 값의 평균이면 두 번 선택하거나, 한 번 선택한 뒤 오른쪽 구간의 최솟값을 찾는다. C++ `std::nth_element`, NumPy `np.partition`이 이 계열이다.
 
 ## 정렬 알고리즘 비교
 
@@ -183,7 +183,7 @@ print(quickselect(nums[:], len(nums) // 2))   # 5 (정렬하면 1 2 4 5 7 9)
 
 ## 실전에서는
 
-파이썬의 `sorted()`와 `list.sort()`는 병합 정렬과 삽입 정렬을 섞은 **Timsort** 계열 알고리즘으로, 최악에도 O(n log n)이고 안정 정렬이다. (Python 3.11부터는 run을 합치는 순서를 정하는 규칙만 Powersort 방식으로 바뀌었고, 기본 구조는 같다.) 코딩 테스트에서는 직접 구현하기보다 내장 정렬에 `key`를 주어 쓰는 경우가 대부분이다. 자바스크립트도 ES2019부터 명세가 `Array.prototype.sort`의 안정성을 요구하고, V8은 팀소트로 구현한다.
+파이썬의 `sorted()`와 `list.sort()`는 병합 정렬과 삽입 정렬을 섞은 Timsort 계열 알고리즘으로, 최악에도 O(n log n)이고 안정 정렬이다. (Python 3.11부터는 run을 합치는 순서를 정하는 규칙만 Powersort 방식으로 바뀌었고, 기본 구조는 같다.) 코딩 테스트에서는 직접 구현하기보다 내장 정렬에 `key`를 주어 쓰는 경우가 대부분이다. 자바스크립트도 ES2019부터 명세가 `Array.prototype.sort`의 안정성을 요구하고, V8은 팀소트로 구현한다.
 
 ```python
 students = [("kim", 90), ("lee", 85), ("park", 90)]
@@ -206,9 +206,9 @@ students.sort(key=lambda s: (-s[1], s[0]))  # 점수 내림차순, 이름 오름
 | Go | `sort.Sort`, `slices.Sort`: 1.19부터 패턴 무력화 퀵 정렬(pdqsort) | `sort.Stable`, `slices.SortStableFunc`: 삽입 정렬 + 제자리 병합 |
 | Rust | `sort_unstable`: ipnsort(pdqsort 계열) | `sort`: driftsort(병합 계열, 1.81부터) |
 
-공통된 흐름은 **불안정 정렬은 퀵 정렬 계열에 최악 대비책을 붙이고, 안정 정렬은 병합 정렬 계열에 이미 정렬된 구간 활용을 붙이는 것**이다. 작은 구간은 어느 쪽이든 삽입 정렬로 넘긴다.
+공통된 흐름은 불안정 정렬은 퀵 정렬 계열에 최악 대비책을 붙이고, 안정 정렬은 병합 정렬 계열에 이미 정렬된 구간 활용을 붙이는 것이다. 작은 구간은 어느 쪽이든 삽입 정렬로 넘긴다.
 
-정렬 기준은 원소 클래스가 `Comparable`(`compareTo`)을 구현해 정하거나, 정렬 호출에 `Comparator`를 넘겨 정한다. 내림차순은 `Collections.reverseOrder()`나 `Comparator.comparing(...).reversed()`를 쓴다. 이 Comparator 방식은 **객체 배열에만** 쓸 수 있어서 `int[]`를 내림차순으로 정렬하려면 `Integer[]`로 박싱하거나 오름차순 정렬 뒤 뒤집어야 한다.
+정렬 기준은 원소 클래스가 `Comparable`(`compareTo`)을 구현해 정하거나, 정렬 호출에 `Comparator`를 넘겨 정한다. 내림차순은 `Collections.reverseOrder()`나 `Comparator.comparing(...).reversed()`를 쓴다. 이 Comparator 방식은 객체 배열에만 쓸 수 있어서 `int[]`를 내림차순으로 정렬하려면 `Integer[]`로 박싱하거나 오름차순 정렬 뒤 뒤집어야 한다.
 
 ```java
 Integer[] arr = {8, 7, 6, 5, 4};
@@ -219,7 +219,7 @@ people.sort(Comparator.comparingInt(Person::score).reversed()
 
 ## 외부 정렬: 메모리보다 큰 데이터
 
-50GB 파일을 메모리 4GB로 정렬하듯 **데이터가 메모리에 다 들어가지 않으면** 디스크와 메모리를 오가는 외부 정렬(external sort)을 쓴다. 디스크는 임의 접근이 느리고 순차 읽기·쓰기가 빠르므로, 순차 접근만으로 끝나는 **외부 병합 정렬**이 표준이다.
+50GB 파일을 메모리 4GB로 정렬하듯 데이터가 메모리에 다 들어가지 않으면 디스크와 메모리를 오가는 외부 정렬(external sort)을 쓴다. 디스크는 임의 접근이 느리고 순차 읽기·쓰기가 빠르므로, 순차 접근만으로 끝나는 외부 병합 정렬이 표준이다.
 
 ```text
 1단계: 정렬된 덩어리(run) 만들기

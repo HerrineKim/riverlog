@@ -73,7 +73,7 @@ card.innerHTML = `<h2>${desc}</h2>` // onerror가 실행된다
 
 ### CSP: 실행할 수 있는 것을 응답 헤더로 정한다
 
-**CSP(Content Security Policy)는 페이지가 어디서 온 스크립트·스타일·이미지·프레임을 불러오고 실행할 수 있는지를 서버가 응답 헤더로 선언하는 장치다.** 이스케이프가 한 곳에서 새더라도 주입된 스크립트가 실행되지 않게 막는 2차 방어선이다.
+**CSP**(Content Security Policy)는 페이지가 어디서 온 스크립트·스타일·이미지·프레임을 불러오고 실행할 수 있는지를 서버가 응답 헤더로 선언하는 장치다. 이스케이프가 한 곳에서 새더라도 주입된 스크립트가 실행되지 않게 막는 2차 방어선이다.
 
 ```http
 Content-Security-Policy: default-src 'self'; img-src 'self' https://cdn.example.com; object-src 'none'; frame-ancestors 'none'

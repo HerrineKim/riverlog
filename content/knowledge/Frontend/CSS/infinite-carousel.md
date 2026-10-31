@@ -14,10 +14,12 @@ sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%EB%
 
 ## 공통 구조
 
-```text
-뷰포트 (overflow: hidden; 보여 줄 크기)
-└─ 트랙 (display: flex; transform: translateX(…); 슬라이드 전부를 가로로)
-   └─ 슬라이드 × n
+```mermaid
+flowchart TB
+  n1["뷰포트<br/>(overflow: hidden; 보여 줄 크기)"]
+  n2["트랙<br/>(display: flex; transform: translateX(…); 슬라이드 전부를 가로로)"]
+  n3["슬라이드 × n"]
+  n1 --> n2 --> n3
 ```
 
 뷰포트는 창 역할만 하고, 트랙 전체를 `transform`으로 옮긴다. `left`가 아니라 `transform`을 쓰는 이유는 레이아웃을 다시 계산하지 않고 합성만으로 움직이기 때문이다([[css-animation|CSS 애니메이션]]).
@@ -91,7 +93,7 @@ const pages = Array.from({ length: Math.ceil(items.length / 4) }, (_, p) => item
 
 ## 자동으로 흐르는 마키: 목록을 두 번
 
-로고 띠처럼 쉬지 않고 한 방향으로 흐르는 슬라이더는 JavaScript 없이 만든다. **같은 목록을 두 번 이어 붙이고**, 트랙을 정확히 절반(목록 하나 길이)만큼 옮긴 뒤 처음으로 되돌아가게 반복한다. 되돌아간 순간의 화면은 두 번째 목록의 시작과 같아서 이음매가 보이지 않는다.
+로고 띠처럼 쉬지 않고 한 방향으로 흐르는 슬라이더는 JavaScript 없이 만든다. 같은 목록을 두 번 이어 붙이고, 트랙을 정확히 절반(목록 하나 길이)만큼 옮긴 뒤 처음으로 되돌아가게 반복한다. 되돌아간 순간의 화면은 두 번째 목록의 시작과 같아서 이음매가 보이지 않는다.
 
 ```css
 .marquee {

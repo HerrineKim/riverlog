@@ -277,7 +277,7 @@ function Clickable(props: ButtonProps | AnchorProps) {
 ```
 
 - 판별 유니언은 **값**으로 좁힌다. `typeof props.value === 'string'`처럼 타입으로 검사하면 다른 필드는 좁혀지지 않는다.
-- 「모두 아니면 전무」를 `All | Record<string, never>`로 만들 수도 있지만, 빈 객체 타입은 공식 권장이 아니라 묶음 prop이 낫다.
+- 「모두 아니면 전무」를 `All | Record<string, never>`로 만들 수도 있지만, 빈 객체 타입은 공식 권장 방식이 아니므로 묶음 prop이 낫다.
 
 ### children 제한의 한계
 

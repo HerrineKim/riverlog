@@ -111,7 +111,7 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 }
 ```
 
-움직임 줄이기는 「애니메이션 금지」가 아니라 **덜, 특히 예상치 못한 움직임을 덜** 달라는 요청이다. 자동 재생 애니메이션은 `animation-play-state: paused`로 멈추고, 큰 이동은 페이드로 바꾸는 식으로 대체한다. 반대로 `@media (prefers-reduced-motion: no-preference)` 안에서만 움직임을 켜는 방식도 있다. 자세한 기준(5초 넘는 자동 애니메이션은 멈출 수 있게)은 [[color-motion-accessibility|색과 움직임의 접근성]]에 있다.
+움직임 줄이기는 「애니메이션 금지」가 아니라 덜, 특히 예상치 못한 움직임을 덜 달라는 요청이다. 자동 재생 애니메이션은 `animation-play-state: paused`로 멈추고, 큰 이동은 페이드로 바꾸는 식으로 대체한다. 반대로 `@media (prefers-reduced-motion: no-preference)` 안에서만 움직임을 켜는 방식도 있다. 자세한 기준(5초 넘는 자동 애니메이션은 멈출 수 있게)은 [[color-motion-accessibility|색과 움직임의 접근성]]에 있다.
 
 ### will-change 쓰는 법
 
@@ -134,13 +134,13 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 
 ## CSS 애니메이션 라이브러리
 
-미리 만든 `@keyframes`를 클래스로 붙여 쓰는 라이브러리다. 통째로 넣어도 되고, **필요한 키프레임만 복사해** 쓰는 편이 가볍다.
+미리 만든 `@keyframes`를 클래스로 붙여 쓰는 라이브러리다. 통째로 넣어도 되고, 필요한 키프레임만 복사해 쓰는 편이 가볍다.
 
 | 이름 | 성격 |
 | --- | --- |
 | [Animate.css](https://animate.style/) | 가장 널리 쓰인다. 등장·퇴장·주의 끌기 효과 수십 가지. `animate__animated animate__bounce`처럼 클래스로 붙이고, 길이·지연은 CSS 변수(`--animate-duration`)로 조절한다. `prefers-reduced-motion`을 기본으로 존중한다 |
 | [Hover.css](http://ianlunn.github.io/Hover/) | 링크·버튼의 호버 효과 모음. CSS·Sass·Less 버전 |
-| [Animista](https://animista.net/) | 효과를 고르고 값을 조절한 뒤 **필요한 CSS만 생성**해 복사한다 |
+| [Animista](https://animista.net/) | 효과를 고르고 값을 조절한 뒤 필요한 CSS만 생성해 복사한다 |
 | [Magic](https://www.minimamente.com/project/magic/) | 독특한 등장·퇴장 효과 |
 | [Vivify](http://vivify.mkcreative.cz/), [Woah.css](http://www.joerezendes.com/projects/Woah.css/), [CSShake](https://elrumordelaluz.github.io/csshake/) | 과장된 효과, 흔들기 효과 |
 
@@ -164,6 +164,6 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 - `prefers-reduced-motion`을 항상 처리한다.
 - 라이브러리는 통째보다 필요한 키프레임만 가져다 쓴다.
 
-**좋은 애니메이션은 눈에 띄지 않고, 상태가 바뀌었다는 사실만 알려 준다.**
+좋은 애니메이션은 눈에 띄지 않고, 상태가 바뀌었다는 사실만 알려 준다.
 
 관련 노트: [[transform|transform: 이동·회전·확대·기울이기]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[browser-rendering|브라우저 렌더링 과정]], [[color-motion-accessibility|색과 움직임의 접근성]], [[animated-icon|Animated Icon: 영상을 투명 배경 아이콘으로 쓰기]], [[devtools-elements-css|DevTools로 DOM과 CSS 다루기]], [[js-animation|JavaScript 애니메이션]], [[ui-motion-principles|UI 모션 디자인: 애니메이션 원칙, 모션 커브, 안무]]

@@ -103,8 +103,9 @@ table.addEventListener('mouseout', (e) => {
 
 마우스 이벤트만 듣는 옛 페이지도 터치 기기에서 동작하도록, 브라우저는 단순한 탭 뒤에 **호환 마우스 이벤트**를 흉내 내 보낸다.
 
-```text
-touchstart → (touchmove) → touchend → mousemove → mousedown → mouseup → click
+```mermaid
+flowchart LR
+  n1["touchstart"] --> n2["(touchmove)"] --> n3["touchend"] --> n4["mousemove"] --> n5["mousedown"] --> n6["mouseup"] --> n7["click"]
 ```
 
 | 문제 | 원인 | 대응 |
@@ -120,11 +121,11 @@ touchstart → (touchmove) → touchend → mousemove → mousedown → mouseup 
 
 **포인터 이벤트(Pointer Events)** 는 마우스·터치·펜을 한 벌의 이벤트로 받는 표준이다. 모든 주요 브라우저가 지원하므로 새 코드는 마우스·터치 이벤트 대신 이것을 쓴다.
 
-```text
-마우스 이벤트만 있던 시절
-  → 터치 기기 등장: 호환을 위해 탭이 mousedown 등을 흉내 낸다. 멀티 터치는 표현 못 함
-  → 터치 이벤트(touchstart·touchmove·touchend): 멀티 터치는 되지만 펜 등은 따로, 두 벌 코드
-  → 포인터 이벤트: 모든 포인팅 장치를 한 벌로
+```mermaid
+flowchart TB
+  n1["마우스 이벤트만 있던 시절"] --> n2["터치 기기 등장: 호환을 위해 탭이 mousedown 등을 흉내 낸다<br/>멀티 터치는 표현 못 함"]
+  n2 --> n3["터치 이벤트(touchstart·touchmove·touchend)<br/>멀티 터치는 되지만 펜 등은 따로, 두 벌 코드"]
+  n3 --> n4["포인터 이벤트: 모든 포인팅 장치를 한 벌로"]
 ```
 
 | 포인터 이벤트 | 대응 마우스 이벤트 |

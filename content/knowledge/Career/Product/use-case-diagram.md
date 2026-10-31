@@ -49,17 +49,23 @@ UML(Unified Modeling Language, 통합 모델링 언어)은 소프트웨어의 �
 
 include와 extend는 화살표 방향이 반대라 헷갈린다. **"누가 누구를 알고 있나"** 로 기억한다. 기본 유스케이스는 자기가 포함하는 것을 알고(include), 확장 유스케이스는 자기가 끼어들 기본 유스케이스를 안다(extend).
 
-```text
-            ┌──────────── 사물함 대여 시스템 ────────────┐
-            │                                            │
- 회원 ──────┼──── (사물함 대여하기) ┄┄include┄┄> (로그인 확인)
-   │        │                                      ^     │
-   └────────┼──── (사물함 반납하기) ┄┄include┄┄┄┄┄┄┘     │
-            │            ^                               │
-            │            ┆ extend [연체 시]              │
-            │      (연체료 결제)                          │
- 관리자 ────┼──── (이용 정지 처리)                         │
-            └────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+  member["회원"]
+  admin["관리자"]
+  subgraph sys["사물함 대여 시스템"]
+    rent(["사물함 대여하기"])
+    ret(["사물함 반납하기"])
+    login(["로그인 확인"])
+    fee(["연체료 결제"])
+    ban(["이용 정지 처리"])
+  end
+  member --- rent
+  member --- ret
+  admin --- ban
+  rent -.->|"include"| login
+  ret -.->|"include"| login
+  fee -.->|"extend [연체 시]"| ret
 ```
 
 ## 작성 4단계

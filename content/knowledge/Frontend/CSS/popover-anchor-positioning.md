@@ -51,7 +51,7 @@ JS로는 `el.showPopover()`, `hidePopover()`, `togglePopover()`를 부른다. `s
 [popover]::backdrop { background: rgb(0 0 0 / 10%); }
 ```
 
-- `::backdrop`은 팝오버 아래 깔리는 가상 요소다. 뒤 페이지가 여전히 조작 가능하므로 **진하게 가리거나 흐리게 만들지 않는다.**
+- `::backdrop`은 팝오버 아래 깔리는 가상 요소다. 뒤 페이지가 여전히 조작 가능하므로 진하게 가리거나 흐리게 만들지 않는다.
 - 기본 위치는 `margin: auto`로 화면 가운데다. 앵커에 붙이려면 `margin: unset`(또는 0)으로 지운다.
 
 ### 열고 닫기 애니메이션

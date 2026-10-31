@@ -9,17 +9,17 @@ sources: ["http://teropa.info/blog/2015/03/02/change-and-its-detection-in-javasc
 ---
 
 > Tero Parviainen의 「[Change And Its Detection In JavaScript Frameworks](http://teropa.info/blog/2015/03/02/change-and-its-detection-in-javascript-frameworks.html)」(2015)를 뼈대로, 「[Functional UI and Components as Higher Order Functions](https://blog.risingstack.com/functional-ui-and-components-as-higher-order-functions/)」와 「[What is React Fiber?](https://gist.github.com/duivvv/2ba00d413b8ff7bc1fa5a2e51c61ba43)」를 더해 재구성한 노트다.
-> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 Fiber의 두 트리 구조을 보강했다.
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 Fiber의 두 트리 구조를 보강했다.
 
 ## 문제: 상태를 화면에 투영하기
 
-렌더링은 **앱 상태(객체·배열·문자열)를 DOM 트리로 투영하는 일**이다. 한 번 그리는 것은 단순한 함수다.
+렌더링은 앱 상태(객체·배열·문자열)를 DOM 트리로 투영하는 일이다. 한 번 그리는 것은 단순한 함수다.
 
 ```text
 UI = f(state)
 ```
 
-어려운 것은 **상태가 시간에 따라 바뀔 때**다. 사용자 입력이나 서버 응답으로 상태가 바뀌면 화면도 따라 바뀌어야 하고, DOM 조작은 비싸므로 바뀐 곳만 고치고 싶다. 프레임워크마다 다른 것은 결국 두 질문의 답이다.
+어려운 것은 상태가 시간에 따라 바뀔 때다. 사용자 입력이나 서버 응답으로 상태가 바뀌면 화면도 따라 바뀌어야 하고, DOM 조작은 비싸므로 바뀐 곳만 고치고 싶다. 프레임워크마다 다른 것은 결국 두 질문의 답이다.
 
 - **무엇이 바뀌었는지 언제 아는가**: 바뀌는 순간 / 나중에 비교해서 / 컴파일할 때
 - **어디를 다시 그릴지 어떻게 정하는가**: 개발자가 / 바인딩이 / 비교 알고리즘이
@@ -49,17 +49,17 @@ AngularJS는 템플릿의 `{{foo.x}}`마다 감시자를 만들고, 클릭 핸�
 
 ### 가상 DOM: 다시 그리고 비교한다
 
-React는 서버 렌더링 시절처럼 **매번 전부 다시 그린다**는 단순한 모델로 돌아갔다. 다만 진짜 DOM이 아니라 가벼운 JavaScript 객체 트리(가상 DOM)에 그린다. 새 트리와 이전 트리를 비교해 바뀐 노드만 진짜 DOM에 패치한다. 첫 렌더와 갱신이 같은 코드 경로라 컴포넌트가 상태 동기화를 신경 쓰지 않는다.
+React는 서버 렌더링 시절처럼 매번 전부 다시 그린다는 단순한 모델로 돌아갔다. 다만 진짜 DOM이 아니라 가벼운 JavaScript 객체 트리(가상 DOM)에 그린다. 새 트리와 이전 트리를 비교해 바뀐 노드만 진짜 DOM에 패치한다. 첫 렌더와 갱신이 같은 코드 경로라 컴포넌트가 상태 동기화를 신경 쓰지 않는다.
 
-트리가 크거나 초당 60번 그려야 하면 비교 자체가 병목이 된다. 이때 **불변 데이터**가 탈출구다. 상태를 바꿀 때마다 새 객체를 만들면, 다시 그릴 때 참조가 이전과 같은 하위 트리는 내용을 볼 필요 없이 이전 결과를 재사용한다. 불변 데이터의 더 큰 이득은 성능보다 **상태 변화를 추적하기 쉬운 구조**다. React에서 이 건너뛰기는 `React.memo`가 맡고, React Compiler는 이를 빌드할 때 자동으로 넣는다. 실제로 리렌더링을 줄이는 순서는 [[re-rendering|리렌더링 원인과 추적]]에 있다.
+트리가 크거나 초당 60번 그려야 하면 비교 자체가 병목이 된다. 이때 불변 데이터가 탈출구다. 상태를 바꿀 때마다 새 객체를 만들면, 다시 그릴 때 참조가 이전과 같은 하위 트리는 내용을 볼 필요 없이 이전 결과를 재사용한다. 불변 데이터의 더 큰 이득은 성능보다 상태 변화를 추적하기 쉬운 구조다. React에서 이 건너뛰기는 `React.memo`가 맡고, React Compiler는 이를 빌드할 때 자동으로 넣는다. 실제로 리렌더링을 줄이는 순서는 [[re-rendering|리렌더링 원인과 추적]]에 있다.
 
 ### 시그널과 컴파일러: 처음부터 어디를 고칠지 안다
 
-시그널은 데이터 바인딩의 현대판이다. 계산이나 화면이 실행되면서 **읽은 시그널을 자동으로 의존성으로 기록**하고, 시그널에 쓰면 그 값을 읽은 곳만 다시 실행한다. 가상 DOM 비교 없이 바뀐 텍스트 노드 하나만 고칠 수 있다. 의존성 추적의 원리는 [[reactive-programming|반응형 프로그래밍과 RxJS]]에, Svelte가 이를 컴파일 결과로 만드는 방식은 [[frontend-frameworks|React와 Vue 말고: Svelte, Angular, Preact, Alpine.js, HTMX]]에 있다.
+시그널은 데이터 바인딩의 현대판이다. 계산이나 화면이 실행되면서 읽은 시그널을 자동으로 의존성으로 기록하고, 시그널에 쓰면 그 값을 읽은 곳만 다시 실행한다. 가상 DOM 비교 없이 바뀐 텍스트 노드 하나만 고칠 수 있다. 의존성 추적의 원리는 [[reactive-programming|반응형 프로그래밍과 RxJS]]에, Svelte가 이를 컴파일 결과로 만드는 방식은 [[frontend-frameworks|React와 Vue 말고: Svelte, Angular, Preact, Alpine.js, HTMX]]에 있다.
 
 ## React Fiber: 렌더링을 쪼개 우선순위를 매긴다
 
-가상 DOM 비교는 원래 **한 번 시작하면 끝까지** 동기로 돌았다(스택 재조정자). 트리가 크면 그동안 메인 스레드가 막혀 입력과 애니메이션이 끊긴다. React 16(2017)은 재조정자를 **Fiber**로 다시 썼다.
+가상 DOM 비교는 원래 한 번 시작하면 끝까지 동기로 돌았다(스택 재조정자). 트리가 크면 그동안 메인 스레드가 막혀 입력과 애니메이션이 끊긴다. React 16(2017)은 재조정자를 **Fiber**로 다시 썼다.
 
 | 개념 | 내용 |
 | --- | --- |
@@ -71,7 +71,7 @@ React는 서버 렌더링 시절처럼 **매번 전부 다시 그린다**는 단
 
 흔히 「가상 DOM」이라 부르는 것은 이 fiber 트리다. current 트리의 호스트 fiber는 `stateNode`로 실제 DOM 노드를 붙잡고 있어 화면과 1:1로 맞물린다. render 단계는 workInProgress 트리만 고치므로 계산 도중에 버려도 화면은 그대로다. 두 트리의 차이가 commit 단계의 DOM 변경 목록이 된다.
 
-Fiber가 깐 바닥 위에 React 18(2022)이 **동시성 기능**을 열었다. `createRoot`로 만든 앱에서 `startTransition`·`useTransition`으로 감싼 갱신은 급하지 않은 갱신이 되어 입력을 막지 않고, `useDeferredValue`는 값의 갱신을 늦춘다. Suspense의 스트리밍 SSR과 선택적 hydration도 같은 기반이다. 긴 작업을 쪼개 메인 스레드를 비우는 일반 기법은 [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]]에 있다.
+Fiber가 깐 바닥 위에 React 18(2022)이 동시성 기능을 열었다. `createRoot`로 만든 앱에서 `startTransition`·`useTransition`으로 감싼 갱신은 급하지 않은 갱신이 되어 입력을 막지 않고, `useDeferredValue`는 값의 갱신을 늦춘다. Suspense의 스트리밍 SSR과 선택적 hydration도 같은 기반이다. 긴 작업을 쪼개 메인 스레드를 비우는 일반 기법은 [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]]에 있다.
 
 ## 정리
 

@@ -312,10 +312,14 @@ GC 일반 원리와 Java·Python과의 비교는 [[how-programs-run|프로그램
 
 ## 프로젝트 구조: 클린 아키텍처 계층
 
-```text
-delivery(HTTP 핸들러, gRPC)  ──▶  usecase/service(비즈니스 규칙)  ──▶  repository(DB, 외부 API)
-                                         │
-                                       domain(엔티티, 에러)  ◀── 모두가 의존
+```mermaid
+flowchart LR
+  del["delivery<br/>(HTTP 핸들러, gRPC)"] --> uc["usecase/service<br/>(비즈니스 규칙)"]
+  uc --> repo["repository<br/>(DB, 외부 API)"]
+  dom["domain(엔티티, 에러)<br/>모두가 의존"]
+  del --> dom
+  uc --> dom
+  repo --> dom
 ```
 
 - 비즈니스 규칙은 프레임워크·DB·전송 방식을 모른다. 그래서 핸들러나 DB를 바꿔도 유스케이스 코드는 그대로이고, 가짜 리포지토리로 테스트할 수 있다.

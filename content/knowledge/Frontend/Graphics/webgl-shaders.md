@@ -33,12 +33,14 @@ sources: ["https://www.youtube.com/watch?v=6AHpdQCrf_Q", "https://developer.mozi
 
 WebGL이 통로라면 **셰이더(shader)는 그 통로로 보내는 명령**이다. GPU에서 수많은 점과 픽셀에 대해 **병렬로** 실행되는 작은 프로그램이다. 셰이더 코드는 JavaScript 안에 문자열로 넣거나 별도 파일·`<script type="x-shader/...">`로 두고, 실행 중에 컴파일해 GPU에 올린다.
 
-```text
-정점 데이터(위치·색·UV)
-  → 정점 셰이더   점마다 한 번: 화면상의 위치를 정한다
-  → 래스터화      삼각형이 덮는 픽셀 후보(프래그먼트)를 고르고, 정점 값을 보간한다
-  → 프래그먼트 셰이더  프래그먼트마다 한 번: 색을 정한다
-  → 화면(canvas)
+```mermaid
+flowchart TB
+  n1["정점 데이터(위치·색·UV)"]
+  n2["정점 셰이더<br/>점마다 한 번: 화면상의 위치를 정한다"]
+  n3["래스터화<br/>삼각형이 덮는 픽셀 후보(프래그먼트)를 고르고, 정점 값을 보간한다"]
+  n4["프래그먼트 셰이더<br/>프래그먼트마다 한 번: 색을 정한다"]
+  n5["화면(canvas)"]
+  n1 --> n2 --> n3 --> n4 --> n5
 ```
 
 | 셰이더 | 실행 단위 | 하는 일 | 대표 출력 |
@@ -118,6 +120,6 @@ Three.js는 `three/webgpu`의 `WebGPURenderer`로 WebGPU를 쓰고, 지원하지
 - 정점 셰이더는 점의 위치를, 프래그먼트 셰이더는 픽셀의 색을 정하고, 그 사이를 래스터화가 잇는다.
 - WebGL은 GLSL ES, WebGPU는 WGSL로 셰이더를 쓴다.
 - WebGPU는 더 빠르고 컴퓨트 셰이더를 지원하는 후속 API다.
-- **프론트엔드 개발자에게 API 자체는 선택이고, 라이브러리와 기본 셰이더 개념이 실용적인 출발점이다.**
+- 프론트엔드 개발자에게 API 자체는 선택이고, 라이브러리와 기본 셰이더 개념이 실용적인 출발점이다.
 
 관련 노트: [[threejs|Three.js로 웹에서 3D 그리기]], [[transformation-matrix|변환 행렬: 이동·크기·회전과 동차 좌표]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[canvas-2d|Canvas 2D API]], [[webxr|WebXR: 브라우저의 VR·AR]], [[graphics-rendering-basics|컴퓨터 그래픽스 렌더링 기초]]

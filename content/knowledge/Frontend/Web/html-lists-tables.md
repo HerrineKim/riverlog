@@ -91,16 +91,16 @@ sources: ["https://web.dev/learn/html/lists", "https://web.dev/learn/html/tables
 
 ### 구성 요소와 순서
 
-```text
-<table>
-  ├─ <caption>        표의 이름. 있으면 반드시 첫 자식
-  ├─ <colgroup>       열 묶음 (안에 <col>)
-  ├─ <thead>          머리글 행 묶음
-  ├─ <tbody>          본문 행 묶음 (여러 개 가능)
-  └─ <tfoot>          꼬리말 행 묶음
-       └─ <tr>        행
-            ├─ <th>   머리글 셀
-            └─ <td>   데이터 셀
+```mermaid
+flowchart TB
+  table["#lt;table#gt;"] --> caption["#lt;caption#gt;<br/>표의 이름. 있으면 반드시 첫 자식"]
+  table --> colgroup["#lt;colgroup#gt;<br/>열 묶음 (안에 #lt;col#gt;)"]
+  table --> thead["#lt;thead#gt;<br/>머리글 행 묶음"]
+  table --> tbody["#lt;tbody#gt;<br/>본문 행 묶음 (여러 개 가능)"]
+  table --> tfoot["#lt;tfoot#gt;<br/>꼬리말 행 묶음"]
+  tfoot --> tr["#lt;tr#gt;<br/>행"]
+  tr --> th["#lt;th#gt;<br/>머리글 셀"]
+  tr --> td["#lt;td#gt;<br/>데이터 셀"]
 ```
 
 | 요소 | 핵심 |

@@ -14,12 +14,12 @@ sources: ["https://web.dev/learn/images/cdn", "https://web.dev/learn/images/cms"
 
 일반 [[cdn|CDN]]은 파일을 전 세계 엣지 서버에 복제해 사용자 가까운 곳에서 응답한다. 지연이 줄고, 장애에 강하고, 트래픽 폭주를 나눠 받는다. **이미지 CDN은 여기에 변환을 더한다.** 고해상도 원본 한 장을 올리면, 요청 URL에 적힌 매개변수대로 크기·자르기·압축·형식을 바꾼 변형을 만들어 준다.
 
-```text
-요청: /image/upload/w_400,q_auto,f_auto/sample.jpg
-  │
-  ├─ 엣지 캐시에 이 변형(+ 이 브라우저가 지원하는 형식)이 있나?
-  │    └─ 있으면 바로 응답
-  └─ 없으면 원본에서 400px로 줄이고, 품질·형식을 골라 인코딩 → 캐시 → 응답
+```mermaid
+flowchart TB
+  req["요청: /image/upload/w_400,q_auto,f_auto/sample.jpg"] --> q{"엣지 캐시에 이 변형<br/>(+ 이 브라우저가 지원하는 형식)이 있나?"}
+  q -->|"있으면"| hit["바로 응답"]
+  q -->|"없으면"| enc["원본에서 400px로 줄이고, 품질·형식을 골라 인코딩"]
+  enc --> cache["캐시"] --> res["응답"]
 ```
 
 첫 요청에서 만든 변형은 캐시되어, 같은 조건의 다음 요청은 다시 만들지 않는다.
@@ -38,7 +38,7 @@ sources: ["https://web.dev/learn/images/cdn", "https://web.dev/learn/images/cms"
 
 여러 변환은 쉼표로 이어 파일 이름 앞에 둔다. `q_auto`만 붙여도 1400px 이미지가 250KB에서 134KB로 주는 식의 차이가 난다.
 
-URL 규칙이 예측 가능하므로 **`srcset`을 별도 도구 없이 만들 수 있다.**
+URL 규칙이 예측 가능하므로 `srcset`을 별도 도구 없이 만들 수 있다.
 
 ```html
 <img
@@ -108,6 +108,6 @@ Cache-Control: public, max-age=31536000
 - `f_auto` 같은 자동 형식은 `Accept` 헤더 협상이다. `Content-Type`이 실제 형식을 알린다.
 - 협상하는 응답에는 `Vary: Accept`가 필요하고, 캐시 키는 몇 단계로 정규화한다.
 - `Accept`에 없는 형식은 지원해도 받지 못한다. 대체 형식이 늘 함께 있어야 한다.
-- **원본 한 장만 관리하고 나머지는 CDN이 만든다.** 대신 `sizes`와 아트 디렉션은 여전히 마크업의 몫이다.
+- 원본 한 장만 관리하고 나머지는 CDN이 만든다. 대신 `sizes`와 아트 디렉션은 여전히 마크업의 몫이다.
 
 관련 노트: [[cdn|CDN]], [[http-cache|HTTP 캐시]], [[image-formats|웹 이미지 형식]], [[image-compression|이미지 압축과 인코딩 자동화]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[lcp-optimization|LCP 최적화: 네 구간으로 나눠 줄이기]]

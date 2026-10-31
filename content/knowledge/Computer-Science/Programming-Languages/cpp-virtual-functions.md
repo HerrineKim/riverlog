@@ -56,9 +56,18 @@ call rax             ; this(s)를 첫 인자로 넘겨 호출한다
 
 **생성과 소멸 도중의 객체는 아직(또는 이미) 자식 타입이 아니다.** 그래서 컴파일러는 각 단계에서 vptr을 그 단계 클래스의 vtable로 바꿔 끼운다.
 
-```text
-생성:  Base 생성자 진입 → vptr = Base vtable → Derived 생성자 진입 → vptr = Derived vtable
-소멸:  Derived 소멸자 실행 → Base 소멸자 진입 → vptr = Base vtable → Base 멤버 정리
+생성:
+
+```mermaid
+flowchart LR
+  c1["Base 생성자 진입"] --> c2["vptr = Base vtable"] --> c3["Derived 생성자 진입"] --> c4["vptr = Derived vtable"]
+```
+
+소멸:
+
+```mermaid
+flowchart LR
+  d1["Derived 소멸자 실행"] --> d2["Base 소멸자 진입"] --> d3["vptr = Base vtable"] --> d4["Base 멤버 정리"]
 ```
 
 부모 소멸자가 돌 때 자식의 멤버는 이미 파괴되었다. 이때 자식 구현을 부르면 죽은 멤버에 접근하게 되므로, 언어가 일부러 부모 구현을 부르게 만든 것이다.

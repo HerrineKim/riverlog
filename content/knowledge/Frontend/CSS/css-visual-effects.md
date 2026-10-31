@@ -83,7 +83,7 @@ sources: ["https://web.dev/learn/css/filters", "https://web.dev/learn/css/blend-
 .duotone::after  { content: ""; position: absolute; inset: 0; background: #e63946; mix-blend-mode: multiply; }
 ```
 
-`isolation: isolate`는 새 쌓임 맥락을 만들어 **그 안의 요소가 바깥 배경과 섞이지 않게** 한다. 안쪽 요소끼리는 계속 섞인다. 배경 겹은 이미 격리돼 있어 `background-blend-mode`에는 영향이 없다.
+`isolation: isolate`는 새 쌓임 맥락을 만들어 그 안의 요소가 바깥 배경과 섞이지 않게 한다. 안쪽 요소끼리는 계속 섞인다. 배경 겹은 이미 격리돼 있어 `background-blend-mode`에는 영향이 없다.
 
 ## 이미지 효과를 거는 방법과 비용
 
@@ -97,7 +97,7 @@ sources: ["https://web.dev/learn/css/filters", "https://web.dev/learn/css/blend-
 | `<canvas>` | `getImageData`로 픽셀마다 계산 | 가장 느리다. 픽셀마다 JS가 돌고, 다른 출처 이미지는 CORS 설정이 필요하다 |
 | 미리 편집 | 이미지 자체를 흑백으로 저장 | 런타임 비용이 없다. 효과를 바꿀 수 없다 |
 
-**바뀌지 않는 효과는 이미지 자체에 굽고**, 상호작용이 필요한 효과만 CSS로 건다. 많은 이미지에 무거운 `blur()`를 걸고 애니메이션하면 프레임마다 다시 그려 느려진다.
+바뀌지 않는 효과는 이미지 자체에 굽고, 상호작용이 필요한 효과만 CSS로 건다. 많은 이미지에 무거운 `blur()`를 걸고 애니메이션하면 프레임마다 다시 그려 느려진다.
 
 ## 도형과 clip-path
 

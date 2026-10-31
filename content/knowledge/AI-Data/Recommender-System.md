@@ -51,10 +51,13 @@ sources: ["https://news.hada.io/topic?id=2385", "https://github.com/SeongBeomLEE
 
 ## 읽는 순서
 
-```text
-기초 (CF·CBF·평가)
-  ├─ 딥러닝 2단계 구조  ── 규모가 커지고 특성이 많아질 때
-  └─ 실시간·밴딧·실험   ── 콘텐츠 수명이 짧고 반응이 빨리 변할 때
+```mermaid
+flowchart LR
+  base["기초 (CF·CBF·평가)"]
+  dl["딥러닝 2단계 구조"]
+  rt["실시간·밴딧·실험"]
+  base -->|"규모가 커지고 특성이 많아질 때"| dl
+  base -->|"콘텐츠 수명이 짧고 반응이 빨리 변할 때"| rt
 ```
 
 텍스트 벡터로 비슷한 영화를 찾는 가장 단순한 콘텐츠 기반 추천은 [[text-similarity|문자열·문서 유사도]]에 있다. 학습의 기본 개념은 [[machine-learning-basics|머신 러닝 기초]], 임베딩은 [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]]를 함께 본다.

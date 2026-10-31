@@ -14,12 +14,12 @@ sources: ["https://web.dev/articles/optimize-lcp", "https://web.dev/articles/lcp
 
 LCP 요소가 이미지라면 시간은 네 구간으로 나뉜다. 텍스트라면 자원 구간이 없으므로(웹 폰트 제외) TTFB와 렌더 지연만 남는다.
 
-```text
-이동 시작
- ├─ ① TTFB ─────────┤ HTML 첫 바이트
- ├─ ② 자원 로드 지연 ─┤ LCP 자원 요청 시작
- ├─ ③ 자원 로드 시간 ─┤ LCP 자원 다 받음
- └─ ④ 요소 렌더 지연 ─┤ LCP 요소가 그려짐 = LCP
+```mermaid
+flowchart LR
+  s["이동 시작"] -->|"① TTFB"| a["HTML 첫 바이트"]
+  a -->|"② 자원 로드 지연"| b["LCP 자원 요청 시작"]
+  b -->|"③ 자원 로드 시간"| c["LCP 자원 다 받음"]
+  c -->|"④ 요소 렌더 지연"| d["LCP 요소가 그려짐 = LCP"]
 ```
 
 | 구간 | 무엇 | 잘 된 페이지의 비중 |
@@ -29,7 +29,7 @@ LCP 요소가 이미지라면 시간은 네 구간으로 나뉜다. 텍스트라
 | ③ 자원 로드 시간(resource load duration) | LCP 자원을 받는 시간 | 약 40% |
 | ④ 요소 렌더 지연(element render delay) | 자원을 다 받은 뒤 **실제로 그려질 때까지** | 10% 미만 |
 
-- 비중은 목표이지 규칙이 아니다. 핵심은 **두 「지연」 구간을 0에 가깝게** 만드는 것이다.
+- 비중은 목표이지 규칙이 아니다. 무엇보다 두 「지연」 구간을 0에 가깝게 만든다.
 - 한 구간만 줄이면 시간이 다른 구간으로 옮겨 갈 뿐일 수 있다. 예를 들어 이미지를 작게 해도 막는 CSS가 더 늦게 오면 렌더 지연이 늘어난다. 네 구간을 다 본다.
 - DevTools Performance 패널의 LCP 인사이트와 Lighthouse의 LCP 항목이 구간별 시간을 보여 준다([[devtools-performance|DevTools로 성능 분석하기]]).
 
@@ -90,9 +90,9 @@ LCP 요소가 이미지라면 시간은 네 구간으로 나뉜다. 텍스트라
 
 ## 정리
 
-1. LCP 자원을 **가능한 한 일찍 요청**한다. HTML에 두고, `fetchpriority="high"`, 지연 로딩 금지.
-2. 자원을 받자마자 **바로 그려지게** 한다. 막는 CSS·동기 스크립트·긴 작업을 걷어 낸다.
-3. 품질을 지키며 **자원 크기와 거리를 줄인다.**
-4. **HTML을 빨리** 보낸다.
+1. LCP 자원을 가능한 한 일찍 요청한다. HTML에 두고, `fetchpriority="high"`, 지연 로딩 금지.
+2. 자원을 받자마자 바로 그려지게 한다. 막는 CSS·동기 스크립트·긴 작업을 걷어 낸다.
+3. 품질을 지키며 자원 크기와 거리를 줄인다.
+4. HTML을 빨리 보낸다.
 
 관련 노트: [[web-vitals|웹 성능 지표와 Lighthouse]], [[ttfb-optimization|TTFB 줄이기]], [[resource-hints|리소스 힌트와 미리 불러오기]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[lazy-loading|지연 로딩]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[image-compression|이미지 압축과 인코딩 자동화]], [[image-cdn|이미지 CDN과 Accept 헤더 협상]]

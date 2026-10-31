@@ -145,7 +145,7 @@ Helm은 훅 Job이 끝날 때까지 기다리고, 실패하면 릴리스도 실�
 
 ## etcd 백업과 복구
 
-etcd에는 클러스터의 모든 오브젝트가 있다([[kubernetes-architecture|구조 노트]]의 etcd). kubeadm으로 직접 운영하는 클러스터라면 스냅숏을 주기적으로 떠서 **클러스터 밖에** 보관한다.
+etcd에는 클러스터의 모든 오브젝트가 있다([[kubernetes-architecture|구조 노트]]의 etcd). kubeadm으로 직접 운영하는 클러스터라면 스냅숏을 주기적으로 떠서 클러스터 밖에 보관한다.
 
 ```bash
 # 백업: 실행 중인 etcd 멤버 하나에서 스냅숏
@@ -161,7 +161,7 @@ etcdutl snapshot restore /backup/etcd-2026-10-30.db --data-dir /var/lib/etcd-res
 ```
 
 - 복구는 클러스터 전체를 스냅숏 시점으로 되돌린다. 그 뒤에 만든 오브젝트는 사라진다. 다중 멤버면 모든 멤버를 같은 스냅숏에서 새 클러스터로 복구한다.
-- 복구 전에는 API 서버를 멈춰 쓰기를 막는다. 복구 절차는 **실제로 연습해 봐야** 믿을 수 있다.
+- 복구 전에는 API 서버를 멈춰 쓰기를 막는다. 복구 절차는 실제로 연습해 봐야 믿을 수 있다.
 - 스냅숏은 Secret을 포함하므로 암호화해 보관한다.
 - 관리형 쿠버네티스는 etcd를 클라우드가 백업하므로 직접 접근할 수 없다. 이때는 Velero처럼 쿠버네티스 리소스와 PV 스냅숏을 함께 백업하는 도구로 네임스페이스·앱 단위 복구를 준비한다. 복구 목표(RTO·RPO)는 [[disaster-recovery|고가용성과 재해 복구 설계]]에 있다.
 
@@ -201,11 +201,11 @@ spec:
 
 ### 로그 구조
 
-```text
-컨테이너 stdout/stderr
-  → 컨테이너 런타임이 노드 파일로 기록 (/var/log/pods/<네임스페이스>_<파드>_<uid>/<컨테이너>/0.log)
-  → kubelet이 크기 기준으로 회전 (기본 10Mi, 5개)
-  → kubectl logs는 kubelet을 통해 이 파일을 읽는다
+```mermaid
+flowchart TB
+  a["컨테이너 stdout/stderr"] --> b["컨테이너 런타임이 노드 파일로 기록<br/>(/var/log/pods/#lt;네임스페이스#gt;_#lt;파드#gt;_#lt;uid#gt;/#lt;컨테이너#gt;/0.log)"]
+  b --> c["kubelet이 크기 기준으로 회전 (기본 10Mi, 5개)"]
+  c --> d["kubectl logs는 kubelet을 통해 이 파일을 읽는다"]
 ```
 
 | 수준 | 범위 | 한계 |
@@ -383,11 +383,13 @@ kubectl debug node/node-3 -it --image=ubuntu:24.04
 | Kubebuilder | Go 프로젝트 골격 생성 도구. controller-runtime 라이브러리 위에서 동작하고, 코드 주석(마커)으로 CRD 스키마·RBAC 매니페스트를 생성한다 |
 | Operator SDK | Go 오퍼레이터는 Kubebuilder를 그대로 쓰고, Helm·Ansible 기반 오퍼레이터와 OLM(Operator Lifecycle Manager) 배포 지원을 더한다 |
 
-```text
-kubebuilder init → kubebuilder create api (CR의 Go 타입 + 컨트롤러 골격)
-  → 타입에 spec(원하는 상태)·status(관측한 상태) 정의
-  → Reconcile 함수 구현: CR을 읽고 → 필요한 하위 리소스를 만들거나 고치고 → status 갱신
-  → make manifests (CRD·RBAC 생성) → 클러스터에 배포
+```mermaid
+flowchart TB
+  a["kubebuilder init"] --> b["kubebuilder create api<br/>(CR의 Go 타입 + 컨트롤러 골격)"]
+  b --> c["타입에 spec(원하는 상태)·status(관측한 상태) 정의"]
+  c --> d["Reconcile 함수 구현:<br/>CR을 읽고 → 필요한 하위 리소스를 만들거나 고치고 → status 갱신"]
+  d --> e["make manifests (CRD·RBAC 생성)"]
+  e --> f["클러스터에 배포"]
 ```
 
 Reconcile은 **멱등**해야 한다. 「무엇이 바뀌었나(이벤트)」가 아니라 「지금 원하는 상태와 실제 상태가 다른가」로 판단하고(레벨 기반), 실패하면 다시 큐에 넣는다. 하위 리소스에 ownerReference를 달아 CR이 지워질 때 함께 지워지게 하고, 외부 자원 정리가 필요하면 finalizer로 삭제를 잠시 막는다.
@@ -396,10 +398,14 @@ Reconcile은 **멱등**해야 한다. 「무엇이 바뀌었나(이벤트)」가
 
 **GitOps는 Git 저장소를 원하는 상태의 유일한 원천으로 두고, 클러스터 안의 에이전트가 그 상태를 끌어와(pull) 계속 맞추는 배포 방식**이다. OpenGitOps 원칙은 선언형, 버전 관리·불변, 자동으로 끌어오기, 지속적 조정 네 가지다. 개념과 IaC의 관계는 [[cloud-native|클라우드 네이티브와 코드형 인프라]]에 있다.
 
-```text
-개발자 PR → 리뷰·병합 (매니페스트 저장소)
-CI: 이미지 빌드·푸시 → 매니페스트의 이미지 태그를 바꾸는 커밋
-클러스터 안 Argo CD / Flux: 저장소 변경 감지 → 클러스터에 적용 → 드리프트 발견 시 되돌림
+```mermaid
+flowchart TB
+  a["개발자 PR"] --> b["리뷰·병합 (매니페스트 저장소)"]
+  c["CI: 이미지 빌드·푸시"] --> d["매니페스트의 이미지 태그를 바꾸는 커밋"]
+  b --> e["클러스터 안 Argo CD / Flux:<br/>저장소 변경 감지"]
+  d --> e
+  e --> f["클러스터에 적용"]
+  f --> g["드리프트 발견 시 되돌림"]
 ```
 
 | | 푸시 방식 CD (CI가 kubectl apply) | GitOps (풀 방식) |

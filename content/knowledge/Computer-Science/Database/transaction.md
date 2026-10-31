@@ -39,15 +39,21 @@ sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebyte
 
 ## 트랜잭션의 상태
 
-```text
-            ┌──────────────── 오류 ───────────────┐
-            │                                     ▼
- 시작 ──▶ 활동(Active) ──마지막 연산 끝──▶ 부분 완료 ──기록 성공──▶ 완료(Committed)
-            │                     (Partially Committed)
-            └──오류──▶ 실패(Failed) ◀──── 커밋 중 오류 ┘
-                          │
-                          ▼ ROLLBACK
-                       철회(Aborted) ──▶ 재시작 또는 종료
+```mermaid
+stateDiagram-v2
+  direction LR
+  active: 활동(Active)
+  partial: 부분 완료(Partially Committed)
+  committed: 완료(Committed)
+  failed: 실패(Failed)
+  aborted: 철회(Aborted)
+  [*] --> active: 시작
+  active --> partial: 마지막 연산 끝
+  partial --> committed: 기록 성공
+  active --> failed: 오류
+  partial --> failed: 커밋 중 오류
+  failed --> aborted: ROLLBACK
+  aborted --> [*]: 재시작 또는 종료
 ```
 
 | 상태 | 뜻 |
@@ -279,7 +285,7 @@ INSERT INTO a VALUES (1);  -- T2의 잠금 대기
 -- ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction
 ```
 
-대부분의 DBMS는 대기 그래프(wait-for graph)로 교착을 **스스로 감지해 한쪽(보통 되돌릴 작업이 적은 쪽)을 롤백**한다. MySQL은 `innodb_deadlock_detect`(기본 켜짐)와 `SHOW ENGINE INNODB STATUS`의 `LATEST DETECTED DEADLOCK`, PostgreSQL은 `deadlock_timeout`(기본 1초) 뒤 검사로 알린다. 감지는 피해를 줄일 뿐이므로 애플리케이션은 오류 코드를 보고 **트랜잭션 전체를 재시도**해야 한다.
+대부분의 DBMS는 대기 그래프(wait-for graph)로 교착을 스스로 감지해 한쪽(보통 되돌릴 작업이 적은 쪽)을 롤백한다. MySQL은 `innodb_deadlock_detect`(기본 켜짐)와 `SHOW ENGINE INNODB STATUS`의 `LATEST DETECTED DEADLOCK`, PostgreSQL은 `deadlock_timeout`(기본 1초) 뒤 검사로 알린다. 감지는 피해를 줄일 뿐이므로 애플리케이션은 오류 코드를 보고 **트랜잭션 전체를 재시도**해야 한다.
 
 | 빈도를 낮추는 방법 | 이유 |
 | --- | --- |
@@ -325,11 +331,21 @@ DB 밖에서 만든 분산 락(Redis 키 등)은 세션이 없으므로 **만료
 
 **코디네이터**가 참여자(각 DB)에게 두 단계로 묻는다.
 
-```text
-1단계 준비(prepare)  코디네이터 ── "커밋할 수 있나?" ──▶ 참여자들
-                     참여자: 변경을 로그에 남기고 잠금을 쥔 채 "예/아니오" 투표
-2단계 확정(commit)   모두 "예" → 코디네이터가 커밋 결정을 기록하고 "커밋" 전달
-                     하나라도 "아니오"·응답 없음 → "롤백" 전달
+```mermaid
+sequenceDiagram
+  participant C as 코디네이터
+  participant P as 참여자들
+  Note over C,P: 1단계 준비(prepare)
+  C->>P: 커밋할 수 있나?
+  Note over P: 변경을 로그에 남기고 잠금을 쥔 채 투표
+  P-->>C: 예/아니오
+  Note over C,P: 2단계 확정(commit)
+  alt 모두 "예"
+    Note over C: 커밋 결정을 기록
+    C->>P: 커밋
+  else 하나라도 "아니오"·응답 없음
+    C->>P: 롤백
+  end
 ```
 
 - 준비에 「예」라고 답한 참여자는 혼자 결정할 수 없다. **코디네이터가 2단계 직전에 죽으면 참여자는 잠금을 쥔 채 결과를 기다린다(in-doubt).** 2PC가 블로킹 프로토콜이라 불리는 이유다.

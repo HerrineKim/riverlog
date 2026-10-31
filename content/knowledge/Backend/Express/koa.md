@@ -64,8 +64,17 @@ app.use(async (ctx, next) => {
 });
 ```
 
-```text
-요청 ─▶ [로깅 ─▶ [인증 ─▶ [라우터] ─▶ 인증 후처리] ─▶ 로깅 후처리] ─▶ 응답
+```mermaid
+flowchart LR
+  req["요청"] --> log1
+  subgraph logging["로깅 미들웨어"]
+    log1["로깅"] --> auth1
+    subgraph auth["인증 미들웨어"]
+      auth1["인증"] --> router["라우터"] --> auth2["인증 후처리"]
+    end
+    auth2 --> log2["로깅 후처리"]
+  end
+  log2 --> res["응답"]
 ```
 
 응답 시간 측정, 에러를 잡아 응답 형식으로 바꾸기, 응답 헤더 추가처럼 「앞뒤를 감싸는」 일이 자연스럽다. 가장 바깥에 `try { await next() } catch (err) { ... }` 미들웨어를 두면 안쪽 어디서 던진 에러든 한곳에서 처리한다.

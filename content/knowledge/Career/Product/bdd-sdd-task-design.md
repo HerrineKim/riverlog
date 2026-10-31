@@ -44,10 +44,14 @@ sources: ["https://velog.io/@teo/behavior-driven-development-schema-driven-devel
 
 ## 프론트엔드 프로그램의 두 흐름
 
-```text
-데이터(상태) ──render──▶ 화면 ──▶ 사용자
-     ▲                              │
-     └──── 액션 ◀── 의도 ◀── 행동 ──┘
+```mermaid
+flowchart LR
+  data["데이터(상태)"] -->|"render"| screen["화면"]
+  screen --> user["사용자"]
+  user --> act["행동"]
+  act --> intent["의도"]
+  intent --> action["액션"]
+  action --> data
 ```
 
 프로그램은 이 순환이다. 정의할 것은 **데이터**와 **사용자 행동** 두 가지이고, 각각에 맞는 방법이 있다.

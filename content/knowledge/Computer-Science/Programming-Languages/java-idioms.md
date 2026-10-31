@@ -102,7 +102,7 @@ try (var in = Files.newBufferedReader(src);
 }
 ```
 
-컴파일러는 이를 `try`·`finally`로 펼친다. 핵심은 예외가 두 번 날 때의 처리다.
+컴파일러는 이를 `try`·`finally`로 펼친다. 직접 쓴 `finally`와 달라지는 곳은 예외가 두 번 날 때의 처리다.
 
 | 상황 | 직접 쓴 `finally { close(); }` | try-with-resources |
 | --- | --- | --- |

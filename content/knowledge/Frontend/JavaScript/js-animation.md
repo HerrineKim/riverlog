@@ -68,7 +68,7 @@ animate({
 | `timing(t)` | 시간 진행 0~1 | 애니메이션 진행률. 0~1을 벗어나도 된다(튀어 나가기) |
 | `draw(p)` | 진행률 | 화면을 그린다. CSS든 캔버스든 텍스트든 상관없다 |
 
-`timing`이 CSS와 달리 **베지어 곡선에 묶이지 않는** 아무 함수라는 점이 핵심이다.
+`timing`은 CSS와 달리 베지어 곡선에 묶이지 않는 아무 함수여도 된다.
 
 ## 타이밍 함수 모음
 
@@ -194,6 +194,6 @@ Web Animations API는 **CSS 애니메이션, CSS 트랜지션, SVG의 SMIL을 �
 - 요소 스타일 애니메이션은 `element.animate()`가 기본. 기본 곡선이 `linear`라는 점에 주의하고, 끝 상태는 `commitStyles()`로 굳힌다.
 - `prefers-reduced-motion`은 JavaScript 애니메이션에도 적용한다.
 
-**같은 움직임이라면 브라우저 엔진에 맡길수록 부드럽고, 직접 그릴수록 자유롭다.**
+같은 움직임이라면 브라우저 엔진에 맡길수록 부드럽고, 직접 그릴수록 자유롭다.
 
 관련 노트: [[css-animation|CSS 애니메이션: transition과 @keyframes]], [[bezier-curve|베지어 곡선]], [[timers|타이머: setTimeout과 setInterval]], [[browser-rendering|브라우저 렌더링 과정]], [[color-motion-accessibility|색과 움직임의 접근성]]

@@ -12,7 +12,7 @@ sources: ["https://web.dev/learn/forms/identity", "https://web.dev/learn/forms/j
 
 ## 계정은 꼭 필요할 때만
 
-**가장 좋은 가입 폼은 없는 가입 폼이다.** 로그인 벽은 이탈의 큰 원인이다.
+가장 좋은 가입 폼은 없는 가입 폼이다. 로그인 벽은 이탈의 큰 원인이다.
 
 | 상황 | 대안 |
 | --- | --- |

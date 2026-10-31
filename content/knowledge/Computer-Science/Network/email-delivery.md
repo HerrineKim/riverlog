@@ -22,19 +22,11 @@ sources: ["https://bytebytego.com/guides/how-is-email-delivered", "https://byteb
 
 ## 흐름
 
-```text
-Alice (Outlook 클라이언트, MUA)
-  │ 1. SMTP 제출 (보통 587 포트, 로그인 + TLS)
-  ▼
-Outlook 메일 서버 (MTA)
-  │ 2. DNS에서 받는 도메인(gmail.com)의 MX 레코드 조회
-  │ 3. 수신 서버에 SMTP로 전달 (25 포트, STARTTLS)
-  ▼
-Gmail 메일 서버 (MTA → MDA)
-  │ 4. 스팸·발신자 인증 검사 후 Bob의 메일함에 저장
-  ▼
-Bob (Gmail 클라이언트, MUA)
-    5. IMAP(또는 POP3)으로 메일함에서 가져온다
+```mermaid
+flowchart TB
+  al["Alice (Outlook 클라이언트, MUA)"] -->|"① SMTP 제출 (보통 587 포트, 로그인 + TLS)"| om["Outlook 메일 서버 (MTA)"]
+  om -->|"② DNS에서 받는 도메인(gmail.com)의 MX 레코드 조회<br/>③ 수신 서버에 SMTP로 전달 (25 포트, STARTTLS)"| gm["Gmail 메일 서버 (MTA → MDA)"]
+  gm -->|"④ 스팸·발신자 인증 검사 후 Bob의 메일함에 저장"| bob["Bob (Gmail 클라이언트, MUA)<br/>⑤ IMAP(또는 POP3)으로 메일함에서 가져온다"]
 ```
 
 - **보내는 프로토콜과 받는 프로토콜이 다르다.** 보내고 서버끼리 넘길 때는 SMTP, 메일함에서 읽어 올 때는 IMAP·POP3다. 포트는 [[transport-layer|전송 계층: 포트, TCP, UDP]]에 있다.

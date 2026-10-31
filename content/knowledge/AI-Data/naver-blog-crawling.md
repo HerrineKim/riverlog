@@ -12,14 +12,14 @@ sources: ["https://developer-woo.tistory.com/60", "https://developers.naver.com/
 
 ## 구조
 
-네이버 블로그 수집은 **목록은 공식 API로, 본문은 페이지에서** 가져오는 두 단계로 나눈다. 검색 API는 본문 대신 몇 줄짜리 요약(`description`)만 주기 때문이다.
+네이버 블로그 수집은 목록은 공식 API로, 본문은 페이지에서 가져오는 두 단계로 나눈다. 검색 API는 본문 대신 몇 줄짜리 요약(`description`)만 주기 때문이다.
 
-```text
-키워드
- └─ 네이버 검색 API (blog.json) ── URL · 제목 · 작성일
-     └─ 글마다 본문 HTML 받기 (PostView 주소 또는 Selenium)
-         └─ BeautifulSoup으로 본문 영역 추출 · 정제
-             └─ pandas DataFrame → CSV
+```mermaid
+flowchart TB
+  n1["키워드"] --> n2["네이버 검색 API (blog.json)"]
+  n2 -->|"URL · 제목 · 작성일"| n3["글마다 본문 HTML 받기 (PostView 주소 또는 Selenium)"]
+  n3 --> n4["BeautifulSoup으로 본문 영역 추출 · 정제"]
+  n4 --> n5["pandas DataFrame → CSV"]
 ```
 
 ## 1. 검색 API로 글 목록 모으기
@@ -68,7 +68,7 @@ def search_blog(query, pages=2, display=100):
 
 ## 2. 본문 받기: iframe 문제
 
-`blog.naver.com/<아이디>/<글번호>` 페이지는 겉 틀이고, **실제 글은 `mainFrame` iframe 안에** 있다. 이 주소를 `requests`로 받으면 본문이 없다.
+`blog.naver.com/<아이디>/<글번호>` 페이지는 겉 틀이고, 실제 글은 `mainFrame` iframe 안에 있다. 이 주소를 `requests`로 받으면 본문이 없다.
 
 | 방법 | 방식 | 특징 |
 | --- | --- | --- |
@@ -95,7 +95,7 @@ def fetch_body(url):
 
 - `div.se-main-container`는 스마트에디터 ONE으로 쓴 글의 본문 영역이다. 옛 에디터 글은 `#postViewArea`처럼 다른 구조라서 선택자를 둘 이상 둔다.
 - 본문에 섞인 제로폭 공백(`​`)과 연속 줄바꿈을 지운다.
-- 네이버는 마크업을 수시로 바꾼다. **추출이 갑자기 빈 값을 내면 선택자부터** 확인한다.
+- 네이버는 마크업을 수시로 바꾼다. 추출이 갑자기 빈 값을 내면 선택자부터 확인한다.
 - Selenium 4.6 이상은 Selenium Manager가 드라이버를 자동으로 받는다. `webdriver-manager`의 `ChromeDriverManager().install()`은 더 필요 없다. 고정 `sleep` 대신 `WebDriverWait`로 요소가 뜰 때까지 기다린다.
 
 ## 3. 저장하기
@@ -135,7 +135,7 @@ pd.DataFrame(rows).to_csv("blog.csv", index=False, encoding="utf-8-sig")
 
 ## 정리
 
-- 목록은 **검색 API**, 본문은 **페이지**에서 가져온다.
+- 목록은 검색 API, 본문은 페이지에서 가져온다.
 - 블로그 본문은 `mainFrame` iframe 안에 있다. PostView 주소를 요청하면 브라우저 없이 받는다.
 - 선택자는 바뀐다. 여러 개를 두고, 빈 값이 나오면 선택자부터 의심한다.
 - 예외는 글 단위로 잡고, 한 글 = dict 한 개로 모아 CSV로 저장한다.

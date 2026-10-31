@@ -91,14 +91,43 @@ REST에서는 프론트엔드가 백엔드가 정한 요청·응답 형식에 �
 
 ## 도입 패턴
 
-```text
-① 클라이언트 래핑        ② BFF                 ③ 모놀리식              ④ 페더레이션
-[앱]                    [웹] [모바일]           [웹][모바일][파트너]     [클라이언트들]
- └ GraphQL 층(앱 안)      │     │                 └──────┬──────┘              │
-    ├ REST A           [BFF] [BFF]             [GraphQL 서버 하나]      [페더레이션 게이트웨이]
-    └ REST B              └──┬──┘                       │                ├ 서브그래프(사용자팀)
-                       [백엔드 API들]             [백엔드 API들]          ├ 서브그래프(주문팀)
-                                                                       └ 서브그래프(상품팀)
+① 클라이언트 래핑
+
+```mermaid
+flowchart TB
+  app["앱"] --> gql["GraphQL 층(앱 안)"]
+  gql --> ra["REST A"]
+  gql --> rb["REST B"]
+```
+
+② BFF
+
+```mermaid
+flowchart TB
+  web["웹"] --> bff1["BFF"]
+  mob["모바일"] --> bff2["BFF"]
+  bff1 --> be["백엔드 API들"]
+  bff2 --> be
+```
+
+③ 모놀리식
+
+```mermaid
+flowchart TB
+  web["웹"] --> gql["GraphQL 서버 하나"]
+  mob["모바일"] --> gql
+  partner["파트너"] --> gql
+  gql --> be["백엔드 API들"]
+```
+
+④ 페더레이션
+
+```mermaid
+flowchart TB
+  clients["클라이언트들"] --> gw["페더레이션 게이트웨이"]
+  gw --> s1["서브그래프(사용자팀)"]
+  gw --> s2["서브그래프(주문팀)"]
+  gw --> s3["서브그래프(상품팀)"]
 ```
 
 | 패턴 | 구조 | 장점 | 대가 |

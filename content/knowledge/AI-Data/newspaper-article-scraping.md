@@ -12,7 +12,7 @@ sources: ["https://scrapeops.io/python-web-scraping-playbook/newspaper3k/", "htt
 
 ## 기사 본문 추출이란
 
-기사 본문 추출(article extraction)은 HTML 페이지에서 메뉴·광고·댓글을 걷어내고 **기사 자체의 제목·본문·메타데이터만 골라내는 일**이다. BeautifulSoup으로 직접 하면 사이트마다 CSS 선택자를 따로 짜야 한다. newspaper는 메타 태그와 텍스트 밀도 휴리스틱으로 이를 자동으로 처리해서, **처음 보는 사이트도 파서 없이** 본문을 뽑는다.
+기사 본문 추출(article extraction)은 HTML 페이지에서 메뉴·광고·댓글을 걷어내고 **기사 자체의 제목·본문·메타데이터만 골라내는 일**이다. BeautifulSoup으로 직접 하면 사이트마다 CSS 선택자를 따로 짜야 한다. newspaper는 메타 태그와 텍스트 밀도 휴리스틱으로 이를 자동으로 처리해서, 처음 보는 사이트도 파서 없이 본문을 뽑는다.
 
 뉴스 모니터링, 말뭉치 수집, RAG용 문서 적재처럼 여러 언론사·블로그 글을 대량으로 모을 때 쓴다.
 
@@ -25,7 +25,7 @@ sources: ["https://scrapeops.io/python-web-scraping-playbook/newspaper3k/", "htt
 | API | `Article`, `build` | 3k API를 그대로 유지하고 `newspaper.article()` 같은 단축 함수, CLI, Google News 소스를 추가 |
 | 추출 정확도 | 기준 | 공개 벤치마크에서 F1이 더 높다 |
 
-**새로 쓴다면 newspaper4k다.** 모듈 이름이 그대로 `newspaper`라서 3k 코드는 대부분 패키지만 바꾸면 돌아간다.
+새로 쓴다면 newspaper4k다. 모듈 이름이 그대로 `newspaper`라서 3k 코드는 대부분 패키지만 바꾸면 돌아간다.
 
 ```bash
 pip install newspaper4k                 # 기본
@@ -38,7 +38,7 @@ pip install "newspaper4k[all]"          # 언어별 토크나이저까지 전부
 
 ## 기사 하나 처리하기
 
-처리는 **download → parse → nlp** 세 단계이고 순서를 바꿀 수 없다. `parse()` 전에 속성을 읽으면 비어 있고, `nlp()`는 파싱된 본문이 있어야 돈다.
+처리는 download → parse → nlp 세 단계이고 순서를 바꿀 수 없다. `parse()` 전에 속성을 읽으면 비어 있고, `nlp()`는 파싱된 본문이 있어야 돈다.
 
 ```python
 import newspaper
@@ -68,7 +68,7 @@ article.nlp()                 # 선택. [nlp] extra 필요
 
 ## HTML은 직접 받고 파싱만 맡기기
 
-newspaper의 다운로드는 내부적으로 `requests`다. 차단이 잦은 사이트, 로그인·쿠키가 필요한 페이지, JavaScript로 그려지는 페이지는 **HTML을 다른 도구로 받아 `input_html`로 넘기고** newspaper는 파싱만 하게 한다.
+newspaper의 다운로드는 내부적으로 `requests`다. 차단이 잦은 사이트, 로그인·쿠키가 필요한 페이지, JavaScript로 그려지는 페이지는 HTML을 다른 도구로 받아 `input_html`로 넘기고 newspaper는 파싱만 하게 한다.
 
 ```python
 import requests
@@ -87,7 +87,7 @@ article.parse()
 
 ## 사이트 전체에서 기사 모으기: Source
 
-`newspaper.build()`는 사이트 첫 화면을 읽어 **카테고리 링크, RSS 피드, 기사 URL 목록**을 만든다. 이 시점에는 기사를 아직 받지 않는다.
+`newspaper.build()`는 사이트 첫 화면을 읽어 카테고리 링크, RSS 피드, 기사 URL 목록을 만든다. 이 시점에는 기사를 아직 받지 않는다.
 
 ```python
 import newspaper
@@ -141,12 +141,12 @@ article = Article(url, config=config, language="ko")
 | 작성자·날짜가 틀린다 | 사이트마다 메타데이터 품질이 다르다 | 중요한 필드는 사이트별 선택자로 검증한다 |
 | 두 번째 `build()`가 0건 | `memoize_articles` 캐시 | `memoize_articles=False` |
 
-휴리스틱 추출이라 **정확도는 100%가 아니다.** 특정 몇 개 사이트만 정밀하게 긁는다면 사이트별 선택자(BeautifulSoup, Scrapy)가 더 믿을 만하다. 같은 일을 하는 대안으로 trafilatura가 있다. 수집 대상 사이트의 이용 약관과 robots.txt, 저작권은 별개로 확인한다.
+휴리스틱 추출이라 정확도는 100%가 아니다. 특정 몇 개 사이트만 정밀하게 긁는다면 사이트별 선택자(BeautifulSoup, Scrapy)가 더 믿을 만하다. 같은 일을 하는 대안으로 trafilatura가 있다. 수집 대상 사이트의 이용 약관과 robots.txt, 저작권은 별개로 확인한다.
 
 ## 정리
 
-- newspaper는 **처음 보는 사이트에서도 기사 본문·메타데이터를 파서 없이** 뽑는다.
-- newspaper3k는 관리가 끝났다. 같은 API의 **newspaper4k**를 쓴다.
+- newspaper는 처음 보는 사이트에서도 기사 본문·메타데이터를 파서 없이 뽑는다.
+- newspaper3k는 관리가 끝났다. 같은 API의 newspaper4k를 쓴다.
 - 순서는 `download → parse → nlp`. 요약은 추출 요약이다.
 - 차단·JS 페이지는 HTML을 따로 받아 `input_html`로 넘기고 파싱만 맡긴다.
 - `build()`를 반복 실행할 때는 `memoize_articles` 캐시를 기억한다.

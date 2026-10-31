@@ -156,7 +156,7 @@ E2E 테스트가 느리고 깨지기 쉽다는 문제는 도구보다 **작성 �
 - 디버깅할 때만 창을 띄우고 느리게 돌린다. Playwright `--headed`·`--debug`와 `launch({ slowMo: 100 })`, Puppeteer `launch({ headless: false, slowMo: 100 })`.
 - 가입 테스트처럼 고유 값이 필요한 데이터는 실행마다 새로 만든다(faker 등).
 
-**과거에는** 헤드리스 테스트에 WebKit 기반의 **PhantomJS**를 썼다. 실제 브라우저와 렌더링·JS 지원이 달라 ES6를 못 돌렸고, 2017년 헤드리스 Chrome이 나오자 개발이 멈췄다. 이어서 Chrome을 조종하는 Puppeteer가 Selenium WebDriver의 느리고 불안정한 E2E를 대신했고, 지금은 여러 브라우저 엔진을 한 API로 다루는 Playwright가 기본 선택이다.
+과거에는 헤드리스 테스트에 WebKit 기반의 **PhantomJS**를 썼다. 실제 브라우저와 렌더링·JS 지원이 달라 ES6를 못 돌렸고, 2017년 헤드리스 Chrome이 나오자 개발이 멈췄다. 이어서 Chrome을 조종하는 Puppeteer가 Selenium WebDriver의 느리고 불안정한 E2E를 대신했고, 지금은 여러 브라우저 엔진을 한 API로 다루는 Playwright가 기본 선택이다.
 
 ## 정리
 

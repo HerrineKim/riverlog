@@ -156,7 +156,7 @@ Windows 스크린 리더는 **읽기 모드**와 **입력 모드**를 오간다.
 8. 표            → 셀을 이동할 때 행·열 헤더가 함께 읽히는가
 ```
 
-이름이 이상하게 들리면 DevTools Accessibility 패널에서 계산된 이름을 확인한다([[aria-basics|ARIA 기초]]). 라벨·오류 연결은 [[accessible-forms|접근 가능한 폼]], 위젯 상태는 [[accessible-widgets|접근 가능한 위젯]]이 본론이다.
+이름이 이상하게 들리면 DevTools Accessibility 패널에서 계산된 이름을 확인한다([[aria-basics|ARIA 기초]]). 라벨·오류 연결은 [[accessible-forms|접근 가능한 폼]]에, 위젯 상태는 [[accessible-widgets|접근 가능한 위젯]]에 있다.
 
 ## 스크린 리더로만 드러나는 문제
 

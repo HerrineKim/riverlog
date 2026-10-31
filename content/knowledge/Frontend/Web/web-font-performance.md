@@ -123,7 +123,7 @@ Promise.all([
 ]).then(() => document.documentElement.classList.add('fonts-stage-1'))
 ```
 
-이 전략들은 `font-display`가 없던 시절 Font Face Observer 같은 라이브러리로 로딩을 감지해 FOIT를 피하던 방법이다. 지금은 같은 감지를 CSS Font Loading API(`document.fonts`)가 맡는다. 지금은 `font-display: swap`(또는 `optional`)이 기본을 맡고, 굵기가 여러 개면 **가변 폰트(variable font) 한 파일**로 바꿔 교체 횟수 자체를 줄이는 편이 단순하다. 두 단계 렌더링은 정적 폰트 파일을 여러 개 써야 할 때만 검토한다.
+이 전략들은 `font-display`가 없던 시절 Font Face Observer 같은 라이브러리로 로딩을 감지해 FOIT를 피하던 방법이다. 지금은 같은 감지를 CSS Font Loading API(`document.fonts`)가 맡는다. 기본 동작은 `font-display: swap`(또는 `optional`)으로 정하고, 굵기가 여러 개면 **가변 폰트(variable font) 한 파일**로 바꿔 교체 횟수 자체를 줄이는 편이 단순하다. 두 단계 렌더링은 정적 폰트 파일을 여러 개 써야 할 때만 검토한다.
 
 ## 정리
 

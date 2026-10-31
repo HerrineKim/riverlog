@@ -38,13 +38,15 @@ I/O는 계산보다 몇 자릿수 느리다. SSD에서 1KB를 읽는 1.4µs 동�
 
 브라우저 이벤트 루프와 원리(콜 스택이 비면 큐의 콜백을 꺼낸다, 매 콜백 뒤 마이크로태스크를 비운다)는 같다([[event-loop|이벤트 루프]]). Node는 libuv가 큐를 **단계(phase)** 로 나눠 돈다.
 
-```text
-   ┌─> timers            setTimeout·setInterval 콜백
-   │   pending callbacks  미뤄진 일부 시스템 콜백(일부 TCP 오류 등)
-   │   idle, prepare      내부용
-   │   poll               새 I/O 이벤트를 받아 I/O 콜백 실행. 할 일이 없으면 여기서 기다린다
-   │   check              setImmediate 콜백
-   └── close callbacks    socket.on('close') 등
+```mermaid
+flowchart TB
+  timers["timers<br/>setTimeout·setInterval 콜백"]
+  pending["pending callbacks<br/>미뤄진 일부 시스템 콜백(일부 TCP 오류 등)"]
+  idle["idle, prepare<br/>내부용"]
+  poll["poll<br/>새 I/O 이벤트를 받아 I/O 콜백 실행. 할 일이 없으면 여기서 기다린다"]
+  check["check<br/>setImmediate 콜백"]
+  close["close callbacks<br/>socket.on('close') 등"]
+  timers --> pending --> idle --> poll --> check --> close --> timers
 ```
 
 - 각 콜백이 끝날 때마다 **`process.nextTick` 큐 → Promise 마이크로태스크 큐** 순으로 비운다. `nextTick`을 재귀로 부르면 루프가 poll 단계에 닿지 못해 I/O가 굶는다.

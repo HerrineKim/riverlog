@@ -78,7 +78,7 @@ import Whatever from './User.js' // 이것도 동작한다
 | CommonJS·동적 import | `require('m').default`, `(await import('m')).default`처럼 `.default`를 거친다 | `const { Foo } = await import('m')`로 바로 꺼낸다 |
 | 다시 내보내기 | `export * from`에 빠져서 `export { default as Foo } from`을 따로 써야 한다 | `export * from`에 포함된다 |
 
-Airbnb 스타일 가이드의 `import/prefer-default-export` 규칙을 두고도 GitHub에서 오래 논쟁이 있었다. 팀 TypeScript 컨벤션 중에는 `export default`를 아예 금지하는 경우도 있다([[typescript-coding-convention|TypeScript 코딩 컨벤션]]). 정답이 있는 문제가 아니라 **팀 안에서 한 방식으로 통일하는 것**이 중요하다.
+Airbnb 스타일 가이드의 `import/prefer-default-export` 규칙을 두고도 GitHub에서 오래 논쟁이 있었다. 팀 TypeScript 컨벤션 중에는 `export default`를 아예 금지하는 경우도 있다([[typescript-coding-convention|TypeScript 코딩 컨벤션]]). 정답이 정해진 문제가 아니므로 팀 안에서 한 방식으로 통일하는 것이 중요하다.
 
 ## 가져오는 여러 방법
 

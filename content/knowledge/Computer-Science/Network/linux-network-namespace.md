@@ -74,10 +74,17 @@ default via 192.168.42.1 dev eth0
 
 ### 직접 만들어 보기
 
-```text
-루트 네임스페이스                         새 네임스페이스 web
-[eth0]                                   [lo]
-[veth0] 10.200.0.2/24 ◀──── veth 쌍 ────▶ [veth1] 10.200.0.3/24  ← nginx
+```mermaid
+flowchart LR
+  subgraph rootns["루트 네임스페이스"]
+    eth0["eth0"]
+    v0["veth0<br/>10.200.0.2/24"]
+  end
+  subgraph web["새 네임스페이스 web"]
+    lo["lo"]
+    v1["veth1<br/>10.200.0.3/24<br/>(nginx)"]
+  end
+  v0 <-->|"veth 쌍"| v1
 ```
 
 ```bash

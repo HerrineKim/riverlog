@@ -9,7 +9,7 @@ sources: ["https://riverkim.kr/134", "https://riverkim.kr/299", "https://react.v
 ---
 
 > 개인 TIL을 바탕으로, 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[리액트는 어쩌다 만들어졌을까?](https://react.vlpt.us/basic/01-concept.html)」·「[JSX의 기본 규칙](https://react.vlpt.us/basic/04-jsx.html)」을 바탕으로 보강했다.
-> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 라이브러리와 프레임워크의 차이을 보강했다.
+> 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 라이브러리와 프레임워크의 차이를 보강했다.
 
 **JSX(JavaScript XML)** 는 JavaScript 안에 HTML과 비슷한 마크업을 쓸 수 있게 한 확장 문법이다. 공식 JavaScript 문법이 아니라서 브라우저가 직접 이해하지 못하고, **Babel**이 일반 JavaScript(`React.createElement` 호출)로 변환한다. 마크업과 로직을 한 파일에서 함께 다룰 수 있어 읽고 쓰기 쉽다.
 

@@ -14,10 +14,12 @@ sources: ["https://zuminternet.github.io/zum-comment-component/", "https://marti
 
 **TDD(Test Driven Development, 테스트 주도 개발)** 는 기능 코드보다 **테스트를 먼저 작성**하고, 그 테스트를 통과하는 코드를 만드는 개발 방식이다. 켄트 벡이 정리한 목표는 **"작동하는 깔끔한 코드(Clean code that works)"** 다. 먼저 테스트로 **작동하는** 코드를 만들고, 그다음 리팩터링으로 **깔끔한** 코드를 만든다.
 
-```text
-테스트 목록 작성 → [Red] 실패하는 테스트 하나 → [Green] 통과하는 최소한의 코드
-                    ↑                                         ↓
-                    └────── [Refactor] 동작을 유지하며 중복 제거 ┘
+```mermaid
+flowchart LR
+  list["테스트 목록 작성"] --> red["[Red] 실패하는 테스트 하나"]
+  red --> green["[Green] 통과하는 최소한의 코드"]
+  green --> refactor["[Refactor] 동작을 유지하며 중복 제거"]
+  refactor --> red
 ```
 
 | 단계 | 할 일 |

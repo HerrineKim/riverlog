@@ -146,7 +146,7 @@ HTTP/2도 한 연결에서 여러 스트림을 동시에 주고받지만, 둘은
 | 서버가 먼저 보내기 | 서버 푸시는 캐시용 자원 밀어 넣기였고 JS가 받을 수 없었으며, 지금은 브라우저가 지원을 뺐다. 실시간 알림은 응답 본문을 길게 흘리는 SSE로 한다 | 기본 기능 |
 | 헤더 | 요청마다 붙지만 HPACK으로 압축 | 핸드셰이크 뒤에는 없다 |
 
-둘은 경쟁이 아니라 겹쳐 쓸 수 있다. RFC 8441은 HTTP/2 연결 안의 스트림 하나를 확장 `CONNECT`(`:protocol = websocket`)로 WebSocket 통로로 여는 방법을 정했고, RFC 9220은 HTTP/3에서 같은 일을 한다. 그러면 페이지 요청과 WebSocket이 TCP 연결 하나를 나눠 쓴다. 다만 서버·프록시 지원이 고르지 않아 대부분의 WebSocket은 여전히 HTTP/1.1 Upgrade로 열린다.
+둘을 겹쳐 쓸 수도 있다. RFC 8441은 HTTP/2 연결 안의 스트림 하나를 확장 `CONNECT`(`:protocol = websocket`)로 WebSocket 통로로 여는 방법을 정했고, RFC 9220은 HTTP/3에서 같은 일을 한다. 그러면 페이지 요청과 WebSocket이 TCP 연결 하나를 나눠 쓴다. 다만 서버·프록시 지원이 고르지 않아 대부분의 WebSocket은 여전히 HTTP/1.1 Upgrade로 열린다.
 
 ## 보안과 인증
 

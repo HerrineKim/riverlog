@@ -120,7 +120,7 @@ function User(name, birthday) {
 | `Reflect.ownKeys` | 포함 | 제외 | 포함 |
 | `key in obj` | 포함 | 포함 | 포함 |
 
-그래서 spread로 만든 복사본은 **프로토타입과 열거 불가 속성을 잃고, getter는 그 순간의 값으로 바뀐다.** 프로토타입·플래그·접근자까지 그대로인 얕은 복사본은 `Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj))`로 만든다. 겉보기에 같은 객체라도 원본의 성질까지 복사되지는 않는다. 자기 속성인지는 `Object.hasOwn(obj, key)`로 판별한다([[prototype-and-inheritance|프로토타입과 상속]]).
+그래서 spread로 만든 복사본은 **프로토타입과 열거 불가 속성을 잃고, getter는 그 순간의 값으로 바뀐다.** 프로토타입·플래그·접근자까지 그대로인 얕은 복사본은 `Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj))`로 만든다. 자기 속성인지는 `Object.hasOwn(obj, key)`로 판별한다([[prototype-and-inheritance|프로토타입과 상속]]).
 
 ## 객체 전체를 잠그기
 

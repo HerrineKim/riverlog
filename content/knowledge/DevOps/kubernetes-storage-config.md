@@ -33,9 +33,12 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 노드(자원)와 파드(요청)의 관계처럼, PVC는 조건에 맞는 PV와 **일대일로 묶인다(binding).** 파드는 PV를 직접 모르고 PVC 이름만 가리키므로, 저장소 종류가 바뀌어도 파드 명세는 그대로다.
 
-```text
-Pod ──volumes: claimName──▶ PVC ──바인딩──▶ PV ──▶ 실제 디스크
-                              └─ storageClassName ─▶ StorageClass (없으면 자동 생성)
+```mermaid
+flowchart LR
+  pod["Pod"] -->|"volumes: claimName"| pvc["PVC"]
+  pvc -->|"바인딩"| pv["PV"]
+  pv --> disk["실제 디스크"]
+  pvc -->|"storageClassName"| sc["StorageClass<br/>(없으면 자동 생성)"]
 ```
 
 ### 접근 모드
@@ -93,7 +96,7 @@ allowVolumeExpansion: true
 
 ## ConfigMap
 
-ConfigMap은 **비밀이 아닌 설정을 키-값으로 저장**한다. 크기는 1MiB까지다.
+ConfigMap은 비밀이 아닌 설정을 키-값으로 저장한다. 크기는 1MiB까지다.
 
 ```bash
 kubectl create configmap app --from-literal=LOG_LEVEL=info          # 키-값 직접
@@ -112,7 +115,7 @@ kubectl create configmap app --from-env-file=app.env                # KEY=VALUE 
 
 ## Secret
 
-Secret은 비밀번호·토큰·인증서처럼 **민감한 값**을 담는다. 쓰는 방법(환경 변수, 볼륨)은 ConfigMap과 같지만 다루는 방식이 다르다.
+Secret은 비밀번호·토큰·인증서처럼 민감한 값을 담는다. 쓰는 방법(환경 변수, 볼륨)은 ConfigMap과 같지만 다루는 방식이 다르다.
 
 | | ConfigMap | Secret |
 | --- | --- | --- |

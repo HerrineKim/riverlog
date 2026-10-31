@@ -23,10 +23,11 @@ JavaScript가 돌아가는 플랫폼을 **호스트(host)** 라고 한다. 호�
 1. JavaScript의 **전역 객체**다. 전역 `function sayHi()`는 `window.sayHi`로도 불린다(모듈 스코프와 `let`·`const`는 예외).
 2. **브라우저 창**을 나타내고 `innerHeight`, `scrollTo()`, `alert()` 같은 창 기능을 준다.
 
-```text
-window ─┬─ document (DOM)        문서 내용
-        ├─ navigator, location, history, screen … (BOM)
-        └─ Object, Array, Function … (JavaScript 코어)
+```mermaid
+flowchart LR
+  win["window"] --> doc["document (DOM)<br/>문서 내용"]
+  win --> bom["navigator, location, history, screen …<br/>(BOM)"]
+  win --> core["Object, Array, Function …<br/>(JavaScript 코어)"]
 ```
 
 | 명세 | 다루는 것 |
@@ -94,9 +95,12 @@ DevTools Elements 패널은 공백만 든 텍스트 노드를 숨겨 보여 준�
 
 DOM 관련 객체는 다음과 같은 상속 구조를 가진다. 모든 노드가 `EventTarget`을 상속하므로 모든 노드는 이벤트를 받을 수 있다.
 
-```text
-EventTarget → Node → Element → HTMLElement
-                   ↘ Document
+```mermaid
+flowchart LR
+  et["EventTarget"] --> node["Node"]
+  node --> el["Element"]
+  el --> hel["HTMLElement"]
+  node --> docu["Document"]
 ```
 
 - `EventTarget`: 이벤트 리스너를 가질 수 있는 최상위 추상 인터페이스
@@ -183,9 +187,9 @@ const scrollToTop = () => {
 
 **HTML은 문자열이다.** 서버 언어(PHP 등)는 문자열을 이어 붙이기만 하면 HTML을 만들 수 있었다. 브라우저에서도 처음에는 `document.write()`로 문자열을 출력했다. 하지만 문자열 HTML을 파싱해 화면에 그릴 구조를 만드는 일은 비싸다. 일부만 바뀌었는데 매번 전체를 다시 파싱하면 낭비다. 그래서 **이미 만들어 둔 구조를 직접 조금씩 고치는 방법**이 필요했다. 문서(Document)를 JavaScript가 다룰 수 있는 객체(Object)로 모델링(Model)한 인터페이스가 DOM이다.
 
-- 브라우저가 먼저 있었고, 서버 언어가 다음, JavaScript는 가장 나중에 나왔다. 브라우저 내부 구조는 JavaScript로 만든 것이 아니며, DOM은 그 구조에 접근하는 **언어 독립적인 표준 인터페이스**다. 실무에서는 DOM과 DOM API를 같은 말로 써도 된다.
+- 브라우저가 먼저 있었고, 서버 언어가 다음, JavaScript는 가장 나중에 나왔다. 브라우저 내부 구조는 JavaScript로 만든 것이 아니며, DOM은 그 구조에 접근하는 언어 독립적인 표준 인터페이스다. 실무에서는 DOM과 DOM API를 같은 말로 써도 된다.
 - DOM은 HTML만이 아니다. `getBoundingClientRect()`·`offsetWidth`처럼 **이미 그려진 화면의 크기·위치**를 읽을 수 있고, 클릭·키 입력 같은 **이벤트**와 캡처링·버블링도 DOM의 일부다.
-- DOM API는 안 되는 게 없도록 최소한으로 설계돼 쓰기 불편하다. jQuery가 다듬은 문법 일부(`querySelectorAll` 등)가 나중에 표준이 됐고, 지금의 프레임워크는 **HTML을 쓰는 감각으로 개발하게 하면서** 내부에서 DOM 조작을 최적화한다.
+- DOM API는 안 되는 게 없도록 최소한으로 설계돼 쓰기 불편하다. jQuery가 다듬은 문법 일부(`querySelectorAll` 등)가 나중에 표준이 됐고, 지금의 프레임워크는 HTML을 쓰는 감각으로 개발하게 하면서 내부에서 DOM 조작을 최적화한다.
 
 ### 프레임워크 시대에 DOM 익히기
 

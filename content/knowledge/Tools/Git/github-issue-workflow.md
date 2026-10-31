@@ -125,6 +125,4 @@ gh pr create --fill                      # 5. PR 생성, 본문에 "Closes #42"
 - 이슈 → 브랜치 → 커밋 → PR을 번호로 이어 두면 진행 상황이 저장소에 저절로 기록된다.
 - 이 연결은 도구가 아니라 팀의 습관이다. 리드가 먼저 지켜야 유지된다.
 
-**이슈 관리가 곧 프로젝트 진행의 투명성이다.**
-
 관련 노트: [[github-collaboration|GitHub 협업 저장소 설정]], [[commit-convention|커밋 컨벤션과 자동 검사]], [[agile-sprint|애자일과 스프린트]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[scrum-framework|스크럼]]

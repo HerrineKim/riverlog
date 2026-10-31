@@ -25,21 +25,24 @@ sources: ["https://80000coding.notion.site/497dc9bfb79549dba4e2946ad868224b", "h
 
 ## 세 개의 층
 
-```text
-┌──────────────────────────────────────────────┐
-│ Framework (Dart)                             │
-│   Material · Cupertino                       │  ← 디자인 언어별 위젯
-│   Widgets                                    │  ← 위젯 기본 클래스, 조합
-│   Rendering                                  │  ← 레이아웃·페인트 객체 트리
-│   Animation · Painting · Gestures            │
-│   Foundation                                 │  ← 저수준 유틸리티
-├──────────────────────────────────────────────┤
-│ Engine (C++): 렌더러(Impeller), Dart 런타임,  │
-│   텍스트 레이아웃, 플랫폼 채널               │
-├──────────────────────────────────────────────┤
-│ Embedder (플랫폼별): Android(Java/C++),       │
-│   iOS·macOS(Objective-C/Swift), Windows·Linux │
-└──────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+  subgraph fw["Framework (Dart)"]
+    direction TB
+    mat["Material · Cupertino<br/>디자인 언어별 위젯"]
+    wid["Widgets<br/>위젯 기본 클래스, 조합"]
+    ren["Rendering<br/>레이아웃·페인트 객체 트리"]
+    ani["Animation · Painting · Gestures"]
+    fnd["Foundation<br/>저수준 유틸리티"]
+    mat ~~~ wid ~~~ ren ~~~ ani ~~~ fnd
+  end
+  subgraph en["Engine (C++)"]
+    eng["렌더러(Impeller), Dart 런타임,<br/>텍스트 레이아웃, 플랫폼 채널"]
+  end
+  subgraph em["Embedder (플랫폼별)"]
+    emb["Android(Java/C++),<br/>iOS·macOS(Objective-C/Swift), Windows·Linux"]
+  end
+  fw ~~~ en ~~~ em
 ```
 
 | 층 | 언어 | 하는 일 |

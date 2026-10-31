@@ -38,10 +38,11 @@ DAC와 MAC의 운영체제 쪽 구현은 [[linux-access-control|리눅스 접근
 
 대부분의 서비스가 출발점으로 삼는 모델이다.
 
-```text
-사용자 ──(배정)──> 역할 ──(포함)──> 권한(행동 + 자원 종류)
-김OO    ──>  편집자  ──>  document:read, document:update
-이OO    ──>  뷰어    ──>  document:read
+```mermaid
+flowchart LR
+  u["사용자"] -->|"배정"| r["역할"] -->|"포함"| p["권한(행동 + 자원 종류)"]
+  u1["김OO"] --> r1["편집자"] --> p1["document:read, document:update"]
+  u2["이OO"] --> r2["뷰어"] --> p2["document:read"]
 ```
 
 | 테이블 | 내용 |

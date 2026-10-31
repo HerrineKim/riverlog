@@ -31,13 +31,13 @@ API 스타일은 이 약속을 **어떤 단위로 나누고, 어떤 형식으로
 
 ## 등장 순서와 흐름
 
-```text
-RPC(원격 함수 호출) 개념
-  └─ SOAP (XML·WSDL, 엄격한 계약)
-       └─ REST (HTTP 의미를 그대로 쓰는 가벼운 스타일)
-            ├─ WebSocket (HTTP에서 갈아타는 양방향 연결)
-            ├─ GraphQL (클라이언트가 필드를 고르는 질의)
-            └─ gRPC (RPC의 재등장: protobuf + HTTP/2)
+```mermaid
+flowchart TB
+  rpc["RPC(원격 함수 호출) 개념"] --> soap["SOAP (XML·WSDL, 엄격한 계약)"]
+  soap --> rest["REST (HTTP 의미를 그대로 쓰는 가벼운 스타일)"]
+  rest --> ws["WebSocket (HTTP에서 갈아타는 양방향 연결)"]
+  rest --> gql["GraphQL (클라이언트가 필드를 고르는 질의)"]
+  rest --> grpc["gRPC (RPC의 재등장: protobuf + HTTP/2)"]
 ```
 
 흐름을 보면 **계약의 엄격함과 단순함 사이를 오간다.** SOAP의 무거운 계약에 지친 쪽이 REST로 옮겼고, REST의 느슨함과 과다·과소 조회(over/under-fetching)를 메우려고 GraphQL과 gRPC가 다시 스키마를 앞세웠다.
@@ -100,7 +100,7 @@ SDK는 보통 **API를 감싼 것**이다. 결제·지도·클라우드 서비�
 
 - API 스타일은 단위(리소스·질의·메서드·메시지·이벤트), 형식, 통신 방향으로 갈린다.
 - 요청·응답형은 REST·GraphQL·gRPC·SOAP, 연결 유지형은 WebSocket, 이벤트 콜백형은 Webhook이다.
-- 하나만 고르는 문제가 아니다. **공개는 REST, 내부는 gRPC, 실시간은 WebSocket, 외부 이벤트는 Webhook**처럼 경계마다 다르게 쓴다.
+- 한 시스템에서도 **공개는 REST, 내부는 gRPC, 실시간은 WebSocket, 외부 이벤트는 Webhook**처럼 경계마다 다르게 쓴다.
 - SDK는 API를 언어별로 감싼 도구 묶음이다.
 
 관련 노트: [[rest-api|REST API 설계]], [[graphql|GraphQL]], [[grpc|gRPC: Protocol Buffers로 정의하는 RPC]], [[websocket|WebSocket]], [[webhook|웹훅과 폴링]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]]

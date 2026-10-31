@@ -29,14 +29,17 @@ Android 앱은 시스템이 직접 띄우고 거둘 수 있는 **네 가지 구�
 
 ## Activity 생명 주기와 구성 변경
 
-```text
-onCreate ─▶ onStart ─▶ onResume ─▶ [실행 중: 보이고 포커스 있음]
-                ▲                        │ 다른 화면이 일부 가림
-                │                        ▼
-            onRestart                 onPause ─▶ [보이지만 포커스 없음]
-                ▲                        │ 완전히 가려짐
-                │                        ▼
-                └──────────────────── onStop ─▶ onDestroy
+```mermaid
+flowchart TB
+  cr["onCreate"] --> st["onStart"]
+  st --> rs["onResume"]
+  rs --> run["실행 중: 보이고 포커스 있음"]
+  run -->|"다른 화면이 일부 가림"| pa["onPause"]
+  pa --> pv["보이지만 포커스 없음"]
+  pa -->|"완전히 가려짐"| sp["onStop"]
+  sp --> ds["onDestroy"]
+  sp --> rst["onRestart"]
+  rst --> st
 ```
 
 | 콜백 | 맞는 작업 |
@@ -105,13 +108,16 @@ val state by viewModel.uiState.collectAsStateWithLifecycle()
 
 서버 데이터를 보여 주는 화면은 대개 같은 요구를 가진다. 오프라인이어도 **캐시된 내용을 즉시** 보여 주고, 서버에서 새 값을 받아 오고, 다른 화면에서 같은 데이터가 바뀌어도 함께 갱신되어야 한다. 이 로직을 화면마다 짜지 않고 재사용 모듈(Fetcher, Repository)로 묶는다.
 
-```text
-fetch()
-  ├─ 1. 로컬 저장소(DB·메모리)의 값을 먼저 내보낸다     → UI: 캐시 + 로딩 표시
-  ├─ 2. 원격 API 호출
-  │     ├─ 성공 → 로컬 저장소에 쓴다                     (UI에 직접 주지 않는다)
-  │     └─ 실패 → 캐시는 그대로 두고 에러 상태만 알린다  → UI: 캐시 + 에러 안내
-  └─ 3. UI는 로컬 저장소를 관찰한다 → 저장소가 바뀌면 어디서 바꿨든 UI가 갱신된다
+```mermaid
+flowchart TB
+  f["fetch()"] --> l1["1. 로컬 저장소(DB·메모리)의 값을 먼저 내보낸다"]
+  l1 --> u1["UI: 캐시 + 로딩 표시"]
+  f --> l2["2. 원격 API 호출"]
+  l2 -->|"성공"| ok["로컬 저장소에 쓴다<br/>(UI에 직접 주지 않는다)"]
+  l2 -->|"실패"| ng["캐시는 그대로 두고 에러 상태만 알린다"]
+  ng --> u2["UI: 캐시 + 에러 안내"]
+  f --> l3["3. UI는 로컬 저장소를 관찰한다"]
+  l3 --> u3["저장소가 바뀌면 어디서 바꿨든 UI가 갱신된다"]
 ```
 
 | 설계 요소 | 내용 |

@@ -12,16 +12,28 @@ sources: ["https://web.dev/learn/pwa/caching", "https://web.dev/learn/pwa/servin
 
 ## 두 단계: 저장하고, 응답한다
 
-```text
-[저장] install 또는 런타임에 caches.open(name) → cache.add/addAll/put
-[응답] fetch 이벤트 → event.respondWith( 캐시 / 네트워크 / 만든 응답 )
+저장
+
+```mermaid
+flowchart LR
+  a["install 또는 런타임"] --> b["caches.open(name)"] --> c["cache.add/addAll/put"]
+```
+
+응답
+
+```mermaid
+flowchart LR
+  a["fetch 이벤트"] --> b["event.respondWith()"]
+  b --> c1["캐시"]
+  b --> c2["네트워크"]
+  b --> c3["만든 응답"]
 ```
 
 서비스 워커 자체의 등록·생명주기는 [[service-worker-lifecycle|서비스 워커 등록·스코프·생명주기와 업데이트]]에, 미디어를 중요도별로 나눠 캐시하고 캐시 크기를 제한하는 방법은 [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]]에 있다. HTTP 캐시와의 관계는 [[http-cache|HTTP 캐시]]를 본다.
 
 ## Cache Storage API
 
-**Cache Storage는 요청과 응답 쌍을, 서버가 보낸 헤더와 본문 그대로 저장한다.** 요청 URL이나 `Request` 객체가 키다. 창(메인 스레드), 서비스 워커, 다른 워커 모두에서 `caches`로 접근하고, 대부분 HTTPS가 필요하다. 모든 주요 브라우저가 지원한다.
+**Cache Storage**는 요청과 응답 쌍을, 서버가 보낸 헤더와 본문 그대로 저장한다. 요청 URL이나 `Request` 객체가 키다. 창(메인 스레드), 서비스 워커, 다른 워커 모두에서 `caches`로 접근하고, 대부분 HTTPS가 필요하다. 모든 주요 브라우저가 지원한다.
 
 | 메서드 | 하는 일 | 주의 |
 | --- | --- | --- |
@@ -178,7 +190,7 @@ self.addEventListener('fetch', (event) => {
 
 ## Workbox
 
-**Workbox는 서비스 워커의 라우팅·캐시 전략·프리캐시·만료를 감싼 Google의 라이브러리 묶음이다.** 서비스 워커 라이브러리 중 가장 많이 쓰이고, 여러 프레임워크의 PWA 플러그인이 내부에서 쓴다.
+**Workbox**는 서비스 워커의 라우팅·캐시 전략·프리캐시·만료를 감싼 Google의 라이브러리 묶음이다. 서비스 워커 라이브러리 중 가장 많이 쓰이고, 여러 프레임워크의 PWA 플러그인이 내부에서 쓴다.
 
 | 모듈 | 하는 일 |
 | --- | --- |
@@ -232,7 +244,7 @@ npm 모듈을 `import`로 쓰면 배포 전에 번들링한다. 모듈 서비스
 
 ### 서비스 워커 인클루드
 
-**페이지를 바뀌는 주기가 다른 조각으로 나누고, 조각마다 다른 전략으로 캐시한 뒤 서비스 워커에서 다시 조립한다.** 캐시가 작아지고 머리글·바닥글이 페이지마다 같은 버전으로 보인다.
+페이지를 바뀌는 주기가 다른 조각으로 나누고, 조각마다 다른 전략으로 캐시한 뒤 서비스 워커에서 다시 조립한다. 캐시가 작아지고 머리글·바닥글이 페이지마다 같은 버전으로 보인다.
 
 | 조각 | 전략 |
 | --- | --- |

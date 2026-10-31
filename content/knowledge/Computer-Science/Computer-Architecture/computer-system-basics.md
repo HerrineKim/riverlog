@@ -48,8 +48,13 @@ sources: ["https://riverkim.kr/187", "https://riverkim.kr/192", "https://www.you
 
 ## 컴퓨터의 기본 구조
 
-```text
-입력 → [ CPU (제어 장치 + 연산 장치) ↔ 메모리 ↔ I/O ] → 출력
+```mermaid
+flowchart LR
+  inp["입력"] --> sys
+  subgraph sys[" "]
+    cpu["CPU (제어 장치 + 연산 장치)"] <--> mem["메모리"] <--> io["I/O"]
+  end
+  sys --> outp["출력"]
 ```
 
 | 구성 요소 | 역할 |
@@ -102,9 +107,9 @@ CPU가 메모리의 값을 읽을 때
 
 ### 속도 계층
 
-```text
-CPU ← 캐시(SRAM) ← 메인 메모리(DRAM) ← 디스크
-       빠름                              느림 (수십~수천 배 차이)
+```mermaid
+flowchart RL
+  dk["디스크<br/>느림 (수십~수천 배 차이)"] --> dr["메인 메모리(DRAM)"] --> ca["캐시(SRAM)<br/>빠름"] --> cpu["CPU"]
 ```
 
 데이터는 디스크 → 메모리 → 캐시를 거쳐 CPU에 전달된다. 위로 갈수록 빠르고 비싸며 용량이 작다. 캐시에 쓰는 SRAM과 주기억장치에 쓰는 DRAM의 차이를 비롯한 자세한 내용은 [[memory-hierarchy|메모리 계층 구조]]에 있다.

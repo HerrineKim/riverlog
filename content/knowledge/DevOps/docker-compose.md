@@ -26,7 +26,7 @@ sources: ["https://80000coding.notion.site/8e5f46b5c0b144d5ac773446bbaf8ffa", "h
 | `secrets` · `configs` | 비밀 값·설정 파일을 컨테이너에 파일로 넣는다 |
 | `name` | 프로젝트 이름. 생략하면 폴더 이름. 컨테이너·네트워크 이름의 접두사가 된다 |
 
-`docker run` 명령을 여러 번 치는 것과 비교한 장점은 **구성이 코드로 남아 버전 관리되고**, 네트워크·볼륨이 자동으로 만들어지고 이어지며, `up`·`down` 한 번으로 전체를 만들고 지우고, 팀원 누구나 같은 개발 환경을 띄운다는 것이다.
+`docker run` 명령을 여러 번 치는 것과 비교한 장점은 구성이 코드로 남아 버전 관리되고, 네트워크·볼륨이 자동으로 만들어지고 이어지며, `up`·`down` 한 번으로 전체를 만들고 지우고, 팀원 누구나 같은 개발 환경을 띄운다는 것이다.
 
 ## 예시: Nginx + PHP-FPM + MariaDB
 
@@ -138,11 +138,11 @@ services:
 | `service_healthy` | healthcheck 통과 |
 | `service_completed_successfully` | 컨테이너가 종료 코드 0으로 끝남(초기화·마이그레이션 작업) |
 
-한계도 있다. `depends_on`은 **처음 띄울 때의 순서**만 다루고, 실행 중에 DB가 잠깐 끊기는 상황은 막지 못한다. 앱이 연결 재시도를 갖춰야 한다. 또 Compose는 한 호스트 안의 순서만 다룬다. healthcheck 옵션의 뜻은 [[dockerfile|Dockerfile 노트]]의 HEALTHCHECK와 같다.
+한계도 있다. `depends_on`은 처음 띄울 때의 순서만 다루고, 실행 중에 DB가 잠깐 끊기는 상황은 막지 못한다. 앱이 연결 재시도를 갖춰야 한다. 또 Compose는 한 호스트 안의 순서만 다룬다. healthcheck 옵션의 뜻은 [[dockerfile|Dockerfile 노트]]의 HEALTHCHECK와 같다.
 
 ## 네트워크
 
-Compose는 따로 정하지 않아도 프로젝트마다 기본 bridge 네트워크(`<프로젝트>_default`)를 하나 만들고 모든 서비스를 붙인다. 이것은 사용자 정의 네트워크라서 Docker 내장 DNS가 **서비스 이름을 IP로 풀어 준다.** 서비스를 여러 개로 늘리면 같은 이름에 IP가 여러 개 돌아와 라운드 로빈된다.
+Compose는 따로 정하지 않아도 프로젝트마다 기본 bridge 네트워크(`<프로젝트>_default`)를 하나 만들고 모든 서비스를 붙인다. 이것은 사용자 정의 네트워크라서 Docker 내장 DNS가 서비스 이름을 IP로 풀어 준다. 서비스를 여러 개로 늘리면 같은 이름에 IP가 여러 개 돌아와 라운드 로빈된다.
 
 ```yaml
 services:

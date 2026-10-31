@@ -35,9 +35,19 @@ sources: ["https://engineering.linecorp.com/ko/blog/do-not-block-the-event-loop-
 
 멀티플렉싱은 순서를 바꾼다. `select`·`epoll_wait` 같은 호출로 "읽을 준비가 된 소켓이 생길 때까지" 한꺼번에 기다리고, 돌아온 소켓에만 `read()`를 부른다. **`read()` 자체는 여전히 동기 호출이지만, 데이터가 이미 와 있으므로 무한정 잠들지 않는다.**
 
-```text
-블로킹 I/O      스레드 ─ read(소켓A) ─────(데이터 올 때까지 잠듦)────→ 처리
-멀티플렉싱      스레드 ─ select(A,B,C…) ─(하나라도 준비될 때까지)→ [B 준비] → read(B) → 처리 → 다시 select
+블로킹 I/O
+
+```mermaid
+flowchart LR
+  t["스레드"] --> r["read(소켓A)"] -->|"데이터 올 때까지 잠듦"| p["처리"]
+```
+
+멀티플렉싱
+
+```mermaid
+flowchart LR
+  t["스레드"] --> s["select(A,B,C…)"] -->|"하나라도 준비될 때까지"| b["B 준비"] --> r["read(B)"] --> p["처리"]
+  p -->|"다시 select"| s
 ```
 
 `select`·`poll`·`epoll`·`kqueue`·`io_uring`의 차이(매번 fd 집합을 넘기는가, 커널에 등록해 두는가, fd 1024개 제한)는 [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]]의 「I/O 멀티플렉싱」에 있다. Windows의 대응물은 IOCP다. 플랫폼마다 API가 달라 서버 프레임워크는 보통 이 차이를 감싸는 계층(libuv, Java NIO, Netty transport)을 둔다.
@@ -101,11 +111,10 @@ Netty는 이 구조를 다듬은 것이다. `EventLoop` 하나가 스레드 하�
 
 이벤트 루프 스레드는 다음을 반복한다.
 
-```text
-1. 이벤트를 기다린다 (select)
-2. 이벤트를 핸들러에 디스패치한다
-3. 핸들러가 처리한다      ← 여기서 막히면
-4. 1로 돌아간다            ← 돌아오지 못한다
+```mermaid
+flowchart TB
+  a["1. 이벤트를 기다린다 (select)"] --> b["2. 이벤트를 핸들러에 디스패치한다"] --> c["3. 핸들러가 처리한다<br/>← 여기서 막히면"]
+  c -->|"4. 1로 돌아간다<br/>← 돌아오지 못한다"| a
 ```
 
 핸들러 안에서 외부 API를 블로킹으로 호출하면(`future.join()`, `get()`, JDBC, `Thread.sleep()`), 응답이 올 때까지 **그 스레드가 맡은 모든 연결의 이벤트가 처리되지 않는다.** 이벤트 루프 스레드는 CPU 코어 수의 몇 배 정도뿐이라, 몇 개만 막혀도 서버 전체 응답이 느려지거나 멈춘다. 블로킹 호출이 같은 루프에서 처리돼야 할 응답을 기다리면 **풀리지 않는 데드락**이 된다.
@@ -146,6 +155,6 @@ Java 21(JEP 444)에 정식 도입된 **가상 스레드**는 블로킹 호출을
 - Reactor 패턴은 기다리고 디스패치하는 루프(Reactor)와 처리하는 핸들러를 나눈다. 그 Reactor가 이벤트 루프다.
 - 이벤트 루프 스레드 하나가 여러 연결을 맡으므로, 핸들러의 블로킹 I/O·긴 계산은 그 연결 전부를 멈춘다. 블로킹 작업은 별도 스레드 풀로, 긴 계산은 쪼개거나 워커로 보낸다.
 
-**이벤트 루프 위의 코드는 "곧 돌려준다"는 약속을 지켜야 한다.**
+이벤트 루프 위의 코드는 "곧 돌려준다"는 약속을 지켜야 한다.
 
 관련 노트: [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[process-and-thread|프로세스와 스레드]], [[spring-singleton-thread-safety|스프링의 싱글톤 빈과 요청 스레드]], [[web-server-and-nginx|웹 서버, WAS, 그리고 Nginx]], [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]], [[spring-application-design|스프링 애플리케이션 설계]]

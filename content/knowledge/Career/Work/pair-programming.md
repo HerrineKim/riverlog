@@ -49,10 +49,15 @@ sources: ["https://80000coding.notion.site/5fe0df00c385413b899d759a46868842", "h
 
 [[tdd|TDD]]의 Red → Green 사이클에 역할 교대를 붙인다.
 
-```text
-A: 실패하는 테스트 작성 ──► 키보드를 B에게 (ping)
-B: 테스트 통과 코드 작성 → 다음 실패 테스트 작성 ──► 키보드를 A에게 (pong)
-A: 통과 코드 작성 → 다음 실패 테스트 ...
+```mermaid
+sequenceDiagram
+  participant A
+  participant B
+  Note over A: 실패하는 테스트 작성
+  A->>B: 키보드를 B에게 (ping)
+  Note over B: 테스트 통과 코드 작성 → 다음 실패 테스트 작성
+  B->>A: 키보드를 A에게 (pong)
+  Note over A: 통과 코드 작성 → 다음 실패 테스트 ...
 ```
 
 한 사람은 테스트만, 다른 사람은 구현만 맡는 변형도 있다. 테스트가 대화의 단위가 되어 역할 교대가 자연스럽다.

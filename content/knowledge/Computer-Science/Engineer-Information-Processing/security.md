@@ -102,7 +102,7 @@ XSS와 CSRF의 원리와 실제 방어법은 [[web-security|웹 보안: CSRF와 
 | 원데이·N데이 | 패치는 나왔지만 적용되지 않음 | 패치 내용을 분석하면 공격법이 드러나므로 공개 직후가 가장 위험하다 |
 | 패치 미적용이 방치된 상태 | 오래전 패치가 있는데도 관리 소홀로 남음 | **실제 침해의 대부분이 여기서 일어난다** |
 
-방어의 기본은 화려한 대책보다 **빠른 패치와 의존성 업데이트**다(`npm audit`, Dependabot 같은 도구로 알림을 받는다).
+방어의 기본은 **빠른 패치와 의존성 업데이트**다(`npm audit`, Dependabot 같은 도구로 알림을 받는다).
 
 ### 버퍼 오버플로와 메모리 보호
 
@@ -172,11 +172,20 @@ AES는 데이터를 16바이트 블록으로 나누고, 키에서 만든 라운�
 
 디피-헬만의 일방향 함수는 **모듈러 거듭제곱**이다. `3⁵ mod 31`은 243을 31로 나눈 나머지 26으로 바로 나오지만, "3을 몇 제곱해 31로 나눴더니 7이 남았다"에서 지수를 찾으려면 하나씩 대입해야 한다(이산 로그 문제). 수가 수백 자리면 사실상 풀 수 없다.
 
-```text
-공개값: 밑 B, 법 M (누구나 안다)
-A: 비밀 x 선택 → Bˣ mod M 전송         C: 비밀 y 선택 → Bʸ mod M 전송
-A: (Bʸ)ˣ mod M = Bˣʸ mod M             C: (Bˣ)ʸ mod M = Bˣʸ mod M   → 같은 값이 공유 키
-도청자: Bˣ, Bʸ만 봐서는 x, y도 Bˣʸ도 구할 수 없다
+```mermaid
+sequenceDiagram
+  participant A
+  participant C
+  participant E as 도청자
+  Note over A,C: 공개값: 밑 B, 법 M (누구나 안다)
+  Note over A: 비밀 x 선택
+  A->>C: Bˣ mod M 전송
+  Note over C: 비밀 y 선택
+  C->>A: Bʸ mod M 전송
+  Note over A: (Bʸ)ˣ mod M = Bˣʸ mod M
+  Note over C: (Bˣ)ʸ mod M = Bˣʸ mod M
+  Note over A,C: 같은 값이 공유 키
+  Note over E: Bˣ, Bʸ만 봐서는 x, y도 Bˣʸ도 구할 수 없다
 ```
 
 이렇게 얻은 공유 키로 AES 같은 대칭 암호를 쓴다. 다만 이 계산만으로는 상대가 누구인지 모르므로 인증서·서명과 함께 쓴다. 세션마다 새 키를 만드는 방식이 주는 전방 비밀성은 [[web-pki-evolution|웹 PKI의 변천]]에 있다.

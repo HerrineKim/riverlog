@@ -141,13 +141,23 @@ SCAN·C-SCAN은 헤드가 무조건 디스크 끝까지 간다. LOOK·C-LOOK은 
 
 파티션은 한 번 나누면 크기를 바꾸기 어렵고 디스크 한 장을 넘을 수 없다. 리눅스의 **LVM**(Logical Volume Manager)은 파티션과 파일 시스템 사이에 층을 하나 더 둔다.
 
-```text
-물리 디스크·파티션  /dev/sda2    /dev/sdb1        ← PV (물리 볼륨, PE 단위로 쪼갬)
-                        └─────┬─────┘
-볼륨 그룹                 vg0 (저장 공간 풀)        ← VG
-                     ┌──────┼──────┐
-논리 볼륨             root   home    var           ← LV (LE 단위, PE와 1:1 대응)
-                     ext4   xfs     ext4          ← 각자 파일 시스템으로 포맷해 마운트
+```mermaid
+flowchart TB
+    subgraph PV["물리 디스크·파티션: PV (물리 볼륨, PE 단위로 쪼갬)"]
+        sda["/dev/sda2"]
+        sdb["/dev/sdb1"]
+    end
+    vg["볼륨 그룹: vg0 (저장 공간 풀)<br/>VG"]
+    sda --> vg
+    sdb --> vg
+    subgraph LV["논리 볼륨: LV (LE 단위, PE와 1:1 대응)<br/>각자 파일 시스템으로 포맷해 마운트"]
+        root["root<br/>ext4"]
+        home["home<br/>xfs"]
+        var["var<br/>ext4"]
+    end
+    vg --> root
+    vg --> home
+    vg --> var
 ```
 
 - 디스크 여러 장의 빈 공간을 합쳐 하나의 논리 볼륨으로 쓸 수 있다. 디스크0에 2GB, 디스크1에 5GB가 남아도 7GB 파일을 담을 수 있다.

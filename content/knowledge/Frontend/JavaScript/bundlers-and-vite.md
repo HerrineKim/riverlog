@@ -36,9 +36,16 @@ sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-
 
 ## 번들러의 계보
 
-```text
-2012 Grunt ─ 2013 webpack ─ 2014 Gulp ─ 2015 Rollup ─ 2017 Parcel
-   └ 2020 esbuild · Snowpack · swc ─ 2021 Vite ─ 2026 Vite 8 + Rolldown
+```mermaid
+timeline
+  2012 : Grunt
+  2013 : webpack
+  2014 : Gulp
+  2015 : Rollup
+  2017 : Parcel
+  2020 : esbuild · Snowpack · swc
+  2021 : Vite
+  2026 : Vite 8 + Rolldown
 ```
 
 | 도구 | 들고 나온 개념 |
@@ -72,14 +79,23 @@ sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-
 1. **더 빠른 언어로 만든다.** 번들러는 로컬에서 도는 프로그램이니 JavaScript일 필요가 없다. esbuild(Go), swc·Rspack·Rolldown(Rust)이 이 길이다. TypeScript 컴파일러도 7.0부터 Go로 다시 쓰였다.
 2. **개발할 때는 번들링하지 않는다.** 개발 중에는 완성된 결과보다 수정 반영 속도가 중요하다. 파일마다 따로 빌드해 브라우저 표준 모듈로 바로 불러오고, 고친 파일만 다시 빌드한다. 배포용 결과물만 기존 번들러로 만든다.
 
-```text
-개발 모드:  파일 A ─ 변환 ─┐
-           파일 B ─ 변환 ─┼─ 브라우저가 ES 모듈로 직접 로드 (고친 파일만 다시 빌드 → HMR)
-           파일 C ─ 변환 ─┘
-배포 모드:  A + B + C ─ 번들러(Snowpack은 webpack, Vite 7까지는 Rollup, Vite 8은 Rolldown) ─ bundle.js
+개발 모드:
+
+```mermaid
+flowchart LR
+  a["파일 A"] -->|"변환"| br["브라우저가 ES 모듈로 직접 로드<br/>(고친 파일만 다시 빌드 → HMR)"]
+  b["파일 B"] -->|"변환"| br
+  c["파일 C"] -->|"변환"| br
 ```
 
-Snowpack이 이 두 길을 합쳤다. esbuild로 개발 모드를 돌리고 실제 번들은 webpack으로 만들어, 새로고침 없이 고친 모듈만 바꾸는 **HMR(Hot Module Replacement)** 을 강력하게 제공했다. 하지만 webpack 연동에 버그가 있고 로더 호환이 불안정했다. Snowpack은 2022년 개발이 중단됐고 그 자리를 Vite가 이어받았다.
+배포 모드:
+
+```mermaid
+flowchart LR
+  n1["A + B + C"] --> n2["번들러<br/>(Snowpack은 webpack, Vite 7까지는 Rollup, Vite 8은 Rolldown)"] --> n3["bundle.js"]
+```
+
+Snowpack이 이 두 길을 합쳤다. esbuild로 개발 모드를 돌리고 실제 번들은 webpack으로 만들어, 새로고침 없이 고친 모듈만 바꾸는 **HMR(Hot Module Replacement)** 을 제공했다. 하지만 webpack 연동에 버그가 있고 로더 호환이 불안정했다. Snowpack은 2022년 개발이 중단됐고 그 자리를 Vite가 이어받았다.
 
 ## Vite
 

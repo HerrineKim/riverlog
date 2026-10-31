@@ -14,11 +14,17 @@ sources: ["https://web.dev/learn/ai/client-side", "https://web.dev/learn/ai/plat
 
 클라이언트 사이드 AI는 서버 없이 사용자 기기에서 추론한다. 방법은 둘이다. 어느 쪽을 클라이언트에 둘지, 서버와 어떻게 나눌지는 [[web-ai-platform-choice|웹 AI 플랫폼 고르기]]에서 다룬다.
 
-```text
-웹 앱
- ├─ 내장 AI API ──────────→ 브라우저가 관리하는 모델 ──┐
- └─ 라이브러리 ──→ 런타임 ──→ 앱이 내려받은 모델 ───────┴─→ 사용자 하드웨어 (CPU / GPU / NPU)
-    (Transformers.js 등)  (Wasm / WebGPU / WebNN)
+```mermaid
+flowchart LR
+  app["웹 앱"]
+  builtin["내장 AI API"]
+  lib["라이브러리<br/>(Transformers.js 등)"]
+  rt["런타임<br/>(Wasm / WebGPU / WebNN)"]
+  bm["브라우저가 관리하는 모델"]
+  am["앱이 내려받은 모델"]
+  hw["사용자 하드웨어 (CPU / GPU / NPU)"]
+  app --> builtin --> bm --> hw
+  app --> lib --> rt --> am --> hw
 ```
 
 | | 내장 AI | 라이브러리 + 커스텀 모델 |

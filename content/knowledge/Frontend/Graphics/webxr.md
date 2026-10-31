@@ -16,11 +16,11 @@ sources: ["https://developers.google.com/web/updates/2018/05/welcome-to-immersiv
 
 WebXR은 **그리기를 하지 않는다.** 화면은 WebGL(또는 WebGPU)로 직접 그린다. WebXR은 「어느 위치에서 어느 방향을 보고 있나」와 「어느 버퍼에 그리면 되나」를 알려 준다. 그래서 실무에서는 Three.js(`renderer.xr`, `VRButton`·`ARButton`), Babylon.js, A-Frame 같은 엔진 위에서 쓴다.
 
-```text
-기기 탐색 → 세션 요청(사용자 동작) → 기준 공간 → XR 프레임 루프 ─┐
-                                                     ↑        │ 매 프레임: 머리 자세 → 눈마다 뷰 → WebGL로 그리기
-                                                     └────────┘
-세션 종료(사용자·앱) → 페이지로 돌아온다
+```mermaid
+flowchart LR
+  n1["기기 탐색"] --> n2["세션 요청(사용자 동작)"] --> n3["기준 공간"] --> n4["XR 프레임 루프"]
+  n4 -->|"매 프레임: 머리 자세 → 눈마다 뷰 → WebGL로 그리기"| n4
+  n4 --> n5["세션 종료(사용자·앱)"] --> n6["페이지로 돌아온다"]
 ```
 
 ## 핵심 개념
@@ -80,7 +80,7 @@ AR은 핵심 API 위의 모듈로 더해진다.
 
 ## 점진적 향상: 한 페이지로 모든 화면 지원
 
-XR 기기는 세 부류로 나뉜다. **한 기기에 맞춰 만들고 나머지에서 흉내 내지 말고, 기기마다 맞는 인터페이스를 준다.**
+XR 기기는 세 부류로 나뉜다. 한 기기에 맞춰 만들고 나머지에서 흉내 내지 말고, 기기마다 맞는 인터페이스를 준다.
 
 | 화면 | 예 | 줄 수 있는 경험 |
 | --- | --- | --- |
@@ -100,7 +100,7 @@ XR 기기는 세 부류로 나뉜다. **한 기기에 맞춰 만들고 나머지
 | Safari | visionOS의 Safari에서 `immersive-vr`. iOS·macOS Safari는 지원하지 않는다 |
 | Firefox | 지원하지 않는다 |
 
-**Baseline이 아닌 실험적 기술**이므로 지원 감지와 평면 화면 대체 경로가 필수다. 기기가 없을 때는 Immersive Web Emulator 같은 브라우저 확장으로 개발한다.
+Baseline이 아닌 실험적 기술이므로 지원 감지와 평면 화면 대체 경로가 필수다. 기기가 없을 때는 Immersive Web Emulator 같은 브라우저 확장으로 개발한다.
 
 ## 역사
 
@@ -114,7 +114,5 @@ XR 기기는 세 부류로 나뉜다. **한 기기에 맞춰 만들고 나머지
 - 몰입형 세션은 사용자 동작 안에서 요청하고, 루프는 `session.requestAnimationFrame`으로 돌며 눈마다 그린다.
 - 기기는 평면·포털·몰입형 세 부류다. 기능 감지로 버튼을 고르고 평면 화면 경험을 기본으로 둔다.
 - 지원이 Chromium과 visionOS Safari에 한정되므로 점진적 향상으로 설계한다.
-
-**XR은 기본 경험 위에 얹는 향상이지, 그것만으로 서는 경험이 아니다.**
 
 관련 노트: [[threejs|Three.js로 웹에서 3D 그리기]], [[webgl-shaders|WebGL과 셰이더]], [[device-permission-apis|권한 모델과 기기 API]], [[pwa-os-integration|PWA 기능과 OS 통합]]

@@ -17,11 +17,11 @@ React·Vue SPA나 SSG 결과물은 `npm run build`가 만든 **정적 파일(HTM
 
 ## 구성 요소
 
-```text
-사용자 ──DNS──▶ Route 53 ──별칭──▶ CloudFront (엣지, HTTPS·캐시·압축)
-                                      │  ACM 인증서 (us-east-1)
-                                      ▼  OAC로 서명한 요청만
-                                 S3 버킷 (비공개, 원본)
+```mermaid
+flowchart TB
+  user["사용자"] -->|"DNS"| r53["Route 53"]
+  r53 -->|"별칭"| cf["CloudFront<br/>(엣지, HTTPS·캐시·압축)<br/>ACM 인증서 (us-east-1)"]
+  cf -->|"OAC로 서명한 요청만"| s3["S3 버킷<br/>(비공개, 원본)"]
 ```
 
 | 서비스 | 맡는 일 |
@@ -145,17 +145,23 @@ jobs:
 
 위 워크플로는 푸시마다 빌드하고 바로 올린다. 환경이 여럿이거나 롤백이 잦으면 **빌드 한 번, 배포 여러 번**으로 나눈다. 정적 번들은 그 자체로 불변 산출물이라 이 방식이 특히 쉽다.
 
-```text
 CI (커밋·태그마다)
-  린트 → 테스트(커버리지 업로드) → 빌드
-  → dist를 <커밋 해시>.tar.gz, 릴리스 태그면 v1.0.1.tar.gz로 묶어 산출물 버킷에 올림
-  → 결과를 채팅으로 알림
+
+```mermaid
+flowchart TB
+  lint["린트"] --> test["테스트<br/>(커버리지 업로드)"]
+  test --> build["빌드"]
+  build --> upload["dist를 #lt;커밋 해시#gt;.tar.gz, 릴리스 태그면 v1.0.1.tar.gz로 묶어 산출물 버킷에 올림"]
+  upload --> notify["결과를 채팅으로 알림"]
+```
 
 배포 (사람이 버전과 환경을 골라 실행, workflow_dispatch)
-  1. 산출물 버킷에서 v1.0.1.tar.gz를 내려받아 푼다
-  2. 그 환경의 설정 파일(config.json)을 끼워 넣는다
-  3. 호스팅 버킷에 sync하고 index.html을 무효화한다
-  4. 배포 결과를 알린다
+
+```mermaid
+flowchart TB
+  d1["1. 산출물 버킷에서 v1.0.1.tar.gz를 내려받아 푼다"] --> d2["2. 그 환경의 설정 파일(config.json)을 끼워 넣는다"]
+  d2 --> d3["3. 호스팅 버킷에 sync하고 index.html을 무효화한다"]
+  d3 --> d4["4. 배포 결과를 알린다"]
 ```
 
 - **롤백은 이전 태그를 다시 배포하는 것**이다. 다시 빌드하지 않으니 수십 초면 끝나고, 무엇이 나갔는지 태그로 정확히 안다.

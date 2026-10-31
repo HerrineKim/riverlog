@@ -96,7 +96,7 @@ API가 REST에 얼마나 다가갔는지는 리처드슨 성숙도 모델(Richar
 
 ## 리소스와 표현
 
-REST에서 서버가 주고받는 것은 **리소스 자체가 아니라 리소스의 표현(representation)** 이다. 리소스는 「3번 고양이」나 「환영 문서」처럼 URI로 가리키는 개념이고, 표현은 그 리소스의 **특정 시점 상태**를 특정 형식으로 담은 것이다. REST의 이름도 여기서 왔다. 애플리케이션의 상태(State)를 표현(Representation)으로 전송(Transfer)한다는 뜻이다.
+REST에서 서버가 주고받는 것은 **리소스 자체가 아니라 리소스의 표현(representation)** 이다. 리소스는 「3번 고양이」나 「환영 문서」처럼 URI로 가리키는 개념이고, 표현은 그 리소스의 특정 시점 상태를 특정 형식으로 담은 것이다. REST의 이름도 여기서 왔다. 애플리케이션의 상태(State)를 표현(Representation)으로 전송(Transfer)한다는 뜻이다.
 
 | 구성 | 뜻 | 예 |
 | --- | --- | --- |
@@ -188,7 +188,7 @@ Django에서 이 설계를 구현하는 방법은 [[drf-serializer|DRF Serialize
 
 ## 실무 설계 팁
 
-**API 설계는 URL 경로 설계만이 아니다.** 자원 이름과 식별자, 경로 패턴을 고르는 일과 함께 헤더(인증, 멱등 키, 캐시), 게이트웨이의 레이트 리밋 규칙까지 계약의 일부로 설계한다.
+API 설계는 URL 경로 설계에서 끝나지 않는다. 자원 이름과 식별자, 경로 패턴을 고르는 일과 함께 헤더(인증, 멱등 키, 캐시), 게이트웨이의 레이트 리밋 규칙까지 계약의 일부로 설계한다.
 
 | 팁 | 내용 | 예 |
 | --- | --- | --- |
@@ -218,12 +218,16 @@ Django에서 이 설계를 구현하는 방법은 [[drf-serializer|DRF Serialize
 
 처리에 수 초 이상 걸리면 요청을 붙잡지 않는다.
 
-```text
-POST /reports              → 202 Accepted
-                             Location: /reports/status/42
-GET  /reports/status/42    → 200 {"status": "running"}   (+ Retry-After: 5)
-GET  /reports/status/42    → 303 See Other
-                             Location: /reports/42        ← 끝나면 결과 자원으로
+```mermaid
+sequenceDiagram
+  participant C as 클라이언트
+  participant S as 서버
+  C->>S: POST /reports
+  S-->>C: 202 Accepted<br/>Location: /reports/status/42
+  C->>S: GET /reports/status/42
+  S-->>C: 200 {"status": "running"} (+ Retry-After: 5)
+  C->>S: GET /reports/status/42
+  S-->>C: 303 See Other<br/>Location: /reports/42 (끝나면 결과 자원으로)
 ```
 
 ### 동시 수정 막기: 조건부 요청

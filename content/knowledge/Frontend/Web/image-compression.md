@@ -16,11 +16,12 @@ sources: ["https://web.dev/learn/images/jpeg", "https://web.dev/learn/images/web
 
 ### JPEG
 
-```text
-픽셀 → 8×8 블록으로 나눔
-     → DCT(이산 코사인 변환): 블록을 주파수 성분으로 바꾸고, 밝기(luma)와 색(chroma)으로 분리
-     → 크로마 서브샘플링: 색 층은 해상도를 낮춰 저장 (눈은 색보다 밝기에 민감하다)
-     → 양자화: 고주파(잘게 변하는) 디테일을 거칠게 반올림 ← 용량 절감의 대부분
+```mermaid
+flowchart TB
+  n1["픽셀"] --> n2["8×8 블록으로 나눔"]
+  n2 --> n3["DCT(이산 코사인 변환)<br/>블록을 주파수 성분으로 바꾸고, 밝기(luma)와 색(chroma)으로 분리"]
+  n3 --> n4["크로마 서브샘플링<br/>색 층은 해상도를 낮춰 저장 (눈은 색보다 밝기에 민감하다)"]
+  n4 --> n5["양자화<br/>고주파(잘게 변하는) 디테일을 거칠게 반올림<br/>← 용량 절감의 대부분"]
 ```
 
 | 단계 | 버리는 것 | 지나치면 |
@@ -138,7 +139,7 @@ add_filter( 'image_editor_output_format', function ( $mappings ) {
 ## 결과 확인
 
 - 원본과 결과의 용량을 비교한다. 3MB가 넘는 PNG 원본이 1000px JPEG 150KB, 400px WebP 30KB 남짓이 되는 정도의 차이가 흔하다.
-- 형식·크기별 결과물에 **아티팩트가 없는지 눈으로 본다.** 문제가 있으면 설정을 바꿔 다시 만든다.
+- 형식·크기별 결과물에 아티팩트가 없는지 눈으로 본다. 문제가 있으면 설정을 바꿔 다시 만든다.
 - 실제 페이지에서 받은 형식과 크기는 DevTools Network 패널의 Type·Size 열로 확인한다.
 
 ## 정리
@@ -147,6 +148,6 @@ add_filter( 'image_editor_output_format', function ( $mappings ) {
 - 품질 값은 도구마다 뜻이 달라 눈으로 맞추고, 아티팩트가 보이기 직전보다 조금 낮게 잡는다.
 - JPEG는 프로그레시브로 만든다.
 - 원본은 그대로 두고 빌드 도구·정적 사이트 생성기·CMS·이미지 CDN이 형식과 크기를 만든다.
-- **`sizes`만은 자동으로 알 수 없다.** 레이아웃을 아는 사람이 주거나 `sizes="auto"`에 맡긴다.
+- `sizes`만은 자동으로 알 수 없다. 레이아웃을 아는 사람이 주거나 `sizes="auto"`에 맡긴다.
 
 관련 노트: [[image-formats|웹 이미지 형식]], [[image-cdn|이미지 CDN과 Accept 헤더 협상]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[static-site-generator|정적 사이트 생성기와 Jamstack]], [[wordpress|워드프레스: 철학, 테마·플러그인 고르기, 속도, 생태계]], [[bundlers-and-vite|번들러의 역사와 Vite]]
