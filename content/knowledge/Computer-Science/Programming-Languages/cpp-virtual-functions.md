@@ -34,12 +34,17 @@ s->area();   // Shape::area가 아니라 Circle::area가 불린다
 | vtable | 클래스마다 하나, 읽기 전용 데이터 영역 | 그 클래스가 쓸 가상 함수들의 주소 배열 |
 | vptr | 객체마다 하나, 보통 객체 맨 앞 | 자기 클래스의 vtable을 가리키는 포인터 |
 
-```text
-Circle 객체                 Circle의 vtable
-┌──────────┐               ┌───────────────────┐
-│ vptr ────┼─────────────▶ │ [0] Circle::area  │
-│ r        │               │ [1] Circle::~Circle│
-└──────────┘               └───────────────────┘
+```mermaid
+flowchart LR
+    subgraph obj["Circle 객체"]
+        vptr["vptr"]
+        r["r"]
+    end
+    subgraph vt["Circle의 vtable"]
+        s0["[0] Circle::area"]
+        s1["[1] Circle::~Circle"]
+    end
+    vptr --> s0
 ```
 
 `s->area()`는 컴파일 후 대략 다음 세 단계가 된다.

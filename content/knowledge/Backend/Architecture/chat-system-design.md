@@ -73,16 +73,16 @@ flowchart TB
 
 작은 규모에서는 Redis 하나로 서버 간 전달과 기록을 함께 처리할 수 있다.
 
-```text
-채팅 서버(여러 대) ──각자 Redis 연결──> Redis
-  - 쓰기용 연결: 데이터 갱신 + PUBLISH
-  - 구독용 연결: SUBSCRIBE messages, member_add ...
-
-입장: 멤버 목록·최근 메시지 조회 → 클라이언트에 전달
-      PUBLISH member_add → 다른 참여자 화면에 새 멤버 표시
-전송: ZADD room:1 <도착 시각> <메시지>   (정렬 집합 = 시간순 기록)
-      PUBLISH messages <메시지>          (구독 중인 모든 채팅 서버가 받음)
-      각 채팅 서버는 자기에게 붙은 참여자에게 WebSocket으로 전달
+```mermaid
+flowchart TB
+  S["채팅 서버(여러 대)"] -- "각자 Redis 연결<br>쓰기용 연결: 데이터 갱신 + PUBLISH<br>구독용 연결: SUBSCRIBE messages, member_add ..." --> R["Redis"]
+  subgraph JOIN["입장"]
+    J1["멤버 목록·최근 메시지 조회"] --> J2["클라이언트에 전달"]
+    J3["PUBLISH member_add"] --> J4["다른 참여자 화면에 새 멤버 표시"]
+  end
+  subgraph SEND["전송"]
+    T1["ZADD room:1 #lt;도착 시각#gt; #lt;메시지#gt;<br>(정렬 집합 = 시간순 기록)"] --> T2["PUBLISH messages #lt;메시지#gt;<br>(구독 중인 모든 채팅 서버가 받음)"] --> T3["각 채팅 서버는 자기에게 붙은 참여자에게<br>WebSocket으로 전달"]
+  end
 ```
 
 - 구독 연결은 구독 상태에서 다른 명령을 못 쓰므로 쓰기용과 구독용 연결을 나눈다.
