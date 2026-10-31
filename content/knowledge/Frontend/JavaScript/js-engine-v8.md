@@ -133,7 +133,7 @@ flowchart LR
 | 비동기 | 파일·네트워크 작업을 기다리지 않고 콜백·Promise로 결과를 받는다 | [[event-loop\|이벤트 루프]], [[async-await\|async/await]] |
 | 프로토타입 기반 객체 | 클래스가 아니라 다른 객체를 원형으로 삼아 속성·메서드를 물려받는다. `class`는 그 위의 문법이다 | [[prototype-and-inheritance\|프로토타입과 상속]] |
 | 자동 가비지 컬렉션 | 더 이상 닿을 수 없는 객체의 메모리를 엔진이 회수한다 | [[garbage-collection\|가비지 컬렉션]] |
-| TypeScript의 하위 집합 | 유효한 JavaScript는 유효한 TypeScript다. TypeScript는 타입 주석을 더하고 컴파일 때 지운다 | [[typescript-basics\|TypeScript 기초]] |
+| TypeScript의 하위 집합(문법상) | 유효한 JavaScript는 문법상 유효한 TypeScript다. 다만 타입 검사기는 유효한 JS 일부를 오류로 본다. TypeScript는 타입 주석을 더하고 컴파일 때 지운다 | [[typescript-basics\|TypeScript 기초]] |
 
 ## 역사: V8 파이프라인의 변화
 

@@ -102,7 +102,7 @@ Lombok 사용 기준은 [[spring-application-design|스프링 애플리케이션
 
 ## 대량 데이터 읽기: 배치와 no-offset
 
-Spring Batch의 `JpaPagingItemReader`는 `LIMIT ... OFFSET ...`으로 페이지를 읽는다. **OFFSET은 건너뛸 행을 모두 읽고 버리므로 뒤 페이지일수록 느려진다.** 수십만 건을 넘으면 마지막 페이지 하나에 수 초가 걸린다.
+Spring Batch의 `JpaPagingItemReader`는 `LIMIT ... OFFSET ...`으로 페이지를 읽는다. **OFFSET은 건너뛸 행을 모두 읽고 버리므로 뒤 페이지일수록 느려진다.**
 
 | 방식 | 다음 페이지 조건 | 성능 | 제약 |
 | --- | --- | --- | --- |

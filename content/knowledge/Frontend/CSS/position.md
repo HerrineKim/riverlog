@@ -85,10 +85,10 @@ z-index는 관리하지 않으면 어느새 엉뚱한 요소가 위로 올라와
 ```css
 .card { background: rgb(232 240 254 / .4); }
 .card .bg-shape { position: relative; z-index: -1; }   /* .card의 z-index가 auto면 카드 뒤로 간다 */
-.card { position: relative; z-index: 0; }              /* 이 줄을 더하면 카드가 쌓임 맥락이 되어 -999를 줘도 카드 뒤로 못 간다 */
+.card { position: relative; z-index: 0; }              /* 이 줄을 더하면 카드가 쌓임 맥락이 되어 z-index를 아무리 낮춰도 카드 뒤로 못 간다 */
 ```
 
-`<html>`은 그 자체가 쌓임 맥락이라 어떤 요소도 그 뒤로 갈 수 없다. `opacity`·`transform`·`will-change`·`filter`가 맥락을 만드는 이유는 브라우저가 이런 요소를 **별도 합성 레이어**로 올려 GPU로 처리하기 때문이다. 바뀔 가능성이 큰 요소를 포스트잇처럼 따로 떼어 두면 전체를 다시 그리지 않아도 된다([[browser-rendering|브라우저 렌더링 과정]]).
+`<html>`은 그 자체가 쌓임 맥락이라 어떤 요소도 그 뒤로 갈 수 없다. `opacity`·`transform`·`will-change`·`filter`가 맥락을 만드는 것은 명세가 정한 규칙이다. 이와 별개로 브라우저는 이런 요소를 구현 최적화로 **별도 합성 레이어**에 올려 GPU로 처리하기도 한다. 바뀔 가능성이 큰 요소를 포스트잇처럼 따로 떼어 두면 전체를 다시 그리지 않아도 된다([[browser-rendering|브라우저 렌더링 과정]]).
 
 컴포넌트 안의 겹침을 바깥과 분리하려면 `isolation: isolate`로 일부러 쌓임 맥락을 만든다. 모달·토스트·드롭다운은 `<dialog>`의 `showModal()`이나 `popover` 속성을 쓰면 **최상위 레이어(top layer)**에 올라가 `z-index` 경쟁에서 벗어난다.
 

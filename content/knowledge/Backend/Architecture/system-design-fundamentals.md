@@ -5,7 +5,7 @@ summary: "확장성·가용성·신뢰성·성능이라는 네 가지 품질 속
 tags: ["backend", "architecture", "scalability", "software-engineering", "design"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-system-designs", "https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide", "https://bytebytego.com/guides/top-5-trade-offs-in-system-designs", "https://bytebytego.com/guides/must-know-system-design-building-blocks", "https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean", "https://learn.microsoft.com/en-us/azure/well-architected/", "https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+sources: ["https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-system-designs", "https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide", "https://bytebytego.com/guides/top-5-trade-offs-in-system-designs", "https://bytebytego.com/guides/must-know-system-design-building-blocks", "https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean", "https://learn.microsoft.com/en-us/azure/well-architected/", "https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html", "https://docs.cloud.google.com/architecture/framework"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[The Fantastic Four of System Design](https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design)」, 「[System Design Cheat Sheet](https://bytebytego.com/guides/system-design-cheat-sheet)」, 「[A cheat sheet for system designs](https://bytebytego.com/guides/a-cheat-sheet-for-system-designs)」, 「[System Design Blueprint](https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide)」, 「[Top 5 Trade-offs in System Designs](https://bytebytego.com/guides/top-5-trade-offs-in-system-designs)」, 「[Must Know System Design Building Blocks](https://bytebytego.com/guides/must-know-system-design-building-blocks)」, 「[CAP, BASE, SOLID, KISS](https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean)」를 바탕으로 재구성한 노트다. 클라우드 설계의 기둥과 원칙은 Microsoft의 「[Azure Well-Architected Framework](https://learn.microsoft.com/en-us/azure/well-architected/)」, 「[Design principles for Azure applications](https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/)」로 보강했다. KISS와 코드 원칙의 연결은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」을 점검해 보강했다.
@@ -74,7 +74,7 @@ SQL·NoSQL, 배치·스트림, 동기·비동기처럼 기술 선택에서 반�
 
 ## 클라우드 설계의 다섯 기둥과 원칙
 
-클라우드 제공자는 품질 속성을 **Well-Architected Framework**의 다섯 기둥으로 묶는다. AWS·Azure·Google Cloud가 같은 이름의 틀을 쓴다(AWS는 여섯 번째로 지속 가능성을 둔다). 설계 리뷰를 할 때 다섯 기둥을 하나씩 짚으면 빠진 것이 드러난다.
+클라우드 제공자는 품질 속성을 **Well-Architected Framework**의 다섯 기둥으로 묶는다. AWS·Azure·Google Cloud가 같은 이름의 틀을 쓴다(AWS와 Google Cloud는 여섯 번째로 지속 가능성을 둔다). 설계 리뷰를 할 때 다섯 기둥을 하나씩 짚으면 빠진 것이 드러난다.
 
 | 기둥 | 목표 | 대표 수단 |
 | --- | --- | --- |

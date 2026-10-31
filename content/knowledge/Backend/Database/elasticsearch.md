@@ -421,7 +421,7 @@ PUT _ingest/pipeline/nginx-logs
 - 색인 요청에 `?pipeline=이름`을 붙이거나 인덱스 설정 `index.default_pipeline`으로 지정한다.
 - Logstash와 비교하면 별도 서버가 필요 없지만, 변환 비용이 데이터 노드 CPU를 쓰므로 양이 많으면 전용 ingest 노드를 둔다. 여러 목적지로 보내거나 복잡한 상태 처리가 필요하면 Logstash가 맞다.
 
-**OpenSearch**(+ OpenSearch Dashboards)도 같은 구조로 쓴다. 2021년 Elastic이 라이선스를 비공개 쪽(SSPL·Elastic License)으로 바꾸자 AWS가 갈라낸 포크이고, 2024년 9월부터 리눅스 재단 산하 OpenSearch Software Foundation이 관리한다. Elasticsearch도 2024년 8월 AGPL을 라이선스 선택지에 다시 넣어 오픈소스로 돌아왔다. 지표·트레이스까지 묶은 관측성(observability) 도구로는 Grafana 계열(Loki·Prometheus) 같은 대안도 흔하다.
+**OpenSearch**(+ OpenSearch Dashboards)도 같은 구조로 쓴다. 2021년 Elastic이 라이선스를 소스는 공개하지만 OSI 승인 오픈소스는 아닌 쪽(SSPL·Elastic License)으로 바꾸자 AWS가 갈라낸 포크이고, 2024년 9월부터 리눅스 재단 산하 OpenSearch Software Foundation이 관리한다. Elasticsearch도 2024년 8월 AGPL을 라이선스 선택지에 다시 넣어 오픈소스로 돌아왔다. 지표·트레이스까지 묶은 관측성(observability) 도구로는 Grafana 계열(Loki·Prometheus) 같은 대안도 흔하다.
 
 ## 정리
 
