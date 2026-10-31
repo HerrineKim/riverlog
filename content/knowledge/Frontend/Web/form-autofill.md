@@ -19,10 +19,10 @@ sources: ["https://web.dev/learn/forms/auto", "https://web.dev/learn/forms/autof
 
 ## 브라우저가 칸을 알아보는 방법
 
-```text
-1. autocomplete 값이 있으면 그것을 믿는다      ← 가장 확실
-2. 없으면 휴리스틱: name · id · type · label 글자 · 주변 문맥
-3. 둘 다 애매하면 아무것도 제안하지 않는다
+```mermaid
+flowchart TB
+  a["1. autocomplete 값이 있으면 그것을 믿는다<br/>(가장 확실)"] -->|"없으면"| b["2. 휴리스틱: name · id · type · label 글자 · 주변 문맥"]
+  b -->|"둘 다 애매하면"| c["3. 아무것도 제안하지 않는다"]
 ```
 
 휴리스틱은 브라우저마다 다르고 보장되지 않는다. 그래서 **autocomplete를 명시하고, name·id·type도 같은 뜻으로 맞춘다.**
