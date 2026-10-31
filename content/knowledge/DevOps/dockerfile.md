@@ -25,11 +25,13 @@ Docker Hub의 공식 이미지(`nginx`, `mariadb`)를 그대로 쓸 수도 있�
 
 이미지는 빌드 단계마다 생긴 파일 변경분을 한 층씩 쌓은 것이다. `RUN`·`COPY`·`ADD`처럼 파일을 바꾸는 명령이 층을 만들고, `CMD`·`ENV`·`EXPOSE` 같은 메타데이터 명령은 파일을 바꾸지 않는다. 층들을 하나의 디렉터리처럼 겹쳐 보여 주는 것이 **유니온 마운트**이고, 리눅스 커널의 OverlayFS(Docker의 기본 스토리지 드라이버 `overlay2`)가 이를 구현한다.
 
-```text
-merged    ← 컨테이너가 보는 최종 파일 시스템
-  ▲
-upperdir  ← 컨테이너의 쓰기 층 (컨테이너마다 하나, 지우면 사라짐)
-lowerdir  ← 이미지의 읽기 전용 층들 (여러 컨테이너·이미지가 공유)
+```mermaid
+block-beta
+  columns 1
+  merged["merged<br>컨테이너가 보는 최종 파일 시스템"]
+  arrow<["&nbsp;"]>(up)
+  upper["upperdir<br>컨테이너의 쓰기 층 (컨테이너마다 하나, 지우면 사라짐)"]
+  lower["lowerdir<br>이미지의 읽기 전용 층들 (여러 컨테이너·이미지가 공유)"]
 ```
 
 | 동작 | 일어나는 일 |

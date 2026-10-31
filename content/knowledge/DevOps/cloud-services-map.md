@@ -84,8 +84,9 @@ AWS는 2006년 S3·SQS·EC2 세 서비스로 시작해 관리형 DB, 서버리�
 
 데이터 파이프라인은 어느 클라우드든 다섯 단계로 이뤄진다.
 
-```text
-수집(Ingestion) → 데이터 레이크(원본 저장) → 처리(Computation) → 웨어하우스(정제된 구조화 데이터) → 표현(시각화·리포트)
+```mermaid
+flowchart LR
+  A["수집(Ingestion)"] --> B["데이터 레이크<br>(원본 저장)"] --> C["처리(Computation)"] --> D["웨어하우스<br>(정제된 구조화 데이터)"] --> E["표현<br>(시각화·리포트)"]
 ```
 
 | 단계 | 하는 일 | AWS | Azure | Google Cloud |

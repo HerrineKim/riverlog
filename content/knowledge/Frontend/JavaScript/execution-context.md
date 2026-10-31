@@ -31,9 +31,13 @@ function outer() { inner() }
 outer()
 ```
 
-```text
-[전역] → [전역, outer] → [전역, outer, inner] → [전역, outer] → [전역] → []
-           outer() 호출      inner() 호출         inner 반환     outer 반환  스크립트 끝
+```mermaid
+flowchart LR
+  e0["[전역]"] -->|"outer() 호출"| e1["[전역, outer]"]
+  e1 -->|"inner() 호출"| e2["[전역, outer, inner]"]
+  e2 -->|"inner 반환"| e3["[전역, outer]"]
+  e3 -->|"outer 반환"| e4["[전역]"]
+  e4 -->|"스크립트 끝"| e5["[]"]
 ```
 
 - 함수를 부르면 현재 컨텍스트는 멈춘 채 스택에 남고, 새 컨텍스트가 위에 올라간다. 반환하면 꺼내지고 멈춘 곳부터 이어 간다.
@@ -113,19 +117,15 @@ function sum(num) {
 var r = sum(4)
 ```
 
-```text
-전역 생성 단계                       전역 실행 단계(sum 호출 직전)
-VariableEnvironment                  VariableEnvironment
-  a: undefined                         a: 3
-  r: undefined                         r: undefined
-  sum: <function>                      sum: <function>
-LexicalEnvironment                   LexicalEnvironment
-  b: <uninitialized>                   b: 4
-
-sum(4) 생성 단계                     sum(4) 실행 단계 → 반환
-  num: 4, arguments: [4]               num: 4, arguments: [4]
-  t: undefined                         t: 9   → 20을 반환하고 스택에서 빠진다
-  outer: 전역 환경                   전역의 r에 20이 들어간다
+```mermaid
+flowchart TB
+  g1["전역 생성 단계<br/>VariableEnvironment: a: undefined, r: undefined, sum: #lt;function#gt;<br/>LexicalEnvironment: b: #lt;uninitialized#gt;"]
+  g2["전역 실행 단계(sum 호출 직전)<br/>VariableEnvironment: a: 3, r: undefined, sum: #lt;function#gt;<br/>LexicalEnvironment: b: 4"]
+  f1["sum(4) 생성 단계<br/>num: 4, arguments: [4]<br/>t: undefined<br/>outer: 전역 환경"]
+  f2["sum(4) 실행 단계<br/>num: 4, arguments: [4]<br/>t: 9"]
+  g3["전역의 r에 20이 들어간다"]
+  g1 --> g2 --> f1 --> f2
+  f2 -->|"반환 · 20을 반환하고 스택에서 빠진다"| g3
 ```
 
 이 두 단계에서 익숙한 현상들이 나온다.

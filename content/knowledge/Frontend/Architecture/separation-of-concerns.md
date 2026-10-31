@@ -18,10 +18,9 @@ sources: ["https://velog.io/@teo/separation-of-concerns-of-frontend"]
 
 ## 분리 축이 바뀌어 온 과정
 
-```text
-역할로 분리          기능으로 분리           기능 안에서 다시 계층으로
-HTML / CSS / JS ──▶  컴포넌트 (수직 관통) ──▶ UI 계층 · 스타일 의존 · 상태 · 서버 상태
-(수평 계층)                                    (수평 계층 재도입)
+```mermaid
+flowchart LR
+  A["역할로 분리<br>HTML / CSS / JS<br>(수평 계층)"] --> B["기능으로 분리<br>컴포넌트 (수직 관통)"] --> C["기능 안에서 다시 계층으로<br>UI 계층 · 스타일 의존 · 상태 · 서버 상태<br>(수평 계층 재도입)"]
 ```
 
 ### 1. 역할: HTML, CSS, JS

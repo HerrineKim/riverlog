@@ -153,15 +153,17 @@ flowchart LR
 
 카드 게임 한 판을 돌리는 명령형 코드(전역 변수 몇 개, `while` 루프 안의 `splice`·점수 증가·`console.log`)를 함수형으로 바꾸는 순서다. 처음부터 함수형으로 쓰려 애쓰기보다 **아무렇게나 짠 뒤 조금씩 옮기면** 습관이 붙는다.
 
-```text
-1. 안쪽 함수의 console.log를 바깥 루프로 옮긴다            효과 모으기
-2. 배열을 splice하던 helper가 고른 값만 반환하게 한다      helper가 순수해진다. 변경은 루프로
-3. 메시지를 정하는 if문과 출력을 떼어 낸다                  winMessage(scores) → 문자열
-4. 흩어진 상태 변수를 state 객체 하나로 묶는다
-5. nextState(state) → 새 state 함수를 만든다              게임 규칙 전체가 순수 함수에 들어간다
-6. state 하나를 덮어쓰지 말고 states 배열에 쌓는다          매 턴의 상태가 기록으로 남는다
-7. 「상태를 만드는 단계」와 「출력하는 단계」로 나눈다       report(states, turnMessage, endMessage)
-8. while 루프를 재귀로 바꾼다 (선택)                       변경하는 코드가 사라진다
+```mermaid
+flowchart TB
+  s1["1. 안쪽 함수의 console.log를 바깥 루프로 옮긴다<br/>효과 모으기"]
+  s2["2. 배열을 splice하던 helper가 고른 값만 반환하게 한다<br/>helper가 순수해진다. 변경은 루프로"]
+  s3["3. 메시지를 정하는 if문과 출력을 떼어 낸다<br/>winMessage(scores) → 문자열"]
+  s4["4. 흩어진 상태 변수를 state 객체 하나로 묶는다"]
+  s5["5. nextState(state) → 새 state 함수를 만든다<br/>게임 규칙 전체가 순수 함수에 들어간다"]
+  s6["6. state 하나를 덮어쓰지 말고 states 배열에 쌓는다<br/>매 턴의 상태가 기록으로 남는다"]
+  s7["7. 「상태를 만드는 단계」와 「출력하는 단계」로 나눈다<br/>report(states, turnMessage, endMessage)"]
+  s8["8. while 루프를 재귀로 바꾼다 (선택)<br/>변경하는 코드가 사라진다"]
+  s1 --> s2 --> s3 --> s4 --> s5 --> s6 --> s7 --> s8
 ```
 
 끝나면 코드의 대부분이 입력을 받아 출력을 돌려주는 순수 함수이고, 효과는 마지막 보고 함수 한곳에만 남는다. 과정에서 `nextState`, `turnMessage`, `endMessage`처럼 **이름 붙일 만한 책임**이 저절로 드러난다. 객체 지향으로 `Game`·`Player`·`Deck` 클래스를 나누는 것은 상태를 정리할 뿐 줄이지 않는다. 변경과 효과가 여전히 객체마다 흩어져 있다.

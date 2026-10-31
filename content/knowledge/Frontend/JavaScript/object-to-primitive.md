@@ -32,12 +32,19 @@ sources: ["https://ko.javascript.info/object-toprimitive", "https://ko.javascrip
 
 ## 엔진이 메서드를 찾는 순서
 
-```text
-1. obj[Symbol.toPrimitive](hint)가 있으면 그것을 부른다. 원시값이 아니면 TypeError
-2. 없으면 hint가 "string"일 때:          toString() → valueOf()
-   hint가 "number"·"default"일 때:       valueOf()  → toString()
-   앞 메서드가 객체를 돌려주면 무시하고 다음 메서드를 쓴다. 둘 다 객체면 TypeError
-3. 얻은 원시값이 연산에 맞지 않으면 원시값 규칙으로 한 번 더 바꾼다
+```mermaid
+flowchart TB
+  q1{"1. obj[Symbol.toPrimitive](hint)가 있는가"}
+  q1 -->|"있다"| callfn["그것을 부른다"]
+  callfn -->|"원시값이 아니면"| err1["TypeError"]
+  callfn -->|"원시값이면"| conv
+  q1 -->|"2. 없다"| hint{"hint"}
+  hint -->|"#quot;string#quot;"| ord1["toString() → valueOf()"]
+  hint -->|"#quot;number#quot;·#quot;default#quot;"| ord2["valueOf() → toString()"]
+  ord1 --> pick["앞 메서드가 객체를 돌려주면 무시하고 다음 메서드를 쓴다"]
+  ord2 --> pick
+  pick -->|"둘 다 객체면"| err2["TypeError"]
+  pick -->|"원시값을 얻으면"| conv["3. 얻은 원시값이 연산에 맞지 않으면<br/>원시값 규칙으로 한 번 더 바꾼다"]
 ```
 
 일반 객체의 기본 메서드는 `toString()`이 `'[object Object]'`, `valueOf()`가 **객체 자신**이다. `valueOf`가 객체를 돌려주니 무시되고, 결국 거의 모든 변환이 `toString`으로 떨어진다. `valueOf`가 이렇게 쓸모없는 것은 역사적 이유다.

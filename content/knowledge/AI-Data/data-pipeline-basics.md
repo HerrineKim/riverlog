@@ -16,10 +16,12 @@ sources: ["https://bytebytego.com/guides/data-pipelines-overview", "https://byte
 
 ## 다섯 단계
 
-```text
-수집(Collect) ─▶ 적재(Ingest) ─▶ 저장(Store) ─▶ 처리(Compute) ─▶ 활용(Consume)
- 앱·DB·기기      이벤트 큐에       웨어하우스·      정제·집계·       BI·대시보드·
- 스트림          정리해 넣기       레이크·DB        변환             ML·서비스
+```mermaid
+flowchart LR
+  C["수집(Collect)<br/>앱·DB·기기 스트림"] --> I["적재(Ingest)<br/>이벤트 큐에 정리해 넣기"]
+  I --> S["저장(Store)<br/>웨어하우스·레이크·DB"]
+  S --> P["처리(Compute)<br/>정제·집계·변환"]
+  P --> U["활용(Consume)<br/>BI·대시보드·ML·서비스"]
 ```
 
 | 단계 | 하는 일 | 예 |
