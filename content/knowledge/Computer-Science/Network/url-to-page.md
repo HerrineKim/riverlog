@@ -15,16 +15,15 @@ sources: ["https://riverkim.kr/320", "https://riverkim.kr/125", "https://riverki
 
 이 흐름은 네트워크 노트 여러 편을 한 줄로 꿰는 지도 역할을 한다. 예로 `https://example.com/books/1`을 입력했다고 하자.
 
-```text
-1. URL 해석        https  ://  example.com  /books/1
-                    프로토콜     도메인        경로
-2. DNS 조회        example.com → 93.184.x.x   (브라우저·OS 캐시 → DNS 서버)
-3. TCP 연결        3-way handshake로 서버 443 포트와 연결
-4. TLS 핸드셰이크   암호화에 쓸 키를 교환 (HTTPS일 때)
-5. HTTP 요청       GET /books/1  + 헤더 (+ 바디)
-6. 서버 처리       웹 서버 → WAS → DB …
-7. HTTP 응답       200 OK + 헤더 + HTML
-8. 렌더링          HTML 파싱 → CSS 적용 → JS 실행 → 화면 그리기
+```mermaid
+flowchart TB
+  s1["1. URL 해석<br/>https(프로토콜) :// example.com(도메인) /books/1(경로)"] --> s2["2. DNS 조회<br/>example.com → 93.184.x.x<br/>(브라우저·OS 캐시 → DNS 서버)"]
+  s2 --> s3["3. TCP 연결<br/>3-way handshake로 서버 443 포트와 연결"]
+  s3 --> s4["4. TLS 핸드셰이크<br/>암호화에 쓸 키를 교환 (HTTPS일 때)"]
+  s4 --> s5["5. HTTP 요청<br/>GET /books/1 + 헤더 (+ 바디)"]
+  s5 --> s6["6. 서버 처리<br/>웹 서버 → WAS → DB …"]
+  s6 --> s7["7. HTTP 응답<br/>200 OK + 헤더 + HTML"]
+  s7 --> s8["8. 렌더링<br/>HTML 파싱 → CSS 적용 → JS 실행 → 화면 그리기"]
 ```
 
 HTTP/3를 쓰는 서버라면 3·4단계가 UDP 위의 **QUIC 핸드셰이크 하나**로 합쳐진다. TLS 1.3이 QUIC에 내장되어 있어 첫 연결은 1-RTT, 재방문은 0-RTT로 요청을 보낼 수 있다.

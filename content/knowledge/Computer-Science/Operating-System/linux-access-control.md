@@ -23,13 +23,14 @@ DAC만 있으면 root 권한을 탈취한 공격자가 시스템 전체를 갖�
 
 ## DAC: 파일 권한
 
-```text
--rwxr-x---  1 alice dev  script.sh
- │└┬┘└┬┘└┬┘
- │ │  │  └ 기타 사용자: 권한 없음
- │ │  └ 그룹(dev): 읽기·실행
- │ └ 소유자(alice): 읽기·쓰기·실행
- └ 파일 종류 (- 일반, d 디렉터리, l 링크)
+```mermaid
+block-beta
+  columns 4
+  line["-rwxr-x---  1 alice dev  script.sh"]:4
+  kind["-<br/>파일 종류 (- 일반, d 디렉터리, l 링크)"]
+  owner["rwx<br/>소유자(alice): 읽기·쓰기·실행"]
+  group["r-x<br/>그룹(dev): 읽기·실행"]
+  other["---<br/>기타 사용자: 권한 없음"]
 ```
 
 | 권한 | 파일 | 디렉터리 |

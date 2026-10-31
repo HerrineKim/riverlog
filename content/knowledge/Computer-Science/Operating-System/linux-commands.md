@@ -75,11 +75,11 @@ tail -f app.log | grep --line-buffered ERROR
 
 ### 확인 순서
 
-```text
-1. top / htop          ─ 어느 프로세스가 쓰나, us(사용자)·sy(커널)·wa(I/O 대기)·st(가상화 뺏김) 비율
-2. top -H -p <PID>     ─ 그 프로세스의 어느 스레드인가
-3. 스택 보기           ─ 그 스레드가 어디서 도나 (jstack, py-spy dump, perf top, gdb)
-4. 시간 맞춰 보기      ─ 배포·트래픽·크론 시각과 겹치나 (메트릭 대시보드)
+```mermaid
+flowchart TB
+  s1["1. top / htop<br/>어느 프로세스가 쓰나, us(사용자)·sy(커널)·wa(I/O 대기)·st(가상화 뺏김) 비율"] --> s2["2. top -H -p #lt;PID#gt;<br/>그 프로세스의 어느 스레드인가"]
+  s2 --> s3["3. 스택 보기<br/>그 스레드가 어디서 도나 (jstack, py-spy dump, perf top, gdb)"]
+  s3 --> s4["4. 시간 맞춰 보기<br/>배포·트래픽·크론 시각과 겹치나 (메트릭 대시보드)"]
 ```
 
 - `sy`가 높으면 시스템 호출·문맥 교환이 많다는 뜻이고, `wa`가 높으면 CPU가 아니라 디스크·네트워크 I/O가 병목이다.
