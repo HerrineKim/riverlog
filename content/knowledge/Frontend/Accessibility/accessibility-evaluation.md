@@ -5,7 +5,7 @@ summary: "접근성 감사는 기준선을 잡고 개발 주기 내내 반복하
 tags: ["accessibility", "frontend", "testing", "wcag", "ux"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/articles/evaluationguide/", "https://webaim.org/articles/tools/", "https://webaim.org/presentations/2024/january/", "https://wave.webaim.org/", "https://wave.webaim.org/help", "https://webaim.org/articles/label-name/", "https://www.html5accessibility.com/tests/tsbookmarklet.html", "https://overlayfactsheet.com/en/", "https://webaim.org/projects/million/", "https://wave.webaim.org/api/docs", "https://web.dev/learn/accessibility/measure", "https://web.dev/learn/accessibility/test-automated", "https://web.dev/learn/accessibility/test-manual", "https://web.dev/learn/accessibility/glossary", "https://www.w3.org/WAI/test-evaluate/tools/selecting/", "https://www.youtube.com/watch?v=_WUHPk8BGfo"]
+sources: ["https://webaim.org/articles/evaluationguide/", "https://webaim.org/articles/tools/", "https://webaim.org/presentations/2024/january/", "https://wave.webaim.org/", "https://wave.webaim.org/help", "https://webaim.org/articles/label-name/", "https://www.html5accessibility.com/tests/tsbookmarklet.html", "https://overlayfactsheet.com/en/", "https://webaim.org/projects/million/", "https://wave.webaim.org/api/docs", "https://web.dev/learn/accessibility/measure", "https://web.dev/learn/accessibility/test-automated", "https://web.dev/learn/accessibility/test-manual", "https://web.dev/learn/accessibility/glossary", "https://www.w3.org/WAI/test-evaluate/tools/selecting/", "https://www.youtube.com/watch?v=_WUHPk8BGfo", "https://webaim.org/projects/practitionersurvey3/", "https://www.ftc.gov/news-events/news/press-releases/2025/04/ftc-approves-final-order-requiring-accessibe-pay-1-million"]
 ---
 
 > WebAIM의 「[Web Accessibility Evaluation Guide](https://webaim.org/articles/evaluationguide/)」, 「[Accessibility Evaluation Tools](https://webaim.org/articles/tools/)」, 웹 접근성 교육 자료(「[Virtual Web Accessibility Training](https://webaim.org/presentations/2024/january/)」)와 [WAVE](https://wave.webaim.org/) 도움말, 「[Overlay Fact Sheet](https://overlayfactsheet.com/en/)」을 바탕으로 재구성하고, 감사 계획·도구 선택 기준·자동과 수동의 경계와 자주 나오는 문제는 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 측정·자동 테스트·수동 테스트 편으로 보강한 노트다.
@@ -237,7 +237,7 @@ macOS는 시스템 설정의 키보드 탐색을 켜고, Safari는 설정 → �
 | 사용자를 돕는다 | 많은 장애인 사용자가 오히려 방해받거나 막힌다고 보고하고, 오버레이를 차단하는 사람도 있다 |
 | (숨은 비용) 보조 기술 감지 | 스크린 리더 사용을 감지해 설정을 켜면 장애 여부라는 민감 정보를 동의 없이 수집하는 셈이 된다 |
 
-[Overlay Fact Sheet](https://overlayfactsheet.com/en/)에는 1,000명 넘는 접근성 실무자·장애인 사용자가 "오버레이를 권하지 않고, 문제를 원인에서 고친다"고 서명했다. WebAIM 실무자 설문에서도 응답자 67%(장애가 있는 응답자는 72%)가 오버레이가 효과가 없거나 거의 없다고 답했다. 2025년에는 미국 연방거래위원회(FTC)가 AI 접근성 제품의 준수 보장 광고를 기만으로 보고 100만 달러 제재를 내렸다.
+[Overlay Fact Sheet](https://overlayfactsheet.com/en/)에는 1,000명 넘는 접근성 실무자·장애인 사용자가 "오버레이를 권하지 않고, 문제를 원인에서 고친다"고 서명했다. [WebAIM 실무자 설문](https://webaim.org/projects/practitionersurvey3/)에서도 응답자 67%(장애가 있는 응답자는 72%)가 오버레이가 효과가 없거나 거의 없다고 답했다. 2025년에는 미국 연방거래위원회(FTC)가 오버레이 업체 accessiBe의 WCAG 준수 보장 광고를 문제 삼아 100만 달러를 내라는 최종 명령을 내렸다([FTC 보도자료](https://www.ftc.gov/news-events/news/press-releases/2025/04/ftc-approves-final-order-requiring-accessibe-pay-1-million)).
 
 ## 정리
 

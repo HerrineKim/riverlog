@@ -5,7 +5,7 @@ summary: "선택자와 선언으로 이루어진 CSS 문법, 스타일 적용 �
 tags: ["css", "frontend"]
 source: til
 date: "2026-10-21"
-sources: ["https://riverkim.kr/263", "https://riverkim.kr/271", "https://riverkim.kr/225", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value", "https://web.dev/learn/css/sizing", "https://web.dev/learn/css/color", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/reset-normalize.md", "http://nicolasgallagher.com/about-normalize-css/", "http://meyerweb.com/eric/tools/css/reset/", "https://css-tricks.com/rems-ems/"]
+sources: ["https://riverkim.kr/263", "https://riverkim.kr/271", "https://riverkim.kr/225", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value", "https://web.dev/learn/css/sizing", "https://web.dev/learn/css/color", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/reset-normalize.md", "http://nicolasgallagher.com/about-normalize-css/", "http://meyerweb.com/eric/tools/css/reset/", "https://css-tricks.com/rems-ems/", "https://webkit.org/blog/10042/wide-gamut-color-in-css-with-display-p3/"]
 ---
 
 > riverkim.kr에 쓴 글을 정리한 노트에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Sizing Units·Color 모듈을 더해 보강했다.
@@ -155,7 +155,7 @@ h1 {
 | 함수 | 채널 | 쓰임 |
 | --- | --- | --- |
 | `color(srgb r g b)` | 0~1 | sRGB를 0~1로. `rgb(72% 8% 25%)` = `color(srgb .72 .08 .25)` |
-| `color(display-p3 r g b)` | 0~1 | Display P3 색역(sRGB보다 약 50% 넓다). 같은 숫자라도 더 선명한 색 |
+| `color(display-p3 r g b)` | 0~1 | Display P3 색역(색 공간 부피로 sRGB보다 약 50% 넓다, [WebKit](https://webkit.org/blog/10042/wide-gamut-color-in-css-with-display-p3/)). 같은 숫자라도 더 선명한 색 |
 | `oklab(L a b)` | 밝기 0~1, a(초록↔빨강)·b(파랑↔노랑) -0.4~0.4 | 매끄러운 그라디언트, 색상·밝기를 유지한 채 채도 조절 |
 | `oklch(L C H)` | 밝기, 채도(0~0.4 남짓), 색상 각도 | 지각적으로 균일하다. 색상을 바꿔도 밝기가 그대로라 팔레트 만들기에 좋다 |
 | `lab()`, `lch()`, `hwb()` | | 다른 색 공간. 다 외울 필요는 없다 |

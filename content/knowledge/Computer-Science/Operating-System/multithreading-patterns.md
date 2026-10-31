@@ -186,7 +186,7 @@ CAS는 "메모리 값이 기대한 값과 같을 때만 새 값으로 바꾼다"
 
 ## 멀티스레드 프로그램 설계 규칙
 
-패턴을 고르기 전에, 프로그램을 어떻게 쪼갤지 정하는 일반 규칙이다. Intel의 병렬화 가이드에서 정리된 여덟 가지가 널리 인용된다.
+패턴을 고르기 전에, 프로그램을 어떻게 쪼갤지 정하는 일반 규칙이다. Intel의 Clay Breshears가 「[8 Simple Rules for Designing Threaded Applications](https://jacobfilipp.com/DrDobbs/2008webarticles/print09b6.html)」(Dr. Dobb's, 2008)에서 정리한 여덟 가지다.
 
 | 규칙 | 내용 |
 | --- | --- |

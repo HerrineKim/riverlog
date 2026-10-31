@@ -5,7 +5,7 @@ summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지
 tags: ["ci-cd", "devops", "docker", "github", "automation"]
 source: notion
 date: "2026-10-21"
-sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule", "https://github.com/actions/checkout/releases", "https://github.com/codecov/codecov-action/releases", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/build/ci/github-actions/", "https://docs.docker.com/build/cache/backends/", "https://testcontainers.com/"]
+sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule", "https://github.com/actions/checkout/releases", "https://github.com/codecov/codecov-action/releases", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/build/ci/github-actions/", "https://docs.docker.com/build/cache/backends/", "https://testcontainers.com/", "https://martinfowler.com/articles/continuousIntegration.html"]
 ---
 
 > 「GitHub Actions 예시」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「DevOps 간단 정리」, 「Github Action을 이용해 코드 검사 자동화하기」를 바탕으로 보강한 노트다. 「파이프라인 단계」와 「환경 승격」은 ByteByteGo의 System Design 101 가이드 「[CI/CD Pipeline Explained in Simple Terms](https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms)」, 「[CI/CD Simplified Visual Guide](https://bytebytego.com/guides/cicd-simplified-visual-guide)」, 「[How do Companies Ship Code to Production?](https://bytebytego.com/guides/how-do-companies-ship-code-to-production)」를 바탕으로 보강했다.
@@ -59,7 +59,7 @@ flowchart TB
 
 | 고려 사항 | 원칙 |
 | --- | --- |
-| 피드백 속도 | 빠른 검사(린트, 단위 테스트)를 앞에, 느린 검사(E2E)를 뒤에 둔다. 독립 job은 병렬로, 의존성·빌드는 캐시로 줄인다. 10분 안팎을 넘으면 개발자가 결과를 기다리지 않게 된다 |
+| 피드백 속도 | 빠른 검사(린트, 단위 테스트)를 앞에, 느린 검사(E2E)를 뒤에 둔다. 독립 job은 병렬로, 의존성·빌드는 캐시로 줄인다. XP는 빌드를 10분 안에 끝내라는 지침을 두고, Martin Fowler도 대부분의 프로젝트에 무리 없는 기준으로 본다([Continuous Integration](https://martinfowler.com/articles/continuousIntegration.html)) |
 | 재현성 | 의존성 잠금 파일, 고정된 러너 이미지·도구 버전. 같은 커밋은 같은 결과를 내야 한다 |
 | 불변 산출물 | 한 번 빌드해 고유 버전(커밋 해시)을 붙이고 모든 환경에 같은 것을 올린다 |
 | 품질 게이트 | 테스트·커버리지·정적 분석·보안 스캔의 통과 기준을 정해 실패하면 멈춘다. 브랜치 보호의 필수 검사로 건다 |

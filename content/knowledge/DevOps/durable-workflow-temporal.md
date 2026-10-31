@@ -41,8 +41,6 @@ sources: ["https://tech.inflab.com/20261009-jenkins-to-temporal/"]
 - **Heartbeat와 타임아웃**으로 오래 걸리는 Activity의 생존을 확인하고, 멈춘 작업을 감지한다.
 - **Schedule** 기능으로 정해진 시각마다 Workflow를 띄운다.
 
-(결정성·replay 같은 실행 세부 원리는 범위 밖이라 여기서 단정하지 않는다.)
-
 ## 왜 Argo가 아니라 Temporal인가
 
 | 기준 | Argo Workflows | Temporal |

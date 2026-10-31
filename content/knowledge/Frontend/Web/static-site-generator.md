@@ -5,7 +5,7 @@ summary: "정적 사이트 생성기(SSG)는 마크다운 콘텐츠와 템플릿
 tags: ["frontend", "web", "rendering", "performance", "devops"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2021/01/14/%EC%A0%95%EC%A0%81-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%83%9D%EC%84%B1%EA%B8%B0-Eleventy%EB%A1%9C-%EC%9B%8C%EB%93%9C%ED%94%84%EB%A0%88%EC%8A%A4-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%98%AE%EA%B8%B0/", "https://www.11ty.dev/docs/", "https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022", "https://wormwlrm.github.io/2022/02/25/Migration-Journey-from-Jekyll-to-Gatsby.html"]
+sources: ["https://webactually.com/2021/01/14/%EC%A0%95%EC%A0%81-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%83%9D%EC%84%B1%EA%B8%B0-Eleventy%EB%A1%9C-%EC%9B%8C%EB%93%9C%ED%94%84%EB%A0%88%EC%8A%A4-%EC%82%AC%EC%9D%B4%ED%8A%B8-%EC%98%AE%EA%B8%B0/", "https://www.11ty.dev/docs/", "https://engineering.linecorp.com/ko/blog/the-baseline-for-web-development-in-2022", "https://wormwlrm.github.io/2022/02/25/Migration-Journey-from-Jekyll-to-Gatsby.html", "https://almanac.httparchive.org/en/2021/jamstack"]
 ---
 
 > Scott Dawson의 「정적 사이트 생성기 Eleventy로 워드프레스 사이트 옮기기」(웹액츄얼리 번역, 2021.01)를 바탕으로 재구성한 노트다. 「[Jekyll에서 Gatsby로 떠나는 마이그레이션 여정](https://wormwlrm.github.io/2022/02/25/Migration-Journey-from-Jekyll-to-Gatsby.html)」의 내용을 더해 보강했다.
@@ -56,7 +56,7 @@ SSG로 만든 정적 파일(Markup)에 JavaScript와 외부 API를 더해 동적
 | Astro | Node.js | 정적 HTML이 기본이고, 필요한 부분만 React·Vue 컴포넌트로 hydration하는 아일랜드 구조 |
 | Next.js | React | 정적 생성과 서버 렌더링·RSC를 페이지 단위로 섞는다. 앱 같은 상호작용에 맞다 |
 
-**콘텐츠 사이트에 SPA 프레임워크를 쓰면 JS 비용을 치른다.** 실측 데이터에서 Gatsby·Next.js처럼 React 런타임을 싣는 SSG는 Hugo·Jekyll보다 JS를 수백 KB 더 보내고 Core Web Vitals 통과율도 낮았다. 블로그·문서·소개 사이트라면 JS를 기본으로 보내지 않는 도구부터 고려한다([[responsible-javascript|책임감 있는 자바스크립트]]). Next.js도 서버 컴포넌트를 쓰면 상호작용이 없는 부분의 JS는 보내지 않는다([[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]).
+**콘텐츠 사이트에 SPA 프레임워크를 쓰면 JS 비용을 치른다.** HTTP Archive의 [Web Almanac 2021 Jamstack 장](https://almanac.httparchive.org/en/2021/jamstack)에서 Gatsby·Next.js처럼 React 런타임을 싣는 SSG는 모바일 중앙값 기준 JS가 약 700KB로 Hugo·Jekyll(약 150KB)보다 수백 KB 많았고, Core Web Vitals 통과율도 낮았다. 블로그·문서·소개 사이트라면 JS를 기본으로 보내지 않는 도구부터 고려한다([[responsible-javascript|책임감 있는 자바스크립트]]). Next.js도 서버 컴포넌트를 쓰면 상호작용이 없는 부분의 JS는 보내지 않는다([[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]]).
 
 ## Eleventy의 구성 요소
 

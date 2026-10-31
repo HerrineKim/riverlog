@@ -40,7 +40,7 @@ sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%
 | 흔한 요청 | 물어볼 것 |
 | --- | --- |
 | jQuery 전체 | 몇 줄의 DOM 조작이면 네이티브 JS로 충분하지 않나 |
-| 캐러셀 | 이미지가 정말 다 필요한가. 사용자 대부분은 캐러셀을 보지 않는다. 강한 이미지 하나로 줄일 수 있나 |
+| 캐러셀 | 이미지가 정말 다 필요한가. 사용자 대부분이 캐러셀에 주목하지 않는다는 조사([Should I Use A Carousel?](https://shouldiuseacarousel.com/))가 있다. 강한 이미지 하나로 줄일 수 있나 |
 | 이미지 | 더 효율적인 형식(AVIF·WebP)과 알맞은 크기로 주고 있나([[responsive-images\|반응형 이미지]]) |
 | 웹 폰트 | 내려받은 폰트를 다 쓰나. 시스템 폰트 목록으로 대신할 수 없나 |
 | 유튜브 임베드 | 재생하지 않아도 수 MB를 받는다. 링크나 클릭 후 로드로 바꿀 수 없나 |
@@ -49,7 +49,7 @@ sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%
 
 ### 3. CSS도 바이트다
 
-- 쓰지 않는 CSS를 걷어내는 도구로 수백 KB를 수 KB로 줄인 사례가 흔하다.
+- 쓰지 않는 CSS를 걷어내는 도구(PurgeCSS)로 CSS를 259KB에서 9KB로 줄인 사례(사라 다얀)를 원문이 소개한다.
 - `div`와 클래스를 남발하기보다 요소 선택자와 상속을 활용하면 HTML·CSS가 함께 준다.
 - HTML·CSS·JS는 늘 압축(minify)하고, 이미지는 늘 최적화하고, 점진적으로 렌더링되게 한다.
 
@@ -60,7 +60,7 @@ sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%
 | 압축 | 텍스트 자원은 Brotli(또는 gzip)로 항상 압축한다 |
 | 서버 캐시 | Nginx FastCGI 캐시, WordPress 캐시 플러그인으로 매 요청마다 PHP·DB를 돌리지 않는다 |
 | HTTPS + HTTP/2·HTTP/3 | 연결 수립을 줄이고, 서비스 워커 같은 기술을 쓸 수 있게 된다([[pwa-service-worker\|PWA와 서비스 워커 캐시 전략]]) |
-| 재생 에너지 호스팅 | 개발자가 줄 수 있는 가장 큰 영향. The Green Web Foundation이 친환경 호스트 목록을 관리한다 |
+| 재생 에너지 호스팅 | 원문 글쓴이는 개발자가 줄 수 있는 가장 큰 영향으로 꼽는다. The Green Web Foundation이 친환경 호스트 목록을 관리한다 |
 
 피할 수 없는 배출은 탄소 상쇄를 고려할 수 있지만, 나무가 탄소를 흡수하는 기간은 100년 단위라 지금 배출을 줄이는 대안은 아니다. **먼저 줄이고, 남는 것을 상쇄한다.**
 

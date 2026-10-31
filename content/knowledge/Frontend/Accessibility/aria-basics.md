@@ -31,7 +31,7 @@ HTML이 `<main>`, `<nav>`, `<header>`, `<footer>`, `<aside>` 같은 랜드마크
 
 기본 role을 ARIA로 되풀이하지도 않는다. `<button role="button">`, `<nav role="navigation">`은 허용되지만 군더더기이고 실수의 여지만 늘린다.
 
-W3C의 「ARIA in HTML」은 HTML과 ARIA를 섞을 때 세 가지를 경계한다.
+W3C의 「ARIA in HTML」은 HTML과 ARIA를 섞을 때 다음 네 가지를 경계한다.
 
 | 경계할 것 | 나쁜 예 | 바로잡기 |
 | --- | --- | --- |
