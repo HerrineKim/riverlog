@@ -104,6 +104,4 @@ sources: ["https://web.dev/learn/ai/evaluation-driven-development", "https://web
 - 프롬프트·지표·테스트 입력은 코드처럼 버전 관리하고 CI에서 회귀를 막는다.
 - 증상 하나를 막는 좁은 규칙보다 상위 지시를 고친다.
 
-프롬프트의 명료함과 신뢰성은 **여러 번의 평가와 수정 끝에야** 나온다.
-
 관련 노트: [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[predictive-vs-generative-ai|예측형 AI와 생성형 AI]], [[tdd|프론트엔드에서의 TDD]], [[loop-engineering|루프 엔지니어링]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]]

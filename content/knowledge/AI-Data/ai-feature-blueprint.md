@@ -156,6 +156,4 @@ AI는 불확실성과 위험을 들여온다. 그래서 **결정적(deterministi
 - 개발자는 데이터 준비도·모델·지연·통합·운영비와 실패 모드를 추정하는 사람이다.
 - 추정은 끝에서 끝까지 이어진 프로토타입과 로그로 검증한다.
 
-AI 기능의 성패는 모델보다 **어떤 문제를 골랐나**에서 먼저 갈린다.
-
 관련 노트: [[predictive-vs-generative-ai|예측형 AI와 생성형 AI]], [[web-ai-platform-choice|웹 AI 플랫폼 고르기]], [[ai-ux-patterns|AI 기능의 UX 패턴]], [[responsible-ai-governance|책임 있는 AI]]

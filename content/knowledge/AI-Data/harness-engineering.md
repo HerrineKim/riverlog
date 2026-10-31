@@ -266,6 +266,4 @@ GitHub Copilot의 변화가 세 단계의 축소판이다. 현재 파일 자동�
 - 만드는 쪽과 판정하는 쪽을 나누고, 볼 수 없는 지식은 레포에 넣고, 실수는 하네스를 고쳐 구조적으로 막는다.
 - 외부 입력·민감 데이터·상태 변경 중 **둘까지만** 허용하고, 모델이 좋아지면 걷어 낼 수 있게 만든다.
 
-영어는 여전히 중요하지만, 이제 시스템 그 자체가 아니라 **시스템의 한 부품**이다.
-
 관련 노트: [[personal-agent-harness|내 일을 줄이는 하네스 만들기]], [[loop-engineering|루프 엔지니어링]], [[ai-era-developer|AI 시대 개발자의 역할]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[multi-agent|멀티 에이전트]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[evaluation-driven-development|평가 주도 개발]]
