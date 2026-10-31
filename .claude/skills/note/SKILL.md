@@ -95,6 +95,9 @@ grep -rh "^concept:\|^title:" content/knowledge | grep -i "<키워드>"
 | 주체끼리 주고받는 요청·응답 | `sequenceDiagram` |
 | 상태 전이 | `stateDiagram-v2` |
 | 연표 | `timeline` |
+| 두 축으로 나눈 2×2 분류 | `quadrantChart` (원문에 위치가 없으면 점은 넣지 않는다) |
+| Git 커밋·브랜치 그래프 | `gitGraph` |
+| 메모리·스택·비트 필드처럼 칸을 쌓은 그림 | `flowchart TB`(또는 `LR`)에 노드를 보이지 않는 링크 `~~~`로 쌓는다. `block-beta`는 사이트(React 페이지)에서 렌더링되지 않으니 쓰지 않는다 |
 
 - 노드·엣지 라벨은 큰따옴표로 감싼다: `A["초기화"] -->|"POST /hooks"| B["서버"]`. 노드 id는 영문·숫자만.
 - 색·`classDef`·`%%{init}%%`는 쓰지 않는다. 사이트 테마가 칠한다.

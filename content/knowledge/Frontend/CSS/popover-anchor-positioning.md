@@ -91,11 +91,20 @@ JS로는 `el.showPopover()`, `hidePopover()`, `togglePopover()`를 부른다. `s
 `position-area`는 앵커의 네 변과 원래 컨테이닝 블록이 만드는 **3×3 격자**의 칸을 고른다. 고른 칸이 새 컨테이닝 블록이 되므로, 그 안에서 `margin`·`padding`의 `%`도 그 칸 기준이다.
 
 ```mermaid
-block-beta
-  columns 3
-  ss["start/start"] sc["start/center"] se["start/end"]
-  cs["center/start"] anchor["[앵커]"] ce["center/end"]
-  es["end/start"] ec["end/center"] ee["end/end"]
+flowchart TB
+  subgraph row1[" "]
+    direction LR
+    ss["start/start"] ~~~ sc["start/center"] ~~~ se["start/end"]
+  end
+  subgraph row2[" "]
+    direction LR
+    cs["center/start"] ~~~ anchor["[앵커]"] ~~~ ce["center/end"]
+  end
+  subgraph row3[" "]
+    direction LR
+    es["end/start"] ~~~ ec["end/center"] ~~~ ee["end/end"]
+  end
+  row1 ~~~ row2 ~~~ row3
 ```
 
 | 키워드 | 예 | 뜻 |
