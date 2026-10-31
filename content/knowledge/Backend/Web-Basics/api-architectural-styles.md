@@ -100,7 +100,7 @@ SDK는 보통 **API를 감싼 것**이다. 결제·지도·클라우드 서비�
 
 - API 스타일은 단위(리소스·질의·메서드·메시지·이벤트), 형식, 통신 방향으로 갈린다.
 - 요청·응답형은 REST·GraphQL·gRPC·SOAP, 연결 유지형은 WebSocket, 이벤트 콜백형은 Webhook이다.
-- 하나만 고르는 문제가 아니다. **공개는 REST, 내부는 gRPC, 실시간은 WebSocket, 외부 이벤트는 Webhook**처럼 경계마다 다르게 쓴다.
+- 한 시스템에서도 **공개는 REST, 내부는 gRPC, 실시간은 WebSocket, 외부 이벤트는 Webhook**처럼 경계마다 다르게 쓴다.
 - SDK는 API를 언어별로 감싼 도구 묶음이다.
 
 관련 노트: [[rest-api|REST API 설계]], [[graphql|GraphQL]], [[grpc|gRPC: Protocol Buffers로 정의하는 RPC]], [[websocket|WebSocket]], [[webhook|웹훅과 폴링]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]]

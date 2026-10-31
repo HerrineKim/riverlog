@@ -7,7 +7,7 @@ source: mixed
 date: "2026-10-12"
 ---
 
-Django REST Framework(DRF)는 Django를 HTML 대신 **JSON을 응답하는 API 서버**로 만들어 주는 라이브러리다. 핵심은 Serializer로, 모델 인스턴스와 JSON 사이의 변환과 입력 검증을 맡는다. 화면은 Vue나 React 같은 프론트엔드가 그리고 서버는 데이터만 제공하는 구조의 출발점이다.
+Django REST Framework(DRF)는 Django를 HTML 대신 **JSON을 응답하는 API 서버**로 만들어 주는 라이브러리다. 그 중심인 Serializer가 모델 인스턴스와 JSON 사이의 변환과 입력 검증을 맡는다. 화면은 Vue나 React 같은 프론트엔드가 그리고 서버는 데이터만 제공하는 구조의 출발점이다.
 
 ## Serializer가 하는 일
 
