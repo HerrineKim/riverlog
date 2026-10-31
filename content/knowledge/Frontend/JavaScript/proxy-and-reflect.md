@@ -140,7 +140,7 @@ sayHi.length // 1: 래퍼 함수였다면 0
 | `fn.apply(thisArg, args)` | `Reflect.apply(fn, thisArg, args)` | `[[Call]]` |
 | 모든 자기 키 | `Reflect.ownKeys(obj)` (문자열 키 + Symbol 키) | `[[OwnPropertyKeys]]` |
 
-`new`·`delete` 같은 연산자를 함수로 부를 수 있다는 점도 쓸모 있지만, 핵심은 트랩에서 **빠뜨리는 것 없이** 원래 동작을 재현하는 것이다.
+`new`·`delete` 같은 연산자를 함수로 부를 수 있다는 점도 쓸모 있지만, 주된 쓰임은 트랩에서 **빠뜨리는 것 없이** 원래 동작을 재현하는 것이다.
 
 ```javascript
 const logged = new Proxy(user, {
