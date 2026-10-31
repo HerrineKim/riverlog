@@ -4,11 +4,11 @@ concept: "Microservices"
 summary: "큰 시스템을 비즈니스 기능 단위의 작은 서비스로 나누고, 서비스마다 데이터와 배포를 따로 갖게 하는 구조다. 운영에는 API 게이트웨이, 서비스 레지스트리, 인증 서버, 비동기 메시징, 메트릭·로그 수집이 따라붙는다. 서비스 협업은 오케스트레이션과 코레오그래피 두 방식이 있고, 지연에 민감하거나 상태를 메모리에 둬야 하는 시스템에는 모놀리스가 낫다."
 tags: ["backend", "architecture", "msa", "scalability", "api"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-does-a-typical-microservice-architecture-look-like", "https://bytebytego.com/guides/9-essential-components-of-a-production-microservice-application", "https://bytebytego.com/guides/9-best-practices-for-building-microservices", "https://bytebytego.com/guides/9-best-practices-for-developing-microservices", "https://bytebytego.com/guides/orchestration-vs-choreography-microservices", "https://bytebytego.com/guides/is-microservice-architecture-the-silver-bullet", "https://bytebytego.com/guides/amazon-prime-video-monitoring-service", "http://channy.creation.net/articles/microservices-by-james_lewes-martin_fowler", "https://www.uber.com/blog/microservice-architecture/", "https://www.slideshare.net/arawnkr/ss-195979955", "http://guruble.com/마이크로서비스microservice-아키텍처-그것이-뭣이-중헌디/", "https://microservices.io/patterns/index.html", "https://microservices.io/patterns/microservices.html", "https://microservices.io/patterns/monolithic.html", "https://microservices.io/patterns/decomposition/decompose-by-business-capability.html", "https://microservices.io/patterns/decomposition/decompose-by-subdomain.html", "https://microservices.io/patterns/data/database-per-service.html", "https://microservices.io/patterns/data/shared-database.html", "https://microservices.io/patterns/client-side-discovery.html", "https://microservices.io/patterns/server-side-discovery.html", "https://microservices.io/patterns/service-registry.html", "https://microservices.io/patterns/microservice-chassis.html", "https://microservices.io/patterns/externalized-configuration.html", "https://microservices.io/patterns/communication-style/rpi.html", "https://microservices.io/patterns/deployment/service-per-container.html", "https://microservices.io/patterns/deployment/service-deployment-platform.html"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/what-does-a-typical-microservice-architecture-look-like", "https://bytebytego.com/guides/9-essential-components-of-a-production-microservice-application", "https://bytebytego.com/guides/9-best-practices-for-building-microservices", "https://bytebytego.com/guides/9-best-practices-for-developing-microservices", "https://bytebytego.com/guides/orchestration-vs-choreography-microservices", "https://bytebytego.com/guides/is-microservice-architecture-the-silver-bullet", "https://bytebytego.com/guides/amazon-prime-video-monitoring-service", "http://channy.creation.net/articles/microservices-by-james_lewes-martin_fowler", "https://www.uber.com/blog/microservice-architecture/", "https://www.slideshare.net/arawnkr/ss-195979955", "http://guruble.com/마이크로서비스microservice-아키텍처-그것이-뭣이-중헌디/", "https://microservices.io/patterns/index.html", "https://microservices.io/patterns/microservices.html", "https://microservices.io/patterns/monolithic.html", "https://microservices.io/patterns/decomposition/decompose-by-business-capability.html", "https://microservices.io/patterns/decomposition/decompose-by-subdomain.html", "https://microservices.io/patterns/data/database-per-service.html", "https://microservices.io/patterns/data/shared-database.html", "https://microservices.io/patterns/client-side-discovery.html", "https://microservices.io/patterns/server-side-discovery.html", "https://microservices.io/patterns/service-registry.html", "https://microservices.io/patterns/microservice-chassis.html", "https://microservices.io/patterns/externalized-configuration.html", "https://microservices.io/patterns/communication-style/rpi.html", "https://microservices.io/patterns/deployment/service-per-container.html", "https://microservices.io/patterns/deployment/service-deployment-platform.html", "https://github.com/remotty/documents.docker.co.kr", "http://www.slideshare.net/subicura/automatic-docker-service-announcement-with-registrator-and-confd", "https://gist.github.com/nacyot/514b904f7ae569e801e4", "http://slides.com/seapy/docker-ambassador#/", "http://slides.com/anarcher/docker-2014-11-30-springsprout#/", "http://junolab.blogspot.kr/2014/09/confd.html", "https://developer.hashicorp.com/consul/commands/agent", "https://github.com/kelseyhightower/confd/releases"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Typical Microservice Architecture](https://bytebytego.com/guides/what-does-a-typical-microservice-architecture-look-like)」, 「[9 Essential Components of a Production Microservice Application](https://bytebytego.com/guides/9-essential-components-of-a-production-microservice-application)」, 「[9 Best Practices for Building Microservices](https://bytebytego.com/guides/9-best-practices-for-building-microservices)」, 「[9 Best Practices for Developing Microservices](https://bytebytego.com/guides/9-best-practices-for-developing-microservices)」, 「[Orchestration vs. Choreography in Microservices](https://bytebytego.com/guides/orchestration-vs-choreography-microservices)」, 「[Is Microservice Architecture the Silver Bullet?](https://bytebytego.com/guides/is-microservice-architecture-the-silver-bullet)」, 「[Amazon Prime Video Monitoring Service](https://bytebytego.com/guides/amazon-prime-video-monitoring-service)」를 바탕으로 재구성한 노트다. 공통 특성은 James Lewis·Martin Fowler의 「[Microservices](http://channy.creation.net/articles/microservices-by-james_lewes-martin_fowler)」(번역), 도메인 단위 묶기는 「[Introducing Domain-Oriented Microservice Architecture](https://www.uber.com/blog/microservice-architecture/)」, 모듈러 모놀리스는 「[잘 키운 모노리스 하나 열 마이크로서비스 안 부럽다](https://www.slideshare.net/arawnkr/ss-195979955)」, 분리 신호는 「[마이크로서비스 아키텍처. 그것이 뭣이 중헌디?](http://guruble.com/마이크로서비스microservice-아키텍처-그것이-뭣이-중헌디/)」로 보강했다. 설계 결정 패턴은 microservices.io의 「[A pattern language for microservices](https://microservices.io/patterns/index.html)」 가운데 분해(비즈니스 역량·하위 도메인), 데이터(서비스별 DB·공유 DB), 서비스 발견(클라이언트 측·서버 측·레지스트리), 섀시·외부화된 설정, 배포 패턴을 바탕으로 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[Typical Microservice Architecture](https://bytebytego.com/guides/what-does-a-typical-microservice-architecture-look-like)」, 「[9 Essential Components of a Production Microservice Application](https://bytebytego.com/guides/9-essential-components-of-a-production-microservice-application)」, 「[9 Best Practices for Building Microservices](https://bytebytego.com/guides/9-best-practices-for-building-microservices)」, 「[9 Best Practices for Developing Microservices](https://bytebytego.com/guides/9-best-practices-for-developing-microservices)」, 「[Orchestration vs. Choreography in Microservices](https://bytebytego.com/guides/orchestration-vs-choreography-microservices)」, 「[Is Microservice Architecture the Silver Bullet?](https://bytebytego.com/guides/is-microservice-architecture-the-silver-bullet)」, 「[Amazon Prime Video Monitoring Service](https://bytebytego.com/guides/amazon-prime-video-monitoring-service)」를 바탕으로 재구성한 노트다. 공통 특성은 James Lewis·Martin Fowler의 「[Microservices](http://channy.creation.net/articles/microservices-by-james_lewes-martin_fowler)」(번역), 도메인 단위 묶기는 「[Introducing Domain-Oriented Microservice Architecture](https://www.uber.com/blog/microservice-architecture/)」, 모듈러 모놀리스는 「[잘 키운 모노리스 하나 열 마이크로서비스 안 부럽다](https://www.slideshare.net/arawnkr/ss-195979955)」, 분리 신호는 「[마이크로서비스 아키텍처. 그것이 뭣이 중헌디?](http://guruble.com/마이크로서비스microservice-아키텍처-그것이-뭣이-중헌디/)」로 보강했다. 설계 결정 패턴은 microservices.io의 「[A pattern language for microservices](https://microservices.io/patterns/index.html)」 가운데 분해(비즈니스 역량·하위 도메인), 데이터(서비스별 DB·공유 DB), 서비스 발견(클라이언트 측·서버 측·레지스트리), 섀시·외부화된 설정, 배포 패턴을 바탕으로 보강했다. 역콘웨이 전략과 전역 트랜잭션 ID는 「[documents.docker.co.kr](https://github.com/remotty/documents.docker.co.kr)」에 모인 2016 OpenContainer Korea 발표 「MSA, Docker and Kubernetes」로, registrator·etcd·confd와 Consul로 만드는 서비스 디스커버리는 같은 자료 모음의 「[Automatic Docker Service Announcement with Registrator and confd](http://www.slideshare.net/subicura/automatic-docker-service-announcement-with-registrator-and-confd)」, 「[Consul 정리](https://gist.github.com/nacyot/514b904f7ae569e801e4)」, 「[Docker Ambassador](http://slides.com/seapy/docker-ambassador#/)」, 「[Docker 2014-11-30 springsprout](http://slides.com/anarcher/docker-2014-11-30-springsprout#/)」, 「[confd](http://junolab.blogspot.kr/2014/09/confd.html)」로 보강하고 [Consul 에이전트 문서](https://developer.hashicorp.com/consul/commands/agent)와 [confd 릴리스](https://github.com/kelseyhightower/confd/releases)로 최신화했다.
 
 ## 마이크로서비스란
 
@@ -146,12 +146,42 @@ flowchart LR
 
 레지스트리에 등록하는 방법도 둘이다. 인스턴스가 시작·종료 때 스스로 등록·해제하고 하트비트를 보내는 **자기 등록**, 배포 플랫폼이 대신 등록하는 **서드파티 등록**이다. 쿠버네티스는 플랫폼이 등록하고 DNS로 찾게 해서, 대부분 별도 레지스트리 없이 서버 측 발견을 쓴다.
 
+컨테이너가 동적 포트로 뜨고 지는 환경에서 이 구조는 역할 셋으로 나뉜다. **등록**(무엇이 어디에 떴나 알린다), **레지스트리**(주소를 저장하고 변경을 알린다), **소비**(주소를 읽어 설정이나 호출에 반영한다).
+
+```text
+컨테이너 시작 ─▶ registrator ─▶ etcd/Consul ─▶ confd ─▶ nginx.conf 다시 쓰고 reload
+               (Docker 이벤트    /services/web/web_1     (키 감시 →
+                감시, 공개 포트)  = 172.17.8.101:49155     템플릿 렌더링)
+
+# confd 템플릿: 서비스마다 upstream 블록을 만든다
+{{ range $dir := lsdir "/services" }}
+upstream backend_{{ base $dir }} {
+  {{ range getvs (printf "/services/%s/*" $dir) }} server {{ . }}; {{ end }}
+}
+{{ end }}
+```
+
+컨테이너를 띄우기만 하면 프록시의 upstream이 무중단으로 갱신된다. 키에 TTL을 걸면 죽은 컨테이너의 항목이 저절로 사라진다. confd는 마지막 릴리스가 v0.16.0(2018)으로 사실상 멈췄고, 같은 일은 쿠버네티스 Service·EndpointSlice와 Ingress 컨트롤러, Consul의 consul-template, Traefik·Caddy의 동적 설정 공급자가 한다.
+
+**Consul**은 서비스 디스커버리, 헬스 체크(장애 감지), KV 저장소, 멀티 데이터센터를 한 도구로 준다. 서버 에이전트 몇 대가 Raft로 상태를 지키고(첫 구성은 `-bootstrap-expect=3`처럼 기대 서버 수를 주면 그만큼 모였을 때 리더를 뽑는다. 단독 `-bootstrap`은 옛 방식이다), 각 노드의 클라이언트 에이전트가 붙는다. 조회는 두 길이다.
+
+```text
+HTTP  GET /v1/health/service/database?passing      건강한 인스턴스만
+DNS   dig @127.0.0.1 -p 8600 database.service.consul
+      mysql.database.service.dc1.consul               태그.서비스.service.데이터센터
+```
+
+서비스 정의는 `{"service": {"name": "database", "tags": ["mysql"], "port": 5000, "check": {"args": ["/bin/check_mysql"], "interval": "10s"}}}` 모양이다. 스크립트 체크는 원격 실행 위험이 있어 에이전트에 `enable_local_script_checks`(설정 파일에 정의한 체크만 허용, 권장)나 `enable_script_checks`를 켜야 동작한다.
+
+클라이언트 라이브러리 대신 **호스트마다 로컬 프록시**를 두고 디스커버리 결과로 그 설정을 갱신하는 방식(AirBnB SmartStack: 로컬 HAProxy 설정을 바꾸는 synapse와 등록을 맡는 nerve, 고정 주소로 상대를 가리키는 앰배서더 컨테이너)은 오늘날 서비스 메시 사이드카의 조상이다.
+
 ### 공통 관심사를 어떻게 처리하나
 
 | 패턴 | 내용 |
 | --- | --- |
 | 외부화된 설정(externalized configuration) | DB 자격 증명·다른 서비스 주소 같은 설정을 코드 밖(환경 변수, 설정 서비스)에서 받는다. 같은 빌드를 모든 환경에 그대로 배포한다. [[cloud-design-patterns\|클라우드 설계 패턴]]의 외부 설정 저장소와 같은 생각이다 |
 | 마이크로서비스 섀시(microservice chassis) | 설정, 로깅, 헬스 체크, 메트릭, 트레이싱, 서비스 발견 같은 공통 기능을 프레임워크로 묶어 새 서비스가 바로 갖추게 한다. Spring Boot + Spring Cloud, Go kit, Micronaut 등. 언어가 섞이면 언어마다 섀시가 필요해, 네트워크 관심사는 **서비스 메시**(사이드카)로 옮기는 추세다 |
+| 전역 트랜잭션 ID | 요청이 처음 들어올 때 전역 ID(gtxid)를 붙이고, 서비스를 하나 거칠 때마다 증가하는 지역 ID(ltxid)를 더해 HTTP 헤더로 넘긴다. 로그를 gtxid로 모으면 요청 하나의 경로가 복원된다. 오늘날 표준은 W3C Trace Context의 `traceparent`(트레이스 ID + 부모 스팬 ID)와 분산 추적이다([[observability\|관측 가능성]]) |
 | 원격 프로시저 호출(remote procedure invocation) | REST·gRPC로 동기 요청-응답. 단순하지만 호출하는 동안 상대가 살아 있어야 한다. 대안은 메시지 기반 비동기 통신이다 |
 
 ### 어디에 배포하나
@@ -169,7 +199,7 @@ flowchart LR
 | 특성 | 뜻 |
 | --- | --- |
 | 서비스로 컴포넌트화 | 라이브러리 호출 대신 프로세스 간 통신으로 잇는다. 독립 교체가 쉬운 대신 원격 호출이 비싸 API가 굵직해지고, 서비스 경계를 옮기기 어렵다 |
-| 비즈니스 역량 중심 팀 | UI·서버·DB 같은 기술 계층별 팀이 아니라 기능별 교차 기능 팀을 둔다. 시스템 구조는 조직의 소통 구조를 닮는다(콘웨이 법칙) |
+| 비즈니스 역량 중심 팀 | UI·서버·DB 같은 기술 계층별 팀이 아니라 기능별 교차 기능 팀을 둔다. 시스템 구조는 조직의 소통 구조를 닮는다(콘웨이 법칙). 그래서 원하는 아키텍처에 맞춰 팀을 먼저 짜는 **역콘웨이 전략(inverse Conway maneuver)** 을 쓴다. 팀이 기능별로 흩어지면 프로그램 매니저·수석 아키텍트 같은 조율 역할이 팀 사이의 결정을 맞춘다 |
 | 프로젝트가 아니라 제품 | 만들고 넘기는 대신 팀이 개발부터 운영까지 책임진다(you build it, you run it) |
 | 똑똑한 끝점, 단순한 파이프 | 로직은 서비스 안에 두고, 통신 인프라는 메시지 전달만 한다. 중앙 ESB에 라우팅·변환 로직을 몰아넣지 않는다 |
 | 분산 거버넌스 | 표준 기술을 강요하지 않고 문제에 맞는 도구를 고른다. 좋은 해법은 공유 라이브러리·사내 오픈소스로 퍼뜨린다 |

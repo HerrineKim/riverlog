@@ -4,11 +4,11 @@ concept: "Collaborative Editing"
 summary: "구글 문서처럼 여럿이 동시에 고치는 편집기는 편집을 문서 전체가 아니라 연산(삽입·삭제) 단위로 WebSocket으로 주고받고, 동시에 일어난 연산을 충돌 없이 합치는 알고리즘이 핵심이다. 중앙 서버가 연산을 변환하는 OT, 연산 자체를 교환·결합 가능하게 만든 CRDT, 차이를 주고받는 차등 동기화가 있다."
 tags: ["backend", "architecture", "realtime", "websocket", "algorithm"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-to-design-google-docs", "https://crdt.tech/"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/how-to-design-google-docs", "https://crdt.tech/", "https://neil.fraser.name/writing/sync/", "https://code.google.com/p/google-mobwrite/"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[How to Design Google Docs](https://bytebytego.com/guides/how-to-design-google-docs)」를 바탕으로 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[How to Design Google Docs](https://bytebytego.com/guides/how-to-design-google-docs)」를 바탕으로 재구성한 노트다. 차등 동기화는 Neil Fraser의 「[Differential Synchronization](https://neil.fraser.name/writing/sync/)」과 그 구현인 「[MobWrite](https://code.google.com/p/google-mobwrite/)」로 보강했다.
 
 ## 무엇이 어려운가
 
@@ -54,6 +54,23 @@ flowchart LR
 - 구글 문서는 OT 계열로 알려져 있다.
 - CRDT는 Yjs·Automerge 같은 라이브러리로 널리 쓰인다. 로컬 우선(local-first) 앱, 오프라인 후 동기화, 여러 서버 간 복제에 특히 맞는다.
 - 텍스트 외에 커서 위치·선택 영역 같은 **현재 상태(presence)** 는 저장하지 않고 실시간으로만 브로드캐스트한다.
+
+### 차등 동기화
+
+OT·CRDT가 **연산**을 주고받는다면, **차등 동기화(differential synchronization)** 는 문서의 **차이(diff)** 를 주고받는다. 클라이언트와 서버가 각자 상대 쪽 마지막 상태의 사본인 **섀도(shadow)** 를 들고, 끝없이 이 순환을 돈다.
+
+```text
+1. diff(클라이언트 문서, 클라이언트 쪽 섀도) → 편집 목록
+2. 클라이언트 섀도 = 클라이언트 문서 (복사)
+3. 편집 목록을 서버로 보낸다
+4. 서버: 서버 섀도에 정확히 패치, 서버 문서에는 퍼지 패치
+5. 이제 같은 절차를 서버 → 클라이언트 방향으로 반복
+```
+
+- 핵심은 **퍼지 패치**다. 문서가 그사이 바뀌었어도 주변 문맥으로 위치를 찾아 패치를 적용한다. 일부 패치가 실패해도 다음 diff에 「되돌림」으로 나타나 자동으로 정리된다.
+- 편집 이벤트를 하나도 빠짐없이 잡을 필요가 없다(잘라내기, 붙여넣기, 자동 완성, 맞춤법 교정까지 diff에 다 드러난다). 메시지 하나를 잃어도 다음 순환에서 다시 맞춰지므로 불안정한 네트워크에 강하다.
+- 소유권 방식(문서나 구획을 잠가 한 명만 편집)은 실시간 협업이 안 되고, 이벤트 전달 방식은 이벤트 하나를 잃으면 이후 편집의 위치가 어긋나 갈라지며, 문서를 통째로 보내 3방향 병합하는 방식은 타이핑 중에 상대 변경을 받지 못하는 반이중이다. 차등 동기화는 이 셋의 약점을 피한다.
+- 대신 diff 계산 비용이 문서 크기에 비례하고, 서버가 클라이언트마다 섀도를 들어야 한다. 폼·스프레드시트처럼 구조화된 데이터에는 더 효율적인 방법이 있다.
 
 ## 정리
 

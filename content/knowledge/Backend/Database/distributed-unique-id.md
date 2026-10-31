@@ -4,11 +4,11 @@ concept: "Unique ID Generation"
 summary: "여러 서버가 동시에 겹치지 않는 ID를 만드는 다섯 가지 방법(UUID, Snowflake, DB 자동 증가, DB 세그먼트, Redis)을 비교하고, 시간순 정렬·64비트·저지연 같은 요구 사항에 따라 어떤 방식을 고를지, 시간순 UUID(UUIDv7)가 인덱스 문제를 어떻게 푸는지 정리했다."
 tags: ["backend", "database", "architecture", "performance"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/explaining-5-unique-id-generators-in-distributed-systems", "https://bytebytego.com/guides/unique-id-generator", "https://www.rfc-editor.org/rfc/rfc9562"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/explaining-5-unique-id-generators-in-distributed-systems", "https://bytebytego.com/guides/unique-id-generator", "https://www.rfc-editor.org/rfc/rfc9562", "https://blog.twitter.com/2010/announcing-snowflake", "https://github.com/twitter/snowflake/"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Explaining 5 Unique ID Generators](https://bytebytego.com/guides/explaining-5-unique-id-generators-in-distributed-systems)」, 「[Unique ID Generator](https://bytebytego.com/guides/unique-id-generator)」를 바탕으로, UUID 버전은 [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562)로 확인해 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[Explaining 5 Unique ID Generators](https://bytebytego.com/guides/explaining-5-unique-id-generators-in-distributed-systems)」, 「[Unique ID Generator](https://bytebytego.com/guides/unique-id-generator)」를 바탕으로, UUID 버전은 [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562)로 확인해 재구성한 노트다. Snowflake의 설계 배경은 Twitter의 「[Announcing Snowflake](https://blog.twitter.com/2010/announcing-snowflake)」(2010)와 「[twitter/snowflake](https://github.com/twitter/snowflake/)」 저장소로 보강했다.
 
 ## 왜 어려운가
 
@@ -41,6 +41,16 @@ flowchart LR
 ```
 
 구현마다 비트 배분은 다르지만, 상위 비트에 시간을 둬서 정렬되게 하고 중간에 머신 ID를 둬서 서로 겹치지 않게 하는 점은 같다. 시계가 뒤로 가면(NTP 보정 등) 생성을 잠시 멈추거나 오류를 내도록 만든다.
+
+Twitter가 Snowflake를 만든 요구 사항이 이 방식의 성격을 그대로 보여 준다. MySQL에서 Cassandra·샤딩 MySQL로 옮기면서 DB의 자동 증가 ID를 잃었고, **초당 수만 개를 고가용으로, 대략 시간순으로, 64비트 안에** 만들어야 했다. 트윗 ID를 한 번 넓혀 본 경험상, 코드베이스 수만 개가 쓰는 ID의 비트 수는 다시 바꾸기 어렵다.
+
+| 검토한 대안 | 탈락 이유 |
+| --- | --- |
+| MySQL 티켓 서버(Flickr 방식) | 여러 대를 두면 순서 보장을 위해 재동기화 장치가 필요하다 |
+| UUID | 128비트라 64비트에 들어가지 않는다 |
+| ZooKeeper 순차 노드 | 필요한 처리량이 나오지 않는다 |
+
+그래서 **조율 없이** 각 서버가 「타임스탬프 + 워커 번호 + 순번」을 조합한다. 워커 번호만 시작할 때 ZooKeeper로 받는다(설정 파일로도 줄 수 있다). 결과는 완전 정렬이 아니라 **k-정렬**이다. 1초 안에 만든 트윗끼리는 ID도 1초 범위 안에 있다는 정도의 보장이다. 2010년 공개판은 은퇴했고, Twitter 내부판은 자체 인프라에 묶인 재작성 버전이다.
 
 ## 시간순 UUID
 

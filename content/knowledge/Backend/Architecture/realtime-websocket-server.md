@@ -4,11 +4,11 @@ concept: "Realtime WebSocket Server"
 summary: "수만 개의 연결을 붙잡고 메시지를 밀어 주는 웹소켓 서버를 설계·검증하는 방법이다. 연결 하나에 여러 메시지 타입을 싣는 법, 방(그룹) 단위 분할과 Pub/Sub로 서버 간 전파하기, 액터 모델로 상태 관리하기, 팬아웃 폭증을 묶음 전송으로 막기, 파일 디스크립터·포트·로드밸런서 한계, 연결 수명 주기를 검증하는 부하 테스트까지 정리했다."
 tags: ["backend", "architecture", "network", "performance", "scalability"]
 source: other
-date: "2026-10-21"
-sources: ["https://engineering.linecorp.com/ko/blog/the-architecture-behind-chatting-on-line-live/", "https://tech.kakao.com/posts/390", "https://tech.kakao.com/posts/391"]
+date: "2026-10-31"
+sources: ["https://engineering.linecorp.com/ko/blog/the-architecture-behind-chatting-on-line-live/", "https://tech.kakao.com/posts/390", "https://tech.kakao.com/posts/391", "http://www.erlang-factory.com/upload/presentations/31/EugeneLetuchy-ErlangatFacebook.pdf"]
 ---
 
-> 「[LINE LIVE 채팅 기능의 기반이 되는 아키텍처](https://engineering.linecorp.com/ko/blog/the-architecture-behind-chatting-on-line-live/)」, 「[실시간 댓글 개발기(part.1)](https://tech.kakao.com/posts/390)」, 「[실시간 댓글 개발기(part.2) - 웹소켓 스트레스 테스트 및 안정화 작업](https://tech.kakao.com/posts/391)」을 바탕으로 재구성한 노트다.
+> 「[LINE LIVE 채팅 기능의 기반이 되는 아키텍처](https://engineering.linecorp.com/ko/blog/the-architecture-behind-chatting-on-line-live/)」, 「[실시간 댓글 개발기(part.1)](https://tech.kakao.com/posts/390)」, 「[실시간 댓글 개발기(part.2) - 웹소켓 스트레스 테스트 및 안정화 작업](https://tech.kakao.com/posts/391)」을 바탕으로 재구성한 노트다. 경량 프로세스의 대기와 무중단 코드 교체는 「[Erlang at Facebook](http://www.erlang-factory.com/upload/presentations/31/EugeneLetuchy-ErlangatFacebook.pdf)」(2009)로 보강했다.
 
 ## 무엇이 다른가
 
@@ -63,6 +63,9 @@ flowchart LR
 - **감독 계층**: 부모 액터가 자식의 장애를 받아 재시작·재개·중지·상위 전파 중 하나를 고른다.
 - 호출자는 액터의 실제 위치를 모르고 **참조**로만 접근한다. 그래서 액터가 다른 서버에 있어도 같은 코드로 다룬다.
 
+- 놀고 있는 연결이 대부분이면 **대기 중인 액터의 메모리**가 한계를 정한다. Erlang의 `erlang:hibernate/3`는 콜스택을 버리고 힙을 최소로 줄인 채 다음 메시지를 기다려, 오래 매달린 롱 폴링·웹소켓 핸들러에 잘 맞는다. 문자열을 리스트 대신 바이너리로 두는 것도 메모리를 크게 줄인다.
+- Erlang은 **실행 중 코드 교체**(hot code swap)를 지원해, 연결과 상태를 유지한 채 수십 초 만에 새 코드를 올리고 쉽게 되돌린다. 연결을 끊으면 재접속 폭주가 생기는 실시간 서버에서 특히 값지다.
+
 ### 저장: 뜨거운 데이터와 영구 데이터 분리
 
 방송 중 채팅처럼 쓰기가 몰리는 데이터는 **인메모리 저장소에 먼저 쓰고, 끝난 뒤 영구 저장소로 옮긴다.** 최근 메시지 조회는 시간을 점수로 쓰는 정렬 집합(Redis Sorted Set)이 맞는다. Redis 클라이언트는 클러스터 지원, 장애 조치·리디렉션 처리, 비동기 API, 구독 연결의 자동 복구, 유지보수 상태를 보고 고른다.
@@ -115,4 +118,4 @@ HTTP API용 부하 도구로 웹소켓을 시험하면 결과를 믿기 어렵�
 - 연결 상한은 포트가 아니라 파일 디스크립터와 메모리다. 앞단 로드밸런서도 한계가 된다.
 - 부하 테스트는 연결 수명 주기 전체를 확인하는 전용 클라이언트로, 변수를 하나씩 바꿔 가며 한다.
 
-관련 노트: [[websocket|WebSocket]], [[chat-system-design|채팅 시스템 설계: 연결, 접속 상태, 메시지 전달]], [[event-driven-architecture|이벤트 기반 아키텍처 설계]], [[redis|Redis]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[transport-layer|전송 계층: 포트, TCP, UDP]]
+관련 노트: [[websocket|WebSocket]], [[chat-system-design|채팅 시스템 설계: 연결, 접속 상태, 메시지 전달]], [[event-driven-architecture|이벤트 기반 아키텍처 설계]], [[redis|Redis]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[transport-layer|전송 계층: 포트, TCP, UDP]], [[multiplayer-game-server|멀티플레이 게임 서버 설계]]

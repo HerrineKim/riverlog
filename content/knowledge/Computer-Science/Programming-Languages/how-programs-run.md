@@ -4,11 +4,11 @@ concept: "Program Execution"
 summary: "소스 코드가 CPU에서 돌기까지의 세 갈래(네이티브 컴파일, 바이트코드 + VM·JIT, 인터프리터)와, 운영체제가 실행 파일을 띄워 종료하기까지의 단계, 가비지 컬렉션이 관리하는 영역과 추적·참조 카운팅의 비교, 순환 참조와 retain cycle, GC의 장단점과 Java·Python·Go의 방식, 브라우저에서 네이티브 코드를 돌리는 WebAssembly를 정리한다."
 tags: ["computer-science", "programming-paradigm", "memory", "os", "performance"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-do-c++-java-python-work", "https://bytebytego.com/guides/how-do-computer-programs-run", "https://bytebytego.com/guides/how-does-garbage-collection-work", "https://bytebytego.com/guides/is-it-possible-to-run-c-c++-or-rust-on-a-web-browser", "https://docs.oracle.com/en/java/javase/21/gctuning/available-collectors.html", "https://webassembly.org/", "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/how-do-c++-java-python-work", "https://bytebytego.com/guides/how-do-computer-programs-run", "https://bytebytego.com/guides/how-does-garbage-collection-work", "https://bytebytego.com/guides/is-it-possible-to-run-c-c++-or-rust-on-a-web-browser", "https://docs.oracle.com/en/java/javase/21/gctuning/available-collectors.html", "https://webassembly.org/", "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "http://journal.stuffwithstuff.com/2013/12/08/babys-first-garbage-collector/"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[How Do C++, Java, Python Work?](https://bytebytego.com/guides/how-do-c++-java-python-work)」, 「[How Do Computer Programs Run?](https://bytebytego.com/guides/how-do-computer-programs-run)」, 「[How does Garbage Collection work?](https://bytebytego.com/guides/how-does-garbage-collection-work)」, 「[Running C, C++, or Rust in a Web Browser](https://bytebytego.com/guides/is-it-possible-to-run-c-c++-or-rust-on-a-web-browser)」를 바탕으로, JVM 수집기 목록은 Oracle 문서로 확인해 재구성한 노트다. GC가 관리하는 영역, 추적과 참조 카운팅, retain cycle, 장단점은 fru1tworld/cs-basic 모의 면접 질문 목록의 가비지 컬렉션 질문을 바탕으로 Swift ARC 문서로 확인해 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[How Do C++, Java, Python Work?](https://bytebytego.com/guides/how-do-c++-java-python-work)」, 「[How Do Computer Programs Run?](https://bytebytego.com/guides/how-do-computer-programs-run)」, 「[How does Garbage Collection work?](https://bytebytego.com/guides/how-does-garbage-collection-work)」, 「[Running C, C++, or Rust in a Web Browser](https://bytebytego.com/guides/is-it-possible-to-run-c-c++-or-rust-on-a-web-browser)」를 바탕으로, JVM 수집기 목록은 Oracle 문서로 확인해 재구성한 노트다. GC가 관리하는 영역, 추적과 참조 카운팅, retain cycle, 장단점은 fru1tworld/cs-basic 모의 면접 질문 목록의 가비지 컬렉션 질문을 바탕으로 Swift ARC 문서로 확인해 보강했다. 가장 단순한 mark-sweep 구현은 Bob Nystrom의 「[Baby's First Garbage Collector](http://journal.stuffwithstuff.com/2013/12/08/babys-first-garbage-collector/)」(2013)로 보강했다.
 
 ## 소스 코드가 기계어가 되는 세 갈래
 
@@ -89,6 +89,24 @@ Java의 메서드 영역(Metaspace)처럼 클래스 메타데이터도 클래스
 | 순환 참조 | 루트에서 끊기면 회수한다 | **회수하지 못한다** |
 | 비용 | 수집 중 멈춤(stop-the-world)이나 동시 수집용 쓰기 장벽, 여유 메모리 | 참조를 복사·해제할 때마다 카운트 갱신. 멀티스레드면 원자적 연산이 필요하다 |
 | 쓰는 곳 | Java, Go, JavaScript, C# | CPython, Swift·Objective-C(ARC), C++ `shared_ptr`, Rust `Rc`·`Arc` |
+
+### 가장 단순한 GC: mark-sweep 구현
+
+McCarthy가 Lisp과 함께 만든 mark-sweep은 C 100줄 안팎으로 동작하는 수집기를 만들 수 있을 만큼 단순하다. 정수와 쌍(pair)만 있는 작은 VM을 생각하면 뼈대는 이렇다.
+
+```text
+객체   { 타입 태그, 값(정수 또는 두 객체 포인터), marked 비트, next 포인터 }
+VM     { 지역·임시 변수 스택, 할당한 모든 객체의 연결 리스트 head, 객체 수, 다음 수집 임계값 }
+
+mark   스택의 각 변수에서 시작해 marked = 1, 쌍이면 두 필드로 재귀
+       이미 표시된 객체를 만나면 바로 돌아간다 (순환 참조에서 무한 재귀 방지)
+sweep  모든 객체 리스트를 돌며 표시 없는 객체는 리스트에서 빼고 해제,
+       표시된 객체는 다음 수집을 위해 비트를 지운다
+```
+
+- 도달할 수 없는 객체는 정의상 프로그램이 찾을 수 없으므로, **언어 의미와 별개로 VM이 할당한 모든 객체의 목록**을 따로 들고 있어야 스윕할 수 있다.
+- 「메모리가 부족할 때」는 가상 메모리 환경에서 모호하다. 그래서 **할당한 객체 수가 임계값에 닿으면** 수집하고, 끝나면 임계값을 살아남은 객체 수의 2배로 다시 잡는다. 힙이 살아 있는 데이터 양에 맞춰 늘고 준다. 초깃값이 작으면 메모리를, 크면 GC 시간을 아낀다.
+- 이 정도가 한때 Ruby·Lua 수집기의 수준이었다. 운영 GC의 나머지는 세대별 수집, 증분·동시 수집, 압축(compaction) 같은 최적화다([[jvm-internals|JVM 내부 구조]]).
 
 ### 순환 참조와 Retain Cycle
 

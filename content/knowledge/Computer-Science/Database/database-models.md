@@ -4,11 +4,11 @@ concept: "Database Model"
 summary: "관계형 DB의 특징과 한계, NoSQL 네 가지 유형과 CAP 정리, 둘의 장점을 합치려는 NewSQL을 비교하고, 프로젝트에서 무엇을 고를지와 PostgreSQL·MySQL의 차이를 정리. 평면·계층·네트워크 모델에서 관계형까지의 계보와 분석용 스타·스노플레이크 스키마도 다룬다."
 tags: ["database", "rdbms", "nosql", "newsql", "sql", "mongodb"]
 source: mixed
-date: "2026-10-16"
-sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md"]
+date: "2026-10-31"
+sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/henryr/cap-faq", "http://ksat.me/a-plain-english-introduction-to-cap-theorem"]
 ---
 
-> 노션 정리를 바탕으로, 데이터 모델의 계보와 CAP 정리의 오해는 ByteByteGo의 System Design 101 가이드 「[Top 6 Database Models](https://bytebytego.com/guides/top-6-database-models)」, 「[CAP Theorem: One of the Most Misunderstood Terms](https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms)」로, PostgreSQL 구조와 문자열 비교 차이는 「[한 눈에 살펴보는 PostgreSQL](https://d2.naver.com/helloworld/227936)」, 「[MySQL 'a' = 'a '가 true인가?](http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html)」로 보강했다. RDB와 NoSQL의 비용 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다.
+> 노션 정리를 바탕으로, 데이터 모델의 계보와 CAP 정리의 오해는 ByteByteGo의 System Design 101 가이드 「[Top 6 Database Models](https://bytebytego.com/guides/top-6-database-models)」, 「[CAP Theorem: One of the Most Misunderstood Terms](https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms)」로, PostgreSQL 구조와 문자열 비교 차이는 「[한 눈에 살펴보는 PostgreSQL](https://d2.naver.com/helloworld/227936)」, 「[MySQL 'a' = 'a '가 true인가?](http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html)」로 보강했다. RDB와 NoSQL의 비용 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다. CAP의 정확한 정의와 흔한 오해는 Henry Robinson의 「[The CAP FAQ](https://github.com/henryr/cap-faq)」와 「[A Plain English Introduction to CAP Theorem](http://ksat.me/a-plain-english-introduction-to-cap-theorem)」으로 보강했다.
 
 데이터베이스는 데이터의 집합이고, 이를 저장·관리하는 소프트웨어가 **DBMS(Database Management System)**다. 데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
 
@@ -148,12 +148,30 @@ DB를 옮기거나 둘을 섞어 쓸 때는 컬럼 타입(CHAR·VARCHAR)과 콜�
 | 가용성(Availability) | 살아 있는 노드는 항상 응답한다 |
 | 분할 내성(Partition tolerance) | 노드 사이 통신이 끊겨도 시스템이 동작한다 |
 
+CAP을 정확히 읽으려면 정리가 쓰는 말의 뜻을 알아야 한다. 2000년 Eric Brewer가 추측으로 제시했고 2002년 Gilbert와 Lynch가 증명했다.
+
+| 용어 | 정리에서의 뜻 |
+| --- | --- |
+| 대상 | 읽기·쓰기 저장소, 정확히는 `set(x)`와 `get()`만 있는 **레지스터**. 키-값 저장소는 레지스터의 모음이다 |
+| 일관성 | **선형화 가능성**(linearizability). 모든 연산이 한 대의 기계에서 도착 순서대로 처리된 것처럼 보인다. `set(10), set(5), get() = 10` 같은 최종 일관성 실행은 허용하지 않는다 |
+| 가용성 | 장애가 나지 않은 노드에 온 **모든** 요청이 언젠가 정상 응답을 받는다. 오류 응답은 응답으로 치지 않는다(늘 오류를 내면 누구나 가용하다). 시간 상한은 없다 |
+| 분할 | 네트워크가 일부 메시지를 **잃는** 것. 늦게라도 도착하면 분할이 아니다. 증명은 두 집합 사이가 완전히 끊긴 경우를 쓴다 |
+| 비동기 네트워크 | 메시지 전달 시간에 상한이 없어 **죽은 노드와 느린 노드를 구별할 수 없다** |
+
+증명의 핵심은 간단하다. 분할 한쪽에 쓰기가 들어오면 반대쪽 읽기는 그 값을 알 수 없다. 옛 값을 주면 일관성이, 저쪽 소식을 끝없이 기다리면 가용성이 깨진다. 전화로 기억을 대신해 주는 회사를 두 직원이 나눠 맡았는데 둘 사이 연락이 끊긴 상황을 떠올리면 된다. 고객에게 답할지(가용성), 상대에게 확인될 때까지 답을 미룰지(일관성)를 골라야 한다.
+
 분할 내성은 분산 시스템에서 뺄 수 없으므로 실제 선택은 **CP**(분할 중에는 일부 요청을 거절하고 정확성을 지킨다)와 **AP**(일단 응답하고 나중에 맞춘다, 최종 일관성) 사이다. 분할이 없을 때도 지연 시간과 일관성을 맞바꾼다는 점까지 넣은 확장이 PACELC다. 많은 제품은 하나로 고정되지 않고 설정(복제 수, 읽기·쓰기 정족수)으로 조절한다.
 
 CAP은 자주 오해된다.
 
 - **「셋 중 둘을 고른다」는 표현은 거친 단순화다.** CAP이 금지하는 것은 「분할이 난 상황에서 완벽한 일관성과 완벽한 가용성을 동시에」뿐이다. 분할이 없을 때는 둘 다 가질 수 있다.
 - CAP의 C와 A는 **100%** 를 뜻한다. 실제 설계 논의는 분할이 없는 평소에 지연과 일관성을 어떻게 맞바꾸느냐(PACELC의 ELC)가 더 자주 문제가 된다.
+- **「CA 시스템」이라는 말은 성립하지 않는다.** 분할 내성은 고르는 성질이 아니라 네트워크가 정하는 조건이다. 분할을 겪을 수 있는 분산 시스템이라면 「분할 가능성 → C와 A를 늘 함께 가질 수는 없다」로 읽는다. 분할이 없는 단일 노드 DB만 CA라고 부를 수 있다.
+- 정리는 **어떤** 상황에서 C나 A를 포기해야 한다고만 말하고, 그 상황이 얼마나 자주 오는지는 말하지 않는다. 다만 오래 도는 시스템은 언젠가 그 상황을 만난다.
+- 실제 시스템은 둘 중 하나를 느슨하게 만든다. ZooKeeper처럼 정확성이 우선이면 가용성을, Dynamo처럼 쓰기 가용성이 우선이면 일관성을 늦춘다. 정의를 하나라도 약하게 바꾸면 CAP의 불가능성은 더 이상 그대로 적용되지 않는다.
+- **CAP과 FLP는 다른 정리다.** FLP 불가능성은 노드 하나가 멈출 수 있는 비동기 네트워크에서 결정적 합의 알고리즘이 항상 끝난다는 보장은 불가능하다는 결과다. FLP는 메시지 유실을 가정하지 않고 합의를 다루며, CAP은 메시지 유실을 허용하고 저장소의 일관성을 다룬다. 합의 알고리즘 쪽은 [[distributed-time-and-failure|분산 시스템의 시간과 장애]]에 있다.
+- 죽은 노드는 응답 의무가 없지만 분할된 노드는 응답해야 한다는 점에서 둘은 다르고, 느린 노드는 메시지가 결국 도착한다는 점에서 분할과 다르다. 그런데 셋을 바깥에서 구별할 수 없다는 사실이 CAP·FLP가 성립하는 이유다.
+
 - **CAP만으로 DB를 고르지 않는다.** 채팅 메시지 저장에 Cassandra를 쓰는 이유는 AP라서가 아니라 쓰기 처리량, 파티션 단위 조회 같은 특성 때문이다. CAP은 트레이드오프를 따져 보게 하는 출발점이다.
 
 ## NewSQL

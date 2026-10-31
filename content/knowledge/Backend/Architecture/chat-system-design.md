@@ -4,11 +4,11 @@ concept: "Chat System Design"
 summary: "채팅 서버는 클라이언트와 WebSocket을 유지하고, 메시지는 순서를 매겨 저장한 뒤 받는 사람이 붙어 있는 서버로 전달한다. 서버가 여러 대이면 Redis pub/sub·메시지 큐로 서버 간에 메시지를 넘기고, 접속 상태 서비스가 온라인이면 소켓으로, 오프라인이면 푸시 알림으로 보낸다."
 tags: ["backend", "architecture", "websocket", "realtime", "scalability"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-do-we-design-a-chat-application-like-whatsapp-facebook-messenger-or-discord", "https://bytebytego.com/guides/build-a-simple-chat-application", "https://redis.io/docs/latest/develop/interact/pubsub/"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/how-do-we-design-a-chat-application-like-whatsapp-facebook-messenger-or-discord", "https://bytebytego.com/guides/build-a-simple-chat-application", "https://redis.io/docs/latest/develop/interact/pubsub/", "http://highscalability.com/blog/2014/2/26/the-whatsapp-architecture-facebook-bought-for-19-billion.html", "http://www.erlang-factory.com/upload/presentations/31/EugeneLetuchy-ErlangatFacebook.pdf", "https://www.facebook.com/note.php?note_id=14218138919&id=9445547199&index=0"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[How do we design a chat application like WhatsApp, Facebook Messenger or Discord?](https://bytebytego.com/guides/how-do-we-design-a-chat-application-like-whatsapp-facebook-messenger-or-discord)」, 「[Build a Simple Chat Application](https://bytebytego.com/guides/build-a-simple-chat-application)」을 바탕으로 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[How do we design a chat application like WhatsApp, Facebook Messenger or Discord?](https://bytebytego.com/guides/how-do-we-design-a-chat-application-like-whatsapp-facebook-messenger-or-discord)」, 「[Build a Simple Chat Application](https://bytebytego.com/guides/build-a-simple-chat-application)」을 바탕으로 재구성한 노트다. 대규모 사례는 High Scalability의 「[The WhatsApp Architecture](http://highscalability.com/blog/2014/2/26/the-whatsapp-architecture-facebook-bought-for-19-billion.html)」와 Facebook 채팅 발표 「[Erlang at Facebook](http://www.erlang-factory.com/upload/presentations/31/EugeneLetuchy-ErlangatFacebook.pdf)」(2009)로 보강했다. 접속 상태의 비용과 다크 런치는 Facebook의 「[Facebook Chat](https://www.facebook.com/note.php?note_id=14218138919&id=9445547199&index=0)」(2008)로 보강했다.
 
 ## 무엇이 어려운가
 
@@ -94,6 +94,21 @@ flowchart TB
 - 클라이언트가 주기적으로 하트비트를 보내고, 일정 시간 없으면 오프라인으로 본다. 연결이 끊긴 순간 바로 오프라인으로 바꾸면 잠깐의 네트워크 흔들림에도 상태가 깜빡인다.
 - 친구가 많은 사용자의 상태 변경은 알림이 폭발한다. 큰 그룹은 상태를 밀어 주지 않고, 화면을 열 때 조회하게 한다.
 
+- 순진하게 접속·이탈 때마다 모든 친구에게 알리면 초당 메시지 수가 **평균 친구 수 × 피크 동시 접속자 × 이탈률**에 비례한다. 친구가 수백 명, 동시 접속이 수백만이면 메시지 전송보다 접속 상태 알림이 훨씬 비싸다. 「1분·5분·10분 유휴」 같은 세부 상태를 보여 주면 아무것도 안 하는 사용자도 부하를 만든다. 그래서 Facebook 채팅은 상태를 밀지 않고, 접속 상태 서버가 메모리에 모아 둔 것을 클라이언트가 주기적으로 **끌어가게** 했다.
+- 오래 붙들고 있는 롱 폴링 요청을 일반 웹 서버(요청당 OS 프로세스)로 받으면 1분 동안 놀다가 「메시지 없음」을 돌려주는 프로세스 하나가 일반 페이지 60여 개를 처리할 자원을 묶는다. 연결 계층을 웹 계층과 따로 둬야 하는 이유다.
+- **다크 런치**: 화면에 채팅을 보이기 전에, 페이지가 몰래 채팅 서버에 연결해 접속 상태를 조회하고 가짜 메시지를 보내게 해서 실제 사용자 규모의 부하를 미리 검증했다. 그다음 몇 주에 걸쳐 점진 출시했다.
+
+## 사례: 적은 서버로 많은 연결 붙들기
+
+채팅 서버의 자원은 대부분 **놀고 있는 연결**에 쓰인다. 수백만 연결이 대부분 아무것도 보내지 않는다. 그래서 연결 하나의 비용을 줄이는 것이 확장의 핵심이다.
+
+| 사례 | 설계 | 배울 점 |
+| --- | --- | --- |
+| Facebook 채팅(2009) | 브라우저는 일반 AJAX로 메시지를 보내고, **롱 폴링**(서버가 메시지가 생길 때까지 응답을 붙들었다 돌려준다)으로 받는다. 탭마다 활성 요청 하나. 백엔드는 PHP 웹 계층과 Erlang 채널 서버로 나뉜다. 채널 서버는 사용자별로 순번을 매긴 짧은 메시지 큐를 들고, 사용자 ID 공간을 나눠 파티션마다 클러스터가 맡는다. 접속 상태는 채널 서버가 권위를 갖고, 주기적으로 접속 상태 서버로 보내 친구 목록 요청이 거기서 **끌어가게(pull)** 한다 | 사용자들은 서로 독립이고 동시적이어서, OS 스레드보다 경량 프로세스 모델에 잘 맞는다. 재시작 없는 코드 교체로 무중단 배포를 한다 |
+| WhatsApp(2014) | 서버 대부분이 Erlang(ejabberd를 고쳐 쓰다 자체 프로토콜로 바꿈), FreeBSD. 서버당 동시 TCP 연결을 20만에서 한 달 만에 200만으로 늘렸다. 메시지는 전달하면 서버에서 지우고 대화 기록을 서버에 두지 않는다 | 사용자 4억 5천만 명을 엔지니어 32명이 운영했다. 병목은 측정으로 찾는다(에뮬레이터 루프 시간 비율, 락 경합). 세계적 사건·장비 장애를 견딜 여유분을 두고 운영한다 |
+
+오늘날 브라우저 채팅은 롱 폴링 대신 [[websocket|WebSocket]]을 쓰지만, 「연결 계층과 메시지 큐 계층의 분리, 사용자 ID 기준 분할, 접속 상태의 끌어가기」라는 구조는 같다.
+
 ## 정리
 
 - 채팅의 핵심은 지속 연결(WebSocket), 서버 간 전달(pub/sub·큐), 오프라인 처리(저장 + 푸시)다.
@@ -101,4 +116,4 @@ flowchart TB
 - 순서는 대화 안에서만 지키면 되고, 재전송 중복은 클라이언트 ID로 거른다.
 - Redis pub/sub은 간단하지만 전달을 보장하지 않으므로 기록과 재동기화를 함께 둔다.
 
-관련 노트: [[websocket|WebSocket]], [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름: REST와 WebSocket 역할 나누기]], [[notification-system|알림 시스템 설계: 푸시·이메일·SMS와 실시간 메시지 전달]], [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장]], [[collaborative-editing|실시간 공동 편집: OT와 CRDT]], [[realtime-websocket-server|실시간 웹소켓 서버 설계]]
+관련 노트: [[websocket|WebSocket]], [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름: REST와 WebSocket 역할 나누기]], [[notification-system|알림 시스템 설계: 푸시·이메일·SMS와 실시간 메시지 전달]], [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장]], [[collaborative-editing|실시간 공동 편집: OT와 CRDT]], [[realtime-websocket-server|실시간 웹소켓 서버 설계]], [[news-feed-design|뉴스 피드 설계]]

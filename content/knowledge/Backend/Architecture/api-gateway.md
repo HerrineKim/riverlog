@@ -4,11 +4,11 @@ concept: "API Gateway"
 summary: "클라이언트와 백엔드 서비스 사이의 단일 입구인 API 게이트웨이. 라우팅·인증·레이트 리밋·요청 변환·응답 조합·캐시 같은 기능, 요청 하나가 게이트웨이를 지나는 순서, 생태계·마켓플레이스·다중 플랫폼 같은 쓰임, 그리고 리버스 프록시·로드 밸런서·서비스 메시·공통 라이브러리와의 차이와 함께 쓰는 배치를 정리했다."
 tags: ["backend", "architecture", "api", "microservices", "infra"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/api-gateway-101", "https://bytebytego.com/guides/what-does-api-gateway-do", "https://bytebytego.com/guides/top-3-api-gateway-use-cases", "https://bytebytego.com/guides/what-are-the-differences-between-a-load-balancer-and-an-api-gateway", "https://bytebytego.com/guides/reverse-proxy-vs-api-gateway-vs-load-balancer", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/api-gateway-101", "https://bytebytego.com/guides/what-does-api-gateway-do", "https://bytebytego.com/guides/top-3-api-gateway-use-cases", "https://bytebytego.com/guides/what-are-the-differences-between-a-load-balancer-and-an-api-gateway", "https://bytebytego.com/guides/reverse-proxy-vs-api-gateway-vs-load-balancer", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://github.com/remotty/documents.docker.co.kr"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[API Gateway 101](https://bytebytego.com/guides/api-gateway-101)」, 「[What Does an API Gateway Do?](https://bytebytego.com/guides/what-does-api-gateway-do)」, 「[Top 3 API Gateway Use Cases](https://bytebytego.com/guides/top-3-api-gateway-use-cases)」, 「[Load Balancer vs. API Gateway](https://bytebytego.com/guides/what-are-the-differences-between-a-load-balancer-and-an-api-gateway)」, 「[Reverse Proxy vs. API Gateway vs. Load Balancer](https://bytebytego.com/guides/reverse-proxy-vs-api-gateway-vs-load-balancer)」를 바탕으로 재구성한 노트다. 서비스 메시·공통 라이브러리와의 비교는 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다.
+> ByteByteGo의 System Design 101 가이드 「[API Gateway 101](https://bytebytego.com/guides/api-gateway-101)」, 「[What Does an API Gateway Do?](https://bytebytego.com/guides/what-does-api-gateway-do)」, 「[Top 3 API Gateway Use Cases](https://bytebytego.com/guides/top-3-api-gateway-use-cases)」, 「[Load Balancer vs. API Gateway](https://bytebytego.com/guides/what-are-the-differences-between-a-load-balancer-and-an-api-gateway)」, 「[Reverse Proxy vs. API Gateway vs. Load Balancer](https://bytebytego.com/guides/reverse-proxy-vs-api-gateway-vs-load-balancer)」를 바탕으로 재구성한 노트다. 서비스 메시·공통 라이브러리와의 비교는 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다. 외부·내부 게이트웨이 분리와 대용량 전송, 오케스트레이션을 빼는 이유는 「[documents.docker.co.kr](https://github.com/remotty/documents.docker.co.kr)」에 모인 2016 OpenContainer Korea 발표 「MSA, Docker and Kubernetes」로 보강했다.
 
 ## API 게이트웨이란
 
@@ -106,6 +106,13 @@ flowchart TB
 | (b) API 게이트웨이로 분기 | 공통 관심사를 한곳에서 처리해 서비스가 가벼워진다 | 게이트웨이 규칙에 맞춰야 해서 유연성이 줄고, 게이트웨이가 병목·단일 장애점이 될 수 있다 |
 
 작고 단순한 서비스는 로드 밸런서 하나로 충분하다. 서비스와 클라이언트 종류가 늘면 게이트웨이를 들인다.
+
+게이트웨이 설계에서 자주 정하는 것들이다.
+
+- **외부용과 내부용을 나눈다.** 인터넷에서 오는 요청을 받는 외부 게이트웨이(인증, 레이트 리밋, 과금)와 서비스끼리 부르는 내부 게이트웨이(라우팅, 관측)는 정책과 부하가 다르다.
+- **큰 파일은 게이트웨이를 거치지 않는다.** 게이트웨이는 짧은 요청에 맞춰져 있어 수백 MB 업로드·다운로드가 연결과 메모리를 오래 붙잡는다. 게이트웨이는 임시 토큰이 붙은 다운로드 URL만 발급하고, 파일은 스토리지나 CDN에서 직접 받게 한다(S3 사전 서명 URL과 같은 방식).
+- **오케스트레이션을 넣지 않는다.** 여러 서비스 호출 순서와 비즈니스 규칙을 게이트웨이에 넣으면, ESB(엔터프라이즈 서비스 버스)에 로직을 몰아 넣었다가 중앙 병목과 변경 지옥이 된 SOA 시절을 되풀이한다. 게이트웨이는 「똑똑한 끝점, 단순한 파이프」에서 파이프 쪽에 머문다.
+- **유료 API면 계량(metering)이 게이트웨이의 일이다.** 키별 호출 수를 세어 요금제 한도와 청구에 쓴다.
 
 ## 한계와 위험
 

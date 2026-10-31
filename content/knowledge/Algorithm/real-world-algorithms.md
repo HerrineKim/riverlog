@@ -4,7 +4,7 @@ concept: "Applied Algorithms"
 summary: "일상 소프트웨어에서 자료구조가 쓰이는 곳(피드의 리스트, 실행 취소의 스택, 캐시의 해시 테이블, DOM의 트리, 지도 검색의 R-트리), 대규모 시스템 설계에 자주 나오는 알고리즘(일관된 해싱, 지오해시·쿼드트리, 블룸 필터, HyperLogLog, 토큰 버킷, 머클 트리, 합의 알고리즘), 세상을 움직이는 아홉 가지 알고리즘을 정리한다. 블룸 필터는 중복 URL 크롤링 방지 예로 자세히 본다."
 tags: ["algorithm", "data-structure", "architecture", "scalability", "search"]
 source: other
-date: "2026-10-21"
+date: "2026-10-31"
 sources: ["https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://bytebytego.com/guides/algorithms-you-should-know-before-taking-system-design-interviews", "https://bytebytego.com/guides/the-9-algorithms-that-dominate-our-world", "https://bytebytego.com/guides/how-to-avoid-crawling-duplicate-urls-at-google-scale", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
 ---
 
@@ -104,4 +104,4 @@ flowchart LR
 - 블룸 필터는 "확실히 없다"를 싸게 판정한다. 거짓 양성을 감수할 수 있는 곳에 쓴다.
 - 설계에서는 구현보다 어떤 문제를 어떤 대가로 푸는지를 설명할 수 있어야 한다.
 
-관련 노트: [[data-structures|기초 자료구조]], [[web-crawler-at-scale|대규모 웹 크롤러 설계]], [[database-sharding|데이터베이스 샤딩]], [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[big-o|빅오 표기법과 시간 복잡도]], [[data-compression|데이터 압축: 무손실과 손실]]
+관련 노트: [[data-structures|기초 자료구조]], [[web-crawler-at-scale|대규모 웹 크롤러 설계]], [[database-sharding|데이터베이스 샤딩]], [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[big-o|빅오 표기법과 시간 복잡도]], [[data-compression|데이터 압축: 무손실과 손실]], [[trending-topics|실시간 트렌딩과 Top-K 집계]]

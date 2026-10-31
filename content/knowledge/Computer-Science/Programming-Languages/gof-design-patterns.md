@@ -4,11 +4,11 @@ concept: "Design Patterns"
 summary: "객체 지향 설계에서 반복되는 문제의 검증된 해법인 GoF 디자인 패턴을 생성·구조·행위 세 갈래로 나눠, 패턴마다 푸는 문제와 한 줄 비유로 정리한다. 패턴은 어휘이자 도구이며, 필요 없는 곳에 쓰면 오히려 복잡도를 늘린다."
 tags: ["design-pattern", "oop", "software-engineering", "clean-code", "computer-science"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/18-key-design-patterns-every-developer-should-know", "https://bytebytego.com/guides/design-patterns-cheat-sheet-part-1-and-part-2"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/18-key-design-patterns-every-developer-should-know", "https://bytebytego.com/guides/design-patterns-cheat-sheet-part-1-and-part-2", "http://sourcemaking.com/design-patterns-and-tips"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[18 Key Design Patterns Every Developer Should Know](https://bytebytego.com/guides/18-key-design-patterns-every-developer-should-know)」, 「[Design Patterns Cheat Sheet](https://bytebytego.com/guides/design-patterns-cheat-sheet-part-1-and-part-2)」를 바탕으로 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[18 Key Design Patterns Every Developer Should Know](https://bytebytego.com/guides/18-key-design-patterns-every-developer-should-know)」, 「[Design Patterns Cheat Sheet](https://bytebytego.com/guides/design-patterns-cheat-sheet-part-1-and-part-2)」를 바탕으로 재구성한 노트다. GoF 밖의 패턴은 「[SourceMaking: Design Patterns](http://sourcemaking.com/design-patterns-and-tips)」로 보강했다.
 
 ## 디자인 패턴이란
 
@@ -54,6 +54,14 @@ sources: ["https://bytebytego.com/guides/18-key-design-patterns-every-developer-
 | 상태(State) | 모드 전환 | 상태별 행동을 객체로 나눠 거대한 조건문을 없앤다 |
 
 GoF의 23개 중 나머지(인터프리터)는 작은 언어의 문법을 클래스로 표현하는 패턴이다.
+
+## GoF 밖에서 자주 쓰는 패턴
+
+| 패턴 | 하는 일 | 쓰임 |
+| --- | --- | --- |
+| 객체 풀(Object Pool) | 만들기 비싼 객체를 미리 만들어 두고 빌려 쓰고 돌려준다 | DB 커넥션 풀, 스레드 풀. 반납을 잊으면 풀이 마른다 |
+| 널 객체(Null Object) | 「없음」을 아무 일도 하지 않는 대체 객체로 표현한다 | `null` 검사 분기를 없앤다. 기본 로거, 빈 할인 정책 |
+| 비공개 클래스 데이터(Private Class Data) | 속성들을 별도 데이터 객체로 묶어 생성 뒤 바꿀 수 없게 숨긴다 | 불변 값 객체, 생성 후 수정되면 안 되는 설정 |
 
 ## 헷갈리는 짝
 

@@ -4,11 +4,11 @@ concept: "CDN"
 summary: "전 세계 엣지 서버에 콘텐츠를 캐시해 사용자 가까운 곳에서 응답하는 CDN. 동작 방식, 얻는 것과 비용·위험, 캐시 무효화와 프론트엔드 배포에서의 쓰임을 정리한다."
 tags: ["network", "cdn", "cache", "web", "frontend"]
 source: mixed
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-cdn-content-delivery-network", "https://bytebytego.com/guides/how-does-cnd-work", "https://bytebytego.com/guides/why-are-content-delivery-networks-cdn-so-popular", "https://bytebytego.com/guides/a-beginner's-guide-to-cdn-content-delivery-network", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/cdn.md", "https://developer.chrome.com/blog/http-cache-partitioning"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/what-is-cdn-content-delivery-network", "https://bytebytego.com/guides/how-does-cnd-work", "https://bytebytego.com/guides/why-are-content-delivery-networks-cdn-so-popular", "https://bytebytego.com/guides/a-beginner's-guide-to-cdn-content-delivery-network", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/cdn.md", "https://developer.chrome.com/blog/http-cache-partitioning", "https://kilthub.cmu.edu/articles/journal_contribution/Globally_distributed_content_delivery/6605972"]
 ---
 
-> 여러 자료를 종합한 노트에, ByteByteGo의 System Design 101 가이드 「[What is CDN?](https://bytebytego.com/guides/what-is-cdn-content-delivery-network)」, 「[How Does CDN Work?](https://bytebytego.com/guides/how-does-cnd-work)」, 「[Why are CDNs so Popular?](https://bytebytego.com/guides/why-are-content-delivery-networks-cdn-so-popular)」, 「[A Beginner's Guide to CDN](https://bytebytego.com/guides/a-beginner's-guide-to-cdn-content-delivery-network)」의 DNS 라우팅·계층 구조·요청 라우팅 내용을 보강했다.
+> 여러 자료를 종합한 노트에, ByteByteGo의 System Design 101 가이드 「[What is CDN?](https://bytebytego.com/guides/what-is-cdn-content-delivery-network)」, 「[How Does CDN Work?](https://bytebytego.com/guides/how-does-cnd-work)」, 「[Why are CDNs so Popular?](https://bytebytego.com/guides/why-are-content-delivery-networks-cdn-so-popular)」, 「[A Beginner's Guide to CDN](https://bytebytego.com/guides/a-beginner's-guide-to-cdn-content-delivery-network)」의 DNS 라우팅·계층 구조·요청 라우팅 내용을 보강했다. CDN 운영의 설계 판단은 Akamai의 「[Globally Distributed Content Delivery](https://kilthub.cmu.edu/articles/journal_contribution/Globally_distributed_content_delivery/6605972)」(IEEE Internet Computing, 2002)로 보강했다.
 > 「비용과 위험」은 「[Must-Know-About-Frontend: CDN](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/cdn.md)」을 바탕으로 보강했다.
 
 ## CDN이란
@@ -72,6 +72,18 @@ flowchart TB
 
 엣지는 정적 파일만 내려 주지 않는다. **엣지 컴퓨팅**은 코드를 엣지에서 실행해 개인화, A/B 테스트 분기, 인증 확인, 이미지 변환 같은 동적 처리를 중앙 데이터센터까지 가지 않고 끝낸다(Cloudflare Workers, Vercel Edge Functions 같은 형태). 실시간성이 중요한 영상 스트리밍·클라우드 게임도 엣지 가까이에서 처리해 지연을 줄인다.
 
+### 캐시할 수 없는 것도 빠르게
+
+정적 파일만 CDN의 몫은 아니다. 대규모 CDN이 초기부터 쓴 기법이다.
+
+| 기법 | 동작 | 효과 |
+| --- | --- | --- |
+| TCP 연결 나누기 | 클라이언트 ↔ 엣지, 엣지 ↔ 원본으로 연결을 둘로 나눈다 | 엣지가 가까워 패킷 손실에 빨리 반응하고, 원본의 응답을 빠르게 받아 메모리에서 클라이언트 속도로 내보내 원본 자원을 일찍 풀어 준다. 원본은 소수의 엣지와만 오래 연결을 유지한다 |
+| 엣지에서 조립(ESI) | 페이지를 캐시 가능한 조각과 개인화 조각으로 나눠 엣지에서 합친다 | 동적 페이지 대부분을 엣지에서 낸다. 원본이 죽으면 대체 조각을 낸다 |
+| 엣지에서 인가 | 원본이 붙인 인가 토큰을 엣지가 검사한다 | 보호된 콘텐츠도 요청마다 원본까지 가지 않는다 |
+
+오늘날의 엣지 함수(Cloudflare Workers, Lambda@Edge)와 서명 URL·서명 쿠키가 같은 발상을 잇는다.
+
 ## 얻는 것
 
 | 효과 | 이유 |
@@ -92,6 +104,8 @@ flowchart TB
 | 배포 복잡도 | 배포마다 오래된 사본을 어떻게 비울지 정해야 한다 | 아래 「캐시 무효화」. 올릴 대상을 정적 자산 위주로 고르는 것도 같은 이유다 |
 | 공용 CDN의 착각 | cdnjs·jsDelivr 같은 공용 CDN으로 라이브러리를 받으면 「다른 사이트가 받아 둔 캐시를 공유한다」는 이점이 있었지만, 2020년 전후 주요 브라우저가 HTTP 캐시를 사이트별로 분리해 사라졌다. 대신 다른 출처로 연결을 하나 더 연다 | 라이브러리는 번들에 넣어 자기 출처·자기 CDN에서 내려 준다. 외부에서 받는다면 `integrity`(SRI)를 건다 |
 
+CDN 자체의 장애도 설계 대상이다. DNS 응답에 IP를 여러 개 실어 하나가 죽어도 클라이언트가 다른 주소로 가게 하고, 상위 DNS가 여러 지역의 하위 DNS를 알려 줘 네트워크 일부가 끊겨도 이름 풀이가 된다. 디스크·메모리 손상이나 운영 실수는 파일 시스템 수준 검사로 다 잡지 못하므로, 다른 고객의 콘텐츠를 잘못 내거나 깨진 응답을 캐시하지 않도록 **끝에서 끝까지(end-to-end) 검사**를 한다. 수천 대의 상태는 분산 모니터링이 모아 SQL 같은 질의로 본다.
+
 ## 무엇을 올리나
 
 - **정적 자산**: JS 번들, CSS, 폰트, 이미지, 영상. 가장 효과가 크다.
@@ -107,6 +121,8 @@ flowchart TB
 | 파일 이름에 해시 | `app.3f9a2c.js`처럼 내용이 바뀌면 URL이 바뀐다. 1년짜리 캐시를 걸어도 안전하다 (번들러 기본 동작) |
 | Purge | CDN 관리 화면이나 API로 특정 경로·태그의 캐시를 지운다 |
 | 짧은 TTL | HTML처럼 URL이 고정된 파일은 짧게 캐시하거나 매번 재검증한다 |
+
+버전 번호를 이름에 넣은 객체(`app.3f2a.js`)는 내용이 바뀌면 이름이 바뀌므로 **TTL을 무한으로** 둬도 된다. 바뀔 수 있는 이름의 객체만 TTL과 즉시 삭제(purge)로 관리한다.
 
 ## 정리
 

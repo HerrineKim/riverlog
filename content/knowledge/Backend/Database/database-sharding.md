@@ -4,11 +4,11 @@ concept: "Database Sharding"
 summary: "한 DB에 담기 어려울 만큼 커진 데이터를 같은 스키마의 여러 DB로 행 단위로 나누는 샤딩을 정리했다. 샤드 키와 라우팅 방식(모듈러·범위·디렉터리·일관된 해싱·가상 버킷), 샤딩이 어렵게 만드는 것, ShardingSphere 같은 미들웨어, 기존 DB에서 옮겨 올 때의 동기화와 첫 요청 지연까지 다룬다."
 tags: ["backend", "database", "architecture", "performance", "mysql"]
 source: other
-date: "2026-10-17"
-sources: ["https://dev.gmarket.com/61", "https://shardingsphere.apache.org/document/current/en/overview/", "https://www.mongodb.com/docs/manual/core/sharding-choose-a-shard-key/", "https://debezium.io/documentation/reference/stable/architecture.html", "https://bytebytego.com/guides/100x-postgres-scaling-at-figma", "https://bytebytego.com/guides/a-crash-course-in-database-sharding", "https://bytebytego.com/guides/key-concepts-to-understand-database-sharding", "https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained", "https://bytebytego.com/guides/consistent-hashing", "https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning", "https://vitess.io/docs/overview/architecture/", "https://docs.citusdata.com/en/stable/get_started/concepts.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
+date: "2026-10-31"
+sources: ["https://dev.gmarket.com/61", "https://shardingsphere.apache.org/document/current/en/overview/", "https://www.mongodb.com/docs/manual/core/sharding-choose-a-shard-key/", "https://debezium.io/documentation/reference/stable/architecture.html", "https://bytebytego.com/guides/100x-postgres-scaling-at-figma", "https://bytebytego.com/guides/a-crash-course-in-database-sharding", "https://bytebytego.com/guides/key-concepts-to-understand-database-sharding", "https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained", "https://bytebytego.com/guides/consistent-hashing", "https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning", "https://vitess.io/docs/overview/architecture/", "https://docs.citusdata.com/en/stable/get_started/concepts.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "http://www.tom-e-white.com/2007/11/consistent-hashing.html", "http://highscalability.com/blog/2013/4/15/scaling-pinterest-from-0-to-10s-of-billions-of-page-views-a.html", "http://highscalability.com/blog/2012/5/21/pinterest-architecture-update-18-million-visitors-10x-growth.html", "http://highscalability.com/flickr-architecture"]
 ---
 
-> G마켓 기술 블로그의 「[Sharded MySQL Cluster 도입 배경과 개발기](https://dev.gmarket.com/61)」(2022.12)를 바탕으로 재구성하고, ShardingSphere·MongoDB·Debezium 공식 문서로 최신화한 노트다. 단계별 확장 사례는 ByteByteGo의 System Design 101 가이드 「[100X Postgres Scaling at Figma](https://bytebytego.com/guides/100x-postgres-scaling-at-figma)」를 바탕으로 덧붙였다. 라우팅 알고리즘과 일관된 해싱은 같은 가이드의 「[A Crash Course on Database Sharding](https://bytebytego.com/guides/a-crash-course-in-database-sharding)」, 「[Key Concepts to Understand Database Sharding](https://bytebytego.com/guides/key-concepts-to-understand-database-sharding)」, 「[Top 4 Data Sharding Algorithms](https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained)」, 「[Consistent Hashing Explained](https://bytebytego.com/guides/consistent-hashing)」, 「[Vertical vs Horizontal Partitioning](https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning)」로 보강했다. Vitess·Citus 구조와 재샤딩은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md)」의 질문을 실마리로 두 프로젝트의 공식 문서를 바탕으로 덧붙였다.
+> G마켓 기술 블로그의 「[Sharded MySQL Cluster 도입 배경과 개발기](https://dev.gmarket.com/61)」(2022.12)를 바탕으로 재구성하고, ShardingSphere·MongoDB·Debezium 공식 문서로 최신화한 노트다. 단계별 확장 사례는 ByteByteGo의 System Design 101 가이드 「[100X Postgres Scaling at Figma](https://bytebytego.com/guides/100x-postgres-scaling-at-figma)」를 바탕으로 덧붙였다. 라우팅 알고리즘과 일관된 해싱은 같은 가이드의 「[A Crash Course on Database Sharding](https://bytebytego.com/guides/a-crash-course-in-database-sharding)」, 「[Key Concepts to Understand Database Sharding](https://bytebytego.com/guides/key-concepts-to-understand-database-sharding)」, 「[Top 4 Data Sharding Algorithms](https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained)」, 「[Consistent Hashing Explained](https://bytebytego.com/guides/consistent-hashing)」, 「[Vertical vs Horizontal Partitioning](https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning)」로 보강했다. Vitess·Citus 구조와 재샤딩은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md)」의 질문을 실마리로 두 프로젝트의 공식 문서를 바탕으로 덧붙였다. 일관된 해싱의 구현은 Tom White의 「[Consistent Hashing](http://www.tom-e-white.com/2007/11/consistent-hashing.html)」으로, 사용자 단위 샤딩 사례는 High Scalability의 「[Scaling Pinterest](http://highscalability.com/blog/2013/4/15/scaling-pinterest-from-0-to-10s-of-billions-of-page-views-a.html)」, 「[Pinterest Architecture Update](http://highscalability.com/blog/2012/5/21/pinterest-architecture-update-18-million-visitors-10x-growth.html)」, 「[Flickr Architecture](http://highscalability.com/flickr-architecture)」로 보강했다. Flickr의 이중 쓰기와 검색 분리는 「[Flickr Architecture](http://highscalability.com/flickr-architecture)」로 보강했다.
 
 ## 샤딩이란
 
@@ -105,6 +105,30 @@ PostgreSQL에서는 행이 많아질수록 VACUUM(죽은 튜플 정리) 비용�
 - 서버 수를 N, 키 수를 K라 하면 서버 하나를 더하거나 뺄 때 평균 **K/N개만** 옮긴다.
 - 서버가 적으면 링 위 구간이 들쭉날쭉해 일부 서버에 키가 몰린다. 서버마다 링 위에 여러 점(**가상 노드**)을 찍어 고르게 하고, 성능 좋은 서버에는 가상 노드를 더 준다.
 - 쓰이는 곳: DynamoDB·Cassandra의 데이터 분산(재배치 최소화), Akamai 같은 CDN의 엣지 서버 콘텐츠 분배, 연결을 오래 유지하는 로드 밸런서의 백엔드 선택, 분산 캐시 클라이언트.
+
+- 일관된 해싱은 웹 캐시의 핫스폿을 풀려고 나왔다(Karger 외, 1997). 캐시 서버 수가 바뀌어 `hash(o) mod n`의 자리가 모두 바뀌면, 캐시가 갑자기 사라진 것처럼 원본 서버로 요청이 쏟아진다.
+- 가상 노드 수의 감: 캐시 10대에 객체 1만 개를 넣는 시뮬레이션에서 서버당 가상 노드를 100~200개 두면 서버별 객체 수의 표준편차가 평균의 5~10% 안으로 들어온다.
+- 구현은 정렬된 맵 하나다. 노드마다 `hash(노드이름 + i)`로 가상 노드 점을 찍어 `TreeMap`에 넣고, 키를 찾을 때는 `tailMap(hash(key))`의 첫 키, 비어 있으면 맵의 첫 키(링을 한 바퀴 돌아)를 고른다. 해시 함수는 고르게 섞이는 것(MD5 등)을 써야 한다. 언어 기본 `hashCode`는 작은 정수에 몰리기 쉽다.
+- Memcached처럼 **서버는 그대로 두고 클라이언트만** 일관된 해싱을 구현해도 된다(ketama 클라이언트가 처음이다).
+
+### 사례: 사용자 단위 샤딩
+
+사진·핀 서비스들은 「한 화면을 그리는 데 가장 적은 DB를 거치게」를 기준으로 **사용자 단위로 데이터를 모아** 샤딩했다.
+
+| 결정 | 내용 | 얻는 것 |
+| --- | --- | --- |
+| 한 사용자의 데이터는 한 샤드 | 사용자의 핀·보드·사진 메타데이터를 같은 샤드에 둔다 | 프로필 화면이 샤드 하나로 끝난다. 사용자의 읽기·쓰기가 한 샤드에서 끝나 복제 지연 문제가 사라진다 |
+| 미리 많이 쪼개 두기 | 5년 성장을 내다보고 물리 서버 8대에 DB 512개씩, 논리 샤드 4,096개로 시작한다. 커지면 DB를 통째로 새 서버로 옮긴다 | 재샤딩 대신 논리 샤드 이동만 한다 |
+| ID에 샤드 번호를 넣는다 | 64비트 ID = 샤드 ID 16비트 + 타입 10비트 + 샤드 안 자동 증가 ID 36비트 | 매핑 표 조회 없이 ID만 보고 샤드를 찾는다. 매핑 표 조회 한 번(수 ms)도 아끼려는 선택이다 |
+| 전역 테이블은 샤딩하지 않는다 | 사용자 테이블은 큰 DB 하나에 두고 이름·이메일 유일 제약을 건다. Flickr는 「사용자 → 샤드」 포인터를 전역 DB에 둔다 | 유일성 검사가 쉽다 |
+| 샤드 서버를 50%만 쓴다 | 샤드마다 서버 두 대가 각자 부하의 절반만 진다 | 한 대가 죽거나 점검 중이어도 남은 한 대가 전부를 받는다. 절반씩 내려 무중단 업그레이드를 한다 |
+| 분할 기준 | 새 계정은 무작위 샤드에, DB는 용량 50%에 이르면 쪼갠다. 너무 커진 사용자는 수동으로 옮긴다 | |
+
+사용자 단위로 나누면 두 사용자에 걸친 데이터가 문제다. Flickr는 댓글을 단 사람과 받은 사람 **양쪽 샤드에 모두** 저장하고, 즐겨찾기를 누르면 사진 주인의 샤드와 내 샤드를 캐시에서 찾아 둘 다 쓴다. 두 트랜잭션을 차례로 열고 첫째가 커밋되면 둘째를 커밋하므로, 그 사이에 장비가 죽으면 한쪽만 남는 불일치가 생길 수 있다(대개 보정 작업으로 맞춘다). 주·주 복제 쌍에서는 자동 증가 ID가 겹치지 않게 서버마다 시작값과 증가폭을 다르게 준다. 실시간성이 필요한 검색(내 사진의 태그 검색)은 샤드에서, 나머지 약 90%는 별도 검색 엔진에서 처리했다.
+
+샤드를 가로지르는 집계(리포트)는 모든 샤드에 묻고 직접 합쳐야 한다. 데이터가 수 TB로 커질 서비스라면 **일찍 샤딩하는 편이 싸다.**
+
+**클러스터링보다 샤딩을 고르는 이유**도 이 사례에서 나온다. 자동 클러스터링(노드가 스스로 데이터를 나누고 옮기는 방식)은 클러스터 관리 알고리즘이 모든 노드에 복제된 복잡한 코드라, 버그 하나가 전체를 멈추고, 재균형 도중 보조 노드가 스스로 주 노드라고 선언해 데이터가 사라지는 「데이터 권한」 장애가 생길 수 있다. 애플리케이션이 데이터 위치를 정하는 샤딩은 배치 알고리즘이 반 페이지짜리 코드라 실패 방식이 단순하다. 대신 리포트·재균형을 직접 해야 한다.
 
 ## 샤딩이 어렵게 만드는 것
 

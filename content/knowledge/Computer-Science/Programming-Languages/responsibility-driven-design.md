@@ -4,11 +4,11 @@ concept: "Responsibility-Driven Design"
 summary: "객체지향 설계는 좋은 객체가 아니라 좋은 협력을 설계하는 일이다. 메시지를 먼저 정하고 그 메시지를 처리할 책임을 가진 객체를 고른다. 객체가 받는 메시지의 집합이 인터페이스가 되고, 속성은 책임을 정한 뒤에 따라온다."
 tags: ["oop", "design-pattern", "architecture", "software-engineering"]
 source: other
-date: "2026-10-21"
-sources: ["https://techblog.woowahan.com/2502/", "https://www.slideshare.net/baejjae93/ss-150432699", "https://youtu.be/dJ5C4qRqAgA"]
+date: "2026-10-31"
+sources: ["https://techblog.woowahan.com/2502/", "https://www.slideshare.net/baejjae93/ss-150432699", "https://youtu.be/dJ5C4qRqAgA", "https://github.com/checkcheckzz/system-design-interview"]
 ---
 
-> 「[생각하라, 객체지향처럼](https://techblog.woowahan.com/2502/)」을 바탕으로 재구성한 노트다. 의존성 관리 쪽 이야기는 조영호의 「우아한 객체지향」([슬라이드](https://www.slideshare.net/baejjae93/ss-150432699), [발표 영상](https://youtu.be/dJ5C4qRqAgA), 2019)을 더 읽을거리로 둔다.
+> 「[생각하라, 객체지향처럼](https://techblog.woowahan.com/2502/)」을 바탕으로 재구성한 노트다. 의존성 관리 쪽 이야기는 조영호의 「우아한 객체지향」([슬라이드](https://www.slideshare.net/baejjae93/ss-150432699), [발표 영상](https://youtu.be/dJ5C4qRqAgA), 2019)을 더 읽을거리로 둔다. 짧은 시간에 객체 설계 문제를 푸는 순서는 「[checkcheckzz/system-design-interview](https://github.com/checkcheckzz/system-design-interview)」의 Object Oriented Design 팁으로 보강했다.
 
 ## 책임 주도 설계란
 
@@ -51,6 +51,17 @@ flowchart LR
 6. **구현해서 설계를 검증한다.** 설계는 구현을 위한 스케치다. 코드와 테스트로 피드백을 받아 고친다.
 
 도메인 모델은 이 과정의 지도 역할을 한다. 도메인을 이루는 타입과 그 관계를 파악하면 메시지를 받을 객체 후보가 보인다.
+
+### 짧은 시간에 객체 설계 문제를 풀 때
+
+「주차장을 설계하라」, 「엘리베이터를 설계하라」 같은 객체 설계 문제도 같은 순서를 압축해 쓴다.
+
+| 단계 | 할 일 |
+| --- | --- |
+| 1. 시나리오와 사용 사례 | 누가, 어떤 순서의 사건으로 시스템에서 무엇을 얻나를 적는다. 다중 스레드 여부, 읽기 위주인지 쓰기 위주인지 같은 특수 요구도 묻는다 |
+| 2. 객체 정의 | 시나리오의 핵심 개념마다 클래스 후보를 둔다. 명사는 속성·클래스, 동사는 메서드 후보다. 다만 위 원칙대로 속성보다 메시지(책임)를 먼저 정한다 |
+| 3. 관계 | 유일해야 하는 인스턴스(싱글턴), 하나가 여럿을 가진다(합성), 하나가 다른 것의 한 종류다(상속, 대개는 인터페이스와 합성이 낫다) |
+| 4. 패턴 적용 | 바뀔 부분이 보이면 [[gof-design-patterns\|디자인 패턴]]으로 감싸 재사용과 확장에 대비한다 |
 
 ## 의존성으로 이어지는 문제
 
