@@ -27,13 +27,13 @@ sources: ["https://ko.javascript.info/indexeddb", "https://developer.mozilla.org
 
 ## 구조
 
-```text
-출처(https://app.com)
- └─ 데이터베이스 "mail" (version 3)
-     ├─ 객체 저장소 "messages"  keyPath: "id"      ← 테이블에 해당
-     │    ├─ 인덱스 "by_date"   keyPath: "date"
-     │    └─ 인덱스 "by_label"  keyPath: "labels", multiEntry
-     └─ 객체 저장소 "drafts"    autoIncrement
+```mermaid
+flowchart TB
+  origin["출처(https://app.com)"] --> db["데이터베이스 #quot;mail#quot; (version 3)"]
+  db --> s1["객체 저장소 #quot;messages#quot;<br/>keyPath: #quot;id#quot;<br/>← 테이블에 해당"]
+  s1 --> i1["인덱스 #quot;by_date#quot;<br/>keyPath: #quot;date#quot;"]
+  s1 --> i2["인덱스 #quot;by_label#quot;<br/>keyPath: #quot;labels#quot;, multiEntry"]
+  db --> s2["객체 저장소 #quot;drafts#quot;<br/>autoIncrement"]
 ```
 
 - **객체 저장소(object store)**: 값을 담는 곳. 이름과 달리 원시값도 담는다. 값마다 고유한 **키**가 있고, 저장소는 늘 **키 순으로 정렬**되어 있다.

@@ -30,13 +30,13 @@ sources: ["https://web.dev/learn/forms/form-element", "https://web.dev/learn/for
 
 ## 어디로, 어떻게 보내나
 
-```text
-제출(버튼 클릭 · Enter · requestSubmit())
-  └─ 제약 검증 (novalidate·formnovalidate면 건너뜀)
-       └─ submit 이벤트  ← 여기서 preventDefault()하면 페이지 이동 없음
-            └─ method·action·enctype에 따라 요청 생성
-                 ├─ GET  → action?name=value&...  (URL에 붙음)
-                 └─ POST → 요청 본문에 실음
+```mermaid
+flowchart TB
+  n1["제출<br/>(버튼 클릭 · Enter · requestSubmit())"] --> n2["제약 검증<br/>(novalidate·formnovalidate면 건너뜀)"]
+  n2 --> n3["submit 이벤트<br/>← 여기서 preventDefault()하면 페이지 이동 없음"]
+  n3 --> n4["method·action·enctype에 따라 요청 생성"]
+  n4 -->|"GET"| n5["action?name=value&...<br/>(URL에 붙음)"]
+  n4 -->|"POST"| n6["요청 본문에 실음"]
 ```
 
 - `action`이 없으면 **현재 페이지 URL**로, `method`가 없으면 **GET**으로 보낸다.

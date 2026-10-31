@@ -23,12 +23,12 @@ i18n을 먼저 해 두지 않으면 언어를 하나 늘릴 때마다 화면을 
 
 ## 언어별 페이지를 내보내는 구조
 
-```text
-요청 (Accept-Language: ko-KR,ko;q=0.9,en;q=0.8)
-  └─ 서버·프레임워크가 지원 언어 중 가장 맞는 것을 고름 (첫 방문 제안용)
-       └─ 언어별 URL로 응답: /ko/…, /en/…
-            └─ 템플릿 + 언어별 메시지 파일(JSON·YAML·PO 등)로 HTML 생성
-                 └─ <html lang="ko"> + hreflang으로 다른 언어판 연결
+```mermaid
+flowchart TB
+  n1["요청<br/>(Accept-Language: ko-KR,ko;q=0.9,en;q=0.8)"] --> n2["서버·프레임워크가 지원 언어 중 가장 맞는 것을 고름<br/>(첫 방문 제안용)"]
+  n2 --> n3["언어별 URL로 응답: /ko/…, /en/…"]
+  n3 --> n4["템플릿 + 언어별 메시지 파일(JSON·YAML·PO 등)로 HTML 생성"]
+  n4 --> n5["#lt;html lang=#quot;ko#quot;#gt; + hreflang으로 다른 언어판 연결"]
 ```
 
 | 결정 | 권장 |

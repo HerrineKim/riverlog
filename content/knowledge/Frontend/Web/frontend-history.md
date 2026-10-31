@@ -22,10 +22,11 @@ sources: ["https://yozm.wishket.com/magazine/detail/2287/", "https://velog.io/@t
 
 ## 프론트엔드를 만든 기술들
 
-```text
-1991 HTML 태그 ─ 1993 <img> ─ 1994 CGI ─ 1995 JavaScript ─ 1996 CSS ─ 2004~05 AJAX(Gmail, Google Maps) ─ 2010 무렵 Flash 퇴장
-                                                                                                     │
-                                                       트래픽·데이터 증가 → 프론트엔드 / 백엔드 분리 ◀┘
+```mermaid
+flowchart LR
+  n1["1991 HTML 태그"] --> n2["1993 #lt;img#gt;"] --> n3["1994 CGI"] --> n4["1995 JavaScript"] --> n5["1996 CSS"]
+  n5 --> n6["2004~05 AJAX<br/>(Gmail, Google Maps)"] --> n7["2010 무렵 Flash 퇴장"]
+  n7 --> n8["트래픽·데이터 증가"] --> n9["프론트엔드 / 백엔드 분리"]
 ```
 
 | 기술 | 바꾼 것 |

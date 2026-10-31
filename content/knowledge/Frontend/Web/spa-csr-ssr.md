@@ -73,10 +73,19 @@ SSR + hydration은 프레임워크 없이도 네 부품으로 만들 수 있다.
 | 초기 상태 주입 | 서버가 쓴 데이터를 `<script>window.__INITIAL_STATE__ = …</script>`처럼 HTML에 직렬화해 싣는다 | 브라우저가 같은 데이터로 시작해야 같은 화면이 나온다. `</script>`가 끼지 않게 이스케이프한다 |
 | hydration | 브라우저가 주입된 상태로 모델을 만들고 이벤트를 붙인다. 이후 이동은 `history.pushState`와 `popstate`로 클라이언트에서 처리한다 | **서버와 클라이언트가 같은 상태에서 같은 HTML을 그려야** 어긋남(hydration mismatch)이 없다 |
 
-```text
-요청 ─▶ 서버: 라우트 매칭 → 데이터 조회 → render(model) → HTML + 초기 상태
-      ─▶ 브라우저: HTML 즉시 표시 → JS 로드 → 초기 상태로 모델 복원 → 이벤트 연결
-      ─▶ 이후 이동: pushState + 클라이언트 렌더, 변경은 API로 서버에 반영
+```mermaid
+flowchart TB
+  req["요청"] --> s1
+  subgraph server["서버"]
+    direction LR
+    s1["라우트 매칭"] --> s2["데이터 조회"] --> s3["render(model)"] --> s4["HTML + 초기 상태"]
+  end
+  s4 --> b1
+  subgraph browser["브라우저"]
+    direction LR
+    b1["HTML 즉시 표시"] --> b2["JS 로드"] --> b3["초기 상태로 모델 복원"] --> b4["이벤트 연결"]
+  end
+  b4 --> next["이후 이동: pushState + 클라이언트 렌더<br/>변경은 API로 서버에 반영"]
 ```
 
 SSR 서버는 보통 API 서버 앞에 따로 둔다. 여러 API를 조합해 화면용으로 가공하고 응답을 캐시하는 이 층이 [[bff|BFF]]다. SSR의 체감 이득은 사용자 기기 성능에 따라 다르므로 서버 비용과 함께 따진다. 서버에서 렌더링하는 Node 프로세스는 요청마다 메모리를 쓰므로 힙 스냅샷으로 누수를 점검한다.

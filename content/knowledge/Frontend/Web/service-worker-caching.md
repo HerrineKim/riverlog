@@ -12,9 +12,21 @@ sources: ["https://web.dev/learn/pwa/caching", "https://web.dev/learn/pwa/servin
 
 ## 두 단계: 저장하고, 응답한다
 
-```text
-[저장] install 또는 런타임에 caches.open(name) → cache.add/addAll/put
-[응답] fetch 이벤트 → event.respondWith( 캐시 / 네트워크 / 만든 응답 )
+저장
+
+```mermaid
+flowchart LR
+  a["install 또는 런타임"] --> b["caches.open(name)"] --> c["cache.add/addAll/put"]
+```
+
+응답
+
+```mermaid
+flowchart LR
+  a["fetch 이벤트"] --> b["event.respondWith()"]
+  b --> c1["캐시"]
+  b --> c2["네트워크"]
+  b --> c3["만든 응답"]
 ```
 
 서비스 워커 자체의 등록·생명주기는 [[service-worker-lifecycle|서비스 워커 등록·스코프·생명주기와 업데이트]]에, 미디어를 중요도별로 나눠 캐시하고 캐시 크기를 제한하는 방법은 [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]]에 있다. HTTP 캐시와의 관계는 [[http-cache|HTTP 캐시]]를 본다.

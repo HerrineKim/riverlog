@@ -22,13 +22,17 @@ iOS 앱은 늘 아래 상태 중 하나에 있다. 시스템이 상태를 바꾸
 | Background | 화면에 없지만 코드를 실행한다. 허용된 작업(오디오, 위치, 다운로드, 짧은 마무리 작업)만 이어 간다 |
 | Suspended | 메모리에는 있지만 코드를 실행하지 않는다. 메모리가 부족하면 시스템이 알림 없이 종료한다 |
 
-```text
-Not Running ──실행──▶ Inactive ⇄ Active
-                         │
-                         ▼
-                     Background ──작업 끝──▶ Suspended ──메모리 부족──▶ Not Running
-                         ▲                      │
-                         └──── 다시 앞으로 ─────┘ (Background를 거쳐 Inactive → Active)
+```mermaid
+stateDiagram-v2
+  state "Not Running" as NR
+  NR --> Inactive : 실행
+  Inactive --> Active
+  Active --> Inactive
+  Inactive --> Background
+  Background --> Suspended : 작업 끝
+  Suspended --> NR : 메모리 부족
+  Suspended --> Background : 다시 앞으로
+  note right of Suspended : 다시 앞으로 올 때는 Background를 거쳐 Inactive → Active
 ```
 
 Suspended에서 곧장 Active로 갈 수는 없다. 다시 열면 Background와 Inactive를 거쳐 Active가 된다.

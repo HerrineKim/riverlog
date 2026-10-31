@@ -26,14 +26,35 @@ sources: ["https://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_St
 
 **MediaStream은 MediaStreamTrack 여러 개의 묶음**이다. 트랙 하나는 오디오나 비디오 한 줄기이고(`kind`), 오디오 트랙은 다시 채널(스테레오의 왼쪽·오른쪽)로 나뉜다.
 
-```text
-소스                                       소비자
-getUserMedia (카메라·마이크) ─┐           ┌─ <video>.srcObject / <audio>.srcObject
-getDisplayMedia (화면 공유)  ─┤           ├─ RTCPeerConnection.addTrack()
-canvas.captureStream()       ─┼─ MediaStream ─┼─ MediaRecorder
-video.captureStream()        ─┤  (트랙들)   ├─ Web Audio MediaStreamAudioSourceNode
-RTCPeerConnection ontrack    ─┤           └─ ImageCapture (사진)
-Web Audio MediaStreamAudioDestinationNode ─┘
+```mermaid
+flowchart LR
+  subgraph src["소스"]
+    s1["getUserMedia (카메라·마이크)"]
+    s2["getDisplayMedia (화면 공유)"]
+    s3["canvas.captureStream()"]
+    s4["video.captureStream()"]
+    s5["RTCPeerConnection ontrack"]
+    s6["Web Audio MediaStreamAudioDestinationNode"]
+  end
+  ms["MediaStream<br/>(트랙들)"]
+  subgraph sink["소비자"]
+    c1["#lt;video#gt;.srcObject / #lt;audio#gt;.srcObject"]
+    c2["RTCPeerConnection.addTrack()"]
+    c3["MediaRecorder"]
+    c4["Web Audio MediaStreamAudioSourceNode"]
+    c5["ImageCapture (사진)"]
+  end
+  s1 --> ms
+  s2 --> ms
+  s3 --> ms
+  s4 --> ms
+  s5 --> ms
+  s6 --> ms
+  ms --> c1
+  ms --> c2
+  ms --> c3
+  ms --> c4
+  ms --> c5
 ```
 
 ```javascript

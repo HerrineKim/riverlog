@@ -18,20 +18,16 @@ npm 패키지는 **다른 사람이 써서 레지스트리(registry.npmjs.org)�
 
 ## `npm install <패키지>`가 하는 일
 
-```text
-npm install axios
- │
- ├─ 1. 해석: package.json·lock 파일을 읽고, 레지스트리에서 axios와
- │          그 의존성(의존성의 의존성까지)의 버전을 정한다
- ├─ 2. 내려받기: 각 패키지의 tarball(.tgz)을 받아 ~/.npm/_cacache 에 캐시한다
- │              이미 캐시에 있으면 네트워크를 쓰지 않는다
- ├─ 3. 검증: tarball의 해시를 lock 파일·레지스트리의 integrity 값과 맞춘다
- ├─ 4. 배치: ./node_modules/ 에 풀어 놓는다. 겹치는 의존성은 위로 끌어올려(hoisting) 공유한다
- ├─ 5. 명령 연결: 패키지가 bin을 선언했으면 node_modules/.bin/ 에 링크를 만든다
- ├─ 6. 설치 스크립트 실행: preinstall·install·postinstall 이 있으면 실행한다
- ├─ 7. 기록: package.json 의 dependencies 에 "axios": "^x.y.z" 를 넣고
- │          package-lock.json 에 실제 설치된 정확한 버전·주소·해시를 쓴다
- └─ 8. 감사: 알려진 취약점을 레지스트리에 물어 요약(npm audit)을 출력한다
+```mermaid
+flowchart TB
+  cmd["npm install axios"] --> s1["1. 해석: package.json·lock 파일을 읽고, 레지스트리에서 axios와<br/>그 의존성(의존성의 의존성까지)의 버전을 정한다"]
+  s1 --> s2["2. 내려받기: 각 패키지의 tarball(.tgz)을 받아 ~/.npm/_cacache 에 캐시한다<br/>이미 캐시에 있으면 네트워크를 쓰지 않는다"]
+  s2 --> s3["3. 검증: tarball의 해시를 lock 파일·레지스트리의 integrity 값과 맞춘다"]
+  s3 --> s4["4. 배치: ./node_modules/ 에 풀어 놓는다<br/>겹치는 의존성은 위로 끌어올려(hoisting) 공유한다"]
+  s4 --> s5["5. 명령 연결: 패키지가 bin을 선언했으면 node_modules/.bin/ 에 링크를 만든다"]
+  s5 --> s6["6. 설치 스크립트 실행: preinstall·install·postinstall 이 있으면 실행한다"]
+  s6 --> s7["7. 기록: package.json 의 dependencies 에 #quot;axios#quot;: #quot;^x.y.z#quot; 를 넣고<br/>package-lock.json 에 실제 설치된 정확한 버전·주소·해시를 쓴다"]
+  s7 --> s8["8. 감사: 알려진 취약점을 레지스트리에 물어 요약(npm audit)을 출력한다"]
 ```
 
 - **의존성은 연쇄된다.** 패키지 하나를 넣어도 그 패키지가 기대는 패키지까지 수십 개가 함께 들어온다. 무엇이 왜 들어왔는지는 `npm ls <이름>`, `npm explain <이름>`으로 본다.

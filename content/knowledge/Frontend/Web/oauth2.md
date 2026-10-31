@@ -92,18 +92,38 @@ OAuth 토큰 하나로 할 수 있는 일은 세 갈래다. 여러 서비스에 
 
 중앙 인증 서버(CAS, Central Authentication Service 계열)를 두는 SSO의 흐름은 이렇다.
 
-```text
-[서비스 A 첫 방문]
-사용자 → 서비스 A: 로그인 안 됨 → SSO 서버로 리다이렉트
-SSO 서버: 전역 세션 없음 → 로그인 페이지 → 자격 증명 확인
-SSO 서버: 전역 세션(SSO 도메인 쿠키) 생성 + 서비스 A용 토큰 발급 → A로 리다이렉트
-서비스 A → SSO 서버: 토큰 유효한가? → "유효" (SSO 서버는 A를 로그인된 서비스로 기록)
-서비스 A: 자기 로컬 세션을 만들고 자원 응답
+서비스 A 첫 방문
 
-[서비스 B 방문]
-사용자 → 서비스 B: 로그인 안 됨 → SSO 서버로 리다이렉트
-SSO 서버: 전역 세션 있음 → 비밀번호 없이 B용 토큰 발급 → B로 리다이렉트
-서비스 B → SSO 서버: 토큰 검증 → "유효" → 자원 응답
+```mermaid
+sequenceDiagram
+  participant U as 사용자
+  participant A as 서비스 A
+  participant S as SSO 서버
+  U->>A: 접근
+  A->>S: 로그인 안 됨 → SSO 서버로 리다이렉트
+  Note over S: 전역 세션 없음 → 로그인 페이지 → 자격 증명 확인
+  Note over S: 전역 세션(SSO 도메인 쿠키) 생성 + 서비스 A용 토큰 발급
+  S->>A: A로 리다이렉트
+  A->>S: 토큰 유효한가?
+  S-->>A: "유효" (SSO 서버는 A를 로그인된 서비스로 기록)
+  Note over A: 자기 로컬 세션을 만듦
+  A-->>U: 자원 응답
+```
+
+서비스 B 방문
+
+```mermaid
+sequenceDiagram
+  participant U as 사용자
+  participant B as 서비스 B
+  participant S as SSO 서버
+  U->>B: 접근
+  B->>S: 로그인 안 됨 → SSO 서버로 리다이렉트
+  Note over S: 전역 세션 있음 → 비밀번호 없이 B용 토큰 발급
+  S->>B: B로 리다이렉트
+  B->>S: 토큰 검증
+  S-->>B: "유효"
+  B-->>U: 자원 응답
 ```
 
 이 흐름에서는 전역 세션(SSO 서버)과 로컬 세션(각 서비스)이 따로 있다. SSO 서버가 어떤 서비스에 토큰을 줬는지 기록해 두기 때문에, 로그아웃할 때 그 목록의 서비스들에 로컬 세션 종료를 알릴 수 있다.

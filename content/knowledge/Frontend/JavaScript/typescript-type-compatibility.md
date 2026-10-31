@@ -14,16 +14,16 @@ sources: ["https://basarat.gitbook.io/typescript/type-system/freshness", "https:
 
 타입 하나는 **그 타입이 될 수 있는 값들의 집합**이다. `string`은 모든 문자열의 집합이고, `'a' | 'b'`는 그 부분집합이다. 대입 `target = source`가 허용되는 조건은 **source의 집합이 target의 집합 안에 들어가는가**다. 이 관계를 「source가 target에 할당 가능하다(assignable)」고 하고, 조건부 타입의 `A extends B`도 같은 관계를 묻는다.
 
-```text
-            unknown          ← 모든 값 (최상위)
-         ┌────┴────┐
-      string     object ...
-       │            │
-    'a' | 'b'    { name: string }
-       │            │
-      'a'      { name: string; age: number }
-         └────┬────┘
-            never            ← 값이 하나도 없음 (최하위)
+```mermaid
+flowchart TB
+  unk["unknown<br/>모든 값 (최상위)"] --> str["string"]
+  unk --> obj["object ..."]
+  str --> ab["'a' | 'b'"]
+  ab --> a["'a'"]
+  obj --> nm["{ name: string }"]
+  nm --> nma["{ name: string; age: number }"]
+  a --> nev["never<br/>값이 하나도 없음 (최하위)"]
+  nma --> nev
 ```
 
 - **좁은 타입은 넓은 타입에 대입할 수 있고, 반대는 안 된다.**

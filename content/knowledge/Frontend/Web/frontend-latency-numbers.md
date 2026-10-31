@@ -81,11 +81,14 @@ sources: ["https://vercel.com/blog/latency-numbers-every-web-developer-should-kn
 | 입력 반응을 200ms 아래로 | 무거운 일은 메인 스레드 밖으로 빼서 INP를 지킨다([[web-workers\|웹 워커]], [[inp-optimization\|INP 최적화]]) |
 | 사용자 가까이 배포한다 | 거리와 라우팅 품질이 지연을 크게 더한다. 싼 CDN 경로는 지연을 두 배로 만들 수 있다 |
 
-```text
-사용자 ──(LTE 15–50ms)── 인터넷 ──(대륙 간 150–300ms)── 서버
-                                                       └─(같은 리전 10ms)── DB
-→ 워터폴은 오른쪽 짧은 구간에서 돌게 하고, 왼쪽 긴 구간은 한 번만 건넌다
+```mermaid
+flowchart LR
+  user["사용자"] ---|"LTE 15–50ms"| net["인터넷"]
+  net ---|"대륙 간 150–300ms"| server["서버"]
+  server ---|"같은 리전 10ms"| db["DB"]
 ```
+
+→ 워터폴은 오른쪽 짧은 구간에서 돌게 하고, 왼쪽 긴 구간은 한 번만 건넌다
 
 ## 정리
 

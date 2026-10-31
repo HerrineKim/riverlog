@@ -14,13 +14,12 @@ sources: ["https://reactnative.dev/docs/environment-setup", "https://docs.expo.d
 
 ## 동작 원리
 
-```text
-React 컴포넌트 (<View>, <Text>)
-   │  JS 스레드에서 실행 (네이티브 코드로 컴파일되지 않음)
-   ▼
-JSI ─ Fabric(렌더러) · Turbo Modules
-   ▼
-Android View / iOS UIView   ← 웹뷰가 아니라 진짜 네이티브 뷰
+```mermaid
+flowchart TB
+  rc["React 컴포넌트 (#lt;View#gt;, #lt;Text#gt;)<br/>JS 스레드에서 실행 (네이티브 코드로 컴파일되지 않음)"]
+  jsi["JSI ─ Fabric(렌더러) · Turbo Modules"]
+  nat["Android View / iOS UIView<br/>웹뷰가 아니라 진짜 네이티브 뷰"]
+  rc --> jsi --> nat
 ```
 
 - `<View>`, `<Text>` 같은 컴포넌트는 플랫폼마다 네이티브 뷰로 그려진다.

@@ -14,13 +14,15 @@ sources: ["https://riverkim.kr/110", "https://riverkim.kr/113"]
 
 ## 흐름
 
-```text
-getUserMedia({ audio: true })     ← 마이크 권한 요청 (HTTPS 또는 localhost에서만 동작)
-  └─ MediaStream
-      └─ new MediaRecorder(stream).start()
-          └─ stop() → dataavailable 이벤트로 Blob 전달 (Chrome 기준 audio/webm)
-              ├─ URL.createObjectURL(blob) → <audio> 재생 / <a download> 저장
-              └─ new FormData().append('file', blob) → 서버 업로드
+```mermaid
+flowchart TB
+  gum["getUserMedia({ audio: true })<br/>마이크 권한 요청 (HTTPS 또는 localhost에서만 동작)"] --> ms["MediaStream"]
+  ms --> rec["new MediaRecorder(stream).start()"]
+  rec --> stp["stop() → dataavailable 이벤트로 Blob 전달<br/>(Chrome 기준 audio/webm)"]
+  stp --> url["URL.createObjectURL(blob)"]
+  url --> play["#lt;audio#gt; 재생 / #lt;a download#gt; 저장"]
+  stp --> fd["new FormData().append('file', blob)"]
+  fd --> up["서버 업로드"]
 ```
 
 ## 1. 직접 구현: MediaRecorder

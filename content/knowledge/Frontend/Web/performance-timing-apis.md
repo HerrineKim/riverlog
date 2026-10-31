@@ -26,11 +26,12 @@ DevTools와 Lighthouse는 **실험실 데이터**다. 실제 사용자의 기기
 
 HTML 문서 하나의 일생을 단계별 시각으로 준다. `performance.getEntriesByType('navigation')[0]`이 `PerformanceNavigationTiming` 객체다.
 
-```text
-redirectStart → redirectEnd → fetchStart (캐시 확인) → workerStart (서비스 워커)
-→ domainLookupStart → domainLookupEnd → connectStart → secureConnectionStart → connectEnd
-→ requestStart → responseStart (첫 바이트) → responseEnd (마지막 바이트)
-→ domInteractive → domContentLoadedEventStart/End → domComplete → loadEventStart/End
+```mermaid
+flowchart TB
+  n1["redirectStart"] --> n2["redirectEnd"] --> n3["fetchStart<br/>(캐시 확인)"] --> n4["workerStart<br/>(서비스 워커)"]
+  n4 --> n5["domainLookupStart"] --> n6["domainLookupEnd"] --> n7["connectStart"] --> n8["secureConnectionStart"] --> n9["connectEnd"]
+  n9 --> n10["requestStart"] --> n11["responseStart<br/>(첫 바이트)"] --> n12["responseEnd<br/>(마지막 바이트)"]
+  n12 --> n13["domInteractive"] --> n14["domContentLoadedEventStart/End"] --> n15["domComplete"] --> n16["loadEventStart/End"]
 ```
 
 | 구하려는 값 | 계산 |

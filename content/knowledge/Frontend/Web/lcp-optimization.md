@@ -14,12 +14,12 @@ sources: ["https://web.dev/articles/optimize-lcp", "https://web.dev/articles/lcp
 
 LCP 요소가 이미지라면 시간은 네 구간으로 나뉜다. 텍스트라면 자원 구간이 없으므로(웹 폰트 제외) TTFB와 렌더 지연만 남는다.
 
-```text
-이동 시작
- ├─ ① TTFB ─────────┤ HTML 첫 바이트
- ├─ ② 자원 로드 지연 ─┤ LCP 자원 요청 시작
- ├─ ③ 자원 로드 시간 ─┤ LCP 자원 다 받음
- └─ ④ 요소 렌더 지연 ─┤ LCP 요소가 그려짐 = LCP
+```mermaid
+flowchart LR
+  s["이동 시작"] -->|"① TTFB"| a["HTML 첫 바이트"]
+  a -->|"② 자원 로드 지연"| b["LCP 자원 요청 시작"]
+  b -->|"③ 자원 로드 시간"| c["LCP 자원 다 받음"]
+  c -->|"④ 요소 렌더 지연"| d["LCP 요소가 그려짐 = LCP"]
 ```
 
 | 구간 | 무엇 | 잘 된 페이지의 비중 |

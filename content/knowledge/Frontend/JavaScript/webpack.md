@@ -21,12 +21,16 @@ webpack은 **정적 모듈 번들러**다. 진입점(entry)에서 시작해 `imp
 
 ## 빌드 과정
 
-```text
-entry ─▶ resolve(경로 찾기) ─▶ loader 체인(파일 → 모듈) ─▶ 그래프에 추가 ─▶ (모든 import에 반복)
-                                                         │
-plugins: 컴파일 단계마다 훅으로 개입 ───────────────────────┤
-                                                         ▼
-                      chunk로 나누기 ─▶ 최적화(트리 셰이킹·스코프 호이스팅·압축) ─▶ output(번들 + runtime + manifest)
+```mermaid
+flowchart TB
+  entry["entry"] --> res["resolve(경로 찾기)"]
+  res --> ld["loader 체인(파일 → 모듈)"]
+  ld --> g["그래프에 추가"]
+  g -->|"모든 import에 반복"| res
+  g --> ch["chunk로 나누기"]
+  plug["plugins: 컴파일 단계마다 훅으로 개입"] --> ch
+  ch --> opt["최적화(트리 셰이킹·스코프 호이스팅·압축)"]
+  opt --> out["output(번들 + runtime + manifest)"]
 ```
 
 | 단계 | 내용 |
@@ -88,11 +92,15 @@ webpack도 `ModuleConcatenationPlugin`으로 같은 일을 한다. 이것이 **�
 
 HMR(Hot Module Replacement)은 **앱이 실행 중인 채로 바뀐 모듈만 교체**한다. 새로고침하면 날아가는 앱 상태(폼 입력, 열린 모달)가 남고, CSS는 DevTools에서 고치는 것처럼 즉시 반영된다.
 
-```text
-파일 저장 → 컴파일러가 update 생성: [이전 해시].hot-update.json(manifest) + [청크].[이전 해시].hot-update.js
-          → 브라우저의 HMR runtime이 check(manifest 요청) → 바뀐 청크 다운로드
-          → apply: 바뀐 모듈을 invalid 표시 → 처리기를 찾아 위로 버블링
-          → dispose 핸들러 실행 후 옛 모듈 제거 → accept 핸들러 호출
+```mermaid
+flowchart TB
+  n1["파일 저장"] --> n2["컴파일러가 update 생성<br/>[이전 해시].hot-update.json(manifest) + [청크].[이전 해시].hot-update.js"]
+  n2 --> n3["브라우저의 HMR runtime이 check(manifest 요청)"]
+  n3 --> n4["바뀐 청크 다운로드"]
+  n4 --> n5["apply: 바뀐 모듈을 invalid 표시"]
+  n5 --> n6["처리기를 찾아 위로 버블링"]
+  n6 --> n7["dispose 핸들러 실행 후 옛 모듈 제거"]
+  n7 --> n8["accept 핸들러 호출"]
 ```
 
 | 개념 | 내용 |

@@ -90,11 +90,10 @@ sources: ["https://developers.google.com/web/progressive-web-apps/checklist", "h
 
 ## 캐시의 두 층
 
-```text
-요청
- ├─ 1. 서비스 워커가 있으면 → fetch 이벤트에서 Cache API로 직접 응답할 수 있다
- └─ 2. HTTP 캐시 → Cache-Control로 유효 기간을 정하고, 만료되면 재검증
-                   (If-None-Match/If-Modified-Since → 304 Not Modified 또는 200)
+```mermaid
+flowchart TB
+  req["요청"] -->|"1. 서비스 워커가 있으면"| sw["fetch 이벤트에서 Cache API로 직접 응답할 수 있다"]
+  req -->|"2. HTTP 캐시"| http["Cache-Control로 유효 기간을 정하고, 만료되면 재검증<br/>(If-None-Match/If-Modified-Since → 304 Not Modified 또는 200)"]
 ```
 
 | 층 | 누가 정하나 | 핵심 |
