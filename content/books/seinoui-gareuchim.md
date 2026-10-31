@@ -3,6 +3,7 @@ title: "세이노의 가르침"
 author: "세이노"
 category: "자기계발"
 status: "read"
+cover: "https://image.aladin.co.kr/product/30929/51/cover500/s192030030_1.jpg"
 tags: ["경제/재테크", "자기계발"]
 pdf: "[[seinoui-gareuchim.pdf]]"
 ---

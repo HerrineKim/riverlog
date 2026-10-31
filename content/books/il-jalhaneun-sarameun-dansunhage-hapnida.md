@@ -3,6 +3,7 @@ title: "일 잘하는 사람은 단순하게 합니다"
 author: "박소연"
 category: "커리어·일"
 status: "want"
+cover: "https://image.aladin.co.kr/product/34598/24/cover500/k812933677_1.jpg"
 tags: ["커리어/경영/마케팅"]
 notionUrl: "https://app.notion.com/p/c52593bd42824c94b532cf507b61fa50"
 ---

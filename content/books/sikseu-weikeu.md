@@ -3,6 +3,7 @@ title: "식스 웨이크"
 author: "무르 래퍼티"
 category: "소설·문학"
 status: "read"
+cover: "https://image.aladin.co.kr/product/18927/51/cover500/k002635282_1.jpg"
 tags: ["문학"]
 ---
 

@@ -3,6 +3,7 @@ title: "도둑맞은 집중력"
 author: "요한 하리"
 category: "기타"
 status: "want"
+cover: "https://image.aladin.co.kr/product/31559/97/cover500/s102936816_3.jpg"
 tags: ["과학/기술/자연"]
 notionUrl: "https://app.notion.com/p/5e455670f8b847f98ae257da4050e2f7"
 ---

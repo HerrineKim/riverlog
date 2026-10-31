@@ -3,6 +3,7 @@ title: "폭풍의 언덕"
 author: "에밀리 브론테"
 category: "소설·문학"
 status: "read"
+cover: "https://image.aladin.co.kr/product/54/93/cover500/8937461188_3.jpg"
 tags: ["문학"]
 ---
 

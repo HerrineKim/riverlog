@@ -3,6 +3,7 @@ title: "이것은 어느 늑대 이야기다"
 author: "닉 잰스"
 category: "소설·문학"
 status: "want"
+cover: "https://image.aladin.co.kr/product/34196/70/cover500/k952931413_1.jpg"
 tags: ["수필/자서전/평전"]
 notionUrl: "https://app.notion.com/p/e0d168672b274d1d8b9af5637edf263c"
 ---

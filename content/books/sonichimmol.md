@@ -3,6 +3,7 @@ title: "소니침몰"
 author: "미야자키 타쿠마"
 category: "경제·경영"
 status: "reading"
+cover: "https://image.aladin.co.kr/product/88/31/cover500/8995900105_1.jpg"
 tags: ["Sony", "메모"]
 notionUrl: "https://app.notion.com/p/e290ade7271c47af9362be80972c5a8e"
 ---

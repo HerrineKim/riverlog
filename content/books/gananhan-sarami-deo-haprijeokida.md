@@ -3,5 +3,6 @@ title: "가난한 사람이 더 합리적이다"
 author: "아비지트 배너지, 에스테르 뒤플로"
 category: "경제·경영"
 status: "want"
+cover: "https://image.aladin.co.kr/product/1677/55/cover500/8962603500_3.jpg"
 tags: ["커리어/경영/마케팅", "알라딘 21세기 최고의 책"]
 ---
