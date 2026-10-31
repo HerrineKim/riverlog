@@ -38,7 +38,7 @@ sources: ["https://web.dev/learn/images/cdn", "https://web.dev/learn/images/cms"
 
 여러 변환은 쉼표로 이어 파일 이름 앞에 둔다. `q_auto`만 붙여도 1400px 이미지가 250KB에서 134KB로 주는 식의 차이가 난다.
 
-URL 규칙이 예측 가능하므로 **`srcset`을 별도 도구 없이 만들 수 있다.**
+URL 규칙이 예측 가능하므로 `srcset`을 별도 도구 없이 만들 수 있다.
 
 ```html
 <img
@@ -108,6 +108,6 @@ Cache-Control: public, max-age=31536000
 - `f_auto` 같은 자동 형식은 `Accept` 헤더 협상이다. `Content-Type`이 실제 형식을 알린다.
 - 협상하는 응답에는 `Vary: Accept`가 필요하고, 캐시 키는 몇 단계로 정규화한다.
 - `Accept`에 없는 형식은 지원해도 받지 못한다. 대체 형식이 늘 함께 있어야 한다.
-- **원본 한 장만 관리하고 나머지는 CDN이 만든다.** 대신 `sizes`와 아트 디렉션은 여전히 마크업의 몫이다.
+- 원본 한 장만 관리하고 나머지는 CDN이 만든다. 대신 `sizes`와 아트 디렉션은 여전히 마크업의 몫이다.
 
 관련 노트: [[cdn|CDN]], [[http-cache|HTTP 캐시]], [[image-formats|웹 이미지 형식]], [[image-compression|이미지 압축과 인코딩 자동화]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[lcp-optimization|LCP 최적화: 네 구간으로 나눠 줄이기]]

@@ -182,7 +182,7 @@ sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/lear
 
 **Open Graph는 검색 순위 요소가 아니다.** Google이 지원하는 meta 태그 목록에 `og:*`는 없고, 지원하지 않는 meta는 무시한다고 명시한다. 검색 결과의 제목과 요약은 `<title>`과 `description`, 본문에서 만든다. 예외로 사이트 이름을 정할 때는 `WebSite` 구조화된 데이터를 가장 중요하게 보고, `og:site_name`도 참고한다.
 
-영향은 간접적이다. 잘 만든 카드는 SNS·메신저에서 **클릭률과 공유를 늘려** 방문과 링크를 만들고, 그 결과가 검색 노출로 이어질 수 있다. 반대로 카드가 깨지면 링크가 공유돼도 눌리지 않는다. 그래서 `og:*`는 검색 최적화가 아니라 **공유 최적화**로 다루고, 검색용 `<title>`·`description`은 따로 챙긴다. 검색 쪽 메타 태그는 [[seo-basics#메타 태그|SEO 기초]]에 있다.
+영향은 간접적이다. 잘 만든 카드는 SNS·메신저에서 클릭률과 공유를 늘려 방문과 링크를 만들고, 그 결과가 검색 노출로 이어질 수 있다. 반대로 카드가 깨지면 링크가 공유돼도 눌리지 않는다. 그래서 `og:*`는 검색 최적화가 아니라 **공유 최적화**로 다루고, 검색용 `<title>`·`description`은 따로 챙긴다. 검색 쪽 메타 태그는 [[seo-basics#메타 태그|SEO 기초]]에 있다.
 
 ## base: 기본 URL과 target
 
@@ -212,7 +212,5 @@ sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/lear
 - meta는 `charset`·`http-equiv`·`name` 세 갈래이고, `refresh`와 `keywords`는 쓰지 않는다.
 - SNS 카드는 Open Graph(`property="og:*"`)로 정하고 이미지에 alt를 준다. 태그는 서버가 내려 준 HTML에 있어야 하고, 검색 순위가 아니라 공유 클릭률에 영향을 준다.
 - `<base>`는 같은 페이지 앵커까지 바꾸니 피한다. 앱 정보는 매니페스트에 모은다.
-
-head는 보이지 않지만, 페이지가 검색·공유·설치되는 모든 순간에 먼저 읽힌다.
 
 관련 노트: [[html|HTML 기초와 HTML5]], [[seo-basics|SEO 기초: 크롤링부터 메타 태그까지]], [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[multilingual-pages|다국어 페이지: lang·hreflang과 국제화]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[web-security|웹 보안]], [[web-app-manifest|웹 앱 매니페스트]], [[dark-mode-theming|테마와 다크 모드 구현]]

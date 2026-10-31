@@ -114,7 +114,7 @@ PerformanceObserver.supportedEntryTypes
 
 ## 정리
 
-- 실험실 도구가 아니라 **실제 사용자**의 시간을 재려면 성능 항목을 읽어 보낸다.
+- 실험실 도구가 아니라 실제 사용자의 시간을 재려면 성능 항목을 읽어 보낸다.
 - 문서는 Navigation Timing, 하위 자원은 Resource Timing, 앱 고유 구간은 `mark`·`measure`로 잰다.
 - 읽기는 `PerformanceObserver` + `buffered: true`로 한다.
 - 0인 필드와 `Timing-Allow-Origin`이 없는 교차 출처 자원을 걸러 계산한다.

@@ -109,6 +109,4 @@ CSS에서는 `:lang(fr)`이나 `[lang|="fr"]`로 언어별 스타일을 준다. 
 - 번역 단위는 문장 전체다. 문자열을 조각내 이어 붙이지 않는다.
 - 날짜·숫자는 `Intl`, 방향은 `dir`과 논리적 속성, 길이는 늘어날 여백으로 대비한다.
 
-**국제화는 번역 전에 끝나 있어야 하는 설계다.**
-
 관련 노트: [[seo-basics|SEO 기초]], [[html-head-metadata|문서 head와 메타데이터]], [[html-text-elements|텍스트 의미 요소와 문자 참조]], [[html|HTML 기초와 HTML5]], [[logical-properties|쓰기 모드와 논리적 속성]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[date-libraries|날짜 라이브러리: date-fns와 Day.js]]

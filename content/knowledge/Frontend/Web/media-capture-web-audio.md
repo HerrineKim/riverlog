@@ -20,7 +20,7 @@ sources: ["https://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_St
 | MediaRecorder | 스트림을 파일(Blob)로 녹음·녹화 | [[audio-recording\|React에서 음성 녹음하고 파일로 보내기]] |
 | WebRTC | 스트림을 다른 피어와 주고받기 | [[webrtc\|WebRTC]] |
 
-세 API는 **MediaStream을 공통 통화로** 이어진다. 카메라 스트림을 `<video>`에 보이고, Web Audio로 마이크 소리를 분석하고, WebRTC로 보내고, MediaRecorder로 녹화하는 일이 모두 같은 객체로 된다.
+세 API는 MediaStream을 공통 통화로 이어진다. 카메라 스트림을 `<video>`에 보이고, Web Audio로 마이크 소리를 분석하고, WebRTC로 보내고, MediaRecorder로 녹화하는 일이 모두 같은 객체로 된다.
 
 ## MediaStream과 트랙
 
@@ -114,7 +114,5 @@ const data = new Uint8Array(analyser.frequencyBinCount)
 - 장치 목록의 이름은 권한을 받은 뒤에 보인다. 사진 한 장이면 `<input capture>`로 충분하다.
 - Web Audio는 소스 → 효과 → 분석 → 출력의 노드 그래프다. 시간은 `ctx.currentTime`으로 예약한다.
 - `AudioContext`는 사용자 동작 안에서 `resume()`한다. 직접 처리는 `AudioWorklet`으로 한다.
-
-**스트림은 흐르는 미디어를 나르고, Web Audio는 그 소리를 그래프로 다룬다.**
 
 관련 노트: [[webrtc|WebRTC]], [[html-media-elements|이미지·오디오·비디오 임베드]], [[audio-recording|React에서 음성 녹음하고 파일로 보내기]], [[device-permission-apis|권한 모델과 기기 API]], [[canvas-2d|Canvas 2D API]]

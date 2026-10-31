@@ -211,6 +211,4 @@ async function preloadInOrder(urls) {
 - `preload`는 늦게 발견되는 중요한 자원에만, `as`와 `crossorigin`을 정확히. LCP 이미지에는 `fetchpriority="high"` 하나.
 - 다음 이동은 Speculation Rules·prefetch·프리캐싱으로 당기되, 데이터 절약·느린 연결·낮은 확신이면 하지 않는다.
 
-**앞당길 것은 적게, 정확히 고른다.**
-
 관련 노트: [[script-loading|스크립트·스타일 로딩 순서와 점진적 렌더링]], [[lcp-optimization|LCP 최적화]], [[web-font-performance|웹 폰트 성능 최적화]], [[pwa-service-worker|PWA와 서비스 워커 캐시 전략]], [[html|HTML 기초와 HTML5]], [[dns|DNS]]

@@ -138,7 +138,7 @@ add_filter( 'image_editor_output_format', function ( $mappings ) {
 ## 결과 확인
 
 - 원본과 결과의 용량을 비교한다. 3MB가 넘는 PNG 원본이 1000px JPEG 150KB, 400px WebP 30KB 남짓이 되는 정도의 차이가 흔하다.
-- 형식·크기별 결과물에 **아티팩트가 없는지 눈으로 본다.** 문제가 있으면 설정을 바꿔 다시 만든다.
+- 형식·크기별 결과물에 아티팩트가 없는지 눈으로 본다. 문제가 있으면 설정을 바꿔 다시 만든다.
 - 실제 페이지에서 받은 형식과 크기는 DevTools Network 패널의 Type·Size 열로 확인한다.
 
 ## 정리
@@ -147,6 +147,6 @@ add_filter( 'image_editor_output_format', function ( $mappings ) {
 - 품질 값은 도구마다 뜻이 달라 눈으로 맞추고, 아티팩트가 보이기 직전보다 조금 낮게 잡는다.
 - JPEG는 프로그레시브로 만든다.
 - 원본은 그대로 두고 빌드 도구·정적 사이트 생성기·CMS·이미지 CDN이 형식과 크기를 만든다.
-- **`sizes`만은 자동으로 알 수 없다.** 레이아웃을 아는 사람이 주거나 `sizes="auto"`에 맡긴다.
+- `sizes`만은 자동으로 알 수 없다. 레이아웃을 아는 사람이 주거나 `sizes="auto"`에 맡긴다.
 
 관련 노트: [[image-formats|웹 이미지 형식]], [[image-cdn|이미지 CDN과 Accept 헤더 협상]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[static-site-generator|정적 사이트 생성기와 Jamstack]], [[wordpress|워드프레스: 철학, 테마·플러그인 고르기, 속도, 생태계]], [[bundlers-and-vite|번들러의 역사와 Vite]]
