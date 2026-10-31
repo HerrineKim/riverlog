@@ -1,16 +1,17 @@
 ---
 title: "DNS"
 concept: "DNS"
-summary: "도메인 이름을 IP 주소로 바꿔 주는 DNS. UDP와 TCP를 쓰는 경우, 재귀·반복 질의 흐름과 hosts 파일의 우선순위, 손실 재시도, 주요 레코드 종류, TTL과 캐시(잘못된 캐시 바로잡기), 프론트엔드에서 쓰는 dns-prefetch·preconnect를 정리한다."
+summary: "도메인 이름을 IP 주소로 바꿔 주는 DNS. 이름 공간의 트리 구조(레이블, FQDN·PQDN, gTLD·ccTLD·역방향 도메인), UDP와 TCP를 쓰는 경우, 재귀·반복 질의 흐름과 hosts 파일의 우선순위, 손실 재시도, 주요 레코드 종류, TTL과 캐시(잘못된 캐시 바로잡기), 프론트엔드에서 쓰는 dns-prefetch·preconnect를 정리한다."
 tags: ["network", "dns", "web", "frontend"]
 source: mixed
 date: "2026-10-12"
-sources: ["https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work", "https://bytebytego.com/guides/dns-record-types-you-should-know", "https://bytebytego.com/guides/internet-traffic-routing-policies", "http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
+sources: ["https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work", "https://bytebytego.com/guides/dns-record-types-you-should-know", "https://bytebytego.com/guides/internet-traffic-routing-policies", "http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)"]
 ---
 
 > 여러 자료를 종합한 노트에, ByteByteGo의 System Design 101 가이드 「[How Does the DNS Lookup Work?](https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work)」, 「[DNS Record Types You Should Know](https://bytebytego.com/guides/dns-record-types-you-should-know)」의 서버 계층과 레코드 종류를 보강했다. DNS 라우팅 정책은 「[Internet Traffic Routing Policies](https://bytebytego.com/guides/internet-traffic-routing-policies)」로 보강했다.
 > DNS 프라이버시와 DoH 부분은 Mozilla 웹 기술 블로그의 「[만화로 보는 DNS over HTTPS](http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/)」를 바탕으로 보강했다.
 > DNS의 계층과 전송 프로토콜, hosts 파일 우선순위, 손실 재시도, 잘못된 캐시 처리는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
+> 도메인 이름 공간의 구조(레이블, FQDN·PQDN, 최상위 도메인 분류)와 동적 갱신은 고려사이버대학교 「컴퓨터네트워크」(2023-2학기) 강의 내용으로 보강했다.
 
 ## DNS란
 
@@ -25,6 +26,23 @@ DNS는 **응용 계층(7계층) 프로토콜**이고 53번 포트를 쓴다. 전
 | TLS·HTTPS | 암호화가 필요할 때 | DoT(853)·DoH(443). 아래 「DNS의 보안과 프라이버시」 |
 
 브라우저가 페이지를 열 때 가장 먼저 일어나는 네트워크 작업이 DNS 조회다. 조회가 느리면 그 뒤의 TCP·TLS 연결과 HTTP 요청이 모두 밀린다.
+
+### 도메인 이름의 구조
+
+도메인 이름 공간은 **루트를 꼭대기로 한 트리**다. 노드마다 **레이블**(최대 63자)이 붙고, 이름은 잎에서 루트 쪽으로 레이블을 점으로 이어 읽는다. 이름 전체는 최대 255바이트다. `www.example.com.`의 맨 끝 점이 루트이고, 바로 위 레이블부터 TLD(`com`), 그 아래가 기관이 등록한 도메인(`example`)이다.
+
+| 구분 | 모양 | 쓰임 |
+| --- | --- | --- |
+| FQDN (완전한 이름) | 루트까지 다 적은 이름. `mail.corp.example.com.` | 그대로 조회한다. 설정 파일(DNS 존 파일)에서 끝 점을 빠뜨리면 영역 이름이 뒤에 붙어 엉뚱한 이름이 된다 |
+| PQDN (부분 이름) | 루트까지 가지 않은 이름. `mail`, `mail.corp` | 리졸버가 **검색 접미사**를 붙여 완성한다. `/etc/resolv.conf`의 `search corp.example.com`(DHCP 옵션 15로도 받는다)이면 `mail` → `mail.corp.example.com` |
+
+최상위 아래는 세 갈래다.
+
+| 분류 | 예 | 설명 |
+| --- | --- | --- |
+| 일반 도메인(gTLD) | `com`, `org`, `net`, `edu`, `gov`, 새 gTLD(`app`, `dev`) | 기관의 성격으로 나눈다 |
+| 국가 도메인(ccTLD) | `kr`, `jp`, `us` | 두 글자 국가 코드 |
+| 역방향 도메인 | `in-addr.arpa`, `ip6.arpa` | IP → 이름 조회용. IP 주소를 뒤집어 붙인 이름에 PTR 레코드를 둔다(아래 「주요 레코드」) |
 
 ## 조회 흐름
 
@@ -71,6 +89,7 @@ DNS는 한 서버가 모든 이름을 알지 않고 **트리 모양으로 책임
 
 - CNAME은 서브도메인을 다른 이름에 붙일 때 쓰고, 도메인 루트(apex)에는 쓸 수 없다. 그래서 DNS 업체들이 ALIAS·CNAME flattening 같은 대안을 제공한다.
 - TXT는 SPF·DKIM·DMARC 같은 메일 보안 설정과, 서비스가 「이 도메인의 주인이 맞는가」를 확인하는 인증 문자열에 쓴다.
+- DNS는 원래 이름과 주소가 자주 바뀌지 않는다고 보고 레코드를 관리자가 손으로 고치게 설계됐다. 주소가 자주 바뀌는 환경을 위해 프로그램이 레코드를 고치는 **동적 갱신**(Dynamic DNS, RFC 2136)이 생겼다. 사내망에서는 DHCP 서버가 주소를 나눠 줄 때 A·PTR 레코드를 함께 갱신하고, 가정에서는 유동 공인 IP가 바뀔 때마다 공유기가 DDNS 서비스의 A 레코드를 고친다.
 
 배포 서비스에 커스텀 도메인을 붙일 때 "A 레코드 또는 CNAME을 이렇게 설정하라"는 안내가 바로 이 레코드들이다.
 

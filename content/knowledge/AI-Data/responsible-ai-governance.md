@@ -66,7 +66,7 @@ sources: ["https://web.dev/learn/ai/responsibility", "https://web.dev/learn/ai/i
 
 ## 공정성
 
-채용·법률·금융처럼 사람에게 직접 영향을 주는 결정에서 편향은 특히 위험하다. 과거 채용 데이터로 학습한 모델은 직무 능력이 아니라 인구 통계 특징으로 소수 집단 지원자를 불리하게 평가할 수 있다. **편향은 데이터에서 태어나 모델에서 커지고 UX에서 드러난다.**
+채용·법률·금융처럼 사람에게 직접 영향을 주는 결정에서 편향은 특히 위험하다. 과거 채용 데이터로 학습한 모델은 직무 능력이 아니라 인구 통계 특징으로 소수 집단 지원자를 불리하게 평가할 수 있다. **편향은 데이터에서 태어나 모델에서 커지고 UX에서 드러난다.** 편향이 생기는 경로와 COMPAS 재범 예측 사례, 자율주행차의 도덕적 딜레마는 [[ai-ethics-bias-dilemma|AI 윤리]]에 있다.
 
 ### 데이터
 
@@ -132,4 +132,4 @@ sources: ["https://web.dev/learn/ai/responsibility", "https://web.dev/learn/ai/i
 
 거버넌스는 규정 준수 절차가 아니라 사용자가 계속 쓰게 만드는 **설계 원칙**이다.
 
-관련 노트: [[ai-feature-blueprint|AI 기능 기획]], [[ai-ux-patterns|AI 기능의 UX 패턴]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]]
+관련 노트: [[ai-feature-blueprint|AI 기능 기획]], [[ai-ux-patterns|AI 기능의 UX 패턴]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]], [[ai-ethics-bias-dilemma|AI 윤리: 데이터 편향과 도덕적 딜레마]], [[ai-software-testing|AI 소프트웨어의 품질과 테스트]]

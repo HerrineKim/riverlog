@@ -174,4 +174,4 @@ LSM 트리: 추가 후 병합
 - 인덱스 자료 구조는 값의 형태와 읽기·쓰기 비율로 고른다. 범위 조회는 B-트리, 전문 검색은 역색인, 공간은 R-트리다.
 - B-트리는 읽기에, LSM 트리는 쓰기에 강하다.
 
-관련 노트: [[transaction|트랜잭션과 회복]], [[database-scaling|데이터베이스 확장과 성능 최적화]], [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]], [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]], [[tree|트리와 이진 탐색 트리]]
+관련 노트: [[transaction|트랜잭션과 회복]], [[database-scaling|데이터베이스 확장과 성능 최적화]], [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]], [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]], [[tree|트리와 이진 탐색 트리]], [[oracle-architecture|Oracle 데이터베이스 구조]]

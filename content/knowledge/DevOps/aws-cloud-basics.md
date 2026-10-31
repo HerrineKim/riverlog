@@ -116,4 +116,4 @@ GUI 클라이언트는 연결 설정의 **SSH Tunnel** 탭에서 같은 일을 �
 - 보안 그룹은 필요한 포트·소스만 연다. 운영 DB는 퍼블릭 액세스 없이 배스천 SSH 터널이나 Session Manager로 접속한다.
 - 관리 부담을 줄이려면 관리형(RDS·ECS·EKS)과 서버리스(Lambda·Fargate)를 먼저 검토하고, 구성은 IaC로 남긴다.
 
-관련 노트: [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[vm-vs-container|VM과 컨테이너]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[dbeaver|DBeaver에서 SQL로 데이터 다루기]]
+관련 노트: [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[vm-vs-container|VM과 컨테이너]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[dbeaver|DBeaver에서 SQL로 데이터 다루기]], [[cloud-service-models|클라우드 서비스 모델]], [[korea-cloud-computing-act|클라우드컴퓨팅법]]

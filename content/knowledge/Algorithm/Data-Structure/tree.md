@@ -5,7 +5,7 @@ summary: "계층 구조를 표현하는 트리의 용어, 이진 트리의 종�
 tags: ["algorithm", "data-structure", "tree", "binary-search"]
 source: other
 date: "2026-10-30"
-sources: ["https://80000coding.notion.site/23197e31a7274fc5960543cbfbee51b5", "https://80000coding.notion.site/303234d626784a398781d3997f7b1e2d", "https://80000coding.notion.site/a1c81b8e4538437abcb713184174052d", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://zeddios.tistory.com/237", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://www.techinterviewhandbook.org/algorithms/tree/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
+sources: ["https://80000coding.notion.site/23197e31a7274fc5960543cbfbee51b5", "https://80000coding.notion.site/303234d626784a398781d3997f7b1e2d", "https://80000coding.notion.site/a1c81b8e4538437abcb713184174052d", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://zeddios.tistory.com/237", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://www.techinterviewhandbook.org/algorithms/tree/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[자료구조] 트리」, 「이진 트리 (기초)」, 「균형 이진 탐색 트리 AVL」, 「ALV tree 찢어버리기」를 바탕으로 재구성한 노트다.
@@ -13,6 +13,7 @@ sources: ["https://80000coding.notion.site/23197e31a7274fc5960543cbfbee51b5", "h
 > 레드-블랙 트리 삭제와 쓰임은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 자료구조 문서로 보강했다.
 > 반복 순회, BST 검증, 트리 문제를 푸는 요령은 Tech Interview Handbook의 「[Tree cheatsheet](https://www.techinterviewhandbook.org/algorithms/tree/)」를 바탕으로 보강했다.
 > BST 삭제의 세 경우, m-원 탐색 트리, 균형 트리의 종류, 레드-블랙 트리와 2-3-4 트리의 대응, B 트리와 B+ 트리는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
+> 다차원 탐색 트리(KD·KDB·R 트리)는 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용으로 보강했다.
 
 트리(Tree)는 **계층 관계를 표현하는 비선형 자료구조**다. 노드 하나가 여러 자식을 가지는 1:N 관계가 반복된다. 그래프의 관점에서 보면 **사이클이 없는 연결 그래프**이고, 노드가 n개면 간선은 정확히 n-1개다. 파일 시스템, DOM, 조직도, 힙, 구문 트리가 모두 트리다.
 
@@ -268,6 +269,18 @@ B+ 트리는 B 트리에서 데이터 위치와 리프 연결을 바꾼 변형�
 
 DB가 B+ 트리를 쓰는 이유(페이지 단위 I/O, 높이 3~4)는 [[database-internals|DB 내부 구조]]의 「왜 B+트리인가」에 있다.
 
+### 다차원 탐색 트리: KD 트리, KDB 트리, R 트리
+
+BST와 B 트리는 키가 **한 축**에서 정렬될 때 쓴다. 지도 위의 점, 「이 사각형 안의 가게」, 「가장 가까운 점」처럼 키가 2차원 이상이면 축을 나눠 공간을 쪼개는 트리를 쓴다.
+
+| 트리 | 나누는 방식 | 특징 | 쓰는 곳 |
+| --- | --- | --- | --- |
+| KD 트리 | 깊이마다 축을 바꿔(x → y → x …) 그 축의 중앙값으로 공간을 둘로 자른다 | 메모리 안의 이진 트리. 범위 검색과 최근접 이웃 검색을 잘린 영역 단위로 가지치기한다. 차원이 높아지면 가지치기가 안 돼 완전 탐색에 가까워진다 | 점 데이터의 최근접 이웃, 그래픽스·머신러닝 라이브러리 |
+| KDB 트리 | KD 트리의 공간 분할을 B 트리처럼 한 노드가 여러 영역을 담는 디스크 페이지로 묶는다 | 높이가 균형을 이루고 페이지 단위로 읽는다. 노드를 쪼갤 때 아래 영역까지 연쇄로 잘릴 수 있다 | 디스크에 둔 다차원 점 인덱스 |
+| R 트리 | 가까운 객체들을 **최소 경계 사각형(MBR)** 으로 묶고, 그 사각형들을 다시 큰 사각형으로 묶는다 | B 트리처럼 균형이고 리프가 같은 깊이다. 형제 사각형끼리 겹칠 수 있어 검색이 여러 가지를 내려갈 수 있다. 점뿐 아니라 선·면 같은 크기 있는 객체를 담는다 | 공간 DB 인덱스(PostGIS의 GiST, SQLite R*Tree), 지도 서비스 |
+
+공간을 겹치지 않게 자르면(KD, KDB) 한 점은 한 영역에만 속하고, 객체 단위로 묶으면(R) 영역이 겹치는 대신 크기 있는 객체를 쪼개지 않고 담는다.
+
 ## 트리 문제를 푸는 요령
 
 | 요령 | 내용 |
@@ -290,4 +303,4 @@ DB가 B+ 트리를 쓰는 이유(페이지 단위 I/O, 높이 3~4)는 [[database
 - 레드-블랙 트리는 2-3-4 트리를 이진 노드로 옮긴 것으로, 수정 때 회전이 상수 번이라 범용 정렬 맵의 기본이다.
 - B+ 트리는 데이터를 리프에만 두고 리프를 이어 범위 조회와 디스크 I/O에 맞춘 B 트리다.
 
-관련 노트: [[lowest-common-ancestor|최소 공통 조상 (LCA)]], [[data-structures|기초 자료구조(CS50)]], [[heap-priority-queue|힙과 우선순위 큐]], [[graph-basics|그래프의 기본]], [[recursion|재귀 함수]], [[behavior-tree|비헤이비어 트리]]
+관련 노트: [[lowest-common-ancestor|최소 공통 조상 (LCA)]], [[data-structures|기초 자료구조(CS50)]], [[heap-priority-queue|힙과 우선순위 큐]], [[graph-basics|그래프의 기본]], [[recursion|재귀 함수]], [[behavior-tree|비헤이비어 트리]], [[segment-tree|세그먼트 트리]]

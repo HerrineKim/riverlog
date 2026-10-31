@@ -69,6 +69,8 @@ include와 extend는 화살표 방향이 반대라 헷갈린다. **"누가 누�
 3. **관계 정의**: 액터-액터(일반화), 액터-유스케이스(연관), 유스케이스-유스케이스(include·extend·일반화) 관계를 잇는다.
 4. **구조화**: 두 개 이상의 유스케이스에 반복되는 부분은 별도 유스케이스로 뽑아 include로 묶고, 조건부로만 수행되는 부분은 extend로 떼어 낸다.
 
+다이어그램은 기능 목록일 뿐이라, 각 유스케이스가 어떻게 진행되는지(사전·사후 조건, 정상·대안·예외 흐름)는 유스케이스 명세에 글로 쓴다. 명세 양식과 명세에서 클래스를 뽑는 과정은 [[uml-object-oriented-modeling#1. 유스케이스 명세|UML 객체지향 모델링]]에 있다.
+
 ## 흔한 실수
 
 | 실수 | 고치는 법 |
@@ -93,4 +95,4 @@ include와 extend는 화살표 방향이 반대라 헷갈린다. **"누가 누�
 - include는 항상 실행되는 공통 부분, extend는 조건부로 덧붙는 부분이다.
 - 액터 → 유스케이스 → 관계 → 구조화 순서로 그리고, 중요한 것은 명세를 글로 덧붙인다.
 
-관련 노트: [[bdd-sdd-task-design|BDD·SDD로 기획서를 태스크로 나누기]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[software-engineering|소프트웨어 공학]]
+관련 노트: [[bdd-sdd-task-design|BDD·SDD로 기획서를 태스크로 나누기]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[software-engineering|소프트웨어 공학]], [[uml-object-oriented-modeling|UML 객체지향 모델링]], [[requirements-engineering|요구공학]]

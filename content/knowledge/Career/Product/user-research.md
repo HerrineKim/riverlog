@@ -96,4 +96,4 @@ sources: ["https://webactually.com/2020/08/04/%EB%8D%94%EB%B8%94-%EB%8B%A4%EC%9D
 - 급할수록 맥락, 분석 시간, 내 디자인에 대한 애착을 경계한다.
 - 참가자도 사람이다. 동의·투명성·데이터 보호를 절차로 갖춘다.
 
-관련 노트: [[Accessibility|웹 접근성]], [[product-minded-engineer|제품 중심 개발자]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[accessible-design-process|디자인 단계의 접근성]]
+관련 노트: [[Accessibility|웹 접근성]], [[product-minded-engineer|제품 중심 개발자]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[accessible-design-process|디자인 단계의 접근성]], [[ux-scenario-persona|UX 시나리오와 페르소나]], [[usability-heuristic-evaluation|사용성 평가]]

@@ -1,22 +1,48 @@
 ---
 title: "관계대수와 DB 설계"
 concept: "Relational Algebra"
-summary: "SQL의 바탕이 되는 관계대수 연산자(σ·π·⋈·÷와 집합 연산)와 결과 카디널리티, DB 설계 단계, 스키마·인덱스 개념."
+summary: "릴레이션의 구조와 성질, SQL의 바탕이 되는 관계대수 연산자(σ·π·⋈·÷와 집합 연산, 조인의 종류)와 결과 카디널리티, 질의를 관계대수식으로 쓰는 법, DB 설계 단계, 스키마·인덱스 개념."
 tags: ["database", "sql", "relational-algebra", "certificate"]
 source: notion
 date: "2026-10-20"
-sources: ["https://bytebytego.com/guides/visualizing-a-sql-query", "https://medium.com/@khwsc1/%EB%B2%88%EC%97%AD-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%84%A4%EA%B3%84-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-b25792a0aa86", "https://brunch.co.kr/@toughrogrammer/17", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md"]
+sources: ["https://bytebytego.com/guides/visualizing-a-sql-query", "https://medium.com/@khwsc1/%EB%B2%88%EC%97%AD-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%84%A4%EA%B3%84-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-b25792a0aa86", "https://brunch.co.kr/@toughrogrammer/17", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "고려사이버대학교 데이터베이스시스템 강의(나홍석 교수, 2024-1학기)"]
 ---
 
 > 노션 정리를 바탕으로 재구성하고, SQL 실행 과정은 ByteByteGo의 System Design 101 가이드 「[Visualizing a SQL Query](https://bytebytego.com/guides/visualizing-a-sql-query)」를, 설계 절차는 Lucidchart 튜토리얼의 번역 「[데이터 구조와 설계: 튜토리얼](https://medium.com/@khwsc1/%EB%B2%88%EC%97%AD-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EA%B5%AC%EC%A1%B0%EC%99%80-%EC%84%A4%EA%B3%84-%ED%8A%9C%ED%86%A0%EB%A6%AC%EC%96%BC-b25792a0aa86)」와 「[개념 정리 - 데이터베이스 편](https://brunch.co.kr/@toughrogrammer/17)」을 바탕으로 보강한 노트다. 3단계 스키마와 데이터 독립성은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다.
+> 릴레이션의 구조와 성질, 조인의 종류, 디비전과 질의를 관계대수식으로 쓰는 예는 고려사이버대학교 「데이터베이스시스템」(2024-1학기) 강의 내용으로 보강했다.
 
 관계대수는 관계형 데이터베이스의 질의를 연산으로 표현하는 수학적 체계이고, SQL은 그 위에 만든 표준 언어다. SQL은 "무엇을 원하는지"만 적는 비절차적 언어, 관계대수는 "어떻게 구할지"를 연산 순서로 적는 절차적 언어라는 차이가 있다.
 
 SQL 명령어 분류(DDL·DML·DCL)와 문법, `WHERE`와 `HAVING` 같은 시험 단골 함정은 [[sql-basics|SQL 기초]]에 있다.
 
+## 릴레이션의 구조
+
+관계형 모델(Codd, 1970)은 데이터베이스를 **릴레이션(테이블)의 집합**으로 본다. 수학적으로 릴레이션은 각 속성 도메인의 카티션 곱의 부분집합이고, 실제로는 튜플의 집합이다.
+
+| 용어 | 뜻 | 테이블에서 |
+| --- | --- | --- |
+| 릴레이션 스키마 | 릴레이션 이름과 속성의 목록. `학생(학번, 이름, 학과)` | 테이블 정의 |
+| 릴레이션 인스턴스(상태) | 어느 한 시점에 들어 있는 튜플의 집합 | 지금 들어 있는 데이터 |
+| 속성(attribute) | 이름 붙은 값의 칸 | 열 |
+| 튜플(tuple) | 속성 값의 묶음 하나. 의미를 담는 최소 단위 | 행 |
+| 도메인(domain) | 한 속성이 가질 수 있는 원자값의 집합. `점수 = 0~100의 정수` | 데이터 타입 + 제약 |
+| 차수(degree) | 속성의 수 | 열 개수 |
+| 카디널리티(cardinality) | 튜플의 수 | 행 개수 |
+
+릴레이션은 집합이므로 테이블과 다른 성질이 있다.
+
+| 성질 | 뜻 | 결과 |
+| --- | --- | --- |
+| 튜플의 유일성 | 똑같은 튜플이 두 번 있을 수 없다 | 모든 튜플을 구별하는 키가 반드시 있다. SQL 테이블은 기본 키가 없으면 중복 행을 허용한다는 점에서 릴레이션과 다르다 |
+| 원자값 | 모든 속성 값은 더 쪼갤 수 없는 값 하나다 | 다중값·복합값을 한 칸에 넣지 않는다([[normalization\|1NF]]) |
+| 튜플의 무순서 | 튜플 사이에 순서가 없다 | 순서가 필요하면 `ORDER BY`로 매번 지정한다 |
+| 속성의 무순서 | 속성 사이에 순서가 없다 | 위치가 아니라 이름으로 속성을 가리킨다 |
+
+키와 무결성 제약(개체·참조·도메인)은 [[sql-basics#제약 조건|SQL 기초]]에 있다.
+
 ## 관계대수
 
-관계(테이블)를 입력받아 관계를 결과로 내놓는 연산들.
+관계(테이블)를 입력받아 관계를 결과로 내놓는 연산들. 피연산자와 결과가 모두 릴레이션이므로 연산을 이어 붙여 식을 만들 수 있다.
 
 ### 순수 관계 연산자
 
@@ -26,6 +52,17 @@ SQL 명령어 분류(DDL·DML·DCL)와 문법, `WHERE`와 `HAVING` 같은 시험
 | Project | π | 지정한 **속성(열)** 만 추출, 중복 제거, 수직 연산 |
 | Join | ⋈ | 공통 속성을 기준으로 두 릴레이션을 결합 |
 | Division | ÷ | R에서 S의 모든 값과 관련된 튜플을 찾아, S의 속성을 뺀 나머지만 남김 |
+
+**조인의 종류**: 조인은 카티션 곱 뒤에 선택을 한 것(`R ⋈θ S = σθ(R × S)`)으로 정의된다.
+
+| 조인 | 조건 | 결과 |
+| --- | --- | --- |
+| 세타 조인(θ-join) | 비교 연산자 `=, ≠, <, ≤, >, ≥` 중 하나 | 조건을 만족하는 튜플 쌍 |
+| 동등 조인(equi join) | θ가 `=` | 조인 속성이 양쪽에 모두 남아 같은 값이 두 번 나온다 |
+| 자연 조인(natural join, ⋈N) | 같은 이름의 속성끼리 `=` | 동등 조인에서 **중복 속성을 하나만 남긴다**. `π(R과 S의 속성 합집합)(σR.z=S.z(R × S))` |
+| 외부 조인(outer join) | 동등 조인 + 짝 없는 튜플 보존 | 짝이 없는 쪽을 NULL로 채운다. 왼쪽·오른쪽·완전 외부 조인. SQL의 `LEFT/RIGHT/FULL JOIN`이다 |
+
+**디비전 예**: `등록(학번, 과목번호) ÷ 과목(과목번호)`은 과목 릴레이션에 있는 **모든** 과목을 등록한 학번을 돌려준다. 과목이 `{C123}`이면 C123을 들은 학생 전부, `{C123, C124, C225}`이면 세 과목을 다 들은 학생만 남는다. 「모든 ~를 한」 질의는 SQL에 바로 대응하는 연산자가 없어 이중 `NOT EXISTS`로 쓴다([[sql-subquery|서브쿼리와 관계해석]]).
 
 ### 일반 집합 연산자
 
@@ -37,6 +74,19 @@ SQL 명령어 분류(DDL·DML·DCL)와 문법, `WHERE`와 `HAVING` 같은 시험
 | 교집합 INTERSECTION (∩) | 양쪽에 모두 있는 튜플 | 작은 쪽 카디널리티 **이하** |
 | 차집합 DIFFERENCE (−) | 앞 릴레이션에만 있는 튜플 | 앞(빼지는) 릴레이션 카디널리티 **이하** |
 | 카티션 곱 CARTESIAN PRODUCT (×) | 모든 튜플의 순서쌍 | 두 카디널리티의 **곱** (차수는 두 차수의 합) |
+
+### 질의를 관계대수식으로 쓰기
+
+조회뿐 아니라 삽입·삭제도 집합 연산으로 표현된다. 같은 질의를 여러 식으로 쓸 수 있고, 그중 비용이 낮은 식을 고르는 것이 아래의 최적화다.
+
+| 질의 | 관계대수식 |
+| --- | --- |
+| 모든 학생의 이름과 학과 | `π 이름,학과 (학생)` |
+| C123 과목을 들은 학생의 이름과 성적 | `π 이름,성적 (σ 과목번호='C123' (학생 ⋈N 등록))` |
+| 학생 한 명 삽입 | `학생 ∪ {('S600', '김명호', '컴퓨터')}` |
+| 「데이터베이스」 과목 삭제 | `과목 − σ 과목명='데이터베이스' (과목)` |
+
+두 번째 식은 조인 뒤에 거르지만, 선택을 먼저 해서 `π 이름,성적 (학생 ⋈N σ 과목번호='C123' (등록))`으로 바꿔도 결과가 같고 조인할 행이 줄어든다.
 
 ## SQL이 실행되는 과정
 
@@ -111,4 +161,4 @@ ANSI/SPARC 구조는 스키마를 보는 관점에 따라 세 층으로 나눈�
 
 논리적 독립성은 물리적 독립성보다 지키기 어렵다. 컬럼을 지우거나 의미를 바꾸면 뷰로 감출 수 없는 경우가 많다.
 
-관련 노트: [[sql-basics|SQL 기초]], [[normalization|정규화와 반정규화]], [[transaction|트랜잭션과 회복]], [[database-models|데이터베이스 모델]], [[database-internals|DB 내부 구조]], [[index-design|인덱스 설계와 쿼리 튜닝]]
+관련 노트: [[sql-basics|SQL 기초]], [[normalization|정규화와 반정규화]], [[transaction|트랜잭션과 회복]], [[database-models|데이터베이스 모델]], [[database-internals|DB 내부 구조]], [[index-design|인덱스 설계와 쿼리 튜닝]], [[er-modeling|ER 모델링]], [[sql-subquery|서브쿼리와 관계해석]]

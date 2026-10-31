@@ -5,11 +5,12 @@ summary: "프로세스가 파일·파이프·소켓을 정수 하나(파일 디�
 tags: ["os", "file-system", "system-call", "c", "io"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/d45aa46eb8e44cb6b21bbf0e66b36cfb", "https://80000coding.notion.site/b2ce62a9502c408b9a76262263a3b8b6", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/f6cc395bb7834e8f9a117a7172a15bc6", "https://80000coding.notion.site/340d53d7bfb54f8b9df0d9acab3002a3", "https://80000coding.notion.site/44f89332af544b1e9fe25d9b6e76f1e2", "https://80000coding.notion.site/10981a9a178f440e98bfcba1d9c90bb6", "https://80000coding.notion.site/f217ea68a2da4e9da1f503e66f0b705e", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
+sources: ["https://80000coding.notion.site/d45aa46eb8e44cb6b21bbf0e66b36cfb", "https://80000coding.notion.site/b2ce62a9502c408b9a76262263a3b8b6", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/f6cc395bb7834e8f9a117a7172a15bc6", "https://80000coding.notion.site/340d53d7bfb54f8b9df0d9acab3002a3", "https://80000coding.notion.site/44f89332af544b1e9fe25d9b6e76f1e2", "https://80000coding.notion.site/10981a9a178f440e98bfcba1d9c90bb6", "https://80000coding.notion.site/f217ea68a2da4e9da1f503e66f0b705e", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] File I/O」, 「파일 디스크립터(file descriptor)」, 「exit() atexit() _exit() 뭐가 다른지 설명할 수 있어?」, 「DB구현에서 왜 Memory Mapped File을 안쓸까」, 「파일 입출력: read()」, 「리눅스가 파일을 다루는 방식」, 「아니 그래서 printf 버퍼 관리가 뭔데…!!」, 「libft, 깨고 나니 보이는 것들」을 바탕으로 재구성한 노트다.
 > 언어 파일 API의 버퍼링 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
+> 「파일 메타데이터와 디렉터리 읽기」 절은 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
 
 ## 파일 디스크립터란
 
@@ -92,6 +93,38 @@ ssize_t read_all(int fd, char *buf, size_t len)
     return done;
 }
 ```
+
+## 파일 메타데이터와 디렉터리 읽기
+
+파일의 내용이 아니라 inode에 든 정보(종류, 권한, 크기, 시각)는 `stat` 계열로 읽는다. 셸의 `ls -l`, `stat` 명령이 이 시스템 콜을 부른다.
+
+| 함수 | 대상 | 심볼릭 링크를 만나면 |
+| --- | --- | --- |
+| `stat(path, &st)` | 경로 | 링크를 **따라가** 원본 파일의 정보를 준다 |
+| `lstat(path, &st)` | 경로 | 링크 **자체**의 정보를 준다(`S_ISLNK`가 참) |
+| `fstat(fd, &st)` | 이미 연 fd | 열린 파일의 정보. 경로를 다시 찾지 않는다 |
+
+`struct stat`의 주요 필드는 `st_ino`(inode 번호), `st_mode`(종류 + 권한), `st_nlink`(하드 링크 수), `st_uid`·`st_gid`, `st_size`(바이트), `st_blocks`(할당된 512바이트 블록 수), `st_atime`·`st_mtime`·`st_ctime`(마지막 접근·내용 수정·inode 변경 시각)이다. `st_ctime`은 생성 시각이 아니다. 권한을 바꿔도 갱신된다.
+
+`st_mode` 하나에 종류와 권한이 함께 들어 있다.
+
+| 알고 싶은 것 | 방법 |
+| --- | --- |
+| 종류 | `S_ISREG(m)` 일반 파일, `S_ISDIR(m)` 디렉터리, `S_ISLNK(m)` 심볼릭 링크, `S_ISCHR`·`S_ISBLK` 문자·블록 장치, `S_ISFIFO` FIFO, `S_ISSOCK` 소켓. `m & S_IFMT`를 `S_IFREG` 같은 상수와 비교해도 같다 |
+| 권한 | `m & S_IRUSR`처럼 비트를 AND해 0인지 본다. 소유자 `S_IRUSR`(0400)·`S_IWUSR`(0200)·`S_IXUSR`(0100), 그룹 `S_I?GRP`(0040·0020·0010), 기타 `S_I?OTH`(0004·0002·0001). `open`의 `mode`와 `chmod`에도 같은 상수를 쓴다(`0644` = `S_IRUSR\|S_IWUSR\|S_IRGRP\|S_IROTH`) |
+
+디렉터리는 `read`로 읽지 않고 `<dirent.h>`의 함수로 엔트리를 하나씩 꺼낸다.
+
+```c
+DIR *dp = opendir(".");                  /* 실패하면 NULL */
+struct dirent *e;
+while ((e = readdir(dp)) != NULL)        /* 호출할 때마다 다음 엔트리. 끝이면 NULL */
+    printf("%lu %s\n", (unsigned long)e->d_ino, e->d_name);
+rewinddir(dp);                           /* 처음 엔트리로 되돌린다 */
+closedir(dp);
+```
+
+`struct dirent`가 보장하는 것은 이름(`d_name`)과 inode 번호(`d_ino`)뿐이다. 디렉터리 엔트리가 원래 이 두 가지만 담기 때문이다([[file-system|파일 시스템]]). 크기나 권한이 필요하면 이름으로 다시 `stat`(또는 `fstatat`)을 부른다. `.`과 `..`도 엔트리로 나오며, 순서는 정렬되어 있지 않다.
 
 ## dup2와 리다이렉션
 
@@ -191,4 +224,4 @@ printf ─▶ [stdio 사용자 버퍼] ─fflush─▶ write() ─▶ [커널 �
 - 많은 연결은 `epoll`·`kqueue`로 기다린다.
 - **mmap은 편하지만 쓰기 순서와 I/O 시점을 내줘야 한다.** 트랜잭션이 필요한 저장소는 직접 버퍼를 관리한다.
 
-관련 노트: [[file-system|파일 시스템]], [[file-system-implementation|파일 시스템 구현]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[unix-signals|UNIX 시그널]], [[file-io|C 입력과 파일 입출력]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]]
+관련 노트: [[file-system|파일 시스템]], [[file-system-implementation|파일 시스템 구현]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[unix-signals|UNIX 시그널]], [[file-io|C 입력과 파일 입출력]], [[event-loop-server|비동기 서버의 이벤트 루프: 다중 접속 서버에서 Reactor 패턴까지]], [[kernel-io-subsystem|운영체제의 입출력 시스템]]

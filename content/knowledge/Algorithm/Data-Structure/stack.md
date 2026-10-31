@@ -5,11 +5,12 @@ summary: "한쪽 끝에서만 넣고 빼는 후입선출(LIFO) 자료구조와 �
 tags: ["data-structure", "stack", "python"]
 source: mixed
 date: "2026-10-30"
-sources: ["https://www.techinterviewhandbook.org/algorithms/stack/", "https://www.techinterviewhandbook.org/algorithms/array/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
+sources: ["https://www.techinterviewhandbook.org/algorithms/stack/", "https://www.techinterviewhandbook.org/algorithms/array/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)"]
 ---
 
 > 언어별 구현과 단조 스택 절은 Tech Interview Handbook의 「[Stack cheatsheet](https://www.techinterviewhandbook.org/algorithms/stack/)」, 「[Array cheatsheet](https://www.techinterviewhandbook.org/algorithms/array/)」(오른쪽부터 훑기)를 바탕으로 보강했다.
 > 수식 표기법과 스택 계산 절은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
+> 「배열 구현과 연결 리스트 구현」은 고려사이버대학교 「자료구조」(2024-1학기) 강의 내용으로 보강했다.
 
 스택(Stack)은 **한쪽 끝(top)에서만 자료를 넣고 뺄 수 있는** 선형 자료구조다. 프링글스 통을 떠올리면 쉽다. 맨 위의 과자부터 꺼낼 수 있고, 새 과자는 그 위에 쌓인다. 나중에 들어간 것이 먼저 나오므로 **후입선출(LIFO, Last In First Out)** 구조라고 한다.
 
@@ -23,6 +24,22 @@ sources: ["https://www.techinterviewhandbook.org/algorithms/stack/", "https://ww
 | `is_empty()` | 비어 있는지 확인 | O(1) |
 
 비어 있는 스택에서 pop하면 **스택 언더플로우**, 정해진 크기를 넘게 push하면 **스택 오버플로우**가 된다.
+
+## 배열 구현과 연결 리스트 구현
+
+스택을 직접 만드는 방법은 두 가지다. 언어 내장 동적 배열(파이썬 리스트, `ArrayDeque`)은 앞의 방식에 자동 확장을 더한 것이다.
+
+| | 고정 크기 배열 | 연결 리스트 |
+| --- | --- | --- |
+| top | 마지막 원소의 인덱스. 빈 스택은 `top = -1` | 맨 앞 노드를 가리키는 포인터. 빈 스택은 `top = NULL` |
+| push | `top`을 1 올리고 `data[top]`에 넣는다 | 새 노드를 만들어 `next`가 옛 top을 가리키게 한 뒤 top을 새 노드로 바꾼다 |
+| pop | `data[top]`을 꺼내고 `top`을 1 내린다 | top 노드의 값을 꺼내고 top을 `next`로 옮긴 뒤 노드 메모리를 해제한다 |
+| 비었나 | `top < 0` | `top == NULL` |
+| 찼나 | `top >= MAX - 1`. 넘으면 오버플로우 | 메모리가 남는 한 차지 않는다 |
+| 크기 | `top + 1`로 O(1) | 개수를 따로 세지 않으면 끝까지 따라가야 해 O(n) |
+| 장단점 | 연속 메모리라 빠르고 단순하다. 최대 크기를 미리 정해야 한다 | 크기 제한이 없다. 노드마다 포인터 공간과 할당 비용이 든다 |
+
+배열 구현에서 오버플로우를 줄이려면 MAX를 넉넉히 잡거나, 찼을 때 배열을 2배로 키워 옮기는 동적 배열로 바꾼다.
 
 ## 파이썬 리스트로 구현하기
 
@@ -171,4 +188,4 @@ def days_until_warmer(temps):          # 각 날짜에서 더 따뜻한 날까�
 - 중간 원소에 직접 접근하는 용도로는 쓰지 않는다.
 - 다음 큰(작은) 원소는 단조 스택으로 O(n)에 구한다.
 
-관련 노트: [[dfs|DFS]], [[recursion|재귀 함수]], [[queue-deque|큐와 덱]], [[data-structures|기초 자료구조(CS50)]]
+관련 노트: [[dfs|DFS]], [[recursion|재귀 함수]], [[queue-deque|큐와 덱]], [[data-structures|기초 자료구조(CS50)]], [[abstract-data-type|추상 자료형 (ADT)]]

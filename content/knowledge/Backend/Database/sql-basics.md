@@ -5,7 +5,7 @@ summary: "SQL 명령어 분류(DDL·DML·DCL)와 테이블 구조 변경과 제�
 tags: ["sql", "database", "mysql", "sqlite", "certificate"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md"]
+sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "고려사이버대학교 데이터베이스시스템 강의(나홍석 교수, 2024-1학기)"]
 ---
 
 > 여러 자료를 종합한 노트에, SQL 다섯 분류는 ByteByteGo의 System Design 101 가이드 「[What is the Best Way to Learn SQL?](https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql)」를, JOIN은 「[How do SQL Joins Work?](https://bytebytego.com/guides/how-do-sql-joins-work)」를 바탕으로 보강했다.
@@ -13,6 +13,7 @@ sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "ht
 > 「파라미터 바인딩과 Prepared Statement」는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로 보강했다.
 > 키의 종류와 저장 프로시저는 gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 저장소의 Database 문서를 바탕으로 보강했다.
 > 기본 키 변경, 외래 키의 NULL, 갱신 가능한 뷰, COUNT의 동작은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다.
+> 무결성의 종류와 강화 방법, 컬럼·테이블 제약과 컬럼 추가 규칙은 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기)과 「데이터베이스시스템」(2024-1학기) 강의 내용으로 보강했다.
 
 SQL(Structured Query Language)은 RDBMS에서 데이터를 관리하기 위해 설계된 언어다. ORM을 쓰더라도 실제로 DB에 전달되는 것은 SQL이므로, 기본 문법을 알면 ORM이 만드는 쿼리를 이해하고 문제를 진단할 수 있다.
 
@@ -78,6 +79,12 @@ SHOW VARIABLES LIKE 'character_set_database';
 
 MySQL의 `utf8`은 3바이트까지만 담는 옛 별칭이라 이모지가 깨진다. 문자 집합은 `utf8mb4`를 쓴다(MySQL 8.0부터 기본값).
 
+이미 행이 있는 테이블의 구조를 바꿀 때는 기존 행이 새 규칙을 만족해야 한다.
+
+- **`NOT NULL` 열을 기본값 없이 추가할 수 없다.** 기존 행에 넣을 값이 없기 때문이다. `DEFAULT`를 함께 주거나, NULL 허용으로 추가해 값을 채운 뒤 `NOT NULL`로 바꾼다. PostgreSQL·Oracle은 오류를 내고, MySQL은 타입의 암묵적 기본값(0, 빈 문자열)으로 채운다.
+- **타입을 좁히면 실패할 수 있다.** 이미 들어 있는 가장 긴 문자열보다 짧은 길이, 기존 값이 넘치는 숫자 크기로는 바꿀 수 없다.
+- 열 삭제는 되돌릴 수 없으므로 백업 뒤에 한다.
+
 | 지우는 대상 | 명령 | 특징 |
 | --- | --- | --- |
 | 조건에 맞는 행 | `DELETE FROM t WHERE ...` | DML. 행마다 지우고 로그를 남겨 롤백할 수 있다. `WHERE`가 없으면 전부 지운다 |
@@ -87,6 +94,27 @@ MySQL의 `utf8`은 3바이트까지만 담는 옛 별칭이라 이모지가 깨�
 ### 제약 조건
 
 제약 조건(constraint)은 열에 들어갈 값을 DB가 직접 검사하게 하는 규칙이다. 애플리케이션 코드가 빠뜨려도 잘못된 데이터가 들어가지 않는다.
+
+제약 조건은 **데이터 무결성(integrity)**, 곧 저장된 값이 현실과 맞고 서로 모순되지 않는 상태를 지키는 도구다. 무결성은 지키려는 대상에 따라 네 가지로 나눈다.
+
+| 무결성 | 지키는 것 | 구현 |
+| --- | --- | --- |
+| 개체 무결성(entity) | 모든 행을 하나로 구별할 수 있다. 기본 키는 NULL일 수 없다 | `PRIMARY KEY`, `UNIQUE` |
+| 영역(도메인) 무결성(domain) | 열 값이 그 열이 가질 수 있는 값의 범위 안에 있다. 2월 30일, 정의되지 않은 상태 코드 `4`는 안 된다 | 데이터 타입·크기, `NOT NULL`, `CHECK`, `DEFAULT` |
+| 참조 무결성(referential) | 외래 키 값은 부모 테이블에 있는 키이거나 NULL이다 | `FOREIGN KEY` |
+| 사용자 정의 무결성 | 업무 규칙(잔액은 한도를 넘지 않는다 등) | `CHECK`, 트리거, 애플리케이션 |
+
+데이터 타입은 도메인 무결성의 가장 기초다. 날짜를 `DATE`로 두면 없는 날짜가 들어올 수 없고, 숫자를 숫자 타입으로 두면 연산과 형식 검사를 DB가 해 준다. 같은 값을 더 적은 바이트로 담는 타입을 고르면(`'100000'`은 문자열 6바이트, 정수 4바이트) 한 페이지에 행이 더 들어가 읽는 페이지 수가 준다.
+
+무결성을 어디서 강제하느냐에 따라 장단점이 갈린다.
+
+| 방법 | 장점 | 단점 |
+| --- | --- | --- |
+| 선언적 제약 조건 | 선언 한 줄로 끝나고, 어떤 경로로 들어오는 데이터든 원천적으로 막는다. 켜고 끄기 쉽다 | 복잡한 규칙과 예외 처리는 표현할 수 없다 |
+| 트리거 | 여러 테이블에 걸친 복잡한 규칙도 DB 한 곳에서 관리한다 | 동작이 눈에 잘 띄지 않아 디버깅이 어렵고 성능에 영향을 준다 |
+| 애플리케이션 코드 | 가장 복잡한 규칙과 사용자 친화적인 오류 처리가 된다 | 규칙이 코드 곳곳에 흩어지고, 다른 경로(배치, 직접 SQL)로 들어온 데이터는 못 막는다 |
+
+데이터가 쌓인 뒤에 정제하는 비용이 훨씬 크므로, 단순한 규칙은 설계 단계에서 제약 조건으로 선언하고 복잡한 규칙만 애플리케이션이나 트리거로 보탠다.
 
 | 제약 | 뜻 |
 | --- | --- |
@@ -108,6 +136,10 @@ CREATE TABLE orders (
 );
 ```
 
+- **열 제약과 테이블 제약**: 열 정의 옆에 쓰는 열 제약(`email VARCHAR(100) UNIQUE`)과 열 목록 뒤에 따로 쓰는 테이블 제약(`CONSTRAINT uk_name UNIQUE (col3, col4)`)이 있다. 여러 열에 걸친 기본 키·유니크·`CHECK`는 테이블 제약으로만 쓸 수 있다. `NOT NULL`은 열 제약으로만 쓴다.
+- **제약에 이름을 붙인다.** `CONSTRAINT 이름`을 주지 않으면 DBMS가 임의 이름(`SYS_C0012345` 등)을 붙여, 나중에 `ALTER TABLE ... DROP CONSTRAINT`로 지우거나 오류 메시지에서 원인을 찾기 어렵다. 테이블을 만든 뒤에도 `ALTER TABLE t ADD CONSTRAINT ...`로 추가할 수 있다.
+- `PRIMARY KEY`와 `UNIQUE`를 걸면 DB가 중복 검사를 위해 유니크 인덱스를 자동으로 만든다([[index-design#유니크 인덱스|인덱스 설계]]).
+
 **키의 종류**: 관계형 모델에서 행을 구분하는 기준을 키라고 한다.
 
 | 키 | 뜻 |
@@ -116,6 +148,7 @@ CREATE TABLE orders (
 | 후보키(candidate key) | 유일성에 **최소성**까지 갖춘 슈퍼키. 속성 하나라도 빼면 유일하지 않다 |
 | 기본 키(primary key) | 후보키 중 대표로 고른 하나. NULL·중복 불가 |
 | 대체키(alternate key) | 기본 키로 고르지 않은 나머지 후보키. 보통 `UNIQUE`를 건다 |
+| 복합 키(composite key) | 속성 두 개 이상이 합쳐져야 유일해지는 키. 수강(학번, 과목번호)처럼 M:N 연결 테이블에 흔하다 |
 | 외래 키(foreign key) | 다른 테이블의 기본 키(또는 후보키)를 참조하는 속성 |
 
 **기본 키의 두 종류**: 이메일·주민번호처럼 원래 데이터에 있던 값을 키로 쓰면 **자연 키(natural key)**, 키로 쓰려고 따로 만든 일련번호를 쓰면 **대리 키(surrogate key)** 다. 자연 키는 바뀔 수 있고(이메일 변경) 개인정보가 섞이기 쉬워, 보통 대리 키를 기본 키로 두고 자연 키에는 `UNIQUE`를 건다. 대리 키는 `AUTO_INCREMENT`(PostgreSQL은 `GENERATED ... AS IDENTITY`)로 1씩 늘어나는 정수를 자동으로 넣는다. 여러 서버에서 ID를 만들어야 하면 UUID·Snowflake 같은 방식을 쓴다([[distributed-unique-id|분산 고유 ID]]).
@@ -130,7 +163,7 @@ CREATE TABLE orders (
 
 그래서 기본 키는 의미 없는 대리 키로 두고, 바뀔 수 있는 값은 일반 컬럼에 둔다.
 
-**외래 키의 동작**: 부모 행을 지우거나 키를 바꿀 때 자식 행을 어떻게 할지 정한다. `CASCADE`는 자식도 함께 지우거나 바꾸고, `SET NULL`은 자식의 외래 키를 NULL로, 기본값인 `RESTRICT`(`NO ACTION`)는 자식이 있으면 부모 변경을 막는다. `CASCADE`는 편하지만 한 번의 삭제가 여러 테이블로 번지므로 범위를 알고 쓴다.
+**외래 키의 동작**: 부모 행을 지우거나 키를 바꿀 때 자식 행을 어떻게 할지 정한다. `CASCADE`는 자식도 함께 지우거나 바꾸고, `SET NULL`은 자식의 외래 키를 NULL로, 기본값인 `RESTRICT`(`NO ACTION`)는 자식이 있으면 부모 변경을 막는다. `CASCADE`는 편하지만 한 번의 삭제가 여러 테이블로 번지므로 범위를 알고 쓴다. 기본 동작(`RESTRICT`)에서는 순서가 정해진다. 만들 때는 부모 테이블과 부모 행을 먼저, 지울 때는 자식 행을 먼저 지운다. 초기 데이터를 스크립트로 넣을 때 이 순서를 어기면 외래 키 오류가 난다.
 
 **외래 키 컬럼은 NULL을 가질 수 있다.** NULL은 「참조하는 부모가 없음」을 뜻하고, 참조 무결성 검사를 하지 않는다. 담당자가 아직 배정되지 않은 주문처럼 **선택적 관계**를 표현하는 방법이다. 관계가 필수라면 외래 키 컬럼에 `NOT NULL`을 함께 건다. 여러 컬럼으로 된 외래 키는 한 컬럼이라도 NULL이면 기본 매칭 방식(`MATCH SIMPLE`)에서 검사를 건너뛴다.
 
@@ -304,6 +337,6 @@ ps.executeQuery();
 - `ORDER BY … LIMIT … OFFSET`으로 정렬·페이지네이션, `GROUP BY` + 집계 함수로 요약.
 - 같은 쿼리를 Django ORM으로 쓰는 법은 [[orm-queryset|Django ORM과 QuerySet]]에 대응표로 있다.
 
-관련 노트: [[sql-and-relational-algebra|관계대수와 DB 설계]], [[transaction|트랜잭션과 회복]], [[dbeaver|DBeaver에서 SQL로 데이터 다루기]]
+관련 노트: [[sql-and-relational-algebra|관계대수와 DB 설계]], [[transaction|트랜잭션과 회복]], [[dbeaver|DBeaver에서 SQL로 데이터 다루기]], [[sql-subquery|서브쿼리와 관계해석]], [[oracle-pl-sql|PL/SQL]], [[er-modeling|ER 모델링]]
 
 참고: [W3Schools SQL](https://www.w3schools.com/sql/)

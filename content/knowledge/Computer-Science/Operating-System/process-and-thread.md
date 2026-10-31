@@ -5,7 +5,7 @@ summary: "프로세스의 문맥과 메모리 영역(코드·데이터·힙·스
 tags: ["os", "process", "thread", "pcb", "system-call"]
 source: notion
 date: "2026-10-14"
-sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/205", "https://velog.io/@raejoonee/프로세스와-스레드의-차이", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/32df4df48d7841f2bd84f71a2aba4547", "https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread", "https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux", "https://www.youtube.com/watch?v=Jjfah3t_xWk", "https://www.youtube.com/watch?v=wz9C_vqME8g", "https://www.youtube.com/watch?v=zUGvpUtNlwI", "https://www.youtube.com/watch?v=XexLQRaKoTA", "https://www.youtube.com/watch?v=yTZ1ECY2Vjc", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md"]
+sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/205", "https://velog.io/@raejoonee/프로세스와-스레드의-차이", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/32df4df48d7841f2bd84f71a2aba4547", "https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread", "https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux", "https://www.youtube.com/watch?v=Jjfah3t_xWk", "https://www.youtube.com/watch?v=wz9C_vqME8g", "https://www.youtube.com/watch?v=zUGvpUtNlwI", "https://www.youtube.com/watch?v=XexLQRaKoTA", "https://www.youtube.com/watch?v=yTZ1ECY2Vjc", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
 ---
 
 > 노션 정리와 개발장의 「[프로세스와 스레드의 차이](https://velog.io/@raejoonee/프로세스와-스레드의-차이)」(2020.08)를 바탕으로 재구성한 노트다.
@@ -15,6 +15,7 @@ sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://
 > IPC 수단 비교는 ByteByteGo의 System Design 101 가이드 「[Inter-Process Communication on Linux](https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux)」로 확인해 보강했다.
 > 「PCB」, 「리눅스에서는 둘 다 태스크」, 「코드로 직접 확인하기」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 주소 공간의 배치·크기와 TCB, 「커널 스택에 남는 것」, 「문맥 교환의 비용과 줄이는 법」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
+> `wait()`가 돌려주는 종료 상태의 비트 구성과 메시지 큐의 복사 비용은 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
 
 먼저 세 개념의 관계를 잡는다.
 
@@ -247,6 +248,7 @@ else                perror("fork");       // -1: 실패
 
 - `wait()`: 부모가 호출하면 커널이 자식이 끝날 때까지 부모를 **sleep(blocked)** 시키고, 자식이 종료되면 부모를 깨운다.
 - `exit()`: 프로세스를 종료한다. 코드에 명시하지 않아도 컴파일러가 `main`의 끝에 넣어 준다. 라이브러리 함수 `exit()`는 `atexit()`로 등록한 함수 실행 → stdio 버퍼 flush → 시스템 콜 `_exit()` 순으로 동작한다([[unix-file-io|UNIX 파일 입출력]]).
+- `wait(&status)`가 채우는 `status`는 정수의 하위 16비트에 두 경우를 나눠 담는다(Linux 기준). 정상 종료면 **상위 8비트에 `exit()`에 넘긴 값**, 하위 8비트는 0이다. 시그널로 죽었으면 **하위 7비트에 시그널 번호**(코어 덤프면 0x80 비트도)가 들어간다. 그래서 자식이 `exit(2)`로 끝나면 `status`를 16진수로 찍었을 때 `0x200`이 나온다. 이 배치는 구현마다 다를 수 있으므로 코드에서는 아래 매크로로 읽는다.
 - 자식이 끝나면 커널은 자원을 회수하지만 종료 상태는 부모가 `wait`로 거둘 때까지 남긴다. 거두지 않은 자식이 **좀비**, 부모가 먼저 끝난 자식이 **고아**(init이 입양)다. 부모는 `SIGCHLD`로 자식의 종료를 알고, `waitpid`와 `WIFEXITED` 같은 매크로로 종료 상태를 읽는다([[unix-signals|UNIX 시그널]]).
 
 ## 코드로 직접 확인하기
@@ -287,13 +289,13 @@ if __name__ == "__main__":
 | Shared Memory | 설정할 때만. 이후 직접 읽고 쓴다 | 양방향 | 큰 데이터를 가장 빠르게 공유. 동기화는 직접 해야 한다 |
 | Pipe | 예 (커널 버퍼) | 단방향 | 부모·자식 사이 바이트 스트림, 셸 파이프라인 |
 | Named Pipe (FIFO) | 예 | 단방향 | 파일 이름으로 관계없는 프로세스끼리 연결 |
-| Message Queue | 예 | 양방향 | 메시지 단위로 넣고 꺼낸다 |
+| Message Queue | 예 | 양방향 | 메시지 단위로 넣고 꺼낸다. 보낼 때와 받을 때마다 시스템 콜이 필요하고 데이터가 송신자 → 커널 버퍼 → 수신자로 두 번 복사되어, 큰 데이터에는 공유 메모리보다 느리다 |
 | Socket | 예 | 양방향 | 다른 컴퓨터의 프로세스와도 통신 |
 | Signal | 예 | 단방향 | 데이터 없이 사건만 알린다([[unix-signals\|UNIX 시그널]]) |
 | File | 예 (파일 시스템) | 양방향 | 한 프로세스가 파일에 쓰고 다른 프로세스가 읽는 가장 단순한 방법. 동시 접근은 파일 잠금으로 조율한다 |
 | Semaphore | 예 | - | 데이터 전달이 아니라 공유 자원 접근 제어 |
 
-Shared Memory처럼 같은 데이터를 함께 쓰거나, 한 프로세스 안의 스레드들이 data 영역을 공유하면 경쟁 상태가 생길 수 있다. 이를 막는 방법은 [[process-synchronization|프로세스 동기화]]에서 다룬다.
+파이프·FIFO·공유 메모리를 실제로 만드는 시스템 콜은 [[ipc-pipe-fifo-shared-memory|파이프, FIFO, 공유 메모리]]에 있다. Shared Memory처럼 같은 데이터를 함께 쓰거나, 한 프로세스 안의 스레드들이 data 영역을 공유하면 경쟁 상태가 생길 수 있다. 이를 막는 방법은 [[process-synchronization|프로세스 동기화]]에서 다룬다.
 
 ## 핵심 정리
 
@@ -303,4 +305,4 @@ Shared Memory처럼 같은 데이터를 함께 쓰거나, 한 프로세스 안�
 - 멀티프로세스는 격리가 강하고 통신이 비싸며, 멀티스레드는 통신이 싸지만 동기화가 필요하고 한 스레드의 장애가 프로세스 전체로 번진다.
 - `fork()`로 복제하고 `exec()`로 덮어쓰며, 부모는 `wait()`로 자식을 기다린다.
 
-관련 노트: [[process-scheduling|프로세스 상태와 CPU 스케줄링]], [[unix-signals|UNIX 시그널]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[pthread-sync-api|POSIX 스레드와 동기화 API]]
+관련 노트: [[process-scheduling|프로세스 상태와 CPU 스케줄링]], [[unix-signals|UNIX 시그널]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[pthread-sync-api|POSIX 스레드와 동기화 API]], [[thread-models|사용자 수준 스레드와 커널 수준 스레드]], [[ipc-pipe-fifo-shared-memory|파이프, FIFO, 공유 메모리]]

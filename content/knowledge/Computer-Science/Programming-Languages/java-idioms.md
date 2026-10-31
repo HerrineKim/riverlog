@@ -5,10 +5,11 @@ summary: "Java 코드를 안전하고 읽기 좋게 만드는 관용구를 주�
 tags: ["java", "backend", "oop", "async", "convention"]
 source: other
 date: "2026-10-21"
-sources: ["https://techblog.woowahan.com/2527/", "https://www.slideshare.net/mobile/gyumee/null-142590829", "http://homoefficio.github.io/2019/10/03/Java-Optional-%EB%B0%94%EB%A5%B4%EA%B2%8C-%EC%93%B0%EA%B8%B0/", "https://cheese10yun.github.io/checked-exception/", "https://d2.naver.com/helloworld/645609", "https://brunch.co.kr/@springboot/267", "https://brunch.co.kr/@heracul/3", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/package-summary.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/package-summary.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md"]
+sources: ["https://techblog.woowahan.com/2527/", "https://www.slideshare.net/mobile/gyumee/null-142590829", "http://homoefficio.github.io/2019/10/03/Java-Optional-%EB%B0%94%EB%A5%B4%EA%B2%8C-%EC%93%B0%EA%B8%B0/", "https://cheese10yun.github.io/checked-exception/", "https://d2.naver.com/helloworld/645609", "https://brunch.co.kr/@springboot/267", "https://brunch.co.kr/@heracul/3", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/package-summary.html", "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CompletableFuture.html", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/stream/package-summary.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md", "고려사이버대학교 Java언어 강의(도성룡 교수, 2023-2학기)"]
 ---
 
 > 「[Java Enum 활용기](https://techblog.woowahan.com/2527/)」, 「[자바에서 null을 안전하게 다루는 방법](https://www.slideshare.net/mobile/gyumee/null-142590829)」, 「[Java Optional 바르게 쓰기](http://homoefficio.github.io/2019/10/03/Java-Optional-%EB%B0%94%EB%A5%B4%EA%B2%8C-%EC%93%B0%EA%B8%B0/)」, 「[Checked Exception을 대하는 자세](https://cheese10yun.github.io/checked-exception/)」, 「[Java 날짜와 시간 API의 문제점과 JDK8에서 개선된 부분](https://d2.naver.com/helloworld/645609)」, 「[자바 비동기 프로그래밍을 위한 CompletableFuture 검토](https://brunch.co.kr/@springboot/267)」, 「[Java Lambda Expression과 성능](https://brunch.co.kr/@heracul/3)」 등을 바탕으로, API는 Java SE 공식 문서로 확인해 재구성한 노트다. try-with-resources, 함수형 인터페이스와 메서드 참조, 스트림의 동작과 병렬 처리는 fru1tworld/cs-basic 모의 면접 질문 목록의 Java 질문을 바탕으로 보강했다.
+> 예외 문법 요소와 사용자 정의 예외는 고려사이버대학교 「Java언어」(2023-2학기) 강의 내용으로 보강했다.
 
 ## Enum: 상수에 상태와 행위를 묶는다
 
@@ -72,7 +73,29 @@ enum CalculatorType {
 | --- | --- | --- | --- |
 | Checked | `Exception` (RuntimeException 제외) | `catch`하거나 `throws`로 선언해야 컴파일된다 | `IOException`, `SQLException` |
 | Unchecked | `RuntimeException` | 강제하지 않는다 | `IllegalArgumentException`, `NullPointerException` |
-| Error | `Error` | 애플리케이션이 복구할 대상이 아니다 | `OutOfMemoryError` |
+| Error | `Error` | 애플리케이션이 복구할 대상이 아니다 | `OutOfMemoryError`, `StackOverflowError` |
+
+셋 모두 `Throwable`의 자손이다. 자주 만나는 unchecked 예외로는 0으로 정수 나눗셈을 한 `ArithmeticException`(실수 나눗셈은 예외 없이 `Infinity`·`NaN`이 된다), 범위를 벗어난 인덱스의 `ArrayIndexOutOfBoundsException`·`StringIndexOutOfBoundsException`(둘 다 `IndexOutOfBoundsException`의 하위), 잘못된 형 변환의 `ClassCastException`이 있다.
+
+### 문법 요소
+
+| 요소 | 역할 |
+| --- | --- |
+| `throw 예외객체` | 문장. 예외를 **지금 발생시킨다** |
+| `throws 예외타입` | 메서드 선언부. 이 메서드가 처리하지 않고 **호출한 쪽에 넘기는** checked 예외를 알린다 |
+| 다중 `catch` | 위에서부터 차례로 맞는 첫 블록 하나만 실행된다. **하위 타입을 위에** 둔다. `Exception`을 먼저 두면 아래 블록에 닿을 수 없어 컴파일 오류다 |
+| 멀티 캐치 `catch (A \| B e)` | 처리 방식이 같은 예외를 한 블록에 묶는다(Java 7). 서로 상속 관계인 타입은 함께 못 쓴다 |
+| `finally` | 정상 종료·예외·`return`과 상관없이 실행된다. 여기서 `return`하면 던져지던 예외가 사라지므로 하지 않는다 |
+| `getMessage()`, `getCause()`, `printStackTrace()` | 요약 메시지, 원인 예외, 스택 추적 출력. 운영 코드에서는 `printStackTrace()` 대신 로거에 예외 객체를 넘긴다 |
+
+**사용자 정의 예외**는 checked로 만들려면 `Exception`을, unchecked로 만들려면 `RuntimeException`을 상속하고, 메시지와 원인을 받는 생성자에서 `super(message, cause)`를 부른다. 이름은 `~Exception`으로 끝낸다.
+
+```java
+public class InsufficientStockException extends RuntimeException {
+    public InsufficientStockException(String message) { super(message); }
+    public InsufficientStockException(String message, Throwable cause) { super(message, cause); }
+}
+```
 
 처리 전략은 셋이다.
 
@@ -237,4 +260,4 @@ Comparator<User> byAge = Comparator.comparingInt(User::age);
 - 스트림은 최종 연산 때 원소 단위로 흐르는 지연 파이프라인이다. 병렬 스트림은 무겁고 잘 쪼개지는 순수 연산에만 쓴다.
 - `CompletableFuture`에는 전용 Executor를 주고, 스트림은 성능이 아니라 가독성을 위해 고른다.
 
-관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-concurrency|Java 동시성]], [[java-language-basics|Java 언어 기본]], [[java-serialization-jackson|Java 직렬화와 Jackson]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-application-design|스프링 애플리케이션 설계]], [[timezone|자바스크립트에서 타임존 다루기]], [[gof-design-patterns|GoF 디자인 패턴]]
+관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-concurrency|Java 동시성]], [[java-language-basics|Java 언어 기본]], [[java-serialization-jackson|Java 직렬화와 Jackson]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-application-design|스프링 애플리케이션 설계]], [[timezone|자바스크립트에서 타임존 다루기]], [[gof-design-patterns|GoF 디자인 패턴]], [[java-io-streams|Java 입출력 스트림]], [[java-swing-gui|Java Swing GUI]]

@@ -76,4 +76,4 @@ F(u, v)는 복소수이므로 크기와 각도로 나눠 본다.
 - 스펙트럼은 세기, 위상은 위치를 담는다.
 - 필터링·합성곱·압축은 주파수 영역에서 하면 단순해진다.
 
-관련 노트: [[divide-and-conquer|분할 정복]], [[vector-space|벡터 공간]], [[image-compression|이미지 압축]]
+관련 노트: [[divide-and-conquer|분할 정복]], [[vector-space|벡터 공간]], [[image-compression|이미지 압축]], [[calculus-basics|미분과 적분 기초]]

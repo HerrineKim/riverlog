@@ -5,10 +5,11 @@ summary: "C++ 가상 함수가 vtable과 vptr로 실행 중에 호출 대상을 
 tags: ["cpp", "oop", "memory", "computer-science"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/7e1085b337114dd2aeb657ac2b4fec16", "https://isocpp.org/wiki/faq/strange-inheritance#calling-virtuals-from-ctors"]
+sources: ["https://80000coding.notion.site/7e1085b337114dd2aeb657ac2b4fec16", "https://isocpp.org/wiki/faq/strange-inheritance#calling-virtuals-from-ctors", "고려사이버대학교 객체지향 프로그래밍(C++) 강의(장윤경 교수, 2024-2학기)"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「소멸자에서 가상함수를 호출하면 생기는 에러」를 바탕으로 재구성한 노트다.
+> virtual이 없을 때의 정적 바인딩은 고려사이버대학교 「객체지향 프로그래밍(C++)」(2024-2학기) 강의 내용으로 보강했다.
 
 ## 가상 함수란
 
@@ -21,6 +22,8 @@ struct Circle : Shape { double r; double area() const override { return 3.14 * r
 Shape* s = new Circle{...};
 s->area();   // Shape::area가 아니라 Circle::area가 불린다
 ```
+
+`virtual`이 없으면 같은 이름·시그니처로 재정의해도 **호출 대상은 포인터·참조의 선언 타입으로 컴파일 시점에 정해진다(정적 바인딩).** 부모 포인터 배열에 여러 자식 객체를 담아 같은 함수를 불러도 모두 부모 구현이 불린다. 자식 객체 자신(`Circle c; c.area()`)으로 부를 때만 자식 구현이 보이므로, 이 차이는 부모 타입으로 다룰 때 드러난다. Java는 모든 인스턴스 메서드가 기본으로 가상이라 이런 구분이 없다.
 
 - `= 0`은 **순수 가상 함수**다. 구현이 없고, 하나라도 있으면 그 클래스는 추상 클래스가 되어 직접 만들 수 없다.
 - `override`는 부모의 가상 함수를 재정의한다는 선언이다. 시그니처가 틀리면 컴파일 오류로 잡아 준다.
@@ -107,4 +110,4 @@ delete s;   // ~Shape()가 virtual이어야 ~Circle()부터 불린다
 - 순수 가상 함수를 생성·소멸 중에 간접 호출하면 pure virtual call로 프로그램이 종료된다.
 - 다형적으로 지울 클래스의 소멸자는 `virtual`로 선언한다.
 
-관련 노트: [[cpp-templates|C++ 템플릿]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[cpp-exceptions|C++ 예외 처리의 내부 동작]], [[oop-messaging|객체 지향의 본질: 메시징]]
+관련 노트: [[cpp-templates|C++ 템플릿]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[cpp-exceptions|C++ 예외 처리의 내부 동작]], [[oop-messaging|객체 지향의 본질: 메시징]], [[cpp-inheritance|C++ 상속]]

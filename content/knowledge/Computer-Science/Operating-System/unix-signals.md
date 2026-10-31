@@ -5,10 +5,11 @@ summary: "커널이나 다른 프로세스가 프로세스에 보내는 비동�
 tags: ["os", "process", "system-call", "c", "interrupt"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/a70aa8cc081c4918a996f83a51299f73", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/49da4c70a23844dabc4e6a6ba4aca5f6", "https://man7.org/linux/man-pages/man7/signal.7.html"]
+sources: ["https://80000coding.notion.site/a70aa8cc081c4918a996f83a51299f73", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/49da4c70a23844dabc4e6a6ba4aca5f6", "https://man7.org/linux/man-pages/man7/signal.7.html", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「minitalk 에서 컴퓨터 통신 맛보기」, 「exit() atexit() _exit() 뭐가 다른지 설명할 수 있어?」, 「[운영체제] Time의 종류와 Alarm」을 바탕으로 재구성한 노트다.
+> 「시그널 보내기」 절과 보류 시그널이 기록되는 위치는 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
 
 ## 시그널이란
 
@@ -51,14 +52,28 @@ sources: ["https://80000coding.notion.site/a70aa8cc081c4918a996f83a51299f73", "h
    막혀 있으면 계속 보류                 └─ 핸들러 실행 → 끊긴 지점으로 복귀
 ```
 
+- 발생한 시그널은 커널이 대상 프로세스의 PCB(Linux는 `task_struct`의 보류 집합)에 표시해 두었다가, 그 프로세스가 커널에서 사용자 모드로 돌아가는 시점에 전달한다. 보내는 쪽은 표시만 하고 바로 돌아오므로 비동기다.
 - **표준 시그널은 큐에 쌓이지 않는다.** 보류 상태는 시그널마다 비트 하나라서, 같은 시그널이 처리 전에 여러 번 오면 한 번으로 합쳐진다.
 - 서로 다른 시그널이 함께 보류되면 어떤 순서로 전달될지 정해져 있지 않다.
 - 실시간 시그널(`SIGRTMIN`~`SIGRTMAX`)은 예외다. 큐에 쌓이고, 번호 순으로 전달되며, `sigqueue()`로 정수나 포인터 하나를 함께 보낼 수 있다.
 - 마스크는 `sigprocmask()`(스레드에서는 `pthread_sigmask()`)로 바꾼다. 임계 구역 동안 막아 두었다가 풀면 그때 전달된다.
 
+## 시그널 보내기
+
+| 방법 | 대상 | 동작 |
+| --- | --- | --- |
+| 셸 `kill -INT 3500`, `kill -9 3500` | 지정한 PID | 이름은 `SIG`를 뺀 형태나 번호로 준다. 옵션이 없으면 `SIGTERM`. 자주 쓰는 번호는 INT 2, QUIT 3, KILL 9, TERM 15 |
+| `kill(pid, sig)` | 지정한 PID | 셸 `kill`이 부르는 시스템 콜. 성공 0, 실패 -1. `sig`가 0이면 아무것도 보내지 않고 프로세스가 있는지와 권한만 확인한다 |
+| `raise(sig)` | 자기 자신 | 단일 스레드에서는 `kill(getpid(), sig)`와 같다 |
+| `alarm(sec)` | 자기 자신 | sec초 뒤 `SIGALRM`을 예약한다. 다시 부르면 이전 예약을 취소하고 남은 초를 돌려주며, `alarm(0)`은 예약만 취소한다 |
+| `abort()` | 자기 자신 | `SIGABRT`를 보내 코어 덤프와 함께 끝낸다. `SIGABRT` 핸들러가 있어도 핸들러가 돌아오면 결국 종료된다 |
+| 터미널 키 | 포그라운드 프로세스 그룹 | `Ctrl+C`(`SIGINT`), `Ctrl+\`(`SIGQUIT`), `Ctrl+Z`(`SIGTSTP`). 멈춘 작업은 `fg`·`bg`가 `SIGCONT`로 되살린다 |
+
+`alarm`은 블로킹 호출에 시간 제한을 거는 가장 간단한 방법이다. `alarm(10)` 뒤 `read`로 입력을 기다리다 10초 안에 들어오면 `alarm(0)`으로 예약을 지우고, 들어오지 않으면 `SIGALRM`의 기본 동작으로 프로세스가 끝난다. 끝내지 않고 계속하려면 `SIGALRM` 핸들러를 `SA_RESTART` 없이 등록해 `read`가 `EINTR`로 빠져나오게 한다. 타이머 계열 함수는 [[time-and-timers|운영체제의 시간과 타이머]]에 있다.
+
 ## 핸들러 등록: sigaction
 
-`signal()`은 시스템마다 의미가 달라(핸들러가 한 번 실행 후 기본값으로 돌아가는지 등) 이식성이 없다. **`sigaction()`을 쓴다.**
+가장 오래된 등록 함수는 `signal(signum, handler)`다. handler에 함수 대신 `SIG_IGN`(무시)이나 `SIG_DFL`(기본 동작으로 되돌림)을 줄 수 있어, `signal(SIGINT, SIG_IGN)`이면 `Ctrl+C`를 눌러도 끝나지 않는다. 그러나 `signal()`은 시스템마다 의미가 달라(핸들러가 한 번 실행 후 기본값으로 돌아가는지 등) 이식성이 없다. **`sigaction()`을 쓴다.**
 
 ```c
 struct sigaction sa = {0};
@@ -120,4 +135,4 @@ sigaction(SIGUSR1, &sa, NULL);
 - 부모는 `SIGCHLD`를 받으면 `WNOHANG` 루프로 자식을 모두 거둬 좀비를 막는다.
 - **프로세스 간 데이터 전달에는 파이프·소켓을 쓰고, 시그널은 "깨워라·멈춰라·다시 읽어라" 같은 제어에만 쓴다.**
 
-관련 노트: [[process-and-thread|프로세스와 스레드]], [[system-structure|컴퓨터 시스템 구조와 인터럽트]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[time-and-timers|시간과 타이머]], [[daemon-and-systemd|데몬과 systemd]]
+관련 노트: [[process-and-thread|프로세스와 스레드]], [[system-structure|컴퓨터 시스템 구조와 인터럽트]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[time-and-timers|시간과 타이머]], [[daemon-and-systemd|데몬과 systemd]], [[ipc-pipe-fifo-shared-memory|파이프, FIFO, 공유 메모리]]

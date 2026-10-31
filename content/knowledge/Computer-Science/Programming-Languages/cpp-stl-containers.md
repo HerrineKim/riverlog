@@ -5,10 +5,11 @@ summary: "C++ 표준 라이브러리의 vector·deque·list·set·map·unordered
 tags: ["cpp", "data-structure", "algorithm", "performance"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/cf49e4717acb41308654fcfeed13bda5", "https://80000coding.notion.site/be1a0d0185214f76877b9e3b8f08305d", "https://en.cppreference.com/w/cpp/container"]
+sources: ["https://80000coding.notion.site/cf49e4717acb41308654fcfeed13bda5", "https://80000coding.notion.site/be1a0d0185214f76877b9e3b8f08305d", "https://en.cppreference.com/w/cpp/container", "고려사이버대학교 객체지향 프로그래밍(C++) 강의(장윤경 교수, 2024-2학기)"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C++] vector STL method 시간복잡도」, 「[C++] set STL 을 알아보자.」를 바탕으로 재구성한 노트다.
+> vector의 헷갈리는 멤버 함수는 고려사이버대학교 「객체지향 프로그래밍(C++)」(2024-2학기) 강의 내용으로 보강했다.
 
 ## STL 컨테이너란
 
@@ -45,6 +46,21 @@ n번 push_back의 복사 횟수 ≤ 1 + 2 + 4 + ... + n < 2n  →  평균 O(1)
 
 - 크기를 미리 알면 `reserve(n)`으로 한 번에 잡아 재할당과 복사를 없앤다.
 - 재할당이 일어나면 **기존 반복자·포인터·참조가 모두 무효화**된다. 순회 중 `push_back`이 위험한 이유다.
+
+### 헷갈리는 멤버 함수
+
+| 함수 | 함정 |
+| --- | --- |
+| `v[i]` vs `v.at(i)` | 둘 다 원소의 참조를 돌려준다. `[]`는 범위를 검사하지 않아 벗어나면 정의되지 않은 동작이고, `at`은 검사해서 `std::out_of_range` 예외를 던진다 |
+| `pop_back()` | 마지막 원소를 지우기만 하고 **반환값이 없다(`void`)**. 값이 필요하면 `back()`으로 먼저 읽는다. 빈 벡터에 부르면 정의되지 않은 동작 |
+| `front()`, `back()` | 첫·마지막 원소의 참조. 빈 벡터에서는 정의되지 않은 동작이므로 `empty()`로 먼저 확인한다 |
+| `size()` vs `capacity()` | 들어 있는 원소 수와 재할당 없이 담을 수 있는 칸 수 |
+| `reserve(n)` vs `resize(n)` | `reserve`는 `capacity`만 늘리고 원소는 만들지 않는다(`size` 그대로). `resize`는 원소를 실제로 만들거나 지워 `size`를 바꾼다. `reserve` 뒤 `v[i] = x`는 범위 밖 접근이다 |
+| `clear()` | 원소를 모두 소멸시켜 `size`는 0이 되지만 `capacity`(메모리)는 그대로 남는다 |
+| `shrink_to_fit()` | 남는 용량을 돌려 달라는 **요청**이다. 구현이 무시해도 된다 |
+| `insert(it, x)`, `erase(it)` | 위치를 인덱스가 아니라 반복자로 받는다(`v.begin() + i`). `erase`는 지운 다음 원소의 반복자를 돌려주므로 순회 중 삭제는 `it = v.erase(it)`로 잇는다 |
+| `begin()`/`cbegin()`, `rbegin()` | `c`가 붙으면 원소를 고칠 수 없는 상수 반복자, `r`이 붙으면 뒤에서 앞으로 도는 역방향 반복자 |
+| `data()` | 내부 연속 메모리의 시작 포인터. C API에 배열로 넘길 때 쓴다 |
 
 ## deque와 list
 

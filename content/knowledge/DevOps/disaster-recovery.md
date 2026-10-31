@@ -105,4 +105,4 @@ RTO·RPO가 0에 가까울수록 비용과 복잡도는 가파르게 오른다. 
 - 모니터링·인증·VPN·배포 도구처럼 **복구에 쓰는 도구**를 서비스와 같은 수준으로 다중화한다.
 - 전환은 자동화하고, 실제처럼 훈련해서 검증한다. 해 보지 않은 전환은 동작하지 않는다고 가정한다.
 
-관련 노트: [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[aws-cloud-basics|AWS 클라우드 기초]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[transaction|트랜잭션과 회복]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]]
+관련 노트: [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[aws-cloud-basics|AWS 클라우드 기초]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]], [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[transaction|트랜잭션과 회복]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[cloud-sla-and-contract|클라우드 SLA와 계약]]

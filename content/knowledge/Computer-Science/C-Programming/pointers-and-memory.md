@@ -5,10 +5,11 @@ summary: "C에서 주소와 포인터로 메모리를 다루는 법과 자주 �
 tags: ["c", "memory", "pointer", "cs50", "computer-science"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://app.notion.com/p/2ec02d23df41457bbf156d5d1c7da595", "https://80000coding.notion.site/a7082b282de545e0aab7d71452450a3b", "https://80000coding.notion.site/69e744e6ef41453fad79079f2655c00c", "https://80000coding.notion.site/4eaf13713faa4c11a983902bd6d451a2", "https://80000coding.notion.site/d835a99d4d264eadb46df105ed769d99", "https://80000coding.notion.site/694fc8c704aa41ea98614f4e7eac7f6c", "https://80000coding.notion.site/c2fc3384860f4f5795cb6b8acc208c12", "https://80000coding.notion.site/673a9e7d18c24c8ab0e1fb145a954ca3", "https://80000coding.notion.site/b799e831198f42719ce64d194fe3ff32", "https://80000coding.notion.site/f217ea68a2da4e9da1f503e66f0b705e"]
+sources: ["https://app.notion.com/p/2ec02d23df41457bbf156d5d1c7da595", "https://80000coding.notion.site/a7082b282de545e0aab7d71452450a3b", "https://80000coding.notion.site/69e744e6ef41453fad79079f2655c00c", "https://80000coding.notion.site/4eaf13713faa4c11a983902bd6d451a2", "https://80000coding.notion.site/d835a99d4d264eadb46df105ed769d99", "https://80000coding.notion.site/694fc8c704aa41ea98614f4e7eac7f6c", "https://80000coding.notion.site/c2fc3384860f4f5795cb6b8acc208c12", "https://80000coding.notion.site/673a9e7d18c24c8ab0e1fb145a954ca3", "https://80000coding.notion.site/b799e831198f42719ce64d194fe3ff32", "https://80000coding.notion.site/f217ea68a2da4e9da1f503e66f0b705e", "고려사이버대학교 프로그래밍 기초와 실습(C언어) 강의(권오상 교수, 2024-2학기)"]
 ---
 
 > 하버드 CS50(부스트코스) 5강(메모리)과 고무오리 CS 스터디의 CS50 정리 노트를 뼈대로, 팔만코딩경(42Seoul 커뮤니티 위키)의 「char *str = "abc"와 char str[] = "abc"의 차이!」, 「포인터와 배열의 차이(?)」, 「const char * vs char * const」, 「함수 내에서 외부 포인터에 동적할당하기」, 「malloc, free 그리고 dangling pointer가 생기는 이유」, 「C/C++의 동적 메모리 할당과 해제」, 「정적 할당에 대한 오해」, 「libft ft_lstdelone 함수에서 next 는 free 하면 안되는 이유?」, 「libft, 깨고 나니 보이는 것들」을 바탕으로 배열과 포인터의 차이부터 new/delete 짝까지의 함정 부분을 보강했다.
+> 포인터 연산, 초기화와 NULL은 고려사이버대학교 「프로그래밍 기초와 실습(C언어)」(2024-2학기) 강의 내용으로 보강했다.
 
 C의 변수는 메모리 어딘가에 놓인 바이트 묶음이고, **포인터**는 그 위치(주소)를 담는 변수다. 문자열 비교가 왜 실패하는지, swap 함수가 왜 동작하지 않는지 같은 C의 "이상한" 현상은 대부분 주소와 값을 구분하면 풀린다.
 
@@ -35,6 +36,27 @@ printf("%i\n", *p);     // 그 주소의 값: 50
 
 - 64비트 시스템에서 포인터 자체는 8바이트다.
 - 주소 값보다 "p가 n을 가리킨다"는 관계로 생각한다. 데이터가 다른 데이터를 가리키게 이으면 연결 리스트·트리가 된다.
+- 포인터 타입과 가리키는 변수의 타입은 맞춰야 한다. `double *pd = &i;`(`i`는 `int`)는 호환되지 않는 포인터 대입이라 컴파일러가 경고하고(GCC 14부터는 기본 오류), 형 변환으로 억지로 넣어 역참조하면 `int` 4바이트를 `double` 8바이트로 읽는다. `*`는 **포인터 타입만큼의 바이트를 그 타입으로 해석해** 읽기 때문이다.
+
+### 포인터 연산
+
+포인터에는 정수 덧셈·뺄셈, 증감, 같은 배열 안의 두 포인터끼리 뺄셈과 비교만 된다. **`p + 1`은 주소에 1을 더하는 것이 아니라 `sizeof(*p)`만큼 이동한다.** `int *`면 4바이트, `double *`면 8바이트, `char *`면 1바이트다. 그래서 `a[i]`는 `*(a + i)`와 같다.
+
+| 식 | 뜻 |
+| --- | --- |
+| `*p++` | 후위 `++`가 `*`보다 먼저 묶여 `*(p++)`다. **현재 값을 읽고 포인터를 다음 칸으로** 옮긴다 |
+| `(*p)++` | 가리키는 **값**을 1 늘린다. 포인터는 그대로 |
+| `*++p` | 포인터를 먼저 옮기고 새 위치의 값을 읽는다 |
+| `q - p` | 두 포인터 사이의 **원소 개수**(바이트 수가 아니다). 결과 타입은 `ptrdiff_t` |
+
+배열 끝을 넘어선 포인터는 「마지막 원소 바로 다음」 한 칸까지만 만들 수 있고 역참조할 수 없다. 그 밖으로 계산한 포인터는 남의 데이터나 운영체제 영역을 가리켜 정의되지 않은 동작이 된다.
+
+### 초기화와 NULL
+
+- **초기화하지 않은 지역 포인터**는 쓰레기 주소를 담고 있다(와일드 포인터). 그대로 `*p = 3`을 하면 임의의 메모리를 덮어쓴다. 가리킬 대상이 아직 없으면 `NULL`로 초기화하고, 쓰기 전에 `NULL`인지 검사한다.
+- `NULL`은 「아무것도 가리키지 않음」을 뜻하는 널 포인터 상수다(`stddef.h`·`stdio.h` 등에 정의, 흔히 `((void *)0)`). 일반 운영체제는 0번지 근처를 매핑하지 않아 널 역참조가 즉시 세그폴트로 드러나지만, 표준상으로는 정의되지 않은 동작이다. C23은 타입이 있는 `nullptr`도 도입했다.
+- 정수 주소를 직접 대입하는 `int *p = (int *)0x1000;`은 메모리 맵이 고정된 임베디드 장치의 하드웨어 레지스터를 다룰 때나 쓴다. 가상 메모리를 쓰는 데스크톱 OS에서는 의미 없는 주소다.
+- 함수가 **지역 변수의 주소를 반환**하면 함수가 끝나는 순간 그 스택 자리는 무효가 된다. 반환할 수 있는 주소는 전역·`static` 변수, `malloc`으로 얻은 메모리, 호출한 쪽이 넘겨준 버퍼뿐이다.
 
 ## 문자열의 정체: `char *`
 
@@ -179,6 +201,7 @@ C++ 코드와 섞일 때는 할당과 해제의 짝이 반드시 맞아야 한�
 ## 핵심 정리
 
 - `&`는 주소, `*`는 그 주소의 값. 포인터는 주소를 담는 변수다.
+- `p + 1`은 가리키는 타입 크기만큼 이동한다. `*p++`는 값을 읽고 포인터를 옮기고, `(*p)++`는 값을 늘린다. 대상이 없는 포인터는 `NULL`로 초기화하고, 지역 변수의 주소는 반환하지 않는다.
 - 문자열은 `char *`이므로 `==`는 주소 비교, 내용 비교는 `strcmp`, 복사는 `malloc` + `strcpy`.
 - `malloc`한 메모리는 반드시 `free`, 배열 범위 밖 접근은 버퍼 오버플로우.
 - 함수에서 원본을 바꾸려면 포인터를 넘긴다. 바깥 포인터 자체를 바꾸려면 포인터의 주소(`**`)를 넘기거나 새 값을 반환한다.
@@ -186,4 +209,4 @@ C++ 코드와 섞일 때는 할당과 해제의 짝이 반드시 맞아야 한�
 - `free`는 포인터를 건드리지 않는다. 다시 쓸 수 있는 포인터는 `NULL`로 바꾼다.
 - 겹칠 수 있으면 `memmove`, 할당·해제는 같은 계열끼리 짝을 맞춘다.
 
-관련 노트: [[c-debugging-tools|C 디버깅 도구]], [[c-struct-and-function-pointer|구조체와 함수 포인터]], [[process-and-thread|프로세스와 스레드]], [[data-structures|기초 자료구조]]
+관련 노트: [[c-debugging-tools|C 디버깅 도구]], [[c-struct-and-function-pointer|구조체와 함수 포인터]], [[process-and-thread|프로세스와 스레드]], [[data-structures|기초 자료구조]], [[c-string-functions|C 문자열 라이브러리]]

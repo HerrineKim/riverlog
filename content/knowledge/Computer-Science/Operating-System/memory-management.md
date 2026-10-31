@@ -5,13 +5,14 @@ summary: "논리·물리 주소와 주소 바인딩, MMU, 동적 로딩·링킹�
 tags: ["os", "memory", "paging", "segmentation", "mmu"]
 source: notion
 date: "2026-10-21"
-sources: ["https://app.notion.com/p/4183234d082949c9b0b5ef03f60f4bb2", "https://riverkim.kr/196", "https://riverkim.kr/216", "https://bytebytego.com/guides/what-are-the-differences-between-paging-and-segmentation", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=bNFLpMUYqSE", "https://www.youtube.com/watch?v=8ufliWkgqMo", "https://www.youtube.com/watch?v=i4rpeyqAODo", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+sources: ["https://app.notion.com/p/4183234d082949c9b0b5ef03f60f4bb2", "https://riverkim.kr/196", "https://riverkim.kr/216", "https://bytebytego.com/guides/what-are-the-differences-between-paging-and-segmentation", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=bNFLpMUYqSE", "https://www.youtube.com/watch?v=8ufliWkgqMo", "https://www.youtube.com/watch?v=i4rpeyqAODo", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
 ---
 
 > 노션 정리를 바탕으로 재구성하고, 페이징과 세그멘테이션 비교는 ByteByteGo의 System Design 101 가이드 「[Paging vs Segmentation](https://bytebytego.com/guides/what-are-the-differences-between-paging-and-segmentation)」을 바탕으로 보강한 노트다.
 > 커널 메모리 할당(버디·슬랩)은 「[개념 정리 - 운영 체제 편](https://brunch.co.kr/@toughrogrammer/15)」을 바탕으로 보강했다.
 > 「스와핑」, 「연속 할당」, 「페이징」, 「공유 페이지와 쓰기 시 복사」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > TLB의 위치, 32비트 주소 한계와 PAE, 요구 세그멘테이션, segfault, protection 비트 확인 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
+> 메모리 관리 정책 세 가지, 주소 비트 수 계산과 TLB 실효 접근 시간의 수치 예, 공유 코드의 절약량은 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
 
 메모리는 주소로 접근하는 바이트들의 배열이다(C에서 주소를 직접 다루는 모습은 [[pointers-and-memory|포인터와 메모리]]). 여러 프로세스가 한정된 물리 메모리를 나눠 쓰려면, 프로세스가 보는 주소를 실제 메모리 위치로 바꿔 주고 서로의 영역을 보호해야 한다. 이 노트는 프로세스 전체 또는 일부를 **어떻게 메모리에 배치하는지**를 다룬다. 필요한 부분만 올리는 방법은 [[virtual-memory|가상 메모리]]에서 이어진다.
 
@@ -65,6 +66,16 @@ backing store는 프로세스 이미지를 담을 만큼 빠르고 큰 디스크
 | swap in | 스왑 영역의 프로세스를 다시 메모리로 올린다 |
 
 스와핑을 쓰면 **프로세스들의 크기 합이 물리 메모리보다 커도** 동시에 실행할 수 있다. A, B, C를 올린 상태에서 D가 필요하면 당장 쓰지 않는 B를 swap out 하고 D를 올리고, 다시 B가 필요하면 A를 내보내고 B를 올리는 식이다. 페이징에서는 같은 일을 페이지 단위로 하며 page out, page in이라고 부른다. 스왑 영역의 크기와 사용량은 Linux에서 `free -h`의 `Swap` 줄이나 `top`으로, macOS에서 `sysctl vm.swapusage`로 확인한다.
+
+## 메모리 관리 정책
+
+운영체제가 메모리를 나눠 줄 때 정해야 하는 것은 셋이다. 아래 할당 방식과 [[virtual-memory|가상 메모리]]의 알고리즘은 모두 이 셋 중 하나에 대한 답이다.
+
+| 정책 | 정하는 것 | 대표적인 답 |
+| --- | --- | --- |
+| 적재(fetch) | 보조기억장치에서 메모리로 **언제** 가져올지 | 실행 전에 전부(연속 할당), 필요할 때(요구 페이징), 미리 예측해서(prepaging) |
+| 배치(placement) | 가져온 것을 메모리의 **어디에** 둘지 | First·Best·Worst-fit(가변 분할), 아무 빈 프레임(페이징) |
+| 대치(replacement) | 메모리가 모자랄 때 **무엇을** 내보낼지 | 스와핑할 프로세스 선택, FIFO·LRU·Clock 같은 페이지 교체 |
 
 ## 물리 메모리 할당
 
@@ -121,6 +132,8 @@ Worst-fit은 큰 hole을 쪼개 남는 조각도 쓸 만한 크기로 남기려�
 - 프로세스마다 별도의 **페이지 테이블**이 있고, 엔트리 수는 논리 주소 공간의 페이지 수와 같다(배열의 인덱스 = 페이지 번호).
 - 페이지 크기는 보통 **4KB**이고, 페이지 테이블은 메인 메모리에 있다. 실제 크기는 `getconf PAGESIZE`로 확인한다.
 
+주소의 비트 수는 페이지 크기와 개수에서 바로 나온다. 페이지가 1024B(2¹⁰)이고 프로세스 하나가 최대 8개(2³) 페이지를 가지며 물리 메모리가 32개(2⁵) 프레임이라면, 오프셋이 10비트이므로 논리 주소는 페이지 번호 3비트를 더해 **13비트**, 물리 주소는 프레임 번호 5비트를 더해 **15비트**다. 논리 주소 공간과 물리 메모리의 크기가 서로 달라도 되는 이유가 여기서 보인다.
+
 페이지가 물리 메모리 곳곳에 흩어져 있어도 CPU는 논리 주소의 0번 페이지부터 차례로 실행하면 된다. 페이지 테이블이 각 페이지가 어느 프레임에 있는지 알려 주므로, **물리적으로는 흩어져 있어도 CPU에게는 연속된 것처럼 보인다.** 페이지와 프레임의 크기가 같으므로 오프셋 d는 변환 전후가 같다. 예를 들어 페이지 크기가 4바이트이고 페이지 테이블에서 5번 페이지가 1번 프레임에 있다면, 논리 주소 `(5, 2)`는 1번 프레임의 시작(4번지)에서 2만큼 떨어진 6번지가 된다.
 
 ### 페이지 테이블 구현과 TLB
@@ -142,6 +155,15 @@ EAT = (1 + ε)α + (2 + ε)(1 - α) = 2 + ε - α
 ```
 
 α가 1에 가까울수록 페이지 테이블만 쓸 때(2)보다 훨씬 빠르다.
+
+실제 시간으로 넣어 보면 차이가 분명하다. TLB 검색이 50ns, 메모리 접근이 750ns라면 TLB 적중 시 50 + 750 = 800ns, 실패 시 테이블까지 한 번 더 읽어 50 + 750 + 750 = 1550ns다.
+
+| TLB 적중률 | 실효 접근 시간 |
+| --- | --- |
+| 80% | 0.8 × 800 + 0.2 × 1550 = 950ns |
+| 90% | 0.9 × 800 + 0.1 × 1550 = 875ns |
+
+TLB 실패 한 번의 추가 비용이 메모리 접근 한 번(750ns)이므로, 적중률이 10%p 오를 때마다 실효 접근 시간이 75ns씩 줄어든다.
 
 ### 2단계 페이지 테이블
 
@@ -176,7 +198,7 @@ EAT = (1 + ε)α + (2 + ε)(1 - α) = 2 + ε - α
 | 수정(dirty) 비트 | 쓴 적이 있으면 1. 내보낼 때 디스크에 다시 써야 하는지 판단한다. 0이면 디스크의 내용과 같으므로 그냥 버려도 된다 |
 | 역 페이지 테이블 | 프로세스마다가 아니라 **물리 프레임마다** 엔트리 하나(`프로세스 ID, 페이지 번호`)를 둔 시스템 전체 테이블. 공간은 크게 줄지만 변환할 때 전체를 검색해야 해 associative register로 병렬 검색한다 |
 | protection 비트 확인 | 어떤 주소가 쓰기 가능한지는 그 페이지의 protection 비트가 정한다. 사용자 프로그램은 `/proc/<pid>/maps`의 권한 열(`r-xp`, `rw-p`)로 확인하고 `mprotect()`로 바꾼다. 권한을 어긴 접근은 MMU가 보호 위반 폴트를 내고 운영체제가 `SIGSEGV`로 프로세스에 알린다 |
-| 공유 페이지 | 같은 코드(에디터, 컴파일러)를 한 번만 올리고 여러 페이지 테이블이 같은 프레임을 가리킨다. **재진입 가능(re-entrant) 코드**여야 하고 read-only이며, 모든 프로세스의 논리 주소 공간에서 같은 위치에 있어야 한다. 통신용 shared memory IPC와는 목적이 다르다 |
+| 공유 페이지 | 같은 코드(에디터, 컴파일러)를 한 번만 올리고 여러 페이지 테이블이 같은 프레임을 가리킨다. **재진입 가능(re-entrant) 코드**여야 하고 read-only이며, 모든 프로세스의 논리 주소 공간에서 같은 위치에 있어야 한다. 코드 150KB·데이터 50KB인 편집기를 40명이 쓰면 공유하지 않을 때 (150 + 50) × 40 = 8000KB, 코드를 공유하면 150 + 50 × 40 = 2150KB다. 통신용 shared memory IPC와는 목적이 다르다 |
 
 ### 쓰기 시 복사 (Copy-on-Write)
 

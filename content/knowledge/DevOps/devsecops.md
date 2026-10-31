@@ -66,4 +66,4 @@ sources: ["https://bytebytego.com/guides/what-is-devsecops", "https://bytebytego
 - 설계는 위협 모델링, 코드는 SAST·시크릿 스캔, 빌드는 SCA·이미지 스캔, 배포는 IaC 검사, 운영은 모니터링과 취약점 관리가 맡는다.
 - 기계용 자격 증명(SSH 키, 토큰, 인증서, 접속 정보)은 저장소 밖에서 주입하고, 짧게 발급하고, 유출되면 즉시 교체한다.
 
-관련 노트: [[ci-cd|CI/CD]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]], [[api-security|API 보안 체크리스트]], [[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]], [[ssh|SSH의 동작: 전송·인증·연결 계층]]
+관련 노트: [[ci-cd|CI/CD]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]], [[api-security|API 보안 체크리스트]], [[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[cloud-governance-security|클라우드 거버넌스와 보안]]

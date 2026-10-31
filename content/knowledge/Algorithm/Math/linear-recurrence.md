@@ -112,7 +112,7 @@ def jacobsthal(n, mod=10**9 + 7):
 print([jacobsthal(i) for i in range(9)])  # [0, 1, 1, 3, 5, 11, 21, 43, 85]
 ```
 
-분할 정복 점화식(`T(n) = a·T(n/b) + f(n)`)은 이 노트의 대상이 아니다. 그런 점화식은 전개하거나 마스터 정리로 푼다.
+분할 정복 점화식(`T(n) = a·T(n/b) + f(n)`)은 이 노트의 대상이 아니다. 그런 점화식은 전개하거나 마스터 정리로 푼다([[divide-and-conquer#시간 복잡도: 점화식으로 구하기|분할 정복의 점화식]]).
 
 ## 정리
 
@@ -121,4 +121,4 @@ print([jacobsthal(i) for i in range(9)])  # [0, 1, 1, 3, 5, 11, 21, 43, 85]
 - 야콥스탈 수열: `aₙ = aₙ₋₁ + 2aₙ₋₂` → `(2ⁿ − (−1)ⁿ)/3`
 - 프로그래밍에서는 큰 n에 행렬 거듭제곱 O(log n)을 쓰고, 일반항은 복잡도 분석에 쓴다.
 
-관련 노트: [[merge-insertion-sort|병합 삽입 정렬]], [[vector-space|벡터공간]], [[dynamic-programming|동적 계획법]], [[big-o|빅오 표기법]]
+관련 노트: [[merge-insertion-sort|병합 삽입 정렬]], [[vector-space|벡터공간]], [[dynamic-programming|동적 계획법]], [[big-o|빅오 표기법]], [[calculus-basics|미분과 적분 기초]]

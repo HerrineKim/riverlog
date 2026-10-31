@@ -120,4 +120,4 @@ int main(int argc, char *argv[])
 - 바이너리 데이터는 `unsigned char` 배열과 `fread`로 읽는다.
 - `FILE *` 아래에는 fd와 시스템 콜이 있고, stdio는 버퍼를 거쳐 출력한다.
 
-관련 노트: [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[file-system|파일 시스템]], [[c-debugging-tools|C 디버깅 도구]]
+관련 노트: [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[file-system|파일 시스템]], [[c-debugging-tools|C 디버깅 도구]], [[java-io-streams|Java 입출력 스트림]]

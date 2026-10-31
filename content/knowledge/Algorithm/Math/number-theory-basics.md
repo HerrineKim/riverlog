@@ -183,4 +183,4 @@ Python `int`, Java `BigInteger`, JavaScript `BigInt` 같은 임의 정밀도 정
 - 선형 합동 생성기는 모듈러 연산으로 난수를 흉내 내며, 시간을 시드로 쓴다. 예측 가능하므로 보안에는 쓰지 않는다.
 - 64비트를 넘는 수는 자릿수를 묶어 배열에 담고 받아올림을 직접 처리한다.
 
-관련 노트: [[recursion|재귀 함수]], [[linear-recurrence|선형 점화식의 일반항]], [[big-o|빅오 표기법과 시간 복잡도]], [[encoding-encryption-hashing|인코딩·암호화·해시·토큰화와 디지털 서명]]
+관련 노트: [[recursion|재귀 함수]], [[linear-recurrence|선형 점화식의 일반항]], [[big-o|빅오 표기법과 시간 복잡도]], [[encoding-encryption-hashing|인코딩·암호화·해시·토큰화와 디지털 서명]], [[permutation-combination|순열과 조합]]

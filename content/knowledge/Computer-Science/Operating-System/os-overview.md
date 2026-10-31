@@ -5,13 +5,14 @@ summary: "운영체제가 무엇이고 왜 필요한지, 커널 영역과 이중
 tags: ["os", "kernel", "linux", "computer-science"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a", "https://bytebytego.com/guides/5-important-components-of-linux", "https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=1PEe33_INZc", "https://www.youtube.com/watch?v=26QPDBe-NB8"]
+sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a", "https://bytebytego.com/guides/5-important-components-of-linux", "https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=1PEe33_INZc", "https://www.youtube.com/watch?v=26QPDBe-NB8", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
 ---
 
 > 「세 가지 핵심 주제」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] 개요 - 3가지 이야기」를 바탕으로 보강했다. 리눅스 커널의 다섯 하위 시스템은 ByteByteGo의 System Design 101 가이드 「[5 Important Components of Linux](https://bytebytego.com/guides/5-important-components-of-linux)」를 바탕으로 보강했다.
 > 레스토랑 비유는 「[레스토랑에 비유해서 알아보는 운영체제](https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html)」를 바탕으로 보강했다. 학부 운영체제 과목의 전체 지도는 「[개념 정리 - 운영 체제 편](https://brunch.co.kr/@toughrogrammer/15)」을 함께 참고했다.
 > 「개발자가 운영체제를 알아야 하는 이유」 절과 자원의 정의는 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 「커널 패닉」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> 모듈·계층 구조와 처리 방식의 다중 프로그래밍·다중 처리·분산 처리는 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
 
 운영체제(Operating System)는 컴퓨터 하드웨어 바로 위에 설치되어 사용자·응용 프로그램과 하드웨어를 연결하는 소프트웨어 계층이다. 사용자에게는 컴퓨터를 편하게 쓸 수 있는 환경을, 컴퓨터 입장에서는 한정된 자원을 효율적으로 나눠 주는 **자원 할당자** 역할을 한다.
 
@@ -61,7 +62,9 @@ sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9a
 | 안정성·모듈성 | 낮음. 한 모듈의 오류가 커널 전체로 번진다 | 높음. 필요한 기능만 골라 구성해 임베디드·실시간에 유리 | 중간 |
 | 예 | UNIX, Linux, MS-DOS | MINIX, QNX(자동차·임베디드), seL4(정확성을 수학적으로 검증) | Windows NT 계열, macOS(XNU) |
 
-Linux는 단일형 커널이지만 장치 드라이버 같은 기능을 실행 중에 붙였다 뗄 수 있는 **적재 가능 커널 모듈(LKM)** 로 유연성을 보완한다.
+Linux는 단일형 커널이지만 장치 드라이버 같은 기능을 실행 중에 붙였다 뗄 수 있는 **적재 가능 커널 모듈(LKM)** 로 유연성을 보완한다. 이렇게 단일형을 모듈로 쪼갠 형태를 따로 **모듈 구조**라고 부르기도 한다. 모듈은 따로 개발·교체할 수 있지만 적재되면 커널 주소 공간에서 함수 호출로 돌아가므로, 속도는 단일형 그대로이고 모듈 하나의 버그가 커널 전체를 멈출 수 있다는 점도 같다. 현대 UNIX, Linux, Solaris가 이 형태다.
+
+기능을 넣는 범위와는 다른 축으로, 커널을 **계층 구조(layered)** 로 짜는 방식도 있다. 하드웨어를 0층으로 두고 그 위에 CPU 스케줄링, 메모리 관리, 입출력 관리를 차례로 쌓아, 각 층은 바로 아래 층의 연산만 호출하게 한다. 아래 층부터 하나씩 검증하며 올라가면 되므로 디버깅과 검증이 쉽고 내부를 잘 감출 수 있다. 대신 어떤 기능을 어느 층에 둘지 정하기 어렵고(예: 메모리 관리도 디스크 입출력이 필요하다), 호출이 층을 여러 번 건너므로 느려서 순수한 계층 구조로 만든 범용 OS는 드물다.
 
 ### 커널 패닉
 
@@ -116,8 +119,11 @@ Linux는 단일형 커널이지만 장치 드라이버 같은 기능을 실행 �
 | 방식 | 특징 | 예 |
 | --- | --- | --- |
 | 일괄 처리(batch) | 작업을 모아서 한꺼번에 처리, 끝날 때까지 기다려야 함 | 초기 펀치 카드 시스템 |
-| 시분할(time sharing) | CPU 시간을 잘게 나눠 여러 작업에 번갈아 할당, 응답이 빠르고 대화형 | UNIX |
+| 다중 프로그래밍(multiprogramming) | 여러 프로그램을 메모리에 함께 올려 두고, 실행 중인 작업이 입출력을 기다리는 동안 다른 작업에 CPU를 넘긴다. 목표는 **CPU 이용률**이고, 그래서 다음에 누구를 실행할지 고르는 [[process-scheduling\|CPU 스케줄링]]이 필요해졌다 | 1960년대 메인프레임 |
+| 시분할(time sharing) | CPU 시간을 잘게 나눠 여러 작업에 번갈아 할당. 다중 프로그래밍이 CPU 이용률을 노린다면 시분할은 **응답 시간**을 줄여 각 사용자가 컴퓨터를 혼자 쓰는 것처럼 느끼게 한다 | UNIX |
+| 다중 처리(multiprocessing) | 한 컴퓨터 안의 CPU(코어) 여러 개가 여러 프로그램을 실제로 동시에 실행. 프로세서 사이의 연결·역할 분담·동기화를 운영체제가 맡는다 | 멀티코어 PC·서버 |
 | 실시간(real-time) | 정해진 시간 안에 반드시 작업이 끝나야 함 | 공장·원자로·로봇 제어 |
+| 분산 처리(distributed) | 네트워크로 연결된 독립된 컴퓨터 여러 대가 일을 나눠 처리하지만, 사용자에게는 하나의 시스템처럼 보인다 | 파일·DB·웹 서버로 나눈 클러스터 |
 
 실시간 시스템은 다시 둘로 나뉜다.
 

@@ -121,4 +121,4 @@ AWS는 2006년 S3·SQS·EC2 세 서비스로 시작해 관리형 DB, 서버리�
 - 로드 밸런서는 L4·L7과 리전·전역 두 축으로 고른다.
 - 데이터 파이프라인은 수집 → 레이크 → 처리 → 웨어하우스 → 표현의 다섯 단계다.
 
-관련 노트: [[aws-cloud-basics|AWS 클라우드 기초]], [[load-balancer|로드 밸런서]], [[data-pipeline-basics|데이터 파이프라인과 저장소 용어]], [[aws-vpc-networking|AWS VPC 네트워크 구성]], [[cloud-cost-optimization|클라우드 비용 최적화와 숨은 비용]], [[cloud-native|클라우드 네이티브와 코드형 인프라]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]]
+관련 노트: [[aws-cloud-basics|AWS 클라우드 기초]], [[load-balancer|로드 밸런서]], [[data-pipeline-basics|데이터 파이프라인과 저장소 용어]], [[aws-vpc-networking|AWS VPC 네트워크 구성]], [[cloud-cost-optimization|클라우드 비용 최적화와 숨은 비용]], [[cloud-native|클라우드 네이티브와 코드형 인프라]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[cloud-service-models|클라우드 서비스 모델]]

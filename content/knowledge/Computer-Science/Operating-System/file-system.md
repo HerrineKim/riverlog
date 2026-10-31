@@ -5,23 +5,26 @@ summary: "파일과 디렉터리, 트리 구조 디렉터리와 경로, 디렉�
 tags: ["os", "file-system", "system-call"]
 source: notion
 date: "2026-10-14"
-sources: ["https://app.notion.com/p/e69581b5aa37458fb37d0a5fc4680921", "https://80000coding.notion.site/81f0b873a067440083175c15cef70664", "https://bytebytego.com/guides/linux-file-system-explained", "https://refspecs.linuxfoundation.org/fhs.shtml", "https://www.youtube.com/watch?v=J8v7wxbnRAM", "https://www.youtube.com/watch?v=C-IYRzC-GW8", "https://www.youtube.com/watch?v=KN8YgJnShPM"]
+sources: ["https://app.notion.com/p/e69581b5aa37458fb37d0a5fc4680921", "https://80000coding.notion.site/81f0b873a067440083175c15cef70664", "https://bytebytego.com/guides/linux-file-system-explained", "https://refspecs.linuxfoundation.org/fhs.shtml", "https://www.youtube.com/watch?v=J8v7wxbnRAM", "https://www.youtube.com/watch?v=C-IYRzC-GW8", "https://www.youtube.com/watch?v=KN8YgJnShPM", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
 ---
 
 > 「하드 링크와 심볼릭 링크」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「하드링크 / 심볼릭링크」를 바탕으로 보강했다. 「리눅스 디렉터리 구조: FHS」는 ByteByteGo의 System Design 101 가이드 「[Linux File System Explained](https://bytebytego.com/guides/linux-file-system-explained)」를 바탕으로 보강했다.
 > 「디렉터리 구조와 경로」, 「디렉터리 엔트리」 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 「파일 형식」 절과 「디렉터리 엔트리」의 파일 이동은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
+> 디렉터리 구조의 다섯 단계, 파일의 세 종류와 절단·첨가 연산, 접근 제어 리스트는 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
 
 메모리는 **주소**로 접근하지만 파일은 **이름**으로 접근한다. 운영체제는 하드디스크·SSD·USB처럼 서로 다른 저장 장치를 "파일"이라는 같은 논리적 단위로 보이게 해 주는데, 이 일을 담당하는 부분이 파일 시스템이다.
 
 ## 파일과 메타데이터
 
 - **파일**: 이름이 붙은, 서로 관련된 정보의 모음. 보통 비휘발성 보조기억장치에 저장된다.
-- **파일 연산**: create, read, write, reposition(lseek), delete, open, close. 모두 I/O를 하는 시스템 콜이다.
+- **파일 연산**: create, read, write, reposition(lseek), delete, open, close. 모두 I/O를 하는 시스템 콜이다. 읽기와 쓰기는 보통 위치 포인터 하나(현재 오프셋)를 함께 쓴다.
+  - truncate(절단): 속성은 그대로 두고 내용만 지운다(`O_TRUNC`, `truncate()`). append(첨가): 기존 내용 뒤에 이어 쓴다(`O_APPEND`).
   - `lseek`: 파일에서 현재 접근 중인 위치(offset)를 옮긴다.
   - `open`: 작업 전에 파일의 메타데이터를 메모리에 올려 둔다.
 - **메타데이터(attribute)**: 파일 내용이 아니라 파일을 관리하기 위한 정보. 이름, 유형, 저장 위치, 크기, 접근 권한, 생성·수정·접근 시각, 소유자 등이 해당한다.
 - **파일 시스템**: 파일과 메타데이터, 디렉터리를 관리하고 저장 방법과 보호를 결정하는 OS의 구성 요소.
+- **파일의 세 종류**: 데이터를 담는 **일반(정규) 파일**, 다른 파일을 찾는 정보만 담는 **디렉터리 파일**, 장치나 커널 객체를 파일처럼 보이게 하는 **특수 파일**(문자·블록 장치 파일, 파이프·FIFO, 소켓)이다. `ls -l`의 첫 글자(`-`, `d`, `c`, `b`, `p`, `s`, 링크는 `l`)가 이 구분이다.
 
 ### 파일 형식
 
@@ -61,7 +64,17 @@ UNIX 파일 시스템에서 파일의 실체는 **i-node**(소유자, 권한, �
 
 ### 디렉터리 구조와 경로
 
-초기 운영체제는 디렉터리가 하나뿐인 **1단계 디렉터리**를 썼다. 파일이 많아지면서 디렉터리 안에 서브 디렉터리를 두는 **트리 구조 디렉터리**가 표준이 되었다. 맨 위의 디렉터리가 **루트 디렉터리**이고, UNIX 계열은 `/`, Windows는 `C:\`처럼 드라이브 이름으로 나타낸다.
+초기 운영체제는 디렉터리가 하나뿐인 **1단계 디렉터리**를 썼다. 파일이 많아지면서 디렉터리 안에 서브 디렉터리를 두는 **트리 구조 디렉터리**가 표준이 되었다. 디렉터리 구조가 발전한 단계를 정리하면 다음과 같다.
+
+| 구조 | 모양 | 한계 |
+| --- | --- | --- |
+| 1단계 | 모든 사용자의 모든 파일이 디렉터리 하나에 | 이름이 전부 달라야 하고, 파일이 많아지면 찾기 어렵다 |
+| 2단계 | 사용자마다 디렉터리 하나 | 사용자별로 이름 충돌이 사라지고 검색이 빨라지지만, 그 아래에 서브 디렉터리를 만들 수 없어 주제별로 묶지 못한다 |
+| 트리 | 루트 아래로 누구나 서브 디렉터리를 계속 만든다 | 한 파일이 한 부모에만 속해 여러 곳에서 공유할 수 없다 |
+| 비순환 그래프 | 트리에 **링크**를 더해 한 파일·디렉터리를 여러 경로에서 가리킨다 | 같은 파일에 이름이 여럿이라 삭제 시점을 정해야 한다. 하드 링크는 참조 계수가 0이 될 때 지우고, 심볼릭 링크는 원본이 지워지면 깨진 채 남는다(아래 「하드 링크와 심볼릭 링크」) |
+| 일반 그래프 | 링크가 사이클을 만들어도 허용 | 순회가 사이클을 돌며 끝나지 않을 수 있고, 자기 자신을 가리키는 사이클 때문에 참조 계수가 0이 되지 않아 지울 수 없는 파일이 생긴다. 쓰레기 수집으로 찾아야 한다 |
+
+UNIX 계열이 디렉터리에 하드 링크를 금지하고 심볼릭 링크만 허용하는 것은 비순환 그래프를 유지해 일반 그래프의 문제를 피하기 위해서다. `find`가 기본적으로 심볼릭 링크를 따라가지 않는 것(`-L`을 줘야 따라간다)도 같은 이유다. 맨 위의 디렉터리가 **루트 디렉터리**이고, UNIX 계열은 `/`, Windows는 `C:\`처럼 드라이브 이름으로 나타낸다.
 
 **경로(path)** 는 디렉터리를 따라 파일·디렉터리의 위치와 이름을 특정하는 문자열이다. UNIX 계열에서 `/`는 루트이면서 디렉터리 구분자다. 같은 디렉터리 안에서는 이름이 겹칠 수 없지만, 경로가 다르면 같은 이름의 파일이 있어도 된다(`/etc/a.sh`와 `/home/minchul/a.sh`).
 
@@ -128,11 +141,11 @@ UNIX 계열에서 C 표준 라이브러리의 `fopen()`이 돌려주는 `FILE *`
 
 | 방법 | 특징 |
 | --- | --- |
-| Access Control Matrix | 사용자 × 파일 전체 권한을 표로 관리. 정확하지만 오버헤드가 큼 |
+| Access Control Matrix | 사용자 × 파일 전체 권한을 표로 관리. 정확하지만 대부분 칸이 비어 있어 낭비가 크다. 그래서 행렬을 파일 기준으로 잘라 파일마다 「누가 무엇을 할 수 있나」 목록만 두는 **접근 제어 리스트(ACL)** 로 구현한다. 사용자가 많으면 목록이 길어지고 관리가 번거롭다 |
 | Grouping | owner / group / others 세 그룹 × rwx, 단 9비트로 표현 (UNIX 방식) |
 | Password | 파일마다 비밀번호. 관리가 어려움 |
 
-대부분의 시스템은 Grouping을 쓴다. 예를 들어 `chmod 751 file`은 소유자 `rwx`, 그룹 `r-x`, 그 외 `--x`다.
+대부분의 시스템은 Grouping을 기본으로 쓰고, 세밀한 제어가 필요할 때만 ACL을 덧붙인다(Linux의 `setfacl`·`getfacl`, Windows NTFS는 ACL이 기본). 예를 들어 `chmod 751 file`은 소유자 `rwx`, 그룹 `r-x`, 그 외 `--x`다.
 
 ## 마운트 (Mounting)
 

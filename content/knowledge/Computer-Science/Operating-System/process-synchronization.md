@@ -5,12 +5,13 @@ summary: "공유 데이터에 동시에 접근할 때 생기는 경쟁 상태, �
 tags: ["os", "process", "synchronization", "semaphore", "race-condition"]
 source: notion
 date: "2026-10-21"
-sources: ["https://app.notion.com/p/0bf3e529b09e4d4b896e90f1c8203882", "https://riverkim.kr/210", "https://www.youtube.com/watch?v=0YDjblJn30k", "https://www.youtube.com/watch?v=4u13f9Umq7Y", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
+sources: ["https://app.notion.com/p/0bf3e529b09e4d4b896e90f1c8203882", "https://riverkim.kr/210", "https://www.youtube.com/watch?v=0YDjblJn30k", "https://www.youtube.com/watch?v=4u13f9Umq7Y", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
 ---
 
 > 「임계 구역 문제의 해법」 절은 고무오리 CS 스터디의 KOCW 반효경 「운영체제」 강의 정리를 바탕으로 보강했다.
 > 「경쟁 상태」, 「세마포어」, 「모니터」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 뮤텍스와 이진 세마포어의 차이, 우선순위 역전 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
+> 데커 알고리즘과 P·V 연산의 원자성을 보장하는 방법은 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
 
 여러 실행 주체가 같은 데이터를 동시에 읽고 쓰면, 실행 순서에 따라 결과가 달라지는 문제가 생긴다. 프로세스 동기화는 이런 **공유 데이터의 일관성**을 지키기 위해 협력하는 프로세스들의 실행 순서를 정해 주는 메커니즘이다. 이름은 프로세스 동기화지만 스레드처럼 실행 문맥을 가진 실행 단위는 모두 대상이다.
 
@@ -88,7 +89,8 @@ do {
 | --- | --- | --- |
 | `turn` 변수 하나 | `turn == i`일 때만 들어가고, 나올 때 `turn = j` | **진행**. 반드시 번갈아 들어가야 해서, 상대가 들어갈 생각이 없으면 내 차례가 다시 오지 않는다 |
 | `flag[]` 배열 | `flag[i] = true`로 의사를 밝히고, `flag[j]`가 false가 될 때까지 대기 | **진행**. 둘이 동시에 flag를 세우면 둘 다 영원히 기다린다 |
-| 피터슨 (`flag[]` + `turn`) | 아래 코드 | 세 조건을 모두 만족한다 |
+| 데커 (`flag[]` + `turn`) | 의사를 밝힌 뒤 상대도 원하면, `turn`이 상대 차례일 때만 자기 flag를 내리고 차례가 올 때까지 기다렸다가 다시 세운다. 나올 때 `turn`을 상대에게 넘긴다 | 세 조건을 모두 만족한 최초의 소프트웨어 해법이지만 entry section이 이중 루프라 복잡하다 |
+| 피터슨 (`flag[]` + `turn`) | 아래 코드. 데커의 이중 루프를 "먼저 양보하고 한 번만 확인"으로 줄였다 | 세 조건을 모두 만족한다 |
 
 ```text
 // 프로세스 i 기준 (상대는 j)
@@ -170,7 +172,7 @@ P(S):  S.value--;  if (S.value < 0) { S.L에 넣고 block(); }
 V(S):  S.value++;  if (S.value <= 0) { S.L에서 P를 꺼내 wakeup(P); }
 ```
 
-Block/Wakeup에서 `value`가 음수이면 그 절댓값이 기다리는 프로세스 수다. 대기 리스트는 PCB를 넣는 대기 큐이고, block은 프로세스를 대기 상태로, wakeup은 준비 상태로 바꿔 준비 큐에 넣는 일이다([[process-and-thread|프로세스와 스레드]]).
+Block/Wakeup에서 `value`가 음수이면 그 절댓값이 기다리는 프로세스 수다. Busy-wait 판에서는 검사한 뒤 감소시켰지만 여기서는 **먼저 감소시키고 검사**하므로 값이 0 아래로 내려갈 수 있다. 대기 리스트는 PCB를 넣는 대기 큐이고, block은 프로세스를 대기 상태로, wakeup은 준비 상태로 바꿔 준비 큐에 넣는 일이다([[process-and-thread|프로세스와 스레드]]).
 
 자원이 2개(`S = 2`)이고 P1, P2, P3 순서로 들어오는 경우를 따라가면 다음과 같다.
 
@@ -182,6 +184,13 @@ P1: V(S) → S = 0, 기다리던 P3를 깨움 (wakeup) → P3 진입
 P2: V(S) → S = 1
 P3: V(S) → S = 2   // 처음 값으로 돌아온다
 ```
+
+P와 V 자체도 중간에 끼어들면 안 되는 임계 구역이다. 그래서 운영체제는 두 연산을 다음처럼 원자적으로 만든다.
+
+| 환경 | 방법 |
+| --- | --- |
+| 단일 프로세서 | P·V를 실행하는 동안 **인터럽트를 끈다.** 문맥 교환이 일어나지 않으니 다른 프로세스가 끼어들 수 없다 |
+| 다중 프로세서 | 인터럽트를 꺼도 다른 CPU는 계속 돈다. 세마포어 값을 Test-and-Set·compare-and-swap 같은 **원자 명령어**로 짧게 감싼 스핀락으로 보호한다. 기다림이 P·V 내부의 몇 명령어뿐이라 바쁜 대기가 길지 않다 |
 
 ### 세마포어로 실행 순서 제어하기
 

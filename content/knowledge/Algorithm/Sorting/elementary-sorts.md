@@ -1,15 +1,16 @@
 ---
-title: "기본 정렬: 버블·선택·삽입·계수·기수 정렬"
+title: "기본 정렬: 버블·선택·삽입·셸·계수·기수 정렬"
 concept: "Elementary Sorts"
-summary: "구현이 단순한 O(n²) 비교 정렬 세 가지와 입력 상태에 따른 실제 속도 비교, 비교 없이 정렬하는 계수 정렬·기수 정렬(LSD·MSD)."
+summary: "구현이 단순한 O(n²) 비교 정렬 세 가지와 입력 상태에 따른 실제 속도 비교, 간격을 줄여 가며 삽입 정렬하는 셸 정렬, 비교 없이 정렬하는 계수 정렬·기수 정렬(LSD·MSD)."
 tags: ["algorithm", "sorting", "complexity", "python"]
 source: til
 date: "2026-10-14"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)"]
 ---
 
 > 기수 정렬 절은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 알고리즘 문서를 바탕으로 보강했다.
 > 세 O(n²) 정렬의 실제 속도 비교는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
+> 셸 정렬 절은 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용으로 보강했다.
 
 정렬 알고리즘의 성능은 보통 **빅오 표기법**으로 최선·평균·최악의 경우를 나눠 비교한다. 이 노트의 버블·선택·삽입 정렬은 원리가 단순한 대신 평균 O(n²)이라 데이터가 많으면 느리다. 계수 정렬은 비교 없이 개수를 세서 O(n + k)에, 기수 정렬은 자릿수마다 계수 정렬을 반복해 O(d·(n + b))에 정렬한다.
 
@@ -67,6 +68,29 @@ def insertion_sort(arr):
 - 시간 복잡도: **평균·최악 O(n²)**, 최선 O(n)
   - 이미 거의 정렬된 데이터라면 원소마다 비교 한두 번으로 끝나 O(n)에 가깝게 동작한다. O(n)은 최선의 경우일 뿐, 일반적인 입력에서는 O(n²)이다.
 - 안정 정렬. 데이터가 적거나 거의 정렬되어 있을 때 매우 효율적이라, 파이썬의 Timsort도 작은 구간에 삽입 정렬을 쓴다.
+
+## 셸 정렬 (Shell Sort)
+
+삽입 정렬은 거의 정렬된 입력에서 빠르지만, 멀리 떨어진 원소는 **한 번에 한 칸씩만** 움직여 느리다. 셸 정렬은 이 약점을 고친 삽입 정렬이다. 간격 h만큼 떨어진 원소끼리 묶어 삽입 정렬하고, h를 줄여 가며 반복한 뒤 **마지막에 h = 1로 보통의 삽입 정렬**을 한다. 앞 단계에서 원소들이 이미 제자리 근처로 크게 옮겨져 있어 마지막 삽입 정렬이 빨리 끝난다.
+
+```python
+def shell_sort(arr):
+    gap = 1
+    while gap < len(arr) // 3:
+        gap = 3 * gap + 1          # 1, 4, 13, 40, ... (Knuth 수열)
+    while gap >= 1:
+        for end in range(gap, len(arr)):
+            item, i = arr[end], end
+            while i >= gap and arr[i - gap] > item:
+                arr[i] = arr[i - gap]
+                i -= gap
+            arr[i] = item
+        gap //= 3
+```
+
+- 시간 복잡도는 **간격 수열에 달려 있다.** 반씩 줄이는 수열(n/2, n/4, …, 1)은 최악 O(n²), Knuth 수열(3h + 1)은 최악 O(n^1.5)이고, 실험으로 찾은 Ciura 수열(1, 4, 10, 23, 57, 132, …)이 실제로 가장 빠른 편으로 알려져 있다.
+- 추가 공간 O(1)인 제자리 정렬이다. 멀리 떨어진 원소를 맞바꾸므로 **불안정 정렬**이다.
+- 재귀도 보조 배열도 없어 코드가 짧다. 중간 크기 입력이나 메모리가 빠듯한 임베디드 환경에서 쓴다.
 
 ## 계수 정렬 (Counting Sort)
 
@@ -135,7 +159,7 @@ print(radix_sort_lsd([170, 45, 75, 90, 802, 24, 2, 66]))
 
 ## 한눈에 비교
 
-버블·선택·삽입은 O(n²), 계수 정렬은 O(n + k), 기수 정렬은 O(d·(n + b))이고, 선택 정렬만 불안정 정렬이다.
+버블·선택·삽입은 O(n²), 셸 정렬은 간격 수열에 따라 O(n^1.5) 안팎, 계수 정렬은 O(n + k), 기수 정렬은 O(d·(n + b))이고, 선택 정렬과 셸 정렬이 불안정 정렬이다.
 
 세 O(n²) 정렬은 빅오가 같아도 실제 속도가 다르다. 차이는 **비교 횟수, 원소를 옮기는(쓰는) 횟수, 입력의 정렬 정도에 반응하는가**에서 나온다. 아래에서 역순쌍(inversion)은 `i < j`인데 `a[i] > a[j]`인 쌍의 수이고, 무작위 입력이면 평균 n²/4개다.
 
@@ -155,6 +179,7 @@ print(radix_sort_lsd([170, 45, 75, 90, 802, 24, 2, 66]))
 
 - 버블·선택·삽입은 O(n²), 작은 입력이나 학습용
 - 삽입 정렬은 거의 정렬된 데이터에서 O(n)에 가깝다.
+- 셸 정렬은 간격을 줄여 가며 삽입 정렬을 반복해 멀리 있는 원소를 빨리 옮긴다. 성능은 간격 수열이 정한다.
 - 값의 범위가 작은 정수라면 계수 정렬이 O(n + k)로 가장 빠르다.
 - 자릿수가 고정된 키는 기수 정렬(LSD)로 자릿수마다 안정 정렬을 반복한다.
 

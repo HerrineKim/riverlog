@@ -150,4 +150,4 @@ default:
 - "없음"이 가능한 자리에만 포인터를 쓴다.
 - 의도한 fallthrough는 `[[fallthrough]]`로 표시하고 경고는 켜 둔다.
 
-관련 노트: [[pointers-and-memory|포인터와 메모리]], [[c-basics|C 기초: 컴파일, 자료형, 배열과 문자열]], [[cpp-templates|C++ 템플릿]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]]
+관련 노트: [[pointers-and-memory|포인터와 메모리]], [[c-basics|C 기초: 컴파일, 자료형, 배열과 문자열]], [[cpp-templates|C++ 템플릿]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[cpp-classes-and-constructors|C++ 클래스와 생성자·소멸자]], [[cpp-operator-overloading|C++ 연산자 오버로딩과 형 변환]]

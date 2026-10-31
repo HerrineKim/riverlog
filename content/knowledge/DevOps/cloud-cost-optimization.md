@@ -59,4 +59,4 @@ sources: ["https://bytebytego.com/guides/cloud-cost-reduction-techniques", "http
 - 숨은 비용은 대개 잊힌 것(볼륨·스냅숏·IP·로드 밸런서)과 보이지 않는 것(요청 요금·송신 전송·NAT 처리량)이다.
 - 수명 주기 정책과 IaC로 만들고 지우는 일을 자동화한다.
 
-관련 노트: [[aws-cloud-basics|AWS 클라우드 기초]], [[aws-vpc-networking|AWS VPC 네트워크 구성]], [[cloud-services-map|클라우드 서비스 지도: AWS·Azure·GCP 대응표]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[cdn|CDN]]
+관련 노트: [[aws-cloud-basics|AWS 클라우드 기초]], [[aws-vpc-networking|AWS VPC 네트워크 구성]], [[cloud-services-map|클라우드 서비스 지도: AWS·Azure·GCP 대응표]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[cdn|CDN]], [[cloud-governance-security|클라우드 거버넌스와 보안]]

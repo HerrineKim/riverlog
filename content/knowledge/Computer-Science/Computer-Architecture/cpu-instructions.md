@@ -5,12 +5,13 @@ summary: "소스 코드가 명령어가 되는 과정, CPU 내부(ALU·제어장
 tags: ["computer-architecture", "cpu", "instruction-set", "interrupt"]
 source: notion
 date: "2026-10-12"
-sources: ["https://riverkim.kr/188", "https://riverkim.kr/191", "https://riverkim.kr/192", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://www.youtube.com/watch?v=3Yz7OnVUM28", "https://www.youtube.com/watch?v=lJwIERMo_N4", "https://www.youtube.com/watch?v=B8TDaBp3UWo", "https://www.youtube.com/watch?v=bWPHUi6BPxo", "https://www.youtube.com/watch?v=1I5ZMmrOfnA", "https://www.youtube.com/watch?v=zltgXvg6r3k", "https://www.youtube.com/watch?v=rtAlC5J1U40", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md"]
+sources: ["https://riverkim.kr/188", "https://riverkim.kr/191", "https://riverkim.kr/192", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://www.youtube.com/watch?v=3Yz7OnVUM28", "https://www.youtube.com/watch?v=lJwIERMo_N4", "https://www.youtube.com/watch?v=B8TDaBp3UWo", "https://www.youtube.com/watch?v=bWPHUi6BPxo", "https://www.youtube.com/watch?v=1I5ZMmrOfnA", "https://www.youtube.com/watch?v=zltgXvg6r3k", "https://www.youtube.com/watch?v=rtAlC5J1U40", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "고려사이버대학교 컴퓨터구조 강의(권오상 교수, 2024-1학기)"]
 ---
 
 > 「반드시 알아야 할 레지스터」 절의 인터럽트를 넣은 명령어 사이클과 「RISC와 CISC」 절의 ISA 호환성 설명, 「소스 코드에서 명령어로」의 목적 코드와 「주소 지정 방식」의 비트 예시·방식별 비교는 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 「명령어 길이」, 「점프와 반복」 절과 「상태 플래그」의 비교 방법, 「RISC와 CISC」의 ISA 확장 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 「x86과 ARM」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
+> 사이클별 마이크로 연산, 명령어 필드의 비트 배분, 변위 주소 지정 방식은 고려사이버대학교 「컴퓨터구조」(2024-1학기) 강의 내용으로 보강했다.
 
 CPU가 실행하는 것은 결국 메모리에 놓인 기계어 명령어다. 명령어가 피연산자를 어디서 가져오는지, 실행 흐름이 어떻게 바뀌는지를 이해하면 컴파일러와 운영체제가 하는 일도 함께 보이기 시작한다.
 
@@ -53,6 +54,22 @@ CPU가 실행하는 것은 결국 메모리에 놓인 기계어 명령어다. �
 
 CPU는 실행 사이클이 끝날 때마다 다음 명령어를 인출하기 전에 인터럽트 요청을 확인한다. 그래서 인터럽트까지 넣은 명령어 사이클은 인출·간접·실행·인터럽트 네 사이클로 이뤄진다.
 
+각 사이클은 클럭 한 주기에 하나씩 일어나는 **마이크로 연산**의 나열이다. 단일 누산기(AC) CPU에서 한 단계에 한 클럭씩 걸린다고 보면 다음과 같다.
+
+| 사이클 | t0 | t1 | t2 |
+| --- | --- | --- | --- |
+| 인출 | MAR ← PC | MBR ← M[MAR], PC ← PC + 1 | IR ← MBR |
+| 간접 | MAR ← IR(addr) | MBR ← M[MAR] | IR(addr) ← MBR (진짜 유효 주소로 바꿔 둔다) |
+| 실행: `LOAD addr` | MAR ← IR(addr) | MBR ← M[MAR] | AC ← MBR |
+| 실행: `STA addr` | MAR ← IR(addr) | MBR ← AC | M[MAR] ← MBR |
+| 실행: `ADD addr` | MAR ← IR(addr) | MBR ← M[MAR] | AC ← AC + MBR |
+| 실행: `JUMP addr` | PC ← IR(addr) | - | - |
+| 인터럽트 | MBR ← PC | MAR ← SP, PC ← ISR 시작 주소 | M[MAR] ← MBR (복귀 주소를 스택에 저장) |
+
+클럭이 1GHz(주기 1ns)면 인출 사이클만 3ns다. 점프가 PC에 값을 넣기만 하면 끝나는 이유도 표에서 보인다. 다음 인출 사이클이 그 주소에서 명령어를 가져오기 때문이다.
+
+ISR을 실행하는 도중에 또 인터럽트가 오면(**다중 인터럽트**) 두 가지로 처리한다. 인터럽트 플래그를 꺼서 ISR이 끝날 때까지 새 요청을 받지 않거나(중단하면 안 되는 입출력 처리에 쓴다), 우선순위를 매겨 지금 것보다 높은 요청만 받아 ISR 안에서 다시 ISR로 들어간다(중첩).
+
 ```text
  ┌─▶ 인출 ──(메모리 접근이 더 필요)──▶ 간접 ──┐
  │     └──────(바로 실행 가능)───────────────┴─▶ 실행 ─▶ 인터럽트 요청?
@@ -62,6 +79,15 @@ CPU는 실행 사이클이 끝날 때마다 다음 명령어를 인출하기 전
 ```
 
 ## 명령어 형식
+
+ISA를 설계할 때는 네 가지를 정한다. **연산 종류**(수·종류·복잡도), **데이터 형태**(길이, 수 표현 방식), **명령어 형식**(길이, 필드 수와 각 필드의 비트 수), **주소 지정 방식**이다. 명령어 길이가 정해져 있으면 필드끼리 비트를 나눠 가지므로 하나를 늘리면 다른 것이 준다.
+
+| 필드 | 비트 수가 정하는 것 | 16비트 명령어 예 |
+| --- | --- | --- |
+| 연산 코드 | 정의할 수 있는 연산의 수 | 4비트면 16가지, 5비트로 늘리면 32가지지만 나머지 필드가 1비트 준다 |
+| 오퍼랜드(주소) | 직접 가리킬 수 있는 메모리 범위 | 연산 코드 5비트인 1주소 명령어는 주소 11비트 → 2¹¹ = 2048번지 |
+| 오퍼랜드(레지스터 번호) | 쓸 수 있는 레지스터 수 | 4비트면 16개 |
+| 오퍼랜드(데이터) | 담을 수 있는 수의 범위 | 12비트 2의 보수면 −2048 ~ +2047 |
 
 ### 주소 개수에 따른 분류
 
@@ -131,7 +157,16 @@ RISC는 값을 먼저 레지스터로 `LOAD`하고 레지스터끼리만 연산�
 
 CPU 밖에 있는 메모리에 가는 것은 CPU 안의 레지스터를 읽는 것보다 훨씬 느리다. 그래서 **메모리 접근 횟수**가 속도를 가른다.
 
-- 상대·베이스 레지스터 방식은 "레지스터 값 + 변위"로 주소를 구해 **변위 주소 지정**이라 묶는다. 베이스 레지스터가 200, 오퍼랜드가 40이면 240번지다.
+- 간접 방식과 레지스터 간접 방식이 넓은 범위를 얻는 이유는 주소가 명령어 필드가 아니라 **워드 하나(또는 레지스터 하나) 전체**에 담기기 때문이다. 워드가 n비트면 2ⁿ곳을 가리킨다. 16비트 레지스터면 64K워드, 32비트면 4G워드다. 간접 여부는 명령어의 **간접 비트(I)**로 구분하고(I = 1이면 간접 사이클을 거친다), 주소의 주소를 여러 번 따라가는 다단계 간접 방식도 있다.
+- 상대·인덱스·베이스 레지스터 방식은 모두 "레지스터 값 + 변위"로 주소를 구해 **변위 주소 지정**(EA = A + (R))이라 묶는다. 어떤 레지스터를 더하느냐만 다르다.
+
+| 변위 방식 | 더하는 레지스터 | 주 용도와 특징 |
+| --- | --- | --- |
+| 상대 | PC | 분기. 변위 A를 2의 보수로 두어 양수면 앞으로, 음수면 뒤로 간다. 전체 주소 대신 짧은 변위만 적어 비트를 아끼지만, 분기 범위가 변위 필드의 2의 보수 범위로 묶인다 |
+| 인덱스 | 인덱스 레지스터(IX) | 배열 원소 접근. **자동 인덱싱**이면 명령어를 실행할 때마다 IX가 1씩 늘거나 줄어 루프에서 따로 증가 명령이 필요 없다 |
+| 베이스 레지스터 | 베이스 레지스터(BR) | 프로그램 재배치. 다중 프로그래밍에서 프로그램을 다른 위치로 옮겨도 명령어의 주소 필드는 그대로 두고 BR만 바꾸면 된다. 베이스 레지스터가 200, 오퍼랜드가 40이면 240번지다 |
+
+x86의 세그먼트 방식도 같은 생각이다. 명령어로 구한 유효 주소에 세그먼트 레지스터가 가리키는 세그먼트 시작 주소를 더해 **선형 주소**를 만든다.
 
 ## 연산 코드의 종류
 
@@ -204,7 +239,7 @@ CALL:   SP ← SP - 1;  M[SP] ← PC;  PC ← 유효 주소     ; 복귀 주소 
 RETURN: PC ← M[SP];  SP ← SP + 1                     ; 복귀 주소 pop
 ```
 
-복귀 주소를 스택에 두므로 **재귀 호출**도 복귀 주소를 덮어쓰지 않는다. 인터럽트도 흐름을 다른 루틴으로 옮겼다가 돌아오지만 다음이 다르다.
+복귀 주소를 스택에 두므로 **재귀 호출**도 복귀 주소를 덮어쓰지 않는다. 메모리가 바이트 단위로 주소를 매기고 복귀 주소가 16비트라면 SP는 1이 아니라 2씩 움직인다. 인터럽트도 흐름을 다른 루틴으로 옮겼다가 돌아오지만 다음이 다르다.
 
 | 항목 | 서브루틴 호출 | 인터럽트 |
 | --- | --- | --- |

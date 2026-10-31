@@ -176,4 +176,4 @@ UNIX 계열의 매뉴얼은 섹션으로 나뉜다. 이름이 같은 항목이 �
 - `man -k 키워드`(= `apropos`)로 검색하고, `man -f 이름`(= `whatis`)으로 어느 섹션에 있는지 본다. 같은 이름의 섹션을 찾는 순서는 시스템마다 설정이 다르다.
 - 매뉴얼 파일은 `/usr/share/man/man<섹션>/`에 roff 형식을 gzip으로 압축해 둔다. 직접 쓴 페이지는 `man -l 파일`로 바로 볼 수 있다. 문법은 `man 7 groff_man`에 있다(`.TH` 제목, `.SH` 절, `.B` 굵게).
 
-관련 노트: [[os-overview|운영체제 개요]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[unix-signals|UNIX 시그널]], [[time-and-timers|운영체제의 시간과 타이머]]
+관련 노트: [[os-overview|운영체제 개요]], [[unix-file-io|UNIX 파일 입출력과 파일 디스크립터]], [[unix-signals|UNIX 시그널]], [[time-and-timers|운영체제의 시간과 타이머]], [[kernel-io-subsystem|운영체제의 입출력 시스템]]

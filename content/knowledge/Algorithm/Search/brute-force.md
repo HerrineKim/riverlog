@@ -103,4 +103,4 @@ print(solve(0, 8, set(), set(), set()))  # 92
 - 순열·조합은 `itertools`, 포함/불포함 선택은 비트마스크나 재귀
 - 백트래킹은 DFS + 가지치기로 불필요한 탐색을 줄인다.
 
-관련 노트: [[dfs|DFS]], [[recursion|재귀 함수]], [[bfs|BFS]]
+관련 노트: [[dfs|DFS]], [[recursion|재귀 함수]], [[bfs|BFS]], [[permutation-combination|순열과 조합]]

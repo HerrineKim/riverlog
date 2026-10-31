@@ -5,12 +5,13 @@ summary: "트랜잭션의 ACID 특성, 이를 지키기 위한 병행 제어·�
 tags: ["database", "transaction", "acid", "certificate", "concurrency"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebytego.com/guides/what-are-database-isolation-levels", "https://bytebytego.com/guides/what-are-the-differences-among-database-locks", "https://bytebytego.com/guides/pessimistic-vs-optimistic-locking", "https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html", "https://d2.naver.com/helloworld/407507", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://www.postgresql.org/docs/current/transaction-iso.html", "https://www.postgresql.org/docs/current/routine-vacuuming.html"]
+sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebytego.com/guides/what-are-database-isolation-levels", "https://bytebytego.com/guides/what-are-the-differences-among-database-locks", "https://bytebytego.com/guides/pessimistic-vs-optimistic-locking", "https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html", "https://d2.naver.com/helloworld/407507", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://www.postgresql.org/docs/current/transaction-iso.html", "https://www.postgresql.org/docs/current/routine-vacuuming.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)"]
 ---
 
 > 노션 정리를 바탕으로, MVCC·잠금의 종류·비관적/낙관적 잠금은 ByteByteGo의 System Design 101 가이드 「[What does ACID mean?](https://bytebytego.com/guides/what-does-acid-mean)」, 「[What are Database Isolation Levels?](https://bytebytego.com/guides/what-are-database-isolation-levels)」, 「[What are the Differences Among Database Locks?](https://bytebytego.com/guides/what-are-the-differences-among-database-locks)」, 「[Pessimistic vs Optimistic Locking](https://bytebytego.com/guides/pessimistic-vs-optimistic-locking)」로, 버퍼 정책·로그·재시작 복구는 「[DBMS는 어떻게 트랜잭션을 관리할까?](https://d2.naver.com/helloworld/407507)」로 보강했다.
 > 트랜잭션의 상태와 DB 교착 상태는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로 보강했다.
 > 스냅숏 격리와 쓰기 스큐, SSI, InnoDB와 PostgreSQL의 MVCC 비교, VACUUM, 분산 트랜잭션, 비정상 종료 시 잠금 해제는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 PostgreSQL·MySQL 공식 문서로 확인해 보강했다.
+> 트랜잭션의 시작과 끝, 세이브포인트의 동작, 잠금 호환성 표, Oracle의 직렬화 오류와 교착 처리는 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기) 강의 내용으로 보강했다.
 
 트랜잭션은 데이터베이스에서 **하나의 논리적 작업 단위**다. 계좌 이체처럼 "출금"과 "입금"이 둘 다 되거나 둘 다 안 되어야 하는 작업을 묶는다. 트랜잭션이 지켜야 할 네 가지 성질(ACID)과, DBMS가 각 성질을 보장하는 수단을 짝지어 기억하면 이해가 쉽다.
 
@@ -36,6 +37,24 @@ sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebyte
 | `COMMIT` | 트랜잭션 결과를 DB에 영구 반영 |
 | `ROLLBACK` | 트랜잭션 실행 이전 상태로 되돌림 |
 | `SAVEPOINT` | 롤백할 중간 지점 지정 (`ROLLBACK TO 이름`) |
+
+`COMMIT`과 `ROLLBACK`은 트랜잭션을 끝내면서 그 트랜잭션이 쥔 잠금을 모두 풀고 세이브포인트를 모두 지운다. `ROLLBACK TO 세이브포인트`는 다르다.
+
+| 항목 | `ROLLBACK` | `ROLLBACK TO sp1` |
+| --- | --- | --- |
+| 되돌리는 범위 | 트랜잭션 전체 | `sp1` 뒤에 실행한 문장만 |
+| 트랜잭션 | 끝난다 | **계속된다.** 이어서 작업하고 나중에 `COMMIT`해야 한다 |
+| 세이브포인트 | 모두 사라진다 | `sp1`은 남고, 그 뒤에 만든 세이브포인트만 사라진다 |
+| 잠금 | 모두 풀린다 | `sp1` 뒤에 건 잠금만 풀린다(Oracle). 앞에서 건 잠금은 유지한다 |
+
+```sql
+UPDATE emp SET salary = 7000  WHERE name = 'A';
+SAVEPOINT after_a;
+UPDATE emp SET salary = 12000 WHERE name = 'B';
+ROLLBACK TO after_a;        -- B의 변경만 취소. A의 변경과 트랜잭션은 그대로
+UPDATE emp SET salary = 11000 WHERE name = 'B';
+COMMIT;                     -- A=7000, B=11000 확정
+```
 
 ## 트랜잭션의 상태
 
@@ -65,6 +84,14 @@ sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebyte
 ## 언제 트랜잭션으로 묶나
 
 대부분의 DBMS는 **자동 커밋(autocommit)** 이 기본이라, 명시적으로 묶지 않은 문장 하나하나가 각자 트랜잭션으로 실행되고 바로 커밋된다. 그래서 「트랜잭션을 건다」는 말은 **여러 문장을 한 단위로 묶는다**는 뜻이다.
+
+Oracle은 서버 쪽에 자동 커밋이 없다. 첫 DML 문장에서 트랜잭션이 저절로 시작되고, `COMMIT`·`ROLLBACK`을 만날 때까지 이어진다(SQL\*Plus·JDBC 같은 클라이언트가 자동 커밋을 대신 켜 주기도 한다). 명시적인 `COMMIT`·`ROLLBACK` 말고도 트랜잭션이 끝나는 경우가 있다.
+
+| 경우 | 결과 |
+| --- | --- |
+| `CREATE`·`ALTER`·`DROP`·`TRUNCATE` 같은 DDL 실행 | DDL 앞뒤로 **암묵적 커밋**. 앞서 하던 DML까지 확정되므로 롤백할 수 없다. MySQL도 같고, PostgreSQL은 DDL도 트랜잭션 안에서 롤백할 수 있다 |
+| 클라이언트 정상 종료 | 대개 커밋한다(도구마다 다르다) |
+| 세션 비정상 종료, 연결 끊김 | 롤백한다 |
 
 | 상황 | 묶는 이유 |
 | --- | --- |
@@ -103,7 +130,7 @@ sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebyte
 | --- | --- | --- |
 | MySQL InnoDB | 네 수준 모두. Repeatable Read는 일반 읽기를 스냅숏으로 하고, 잠금 읽기·쓰기에는 넥스트 키 잠금을 걸어 팬텀을 대부분 막는다. Serializable은 자동 커밋이 아닐 때 일반 `SELECT`를 `SELECT ... FOR SHARE`로 바꾼다 | Repeatable Read |
 | PostgreSQL | 네 수준을 받지만 Read Uncommitted는 Read Committed로 동작한다. Repeatable Read는 스냅숏 격리라 팬텀도 막는다. Serializable은 SSI | Read Committed |
-| Oracle | Read Committed와 Serializable 두 가지(와 Read Only)만 있다. Oracle의 Serializable은 실제로는 스냅숏 격리라 쓰기 스큐가 생긴다 | Read Committed |
+| Oracle | Read Committed와 Serializable 두 가지(와 Read Only)만 있다. Read Committed는 **문장 단위**, Serializable은 **트랜잭션 단위**로 읽기 일관성을 보장한다(undo로 옛 블록을 복원해 읽는다). Serializable에서 내가 시작한 뒤 다른 트랜잭션이 고치고 커밋한 행을 고치려 하면 `ORA-08177: can't serialize access`로 실패한다. 실제로는 스냅숏 격리라 쓰기 스큐가 생긴다 | Read Committed |
 | SQL Server | 네 수준 + `SNAPSHOT`. `READ_COMMITTED_SNAPSHOT` 옵션을 켜면 Read Committed도 잠금 대신 버전으로 읽는다 | Read Committed |
 
 ### MVCC가 스냅숏으로 읽는 방식
@@ -228,11 +255,21 @@ PostgreSQL의 Serializable(9.1부터)은 **SSI(Serializable Snapshot Isolation)*
 | 대량 갱신 잠금(BU lock) | 대량 삽입 중 테이블 단위 잠금 하나로 처리 | 잠금 수를 줄여 적재가 빨라진다(SQL Server) |
 | 키 범위 잠금 | 인덱스의 범위(빈 틈 포함)를 잠근다 | 이미 읽은 범위에 새 행이 끼어드는 **팬텀 읽기**를 막는다. InnoDB의 갭 잠금·넥스트 키 잠금이 같은 역할이다 |
 
+잠금끼리 함께 걸 수 있는지는 호환성 표로 정해진다. 아래는 SQL Server 기준이고, 의도 잠금을 쓰는 다른 DBMS도 뼈대는 같다(IS: 의도 공유, IX: 의도 배타, SIX: 공유 + 의도 배타).
+
 ```text
-호환성    S    X
-   S     ○    ✕
-   X     ✕    ✕
+요청/보유     IS   S    U    IX   SIX  X
+   IS         ○    ○    ○    ○    ○    ✕
+   S          ○    ○    ○    ✕    ✕    ✕
+   U          ○    ○    ✕    ✕    ✕    ✕
+   IX         ○    ✕    ✕    ○    ✕    ✕
+   SIX        ○    ✕    ✕    ✕    ✕    ✕
+   X          ✕    ✕    ✕    ✕    ✕    ✕
 ```
+
+- S끼리는 함께 걸려 여러 트랜잭션이 동시에 읽는다. X는 무엇과도 함께 걸리지 않는다.
+- IX끼리 호환되는 것이 핵심이다. 두 트랜잭션이 같은 테이블의 **서로 다른 행**을 고칠 때 테이블에는 IX가 둘 걸리지만 막히지 않고, 충돌 판정은 행 단위 X 잠금에서 한다.
+- U끼리는 호환되지 않는다. 그래서 「읽고 나서 고치는」 두 트랜잭션이 동시에 S를 X로 올리려다 생기는 교착이 처음부터 줄을 서는 대기로 바뀐다.
 
 ### 잠금 단위
 
@@ -280,6 +317,8 @@ INSERT INTO a VALUES (1);  -- T2의 잠금 대기
 ```
 
 대부분의 DBMS는 대기 그래프(wait-for graph)로 교착을 **스스로 감지해 한쪽(보통 되돌릴 작업이 적은 쪽)을 롤백**한다. MySQL은 `innodb_deadlock_detect`(기본 켜짐)와 `SHOW ENGINE INNODB STATUS`의 `LATEST DETECTED DEADLOCK`, PostgreSQL은 `deadlock_timeout`(기본 1초) 뒤 검사로 알린다. 감지는 피해를 줄일 뿐이므로 애플리케이션은 오류 코드를 보고 **트랜잭션 전체를 재시도**해야 한다.
+
+희생자를 얼마나 되돌리는지는 DBMS마다 다르다. InnoDB는 희생자 트랜잭션 전체를 롤백하고, PostgreSQL은 트랜잭션을 실패 상태로 만들어 `ROLLBACK`만 받는다. Oracle은 `ORA-00060: deadlock detected`를 받은 쪽의 **교착을 일으킨 문장 하나만** 롤백하고 트랜잭션과 그 앞의 변경·잠금은 남긴다. 그래서 Oracle 애플리케이션은 오류를 받은 뒤 직접 `ROLLBACK`(또는 남은 작업을 정리하고 `COMMIT`)해야 상대 트랜잭션이 풀린다.
 
 | 빈도를 낮추는 방법 | 이유 |
 | --- | --- |
@@ -439,4 +478,4 @@ DBMS는 데이터를 고정 크기 **페이지** 단위로 읽고 쓰며, 메모
 - 스냅숏 격리도 쓰기 스큐를 막지 못한다. 막으려면 판단 근거 행을 잠그거나 SSI(PostgreSQL Serializable)를 쓴다.
 - 여러 DB에 걸친 작업은 2PC(강한 일관성, 블로킹) 또는 사가(보상 트랜잭션, 최종 일관성)로 묶는다.
 
-로킹으로 상호 배제를 구현하는 발상은 운영체제의 [[process-synchronization|프로세스 동기화]]와 같고, 트랜잭션끼리 서로의 잠금을 기다리면 [[deadlock|교착 상태]]가 생길 수 있다. SQL이 실행될 때 잠금 관리자가 어디에 끼는지는 [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]]에 있다.
+로킹으로 상호 배제를 구현하는 발상은 운영체제의 [[process-synchronization|프로세스 동기화]]와 같고, 트랜잭션끼리 서로의 잠금을 기다리면 [[deadlock|교착 상태]]가 생길 수 있다. SQL이 실행될 때 잠금 관리자가 어디에 끼는지는 [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]]에 있다. Oracle이 undo·redo 로그와 로그 기록 프로세스로 커밋을 처리하는 구조는 [[oracle-architecture|Oracle 데이터베이스 구조]]에 있다.

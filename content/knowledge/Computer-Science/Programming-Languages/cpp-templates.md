@@ -5,10 +5,11 @@ summary: "타입을 매개변수로 받아 함수와 클래스를 찍어 내는 
 tags: ["cpp", "oop", "computer-science", "design-pattern"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/e4d170fd04df4c2497c48c2a27d9f8d0", "https://80000coding.notion.site/bce4147ecad5436e89b9a46d284bad69", "https://en.cppreference.com/w/cpp/language/templates"]
+sources: ["https://80000coding.notion.site/e4d170fd04df4c2497c48c2a27d9f8d0", "https://80000coding.notion.site/bce4147ecad5436e89b9a46d284bad69", "https://en.cppreference.com/w/cpp/language/templates", "고려사이버대학교 객체지향 프로그래밍(C++) 강의(장윤경 교수, 2024-2학기)"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C++] Template 은 무엇일까」, 「[c++] Template Recursion(템플릿 재귀)」를 바탕으로 재구성한 노트다.
+> 클래스 템플릿 멤버 함수의 바깥 정의는 고려사이버대학교 「객체지향 프로그래밍(C++)」(2024-2학기) 강의 내용으로 보강했다.
 
 ## 템플릿이란
 
@@ -61,6 +62,14 @@ Array<std::string, 10>  c;  // std::string, 10
 
 - 클래스 템플릿은 C++17 이전에는 타입을 반드시 명시해야 했다. C++17부터는 생성자 인자로 추론한다(CTAD, `std::vector v{1, 2, 3};`).
 - `int Capacity`처럼 타입이 아닌 **비타입 템플릿 인자**는 컴파일 타임 상수여야 한다. `std::array<int, 5>`가 이 방식이다.
+- 멤버 함수를 클래스 바깥에서 정의할 때는 `template` 선언을 다시 쓰고, 클래스 이름에 타입 인자까지 붙여 `Array<T, Capacity>::`로 한정한다. 클래스 안에서는 `Array`만 써도 현재 인스턴스를 뜻한다.
+
+  ```cpp
+  // 클래스 안에는 선언 void add(const T& v); 만 두었을 때
+  template <typename T, int Capacity>
+  void Array<T, Capacity>::add(const T& v) { buf[size++] = v; }
+  ```
+
 - 멤버 함수 정의까지 헤더에 둔다. 사용하는 쪽에서 정의가 보여야 인스턴스화할 수 있어서, 템플릿을 `.cpp`에만 두면 링크 오류가 난다.
 
 ## 템플릿 특수화
@@ -117,4 +126,4 @@ void printAll(const Args&... args) { ((std::cout << args << ' '), ...); }  // C+
 - 템플릿 재귀는 컴파일 타임 계산의 원리이고, 오늘날에는 폴드 식과 `constexpr`이 그 자리를 많이 대신한다.
 - STL 컨테이너와 알고리즘이 모두 템플릿으로 만들어져 있다.
 
-관련 노트: [[cpp-stl-containers|C++ STL 컨테이너와 시간 복잡도]], [[cpp-virtual-functions|가상 함수와 vtable]], [[cpp-basics|C++ 기초 문법과 참조자]]
+관련 노트: [[cpp-stl-containers|C++ STL 컨테이너와 시간 복잡도]], [[cpp-virtual-functions|가상 함수와 vtable]], [[cpp-basics|C++ 기초 문법과 참조자]], [[cpp-operator-overloading|C++ 연산자 오버로딩과 형 변환]], [[cpp-classes-and-constructors|C++ 클래스와 생성자·소멸자]]
