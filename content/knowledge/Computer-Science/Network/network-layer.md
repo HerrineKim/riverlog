@@ -1,11 +1,11 @@
 ---
 title: "네트워크 계층 프로토콜"
 concept: "IP"
-summary: "IPv4 헤더와 단편화(MTU), 주소 체계(클래스와 CIDR), 서브넷 계산(VLSM·경로 요약·특수 주소)과 라우팅 테이블(최장 프리픽스 일치, 직접·간접 전달), 라우팅과 포워딩(RIB·FIB, 라우터의 포워딩 과정), ARP 동작 과정·RARP, DHCP 주소 할당(DORA·옵션·임대·예약), ICMP 메시지 종류·생성 규칙과 ping·traceroute, IPv6(주소 종류·확장 헤더·ICMPv6·SLAAC), NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 알고리즘(거리 벡터·링크 상태·경로 벡터)과 RIP·OSPF·BGP 비교, IP 멀티캐스트(그룹 주소와 MAC 변환, IGMP, RPF와 송신자 기반·공유 트리, PIM), 회선·패킷 교환 방식 정리."
+summary: "IPv4 헤더와 단편화(MTU), 주소 체계(클래스와 CIDR, 사설·링크 로컬(APIPA) 같은 특수 주소), 서브넷 계산(VLSM·경로 요약·특수 주소)과 라우팅 테이블(최장 프리픽스 일치, 직접·간접 전달), 라우팅과 포워딩(RIB·FIB, 라우터의 포워딩 과정), ARP 동작 과정·RARP, DHCP 주소 할당(DORA·옵션·임대·예약), ICMP 메시지 종류·생성 규칙과 ping·traceroute, IPv6(주소 종류·확장 헤더·ICMPv6·SLAAC), NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 알고리즘(거리 벡터·링크 상태·경로 벡터)과 RIP·OSPF·BGP 비교, IP 멀티캐스트(그룹 주소와 MAC 변환, IGMP, RPF와 송신자 기반·공유 트리, PIM), 회선·패킷 교환 방식 정리."
 tags: ["network", "ip", "routing", "multicast", "certificate"]
 source: notion
-sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://bytebytego.com/guides/ipv4-vs-ipv6", "https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible", "https://dataportal.kr/14", "https://no1.technology/13", "https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)"]
-date: "2026-10-21"
+sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://bytebytego.com/guides/ipv4-vs-ipv6", "https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible", "https://dataportal.kr/14", "https://no1.technology/13", "https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
+date: "2026-10-31"
 ---
 
 > 고무오리 CS 스터디의 네트워크 학습 노트(IP 주소, ARP, IPv4·ICMP, NAT와 포트 포워딩)를 바탕으로 재구성한 노트다. 서브넷 계산·라우팅 테이블·NAT 분류 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「netpractice를 위한 네트워크 통신 기초 - 1. LAN 통신」, 「- 2. WAN 통신」, 「포트 포워딩, NAT, IP Masquerade 뭐가 다른거지?」, 「Network에 대한 정리(3)」을 바탕으로 보강했다.
@@ -15,6 +15,7 @@ date: "2026-10-21"
 > 「데이터 교환 방식」 절의 세 방식 비교는 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 서브넷 마스크 표기, 라우팅과 포워딩·라우터의 포워딩 과정, 라우팅 알고리즘 비교, DHCP의 계층·옵션·임대 기간·예약은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
 > 블록 계산식·VLSM·경로 요약·특수 주소, 직접·간접 전달, ARP 캐시 상태, ICMP 메시지 규칙, RIP·OSPF·BGP 비교, IPv6 주소 종류·확장 헤더·ICMPv6·SLAAC, IP 멀티캐스트(그룹 주소와 MAC 변환, IGMP, 멀티캐스트 라우팅)는 고려사이버대학교 「컴퓨터네트워크」(2023-2학기) 강의 내용으로 보강했다.
+> APIPA, 관리 거리와 메트릭에 따른 경로 선택, 모바일 IPv6, NAT-PT는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 네트워크 면접 정리를 바탕으로 보강했다.
 
 네트워크 계층(3계층)은 여러 네트워크를 거쳐 패킷을 목적지 호스트까지 보내는 일을 한다. 핵심인 IP는 "최선을 다해 전달하지만 보장은 하지 않는" 프로토콜이고, 주변 프로토콜들이 주소 변환·오류 보고·경로 선택을 돕는다.
 
@@ -153,7 +154,7 @@ IP 주소와 서브넷 마스크를 비트 AND 하면 **네트워크 주소**가
 | 호스트 비트 전부 1 (예: `192.0.2.255/24`) | 직접 브로드캐스트 | 특정 네트워크 전체. 원래 라우터가 그 네트워크까지 전달할 수 있었지만, 증폭 공격(smurf)에 쓰여 지금 라우터는 기본으로 막는다 |
 | `127.0.0.0/8` | 루프백 | 패킷이 NIC 밖으로 나가지 않고 자기 프로세스로 돌아온다. 목적지로만 쓴다 |
 | `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16` | 사설 | 기관 내부 전용. 인터넷에 나갈 때 NAT로 바꾼다 |
-| `169.254.0.0/16` | 링크 로컬 | DHCP가 실패하면 OS가 스스로 붙인다 |
+| `169.254.0.0/16` | 링크 로컬 | DHCP가 실패하면 OS가 스스로 붙인다. Windows는 이 기능을 **APIPA**(Automatic Private IP Addressing)라 부른다. 같은 링크 안에서만 통하고 라우터를 넘지 못한다 |
 | `224.0.0.0/4` | 멀티캐스트 | 그룹 주소(아래 「IP 멀티캐스트」) |
 | `240.0.0.0/4` | 예약 | 쓰지 않는다 |
 
@@ -168,6 +169,7 @@ IP 주소와 서브넷 마스크를 비트 AND 하면 **네트워크 주소**가
 | `0.0.0.0/0` (default) | `192.168.1.1` | **기본 경로.** 나머지 전부. PC의 "기본 게이트웨이"가 바로 이것 |
 
 - 목적지가 여러 규칙에 걸리면 **프리픽스가 가장 긴(가장 구체적인) 규칙**을 고른다(최장 프리픽스 일치, longest prefix match). `/28` 규칙은 `/0` 기본 경로보다 우선한다.
+- 같은 프리픽스를 여러 출처에서 배웠으면 출처의 신뢰도인 **관리 거리**(administrative distance)가 작은 쪽을 고른다. Cisco 기준으로 직접 연결 0, 정적 경로 1, eBGP 20, OSPF 110, RIP 120이다. 출처까지 같으면 그 라우팅 프로토콜의 **메트릭**(홉 수, 대역폭, 지연을 반영한 비용)이 작은 경로를 쓰고, 메트릭도 같으면 여러 경로로 나눠 보낸다(ECMP).
 - 규칙은 범위로 나뉜다. 네트워크 하나를 가리키는 **네트워크 경로**가 기본이고, 특정 호스트 하나만 다른 길로 보내는 **호스트 경로**(`/32`)는 시험·관리용으로 쓴다. 나머지를 모두 받는 것이 **기본 경로**(`0.0.0.0/0`)다. 다음 홉만 적고 전체 경로는 적지 않으므로 테이블이 작다.
 - 어느 규칙에도 맞지 않고 기본 경로도 없으면 패킷을 버리고 ICMP "Destination Unreachable"을 돌려보낸다.
 - 통신은 양방향이다. 가는 길뿐 아니라 **돌아오는 경로**도 상대 쪽 라우팅 테이블에 있어야 응답이 온다.
@@ -318,7 +320,7 @@ sequenceDiagram
 | --- | --- |
 | 갱신 | 임대 기간의 절반(T1)이 지나면 같은 서버에 DHCPREQUEST를 유니캐스트로 보내 연장한다. 87.5%(T2)까지 답이 없으면 아무 서버에나 브로드캐스트로 요청한다 |
 | 해제 | 더 쓰지 않을 때 DHCPRELEASE로 주소를 돌려준다. 보내지 않고 꺼져도 임대가 끝나면 회수된다 |
-| 실패 | 서버를 못 찾으면 OS가 `169.254.0.0/16` 링크 로컬 주소를 스스로 붙인다. 이 주소가 보이면 DHCP 문제다 |
+| 실패 | 서버를 못 찾으면 OS가 `169.254.0.0/16` 링크 로컬 주소(APIPA)를 스스로 붙인다. 무작위로 고른 뒤 ARP로 충돌이 없는지 확인하고 쓴다. 이 주소가 보이면 DHCP 문제다 |
 
 DISCOVER는 브로드캐스트라 라우터를 넘지 못한다. 서버가 다른 네트워크에 있으면 라우터가 **DHCP 릴레이**로 요청을 전달한다.
 
@@ -360,6 +362,8 @@ IPv4(32비트, 8비트씩 4부분)의 주소 고갈 문제를 해결하려고 �
 
 - IPsec(인증·기밀성·무결성)을 염두에 두고 설계되었다. 초기 표준(RFC 4294)은 모든 IPv6 노드에 IPsec 구현을 **필수**로 요구했지만, RFC 6434 이후로는 **권장(SHOULD)** 으로 완화되었다(현행 RFC 8504).
 - Traffic Class, Flow Label 필드로 서비스 품질(QoS)을 다루기 쉽다.
+- 주소 자동 설정(SLAAC)으로 DHCP 서버 없이도 같은 링크 안에서 스스로 주소를 만들어 통신한다(아래 「ICMPv6와 주소 자동 설정」).
+- 모바일 IPv6(RFC 6275)는 단말이 다른 망으로 옮겨 가도 고정된 홈 주소를 유지하게 한다. 실제 휴대폰 망은 이 대신 이동통신 코어망이 단말 주소를 지켜 준다.
 - 주소 종류
 
 | IPv4 | IPv6 |
@@ -451,7 +455,7 @@ DNS 서버는 RA의 RDNSS 옵션이나 DHCPv6로 받는다. 서버 주소를 중
 | --- | --- |
 | **듀얼 스택** (dual stack) | 한 장비가 IPv4와 IPv6를 함께 돌린다. 상대가 IPv6를 지원하면 IPv6로, 아니면 IPv4로 통신한다. 가장 보편적인 방식이다 |
 | 터널링 | IPv6 패킷을 IPv4 패킷 안에 넣어 IPv4 구간을 건너간다(6in4 등) |
-| 변환 | NAT64 + DNS64처럼 경계에서 IPv6 ↔ IPv4 헤더를 바꿔 IPv6 전용 망이 IPv4 서버에 닿게 한다. 모바일 통신망에서 흔하다 |
+| 변환 | NAT64 + DNS64처럼 경계에서 IPv6 ↔ IPv4 헤더를 바꿔 IPv6 전용 망이 IPv4 서버에 닿게 한다. 모바일 통신망에서 흔하다. 초기 변환 방식인 NAT-PT는 문제가 많아 폐기(RFC 4966)되고 NAT64로 대체됐다 |
 
 ## NAT (Network Address Translation)
 
