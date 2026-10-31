@@ -188,4 +188,4 @@ def days_until_warmer(temps):          # 각 날짜에서 더 따뜻한 날까�
 - 중간 원소에 직접 접근하는 용도로는 쓰지 않는다.
 - 다음 큰(작은) 원소는 단조 스택으로 O(n)에 구한다.
 
-관련 노트: [[dfs|DFS]], [[recursion|재귀 함수]], [[queue-deque|큐와 덱]], [[data-structures|기초 자료구조(CS50)]], [[abstract-data-type|추상 자료형 (ADT)]]
+관련 노트: [[dfs|DFS]], [[recursion|재귀 함수]], [[queue-deque|큐와 덱]], [[data-structures|기초 자료구조(CS50)]]

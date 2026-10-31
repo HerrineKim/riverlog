@@ -332,4 +332,4 @@ RAID는 디스크 고장에 대비할 뿐 **백업이 아니다.** 실수로 지
 - 플래시는 부동 게이트에 전자를 가둬 저장하고, SSD 컨트롤러의 FTL이 덮어쓰기 불가·블록 단위 삭제·마모를 감춘다.
 - RAID는 스트라이핑(성능), 미러링·패리티(안정성)의 조합이다. 패리티 RAID의 작은 쓰기는 P′ = P ⊕ D ⊕ D′로 4번 접근이 든다.
 
-관련 노트: [[cache-and-virtual-memory|캐시 메모리와 MMU]] (계층 사이를 잇는 캐시와 주소 변환 하드웨어), [[system-bus-and-arbitration|시스템 버스와 버스 중재]] (CPU와 메모리를 잇는 버스의 대역폭과 타이밍), [[multiprocessor-systems|다중 프로세서와 병렬 컴퓨터 구조]] (UMA·NUMA 메모리 접근 모델), [[disk-scheduling|디스크 관리와 스케줄링]] (운영체제가 디스크 요청을 처리하는 방법)
+관련 노트: [[cache-and-virtual-memory|캐시 메모리와 MMU]] (계층 사이를 잇는 캐시와 주소 변환 하드웨어), [[io-organization#시스템 버스|입출력 구조와 시스템 버스]] (CPU와 메모리를 잇는 버스의 대역폭과 타이밍), [[pipeline-and-parallelism#메모리 접근 모델|파이프라인과 병렬 처리]] (UMA·NUMA 메모리 접근 모델), [[disk-scheduling|디스크 관리와 스케줄링]] (운영체제가 디스크 요청을 처리하는 방법)

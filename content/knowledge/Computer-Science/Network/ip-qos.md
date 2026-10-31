@@ -34,7 +34,7 @@ QoS를 지원하는 라우터는 패킷을 다음 순서로 처리한다.
 
 ### 1. 분류(Classification)
 
-헤더를 읽어 어느 플로우, 어느 클래스인지 정한다. 3계층에서는 IP 주소·포트·프로토콜과 ToS/DS 필드(IPv6는 Traffic Class와 Flow Label), 2계층에서는 VLAN 태그의 우선순위 비트(802.1p)나 MPLS 레이블의 EXP 비트([[mpls|MPLS]])를 본다.
+헤더를 읽어 어느 플로우, 어느 클래스인지 정한다. 3계층에서는 IP 주소·포트·프로토콜과 ToS/DS 필드(IPv6는 Traffic Class와 Flow Label), 2계층에서는 VLAN 태그의 우선순위 비트(802.1p)나 MPLS 레이블의 EXP(TC) 비트([[access-network-and-wan#MPLS: IP 망 위의 레이블 스위칭|MPLS]])를 본다.
 
 #### ToS 필드에서 DSCP로
 
@@ -139,7 +139,7 @@ s.setsockopt(socket.IPPROTO_IP, socket.IP_TOS, 46 << 2)  # EF = 0xB8
 | 자원 예약 | 모든 라우터에서 RSVP로 | 없음. 경계에서 감시 |
 | 확장성 | 어렵다 | 쉽다 |
 
-현실의 대규모 망은 DiffServ 쪽을 택했고, 경로까지 통제해야 하는 곳은 [[mpls|MPLS 트래픽 엔지니어링]]을 함께 쓴다.
+현실의 대규모 망은 DiffServ 쪽을 택했고, 경로까지 통제해야 하는 곳은 [[access-network-and-wan#MPLS: IP 망 위의 레이블 스위칭|MPLS 트래픽 엔지니어링]]을 함께 쓴다.
 
 ## 핵심 정리
 
@@ -150,4 +150,4 @@ s.setsockopt(socket.IPPROTO_IP, socket.IP_TOS, 46 << 2)  # EF = 0xB8
 - 초과 트래픽을 버리면 폴리싱, 늦추면 셰이핑이다.
 - IntServ는 정확하지만 확장이 안 되고, DiffServ는 대략적이지만 확장된다.
 
-관련 노트: [[transport-layer|전송 계층: 포트, TCP, UDP]], [[voip-sip-rtp|VoIP 전화망]], [[mpls|MPLS]], [[network-layer|네트워크 계층 프로토콜]]
+관련 노트: [[transport-layer|전송 계층: 포트, TCP, UDP]], [[voip-sip-rtp|VoIP 전화망]], [[access-network-and-wan|가입자망과 광역망(MPLS)]], [[network-layer|네트워크 계층 프로토콜]]

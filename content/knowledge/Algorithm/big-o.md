@@ -5,18 +5,28 @@ summary: "입력 크기가 커질 때 알고리즘의 연산량이 어떻게 늘
 tags: ["algorithm", "complexity", "big-o", "big-omega", "big-theta"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "http://bigocheatsheet.com/", "https://www.youtube.com/watch?v=rL8X2mlNHPM", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)"]
+sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "http://bigocheatsheet.com/", "https://www.youtube.com/watch?v=rL8X2mlNHPM", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "고려사이버대학교 알고리즘과 문제해결 강의(김한성 교수, 2023-2학기)"]
 ---
 
 > 노션 정리를 바탕으로, 자료구조 연산과 정렬 알고리즘의 복잡도 표는 「[Big-O Cheat Sheet](http://bigocheatsheet.com/)」를 바탕으로 보강했다.
 > 「입력이 커질 때의 체감」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 소문자 o·ω 표기와 공간의 고정·가변 구분은 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기), 「자료구조」(2024-1학기) 강의 내용으로 보강했다.
+> 좋은 알고리즘의 조건은 고려사이버대학교 「알고리즘과 문제해결」(2023-2학기) 강의 내용으로 보강했다.
 
 ## 알고리즘이란
 
 알고리즘은 어떤 값(또는 값의 집합)을 입력으로 받아 원하는 출력으로 바꾸는 **잘 정의된 계산 절차**다. 계산 문제는 "입력과 출력이 어떤 관계여야 하는가"로 정의되고, 알고리즘은 그 관계를 실제로 만들어 내는 단계별 방법을 제시한다. (참고: Cormen 외, *Introduction to Algorithms*)
 
-같은 문제를 푸는 알고리즘이 여러 개라면 어느 쪽이 더 나은지 비교할 기준이 필요하다. 그 기준이 **빅오(Big O) 표기법**이다.
+같은 문제를 푸는 알고리즘이 여러 개라면 다음 기준으로 고른다.
+
+| 조건 | 뜻 |
+| --- | --- |
+| 정확성 | 모든 올바른 입력에 올바른 답을 내고, 유한한 단계 안에 끝난다 |
+| 효율성 | 시간과 메모리를 적게 쓴다 |
+| 범용성 | 특정 입력이 아니라 다양한 상황에 쓸 수 있다 |
+| 수정·확장 용이성 | 읽고 고치기 쉽고 다른 알고리즘과 엮기 쉽다 |
+
+이 중 효율성을 기계와 상관없이 비교하는 기준이 **빅오(Big O) 표기법**이다. 알고리즘을 설계하고 의사 코드·순서도로 적는 과정은 [[computational-thinking|컴퓨팅 사고]]에 있다.
 
 ## 시간을 직접 재면 안 되는 이유
 
@@ -166,4 +176,4 @@ O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!) 순으로 느려�
 - 시간뿐 아니라 공간 복잡도도 같은 방식으로 따진다.
 - 문제의 N 범위를 보고 허용되는 복잡도를 먼저 정하면 풀이 방향이 좁혀진다.
 
-관련 노트: [[elementary-sorts|기본 정렬]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[binary-search|이분 탐색]], [[coding-test|코딩 테스트 접근법]], [[algorithm-representation|알고리즘 표현과 제어 구조]]
+관련 노트: [[elementary-sorts|기본 정렬]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[binary-search|이분 탐색]], [[coding-test|코딩 테스트 접근법]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]]

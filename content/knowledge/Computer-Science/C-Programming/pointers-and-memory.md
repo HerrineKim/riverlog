@@ -209,4 +209,4 @@ C++ 코드와 섞일 때는 할당과 해제의 짝이 반드시 맞아야 한�
 - `free`는 포인터를 건드리지 않는다. 다시 쓸 수 있는 포인터는 `NULL`로 바꾼다.
 - 겹칠 수 있으면 `memmove`, 할당·해제는 같은 계열끼리 짝을 맞춘다.
 
-관련 노트: [[c-debugging-tools|C 디버깅 도구]], [[c-struct-and-function-pointer|구조체와 함수 포인터]], [[process-and-thread|프로세스와 스레드]], [[data-structures|기초 자료구조]], [[c-string-functions|C 문자열 라이브러리]]
+관련 노트: [[c-debugging-tools|C 디버깅 도구]], [[c-struct-and-function-pointer|C 사용자 정의 타입과 함수 포인터]], [[process-and-thread|프로세스와 스레드]], [[data-structures|기초 자료구조]], [[c-basics|C 기초]]

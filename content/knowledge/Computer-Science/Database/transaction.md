@@ -478,4 +478,4 @@ DBMS는 데이터를 고정 크기 **페이지** 단위로 읽고 쓰며, 메모
 - 스냅숏 격리도 쓰기 스큐를 막지 못한다. 막으려면 판단 근거 행을 잠그거나 SSI(PostgreSQL Serializable)를 쓴다.
 - 여러 DB에 걸친 작업은 2PC(강한 일관성, 블로킹) 또는 사가(보상 트랜잭션, 최종 일관성)로 묶는다.
 
-로킹으로 상호 배제를 구현하는 발상은 운영체제의 [[process-synchronization|프로세스 동기화]]와 같고, 트랜잭션끼리 서로의 잠금을 기다리면 [[deadlock|교착 상태]]가 생길 수 있다. SQL이 실행될 때 잠금 관리자가 어디에 끼는지는 [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]]에 있다. Oracle이 undo·redo 로그와 로그 기록 프로세스로 커밋을 처리하는 구조는 [[oracle-architecture|Oracle 데이터베이스 구조]]에 있다.
+로킹으로 상호 배제를 구현하는 발상은 운영체제의 [[process-synchronization|프로세스 동기화]]와 같고, 트랜잭션끼리 서로의 잠금을 기다리면 [[deadlock|교착 상태]]가 생길 수 있다. SQL이 실행될 때 잠금 관리자가 어디에 끼는지는 [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]]에 있다. Oracle이 undo·redo 로그와 로그 기록 프로세스(LGWR)로 커밋을 처리하는 구조는 [[database-internals#엔진의 몸체: Oracle로 보는 메모리·프로세스·파일|DB 내부 구조]]에 있다.

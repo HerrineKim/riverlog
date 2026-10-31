@@ -47,8 +47,8 @@ DevOps는 개발(Development)과 운영(Operations) 사이의 벽을 줄여, 코
 
 | 노트 | 내용 |
 | --- | --- |
-| [AWS 클라우드 기초](/knowledge/dictionary/devops/aws-cloud-basics) | 클라우드의 이점, 리전·가용 영역, EC2 인스턴스와 요금 모델, ECS·EKS·Lambda, 보안 그룹과 RDS 접속(배스천 SSH 터널), IaC |
-| [클라우드 서비스 지도: AWS·Azure·GCP 대응표](/knowledge/dictionary/devops/cloud-services-map) | 범주별 서비스 대응표, AWS 학습 순서, 클라우드 로드 밸런서, 모니터링 기능 |
+| [클라우드 기초와 AWS](/knowledge/dictionary/devops/aws-cloud-basics) | 클라우드의 이점과 NIST 다섯 특징, 배포 모델, IaaS·PaaS·SaaS와 공동 책임 모델, 받치는 기술(가상화·SDN·NFV), 리전·가용 영역, EC2 인스턴스와 요금 모델, ECS·EKS·Lambda, 보안 그룹과 RDS 접속(배스천 SSH 터널), IaC |
+| [클라우드 서비스 지도: AWS·Azure·GCP 대응표](/knowledge/dictionary/devops/cloud-services-map) | 범주별 서비스 대응표, AWS 학습 순서, 클라우드 로드 밸런서, 빅데이터 파이프라인과 Hadoop·Spark, 모니터링 기능 |
 | [클라우드 네이티브와 코드형 인프라](/knowledge/dictionary/devops/cloud-native) | 클라우드 네이티브의 네 축, IaaS·PaaS·컨테이너 변천, CNCF 랜드스케이프, IaC·GitOps |
 | [AWS VPC 네트워크 구성](/knowledge/dictionary/devops/aws-vpc-networking) | 서브넷·라우팅, 인터넷 게이트웨이·NAT, VPN·Direct Connect, 피어링·Transit Gateway, PrivateLink |
 | [AWS Lambda의 내부 구조](/knowledge/dictionary/devops/aws-lambda-internals) | 동기·비동기 호출 경로, 실행 환경 배정, Firecracker 마이크로VM, 청크 저장, SnapStart |
@@ -57,18 +57,15 @@ DevOps는 개발(Development)과 운영(Operations) 사이의 벽을 줄여, 코
 | [Terraform: 코드로 클라우드 인프라 만들기](/knowledge/dictionary/devops/terraform-workflow) | write → init → plan → apply, 상태 파일과 원격 백엔드·잠금, 모듈, 드리프트, CI 운영 |
 | [클라우드 비용 최적화와 숨은 비용](/knowledge/dictionary/devops/cloud-cost-optimization) | 비용을 줄이는 여섯 방법, 공인 IPv4·유휴 자원·송신 전송 같은 숨은 비용 |
 | [스타트업 인프라 선택 원칙](/knowledge/dictionary/devops/startup-infra-decisions) | 데이터는 관리형, 단순한 도구, 관측 표준·IdP·비용 추적은 처음부터 같은 인프라 결정 기준 |
-| [클라우드 서비스 모델: IaaS, PaaS, SaaS와 받치는 기술](/knowledge/dictionary/devops/cloud-service-models) | NIST 정의와 배포 모델, 모델별 책임 범위, 받치는 기술 |
-| [클라우드 SLA와 계약: 품질 지표, 도입 판단, 계약 체크리스트](/knowledge/dictionary/devops/cloud-sla-and-contract) | 가용성·응답성 지표, 서비스 크레딧, 이전 대상 고르기, 출구 전략, 계약 체크리스트 |
-| [클라우드 거버넌스와 보안: 조직 모델, 운영 원칙, 위협과 대응](/knowledge/dictionary/devops/cloud-governance-security) | 조직 모델과 CCoE, 가드레일, 공동 책임 모델, 위협과 점검(CVE·CCE) |
-| [클라우드컴퓨팅법과 분야별 클라우드 규제](/knowledge/dictionary/devops/korea-cloud-computing-act) | 이용자 권리, 공공·금융·의료·교육 분야 클라우드 규정 |
+| [클라우드 SLA·계약과 규제](/knowledge/dictionary/devops/cloud-sla-and-contract) | 가용성·응답성 지표, 서비스 크레딧, 이전 대상 고르기, 출구 전략, 계약 체크리스트, 클라우드컴퓨팅법의 이용자 권리와 공공·금융·의료·교육 분야 규정 |
 
 ### 조직·문화
 
 | 노트 | 내용 |
 | --- | --- |
-| [DevOps, SRE, 플랫폼 엔지니어링, NoOps](/knowledge/dictionary/devops/devops-sre-platform-engineering) | 협업 문화, SLO·에러 버짓, 내부 플랫폼, 서버리스 지향의 차이 |
+| [DevOps, SRE, 플랫폼 엔지니어링, NoOps와 클라우드 거버넌스](/knowledge/dictionary/devops/devops-sre-platform-engineering) | 협업 문화, SLO·에러 버짓, 내부 플랫폼, 서버리스 지향의 차이, 클라우드 운영 조직 모델(CCoE)과 가드레일 거버넌스 |
 | [플랫폼 엔지니어링: 내부 개발자 플랫폼과 골든 패스](/knowledge/dictionary/devops/platform-engineering) | 개발자를 고객으로 보는 IDP, 다섯 구성 요소와 오케스트레이터, 포털과 플랫폼, 골든 패스 설계, 최소 실행 가능 플랫폼 |
-| [DevSecOps: 개발 흐름에 보안을 넣기](/knowledge/dictionary/devops/devsecops) | 위협 모델링, 코드·의존성·이미지·IaC 자동 검사, 비밀 관리, 취약점 관리 |
+| [DevSecOps와 클라우드 보안](/knowledge/dictionary/devops/devsecops) | 위협 모델링, 코드·의존성·이미지·IaC 자동 검사, 비밀 관리, 취약점 관리, 클라우드의 관리적·기술적 위협과 CVE·CCE 점검, 보안 솔루션 배치 |
 | [ChatOps: 채팅에서 운영하기](/knowledge/dictionary/devops/chatops) | 채팅방 봇 명령으로 배포·조회·장애 대응, 투명성과 온보딩, 도입 단계, 권한·비밀·알림 피로 |
 
 서비스 전체의 데이터 흐름 속에서 DevOps가 차지하는 자리는 [웹 확장성의 구성 요소](/knowledge/dictionary/backend/architecture/web-scalability-components)에서 함께 볼 수 있다. 모바일 앱의 OTA 배포는 [CodePush](/knowledge/dictionary/frontend/mobile/codepush) 참고.

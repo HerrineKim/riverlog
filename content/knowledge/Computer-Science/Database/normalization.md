@@ -93,7 +93,7 @@ sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/mai
 | 열로 편다. `위치1, 위치2, 위치3` | 행 수는 그대로다 | 최대 개수를 미리 정해야 하고 빈칸(NULL)이 많다. 「서울에 있는 부서」를 찾으려면 열 세 개를 다 봐야 한다 |
 | **별도 릴레이션으로 뗀다.** `부서(부서번호, 부서명)` + `부서위치(부서번호, 위치)` | 다중값 속성이 독립된 테이블이 된다 | 조인이 하나 는다. 보통 이 방법을 쓴다 |
 
-ER 모델의 다중값 속성을 테이블로 옮길 때도 같은 이유로 세 번째 방법을 쓴다([[er-modeling|ER 모델링]]).
+ER 모델의 다중값 속성을 테이블로 옮길 때도 같은 이유로 세 번째 방법을 쓴다([[sql-and-relational-algebra#논리적 설계: ERD를 테이블로|ERD를 테이블로]]).
 
 ### 좋은 분해의 조건
 
@@ -133,4 +133,4 @@ ER 모델의 다중값 속성을 테이블로 옮길 때도 같은 이유로 세
 | 중복 테이블 추가 | 집계 테이블, 이력 테이블 등을 별도로 둠 |
 | 중복 속성 추가 | 조인을 피하려고 다른 테이블의 컬럼을 복사해 둠 |
 
-관련 노트: [[er-modeling|ER 모델링]], [[sql-and-relational-algebra|관계대수와 DB 설계]], [[sql-basics|SQL 기초]], [[database-scaling|데이터베이스 확장과 성능 최적화]], [[oracle-schema-objects|Oracle 스키마 객체]]
+관련 노트: [[sql-and-relational-algebra|관계대수·관계해석과 DB 설계]], [[sql-basics|SQL 기초]], [[database-scaling|데이터베이스 확장과 성능 최적화]]

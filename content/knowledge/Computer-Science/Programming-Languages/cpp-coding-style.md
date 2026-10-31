@@ -98,4 +98,4 @@ clang-format -i src/*.cpp include/*.hpp                    # 파일을 제자리
 - 이름 규칙은 무엇을 고르느냐보다 저장소 안에서 통일하는 것이 중요하다.
 - 서식은 `.clang-format` 파일 하나와 저장 시 자동 정렬, CI 검사로 사람 손을 떠나게 한다.
 
-관련 노트: [[clean-code-functions-naming|클린 코드: 함수와 이름]], [[cpp-basics|C++ 기초 문법과 참조자]], [[commit-convention|커밋 컨벤션과 자동 검사]]
+관련 노트: [[clean-code-functions-naming|클린 코드: 함수와 이름]], [[cpp-basics|C++ 기초]], [[commit-convention|커밋 컨벤션과 자동 검사]]

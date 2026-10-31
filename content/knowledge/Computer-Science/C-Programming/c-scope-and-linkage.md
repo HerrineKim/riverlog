@@ -135,4 +135,4 @@ t t;                          /* typedef 이름 t와 변수 t가 둘 다 일반 
 - 파일 밖으로 노출하지 않는 함수와 전역은 `static`으로 내부 링키지를 준다.
 - 상수는 관련된 정수면 `enum`, 컴파일 옵션이면 `#define`, C23이면 `constexpr`.
 
-관련 노트: [[gcc-compile-and-link|GCC 컴파일과 링크]], [[c-struct-and-function-pointer|구조체와 함수 포인터]], [[c-history-and-standards|C의 역사와 표준]], [[c-union-enum-typedef|C 공용체, 열거형, typedef]]
+관련 노트: [[gcc-compile-and-link|GCC 컴파일과 링크]], [[c-struct-and-function-pointer|C 사용자 정의 타입과 함수 포인터]], [[c-history-and-standards|C의 역사와 표준]]

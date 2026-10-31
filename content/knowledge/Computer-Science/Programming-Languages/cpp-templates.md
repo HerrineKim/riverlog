@@ -126,4 +126,4 @@ void printAll(const Args&... args) { ((std::cout << args << ' '), ...); }  // C+
 - 템플릿 재귀는 컴파일 타임 계산의 원리이고, 오늘날에는 폴드 식과 `constexpr`이 그 자리를 많이 대신한다.
 - STL 컨테이너와 알고리즘이 모두 템플릿으로 만들어져 있다.
 
-관련 노트: [[cpp-stl-containers|C++ STL 컨테이너와 시간 복잡도]], [[cpp-virtual-functions|가상 함수와 vtable]], [[cpp-basics|C++ 기초 문법과 참조자]], [[cpp-operator-overloading|C++ 연산자 오버로딩과 형 변환]], [[cpp-classes-and-constructors|C++ 클래스와 생성자·소멸자]]
+관련 노트: [[cpp-stl-containers|C++ STL 컨테이너와 시간 복잡도]], [[cpp-virtual-functions|C++ 상속과 가상 함수]], [[cpp-basics|C++ 기초]]

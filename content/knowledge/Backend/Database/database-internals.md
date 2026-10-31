@@ -1,14 +1,15 @@
 ---
 title: "DB 내부 구조: 쿼리 실행과 인덱스 자료 구조"
 concept: "Database Internals"
-summary: "SQL 한 문장이 파서·옵티마이저·실행기·버퍼 관리자·트랜잭션·잠금 관리자를 거쳐 처리되는 흐름과, DB가 데이터를 찾는 데 쓰는 자료 구조(B-트리, LSM 트리, 해시, 스킵 리스트, 역색인, R-트리 등)를 정리했다. B-트리는 읽기에, LSM 트리는 쓰기에 강하다."
-tags: ["database", "backend", "data-structure", "performance", "storage"]
+summary: "SQL 한 문장이 파서·옵티마이저·실행기·버퍼 관리자·트랜잭션·잠금 관리자를 거쳐 처리되는 흐름, Oracle을 예로 본 엔진의 메모리(SGA·PGA)·백그라운드 프로세스·파일 구성과 테이블스페이스→세그먼트→익스텐트→블록의 논리 저장 구조, 그리고 DB가 데이터를 찾는 데 쓰는 자료 구조(B-트리, LSM 트리, 해시, 스킵 리스트, 역색인, R-트리 등)를 정리했다. B-트리는 읽기에, LSM 트리는 쓰기에 강하다."
+tags: ["database", "backend", "data-structure", "performance", "storage", "oracle"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-is-a-sql-statement-executed-in-the-database", "https://bytebytego.com/guides/8-data-structures-that-power-your-databases", "https://bytebytego.com/guides/b-tree-vs", "https://www.postgresql.org/docs/current/indexes-types.html", "https://hugehoo-blog.vercel.app/blog/Database/B%20tree%20as%20Index", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://dev.mysql.com/doc/refman/8.4/en/storage-engines.html"]
+sources: ["https://bytebytego.com/guides/how-is-a-sql-statement-executed-in-the-database", "https://bytebytego.com/guides/8-data-structures-that-power-your-databases", "https://bytebytego.com/guides/b-tree-vs", "https://www.postgresql.org/docs/current/indexes-types.html", "https://hugehoo-blog.vercel.app/blog/Database/B%20tree%20as%20Index", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://dev.mysql.com/doc/refman/8.4/en/storage-engines.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How is a SQL Statement Executed in the Database?](https://bytebytego.com/guides/how-is-a-sql-statement-executed-in-the-database)」, 「[8 Data Structures That Power Your Databases](https://bytebytego.com/guides/8-data-structures-that-power-your-databases)」, 「[B-Tree vs. LSM-Tree](https://bytebytego.com/guides/b-tree-vs)」, 「[B+ 트리는 어쩌다 인덱스로 간택되었을까?](https://hugehoo-blog.vercel.app/blog/Database/B%20tree%20as%20Index)」를 바탕으로 재구성한 노트다. 스토리지 엔진, 규칙·비용 기반 옵티마이저, B-트리와 B+트리 비교, 공간 인덱스, PostgreSQL 인덱스 종류는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
+> Oracle 인스턴스의 메모리·프로세스·파일 구성과 논리 저장 구조는 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기) 강의 내용으로 보강했다.
 
 ## SQL 문장이 실행되는 과정
 
@@ -66,6 +67,95 @@ MySQL은 이 층을 **플러그인처럼 갈아 끼우는** 구조라 테이블�
 | 단점 | 데이터 분포를 몰라 인덱스가 오히려 느린 경우에도 인덱스를 쓴다 | 통계가 낡거나 추정이 틀리면 엉뚱한 계획을 고른다. 데이터가 바뀌면 계획도 바뀔 수 있다 |
 
 지금 주요 DBMS(MySQL, PostgreSQL, Oracle, SQL Server)는 모두 비용 기반이다. Oracle의 RBO는 10g부터 지원이 끝났다. 그래서 통계를 최신으로 유지하는 것(`ANALYZE TABLE`, PostgreSQL의 autovacuum이 함께 돌리는 ANALYZE)이 성능 관리의 일부다. 실행 계획을 읽는 법과 풀 스캔을 고르는 이유는 [[index-design|인덱스 설계와 쿼리 튜닝]]에 있다.
+
+## 엔진의 몸체: Oracle로 보는 메모리·프로세스·파일
+
+위 흐름의 버퍼 관리자·트랜잭션 관리자가 실제로 어떤 부품인지는 엔진 하나를 뜯어 보면 잘 보인다. Oracle은 부품마다 이름이 붙어 있어 예로 쓰기 좋다. 부품이 노리는 목표는 셋이다. **디스크를 덜 읽고, 커밋을 빨리 끝내고, 죽어도 되살린다.** MySQL·PostgreSQL도 같은 목표를 비슷한 부품으로 푼다.
+
+Oracle에서 **인스턴스**와 **데이터베이스**는 다른 말이다. 인스턴스는 메모리와 백그라운드 프로세스의 묶음이라 시작할 때 생기고 종료하면 사라진다. 데이터베이스는 디스크의 파일 묶음이라 인스턴스가 꺼져도 남는다. 인스턴스가 데이터베이스를 마운트해서 연다. 보통 1:1이고, RAC(Real Application Clusters)에서는 여러 서버의 인스턴스가 한 데이터베이스를 함께 연다.
+
+```text
+ 클라이언트 ──▶ 서버 프로세스 (전용 메모리 PGA)
+                   │
+ ┌──────────── SGA: 모든 세션이 공유 ─────────────┐
+ │ 버퍼 캐시 │ 공유 풀 │ 리두 로그 버퍼 │ 대용량·자바 풀 │
+ └───────────────────────────────────────────────┘
+      │ DBWn          │ LGWR           CKPT·SMON·PMON …
+      ▼               ▼
+  데이터 파일     온라인 리두 로그 ──ARCn──▶ 아카이브 로그
+             컨트롤 파일: 파일 위치와 체크포인트 기록
+```
+
+### 메모리: SGA와 PGA
+
+| 영역 | 담는 것 | MySQL·PostgreSQL의 대응 |
+| --- | --- | --- |
+| 버퍼 캐시(SGA) | 데이터 파일에서 올린 블록. LRU 계열로 자주 쓰는 블록을 남긴다 | InnoDB 버퍼 풀, `shared_buffers` |
+| 공유 풀(SGA) | 파싱된 SQL·PL/SQL과 실행 계획(라이브러리 캐시), 테이블·권한 메타데이터(데이터 사전 캐시), 결과 캐시 | MySQL에는 실행 계획을 세션끼리 공유하는 캐시가 없다 |
+| 리두 로그 버퍼(SGA) | 어느 블록이 어떻게 바뀌었나. 곧 리두 로그 파일로 내려간다 | InnoDB 로그 버퍼, WAL 버퍼 |
+| 대용량·자바 풀(SGA) | 백업·병렬 처리용 큰 메모리, JVM 메모리 | - |
+| PGA | 서버 프로세스마다 따로 갖는 정렬·해시 조인 작업 공간과 세션 정보. 모자라면 임시 테이블스페이스(디스크)로 넘친다 | `work_mem`, InnoDB의 정렬 버퍼 |
+
+공유 풀은 문장 모양이 같은 SQL의 실행 계획을 재사용한다(소프트 파싱). 값을 문자열로 이어 붙이면 문장이 매번 달라 캐시를 못 쓰므로, Oracle에서는 바인드 변수가 인젝션 방어에 더해 성능에도 크게 듣는다([[sql-basics#파라미터 바인딩과 Prepared Statement|Prepared Statement]]).
+
+### 백그라운드 프로세스
+
+| 프로세스 | 하는 일 |
+| --- | --- |
+| 서버 프로세스 | 사용자 대신 SQL을 실행한다. 버퍼 캐시에 없는 블록은 직접 읽어 올린다. 연결당 하나가 기본(전용 서버)이다 |
+| DBWn | 버퍼 캐시의 고친(dirty) 블록을 데이터 파일에 쓴다. 커밋과 무관하게 나중에 몰아서 쓴다 |
+| LGWR | 리두 로그 버퍼를 리두 로그 파일에 쓴다. **커밋은 이 쓰기가 끝나야 완료다** |
+| CKPT | 체크포인트(여기까지는 데이터 파일에 다 내려갔다는 표시)를 기록하고 DBWn을 깨운다 |
+| SMON | 비정상 종료 뒤 재시작할 때 인스턴스 복구, 임시 세그먼트 정리 |
+| PMON | 죽은 세션의 트랜잭션을 롤백하고 잠금·자원을 푼다 |
+| ARCn | 다 쓴 리두 로그를 아카이브 로그로 복사한다(아카이브 모드) |
+| RECO | 끊긴 분산 트랜잭션을 커밋이나 롤백으로 마무리한다 |
+| MMON 등 | 성능 통계를 모아 AWR에 쌓는다 |
+
+연결마다 프로세스를 두는 것은 PostgreSQL도 같고, MySQL은 연결마다 스레드를 둔다. 어느 쪽이든 연결이 비싸 앞단에 [[connection-pool|커넥션 풀]]을 둔다.
+
+커밋은 리두 로그만 **순차로 덧붙이고** 끝낸다. 흩어진 데이터 블록을 제자리에 쓰는 무거운 일은 DBWn이 미룬다. 그 사이에 죽으면 재시작 때 리두로 커밋된 변경을 다시 적용하고(롤 포워드), 언두 세그먼트의 이전 값으로 커밋 안 된 변경을 되돌린다. 체크포인트가 잦으면 복구할 리두가 짧아지는 대신 쓰기가 는다. WAL과 재시작 복구의 일반 원리는 [[transaction|트랜잭션과 회복]]에 있다.
+
+### 물리 파일
+
+| 파일 | 역할 |
+| --- | --- |
+| 데이터 파일 | 테이블·인덱스의 실제 데이터 |
+| 온라인 리두 로그 | 변경 기록. 여러 그룹을 돌려 쓰고, 차면 다음 그룹으로 넘어간다(로그 스위치) |
+| 아카이브 리두 로그 | 덮어쓰기 전에 떠 둔 리두 사본. 시점 복구(PITR)에 쓴다 |
+| 컨트롤 파일 | DB 이름, 데이터 파일·리두 로그 위치, 체크포인트 정보. 잃으면 DB를 못 열어 여러 벌 둔다 |
+| 파라미터 파일(spfile) | 메모리 크기 같은 인스턴스 설정 |
+
+### 논리 저장 구조
+
+SQL이 보는 테이블과 디스크 파일 사이에는 네 겹의 논리 단위가 있다.
+
+```text
+테이블스페이스 ─(1:N)─ 데이터 파일(물리)
+  └ 세그먼트     테이블·인덱스·파티션 하나가 차지하는 공간
+      └ 익스텐트   연속된 블록 묶음. 공간이 모자라면 하나씩 더 받는다
+          └ 블록     I/O의 최소 단위. 기본 8KB(2~32KB 중 DB를 만들 때 정한다)
+```
+
+- **블록**이 크면 한 번에 많이 읽어 I/O 횟수가 줄지만, 몇 행만 필요할 때 낭비가 생기고 같은 블록을 두고 다투는 일이 는다. 분석용은 크게, OLTP는 기본값 근처를 쓴다. InnoDB의 페이지(기본 16KB)가 같은 개념이다.
+- **익스텐트**는 블록을 연속으로 묶어 줘서 데이터가 흩어지지 않고 순차 읽기가 빨라진다.
+- **세그먼트**는 한 테이블스페이스 안에 있지만 그 안의 여러 데이터 파일에 걸칠 수 있다.
+- **테이블스페이스**는 관리 단위다. 테이블과 인덱스를 다른 디스크의 테이블스페이스에 두어 I/O를 나누거나, 오래된 데이터를 읽기 전용 테이블스페이스로 옮겨 백업 대상을 줄인다. 기본으로 SYSTEM·SYSAUX(데이터 사전), UNDO(롤백과 읽기 일관성용 이전 값), TEMP(메모리에 못 담은 정렬 중간 결과), USERS(사용자 객체 기본 위치)가 있다.
+
+```sql
+CREATE TABLESPACE ts_orders
+  DATAFILE '/u01/oradata/orders01.dbf' SIZE 100M AUTOEXTEND ON NEXT 10M;
+
+ALTER TABLESPACE ts_orders
+  ADD DATAFILE '/u02/oradata/orders02.dbf' SIZE 100M;   -- 다른 디스크로 넓히기
+
+-- 안의 객체, 걸린 참조 제약, 실제 파일까지 지운다. 되돌릴 수 없다
+DROP TABLESPACE ts_orders INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+```
+
+Oracle의 **스키마는 사용자 계정과 1:1**이다. `HR` 사용자가 만든 객체는 `HR` 스키마에 속하고, 다른 사용자는 `HR.EMPLOYEES`처럼 접두어를 붙이거나 동의어를 만들어 쓴다([[sql-basics#동의어|동의어]]). 테이블 저장 방식은 순서 없이 쌓는 힙 테이블이 기본이고, 기본 키 순서의 B-트리에 행을 넣는 인덱스 구조 테이블(IOT)을 고를 수도 있다([[index-design#클러스터드 인덱스와 보조 인덱스|클러스터드 인덱스]]).
+
+에디션은 무료이고 CPU·메모리·용량 상한이 있는 Express Edition(XE), 중소 규모용 Standard Edition 2, 모든 기능을 갖춘 Enterprise Edition으로 나뉜다. 파티셔닝은 Enterprise Edition의 별도 유료 옵션이다. 12c부터는 컨테이너 DB(CDB) 하나에 플러그형 DB(PDB) 여럿을 담는 멀티테넌트 구조를 쓴다.
 
 ## 인덱스 자료 구조
 
@@ -171,7 +261,8 @@ LSM 트리: 추가 후 병합
 
 - SQL은 파싱 → 최적화 → 실행 → 버퍼·트랜잭션·잠금 관리 순으로 처리된다. 느린 쿼리는 대개 옵티마이저가 고른 계획에서 원인이 보인다.
 - 쓰기는 WAL로 먼저 기록하고, 읽기는 버퍼 풀에서 끝나는 것이 보통이다.
+- Oracle로 보면 인스턴스(공유 메모리 SGA + 프로세스 전용 PGA + 백그라운드 프로세스)가 파일 묶음인 데이터베이스를 연다. 커밋은 LGWR의 리두 쓰기로 끝나고 데이터 블록은 DBWn이 나중에 내린다. 저장은 테이블스페이스 → 세그먼트 → 익스텐트 → 블록이다.
 - 인덱스 자료 구조는 값의 형태와 읽기·쓰기 비율로 고른다. 범위 조회는 B-트리, 전문 검색은 역색인, 공간은 R-트리다.
 - B-트리는 읽기에, LSM 트리는 쓰기에 강하다.
 
-관련 노트: [[transaction|트랜잭션과 회복]], [[database-scaling|데이터베이스 확장과 성능 최적화]], [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]], [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]], [[tree|트리와 이진 탐색 트리]], [[oracle-architecture|Oracle 데이터베이스 구조]]
+관련 노트: [[transaction|트랜잭션과 회복]], [[database-scaling|데이터베이스 확장과 성능 최적화]], [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]], [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]], [[tree|트리와 이진 탐색 트리]], [[connection-pool|DB 커넥션 풀]]

@@ -10,24 +10,24 @@ date: "2026-10-13"
 
 프레임워크와 언어는 바뀌어도, 프로그램이 하드웨어 위에서 어떻게 실행되고 데이터가 어떻게 오가는지에 대한 이해는 오래 쓰인다. 이 분야에는 하드웨어(컴퓨터 구조)에서 시작해 운영체제, 네트워크, 데이터베이스로 올라가는 CS 기초를 모았다. 정보처리기사 실기에 반복해 나오는 개념도 따로 묶었다. 처음 공부한다면 아래 「학습 순서와 자료」의 순서를 따르면 된다.
 
-- [Computer-Architecture](Computer-Science/Computer-Architecture.md): 논리 회로와 디지털 부품, 데이터 표현과 컴퓨터 산술, 레지스터 전송, 기본 컴퓨터의 설계와 어셈블리 프로그래밍, CPU 명령어, 파이프라인, 현대 CPU의 마이크로아키텍처, 입출력, 메모리 계층과 캐시, 캐시를 고려한 코드
+- [Computer-Architecture](Computer-Science/Computer-Architecture.md): 논리 회로와 디지털 부품, 데이터 표현과 컴퓨터 산술, 레지스터 전송, 기본 컴퓨터의 설계와 어셈블리 프로그래밍, CPU 명령어, 파이프라인과 다중 프로세서, 현대 CPU의 마이크로아키텍처, 입출력과 시스템 버스, 메모리 계층과 캐시, 캐시를 고려한 코드
 - [Operating-System](Computer-Science/Operating-System.md): 운영체제 개요, 커널, 인터럽트와 시스템 콜, 프로세스와 스레드, CPU 스케줄링, 동기화와 교착 상태, 메모리 관리와 가상 메모리, 파일 시스템과 UNIX 파일 입출력, 시그널과 셸, 데몬과 systemd, 리눅스 접근 제어와 배포판, 가상화, 디스크 스케줄링과 LVM
 - [Network](Computer-Science/Network.md): 네트워크 기초와 OSI 7계층, IP와 서브넷·라우팅·NAT, 전송 계층과 포트, TCP, HTTP·HTTPS, 프록시, 리눅스 네트워크 네임스페이스, RFC, WebRTC
 - [Database](Computer-Science/Database.md): 데이터 모델, 트랜잭션, 정규화, SQL
 - [C-Programming](Computer-Science/C-Programming.md): C 기초와 포인터, 자료형과 형 변환, 구조체·스코프·링키지, 입출력, gcc·make 빌드와 디버깅 도구, 호출 규약과 저수준 최적화, C의 역사와 표준
 - [Programming-Languages](Computer-Science/Programming-Languages.md): C++ 문법·템플릿·STL·예외·vtable·메모리 풀, Java·JVM과 Go, 언어의 계보·패러다임·실행 방식, 추상 클래스와 인터페이스·위임·DTO/VO·클린 코드·GoF 디자인 패턴 같은 객체 지향 설계
-- [Software-Development](Computer-Science/Software-Development.md): 요구공학, 구조적·객체지향 분석 설계(DFD·UML), 테스트 설계 기법과 테스트 프로세스, 프로젝트 관리(EVM·COCOMO), 소프트웨어 안전
-- [Engineer-Information-Processing](Computer-Science/Engineer-Information-Processing.md): 정보처리기사 실기의 반복 출제 개념 정리
+- [Engineer-Information-Processing](Computer-Science/Engineer-Information-Processing.md): 정보처리기사 실기의 반복 출제 개념에서 출발해 소프트웨어 공학(요구공학, 구조적·객체지향 분석 설계, 프로젝트 관리)과 소프트웨어 테스트(설계 기법, 테스트 프로세스, AI 테스트)까지 넓힌 정리
 - [개발자가 빠지는 함정 모음](Computer-Science/developer-traps.md): CSS·유니코드·부동소수점·시간·SQL·동시성·Git 등에서 직관과 다르게 동작하는 지점
 - [달력과 시간에 대한 개발자의 착각](Computer-Science/calendar-fallacies.md): 하루·주·달·해·시간대·서머타임에 대한 흔한 가정과 그것을 깨는 실제 사례
 - [소프트웨어 비대화](Computer-Science/software-bloat.md): 하드웨어가 빨라져도 체감 속도가 그대로인 이유, 의존성·계층·임시방편이 쌓이는 원인과 효율을 기본값으로 두는 태도
 - [소프트웨어 복잡성: 본질적 복잡성과 우발적 복잡성](Computer-Science/software-complexity.md): 상태·제어 흐름·코드 양이라는 원인, 단순함과 쉬움의 차이, 피하고 분리하라는 처방
+- [소프트웨어 안전: 위험원 분석과 결함 허용 설계](Computer-Science/software-safety.md): 사고 사례, 결함 예방·검출·제거·허용, 중복성과 다양성, IEC 61508과 SIL, FMEA·FTA·HAZOP
 - [베지어 곡선](Computer-Science/bezier-curve.md): 선형 보간을 겹친 드 카스텔조 알고리즘, 2·3차 곡선 식과 행렬 표현, 펜 툴·SVG·CSS의 곡선
 - [변환 행렬: 이동·크기·회전과 동차 좌표](Computer-Science/transformation-matrix.md): 그래픽스의 2D·3D 변환 행렬, 기준점·임의 축 변환의 합성, 곱하는 순서와 투영
 - [피드백 제어와 PID 제어기: 로봇이 목표값에 닿는 법](Computer-Science/feedback-control-pid.md): 로봇의 정의, 센서·오차·제어기·구동기의 음의 피드백 루프, 오버슈트, 비례·적분·미분 항, 상위 계획, 모라벡의 역설
 - [컴퓨터 그래픽스 렌더링 기초: 프레임버퍼에서 3D 래스터화까지](Computer-Science/graphics-rendering-basics.md): 래스터·벡터 스캔과 텍스트 모드, 프레임버퍼, 투영·삼각형 메시·스캔라인 채우기·안티앨리어싱, 화가 알고리즘과 Z 버퍼, 후면 컬링, 셰이딩·텍스처 매핑, GPU 병렬 처리
 - [데이터 압축: 무손실과 손실](Computer-Science/data-compression.md): 런 렝스 부호화, LZ 계열 사전 방식과 DEFLATE, 허프만 트리와 접두 부호, 압축 한계, 지각 부호화와 동영상의 움직임 보상
-- [그래픽 사용자 인터페이스: WIMP, 메타포, 이벤트 기반 프로그래밍](Computer-Science/graphical-user-interface.md): CLI와 GUI 비교, 창·아이콘·메뉴·포인터와 데스크톱 메타포, 위젯, 이벤트 처리 함수를 등록하는 GUI 프로그램 구조, WYSIWYG
+- [그래픽 사용자 인터페이스: WIMP, 메타포, 이벤트 기반 프로그래밍, GUI 툴킷](Computer-Science/graphical-user-interface.md): CLI와 GUI 비교, 창·아이콘·메뉴·포인터와 데스크톱 메타포, 위젯, 이벤트 처리 함수를 등록하는 GUI 프로그램 구조, WYSIWYG, Java Swing의 레이아웃 관리자·리스너·EDT
 - [양자역학 기초: 이중 슬릿, 중첩, 얽힘](Computer-Science/quantum-mechanics-basics.md): 파동-입자 이중성, 양자 중첩과 얽힘, 양자역학에 대한 흔한 오해
 - [컴퓨터의 역사: 무엇이 무엇을 대체했나](Computer-Science/computing-history.md): 계산 도구에서 범용 기계로, 릴레이→진공관→트랜지스터→집적회로, 포토리소그래피와 무어의 법칙의 한계, 프로그램 입력 수단의 변천, 튜링 머신과 정지 문제, 개인용 컴퓨터가 보급된 조건
 - [양자 컴퓨터의 원리: 큐비트, 양자 알고리즘, 양자 게이트](Computer-Science/quantum-computing.md): 진폭 간섭으로 정답 확률 키우기, 블로흐 구면과 X·H·CNOT, 그로버·쇼어, 양자내성암호, 오류 정정

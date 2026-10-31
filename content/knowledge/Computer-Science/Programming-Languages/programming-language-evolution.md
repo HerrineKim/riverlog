@@ -91,4 +91,4 @@ C++의 강점은 **하드웨어와 메모리를 세밀하게 제어하면서도 
 - 최근 언어는 대부분 기존 언어의 약점(메모리 안전성, 장황함, 타입 부재)을 고치는 후계자다.
 - C++는 성능과 자원 통제가 핵심인 분야에 남아 있다. 에너지 효율도 대체로 네이티브 언어가 앞선다.
 
-관련 노트: [[computing-history|컴퓨터의 역사]], [[how-programs-run|프로그램이 실행되기까지]], [[programming-paradigms|프로그래밍 패러다임]], [[c-history-and-standards|C의 역사와 표준]], [[cpp-basics|C++ 기초 문법과 참조자]]
+관련 노트: [[computing-history|컴퓨터의 역사]], [[how-programs-run|프로그램이 실행되기까지]], [[programming-paradigms|프로그래밍 패러다임]], [[c-history-and-standards|C의 역사와 표준]], [[cpp-basics|C++ 기초]]

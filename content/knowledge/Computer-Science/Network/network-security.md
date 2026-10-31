@@ -132,4 +132,4 @@ VPN 전용 계정 DB(LDAP 등)를 따로 운영하거나 설정 파일·키를 �
 - VPN은 공용망 위의 암호화 터널이다. 원격 접속과 사이트 간 연결로 나뉘고, 신뢰를 VPN 제공자에게 옮긴다는 점을 기억한다.
 - 공격은 계층마다 다르므로 방어도 계층마다 쌓는다.
 
-관련 노트: [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[osi-7-layer|OSI 7계층]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[security|정보 시스템 보안]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]], [[mpls|MPLS]]
+관련 노트: [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[osi-7-layer|OSI 7계층]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[security|정보 시스템 보안]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]], [[access-network-and-wan|가입자망과 광역망(MPLS VPN)]]

@@ -11,7 +11,7 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 > 「[Mysql 인덱스 정리 및 팁](https://jojoldu.tistory.com/243)」, 「[MySQL Workbench의 VISUAL EXPLAIN으로 인덱스 동작 확인하기](https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/)」, 「[쿼리 최적화: 빠른 쿼리를 위한 7가지 체크리스트](https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073)」, 「[MongoDB Index 설계 전략](https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html)」, 「[MySQL performance-schema-instruments 사용에 따른 성능 영향 실험](https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/)」을 바탕으로, MySQL·MongoDB 공식 문서로 확인해 재구성한 노트다.
 > 「클러스터드 인덱스와 보조 인덱스」는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로, MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
 > 유니크 인덱스·외래 키 인덱스, 조인 방식, 정렬 처리, NoSQL의 인덱스는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
-> 인덱스 후보 컬럼 고르기, 복합 인덱스 순서 원칙, Oracle의 인덱스 스캔 방식, 조인 방식별 적용 조건은 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기) 강의 내용으로 보강했다.
+> 인덱스 후보 컬럼 고르기, 복합 인덱스 순서 원칙, Oracle의 인덱스 스캔 방식과 인덱스 구조 테이블, 조인 방식별 적용 조건은 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기) 강의 내용으로 보강했다.
 
 ## 인덱스는 정렬이다
 
@@ -52,7 +52,7 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 
 - 기본 키(primary key)에 만든 인덱스를 primary index, 나머지 컬럼의 인덱스를 secondary index라고도 한다. 기본 키는 유일하고 NULL이 없어 물리 정렬 기준으로 알맞다.
 - **MySQL InnoDB**는 테이블 자체가 기본 키 순서의 B+트리(클러스터드 인덱스)다. 그래서 기본 키 없이 만든 테이블도 클러스터드 인덱스가 있다. 기본 키가 없으면 첫 번째 `NOT NULL UNIQUE` 인덱스를, 그것도 없으면 6바이트짜리 숨은 행 ID(`GEN_CLUST_INDEX`)를 만들어 쓴다. 숨은 행 ID는 인스턴스 전체가 공유하는 카운터에서 받으므로 경합이 생기고 쿼리에 쓸 수도 없다. MySQL 8.0.30부터는 `sql_generate_invisible_primary_key`를 켜면 기본 키 없는 테이블에 보이지 않는 자동 증가 컬럼(`my_row_id`)을 기본 키로 붙인다. 복제(행 기반)에서도 기본 키가 없으면 복제본이 행을 찾느라 느려지므로 늘 명시적인 기본 키를 둔다. 보조 인덱스 리프에는 **기본 키 값**이 들어 있어, 보조 인덱스 조회는 「보조 인덱스 → 기본 키 → 클러스터드 인덱스」 두 번 찾기가 된다. 기본 키가 길면 모든 보조 인덱스가 같이 커진다.
-- **PostgreSQL**은 행을 힙(heap)에 순서 없이 쌓고 모든 인덱스가 행 위치(TID)를 가리키는 보조 인덱스다. `CLUSTER` 명령은 한 번 정렬해 줄 뿐 이후 삽입 순서는 유지하지 않는다. SQL Server는 클러스터드 인덱스를 직접 고른다.
+- **PostgreSQL**은 행을 힙(heap)에 순서 없이 쌓고 모든 인덱스가 행 위치(TID)를 가리키는 보조 인덱스다. `CLUSTER` 명령은 한 번 정렬해 줄 뿐 이후 삽입 순서는 유지하지 않는다. SQL Server는 클러스터드 인덱스를 직접 고른다. Oracle은 테이블마다 고른다. 기본인 힙 테이블은 PostgreSQL처럼 인덱스가 행 주소(ROWID)를 가리키고, **인덱스 구조 테이블(IOT, Index-Organized Table)** 로 만들면 InnoDB처럼 기본 키 B-트리 안에 행이 들어간다. IOT는 기본 키로만 찾는 작은 행이나 기본 키 범위 조회가 잦은 테이블에 맞는다. 같은 스키마가 DBMS마다 다르게 동작하는 이유 중 하나다.
 - 클러스터드 키 값이 바뀌면 행이 물리적으로 옮겨진다. 그래서 기본 키는 바뀌지 않고, 짧고, **단조 증가하는 값**(자동 증가, 시간순 UUIDv7)이 좋다. 무작위 UUIDv4는 삽입마다 B+트리 중간 페이지를 쪼개(page split) 쓰기가 느려지고 인덱스가 부푼다([[distributed-unique-id|분산 고유 ID]]).
 - **기본 키는 인덱스인가**: 기본 키는 「유일하고 NULL이 없다」는 **제약**이고, 인덱스는 빨리 찾기 위한 **자료 구조**다. 모든 RDBMS는 기본 키 제약을 검사하려고 유니크 인덱스를 자동으로 만들므로 실제로는 늘 인덱스가 딸려 있다. InnoDB에서는 그 인덱스가 테이블 자체(클러스터드)이고, PostgreSQL에서는 보조 인덱스 하나다.
 - **외래 키와 인덱스**: 외래 키도 제약이다. 참조되는 부모 쪽 컬럼은 기본 키나 유니크여야 하므로 이미 인덱스가 있다. 참조하는 **자식 쪽 컬럼**의 인덱스는 DB마다 다르다. InnoDB는 외래 키 컬럼에 인덱스가 없으면 자동으로 만든다. PostgreSQL은 만들지 않으므로 직접 만들어야 한다. 이 인덱스가 없으면 부모 행을 지우거나 키를 바꿀 때마다 자식 테이블 전체를 훑어 참조를 확인하고, 그동안 잠금도 넓게 걸린다. 조인 컬럼이기도 하므로 대개 만든다.
@@ -288,4 +288,4 @@ RDB 인덱스와 다른 점은 셋이다. 분산 저장이라 **파티션 키를
 - 컬럼 가공, 앞쪽 와일드카드, 타입 불일치는 인덱스를 무력화한다.
 - 설계는 EXPLAIN과 실제 데이터 분포로 검증한다. 이론적으로 맞는 인덱스도 데이터에 따라 버려진다.
 
-관련 노트: [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]], [[database-scaling|데이터베이스 확장과 성능 최적화]], [[sql-basics|SQL 기초]], [[mongodb|MongoDB 시작하기와 CRUD]], [[api-pagination|API 페이지네이션]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]], [[sql-subquery|서브쿼리와 관계해석]]
+관련 노트: [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]], [[database-scaling|데이터베이스 확장과 성능 최적화]], [[sql-basics|SQL 기초]], [[mongodb|MongoDB 시작하기와 CRUD]], [[api-pagination|API 페이지네이션]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]]

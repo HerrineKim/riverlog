@@ -1,7 +1,7 @@
 ---
 title: "C 프로그래밍"
 concept: "C Language"
-summary: "C 언어의 컴파일 과정과 자료형, 포인터와 메모리, 구조체와 함수 포인터, 스코프와 링키지, 입출력, 빌드 도구(gcc·make)와 디버깅 도구, 호출 규약과 저수준 최적화, 역사와 표준."
+summary: "C 언어의 컴파일 과정과 자료형·연산자·문자열, 포인터와 메모리, 구조체·공용체와 함수 포인터, 스코프와 링키지, 입출력, 빌드 도구(gcc·make)와 디버깅 도구, 호출 규약과 저수준 최적화, 역사와 표준."
 tags: ["c", "memory", "pointer", "cs50", "data-structure", "build"]
 source: notion
 date: "2026-10-14"
@@ -11,15 +11,12 @@ C는 메모리를 직접 다루는 언어라서, 주소와 포인터를 이해�
 
 ### 언어 기초
 
-- [C 기초: 컴파일, 자료형, 제어문, 함수, 배열과 문자열](Computer-Science/C-Programming/c-basics.md): 정보의 표현, 4단계 컴파일 과정, 자료형 크기, 제어문과 함수, 배열과 널 종단 문자열
+- [C 기초: 컴파일, 자료형, 연산자, 제어문, 함수, 배열과 문자열](Computer-Science/C-Programming/c-basics.md): 정보의 표현, 4단계 컴파일 과정, 자료형 크기, 연산자 함정(정수 나눗셈, 증감의 미정의 동작, 단락 평가, 우선순위), 제어문과 함수, 배열, 널 종단 문자열과 ctype.h·string.h 함수의 함정, fgets·strtol
 - [포인터와 메모리](Computer-Science/C-Programming/pointers-and-memory.md): 주소와 포인터, 문자열의 정체, malloc/free와 저장 기간, 스택·힙, 배열과 포인터의 차이, 읽기 전용 리터럴, const 위치, 이중 포인터, 댕글링 포인터, memmove, new/delete 짝
 - [C의 정수 자료형과 형 변환](Computer-Science/C-Programming/c-integer-types.md): 플랫폼별 크기, stdint.h와 size_t, 정수 승격, 부호 확장, 오버플로 미정의 동작, 고정소수점
-- [구조체와 함수 포인터](Computer-Science/C-Programming/c-struct-and-function-pointer.md): 구조체 패딩, 함수 포인터와 콜백, 불투명 포인터와 가상 함수 테이블로 객체 흉내 내기
+- [C 사용자 정의 타입과 함수 포인터: 구조체, 공용체, 열거형, typedef](Computer-Science/C-Programming/c-struct-and-function-pointer.md): 구조체 패딩, 태그 공용체와 타입 퍼닝, enum의 약한 타입 검사, typedef, 함수 포인터와 콜백, 불투명 포인터와 가상 함수 테이블로 객체 흉내 내기
 - [C의 스코프와 링키지](Computer-Science/C-Programming/c-scope-and-linkage.md): 스코프와 이름 가림, 네 가지 이름 공간, 저장 기간, static과 내부 링키지, 기호 상수
 - [C 입력과 파일 입출력](Computer-Science/C-Programming/file-io.md): scanf, fopen·fprintf·fread·fclose, 매직 넘버로 바이너리 판별, stdio 아래의 fd와 시스템 콜
-- [C 연산자와 수식: 나눗셈, 증감, 대입식, 단락 평가, 우선순위 함정](Computer-Science/C-Programming/c-operators-and-expressions.md): 정수 나눗셈과 %, 증감 연산자의 미정의 동작, 대입식 함정, 단락 평가, 우선순위 함정
-- [C 문자열 라이브러리: ctype.h, string.h, 안전한 대안과 숫자 변환](Computer-Science/C-Programming/c-string-functions.md): ctype.h·string.h 함수별 함정, snprintf·strlcpy·fgets 같은 안전한 대안, strtol
-- [C 공용체, 열거형, typedef](Computer-Science/C-Programming/c-union-enum-typedef.md): 공용체의 메모리 공유와 태그 공용체, 타입 퍼닝, enum의 약한 타입 검사, typedef
 
 ### 빌드와 디버깅
 

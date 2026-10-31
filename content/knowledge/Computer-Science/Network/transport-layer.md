@@ -391,7 +391,7 @@ UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프�
 - 주기적으로 정보를 뿌리는 경우: **RIP** 라우팅 정보 교환
 - 신뢰성이 필요하면 애플리케이션 계층에서 직접 구현한다 (예: QUIC은 UDP 위에서 신뢰성과 암호화를 제공하며, [[http|HTTP/3]]가 QUIC 위에서 동작한다).
 - 브라우저 간 실시간 통화([[webrtc|WebRTC]])도 미디어를 UDP로 보낸다.
-- 한 번에 여러 수신자에게 보내는 경우: 저지연 트레이딩의 **시세 멀티캐스트**. TCP는 1:1 연결이라 멀티캐스트를 할 수 없다([[backend-latency-optimization|백엔드 지연 시간 줄이기]]).
+- 한 번에 여러 수신자에게 보내는 경우: 저지연 트레이딩의 **시세 멀티캐스트**. TCP는 1:1 연결이라 멀티캐스트를 할 수 없다([[backend-latency-optimization|백엔드 지연 시간 줄이기]], [[network-layer#IP 멀티캐스트|IP 멀티캐스트]]).
 - 작은 패킷을 자주 보내는 저전력 기기: **IoT** 센서 통신(CoAP 같은 UDP 기반 프로토콜).
 
 DNS도 보통 UDP를 쓰지만, 응답이 커서 잘리거나 영역 전송(zone transfer)을 할 때는 TCP로 넘어간다.
@@ -433,4 +433,4 @@ DNS도 보통 UDP를 쓰지만, 응답이 커서 잘리거나 영역 전송(zone
 - TCP의 중요 플래그는 SYN·ACK·FIN·RST, 중요 상태는 LISTEN·ESTABLISHED. 종료는 방향마다 닫는 4-way handshake이고, 먼저 닫은 쪽은 TIME_WAIT로 잠시 기다린다.
 - UDP는 포트와 체크섬만 얹은 8바이트 헤더로, 신뢰성이 필요하면 QUIC처럼 위 계층에서 구현한다.
 
-관련 노트: [[network-layer|네트워크 계층 프로토콜]], [[osi-7-layer|OSI 7계층]], [[http|HTTP 프로토콜]], [[security|정보 시스템 보안]], [[dns|DNS]], [[websocket|WebSocket]], [[ip-multicast|IP 멀티캐스트]]
+관련 노트: [[network-layer|네트워크 계층 프로토콜]], [[osi-7-layer|OSI 7계층]], [[http|HTTP 프로토콜]], [[security|정보 시스템 보안]], [[dns|DNS]], [[websocket|WebSocket]]

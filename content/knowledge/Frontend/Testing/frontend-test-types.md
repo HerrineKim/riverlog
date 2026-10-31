@@ -212,4 +212,4 @@ Testing Library 쿼리는 **접두어로 "없을 때 어떻게 하나"** 를, �
 - 테스트는 짧고 읽기 쉽게: 이름에 대상·상황·기대 결과, 본문은 AAA.
 - 기본 조합은 TypeScript·ESLint + Vitest + Testing Library + MSW + Playwright다.
 
-관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[test-run-stages|테스트를 돌리는 시점]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]], [[test-environment|테스트 실행 환경]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[test-primitives|테스트의 기본 요소]], [[static-analysis|정적 분석]], [[backend-testing|백엔드 테스트]], [[api-mocking|API 모킹: MSW와 json-server]], [[storybook|Storybook]], [[test-design-techniques|테스트 설계 기법]]
+관련 노트: [[js-testing-best-practices|JavaScript 테스트 모범 사례]], [[tdd|프론트엔드에서의 TDD]], [[humble-object-pattern|험블 객체 패턴]], [[test-run-stages|테스트를 돌리는 시점]], [[a11y-driven-testing|접근성 기반 UI 테스트 자동화]], [[software-testing|소프트웨어 테스트]], [[test-environment|테스트 실행 환경]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[test-primitives|테스트의 기본 요소]], [[static-analysis|정적 분석]], [[backend-testing|백엔드 테스트]], [[api-mocking|API 모킹: MSW와 json-server]], [[storybook|Storybook]]

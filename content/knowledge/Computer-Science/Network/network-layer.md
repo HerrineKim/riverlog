@@ -1,8 +1,8 @@
 ---
 title: "네트워크 계층 프로토콜"
 concept: "IP"
-summary: "IPv4 헤더와 단편화(MTU), 주소 체계(클래스와 CIDR), 서브넷 계산(VLSM·경로 요약·특수 주소)과 라우팅 테이블(최장 프리픽스 일치, 직접·간접 전달), 라우팅과 포워딩(RIB·FIB, 라우터의 포워딩 과정), ARP 동작 과정·RARP, DHCP 주소 할당(DORA·옵션·임대·예약), ICMP 메시지 종류·생성 규칙과 ping·traceroute, IGMP, IPv6(주소 종류·확장 헤더·ICMPv6·SLAAC), NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 알고리즘(거리 벡터·링크 상태·경로 벡터)과 RIP·OSPF·BGP 비교, 회선·패킷 교환 방식 정리."
-tags: ["network", "ip", "routing", "certificate"]
+summary: "IPv4 헤더와 단편화(MTU), 주소 체계(클래스와 CIDR), 서브넷 계산(VLSM·경로 요약·특수 주소)과 라우팅 테이블(최장 프리픽스 일치, 직접·간접 전달), 라우팅과 포워딩(RIB·FIB, 라우터의 포워딩 과정), ARP 동작 과정·RARP, DHCP 주소 할당(DORA·옵션·임대·예약), ICMP 메시지 종류·생성 규칙과 ping·traceroute, IPv6(주소 종류·확장 헤더·ICMPv6·SLAAC), NAT의 종류(SNAT·DNAT·NAPT)와 포트 포워딩, 라우팅 알고리즘(거리 벡터·링크 상태·경로 벡터)과 RIP·OSPF·BGP 비교, IP 멀티캐스트(그룹 주소와 MAC 변환, IGMP, RPF와 송신자 기반·공유 트리, PIM), 회선·패킷 교환 방식 정리."
+tags: ["network", "ip", "routing", "multicast", "certificate"]
 source: notion
 sources: ["https://app.notion.com/p/f5f9fef15c754d119e52ff9e731ccf9d", "https://app.notion.com/p/42f307b4a399451588a4a6eafe5e4942", "https://app.notion.com/p/0bf40aabca234965b20a76643119e00e", "https://app.notion.com/p/75b4f05a4e764d11a187267de520c0af", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://80000coding.notion.site/95d93763a0124c73975f3c8333f6fb3f", "https://80000coding.notion.site/2679bd9e167847c8b969a8647bcfc9bb", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://bytebytego.com/guides/ipv4-vs-ipv6", "https://bytebytego.com/guides/how-nat-made-the-growth-of-the-internet-possible", "https://dataportal.kr/14", "https://no1.technology/13", "https://engineering.fb.com/2021/10/05/networking-traffic/outage-details/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)"]
 date: "2026-10-21"
@@ -14,7 +14,7 @@ date: "2026-10-21"
 > IP 주소 클래스·서브네팅과 DHCP는 「[Frontend_TIL: 네트워크 계층의 역활과 IP의 구조](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B3%84%EC%B8%B5%EC%9D%98%20%EC%97%AD%ED%99%9C%EA%B3%BC%20IP%EC%9D%98%20%EA%B5%AC%EC%A1%B0.md)」, 「[라우터와 서브넷](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%9D%BC%EC%9A%B0%ED%84%B0%EC%99%80%20%EC%84%9C%EB%B8%8C%EB%84%B7.md)」, 「[ICMP, DHCP](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/ICMP%2C%20DHCP.md)」을 바탕으로 보강했다.
 > 「데이터 교환 방식」 절의 세 방식 비교는 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 서브넷 마스크 표기, 라우팅과 포워딩·라우터의 포워딩 과정, 라우팅 알고리즘 비교, DHCP의 계층·옵션·임대 기간·예약은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
-> 블록 계산식·VLSM·경로 요약·특수 주소, 직접·간접 전달, ARP 캐시 상태, ICMP 메시지 규칙, RIP·OSPF·BGP 비교, IPv6 주소 종류·확장 헤더·ICMPv6·SLAAC는 고려사이버대학교 「컴퓨터네트워크」(2023-2학기) 강의 내용으로 보강했다.
+> 블록 계산식·VLSM·경로 요약·특수 주소, 직접·간접 전달, ARP 캐시 상태, ICMP 메시지 규칙, RIP·OSPF·BGP 비교, IPv6 주소 종류·확장 헤더·ICMPv6·SLAAC, IP 멀티캐스트(그룹 주소와 MAC 변환, IGMP, 멀티캐스트 라우팅)는 고려사이버대학교 「컴퓨터네트워크」(2023-2학기) 강의 내용으로 보강했다.
 
 네트워크 계층(3계층)은 여러 네트워크를 거쳐 패킷을 목적지 호스트까지 보내는 일을 한다. 핵심인 IP는 "최선을 다해 전달하지만 보장은 하지 않는" 프로토콜이고, 주변 프로토콜들이 주소 변환·오류 보고·경로 선택을 돕는다.
 
@@ -154,7 +154,7 @@ IP 주소와 서브넷 마스크를 비트 AND 하면 **네트워크 주소**가
 | `127.0.0.0/8` | 루프백 | 패킷이 NIC 밖으로 나가지 않고 자기 프로세스로 돌아온다. 목적지로만 쓴다 |
 | `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16` | 사설 | 기관 내부 전용. 인터넷에 나갈 때 NAT로 바꾼다 |
 | `169.254.0.0/16` | 링크 로컬 | DHCP가 실패하면 OS가 스스로 붙인다 |
-| `224.0.0.0/4` | 멀티캐스트 | 그룹 주소([[ip-multicast\|IP 멀티캐스트]]) |
+| `224.0.0.0/4` | 멀티캐스트 | 그룹 주소(아래 「IP 멀티캐스트」) |
 | `240.0.0.0/4` | 예약 | 쓰지 않는다 |
 
 ### 라우팅 테이블
@@ -189,7 +189,7 @@ IP 주소와 서브넷 마스크를 비트 AND 하면 **네트워크 주소**가
 | `10.1.2.10` | `/24`만 (`/26`에 AND하면 `10.1.2.0`이라 불일치) | eth0로 직접 전달 |
 | `8.8.8.8` | 기본 경로만 | eth1로 간접 전달, 다음 홉 `10.9.9.1`의 MAC을 ARP |
 
-목적지 주소를 테이블에서 찾는 대신, 미리 경로를 정해 두고 패킷에 붙인 짧은 **레이블**로 교환 테이블을 바로 찾는 레이블 기반 포워딩도 있다([[mpls|MPLS]]).
+목적지 주소를 테이블에서 찾는 대신, 미리 경로를 정해 두고 패킷에 붙인 짧은 **레이블**로 교환 테이블을 바로 찾는 레이블 기반 포워딩도 있다([[access-network-and-wan#MPLS: IP 망 위의 레이블 스위칭|MPLS]]).
 
 ### 라우팅과 포워딩
 
@@ -317,7 +317,7 @@ DISCOVER는 브로드캐스트라 라우터를 넘지 못한다. 서버가 다�
 
 **공유기의 「고정 IP 할당」은 DHCP 예약**(reservation)이다. 프로토콜은 그대로 DHCP지만, 서버가 특정 **MAC 주소**(또는 클라이언트 식별자)에는 늘 같은 주소를 주도록 표에 묶어 둔다. 기기는 평소처럼 DORA로 주소를 받으므로 기기 쪽 설정은 바꿀 필요가 없다. 이와 별개로 ISP가 공유기에 주는 공인 IP는 대개 유동이라, 바깥에서 집에 접속하려면 고정 IP 상품이나 DDNS(주소가 바뀔 때마다 도메인의 A 레코드를 갱신)를 쓴다. 요즘 휴대폰·노트북은 Wi-Fi마다 **무작위 MAC**을 쓰므로, 예약을 걸려면 그 네트워크에서 무작위화를 끈다.
 
-## ICMP와 IGMP
+## ICMP
 
 **ICMP**는 IP의 비신뢰성을 보완해 **오류·제어 메시지를 원래 패킷의 출발지에 보고**한다. 오류를 고치지는 않고 알리기만 하며, 고치는 일은 상위 계층에 맡긴다. ICMP 메시지는 IP 패킷의 페이로드에 실린다(Protocol = 1). 헤더는 Type, Code, Checksum으로 시작하고, Type이 큰 분류, Code가 세부 이유다.
 
@@ -344,7 +344,6 @@ ICMP로 동작하는 두 도구는 다음과 같다.
 
 - 유닉스 계열 `traceroute`는 기본으로 높은 번호의 UDP 포트로 보내고, 목적지에 닿으면 Port Unreachable(Type 3, Code 3)이 와서 끝을 안다. Windows `tracert`는 ICMP Echo를 쓴다.
 - 방화벽이 ICMP를 막으면 ping이 실패해도 서비스는 정상일 수 있다. 응답이 없다는 것만으로 "죽었다"고 단정하지 않는다.
-- **IGMP**: 멀티캐스트 그룹의 가입·탈퇴를 관리한다([[ip-multicast|IP 멀티캐스트]]).
 
 ## IPv6
 
@@ -575,6 +574,70 @@ NAPT 표의 항목은 안에서 밖으로 나갈 때 생긴다. 그래서 **밖�
 - NFV(Network Function Virtualization)는 방화벽·로드 밸런서 같은 네트워크 기능을 전용 장비 대신 범용 서버의 소프트웨어로 돌리는 것으로, SDN과 짝을 이룬다.
 - 쿠버네티스의 CNI 플러그인, 클라우드의 VPC도 같은 생각, 즉 **선언한 정책을 컨트롤러가 데이터 평면에 내려보내는** 구조다.
 
+## IP 멀티캐스트
+
+**멀티캐스트**는 송신자가 **그룹 주소로 한 번만** 보내고, 경로가 갈라지는 라우터에서만 패킷을 복사하는 전달 방식이다. 유니캐스트로 N명에게 보내면 송신자 근처 링크에 같은 데이터가 N번 지나가지만, 멀티캐스트는 링크마다 사본이 많아야 하나다. 브로드캐스트와 달리 라우터를 넘어가고, 가입한 호스트만 받는다(통신 방식 비교는 [[network-basics|네트워크 기초]]).
+
+IPTV, 사내 영상 송출, 시세 배포, 라우팅 프로토콜 메시지(OSPF, RIPv2)에 쓴다. 공용 인터넷 사업자들은 망 사이 멀티캐스트를 거의 열어 두지 않아서, 실제로는 한 사업자·한 회사 망 안에서 쓰고 인터넷 전체 배포는 [[cdn|CDN]]과 [[live-streaming|라이브 스트리밍]]의 유니캐스트 계층 구조가 맡는다. 시세 멀티캐스트의 쓰임은 [[backend-latency-optimization|백엔드 지연 최적화]]에 있다.
+
+### 그룹 주소
+
+IPv4 클래스 D(`224.0.0.0/4`)가 멀티캐스트용이고, 주소 하나가 호스트가 아니라 그룹을 가리킨다.
+
+| 구간·주소 | 용도 |
+| --- | --- |
+| `224.0.0.0/24` | 같은 링크의 제어용. TTL 1로 보내 라우터를 넘지 않는다. `224.0.0.1` 모든 호스트, `.2` 모든 라우터, `.5` OSPF, `.9` RIPv2, `.13` PIM, `.22` IGMPv3 보고 |
+| `232.0.0.0/8` | SSM(Source-Specific Multicast). 그룹뿐 아니라 송신자까지 골라 받는다 |
+| `239.0.0.0/8` | 관리 범위(administratively scoped). 조직 내부용이라 사설 IP와 비슷한 자리다 |
+
+그룹 주소에는 ARP에 답할 주인이 하나가 아니므로, 이더넷은 MAC 주소를 **계산으로** 만든다. 앞 25비트를 `01:00:5E` + `0`으로 고정하고 IP 주소의 하위 23비트를 붙인다.
+
+```text
+239.1.2.3 → 하위 23비트 0000001.00000010.00000011 → 01:00:5E:01:02:03
+```
+
+IP 쪽은 앞 4비트(`1110`)를 뺀 28비트가 그룹을 구분하는데 MAC에는 23비트만 들어가므로, **IP 그룹 32개가 MAC 주소 하나를 공유한다.** NIC가 받은 프레임이 정말 가입한 그룹의 것인지는 IP 계층에서 한 번 더 거른다.
+
+### IGMP: 그룹 가입 관리
+
+라우터는 자기 LAN에 어떤 그룹의 수신자가 있어야 그쪽으로 내보낸다. **IGMP(Internet Group Management Protocol)** 는 호스트와 바로 옆 라우터 사이에서 이 가입 정보를 주고받는다. IP 프로토콜 번호 2로 실리고 TTL 1이라 LAN 밖으로 나가지 않는다.
+
+- **질의(Query)**: 라우터가 묻는다. 모든 그룹에 대한 일반 질의(`224.0.0.1`로), 특정 그룹 질의, 특정 그룹·송신자 질의(v3)가 있다.
+- **보고(Report)**: 호스트가 답하거나, 가입할 때 먼저 보낸다.
+- v2에서 명시적 탈퇴가, v3에서 송신자 지정(SSM의 바탕)이 더해졌다.
+
+스위치는 원래 멀티캐스트 프레임을 모든 포트로 뿌리므로, IGMP 메시지를 엿보고 가입한 포트로만 보내는 **IGMP 스누핑**을 켜는 경우가 많다. 라우터끼리 가입 정보를 퍼뜨려 전달 트리를 만드는 일은 아래 멀티캐스트 라우팅 프로토콜이 맡는다.
+
+### 멀티캐스트 라우팅: 전달 트리 만들기
+
+유니캐스트는 목적지마다 최단 경로 하나면 되지만, 멀티캐스트는 송신자에서 여러 수신자로 뻗는 **트리**가 필요하다.
+
+| 구분 | 송신자 기반 트리(SBT) | 그룹 공유 트리 |
+| --- | --- | --- |
+| 단위 | (송신자, 그룹)마다 하나 | 그룹마다 하나. 코어(랑데부) 라우터가 뿌리 |
+| 경로·지연 | 송신자에서 각 수신자까지 최단. 지연이 짧다 | 코어를 거쳐 돌아갈 수 있어 길다 |
+| 라우터 상태 | 송신자·그룹이 많으면 폭증 | 그룹 수에 비례해 가볍다 |
+| 어울리는 곳 | 송신자가 적고 수신자가 촘촘할 때 | 송신자가 많고 수신자가 흩어져 있을 때 |
+| 프로토콜 | DVMRP, MOSPF, PIM-DM | CBT, PIM-SM |
+
+송신자 기반 트리의 전달 정책은 플러딩의 약점을 하나씩 고친 단계로 이해한다.
+
+| 정책 | 동작 | 남는 문제 |
+| --- | --- | --- |
+| 플러딩 | 들어온 곳을 뺀 모든 인터페이스로 | 루프, 멤버 없는 망까지 전달 |
+| RPF (Reverse Path Forwarding) | 송신자 주소로 **유니캐스트** 라우팅 테이블을 찾아, 내가 송신자에게 갈 때 쓰는 인터페이스로 들어온 패킷만 내보내고 나머지는 버린다 | 루프는 없지만 한 네트워크가 사본을 여럿 받을 수 있다 |
+| RPB (Reverse Path Broadcasting) | 네트워크마다 부모 라우터 하나만 전달 | 중복은 없지만 여전히 모두에게 간다 |
+| RPM (Reverse Path Multicasting) | RPB로 뿌린 뒤 멤버 없는 가지는 **가지치기(prune)**, 새 멤버가 생기면 **접목(graft)** | 주기적으로 다시 뿌리고 가지치는 비용 |
+
+RPF는 「송신자로 가는 최단 경로의 반대 방향으로 들어온 패킷만 최단 경로 트리를 따라온 것」이라는 판정이다. 기존 라우팅 테이블을 재활용하므로 멀티캐스트용 경로 계산이 따로 필요 없고, 지금의 PIM도 이 검사를 쓴다.
+
+- **DVMRP**: RIP식 거리 벡터에 RPM을 얹었다. 느린 수렴, 홉 제한 같은 RIP의 약점을 물려받았다.
+- **MOSPF**: OSPF 링크 상태로 (송신자, 그룹)마다 다익스트라 트리를 계산한다. 가입·탈퇴마다 다시 계산해 작은 환경에만 맞는다.
+- **CBT**: 코어 하나를 뿌리로 한 공유 트리. 송신자는 패킷을 유니캐스트로 감싸 코어에 보내고, 수신 측 라우터는 코어에 명시적으로 가입한다.
+- **PIM(Protocol Independent Multicast)**: 어떤 유니캐스트 라우팅 프로토콜이 만든 테이블이든 RPF에 그대로 쓴다. 현재 가장 많이 쓴다. **PIM-DM**(밀집 모드)은 수신자가 많다고 보고 뿌린 뒤 가지치고, **PIM-SM**(희소 모드)은 랑데부 포인트(RP)를 뿌리로 한 공유 트리로 시작해 트래픽이 많아지면 송신자 기반 최단 경로 트리로 갈아탄다.
+
+멀티캐스트를 모르는 라우터가 중간에 있으면 멀티캐스트 라우터끼리 **유니캐스트 터널**로 잇는다. 멀티캐스트 패킷을 터널 반대편 주소로 가는 유니캐스트 패킷에 넣어 보내고 받은 쪽이 꺼내 다시 뿌리는 방식으로, 초기 실험망 MBONE이 이렇게 만들어졌다.
+
 ## 데이터 교환 방식
 
 | 방식 | 특징 |
@@ -590,4 +653,4 @@ NAPT 표의 항목은 안에서 밖으로 나갈 때 생긴다. 그래서 **밖�
 - **가상 회선 방식**: 논리적 경로를 먼저 설정(호 설정 → 전송 → 해제)하고 패킷이 순서대로 같은 길로 간다. 연결형.
 - **데이터그램 방식**: 경로 설정 없이 패킷마다 독립적으로 전송. 유연하지만 도착 순서가 바뀔 수 있어 재조립이 필요하다. 비연결형 (IP).
 
-관련 노트: [[network-basics|네트워크 기초]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[linux-network-namespace|리눅스 네트워크 네임스페이스와 ip 명령]], [[ip-multicast|IP 멀티캐스트]], [[ip-qos|IP QoS]], [[mpls|MPLS]]
+관련 노트: [[network-basics|네트워크 기초]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[linux-network-namespace|리눅스 네트워크 네임스페이스와 ip 명령]], [[ip-qos|IP QoS]], [[access-network-and-wan|가입자망과 광역망]]

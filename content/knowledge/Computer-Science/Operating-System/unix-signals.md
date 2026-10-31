@@ -135,4 +135,4 @@ sigaction(SIGUSR1, &sa, NULL);
 - 부모는 `SIGCHLD`를 받으면 `WNOHANG` 루프로 자식을 모두 거둬 좀비를 막는다.
 - **프로세스 간 데이터 전달에는 파이프·소켓을 쓰고, 시그널은 "깨워라·멈춰라·다시 읽어라" 같은 제어에만 쓴다.**
 
-관련 노트: [[process-and-thread|프로세스와 스레드]], [[system-structure|컴퓨터 시스템 구조와 인터럽트]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[time-and-timers|시간과 타이머]], [[daemon-and-systemd|데몬과 systemd]], [[ipc-pipe-fifo-shared-memory|파이프, FIFO, 공유 메모리]]
+관련 노트: [[process-and-thread|프로세스와 스레드]], [[system-structure|컴퓨터 시스템 구조와 인터럽트]], [[shell-pipeline|셸이 명령을 실행하는 방식]], [[time-and-timers|시간과 타이머]], [[daemon-and-systemd|데몬과 systemd]]

@@ -60,12 +60,12 @@ date: "2026-10-14"
 
 RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/dictionary/computer-science/database/database-models)에서 먼저 본다.
 
-- [SQL 기초](/knowledge/dictionary/backend/database/sql-basics): DDL·DML·DCL, 조회·집계·그룹화, 헷갈리는 문법
+- [SQL 기초](/knowledge/dictionary/backend/database/sql-basics): DDL·DML·DCL, 뷰·시퀀스, 조회·집계·그룹화, 서브쿼리와 NOT IN 함정, 저장 프로시저와 PL/SQL
 - [용도별 데이터베이스와 고르는 법](/knowledge/dictionary/backend/database/database-selection): OLTP·OLAP·검색·키-값·문서·그래프·시계열·벡터 DB와 선택 기준
-- [DB 내부 구조: 쿼리 실행과 인덱스 자료 구조](/knowledge/dictionary/backend/database/database-internals): 파서·옵티마이저·실행기·버퍼 관리자, B+ 트리·LSM 트리
+- [DB 내부 구조: 쿼리 실행과 인덱스 자료 구조](/knowledge/dictionary/backend/database/database-internals): 파서·옵티마이저·실행기·버퍼 관리자, Oracle의 SGA·PGA·백그라운드 프로세스와 테이블스페이스, B+ 트리·LSM 트리
 - [인덱스 설계와 쿼리 튜닝](/knowledge/dictionary/backend/database/index-design): 카디널리티, 복합 인덱스 순서, 인덱스를 못 타는 조건, EXPLAIN
 - [DB 커넥션 풀](/knowledge/dictionary/backend/database/connection-pool): 풀 크기와 처리량, 대기 시간·타임아웃 설정
-- [데이터베이스 확장과 성능 최적화](/knowledge/dictionary/backend/database/database-scaling): 인덱스·캐시·구체화된 뷰·복제·샤딩을 싼 것부터
+- [데이터베이스 확장과 성능 최적화](/knowledge/dictionary/backend/database/database-scaling): 인덱스·캐시·구체화된 뷰·복제·파티셔닝·샤딩을 싼 것부터
 - [데이터베이스 샤딩](/knowledge/dictionary/backend/database/database-sharding): 샤드 키와 라우팅 방식, 샤딩이 어렵게 만드는 것
 - [분산 환경의 고유 ID 생성](/knowledge/dictionary/backend/database/distributed-unique-id): UUID, Snowflake, DB 자동 증가·세그먼트 방식 비교
 - [JPA와 영속성 컨텍스트](/knowledge/dictionary/backend/database/jpa-persistence-context): 패러다임 불일치, 1차 캐시·변경 감지·쓰기 지연, 지연 로딩과 N+1
@@ -79,10 +79,6 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [Elasticsearch와 ELK 스택](/knowledge/dictionary/backend/database/elasticsearch): Lucene 기반 분산 검색·분석 엔진, 인덱스·샤드·세그먼트, 노드 역할·복제·일관성, ILM·데이터 티어·스냅숏, 운영 진단(429·디스크 워터마크), ELK 로그 파이프라인
 - [Elasticsearch 검색: 매핑·분석기·Query DSL](/knowledge/dictionary/backend/database/elasticsearch-search): 동적·명시적 매핑과 nested, 분석기, Query DSL(match·term·bool·multi_match), BM25·부스팅, 집계, search_after·PIT 페이지네이션
 - [웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리](/knowledge/dictionary/backend/database/web-search-engine): URL 프런티어, PageRank, 샤딩된 역인덱스, 질의 처리
-- [Oracle 데이터베이스 구조: 인스턴스, 메모리, 저장 단위](/knowledge/dictionary/backend/database/oracle-architecture): 인스턴스(SGA·PGA·백그라운드 프로세스)와 데이터베이스 파일, 테이블스페이스·세그먼트·익스텐트·블록
-- [PL/SQL: 블록, 커서, 프로시저와 함수](/knowledge/dictionary/backend/database/oracle-pl-sql): 블록 구조, 예외 처리, 커서, BULK COLLECT·FORALL, 프로시저·함수·패키지·트리거
-- [Oracle 스키마 객체: 파티션, 뷰, 시퀀스, 동의어](/knowledge/dictionary/backend/database/oracle-schema-objects): 파티션과 프루닝, 수정 가능한 뷰와 실체화된 뷰, 시퀀스 캐시, 동의어
-- [서브쿼리와 관계해석: IN, EXISTS, 상관 서브쿼리](/knowledge/dictionary/backend/database/sql-subquery): 서브쿼리의 위치와 연산자, 상관 서브쿼리, NOT IN과 NULL 함정, 관계해석과 EXISTS
 
 ### Architecture
 

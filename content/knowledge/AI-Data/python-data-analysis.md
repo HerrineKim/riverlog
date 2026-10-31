@@ -135,9 +135,7 @@ EDA는 데이터 분석 방법 네 갈래 중 첫 번째에 속한다.
 
 | 알고 싶은 것 | 노트 |
 | --- | --- |
-| 데이터 열을 위치·길이·색에 대응시키는 원리(그래픽 문법, 지각) | [[visual-encoding\|시각화 인코딩]] |
-| 수량·분포·비율·관계·시계열별 차트 고르기 | [[chart-selection-guide\|데이터 종류별 차트 고르기]] |
-| 겹침·색·레이블·3차원 같은 디자인 판단 | [[chart-design-principles\|그래프 디자인 원칙]] |
+| 시각 채널의 원리(그래픽 문법, 지각), 질문별 차트 고르기, 겹침·색·레이블 같은 디자인 판단 | [[data-visualization\|데이터 시각화]] |
 | 시각화 도구를 과업 분석부터 평가까지 설계하기 | [[visualization-design-process\|시각화 설계 과정]] |
 
 | 라이브러리 | 특징 |
@@ -148,7 +146,7 @@ EDA는 데이터 분석 방법 네 갈래 중 첫 번째에 속한다.
 | Bokeh | 웹 브라우저용 인터랙티브 시각화 |
 | Altair (Vega) | 선언적 문법의 시각화 |
 
-Altair처럼 그래픽 문법을 API로 옮긴 라이브러리의 바탕은 [[visual-encoding#그래픽 문법: 차트를 일곱 부품으로 나누기|시각화 인코딩]]에 있다. 모두 [Jupyter Notebook](jupyter-notebook.md)이나 설치 없이 브라우저에서 돌고 GPU도 쓸 수 있는 Google Colab에서 바로 결과를 확인할 수 있다.
+Altair처럼 그래픽 문법을 API로 옮긴 라이브러리의 바탕은 [[data-visualization#그래픽 문법: 차트를 일곱 부품으로 나누기|데이터 시각화]]에 있다. 모두 [Jupyter Notebook](jupyter-notebook.md)이나 설치 없이 브라우저에서 돌고 GPU도 쓸 수 있는 Google Colab에서 바로 결과를 확인할 수 있다.
 
 ## 4. 분석 개선하기
 
@@ -170,4 +168,4 @@ Altair처럼 그래픽 문법을 API로 옮긴 라이브러리의 바탕은 [[vi
 - 학습 지도: 「[I want to study Data Science](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki)」 위키는 데이터 분석가·엔지니어·ML 엔지니어·과학자 직무 구분과 Git·리눅스·파이썬·선형대수부터 비전·NLP·추천·MLOps까지의 공부 목록, 데이터셋·포트폴리오 자료를 모아 둔다.
 - 책: 『파이썬 라이브러리를 활용한 데이터 분석』, 『파이썬 데이터 사이언스 핸드북』, 『밑바닥부터 시작하는 데이터 과학』
 
-관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-journalism|데이터 저널리즘 실무]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[location-estimation|데이터의 위치 추정]], [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[chart-selection-guide|데이터 종류별 차트 고르기]], [[visual-encoding|시각화 인코딩]]
+관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-journalism|데이터 저널리즘 실무]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[location-estimation|데이터의 위치 추정]], [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[data-visualization|데이터 시각화]], [[visualization-design-process|시각화 설계 과정]]

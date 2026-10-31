@@ -124,7 +124,7 @@ public class Human extends Animal implements Thinkable, Comparable<Human> { ... 
 
 | 언어 | 추상 클래스 | 인터페이스 |
 | --- | --- | --- |
-| C++ | 순수 가상 함수(`= 0`)가 있는 클래스 | 별도 문법 없음. 순수 가상 함수만 있는 클래스로 표현 ([[cpp-virtual-functions\|가상 함수와 vtable]]) |
+| C++ | 순수 가상 함수(`= 0`)가 있는 클래스 | 별도 문법 없음. 순수 가상 함수만 있는 클래스로 표현 ([[cpp-virtual-functions\|C++ 상속과 가상 함수]]) |
 | Kotlin | `abstract class` | `interface`. 기본 구현과 추상 프로퍼티 가능, 상태(backing field)는 불가 |
 | TypeScript | `abstract class` | `interface`. 컴파일 후 사라지는 타입 정보 |
 | Python | `abc.ABC`를 상속하고 `@abstractmethod`를 붙인다. 추상 메서드를 모두 구현하지 않은 하위 클래스는 **인스턴스를 만들 때** `TypeError` | 별도 문법 없음. 추상 메서드만 둔 ABC를 쓰거나, 상속 없이 메서드 모양만 맞추면 되는 `typing.Protocol`(정적 검사기용, [[python-internals\|덕 타이핑]]). ABC의 `register()`로 상속 없이 가상 하위 클래스를 등록할 수도 있다 |
@@ -137,4 +137,4 @@ public class Human extends Animal implements Thinkable, Comparable<Human> { ... 
 - 템플릿 메서드 패턴은 추상 클래스가 순서를 고정하고 추상·훅 메서드로 변하는 부분만 연다.
 - 기본은 인터페이스, 공유할 상태가 있을 때 추상 클래스, 그 전에 위임을 검토한다.
 
-관련 노트: [[frontend-solid|프론트엔드와 SOLID 원칙]], [[oop-messaging|객체 지향의 본질: 메시징]], [[kotlin-delegation|위임 패턴과 Kotlin by]], [[software-engineering|소프트웨어 설계와 공학]], [[cpp-inheritance|C++ 상속]]
+관련 노트: [[frontend-solid|프론트엔드와 SOLID 원칙]], [[oop-messaging|객체 지향의 본질: 메시징]], [[kotlin-delegation|위임 패턴과 Kotlin by]], [[software-engineering|소프트웨어 설계와 공학]], [[cpp-virtual-functions|C++ 상속과 가상 함수]]

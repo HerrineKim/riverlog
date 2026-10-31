@@ -132,7 +132,7 @@ CPU의 산술 연산은 데이터가 어떤 형식으로 표현되어 있느냐�
 
 ### BCD 가산기
 
-4비트 이진 덧셈의 결과를 BCD로 보정한다. 두 BCD 자리와 캐리를 더한 이진 합이 **9를 넘으면 6(`0110`)을 더해** 올바른 BCD 자리와 캐리를 만든다. 보정 조건의 논리식과 회로는 [[combinational-circuit-components|조합 회로 부품 활용]]의 「BCD 가산기」에 있다.
+4비트 이진 덧셈의 결과를 BCD로 보정한다. 두 BCD 자리와 캐리를 더한 이진 합이 **9를 넘으면 6(`0110`)을 더해** 올바른 BCD 자리와 캐리를 만든다. 보정 조건의 논리식과 회로는 [[digital-logic-circuits#BCD 가산기|디지털 논리 회로와 부품]]의 「BCD 가산기」에 있다.
 
 ### BCD 감산기
 
@@ -151,4 +151,4 @@ CPU의 산술 연산은 데이터가 어떤 형식으로 표현되어 있느냐�
 - 부동 소수점 곱셈은 지수 덧셈·가수 곱셈, 나눗셈은 지수 뺄셈·가수 나눗셈 후 정규화한다.
 - BCD 덧셈은 이진 합이 9를 넘으면 6을 더해 보정한다.
 
-관련 노트: [[data-representation|데이터의 표현]], [[register-transfer|레지스터 전송과 마이크로 연산]], [[floating-point-arithmetic|부동소수점 오차: 반올림·비교·누적]], [[combinational-circuit-components|조합 회로 부품 활용]]
+관련 노트: [[data-representation|데이터의 표현]], [[register-transfer|레지스터 전송과 마이크로 연산]], [[floating-point-arithmetic|부동소수점 오차: 반올림·비교·누적]], [[digital-logic-circuits|디지털 논리 회로와 부품]]

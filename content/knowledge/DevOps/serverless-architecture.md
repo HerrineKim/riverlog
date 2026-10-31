@@ -80,4 +80,4 @@ FaaS(Function as a Service)와 함께 인증·DB·스토리지·큐를 관리형
 - 함수를 얼마나 잘게 나눌지는 관리 비용과 콜드 스타트 사이의 거래다. 도메인 단위로 묶는 것이 무난한 출발점이다.
 - 15분 실행 제한, 콜드 스타트, DB 연결 폭주, 제공자 종속을 설계 단계에서 감안한다.
 
-관련 노트: [[aws-lambda-internals|AWS Lambda의 내부 구조]], [[aws-cloud-basics|AWS 클라우드 기초]], [[cloud-native|클라우드 네이티브]], [[devops-sre-platform-engineering|DevOps, SRE, 플랫폼 엔지니어링, NoOps]], [[cloud-design-patterns|클라우드 설계 패턴]], [[database-selection|데이터베이스 선택]], [[cloud-service-models|클라우드 서비스 모델(FaaS·PaaS)]]
+관련 노트: [[aws-lambda-internals|AWS Lambda의 내부 구조]], [[aws-cloud-basics|AWS 클라우드 기초]], [[cloud-native|클라우드 네이티브]], [[devops-sre-platform-engineering|DevOps, SRE, 플랫폼 엔지니어링, NoOps]], [[cloud-design-patterns|클라우드 설계 패턴]], [[database-selection|데이터베이스 선택]]

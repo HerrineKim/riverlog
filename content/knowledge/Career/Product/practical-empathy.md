@@ -91,4 +91,4 @@ sources: ["https://webactually.com/2015/04/17/%ea%b2%bd%ec%b2%ad%ec%97%90-%ea%b4
 - 결정마다 "누가 다칠 수 있나"를 묻고, 사전 부검으로 해로운 시나리오를 미리 적는다.
 - 배려는 사용자를 감싸는 것이 아니라 제품이 상황을 악화시키지 않게 하는 것이다.
 
-관련 노트: [[working-with-designers|디자이너와 함께 일하기]], [[content-strategy|콘텐츠 전략과 핵심 모델]], [[product-minded-engineer|제품 중심 개발자]], [[ux-scenario-persona|UX 시나리오와 페르소나]]
+관련 노트: [[working-with-designers|디자이너와 함께 일하기]], [[content-strategy|콘텐츠 전략과 핵심 모델]], [[product-minded-engineer|제품 중심 개발자]], [[user-research#페르소나와 UX 시나리오: 조사 결과를 이야기로|페르소나와 UX 시나리오]]

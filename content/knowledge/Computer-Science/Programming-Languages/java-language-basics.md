@@ -316,4 +316,4 @@ Java 8 이후 언어 기능(`record`, `sealed`, `var`, 패턴 매칭, 모듈)과
 - `static`은 클래스에 속한 공유 멤버다. 상수가 아니면 전역 상태처럼 조심하고, `static final` 상수는 쓰는 쪽에 인라이닝된다
 - 리플렉션은 실행 중 구조를 읽는 프레임워크용 도구이고, 동적 프록시는 인터페이스 호출을 가로채 횡단 관심사를 붙인다
 
-관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-concurrency|Java 동시성]], [[modern-java-features|모던 Java 기능]], [[java-idioms|Java 실무 관용구]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[singleton-pattern|싱글턴 패턴]], [[java-io-streams|Java 입출력 스트림]], [[java-swing-gui|Java Swing GUI]]
+관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-concurrency|Java 동시성]], [[modern-java-features|모던 Java 기능]], [[java-idioms|Java 실무 관용구]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[singleton-pattern|싱글턴 패턴]], [[java-serialization-jackson|Java 입출력과 직렬화]], [[graphical-user-interface|그래픽 사용자 인터페이스]]

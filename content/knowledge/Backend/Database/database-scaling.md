@@ -1,14 +1,15 @@
 ---
 title: "데이터베이스 확장과 성능 최적화"
 concept: "Database Scaling"
-summary: "DB가 느려지거나 한계에 닿을 때 싼 것부터 쓰는 수단을 순서대로 정리했다. 인덱스·쿼리 튜닝·커넥션 풀·캐시·구체화된 뷰·반정규화·수직 확장·읽기 복제본·파티셔닝·샤딩의 효과와 대가, 복제 구조(단일 리더·다중 리더·리더 없음)와 동기화 방식, 읽기 복제본 패턴의 복제 지연과 라우팅(애플리케이션 vs 미들웨어)을 다룬다."
+summary: "DB가 느려지거나 한계에 닿을 때 싼 것부터 쓰는 수단을 순서대로 정리했다. 인덱스·쿼리 튜닝·커넥션 풀·캐시·구체화된 뷰(갱신 방식)·반정규화·수직 확장·읽기 복제본·파티셔닝(프루닝, 분할 방식, 로컬·글로벌 인덱스)·샤딩의 효과와 대가, 복제 구조(단일 리더·다중 리더·리더 없음)와 동기화 방식, 읽기 복제본 패턴의 복제 지연과 라우팅(애플리케이션 vs 미들웨어)을 다룬다."
 tags: ["database", "backend", "performance", "scalability", "architecture"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/7-must-know-strategies-to-scale-your-database", "https://bytebytego.com/guides/a-cheatsheet-on-database-performance", "https://bytebytego.com/guides/read-replica-pattern", "https://bytebytego.com/guides/how-to-implement-read-replica-pattern", "https://bytebytego.com/guides/database-middleware", "https://www.postgresql.org/docs/current/rules-materializedviews.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://dev.mysql.com/doc/refman/8.4/en/replication-semisync.html"]
+sources: ["https://bytebytego.com/guides/7-must-know-strategies-to-scale-your-database", "https://bytebytego.com/guides/a-cheatsheet-on-database-performance", "https://bytebytego.com/guides/read-replica-pattern", "https://bytebytego.com/guides/how-to-implement-read-replica-pattern", "https://bytebytego.com/guides/database-middleware", "https://www.postgresql.org/docs/current/rules-materializedviews.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://dev.mysql.com/doc/refman/8.4/en/replication-semisync.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[7 Must-Know Strategies to Scale Your Database](https://bytebytego.com/guides/7-must-know-strategies-to-scale-your-database)」, 「[A Cheatsheet on Database Performance](https://bytebytego.com/guides/a-cheatsheet-on-database-performance)」, 「[Read Replica Pattern](https://bytebytego.com/guides/read-replica-pattern)」, 「[How to Implement Read Replica Pattern](https://bytebytego.com/guides/how-to-implement-read-replica-pattern)」, 「[Database Middleware](https://bytebytego.com/guides/database-middleware)」을 바탕으로 재구성한 노트다. 복제 구조와 동기화 방식, 클러스터링 구조는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 DB·[시스템 설계](https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md) 질문을 실마리로 보강했다.
+> 구체화된 뷰의 갱신 방식과 파티셔닝은 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기) 강의 내용으로 보강했다.
 
 ## 순서가 중요하다
 
@@ -45,7 +46,65 @@ CREATE UNIQUE INDEX ON daily_sales (order_date);
 REFRESH MATERIALIZED VIEW CONCURRENTLY daily_sales;  -- 읽기를 막지 않고 갱신 (유니크 인덱스 필요)
 ```
 
-MySQL에는 구체화된 뷰가 없어 요약 테이블을 만들고 배치나 이벤트로 갱신한다. 과거 MySQL이 제공하던 DB 수준 쿼리 캐시는 쓰기가 많으면 오히려 경합을 일으켜 8.0에서 제거되었다. 그래서 캐시는 애플리케이션 계층(Redis 등)에 둔다.
+Oracle은 갱신 시점과 방식을 고를 수 있고, 원본 집계 질의를 구체화된 뷰로 자동으로 바꿔 치는 질의 재작성(query rewrite)도 한다.
+
+```sql
+-- Oracle
+CREATE MATERIALIZED VIEW mv_monthly_sales
+REFRESH FAST ON DEMAND        -- 바뀐 부분만, 요청할 때
+ENABLE QUERY REWRITE          -- 원본에 대한 같은 집계 질의를 이 뷰로 대체
+AS
+SELECT TRUNC(ordered_at, 'MM') AS month, region, SUM(amount) AS total
+FROM orders GROUP BY TRUNC(ordered_at, 'MM'), region;
+```
+
+| 갱신 | 뜻 | 대가 |
+| --- | --- | --- |
+| `COMPLETE` | 처음부터 다시 계산 | 크면 오래 걸린다 |
+| `FAST` | 원본의 변경분만 반영. 원본에 구체화된 뷰 로그가 있어야 한다 | 원본에 쓸 때마다 로그가 남는다 |
+| `ON COMMIT` | 원본 트랜잭션이 커밋될 때마다 | 원본 쓰기가 느려진다 |
+| `ON DEMAND` | 요청하거나 일정에 맞춰 | 그 사이에는 낡은 값을 보여 준다 |
+
+결국 **얼마나 낡은 값까지 괜찮은가**를 정하는 일이다. 원거리 DB 테이블의 가까운 복사본으로도 쓴다. SQL Server는 인덱싱된 뷰, Db2는 구체화 쿼리 테이블이라 부른다. MySQL에는 구체화된 뷰가 없어 요약 테이블을 만들고 배치나 이벤트로 갱신한다. 과거 MySQL이 제공하던 DB 수준 쿼리 캐시는 쓰기가 많으면 오히려 경합을 일으켜 8.0에서 제거되었다. 그래서 캐시는 애플리케이션 계층(Redis 등)에 둔다.
+
+### 파티셔닝
+
+**파티셔닝(partitioning)** 은 큰 테이블·인덱스를 한 DB 서버 안에서 월별 같은 조각으로 나눠 저장하는 것이다. 애플리케이션에는 여전히 테이블 하나라 SQL을 고치지 않는다. 여러 서버로 나누는 [[database-sharding|샤딩]]과의 용어 구분은 그 노트에 있다.
+
+| 얻는 것 | 이유 |
+| --- | --- |
+| 조회가 빨라진다 | 옵티마이저가 조건을 보고 볼 필요 없는 파티션을 건너뛴다(**파티션 프루닝**) |
+| 오래된 데이터 삭제가 순식간이다 | 수천만 행 `DELETE` 대신 `DROP PARTITION`·`TRUNCATE PARTITION` 한 번. 언두·리두가 거의 안 생긴다 |
+| 관리 단위가 작아진다 | 파티션별로 백업·재구성·압축하고, 오래된 파티션은 싼 디스크로 옮긴다. 파티션 하나하나가 독립된 세그먼트라 저장 위치를 따로 줄 수 있다([[database-internals#논리 저장 구조\|논리 저장 구조]]) |
+| 장애 범위가 준다 | 한 파티션의 디스크가 문제여도 나머지는 쓸 수 있다 |
+
+행이 어느 파티션에 갈지는 **파티션 키** 컬럼으로 정한다.
+
+| 방식 | 기준 | 맞는 데이터 |
+| --- | --- | --- |
+| 범위(range) | 키 값의 구간 | 날짜. 가장 흔하다 |
+| 리스트(list) | 키 값의 목록 | 지역, 국가, 상태 코드처럼 값이 정해진 것 |
+| 해시(hash) | 키의 해시 | 뚜렷한 구간 없이 고르게 퍼뜨리고 싶을 때 |
+| 복합(composite) | 둘을 겹쳐서 | 월별 범위 안을 다시 해시로 |
+
+```sql
+-- Oracle: 새 달 데이터가 들어오면 파티션이 자동으로 생긴다
+CREATE TABLE orders (id NUMBER, ordered_at DATE, region VARCHAR2(10), amount NUMBER)
+PARTITION BY RANGE (ordered_at)
+INTERVAL (NUMTOYMINTERVAL(1, 'MONTH'))
+( PARTITION p_before_2026 VALUES LESS THAN (DATE '2026-01-01') );
+
+-- 2026년 9월 파티션만 읽는다
+SELECT SUM(amount) FROM orders
+WHERE ordered_at >= DATE '2026-09-01' AND ordered_at < DATE '2026-10-01';
+```
+
+MySQL·PostgreSQL도 `PARTITION BY RANGE/LIST/HASH`를 지원한다(PostgreSQL은 선언적 파티셔닝). Oracle에서는 Enterprise Edition의 별도 옵션이다.
+
+- **조건에 파티션 키가 없으면** 모든 파티션을 뒤진다. 날짜로 나눈 테이블을 고객 ID로만 찾으면 오히려 느려질 수 있으므로, 가장 흔한 조회 조건으로 키를 고른다.
+- 파티션 키에 함수를 씌우면(`TRUNC(ordered_at) = ...`) 프루닝이 안 될 수 있다. 인덱스가 함수 때문에 안 타는 것과 같은 이유다.
+- **로컬 인덱스**는 파티션마다 하나라 파티션을 지워도 다른 인덱스가 멀쩡하다. **글로벌 인덱스**는 테이블 전체에 하나라 파티션 키 없는 조회에 유리하지만, 파티션을 지우면 다시 만들거나 함께 갱신해야 한다(`UPDATE GLOBAL INDEXES`).
+- 파티션이 너무 잘면(일 단위 10년치) 계획 수립과 관리가 오히려 무거워진다.
 
 ## 복제와 클러스터링
 
@@ -181,4 +240,4 @@ MySQL 바이너리 로그는 SQL 문장(statement)이나 바뀐 행(row, 기본�
 - 복제는 가용성과 읽기 확장을 준다. 단일 리더는 충돌이 없는 대신 쓰기가 리더 한 대에 묶이고, 다중 리더·리더 없음은 쓰기를 나누는 대신 쓰기 충돌을 감지·해결해야 한다. LWW는 동시 쓰기를 조용히 버린다.
 - 읽기 복제본은 복제 지연 때문에 쓴 뒤 읽기 일관성이 깨질 수 있다. 중요한 읽기와 쓰기 직후 읽기는 원본으로 보낸다.
 
-관련 노트: [[index-design|인덱스 설계와 쿼리 튜닝]], [[connection-pool|DB 커넥션 풀]], [[database-sharding|데이터베이스 샤딩]], [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]], [[web-scalability-components|웹 확장성의 구성 요소: 한 장으로 보는 웹 아키텍처]], [[normalization|정규화와 반정규화]], [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[distributed-time-and-failure|분산 시스템의 시간과 장애: 8가지 착각부터 논리 시계까지]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[oracle-schema-objects|Oracle 스키마 객체]]
+관련 노트: [[index-design|인덱스 설계와 쿼리 튜닝]], [[connection-pool|DB 커넥션 풀]], [[database-sharding|데이터베이스 샤딩]], [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]], [[web-scalability-components|웹 확장성의 구성 요소: 한 장으로 보는 웹 아키텍처]], [[normalization|정규화와 반정규화]], [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[distributed-time-and-failure|분산 시스템의 시간과 장애: 8가지 착각부터 논리 시계까지]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]]

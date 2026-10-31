@@ -109,29 +109,11 @@ binom_table(5)[5][2]   # 10
 
 ### 실제로 나열할 때
 
-```python
-from itertools import permutations, combinations, product, combinations_with_replacement
-
-list(permutations("abc", 2))   # ab ac ba bc ca cb  → 6 = P(3,2)
-list(combinations("abc", 2))   # ab ac bc           → 3 = C(3,2)
-list(product("ab", repeat=2))  # aa ab ba bb        → 4 = 2^2
-list(combinations_with_replacement("ab", 2))  # aa ab bb → 3 = C(3,2)
-```
-
-직접 구현하려면 재귀로 "이 원소를 넣을지 말지"(조합) 또는 "이번 자리에 무엇을 놓을지"(순열)를 고르며 내려간다. 구조는 [[brute-force|완전 탐색과 백트래킹]]과 같다.
+경우를 하나씩 만들어야 하면 파이썬 `itertools`의 `permutations`(순열), `combinations`(조합), `product(repeat=r)`(중복 순열), `combinations_with_replacement`(중복 조합)를 쓴다. 직접 짜려면 재귀로 「이번 자리에 무엇을 놓을지」(순열)나 「이 원소를 넣을지 말지」(조합)를 고르며 내려간다. 코드와 가지치기는 [[brute-force|완전 탐색과 백트래킹]]에 있다.
 
 ## 완전 탐색이 가능한지 가늠하기
 
-1초에 대략 1억 번 연산한다고 보면 다음이 감이다.
-
-| 경우의 수 | 감당 가능한 n |
-| --- | --- |
-| n! (모든 순열) | 10 안팎 (10! ≈ 363만) |
-| 2^n (모든 부분집합) | 20~25 (2^20 ≈ 100만) |
-| C(n, 3) | 수백~1,000 |
-| C(n, 2) | 수천~1만 |
-
-경우의 수가 이보다 크면 순열·조합을 다 만들지 말고 정렬·[[greedy|그리디]]·DP로 줄일 방법을 찾는다. 입력 크기로 방향을 정하는 법은 [[coding-test|코딩 테스트 접근법]]에도 정리했다.
+경우의 수를 먼저 세면 다 만들어 볼 수 있는지 바로 판단된다. 1초에 약 1억 번 연산으로 어림하면 모든 순열(n!)은 n이 10 안팎(10! ≈ 363만), 모든 부분집합(2^n)은 20~25까지다. 두 개·세 개를 고르는 쌍은 `C(n, 2) ≈ n²/2`, `C(n, 3) ≈ n³/6`이라 각각 n이 수천~1만, 수백~1,000 정도까지 감당한다. 이보다 크면 정렬·[[greedy|그리디]]·DP로 줄일 방법을 찾는다. N 범위별 목표 복잡도 표는 [[coding-test|코딩 테스트 접근법]]에 있다.
 
 ## 정리
 

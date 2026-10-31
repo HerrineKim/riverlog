@@ -1,18 +1,19 @@
 ---
 title: "클라우드 서비스 지도: AWS·Azure·GCP 대응표"
 concept: "Cloud Services Map"
-summary: "세 주요 클라우드의 서비스를 컴퓨팅·스토리지·데이터베이스·네트워크·메시징·보안·관측·IaC 범주로 나란히 놓은 대응표, 처음 익힐 AWS 핵심 서비스와 학습 순서, 계층·범위로 고르는 클라우드 로드 밸런서, 수집에서 시각화까지의 빅데이터 파이프라인 단계, 클라우드 모니터링이 갖춰야 할 기능을 정리했다."
+summary: "세 주요 클라우드의 서비스를 컴퓨팅·스토리지·데이터베이스·네트워크·메시징·보안·관측·IaC 범주로 나란히 놓은 대응표, 처음 익힐 AWS 핵심 서비스와 학습 순서, 계층·범위로 고르는 클라우드 로드 밸런서, 수집에서 시각화까지의 빅데이터 파이프라인 단계와 처리 엔진(Hadoop·Spark), 클라우드 모니터링이 갖춰야 할 기능을 정리했다."
 tags: ["devops", "cloud", "aws", "infra"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/aws-services-cheat-sheet", "https://bytebytego.com/guides/what-are-the-most-important-aws-services-to-learn", "https://bytebytego.com/guides/aws-services-evolution", "https://bytebytego.com/guides/azure-services-cheat-sheet", "https://bytebytego.com/guides/cloud-comparison-cheat-sheet", "https://bytebytego.com/guides/cloud-load-balancer-cheat-sheet", "https://bytebytego.com/guides/big-data-pipeline-cheatsheet-for-aws-azure-and-google-cloud", "https://bytebytego.com/guides/cloud-monitoring-cheat-sheet", "https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html"]
+sources: ["https://bytebytego.com/guides/aws-services-cheat-sheet", "https://bytebytego.com/guides/what-are-the-most-important-aws-services-to-learn", "https://bytebytego.com/guides/aws-services-evolution", "https://bytebytego.com/guides/azure-services-cheat-sheet", "https://bytebytego.com/guides/cloud-comparison-cheat-sheet", "https://bytebytego.com/guides/cloud-load-balancer-cheat-sheet", "https://bytebytego.com/guides/big-data-pipeline-cheatsheet-for-aws-azure-and-google-cloud", "https://bytebytego.com/guides/cloud-monitoring-cheat-sheet", "https://docs.aws.amazon.com/apprunner/latest/dg/apprunner-availability-change.html", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[AWS Services Cheat Sheet](https://bytebytego.com/guides/aws-services-cheat-sheet)」, 「[Most Important AWS Services to Learn](https://bytebytego.com/guides/what-are-the-most-important-aws-services-to-learn)」, 「[AWS Services Evolution](https://bytebytego.com/guides/aws-services-evolution)」, 「[Azure Services Cheat Sheet](https://bytebytego.com/guides/azure-services-cheat-sheet)」, 「[Cloud Comparison Cheat Sheet](https://bytebytego.com/guides/cloud-comparison-cheat-sheet)」, 「[Cloud Load Balancer Cheat Sheet](https://bytebytego.com/guides/cloud-load-balancer-cheat-sheet)」, 「[Big Data Pipeline Cheatsheet](https://bytebytego.com/guides/big-data-pipeline-cheatsheet-for-aws-azure-and-google-cloud)」, 「[Cloud Monitoring Cheat Sheet](https://bytebytego.com/guides/cloud-monitoring-cheat-sheet)」을 바탕으로 재구성한 노트다. 서비스 이름은 바뀌는 일이 잦으므로 쓰기 전에 각 클라우드의 공식 문서로 확인한다.
+> 분산 처리 엔진 비교는 고려사이버대학교 「클라우드 컴퓨팅」(2023-2학기) 강의 내용으로 보강했다.
 
 ## 왜 범주로 익히나
 
-클라우드마다 서비스가 수백 개라 이름부터 외우면 끝이 없다. 그런데 **범주는 거의 같다.** 가상 서버, 객체 스토리지, 관리형 DB, 가상 네트워크, 큐는 어느 클라우드에나 있다. 범주와 각 범주의 역할을 먼저 익히고, 클라우드별 이름은 대응표로 찾는다. 클라우드의 기본 개념(리전·AZ, 요금 모델)은 [[aws-cloud-basics|AWS 클라우드 기초]]에 있다.
+클라우드마다 서비스가 수백 개라 이름부터 외우면 끝이 없다. 그런데 **범주는 거의 같다.** 가상 서버, 객체 스토리지, 관리형 DB, 가상 네트워크, 큐는 어느 클라우드에나 있다. 범주와 각 범주의 역할을 먼저 익히고, 클라우드별 이름은 대응표로 찾는다. 클라우드의 기본 개념(리전·AZ, 요금 모델)은 [[aws-cloud-basics|클라우드 기초와 AWS]]에 있다.
 
 ## 범주별 대응표
 
@@ -96,6 +97,14 @@ AWS는 2006년 S3·SQS·EC2 세 서비스로 시작해 관리형 DB, 서버리�
 | 웨어하우스 | 분석용으로 구조화해 SQL로 질의한다 | Redshift | Synapse Analytics, Microsoft Fabric | BigQuery |
 | 표현 | 대시보드와 리포트를 만든다 | QuickSight | Power BI | Looker Studio |
 
+처리 단계는 비싼 고성능 서버 한 대 대신 평범한 서버 여럿을 묶어(클러스터링) 일을 나눠 맡기고, 몇 대가 고장 나도 나머지가 이어받는 분산 처리다. 마스터가 작업을 나누고 워커가 계산하는 구조라 워커를 늘리면 처리량이 거의 비례해 는다. 클러스터를 필요할 때만 띄웠다 끄면 되므로 클라우드와 잘 맞는다(EMR, Dataproc).
+
+| | Hadoop(MapReduce) | Spark |
+| --- | --- | --- |
+| 중간 결과 | 단계마다 디스크에 쓰고 읽는다 | 가능하면 메모리에 둔다 |
+| 속도 | 상대적으로 느리다 | 반복 연산에서 훨씬 빠르다 |
+| 맞는 일 | 한 번 훑는 대용량 일괄 처리 | 같은 데이터를 여러 번 도는 기계 학습, 대화형 분석 |
+
 레이크와 웨어하우스를 하나로 합친 **레이크하우스**(Delta Lake·Apache Iceberg 같은 테이블 포맷 위에서 SQL 분석)도 흔하다. 배치·스트림, ETL·ELT, 레이크·웨어하우스 같은 용어는 [[data-pipeline-basics|데이터 파이프라인과 저장소 용어]]에 있다.
 
 ## 클라우드 모니터링이 갖출 것
@@ -121,4 +130,4 @@ AWS는 2006년 S3·SQS·EC2 세 서비스로 시작해 관리형 DB, 서버리�
 - 로드 밸런서는 L4·L7과 리전·전역 두 축으로 고른다.
 - 데이터 파이프라인은 수집 → 레이크 → 처리 → 웨어하우스 → 표현의 다섯 단계다.
 
-관련 노트: [[aws-cloud-basics|AWS 클라우드 기초]], [[load-balancer|로드 밸런서]], [[data-pipeline-basics|데이터 파이프라인과 저장소 용어]], [[aws-vpc-networking|AWS VPC 네트워크 구성]], [[cloud-cost-optimization|클라우드 비용 최적화와 숨은 비용]], [[cloud-native|클라우드 네이티브와 코드형 인프라]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[cloud-service-models|클라우드 서비스 모델]]
+관련 노트: [[aws-cloud-basics|AWS 클라우드 기초]], [[load-balancer|로드 밸런서]], [[data-pipeline-basics|데이터 파이프라인과 저장소 용어]], [[aws-vpc-networking|AWS VPC 네트워크 구성]], [[cloud-cost-optimization|클라우드 비용 최적화와 숨은 비용]], [[cloud-native|클라우드 네이티브와 코드형 인프라]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]]

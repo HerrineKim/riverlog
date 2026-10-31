@@ -133,4 +133,4 @@ inline const char* getErrorMessage(ErrorCode code) {
 - 예외를 `if` 대신 쓰지 않는다. 자주 일어나는 실패는 오류 코드, `std::error_code`, `std::expected`로 표현한다.
 - 오류 코드와 메시지는 X-macro로 한 목록에서 생성해 어긋나지 않게 한다.
 
-관련 노트: [[cpp-virtual-functions|가상 함수와 vtable]], [[memory-pool|메모리 풀]], [[pointers-and-memory|포인터와 메모리]], [[cpp-classes-and-constructors|C++ 클래스와 생성자·소멸자]]
+관련 노트: [[cpp-virtual-functions|C++ 상속과 가상 함수]], [[memory-pool|메모리 풀]], [[pointers-and-memory|포인터와 메모리]], [[cpp-basics|C++ 기초]]

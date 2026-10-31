@@ -213,4 +213,4 @@ RAID는 전용 컨트롤러 없이 커널의 **md** 드라이버(`mdadm`으로 �
 - SSTF는 기아, SCAN은 대기 시간 불균형, C-SCAN은 균일한 대기, LOOK 계열은 불필요한 끝까지 이동을 없앤다.
 - 스왑 영역은 속도 우선, RAID는 분산(속도)과 중복(신뢰성)으로 디스크 여러 개를 묶는다.
 
-관련 노트: [[file-system-implementation|파일 시스템 구현]], [[virtual-memory|가상 메모리]], [[kernel-io-subsystem|운영체제의 입출력 시스템]]
+관련 노트: [[file-system-implementation|파일 시스템 구현]], [[virtual-memory|가상 메모리]], [[system-structure#커널 입출력 서브시스템|운영체제의 입출력 시스템]]

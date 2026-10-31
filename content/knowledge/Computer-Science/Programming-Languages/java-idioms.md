@@ -260,4 +260,4 @@ Comparator<User> byAge = Comparator.comparingInt(User::age);
 - 스트림은 최종 연산 때 원소 단위로 흐르는 지연 파이프라인이다. 병렬 스트림은 무겁고 잘 쪼개지는 순수 연산에만 쓴다.
 - `CompletableFuture`에는 전용 Executor를 주고, 스트림은 성능이 아니라 가독성을 위해 고른다.
 
-관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-concurrency|Java 동시성]], [[java-language-basics|Java 언어 기본]], [[java-serialization-jackson|Java 직렬화와 Jackson]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-application-design|스프링 애플리케이션 설계]], [[timezone|자바스크립트에서 타임존 다루기]], [[gof-design-patterns|GoF 디자인 패턴]], [[java-io-streams|Java 입출력 스트림]], [[java-swing-gui|Java Swing GUI]]
+관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-concurrency|Java 동시성]], [[java-language-basics|Java 언어 기본]], [[java-serialization-jackson|Java 입출력과 직렬화]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-application-design|스프링 애플리케이션 설계]], [[timezone|자바스크립트에서 타임존 다루기]], [[gof-design-patterns|GoF 디자인 패턴]], [[graphical-user-interface|그래픽 사용자 인터페이스]]
