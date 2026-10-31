@@ -14,12 +14,12 @@ sources: ["https://developer-woo.tistory.com/60", "https://developers.naver.com/
 
 네이버 블로그 수집은 목록은 공식 API로, 본문은 페이지에서 가져오는 두 단계로 나눈다. 검색 API는 본문 대신 몇 줄짜리 요약(`description`)만 주기 때문이다.
 
-```text
-키워드
- └─ 네이버 검색 API (blog.json) ── URL · 제목 · 작성일
-     └─ 글마다 본문 HTML 받기 (PostView 주소 또는 Selenium)
-         └─ BeautifulSoup으로 본문 영역 추출 · 정제
-             └─ pandas DataFrame → CSV
+```mermaid
+flowchart TB
+  n1["키워드"] --> n2["네이버 검색 API (blog.json)"]
+  n2 -->|"URL · 제목 · 작성일"| n3["글마다 본문 HTML 받기 (PostView 주소 또는 Selenium)"]
+  n3 --> n4["BeautifulSoup으로 본문 영역 추출 · 정제"]
+  n4 --> n5["pandas DataFrame → CSV"]
 ```
 
 ## 1. 검색 API로 글 목록 모으기

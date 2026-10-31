@@ -24,12 +24,12 @@ sources: ["https://www.slideshare.net/wangwonLee/2018-datayanolja-moreeffectivew
 
 ## 동적 페이지: 가벼운 방식부터
 
-```text
-공식 데이터 API가 있나? ─ 예 → API 사용
-        │ 아니오
-화면 데이터를 주는 XHR/fetch 엔드포인트를 찾을 수 있나? ─ 예 → 엔드포인트 직접 호출
-        │ 아니오 (복잡한 인증·암호화된 요청 등)
-헤드리스 브라우저(Playwright 등)로 렌더링 후 추출
+```mermaid
+flowchart TB
+  q1["공식 데이터 API가 있나?"] -->|"예"| a1["API 사용"]
+  q1 -->|"아니오"| q2["화면 데이터를 주는 XHR/fetch 엔드포인트를 찾을 수 있나?"]
+  q2 -->|"예"| a2["엔드포인트 직접 호출"]
+  q2 -->|"아니오 (복잡한 인증·암호화된 요청 등)"| a3["헤드리스 브라우저(Playwright 등)로 렌더링 후 추출"]
 ```
 
 | 방식 | 장점 | 단점 |

@@ -239,24 +239,29 @@ Kotlin data class의 `copy()`나 `super.clone()`처럼 언어가 주는 복사�
 
 실무에서는 자료구조를 직접 짜기보다 언어가 주는 구현을 고른다. Java 컬렉션 프레임워크(JCF)는 인터페이스로 연산을 정하고 구현 클래스로 내부 자료구조를 정하는 구조라 이 관계가 잘 보인다.
 
-```text
-Iterable ── for-each로 순회할 수 있다
-  └─ Collection ── 추가·삭제·포함 여부 같은 기본 연산
-       ├─ List   순서 있음, 중복 허용
-       │    ├─ ArrayList    동적 배열
-       │    └─ LinkedList   이중 연결 리스트 (Deque도 구현)
-       ├─ Set    중복 없음
-       │    ├─ HashSet        해시 테이블
-       │    ├─ LinkedHashSet  해시 테이블 + 삽입 순서
-       │    └─ TreeSet        레드-블랙 트리, 정렬 유지 (SortedSet)
-       └─ Queue  한쪽에서 넣고 꺼냄
-            ├─ PriorityQueue  힙
-            └─ Deque ── ArrayDeque  원형 배열, 스택·큐 모두 대용
+```mermaid
+flowchart TB
+  it["Iterable<br/>for-each로 순회할 수 있다"] --> col["Collection<br/>추가·삭제·포함 여부 같은 기본 연산"]
+  col --> list["List<br/>순서 있음, 중복 허용"]
+  list --> al["ArrayList<br/>동적 배열"]
+  list --> ll["LinkedList<br/>이중 연결 리스트 (Deque도 구현)"]
+  col --> set["Set<br/>중복 없음"]
+  set --> hs["HashSet<br/>해시 테이블"]
+  set --> lhs["LinkedHashSet<br/>해시 테이블 + 삽입 순서"]
+  set --> ts["TreeSet<br/>레드-블랙 트리, 정렬 유지 (SortedSet)"]
+  col --> q["Queue<br/>한쪽에서 넣고 꺼냄"]
+  q --> pq["PriorityQueue<br/>힙"]
+  q --> dq["Deque"]
+  dq --> ad["ArrayDeque<br/>원형 배열, 스택·큐 모두 대용"]
+```
 
-Map (Collection과 별개 계층) ── 키-값
-  ├─ HashMap        해시 테이블
-  ├─ LinkedHashMap  해시 테이블 + 순서 (LRU 캐시 구현에 쓰인다)
-  └─ TreeMap        레드-블랙 트리, 키 정렬
+Map (Collection과 별개 계층):
+
+```mermaid
+flowchart TB
+  map["Map<br/>키-값"] --> hm["HashMap<br/>해시 테이블"]
+  map --> lhm["LinkedHashMap<br/>해시 테이블 + 순서 (LRU 캐시 구현에 쓰인다)"]
+  map --> tm["TreeMap<br/>레드-블랙 트리, 키 정렬"]
 ```
 
 - 고르는 기준은 이 노트의 복잡도 표와 같다. 인덱스 접근이 많으면 `ArrayList`, 정렬된 순회가 필요하면 `TreeMap`·`TreeSet`, 순서가 상관없으면 `HashMap`·`HashSet`이다.
