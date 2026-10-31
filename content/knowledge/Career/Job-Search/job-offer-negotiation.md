@@ -4,11 +4,11 @@ concept: "Offer Negotiation"
 summary: "취업은 일자리를 얻는 것이 아니라 내 노동을 파는 거래이고, 협상은 그 거래의 당연한 일부다. 기본급·보너스·지분·사이닝 보너스로 이뤄진 총보상(TC)을 읽는 법, 모든 것을 기록하기, 결정을 미루며 문 열어 두기, 정보 지키기, 긍정적인 태도, 결정권자를 밖에 두기, 대안(BATNA) 만들기, 이유 붙이기, 돈 밖의 조건, 상대가 중시하는 것 알기, 이길 수 있는 조건 주기의 열 가지 원칙, 복수 오퍼·시한부 오퍼 다루는 법, 오퍼를 비교할 때 볼 일곱 가지 축을 정리한다."
 tags: ["career", "job-search", "communication", "decision-making"]
 source: other
-date: "2026-10-21"
-sources: ["https://medium.com/free-code-camp/ten-rules-for-negotiating-a-job-offer-ee17cccbdab6", "https://github.com/jlevy/og-equity-compensation", "https://www.techinterviewhandbook.org/negotiation/", "https://www.techinterviewhandbook.org/negotiation-rules/", "https://www.techinterviewhandbook.org/understanding-compensation/", "https://www.techinterviewhandbook.org/choosing-between-companies/"]
+date: "2026-10-31"
+sources: ["https://medium.com/free-code-camp/ten-rules-for-negotiating-a-job-offer-ee17cccbdab6", "https://github.com/jlevy/og-equity-compensation", "https://www.techinterviewhandbook.org/negotiation/", "https://www.techinterviewhandbook.org/negotiation-rules/", "https://www.techinterviewhandbook.org/understanding-compensation/", "https://www.techinterviewhandbook.org/choosing-between-companies/", "https://media-ai.tistory.com/7", "https://ppss.kr/archives/53935"]
 ---
 
-> Haseeb Qureshi의 「[Ten Rules for Negotiating a Job Offer](https://medium.com/free-code-camp/ten-rules-for-negotiating-a-job-offer-ee17cccbdab6)」(2016)를 바탕으로, 「[The Open Guide to Equity Compensation](https://github.com/jlevy/og-equity-compensation)」의 「Offers and Negotiations」와 Tech Interview Handbook의 「[Negotiation](https://www.techinterviewhandbook.org/negotiation/)」, 「[Negotiation rules](https://www.techinterviewhandbook.org/negotiation-rules/)」, 「[Understanding compensation](https://www.techinterviewhandbook.org/understanding-compensation/)」, 「[Choosing between companies](https://www.techinterviewhandbook.org/choosing-between-companies/)」로 보강해 재구성한 노트다.
+> Haseeb Qureshi의 「[Ten Rules for Negotiating a Job Offer](https://medium.com/free-code-camp/ten-rules-for-negotiating-a-job-offer-ee17cccbdab6)」(2016)를 바탕으로, 「[The Open Guide to Equity Compensation](https://github.com/jlevy/og-equity-compensation)」의 「Offers and Negotiations」와 Tech Interview Handbook의 「[Negotiation](https://www.techinterviewhandbook.org/negotiation/)」, 「[Negotiation rules](https://www.techinterviewhandbook.org/negotiation-rules/)」, 「[Understanding compensation](https://www.techinterviewhandbook.org/understanding-compensation/)」, 「[Choosing between companies](https://www.techinterviewhandbook.org/choosing-between-companies/)」로 보강해 재구성한 노트다. 팀을 고르는 기준은 앤드류 응의 CS230 강의를 정리한 「[논문 읽기와 ML/DL 커리어 경력에 대한 조언](https://media-ai.tistory.com/7)」으로, 대기업과 스타트업이 기르는 역량은 「[대기업 vs. 스타트업](https://ppss.kr/archives/53935)」으로 더했다.
 
 ## 협상을 보는 관점
 
@@ -90,9 +90,9 @@ flowchart TB
 | 축 | 볼 것 |
 | --- | --- |
 | **보상** | 기본급·보너스·지분·사이닝의 구성. 지분은 베스팅 일정이 회사마다 달라(균등, 뒤로 몰린 일정, 1년 단위 부여) 같은 4년 총액도 해마다 받는 돈이 다르다. 일정 유형은 [[stock-options\|스톡옵션]]에 있다 |
-| **제품과 팀** | 관심 있는 도메인인가. 대기업은 광고·메신저·결제·클라우드·하드웨어·AI·사내 도구까지 영역이 넓고, 규모 때문에 인프라를 직접 만드는 경우가 많다. 같은 회사도 **오피스마다 맡는 제품이 다르니** 내 근무지의 팀이 무엇을 하는지 확인한다. 내가 사용자로 쓰는 제품은 만들기도 쉽다 |
+| **제품과 팀** | 관심 있는 도메인인가. 대기업은 광고·메신저·결제·클라우드·하드웨어·AI·사내 도구까지 영역이 넓고, 규모 때문에 인프라를 직접 만드는 경우가 많다. 같은 회사도 **오피스마다 맡는 제품이 다르니** 내 근무지의 팀이 무엇을 하는지 확인한다. 내가 사용자로 쓰는 제품은 만들기도 쉽다. 회사 브랜드보다 **가장 가까이 일할 10~30명과 그 리더**가 성장을 좌우하므로, 오퍼를 받으면 어느 팀에서 일하는지 먼저 묻는다. 「입사하면 팀을 배정하겠다」는 오퍼는 관심 없는 팀에 배치될 수 있어 경계한다 |
 | **회사 전망** | 지분을 받으면 회사의 앞날이 곧 내 보상이다. 재무 상태 확인은 [[company-financial-check\|비상장 회사 재무제표 찾아보기]]에 있다 |
-| **성장** | 스타트업은 여러 역할을 맡으며 0에서 1을 빠르게 만들지만, 제품이 인프라보다 우선이라 기술적 깊이와 상위 IC 자리(Staff·Principal)가 부족하다. 대기업은 승진 속도와 기대치가 회사마다 다르다. 레벨과 승진 기대 기간은 [[engineering-levels\|엔지니어 레벨]]에 있다 |
+| **성장** | 스타트업은 여러 역할을 맡으며 0에서 1을 빠르게 만들지만, 제품이 인프라보다 우선이라 기술적 깊이와 상위 IC 자리(Staff·Principal)가 부족하다. 대기업은 승진 속도와 기대치가 회사마다 다르다. 기르는 역량도 다르다. 이미 있는 수익원을 지키는 대기업은 「돈이 되나」를 정량 근거로 설득해 결재선을 통과하는 보고 역량과, 조직·협력사를 움직이는 관리 역량을 기른다. 새 시장을 찾는 스타트업은 여러 투자자·임원 중 한 명만 설득하면 되는 구조라 「해낼 수 있나」를 보여 주는 자기 확신과 추진력을 기른다. 레벨과 승진 기대 기간은 [[engineering-levels\|엔지니어 레벨]]에 있다 |
 | **문화** | 회사가 내세우는 가치(Google의 엔지니어링 품질과 데이터 기반 결정, Netflix의 「절차보다 사람」과 높은 성과 기준)와 실제 엔지니어링 문화. 아래 체크리스트로 점검한다 |
 | **워라밸** | 주 40시간이 기준이지만 훨씬 더 요구하는 회사도 있다(중국 테크 업계의 「996」, 오전 9시~오후 9시 주 6일). 초과 근무가 무급이면 연봉이 아니라 **시간당 보상**으로 비교한다 |
 | **이동성** | 해외 오피스, 원격 근무, 사내 전배가 가능한가. 작은 회사는 대개 본사 한 곳뿐이다. 오피스가 여러 대륙에 있는 대기업은 나라를 옮기는 내부 이동이 흔하다 |

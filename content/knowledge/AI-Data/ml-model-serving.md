@@ -1,14 +1,14 @@
 ---
 title: "머신러닝 모델 서빙"
 concept: "Model Serving"
-summary: "학습한 모델을 서비스에서 호출할 수 있게 띄우는 방법. 동기 API와 큐 기반 비동기 워커 중 무엇을 고를지, 가중치·이미지 분리, 배치 처리, 헬스 체크, 배포 게이트 같은 설계 원칙과, BentoML처럼 모델을 API·컨테이너로 묶어 주는 프레임워크의 역할을 정리했다."
+summary: "학습한 모델을 서비스에서 호출할 수 있게 띄우는 방법. VM·컨테이너·서버리스·모델 서버 같은 배포 형태와 CPU·GPU 추론 선택, 모바일·엣지 배포, 동기 API와 큐 기반 비동기 워커 중 무엇을 고를지, 가중치·이미지 분리, 배치 처리, 헬스 체크, 배포 게이트 같은 설계 원칙과, BentoML처럼 모델을 API·컨테이너로 묶어 주는 프레임워크의 역할을 정리했다."
 tags: ["ai", "machine-learning", "mlops", "deep-learning", "architecture"]
 source: other
-date: "2026-10-21"
-sources: ["https://tech.socar.kr/data/2020/03/10/ml-model-serving", "https://zuminternet.github.io/BentoML/", "https://docs.bentoml.com/"]
+date: "2026-10-31"
+sources: ["https://tech.socar.kr/data/2020/03/10/ml-model-serving", "https://zuminternet.github.io/BentoML/", "https://docs.bentoml.com/", "https://github.com/alirezadir/Production-Level-Deep-Learning", "https://zzsza.github.io/mlops/2019/10/06/fullstack-deeplearning-bootcamp/", "https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html"]
 ---
 
-> 쏘카 기술 블로그의 「[딥러닝 모델 Serving 간단 구축기](https://tech.socar.kr/data/2020/03/10/ml-model-serving)」, 줌인터넷 기술 블로그의 「[BentoML을 활용하여 딥러닝 모델 API 서빙하기](https://zuminternet.github.io/BentoML/)」를 바탕으로, BentoML 사용법은 [공식 문서](https://docs.bentoml.com/)로 확인해 재구성한 노트다.
+> 쏘카 기술 블로그의 「[딥러닝 모델 Serving 간단 구축기](https://tech.socar.kr/data/2020/03/10/ml-model-serving)」, 줌인터넷 기술 블로그의 「[BentoML을 활용하여 딥러닝 모델 API 서빙하기](https://zuminternet.github.io/BentoML/)」를 바탕으로, BentoML 사용법은 [공식 문서](https://docs.bentoml.com/)로 확인해 재구성한 노트다. 배포 형태와 CPU·GPU 선택, 모바일 배포는 「[A Guide to Production Level Deep Learning](https://github.com/alirezadir/Production-Level-Deep-Learning)」과 「[Full Stack Deep Learning Bootcamp 정리](https://zzsza.github.io/mlops/2019/10/06/fullstack-deeplearning-bootcamp/)」로 보강하고, 서버리스 한도는 [AWS Lambda 문서](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html)로 확인했다.
 
 ## 모델 서빙이란
 
@@ -21,7 +21,27 @@ sources: ["https://tech.socar.kr/data/2020/03/10/ml-model-serving", "https://zum
 | 관리형·엔드투엔드 플랫폼 | 학습부터 배포까지 묶은 플랫폼(SageMaker, Vertex AI, Kubeflow 등) | 팀이 크고 모델이 많을 때. 기능은 넓지만 익히는 비용과 플랫폼 의존이 생긴다 |
 | 직접 구성하는 가벼운 서빙 | 기존 인프라(컨테이너, 큐, 오케스트레이터) 위에 추론 서버만 얹는다 | 모델이 몇 개이고 기존 시스템과 붙이는 일이 중요할 때 |
 
-LLM처럼 토큰을 하나씩 생성하는 모델은 KV 캐시·연속 배치 같은 별도 문제가 있다. 그 내용은 [[llm-serving-at-scale|LLM 서빙의 병목]]에 정리했다.
+LLM처럼 토큰을 하나씩 생성하는 모델은 KV 캐시·연속 배치 같은 별도 문제가 있다. 그 내용은 [[llm-serving-at-scale|LLM 서빙의 병목]]에 정리했다. 서빙은 모델 운영의 한 부분이고, 버전 관리·모니터링·재학습까지 이어지는 전체 흐름은 [[mlops|MLOps]]에 있다.
+
+## 배포 형태와 CPU·GPU 선택
+
+웹 배포는 입력을 받아 예측하는 **예측 시스템**과, 요청을 받아 규모에 맞게 예측 시스템을 부르는 **서빙 시스템**(REST·gRPC 서버)으로 나뉜다. 서빙 시스템을 올리는 방식은 넷이다.
+
+| 형태 | 장점 | 단점 |
+| --- | --- | --- |
+| VM에 배포 | 단순하다. 인스턴스를 더해 늘린다 | 프로비저닝이 번거롭고, 안 쓸 때도 비용을 낸다 |
+| 컨테이너 + 오케스트레이터 | 환경이 재현되고 Kubernetes로 늘리고 줄인다. 지금 가장 흔하다 | 계산 시간이 아니라 서버 가동 시간만큼 낸다 |
+| 서버리스 함수 | 요청만큼 내고 운영할 서버가 없다 | AWS Lambda 기준 실행 15분, 메모리 10GB, 컨테이너 이미지 10GB 한도가 있고 GPU를 쓸 수 없다. 큰 모델은 콜드 스타트가 길다 |
+| 모델 서버 | 모델 전용 웹 서버. 요청을 묶어 GPU로 추론한다 | 설정할 것이 늘어난다 |
+
+| 추론 | 고르는 기준 |
+| --- | --- |
+| CPU | **요구 지연·처리량을 맞춘다면 CPU가 먼저다.** 서버를 늘리거나 서버리스로 확장한다. 추천의 사용자 벡터 계산처럼 가벼운 모델은 CPU로 수 밀리초에 끝난다 |
+| GPU | 큰 모델이나 높은 처리량이 필요할 때. 요청을 모아 한 번에 돌리는 적응형 배치가 있는 모델 서버(아래 BentoML, Triton 등)를 쓴다 |
+
+### 모바일·엣지 배포
+
+기기는 메모리와 연산이 작다. 가중치를 8비트 등으로 줄이는 **양자화**, MobileNet처럼 작게 설계한 구조, 큰 모델의 출력을 작은 모델이 배우는 **지식 증류**(DistilBERT 등)로 줄인다. 기기용 런타임으로 LiteRT(옛 TensorFlow Lite), PyTorch의 ExecuTorch, Core ML, ONNX Runtime을 쓰고, 프레임워크 사이 변환에는 ONNX 형식을 쓴다. 웹 브라우저 안에서 돌리는 방법은 [[client-side-web-ai|클라이언트 사이드 웹 AI]]에 있다.
 
 ## 동기 API와 큐 기반 워커
 
@@ -74,4 +94,4 @@ Flask나 FastAPI로 직접 감싸면 API 문서, 배치 처리, 워커 수, 컨�
 - 프로세스 생존이 아니라 실제로 일하는지를 헬스 체크한다.
 - 배치는 GPU 효율을 올리는 가장 쉬운 수단이다. 서빙 프레임워크가 적응형 배치를 대신 해 준다.
 
-관련 노트: [[llm-serving-at-scale|LLM 서빙의 병목: KV 캐시, 배치, GPU]], [[message-queue-kafka|메시지 큐와 Kafka]], [[kubernetes-architecture|쿠버네티스 구조와 핵심 개념]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[text-classification-in-production|서비스용 텍스트 분류 모델 만들기]]
+관련 노트: [[mlops|MLOps]], [[llm-serving-at-scale|LLM 서빙의 병목: KV 캐시, 배치, GPU]], [[message-queue-kafka|메시지 큐와 Kafka]], [[kubernetes-architecture|쿠버네티스 구조와 핵심 개념]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[text-classification-in-production|서비스용 텍스트 분류 모델 만들기]]

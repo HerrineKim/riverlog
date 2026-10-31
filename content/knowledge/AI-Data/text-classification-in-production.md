@@ -1,14 +1,15 @@
 ---
 title: "서비스용 텍스트 분류 모델 만들기"
 concept: "Production Text Classification"
-summary: "악성 댓글 탐지, 상품 카테고리 자동 분류처럼 실제 서비스에 넣는 분류 모델을 만들 때의 결정들. 라벨 기준 정의와 애매한 데이터 제외, 노이즈 많은 텍스트의 토큰화, 가벼운 모델을 고르는 이유, 클래스 불균형, 모델로 라벨 오류 찾기, 사람이 고친 데이터로 재학습, 텍스트·이미지·메타데이터를 함께 쓰는 다중 입력 모델을 정리했다."
+summary: "악성 댓글 탐지, 상품 카테고리 자동 분류처럼 실제 서비스에 넣는 분류 모델을 만들 때의 결정들. 라벨 기준 정의와 애매한 데이터 제외, 노이즈 많은 텍스트의 토큰화, 가벼운 모델을 고르는 이유와 BoW 선형 모델에서 TextCNN·BiLSTM·트랜스포머까지의 후보, 클래스 불균형, 모델로 라벨 오류 찾기, 사람이 고친 데이터로 재학습, 텍스트·이미지·메타데이터를 함께 쓰는 다중 입력 모델을 정리했다."
 tags: ["ai", "nlp", "machine-learning", "deep-learning", "mlops"]
 source: other
-date: "2026-10-21"
-sources: ["https://d2.naver.com/helloworld/7753273", "https://d2.naver.com/helloworld/1264836"]
+date: "2026-10-31"
+sources: ["https://d2.naver.com/helloworld/7753273", "https://d2.naver.com/helloworld/1264836", "https://github.com/lovit/textmining-tutorial", "https://github.com/graykode/nlp-tutorial"]
 ---
 
 > NAVER D2의 「[클린봇 2.0: 문맥을 이해하는 악성 댓글(단문) 탐지 AI](https://d2.naver.com/helloworld/7753273)」, 「[TensorFlow를 활용한 네이버쇼핑의 상품 카테고리 자동 분류](https://d2.naver.com/helloworld/1264836)」를 바탕으로 재구성한 노트다.
+> 분류 모델 후보 표는 「[(한국어) 텍스트 마이닝을 위한 튜토리얼](https://github.com/lovit/textmining-tutorial)」과 「[nlp-tutorial](https://github.com/graykode/nlp-tutorial)」의 모델 목록으로 보강했다.
 
 ## 무엇이 다른가
 
@@ -45,6 +46,18 @@ flowchart LR
 - 사용자가 글을 쓰는 순간 판정해야 하면 응답 속도와 안정성이 정확도만큼 중요하다.
 
 그래서 CNN·BiLSTM 같은 가벼운 구조를 쓰고, 큰 모델의 힘은 다른 방식으로 빌린다.
+
+가벼운 쪽부터 후보를 놓고 고른다. 위로 갈수록 학습·추론이 싸고, 아래로 갈수록 문맥을 더 본다.
+
+| 모델 | 원리 | 쓸 때 |
+| --- | --- | --- |
+| BoW·TF-IDF + 로지스틱 회귀·선형 SVM·나이브 베이즈 | 단어 빈도 벡터에 선형 분류기. Lasso(L1)를 걸면 판정에 쓰인 단어가 드러난다 | 첫 기준 모델. 이것보다 나아야 복잡한 모델을 쓸 이유가 생긴다 |
+| FastText | 단어와 n-gram 벡터를 평균해 선형 분류 | CPU에서도 매우 빠르고 신조어·오타에 강하다 |
+| TextCNN(Yoon Kim, 2014) | 단어 임베딩 위에 너비가 다른 1D 합성곱 필터(2·3·4단어 등)를 대고 시간 축 최대 풀링 | 짧은 문장의 감성·의도 분류. 「욕설 n-gram」 같은 지역 패턴을 잘 잡는다 |
+| 글자 단위 CNN | 단어 대신 글자(한국어는 자모·음절)를 입력 | 띄어쓰기가 엉망이거나 변형 표기가 많은 댓글 |
+| BiLSTM + 어텐션 | 양방향으로 읽고, 어텐션 가중치로 중요한 단어를 모아 분류 | 어순과 부정(「안 좋다」)이 중요할 때. 어텐션 가중치로 근거 단어를 보여 줄 수 있다 |
+| 계층적 어텐션(HAN) | 단어 → 문장, 문장 → 문서의 두 단계 어텐션 | 긴 문서 분류 |
+| 사전 학습 트랜스포머 미세 조정 | BERT 계열 인코더에 분류 헤드를 붙여 학습 | 정확도가 가장 중요하고 서빙 비용을 감당할 수 있을 때 |
 
 | 방법 | 내용 |
 | --- | --- |

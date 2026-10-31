@@ -1,14 +1,15 @@
 ---
 title: "딥러닝 추천 시스템: 후보 생성과 랭킹"
 concept: "Two-Stage Recommendation"
-summary: "아이템이 수십만~수억 개일 때 쓰는 딥러닝 추천의 2단계 구조(후보 생성 → 랭킹)를 정리했다. 최근 본 아이템으로 다음 아이템을 맞히는 학습, 맥락을 조건으로 넣는 법, 사용자 벡터와 근사 최근접 이웃 검색으로 바꾸는 서빙, 학습·배포 파이프라인, RNN·트랜스포머 순차 추천, 여러 서비스의 이력과 이미지·텍스트를 합치는 크로스오버·멀티모달 추천, 장기 가치와 파운데이션 추천 모델로 가는 흐름을 다룬다."
+summary: "아이템이 수십만~수억 개일 때 쓰는 딥러닝 추천의 2단계 구조(후보 생성 → 랭킹)를 정리했다. 최근 본 아이템으로 다음 아이템을 맞히는 학습, word2vec을 아이템 시퀀스에 적용한 Item2Vec, 맥락을 조건으로 넣는 법, 사용자 벡터와 근사 최근접 이웃 검색으로 바꾸는 서빙, 학습·배포 파이프라인, RNN·트랜스포머 순차 추천, 여러 서비스의 이력과 이미지·텍스트를 합치는 크로스오버·멀티모달 추천, 장기 가치와 파운데이션 추천 모델로 가는 흐름을 다룬다."
 tags: ["ai", "deep-learning", "recommender-system", "embedding", "mlops"]
 source: other
-date: "2026-10-20"
-sources: ["https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EA%B0%9C%EC%9D%B8%ED%99%94-%EC%B6%94%EC%B2%9C-1eda682c2e8c", "https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-in-production-fa623877e56a", "https://navercorp.com/media/pressReleasesDetail?seq=29610", "https://navercorp.com/media/pressReleasesDetail?seq=29595", "https://engineering.linecorp.com/ko/blog/a-new-challenge-for-line-timeline-1/", "https://byline.network/2026/04/17_28182764/", "https://research.google/pubs/pub45530/", "https://bytebytego.com/guides/how-does-twitter-recommend-tweets"]
+date: "2026-10-31"
+sources: ["https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EA%B0%9C%EC%9D%B8%ED%99%94-%EC%B6%94%EC%B2%9C-1eda682c2e8c", "https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-in-production-fa623877e56a", "https://navercorp.com/media/pressReleasesDetail?seq=29610", "https://navercorp.com/media/pressReleasesDetail?seq=29595", "https://engineering.linecorp.com/ko/blog/a-new-challenge-for-line-timeline-1/", "https://byline.network/2026/04/17_28182764/", "https://research.google/pubs/pub45530/", "https://bytebytego.com/guides/how-does-twitter-recommend-tweets", "https://brunch.co.kr/@goodvc78/16", "https://www.slideshare.net/ssuser2fe594/2015-py-con-word2vec"]
 ---
 
 > 당근마켓의 「[딥러닝 개인화 추천](https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EA%B0%9C%EC%9D%B8%ED%99%94-%EC%B6%94%EC%B2%9C-1eda682c2e8c)」·「[딥러닝 추천 시스템 in production](https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-in-production-fa623877e56a)」(2019), 네이버 AiRS·AiTEMS 발표 자료(2017), LINE 「[Timeline의 새로운 도전 1편](https://engineering.linecorp.com/ko/blog/a-new-challenge-for-line-timeline-1/)」(2020)을 바탕으로, 이후의 흐름은 2026년 공개 내용으로 보강해 재구성한 노트다. 피드의 다단계 파이프라인은 ByteByteGo의 System Design 101 가이드 「[How does Twitter recommend "For You" Timeline](https://bytebytego.com/guides/how-does-twitter-recommend-tweets)」를 바탕으로 덧붙였다.
+> Item2Vec은 최규민의 「[Word2Vec 그리고 추천 시스템의 Item2Vec](https://brunch.co.kr/@goodvc78/16)」과 「[word2vec이 추천 시스템을 만났을때](https://www.slideshare.net/ssuser2fe594/2015-py-con-word2vec)」(PyCon Korea 2015)로 보강했다.
 
 ## 왜 딥러닝으로 가나
 
@@ -99,6 +100,35 @@ flowchart TB
 
 - 워크플로는 Kubeflow Pipelines, Airflow, Vertex AI Pipelines 같은 오케스트레이터로 자동화한다.
 - **전처리를 모델 그래프 안에 넣으면** 서빙 때 같은 전처리를 다시 짤 필요가 없다. 학습과 서빙의 전처리 불일치(training-serving skew)를 막는 방법이다.
+
+## 아이템 시퀀스를 문장처럼: Item2Vec
+
+word2vec은 문장 안에서 가까이 나오는 단어끼리 비슷한 벡터를 갖도록 학습한다. 이 「문장」과 「단어」 자리에 **사용자 이력과 아이템**을 넣으면 아이템 임베딩이 나온다. 이렇게 아이템을 벡터로 만드는 방법을 통틀어 Item2Vec이라 부른다.
+
+| 서비스 | 문장 | 단어 |
+| --- | --- | --- |
+| 방송 추천(Live2Vec) | 한 시청자의 시청 이력 | 방송 |
+| 음악(Song2Vec) | 한 사용자의 플레이리스트 | 곡 |
+| 쇼핑(Prod2Vec, Meta-Prod2Vec) | 한 쇼핑 세션 | 상품 |
+
+```python
+from gensim.models import Word2Vec
+
+sessions = [["item1", "item2", "item3"], ["item1", "item12", "item23"]]  # 사용자·세션별 아이템 ID 나열
+model = Word2Vec(sessions, vector_size=100, window=10, min_count=3, sg=1, negative=5)
+model.wv.most_similar("item1")   # 같이 소비되는 아이템
+```
+
+| 설정 | 의미 |
+| --- | --- |
+| 구조 | CBOW(주변으로 가운데를 맞힘) 또는 Skip-gram(가운데로 주변을 맞힘, `sg=1`) |
+| 출력층 근사 | 계층적 소프트맥스 또는 네거티브 샘플링. 출력 계산을 어휘 크기 V에서 log V 수준으로 줄인다 |
+| 서브샘플링 | 너무 자주 나오는 아이템을 확률적으로 건너뛰어 속도와 품질을 함께 높인다. 인기 아이템이 모든 벡터를 끌어당기는 것을 누그러뜨린다 |
+| 차원·데이터 양 | 보통 100~수백 차원. 데이터가 적으면 군집만 대충 생기고, 많아져야 의미 있는 관계가 나온다 |
+
+- **쓰임**: 비슷한 아이템 추천, 아이템 벡터를 k-means로 묶은 세분류(예: 방송 13K개를 500개 군집으로 나누니 지상파 뉴스와 인터넷 뉴스가 갈리고 운세·그림 같은 틈새 분류가 드러났다), 다른 모델의 의미 특징.
+- **장점**: 레이블 없는 로그만으로 학습하고 코드가 짧다. 메모리 기반 최근접 이웃은 인기 아이템 쪽으로 쏠리는데, 임베딩은 내용상 가까운 아이템을 더 잘 찾는 경우가 있다.
+- **한계**: 벡터 공간을 해석하기 어렵고, 성능을 의도대로 올리려면 시행착오가 많다. 행렬 분해도 이미 잘 동작하므로 단독 대체재보다 **앙상블의 한 구성 요소**로 쓴다.
 
 ## 순서를 보는 모델: 세션 추천
 

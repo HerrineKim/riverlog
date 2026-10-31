@@ -4,7 +4,7 @@ concept: "Side Project"
 summary: "꾸준히 하나는 굴리기, 내 불편에서 아이디어 찾기, 틈새 겨냥, 작게 시작, 1~2주 단위 기한, 코딩 전 랜딩 페이지로 검증하기까지 사이드 프로젝트를 시작하고 유지하는 원칙. 내가 쓸 것을 내가 만드는 출발점과 불편 일기, MVP·MMP·MLP로 나눈 검증, 빌드 인 퍼블릭까지 다룬다."
 tags: ["career", "growth", "productivity", "side-project"]
 source: other
-date: "2026-10-20"
+date: "2026-10-31"
 sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM", "https://webactually.com/2015/04/17/%ed%95%9c%ea%b3%84%ec%97%90%ec%84%9c-%ec%9d%b4%ec%96%b4%ec%a7%84-%eb%82%98%ec%9d%98-%ec%95%b1%ec%8a%a4%ed%86%a0%ec%96%b4-%ec%84%b1%ea%b3%b5%ea%b3%bc-%ec%8b%a4%ed%8c%a8-%ec%9d%b4%ec%95%bc%ea%b8%b0/", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://techblog.woowahan.com/2590/", "https://wormwlrm.github.io/2019/10/13/Kwakcheolyong-Image-Creator-Development-Story.html", "https://wormwlrm.github.io/2022/05/07/Bamboo-Forest-Slack-App.html", "https://cho.sh/ko/w/5ADC58", "https://api.slack.com/interactivity/handling"]
 ---
 
@@ -149,7 +149,7 @@ AI 코딩 도구로 프로토타입을 만드는 비용이 크게 줄었다. 그
 - 셋은 차례로가 아니라 **처음부터 함께** 만든다. 「일단 동작만 하게 만들고 기능을 붙여 간다」가 아니라, 처음부터 전체를 맛볼 수 있는 조각 케이크처럼 만든다. 처음 한 명부터 돈을 낼 만하고, 입소문이 날 만해야 한다.
 - 초기에는 사람이 손으로 대신해도 된다. 스케일이 안 되는 일을 기꺼이 한다(폴 그레이엄의 「Do things that don't scale」). 자동화는 수요가 확인된 뒤에 한다.
 - 사용자와 고객이 다르면(정부 기관, 학생 대상 교육, 중개 플랫폼) 핵심 가설을 검증하기 어려우니 조심한다.
-- 유입 → 활성화 → 유지 → 수익 → 추천(AARRR)은 제품 상태를 보는 틀이다. 순서를 꼭 따를 필요는 없다. 유지와 수익부터 챙기는 변주(RARRA)도 있다.
+- 획득 → 활성화 → 유지 → 추천 → 수익(AARRR)은 제품 상태를 보는 틀이다. 순서를 꼭 따를 필요는 없다. 유지와 수익부터 챙기는 변주(RARRA)도 있다. 단계별 지표와 OMTM은 [[product-analytics|프로덕트 데이터 분석]]에 있다.
 
 ## 빌드 인 퍼블릭: 만드는 과정을 공개한다
 
