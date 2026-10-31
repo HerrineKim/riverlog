@@ -11,7 +11,7 @@ sources: ["https://riverkim.kr/263", "https://riverkim.kr/271", "https://riverki
 > riverkim.kr에 쓴 글을 정리한 노트에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Sizing Units·Color 모듈을 더해 보강했다.
 > 「리셋과 노멀라이즈」는 「[Must-Know-About-Frontend: Reset.css vs Normalize.css](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/reset-normalize.md)」를 바탕으로, 「[About normalize.css](http://nicolasgallagher.com/about-normalize-css/)」와 「[Reset CSS](http://meyerweb.com/eric/tools/css/reset/)」로 보강했다. rem과 em을 섞어 쓰는 법은 「[Font Size Idea: px at the Root, rem for Components, em for Text Elements](https://css-tricks.com/rems-ems/)」를 바탕으로 보강했다.
 
-CSS는 "어떤 요소를(선택자) 어떻게 바꿀지(선언)"를 적는 언어다. 문법 자체는 단순하지만, 스타일을 **어디에** 작성하느냐와 **어떤 단위**를 쓰느냐에 따라 유지보수성과 반응형 대응이 크게 달라진다.
+CSS는 "어떤 요소를(선택자) 어떻게 바꿀지(선언)"를 적는 언어다. 문법 자체는 단순하지만, 스타일을 어디에 작성하느냐와 어떤 단위를 쓰느냐에 따라 유지보수성과 반응형 대응이 크게 달라진다.
 
 ## 문법
 

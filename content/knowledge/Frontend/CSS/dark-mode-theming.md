@@ -12,7 +12,7 @@ sources: ["https://web.dev/learn/design/theming", "https://web.dev/learn/design/
 
 ## 테마가 닿는 곳
 
-반응형은 화면 크기뿐 아니라 **사용자 설정**에도 반응한다. 다크 모드가 대표적이다. 다크 모드가 왜 필요한지, 대비 기준은 무엇인지는 [[color-motion-accessibility|색과 움직임의 접근성]]에, 색 변수를 팔레트·기능·컴포넌트로 나누는 설계는 [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]]에 있다. 이 노트는 **테마를 끝까지 적용하는 체크리스트**다.
+반응형은 화면 크기뿐 아니라 **사용자 설정**에도 반응한다. 다크 모드가 대표적이다. 다크 모드가 왜 필요한지, 대비 기준은 무엇인지는 [[color-motion-accessibility|색과 움직임의 접근성]]에, 색 변수를 팔레트·기능·컴포넌트로 나누는 설계는 [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]]에 있다. 이 노트는 테마를 끝까지 적용하는 체크리스트다.
 
 | 대상 | 누가 그리나 | 도구 |
 | --- | --- | --- |
@@ -31,7 +31,7 @@ sources: ["https://web.dev/learn/design/theming", "https://web.dev/learn/design/
 <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
 ```
 
-- HTML에 두는 이유는 CSS를 기다리지 않고 **페이지가 열리자마자** 브라우저 UI를 칠하기 위해서다.
+- HTML에 두는 이유는 CSS를 기다리지 않고 페이지가 열리자마자 브라우저 UI를 칠하기 위해서다.
 - JavaScript로 바꿀 수 있지만 자주 바꾸면 사용자를 피곤하게 한다. 바꾸더라도 은은하게 바꾼다.
 - 홈 화면에 추가된 앱의 색은 웹 앱 매니페스트의 `theme_color`·`background_color`가 정한다. 어느 브라우저가 이 값을 쓰는지는 [[html-head-metadata|문서 head와 메타데이터]]에 있다.
 

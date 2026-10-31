@@ -80,7 +80,7 @@ z-index는 관리하지 않으면 어느새 엉뚱한 요소가 위로 올라와
 | 변형·효과 | `transform`, `filter`, `backdrop-filter`, `mix-blend-mode` |
 | 기타 | `isolation: isolate`, `will-change`, `contain: paint` |
 
-쌓임 맥락은 공통 부모 아래에서 **함께 Z축을 오르내리는 묶음**이다. 부모 A(`z-index: 1`) 안의 자식(`z-index: 999`)은 형제 부모 B(`z-index: 2`) 안의 자식(`z-index: 2`)보다 아래다. 비교는 부모끼리 먼저 이뤄진다.
+쌓임 맥락은 공통 부모 아래에서 함께 Z축을 오르내리는 묶음이다. 부모 A(`z-index: 1`) 안의 자식(`z-index: 999`)은 형제 부모 B(`z-index: 2`) 안의 자식(`z-index: 2`)보다 아래다. 비교는 부모끼리 먼저 이뤄진다.
 
 ```css
 .card { background: rgb(232 240 254 / .4); }
@@ -106,7 +106,7 @@ z-index는 관리하지 않으면 어느새 엉뚱한 요소가 위로 올라와
 | 6 | `z-index: auto`·`0`인 위치 지정 자손, `opacity`·`transform` 등으로 맥락을 만든 자손 |
 | 7 | 양수 `z-index`를 가진 자손 (값 순서대로) |
 
-같은 층 안에서는 소스 순서를 따른다. 그래서 `position: absolute`만 주고 `z-index`를 생략한 형제 셋은 쌓임 맥락을 만들지 않고, 6층에서 **마크업 순서대로** 쌓인다. 부모가 쌓임 맥락이면 음수 `z-index` 자식이 부모 배경 뒤로는 못 가면서(1층 위) 부모 안의 블록 뒤로는 숨는(3층 아래) 이유도 이 표에 있다.
+같은 층 안에서는 소스 순서를 따른다. 그래서 `position: absolute`만 주고 `z-index`를 생략한 형제 셋은 쌓임 맥락을 만들지 않고, 6층에서 마크업 순서대로 쌓인다. 부모가 쌓임 맥락이면 음수 `z-index` 자식이 부모 배경 뒤로는 못 가면서(1층 위) 부모 안의 블록 뒤로는 숨는(3층 아래) 이유도 이 표에 있다.
 
 ### fixed가 뷰포트를 기준으로 하지 않을 때
 
@@ -114,7 +114,7 @@ z-index는 관리하지 않으면 어느새 엉뚱한 요소가 위로 올라와
 
 ## 앵커 위치 지정
 
-툴팁·드롭다운처럼 **다른 요소 옆에 붙어야 하는 요소**는 예전에는 JS(Popper, Floating UI)로 좌표를 계산했다. CSS 앵커 위치 지정(anchor positioning)은 이를 CSS만으로 한다. 2026년 1월 Firefox 147이 지원하면서 모든 주요 브라우저에서 쓸 수 있다(Baseline 2026).
+툴팁·드롭다운처럼 다른 요소 옆에 붙어야 하는 요소는 예전에는 JS(Popper, Floating UI)로 좌표를 계산했다. CSS 앵커 위치 지정(anchor positioning)은 이를 CSS만으로 한다. 2026년 1월 Firefox 147이 지원하면서 모든 주요 브라우저에서 쓸 수 있다(Baseline 2026).
 
 ```css
 .trigger { anchor-name: --menu; }

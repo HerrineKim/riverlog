@@ -7,7 +7,7 @@ source: til
 date: "2026-10-13"
 ---
 
-CSS(Cascading Style Sheets)는 HTML 요소를 **선택**해 **어떻게 보일지** 선언하는 언어다. CSS의 두 가지 기본 원칙만 기억하면 대부분의 레이아웃 문제를 설명할 수 있다.
+CSS(Cascading Style Sheets)는 HTML 요소를 선택해 어떻게 보일지 선언하는 언어다. CSS의 두 가지 기본 원칙만 기억하면 대부분의 레이아웃 문제를 설명할 수 있다.
 
 1. 모든 요소는 네모(박스)이고, 위에서 아래로·왼쪽에서 오른쪽으로 쌓인다(Normal Flow).
 2. `display`에 따라 크기와 배치 방식이 달라진다.

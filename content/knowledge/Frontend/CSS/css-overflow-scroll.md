@@ -35,7 +35,7 @@ sources: ["https://web.dev/learn/css/overflow", "https://developer.mozilla.org/e
 .panel { overflow: hidden auto; }   /* 두 값이면 x → y 순 */
 ```
 
-- 기본값이 `visible`인 이유는 **내용을 실수로 숨기지 않기 위해서다.** 잘리는 것보다 겹치는 것이 데이터 손실이 적다.
+- 기본값이 `visible`인 이유는 내용을 실수로 숨기지 않기 위해서다. 잘리는 것보다 겹치는 것이 데이터 손실이 적다.
 - 대부분은 `auto`가 맞다. 필요할 때만 스크롤바가 나타난다.
 - `scroll`은 나중에 넘칠 수 있는 영역의 스크롤바 자리를 미리 잡아 레이아웃 이동을 막는다. 자리만 잡고 싶다면 `scrollbar-gutter: stable`도 있다.
 - `visible`·`clip` 외의 값은 새 블록 서식 맥락(BFC)을 만든다. 안의 float를 품고 margin 병합을 막는다([[box-model|박스 모델과 display]]).
