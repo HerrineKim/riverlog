@@ -31,13 +31,13 @@ API 스타일은 이 약속을 **어떤 단위로 나누고, 어떤 형식으로
 
 ## 등장 순서와 흐름
 
-```text
-RPC(원격 함수 호출) 개념
-  └─ SOAP (XML·WSDL, 엄격한 계약)
-       └─ REST (HTTP 의미를 그대로 쓰는 가벼운 스타일)
-            ├─ WebSocket (HTTP에서 갈아타는 양방향 연결)
-            ├─ GraphQL (클라이언트가 필드를 고르는 질의)
-            └─ gRPC (RPC의 재등장: protobuf + HTTP/2)
+```mermaid
+flowchart TB
+  rpc["RPC(원격 함수 호출) 개념"] --> soap["SOAP (XML·WSDL, 엄격한 계약)"]
+  soap --> rest["REST (HTTP 의미를 그대로 쓰는 가벼운 스타일)"]
+  rest --> ws["WebSocket (HTTP에서 갈아타는 양방향 연결)"]
+  rest --> gql["GraphQL (클라이언트가 필드를 고르는 질의)"]
+  rest --> grpc["gRPC (RPC의 재등장: protobuf + HTTP/2)"]
 ```
 
 흐름을 보면 **계약의 엄격함과 단순함 사이를 오간다.** SOAP의 무거운 계약에 지친 쪽이 REST로 옮겼고, REST의 느슨함과 과다·과소 조회(over/under-fetching)를 메우려고 GraphQL과 gRPC가 다시 스키마를 앞세웠다.

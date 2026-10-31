@@ -19,16 +19,19 @@ HTTP 엔진은 `@nestjs/platform-fastify` 어댑터로 Fastify로 바꿀 수 있
 
 요청이 컨트롤러에 도달하기 전후로 여러 "끼어들 수 있는 지점"이 있다. 각 노트는 이 순서 중 한 단계를 다룬다.
 
-```text
-Request
- → Middleware (전역 → 모듈)
- → Guard (전역 → 컨트롤러 → 라우트)            ← 인증·인가
- → Interceptor before (전역 → 컨트롤러 → 라우트)
- → Pipe (전역 → 컨트롤러 → 라우트 → 파라미터)   ← 변환·검증
- → Controller handler → Service
- → Interceptor after (라우트 → 컨트롤러 → 전역)
- → Exception Filter (라우트 → 컨트롤러 → 전역, 예외가 났을 때)
-Response
+```mermaid
+flowchart TB
+  req["Request"]
+  mw["Middleware<br/>(전역 → 모듈)"]
+  guard["Guard<br/>(전역 → 컨트롤러 → 라우트)"]
+  ib["Interceptor before<br/>(전역 → 컨트롤러 → 라우트)"]
+  pipe["Pipe<br/>(전역 → 컨트롤러 → 라우트 → 파라미터)"]
+  ctrl["Controller handler"]
+  svc["Service"]
+  ia["Interceptor after<br/>(라우트 → 컨트롤러 → 전역)"]
+  ef["Exception Filter<br/>(라우트 → 컨트롤러 → 전역, 예외가 났을 때)"]
+  res["Response"]
+  req --> mw --> guard -->|"인증·인가"| ib --> pipe -->|"변환·검증"| ctrl --> svc --> ia --> ef --> res
 ```
 
 ## 노트 목록

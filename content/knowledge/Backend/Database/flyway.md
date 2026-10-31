@@ -33,11 +33,13 @@ db/migration/
 ├── V1__create_user_table.sql
 ├── V2__add_email_to_user.sql
 └── V3__create_post_table.sql
+```
 
-flyway migrate
-→ DB의 이력 테이블(flyway_schema_history)을 확인
-→ 아직 적용되지 않은 버전만 번호 순서대로 실행
-→ 실행한 버전과 체크섬을 이력 테이블에 기록
+```mermaid
+flowchart TB
+  cmd["flyway migrate"] --> s1["DB의 이력 테이블(flyway_schema_history)을 확인"]
+  s1 --> s2["아직 적용되지 않은 버전만 번호 순서대로 실행"]
+  s2 --> s3["실행한 버전과 체크섬을 이력 테이블에 기록"]
 ```
 
 - 파일 이름 규칙은 `V<버전>__<설명>.sql`(밑줄 두 개)이다.

@@ -35,12 +35,18 @@ SQL 중심으로 개발하면 필드 하나를 추가할 때 INSERT·SELECT·UPD
 
 ### 엔티티의 네 가지 상태
 
-```text
-new ──persist()──▶ 영속(managed) ──detach()/clear()/close()──▶ 준영속(detached)
-                       │  ▲                                       │
-                remove()│  └──────────── merge() (새 영속 객체 반환) ─┘
-                       ▼
-                    삭제(removed) ──flush/commit──▶ DELETE
+```mermaid
+stateDiagram-v2
+  state "new" as newState
+  state "영속(managed)" as managed
+  state "준영속(detached)" as detached
+  state "삭제(removed)" as removed
+  state "DELETE" as deleted
+  newState --> managed : persist()
+  managed --> detached : detach()/clear()/close()
+  detached --> managed : merge() (새 영속 객체 반환)
+  managed --> removed : remove()
+  removed --> deleted : flush/commit
 ```
 
 | 상태 | 뜻 |
