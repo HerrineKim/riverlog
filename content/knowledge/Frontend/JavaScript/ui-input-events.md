@@ -243,11 +243,9 @@ zone.addEventListener('drop', (e) => {
 
 ### 포인터 이벤트로 직접 구현
 
-```text
-pointerdown (요소)   준비: 포인터와 요소 왼쪽 위의 거리(shiftX·shiftY) 기억, 포인터 캡처
-pointermove          left = pageX - shiftX, top = pageY - shiftY  (position: absolute)
-                     아래의 드롭 대상 찾기 → 들어오면 강조, 나가면 해제
-pointerup            드롭 처리(데이터 변경, 요소 이동), 강조 해제
+```mermaid
+flowchart LR
+  d["pointerdown (요소)<br/>준비: 포인터와 요소 왼쪽 위의 거리(shiftX·shiftY) 기억, 포인터 캡처"] --> m["pointermove<br/>left = pageX - shiftX, top = pageY - shiftY (position: absolute)<br/>아래의 드롭 대상 찾기 → 들어오면 강조, 나가면 해제"] --> u["pointerup<br/>드롭 처리(데이터 변경, 요소 이동), 강조 해제"]
 ```
 
 | 요점 | 이유 |

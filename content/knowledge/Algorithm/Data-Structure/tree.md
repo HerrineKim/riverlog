@@ -163,13 +163,19 @@ def is_bst(node, low=float('-inf'), high=float('inf')):
 | LR: 왼쪽 자식의 오른쪽에 삽입 | 왼쪽 자식을 왼쪽 회전 → 전체를 오른쪽 회전 |
 | RL: 오른쪽 자식의 왼쪽에 삽입 | 오른쪽 자식을 오른쪽 회전 → 전체를 왼쪽 회전 |
 
-```text
-LL 불균형 → 오른쪽 회전
-      30              20
-     /               /  \
-    20      →      10    30
-   /
-  10
+```mermaid
+flowchart LR
+  subgraph before["LL 불균형"]
+    direction TB
+    A30["30"] --> A20["20"]
+    A20 --> A10["10"]
+  end
+  subgraph after["오른쪽 회전 뒤"]
+    direction TB
+    B20["20"] --> B10["10"]
+    B20 --> B30["30"]
+  end
+  before -->|"오른쪽 회전"| after
 ```
 
 회전의 결과는 언제나 같다. 문제가 된 세 노드 중 **값이 가운데인 노드가 부모**가 되고, 나머지 둘이 좌우 자식이 된다.

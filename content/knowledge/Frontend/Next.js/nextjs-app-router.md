@@ -88,11 +88,19 @@ export default async function Page() {
 
 순차 요청은 앞 요청이 끝나야 다음이 시작되는 **폭포(waterfall)** 를 만든다. 의도한 게 아니라면 로딩만 길어진다.
 
-```text
-순차:  getArtist ████████
-                         getAlbums ████████        → 두 시간의 합
-병렬:  getArtist ████████
-       getAlbums ████████                          → 긴 쪽 하나의 시간
+순차: 하나가 끝나야 다음이 시작된다.
+
+```mermaid
+flowchart LR
+  s1["getArtist"] --> s2["getAlbums"] --> s3["두 시간의 합"]
+```
+
+병렬: 둘이 함께 시작한다.
+
+```mermaid
+flowchart LR
+  p1["getArtist"] --> p3["긴 쪽 하나의 시간"]
+  p2["getAlbums"] --> p3
 ```
 
 ```tsx

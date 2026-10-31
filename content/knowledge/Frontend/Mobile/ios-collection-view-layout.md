@@ -39,14 +39,12 @@ UICollectionView는 그리기만 하고, **어디에 무엇을 둘지는 레이�
 
 스크롤하는 동안 `layoutAttributesForElements(in:)`가 계속 불리므로, 여기서 계산하면 끊긴다.
 
-```text
-prepare()
-  ├─ 모든 셀·보조 뷰의 속성을 한 번 계산
-  ├─ 인덱스 패스 → 속성 딕셔너리        ← 특정 항목 질의에 O(1)
-  └─ y 좌표 순으로 정렬한 속성 배열      ← 영역 질의에 이진 탐색
-
-layoutAttributesForElements(in: rect)
-  └─ 이진 탐색으로 rect.minY에 걸치는 첫 요소를 찾고, rect.maxY를 넘을 때까지 앞으로 훑는다
+```mermaid
+flowchart TB
+  p["prepare()"] --> p1["모든 셀·보조 뷰의 속성을 한 번 계산"]
+  p --> p2["인덱스 패스 → 속성 딕셔너리<br/>← 특정 항목 질의에 O(1)"]
+  p --> p3["y 좌표 순으로 정렬한 속성 배열<br/>← 영역 질의에 이진 탐색"]
+  l["layoutAttributesForElements(in: rect)"] --> l1["이진 탐색으로 rect.minY에 걸치는 첫 요소를 찾고,<br/>rect.maxY를 넘을 때까지 앞으로 훑는다"]
 ```
 
 채팅처럼 항목이 위에서 아래로 쌓이면 y 좌표가 정렬되어 있으므로 이진 탐색이 그대로 통한다. 전체를 훑는 O(n) 대신 O(log n + 보이는 개수)로 답한다.

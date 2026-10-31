@@ -16,8 +16,11 @@ sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/mai
 
 해시 테이블(Hash Table)은 키를 해시 함수에 넣어 나온 값을 배열 인덱스로 쓰는 자료구조다. 키만 알면 그 칸으로 바로 가므로 탐색·삽입·삭제가 **평균 O(1)** 이다. 다른 원소를 밀거나 당길 필요가 없다는 점이 배열·연결 리스트와 다르다.
 
-```text
-key "apple" ──hash()──▶ 93847102 ──mod 버킷 수(16)──▶ 인덱스 6 ──▶ buckets[6]
+```mermaid
+flowchart LR
+  K["key #quot;apple#quot;"] -->|"hash()"| H["93847102"]
+  H -->|"mod 버킷 수(16)"| I["인덱스 6"]
+  I --> B["buckets[6]"]
 ```
 
 | 용어 | 뜻 |

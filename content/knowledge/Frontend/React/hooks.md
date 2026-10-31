@@ -272,12 +272,21 @@ action 모양은 자유지만 `{ type, ...payload }` 형태가 관례다. `dispa
 
 목록(`users`)과 입력창, 항목마다 토글·삭제 버튼이 있는 화면에서 흔히 생기는 연쇄다.
 
-```text
-1. 입력창에 타이핑 → App 리렌더링 → UserList·User 전부 리렌더링
-2. UserList·User를 memo로 감쌈 → 타이핑 때는 멈춘다
-3. 항목 하나를 토글 → users가 바뀜 → useCallback(…, [users])인 onToggle·onRemove가 새로 생김
-   → 모든 User의 props가 달라져 전부 리렌더링
-4. 콜백이 users를 읽지 않게 함수형 업데이트로 바꾸고 deps를 비움 → 바뀐 항목만 리렌더링
+```mermaid
+flowchart TB
+  subgraph s1["1"]
+    a1["입력창에 타이핑"] --> a2["App 리렌더링"] --> a3["UserList·User 전부 리렌더링"]
+  end
+  subgraph s2["2"]
+    b1["UserList·User를 memo로 감쌈"] --> b2["타이핑 때는 멈춘다"]
+  end
+  subgraph s3["3"]
+    c1["항목 하나를 토글"] --> c2["users가 바뀜"] --> c3["useCallback(…, [users])인 onToggle·onRemove가 새로 생김"] --> c4["모든 User의 props가 달라져 전부 리렌더링"]
+  end
+  subgraph s4["4"]
+    d1["콜백이 users를 읽지 않게 함수형 업데이트로 바꾸고 deps를 비움"] --> d2["바뀐 항목만 리렌더링"]
+  end
+  s1 --> s2 --> s3 --> s4
 ```
 
 ```jsx
