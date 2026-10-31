@@ -14,8 +14,9 @@ sources: ["https://developer.chrome.com/docs/devtools/javascript?hl=ko", "https:
 
 `console.log`로 디버깅하려면 코드를 찾아 로그를 넣고, 볼 값을 하나하나 적고, 새로고침해야 한다. **중단점은 코드 구조를 몰라도 관련 지점에서 멈추게 하고, 그 순간의 모든 변수를 보여 준다.** 기본 흐름은 이렇다.
 
-```text
-버그 재현 → 중단점으로 멈춤 → 한 줄씩 실행 → Scope·Watch·Console로 값 확인 → 편집기에서 고쳐 저장 → 다시 실행
+```mermaid
+flowchart LR
+    A["버그 재현"] --> B["중단점으로 멈춤"] --> C["한 줄씩 실행"] --> D["Scope·Watch·Console로 값 확인"] --> E["편집기에서 고쳐 저장"] --> F["다시 실행"]
 ```
 
 Sources 패널은 세 영역으로 나뉜다. 왼쪽 **Page 탭**(페이지가 받은 파일 트리), 가운데 **편집기**, 오른쪽 **디버거**(Breakpoints·Scope·Watch·Call Stack). 명령 메뉴(`Ctrl+Shift+P` / `Cmd+Shift+P`)에서 `sources`로도 연다.

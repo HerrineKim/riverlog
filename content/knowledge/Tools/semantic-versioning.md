@@ -14,11 +14,12 @@ sources: ["https://bytebytego.com/guides/what-do-version-numbers-mean", "https:/
 
 유의적 버전(Semantic Versioning, SemVer)은 **버전 번호만 보고 무엇이 바뀌었는지 알 수 있게 하는 규칙**이다. 라이브러리를 쓰는 쪽은 번호를 보고 "올려도 내 코드가 안 깨지나"를 판단한다. 이 약속이 지켜져야 패키지 매니저가 업데이트 범위를 자동으로 정할 수 있다.
 
-```text
-  2 . 4 . 1
-  │   │   └─ PATCH: 하위 호환되는 버그 수정
-  │   └───── MINOR: 하위 호환되는 기능 추가
-  └───────── MAJOR: 하위 호환이 깨지는 API 변경
+```mermaid
+block-beta
+    columns 3
+    major["2<br>MAJOR: 하위 호환이 깨지는 API 변경"]
+    minor["4<br>MINOR: 하위 호환되는 기능 추가"]
+    patch["1<br>PATCH: 하위 호환되는 버그 수정"]
 ```
 
 기준은 **공개 API**다. 내부 구현을 아무리 많이 바꿔도 공개 API가 그대로면 MAJOR가 아니다. 반대로 한 줄을 고쳐도 기존 사용자의 코드가 깨지면 MAJOR다.

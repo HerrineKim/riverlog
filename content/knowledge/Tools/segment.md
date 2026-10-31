@@ -12,9 +12,9 @@ sources: ["https://www.twilio.com/docs/segment", "https://www.twilio.com/docs/se
 
 ## 기본 구조
 
-```text
-Source(수집) ──► Segment ──► Destination(전송)
- 웹·앱·서버·클라우드 툴       GA, 광고 픽셀, CRM, Warehouse ...
+```mermaid
+flowchart LR
+    A["Source(수집)<br>웹·앱·서버·클라우드 툴"] --> B["Segment"] --> C["Destination(전송)<br>GA, 광고 픽셀, CRM, Warehouse ..."]
 ```
 
 | 용어 | 의미 |
