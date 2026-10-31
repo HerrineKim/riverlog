@@ -4,8 +4,8 @@ concept: "OS Basics"
 summary: "운영체제가 무엇이고 왜 필요한지, 커널 영역과 이중 모드·시스템 호출, 단일형·마이크로·하이브리드 커널의 구조 차이, 어떤 기준으로 분류되는지 정리한 입문 노트."
 tags: ["os", "kernel", "linux", "computer-science"]
 source: mixed
-date: "2026-10-20"
-sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a", "https://bytebytego.com/guides/5-important-components-of-linux", "https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=1PEe33_INZc", "https://www.youtube.com/watch?v=26QPDBe-NB8", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
+date: "2026-10-31"
+sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9aa04537faa8d0022", "https://80000coding.notion.site/aaeb2710ba9647fb8fe060a2c9a3fb3a", "https://bytebytego.com/guides/5-important-components-of-linux", "https://wormwlrm.github.io/2021/10/04/OS-Restaurant.html", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=1PEe33_INZc", "https://www.youtube.com/watch?v=26QPDBe-NB8", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > 「세 가지 핵심 주제」 절은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] 개요 - 3가지 이야기」를 바탕으로 보강했다. 리눅스 커널의 다섯 하위 시스템은 ByteByteGo의 System Design 101 가이드 「[5 Important Components of Linux](https://bytebytego.com/guides/5-important-components-of-linux)」를 바탕으로 보강했다.
@@ -13,6 +13,7 @@ sources: ["https://riverkim.kr/204", "https://app.notion.com/p/95029389562e43c9a
 > 「개발자가 운영체제를 알아야 하는 이유」 절과 자원의 정의는 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 「커널 패닉」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 모듈·계층 구조와 처리 방식의 다중 프로그래밍·다중 처리·분산 처리는 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
+> 네트워크 운영체제, 「다중 프로그래밍·다중 작업·다중 처리의 구분」 절, 실시간 OS의 예는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 OS 면접 정리를 바탕으로 보강했다.
 
 운영체제(Operating System)는 컴퓨터 하드웨어 바로 위에 설치되어 사용자·응용 프로그램과 하드웨어를 연결하는 소프트웨어 계층이다. 사용자에게는 컴퓨터를 편하게 쓸 수 있는 환경을, 컴퓨터 입장에서는 한정된 자원을 효율적으로 나눠 주는 **자원 할당자** 역할을 한다.
 
@@ -124,11 +125,27 @@ Linux는 단일형 커널이지만 장치 드라이버 같은 기능을 실행 �
 | 다중 처리(multiprocessing) | 한 컴퓨터 안의 CPU(코어) 여러 개가 여러 프로그램을 실제로 동시에 실행. 프로세서 사이의 연결·역할 분담·동기화를 운영체제가 맡는다 | 멀티코어 PC·서버 |
 | 실시간(real-time) | 정해진 시간 안에 반드시 작업이 끝나야 함 | 공장·원자로·로봇 제어 |
 | 분산 처리(distributed) | 네트워크로 연결된 독립된 컴퓨터 여러 대가 일을 나눠 처리하지만, 사용자에게는 하나의 시스템처럼 보인다 | 파일·DB·웹 서버로 나눈 클러스터 |
+| 네트워크 운영체제(network OS) | 서버에서 돌며 네트워크 안의 여러 컴퓨터가 파일·프린터·사용자 계정·보안 정책을 함께 쓰게 관리한다. 분산 처리와 달리 각 컴퓨터가 독립된 시스템으로 보이고, 사용자는 원격 자원이 어디 있는지 안다 | Windows Server, Linux·UNIX 서버 |
 
 실시간 시스템은 다시 둘로 나뉜다.
 
-- **Hard real-time**: 마감 시간을 어기면 치명적 (로켓, 반도체 장비)
+- **Hard real-time**: 마감 시간을 어기면 치명적 (로켓, 반도체 장비, 자동차 에어백·ABS)
 - **Soft real-time**: 마감이 있지만 가끔 어겨도 큰 문제는 없음 (동영상 재생)
+
+실시간 OS(RTOS)의 목표는 평균 처리량이 아니라 **최악의 경우에도 응답 시간을 보장하는 예측 가능성**이다. 그래서 선점형 고정 우선순위 스케줄링, 짧고 일정한 인터럽트 지연, 우선순위 상속 같은 기능을 갖추고([[process-scheduling|CPU 스케줄링]]), 범용 OS의 가상 메모리처럼 지연이 들쭉날쭉한 기능은 끄거나 쓰지 않는다. 마이크로컨트롤러용 FreeRTOS·Zephyr, 자동차·산업용 QNX·VxWorks가 대표적이다.
+
+### 다중 프로그래밍·다중 작업·다중 처리의 구분
+
+이름이 비슷해 자주 섞이는 네 용어는 **무엇을 여러 개 두느냐**로 구분한다.
+
+| 용어 | 여러 개인 것 | 목표 | CPU가 1개여도 되나 |
+| --- | --- | --- | --- |
+| 다중 프로그래밍(multiprogramming) | 메모리에 올라간 프로그램 | 입출력 대기 동안 CPU를 놀리지 않기(**CPU 이용률**). 작업이 스스로 입출력을 기다릴 때만 CPU가 넘어간다 | 된다 |
+| 다중 작업(multitasking), 시분할 | 번갈아 실행되는 작업 | 타이머로 시간 조각을 나눠 아주 자주 전환해 사용자가 각 프로그램과 대화하게 하기(**응답 시간**). 다중 프로그래밍의 논리적 확장이다 | 된다. 겉보기 동시성(병행) |
+| 다중 처리(multiprocessing) | CPU(코어) | 여러 작업을 **실제로 같은 순간에** 실행해 처리량 늘리기(병렬). 한 CPU가 고장 나도 나머지가 돈다 | 안 된다 |
+| 다중 스레딩(multithreading) | 한 프로세스 안의 실행 흐름 | 같은 주소 공간을 공유하며 일을 나눠 응답성과 코어 활용 높이기([[process-and-thread\|프로세스와 스레드]]) | 된다 |
+
+다중 작업과 다중 처리는 서로 배타적이지 않다. 오늘날의 OS는 코어 여러 개(다중 처리) 위에서 각 코어가 다시 시분할(다중 작업)로 수백 개의 스레드를 돌린다. 다중 처리 시스템은 다시, 모든 CPU가 대등하게 스스로 스케줄링하는 **대칭형(SMP)** 과 한 CPU가 나머지에 일을 나눠 주는 **비대칭형**으로 나뉜다.
 
 ## 세 가지 핵심 주제: 가상화·병행성·영속성
 
@@ -175,4 +192,4 @@ Linux는 단일형 커널이지만 장치 드라이버 같은 기능을 실행 �
 
 - 운영체제 = 하드웨어 위의 소프트웨어 계층, 핵심은 메모리에 상주하는 **커널**. 구조는 단일형·마이크로·하이브리드로 나뉜다.
 - 목적은 **자원의 효율적 관리**와 **편리한 실행 환경 제공** 두 가지.
-- 동시 작업 여부, 사용자 수, 처리 방식(일괄·시분할·실시간)으로 분류한다.
+- 동시 작업 여부, 사용자 수, 처리 방식(일괄·다중 프로그래밍·시분할·다중 처리·실시간·분산)으로 분류한다. 다중 프로그래밍은 CPU 이용률, 시분할은 응답 시간, 다중 처리는 실제 병렬 실행이 목표다.
