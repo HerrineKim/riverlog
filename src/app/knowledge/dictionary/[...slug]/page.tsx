@@ -143,9 +143,15 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
                 </ul>
               )}
               {doc.sources.length > 0 && (
-                <div className="mt-14 rounded-xl border border-line bg-bg-elev p-4 text-sm text-muted">
-                  <p className="font-medium text-fg">원본 기록</p>
-                  <ul className="mt-2 space-y-1">
+                <details className="group mt-14 rounded-xl border border-line bg-bg-elev text-sm text-muted">
+                  <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 font-medium text-fg [&::-webkit-details-marker]:hidden">
+                    원본 기록
+                    <span className="text-xs font-normal text-muted">{doc.sources.length}</span>
+                    <svg viewBox="0 0 16 16" className="ml-auto size-3 text-muted transition group-open:rotate-180" fill="currentColor" aria-hidden>
+                      <path d="M3.5 6 8 10.5 12.5 6z" />
+                    </svg>
+                  </summary>
+                  <ul className="space-y-1 px-4 pb-4">
                     {doc.sources.map((s) => (
                       <li key={s} className="truncate">
                         <a href={s} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center" target="_blank" rel="noreferrer">
@@ -155,7 +161,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
                       </li>
                     ))}
                   </ul>
-                </div>
+                </details>
               )}
             </article>
           )}
