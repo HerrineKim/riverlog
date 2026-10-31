@@ -5,7 +5,7 @@ summary: "컴퓨터가 숫자와 문자를 비트로 저장하는 방식: 진법
 tags: ["computer-architecture", "binary", "floating-point", "encoding"]
 source: notion
 date: "2026-10-21"
-sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://bytebytego.com/guides/big-endian-vs-little-endian", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md", "https://www.joelonsoftware.com/articles/Unicode.html", "https://www.youtube.com/watch?v=peg8c6Gn-zc", "https://www.youtube.com/watch?v=upoRINMqlrw", "https://www.youtube.com/watch?v=1GSjbWt0c9M", "https://www.youtube.com/watch?v=KN8YgJnShPM", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://bytebytego.com/guides/big-endian-vs-little-endian", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md", "https://www.joelonsoftware.com/articles/Unicode.html", "https://www.youtube.com/watch?v=peg8c6Gn-zc", "https://www.youtube.com/watch?v=upoRINMqlrw", "https://www.youtube.com/watch?v=1GSjbWt0c9M", "https://www.youtube.com/watch?v=KN8YgJnShPM", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "고려사이버대학교 컴퓨터구조 강의(권오상 교수, 2024-1학기)"]
 ---
 
 > 진법 변환·KiB·부호 확장·IEEE 754 세부·해밍 코드 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「원리를 알면 까먹지 않을 10진법을 2진법으로 변환하는 방법」, 「KB(킬로바이트)와 KiB(키비바이트)」, 「Unsigned char와 Char의 차이」, 「실수의 비트 표현 방법」, 「JavaScript에서 표현할 수 있는 수의 범위와 부동소수점」, 「Parity Bit (패리티 비트)」, 「Born2BeRoot를 진행하며 궁금했던 부분들」을 바탕으로 보강했다. 보수로 하는 뺄셈은 고무오리 CS 스터디의 『컴퓨터 시스템 구조』(Mano) 정리를 바탕으로 보강했다.
@@ -15,6 +15,7 @@ sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109
 > 「데이터의 종류와 진법」(워드), 「문자 코드」(EUC-KR 예, UTF-8 비트 틀) 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 「2진수 덧셈」 절과 「고정 소수점」의 비트 폭별 정수 범위, 「문자 코드」의 ASCII 제어 문자·상호 운용성, 「이미지와 소리의 표현」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 「32비트와 64비트」 절은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」을 점검해 보강했다.
+> 음수 표현 방식의 범위 비교, 2의 보수를 10진수로 읽는 법, 바이어스 지수를 쓰는 이유와 4배 정밀도는 고려사이버대학교 「컴퓨터구조」(2024-1학기) 강의 내용으로 보강했다.
 
 컴퓨터는 모든 정보를 0과 1로 저장한다. 정수, 실수, 문자를 어떤 규칙으로 비트에 담는지 알아야 오버플로우나 부동 소수점 오차 같은 현상을 이해할 수 있다.
 
@@ -191,7 +192,15 @@ n자리 수 M − N은 **M에 N의 r의 보수를 더해서** 구한다. M + (r�
 | 1의 보수 | `11110001` | 모든 비트 반전 |
 | 2의 보수 | `11110010` | 1의 보수 + 1, 대부분의 CPU가 사용 |
 
-2의 보수는 0이 하나뿐이고 덧셈 회로만으로 뺄셈이 되어 가장 널리 쓰인다.
+| 방식 | 8비트 범위 | 0의 표현 | 덧셈·뺄셈 |
+| --- | --- | --- | --- |
+| 부호-절댓값 | −127 ~ +127 | `00000000`(+0), `10000000`(−0) 두 개 | 부호와 크기를 비교해 처리해야 해 복잡하다 |
+| 1의 보수 | −127 ~ +127 | `00000000`, `11111111` 두 개 | 맨 위 캐리를 다시 더해야 한다(end-around carry) |
+| 2의 보수 | **−128** ~ +127 | 하나 | 부호 비트까지 그냥 더하고 캐리는 버린다 |
+
+0이 둘이면 n비트로 2ⁿ − 1개의 수만 나타낸다. 2의 보수는 0이 하나뿐이라 2ⁿ개를 다 쓰고 덧셈 회로만으로 뺄셈이 되어 가장 널리 쓰인다.
+
+**2의 보수를 10진수로 읽기**: 최상위 비트의 자리값을 **−2ⁿ⁻¹**로 보고 나머지 자리값을 더한다. 8비트 `10101110` = −128 + 32 + 8 + 4 + 2 = **−82**다. 2의 보수를 다시 취해(`01010010` = 82) 음수 부호를 붙여도 같다.
 
 **비트 폭별 정수 범위** (부호 있는 쪽은 2의 보수)
 
@@ -227,12 +236,14 @@ C에서 `char`가 부호 있는지는 구현마다 다르다(x86은 보통 signe
   - 가수: 유효 숫자, 지수: 소수점의 위치
 - **정규화**: 가수의 최상위 자리가 0이 되지 않도록 소수점을 옮기고, 옮긴 만큼 지수를 조정한다. 같은 비트로 최대한 많은 유효 숫자를 담기 위해서다.
 - 정규화된 수의 맨 앞 자리는 항상 1이므로 저장하지 않는다(숨은 비트). 그만큼 가수에 1비트를 더 쓴다.
-- 지수는 부호 없이 저장하려고 **바이어스**를 더한다. 실제 지수 = 저장된 지수 − 바이어스.
+- 지수는 부호 없이 저장하려고 **바이어스**를 더한다. 실제 지수 = 저장된 지수 − 바이어스. 그러면 지수 필드를 부호 없는 정수처럼 비교할 수 있어 **두 부동 소수점 수의 크기 비교가 쉽고**, 0을 모든 비트가 0인 패턴으로 나타내 **0 검사도 쉽다.**
+- 지수 비트를 늘리면 표현 범위가, 가수 비트를 늘리면 정밀도가 커진다. 같은 32비트라도 부동 소수점은 약 10^±38까지 담지만, 32비트 고정 소수점 정수는 약 ±2.1 × 10⁹에 그친다. 대신 부동 소수점은 큰 수일수록 이웃한 수 사이 간격이 벌어진다.
 
 | 형식 | 전체 | 부호 | 지수 | 가수 | 바이어스 | 십진 유효 자릿수 | C 타입 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 단정밀도 (binary32) | 32 | 1 | 8 | 23 | 127 | 약 7자리 | `float` |
 | 배정밀도 (binary64) | 64 | 1 | 11 | 52 | 1023 | 약 15~17자리 | `double` |
+| 4배 정밀도 (binary128, IEEE 754-2008) | 128 | 1 | 15 | 112 | 16383 | 약 34자리 | GCC `__float128` 등 |
 
 값 = (−1)^부호 × 1.가수 × 2^(지수−바이어스). 지수 필드의 양 끝은 특별한 값이다.
 

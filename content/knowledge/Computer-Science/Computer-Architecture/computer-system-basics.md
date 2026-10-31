@@ -116,7 +116,7 @@ sequenceDiagram
   CU->>MEM: '메모리 쓰기' 신호, 주소 5번지, 데이터 220을 보낸다
 ```
 
-실제 CPU는 이보다 단계가 많다. 명령어를 가져오는 경로(PC·MAR·MBR·IR)는 [[cpu-instructions|CPU와 명령어 구조]]에 있다.
+실제 CPU는 이보다 단계가 많다. 명령어를 가져오는 경로(PC·MAR·MBR·IR)는 [[cpu-instructions|CPU와 명령어 구조]]에 있다. 버스의 폭과 대역폭, 동기식·비동기식 버스, 여러 장치가 버스를 동시에 원할 때의 버스 중재는 [[io-organization#시스템 버스|입출력 구조와 시스템 버스]]에 있다.
 
 ### 속도 계층
 

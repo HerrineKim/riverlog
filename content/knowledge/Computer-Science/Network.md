@@ -1,7 +1,7 @@
 ---
 title: "네트워크"
 concept: "Network"
-summary: "네트워크 기초와 OSI 계층 모델부터 IP·서브넷·NAT, TCP·UDP, HTTP·HTTPS, DNS·CDN·HTTP 캐시와 프록시, 리눅스 네트워크 네임스페이스, RFC 읽는 법, WebSocket과 WebRTC까지 네트워크 노트 모음."
+summary: "네트워크 기초(물리 전송·변조·다중화 포함)와 OSI 계층 모델부터 IP·서브넷·NAT·멀티캐스트, QoS, 가입자망과 광역망(MPLS), 무선 네트워크, TCP·UDP, HTTP·HTTPS, DNS·CDN·HTTP 캐시와 프록시, 리눅스 네트워크 네임스페이스, RFC 읽는 법, WebSocket과 WebRTC까지 네트워크 노트 모음."
 tags: ["network", "tcp", "udp", "ip", "http"]
 source: mixed
 date: "2026-10-14"
@@ -9,9 +9,9 @@ date: "2026-10-14"
 
 네트워크는 서로 다른 컴퓨터의 프로세스가 데이터를 주고받는 방법이다. 데이터 전송 과정을 계층별로 이해해 두면 애플리케이션에서 OS, 하드웨어까지 걸친 통신 문제를 어디서부터 살펴야 할지 판단할 수 있다.
 
-- [네트워크 기초](Computer-Science/Network/network-basics.md): 네트워크의 분류와 통신 방식, 프로토콜과 캡슐화, 이더넷과 MAC 주소
+- [네트워크 기초](Computer-Science/Network/network-basics.md): 네트워크의 분류와 통신 방식, 프로토콜과 캡슐화, 1계층 전송 방식·변조·다중화, 이더넷과 MAC 주소
 - [OSI 7계층](Computer-Science/Network/osi-7-layer.md): OSI 7계층과 각 계층의 역할, TCP/IP 4계층과의 대응, 캡슐화와 계층별 PDU
-- [네트워크 계층 프로토콜](Computer-Science/Network/network-layer.md): IPv4 헤더와 단편화, IP 주소 체계, ARP 동작 과정, ICMP와 ping·traceroute, IPv6, NAT·포트 포워딩, 라우팅 프로토콜, 데이터 교환 방식
+- [네트워크 계층 프로토콜](Computer-Science/Network/network-layer.md): IPv4 헤더와 단편화, IP 주소 체계, ARP 동작 과정, ICMP와 ping·traceroute, IPv6, NAT·포트 포워딩, 라우팅 프로토콜, IP 멀티캐스트(IGMP·PIM), 데이터 교환 방식
 - [리눅스 네트워크 네임스페이스와 ip 명령](Computer-Science/Network/linux-network-namespace.md): ip 명령 출력 읽기, 라우팅 테이블, 네임스페이스와 veth로 본 컨테이너 네트워크
 - [전송 계층: 포트, TCP, UDP](Computer-Science/Network/transport-layer.md): 전송 계층의 역할과 포트 번호, TCP 헤더·플래그·3-way handshake·순서 번호·상태 전이·4-way handshake와 TIME_WAIT, UDP, TCP와 UDP 비교
 - [HTTP 프로토콜](Computer-Science/Network/http.md): HTTP 요청·응답 형식, 메서드, 상태 코드, URI·URL·URN, HTTP/1.1·2·3 비교
@@ -29,3 +29,6 @@ date: "2026-10-14"
 - [WebRTC](Computer-Science/Network/webrtc.md): 브라우저끼리 P2P로 오디오·비디오·데이터를 주고받는 WebRTC의 구조
 - [VoIP 전화망: SIP, SDP, RTP](Computer-Science/Network/voip-sip-rtp.md): PSTN·PBX·게이트웨이, 음성 디지털화와 G.711, SIP·SDP 통화 협상, RTP와 지터 버퍼
 - [브라우저에 URL을 입력하면 일어나는 일](Computer-Science/Network/url-to-page.md): 주소창에 URL을 입력한 뒤 DNS·TCP·TLS·HTTP·렌더링을 거쳐 화면이 뜨기까지의 흐름
+- [가입자망과 광역망: DSL·케이블·FTTH에서 SONET·ATM·MPLS까지](Computer-Science/Network/access-network-and-wan.md): xDSL·HFC·FTTH·PON, 위성, T1·E1, SONET/SDH, PPP, X.25에서 프레임 릴레이·ATM까지, MPLS 레이블 스위칭과 트래픽 엔지니어링
+- [무선 네트워크: Wi-Fi, 블루투스, 셀룰러 이동통신](Computer-Science/Network/wireless-network.md): WPAN·WLAN·WWAN, 802.11 구조와 규격, 숨은 터미널과 CSMA/CA·RTS/CTS, 셀과 핸드오프, FDMA·TDMA·CDMA·OFDMA, 1G에서 5G까지
+- [IP QoS: 패킷을 차별해서 보내는 법](Computer-Science/Network/ip-qos.md): 분류·마킹·셰이핑, DSCP, RED·WRED, 큐 스케줄링, IntServ와 DiffServ

@@ -1,14 +1,15 @@
 ---
 title: "네트워크 보안: 방화벽, VPN, 계층별 공격"
 concept: "Network Security"
-summary: "방화벽은 정해 둔 규칙(포트·IP·프로토콜·연결 상태·애플리케이션)으로 트래픽을 걸러 내는 문지기이고, 패킷 필터에서 상태 추적·프록시·차세대 방화벽으로 발전했다. VPN은 공용망 위에 암호화된 터널을 만들어 원격 사용자나 지점을 사설망처럼 잇는다. OSI 계층마다 노리는 공격이 달라 방어도 계층별로 겹겹이 쌓는다."
+summary: "방화벽은 정해 둔 규칙(포트·IP·프로토콜·연결 상태·애플리케이션)으로 트래픽을 걸러 내는 문지기이고, 패킷 필터에서 상태 추적·프록시·차세대 방화벽으로 발전했다. 방화벽을 통과한 공격은 IDS·IPS가 탐지·차단한다. VPN은 공용망 위에 암호화된 터널을 만들어 원격 사용자나 지점을 사설망처럼 잇는다. OSI 계층마다 노리는 공격이 달라 방어도 계층별로 겹겹이 쌓는다."
 tags: ["network", "security", "osi", "infra"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/firewall-explained-to-kids-and-adults", "https://bytebytego.com/guides/top-6-firewall-use-cases", "https://bytebytego.com/guides/how-does-a-vpn-work", "https://bytebytego.com/guides/types-of-vpns", "https://bytebytego.com/guides/top-network-security-cheatsheet", "https://medium.com/watcha/watcha-%EC%82%AC%EB%82%B4-vpn-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-e04f946d3ccb"]
+sources: ["https://bytebytego.com/guides/firewall-explained-to-kids-and-adults", "https://bytebytego.com/guides/top-6-firewall-use-cases", "https://bytebytego.com/guides/how-does-a-vpn-work", "https://bytebytego.com/guides/types-of-vpns", "https://bytebytego.com/guides/top-network-security-cheatsheet", "https://medium.com/watcha/watcha-%EC%82%AC%EB%82%B4-vpn-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-e04f946d3ccb", "고려사이버대학교 정보통신개론 강의(권오상 교수, 2023 겨울계절학기)"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Firewall Explained to Kids and Adults](https://bytebytego.com/guides/firewall-explained-to-kids-and-adults)」, 「[Top 6 Firewall Use Cases](https://bytebytego.com/guides/top-6-firewall-use-cases)」, 「[How Does a VPN Work?](https://bytebytego.com/guides/how-does-a-vpn-work)」, 「[Types of VPNs](https://bytebytego.com/guides/types-of-vpns)」, 「[Top Network Security Cheatsheet](https://bytebytego.com/guides/top-network-security-cheatsheet)」를 바탕으로, 사내 VPN 설계는 「[WATCHA 사내 VPN 개발하기](https://medium.com/watcha/watcha-%EC%82%AC%EB%82%B4-vpn-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-e04f946d3ccb)」로 보강해 재구성한 노트다.
+> 침입 탐지·방지 시스템과 보안 장비 배치, IP 스푸핑 필터링, 스니핑은 고려사이버대학교 「정보통신개론」(2023 겨울계절학기) 강의 내용으로 보강했다.
 
 ## 방화벽
 
@@ -44,9 +45,29 @@ sources: ["https://bytebytego.com/guides/firewall-explained-to-kids-and-adults",
 
 규칙의 출발점은 **기본 거부(default deny)** 다. 모두 막아 두고 필요한 것만 연다. 클라우드에서 DB의 보안 그룹을 앱 서버의 보안 그룹에서 오는 트래픽만 받도록 여는 것이 같은 원칙이다 → [[aws-cloud-basics|AWS 클라우드 기초]].
 
+### 침입 탐지·방지 시스템(IDS·IPS)
+
+방화벽이 출입구에서 규칙에 맞지 않는 트래픽을 미리 막는 문지기라면, 규칙을 통과해 들어왔거나 내부에서 시작된 공격은 따로 찾아야 한다.
+
+| 장비 | 하는 일 | 놓이는 방식 |
+| --- | --- | --- |
+| IDS (Intrusion Detection System) | 트래픽·활동을 지켜보다 공격으로 보이면 **알린다**. 막지는 않는다 | 트래픽 사본을 받아 옆에서 본다(미러 포트). 지켜보는 대상에 따라 호스트 기반(H-IDS, 서버 한 대의 로그·프로세스)과 네트워크 기반(N-IDS, 망을 지나는 패킷)으로 나뉜다 |
+| IPS (Intrusion Prevention System) | 공격으로 판단한 트래픽을 그 자리에서 **차단**한다 | 트래픽이 지나가는 길 한가운데(인라인). 오탐이 정상 트래픽을 끊을 수 있어 규칙 조정이 중요하다 |
+
+탐지 방식은 알려진 공격 패턴과 맞춰 보는 **시그니처 기반**과, 평소 트래픽 모양을 학습해 두고 벗어나면 잡는 **이상 탐지**(anomaly) 기반이다. 시그니처는 오탐이 적지만 새 공격을 못 잡고, 이상 탐지는 알려지지 않은 공격도 잡지만 오탐이 많다. 지금은 NGFW가 IPS를 품는 경우가 많다.
+
+전형적인 배치는 바깥에서 안쪽으로 겹을 쌓는 모양이다.
+
+```mermaid
+flowchart LR
+  inet["인터넷"] --- fw["방화벽"] --- ips1["IPS"] --- core["라우터·백본 스위치"] --- lan["내부망"]
+  ips1 --- ips2["IPS"] --- dmz["DMZ 서버팜(웹·메일)"]
+  ap["무선 AP"] --- ips3["IPS<br>(무선 사용자가 시작하는 공격도 거른다)"] --- sw["스위치"]
+```
+
 ## VPN
 
-**VPN(Virtual Private Network)** 은 인터넷 같은 공용망 위에 **암호화된 터널**을 만들어, 떨어진 기기나 네트워크를 같은 사설망에 있는 것처럼 잇는다.
+**VPN(Virtual Private Network)** 은 인터넷 같은 공용망 위에 **암호화된 터널**을 만들어, 떨어진 기기나 네트워크를 같은 사설망에 있는 것처럼 잇는다. 본사와 지사를 잇던 전용 회선은 거리와 지점 수에 따라 비용이 늘고 지점을 옮길 때마다 다시 깔아야 했다. VPN은 이미 있는 공용망을 빌려 쓰고 사설망에 필요한 것(주소 비공개, 암호화, 사용자 인증·접근 제한)만 위에 얹는다. 망은 통신사 것이지만 쓰는 사람에게는 사설망처럼 보여서 「가상」 사설망이다.
 
 VPN 없이:
 
@@ -123,8 +144,8 @@ flowchart TB
 | 6 표현 | 인코딩·디코딩 취약점, 포맷 스트링 공격, 직렬화 데이터 악용 | 검증된 파서, 정규화 후 검증 |
 | 5 세션 | 세션 하이재킹, 세션 고정, 무차별 대입 로그인 | 로그인 후 세션 ID 재발급, 시도 횟수 제한 → [[session-vs-token-auth\|세션 기반 인증과 토큰 기반 인증]] |
 | 4 전송 | 중간자 공격, SYN 플러드 | TLS, SYN 쿠키 |
-| 3 네트워크 | IP 스푸핑, 라우팅 테이블 조작, 볼류메트릭 DDoS | 출발지 검증 필터, 라우팅 보안, DDoS 방어 서비스 |
-| 2 데이터 링크 | MAC 스푸핑, ARP 스푸핑, VLAN 호핑 | 포트 보안, 동적 ARP 검사, VLAN 설정 점검 |
+| 3 네트워크 | IP 스푸핑, 라우팅 테이블 조작, 볼류메트릭 DDoS | 출발지 검증 필터: 바깥에서 들어오는데 출발지가 내부 대역인 패킷을 버리고(인그레스 필터링), 나가는데 출발지가 내부 대역이 아닌 패킷을 막는다(이그레스 필터링, BCP 38). 라우팅 보안, DDoS 방어 서비스 |
+| 2 데이터 링크 | MAC 스푸핑, ARP 스푸핑, VLAN 호핑, 스니핑(NIC를 무차별 모드로 두어 자기 것이 아닌 프레임까지 엿보기) | 포트 보안, 동적 ARP 검사, VLAN 설정 점검. 허브와 달리 스위치는 프레임을 해당 포트로만 보내 스니핑을 어렵게 하지만, ARP 스푸핑과 함께 쓰면 뚫린다. 최종 방어는 전송 암호화(TLS) |
 | 1 물리 | 도청(선로 탭), 물리적 변조, 전자기 간섭 | 출입 통제, 케이블 보호, 전송 암호화 |
 
 ## 정리
@@ -133,4 +154,4 @@ flowchart TB
 - VPN은 공용망 위의 암호화 터널이다. 원격 접속과 사이트 간 연결로 나뉘고, 신뢰를 VPN 제공자에게 옮긴다는 점을 기억한다.
 - 공격은 계층마다 다르므로 방어도 계층마다 쌓는다.
 
-관련 노트: [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[osi-7-layer|OSI 7계층]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[security|정보 시스템 보안]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]]
+관련 노트: [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[osi-7-layer|OSI 7계층]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[security|정보 시스템 보안]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]], [[access-network-and-wan|가입자망과 광역망(MPLS VPN)]]

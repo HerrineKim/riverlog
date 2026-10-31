@@ -1,10 +1,10 @@
 ---
 title: "전송 계층: 포트, TCP, UDP"
 concept: "Transport Layer"
-summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계(임시 포트 범위 포함), 소켓과 역다중화, 연결 지향 TCP의 헤더·플래그·3-way handshake(SYN 쿠키, 0-RTT)·순서 번호 규칙·상태 전이·4-way handshake와 TIME_WAIT·강제 종료·keepalive, 비연결형 UDP와 체크섬, 그리고 TCP와 UDP의 비교."
+summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계(임시 포트 범위 포함), 소켓과 역다중화, 연결 지향 TCP의 헤더·옵션(MSS·윈도 스케일·SACK)·플래그·3-way handshake(SYN 쿠키, 0-RTT)·순서 번호 규칙·상태 전이·4-way handshake와 절반 닫기·TIME_WAIT·강제 종료·keepalive, 흐름·오류(ARQ)·혼잡 제어, 비연결형 UDP와 체크섬, 그리고 TCP와 UDP의 비교."
 tags: ["network", "transport-layer", "tcp", "udp", "port", "handshake"]
 source: notion
-sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df", "https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp", "https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data", "https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram", "https://bytebytego.com/guides/18-common-ports-worth-knowing", "https://roka88.dev/114", "https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/", "https://www.youtube.com/watch?v=AEaKrq3SpW8", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
+sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df", "https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp", "https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data", "https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram", "https://bytebytego.com/guides/18-common-ports-worth-knowing", "https://roka88.dev/114", "https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/", "https://www.youtube.com/watch?v=AEaKrq3SpW8", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)"]
 date: "2026-10-21"
 ---
 
@@ -14,6 +14,7 @@ date: "2026-10-21"
 > 임시 포트 고갈과 소켓 옵션은 Cloudflare의 「[How to stop running out of ephemeral ports and start to love long-lived connections](https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/)」를 바탕으로 보강했다.
 > 「UDP」 절의 체크섬 계산 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 소켓과 역다중화, 3-way handshake의 이유·동시 열기·SYN 쿠키·0-RTT, 강제 종료와 keepalive, 계층별 체크섬 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
+> TCP 옵션과 윈도 크기에 따른 처리량 상한, 절반 닫기, 어리석은 윈도 증후군, ARQ 방식별 윈도 크기와 회선 효율, Reno 계산 예는 고려사이버대학교 「컴퓨터네트워크」(2023-2학기) 강의 내용으로 보강했다.
 
 네트워크 계층(IP)이 데이터를 **목적지 호스트**까지 보내 준다면, 전송 계층(4계층)은 그 호스트 안의 **어느 프로세스**에게 줄지 결정하고 필요하면 신뢰성을 보장한다. 이때 프로세스를 구분하는 번호가 포트 번호다.
 
@@ -145,14 +146,30 @@ TCP는 서로 다른 호스트의 프로그램이 데이터를 **안정적으로
 | 필드 | 설명 |
 | --- | --- |
 | 출발지·목적지 포트 | 각 2바이트 |
-| 순서 번호(Sequence Number) | 보내는 데이터의 첫 바이트 번호 |
+| 순서 번호(Sequence Number) | 보내는 데이터의 첫 바이트 번호. 첫 번호(ISN)는 연결마다 무작위로 정한다 |
 | 확인 번호(Acknowledgment Number) | 다음에 받기를 기대하는 바이트 번호 |
-| Offset | 헤더 길이 (4바이트 단위, 옵션이 없으면 20바이트 → 5) |
+| Offset | 헤더 길이 (4바이트 단위, 5~15 → 20~60바이트) |
 | Reserved | 예약 필드 |
 | Flags | URG, ACK, PSH, RST, SYN, FIN |
-| Window | 수신 측 버퍼에 남은 공간, 흐름 제어에 사용 |
+| Window | 수신 측 버퍼에 남은 공간(rwnd), 흐름 제어에 사용. 16비트라 최대 65,535바이트 |
 | Checksum | 오류 검출 |
 | Urgent Pointer | 긴급 데이터의 위치 |
+| Options | 최대 40바이트. 아래 「옵션」 |
+
+TCP는 **바이트 스트림**이다. 전송은 세그먼트 단위지만 순서 번호와 윈도는 바이트 단위로 센다.
+
+### 옵션
+
+옵션은 대부분 **연결 수립 때(SYN) 협상**하고 연결 중에는 바꾸지 않는다.
+
+| 옵션 | 하는 일 |
+| --- | --- |
+| MSS (최대 세그먼트 크기) | 한 세그먼트에 실을 데이터의 최대 크기. 양쪽이 알리고 작은 값을 쓴다. 옵션이 없으면 기본 536바이트, 이더넷에서는 보통 1460(1500 − IP 20 − TCP 20) |
+| 윈도 스케일(Window Scale) | 실제 윈도 = Window 필드 × 2ⁿ(n은 최대 14, 약 1GB). 16비트 Window 필드의 한계를 넘는다 |
+| SACK 허용 / SACK | 누적 ACK만으로는 빠진 구간을 알릴 수 없어, 받은 구간을 따로 알려 빠진 것만 다시 받게 한다(아래 「오류 제어」) |
+| 타임스탬프(Timestamps) | 세그먼트마다 보낸 시각을 실어 RTT를 정확히 재고, 순서 번호가 한 바퀴 돌았을 때 옛 세그먼트를 가려낸다(PAWS) |
+
+윈도 스케일이 필요한 이유는 **처리량 상한 = 윈도 크기 ÷ RTT**이기 때문이다. 윈도가 65,535바이트에 묶이면 RTT 100ms인 경로에서는 회선이 아무리 빨라도 65,535 × 8 ÷ 0.1 ≈ **5.2Mbps**를 넘지 못한다. 1Gbps를 채우려면 1Gbps × 0.1s = 약 12.5MB의 윈도(대역폭-지연 곱)가 필요하다.
 
 ### 플래그
 
@@ -251,6 +268,9 @@ Linux는 TIME_WAIT를 60초로 고정해 둔다. 짧은 연결이 많은 서버�
 
 종료용 세그먼트는 헤더의 **FIN 플래그**로 구별한다. 수신 측은 FIN을 받으면 상대가 더 보낼 데이터가 없다는 뜻으로 알고 응용 프로그램에 EOF(`read()`가 0 반환)를 전한다.
 
+- **절반 닫기(half-close)**: 2단계와 3단계 사이에 B는 계속 데이터를 보낼 수 있다. 한 방향만 닫힌 이 상태를 일부러 쓰는 것이 `shutdown(fd, SHUT_WR)`이다. 예를 들어 클라이언트가 입력을 다 보낸 뒤 쓰기 방향만 닫으면, 서버는 EOF로 입력 끝을 알고 결과를 마저 돌려준다.
+- **3단계 종료**: B에게 더 보낼 데이터가 없으면 2단계 ACK와 3단계 FIN을 한 세그먼트(FIN+ACK)로 합쳐 세그먼트 3개로 끝나기도 한다. 패킷 캡처에서 흔히 보이는 모양이다.
+
 #### 정상 종료와 강제 종료
 
 | 방식 | 동작 | 결과 |
@@ -295,16 +315,25 @@ RST는 4-way handshake를 기다릴 수 없을 때(비정상 상태 감지, 과�
 보낼 수 있는 양 = min(rwnd, cwnd) − 아직 ACK 못 받은 양
 ```
 
-- **Nagle 알고리즘**: ACK를 기다리는 데이터가 있으면 작은 세그먼트를 모아 보낸다. 헤더 낭비는 줄지만 지연이 생겨, 지연에 민감한 서비스는 `TCP_NODELAY`로 끈다.
-- **지연 ACK**: 다음 세그먼트가 올 때까지(최대 수백 ms) ACK를 미뤄 하나로 합친다. 순서가 어긋난 세그먼트가 오면 바로 ACK를 보내 빠른 재전송을 돕는다. Nagle과 지연 ACK가 겹치면 작은 요청·응답에서 눈에 띄는 지연이 생긴다.
+수신 윈도는 `rwnd = 수신 버퍼 크기 − 아직 응용이 읽어 가지 않은 바이트 수`다. 데이터가 도착하면 줄고(닫히고), 응용이 `read()`로 읽어 가면 늘어난다(열린다). 예를 들어 버퍼 800바이트에서 200바이트를 받으면 rwnd는 600, 이어서 300바이트를 더 받고 응용이 100바이트를 읽으면 400이 된다. 받는 쪽이 아예 꽉 차면 rwnd 0을 알리고, 송신 측은 윈도 탐침(persist timer)으로 다시 열렸는지 주기적으로 묻는다.
+
+송신 응용이 데이터를 아주 조금씩 만들거나 수신 응용이 아주 조금씩 읽으면, 1바이트를 보내려고 헤더 40바이트를 붙인 41바이트 패킷이 오가는 **어리석은 윈도 증후군**(silly window syndrome)이 생긴다. 송신 측에서는 Nagle 알고리즘이, 수신 측에서는 지연 ACK(작은 윈도를 바로 알리지 않고 기다리기)가 이를 막는다.
+
+- **Nagle 알고리즘**: ACK를 기다리는 데이터가 있으면 작은 세그먼트를 모아 보낸다. 새 ACK가 오거나 MSS를 채울 만큼 모이면 보낸다. 헤더 낭비는 줄지만 지연이 생겨, 지연에 민감한 서비스는 `TCP_NODELAY`로 끈다.
+- **지연 ACK**: 다음 세그먼트가 올 때까지(표준 상한 500ms, 보통 수십~200ms) ACK를 미뤄 하나로 합친다. 순서가 어긋난 세그먼트나 빠진 구간을 메우는 세그먼트가 오면 바로 ACK를 보내 빠른 재전송을 돕고, 이미 받은 세그먼트가 또 오면 ACK가 사라진 것으로 보고 버린 뒤 바로 ACK를 다시 보낸다. Nagle과 지연 ACK가 겹치면 작은 요청·응답에서 눈에 띄는 지연이 생긴다.
 
 #### 오류 제어: 무엇을 다시 보내나
 
-| 방식 | ACK | 손실 시 재전송 |
-| --- | --- | --- |
-| Go-Back-N | 누적 ACK(여기까지 다 받았다) | 잃어버린 세그먼트부터 그 뒤 전부 |
-| Selective Repeat | 세그먼트별 ACK | 잃어버린 세그먼트만 |
-| 실제 TCP | 누적 ACK + **SACK 옵션** | 기본은 누적 ACK, SACK로 받은 구간을 알려 빠진 것만 보낸다 |
+| 방식 | ACK | 손실 시 재전송 | 윈도 크기 (순서 번호 m비트) | 타이머·수신 버퍼 |
+| --- | --- | --- | --- | --- |
+| Stop-and-Wait | 하나 보내고 그 ACK를 기다린다 | 그 하나 | 송신·수신 1 (m = 1이면 충분) | 타이머 1개 |
+| Go-Back-N | 누적 ACK(여기까지 다 받았다) | 잃어버린 세그먼트부터 그 뒤 전부 | 송신 **2ᵐ − 1**, 수신 1 | 타이머 1개. 수신 측은 순서대로 온 것만 받고 나머지는 버려 단순하다 |
+| Selective Repeat | 세그먼트별 ACK | 잃어버린 세그먼트만 | 송신·수신 모두 **2ᵐ⁻¹** 이하 | 세그먼트마다 타이머. 수신 측이 순서 어긋난 것을 버퍼에 두었다가 재정렬해야 해 복잡하다 |
+| 실제 TCP | 누적 ACK + **SACK 옵션** | 기본은 누적 ACK, SACK로 받은 구간을 알려 빠진 것만 보낸다 | 순서 번호 32비트라 제약이 느슨하다 | 재전송 타이머 1개(RTO) |
+
+윈도에 상한이 있는 이유는 **순서 번호가 돌아서 다시 쓰이기 때문**이다. 윈도가 그보다 크면, ACK가 모두 사라져 재전송된 옛 세그먼트를 수신 측이 새 세그먼트로 착각할 수 있다.
+
+Stop-and-Wait는 고속·장거리 회선에서 낭비가 크다. 회선을 꽉 채우려면 한 RTT 동안 **대역폭 × RTT**(대역폭-지연 곱)만큼 보내야 하기 때문이다. 1Mbps, RTT 20ms 회선의 대역폭-지연 곱은 20,000비트다. 1,000비트 패킷을 하나씩 보내면 효율은 1,000 ÷ 20,000 = **5%** 이고, ACK 없이 15개까지 보낼 수 있으면 15,000 ÷ 20,000 = **75%** 가 된다. 슬라이딩 윈도가 필요한 이유다.
 
 손실은 **재전송 타이머(RTO) 만료** 또는 **중복 ACK 3개**로 알아챈다. 중복 ACK는 뒤 세그먼트는 도착했다는 뜻이므로 타이머를 기다리지 않고 바로 보낸다(빠른 재전송).
 
@@ -316,7 +345,17 @@ RST는 4-way handshake를 기다릴 수 없을 때(비정상 상태 감지, 과�
 | 혼잡 회피 | RTT마다 1 MSS씩(선형 증가) | 손실을 감지할 때까지 |
 | 빠른 회복 | 중복 ACK 3개 → ssthresh = cwnd/2, cwnd를 그 근처로 줄이고 계속 전송 | 새 ACK가 오면 혼잡 회피로 |
 
-RTO가 만료되면 더 심한 혼잡으로 보고 ssthresh를 절반으로, cwnd를 1로 되돌려 슬로 스타트부터 다시 한다. 늘릴 때는 더하고 줄일 때는 반으로 나누는 이 방식을 **AIMD(가산 증가·승산 감소)** 라고 한다. 이전 방식인 **Tahoe**는 빠른 회복이 없어 중복 ACK에도 cwnd를 처음으로 되돌렸고, Reno는 절반만 줄여 처리량이 덜 꺾인다. 지금 리눅스 기본인 CUBIC은 손실 뒤 cwnd를 3차 함수 모양으로 회복하고, BBR은 손실 대신 대역폭과 RTT 측정으로 속도를 정한다.
+RTO가 만료되면 더 심한 혼잡으로 보고 ssthresh를 절반으로, cwnd를 1로 되돌려 슬로 스타트부터 다시 한다. 중복 ACK 3개는 뒤 세그먼트가 도착하고 있다는 뜻이라 일시적 손실로 보고 덜 줄이는 것이다. 늘릴 때는 더하고 줄일 때는 반으로 나누는 이 방식을 **AIMD(가산 증가·승산 감소)** 라고 한다. 이전 방식인 **Tahoe**는 빠른 회복이 없어 중복 ACK에도 cwnd를 처음으로 되돌렸고, Reno는 절반만 줄여 처리량이 덜 꺾인다. 지금 리눅스 기본인 CUBIC은 손실 뒤 cwnd를 3차 함수 모양으로 회복하고, BBR은 손실 대신 대역폭과 RTT 측정으로 속도를 정한다.
+
+예: ssthresh 16에서 시작한다(단위 MSS).
+
+```text
+cwnd 1 → 2 → 4 → 8 → 16      슬로 스타트 (RTT마다 2배)
+cwnd 16 → 17 → … → 20        혼잡 회피 (RTT마다 +1)
+cwnd 20에서 RTO 만료          → ssthresh = 10, cwnd = 1, 슬로 스타트부터
+cwnd 1 → … → 10 → 11 → 12    다시 슬로 스타트 후 10부터 혼잡 회피
+cwnd 12에서 중복 ACK 3개      → ssthresh = 6, cwnd = 6, 혼잡 회피로 계속
+```
 
 ## UDP (User Datagram Protocol)
 
@@ -354,7 +393,7 @@ UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프�
 - 주기적으로 정보를 뿌리는 경우: **RIP** 라우팅 정보 교환
 - 신뢰성이 필요하면 애플리케이션 계층에서 직접 구현한다 (예: QUIC은 UDP 위에서 신뢰성과 암호화를 제공하며, [[http|HTTP/3]]가 QUIC 위에서 동작한다).
 - 브라우저 간 실시간 통화([[webrtc|WebRTC]])도 미디어를 UDP로 보낸다.
-- 한 번에 여러 수신자에게 보내는 경우: 저지연 트레이딩의 **시세 멀티캐스트**. TCP는 1:1 연결이라 멀티캐스트를 할 수 없다([[backend-latency-optimization|백엔드 지연 시간 줄이기]]).
+- 한 번에 여러 수신자에게 보내는 경우: 저지연 트레이딩의 **시세 멀티캐스트**. TCP는 1:1 연결이라 멀티캐스트를 할 수 없다([[backend-latency-optimization|백엔드 지연 시간 줄이기]], [[network-layer#IP 멀티캐스트|IP 멀티캐스트]]).
 - 작은 패킷을 자주 보내는 저전력 기기: **IoT** 센서 통신(CoAP 같은 UDP 기반 프로토콜).
 
 DNS도 보통 UDP를 쓰지만, 응답이 커서 잘리거나 영역 전송(zone transfer)을 할 때는 TCP로 넘어간다.

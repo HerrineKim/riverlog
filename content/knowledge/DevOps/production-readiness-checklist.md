@@ -52,4 +52,4 @@ sources: ["https://github.com/mr-mig/going-to-production", "https://developer.mo
 - 백업은 복구해 봐야 백업이다.
 - 보안 헤더는 HSTS·CSP·nosniff를 붙이고, X-XSS-Protection과 HPKP는 버린다.
 
-관련 노트: [[frontend-launch-checklist|프론트엔드 출시 전 체크리스트]], [[observability|관측 가능성]], [[deployment-strategies|배포 전략]], [[resiliency-patterns|회복력 패턴]], [[disaster-recovery|재해 복구]], [[high-availability-redundancy|고가용성과 이중화]]
+관련 노트: [[frontend-launch-checklist|프론트엔드 출시 전 체크리스트]], [[observability|관측 가능성]], [[deployment-strategies|배포 전략]], [[resiliency-patterns|회복력 패턴]], [[disaster-recovery|재해 복구]], [[high-availability-redundancy|고가용성과 이중화]], [[cloud-sla-and-contract|클라우드 SLA와 계약]]

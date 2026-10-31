@@ -5,12 +5,13 @@ summary: "키를 해시 함수로 배열 인덱스로 바꿔 평균 O(1)에 찾�
 tags: ["algorithm", "data-structure", "hash-table", "java"]
 source: other
 date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://d2.naver.com/helloworld/831311", "https://www.techinterviewhandbook.org/algorithms/hash-table/", "https://www.techinterviewhandbook.org/algorithms/string/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://d2.naver.com/helloworld/831311", "https://www.techinterviewhandbook.org/algorithms/hash-table/", "https://www.techinterviewhandbook.org/algorithms/string/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 자료구조 문서의 Hash Table 절을 바탕으로 재구성하고, 언어별 구현은 각 언어의 공식 문서·소스 기준으로 최신화한 노트다.
 > 「문제 풀이에서 쓰는 패턴」은 Tech Interview Handbook의 「[Hash table cheatsheet](https://www.techinterviewhandbook.org/algorithms/hash-table/)」, 「[String cheatsheet](https://www.techinterviewhandbook.org/algorithms/string/)」의 글자 세기·애너그램 절을 바탕으로 보강했다.
 > 해시 함수 설계 방식, 이중 해싱의 단점과 해결, 언어별 적재율, LRU·LFU 캐시 구현은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
+> 적재율별 평균 탐사 횟수는 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용으로 보강했다.
 
 ## 해시 테이블이란
 
@@ -102,6 +103,16 @@ flowchart LR
 ## 적재율과 리사이즈
 
 버킷이 적으면 메모리는 아끼지만 충돌이 늘어난다. 그래서 적재율이 임계값을 넘으면 버킷 배열을 보통 2배로 늘리고 모든 원소를 새 인덱스로 다시 넣는다(rehash). 리사이즈 한 번은 O(n)이지만 드물게 일어나므로 삽입의 **분할 상환(amortized) 비용은 O(1)** 이다.
+
+임계값을 어디에 둘지는 적재율 α에 따른 **평균 탐사 횟수**로 정한다. 키가 버킷에 고르게 퍼진다고 가정한 기댓값이다.
+
+| 방식 | 실패한 검색(없는 키) | 성공한 검색 | α = 0.5 | α = 0.9 |
+| --- | --- | --- | --- | --- |
+| 분리 연결법 | 1 + α | 약 1 + α/2 | 1.5 / 1.25 | 1.9 / 1.45 |
+| 개방 주소법(균등 탐사 가정) | 1 / (1 − α) 이하 | (1/α)·ln(1/(1 − α)) 이하 | 2 / 1.39 | 10 / 2.56 |
+| 선형 탐사 | 약 ½·(1 + 1/(1 − α)²) | 약 ½·(1 + 1/(1 − α)) | 2.5 / 1.5 | 50.5 / 5.5 |
+
+분리 연결법은 α에 비례해 천천히 늘지만, 개방 주소법은 1/(1 − α) 꼴이라 **α가 1에 다가가면 폭발한다.** 군집이 생기는 선형 탐사는 더 빨리 나빠진다. 개방 주소법 구현이 적재율을 0.5~0.9 아래로 묶는 이유다.
 
 ```text
 버킷 16개, 적재율 0.75 → 원소 12개를 넘는 순간 32개로 확장 → 다음 임계값 24개

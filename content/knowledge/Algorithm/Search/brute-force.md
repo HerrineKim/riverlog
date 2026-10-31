@@ -33,15 +33,16 @@ answer = [n for n in range(100, 1000) if sum(map(int, str(n))) == 10]
 `itertools`를 쓰면 순서가 있는 나열(순열)과 순서 없는 선택(조합)을 간단히 만들 수 있다.
 
 ```python
-from itertools import permutations, combinations, product
+from itertools import permutations, combinations, product, combinations_with_replacement
 
 arr = [1, 2, 3]
 print(list(permutations(arr, 2)))   # 순열 nPr: (1,2), (1,3), (2,1), ...
 print(list(combinations(arr, 2)))   # 조합 nCr: (1,2), (1,3), (2,3)
 print(list(product(arr, repeat=2))) # 중복 순열: (1,1), (1,2), ...
+print(list(combinations_with_replacement(arr, 2)))  # 중복 조합: (1,1), (1,2), ...
 ```
 
-순열의 개수는 N!이므로 N이 한 자릿수(대략 10 이하)일 때만 완전 탐색이 현실적이다.
+순열의 개수는 N!이므로 N이 한 자릿수(대략 10 이하)일 때만 완전 탐색이 현실적이다. 각 경우의 수를 세는 공식은 [[permutation-combination|순열과 조합]]에 있다.
 
 ### 3) 비트마스크 (Bit Mask)
 
@@ -103,4 +104,4 @@ print(solve(0, 8, set(), set(), set()))  # 92
 - 순열·조합은 `itertools`, 포함/불포함 선택은 비트마스크나 재귀
 - 백트래킹은 DFS + 가지치기로 불필요한 탐색을 줄인다.
 
-관련 노트: [[dfs|DFS]], [[recursion|재귀 함수]], [[bfs|BFS]]
+관련 노트: [[dfs|DFS]], [[recursion|재귀 함수]], [[bfs|BFS]], [[permutation-combination|순열과 조합]]

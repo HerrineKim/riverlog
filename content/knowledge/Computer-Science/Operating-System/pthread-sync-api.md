@@ -176,4 +176,4 @@ Java도 `wait()`는 `while` 루프 안에서 부른다. 같은 이유(가짜 깨
 - 동기화 도구의 원자성은 결국 CPU의 원자 명령어가 보장한다.
 - **짧은 대기는 스핀, 긴 대기는 잠들기.** 사용자 코드에서는 직접 스핀락을 만들기보다 표준 뮤텍스를 쓴다.
 
-관련 노트: [[process-synchronization|프로세스 동기화]], [[process-and-thread|프로세스와 스레드]], [[deadlock|교착 상태]], [[cache-friendly-code|캐시를 고려한 코드]]
+관련 노트: [[process-synchronization|프로세스 동기화]], [[process-and-thread|프로세스와 스레드]], [[deadlock|교착 상태]], [[cache-friendly-code|캐시를 고려한 코드]], [[process-and-thread#스레드 모델: 사용자 수준과 커널 수준|스레드 모델(N:1·1:1·M:N)]]

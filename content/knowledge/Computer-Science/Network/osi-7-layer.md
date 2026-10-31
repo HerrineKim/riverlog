@@ -1,18 +1,21 @@
 ---
 title: "OSI 7계층"
 concept: "OSI Model"
-summary: "네트워크 통신을 일곱 단계로 나눈 OSI 참조 모델과 각 계층의 역할, 대표 프로토콜, TCP/IP 4계층과의 대응, 캡슐화와 계층별 PDU."
+summary: "네트워크 통신을 일곱 단계로 나눈 OSI 참조 모델과 각 계층의 역할, 대표 프로토콜, TCP/IP 4계층과의 대응(법률 표준과 사실 표준), 캡슐화와 계층별 PDU(SDU·PCI)."
 tags: ["network", "osi", "protocol", "certificate"]
 source: notion
-sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://bytebytego.com/guides/what-is-osi-model", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/OSI%207%EA%B3%84%EC%B8%B5.md"]
+sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://bytebytego.com/guides/what-is-osi-model", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/OSI%207%EA%B3%84%EC%B8%B5.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)", "고려사이버대학교 정보통신개론 강의(권오상 교수, 2023 겨울계절학기)"]
 date: "2026-10-21"
 ---
 
 > 고무오리 CS 스터디의 네트워크 학습 노트(네트워크와 모델)를 바탕으로 재구성한 노트다.
 > 캡슐화 흐름과 계층을 나누는 이유는 ByteByteGo의 System Design 101 가이드 「[OSI Model Explained](https://bytebytego.com/guides/what-is-osi-model)」를 바탕으로 보강했다.
 > 계층별 구현 위치와 세션·표현 계층 설명은 「[Frontend_TIL: OSI 7계층](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/OSI%207%EA%B3%84%EC%B8%B5.md)」을 바탕으로 보강했다.
+> OSI 모델이 나온 배경, 법률 표준과 사실 표준, 계층 사이의 SDU·PCI·PDU는 고려사이버대학교 「컴퓨터네트워크」(2023-2학기)와 「정보통신개론」(2023 겨울계절학기) 강의 내용으로 보강했다.
 
 OSI(Open Systems Interconnection) 모델은 네트워크 통신 과정을 일곱 개의 계층으로 나눈 참조 모델이다. 계층마다 맡은 일이 정해져 있어, 문제가 생기면 어느 계층의 문제인지 좁혀 갈 수 있고 각 계층을 독립적으로 바꿀 수 있다.
+
+1970년대에는 컴퓨터 제조사마다 자기만의 네트워크 구조를 내놓아 다른 회사 장비끼리는 연결되지 않았다. ISO가 이 폐쇄성을 풀려고 「이런 모양으로 만들라」는 기준(참조 모델)으로 정한 것이 OSI다.
 
 외우는 순서: **물-데-네-전-세-표-응** (아래에서 위로)
 
@@ -58,10 +61,13 @@ OSI(Open Systems Interconnection) 모델은 네트워크 통신 과정을 일곱
 | 항목 | OSI 7계층 | TCP/IP 4계층 |
 | --- | --- | --- |
 | 성격 | ISO 표준 참조 모델. 통신 전반을 **역할 기준**으로 논리적으로 나눈다 | 실제 인터넷이 쓰는 프로토콜 묶음. **구현 기준**으로 나눈다 |
+| 표준의 종류 | **법률 표준**(de jure): 공인 기구가 합의 절차로 제정 | **사실 표준**(de facto): 공인 전에 널리 쓰여 표준이 됐다(이후 IETF RFC로 정리) |
 | 응용 | 응용 + 표현 + 세션 (7·6·5) | 응용 계층 하나 |
 | 전송 | 전송 (4) | 전송 계층 |
 | 네트워크 | 네트워크 (3) | 인터넷 계층 |
 | 링크 | 데이터 링크 + 물리 (2·1) | 네트워크 접근(인터페이스) 계층 |
+
+OSI는 전 세계 합의가 필요해 표준화가 더뎠다. 그사이 ARPANET에서 자란 TCP/IP가 1980년대 UNIX(BSD)에 기본 탑재되어 널리 퍼졌고, 1990년대 WWW가 사용량을 폭발시키면서 실제 인터넷은 TCP/IP로 굳었다. OSI는 프로토콜이 아니라 **설명하는 말**로 남았다.
 
 둘 다 계층마다 역할을 정하고 아래 계층의 서비스를 위 계층이 쓰는 구조다. 문제를 진단할 때는 OSI 번호로 말하고("L4 로드 밸런서", "L2 스위치"), 구현은 TCP/IP 모델을 따른다.
 
@@ -76,6 +82,8 @@ OSI(Open Systems Interconnection) 모델은 네트워크 통신 과정을 일곱
 | 3 네트워크 | IP + TCP + 데이터 | 패킷 |
 | 2 데이터 링크 | Ethernet + IP + TCP + 데이터 + FCS | 프레임 |
 | 1 물리 | 신호 | 비트 |
+
+이웃한 두 계층 사이에서는 같은 덩어리를 부르는 이름이 바뀐다. 위 계층(N+1)이 내려준 PDU는 N 계층에게 내용을 모르는 짐인 **SDU**(Service Data Unit)이고, N 계층이 여기에 자기 제어 정보 **PCI**(Protocol Control Information, 곧 헤더·트레일러)를 붙이면 N 계층의 PDU가 된다. 그래서 `N-PDU = N-PCI + N-SDU`이고, 하위 계층은 SDU 안이 어떻게 생겼는지 모른 채 통째로 나른다. 받는 쪽의 같은 계층만 그 PCI를 읽고 떼어 낸다.
 
 HTTP 요청 하나가 장치 A에서 B로 가는 과정은 다음과 같다.
 

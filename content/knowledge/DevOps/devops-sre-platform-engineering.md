@@ -1,14 +1,15 @@
 ---
-title: "DevOps, SRE, 플랫폼 엔지니어링, NoOps"
+title: "DevOps, SRE, 플랫폼 엔지니어링, NoOps와 클라우드 거버넌스"
 concept: "DevOps vs SRE"
-summary: "개발과 운영을 잇는 방식의 갈래를 비교한다. DevOps는 협업 문화와 자동화, SRE는 SLO·에러 버짓으로 신뢰성을 공학 문제로 다루는 실천, 플랫폼 엔지니어링은 개발자가 스스로 쓰는 내부 플랫폼을 제품으로 만드는 일, NoOps는 서버리스로 운영 작업을 클라우드에 넘기는 지향이다. 테스트가 개발자 몫으로 옮겨 간 흐름과 회사 규모별 배포·품질 도구의 변화도 함께 다룬다."
-tags: ["devops", "infra", "software-engineering", "testing", "collaboration"]
+summary: "개발과 운영을 잇는 방식의 갈래를 비교한다. DevOps는 협업 문화와 자동화, SRE는 SLO·에러 버짓으로 신뢰성을 공학 문제로 다루는 실천, 플랫폼 엔지니어링은 개발자가 스스로 쓰는 내부 플랫폼을 제품으로 만드는 일, NoOps는 서버리스로 운영 작업을 클라우드에 넘기는 지향이다. 클라우드를 들인 조직의 운영 모델(중앙 집중·분산·공유 서비스·CCoE), 통제가 아니라 가드레일로서의 거버넌스와 문화 전환, 테스트가 개발자 몫으로 옮겨 간 흐름과 회사 규모별 배포·품질 도구의 변화도 함께 다룬다."
+tags: ["devops", "infra", "software-engineering", "testing", "collaboration", "cloud"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/devops-vs-sre-vs-paltform-engg", "https://bytebytego.com/guides/devops-vs-noops", "https://bytebytego.com/guides/paradigm-shift-how-developer-to-tester-ratio-changed-from-11-to-1001", "https://bytebytego.com/guides/what-tools-does-your-team-use-to-ship-code-to-production-and-ensure-code-quality", "https://sre.google/sre-book/introduction/"]
+sources: ["https://bytebytego.com/guides/devops-vs-sre-vs-paltform-engg", "https://bytebytego.com/guides/devops-vs-noops", "https://bytebytego.com/guides/paradigm-shift-how-developer-to-tester-ratio-changed-from-11-to-1001", "https://bytebytego.com/guides/what-tools-does-your-team-use-to-ship-code-to-production-and-ensure-code-quality", "https://sre.google/sre-book/introduction/", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[DevOps vs. SRE vs. Platform Engineering](https://bytebytego.com/guides/devops-vs-sre-vs-paltform-engg)」, 「[DevOps vs NoOps](https://bytebytego.com/guides/devops-vs-noops)」, 「[Paradigm Shift: Developer to Tester Ratio](https://bytebytego.com/guides/paradigm-shift-how-developer-to-tester-ratio-changed-from-11-to-1001)」, 「[Tools for Shipping Code to Production](https://bytebytego.com/guides/what-tools-does-your-team-use-to-ship-code-to-production-and-ensure-code-quality)」를 바탕으로, SRE는 Google SRE 책으로 확인해 재구성한 노트다. 「Paradigm Shift」의 원 자료는 Carlos Arguelles의 「The Paradigm Shifts with Different Dev:Test Ratios」다.
+> 클라우드 운영 조직 모델과 거버넌스는 고려사이버대학교 「클라우드 컴퓨팅」(2023-2학기) 강의 내용으로 보강했다.
 
 ## 개발과 운영을 잇는 방식의 변화
 
@@ -68,7 +69,43 @@ flowchart TB
 
 **NoOps는 서버리스로 운영 작업 대부분을 클라우드 제공자에게 넘겨 개발자가 기능에만 집중하는 지향이다.** 함수 실행(FaaS)과 관리형 백엔드(BaaS: 인증, DB, 스토리지)로 시스템을 짜면 서버 관리·확장·패치가 사라진다. 작은 팀과 작은 서비스에서 수명 주기를 DevOps보다 더 줄인다.
 
-다만 운영이 0이 되지는 않는다. 모니터링, 비용 관리, 권한 설정, 장애 대응은 여전히 남고, 제공자 종속(lock-in)과 콜드 스타트 같은 제약이 따른다. 서버리스의 쓰임은 [[aws-cloud-basics|AWS 클라우드 기초]]에 있다.
+다만 운영이 0이 되지는 않는다. 모니터링, 비용 관리, 권한 설정, 장애 대응은 여전히 남고, 제공자 종속(lock-in)과 콜드 스타트 같은 제약이 따른다. 서버리스의 쓰임은 [[serverless-architecture|서버리스 아키텍처]]에 있다.
+
+## 클라우드를 들인 조직: 운영 모델과 거버넌스
+
+클라우드의 장점은 하루에도 여러 번 바꾸고 배포할 수 있다는 데 있다. 몇 달에 한 번 모아 반영하던 조직 구조로는 이 장점을 못 쓰고, 오히려 누구나 버튼 하나로 서버를 만들게 되면서 비용과 보안 사고가 는다. 그래서 클라우드 도입은 기술보다 조직과 규칙의 문제가 된다.
+
+전담 조직은 독립 팀이든 IT 부서 안의 전담 인력이든 의사 결정권자의 확실한 지원이 있어야 한다. 설계 단계부터 클라우드 아키텍트와 운영 인력을 한 팀에 두고(DevOps), 서버·스토리지·네트워크 부서를 합쳐 관리하며, 비용 관리 방안을 처음부터 마련한다. 구심점은 **클라우드 아키텍트**다. 사업자를 고르고, 표준 아키텍처와 배포 절차를 만들고, 비용·접근 관리·규정 준수 절차를 세운다.
+
+| 운영 모델 | 구조 | 장점 | 단점 |
+| --- | --- | --- | --- |
+| 중앙 집중(centralized) | 중앙 그룹이 전략과 운영을 함께 맡고 모든 결정을 승인 | 일관성, 책임 추적 | 획일적이라 변화가 느리다 |
+| 분산(decentralized) | 사업 조직마다 각자 전략과 운영 | 각자 맞는 결정을 빠르게 | 조직 간 일관성이 없고 확장이 어렵다 |
+| 공유 서비스(shared service) | 전략은 각자, 운영은 IT 자회사 같은 전문 조직이 공유 | 확장성이 높다 | 조직 간 간극 조율과 소통이 어렵다 |
+| CCoE(Cloud Center of Excellence) | 여러 직무가 모인 중앙 전문 조직이 전략·표준·모범 사례를 만들고 교육·기술 지원. 실행은 사업 조직이 | 중앙 관리와 전문 인력 | 큰 조직에서나 가능하다 |
+
+CCoE의 표준을 셀프서비스 도구로 만들어 내놓으면 위의 플랫폼 엔지니어링이 된다. 전 조직을 한 번에 바꾸기는 어려우므로 단순하고 효과가 분명한 서비스부터 옮겨 성공 경험을 만들고, 목표 조직·직무 정의 → 현재 구조·역량·문화 진단 → 구조·역할 재설계 → 단계별 이행 순으로 넓힌다.
+
+**거버넌스는 감시가 아니라 가드레일이다.** 목표는 「허락받고 쓰기」가 아니라 「정해진 울타리 안에서는 마음대로 쓰기」이고, 울타리를 넘는 행동(공개 버킷, 허용 안 된 리전, 너무 큰 인스턴스)만 자동으로 막거나 알린다. 감시가 목적이 되면 다들 우회한다. 거버넌스가 맡는 일은 이렇다.
+
+| 할 일 | 내용 |
+| --- | --- |
+| 이해관계자 참여 | 아키텍트는 계정 정책에 맞는 표준 아키텍처를, 보안 관리자는 위협과 해법을 가져와 함께 규칙을 정한다 |
+| 비용 가시성 | 서비스별로 쪼개진 청구서를 태그로 사업 단위에 배분하고, 꺼지지 않은 유휴 자원을 찾아 줄인다([[cloud-cost-optimization\|클라우드 비용 최적화]]) |
+| 최소 권한 | 클라우드에 둔 데이터를 지킬 책임은 이용 기업에 있다. 접근은 역할별로 세분화한다([[devsecops#클라우드의 보안 위협\|클라우드의 보안 위협]]) |
+| 탐지 자동화 | 인스턴스·스토리지·네트워크·컨테이너와 클라우드 사이의 데이터 이동에서 이상 징후를 찾고, 중요 데이터의 외부 전송을 막는다 |
+| 프로비저닝 자동화 | 손으로 만들면 실수가 나고 현황이 안 보인다. 코드형 인프라와 CI/CD로 만들면 정책 검사도 자동이 된다([[terraform-workflow\|Terraform]]) |
+| 교육 | 지식 전달보다 왜 필요한지 체감하게 하고, 성공 사례를 공유하고, 사전 점검을 자동화한다 |
+
+새 방식에는 늘 저항이 따른다. 지금의 업무·직책·영향력이 줄어든다고 느낄 때 커지므로 배울 기회를 넉넉히 주고 단계적으로 바꾼다. 바뀌어야 하는 사고방식은 다섯 가지다.
+
+| 예전 | 클라우드 |
+| --- | --- |
+| 인프라는 직접 짓는다 | 빌려 쓴다 |
+| 단계별 승인 | 표준 안에서 스스로 결정하는 셀프서비스 |
+| 정적인 자원을 손으로 관리 | 앱에 맞춰 자동으로 늘고 준다 |
+| 결재 중심의 접근 제어 | API 중심의 즉시 접근 제어 |
+| 하드웨어 중심 | 정책과 변경까지 코드로 다루는 소프트웨어 중심 |
 
 ## 테스트는 개발자의 몫이 됐다
 
@@ -100,7 +137,8 @@ flowchart TB
 - DevOps는 문화, SRE는 그 문화를 숫자로 운영하는 방법, 플랫폼 엔지니어링은 그것을 내부 제품으로 만드는 조직 방식이다.
 - SRE의 에러 버짓은 배포 속도와 안정성의 갈등을 하나의 숫자로 조정한다.
 - NoOps는 운영을 없애는 게 아니라 클라우드에 넘기는 것이다. 관측·비용·권한은 남는다.
+- 클라우드를 들인 조직은 규모에 맞는 운영 모델(중앙·분산·공유 서비스·CCoE)을 고르고, 거버넌스를 감시가 아니라 가드레일(비용 가시성, 최소 권한, 자동화된 프로비저닝과 탐지)로 운영한다.
 - 배포가 빨라질수록 테스트는 개발자의 일이 되고, 품질 조직은 도구를 만든다.
 - 도구와 절차는 회사의 단계에 맞춰 늘린다.
 
-관련 노트: [[platform-engineering|플랫폼 엔지니어링]], [[ci-cd|CI/CD]], [[deployment-strategies|배포 전략]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[test-run-stages|테스트를 돌리는 시점: 로컬, PR, CI]], [[incident-postmortem|장애 대응과 포스트모템]]
+관련 노트: [[platform-engineering|플랫폼 엔지니어링]], [[ci-cd|CI/CD]], [[deployment-strategies|배포 전략]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[disaster-recovery|고가용성과 재해 복구 설계]], [[test-run-stages|테스트를 돌리는 시점: 로컬, PR, CI]], [[incident-postmortem|장애 대응과 포스트모템]], [[cloud-cost-optimization|클라우드 비용 최적화]], [[cloud-sla-and-contract|클라우드 SLA·계약과 규제]]

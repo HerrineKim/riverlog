@@ -21,11 +21,11 @@ date: "2026-10-14"
 
 ### C++
 
-- [C++ 기초 문법과 참조자](Computer-Science/Programming-Languages/cpp-basics.md): 초기화와 L/R-value, 스트림, 헤더와 네임스페이스, 포인터와 참조자의 차이, switch fallthrough
+- [C++ 기초: 문법, 참조자, 클래스, 연산자 오버로딩](Computer-Science/Programming-Languages/cpp-basics.md): 초기화와 L/R-value, 스트림, 헤더와 네임스페이스, switch fallthrough, 참조자, 접근 지정과 const 멤버 함수, 초기화 리스트, static 멤버, RAII와 3·5·0의 규칙, 연산자 오버로딩, explicit
 - [C++ 템플릿](Computer-Science/Programming-Languages/cpp-templates.md): 함수·클래스 템플릿, 기본·비타입 인자, 특수화, 템플릿 재귀와 가변 인자
 - [C++ STL 컨테이너와 시간 복잡도](Computer-Science/Programming-Languages/cpp-stl-containers.md): vector의 분할 상환 O(1), deque·list, 레드-블랙 트리 기반 set·map과 해시 기반 unordered
 - [C++ 예외 처리의 내부 동작](Computer-Science/Programming-Languages/cpp-exceptions.md): 스택 되감기, 동적 등록과 zero-cost 테이블 방식, 예외 객체의 힙 할당
-- [가상 함수와 vtable](Computer-Science/Programming-Languages/cpp-virtual-functions.md): vptr과 vtable, 생성자·소멸자 안의 가상 호출과 pure virtual call, 가상 소멸자
+- [C++ 상속과 가상 함수: 접근 지정, 생성·소멸 순서, vtable, 슬라이싱, 다중 상속](Computer-Science/Programming-Languages/cpp-virtual-functions.md): 상속 방식별 접근 수준, 생성·소멸 순서, 재정의와 이름 가림, vptr과 vtable, pure virtual call, 가상 소멸자, 슬라이싱, 다이아몬드와 가상 상속
 - [메모리 풀](Computer-Science/Programming-Languages/memory-pool.md): 고정·가변 메모리 풀, operator new/delete 오버로딩, std::pmr
 - [C++ 코딩 표준과 clang-format](Computer-Science/Programming-Languages/cpp-coding-style.md): 코딩 표준이 정하는 항목, 이름 규칙 예, clang-format으로 서식 자동화
 
@@ -48,7 +48,7 @@ date: "2026-10-14"
 - [Java 코딩 컨벤션: Google 스타일과 캠퍼스 핵데이 규칙](Computer-Science/Programming-Languages/java-coding-convention.md): 두 컨벤션 비교, 이름·import·중괄호·Javadoc 규칙, Checkstyle·EditorConfig 자동 적용
 - [Java 언어 기본: 접근 제어자, static, 객체 비교, 제네릭, 리플렉션](Computer-Science/Programming-Languages/java-language-basics.md): 접근 제어자, final·finalize, 오버로딩·오버라이딩, 오토박싱, 제네릭 타입 소거, 어노테이션, 동시성 컬렉션, ThreadLocal
 - [Java 실무 관용구: Enum, Optional, 예외와 자원, 날짜 API, 람다와 스트림, 비동기](Computer-Science/Programming-Languages/java-idioms.md): Enum에 행위 묶기, Optional 규칙, unchecked 예외 전환, java.time, CompletableFuture
-- [Java 직렬화와 Jackson](Computer-Science/Programming-Languages/java-serialization-jackson.md): Serializable·serialVersionUID와 보안 문제, Jackson 어노테이션과 타입 정보 보존
+- [Java 입출력과 직렬화: 스트림, Path·Files, Serializable, Jackson](Computer-Science/Programming-Languages/java-serialization-jackson.md): 바이트·문자 스트림과 인코딩, 데코레이터 구조의 보조 스트림, 버퍼링, Path·Files, Serializable·serialVersionUID와 보안 문제, Jackson 어노테이션과 타입 정보 보존
 - [JVM 내부 구조: 실행 엔진, 클래스 로딩, 메모리 영역, GC](Computer-Science/Programming-Languages/jvm-internals.md): 바이트코드와 클래스 로딩, 런타임 데이터 영역, 세대별 GC, GC 로그·힙 덤프 진단
 - [Python 언어 동작: 제너레이터, MRO, 메모리 관리, 동시성, 성능](Computer-Science/Programming-Languages/python-internals.md): 이터러블·이터레이터·제너레이터, C3 MRO와 super(), 참조 카운팅과 세대별 순환 수집, 누수 패턴, PyPy 추적 JIT, 덕 타이핑과 Protocol
 - [Go 언어: 설계 원칙, 타입, 에러 처리, 빌드와 테스트, GC](Computer-Science/Programming-Languages/go-language.md): The Zen of Go, G·M·P 스케줄러, 동시 GC와 GOGC·GOMEMLIMIT, 계층별 프로젝트 구조

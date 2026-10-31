@@ -5,12 +5,13 @@ summary: "캐시의 주소 매핑(연관·직접·집합 연관)과 쓰기 정�
 tags: ["computer-architecture", "cache", "memory", "virtual-memory", "os"]
 source: notion
 date: "2026-10-12"
-sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://parksb.github.io/article/29.html", "https://www.youtube.com/watch?v=qLCP0PwRp_w", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
+sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://parksb.github.io/article/29.html", "https://www.youtube.com/watch?v=qLCP0PwRp_w", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "고려사이버대학교 컴퓨터구조 강의(권오상 교수, 2024-1학기)"]
 ---
 
 > 교체 정책·성능 지표·캐시 친화적 코드는 「[캐시가 동작하는 아주 구체적인 원리](https://parksb.github.io/article/29.html)」로 보강했다.
 > 「캐시 메모리」 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 캐시 계층별 역할, 라인 크기의 트레이드오프, 하드웨어 교체 정책 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
+> 평균 접근 시간 계산(1·2단계), 요구 인출과 선인출, 캐시 용량의 트레이드오프는 고려사이버대학교 「컴퓨터구조」(2024-1학기) 강의 내용으로 보강했다.
 
 캐시와 가상 메모리는 같은 아이디어를 메모리 계층의 서로 다른 층에 적용한 것이다. 캐시는 "느린 메인 메모리를 빠르게", 가상 메모리는 "작은 메인 메모리를 크게" 보이게 만든다. 둘 다 프로그램이 최근에 쓴 데이터나 그 근처를 다시 쓰는 경향(**지역성**)에 기대고 있다. 이 노트는 그중 하드웨어가 담당하는 부분, 즉 캐시 회로와 MMU를 다룬다.
 
@@ -32,7 +33,10 @@ sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8
   - **캐시 히트**: 캐시에 있음 → 바로 전달
   - **캐시 미스**: 없음 → 메인 메모리에서 가져와 캐시에 채움
 - **히트율** = 히트 횟수 / 전체 접근 횟수. 실제 프로그램은 지역성이 있어 히트율이 높게 유지되고, 캐시가 효과를 내는 것도 이 덕분이다.
-- 캐시가 기대는 **참조 지역성**은 두 가지다. 시간 지역성은 최근에 접근한 곳(예: 반복해서 쓰는 변수)에 다시 접근하는 경향이고, 공간 지역성은 접근한 곳 근처(예: 배열의 다음 원소, 함께 모여 있는 관련 데이터)에 접근하는 경향이다.
+- 캐시가 기대는 **참조 지역성**은 두 가지다. 시간 지역성은 최근에 접근한 곳(예: 반복해서 쓰는 변수)에 다시 접근하는 경향이고, 공간 지역성은 접근한 곳 근처(예: 배열의 다음 원소, 함께 모여 있는 관련 데이터)에 접근하는 경향이다. 분기가 없으면 명령어가 저장된 순서대로 인출된다는 **순차 지역성**을 따로 꼽기도 한다(공간 지역성의 특수한 경우).
+- 미스가 났을 때 필요한 블록만 가져오는 것이 **요구 인출**(demand fetch), 곧 쓸 것으로 예측되는 블록까지 미리 가져오는 것이 **선인출**(prefetch)이다. 선인출은 지역성이 높을수록 효과가 크다.
+- 캐시 용량은 클수록 히트율이 오르지만 비싸고, 주소 해독·인출 회로가 복잡해져 히트 시간 자체가 조금 늘어난다. L1을 작게 두는 이유다.
+- 캐시 설계의 목표는 네 가지로 정리된다. 히트율을 최대로, 히트 시간을 최소로, 미스 때의 지연을 최소로, 그리고 메인 메모리와의 일관성을 적은 비용으로 유지한다.
 
 ### 주소 매핑 방식
 
@@ -64,6 +68,16 @@ sources: ["https://riverkim.kr/196", "https://www.youtube.com/playlist?list=PLc8
 ```text
 AMAT = 히트 시간 + 미스율 × 미스 페널티
 ```
+
+히트율 H, 캐시 접근 시간 Tc, 메인 메모리 접근 시간 Tm으로 쓰면 `Ta = H × Tc + (1 − H) × Tm`이다(미스 때 Tm만 걸린다고 본 단순화). Tc = 10ns, Tm = 100ns에서 H가 0.5면 55ns, 0.9면 19ns, 0.99면 10.9ns로, **히트율이 오를수록 평균은 캐시 속도에 붙는다.**
+
+캐시가 두 단계면 L1에서 놓친 접근 가운데 L2가 받아 주는 비율(지역 히트율) H2를 써서 다음과 같이 계산한다.
+
+```text
+Ta = H1 × T_L1 + (1 − H1) × H2 × T_L2 + (1 − H1)(1 − H2) × Tm
+```
+
+L1은 빠르지만 작아 L2보다 히트율이 낮다. L1의 모든 내용을 L2에도 두는 구성을 **포함형**(inclusive) 캐시라 하며, 이때 L2는 L1의 상위 집합이다.
 
 태그 비교가 추가되면 히트 시간이 늘어나므로, 태그 확인과 데이터 읽기를 병렬로 해서 줄이기도 한다.
 
@@ -107,7 +121,7 @@ AMAT = 히트 시간 + 미스율 × 미스 페널티
 
 ## 핵심 정리
 
-- 캐시: 매핑(연관/직접/집합 연관)과 쓰기 정책(write-through/back)이 핵심이다.
+- 캐시: 매핑(연관/직접/집합 연관)과 쓰기 정책(write-through/back)이 핵심이다. 평균 접근 시간은 H × Tc + (1 − H) × Tm으로, 히트율이 높을수록 캐시 속도에 가까워진다.
 - 가상 메모리는 OS가 정책(교체·할당)을, MMU가 실행(주소 변환·보호)을 맡는 분업 구조다.
 - MMU는 재배치·공유·보호를 맡고, TLB로 주소 변환을 빠르게 한다. 보호는 세그먼트 테이블의 길이·보호 필드로 구현한다.
 

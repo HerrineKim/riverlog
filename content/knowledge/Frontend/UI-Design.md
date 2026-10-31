@@ -7,14 +7,14 @@ source: mixed
 date: "2026-10-15"
 ---
 
-UI 디자인 주제는 **화면이 어떻게 보이고 쓰이는가**를 다룬다. 색·간격·타이포그래피를 토큰으로 묶어 여러 프로젝트에 같은 모양을 배포하는 디자인 시스템이 여기 속한다. 인쇄와 다른 웹 레이아웃, 전자상거래와 제스처 같은 UI 패턴, 디자이너와 개발자가 Figma로 주고받는 핸드오프도 함께 다룬다. 누구나 쓸 수 있게 만드는 웹 접근성은 [Accessibility](/knowledge/dictionary/frontend/accessibility) 주제에 있다. 사용자 리서치와 상세페이지 구성은 [[user-research|Career]] 분야의 Product 주제에 있다. AI로 디자인을 뽑는 프롬프트 기법은 [[ai-frontend-design-prompting|AI & Data]] 분야에, 움직이는 아이콘과 WebGL·Three.js 3D는 [Graphics](/knowledge/dictionary/frontend/graphics) 주제에 있다.
+UI 디자인 주제는 **화면이 어떻게 보이고 쓰이는가**를 다룬다. 색·간격·타이포그래피를 토큰으로 묶어 여러 프로젝트에 같은 모양을 배포하는 디자인 시스템이 여기 속한다. 인쇄와 다른 웹 레이아웃, 전자상거래와 제스처 같은 UI 패턴, 디자이너와 개발자가 Figma로 주고받는 핸드오프도 함께 다룬다. 누구나 쓸 수 있게 만드는 웹 접근성은 [Accessibility](/knowledge/dictionary/frontend/accessibility) 주제에 있다. 사용자 리서치, 페르소나·시나리오, 휴리스틱 평가·사용성 테스트와 상세페이지 구성은 [[user-research|Career]] 분야의 Product 주제에 있다. AI로 디자인을 뽑는 프롬프트 기법은 [[ai-frontend-design-prompting|AI & Data]] 분야에, 움직이는 아이콘과 WebGL·Three.js 3D는 [Graphics](/knowledge/dictionary/frontend/graphics) 주제에 있다.
 
 ## 노트
 
 - [디자인 시스템: 구성, 도입, 구축과 배포](Frontend/UI-Design/design-system.md): 구성 요소, 작은 팀도 필요한 이유와 도입 시점, 감사부터 QA까지 구축 절차와 이름 규칙, 토큰·컴포넌트를 모노레포 패키지로 배포하고 Storybook으로 문서화하는 구조
 - [제품 언어로서의 디자인 시스템: 토큰, 기능과 형태, 컴포넌트 API](Frontend/UI-Design/product-language-design-system.md): 범용 시스템과 제품 언어, 값·의도·맥락으로 인코딩하는 토큰과 섣부른 시맨틱 토큰, 기능·형태 해부와 상태 압축, 디자인-개발 순환 참조 끊기, 사전 조합 + 조합 가능한 패키지
 - [UI 요소 용어집: 입력·내비게이션·정보·컨테이너](Frontend/UI-Design/ui-elements-glossary.md): UI 요소 32가지를 네 범주로, 각각의 쓰임과 기댈 HTML 요소·ARIA 패턴, 햄버거·케밥·미트볼·벤토·도너 메뉴 구분, 헷갈리는 짝
-- [디자인 도구와 개발자 핸드오프](Frontend/UI-Design/design-tools-handoff.md): Figma 파일에서 개발자가 보는 것(변수·측정·애셋·프로토타입·댓글), Auto Layout을 Flexbox로 옮기기, 디자인 시스템을 도구에 담는 원칙, 도구 이전, 클릭되는 와이어프레임, 고해상도 대응
+- [디자인 도구와 개발자 핸드오프](Frontend/UI-Design/design-tools-handoff.md): Figma 파일에서 개발자가 보는 것(변수·측정·애셋·프로토타입·댓글), Auto Layout을 Flexbox로 옮기기, 디자인 시스템을 도구에 담는 원칙, 도구 이전, 실제 데이터로 디자인하기, 고해상도 대응
 - [웹 레이아웃 디자인: 인쇄와 다른 매체](Frontend/UI-Design/web-layout-design.md): 인쇄와 웹의 매체 차이, 단락·문자 스타일과 CSS, 본질의 웹 디자인(그리드·컨테이너 쿼리), 이미지 위 텍스트 배치, 고정폭→반응형의 흐름, 매크로·마이크로 레이아웃
 - [레이아웃 그리드와 간격 체계: 12단 그리드, 8pt 그리드, 수직 리듬](Frontend/UI-Design/layout-grid-spacing.md): 칼럼 그리드 구성, 8pt·4pt 기준, 수직 리듬과 모듈러 스케일, CSS Grid·rlh·text-box-trim·토큰 구현
 - [UI 밀도: 시각·정보·디자인·시간·가치](Frontend/UI-Design/ui-density.md): 시각 밀도의 함정, 데이터-잉크 비율, 게슈탈트로 센 디자인 밀도, 대기 시간 구간별 로딩 표시, 가치 밀도와 긴 폼 나누기
@@ -30,3 +30,4 @@ UI 디자인 주제는 **화면이 어떻게 보이고 쓰이는가**를 다룬�
 - [모바일 앱 UI 가이드라인: 한 손 조작, 내비게이션, 버튼, 입력](Frontend/UI-Design/mobile-app-ui-guidelines.md): 보는 영역과 조작 영역, 얕은 내비게이션, 버튼 위계와 레이블, 입력 피드백, 터치 크기
 - [UX 라이팅: 원칙, 가이드라인, 체크리스트](Frontend/UI-Design/ux-writing.md): 원칙→가이드라인→체크리스트 문서 구조, 화면 문구를 검토하는 8가지 기준, 다크 패턴과 보이스 톤
 - [디자이너는 어떻게 코드를 배우나](Frontend/UI-Design/designers-learning-code.md): 코드를 배우는 목적은 디자인 재료 이해, 터미널·Git·시맨틱 HTML·CSS 기초, 토큰·컴포넌트 같은 공학 개념
+- [와이어프레임, 목업, 프로토타입: 충실도에 따른 화면 설계 산출물](Frontend/UI-Design/wireframe-mockup-prototype.md): IA에서 프로토타입까지, 와이어프레임 충실도, 프로토타입 유형과 충실도 고르기, 클릭되는 와이어프레임과 도구 기준

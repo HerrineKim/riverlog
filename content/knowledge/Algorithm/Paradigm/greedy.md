@@ -5,11 +5,12 @@ summary: "매 선택의 순간마다 당장 가장 좋아 보이는 것을 골�
 tags: ["algorithm", "paradigm", "greedy"]
 source: til
 date: "2026-10-14"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)"]
 ---
 
 > 탐욕 선택 속성과 최적 부분 구조는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 알고리즘 문서를 바탕으로 보강했다.
 > 로마 숫자 변환 예시는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(손코딩) 질문이 묻는 개념으로 보강했다.
+> 매트로이드는 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용으로 보강했다.
 
 그리디(Greedy, 탐욕법) 알고리즘은 여러 경우 중 하나를 골라야 할 때마다 **그 순간 가장 좋아 보이는 선택**을 하며 최종 해답에 도달하는 방법이다. 앞으로의 선택이나 지나간 선택을 다시 고려하지 않는다. 구현이 간단하고 빠르지만, **최적해를 항상 보장하지는 않는다**.
 
@@ -76,6 +77,25 @@ print(to_roman(944))   # CMXLIV
 | 최적 부분 구조(optimal substructure) | 그 선택을 한 뒤 남은 부분 문제의 최적해를 더하면 전체 최적해가 되는가 |
 
 최적 부분 구조는 DP도 요구하는 성질이다. 그리디는 여기에 탐욕 선택 속성이 더해져 되돌아볼 필요가 없을 때 쓴다. 증명은 보통 「최적해가 내 선택을 안 했다면, 그 자리를 내 선택으로 바꿔도 나빠지지 않는다」는 교환 논증(exchange argument)으로 한다.
+
+### 그리디가 늘 통하는 구조: 매트로이드
+
+교환 논증이 문제마다 따로 필요 없는 경우가 있다. 고를 수 있는 원소 집합 S와 「같이 골라도 되는」 부분집합의 모음 I(독립 집합)가 다음 두 성질을 가지면 **매트로이드(matroid)** 라고 한다.
+
+| 성질 | 뜻 |
+| --- | --- |
+| 유전성(hereditary) | 독립 집합의 부분집합도 독립이다. 공집합은 독립이다 |
+| 교환성(exchange) | 독립 집합 A, B에서 \|A\| < \|B\|이면, B에만 있는 원소 x 중 A ∪ {x}가 여전히 독립인 것이 있다 |
+
+원소마다 양의 가중치가 있을 때 **무거운 순으로 보면서, 넣어도 독립이면 넣는** 그리디는 매트로이드에서 항상 가중치 합이 최대인 독립 집합을 찾는다.
+
+```text
+A ← ∅
+가중치 내림차순으로 x를 하나씩 본다:
+    A ∪ {x}가 독립이면 A ← A ∪ {x}
+```
+
+그래프의 간선 집합에서 「사이클이 없는 간선 모음(숲)」을 독립으로 보면 매트로이드가 된다(그래픽 매트로이드). 가중치를 뒤집어 가벼운 순으로 같은 그리디를 돌린 것이 크루스칼 알고리즘이고, 「넣어도 독립인가」 검사를 [[disjoint-set|서로소 집합]]이 맡는다. 반대로 0-1 배낭 문제는 교환성이 깨져 그리디가 실패한다.
 
 그래서 그리디로 풀 때는
 

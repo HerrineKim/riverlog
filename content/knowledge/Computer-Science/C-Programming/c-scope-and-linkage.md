@@ -5,10 +5,11 @@ summary: "C에서 같은 이름이 무엇을 가리키는지는 스코프, 이�
 tags: ["c", "computer-science", "compile", "memory"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/353fe98e21a54b1889f294192257551f", "https://80000coding.notion.site/c5e5094f801e4dc493b45de9a61fdd11", "https://80000coding.notion.site/083f8a82494543658797ac87745289b3", "https://80000coding.notion.site/374b09d2f19a4ccc92dc22b38b73207a", "https://80000coding.notion.site/46b05277e1cd476ca86a36581932b775", "https://en.cppreference.com/w/c/language/scope"]
+sources: ["https://80000coding.notion.site/353fe98e21a54b1889f294192257551f", "https://80000coding.notion.site/c5e5094f801e4dc493b45de9a61fdd11", "https://80000coding.notion.site/083f8a82494543658797ac87745289b3", "https://80000coding.notion.site/374b09d2f19a4ccc92dc22b38b73207a", "https://80000coding.notion.site/46b05277e1cd476ca86a36581932b775", "https://en.cppreference.com/w/c/language/scope", "고려사이버대학교 프로그래밍 기초와 실습(C언어) 강의(권오상 교수, 2024-2학기)"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[C] Identifier와 Name Space」, 「외부 비노출 함수는 static 함수로 선언하는 것이 '권장'됨」, 「상수(constant)를 직접 정의해 가독성을 높이자」, 「C 코딩 스타일 가이드」 연재를 바탕으로 C 표준 문서와 함께 재구성한 노트다.
+> 저장 클래스 지정자와 변수 선택 기준은 고려사이버대학교 「프로그래밍 기초와 실습(C언어)」(2024-2학기) 강의 내용으로 보강했다.
 
 ## 식별자
 
@@ -80,7 +81,21 @@ t t;                          /* typedef 이름 t와 변수 t가 둘 다 일반 
 | 할당 | `malloc`으로 얻은 메모리 | `free`할 때까지 |
 | 스레드 | `thread_local`(C23, 이전엔 `_Thread_local`) | 스레드가 끝날 때까지 |
 
-함수 안의 `static int count;`는 블록 스코프라서 그 함수에서만 보이지만, 값은 호출 사이에 유지된다.
+함수 안의 `static int count;`는 블록 스코프라서 그 함수에서만 보이지만, 값은 호출 사이에 유지된다. 초기화식도 프로그램 시작 전에 **한 번만** 적용되므로, 함수가 다시 불려 `static int count = 1;` 줄을 지나도 1로 돌아가지 않는다. 호출 횟수 세기나 한 번만 할 초기화 표시에 쓴다.
+
+변수의 저장 기간과 링키지는 선언 위치와 **저장 클래스 지정자(storage-class specifier)** 로 정해진다.
+
+| 지정자 | 뜻 | 비고 |
+| --- | --- | --- |
+| `auto` | 자동 저장 기간. 블록 안 지역 변수의 기본값이라 쓸 일이 없다 | C23은 `auto x = 1;`처럼 타입 추론에도 쓴다(C++11의 `auto`와 비슷) |
+| `register` | 자주 쓰니 레지스터에 두라는 힌트 | 현대 컴파일러는 무시하고 스스로 배치한다. `&`로 주소를 얻을 수 없다는 제약만 남는다. C++17에서는 제거됐다 |
+| `static` | 지역 변수면 정적 저장 기간, 파일 스코프면 내부 링키지 | 아래 「링키지와 static」 |
+| `extern` | 다른 곳(보통 다른 파일)에 **정의된** 변수를 쓰겠다는 선언. 메모리를 잡지 않는다 | 정의는 한 파일에만 둔다 |
+| `_Thread_local` / `thread_local` | 스레드 저장 기간 | C23부터 `thread_local`이 키워드 |
+
+`volatile`과 `const`는 저장 클래스가 아니라 **타입 한정자(type qualifier)** 다. `volatile`은 하드웨어 레지스터나 시그널 처리기처럼 프로그램 바깥에서 값이 바뀔 수 있는 변수에 붙여, 컴파일러가 읽기·쓰기를 레지스터에 캐시하거나 없애지 못하게 한다. 스레드 간 동기화 수단은 아니다(그건 `_Atomic`과 뮤텍스의 몫이다).
+
+전역 변수는 어느 함수에서나 바꿀 수 있어 버그 추적이 어렵다. 기본은 자동 변수로 쓰고, 호출 사이에 값을 유지해야 하면 `static` 지역 변수, 여러 파일이 정말 공유해야 할 때만 `extern` 전역 변수를 쓴다. 일부 함수만 쓰는 데이터는 전역으로 두지 말고 인수로 넘긴다.
 
 ## 링키지와 static
 
@@ -120,4 +135,4 @@ t t;                          /* typedef 이름 t와 변수 t가 둘 다 일반 
 - 파일 밖으로 노출하지 않는 함수와 전역은 `static`으로 내부 링키지를 준다.
 - 상수는 관련된 정수면 `enum`, 컴파일 옵션이면 `#define`, C23이면 `constexpr`.
 
-관련 노트: [[gcc-compile-and-link|GCC 컴파일과 링크]], [[c-struct-and-function-pointer|구조체와 함수 포인터]], [[c-history-and-standards|C의 역사와 표준]]
+관련 노트: [[gcc-compile-and-link|GCC 컴파일과 링크]], [[c-struct-and-function-pointer|C 사용자 정의 타입과 함수 포인터]], [[c-history-and-standards|C의 역사와 표준]]

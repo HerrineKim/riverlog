@@ -5,14 +5,25 @@ summary: "인스턴스를 만들 수 없는 추상 클래스와, 구현할 행�
 tags: ["oop", "design-pattern", "software-engineering", "computer-science"]
 source: other
 date: "2026-10-14"
-sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/python.md", "https://80000coding.notion.site/6b1c657ef1284851a66fe008c3709bbf", "https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html"]
+sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/python.md", "https://80000coding.notion.site/6b1c657ef1284851a66fe008c3709bbf", "https://docs.oracle.com/javase/tutorial/java/IandI/abstract.html", "고려사이버대학교 Java언어 강의(도성룡 교수, 2023-2학기)"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「추상 클래스와 인터페이스」를 바탕으로 재구성한 노트다. 인터페이스 정적 메서드와 디폴트 메서드 충돌 규칙, Python의 ABC는 fru1tworld/cs-basic 모의 면접 질문 목록의 Java·Python 질문을 바탕으로 보강했다.
+> 추상화의 세 종류는 고려사이버대학교 「Java언어」(2023-2학기) 강의 내용으로 보강했다.
 
 ## 추상화에서 출발한다
 
 **추상화**(abstraction)는 복잡한 대상에서 핵심만 남기고 나머지를 감추는 일이다. 여러 클래스의 공통점을 뽑아 상위 타입을 만들거나, 내부를 몰라도 호출만 하면 되게 만드는 것이 모두 추상화다. 추상 클래스와 인터페이스는 이 상위 타입을 만드는 두 도구이고, 둘 다 **개방-폐쇄 원칙**(확장에는 열리고 수정에는 닫힘)을 지키는 기반이 된다.
+
+무엇을 감추느냐에 따라 추상화를 셋으로 나누기도 한다. 달력 프로그램을 예로 들면 이렇다.
+
+| 종류 | 감추는 것 | 달력 예 |
+| --- | --- | --- |
+| 과정(procedural) 추상화 | 세부 단계. 큰 흐름부터 정하고 각 단계의 구현은 미룬다 | 「날짜 입력 → 요일 계산 → 출력」만 먼저 정한다 |
+| 데이터 추상화 | 데이터의 내부 표현. 대표 이름과 연산만 드러낸다 | 연·월·일 세 값을 `Date` 하나로 다룬다 |
+| 제어 추상화 | 분기·반복의 구체적 흐름 | 윤년이면 A, 아니면 B로 계산하는 분기를 「요일 계산」 한 단계로 묶는다 |
+
+추상 클래스와 인터페이스는 이 중 데이터 추상화를 타입으로 표현하는 도구다.
 
 ## 추상 클래스
 
@@ -113,7 +124,7 @@ public class Human extends Animal implements Thinkable, Comparable<Human> { ... 
 
 | 언어 | 추상 클래스 | 인터페이스 |
 | --- | --- | --- |
-| C++ | 순수 가상 함수(`= 0`)가 있는 클래스 | 별도 문법 없음. 순수 가상 함수만 있는 클래스로 표현 ([[cpp-virtual-functions\|가상 함수와 vtable]]) |
+| C++ | 순수 가상 함수(`= 0`)가 있는 클래스 | 별도 문법 없음. 순수 가상 함수만 있는 클래스로 표현 ([[cpp-virtual-functions\|C++ 상속과 가상 함수]]) |
 | Kotlin | `abstract class` | `interface`. 기본 구현과 추상 프로퍼티 가능, 상태(backing field)는 불가 |
 | TypeScript | `abstract class` | `interface`. 컴파일 후 사라지는 타입 정보 |
 | Python | `abc.ABC`를 상속하고 `@abstractmethod`를 붙인다. 추상 메서드를 모두 구현하지 않은 하위 클래스는 **인스턴스를 만들 때** `TypeError` | 별도 문법 없음. 추상 메서드만 둔 ABC를 쓰거나, 상속 없이 메서드 모양만 맞추면 되는 `typing.Protocol`(정적 검사기용, [[python-internals\|덕 타이핑]]). ABC의 `register()`로 상속 없이 가상 하위 클래스를 등록할 수도 있다 |
@@ -126,4 +137,4 @@ public class Human extends Animal implements Thinkable, Comparable<Human> { ... 
 - 템플릿 메서드 패턴은 추상 클래스가 순서를 고정하고 추상·훅 메서드로 변하는 부분만 연다.
 - 기본은 인터페이스, 공유할 상태가 있을 때 추상 클래스, 그 전에 위임을 검토한다.
 
-관련 노트: [[frontend-solid|프론트엔드와 SOLID 원칙]], [[oop-messaging|객체 지향의 본질: 메시징]], [[kotlin-delegation|위임 패턴과 Kotlin by]], [[software-engineering|소프트웨어 설계와 공학]]
+관련 노트: [[frontend-solid|프론트엔드와 SOLID 원칙]], [[oop-messaging|객체 지향의 본질: 메시징]], [[kotlin-delegation|위임 패턴과 Kotlin by]], [[software-engineering|소프트웨어 설계와 공학]], [[cpp-virtual-functions|C++ 상속과 가상 함수]]

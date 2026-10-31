@@ -1,16 +1,17 @@
 ---
 title: "인덱스 설계와 쿼리 튜닝"
 concept: "Index Design"
-summary: "인덱스는 정렬이다. 카디널리티와 복합 인덱스 컬럼 순서, 유니크·외래 키 인덱스, 인덱스를 못 타게 만드는 조건, EXPLAIN 접근 유형 읽는 법, 조인 방식(중첩 루프·해시·정렬 병합)과 조인 순서, ORDER BY·GROUP BY·커버링 인덱스, 빠른 쿼리를 위한 체크리스트, NoSQL의 인덱스와 MongoDB의 ESR 규칙까지 정리했다."
+summary: "인덱스는 정렬이다. 카디널리티·분포도와 후보 컬럼 고르기, 복합 인덱스 컬럼 순서, 유니크·외래 키 인덱스, 인덱스를 못 타게 만드는 조건, EXPLAIN 접근 유형과 Oracle 인덱스 스캔 방식, 조인 방식(중첩 루프·해시·정렬 병합)과 조인 순서, ORDER BY·GROUP BY·커버링 인덱스, 빠른 쿼리를 위한 체크리스트, NoSQL의 인덱스와 MongoDB의 ESR 규칙까지 정리했다."
 tags: ["database", "mysql", "sql", "performance", "nosql"]
 source: other
 date: "2026-10-21"
-sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/", "https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073", "https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html", "https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/", "https://www.mongodb.com/docs/manual/tutorial/equality-sort-range-guideline/", "https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://dev.mysql.com/doc/refman/8.4/en/nested-loop-joins.html", "https://dev.mysql.com/doc/refman/8.4/en/hash-joins.html"]
+sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/", "https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073", "https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html", "https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/", "https://www.mongodb.com/docs/manual/tutorial/equality-sort-range-guideline/", "https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://dev.mysql.com/doc/refman/8.4/en/nested-loop-joins.html", "https://dev.mysql.com/doc/refman/8.4/en/hash-joins.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)"]
 ---
 
 > 「[Mysql 인덱스 정리 및 팁](https://jojoldu.tistory.com/243)」, 「[MySQL Workbench의 VISUAL EXPLAIN으로 인덱스 동작 확인하기](https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/)」, 「[쿼리 최적화: 빠른 쿼리를 위한 7가지 체크리스트](https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073)」, 「[MongoDB Index 설계 전략](https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html)」, 「[MySQL performance-schema-instruments 사용에 따른 성능 영향 실험](https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/)」을 바탕으로, MySQL·MongoDB 공식 문서로 확인해 재구성한 노트다.
 > 「클러스터드 인덱스와 보조 인덱스」는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로, MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
 > 유니크 인덱스·외래 키 인덱스, 조인 방식, 정렬 처리, NoSQL의 인덱스는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
+> 인덱스 후보 컬럼 고르기, 복합 인덱스 순서 원칙, Oracle의 인덱스 스캔 방식과 인덱스 구조 테이블, 조인 방식별 적용 조건은 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기) 강의 내용으로 보강했다.
 
 ## 인덱스는 정렬이다
 
@@ -51,17 +52,47 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 
 - 기본 키(primary key)에 만든 인덱스를 primary index, 나머지 컬럼의 인덱스를 secondary index라고도 한다. 기본 키는 유일하고 NULL이 없어 물리 정렬 기준으로 알맞다.
 - **MySQL InnoDB**는 테이블 자체가 기본 키 순서의 B+트리(클러스터드 인덱스)다. 그래서 기본 키 없이 만든 테이블도 클러스터드 인덱스가 있다. 기본 키가 없으면 첫 번째 `NOT NULL UNIQUE` 인덱스를, 그것도 없으면 6바이트짜리 숨은 행 ID(`GEN_CLUST_INDEX`)를 만들어 쓴다. 숨은 행 ID는 인스턴스 전체가 공유하는 카운터에서 받으므로 경합이 생기고 쿼리에 쓸 수도 없다. MySQL 8.0.30부터는 `sql_generate_invisible_primary_key`를 켜면 기본 키 없는 테이블에 보이지 않는 자동 증가 컬럼(`my_row_id`)을 기본 키로 붙인다. 복제(행 기반)에서도 기본 키가 없으면 복제본이 행을 찾느라 느려지므로 늘 명시적인 기본 키를 둔다. 보조 인덱스 리프에는 **기본 키 값**이 들어 있어, 보조 인덱스 조회는 「보조 인덱스 → 기본 키 → 클러스터드 인덱스」 두 번 찾기가 된다. 기본 키가 길면 모든 보조 인덱스가 같이 커진다.
-- **PostgreSQL**은 행을 힙(heap)에 순서 없이 쌓고 모든 인덱스가 행 위치(TID)를 가리키는 보조 인덱스다. `CLUSTER` 명령은 한 번 정렬해 줄 뿐 이후 삽입 순서는 유지하지 않는다. SQL Server는 클러스터드 인덱스를 직접 고른다.
+- **PostgreSQL**은 행을 힙(heap)에 순서 없이 쌓고 모든 인덱스가 행 위치(TID)를 가리키는 보조 인덱스다. `CLUSTER` 명령은 한 번 정렬해 줄 뿐 이후 삽입 순서는 유지하지 않는다. SQL Server는 클러스터드 인덱스를 직접 고른다. Oracle은 테이블마다 고른다. 기본인 힙 테이블은 PostgreSQL처럼 인덱스가 행 주소(ROWID)를 가리키고, **인덱스 구조 테이블(IOT, Index-Organized Table)** 로 만들면 InnoDB처럼 기본 키 B-트리 안에 행이 들어간다. IOT는 기본 키로만 찾는 작은 행이나 기본 키 범위 조회가 잦은 테이블에 맞는다. 같은 스키마가 DBMS마다 다르게 동작하는 이유 중 하나다.
 - 클러스터드 키 값이 바뀌면 행이 물리적으로 옮겨진다. 그래서 기본 키는 바뀌지 않고, 짧고, **단조 증가하는 값**(자동 증가, 시간순 UUIDv7)이 좋다. 무작위 UUIDv4는 삽입마다 B+트리 중간 페이지를 쪼개(page split) 쓰기가 느려지고 인덱스가 부푼다([[distributed-unique-id|분산 고유 ID]]).
 - **기본 키는 인덱스인가**: 기본 키는 「유일하고 NULL이 없다」는 **제약**이고, 인덱스는 빨리 찾기 위한 **자료 구조**다. 모든 RDBMS는 기본 키 제약을 검사하려고 유니크 인덱스를 자동으로 만들므로 실제로는 늘 인덱스가 딸려 있다. InnoDB에서는 그 인덱스가 테이블 자체(클러스터드)이고, PostgreSQL에서는 보조 인덱스 하나다.
 - **외래 키와 인덱스**: 외래 키도 제약이다. 참조되는 부모 쪽 컬럼은 기본 키나 유니크여야 하므로 이미 인덱스가 있다. 참조하는 **자식 쪽 컬럼**의 인덱스는 DB마다 다르다. InnoDB는 외래 키 컬럼에 인덱스가 없으면 자동으로 만든다. PostgreSQL은 만들지 않으므로 직접 만들어야 한다. 이 인덱스가 없으면 부모 행을 지우거나 키를 바꿀 때마다 자식 테이블 전체를 훑어 참조를 확인하고, 그동안 잠금도 넓게 걸린다. 조인 컬럼이기도 하므로 대개 만든다.
-- 삭제·갱신이 반복되면 인덱스 페이지에 빈 공간과 지운 표시가 쌓여 인덱스가 실제 데이터보다 커진다. MySQL은 `OPTIMIZE TABLE`, PostgreSQL은 `VACUUM`·`REINDEX`로 정리한다.
+- 삭제·갱신이 반복되면 인덱스 페이지에 빈 공간과 지운 표시가 쌓여 인덱스가 실제 데이터보다 커진다. MySQL은 `OPTIMIZE TABLE`, PostgreSQL은 `VACUUM`·`REINDEX`로 정리한다. Oracle은 `ALTER INDEX 이름 REBUILD`로 인덱스 전체를 다시 만들거나, `COALESCE`로 리프 블록의 조각난 빈 공간만 합친다.
 
 ## 무엇을 인덱스로 잡나
 
 ### 카디널리티
 
-**카디널리티(cardinality)** 는 컬럼 값이 얼마나 다양한가다. 성별처럼 값 종류가 적으면 낮고, 주민등록번호처럼 거의 겹치지 않으면 높다. 인덱스는 많이 걸러 낼수록 효과가 크므로, 컬럼 하나만 잡는다면 카디널리티가 높은 컬럼을 고른다. 조회 결과가 테이블 대부분이면 인덱스로 하나씩 찾아가는 것보다 풀 테이블 스캔이 빠를 수 있고, 옵티마이저도 그렇게 판단한다.
+**카디널리티(cardinality)** 는 컬럼 값이 얼마나 다양한가다. 성별처럼 값 종류가 적으면 낮고, 주민등록번호처럼 거의 겹치지 않으면 높다. 인덱스는 많이 걸러 낼수록 효과가 크므로, 컬럼 하나만 잡는다면 카디널리티가 높은 컬럼을 고른다. 조회 결과가 테이블 대부분이면 인덱스로 하나씩 찾아가는 것보다 풀 테이블 스캔이 빠를 수 있고, 옵티마이저도 그렇게 판단한다. 흔히 쓰는 어림값은 **대부분의 조회가 테이블의 10~15% 이하를 읽을 때** 인덱스가 이득이라는 것이다.
+
+카디널리티(또는 그 역수인 **분포도**, 값 하나가 전체에서 차지하는 비율)만 보고 판단하면 틀린다. 기준은 **실제로 자주 쓰는 조건값이 몇 행을 고르느냐**다.
+
+| 컬럼 | 카디널리티만 보면 | 실제 |
+| --- | --- | --- |
+| 생년월일 | 값이 수만 가지라 좋아 보인다 | 조회는 연도·월 범위로 하는 경우가 많아 한 번에 많은 행을 읽는다 |
+| 배송 여부(Y/N) | 값이 두 개라 나빠 보인다 | 대부분 Y이고 최근 주문 일부만 N이면, `WHERE 배송여부 = 'N'`은 소수 행만 골라 인덱스가 잘 듣는다 |
+
+이처럼 값이 한쪽으로 쏠린 컬럼은 옵티마이저가 히스토그램이 있어야 제대로 판단한다(아래 「풀 스캔을 고르는 이유」). PostgreSQL에서는 `WHERE 배송여부 = 'N'`인 행만 담는 부분 인덱스(partial index)로 인덱스 크기도 줄인다.
+
+### 후보 컬럼 고르기
+
+인덱스 후보는 쿼리 하나가 아니라 **쿼리 전체의 실행 빈도**로 고른다. 조건절에 나오는 모든 컬럼에 인덱스를 만들면 쓰기가 무거워지므로, 하루 실행 횟수가 많은 쿼리의 조건 컬럼부터 잡고 여러 쿼리가 공유하는 컬럼은 복합 인덱스로 묶는다.
+
+| 질문 | 이유 |
+| --- | --- |
+| 실제로 자주 쓰는 조건값이 적은 행을 고르나 | 위 「카디널리티」 |
+| 값이 자주 바뀌지 않나 | 인덱스 컬럼을 고치면 인덱스도 고쳐야 한다. 상태 코드, 진행 단계, 승인 일자처럼 자주 바뀌는 컬럼은 단독 인덱스보다 복합 인덱스의 뒤쪽 컬럼으로 둔다 |
+| 자주 실행되는 쿼리의 조건절에 나오나 | 실행 횟수 × 거르는 효과가 큰 컬럼부터 |
+| 조인 연결 컬럼인가 | 중첩 루프 조인은 안쪽 테이블의 조인 컬럼에 인덱스가 있어야 한다(아래 「조인 방식」) |
+| 정렬·그룹화에 쓰나 | 인덱스 순서로 읽으면 정렬 작업이 사라진다(아래 「ORDER BY·GROUP BY와 커버링 인덱스」) |
+
+테이블의 성격에 따라 둘 수 있는 인덱스 수도 다르다.
+
+| 테이블 성격 | 인덱스 수 |
+| --- | --- |
+| 코드·기준 정보 테이블 (내용이 거의 안 바뀌고 조회만 많다) | 필요한 만큼 둬도 된다 |
+| 처리성 테이블 (주문, 계약처럼 쓰기가 많다) | 최소한으로 줄인다 |
+| 집계성 테이블 (주로 야간 배치로 쌓는다) | 조회 패턴에 맞춰 적정하게 둔다. 적재 전에 인덱스를 지우고 적재 뒤 다시 만들기도 한다 |
+| 로그성 테이블 (쌓기만 하고 거의 안 읽는다) | 거의 두지 않는다 |
 
 ### 복합 인덱스의 컬럼 순서
 
@@ -78,6 +109,25 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 - 등호 조건 컬럼을 앞에, 범위 조건 컬럼을 뒤에 둔다. 범위 조건 뒤의 컬럼은 정렬을 이용하지 못한다.
 - 키가 길면 한 페이지에 담기는 키가 줄어 트리가 높아진다. 긴 문자열은 접두사 인덱스나 해시 컬럼을 검토한다.
 
+단일 인덱스는 컬럼의 카디널리티가, 복합 인덱스는 **컬럼 순서**가 성능을 가른다. 순서를 정하는 원칙은 다음과 같다.
+
+| 원칙 | 예 |
+| --- | --- |
+| 여러 쿼리가 **공통으로 늘 쓰는 조건** 컬럼을 맨 앞에 | 거의 모든 조회에 `회사ID = ?`가 붙으면 `(회사ID, ...)` |
+| `=` 조건 컬럼을 범위·`LIKE` 조건 컬럼보다 앞에 | `(유형, 상품명, 제조일)`에서 제조일만 `BETWEEN` |
+| 대분류 → 중분류 → 소분류 순으로 | `(지역, 지점, 담당자)` |
+| 행을 **거르는**(위치 정보) 컬럼을 **정렬만 하는**(순서 정보) 컬럼보다 앞에 | 아래 예 |
+
+```sql
+SELECT * FROM 상품
+WHERE 유형 = '식품' AND 상품명 = '우유' AND 제조일 BETWEEN '20250101' AND '20250331'
+ORDER BY 제조일 DESC, 제조번호;
+-- 인덱스: (유형, 상품명, 제조일, 제조번호)
+--          거르기  거르기   거르기+정렬  정렬
+```
+
+정렬 컬럼까지 인덱스에 넣을지는 결과 행 수로 정한다. 결과가 적으면 `(유형, 상품명)`만 두고 가져온 뒤 정렬해도 싸고, 결과가 많아 정렬 비용이 인덱스 유지 비용보다 크면 정렬 컬럼까지 넣는다.
+
 ## 인덱스를 못 타게 만드는 조건
 
 | 쓰는 방식 | 결과 | 대신 |
@@ -85,10 +135,12 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 | `BETWEEN`, `<`, `>`, `LIKE 'abc%'` 같은 범위 조건 | 그 컬럼까지만 인덱스를 쓰고, 뒤 컬럼은 못 쓴다 | 범위 컬럼을 복합 인덱스 뒤쪽에 둔다 |
 | `=`, `IN` | 뒤 컬럼까지 인덱스를 쓴다 | `IN` 안에 서브쿼리는 실행 계획을 확인한다 |
 | `LIKE '%abc'` (앞쪽 와일드카드) | 정렬을 이용할 수 없어 전체를 훑는다 | 값 목록(`IN`), 접두사 검색, 전문 검색 인덱스 |
-| 컬럼을 가공 `salary * 10 > 150000`, `FLOOR(v/2) = 2`, `DATE(created_at) = ...` | 가공한 값은 인덱스에 없어 못 쓴다 | 상수 쪽을 계산한다 `salary > 15000`, 범위로 바꾼다 `created_at >= ... AND < ...`. 꼭 필요하면 함수 기반 인덱스 |
+| 컬럼을 가공 `salary * 10 > 150000`, `FLOOR(v/2) = 2`, `DATE(created_at) = ...`, `SUBSTR(email, 1, 2) = 'SV'` | 가공한 값은 인덱스에 없어 못 쓴다 | 상수 쪽을 계산한다 `salary > 15000`, 범위로 바꾼다 `created_at >= ... AND < ...`, 접두사는 `LIKE 'SV%'`로. 꼭 필요하면 함수 기반 인덱스 |
+| 컬럼을 이어 붙여 비교 `first_name \|\| last_name = 'StevenKing'` | 이어 붙인 값은 인덱스에 없다 | 컬럼마다 따로 비교한다 `first_name = 'Steven' AND last_name = 'King'` |
+| 부정형 `<>`, `NOT BETWEEN`, `NOT IN` | 고를 범위가 「나머지 전부」라 대개 풀 스캔이 된다 | 긍정형 범위·값 목록으로 바꿀 수 있는지 본다 |
 | 타입이 다른 값과 비교 (문자열 컬럼 = 숫자) | 암묵적 형 변환으로 못 쓴다 | 컬럼 타입에 맞춰 바인딩한다. JOIN 컬럼도 타입·크기를 맞춘다 |
 | `OR`로 다른 컬럼 묶기 | 풀 스캔이 되기 쉽다 | `UNION ALL`로 나누거나 각 컬럼 인덱스 병합을 확인한다 |
-| `IS NULL` | 인덱스 범위 스캔이 가능하다 | - |
+| `IS NULL` | MySQL·PostgreSQL은 인덱스 범위 스캔이 가능하다. **Oracle은 키 컬럼이 모두 NULL인 행을 B-트리 인덱스에 넣지 않아** 단일 컬럼 인덱스로는 `IS NULL`을 찾지 못한다(SQL Server는 넣는다) | Oracle은 NOT NULL 컬럼이나 상수를 뒤에 붙인 복합 인덱스 `(col, 0)`으로 NULL 행도 인덱스에 담는다 |
 
 ## ORDER BY·GROUP BY와 커버링 인덱스
 
@@ -132,6 +184,20 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 
 `EXPLAIN ANALYZE`는 실제로 실행하므로 `UPDATE`·`DELETE`에 쓰면 데이터가 바뀐다. 트랜잭션 안에서 실행하고 롤백한다.
 
+### Oracle의 인덱스 스캔 방식
+
+Oracle 실행 계획은 인덱스를 읽는 방식을 이름으로 보여 준다. B-트리를 루트에서 리프까지 **수직으로** 내려가는지, 리프를 옆으로 **수평으로** 훑는지로 구별된다.
+
+| 방식 | 동작 | 언제 | MySQL `type`에 가까운 것 |
+| --- | --- | --- | --- |
+| INDEX UNIQUE SCAN | 수직 탐색만 하고 찾으면 멈춘다 | 유니크 인덱스를 `=`로 찾을 때 | `const`, `eq_ref` |
+| INDEX RANGE SCAN | 수직 탐색으로 시작점을 찾고 필요한 범위의 리프만 읽다 멈춘다 | 가장 일반적인 인덱스 접근. `=`(비유니크), 범위, `LIKE 'K%'` | `ref`, `range` |
+| INDEX FULL SCAN | 리프 전체를 처음부터 끝까지 순서대로 읽는다 | 선행 컬럼 조건이 없지만 인덱스만으로 답이 되거나, 인덱스 순서로 `ORDER BY`·`GROUP BY`를 처리할 때 | `index` |
+| INDEX FAST FULL SCAN | 트리 구조를 무시하고 인덱스 세그먼트 전체를 여러 블록씩 읽는다 | 필요한 컬럼이 모두 인덱스에 있을 때(커버링). 결과 순서는 보장하지 않는다 | `index`(커버링) |
+| INDEX SKIP SCAN | 선행 컬럼 값별로 조건에 맞을 수 있는 하위 블록만 골라 읽는다 | 선행 컬럼 조건이 없고, 선행 컬럼의 고유값이 적고 후행 컬럼의 고유값이 많을 때. `(성별, 이메일)` 인덱스로 이메일만 찾기 | `range`(skip scan) |
+
+INDEX FULL SCAN은 블록을 하나씩 읽어 순서를 지키는 대신 병렬화가 안 되고, FAST FULL SCAN은 여러 블록을 한 번에 읽고 병렬로 돌 수 있지만 순서가 없다. 그래서 옵티마이저는 정렬이 필요하면 FULL SCAN을, 개수만 세거나 순서가 상관없으면 FAST FULL SCAN을 고른다.
+
 ### 풀 스캔을 고르는 이유
 
 인덱스가 있어도 옵티마이저가 풀 테이블 스캔을 고르는 것은 대개 **그쪽이 더 싸다고 추정했기 때문**이다.
@@ -151,9 +217,9 @@ SQL의 `JOIN` 종류(INNER, LEFT 등)는 결과의 모양이고, DB가 실제로
 
 | 방식 | 동작 | 유리할 때 | 약점 |
 | --- | --- | --- | --- |
-| **중첩 루프 조인**(Nested Loop) | 바깥 입력의 행마다 안쪽 입력에서 짝을 찾는다 | 바깥 결과가 작고 **안쪽 조인 컬럼에 인덱스**가 있을 때. 첫 행을 빨리 낸다(`LIMIT`) | 안쪽에 인덱스가 없으면 바깥 행 수 × 안쪽 행 수만큼 비교한다 |
-| **해시 조인**(Hash) | 작은 쪽으로 조인 키의 해시 테이블을 만들고(build), 큰 쪽을 훑으며 찾는다(probe) | 인덱스 없는 큰 테이블끼리의 같음 조인. 분석 쿼리 | 해시 테이블이 메모리를 넘으면 디스크로 나눠 쓴다. 같음 조건에만 맞다 |
-| **정렬 병합 조인**(Sort Merge) | 두 입력을 조인 키로 정렬한 뒤 두 포인터로 나란히 훑는다 | 두 입력이 이미 정렬돼 있을 때(인덱스 순서). 범위 조건 조인 | 정렬되지 않았으면 정렬 비용이 크다 |
+| **중첩 루프 조인**(Nested Loop) | 바깥 입력의 행마다 안쪽 입력에서 짝을 찾는다 | 바깥 결과가 작고 **안쪽 조인 컬럼에 인덱스**가 있을 때. 첫 행을 빨리 내므로 결과 일부만 먼저 보여 주는 **부분 범위 처리**(`LIMIT`, 화면 페이징)에 맞다. 온라인 트랜잭션 쿼리의 대부분이 이 방식이다 | 안쪽에 인덱스가 없으면 바깥 행 수 × 안쪽 행 수만큼 비교한다. 인덱스가 있어도 바깥 행이 많으면 행마다 무작위 I/O가 쌓여 대량 조인에 느리다 |
+| **해시 조인**(Hash) | 작은 쪽으로 조인 키의 해시 테이블을 만들고(build), 큰 쪽을 훑으며 찾는다(probe) | 인덱스 없는 큰 테이블끼리의 같음 조인. 인덱스가 있어도 안쪽에서 읽을 행이 많을 때. 결과 전체를 만들어야 하는 **전체 범위 처리**(배치, 집계) | build 쪽이 해시 영역(메모리)에 들어갈 만큼 작아야 한다. 넘치면 디스크로 나눠 쓴다. build 키에 중복이 많으면 한 버킷이 길어져 느리다. 같음 조건에만 쓴다 |
+| **정렬 병합 조인**(Sort Merge) | 두 입력을 조인 키로 정렬한 뒤 두 포인터로 나란히 훑는다 | 두 입력이 이미 정렬돼 있을 때(인덱스 순서, 앞 단계의 `GROUP BY`·`ORDER BY`). `<`, `BETWEEN` 같은 범위 조건 조인처럼 해시 조인을 못 쓰는 경우 | 정렬되지 않았으면 정렬 비용이 세 방식 중 가장 크다 |
 
 - MySQL은 중첩 루프가 기본이고, 8.0.18부터 해시 조인을 쓴다(8.0.20부터 인덱스 없는 조인의 블록 중첩 루프를 대체). 정렬 병합 조인은 없다. PostgreSQL·Oracle·SQL Server는 세 가지를 모두 쓴다.
 - **드라이빙 테이블**(driving, outer)은 중첩 루프에서 바깥 루프를 도는 쪽이고, **드리븐 테이블**(driven, inner)은 행마다 찾아지는 쪽이다. 드리븐 쪽은 바깥 행 수만큼 탐색되므로 그 조인 컬럼에 인덱스가 있어야 한다. 옵티마이저는 WHERE로 거른 뒤 **결과가 작은 쪽을 드라이빙**으로, **인덱스로 찾을 수 있는 쪽을 드리븐**으로 두는 순서를 비용으로 고른다. `LEFT JOIN`은 왼쪽 행을 모두 살려야 하므로 순서를 바꿀 여지가 줄어든다.

@@ -121,4 +121,4 @@ flowchart LR
 - 품질의 적은 지터다. 송신은 정확한 주기로, 수신은 지터 버퍼로 다룬다.
 - 통화별 처리 단계를 채널로 잇는 동시성 구조가 전화망 서버에 잘 맞는다.
 
-관련 노트: [[webrtc|WebRTC]], [[transport-layer|전송 계층: 포트, TCP, UDP]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[Computer-Science/Network/http|HTTP 프로토콜]]
+관련 노트: [[webrtc|WebRTC]], [[transport-layer|전송 계층: 포트, TCP, UDP]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[ip-qos|IP QoS]], [[wireless-network|무선 네트워크]], [[network-basics|네트워크 기초]]

@@ -110,4 +110,4 @@ C23부터 부호 있는 정수는 2의 보수 표현이 표준으로 못 박혔�
 - 넓히는 변환은 연산 **전에** 한다. 오버플로가 난 뒤에 넓히면 늦다.
 - 부호 있는 정수 오버플로는 미정의 동작이다. 검사는 연산 전에, 또는 `ckd_add` 계열로 한다.
 
-관련 노트: [[data-representation|데이터 표현]], [[computer-arithmetic|컴퓨터 산술]], [[c-basics|C 기초: 컴파일, 자료형, 배열과 문자열]], [[c-history-and-standards|C의 역사와 표준]]
+관련 노트: [[data-representation|데이터 표현]], [[computer-arithmetic|컴퓨터 산술]], [[c-basics|C 기초]], [[c-history-and-standards|C의 역사와 표준]]

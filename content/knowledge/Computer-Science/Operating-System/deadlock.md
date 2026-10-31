@@ -5,12 +5,13 @@ summary: "프로세스들이 서로의 자원을 기다리며 멈추는 교착 �
 tags: ["os", "deadlock", "process", "synchronization"]
 source: notion
 date: "2026-10-12"
-sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://riverkim.kr/215", "https://bytebytego.com/guides/what-is-a-deadlock", "https://www.youtube.com/watch?v=Kcv0_Yb8Rqw", "https://www.youtube.com/watch?v=zQDNXklvdUw", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
+sources: ["https://app.notion.com/p/1d14283b365b43bf9e7e3281b8349159", "https://riverkim.kr/215", "https://bytebytego.com/guides/what-is-a-deadlock", "https://www.youtube.com/watch?v=Kcv0_Yb8Rqw", "https://www.youtube.com/watch?v=zQDNXklvdUw", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
 ---
 
 > 노션 정리를 바탕으로 재구성하고, 데이터베이스의 교착 상태 처리는 ByteByteGo의 System Design 101 가이드 「[What is a Deadlock?](https://bytebytego.com/guides/what-is-a-deadlock)」를 바탕으로 보강한 노트다.
 > 「식사하는 철학자 문제」, 「자원 할당 그래프」, 「회피」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 네 조건이 필요 조건인 이유 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
+> 회피의 프로세스 시작 거부와 안전성 검사 절차, 탐지 알고리즘을 부르는 시점은 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
 
 **교착 상태(deadlock)** 는 일련의 프로세스들이 서로가 가진 자원을 기다리며 모두 blocked 된 상태다. 예를 들어 두 프로세스가 각각 lock 하나씩을 쥔 채 상대방의 lock을 기다리면 둘 다 영원히 진행할 수 없다.
 
@@ -113,8 +114,20 @@ flowchart LR
 
 | 알고리즘 | 적용 대상 | 방식 |
 | --- | --- | --- |
+| 프로세스 시작 거부 | 자원 종류 무관 | 새 프로세스를 시작할 때, 이미 돌고 있는 프로세스들과 새 프로세스의 **최대 요구량을 모두 더해도** 자원이 충분할 때만 시작을 허락한다. 모두가 동시에 최대치를 쓰는 최악을 가정하므로 안전하지만 자원 이용률이 낮다 |
 | 자원 할당 그래프 알고리즘 | 자원당 인스턴스가 하나 | 앞으로 요청할 수 있음을 나타내는 **claim edge**를 미리 그려 두고, 요청을 할당 간선으로 바꿨을 때 사이클이 생기지 않는 경우에만 할당 |
 | 은행원 알고리즘 (Banker's Algorithm) | 자원당 인스턴스가 여러 개 | 할당량(Allocation), 최대 요구량(Max), 가용량(Available), 추가 필요량(Need = Max - Allocation)을 표로 관리. 요청을 들어줬을 때도 안전 순서열이 존재하는지 확인한 뒤 할당 |
+
+은행원 알고리즘이 안전 상태인지 검사하는 절차는 다음과 같다(프로세스 n개, 자원 종류 m개).
+
+```text
+1. Work = Available (길이 m),  Finish[i] = false (모든 i)
+2. Finish[i] == false 이고 Need[i] <= Work 인 i를 찾는다. 없으면 4로
+3. Work = Work + Allocation[i],  Finish[i] = true  (Pi가 끝나며 자원을 돌려준다고 본다) → 2로
+4. 모든 Finish[i]가 true면 안전 상태. 3에서 고른 순서가 안전 순서열이다
+```
+
+요청이 들어오면 `Request <= Need`, `Request <= Available`을 먼저 확인하고, 요청을 들어줬다고 가정해 `Available`, `Allocation`, `Need`를 고친 상태로 위 검사를 돌린다. 안전하면 실제로 할당하고, 아니면 고친 값을 되돌리고 기다리게 한다.
 
 ### 3. 탐지와 복구 (Detection and Recovery)
 
@@ -124,6 +137,14 @@ flowchart LR
 
 - 자원당 인스턴스가 하나: 자원 할당 그래프를 프로세스끼리의 대기 관계만 남긴 **wait-for graph**로 바꿔 사이클을 찾는다. 사이클 탐색에 O(n²)이 걸린다.
 - 자원당 인스턴스가 여러 개: 은행원 알고리즘과 비슷하게 할당·요청·가용 표를 만들어 끝낼 수 있는 순서가 있는지 확인한다(단, 미래 최대량이 아니라 **현재 요청**만 본다).
+
+탐지 알고리즘을 **언제 돌릴지**는 비용과 발견 속도의 저울질이다. 자주 돌리면 교착 상태를 빨리 찾아 자원이 놀지 않지만 오버헤드가 크다.
+
+| 호출 시점 | 특징 |
+| --- | --- |
+| 자원 요청이 즉시 받아들여지지 않을 때마다 | 가장 빨리 찾고 어느 요청이 원인인지도 알지만 부하가 크다 |
+| 일정 주기마다 (예: 1시간) | 부하는 작지만 그 사이 교착 상태가 방치되고, 사이클이 여러 개 얽혀 원인을 가리기 어렵다 |
+| CPU 이용률이 기준 아래로 떨어질 때 | 교착 상태에 빠진 프로세스들은 CPU를 쓰지 않아 이용률이 떨어진다는 점을 신호로 쓴다 |
 
 **복구**
 

@@ -79,4 +79,4 @@ def count_subarrays_with_sum(nums, k):
 - 구간 합 = `P[R] - P[L-1]`, 쿼리당 O(1)
 - 배열 값이 바뀌지 않는(정적인) 경우에 적합하다. 값이 자주 바뀌면 펜윅 트리·세그먼트 트리 같은 자료구조가 필요하다.
 
-관련 노트: [[dynamic-programming|동적 계획법]], [[two-pointers|투 포인터와 슬라이딩 윈도우]], [[coding-test|코딩 테스트 접근법]]
+관련 노트: [[dynamic-programming|동적 계획법]], [[two-pointers|투 포인터와 슬라이딩 윈도우]], [[coding-test|코딩 테스트 접근법]], [[segment-tree|세그먼트 트리]]

@@ -7,10 +7,10 @@ source: notion
 date: "2026-10-13"
 ---
 
-정보처리기사 실기는 소프트웨어 공학, 데이터베이스, 네트워크·운영체제, 보안, 신기술 용어를 폭넓게 묻는다. 이 주제는 문제 원문 대신 여러 회차에 걸쳐 **반복 출제되는 개념**을 주제별로 묶는다.
+정보처리기사 실기는 소프트웨어 공학, 데이터베이스, 네트워크·운영체제, 보안, 신기술 용어를 폭넓게 묻는다. 이 주제는 문제 원문 대신 여러 회차에 걸쳐 **반복 출제되는 개념**을 주제별로 묶고, 같은 주제의 대학 강의 내용(요구공학, 분석 설계, 테스트 설계, 프로젝트 관리)도 함께 합쳐 둔다.
 
-- [소프트웨어 설계와 공학](Computer-Science/Engineer-Information-Processing/software-engineering.md): 모듈 결합도·응집도, 디자인 패턴, UML, 객체지향, 비용 산정, 형상 관리
-- [소프트웨어 테스트](Computer-Science/Engineer-Information-Processing/software-testing.md): 테스트 원리, V-모델, 블랙박스·화이트박스 기법, 테스트 오라클, 통합 테스트와 결함 관리
+- [소프트웨어 설계와 공학](Computer-Science/Engineer-Information-Processing/software-engineering.md): 생명주기 모델과 애자일, 요구공학(EARS, 추적 매트릭스), 구조적 분석·설계(DFD, 구조 차트), 모듈 결합도·응집도, 디자인 패턴, UML 객체지향 분석·설계, 프로젝트 관리(COCOMO, PERT, EVM, 위험), 형상 관리
+- [소프트웨어 테스트](Computer-Science/Engineer-Information-Processing/software-testing.md): 테스트 원리, V&V, ISO/IEC 25010 품질 특성, V-모델, 블랙박스 기법과 커버리지(MC/DC)의 케이스 도출, 테스트 오라클, 통합 테스트, 29119 테스트 프로세스와 위험 기반 테스트, 결함 관리, AI 소프트웨어 테스트
 - [정보 시스템 보안](Computer-Science/Engineer-Information-Processing/security.md): 보안 3요소, 공격 기법, 암호 알고리즘, 접근 통제
 - [웹 서비스 기술과 IT 신기술 용어](Computer-Science/Engineer-Information-Processing/web-services-and-it-trends.md): SOAP·WSDL·UDDI, EAI 연계 유형, 데이터 마이닝과 각종 신기술 용어
 

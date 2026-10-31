@@ -12,4 +12,4 @@ date: "2026-10-13"
 - [데이터베이스 모델: RDB, NoSQL, NewSQL](Computer-Science/Database/database-models.md): 관계형, NoSQL(문서·키-값·와이드 컬럼·그래프), NewSQL 비교
 - [트랜잭션과 회복](Computer-Science/Database/transaction.md): ACID, 병행 제어, 고립화 수준, 회복 기법
 - [정규화와 반정규화](Computer-Science/Database/normalization.md): 이상 현상, 함수 종속, 정규형 단계, 반정규화
-- [관계대수와 DB 설계](Computer-Science/Database/sql-and-relational-algebra.md): 관계대수 연산자와 카디널리티, DB 설계 단계, 스키마·인덱스
+- [관계대수·관계해석과 DB 설계](Computer-Science/Database/sql-and-relational-algebra.md): 관계대수 연산자와 카디널리티, 관계해석(∃·∀), DB 설계 단계, ER 모델과 ERD를 테이블로 바꾸는 규칙, 스키마·인덱스

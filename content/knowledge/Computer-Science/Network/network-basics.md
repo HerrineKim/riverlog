@@ -1,10 +1,10 @@
 ---
 title: "네트워크 기초"
 concept: "Network Basics"
-summary: "네트워크의 정의와 분류(LAN·WAN, 연결 형태), 통신 방식, 프로토콜과 표준 기구, 패킷의 캡슐화, 네트워크 장비(허브·스위치·라우터·AP·공유기, L3 스위치와 라우터의 차이)와 가정·기업·클라우드의 배치, 1계층 전송 매체와 CSMA/CD, 2계층의 회선·흐름·오류 제어, 이더넷과 MAC 주소, 스위치의 MAC 학습과 홉마다 바뀌는 프레임."
+summary: "네트워크의 정의와 분류(LAN·WAN, 토폴로지별 장단점), 통신 방식, 프로토콜과 표준 기구, 패킷의 캡슐화, 계층별 네 가지 주소, 네트워크 장비(허브·브리지·스위치·라우터·AP·공유기·게이트웨이, L3 스위치와 라우터의 차이)와 가정·기업·클라우드의 배치, 1계층 전송 매체·이더넷 속도 변천, 직렬·병렬과 동기·비동기 전송, 디지털 변조(ASK·FSK·PSK·QAM)와 나이퀴스트·섀넌 한계, CSMA/CD·다중 접근 방식 분류, 다중화(FDM·TDM·WDM, T1), 2계층의 회선·흐름·오류 제어, 이더넷과 MAC 주소, 스위치의 MAC 학습과 VLAN, 홉마다 바뀌는 프레임."
 tags: ["network", "lan", "ethernet", "packet", "protocol"]
 source: notion
-sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://app.notion.com/p/7b2a147be0b54d499f6e1617865fa855", "https://80000coding.notion.site/881854082fa847818b417648d8d05612", "https://80000coding.notion.site/1f0bc84be25e461d9c50c1caddcf479a", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://80000coding.notion.site/875cb26a017f43d2a0ab58915fd21686", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man", "https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast", "https://bytebytego.com/guides/how-is-data-transmitted-between-applications", "https://d2.naver.com/helloworld/47667", "https://d2.naver.com/helloworld/7847943", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EC%9D%98%20%EB%B0%8F%20%EC%97%AD%EC%82%AC.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%9E%A5%EB%B9%84%EC%99%80%20%EC%BC%80%EC%9D%B4%EB%B8%94.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A7%81%ED%81%AC%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%A7%81%ED%81%AC%20%EC%8A%A4%EC%9C%84%EC%B9%98%EC%99%80%20ARP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
+sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://app.notion.com/p/7b2a147be0b54d499f6e1617865fa855", "https://80000coding.notion.site/881854082fa847818b417648d8d05612", "https://80000coding.notion.site/1f0bc84be25e461d9c50c1caddcf479a", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://80000coding.notion.site/875cb26a017f43d2a0ab58915fd21686", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man", "https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast", "https://bytebytego.com/guides/how-is-data-transmitted-between-applications", "https://d2.naver.com/helloworld/47667", "https://d2.naver.com/helloworld/7847943", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EC%9D%98%20%EB%B0%8F%20%EC%97%AD%EC%82%AC.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%9E%A5%EB%B9%84%EC%99%80%20%EC%BC%80%EC%9D%B4%EB%B8%94.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A7%81%ED%81%AC%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%A7%81%ED%81%AC%20%EC%8A%A4%EC%9C%84%EC%B9%98%EC%99%80%20ARP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)", "고려사이버대학교 정보통신개론 강의(권오상 교수, 2023 겨울계절학기)"]
 date: "2026-10-21"
 ---
 
@@ -13,6 +13,7 @@ date: "2026-10-21"
 > 표준 기구, 장비 배치, 물리 계층(매체·이중 방식·CSMA/CD), 2계층의 부계층과 회선·흐름·오류 제어, 스위치 에이징은 「[Frontend_TIL: 네트워크 정의 및 역사](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EC%9D%98%20%EB%B0%8F%20%EC%97%AD%EC%82%AC.md)」, 「[네트워크 구조](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B5%AC%EC%A1%B0.md)」, 「[물리계층 역활과 기능](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md)」, 「[물리계층 장비와 케이블](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%9E%A5%EB%B9%84%EC%99%80%20%EC%BC%80%EC%9D%B4%EB%B8%94.md)」, 「[데이터링크 역활과 기능](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A7%81%ED%81%AC%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md)」, 「[데이터 링크 스위치와 ARP](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%A7%81%ED%81%AC%20%EC%8A%A4%EC%9C%84%EC%B9%98%EC%99%80%20ARP.md)」를 바탕으로 보강했다.
 > 「전송 방향과 충돌」 절의 지수 백오프 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > L3 스위치와 라우터의 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 보강했다.
+> 토폴로지별 장단점, 계층별 네 가지 주소, 브리지·게이트웨이, 다중 접근 방식 분류, 이더넷 속도 변천, VLAN, 전송 방식·변조·전송 속도 한계·다중화는 고려사이버대학교 「컴퓨터네트워크」(2023-2학기)와 「정보통신개론」(2023 겨울계절학기) 강의 내용으로 보강했다.
 
 네트워크는 여러 노드(컴퓨터 같은 시스템)가 데이터를 공유할 수 있도록 연결한 디지털 전기 통신망이다. 분산된 컴퓨터를 통신망으로 묶고, 노드 간 연결을 통해 서로 데이터를 주고받는다. 우리가 매일 쓰는 인터넷도 문서·그림·영상 같은 데이터를 공유하게 해 주는 네트워크 통신망 중 하나일 뿐이다.
 
@@ -24,18 +25,21 @@ date: "2026-10-21"
 | --- | --- | --- |
 | PAN (Personal Area Network) | 한 사람 주변 수 미터 안의 기기를 잇는 개인 통신망. 주로 블루투스 | 스마트폰과 이어폰·워치 연결, 컴퓨터와 휴대폰 동기화 |
 | LAN (Local Area Network) | 가까운 지역을 하나로 묶은 근거리 통신망 | 같은 회사·사무실·집 안의 컴퓨터, 공유 프린터·파일 서버 |
-| MAN (Metropolitan Area Network) | LAN보다 넓고 WAN보다 좁은, 도시나 큰 캠퍼스 규모의 망 | 대학 캠퍼스 여러 곳 연결, 도시 단위 초고속망, 시내 관공서 연결 |
+| MAN (Metropolitan Area Network) | LAN보다 넓고 WAN보다 좁은, 도시나 큰 캠퍼스 규모(반경 수~수십 km)의 망. 장거리 백본과 LAN 사이를 잇는다 | 대학 캠퍼스 여러 곳 연결, 도시 단위 초고속망, 시내 관공서 연결 |
 | WAN (Wide Area Network) | 국가·대륙처럼 멀리 떨어진 곳들을 묶은 네트워크. 여러 LAN 대역을 서로 연결한 것 | 인터넷, 다국적 기업의 지사 연결 |
 
 떨어진 LAN들을 전용선 대신 인터넷 같은 공중망 위에서 **암호화한 터널로 묶어 하나의 사설망처럼** 쓰는 것이 VPN(Virtual Private Network)이다([[proxy|프록시와 VPN의 차이]]).
 
 ### 연결 형태(토폴로지)에 따른 분류
 
-| 형태 | 설명 | 주 용도 |
-| --- | --- | --- |
-| 성형(Star) | 중앙 장비에 모든 노드가 연결 | LAN (예: Wi-Fi 공유기) |
-| 망형(Mesh) | 네트워크 장비들이 서로 모두 연결 | WAN (예: 국가 간 연결) |
-| 혼합형 | 여러 형태를 섞은 구조 | 실제 인터넷: LAN들이 서로 연결되어 결국 WAN을 이룬다 |
+| 형태 | 설명 | 장점 | 약점 | 주 용도 |
+| --- | --- | --- | --- | --- |
+| 성형(Star) | 중앙 장비에 모든 노드가 점대점으로 연결 | 고장 난 단말을 찾고 늘리기 쉽다. 단말 하나가 고장 나도 나머지는 그대로 | **중앙 장비가 죽으면 전체가 멈춘다** | LAN (예: 스위치, Wi-Fi 공유기) |
+| 트리(Tree) | 성형을 여러 단으로 쌓은 모양 | 성형보다 많은 장비를 더 멀리까지 붙인다 | 위쪽 장비가 고장 나면 그 아래가 모두 끊긴다 | 건물·층별 스위치 계층 |
+| 버스(Bus) | 긴 케이블 하나에 모든 장비가 매달림 | 설치가 쉽고 싸다 | 장비가 많을수록 충돌이 늘어 느려지고, 중앙 케이블이 끊기면 전체가 멈춘다 | 초기 동축 이더넷(10BASE5) |
+| 링(Ring) | 이웃끼리 고리처럼 이어 한 방향으로 전달 | 순서대로 돌아 충돌이 없다 | 장비를 추가하려면 링을 끊어야 하고, 제어 절차가 복잡하다 | 토큰 링, SONET 링 |
+| 망형(Mesh) | 네트워크 장비들이 서로 모두 연결 | 경로가 여럿이라 한 링크가 끊겨도 돌아간다 | 회선 수가 많아 비싸다 | WAN (예: 국가 간 연결) |
+| 혼합형 | 여러 형태를 섞은 구조 | - | - | 실제 인터넷: LAN들이 서로 연결되어 결국 WAN을 이룬다 |
 
 ## 통신 방식
 
@@ -57,6 +61,9 @@ date: "2026-10-21"
 | 가까운 곳(같은 LAN)과 연결 | MAC 주소 | Ethernet |
 | 멀리 있는 곳(다른 네트워크)과 연결 | IP 주소 | IPv4, ARP, ICMP |
 | 특정 프로그램과 연결 | 포트 번호 | TCP, UDP |
+| 사람이 기억하는 이름으로 찾기 | 응용 주소(URL, 이메일 주소) | DNS가 이름을 IP로 바꾼다([[dns\|DNS]]) |
+
+네 주소는 쓰이는 범위가 다르다. MAC 주소(물리 주소)는 **한 링크 안에서만** 유일하면 되고 홉마다 바뀐다. IP 주소(논리 주소)는 **인터넷 전체에서** 유일하고 목적지까지 그대로다. 포트는 **한 호스트 안**의 프로세스를 가린다.
 
 예를 들어 친구에게 메시지를 보낼 때, 카카오톡으로 보낼지 디스코드로 보낼지는 **포트 번호**로 구분한다([[transport-layer|전송 계층과 포트]]). 실제로는 프로토콜 하나만 쓰지 않고 여러 개를 함께 사용한다. "어느 프로그램으로(포트), 어느 지역으로(IP), 그 지역의 어느 컴퓨터로(MAC)"를 모두 담아야 데이터가 제대로 도착한다.
 
@@ -100,10 +107,12 @@ date: "2026-10-21"
 | --- | --- | --- |
 | 랜카드(NIC) | 1·2계층 | 컴퓨터와 전송 매체를 잇고, 디지털 데이터와 전기·전파 신호를 서로 바꾼다. MAC 주소를 가진다. OS의 장치 드라이버가 제어한다 |
 | 리피터·허브 | 1계층 | 신호를 증폭해 다시 내보낸다. 허브는 받은 신호를 **모든 포트로** 뿌린다. 지금은 스위치로 대체되어 거의 쓰지 않는다 |
-| 스위치 | 2계층 | 여러 기기를 묶어 하나의 LAN을 만들고, MAC 주소를 보고 프레임을 해당 포트로만 보낸다. 라우팅 기능까지 넣은 것을 L3 스위치, 포트 번호까지 보고 서버에 나눠 주는 것을 L4 스위치(로드 밸런서)라 부른다 |
+| 브리지 | 2계층 | 두세 개의 LAN 구간 사이에서 MAC 주소 테이블을 보고 프레임을 건널지 정한다. 구간마다 **충돌 도메인을 나눈다.** 스위치는 포트가 많고, 포트마다 속도가 달라도 되고, 전용 칩으로 빠른 다중 포트 브리지다. 지금은 Wi-Fi와 유선을 잇는 무선 브리지, 리눅스 가상 브리지(`br0`, Docker의 `docker0`) 정도로 이름이 남았다 |
+| 스위치 | 2계층 | 여러 기기를 묶어 하나의 LAN을 만들고, MAC 주소를 보고 프레임을 해당 포트로만 보낸다. 라우팅 기능까지 넣은 것을 L3 스위치, 포트 번호까지 보고 서버에 나눠 주는 것을 L4 스위치(로드 밸런서), HTTP 내용(URL·쿠키)까지 보고 나누는 것을 L7 스위치라 부른다 |
 | 라우터 | 3계층 | **서로 다른 네트워크를 잇고** IP 주소를 보고 다음 경로를 고른다. 인터페이스(포트)마다 다른 네트워크에 속하고 각각 IP·MAC 주소를 가진다 |
 | 무선 AP | 2계층 | 무선 기기를 유선 네트워크에 연결한다 |
 | 인터넷 공유기 | 2~3계층 | 스위치 + 라우터 + 무선 AP + NAT·DHCP를 한 기기에 담은 가정용 장비 |
+| 게이트웨이 | 여러 계층(필요하면 전 계층) | 프로토콜 체계가 아예 다른 망(예: 인터넷과 전화망)을 잇고 프로토콜을 변환한다. VoIP의 미디어 게이트웨이가 예다. PC 설정의 「기본 게이트웨이」는 이 넓은 뜻을 물려받은 이름일 뿐 실제로는 라우터다 |
 
 기술적으로 "하나의 네트워크"는 **라우터를 거치지 않고 닿는 범위**다. 같은 스위치에 꽂혀 있어도 IP 대역이 다르면 서로 직접 통신하지 못하고 라우터를 거쳐야 한다.
 
@@ -137,7 +146,63 @@ date: "2026-10-21"
 | 광섬유(빛) | 빛의 패턴 | 싱글 모드(장거리, 예: LX), 멀티 모드(단거리, 예: SX) | 전자기 간섭이 없어 장거리·고속이다. 데이터센터·백본·통신사 구간에 쓴다 |
 | 무선(전파) | 전파 | Wi-Fi(IEEE 802.11) | 주파수 대역과 규격에 따라 속도·도달 거리가 다르다 |
 
+이더넷은 1970년대 제록스 PARC에서 만들어 IEEE 802.3으로 표준화됐고, 프레임 형식(최소 64·최대 1518바이트)을 그대로 지키면서 속도만 10배씩 올려 왔다. 10Mbps → 고속 이더넷(Fast Ethernet, 100Mbps) → 기가비트(1Gbps) → 10기가비트(2006년 구리선 규격 802.3an까지 나와 LAN·MAN·WAN을 아우름) → 25·40·100Gbps(40·100G는 2010년 802.3ba)다. 10Gbps 이상은 **전이중만** 지원해 CSMA/CD가 아예 없다.
+
 이더넷 규격 이름은 `속도 + 전송 방식 + 매체`로 읽는다. `1000BASE-T`는 1000Mbps, 베이스밴드(BASE) 전송, 꼬임쌍선(T)이다. 마지막이 숫자면 최대 거리(`10BASE5` = 500m), 글자면 케이블·광 종류(`1000BASE-SX`)다.
+
+### 비트를 싣는 방식: 직렬·병렬, 비동기·동기
+
+| 구분 | 직렬 전송 | 병렬 전송 |
+| --- | --- | --- |
+| 방식 | 선 하나로 비트를 차례로 | n비트를 n개 선으로 동시에 |
+| 비용·거리 | 선이 적어 싸고 멀리 간다 | 선이 많아 비싸고 짧은 거리용 |
+| 예 | USB, SATA, PCIe, 이더넷 | 옛 프린터 포트, IDE 디스크 |
+
+컴퓨터 내부는 병렬로 다루므로 내보낼 때 병렬 → 직렬, 받을 때 직렬 → 병렬로 바꾼다. 클럭이 높아지면 병렬 선마다 신호 도착 시각이 어긋나는 **스큐(skew)** 와 선 사이 간섭이 커져서, 고속 인터페이스는 오히려 직렬로 옮겨 갔다(IDE → SATA, 병렬 포트 → USB).
+
+직렬로 받는 쪽은 비트 묶음의 경계를 알아야 한다.
+
+| 구분 | 비동기식 | 동기식 |
+| --- | --- | --- |
+| 단위 | 문자 하나 | 여러 바이트를 묶은 블록(프레임) |
+| 경계 표시 | 문자마다 시작 비트·정지 비트 | 약속한 비트 패턴(동기 문자, 플래그)으로 블록 시작을 알린다 |
+| 효율 | 8비트에 2비트를 더 붙여 80% 안팎 | 높다. 대신 블록을 모아 둘 버퍼가 필요하다 |
+| 어울리는 데이터 | 띄엄띄엄 생기는 입력(키보드, 시리얼 콘솔) | 연속된 대량 데이터 |
+
+이더넷 프레임 앞의 프리앰블이 동기식의 블록 시작 신호에 해당한다.
+
+### 신호 변환과 변조
+
+정보와 신호가 각각 아날로그·디지털일 수 있어 변환은 네 가지다.
+
+| 정보 → 신호 | 변환 | 예 |
+| --- | --- | --- |
+| 아날로그 → 아날로그 | 반송파에 실어 보낸다(AM·FM) | 라디오, 옛 전화 |
+| 디지털 → 아날로그 | **변조**(모뎀) | 전화선 모뎀, Wi-Fi, LTE |
+| 아날로그 → 디지털 | **PCM**: 표본화 → 양자화 → 부호화(8kHz·64kbps 계산은 [[voip-sip-rtp\|VoIP 전화망]]) | 디지털 전화, VoIP |
+| 디지털 → 디지털 | **선로 부호화**: 비트를 전압 패턴으로 | 이더넷 NIC |
+
+아날로그 신호는 먼 길을 가며 섞인 잡음을 걸러 낼 수 없고, 증폭기는 잡음까지 키운다. 디지털 신호는 중간에서 0과 1만 판정해 깨끗하게 다시 만들 수 있어(재생 중계) 오류가 쌓이지 않는다. 통신망이 거의 다 디지털이 된 이유다.
+
+**bps**는 초당 비트 수, **보오(baud)** 는 초당 신호가 바뀌는 횟수다. 신호 하나가 가질 수 있는 상태가 L가지면 `bps = 보오 × log₂L`이다. 디지털 변조는 반송파의 어느 성질을 바꿔 상태를 만드느냐로 나뉜다.
+
+| 방식 | 바꾸는 것 | 특징 |
+| --- | --- | --- |
+| ASK (진폭 편이) | 진폭 | 단순하지만 잡음에 약하다 |
+| FSK (주파수 편이) | 주파수 | ASK보다 잡음에 강하다. 옛 저속 모뎀 |
+| PSK (위상 편이) | 위상 | 잡음에 강하다. 위상 4개면 신호당 2비트(QPSK) |
+| QAM (직교 진폭) | 진폭 + 위상 | 16-QAM은 4비트, 64-QAM은 6비트, 256-QAM은 8비트 |
+
+QAM 단계를 올리면 같은 대역에서 빨라지지만 상태끼리 촘촘해져 잡음에 약해진다. 그래서 Wi-Fi와 LTE는 신호 품질을 보고 변조 단계를 수시로 바꾼다. AP 가까이에서 속도가 잘 나오는 이유 중 하나다.
+
+속도의 상한은 선로의 **대역폭** B(Hz)와 **잡음**이 정한다.
+
+| 정리 | 식 | 뜻 |
+| --- | --- | --- |
+| 나이퀴스트 | 최대 bps = 2B × log₂L | 잡음이 없다면 상태 수를 늘릴수록 빨라진다 |
+| 섀넌 | C = B × log₂(1 + S/N) | 잡음이 있으면 상태를 아무리 늘려도 이 용량을 넘지 못한다 |
+
+대역 3kHz 전화선에서 신호 대 잡음비가 30dB(S/N = 1000)면 C ≈ 3000 × log₂1001 ≈ 30kbps다. 다이얼업 모뎀이 수십 kbps에서 멈춘 이유이고, DSL이 4kHz 필터를 걷어내고 MHz급 대역을 쓰면서 Mbps가 된 이유다([[access-network-and-wan|가입자망과 광역망]]).
 
 ### 전송 방향과 충돌
 
@@ -155,7 +220,36 @@ date: "2026-10-21"
 
 기다리는 시간이 모두 같으면 같은 순간에 다시 부딪치므로 **무작위**로 고른다. 또 연달아 충돌한다는 것은 혼잡하다는 뜻이라, 충돌할 때마다 무작위 대기 범위를 두 배로 넓힌다. 이것이 **이진 지수 백오프**(binary exponential backoff)다. 송신자들이 물러설수록 충돌이 줄어 망이 다시 흐른다. 같은 발상이 무선 LAN, TCP 재전송, API 재시도에도 쓰인다([[resiliency-patterns|장애 확산을 막는 복원력 패턴]]).
 
-스위치가 포트마다 전이중 링크를 주면서 충돌 자체가 사라져, 지금 유선 이더넷에서 CSMA/CD는 사실상 쓰이지 않는다. 무선 LAN은 충돌을 감지할 수 없어 미리 피하는 CSMA/CA를 쓴다.
+스위치가 포트마다 전이중 링크를 주면서 충돌 자체가 사라져, 지금 유선 이더넷에서 CSMA/CD는 사실상 쓰이지 않는다. 무선 LAN은 충돌을 감지할 수 없어 미리 피하는 CSMA/CA를 쓴다([[wireless-network|무선 네트워크]]).
+
+CSMA/CD는 공유 매체를 누가 언제 쓸지 정하는 **다중 접근**(multiple access) 방식 중 하나다. 방식은 세 갈래다.
+
+| 갈래 | 원리 | 예 |
+| --- | --- | --- |
+| 임의 접근(random access) | 정해진 순서 없이 경쟁하고, 충돌하면 물러섰다 다시 시도 | ALOHA, CSMA, CSMA/CD(유선 이더넷), CSMA/CA(무선 LAN) |
+| 제어 접근(controlled access) | 보낼 권리를 순서대로 넘겨 충돌이 없다 | 예약, 폴링(주국이 차례로 묻기), **토큰 패싱**: 토큰이라는 짧은 프레임을 가진 노드만 보내고 다 보내면 이웃에게 넘긴다. 토큰 링(물리 링), 토큰 버스(물리는 버스, 논리는 링) |
+| 채널화(channelization) | 주파수·시간·코드로 채널을 미리 나눠 각자 자기 몫만 쓴다 | FDMA, TDMA, CDMA, OFDMA. 이동통신 세대를 가르는 기준이다([[wireless-network\|무선 네트워크]]) |
+
+### 다중화: 선로 하나를 나눠 쓰기
+
+**다중화(multiplexing)** 는 한 장비가 여러 신호를 모아 한 선로로 보내고 받는 쪽에서 다시 나누는(역다중화) 기술이다. 위의 채널화가 여러 단말이 **각자** 공유 매체에 접근하는 것이라면, 다중화는 장비 한 대가 모아서 보낸다. [[transport-layer|전송 계층]]이 포트 번호로 여러 프로세스의 데이터를 섞는 것과 발상이 같고, 여기서는 물리 신호 수준에서 한다.
+
+| 방식 | 나누는 기준 | 동작 | 쓰임 |
+| --- | --- | --- | --- |
+| FDM (주파수 분할) | 주파수 대역 | 신호마다 다른 대역으로 옮겨 합치고, 사이에 보호 대역을 둔다. 받는 쪽은 대역 통과 필터로 골라낸다 | 라디오·TV 채널, DSL의 음성·데이터 분리. 아날로그 신호에 맞다 |
+| TDM (시분할) | 시간 슬롯 | 채널마다 돌아가며 슬롯을 준다 | 전화망 디지털 회선. 디지털 신호에 맞다 |
+| WDM (파장 분할) | 빛의 파장 | 여러 색의 빛을 광섬유 한 가닥에 함께 싣는다. 원리는 FDM과 같다 | 광 백본. CWDM(20nm 간격, 십여 파장, 싸다)은 도시 구간, DWDM(촘촘한 간격, 수십~백 파장)은 장거리 |
+
+TDM은 슬롯을 나누는 방식이 둘이다. **동기식**은 채널마다 슬롯을 고정해 보낼 게 없어도 빈 슬롯이 나가고, **통계적(비동기식)** 은 데이터가 있는 채널에만 슬롯을 주는 대신 슬롯에 주소를 붙인다. 통계적 TDM을 끝까지 밀면 주소 붙은 패킷을 필요할 때만 보내는 패킷 교환이 된다([[network-layer|데이터 교환 방식]]).
+
+동기식 TDM의 대표가 북미 전화망의 **T1**이다. 64kbps 음성 채널 24개를 한 프레임에 1바이트씩 담고 프레임 구분용 1비트를 더한다.
+
+```text
+프레임 = 24채널 × 8비트 + 1비트 = 193비트
+초당 8,000프레임(음성 표본화 주기) × 193비트 = 1.544Mbps
+```
+
+WDM은 새 케이블을 깔지 않고 파장만 늘려 용량을 키울 수 있어 백본망의 기본 기술이다.
 
 ### 단위와 성능 지표
 
@@ -217,6 +311,16 @@ date: "2026-10-21"
 허브는 모든 포트가 한 충돌 도메인이지만, 스위치는 **포트마다 충돌 도메인을 나눈다.** 브로드캐스트는 여전히 모든 포트로 가므로 브로드캐스트 도메인은 라우터(또는 VLAN)로 나눈다.
 
 받은 기기는 목적지 MAC이 자기 것이 아니면 프레임을 버린다. 스위치 자체는 프레임을 중계할 뿐 그 통신의 출발지·목적지가 아니므로 통신용 MAC·IP 주소가 필요 없다(관리용 주소는 따로 있을 수 있다).
+
+### VLAN: 스위치 하나를 여러 LAN으로
+
+**VLAN**(Virtual LAN)은 물리적으로 같은 스위치에 꽂힌 기기를 논리적으로 다른 LAN으로 나눈다. 브로드캐스트는 같은 VLAN 안에서만 퍼지므로 **VLAN 하나가 브로드캐스트 도메인 하나**다.
+
+- **브로드캐스트 줄이기**: 망이 커질수록 ARP·DHCP 같은 브로드캐스트가 늘어 모든 기기를 괴롭힌다. VLAN으로 쪼개면 그 범위가 줄어든다.
+- **분리와 보안**: 학생망과 교직원망, 사무망과 서버망처럼 같은 건물 배선 위에서도 서로의 트래픽이 섞이지 않는다. VLAN끼리는 **라우터나 L3 스위치를 거쳐야만** 통신하므로, 그 지점에 ACL·방화벽 정책을 건다.
+- **이동이 쉽다**: 자리를 옮긴 기기를 원래 망에 두려면 케이블을 다시 깔 필요 없이 스위치 포트의 VLAN 설정만 바꾼다.
+
+여러 스위치에 걸친 VLAN은 스위치 사이 **트렁크** 링크에서 프레임에 IEEE 802.1Q 태그(4바이트, VLAN ID 12비트라 1~4094)를 끼워 어느 VLAN 프레임인지 구분한다.
 
 ### 홉마다 바뀌는 MAC, 그대로인 IP
 
@@ -326,4 +430,4 @@ flowchart TB
 - 스위치는 MAC 테이블을 학습해 프레임을 필요한 포트로만 보내고, 모르면 플러딩한다. 라우터는 홉마다 이더넷 헤더를 새로 쓴다.
 - 보낼 때는 캡슐화(상위 → 하위), 받을 때는 디캡슐화(하위 → 상위). PDU는 세그먼트 → 패킷 → 프레임.
 
-관련 노트: [[network-layer|네트워크 계층 프로토콜]], [[osi-7-layer|OSI 7계층]], [[linux-network-namespace|리눅스 네트워크 네임스페이스와 ip 명령]]
+관련 노트: [[network-layer|네트워크 계층 프로토콜]], [[osi-7-layer|OSI 7계층]], [[linux-network-namespace|리눅스 네트워크 네임스페이스와 ip 명령]], [[wireless-network|무선 네트워크]], [[access-network-and-wan|가입자망과 광역망]]

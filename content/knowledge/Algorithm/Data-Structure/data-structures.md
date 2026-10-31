@@ -1,10 +1,10 @@
 ---
 title: "기초 자료구조: 배열에서 트라이까지"
 concept: "Basic Data Structures"
-summary: "배열과 realloc 크기 조정 비용, 배열·행렬 문제의 요령(부분 배열과 부분 수열, 인덱스 변환, 전치), 연결 리스트(C 구조체·Kotlin 예제)와 둘 중 고르는 기준, 더미 노드·제자리 뒤집기 같은 연결 리스트 기법, 층을 쌓아 건너뛰는 스킵 리스트, 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 얕은 복사와 깊은 복사."
-tags: ["data-structure", "cs50", "linked-list", "hash-table", "tree"]
+summary: "연산의 약속(추상 자료형)과 구현(자료구조)을 나누는 관점, 배열과 realloc 크기 조정 비용, 배열·행렬 문제의 요령(부분 배열과 부분 수열, 인덱스 변환, 전치), 연결 리스트(C 구조체·Kotlin 예제)와 둘 중 고르는 기준, 더미 노드·제자리 뒤집기 같은 연결 리스트 기법, 층을 쌓아 건너뛰는 스킵 리스트, 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 얕은 복사와 깊은 복사."
+tags: ["data-structure", "cs50", "linked-list", "hash-table", "tree", "c"]
 source: notion
-sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/", "https://www.youtube.com/watch?v=DuDz6B4cqVc", "https://www.techinterviewhandbook.org/algorithms/array/", "https://www.techinterviewhandbook.org/algorithms/matrix/", "https://www.techinterviewhandbook.org/algorithms/linked-list/", "https://www.techinterviewhandbook.org/algorithms/trie/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
+sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/", "https://www.youtube.com/watch?v=DuDz6B4cqVc", "https://www.techinterviewhandbook.org/algorithms/array/", "https://www.techinterviewhandbook.org/algorithms/matrix/", "https://www.techinterviewhandbook.org/algorithms/linked-list/", "https://www.techinterviewhandbook.org/algorithms/trie/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)"]
 date: "2026-10-30"
 ---
 
@@ -12,8 +12,59 @@ date: "2026-10-30"
 > 「다차원 배열과 구조체」 절과 배열 인덱스·연결 리스트 끝 표시·연결 리스트로 만든 스택과 큐 등 일부 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 배열 문제의 요령, 행렬 다루기, 연결 리스트 문제 기법, 트라이의 연산 복잡도는 Tech Interview Handbook의 「[Array](https://www.techinterviewhandbook.org/algorithms/array/)」, 「[Matrix](https://www.techinterviewhandbook.org/algorithms/matrix/)」, 「[Linked list](https://www.techinterviewhandbook.org/algorithms/linked-list/)」, 「[Trie](https://www.techinterviewhandbook.org/algorithms/trie/)」 치트시트를 바탕으로 보강했다.
 > 스킵 리스트 절은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
+> 「추상 자료형(ADT)」 절은 고려사이버대학교 「자료구조」(2024-1학기) 강의 내용을 바탕으로 보강했다.
 
 자료구조는 데이터를 메모리에 어떻게 배치하고 연결하느냐의 문제다. 배열처럼 연속된 공간을 쓰면 접근은 빠르지만 크기를 바꾸기 어렵고, [[pointers-and-memory|포인터]]로 흩어진 공간을 이으면 크기는 자유롭지만 접근이 느려진다. 예제는 C와 Kotlin으로 든다.
+
+## 추상 자료형 (ADT)
+
+스택을 쓸 때는 `push`와 `pop`만 알면 된다. 안이 배열인지 연결 리스트인지는 몰라도 된다. 이렇게 **자료와 연산의 동작만 약속하고 구현은 감춘 정의**를 추상 자료형(ADT, Abstract Data Type)이라고 한다. 리스트·스택·큐·트리를 배울 때 늘 「ADT 정의 → 구현」 순서를 밟는 이유다.
+
+### 자료형 = 값의 집합 + 연산의 집합
+
+정수형도 값 `{…, -1, 0, 1, …}`과 연산 `{+, -, ×, /, mod}`이 함께 묶여야 쓸 수 있는 자료형이 된다. ADT는 이 생각을 사용자가 정의하는 자료로 넓힌 것이다. 예를 들어 **리스트 ADT**는 「순서 있는 항목들」이라는 값과 다음 연산으로만 정의된다.
+
+| 연산 | 동작 |
+| --- | --- |
+| `create()` | 빈 리스트를 만든다 |
+| `is_empty()`, `length()` | 비었는지, 항목이 몇 개인지 알려 준다 |
+| `insert(pos, item)` | `pos` 위치에 항목을 넣는다 |
+| `delete(pos)` | `pos` 위치의 항목을 지운다 |
+| `retrieve(pos)` | `pos` 위치의 항목을 돌려준다 |
+
+표 어디에도 배열이나 포인터가 나오지 않는다는 점이 핵심이다. ADT는 추상화 가운데 **데이터 추상화**(값이 메모리에 놓이는 방식을 숨김)와 **절차 추상화**(`sort(a)`처럼 계산 단계를 숨김)를 합친 것이다. 반복문이 점프 명령으로 바뀌는 과정을 숨기는 **제어 추상화**는 여기에 들지 않는다.
+
+### ADT와 자료구조
+
+| | 추상 자료형 | 자료구조 |
+| --- | --- | --- |
+| 묻는 것 | 무엇을 할 수 있나 | 어떻게 저장하고 처리하나 |
+| 예 | 리스트, 스택, 큐, 우선순위 큐, 맵 | 배열, 연결 리스트, 힙, 해시 테이블, 균형 트리 |
+| 관계 | 하나의 ADT를 여러 자료구조로 구현한다 | 하나의 자료구조가 여러 ADT를 구현하기도 한다 |
+
+우선순위 큐는 정렬된 배열로도 [[heap-priority-queue|힙]]으로도, 맵은 [[hash-table|해시 테이블]]로도 [[tree|균형 이진 탐색 트리]]로도 만든다. 같은 ADT라도 구현에 따라 연산의 복잡도가 달라지므로 자주 쓰는 연산을 보고 구현을 고른다. 아래 절들은 대부분 이 「어떻게」에 해당한다.
+
+### 인터페이스와 구현의 분리
+
+ADT를 코드로 옮기면 사용자가 보는 **인터페이스**(연산 이름·인자·반환값·동작)와 약속을 지키는 **구현**(내부 표현과 알고리즘)으로 나뉜다. 사용자 코드가 인터페이스에만 기대면 구현을 배열에서 연결 리스트로 바꿔도 사용자 코드는 그대로다. 성능 문제가 생겼을 때 구현만 갈아 끼울 수 있다는 것이 ADT의 실질적인 이득이다.
+
+C에는 클래스가 없으니 파일로 나눈다. 헤더(`.h`)에 타입과 함수 원형을, 소스(`.c`)에 본문을 둔다.
+
+```c
+/* list.h: 인터페이스 */
+typedef struct List List;          /* 멤버를 공개하지 않은 불완전 타입 */
+List *list_create(void);
+int   list_length(const List *l);
+void  list_insert(List *l, int pos, int item);
+
+/* list.c: 구현. 사용자는 이 파일을 보지 않는다 */
+struct List { int count; int items[100]; };
+int list_length(const List *l) { return l->count; }
+```
+
+헤더에 구조체 멤버를 드러내지 않으면 사용자는 `l->count`를 직접 건드릴 수 없고 함수로만 다룬다. 대신 크기를 모르니 사용자가 `List`를 직접 선언할 수 없어 생성·해제 함수를 따로 줘야 한다. 구조체 정의를 헤더에 그대로 두는 방식도 흔한데, 이때 은닉은 「멤버를 직접 만지지 않는다」는 약속에 기댄다. 헤더 분리와 링크는 [[c-scope-and-linkage|C의 스코프와 링키지]]에 있다.
+
+C++·Java는 클래스가 자료와 연산을 한 단위로 묶고 `public`·`private` 접근 제어자로 경계를 언어 차원에서 강제한다. Java의 `List` 인터페이스와 `ArrayList`·`LinkedList`의 관계가 ADT와 구현의 관계 그대로다(아래 「언어 라이브러리 속 자료구조」).
 
 ## 배열 (Array)
 
@@ -237,7 +288,7 @@ Kotlin data class의 `copy()`나 `super.clone()`처럼 언어가 주는 복사�
 
 ## 언어 라이브러리 속 자료구조: Java 컬렉션
 
-실무에서는 자료구조를 직접 짜기보다 언어가 주는 구현을 고른다. Java 컬렉션 프레임워크(JCF)는 인터페이스로 연산을 정하고 구현 클래스로 내부 자료구조를 정하는 구조라 이 관계가 잘 보인다.
+실무에서는 자료구조를 직접 짜기보다 언어가 주는 구현을 고른다. Java 컬렉션 프레임워크(JCF)는 인터페이스로 연산을 정하고(ADT) 구현 클래스로 내부 자료구조를 정하는 구조라 이 관계가 잘 보인다.
 
 ```mermaid
 flowchart TB

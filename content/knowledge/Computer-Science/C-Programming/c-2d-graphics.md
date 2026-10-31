@@ -123,4 +123,4 @@ SDL2 자료가 많지만 새 프로젝트는 SDL3를 쓴다. 개념은 같고 �
 - 색은 정수 하나에 비트로 패킹하고, 직선은 브레젠험, 그라데이션은 선형 보간으로 그린다.
 - 좌표계의 축 방향이 다르면 회전·투영이 뒤집힌다. 변환은 단계별로 적용한다.
 
-관련 노트: [[c-low-level-optimization|C 저수준 최적화]], [[gcc-compile-and-link|GCC 컴파일과 링크]], [[c-struct-and-function-pointer|구조체와 함수 포인터]], [[Blender|Blender 기초 조작과 모델링]]
+관련 노트: [[c-low-level-optimization|C 저수준 최적화]], [[gcc-compile-and-link|GCC 컴파일과 링크]], [[c-struct-and-function-pointer|C 사용자 정의 타입과 함수 포인터]], [[Blender|Blender 기초 조작과 모델링]]

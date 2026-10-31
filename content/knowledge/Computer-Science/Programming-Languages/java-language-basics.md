@@ -1,17 +1,18 @@
 ---
 title: "Java 언어 기본: 접근 제어자, static, 객체 비교, 제네릭, 리플렉션"
 concept: "Java Basics"
-summary: "Java 면접에서 자주 묻는 언어 기본기를 주제별로 정리한다. 접근 제어자, final·finally·finalize, static과 static final(C·C++의 static과 컴파일 시 처리 포함), 오버로딩과 오버라이딩, 업·다운캐스팅, ==·equals·hashCode와 문자열 상수 풀, String 계열, Comparable과 Comparator, 값 전달, 컴포지션, 래퍼 클래스와 오토박싱, 제네릭과 타입 소거, 리플렉션·어노테이션·동적 프록시."
+summary: "Java 면접에서 자주 묻는 언어 기본기를 주제별로 정리한다. 접근 제어자와 패키지, final·finally·finalize, static과 static final(C·C++의 static과 컴파일 시 처리 포함), 오버로딩과 오버라이딩, 업·다운캐스팅, ==·equals·hashCode와 문자열 상수 풀, String 계열, Comparable과 Comparator, 값 전달, 컴포지션, 기본형과 래퍼 클래스·오토박싱, 제네릭과 타입 소거, 리플렉션·어노테이션·동적 프록시."
 tags: ["java", "oop", "backend", "concurrency"]
 source: other
 date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Java/README.md", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html", "https://openjdk.org/jeps/421", "https://openjdk.org/jeps/506", "https://github.com/4z7l/tech_interview.zip/blob/main/%EC%A7%81%EB%AC%B4/JAVA.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20String%20StringBuilder%20StringBuffer%20%EC%B0%A8%EC%9D%B4.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Call%20by%20value%EC%99%80%20Call%20by%20reference.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20%EC%BB%B4%ED%8F%AC%EC%A7%80%EC%85%98%28Composition%29.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5BJava%5D%20Intrinsic%20Lock.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Java%20major%20feature%20changes.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Java/README.md", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html", "https://openjdk.org/jeps/421", "https://openjdk.org/jeps/506", "https://github.com/4z7l/tech_interview.zip/blob/main/%EC%A7%81%EB%AC%B4/JAVA.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20String%20StringBuilder%20StringBuffer%20%EC%B0%A8%EC%9D%B4.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Call%20by%20value%EC%99%80%20Call%20by%20reference.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20%EC%BB%B4%ED%8F%AC%EC%A7%80%EC%85%98%28Composition%29.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5BJava%5D%20Intrinsic%20Lock.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Java%20major%20feature%20changes.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "고려사이버대학교 Java언어 강의(도성룡 교수, 2023-2학기)"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 Java 문서를 바탕으로, Java SE 공식 문서와 JEP로 확인해 재구성한 노트다.
 > 업·다운캐스팅, 객체 비교와 문자열 상수 풀, volatile·Atomic·Callable은 4z7l의 「[tech_interview.zip](https://github.com/4z7l/tech_interview.zip)」 Java 문서를 바탕으로 보강했다.
 > String 계열 비교, 값 전달, 컴포지션, 고유 락과 wait·notify, 버전별 기능은 gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 저장소의 Language 문서를 바탕으로, OpenJDK JEP로 확인해 보강했다.
 > static, Comparable과 Comparator, 리플렉션·커스텀 어노테이션·동적 프록시는 fru1tworld/cs-basic 모의 면접 질문 목록의 Java·언어 기본 질문을 바탕으로 보강했다.
+> 패키지와 import, 상속 형태, 기본형 표, 배열과 컬렉션의 차이는 고려사이버대학교 「Java언어」(2023-2학기) 강의 내용으로 보강했다.
 
 JVM 구조와 GC는 [[jvm-internals|JVM 내부 구조]], Enum·Optional·예외 같은 실무 관용구는 [[java-idioms|Java 실무 관용구]], 코딩 규칙은 [[java-coding-convention|Java 코딩 컨벤션]]에, 동시성은 [[java-concurrency|Java 동시성]]에, 버전별 새 기능은 [[modern-java-features|모던 Java 기능]]에 있다. 이 노트는 그 아래 깔린 언어 문법의 기본기를 다룬다.
 
@@ -26,6 +27,20 @@ JVM 구조와 GC는 [[jvm-internals|JVM 내부 구조]], Enum·Optional·예외 
 
 - 필드는 `private`으로 숨기고 필요한 동작만 메서드로 연다(캡슐화). 기본값은 「아무것도 안 쓴」 package-private이다.
 - Java 9의 모듈 시스템(`module-info.java`)은 그 위에서 **패키지 단위로** 무엇을 `exports`할지 한 번 더 막는다. `public` 클래스라도 내보내지 않은 패키지에 있으면 모듈 밖에서 못 쓴다.
+
+### 패키지와 import
+
+**패키지는 관련 클래스·인터페이스를 묶는 이름 공간이다.** 파일 첫 줄의 `package com.example.member;`로 선언하고, 소스 디렉터리 구조(`com/example/member/`)가 이름과 일치해야 한다. 클래스의 진짜 이름은 패키지까지 붙인 **완전한 이름(fully qualified name)** `com.example.member.Student`이므로, 다른 패키지에 같은 단순 이름의 클래스가 있어도 충돌하지 않는다. 그리고 package-private과 `protected`의 경계가 바로 이 패키지다.
+
+| 규칙 | 내용 |
+| --- | --- |
+| 이름 | 전부 소문자, 소유한 도메인을 뒤집어 시작한다(`com.example`). `java.*`는 JDK 전용이다 |
+| `package` 생략 | 이름 없는 기본 패키지에 들어간다. 다른 패키지에서 `import`할 수 없으므로 연습 코드에만 쓴다 |
+| `import a.b.C;` | 클래스 하나를 단순 이름으로 쓰게 한다 |
+| `import a.b.*;` | 그 패키지의 클래스를 필요할 때 찾는다. **하위 패키지(`a.b.c`)는 포함하지 않는다.** 두 와일드카드에 같은 이름이 있으면 그 이름을 쓰는 순간 모호성 오류다 |
+| 자동 import | `java.lang`(`String`, `Math`, `System`, 래퍼 클래스)과 같은 패키지의 클래스는 `import` 없이 쓴다 |
+
+`import`는 컴파일러에게 이름을 알려 줄 뿐이고 코드를 붙여 넣지 않는다. C의 `#include`와 달리 실행 파일 크기나 속도에 영향이 없다.
 
 ## final, finally, finalize
 
@@ -88,7 +103,9 @@ JVM 구조와 GC는 [[jvm-internals|JVM 내부 구조]], Enum·Optional·예외 
 | 무엇을 | 같은 이름, **다른 매개변수 목록**의 메서드를 여럿 만든다 | 상위 타입의 메서드를 하위 클래스가 **같은 시그니처로 다시 정의**한다 |
 | 반환 타입 | 달라도 되지만 반환 타입만 다른 것은 안 된다 | 같거나 하위 타입(공변 반환) |
 | 언제 결정되나 | **컴파일 시점**, 인자의 정적 타입으로 고른다 | **실행 시점**, 실제 객체의 타입으로 고른다(동적 바인딩) |
+| 다형성 분류 | 정적(컴파일 시간) 다형성 | 동적(실행 시간) 다형성 |
 | 접근 제어자 | 상관없다 | 상위보다 좁힐 수 없다 |
+| 생성자 | 오버로딩할 수 있다(매개변수 목록이 다른 생성자 여럿) | 생성자는 상속되지 않으므로 오버라이딩도 없다 |
 
 ```java
 class Animal { String sound() { return "..."; } }
@@ -161,11 +178,29 @@ void replace(User u) { u = new User("C"); } // 복사된 참조만 바꾼다 →
 
 ## 상속보다 컴포지션
 
+Java 클래스는 `extends`로 **부모를 하나만** 둔다. 한 부모에 자식 하나(단일), 부모 → 자식 → 손자로 이어지는 사슬(다단계), 한 부모에 여러 자식(계층적)은 모두 되지만, 한 클래스가 두 클래스를 동시에 상속하는 다중 상속은 없다. 여러 타입의 역할이 필요하면 인터페이스를 여러 개 `implements`한다([[abstract-class-vs-interface|추상 클래스와 인터페이스]]). 부모의 `private` 멤버는 자식 객체 안에 있지만 자식 코드에서 직접 접근할 수 없고, 부모가 연 메서드나 `super`로 다룬다.
+
 상속은 상위 클래스의 구현에 하위 클래스를 묶는다. 상위 클래스가 내부 동작을 바꾸면 하위 클래스가 깨질 수 있다(깨지기 쉬운 상위 클래스 문제). 예를 들어 `HashSet`을 상속해 `add`·`addAll`을 재정의해 개수를 세면, `addAll`이 내부에서 `add`를 부르는 구현 때문에 두 번 세어진다. **컴포지션**은 기존 클래스를 필드로 갖고 필요한 메서드만 넘겨(forwarding) 쓴다. 구현이 아니라 공개 API에만 기대므로 덜 깨진다. 「is-a」가 분명할 때만 상속하고, 기능을 빌려 쓰려면 컴포지션을 쓴다. Kotlin은 이를 `by`로 문법에 넣었다([[kotlin-delegation|위임 패턴과 Kotlin by]]).
 
 ## 래퍼 클래스와 오토박싱
 
-기본형(`int`, `double`, `boolean` …)을 객체로 감싼 것이 래퍼 클래스(`Integer`, `Double`, `Boolean` …)다. 제네릭과 컬렉션은 객체만 담으므로 `List<int>`는 안 되고 `List<Integer>`를 쓴다. Java 5부터 컴파일러가 둘 사이를 자동으로 바꿔 준다.
+Java의 기본형은 8개이고, 크기가 플랫폼과 상관없이 명세로 고정돼 있다(C와 다른 점이다).
+
+| 기본형 | 크기 | 필드 기본값 | 래퍼 클래스 |
+| --- | --- | --- | --- |
+| `byte` | 1바이트 | `0` | `Byte` |
+| `short` | 2바이트 | `0` | `Short` |
+| `int` | 4바이트 | `0` | `Integer` |
+| `long` | 8바이트 | `0L` | `Long` |
+| `float` | 4바이트 | `0.0f` | `Float` |
+| `double` | 8바이트 | `0.0d` | `Double` |
+| `char` | 2바이트(UTF-16 코드 단위, 부호 없음) | `'\u0000'` | `Character` |
+| `boolean` | 명세상 크기 미정 | `false` | `Boolean` |
+
+- 기본값은 **필드와 배열 원소**에만 자동으로 들어간다. 지역 변수는 대입 전에 읽으면 컴파일 오류다.
+- 정수 리터럴은 `int`, 실수 리터럴은 `double`이 기본이라 `long`·`float`는 `10L`, `3.14f`처럼 접미사를 붙인다.
+
+기본형을 객체로 감싼 것이 래퍼 클래스다. 제네릭과 컬렉션은 객체만 담으므로 `List<int>`는 안 되고 `List<Integer>`를 쓴다. Java 5부터 컴파일러가 둘 사이를 자동으로 바꿔 준다.
 
 ```java
 List<Integer> list = new ArrayList<>();
@@ -256,7 +291,17 @@ Spring AOP는 둘 중 하나로 빈을 프록시로 감싸 `@Transactional`을 �
 
 ## 컬렉션 프레임워크
 
-컬렉션 프레임워크는 여러 데이터를 다루는 표준 인터페이스(`List`, `Set`, `Queue`/`Deque`, `Map`)와 구현체 묶음이다. 인터페이스 계층과 `ArrayList`·`LinkedList` 같은 구현체 고르는 기준은 [[data-structures|기초 자료구조]]의 Java 컬렉션 절에, `HashMap`의 해시 충돌 처리와 트리화는 [[hash-table|해시 테이블]]에 있다. `HashSet`은 내부적으로 값만 키로 쓰는 `HashMap`이다. 여러 스레드가 함께 쓰는 컬렉션(`ConcurrentHashMap` 등)과 `synchronized`·`volatile`·`ThreadLocal`은 [[java-concurrency|Java 동시성]]에 있다.
+컬렉션 프레임워크는 여러 데이터를 다루는 표준 인터페이스(`List`, `Set`, `Queue`/`Deque`, `Map`)와 구현체 묶음이다. 배열과는 이렇게 다르다.
+
+| 비교 | 배열 `int[]`, `String[]` | 컬렉션 `List<Integer>` |
+| --- | --- | --- |
+| 크기 | 생성할 때 고정. 늘리려면 새 배열에 복사한다 | 원소를 넣고 빼면 알아서 늘고 준다 |
+| 원소 타입 | 기본형도 담는다 | 객체만 담는다(기본형은 오토박싱) |
+| 길이 | `arr.length` (필드) | `list.size()` (메서드) |
+| 타입 검사 | 공변이라 `Object[] o = new String[1]; o[0] = 1;`이 실행 중 `ArrayStoreException` | 제네릭이 컴파일 시점에 막는다 |
+| 기능 | 인덱스 접근뿐. 정렬·검색은 `java.util.Arrays` 유틸리티로 | 삽입·삭제·포함 검사·반복자(`Iterator`)를 메서드로 제공 |
+
+`Map`은 `Collection`을 상속하지 않는 별도 계층이다. 키 중복은 허용하지 않고 값 중복은 허용한다. 인터페이스 계층과 `ArrayList`·`LinkedList` 같은 구현체 고르는 기준은 [[data-structures|기초 자료구조]]의 Java 컬렉션 절에, `HashMap`의 해시 충돌 처리와 트리화는 [[hash-table|해시 테이블]]에 있다. `HashSet`은 내부적으로 값만 키로 쓰는 `HashMap`이다. 여러 스레드가 함께 쓰는 컬렉션(`ConcurrentHashMap` 등)과 `synchronized`·`volatile`·`ThreadLocal`은 [[java-concurrency|Java 동시성]]에 있다.
 
 Java 8 이후 언어 기능(`record`, `sealed`, `var`, 패턴 매칭, 모듈)과 LTS 버전별 기능 표는 [[modern-java-features|모던 Java 기능]]에 있다.
 
@@ -271,4 +316,4 @@ Java 8 이후 언어 기능(`record`, `sealed`, `var`, 패턴 매칭, 모듈)과
 - `static`은 클래스에 속한 공유 멤버다. 상수가 아니면 전역 상태처럼 조심하고, `static final` 상수는 쓰는 쪽에 인라이닝된다
 - 리플렉션은 실행 중 구조를 읽는 프레임워크용 도구이고, 동적 프록시는 인터페이스 호출을 가로채 횡단 관심사를 붙인다
 
-관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-concurrency|Java 동시성]], [[modern-java-features|모던 Java 기능]], [[java-idioms|Java 실무 관용구]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[singleton-pattern|싱글턴 패턴]]
+관련 노트: [[jvm-internals|JVM 내부 구조]], [[java-concurrency|Java 동시성]], [[modern-java-features|모던 Java 기능]], [[java-idioms|Java 실무 관용구]], [[java-coding-convention|Java 코딩 컨벤션]], [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[singleton-pattern|싱글턴 패턴]], [[java-serialization-jackson|Java 입출력과 직렬화]], [[graphical-user-interface|그래픽 사용자 인터페이스]]

@@ -104,4 +104,4 @@ flowchart TB
 - 디자이너는 의사처럼 발견하고 진단하고 설명한다. 고객 중심은 고객의 지시를 따르는 것이 아니다.
 - 중요한 것은 직함과 약어가 아니라 서로의 일을 이해하려는 존중이다.
 
-관련 노트: [[product-minded-engineer|제품 중심 개발자]], [[content-strategy|콘텐츠 전략과 핵심 모델]], [[presentation-design|발표·포트폴리오 디자인 팁]], [[practical-empathy|공감하는 제품 만들기]]
+관련 노트: [[product-minded-engineer|제품 중심 개발자]], [[content-strategy|콘텐츠 전략과 핵심 모델]], [[presentation-design|발표·포트폴리오 디자인 팁]], [[practical-empathy|공감하는 제품 만들기]], [[wireframe-mockup-prototype|와이어프레임, 목업, 프로토타입]], [[user-research|사용자 리서치]]
