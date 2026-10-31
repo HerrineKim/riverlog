@@ -4,14 +4,15 @@ concept: "Synchronization"
 summary: "공유 데이터에 동시에 접근할 때 생기는 경쟁 상태, 운영체제 안의 경쟁 상태, 임계 구역 문제와 해결 조건, 피터슨 알고리즘과 Test-and-Set, 뮤텍스 락과 세마포어(상호 배제·실행 순서 제어), 고전적인 동기화 문제, 모니터의 진입 큐와 조건 변수."
 tags: ["os", "process", "synchronization", "semaphore", "race-condition"]
 source: notion
-date: "2026-10-21"
-sources: ["https://app.notion.com/p/0bf3e529b09e4d4b896e90f1c8203882", "https://riverkim.kr/210", "https://www.youtube.com/watch?v=0YDjblJn30k", "https://www.youtube.com/watch?v=4u13f9Umq7Y", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
+date: "2026-10-31"
+sources: ["https://app.notion.com/p/0bf3e529b09e4d4b896e90f1c8203882", "https://riverkim.kr/210", "https://www.youtube.com/watch?v=0YDjblJn30k", "https://www.youtube.com/watch?v=4u13f9Umq7Y", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > 「임계 구역 문제의 해법」 절은 고무오리 CS 스터디의 KOCW 반효경 「운영체제」 강의 정리를 바탕으로 보강했다.
 > 「경쟁 상태」, 「세마포어」, 「모니터」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 뮤텍스와 이진 세마포어의 차이, 우선순위 역전 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 > 데커 알고리즘과 P·V 연산의 원자성을 보장하는 방법은 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
+> 빵집 알고리즘과 「고전적인 동기화 문제」 절의 세마포어 해법(생산자-소비자, 읽기-쓰기, 식사하는 철학자)은 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 OS 면접 정리를 바탕으로 보강했다.
 
 여러 실행 주체가 같은 데이터를 동시에 읽고 쓰면, 실행 순서에 따라 결과가 달라지는 문제가 생긴다. 프로세스 동기화는 이런 **공유 데이터의 일관성**을 지키기 위해 협력하는 프로세스들의 실행 순서를 정해 주는 메커니즘이다. 이름은 프로세스 동기화지만 스레드처럼 실행 문맥을 가진 실행 단위는 모두 대상이다.
 
@@ -107,8 +108,30 @@ flag[i] = false;
 둘이 동시에 들어가려 해도 `turn`에는 마지막에 쓴 값 하나만 남으므로 한쪽만 통과한다. 한계는 셋이다.
 
 - 기다리는 동안 루프를 돌며 CPU를 쓰는 **바쁜 대기**다.
-- 프로세스 둘을 전제로 한다(n개로 일반화한 것이 빵집 알고리즘이다).
+- 프로세스 둘을 전제로 한다(n개로 일반화한 것이 아래 빵집 알고리즘이다).
 - 현대 CPU와 컴파일러는 메모리 읽기·쓰기 순서를 바꿀 수 있어서, **메모리 배리어 없이 그대로 쓰면 상호 배제가 깨진다.** 교재용 알고리즘이고, 실제로는 아래 하드웨어 명령을 쓴다.
+
+### 빵집 알고리즘 (Bakery Algorithm)
+
+램포트(Lamport)가 만든 n개 프로세스용 소프트웨어 해법이다. 빵집에서 번호표를 뽑고 가장 작은 번호부터 손님을 받는 방식을 그대로 옮겼다.
+
+```text
+// 공유: choosing[n] = false, number[n] = 0
+choosing[i] = true;
+number[i] = max(number[0..n-1]) + 1;     // 번호표 뽑기
+choosing[i] = false;
+for (j = 0; j < n; j++) {
+    while (choosing[j]) ;                 // j가 번호를 뽑는 중이면 끝날 때까지
+    while (number[j] != 0 &&
+           (number[j], j) < (number[i], i)) ;   // 나보다 앞 번호가 있으면 대기
+}
+critical section
+number[i] = 0;                            // 번호표 반납
+```
+
+- 두 프로세스가 동시에 `max`를 읽으면 **같은 번호**를 받을 수 있다. 그래서 `(번호, 프로세스 번호)` 쌍을 사전 순으로 비교해 번호가 같으면 프로세스 번호가 작은 쪽이 먼저 들어간다.
+- `choosing`은 번호를 다 뽑기 전에 비교당하는 것을 막는다. 이게 없으면 번호를 쓰기 직전인 프로세스를 0으로 보고 지나쳐 둘이 함께 들어갈 수 있다.
+- 도착 순서대로 들어가므로 상호 배제·진행·유한 대기를 모두 만족한다. 대신 번호가 계속 커질 수 있고, 피터슨처럼 바쁜 대기와 메모리 순서 문제가 있다.
 
 ### 하드웨어 해법: 원자 명령어
 
@@ -246,11 +269,80 @@ P2가 먼저 CPU를 받아도 `S = 0`이라 기다리게 되므로, 어느 쪽�
 
 ## 고전적인 동기화 문제
 
+동기화 도구가 제대로 설계됐는지 시험하는 표준 문제 셋이다.
+
 | 문제 | 상황 |
 | --- | --- |
 | Bounded-Buffer (생산자-소비자) | 크기가 정해진 버퍼에 생산자는 데이터를 넣고 소비자는 꺼낸다. 버퍼가 가득 차거나 비었을 때의 대기, 버퍼 접근의 상호 배제가 필요하다 |
 | Readers-Writers | 읽기는 여럿이 동시에 해도 되지만, 쓰기는 혼자 해야 한다 |
 | Dining-Philosophers (식사하는 철학자) | 원탁의 철학자들이 양옆의 젓가락 두 개를 집어야 식사할 수 있다. 모두 왼쪽 젓가락을 동시에 집으면 교착 상태가 된다([[deadlock\|교착 상태]]) |
+
+### 생산자-소비자 (Bounded Buffer)
+
+버퍼에 든 개수를 `counter` 하나로 세며 `counter++`·`counter--`를 하면, 앞의 「경쟁 상태」 예처럼 두 연산이 섞여 개수가 틀어진다. 세마포어 셋으로 역할을 나누면 해결된다.
+
+| 세마포어 | 처음 값 | 의미 |
+| --- | --- | --- |
+| `mutex` | 1 | 버퍼 자체에 대한 상호 배제 |
+| `empty` | n (버퍼 크기) | 남은 빈칸 수. 0이면 생산자가 기다린다 |
+| `full` | 0 | 찬 칸 수. 0이면 소비자가 기다린다 |
+
+```text
+생산자                              소비자
+P(empty);   // 빈칸 확보             P(full);    // 찬 칸 확보
+P(mutex);                           P(mutex);
+버퍼에 넣기                          버퍼에서 꺼내기
+V(mutex);                           V(mutex);
+V(full);    // 찬 칸 하나 늘림        V(empty);   // 빈칸 하나 늘림
+```
+
+`empty`·`full`은 개수를 세는 counting semaphore로 실행 순서를, `mutex`는 이진 세마포어로 상호 배제를 맡는다. **P의 순서를 바꾸면 안 된다.** 생산자가 `P(mutex)`를 먼저 잡은 채 버퍼가 가득 차 `P(empty)`에서 잠들면, 소비자는 `mutex`를 못 얻어 빈칸을 만들 수 없으니 둘 다 영원히 기다린다. 스레드 수준에서 같은 일을 하는 블로킹 큐는 [[multithreading-patterns|멀티스레딩 디자인 패턴]]에 있다.
+
+### 읽기-쓰기 (Readers-Writers)
+
+```text
+공유: readcount = 0,  mutex = 1 (readcount 보호),  wrt = 1 (쓰기 배타)
+
+writer:  P(wrt);  쓰기;  V(wrt);
+
+reader:  P(mutex);
+         readcount++;
+         if (readcount == 1) P(wrt);   // 첫 reader가 writer를 막는다
+         V(mutex);
+         읽기;                           // reader끼리는 동시에
+         P(mutex);
+         readcount--;
+         if (readcount == 0) V(wrt);   // 마지막 reader가 writer를 풀어 준다
+         V(mutex);
+```
+
+이 해법은 **reader 우선**이라, reader가 끊임없이 들어오면 `readcount`가 0이 되지 않아 writer가 기아에 빠진다. 반대로 기다리는 writer가 있으면 새 reader를 막는 **writer 우선** 해법은 reader를 굶길 수 있다. 실제 읽기-쓰기 락은 대기 중인 writer가 있으면 새 reader를 줄 세우는 식으로 둘 사이를 조율한다(`pthread_rwlock`, Java `ReentrantReadWriteLock`).
+
+### 식사하는 철학자 (Dining Philosophers)
+
+젓가락마다 세마포어 하나(`chopstick[5]`, 모두 1)를 두고 `P(chopstick[i]); P(chopstick[(i+1)%5]);`로 집으면, 다섯 명이 동시에 왼쪽을 집는 순간 교착 상태다. 교착 상태가 없는 해법은 여럿이다.
+
+| 해법 | 방법 | 깨는 조건 |
+| --- | --- | --- |
+| 인원 제한 | 동시에 식탁에 앉는 철학자를 4명으로 제한한다(초기값 4인 세마포어). 젓가락 5개에 4명이면 적어도 한 명은 두 개를 집는다 | 순환 대기 |
+| 비대칭 | 홀수 번 철학자는 왼쪽부터, 짝수 번은 오른쪽부터 집는다. 젓가락에 번호를 매겨 작은 번호부터 집는 것과 같다 | 순환 대기 |
+| 둘 다 집을 수 있을 때만 | 양쪽이 모두 비어 있을 때만 한꺼번에 집는다. 아래 모니터 해법 | 보유 대기 |
+
+```text
+monitor DiningPhilosophers {
+  enum { THINKING, HUNGRY, EATING } state[5];
+  condition self[5];
+
+  pickup(i):  state[i] = HUNGRY;  test(i);
+              if (state[i] != EATING) self[i].wait();
+  putdown(i): state[i] = THINKING;
+              test((i + 4) % 5);  test((i + 1) % 5);   // 양옆이 이제 먹을 수 있나
+  test(i):    if (state[(i+4)%5] != EATING && state[i] == HUNGRY && state[(i+1)%5] != EATING)
+                  { state[i] = EATING;  self[i].signal(); }
+}
+```
+
+모니터 해법은 교착 상태가 없지만, 양옆이 번갈아 먹으면 가운데 철학자가 계속 굶을 수 있어 **기아까지 막지는 못한다.** 교착 상태 쪽의 해석은 [[deadlock|교착 상태]]에 있다.
 
 ## 모니터 (Monitor)
 
