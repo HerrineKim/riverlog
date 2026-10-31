@@ -23,14 +23,27 @@ UNIX는 일반 파일뿐 아니라 디렉터리, 터미널, 파이프, 소켓, �
 
 fd는 커널 자료구조를 가리키는 인덱스일 뿐이다. 실제 상태는 세 단계 테이블에 나뉘어 있다.
 
-```text
-프로세스 A (PCB)            커널 전역                   파일마다 하나
-fd 테이블                   열린 파일 테이블             v-node / i-node
- 0 ─┐                      ┌───────────────────┐       ┌──────────────┐
- 1 ─┼────────────────────▶ │ 플래그(O_RDONLY…)  │ ────▶ │ 소유자·권한   │
- 3 ─┘          ┌─────────▶ │ 오프셋, refcnt     │       │ 크기·블록 위치 │
-프로세스 B      │           └───────────────────┘       └──────────────┘
- 3 ────────────┘ (fork·dup이면 같은 항목을 공유)
+```mermaid
+flowchart LR
+  subgraph pa["프로세스 A (PCB) · fd 테이블"]
+    a0["0"]
+    a1["1"]
+    a3["3"]
+  end
+  subgraph pb["프로세스 B"]
+    b3["3"]
+  end
+  subgraph kern["커널 전역 · 열린 파일 테이블"]
+    oft["플래그(O_RDONLY…)<br/>오프셋, refcnt"]
+  end
+  subgraph perfile["파일마다 하나 · v-node / i-node"]
+    vn["소유자·권한<br/>크기·블록 위치"]
+  end
+  a0 --> oft
+  a1 --> oft
+  a3 --> oft
+  b3 -->|"fork·dup이면 같은 항목을 공유"| oft
+  oft --> vn
 ```
 
 | 테이블 | 단위 | 담는 것 |
@@ -109,9 +122,12 @@ ssize_t read_all(int fd, char *buf, size_t len)
 
 ## 버퍼는 두 층이다
 
-```text
-printf ─▶ [stdio 사용자 버퍼] ─fflush─▶ write() ─▶ [커널 페이지 캐시] ─fsync─▶ 디스크
-          (프로세스 메모리)                         (모든 프로세스 공유)
+```mermaid
+flowchart LR
+  p["printf"] --> ub["stdio 사용자 버퍼<br/>(프로세스 메모리)"]
+  ub -->|"fflush"| w["write()"]
+  w --> pc["커널 페이지 캐시<br/>(모든 프로세스 공유)"]
+  pc -->|"fsync"| d["디스크"]
 ```
 
 | 층 | 목적 | 비우는 방법 |

@@ -117,14 +117,18 @@ function Card({ summary }: { summary?: React.ReactNode }) {
 
 탭 전환, 검색, 검색 조건 토글, 페이징, 결과 목록을 모두 한 `Page`가 다루면 기능끼리 서로 직접 얽힌다. 상호작용하는 기능이 늘수록 복잡도는 기능 수보다 빠르게 커진다.
 
-```text
-Page
-├── Tab        ─┐  각자 자기 UI 상태를 책임진다 (선택된 탭, 입력값 …)
-├── Search     ─┤
-├── Pagination ─┘
-│        │ 정해진 통로로만 알린다 (콜백, Context, URL 쿼리 등)
-│        ▼
-└── Content     취합한 조건으로 목록을 보여 준다
+```mermaid
+flowchart TB
+  page["Page"] --> tab["Tab"]
+  page --> search["Search"]
+  page --> pag["Pagination"]
+  page --> content["Content<br/>취합한 조건으로 목록을 보여 준다"]
+  subgraph own["각자 자기 UI 상태를 책임진다 (선택된 탭, 입력값 …)"]
+    tab
+    search
+    pag
+  end
+  own -->|"정해진 통로로만 알린다 (콜백, Context, URL 쿼리 등)"| content
 ```
 
 각 컴포넌트는 자기 UI에 관한 변경을 안에 감추고, 다른 컴포넌트와는 잘 바뀌지 않는 정해진 통로로만 이야기한다. `Tab`과 `Search`가 서로를 직접 건드리는 경로는 없앤다. 이것이 컴포넌트 수준의 캡슐화다. 책임의 단위를 어떻게 잡는지는 [[frontend-solid|SRP]]를 따른다.

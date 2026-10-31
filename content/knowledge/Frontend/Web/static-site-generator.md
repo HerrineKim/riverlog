@@ -14,10 +14,21 @@ sources: ["https://webactually.com/2021/01/14/%EC%A0%95%EC%A0%81-%EC%82%AC%EC%9D
 
 정적 사이트 생성기(Static Site Generator, SSG)는 **콘텐츠(주로 마크다운)와 템플릿을 빌드 때 합쳐 완성된 HTML 파일을 만드는 도구**다. 요청이 올 때마다 페이지를 조립하는 CMS와 반대다.
 
-```text
-CMS (WordPress)                         SSG
-요청 ─▶ PHP 실행 ─▶ DB 쿼리             빌드: 마크다운 + 템플릿 ─▶ HTML 파일
-     ─▶ 템플릿 병합 ─▶ HTML 응답        요청 ─▶ CDN이 파일을 그대로 응답
+CMS (WordPress)
+
+```mermaid
+flowchart LR
+  n1["요청"] --> n2["PHP 실행"] --> n3["DB 쿼리"] --> n4["템플릿 병합"] --> n5["HTML 응답"]
+```
+
+SSG
+
+```mermaid
+flowchart LR
+  subgraph build["빌드"]
+    b1["마크다운 + 템플릿"] --> b2["HTML 파일"]
+  end
+  r1["요청"] --> r2["CDN이 파일을 그대로 응답"]
 ```
 
 대부분의 방문자가 같은 콘텐츠를 본다면, 매 요청마다 DB를 거칠 이유가 없다. 렌더링 방식 전체(CSR·SSR·SSG·ISR)의 비교는 [[spa-csr-ssr|SPA와 CSR·SSR]]에 있다.

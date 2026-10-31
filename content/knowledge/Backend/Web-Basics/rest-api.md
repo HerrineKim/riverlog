@@ -218,12 +218,16 @@ API 설계는 URL 경로 설계에서 끝나지 않는다. 자원 이름과 식�
 
 처리에 수 초 이상 걸리면 요청을 붙잡지 않는다.
 
-```text
-POST /reports              → 202 Accepted
-                             Location: /reports/status/42
-GET  /reports/status/42    → 200 {"status": "running"}   (+ Retry-After: 5)
-GET  /reports/status/42    → 303 See Other
-                             Location: /reports/42        ← 끝나면 결과 자원으로
+```mermaid
+sequenceDiagram
+  participant C as 클라이언트
+  participant S as 서버
+  C->>S: POST /reports
+  S-->>C: 202 Accepted<br/>Location: /reports/status/42
+  C->>S: GET /reports/status/42
+  S-->>C: 200 {"status": "running"} (+ Retry-After: 5)
+  C->>S: GET /reports/status/42
+  S-->>C: 303 See Other<br/>Location: /reports/42 (끝나면 결과 자원으로)
 ```
 
 ### 동시 수정 막기: 조건부 요청

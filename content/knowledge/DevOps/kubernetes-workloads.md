@@ -148,10 +148,10 @@ initContainers:
 
 ## Deployment와 ReplicaSet
 
-```text
-Deployment (원하는 버전·전략)
-  └ ReplicaSet (파드 템플릿 하나의 복제 수 유지, 이름에 템플릿 해시)
-      └ Pod × replicas
+```mermaid
+flowchart TB
+  dep["Deployment<br/>(원하는 버전·전략)"] --> rs["ReplicaSet<br/>(파드 템플릿 하나의 복제 수 유지, 이름에 템플릿 해시)"]
+  rs --> pod["Pod × replicas"]
 ```
 
 **ReplicaSet**은 라벨 셀렉터에 맞는 파드를 정해진 수만큼 유지하는 일만 한다. **Deployment**는 그 위에서 버전 교체를 맡는다. 파드 템플릿이 바뀌면 새 ReplicaSet을 만들어 늘리고 옛 ReplicaSet을 줄인다. 옛 ReplicaSet은 파드 0개로 남겨 두어 되돌릴 때 쓴다. ReplicaSet을 직접 만들 일은 거의 없다.

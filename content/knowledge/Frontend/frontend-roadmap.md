@@ -16,10 +16,11 @@ sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/frontEnd/%
 
 ## 학습 순서
 
-```text
-HTML → CSS → JavaScript → DOM·브라우저 → Git/GitHub → TypeScript
-     → React → 메타 프레임워크(Next.js) → 데이터 가져오기(HTTP·API)
-     → 테스트 → 빌드·배포
+```mermaid
+flowchart LR
+  n1["HTML"] --> n2["CSS"] --> n3["JavaScript"] --> n4["DOM·브라우저"]
+  n4 --> n5["Git/GitHub"] --> n6["TypeScript"] --> n7["React"] --> n8["메타 프레임워크(Next.js)"]
+  n8 --> n9["데이터 가져오기(HTTP·API)"] --> n10["테스트"] --> n11["빌드·배포"]
 ```
 
 | 단계 | 핵심 질문 | 관련 노트 |

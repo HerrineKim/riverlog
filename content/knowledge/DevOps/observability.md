@@ -30,9 +30,12 @@ sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://byte
 
 ### 로그
 
-```text
-앱 ──(구조화 로그: JSON)──▶ 수집기(에이전트) ──▶ 처리·파싱 ──▶ 저장·색인 ──▶ 검색·대시보드
-                                 Filebeat, Fluent Bit    Logstash     Elasticsearch   Kibana
+```mermaid
+flowchart LR
+  app["앱"] -->|"구조화 로그: JSON"| col["수집기(에이전트)<br/>Filebeat, Fluent Bit"]
+  col --> proc["처리·파싱<br/>Logstash"]
+  proc --> store["저장·색인<br/>Elasticsearch"]
+  store --> view["검색·대시보드<br/>Kibana"]
 ```
 
 - 팀마다 형식이 다르면 수많은 로그에서 키워드로 찾을 수 없다. **표준 로그 형식**(타임스탬프, 레벨, 서비스 이름, 트레이스 ID, 메시지)을 정해 모든 팀이 따른다.
@@ -56,10 +59,12 @@ sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://byte
 
 ### 메트릭
 
-```text
-앱 /metrics ◀──scrape── Prometheus ──규칙 평가──▶ Alertmanager ──▶ 메일·SMS·Slack
-                            │
-                            └──query──▶ Grafana 대시보드
+```mermaid
+flowchart LR
+  prom["Prometheus"] -->|"scrape"| app["앱 /metrics"]
+  prom -->|"규칙 평가"| am["Alertmanager"]
+  am --> notify["메일·SMS·Slack"]
+  prom -->|"query"| graf["Grafana 대시보드"]
 ```
 
 메트릭 하나는 **이름 + 라벨 + (시각, 값) 목록**이다. `http_requests_total{service="order", status="500"}`처럼 라벨 조합마다 별도 시계열이 생기므로, 사용자 ID처럼 값이 무한한 것을 라벨에 넣으면 시계열 수(카디널리티)가 폭발한다.
@@ -94,10 +99,19 @@ sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://byte
 
 서버가 수시로 늘고 줄면 수집 대상 목록을 파일로 관리할 수 없다. 서비스가 자신을 **서비스 디스커버리**(쿠버네티스 API, Consul, ZooKeeper 등)에 등록하면 수집기가 목록을 받아 온다.
 
-```text
-1. 수집기 ──▶ 서비스 디스커버리: 대상 목록과 설정(수집 주기, IP, 타임아웃, 재시도) 조회
-2. 수집기 ──HTTP GET /metrics──▶ 각 서비스 (클라이언트 라이브러리가 엔드포인트를 노출)
-3. 대상이 바뀌면 디스커버리가 변경을 알리거나, 수집기가 주기적으로 다시 조회
+```mermaid
+sequenceDiagram
+  participant C as 수집기
+  participant D as 서비스 디스커버리
+  participant S as 각 서비스
+  C->>D: 1. 대상 목록과 설정(수집 주기, IP, 타임아웃, 재시도) 조회
+  C->>S: 2. HTTP GET /metrics
+  Note over S: 클라이언트 라이브러리가 엔드포인트를 노출
+  alt 대상이 바뀌면
+    D->>C: 3. 디스커버리가 변경을 알림
+  else 또는
+    C->>D: 3. 수집기가 주기적으로 다시 조회
+  end
 ```
 
 ## 메트릭 저장소: 왜 시계열 DB인가

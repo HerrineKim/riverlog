@@ -11,16 +11,13 @@ date: "2026-10-13"
 
 ## 전체 흐름
 
-```text
-[텔레그램] 미니앱 실행 → initData(서명 포함) 전달
-   ↓
-[클라이언트] SDK 초기화 → initData 원본을 서버로 전송
-   ↓
-[서버] initData 파싱 → auth_date 만료 확인 → HMAC 해시 계산·비교
-   ↓ 성공                                  ↓ 실패
-사용자 생성·조회 → 자체 세션·JWT 발급        403 Forbidden
-   ↓
-[클라이언트] 이후 요청은 세션 쿠키·토큰으로 인증
+```mermaid
+flowchart TB
+  tg["텔레그램<br/>미니앱 실행 → initData(서명 포함) 전달"] --> cl["클라이언트<br/>SDK 초기화 → initData 원본을 서버로 전송"]
+  cl --> sv["서버<br/>initData 파싱 → auth_date 만료 확인 → HMAC 해시 계산·비교"]
+  sv -->|"성공"| ok["사용자 생성·조회 → 자체 세션·JWT 발급"]
+  sv -->|"실패"| ng["403 Forbidden"]
+  ok --> cl2["클라이언트<br/>이후 요청은 세션 쿠키·토큰으로 인증"]
 ```
 
 ## 1. 클라이언트: initData 얻어서 보내기

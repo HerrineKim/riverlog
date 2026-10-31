@@ -47,16 +47,37 @@ sources: ["https://github.com/arslanbilal/git-cheat-sheet", "https://nvie.com/po
 | `release/*` | `develop` | `main`과 `develop` | 출시 준비. 기능 추가는 멈추고 버그 수정·버전 번호·메타데이터만 |
 | `hotfix/*` | `main`(해당 버전 태그) | `main`과 `develop` | 운영 중인 버전의 긴급 수정 |
 
-```text
-main     ●───────────────●(v1.0)──────────●(v1.0.1)───────●(v1.1)
-          \             /  \             /                /
-hotfix     \           /    ●──fix──────●                /
-            \         /                  \              /
-release      \       ●──fix──●            \       ●────●
-              \     /         \            \     /
-develop        ●───●───●───────●────────────●───●
-                    \     /
-feature              ●───●
+```mermaid
+gitGraph
+  commit
+  branch develop
+  commit
+  commit
+  branch feature
+  commit
+  checkout develop
+  commit
+  merge feature
+  branch release
+  commit
+  commit id: "fix"
+  checkout main
+  merge release tag: "v1.0"
+  checkout develop
+  merge release
+  checkout main
+  branch hotfix
+  commit id: "hotfix fix"
+  checkout main
+  merge hotfix tag: "v1.0.1"
+  checkout develop
+  merge hotfix
+  commit
+  checkout release
+  merge develop
+  commit
+  checkout main
+  merge release tag: "v1.1"
 ```
 
 - **장점**: 출시 시점과 내용이 분명하고, 출시 준비와 다음 기능 개발이 동시에 진행된다. 여러 버전을 따로 유지 보수하는 제품에 맞는다.
@@ -118,12 +139,13 @@ git push origin main develop --tags # finish는 로컬에서만 일어나므로 
 | 여러 버전 동시 지원 | 쉽다 | 어렵다 | 릴리스 브랜치로 한다 |
 | 맞는 곳 | 설치형 앱, 라이브러리, 정해진 출시 일정 | 웹 서비스, 작은~중간 팀 | 지속 배포, 큰 조직, 모노레포 |
 
-```text
-여러 버전을 동시에 고쳐 줘야 한다?
-├─ 예 → Git Flow (또는 트렁크 + 릴리스 브랜치)
-└─ 아니오 → 하루 여러 번 배포하고 자동 테스트·기능 플래그가 갖춰져 있다?
-            ├─ 예 → 트렁크 기반 개발
-            └─ 아니오 → GitHub Flow
+```mermaid
+flowchart TB
+  q1{"여러 버전을 동시에 고쳐 줘야 한다?"}
+  q1 -->|"예"| gf["Git Flow<br/>(또는 트렁크 + 릴리스 브랜치)"]
+  q1 -->|"아니오"| q2{"하루 여러 번 배포하고<br/>자동 테스트·기능 플래그가 갖춰져 있다?"}
+  q2 -->|"예"| tb["트렁크 기반 개발"]
+  q2 -->|"아니오"| gh["GitHub Flow"]
 ```
 
 어느 전략·워크플로를 고르든 공통 지침은 셋이다.

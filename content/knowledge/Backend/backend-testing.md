@@ -42,11 +42,12 @@ sources: ["https://github.com/cheese10yun/blog-sample/blob/master/test-code/READ
 
 ### 에뮬레이터로 통합 테스트 환경 만들기
 
-```text
-테스트 시작
-  └─ Testcontainers가 컨테이너 기동 (DB, LocalStack)
-       └─ 테스트 설정이 클라이언트 빈의 엔드포인트를 컨테이너 주소로 교체
-            └─ 테스트 실행 ──▶ 종료 시 컨테이너 폐기
+```mermaid
+flowchart TB
+  start["테스트 시작"] --> boot["Testcontainers가 컨테이너 기동 (DB, LocalStack)"]
+  boot --> cfg["테스트 설정이 클라이언트 빈의 엔드포인트를 컨테이너 주소로 교체"]
+  cfg --> run["테스트 실행"]
+  run --> drop["종료 시 컨테이너 폐기"]
 ```
 
 - 서비스 목록만 바꿔 쓰도록 컨테이너 설정을 공용 테스트 모듈의 애너테이션·확장으로 감싼다.

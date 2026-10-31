@@ -37,11 +37,17 @@ WAS 앞에 웹 서버를 두면 그 웹 서버가 **리버스 프록시**가 된
 
 Nginx가 널리 쓰이는 이유는 **마스터-워커 프로세스 모델**에 있다.
 
-```text
-master 프로세스  ─ 설정 읽기·검증, 포트 열기, 워커 생성·감시, 무중단 설정 재적재(reload)
-  ├─ worker 1   ─ 이벤트 루프 하나로 수천 개 연결을 논블로킹 I/O로 처리
-  ├─ worker 2      (보통 CPU 코어 수만큼 띄운다)
-  └─ worker N
+```mermaid
+flowchart TB
+  m["master 프로세스<br/>설정 읽기·검증, 포트 열기, 워커 생성·감시, 무중단 설정 재적재(reload)"]
+  subgraph workers["보통 CPU 코어 수만큼 띄운다"]
+    w1["worker 1<br/>이벤트 루프 하나로 수천 개 연결을 논블로킹 I/O로 처리"]
+    w2["worker 2"]
+    wn["worker N"]
+  end
+  m --> w1
+  m --> w2
+  m --> wn
 ```
 
 - 워커는 연결마다 스레드를 만들지 않고, epoll 같은 I/O 다중화로 준비된 연결만 골라 처리한다. 원리는 [[event-loop-server|비동기 서버의 이벤트 루프]]에 있다.

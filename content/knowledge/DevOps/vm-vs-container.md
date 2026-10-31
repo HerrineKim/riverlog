@@ -49,13 +49,26 @@ Docker는 클라이언트-서버 구조다. 터미널에서 치는 `docker` 명�
 
 클라이언트와 데몬은 **REST API**로 통신한다. 기본 통로는 유닉스 소켓 `/var/run/docker.sock`이고, 원격 데몬은 TLS로 보호한 TCP(2376)나 SSH(`DOCKER_HOST=ssh://user@host`)로 연결한다. `docker context`로 여러 데몬을 바꿔 가며 쓴다. 인증 없는 TCP(2375)를 열면 누구나 호스트 root를 얻으므로 열지 않는다.
 
-```text
-Docker 클라이언트 ──REST API──▶ Docker 호스트                  ◀──pull/push──▶ 레지스트리
-  docker build                  dockerd (데몬)                                Docker Hub,
-  docker pull                     ├ 이미지                                      비공개 레지스트리
-  docker run                      ├ 컨테이너
-                                  ├ 네트워크
-                                  └ 볼륨
+```mermaid
+flowchart LR
+  subgraph client["Docker 클라이언트"]
+    c1["docker build"]
+    c2["docker pull"]
+    c3["docker run"]
+  end
+  subgraph host["Docker 호스트"]
+    dd["dockerd (데몬)"]
+    dd --> img["이미지"]
+    dd --> ctr["컨테이너"]
+    dd --> net["네트워크"]
+    dd --> vol["볼륨"]
+  end
+  subgraph reg["레지스트리"]
+    hub["Docker Hub"]
+    priv["비공개 레지스트리"]
+  end
+  client -->|"REST API"| host
+  host <-->|"pull/push"| reg
 ```
 
 `docker run nginx` 한 줄은 다음 순서로 실행된다.
@@ -70,11 +83,13 @@ Docker 클라이언트 ──REST API──▶ Docker 호스트                 
 
 데몬은 컨테이너를 직접 만들지 않고 아래 계층에 맡긴다.
 
-```text
-docker CLI ─REST─▶ dockerd ─gRPC─▶ containerd ─▶ containerd-shim ─▶ runc ─▶ 컨테이너 프로세스
-                   (빌드, 네트워크,   (이미지 받기·저장,   (컨테이너마다 하나,   (네임스페이스·cgroups를
-                    볼륨, API)         컨테이너 수명 관리)    runc가 끝난 뒤 남아   만들고 프로세스를 실행한 뒤
-                                                            입출력·종료 코드 관리)  종료)
+```mermaid
+flowchart TB
+  cli["docker CLI"] -->|"REST"| dd["dockerd<br/>(빌드, 네트워크, 볼륨, API)"]
+  dd -->|"gRPC"| ctd["containerd<br/>(이미지 받기·저장, 컨테이너 수명 관리)"]
+  ctd --> shim["containerd-shim<br/>(컨테이너마다 하나, runc가 끝난 뒤 남아 입출력·종료 코드 관리)"]
+  shim --> runc["runc<br/>(네임스페이스·cgroups를 만들고 프로세스를 실행한 뒤 종료)"]
+  runc --> proc["컨테이너 프로세스"]
 ```
 
 | 구성 요소 | 역할 |

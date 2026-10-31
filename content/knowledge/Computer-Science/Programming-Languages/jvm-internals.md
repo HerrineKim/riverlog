@@ -26,12 +26,13 @@ JVM은 Java 언어와 별개다. JVM 명세만 지키면 Kotlin, Scala, Clojure,
 
 ### JVM의 구성 요소
 
-```text
-.class ─▶ 클래스로더 서브시스템 ─▶ 런타임 데이터 영역(메서드 영역·힙·스택·PC·네이티브 스택)
-                                         ▲
-                              실행 엔진: 인터프리터 + JIT 컴파일러(C1·C2) + GC
-                                         │
-                              네이티브 메서드 인터페이스(JNI) ─▶ 네이티브 라이브러리
+```mermaid
+flowchart TB
+  cls[".class"] --> cl["클래스로더 서브시스템"]
+  cl --> rda["런타임 데이터 영역<br/>(메서드 영역·힙·스택·PC·네이티브 스택)"]
+  ee["실행 엔진<br/>인터프리터 + JIT 컴파일러(C1·C2) + GC"] --> rda
+  ee --- jni["네이티브 메서드 인터페이스(JNI)"]
+  jni --> nl["네이티브 라이브러리"]
 ```
 
 | 구성 요소 | 하는 일 |
@@ -46,8 +47,13 @@ HotSpot은 **계층형 컴파일(tiered compilation)** 을 쓴다. 인터프리�
 
 ## 컴파일: 소스에서 바이트코드로
 
-```text
-.java ──javac──▶ .class (바이트코드) ──java──▶ JVM: 로딩 → 링크 → 초기화 → 실행
+```mermaid
+flowchart LR
+  src[".java"] -->|"javac"| cls[".class (바이트코드)"]
+  cls -->|"java"| ld
+  subgraph jvm["JVM"]
+    ld["로딩"] --> lk["링크"] --> init["초기화"] --> run["실행"]
+  end
 ```
 
 - `javac`는 어휘 분석 → 구문 분석 → 의미 분석 → 바이트코드 생성 순으로 처리한다. C와 달리 어셈블리·링크 단계가 없다. **링크는 실행 중에 JVM이 동적으로 한다.**
@@ -114,9 +120,14 @@ HotSpot은 **계층형 컴파일(tiered compilation)** 을 쓴다. 인터프리�
 
 **약한 세대 가설(weak generational hypothesis)**: 대부분의 객체는 만들어지고 곧 죽는다. 그래서 힙을 나이로 나눠, 젊은 영역을 자주·싸게 청소한다.
 
-```text
-Young ─ Eden ─▶ Survivor 0 ⇄ Survivor 1 ─(나이 ≥ 임계값)─▶ Old
-          ▲ new                                    승격(promotion)
+```mermaid
+flowchart LR
+  nw["new"] --> eden
+  subgraph young["Young"]
+    eden["Eden"] --> s0["Survivor 0"]
+    s0 <--> s1["Survivor 1"]
+  end
+  s1 -->|"나이 ≥ 임계값<br/>승격(promotion)"| old["Old"]
 ```
 
 | 용어 | 뜻 |

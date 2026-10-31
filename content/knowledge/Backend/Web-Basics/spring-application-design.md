@@ -75,10 +75,11 @@ sources: ["https://biggwang.github.io/2019/08/31/Spring/IoC,%20DI란%20무엇일
 
 **스프링의 선언적 트랜잭션은 빈을 감싼 프록시가 메서드 호출을 가로채서 동작한다.** 그래서 프록시를 거치지 않는 호출에는 적용되지 않는다.
 
-```text
-외부 호출 ──▶ [프록시: 트랜잭션 시작] ──▶ target.outer()
-                                            └─ this.inner()   ← 프록시를 거치지 않음
-                                               (@Transactional(REQUIRES_NEW) 무시)
+```mermaid
+flowchart LR
+  ext["외부 호출"] --> proxy["프록시: 트랜잭션 시작"]
+  proxy --> outer["target.outer()"]
+  outer -->|"프록시를 거치지 않음"| inner["this.inner()<br/>(@Transactional(REQUIRES_NEW) 무시)"]
 ```
 
 | 증상 | 원인 |
@@ -112,8 +113,12 @@ sources: ["https://biggwang.github.io/2019/08/31/Spring/IoC,%20DI란%20무엇일
 | 내부 모듈 | 외부 API 클라이언트, 이벤트 발행 등 시스템 지원 기능 | 도메인 모듈에 의존하지 않는다 |
 | 애플리케이션 모듈 | 하위 모듈을 조립한 실행 단위 | 모든 하위 계층에 의존할 수 있다. 다른 앱 모듈에는 의존하지 않는다 |
 
-```text
-애플리케이션 ──▶ 내부 / 도메인 ──▶ 공통 / 독립      (한 방향으로만)
+```mermaid
+flowchart LR
+  subgraph oneway["한 방향으로만"]
+    app["애플리케이션"] --> dom["내부 / 도메인"]
+    dom --> com["공통 / 독립"]
+  end
 ```
 
 - Gradle `java-library` 플러그인의 `api`는 의존성을 상위로 전파하고, `implementation`은 숨긴다. 앱 모듈이 하위 모듈의 내부 의존성에 직접 손대지 못하게 `implementation`을 기본으로 쓴다.

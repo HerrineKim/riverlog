@@ -36,11 +36,14 @@ sources: ["https://dart.fss.or.kr/", "https://www.smes.go.kr/venturein/pbntc/sea
 
 ### 벤처인에서 찾는 순서
 
-```text
-smes.go.kr/venturein
-  └─ 공시·통계 → 벤처확인기업 공시
-       └─ 기업명(또는 사업자번호·대표자명) 검색
-            └─ 기업 선택 → 재무정보 탭 → 손익계산서
+```mermaid
+flowchart TB
+  site["smes.go.kr/venturein"] --> menu["공시·통계"]
+  menu --> pub["벤처확인기업 공시"]
+  pub --> search["기업명(또는 사업자번호·대표자명) 검색"]
+  search --> pick["기업 선택"]
+  pick --> tab["재무정보 탭"]
+  tab --> pl["손익계산서"]
 ```
 
 ## 무엇을 보나

@@ -33,9 +33,12 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 노드(자원)와 파드(요청)의 관계처럼, PVC는 조건에 맞는 PV와 **일대일로 묶인다(binding).** 파드는 PV를 직접 모르고 PVC 이름만 가리키므로, 저장소 종류가 바뀌어도 파드 명세는 그대로다.
 
-```text
-Pod ──volumes: claimName──▶ PVC ──바인딩──▶ PV ──▶ 실제 디스크
-                              └─ storageClassName ─▶ StorageClass (없으면 자동 생성)
+```mermaid
+flowchart LR
+  pod["Pod"] -->|"volumes: claimName"| pvc["PVC"]
+  pvc -->|"바인딩"| pv["PV"]
+  pv --> disk["실제 디스크"]
+  pvc -->|"storageClassName"| sc["StorageClass<br/>(없으면 자동 생성)"]
 ```
 
 ### 접근 모드

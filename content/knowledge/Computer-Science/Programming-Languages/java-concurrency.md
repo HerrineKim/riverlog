@@ -103,14 +103,18 @@ try {
 
 ### ThreadPoolExecutor의 동작
 
-```text
-작업 제출
-  ├─ 실행 중 스레드 < corePoolSize      → 새 스레드를 만들어 실행
-  ├─ 아니면 큐에 넣을 수 있다            → 작업 큐에 대기
-  ├─ 큐가 가득 찼고 스레드 < maximumPoolSize → 스레드를 더 만든다
-  └─ 그것도 안 된다                     → 거부 정책(RejectedExecutionHandler)
-corePoolSize를 넘는 스레드는 keepAliveTime 동안 놀면 종료된다
+```mermaid
+flowchart TB
+  sub["작업 제출"] --> q1{"실행 중 스레드 < corePoolSize"}
+  q1 -->|"예"| a1["새 스레드를 만들어 실행"]
+  q1 -->|"아니면"| q2{"큐에 넣을 수 있다"}
+  q2 -->|"예"| a2["작업 큐에 대기"]
+  q2 -->|"큐가 가득 참"| q3{"스레드 < maximumPoolSize"}
+  q3 -->|"예"| a3["스레드를 더 만든다"]
+  q3 -->|"그것도 안 된다"| a4["거부 정책(RejectedExecutionHandler)"]
 ```
+
+corePoolSize를 넘는 스레드는 keepAliveTime 동안 놀면 종료된다.
 
 | 거부 정책 | 동작 |
 | --- | --- |

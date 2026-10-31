@@ -37,11 +37,16 @@ Electron 앱은 Chromium의 [[browser-architecture|다중 프로세스 구조]]�
 
 ## IPC: 렌더러와 메인이 대화하는 법
 
-```text
-renderer (웹 페이지)            preload                         main
-window.api.saveFile(text) ─▶ ipcRenderer.invoke('save', text) ─▶ ipcMain.handle('save', …)
-                                                                   └ dialog·fs로 실제 저장
-          ◀──────────────────── Promise 결과 ◀────────────────────────┘
+```mermaid
+sequenceDiagram
+  participant r as renderer (웹 페이지)
+  participant p as preload
+  participant m as main
+  r->>p: window.api.saveFile(text)
+  p->>m: ipcRenderer.invoke('save', text)
+  Note over m: ipcMain.handle('save', …)<br/>dialog·fs로 실제 저장
+  m-->>p: Promise 결과
+  p-->>r: Promise 결과
 ```
 
 ```javascript

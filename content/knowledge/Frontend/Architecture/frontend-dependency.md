@@ -76,11 +76,21 @@ parsePhoneNumber(input, getNumber);                          // 기존
 parsePhoneNumber(input, (s) => s.replace(/[^0-9-]/g, ''));   // 요구 변경
 ```
 
-```text
-전 : 전화번호 리스너 ──▶ getNumber ◀── 가격 리스너
-후 : 전화번호 리스너 ──▶ parsePhoneNumber ──▶ 계약 (string) => string
-                                                 ▲
-                                            getNumber
+전
+
+```mermaid
+flowchart LR
+  phone["전화번호 리스너"] --> gn["getNumber"]
+  price["가격 리스너"] --> gn
+```
+
+후
+
+```mermaid
+flowchart LR
+  phone["전화번호 리스너"] --> ppn["parsePhoneNumber"]
+  ppn --> contract["계약 (string) => string"]
+  gn["getNumber"] --> contract
 ```
 
 코드 양은 오히려 늘었지만 고칠 지점이 명확해진다. 파싱 방법을 바꾸려면 두 번째 인자만 바꾸면 된다는 메시지를 인터페이스가 전한다. 이제 `getNumber`가 계약을 지켜야 쓰일 수 있다. 방향이 뒤집혔다.

@@ -20,17 +20,18 @@ gRPC에서는 **계약이 먼저**다. 서비스 정의 파일(`.proto`)이 곧 
 
 RPC가 「원격」인 이유는 호출하는 쪽과 실행하는 쪽이 **다른 서버**에 있기 때문이다. 그래도 호출하는 코드에서는 로컬 함수처럼 보인다. 흔한 구성은 바깥에는 REST를, 서비스끼리는 gRPC를 쓰는 것이다.
 
-```text
-[클라이언트] ──REST(JSON)──▶ [주문 서비스 = gRPC 클라이언트]
-                                │ ① 스텁 호출: payment.Charge(req)
-                                │ ② protobuf로 이진 인코딩
-                                │ ③ HTTP/2 프레임으로 전송
-                                ▼
-                         [결제 서비스 = gRPC 서버]
-                                │ ④ 디코딩 → 서버 구현 함수 실행
-                                │ ⑤ 결과를 인코딩해 같은 연결로 응답
-                                ▼
-[클라이언트] ◀──REST(JSON)── [주문 서비스] ⑥ 디코딩한 결과로 응답 조립
+```mermaid
+sequenceDiagram
+  participant C as 클라이언트
+  participant O as 주문 서비스 = gRPC 클라이언트
+  participant P as 결제 서비스 = gRPC 서버
+  C->>O: REST(JSON)
+  Note over O: ① 스텁 호출: payment.Charge(req)<br/>② protobuf로 이진 인코딩
+  O->>P: ③ HTTP/2 프레임으로 전송
+  Note over P: ④ 디코딩 → 서버 구현 함수 실행
+  P-->>O: ⑤ 결과를 인코딩해 같은 연결로 응답
+  Note over O: ⑥ 디코딩한 결과로 응답 조립
+  O-->>C: REST(JSON)
 ```
 
 인코딩·전송·디코딩은 모두 생성된 스텁과 gRPC 런타임이 맡는다. 이진 인코딩과 HTTP/2의 연결 재사용 덕분에 같은 데이터를 JSON over HTTP/1.1로 보낼 때보다 메시지가 작고 빠르다. 인증, 로드 밸런싱, 타임아웃(deadline) 전파 같은 기능도 프레임워크가 제공한다.

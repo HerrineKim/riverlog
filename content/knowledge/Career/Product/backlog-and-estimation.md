@@ -14,12 +14,12 @@ sources: ["https://asana.com/ko/resources/agile", "https://asana.com/ko/resource
 
 큰 목표는 그대로 일할 수 없다. 위에서 아래로 쪼개면서 **각 단위가 왜 중요한지를 위 단위와 연결**해 둔다.
 
-```text
-목표(연간 OKR 등)          "올해 고객 만족도를 높인다"
- └─ 이니셔티브(분기)        "1분기 리포트 경험 개선"
-     └─ 에픽(여러 스프린트)   "공유할 수 있는 리포트 대시보드"
-         └─ 사용자 스토리     "관리자로서 리포트를 내려받아 이해관계자와 공유하고 싶다"
-             └─ 태스크        "CSV 내보내기 API 추가", "다운로드 버튼 UI"
+```mermaid
+flowchart TB
+  goal["목표(연간 OKR 등)<br/>#quot;올해 고객 만족도를 높인다#quot;"] --> ini["이니셔티브(분기)<br/>#quot;1분기 리포트 경험 개선#quot;"]
+  ini --> epic["에픽(여러 스프린트)<br/>#quot;공유할 수 있는 리포트 대시보드#quot;"]
+  epic --> story["사용자 스토리<br/>#quot;관리자로서 리포트를 내려받아 이해관계자와 공유하고 싶다#quot;"]
+  story --> task["태스크<br/>#quot;CSV 내보내기 API 추가#quot;, #quot;다운로드 버튼 UI#quot;"]
 ```
 
 | 단위 | 크기 | 특징 |

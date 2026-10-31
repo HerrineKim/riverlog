@@ -14,12 +14,28 @@ sources: ["https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://ro
 
 백엔드 개발자가 다루는 영역은 넓다. **전부 외울 필요는 없다.** 각 영역이 무엇을 풀려고 존재하는지 알고, 필요할 때 찾아서 쓸 수 있으면 된다.
 
-```text
-요청이 도착하기까지   인터넷 → DNS → HTTP
-요청을 처리하는 코드  언어 → 웹 프레임워크 → API 설계 → 인증·인가
-데이터               데이터 표현(JSON 등) → 데이터베이스 → 배치 처리
-코드를 내보내는 일    Git → CI/CD → 도커 → 클라우드 → 리눅스
-전체를 받치는 것      보안 → 아키텍처
+```mermaid
+flowchart TB
+  subgraph g1["요청이 도착하기까지"]
+    direction LR
+    a1["인터넷"] --> a2["DNS"] --> a3["HTTP"]
+  end
+  subgraph g2["요청을 처리하는 코드"]
+    direction LR
+    b1["언어"] --> b2["웹 프레임워크"] --> b3["API 설계"] --> b4["인증·인가"]
+  end
+  subgraph g3["데이터"]
+    direction LR
+    c1["데이터 표현(JSON 등)"] --> c2["데이터베이스"] --> c3["배치 처리"]
+  end
+  subgraph g4["코드를 내보내는 일"]
+    direction LR
+    d1["Git"] --> d2["CI/CD"] --> d3["도커"] --> d4["클라우드"] --> d5["리눅스"]
+  end
+  subgraph g5["전체를 받치는 것"]
+    direction LR
+    e1["보안"] --> e2["아키텍처"]
+  end
 ```
 
 | 영역 | 핵심 질문 | 관련 노트 |

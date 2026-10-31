@@ -28,18 +28,15 @@ sources: ["https://www.w3.org/policies/process/", "https://www.w3.org/2014/Proce
 
 W3C 문서는 성숙 단계(maturity stage)를 거쳐 권고안(Recommendation)이 된다.
 
-```text
-Editor's Draft (상시 수정본, 공식 단계 아님)
-  │
-  ▼
-Working Draft (WD) ── 첫 공개본이 FPWD: "이 범위를 작업한다"는 그룹 합의 + 특허 정책 시작
-  │  넓은 검토(wide review)를 모으며 반복 수정
-  ▼
-Candidate Recommendation (CR) ── 설계 완료 선언, 구현 경험을 모으는 단계
-  │  CR Snapshot(특허 약속이 걸린 판) / CR Draft(중간 수정본)
-  │  각 기능이 독립적이고 상호 운용되는 구현으로 증명돼야 다음 단계
-  ▼
-Recommendation (REC) ── 유지 보수. 오류 수정과 후보 수정안(candidate amendment)만 받는다
+```mermaid
+flowchart TB
+  n1["Editor's Draft<br/>(상시 수정본, 공식 단계 아님)"]
+  n2["Working Draft (WD)<br/>첫 공개본이 FPWD: #quot;이 범위를 작업한다#quot;는 그룹 합의 + 특허 정책 시작"]
+  n3["Candidate Recommendation (CR)<br/>설계 완료 선언, 구현 경험을 모으는 단계<br/>CR Snapshot(특허 약속이 걸린 판) / CR Draft(중간 수정본)"]
+  n4["Recommendation (REC)<br/>유지 보수. 오류 수정과 후보 수정안(candidate amendment)만 받는다"]
+  n1 --> n2
+  n2 -->|"넓은 검토(wide review)를 모으며 반복 수정"| n3
+  n3 -->|"각 기능이 독립적이고 상호 운용되는 구현으로 증명돼야 다음 단계"| n4
 ```
 
 | 단계 | 의미 | 알아 둘 점 |

@@ -18,11 +18,32 @@ sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇
 
 UI 소프트웨어의 본질은 데이터를 화면에 그리고, 사용자가 동작하면 데이터가 바뀌고, 다시 화면이 바뀌는 것이다. 화면 문제와 데이터 문제는 성격이 다르므로 둘을 나눠 한쪽 수정이 다른 쪽으로 번지지 않게 한다. 세 패턴 모두 Model(화면이 아닌 데이터: JS 객체, API 응답, 서버 DB)과 View(최종 HTML·CSS)는 같고, 둘 사이를 잇는 세 번째 역할과 의존 방향이 다르다.
 
-```text
-MVC   입력 → Controller ─갱신→ Model ←─읽기── View   (Controller는 View를 고르기만 한다)
-MVP   입력 → View ⇄ Presenter ⇄ Model              (View와 Model은 서로 모른다)
-MVVM  입력 → View ─명령→ ViewModel ⇄ Model
-             View ←─데이터 바인딩── ViewModel       (ViewModel은 View를 모른다)
+MVC (Controller는 View를 고르기만 한다)
+
+```mermaid
+flowchart LR
+  input["입력"] --> ctrl["Controller"]
+  ctrl -->|"갱신"| model["Model"]
+  view["View"] -->|"읽기"| model
+```
+
+MVP (View와 Model은 서로 모른다)
+
+```mermaid
+flowchart LR
+  input["입력"] --> view["View"]
+  view <--> pres["Presenter"]
+  pres <--> model["Model"]
+```
+
+MVVM (ViewModel은 View를 모른다)
+
+```mermaid
+flowchart LR
+  input["입력"] --> view["View"]
+  view -->|"명령"| vm["ViewModel"]
+  vm <--> model["Model"]
+  vm -->|"데이터 바인딩"| view
 ```
 
 | | MVC | MVP | MVVM |
@@ -62,16 +83,15 @@ MVC와 MVP는 하나의 정해진 구조가 아니라 여러 변형을 묶는 �
 
 ## 웹 프론트엔드 아키텍처의 변천
 
-```text
-서버 MVC ─▶ jQuery MVC ─▶ MVVM ─▶ 컴포넌트 + Container-Presenter
-                                          │ props drilling
-                                          ▼
-                    Flux·Redux (뷰와 상태 관리 분리, 단방향)
-                                          │ 보일러플레이트 과다
-                          ┌───────────────┼────────────────┐
-                          ▼               ▼                ▼
-                  Context·hooks   가벼운 전역 스토어   서버 상태 관리
-                                  (Zustand, Jotai)    (TanStack Query, SWR)
+```mermaid
+flowchart TB
+  a["서버 MVC"] --> b["jQuery MVC"]
+  b --> c["MVVM"]
+  c --> d["컴포넌트 + Container-Presenter"]
+  d -->|"props drilling"| e["Flux·Redux<br/>(뷰와 상태 관리 분리, 단방향)"]
+  e -->|"보일러플레이트 과다"| f1["Context·hooks"]
+  e -->|"보일러플레이트 과다"| f2["가벼운 전역 스토어<br/>(Zustand, Jotai)"]
+  e -->|"보일러플레이트 과다"| f3["서버 상태 관리<br/>(TanStack Query, SWR)"]
 ```
 
 | 단계 | Model / View / Controller | 바뀐 점과 남은 불편 |
@@ -106,10 +126,11 @@ MVI(Model-View-Intent)는 웹의 cycle.js에서 먼저 나온 개념이 Android�
 | Intent | 사용자 이벤트를 **어떤 데이터 변화인지**로 해석해 전달 |
 | Model | 전달받은 요청대로 데이터를 바꾸고, 변화를 감지해 전파 |
 
-```text
-   ┌──────────── 데이터 시각화 ────────────┐
-   ▼                                        │
- View ── 이벤트 ──▶ Intent ── 액션 ──▶ Model
+```mermaid
+flowchart LR
+  view["View"] -->|"이벤트"| intent["Intent"]
+  intent -->|"액션"| model["Model"]
+  model -->|"데이터 시각화"| view
 ```
 
 ### 특징
