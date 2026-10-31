@@ -5,7 +5,7 @@ summary: "미국 개발자 채용은 레주메·LinkedIn 준비부터 오퍼 협
 tags: ["career", "job-search", "resume", "interview"]
 source: other
 date: "2026-10-21"
-sources: ["https://www.resume.guide/ko/intro"]
+sources: ["https://www.resume.guide/ko/intro", "https://www.hrdive.com/news/eye-tracking-study-shows-recruiters-look-at-resumes-for-7-seconds/541582/"]
 ---
 
 > resume.guide의 「[미국 개발자 Resume 작성 가이드](https://www.resume.guide/ko/intro)」 중 공개된 Understand 파트를 바탕으로 재구성한 노트다.
@@ -73,7 +73,7 @@ ATS는 지원자를 관리하는 소프트웨어다. Greenhouse, Lever, Workday,
 
 ## 레주메는 7초 안에 분류된다
 
-평가자는 레주메 하나를 평균 7.4초 훑는다. 이 짧은 시간에 먼저 보는 정보는 넷이다.
+평가자는 레주메 하나를 평균 7.4초 훑는다(Ladders의 2018년 조사, [HR Dive 보도](https://www.hrdive.com/news/eye-tracking-study-shows-recruiters-look-at-resumes-for-7-seconds/541582/)). 이 짧은 시간에 먼저 보는 정보는 넷이다.
 
 ```text
 경력 연차 → 기술 스택 → 회사와 직함 → 현재 거주 지역

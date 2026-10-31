@@ -119,7 +119,7 @@ flowchart LR
 | 키 교환 | X25519, TLS 1.3의 하이브리드 X25519MLKEM768 | 매개변수를 협상하는 고전 DH, 직접 만든 핸드셰이크 |
 | 클라이언트-서버 전송 | TLS 1.3(직접 배포하는 앱이면 인증서를 고정해도 된다) | 직접 설계한 암호 전송 프로토콜, 검증을 끈 TLS |
 
-양자 컴퓨터에 대비한 **포스트 양자 암호**도 표준이 됐다. NIST는 2024년 키 캡슐화 ML-KEM(FIPS 203)과 서명 ML-DSA(FIPS 204)를 확정했고, 주요 브라우저와 CDN은 TLS 키 교환에 X25519와 ML-KEM-768을 섞은 하이브리드 방식을 기본으로 쓴다. 지금 가로챈 암호문을 나중에 양자 컴퓨터로 푸는 「지금 수집, 나중에 해독」 공격 때문이다.
+양자 컴퓨터에 대비한 **포스트 양자 암호**도 표준이 됐다. NIST는 2024년 키 캡슐화 ML-KEM(FIPS 203)과 서명 ML-DSA(FIPS 204)를 확정했고, TLS 키 교환에 X25519와 ML-KEM-768을 섞은 하이브리드 방식(X25519MLKEM768)은 Chrome·Edge 131, Firefox 132(데스크톱), Safari 26부터 기본값이고 Cloudflare 같은 CDN도 지원한다([Cloudflare PQC 지원 현황](https://developers.cloudflare.com/ssl/post-quantum-cryptography/pqc-support/)). 지금 가로챈 암호문을 나중에 양자 컴퓨터로 푸는 「지금 수집, 나중에 해독」 공격 때문이다.
 
 ### 조합에서 생기는 함정
 

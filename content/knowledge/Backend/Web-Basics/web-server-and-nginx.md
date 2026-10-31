@@ -5,7 +5,7 @@ summary: "정적 자원을 내주는 웹 서버(Apache·Nginx)와 동적 처리�
 tags: ["backend", "web", "http", "architecture", "devops"]
 source: mixed
 date: "2026-10-12"
-sources: ["https://riverkim.kr/249", "https://riverkim.kr/310", "https://bytebytego.com/guides/why-is-nginx-so-popular", "https://bytebytego.com/guides/top-6-most-commonly-used-server-types"]
+sources: ["https://riverkim.kr/249", "https://riverkim.kr/310", "https://bytebytego.com/guides/why-is-nginx-so-popular", "https://bytebytego.com/guides/top-6-most-commonly-used-server-types", "https://httpd.apache.org/docs/2.4/mod/event.html"]
 ---
 
 > riverkim.kr에 쓴 글들을 다시 정리한 노트다. 「Nginx의 마스터-워커 구조」는 ByteByteGo의 System Design 101 가이드 「[Why is Nginx so Popular?](https://bytebytego.com/guides/why-is-nginx-so-popular)」를, 「서버의 종류」는 「[Top 6 Most Commonly Used Server Types](https://bytebytego.com/guides/top-6-most-commonly-used-server-types)」를 바탕으로 보강했다.
@@ -30,7 +30,7 @@ WAS 앞에 웹 서버를 두면 그 웹 서버가 **리버스 프록시**가 된
 
 | | Apache | Nginx |
 | --- | --- | --- |
-| 처리 방식 | 클라이언트(연결)마다 프로세스·스레드를 따로 만든다 | 이벤트 기반으로 적은 수의 워커가 많은 연결을 처리한다 |
+| 처리 방식 | 전통적으로 연결마다 프로세스(prefork)나 스레드(worker)를 하나씩 붙인다. 2.4의 event MPM은 keep-alive 연결을 리스너 스레드의 이벤트 처리로 넘긴다 | 이벤트 기반으로 적은 수의 워커가 많은 연결을 처리한다 |
 | 장점 | 오래 쓰여 안정적이고 모듈 생태계가 넓다 | 동시 접속이 많아도 메모리·CPU 부담이 적다 |
 
 ### Nginx의 마스터-워커 구조
@@ -111,7 +111,7 @@ server {
 ## 정리
 
 - 웹 서버는 정적 자원과 앞단 관리(프록시·캐시·로드밸런싱·헬스 체크)를, WAS는 동적 처리를 맡는다.
-- Apache는 연결마다 프로세스·스레드, Nginx는 이벤트 기반이라 동시 접속에 강하다.
+- Apache는 전통적으로 연결마다 프로세스(prefork)나 스레드(worker)를 붙이고 2.4의 event MPM은 keep-alive 연결만 이벤트로 넘긴다. Nginx는 처음부터 이벤트 기반이라 동시 접속에 강하다.
 - Nginx는 마스터가 설정과 워커를 관리하고, 워커가 이벤트 루프로 연결을 처리한다. 그래서 웹 서버·프록시·캐시·TLS 종료를 한 프로세스 묶음으로 겸한다.
 - Spring Boot는 Tomcat을 내장한 jar로 배포하는 것이 일반적이다.
 - Nginx에서는 `location`으로 묶고, `rewrite`로 경로를 바꾸고, `proxy_pass`로 다른 서버에 넘긴다.
