@@ -53,14 +53,18 @@ Staging Area와 Repository는 `.git` 폴더 안에서 관리되는 논리적 공
 
 흔히 코드가 "내 컴퓨터"와 "GitHub" 두 곳에 있다고 생각하지만, 로컬에만 세 곳이 있어 **코드는 모두 네 곳**에 있다. Git 명령 대부분은 이 네 곳 사이에서 변경을 옮기는 일이다.
 
-```text
- Working Directory ──add──▶ Staging Area ──commit──▶ Local Repo ──push──▶ Remote Repo
-        ▲                        │                       ▲  │                  │
-        │◀── restore --staged ───┘                       │  └──── fetch ◀──────┘
-        │◀──────────── switch / checkout / merge ─────────┘
-        │◀──────────────────── pull (= fetch + merge) ─────────────────────────┘
-                           clone: Remote Repo 전체를 처음 복사해 와 네 곳을 만든다
+```mermaid
+flowchart LR
+    wd["Working Directory"] -->|"add"| sa["Staging Area"]
+    sa -->|"commit"| lr["Local Repo"]
+    lr -->|"push"| rr["Remote Repo"]
+    sa -->|"restore --staged"| wd
+    rr -->|"fetch"| lr
+    lr -->|"switch / checkout / merge"| wd
+    rr -->|"pull (= fetch + merge)"| wd
 ```
+
+clone: Remote Repo 전체를 처음 복사해 와 네 곳을 만든다
 
 | 명령 | 어디에서 어디로 |
 | --- | --- |

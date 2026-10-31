@@ -46,11 +46,22 @@ merge 안의 커밋:  +50/-50      → "아, 여기다" 하고 바로 찾음 (�
 
 `git rebase main`은 내 브랜치가 **마치 최신 main에서 시작한 것처럼** 시작점을 옮긴다. merge가 기준 브랜치의 변경을 merge 커밋 하나로 합치는 것과 달리, rebase는 내 커밋들을 최신 main 뒤에 하나씩 다시 쌓는다.
 
-```text
-merge:   main ─A─B─C──────M      (M = merge 커밋)
-               └─X─Y─┘
-rebase:  main ─A─B─C─X'─Y'       (X, Y가 새 커밋 X', Y'로 다시 만들어짐)
+merge:
+
+```mermaid
+flowchart LR
+    main["main"] --- A["A"] --> B["B"] --> C["C"] --> M["M<br/>(M = merge 커밋)"]
+    A --> X["X"] --> Y["Y"] --> M
 ```
+
+rebase:
+
+```mermaid
+flowchart LR
+    main["main"] --- A["A"] --> B["B"] --> C["C"] --> X2["X'"] --> Y2["Y'"]
+```
+
+(X, Y가 새 커밋 X', Y'로 다시 만들어짐)
 
 | 장점 | 주의 |
 | --- | --- |

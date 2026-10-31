@@ -48,11 +48,15 @@ my-project/                 ← 작업 폴더
 
 `git commit`은 인덱스를 바탕으로 tree를 만들고, 그 tree를 가리키는 commit 객체를 만든 다음, 현재 브랜치 파일(`refs/heads/main`)의 해시를 새 커밋으로 바꾼다.
 
-```text
-main ──▶ commit c3 ──▶ tree ──┬─ README.md → blob a1
-             │                └─ src/      → tree ── app.js → blob b7
-             ▼ parent
-         commit c2 ──▶ tree ...
+```mermaid
+flowchart LR
+    main["main"] --> c3["commit c3"]
+    c3 --> t1["tree"]
+    t1 -->|"README.md"| a1["blob a1"]
+    t1 -->|"src/"| t2["tree"]
+    t2 -->|"app.js"| b7["blob b7"]
+    c3 -->|"parent"| c2["commit c2"]
+    c2 --> t3["tree ..."]
 ```
 
 ### 객체 파일의 위치

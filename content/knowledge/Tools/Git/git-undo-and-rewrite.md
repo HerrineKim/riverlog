@@ -171,10 +171,22 @@ git commit --amend --reset-author --no-edit                     # 지금 user.na
 
 `feature-b`를 `feature-a` 위에서 땄는데 `feature-a`가 아직 머지되지 않았고, `feature-b`만 `main`으로 옮기고 싶을 때다.
 
-```text
-전:  main ─A                     후:  main ─A─B'─C'   (feature-b)
-           └─X─Y (feature-a)                └─X─Y   (feature-a)
-                └─B─C (feature-b)
+전:
+
+```mermaid
+flowchart LR
+    main["main"] --- A["A"]
+    A --> X["X"] --> Y["Y (feature-a)"]
+    Y --> B["B"] --> C["C (feature-b)"]
+```
+
+후:
+
+```mermaid
+flowchart LR
+    main["main"] --- A["A"]
+    A --> B2["B'"] --> C2["C' (feature-b)"]
+    A --> X["X"] --> Y["Y (feature-a)"]
 ```
 
 ```bash

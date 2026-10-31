@@ -25,11 +25,11 @@ sources: ["https://80000coding.notion.site/513a28227b7d4b9ba680d8236f8fb21d", "h
 
 ## 구성: 세션 › 창 › 패인
 
-```text
-tmux 서버
-└─ 세션(session)      "work", "blog" 처럼 작업 단위. detach해도 남는다
-   └─ 창(window)      브라우저 탭처럼 전환하는 전체 화면
-      └─ 패인(pane)   한 창을 가로·세로로 나눈 각각의 셸
+```mermaid
+flowchart TB
+    srv["tmux 서버"] --> ses["세션(session)<br/>#quot;work#quot;, #quot;blog#quot; 처럼 작업 단위. detach해도 남는다"]
+    ses --> win["창(window)<br/>브라우저 탭처럼 전환하는 전체 화면"]
+    win --> pane["패인(pane)<br/>한 창을 가로·세로로 나눈 각각의 셸"]
 ```
 
 ## 기본 사용법
