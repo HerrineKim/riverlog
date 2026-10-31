@@ -72,9 +72,8 @@ flowchart TB
 블록 하나의 구조:
 
 ```mermaid
-block-beta
-    columns 2
-    hdr["chunk 번호<br>← 해제 시 앞쪽 헤더를 읽어 어느 청크로 돌려줄지 안다"] data["데이터"]
+flowchart LR
+    hdr["chunk 번호<br/>← 해제 시 앞쪽 헤더를 읽어 어느 청크로 돌려줄지 안다"] ~~~ data["데이터"]
 ```
 
 각 블록 앞에 출신 청크 번호를 붙여 두면 `free`할 때 주소 몇 바이트 앞만 읽어 올바른 청크로 돌려보낼 수 있다.

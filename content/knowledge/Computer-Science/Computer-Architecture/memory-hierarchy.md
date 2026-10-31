@@ -18,16 +18,8 @@ sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.you
 ## 메모리 계층
 
 ```mermaid
-block-beta
-  columns 1
-  top["▲ 빠름 · 비쌈 · 작음"]
-  m1["레지스터"]
-  m2["L1 캐시"]
-  m3["L2 / L3 캐시"]
-  m4["메인 메모리 (DRAM)"]
-  m5["보조 기억 장치 (SSD / HDD / RAID)"]
-  m6["원격 보조 저장소 (네트워크 스토리지, 클라우드 백업, 테이프)"]
-  bottom["▼ 느림 · 저렴 · 큼"]
+flowchart TB
+  top["▲ 빠름 · 비쌈 · 작음"] ~~~ m1["레지스터"] ~~~ m2["L1 캐시"] ~~~ m3["L2 / L3 캐시"] ~~~ m4["메인 메모리 (DRAM)"] ~~~ m5["보조 기억 장치 (SSD / HDD / RAID)"] ~~~ m6["원격 보조 저장소 (네트워크 스토리지, 클라우드 백업, 테이프)"] ~~~ bottom["▼ 느림 · 저렴 · 큼"]
 ```
 
 | 계층 | 역할 | 휘발성 |

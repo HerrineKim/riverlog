@@ -223,11 +223,20 @@ flowchart TB
 ### 로그 컴팩션
 
 ```mermaid
-block-beta
-  columns 7
-  r1["컴팩션 전"] a0["K1=a"] a1["K2=b"] a2["K1=c"] a3["K3=d"] a4["K2=null"] a5["K1=e"]
-  r2["컴팩션 후"] space space space b3["K3=d"] b4["K2=null<br>(tombstone, 일정 시간 뒤 사라진다)"] b5["K1=e"]
-  r3["오프셋<br>남은 레코드의 오프셋은 그대로다"] o0["0"] o1["1"] o2["2"] o3["3"] o4["4"] o5["5"]
+flowchart TB
+  subgraph row1[" "]
+    direction LR
+    r1["컴팩션 전"] ~~~ a0["K1=a"] ~~~ a1["K2=b"] ~~~ a2["K1=c"] ~~~ a3["K3=d"] ~~~ a4["K2=null"] ~~~ a5["K1=e"]
+  end
+  subgraph row2[" "]
+    direction LR
+    r2["컴팩션 후"] ~~~ s1[" "] ~~~ s2[" "] ~~~ s3[" "] ~~~ b3["K3=d"] ~~~ b4["K2=null<br/>(tombstone, 일정 시간 뒤 사라진다)"] ~~~ b5["K1=e"]
+  end
+  subgraph row3[" "]
+    direction LR
+    r3["오프셋<br/>남은 레코드의 오프셋은 그대로다"] ~~~ o0["0"] ~~~ o1["1"] ~~~ o2["2"] ~~~ o3["3"] ~~~ o4["4"] ~~~ o5["5"]
+  end
+  row1 ~~~ row2 ~~~ row3
 ```
 
 | 규칙 | 내용 |

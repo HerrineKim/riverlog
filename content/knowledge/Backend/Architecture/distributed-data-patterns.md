@@ -88,10 +88,16 @@ COMMIT
 CRUD: orders 테이블
 
 ```mermaid
-block-beta
-  columns 2
-  h1["id"] h2["status"]
-  v1["7"] v2["PAID<br>← 덮어씀"]
+flowchart TB
+  subgraph row1[" "]
+    direction LR
+    h1["id"] ~~~ h2["status"]
+  end
+  subgraph row2[" "]
+    direction LR
+    v1["7"] ~~~ v2["PAID<br/>← 덮어씀"]
+  end
+  row1 ~~~ row2
 ```
 
 이벤트 소싱: order_events (추가만 한다)
