@@ -22,14 +22,30 @@ sources: ["https://80000coding.notion.site/d1a5529246ad4553a1dab05d762ead4d", "h
 
 ## 전체 흐름
 
-```text
-         프런트엔드                              백엔드
-L1-I ─▶ 인출 ─▶ 디코더 ─▶ μop 큐 ─▶ 재정렬 버퍼(ROB) ─▶ 예약 스테이션 ─┬─ 포트0: ALU, 곱셈, 분기
-  ▲      │        ▲        (LSD)    이름 바꾸기(rename)   (스케줄러)     ├─ 포트1: ALU, 곱셈
-  │   분기 예측기  │                                                     ├─ 포트5: ALU, 셔플
-  │              μop 캐시(DSB)                                          ├─ 포트2·3: 로드 + 주소 계산
-  │                                                                     └─ 포트4·7: 스토어
-  └──────────── L2 ◀── L3 ◀── DRAM                    실행 완료 → ROB에서 순서대로 commit
+```mermaid
+flowchart LR
+  dram["DRAM"] --> l3["L3"] --> l2["L2"] --> l1i["L1-I"]
+  subgraph fe["프런트엔드"]
+    ft["인출"] --- bp["분기 예측기"]
+    ft --> dec["디코더"]
+    dsb["μop 캐시(DSB)"] --> dec
+    dec --> uq["μop 큐<br/>(LSD)"]
+  end
+  subgraph be["백엔드"]
+    rob["재정렬 버퍼(ROB)<br/>이름 바꾸기(rename)"] --> rs["예약 스테이션<br/>(스케줄러)"]
+    subgraph ports[" "]
+      p0["포트0: ALU, 곱셈, 분기"]
+      p1["포트1: ALU, 곱셈"]
+      p5["포트5: ALU, 셔플"]
+      p23["포트2·3: 로드 + 주소 계산"]
+      p47["포트4·7: 스토어"]
+    end
+    rs --> p0 & p1 & p5 & p23 & p47
+    cm["ROB에서 순서대로 commit"]
+  end
+  l1i --> ft
+  uq --> rob
+  ports -->|"실행 완료"| cm
 ```
 
 ## 프런트엔드: 명령어를 μop으로

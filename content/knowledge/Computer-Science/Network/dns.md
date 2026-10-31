@@ -28,14 +28,16 @@ DNS는 **응용 계층(7계층) 프로토콜**이고 53번 포트를 쓴다. 전
 
 ## 조회 흐름
 
-```text
-브라우저 캐시 → OS 캐시(hosts 파일 포함) → 리졸버(ISP·8.8.8.8·1.1.1.1)
-                                              │
-                         캐시에 없으면 리졸버가 대신 물어본다
-                                              ▼
-            루트 서버 ─▶ "com은 이 서버에 물어봐"
-            .com TLD 서버 ─▶ "example.com은 이 서버에 물어봐"
-            권한 있는(authoritative) 서버 ─▶ "93.184.215.14"
+```mermaid
+flowchart TB
+  bc["브라우저 캐시"] --> oc["OS 캐시(hosts 파일 포함)"] --> rs["리졸버(ISP·8.8.8.8·1.1.1.1)"]
+  rs -->|"캐시에 없으면 리졸버가 대신 물어본다"| rt
+  subgraph ask[" "]
+    rt["루트 서버<br/>→ #quot;com은 이 서버에 물어봐#quot;"]
+    tld[".com TLD 서버<br/>→ #quot;example.com은 이 서버에 물어봐#quot;"]
+    au["권한 있는(authoritative) 서버<br/>→ #quot;93.184.215.14#quot;"]
+    rt --> tld --> au
+  end
 ```
 
 - 브라우저 → 리졸버는 **재귀 질의**다. "답을 다 찾아서 줘"라고 맡긴다.

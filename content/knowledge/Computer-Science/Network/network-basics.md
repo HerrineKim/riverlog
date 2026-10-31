@@ -234,17 +234,32 @@ IP:     PC→서버     PC→서버      PC→서버    (변하지 않음, NAT �
 
 애플리케이션이 보낸 메시지 하나는 운영체제 커널의 네트워크 스택과 NIC(Network Interface Card)를 지나 상대 애플리케이션까지 간다.
 
-```text
-보내는 서버                                  받는 서버
-[사용자 공간] 채팅 앱 send()                   채팅 앱 recv()  ← 사용자 공간으로 복사
-─────────────────────────────              ─────────────────────────────
-[커널] 소켓 송신 버퍼                          소켓 수신 버퍼
-   ↓ TCP 헤더 추가                              ↑ TCP 헤더 제거
-   ↓ IP 헤더 추가                               ↑ IP 헤더 제거
-   ↓ MAC 헤더 추가                              ↑ MAC 헤더 제거
-   ↓ qdisc (큐잉 규칙, 흐름 제어)                 ↑ ksoftirqd가 꺼냄 (소프트 인터럽트)
-   ↓ 링 버퍼                                    ↑ 링 버퍼  ← NIC가 CPU에 하드 인터럽트
-[NIC] ──▶ 라우터·스위치 여러 홉 ─────────────────▶ [NIC]
+```mermaid
+flowchart TB
+  subgraph snd["보내는 서버"]
+    subgraph su["사용자 공간"]
+      a1["채팅 앱 send()"]
+    end
+    subgraph sk["커널"]
+      sb["소켓 송신 버퍼"] --> tc1["TCP 헤더 추가"] --> ip1["IP 헤더 추가"] --> mc1["MAC 헤더 추가"] --> qd["qdisc (큐잉 규칙, 흐름 제어)"]
+      qd --> rb1["링 버퍼"]
+    end
+    n1["NIC"]
+  end
+  subgraph rcv["받는 서버"]
+    n2["NIC"]
+    subgraph rk["커널"]
+      rb2["링 버퍼"] --> ks["ksoftirqd가 꺼냄 (소프트 인터럽트)"] --> mc2["MAC 헤더 제거"] --> ip2["IP 헤더 제거"] --> tc2["TCP 헤더 제거"] --> rbuf["소켓 수신 버퍼"]
+    end
+    subgraph ru["사용자 공간"]
+      a2["채팅 앱 recv()"]
+    end
+  end
+  a1 --> sb
+  rb1 --> n1
+  n1 -->|"라우터·스위치 여러 홉"| n2
+  n2 -->|"NIC가 CPU에 하드 인터럽트"| rb2
+  rbuf -->|"사용자 공간으로 복사"| a2
 ```
 
 | 구간 | 하는 일 |

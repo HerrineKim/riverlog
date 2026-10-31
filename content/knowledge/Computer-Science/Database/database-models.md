@@ -39,13 +39,23 @@ sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-8
 
 데이터 웨어하우스(OLAP)에서는 정규화보다 **집계 쿼리를 빨리 돌리는 것**이 중요해 테이블을 다르게 배치한다.
 
-```text
-스타 스키마                              스노플레이크 스키마
-        [dim_날짜]                               [dim_날짜]
-            │                                       │
-[dim_상품]─[fact_매출]─[dim_매장]       [dim_카테고리]─[dim_상품]─[fact_매출]─[dim_매장]─[dim_지역]
-            │                                       │
-        [dim_고객]                               [dim_고객]
+스타 스키마
+
+```mermaid
+flowchart TB
+  dt["dim_날짜"] --- fact["fact_매출"]
+  pr["dim_상품"] --- fact
+  fact --- sh["dim_매장"]
+  fact --- cu["dim_고객"]
+```
+
+스노플레이크 스키마
+
+```mermaid
+flowchart TB
+  ct["dim_카테고리"] --- pr["dim_상품"] --- fact["fact_매출"] --- sh["dim_매장"] --- rg["dim_지역"]
+  dt["dim_날짜"] --- fact
+  fact --- cu["dim_고객"]
 ```
 
 | 항목 | 스타 스키마 | 스노플레이크 스키마 |

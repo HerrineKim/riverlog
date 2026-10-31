@@ -19,11 +19,11 @@ CDN(Content Delivery Network)은 **여러 지역에 흩어진 엣지 서버(PoP)
 
 ## 동작 방식
 
-```text
-사용자 ─▶ DNS가 가까운 엣지로 안내 ─▶ 엣지 서버
-                                      │
-                    캐시 HIT  ─────────┴─▶ 바로 응답 (빠름)
-                    캐시 MISS ─▶ 오리진에서 가져와 저장 후 응답
+```mermaid
+flowchart LR
+  us["사용자"] --> dn["DNS가 가까운 엣지로 안내"] --> eg["엣지 서버"]
+  eg -->|"캐시 HIT"| hit["바로 응답 (빠름)"]
+  eg -->|"캐시 MISS"| ms["오리진에서 가져와 저장 후 응답"]
 ```
 
 - 사용자를 가까운 엣지로 보내는 데 DNS 기반 라우팅이나 애니캐스트(Anycast)를 쓴다.
@@ -33,14 +33,11 @@ CDN(Content Delivery Network)은 **여러 지역에 흩어진 엣지 서버(PoP)
 
 DNS 기반 CDN에서는 내 도메인을 CDN 도메인의 **별칭(CNAME)** 으로 걸어 둔다. 리졸버가 별칭을 따라가다 보면 CDN의 DNS(로드 밸런서)가 사용자에게 맞는 엣지 IP를 골라 준다.
 
-```text
-브라우저: shop.example.com?
-  └─ 리졸버 ─▶ 루트 ─▶ TLD ─▶ example.com 권한 서버
-                              "shop.example.com은 shop.example.cdn.net의 별칭(CNAME)"
-       └─ 리졸버 ─▶ CDN의 권한 서버·로드 밸런서
-                    사용자 IP·ISP·요청 콘텐츠·서버 부하를 보고 엣지를 고름
-                    "203.0.113.7 (가까운 엣지)"
-  └─ 브라우저 ─▶ 엣지 203.0.113.7 에 요청
+```mermaid
+flowchart TB
+  b1["브라우저: shop.example.com?"] --> r1["리졸버"] --> rt["루트"] --> tld["TLD"] --> au["example.com 권한 서버<br/>#quot;shop.example.com은 shop.example.cdn.net의 별칭(CNAME)#quot;"]
+  au --> r2["리졸버"] --> ca["CDN의 권한 서버·로드 밸런서<br/>사용자 IP·ISP·요청 콘텐츠·서버 부하를 보고 엣지를 고름<br/>#quot;203.0.113.7 (가까운 엣지)#quot;"]
+  ca --> b2["브라우저"] -->|"요청"| eg["엣지 203.0.113.7"]
 ```
 
 조회 단계 자체는 [[dns|DNS]]의 재귀·반복 질의와 같다. CDN은 마지막 답을 「사용자마다 다르게」 돌려줄 뿐이다.
@@ -49,11 +46,9 @@ DNS 기반 CDN에서는 내 도메인을 CDN 도메인의 **별칭(CNAME)** 으�
 
 엣지에 없다고 바로 오리진으로 가지 않는다. 큰 CDN은 캐시를 여러 층으로 둔다.
 
-```text
-엣지 (사용자 근처, 많고 작다)
-  └─ MISS ─▶ 지역(regional) 캐시
-               └─ MISS ─▶ 중앙(shield) 캐시
-                            └─ MISS ─▶ 오리진
+```mermaid
+flowchart TB
+  eg["엣지 (사용자 근처, 많고 작다)"] -->|"MISS"| rg["지역(regional) 캐시"] -->|"MISS"| sh["중앙(shield) 캐시"] -->|"MISS"| og["오리진"]
 ```
 
 위층으로 갈수록 수는 적고 용량은 크다. 여러 엣지의 미스가 한 곳으로 모이므로 **오리진까지 가는 요청이 크게 준다.** 오리진 앞에 중앙 캐시 하나를 두는 설정을 흔히 origin shield라고 부른다.
