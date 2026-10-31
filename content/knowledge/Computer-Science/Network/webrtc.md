@@ -51,7 +51,7 @@ ICE는 지연이 가장 짧은 **UDP 직접 연결**을 먼저 시도하고, 안
 | `srflx`(server reflexive) | NAT 바깥에서 보이는 공인 IP·포트 | STUN 응답 |
 | `relay` | TURN 서버가 할당한 주소 | TURN 서버 |
 
-STUN 서버는 요청마다 주소만 돌려주면 되므로 사양이 낮아도 많은 요청을 처리한다. 대부분의 통화는 STUN만으로 연결된다. TURN은 미디어 전체를 중계하므로 **대역폭 비용이 크다.** TURN 서버는 오픈 소스 coturn이 사실상 표준이고, 자격 증명은 REST API로 짧게 사는 것을 발급해 노출을 줄인다. 공개 STUN `stun.l.google.com:19302`는 시험용이다.
+STUN 서버는 요청마다 주소만 돌려주면 되므로 사양이 낮아도 많은 요청을 처리한다. [web.dev](https://web.dev/articles/webrtc-infrastructure)에 따르면 대부분의 통화는 STUN만으로 연결되고, 방화벽이나 복잡한 NAT 뒤에서는 그 비율이 낮아진다. TURN은 미디어 전체를 중계하므로 **대역폭 비용이 크다.** TURN 서버는 오픈 소스 coturn이 사실상 표준이고, 자격 증명은 REST API로 짧게 사는 것을 발급해 노출을 줄인다. 공개 STUN `stun.l.google.com:19302`는 시험용이다.
 
 정리하면, 실서비스에는 **시그널링 서버 + STUN 서버 + (대비용) TURN 서버**가 필요하다. NAT가 왜 직접 연결을 막는지는 [[network-layer|네트워크 계층]]의 NAT 부분을 참고한다.
 
@@ -203,7 +203,7 @@ io.on('connection', (socket) => {
 
 | 구조 | 방식 | 한계·쓰임 |
 | --- | --- | --- |
-| 풀 메시(mesh) | 모든 참가자가 서로 연결(n−1개 연결) | 서버가 필요 없지만 업로드가 참가자 수만큼 늘어 **4~5명 정도**가 한계. 모바일은 더 빨리 무너진다 |
+| 풀 메시(mesh) | 모든 참가자가 서로 연결(n−1개 연결) | 서버가 필요 없지만 업로드가 참가자 수만큼 늘어 **소수 인원**까지만 버틴다. 모바일은 더 빨리 무너진다 |
 | SFU(Selective Forwarding Unit) | 각자 서버에 한 번 올리고, 서버가 디코딩 없이 골라서 전달 | 지금의 주류. 사이멀캐스트(해상도별 여러 스트림)로 받는 쪽 대역폭에 맞춰 고른다. mediasoup, LiveKit, Janus, Jitsi |
 | MCU(Multipoint Control Unit) | 서버가 받은 스트림을 디코딩·합성(믹싱)해 하나로 보냄 | 받는 쪽은 가볍지만 서버 CPU 비용이 크다. 녹화·레거시 회의 장비 연동 |
 
@@ -224,6 +224,6 @@ WebRTC는 표준 기술이라 게이트웨이를 두면 다른 망과도 통한�
 - 교환하는 것: SDP(offer/answer)와 ICE candidate.
 - STUN으로 공인 주소를 알아내고, 안 되면 TURN으로 중계한다.
 - 데이터 채널은 신뢰·순서를 옵션으로 고른다. 최신 값만 중요하면 `ordered: false, maxRetransmits: 0`.
-- 3~4명을 넘는 통화는 메시 대신 SFU를 둔다.
+- 소수 인원을 넘는 통화는 메시 대신 SFU를 둔다.
 
 관련 노트: [[voip-sip-rtp|VoIP 전화망: SIP, SDP, RTP]]
