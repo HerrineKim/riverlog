@@ -1,11 +1,11 @@
 ---
 title: "전송 계층: 포트, TCP, UDP"
 concept: "Transport Layer"
-summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계(임시 포트 범위 포함), 소켓과 역다중화, 연결 지향 TCP의 헤더·옵션(MSS·윈도 스케일·SACK)·플래그·3-way handshake(SYN 쿠키, 0-RTT)·순서 번호 규칙·상태 전이·4-way handshake와 절반 닫기·TIME_WAIT·강제 종료·keepalive, 흐름·오류(ARQ)·혼잡 제어, 비연결형 UDP와 체크섬, 그리고 TCP와 UDP의 비교."
+summary: "프로세스 간 통신을 담당하는 전송 계층의 역할과 포트 번호 체계(임시 포트 범위 포함), 소켓과 역다중화, 연결 지향 TCP의 헤더·옵션(MSS·윈도 스케일·SACK)·플래그·3-way handshake(SYN 쿠키, 0-RTT)·순서 번호 규칙·상태 전이·4-way handshake와 절반 닫기·TIME_WAIT·강제 종료·keepalive, ECN 플래그, 재전송·지속·keepalive·TIME_WAIT 타이머, 흐름·오류(ARQ)·혼잡 제어, 비연결형 UDP와 체크섬, 그리고 TCP와 UDP의 비교."
 tags: ["network", "transport-layer", "tcp", "udp", "port", "handshake"]
 source: notion
-sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df", "https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp", "https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data", "https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram", "https://bytebytego.com/guides/18-common-ports-worth-knowing", "https://roka88.dev/114", "https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/", "https://www.youtube.com/watch?v=AEaKrq3SpW8", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)"]
-date: "2026-10-21"
+sources: ["https://app.notion.com/p/0b3cef79cd844acc96c0d0c59ef5fc4f", "https://app.notion.com/p/7efeeaf7c18445f9bb7cf9d3ddc6391d", "https://app.notion.com/p/30782af647b247739414d681275586df", "https://bytebytego.com/guides/top-4-most-popular-use-cases-for-udp", "https://bytebytego.com/guides/what-protocol-does-online-gaming-use-to-transmit-data", "https://bytebytego.com/guides/explaining-8-popular-network-protocols-in-1-diagram", "https://bytebytego.com/guides/18-common-ports-worth-knowing", "https://roka88.dev/114", "https://blog.cloudflare.com/how-to-stop-running-out-of-ephemeral-ports-and-start-to-love-long-lived-connections/", "https://www.youtube.com/watch?v=AEaKrq3SpW8", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
+date: "2026-10-31"
 ---
 
 > 고무오리 CS 스터디의 네트워크 학습 노트(전송 계층과 포트, UDP, TCP 장)를 바탕으로 재구성한 노트다.
@@ -15,6 +15,7 @@ date: "2026-10-21"
 > 「UDP」 절의 체크섬 계산 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 소켓과 역다중화, 3-way handshake의 이유·동시 열기·SYN 쿠키·0-RTT, 강제 종료와 keepalive, 계층별 체크섬 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
 > TCP 옵션과 윈도 크기에 따른 처리량 상한, 절반 닫기, 어리석은 윈도 증후군, ARQ 방식별 윈도 크기와 회선 효율, Reno 계산 예는 고려사이버대학교 「컴퓨터네트워크」(2023-2학기) 강의 내용으로 보강했다.
+> ECN 플래그(ECE·CWR), TCP 타이머 정리, UDP를 쓰는 관리 프로토콜은 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 네트워크 면접 정리를 바탕으로 보강했다.
 
 네트워크 계층(IP)이 데이터를 **목적지 호스트**까지 보내 준다면, 전송 계층(4계층)은 그 호스트 안의 **어느 프로세스**에게 줄지 결정하고 필요하면 신뢰성을 보장한다. 이때 프로세스를 구분하는 번호가 포트 번호다.
 
@@ -150,7 +151,7 @@ TCP는 서로 다른 호스트의 프로그램이 데이터를 **안정적으로
 | 확인 번호(Acknowledgment Number) | 다음에 받기를 기대하는 바이트 번호 |
 | Offset | 헤더 길이 (4바이트 단위, 5~15 → 20~60바이트) |
 | Reserved | 예약 필드 |
-| Flags | URG, ACK, PSH, RST, SYN, FIN |
+| Flags | CWR, ECE, URG, ACK, PSH, RST, SYN, FIN (8비트) |
 | Window | 수신 측 버퍼에 남은 공간(rwnd), 흐름 제어에 사용. 16비트라 최대 65,535바이트 |
 | Checksum | 오류 검출 |
 | Urgent Pointer | 긴급 데이터의 위치 |
@@ -181,6 +182,10 @@ TCP는 **바이트 스트림**이다. 전송은 세그먼트 단위지만 순서
 | **RST** | Reset | 비정상적인 상황에서 연결을 즉시 끊음 |
 | **SYN** | Synchronize | 연결 요청. 초기 순서 번호를 임의로 정해 보냄 |
 | **FIN** | Finish | 더 보낼 데이터가 없음. 정상적인 연결 종료 요청 |
+| ECE | ECN-Echo | SYN에 켜면 「ECN을 쓸 수 있다」는 협상. 연결 중에는 IP 헤더에 혼잡 표시(CE)가 붙은 패킷을 받았다고 송신 측에 알린다 |
+| CWR | Congestion Window Reduced | ECE를 받은 송신 측이 혼잡 윈도를 줄였다고 답한다 |
+
+ECE·CWR은 라우터가 패킷을 버리는 대신 IP 헤더의 ECN 비트로 혼잡을 표시해 주는 **명시적 혼잡 알림**(ECN)을 TCP 양 끝이 주고받는 플래그다([[ip-qos|IP QoS의 ECN]]). 그 앞에 있던 NS(ECN nonce) 비트는 실험이 끝나 폐기(RFC 8311)되어 지금은 예약 비트다.
 
 ### 3-Way Handshake (연결 수립)
 
@@ -357,6 +362,17 @@ cwnd 1 → … → 10 → 11 → 12    다시 슬로 스타트 후 10부터 혼�
 cwnd 12에서 중복 ACK 3개      → ssthresh = 6, cwnd = 6, 혼잡 회피로 계속
 ```
 
+### TCP의 타이머
+
+TCP의 신뢰성과 연결 관리는 타이머 네 개로 돌아간다.
+
+| 타이머 | 시작하는 때 | 끝나면 | 설명 |
+| --- | --- | --- | --- |
+| 재전송(RTO) | 세그먼트를 보낼 때 | ACK가 없으면 다시 보내고 타이머를 두 배로 늘린다 | 측정한 RTT의 평활 평균(SRTT)과 편차(RTTVAR)로 `RTO = SRTT + 4 × RTTVAR`를 계산한다. RFC 6298은 하한 1초를 권하지만 Linux는 200ms를 쓴다 |
+| 지속(persist) | 상대가 윈도 0을 알렸을 때 | 윈도 탐침을 보내 윈도가 열렸는지 묻는다 | 윈도가 다시 열렸다는 알림이 사라지면 양쪽이 서로를 영원히 기다리는 교착을 막는다 |
+| keepalive | 연결이 유휴 상태가 될 때 | 빈 탐침을 보내 상대가 살아 있는지 확인한다 | Linux 기본은 유휴 2시간 뒤(위 「연결이 살아 있는지 확인하기」) |
+| TIME_WAIT(2MSL) | 먼저 닫은 쪽이 마지막 ACK를 보낼 때 | 연결 자원을 완전히 지운다 | 마지막 ACK가 사라졌을 때 다시 보낼 수 있게 하고, 늦게 도착한 옛 세그먼트가 새 연결에 섞이지 않게 한다. Linux는 60초 |
+
 ## UDP (User Datagram Protocol)
 
 UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프로토콜이다. 연결 설정도, 재전송도, 순서 보장도 없다. 대신 지연이 적고 가볍다.
@@ -391,6 +407,7 @@ UDP는 IP 위에 **포트 번호와 체크섬만 얹은** 아주 단순한 프�
 - 요청·응답이 짧아 연결 수립 비용이 아까운 경우: **DNS** 조회
 - 단순한 파일 전송: **TFTP**
 - 주기적으로 정보를 뿌리는 경우: **RIP** 라우팅 정보 교환
+- 짧은 질의·응답으로 끝나는 관리·인프라 프로토콜: **SNMP**(장비 감시, 161·162), **DHCP**(주소 할당, 67·68), **NTP**(시각 동기화, 123), **Kerberos** 인증(88, 응답이 크면 TCP)
 - 신뢰성이 필요하면 애플리케이션 계층에서 직접 구현한다 (예: QUIC은 UDP 위에서 신뢰성과 암호화를 제공하며, [[http|HTTP/3]]가 QUIC 위에서 동작한다).
 - 브라우저 간 실시간 통화([[webrtc|WebRTC]])도 미디어를 UDP로 보낸다.
 - 한 번에 여러 수신자에게 보내는 경우: 저지연 트레이딩의 **시세 멀티캐스트**. TCP는 1:1 연결이라 멀티캐스트를 할 수 없다([[backend-latency-optimization|백엔드 지연 시간 줄이기]], [[network-layer#IP 멀티캐스트|IP 멀티캐스트]]).
