@@ -1,16 +1,47 @@
 ---
 title: "데이터베이스 모델: RDB, NoSQL, NewSQL"
 concept: "Database Model"
-summary: "관계형 DB의 특징과 한계, NoSQL 네 가지 유형과 CAP 정리, 둘의 장점을 합치려는 NewSQL을 비교하고, 프로젝트에서 무엇을 고를지와 PostgreSQL·MySQL의 차이를 정리. 평면·계층·네트워크 모델에서 관계형까지의 계보와 분석용 스타·스노플레이크 스키마도 다룬다."
+summary: "DBMS가 파일 처리 시스템의 어떤 문제를 푸는지와 1·2·3계층 구조, 관계형 DB의 특징과 한계, 코드의 규칙, NoSQL 네 가지 유형과 BASE·CAP 정리, 둘의 장점을 합치려는 NewSQL을 비교하고, 프로젝트에서 무엇을 고를지와 PostgreSQL·MySQL의 차이를 정리. 평면·계층·네트워크 모델에서 관계형까지의 계보와 분석용 스타·스노플레이크 스키마도 다룬다."
 tags: ["database", "rdbms", "nosql", "newsql", "sql", "mongodb"]
 source: mixed
 date: "2026-10-31"
-sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/henryr/cap-faq", "http://ksat.me/a-plain-english-introduction-to-cap-theorem"]
+sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS", "https://github.com/henryr/cap-faq", "http://ksat.me/a-plain-english-introduction-to-cap-theorem"]
 ---
 
 > 노션 정리를 바탕으로, 데이터 모델의 계보와 CAP 정리의 오해는 ByteByteGo의 System Design 101 가이드 「[Top 6 Database Models](https://bytebytego.com/guides/top-6-database-models)」, 「[CAP Theorem: One of the Most Misunderstood Terms](https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms)」로, PostgreSQL 구조와 문자열 비교 차이는 「[한 눈에 살펴보는 PostgreSQL](https://d2.naver.com/helloworld/227936)」, 「[MySQL 'a' = 'a '가 true인가?](http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html)」로 보강했다. RDB와 NoSQL의 비용 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다. CAP의 정확한 정의와 흔한 오해는 Henry Robinson의 「[The CAP FAQ](https://github.com/henryr/cap-faq)」와 「[A Plain English Introduction to CAP Theorem](http://ksat.me/a-plain-english-introduction-to-cap-theorem)」으로 보강했다.
+> 파일 처리 시스템과의 비교, DBMS 사용자와 1·2·3계층 구조, 코드의 규칙, BASE는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 DBMS 면접 정리를 바탕으로 보강했다.
 
 데이터베이스는 데이터의 집합이고, 이를 저장·관리하는 소프트웨어가 **DBMS(Database Management System)**다. 데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
+
+## DBMS가 해결하는 문제
+
+DBMS 이전에는 응용 프로그램마다 운영체제의 파일에 데이터를 따로 저장했다(파일 처리 시스템). 학적 프로그램과 수강 프로그램이 학생 정보를 각자 파일로 갖는 식이다. DBMS는 데이터를 한곳에 모아 여러 프로그램이 공유하게 해서 이 방식의 문제를 푼다. 데이터베이스, DBMS, 그 위의 응용 프로그램을 함께 **데이터베이스 시스템**이라 부른다.
+
+| 파일 처리 시스템의 문제 | DBMS의 해결 |
+| --- | --- |
+| 중복과 불일치: 같은 학생 주소가 파일마다 있고, 한쪽만 고치면 어긋난다 | 데이터를 한 번만 저장해 공유하고, 정규화로 중복을 줄인다 |
+| 접근의 어려움: 새 질문(「서울에 사는 3학년」)마다 프로그램을 새로 짠다 | SQL로 원하는 것만 선언하면 DBMS가 찾는다 |
+| 데이터 고립: 파일마다 형식이 달라 합치기 어렵다 | 하나의 스키마로 기술하고 조인으로 잇는다 |
+| 무결성: 「잔액은 음수가 아니다」 같은 규칙이 프로그램 곳곳에 흩어진다 | 제약 조건으로 DB가 직접 검사한다 |
+| 원자성: 이체 도중 장애가 나면 출금만 반영된다 | 트랜잭션과 회복 |
+| 동시 접근: 둘이 같은 파일을 동시에 고치면 한쪽 변경이 사라진다 | 병행 제어(잠금·MVCC) |
+| 보안: 파일 단위로만 권한을 줄 수 있다 | 사용자·테이블·컬럼 단위 권한(`GRANT`·`REVOKE`)과 뷰 |
+| 백업·복구를 프로그램마다 직접 챙긴다 | 로그와 백업 기반 복구 |
+| 저장 형식이 바뀌면 프로그램을 고쳐야 한다 | 3단계 스키마로 데이터 독립성을 준다([[sql-and-relational-algebra#3단계 스키마와 데이터 독립성\|3단계 스키마]]) |
+
+대가는 DBMS 자체의 비용(라이선스·서버·운영 인력)과 단순한 작업에도 붙는 처리 오버헤드다. 데이터가 작고 한 프로그램만 쓰면 파일이 더 싸다.
+
+DBMS를 다루는 사람은 역할로 나뉜다. **DBA(데이터베이스 관리자)** 는 스키마 정의, 저장 구조와 접근 방법 결정, 권한 부여, 백업·복구, 성능 감시를 맡는다. 설계자는 개체·관계·제약·뷰를 설계하고, 최종 사용자는 응용 프로그램이나 질의로 데이터를 쓴다.
+
+### 1계층·2계층·3계층 구조
+
+DBMS를 어떤 층을 거쳐 쓰느냐로 구조를 나눈다.
+
+| 구조 | 모양 | 쓰임과 한계 |
+| --- | --- | --- |
+| 1계층 | 사용자가 DBMS에 직접 붙어 SQL을 실행한다 | DB 설계자·개발자가 SQL 클라이언트로 개발·관리할 때 |
+| 2계층(클라이언트-서버) | 클라이언트 응용 프로그램이 DB 서버에 직접 접속한다(JDBC·ODBC) | 사내 데스크톱 업무 프로그램. 클라이언트마다 DB 연결과 계정이 필요해 사용자가 늘면 연결 수와 보안이 문제가 되고, 업무 규칙을 바꾸면 모든 클라이언트를 다시 배포해야 한다 |
+| 3계층 | 클라이언트(표현층) ─ 애플리케이션 서버(응용층) ─ DB 서버(데이터층) | 웹 서비스의 표준. 클라이언트는 DB를 모르고 DB는 애플리케이션 서버만 안다. 업무 규칙을 가운데 층에 모으고, 연결은 [[connection-pool\|커넥션 풀]]로 공유하고, DB를 외부에 드러내지 않는다 |
 
 ## 한눈에 비교
 
@@ -74,9 +105,26 @@ flowchart TB
 - **ACID** 트랜잭션: 원자성, 일관성, 격리성, 지속성
 - **정규화**(1NF, 2NF, 3NF …)로 중복과 이상 현상을 줄임
 - ANSI 표준 SQL과 **JOIN**으로 복잡한 질의 가능
-- 확장은 주로 더 좋은 서버로 바꾸는 **scale-up** 방식
+- 확장은 주로 더 좋은 서버로 바꾸는 **scale-up** 방식. 서버를 늘리는 scale-out(읽기 복제본, 샤딩)은 따로 설계해야 한다([[database-scaling|데이터베이스 확장과 성능 최적화]], [[database-sharding|데이터베이스 샤딩]])
 
 한계: 스키마가 경직되어 있어 구조가 자주 바뀌거나 비정형인 대용량 데이터(빅데이터)를 다루기에는 불리하다.
+
+**무엇이 관계형인가: 코드의 규칙.** 관계형 모델을 제안한 E. F. Codd는 1985년 DBMS가 「관계형」이라 불리려면 지켜야 할 규칙을 0번 기초 규칙(관계형 기능만으로 데이터를 관리한다)과 1~12번으로 정리했다(번호가 13개지만 흔히 「12규칙」이라 부른다). 모두 지키는 상용 제품은 사실상 없고, 관계형다움을 재는 기준으로 쓴다.
+
+| 규칙 | 뜻 |
+| --- | --- |
+| 1. 정보 | 메타데이터까지 모든 정보를 테이블의 값으로 표현한다 |
+| 2. 접근 보장 | 모든 값은 테이블 이름 + 기본 키 + 컬럼 이름으로 찾을 수 있다 |
+| 3. NULL의 체계적 처리 | 「값 없음」을 타입과 무관하게 NULL로 일관되게 다룬다 |
+| 4. 온라인 카탈로그 | 데이터 사전(스키마 정보)도 테이블로 두고 같은 질의 언어로 조회한다 |
+| 5. 포괄적 데이터 언어 | 정의·조작·권한·트랜잭션을 모두 하나의 언어(SQL)로 할 수 있다 |
+| 6. 뷰 갱신 | 이론적으로 갱신할 수 있는 뷰는 시스템도 갱신할 수 있다 |
+| 7. 집합 단위 연산 | 조회뿐 아니라 삽입·수정·삭제도 행 하나씩이 아니라 집합 단위로 한다 |
+| 8. 물리적 데이터 독립성 | 저장 구조가 바뀌어도 응용 프로그램은 그대로다 |
+| 9. 논리적 데이터 독립성 | 테이블 구조가 바뀌어도(정보가 보존되면) 응용 프로그램은 그대로다 |
+| 10. 무결성 독립성 | 무결성 제약을 프로그램이 아니라 카탈로그에 선언한다 |
+| 11. 분산 독립성 | 데이터가 여러 곳에 나뉘어도 사용자는 몰라도 된다 |
+| 12. 비전복 | 저수준(레코드 단위) 접근으로 무결성 규칙을 우회할 수 없다 |
 
 대표 제품
 
@@ -112,6 +160,8 @@ DB를 옮기거나 둘을 섞어 쓸 때는 컬럼 타입(CHAR·VARCHAR)과 콜�
 ## NoSQL
 
 "Not only SQL". 비정형 데이터를 다루며 고정 스키마가 없고, 애플리케이션의 도움 없이도 여러 서버에 데이터를 나눠 저장(자동 분산·밸런싱)하는 경우가 많다. 캐싱이 통합된 제품도 있다.
+
+RDB의 ACID에 대비해 많은 NoSQL이 따르는 성질을 **BASE**라 부른다. 기본적으로 가용하고(Basically Available: 일부 노드가 죽어도 응답한다), 상태가 고정돼 있지 않으며(Soft state: 입력이 없어도 복제가 따라잡는 동안 값이 바뀐다), 결국 일관해진다(Eventually consistent: 쓰기가 멈추면 언젠가 모든 복제본이 같은 값이 된다). 일관성을 늦추는 대신 가용성과 확장성을 얻는다는 뜻으로, 아래 CAP 정리의 AP 쪽 선택과 같은 방향이다. MongoDB·DynamoDB처럼 단일 문서·다중 문서 트랜잭션을 지원하는 NoSQL도 많아 BASE와 NoSQL이 같은 말은 아니다.
 
 ### 문서형 (Document)
 
