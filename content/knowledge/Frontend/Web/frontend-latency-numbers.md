@@ -63,7 +63,7 @@ sources: ["https://vercel.com/blog/latency-numbers-every-web-developer-should-kn
 | cold potato | 사업자의 품질 좋은 망 안에서 최대한 멀리 운반 | 150ms(단일 리전에 배포했을 때의 최악값) |
 | hot potato | 가장 싼 경로로 최대한 빨리 넘김 | 300ms(먼 서버에 직접 붙거나 저가 CDN을 쓸 때) |
 
-**바이트가 가장 싼 길로 다니면 지연이 두 배가 될 수 있다.** 배포 위치만큼 경로 품질도 중요하다.
+바이트가 가장 싼 길로 다니면 지연이 두 배가 될 수 있다. 배포 위치만큼 경로 품질도 중요하다.
 
 ### 렌더링과 체감
 

@@ -12,7 +12,7 @@ sources: ["https://www.smashingmagazine.com/2011/09/the-guide-to-css-animation-p
 
 ## UI 모션이란
 
-UI 애니메이션은 장식이 아니라 **상태 변화를 설명하는 수단**이다. 무엇이 어디서 와서 어디로 갔는지, 무엇을 눌러야 하는지를 움직임으로 알려 준다. 좋은 모션은 매끄럽고 **자연스럽다.** 기계적인 등속 운동은 로봇처럼 느껴진다. 문법(transition, `@keyframes`)은 [[css-animation|CSS 애니메이션]]에, 접근성 기준은 [[color-motion-accessibility|색과 움직임의 접근성]]에 있다.
+UI 애니메이션은 장식이 아니라 **상태 변화를 설명하는 수단**이다. 무엇이 어디서 와서 어디로 갔는지, 무엇을 눌러야 하는지를 움직임으로 알려 준다. 좋은 모션은 매끄럽고 자연스럽다. 기계적인 등속 운동은 로봇처럼 느껴진다. 문법(transition, `@keyframes`)은 [[css-animation|CSS 애니메이션]]에, 접근성 기준은 [[color-motion-accessibility|색과 움직임의 접근성]]에 있다.
 
 ## 애니메이션 12원칙을 UI에 옮기기
 
@@ -63,7 +63,7 @@ transition과 animation은 A에서 B까지 **최단 직선**으로 움직인다.
 
 ### 겹친 애니메이션: 축마다 다른 타이밍
 
-경로를 휘게 하려면 **X축과 Y축의 속도를 어긋나게** 하면 된다. 같은 요소에 `transform` 애니메이션 두 개를 걸면 나중 것만 적용되므로, **요소를 둘로 나눠** 바깥은 X, 안쪽은 Y를 맡긴다.
+경로를 휘게 하려면 **X축과 Y축의 속도를 어긋나게** 하면 된다. 같은 요소에 `transform` 애니메이션 두 개를 걸면 나중 것만 적용되므로, 요소를 둘로 나눠 바깥은 X, 안쪽은 Y를 맡긴다.
 
 ```css
 .track { animation: move-x 1s ease-in infinite alternate; }        /* X는 ease-in */

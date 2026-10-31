@@ -134,6 +134,6 @@ navigator.vibrate(0)                // 진행 중인 진동 취소
 - iOS의 기기 방향·움직임은 사용자 동작 안의 `requestPermission()`이 필요하다.
 - 게임패드는 매 프레임 폴링, 음성 인식은 서버로 소리가 갈 수 있다는 점, 진동은 Android Chromium 전용이라는 점을 기억한다.
 
-**기기 기능은 감지하고, 이유를 보여 준 뒤 요청하고, 없거나 거절돼도 쓸 수 있게 만든다.**
+기기 기능은 감지하고, 이유를 보여 준 뒤 요청하고, 없거나 거절돼도 쓸 수 있게 만든다.
 
 관련 노트: [[pwa-os-integration|PWA 기능과 OS 통합]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[media-capture-web-audio|미디어 캡처와 Web Audio API]], [[browser-fingerprinting|브라우저 핑거프린팅]], [[webxr|WebXR]]

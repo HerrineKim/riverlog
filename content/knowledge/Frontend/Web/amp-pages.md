@@ -12,7 +12,7 @@ sources: ["https://d2.naver.com/helloworld/6856597", "https://blog.outsider.ne.k
 
 ## AMP란
 
-**AMP**(Accelerated Mobile Pages)는 2015년 Google이 시작한 오픈소스 웹 컴포넌트 프레임워크다. 지금은 OpenJS 재단 프로젝트다. 발상은 단순하다. **느려질 수 있는 일을 아예 못 하게 막으면** 페이지가 빨라진다.
+**AMP**(Accelerated Mobile Pages)는 2015년 Google이 시작한 오픈소스 웹 컴포넌트 프레임워크다. 지금은 OpenJS 재단 프로젝트다. 발상은 단순하다. 느려질 수 있는 일을 아예 못 하게 막으면 페이지가 빨라진다.
 
 | 구성 요소 | 역할 |
 | --- | --- |
@@ -40,7 +40,7 @@ AMP의 규칙은 [[browser-rendering|브라우저 렌더링 과정]]의 병목�
 
 ### 커스텀 엘리먼트로 레이아웃을 쥔다
 
-AMP 컴포넌트는 [[web-components|웹 컴포넌트]]의 커스텀 엘리먼트다. 런타임은 표준 생명주기 콜백 위에 `buildCallback`(자식까지 준비됨), `layoutCallback`(실제 렌더링), `viewportCallback`(뷰포트 진입·이탈) 같은 단계를 더해, 각 요소를 **언제 받고 언제 그릴지**를 스스로 스케줄링한다. 요소가 생성되는 순간 선언된 크기로 자리를 먼저 잡기 때문에 자원 없이도 레이아웃을 끝낼 수 있다.
+AMP 컴포넌트는 [[web-components|웹 컴포넌트]]의 커스텀 엘리먼트다. 런타임은 표준 생명주기 콜백 위에 `buildCallback`(자식까지 준비됨), `layoutCallback`(실제 렌더링), `viewportCallback`(뷰포트 진입·이탈) 같은 단계를 더해, 각 요소를 언제 받고 언제 그릴지를 스스로 스케줄링한다. 요소가 생성되는 순간 선언된 크기로 자리를 먼저 잡기 때문에 자원 없이도 레이아웃을 끝낼 수 있다.
 
 ## 비판
 
