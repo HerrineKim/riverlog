@@ -25,13 +25,13 @@ sources: ["https://roka88.dev/102", "https://engineering.linecorp.com/ko/blog/li
 
 ## 온디맨드 리사이징의 구조
 
-```text
-클라이언트 ──GET /img/cat.jpg?w=300──▶ 캐시(CDN) ──hit──▶ 바로 응답
-                                         │ miss
-                                         ▼
-                                    리사이징 서버 ──▶ 원본 스토리지
-                                         │
-                                         └─ 변환 결과를 응답하고 캐시에 저장
+```mermaid
+flowchart LR
+  c["클라이언트"] -->|"GET /img/cat.jpg?w=300"| cache["캐시(CDN)"]
+  cache -->|"hit"| hit["바로 응답"]
+  cache -->|"miss"| rs["리사이징 서버"]
+  rs --> orig["원본 스토리지"]
+  rs --> save["변환 결과를 응답하고 캐시에 저장"]
 ```
 
 - **파라미터는 URL에 담고 GET으로 받는다.** URL이 곧 캐시 키가 되어 CDN·브라우저 캐시를 그대로 쓴다.
@@ -58,9 +58,14 @@ sources: ["https://roka88.dev/102", "https://engineering.linecorp.com/ko/blog/li
 
 동영상 변환은 이미지보다 훨씬 오래 걸리므로 **요청에 바로 결과를 돌려줄 수 없다.** 작업을 받아 두고 끝나면 알리는 비동기 구조가 기본이다.
 
-```text
-요청 ─▶ 작업 접수(즉시 응답) ─▶ [분석] ─▶ [변환] ─▶ [후처리·검증·저장] ─▶ 완료 콜백
-                                  └ 단계마다 독립 작업으로 실행 ┘          └ 실패 시 보관 후 재전송
+```mermaid
+flowchart LR
+  req["요청"] --> acc["작업 접수(즉시 응답)"]
+  subgraph steps["단계마다 독립 작업으로 실행"]
+    an["분석"] --> tr["변환"] --> post["후처리·검증·저장"]
+  end
+  acc --> an
+  post --> cb["완료 콜백<br/>(실패 시 보관 후 재전송)"]
 ```
 
 - **단계를 나눈다.** 분석, 변환, 후처리·검증·저장을 따로 실행하면 단계별로 자원을 다르게 쓰고 병렬화하기 쉽다.

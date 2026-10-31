@@ -25,25 +25,24 @@ sources: ["https://bytebytego.com/guides/what-does-a-typical-microservice-archit
 
 ## 전형적인 구조
 
-```text
-클라이언트
-   │
-   ├──▶ CDN ─────────────── 정적 콘텐츠는 여기서 끝난다
-   │
-   ▼
-로드 밸런서
-   │
-   ▼
-API 게이트웨이 ──▶ 인증 서버(Identity Provider)
-   │          └──▶ 서비스 레지스트리(어디에 무엇이 떠 있나)
-   ▼
-┌───────────┬───────────┬───────────┐
-│ 주문 서비스 │ 결제 서비스 │ 상품 서비스 │   ← 도메인별로 나뉜 서비스
-│   + DB    │   + DB    │   + DB    │   ← 서비스마다 자기 DB
-└─────┬─────┴─────┬─────┴─────┬─────┘
-      └── 메시지 브로커(Kafka, RabbitMQ) ──┘   ← 비동기 통신
-      
-관리 영역: 메트릭(Prometheus → Grafana), 로그(수집 → 저장 → 검색·시각화), 분산 캐시
+```mermaid
+flowchart TB
+  client["클라이언트"] --> cdn["CDN<br/>정적 콘텐츠는 여기서 끝난다"]
+  client --> lb["로드 밸런서"] --> gw["API 게이트웨이"]
+  gw --> idp["인증 서버(Identity Provider)"]
+  gw --> reg["서비스 레지스트리(어디에 무엇이 떠 있나)"]
+  subgraph svcs["도메인별로 나뉜 서비스 (서비스마다 자기 DB)"]
+    order["주문 서비스<br/>+ DB"]
+    pay["결제 서비스<br/>+ DB"]
+    prod["상품 서비스<br/>+ DB"]
+  end
+  gw --> svcs
+  order & pay & prod ---|"비동기 통신"| mb["메시지 브로커(Kafka, RabbitMQ)"]
+  subgraph ops["관리 영역"]
+    metrics["메트릭(Prometheus → Grafana)"]
+    logs["로그(수집 → 저장 → 검색·시각화)"]
+    cache["분산 캐시"]
+  end
 ```
 
 ## 운영에 필요한 구성 요소
@@ -82,14 +81,22 @@ API 게이트웨이 ──▶ 인증 서버(Identity Provider)
 
 여러 서비스가 하나의 업무(주문 → 결제 → 배송)를 함께 처리하는 방식은 두 가지다.
 
-```text
-오케스트레이션                         코레오그래피
-                                  
-     오케스트레이터                     주문 ──이벤트──▶ 결제
-    ┌────┼────┐                         │               │
-    ▼    ▼    ▼                         └──이벤트──▶ 배송 ◀┘
-  주문  결제  배송                   (각자 규칙에 따라 반응)
-(중앙이 순서를 호출)
+오케스트레이션 (중앙이 순서를 호출)
+
+```mermaid
+flowchart TB
+  o["오케스트레이터"] --> a["주문"]
+  o --> b["결제"]
+  o --> c["배송"]
+```
+
+코레오그래피 (각자 규칙에 따라 반응)
+
+```mermaid
+flowchart LR
+  order["주문"] -->|"이벤트"| pay["결제"]
+  order -->|"이벤트"| ship["배송"]
+  pay --> ship
 ```
 
 | 비교 | 오케스트레이션(orchestration) | 코레오그래피(choreography) |

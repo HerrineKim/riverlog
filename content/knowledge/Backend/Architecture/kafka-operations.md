@@ -78,15 +78,14 @@ ISR이 **복제의 일관성 단위**다. 쓰기 확인, 리더 선출, 컨슈�
 
 ### 브로커 장애 조치
 
-```text
-브로커 2 다운
-  → 활성 컨트롤러가 하트비트 끊김을 감지 (broker.session.timeout.ms, 기본 9초)
-  → 브로커 2가 리더였던 파티션마다 ISR에 남은 복제본 중 새 리더를 뽑는다
-  → 메타데이터 로그에 기록, 브로커들이 따라 읽는다
-  → 프로듀서·컨슈머는 NOT_LEADER_OR_FOLLOWER 오류를 받고 메타데이터를 새로 받아 새 리더로 재시도한다
-브로커 2 복구
-  → 팔로워로 돌아와 따라잡고 ISR에 다시 들어간다
-  → 선호 리더 선출(auto.leader.rebalance.enable)이 리더 자리를 원래 배치로 되돌린다
+```mermaid
+flowchart TB
+  d["브로커 2 다운"] --> d1["활성 컨트롤러가 하트비트 끊김을 감지<br/>(broker.session.timeout.ms, 기본 9초)"]
+  d1 --> d2["브로커 2가 리더였던 파티션마다<br/>ISR에 남은 복제본 중 새 리더를 뽑는다"]
+  d2 --> d3["메타데이터 로그에 기록, 브로커들이 따라 읽는다"]
+  d3 --> d4["프로듀서·컨슈머는 NOT_LEADER_OR_FOLLOWER 오류를 받고<br/>메타데이터를 새로 받아 새 리더로 재시도한다"]
+  r["브로커 2 복구"] --> r1["팔로워로 돌아와 따라잡고 ISR에 다시 들어간다"]
+  r1 --> r2["선호 리더 선출(auto.leader.rebalance.enable)이<br/>리더 자리를 원래 배치로 되돌린다"]
 ```
 
 리더가 한 브로커에 몰리면 그 브로커만 바빠지므로, 장애 뒤에는 **선호 리더(preferred leader)** 로 리더를 되돌리는 것까지가 복구다. 활성 컨트롤러가 죽으면 쿼럼 안에서 Raft 선거로 새 활성 컨트롤러를 뽑는다.
@@ -339,16 +338,14 @@ for 브로커 in 클러스터:
 
 ### 프로듀서 전송이 느릴 때: 어느 쪽 병목인가
 
-```text
-record-queue-time-avg 높음, bufferpool-wait-ratio > 0
-  → 레코드가 누산기에서 오래 기다린다: 프로듀서 쪽
-    (송신이 못 따라감, 배치가 작아 요청이 너무 많음, buffer.memory 부족, 직렬화·압축 CPU)
-request-latency-avg 높음
-  → 보낸 요청의 왕복이 느리다: 네트워크나 브로커 쪽. 브로커 Produce TotalTimeMs를 쪼개 본다
-      RequestQueueTimeMs 높음 → 요청 처리 스레드 포화 (num.io.threads, RequestHandlerAvgIdlePercent)
-      LocalTimeMs 높음        → 리더의 디스크 쓰기가 느리다
-      RemoteTimeMs 높음       → acks=all에서 팔로워 복제를 기다린다 (느린 팔로워, ISR 문제)
-      ResponseSendTimeMs 높음 → 네트워크 스레드나 대역폭 포화
+```mermaid
+flowchart LR
+  p["record-queue-time-avg 높음,<br/>bufferpool-wait-ratio #gt; 0"] --> pc["레코드가 누산기에서 오래 기다린다: 프로듀서 쪽<br/>(송신이 못 따라감, 배치가 작아 요청이 너무 많음,<br/>buffer.memory 부족, 직렬화·압축 CPU)"]
+  l["request-latency-avg 높음"] --> lc["보낸 요청의 왕복이 느리다: 네트워크나 브로커 쪽<br/>브로커 Produce TotalTimeMs를 쪼개 본다"]
+  lc --> q["RequestQueueTimeMs 높음"] --> qc["요청 처리 스레드 포화<br/>(num.io.threads, RequestHandlerAvgIdlePercent)"]
+  lc --> lt["LocalTimeMs 높음"] --> ltc["리더의 디스크 쓰기가 느리다"]
+  lc --> rt["RemoteTimeMs 높음"] --> rtc["acks=all에서 팔로워 복제를 기다린다<br/>(느린 팔로워, ISR 문제)"]
+  lc --> rs["ResponseSendTimeMs 높음"] --> rsc["네트워크 스레드나 대역폭 포화"]
 ```
 
 배치 크기 평균(`batch-size-avg`)과 요청당 레코드 수(`records-per-request-avg`)가 작으면 브로커가 아니라 배치 설정부터 고친다.

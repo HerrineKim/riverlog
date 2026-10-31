@@ -18,24 +18,18 @@ sources: ["https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had
 
 ## 한 장의 지도
 
-```text
-사용자
-  │  ① DNS: 도메인 → IP
-  ▼
-⑩ CDN ──────────────── 정적 파일(이미지·CSS·JS·영상)
-  │
-  ▼
-② 로드 밸런서 / 리버스 프록시
-  │
-  ▼
-④ 프론트 웹 서버 ── ③ 캐시
-  │
-  ▼
-⑦ 웹 서비스(백엔드) ── ⑤ 캐시
-  │          │
-  │          └─ ⑥ 메시지 큐 ── ⑪ 큐 워커
-  ▼
-⑧ 데이터 저장소      ⑨ 검색엔진
+```mermaid
+flowchart TB
+  user["사용자"] -->|"① DNS: 도메인 → IP"| cdn["⑩ CDN<br/>정적 파일(이미지·CSS·JS·영상)"]
+  cdn --> lb["② 로드 밸런서 / 리버스 프록시"]
+  lb --> fe["④ 프론트 웹 서버"]
+  fe --- c3["③ 캐시"]
+  fe --> ws["⑦ 웹 서비스(백엔드)"]
+  ws --- c5["⑤ 캐시"]
+  ws --- mq["⑥ 메시지 큐"]
+  mq --- wk["⑪ 큐 워커"]
+  ws --> ds["⑧ 데이터 저장소"]
+  se["⑨ 검색엔진"]
 ```
 
 | 번호 | 구성 요소 | 하는 일 |
@@ -198,8 +192,9 @@ NoSQL을 「CP냐 AP냐」로 딱 잘라 분류하는 것은 거친 근사다. M
 
 ### 메시지 큐
 
-```text
-생산자(producer) ──메시지──▶ 메시지 큐(버퍼) ──▶ 소비자(consumer, 큐 워커)
+```mermaid
+flowchart LR
+  p["생산자(producer)"] -->|"메시지"| q["메시지 큐(버퍼)"] --> c["소비자(consumer, 큐 워커)"]
 ```
 
 | 구성 | 역할 |

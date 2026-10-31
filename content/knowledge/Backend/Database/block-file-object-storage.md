@@ -13,13 +13,13 @@ sources: ["https://bytebytego.com/guides/storage-systems-overview", "https://byt
 
 ## 세 가지 스토리지
 
-```text
-애플리케이션
-   │ REST API (PUT/GET 키)         │ 파일 경로 (open/read)       │ 블록 주소 (read block 1024)
-   ▼                               ▼                             ▼
-오브젝트 스토리지                 파일 스토리지                  블록 스토리지
-평평한 버킷 + 키 + 메타데이터       디렉터리 트리                  날것의 블록 볼륨
-   └───── 내부적으로 결국 블록 위에 쌓인다 ─────┘
+```mermaid
+flowchart TB
+  app["애플리케이션"]
+  app -->|"REST API (PUT/GET 키)"| obj["오브젝트 스토리지<br/>평평한 버킷 + 키 + 메타데이터"]
+  app -->|"파일 경로 (open/read)"| file["파일 스토리지<br/>디렉터리 트리"]
+  app -->|"블록 주소 (read block 1024)"| blk["블록 스토리지<br/>날것의 블록 볼륨"]
+  obj & file -.->|"내부적으로 결국 블록 위에 쌓인다"| blk
 ```
 
 | 항목 | 블록 스토리지 | 파일 스토리지 | 오브젝트 스토리지 |
@@ -58,15 +58,30 @@ sources: ["https://bytebytego.com/guides/storage-systems-overview", "https://byt
 
 S3 같은 객체 스토리지는 내부에서 **메타데이터 저장소와 데이터 저장소를 분리**한다. 메타데이터는 작고 자주 조회되며 검색·목록이 필요하고, 데이터는 크고 한 번 쓰면 바뀌지 않으므로 서로 다른 저장 방식이 맞기 때문이다.
 
-```text
-[버킷 생성]  PUT /bucket-to-share
-  API 서비스 → IAM: 인증·쓰기 권한 확인
-  API 서비스 → 메타데이터 저장소: 버킷 항목 생성 → 성공 응답
+[버킷 생성] PUT /bucket-to-share
 
-[객체 업로드]  PUT /bucket-to-share/script.txt
-  API 서비스 → IAM: 이 버킷에 대한 쓰기 권한 확인
-  API 서비스 → 데이터 저장소: payload 저장 → 객체 UUID 반환
-  API 서비스 → 메타데이터 저장소: { object_id(UUID), bucket_id, object_name, ... } 기록
+```mermaid
+sequenceDiagram
+  participant API as API 서비스
+  participant IAM
+  participant Meta as 메타데이터 저장소
+  API->>IAM: 인증·쓰기 권한 확인
+  API->>Meta: 버킷 항목 생성
+  Note over API: 성공 응답
+```
+
+[객체 업로드] PUT /bucket-to-share/script.txt
+
+```mermaid
+sequenceDiagram
+  participant API as API 서비스
+  participant IAM
+  participant Data as 데이터 저장소
+  participant Meta as 메타데이터 저장소
+  API->>IAM: 이 버킷에 대한 쓰기 권한 확인
+  API->>Data: payload 저장
+  Data-->>API: 객체 UUID 반환
+  API->>Meta: { object_id(UUID), bucket_id, object_name, ... } 기록
 ```
 
 - 경로처럼 보이는 `/bucket-to-share/script.txt`는 실제 디렉터리가 아니라 **버킷 이름 + 객체 키**다. 폴더는 키의 접두사로 흉내 낸다.
@@ -77,16 +92,26 @@ S3 같은 객체 스토리지는 내부에서 **메타데이터 저장소와 데
 
 데이터를 잃지 않게 하는 가장 단순한 방법은 **복제**다. 같은 데이터를 3벌 두면 2대가 죽어도 남는다. 대신 저장 공간이 3배다. **이레이저 코딩(erasure coding)** 은 데이터를 조각내고 수학적으로 계산한 **패리티(parity)** 조각을 더해, 일부 조각을 잃어도 나머지로 원본을 복원한다.
 
-```text
 4 + 2 이레이저 코딩
-원본 ──▶ d1  d2  d3  d4   (데이터 조각 4개)
-          └──┬──┘
-       계산  ▼
-            p1  p2         (패리티 조각 2개, 리드-솔로몬 부호 등)
+
+```mermaid
+flowchart TB
+  orig["원본"] --> data
+  subgraph data["데이터 조각 4개"]
+    d1["d1"]
+    d2["d2"]
+    d3["d3"]
+    d4["d4"]
+  end
+  subgraph parity["패리티 조각 2개 (리드-솔로몬 부호 등)"]
+    p1["p1"]
+    p2["p2"]
+  end
+  data -->|"계산"| parity
+```
 
 6개 조각을 서로 다른 서버(가능하면 다른 랙·가용 영역)에 둔다.
 d3, d4를 잃음 → d1, d2, p1, p2로 d3, d4를 다시 계산한다.
-```
 
 | 항목 | 3벌 복제 | 4+2 이레이저 코딩 |
 | --- | --- | --- |
@@ -102,17 +127,18 @@ d3, d4를 잃음 → d1, d2, p1, p2로 d3, d4를 다시 계산한다.
 
 몇 GB짜리 파일을 한 번에 올리면 오래 걸리고, 중간에 연결이 끊기면 처음부터 다시 올려야 한다. **멀티파트 업로드(multipart upload)** 는 파일을 조각내 따로 올리고, 저장소가 마지막에 조립한다.
 
-```text
-클라이언트                                        오브젝트 스토리지
-   │ 1. CreateMultipartUpload ─────────────────────▶ │
-   │ ◀──────────────────────────────── 2. UploadId   │
-   │ 3. UploadPart(UploadId, part 1, 데이터) ───────▶ │
-   │ ◀────────────────────────────── 4. ETag(part 1) │
-   │    … part 2 ~ N (병렬로, 실패한 조각만 재시도)      │
-   │ 5. CompleteMultipartUpload(UploadId,            │
-   │      [part번호, ETag] 목록) ───────────────────▶ │
-   │                              6. 번호순으로 조립   │
-   │ ◀──────────────────────────────────── 완료 응답  │
+```mermaid
+sequenceDiagram
+  participant C as 클라이언트
+  participant S as 오브젝트 스토리지
+  C->>S: 1. CreateMultipartUpload
+  S-->>C: 2. UploadId
+  C->>S: 3. UploadPart(UploadId, part 1, 데이터)
+  S-->>C: 4. ETag(part 1)
+  Note over C,S: … part 2 ~ N (병렬로, 실패한 조각만 재시도)
+  C->>S: 5. CompleteMultipartUpload(UploadId, [part번호, ETag] 목록)
+  Note over S: 6. 번호순으로 조립
+  S-->>C: 완료 응답
 ```
 
 | 이점 | 설명 |

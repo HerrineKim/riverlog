@@ -39,15 +39,21 @@ sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebyte
 
 ## 트랜잭션의 상태
 
-```text
-            ┌──────────────── 오류 ───────────────┐
-            │                                     ▼
- 시작 ──▶ 활동(Active) ──마지막 연산 끝──▶ 부분 완료 ──기록 성공──▶ 완료(Committed)
-            │                     (Partially Committed)
-            └──오류──▶ 실패(Failed) ◀──── 커밋 중 오류 ┘
-                          │
-                          ▼ ROLLBACK
-                       철회(Aborted) ──▶ 재시작 또는 종료
+```mermaid
+stateDiagram-v2
+  direction LR
+  active: 활동(Active)
+  partial: 부분 완료(Partially Committed)
+  committed: 완료(Committed)
+  failed: 실패(Failed)
+  aborted: 철회(Aborted)
+  [*] --> active: 시작
+  active --> partial: 마지막 연산 끝
+  partial --> committed: 기록 성공
+  active --> failed: 오류
+  partial --> failed: 커밋 중 오류
+  failed --> aborted: ROLLBACK
+  aborted --> [*]: 재시작 또는 종료
 ```
 
 | 상태 | 뜻 |
