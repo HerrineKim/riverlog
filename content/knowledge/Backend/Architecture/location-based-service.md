@@ -4,11 +4,11 @@ concept: "Location-Based Service"
 summary: "'내 주변 식당'은 모든 점과의 거리를 계산하면 느리므로 지도를 격자로 나눠 색인한다. 지오해시는 위경도를 접두사가 같으면 가까운 문자열로 바꿔 DB 색인으로 찾고, 쿼드트리는 밀도에 따라 칸을 쪼갠 메모리 트리로 찾는다. 지도 서비스는 위치 수집, 미리 잘라 둔 타일의 CDN 서빙, 지오코딩과 경로 계산으로 나뉜다."
 tags: ["backend", "architecture", "algorithm", "data-structure", "scalability"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/proximity-service", "https://bytebytego.com/guides/quadtree", "https://bytebytego.com/guides/design-google-maps", "https://bytebytego.com/guides/how-do-airtags-work", "https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view", "https://techblog.woowahan.com/2608/"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/proximity-service", "https://bytebytego.com/guides/quadtree", "https://bytebytego.com/guides/design-google-maps", "https://bytebytego.com/guides/how-do-airtags-work", "https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view", "https://techblog.woowahan.com/2608/", "http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Proximity Service](https://bytebytego.com/guides/proximity-service)」, 「[Quadtree](https://bytebytego.com/guides/quadtree)」, 「[Design Google Maps](https://bytebytego.com/guides/design-google-maps)」, 「[How do AirTags work?](https://bytebytego.com/guides/how-do-airtags-work)」, 「[How do Google/Apple Maps blur license plates and human faces on Street View?](https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view)」를 바탕으로 재구성한 노트다. 육각형 격자 거리 근사는 「[배민라이더스 배달 경로와 거리 계산 개발 과정](https://techblog.woowahan.com/2608/)」으로 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[Proximity Service](https://bytebytego.com/guides/proximity-service)」, 「[Quadtree](https://bytebytego.com/guides/quadtree)」, 「[Design Google Maps](https://bytebytego.com/guides/design-google-maps)」, 「[How do AirTags work?](https://bytebytego.com/guides/how-do-airtags-work)」, 「[How do Google/Apple Maps blur license plates and human faces on Street View?](https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view)」를 바탕으로 재구성한 노트다. 육각형 격자 거리 근사는 「[배민라이더스 배달 경로와 거리 계산 개발 과정](https://techblog.woowahan.com/2608/)」으로 보강했다. 차량 배차 사례는 High Scalability의 「[How Uber Scales Their Real-Time Market Platform](http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html)」(2015)로 보강했다.
 
 ## 주변 검색 서비스
 
@@ -121,6 +121,23 @@ flowchart TB
 | 경로 탐색 | **A\*** 알고리즘으로 「지금까지 비용 + 목표까지 추정 거리」가 작은 칸부터 우선순위 큐로 탐색해 탐색 범위를 줄인다 |
 
 위치 로그는 결측과 잡음이 많다. 같은 좌표가 반복되면 고정된 신호원(기지국·와이파이) 위치일 가능성이 있어 전처리에서 걸러 낸다. 수집 주기가 길면 경로 정보가 사라지므로, 분석 목적에 맞는 해상도로 처음부터 수집해야 한다. 목표는 완벽한 최단 경로가 아니라 **충분히 그럴듯하고 빠른 근사**다.
+
+## 실시간 배차: 움직이는 공급과 수요 맞추기
+
+차량 호출 배차는 주변 검색에 **위치가 계속 바뀐다**는 조건이 붙은 문제다. 공급(기사)도 수요(승객)도 제멋대로 움직이고, 위치 색인에 초당 수백만 건의 쓰기가 들어오며 읽기는 그 몇 배다.
+
+```text
+기사 앱 --위치 갱신(수 초마다)--> 공급 서비스 --> 공급 위치 색인(geo by supply)
+승객 요청 --> 수요 서비스 --> 배차 최적화(DISCO)
+  1. 위치 색인에서 근처 후보를 거칠게 거른다(셀 단위)
+  2. 경로·ETA 서비스가 직선거리가 아니라 도로망 기준 도착 시간을 계산한다
+  3. ETA로 정렬해 기사에게 차례로 제안한다
+```
+
+- 공급과 수요를 「승용차·배달 같은 제품」에 묶지 않고 **능력과 요구 조건**으로 일반화하면, 도시·제품마다 따로 만든 배차를 한 시스템으로 합칠 수 있다.
+- 배차 가능한 차만 색인하던 단순화를 버리고 **모든** 공급을 추적하면, 손님을 내려 줄 예정인 차까지 후보로 넣어 전체 대기 시간을 줄인다. 공항처럼 도착 순서가 중요한 곳은 가상 대기열을 따로 둔다.
+- 지도 셀로 색인을 나누고 셀을 서버에 배치할 때 **일관된 해싱 링 + 가십 기반 멤버십**(Uber의 Ringpop, SWIM 프로토콜)을 쓰면, 서버가 늘고 줄어도 각 노드가 자기 담당 셀을 알고 요청을 주인에게 넘긴다.
+- 데이터센터 장애에는 기사 앱을 상태 저장소로 쓰는 방식이 나왔다. 서버가 주기적으로 여정 상태 요약을 기사 폰에 내려 두고, 다른 데이터센터로 넘어갔을 때 폰이 그 상태를 올려 이어 가게 한다.
 
 ## 정리
 

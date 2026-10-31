@@ -1,14 +1,15 @@
 ---
 title: "퍼셉트론과 다층 퍼셉트론"
 concept: "Perceptron"
-summary: "퍼셉트론은 입력과 가중치의 합을 활성화 함수에 통과시키는 인공 뉴런이자 선형 분류기다. 퍼셉트론 학습(경사 하강·델타 규칙), XOR 문제로 드러난 한계, 은닉층을 쌓은 다층 퍼셉트론(MLP)과 오류 역전파 알고리즘을 정리한다."
+summary: "퍼셉트론은 입력과 가중치의 합을 활성화 함수에 통과시키는 인공 뉴런이자 선형 분류기다. 퍼셉트론 학습(경사 하강·델타 규칙), XOR 문제로 드러난 한계, 은닉층을 쌓은 다층 퍼셉트론(MLP)과 오류 역전파 알고리즘, 그 행렬 표기를 정리한다."
 tags: ["ai", "machine-learning", "deep-learning", "neural-network"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/51f014cdd7a147b193d182c151decd51", "https://80000coding.notion.site/738703ab0c4b4bf4b86c0fc8f2580e00"]
+date: "2026-10-31"
+sources: ["https://80000coding.notion.site/51f014cdd7a147b193d182c151decd51", "https://80000coding.notion.site/738703ab0c4b4bf4b86c0fc8f2580e00", "https://www.slideshare.net/ssuser7e10e4/matrix-calculus"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[인공지능] 퍼셉트론 학습 기초이론」, 「인공신경망(AI) 학습 기본 원리」를 바탕으로 재구성한 노트다.
+> 역전파의 행렬 표기는 임성빈의 「[Matrix calculus](https://www.slideshare.net/ssuser7e10e4/matrix-calculus)」로 보강했다.
 
 ## 인공 신경망과 퍼셉트론
 
@@ -102,6 +103,17 @@ MLP의 비용 함수는 보통 출력과 정답의 제곱 오차 합 `J = ½ Σ_
     3. 은닉층 오차  η_j = τ'(z_j) · Σ_k δ_k·v_jk      ← 출력 오차를 거꾸로 나눠 받음
     4. 가중치 갱신  v_jk += ρ·δ_k·z_j,   u_ij += ρ·η_j·xᵢ
 ```
+
+층이 L개인 일반 신경망에서는 같은 계산을 행렬로 한 번에 쓴다. 층 ℓ의 출력은 `z_ℓ = f(W_ℓ z_{ℓ−1})`, 입력은 `z₀ = x`다.
+
+```text
+출력층 오차:  δ_L = f'(W_L z_{L−1}) ⊙ ∇_ŷ L
+뒤로 전파:    δ_ℓ = f'(W_ℓ z_{ℓ−1}) ⊙ (W_{ℓ+1}ᵀ δ_{ℓ+1})
+가중치 기울기: ∂L/∂W_ℓ = δ_ℓ z_{ℓ−1}ᵀ        ← (d_ℓ × d_{ℓ−1}), W_ℓ와 같은 모양
+갱신:         W_ℓ ← W_ℓ − α · ∂L/∂W_ℓ
+```
+
+⊙는 원소별 곱이다. 기울기 행렬이 가중치 행렬과 같은 모양인지 차원을 맞춰 보면 유도 실수를 잡을 수 있다. 손실은 회귀면 평균 제곱 오차, 이진 분류면 교차 엔트로피 `−[y log ŷ + (1 − y) log(1 − ŷ)]`의 배치 평균을 쓴다.
 
 PyTorch·TensorFlow 같은 프레임워크는 이 미분을 자동 미분(autograd)으로 대신 계산한다. 직접 유도할 일은 드물지만, 기울기 소실·폭발 같은 학습 문제를 이해하려면 이 흐름을 알아야 한다.
 

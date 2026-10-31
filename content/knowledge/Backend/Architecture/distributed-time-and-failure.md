@@ -4,11 +4,11 @@ concept: "Distributed Time and Failure"
 summary: "분산 시스템이 어려운 이유는 메시지가 늦게 오고(비동기) 부품이 일부만 고장 나기(부분 장애) 때문이다. 분산 컴퓨팅의 8가지 착각, 대규모 클러스터의 실제 장애 빈도, 전역 '지금'이 없다는 사실, Lamport의 happened-before와 논리 시계, 선형화 가능성부터 최종 일관성·세션 보장까지의 일관성 모델, 합의 문제와 비잔티움 장애·BFT, Raft의 리더 선출과 로그 복제, 합의·CRDT로 조율 비용을 다루는 법을 정리한다."
 tags: ["backend", "architecture", "distributed-system", "network", "database"]
 source: other
-date: "2026-10-21"
-sources: ["https://web.archive.org/web/2020/https://pages.cs.wisc.edu/~zuyu/files/fallacies.pdf", "https://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf", "https://www.microsoft.com/en-us/research/publication/time-clocks-ordering-events-distributed-system/", "https://queue.acm.org/detail.cfm?id=2745385", "https://aphyr.com/tags/jepsen", "https://raft.github.io/raft.pdf", "https://lamport.azurewebsites.net/pubs/byz.pdf", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
+date: "2026-10-31"
+sources: ["https://web.archive.org/web/2020/https://pages.cs.wisc.edu/~zuyu/files/fallacies.pdf", "https://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf", "https://www.microsoft.com/en-us/research/publication/time-clocks-ordering-events-distributed-system/", "https://queue.acm.org/detail.cfm?id=2745385", "https://aphyr.com/tags/jepsen", "https://raft.github.io/raft.pdf", "https://lamport.azurewebsites.net/pubs/byz.pdf", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://lamport.azurewebsites.net/pubs/paxos-simple.pdf", "http://snarfed.org/transactions_across_datacenters_io.html"]
 ---
 
-> Arnon Rotem-Gal-Oz의 「[Fallacies of Distributed Computing Explained](https://web.archive.org/web/2020/https://pages.cs.wisc.edu/~zuyu/files/fallacies.pdf)」, Jeff Dean의 LADIS 2009 기조연설 「[Designs, Lessons and Advice from Building Large Distributed Systems](https://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf)」, Leslie Lamport의 논문 「[Time, Clocks, and the Ordering of Events in a Distributed System](https://www.microsoft.com/en-us/research/publication/time-clocks-ordering-events-distributed-system/)」(1978), Justin Sheehy의 「[There is No Now](https://queue.acm.org/detail.cfm?id=2745385)」(ACM Queue, 2015)를 바탕으로 재구성한 노트다. 일관성 모델, 비잔티움 장애, Raft는 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 Diego Ongaro·John Ousterhout의 「[In Search of an Understandable Consensus Algorithm](https://raft.github.io/raft.pdf)」(2014), Lamport·Shostak·Pease의 「[The Byzantine Generals Problem](https://lamport.azurewebsites.net/pubs/byz.pdf)」(1982)로 채웠다.
+> Arnon Rotem-Gal-Oz의 「[Fallacies of Distributed Computing Explained](https://web.archive.org/web/2020/https://pages.cs.wisc.edu/~zuyu/files/fallacies.pdf)」, Jeff Dean의 LADIS 2009 기조연설 「[Designs, Lessons and Advice from Building Large Distributed Systems](https://www.cs.cornell.edu/projects/ladis2009/talks/dean-keynote-ladis2009.pdf)」, Leslie Lamport의 논문 「[Time, Clocks, and the Ordering of Events in a Distributed System](https://www.microsoft.com/en-us/research/publication/time-clocks-ordering-events-distributed-system/)」(1978), Justin Sheehy의 「[There is No Now](https://queue.acm.org/detail.cfm?id=2745385)」(ACM Queue, 2015)를 바탕으로 재구성한 노트다. 일관성 모델, 비잔티움 장애, Raft는 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 Diego Ongaro·John Ousterhout의 「[In Search of an Understandable Consensus Algorithm](https://raft.github.io/raft.pdf)」(2014), Lamport·Shostak·Pease의 「[The Byzantine Generals Problem](https://lamport.azurewebsites.net/pubs/byz.pdf)」(1982)로 채웠다. Paxos는 Leslie Lamport의 「[Paxos Made Simple](https://lamport.azurewebsites.net/pubs/paxos-simple.pdf)」(2001)로, 복제 방식별 일관성·지연 비교는 Ryan Barrett의 「[Transactions Across Datacenters](http://snarfed.org/transactions_across_datacenters_io.html)」(Google I/O 2009)로 보강했다.
 
 ## 분산 시스템이 어려운 이유
 
@@ -180,6 +180,44 @@ AP 시스템(분할 중에도 응답하는 시스템)이 줄 수 있는 것은 �
 
 근본 차이는 **노드를 믿느냐**다. CFT는 「살아 있는 노드는 프로토콜대로 행동한다」를 믿어 과반만으로 충분하고, BFT는 그 믿음 없이 서로 교차 검증하느라 노드도 메시지도 더 든다.
 
+## Paxos
+
+**Paxos** 는 노드가 멈추거나 메시지를 잃어도 **값 하나에 합의**하게 하는 고전 알고리즘이다. 역할은 셋이다. 값을 제안하는 **제안자(proposer)**, 제안을 받아들이는 **수락자(acceptor)**, 결정된 값을 알게 되는 **학습자(learner)**. 한 노드가 여러 역할을 겸한다. 안전성 조건은 「제안된 값만 선택되고, 값은 하나만 선택되며, 선택되지 않은 값을 선택됐다고 알지 않는다」이다.
+
+```text
+1단계 (prepare / promise)
+  제안자: 새 번호 n을 골라 수락자 과반에 prepare(n)
+  수락자: 이미 응답한 어떤 prepare보다 n이 크면
+          「n보다 작은 제안은 앞으로 받지 않겠다」고 약속하고,
+          지금까지 수락한 제안 중 번호가 가장 큰 것(있으면)을 돌려준다
+2단계 (accept / accepted)
+  제안자: 과반의 약속을 받으면 accept(n, v)를 보낸다.
+          v는 응답에 실려 온 제안 중 번호가 가장 큰 것의 값, 없으면 자기 값
+  수락자: 그사이 더 큰 번호에 약속하지 않았다면 수락한다
+과반이 (n, v)를 수락하면 v가 선택된다
+```
+
+- **과반 정족수가 핵심이다.** 어떤 두 과반도 최소 한 노드를 공유하므로, 이미 선택됐을 수 있는 값은 다음 제안자의 1단계 응답에 반드시 실려 온다. 그래서 새 제안자는 그 값을 이어받을 수밖에 없다.
+- 학습자는 수락자들이 수락 사실을 알려 와서 과반 수락을 확인한다. 메시지를 줄이려면 수락자가 대표 학습자 한 명에게만 알리고 그가 나머지에게 퍼뜨린다.
+- **안전성은 늘 지키지만 진행은 보장하지 않는다.** 두 제안자가 번갈아 더 큰 번호로 1단계를 시작하면 서로의 2단계를 무효로 만들며 끝없이 경쟁할 수 있다. 그래서 대표 제안자(리더) 하나만 제안하게 한다. 리더 선출에는 타임아웃 같은 시간 가정이 필요하며, 이는 비동기 네트워크에서 결정적 합의가 항상 끝나는 알고리즘은 없다는 FLP 불가능성과 맞닿아 있다.
+- **상태 기계 복제는 Paxos를 여러 번 돌려 만든다(Multi-Paxos).** 로그의 칸마다 Paxos 인스턴스 하나를 두고, 안정된 리더는 앞으로의 모든 칸에 대해 1단계를 한 번에 끝내 둔 뒤 칸마다 2단계만 보낸다. 새 리더가 빈칸을 발견하면 아무 효과 없는 no-op 명령으로 채워 순서를 이어 간다.
+
+Raft는 이 구조(리더, 과반 복제, 로그)를 같은 보장으로 다시 짜서 각 부분을 명시적으로 정의한 알고리즘이다.
+
+### 복제 방식별로 얻는 것과 내주는 것
+
+데이터센터를 여러 곳에 두고 쓰기까지 받으려면(multihoming) 어떤 복제 방식을 쓰냐에 따라 얻는 것이 갈린다. 같은 DC 안 왕복은 1ms 안팎이지만 DC 사이는 수십~150ms라서, 동기 합의는 그만큼 쓰기 지연을 치른다.
+
+| 방식 | 일관성 | 트랜잭션 | 지연 | 처리량 | 장애 때 데이터 유실 | 페일오버 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 백업(주기적 복사) | 약함 | 없음 | 낮음 | 높음 | 많음 | 서비스 중단 |
+| 주·복제(비동기) | 최종 | 주 DC 안에서 완전 | 낮음 | 높음 | 일부 | 읽기 전용으로 |
+| 다중 주(multi-master) | 최종 | DC 안에서만 | 낮음 | 높음 | 일부 | 읽기·쓰기 |
+| 2PC | 강함 | 완전 | 높음 | 낮음 | 없음 | 읽기·쓰기 |
+| Paxos | 강함 | 완전 | 높음 | 중간 | 없음 | 읽기·쓰기 |
+
+2PC는 코디네이터 하나가 투표를 모으는 동기 프로토콜이라 무겁고, 코디네이터나 참여자 하나만 멈춰도 막힌다. Paxos는 과반만 응답하면 진행해 같은 강한 일관성을 더 나은 가용성으로 준다. Google Spanner, CockroachDB 같은 분산 SQL이 Paxos·Raft 위에서 DC를 넘는 트랜잭션을 제공하는 이유다. 2PC 자체와 사가 같은 대안은 [[distributed-transaction|분산 트랜잭션]]에 있다.
+
 ## Raft
 
 **Raft** 는 이해하기 쉬운 것을 목표로 2014년에 나온 합의 알고리즘이다. Paxos와 같은 보장을 주면서 문제를 리더 선출, 로그 복제, 안전성으로 나눴다. 시간은 **임기(term)** 라는 단조 증가 번호로 나뉘고, 임기마다 리더는 많아야 하나다.
@@ -266,4 +304,4 @@ sequenceDiagram
 - 합의는 과반(2f+1)으로 중단 장애를, 3f+1과 교차 검증으로 비잔티움 장애를 견딘다. Raft는 무작위 타임아웃 선거와 과반 복제로 로그 순서를 맞춘다.
 - 조율은 비싸다. 꼭 필요한 곳에만 합의를 쓰고, 나머지는 CRDT·멱등 연산처럼 순서가 필요 없는 설계로 뺀다.
 
-관련 노트: [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[distributed-system-patterns|분산 시스템의 통신·데이터 흐름 패턴]], [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]], [[backend-latency-optimization|백엔드 지연 시간 줄이기: 숫자 감각과 기법]]
+관련 노트: [[database-models|데이터베이스 모델: RDB, NoSQL, NewSQL]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[distributed-system-patterns|분산 시스템의 통신·데이터 흐름 패턴]], [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]], [[backend-latency-optimization|백엔드 지연 시간 줄이기: 숫자 감각과 기법]], [[classic-distributed-systems|고전 분산 시스템 설계]]

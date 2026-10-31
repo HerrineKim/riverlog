@@ -4,11 +4,11 @@ concept: "Virtualization"
 summary: "하나의 물리 머신 위에 여러 운영체제를 돌리는 서버 가상화의 원리. 하이퍼바이저 Type 1·2 분류와 전가상화·반가상화·하드웨어 지원 가상화의 차이, 운영체제 수준 가상화(컨테이너), 샌드박스로서의 VM, 가상 네트워크 모드를 정리한다."
 tags: ["os", "virtualization", "devops", "security", "linux"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/7638f02b1afe4ec697def740fb87ddf5", "https://80000coding.notion.site/a6441099745c4aff8cd50a5ac36c7238", "https://80000coding.notion.site/506a40f3aed7484aa461027f014aff35", "https://80000coding.notion.site/369d9cf9c1a4418f8efb4943ea952da4", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/6020ebc86a2c468e9440a5686272a925"]
+date: "2026-10-31"
+sources: ["https://80000coding.notion.site/7638f02b1afe4ec697def740fb87ddf5", "https://80000coding.notion.site/a6441099745c4aff8cd50a5ac36c7238", "https://80000coding.notion.site/506a40f3aed7484aa461027f014aff35", "https://80000coding.notion.site/369d9cf9c1a4418f8efb4943ea952da4", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/6020ebc86a2c468e9440a5686272a925", "https://bcho.tistory.com/805", "http://www.joinc.co.kr/modules/moniwiki/wiki.php/man/12/docker", "http://opennaru.tistory.com/9", "http://hatemogi.com/holiday-project-day-13/", "http://www.yongbok.net/blog/how-to-install-docker-on-ubuntu/"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「웅성웅성.. 뭔 가상화 종류가 이렇게 많아….」, 「가상 머신(Virtual Machine, VM)이란?」, 「가상 머신(VM)과 컨테이너」, 「여러분은 인터넷에 있는 파일을 의심해본 적이 있나요?!!」, 「서버 관리 맛보기」, 「m1, m2 Mac 에서 VMware를 통해 Ubuntu 설치」를 바탕으로 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「웅성웅성.. 뭔 가상화 종류가 이렇게 많아….」, 「가상 머신(Virtual Machine, VM)이란?」, 「가상 머신(VM)과 컨테이너」, 「여러분은 인터넷에 있는 파일을 의심해본 적이 있나요?!!」, 「서버 관리 맛보기」, 「m1, m2 Mac 에서 VMware를 통해 Ubuntu 설치」를 바탕으로 재구성한 노트다. 컨테이너의 계보는 「[Docker란 무엇인가?](https://bcho.tistory.com/805)」, Joinc의 「[Docker](http://www.joinc.co.kr/modules/moniwiki/wiki.php/man/12/docker)」, 「[오픈소스 슈퍼루키 Docker 이해하기](http://opennaru.tistory.com/9)」, 「[컨테이너 기반 가상화 프레임워크 Docker](http://hatemogi.com/holiday-project-day-13/)」, 「[How to install docker on ubuntu](http://www.yongbok.net/blog/how-to-install-docker-on-ubuntu/)」로 보강했다.
 
 ## 가상화란
 
@@ -100,6 +100,8 @@ Type 1·2 분류와 전가상화·반가상화 분류는 서로 독립이다. "T
 | seccomp, LSM(AppArmor·SELinux) | 쓸 수 있는 시스템 콜과 접근 대상 제한 |
 
 컨테이너는 수 초 안에 뜨고 이미지가 작지만, 커널을 공유하므로 커널 취약점 하나가 격리를 깰 수 있고 호스트와 다른 커널(예: Linux 위의 Windows)은 돌릴 수 없다. VM과 컨테이너의 비교표, Docker와 오케스트레이션은 [[vm-vs-container|VM과 컨테이너]]에, 네트워크 네임스페이스를 직접 만드는 과정은 [[linux-network-namespace|리눅스 네트워크 네임스페이스와 ip 명령]]에 있다. 둘을 섞은 경량 VM(Firecracker, Kata Containers)은 컨테이너처럼 빨리 뜨면서 VM 수준으로 격리한다.
+
+운영체제 수준 가상화는 Docker보다 오래됐다. FreeBSD jail(2000), Solaris Zones(2004), 리눅스의 LXC(2008)가 같은 일을 했다. 2013년 공개된 Docker는 처음에 LXC를 감싼 도구에 AUFS 층 이미지를 붙인 것이었고, 0.9(2014)에서 자체 라이브러리 libcontainer로 바꿔 LXC 의존을 끊었다. libcontainer는 뒤에 OCI 런타임 runc가 됐다. Docker의 기여는 새 격리 기술이 아니라 복잡한 커널 기능을 API·CLI로 감싸고, **층 이미지와 레지스트리(push·pull)라는 배포 단위**를 붙인 데 있다.
 
 ## 샌드박스로서의 VM
 

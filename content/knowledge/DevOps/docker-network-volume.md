@@ -4,11 +4,11 @@ concept: "Docker Networking"
 summary: "Docker 네트워크 드라이버(bridge·host·none·overlay·macvlan)의 동작, bridge 네트워크의 veth·NAT 원리, 사용자 정의 네트워크와 내장 DNS, 포트 공개(-p)와 EXPOSE의 차이, 컨테이너 간 통신 제한, 그리고 볼륨·바인드 마운트·tmpfs의 차이와 볼륨 수명·드라이버·읽기 전용 마운트, 이미지 층을 저장하는 스토리지 드라이버를 정리한다."
 tags: ["docker", "devops", "container", "network", "storage"]
 source: other
-date: "2026-10-30"
-sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/engine/network/", "https://docs.docker.com/engine/network/drivers/bridge/", "https://docs.docker.com/engine/network/port-publishing/", "https://docs.docker.com/engine/storage/", "https://docs.docker.com/engine/storage/volumes/", "https://docs.docker.com/engine/storage/drivers/select-storage-driver/", "https://www.docker.com/blog/docker-engine-version-29/"]
+date: "2026-10-31"
+sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/engine/network/", "https://docs.docker.com/engine/network/drivers/bridge/", "https://docs.docker.com/engine/network/port-publishing/", "https://docs.docker.com/engine/storage/", "https://docs.docker.com/engine/storage/volumes/", "https://docs.docker.com/engine/storage/drivers/select-storage-driver/", "https://www.docker.com/blog/docker-engine-version-29/", "http://slides.com/anarcher/docker-2014-11-30-springsprout#/", "http://slides.com/seapy/docker-ambassador#/", "https://speakerdeck.com/anarcher/multi-host-networking-with-docker", "http://slides.com/subicura/docker-tip", "http://slides.com/seapy/fig-use-story", "http://blog.nacyot.com/articles/2014-07-17-graphite-with-dokcer/", "https://gist.github.com/nacyot/8366310", "https://dayone.me/1agvzvw"]
 ---
 
-> fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」 항목이 묻는 개념을 Docker 공식 문서로 확인해 정리한 노트다.
+> fru1tworld/cs-basic 모의 면접 질문 목록의 「[Docker](https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md)」 항목이 묻는 개념을 Docker 공식 문서로 확인해 정리한 노트다. 링크·앰배서더·외부 KV 기반 overlay·CNM의 변천, 데이터 볼륨 컨테이너, 동적 포트와 자동 리버스 프록시는 「[도커 사용에 유용한 유틸리티와 팁](http://slides.com/anarcher/docker-2014-11-30-springsprout#/)」, 「[Docker Ambassador 패턴](http://slides.com/seapy/docker-ambassador#/)」, 「[Multi-Host networking with Docker](https://speakerdeck.com/anarcher/multi-host-networking-with-docker)」, 「[Docker 배포할 때 알면 좋은 팁](http://slides.com/subicura/docker-tip)」, 「[fig 사용기](http://slides.com/seapy/fig-use-story)」, 「[Graphite + Grafana 모니터링 구축 with Docker](http://blog.nacyot.com/articles/2014-07-17-graphite-with-dokcer/)」, 「[Docker 치트 시트](https://gist.github.com/nacyot/8366310)」, 「[본격적으로 쓰는 Docker](https://dayone.me/1agvzvw)」로 보강했다.
 
 컨테이너는 기본적으로 네트워크와 파일 시스템이 격리되어 있다. 이 노트는 그 격리를 어떻게 열고 잇는가를 다룬다. Compose에서 이를 선언하는 방법은 [[docker-compose|Docker Compose: 여러 컨테이너 묶어 띄우기]]에, 이미지 층과 쓰기 층의 구조는 [[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]]에 있다.
 
@@ -49,6 +49,20 @@ flowchart LR
 
 overlay는 여러 Docker 호스트에 흩어진 컨테이너를 같은 L2 네트워크에 있는 것처럼 잇는다. 호스트 사이 패킷은 VXLAN으로 감싸 보내고, 옵션으로 암호화(IPsec)할 수 있다. Swarm 모드(`docker swarm init`)가 키·라우팅 정보를 관리하므로 Swarm에서 쓰며, 독립 컨테이너도 `--attachable`로 붙일 수 있다. 쿠버네티스에서는 이 역할을 CNI 플러그인이 맡는다([[kubernetes-networking|쿠버네티스 네트워킹]]).
 
+overlay는 세 부분으로 이뤄진다. 호스트 사이를 잇는 **VXLAN**(IP/UDP 위에 논리적 L2를 만든다), 노드끼리 서로를 알아보는 gossip 프로토콜, 그리고 어떤 네트워크·서브넷·컨테이너가 어느 노드에 있는지 담는 **네트워크 상태 저장소**다. 과거(Docker 1.9 무렵)에는 이 상태를 외부 키-값 저장소(Consul·etcd·ZooKeeper)에 두고 데몬마다 `--cluster-store`로 가리켰다. Swarm 모드부터는 매니저의 내장 Raft 저장소가 이를 맡아 외부 저장소 없이 만들고, 외부 KV 방식은 제거됐다.
+
+### CNM과 CNI
+
+Docker의 네트워킹은 libnetwork 라이브러리가 **CNM(Container Network Model)** 으로 구현한다.
+
+| CNM 개념 | 뜻 |
+| --- | --- |
+| 샌드박스(sandbox) | 컨테이너의 격리된 네트워크 스택(인터페이스, 라우팅 표, DNS 설정). 리눅스에서는 네트워크 네임스페이스 |
+| 엔드포인트(endpoint) | 샌드박스를 한 네트워크에 붙이는 인터페이스(veth 한쪽). 엔드포인트 하나는 네트워크 하나에만 속한다 |
+| 네트워크(network) | 서로 직접 통신할 수 있는 엔드포인트의 묶음. bridge·overlay 같은 드라이버가 구현한다 |
+
+쿠버네티스는 CNM 대신 더 단순한 **CNI**(런타임이 파드를 만들 때 플러그인 실행 파일을 호출해 인터페이스와 IP를 받는 규약)를 택했다. 그래서 Docker의 네트워크 드라이버와 쿠버네티스의 CNI 플러그인은 서로 바꿔 끼울 수 없다.
+
 ## 사용자 정의 네트워크와 내장 DNS
 
 ```bash
@@ -66,6 +80,8 @@ docker run -d --name api --network app-net -e DB_HOST=db myapi:1.0   # "db"라�
 
 **내장 DNS**: 사용자 정의 네트워크의 컨테이너는 `/etc/resolv.conf`에 `127.0.0.11`을 DNS 서버로 받는다. Docker 엔진이 이 주소에서 질의를 받아 같은 네트워크의 컨테이너 이름, `--network-alias`, Compose 서비스 이름을 IP로 풀고, 나머지 이름은 호스트의 DNS로 넘긴다. 같은 별칭을 여러 컨테이너에 주면 IP 여러 개를 돌려줘 간단한 라운드 로빈이 된다. 컨테이너가 다시 만들어져 IP가 바뀌어도 이름은 그대로라, 설정에 IP를 적지 않는다.
 
+과거에는 `--link db:db`로 컨테이너를 이었다. 링크는 대상의 IP·포트를 `DB_PORT_5432_TCP_ADDR` 같은 환경 변수와 `/etc/hosts` 항목으로 주입했는데, 한 호스트 안에서만, 한 방향으로만 동작했고, 대상 컨테이너를 지우고 새로 만들면 옛 IP가 남아 깨졌다. 다른 호스트의 서비스에 닿으려면 **앰배서더(ambassador) 패턴**을 썼다. 앱 옆에 프록시 컨테이너(`socat TCP4-LISTEN:6379,fork TCP4:<원격 IP>:6379` 한 줄)를 두고 앱은 로컬의 앰배서더에만 붙어, 원격 위치는 앰배서더가 숨겼다. `--link`는 레거시가 되어 내장 DNS로 대체됐고, 앰배서더는 서비스 메시의 사이드카 프록시로 이어졌다.
+
 ## 포트 공개: `-p`와 EXPOSE
 
 | | `EXPOSE` (Dockerfile) | `-p` / `--publish` (실행 시) |
@@ -81,6 +97,8 @@ docker port <컨테이너>                  # 공개된 포트 확인
 ```
 
 `-p 8080:80`은 기본으로 `0.0.0.0`에 바인드되고, Docker가 iptables 규칙을 직접 넣기 때문에 **ufw 같은 호스트 방화벽 규칙을 우회한다.** 외부에 열 필요가 없는 DB·관리 포트는 `127.0.0.1`에만 바인드하거나 아예 공개하지 않는다. 컨테이너 안 서버는 `0.0.0.0`으로 들어야 포트 공개가 동작한다(`127.0.0.1`로 들면 컨테이너 밖에서 닿지 않는다).
+
+호스트 포트를 고정하면(`-p 80:80`) 새 버전 컨테이너를 띄우기 전에 옛것을 먼저 멈춰야 해 순단이 생긴다. 그래서 앱 컨테이너는 호스트 포트를 정하지 않고(`-P` 또는 네트워크 안에서만 노출) 앞단 리버스 프록시가 새 컨테이너로 트래픽을 옮기게 한다. 이 갱신을 자동화한 것이 Docker 이벤트를 보고 설정을 다시 쓰는 프록시다. 과거의 nginx-proxy(docker-gen 템플릿, `VIRTUAL_HOST` 환경 변수)에서 지금의 Traefik(컨테이너·서비스 라벨, `--providers.docker`·`--providers.swarm`)으로 이어졌다. 이런 프록시는 Docker 소켓을 읽으므로 그 권한을 조심한다([[docker-container-operations|Docker 컨테이너 운영]]).
 
 ## 컨테이너 간 통신 제한
 
@@ -171,6 +189,8 @@ docker run --rm -v pgdata:/data:ro -v "$PWD":/backup alpine:3.22 tar czf /backup
 
 DB는 파일 복사보다 DB 자체의 덤프·백업 도구가 일관성을 보장한다.
 
+과거에는 이름 있는 볼륨이 없어서 **데이터 볼륨 컨테이너**를 썼다. `busybox`에 `VOLUME /data`만 선언한 컨테이너를 만들어 두고 앱 컨테이너가 `--volumes-from appdata`로 그 볼륨을 공유해, 앱 컨테이너를 지워도 데이터가 남게 했다. 당시 Compose(fig)는 `up` 때 이 데이터 컨테이너까지 다시 만들어 DB가 날아가는 문제가 있어 호스트 경로 바인드로 피하곤 했다. Docker 1.9(2015)의 이름 있는 볼륨(`docker volume create`)이 이 패턴을 대체했다. `--volumes-from`은 아직 동작하지만 쓸 이유가 거의 없다.
+
 ### 볼륨 드라이버
 
 볼륨 드라이버는 볼륨 데이터를 어디에 저장할지 정한다. 기본 `local` 드라이버는 호스트 디스크에 두지만, 옵션으로 NFS·CIFS 같은 네트워크 파일 시스템을 마운트할 수도 있다.
@@ -208,7 +228,8 @@ docker run --read-only --tmpfs /tmp myapp:1.0     # 컨테이너 루트 파일 �
 | containerd 스냅숏터 (`overlayfs` 등) | Docker 29부터 새로 설치하면 기본 | containerd 이미지 저장소를 쓴다. 멀티 플랫폼 이미지와 이미지 증명(attestation)을 로컬에 그대로 보관한다. 옛 그래프 드라이버 방식은 폐기 예정이다 |
 | `btrfs` · `zfs` | 해당 파일 시스템 위에서만 | 파일 시스템의 스냅숏 기능을 쓴다. 그 파일 시스템을 이미 운영할 때 |
 | `vfs` | 테스트용 | copy-on-write 없이 층마다 전체 복사. 느리고 디스크를 많이 쓴다 |
-| `aufs` · `devicemapper` | 제거됨 | 과거 Ubuntu·RHEL의 기본값이었다 |
+| `devicemapper` | 폐기 예정(deprecated) | 과거 RHEL·CentOS의 기본값. 블록 장치 위 씬 프로비저닝 |
+| `aufs` | 제거됨 | 초기 Docker와 과거 Ubuntu의 기본값. 커널 본선에 들어가지 못했다 |
 
 특별한 이유가 없으면 기본값을 쓴다. 쓰기가 많은 데이터는 어떤 스토리지 드라이버를 써도 copy-on-write 비용이 있으므로 볼륨에 둔다.
 

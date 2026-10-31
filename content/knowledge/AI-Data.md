@@ -4,7 +4,7 @@ concept: "AI & Data"
 summary: "LLM·에이전트 도구(Claude Code, 스킬, 루프 엔지니어링)와 AI 활용법, 머신 러닝·딥러닝·강화 학습·자연어 처리의 기초 개념, 파이썬 데이터 분석·Jupyter 같은 데이터 도구에 관한 노트."
 tags: ["data-science", "python", "analysis", "ai", "llm"]
 source: notion
-date: "2026-10-14"
+date: "2026-10-31"
 ---
 
 AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 목표를 공유하는 분야이다. 이 분야에는 Claude Code·스킬·루프 엔지니어링 같은 LLM 에이전트 도구와 프롬프트 설계, AI로 UI를 만드는 방법, 퍼셉트론·트리 앙상블·강화 학습·자연어 처리 같은 머신 러닝 기초 개념, 그리고 파이썬 데이터 분석 흐름과 표준 도구인 Jupyter Notebook을 정리했다.
@@ -12,8 +12,13 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 ## 하위 노트
 
 - [파이썬 데이터 분석 프로세스](AI-Data/python-data-analysis.md): 데이터 수집 → 처리 → EDA·시각화 → 성능 개선
-- [데이터 파이프라인과 저장소 용어](AI-Data/data-pipeline-basics.md): 수집 → 적재 → 저장 → 처리 → 활용, 배치·스트림, ETL·ELT, 웨어하우스·레이크·레이크하우스·데이터 메시
+- [데이터 파이프라인과 저장소 용어](AI-Data/data-pipeline-basics.md): 수집 → 적재 → 저장 → 처리 → 활용, 단계별 도구 지도, 배치·스트림과 Lambda·Kappa, ETL·ELT, 웨어하우스·레이크·레이크하우스·데이터 메시
+- [이벤트 로그 설계와 수집](AI-Data/event-log-design.md): 지표에서 거꾸로 설계, 기록 시점 기준·검증, 테이블 모양 로그, 스키마 공유, 에이전트 → 스트림 버퍼 → 원본·검색 인덱스, 수집 감시
+- [분산 데이터 처리: MapReduce, Spark, SQL 엔진](AI-Data/distributed-data-processing.md): 빅데이터의 기준, RDD 계보·지연 실행·좁은/넓은 의존성, DataFrame·Spark SQL, Trino, Parquet
+- [프로덕트 데이터 분석: 지표, 로그, 실험](AI-Data/product-analytics.md): AARRR·OMTM, 지표의 조작적 정의·저량과 유량·선행 지표, 로그 설계와 품질, 심슨의 역설·코호트·퍼널, A/B 테스트와 밴딧
+- [데이터 직군: 분석가·엔지니어·머신러닝 엔지니어·사이언티스트](AI-Data/data-job-roles.md): 성향으로 나눈 네 데이터 직군의 업무·역량·자격 요건, 새 직군, 기대와 현실, 학습 로드맵, 포트폴리오와 채용 면접
 - [데이터의 위치 추정: 평균·절사평균·가중평균·중앙값](AI-Data/location-estimation.md): 이상치에 흔들리는 산술평균과 그 대안, 상황별 대푯값 고르기
+- [시계열 분석: 정상성·분해·ARIMA에서 Prophet과 딥러닝 예측까지](AI-Data/time-series-analysis.md): 정상성과 단위근 검정, STL 분해, 지수평활·ARIMA·SARIMAX, Prophet, seq2seq·인과 합성곱 예측, 시간 순서 평가, DTW 분류·군집
 - [newspaper로 기사 본문 추출하기](AI-Data/newspaper-article-scraping.md): 사이트별 파서 없이 기사 제목·본문·메타데이터 추출, newspaper4k, Source로 기사 URL 모으기, 설정과 한계
 - [네이버 블로그 크롤링](AI-Data/naver-blog-crawling.md): 검색 API로 글 목록, PostView 주소로 iframe 속 본문 받기, 선택자 변경·예외 처리 함정
 - [웹 크롤링 전략: 정적·동적 판별과 수집 방식 고르기](AI-Data/web-scraping-strategy.md): 공식 API → 숨은 데이터 엔드포인트 → 헤드리스 브라우저 순으로 가벼운 방식 고르기
@@ -23,16 +28,18 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [머신 러닝 기초: 네 단계 추상화](AI-Data/machine-learning-basics.md): 데이터 → 모델 → 손실 → 최적화, 지도·비지도, 최소제곱법, 과적합·MLE·MAP·정규화
 - [퍼셉트론과 다층 퍼셉트론](AI-Data/perceptron-mlp.md): 인공 뉴런·활성화 함수, 퍼셉트론 학습과 XOR 한계, MLP와 오류 역전파
 - [딥러닝 직관으로 이해하기: 신경망으로 숫자에서 패턴 찾기](AI-Data/deep-learning-intuition.md): 모든 것이 숫자인 컴퓨터, 규칙으로 못 적는 패턴, 프로그래밍과 학습의 차이, 층별 특징과 해석의 어려움, 강화 학습과 알파제로, 전이 학습
-- [컴퓨터 비전 기초: 커널과 합성곱에서 CNN까지](AI-Data/computer-vision-basics.md): 색 추적, 패치·커널·합성곱과 프리윗 에지 검출, Viola-Jones 얼굴 검출, 커널을 학습하는 CNN과 비전 트랜스포머, 랜드마크·표정·생체 인식
+- [컴퓨터 비전 기초: 커널과 합성곱에서 CNN까지](AI-Data/computer-vision-basics.md): 영상 처리와의 차이, 분류·탐지·분할 등 세부 과제, 색 추적, 패치·커널·합성곱과 프리윗 에지 검출, Viola-Jones 얼굴 검출, 커널을 학습하는 CNN과 비전 트랜스포머, 랜드마크·표정·생체 인식
 - [결정 트리와 앙상블: 랜덤 포레스트와 부스팅](AI-Data/decision-tree-ensemble.md): 지니 불순도, 배깅과 부스팅 비교, 정형 데이터에 강한 트리 모델, 서버·엣지 배포
-- [분류 모델 성능 평가 지표](AI-Data/classification-metrics.md): 혼동 행렬, 정밀도·재현율·정확도·F1, 객체 탐지의 IoU·PR 곡선·AP·mAP
+- [분류 모델 성능 평가 지표](AI-Data/classification-metrics.md): 혼동 행렬, 정밀도·재현율·정확도·F1, ROC·AUC, 회귀 지표, 객체 탐지의 IoU·PR 곡선·AP·mAP
+- [논문 읽기와 구현](AI-Data/paper-reading-implementation.md): 논문 고르기와 여러 번 나눠 읽기, 이해 점검 네 질문, 구현할 때의 태도, 재현 가능한 코드 공개 다섯 가지
 - [서비스용 텍스트 분류 모델 만들기](AI-Data/text-classification-in-production.md): 라벨 기준, 노이즈 많은 텍스트 토큰화, 가벼운 모델, 클래스 불균형, 라벨 오류 찾기와 재학습, 다중 입력 모델
-- [머신러닝 모델 서빙](AI-Data/ml-model-serving.md): 동기 API와 큐 기반 비동기 워커, 가중치·이미지 분리, 배치 처리, 헬스 체크·배포 게이트, BentoML
+- [머신러닝 모델 서빙](AI-Data/ml-model-serving.md): 배포 방식과 CPU·GPU 선택, 동기 API와 큐 기반 비동기 워커, 가중치·이미지 분리, 배치 처리, 헬스 체크·배포 게이트, BentoML
+- [MLOps: 머신러닝을 운영 환경에서 굴리기](AI-Data/mlops.md): 서빙·버전 관리·모니터링·재학습, 생명 주기별 도구, Kubeflow Pipelines, ML 테스트, 학습·서빙 불일치
 - [불확실한 지식으로 추론하기: 베이지안 분류기와 퍼지 추론](AI-Data/bayesian-fuzzy-inference.md): 베이즈 정리·최소 오류/위험 분류기·나이브 베이즈, 퍼지 집합·관계·논리
 - [지능형 튜터링 시스템과 베이지안 지식 추적](AI-Data/intelligent-tutoring-system.md): 생성 규칙·버그 규칙의 도메인 모델, 학생 모델, 숙달·추측·실수·전이 확률의 BKT 갱신식, 숙달 학습과 적응형 순서, LLM 튜터
 - [강화 학습: 에이전트·MDP·가치 함수와 알고리즘 분류](AI-Data/reinforcement-learning.md): 상태·행동·보상, MDP, 리턴·Q 함수·벨만 방정식, 모델 기반/프리·가치/정책·온/오프 정책
 - [비헤이비어 트리](AI-Data/behavior-tree.md): 틱마다 깊이 우선 평가, Success·Failure·Running, Sequence·Selector·Parallel과 데코레이터, FSM과 비교
-- [자연어 처리 파이프라인: 전처리부터 언어 모델까지](AI-Data/nlp-pipeline.md): 말뭉치 → 토큰화·정규화·인코딩 → 언어 모델(n-gram → 트랜스포머 → LLM) → 평가
+- [자연어 처리 파이프라인: 전처리부터 언어 모델까지](AI-Data/nlp-pipeline.md): 과제 분류, 말뭉치 → 토큰화·정규화·인코딩 → 언어 모델(n-gram → 트랜스포머 → LLM) → 평가
 - [LLM은 무엇을 하고 왜 작동하나](AI-Data/how-llm-works.md): 다음 토큰 예측과 온도, 파일 두 개와 손실 압축, 환각과 역전 저주, 임베딩, 트랜스포머 내부 구조, 사전·사후 학습, 스케일링 법칙, 계산 환원 불가능성과 시스템 2·자기 개선·도구로 넘는 법
 - [LLM 보안 공격: 탈옥, 프롬프트 인젝션, 데이터 중독](AI-Data/llm-security-attacks.md): 역할극·Base64·최적화된 접미사 탈옥, 숨은 글씨·검색 결과·공유 문서로 데이터 빼내기, 250개 문서로 심는 백도어, 고양이와 쥐 게임
 - [LLM 서빙의 병목: KV 캐시, 배치, GPU](AI-Data/llm-serving-at-scale.md): 어텐션 비용과 KV 캐시, 산술 강도와 배치 크기, 속이는 GPU 사용률, GPU를 따라가는 배치와 오토스케일 불가, PagedAttention·연속 배치·프롬프트 캐싱

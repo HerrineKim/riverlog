@@ -4,11 +4,12 @@ concept: "Recommender System"
 summary: "사용자가 좋아할 아이템을 예측해 골라 주는 추천 시스템을 묶은 주제다. 추천이 나오는 세 자리, 협업·콘텐츠 기반 필터링의 기초, 후보 생성 → 랭킹의 딥러닝 구조, 밴딧과 실시간 피드백·A/B 테스트를 하위 노트로 나누고, 실서비스에서 반복되는 설계 원칙을 정리했다."
 tags: ["ai", "machine-learning", "recommender-system", "deep-learning"]
 source: other
-date: "2026-10-20"
-sources: ["https://news.hada.io/topic?id=2385", "https://github.com/SeongBeomLEE/RecSys-Tech-Blog-Article"]
+date: "2026-10-31"
+sources: ["https://news.hada.io/topic?id=2385", "https://github.com/SeongBeomLEE/RecSys-Tech-Blog-Article", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C"]
 ---
 
 > 국내 기업 기술 블로그의 추천 시스템 글 20편 목록(GeekNews, 2020)을 출발점으로, 찾을 수 있는 원문과 각 사 공식 발표를 모아 재구성한 주제다. 각 노트에 실제로 참고한 원문을 밝혔다.
+> Team-Neighborhood의 「[I want to study Data Science](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C)」 위키 「추천 시스템」 문서가 모은 자료(베이스라인·이웃 기반 CF, Item2Vec, 밴딧과 타기팅, SQL 기반 베스트·연관 추천)는 각 하위 노트에 나눠 넣었다.
 
 ## 추천 시스템이란
 
@@ -45,9 +46,9 @@ sources: ["https://news.hada.io/topic?id=2385", "https://github.com/SeongBeomLEE
 
 ## 하위 노트
 
-- [추천 시스템 기초: 협업 필터링과 콘텐츠 기반 필터링](AI-Data/Recommender-System/recsys-basics.md): 명시적·암묵적 피드백, 행렬 분해(ALS)와 오토인코더, 오디오·텍스트·이미지 임베딩, 앙상블과 폴백, 콜드 스타트·희소성·인기 편향, 평가 지표
-- [딥러닝 추천 시스템: 후보 생성과 랭킹](AI-Data/Recommender-System/deep-learning-recsys.md): 유튜브식 2단계 구조, 다음 아이템 예측 학습, 유사 벡터 검색, 학습·서빙 파이프라인, 순차 추천, 크로스오버·멀티모달·맥락 인식 추천, 장기 가치와 파운데이션 추천 모델
-- [실시간 추천과 실험: 밴딧, 피드백 지연, A/B 테스트](AI-Data/Recommender-System/realtime-recsys.md): 멀티암드 밴딧과 톰슨 샘플링, 뉴스 추천의 시간 감쇠·위치 편향, CTR을 넘어 열독률, 실시간 파이프라인 구조, 버킷 실험, 투명성과 사용자 조절권
+- [추천 시스템 기초: 협업 필터링과 콘텐츠 기반 필터링](AI-Data/Recommender-System/recsys-basics.md): 명시적·암묵적 피드백, 베이스라인 모형과 이웃 기반 CF, 행렬 분해(ALS)와 오토인코더, 오디오·텍스트·이미지 임베딩, 앙상블과 폴백, 콜드 스타트·희소성·인기 편향, 평가 지표
+- [딥러닝 추천 시스템: 후보 생성과 랭킹](AI-Data/Recommender-System/deep-learning-recsys.md): 유튜브식 2단계 구조, 다음 아이템 예측 학습, Item2Vec, 유사 벡터 검색, 학습·서빙 파이프라인, 순차 추천, 크로스오버·멀티모달·맥락 인식 추천, 장기 가치와 파운데이션 추천 모델
+- [실시간 추천과 실험: 밴딧, 피드백 지연, A/B 테스트](AI-Data/Recommender-System/realtime-recsys.md): ε-greedy·톰슨 샘플링·UCB 밴딧, 사용자 군집과 타기팅, 뉴스 추천의 시간 감쇠·위치 편향, CTR을 넘어 열독률, 실시간 파이프라인 구조, 버킷 실험, 투명성과 사용자 조절권
 
 ## 읽는 순서
 

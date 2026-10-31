@@ -4,11 +4,11 @@ concept: "Tech Blogging"
 summary: "남에게 설명하며 이해의 빈틈을 찾고, 기록이 포트폴리오와 기회가 된다. 메모가 아닌 완성된 글을 형식을 정해 쓰고, 오래 보존할 수 있는 도구와 검색·구독 채널로 꾸준히 운영한다."
 tags: ["career", "writing", "blog", "growth", "seo"]
 source: other
-date: "2026-10-21"
-sources: ["https://taegon.kim/archives/7107", "https://www.44bits.io/ko/post/8-suggestions-for-tech-programming-blog", "https://diataxis.fr/"]
+date: "2026-10-31"
+sources: ["https://taegon.kim/archives/7107", "https://www.44bits.io/ko/post/8-suggestions-for-tech-programming-blog", "https://diataxis.fr/", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4", "https://brunch.co.kr/@gimmesilver/41", "https://www.slideshare.net/zzsza/intro-102870757"]
 ---
 
-> 「[개발자가 블로그를 운영해야 할 이유](https://taegon.kim/archives/7107)」, 「[좋은 기술 블로그를 만들어 나가기 위한 8가지 제언](https://www.44bits.io/ko/post/8-suggestions-for-tech-programming-blog)」(2019.01)을 바탕으로 재구성한 노트다. 글 형식 분류는 [Diátaxis](https://diataxis.fr/)를 참고했다.
+> 「[개발자가 블로그를 운영해야 할 이유](https://taegon.kim/archives/7107)」, 「[좋은 기술 블로그를 만들어 나가기 위한 8가지 제언](https://www.44bits.io/ko/post/8-suggestions-for-tech-programming-blog)」(2019.01)을 바탕으로 재구성한 노트다. 글 형식 분류는 [Diátaxis](https://diataxis.fr/)를 참고했다. 「I want to study Data Science」 위키의 「[포트폴리오](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4)」 페이지와 「[2018 인턴 채용 후기](https://brunch.co.kr/@gimmesilver/41)」, 「[개발자를 위한 (블로그) 글쓰기 intro](https://www.slideshare.net/zzsza/intro-102870757)」로 보강했다.
 
 ## 왜 쓰나
 
@@ -18,7 +18,7 @@ sources: ["https://taegon.kim/archives/7107", "https://www.44bits.io/ko/post/8-s
 | **기억 유지** | 다시 쓴 지식은 오래 남고, 나중에 내가 다시 찾아보는 사전이 된다 |
 | **학습 동기** | 발행 주기를 정해 두면 새로 배울 거리를 찾게 된다 |
 | **남을 돕기** | 초보의 학습기, 시행착오 기록도 같은 문제를 겪는 사람에게 쓸모 있다. 짧은 팁 하나가 오래 검색되기도 한다 |
-| **기회** | 쌓인 글은 실력을 보여 주는 포트폴리오다. 번역·출간·이직·협업·발표 제안으로 이어진다 |
+| **기회** | 쌓인 글은 실력을 보여 주는 포트폴리오다. 번역·출간·이직·협업·발표 제안으로 이어진다. 채용 담당자는 오래 쌓인 생각의 기록을 높이 보고, 지원 직전에 급조했거나 몇 달 뒤 방치된 블로그는 오히려 꾸준함이 부족해 보인다 |
 
 글감은 새로 배운 기술, 해결한 문제와 시행착오, 외국 글 번역, 컨퍼런스 정리, 직접 한 프로젝트에서 나온다.
 
@@ -48,6 +48,7 @@ sources: ["https://taegon.kim/archives/7107", "https://www.44bits.io/ko/post/8-s
 
 | 원칙 | 내용 |
 | --- | --- |
+| **좋은 글 많이 읽기** | 잘 쓴 개발 블로그를 RSS로 구독해 꾸준히 읽는다. 대부분의 블로그는 `/feed.xml`, `/atom.xml`, `/rss.xml` 같은 주소에 피드를 둔다. 많이 읽어야 형식과 문장이 는다 |
 | **콘텐츠 관리가 쉬운 도구** | 글을 쓰고 고치고 분류하기 쉬워야 오래 쓴다. 꾸미기·테마 손질에 시간이 빠지면 글이 줄어든다 |
 | **보존 비용 최소화** | 서버·빌드 환경이 깨지면 블로그도 멈춘다. 관리 부담이 적은 방식을 고르고, 글은 마크다운처럼 옮기기 쉬운 형태로 백업한다 |
 | **내 도메인** | 플랫폼을 옮겨도 주소가 유지되도록 개인 도메인을 쓰면 링크와 검색 유입을 지킬 수 있다 |
@@ -61,4 +62,4 @@ sources: ["https://taegon.kim/archives/7107", "https://www.44bits.io/ko/post/8-s
 - 메모가 아니라 완성된 글로, 형식을 정해서 쓴다.
 - 도구는 꾸미기보다 **쓰기·보존이 쉬운 것**을 고른다.
 
-관련 노트: [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[sustainable-learning-loop|지속 가능한 학습 루프]], [[persuasive-writing|글쓰기 원칙]], [[newsletter-lessons|뉴스레터 발행의 35가지 교훈]]
+관련 노트: [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[data-job-roles|데이터 직군]], [[sustainable-learning-loop|지속 가능한 학습 루프]], [[persuasive-writing|글쓰기 원칙]], [[newsletter-lessons|뉴스레터 발행의 35가지 교훈]]

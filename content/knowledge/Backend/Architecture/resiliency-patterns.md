@@ -4,11 +4,11 @@ concept: "Resiliency Patterns"
 summary: "작은 오류가 연쇄 장애로 번지지 않게 하는 여덟 가지 패턴(타임아웃, 재시도, 서킷 브레이커, 속도 제한, 부하 차단, 벌크헤드, 배압, 크래시 허용), 속도 제한 알고리즘의 개요, 벌크헤드 격리 방식과 배압 전략, 재시도를 안전하게 만드는 백오프·지터 전략, 4xx·5xx별 재시도 규칙, 재시도의 전제 조건인 멱등성을 적용해야 하는 곳을 정리했다."
 tags: ["backend", "architecture", "performance", "api", "async"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/resiliency-patterns", "https://bytebytego.com/guides/how-do-we-retry-on-failures", "https://bytebytego.com/guides/how-to-handle-web-request-error", "https://bytebytego.com/guides/top-6-cases-to-apply-idempotency", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/resiliency-patterns", "https://bytebytego.com/guides/how-do-we-retry-on-failures", "https://bytebytego.com/guides/how-to-handle-web-request-error", "https://bytebytego.com/guides/top-6-cases-to-apply-idempotency", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "http://www.slideshare.net/jboner/scalability-availability-stability-patterns", "http://www.erlang-factory.com/upload/presentations/31/EugeneLetuchy-ErlangatFacebook.pdf"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Resiliency Patterns](https://bytebytego.com/guides/resiliency-patterns)」, 「[Retry Strategies for System Failures](https://bytebytego.com/guides/how-do-we-retry-on-failures)」, 「[How to Handle Web Request Errors](https://bytebytego.com/guides/how-to-handle-web-request-error)」, 「[Top 6 Cases to Apply Idempotency](https://bytebytego.com/guides/top-6-cases-to-apply-idempotency)」를 바탕으로 재구성한 노트다. 속도 제한 알고리즘, 벌크헤드 격리 방식, 배압 전략은 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다.
+> ByteByteGo의 System Design 101 가이드 「[Resiliency Patterns](https://bytebytego.com/guides/resiliency-patterns)」, 「[Retry Strategies for System Failures](https://bytebytego.com/guides/how-do-we-retry-on-failures)」, 「[How to Handle Web Request Errors](https://bytebytego.com/guides/how-to-handle-web-request-error)」, 「[Top 6 Cases to Apply Idempotency](https://bytebytego.com/guides/top-6-cases-to-apply-idempotency)」를 바탕으로 재구성한 노트다. 속도 제한 알고리즘, 벌크헤드 격리 방식, 배압 전략은 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다. 빠른 실패·안정 상태 패턴은 Jonas Bonér의 「[Scalability, Availability & Stability Patterns](http://www.slideshare.net/jboner/scalability-availability-stability-patterns)」로, 크래시 허용의 실제 효과는 「[Erlang at Facebook](http://www.erlang-factory.com/upload/presentations/31/EugeneLetuchy-ErlangatFacebook.pdf)」(2009)로 보강했다.
 
 ## 복원력이란
 
@@ -30,6 +30,13 @@ sources: ["https://bytebytego.com/guides/resiliency-patterns", "https://bytebyte
 | 크래시 허용(let it crash) | 이상한 상태를 고치려 하지 않고 프로세스를 죽인 뒤 감독자가 깨끗한 상태로 다시 띄운다(Erlang 감독 트리) | 오염된 상태로 계속 도는 것 | 재시작이 빠르고 상태가 밖에 있어야 한다 |
 
 속도 제한·벌크헤드·배압의 구체적인 방식은 아래 절에 있다. 서킷 브레이커의 세 상태(Closed·Open·Half-Open)와 구현 라이브러리는 [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]]에 있다.
+
+표에 더해 두 가지 안정성 패턴이 함께 쓰인다.
+
+- **빠른 실패(fail fast)**: 느린 실패가 빠른 실패보다 나쁘다. 비싼 작업을 시작하기 전에 필요한 자원(커넥션, 하류 서비스)이 있는지 먼저 확인하고, 입력 검증은 맨 앞에서 한다. 자원이 없는 시스템 오류와 잘못된 입력 같은 애플리케이션 오류를 구분해 다르게 답한다.
+- **안정 상태(steady state)**: 사람이 손대지 않아도 오래 돌 수 있게 스스로 치운다. 로그는 순환(logrotate)시키고 가능하면 별도 디스크에 두며, 임시 파일·캐시·세션도 만료로 정리한다. 디스크가 차서 멈추는 장애가 가장 흔한 「청소 안 함」 장애다.
+
+벌크헤드는 관리용 작업에도 쓴다. 관리 작업 전용 스레드 풀을 따로 두면 서비스 스레드가 모두 막혀도 진단·복구 명령은 돈다. 크래시 허용의 효과는 Facebook 채팅 초기 사례가 보여 준다. 스레드 누수, 의도치 않은 메시지 다중 전송, 접속 상태 집계 오류 같은 버그가 있었지만, C 서버였다면 세그폴트가 OS 프로세스와 모든 상태를 날렸을 일이 Erlang에서는 해당 경량 프로세스 하나만 죽이고 연결된 프로세스에 알리는 데서 끝나, 대부분 동작하는 시스템을 유지했다.
 
 ## 속도 제한 알고리즘
 

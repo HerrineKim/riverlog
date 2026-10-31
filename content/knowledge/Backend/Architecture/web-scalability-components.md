@@ -4,11 +4,11 @@ concept: "Web Scalability"
 summary: "확장 가능한 웹 애플리케이션을 이루는 구성 요소(DNS, 로드 밸런서, CDN, 프론트 웹 서버, 웹 서비스, 캐시, 메시지 큐와 워커, 데이터 저장소, 검색엔진)를 한 장의 지도로 정리했다. 3-Tier와 MSA의 데이터 흐름, 확장의 세 축(복제, 기능 분할, 데이터 분할), HTTP 캐시와 객체 캐시, 비동기 처리와 이벤트 기반 구조, 구간별 보안, 그리고 사람과 팀을 확장하는 법까지 다룬다."
 tags: ["backend", "architecture", "scalability", "cache", "msa", "security"]
 source: other
-date: "2026-10-20"
-sources: ["https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db", "https://bytebytego.com/guides/10-essential-components-of-a-production-web-application", "https://bytebytego.com/guides/8-must-know-scalability-strategies", "https://bytebytego.com/guides/a-crash-course-on-architectural-scalability", "https://bytebytego.com/guides/how-to-scale-a-website-to-support-millions-of-users"]
+date: "2026-10-31"
+sources: ["https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db", "https://bytebytego.com/guides/10-essential-components-of-a-production-web-application", "https://bytebytego.com/guides/8-must-know-scalability-strategies", "https://bytebytego.com/guides/a-crash-course-on-architectural-scalability", "https://bytebytego.com/guides/how-to-scale-a-website-to-support-millions-of-users", "http://www.lecloud.net/post/7295452622/scalability-for-dummies-part-1-clones", "http://www.lecloud.net/post/7994751381/scalability-for-dummies-part-2-database", "http://www.lecloud.net/post/9246290032/scalability-for-dummies-part-3-cache", "http://www.lecloud.net/post/9699762917/scalability-for-dummies-part-4-asynchronism", "http://www.hiredintech.com/system-design/scalability-fundamentals/", "http://lethain.com/introduction-to-architecting-systems-for-scale/", "https://aosabook.org/en/v2/distsys.html"]
 ---
 
-> Olga Mitroshyna의 「[Software Architecture & System Design: I wish I had known about this earlier…](https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db)」(2022.05)를 바탕으로 재구성한 노트다. 운영 요소(CI/CD, 모니터링, 알림)는 ByteByteGo의 System Design 101 가이드 「[10 Essential Components of a Production Web Application](https://bytebytego.com/guides/10-essential-components-of-a-production-web-application)」로, 확장의 병목·전략과 단계별 성장 과정은 같은 가이드의 「[8 Must-Know Scalability Strategies](https://bytebytego.com/guides/8-must-know-scalability-strategies)」, 「[A Crash Course on Architectural Scalability](https://bytebytego.com/guides/a-crash-course-on-architectural-scalability)」, 「[Scaling Websites for Millions of Users](https://bytebytego.com/guides/how-to-scale-a-website-to-support-millions-of-users)」로 보강했다. 원 자료는 Artur Ejsmont의 책 『Web Scalability for Startup Engineers』(2015)다.
+> Olga Mitroshyna의 「[Software Architecture & System Design: I wish I had known about this earlier…](https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db)」(2022.05)를 바탕으로 재구성한 노트다. 운영 요소(CI/CD, 모니터링, 알림)는 ByteByteGo의 System Design 101 가이드 「[10 Essential Components of a Production Web Application](https://bytebytego.com/guides/10-essential-components-of-a-production-web-application)」로, 확장의 병목·전략과 단계별 성장 과정은 같은 가이드의 「[8 Must-Know Scalability Strategies](https://bytebytego.com/guides/8-must-know-scalability-strategies)」, 「[A Crash Course on Architectural Scalability](https://bytebytego.com/guides/a-crash-course-on-architectural-scalability)」, 「[Scaling Websites for Millions of Users](https://bytebytego.com/guides/how-to-scale-a-website-to-support-millions-of-users)」로 보강했다. 원 자료는 Artur Ejsmont의 책 『Web Scalability for Startup Engineers』(2015)다. 복제 서버의 황금률, 캐시 두 패턴, 비동기 두 방식은 「[Scalability for Dummies](http://www.lecloud.net/post/7295452622/scalability-for-dummies-part-1-clones)」 1~4부(HiredInTech의 「[Scalability Fundamentals](http://www.hiredintech.com/system-design/scalability-fundamentals/)」가 추린 읽을거리)로, 계층별 로드 밸런싱·캐시 무효화·오프라인 처리는 「[Introduction to Architecting Systems for Scale](http://lethain.com/introduction-to-architecting-systems-for-scale/)」로, 읽기·쓰기 서비스 분리와 전역·분산 캐시, 다층 인덱스는 AOSA 2권의 「[Scalable Web Architecture and Distributed Systems](https://aosabook.org/en/v2/distsys.html)」로 보강했다.
 
 ## 확장성이란
 
@@ -76,6 +76,16 @@ FE/BE 구분은 Presentation과 「나머지 전부」로 나눈 모델이다. �
 | 데이터 분할(data partitioning) | 데이터 집합을 키 기준으로 쪼개 여러 서버에 둔다 | 효과가 크지만 복잡도가 가장 높다 |
 
 **복제부터 시도하고, 기능 분할과 데이터 분할은 필요해질 때 한다.** 기능 분할은 엔지니어가 10~20명을 넘어 팀이 나뉠 때쯤 의미가 생긴다.
+
+복제의 **황금률은 「모든 서버가 같은 코드를 갖고, 사용자 데이터(세션, 업로드 파일)를 로컬 디스크나 메모리에 두지 않는다」** 이다. 같은 사용자의 요청이 2번 서버, 9번 서버, 다시 2번 서버로 가도 결과가 같아야 한다. 세션은 모든 앱 서버가 닿는 외부 저장소(Redis 같은 영속 캐시가 DB보다 빠르다)에 둔다. 이렇게 상태를 빼낸 서버 하나로 머신 이미지(AWS AMI 등)를 만들어 두면, 새 인스턴스는 그 이미지에서 띄우고 최신 코드만 배포하면 된다. 배포 중 일부 서버만 옛 코드를 내보내는 일은 배포 도구로 막는다.
+
+로드 밸런싱은 사용자 → 웹 서버 한 곳에서만 하지 않는다. 웹 서버 → 내부 플랫폼 계층, 플랫폼 계층 → DB까지 **계층마다** 해야 계층 전체가 수평 확장과 이중화를 얻는다.
+
+| 구현 | 방식 | 장단점 |
+| --- | --- | --- |
+| 스마트 클라이언트 | DB·캐시·서비스 클라이언트 라이브러리가 호스트 풀을 들고 부하를 나누고 죽은 호스트를 피한다 | 개발자에게 친숙해 보이지만 호스트 복구·추가 감지까지 직접 만들어야 해 견고하게 만들기 어렵다 |
+| 하드웨어 로드 밸런서 | 전용 장비(Citrix NetScaler, F5 BIG-IP) | 성능은 좋지만 비싸고 설정이 어렵다. 보통 외부 요청의 첫 관문에만 쓴다 |
+| 소프트웨어 로드 밸런서 | HAProxy·Envoy를 각 서버에 띄우고 서비스마다 로컬 포트를 준다(`localhost:9000` 플랫폼, `9001` DB 읽기 풀, `9002` DB 쓰기 풀) | 헬스 체크와 풀 관리를 맡긴다. **대부분은 여기서 시작하고**, 필요가 분명할 때만 다른 방식으로 간다. 오늘날 서비스 메시의 사이드카가 같은 모양이다 |
 
 ### 확장을 막는 병목
 
@@ -156,6 +166,8 @@ MSA는 배포·관측·데이터 정합성의 운영 복잡도를 크게 늘린�
 - **기능 분할**: `UserProfileService`, `ProductCatalogService`처럼 기능별 서비스로 나눈다. 서비스 사이 의존이 조금 있어도 괜찮다.
 - **HTTP 캐싱**: `GET` 응답을 캐시해 서비스까지 가지 않고 돌려준다. REST가 확장에 유리한 큰 이유다.
 
+처음부터 서비스를 나눌 때 흔한 첫 분할은 **읽기와 쓰기의 분리**다. 이미지 호스팅처럼 업로드는 느리고 드물지만 조회는 빠르고 잦은 서비스에서, 업로드가 웹 서버의 연결 슬롯(예: 최대 500개)을 오래 붙잡으면 조회까지 막힌다. 조회는 압축·청크 전송 덕에 연결 수보다 훨씬 많은 초당 요청을 처리할 수 있으므로, 두 기능을 따로 띄우면 각자의 병목에 맞게 늘릴 수 있다.
+
 ## 데이터 계층
 
 데이터 저장소는 가장 확장하기 어려운 부분이다.
@@ -171,6 +183,8 @@ MSA는 배포·관측·데이터 정합성의 운영 복잡도를 크게 늘린�
 
 NoSQL을 「CP냐 AP냐」로 딱 잘라 분류하는 것은 거친 근사다. MongoDB는 기본적으로 primary에서 읽고 써 일관성 쪽에 가깝고, Cassandra는 가용성 쪽에 가깝지만, 둘 다 읽기·쓰기 정족수 설정으로 성격을 조절한다. 클라우드에서는 직접 샤딩하는 대신 Azure SQL Hyperscale, Amazon Aurora, 분산 SQL(NewSQL) 같은 관리형 선택지를 먼저 검토한다.
 
+DB가 버거워지면 길은 둘이다. 관계형 DB를 유지하며 주·복제 구성, 더 큰 서버, 결국 샤딩·비정규화·SQL 튜닝으로 가는 길은 갈수록 한 걸음의 비용이 커진다. 다른 길은 일찍부터 **조인을 없애고 비정규화해** DB를 키-값 저장소처럼 쓰고 조인은 애플리케이션에서 하는 것이다. 데이터가 작을 때 바꿀수록 옮길 코드가 적다. 어느 길이든 결국 캐시가 필요해진다.
+
 흐름은 **서비스는 기능별로 나누고, 서비스마다 필요에 맞는 저장소를 고르는 것**(polyglot persistence)이다.
 
 ## 캐시
@@ -181,6 +195,26 @@ NoSQL을 「CP냐 AP냐」로 딱 잘라 분류하는 것은 거친 근사다. M
 
 분산 캐시를 운영할 때 생기는 장애와 핫 키 문제는 [[cache-cluster-operations|캐시 클러스터 운영과 장애 대응]]에서, 트래픽 급증 때 CDN·웹 서버로 앞단을 지키는 법은 [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]]에서 다룬다.
 
+캐시에 무엇을 담느냐에는 두 패턴이 있다.
+
+| 패턴 | 키 | 문제 |
+| --- | --- | --- |
+| 쿼리 결과 캐시 | 쿼리 문자열의 해시 | 표의 한 칸이 바뀌면 그 칸을 포함할 수 있는 모든 쿼리 캐시를 지워야 한다. 복잡한 쿼리일수록 무효화가 사실상 불가능하다 |
+| 객체 캐시 | 조립이 끝난 객체(`product:42`) | 여러 쿼리로 조립한 결과를 통째로 담아, 무언가 바뀌면 그 객체만 지운다. 워커가 미리 객체를 조립해 두는 비동기 처리와도 잘 맞는다 |
+
+**객체 캐시가 대개 낫다.** 담기 좋은 것: 세션, 렌더링이 끝난 글, 활동 스트림, 친구 관계. 파일 기반 캐시는 서버를 복제·자동 확장할 때 걸림돌이 되므로 메모리 캐시(Redis, Memcached)를 쓴다.
+
+캐시는 **애플리케이션 캐시**(코드가 캐시를 먼저 보고 없으면 DB에서 읽어 채운다)와 **DB 캐시**(DB 설정을 접근 패턴에 맞춰 조정하면 코드 변경 없이 빨라진다)로도 나뉘고, 대부분의 시스템은 둘 다 쓴다. 캐시 전략은 일찍 정하는 편이 낫다. 캐시로 흉내 낼 수 없는 접근 패턴을 먼저 최적화해 두면 나중에 캐시를 끼우기 어렵다.
+
+무효화의 기본은 값이 바뀔 때마다 캐시에 새 값을 쓰거나(write-through) 지워서 다음 읽기가 채우게 하는 것이다. 어려운 경우는 두 가지다.
+
+- **모호한 질의**: 전문 검색 결과 앞의 캐시처럼 어떤 키가 영향을 받는지 알 수 없다. DB 쪽 캐시에 맡기거나 짧은 TTL을 건다.
+- **개수를 모르는 변경**: `DELETE FROM a WHERE created < 일주일 전` 대신 조건에 맞는 행을 먼저 조회해 해당 캐시 키를 지우고, 기본 키로 하나씩 지운다.
+
+여러 노드가 캐시를 함께 쓰는 방식은 둘이다. **전역 캐시**는 모든 요청 노드가 하나의 캐시 공간을 쓴다(대개 캐시가 원본 조회까지 맡아 같은 키 요청이 몰려도 원본에는 한 번만 간다). **분산 캐시**는 일관된 해싱으로 키를 노드에 나눠, 노드를 더할수록 캐시 공간이 커진다. 같은 키에 대한 동시 요청을 하나로 합쳐 원본에 한 번만 보내는 것을 **요청 병합(collapsed forwarding)** 이라 하고, 프록시 계층에서 흔히 한다.
+
+인덱스도 같은 원리로 계층을 쌓는다. 데이터가 커지면 「인덱스 → 하위 인덱스 → 데이터」처럼 여러 층의 인덱스가 지도 역할을 하고, 같은 데이터에 다른 관점의 인덱스(역인덱스 등)를 여러 개 둘 수 있다.
+
 ## 비동기 처리
 
 | 방식 | 동작 | 결과 |
@@ -189,6 +223,15 @@ NoSQL을 「CP냐 AP냐」로 딱 잘라 분류하는 것은 거친 근사다. M
 | 비동기 처리 | 요청을 맡기고 바로 자기 일을 계속한다(fire-and-forget) | 응답성이 좋고, 느린 작업을 뒤로 미룰 수 있다 |
 
 반응이 빠른 서비스는 오래 걸리는 일(메일 발송, 이미지 변환, 결제 후처리)을 비동기로 뺀다.
+
+비동기 처리에는 두 모양이 있다.
+
+| 방식 | 비유 | 웹에서 |
+| --- | --- | --- |
+| 미리 해 두기 | 밤에 빵을 구워 아침에 판다 | 동적 페이지를 변경 때마다 정적 HTML로 미리 렌더링해 CDN·오브젝트 스토리지에 올린다. cron 같은 주기 작업으로 집계를 미리 계산한다 |
+| 맡기고 알려 주기 | 주문 케이크는 내일 찾으러 오게 한다 | 요청을 작업 큐에 넣고 바로 「처리 중」을 답한다. 워커가 끝내면 프론트엔드가 완료 신호를 받아 알린다 |
+
+사용자에게 어떻게 보일지에 따라 요청 안에서 할 일과 큐로 넘길 일의 경계가 정해진다. VM 생성처럼 거의 아무것도 하지 않고 「곧 처리된다」고 알리는 방식이 있고, 글 게시처럼 **사용자 화면에는 즉시 반영하고 팔로워 타임라인 갱신은 나중에 하는** 방식이 있다. 큐 워커를 별도 서버 풀로 두면 병목인 곳에만 자원을 더할 수 있다. 주기 작업은 cron 서버가 직접 일을 하지 말고 큐에 메시지만 넣게 하면 cron 서버는 스케줄링만 맡는다.
 
 ### 메시지 큐
 

@@ -4,11 +4,11 @@ concept: "Storage Systems"
 summary: "저장 시스템의 세 갈래인 블록·파일·오브젝트 스토리지를 비교하고, 오브젝트 스토리지의 쓰임새, 복제 대신 패리티로 내구성을 얻는 이레이저 코딩, 큰 파일을 조각내 올리는 멀티파트 업로드를 정리했다."
 tags: ["storage", "backend", "cloud", "aws", "file-upload"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/storage-systems-overview", "https://bytebytego.com/guides/explain-the-top-6-use-cases-of-object-stores", "https://bytebytego.com/guides/erasure-coding", "https://bytebytego.com/guides/how-to-upload-a-large-file-to-s3", "https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html", "https://bytebytego.com/guides/what-happens-when-you-upload-a-file-to-amazon-s3", "https://tech.kakao.com/posts/336"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/storage-systems-overview", "https://bytebytego.com/guides/explain-the-top-6-use-cases-of-object-stores", "https://bytebytego.com/guides/erasure-coding", "https://bytebytego.com/guides/how-to-upload-a-large-file-to-s3", "https://docs.aws.amazon.com/AmazonS3/latest/userguide/mpuoverview.html", "https://bytebytego.com/guides/what-happens-when-you-upload-a-file-to-amazon-s3", "https://tech.kakao.com/posts/336", "https://github.com/remotty/documents.docker.co.kr"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Storage Systems Overview](https://bytebytego.com/guides/storage-systems-overview)」, 「[Top 6 Use Cases of Object Stores](https://bytebytego.com/guides/explain-the-top-6-use-cases-of-object-stores)」, 「[Erasure Coding](https://bytebytego.com/guides/erasure-coding)」, 「[How to Upload a Large File to S3](https://bytebytego.com/guides/how-to-upload-a-large-file-to-s3)」를 바탕으로, 멀티파트 업로드는 Amazon S3 공식 문서로 확인해 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[Storage Systems Overview](https://bytebytego.com/guides/storage-systems-overview)」, 「[Top 6 Use Cases of Object Stores](https://bytebytego.com/guides/explain-the-top-6-use-cases-of-object-stores)」, 「[Erasure Coding](https://bytebytego.com/guides/erasure-coding)」, 「[How to Upload a Large File to S3](https://bytebytego.com/guides/how-to-upload-a-large-file-to-s3)」를 바탕으로, 멀티파트 업로드는 Amazon S3 공식 문서로 확인해 재구성한 노트다. 컨테이너 볼륨의 저장 방식은 「[documents.docker.co.kr](https://github.com/remotty/documents.docker.co.kr)」의 「Container management for distribution」 발표로 보강했다.
 > 버킷·객체 구조와 업로드 흐름은 같은 가이드의 「[What Happens When You Upload a File to Amazon S3?](https://bytebytego.com/guides/what-happens-when-you-upload-a-file-to-amazon-s3)」를 바탕으로 보탰다. 청크 기반 BLOB 저장소는 「[대규모 분산 스토리지(Kage)의 발전과정](https://tech.kakao.com/posts/336)」을 바탕으로 보탰다.
 
 ## 세 가지 스토리지
@@ -35,6 +35,8 @@ flowchart TB
 | 클라우드 예 | EBS, Persistent Disk | EFS, Filestore | S3, Cloud Storage, Azure Blob Storage |
 
 블록 스토리지가 가장 먼저 나왔고, 파일 스토리지는 그 위의 추상화이며, 오브젝트 스토리지는 **성능을 일부 내주고 내구성·규모·비용을 얻는** 선택이다. 파일 시스템이 블록을 관리하는 방식은 [[file-system|파일 시스템]]에 있다.
+
+컨테이너 볼륨을 고를 때도 같은 구분이 나온다. 여러 컨테이너가 NFS 공유 디렉터리를 쓰면 설정은 쉽지만 컨테이너별 격리와 용량 제한(quota)을 걸기 어렵다. 컨테이너마다 블록 장치(NBD 같은 네트워크 블록 장치, qcow2 이미지 파일)를 붙이면 볼륨 단위로 격리되고, 용량 제한과 스냅숏이 쉬워진다. 쿠버네티스의 PersistentVolume도 같은 선택을 접근 모드로 드러낸다. 노드 하나가 붙는 `ReadWriteOnce`는 대개 블록 볼륨(EBS 등)이, 여러 노드가 함께 쓰는 `ReadWriteMany`는 파일 스토리지(NFS, EFS 등)가 맡는다.
 
 ## 오브젝트 스토리지의 쓰임새
 

@@ -4,11 +4,11 @@ concept: "Observability"
 summary: "관측 가능성의 세 기둥인 로그(개별 사건), 트레이스(요청 하나의 경로), 메트릭(집계 가능한 수치)의 차이와 수집 구조, OpenTelemetry로 한 표준에 모으는 방법, 메트릭 수집의 풀·푸시 모델과 서비스 디스커버리, 쓰기가 많고 읽기가 몰리는 메트릭에 범용 DB 대신 시계열 DB를 쓰는 이유를 정리한다."
 tags: ["devops", "monitoring", "infra", "database", "architecture"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://bytebytego.com/guides/push-vs-pull-in-metrics-collecting-systems", "https://bytebytego.com/guides/choose-the-right-database-for-metric-collecting-system", "https://opentelemetry.io/docs/concepts/signals/", "https://prometheus.io/docs/introduction/overview/", "https://blog.banksalad.com/tech/url-status-checker", "https://www.loggly.com/ultimate-guide/category/node/", "https://blog.risingstack.com/monitoring-nodejs-applications-nodejs-at-scale/", "https://learn.microsoft.com/en-us/azure/architecture/best-practices/monitoring"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/logging-tracing-metrics", "https://bytebytego.com/guides/push-vs-pull-in-metrics-collecting-systems", "https://bytebytego.com/guides/choose-the-right-database-for-metric-collecting-system", "https://opentelemetry.io/docs/concepts/signals/", "https://prometheus.io/docs/introduction/overview/", "https://blog.banksalad.com/tech/url-status-checker", "https://www.loggly.com/ultimate-guide/category/node/", "https://blog.risingstack.com/monitoring-nodejs-applications-nodejs-at-scale/", "https://learn.microsoft.com/en-us/azure/architecture/best-practices/monitoring", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4", "http://blog.nacyot.com/articles/2014-07-17-graphite-with-dokcer/"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Logging, Tracing, and Metrics](https://bytebytego.com/guides/logging-tracing-metrics)」, 「[Push vs Pull in Metrics Collection Systems](https://bytebytego.com/guides/push-vs-pull-in-metrics-collecting-systems)」, 「[Choose the Right Database for Metric Collection](https://bytebytego.com/guides/choose-the-right-database-for-metric-collecting-system)」를 바탕으로, OpenTelemetry·Prometheus 공식 문서로 확인해 재구성한 노트다. 합성 모니터링은 「[매출 손실을 줄여주는 외부링크 관제 Bot, URL Checker 개발기](https://blog.banksalad.com/tech/url-status-checker)」로 보강했다. 로그 작성 규칙과 런타임 지표는 Loggly의 「[Node.js Logging: The Ultimate Guide](https://www.loggly.com/ultimate-guide/category/node/)」, RisingStack의 「[The Definitive Guide for Monitoring Node.js Applications](https://blog.risingstack.com/monitoring-nodejs-applications-nodejs-at-scale/)」, Microsoft의 「[Monitoring and diagnostics guidance](https://learn.microsoft.com/en-us/azure/architecture/best-practices/monitoring)」를 바탕으로 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[Logging, Tracing, and Metrics](https://bytebytego.com/guides/logging-tracing-metrics)」, 「[Push vs Pull in Metrics Collection Systems](https://bytebytego.com/guides/push-vs-pull-in-metrics-collecting-systems)」, 「[Choose the Right Database for Metric Collection](https://bytebytego.com/guides/choose-the-right-database-for-metric-collecting-system)」를 바탕으로, OpenTelemetry·Prometheus 공식 문서로 확인해 재구성한 노트다. 합성 모니터링은 「[매출 손실을 줄여주는 외부링크 관제 Bot, URL Checker 개발기](https://blog.banksalad.com/tech/url-status-checker)」로 보강했다. 로그 작성 규칙과 런타임 지표는 Loggly의 「[Node.js Logging: The Ultimate Guide](https://www.loggly.com/ultimate-guide/category/node/)」, RisingStack의 「[The Definitive Guide for Monitoring Node.js Applications](https://blog.risingstack.com/monitoring-nodejs-applications-nodejs-at-scale/)」, Microsoft의 「[Monitoring and diagnostics guidance](https://learn.microsoft.com/en-us/azure/architecture/best-practices/monitoring)」를 바탕으로 보강했다. 오류 코드와 로그를 잇는 규칙, 로그 수집 에이전트 감시는 I-want-to-study-Data-Science 위키의 「[데이터 엔지니어](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%97%94%EC%A7%80%EB%8B%88%EC%96%B4)」 문서가 소개하는 로그 시스템 발표 자료로, Graphite 구성은 「[그라파이트 + 그라파나 모니터링 시스템 구축 with Docker](http://blog.nacyot.com/articles/2014-07-17-graphite-with-dokcer/)」로 보강했다.
 
 ## 관측 가능성이란
 
@@ -41,6 +41,7 @@ flowchart LR
 - 팀마다 형식이 다르면 수많은 로그에서 키워드로 찾을 수 없다. **표준 로그 형식**(타임스탬프, 레벨, 서비스 이름, 트레이스 ID, 메시지)을 정해 모든 팀이 따른다.
 - 양이 가장 많으므로 보존 기간과 레벨을 정해 비용을 관리한다.
 - 서버 한 대의 로그를 셸 명령으로 훑는 법은 [[linux-commands|자주 쓰는 리눅스 명령어 지도]]에 있다.
+- **수집기도 감시 대상이다.** 서버마다 도는 로그 에이전트가 죽거나 막히면 로그가 조용히 사라지고, 로그가 없으니 알아채지도 못한다. 에이전트를 서비스 디스커버리에 등록해 살아 있는 목록을 자동으로 관리하고, 에이전트별 입력·출력 처리량을 지표로 수집해 「입력은 있는데 출력이 0」, 「처리량이 평소의 절반 이하」 같은 조건에 알림을 건다.
 
 #### 로그를 쓰는 규칙
 
@@ -51,6 +52,7 @@ flowchart LR
 | 요청을 잇는 ID | 요청 ID·트레이스 ID를 모든 로그 줄에 넣는다. 비동기 콜백을 건너도 유지되게 Node.js는 `AsyncLocalStorage`로 문맥을 들고 다닌다 |
 | 표준 출력으로 | 앱은 파일 회전·전송을 하지 않고 stdout에 쓴다. 수집은 플랫폼(에이전트, 컨테이너 런타임)이 맡는다([[twelve-factor-app\|12요소 앱]]) |
 | 비밀은 남기지 않는다 | 비밀번호, 토큰, 카드 번호, 개인 정보는 로거 단계에서 가린다(redact) |
+| 사용자 오류와 서버 로그를 잇는다 | 사용자 화면에 보여 주는 오류에 오류 코드(와 요청 ID)를 붙이고, 같은 코드를 서버 로그에 남긴다. 문의가 오면 코드 하나로 해당 로그 줄을 바로 찾는다. 코드 목록은 의미와 함께 문서로 관리한다 |
 | 비싸지 않게 | 동기 파일 쓰기나 `console.log` 남발은 이벤트 루프를 막는다. Node.js에서는 JSON을 빠르게 비동기로 쓰는 pino가 흔하고, winston은 전송 대상(transport) 설정이 유연하다. HTTP 접근 로그는 미들웨어(pino-http, morgan)로 남긴다 |
 
 ### 트레이스
@@ -113,6 +115,8 @@ sequenceDiagram
     C->>D: 3. 수집기가 주기적으로 다시 조회
   end
 ```
+
+푸시 모델의 고전적인 예가 **Graphite**다. collectd·statsd 같은 수집기가 `네임스페이스 값 타임스탬프` 한 줄을 Carbon 데몬(평문 2003 포트)에 보내면, 고정 크기 시계열 파일 형식 Whisper에 저장하고 Graphite-Web이 HTTP로 그래프와 데이터를 내준다. Grafana는 원래 Graphite용 대시보드로 시작했다. 지금은 풀 방식의 Prometheus와 Grafana가 주류이고 Graphite는 레거시로 남아 있다.
 
 ## 메트릭 저장소: 왜 시계열 DB인가
 

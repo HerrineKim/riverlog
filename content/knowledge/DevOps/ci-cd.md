@@ -4,11 +4,11 @@ concept: "CI/CD"
 summary: "코드 변경을 자동으로 빌드·테스트하고(CI) 배포까지 이어 주는(CD) 파이프라인의 개념과 단계, dev·QA·UAT·운영으로 산출물을 승격하는 흐름, 파이프라인 설계 시 고려할 것, GitHub Actions 예시와 CI 비밀 값 관리, Docker 이미지 빌드·태그 전략·층 캐시·보안 스캔 게이트·Testcontainers."
 tags: ["ci-cd", "devops", "docker", "github", "automation"]
 source: notion
-date: "2026-10-21"
-sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule", "https://github.com/actions/checkout/releases", "https://github.com/codecov/codecov-action/releases", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/build/ci/github-actions/", "https://docs.docker.com/build/cache/backends/", "https://testcontainers.com/", "https://martinfowler.com/articles/continuousIntegration.html"]
+date: "2026-10-31"
+sources: ["https://80000coding.notion.site/594fdf538093483f99c17f9800dc4c8e", "https://80000coding.notion.site/ecf91c98f04040f59a8de48b35d6b0d2", "https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions", "https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms", "https://bytebytego.com/guides/cicd-simplified-visual-guide", "https://bytebytego.com/guides/how-do-companies-ship-code-to-production", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule", "https://github.com/actions/checkout/releases", "https://github.com/codecov/codecov-action/releases", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/docker.md", "https://docs.docker.com/build/ci/github-actions/", "https://docs.docker.com/build/cache/backends/", "https://testcontainers.com/", "https://martinfowler.com/articles/continuousIntegration.html", "http://slides.com/k16wire/deck-5", "http://seapy.com/2082", "http://seapy.com/2083", "http://blog.outsider.ne.kr/1118"]
 ---
 
-> 「GitHub Actions 예시」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「DevOps 간단 정리」, 「Github Action을 이용해 코드 검사 자동화하기」를 바탕으로 보강한 노트다. 「파이프라인 단계」와 「환경 승격」은 ByteByteGo의 System Design 101 가이드 「[CI/CD Pipeline Explained in Simple Terms](https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms)」, 「[CI/CD Simplified Visual Guide](https://bytebytego.com/guides/cicd-simplified-visual-guide)」, 「[How do Companies Ship Code to Production?](https://bytebytego.com/guides/how-do-companies-ship-code-to-production)」를 바탕으로 보강했다.
+> 「GitHub Actions 예시」는 팔만코딩경(42Seoul 커뮤니티 위키)의 「DevOps 간단 정리」, 「Github Action을 이용해 코드 검사 자동화하기」를 바탕으로 보강한 노트다. 「파이프라인 단계」와 「환경 승격」은 ByteByteGo의 System Design 101 가이드 「[CI/CD Pipeline Explained in Simple Terms](https://bytebytego.com/guides/cicd-pipeline-explained-in-simple-terms)」, 「[CI/CD Simplified Visual Guide](https://bytebytego.com/guides/cicd-simplified-visual-guide)」, 「[How do Companies Ship Code to Production?](https://bytebytego.com/guides/how-do-companies-ship-code-to-production)」를 바탕으로 보강했다. CI 서버를 컨테이너로 돌리는 방법과 그 위험은 「[Jenkins on Docker](http://slides.com/k16wire/deck-5)」, 「[Docker를 이용한 Jenkins 설치](http://seapy.com/2082)」, 「[Jenkins를 이용한 Docker 빌드](http://seapy.com/2083)」, 「[TravisCI에서 Docker 기반의 인프라 활성화하기](http://blog.outsider.ne.kr/1118)」로 보강했다.
 >
 > 「PR에 테스트 커버리지 보이기」, 「상태 배지와 예약 실행」은 cheese10yun의 「[github-project-management](https://github.com/cheese10yun/github-project-management)」을 바탕으로, Travis CI 설정을 GitHub Actions 기준으로 바꿔 보강했다.
 >
@@ -212,6 +212,18 @@ CI 러너는 매번 빈 상태로 시작해 로컬 층 캐시가 없다. 그대�
 ```
 
 빌드한 이미지를 푸시 전이나 직후에 스캔하고, 심각도 기준을 넘으면 파이프라인을 멈춘다. 결과를 SARIF로 올리면 GitHub 보안 탭에 모인다. 같은 단계에서 SBOM 생성과 Cosign 서명을 하고, 배포 쪽(쿠버네티스 어드미션 정책)에서 서명을 검증하면 파이프라인을 거치지 않은 이미지가 운영에 들어가지 못한다. 공급망 보안의 전체 그림은 [[devsecops|DevSecOps]]와 [[docker-container-operations|Docker 컨테이너 운영]]에 있다.
+
+### CI 서버와 빌드 에이전트를 컨테이너로
+
+CI는 작업마다 깨끗한 격리 환경을 짧게 띄웠다가 버려야 하므로 컨테이너와 잘 맞는다. 호스팅 CI가 작업을 컨테이너·VM으로 격리하는 것도 그 때문이다.
+
+| 구성 | 방법 | 주의 |
+| --- | --- | --- |
+| CI 서버 자체 | `docker run -d -p 8080:8080 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts` | 홈 디렉터리를 볼륨으로 빼야 컨테이너를 교체해도 작업·설정이 남는다 |
+| 빌드 에이전트 | 작업마다 에이전트 컨테이너(`jenkins/inbound-agent`)나 쿠버네티스 파드를 띄우고 끝나면 지운다 | 에이전트 이미지에 빌드 도구를 고정해 두면 환경 차이가 없다 |
+| 이미지 빌드 | 데몬 없는 빌더(rootless BuildKit, Buildah), 원격 빌더 | 호스트 Docker 소켓을 CI 컨테이너에 마운트하면 CI 작업이 호스트 root를 얻는다 |
+
+과거에는 Jenkins 컨테이너에 호스트 소켓과 `docker` 바이너리를 마운트하고 sudoers에 `NOPASSWD`를 넣거나 `--privileged`로 띄웠고, SSH가 열린 슬레이브 컨테이너를 띄워 작업을 맡겼다. 호스트 바이너리 마운트는 라이브러리 버전이 달라 깨지고, 소켓·`--privileged`는 호스트 장악과 같아 지금은 쓰지 않는다([[docker-container-operations#Docker in Docker|Docker in Docker]]). 레지스트리 로그인도 스크립트에 비밀번호를 적지 말고 CI 시크릿과 `--password-stdin`, 가능하면 OIDC 단기 자격 증명을 쓴다.
 
 ### 테스트 환경: Compose와 Testcontainers
 

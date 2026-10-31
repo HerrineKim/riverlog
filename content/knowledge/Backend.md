@@ -4,7 +4,7 @@ concept: "Backend"
 summary: "클라이언트의 요청을 받아 비즈니스 로직을 처리하고 데이터를 저장·제공하는 서버 쪽 개발 지식 모음."
 tags: ["backend", "http", "api", "database"]
 source: mixed
-date: "2026-10-14"
+date: "2026-10-31"
 ---
 
 백엔드는 프론트엔드가 보낸 HTTP 요청을 받아 인증·검증·비즈니스 로직을 수행하고, 데이터베이스에 저장하거나 조회한 결과를 응답으로 돌려주는 영역이다. 이 분야의 노트는 "웹 기초(HTTP·REST) → 프레임워크(Express → NestJS, Django) → 데이터베이스 → 아키텍처" 순서로 읽으면 자연스럽다. Express에서 미들웨어·라우터·서비스 분리를 직접 손으로 짜 보고, 같은 개념이 NestJS에서 데코레이터와 DI로 어떻게 구조화되는지 비교하면 이해가 빠르다.
@@ -103,6 +103,7 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 **분산·메시징·데이터**
 
 - [분산 시스템의 시간과 장애: 8가지 착각부터 논리 시계까지](/knowledge/dictionary/backend/architecture/distributed-time-and-failure): 비동기와 부분 장애, 분산 컴퓨팅의 8가지 착각, happened-before와 논리 시계, 합의·CRDT
+- [고전 분산 시스템 설계: GFS, MapReduce, Bigtable, Chubby, Dynamo](/knowledge/dictionary/backend/architecture/classic-distributed-systems): 단일 마스터·청크 복제, 계산을 데이터로, LSM·태블릿, 굵은 락·시퀀서·ZooKeeper 레시피, Dynamo 기법, 오픈소스 계보
 - [분산 시스템의 통신·데이터 흐름 패턴](/knowledge/dictionary/backend/architecture/distributed-system-patterns): 요청-응답·발행-구독·경쟁 소비자·클레임 체크, 데이터 흐름 패턴
 - [메시지 큐와 Kafka](/knowledge/dictionary/backend/architecture/message-queue-kafka): 큐 선택 기준, MQ → RabbitMQ → Kafka → Pulsar, 토픽·파티션·컨슈머 그룹
 - [Kafka 운영: 복제, 컨슈머 그룹, 튜닝, 모니터링](/knowledge/dictionary/backend/architecture/kafka-operations): ISR·acks·min.insync, KRaft, 리밸런스·오프셋·랙, 컴팩션, 보안, 지표와 병목 진단
@@ -139,6 +140,7 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [자금 이동: 청산과 결제](/knowledge/dictionary/backend/architecture/money-movement): 정보 흐름과 자금 흐름, 청산과 결제(settlement)
 - [알림 시스템 설계: 푸시·이메일·SMS와 실시간 메시지 전달](/knowledge/dictionary/backend/architecture/notification-system): 게이트웨이 → 분배 → 큐 → 채널 서비스, 재시도·중복 방지
 - [채팅 시스템 설계: 연결, 접속 상태, 메시지 전달](/knowledge/dictionary/backend/architecture/chat-system-design): WebSocket 연결, 메시지 순서·저장, 접속 상태
+- [뉴스 피드 설계: 연결, 활동, 팬아웃](/knowledge/dictionary/backend/architecture/news-feed-design): 스캐터·개더와 받은편지함 팬아웃, 활동 복제, 집계·중복 제거·점수, 비정규화와 캐시 수명
 - [실시간 웹소켓 서버 설계](/knowledge/dictionary/backend/architecture/realtime-websocket-server): 수만 연결 유지, 메시지 타입 설계, 부하 검증
 - [위치 기반 서비스 설계: 지오해시, 쿼드트리, 지도](/knowledge/dictionary/backend/architecture/location-based-service): 격자 색인, 지오해시·쿼드트리, 지도 타일
 - [라이브 스트리밍의 구조: 인코딩, 세그먼트, ABR, CDN](/knowledge/dictionary/backend/architecture/live-streaming): 인코딩·세그먼트·적응형 비트레이트·CDN 전송
@@ -146,5 +148,7 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [실시간 공동 편집: OT와 CRDT](/knowledge/dictionary/backend/architecture/collaborative-editing): 연산 단위 전송, OT와 CRDT 비교
 - [대규모 웹 크롤러 설계](/knowledge/dictionary/backend/architecture/web-crawler-at-scale): 예의 제약, 도메인 샤드 노드, 프런티어
 - [URL 단축기 설계](/knowledge/dictionary/backend/architecture/url-shortener-design): 301·302, 고유 ID+Base62, 캐시 중심 읽기 경로
+- [실시간 트렌딩과 Top-K 집계](/knowledge/dictionary/backend/architecture/trending-topics): 슬라이딩 창 카운터, 3단 분산 집계, MinTopk 최소 후보 집합, 근사 Top-K, 비모수 조기 탐지
+- [멀티플레이 게임 서버 설계: 턴제 비동기와 실시간](/knowledge/dictionary/backend/architecture/multiplayer-game-server): 상태 저장(격자·명령 로그), 비동기 매치메이킹, 서버 권위·예측·보정·보간
 
 배포·운영 자동화는 [DevOps](/knowledge/dictionary/devops)에서 다룬다. 이론적 배경은 [[Computer-Science/Network|네트워크]]와 [[Computer-Science/Database|데이터베이스]] 노트에 있다.

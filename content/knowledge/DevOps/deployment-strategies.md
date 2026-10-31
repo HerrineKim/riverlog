@@ -4,11 +4,11 @@ concept: "Deployment Strategy"
 summary: "새 버전을 운영에 올리는 방식을 다운타임·롤백 속도·비용·노출 범위로 비교한다. 한 번에 바꾸는 빅뱅(Recreate), 하나씩 바꾸는 롤링, 환경을 통째로 전환하는 블루-그린, 일부 사용자에게 먼저 여는 카나리, 트래픽 사본으로 검증하는 섀도, 배포와 출시를 떼어 내는 피처 토글과 A/B 테스트를 다룬다."
 tags: ["devops", "ci-cd", "kubernetes", "infra"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-to-deploy-services", "https://bytebytego.com/guides/kubernetes-deployment-strategies", "https://bytebytego.com/guides/top-5-most-used-deployment-strategies", "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "https://bytebytego.com/guides/possible-experiment-platform-architecture", "https://brunch.co.kr/@springboot/283", "https://sre.google/sre-book/introduction/"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/how-to-deploy-services", "https://bytebytego.com/guides/kubernetes-deployment-strategies", "https://bytebytego.com/guides/top-5-most-used-deployment-strategies", "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "https://bytebytego.com/guides/possible-experiment-platform-architecture", "https://brunch.co.kr/@springboot/283", "https://sre.google/sre-book/introduction/", "https://dayone.me/1agvzvw"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Deployment Strategies](https://bytebytego.com/guides/how-to-deploy-services)」, 「[Kubernetes Deployment Strategies](https://bytebytego.com/guides/kubernetes-deployment-strategies)」, 「[Top 5 Most-Used Deployment Strategies](https://bytebytego.com/guides/top-5-most-used-deployment-strategies)」, 「[Possible Experiment Platform Architecture](https://bytebytego.com/guides/possible-experiment-platform-architecture)」를 바탕으로 재구성한 노트다. 「[개발자를 위한 A/B 테스트 해시 샘플링](https://brunch.co.kr/@springboot/283)」의 내용을 더해 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[Deployment Strategies](https://bytebytego.com/guides/how-to-deploy-services)」, 「[Kubernetes Deployment Strategies](https://bytebytego.com/guides/kubernetes-deployment-strategies)」, 「[Top 5 Most-Used Deployment Strategies](https://bytebytego.com/guides/top-5-most-used-deployment-strategies)」, 「[Possible Experiment Platform Architecture](https://bytebytego.com/guides/possible-experiment-platform-architecture)」를 바탕으로 재구성한 노트다. 「[개발자를 위한 A/B 테스트 해시 샘플링](https://brunch.co.kr/@springboot/283)」의 내용을 더해 보강했다. 컨테이너만으로 하는 블루-그린 구현은 「[본격적으로 쓰는 Docker](https://dayone.me/1agvzvw)」로 보강했다.
 
 ## 배포 전략이란
 
@@ -59,6 +59,18 @@ flowchart LR
 전환: 라우터가 Green을 가리키게 바꾼다 → 문제가 생기면 Blue로 되돌린다
 
 전환 직전까지 Green을 운영과 같은 조건에서 시험할 수 있고, 롤백은 스위치를 되돌리는 것뿐이다. 대신 운영급 환경을 두 벌 유지해야 하고, DB처럼 상태가 있는 계층은 두 환경이 공유하므로 스키마 호환 문제가 그대로 남는다.
+
+오케스트레이터 없이 서버 한 대에서도 원리는 같다. 앱 컨테이너는 호스트 포트를 고정하지 않고, 새 컨테이너를 띄운 뒤 리버스 프록시만 옮긴다.
+
+```bash
+cid=$(docker run -d -P myapp:2.0)                 # EXPOSE 80을 임의 호스트 포트에
+port=$(docker port "$cid" 80 | cut -d: -f2)
+# 헬스 체크 확인 후 nginx upstream을 새 포트로 바꾸고
+nginx -s reload                                    # graceful reload: 기존 연결은 끝까지
+docker stop <옛 컨테이너>
+```
+
+지금은 이 일을 Traefik 라벨, 쿠버네티스 Service와 롤링 업데이트, ECS와 ALB 타깃 그룹이 대신한다.
 
 ### 카나리
 

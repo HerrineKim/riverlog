@@ -4,11 +4,11 @@ concept: "URL Shortener"
 summary: "긴 URL을 짧은 코드로 바꿔 주고 그 코드로 원래 주소에 리다이렉트하는 서비스(Bitly 같은)의 설계다. 요구 사항과 규모 추정, 301과 302 리다이렉트의 차이, 해시·고유 ID+Base62·무작위 코드 생성 방식 비교, 데이터 모델과 저장소, 캐시 중심의 읽기 경로, 사용자 지정 별칭·만료·클릭 분석·악용 방지를 다룬다."
 tags: ["backend", "architecture", "scalability", "web"]
 source: other
-date: "2026-10-30"
-sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://bytebytego.com/courses/system-design-interview/design-a-url-shortener"]
+date: "2026-10-31"
+sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://bytebytego.com/courses/system-design-interview/design-a-url-shortener", "http://n00tc0d3r.blogspot.com/2013/09/big-data-tinyurl.html", "https://developers.googleblog.com/en/google-url-shortener-links-will-no-longer-be-available/"]
 ---
 
-> 「fru1tworld/cs-basic 모의 면접 질문 목록」의 URL 단축기 설계 항목이 묻는 개념을 바탕으로, ByteByteGo 「[Design a URL Shortener](https://bytebytego.com/courses/system-design-interview/design-a-url-shortener)」의 구성을 참고해 재구성한 노트다.
+> 「fru1tworld/cs-basic 모의 면접 질문 목록」의 URL 단축기 설계 항목이 묻는 개념을 바탕으로, ByteByteGo 「[Design a URL Shortener](https://bytebytego.com/courses/system-design-interview/design-a-url-shortener)」의 구성을 참고해 재구성한 노트다. 해시 값을 그대로 코드로 쓰는 설계의 함정은 「[Big Data: TinyURL](http://n00tc0d3r.blogspot.com/2013/09/big-data-tinyurl.html)」(2013)을 실마리로, goo.gl 종료 경과는 Google Developers Blog의 「[Google URL Shortener links will no longer be available](https://developers.googleblog.com/en/google-url-shortener-links-will-no-longer-be-available/)」로 보강했다.
 
 ## URL 단축기란
 
@@ -57,6 +57,8 @@ GET /2TX9aB
 | 해시 후 자르기 | 긴 URL을 MD5·SHA-256 등으로 해시해 앞 7자(Base62)를 쓴다. 충돌하면 URL에 소금(salt)을 붙여 다시 해시한다 | 같은 URL은 같은 코드가 된다(중복 생성 방지). 조율이 필요 없다 | 자르면 충돌이 생기므로 쓸 때마다 존재 확인 조회가 필요하다 |
 | **고유 ID + Base62 인코딩** | 분산 ID 생성기로 정수 ID를 받아 Base62로 바꾼다 | **충돌이 없다.** 존재 확인이 필요 없다 | ID가 순서대로면 코드가 예측 가능해 다른 링크를 훑어볼 수 있다. ID 생성기가 필요하다 |
 | 무작위 코드 | 무작위 7자를 만들고 유니크 제약으로 충돌 시 다시 만든다. 또는 미리 만들어 둔 코드 풀에서 꺼내 쓴다(키 생성 서비스) | 예측할 수 없다 | 채워질수록 충돌 재시도가 는다. 코드 풀은 별도 서비스·동시성 관리가 필요하다 |
+
+여러 서버로 늘릴 때 흔한 실수는 「원본 URL을 해시해 일관된 해싱으로 저장 서버를 고르고, **그 해시 값을 62진수로 바꿔** 코드로 돌려주는」 설계다. 7자리 Base62(약 3.5조 개)에 담으려면 해시 공간을 그만큼 줄여야 하고, 그 순간 서로 다른 URL이 같은 코드를 갖는 충돌이 생긴다. 해시를 쓰려면 위 표처럼 저장 전에 존재를 확인하고 충돌하면 소금을 붙여 다시 해시해야 하고, 충돌 처리를 피하려면 서버마다 ID 구간을 나눠 주고 그 ID를 Base62로 바꾼다. 62진수 변환 자체는 정수와 코드 사이의 일대일 대응이라 충돌이 없다.
 
 Base62 인코딩은 정수를 62진수로 바꾸는 것이다. `0-9`를 0~9, `a-z`를 10~35, `A-Z`를 36~61로 둘 때 11157은 다음과 같다.
 
@@ -117,6 +119,7 @@ flowchart LR
 | 같은 URL 재요청 | 매번 새 코드를 줄지, 사용자별로 같은 코드를 돌려줄지 정한다 |
 | 악용 방지 | 피싱·악성 URL 검사, 생성 API 속도 제한([[resiliency-patterns\|장애 확산을 막는 복원력 패턴]]), 신고된 코드 차단(302여야 즉시 반영된다) |
 | 통계 | 클릭 수, 시간대, 국가, 유입 경로를 스트림 처리로 집계한다 |
+| 서비스 수명 | 단축 링크는 서비스가 살아 있어야 동작한다. Google의 goo.gl은 2018년 새 링크 생성을 막았고, 기존 링크를 2025-08-25에 모두 끊으려다 2024년 말 이후 클릭이 있던 링크와 Google 앱이 만든 링크는 유지하는 쪽으로 바꿨다. 활동이 없던 링크는 그날 이후 동작하지 않는다. 오래 남을 문서에는 자기 도메인의 단축기나 원본 URL을 쓴다 |
 
 ## 정리
 

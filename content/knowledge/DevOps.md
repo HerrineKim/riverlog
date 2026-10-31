@@ -55,6 +55,7 @@ DevOps는 개발(Development)과 운영(Operations) 사이의 벽을 줄여, 코
 | [서버리스 아키텍처](/knowledge/dictionary/devops/serverless-architecture) | IaaS·PaaS·컨테이너와 차이, FaaS·BaaS, 함수 호출 경로와 코드 구성 방식, 콜드 스타트 같은 제약과 맞는 곳 |
 | [S3·CloudFront로 정적 사이트 배포하기](/knowledge/dictionary/devops/s3-cloudfront-static-hosting) | 비공개 S3 + OAC, ACM·Route 53 도메인, SPA 라우팅, 캐시 헤더와 무효화, GitHub Actions OIDC 배포 |
 | [Terraform: 코드로 클라우드 인프라 만들기](/knowledge/dictionary/devops/terraform-workflow) | write → init → plan → apply, 상태 파일과 원격 백엔드·잠금, 모듈, 드리프트, CI 운영 |
+| [Packer와 머신 이미지 굽기](/knowledge/dictionary/devops/packer-machine-image) | 소스·프로비저너·후처리기 빌드 흐름, HCL2 템플릿과 packer init, Dockerfile과의 차이, 골든 이미지·굽기 vs 볶기·불변 인프라 |
 | [클라우드 비용 최적화와 숨은 비용](/knowledge/dictionary/devops/cloud-cost-optimization) | 비용을 줄이는 여섯 방법, 공인 IPv4·유휴 자원·송신 전송 같은 숨은 비용 |
 | [스타트업 인프라 선택 원칙](/knowledge/dictionary/devops/startup-infra-decisions) | 데이터는 관리형, 단순한 도구, 관측 표준·IdP·비용 추적은 처음부터 같은 인프라 결정 기준 |
 | [클라우드 SLA·계약과 규제](/knowledge/dictionary/devops/cloud-sla-and-contract) | 가용성·응답성 지표, 서비스 크레딧, 이전 대상 고르기, 출구 전략, 계약 체크리스트, 클라우드컴퓨팅법의 이용자 권리와 공공·금융·의료·교육 분야 규정 |

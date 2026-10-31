@@ -4,11 +4,11 @@ concept: "Elasticsearch"
 summary: "Elasticsearch는 Lucene 위에 만든 분산 검색·분석 엔진이다. JSON 문서를 역인덱스로 색인해 전문 검색과 집계를 거의 실시간으로 처리한다. 클러스터·노드 역할·샤드·세그먼트 구조, 쓰기 경로와 복제·일관성 모델, 인덱스 템플릿·롤오버·ILM·데이터 티어, 스냅숏 백업, 확장과 튜닝, 모니터링과 장애 진단(429, 디스크 워터마크), 보안, ELK 로그 파이프라인을 정리한다."
 tags: ["backend", "search", "database", "monitoring", "architecture"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-do-we-learn-elasticsearch", "https://bytebytego.com/guides/top-6-elasticsearch-use-cases", "https://bytebytego.com/guides/what-is-elk-stack-and-why-is-it-so-popular-for-log-management", "https://techcrunch.com/2024/09/16/aws-brings-opensearch-under-the-linux-foundation-umbrella", "https://lwn.net/Articles/990517", "https://github.com/fru1tworld/cs-basic/blob/main/interview/database/elasticsearch.md", "https://www.elastic.co/docs/reference/elasticsearch/configuration-reference/cluster-level-shard-allocation-routing-settings", "https://www.elastic.co/docs/deploy-manage/distributed-architecture/reading-and-writing-documents"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/how-do-we-learn-elasticsearch", "https://bytebytego.com/guides/top-6-elasticsearch-use-cases", "https://bytebytego.com/guides/what-is-elk-stack-and-why-is-it-so-popular-for-log-management", "https://techcrunch.com/2024/09/16/aws-brings-opensearch-under-the-linux-foundation-umbrella", "https://lwn.net/Articles/990517", "https://github.com/fru1tworld/cs-basic/blob/main/interview/database/elasticsearch.md", "https://www.elastic.co/docs/reference/elasticsearch/configuration-reference/cluster-level-shard-allocation-routing-settings", "https://www.elastic.co/docs/deploy-manage/distributed-architecture/reading-and-writing-documents", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/데이터-엔지니어", "https://trino.io/docs/current/connector/elasticsearch.html", "https://github.com/remotty/documents.docker.co.kr", "http://slides.com/seapy/dockerize_elasticsearch", "http://www.slideshare.net/seapy/elasticsearch-52463195"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[How to Learn Elasticsearch](https://bytebytego.com/guides/how-do-we-learn-elasticsearch)」, 「[Top 6 Elasticsearch Use Cases](https://bytebytego.com/guides/top-6-elasticsearch-use-cases)」, 「[What is ELK Stack and Why is it Popular?](https://bytebytego.com/guides/what-is-elk-stack-and-why-is-it-so-popular-for-log-management)」을 바탕으로 재구성한 노트다. 노드 역할, 쓰기 경로와 일관성, 인덱스 수명 주기, 백업, 운영 진단, 보안은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/database/elasticsearch.md)」의 질문을 실마리로 Elastic 공식 문서로 확인해 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[How to Learn Elasticsearch](https://bytebytego.com/guides/how-do-we-learn-elasticsearch)」, 「[Top 6 Elasticsearch Use Cases](https://bytebytego.com/guides/top-6-elasticsearch-use-cases)」, 「[What is ELK Stack and Why is it Popular?](https://bytebytego.com/guides/what-is-elk-stack-and-why-is-it-so-popular-for-log-management)」을 바탕으로 재구성한 노트다. 노드 역할, 쓰기 경로와 일관성, 인덱스 수명 주기, 백업, 운영 진단, 보안은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/database/elasticsearch.md)」의 질문을 실마리로 Elastic 공식 문서로 확인해 보강했다. 최근 N개월만 두는 운영과 Trino 연동은 「[I want to study Data Science: 데이터 엔지니어](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/데이터-엔지니어)」 위키의 데이터 엔지니어링 발표와 [Trino Elasticsearch 커넥터 문서](https://trino.io/docs/current/connector/elasticsearch.html)로, 컨테이너로 운영하는 법은 「[documents.docker.co.kr](https://github.com/remotty/documents.docker.co.kr)」에 모인 「[Dockerize Elasticsearch](http://slides.com/seapy/dockerize_elasticsearch)」, 「[Elasticsearch 형태소 분석기와 Docker](http://www.slideshare.net/seapy/elasticsearch-52463195)」로 보강했다.
 
 ## Elasticsearch란
 
@@ -185,6 +185,8 @@ PUT _index_template/logs
 
 **Hot-Warm-Cold 아키텍처**는 이 단계를 하드웨어로 나눈 구성이다. 노드에 `data_hot`(빠른 NVMe·많은 CPU), `data_warm`(큰 HDD·적은 CPU), `data_cold`·`data_frozen`(가장 싼 저장소) 역할을 주고, ILM이 단계를 옮길 때 인덱스의 `_tier_preference`를 바꿔 샤드를 해당 티어 노드로 자동 이동한다. 최신 데이터는 빠르게, 오래된 데이터는 싸게 둔다. 검색 가능한 스냅숏과 frozen 티어는 유료 구독 기능이다.
 
+로그·이벤트 클러스터는 흔히 **최근 N개월만** hot·warm 티어에 두고 그 이전은 스냅숏으로 내리거나 지운다. 검색 대상을 줄여 클러스터 크기를 일정하게 유지한다. 날짜별 인덱스는 SQL 엔진에서 하나의 테이블처럼 읽을 수도 있다. Trino의 Elasticsearch 커넥터는 인덱스를 테이블로 보여 주고, `"page_views_*"` 같은 와일드카드나 별칭으로 공통 접두사의 인덱스들을 한 번에 질의한다(모든 인덱스의 필드 매핑이 호환돼야 한다). 다른 저장소의 테이블과 조인하는 분석이 쉬워진다.
+
 ### 데이터 삭제
 
 | 방법 | 동작 | 주의 |
@@ -254,6 +256,16 @@ POST _reindex?slices=auto&wait_for_completion=false
 | 합성 `_source`(synthetic source)·LogsDB 모드 | 원본 JSON을 따로 저장하지 않고 필드 값에서 재구성한다 | 원본의 필드 순서·형식이 보존되지 않는다. 라이선스에 따라 다르다 |
 | 읽기 전용 인덱스 `forcemerge` | 세그먼트를 줄여 오버헤드와 삭제 표시를 없앤다 | 쓰기 중인 인덱스에는 하지 않는다 |
 | 숫자 ID를 `keyword`로 | 범위 검색이 없는 식별자는 `keyword`가 같음 검색에 빠르다 | 범위 질의는 느리다 |
+
+### 컨테이너로 운영하기
+
+노드를 늘릴 때마다 설치·설정을 반복하는 문제는 이미지로 푼다.
+
+- 설정 파일, 플러그인, 한국어 분석기와 사용자 사전을 **이미지에 굽고 버전을 고정**한다. 서버를 옮기거나 버전을 올릴 때마다 설치 문서를 다시 찾지 않는다. 한국어는 6.4부터 공식 분석기 nori가 있어 예전처럼 은전한닢(mecab-ko)을 빌드해 넣는 수고가 줄었다([[elasticsearch-search|Elasticsearch 검색]]).
+- 컨테이너 안의 IP는 다른 노드가 닿을 수 없으므로 `network.publish_host`에 호스트 주소를 주고 9200(HTTP)·9300(노드 간) 포트를 연다. 데이터 디렉터리는 호스트 볼륨에 둔다.
+- 노드 찾기는 7.0부터 `discovery.seed_hosts`(마스터 후보 목록)와 첫 기동 때만 쓰는 `cluster.initial_master_nodes`로 한다. 예전의 멀티캐스트·`discovery.zen.*` 설정은 없어졌다.
+- 접근 제어는 예전에는 앞에 basic auth 프록시를 두었지만, 지금은 인증·TLS가 무료 기본 라이선스에 들어 있고 8.0부터 기본으로 켜진다(아래 「보안」).
+- **한 번에 하나만 바꾼다.** 컨테이너로 옮긴 뒤 로그 수집기가 31시간마다 접속에 실패하는 문제가 생겼는데, 원인은 컨테이너가 아니라 함께 올린 수집기 플러그인 버전이었다. 여러 변경을 섞으면 원인을 가릴 수 없다.
 
 ## 모니터링과 장애 진단
 

@@ -4,11 +4,11 @@ concept: "Cloud Native"
 summary: "클라우드 네이티브를 개발 프로세스·애플리케이션 구조·배포 단위·인프라의 네 축으로 정의하고, 가상화에서 IaaS·PaaS·컨테이너로 이어진 클라우드의 변천, 전환 로드맵(CNCF 랜드스케이프의 여섯 영역), 전통적 구성 관리와 코드형 인프라(IaC)·GitOps의 차이와 대표 도구를 정리했다."
 tags: ["devops", "infra", "cloud", "docker", "automation"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-cloud-native", "https://bytebytego.com/guides/how-do-we-transform-a-system-to-be-cloud-native", "https://bytebytego.com/guides/2-decades-of-cloud-evolution", "https://bytebytego.com/guides/a-cheatsheet-on-infrastructure-as-code-landscape", "https://bytebytego.com/guides/how-do-we-manage-configurations-in-a-system", "https://github.com/cncf/toc/blob/main/DEFINITION.md"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/what-is-cloud-native", "https://bytebytego.com/guides/how-do-we-transform-a-system-to-be-cloud-native", "https://bytebytego.com/guides/2-decades-of-cloud-evolution", "https://bytebytego.com/guides/a-cheatsheet-on-infrastructure-as-code-landscape", "https://bytebytego.com/guides/how-do-we-manage-configurations-in-a-system", "https://github.com/cncf/toc/blob/main/DEFINITION.md", "http://slides.com/anarcher/docker-2014-11-30-springsprout#/", "http://spoqa.github.io/2013/11/22/docker-the-cloud.html", "http://www.itworld.co.kr/tags/64073/%EB%8F%84%EC%BB%A4/87971", "http://blog.naver.com/wonzer0/220029292959", "https://attic.apache.org/projects/mesos.html"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[What is Cloud Native?](https://bytebytego.com/guides/what-is-cloud-native)」, 「[How to Transform a System to be Cloud Native](https://bytebytego.com/guides/how-do-we-transform-a-system-to-be-cloud-native)」, 「[2 Decades of Cloud Evolution](https://bytebytego.com/guides/2-decades-of-cloud-evolution)」, 「[Infrastructure as Code Landscape Cheatsheet](https://bytebytego.com/guides/a-cheatsheet-on-infrastructure-as-code-landscape)」, 「[How do we manage configurations in a system?](https://bytebytego.com/guides/how-do-we-manage-configurations-in-a-system)」를 바탕으로, 정의는 [CNCF의 Cloud Native 정의](https://github.com/cncf/toc/blob/main/DEFINITION.md)로 확인해 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[What is Cloud Native?](https://bytebytego.com/guides/what-is-cloud-native)」, 「[How to Transform a System to be Cloud Native](https://bytebytego.com/guides/how-do-we-transform-a-system-to-be-cloud-native)」, 「[2 Decades of Cloud Evolution](https://bytebytego.com/guides/2-decades-of-cloud-evolution)」, 「[Infrastructure as Code Landscape Cheatsheet](https://bytebytego.com/guides/a-cheatsheet-on-infrastructure-as-code-landscape)」, 「[How do we manage configurations in a system?](https://bytebytego.com/guides/how-do-we-manage-configurations-in-a-system)」를 바탕으로, 정의는 [CNCF의 Cloud Native 정의](https://github.com/cncf/toc/blob/main/DEFINITION.md)로 확인해 재구성한 노트다. Ansible 예와 컨테이너 시대의 연표는 「[도커 사용에 유용한 유틸리티와 팁](http://slides.com/anarcher/docker-2014-11-30-springsprout#/)」, 「[docker the cloud](http://spoqa.github.io/2013/11/22/docker-the-cloud.html)」, 「[도커 101: 가장 중요한 질문 8가지](http://www.itworld.co.kr/tags/64073/%EB%8F%84%EC%BB%A4/87971)」, 「[RHEL7에서 Docker Container 사용하기](http://blog.naver.com/wonzer0/220029292959)」, Apache Attic 기록으로 보강했다.
 
 ## 클라우드 네이티브란
 
@@ -65,6 +65,27 @@ IaC는 **인프라에 소프트웨어 개발 관행을 적용한 것**이다. �
 
 Terraform의 write → plan → apply 흐름과 상태 파일, 오픈소스 포크 OpenTofu와의 관계는 [[terraform-workflow|Terraform: 코드로 클라우드 인프라 만들기]]에 있다.
 
+구성 관리 도구의 대표인 **Ansible**은 에이전트 없이 SSH로 접속해 YAML 플레이북을 실행한다. 모듈은 표준 입출력으로 JSON을 주고받는 프로그램이면 무엇이든 된다. 여러 서버에 Docker를 까는 플레이북은 대략 이렇다.
+
+```yaml
+- hosts: docker_hosts
+  become: true
+  tasks:
+    - name: Docker 저장소 키
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.asc
+    - name: Docker 저장소
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    - name: Docker 설치
+      ansible.builtin.apt: { name: [docker-ce, docker-ce-cli, containerd.io], state: present, update_cache: true }
+    - name: 서비스 시작
+      ansible.builtin.service: { name: docker, state: started, enabled: true }
+```
+
+같은 플레이북을 다시 돌리면 이미 원하는 상태인 서버는 `changed=0`으로 끝난다. 이 **멱등성**이 구성 관리의 핵심이다. 과거 예제의 `apt_key` 모듈은 폐기됐고 키링 파일과 `signed-by`를 쓴다.
+
 **GitOps**는 IaC를 한 단계 더 밀어붙인다. 사람이 `kubectl apply`나 `terraform apply`를 직접 치지 않고, Git에 병합하면 에이전트가 실제 상태를 Git의 선언에 맞춘다. 실제 상태가 선언과 달라지는 드리프트(drift)도 같은 방식으로 되돌린다.
 
 ## 역사
@@ -75,8 +96,11 @@ Terraform의 write → plan → apply 흐름과 상태 파일, 오픈소스 포�
 | 2006 | AWS의 IaaS(S3, EC2) | 인프라를 API로 빌려 쓴다 |
 | 2009 | Heroku의 PaaS | 코드만 올리면 플랫폼이 실행한다 |
 | 2010~2011 | OpenStack(오픈소스 IaaS), Cloud Foundry(오픈소스 PaaS) | 자체 데이터센터에서도 클라우드 방식을 쓴다 |
-| 2013 | Docker | 컨테이너가 배포 단위가 된다 |
+| 2013 | PaaS 업체 dotCloud가 내부 컨테이너 엔진을 Docker로 공개 | 컨테이너가 배포 단위가 된다 |
+| 2014 | Docker 1.0과 Docker Hub, 회사 이름도 Docker로 바뀜. RHEL 7이 Docker를 기본 지원. Microsoft가 Windows Server 컨테이너 개발을 발표 | 컨테이너가 리눅스 배포판과 기업 환경으로 퍼진다 |
 | 2014~2015 | Kubernetes 공개, CNCF 설립 | 컨테이너 오케스트레이션과 클라우드 네이티브 생태계가 표준화된다 |
+| 2017~2018 | Swarm·Mesos·Nomad와의 경쟁이 Kubernetes로 정리 | 오케스트레이터 표준이 정해진다 |
+| 2020~2025 | CoreOS Container Linux 지원 종료(2020), Apache Mesos 은퇴(2025) | 2010년대 중반의 컨테이너 도구들이 쿠버네티스 생태계로 흡수된다 |
 
 ## 정리
 

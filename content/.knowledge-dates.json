@@ -1,23 +1,23 @@
 {
  "AI-Data.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/Recommender-System.md": {
   "created": "2026-10-20T11:04:43+09:00",
-  "updated": "2026-10-31T13:02:37+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/Recommender-System/deep-learning-recsys.md": {
   "created": "2026-10-20T11:04:43+09:00",
-  "updated": "2026-10-31T13:02:37+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/Recommender-System/realtime-recsys.md": {
   "created": "2026-10-20T11:04:43+09:00",
-  "updated": "2026-10-31T13:02:37+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/Recommender-System/recsys-basics.md": {
   "created": "2026-10-20T11:04:43+09:00",
-  "updated": "2026-10-20T15:35:59+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/agent-trust-environment.md": {
   "created": "2026-10-20T11:57:40+09:00",
@@ -77,7 +77,7 @@
  },
  "AI-Data/classification-metrics.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-17T23:13:05+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/claude-code-guide.md": {
   "created": "2026-10-12T14:11:17+09:00",
@@ -97,11 +97,15 @@
  },
  "AI-Data/computer-vision-basics.md": {
   "created": "2026-10-23T13:09:00+09:00",
-  "updated": "2026-10-31T13:02:37+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
+ },
+ "AI-Data/data-job-roles.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/data-pipeline-basics.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-31T13:39:38+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/data-visualization.md": {
   "created": "2026-10-31T16:02:04+09:00",
@@ -109,19 +113,27 @@
  },
  "AI-Data/decision-tree-ensemble.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-31T13:39:38+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/deep-learning-intuition.md": {
   "created": "2026-10-18T14:51:32+09:00",
-  "updated": "2026-10-31T13:02:37+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/design-system-agent-harness.md": {
   "created": "2026-10-12T14:11:17+09:00",
   "updated": "2026-10-31T13:02:37+09:00"
  },
+ "AI-Data/distributed-data-processing.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
+ },
  "AI-Data/evaluation-driven-development.md": {
   "created": "2026-10-17T23:13:05+09:00",
   "updated": "2026-10-31T13:02:37+09:00"
+ },
+ "AI-Data/event-log-design.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/harness-engineering.md": {
   "created": "2026-10-18T10:27:21+09:00",
@@ -157,7 +169,7 @@
  },
  "AI-Data/machine-learning-basics.md": {
   "created": "2026-10-13T19:48:50+09:00",
-  "updated": "2026-10-31T13:39:38+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/midjourney-prompt-parameters.md": {
   "created": "2026-10-13T14:36:59+09:00",
@@ -165,7 +177,11 @@
  },
  "AI-Data/ml-model-serving.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-31T13:02:04+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
+ },
+ "AI-Data/mlops.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/multi-agent.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -181,15 +197,19 @@
  },
  "AI-Data/nlp-pipeline.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-31T13:39:10+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/organizational-ax.md": {
   "created": "2026-10-19T14:44:10+09:00",
   "updated": "2026-10-31T13:21:48+09:00"
  },
+ "AI-Data/paper-reading-implementation.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
+ },
  "AI-Data/perceptron-mlp.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-31T13:39:10+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/personal-agent-harness.md": {
   "created": "2026-10-20T11:39:52+09:00",
@@ -199,17 +219,21 @@
   "created": "2026-10-17T23:13:05+09:00",
   "updated": "2026-10-31T13:39:10+09:00"
  },
+ "AI-Data/product-analytics.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
+ },
  "AI-Data/prompt-cheat-sheet.md": {
   "created": "2026-10-13T20:00:31+09:00",
   "updated": "2026-10-31T12:49:41+09:00"
  },
  "AI-Data/python-data-analysis.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/reinforcement-learning.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-31T13:02:04+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/responsible-ai-governance.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -225,11 +249,15 @@
  },
  "AI-Data/text-classification-in-production.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-31T13:21:48+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/text-similarity.md": {
   "created": "2026-10-12T21:27:28+09:00",
-  "updated": "2026-10-31T13:39:10+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
+ },
+ "AI-Data/time-series-analysis.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "AI-Data/visualization-design-process.md": {
   "created": "2026-10-31T13:48:56+09:00",
@@ -241,7 +269,7 @@
  },
  "AI-Data/web-scraping-strategy.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-31T13:21:48+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Algorithm.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -449,11 +477,11 @@
  },
  "Algorithm/real-world-algorithms.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-31T13:39:44+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/access-control-models.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -461,7 +489,7 @@
  },
  "Backend/Architecture/api-gateway.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:04:30+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/api-layer-evolution.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -485,7 +513,7 @@
  },
  "Backend/Architecture/big-tech-stack-anatomy.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:04:30+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/cache-cluster-operations.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -493,7 +521,7 @@
  },
  "Backend/Architecture/caching-strategies.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:39:44+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/card-payment-network.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -501,7 +529,11 @@
  },
  "Backend/Architecture/chat-system-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:39:44+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
+ },
+ "Backend/Architecture/classic-distributed-systems.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/cloud-design-patterns.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -509,7 +541,7 @@
  },
  "Backend/Architecture/collaborative-editing.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:39:44+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/db-fetching-patterns.md": {
   "created": "2026-10-12T23:54:57+09:00",
@@ -525,7 +557,7 @@
  },
  "Backend/Architecture/distributed-time-and-failure.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-31T13:20:24+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/distributed-transaction.md": {
   "created": "2026-10-30T23:43:44+09:00",
@@ -565,7 +597,7 @@
  },
  "Backend/Architecture/location-based-service.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:39:44+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/media-processing-pipeline.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -573,15 +605,23 @@
  },
  "Backend/Architecture/message-queue-kafka.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:04:38+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/microservices-architecture.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:04:38+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/money-movement.md": {
   "created": "2026-10-21T14:58:21+09:00",
   "updated": "2026-10-31T13:39:44+09:00"
+ },
+ "Backend/Architecture/multiplayer-game-server.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
+ },
+ "Backend/Architecture/news-feed-design.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/notification-system.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -593,11 +633,11 @@
  },
  "Backend/Architecture/realtime-websocket-server.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:04:38+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/resiliency-patterns.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-30T23:43:44+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/secure-system-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -613,11 +653,15 @@
  },
  "Backend/Architecture/system-design-fundamentals.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:39:03+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
+ },
+ "Backend/Architecture/trending-topics.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/url-shortener-design.md": {
   "created": "2026-10-30T23:43:44+09:00",
-  "updated": "2026-10-31T13:04:38+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Architecture/virtual-waiting-room.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -629,11 +673,11 @@
  },
  "Backend/Architecture/web-scalability-components.md": {
   "created": "2026-10-20T11:04:43+09:00",
-  "updated": "2026-10-31T13:39:03+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Database/block-file-object-storage.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:04:38+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Database/connection-pool.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -653,11 +697,11 @@
  },
  "Backend/Database/database-sharding.md": {
   "created": "2026-10-17T19:04:42+09:00",
-  "updated": "2026-10-31T13:02:48+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Database/distributed-unique-id.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:49:07+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Database/elasticsearch-search.md": {
   "created": "2026-10-30T23:43:44+09:00",
@@ -665,7 +709,7 @@
  },
  "Backend/Database/elasticsearch.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:20:24+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Database/flyway.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -693,7 +737,7 @@
  },
  "Backend/Database/search-engine-basics.md": {
   "created": "2026-10-14T10:18:30+09:00",
-  "updated": "2026-10-31T13:02:48+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Database/sql-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -701,7 +745,7 @@
  },
  "Backend/Database/web-search-engine.md": {
   "created": "2026-10-17T19:04:42+09:00",
-  "updated": "2026-10-31T13:02:48+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Backend/Database/wide-column-database.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -953,7 +997,7 @@
  },
  "Career/Job-Search/job-offer-negotiation.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-31T13:38:58+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Career/Job-Search/resume-writing.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -1025,7 +1069,7 @@
  },
  "Career/Product/product-minded-engineer.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-31T12:48:13+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Career/Product/project-process.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1145,7 +1189,7 @@
  },
  "Career/Work/side-project-tips.md": {
   "created": "2026-10-13T19:31:42+09:00",
-  "updated": "2026-10-31T13:20:13+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Career/Work/software-documentation.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -1157,7 +1201,7 @@
  },
  "Career/Work/tech-blogging.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-31T13:20:13+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Career/Work/tech-lead-transition.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -1301,7 +1345,7 @@
  },
  "Computer-Science/Database/database-models.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T13:19:57+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Computer-Science/Database/normalization.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1345,7 +1389,7 @@
  },
  "Computer-Science/Network/cdn.md": {
   "created": "2026-10-12T21:06:09+09:00",
-  "updated": "2026-10-31T13:04:19+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Computer-Science/Network/dns.md": {
   "created": "2026-10-12T21:06:09+09:00",
@@ -1445,7 +1489,7 @@
  },
  "Computer-Science/Operating-System/daemon-and-systemd.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-31T13:02:42+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Computer-Science/Operating-System/deadlock.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -1537,7 +1581,7 @@
  },
  "Computer-Science/Operating-System/virtualization.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-31T13:49:12+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Computer-Science/Programming-Languages.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1593,11 +1637,11 @@
  },
  "Computer-Science/Programming-Languages/gof-design-patterns.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-30T15:51:53+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Computer-Science/Programming-Languages/how-programs-run.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:03:08+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Computer-Science/Programming-Languages/java-coding-convention.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1665,7 +1709,7 @@
  },
  "Computer-Science/Programming-Languages/responsibility-driven-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:03:08+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Computer-Science/Programming-Languages/singleton-pattern.md": {
   "created": "2026-10-30T15:51:53+09:00",
@@ -1741,7 +1785,7 @@
  },
  "DevOps.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/aws-cloud-basics.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1761,7 +1805,7 @@
  },
  "DevOps/ci-cd.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T13:21:34+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/cloud-cost-optimization.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1769,7 +1813,7 @@
  },
  "DevOps/cloud-native.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-30T13:19:55+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/cloud-services-map.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1781,7 +1825,7 @@
  },
  "DevOps/deployment-strategies.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:39:38+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/devops-sre-platform-engineering.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1797,19 +1841,19 @@
  },
  "DevOps/docker-compose.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-31T12:49:53+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/docker-container-operations.md": {
   "created": "2026-10-30T23:43:44+09:00",
-  "updated": "2026-10-31T12:49:53+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/docker-network-volume.md": {
   "created": "2026-10-30T23:43:44+09:00",
-  "updated": "2026-10-31T13:03:40+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/dockerfile.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-31T13:49:35+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/durable-workflow-temporal.md": {
   "created": "2026-10-23T17:37:45+09:00",
@@ -1821,11 +1865,11 @@
  },
  "DevOps/kubernetes-architecture.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:03:40+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/kubernetes-networking.md": {
   "created": "2026-10-30T23:43:44+09:00",
-  "updated": "2026-10-31T13:03:40+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/kubernetes-operations.md": {
   "created": "2026-10-30T23:43:44+09:00",
@@ -1853,11 +1897,15 @@
  },
  "DevOps/observability.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:03:08+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
+ },
+ "DevOps/packer-machine-image.md": {
+  "created": "2026-10-31T18:52:03+09:00",
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/platform-engineering.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-31T13:03:08+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/production-readiness-checklist.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -1881,15 +1929,15 @@
  },
  "DevOps/terraform-workflow.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:03:08+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/twelve-factor-app.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:03:08+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "DevOps/vm-vs-container.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T13:21:34+09:00"
+  "updated": "2026-10-31T18:52:03+09:00"
  },
  "Frontend.md": {
   "created": "2026-10-11T22:24:49+09:00",

@@ -4,11 +4,11 @@ concept: "Web Search Engine"
 summary: "웹 검색엔진은 크롤러가 링크 그래프를 따라 페이지를 모으고, 중복을 묶어 샤딩된 역인덱스에 넣은 뒤, 질의가 오면 의도를 해석해 후보를 뽑고 여러 랭킹 신호로 순서를 정한다. 크롤러의 URL 프런티어, PageRank, 2단계 랭킹, 구글의 랭킹 시스템과 네이버 통합검색의 컬렉션 구조를 자료구조·알고리즘 관점에서 정리했다."
 tags: ["backend", "search", "algorithm", "data-structure", "graph", "seo"]
 source: other
-date: "2026-10-17"
-sources: ["https://tali.kr/2188", "https://xo.dev/articles/how-search-engine-works", "https://idlab.tistory.com/8", "https://m.blog.naver.com/hoebok/20147866069", "https://developers.google.com/search/docs/fundamentals/how-search-works", "https://developers.google.com/search/docs/appearance/ranking-systems-guide", "https://www.google.com/search/howsearchworks/how-search-works/rigorous-testing/", "https://www.navercorp.com/media/pressReleasesDetail?seq=31528", "https://bytebytego.com/guides/how-do-search-engines-work"]
+date: "2026-10-31"
+sources: ["https://tali.kr/2188", "https://xo.dev/articles/how-search-engine-works", "https://idlab.tistory.com/8", "https://m.blog.naver.com/hoebok/20147866069", "https://developers.google.com/search/docs/fundamentals/how-search-works", "https://developers.google.com/search/docs/appearance/ranking-systems-guide", "https://www.google.com/search/howsearchworks/how-search-works/rigorous-testing/", "https://www.navercorp.com/media/pressReleasesDetail?seq=31528", "https://bytebytego.com/guides/how-do-search-engines-work", "http://programmers.stackexchange.com/questions/38324/interview-question-how-would-you-implement-google-search"]
 ---
 
-> TALI.KR의 「구글이 직접 말하는 검색엔진의 원리」(2023.08), blurfx의 「[검색 엔진은 어떻게 작동하는가](https://xo.dev/articles/how-search-engine-works)」(2023.04), idLAB의 「네이버 검색엔진의 특징과 알고리즘」(2020.12), 네이버의 「네이버 통합검색의 원리」(2007, 블로그 재게시본)를 바탕으로 재구성하고, 구글 검색 센터 문서와 네이버 보도자료(2024.02)로 최신화한 노트다. 크롤링·색인·서빙의 3단계 뼈대는 ByteByteGo의 System Design 101 가이드 「[How Do Search Engines Work?](https://bytebytego.com/guides/how-do-search-engines-work)」를 함께 참고했다. 역인덱스를 만드는 과정과 TF-IDF·BM25 공식은 [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]]에 있다.
+> TALI.KR의 「구글이 직접 말하는 검색엔진의 원리」(2023.08), blurfx의 「[검색 엔진은 어떻게 작동하는가](https://xo.dev/articles/how-search-engine-works)」(2023.04), idLAB의 「네이버 검색엔진의 특징과 알고리즘」(2020.12), 네이버의 「네이버 통합검색의 원리」(2007, 블로그 재게시본)를 바탕으로 재구성하고, 구글 검색 센터 문서와 네이버 보도자료(2024.02)로 최신화한 노트다. 크롤링·색인·서빙의 3단계 뼈대는 ByteByteGo의 System Design 101 가이드 「[How Do Search Engines Work?](https://bytebytego.com/guides/how-do-search-engines-work)」를 함께 참고했다. 역인덱스를 만드는 과정과 TF-IDF·BM25 공식은 [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]]에 있다. 설계 질문으로 볼 때의 세 층은 Software Engineering Stack Exchange의 「[How would you implement Google Search?](http://programmers.stackexchange.com/questions/38324/interview-question-how-would-you-implement-google-search)」 답변으로 보강했다.
 
 ## 웹 검색엔진이란
 
@@ -32,6 +32,8 @@ flowchart LR
   end
   index --> serve
 ```
+
+설계 질문으로 「구글 검색을 만들라」를 받으면 세 층으로 나눠 말한다. **색인 인프라**(크롤러가 무한 루프·무한 생성 페이지에 갇히지 않게 하고, 맵리듀스로 페이지별 색인을 만들어 합친다), **색인 알고리즘**(들어오는 링크 수, 링크가 걸린 태그(`h1`·`b`가 `h3`보다 무겁다), 나가는 링크가 지나치게 많은 스팸 신호, 단어 조합으로 주제 추정), **서빙**(매일 질의의 상당 부분은 처음 보는 질의라 결과 캐시만으로는 안 되고, 여러 색인을 조합해 거대한 색인에서 빨리 찾아야 한다). Google은 하루 검색의 약 15%가 처음 보는 질의라고 밝혀 왔다.
 
 ## 1. 크롤링: 웹이라는 그래프 탐색
 

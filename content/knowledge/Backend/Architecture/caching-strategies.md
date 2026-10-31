@@ -4,11 +4,11 @@ concept: "Caching Strategies"
 summary: "캐시는 요청 경로의 거의 모든 층에 있다. 캐시와 원본을 맞추는 읽기·쓰기 패턴(cache-aside, read-through, write-through, write-around, write-back), 꽉 찼을 때 무엇을 버릴지 정하는 교체 정책(LRU·LFU·FIFO·SLRU·TTL 등), 그리고 캐시가 오히려 DB를 무너뜨리는 네 가지 장애(동시 만료, 관통, 핫 키 만료, 캐시 다운)와 대응을 정리한다."
 tags: ["backend", "cache", "architecture", "performance", "database"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/cache-systems-every-developer-should-know", "https://bytebytego.com/guides/learn-cache", "https://bytebytego.com/guides/things-to-consider-when-using-cache", "https://bytebytego.com/guides/top-5-caching-strategies", "https://bytebytego.com/guides/what-are-the-top-caching-strategies", "https://bytebytego.com/guides/most-popular-cache-eviction", "https://bytebytego.com/guides/top-8-cache-eviction-strategies", "https://bytebytego.com/guides/how-can-cache-systems-go-wrong", "https://bytebytego.com/guides/cache-miss-attack"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/cache-systems-every-developer-should-know", "https://bytebytego.com/guides/learn-cache", "https://bytebytego.com/guides/things-to-consider-when-using-cache", "https://bytebytego.com/guides/top-5-caching-strategies", "https://bytebytego.com/guides/what-are-the-top-caching-strategies", "https://bytebytego.com/guides/most-popular-cache-eviction", "https://bytebytego.com/guides/top-8-cache-eviction-strategies", "https://bytebytego.com/guides/how-can-cache-systems-go-wrong", "https://bytebytego.com/guides/cache-miss-attack", "http://www.slideshare.net/oemebamo/introduction-to-memcached", "https://docs.memcached.org/features/tls/"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Cache Systems Every Developer Should Know](https://bytebytego.com/guides/cache-systems-every-developer-should-know)」, 「[Things to Consider When Using Cache](https://bytebytego.com/guides/things-to-consider-when-using-cache)」, 「[Top 5 Caching Strategies](https://bytebytego.com/guides/top-5-caching-strategies)」, 「[Top 8 Cache Eviction Strategies](https://bytebytego.com/guides/top-8-cache-eviction-strategies)」, 「[How Can Cache Systems Go Wrong?](https://bytebytego.com/guides/how-can-cache-systems-go-wrong)」, 「[Cache Miss Attack](https://bytebytego.com/guides/cache-miss-attack)」 등을 바탕으로 재구성한 노트다.
+> ByteByteGo의 System Design 101 가이드 「[Cache Systems Every Developer Should Know](https://bytebytego.com/guides/cache-systems-every-developer-should-know)」, 「[Things to Consider When Using Cache](https://bytebytego.com/guides/things-to-consider-when-using-cache)」, 「[Top 5 Caching Strategies](https://bytebytego.com/guides/top-5-caching-strategies)」, 「[Top 8 Cache Eviction Strategies](https://bytebytego.com/guides/top-8-cache-eviction-strategies)」, 「[How Can Cache Systems Go Wrong?](https://bytebytego.com/guides/how-can-cache-systems-go-wrong)」, 「[Cache Miss Attack](https://bytebytego.com/guides/cache-miss-attack)」 등을 바탕으로 재구성한 노트다. Memcached의 사용 패턴과 무효화 방식은 「[Introduction to memcached](http://www.slideshare.net/oemebamo/introduction-to-memcached)」로, TLS 지원은 [Memcached 공식 문서](https://docs.memcached.org/features/tls/)로 보강했다.
 
 ## 캐시란
 
@@ -107,6 +107,16 @@ Write-back은 조회수·좋아요처럼 **잃어도 치명적이지 않고 쓰�
 
 - **2계층 캐시**(two-tier caching)는 교체 정책이라기보다 배치 전략이다. 1차는 프로세스 메모리, 2차는 분산 캐시에 둔다. 1차는 빠르지만 서버마다 내용이 다르므로 TTL을 짧게 둔다.
 - 실제 제품은 이론적 정책을 근사한다. Redis는 표본을 몇 개 뽑아 그중에서 LRU·LFU를 고르는 근사 알고리즘을 쓰고, 자바 Caffeine 같은 로컬 캐시는 빈도와 최근성을 섞은 W-TinyLFU를 쓴다.
+
+## 무효화 방식과 Memcached
+
+캐시를 비우는 방법은 세 가지다. **시간 만료**(TTL), **무기한 저장 후 이벤트로 삭제**(데이터가 바뀌는 코드에서 키를 지운다), **버전 번호를 키에 넣고 바뀔 때 올리기**(`user:42:v7` → `v8`. 옛 키는 아무도 읽지 않으니 LRU가 자연히 치운다). 셋째는 삭제 누락이나 경쟁 조건 없이 한 번에 여러 키를 무효화할 수 있다.
+
+Memcached는 이런 단순 캐시의 표준이다. **서버끼리 서로 모르고, 서버 목록 관리와 키 분배는 클라이언트 몫**이다. 클라이언트가 `hash(key) % 서버 수`로 고르면 서버 하나가 빠질 때 거의 모든 키 자리가 바뀌어 캐시 전체가 식으므로, 일관된 해싱 클라이언트를 쓴다([[database-sharding|데이터베이스 샤딩]]). 복제와 장애 조치가 없고 키를 나열할 수 없으며, 값 크기 기본 상한은 1MB다. 접근 제어는 SASL 인증과 1.5.13부터 지원하는 TLS(`--enable-tls`로 빌드, `-Z`로 켬)로 하지만 기본은 꺼져 있어, 민감한 데이터를 넣을 때는 네트워크로 막는다.
+
+- 렌더링한 페이지 조각을 담는 **출력 캐시**는 빠르지만 언어·로그인 상태 같은 의존성이 많고, DB 결과를 담는 **데이터 캐시**는 의존성 추적이 쉽다.
+- 여러 키는 multi-get으로 한 번에 가져와 왕복을 줄인다.
+- 캐시로 DB 튜닝을 대신하지 않는다. 낡은 데이터 버그는 재현이 어려우니 캐시 코드에도 단위 테스트를 둔다.
 
 ## 캐시가 DB를 무너뜨리는 네 가지 경우
 

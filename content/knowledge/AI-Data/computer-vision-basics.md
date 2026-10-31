@@ -1,14 +1,15 @@
 ---
 title: "컴퓨터 비전 기초: 커널과 합성곱에서 CNN까지"
 concept: "Computer Vision"
-summary: "컴퓨터 비전은 픽셀 격자에서 높은 수준의 의미를 뽑는 분야다. 픽셀 하나로 하는 색 추적, 주변 픽셀 묶음(패치)에 커널을 곱해 더하는 합성곱과 에지 검출, 약한 특징을 모아 얼굴을 찾는 Viola-Jones, 커널을 학습하는 합성곱 신경망(CNN), 얼굴 랜드마크에서 표정·생체 인식으로 올라가는 추상화 층을 정리한다."
+summary: "컴퓨터 비전은 픽셀 격자에서 높은 수준의 의미를 뽑는 분야다. 영상 처리와의 차이, 분류·탐지·분할·특징·매칭·3D·추적·생성의 세부 과제와 대표 데이터셋, 픽셀 하나로 하는 색 추적, 주변 픽셀 묶음(패치)에 커널을 곱해 더하는 합성곱과 에지 검출, 약한 특징을 모아 얼굴을 찾는 Viola-Jones, 커널을 학습하는 합성곱 신경망(CNN), 얼굴 랜드마크에서 표정·생체 인식으로 올라가는 추상화 층을 정리한다."
 tags: ["ai", "computer-vision", "deep-learning", "neural-network", "graphics"]
 source: other
-date: "2026-10-23"
-sources: ["https://www.youtube.com/watch?v=-4E2-0sxVUM"]
+date: "2026-10-31"
+sources: ["https://www.youtube.com/watch?v=-4E2-0sxVUM", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%EC%BB%B4%ED%93%A8%ED%84%B0-%EB%B9%84%EC%A0%84", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0"]
 ---
 
 > CrashCourse의 「Crash Course Computer Science」 #35 「Computer Vision」(2017)을 바탕으로, 그 뒤 바뀐 사실은 2026년 기준으로 고쳐 재구성한 노트다.
+> 「영상 처리와 컴퓨터 비전」, 「선수 지식」, 「세부 과제」는 Team-Neighborhood의 「[I want to study Data Science](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki)」 위키 「컴퓨터 비전」 문서로, 「대표 데이터셋」은 같은 위키의 「[데이터](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0)」 문서와 각 데이터셋 공식 페이지로 보강했다.
 
 ## 컴퓨터 비전이란
 
@@ -20,6 +21,28 @@ sources: ["https://www.youtube.com/watch?v=-4E2-0sxVUM"]
 | 패치(주변 픽셀 묶음) | 에지, 선, 점 같은 국소 특징 | 커널과 합성곱 |
 | 특징의 조합 | 얼굴, 손, 물체 | Viola-Jones, CNN |
 | 물체 안의 좌표 | 눈꼬리, 입꼬리, 관절 | 랜드마크 추적 |
+
+### 영상 처리와 컴퓨터 비전
+
+두 말은 전공자도 섞어 쓰지만 목적이 다르다.
+
+| | 영상 처리(image processing) | 컴퓨터 비전(computer vision) |
+| --- | --- | --- |
+| 목적 | 이미지를 **바꾼다** | 이미지를 **이해한다** |
+| 입력 → 출력 | 이미지 → 이미지 | 이미지 → 의미(라벨, 좌표, 설명) |
+| 예 | 모자이크, 블러, 에지 강조, 노이즈 제거 | 얼굴 검출, 물체 분류, 특징 추출·매칭 |
+
+얼굴을 찾으려고 필터로 기울기(gradient)를 또렷하게 만드는 단계는 영상 처리이고, 그 기울기를 학습된 패턴과 비교해 「얼굴이다」라고 판단하는 단계는 컴퓨터 비전이다. 비전은 거의 항상 영상 처리를 앞 단계로 깔고 가므로 경계가 칼같지는 않다.
+
+### 선수 지식
+
+| 분야 | 왜 필요한가 |
+| --- | --- |
+| 디지털 영상 처리 | 이미지를 다루는 기본 조작 |
+| 선형대수 | 이미지는 행렬이고, 변환·투영은 행렬 연산이다 |
+| 미적분 | 기울기 같은 특징 계산, 신경망 학습 |
+| 디지털 신호 처리 | 이미지도 2차원 신호다. 샘플링, 에일리어싱, LTI 시스템, [[fourier-transform\|푸리에 변환]] |
+| 확률·패턴 인식 | 추출한 특징의 분포를 보고 분류한다 |
 
 ## 픽셀 하나로 하는 일: 색 추적
 
@@ -102,6 +125,39 @@ flowchart TB
 ```
 
 층마다 연구가 따로 진행되고, 아래층이 좋아지면 위층의 응용이 함께 넓어진다. 대규모 학습이 가능해진 것은 빠른 GPU 덕분이다.
+
+## 세부 과제
+
+| 과제 | 출력 | 대표 방법 |
+| --- | --- | --- |
+| **분류**(classification) | 이미지 전체의 클래스 하나 | CNN(ResNet 등), ViT. ImageNet 대회로 알려졌다 |
+| **탐지**(detection) | 물체마다 경계 상자(bounding box) 좌표 + 클래스 | YOLO 계열, DETR |
+| **분할**(segmentation) | 픽셀마다 클래스. 의미 분할·인스턴스 분할 | U-Net, Mask R-CNN, SAM. 비지도 방식(mean shift)도 있다 |
+| **특징 추출**(feature detection) | 크기·위치·회전이 바뀌어도 다시 찾을 수 있는 점. 주로 코너 | Harris 코너, FAST |
+| **특징 기술**(feature description) | 특징점 주변을 요약한 벡터. 분별력·불변성·작은 크기를 갖춰야 한다 | SIFT, ORB, HOG |
+| **매칭·정합**(matching, registration) | 시점이 다른 영상을 한 좌표계로 맞추는 변환 | 기술자로 같은 점을 찾고 선형·비선형 변환. CT와 MRI 겹쳐 보기, 파노라마 |
+| **3D 비전** | 두 장 이상의 영상에서 복원한 3차원 좌표 | 삼각 측량, 스테레오 비전, 다시점, Visual SLAM |
+| **추적**(tracking) | 관심 물체의 시간축 위치 | 칼만 필터, 탐지 + 연결(SORT 계열) |
+| **생성**(generative) | 새 이미지 | GAN에서 시작해 지금은 확산 모델(diffusion)이 주류 |
+
+3D 비전은 카메라 기하·캘리브레이션, 정렬(rectification), 특징 추출과 매칭, 3차원 복원을 모두 거치므로 위 과제를 한 번에 익히는 연습 과제로 좋다. 분류는 Keras·PyTorch로 금방 만들어 볼 수 있어 입문으로 알맞다. 개·고양이 사진 2만 5천 장을 둘로 나누는 Kaggle의 Dogs vs. Cats 같은 이진 분류가 첫 과제로 흔하다.
+
+### 대표 데이터셋
+
+| 데이터셋 | 과제 | 규모·특징 |
+| --- | --- | --- |
+| [ImageNet](https://image-net.org/) | 분류 | ILSVRC 대회용 1,000개 클래스, 학습 이미지 약 120만 장. 사전 학습의 표준 |
+| [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) | 분류 | 32×32 컬러 이미지 6만 장, 10개 클래스. 작은 모델 실험용 |
+| Stanford Dogs | 세분류(fine-grained) | 개 120종, 약 2만 장. 비슷한 클래스끼리 구별하는 문제 |
+| LSUN | 장면 분류 | 침실·다리·교실 같은 장면별 대량 이미지. 생성 모델 학습에도 많이 쓴다 |
+| [COCO](https://cocodataset.org/) | 탐지·분할·캡션 | 80개 물체 범주, 이미지마다 상자·마스크·설명 문장. 탐지 모델 성능 비교의 기준 |
+| [DeepFashion2](https://github.com/switchablenorms/DeepFashion2) | 의류 탐지·분할·랜드마크·검색 | 13개 의류 범주, 약 49만 장 |
+| [Visual Genome](https://visualgenome.org/) | 장면 그래프, 이미지와 언어 연결 | 이미지 속 물체·속성·관계를 구조화해 주석 |
+| [VQA](https://visualqa.org/) | 시각 질의응답 | 이미지와 질문을 받아 답을 낸다 |
+| [YouTube-8M](https://research.google.com/youtube8m/) | 영상 다중 레이블 분류 | 수백만 개 영상, 3,800개 넘는 시각 개체 레이블 |
+| LabelMe | 다각형 주석 | 사용자가 웹에서 직접 물체 윤곽을 그려 만든 주석 데이터와 도구 |
+
+여기 없는 데이터는 Kaggle Datasets, Google Dataset Search, 공공데이터포털, AI Hub에서 찾는다. 원하는 데이터가 없으면 직접 수집한다([[web-scraping-strategy|웹 크롤링 전략]]).
 
 ## 정리
 

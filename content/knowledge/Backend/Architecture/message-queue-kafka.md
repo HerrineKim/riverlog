@@ -4,11 +4,11 @@ concept: "Message Queue"
 summary: "메시지 큐를 고르는 기준과 IBM MQ → RabbitMQ → Kafka → Pulsar로 이어진 구조 변화, Kafka의 토픽·파티션·컨슈머 그룹 구조와 빠른 이유(순차 I/O, 제로 카피), 전달 보장 수준(at-most/at-least/exactly once)과 메시지가 유실되는 지점별 대책, Kafka와 RabbitMQ의 차이, 처리 실패와 DLQ, Kafka Connect·Streams·스키마 레지스트리 생태계를 정리했다."
 tags: ["backend", "architecture", "queue", "streaming", "msa"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/types-of-message-queue", "https://bytebytego.com/guides/how-do-message-queue-architectures-evolve", "https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss", "https://bytebytego.com/guides/why-is-kafka-fast", "https://bytebytego.com/guides/delivery-semantics", "https://bytebytego.com/guides/can-kafka-lose-messages", "https://bytebytego.com/guides/top-5-kafka-use-cases", "https://kafka.apache.org/documentation/", "https://godekdls.github.io/Apache%20Kafka/design/", "https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/", "https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/", "https://ryan-han.com/post/server/activemq_virtual_destinations/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/messaging/kafka.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/types-of-message-queue", "https://bytebytego.com/guides/how-do-message-queue-architectures-evolve", "https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss", "https://bytebytego.com/guides/why-is-kafka-fast", "https://bytebytego.com/guides/delivery-semantics", "https://bytebytego.com/guides/can-kafka-lose-messages", "https://bytebytego.com/guides/top-5-kafka-use-cases", "https://kafka.apache.org/documentation/", "https://godekdls.github.io/Apache%20Kafka/design/", "https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/", "https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/", "https://ryan-han.com/post/server/activemq_virtual_destinations/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/messaging/kafka.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/데이터-엔지니어", "https://jaceklaskowski.gitbooks.io/apache-kafka/", "https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[Types of Message Queue](https://bytebytego.com/guides/types-of-message-queue)」, 「[Message Queue Evolution](https://bytebytego.com/guides/how-do-message-queue-architectures-evolve)」, 「[The Ultimate Kafka 101](https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss)」, 「[Why is Kafka Fast](https://bytebytego.com/guides/why-is-kafka-fast)」, 「[Delivery Semantics](https://bytebytego.com/guides/delivery-semantics)」, 「[Can Kafka Lose Messages?](https://bytebytego.com/guides/can-kafka-lose-messages)」, 「[Top 5 Kafka Use Cases](https://bytebytego.com/guides/top-5-kafka-use-cases)」를 바탕으로, 설정 기본값은 Apache Kafka 공식 문서로 확인해 재구성한 노트다. 운영 설계와 구독 모델은 「[아파치 카프카 레퍼런스: 설계](https://godekdls.github.io/Apache%20Kafka/design/)」(공식 문서 번역), 「[Kafka 운영자가 말하는 처음 접하는 Kafka](https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/)」, 「[LINE에서 Kafka를 사용하는 방법](https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/)」, 「[ActiveMQ의 Virtual Destinations를 활용한 메세지 로드밸런싱](https://ryan-han.com/post/server/activemq_virtual_destinations/)」으로 보강했다. Kafka와 RabbitMQ 비교, 정확히 한 번 처리, DLQ, Kafka Connect·Streams·스키마 레지스트리는 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다.
+> ByteByteGo의 System Design 101 가이드 「[Types of Message Queue](https://bytebytego.com/guides/types-of-message-queue)」, 「[Message Queue Evolution](https://bytebytego.com/guides/how-do-message-queue-architectures-evolve)」, 「[The Ultimate Kafka 101](https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss)」, 「[Why is Kafka Fast](https://bytebytego.com/guides/why-is-kafka-fast)」, 「[Delivery Semantics](https://bytebytego.com/guides/delivery-semantics)」, 「[Can Kafka Lose Messages?](https://bytebytego.com/guides/can-kafka-lose-messages)」, 「[Top 5 Kafka Use Cases](https://bytebytego.com/guides/top-5-kafka-use-cases)」를 바탕으로, 설정 기본값은 Apache Kafka 공식 문서로 확인해 재구성한 노트다. 운영 설계와 구독 모델은 「[아파치 카프카 레퍼런스: 설계](https://godekdls.github.io/Apache%20Kafka/design/)」(공식 문서 번역), 「[Kafka 운영자가 말하는 처음 접하는 Kafka](https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/)」, 「[LINE에서 Kafka를 사용하는 방법](https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/)」, 「[ActiveMQ의 Virtual Destinations를 활용한 메세지 로드밸런싱](https://ryan-han.com/post/server/activemq_virtual_destinations/)」으로 보강했다. Kafka와 RabbitMQ 비교, 정확히 한 번 처리, DLQ, Kafka Connect·Streams·스키마 레지스트리는 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다. 관리형 스트림과의 비교는 「[I want to study Data Science: 데이터 엔지니어](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/데이터-엔지니어)」 위키가 소개한 「[The Internals of Apache Kafka](https://jaceklaskowski.gitbooks.io/apache-kafka/)」와 데이터 엔지니어링 발표를 실마리로, 수치는 [Kinesis Data Streams 할당량 문서](https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html)로 확인해 보강했다.
 
 ## 메시지 큐란
 
@@ -32,6 +32,18 @@ sources: ["https://bytebytego.com/guides/types-of-message-queue", "https://byteb
 | 라우팅 | 메시지 속성에 따라 다른 큐로 보낼 수 있나 |
 | 프로토콜·생태계 | AMQP, MQTT, 자체 프로토콜 중 무엇을 쓰나. 커넥터·클라이언트가 충분한가 |
 | 운영 부담 | 직접 운영하나, 관리형 서비스(SQS, 관리형 Kafka 등)를 쓰나 |
+
+Kafka를 직접 운영할지 관리형 스트림을 쓸지도 갈린다. Kafka는 브로커가 「누가 어디까지 읽었나」를 메시지마다 기록하지 않고 소비자가 오프셋을 들고 가는 **분산 커밋 로그**라 커넥터 생태계가 가장 넓지만, 브로커 운영을 떠안는다(관리형 Kafka로 덜 수 있다). Amazon Kinesis Data Streams는 운영이 없는 대신 샤드 단위 한도 안에서 설계해야 한다.
+
+| Kinesis 한도 (2026년 기준) | 값 |
+| --- | --- |
+| 샤드당 쓰기 | 초당 1MB 또는 1,000레코드 |
+| 샤드당 읽기 | 초당 2MB, `GetRecords` 초당 5회. 소비자들이 이 한도를 나눠 쓴다 |
+| 향상된 팬아웃(enhanced fan-out) | 등록한 소비자마다 샤드별 전용 읽기 처리량을 준다. 스트림당 등록 소비자 20개(일부 모드 50개) |
+| 레코드 크기 | 최대 10MiB(1~10MiB는 순간 용량으로 처리) |
+| 보존 기간 | 기본 24시간, 최대 365일 |
+
+Google Cloud Pub/Sub은 샤드를 드러내지 않는 대신 순서는 순서 키 단위로만 보장한다.
 
 ## 구조의 변화: 큐에서 로그로
 

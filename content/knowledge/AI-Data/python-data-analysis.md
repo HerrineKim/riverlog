@@ -1,15 +1,16 @@
 ---
 title: "파이썬 데이터 분석 프로세스"
 concept: "EDA"
-summary: "데이터를 구하고 처리한 뒤 탐색적 데이터 분석(EDA)과 시각화로 패턴을 찾고, 필요하면 성능을 개선하는 파이썬 데이터 분석의 흐름."
+summary: "데이터를 구하고 NumPy·pandas로 처리한 뒤 탐색적 데이터 분석(EDA)과 시각화로 패턴을 찾고, 필요하면 성능을 개선하는 파이썬 데이터 분석의 흐름."
 tags: ["data-science", "python", "eda", "visualization"]
 source: notion
-date: "2026-10-13"
-sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas", "https://playwright.dev/python/docs/intro", "https://pola.rs/posts/benchmarks/", "고려사이버대학교 데이터 시각화 강의(최대영 교수, 2024 여름계절학기)"]
+date: "2026-10-31"
+sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas", "https://playwright.dev/python/docs/intro", "https://pola.rs/posts/benchmarks/", "고려사이버대학교 데이터 시각화 강의(최대영 교수, 2024 여름계절학기)", "https://github.com/rougier/numpy-100", "https://github.com/guipsamora/pandas_exercises"]
 ---
 
 > 노션 정리를 바탕으로 재구성하고, pandas로 표 합치기는 ByteByteGo의 System Design 101 가이드 「[5 Functions to Merge Data with Pandas](https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas)」를 바탕으로 pandas 공식 문서 기준으로 보강한 노트다.
 > 분석 방법의 네 갈래와 시각화 절은 고려사이버대학교 「데이터 시각화」(2024 여름계절학기) 강의 내용으로 보강했다.
+> NumPy 핵심 개념과 pandas 연습 순서는 「[100 numpy exercises](https://github.com/rougier/numpy-100)」와 「[Pandas Exercises](https://github.com/guipsamora/pandas_exercises)」의 문제 구성에서 개념만 뽑아 보강했다.
 
 파이썬은 데이터 수집부터 분석·시각화까지 한 언어로 처리할 수 있는 생태계를 갖추고 있어 데이터 분석의 기본 언어로 쓰인다. 분석은 대략 **데이터 구하기 → 처리와 분석 → 탐색·시각화 → 개선**의 흐름으로 진행된다.
 
@@ -91,6 +92,22 @@ df.describe()          # 숫자 열의 요약 통계
 df.groupby("region")["amount"].sum().sort_values(ascending=False)
 ```
 
+#### NumPy 핵심 개념
+
+| 개념 | 뜻 | 예 |
+| --- | --- | --- |
+| 벡터화 | 파이썬 반복문 대신 배열 전체에 연산을 한 번에 건다. C로 돈다 | `Z - Z.mean(axis=1, keepdims=True)`로 행마다 평균 빼기 |
+| 브로드캐스팅 | 모양이 다른 배열을 규칙에 따라 늘려 맞춘다 | (5,5,3) 배열에 (5,5) 배열을 곱하려면 `B[:, :, None]`로 축을 하나 더한다 |
+| 축(axis) | 어느 방향으로 집계할지 | `sum(axis=0)`은 열별, `axis=(-2, -1)`은 마지막 두 축을 한 번에 |
+| 불리언·팬시 인덱싱 | 조건 배열이나 인덱스 배열로 고른다 | `Z[(Z > 3) & (Z < 8)] *= -1`, `np.nonzero(Z)` |
+| 뷰와 복사 | 슬라이싱은 원본을 공유하는 뷰, 팬시 인덱싱은 복사본 | 뷰를 고치면 원본도 바뀐다. 필요하면 `.copy()` |
+| dtype | 모든 원소가 같은 타입. 메모리 크기가 정해진다 | `Z.itemsize * Z.size`가 바이트 수, 구조화 dtype으로 (x, y, r, g, b) 같은 레코드 |
+| 중복 인덱스 누적 | `Z[I] += 1`은 같은 인덱스가 여러 번 나와도 한 번만 더한다 | `np.add.at(Z, I, 1)` 또는 `np.bincount` |
+| 이동 창 | 복사 없이 겹치는 창을 만든다 | `np.lib.stride_tricks.sliding_window_view(Z, 3)` |
+| einsum | 첨자 표기로 내적·외적·합·행렬곱을 쓴다 | `np.einsum("i,i->", A, B)`(내적), `"i,j->ij"`(외적) |
+
+pandas 연습은 **데이터 파악 → 필터링·정렬 → 그룹 집계 → apply → 병합 → 통계 → 시각화 → 시계열 → 삭제** 순으로 하면 실무의 흐름과 겹친다. 시계열 다루기(리샘플링·이동 창)는 [[time-series-analysis|시계열 분석]]에 있다.
+
 #### pandas로 표 합치기
 
 | 함수 | 합치는 방식 | 쓰임 |
@@ -165,7 +182,7 @@ Altair처럼 그래픽 문법을 API로 옮긴 라이브러리의 바탕은 [[da
 ## 더 공부하기
 
 - 커뮤니티: PyCon, PyData, JupyterCon
-- 학습 지도: 「[I want to study Data Science](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki)」 위키는 데이터 분석가·엔지니어·ML 엔지니어·과학자 직무 구분과 Git·리눅스·파이썬·선형대수부터 비전·NLP·추천·MLOps까지의 공부 목록, 데이터셋·포트폴리오 자료를 모아 둔다.
+- 학습 지도: 「[I want to study Data Science](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki)」 위키는 데이터 분석가·엔지니어·ML 엔지니어·과학자 직무 구분([[data-job-roles|데이터 직군]])과 Git·리눅스·파이썬·선형대수부터 비전·NLP·추천·MLOps까지의 공부 목록, 데이터셋·포트폴리오 자료를 모아 둔다.
 - 책: 『파이썬 라이브러리를 활용한 데이터 분석』, 『파이썬 데이터 사이언스 핸드북』, 『밑바닥부터 시작하는 데이터 과학』
 
-관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-journalism|데이터 저널리즘 실무]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[location-estimation|데이터의 위치 추정]], [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[data-visualization|데이터 시각화]], [[visualization-design-process|시각화 설계 과정]]
+관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-journalism|데이터 저널리즘 실무]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[location-estimation|데이터의 위치 추정]], [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[data-visualization|데이터 시각화]], [[visualization-design-process|시각화 설계 과정]], [[time-series-analysis|시계열 분석]]

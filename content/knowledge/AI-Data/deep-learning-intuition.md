@@ -4,11 +4,12 @@ concept: "Deep Learning Intuition"
 summary: "인공지능을 「신경망으로 숫자에서 패턴 찾기」 한 문장으로 풀어 보는 입문 노트. 컴퓨터에서는 사진·소리·바둑판이 모두 숫자이고, 사람이 순서도를 짜는 프로그래밍과 달리 딥러닝은 곱하기·더하기 구조의 가중치를 학습으로 찾는다. 층이 쌓이며 선에서 눈·다리로 올라가는 특징, 설명하기 어려운 이유, 강화 학습과 알파고에서 알파제로로의 변화, 전이 학습까지 다룬다."
 tags: ["ai", "deep-learning", "neural-network", "machine-learning", "reinforcement-learning"]
 source: other
-date: "2026-10-20"
-sources: ["https://www.youtube.com/watch?v=mDqCC3i14bI", "https://www.youtube.com/watch?v=uBay2vE7X8g", "https://www.youtube.com/watch?v=IsapcGYEASY"]
+date: "2026-10-31"
+sources: ["https://www.youtube.com/watch?v=mDqCC3i14bI", "https://www.youtube.com/watch?v=uBay2vE7X8g", "https://www.youtube.com/watch?v=IsapcGYEASY", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%EC%9A%94%EC%83%88-%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%82%AC%EB%A1%80", "https://www.naverlabs.com/storyDetail/44", "https://brunch.co.kr/@itschloe1/23"]
 ---
 
 > 남세동(보이저엑스 대표)의 티타임즈TV 강의 「인공지능 강의」 3부작(2021.12, [①](https://www.youtube.com/watch?v=mDqCC3i14bI) [②](https://www.youtube.com/watch?v=uBay2vE7X8g) [③](https://www.youtube.com/watch?v=IsapcGYEASY))을 바탕으로 재구성한 노트다.
+> 음성 합성·GAN과 「여러 기술을 엮은 사례」는 Team-Neighborhood 「[I want to study Data Science](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%EC%9A%94%EC%83%88-%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%82%AC%EB%A1%80)」 위키 「요새 딥러닝 사례」, NAVER LABS의 「[네이버 웹툰 '마주쳤다'에 적용된 GAN 기술](https://www.naverlabs.com/storyDetail/44)」, 「[딥러닝의 30가지 적용 사례](https://brunch.co.kr/@itschloe1/23)」로 보강했다.
 
 ## 한 문장: 신경망으로 숫자에서 패턴 찾기
 
@@ -108,8 +109,22 @@ flowchart TB
 | 지금까지의 단어들 | 다음 단어 | 말하는 기계(언어 모델, [[how-llm-works\|LLM은 무엇을 하고 왜 작동하나]]) |
 | 앞 10초의 악보 | 다음 음표 | 작곡 |
 | 「아보카도 모양의 안락의자」라는 글 | 그림 | 세상에 없던 이미지 |
+| 글자 나열 | 멜 스펙트로그램 → 파형 | 책 읽어 주는 음성 합성(Tacotron 계열) |
+| 인물 사진 | 같은 인물의 웹툰 그림체 | 사용자 얼굴을 웹툰 캐릭터로 바꾸는 서비스 |
 
 수많은 그림과 글을 보며 학습했을 뿐인데 대칭·균형·물리 법칙을 지키는 그림을 내놓는다. 겉으로는 논리력과 창의력이 있는 것처럼 보이지만, 안에서 일어나는 일은 여전히 곱하기와 더하기다.
+
+사진을 웹툰으로 바꾸는 데 쓰인 **GAN(생성적 적대 신경망)** 은 두 신경망을 경쟁시킨다. 생성자는 진짜 같은 가짜를 만들고, 판별자는 진짜와 가짜를 가려낸다. 생성자는 판별자를 속이지 못한 만큼, 판별자는 속은 만큼 고친다. 이 경쟁이 반복되면 생성자의 결과물이 진짜와 구별하기 어려워진다. 네이버 웹툰은 2018년 웹툰 「마주쳤다」에서 독자 사진을 작품 그림체로 바꿔 넣어, 연구용이던 GAN을 많은 사용자가 쓰는 서비스에 올렸다. 이미지 생성의 주류는 이후 확산 모델로 옮겨 갔다.
+
+### 여러 기술을 엮은 사례
+
+| 사례 | 엮은 기술 |
+| --- | --- |
+| 전화 예약 비서(Google Duplex, 2018) | 「화요일 오전에 미용실 예약해 줘」라는 말에 직접 전화를 건다. 음성 인식 → 대화를 이어 가는 언어 모델 → 음성 합성이 실시간으로 돌고, 「음흠」 같은 맞장구까지 넣어 상대가 기계인 줄 모를 정도였다. 그래서 AI가 전화를 걸 때 스스로 밝혀야 한다는 논의도 함께 나왔다 |
+| 자율 주행 | 카메라 영상에서 차선·차량·보행자를 인식하고, 길가에 사람이 보이면 순간적으로 감속한다. 인지(비전)와 판단(제어)이 이어진다 |
+| 영상·사진 복원 | 흑백 사진 컬러화, 8×8 저해상도 얼굴의 고해상도 복원(초해상도) |
+| 사람 이해 | 영상만으로 여러 사람의 관절 위치를 실시간 추정(자세 추정), 사진을 영역별로 설명하는 문장 생성(캡셔닝), 입술 모양 읽기 |
+| 스타일과 생성 | 화가의 화풍 입히기(스타일 전이), 낮 사진을 밤으로, 스케치를 사실적인 사진으로 바꾸기, 손글씨·음악·코드 생성 |
 
 ## 강화 학습: 보상만 주고 스스로 찾게 한다
 

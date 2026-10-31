@@ -4,11 +4,11 @@ concept: "Daemon"
 summary: "터미널과 분리되어 백그라운드에서 도는 데몬의 개념, SysV 방식의 이중 fork 데몬화가 필요했던 이유, 그 일을 대신 해 주는 systemd의 유닛·서비스·타이머, cron을 대체하는 systemd 타이머와 journalctl 로그를 정리한다."
 tags: ["os", "linux", "process", "devops", "infra"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/5e4cfeac0cae49eab170acdeab86beec", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/705db1daea764875a8b2a971a18b9097", "https://man7.org/linux/man-pages/man7/daemon.7.html", "https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html", "https://bytebytego.com/guides/linux-boot-process-explained"]
+date: "2026-10-31"
+sources: ["https://80000coding.notion.site/5e4cfeac0cae49eab170acdeab86beec", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://80000coding.notion.site/705db1daea764875a8b2a971a18b9097", "https://man7.org/linux/man-pages/man7/daemon.7.html", "https://www.freedesktop.org/software/systemd/man/latest/systemd.timer.html", "https://bytebytego.com/guides/linux-boot-process-explained", "http://slides.com/subicura/coreos-study#/", "https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[linux] fork 그만, systemd를 이용해 데몬 생성하기」, 「서버 관리 맛보기」, 「[Born2beRoot] 보너스 서비스로 sendmail 어때요?」를 바탕으로 재구성한 노트다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「[linux] fork 그만, systemd를 이용해 데몬 생성하기」, 「서버 관리 맛보기」, 「[Born2beRoot] 보너스 서비스로 sendmail 어때요?」를 바탕으로 재구성한 노트다. 컨테이너를 systemd 유닛으로 돌리는 방법과 fleet은 「[CoreOS 스터디](http://slides.com/subicura/coreos-study#/)」를 Podman 공식 문서로 최신화해 보강했다.
 >
 > 부팅 과정은 ByteByteGo의 System Design 101 가이드 「[Linux Boot Process Explained](https://bytebytego.com/guides/linux-boot-process-explained)」를 바탕으로 보강했다.
 
@@ -104,6 +104,28 @@ WantedBy=multi-user.target
 | `systemctl status myapp` | 상태, 최근 로그, 프로세스 트리 |
 | `systemctl restart`·`stop`·`disable` | 재시작·정지·자동 시작 해제 |
 | `journalctl -u myapp -f` | 그 유닛의 로그를 따라 보기 |
+
+### 컨테이너를 유닛으로 띄우기
+
+오케스트레이터 없이 서버 몇 대에서 컨테이너를 상시 돌릴 때는 systemd가 감독자가 된다. 데몬화나 PID 파일이 필요 없고 로그는 저널에 모인다.
+
+```ini
+# /etc/systemd/system/app.service
+[Unit]
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStartPre=-/usr/bin/docker rm -f app
+ExecStart=/usr/bin/docker run --rm --name app -p 8080:8080 myorg/app:1.4.2
+ExecStop=/usr/bin/docker stop app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Podman은 이를 정식 기능으로 만들었다. **Quadlet**은 `/etc/containers/systemd/app.container`에 `[Container]` 절(`Image=`, `PublishPort=`)만 쓰면 systemd 서비스 유닛을 생성해 준다. 과거 CoreOS의 **fleet**은 이 유닛 파일을 etcd 위에서 여러 머신에 나눠 배치하던 「클러스터 init 시스템」이었다. 유닛에 `[X-Fleet]` 절을 두고 `Conflicts=app.*.service`(같은 서비스는 머신당 하나), `MachineOf=`(같은 머신에), `MachineMetadata=`(조건에 맞는 머신에)로 배치를 정했다. fleet은 개발이 멈췄고 그 일은 쿠버네티스가 맡는다.
 
 ## cron 대신 systemd 타이머
 
