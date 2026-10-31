@@ -1341,27 +1341,27 @@
  },
  "Computer-Science/Database.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Database/database-models.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T18:52:03+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Database/normalization.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Database/sql-and-relational-algebra.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Database/transaction.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Engineer-Information-Processing.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Engineer-Information-Processing/security.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1369,11 +1369,11 @@
  },
  "Computer-Science/Engineer-Information-Processing/software-engineering.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Engineer-Information-Processing/software-testing.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Engineer-Information-Processing/web-services-and-it-trends.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1393,11 +1393,11 @@
  },
  "Computer-Science/Network/dns.md": {
   "created": "2026-10-12T21:06:09+09:00",
-  "updated": "2026-10-31T15:46:43+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Network/email-delivery.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:04:19+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Network/http-cache.md": {
   "created": "2026-10-12T21:06:09+09:00",
@@ -1421,15 +1421,15 @@
  },
  "Computer-Science/Network/network-basics.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Network/network-layer.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Network/network-security.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Network/osi-7-layer.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1449,7 +1449,7 @@
  },
  "Computer-Science/Network/transport-layer.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Network/url-to-page.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -1493,11 +1493,11 @@
  },
  "Computer-Science/Operating-System/deadlock.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-31T15:46:43+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Operating-System/disk-scheduling.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Operating-System/file-system-implementation.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1525,7 +1525,7 @@
  },
  "Computer-Science/Operating-System/memory-management.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-31T15:46:43+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Operating-System/multithreading-patterns.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1533,19 +1533,19 @@
  },
  "Computer-Science/Operating-System/os-overview.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T15:46:43+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Operating-System/process-and-thread.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Operating-System/process-scheduling.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T15:46:43+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Operating-System/process-synchronization.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-31T15:46:43+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Operating-System/pthread-sync-api.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1577,7 +1577,7 @@
  },
  "Computer-Science/Operating-System/virtual-memory.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-31T15:46:43+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Operating-System/virtualization.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1585,7 +1585,7 @@
  },
  "Computer-Science/Programming-Languages.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Programming-Languages/abstract-class-vs-interface.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1601,7 +1601,7 @@
  },
  "Computer-Science/Programming-Languages/cpp-basics.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Programming-Languages/cpp-coding-style.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1610,6 +1610,10 @@
  "Computer-Science/Programming-Languages/cpp-exceptions.md": {
   "created": "2026-10-14T10:57:30+09:00",
   "updated": "2026-10-31T16:02:04+09:00"
+ },
+ "Computer-Science/Programming-Languages/cpp-smart-pointers.md": {
+  "created": "2026-10-31T23:18:38+09:00",
+  "updated": "2026-10-31T23:18:38+09:00"
  },
  "Computer-Science/Programming-Languages/cpp-stl-containers.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1621,7 +1625,7 @@
  },
  "Computer-Science/Programming-Languages/cpp-virtual-functions.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Programming-Languages/dto-vo-dao-repository.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1697,7 +1701,7 @@
  },
  "Computer-Science/Programming-Languages/programming-paradigms.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-30T23:43:44+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Programming-Languages/python-internals.md": {
   "created": "2026-10-30T15:53:40+09:00",
@@ -1713,7 +1717,7 @@
  },
  "Computer-Science/Programming-Languages/singleton-pattern.md": {
   "created": "2026-10-30T15:51:53+09:00",
-  "updated": "2026-10-30T15:51:53+09:00"
+  "updated": "2026-10-31T23:18:39+09:00"
  },
  "Computer-Science/Programming-Languages/state-and-decoupling-designs.md": {
   "created": "2026-10-21T15:52:08+09:00",

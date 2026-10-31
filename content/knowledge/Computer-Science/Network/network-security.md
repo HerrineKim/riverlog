@@ -1,15 +1,52 @@
 ---
 title: "네트워크 보안: 방화벽, VPN, 계층별 공격"
 concept: "Network Security"
-summary: "방화벽은 정해 둔 규칙(포트·IP·프로토콜·연결 상태·애플리케이션)으로 트래픽을 걸러 내는 문지기이고, 패킷 필터에서 상태 추적·프록시·차세대 방화벽으로 발전했다. 방화벽을 통과한 공격은 IDS·IPS가 탐지·차단한다. VPN은 공용망 위에 암호화된 터널을 만들어 원격 사용자나 지점을 사설망처럼 잇는다. OSI 계층마다 노리는 공격이 달라 방어도 계층별로 겹겹이 쌓는다."
+summary: "공용망의 위협은 가로막기·가로채기·변조·위조로 나뉘고 대칭키·공개키(RSA)·해시로 막는다. 방화벽은 정해 둔 규칙(포트·IP·프로토콜·연결 상태·애플리케이션)으로 트래픽을 걸러 내는 문지기이고, 패킷 필터에서 상태 추적·프록시·차세대 방화벽으로 발전했다. 방화벽을 통과한 공격은 IDS·IPS가 탐지·차단한다. VPN은 공용망 위에 암호화된 터널을 만들어 원격 사용자나 지점을 사설망처럼 잇는다. OSI 계층마다 노리는 공격이 달라 방어도 계층별로 겹겹이 쌓는다."
 tags: ["network", "security", "osi", "infra"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/firewall-explained-to-kids-and-adults", "https://bytebytego.com/guides/top-6-firewall-use-cases", "https://bytebytego.com/guides/how-does-a-vpn-work", "https://bytebytego.com/guides/types-of-vpns", "https://bytebytego.com/guides/top-network-security-cheatsheet", "https://medium.com/watcha/watcha-%EC%82%AC%EB%82%B4-vpn-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-e04f946d3ccb", "고려사이버대학교 정보통신개론 강의(권오상 교수, 2023 겨울계절학기)"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/firewall-explained-to-kids-and-adults", "https://bytebytego.com/guides/top-6-firewall-use-cases", "https://bytebytego.com/guides/how-does-a-vpn-work", "https://bytebytego.com/guides/types-of-vpns", "https://bytebytego.com/guides/top-network-security-cheatsheet", "https://medium.com/watcha/watcha-%EC%82%AC%EB%82%B4-vpn-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-e04f946d3ccb", "고려사이버대학교 정보통신개론 강의(권오상 교수, 2023 겨울계절학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Firewall Explained to Kids and Adults](https://bytebytego.com/guides/firewall-explained-to-kids-and-adults)」, 「[Top 6 Firewall Use Cases](https://bytebytego.com/guides/top-6-firewall-use-cases)」, 「[How Does a VPN Work?](https://bytebytego.com/guides/how-does-a-vpn-work)」, 「[Types of VPNs](https://bytebytego.com/guides/types-of-vpns)」, 「[Top Network Security Cheatsheet](https://bytebytego.com/guides/top-network-security-cheatsheet)」를 바탕으로, 사내 VPN 설계는 「[WATCHA 사내 VPN 개발하기](https://medium.com/watcha/watcha-%EC%82%AC%EB%82%B4-vpn-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-e04f946d3ccb)」로 보강해 재구성한 노트다.
 > 침입 탐지·방지 시스템과 보안 장비 배치, IP 스푸핑 필터링, 스니핑은 고려사이버대학교 「정보통신개론」(2023 겨울계절학기) 강의 내용으로 보강했다.
+> 위협의 네 갈래, 대칭키·공개키·메시지 다이제스트, RSA 키 생성 절차는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 네트워크 면접 정리를 바탕으로 보강했다.
+
+## 위협의 네 갈래와 암호
+
+공용망을 지나는 데이터를 노리는 위협은 무엇을 깨뜨리느냐로 넷이다. 모두 의도적인 공격이고, 어떤 기법도 100% 막지는 못하므로 위협마다 맞는 수단을 겹쳐 쓴다.
+
+| 위협 | 깨지는 것 | 예 | 막는 수단 |
+| --- | --- | --- | --- |
+| 가로막기(interruption) | 가용성: 자원을 쓸 수 없게 한다 | DDoS, 서버 탈취, 회선 절단 | 이중화, DDoS 방어, 레이트 리밋 |
+| 가로채기(interception) | 기밀성: 허가받지 않은 사람이 엿본다 | 도청, 스니핑 | 암호화(대칭·공개키) |
+| 변조(modification) | 무결성: 중간에서 내용을 바꿔 원래 보낸 사람인 척 넘긴다 | 중간자 공격 | 해시·MAC·디지털 서명 |
+| 위조(fabrication) | 인증: 정상 사용자를 사칭해 자원에 접근하거나 대화한다 | IP·ARP 스푸핑, 피싱 | 인증서, 상호 인증, 서명 |
+
+이 중 기밀성·무결성·인증을 기술로 지키는 중심이 암호다.
+
+| 방식 | 원리 | 예 | 약점 |
+| --- | --- | --- | --- |
+| 대칭키(비밀키) | 보내는 쪽과 받는 쪽이 **같은 키** 하나로 암호화·복호화 | AES, ChaCha20. 과거의 DES는 56비트 키라 깨졌다 | 상대마다 키가 따로 필요하고(n명이면 n(n-1)/2개), 키를 안전하게 나눠 줄 방법이 없다 |
+| 공개키(비대칭) | 각자 **공개키와 개인키** 한 쌍을 갖는다. 공개키로 잠근 것은 개인키로만 연다 | RSA, 타원 곡선(ECDH·ECDSA) | 느리다. 그래서 실제로는 공개키로 대칭키를 합의하고 데이터는 대칭키로 암호화한다(TLS) |
+| 메시지 다이제스트(해시) | 데이터 대신 고정 길이 해시를 보내고, 받는 쪽이 다시 계산해 비교한다 | SHA-256. MD5·SHA-1은 충돌이 발견돼 무결성 용도로 쓰지 않는다 | 키가 없으면 공격자가 내용과 해시를 함께 바꿀 수 있어 HMAC이나 서명과 묶는다 |
+
+각 기법의 선택 기준과 함정은 [[encoding-encryption-hashing|인코딩·암호화·해시·토큰화와 디지털 서명]]에 있다.
+
+**RSA**는 큰 수를 소인수분해하기 어렵다는 점에 안전성을 건 공개키 암호다. 키 만들기와 암호화·복호화는 다음 순서다(수학적 근거인 오일러 정리는 [[number-theory-basics|정수론 기초: 소수·최대공약수·합동식]]).
+
+```text
+1. 큰 소수 p, q를 고르고 n = p × q, φ(n) = (p-1)(q-1)을 구한다
+2. φ(n)과 서로소인 e를 고른다 (보통 65537)
+3. e × d ≡ 1 (mod φ(n))인 d를 구한다 (확장 유클리드 호제법)
+4. 공개키 (n, e), 개인키 (n, d). p, q, φ(n)은 버린다
+암호화 c = m^e mod n,  복호화 m = c^d mod n
+
+작은 예: p=3, q=11 → n=33, φ=20, e=3, d=7 (3×7=21≡1)
+  m=4 → c = 4³ mod 33 = 31 → 31⁷ mod 33 = 4
+```
+
+실제 키는 n이 2048비트 이상이다. RSA는 지금 주로 **서명**(인증서)에 쓰이고, TLS 1.3은 RSA로 세션 키를 보내는 키 교환을 없앴다([[web-pki-evolution|웹 PKI의 변천]]).
 
 ## 방화벽
 
@@ -152,6 +189,7 @@ flowchart TB
 
 - 방화벽은 기본 거부에서 시작해 포트·IP·프로토콜·상태·애플리케이션 기준으로 필요한 것만 연다. 지금의 기본은 상태 추적 방화벽이고, 응용 계층은 WAF·NGFW가 본다.
 - VPN은 공용망 위의 암호화 터널이다. 원격 접속과 사이트 간 연결로 나뉘고, 신뢰를 VPN 제공자에게 옮긴다는 점을 기억한다.
+- 위협은 가용성·기밀성·무결성·인증 중 무엇을 깨느냐로 나누고, 암호는 대칭키로 데이터를, 공개키로 키 합의와 서명을, 해시로 무결성을 맡는다.
 - 공격은 계층마다 다르므로 방어도 계층마다 쌓는다.
 
 관련 노트: [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[osi-7-layer|OSI 7계층]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[security|정보 시스템 보안]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]], [[access-network-and-wan|가입자망과 광역망(MPLS VPN)]]

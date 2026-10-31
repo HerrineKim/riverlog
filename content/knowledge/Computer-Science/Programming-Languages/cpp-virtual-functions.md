@@ -1,15 +1,16 @@
 ---
 title: "C++ 상속과 가상 함수: 접근 지정, 생성·소멸 순서, vtable, 슬라이싱, 다중 상속"
 concept: "C++ Inheritance"
-summary: "C++ 상속에서 protected와 상속 방식(public·protected·private)이 접근 수준을 어떻게 바꾸는지, 기반에서 파생으로 생성되고 역순으로 소멸되는 순서, 가상 함수가 vtable과 vptr로 호출 대상을 고르는 원리와 비가상 함수의 이름 가림, 생성자·소멸자 안의 가상 호출과 pure virtual call, 가상 소멸자, 객체 슬라이싱, 다이아몬드 문제와 가상 상속을 정리한다."
+summary: "C++ 상속의 다섯 가지 형태(단일·다중·다단계·계층·혼합), protected와 상속 방식(public·protected·private)이 접근 수준을 어떻게 바꾸는지, 기반에서 파생으로 생성되고 역순으로 소멸되는 순서, 가상 함수가 vtable과 vptr로 호출 대상을 고르는 원리와 비가상 함수의 이름 가림, 가상 생성자와 static 가상 함수가 없는 이유, 생성자·소멸자 안의 가상 호출과 pure virtual call, 가상 소멸자, 순수 가상 함수와 추상 클래스, 객체 슬라이싱, 다중 상속의 생성 순서와 다이아몬드 문제·가상 상속을 정리한다."
 tags: ["cpp", "oop", "memory", "design-pattern", "computer-science"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/7e1085b337114dd2aeb657ac2b4fec16", "https://isocpp.org/wiki/faq/strange-inheritance#calling-virtuals-from-ctors", "고려사이버대학교 객체지향 프로그래밍(C++) 강의(장윤경 교수, 2024-2학기)"]
+date: "2026-10-31"
+sources: ["https://80000coding.notion.site/7e1085b337114dd2aeb657ac2b4fec16", "https://isocpp.org/wiki/faq/strange-inheritance#calling-virtuals-from-ctors", "고려사이버대학교 객체지향 프로그래밍(C++) 강의(장윤경 교수, 2024-2학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「소멸자에서 가상함수를 호출하면 생기는 에러」를 바탕으로 재구성한 노트다.
 > 상속 방식과 접근 지정, 생성·소멸 순서, 이름 가림과 정적 바인딩, 슬라이싱, 다중 상속은 고려사이버대학교 「객체지향 프로그래밍(C++)」(2024-2학기) 강의 내용으로 보강했다.
+> 상속의 형태, 가상 생성자가 없는 이유, 순수 가상 함수의 정의, 다중 상속의 생성 순서는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 OOP 면접 정리를 바탕으로 보강했다.
 
 ## 상속이란
 
@@ -31,6 +32,20 @@ public:
     Truck() : Vehicle(6) {}  // 기반 생성자는 초기화 리스트에서 고른다
 };
 ```
+
+### 상속의 형태
+
+기반과 파생이 이어지는 모양에 따라 다섯 가지로 부른다.
+
+| 형태 | 모양 | 예 |
+| --- | --- | --- |
+| 단일(single) | `A → B`. 기반 하나, 파생 하나 | `Truck : Vehicle` |
+| 다단계(multilevel) | `A → B → C`. 파생이 다시 기반이 된다 | `Vehicle → Car → SportsCar` |
+| 계층(hierarchical) | `A → B`, `A → C`, `A → D`. 기반 하나에 파생 여럿 | `Shape`에서 `Circle`, `Rect`, `Triangle` |
+| 다중(multiple) | `A, B → C`. 파생 하나가 기반 여럿 | `MultiFunction : Scanner, Printer` (아래 「다중 상속」) |
+| 혼합(hybrid) | 위 형태를 섞은 것. 다이아몬드가 대표적이다 | `Device`에서 `Scanner`·`Printer`가 갈라졌다가 `MultiFunction`에서 다시 합쳐짐 |
+
+다중·혼합 상속은 C++처럼 클래스 다중 상속을 허용하는 언어에만 있다. Java·C#·Kotlin에서는 클래스로는 단일·다단계·계층만 되고, 여러 부모가 필요하면 인터페이스로 푼다.
 
 ## 접근 지정과 상속 방식
 
@@ -87,7 +102,18 @@ s->area();   // Shape::area가 아니라 Circle::area가 불린다
 비가상 함수를 다시 쓰면 기반 포인터 배열에 여러 파생 객체를 담아 같은 함수를 불러도 모두 기반 구현이 불린다. 파생 객체 자신(`Circle c; c.area()`)으로 부를 때만 파생 구현이 보여서, 차이는 기반 타입으로 다룰 때 드러난다. Java는 모든 인스턴스 메서드가 기본으로 가상이라 이 구분이 없다.
 
 - `override`를 붙이면 기반 함수가 비가상이거나 시그니처가 틀렸을 때 컴파일 오류로 잡힌다. 재정의 의도는 늘 `override`로 밝힌다.
-- **이름 가림은 오버로드 전체에 걸린다.** 파생에 `log(int)` 하나만 있어도 기반의 `log(double)`, `log(const std::string&)`이 모두 가려진다. 기반 오버로드를 살리려면 파생 클래스 안에 `using Base::log;`를 둔다.
+- **이름 가림은 오버로드 전체에 걸린다.** 파생에 `log(int)` 하나만 있어도 기반의 `log(double)`, `log(const std::string&)`이 모두 가려진다. 기반 오버로드를 살리려면 파생 클래스 안에 `using Base::log;`를 둔다. 한 범위 안에서 시그니처를 달리하는 오버로딩과의 차이는 [[cpp-basics#함수 오버로딩|함수 오버로딩]]에 있다.
+
+### 가상일 수 없는 함수
+
+| 함수 | 가상 가능? | 이유 |
+| --- | --- | --- |
+| `static` 멤버 함수 | 불가 | 가상 호출은 객체의 vptr에서 출발하는데, `static` 함수에는 객체(`this`)가 없다 |
+| 생성자 | 불가 | 생성자가 돌아야 vptr이 채워진다. 또 객체를 만들려면 **어떤 타입을 만들지 호출하는 쪽이 이미 알아야** 하므로 실행 중에 고를 대상이 없다 |
+| 소멸자 | 가능, 다형적 기반이면 필수 | 아래 「가상 소멸자」 |
+| 템플릿 멤버 함수 | 불가 | 인스턴스 개수를 컴파일러가 미리 알 수 없어 vtable 칸을 정할 수 없다 |
+
+기반 포인터만 가진 채 "실제 타입 그대로 복제"가 필요하면 가상 생성자 대신 **`clone()` 관용구**를 쓴다. 기반에 `virtual std::unique_ptr<Shape> clone() const = 0;`을 두고 파생마다 `return std::make_unique<Circle>(*this);`로 자기 복사 생성자를 부른다.
 
 ## vtable과 vptr
 
@@ -180,7 +206,19 @@ delete s;   // ~Shape()가 virtual이어야 ~Circle()부터 불린다
 
 ## 추상 클래스와 final
 
-순수 가상 함수(`virtual double area() const = 0;`)가 하나라도 있으면 추상 클래스가 되어 직접 객체를 만들 수 없고, 파생 클래스가 모두 구현해야 객체를 만들 수 있다. 공통 인터페이스를 강제하는 수단이며, Java의 추상 클래스·인터페이스와 비교는 [[abstract-class-vs-interface|추상 클래스와 인터페이스]]에 있다. 더 상속하지 못하게 하려면 클래스나 가상 함수에 `final`을 붙인다.
+순수 가상 함수(`virtual double area() const = 0;`)가 하나라도 있으면 추상 클래스가 되어 직접 객체를 만들 수 없고, 파생 클래스가 모두 구현해야 객체를 만들 수 있다. 하나라도 구현하지 않은 파생 클래스는 그 자신도 추상 클래스로 남는다. 공통 인터페이스를 강제하는 수단이며, Java의 추상 클래스·인터페이스와 비교는 [[abstract-class-vs-interface|추상 클래스와 인터페이스]]에 있다. 더 상속하지 못하게 하려면 클래스나 가상 함수에 `final`을 붙인다.
+
+- 추상 클래스도 멤버 변수와 생성자를 가질 수 있다. 생성자는 파생 객체가 만들어질 때 기반 부분을 초기화하는 데 쓰인다.
+- 추상 클래스 객체는 못 만들어도 **포인터와 참조는 만들 수 있다**(`Shape* s`, `const Shape&`). 동적 다형성은 이 포인터로 이루어진다.
+- `= 0`은 "파생이 반드시 재정의하라"는 뜻이지 "몸체가 없다"는 뜻이 아니다. 순수 가상 함수도 클래스 밖에 정의를 둘 수 있고, 파생이 `Shape::describe()`로 기본 구현을 불러 쓴다.
+- 다른 순수 가상 함수가 없는데 추상 클래스로 만들고 싶으면 소멸자를 순수 가상으로 선언한다. 이때도 파생 소멸자가 끝에 기반 소멸자를 부르므로 **정의가 반드시 있어야** 한다.
+
+```cpp
+struct Shape {
+    virtual ~Shape() = 0;
+};
+Shape::~Shape() = default;   // 순수 가상 소멸자에도 정의가 필요하다
+```
 
 ## 객체 슬라이싱
 
@@ -196,6 +234,8 @@ void draw(const Shape& s); // 참조로 받음 → 가상 함수가 Circle 구�
 ## 다중 상속
 
 C++은 기반 클래스를 여럿 둘 수 있다(`class C : public A, public B`). 두 기반에 같은 이름의 멤버가 있으면 `c.f()`는 모호해서 컴파일 오류다. `c.A::f()`처럼 범위 결정 연산자로 고르거나 파생에서 재정의해 한쪽으로 넘긴다.
+
+기반 생성자는 **기반 목록에 적은 순서**대로 불린다. `class C : public B, public A`면 `B()` → `A()` → `C()` 순이고, 초기화 리스트에 `A`를 먼저 적어도 바뀌지 않는다. 소멸은 그 역순이다. 가상 기반 클래스가 있으면 그것이 다른 모든 기반보다 먼저 생성된다.
 
 ### 다이아몬드 문제와 가상 상속
 
@@ -222,12 +262,14 @@ public:
 
 ## 정리
 
+- 상속은 단일·다단계·계층·다중·혼합으로 나뉘고, 다중·혼합은 클래스 다중 상속을 허용하는 C++에만 있다.
 - `protected`는 파생 클래스에만 연다. is-a 관계는 `public` 상속뿐이고, 상속 방식은 항상 적는다.
-- 생성은 기반 → 멤버 → 파생, 소멸은 그 역순이다.
+- 생성은 기반(기반 목록 순서) → 멤버 → 파생, 소멸은 그 역순이다.
+- 생성자와 `static` 함수는 가상일 수 없다. 실제 타입대로 복제하려면 `clone()`을 쓴다.
 - 가상 함수는 객체의 vptr이 가리키는 vtable에서 주소를 읽어 호출한다. 대가는 간접 호출, 인라인 불가, 객체당 포인터 하나다.
 - 비가상 함수를 같은 이름으로 쓰면 재정의가 아니라 가림이고, 기반 오버로드도 모두 가려진다. `override`와 `using Base::f`로 의도를 밝힌다.
 - 생성자·소멸자 안에서는 가상 함수가 파생 구현으로 가지 않고, 순수 가상이면 pure virtual call로 종료된다.
 - 다형적으로 지울 기반 클래스의 소멸자는 `virtual`, 다형적 객체는 참조·포인터로 다뤄 슬라이싱을 피한다.
 - 다이아몬드는 가상 상속으로 풀지만, 상태 있는 기반을 하나만 두는 설계가 먼저다.
 
-관련 노트: [[cpp-basics|C++ 기초]], [[cpp-templates|C++ 템플릿]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[cpp-exceptions|C++ 예외 처리의 내부 동작]], [[oop-messaging|객체 지향의 본질: 메시징]], [[kotlin-delegation|위임 패턴과 Kotlin by]]
+관련 노트: [[cpp-basics|C++ 기초]], [[cpp-smart-pointers|C++ 스마트 포인터]], [[cpp-templates|C++ 템플릿]], [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[cpp-exceptions|C++ 예외 처리의 내부 동작]], [[oop-messaging|객체 지향의 본질: 메시징]], [[kotlin-delegation|위임 패턴과 Kotlin by]]

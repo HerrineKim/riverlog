@@ -4,12 +4,13 @@ concept: "Disk Scheduling"
 summary: "디스크 구조(섹터·논리 블록), 포맷팅·파티셔닝과 부팅 과정, 접근 시간 구성, FCFS·SSTF·SCAN·C-SCAN·N-SCAN·LOOK 디스크 스케줄링, 스왑 공간과 RAID."
 tags: ["os", "disk", "scheduling", "storage", "raid"]
 source: notion
-sources: ["https://app.notion.com/p/b0b7e47aef714bc9a0a33e37f1cb4b41", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://80000coding.notion.site/2fab2f6ce84d47019677858dd4f58ee2", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://discord.com/blog/how-discord-supercharges-network-disks-for-extreme-low-latency", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
-date: "2026-10-14"
+sources: ["https://app.notion.com/p/b0b7e47aef714bc9a0a33e37f1cb4b41", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://80000coding.notion.site/2fab2f6ce84d47019677858dd4f58ee2", "https://80000coding.notion.site/54aafe0b4c2447dea6364de4dcc092b9", "https://discord.com/blog/how-discord-supercharges-network-disks-for-extreme-low-latency", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
+date: "2026-10-31"
 ---
 
 > 파티션 테이블과 LVM 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「Born2BeRoot를 진행하며 궁금했던 부분들」, 「LVM 수박 겉핥기」, 「서버 관리 맛보기」를 바탕으로 보강했다.
 > CAV·CLV, 스토리지 연결 방식, VBR, 스케줄링 평가 기준과 SLTF·SPTF, 리눅스 디스크 스케줄러의 변천은 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
+> 부팅 과정의 POST 단계는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 OS 면접 정리를 바탕으로 보강했다.
 
 디스크는 파일을 영구 저장하는 곳이자, 메모리가 모자랄 때 쓰는 스왑 공간이다. 디스크 접근은 CPU·메모리에 비해 매우 느리기 때문에, 운영체제는 요청을 처리하는 **순서**를 조절해 성능을 높인다.
 
@@ -58,7 +59,7 @@ date: "2026-10-14"
 
 ### 부팅 과정
 
-1. 전원을 켜면 CPU가 ROM의 주소를 가리키고, ROM에 있는 **small bootstrap loader**가 실행된다. ROM은 고치기 어려우므로 여기에는 로더만 두고 실제 부트스트랩 프로그램은 디스크에 둔다.
+1. 전원을 켜면 CPU가 ROM의 주소를 가리키고, 펌웨어가 먼저 CPU·메모리·장치가 정상인지 확인하는 **POST**(Power-On Self-Test)를 한다. 이어서 ROM에 있는 **small bootstrap loader**가 실행된다. ROM은 고치기 어려우므로 여기에는 로더만 두고 실제 부트스트랩 프로그램은 디스크에 둔다.
 2. small bootstrap loader는 디스크의 **섹터 0(boot block)** 을 메모리에 올려 실행한다. 파티션된 디스크라면 섹터 0이 **MBR**이고, MBR의 코드는 파티션 테이블에서 부팅할 파티션을 찾아 그 파티션의 첫 섹터인 **VBR**(Volume Boot Record, PBR이라고도 한다)을 읽어 실행한다.
 3. VBR(파티션이 없으면 섹터 0)에는 **full bootstrap loader**가 있어, 파일 시스템에서 운영체제 커널의 위치를 찾아 메모리에 올리고 실행한다.
 4. 운영체제가 메모리에 올라와 실행된다.

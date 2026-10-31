@@ -1,17 +1,18 @@
 ---
 title: "DNS"
 concept: "DNS"
-summary: "도메인 이름을 IP 주소로 바꿔 주는 DNS. 이름 공간의 트리 구조(레이블, FQDN·PQDN, gTLD·ccTLD·역방향 도메인), UDP와 TCP를 쓰는 경우, 재귀·반복 질의 흐름과 hosts 파일의 우선순위, 손실 재시도, 주요 레코드 종류, TTL과 캐시(잘못된 캐시 바로잡기), 프론트엔드에서 쓰는 dns-prefetch·preconnect를 정리한다."
+summary: "도메인 이름을 IP 주소로 바꿔 주는 DNS. 이름 공간의 트리 구조(레이블, FQDN·PQDN, gTLD·ccTLD·역방향 도메인), UDP와 TCP를 쓰는 경우, 재귀·반복 질의 흐름과 DNS 포워더, hosts 파일의 우선순위, 손실 재시도, 주요 레코드 종류, TTL과 캐시(잘못된 캐시 바로잡기), 프론트엔드에서 쓰는 dns-prefetch·preconnect를 정리한다."
 tags: ["network", "dns", "web", "frontend"]
 source: mixed
-date: "2026-10-12"
-sources: ["https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work", "https://bytebytego.com/guides/dns-record-types-you-should-know", "https://bytebytego.com/guides/internet-traffic-routing-policies", "http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work", "https://bytebytego.com/guides/dns-record-types-you-should-know", "https://bytebytego.com/guides/internet-traffic-routing-policies", "http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > 여러 자료를 종합한 노트에, ByteByteGo의 System Design 101 가이드 「[How Does the DNS Lookup Work?](https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work)」, 「[DNS Record Types You Should Know](https://bytebytego.com/guides/dns-record-types-you-should-know)」의 서버 계층과 레코드 종류를 보강했다. DNS 라우팅 정책은 「[Internet Traffic Routing Policies](https://bytebytego.com/guides/internet-traffic-routing-policies)」로 보강했다.
 > DNS 프라이버시와 DoH 부분은 Mozilla 웹 기술 블로그의 「[만화로 보는 DNS over HTTPS](http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/)」를 바탕으로 보강했다.
 > DNS의 계층과 전송 프로토콜, hosts 파일 우선순위, 손실 재시도, 잘못된 캐시 처리는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
 > 도메인 이름 공간의 구조(레이블, FQDN·PQDN, 최상위 도메인 분류)와 동적 갱신은 고려사이버대학교 「컴퓨터네트워크」(2023-2학기) 강의 내용으로 보강했다.
+> DNS 포워더와 조건부 포워딩은 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 네트워크 면접 정리를 바탕으로 보강했다.
 
 ## DNS란
 
@@ -61,6 +62,16 @@ flowchart TB
 - 브라우저 → 리졸버는 **재귀 질의**다. "답을 다 찾아서 줘"라고 맡긴다.
 - 리졸버 → 루트·TLD·권한 서버는 **반복 질의**다. 다음에 물을 곳을 받아 차례로 따라간다.
 - 캐시가 모두 빗나가면 루트·TLD·권한 서버를 차례로 오가야 해 조회가 느려진다. 그래서 각 층의 캐시와 TTL이 중요하다.
+
+**DNS 포워더**(forwarder)는 자기 캐시에 없는 질의를 루트부터 직접 따라가지 않고 **다른 리졸버에게 통째로 넘기는**(재귀 질의) DNS 서버다. 받은 답은 캐시해 두었다가 다음 질의에 바로 쓴다.
+
+| 쓰는 곳 | 동작 |
+| --- | --- |
+| 가정용 공유기 | DHCP로 자기 주소를 DNS 서버로 알려 주고, 받은 질의를 ISP나 공용 리졸버로 넘긴다(DNS 프록시) |
+| 사내 DNS | 내부 도메인(`corp.example.com`)은 직접 답하고, 외부 이름만 상위 리졸버로 넘긴다. 바깥으로 나가는 DNS 트래픽을 한 곳에 모아 통제·기록할 수 있다 |
+| 조건부 포워딩 | 특정 도메인만 정해 둔 서버로 넘긴다. 사내망과 클라우드 VPC, 합병한 두 회사의 내부 도메인을 서로 풀 때 쓴다 |
+
+포워더를 거치면 캐시를 여럿이 나눠 써 외부 질의가 줄지만, 상위 리졸버가 죽으면 이름 풀이도 함께 멈춘다. 그래서 상위 리졸버를 두 곳 이상 지정한다.
 
 **hosts 파일이 DNS보다 먼저다.** OS의 이름 해석기는 `/etc/hosts`(Windows는 `C:\Windows\System32\drivers\etc\hosts`)를 먼저 보고, 거기 없을 때만 DNS 서버에 묻는다. Linux에서는 이 순서를 `/etc/nsswitch.conf`의 `hosts: files dns` 줄이 정한다. 그래서 hosts 파일은 개발 중 도메인을 로컬 서버로 돌리거나 특정 도메인을 막는 데 쓰이고, 악성 코드가 은행 도메인을 가짜 IP로 바꾸는 파밍(pharming)의 표적이 되기도 한다. 브라우저가 DoH를 켜고 자체 리졸버로 조회하면 OS 해석기를 건너뛸 수 있지만, 주요 브라우저는 hosts 파일 항목을 먼저 확인한다.
 

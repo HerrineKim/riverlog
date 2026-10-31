@@ -1,17 +1,18 @@
 ---
 title: "트랜잭션과 회복"
 concept: "Transaction"
-summary: "트랜잭션의 ACID 특성, 이를 지키기 위한 병행 제어·고립화 수준·회복 기법을 연결해서 정리. MVCC가 스냅숏으로 읽는 방식과 InnoDB·PostgreSQL의 구현 차이(undo·VACUUM), 스냅숏 격리·쓰기 스큐·SSI, 잠금의 종류와 단위, 비관적·낙관적 잠금, 2PC와 사가까지 다룬다."
+summary: "트랜잭션의 ACID 특성, 이를 지키기 위한 병행 제어·고립화 수준·회복 기법을 연결해서 정리. 동시 실행 문제(갱신 손실·더티 읽기 등), 스케줄의 충돌·뷰 직렬 가능성과 선행 그래프, 회복 가능·비연쇄·엄격 스케줄, 2단계 잠금(2PL)의 변형과 타임스탬프 순서·토마스 쓰기 규칙, wait-die·wound-wait 교착 예방, MVCC가 스냅숏으로 읽는 방식과 InnoDB·PostgreSQL의 구현 차이(undo·VACUUM), 스냅숏 격리·쓰기 스큐·SSI, 잠금의 종류와 단위, 비관적·낙관적 잠금, 2PC와 사가까지 다룬다."
 tags: ["database", "transaction", "acid", "certificate", "concurrency"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebytego.com/guides/what-are-database-isolation-levels", "https://bytebytego.com/guides/what-are-the-differences-among-database-locks", "https://bytebytego.com/guides/pessimistic-vs-optimistic-locking", "https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html", "https://d2.naver.com/helloworld/407507", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://www.postgresql.org/docs/current/transaction-iso.html", "https://www.postgresql.org/docs/current/routine-vacuuming.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/what-does-acid-mean", "https://bytebytego.com/guides/what-are-database-isolation-levels", "https://bytebytego.com/guides/what-are-the-differences-among-database-locks", "https://bytebytego.com/guides/pessimistic-vs-optimistic-locking", "https://dev.mysql.com/doc/refman/8.4/en/innodb-multi-versioning.html", "https://d2.naver.com/helloworld/407507", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://www.postgresql.org/docs/current/transaction-iso.html", "https://www.postgresql.org/docs/current/routine-vacuuming.html", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)"]
 ---
 
 > 노션 정리를 바탕으로, MVCC·잠금의 종류·비관적/낙관적 잠금은 ByteByteGo의 System Design 101 가이드 「[What does ACID mean?](https://bytebytego.com/guides/what-does-acid-mean)」, 「[What are Database Isolation Levels?](https://bytebytego.com/guides/what-are-database-isolation-levels)」, 「[What are the Differences Among Database Locks?](https://bytebytego.com/guides/what-are-the-differences-among-database-locks)」, 「[Pessimistic vs Optimistic Locking](https://bytebytego.com/guides/pessimistic-vs-optimistic-locking)」로, 버퍼 정책·로그·재시작 복구는 「[DBMS는 어떻게 트랜잭션을 관리할까?](https://d2.naver.com/helloworld/407507)」로 보강했다.
 > 트랜잭션의 상태와 DB 교착 상태는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로 보강했다.
 > 스냅숏 격리와 쓰기 스큐, SSI, InnoDB와 PostgreSQL의 MVCC 비교, VACUUM, 분산 트랜잭션, 비정상 종료 시 잠금 해제는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 PostgreSQL·MySQL 공식 문서로 확인해 보강했다.
 > 트랜잭션의 시작과 끝, 세이브포인트의 동작, 잠금 호환성 표, Oracle의 직렬화 오류와 교착 처리는 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기) 강의 내용으로 보강했다.
+> 동시 실행 문제, 스케줄과 직렬 가능성, 회복 가능한 스케줄, 2PL과 타임스탬프 순서, wait-die·wound-wait는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 DBMS 면접 정리를 바탕으로 보강했다.
 
 트랜잭션은 데이터베이스에서 **하나의 논리적 작업 단위**다. 계좌 이체처럼 "출금"과 "입금"이 둘 다 되거나 둘 다 안 되어야 하는 작업을 묶는다. 트랜잭션이 지켜야 할 네 가지 성질(ACID)과, DBMS가 각 성질을 보장하는 수단을 짝지어 기억하면 이해가 쉽다.
 
@@ -112,16 +113,128 @@ Oracle은 서버 쪽에 자동 커밋이 없다. 첫 DML 문장에서 트랜잭�
 
 ## 병행 제어 (Concurrency Control)
 
-여러 트랜잭션이 동시에 실행될 때 결과가 순차 실행한 것과 같도록 보장한다.
+여러 트랜잭션이 동시에 실행될 때 결과가 순차 실행한 것과 같도록 보장한다. 순서대로 하나씩 돌리면 늘 맞지만 느리다. 연산을 섞어 돌리면서도 결과가 어긋나지 않게 하는 것이 병행 제어의 일이다.
 
-- **로킹(Locking)**: 접근할 데이터에 잠금을 걸어 연산이 끝날 때까지 다른 트랜잭션의 접근을 막는다(상호 배제). 잠금 단위가 크면 관리가 쉽지만 병행성이 떨어지고, 작으면 그 반대다.
-- **낙관적 검증**: 일단 실행하고 커밋 직전에 충돌 여부를 검사한다.
-- **타임스탬프 순서**: 트랜잭션 시작 시각 순서대로 실행 순서를 정한다.
-- **다중 버전 동시성 제어(MVCC)**: 데이터의 여러 버전을 두어 읽기와 쓰기가 서로 막지 않게 한다.
+### 동시 실행에서 생기는 문제
+
+| 문제 | 무슨 일이 생기나 |
+| --- | --- |
+| 갱신 손실(lost update) | 두 트랜잭션이 같은 값을 읽고 각자 고쳐 쓰면 나중에 쓴 쪽이 먼저 쓴 변경을 덮는다 |
+| 더티 읽기(dirty read, 오손 읽기) | 아직 커밋하지 않은 변경을 읽는다. 그 트랜잭션이 롤백하면 있지도 않았던 값을 본 셈이다 |
+| 반복 불가능 읽기(non-repeatable read) | 한 트랜잭션 안에서 같은 행을 두 번 읽었는데, 그사이 다른 트랜잭션이 고치고 커밋해 값이 다르다 |
+| 팬텀 읽기(phantom read) | 같은 조건으로 두 번 조회했는데, 그사이 다른 트랜잭션이 삽입·삭제해 **행의 개수**가 다르다 |
+| 잘못된 요약(incorrect summary) | 합계를 내는 도중 다른 트랜잭션이 일부 행을 고쳐, 고치기 전 값과 고친 뒤 값이 섞인 합계가 나온다 |
+| 연쇄 복귀(cascading rollback) | 더티 읽기를 한 트랜잭션들이 원래 트랜잭션의 롤백을 따라 줄줄이 롤백된다 |
+
+갱신 손실은 잔액 100에서 T1이 30을 빼고 T2가 50을 빼는 경우로 볼 수 있다.
+
+```text
+T1                    T2
+read(A)    -- 100
+                      read(A)    -- 100
+A = A - 30
+write(A)   -- 70
+                      A = A - 50
+                      write(A)   -- 50   ← T1의 차감이 사라졌다. 맞는 값은 20
+```
+
+더티 읽기·반복 불가능 읽기·팬텀 읽기는 아래 고립화 수준이 어디까지 막는지의 기준이 된다.
+
+### 스케줄과 직렬 가능성
+
+여러 트랜잭션의 연산이 실제로 실행되는 순서를 **스케줄(schedule)** 이라 한다. 한 트랜잭션 안의 연산 순서는 바뀌지 않고, 트랜잭션 사이에서만 섞인다.
+
+| 스케줄 | 뜻 |
+| --- | --- |
+| 직렬 스케줄(serial) | 트랜잭션을 하나씩 끝까지 실행한다. 늘 일관되지만 병행성이 없다 |
+| 비직렬 스케줄(non-serial) | 연산을 섞어 실행한다. 결과가 맞을 수도 틀릴 수도 있다 |
+| 직렬 가능 스케줄(serializable) | 비직렬이지만 **어떤 직렬 스케줄과 결과가 같다고 보장되는** 스케줄. 병행 제어가 만들어 내려는 목표다 |
+
+「결과가 같다」를 판정하는 기준은 둘이다. 우연히 결과 값이 같은 것(결과 동등)은 입력 값에 따라 달라져 기준으로 쓰지 않는다.
+
+**충돌 직렬 가능성(conflict serializability).** 두 연산이 서로 다른 트랜잭션에 속하고, 같은 데이터에 접근하며, 적어도 하나가 쓰기이면 **충돌 연산**이다(읽기-쓰기, 쓰기-읽기, 쓰기-쓰기). 충돌하지 않는 연산끼리 자리를 바꿔 직렬 스케줄로 만들 수 있으면, 곧 충돌 연산의 순서를 그대로 둔 직렬 스케줄이 있으면 충돌 직렬 가능하다. 판정은 **선행 그래프(precedence graph)** 로 한다.
+
+1. 트랜잭션마다 노드를 만든다.
+2. Ti의 연산이 Tj의 충돌 연산보다 먼저 나오면 간선 Ti → Tj를 긋는다.
+3. 그래프에 **사이클이 없으면** 충돌 직렬 가능하고, 위상 정렬한 순서가 동등한 직렬 순서다.
+
+```text
+S: r1(A) w2(A) w1(A)
+   r1(A) → w2(A) : T1 → T2
+   w2(A) → w1(A) : T2 → T1   ← 사이클. 충돌 직렬 가능하지 않다 (위의 갱신 손실과 같은 모양)
+```
+
+**뷰 직렬 가능성(view serializability).** 두 스케줄이 다음 세 조건을 지키면 뷰 동등이다. 어떤 직렬 스케줄과 뷰 동등이면 뷰 직렬 가능하다.
+
+- 어떤 트랜잭션이 데이터의 **초깃값**을 읽으면 다른 스케줄에서도 초깃값을 읽는다.
+- Ti가 Tj가 **쓴 값**을 읽으면 다른 스케줄에서도 Tj가 쓴 값을 읽는다.
+- 어떤 데이터에 **마지막으로 쓰는** 트랜잭션이 같다.
+
+충돌 직렬 가능한 스케줄은 모두 뷰 직렬 가능하지만 반대는 아니다. 차이는 읽지 않고 덮어쓰는 **맹목 쓰기(blind write)** 에서 난다. `r1(A) w2(A) w1(A) w3(A)`는 선행 그래프에 사이클이 있지만, 마지막에 T3이 덮어써서 T1 → T2 → T3 직렬 실행과 뷰 동등하다. 뷰 직렬 가능성 판정은 NP-완전이라 실제 DBMS는 판정이 쉬운 충돌 직렬 가능성을 목표로 프로토콜을 짠다.
+
+### 회복 가능한 스케줄
+
+직렬 가능성은 「모두 커밋한다면 결과가 맞는가」만 본다. 중간에 누군가 롤백할 때도 안전한지는 따로 본다.
+
+| 스케줄 | 조건 | 결과 |
+| --- | --- | --- |
+| 회복 불가능(irrecoverable) | T2가 T1이 쓴 값을 읽고(더티 읽기) **T1보다 먼저 커밋**한다 | T1이 롤백하면 이미 커밋한 T2를 되돌릴 수 없다. 허용하면 안 된다 |
+| 회복 가능(recoverable) | 읽은 값을 쓴 트랜잭션이 끝날 때까지 커밋을 미룬다 | 롤백은 가능하지만 연쇄 복귀가 생길 수 있다 |
+| 비연쇄(cascadeless) | 커밋되지 않은 값은 **읽지 않는다** | 연쇄 복귀가 없다 |
+| 엄격(strict) | 커밋되지 않은 값은 **읽지도 덮어쓰지도 않는다** | 롤백할 때 쓰기 전 값(before image)만 되돌리면 된다. 회복이 가장 단순하다 |
+
+엄격 ⊂ 비연쇄 ⊂ 회복 가능 순서로 포함된다. 직렬 스케줄은 넷 다 만족하지만, 직렬 가능하다고 회복 가능한 것은 아니다. 두 성질은 따로 지켜야 한다.
+
+### 병행 제어 기법
+
+| 기법 | 방식 |
+| --- | --- |
+| 로킹(Locking) | 접근할 데이터에 잠금을 걸어 연산이 끝날 때까지 다른 트랜잭션의 접근을 막는다(상호 배제). 잠금 단위가 크면 관리가 쉽지만 병행성이 떨어지고, 작으면 그 반대다 |
+| 타임스탬프 순서 | 트랜잭션이 시작한 순서대로 충돌 연산의 순서를 정한다. 잠금을 쓰지 않는다 |
+| 낙관적 검증 | 읽기 단계에서 사본으로 일하고, 커밋 직전 검증 단계에서 충돌을 검사해 통과하면 쓰기 단계에서 반영한다 |
+| 다중 버전 동시성 제어(MVCC) | 데이터의 여러 버전을 두어 읽기와 쓰기가 서로 막지 않게 한다(아래 「MVCC가 스냅숏으로 읽는 방식」) |
+
+**2단계 잠금(2PL, Two-Phase Locking).** 잠금을 쓴다고 저절로 직렬 가능해지지는 않는다. 쓰자마자 잠금을 풀면 다른 트랜잭션이 사이에 끼어든다. 2PL은 트랜잭션의 잠금 동작을 두 단계로 나눈다.
+
+```text
+잠금 수
+  ▲        ┌──── 잠금 지점(lock point)
+  │      ╱  ╲
+  │    ╱      ╲
+  │  ╱          ╲
+  └──────────────────▶ 시간
+   확장 단계   축소 단계
+   잠금만 얻는다  잠금만 푼다 (새 잠금 불가)
+```
+
+모든 트랜잭션이 2PL을 지키면 스케줄은 **충돌 직렬 가능**하다. 잠금 지점 순서가 곧 동등한 직렬 순서다. 공유 잠금(S)을 쥐고 있다가 배타 잠금(X)으로 올리는 잠금 승격은 확장 단계에서만 할 수 있다. 기본 2PL은 교착 상태를 막지 못하고, 축소 단계에서 푼 X 잠금 뒤의 값을 남이 읽을 수 있어 연쇄 복귀도 생긴다. 그래서 변형을 쓴다.
+
+| 변형 | 규칙 | 얻는 것 |
+| --- | --- | --- |
+| 기본 2PL | 첫 잠금 해제 뒤 새 잠금 금지 | 충돌 직렬 가능 |
+| 보수적 2PL(conservative, 사전 선점) | 시작 전에 필요한 잠금을 **모두** 얻는다. 하나라도 못 얻으면 아무것도 쥐지 않고 기다린다 | 교착 상태가 생기지 않는다. 필요한 데이터를 미리 알아야 해 실제로는 드물다 |
+| 엄격 2PL(strict) | **X 잠금**을 커밋·롤백할 때까지 쥔다 | 엄격 스케줄. 연쇄 복귀가 없다 |
+| 강한 2PL(rigorous) | **모든 잠금**을 커밋·롤백할 때까지 쥔다 | 커밋 순서가 곧 직렬 순서다 |
+
+잠금 기반 DBMS의 쓰기는 대개 엄격 2PL 모양이다. InnoDB도 행에 건 X 잠금을 트랜잭션이 끝날 때 한꺼번에 푼다. 교착 상태는 2PL로 막지 못하므로 아래 「DB의 교착 상태」처럼 감지하거나 예방한다.
+
+**타임스탬프 순서(timestamp ordering).** 트랜잭션 Ti는 시작할 때 타임스탬프 TS(Ti)를 받는다(시스템 시계나 논리 카운터). 데이터 X마다 마지막으로 읽은 트랜잭션의 타임스탬프 R-TS(X)와 마지막으로 쓴 트랜잭션의 W-TS(X)를 기록하고, 충돌 연산이 **타임스탬프 순서와 어긋나면** 연산을 거절하고 Ti를 롤백한다.
+
+| 요청 | 조건 | 처리 |
+| --- | --- | --- |
+| Ti가 read(X) | TS(Ti) < W-TS(X): 더 젊은 트랜잭션이 이미 썼다 | 거절, Ti 롤백 |
+| Ti가 read(X) | 그 밖 | 실행. R-TS(X) = max(R-TS(X), TS(Ti)) |
+| Ti가 write(X) | TS(Ti) < R-TS(X): 더 젊은 트랜잭션이 이미 옛 값을 읽었다 | 거절, Ti 롤백 |
+| Ti가 write(X) | TS(Ti) < W-TS(X): 더 젊은 트랜잭션이 이미 썼다 | 거절, Ti 롤백 |
+| Ti가 write(X) | 그 밖 | 실행. W-TS(X) = TS(Ti) |
+
+- **토마스 쓰기 규칙(Thomas' write rule)**: write의 두 번째 경우(이미 더 젊은 쓰기가 있다)에는 롤백하지 않고 **낡은 쓰기를 무시**한다. 어차피 더 젊은 값으로 덮일 쓰기이기 때문이다. 충돌 직렬 가능하지 않지만 뷰 직렬 가능한 스케줄까지 허용해 롤백이 준다.
+- 기다리는 일이 없어 교착 상태가 생기지 않는다. 대신 롤백과 재시작이 잦고, 커밋 전 값을 읽게 두면 회복 불가능한 스케줄이 생길 수 있어 쓰기를 커밋 때까지 미루는 장치를 함께 쓴다.
+- MVCC의 많은 구현이 트랜잭션 ID를 타임스탬프처럼 써서 「어느 버전이 내게 보이나」를 정한다. 타임스탬프 순서를 다중 버전으로 확장한 셈이다.
 
 ## 고립화 수준 (Isolation Level)
 
-격리를 얼마나 엄격하게 할지 고르는 설정이다. 아래로 갈수록 엄격하고 성능 비용이 크다.
+격리를 얼마나 엄격하게 할지 고르는 설정이다. 아래로 갈수록 엄격하고 성능 비용이 크다. 세 현상의 뜻은 위 「동시 실행에서 생기는 문제」에 있다.
 
 | 수준 | Dirty Read | Non-repeatable Read | Phantom Read |
 | --- | --- | --- | --- |
@@ -336,6 +449,15 @@ INSERT INTO a VALUES (1);  -- T2의 잠금 대기
 
 대부분의 DBMS는 대기 그래프(wait-for graph)로 교착을 스스로 감지해 한쪽(보통 되돌릴 작업이 적은 쪽)을 롤백한다. MySQL은 `innodb_deadlock_detect`(기본 켜짐)와 `SHOW ENGINE INNODB STATUS`의 `LATEST DETECTED DEADLOCK`, PostgreSQL은 `deadlock_timeout`(기본 1초) 뒤 검사로 알린다. 감지는 피해를 줄일 뿐이므로 애플리케이션은 오류 코드를 보고 **트랜잭션 전체를 재시도**해야 한다.
 
+감지 대신 **예방**하는 방법도 있다. 트랜잭션의 타임스탬프(나이)로 누가 기다리고 누가 물러날지 미리 정해, 순환 대기가 생길 수 없게 한다. Ti가 Tj가 쥔 잠금을 요청했을 때의 처리다.
+
+| 기법 | Ti가 더 늙었다 (TS(Ti) < TS(Tj)) | Ti가 더 젊다 |
+| --- | --- | --- |
+| 기다리거나 죽기(wait-die) | Ti가 기다린다 | Ti가 죽는다(롤백) |
+| 상처 입히거나 기다리기(wound-wait) | Tj를 롤백시키고 잠금을 뺏는다 | Ti가 기다린다 |
+
+두 기법 모두 **롤백되는 쪽은 늘 젊은 트랜잭션**이다. wait-die는 비선점(늙은 쪽이 기다린다), wound-wait는 선점(늙은 쪽이 빼앗는다)이다. 롤백된 트랜잭션은 **원래 타임스탬프를 유지한 채** 다시 시작하므로 시간이 지나면 가장 늙은 트랜잭션이 되어 결국 끝난다(기아 방지). 쓸데없는 롤백이 많아 범용 DBMS는 대기 그래프 감지를 주로 쓰고, 이 기법은 분산 DB처럼 전역 대기 그래프를 만들기 어려운 곳에서 쓴다(Google Spanner는 wound-wait를 쓴다).
+
 희생자를 얼마나 되돌리는지는 DBMS마다 다르다. InnoDB는 희생자 트랜잭션 전체를 롤백하고, PostgreSQL은 트랜잭션을 실패 상태로 만들어 `ROLLBACK`만 받는다. Oracle은 `ORA-00060: deadlock detected`를 받은 쪽의 **교착을 일으킨 문장 하나만** 롤백하고 트랜잭션과 그 앞의 변경·잠금은 남긴다. 그래서 Oracle 애플리케이션은 오류를 받은 뒤 직접 `ROLLBACK`(또는 남은 작업을 정리하고 `COMMIT`)해야 상대 트랜잭션이 풀린다.
 
 | 빈도를 낮추는 방법 | 이유 |
@@ -501,6 +623,7 @@ flowchart TB
 ## 핵심 정리
 
 - 원자성·지속성 ↔ 회복, 격리성 ↔ 고립화 수준·로킹, 일관성 ↔ 무결성 제약·병행 제어.
+- 병행 제어의 목표는 직렬 가능한 스케줄이다. 판정은 선행 그래프의 사이클로 하고, 2PL을 지키면 충돌 직렬 가능해진다. 연쇄 복귀까지 막으려면 엄격 2PL로 X 잠금을 커밋까지 쥔다.
 - 지연 갱신은 REDO만, 즉시 갱신은 REDO + UNDO. 실제 DBMS는 STEAL + ¬FORCE라서 WAL 로그로 둘 다 한다.
 - MVCC는 버전을 남겨 읽기와 쓰기가 서로 막지 않게 하고, 쓰기끼리의 충돌은 잠금으로 막는다.
 - 경쟁이 몰리는 데이터는 비관적 잠금, 충돌이 드문 데이터는 낙관적 잠금이 맞다.

@@ -1,16 +1,17 @@
 ---
 title: "프로그래밍 패러다임"
 concept: "Programming Paradigms"
-summary: "명령형·선언형·객체 지향·함수형·반응형·관점 지향·제네릭·동시성 프로그래밍이 각각 무엇을 중심에 두고 코드를 짜는지 비교한다. 패러다임을 레코드·클로저·동시성·이름 붙은 상태 같은 개념의 묶음으로 보는 관점, 관찰 가능한 비결정성과 상태 표현력이라는 두 축, 새 개념이 필요하다는 신호인 창조적 확장 원칙, goto를 없앤 구조적 프로그래밍, 명령형·함수형·객체 지향의 차이와 객체 지향의 네 기둥(추상화, 캡슐화, 상속, 다형성)을 정리한다. 함수형의 순수 함수·부수 효과·참조 투명성과 순수 함수가 스레드 안전한 이유, 클래스와 객체 지향이 같은 말이 아닌 이유도 다룬다."
+summary: "명령형·선언형·객체 지향·함수형·반응형·관점 지향·제네릭·동시성 프로그래밍이 각각 무엇을 중심에 두고 코드를 짜는지 비교한다. 패러다임을 레코드·클로저·동시성·이름 붙은 상태 같은 개념의 묶음으로 보는 관점, 관찰 가능한 비결정성과 상태 표현력이라는 두 축, 새 개념이 필요하다는 신호인 창조적 확장 원칙, goto를 없앤 구조적 프로그래밍, 명령형·함수형·객체 지향의 차이와 객체 지향의 네 기둥(추상화, 캡슐화, 상속, 다형성)과 추상화·캡슐화·정보 은닉의 구분, is-a·has-a 관계를 정리한다. 함수형의 순수 함수·부수 효과·참조 투명성과 순수 함수가 스레드 안전한 이유, 클래스와 객체 지향이 같은 말이 아닌 이유도 다룬다."
 tags: ["programming-paradigm", "oop", "computer-science", "design", "paradigm"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/top-8-programming-paradigms", "https://bytebytego.com/guides/imperative-vs-functional-vs-object-oriented-programming", "https://bytebytego.com/guides/the-fundamental-pillars-of-object-oriented-programming", "https://bytebytego.com/guides/8-key-oop-concepts-every-developer-should-know", "https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf", "https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf", "https://www.youtube.com/watch?v=l26oaHV7D40", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+date: "2026-10-31"
+sources: ["https://bytebytego.com/guides/top-8-programming-paradigms", "https://bytebytego.com/guides/imperative-vs-functional-vs-object-oriented-programming", "https://bytebytego.com/guides/the-fundamental-pillars-of-object-oriented-programming", "https://bytebytego.com/guides/8-key-oop-concepts-every-developer-should-know", "https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf", "https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf", "https://www.youtube.com/watch?v=l26oaHV7D40", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Top 8 Programming Paradigms](https://bytebytego.com/guides/top-8-programming-paradigms)」, 「[Imperative vs Functional vs Object-oriented Programming](https://bytebytego.com/guides/imperative-vs-functional-vs-object-oriented-programming)」, 「[The Fundamental Pillars of Object-Oriented Programming](https://bytebytego.com/guides/the-fundamental-pillars-of-object-oriented-programming)」, 「[8 Key OOP Concepts Every Developer Should Know](https://bytebytego.com/guides/8-key-oop-concepts-every-developer-should-know)」를 바탕으로 재구성한 노트다. 개념 묶음으로서의 패러다임은 Peter Van Roy의 「[Programming Paradigms for Dummies: What Every Programmer Should Know](https://www.info.ucl.ac.be/~pvr/VanRoyChapter.pdf)」(2009)를, 구조적 프로그래밍은 Edsger Dijkstra의 「[Go To Statement Considered Harmful](https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf)」(1968)를 바탕으로 보강했다.
 > 「구조적 프로그래밍: goto를 없앤 첫 전환」 절의 기본 구성 요소 표와 함수 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 「함수형 프로그래밍의 핵심 개념」 절과 클래스와 객체 지향의 관계는 fru1tworld/cs-basic 모의 면접 질문 목록의 객체지향·함수형 질문을 바탕으로 보강했다.
+> 추상화·캡슐화·정보 은닉의 구분과 is-a·has-a 관계는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 OOP 면접 정리를 바탕으로 보강했다.
 
 ## 패러다임이란
 
@@ -151,6 +152,18 @@ total = cart.total_of_items_over(100)
 | **캡슐화(Encapsulation)** | 데이터와 메서드를 한 단위로 묶고 접근 제한자로 직접 접근을 막는다 | private 필드 + 공개 메서드 |
 | **상속(Inheritance)** | 기존 클래스(부모)의 속성과 메서드를 새 클래스(자식)가 물려받아 재사용한다 | `Car extends Vehicle` |
 | **다형성(Polymorphism)** | 같은 메시지에 객체마다 다르게 반응한다. 같은 상속 계보의 타입은 서로 바꿔 쓸 수 있다. 정적·동적 다형성의 구분은 [[type-systems\|타입 시스템]] | `vehicle.stop()`이 차와 자전거에서 다르게 동작 |
+
+추상화와 캡슐화는 자주 섞어 쓰지만 묻는 질문이 다르다.
+
+| 개념 | 묻는 것 | 수단 | 예 (TV 리모컨) |
+| --- | --- | --- | --- |
+| 추상화 | **무엇을** 보여 줄까. 쓰는 쪽에 필요한 특징만 고른다 | 인터페이스, 추상 클래스, 함수 이름 | 사용자는 "음량 올리기" 버튼만 안다 |
+| 캡슐화 | 데이터와 그것을 다루는 동작을 **한 단위로 묶는다** | 클래스 | 음량 값과 그 값을 바꾸는 회로가 한 기기에 있다 |
+| 정보 은닉 | 묶은 것 중 **무엇을 숨길까**. 바깥이 내부에 기대지 못하게 막는다 | 접근 지정자(`private`, `protected`) | 회로를 바꿔도 버튼 사용법은 그대로다 |
+
+추상화는 설계 수준에서 경계를 정하고, 캡슐화와 정보 은닉은 그 경계를 코드로 지킨다. 정보 은닉이 결합도를 낮추는 원리는 [[software-engineering#계층과 API|계층과 API]]에 있다.
+
+객체 사이의 관계도 두 가지로 나눠 말한다. **is-a**는 "Car는 Vehicle이다"처럼 상속으로 표현하고, **has-a**는 "Car는 Engine을 가진다"처럼 다른 객체를 멤버로 들고 쓰는 것이다. has-a는 부분의 수명이 전체에 묶이는 합성(composition)과 따로 사는 집합(aggregation)으로 갈리며, UML 표기와 코드 모양은 [[software-engineering#관계|UML 관계]]에 있다.
 
 ### 클래스와 객체 지향은 같은 말이 아니다
 

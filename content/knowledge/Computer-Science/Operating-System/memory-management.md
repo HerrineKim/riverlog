@@ -4,8 +4,8 @@ concept: "Memory Management"
 summary: "논리·물리 주소와 주소 바인딩, MMU, 동적 로딩·링킹과 스와핑, 연속 할당과 단편화, 페이징(TLB·다단계 페이지 테이블·쓰기 시 복사)과 세그멘테이션."
 tags: ["os", "memory", "paging", "segmentation", "mmu"]
 source: notion
-date: "2026-10-21"
-sources: ["https://app.notion.com/p/4183234d082949c9b0b5ef03f60f4bb2", "https://riverkim.kr/196", "https://riverkim.kr/216", "https://bytebytego.com/guides/what-are-the-differences-between-paging-and-segmentation", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=bNFLpMUYqSE", "https://www.youtube.com/watch?v=8ufliWkgqMo", "https://www.youtube.com/watch?v=i4rpeyqAODo", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
+date: "2026-10-31"
+sources: ["https://app.notion.com/p/4183234d082949c9b0b5ef03f60f4bb2", "https://riverkim.kr/196", "https://riverkim.kr/216", "https://bytebytego.com/guides/what-are-the-differences-between-paging-and-segmentation", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=bNFLpMUYqSE", "https://www.youtube.com/watch?v=8ufliWkgqMo", "https://www.youtube.com/watch?v=i4rpeyqAODo", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > 노션 정리를 바탕으로 재구성하고, 페이징과 세그멘테이션 비교는 ByteByteGo의 System Design 101 가이드 「[Paging vs Segmentation](https://bytebytego.com/guides/what-are-the-differences-between-paging-and-segmentation)」을 바탕으로 보강한 노트다.
@@ -13,6 +13,7 @@ sources: ["https://app.notion.com/p/4183234d082949c9b0b5ef03f60f4bb2", "https://
 > 「스와핑」, 「연속 할당」, 「페이징」, 「공유 페이지와 쓰기 시 복사」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > TLB의 위치, 32비트 주소 한계와 PAE, 요구 세그멘테이션, segfault, protection 비트 확인 부분은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 > 메모리 관리 정책 세 가지, 주소 비트 수 계산과 TLB 실효 접근 시간의 수치 예, 공유 코드의 절약량은 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
+> 동적 바인딩이라는 이름과 스왑 전송 시간의 계산 예는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 OS 면접 정리를 바탕으로 보강했다.
 
 메모리는 주소로 접근하는 바이트들의 배열이다(C에서 주소를 직접 다루는 모습은 [[pointers-and-memory|포인터와 메모리]]). 여러 프로세스가 한정된 물리 메모리를 나눠 쓰려면, 프로세스가 보는 주소를 실제 메모리 위치로 바꿔 주고 서로의 영역을 보호해야 한다. 이 노트는 프로세스 전체 또는 일부를 **어떻게 메모리에 배치하는지**를 다룬다. 필요한 부분만 올리는 방법은 [[virtual-memory|가상 메모리]]에서 이어진다.
 
@@ -33,7 +34,7 @@ sources: ["https://app.notion.com/p/4183234d082949c9b0b5ef03f60f4bb2", "https://
 | 로드 타임 바인딩 | 프로그램을 메모리에 올릴 때 로더가 물리 주소를 정한다. 컴파일러가 **재배치 가능 코드(relocatable code)** 를 만들어야 한다 |
 | 실행 타임 바인딩 | 실행 도중에도 프로세스의 위치를 옮길 수 있다. CPU가 주소를 참조할 때마다 변환 정보를 확인하므로 **하드웨어 지원**(base·limit 레지스터, MMU)이 필요하다 |
 
-앞의 두 방식은 한 번 정해지면 바뀌지 않고, 현대 컴퓨터는 실행 타임 바인딩을 쓴다.
+앞의 두 방식은 한 번 정해지면 바뀌지 않아 **정적 바인딩**, 실행 타임 바인딩은 실행 중에 주소가 정해지고 바뀔 수 있어 **동적 바인딩(dynamic binding)** 이라고도 부른다. 현대 컴퓨터는 실행 타임 바인딩을 쓴다. 컴파일·로드 타임 바인딩에서는 논리 주소와 물리 주소가 같고, 실행 타임 바인딩에서만 둘이 달라진다. 객체 지향 언어에서 말하는 동적 바인딩(오버라이딩된 메서드를 실행 시점의 실제 객체 타입으로 고르는 것, [[java-language-basics|Java 기초]])은 「결정을 실행 시점으로 미룬다」는 발상만 같고 다른 개념이다.
 
 ## MMU (Memory-Management Unit)
 
@@ -59,7 +60,7 @@ flowchart TB
 
 ### 스와핑
 
-backing store는 프로세스 이미지를 담을 만큼 빠르고 큰 디스크 공간이다. 중기 스케줄러가 보통 우선순위가 낮은 프로세스를 내보낸다. 컴파일·로드 타임 바인딩이면 **원래 위치로** swap in 해야 하지만, 실행 타임 바인딩이면 빈 곳 어디에나 올릴 수 있다. 스왑 시간의 대부분은 데이터 양에 비례하는 전송 시간이다.
+backing store는 프로세스 이미지를 담을 만큼 빠르고 큰 디스크 공간이다. 중기 스케줄러가 보통 우선순위가 낮은 프로세스를 내보낸다. 컴파일·로드 타임 바인딩이면 **원래 위치로** swap in 해야 하지만, 실행 타임 바인딩이면 빈 곳 어디에나 올릴 수 있다. 스왑 시간의 대부분은 데이터 양에 비례하는 전송 시간이다. 100MB 프로세스를 초당 50MB를 옮기는 디스크로 내보내면 2초, 다시 올리는 데 2초가 더 들어 한 번 맞바꾸는 데 4초다. 그래서 실제로 쓰는 메모리만큼만 옮겨야 하고, 프로세스를 통째로 옮기는 스와핑 대신 페이지 단위로 옮기는 방식이 자리 잡았다.
 
 | 용어 | 뜻 |
 | --- | --- |

@@ -4,8 +4,8 @@ concept: "Process"
 summary: "프로세스의 문맥과 메모리 영역(코드·데이터·힙·스택), PCB, 문맥 교환, 스레드의 구조와 장점, 사용자 수준·커널 수준 스레드 모델(N:1·1:1·M:N), 멀티프로세스와 멀티스레드 비교, fork·exec·wait·exit, IPC 수단과 파이프·FIFO·공유 메모리·메시지 큐 사용법."
 tags: ["os", "process", "thread", "pcb", "system-call", "ipc"]
 source: notion
-date: "2026-10-14"
-sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/205", "https://velog.io/@raejoonee/프로세스와-스레드의-차이", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/32df4df48d7841f2bd84f71a2aba4547", "https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread", "https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux", "https://www.youtube.com/watch?v=Jjfah3t_xWk", "https://www.youtube.com/watch?v=wz9C_vqME8g", "https://www.youtube.com/watch?v=zUGvpUtNlwI", "https://www.youtube.com/watch?v=XexLQRaKoTA", "https://www.youtube.com/watch?v=yTZ1ECY2Vjc", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)"]
+date: "2026-10-31"
+sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://app.notion.com/p/b928a8d7163347f9b8a8e8b741ce08ee", "https://riverkim.kr/205", "https://velog.io/@raejoonee/프로세스와-스레드의-차이", "https://80000coding.notion.site/f50d12ceb3a84f2a83a611fae04a3e63", "https://80000coding.notion.site/32df4df48d7841f2bd84f71a2aba4547", "https://bytebytego.com/guides/what-is-the-difference-between-process-and-thread", "https://bytebytego.com/guides/how-do-processes-talk-to-each-other-on-linux", "https://www.youtube.com/watch?v=Jjfah3t_xWk", "https://www.youtube.com/watch?v=wz9C_vqME8g", "https://www.youtube.com/watch?v=zUGvpUtNlwI", "https://www.youtube.com/watch?v=XexLQRaKoTA", "https://www.youtube.com/watch?v=yTZ1ECY2Vjc", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
 > 노션 정리와 개발장의 「[프로세스와 스레드의 차이](https://velog.io/@raejoonee/프로세스와-스레드의-차이)」(2020.08)를 바탕으로 재구성한 노트다.
@@ -16,6 +16,7 @@ sources: ["https://app.notion.com/p/5a8892a2b2814066adb7ec83fcfd86b4", "https://
 > 「PCB」, 「리눅스에서는 둘 다 태스크」, 「코드로 직접 확인하기」 등 일부 절은 강민철의 「혼자 공부하는 컴퓨터 구조+운영체제」 강의(한빛미디어)를 바탕으로 보강했다.
 > 주소 공간의 배치·크기와 TCB, 「커널 스택에 남는 것」, 「문맥 교환의 비용과 줄이는 법」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 > `wait()`가 돌려주는 종료 상태의 비트 구성, 「스레드 모델」 절, 「프로세스 간 협력 (IPC)」 절의 파이프·FIFO·공유 메모리·메시지 큐는 고려사이버대학교 「운영체제이론 및 실습」(2024-1학기) 강의 내용으로 보강했다.
+> `fork()`를 n번 호출할 때의 프로세스 수와 소켓 설명은 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 OS 면접 정리를 바탕으로 보강했다.
 
 먼저 세 개념의 관계를 잡는다.
 
@@ -289,6 +290,15 @@ else                perror("fork");       // -1: 실패
 
 자식은 부모의 문맥(PC 포함)까지 복제하므로 `fork()` 다음 줄부터 실행을 이어 간다. 둘을 구분하는 유일한 단서가 반환값이다.
 
+그래서 `fork()`를 반환값 검사 없이 연달아 부르면, 이미 만들어진 자식들도 다음 `fork()`를 실행해 프로세스 수가 매번 두 배가 된다.
+
+```c
+fork(); fork(); fork();   // 1 → 2 → 4 → 8
+printf("hi\n");           // 8번 출력된다
+```
+
+`fork()`를 n번 부르면 프로세스는 모두 **2ⁿ개**, 처음 프로세스를 뺀 자식은 **2ⁿ − 1개**다.
+
 ### exec(): 새로운 프로그램 실행
 
 `exec`는 현재 프로세스의 주소 공간을 새 프로그램으로 **덮어쓴다.** PID는 그대로다. **성공하면 돌아오지 않으므로**, `exec` 다음 줄이 실행됐다면 실패(-1)한 것이다.
@@ -444,7 +454,7 @@ shm_unlink("/counter");       /* 이름 제거. 열려 있는 매핑은 닫힐 �
 | 관계없는 로컬 프로세스 사이의 단순한 스트림 | FIFO |
 | 메시지 경계와 우선순위가 필요하다 | 메시지 큐 |
 | 큰 데이터를 자주, 빠르게 공유한다(영상 프레임, 캐시) | 공유 메모리 + 세마포어 |
-| 다른 컴퓨터와도 통신해야 한다 | 소켓 |
+| 다른 컴퓨터와도 통신해야 한다 | 소켓. 「IP 주소 + 포트 번호」로 식별하는 통신 끝점으로, fd로 열어 `read`·`write`로 주고받는다([[transport-layer#소켓과 역다중화\|전송 계층]]). 같은 컴퓨터 안에서는 파일 경로로 여는 UNIX 도메인 소켓이 네트워크 스택을 거치지 않아 더 빠르다 |
 
 | 수단 | 수명 |
 | --- | --- |
