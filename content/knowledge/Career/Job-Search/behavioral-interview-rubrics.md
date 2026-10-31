@@ -16,9 +16,10 @@ sources: ["https://www.techinterviewhandbook.org/behavioral-interview-rubrics/",
 
 면접 한 번에 질문은 보통 **5~6개**이고, 질문마다 상황을 깊이 파고든다. 질문 하나가 여러 영역의 신호를 함께 준다. 면접관은 영역마다 두 가지를 판단한다.
 
-```text
-이 행동을 보였나?               → 채용 여부 (hire / no-hire)
-그 행동의 범위가 어느 레벨인가?  → 연차 판정 (주니어 / 시니어 / 스태프)
+```mermaid
+flowchart LR
+  q1["이 행동을 보였나?"] --> a1["채용 여부<br/>(hire / no-hire)"]
+  q2["그 행동의 범위가 어느 레벨인가?"] --> a2["연차 판정<br/>(주니어 / 시니어 / 스태프)"]
 ```
 
 답을 짜는 법(STAR, 핵심 사례 준비)은 [[behavioral-interview-questions|인성 면접 준비]]에 있다.

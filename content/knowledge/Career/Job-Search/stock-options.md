@@ -20,10 +20,9 @@ sources: ["https://evan-moon.github.io/2021/12/04/what-is-stock-options/", "http
 
 ## 단계별 구조
 
-```text
-부여(Grant) ──▶ 베스팅(Vesting) ──▶ 행사(Exercise) ──▶ 매도(Sale)
- 주주총회 결의     클리프 이후 단계적으로   행사가 납입         상장·M&A·장외 거래
-                   행사 가능 수량이 생김    과세 시점          양도소득 과세
+```mermaid
+flowchart LR
+  n1["부여(Grant)<br/>주주총회 결의"] --> n2["베스팅(Vesting)<br/>클리프 이후 단계적으로<br/>행사 가능 수량이 생김"] --> n3["행사(Exercise)<br/>행사가 납입<br/>과세 시점"] --> n4["매도(Sale)<br/>상장·M&A·장외 거래<br/>양도소득 과세"]
 ```
 
 | 단계 | 핵심 | 확인할 것 |

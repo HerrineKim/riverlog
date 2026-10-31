@@ -9,8 +9,9 @@ date: "2026-10-13"
 
 DTO(Data Transfer Object)는 **계층 사이에서 데이터를 주고받을 때 쓰는 객체의 형태**를 정의한 클래스다. 클라이언트가 보낸 바디를 DTO로 만들고 검증을 통과한 것만 컨트롤러 → 서비스 → DB로 흘려보낸다.
 
-```text
-Client body → [ValidationPipe: DTO 검증] → Controller → Service → DB
+```mermaid
+flowchart LR
+  n1["Client body"] --> n2["ValidationPipe: DTO 검증"] --> n3["Controller"] --> n4["Service"] --> n5["DB"]
 ```
 
 ## 설치와 전역 설정
