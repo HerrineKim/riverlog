@@ -44,10 +44,13 @@ const myLogger = (store) => (next) => (action) => {
 | `next` | 체인의 다음 미들웨어. 마지막 미들웨어의 `next`는 reducer로 가는 원래 dispatch다 |
 | `action` | 지금 처리하는 액션 |
 
-```text
-dispatch(action) ──▶ 미들웨어 1 ──next──▶ 미들웨어 2 ──next──▶ reducer ──▶ 새 state
-                         │
-                         └─ store.dispatch(다른 액션)  → 체인 맨 앞부터 다시 시작
+```mermaid
+flowchart LR
+  d["dispatch(action)"] --> m1["미들웨어 1"]
+  m1 -->|"next"| m2["미들웨어 2"]
+  m2 -->|"next"| r["reducer"]
+  r --> s["새 state"]
+  m1 -->|"store.dispatch(다른 액션)<br/>체인 맨 앞부터 다시 시작"| d
 ```
 
 ![리덕스 미들웨어가 액션을 차례로 넘기는 구조](https://i.imgur.com/fZs5yvY.png)

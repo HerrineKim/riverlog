@@ -46,13 +46,13 @@ sources: ["https://www.youtube.com/watch?v=obQvttzgSzY", "https://github.com/daa
 
 ### 토큰을 플랫폼마다 동기화하기
 
-```text
-Figma 컴포넌트 프레임 안의 토큰 정의(DSL) = 진실의 원천
-   ├─→ Figma 문서 동기화, 다크 모드 미리 보기
-   └─ 컴포넌트 배포 시 웹훅 → 액션
-        ├─→ 웹: CSS 변수 스타일시트 + CSS-in-JS용 별칭 패키지
-        ├─→ iOS 코드
-        └─→ Android 코드
+```mermaid
+flowchart TB
+  src["Figma 컴포넌트 프레임 안의 토큰 정의(DSL)<br/>= 진실의 원천"] --> doc["Figma 문서 동기화, 다크 모드 미리 보기"]
+  src -->|"컴포넌트 배포 시 웹훅"| action["액션"]
+  action --> web["웹: CSS 변수 스타일시트 + CSS-in-JS용 별칭 패키지"]
+  action --> ios["iOS 코드"]
+  action --> android["Android 코드"]
 ```
 
 - 토큰 정의는 **Figma 변수**(Variables)와 개념이 같다. 새로 토큰을 만든다면 Figma 변수를 먼저 고려한다. 토큰 파일 표준(DTCG)은 [[design-system|디자인 시스템]] 노트에 있다.

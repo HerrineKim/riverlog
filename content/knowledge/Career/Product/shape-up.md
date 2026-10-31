@@ -14,10 +14,13 @@ sources: ["https://www.relate.kr/blog/shape-up-relate/", "https://basecamp.com/s
 
 Shape Up은 Basecamp가 자기 팀의 제품 개발 방식을 정리해 공개한 방법론이다. 스크럼처럼 백로그를 쌓고 스프린트마다 꺼내 쓰는 대신, **일정을 고정하고 범위를 조절한다.**
 
-```text
-Shaping (사이클과 별도로 진행)
-  └─ 피치 작성 ──▶ Betting table ──▶ 6주 Building ──▶ 2주 Cool-down ──▶ 다음 베팅
-                    (무엇에 걸까)      (팀이 알아서)    (버그·리팩터링·정리)
+```mermaid
+flowchart LR
+  n0["Shaping<br/>(사이클과 별도로 진행)"] --> n1["피치 작성"]
+  n1 --> n2["Betting table<br/>(무엇에 걸까)"]
+  n2 --> n3["6주 Building<br/>(팀이 알아서)"]
+  n3 --> n4["2주 Cool-down<br/>(버그·리팩터링·정리)"]
+  n4 --> n5["다음 베팅"]
 ```
 
 | 비교 | 스크럼 | Shape Up |

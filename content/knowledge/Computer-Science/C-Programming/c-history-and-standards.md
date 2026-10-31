@@ -64,13 +64,16 @@ func(a, b)
 
 C와 함께 퍼진 유닉스는 여러 갈래로 나뉘었다.
 
-```text
-Unix (벨 연구소, 1969)
-├── System V (AT&T 상용) ── Solaris, AIX, HP-UX
-└── BSD (UC 버클리) ─────── FreeBSD, NetBSD, OpenBSD
-                         └─ NeXTSTEP → Darwin → macOS (Mach 커널 + BSD 계층)
-Linux (1991, 리누스 토르발스): 유닉스 코드를 쓰지 않고 새로 작성한 커널
-└── Debian, Ubuntu, Fedora, Android ...
+```mermaid
+flowchart LR
+  unix["Unix<br/>(벨 연구소, 1969)"] --> sysv["System V<br/>(AT&T 상용)"]
+  unix --> bsd["BSD<br/>(UC 버클리)"]
+  sysv --> sysvd["Solaris, AIX, HP-UX"]
+  bsd --> bsdd["FreeBSD, NetBSD, OpenBSD"]
+  bsd --> next["NeXTSTEP"]
+  next --> darwin["Darwin"]
+  darwin --> macos["macOS<br/>(Mach 커널 + BSD 계층)"]
+  linux["Linux<br/>(1991, 리누스 토르발스)<br/>유닉스 코드를 쓰지 않고 새로 작성한 커널"] --> distros["Debian, Ubuntu, Fedora, Android ..."]
 ```
 
 BSD가 AT&T 측과 저작권 소송에 묶여 있던 1990년대 초, 자유롭게 쓸 수 있는 리눅스가 빠르게 퍼졌다. 리눅스는 유닉스의 후손이 아니라 유닉스를 **닮게** 만든 운영체제다.

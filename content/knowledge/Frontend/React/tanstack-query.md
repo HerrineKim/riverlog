@@ -155,10 +155,15 @@ function Todos() {
 
 query key마다 캐시 항목이 하나 생기고, 항목은 아래 상태를 오간다.
 
-```text
-요청 성공 ─→ fresh ──(staleTime 지남)──→ stale ──(구독 컴포넌트가 모두 사라짐)──→ inactive ──(gcTime 지남)──→ 삭제
-              │                           │
-              └ 재요청 계기가 와도 그대로 씀   └ 캐시를 먼저 보여 주고 계기가 오면 백그라운드에서 다시 가져옴
+```mermaid
+stateDiagram-v2
+  state "삭제" as deleted
+  [*] --> fresh : 요청 성공
+  fresh --> stale : staleTime 지남
+  stale --> inactive : 구독 컴포넌트가 모두 사라짐
+  inactive --> deleted : gcTime 지남
+  note right of fresh : 재요청 계기가 와도 그대로 씀
+  note right of stale : 캐시를 먼저 보여 주고 계기가 오면 백그라운드에서 다시 가져옴
 ```
 
 | 옵션 | 기본값 | 의미 |

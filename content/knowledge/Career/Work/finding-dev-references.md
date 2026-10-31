@@ -50,10 +50,19 @@ sources: ["https://teqoo.tistory.com/277", "https://reactflow.dev/learn/layoutin
 Realm 문서      → 저장 가능한 타입에 Data(바이너리)가 있다
 PKDrawing 문서  → dataRepresentation() -> Data   그림을 Data로 내보낸다
                 → init(data: Data)               Data로 그림을 되살린다
+```
 
 설계
-  Realm에 Data 없음 → 빈 캔버스 → 그리기 완료 → dataRepresentation() → 저장
-  Realm에 Data 있음 → init(data:)로 복원 → 수정 → 다시 저장
+
+```mermaid
+flowchart LR
+  a1["Realm에 Data 없음"] --> a2["빈 캔버스"]
+  a2 --> a3["그리기 완료"]
+  a3 --> a4["dataRepresentation()"]
+  a4 --> a5["저장"]
+  b1["Realm에 Data 있음"] --> b2["init(data:)로 복원"]
+  b2 --> b3["수정"]
+  b3 --> b4["다시 저장"]
 ```
 
 "직렬화할 수 있는 형식"이라는 공통분모를 문서에서 찾으면 예제 없이도 구현할 수 있다.

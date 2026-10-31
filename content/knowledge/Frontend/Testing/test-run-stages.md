@@ -12,12 +12,10 @@ sources: ["https://web.dev/learn/testing/get-started/where-tests-run", "https://
 
 ## 세 번의 실행
 
-```text
-[로컬] 기능을 만들며 watch 모드로 계속 실행
-   ↓  push
-[PR]   병합 전 상태 검사(status check). 실패하면 병합을 막는다
-   ↓  merge
-[CI]   main 브랜치에서 다시 실행. 즉시 또는 정해진 주기(매시간, 매일 밤)
+```mermaid
+flowchart TB
+  local["[로컬] 기능을 만들며 watch 모드로 계속 실행"] -->|"push"| pr["[PR] 병합 전 상태 검사(status check). 실패하면 병합을 막는다"]
+  pr -->|"merge"| ci["[CI] main 브랜치에서 다시 실행. 즉시 또는 정해진 주기(매시간, 매일 밤)"]
 ```
 
 | 시점 | 목적 | 누가 보나 |

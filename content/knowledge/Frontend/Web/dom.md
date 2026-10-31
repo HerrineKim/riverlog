@@ -23,10 +23,11 @@ JavaScript가 돌아가는 플랫폼을 **호스트(host)** 라고 한다. 호�
 1. JavaScript의 **전역 객체**다. 전역 `function sayHi()`는 `window.sayHi`로도 불린다(모듈 스코프와 `let`·`const`는 예외).
 2. **브라우저 창**을 나타내고 `innerHeight`, `scrollTo()`, `alert()` 같은 창 기능을 준다.
 
-```text
-window ─┬─ document (DOM)        문서 내용
-        ├─ navigator, location, history, screen … (BOM)
-        └─ Object, Array, Function … (JavaScript 코어)
+```mermaid
+flowchart LR
+  win["window"] --> doc["document (DOM)<br/>문서 내용"]
+  win --> bom["navigator, location, history, screen …<br/>(BOM)"]
+  win --> core["Object, Array, Function …<br/>(JavaScript 코어)"]
 ```
 
 | 명세 | 다루는 것 |
@@ -94,9 +95,12 @@ DevTools Elements 패널은 공백만 든 텍스트 노드를 숨겨 보여 준�
 
 DOM 관련 객체는 다음과 같은 상속 구조를 가진다. 모든 노드가 `EventTarget`을 상속하므로 모든 노드는 이벤트를 받을 수 있다.
 
-```text
-EventTarget → Node → Element → HTMLElement
-                   ↘ Document
+```mermaid
+flowchart LR
+  et["EventTarget"] --> node["Node"]
+  node --> el["Element"]
+  el --> hel["HTMLElement"]
+  node --> docu["Document"]
 ```
 
 - `EventTarget`: 이벤트 리스너를 가질 수 있는 최상위 추상 인터페이스
