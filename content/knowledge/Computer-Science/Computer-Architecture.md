@@ -24,3 +24,8 @@ date: "2026-10-14"
 - [메모리 계층 구조](Computer-Science/Computer-Architecture/memory-hierarchy.md): 메모리 계층, 주기억·보조기억 장치, RAID
 - [캐시 메모리와 MMU](Computer-Science/Computer-Architecture/cache-and-virtual-memory.md): 캐시 매핑과 쓰기 정책, 하드웨어 관점의 MMU(재배치·공유·보호)와 보호 필드
 - [캐시를 고려한 코드](Computer-Science/Computer-Architecture/cache-friendly-code.md): 캐시 라인과 프리페처, 배열 vs 연결 리스트, 넌템포럴 저장, MESI와 거짓 공유, TLB shootdown
+- [조합 회로 부품 활용: 비교기, 우선순위 인코더, MUX로 함수 만들기](Computer-Science/Computer-Architecture/combinational-circuit-components.md): 최소항·최대항, NAND·NOR 구현, BCD 가산기, 비교기, 디코더·MUX로 함수 구현, 우선순위 인코더
+- [순차 회로 설계: 상태도에서 플립플롭 입력식까지](Computer-Science/Computer-Architecture/sequential-circuit-design.md): 플립플롭 특성식과 여기표, 무어·밀리 머신, 상태도에서 입력식까지의 설계 절차
+- [카운터와 시프트 레지스터](Computer-Science/Computer-Architecture/counters-and-shift-registers.md): 리플·동기 카운터, mod-N 카운터와 글리치, 분주기, 시프트 레지스터, 링·존슨 카운터
+- [시스템 버스와 버스 중재](Computer-Science/Computer-Architecture/system-bus-and-arbitration.md): 데이터·주소·제어 선과 대역폭, 동기·비동기 버스, 병렬·데이지 체인·폴링 중재
+- [다중 프로세서와 병렬 컴퓨터 구조](Computer-Science/Computer-Architecture/multiprocessor-systems.md): UMA·NUMA·NORMA, SMP·MPP·클러스터, 상호연결망 토폴로지

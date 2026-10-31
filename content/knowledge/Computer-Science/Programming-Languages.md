@@ -28,6 +28,9 @@ date: "2026-10-14"
 - [가상 함수와 vtable](Computer-Science/Programming-Languages/cpp-virtual-functions.md): vptr과 vtable, 생성자·소멸자 안의 가상 호출과 pure virtual call, 가상 소멸자
 - [메모리 풀](Computer-Science/Programming-Languages/memory-pool.md): 고정·가변 메모리 풀, operator new/delete 오버로딩, std::pmr
 - [C++ 코딩 표준과 clang-format](Computer-Science/Programming-Languages/cpp-coding-style.md): 코딩 표준이 정하는 항목, 이름 규칙 예, clang-format으로 서식 자동화
+- [C++ 클래스와 생성자·소멸자: 캡슐화, 초기화 리스트, static 멤버, RAII, 3·5·0의 규칙](Computer-Science/Programming-Languages/cpp-classes-and-constructors.md): 접근 지정, const 멤버 함수, 초기화 리스트, static 멤버, RAII, 3·5·0의 규칙
+- [C++ 상속: 접근 지정, 생성·소멸 순서, 이름 가림, 슬라이싱, 다중 상속](Computer-Science/Programming-Languages/cpp-inheritance.md): 상속 방식별 접근 수준, 생성·소멸 순서, 이름 가림, 슬라이싱, 다이아몬드와 가상 상속
+- [C++ 연산자 오버로딩과 형 변환](Computer-Science/Programming-Languages/cpp-operator-overloading.md): 멤버와 friend 중 고르기, += 먼저 만들기, 전위·후위 증감, 변환 연산자와 explicit
 
 ### 객체 지향 설계
 
@@ -56,3 +59,5 @@ date: "2026-10-14"
 - [모던 Java 기능: 모듈, var, record, sealed, 패턴 매칭, switch 식](Computer-Science/Programming-Languages/modern-java-features.md): LTS별 기능 표, 모듈 시스템, var 제약, record·sealed, 패턴 매칭, switch 식, Sequenced Collections
 - [Python 언어 기본: 객체와 가변성, 함수, 데코레이터, 클래스, 타입 힌트, import](Computer-Science/Programming-Languages/python-language-basics.md): 가변·불변과 복사, 인자 종류, LEGB·nonlocal, 데코레이터, 컨텍스트 매니저, 매직 메서드, 디스크립터, 타입 힌트, import
 - [Go 동시성: 고루틴, 채널, select, context, sync](Computer-Science/Programming-Languages/go-concurrency.md): G·M·P 스케줄러, 채널 상태별 동작, select, context 취소 전파, sync와 atomic, 레이스 디텍터
+- [Java 입출력 스트림: 바이트와 문자, 보조 스트림, NIO Files](Computer-Science/Programming-Languages/java-io-streams.md): 바이트·문자 스트림과 인코딩, 데코레이터 구조의 보조 스트림, 버퍼링, Path·Files
+- [Java Swing GUI: 컴포넌트, 레이아웃 관리자, 이벤트 리스너, EDT](Computer-Science/Programming-Languages/java-swing-gui.md): AWT·Swing·JavaFX, 컴포넌트 계층, 레이아웃 관리자, 이벤트 리스너, EDT 규칙

@@ -29,3 +29,10 @@ date: "2026-10-14"
 - [WebRTC](Computer-Science/Network/webrtc.md): 브라우저끼리 P2P로 오디오·비디오·데이터를 주고받는 WebRTC의 구조
 - [VoIP 전화망: SIP, SDP, RTP](Computer-Science/Network/voip-sip-rtp.md): PSTN·PBX·게이트웨이, 음성 디지털화와 G.711, SIP·SDP 통화 협상, RTP와 지터 버퍼
 - [브라우저에 URL을 입력하면 일어나는 일](Computer-Science/Network/url-to-page.md): 주소창에 URL을 입력한 뒤 DNS·TCP·TLS·HTTP·렌더링을 거쳐 화면이 뜨기까지의 흐름
+- [데이터 전송 방식과 다중화](Computer-Science/Network/data-transmission-and-multiplexing.md): 직렬·병렬, 동기·비동기, 변조(ASK·FSK·PSK·QAM), 나이퀴스트·섀넌 한계, FDM·TDM·WDM
+- [가입자망과 광역 회선: DSL·케이블·FTTH에서 SONET·ATM까지](Computer-Science/Network/access-network-and-wan.md): xDSL·HFC·FTTH·PON, T1·E1, SONET/SDH, PPP, X.25에서 프레임 릴레이·ATM까지
+- [무선 LAN과 근거리 무선: Wi-Fi, CSMA/CA, 블루투스](Computer-Science/Network/wireless-lan.md): WPAN·WLAN·WWAN, 802.11 구조와 규격, 숨은 터미널, CSMA/CA와 RTS/CTS, 블루투스
+- [이동통신: 셀룰러 구조와 1G에서 5G까지](Computer-Science/Network/mobile-communication.md): 셀과 주파수 재사용, 핸드오프, FDMA·TDMA·CDMA·OFDMA, 1G에서 5G까지
+- [IP 멀티캐스트: 그룹 주소, IGMP, 멀티캐스트 라우팅](Computer-Science/Network/ip-multicast.md): 멀티캐스트 주소와 MAC 변환, IGMP, RPF, DVMRP·PIM 같은 멀티캐스트 라우팅
+- [IP QoS: 패킷을 차별해서 보내는 법](Computer-Science/Network/ip-qos.md): 분류·마킹·셰이핑, DSCP, RED·WRED, 큐 스케줄링, IntServ와 DiffServ
+- [MPLS: 레이블 스위칭과 트래픽 엔지니어링](Computer-Science/Network/mpls.md): 레이블 push·swap·pop, LDP·RSVP-TE, 트래픽 엔지니어링

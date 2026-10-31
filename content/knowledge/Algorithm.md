@@ -21,3 +21,4 @@ date: "2026-10-13"
 - [코딩 테스트 접근법](Algorithm/coding-test.md): 문제를 푸는 순서, 반례 찾기, 실전 팁
 - [현실 시스템을 움직이는 알고리즘과 자료구조](Algorithm/real-world-algorithms.md): 일상 소프트웨어 속 자료구조, 일관된 해싱·블룸 필터·HyperLogLog·토큰 버킷·머클 트리 같은 시스템 설계 알고리즘
 - [파싱 알고리즘과 프랫 파서](Algorithm/pratt-parsing.md): 연산자 우선순위와 바인딩 파워로 토큰을 구문 트리로 묶기
+- [알고리즘 표현과 제어 구조](Algorithm/algorithm-representation.md): 컴퓨팅 사고의 네 요소, 자연어·순서도·의사 코드로 알고리즘 적기, 순차·선택·반복

@@ -16,3 +16,5 @@ date: "2026-10-14"
 - [해시 테이블](Algorithm/Data-Structure/hash-table.md): 해시 함수, 개방 주소법과 분리 연결법, 적재율과 리사이즈, 언어별 구현
 - [트리와 이진 탐색 트리](Algorithm/Data-Structure/tree.md): 트리 용어, 이진 트리의 종류와 배열 표현, 순회, BST와 AVL 회전
 - [기초 자료구조: 배열에서 트라이까지](Algorithm/Data-Structure/data-structures.md): 배열·연결 리스트·이진 탐색 트리·해시 테이블·트라이의 구조와 C 구현 (CS50)
+- [추상 자료형 (ADT)](Algorithm/Data-Structure/abstract-data-type.md): 자료와 연산을 동작으로만 정의하기, 인터페이스와 구현 분리, ADT와 자료구조의 차이
+- [세그먼트 트리](Algorithm/Data-Structure/segment-tree.md): 값이 바뀌는 배열의 구간 질의·갱신을 O(log n)에, 지연 전파, 펜윅 트리 비교

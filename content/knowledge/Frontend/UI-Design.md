@@ -30,3 +30,5 @@ UI 디자인 주제는 **화면이 어떻게 보이고 쓰이는가**를 다룬�
 - [모바일 앱 UI 가이드라인: 한 손 조작, 내비게이션, 버튼, 입력](Frontend/UI-Design/mobile-app-ui-guidelines.md): 보는 영역과 조작 영역, 얕은 내비게이션, 버튼 위계와 레이블, 입력 피드백, 터치 크기
 - [UX 라이팅: 원칙, 가이드라인, 체크리스트](Frontend/UI-Design/ux-writing.md): 원칙→가이드라인→체크리스트 문서 구조, 화면 문구를 검토하는 8가지 기준, 다크 패턴과 보이스 톤
 - [디자이너는 어떻게 코드를 배우나](Frontend/UI-Design/designers-learning-code.md): 코드를 배우는 목적은 디자인 재료 이해, 터미널·Git·시맨틱 HTML·CSS 기초, 토큰·컴포넌트 같은 공학 개념
+- [사용성 평가: 닐슨의 10가지 휴리스틱과 사용성 테스트](Frontend/UI-Design/usability-heuristic-evaluation.md): ISO 9241-11, 닐슨의 10가지 휴리스틱과 심각도, 사용성 테스트 절차와 SUS
+- [와이어프레임, 목업, 프로토타입: 충실도에 따른 화면 설계 산출물](Frontend/UI-Design/wireframe-mockup-prototype.md): IA에서 프로토타입까지, 와이어프레임 충실도, 프로토타입 유형과 충실도 고르기

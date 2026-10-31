@@ -79,6 +79,10 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [Elasticsearch와 ELK 스택](/knowledge/dictionary/backend/database/elasticsearch): Lucene 기반 분산 검색·분석 엔진, 인덱스·샤드·세그먼트, 노드 역할·복제·일관성, ILM·데이터 티어·스냅숏, 운영 진단(429·디스크 워터마크), ELK 로그 파이프라인
 - [Elasticsearch 검색: 매핑·분석기·Query DSL](/knowledge/dictionary/backend/database/elasticsearch-search): 동적·명시적 매핑과 nested, 분석기, Query DSL(match·term·bool·multi_match), BM25·부스팅, 집계, search_after·PIT 페이지네이션
 - [웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리](/knowledge/dictionary/backend/database/web-search-engine): URL 프런티어, PageRank, 샤딩된 역인덱스, 질의 처리
+- [Oracle 데이터베이스 구조: 인스턴스, 메모리, 저장 단위](/knowledge/dictionary/backend/database/oracle-architecture): 인스턴스(SGA·PGA·백그라운드 프로세스)와 데이터베이스 파일, 테이블스페이스·세그먼트·익스텐트·블록
+- [PL/SQL: 블록, 커서, 프로시저와 함수](/knowledge/dictionary/backend/database/oracle-pl-sql): 블록 구조, 예외 처리, 커서, BULK COLLECT·FORALL, 프로시저·함수·패키지·트리거
+- [Oracle 스키마 객체: 파티션, 뷰, 시퀀스, 동의어](/knowledge/dictionary/backend/database/oracle-schema-objects): 파티션과 프루닝, 수정 가능한 뷰와 실체화된 뷰, 시퀀스 캐시, 동의어
+- [서브쿼리와 관계해석: IN, EXISTS, 상관 서브쿼리](/knowledge/dictionary/backend/database/sql-subquery): 서브쿼리의 위치와 연산자, 상관 서브쿼리, NOT IN과 NULL 함정, 관계해석과 EXISTS
 
 ### Architecture
 

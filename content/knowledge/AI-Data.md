@@ -66,3 +66,9 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [클라이언트 사이드 웹 AI: 내장 AI API, 라이브러리, 런타임](AI-Data/client-side-web-ai.md): Chrome 내장 AI API 상태와 쓰는 순서, Transformers.js·WebLLM 등, Wasm·WebGPU·WebNN
 - [평가 주도 개발(EDD): AI 기능을 테스트하며 다듬기](AI-Data/evaluation-driven-development.md): AI용 TDD, 결정적·주관적 지표, 코드·사람·LLM 심판, 프롬프트 CI
 - [AI 기능의 UX 패턴: 배경형·제한형·개방형](AI-Data/ai-ux-patterns.md): 노출 단계별 예와 모범 사례, 배경형과 제한형 사이에서 고르기, 투명성·제어·신뢰 보정 패턴 표
+- [AI 윤리: 데이터 편향과 도덕적 딜레마](AI-Data/ai-ethics-bias-dilemma.md): COMPAS 사례와 데이터 편향, 트롤리 딜레마·자율주행차·모럴 머신
+- [AI 소프트웨어의 품질과 테스트](AI-Data/ai-software-testing.md): AI 소프트웨어 품질 특성, AI용 V 모델, 메타모픽·백투백 테스트, 뉴런 커버리지
+- [시각화 인코딩: 그래픽 문법, 시각 채널, 좌표계, 지각](AI-Data/visual-encoding.md): 그래픽 문법, 데이터 유형과 시각 채널의 정확도, 색 스케일, 좌표계, 사전 주의 속성
+- [데이터 종류별 차트 고르기: 수량·분포·비율·관계·시계열](AI-Data/chart-selection-guide.md): 수량·분포·비율·관계·시계열 질문별로 맞는 차트와 seaborn 함수
+- [그래프 디자인 원칙: 잉크 비례, 겹침, 색, 레이블, 맥락 요소](AI-Data/chart-design-principles.md): 0 기준선, 겹친 점 풀기, 색각 이상 고려, 직접 레이블, 3D 피하기, 점검 목록
+- [시각화 설계 과정: 과업 분석, 상호작용, 평가](AI-Data/visualization-design-process.md): 과업 분석, 다섯 장 디자인 시트, 정보 탐색 만트라와 상호작용, 시각화 평가

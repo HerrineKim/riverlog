@@ -16,6 +16,7 @@ date: "2026-10-13"
 - [Database](Computer-Science/Database.md): 데이터 모델, 트랜잭션, 정규화, SQL
 - [C-Programming](Computer-Science/C-Programming.md): C 기초와 포인터, 자료형과 형 변환, 구조체·스코프·링키지, 입출력, gcc·make 빌드와 디버깅 도구, 호출 규약과 저수준 최적화, C의 역사와 표준
 - [Programming-Languages](Computer-Science/Programming-Languages.md): C++ 문법·템플릿·STL·예외·vtable·메모리 풀, Java·JVM과 Go, 언어의 계보·패러다임·실행 방식, 추상 클래스와 인터페이스·위임·DTO/VO·클린 코드·GoF 디자인 패턴 같은 객체 지향 설계
+- [Software-Development](Computer-Science/Software-Development.md): 요구공학, 구조적·객체지향 분석 설계(DFD·UML), 테스트 설계 기법과 테스트 프로세스, 프로젝트 관리(EVM·COCOMO), 소프트웨어 안전
 - [Engineer-Information-Processing](Computer-Science/Engineer-Information-Processing.md): 정보처리기사 실기의 반복 출제 개념 정리
 - [개발자가 빠지는 함정 모음](Computer-Science/developer-traps.md): CSS·유니코드·부동소수점·시간·SQL·동시성·Git 등에서 직관과 다르게 동작하는 지점
 - [달력과 시간에 대한 개발자의 착각](Computer-Science/calendar-fallacies.md): 하루·주·달·해·시간대·서머타임에 대한 흔한 가정과 그것을 깨는 실제 사례
@@ -30,6 +31,7 @@ date: "2026-10-13"
 - [양자역학 기초: 이중 슬릿, 중첩, 얽힘](Computer-Science/quantum-mechanics-basics.md): 파동-입자 이중성, 양자 중첩과 얽힘, 양자역학에 대한 흔한 오해
 - [컴퓨터의 역사: 무엇이 무엇을 대체했나](Computer-Science/computing-history.md): 계산 도구에서 범용 기계로, 릴레이→진공관→트랜지스터→집적회로, 포토리소그래피와 무어의 법칙의 한계, 프로그램 입력 수단의 변천, 튜링 머신과 정지 문제, 개인용 컴퓨터가 보급된 조건
 - [양자 컴퓨터의 원리: 큐비트, 양자 알고리즘, 양자 게이트](Computer-Science/quantum-computing.md): 진폭 간섭으로 정답 확률 키우기, 블로흐 구면과 X·H·CNOT, 그로버·쇼어, 양자내성암호, 오류 정정
+- [디지털 오디오 기초: 표본화부터 입체 음향까지](Computer-Science/digital-audio-basics.md): 표본화와 나이퀴스트, PCM·ADPCM·MP3, 파일 형식, MIDI, HRTF 입체 음향
 
 ## 학습 순서와 자료
 

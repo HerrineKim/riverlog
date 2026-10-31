@@ -57,6 +57,10 @@ DevOps는 개발(Development)과 운영(Operations) 사이의 벽을 줄여, 코
 | [Terraform: 코드로 클라우드 인프라 만들기](/knowledge/dictionary/devops/terraform-workflow) | write → init → plan → apply, 상태 파일과 원격 백엔드·잠금, 모듈, 드리프트, CI 운영 |
 | [클라우드 비용 최적화와 숨은 비용](/knowledge/dictionary/devops/cloud-cost-optimization) | 비용을 줄이는 여섯 방법, 공인 IPv4·유휴 자원·송신 전송 같은 숨은 비용 |
 | [스타트업 인프라 선택 원칙](/knowledge/dictionary/devops/startup-infra-decisions) | 데이터는 관리형, 단순한 도구, 관측 표준·IdP·비용 추적은 처음부터 같은 인프라 결정 기준 |
+| [클라우드 서비스 모델: IaaS, PaaS, SaaS와 받치는 기술](/knowledge/dictionary/devops/cloud-service-models) | NIST 정의와 배포 모델, 모델별 책임 범위, 받치는 기술 |
+| [클라우드 SLA와 계약: 품질 지표, 도입 판단, 계약 체크리스트](/knowledge/dictionary/devops/cloud-sla-and-contract) | 가용성·응답성 지표, 서비스 크레딧, 이전 대상 고르기, 출구 전략, 계약 체크리스트 |
+| [클라우드 거버넌스와 보안: 조직 모델, 운영 원칙, 위협과 대응](/knowledge/dictionary/devops/cloud-governance-security) | 조직 모델과 CCoE, 가드레일, 공동 책임 모델, 위협과 점검(CVE·CCE) |
+| [클라우드컴퓨팅법과 분야별 클라우드 규제](/knowledge/dictionary/devops/korea-cloud-computing-act) | 이용자 권리, 공공·금융·의료·교육 분야 클라우드 규정 |
 
 ### 조직·문화
 

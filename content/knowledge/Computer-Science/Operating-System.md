@@ -35,3 +35,6 @@ date: "2026-10-14"
 - [리눅스 접근 제어: DAC, MAC, sudo](Computer-Science/Operating-System/linux-access-control.md): 파일 권한과 setuid, AppArmor·SELinux, sudoers 문법, PAM
 - [파일 시스템 구현](Computer-Science/Operating-System/file-system-implementation.md): 디스크 할당 방식, UNIX/FAT 구조, 버퍼 캐시와 페이지 캐시
 - [디스크 관리와 스케줄링](Computer-Science/Operating-System/disk-scheduling.md): 디스크 구조와 부팅, 디스크 스케줄링 알고리즘, 스왑 공간, RAID
+- [사용자 수준 스레드와 커널 수준 스레드](Computer-Science/Operating-System/thread-models.md): N:1·1:1·M:N 스레드 모델, OS는 1:1로 모이고 M:N은 언어 런타임으로 옮겨 간 이유
+- [파이프, FIFO, 공유 메모리: 프로세스끼리 데이터 주고받기](Computer-Science/Operating-System/ipc-pipe-fifo-shared-memory.md): 커널 복사 방식과 메모리 공유 방식, pipe·mkfifo·공유 메모리 사용법과 선택 기준
+- [운영체제의 입출력 시스템: 장치 드라이버에서 버퍼링·스풀링까지](Computer-Science/Operating-System/kernel-io-subsystem.md): 입출력 계층, 블록·문자·네트워크 장치, 버퍼링·캐싱·스풀링
