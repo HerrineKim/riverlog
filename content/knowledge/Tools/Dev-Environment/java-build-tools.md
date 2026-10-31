@@ -45,10 +45,10 @@ Java로 개발하려면 먼저 **JDK(Java Development Kit)를** 설치하고, �
 
 ### 오류 창이 없을 때 원인 찾는 법
 
-GUI 앱이 조용히 죽으면 **터미널에서 앱을 실행**해 본다. 앱이 내보내는 에러 로그가 터미널에 그대로 찍힌다.
+GUI 앱이 조용히 죽으면 **터미널에서 앱 실행 파일을 직접 실행**해 본다. 앱이 내보내는 에러 로그가 터미널에 그대로 찍힌다. `open -a`로 열면 앱이 터미널과 분리되어 로그가 보이지 않으므로, `.app` 번들 안의 실행 파일을 부른다(Community Edition은 `IntelliJ IDEA CE.app`).
 
 ```bash
-open -a "IntelliJ IDEA.app"
+"/Applications/IntelliJ IDEA.app/Contents/MacOS/idea"
 ```
 
 ## 정리

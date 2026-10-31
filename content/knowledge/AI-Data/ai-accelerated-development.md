@@ -5,7 +5,7 @@ summary: "AI를 가끔 꺼내 쓰는 도구가 아니라 리서치·기획·구�
 tags: ["ai", "llm", "claude-code", "agentic-coding", "productivity", "career"]
 source: other
 date: "2026-10-20"
-sources: ["https://drive.google.com/file/d/1SJ7-1YXo4r4pkHDuMdKLR9NtgbUsSRoZ/view", "https://addyo.substack.com/p/the-ai-native-software-engineer", "https://arxiv.org/abs/2503.14499", "https://arxiv.org/abs/2502.12115", "https://arxiv.org/abs/2502.05167"]
+sources: ["https://drive.google.com/file/d/1SJ7-1YXo4r4pkHDuMdKLR9NtgbUsSRoZ/view", "https://addyo.substack.com/p/the-ai-native-software-engineer", "https://arxiv.org/abs/2503.14499", "https://arxiv.org/abs/2502.12115", "https://arxiv.org/abs/2502.05167", "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/"]
 ---
 
 > 하용호의 강의 자료 「[AI로 개발을 어떻게 가속화하는가: 드디어 열린 입코딩 시대](https://drive.google.com/file/d/1SJ7-1YXo4r4pkHDuMdKLR9NtgbUsSRoZ/view)」(2025.07)와 Addy Osmani의 「[The AI-Native Software Engineer](https://addyo.substack.com/p/the-ai-native-software-engineer)」(2025.07)를 바탕으로 재구성한 노트다.
@@ -207,7 +207,7 @@ AI는 얼개는 잘 잡지만 논리 오류는 잘 못 잡는다. **코드를 �
 | [SWE-Lancer](https://arxiv.org/abs/2502.12115)(OpenAI, 2025) | 실제 프리랜서 과제에서, 직접 구현하는 과제보다 여러 제안 중 나은 것을 고르는 관리자 과제의 성공률이 높았다 |
 | [METR 작업 길이](https://arxiv.org/abs/2503.14499)(2025) | AI가 50% 확률로 완수하는 작업의 길이(사람 기준 소요 시간)가 약 7개월마다 두 배로 늘었다 |
 
-**한 번에 맡기는 작업을 AI가 감당할 크기 안으로 쪼개야** 성공률이 오른다. AI가 더 긴 일을 맡을수록 사람이 맡는 일의 단위도 커진다. AI 도구가 오히려 개발을 느리게 했다는 연구도 있는데, 도구만 얹고 일하는 방식은 그대로였던 경우다. **일하는 방식 자체를 AI 친화적으로 재편해야** 효과가 난다.
+**한 번에 맡기는 작업을 AI가 감당할 크기 안으로 쪼개야** 성공률이 오른다. AI가 더 긴 일을 맡을수록 사람이 맡는 일의 단위도 커진다. [METR의 2025년 실험](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)에서는 숙련 오픈소스 개발자 16명이 AI 도구를 쓸 때 오히려 19% 더 오래 걸렸다. **일하는 방식 자체를 AI 친화적으로 재편해야** 효과가 난다.
 
 ### 트레이드오프 사이의 선택자
 

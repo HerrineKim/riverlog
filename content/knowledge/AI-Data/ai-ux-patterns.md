@@ -126,6 +126,6 @@ sources: ["https://web.dev/learn/ai/ux-patterns", "https://web.dev/learn/ai/prom
 - 라벨은 구체적으로, 결과는 여러 개·되돌릴 수 있게, 민감한 행동은 확인 후에.
 - 배경형과 제한형의 선택은 능력이 아니라 가시성·인지 부하·타이밍의 문제다.
 
-"잘 작동하기 시작하면 아무도 그걸 AI라고 부르지 않는다." 좋은 AI UX는 대개 눈에 띄지 않는다.
+좋은 AI UX는 대개 눈에 띄지 않는다.
 
 관련 노트: [[ai-feature-blueprint|AI 기능 기획]], [[responsible-ai-governance|책임 있는 AI]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[web-ai-platform-choice|웹 AI 플랫폼 고르기]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]]

@@ -12,7 +12,7 @@ sources: ["https://inner-game.tistory.com/662", "https://omscs.gatech.edu/admiss
 
 ## OMSCS란
 
-OMSCS(Online Master of Science in Computer Science)는 조지아텍(Georgia Institute of Technology)의 **전 과정 온라인 컴퓨터공학 석사**다. 강의는 녹화본이고 정해진 수업 시간이 없는 **비동기(asynchronous)** 방식이라 직장·가정과 병행하기 쉽다. 학위는 캠퍼스 석사와 같은 「Master of Science in Computer Science」로 나온다. 초기에는 온라인 학위가 캠퍼스 학위와 같은 대우를 받는지 의문이 있었지만, 졸업생이 많이 쌓이면서 그 의문은 사라졌다.
+OMSCS(Online Master of Science in Computer Science)는 조지아텍(Georgia Institute of Technology)의 **전 과정 온라인 컴퓨터공학 석사**다. 강의는 녹화본이고 정해진 수업 시간이 없는 **비동기(asynchronous)** 방식이라 직장·가정과 병행하기 쉽다. 학위는 캠퍼스 석사와 같은 「Master of Science in Computer Science」로 나온다.
 
 같은 방식의 자매 과정으로 분석학 석사 OMSA(Online Master of Science in Analytics)가 있다. 데이터 분석·비즈니스 분석 쪽이면 OMSA를 본다.
 

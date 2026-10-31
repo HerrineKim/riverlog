@@ -42,7 +42,7 @@ IE가 사라진 뒤에는 "어디까지 지원할까"를 사용자 기기 데이
 
 ### 예산
 
-저사양 Android + 느린 4G에서 빠른 첫 화면을 내려면 HTML·CSS는 각각 100KB, JS는 350KB 안팎(압축 기준)이 적정 예산으로 꼽힌다. HTTP Archive 집계에서 웹 페이지 JS 중앙값은 이 예산을 넘고, 모바일 페이지의 상당수가 Core Web Vitals를 통과하지 못한다. 페이지 무게에서 이미지가 더 크더라도 **먼저 줄일 것은 JS**다.
+저사양 Android + 느린 4G에서 빠른 첫 화면을 내려면 HTML·CSS는 각각 100KB, JS는 350KB 안팎(압축 기준)이 적정 예산으로 꼽힌다. HTTP Archive의 [Web Almanac 2024](https://almanac.httparchive.org/en/2024/javascript)에서 모바일 페이지 JS 중앙값은 558KB로 이 예산을 넘고, 모바일 사이트 가운데 Core Web Vitals를 통과한 비율은 [43%](https://almanac.httparchive.org/en/2024/performance)에 그쳤다. 페이지 무게에서 이미지가 더 크더라도 **먼저 줄일 것은 JS**다.
 
 ### 프레임워크의 기본 비용
 
