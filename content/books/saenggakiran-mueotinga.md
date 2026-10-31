@@ -3,6 +3,7 @@ title: "생각이란 무엇인가"
 author: "대니얼 C. 데닛"
 category: "기타"
 status: "want"
+cover: "https://image.aladin.co.kr/product/37993/0/cover500/k602034676_2.jpg"
 tags: ["과학/기술/자연"]
 notionUrl: "https://app.notion.com/p/5e455670f8b847f98ae257da4050e2f7"
 ---

@@ -3,6 +3,7 @@ title: "북유럽인 이야기"
 author: "로버트 퍼거슨"
 category: "인문·사회"
 status: "want"
+cover: "https://image.aladin.co.kr/product/17915/75/cover500/8932319804_1.jpg"
 tags: ["사회/정치"]
 notionUrl: "https://app.notion.com/p/a5bc5b4c3abf4a0e94d41754de9ece88"
 ---

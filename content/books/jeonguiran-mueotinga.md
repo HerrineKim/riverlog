@@ -3,6 +3,7 @@ title: "정의란 무엇인가"
 author: "마이클 샌델"
 category: "인문·사회"
 status: "want"
+cover: "https://image.aladin.co.kr/product/4898/84/cover500/s812035947_1.jpg"
 tags: ["인문"]
 notionUrl: "https://app.notion.com/p/85fed891e6584642bad4111114933a9f"
 ---

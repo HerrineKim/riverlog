@@ -3,6 +3,7 @@ title: "안나와디의 아이들"
 author: "캐서린 부"
 category: "인문·사회"
 status: "want"
+cover: "https://image.aladin.co.kr/product/3062/80/cover500/8983716150_2.jpg"
 tags: ["사회/정치"]
 notionUrl: "https://app.notion.com/p/a5bc5b4c3abf4a0e94d41754de9ece88"
 ---

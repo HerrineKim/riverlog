@@ -3,6 +3,7 @@ title: "증권 분석"
 author: "벤저민 그레이엄, 데이비드 도드"
 category: "경제·경영"
 status: "want"
+cover: "https://image.aladin.co.kr/product/37258/82/cover500/k792031229_1.jpg"
 tags: ["경제/재테크"]
 notionUrl: "https://app.notion.com/p/3c9d1978fc7f4a8da3d00371a0d9efa8"
 ---

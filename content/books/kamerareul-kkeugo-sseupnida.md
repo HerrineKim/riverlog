@@ -3,5 +3,6 @@ title: "카메라를 끄고 씁니다"
 author: "양영희"
 category: "소설·문학"
 status: "want"
+cover: "https://image.aladin.co.kr/product/30344/58/cover500/8960907774_3.jpg"
 tags: ["수필/자서전/평전", "알라딘 21세기 최고의 책"]
 ---
