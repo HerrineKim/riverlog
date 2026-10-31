@@ -24,14 +24,13 @@ flowchart LR
 
 애플리케이션은 DB 프로토콜을 직접 다루지 않고 **드라이버**(JDBC 드라이버, `psycopg`, `mysql2` 등)를 통해 연결한다.
 
-```text
-1. 설정 읽기    URL(jdbc:postgresql://host:5432/app), 사용자, 비밀번호, 옵션
-2. TCP 연결     DNS 조회 → 3-way handshake (원격이면 왕복 1번 이상)
-3. TLS          설정했다면 TLS 핸드셰이크 (왕복이 더 든다)
-4. 핸드셰이크·인증  서버 버전·기능 교환, 인증 방식 협상(MySQL caching_sha2_password, PostgreSQL SCRAM-SHA-256)
-5. 세션 준비    서버가 세션을 만든다(PostgreSQL은 연결마다 백엔드 프로세스를 fork, MySQL은 스레드 할당)
-               문자 집합, 시간대, 자동 커밋, 격리 수준 같은 세션 변수 설정
-6. 쿼리 송수신  이후 같은 연결로 쿼리를 보내고 결과를 받는다
+```mermaid
+flowchart TB
+  S1["1. 설정 읽기<br/>URL(jdbc:postgresql://host:5432/app), 사용자, 비밀번호, 옵션"] --> S2["2. TCP 연결<br/>DNS 조회 → 3-way handshake (원격이면 왕복 1번 이상)"]
+  S2 --> S3["3. TLS<br/>설정했다면 TLS 핸드셰이크 (왕복이 더 든다)"]
+  S3 --> S4["4. 핸드셰이크·인증<br/>서버 버전·기능 교환, 인증 방식 협상(MySQL caching_sha2_password, PostgreSQL SCRAM-SHA-256)"]
+  S4 --> S5["5. 세션 준비<br/>서버가 세션을 만든다(PostgreSQL은 연결마다 백엔드 프로세스를 fork, MySQL은 스레드 할당)<br/>문자 집합, 시간대, 자동 커밋, 격리 수준 같은 세션 변수 설정"]
+  S5 --> S6["6. 쿼리 송수신<br/>이후 같은 연결로 쿼리를 보내고 결과를 받는다"]
 ```
 
 Java에서는 `DriverManager.getConnection()`이 이 과정을 매번 처음부터 하고, 실무에서는 `DataSource` 인터페이스 뒤에 커넥션 풀 구현체를 둬서 이미 만들어진 연결을 꺼내 준다. 2~5단계가 요청마다 반복되는 비용이 풀을 쓰는 이유다.
