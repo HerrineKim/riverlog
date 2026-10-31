@@ -295,11 +295,20 @@ JavaScript의 `Number`는 배정밀도 부동 소수점 하나뿐이다. 그래�
 여러 바이트로 된 값(예: 4바이트 정수 `0x12345678`)을 메모리에 놓는 순서를 **바이트 순서(byte order)** 또는 엔디언(endianness)이라 한다.
 
 ```mermaid
-block-beta
-  columns 5
-  h0["주소"] h1["0x100"] h2["0x101"] h3["0x102"] h4["0x103"]
-  b0["빅 엔디언<br/>큰 자리(MSB)가 낮은 주소"] b1["12"] b2["34"] b3["56"] b4["78"]
-  l0["리틀 엔디언<br/>작은 자리(LSB)가 낮은 주소"] l1["78"] l2["56"] l3["34"] l4["12"]
+flowchart TB
+  subgraph hrow[" "]
+    direction LR
+    h0["주소"] ~~~ h1["0x100"] ~~~ h2["0x101"] ~~~ h3["0x102"] ~~~ h4["0x103"]
+  end
+  subgraph brow[" "]
+    direction LR
+    b0["빅 엔디언<br/>큰 자리(MSB)가 낮은 주소"] ~~~ b1["12"] ~~~ b2["34"] ~~~ b3["56"] ~~~ b4["78"]
+  end
+  subgraph lrow[" "]
+    direction LR
+    l0["리틀 엔디언<br/>작은 자리(LSB)가 낮은 주소"] ~~~ l1["78"] ~~~ l2["56"] ~~~ l3["34"] ~~~ l4["12"]
+  end
+  hrow ~~~ brow ~~~ lrow
 ```
 
 | 방식 | 쓰는 곳 | 특징 |

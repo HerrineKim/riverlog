@@ -30,22 +30,36 @@ Type 1·2는 가상화 방식이 아니라 **하이퍼바이저가 어디에 놓
 Type 1 (베어메탈):
 
 ```mermaid
-block-beta
-    columns 2
-    g1["게스트"] g2["게스트"]
-    hv["하이퍼바이저"]:2
-    hw["하드웨어"]:2
+flowchart TB
+    subgraph guests[" "]
+        direction LR
+        g1["게스트"] ~~~ g2["게스트"]
+    end
+    hv["하이퍼바이저"]
+    hw["하드웨어"]
+    guests ~~~ hv ~~~ hw
 ```
 
 Type 2 (호스티드):
 
 ```mermaid
-block-beta
-    columns 3
-    g1["게스트"] g2["게스트"] space
-    hv["하이퍼바이저"]:2 app["일반 앱"]
-    os["호스트 OS"]:3
-    hw["하드웨어"]:3
+flowchart TB
+    subgraph upper[" "]
+        direction LR
+        subgraph vms[" "]
+            direction TB
+            subgraph guests[" "]
+                direction LR
+                g1["게스트"] ~~~ g2["게스트"]
+            end
+            hv["하이퍼바이저"]
+            guests ~~~ hv
+        end
+        app["일반 앱"]
+    end
+    os["호스트 OS"]
+    hw["하드웨어"]
+    upper ~~~ os ~~~ hw
 ```
 
 | 구분 | Type 1 | Type 2 |

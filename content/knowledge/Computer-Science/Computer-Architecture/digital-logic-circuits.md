@@ -262,13 +262,28 @@ Write Enable을 1로 올려 값을 넣고 0으로 내리면 그 값이 잠긴다
 256비트 = 16 × 16 격자:
 
 ```mermaid
-block-beta
-  columns 7
-  space c0["열 0"] c1["열 1"] cx1["…"] c8["열 8"] cx2["…"] c15["열 15"]
-  r0["행 0"] a0["□"] a1["□"] space a8["□"] space a15["□"]
-  rx1["…"] space:6
-  r12["행 12"] b0["□"] b1["□"] space b8["■<br/>행 12 AND 열 8 인 셀 하나만 선택"] space b15["□"]
-  rx2["…"] space:6
+flowchart TB
+  subgraph hrow[" "]
+    direction LR
+    s0[" "] ~~~ c0["열 0"] ~~~ c1["열 1"] ~~~ cx1["…"] ~~~ c8["열 8"] ~~~ cx2["…"] ~~~ c15["열 15"]
+  end
+  subgraph row0[" "]
+    direction LR
+    r0["행 0"] ~~~ a0["□"] ~~~ a1["□"] ~~~ s1[" "] ~~~ a8["□"] ~~~ s2[" "] ~~~ a15["□"]
+  end
+  subgraph rowx1[" "]
+    direction LR
+    rx1["…"]
+  end
+  subgraph row12[" "]
+    direction LR
+    r12["행 12"] ~~~ b0["□"] ~~~ b1["□"] ~~~ s3[" "] ~~~ b8["■<br/>행 12 AND 열 8 인 셀 하나만 선택"] ~~~ s4[" "] ~~~ b15["□"]
+  end
+  subgraph rowx2[" "]
+    direction LR
+    rx2["…"]
+  end
+  hrow ~~~ row0 ~~~ rowx1 ~~~ row12 ~~~ rowx2
 ```
 
 - 셀마다 AND 게이트를 두어 **행 선, 열 선, Write Enable이 모두 1일 때만** 쓰기가 가능하게 한다. 한순간에 선택되는 셀은 하나뿐이다.
