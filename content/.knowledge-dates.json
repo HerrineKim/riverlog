@@ -1,7 +1,7 @@
 {
  "AI-Data.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:01+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "AI-Data/Recommender-System.md": {
   "created": "2026-10-20T11:04:43+09:00",
@@ -43,6 +43,10 @@
   "created": "2026-10-13T19:47:35+09:00",
   "updated": "2026-10-30T15:47:47+09:00"
  },
+ "AI-Data/ai-ethics-bias-dilemma.md": {
+  "created": "2026-10-31T13:48:56+09:00",
+  "updated": "2026-10-31T13:48:56+09:00"
+ },
  "AI-Data/ai-feature-blueprint.md": {
   "created": "2026-10-17T23:13:05+09:00",
   "updated": "2026-10-17T23:13:05+09:00"
@@ -63,6 +67,10 @@
   "created": "2026-10-18T12:26:21+09:00",
   "updated": "2026-10-23T13:09:01+09:00"
  },
+ "AI-Data/ai-software-testing.md": {
+  "created": "2026-10-31T13:48:56+09:00",
+  "updated": "2026-10-31T13:48:56+09:00"
+ },
  "AI-Data/ai-ux-patterns.md": {
   "created": "2026-10-17T23:13:05+09:00",
   "updated": "2026-10-23T13:09:01+09:00"
@@ -74,6 +82,14 @@
  "AI-Data/behavior-tree.md": {
   "created": "2026-10-21T14:58:22+09:00",
   "updated": "2026-10-23T13:09:01+09:00"
+ },
+ "AI-Data/chart-design-principles.md": {
+  "created": "2026-10-31T13:48:56+09:00",
+  "updated": "2026-10-31T13:48:56+09:00"
+ },
+ "AI-Data/chart-selection-guide.md": {
+  "created": "2026-10-31T13:48:56+09:00",
+  "updated": "2026-10-31T13:48:56+09:00"
  },
  "AI-Data/classification-metrics.md": {
   "created": "2026-10-14T10:57:28+09:00",
@@ -227,6 +243,14 @@
   "created": "2026-10-12T21:27:28+09:00",
   "updated": "2026-10-22T12:22:16+09:00"
  },
+ "AI-Data/visual-encoding.md": {
+  "created": "2026-10-31T13:48:56+09:00",
+  "updated": "2026-10-31T13:48:56+09:00"
+ },
+ "AI-Data/visualization-design-process.md": {
+  "created": "2026-10-31T13:48:56+09:00",
+  "updated": "2026-10-31T13:48:56+09:00"
+ },
  "AI-Data/web-ai-platform-choice.md": {
   "created": "2026-10-17T23:13:05+09:00",
   "updated": "2026-10-21T14:58:22+09:00"
@@ -237,15 +261,19 @@
  },
  "Algorithm.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "Algorithm/Data-Structure.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T15:46:57+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
+ },
+ "Algorithm/Data-Structure/abstract-data-type.md": {
+  "created": "2026-10-31T13:48:56+09:00",
+  "updated": "2026-10-31T13:48:56+09:00"
  },
  "Algorithm/Data-Structure/data-structures.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-30T15:46:57+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Data-Structure/disjoint-set.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -253,27 +281,31 @@
  },
  "Algorithm/Data-Structure/hash-table.md": {
   "created": "2026-10-30T15:46:57+09:00",
-  "updated": "2026-10-30T15:46:57+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Data-Structure/heap-priority-queue.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Data-Structure/queue-deque.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Algorithm/Data-Structure/segment-tree.md": {
+  "created": "2026-10-31T13:48:56+09:00",
+  "updated": "2026-10-31T13:48:56+09:00"
  },
  "Algorithm/Data-Structure/stack.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-15T17:29:26+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Data-Structure/tree.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-30T16:00:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Graph.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T16:00:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Graph/articulation-point.md": {
   "created": "2026-10-14T10:57:28+09:00",
@@ -281,7 +313,7 @@
  },
  "Algorithm/Graph/dijkstra.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:01+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Graph/euler-circuit.md": {
   "created": "2026-10-14T10:57:28+09:00",
@@ -289,7 +321,7 @@
  },
  "Algorithm/Graph/graph-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T15:46:57+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Graph/lowest-common-ancestor.md": {
   "created": "2026-10-30T16:00:02+09:00",
@@ -297,11 +329,27 @@
  },
  "Algorithm/Graph/minimum-spanning-tree.md": {
   "created": "2026-10-30T15:46:57+09:00",
-  "updated": "2026-10-30T15:46:57+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Algorithm/Graph/shortest-path.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Algorithm/Graph/topological-sort.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Math.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
+ },
+ "Algorithm/Math/bit-manipulation.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Algorithm/Math/calculus-basics.md": {
+  "created": "2026-10-31T13:48:56+09:00",
+  "updated": "2026-10-31T13:48:56+09:00"
  },
  "Algorithm/Math/fourier-transform.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -317,11 +365,15 @@
  },
  "Algorithm/Math/number-theory-basics.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Algorithm/Math/permutation-combination.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
  },
  "Algorithm/Math/vector-geometry.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Math/vector-space.md": {
   "created": "2026-10-14T10:57:28+09:00",
@@ -329,7 +381,7 @@
  },
  "Algorithm/Paradigm.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Paradigm/divide-and-conquer.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -337,11 +389,11 @@
  },
  "Algorithm/Paradigm/dynamic-programming.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T15:46:57+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Paradigm/greedy.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T15:46:57+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Paradigm/longest-increasing-subsequence.md": {
   "created": "2026-10-14T10:57:28+09:00",
@@ -349,11 +401,15 @@
  },
  "Algorithm/Paradigm/recursion.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Paradigm/sweep-line.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-15T17:29:26+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Algorithm/Paradigm/two-pointers.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Search.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -365,7 +421,7 @@
  },
  "Algorithm/Search/binary-search.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T11:42:48+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Search/brute-force.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -381,7 +437,7 @@
  },
  "Algorithm/Sorting/elementary-sorts.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T15:46:57+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/Sorting/merge-insertion-sort.md": {
   "created": "2026-10-14T10:57:28+09:00",
@@ -389,7 +445,11 @@
  },
  "Algorithm/Sorting/merge-quick-sort.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T13:19:55+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Algorithm/algorithm-representation.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
  },
  "Algorithm/big-o.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -397,11 +457,11 @@
  },
  "Algorithm/coding-test.md": {
   "created": "2026-10-12T20:52:25+09:00",
-  "updated": "2026-10-30T15:46:57+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/kmp-algorithm.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/pratt-parsing.md": {
   "created": "2026-10-14T10:57:28+09:00",
@@ -409,15 +469,15 @@
  },
  "Algorithm/prefix-sum.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-15T17:29:26+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Algorithm/real-world-algorithms.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-23T13:09:01+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "Backend/Architecture/access-control-models.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -425,7 +485,7 @@
  },
  "Backend/Architecture/api-gateway.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Architecture/api-layer-evolution.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -481,7 +541,7 @@
  },
  "Backend/Architecture/distributed-data-patterns.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Architecture/distributed-system-patterns.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -489,7 +549,11 @@
  },
  "Backend/Architecture/distributed-time-and-failure.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Backend/Architecture/distributed-transaction.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Architecture/domain-driven-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -497,7 +561,7 @@
  },
  "Backend/Architecture/event-driven-architecture.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Architecture/event-loop-server.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -505,11 +569,15 @@
  },
  "Backend/Architecture/high-availability-redundancy.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Architecture/high-traffic-resilience.md": {
   "created": "2026-10-17T19:04:42+09:00",
   "updated": "2026-10-21T14:58:21+09:00"
+ },
+ "Backend/Architecture/kafka-operations.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Architecture/live-streaming.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -529,7 +597,7 @@
  },
  "Backend/Architecture/message-queue-kafka.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Architecture/microservices-architecture.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -553,7 +621,7 @@
  },
  "Backend/Architecture/resiliency-patterns.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Architecture/secure-system-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -569,7 +637,11 @@
  },
  "Backend/Architecture/system-design-fundamentals.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Backend/Architecture/url-shortener-design.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Architecture/virtual-waiting-room.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -589,15 +661,15 @@
  },
  "Backend/Database/connection-pool.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Database/database-internals.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Database/database-scaling.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Database/database-selection.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -605,15 +677,19 @@
  },
  "Backend/Database/database-sharding.md": {
   "created": "2026-10-17T19:04:42+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Database/distributed-unique-id.md": {
   "created": "2026-10-21T14:58:21+09:00",
   "updated": "2026-10-21T14:58:21+09:00"
  },
+ "Backend/Database/elasticsearch-search.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
  "Backend/Database/elasticsearch.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-30T13:19:55+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Database/flyway.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -621,7 +697,7 @@
  },
  "Backend/Database/index-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-30T15:48:47+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Database/jpa-persistence-context.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -629,7 +705,19 @@
  },
  "Backend/Database/mongodb.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-20T15:35:59+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Backend/Database/oracle-architecture.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
+ },
+ "Backend/Database/oracle-pl-sql.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
+ },
+ "Backend/Database/oracle-schema-objects.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
  },
  "Backend/Database/prisma.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -637,7 +725,7 @@
  },
  "Backend/Database/redis.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Database/search-engine-basics.md": {
   "created": "2026-10-14T10:18:30+09:00",
@@ -645,7 +733,11 @@
  },
  "Backend/Database/sql-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T16:02:04+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Backend/Database/sql-subquery.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
  },
  "Backend/Database/web-search-engine.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -789,7 +881,7 @@
  },
  "Backend/Web-Basics/api-security.md": {
   "created": "2026-10-12T21:23:39+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Web-Basics/api-testing.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -813,7 +905,7 @@
  },
  "Backend/Web-Basics/grpc.md": {
   "created": "2026-10-18T09:11:36+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Web-Basics/http-web-architecture.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -829,7 +921,7 @@
  },
  "Backend/Web-Basics/session-vs-token-auth.md": {
   "created": "2026-10-14T10:57:29+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Backend/Web-Basics/spring-application-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -865,11 +957,19 @@
  },
  "Career.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T15:47:01+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "Career/Job-Search/behavioral-interview-questions.md": {
   "created": "2026-10-12T21:10:41+09:00",
-  "updated": "2026-10-20T15:35:59+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Career/Job-Search/behavioral-interview-rubrics.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Career/Job-Search/coding-interview-rubric.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Job-Search/company-financial-check.md": {
   "created": "2026-10-18T09:38:44+09:00",
@@ -877,39 +977,39 @@
  },
  "Career/Job-Search/competency-mapping.md": {
   "created": "2026-10-22T15:47:01+09:00",
-  "updated": "2026-10-22T15:47:01+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Job-Search/cover-letter-writing.md": {
   "created": "2026-10-16T13:20:08+09:00",
-  "updated": "2026-10-22T15:47:01+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Job-Search/frontend-interview.md": {
   "created": "2026-10-17T18:13:09+09:00",
-  "updated": "2026-10-30T15:22:08+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Job-Search/interview-attitude.md": {
   "created": "2026-10-16T13:20:09+09:00",
-  "updated": "2026-10-30T15:55:32+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Job-Search/job-offer-negotiation.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Job-Search/resume-writing.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-20T15:35:59+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Job-Search/stock-options.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Job-Search/tech-interview-prep.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Job-Search/us-hiring-process.md": {
   "created": "2026-10-17T18:11:24+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Job-Search/us-work-visa-paths.md": {
   "created": "2026-10-20T11:04:43+09:00",
@@ -917,7 +1017,7 @@
  },
  "Career/Job-Search/web-dev-study-guide.md": {
   "created": "2026-10-13T19:37:05+09:00",
-  "updated": "2026-10-30T15:47:47+09:00"
+  "updated": "2026-10-30T18:22:33+09:00"
  },
  "Career/Product/agile-sprint.md": {
   "created": "2026-10-13T19:40:33+09:00",
@@ -999,6 +1099,10 @@
   "created": "2026-10-15T17:29:26+09:00",
   "updated": "2026-10-20T15:35:59+09:00"
  },
+ "Career/Product/ux-scenario-persona.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
+ },
  "Career/Product/working-with-designers.md": {
   "created": "2026-10-13T19:43:50+09:00",
   "updated": "2026-10-15T17:29:26+09:00"
@@ -1029,11 +1133,15 @@
  },
  "Career/Work/developer-skill-roadmap.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Work/effective-meetings.md": {
   "created": "2026-10-13T19:40:33+09:00",
   "updated": "2026-10-15T17:29:26+09:00"
+ },
+ "Career/Work/engineering-levels.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Work/finding-dev-references.md": {
   "created": "2026-10-14T10:23:54+09:00",
@@ -1041,7 +1149,7 @@
  },
  "Career/Work/growing-at-work.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Work/kind-engineering.md": {
   "created": "2026-10-15T19:59:20+09:00",
@@ -1097,7 +1205,7 @@
  },
  "Career/Work/tech-lead-transition.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Career/Work/work-habits.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -1109,11 +1217,11 @@
  },
  "Computer-Science.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:01+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "Computer-Science/C-Programming.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "Computer-Science/C-Programming/c-2d-graphics.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1139,13 +1247,25 @@
   "created": "2026-10-14T10:57:30+09:00",
   "updated": "2026-10-15T17:29:26+09:00"
  },
+ "Computer-Science/C-Programming/c-operators-and-expressions.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
+ },
  "Computer-Science/C-Programming/c-scope-and-linkage.md": {
   "created": "2026-10-14T10:57:30+09:00",
   "updated": "2026-10-15T17:29:26+09:00"
  },
+ "Computer-Science/C-Programming/c-string-functions.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
+ },
  "Computer-Science/C-Programming/c-struct-and-function-pointer.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-20T15:35:59+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Computer-Science/C-Programming/c-union-enum-typedef.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
  },
  "Computer-Science/C-Programming/calling-convention.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1157,7 +1277,7 @@
  },
  "Computer-Science/C-Programming/gcc-compile-and-link.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-23T12:47:44+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/C-Programming/makefile.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1169,7 +1289,7 @@
  },
  "Computer-Science/Computer-Architecture.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "Computer-Science/Computer-Architecture/basic-computer-design.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -1181,11 +1301,15 @@
  },
  "Computer-Science/Computer-Architecture/cache-and-virtual-memory.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T13:19:55+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Computer-Architecture/cache-friendly-code.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Computer-Science/Computer-Architecture/combinational-circuit-components.md": {
+  "created": "2026-10-31T13:48:57+09:00",
+  "updated": "2026-10-31T13:48:57+09:00"
  },
  "Computer-Science/Computer-Architecture/computer-arithmetic.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -1193,11 +1317,15 @@
  },
  "Computer-Science/Computer-Architecture/computer-system-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:01+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Computer-Science/Computer-Architecture/counters-and-shift-registers.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
  },
  "Computer-Science/Computer-Architecture/cpu-instructions.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Computer-Architecture/cpu-microarchitecture.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1205,7 +1333,7 @@
  },
  "Computer-Science/Computer-Architecture/data-representation.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Computer-Architecture/digital-logic-circuits.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -1217,11 +1345,15 @@
  },
  "Computer-Science/Computer-Architecture/io-organization.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T12:47:45+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Computer-Architecture/memory-hierarchy.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Computer-Science/Computer-Architecture/multiprocessor-systems.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
  },
  "Computer-Science/Computer-Architecture/pipeline-and-parallelism.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1231,25 +1363,37 @@
   "created": "2026-10-12T12:00:52+09:00",
   "updated": "2026-10-23T13:09:02+09:00"
  },
+ "Computer-Science/Computer-Architecture/sequential-circuit-design.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
+ },
+ "Computer-Science/Computer-Architecture/system-bus-and-arbitration.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
+ },
  "Computer-Science/Database.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "Computer-Science/Database/database-models.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T14:26:15+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Computer-Science/Database/er-modeling.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
  },
  "Computer-Science/Database/normalization.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T15:48:47+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Database/sql-and-relational-algebra.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T14:26:15+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Database/transaction.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T15:48:47+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Engineer-Information-Processing.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1273,15 +1417,23 @@
  },
  "Computer-Science/Network.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
+ },
+ "Computer-Science/Network/access-network-and-wan.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
  },
  "Computer-Science/Network/cdn.md": {
   "created": "2026-10-12T21:06:09+09:00",
   "updated": "2026-10-21T15:52:08+09:00"
  },
+ "Computer-Science/Network/data-transmission-and-multiplexing.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
+ },
  "Computer-Science/Network/dns.md": {
   "created": "2026-10-12T21:06:09+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Network/email-delivery.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1293,23 +1445,39 @@
  },
  "Computer-Science/Network/http.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Network/https.md": {
   "created": "2026-10-12T21:06:09+09:00",
   "updated": "2026-10-21T14:58:21+09:00"
  },
+ "Computer-Science/Network/ip-multicast.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
+ },
+ "Computer-Science/Network/ip-qos.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
+ },
  "Computer-Science/Network/linux-network-namespace.md": {
   "created": "2026-10-14T10:57:30+09:00",
   "updated": "2026-10-15T17:29:26+09:00"
  },
+ "Computer-Science/Network/mobile-communication.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
+ },
+ "Computer-Science/Network/mpls.md": {
+  "created": "2026-10-31T13:48:58+09:00",
+  "updated": "2026-10-31T13:48:58+09:00"
+ },
  "Computer-Science/Network/network-basics.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Network/network-layer.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Network/network-security.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1333,7 +1501,7 @@
  },
  "Computer-Science/Network/transport-layer.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Network/url-to-page.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -1353,11 +1521,15 @@
  },
  "Computer-Science/Network/websocket.md": {
   "created": "2026-10-12T21:06:09+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Computer-Science/Network/wireless-lan.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
  },
  "Computer-Science/Operating-System.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "Computer-Science/Operating-System/bash-scripting.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1373,7 +1545,7 @@
  },
  "Computer-Science/Operating-System/deadlock.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-23T12:47:45+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Operating-System/disk-scheduling.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -1386,6 +1558,14 @@
  "Computer-Science/Operating-System/file-system.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-23T13:09:02+09:00"
+ },
+ "Computer-Science/Operating-System/ipc-pipe-fifo-shared-memory.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
+ },
+ "Computer-Science/Operating-System/kernel-io-subsystem.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
  },
  "Computer-Science/Operating-System/linux-access-control.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1405,11 +1585,11 @@
  },
  "Computer-Science/Operating-System/memory-management.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-23T12:47:46+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Operating-System/multithreading-patterns.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Operating-System/os-overview.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1417,19 +1597,19 @@
  },
  "Computer-Science/Operating-System/process-and-thread.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-23T12:47:46+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Operating-System/process-scheduling.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T12:47:46+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Operating-System/process-synchronization.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-23T12:47:46+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Operating-System/pthread-sync-api.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-15T17:29:26+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Operating-System/shell-pipeline.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1441,7 +1621,11 @@
  },
  "Computer-Science/Operating-System/system-structure.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Computer-Science/Operating-System/thread-models.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
  },
  "Computer-Science/Operating-System/time-and-timers.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1449,7 +1633,7 @@
  },
  "Computer-Science/Operating-System/unix-file-io.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-17T19:04:42+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Operating-System/unix-signals.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1457,7 +1641,7 @@
  },
  "Computer-Science/Operating-System/virtual-memory.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-23T12:47:46+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Operating-System/virtualization.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1465,11 +1649,11 @@
  },
  "Computer-Science/Programming-Languages.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-30T15:58:34+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "Computer-Science/Programming-Languages/abstract-class-vs-interface.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-17T23:13:05+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Programming-Languages/clean-code-functions-naming.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1483,6 +1667,10 @@
   "created": "2026-10-14T10:57:30+09:00",
   "updated": "2026-10-22T12:22:16+09:00"
  },
+ "Computer-Science/Programming-Languages/cpp-classes-and-constructors.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
+ },
  "Computer-Science/Programming-Languages/cpp-coding-style.md": {
   "created": "2026-10-14T10:57:30+09:00",
   "updated": "2026-10-15T17:29:26+09:00"
@@ -1490,6 +1678,14 @@
  "Computer-Science/Programming-Languages/cpp-exceptions.md": {
   "created": "2026-10-14T10:57:30+09:00",
   "updated": "2026-10-15T17:29:26+09:00"
+ },
+ "Computer-Science/Programming-Languages/cpp-inheritance.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
+ },
+ "Computer-Science/Programming-Languages/cpp-operator-overloading.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
  },
  "Computer-Science/Programming-Languages/cpp-stl-containers.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1507,9 +1703,13 @@
   "created": "2026-10-14T10:57:30+09:00",
   "updated": "2026-10-22T12:22:16+09:00"
  },
+ "Computer-Science/Programming-Languages/go-concurrency.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
  "Computer-Science/Programming-Languages/go-language.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Programming-Languages/gof-design-patterns.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1517,27 +1717,39 @@
  },
  "Computer-Science/Programming-Languages/how-programs-run.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-30T15:53:40+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Programming-Languages/java-coding-convention.md": {
   "created": "2026-10-21T14:58:21+09:00",
   "updated": "2026-10-30T13:19:55+09:00"
  },
+ "Computer-Science/Programming-Languages/java-concurrency.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
  "Computer-Science/Programming-Languages/java-idioms.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Computer-Science/Programming-Languages/java-io-streams.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
  },
  "Computer-Science/Programming-Languages/java-language-basics.md": {
   "created": "2026-10-30T15:51:53+09:00",
-  "updated": "2026-10-30T16:02:04+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Programming-Languages/java-serialization-jackson.md": {
   "created": "2026-10-21T14:58:21+09:00",
   "updated": "2026-10-21T14:58:21+09:00"
  },
+ "Computer-Science/Programming-Languages/java-swing-gui.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
+ },
  "Computer-Science/Programming-Languages/jvm-internals.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-30T15:51:53+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Programming-Languages/kotlin-basics.md": {
   "created": "2026-10-30T15:58:34+09:00",
@@ -1551,6 +1763,10 @@
   "created": "2026-10-14T10:57:30+09:00",
   "updated": "2026-10-15T17:29:26+09:00"
  },
+ "Computer-Science/Programming-Languages/modern-java-features.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
  "Computer-Science/Programming-Languages/oop-messaging.md": {
   "created": "2026-10-14T10:06:44+09:00",
   "updated": "2026-10-21T14:58:21+09:00"
@@ -1559,13 +1775,21 @@
   "created": "2026-10-21T14:58:21+09:00",
   "updated": "2026-10-23T13:09:02+09:00"
  },
+ "Computer-Science/Programming-Languages/programming-language-semantics.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
  "Computer-Science/Programming-Languages/programming-paradigms.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-23T13:09:02+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Programming-Languages/python-internals.md": {
   "created": "2026-10-30T15:53:40+09:00",
-  "updated": "2026-10-30T15:53:40+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Computer-Science/Programming-Languages/python-language-basics.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Computer-Science/Programming-Languages/responsibility-driven-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1578,6 +1802,42 @@
  "Computer-Science/Programming-Languages/state-and-decoupling-designs.md": {
   "created": "2026-10-21T15:52:08+09:00",
   "updated": "2026-10-21T15:52:08+09:00"
+ },
+ "Computer-Science/Programming-Languages/type-systems.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "Computer-Science/Software-Development.md": {
+  "created": "2026-10-31T13:49:01+09:00",
+  "updated": "2026-10-31T13:49:01+09:00"
+ },
+ "Computer-Science/Software-Development/requirements-engineering.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
+ },
+ "Computer-Science/Software-Development/software-project-management.md": {
+  "created": "2026-10-31T13:48:59+09:00",
+  "updated": "2026-10-31T13:48:59+09:00"
+ },
+ "Computer-Science/Software-Development/software-safety.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
+ },
+ "Computer-Science/Software-Development/structured-analysis-design.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
+ },
+ "Computer-Science/Software-Development/test-design-techniques.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
+ },
+ "Computer-Science/Software-Development/test-process-risk-based-testing.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
+ },
+ "Computer-Science/Software-Development/uml-object-oriented-modeling.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
  },
  "Computer-Science/bezier-curve.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1598,6 +1858,10 @@
  "Computer-Science/developer-traps.md": {
   "created": "2026-10-12T20:48:44+09:00",
   "updated": "2026-10-21T15:52:08+09:00"
+ },
+ "Computer-Science/digital-audio-basics.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
  },
  "Computer-Science/feedback-control-pid.md": {
   "created": "2026-10-23T13:09:00+09:00",
@@ -1633,7 +1897,7 @@
  },
  "DevOps.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-23T17:37:45+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "DevOps/aws-cloud-basics.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1653,19 +1917,31 @@
  },
  "DevOps/ci-cd.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T13:19:55+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "DevOps/cloud-cost-optimization.md": {
   "created": "2026-10-21T14:58:21+09:00",
   "updated": "2026-10-21T14:58:21+09:00"
  },
+ "DevOps/cloud-governance-security.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
+ },
  "DevOps/cloud-native.md": {
   "created": "2026-10-21T14:58:21+09:00",
   "updated": "2026-10-30T13:19:55+09:00"
  },
+ "DevOps/cloud-service-models.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
+ },
  "DevOps/cloud-services-map.md": {
   "created": "2026-10-21T14:58:21+09:00",
   "updated": "2026-10-30T13:19:55+09:00"
+ },
+ "DevOps/cloud-sla-and-contract.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
  },
  "DevOps/deployment-strategies.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1685,11 +1961,19 @@
  },
  "DevOps/docker-compose.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-17T23:13:05+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "DevOps/docker-container-operations.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "DevOps/docker-network-volume.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "DevOps/dockerfile.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-30T13:19:55+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "DevOps/durable-workflow-temporal.md": {
   "created": "2026-10-23T17:37:45+09:00",
@@ -1699,13 +1983,41 @@
   "created": "2026-10-21T14:58:21+09:00",
   "updated": "2026-10-21T14:58:21+09:00"
  },
+ "DevOps/korea-cloud-computing-act.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
+ },
  "DevOps/kubernetes-architecture.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "DevOps/kubernetes-networking.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "DevOps/kubernetes-operations.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "DevOps/kubernetes-request-path.md": {
   "created": "2026-10-13T19:45:09+09:00",
   "updated": "2026-10-20T15:35:59+09:00"
+ },
+ "DevOps/kubernetes-scheduling-resources.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "DevOps/kubernetes-security.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "DevOps/kubernetes-storage-config.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
+ },
+ "DevOps/kubernetes-workloads.md": {
+  "created": "2026-10-30T23:43:44+09:00",
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "DevOps/observability.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1745,7 +2057,7 @@
  },
  "DevOps/vm-vs-container.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Frontend.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1877,7 +2189,7 @@
  },
  "Frontend/Architecture/ui-change-detection.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-30T15:52:22+09:00"
+  "updated": "2026-10-30T18:32:04+09:00"
  },
  "Frontend/CSS.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1885,7 +2197,7 @@
  },
  "Frontend/CSS/box-model.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Frontend/CSS/css-animation.md": {
   "created": "2026-10-14T18:18:27+09:00",
@@ -2057,7 +2369,7 @@
  },
  "Frontend/JavaScript.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T15:57:25+09:00"
+  "updated": "2026-10-30T22:38:05+09:00"
  },
  "Frontend/JavaScript/ajax.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -2125,7 +2437,7 @@
  },
  "Frontend/JavaScript/eslint-prettier.md": {
   "created": "2026-10-13T08:00:18+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T22:38:05+09:00"
  },
  "Frontend/JavaScript/event-loop.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -2153,7 +2465,7 @@
  },
  "Frontend/JavaScript/garbage-collection.md": {
   "created": "2026-10-17T23:13:05+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Frontend/JavaScript/iterators-and-generators.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -2293,11 +2605,11 @@
  },
  "Frontend/JavaScript/typescript-basics.md": {
   "created": "2026-10-14T18:13:16+09:00",
-  "updated": "2026-10-30T15:57:25+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Frontend/JavaScript/typescript-coding-convention.md": {
   "created": "2026-10-12T21:02:24+09:00",
-  "updated": "2026-10-30T15:57:05+09:00"
+  "updated": "2026-10-30T22:38:05+09:00"
  },
  "Frontend/JavaScript/typescript-compiler-internals.md": {
   "created": "2026-10-30T15:57:24+09:00",
@@ -2417,7 +2729,7 @@
  },
  "Frontend/React.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T18:32:04+09:00"
  },
  "Frontend/React/advanced-react-patterns.md": {
   "created": "2026-10-15T17:46:05+09:00",
@@ -2437,7 +2749,7 @@
  },
  "Frontend/React/concurrent-rendering.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T18:32:04+09:00"
  },
  "Frontend/React/conditional-rendering.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -2481,7 +2793,7 @@
  },
  "Frontend/React/logic-reuse-patterns.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T18:21:36+09:00"
  },
  "Frontend/React/portals.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -2493,7 +2805,7 @@
  },
  "Frontend/React/react-events.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-15T17:29:26+09:00"
+  "updated": "2026-10-30T18:21:36+09:00"
  },
  "Frontend/React/react-hook-form.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -2509,11 +2821,15 @@
  },
  "Frontend/React/react-typescript.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T18:21:36+09:00"
  },
  "Frontend/React/react-use-hook.md": {
   "created": "2026-10-12T21:19:51+09:00",
   "updated": "2026-10-22T12:22:16+09:00"
+ },
+ "Frontend/React/react-version-history.md": {
+  "created": "2026-10-30T18:32:04+09:00",
+  "updated": "2026-10-30T18:32:04+09:00"
  },
  "Frontend/React/realtime-chat-app.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -2589,7 +2905,7 @@
  },
  "Frontend/Testing/tdd.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Frontend/Testing/test-environment.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -2605,7 +2921,7 @@
  },
  "Frontend/UI-Design.md": {
   "created": "2026-10-13T08:00:18+09:00",
-  "updated": "2026-10-23T13:09:03+09:00"
+  "updated": "2026-10-31T13:49:01+09:00"
  },
  "Frontend/UI-Design/design-system.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -2671,6 +2987,10 @@
   "created": "2026-10-21T15:52:08+09:00",
   "updated": "2026-10-21T15:52:08+09:00"
  },
+ "Frontend/UI-Design/usability-heuristic-evaluation.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
+ },
  "Frontend/UI-Design/ux-writing.md": {
   "created": "2026-10-15T16:28:51+09:00",
   "updated": "2026-10-20T15:35:59+09:00"
@@ -2682,6 +3002,10 @@
  "Frontend/UI-Design/web-layout-design.md": {
   "created": "2026-10-13T19:48:01+09:00",
   "updated": "2026-10-21T15:52:08+09:00"
+ },
+ "Frontend/UI-Design/wireframe-mockup-prototype.md": {
+  "created": "2026-10-31T13:49:00+09:00",
+  "updated": "2026-10-31T13:49:00+09:00"
  },
  "Frontend/Web.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -2721,7 +3045,7 @@
  },
  "Frontend/Web/code-splitting.md": {
   "created": "2026-10-17T23:13:04+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T18:21:36+09:00"
  },
  "Frontend/Web/constraint-validation.md": {
   "created": "2026-10-17T23:13:04+09:00",
@@ -2969,7 +3293,7 @@
  },
  "Frontend/Web/web-components.md": {
   "created": "2026-10-17T23:13:04+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-10-30T18:21:36+09:00"
  },
  "Frontend/Web/web-dev-myths.md": {
   "created": "2026-10-18T10:36:58+09:00",
@@ -3197,7 +3521,7 @@
  },
  "Tools/Code-Review/simple-design.md": {
   "created": "2026-10-12T23:48:32+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Tools/Dev-Environment.md": {
   "created": "2026-10-13T08:00:18+09:00",
@@ -3213,7 +3537,7 @@
  },
  "Tools/Dev-Environment/python-pyenv-setup.md": {
   "created": "2026-10-13T08:00:18+09:00",
-  "updated": "2026-10-15T17:29:27+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Tools/Dev-Environment/windows-dev-environment.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -3241,7 +3565,7 @@
  },
  "Tools/Git/git-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-10-30T23:43:44+09:00"
  },
  "Tools/Git/git-config-options.md": {
   "created": "2026-10-12T21:32:52+09:00",
