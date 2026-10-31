@@ -5,7 +5,7 @@ summary: "데이터를 구하고 처리한 뒤 탐색적 데이터 분석(EDA)�
 tags: ["data-science", "python", "eda", "visualization"]
 source: notion
 date: "2026-10-13"
-sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas", "https://playwright.dev/python/docs/intro"]
+sources: ["https://pandas.pydata.org/", "https://pola.rs/", "https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas", "https://playwright.dev/python/docs/intro", "https://pola.rs/posts/benchmarks/"]
 ---
 
 > 노션 정리를 바탕으로 재구성하고, pandas로 표 합치기는 ByteByteGo의 System Design 101 가이드 「[5 Functions to Merge Data with Pandas](https://bytebytego.com/guides/5-functions-to-merge-data-with-pandas)」를 바탕으로 pandas 공식 문서 기준으로 보강한 노트다.
@@ -77,7 +77,7 @@ top5 = sorted(movies, key=lambda m: m["vote_average"], reverse=True)[:5]   # 내
 | 라이브러리 | 특징 |
 | --- | --- |
 | pandas | 파이썬 데이터 분석의 표준 DataFrame. 생태계(시각화·머신 러닝 라이브러리)와 가장 잘 맞물린다 |
-| Polars | Rust로 만든 DataFrame. 멀티코어와 지연 실행(lazy)으로 pandas보다 훨씬 빠르고 메모리를 덜 쓴다. 큰 데이터에 먼저 고려한다 |
+| Polars | Rust로 만든 DataFrame. 멀티코어와 지연 실행(lazy)으로 pandas보다 빠르고 메모리를 덜 쓴다. Polars 팀의 [PDS-H 벤치마크](https://pola.rs/posts/benchmarks/)(2025.5, SF-10)에서는 pandas보다 약 38배(인메모리)~94배(스트리밍) 빨랐다. 큰 데이터에 먼저 고려한다 |
 | DuckDB | 파일(CSV·Parquet)과 DataFrame에 바로 SQL을 던지는 내장형 분석 DB |
 
 ```python
@@ -134,7 +134,7 @@ pd.concat([df_jan, df_feb], ignore_index=True)
 
 - **프로파일링**: 어디가 느린지 먼저 재고 고친다. 측정 방법은 Jupyter 매직 명령 정리([[jupyter-notebook#알아 두면 좋은 기능|Jupyter Notebook]])에 있다.
 - **GPU 가속**: CUDA, cuDF(GPU 기반 DataFrame)
-- **더 빠른 DataFrame**: Polars, DuckDB로 바꾸는 것만으로 단일 머신에서 수십 배 빨라지는 경우가 많다
+- **더 빠른 DataFrame**: Polars, DuckDB로 바꾸는 것만으로 단일 머신에서 크게 빨라질 수 있다. 배수는 작업과 데이터 크기에 따라 다르다
 - **병렬·분산 처리**: Dask, Ray, Spark(PySpark) (메모리보다 큰 데이터 처리)
 - **JIT 컴파일**: Numba(숫자 계산 루프), PyPy(순수 파이썬 코드)
 

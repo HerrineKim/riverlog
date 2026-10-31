@@ -5,7 +5,7 @@ summary: "로봇은 컴퓨터 제어로 물리 세계에서 일련의 동작을 
 tags: ["computer-science", "robotics", "control", "algorithm"]
 source: other
 date: "2026-10-23"
-sources: ["https://www.youtube.com/watch?v=3XkL0qQ21Oo"]
+sources: ["https://www.youtube.com/watch?v=3XkL0qQ21Oo", "https://research.google/blog/deep-learning-for-robots-learning-from-large-scale-interaction/"]
 ---
 
 > CrashCourse의 「Crash Course Computer Science」 #37 「Robots」(2017)를 바탕으로 재구성한 노트다.
@@ -82,7 +82,7 @@ flowchart TB
 
 로봇은 심해 바닥에 가고 화성을 10년 넘게 돌아다녔지만, 사람에게 하찮은 일이 오히려 어렵다. 두 발로 걷기, 문 열기, 부서뜨리지 않고 물건 집기, 티셔츠 입기, 개 쓰다듬기처럼 **생각 없이 하는 감각·운동 기술이 체스보다 어렵다**는 관찰을 모라벡의 역설(Moravec's paradox)이라 한다.
 
-- 이 벽을 넘는 유력한 방법은 학습이다. 여러 로봇 팔이 물건 집기를 시행착오로 수천 시간 연습해 실패율을 절반으로 줄인 실험처럼, 로봇은 쉬지 않고 여러 대가 동시에 연습한다([[reinforcement-learning|강화 학습]]).
+- 이 벽을 넘는 유력한 방법은 학습이다. 구글 연구진이 로봇 팔 14대에 물건 집기를 약 3,000 로봇-시간 연습시킨 실험에서, 카메라 피드백으로 동작을 고쳐 가는 학습 모델의 실패율은 18%로 개루프 방식(34%)의 절반쯤이었다([Google Research, 2016](https://research.google/blog/deep-learning-for-robots-learning-from-large-scale-interaction/)). 이처럼 로봇은 쉬지 않고 여러 대가 동시에 연습한다([[reinforcement-learning|강화 학습]]).
 - **자율 주행차**는 입력이 가속·감속·조향뿐이라 제어 자체는 단순하다. 어려운 것은 차선·표지판 읽기, 차·보행자·자전거의 움직임 예측 같은 인식이고, 근접 센서와 [[computer-vision-basics|컴퓨터 비전]]에 크게 기댄다.
 - 사람처럼 생기고 행동하는 안드로이드는 인공지능·비전·자연어 처리를 모두 합쳐야 하는 목표다. 사람을 너무 닮으면 불쾌한 골짜기에 빠진다([[interface-psychology|인터페이스 심리학]]).
 

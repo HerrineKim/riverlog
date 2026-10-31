@@ -71,7 +71,7 @@ sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b
 | --- | --- |
 | 같은 `font-size`인데 글꼴마다 커 보이는 정도가 다르다 | `font-size-adjust`(Baseline 2024): 소문자 높이(x-height) 비율을 맞춘다. 폴백 글꼴로 바뀌어도 크기가 튀지 않는다 |
 | 웹폰트 로딩 전후로 레이아웃이 흔들린다 | `@font-face`의 `size-adjust`, `ascent-override` 등으로 폴백 글꼴 지표를 웹폰트에 맞춘다 |
-| 글자·단어 간격 | `letter-spacing`, `word-spacing`. 난독증 독자에게는 글꼴 모양보다 **간격을 넓히는 것**이 더 도움이 된다는 연구가 있다 |
+| 글자·단어 간격 | `letter-spacing`, `word-spacing`. 난독증 독자에게는 글꼴 모양보다 **간격을 넓히는 것**이 더 도움이 됐다([Galliussi 외, 2020, Annals of Dyslexia](https://doi.org/10.1007/s11881-020-00194-x)) |
 | 굵기·폭·광학 크기를 연속적으로 조절 | 가변 폰트(variable font) + `font-variation-settings`, `font-optical-sizing` |
 
 `letter-spacing`은 모든 글자 사이에 같은 값을 더해 글꼴 고유의 간격 리듬을 깰 수 있다. 가변 폰트는 디자이너가 축(axis)으로 설계한 범위 안에서 조절해 더 자연스럽다. 폰트 지표를 임의로 비트는 것은 피한다.

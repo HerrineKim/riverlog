@@ -5,10 +5,10 @@ summary: "양자 컴퓨터는 중첩된 큐비트를 쓰지만 모든 답을 한
 tags: ["computer-science", "quantum", "algorithm", "security"]
 source: other
 date: "2026-10-17"
-sources: ["https://qubit.donghwi.dev/principle/1", "https://qubit.donghwi.dev/principle/2", "https://qubit.donghwi.dev/principle/3", "https://qubit.donghwi.dev/myth/2", "https://csrc.nist.gov/projects/post-quantum-cryptography"]
+sources: ["https://qubit.donghwi.dev/principle/1", "https://qubit.donghwi.dev/principle/2", "https://qubit.donghwi.dev/principle/3", "https://qubit.donghwi.dev/myth/2", "https://csrc.nist.gov/projects/post-quantum-cryptography", "https://www.scientificamerican.com/article/ibm-releases-first-ever-1-000-qubit-quantum-chip/", "https://doi.org/10.1038/s41586-023-06927-3", "https://newsroom.ibm.com/2025-06-10-IBM-Sets-the-Course-to-Build-Worlds-First-Large-Scale,-Fault-Tolerant-Quantum-Computer-at-New-IBM-Quantum-Data-Center"]
 ---
 
-> 「[Qubit](https://qubit.donghwi.dev/principle/1)」(qubit.donghwi.dev)의 「양자 컴퓨터의 원리」, 「양자 컴퓨터에 대한 오해」 편을 바탕으로 재구성하고, 하드웨어 현황과 양자내성암호는 NIST 발표 등으로 최신화한 노트다. 바탕이 되는 물리는 [[quantum-mechanics-basics|양자역학 기초]]에 있다.
+> 「[Qubit](https://qubit.donghwi.dev/principle/1)」(qubit.donghwi.dev)의 「양자 컴퓨터의 원리」, 「양자 컴퓨터에 대한 오해」 편을 바탕으로 재구성하고, 하드웨어 현황은 IBM 발표와 Nature 논문으로, 양자내성암호는 NIST 발표로 최신화한 노트다. 바탕이 되는 물리는 [[quantum-mechanics-basics|양자역학 기초]]에 있다.
 
 ## 비트와 큐비트
 
@@ -103,7 +103,7 @@ RSA는 큰 수를 곱하기는 쉽고 소인수분해하기는 어렵다는 사�
 
 ### 가장 큰 과제: 오류
 
-큐비트는 주변과의 상호작용으로 중첩이 쉽게 깨진다(**결어긋남, decoherence**). 그래서 여러 물리 큐비트를 묶어 오류가 정정된 **논리 큐비트** 하나를 만드는 **양자 오류 정정**이 핵심 과제다. 2026년 기준 물리 큐비트 수는 수백~천여 개에 이르렀고, 논리 큐비트는 수십 개 규모가 실험에서 시연되는 단계다. IBM은 2029년 논리 큐비트 200개 규모의 오류 내성 시스템을 목표로 하고 있다.
+큐비트는 주변과의 상호작용으로 중첩이 쉽게 깨진다(**결어긋남, decoherence**). 그래서 여러 물리 큐비트를 묶어 오류가 정정된 **논리 큐비트** 하나를 만드는 **양자 오류 정정**이 핵심 과제다. 물리 큐비트는 2023년에 1,000개를 넘긴 칩(IBM Condor, 1,121개)이 나왔고([Scientific American](https://www.scientificamerican.com/article/ibm-releases-first-ever-1-000-qubit-quantum-chip/)), 논리 큐비트는 같은 해 중성 원자로 48개를 얽어 회로를 돌린 실험이 보고됐다([Bluvstein 외, Nature](https://doi.org/10.1038/s41586-023-06927-3)). IBM은 2029년 논리 큐비트 200개로 1억 번의 연산을 돌리는 오류 내성 시스템(Starling)을 목표로 하고 있다([IBM, 2025](https://newsroom.ibm.com/2025-06-10-IBM-Sets-the-Course-to-Build-Worlds-First-Large-Scale,-Fault-Tolerant-Quantum-Computer-at-New-IBM-Quantum-Data-Center)).
 
 ## 정리
 

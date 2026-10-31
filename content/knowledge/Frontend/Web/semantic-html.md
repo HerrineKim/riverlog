@@ -5,7 +5,7 @@ summary: "태그로 모양이 아니라 의미를 표시하는 시맨틱 HTML. �
 tags: ["html", "semantic", "a11y", "frontend", "seo"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://webactually.com/2020/03/03/%3Csection%3E%EC%9D%84-%EB%B2%84%EB%A6%AC%EA%B3%A0-HTML5-%3Carticle%3E%EC%9D%84-%EC%8D%A8%EC%95%BC-%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0/", "https://developer.mozilla.org/en-US/blog/h1-element-styles/", "https://web.dev/learn/html/semantic-html", "https://web.dev/learn/html/headings-and-sections", "http://html5doctor.com/lets-talk-about-semantics/"]
+sources: ["https://webactually.com/2020/03/03/%3Csection%3E%EC%9D%84-%EB%B2%84%EB%A6%AC%EA%B3%A0-HTML5-%3Carticle%3E%EC%9D%84-%EC%8D%A8%EC%95%BC-%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0/", "https://developer.mozilla.org/en-US/blog/h1-element-styles/", "https://web.dev/learn/html/semantic-html", "https://web.dev/learn/html/headings-and-sections", "http://html5doctor.com/lets-talk-about-semantics/", "https://webaim.org/projects/screenreadersurvey8/"]
 ---
 
 > 「`<article>` 대 `<section>`」 부분은 브루스 로슨(Bruce Lawson)의 「Why You Should Choose HTML5 `<article>` Over `<section>`」(Smashing Magazine, 2020.01)을 웹액츄얼리 코리아가 번역한 글(2020.03)을 바탕으로 재구성했다. 「암묵적 역할과 접근성 트리」와 랜드마크가 되는 조건은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Semantic HTML」·「Headings and sections」 모듈을 바탕으로 보강했다. 「요소 이름은 어디서 왔나」는 HTML5 Doctor의 「[Let’s Talk about Semantics](http://html5doctor.com/lets-talk-about-semantics/)」를 바탕으로 보강했다.
@@ -83,7 +83,7 @@ HTML5 명세에는 **아웃라인 알고리즘**이 있었다. `<section>`을 �
 - 아웃라인 알고리즘은 2022년 HTML 명세에서 삭제됐다. 중첩된 `<h1>`을 작게 그리던 기본 스타일도 2025년 Firefox 140을 시작으로 주요 브라우저가 걷어 내, 지금은 어디에 있든 `<h1>`은 같은 크기로 그려진다.
 - 제목 수준은 `<h1>`~`<h6>`로 직접 표시한다.
 
-스크린 리더 사용자는 제목 구조에 크게 기댄다. WebAIM의 8차 스크린 리더 사용자 조사에서 응답자 86.1%가 제목 구조를 아는 것이 유용하다고 답했다.
+스크린 리더 사용자는 제목 구조에 크게 기댄다. WebAIM의 [8차 스크린 리더 사용자 조사](https://webaim.org/projects/screenreadersurvey8/)(2019)에서 응답자 86.1%가 제목 수준이 매우 또는 다소 유용하다고 답했다.
 
 ```html
 <!-- 나쁨: section 중첩을 믿고 모두 h1 -->

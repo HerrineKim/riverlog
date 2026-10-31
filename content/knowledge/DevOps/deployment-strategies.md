@@ -5,14 +5,14 @@ summary: "새 버전을 운영에 올리는 방식을 다운타임·롤백 속�
 tags: ["devops", "ci-cd", "kubernetes", "infra"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-to-deploy-services", "https://bytebytego.com/guides/kubernetes-deployment-strategies", "https://bytebytego.com/guides/top-5-most-used-deployment-strategies", "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "https://bytebytego.com/guides/possible-experiment-platform-architecture", "https://brunch.co.kr/@springboot/283"]
+sources: ["https://bytebytego.com/guides/how-to-deploy-services", "https://bytebytego.com/guides/kubernetes-deployment-strategies", "https://bytebytego.com/guides/top-5-most-used-deployment-strategies", "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "https://bytebytego.com/guides/possible-experiment-platform-architecture", "https://brunch.co.kr/@springboot/283", "https://sre.google/sre-book/introduction/"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Deployment Strategies](https://bytebytego.com/guides/how-to-deploy-services)」, 「[Kubernetes Deployment Strategies](https://bytebytego.com/guides/kubernetes-deployment-strategies)」, 「[Top 5 Most-Used Deployment Strategies](https://bytebytego.com/guides/top-5-most-used-deployment-strategies)」, 「[Possible Experiment Platform Architecture](https://bytebytego.com/guides/possible-experiment-platform-architecture)」를 바탕으로 재구성한 노트다. 「[개발자를 위한 A/B 테스트 해시 샘플링](https://brunch.co.kr/@springboot/283)」의 내용을 더해 보강했다.
 
 ## 배포 전략이란
 
-**배포 전략은 옛 버전을 새 버전으로 바꾸는 순서와 범위를 정하는 방법이다.** 배포는 장애가 가장 자주 시작되는 순간이라, 전략은 결국 다음 네 가지를 어떻게 맞바꿀지의 선택이다.
+**배포 전략은 옛 버전을 새 버전으로 바꾸는 순서와 범위를 정하는 방법이다.** 배포 같은 변경은 장애가 자주 시작되는 지점이라(Google SRE는 장애의 약 70%가 운영 중인 시스템의 변경에서 온다고 본다, [SRE 책 서론](https://sre.google/sre-book/introduction/)), 전략은 결국 다음 네 가지를 어떻게 맞바꿀지의 선택이다.
 
 | 기준 | 질문 |
 | --- | --- |

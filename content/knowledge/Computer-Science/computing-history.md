@@ -5,7 +5,7 @@ summary: "주판·기계식 계산기에서 범용 기계의 구상, 릴레이�
 tags: ["computer-science", "history", "computer-architecture", "semiconductor", "computability"]
 source: other
 date: "2026-10-23"
-sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo", "https://www.youtube.com/watch?v=tpIctyqH29Q", "https://www.youtube.com/watch?v=O5nskjZ_GoI", "https://www.youtube.com/watch?v=LN0ucKNX0hc", "https://www.youtube.com/watch?v=nwDq4adJwzM", "https://www.youtube.com/watch?v=7TycxwFmdB0", "https://www.youtube.com/watch?v=6-tKOHICqrI", "https://www.youtube.com/watch?v=m8i38Yq1wX4", "https://www.youtube.com/watch?v=M5BZou6C01w"]
+sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo", "https://www.youtube.com/watch?v=tpIctyqH29Q", "https://www.youtube.com/watch?v=O5nskjZ_GoI", "https://www.youtube.com/watch?v=LN0ucKNX0hc", "https://www.youtube.com/watch?v=nwDq4adJwzM", "https://www.youtube.com/watch?v=7TycxwFmdB0", "https://www.youtube.com/watch?v=6-tKOHICqrI", "https://www.youtube.com/watch?v=m8i38Yq1wX4", "https://www.youtube.com/watch?v=M5BZou6C01w", "https://en.wikipedia.org/wiki/Apple_A17_Pro", "https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing", "https://www.sec.gov/Archives/edgar/data/0000937966/000162828026011378/asml-20251231.htm", "https://www.tsmc.com/english/dedicatedFoundry/technology/logic/l_2nm"]
 ---
 
 > CrashCourse의 「[Crash Course Computer Science](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo)」(2017~2018) 강의 중 컴퓨팅의 역사를 다룬 편을 바탕으로 재구성한 노트다. 반도체 공정의 현황은 2026년 기준으로 고쳐 썼다.
@@ -96,7 +96,7 @@ sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZB
 | 1990 무렵 | 100만 개를 넘음 |
 | 2000 무렵 | 수천만 개 |
 | 2010 무렵 | 10억 개 안팎 |
-| 2020년대 중반 | 스마트폰 칩도 수백억 개. 대형 AI 가속기는 다이 여러 개를 한 패키지에 묶어 수천억 개 |
+| 2020년대 중반 | 스마트폰 칩도 200억 개 안팎(Apple A17 Pro 190억 개). 대형 AI 가속기는 다이 두 개를 한 패키지에 묶어 2,000억 개를 넘음(NVIDIA Blackwell 2,080억 개) |
 
 트랜지스터가 작아지면 개수만 느는 것이 아니다. 옮길 전하가 줄어 **더 빨리 전환되고 전력을 덜 쓰며**, 회로가 촘촘해져 신호 지연이 줄고 클럭을 올릴 수 있었다. IC 값도 1962년 평균 50달러에서 1968년 2달러 수준으로 떨어졌고, 같은 효과가 CPU뿐 아니라 RAM·그래픽 카드·SSD·카메라 센서에 두루 미쳤다. 수십억 개의 트랜지스터는 사람이 배치할 수 없어, 1970년대부터 높은 수준의 설계(예: 캐시 한 덩어리)를 회로로 바꿔 주는 **논리 합성(logic synthesis)** 같은 칩 설계 자동화 소프트웨어가 설계를 맡는다.
 
@@ -104,7 +104,7 @@ sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZB
 
 | 한계 | 원인 | 업계의 대응 |
 | --- | --- | --- |
-| 빛의 파장 | 포토마스크 패턴을 투영하는 빛의 파장보다 훨씬 작은 선은 그리기 어렵다 | 파장을 줄여 왔다. 첨단 공정은 파장 13.5nm의 **극자외선(EUV)** 노광을 쓰고, 렌즈 개구수를 키운 High-NA EUV 도입이 다음 단계로 진행 중이다 |
+| 빛의 파장 | 포토마스크 패턴을 투영하는 빛의 파장보다 훨씬 작은 선은 그리기 어렵다 | 파장을 줄여 왔다. 첨단 공정은 파장 13.5nm의 **극자외선(EUV)** 노광을 쓰고, 렌즈 개구수를 0.33에서 0.55로 키운 High-NA EUV는 ASML이 2025년 양산용 장비(EXE:5200B)를 처음 출하해 도입 초기 단계다 |
 | 양자 터널링(quantum tunneling) | 전극 사이가 원자 수십 개 거리로 좁아지면 전자가 장벽을 뚫고 새어 나간다. 전류가 새면 스위치로 제 역할을 못 한다 | 게이트가 채널을 감싸는 면을 늘렸다. 평면 → 핀펫(FinFET) → 채널 사방을 감싸는 **GAA(gate-all-around) 나노시트**. TSMC의 2nm(N2)가 2025년 4분기 GAA로 양산에 들어갔다 |
 | 전력과 열 | 작아질수록 전력 밀도가 일정하게 유지된다는 데너드 스케일링이 2000년대 중반 깨졌다 | 클럭 대신 코어 수를 늘렸다([[computer-system-basics#클럭과 멀티코어\|클럭과 멀티코어]]) |
 

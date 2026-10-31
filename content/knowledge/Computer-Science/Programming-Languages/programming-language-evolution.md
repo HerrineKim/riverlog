@@ -5,7 +5,7 @@ summary: "기계어·어셈블리에서 고급 언어까지 세대 구분, 1950�
 tags: ["computer-science", "programming-paradigm", "cpp", "performance", "history"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/a-brief-history-og-programming-languages", "https://bytebytego.com/guides/top-8-c++-use-cases", "https://bytebytego.com/guides/what-are-the-greenest-programming-languages", "https://greenlab.di.uminho.pt/wp-content/uploads/2017/10/sleFinal.pdf", "https://www.youtube.com/watch?v=RU1u-js7db8"]
+sources: ["https://bytebytego.com/guides/a-brief-history-og-programming-languages", "https://bytebytego.com/guides/top-8-c++-use-cases", "https://bytebytego.com/guides/what-are-the-greenest-programming-languages", "https://greenlab.di.uminho.pt/wp-content/uploads/2017/10/sleFinal.pdf", "https://www.youtube.com/watch?v=RU1u-js7db8", "https://en.wikipedia.org/wiki/Exception_handling_(programming)"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[A Brief History of Programming Languages](https://bytebytego.com/guides/a-brief-history-og-programming-languages)」, 「[Top 8 C++ Use Cases](https://bytebytego.com/guides/top-8-c++-use-cases)」, 「[What Are the Greenest Programming Languages?](https://bytebytego.com/guides/what-are-the-greenest-programming-languages)」를 바탕으로 재구성한 노트다. 에너지 효율 연구의 원 자료는 Pereira 외 「[Energy Efficiency across Programming Languages](https://greenlab.di.uminho.pt/wp-content/uploads/2017/10/sleFinal.pdf)」(SLE 2017)다.
@@ -36,7 +36,7 @@ sources: ["https://bytebytego.com/guides/a-brief-history-og-programming-language
 
 | 시기 | 사건 | 남긴 것 |
 | --- | --- | --- |
-| 1950년대 | Fortran, LISP, COBOL | 재귀, 가비지 컬렉션, 예외 같은 개념이 이때 나와 지금 언어에도 남아 있다. COBOL은 기종을 넘는 공통 언어를 목표로 했다 |
+| 1950년대 | Fortran, LISP, COBOL | 재귀, 가비지 컬렉션 같은 개념이 이때 나와 지금 언어에도 남아 있다. 예외 처리는 1960년대 LISP 1.5(1961)의 `ERRORSET`, PL/I(1964 무렵)의 ON 조건으로 이어졌다. COBOL은 기종을 넘는 공통 언어를 목표로 했다 |
 | 1972년 | **C**와 **Smalltalk** | C는 유닉스를 쓰려고 만들어져 시스템 프로그래밍의 기반이 됐다([[c-history-and-standards\|C의 역사와 표준]]). Smalltalk는 객체 지향과 이후 스크립트·클라이언트 언어에 영향을 줬다 |
 | 1980년대 | C++, Objective-C | 그래픽 사용자 인터페이스를 짜기 좋아 객체 지향이 퍼졌다 |
 | 1990년대 | Python(1991), Java·JavaScript·PHP·Ruby(1995) | PC가 싸지며 안전성과 단순함을 강조했다. 가상 머신과 웹이 등장했다 |
@@ -82,12 +82,12 @@ C++의 강점은 **하드웨어와 메모리를 세밀하게 제어하면서도 
 | 속도와 에너지 | 대체로 빠른 언어가 에너지도 적게 쓰지만, **항상 그렇지는 않다** |
 | 메모리 | 메모리 사용량이 에너지에 영향을 주지만, 실행 시간만큼 크지 않다 |
 
-벤치마크는 순수 계산 위주라 I/O가 대부분인 웹 서비스에 그대로 옮길 수 없다. 실제 시스템의 에너지는 언어보다 아키텍처, 알고리즘, 서버 가동률에 더 크게 좌우된다.
+벤치마크는 순수 계산 위주라 I/O가 대부분인 웹 서비스에 그대로 옮길 수 없다.
 
 ## 정리
 
 - 언어는 기계어 → 어셈블리 → 고급 언어로 추상화 수준을 높여 왔다.
-- 재귀·GC·예외 같은 핵심 개념은 1950년대에 이미 나왔고, 이후 언어는 그것을 다듬고 조합했다.
+- 재귀·GC는 1950년대에, 예외 처리는 1960년대 초에 나왔고, 이후 언어는 그것을 다듬고 조합했다.
 - 최근 언어는 대부분 기존 언어의 약점(메모리 안전성, 장황함, 타입 부재)을 고치는 후계자다.
 - C++는 성능과 자원 통제가 핵심인 분야에 남아 있다. 에너지 효율도 대체로 네이티브 언어가 앞선다.
 

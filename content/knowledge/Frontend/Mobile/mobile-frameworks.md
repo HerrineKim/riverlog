@@ -44,7 +44,7 @@ sources: ["https://d2.naver.com/helloworld/3384599", "https://github.com/jessemo
 
 ## 크로스 플랫폼 앱
 
-하이브리드의 단점을 보완하려는 방식이다. 하이브리드는 기기 기능을 라이브러리로 감싸 웹에서 호출하느라 느렸다. 크로스 플랫폼은 **공통 언어 하나로 작성하면 네이티브 UI·네이티브 앱으로 만들어** 주므로 속도와 성능이 훨씬 좋다.
+하이브리드의 단점을 보완하려는 방식이다. 하이브리드는 기기 기능을 라이브러리로 감싸 웹에서 호출하느라 느렸다. 크로스 플랫폼은 **공통 언어 하나로 작성하면 네이티브 UI·네이티브 앱으로 만들어** 주므로 웹뷰를 거치는 하이브리드보다 성능에 유리하다.
 
 - 대표: **React Native**(JavaScript/React), **Flutter**(Dart), **Kotlin Multiplatform**(Kotlin, Compose Multiplatform로 UI까지 공유), **.NET MAUI**(C#)
 - (레거시) Xamarin(C#)은 2024년 5월 1일 지원이 종료되었고, Microsoft는 후속인 .NET MAUI로 옮길 것을 권한다.
@@ -86,7 +86,7 @@ sources: ["https://d2.naver.com/helloworld/3384599", "https://github.com/jessemo
 | 네이티브 호환성 | 기존 Kotlin·Swift 코드와 함께 쓸 수 있는가, 버전마다 API가 크게 바뀌는가 |
 | 현지화·테스트 | 다국어 처리, 단위·위젯(컴포넌트)·통합 테스트를 나눠 할 수 있는가 |
 
-Flutter는 브리지 없이 자체 엔진으로 화면을 직접 그려 네이티브와 구분하기 어려운 성능을 내고, **선언형 UI**로 복잡한 화면을 빨리 만든다는 점에서 좋은 평가를 받는 경우가 많다. 선언형 UI는 SwiftUI·Jetpack Compose도 택한 방향이라 네이티브 쪽도 같은 방식으로 수렴하고 있다. 구조는 [[flutter-architecture|Flutter의 구조와 위젯 트리]]에 있다.
+Flutter는 브리지 없이 자체 엔진으로 화면을 직접 그려 네이티브와 구분하기 어려운 성능을 내고, **선언형 UI**로 복잡한 화면을 빨리 만든다. 선언형 UI는 SwiftUI·Jetpack Compose도 택한 방향이라 네이티브 쪽도 같은 방식으로 수렴하고 있다. 구조는 [[flutter-architecture|Flutter의 구조와 위젯 트리]]에 있다.
 
 ## 핵심 정리
 

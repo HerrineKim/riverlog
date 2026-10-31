@@ -5,7 +5,7 @@ summary: "UI 엔지니어링의 실력은 라이브러리가 아니라 문제를
 tags: ["frontend", "architecture", "react", "performance", "ux"]
 source: other
 date: "2026-10-17"
-sources: ["https://overreacted.io/the-elements-of-ui-engineering/"]
+sources: ["https://overreacted.io/the-elements-of-ui-engineering/", "https://www.who.int/news-room/fact-sheets/detail/disability-and-health"]
 ---
 
 > Dan Abramov의 「[The Elements of UI Engineering](https://overreacted.io/the-elements-of-ui-engineering/)」(2018.12)을 바탕으로 재구성한 노트다. 문제 정의는 원문을 따르고, 각 문제를 다루는 도구는 지금 기준으로 덧붙였다.
@@ -48,7 +48,7 @@ sources: ["https://overreacted.io/the-elements-of-ui-engineering/"]
 | 동작 | 허용 한계 |
 | --- | --- |
 | 스크롤·제스처 같은 연속 동작 | 프레임 하나(60Hz에서 약 16ms)만 빠져도 버벅인다 |
-| 클릭 같은 단발 동작 | 약 100ms 안이면 즉시로 느낀다. 넘으면 진행 표시가 필요하다 |
+| 클릭 같은 단발 동작 | 100ms 미만의 지연은 모두 똑같이 빠르게 느낀다는 연구가 있다. 넘으면 진행 표시가 필요하다 |
 
 **뇌는 벤치마크가 아니다.** 레이아웃을 들썩이게 하거나 로딩 단계를 여러 번 거치는 표시는 실제보다 오래 걸린 것처럼 느끼게 한다. 애니메이션 프레임을 떨어뜨리며 20ms에 처리하는 것보다, 프레임을 지키며 30ms에 처리하는 편이 더 빠르게 느껴질 수 있다.
 
@@ -104,7 +104,7 @@ CSS `z-index`처럼 하나의 「중요도」 축에 줄 세우는 방식은 대
 
 ## 8. 접근성
 
-접근성이 떨어지는 사이트는 소수의 문제가 아니다. 세계 인구 6명 중 1명이 의미 있는 장애를 갖고 있고, 얇은 글꼴과 낮은 대비는 나이가 들면 누구에게나 장벽이 된다. 다행히 쉽게 딸 수 있는 열매가 많다. 교육과 도구에서 시작하되, 결국 제품 개발자가 옳은 일을 하기 쉽게 만들어야 한다. 기본 컴포넌트가 처음부터 접근 가능하면 접근성은 기본값이 된다. 자세한 내용은 [Accessibility](/knowledge/dictionary/frontend/accessibility) 주제에 있다.
+접근성이 떨어지는 사이트는 소수의 문제가 아니다. 세계 인구의 16%, 6명 중 1명꼴인 약 13억 명이 의미 있는 장애를 겪고 있고([WHO, 2023](https://www.who.int/news-room/fact-sheets/detail/disability-and-health)), 얇은 글꼴과 낮은 대비는 나이가 들면 누구에게나 장벽이 된다. 다행히 쉽게 딸 수 있는 열매가 많다. 교육과 도구에서 시작하되, 결국 제품 개발자가 옳은 일을 하기 쉽게 만들어야 한다. 기본 컴포넌트가 처음부터 접근 가능하면 접근성은 기본값이 된다. 자세한 내용은 [Accessibility](/knowledge/dictionary/frontend/accessibility) 주제에 있다.
 
 ## 9. 국제화
 

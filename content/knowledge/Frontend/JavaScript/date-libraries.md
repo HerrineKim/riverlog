@@ -10,7 +10,7 @@ sources: ["https://riverkim.kr/260", "https://developer.mozilla.org/en-US/docs/W
 
 > 개인 노트를 바탕으로, 기본 `Date` 사용법은 javascript.info(모던 JavaScript 튜토리얼)의 「Date 객체와 날짜」 글로 보강한 노트다.
 
-JavaScript의 기본 `Date`는 API가 불편하고(월이 0부터 시작, 포맷 함수 부재), 값을 직접 바꾸는 가변(mutable) 객체라 버그가 나기 쉽다. 그래서 날짜 라이브러리를 쓰는데, 오랫동안 표준처럼 쓰이던 Moment.js는 2020년부터 새 기능 개발을 멈춘 유지보수 모드이며 공식 문서에서도 다른 라이브러리를 권한다. 그 대안 중 가장 많이 쓰는 두 가지가 **date-fns**와 **Day.js**다.
+JavaScript의 기본 `Date`는 API가 불편하고(월이 0부터 시작, 포맷 함수 부재), 값을 직접 바꾸는 가변(mutable) 객체라 버그가 나기 쉽다. 그래서 날짜 라이브러리를 쓰는데, 오랫동안 표준처럼 쓰이던 Moment.js는 2020년부터 새 기능 개발을 멈춘 유지보수 모드이며 공식 문서에서도 다른 라이브러리를 권한다. 그 대안으로 널리 쓰이는 두 가지가 **date-fns**와 **Day.js**다.
 
 ## 기본 Date의 함정: 0부터 시작하는 월
 

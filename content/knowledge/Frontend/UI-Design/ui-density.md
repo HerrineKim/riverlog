@@ -5,7 +5,7 @@ summary: "UI 밀도는 화면에 많이 담는 것이 아니라, 인터페이스
 tags: ["ui", "ux", "design", "performance", "data-visualization"]
 source: other
 date: "2026-10-20"
-sources: ["https://mattstromawn.com/writing/ui-density/", "https://www.nngroup.com/articles/response-times-3-important-limits/"]
+sources: ["https://mattstromawn.com/writing/ui-density/", "https://www.nngroup.com/articles/response-times-3-important-limits/", "https://chrisharrison.net/projects/progressbars2/ProgressBarsHarrison.pdf"]
 ---
 
 > Matt Ström-Awn의 「[UI Density](https://mattstromawn.com/writing/ui-density/)」(2024.05)를 바탕으로 재구성한 노트다.
@@ -74,7 +74,7 @@ UI로 옮기면 반쪽만 맞는다. "각 부분이 보여 주는 정보를 최�
 | 100ms 미만 | 동시에 일어난 것처럼 느낀다 | 전환 애니메이션을 넣으면 오히려 느리게 느껴질 수 있다 |
 | 100ms ~ 1초 | 두 동작의 연결이 끊긴다. "눌렸나? 고장 났나?" | 애니메이션과 전환으로 틈을 잇는다 |
 | 1 ~ 10초 | 애니메이션만으로는 못 잇는다. 이탈이 가장 많은 구간 | 시스템이 정상 동작 중임을 알리는 **불확정 로딩 표시**(스피너) |
-| 10초 ~ 1분 | 10초 넘게 같은 스피너를 보면 멈췄다고 여긴다 | 남은 양을 보여 주는 **확정 진행 표시**(진행 막대). 뒤로 흐르는 줄무늬 진행 막대는 대기를 약 11% 짧게 느끼게 했다는 연구가 있다 |
+| 10초 ~ 1분 | 10초 넘게 같은 스피너를 보면 멈췄다고 여긴다 | 남은 양을 보여 주는 **확정 진행 표시**(진행 막대). Harrison 외의 [「Faster Progress Bars」](https://chrisharrison.net/projects/progressbars2/ProgressBarsHarrison.pdf)(CHI 2010) 실험에서는 줄무늬가 뒤로 흐르는 진행 막대가 체감 대기를 11% 줄였다 |
 | 1분 이상 | 아무것도 못 하게 막으면 짜증이 쌓이고, 긴 과정은 오류도 잦다 | 사용자가 떠나 다른 일을 하게 두고, 끝나면 알린다 |
 
 100ms·1초·10초 경계는 닐슨 노먼 그룹이 정리한 [응답 시간의 세 가지 한계](https://www.nngroup.com/articles/response-times-3-important-limits/)와 같다. 연속 동작의 프레임 예산과 측정 지표(INP)는 [[ui-engineering-problems|UI 엔지니어링의 열두 가지 문제]]에 있다.

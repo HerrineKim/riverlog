@@ -5,7 +5,7 @@ summary: "시각·청각·운동·인지·발작과 전정·말하기 장애 사
 tags: ["accessibility", "frontend", "ux", "html"]
 source: other
 date: "2026-10-17"
-sources: ["https://webaim.org/intro/", "https://webaim.org/articles/visual/", "https://webaim.org/articles/visual/blind", "https://webaim.org/articles/visual/lowvision", "https://webaim.org/articles/visual/colorblind", "https://webaim.org/articles/auditory/", "https://webaim.org/articles/auditory/auditorydisabilities", "https://webaim.org/articles/auditory/culture", "https://webaim.org/articles/motor/", "https://webaim.org/articles/motor/motordisabilities", "https://webaim.org/articles/motor/assistive", "https://webaim.org/articles/cognitive/", "https://webaim.org/articles/cognitive/design", "https://webaim.org/articles/cognitive/activity", "https://webaim.org/articles/cognitive/cognitive_too_little/", "https://webaim.org/articles/cognitive/conceptualize/", "https://webaim.org/articles/framework/", "https://webaim.org/articles/seizure/", "https://webaim.org/articles/design/", "https://webaim.org/articles/userperspective/", "https://webaim.org/articles/gonewild/", "https://web.dev/learn/accessibility/why", "https://web.dev/learn/accessibility/test-assistive-technology", "https://webaim.org/presentations/2024/january/", "https://webaim.org/projects/screenreadersurvey11/"]
+sources: ["https://webaim.org/intro/", "https://webaim.org/articles/visual/", "https://webaim.org/articles/visual/blind", "https://webaim.org/articles/visual/lowvision", "https://webaim.org/articles/visual/colorblind", "https://webaim.org/articles/auditory/", "https://webaim.org/articles/auditory/auditorydisabilities", "https://webaim.org/articles/auditory/culture", "https://webaim.org/articles/motor/", "https://webaim.org/articles/motor/motordisabilities", "https://webaim.org/articles/motor/assistive", "https://webaim.org/articles/cognitive/", "https://webaim.org/articles/cognitive/design", "https://webaim.org/articles/cognitive/activity", "https://webaim.org/articles/cognitive/cognitive_too_little/", "https://webaim.org/articles/cognitive/conceptualize/", "https://webaim.org/articles/framework/", "https://webaim.org/articles/seizure/", "https://webaim.org/articles/design/", "https://webaim.org/articles/userperspective/", "https://webaim.org/articles/gonewild/", "https://web.dev/learn/accessibility/why", "https://web.dev/learn/accessibility/test-assistive-technology", "https://webaim.org/presentations/2024/january/", "https://webaim.org/projects/screenreadersurvey11/", "https://www.epilepsy.org.uk/info/seizure-triggers/photosensitive-epilepsy"]
 ---
 
 > WebAIM의 「[Introduction to Web Accessibility](https://webaim.org/intro/)」, 「[Visual Disabilities](https://webaim.org/articles/visual/)」, 「[Auditory Disabilities](https://webaim.org/articles/auditory/)」, 「[Motor Disabilities](https://webaim.org/articles/motor/)」, 「[Cognitive Disabilities](https://webaim.org/articles/cognitive/)」, 「[Seizure and Vestibular Disorders](https://webaim.org/articles/seizure/)」, 「[Considering the User Perspective](https://webaim.org/articles/userperspective/)」, 「[Web Accessibility Gone Wild](https://webaim.org/articles/gonewild/)」 등을 바탕으로 재구성하고, 말하기 장애·일시적 장애와 보조 기술 분류는 web.dev 「[Learn Accessibility](https://web.dev/learn/accessibility)」의 필요성·보조 기술 테스트 편으로 보강한 노트다.
@@ -126,7 +126,7 @@ sources: ["https://webaim.org/intro/", "https://webaim.org/articles/visual/", "h
 - 원인에 따라 감각신경성(내이·신경, 대부분을 차지), 전음성(외이·중이), 청각 처리 장애(소리는 들리지만 뇌가 말로 해석하지 못함), 혼합성으로 나눈다.
 - 고음역·저음역만 안 들리는 경우, 특정 소리가 고통스러울 만큼 크게 들리는 청각과민(hyperacusis), 없는 소리가 들리는 이명(tinnitus)도 있다. 볼륨만의 문제가 아니다.
 
-**농문화(Deaf culture)**도 알아 둔다. 평생 농인으로 산 사람 중에는 스스로를 장애인이 아니라 **수어를 쓰는 언어적·문화적 소수자**로 여기는 이들이 많다. 이들에게 문자 언어는 제2언어라서 복잡한 문장이 어려울 수 있다. 입 모양 읽기는 오랜 훈련 뒤에도 말의 절반 안팎만 정확히 알아본다고 알려져 있다.
+**농문화(Deaf culture)**도 알아 둔다. 평생 농인으로 산 사람 중에는 스스로를 장애인이 아니라 **수어를 쓰는 언어적·문화적 소수자**로 여기는 이들이 많다. 이들에게 문자 언어는 제2언어라서 복잡한 문장이 어려울 수 있다. WebAIM의 「[Deaf Culture](https://webaim.org/articles/auditory/culture)」에 따르면 입 모양 읽기는 오랜 훈련 뒤에도 말의 40~60% 정도만 확실히 알아보고 나머지는 짐작으로 채운다.
 
 | 할 일 | 이유 |
 | --- | --- |
@@ -223,8 +223,8 @@ WCAG 2.2의 중복 입력 방지(3.3.7)와 인지 기능 테스트 없는 인증
 ## 발작과 전정 장애
 
 - **광과민성 뇌전증**: 번쩍임·깜빡임·스트로브 효과가 발작을 일으킬 수 있다. 대부분의 애니메이션·영상은 안전하지만, 크고 밝은 대비의 번쩍임이 **1초에 세 번을 넘으면**(특히 빨강이 섞이면) 위험하다. 대비가 강한 드롭다운이 반복해서 펼쳐지며 화면이 깜빡이는 것도 해당한다.
-- **전정 장애**: 균형과 눈 움직임을 맡는 내이·뇌 기관의 문제로, 움직임이 어지럼과 구역질을 일으킨다. 미국 40세 이상 성인의 상당수(최대 35%로 추정)가 겪어 봤을 만큼 흔하다. 촘촘한 고대비 평행선, 길게 이어지는 스크롤 애니메이션, 패럴랙스, 고정된 글 아래로 움직이는 배경이 문제다.
-- 세계보건기구는 뇌전증 환자를 약 5천만 명으로 추정하고, 그중 약 3%가 빛에 민감한 광과민성이다.
+- **전정 장애**: 균형과 눈 움직임을 맡는 내이·뇌 기관의 문제로, 움직임이 어지럼과 구역질을 일으킨다. WebAIM의 「[Seizure and Vestibular Disorders](https://webaim.org/articles/seizure/)」에 따르면 미국 40세 이상 성인의 최대 35%가 어떤 형태로든 전정 기능 이상을 겪어 봤다. 촘촘한 고대비 평행선, 길게 이어지는 스크롤 애니메이션, 패럴랙스, 고정된 글 아래로 움직이는 배경이 문제다.
+- 세계보건기구는 뇌전증 환자를 약 5천만 명으로 추정하고, 그중 약 3~5%가 빛에 민감한 광과민성이다([Epilepsy Action](https://www.epilepsy.org.uk/info/seizure-triggers/photosensitive-epilepsy)).
 - OS에는 움직임을 줄이는 설정이 있다(macOS·iOS 「동작 줄이기」, Android 「애니메이션 삭제」, Windows 「애니메이션 효과」 끄기). 하지만 켜고 끄기만 있어서, 쓸데없는 움직임만 끄고 잘 만든 움직임은 보고 싶은 사람에게는 중간 선택지가 없다.
 - 대응은 번쩍임을 만들지 않고, `prefers-reduced-motion` 설정을 따르고, 움직임을 멈출 수 있게 하는 것이다. 임계값과 5초 규칙, CSS 예시는 [[color-motion-accessibility|색과 움직임의 접근성]]과 [[accessible-widgets|접근 가능한 위젯: 펼침·탭·캐러셀]]에 있다.
 

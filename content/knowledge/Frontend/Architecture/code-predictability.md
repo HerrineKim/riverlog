@@ -73,7 +73,7 @@ if (!result.ok) {
 }
 ```
 
-typescript-eslint의 `strict-boolean-expressions` 규칙을 켜면 객체를 조건식에 넣는 실수를 컴파일 단계에서 잡을 수 있다.
+typescript-eslint의 `strict-boolean-expressions` 규칙을 켜면 객체를 조건식에 넣는 실수를 린트 단계에서 잡을 수 있다.
 
 ## 3. 숨은 로직 드러내기
 

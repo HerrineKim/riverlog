@@ -14,7 +14,7 @@ sources: ["https://web.dev/learn/css/anchor-positioning", "https://web.dev/learn
 
 | 기능 | 해결하는 문제 | 지원 |
 | --- | --- | --- |
-| `popover` 속성 | 열고 닫기, 다른 팝오버와의 관계, Esc·바깥 클릭으로 닫기, **최상위 레이어**(z-index 경쟁 없음) | auto·manual은 Baseline 2024. `hint`는 Chrome 151·Firefox 153부터, Safari는 미지원 |
+| `popover` 속성 | 열고 닫기, 다른 팝오버와의 관계, Esc·바깥 클릭으로 닫기, **최상위 레이어**(z-index 경쟁 없음) | auto·manual은 Baseline 2024. `hint`는 Chrome 151·Firefox 153부터(Chrome 133~150·Firefox 149~152는 이전 명세를 부분 구현), Safari는 기술 미리 보기에만 있다 |
 | 앵커 위치 지정 | 다른 요소 옆에 붙이기, 화면 밖으로 나가면 위치 바꾸기 | 2026년 1월 Firefox 147로 모든 주요 브라우저(Baseline 2026) |
 
 과거에는 두 일을 Popper·Floating UI 같은 JS 라이브러리가 했다. 지금은 HTML 속성과 CSS만으로 된다.

@@ -53,7 +53,7 @@ timeline
 | webpack | 처음 크게 퍼진 번들러. 로더·플러그인으로 트랜스파일, 코드 스플리팅, HMR, CSS·에셋까지 다루는 **통합 개발 도구**로 커졌다. 설정이 복잡하다 |
 | Parcel | webpack 설정이 불편하다는 반응에서 나온 **설정 없는(zero-config)** 번들러 |
 | Rollup | 쓰지 않는 코드를 걷어 내는 **트리 셰이킹(tree-shaking)** 을 앞세웠다. Svelte를 만든 Rich Harris가 먼저 만든 도구다 |
-| esbuild | JavaScript가 아니라 **Go로 작성**한 네이티브 빌드 도구. 기존 번들러보다 100배 가까이 빠르다고 알려졌다. 다만 순수 빌드 도구라 개발 서버·HMR 같은 통합 기능은 없었다 |
+| esbuild | JavaScript가 아니라 **Go로 작성**한 네이티브 빌드 도구. [공식 벤치마크](https://esbuild.github.io/)(three.js 10벌 번들)에서 webpack 5보다 약 100배 빨랐다. 다만 순수 빌드 도구라 개발 서버·HMR 같은 통합 기능은 없었다 |
 | Snowpack | esbuild의 속도를 실무에 쓰려는 시도 (아래) |
 | Vite | Snowpack의 개념과 기존 번들러 기능을 한데 모은 프론트엔드 빌드 도구 |
 | Rolldown | Rollup 호환 API를 가진 **Rust** 번들러. Vite 8부터 esbuild와 Rollup을 함께 대체한다 |

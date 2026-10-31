@@ -60,6 +60,5 @@ sources: ["https://taegon.kim/archives/7107", "https://www.44bits.io/ko/post/8-s
 - 블로그는 **설명하며 배우는 도구**이자 실력을 증명하는 기록이다.
 - 메모가 아니라 완성된 글로, 형식을 정해서 쓴다.
 - 도구는 꾸미기보다 **쓰기·보존이 쉬운 것**을 고른다.
-- 작은 주제라도 꾸준히 쌓는 것이 가장 큰 경쟁력이다.
 
 관련 노트: [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[sustainable-learning-loop|지속 가능한 학습 루프]], [[persuasive-writing|글쓰기 원칙]], [[newsletter-lessons|뉴스레터 발행의 35가지 교훈]]

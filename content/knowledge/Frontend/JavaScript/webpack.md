@@ -16,7 +16,7 @@ webpack은 **정적 모듈 번들러**다. 진입점(entry)에서 시작해 `imp
 
 - 번들러가 왜 생겼는지, 계보와 Vite로의 흐름은 [[bundlers-and-vite|번들러의 역사와 Vite]]에 있다. 여기서는 webpack 자체의 동작을 다룬다.
 - 설정 파일 없이도 돈다(4.0부터). 기본 entry는 `./src/index.js`, 기본 output은 `./dist/main.js`다.
-- 지금 판은 **webpack 5**다. 최신 5.x는 CSS와 HTML을 내장 지원해 로더 없이도 이해한다.
+- 지금 판은 **webpack 5**다. 최신 5.x는 CSS와 HTML 모듈을 **실험 기능**(`experiments.css`·`experiments.html`)으로 내장 지원하고, 5.109.0부터 기본값이 `'auto'`라 따로 로더를 두지 않으면 로더 없이도 처리한다([experiments](https://webpack.js.org/configuration/experiments/)).
 - 같은 설정·플러그인 API를 Rust로 다시 구현한 **Rspack**이 있어, 큰 webpack 프로젝트는 설정을 거의 그대로 옮겨 빌드 속도를 얻는다.
 
 ## 빌드 과정

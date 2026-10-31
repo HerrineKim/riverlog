@@ -126,7 +126,7 @@ JSON.stringify({ id: JSON.rawJSON(data.id.toString()) }) // '{"id":1234567890123
 | 파서가 보는 것 | 키·값·괄호마다 토큰. 중첩될수록 늘어난다 | 호출식 하나와 문자열 리터럴 하나 |
 | 문맥 판단 | `{`가 객체인지, 구조 분해인지, 블록인지 뒤를 봐야 안다 | JSON 문법은 단순해 「객체 시작이거나 오류」뿐이다 |
 
-차이는 수백 KB 이상의 **큰 데이터에서만** 의미가 있다. 손으로 바꾸지 않는다. webpack과 Vite는 `.json` 모듈을 이 형태로 바꿔 내보낼 수 있으므로(Vite는 `json.stringify` 옵션) 큰 데이터는 `.json` 파일로 분리해 `import`한다. `Date`·`Map`·`undefined`처럼 JSON이 표현하지 못하는 값이 있으면 적용할 수 없다. 서버가 그린 HTML에 초기 상태를 실을 때도 같은 이유로 `JSON.parse`와 문자열을 쓴다([[spa-csr-ssr|SPA와 CSR·SSR]]).
+차이는 약 10KB 이상의 **큰 데이터에서만** 의미가 있다(V8 블로그 「[The cost of parsing JSON](https://v8.dev/blog/cost-of-javascript-2019#json)」의 경험칙, 바꾸기 전에 측정한다). 손으로 바꾸지 않는다. webpack과 Vite는 `.json` 모듈을 이 형태로 바꿔 내보낼 수 있으므로(Vite는 `json.stringify` 옵션) 큰 데이터는 `.json` 파일로 분리해 `import`한다. `Date`·`Map`·`undefined`처럼 JSON이 표현하지 못하는 값이 있으면 적용할 수 없다. 서버가 그린 HTML에 초기 상태를 실을 때도 같은 이유로 `JSON.parse`와 문자열을 쓴다([[spa-csr-ssr|SPA와 CSR·SSR]]).
 
 ## JSON으로 복사하지 않는다
 
