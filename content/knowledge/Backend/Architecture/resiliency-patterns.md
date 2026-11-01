@@ -4,11 +4,12 @@ concept: "Resiliency Patterns"
 summary: "작은 오류가 연쇄 장애로 번지지 않게 하는 여덟 가지 패턴(타임아웃, 재시도, 서킷 브레이커, 속도 제한, 부하 차단, 벌크헤드, 배압, 크래시 허용), 속도 제한 알고리즘의 개요, 벌크헤드 격리 방식과 배압 전략, 재시도를 안전하게 만드는 백오프·지터 전략, 4xx·5xx별 재시도 규칙, 재시도의 전제 조건인 멱등성을 적용해야 하는 곳을 정리했다."
 tags: ["backend", "architecture", "performance", "api", "async"]
 source: other
-date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/resiliency-patterns", "https://bytebytego.com/guides/how-do-we-retry-on-failures", "https://bytebytego.com/guides/how-to-handle-web-request-error", "https://bytebytego.com/guides/top-6-cases-to-apply-idempotency", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "http://www.slideshare.net/jboner/scalability-availability-stability-patterns", "http://www.erlang-factory.com/upload/presentations/31/EugeneLetuchy-ErlangatFacebook.pdf"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/resiliency-patterns", "https://bytebytego.com/guides/how-do-we-retry-on-failures", "https://bytebytego.com/guides/how-to-handle-web-request-error", "https://bytebytego.com/guides/top-6-cases-to-apply-idempotency", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "http://www.slideshare.net/jboner/scalability-availability-stability-patterns", "http://www.erlang-factory.com/upload/presentations/31/EugeneLetuchy-ErlangatFacebook.pdf", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Resiliency Patterns](https://bytebytego.com/guides/resiliency-patterns)」, 「[Retry Strategies for System Failures](https://bytebytego.com/guides/how-do-we-retry-on-failures)」, 「[How to Handle Web Request Errors](https://bytebytego.com/guides/how-to-handle-web-request-error)」, 「[Top 6 Cases to Apply Idempotency](https://bytebytego.com/guides/top-6-cases-to-apply-idempotency)」를 바탕으로 재구성한 노트다. 속도 제한 알고리즘, 벌크헤드 격리 방식, 배압 전략은 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다. 빠른 실패·안정 상태 패턴은 Jonas Bonér의 「[Scalability, Availability & Stability Patterns](http://www.slideshare.net/jboner/scalability-availability-stability-patterns)」로, 크래시 허용의 실제 효과는 「[Erlang at Facebook](http://www.erlang-factory.com/upload/presentations/31/EugeneLetuchy-ErlangatFacebook.pdf)」(2009)로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 멱등성의 정의(상태와 응답의 구분), 멱등 키 구현의 세부, 멱등 소비자 기법, 사실상 한 번 처리를 보강했다.
 
 ## 복원력이란
 
@@ -110,6 +111,23 @@ Resilience4j는 `SemaphoreBulkhead`와 `ThreadPoolBulkhead`를 모두 제공한�
 | 메시지 처리 | 큐가 같은 메시지를 다시 배달해 두 번 처리되는 것 | 처리한 메시지 ID를 기록해 중복을 거르는 멱등 소비자 |
 
 대부분의 메시지 큐는 「적어도 한 번(at-least-once)」 배달을 보장하므로, **소비자는 같은 메시지를 두 번 받는다고 가정하고** 만든다.
+
+멱등은 **서버 상태**가 한 번 호출한 것과 같다는 뜻이지 응답까지 같다는 뜻이 아니다. 이미 지운 자원에 `DELETE`를 다시 보내면 `200` 대신 `404`가 올 수 있다. 결제 요청이 타임아웃되면 클라이언트는 서버가 요청을 못 받았는지, 처리했는데 응답만 잃었는지, 아직 처리 중인지 알 수 없다. 안전한 복구는 재시도뿐이고, 그래서 재시도할 작업을 멱등하게 만든다. 사용자가 버튼을 두 번 누르거나 새로 고침해 생기는 중복 제출도 같은 장치로 막는다.
+
+### 멱등 키 구현의 세부
+
+`POST /payments`처럼 본래 멱등하지 않은 요청은 클라이언트가 만든 고유 값(보통 UUID)을 `Idempotency-Key` 헤더로 보낸다. 서버는 키가 없으면 저장하고 처리한 뒤 응답을 키에 묶어 저장하고, 키가 있으면 처리 없이 저장된 응답을 돌려준다.
+
+| 챙길 것 | 이유와 방법 |
+| --- | --- |
+| 원자성 | 「키가 있나 확인」과 「키 기록」 사이에 동시 재시도 둘이 함께 통과할 수 있다. DB 유니크 제약이나 Redis `SET key value NX`로 한 번에 처리한다 |
+| 요청 지문 | 요청 본문의 해시도 저장한다. 같은 키에 다른 본문이 오면 엉뚱한 저장 응답을 주지 말고 거절한다 |
+| 처리 중 요청 | 원 요청이 아직 처리 중일 때 재시도가 오면 `409 Conflict`를 주거나 끝날 때까지 기다리게 한다 |
+| 만료 | 키를 영원히 둘 필요는 없다. 몇 시간~며칠 보관하고 지워 저장 비용을 묶는다 |
+
+비동기 소비자는 세 방법을 쓴다. **중복 제거 표**에 처리한 메시지 ID를 남기되 부수 효과와 **같은 트랜잭션**으로 쓴다. 작업 자체를 **본래 멱등하게** 설계한다(「상태를 다음 단계로」 대신 「상태를 shipped로」). **버전·순번**을 붙여 지금 상태보다 새롭지 않은 갱신은 버린다.
+
+멱등성에는 키 저장·조회와 동시 요청 처리라는 비용이 든다. 네트워크 너머의 **정확히 한 번 처리**는 일반적으로 불가능하지만, 최소 한 번 전달과 멱등 처리를 합치면 겉으로는 같은 결과가 나온다. 이를 **사실상 한 번(effectively-once)** 처리라 부른다.
 
 ## 정리
 
