@@ -4,11 +4,12 @@ concept: "High Availability"
 summary: "가용성을 나인(nines)으로 재는 법과 직렬·병렬 구성의 가용성 계산, 주-백업·주-보조·주-주·핫-핫·핫-웜·단일 리더·리더 없는 클러스터 같은 이중화 구조, 결함 허용 설계의 여섯 원칙, 하트비트로 노드 장애를 감지하는 방식, 페일오버 절차와 비동기 복제의 유실, 스플릿 브레인을 막는 정족수·에포크·펜싱·리스를 정리했다."
 tags: ["backend", "architecture", "infra", "database", "monitoring"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-designing-fault-tolerant-systems", "https://bytebytego.com/guides/how-do-we-detect-node-failures-in-distributed-systems", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-designing-fault-tolerant-systems", "https://bytebytego.com/guides/how-do-we-detect-node-failures-in-distributed-systems", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How to Design for High Availability](https://bytebytego.com/guides/how-do-we-design-for-high-availability)」, 「[System Design Cheat Sheet](https://bytebytego.com/guides/system-design-cheat-sheet)」, 「[A Cheat Sheet for Designing Fault-Tolerant Systems](https://bytebytego.com/guides/a-cheat-sheet-for-designing-fault-tolerant-systems)」, 「[How to Detect Node Failures in Distributed Systems](https://bytebytego.com/guides/how-do-we-detect-node-failures-in-distributed-systems)」를 바탕으로 재구성한 노트다. 페일오버와 스플릿 브레인은 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다.
+> Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 하트비트 설명으로 중앙 감시자가 없는 방식을 더했다.
 
 ## 가용성이란
 
@@ -86,6 +87,7 @@ sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability"
 | 헬스 체크 포함 | 신호에 CPU·메모리·앱 지표를 담는다 | 「살아 있지만 아픈」 노드를 가려낸다 | 메시지가 커지고 판단 로직이 복잡해진다 |
 | 타임스탬프 포함 | 신호에 보낸 시각을 담는다 | 생존 여부와 함께 네트워크 지연도 본다 | 노드 간 시계가 어긋나면 해석이 틀어진다 |
 | 확인 응답(ack) | 받는 쪽이 응답을 돌려보낸다 | 보낸 노드뿐 아니라 **양방향 경로**가 살아 있음을 확인한다 | 메시지가 두 배가 된다 |
+| 중앙 감시자 없음(무작위 피어) | 각 서버가 몇 초마다 무작위로 고른 서버 몇 대에 신호를 보낸다(가십 방식) | 감시자가 단일 장애 지점이 되지 않는다 | 장애가 퍼져 알려지기까지 시간이 걸리고 오판을 걸러야 한다 |
 | 정족수(quorum) | 과반 노드와 하트비트가 닿는지로 클러스터 소속과 리더를 유지한다(Raft·Paxos) | 네트워크가 갈라져도 과반 쪽만 결정을 내려 **스플릿 브레인**을 막는다 | 노드 가입·탈퇴 때 정족수 변경을 다루기 복잡하다 |
 
 ### 타임아웃을 정하는 감각
