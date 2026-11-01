@@ -5,12 +5,13 @@ summary: "DBMS가 파일 처리 시스템의 어떤 문제를 푸는지와 1·2�
 tags: ["database", "rdbms", "nosql", "newsql", "sql", "mongodb"]
 source: mixed
 date: "2026-11-01"
-sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS", "https://github.com/henryr/cap-faq", "http://ksat.me/a-plain-english-introduction-to-cap-theorem", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448"]
+sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS", "https://github.com/henryr/cap-faq", "http://ksat.me/a-plain-english-introduction-to-cap-theorem", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 노션 정리를 바탕으로, 데이터 모델의 계보와 CAP 정리의 오해는 ByteByteGo의 System Design 101 가이드 「[Top 6 Database Models](https://bytebytego.com/guides/top-6-database-models)」, 「[CAP Theorem: One of the Most Misunderstood Terms](https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms)」로, PostgreSQL 구조와 문자열 비교 차이는 「[한 눈에 살펴보는 PostgreSQL](https://d2.naver.com/helloworld/227936)」, 「[MySQL 'a' = 'a '가 true인가?](http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html)」로 보강했다. RDB와 NoSQL의 비용 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다. CAP의 정확한 정의와 흔한 오해는 Henry Robinson의 「[The CAP FAQ](https://github.com/henryr/cap-faq)」와 「[A Plain English Introduction to CAP Theorem](http://ksat.me/a-plain-english-introduction-to-cap-theorem)」으로 보강했다.
 > 파일 처리 시스템과의 비교, DBMS 사용자와 1·2·3계층 구조, 코드의 규칙, BASE는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 DBMS 면접 정리를 바탕으로 보강했다.
 > Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 PACELC 설명으로 분류 예시를 더했다. 원문이 BigTable·HBase를 PA/EC로 적은 부분은 PC/EC로 바로잡았다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 문서형·키-값형·그래프형의 장단점, 시계열형과 멀티 모델 DB를 보강했다.
 
 데이터베이스는 데이터의 집합이고, 이를 저장·관리하는 소프트웨어가 **DBMS(Database Management System)**다. 데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
 
@@ -168,13 +169,15 @@ RDB의 ACID에 대비해 많은 NoSQL이 따르는 성질을 **BASE**라 부른�
 
 - JSON(BSON) 같은 트리 구조 문서를 저장. 문서마다 구조가 달라도 된다.
 - 문서 내부 필드로 검색하기 쉽다.
+- 객체 모양 그대로 저장해 직관적이고 수평 확장이 쉽다. 대신 스키마가 없다는 것이 양날이다. 형식이 문서마다 어긋나도 DB가 막지 않고, 문서 사이의 관계(조인)는 약하다.
 - 예: MongoDB, Couchbase
 
 ### 키-값형 (Key-Value)
 
 - 하나의 키에 하나의 값을 매핑하는 가장 단순한 구조. 키로 바로 찾으므로 단순 조회가 빠르다.
 - 주로 메모리에 두고 세션, 캐시, 실시간 순위·시세 같은 상태 저장에 쓴다.
-- 예: Redis
+- 기본 연산이 키 단위 CRUD뿐이다. 값의 내용으로 거르거나 범위를 훑거나 보조 인덱스로 찾는 복잡한 질의에는 맞지 않는다(제품마다 자료구조·보조 인덱스를 일부 더한다).
+- 예: Redis, Valkey, Amazon DynamoDB(키-값 + 문서)
 
 ### 와이드 컬럼형 (Wide Column)
 
@@ -186,8 +189,21 @@ RDB의 ACID에 대비해 많은 NoSQL이 따르는 성질을 **BASE**라 부른�
 ### 그래프형 (Graph)
 
 - 데이터를 **노드**, 관계를 **엣지**로 저장한다. 관계 자체가 저장되어 있어 여러 단계의 관계를 따라갈 때 RDB처럼 단계마다 JOIN을 할 필요가 없다.
-- 소셜 네트워크, 추천 시스템 등에 적합.
-- 예: Neo4j
+- 소셜 네트워크, 추천 시스템, 사기 탐지(계좌·기기·사람 사이의 수상한 고리 찾기), 네트워크·인프라 의존 관계 지도에 적합.
+- 관계를 따라가는 질의는 빠르지만, 모델링과 운영이 익숙하지 않고 분산이 어렵다. 질의 언어는 오래 제품마다 달랐지만(Neo4j의 Cypher, Apache TinkerPop의 Gremlin), 2024년에 ISO 표준 그래프 질의 언어 **GQL**(ISO/IEC 39075)이 나왔다.
+- 예: Neo4j, Amazon Neptune
+
+### 시계열형 (Time Series)
+
+- 시각이 찍힌 측정값(지표, 센서 값, 시세)을 쓰기 순서대로 빠르게 쌓고, 시간 구간으로 집계하는 데 최적화했다. 압축과 오래된 데이터 자동 삭제·다운샘플링으로 저장 효율을 높인다.
+- IoT 데이터, 애플리케이션 모니터링 지표, 금융 시세 분석에 쓴다.
+- 예: InfluxDB, Prometheus, TimescaleDB. 고르는 기준은 [[database-selection#시계열 DB|용도별 데이터베이스와 고르는 법]]에 있다.
+
+### 멀티 모델 (Multi-model)
+
+- 관계형·문서·키-값·그래프 같은 여러 모델을 **한 DB 엔진**에서 함께 제공한다. 데이터 종류마다 다른 DB를 두는 대신 한 저장소에서 여러 모델로 저장·색인·질의한다.
+- 저장소를 여럿 운영하지 않아도 되고 모델 사이 일관성을 지키기 쉽다. 대신 엔진이 복잡하고, 각 모델의 기능은 전용 DB보다 덜 성숙한 경우가 많다.
+- 예: ArangoDB, Azure Cosmos DB(여러 API), 그리고 JSONB·확장으로 문서·벡터·지리 데이터까지 다루는 PostgreSQL도 이 방향이다
 
 ### CAP 정리
 
