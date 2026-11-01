@@ -71,4 +71,4 @@ HLS와 DASH는 모두 ABR을 지원하고, 같은 세그먼트 형식(CMAF)을 �
 - 송출은 RTMP·SRT, 시청은 HLS·DASH가 기본이고, 1초 미만이 필요하면 WebRTC를 쓴다.
 - 지연과 안정성·비용은 맞바꾸는 관계다.
 
-관련 노트: [[cdn|CDN]], [[webrtc|WebRTC]], [[big-tech-stack-anatomy|대규모 서비스 기술 스택 해부]], [[block-file-object-storage|블록·파일·오브젝트 스토리지]]
+관련 노트: [[cdn|CDN]], [[webrtc|WebRTC]], [[big-tech-stack-anatomy|대규모 서비스 기술 스택 해부]], [[block-file-object-storage|블록·파일·오브젝트 스토리지]], [[video-streaming-design|동영상 스트리밍 서비스 설계: Netflix·YouTube]]
