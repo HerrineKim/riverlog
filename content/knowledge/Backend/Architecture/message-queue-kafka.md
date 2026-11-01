@@ -4,11 +4,12 @@ concept: "Message Queue"
 summary: "메시지 큐를 고르는 기준과 IBM MQ → RabbitMQ → Kafka → Pulsar로 이어진 구조 변화, Kafka의 토픽·파티션·컨슈머 그룹 구조와 빠른 이유(순차 I/O, 제로 카피), 전달 보장 수준(at-most/at-least/exactly once)과 메시지가 유실되는 지점별 대책, Kafka와 RabbitMQ의 차이, 처리 실패와 DLQ, Kafka Connect·Streams·스키마 레지스트리 생태계를 정리했다."
 tags: ["backend", "architecture", "queue", "streaming", "msa"]
 source: other
-date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/types-of-message-queue", "https://bytebytego.com/guides/how-do-message-queue-architectures-evolve", "https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss", "https://bytebytego.com/guides/why-is-kafka-fast", "https://bytebytego.com/guides/delivery-semantics", "https://bytebytego.com/guides/can-kafka-lose-messages", "https://bytebytego.com/guides/top-5-kafka-use-cases", "https://kafka.apache.org/documentation/", "https://godekdls.github.io/Apache%20Kafka/design/", "https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/", "https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/", "https://ryan-han.com/post/server/activemq_virtual_destinations/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/messaging/kafka.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/데이터-엔지니어", "https://jaceklaskowski.gitbooks.io/apache-kafka/", "https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/types-of-message-queue", "https://bytebytego.com/guides/how-do-message-queue-architectures-evolve", "https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss", "https://bytebytego.com/guides/why-is-kafka-fast", "https://bytebytego.com/guides/delivery-semantics", "https://bytebytego.com/guides/can-kafka-lose-messages", "https://bytebytego.com/guides/top-5-kafka-use-cases", "https://kafka.apache.org/documentation/", "https://godekdls.github.io/Apache%20Kafka/design/", "https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/", "https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/", "https://ryan-han.com/post/server/activemq_virtual_destinations/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/messaging/kafka.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/데이터-엔지니어", "https://jaceklaskowski.gitbooks.io/apache-kafka/", "https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Types of Message Queue](https://bytebytego.com/guides/types-of-message-queue)」, 「[Message Queue Evolution](https://bytebytego.com/guides/how-do-message-queue-architectures-evolve)」, 「[The Ultimate Kafka 101](https://bytebytego.com/guides/the-ultimate-kafka-101-you-cannot-miss)」, 「[Why is Kafka Fast](https://bytebytego.com/guides/why-is-kafka-fast)」, 「[Delivery Semantics](https://bytebytego.com/guides/delivery-semantics)」, 「[Can Kafka Lose Messages?](https://bytebytego.com/guides/can-kafka-lose-messages)」, 「[Top 5 Kafka Use Cases](https://bytebytego.com/guides/top-5-kafka-use-cases)」를 바탕으로, 설정 기본값은 Apache Kafka 공식 문서로 확인해 재구성한 노트다. 운영 설계와 구독 모델은 「[아파치 카프카 레퍼런스: 설계](https://godekdls.github.io/Apache%20Kafka/design/)」(공식 문서 번역), 「[Kafka 운영자가 말하는 처음 접하는 Kafka](https://www.popit.kr/kafka-%EC%9A%B4%EC%98%81%EC%9E%90%EA%B0%80-%EB%A7%90%ED%95%98%EB%8A%94-%EC%B2%98%EC%9D%8C-%EC%A0%91%ED%95%98%EB%8A%94-kafka/)」, 「[LINE에서 Kafka를 사용하는 방법](https://engineering.linecorp.com/ko/blog/how-to-use-kafka-in-line-1/)」, 「[ActiveMQ의 Virtual Destinations를 활용한 메세지 로드밸런싱](https://ryan-han.com/post/server/activemq_virtual_destinations/)」으로 보강했다. Kafka와 RabbitMQ 비교, 정확히 한 번 처리, DLQ, Kafka Connect·Streams·스키마 레지스트리는 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다. 관리형 스트림과의 비교는 「[I want to study Data Science: 데이터 엔지니어](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/데이터-엔지니어)」 위키가 소개한 「[The Internals of Apache Kafka](https://jaceklaskowski.gitbooks.io/apache-kafka/)」와 데이터 엔지니어링 발표를 실마리로, 수치는 [Kinesis Data Streams 할당량 문서](https://docs.aws.amazon.com/streams/latest/dev/service-sizes-and-limits.html)로 확인해 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 큐와 발행·구독 서비스가 흔히 주는 기능(롱 폴링, 지연 큐, 독약 메시지, 작업 큐, 필터링, 팬아웃)과 큐 길이 상한을 보강했다.
 
 ## 메시지 큐란
 
@@ -88,6 +89,35 @@ flowchart LR
 | 토픽(발행·구독) | 구독자 모두가 같은 메시지를 받는다 | 같은 역할의 서버 여러 대가 구독하면 서버마다 같은 메시지를 처리하는 중복이 생긴다 |
 
 그래서 대부분의 시스템은 **구독 그룹 사이에는 토픽처럼, 그룹 안에서는 큐처럼** 동작하는 모델을 제공한다. Kafka의 컨슈머 그룹, ActiveMQ·Amazon MQ의 Virtual Topic(논리 토픽에 발행하면 브로커가 구독 그룹마다 물리 큐를 만든다), SNS 토픽 → 서비스별 SQS 큐 팬아웃이 같은 생각이다. 생산자를 고치지 않고 소비자를 늘리고 줄일 수 있다.
+
+### 큐와 토픽이 흔히 주는 기능
+
+관리형 큐(Amazon SQS, RabbitMQ)와 발행·구독 서비스(Amazon SNS, Google Pub/Sub)를 고를 때 보는 기능들이다.
+
+| 기능 | 내용 |
+| --- | --- |
+| 푸시·풀 전달 | 풀은 소비자가 큐에 계속 묻는 방식, 푸시는 메시지가 오면 소비자에게 알리는 방식이다. 풀에 **롱 폴링**을 걸면 빈 응답 대신 정해진 시간(SQS는 최대 20초)까지 새 메시지를 기다려 헛된 요청이 준다 |
+| FIFO와 중복 제거 | 먼저 들어온 메시지부터 꺼낸다. SQS FIFO 큐는 중복 제거 ID로 정해진 시간(5분) 안의 같은 메시지를 걸러 「정확히 한 번 넣기」를 준다. 네트워크 너머 끝에서 끝까지의 정확히 한 번은 아래 「전달 보장 수준」처럼 멱등 처리로 완성한다 |
+| 순서 | 대부분의 표준 큐는 최선 노력(best-effort) 순서라 대체로 보낸 순서로 오지만 보장하지 않고, 최소 한 번 전달한다 |
+| 예약·지연 전달 | 메시지마다 전달 시각을 정하거나, 큐 전체에 같은 지연을 거는 지연 큐(delay queue)를 둔다 |
+| 최소 한 번 전달 | 메시지 사본을 여러 곳에 두고, 확인이 없으면 다시 보낸다 |
+| 데드 레터 큐 | 처리에 계속 실패한 메시지를 따로 빼 두어 큐를 막지 않고 나중에 살펴본다(아래 「처리 실패와 DLQ」) |
+| 독약 메시지(poison pill) | 두 뜻으로 쓴다. 하나는 소비자에게 「일을 끝내고 종료하라」고 알리는 약속된 특수 메시지로, 소켓을 닫는 것과 비슷하게 더 기다리지 않게 한다. 다른 하나는 받을 수는 있지만 처리할 때마다 실패하는 메시지로, DLQ로 격리할 대상이다 |
+| 보안 | 큐에 접근하는 애플리케이션을 인증하고, 전송 중·저장된 메시지를 암호화한다 |
+| 작업 큐(task queue) | 작업과 데이터를 받아 실행하고 결과를 돌려준다. 예약 실행과 무거운 계산을 백그라운드로 돌리는 데 쓴다(Celery, Sidekiq, BullMQ) |
+
+발행·구독 쪽은 다음을 더 본다.
+
+| 기능 | 내용 |
+| --- | --- |
+| 즉시 푸시 | 토픽에 발행되면 구독자에게 바로 밀어 준다. 구독자가 주기적으로 물을(폴링) 필요가 없어 지연이 준다 |
+| 팬아웃 | 메시지 하나를 복제해 여러 끝점에 동시에 보내 병렬 처리하게 한다 |
+| 여러 전달 프로토콜 | 구독 끝점으로 큐, 서버리스 함수, HTTP 웹훅, 이메일·SMS 등을 붙인다(SNS → SQS·Lambda·HTTPS) |
+| 필터링 | 구독자가 필터 정책을 걸어 관심 있는 메시지만 받는다 |
+| 동적 대상 | 발행자는 토픽에만 보내고, 구독자는 끝점을 등록·해제하기만 하면 된다. 받을 쪽 명단을 발행자가 관리하지 않고, 점대점 연결 다발이 토픽 하나로 줄어든다 |
+| 내구성 | 메시지 사본을 여러 서버에 두어 최소 한 번 전달을 보장한다 |
+
+큐에 쌓인 양이 메모리를 넘으면 디스크로 밀려 처리가 더 느려지는 악순환이 생긴다. 그래서 큐 길이에 상한을 두고, 가득 차면 생산자나 클라이언트에 「바쁘다」(HTTP 503)를 돌려 지수 백오프로 나중에 다시 오게 하는 **배압**을 건다([[resiliency-patterns#배압 전략|배압 전략]]).
 
 ## Kafka의 구조
 
