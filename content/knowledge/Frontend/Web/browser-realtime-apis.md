@@ -4,11 +4,12 @@ concept: "Server-Sent Events"
 summary: "서버가 먼저 보내는 데이터를 브라우저에서 받는 세 가지 방법의 클라이언트 쪽 구현을 정리한다. 재요청 루프로 만드는 롱 폴링, HTTP 위의 텍스트 스트림인 SSE(EventSource의 메시지 형식·자동 재연결·Last-Event-ID와 fetch로 직접 읽는 방법), 그리고 WebSocket API의 바이너리·버퍼·종료 코드·재연결까지."
 tags: ["realtime", "network", "http", "browser", "javascript", "frontend"]
 source: other
-date: "2026-10-17"
-sources: ["https://ko.javascript.info/long-polling", "https://ko.javascript.info/server-sent-events", "https://ko.javascript.info/websocket", "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events", "https://html.spec.whatwg.org/multipage/server-sent-events.html", "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/close", "https://developer.mozilla.org/en-US/docs/Web/API/WebSocketStream"]
+date: "2026-11-01"
+sources: ["https://ko.javascript.info/long-polling", "https://ko.javascript.info/server-sent-events", "https://ko.javascript.info/websocket", "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events", "https://html.spec.whatwg.org/multipage/server-sent-events.html", "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/close", "https://developer.mozilla.org/en-US/docs/Web/API/WebSocketStream", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448"]
 ---
 
 > javascript.info(모던 JavaScript 튜토리얼)의 「롱 폴링」, 「Server Sent Events」, 「웹소켓」 글을 바탕으로, 형식과 제약은 HTML 명세·MDN으로 확인해 재구성한 노트다.
+> Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 폴링 설명으로 용어를 보탰다.
 
 ## 무엇을 고르나
 
@@ -16,9 +17,9 @@ sources: ["https://ko.javascript.info/long-polling", "https://ko.javascript.info
 
 ## 롱 폴링
 
-**일반 폴링**은 정해진 간격으로 「새 소식 있나?」를 묻는다. 단순하지만 간격만큼 늦고, 소식이 없어도 요청이 계속 서버를 두드린다.
+**일반 폴링**(AJAX 폴링)은 정해진 간격으로 「새 소식 있나?」를 묻고, 서버는 소식이 없으면 빈 응답을 돌려준다. 단순하지만 간격만큼 늦고, 소식이 없어도 요청이 계속 서버를 두드린다.
 
-**롱 폴링(long polling)** 은 요청을 보내면 서버가 **보낼 메시지가 생길 때까지 응답을 붙잡아 둔다.** 응답을 받으면 클라이언트가 즉시 다음 요청을 보낸다. 특별한 프로토콜 없이 평범한 HTTP로 지연 없이 받는다.
+**롱 폴링(long polling)** 은 요청을 보내면 서버가 **보낼 메시지가 생길 때까지 응답을 붙잡아 둔다**(그래서 hanging GET이라고도 한다). 응답을 받으면 클라이언트가 즉시 다음 요청을 보낸다. 특별한 프로토콜 없이 평범한 HTTP로 지연 없이 받는다.
 
 ```javascript
 async function subscribe(signal) {
