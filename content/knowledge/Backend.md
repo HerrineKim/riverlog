@@ -141,6 +141,7 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [알림 시스템 설계: 푸시·이메일·SMS와 실시간 메시지 전달](/knowledge/dictionary/backend/architecture/notification-system): 게이트웨이 → 분배 → 큐 → 채널 서비스, 재시도·중복 방지
 - [채팅 시스템 설계: 연결, 접속 상태, 메시지 전달](/knowledge/dictionary/backend/architecture/chat-system-design): WebSocket 연결, 메시지 순서·저장, 접속 상태
 - [뉴스 피드 설계: 연결, 활동, 팬아웃](/knowledge/dictionary/backend/architecture/news-feed-design): 스캐터·개더와 받은편지함 팬아웃, 활동 복제, 집계·중복 제거·점수, 비정규화와 캐시 수명
+- [사진 공유 서비스 설계: 메타데이터, 저장, 샤딩](/knowledge/dictionary/backend/architecture/photo-sharing-design): 파일과 메타데이터 분리, 테이블 크기 추정, 업로드·읽기 분리, PhotoID 샤딩과 홀짝 티켓 서버
 - [실시간 웹소켓 서버 설계](/knowledge/dictionary/backend/architecture/realtime-websocket-server): 수만 연결 유지, 메시지 타입 설계, 부하 검증
 - [위치 기반 서비스 설계: 지오해시, 쿼드트리, 지도](/knowledge/dictionary/backend/architecture/location-based-service): 격자 색인, 지오해시·쿼드트리, 지도 타일
 - [라이브 스트리밍의 구조: 인코딩, 세그먼트, ABR, CDN](/knowledge/dictionary/backend/architecture/live-streaming): 인코딩·세그먼트·적응형 비트레이트·CDN 전송
