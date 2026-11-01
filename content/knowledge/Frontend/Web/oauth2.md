@@ -4,12 +4,13 @@ concept: "OAuth2"
 summary: "비밀번호를 넘기지 않고 다른 서비스의 자원 접근 권한을 위임하는 OAuth 2.0. 네 역할, Authorization Code + PKCE 흐름, 토큰 종류, OIDC와의 차이, 프론트엔드 보안 주의점, OIDC로 구현하는 SSO를 정리한다."
 tags: ["security", "web", "auth", "oauth", "frontend"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://riverkim.kr/323", "https://www.rfc-editor.org/rfc/rfc9700", "https://80000coding.notion.site/7e32a39070024199bf98063452f5fcb3", "https://bytebytego.com/guides/oauth-2-explained-with-siple-terms", "https://bytebytego.com/guides/oauth-20-flows", "https://bytebytego.com/guides/v1what-is-sso-single-sign-on", "https://www.rfc-editor.org/rfc/rfc8628"]
+date: "2026-11-01"
+sources: ["https://riverkim.kr/323", "https://www.rfc-editor.org/rfc/rfc9700", "https://80000coding.notion.site/7e32a39070024199bf98063452f5fcb3", "https://bytebytego.com/guides/oauth-2-explained-with-siple-terms", "https://bytebytego.com/guides/oauth-20-flows", "https://bytebytego.com/guides/v1what-is-sso-single-sign-on", "https://www.rfc-editor.org/rfc/rfc8628", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > SSO 섹션에 팔만코딩경(42Seoul 커뮤니티 위키)의 「싱글 사인온 (Single Sign On)」을 재구성해 더한 노트다.
 > 그랜트 유형과 중앙 인증 서버의 SSO 흐름은 ByteByteGo의 System Design 101 가이드 「[OAuth 2.0 Flows](https://bytebytego.com/guides/oauth-20-flows)」, 「[OAuth 2.0 Explained With Simple Terms](https://bytebytego.com/guides/oauth-2-explained-with-siple-terms)」, 「[What is SSO](https://bytebytego.com/guides/v1what-is-sso-single-sign-on)」를 바탕으로 재구성해 보탰다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 스코프와 OAuth의 한계, OIDC의 구성 요소, SSO의 구성 요소(ID 브로커 포함)와 SAML·OIDC 비교를 보강했다.
 
 ## OAuth 2.0이란
 
@@ -27,6 +28,8 @@ OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 
 | Client | 권한을 위임받으려는 앱 | 내 서비스 |
 | Authorization Server | 로그인·동의를 받고 토큰을 발급 | accounts.google.com |
 | Resource Server | 토큰을 확인하고 자원을 내준다 | Google Calendar API |
+
+**스코프(scope)** 는 무엇에 대한 접근을 허락하는지 정하는 문자열이다(`calendar.readonly` 등). 어떤 스코프가 있고 무슨 자원과 이어지는지는 자원 서버마다 정하므로 서비스 사이에 공통 스코프 체계는 없다. OAuth 2.0 자체도 틀(framework)이라 구현 방식이 제각각이고, 보안 장치(PKCE, 정확한 리다이렉트 URI 검사 등)는 뒤에 나온 권고(RFC 9700)로 보완했다.
 
 ## Authorization Code + PKCE 흐름
 
@@ -81,6 +84,17 @@ OAuth 토큰 하나로 할 수 있는 일은 세 갈래다. 여러 서비스에 
 
 **Access Token으로 로그인을 판단하면 안 된다.** 로그인은 OIDC의 ID Token으로 확인한다.
 
+OIDC는 OAuth 2.0 위에 로그인과 프로필 정보를 얹은 얇은 층이다. OIDC를 지원하는 인가 서버를 **ID 제공자**(IdP)라 부른다.
+
+| OIDC 용어 | 뜻 |
+| --- | --- |
+| 신뢰 당사자(Relying Party) | 로그인을 맡기는 우리 앱. OAuth의 Client |
+| OpenID 제공자(OpenID Provider) | 사용자를 인증하고 인가 코드를 내주는 쪽. OIDC를 지원하는 인가 서버 |
+| 토큰 엔드포인트 | 인가 코드(일회용)를 받고 ID Token(JWT)과 Access Token을 돌려준다 |
+| UserInfo 엔드포인트 | Access Token을 내면 사용자 정보(클레임)를 돌려준다 |
+
+OIDC는 2014년에 나온 뒤 Google·Apple·Microsoft 로그인을 비롯한 웹·모바일 로그인의 표준이 됐다. 명세가 기본 OAuth보다 엄격해(ID Token 형식과 검증 규칙이 정해져 있다) 구현마다 덜 어긋난다.
+
 ## SSO: 한 번 로그인으로 여러 서비스
 
 **SSO(Single Sign-On)** 는 한 번의 인증으로 여러 애플리케이션을 쓰게 하는 방식이다. 회사 계정 하나로 메일·메신저·사내 위키에 들어가거나, Google 계정 하나로 Gmail·YouTube를 오가는 것이 예다. 인증은 한 곳(IdP, Identity Provider)이 맡고, 각 서비스는 그 결과를 믿는다.
@@ -130,10 +144,27 @@ sequenceDiagram
 
 인증 정보 전달 방식의 표준 프로토콜은 둘이다. 웹·모바일의 새 서비스는 **OIDC**(위의 ID Token 흐름), 기업용 레거시 시스템은 XML 기반 **SAML 2.0**을 많이 쓴다. 사용자가 IdP에 한 번 로그인하면 IdP 도메인에 세션 쿠키가 남으므로, 다른 서비스가 IdP로 보내도 다시 비밀번호를 묻지 않고 바로 토큰을 돌려준다.
 
+SSO의 구성 요소는 셋이다.
+
+| 구성 요소 | 하는 일 |
+| --- | --- |
+| ID 제공자(IdP) | 사용자 신원을 저장·관리하고 인증한다. 비밀번호를 직접 확인하거나, 다른 IdP가 내준 신원 주장(assertion)을 검증한다. 서비스는 신원 관리를 IdP에 맡긴다 |
+| 서비스 제공자(SP) | 사용자에게 실제 서비스를 준다. 신원은 IdP의 주장을 믿되, 자기 서비스에만 필요한 속성은 로컬 계정에 따로 둘 수 있다 |
+| ID 브로커(identity broker) | 여러 서비스 제공자와 여러 IdP 사이의 중개자. 각 IdP의 프로토콜(SAML, OIDC, 소셜 로그인)을 브로커가 맞춰 주므로 서비스는 브로커 하나에만 붙는다(Keycloak, Auth0, Amazon Cognito) |
+
+**SAML**(Security Assertion Markup Language) 2.0은 IdP가 인증한 신원과 속성을 XML 어설션으로 서비스 제공자에게 넘기는 **신원 연합**(identity federation) 표준이다.
+
+| 비교 | SAML 2.0 | OAuth 2.0 + OIDC |
+| --- | --- | --- |
+| 메시지 형식 | XML(서명된 어설션) | JSON, JWT |
+| 통신 | 브라우저 리다이렉트·POST로 어설션을 넘기고, SP가 세션 쿠키를 만든다 | REST 호출 중심이라 모바일·SPA·API와 잘 맞는다 |
+| 동의 화면 | 프로토콜에 없어 개발자가 따로 만든다 | 스코프 동의가 프로토콜에 들어 있다 |
+| 구현 | 설정과 유지가 무겁다. 기업용 SaaS·사내 시스템에서 여전히 흔하다 | 언어마다 라이브러리가 많아 빨리 붙인다 |
+
 | 장점 | 주의 |
 | --- | --- |
 | 사용자는 비밀번호 하나만 관리한다 | IdP 계정이 털리면 모든 서비스가 열린다. MFA를 함께 건다 |
-| 비밀번호 정책·접근 권한·계정 정지를 한 곳에서 관리한다 | IdP가 멈추면 모든 서비스 로그인이 멈춘다 |
+| 비밀번호 정책·접근 권한·계정 정지를 한 곳에서 관리해 IT 지원 비용이 준다 | IdP가 멈추면 모든 서비스 로그인이 멈춘다. 서비스마다 IdP에 확인하는 왕복이 붙어 첫 로그인이 조금 느리다 |
 | 각 서비스는 인증 구현을 직접 하지 않아도 된다 | 로그아웃을 모든 서비스에 전파하려면 별도 처리(OIDC 로그아웃 규격 등)가 필요하다 |
 
 ## 프론트엔드 보안 주의점
