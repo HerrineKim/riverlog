@@ -5,11 +5,12 @@ summary: "가용성을 나인(nines)으로 재는 법과 직렬·병렬 구성�
 tags: ["backend", "architecture", "infra", "database", "monitoring"]
 source: other
 date: "2026-11-01"
-sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-designing-fault-tolerant-systems", "https://bytebytego.com/guides/how-do-we-detect-node-failures-in-distributed-systems", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448"]
+sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-designing-fault-tolerant-systems", "https://bytebytego.com/guides/how-do-we-detect-node-failures-in-distributed-systems", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How to Design for High Availability](https://bytebytego.com/guides/how-do-we-design-for-high-availability)」, 「[System Design Cheat Sheet](https://bytebytego.com/guides/system-design-cheat-sheet)」, 「[A Cheat Sheet for Designing Fault-Tolerant Systems](https://bytebytego.com/guides/a-cheat-sheet-for-designing-fault-tolerant-systems)」, 「[How to Detect Node Failures in Distributed Systems](https://bytebytego.com/guides/how-do-we-detect-node-failures-in-distributed-systems)」를 바탕으로 재구성한 노트다. 페일오버와 스플릿 브레인은 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다.
 > Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 하트비트 설명으로 중앙 감시자가 없는 방식을 더했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 나인 표의 월·주 단위, 가용성과 신뢰성·결함 허용의 구분, 클러스터링을 보강했다.
 
 ## 가용성이란
 
@@ -17,12 +18,18 @@ sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability"
 
 목표는 흔히 「9가 몇 개인가(nines)」로 말한다.
 
-| 목표 | 연간 허용 중단 | 하루 허용 중단 |
-| --- | --- | --- |
-| 99% (two nines) | 약 3.65일 | 약 14.4분 |
-| 99.9% (three nines) | 약 8.76시간 | 약 1.44분 |
-| 99.99% (four nines) | 약 52.6분 | 약 8.64초 |
-| 99.999% (five nines) | 약 5.26분 | 약 0.86초 |
+가용성 = 가동 시간 ÷ (가동 시간 + 중단 시간)
+
+| 목표 | 연간 허용 중단 | 월(30일) | 주 | 하루 |
+| --- | --- | --- | --- | --- |
+| 90% (one nine) | 약 36.5일 | 72시간 | 16.8시간 | 2.4시간 |
+| 99% (two nines) | 약 3.65일 | 7.2시간 | 1.68시간 | 약 14.4분 |
+| 99.9% (three nines) | 약 8.76시간 | 약 43분 | 약 10분 | 약 1.44분 |
+| 99.99% (four nines) | 약 52.6분 | 약 4.3분 | 약 1분 | 약 8.64초 |
+| 99.999% (five nines) | 약 5.26분 | 약 26초 | 약 6초 | 약 0.86초 |
+| 99.9999% (six nines) | 약 31.5초 | 약 2.6초 | 약 0.6초 | 약 0.09초 |
+
+9가 하나 늘 때마다 허용 중단은 10분의 1로 준다. 일곱 개 이상은 연간 몇 초 이하라 사람이 개입해 복구하는 것 자체가 불가능한 수준이다.
 
 ### 구성 방식에 따른 가용성 계산
 
@@ -36,6 +43,14 @@ sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability"
 ```
 
 **이중화는 가용성을 곱으로 끌어올리고, 의존성은 곱으로 끌어내린다.** 요청 경로에 동기 의존성이 많을수록 전체 가용성은 가장 약한 고리보다도 낮아진다. 병렬 계산은 노드 장애가 서로 독립이라는 가정이 있어야 맞으므로, 같은 랙·같은 AZ에 둔 복제본은 계산만큼 안전하지 않다.
+
+### 가용성, 신뢰성, 결함 허용
+
+| 구분 | 뜻 | 관계 |
+| --- | --- | --- |
+| 가용성(availability) | 필요할 때 응답하는 시간의 비율 | 장애가 잦아도 빨리 복구하면 높게 나온다 |
+| 신뢰성(reliability) | 장애 없이 올바르게 동작하는 능력(MTBF 등) | **신뢰할 수 있는 시스템은 가용하지만, 가용한 시스템이 늘 신뢰할 수 있는 것은 아니다** |
+| 결함 허용(fault tolerance) | 구성 요소가 고장 나도 **중단 없이** 계속 도는 성질 | 고가용성은 짧은 중단(페일오버 시간)을 허용하고, 결함 허용은 중단 자체가 없다. 대신 전체 하드웨어를 이중으로 두고 동시에 돌려야 해 훨씬 비싸다 |
 
 ## 이중화 구조
 
@@ -62,6 +77,31 @@ sources: ["https://bytebytego.com/guides/how-do-we-design-for-high-availability"
 | 리더 없는 클러스터 | 아무 노드나 쓰기를 받고 다른 노드로 복제한다 | **정족수(quorum)**: 노드 수 N, 쓰기 확인 수 W, 읽기 응답 수 R이 `W + R > N`이면 읽기 집합과 쓰기 집합이 최소 한 노드에서 겹쳐 최신 값을 읽는다 |
 
 데이터센터·리전 단위의 이중화(백업·파일럿 라이트·웜 스탠바이·액티브-액티브)와 RTO·RPO는 [[disaster-recovery|고가용성과 재해 복구 설계]]에 있다.
+
+## 클러스터링
+
+**클러스터**(cluster)는 네트워크로 이은 컴퓨터(노드) 둘 이상이 **하나의 시스템처럼** 함께 일하는 구성이다. 노드들이 공유 저장소나 각자의 로컬 저장소를 쓰고, 보통 리더 노드 하나가 진입점이 되어 일을 나눠 주고 결과를 모은다. 사용자는 상대가 클러스터인지 한 대인지 몰라야 하고, 노드 간 통신이 병목이 되지 않게 설계한다.
+
+| 종류 | 목적 |
+| --- | --- |
+| 고가용성(페일오버) 클러스터 | 한 노드가 죽으면 다른 노드가 이어받는다 |
+| 부하 분산 클러스터 | 여러 노드가 같은 일을 나눠 처리한다 |
+| 고성능 컴퓨팅(HPC) 클러스터 | 잘게 나눈 병렬 작업을 여러 노드의 CPU·메모리로 함께 계산한다 |
+
+| 구성 | 동작 | 특징 |
+| --- | --- | --- |
+| 액티브-액티브 | 둘 이상의 노드가 같은 서비스를 **동시에** 돌리고, 앞의 로드 밸런서가 일을 나눈다 | 처리량과 응답 시간이 좋아진다. 한 노드가 죽으면 남은 노드가 전체 부하를 감당할 여유가 있어야 한다 |
+| 액티브-패시브 | 한 노드만 일하고 나머지는 대기(standby)한다 | 단순하지만 대기 노드 자원이 논다. 전환 시간만큼 중단된다 |
+
+클러스터 모드는 쿠버네티스·Amazon ECS 같은 컨테이너 플랫폼, Cassandra·MongoDB 같은 DB, Redis 같은 캐시에 흔히 들어 있다.
+
+| 어려움 | 내용 |
+| --- | --- |
+| 설치·운영 | OS, 앱, 의존성을 모든 노드에 설치·갱신해야 한다. 노드가 이기종이면 더 어렵다 |
+| 관측 | 노드마다 자원 사용률을 보고 로그를 한곳으로 모아야 한다 |
+| 저장소 | 공유 저장소는 노드끼리 서로 덮어쓰지 않게 막아야 하고, 분산 저장소는 동기화를 유지해야 한다 |
+
+로드 밸런싱과의 차이(서버가 서로를 아는가)는 [[load-balancer#클러스터링과 무엇이 다른가|로드 밸런서]]에 있다.
 
 ## 결함 허용 설계의 원칙
 
