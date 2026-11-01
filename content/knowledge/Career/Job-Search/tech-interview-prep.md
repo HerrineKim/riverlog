@@ -19,7 +19,7 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 | --- | --- | --- |
 | 코딩 | 자료구조·알고리즘으로 문제를 풀고, 생각을 말로 설명하며 코드로 옮기는 힘. 한 라운드는 보통 30~45분이다 | LeetCode 같은 문제 사이트에서 유형별로 푼다. NeetCode처럼 유형별로 묶은 목록, 『코딩 인터뷰 완전 분석』([[coding-test\|코딩 테스트 접근법]]) |
 | 시스템 디자인 | 모호한 요구를 구체화하고, 구성 요소를 조립하고, 트레이드오프를 설명하는 힘. 주로 몇 년 차 이상 경력직에게 내고, 인턴에게는 거의 내지 않는다 | 『가상 면접 사례로 배우는 대규모 시스템 설계 기초』 1·2권, 『데이터 중심 애플리케이션 설계』, 설계 사례 강의 |
-| 객체 지향 설계(OOD) | 클래스와 책임을 나누고 관계를 그리는 힘. 주차장, 엘리베이터 같은 문제 | 『헤드 퍼스트 디자인 패턴』, OOD 문제 모음([[gof-design-patterns\|GoF 디자인 패턴]]) |
+| 객체 지향 설계(OOD) | 클래스와 책임을 나누고 관계를 그리는 힘. 주차장, 엘리베이터 같은 문제 | 『헤드 퍼스트 디자인 패턴』, OOD 문제 모음. 풀이 순서와 17개 사례는 [[ood-interview-approach\|객체 지향 설계 면접]], 패턴은 [[gof-design-patterns\|GoF 디자인 패턴]] |
 | 행동(behavioral) | 협업, 갈등, 실패, 주도성에 대한 실제 경험 | STAR 기법(상황 → 과제 → 행동 → 결과)으로 사례를 미리 정리한다. Tech Interview Handbook 같은 공개 자료([[behavioral-interview-questions\|인성 면접 준비]], 평가 기준은 [[behavioral-interview-rubrics\|인성 면접 평가 기준]]) |
 | 모의 면접 | 실전 압박 속에서 말하며 푸는 연습 | 동료와 짝을 지어 번갈아 면접관을 맡거나, 현업 엔지니어와 익명으로 연습하는 플랫폼(interviewing.io 등)을 쓴다. 익명이라 부담이 적고, 끝나면 양쪽이 서로 피드백을 남긴다. 처음이라면 녹화된 모의 면접을 먼저 보며 흐름을 익힌다 |
 
@@ -234,4 +234,4 @@ flowchart TB
 - 시스템 디자인은 요구 확인 → 용량 추정 → 상위 설계 → DB → 인터페이스 → 확장성 → 신뢰성 순으로 진행한다.
 - 모든 단계에서 트레이드오프를 말로 설명한다.
 
-관련 노트: [[coding-interview-rubric|코딩 인터뷰 평가 기준]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[coding-test|코딩 테스트 접근법]], [[behavioral-interview-questions|인성 면접 준비]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]], [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]]
+관련 노트: [[coding-interview-rubric|코딩 인터뷰 평가 기준]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[coding-test|코딩 테스트 접근법]], [[behavioral-interview-questions|인성 면접 준비]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]], [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[ood-interview-approach|객체 지향 설계 면접: 풀이 순서와 반복되는 설계 부품]]
