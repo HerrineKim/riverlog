@@ -4,17 +4,22 @@ concept: "Event-Driven Architecture"
 summary: "이벤트 기반 아키텍처는 「무슨 일이 일어났다」는 사실을 발행하고, 관심 있는 쪽이 구독해 반응하게 해서 시스템 사이의 논리적 의존을 끊는다. 이벤트와 커맨드의 구분, 이벤트 계층(앱·내부·외부), 페이로드 설계, 발행 시점의 정합성, 큐와 토픽, 멱등 소비, 순서와 재처리, 조회 모델 분리까지 설계할 때 정해야 할 것을 정리했다."
 tags: ["backend", "architecture", "event-driven", "msa", "message-queue"]
 source: other
-date: "2026-10-21"
-sources: ["https://techblog.woowahan.com/7835", "https://www.slideshare.net/arawnkr/ss-94475606", "https://techblog.woowahan.com/2587/", "https://techblog.woowahan.com/2667/", "https://tech.kakao.com/posts/390", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md"]
+date: "2026-11-01"
+sources: ["https://techblog.woowahan.com/7835", "https://www.slideshare.net/arawnkr/ss-94475606", "https://techblog.woowahan.com/2587/", "https://techblog.woowahan.com/2667/", "https://tech.kakao.com/posts/390", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 「[회원시스템 이벤트기반 아키텍처 구축하기](https://techblog.woowahan.com/7835)」, 「[이벤트 기반 분산 시스템을 향한 여정](https://www.slideshare.net/arawnkr/ss-94475606)」, 「[신규 포인트 시스템 전환기 #1](https://techblog.woowahan.com/2587/)」, 「[배달의민족 가게노출 시스템을 소개합니다](https://techblog.woowahan.com/2667/)」, 「[실시간 댓글 개발기(part.1)](https://tech.kakao.com/posts/390)」을 바탕으로 재구성한 노트다. 메시지와 이벤트의 구분, 요청-응답과의 비교, 브로커 이중화, 이벤트 불변성과 정정은 「fru1tworld/cs-basic 모의 면접 질문 목록」이 묻는 개념을 채워 넣었다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 생산자·라우터·소비자 구성과 잘 맞는 쓰임을 보강했다.
 
 ## 이벤트 기반 아키텍처란
 
 이벤트 기반 아키텍처(event-driven architecture)는 **시스템이 「무슨 일이 일어났다」는 사실을 이벤트로 발행하고, 관심 있는 다른 시스템이 그 이벤트를 구독해 각자 반응하는 구조**다. 발행자는 누가 무엇을 하는지 모른다.
 
 모듈 사이에 직접 호출이 늘면 기능 하나를 붙일 때마다 기존 코드를 고쳐야 하고, 순환 의존이 생기고, 모듈 경계가 무너진다. 이벤트는 이 호출 사슬을 끊는 수단이다.
+
+구성 요소는 셋이다. **이벤트 생산자**(event producer)가 이벤트를 발행하고, **이벤트 라우터**(event router, 브로커·이벤트 버스)가 이벤트를 걸러 소비자에게 밀어 주며, **이벤트 소비자**(event consumer)가 이벤트를 받아 자기 상태에 반영한다. 생산자는 소비자를 모르고 소비자끼리도 서로 모른다. 구현 패턴으로는 [[message-queue-kafka|발행·구독]], [[distributed-data-patterns|이벤트 소싱과 CQRS]], [[distributed-transaction|사가]]가 있다.
+
+잘 맞는 곳은 메타데이터·지표 수집, 서버·보안 로그 모으기, 서로 다른 기술로 된 시스템 잇기, 하나의 사건을 여러 곳에서 병렬로 처리하는 팬아웃이다.
 
 **시스템을 물리적으로 나누거나 호출을 비동기로 바꾸는 것만으로는 결합이 줄지 않는다.** 「회원 탈퇴 후 쿠폰을 회수해 줘」라는 메시지를 비동기로 보내도, 발행자가 쿠폰 시스템의 할 일을 알고 있으면 논리적 의존은 그대로다. 결합을 끊는 것은 메시지의 **의도**다.
 
