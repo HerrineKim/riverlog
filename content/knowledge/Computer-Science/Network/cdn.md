@@ -4,12 +4,13 @@ concept: "CDN"
 summary: "전 세계 엣지 서버에 콘텐츠를 캐시해 사용자 가까운 곳에서 응답하는 CDN. 동작 방식, 얻는 것과 비용·위험, 캐시 무효화와 프론트엔드 배포에서의 쓰임을 정리한다."
 tags: ["network", "cdn", "cache", "web", "frontend"]
 source: mixed
-date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/what-is-cdn-content-delivery-network", "https://bytebytego.com/guides/how-does-cnd-work", "https://bytebytego.com/guides/why-are-content-delivery-networks-cdn-so-popular", "https://bytebytego.com/guides/a-beginner's-guide-to-cdn-content-delivery-network", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/cdn.md", "https://developer.chrome.com/blog/http-cache-partitioning", "https://kilthub.cmu.edu/articles/journal_contribution/Globally_distributed_content_delivery/6605972"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/what-is-cdn-content-delivery-network", "https://bytebytego.com/guides/how-does-cnd-work", "https://bytebytego.com/guides/why-are-content-delivery-networks-cdn-so-popular", "https://bytebytego.com/guides/a-beginner's-guide-to-cdn-content-delivery-network", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/cdn.md", "https://developer.chrome.com/blog/http-cache-partitioning", "https://kilthub.cmu.edu/articles/journal_contribution/Globally_distributed_content_delivery/6605972", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 여러 자료를 종합한 노트에, ByteByteGo의 System Design 101 가이드 「[What is CDN?](https://bytebytego.com/guides/what-is-cdn-content-delivery-network)」, 「[How Does CDN Work?](https://bytebytego.com/guides/how-does-cnd-work)」, 「[Why are CDNs so Popular?](https://bytebytego.com/guides/why-are-content-delivery-networks-cdn-so-popular)」, 「[A Beginner's Guide to CDN](https://bytebytego.com/guides/a-beginner's-guide-to-cdn-content-delivery-network)」의 DNS 라우팅·계층 구조·요청 라우팅 내용을 보강했다. CDN 운영의 설계 판단은 Akamai의 「[Globally Distributed Content Delivery](https://kilthub.cmu.edu/articles/journal_contribution/Globally_distributed_content_delivery/6605972)」(IEEE Internet Computing, 2002)로 보강했다.
 > 「비용과 위험」은 「[Must-Know-About-Frontend: CDN](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/cdn.md)」을 바탕으로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 푸시 CDN과 풀 CDN의 차이를 보강했다.
 
 ## CDN이란
 
@@ -28,6 +29,15 @@ flowchart LR
 
 - 사용자를 가까운 엣지로 보내는 데 DNS 기반 라우팅이나 애니캐스트(Anycast)를 쓴다.
 - 엣지가 얼마나 오래 보관할지는 오리진 응답의 `Cache-Control`(특히 `s-maxage`) 헤더로 정한다.
+
+### 푸시 CDN과 풀 CDN
+
+엣지에 콘텐츠를 **누가 언제 올리느냐**로 나뉜다. 위 그림의 「MISS면 오리진에서 가져온다」는 풀 방식이다.
+
+| 방식 | 동작 | 장점 | 단점 | 어울리는 곳 |
+| --- | --- | --- | --- | --- |
+| 푸시(push) | 운영자가 콘텐츠가 바뀔 때마다 CDN에 직접 올리고, URL을 CDN 주소로 바꾼다. 만료·갱신 시점도 운영자가 정한다 | 새것·바뀐 것만 한 번 올리므로 전송이 적다 | 올린 것은 안 읽혀도 엣지 저장 공간을 차지한다. 올리기를 운영자가 책임진다 | 트래픽이 적거나 자주 바뀌지 않는 사이트, 큰 파일을 미리 깔아 둬야 하는 곳 |
+| 풀(pull) | 첫 요청이 MISS면 엣지가 오리진에서 가져와 채우고 TTL 동안 재사용한다 | 관리가 거의 없다. 최근에 요청된 것만 엣지에 남아 공간을 아낀다 | 첫 요청은 느리다. TTL이 끝나면 바뀌지 않았어도 다시 가져오거나 재검증한다 | 트래픽이 많은 사이트. 요청이 고르게 퍼진다 |
 
 ### DNS로 가까운 엣지 찾기
 
