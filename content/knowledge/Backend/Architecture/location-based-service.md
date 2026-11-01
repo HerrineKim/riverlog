@@ -4,11 +4,12 @@ concept: "Location-Based Service"
 summary: "'내 주변 식당'은 모든 점과의 거리를 계산하면 느리므로 지도를 격자로 나눠 색인한다. 지오해시는 위경도를 접두사가 같으면 가까운 문자열로 바꿔 DB 색인으로 찾고, 쿼드트리는 밀도에 따라 칸을 쪼갠 메모리 트리로 찾는다. 지도 서비스는 위치 수집, 미리 잘라 둔 타일의 CDN 서빙, 지오코딩과 경로 계산으로 나뉜다."
 tags: ["backend", "architecture", "algorithm", "data-structure", "scalability"]
 source: other
-date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/proximity-service", "https://bytebytego.com/guides/quadtree", "https://bytebytego.com/guides/design-google-maps", "https://bytebytego.com/guides/how-do-airtags-work", "https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view", "https://techblog.woowahan.com/2608/", "http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/proximity-service", "https://bytebytego.com/guides/quadtree", "https://bytebytego.com/guides/design-google-maps", "https://bytebytego.com/guides/how-do-airtags-work", "https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view", "https://techblog.woowahan.com/2608/", "http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Proximity Service](https://bytebytego.com/guides/proximity-service)」, 「[Quadtree](https://bytebytego.com/guides/quadtree)」, 「[Design Google Maps](https://bytebytego.com/guides/design-google-maps)」, 「[How do AirTags work?](https://bytebytego.com/guides/how-do-airtags-work)」, 「[How do Google/Apple Maps blur license plates and human faces on Street View?](https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view)」를 바탕으로 재구성한 노트다. 육각형 격자 거리 근사는 「[배민라이더스 배달 경로와 거리 계산 개발 과정](https://techblog.woowahan.com/2608/)」으로 보강했다. 차량 배차 사례는 High Scalability의 「[How Uber Scales Their Real-Time Market Platform](http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html)」(2015)로 보강했다.
+> Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 Uber 풀이로 기사 위치 갱신·전파의 규모 추정을 보강했다.
 
 ## 주변 검색 서비스
 
@@ -133,6 +134,26 @@ flowchart TB
   2. 경로·ETA 서비스가 직선거리가 아니라 도로망 기준 도착 시간을 계산한다
   3. ETA로 정렬해 기사에게 차례로 제안한다
 ```
+
+### 면접 풀이: 기사 위치 갱신과 전파
+
+면접에서 차량 호출을 설계할 때는 「기사 위치가 3초마다 바뀐다」는 쓰기 부하를 어떻게 받아 내는지가 핵심이다.
+
+| 요구 사항 | 내용 |
+| --- | --- |
+| 기사 | 위치와 배차 가능 여부를 자주 알린다. 운행을 마치면 다시 배차 가능 상태가 된다 |
+| 승객 | 주변 기사를 실시간으로 보고, 목적지와 탑승 시각으로 호출한다 |
+| 운행 중 | 배차가 확정되면 기사와 승객이 서로의 위치를 계속 본다 |
+
+가정: 승객 3억·기사 100만 명, 하루 활성 승객 100만·기사 50만 명, 하루 운행 100만 건, 활성 기사는 3초마다 위치를 보낸다.
+
+- **쿼드트리만으로는 3초 갱신을 따라가지 못한다.** 위치가 바뀌면 이전 칸에서 빼고 새 칸에 넣어야 하고, 칸이 한도를 넘으면 다시 쪼개야 한다. 그래서 최신 위치는 해시 테이블(DriverLocationHT)에 두고, 쿼드트리는 15초 안에 반영되도록 덜 자주 갱신한다.
+- **해시 테이블 크기**: 기사 ID 3B + 이전·현재 위도·경도 각 8B = 35B. 기사 100만 명이면 35MB라 메모리에 넉넉히 들어간다.
+- **수신 대역폭**: 기사 ID와 새 위치(3 + 16 = 19B) × 활성 기사 50만 = 3초마다 9.5MB.
+- **분산**: DriverLocationHT를 기사 ID로 여러 서버(기사 위치 서버)에 나눈다. 이 서버는 위치를 받으면 관련 승객에게 전파하고 쿼드트리 서버에 갱신을 알린다.
+- **전파(푸시)**: 승객이 앱을 열면 주변 기사들을 구독시키는 발행·구독 알림 서비스를 둔다. 기사 한 명당 구독자 5명이라 하면 구독 표는 (50만 × 3B) + (50만 × 5 × 8B) ≈ 21MB, 전송량은 250만 구독 × 19B ≈ 초당 47.5MB다. 알림은 롱 폴링이나 푸시 알림으로 보낸다.
+- **당겨 오기(풀)**: 새 기사가 승객 주변에 들어올 때마다 구독을 동적으로 더하는 것은 복잡하다. 대신 승객이 현재 위치를 보내면 서버가 쿼드트리에서 주변 기사를 찾아 돌려주는 방식으로 단순화할 수 있다.
+- **재분할 완충**: 칸이 한도를 넘자마자 쪼개지 않고 10% 정도 더 자라거나 줄 여유를 두면 재분할 부하가 준다.
 
 - 공급과 수요를 「승용차·배달 같은 제품」에 묶지 않고 **능력과 요구 조건**으로 일반화하면, 도시·제품마다 따로 만든 배차를 한 시스템으로 합칠 수 있다.
 - 배차 가능한 차만 색인하던 단순화를 버리고 **모든** 공급을 추적하면, 손님을 내려 줄 예정인 차까지 후보로 넣어 전체 대기 시간을 줄인다. 공항처럼 도착 순서가 중요한 곳은 가상 대기열을 따로 둔다.
