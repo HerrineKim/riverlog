@@ -4,11 +4,12 @@ concept: "Database Sharding"
 summary: "한 DB에 담기 어려울 만큼 커진 데이터를 같은 스키마의 여러 DB로 행 단위로 나누는 샤딩을 정리했다. 샤드 키와 라우팅 방식(모듈러·범위·디렉터리·일관된 해싱·가상 버킷), 샤딩이 어렵게 만드는 것, ShardingSphere 같은 미들웨어, 기존 DB에서 옮겨 올 때의 동기화와 첫 요청 지연까지 다룬다."
 tags: ["backend", "database", "architecture", "performance", "mysql"]
 source: other
-date: "2026-10-31"
-sources: ["https://dev.gmarket.com/61", "https://shardingsphere.apache.org/document/current/en/overview/", "https://www.mongodb.com/docs/manual/core/sharding-choose-a-shard-key/", "https://debezium.io/documentation/reference/stable/architecture.html", "https://bytebytego.com/guides/100x-postgres-scaling-at-figma", "https://bytebytego.com/guides/a-crash-course-in-database-sharding", "https://bytebytego.com/guides/key-concepts-to-understand-database-sharding", "https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained", "https://bytebytego.com/guides/consistent-hashing", "https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning", "https://vitess.io/docs/overview/architecture/", "https://docs.citusdata.com/en/stable/get_started/concepts.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "http://www.tom-e-white.com/2007/11/consistent-hashing.html", "http://highscalability.com/blog/2013/4/15/scaling-pinterest-from-0-to-10s-of-billions-of-page-views-a.html", "http://highscalability.com/blog/2012/5/21/pinterest-architecture-update-18-million-visitors-10x-growth.html", "http://highscalability.com/flickr-architecture"]
+date: "2026-11-01"
+sources: ["https://dev.gmarket.com/61", "https://shardingsphere.apache.org/document/current/en/overview/", "https://www.mongodb.com/docs/manual/core/sharding-choose-a-shard-key/", "https://debezium.io/documentation/reference/stable/architecture.html", "https://bytebytego.com/guides/100x-postgres-scaling-at-figma", "https://bytebytego.com/guides/a-crash-course-in-database-sharding", "https://bytebytego.com/guides/key-concepts-to-understand-database-sharding", "https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained", "https://bytebytego.com/guides/consistent-hashing", "https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning", "https://vitess.io/docs/overview/architecture/", "https://docs.citusdata.com/en/stable/get_started/concepts.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "http://www.tom-e-white.com/2007/11/consistent-hashing.html", "http://highscalability.com/blog/2013/4/15/scaling-pinterest-from-0-to-10s-of-billions-of-page-views-a.html", "http://highscalability.com/blog/2012/5/21/pinterest-architecture-update-18-million-visitors-10x-growth.html", "http://highscalability.com/flickr-architecture", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > G마켓 기술 블로그의 「[Sharded MySQL Cluster 도입 배경과 개발기](https://dev.gmarket.com/61)」(2022.12)를 바탕으로 재구성하고, ShardingSphere·MongoDB·Debezium 공식 문서로 최신화한 노트다. 단계별 확장 사례는 ByteByteGo의 System Design 101 가이드 「[100X Postgres Scaling at Figma](https://bytebytego.com/guides/100x-postgres-scaling-at-figma)」를 바탕으로 덧붙였다. 라우팅 알고리즘과 일관된 해싱은 같은 가이드의 「[A Crash Course on Database Sharding](https://bytebytego.com/guides/a-crash-course-in-database-sharding)」, 「[Key Concepts to Understand Database Sharding](https://bytebytego.com/guides/key-concepts-to-understand-database-sharding)」, 「[Top 4 Data Sharding Algorithms](https://bytebytego.com/guides/top-4-data-sharding-algorithms-explained)」, 「[Consistent Hashing Explained](https://bytebytego.com/guides/consistent-hashing)」, 「[Vertical vs Horizontal Partitioning](https://bytebytego.com/guides/vertical-partitioning-vs-horizontal-partitioning)」로 보강했다. Vitess·Citus 구조와 재샤딩은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md)」의 질문을 실마리로 두 프로젝트의 공식 문서를 바탕으로 덧붙였다. 일관된 해싱의 구현은 Tom White의 「[Consistent Hashing](http://www.tom-e-white.com/2007/11/consistent-hashing.html)」으로, 사용자 단위 샤딩 사례는 High Scalability의 「[Scaling Pinterest](http://highscalability.com/blog/2013/4/15/scaling-pinterest-from-0-to-10s-of-billions-of-page-views-a.html)」, 「[Pinterest Architecture Update](http://highscalability.com/blog/2012/5/21/pinterest-architecture-update-18-million-visitors-10x-growth.html)」, 「[Flickr Architecture](http://highscalability.com/flickr-architecture)」로 보강했다. Flickr의 이중 쓰기와 검색 분리는 「[Flickr Architecture](http://highscalability.com/flickr-architecture)」로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 기능별 분할과 연합 데이터베이스, 일관된 해싱의 복제와 연쇄 장애를 보강했다.
 
 ## 샤딩이란
 
@@ -55,6 +56,23 @@ PostgreSQL에서는 행이 많아질수록 VACUUM(죽은 튜플 정리) 비용�
 | 수평 분할 | 행 | 같은 스키마의 테이블이 여러 개 생기고, 각 행은 **샤드 키**에 따라 한 곳에 들어간다. 샤딩은 이쪽이다 |
 
 수직 분할은 각 테이블의 행 수가 그대로이고 컬럼만 줄어든다. 수평 분할은 컬럼은 그대로이고 행만 줄어, 쿼리가 훑는 행이 적어지니 응답도 빨라진다.
+
+### 기능별 분할과 연합 데이터베이스
+
+**페더레이션(federation)** 은 같은 말로 두 가지를 가리킨다.
+
+- **기능별 분할(functional partitioning)**: DB를 기능 단위로 나눈다. 사용자·상품·게시판을 서로 다른 DB 서버에 두면 서버마다 읽기·쓰기 부하가 줄고, 데이터가 작아 캐시 적중률이 오르며, 기능별로 따로 쓰기를 늘릴 수 있다. 마이크로서비스의 「서비스마다 자기 DB」가 같은 모양이다. 대신 애플리케이션이 어느 DB로 갈지 알아야 하고, 기능 사이 조인은 애플리케이션이 직접 해야 한다. 한 기능이 너무 커지면 결국 그 안을 샤딩한다.
+- **연합 데이터베이스 시스템(federated database system)**: 물리적으로 따로 있는 여러 DB를 **하나의 논리 DB처럼** 보이게 하는 층을 둔다. 공통 데이터를 표현하는 **연합 스키마**(federated schema)가 구성 DB들이 무엇을 공유하는지 정하고, 사용자는 데이터가 어디 있는지 몰라도 한 번에 질의한다. PostgreSQL의 외부 데이터 래퍼(`postgres_fdw`), Trino 같은 연합 질의 엔진이 이 방식이다.
+
+| 연합 DB의 성질 | 뜻 |
+| --- | --- |
+| 투명성 | 사용자는 데이터 원천의 차이와 위치를 몰라도 된다 |
+| 이질성 | 하드웨어·네트워크 프로토콜·데이터 모델이 다른 원천을 함께 다룬다 |
+| 확장성 | 새 원천을 쉽게 붙인다 |
+| 자율성 | 기존 원천과 그 인터페이스를 바꾸지 않는다. 레거시 DB와 앱이 단단히 묶이지 않는다 |
+| 데이터 통합 | 서로 다른 DBMS·프로토콜의 데이터를 한 관점으로 합친다 |
+
+연합 DB는 원천을 그대로 두고 통합된 관점을 얻는 대신, 원천 DB 사이의 조인이 느리고 복잡하며, 성능과 가용성이 각 원천에 묶이고, 장비와 운영 복잡도가 늘어난다.
 
 ## 샤드 키
 
@@ -103,6 +121,8 @@ PostgreSQL에서는 행이 많아질수록 VACUUM(죽은 튜플 정리) 비용�
 ```
 
 - 서버 수를 N, 키 수를 K라 하면 서버 하나를 더하거나 뺄 때 평균 **K/N개만** 옮긴다.
+- **복제도 링 위에서 한다.** 키를 담당 서버뿐 아니라 시계 방향으로 이어지는 서버 N대(복제 계수)에 함께 둔다. 최종 일관성 시스템은 이 복제를 비동기로 한다(Dynamo·Cassandra).
+- 한계도 있다. 서버 하나가 죽으면 그 구간의 부하가 **바로 다음 서버 한 대**에 몰려 그 서버도 넘어지는 연쇄 장애가 날 수 있다(가상 노드가 부하를 여러 서버로 흩어 완화한다). 서버가 잠깐 끊겼다 돌아오는 일이 잦으면 키를 옮겼다 되돌리는 관리 비용이 크다.
 - 서버가 적으면 링 위 구간이 들쭉날쭉해 일부 서버에 키가 몰린다. 서버마다 링 위에 여러 점(**가상 노드**)을 찍어 고르게 하고, 성능 좋은 서버에는 가상 노드를 더 준다.
 - 쓰이는 곳: DynamoDB·Cassandra의 데이터 분산(재배치 최소화), Akamai 같은 CDN의 엣지 서버 콘텐츠 분배, 연결을 오래 유지하는 로드 밸런서의 백엔드 선택, 분산 캐시 클라이언트.
 
