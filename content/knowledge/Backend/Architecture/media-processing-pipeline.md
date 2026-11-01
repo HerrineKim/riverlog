@@ -96,4 +96,4 @@ flowchart LR
 - 엣지 함수와 관리형 이미지 변환은 운영을 줄이지만 비용과 실행 제한을 따진다.
 - 동영상은 단계로 나눈 비동기 파이프라인으로 처리하고, 결과 확정 뒤 유실 없는 완료 알림을 보낸다.
 
-관련 노트: [[cdn|CDN]], [[http-cache|HTTP 캐시]], [[block-file-object-storage|블록·파일·오브젝트 스토리지]], [[caching-strategies|캐시 전략: 계층, 읽기·쓰기 패턴, 교체 정책, 장애 패턴]], [[aws-lambda-internals|AWS Lambda의 내부 구조]]
+관련 노트: [[cdn|CDN]], [[http-cache|HTTP 캐시]], [[block-file-object-storage|블록·파일·오브젝트 스토리지]], [[caching-strategies|캐시 전략: 계층, 읽기·쓰기 패턴, 교체 정책, 장애 패턴]], [[aws-lambda-internals|AWS Lambda의 내부 구조]], [[video-streaming-design|동영상 스트리밍 서비스 설계: Netflix·YouTube]]
