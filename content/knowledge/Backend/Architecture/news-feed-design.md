@@ -73,4 +73,4 @@ Facebook 타임라인은 최근 며칠이 아니라 **평생의 기록**을 보�
 - 집계는 연결 고르기 → 활동 모으기 → 중복 제거 → 점수 → 캐시 순서다.
 - 결론: 피드는 「언제 일을 하느냐(쓸 때냐 읽을 때냐)」를 계정 규모에 따라 나눠 정하는 문제다.
 
-관련 노트: [[message-queue-kafka|메시지 큐와 Kafka]], [[caching-strategies|캐시 전략]], [[redis|Redis]], [[database-sharding|데이터베이스 샤딩]], [[notification-system|알림 시스템 설계]], [[web-scalability-components|웹 확장성의 구성 요소]]
+관련 노트: [[message-queue-kafka|메시지 큐와 Kafka]], [[caching-strategies|캐시 전략]], [[redis|Redis]], [[database-sharding|데이터베이스 샤딩]], [[notification-system|알림 시스템 설계]], [[web-scalability-components|웹 확장성의 구성 요소]], [[photo-sharing-design|사진 공유 서비스 설계]]
