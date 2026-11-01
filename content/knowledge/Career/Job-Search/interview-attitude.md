@@ -5,12 +5,12 @@ summary: "면접관은 말보다 태도를 먼저 읽는다. 눈 맞춤과 미�
 tags: ["career", "interview", "job-search", "communication"]
 source: other
 date: "2026-11-01"
-sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md", "https://www.techinterviewhandbook.org/final-questions/", "https://github.com/viraptor/reverse-interview", "https://github.com/Twipped/InterviewThis"]
+sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md", "https://www.techinterviewhandbook.org/final-questions/", "https://github.com/viraptor/reverse-interview", "https://github.com/Twipped/InterviewThis", "https://www.educative.io/blog/behavioral-interviews-how-to-prepare-and-ace-interview-questions"]
 ---
 
 > 플라피나의 노션 강의록 「플라피나 면접팁 / 자소서팁」과 「심화편」, 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리를 바탕으로 재구성한 노트다. 회사를 면접하는 질문은 freeCodeCamp의 「[How to Interview as a Developer Candidate](https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd)」를 바탕으로 더했다. 현직자 커피챗은 위니브의 「[프론트엔드 개발자 가이드](https://github.com/weniv/frontend-developer-guide)」를 바탕으로 더했다.
 > 「주제별 질문 목록」과 프로젝트 질문·말로 꺼내 보기는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소의 Reverse Interview·Tip 문서를 바탕으로 보강했다. 역질문의 의미와 면접관의 경험을 묻는 질문, 관리자·경영진 대상 질문은 Tech Interview Handbook의 「[Best end of interview questions to ask](https://www.techinterviewhandbook.org/final-questions/)」로 보강했다.
-> 원본 영어 목록인 viraptor의 「[Reverse interview](https://github.com/viraptor/reverse-interview)」에서 번역본에 없던 질문(인프라 코드화, 재해 복구, ADR, 핫스폿, 채용 이유, 런웨이, 계약 조건 등)을 더했다. 운영·온콜과 문화 질문, 스택별 질문 표, 묻는 상대와 시점을 고르는 원칙은 Twipped의 「[InterviewThis](https://github.com/Twipped/InterviewThis)」로 보강했다.
+> 원본 영어 목록인 viraptor의 「[Reverse interview](https://github.com/viraptor/reverse-interview)」에서 번역본에 없던 질문(인프라 코드화, 재해 복구, ADR, 핫스폿, 채용 이유, 런웨이, 계약 조건 등)을 더했다. 운영·온콜과 문화 질문, 스택별 질문 표, 묻는 상대와 시점을 고르는 원칙은 Twipped의 「[InterviewThis](https://github.com/Twipped/InterviewThis)」로 보강했다. 화상·전화 면접 태도는 Educative의 「[Behavioral interviews: How to prepare and ace interview questions](https://www.educative.io/blog/behavioral-interviews-how-to-prepare-and-ace-interview-questions)」로 보강했다.
 
 ## 면접은 소개팅이다
 
@@ -40,6 +40,22 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 ### 미러링
 
 상대의 몸짓을 따라 한다. 면접관이 한 명일 때 특히 효과적이다. **눈치채지 못하게** 하는 것이 따라 하는 것 자체보다 중요하다. 웃음, 추임새 같은 감정 표현의 크기도 상대와 비슷하게 맞춘다.
+
+### 화상·전화 면접에서
+
+보이지 않는다고 대충 하지 않는다. 환경을 갖추면 스스로도 면접 모드가 되고, 면접관에게는 준비된 사람으로 보인다.
+
+| 항목 | 할 일 |
+| --- | --- |
+| 옷 | 전화 면접이라도 대면 면접에 입을 옷을 입는다 |
+| 장비 | 기기를 충전하고 인터넷 속도를 확인한다. 화상 도구(Zoom, Meet 등)를 미리 써 보고, 친구와 테스트 통화로 마이크·스피커를 점검한다 |
+| 자리 | 조용하고 밝은 곳의 책상에 앉는다. 배경의 잡동사니나 지나치게 사적인 물건은 치운다 |
+| 방해 차단 | 함께 사는 사람에게 미리 알리고, 필요하면 문에 안내문을 붙인다 |
+| 첫인사 | 악수가 없으니 면접관의 신호를 기다렸다가 「안녕하세요, 시간 내 주셔서 감사합니다. ○○○입니다」처럼 짧게 인사한다 |
+| 사람 사이의 연결 | 잡담할 틈이 적으니 공유하는 가치, 면접관의 역할에 대한 질문, 자연스럽게 나온 공통 관심사로 연결을 만든다. 선은 지킨다 |
+| 자세 | 바르게 앉으면 목소리도 또렷해진다. 전화 면접은 걷거나 몸을 많이 움직이면 소리가 흔들리고 긴장한 것처럼 들린다. 화상 면접은 구부정함, 다리 떨기, 머리 만지기가 다 보인다. 카메라를 보며 눈을 맞추고, 손은 책상 위에 두고 말하며 자연스럽게 쓴다 |
+
+코딩 면접을 화상으로 볼 때의 준비(공유 편집기, 이어폰, 펜과 종이)는 [[tech-interview-prep|기술 면접 준비]]에 있다.
 
 ## 면접 전
 
