@@ -28,6 +28,7 @@ UI 디자인 주제는 **화면이 어떻게 보이고 쓰이는가**를 다룬�
 - [전자상거래 UI 디자인](Frontend/UI-Design/ecommerce-ui.md): 구매 여정의 마찰 제거, 얕은 메뉴·필터·검색, 상품 페이지 첫 화면, 옵션별 선택 UI와 품절 표시, 재고 기반 가격 슬라이더
 - [제스처 기반 인터페이스](Frontend/UI-Design/gesture-interface.md): 대표 제스처, 콘텐츠 중심 화면, 시간·애니메이션 설계, 점진적 힌트, 시스템 제스처 충돌과 버튼 대안
 - [모바일 앱 UI 가이드라인: 한 손 조작, 내비게이션, 버튼, 입력](Frontend/UI-Design/mobile-app-ui-guidelines.md): 보는 영역과 조작 영역, 얕은 내비게이션, 버튼 위계와 레이블, 입력 피드백, 터치 크기
+- [Apple Human Interface Guidelines 요약: 원칙, 레이아웃, 바, 버튼, 알림](Frontend/UI-Design/apple-hig.md): 설계 원칙 여섯 가지, 안전 영역과 44pt, 계정·알림·평가 요청, 브랜딩·색·시작 화면·앱 아이콘, 내비게이션·검색·탭 바와 툴바, 경고창과 버튼 역할, 진행 표시
 - [UX 라이팅: 원칙, 가이드라인, 체크리스트](Frontend/UI-Design/ux-writing.md): 원칙→가이드라인→체크리스트 문서 구조, 화면 문구를 검토하는 8가지 기준, 다크 패턴과 보이스 톤
 - [디자이너는 어떻게 코드를 배우나](Frontend/UI-Design/designers-learning-code.md): 코드를 배우는 목적은 디자인 재료 이해, 터미널·Git·시맨틱 HTML·CSS 기초, 토큰·컴포넌트 같은 공학 개념
 - [와이어프레임, 목업, 프로토타입: 충실도에 따른 화면 설계 산출물](Frontend/UI-Design/wireframe-mockup-prototype.md): IA에서 프로토타입까지, 와이어프레임 충실도, 프로토타입 유형과 충실도 고르기, 클릭되는 와이어프레임과 도구 기준
