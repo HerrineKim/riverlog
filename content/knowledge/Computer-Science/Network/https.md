@@ -4,8 +4,8 @@ concept: "HTTPS"
 summary: "HTTP를 TLS로 감싸 도청·변조·위장을 막는 HTTPS. 대칭키·공개키를 섞어 쓰는 TLS 핸드셰이크, 첫 HTTP 요청의 빈틈을 막는 HSTS와 preload, HTTPS만으로는 부족한 경우를 정리한다."
 tags: ["network", "security", "http", "web", "frontend"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishket.com/magazine/detail/1862/", "https://www.ssl.com/article/ssl-certificate-validity-changes-what-you-need-to-know/", "https://www.encryptionconsulting.com/x25519mlkem768-tls-deployment-guide/", "https://howhttps.works/", "https://bytebytego.com/guides/how-does-https-work", "https://bytebytego.com/guides/https-ssl-handshake-and-data-encryption-explained-to-kids", "https://bytebytego.com/guides/is-https-safe", "https://bytebytego.com/guides/symmetric-encryption-vs-asymmetric-encryption", "https://parksb.github.io/article/24.html", "https://brunch.co.kr/@mobiinside/1482", "https://engineering.linecorp.com/ko/blog/best-practices-to-secure-your-ssl-tls/"]
+date: "2026-11-01"
+sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishket.com/magazine/detail/1862/", "https://www.ssl.com/article/ssl-certificate-validity-changes-what-you-need-to-know/", "https://www.encryptionconsulting.com/x25519mlkem768-tls-deployment-guide/", "https://howhttps.works/", "https://bytebytego.com/guides/how-does-https-work", "https://bytebytego.com/guides/https-ssl-handshake-and-data-encryption-explained-to-kids", "https://bytebytego.com/guides/is-https-safe", "https://bytebytego.com/guides/symmetric-encryption-vs-asymmetric-encryption", "https://parksb.github.io/article/24.html", "https://brunch.co.kr/@mobiinside/1482", "https://engineering.linecorp.com/ko/blog/best-practices-to-secure-your-ssl-tls/", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 핸드셰이크·HSTS 부분은 테크유람의 요즘IT 연재 「[안전한 웹을 위해 HTTPS 이해하기 ①HTTPS의 작동 원리](https://yozm.wishket.com/magazine/detail/1852/)」·「[②HTTPS를 강제하는 HSTS 기술](https://yozm.wishket.com/magazine/detail/1862/)」(2023.01)을 요약·재구성해 보강했다.
@@ -13,6 +13,7 @@ sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishke
 > 신뢰 저장소를 이용한 중간자 가로채기 부분은 ByteByteGo의 System Design 101 가이드 「[Is HTTPS Safe?](https://bytebytego.com/guides/is-https-safe)」, 「[How does HTTPS work?](https://bytebytego.com/guides/how-does-https-work)」를 바탕으로 보강했다.
 > 패킷 캡처로 본 HTTP와 HTTPS의 차이는 「[HTTPS는 어떻게 다를까?](https://parksb.github.io/article/24.html)」를 바탕으로 보강했다.
 > TLS 1.3의 변경점과 서버 설정 점검은 「[보안 프로토콜 TLS 1.3](https://brunch.co.kr/@mobiinside/1482)」, 「[안전한 SSL/TLS를 운영하기 위해 알아야 하는 것들](https://engineering.linecorp.com/ko/blog/best-practices-to-secure-your-ssl-tls/)」을 바탕으로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 mTLS를 보강했다.
 
 ## HTTPS란
 
@@ -195,6 +196,18 @@ Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
 HSTS 헤더도 **처음 한 번은 받아야** 효과가 있다. preload 목록은 이 첫 방문의 빈틈까지 막는다. 목록에 오른 도메인은 브라우저에 하드코딩되어 첫 방문부터 HTTPS로만 접속한다. Chrome 목록은 hstspreload.org에서 관리하고, 다른 브라우저도 이 목록을 바탕으로 한다.
 
 **되돌리기 어렵다.** 등록 후 인증서가 만료되거나 HTTPS 설정이 깨지면 사용자가 아예 접속할 수 없고, 목록에서 빠지는 데도 오래 걸린다. 모든 하위 도메인까지 HTTPS가 확실할 때만 신청한다.
+
+## mTLS: 클라이언트도 인증서를 낸다
+
+보통의 TLS는 **서버만** 인증서로 자기를 증명한다. 클라이언트는 그 뒤에 비밀번호나 토큰으로 증명한다. **상호 TLS**(mutual TLS, mTLS)는 핸드셰이크에서 서버가 클라이언트 인증서를 요청하고(`CertificateRequest`), 클라이언트도 인증서와 그 개인 키로 만든 서명을 보내 **양쪽 모두** 개인 키를 가진 주인임을 증명한다. 서버는 클라이언트 인증서가 신뢰하는 CA(대개 사내 CA)가 발급했는지 확인하고, 인증서의 정보(서비스 이름 등)로 상대를 식별한다.
+
+| 쓰는 곳 | 이유 |
+| --- | --- |
+| 마이크로서비스 사이 통신 | **제로 트러스트**: 내부망이라고 믿지 않고 모든 연결의 상대를 확인한다. 서비스 메시(Istio, Linkerd)가 사이드카에서 인증서 발급·교체와 mTLS를 자동으로 해 준다 |
+| 로그인 과정이 없는 기기 | IoT 기기처럼 사람이 비밀번호를 넣을 수 없는 클라이언트를 기기 인증서로 식별한다 |
+| 기업·금융 API | 오픈뱅킹, B2B 연동에서 허가된 상대만 접속하게 한다. 토큰을 클라이언트 인증서에 묶어 탈취된 토큰을 못 쓰게 하기도 한다(RFC 8705) |
+
+인증서 수가 서비스·기기 수만큼 늘어나므로, 짧은 수명과 자동 교체(SPIFFE/SPIRE, cert-manager) 없이는 운영이 어렵다.
 
 ## HTTPS만으로 충분하지 않은 경우
 
