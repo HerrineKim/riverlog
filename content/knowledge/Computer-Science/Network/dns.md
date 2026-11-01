@@ -4,8 +4,8 @@ concept: "DNS"
 summary: "도메인 이름을 IP 주소로 바꿔 주는 DNS. 이름 공간의 트리 구조(레이블, FQDN·PQDN, gTLD·ccTLD·역방향 도메인), UDP와 TCP를 쓰는 경우, 재귀·반복 질의 흐름과 DNS 포워더, hosts 파일의 우선순위, 손실 재시도, 주요 레코드 종류, TTL과 캐시(잘못된 캐시 바로잡기), 프론트엔드에서 쓰는 dns-prefetch·preconnect를 정리한다."
 tags: ["network", "dns", "web", "frontend"]
 source: mixed
-date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work", "https://bytebytego.com/guides/dns-record-types-you-should-know", "https://bytebytego.com/guides/internet-traffic-routing-policies", "http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work", "https://bytebytego.com/guides/dns-record-types-you-should-know", "https://bytebytego.com/guides/internet-traffic-routing-policies", "http://hacks.mozilla.or.kr/2019/10/a-cartoon-intro-to-dns-over-https/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 여러 자료를 종합한 노트에, ByteByteGo의 System Design 101 가이드 「[How Does the DNS Lookup Work?](https://bytebytego.com/guides/how-does-the-domain-name-system-dns-lookup-work)」, 「[DNS Record Types You Should Know](https://bytebytego.com/guides/dns-record-types-you-should-know)」의 서버 계층과 레코드 종류를 보강했다. DNS 라우팅 정책은 「[Internet Traffic Routing Policies](https://bytebytego.com/guides/internet-traffic-routing-policies)」로 보강했다.
@@ -13,6 +13,7 @@ sources: ["https://bytebytego.com/guides/how-does-the-domain-name-system-dns-loo
 > DNS의 계층과 전송 프로토콜, hosts 파일 우선순위, 손실 재시도, 잘못된 캐시 처리는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md)」의 질문을 기준으로 빠진 개념을 보강했다.
 > 도메인 이름 공간의 구조(레이블, FQDN·PQDN, 최상위 도메인 분류)와 동적 갱신은 고려사이버대학교 「컴퓨터네트워크」(2023-2학기) 강의 내용으로 보강했다.
 > DNS 포워더와 조건부 포워딩은 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 네트워크 면접 정리를 바탕으로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 비재귀 질의, DNS 영역, SOA·CERT 레코드, 관리형 DNS 예를 보강했다.
 
 ## DNS란
 
@@ -61,6 +62,7 @@ flowchart TB
 
 - 브라우저 → 리졸버는 **재귀 질의**다. "답을 다 찾아서 줘"라고 맡긴다.
 - 리졸버 → 루트·TLD·권한 서버는 **반복 질의**다. 다음에 물을 곳을 받아 차례로 따라간다.
+- 리졸버가 이미 답을 알고 있으면 **비재귀(non-recursive) 질의**로 끝난다. 캐시에 있는 레코드를 바로 돌려주거나, 묻는 상대가 그 레코드의 권한 서버라 추가 왕복 없이 답한다.
 - 캐시가 모두 빗나가면 루트·TLD·권한 서버를 차례로 오가야 해 조회가 느려진다. 그래서 각 층의 캐시와 TTL이 중요하다.
 
 **DNS 포워더**(forwarder)는 자기 캐시에 없는 질의를 루트부터 직접 따라가지 않고 **다른 리졸버에게 통째로 넘기는**(재귀 질의) DNS 서버다. 받은 답은 캐시해 두었다가 다음 질의에 바로 쓴다.
@@ -87,6 +89,10 @@ DNS는 한 서버가 모든 이름을 알지 않고 **트리 모양으로 책임
 | TLD 네임서버 | 각 도메인의 권한 네임서버 주소 | 일반 TLD(`.com`, `.org`), 국가 코드 TLD(`.kr`, `.us`), 테스트·예약용(`.test`) 등 |
 | 권한(authoritative) 네임서버 | 실제 레코드(최종 답) | 도메인 등록 기관이나 DNS 호스팅(Route 53, Cloudflare 등)에 등록해 둔다 |
 
+권한 서버가 레코드를 찾지 못하면 `NXDOMAIN`을 돌려준다. CNAME을 받으면 리졸버는 그 별칭 이름으로 조회를 처음부터 다시 한다.
+
+**DNS 영역(zone)** 은 이름 공간 트리에서 한 조직이 위임받아 관리하는 부분이다. `example.com` 영역의 관리자는 그 아래 이름의 레코드를 직접 고치고, `blog.example.com`처럼 하위 이름(서브도메인)을 같은 영역에 두거나 다른 네임서버에 다시 위임(NS 레코드)할 수 있다. 영역 하나의 레코드를 모은 텍스트가 **존 파일**(zone file)이다. 권한 서버를 직접 운영하지 않고 Route 53, Cloudflare DNS, Google Cloud DNS, Azure DNS, NS1 같은 **관리형 DNS**에 영역을 맡기는 경우가 많다.
+
 ## 주요 레코드
 
 | 레코드 | 의미 | 예 |
@@ -99,6 +105,8 @@ DNS는 한 서버가 모든 이름을 알지 않고 **트리 모양으로 책임
 | NS | 이 도메인을 맡은 네임서버 | `ns1.vercel-dns.com` |
 | PTR | IP → 도메인 (역방향 조회) | `14.215.184.93.in-addr.arpa → example.com`. 메일 서버의 신원 확인에 쓴다 |
 | SRV | 특정 서비스의 호스트와 **포트** | `_sip._tcp.example.com → 10 60 5060 sip.example.com`. VoIP, XMPP 등 |
+| SOA | 영역의 시작(Start of Authority). 주 네임서버, 관리자 메일, 일련번호, 보조 서버 갱신 주기, 부정 응답 캐시 시간 | 영역마다 하나 |
+| CERT·CAA | CERT는 공개 키 인증서를 담고(거의 쓰이지 않는다), CAA는 이 도메인의 인증서를 발급해도 되는 CA를 정한다 | `example.com CAA 0 issue "letsencrypt.org"` |
 
 - CNAME은 서브도메인을 다른 이름에 붙일 때 쓰고, 도메인 루트(apex)에는 쓸 수 없다. 그래서 DNS 업체들이 ALIAS·CNAME flattening 같은 대안을 제공한다.
 - TXT는 SPF·DKIM·DMARC 같은 메일 보안 설정과, 서비스가 「이 도메인의 주인이 맞는가」를 확인하는 인증 문자열에 쓴다.
