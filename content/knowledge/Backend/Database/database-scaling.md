@@ -4,12 +4,13 @@ concept: "Database Scaling"
 summary: "DB가 느려지거나 한계에 닿을 때 싼 것부터 쓰는 수단을 순서대로 정리했다. 인덱스·쿼리 튜닝·커넥션 풀·캐시·구체화된 뷰(갱신 방식)·반정규화·수직 확장·읽기 복제본·파티셔닝(프루닝, 분할 방식, 로컬·글로벌 인덱스)·샤딩의 효과와 대가, 복제 구조(단일 리더·다중 리더·리더 없음)와 동기화 방식, 읽기 복제본 패턴의 복제 지연과 라우팅(애플리케이션 vs 미들웨어)을 다룬다."
 tags: ["database", "backend", "performance", "scalability", "architecture"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/7-must-know-strategies-to-scale-your-database", "https://bytebytego.com/guides/a-cheatsheet-on-database-performance", "https://bytebytego.com/guides/read-replica-pattern", "https://bytebytego.com/guides/how-to-implement-read-replica-pattern", "https://bytebytego.com/guides/database-middleware", "https://www.postgresql.org/docs/current/rules-materializedviews.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://dev.mysql.com/doc/refman/8.4/en/replication-semisync.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/7-must-know-strategies-to-scale-your-database", "https://bytebytego.com/guides/a-cheatsheet-on-database-performance", "https://bytebytego.com/guides/read-replica-pattern", "https://bytebytego.com/guides/how-to-implement-read-replica-pattern", "https://bytebytego.com/guides/database-middleware", "https://www.postgresql.org/docs/current/rules-materializedviews.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://dev.mysql.com/doc/refman/8.4/en/replication-semisync.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[7 Must-Know Strategies to Scale Your Database](https://bytebytego.com/guides/7-must-know-strategies-to-scale-your-database)」, 「[A Cheatsheet on Database Performance](https://bytebytego.com/guides/a-cheatsheet-on-database-performance)」, 「[Read Replica Pattern](https://bytebytego.com/guides/read-replica-pattern)」, 「[How to Implement Read Replica Pattern](https://bytebytego.com/guides/how-to-implement-read-replica-pattern)」, 「[Database Middleware](https://bytebytego.com/guides/database-middleware)」을 바탕으로 재구성한 노트다. 복제 구조와 동기화 방식, 클러스터링 구조는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 DB·[시스템 설계](https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md) 질문을 실마리로 보강했다.
 > 구체화된 뷰의 갱신 방식과 파티셔닝은 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기) 강의 내용으로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 복제본의 운영 활용, 계단식 복제, 리더 장애 시 읽기 전용 운영을 보강했다.
 
 ## 순서가 중요하다
 
@@ -143,6 +144,10 @@ MySQL 바이너리 로그는 SQL 문장(statement)이나 바뀐 행(row, 기본�
 | 구조가 단순하고 거의 모든 RDB가 기본 지원한다 | 리더가 죽으면 승격까지 쓰기가 멈추고, 비동기면 최근 쓰기를 잃을 수 있다 |
 | 읽기는 복제본을 늘려 쉽게 확장한다 | 복제본 읽기는 복제 지연만큼 낡을 수 있다 |
 | 리더에서 읽으면 강한 일관성을 얻는다 | 리더가 먼 리전에 있으면 쓰기 지연이 크다 |
+
+- **복제본을 운영 작업에 쓴다.** 전체 백업, 무거운 분석 쿼리, 스키마 변경 리허설을 복제본에서 하면 리더에 거의 영향이 없다. 복제본은 잠시 내렸다가 다시 붙여 따라잡게 해도 서비스가 멈추지 않는다.
+- **복제본을 계단식으로 잇는다.** 복제본이 다시 다른 복제본에 변경을 넘기는 나무 모양(cascading replication)으로 두면, 리더가 직접 보내야 하는 복제본 수가 줄어 리더 부담이 준다. 대신 아래 단계일수록 지연이 쌓인다. 복제본이 많을수록 복제할 곳이 늘어 복제 지연도 커진다.
+- **리더가 죽으면 읽기 전용으로 버틴다.** 승격이나 새 리더 준비가 끝날 때까지 복제본으로 읽기만 받아 서비스를 부분적으로 이어 간다.
 
 리더로 쓰기가 몰려 병목이 생기면 다음 순서로 푼다.
 
