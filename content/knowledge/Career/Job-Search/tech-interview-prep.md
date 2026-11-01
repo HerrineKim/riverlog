@@ -4,12 +4,13 @@ concept: "Tech Interview"
 summary: "개발자 기술 면접은 코딩, 시스템 디자인, 객체 지향 설계(OOD), 행동(behavioral) 면접으로 나뉜다. 유형별로 무엇을 보는지와 준비 자료, 퀴즈·온라인 코딩 테스트·과제·화상 면접·온사이트 같은 진행 형식별 대비, 면접 언어 고르기, 남은 시간에 맞춘 준비 계획(주제 우선순위, Blind 75·Grind 75), 코딩 인터뷰를 자기소개 → 질문 명확화 → 접근 논의 → 말하며 코딩 → 테스트 → 역질문으로 진행하는 법을 정리하고, 시스템 디자인 면접의 유형과 요구 사항 확인 → 용량 추정 → 상위 설계 → DB 설계 → 인터페이스 설계 → 확장성 → 신뢰성의 7단계를 다룬다."
 tags: ["career", "interview", "job-search", "architecture", "algorithm"]
 source: other
-date: "2026-10-30"
-sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss", "https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview", "https://jeinalog.tistory.com/30", "https://github.com/donnemartin/system-design-primer", "https://www.techinterviewhandbook.org/software-engineering-interview-guide/", "https://www.techinterviewhandbook.org/coding-interview-prep/", "https://www.techinterviewhandbook.org/coding-interview-study-plan/", "https://www.techinterviewhandbook.org/coding-interview-cheatsheet/", "https://www.techinterviewhandbook.org/best-practice-questions/", "https://www.techinterviewhandbook.org/programming-languages-for-coding-interviews/", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://www.techinterviewhandbook.org/mock-interviews/", "https://www.techinterviewhandbook.org/landscape/", "https://www.techinterviewhandbook.org/system-design/"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss", "https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview", "https://jeinalog.tistory.com/30", "https://github.com/donnemartin/system-design-primer", "https://www.techinterviewhandbook.org/software-engineering-interview-guide/", "https://www.techinterviewhandbook.org/coding-interview-prep/", "https://www.techinterviewhandbook.org/coding-interview-study-plan/", "https://www.techinterviewhandbook.org/coding-interview-cheatsheet/", "https://www.techinterviewhandbook.org/best-practice-questions/", "https://www.techinterviewhandbook.org/programming-languages-for-coding-interviews/", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://www.techinterviewhandbook.org/mock-interviews/", "https://www.techinterviewhandbook.org/landscape/", "https://www.techinterviewhandbook.org/system-design/", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How to Ace System Design Interviews](https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss)」, 「[Recommended Materials for Technical Interviews](https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview)」를 바탕으로 재구성한 노트다.
 > 진행 형식, 언어, 준비 계획, 코딩 인터뷰 진행 순서, 시스템 디자인 면접 유형은 Tech Interview Handbook의 「[Software Engineer Interview Guide](https://www.techinterviewhandbook.org/software-engineering-interview-guide/)」, 「[Coding Interview Prep](https://www.techinterviewhandbook.org/coding-interview-prep/)」, 「[Study Plan](https://www.techinterviewhandbook.org/coding-interview-study-plan/)」, 「[Best Practice Questions](https://www.techinterviewhandbook.org/best-practice-questions/)」, 「[Programming Languages](https://www.techinterviewhandbook.org/programming-languages-for-coding-interviews/)」, 「[Coding Interview Cheatsheet](https://www.techinterviewhandbook.org/coding-interview-cheatsheet/)」, 「[Interview Formats](https://www.techinterviewhandbook.org/interview-formats-top-companies/)」, 「[Mock Interviews](https://www.techinterviewhandbook.org/mock-interviews/)」, 「[Landscape](https://www.techinterviewhandbook.org/landscape/)」, 「[System Design](https://www.techinterviewhandbook.org/system-design/)」로, 코딩 인터뷰의 말하기 원칙은 「[구글 신입 엔지니어 인터뷰 준비 후기](https://jeinalog.tistory.com/30)」를 바탕으로 보강했다.
+> Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」로 면접관이 보는 것, 준비의 세 갈래, 면접의 변천, 답하는 요령, 단골 문제를 보강했다.
 
 ## 면접 유형과 준비 자료
 
@@ -168,9 +169,13 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 | 객체 지향 설계 | 클래스·객체와 관계, 클래스 다이어그램, 인터페이스, 디자인 패턴 |
 | 프론트엔드 | 복잡한 클라이언트 앱·UI 컴포넌트 구조와 클라이언트-서버 API([[frontend-interview#프론트엔드 시스템 디자인과 RADIO\|RADIO 프레임워크]]) |
 
-단골 백엔드 문제는 URL 단축기(Bitly), 소셜 미디어(Twitter), 동영상 서비스(YouTube, [[media-processing-pipeline|이미지·동영상 처리 서버 설계]]), 채팅([[chat-system-design|채팅 시스템 설계]]), 파일 공유(Google Drive, Dropbox), 차량 호출([[location-based-service|위치 기반 서비스 설계]]), 사진 공유, 전자상거래, 채용 포털, 웹 크롤러([[web-crawler-at-scale|대규모 웹 크롤러 설계]])다.
+단골 백엔드 문제는 URL 단축기(Bitly, [[url-shortener-design|URL 단축기 설계]]), 소셜 미디어(Twitter), 동영상 서비스(YouTube, [[media-processing-pipeline|이미지·동영상 처리 서버 설계]]), 채팅([[chat-system-design|채팅 시스템 설계]]), 파일 공유(Google Drive, Dropbox), 차량 호출([[location-based-service|위치 기반 서비스 설계]]), 사진 공유([[photo-sharing-design|사진 공유 서비스 설계]]), 전자상거래, 채용 포털, 웹 크롤러([[web-crawler-at-scale|대규모 웹 크롤러 설계]])다.
 
-시스템 디자인 면접에는 정답이 없다. **요구를 묻고, 숫자로 규모를 잡고, 단순한 그림에서 출발해 병목을 하나씩 푸는 과정**을 보여 주는 것이 핵심이다.
+그 밖에 전 세계 채팅(Messenger, WhatsApp), 질문·게시판 서비스(Quora, Reddit), 전 세계 동영상 스트리밍(Netflix), API 속도 제한기, 주변 장소 검색(Yelp), 검색어 자동 완성(type-ahead), 티켓 예매(Ticketmaster)도 자주 나온다.
+
+시스템 디자인 면접에는 정답이 없다. **요구를 묻고, 숫자로 규모를 잡고, 단순한 그림에서 출발해 병목을 하나씩 푸는 과정**을 보여 주는 것이 핵심이다. 대규모 시스템을 직접 만들어 본 지원자는 드물고 면접관도 그것을 안다. 보는 것은 경험이 아니라 **구성 요소에 대한 대화를 이끌고 요구 사항에 비춰 해법을 평가하는 능력**이다. 그래서 준비도 분산 시스템의 기초, 대규모 웹 애플리케이션 구조, 분산 시스템 설계 방법 세 갈래로 하고, 회사마다 다른 면접 방식(Amazon은 리더십 원칙을 섞는다)을 따로 확인한다.
+
+면접 자체도 시대에 따라 바뀌었다. 2000년대 초에는 코딩과 함께 퍼즐형 질문(brain teaser)을 냈지만 실제 프로그래밍과 동떨어져 Google부터 실제 문제를 코드로 풀게 바꿨다. 2000년대 중반 MapReduce와 BigTable로 대규모 시스템의 관행이 자리 잡고 클라우드가 퍼지면서, 2012년 무렵 Facebook이 시스템 디자인을 면접에 넣었고 표준화된 설계 문제가 퍼졌다.
 
 ```mermaid
 flowchart TB
@@ -188,7 +193,9 @@ flowchart TB
 | 6. 확장성·성능 | 수직·수평 확장, 캐시, 인덱스, 비정규화, 샤딩, 복제, CDN 중 병목에 맞는 처방을 낸다 | 병목이 어디인지 말하지 않고 기술 이름만 나열한다 |
 | 7. 신뢰성·복원력 | 단일 장애 지점을 찾아 이중화, 장애 조치, 재시도·서킷 브레이커로 영향을 줄인다 | 장애 시나리오를 묻기 전까지 다루지 않는다 |
 
-- 각 단계에서 **선택의 이유와 대가**를 말한다. 면접관은 답보다 판단 과정을 본다.
+- 시작할 때 **아는 것부터 말한다.** 필요한 기능, 예상되는 문제, 예상 트래픽을 먼저 말하면 계획하는 능력이 보이고, 면접관이 잘못된 가정을 일찍 바로잡아 줄 수 있다.
+- 각 단계에서 **선택의 이유와 대가**를 말한다. 결정마다 좋은 점과 나쁜 점을 적어도 하나씩 든다. 면접관은 답보다 판단 과정을 본다.
+- 끝에는 시스템이 앞으로 어디서 더 나아질 수 있는지(예: 추천·이상 탐지에 머신러닝을 쓰는 지점)를 짧게 덧붙이면, 지금의 해법 너머를 보는 사람이라는 인상을 준다.
 - 시간을 나눠 쓴다. 1~3단계에서 전체 그림을 끝내고, 남은 시간에 면접관이 관심 있는 곳을 깊게 판다.
 - 설계 체크리스트와 품질 속성은 [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]], 단골 선택지와 증상별 처방은 [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], 자주 쓰이는 알고리즘은 [[real-world-algorithms|현실 시스템을 움직이는 알고리즘과 자료구조]]에 있다.
 
