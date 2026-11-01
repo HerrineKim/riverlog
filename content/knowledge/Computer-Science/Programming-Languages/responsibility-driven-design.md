@@ -4,7 +4,7 @@ concept: "Responsibility-Driven Design"
 summary: "객체지향 설계는 좋은 객체가 아니라 좋은 협력을 설계하는 일이다. 메시지를 먼저 정하고 그 메시지를 처리할 책임을 가진 객체를 고른다. 객체가 받는 메시지의 집합이 인터페이스가 되고, 속성은 책임을 정한 뒤에 따라온다."
 tags: ["oop", "design-pattern", "architecture", "software-engineering"]
 source: other
-date: "2026-10-31"
+date: "2026-11-01"
 sources: ["https://techblog.woowahan.com/2502/", "https://www.slideshare.net/baejjae93/ss-150432699", "https://youtu.be/dJ5C4qRqAgA", "https://github.com/checkcheckzz/system-design-interview"]
 ---
 
@@ -62,6 +62,8 @@ flowchart LR
 | 2. 객체 정의 | 시나리오의 핵심 개념마다 클래스 후보를 둔다. 명사는 속성·클래스, 동사는 메서드 후보다. 다만 위 원칙대로 속성보다 메시지(책임)를 먼저 정한다 |
 | 3. 관계 | 유일해야 하는 인스턴스(싱글턴), 하나가 여럿을 가진다(합성), 하나가 다른 것의 한 종류다(상속, 대개는 인터페이스와 합성이 낫다) |
 | 4. 패턴 적용 | 바뀔 부분이 보이면 [[gof-design-patterns\|디자인 패턴]]으로 감싸 재사용과 확장에 대비한다 |
+
+요구 사항 정리부터 UML, 코드 골격까지의 전체 풀이 순서와 주차장·도서관 등 17개 사례는 [[ood-interview-approach|객체 지향 설계 면접: 풀이 순서와 반복되는 설계 부품]]에 있다.
 
 ## 의존성으로 이어지는 문제
 
