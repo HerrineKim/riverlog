@@ -4,11 +4,12 @@ concept: "Unique ID Generation"
 summary: "여러 서버가 동시에 겹치지 않는 ID를 만드는 다섯 가지 방법(UUID, Snowflake, DB 자동 증가, DB 세그먼트, Redis)을 비교하고, 시간순 정렬·64비트·저지연 같은 요구 사항에 따라 어떤 방식을 고를지, 시간순 UUID(UUIDv7)가 인덱스 문제를 어떻게 푸는지 정리했다."
 tags: ["backend", "database", "architecture", "performance"]
 source: other
-date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/explaining-5-unique-id-generators-in-distributed-systems", "https://bytebytego.com/guides/unique-id-generator", "https://www.rfc-editor.org/rfc/rfc9562", "https://blog.twitter.com/2010/announcing-snowflake", "https://github.com/twitter/snowflake/"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/explaining-5-unique-id-generators-in-distributed-systems", "https://bytebytego.com/guides/unique-id-generator", "https://www.rfc-editor.org/rfc/rfc9562", "https://blog.twitter.com/2010/announcing-snowflake", "https://github.com/twitter/snowflake/", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Explaining 5 Unique ID Generators](https://bytebytego.com/guides/explaining-5-unique-id-generators-in-distributed-systems)」, 「[Unique ID Generator](https://bytebytego.com/guides/unique-id-generator)」를 바탕으로, UUID 버전은 [RFC 9562](https://www.rfc-editor.org/rfc/rfc9562)로 확인해 재구성한 노트다. Snowflake의 설계 배경은 Twitter의 「[Announcing Snowflake](https://blog.twitter.com/2010/announcing-snowflake)」(2010)와 「[twitter/snowflake](https://github.com/twitter/snowflake/)」 저장소로 보강했다.
+> Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 Instagram 풀이로 티켓 서버의 홀짝 이중화를 더했다.
 
 ## 왜 어려운가
 
@@ -49,6 +50,15 @@ Twitter가 Snowflake를 만든 요구 사항이 이 방식의 성격을 그대�
 | MySQL 티켓 서버(Flickr 방식) | 여러 대를 두면 순서 보장을 위해 재동기화 장치가 필요하다 |
 | UUID | 128비트라 64비트에 들어가지 않는다 |
 | ZooKeeper 순차 노드 | 필요한 처리량이 나오지 않는다 |
+
+티켓 서버 방식은 ID만 내주는 전용 DB 인스턴스를 두는 것이다. 64비트 ID 열 하나만 있는 테이블에 행을 넣고 그 자동 증가 값을 새 객체의 ID로 쓴다. 이 DB가 단일 장애 지점이 되는 문제는 두 대를 두고 한 대는 홀수, 한 대는 짝수만 내게 해서 푼다.
+
+```text
+KeyGeneratingServer1:  auto-increment-increment = 2, auto-increment-offset = 1   → 1, 3, 5, …
+KeyGeneratingServer2:  auto-increment-increment = 2, auto-increment-offset = 2   → 2, 4, 6, …
+```
+
+앞에 로드 밸런서를 두고 라운드 로빈으로 번갈아 쓰면 한 대가 죽어도 ID가 계속 나온다. 두 서버가 내준 개수가 어긋나도 겹치지만 않으면 되므로 문제가 없고, 대신 전체 ID가 시간순으로 정렬된다는 보장은 잃는다. 사용자, 댓글처럼 객체마다 ID 테이블을 따로 둘 수도 있다.
 
 그래서 **조율 없이** 각 서버가 「타임스탬프 + 워커 번호 + 순번」을 조합한다. 워커 번호만 시작할 때 ZooKeeper로 받는다(설정 파일로도 줄 수 있다). 결과는 완전 정렬이 아니라 **k-정렬**이다. 1초 안에 만든 트윗끼리는 ID도 1초 범위 안에 있다는 정도의 보장이다. 2010년 공개판은 은퇴했고, Twitter 내부판은 자체 인프라에 묶인 재작성 버전이다.
 
