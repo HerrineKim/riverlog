@@ -4,11 +4,12 @@ concept: "Proxy"
 summary: "클라이언트와 서버 사이에서 요청을 대신 주고받는 프록시 서버. 누구를 대리하느냐에 따라 나뉘는 포워드 프록시와 리버스 프록시의 차이, 리버스 프록시가 맡는 일(TLS 종료·로드 밸런싱·캐시), VPN·NAT와의 관계, 원래 클라이언트 IP를 전달하는 헤더를 정리한다."
 tags: ["network", "http", "backend", "security", "infra"]
 source: other
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/8f7f756919304866b8d7d8413d663406", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded", "https://bytebytego.com/guides/proxy-vs-reverse-proxy"]
+date: "2026-11-01"
+sources: ["https://80000coding.notion.site/8f7f756919304866b8d7d8413d663406", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded", "https://bytebytego.com/guides/proxy-vs-reverse-proxy", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「Proxy, Front Proxy, Reverse Proxy란?」을 바탕으로 재구성하고, ByteByteGo의 System Design 101 가이드 「[Proxy vs Reverse Proxy](https://bytebytego.com/guides/proxy-vs-reverse-proxy)」로 보강한 노트다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 포워드 프록시의 쓰임과 한계, 리버스 프록시의 단일 장애점, 로드 밸런서와의 차이를 보강했다.
 
 ## 프록시란
 
@@ -39,6 +40,8 @@ flowchart LR
 | 쓰임 | 사내 인터넷 접근 통제·감사, 공용 캐시, 지역 제한 우회 | 웹 서버 앞단, API 게이트웨이, CDN |
 | 예 | Squid, 기업 보안 게이트웨이 | Nginx, HAProxy, Envoy, Cloudflare |
 
+포워드 프록시는 특정 콘텐츠 차단, 지역 제한(geo-blocking) 우회, 익명성, 그 밖의 접속 제한 우회에 쓰인다. 다만 목적지 서버에 IP를 감출 뿐 **프록시 운영자는 사용자의 요청을 모두 볼 수 있고** 기록할 수 있다. 직접 운영하면 설정·유지 비용도 든다.
+
 ## 리버스 프록시가 맡는 일
 
 | 기능 | 설명 |
@@ -49,6 +52,10 @@ flowchart LR
 | 정책 일원화 | 방화벽 규칙, 요청 크기 제한, 속도 제한, WAF를 한곳에서 관리한다 |
 | 캐시·압축 | 정적 자원과 캐시 가능한 응답을 직접 응답한다. CDN은 전 세계에 흩어진 리버스 프록시 캐시다([[cdn\|CDN]]) |
 | 경로 라우팅 | `/api`는 API 서버로, 나머지는 프런트 서버로. 마이크로서비스나 컨테이너 환경에서 서비스 여러 개를 한 도메인 아래 묶는다 |
+
+리버스 프록시를 두면 구성이 복잡해진다. 한 대뿐이면 그 자체가 **단일 장애점**이 되고, 여러 대로 페일오버를 만들면 복잡도가 더 오른다.
+
+**로드 밸런서는 서버가 여러 대일 때** 같은 일을 하는 서버들에 나눠 주는 것이 목적이다. 리버스 프록시는 **웹 서버가 한 대여도** 보안·캐시·TLS 종료를 위해 쓸 만하다. 리버스 프록시는 로드 밸런서 역할을 겸할 수 있지만, 로드 밸런서가 곧 리버스 프록시의 모든 기능을 하지는 않는다.
 
 리버스 프록시, 로드 밸런서, API 게이트웨이는 같은 자리에 서서 기능이 겹친다. 주된 목적으로 구분하면 리버스 프록시는 **서버를 숨기고 보호**, 로드 밸런서는 **고르게 나누기**, API 게이트웨이는 **API 호출의 라우팅과 정책**이다. 비교표는 [[api-gateway|API 게이트웨이]]에 있다.
 

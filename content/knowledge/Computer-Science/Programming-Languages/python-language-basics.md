@@ -1,14 +1,15 @@
 ---
 title: "Python 언어 기본: 객체와 가변성, 함수, 데코레이터, 클래스, 타입 힌트, import"
 concept: "Python Basics"
-summary: "Python 문법이 실제로 어떻게 동작하는지 주제별로 정리한다. 이름과 객체, 가변·불변 타입과 is·==, 얕은 복사와 깊은 복사, *args·**kwargs와 인자 종류, 일급 함수와 LEGB 스코프·클로저·nonlocal, 람다의 제약, 데코레이터, 컴프리헨션과 제너레이터 식, 컨텍스트 매니저, 클래스 변수와 인스턴스 변수, 매직 메서드, 프로퍼티와 디스크립터, 타입 힌트와 mypy, import 시스템과 __init__.py, Python 2와 3의 차이."
+summary: "Python 문법이 실제로 어떻게 동작하는지 주제별로 정리한다. 이름과 객체, 가변·불변 타입과 is·==, 얕은 복사와 깊은 복사, *args·**kwargs와 인자 종류, 일급 함수와 LEGB 스코프·클로저·nonlocal, 람다의 제약, 데코레이터, 컴프리헨션과 제너레이터 식, 컨텍스트 매니저, 클래스 변수와 인스턴스 변수, 이름 맹글링, 매직 메서드, 프로퍼티와 디스크립터, 타입 힌트와 mypy, import 시스템과 __init__.py, Python 2와 3의 차이."
 tags: ["python", "programming-language", "oop", "type-system"]
 source: other
-date: "2026-10-30"
-sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/python.md", "https://docs.python.org/3/reference/datamodel.html", "https://docs.python.org/3/reference/executionmodel.html", "https://docs.python.org/3/howto/descriptor.html", "https://docs.python.org/3/reference/import.html", "https://docs.python.org/3/library/copy.html", "https://docs.python.org/3/library/contextlib.html", "https://peps.python.org/pep-0484/", "https://peps.python.org/pep-0649/"]
+date: "2026-11-01"
+sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/python.md", "https://docs.python.org/3/reference/datamodel.html", "https://docs.python.org/3/reference/executionmodel.html", "https://docs.python.org/3/howto/descriptor.html", "https://docs.python.org/3/reference/import.html", "https://docs.python.org/3/library/copy.html", "https://docs.python.org/3/library/contextlib.html", "https://peps.python.org/pep-0484/", "https://peps.python.org/pep-0649/", "https://github.com/tssovi/grokking-the-object-oriented-design-interview"]
 ---
 
 > fru1tworld/cs-basic 모의 면접 질문 목록의 Python 질문이 묻는 개념을, Python 언어 레퍼런스(데이터 모델, 실행 모델, import 시스템)와 PEP로 확인해 정리한 노트다.
+> 「비공개 속성과 이름 맹글링」 절의 예제는 GitHub 저장소 「[Grokking the Object Oriented Design Interview](https://github.com/tssovi/grokking-the-object-oriented-design-interview)」를 바탕으로 보강했다.
 
 제너레이터·MRO·메모리 관리·GIL과 동시성·성능은 [[python-internals|Python 언어 동작]]에, 가상 환경과 패키지 관리 도구는 [[python-pyenv-setup|pyenv로 Python 환경 잡기]]에 있다.
 
@@ -195,6 +196,28 @@ class Dog:
 ```
 
 `d.kind`는 인스턴스 `__dict__`에서 먼저 찾고, 없으면 클래스(그리고 MRO)에서 찾는다. `d.kind = "x"`로 **대입**하면 인스턴스 변수가 새로 생겨 클래스 변수를 가릴 뿐 클래스 변수는 그대로다. 반면 `d.tricks.append(...)`는 대입이 아니라 공유된 리스트를 고친다. 인스턴스마다 다른 가변 값은 `__init__`에서 만든다. `@classmethod`는 첫 인자로 클래스(`cls`)를 받아 대안 생성자(`from_json`)에, `@staticmethod`는 아무것도 받지 않아 네임스페이스로 묶은 함수에 쓴다.
+
+### 비공개 속성과 이름 맹글링
+
+Python에는 `private` 키워드가 없다. 밑줄 하나(`_x`)는 「내부용」이라는 관례일 뿐이고, **밑줄 둘(`__x`)로 시작하는 속성은 클래스 안에서 `_클래스이름__x`로 이름이 바뀐다(이름 맹글링, name mangling).** 하위 클래스의 같은 이름과 충돌하지 않게 하려는 장치이지 접근을 완전히 막지는 않는다.
+
+```python
+class Product:
+    def __init__(self):
+        self.__maxprice = 900            # 실제 이름은 _Product__maxprice
+    def sell(self):
+        print(self.__maxprice)
+    def set_max_price(self, price):
+        self.__maxprice = price
+
+p = Product()
+p.__maxprice = 1000   # 바깥에서는 맹글링이 일어나지 않아 새 속성 __maxprice가 생길 뿐이다
+p.sell()              # 900
+p.set_max_price(1000) # 공개 메서드를 거쳐야 바뀐다
+p.sell()              # 1000
+```
+
+객체 상태를 공개 메서드로만 바꾸게 하는 캡슐화를 Python에서는 이 관례와 맹글링, `property`로 흉내 낸다.
 
 ### 매직 메서드
 

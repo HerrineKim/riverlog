@@ -4,7 +4,7 @@ concept: "Design Patterns"
 summary: "객체 지향 설계에서 반복되는 문제의 검증된 해법인 GoF 디자인 패턴을 생성·구조·행위 세 갈래로 나눠, 패턴마다 푸는 문제와 한 줄 비유로 정리한다. 패턴은 어휘이자 도구이며, 필요 없는 곳에 쓰면 오히려 복잡도를 늘린다."
 tags: ["design-pattern", "oop", "software-engineering", "clean-code", "computer-science"]
 source: other
-date: "2026-10-31"
+date: "2026-11-01"
 sources: ["https://bytebytego.com/guides/18-key-design-patterns-every-developer-should-know", "https://bytebytego.com/guides/design-patterns-cheat-sheet-part-1-and-part-2", "http://sourcemaking.com/design-patterns-and-tips"]
 ---
 
@@ -78,6 +78,7 @@ GoF의 23개 중 나머지(인터프리터)는 작은 언어의 문법을 클래
 - 언어 기능이 패턴을 대신하기도 한다. 일급 함수가 있으면 전략·커맨드는 함수 하나로 끝나고, 이터레이터는 언어의 반복 프로토콜이 맡는다.
 - 다중 스레드 환경에 특화된 패턴(생산자-소비자, 스레드 풀 등)은 [[multithreading-patterns|멀티스레딩 디자인 패턴]]에 있다. JavaScript로 구현한 생성 패턴은 [[js-design-patterns|JavaScript 디자인 패턴]]에 있다.
 - 패턴은 UML 클래스 다이어그램으로 그려 설명하는 경우가 많다. 표기법은 [[software-engineering|소프트웨어 설계와 공학]]에 있다.
+- 주차장·ATM·체스 같은 객체 지향 설계 면접 사례 어디에 어떤 패턴이 쓰이는지는 [[ood-interview-approach#사례별 디자인 패턴 지도|객체 지향 설계 면접]]에 모아 두었다.
 
 ## 정리
 
@@ -86,4 +87,4 @@ GoF의 23개 중 나머지(인터프리터)는 작은 언어의 문법을 클래
 - 구조가 비슷한 패턴은 **의도**로 구분한다.
 - 패턴을 쓰려고 문제를 만들지 않는다. 쓰지 않아도 될 곳의 패턴은 복잡도만 더한다.
 
-관련 노트: [[js-design-patterns|JavaScript 디자인 패턴: 생성 패턴]], [[software-architecture-patterns|소프트웨어 아키텍처 패턴]], [[programming-paradigms|프로그래밍 패러다임]], [[coding-principles|좋은 코드를 위한 열 가지 원칙]], [[frontend-solid|프론트엔드와 SOLID 원칙]]
+관련 노트: [[js-design-patterns|JavaScript 디자인 패턴: 생성 패턴]], [[software-architecture-patterns|소프트웨어 아키텍처 패턴]], [[programming-paradigms|프로그래밍 패러다임]], [[coding-principles|좋은 코드를 위한 열 가지 원칙]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[ood-interview-approach|객체 지향 설계 면접: 풀이 순서와 반복되는 설계 부품]]

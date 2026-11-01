@@ -4,15 +4,22 @@ concept: "Web Scalability"
 summary: "확장 가능한 웹 애플리케이션을 이루는 구성 요소(DNS, 로드 밸런서, CDN, 프론트 웹 서버, 웹 서비스, 캐시, 메시지 큐와 워커, 데이터 저장소, 검색엔진)를 한 장의 지도로 정리했다. 3-Tier와 MSA의 데이터 흐름, 확장의 세 축(복제, 기능 분할, 데이터 분할), HTTP 캐시와 객체 캐시, 비동기 처리와 이벤트 기반 구조, 구간별 보안, 그리고 사람과 팀을 확장하는 법까지 다룬다."
 tags: ["backend", "architecture", "scalability", "cache", "msa", "security"]
 source: other
-date: "2026-10-31"
-sources: ["https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db", "https://bytebytego.com/guides/10-essential-components-of-a-production-web-application", "https://bytebytego.com/guides/8-must-know-scalability-strategies", "https://bytebytego.com/guides/a-crash-course-on-architectural-scalability", "https://bytebytego.com/guides/how-to-scale-a-website-to-support-millions-of-users", "http://www.lecloud.net/post/7295452622/scalability-for-dummies-part-1-clones", "http://www.lecloud.net/post/7994751381/scalability-for-dummies-part-2-database", "http://www.lecloud.net/post/9246290032/scalability-for-dummies-part-3-cache", "http://www.lecloud.net/post/9699762917/scalability-for-dummies-part-4-asynchronism", "http://www.hiredintech.com/system-design/scalability-fundamentals/", "http://lethain.com/introduction-to-architecting-systems-for-scale/", "https://aosabook.org/en/v2/distsys.html"]
+date: "2026-11-01"
+sources: ["https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db", "https://bytebytego.com/guides/10-essential-components-of-a-production-web-application", "https://bytebytego.com/guides/8-must-know-scalability-strategies", "https://bytebytego.com/guides/a-crash-course-on-architectural-scalability", "https://bytebytego.com/guides/how-to-scale-a-website-to-support-millions-of-users", "http://www.lecloud.net/post/7295452622/scalability-for-dummies-part-1-clones", "http://www.lecloud.net/post/7994751381/scalability-for-dummies-part-2-database", "http://www.lecloud.net/post/9246290032/scalability-for-dummies-part-3-cache", "http://www.lecloud.net/post/9699762917/scalability-for-dummies-part-4-asynchronism", "http://www.hiredintech.com/system-design/scalability-fundamentals/", "http://lethain.com/introduction-to-architecting-systems-for-scale/", "https://aosabook.org/en/v2/distsys.html", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > Olga Mitroshyna의 「[Software Architecture & System Design: I wish I had known about this earlier…](https://medium.com/@olgamitroshyna/software-architecture-i-wish-i-had-known-about-this-earlier-4df43eae57db)」(2022.05)를 바탕으로 재구성한 노트다. 운영 요소(CI/CD, 모니터링, 알림)는 ByteByteGo의 System Design 101 가이드 「[10 Essential Components of a Production Web Application](https://bytebytego.com/guides/10-essential-components-of-a-production-web-application)」로, 확장의 병목·전략과 단계별 성장 과정은 같은 가이드의 「[8 Must-Know Scalability Strategies](https://bytebytego.com/guides/8-must-know-scalability-strategies)」, 「[A Crash Course on Architectural Scalability](https://bytebytego.com/guides/a-crash-course-on-architectural-scalability)」, 「[Scaling Websites for Millions of Users](https://bytebytego.com/guides/how-to-scale-a-website-to-support-millions-of-users)」로 보강했다. 원 자료는 Artur Ejsmont의 책 『Web Scalability for Startup Engineers』(2015)다. 복제 서버의 황금률, 캐시 두 패턴, 비동기 두 방식은 「[Scalability for Dummies](http://www.lecloud.net/post/7295452622/scalability-for-dummies-part-1-clones)」 1~4부(HiredInTech의 「[Scalability Fundamentals](http://www.hiredintech.com/system-design/scalability-fundamentals/)」가 추린 읽을거리)로, 계층별 로드 밸런싱·캐시 무효화·오프라인 처리는 「[Introduction to Architecting Systems for Scale](http://lethain.com/introduction-to-architecting-systems-for-scale/)」로, 읽기·쓰기 서비스 분리와 전역·분산 캐시, 다층 인덱스는 AOSA 2권의 「[Scalable Web Architecture and Distributed Systems](https://aosabook.org/en/v2/distsys.html)」로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 수직 확장과 수평 확장의 장단점 비교를 보강했다.
 
 ## 확장성이란
 
 확장성(scalability)은 **사용자·데이터·요청이 늘어도 구성 요소를 더하는 것만으로 서비스를 유지할 수 있는 성질**이다. 서버 한 대를 더 좋은 것으로 바꾸는 수직 확장(scale up)은 쉽지만 금방 한계에 닿는다. 그래서 웹 아키텍처는 같은 일을 하는 서버를 늘리거나(수평 확장, scale out), 일을 나눠 맡기는 방향으로 짜인다.
+
+| 비교 | 수직 확장(scale up) | 수평 확장(scale out) |
+| --- | --- | --- |
+| 방법 | 기존 서버에 CPU·메모리·디스크를 더한다 | 같은 일을 하는 서버를 풀에 더한다 |
+| 장점 | 구현·관리가 단순하다. 데이터가 한 곳이라 일관성이 쉽다 | 이중화로 결함 허용이 좋아지고, 필요한 만큼 유연하게 늘리며, 한 대씩 돌아가며 업그레이드한다 |
+| 단점 | 업그레이드 때 중단이 길고, 사양에 상한이 있으며, 그 서버가 단일 장애점이다 | 구조가 복잡해지고, 복제본 사이 데이터가 어긋날 수 있으며, 늘어난 서버가 하류 서비스(DB 등)에 부하를 더 보낸다 |
 
 확장성을 이해하려면 **웹 애플리케이션을 이루는 부품 전체와 그 사이를 흐르는 데이터**를 한 장으로 그릴 수 있어야 한다. 데이터가 어디서 들어와 어디를 거쳐 어디에 저장되는지(data flow)를 그리면 설계 논의를 빨리 따라가고, 누가 어느 부품을 책임지는지도 분명해진다.
 

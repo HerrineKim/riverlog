@@ -4,13 +4,14 @@ concept: "Software Engineering"
 summary: "개발 생명주기 모델(폭포수·원형·나선형·V·UP·애자일), 요구공학(추출·분석·명세·검증, EARS, 추적 매트릭스), 구조적 분석·설계(문맥도·DFD·구조 차트)와 UML 객체지향 분석·설계(경계·제어·실체 클래스, 시퀀스·활동·상태 머신), 모듈 결합도·응집도와 복잡도 척도(McCabe 순환 복잡도, Halstead), 사용자 인터페이스 황금률, 디자인 패턴, 프로젝트 관리(CMMI, WBS, COCOMO, 기능 점수 계산, PERT 주 경로, EVM, 위험 관리), 유지보수 유형과 Lehman 법칙·재공학, 형상 관리, CASE 도구 정리."
 tags: ["certificate", "software-engineering", "design-pattern", "uml", "requirements", "project-management"]
 source: notion
-date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams", "https://www.youtube.com/watch?v=O753uuutqH8", "고려사이버대학교 소프트웨어공학 강의(도성룡 교수, 2024-1학기)", "고려사이버대학교 소프트웨어 분석설계 강의(도성룡 교수, 2023-2학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams", "https://www.youtube.com/watch?v=O753uuutqH8", "고려사이버대학교 소프트웨어공학 강의(도성룡 교수, 2024-1학기)", "고려사이버대학교 소프트웨어 분석설계 강의(도성룡 교수, 2023-2학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS", "https://github.com/tssovi/grokking-the-object-oriented-design-interview"]
 ---
 
 > 클래스 다이어그램 표기는 ByteByteGo의 System Design 101 가이드 「[UML Class Diagrams Cheatsheet](https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams)」를 바탕으로 보강했다.
 > 「계층과 API」, 「버전 관리의 기본 동작」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 개발 생명주기와 방법론, 요구공학, 구조적·객체지향 분석과 설계, 프로젝트 관리, 형상 관리 절은 고려사이버대학교 「소프트웨어공학」(2024-1학기)과 「소프트웨어 분석설계」(2023-2학기) 강의 내용으로 보강했다.
+> UML을 쓰는 이유, 다이어그램 14종, 클래스 다이어그램의 쓰임과 연관 방향, 활동·시퀀스 다이어그램의 차이는 GitHub 저장소 「[Grokking the Object Oriented Design Interview](https://github.com/tssovi/grokking-the-object-oriented-design-interview)」를 바탕으로 보강했다.
 > 반복적·RAD 모델, 타당성 분석, 요구사항 추출 기법과 MoSCoW, 설계 수준과 하향식·상향식 설계, 인터페이스 황금률, 복잡도 척도와 기능 점수 계산, 유지보수와 재공학, CASE 도구는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 소프트웨어 공학 튜토리얼을 바탕으로 보강했다.
 
 좋은 소프트웨어 설계의 핵심은 "고치기 쉽고 다시 쓰기 쉬운 구조"다. 소프트웨어 공학은 이를 정해진 비용과 일정 안에서 믿을 만한 품질로 해내는 방법을 다룬다. 무엇을 만들지 정하는 요구공학, 어떻게 나눌지 정하는 분석·설계, 제대로 만들었는지 확인하는 [[software-testing|테스트]], 그리고 이 모두를 굴리는 프로젝트 관리와 형상 관리가 큰 축이다. 시험에서는 개발 과정의 틀(생명주기 모델, 방법론), 모듈 독립성, 디자인 패턴, 모델링 도구, 관리 기법(비용 산정, 형상 관리)으로 나눠 묻는다.
@@ -435,7 +436,17 @@ GoF 패턴 23개는 목적에 따라 **생성**(객체를 만드는 방식: Sing
 
 ## UML
 
-다이어그램은 정적인 **구조**와 동적인 **행위**로 나뉜다. 유스케이스 다이어그램 작성법과 유스케이스 명세는 [[use-case-diagram|유스케이스 다이어그램]]에 있다.
+UML(Unified Modeling Language)은 객체지향 분석·설계의 결과를 그림으로 기록하는 표준 표기다. UML의 그림은 객체지향 개념을 옮긴 것이므로 객체지향 개념을 먼저 알아야 읽힌다.
+
+| 쓰는 이유 | 내용 |
+| --- | --- |
+| 빠른 이해 | 시스템의 구조와 동작을 한눈에 파악한다 |
+| 분할 | 복잡한 시스템을 이해하기 쉬운 조각으로 나눈다 |
+| 소통 | 설계 결정을 그림으로 전달한다. 개발자뿐 아니라 업무 담당자, 아키텍트도 읽는다 |
+| 독립성 | 특정 플랫폼·언어·기술에 묶이지 않아 개념을 추상화하기 쉽다 |
+| 인수인계 | 새 팀에 시스템을 넘기기 쉽다 |
+
+현재 표준은 다이어그램 **14종**을 정의한다. 구조 7종(클래스, 객체, 패키지, 컴포넌트, 복합체 구조, 배치, 프로파일)과 행위 7종(유스케이스, 활동, 시퀀스, 상태, 커뮤니케이션, 상호작용 개요, 타이밍)이다. 다이어그램은 정적인 **구조**와 동적인 **행위**로 나뉜다. 유스케이스 다이어그램 작성법과 유스케이스 명세는 [[use-case-diagram|유스케이스 다이어그램]]에 있다.
 
 ### 구조 다이어그램
 
@@ -447,6 +458,7 @@ GoF 패턴 23개는 목적에 따라 **생성**(객체를 만드는 방식: Sing
 | 배치 | 결과물·프로세스·컴포넌트가 놓이는 물리적 노드와 통신 경로. 구현 단계 |
 | 복합체 구조 | 클래스·컴포넌트가 복합 구조일 때 그 내부 구조 |
 | 패키지 | 유스케이스·클래스 같은 요소를 묶은 패키지 사이의 관계(`<<import>>` 의존) |
+| 프로파일 | 스테레오타입·태그 값·제약으로 UML을 특정 도메인·플랫폼에 맞게 확장하는 정의 |
 
 ### 행위 다이어그램
 
@@ -498,9 +510,23 @@ class CommentCtrl {
 | 속성(Attribute) | 클래스의 데이터 필드 | `가시성 이름: 타입[개수] = 기본값`, 예: `- name: String` |
 | 메서드(Method) | 클래스가 할 수 있는 행동 | `가시성 이름(파라미터: 타입): 반환 타입`, 예: `+ getName(): String` |
 | 인터페이스 | 구현 클래스가 반드시 제공할 메서드의 계약 | `<<interface>>` 스테레오타입 |
+| 추상 클래스 | 직접 인스턴스를 만들지 않는 상위 클래스 | 클래스 이름을 기울임꼴로 쓴다 |
 | 열거형(Enumeration) | 이름 붙은 값의 집합(상품 분류, 월) | `<<enumeration>>` 스테레오타입 |
 | 접근 제한자 | 공개 범위 | `+` public, `-` private, `#` protected, `~` package |
 | 다중성 | 관계 양끝의 개수 | `1` 정확히 하나, `0..1` 없거나 하나, `0..*`·`*` 없거나 여러 개, `1..*` 하나 이상, `n..m` n개에서 m개 |
+
+연관은 **기본이 양방향**이다. 두 클래스가 서로의 존재와 관계를 안다. 한쪽만 상대를 알면 **단방향 연관**이고, 아는 쪽에서 모르는 쪽으로 화살표를 그린다. 항공 예약 시스템으로 보면 다음과 같다.
+
+| 관계 | 예 |
+| --- | --- |
+| 양방향 연관 + 다중성 | `FlightInstance`에는 조종사(`Pilot`)가 정확히 2명(`2`), 조종사 한 명은 여러 운항 회차(`*`)를 맡는다 |
+| 단방향 연관 | `Flight`는 `Aircraft`를 알지만 기체는 어떤 항공편에 쓰이는지 모른다 |
+| 집합 | `Aircraft`는 `Airline` 없이도 존재한다 |
+| 합성 | `WeeklySchedule`은 `Flight`에 속해, 항공편이 사라지면 일정도 사라진다 |
+| 일반화 | `Crew`, `Pilot`, `Admin`은 모두 `Person`이다 |
+| 의존 | `FlightReservation`은 `Payment`를 쓴다 |
+
+클래스 다이어그램은 **객체지향 언어로 바로 옮겨지는 유일한 UML**이라 가장 널리 쓴다. 쓰임은 애플리케이션의 정적 구조 분석·설계, 시스템 책임 기술, 컴포넌트·배치 다이어그램의 기반, 코드 생성(순공학)과 코드에서 다이어그램 복원(역공학)이다. 면접 사례에 적용한 예는 [[ood-interview-approach|객체 지향 설계 면접]]에 있다.
 
 GoF 패턴 대부분이 클래스 다이어그램으로 설명된다([[gof-design-patterns|GoF 디자인 패턴]]).
 
@@ -558,6 +584,14 @@ sequenceDiagram
 | 파티션 | 수영 레인. 누가 그 동작을 맡는지 영역으로 나눈다 |
 
 결정·병합은 "둘 중 하나", 분기·결합은 "둘 다 동시에"다. 이 차이를 헷갈리면 병렬 처리를 순차로 그리게 된다.
+
+활동 다이어그램과 시퀀스 다이어그램은 둘 다 흐름을 그리지만 보는 것이 다르다.
+
+| 구분 | 활동 다이어그램 | 시퀀스 다이어그램 |
+| --- | --- | --- |
+| 담는 것 | 처리 흐름. 조건과 순서를 강조한다 | 객체 사이의 상호작용(메시지 교환) |
+| 모델링 관점 | 기능 모델링: 외부 입력이 연산과 내부 저장소를 거쳐 외부 출력이 되는 값의 흐름 | 동적 모델링: 상태, 상태 전이, 전이를 일으키는 이벤트 |
+| 쓰는 곳 | 업무 프로세스, 유스케이스의 실행 단계, 내부 연산 | 유스케이스 하나(또는 그 일부)의 상세한 호출 순서, 복잡한 연산의 논리 탐색 |
 
 **5. 상태 머신 다이어그램: 한 객체의 일생.** 상태가 복잡하게 바뀌는 대상(주문, 결제, 장비)을 골라 상태와 전이를 그린다. 전이 라벨은 구조적 방법의 상태 머신과 같은 `이벤트(파라미터) [조건] / 행위`이고, 조건에 따라 여러 전이 중 하나를 고르는 지점은 **선택(choice)** 노드로 그린다.
 
@@ -848,4 +882,4 @@ Lehman은 소프트웨어를 셋으로 나눴다.
 - 프로젝트는 WBS로 쪼개고, COCOMO·FP(미조정 FP × (0.65 + 0.01N))로 산정하고, PERT 주 경로로 일정을 잡고, EVM으로 통제하고, 위험은 확률 × 영향도로 다룬다.
 - 유지보수는 수정·적응·완전화·예방으로 나뉘고 생명주기 비용의 절반 이상을 차지한다. E형 소프트웨어는 계속 변하고 복잡해지므로(Lehman), 낡은 시스템은 역공학 → 재구조화 → 순공학으로 재공학한다.
 
-관련 노트: [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[oop-messaging|객체 지향의 본질: 메시징]], [[software-testing|소프트웨어 테스트]], [[use-case-diagram|유스케이스 다이어그램]], [[software-safety|소프트웨어 안전]], [[software-complexity|소프트웨어 복잡성]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[Tools/Git/git-basics|Git 기초]]
+관련 노트: [[abstract-class-vs-interface|추상 클래스와 인터페이스]], [[oop-messaging|객체 지향의 본질: 메시징]], [[software-testing|소프트웨어 테스트]], [[use-case-diagram|유스케이스 다이어그램]], [[ood-interview-approach|객체 지향 설계 면접]], [[software-safety|소프트웨어 안전]], [[software-complexity|소프트웨어 복잡성]], [[project-process|새 서비스 개발 프로젝트 진행 순서]], [[Tools/Git/git-basics|Git 기초]]

@@ -4,11 +4,12 @@ concept: "Disaster Recovery"
 summary: "데이터센터 하나가 통째로 사라져도 서비스를 이어 가기 위한 설계 원칙. RTO·RPO로 목표를 정하고, 백업·파일럿 라이트·웜 스탠바이·액티브-액티브 중 전략을 고르며, 데이터·플랫폼·운영 도구까지 모든 계층을 여러 데이터센터에 나누고, 전환을 정기 훈련으로 검증한다. 복구에 쓰는 운영 도구가 가장 자주 다중화에서 빠진다."
 tags: ["devops", "infra", "architecture", "database", "monitoring"]
 source: other
-date: "2026-10-20"
-sources: ["https://brunch.co.kr/@chadwick/49", "https://www.kakaocorp.com/page/detail/9843", "https://www.kakaocorp.com/page/detail/11097", "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html", "https://bytebytego.com/guides/cloud-disaster-recovery-strategies"]
+date: "2026-11-01"
+sources: ["https://brunch.co.kr/@chadwick/49", "https://www.kakaocorp.com/page/detail/9843", "https://www.kakaocorp.com/page/detail/11097", "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html", "https://bytebytego.com/guides/cloud-disaster-recovery-strategies", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 채드윅의 「[카카오가 직접 회고한 1015 장애 사태 원인과 대책](https://brunch.co.kr/@chadwick/49)」(2022.12)을 바탕으로, 카카오의 공식 발표([재발 방지 대책](https://www.kakaocorp.com/page/detail/9843), [데이터센터 안산](https://www.kakaocorp.com/page/detail/11097))와 AWS 「[Disaster Recovery of Workloads on AWS](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html)」 백서로 일반화한 노트다. 전략별 RTO·RPO 범위는 ByteByteGo의 System Design 101 가이드 「[Cloud Disaster Recovery Strategies](https://bytebytego.com/guides/cloud-disaster-recovery-strategies)」로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 콜드 사이트와 핫 사이트 구분을 보강했다.
 
 ## 고가용성과 재해 복구
 
@@ -53,6 +54,8 @@ flowchart LR
 | 파일럿 라이트 | 수 분 ~ 수 시간 | 데이터 동기화 주기에 달렸다 |
 | 웜 스탠바이 | 수 분 ~ 수 시간 | 최근 수 분 ~ 수 시간 |
 | 멀티 사이트 | 거의 즉시 (수 분 이내) | 수 초 이내 |
+
+전통적인 용어로는 대기 사이트를 **콜드 사이트**(cold site, 기본 인프라만 갖춘 두 번째 장소. 장애 때 장비를 켜고 데이터를 복원한다)와 **핫 사이트**(hot site, 늘 최신 데이터 사본을 유지해 바로 넘어간다)로 나눈다. 콜드 사이트는 싸지만 복구가 느리고, 핫 사이트는 구축·유지가 비싸지만 중단 시간이 크게 준다. 위 표에서 파일럿 라이트가 콜드 쪽, 웜·핫 스탠바이가 핫 쪽에 가깝다. 어느 쪽이든 재해의 영향을 받지 않는 **다른 장소**에 데이터와 처리 능력을 복제해 두는 것이 재해 복구의 바탕이다.
 
 앞의 셋은 **액티브-스탠바이(active/passive)** 계열이다. 평소에는 주 사이트만 일하고, 장애 때 대기 사이트를 **승격(promote)** 한다. 대기 사이트를 운영 규모 그대로 켜 두되 트래픽은 주지 않는 형태는 **핫 스탠바이**라 부른다.
 

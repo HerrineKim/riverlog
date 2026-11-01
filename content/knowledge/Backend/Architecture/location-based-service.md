@@ -4,11 +4,13 @@ concept: "Location-Based Service"
 summary: "'내 주변 식당'은 모든 점과의 거리를 계산하면 느리므로 지도를 격자로 나눠 색인한다. 지오해시는 위경도를 접두사가 같으면 가까운 문자열로 바꿔 DB 색인으로 찾고, 쿼드트리는 밀도에 따라 칸을 쪼갠 메모리 트리로 찾는다. 지도 서비스는 위치 수집, 미리 잘라 둔 타일의 CDN 서빙, 지오코딩과 경로 계산으로 나뉜다."
 tags: ["backend", "architecture", "algorithm", "data-structure", "scalability"]
 source: other
-date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/proximity-service", "https://bytebytego.com/guides/quadtree", "https://bytebytego.com/guides/design-google-maps", "https://bytebytego.com/guides/how-do-airtags-work", "https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view", "https://techblog.woowahan.com/2608/", "http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/proximity-service", "https://bytebytego.com/guides/quadtree", "https://bytebytego.com/guides/design-google-maps", "https://bytebytego.com/guides/how-do-airtags-work", "https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view", "https://techblog.woowahan.com/2608/", "http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Proximity Service](https://bytebytego.com/guides/proximity-service)」, 「[Quadtree](https://bytebytego.com/guides/quadtree)」, 「[Design Google Maps](https://bytebytego.com/guides/design-google-maps)」, 「[How do AirTags work?](https://bytebytego.com/guides/how-do-airtags-work)」, 「[How do Google/Apple Maps blur license plates and human faces on Street View?](https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view)」를 바탕으로 재구성한 노트다. 육각형 격자 거리 근사는 「[배민라이더스 배달 경로와 거리 계산 개발 과정](https://techblog.woowahan.com/2608/)」으로 보강했다. 차량 배차 사례는 High Scalability의 「[How Uber Scales Their Real-Time Market Platform](http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html)」(2015)로 보강했다.
+> Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 Uber 풀이로 기사 위치 갱신·전파의 규모 추정을 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 지오해시 길이별 칸 크기와 쓰임, 쿼드트리의 종류와 힐베르트 곡선, 차량 호출의 흐름·데이터 모델·API·경쟁 조건·탄력 요금을 보강했다.
 
 ## 주변 검색 서비스
 
@@ -33,7 +35,22 @@ flowchart TB
 ```
 
 - **접두사가 같으면 같은 칸 안에 있다.** 그래서 `WHERE geohash LIKE 'wydm9%'` 같은 접두사 검색이 일반 B-트리 색인으로 된다.
-- 길이가 길수록 칸이 작다. 반경에 맞는 길이를 고른다(6자리는 대략 1km 안팎 크기의 칸).
+- 길이가 길수록 칸이 작다. 한 글자가 5비트라 글자 하나가 늘 때마다 칸이 32개로 쪼개진다. 반경에 맞는 길이를 고른다.
+
+| 길이 | 칸 너비 × 높이(적도 기준 최대) |
+| --- | --- |
+| 1 | 5,000km × 5,000km |
+| 2 | 1,250km × 625km |
+| 3 | 156km × 156km |
+| 4 | 39.1km × 19.5km |
+| 5 | 4.89km × 4.89km |
+| 6 | 1.22km × 0.61km |
+| 7 | 153m × 153m |
+| 8 | 38.2m × 19.1m |
+| 9 | 4.77m × 4.77m |
+| 12 | 3.7cm × 1.9cm |
+
+- 짧은 문자열이라 DB에 저장하기 쉽고 URL로 공유하기도 좋다. 길이를 줄여 저장하면 「이 근처 어딘가」까지만 드러나 **정확한 위치를 감추는** 효과도 있다. 지오해시는 2008년 Gustavo Niemeyer가 만들었고, Redis(`GEOADD`·`GEOSEARCH`), Elasticsearch, MySQL·PostgreSQL(PostGIS) 같은 DB가 지원한다. 예를 들어 샌프란시스코(37.7564, −122.4016)는 `9q8yy9mf`이고, `9q8yy9vx`와 접두사 `9q8yy9`를 공유하니 가깝다.
 - **경계 문제**: 바로 옆이어도 칸 경계를 넘으면 접두사가 전혀 다를 수 있다. 그래서 내 칸과 **이웃 8칸**을 함께 조회한 뒤 실제 거리로 거른다.
 - 결과가 적으면 길이를 줄여(칸을 키워) 다시 찾는다.
 - 칸 크기가 고정이라 도심의 한 칸에는 업체가 너무 많고 바다의 칸은 텅 빈다.
@@ -58,6 +75,8 @@ flowchart TB
 - **DB가 아니라 메모리 자료구조**다. LBS 서버마다 시작할 때 전체 업체로 트리를 만든다.
 - 업체가 수억 개면 트리를 만드는 데 몇 분이 걸리고, 그동안 그 서버는 트래픽을 받지 못한다. 그래서 새 버전을 **일부 서버씩 순차 배포**해 클러스터 전체가 동시에 빠지지 않게 한다.
 - 업체 추가·삭제는 즉시 반영하기보다 다음 날 재구축처럼 늦게 반영하는 경우가 많다.
+- 위경도만 있으면 모든 점과 유클리드 거리를 계산할 수 있지만 데이터가 크면 CPU를 감당할 수 없다. 쿼드트리는 2차원 범위 검색을 트리 탐색으로 줄이고, 기준 개수를 넘을 때만 쪼개 계산을 아낀다. 칸을 **힐베르트 곡선**(Hilbert curve) 순서로 1차원에 펴면 가까운 칸이 번호도 가까워져 범위 검색과 분할이 쉬워진다(Google S2가 이 방식).
+- 담는 데이터에 따라 점 쿼드트리, 점-영역(PR) 쿼드트리, 다각형 지도(PM) 쿼드트리, 압축 쿼드트리, 엣지 쿼드트리로 나뉜다. 3차원으로 넓힌 것이 **옥트리**(octree)다. 위치 서비스 말고도 이미지 표현·압축, 메시 생성과 컴퓨터 그래픽스, 희소 데이터 저장에 쓰인다.
 
 ### 고르는 기준
 
@@ -133,6 +152,49 @@ flowchart TB
   2. 경로·ETA 서비스가 직선거리가 아니라 도로망 기준 도착 시간을 계산한다
   3. ETA로 정렬해 기사에게 차례로 제안한다
 ```
+
+### 호출 한 건의 흐름과 데이터
+
+| 단계 | 하는 일 |
+| --- | --- |
+| 1. 호출 | 승객이 출발지·목적지 좌표, 차종(일반·대형 등), 결제 수단을 보낸다 |
+| 2. 후보 찾기 | 배차(ride) 서비스가 요청을 등록하고, 주변 기사를 찾아 ETA와 요금을 계산한다 |
+| 3. 제안 | 근처 기사들에게 요청을 알리고 수락·거절을 받는다 |
+| 4. 수락 | 승객은 기사의 실시간 위치와 도착 예정 시각을 본다 |
+| 5. 운행 | 기사가 탑승을 확인하고 운행을 시작한다 |
+| 6. 완료 | 목적지에서 기사가 운행 종료를 누르고 결제한다 |
+| 7. 평가 | 승객이 별점과 의견을 남긴다 |
+
+- **서비스 나누기**: 승객, 기사, 배차(매칭·쿼드트리 집계), 운행, 결제, 알림, 분석 서비스로 나누고 각자 자기 데이터를 갖는다. 서비스 사이는 gRPC로, 찾기는 서비스 디스커버리·서비스 메시로 한다.
+- **테이블**: `customers`, `drivers`, `cabs`(차량 번호·차종), `trips`(출발지·목적지·상태), `ratings`(별점·의견), `payments`(운행 ID와 결제 정보).
+- **API**: `requestRide(customerID, source, destination, cabType, paymentMethod)`, `cancelRide(customerID, reason?)`, `acceptRide`·`denyRide(driverID, rideID)`, `startTrip`·`endTrip(driverID, tripID)`, `rateTrip(customerID, tripID, rating, feedback?)`.
+- **위치 보고**: 수 초마다 위치를 보내므로 요청마다 연결을 여는 폴링보다 WebSocket 같은 지속 연결로 받는다. 앱이 백그라운드에 있어도 GPS 위치를 보내는 백그라운드 작업이 필요하다.
+- **순진한 SQL**: `WHERE lat BETWEEN X-R AND X+R AND lng BETWEEN Y-R AND Y+R`도 동작하지만 두 범위 조건을 한 B-트리 인덱스로 함께 좁힐 수 없어 데이터가 크면 느리다. 그래서 지오해시·쿼드트리로 색인한다.
+- **경쟁 조건**: 승객 여럿이 동시에 같은 기사를 잡을 수 있다. 기사 배정을 뮤텍스나 DB 조건부 갱신(`UPDATE drivers SET status='busy' WHERE id=? AND status='free'`)으로 원자적으로 만들어 한 기사가 두 호출에 배정되지 않게 한다.
+- **기사 순위**: 주변 후보를 거리만이 아니라 평균 별점, 과거 피드백, 관련도로 정렬해 좋은 기사에게 먼저 제안한다.
+- **수요 폭증**: 수요가 몰리고 공급이 모자라면 **탄력 요금**(surge pricing)으로 기본 요금에 배율을 붙여 수요를 줄이고 기사를 그 지역으로 끈다.
+- **결제**: 직접 만들지 않고 Stripe 같은 결제 대행사에 맡기고, 결제가 끝나면 대행사가 앱으로 돌려보낸다([[payment-system|결제 시스템 설계]]).
+- **알림·분석**: 알림은 Kafka 같은 브로커를 거쳐 FCM·APNs로 보내고([[notification-system|알림 시스템 설계]]), 이벤트는 Spark로 분석한다. 최근 위치는 Redis에 두고 LRU로 내보낸다.
+
+### 면접 풀이: 기사 위치 갱신과 전파
+
+면접에서 차량 호출을 설계할 때는 「기사 위치가 3초마다 바뀐다」는 쓰기 부하를 어떻게 받아 내는지가 핵심이다.
+
+| 요구 사항 | 내용 |
+| --- | --- |
+| 기사 | 위치와 배차 가능 여부를 자주 알린다. 운행을 마치면 다시 배차 가능 상태가 된다 |
+| 승객 | 주변 기사를 실시간으로 보고, 목적지와 탑승 시각으로 호출한다 |
+| 운행 중 | 배차가 확정되면 기사와 승객이 서로의 위치를 계속 본다 |
+
+가정: 승객 3억·기사 100만 명, 하루 활성 승객 100만·기사 50만 명, 하루 운행 100만 건, 활성 기사는 3초마다 위치를 보낸다.
+
+- **쿼드트리만으로는 3초 갱신을 따라가지 못한다.** 위치가 바뀌면 이전 칸에서 빼고 새 칸에 넣어야 하고, 칸이 한도를 넘으면 다시 쪼개야 한다. 그래서 최신 위치는 해시 테이블(DriverLocationHT)에 두고, 쿼드트리는 15초 안에 반영되도록 덜 자주 갱신한다.
+- **해시 테이블 크기**: 기사 ID 3B + 이전·현재 위도·경도 각 8B = 35B. 기사 100만 명이면 35MB라 메모리에 넉넉히 들어간다.
+- **수신 대역폭**: 기사 ID와 새 위치(3 + 16 = 19B) × 활성 기사 50만 = 3초마다 9.5MB.
+- **분산**: DriverLocationHT를 기사 ID로 여러 서버(기사 위치 서버)에 나눈다. 이 서버는 위치를 받으면 관련 승객에게 전파하고 쿼드트리 서버에 갱신을 알린다.
+- **전파(푸시)**: 승객이 앱을 열면 주변 기사들을 구독시키는 발행·구독 알림 서비스를 둔다. 기사 한 명당 구독자 5명이라 하면 구독 표는 (50만 × 3B) + (50만 × 5 × 8B) ≈ 21MB, 전송량은 250만 구독 × 19B ≈ 초당 47.5MB다. 알림은 롱 폴링이나 푸시 알림으로 보낸다.
+- **당겨 오기(풀)**: 새 기사가 승객 주변에 들어올 때마다 구독을 동적으로 더하는 것은 복잡하다. 대신 승객이 현재 위치를 보내면 서버가 쿼드트리에서 주변 기사를 찾아 돌려주는 방식으로 단순화할 수 있다.
+- **재분할 완충**: 칸이 한도를 넘자마자 쪼개지 않고 10% 정도 더 자라거나 줄 여유를 두면 재분할 부하가 준다.
 
 - 공급과 수요를 「승용차·배달 같은 제품」에 묶지 않고 **능력과 요구 조건**으로 일반화하면, 도시·제품마다 따로 만든 배차를 한 시스템으로 합칠 수 있다.
 - 배차 가능한 차만 색인하던 단순화를 버리고 **모든** 공급을 추적하면, 손님을 내려 줄 예정인 차까지 후보로 넣어 전체 대기 시간을 줄인다. 공항처럼 도착 순서가 중요한 곳은 가상 대기열을 따로 둔다.

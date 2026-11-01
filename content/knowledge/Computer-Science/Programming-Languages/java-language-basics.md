@@ -1,11 +1,11 @@
 ---
 title: "Java 언어 기본: 접근 제어자, static, 객체 비교, 제네릭, 리플렉션"
 concept: "Java Basics"
-summary: "Java 면접에서 자주 묻는 언어 기본기를 주제별로 정리한다. 접근 제어자와 패키지, final·finally·finalize, static과 static final(C·C++의 static과 컴파일 시 처리 포함), 오버로딩과 오버라이딩, 업·다운캐스팅, ==·equals·hashCode와 문자열 상수 풀, String 계열, Comparable과 Comparator, 값 전달, 컴포지션, 기본형과 래퍼 클래스·오토박싱, 제네릭과 타입 소거, 리플렉션·어노테이션·동적 프록시."
+summary: "Java 면접에서 자주 묻는 언어 기본기를 주제별로 정리한다. Java의 특징과 개발 환경·첫 프로그램·배우는 순서, 접근 제어자와 패키지, final·finally·finalize, static과 static final(C·C++의 static과 컴파일 시 처리 포함), 오버로딩과 오버라이딩, 업·다운캐스팅, ==·equals·hashCode와 문자열 상수 풀, String 계열, Comparable과 Comparator, 값 전달, 컴포지션, 기본형과 래퍼 클래스·오토박싱, 제네릭과 타입 소거, 리플렉션·어노테이션·동적 프록시."
 tags: ["java", "oop", "backend", "concurrency"]
 source: other
-date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Java/README.md", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html", "https://openjdk.org/jeps/421", "https://openjdk.org/jeps/506", "https://github.com/4z7l/tech_interview.zip/blob/main/%EC%A7%81%EB%AC%B4/JAVA.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20String%20StringBuilder%20StringBuffer%20%EC%B0%A8%EC%9D%B4.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Call%20by%20value%EC%99%80%20Call%20by%20reference.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20%EC%BB%B4%ED%8F%AC%EC%A7%80%EC%85%98%28Composition%29.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5BJava%5D%20Intrinsic%20Lock.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Java%20major%20feature%20changes.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "고려사이버대학교 Java언어 강의(도성룡 교수, 2023-2학기)"]
+date: "2026-11-01"
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Java/README.md", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html", "https://openjdk.org/jeps/421", "https://openjdk.org/jeps/506", "https://github.com/4z7l/tech_interview.zip/blob/main/%EC%A7%81%EB%AC%B4/JAVA.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20String%20StringBuilder%20StringBuffer%20%EC%B0%A8%EC%9D%B4.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Call%20by%20value%EC%99%80%20Call%20by%20reference.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20%EC%BB%B4%ED%8F%AC%EC%A7%80%EC%85%98%28Composition%29.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5BJava%5D%20Intrinsic%20Lock.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Java%20major%20feature%20changes.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "고려사이버대학교 Java언어 강의(도성룡 교수, 2023-2학기)", "https://www.geeksforgeeks.org/java/java-how-to-start-learning-java/", "https://openjdk.org/jeps/330", "https://openjdk.org/jeps/458", "https://openjdk.org/jeps/512"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 Java 문서를 바탕으로, Java SE 공식 문서와 JEP로 확인해 재구성한 노트다.
@@ -13,8 +13,57 @@ sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/mai
 > String 계열 비교, 값 전달, 컴포지션, 고유 락과 wait·notify, 버전별 기능은 gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 저장소의 Language 문서를 바탕으로, OpenJDK JEP로 확인해 보강했다.
 > static, Comparable과 Comparator, 리플렉션·커스텀 어노테이션·동적 프록시는 fru1tworld/cs-basic 모의 면접 질문 목록의 Java·언어 기본 질문을 바탕으로 보강했다.
 > 패키지와 import, 상속 형태, 기본형 표, 배열과 컬렉션의 차이는 고려사이버대학교 「Java언어」(2023-2학기) 강의 내용으로 보강했다.
+> 「Java란: 특징과 시작하기」는 GeeksforGeeks의 「[How to Start Learning Java](https://www.geeksforgeeks.org/java/java-how-to-start-learning-java/)」를 바탕으로, 소스 바로 실행과 간결한 소스 파일은 OpenJDK JEP로 확인해 보강했다.
 
 JVM 구조와 GC는 [[jvm-internals|JVM 내부 구조]], Enum·Optional·예외 같은 실무 관용구는 [[java-idioms|Java 실무 관용구]], 코딩 규칙은 [[java-coding-convention|Java 코딩 컨벤션]]에, 동시성은 [[java-concurrency|Java 동시성]]에, 버전별 새 기능은 [[modern-java-features|모던 Java 기능]]에 있다. 이 노트는 그 아래 깔린 언어 문법의 기본기를 다룬다.
+
+## Java란: 특징과 시작하기
+
+Java는 1995년 Sun Microsystems(지금은 Oracle)가 내놓은 **객체 지향, 플랫폼 독립** 언어다. 소스를 바이트코드로 컴파일하고, 바이트코드는 JVM이 있는 어느 OS·CPU에서나 돈다. 웹 백엔드, 엔터프라이즈 시스템, Android 앱, 빅데이터 도구에 널리 쓰인다.
+
+| 특징 | 내용 |
+| --- | --- |
+| 단순함 | C++를 바탕으로 하되 명시적 포인터, 연산자 오버로딩처럼 헷갈리고 드물게 쓰는 기능을 뺐다. 메모리는 가비지 컬렉터가 자동으로 회수한다 |
+| 플랫폼 독립 | 컴파일 결과가 기계어가 아니라 바이트코드라 JVM만 있으면 다시 컴파일하지 않고 실행된다(「한 번 쓰고 어디서나 실행」). 실행 과정은 [[jvm-internals\|JVM 내부 구조]] |
+| 객체 지향 | 프로그램을 객체로 나누고 데이터와 동작을 함께 묶는다 |
+| 견고함 | 강한 정적 타입, 예외 처리, 배열 경계 검사로 블루레이 플레이어부터 내비게이션까지 신뢰성이 필요한 곳에 쓰인다 |
+| 멀티스레드 | 언어와 표준 라이브러리가 스레드를 지원해, 예컨대 네트워크 입력을 기다리는 일을 별도 스레드에 맡겨 GUI가 멈추지 않게 한다([[java-concurrency\|Java 동시성]]) |
+| 전처리기 없음 | C·C++의 헤더 파일 포함이나 매크로가 없다. 의존은 `import`와 모듈로 표현한다 |
+
+과거에는 웹 브라우저 안에서 도는 **애플릿(applet)** 이 Java의 대표 기능이었지만, 브라우저들이 Java 플러그인을 끊으면서 Java 9에서 폐기 예정이 되고 Java 11에서 제거됐다.
+
+### 개발 환경
+
+| 준비물 | 내용 |
+| --- | --- |
+| JDK | 컴파일러 `javac`, 런타임, 표준 도구가 든 개발 키트. Oracle JDK나 OpenJDK 빌드(Eclipse Temurin, Amazon Corretto 등)를 받는다. 처음이면 최신 LTS(2026년 기준 25)를 고른다 |
+| IDE | IntelliJ IDEA(무료로 쓸 수 있는 판이 있다), Eclipse(기능이 많고 오래 쓰여 왔다), Apache NetBeans(입문자에게 단순하다). VS Code에 Java 확장을 깔아 쓰기도 한다 |
+| 설치 확인 | 터미널에서 `java -version`과 `javac -version`이 버전을 출력하면 된다 |
+
+첫 프로그램은 클래스 하나와 `main` 메서드로 쓴다.
+
+```java
+public class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java");
+    }
+}
+```
+
+`javac Hello.java`로 `Hello.class`를 만들고 `java Hello`로 실행한다. Java 11부터는 `java Hello.java`처럼 소스 파일을 바로 실행할 수 있고(JEP 330), Java 22부터는 여러 소스 파일로 된 프로그램도 그렇게 실행한다(JEP 458). Java 25에서는 클래스 선언 없이 `void main() { IO.println("Hello"); }`만으로 된 작은 프로그램(간결한 소스 파일과 인스턴스 `main` 메서드, JEP 512)도 정식 기능이 됐다.
+
+### 배우는 순서
+
+| 단계 | 할 일 |
+| --- | --- |
+| 1. 기본 용어 | 문법, 클래스(설계도)와 객체(인스턴스), 변수와 자료형(`int`, `double`, `boolean`, `String`) |
+| 2. 환경 설치 | JDK와 IDE를 깔고 첫 프로그램을 돌린다 |
+| 3. 핵심 문법 | 기본형과 참조형(배열, 객체), 제어문(`if`, `switch`, `for`, `while`), 메서드, 클래스와 객체, 배열과 컬렉션(`ArrayList`, `HashMap`) |
+| 4. 작은 문제 풀기 | 표준 입력 읽기, 사용자 입력 받기, 두 실수 곱하기, 두 수 바꾸기, 이진 문자열 더하기, 복소수 더하기처럼 문법을 손에 익히는 문제. 읽는 것보다 많이 쓴다 |
+| 5. 프로젝트 | 사용자 관리, 온라인 뱅킹, 티켓 예매, 챗봇, 날씨 앱처럼 여러 개념을 엮는 작은 프로젝트. 포트폴리오도 된다 |
+| 6. 꾸준히 읽고 함께 배우기 | 새 버전의 기능을 따라 읽고([[modern-java-features\|모던 Java 기능]]), 스터디에서 서로 설명하고 막힌 문제를 함께 푼다 |
+
+분량이 많아 처음에는 벅차다. 서두르지 말고 자기 속도로 쌓는다.
 
 ## 접근 제어자
 

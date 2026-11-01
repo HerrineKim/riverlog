@@ -4,15 +4,22 @@ concept: "Caching Strategies"
 summary: "캐시는 요청 경로의 거의 모든 층에 있다. 캐시와 원본을 맞추는 읽기·쓰기 패턴(cache-aside, read-through, write-through, write-around, write-back), 꽉 찼을 때 무엇을 버릴지 정하는 교체 정책(LRU·LFU·FIFO·SLRU·TTL 등), 그리고 캐시가 오히려 DB를 무너뜨리는 네 가지 장애(동시 만료, 관통, 핫 키 만료, 캐시 다운)와 대응을 정리한다."
 tags: ["backend", "cache", "architecture", "performance", "database"]
 source: other
-date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/cache-systems-every-developer-should-know", "https://bytebytego.com/guides/learn-cache", "https://bytebytego.com/guides/things-to-consider-when-using-cache", "https://bytebytego.com/guides/top-5-caching-strategies", "https://bytebytego.com/guides/what-are-the-top-caching-strategies", "https://bytebytego.com/guides/most-popular-cache-eviction", "https://bytebytego.com/guides/top-8-cache-eviction-strategies", "https://bytebytego.com/guides/how-can-cache-systems-go-wrong", "https://bytebytego.com/guides/cache-miss-attack", "http://www.slideshare.net/oemebamo/introduction-to-memcached", "https://docs.memcached.org/features/tls/"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/cache-systems-every-developer-should-know", "https://bytebytego.com/guides/learn-cache", "https://bytebytego.com/guides/things-to-consider-when-using-cache", "https://bytebytego.com/guides/top-5-caching-strategies", "https://bytebytego.com/guides/what-are-the-top-caching-strategies", "https://bytebytego.com/guides/most-popular-cache-eviction", "https://bytebytego.com/guides/top-8-cache-eviction-strategies", "https://bytebytego.com/guides/how-can-cache-systems-go-wrong", "https://bytebytego.com/guides/cache-miss-attack", "http://www.slideshare.net/oemebamo/introduction-to-memcached", "https://docs.memcached.org/features/tls/", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Cache Systems Every Developer Should Know](https://bytebytego.com/guides/cache-systems-every-developer-should-know)」, 「[Things to Consider When Using Cache](https://bytebytego.com/guides/things-to-consider-when-using-cache)」, 「[Top 5 Caching Strategies](https://bytebytego.com/guides/top-5-caching-strategies)」, 「[Top 8 Cache Eviction Strategies](https://bytebytego.com/guides/top-8-cache-eviction-strategies)」, 「[How Can Cache Systems Go Wrong?](https://bytebytego.com/guides/how-can-cache-systems-go-wrong)」, 「[Cache Miss Attack](https://bytebytego.com/guides/cache-miss-attack)」 등을 바탕으로 재구성한 노트다. Memcached의 사용 패턴과 무효화 방식은 「[Introduction to memcached](http://www.slideshare.net/oemebamo/introduction-to-memcached)」로, TLS 지원은 [Memcached 공식 문서](https://docs.memcached.org/features/tls/)로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 적중과 미스, 차가운 캐시, 캐시를 쓰지 말아야 할 때, 분산 캐시와 전역 캐시, LIFO를 보강했다.
 
 ## 캐시란
 
 캐시(cache)는 **느린 원본 대신 빠른 저장소에 결과 사본을 두고 다시 쓰는 장치**다. 원본은 DB, 다른 서비스, 디스크, 멀리 있는 서버 등이다. 사본은 메모리나 사용자 가까운 곳에 둔다.
+
+캐시가 빠른 이유는 **참조 지역성**(locality of reference)이다. 방금 요청된 데이터는 곧 다시 요청되기 쉽다. 캐시는 용량을 내주고 속도를 얻는다. 원본(DB)이 완전하고 영속적인 데 비해 캐시는 데이터의 일부만 잠시 담는다. 대개 휘발성 메모리에 두므로 **캐시를 영구 저장소로 쓰지 않는다.**
+
+- **적중(hit)**: 찾는 값이 캐시에 있어 캐시가 답한다.
+- **미스(miss)**: 캐시에 없어 원본에서 읽고, 보통 그 값을 캐시에 채운다.
+- **차가운 캐시(cold cache)**: 재시작·배포 직후처럼 캐시가 비어 거의 모든 요청이 미스인 상태다. 요청이 쌓이며 채워지면 **따뜻한(warm)**, 자주 쓰는 데이터가 다 들어 있어 적중률이 높으면 **뜨거운(hot)** 캐시라 부른다.
 
 캐시는 공짜가 아니다. 사본을 두는 순간 **원본과 사본이 어긋날 수 있다**는 문제가 생긴다. 그래서 캐시 설계는 세 질문으로 정리된다.
 
@@ -28,6 +35,12 @@ sources: ["https://bytebytego.com/guides/cache-systems-every-developer-should-kn
 - **데이터가 자주 바뀌지 않는다.** 자주 바뀌면 무효화 비용이 이득을 먹는다.
 - **원본 접근이 비싸다.** 무거운 쿼리, 먼 네트워크, 외부 API.
 - **약간 오래된 값을 허용한다.** 강한 일관성이 필요한 값(잔액, 재고 차감)은 캐시를 판단 근거로 쓰지 않는다.
+
+반대로 캐시가 도움이 안 되는 경우도 분명하다.
+
+- 캐시 조회가 원본 조회만큼 오래 걸린다(원본이 이미 메모리 DB이거나 바로 옆에 있다).
+- 요청이 거의 반복되지 않는다. 무작위성이 크면 적중률이 나오지 않는다.
+- 데이터가 너무 자주 바뀌어 사본이 금방 낡고, 결국 매번 원본을 봐야 한다.
 
 ## 캐시는 어디에나 있다
 
@@ -53,6 +66,13 @@ flowchart LR
 | 검색엔진 | 역인덱스. 원본 DB를 검색하기 좋은 모양으로 바꾼 사본이다 | [[elasticsearch\|Elasticsearch와 ELK 스택]] |
 | DB | 버퍼 풀(디스크 페이지의 메모리 사본), 머티리얼라이즈드 뷰(무거운 쿼리 결과를 미리 저장) | |
 
+여러 서버가 캐시를 함께 쓰는 방식은 둘로 나뉜다.
+
+| 방식 | 구조 | 특징 |
+| --- | --- | --- |
+| 분산 캐시(distributed cache) | 여러 서버의 RAM을 묶어 하나의 인메모리 저장소처럼 쓴다. 키를 해시해 노드에 나눈다 | 한 대의 메모리 한계를 넘어 커진다. 노드가 빠지면 그 몫의 키만 사라진다 |
+| 전역 캐시(global cache) | 모든 앱 서버가 **하나의 공유 캐시**를 본다. 캐시에 없으면 캐시가 원본에서 채워 온다(read-through) | 구조가 단순하고 서버마다 내용이 어긋나지 않는다. 캐시 하나가 병목·단일 장애점이 될 수 있다 |
+
 HTTP 캐시는 **읽기 관통(read-through)** 방식이다. 클라이언트는 캐시에 묻고, 캐시가 답하지 못할 때만 캐시가 서비스에 묻는다. 웹 아키텍처 전체에서 캐시가 놓이는 자리는 [[web-scalability-components|웹 확장성의 구성 요소]]에 있다.
 
 ## 읽기·쓰기 패턴
@@ -72,7 +92,7 @@ HTTP 캐시는 **읽기 관통(read-through)** 방식이다. 클라이언트는 
 | --- | --- | --- | --- | --- |
 | **Write-through** | 캐시에 쓰고 **동시에** DB에 쓴다. 둘 다 끝나야 완료 | 높다 | 크다(두 곳에 씀) | 한 번도 안 읽힐 데이터까지 캐시에 쌓인다 |
 | **Write-around** | DB에만 쓰고 캐시는 건너뛴다(또는 해당 키를 지운다) | 다음 읽기에서 맞춰진다 | 작다 | 방금 쓴 값을 바로 읽으면 미스가 난다 |
-| **Write-back** (write-behind) | 캐시에만 쓰고 완료. DB에는 나중에 모아서 쓴다 | 낮다 | 가장 작다 | DB 반영 전에 캐시가 죽으면 **데이터를 잃는다** |
+| **Write-back** (write-behind) | 캐시에만 쓰고 완료. DB에는 나중에 모아서 쓴다 | 낮다 | 가장 작다 | DB 반영 전에 캐시가 죽으면 **데이터를 잃는다**. 캐시 복제본 여러 곳이 쓰기를 확인한 뒤 응답하면 위험이 준다 |
 
 ```mermaid
 flowchart LR
@@ -100,6 +120,7 @@ Write-back은 조회수·좋아요처럼 **잃어도 치명적이지 않고 쓰�
 | **LRU** (Least Recently Used) | 가장 오래 안 쓴 것 | 최근에 쓴 것을 곧 다시 쓰는 경우(시간 지역성). 기본값으로 가장 흔하다 | 한 번 훑고 지나가는 대량 조회(스캔)가 인기 항목을 밀어낸다 |
 | **LFU** (Least Frequently Used) | 가장 적게 쓴 것 | 인기 항목이 뚜렷하고 오래 유지될 때 | 접근 횟수를 세야 한다. 예전 인기 항목이 계속 남는 문제가 있어 횟수를 감쇠시킨다 |
 | **FIFO** | 가장 먼저 들어온 것 | 구현이 가장 단순하다 | 사용 패턴을 보지 않는다 |
+| **LIFO** | 가장 나중에 들어온 것 | 오래 머문 항목을 보존해야 하는 특수한 경우 | 사용 빈도를 보지 않고, 새로 들어온 인기 항목부터 버릴 수 있다 |
 | **RR** (Random Replacement) | 무작위 | 추적 비용 없이 그럭저럭 | 운에 맡긴다 |
 | **MRU** (Most Recently Used) | 가장 최근에 쓴 것 | 한 번 쓴 데이터를 다시 안 쓰는 순차 스캔·배치·스트리밍 | 일반 웹 캐시에는 맞지 않는다 |
 | **SLRU** (Segmented LRU) | 수습 구간의 LRU부터 | 스캔에 강한 LRU가 필요할 때 | 새 항목은 수습(probationary) 구간에 들어가고, 다시 쓰이면 보호(protected) 구간으로 승격된다. 한 번 쓰고 마는 항목이 인기 항목을 밀어내지 못한다 |

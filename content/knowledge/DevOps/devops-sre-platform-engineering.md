@@ -4,12 +4,13 @@ concept: "DevOps vs SRE"
 summary: "개발과 운영을 잇는 방식의 갈래를 비교한다. DevOps는 협업 문화와 자동화, SRE는 SLO·에러 버짓으로 신뢰성을 공학 문제로 다루는 실천, 플랫폼 엔지니어링은 개발자가 스스로 쓰는 내부 플랫폼을 제품으로 만드는 일, NoOps는 서버리스로 운영 작업을 클라우드에 넘기는 지향이다. 클라우드를 들인 조직의 운영 모델(중앙 집중·분산·공유 서비스·CCoE), 통제가 아니라 가드레일로서의 거버넌스와 문화 전환, 테스트가 개발자 몫으로 옮겨 간 흐름과 회사 규모별 배포·품질 도구의 변화도 함께 다룬다."
 tags: ["devops", "infra", "software-engineering", "testing", "collaboration", "cloud"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/devops-vs-sre-vs-paltform-engg", "https://bytebytego.com/guides/devops-vs-noops", "https://bytebytego.com/guides/paradigm-shift-how-developer-to-tester-ratio-changed-from-11-to-1001", "https://bytebytego.com/guides/what-tools-does-your-team-use-to-ship-code-to-production-and-ensure-code-quality", "https://sre.google/sre-book/introduction/", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/devops-vs-sre-vs-paltform-engg", "https://bytebytego.com/guides/devops-vs-noops", "https://bytebytego.com/guides/paradigm-shift-how-developer-to-tester-ratio-changed-from-11-to-1001", "https://bytebytego.com/guides/what-tools-does-your-team-use-to-ship-code-to-production-and-ensure-code-quality", "https://sre.google/sre-book/introduction/", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[DevOps vs. SRE vs. Platform Engineering](https://bytebytego.com/guides/devops-vs-sre-vs-paltform-engg)」, 「[DevOps vs NoOps](https://bytebytego.com/guides/devops-vs-noops)」, 「[Paradigm Shift: Developer to Tester Ratio](https://bytebytego.com/guides/paradigm-shift-how-developer-to-tester-ratio-changed-from-11-to-1001)」, 「[Tools for Shipping Code to Production](https://bytebytego.com/guides/what-tools-does-your-team-use-to-ship-code-to-production-and-ensure-code-quality)」를 바탕으로, SRE는 Google SRE 책으로 확인해 재구성한 노트다. 「Paradigm Shift」의 원 자료는 Carlos Arguelles의 「The Paradigm Shifts with Different Dev:Test Ratios」다.
 > 클라우드 운영 조직 모델과 거버넌스는 고려사이버대학교 「클라우드 컴퓨팅」(2023-2학기) 강의 내용으로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 SLA와 SLO·SLI의 관계를 보강했다.
 
 ## 개발과 운영을 잇는 방식의 변화
 
@@ -54,7 +55,8 @@ flowchart TB
 | 개념 | 뜻 |
 | --- | --- |
 | SLI | 사용자가 느끼는 품질을 재는 지표(성공 요청 비율, p99 지연 시간) |
-| SLO | SLI의 목표치(예: 한 달 동안 99.9% 성공) |
+| SLO | SLI의 목표치(예: 한 달 동안 99.9% 성공). 단순하고 분명하며 잴 수 있어야 한다 |
+| SLA | 서비스 제공자와 사용자가 맺은 **약속(계약)**. 어떤 지표를 얼마나 지킬지와 못 지켰을 때의 보상(서비스 크레딧)을 담는다. 보통 사업·법무 팀이 쓰고, 그 안의 약속 하나하나가 SLO다. SLI가 SLO를 늘 맞춰야 SLA를 지킨다([[cloud-sla-and-contract\|클라우드 SLA·계약]]) |
 | 에러 버짓 | 100% − SLO. 이만큼은 실패해도 된다. 남아 있으면 기능 배포를 밀고, 다 쓰면 배포를 멈추고 안정화에 쓴다 |
 | 토일(toil) | 손으로 반복하는 운영 작업. 자동화로 줄이고, 엔지니어 시간의 절반 이상이 되지 않게 관리한다 |
 | 비난 없는 포스트모템 | 사람이 아니라 시스템의 원인을 찾아 재발을 막는다 |

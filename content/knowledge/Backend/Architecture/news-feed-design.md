@@ -4,11 +4,12 @@ concept: "News Feed Design"
 summary: "뉴스 피드는 「누구와 연결됐나」와 「누가 무엇을 했나」 두 데이터를 합쳐 사용자마다 다른 목록을 만드는 문제다. 읽을 때 모으는 방식(스캐터·개더)과 쓸 때 받은편지함에 뿌리는 방식(팬아웃)의 차이, 활동 복제와 집계·중복 제거·점수 매기기, 비정규화와 캐시로 타임라인을 빠르게 만드는 법을 정리했다."
 tags: ["backend", "architecture", "cache", "database", "realtime"]
 source: other
-date: "2026-10-31"
-sources: ["https://github.com/checkcheckzz/system-design-interview", "http://www.slideshare.net/danmckinley/etsy-activity-feeds-architecture", "https://www.facebook.com/note.php?note_id=10150468255628920", "http://highscalability.com/blog/2012/1/23/facebook-timeline-brought-to-you-by-the-power-of-denormaliza.html", "http://highscalability.com/blog/2012/2/13/tumblr-architecture-15-billion-page-views-a-month-and-harder.html", "http://highscalability.com/scaling-twitter-making-twitter-10000-percent-faster", "http://highscalability.com/blog/2011/12/6/instagram-architecture-14-million-users-terabytes-of-photos.html", "http://lethain.com/introduction-to-architecting-systems-for-scale/"]
+date: "2026-11-01"
+sources: ["https://github.com/checkcheckzz/system-design-interview", "http://www.slideshare.net/danmckinley/etsy-activity-feeds-architecture", "https://www.facebook.com/note.php?note_id=10150468255628920", "http://highscalability.com/blog/2012/1/23/facebook-timeline-brought-to-you-by-the-power-of-denormaliza.html", "http://highscalability.com/blog/2012/2/13/tumblr-architecture-15-billion-page-views-a-month-and-harder.html", "http://highscalability.com/scaling-twitter-making-twitter-10000-percent-faster", "http://highscalability.com/blog/2011/12/6/instagram-architecture-14-million-users-terabytes-of-photos.html", "http://lethain.com/introduction-to-architecting-systems-for-scale/", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 「[checkcheckzz/system-design-interview](https://github.com/checkcheckzz/system-design-interview)」의 「Facebook 뉴스 피드·타임라인 설계」 문항이 가리키는 자료, Etsy의 「[Activity Feeds Architecture](http://www.slideshare.net/danmckinley/etsy-activity-feeds-architecture)」, Facebook의 「[Building Timeline](https://www.facebook.com/note.php?note_id=10150468255628920)」(2012)과 그 요약 「[Facebook Timeline: Brought To You By The Power Of Denormalization](http://highscalability.com/blog/2012/1/23/facebook-timeline-brought-to-you-by-the-power-of-denormaliza.html)」, High Scalability의 「[Tumblr Architecture](http://highscalability.com/blog/2012/2/13/tumblr-architecture-15-billion-page-views-a-month-and-harder.html)」, 「[Scaling Twitter](http://highscalability.com/scaling-twitter-making-twitter-10000-percent-faster)」, 「[Instagram Architecture](http://highscalability.com/blog/2011/12/6/instagram-architecture-14-million-users-terabytes-of-photos.html)」, 「[Introduction to Architecting Systems for Scale](http://lethain.com/introduction-to-architecting-systems-for-scale/)」를 바탕으로 재구성한 노트다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 EdgeRank와 Twitter 전체 설계(규모 추정, 데이터 모델, API, 리트윗, 검색·트렌드, 함께 아는 친구)를 보강했다.
 
 ## 피드가 어려운 이유
 
@@ -54,6 +55,8 @@ Etsy는 활동 하나를 **관심 가질 당사자 수만큼 복제**한다. 「
 
 따르는 대상이 피드 하나에 담기 어려울 만큼 많으면 1단계에서 표본을 고르거나, 따를 수 있는 수에 상한을 둔다.
 
+4단계 점수의 고전적인 예가 Facebook이 쓰던 **EdgeRank**다. 피드 항목(edge)마다 `점수 = 친밀도(affinity) × 가중치(weight) × 시간 감쇠(decay)`를 곱한다. 친밀도는 내가 작성자와 얼마나 자주 주고받나(좋아요·댓글·메시지), 가중치는 행동 종류의 무게(댓글이 좋아요보다 무겁다), 감쇠는 오래될수록 줄어드는 값이다. 지금의 피드 랭킹은 이런 손 공식 대신 수천 가지 신호를 쓰는 머신러닝 모델이 한다.
+
 ## 오래된 기록까지: 비정규화와 캐시 수명
 
 Facebook 타임라인은 최근 며칠이 아니라 **평생의 기록**을 보여 줘야 했다. 정규화된 기존 데이터는 화면 하나에 DB 왕복이 많았고, 캐시에 없으면 디스크 여기저기를 무작위로 읽었다.
@@ -65,6 +68,31 @@ Facebook 타임라인은 최근 며칠이 아니라 **평생의 기록**을 보�
 
 캐시할 수 없는 큰 조인은 플래시 전용 DB 계층으로 모으고 여러 서버에 동시에 질의하는 프록시를 둬서 줄였다.
 
+## 사례: Twitter 전체를 설계할 때
+
+면접에서 「Twitter를 설계하라」는 피드에 트윗 저장·검색·알림이 붙은 문제다.
+
+| 구분 | 내용 |
+| --- | --- |
+| 기능 | 트윗 작성(텍스트·이미지·동영상), 팔로우, 팔로우한 사람들의 뉴스 피드, 트윗 검색 |
+| 비기능 | 고가용성과 낮은 지연, 확장성 |
+| 확장 | 지표·분석, 리트윗, 좋아요 |
+
+```text
+사용자 10억, DAU 2억 × 하루 5트윗 = 하루 10억 트윗 → 초당 약 1.2만
+텍스트: 10억 × 100B ≈ 하루 100GB
+미디어: 트윗의 10% = 1억 개 × 50KB ≈ 하루 5TB
+10년: 5.1TB × 365 × 10 ≈ 19PB, 수신 대역폭 ≈ 초당 60MB
+```
+
+- **테이블**: `users`, `tweets`(종류, 내용, 작성자), `favorites`(사용자-트윗 좋아요), `followers`(팔로워-팔로이 N:M), `feeds`(사용자별 피드), `feeds_tweets`(피드-트윗 N:M). 서비스마다 테이블을 나눠 갖는다.
+- **API**: `postTweet(userID, content, mediaURL?)`, `follow(followerID, followeeID)`·`unfollow`, `getNewsfeed(userID)`(페이지 단위).
+- **서비스**: 사용자, 뉴스 피드(생성·발행), 트윗(작성·좋아요), 검색, 미디어, 알림, 분석.
+- **피드 생성**: ① 내가 따르는 사용자·해시태그·주제의 ID를 모으고 ② 각각의 트윗을 가져와 ③ 관련도·시간·참여도로 순위를 매기고 ④ 페이지 단위로 돌려준다. 팔로우가 많은 사용자는 오래 걸리므로 미리 만들어 캐시에 두고 주기적으로 갱신한다. 발행은 위 「두 가지 기본 전략」의 혼합(팔로워가 적은 계정은 푸시, 유명인은 풀)이다.
+- **리트윗**: 새 트윗 행을 만들고 종류를 `tweet`, 내용을 원래 트윗 ID로 둔다. 리트윗이 많아지면 별도 테이블로 뺀다.
+- **검색과 트렌드**: 트윗 검색은 Elasticsearch 같은 검색 엔진으로 한다([[elasticsearch-search|Elasticsearch 검색: 매핑·분석기·Query DSL]]). 트렌드는 최근 N초 동안 많이 검색·언급된 질의·해시태그를 세어 M초마다 배치로 갱신하고 캐시한다([[trending-topics|실시간 트렌딩과 Top-K 집계]]).
+- **함께 아는 친구**: 사용자를 노드, 팔로우를 방향 간선으로 둔 소셜 그래프에서 팔로워의 팔로워를 따라가 추천한다. 정확도는 추천 모델로 높인다.
+- **나머지**: 모든 이벤트를 Kafka로 발행해 Spark로 분석하고, 알림은 브로커를 거쳐 FCM·APNs로 보낸다. 인기 상위 20% 트윗을 LRU 캐시에 두고, 미디어는 오브젝트 스토리지와 CDN으로 내려 준다.
 ## 정리
 
 - 피드 = 연결 그래프 + 활동 로그. 간선은 양방향으로, 활동은 관심 당사자별로 복제해 둔다.
@@ -73,4 +101,4 @@ Facebook 타임라인은 최근 며칠이 아니라 **평생의 기록**을 보�
 - 집계는 연결 고르기 → 활동 모으기 → 중복 제거 → 점수 → 캐시 순서다.
 - 결론: 피드는 「언제 일을 하느냐(쓸 때냐 읽을 때냐)」를 계정 규모에 따라 나눠 정하는 문제다.
 
-관련 노트: [[message-queue-kafka|메시지 큐와 Kafka]], [[caching-strategies|캐시 전략]], [[redis|Redis]], [[database-sharding|데이터베이스 샤딩]], [[notification-system|알림 시스템 설계]], [[web-scalability-components|웹 확장성의 구성 요소]]
+관련 노트: [[message-queue-kafka|메시지 큐와 Kafka]], [[caching-strategies|캐시 전략]], [[redis|Redis]], [[database-sharding|데이터베이스 샤딩]], [[notification-system|알림 시스템 설계]], [[web-scalability-components|웹 확장성의 구성 요소]], [[photo-sharing-design|사진 공유 서비스 설계]]

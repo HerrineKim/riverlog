@@ -4,13 +4,14 @@ concept: "Load Balancer"
 summary: "여러 서버 앞에서 트래픽을 나눠 주는 로드 밸런서. 하는 일(분산, 헬스 체크와 장애 우회, TLS 종료, 세션 고정, 수평 확장, 플랫폼·경로별 라우팅, 영역 간 분산), L4와 L7의 차이, 하드웨어·소프트웨어·클라우드·GSLB 같은 형태, 분산 알고리즘을 정리했다."
 tags: ["backend", "architecture", "network", "infra", "scalability"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-a-load-balancer", "https://bytebytego.com/guides/key-use-cases-for-load-balancers", "https://bytebytego.com/guides/load-balancer-realistic-use-cases-you-may-not-know", "https://bytebytego.com/guides/top-6-load-balancing-algorithms", "https://d2.naver.com/helloworld/284659", "https://ziwon.github.io/post/modern-network-load-balancing-and-proxying/", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Network/README.md"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/what-is-a-load-balancer", "https://bytebytego.com/guides/key-use-cases-for-load-balancers", "https://bytebytego.com/guides/load-balancer-realistic-use-cases-you-may-not-know", "https://bytebytego.com/guides/top-6-load-balancing-algorithms", "https://d2.naver.com/helloworld/284659", "https://ziwon.github.io/post/modern-network-load-balancing-and-proxying/", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Network/README.md", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[What is a Load Balancer?](https://bytebytego.com/guides/what-is-a-load-balancer)」, 「[Key Use Cases for Load Balancers](https://bytebytego.com/guides/key-use-cases-for-load-balancers)」, 「[Load Balancer Realistic Use Cases](https://bytebytego.com/guides/load-balancer-realistic-use-cases-you-may-not-know)」, 「[Top 6 Load Balancing Algorithms](https://bytebytego.com/guides/top-6-load-balancing-algorithms)」를 바탕으로, 패킷 전달 방식과 로드 밸런서 이중화는 「[L4/L7 스위치의 대안, 오픈 소스 로드 밸런서 HAProxy](https://d2.naver.com/helloworld/284659)」로 보강해 재구성한 노트다.
 > 배치 토폴로지, L4 구현 방식, 제어 평면 부분은 Matt Klein의 「Introduction to modern network load balancing and proxying」 번역 「[네트워크 로드 밸런싱 및 프록시 소개](https://ziwon.github.io/post/modern-network-load-balancing-and-proxying/)」를 바탕으로 보강했다.
 > 「DNS 라운드 로빈」은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 네트워크 문서를 바탕으로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 요청을 나누는 기준, 최소 대역폭 알고리즘, 흔히 기대하는 부가 기능, 클러스터링과의 차이를 보강했다.
 
 ## 로드 밸런서란
 
@@ -39,6 +40,29 @@ flowchart LR
 | 플랫폼·경로별 라우팅 | 모바일과 데스크톱 요청, `/api`와 `/static`을 서로 다른 백엔드로 보낸다 (L7) |
 | 영역 간 분산(cross-zone) | 여러 가용 영역·지역에 걸쳐 나눠, 한 영역이 통째로 죽어도 버틴다 |
 
+로드 밸런서는 사용자와 웹 서버 사이 한 곳에만 두지 않는다. 웹 서버와 내부 서비스, 서비스와 DB·캐시 사이처럼 **계층마다** 두어야 각 계층이 따로 늘고 이중화된다([[web-scalability-components|웹 확장성의 구성 요소]]).
+
+### 무엇을 보고 나누나
+
+| 기준 | 보는 것 | 예 |
+| --- | --- | --- |
+| 호스트 기반 | 요청의 호스트 이름 | `api.example.com`은 API 서버 풀로, `www.example.com`은 웹 서버 풀로 |
+| 경로 기반 | 호스트를 넘어 URL 경로 전체 | `/images/*`는 이미지 서버로, `/checkout/*`는 결제 서버로 |
+| 내용 기반 | 요청 메시지 내용(파라미터 값, 헤더, 본문) | 특정 파라미터 값이나 고객 등급에 따라 다른 풀로 |
+
+셋 다 요청을 열어 봐야 하므로 L7에서만 된다.
+
+### 흔히 기대하는 부가 기능
+
+| 기능 | 하는 일 |
+| --- | --- |
+| 오토스케일링 연동 | 수요에 따라 서버를 늘리고 줄인 결과를 풀에 반영한다 |
+| 지속 연결 | WebSocket처럼 오래 가는 연결을 같은 서버에 붙여 둔다 |
+| 인증서 | 서버 인증서를 내보이고, 필요하면 클라이언트 인증서도 검증한다(mTLS, [[https\|HTTPS와 TLS]]) |
+| 압축·캐시 | 응답을 압축하고, L7이면 응답을 캐시한다 |
+| 로그·요청 추적 | 요청·응답 메타데이터를 남기고, 요청마다 고유 ID를 붙여 여러 서비스에 걸친 흐름을 추적한다 |
+| 리다이렉트·고정 응답 | 경로에 따라 다른 주소로 보내거나(HTTP → HTTPS), 백엔드까지 가지 않고 정해진 응답(점검 안내, 오류 페이지)을 돌려준다 |
+
 세션 고정은 편하지만 **특정 서버에 부하가 쏠리고, 그 서버가 죽으면 세션이 사라진다.** 세션을 Redis 같은 외부 저장소에 두거나 토큰 방식으로 바꾸면 고정 없이도 어느 서버로 가도 된다([[session-vs-token-auth|세션과 토큰 인증]]).
 
 ## L4와 L7
@@ -59,7 +83,7 @@ L4는 **연결 단위**로 나누기 때문에 HTTP/2·gRPC처럼 연결 하나�
 
 | 형태 | 설명 | 예 |
 | --- | --- | --- |
-| 하드웨어 | 전용 장비. 높은 처리량, 비싸고 늘리기 어렵다 | F5 같은 어플라이언스 |
+| 하드웨어 | 전용 장비. 높은 처리량, 비싸고 늘리기 어렵다. 제조사 펌웨어라 보안 패치·업데이트를 장비 단위로 챙겨야 하고, 설정 자유도가 낮다 | F5 같은 어플라이언스 |
 | 소프트웨어 | 일반 서버·VM·컨테이너에 설치 | Nginx, HAProxy, Envoy |
 | 클라우드 관리형 | 클라우드가 운영하고 자동으로 확장된다 | AWS Elastic Load Balancing, Google Cloud Load Balancing, Azure Load Balancer |
 | GSLB (Global Server Load Balancing) | 여러 지역의 데이터 센터 사이에서 나눈다. 보통 DNS나 애니캐스트로 구현 | 지역 장애 대비, 가까운 리전으로 보내기([[dns\|DNS 라우팅 정책]]) |
@@ -88,6 +112,7 @@ L4는 **연결 단위**로 나누기 때문에 HTTP/2·gRPC처럼 연결 하나�
 | 가중 라운드 로빈 | 서버마다 비중을 두고 돌린다 | 사양이 다른 서버가 섞여 있을 때, 새 버전에 일부만 보낼 때 |
 | 최소 연결 | 현재 연결이 가장 적은 서버로 | 요청마다 처리 시간이 크게 다를 때, WebSocket처럼 연결이 오래 갈 때 |
 | 최소 응답 시간 | 응답이 가장 빠른 서버로 | 서버 상태가 들쭉날쭉할 때 |
+| 최소 대역폭 | 지금 흘리는 트래픽(Mbps)이 가장 적은 서버로 | 요청마다 주고받는 데이터 양이 크게 다를 때(파일 전송, 미디어) |
 | IP 해시·일관 해시 | 클라이언트 IP나 키의 해시로 서버를 정한다 | 같은 클라이언트를 같은 서버로, 캐시 서버 분산 |
 
 ## 헬스 체크와 서비스 디스커버리
@@ -129,6 +154,10 @@ L7 프록시는 보통 상태 없이 여러 대를 나란히 두어 확장한다
 | 사이드카 프록시 | 서비스 옆에 붙은 별도 프로세스(Envoy, Linkerd) | 라이브러리의 장점을 언어와 무관하게 얻는다. 약간의 지연이 더해진다. **서비스 메시**의 바탕이다 |
 
 서비스 간 트래픽은 사이드카(서비스 메시)로, 외부 트래픽은 엣지 프록시로 받는 구성이 흔하다. 이때 프록시들은 **데이터 평면**이 되고, 설정·라우팅 규칙·인증서를 내려 주고 상태를 모으는 중앙 **제어 평면**(Istio의 istiod 등)이 따로 선다. 존 장애 시 자동 우회, 전역 정책 적용, 이상 탐지를 제어 평면이 맡는다([[distributed-system-patterns|분산 시스템의 통신·데이터 흐름 패턴]]).
+
+## 클러스터링과 무엇이 다른가
+
+로드 밸런서 뒤의 서버들은 **서로를 모른다.** 각자 받은 요청만 처리한다. **클러스터**(cluster)의 노드들은 서로를 알고 협력해 하나의 시스템처럼 동작한다(리더 선출, 상태 공유, 데이터 복제). 둘은 함께 쓰인다. 액티브-액티브 클러스터 앞에는 보통 로드 밸런서가 서고, 독립된 웹 서버 여러 대처럼 클러스터가 아닌 서버에도 로드 밸런싱은 쓸 수 있다. 클러스터의 종류와 구성은 [[high-availability-redundancy#클러스터링|고가용성 이중화 구조]]에 있다.
 
 ## 정리
 

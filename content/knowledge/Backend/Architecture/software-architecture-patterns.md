@@ -4,11 +4,12 @@ concept: "Architectural Patterns"
 summary: "계층형, 클라이언트-서버, 이벤트 기반, 마이크로서비스, 플러그인(마이크로커널), 헥사고날(포트와 어댑터) 아키텍처를 구조·장점·약점으로 비교하고, 구성 요소·커넥터와 제어·데이터 흐름으로 스타일을 가르는 다섯 계열(데이터 흐름, 호출-반환, 독립 구성 요소, 데이터 중심, 가상 머신)과 문제 모양별 선택 경험칙을 정리한다. 패턴마다 얻는 것과 치르는 것이 다르므로 시스템의 변경 방향과 팀 규모를 보고 고른다."
 tags: ["backend", "architecture", "design-pattern", "software-engineering", "msa"]
 source: other
-date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/6-software-architectural-patterns-you-must-know", "https://bytebytego.com/guides/top-5-software-architectural-patterns", "https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/", "https://web.cs.wpi.edu/~cs562/s98/pdf/Boxology.pdf"]
+date: "2026-11-01"
+sources: ["https://bytebytego.com/guides/6-software-architectural-patterns-you-must-know", "https://bytebytego.com/guides/top-5-software-architectural-patterns", "https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/", "https://web.cs.wpi.edu/~cs562/s98/pdf/Boxology.pdf", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[6 Software Architectural Patterns You Must Know](https://bytebytego.com/guides/6-software-architectural-patterns-you-must-know)」, 「[Top 5 Software Architectural Patterns](https://bytebytego.com/guides/top-5-software-architectural-patterns)」를 바탕으로 재구성한 노트다. 클라우드 아키텍처 스타일은 Azure Architecture Center의 「[Architecture styles](https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/)」로 보강했다. 상호작용 축에 따른 스타일 분류와 선택 경험칙은 Mary Shaw·Paul Clements의 「[A Field Guide to Boxology](https://web.cs.wpi.edu/~cs562/s98/pdf/Boxology.pdf)」(1997)를 바탕으로 더했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 N계층의 층과 티어, 닫힌 층과 열린 층, 1·2·3계층 구성을 보강했다.
 
 ## 아키텍처 패턴이란
 
@@ -41,6 +42,23 @@ sources: ["https://bytebytego.com/guides/6-software-architectural-patterns-you-m
 | 이벤트 기반 | 생산자가 브로커에 이벤트를 내고 소비자들이 거의 실시간으로 반응한다 | IoT, 금융 거래, 대량 스트림 처리 | 전달 보장, 순서, 최종 일관성 |
 | 빅 데이터 | 데이터 레이크에 모아 배치로 분석하고, 스트림은 실시간으로 처리해 분석 저장소에서 합친다 | 기존 DB에 담기지 않는 규모의 분석, 예측 모델 | 배치와 스트림 두 경로를 함께 운영해야 한다(람다 아키텍처) |
 | 빅 컴퓨트 | 스케줄러가 작업을 수천 코어에 나눠 보낸다. 서로 독립인 작업(embarrassingly parallel)과 고속 인터커넥트(InfiniBand, RDMA)가 필요한 밀결합 작업으로 나뉜다 | 시뮬레이션, 금융 위험 모델링, 3D 렌더링 | 필요할 때만 용량을 빌려 쓰도록 설계한다 |
+
+### N계층: 논리 층과 물리 티어
+
+N계층에서 **층(layer)** 은 책임을 나누는 논리 단위이고, **티어(tier)** 는 따로 떨어진 기계에서 도는 물리 단위다. 위층은 아래층을 쓰지만 반대 방향은 안 된다. 층마다 티어를 따로 둘 필요는 없어 여러 층이 한 티어에 함께 살 수 있다. 티어를 물리적으로 떼면 따로 늘리고 한 티어의 장애를 가둘 수 있지만, 티어 사이 네트워크 왕복만큼 지연이 붙는다. 티어끼리는 직접 호출하거나 비동기 메시지로 잇는다.
+
+| 방식 | 호출 규칙 | 특징 |
+| --- | --- | --- |
+| 닫힌 층(closed layer) | 바로 아래층만 부른다 | 층 사이 의존이 줄어든다. 아래층으로 넘기기만 하는 층이 있으면 쓸데없는 네트워크 홉이 생긴다 |
+| 열린 층(open layer) | 아래 어느 층이든 부른다 | 홉은 줄지만 의존이 늘어난다 |
+
+| 형태 | 구성 |
+| --- | --- |
+| 1계층(single tier) | 모든 구성 요소가 한 앱·한 서버에서 돈다. PC에서 혼자 도는 프로그램과 같다 |
+| 2계층 | 클라이언트에서 도는 표현 층이 데이터 저장소와 바로 통신한다. 사이에 비즈니스 로직 층이 없다 |
+| 3계층 | 표현(사용자 상호 작용) → 비즈니스 로직(검증·규칙) → 데이터 접근(DB 작업). 가장 흔하다 |
+
+티어를 나누면 가용성이 오르고, 티어 경계가 방화벽처럼 동작해 보안이 좋아지며, 티어마다 따로 늘리고 다른 사람이 관리할 수 있다. 대신 전체 복잡도와 티어 수만큼의 지연, 티어마다의 장비 비용이 늘고 티어 사이 네트워크 보안 관리가 어려워진다. DBMS의 1·2·3계층 구조는 [[database-models|데이터베이스 모델]]에 있다.
 
 ## 헥사고날 아키텍처의 모양
 

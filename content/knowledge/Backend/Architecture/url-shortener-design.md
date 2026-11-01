@@ -4,11 +4,13 @@ concept: "URL Shortener"
 summary: "긴 URL을 짧은 코드로 바꿔 주고 그 코드로 원래 주소에 리다이렉트하는 서비스(Bitly 같은)의 설계다. 요구 사항과 규모 추정, 301과 302 리다이렉트의 차이, 해시·고유 ID+Base62·무작위 코드 생성 방식 비교, 데이터 모델과 저장소, 캐시 중심의 읽기 경로, 사용자 지정 별칭·만료·클릭 분석·악용 방지를 다룬다."
 tags: ["backend", "architecture", "scalability", "web"]
 source: other
-date: "2026-10-31"
-sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://bytebytego.com/courses/system-design-interview/design-a-url-shortener", "http://n00tc0d3r.blogspot.com/2013/09/big-data-tinyurl.html", "https://developers.googleblog.com/en/google-url-shortener-links-will-no-longer-be-available/"]
+date: "2026-11-01"
+sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://bytebytego.com/courses/system-design-interview/design-a-url-shortener", "http://n00tc0d3r.blogspot.com/2013/09/big-data-tinyurl.html", "https://developers.googleblog.com/en/google-url-shortener-links-will-no-longer-be-available/", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 「fru1tworld/cs-basic 모의 면접 질문 목록」의 URL 단축기 설계 항목이 묻는 개념을 바탕으로, ByteByteGo 「[Design a URL Shortener](https://bytebytego.com/courses/system-design-interview/design-a-url-shortener)」의 구성을 참고해 재구성한 노트다. 해시 값을 그대로 코드로 쓰는 설계의 함정은 「[Big Data: TinyURL](http://n00tc0d3r.blogspot.com/2013/09/big-data-tinyurl.html)」(2013)을 실마리로, goo.gl 종료 경과는 Google Developers Blog의 「[Google URL Shortener links will no longer be available](https://developers.googleblog.com/en/google-url-shortener-links-will-no-longer-be-available/)」로 보강했다.
+> Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 TinyURL 풀이로 100:1 규모 추정, API 서명, 해시 자르기의 함정, 분할·캐시·로드 밸런서 위치를 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 ZooKeeper 구간 배정과 키 생성 서비스, 비공개 링크와 API 키를 보강했다.
 
 ## URL 단축기란
 
@@ -31,7 +33,22 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system
 저장: 한 건 평균 100바이트라면 3,650억 × 100B ≈ 36.5TB
 ```
 
-코드 길이는 「필요한 총 건수 < 62^n」을 만족하는 가장 작은 n으로 정한다. 6자는 약 568억 가지, 7자는 약 3.5조 가지다.
+코드 길이는 「필요한 총 건수 < 62^n」을 만족하는 가장 작은 n으로 정한다. 6자는 약 568억 가지, 7자는 약 3.5조 가지다. Base64(URL에 안전한 `-`, `_` 포함)라면 6자가 64^6 ≈ 687억, 8자가 64^8 ≈ 281조 가지다.
+
+읽기 비율을 더 크게 잡으면 캐시와 대역폭까지 같은 식으로 어림한다. 한 달 5억 건 생성, 읽기:쓰기 100:1, 객체 500바이트, 5년 보관이라고 가정하면 다음과 같다.
+
+```text
+쓰기 QPS: 5억 / (30일 × 86,400초) ≈ 200건/초
+읽기 QPS: 200 × 100 = 20,000건/초
+보관 건수: 5억 × 12개월 × 5년 = 300억 건
+저장: 300억 × 500B = 15TB
+들어오는 대역폭: 200 × 500B = 100KB/s
+나가는 대역폭: 20,000 × 500B = 10MB/s
+하루 읽기: 20,000 × 86,400 ≈ 17억 건
+캐시(80/20 규칙, 인기 20%만): 0.2 × 17억 × 500B ≈ 170GB
+```
+
+같은 URL에 대한 중복 요청이 많으므로 실제 캐시 메모리는 170GB보다 적게 든다. 하루 트래픽의 20% 정도에서 시작해 사용 패턴을 보고 조절한다.
 
 ## API와 리다이렉트
 
@@ -48,6 +65,13 @@ GET /2TX9aB
 | **301 Moved Permanently** | 영구 이동. 브라우저가 결과를 캐시한다 | 두 번째 방문부터 서버를 거치지 않아 부하가 준다 | 클릭이 서버에 오지 않아 **통계를 잃는다.** 목적지를 바꾸거나 만료시켜도 캐시된 브라우저는 옛 주소로 간다 |
 | **302 Found** (또는 307) | 임시 이동. 매번 서버에 묻는다 | 모든 클릭을 셀 수 있고, 목적지 변경·만료·차단이 즉시 반영된다 | 모든 클릭이 서버 부하가 된다 |
 
+공개 API라면 생성 함수에 호출자 식별 키를 받아 할당량별로 속도를 제한한다.
+
+```text
+createURL(api_dev_key, original_url, custom_alias=None, user_name=None, expire_date=None) → 짧은 URL
+deleteURL(api_dev_key, url_key)
+```
+
 클릭 분석이 상품의 핵심이면 302, 부하 절감이 우선이면 301을 쓴다. 302를 쓰더라도 리다이렉트 응답 자체는 캐시·CDN 엣지에서 처리해 원본 서버까지 오는 요청을 줄인다.
 
 ## 코드 생성 방식
@@ -58,6 +82,8 @@ GET /2TX9aB
 | **고유 ID + Base62 인코딩** | 분산 ID 생성기로 정수 ID를 받아 Base62로 바꾼다 | **충돌이 없다.** 존재 확인이 필요 없다 | ID가 순서대로면 코드가 예측 가능해 다른 링크를 훑어볼 수 있다. ID 생성기가 필요하다 |
 | 무작위 코드 | 무작위 7자를 만들고 유니크 제약으로 충돌 시 다시 만든다. 또는 미리 만들어 둔 코드 풀에서 꺼내 쓴다(키 생성 서비스) | 예측할 수 없다 | 채워질수록 충돌 재시도가 는다. 코드 풀은 별도 서비스·동시성 관리가 필요하다 |
 
+해시를 자르는 방식에는 두 가지 함정이 더 있다. MD5는 128비트라 Base64로 바꾸면 21자가 넘어 앞 6~8자만 써야 하고, 여러 사용자가 같은 URL을 넣으면 같은 코드가 나온다. URL 일부가 퍼센트 인코딩되어 있으면 같은 주소가 다른 해시가 된다. 사용자마다 다른 코드를 주려면 URL 뒤에 시퀀스 번호를 붙여 해시하거나, 로그인한 사용자라면 사용자 ID를 붙인다.
+
 여러 서버로 늘릴 때 흔한 실수는 「원본 URL을 해시해 일관된 해싱으로 저장 서버를 고르고, **그 해시 값을 62진수로 바꿔** 코드로 돌려주는」 설계다. 7자리 Base62(약 3.5조 개)에 담으려면 해시 공간을 그만큼 줄여야 하고, 그 순간 서로 다른 URL이 같은 코드를 갖는 충돌이 생긴다. 해시를 쓰려면 위 표처럼 저장 전에 존재를 확인하고 충돌하면 소금을 붙여 다시 해시해야 하고, 충돌 처리를 피하려면 서버마다 ID 구간을 나눠 주고 그 ID를 Base62로 바꾼다. 62진수 변환 자체는 정수와 코드 사이의 일대일 대응이라 충돌이 없다.
 
 Base62 인코딩은 정수를 62진수로 바꾸는 것이다. `0-9`를 0~9, `a-z`를 10~35, `A-Z`를 36~61로 둘 때 11157은 다음과 같다.
@@ -67,7 +93,14 @@ Base62 인코딩은 정수를 62진수로 바꾸는 것이다. `0-9`를 0~9, `a-
        → [2, 55, 59] → "2" "T" "X" → 2TX
 ```
 
-고유 ID는 Snowflake 같은 분산 ID 생성기, DB 시퀀스, 서버마다 번호 구간을 미리 나눠 주는 방식으로 얻는다([[distributed-unique-id|분산 환경의 고유 ID 생성]]). 순차 ID의 예측 가능성이 문제면 ID를 비트 섞기(가역 순열)로 뒤섞은 뒤 인코딩한다. 비공개 링크에는 예측 불가능한 무작위 코드를 쓴다.
+7자리 Base62는 약 3.5조 개(62⁷), 6자리는 약 568억 개, 5자리는 약 9억 개의 코드를 만든다. 고유 ID는 Snowflake 같은 분산 ID 생성기, DB 시퀀스, 서버마다 번호 구간을 미리 나눠 주는 방식으로 얻는다([[distributed-unique-id|분산 환경의 고유 ID 생성]]). 순차 ID의 예측 가능성이 문제면 ID를 비트 섞기(가역 순열)로 뒤섞은 뒤 인코딩한다. 비공개 링크에는 예측 불가능한 무작위 코드를 쓴다.
+
+### 카운터와 키 생성 서비스
+
+- **카운터 한 대**는 요청마다 번호를 하나씩 올려 주면 충돌이 없지만 단일 장애점이 된다. 카운터를 여러 대 두면 서로 같은 번호를 낼 수 있다.
+- **ZooKeeper로 구간 나눠 주기**: ZooKeeper 같은 분산 조정 서비스가 서버마다 겹치지 않는 번호 구간(1~1,000,000, 1,000,001~2,000,000, ...)을 배정한다. 서버는 자기 구간 안에서 혼자 번호를 올리고, 다 쓰면 새 구간을 받는다. 충돌이 없고, ZooKeeper도 여러 대로 묶어 단일 장애점을 없앤다. 서버가 죽으면 쓰다 만 구간의 남은 번호는 버린다.
+- **키 생성 서비스(KGS)**: 독립 서비스가 코드를 **미리 만들어** 별도 키 DB에 쌓아 두고, API 서버가 하나씩 받아 간다. 서버 여러 대가 같은 키를 받지 않도록 키를 「안 쓴 키」, 「쓴 키」 두 테이블에 두고, 키를 내줄 때 잠금과 함께 쓴 키 테이블로 옮긴다. 자주 쓰는 만큼은 메모리에 미리 올려 둔다(서버가 죽으면 메모리의 키는 버린다).
+- KGS의 키 DB 크기: 6자리 키 약 568억 개 × 6바이트 ≈ 341GB. 서비스 수명 전체 분량이고, 본 DB처럼 계속 커지지 않는다. KGS와 키 DB는 여러 인스턴스와 대기 복제본으로 이중화한다.
 
 ## 데이터 모델과 저장소
 
@@ -83,6 +116,8 @@ urls
 
 - 접근 패턴이 「코드로 한 건 읽기」뿐이므로 **키-값 저장소**(DynamoDB, Cassandra)와 잘 맞는다. 인덱스를 둔 RDB도 충분하다.
 - 수십 TB가 되면 `short_code`의 해시로 샤딩한다. 코드로만 찾으므로 샤드를 넘는 조회가 없다([[database-sharding|데이터베이스 샤딩]]).
+- 범위 기반 분할(코드 첫 글자로 나누기)은 글자마다 빈도가 달라 서버 부하가 고르지 않다. 해시 기반 분할은 고르게 퍼지지만 특정 파티션이 몰리면 일관된 해싱으로 재분배한다.
+- 레코드는 수십억 개이고 하나하나 작으며(1KB 미만) 서로 관계가 없다(만든 사용자 정도). 그래서 관계형 기능보다 키-값 조회 성능이 중요하다.
 
 ## 읽기 경로와 쓰기 경로
 
@@ -109,6 +144,8 @@ flowchart LR
 - 없는 코드로 오는 요청(오타, 스캔)이 DB까지 가지 않게 블룸 필터나 「없음」 결과의 짧은 캐시를 둔다.
 - 클릭 기록은 리다이렉트 응답을 막지 않게 비동기 이벤트로 보내 따로 집계한다([[message-queue-kafka|메시지 큐와 Kafka]]).
 - 리다이렉트 서버는 상태가 없어 수평으로 늘린다.
+- 캐시(Redis, Memcached)는 인기 링크를 남기도록 LRU로 내보낸다.
+- 로드 밸런서는 클라이언트와 앱 서버 사이, 앱 서버와 DB 사이, 앱 서버와 캐시 사이 세 곳에 둘 수 있다. 처음에는 라운드 로빈으로 시작하고, 서버 부하를 보는 방식으로 바꾼다([[load-balancer|로드 밸런서]]).
 
 ## 추가로 정할 것
 
@@ -119,6 +156,8 @@ flowchart LR
 | 같은 URL 재요청 | 매번 새 코드를 줄지, 사용자별로 같은 코드를 돌려줄지 정한다 |
 | 악용 방지 | 피싱·악성 URL 검사, 생성 API 속도 제한([[resiliency-patterns\|장애 확산을 막는 복원력 패턴]]), 신고된 코드 차단(302여야 즉시 반영된다) |
 | 통계 | 클릭 수, 시간대, 국가, 유입 경로를 스트림 처리로 집계한다 |
+| 비공개 링크 | 링크마다 접근을 허락한 사용자 ID를 별도 테이블에 두고, 권한 없는 사용자에게는 401·403을 돌려준다 |
+| API 키 | 생성·조회·삭제 API(`createURL(apiKey, originalURL, expiration?)`, `getURL`, `deleteURL(apiKey, shortURL)`)에 API 키를 받아 사용자별 초당·분당 호출 한도를 건다. 인증·속도 제한은 API 게이트웨이에 맡길 수 있다 |
 | 서비스 수명 | 단축 링크는 서비스가 살아 있어야 동작한다. Google의 goo.gl은 2018년 새 링크 생성을 막았고, 기존 링크를 2025-08-25에 모두 끊으려다 2024년 말 이후 클릭이 있던 링크와 Google 앱이 만든 링크는 유지하는 쪽으로 바꿨다. 활동이 없던 링크는 그날 이후 동작하지 않는다. 오래 남을 문서에는 자기 도메인의 단축기나 원본 URL을 쓴다 |
 
 ## 정리
