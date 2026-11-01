@@ -4,8 +4,8 @@ concept: "Memory Hierarchy"
 summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 저장 장치를 계층으로 묶는 구조(계층별 지연 시간의 자릿수)와 RAM의 종류(SRAM·DRAM의 셀 구조, DRAM의 행·열 접근 타이밍과 순차 접근이 빠른 이유, NUMA), 칩을 병렬·직렬로 이어 만드는 기억장치 모듈, 하드 디스크·플래시 메모리(셀 원리, NOR·NAND, SSD와 FTL), RAID(작은 쓰기 문제), 연관 메모리."
 tags: ["computer-architecture", "memory", "storage", "raid"]
 source: mixed
-date: "2026-10-21"
-sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/", "https://www.youtube.com/watch?v=m2NfFJEvssY", "https://www.youtube.com/watch?v=lgFmNUG_Atw", "https://www.youtube.com/watch?v=TQCr9RV7twk", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "고려사이버대학교 컴퓨터구조 강의(권오상 교수, 2024-1학기)"]
+date: "2026-11-01"
+sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/", "https://www.youtube.com/watch?v=m2NfFJEvssY", "https://www.youtube.com/watch?v=lgFmNUG_Atw", "https://www.youtube.com/watch?v=TQCr9RV7twk", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "고려사이버대학교 컴퓨터구조 강의(권오상 교수, 2024-1학기)", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 노션 정리를 바탕으로, 계층별 역할은 ByteByteGo의 System Design 101 가이드 「[Types of Memory](https://bytebytego.com/guides/types-of-memory)」, 「[Types of Memory and Storage](https://bytebytego.com/guides/types-of-memory-and-storage)」로, SRAM·DRAM의 구조와 DRAM 접근 타이밍·NUMA는 Ulrich Drepper의 「[What every programmer should know about memory, Part 1](https://lwn.net/Articles/250967/)」(2007)로 보강했다.
@@ -13,6 +13,7 @@ sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.you
 > 「매체마다 다른 접근 방식」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 「메모리 대역폭」 절은 fru1tworld/cs-basic 모의 면접 질문 목록을 점검해 빠진 개념을 보강했다.
 > 내부·외부 기억장치와 전송률, 「칩 조직과 기억장치 모듈 설계」, SDRAM 세대별 읽기 시간, 차세대 비휘발성 메모리, 하드 디스크의 기록 방식, 플래시 셀·NOR와 NAND·SSD 구성, RAID의 MTTF와 작은 쓰기 문제는 고려사이버대학교 「컴퓨터구조」(2024-1학기) 강의 내용으로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 RAID 레벨별 최소 디스크 수·용량 효율·허용 고장 비교를 보강했다.
 
 빠른 메모리는 비싸고 작으며, 큰 메모리는 느리다. 그래서 컴퓨터는 여러 종류의 저장 장치를 **계층**으로 쌓고, 자주 쓰는 데이터를 위쪽에 두는 방식으로 "빠르면서도 큰" 메모리처럼 보이게 만든다.
 
@@ -301,6 +302,17 @@ flowchart LR
 - **작은 쓰기 문제**: 블록 하나 D를 D′로 고칠 때 나머지 블록을 모두 읽어 패리티를 다시 구할 필요는 없다. XOR의 성질로 `P′ = P ⊕ D ⊕ D′`이므로 옛 데이터 읽기, 옛 패리티 읽기, 새 데이터 쓰기, 새 패리티 쓰기의 **4번 접근**이면 디스크 수와 상관없이 끝난다. 그래도 단순 쓰기 한 번보다 네 배다. RAID 4는 모든 쓰기가 패리티 디스크를 두 번씩 건드려 병목이 되고, RAID 5는 패리티가 흩어져 있어 데이터 디스크 G개일 때 최대 (G + 1)/2개의 쓰기를 동시에 할 수 있다. 디스크 수보다 많은 블록을 한꺼번에 쓰는 **큰 쓰기**는 패리티를 미리 계산해 데이터와 패리티를 한 번씩만 쓰면 된다.
 - 그래서 읽기와 작은 쓰기가 많은 곳에는 RAID 1이, 용량·비용이 중요하고 큰 쓰기가 많은 곳에는 RAID 5가 어울린다. 가격 대비 성능은 RAID 5가 낫다.
 - RAID 6은 쓰기 속도를 조금 희생하더라도 더 안전하게 보관하고 싶을 때 쓴다. 여러 레벨을 섞은 RAID 10, RAID 50 같은 구성(Nested RAID)도 있다.
+- **RAID 10**(1+0)은 디스크를 둘씩 미러링(RAID 1)한 쌍들을 다시 스트라이핑(RAID 0)한다. 미러 덕분에 패리티 계산이 없어 작은 쓰기에도 빠르고, 재구성도 짝 디스크를 복사하기만 하면 돼 빠르다. 대신 용량의 절반을 쓴다. DB 서버처럼 쓰기가 많고 안정성도 필요한 곳에서 흔하다.
+
+| 레벨 | 최소 디스크 | 용량 효율(N장) | 견디는 고장 | 읽기 | 쓰기 |
+| --- | --- | --- | --- | --- | --- |
+| RAID 0 | 2 | 100% | 없음 | 높음 | 높음 |
+| RAID 1 | 2 | 50%(2중 미러) | 짝 하나가 남는 한 | 높음 | 디스크 한 장 수준 |
+| RAID 5 | 3 | (N−1)/N, 3장이면 67% | 1장 | 높음 | 작은 쓰기마다 4번 접근해 떨어진다 |
+| RAID 6 | 4 | (N−2)/N, 4장이면 50% | 2장 | 높음 | 패리티가 둘이라 RAID 5보다 더 떨어진다 |
+| RAID 10 | 4 | 50% | 미러 쌍마다 1장(같은 쌍 두 장이 죽으면 손실) | 높음 | 중간(두 번씩 쓴다) |
+
+디스크가 커질수록 재구성에 몇 시간~며칠이 걸리고, 그동안 한 장이 더 고장 나거나 읽기 오류가 나면 RAID 5는 데이터를 잃는다. 그래서 대용량 디스크 배열은 RAID 6이나 RAID 10을 고르는 편이다. RAID는 디스크 고장 대비일 뿐 **실수로 지운 파일이나 랜섬웨어를 되돌려 주지 않으므로** 백업을 대신하지 않는다.
 - 디스크 여러 장에 줄무늬처럼 나뉘어 놓인 데이터 조각을 **스트라이프**(stripe), 그렇게 나눠 저장하는 일을 **스트라이핑**이라 한다. 한 디스크에 연속으로 쓰는 조각의 크기(stripe size)는 RAID 볼륨을 만들 때 정한다.
 - 일반적인 패리티 비트는 오류를 **검출**만 하지만, RAID의 패리티는 나머지 디스크의 데이터와 XOR해 고장 난 디스크 한 장의 내용을 **복구**할 수 있다.
 - RAID는 메인보드 펌웨어(BIOS·UEFI 설정의 RAID 모드), 전용 RAID 컨트롤러, 운영체제의 소프트웨어 RAID([[disk-scheduling|디스크 관리와 스케줄링]]의 md) 중 어디서든 구성할 수 있다.
