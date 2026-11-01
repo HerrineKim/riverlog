@@ -4,12 +4,13 @@ concept: "Interview Attitude"
 summary: "면접관은 말보다 태도를 먼저 읽는다. 눈 맞춤과 미러링, 일찍 도착하기, 겸손과 감사, 결론부터 짧게 답하기, 이력서 숙지와 모르면 모른다고 하기, 실수를 빨리 인정하기, 압박 면접 대응, 역질문과 감점되는 질문, 감사 메일, 기술 질문 준비, 면접에서 피할 회사를 가려내는 신호까지 면접 전·중·후의 원칙을 정리한다."
 tags: ["career", "interview", "job-search", "communication"]
 source: other
-date: "2026-10-30"
-sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md", "https://www.techinterviewhandbook.org/final-questions/"]
+date: "2026-11-01"
+sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md", "https://www.techinterviewhandbook.org/final-questions/", "https://github.com/viraptor/reverse-interview"]
 ---
 
 > 플라피나의 노션 강의록 「플라피나 면접팁 / 자소서팁」과 「심화편」, 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리를 바탕으로 재구성한 노트다. 회사를 면접하는 질문은 freeCodeCamp의 「[How to Interview as a Developer Candidate](https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd)」를 바탕으로 더했다. 현직자 커피챗은 위니브의 「[프론트엔드 개발자 가이드](https://github.com/weniv/frontend-developer-guide)」를 바탕으로 더했다.
 > 「주제별 질문 목록」과 프로젝트 질문·말로 꺼내 보기는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소의 Reverse Interview·Tip 문서를 바탕으로 보강했다. 역질문의 의미와 면접관의 경험을 묻는 질문, 관리자·경영진 대상 질문은 Tech Interview Handbook의 「[Best end of interview questions to ask](https://www.techinterviewhandbook.org/final-questions/)」로 보강했다.
+> 원본 영어 목록인 viraptor의 「[Reverse interview](https://github.com/viraptor/reverse-interview)」에서 번역본에 없던 질문(인프라 코드화, 재해 복구, ADR, 핫스폿, 채용 이유, 런웨이, 계약 조건 등)을 더했다.
 
 ## 면접은 소개팅이다
 
@@ -137,16 +138,16 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 
 #### 주제별 질문 목록
 
-질문 목록은 **전부 묻는 용도가 아니다.** 회사 블로그·채용 공고·기사로 검색해 알 수 있는 것은 빼고, 지원한 팀과 포지션에서 정말 궁금한 것 **3~5개**만 골라 공손하게 묻는다. 역질문은 회사를 얼마나 조사했는지 보여 주는 기회이기도 하다.
+질문 목록은 **전부 묻는 용도가 아니다.** 버그 트래커나 CI/CD가 있다는 대답이 곧 일이 효율적으로 돈다는 뜻은 아니고 조직은 자주 바뀌므로, 「있나요」보다 「실제로 어떻게 돌아가나요」를 묻는다. 회사 블로그·채용 공고·기사로 검색해 알 수 있는 것은 빼고, 지원한 팀과 포지션에서 정말 궁금한 것 **3~5개**만 골라 공손하게 묻는다. 역질문은 회사를 얼마나 조사했는지 보여 주는 기회이기도 하다.
 
 | 주제 | 고를 만한 질문 |
 | --- | --- |
-| 역할 | 이 포지션에서 「잘했다」의 기준은 무엇인가요? 온보딩은 어떻게 하나요? 온콜(on-call)이 있나요? 제 지원서에서 우려되는 점이 있나요? |
-| 기술 | 기획부터 배포까지 흐름은 어떻게 되나요? CI/CD와 테스트는 어떻게 하나요? 장애가 나면 누가 어떻게 대응하나요? 개발 문서와 의존성 보안 점검은 어떻게 하나요? |
+| 역할 | 이 포지션에서 「잘했다」의 기준은 무엇인가요? 입사 후 1개월·3개월 안에 기대하는 결과는요? 수습 기간 끝에 무엇으로 평가하나요? 온보딩은 어떻게 하나요? 온콜(on-call)이 있고 대기·출동 수당은 어떻게 되나요? 개발자 개인의 결정 재량은 어느 정도인가요? 제 지원서에서 우려되는 점이 있나요? |
+| 기술 | 기획부터 배포까지 흐름은 어떻게 되나요? CI/CD와 테스트는 어떻게 하나요? 인프라도 코드로 관리하나요? 재해 복구는 어떻게 대비하나요? 장애가 나면 누가 어떻게 대응하나요? 개발 문서와 의존성 보안 점검은 어떻게 하나요? 아키텍처 결정은 ADR처럼 기록하나요? 자주 바뀌는 위험한 코드(핫스폿)는 어디이고, 온보딩 중에 만날 가능성은요? |
 | 팀 | 우선순위와 일정은 누가 정하나요? 코드 리뷰는 어떻게 하나요? 팀이 아직 풀지 못한 문제는 무엇인가요? 장애 회고는 탓하지 않는(blameless) 방식인가요? |
 | 충돌 | 의견이 갈리면 어떻게 결정하나요? 감당할 수 없는 일정이 들어오면 어떻게 하나요? 경영진의 기대와 팀의 결과가 어긋나면 어떻게 되나요? |
-| 동료 | 여기서 일해서 가장 좋은 점과 바꾸고 싶은 점은 무엇인가요? |
-| 회사·사업 | 수익은 어디서 나고, 더 크는 데 방해되는 것은 무엇인가요? 승진·성장 경로와 학습 지원은 어떻게 되나요? |
+| 동료 | 여기서 일해서 가장 좋은 점과 바꾸고 싶은 점은 무엇인가요? 처음 이 회사를 고른 이유와 지금 남아 있는 이유는요? 가장 오래 일한 팀원은 얼마나 됐나요? 최근에 누군가 성장한 걸 본 때는 언제였나요? |
+| 회사·사업 | 왜 지금 이 자리를 뽑나요(성장, 신규 제품, 결원)? 내부 승진 대신 외부 채용을 택한 이유는요? 회사는 어느 단계(방향 탐색, 기능 확장, 유지 보수)에 있나요? 수익을 내나요, 아니라면 런웨이는 얼마나 남았나요? 수익은 어디서 나고, 더 크는 데 방해되는 것은 무엇인가요? 승진·평가 절차와 기술·관리 트랙 분리, 학습 지원은 어떻게 되나요? 경업 금지·비밀 유지 계약이 있나요? 오픈소스 기여에 승인이 필요한가요? |
 | 근무 형태·처우 | 원격과 사무실 근무 비율, 업무 장비 지원, 휴가·육아 휴직 정책은 어떻게 되나요? |
 
 처우·휴가처럼 민감한 주제는 보통 면접 단계보다 처우 협의 단계에서 인사 담당자에게 묻는 편이 낫다([[job-offer-negotiation|처우 협상]]).
