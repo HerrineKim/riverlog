@@ -4,7 +4,7 @@ concept: "Programming Languages"
 summary: "C++의 문법·템플릿·STL·예외·가상 함수·스마트 포인터·메모리 풀 같은 언어 내부 동작과, 추상 클래스·인터페이스·위임·DTO/VO·클린 코드 같은 객체 지향 설계 개념 모음."
 tags: ["cpp", "oop", "design-pattern", "clean-code", "computer-science"]
 source: other
-date: "2026-10-31"
+date: "2026-11-01"
 ---
 
 언어의 문법은 금방 익히지만, 그 문법이 컴파일된 뒤 무엇이 되는지(템플릿 인스턴스화, vtable, 예외 테이블)를 알면 성능과 버그를 설명할 수 있다. 이 주제에는 C++를 중심으로 한 언어 내부 동작과, 언어를 넘어 쓰이는 객체 지향 설계 개념을 모았다. C 언어와 포인터는 [C-Programming](Computer-Science/C-Programming.md)에 있다.
@@ -41,6 +41,10 @@ date: "2026-10-31"
 - [책임 주도 설계: 협력·책임·메시지](Computer-Science/Programming-Languages/responsibility-driven-design.md): 메시지를 먼저 정하고 책임을 가진 객체 고르기, 인터페이스는 메시지 집합
 - [싱글턴 패턴](Computer-Science/Programming-Languages/singleton-pattern.md): 인스턴스를 하나로 제한하는 Java 구현 여섯 가지(DCL과 volatile, 홀더, enum), C++ Meyers 싱글턴, 전역 상태의 단점
 - [GoF 디자인 패턴](Computer-Science/Programming-Languages/gof-design-patterns.md): 생성·구조·행위 패턴이 푸는 문제와 비유, 과용의 비용
+- [객체 지향 설계 면접: 풀이 순서와 반복되는 설계 부품](Computer-Science/Programming-Languages/ood-interview-approach.md): 요구 사항 → 유스케이스 → 클래스 → 활동·시퀀스 → 코드 골격 순서, 계정과 사람·정의와 인스턴스 분리·상태 enum·Search 색인 같은 공통 부품, 사례별 패턴 지도와 SOLID, 안티패턴
+- [객체 지향 설계 사례: 예약·대여 시스템](Computer-Science/Programming-Languages/ood-booking-rental-systems.md): 도서관(5권·10일·연체료), 영화 예매(회차 좌석과 SERIALIZABLE), 항공(운항 회차·여정), 호텔(24시간 전 환불), 식당(좌석별 주문), 렌터카(다른 지점 반납·부가 서비스)
+- [객체 지향 설계 사례: 주차장·ATM과 카드·보드 게임](Computer-Science/Programming-Languages/ood-machines-and-games.md): 차종별 주차 자리 배정과 티켓 발급 락, ATM 부품·거래 커맨드·잔액 조회 시퀀스, 블랙잭 점수와 보험·스플릿·더블, 체스 말별 이동과 수 검증
+- [객체 지향 설계 사례: 커머스·커뮤니티·플랫폼](Computer-Science/Programming-Languages/ood-platform-systems.md): 쇼핑몰 주문·배송과 결제 시퀀스, Stack Overflow 평판·현상금, 증권 주문 종류·부분 체결·묶음, LinkedIn·Facebook 연결과 2단계 BFS 추천, Cricinfo 경기 계층, Uber 매칭과 요금
 - [좋은 코드를 위한 열 가지 원칙](Computer-Science/Programming-Languages/coding-principles.md): 규약·주석·견고함·SOLID·테스트 용이성·적당한 추상화, 원칙끼리 부딪칠 때의 판단
 - [같은 문제, 열다섯 가지 설계: 상태와 결합을 다루는 법](Computer-Science/Programming-Languages/state-and-decoupling-designs.md): 터틀 그래픽을 클래스·순수 함수·의존성 주입·상태 모나드·이벤트 소싱·인터프리터 등으로 구현하며 상태 소유와 결합 비교
 
