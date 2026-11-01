@@ -8,7 +8,7 @@ date: "2026-10-21"
 sources: ["https://brunch.co.kr/@chulhochoiucj0/8", "https://brunch.co.kr/@chulhochoiucj0/9", "https://brunch.co.kr/@chulhochoiucj0/10", "https://brunch.co.kr/@chulhochoiucj0/12", "https://brunch.co.kr/@chulhochoiucj0/14", "https://brunch.co.kr/@chulhochoiucj0/23", "https://brunch.co.kr/@supernova9/180", "http://www.design.samsung.com/kr/contents/one-ui/download/oneui_design_guide_kor.pdf"]
 ---
 
-> 「[모바일 UI UX 디자인 시 고려해야 할 가이드라인](https://brunch.co.kr/@chulhochoiucj0/8)」 연재([2](https://brunch.co.kr/@chulhochoiucj0/9), [3](https://brunch.co.kr/@chulhochoiucj0/10), [4](https://brunch.co.kr/@chulhochoiucj0/12), [5](https://brunch.co.kr/@chulhochoiucj0/14))와 「[모바일 UI 디자인 기본 요소 - 버튼](https://brunch.co.kr/@chulhochoiucj0/23)」, 「[따릉아! 문제는 UX/UI야!](https://brunch.co.kr/@supernova9/180)」, 삼성전자 「[One UI 디자인 가이드](http://www.design.samsung.com/kr/contents/one-ui/download/oneui_design_guide_kor.pdf)」를 바탕으로 재구성한 노트다. 플랫폼 공식 기준은 Apple Human Interface Guidelines와 Material Design이 우선이다.
+> 「[모바일 UI UX 디자인 시 고려해야 할 가이드라인](https://brunch.co.kr/@chulhochoiucj0/8)」 연재([2](https://brunch.co.kr/@chulhochoiucj0/9), [3](https://brunch.co.kr/@chulhochoiucj0/10), [4](https://brunch.co.kr/@chulhochoiucj0/12), [5](https://brunch.co.kr/@chulhochoiucj0/14))와 「[모바일 UI 디자인 기본 요소 - 버튼](https://brunch.co.kr/@chulhochoiucj0/23)」, 「[따릉아! 문제는 UX/UI야!](https://brunch.co.kr/@supernova9/180)」, 삼성전자 「[One UI 디자인 가이드](http://www.design.samsung.com/kr/contents/one-ui/download/oneui_design_guide_kor.pdf)」를 바탕으로 재구성한 노트다. 플랫폼 공식 기준은 Apple Human Interface Guidelines([[apple-hig|Apple HIG 요약]])와 Material Design이 우선이다.
 
 ## 출발점: 모바일의 사용 맥락
 
@@ -118,4 +118,4 @@ sources: ["https://brunch.co.kr/@chulhochoiucj0/8", "https://brunch.co.kr/@chulh
 - 입력은 맞는 키보드, 즉시 피드백, 실수를 막고 되돌릴 길을 둔다.
 - 어떤 관례든 앱 전체에서 일관되게 쓴다.
 
-관련 노트: [[form-usability|폼 사용성]], [[gesture-interface|제스처 기반 인터페이스]], [[responsive-ui-patterns|반응형 UI 패턴]], [[ux-writing|UX 라이팅]], [[visual-design-tips|개발자를 위한 시각 디자인 요령]], [[ui-elements-glossary|UI 요소 용어]]
+관련 노트: [[form-usability|폼 사용성]], [[gesture-interface|제스처 기반 인터페이스]], [[responsive-ui-patterns|반응형 UI 패턴]], [[ux-writing|UX 라이팅]], [[visual-design-tips|개발자를 위한 시각 디자인 요령]], [[ui-elements-glossary|UI 요소 용어]], [[apple-hig|Apple HIG 요약]]
