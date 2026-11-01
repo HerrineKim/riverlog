@@ -1,16 +1,17 @@
 ---
 title: "코딩 테스트 접근법"
 concept: "Coding Test"
-summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법, 랜덤 비교 테스트로 반례 찾기, 막혔을 때 접근을 찾는 관점과 이론상 최선 복잡도(BTTC)를 기준으로 시간·공간을 줄이는 최적화 기법, 파이썬·자바스크립트 실전 팁."
+summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법과 그 방식이 자기기만이 되는 함정, 랜덤 비교 테스트로 반례 찾기, 막혔을 때 접근을 찾는 관점과 이론상 최선 복잡도(BTTC)를 기준으로 시간·공간을 줄이는 최적화 기법, 파이썬·자바스크립트 실전 팁."
 tags: ["coding-test", "algorithm", "python", "javascript", "problem-solving"]
 source: mixed
-date: "2026-10-30"
-sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%99%84%EC%A3%BC%ED%95%98%EC%A7%80%20%EB%AA%BB%ED%95%9C%20%EC%84%A0%EC%88%98.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%B4%EB%A7%98%EB%8C%80%EB%A1%9C%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/3%EC%A7%84%EB%B2%95%20%EB%92%A4%EC%A7%91%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EC%A0%95%EC%88%98%EC%82%AC%EC%9D%B4%EC%9D%98%20%ED%95%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/2016%EB%85%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EA%B0%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EB%8D%94%ED%95%98%EA%B8%B0.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://www.techinterviewhandbook.org/coding-interview-techniques/", "https://www.techinterviewhandbook.org/algorithms/study-cheatsheet/", "https://www.techinterviewhandbook.org/algorithms/math/", "https://www.techinterviewhandbook.org/algorithms/interval/"]
+date: "2026-11-01"
+sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%99%84%EC%A3%BC%ED%95%98%EC%A7%80%20%EB%AA%BB%ED%95%9C%20%EC%84%A0%EC%88%98.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%B4%EB%A7%98%EB%8C%80%EB%A1%9C%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/3%EC%A7%84%EB%B2%95%20%EB%92%A4%EC%A7%91%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EC%A0%95%EC%88%98%EC%82%AC%EC%9D%B4%EC%9D%98%20%ED%95%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/2016%EB%85%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EA%B0%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EB%8D%94%ED%95%98%EA%B8%B0.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://www.techinterviewhandbook.org/coding-interview-techniques/", "https://www.techinterviewhandbook.org/algorithms/study-cheatsheet/", "https://www.techinterviewhandbook.org/algorithms/math/", "https://www.techinterviewhandbook.org/algorithms/interval/", "https://codeforces.com/blog/entry/98621"]
 ---
 
 > 반례 찾기와 파이썬 표준 라이브러리 팁 일부는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Python&C] 맞왜틀 이제 그만, 반례 생성기!」, 「코딩테스트를 위한 python 문법」을 바탕으로 보강했다. 자바스크립트 실전 팁은 「[Frontend_TIL: 알고리즘](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)」의 문제 풀이에서 반복되는 패턴만 뽑아 보강했다.
 > 「막혔을 때 바꿔 보는 관점」은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 알고리즘 문서의 코딩 테스트 팁과 전략적 접근 절을, 「풀이 최적화」와 자료구조 신호는 Tech Interview Handbook의 「[Coding Interview Techniques](https://www.techinterviewhandbook.org/coding-interview-techniques/)」를 바탕으로 보강했다.
 > 문제 풀이 순서의 조건 확정, 「자주 하는 선택」 일부와 「놓치기 쉬운 경계 사례」는 Tech Interview Handbook의 「[Algorithms study cheatsheets](https://www.techinterviewhandbook.org/algorithms/study-cheatsheet/)」와 주제별 치트시트(배열·행렬·연결 리스트·트리·그래프·구간·수학 등)의 코너 케이스 절을 바탕으로 보강했다.
+> 「자기기만 피하기」는 Codeforces 블로그의 「[Self-deception: maybe why you're still grey after practicing every day](https://codeforces.com/blog/entry/98621)」(2022.01)와 글쓴이가 단 보충 댓글을 바탕으로 보강했다.
 
 코딩 테스트에서 시간이 부족해지는 이유는 대개 설계 없이 코드부터 쓰다가 중간에 방향을 잃기 때문이다. 아래는 문제를 풀 때 따르는 순서와 자주 쓰는 실전 팁이다.
 
@@ -66,6 +67,21 @@ sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.ti
 | 풀었는데 시간 초과 | 1시간 | 다른 알고리즘·자료구조를 검토한다. 떠오르지 않으면 풀이를 본다 |
 | 일부 케이스만 틀림 | 2시간 | 엣지 케이스를 못 찾으면 처음부터 다시 풀거나 풀이를 본다 |
 | 풀이를 보고 풂 | 1주 뒤 | 같은 문제를 다시 혼자 푼다 |
+
+### 자기기만 피하기
+
+위 기준표에는 함정이 있다. 「n분 동안 풀어 보고 안 되면 풀이를 본다」가 실제로는 **「n분 동안 푸는 척하다가 풀이를 본다」**가 되기 쉽다. 어차피 곧 풀이를 볼 테니 흔한 접근 몇 개를 건드려 볼 뿐 문제에 온전히 몰두하지 않는다. 겉으로는 매일 꾸준히 연습하는 것과 구별되지 않아서 남도, 나 자신도 알아채기 어렵다. 실력이 늘지 않는 가장 큰 원인이 이런 **자기기만(self-deception)**인 경우가 많다.
+
+| 자기기만 | 모습 | 막는 법 |
+| --- | --- | --- |
+| 풀이를 전제로 한 연습 | 정해 둔 시간이 지나기만 기다린다 | 「언제 볼까」가 아니라 「볼 것인가」를 묻는다. 풀이를 볼 생각 없이 끝까지 붙잡고, 풀이는 비상시에만 본다. 풀이가 아예 없는 문제집(USACO Training Pages)이 이 효과를 강제한다 |
+| 「풀이를 봐야 새 기법을 배운다」 | 풀이에 나온 한 줄짜리 성질(예: `x mod y`는 `x/2`보다 작거나 `x` 그대로다)을 외울 기법으로 여긴다 | 그런 성질은 외우는 것이 아니라 대회 중에 **스스로 떠올려야 하는 것**이다. 처음에 스스로 떠올린 사실은 다음에도 남을 확률이 훨씬 높다. 입문 단계를 벗어나는 데 필요한 지식은 DFS, 이분 탐색, 중학교 수학 정도다 |
+| 편향된 문제 선택 | 같은 난이도 목록에서 쉽게 풀리는 것만 풀고 막히는 것은 넘긴다. 추천기를 여러 번 다시 돌려 아는 유형이 나올 때까지 고른다 | 한 번에 몇 문제만 보여 주고 **모두 풀어야 다음으로 넘어가는** 방식(USACO Training, 예전 A2OJ의 단일 문제 사다리)을 쓴다. 「1600 난이도 100문제」가 정말 무작위 표본인지 의심한다 |
+| 푼 문제 수를 목표로 삼기 | 개수를 늘리려고 가장 쉬운 방식으로 많이 푼다 | 푼 문제 수는 노력의 지표로는 괜찮지만 목표가 되면 연습의 목적을 무너뜨린다(굿하트의 법칙) |
+| 엉뚱한 데서 원인 찾기 | 「하루 5시간으로 안 되니 8시간」, 「FFT·HLD 같은 고급 알고리즘을 몰라서」, 「개인 코치나 합숙이 없어서」 | 늘지 않는다면 양이 아니라 방식이 틀렸다는 신호다. 높은 단계 전까지는 취미 수준으로 해도 된다. 고급 알고리즘이 발목을 잡는 일은 드물고, 코치·합숙은 이미 높은 수준인 사람에게 주로 도움이 된다. 실력의 대부분은 스스로의 연습에서 나온다 |
+| 낮은 점수 합리화 | 「실력은 더 높은데 레이팅이 낮다」 | 레이팅은 실제 대회 성적에서 계산되므로 꽤 객관적이다. 잘된 몇 번(최고의 경우)을 남의 평균과 비교하거나, 대회 형식이 달라서라고 둘러대지 않는다. 오래 쉬었거나 가끔만 나가는 경우처럼 예외는 있지만 드물다 |
+
+좋은 연습법은 **자기를 속일 수 없게 만드는 합리적인 방법이면 무엇이든** 된다. 문제 자체에 대한 흥미가 깊으면 거의 어떤 방법도 이 조건을 만족하고, 흥미 없이 취업 같은 외부 동기만 있으면 거의 어떤 방법도 만족하지 못한다. 풀이를 보는 것 자체가 나쁜 것은 아니다. 다만 한동안 풀이 없이 끝까지 풀어 보면 아이디어를 떠올리는 일이 생각보다 가능하다는 것을 알게 된다.
 
 목표 난이도는 회사마다 다르다. [한 블로그 글](https://mungto.tistory.com/516)은 네카라쿠배급 기업은 프로그래머스 3레벨, 대기업 SI는 2레벨을 풀 수 있으면 된다고 본다. 연습 사이트는 국내 기업 대비로 백준·프로그래머스, 삼성 대비로 SW Expert Academy, 해외 기업 대비로 LeetCode·Codeforces가 대표적이다.
 
@@ -280,7 +296,7 @@ const [n, m] = input[0].split(' ').map(Number)
 - 주석 설계 → TC 작성 → 구현 → 정리 순서로 푼다.
 - N의 범위에서 허용 복잡도를 역산해 알고리즘을 고른다.
 - 최적화는 이론상 최선 복잡도(BTTC)를 하한으로 잡고, 겹치는 계산 재사용·자료구조 교체·불필요한 작업 제거 순으로 본다.
-- 막히면 30분·1시간·2시간 기준으로 풀이를 보고, 1주 뒤 다시 푼다.
+- 막히면 30분·1시간·2시간 기준으로 풀이를 보고, 1주 뒤 다시 푼다. 다만 「푸는 척하다 풀이 보기」와 쉬운 문제만 고르기가 되지 않게, 때로는 풀이 없이 끝까지 푼다.
 - `sys.stdin.readline`, `deque`, `heapq`, `setrecursionlimit`은 기본 장비다.
 
 관련 노트: [[big-o|빅오 표기법]], [[tech-interview-prep|기술 면접 준비]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[two-pointers|투 포인터와 슬라이딩 윈도우]], [[bfs|BFS]], [[dijkstra|다익스트라]], [[dynamic-programming|동적 계획법]], [[greedy|그리디]], [[binary-search|이분 탐색]], [[prefix-sum|접두사 합]], [[interview-attitude|면접 잘 보는 법]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[kmp-algorithm|KMP 문자열 검색 알고리즘]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]]
