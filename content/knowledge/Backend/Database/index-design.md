@@ -4,14 +4,15 @@ concept: "Index Design"
 summary: "인덱스는 정렬이다. 카디널리티·분포도와 후보 컬럼 고르기, 복합 인덱스 컬럼 순서, 유니크·외래 키 인덱스, 인덱스를 못 타게 만드는 조건, EXPLAIN 접근 유형과 Oracle 인덱스 스캔 방식, 조인 방식(중첩 루프·해시·정렬 병합)과 조인 순서, ORDER BY·GROUP BY·커버링 인덱스, 빠른 쿼리를 위한 체크리스트, NoSQL의 인덱스와 MongoDB의 ESR 규칙까지 정리했다."
 tags: ["database", "mysql", "sql", "performance", "nosql"]
 source: other
-date: "2026-10-21"
-sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/", "https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073", "https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html", "https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/", "https://www.mongodb.com/docs/manual/tutorial/equality-sort-range-guideline/", "https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://dev.mysql.com/doc/refman/8.4/en/nested-loop-joins.html", "https://dev.mysql.com/doc/refman/8.4/en/hash-joins.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)"]
+date: "2026-11-01"
+sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/", "https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073", "https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html", "https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/", "https://www.mongodb.com/docs/manual/tutorial/equality-sort-range-guideline/", "https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://dev.mysql.com/doc/refman/8.4/en/nested-loop-joins.html", "https://dev.mysql.com/doc/refman/8.4/en/hash-joins.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 「[Mysql 인덱스 정리 및 팁](https://jojoldu.tistory.com/243)」, 「[MySQL Workbench의 VISUAL EXPLAIN으로 인덱스 동작 확인하기](https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/)」, 「[쿼리 최적화: 빠른 쿼리를 위한 7가지 체크리스트](https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073)」, 「[MongoDB Index 설계 전략](https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html)」, 「[MySQL performance-schema-instruments 사용에 따른 성능 영향 실험](https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/)」을 바탕으로, MySQL·MongoDB 공식 문서로 확인해 재구성한 노트다.
 > 「클러스터드 인덱스와 보조 인덱스」는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로, MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
 > 유니크 인덱스·외래 키 인덱스, 조인 방식, 정렬 처리, NoSQL의 인덱스는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 MySQL·PostgreSQL 공식 문서로 확인해 보강했다.
 > 인덱스 후보 컬럼 고르기, 복합 인덱스 순서 원칙, Oracle의 인덱스 스캔 방식과 인덱스 구조 테이블, 조인 방식별 적용 조건은 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기) 강의 내용으로 보강했다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 밀집 인덱스와 희소 인덱스를 보강했다.
 
 ## 인덱스는 정렬이다
 
@@ -57,6 +58,19 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 - **기본 키는 인덱스인가**: 기본 키는 「유일하고 NULL이 없다」는 **제약**이고, 인덱스는 빨리 찾기 위한 **자료 구조**다. 모든 RDBMS는 기본 키 제약을 검사하려고 유니크 인덱스를 자동으로 만들므로 실제로는 늘 인덱스가 딸려 있다. InnoDB에서는 그 인덱스가 테이블 자체(클러스터드)이고, PostgreSQL에서는 보조 인덱스 하나다.
 - **외래 키와 인덱스**: 외래 키도 제약이다. 참조되는 부모 쪽 컬럼은 기본 키나 유니크여야 하므로 이미 인덱스가 있다. 참조하는 **자식 쪽 컬럼**의 인덱스는 DB마다 다르다. InnoDB는 외래 키 컬럼에 인덱스가 없으면 자동으로 만든다. PostgreSQL은 만들지 않으므로 직접 만들어야 한다. 이 인덱스가 없으면 부모 행을 지우거나 키를 바꿀 때마다 자식 테이블 전체를 훑어 참조를 확인하고, 그동안 잠금도 넓게 걸린다. 조인 컬럼이기도 하므로 대개 만든다.
 - 삭제·갱신이 반복되면 인덱스 페이지에 빈 공간과 지운 표시가 쌓여 인덱스가 실제 데이터보다 커진다. MySQL은 `OPTIMIZE TABLE`, PostgreSQL은 `VACUUM`·`REINDEX`로 정리한다. Oracle은 `ALTER INDEX 이름 REBUILD`로 인덱스 전체를 다시 만들거나, `COALESCE`로 리프 블록의 조각난 빈 공간만 합친다.
+
+### 밀집 인덱스와 희소 인덱스
+
+인덱스 항목을 **모든 행마다** 두느냐, **일부 행에만** 두느냐에 따른 구분이다.
+
+| 구분 | 밀집 인덱스(dense index) | 희소 인덱스(sparse index) |
+| --- | --- | --- |
+| 항목 | 행(검색 키 값)마다 하나. 키와 행 포인터를 가진다 | 블록(페이지)마다 하나. 보통 그 블록의 첫 키 |
+| 찾기 | 인덱스에서 이진 탐색하면 바로 행을 찾는다 | 이진 탐색으로 블록을 찾은 뒤 블록 안을 훑는다. 조금 느리다 |
+| 크기·쓰기 비용 | 크다. 삽입·수정·삭제마다 항목을 고친다 | 작아 메모리에 올리기 쉽고, 블록 안의 변경은 인덱스를 건드리지 않아 쓰기가 가볍다 |
+| 데이터 정렬 조건 | 없다. 어떤 순서로 쌓인 행에도 만들 수 있다 | **데이터가 검색 키 순서로 정렬돼 있어야** 한다 |
+
+그래서 희소 인덱스는 정렬된 파일 위의 기본 인덱스에서만 쓰이고, 보조 인덱스는 늘 밀집이다. 클러스터드 B+트리의 내부 노드는 아래 페이지마다 키 하나만 두는 희소 인덱스, 보조 인덱스의 리프는 행마다 항목이 있는 밀집 인덱스로 볼 수 있다. LSM 트리의 SSTable도 블록마다 키 하나를 둔 희소 인덱스로 파일 안을 찾는다([[database-internals|DB 내부 구조]]).
 
 ## 무엇을 인덱스로 잡나
 
