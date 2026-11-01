@@ -1,14 +1,15 @@
 ---
 title: "인성 면접 준비: STAR, 핵심 사례, 단골 질문"
 concept: "Behavioral Interview"
-summary: "인성·경험 면접(Behavioral Interview)은 과거 행동으로 일하는 방식과 연차에 맞는 범위를 본다. STAR(R)로 답을 짜는 법, 질문을 외우는 대신 핵심 사례 3~5개를 준비하는 법, 꼭 나오는 세 질문, 엘리베이터 피치로 하는 자기소개, 그리고 단골 질문과 회사별 질문을 무엇을 묻는지에 따라 묶어 답할 요소를 정리했다."
+summary: "인성·경험 면접(Behavioral Interview)은 과거 행동으로 일하는 방식과 연차에 맞는 범위를 본다. STAR(R)로 답을 짜는 법, 질문을 외우는 대신 핵심 사례 3~5개를 준비하는 법, 꼭 나오는 세 질문, 엘리베이터 피치로 하는 자기소개, 그리고 단골 질문과 회사별 질문을 무엇을 묻는지에 따라 묶어 답할 요소를 정리했다. Amazon 리더십 원칙 16개별로 실제로 나온 질문도 짝지었다."
 tags: ["career", "interview", "job-search", "communication"]
 source: other
-date: "2026-10-30"
-sources: ["https://www.techinterviewhandbook.org/behavioral-interview/", "https://www.techinterviewhandbook.org/behavioral-interview-questions/", "https://www.techinterviewhandbook.org/self-introduction/"]
+date: "2026-11-01"
+sources: ["https://www.techinterviewhandbook.org/behavioral-interview/", "https://www.techinterviewhandbook.org/behavioral-interview-questions/", "https://www.techinterviewhandbook.org/self-introduction/", "https://leetcode.com/discuss/post/437082/amazon-behavioral-questions-leadership-p-kvhl/", "https://www.amazon.jobs/content/en/our-workplace/leadership-principles"]
 ---
 
 > Chris Donnelly의 이미지 「The Job Interview Cheat Sheet」를 요약·재구성한 노트다. 준비 순서, STAR(R), 자기소개, 빅테크 단골 질문은 Tech Interview Handbook의 「[Behavioral interviews](https://www.techinterviewhandbook.org/behavioral-interview/)」, 「[The 30 most common behavioral interview questions](https://www.techinterviewhandbook.org/behavioral-interview-questions/)」, 「[Crafting the perfect self introduction](https://www.techinterviewhandbook.org/self-introduction/)」을 바탕으로 보강했다.
+> Amazon 리더십 원칙별 질문은 LeetCode Discuss의 「[Amazon Behavioral questions | Leadership Principles | LP](https://leetcode.com/discuss/post/437082/amazon-behavioral-questions-leadership-p-kvhl/)」(2019.11) 면접 후기 모음을 원칙별로 묶고, 원칙 목록은 [Amazon 공식 페이지](https://www.amazon.jobs/content/en/our-workplace/leadership-principles) 기준으로 맞췄다.
 
 ## 인성·경험 면접이란
 
@@ -162,10 +163,37 @@ STAR는 경험을 묻는 질문에 답을 짜는 틀이다. 질문이 달라도 
 | 무엇을 보나 | 예 |
 | --- | --- |
 | 제품·미션과의 깊은 연결 | Airbnb: 「belong anywhere」가 당신에게 무슨 의미인가, 좋은 호스트였던 때, Airbnb 경험에서 없애고 싶은 것. Slack: 우리 제품에서 버그를 찾은 적이 있나, 가장 좋아하는 기능과 이유. 「여행을 좋아해서」 수준을 넘어 제품을 깊이 써 본 사람이라는 것을 보여 준다 |
-| 회사 원칙에 맞는 행동 | Amazon: 매니저 승인 없이 일을 진행한 적이 있나, 지금이라면 다르게 했을 일. 리더십 원칙(Leadership Principles)에 사례를 짝지어 준비한다 |
+| 회사 원칙에 맞는 행동 | Amazon: 매니저 승인 없이 일을 진행한 적이 있나, 지금이라면 다르게 했을 일. 리더십 원칙(Leadership Principles)에 사례를 짝지어 준비한다(아래 「Amazon 리더십 원칙과 단골 질문」) |
 | 독립적인 사고 | Palantir: 사람들 90%가 당신과 생각이 다른 것은? 당신 주변에서 망가져 있는 것은? 무언가를 예측했던 때 |
 | 설명하고 가르치는 능력 | 할머니에게 우리 회사를 설명해 보라, 면접관에게 몇 분 안에 새로운 것을 가르쳐 보라 |
 | 처음부터 끝까지의 경험 | ByteDance: 출시한 제품을 처음부터 끝까지 설명하라. Dropbox: 기술 문제를 푼 경험을 진단과 과정까지 구체적으로 |
+
+#### Amazon 리더십 원칙과 단골 질문
+
+Amazon의 인성 질문은 거의 모두 **리더십 원칙(Leadership Principles, LP) 16개** 중 하나를 겨눈다. 면접관마다 맡은 LP가 있고, 한 사례를 두고 「그때 데이터는?」, 「다시 한다면?」처럼 꼬리 질문으로 깊이 판다. 그래서 질문을 외우기보다 **LP마다 사례 1~2개**를 STAR로 준비한다. 사례 하나가 여러 LP를 덮을 수 있으니, 핵심 사례 3~5개를 아래 표에 짝지어 빈칸을 찾는 식으로 준비한다.
+
+| LP | 보는 것 | 실제로 나온 질문 |
+| --- | --- | --- |
+| Customer Obsession | 경쟁사보다 고객에서 출발해 거꾸로 일하는가 | 고객(사용자)을 위해 기대 이상으로 한 일 |
+| Ownership | 내 일 너머까지, 장기적으로 주인처럼 책임지는가 | 맡은 범위를 넘어 일한 때. 힘들어하는 동료를 보고 나서서 도운 때. 프로젝트 75%쯤에서 목표가 잘못됐음을 알았을 때 |
+| Invent and Simplify | 새로운 해법을 내고 단순하게 만드는가 | 무언가를 발명한 때. 새로운 해법을 낸 때. 처음엔 인기 없던 아이디어를 낸 때 |
+| Are Right, A Lot | 여러 관점을 듣고 판단이 대체로 맞는가 | 해법이 여럿일 때 최선을 고른 과정. 정보가 부족한 채 내린 결정과 그 결과 |
+| Learn and Be Curious | 계속 배우고 모르는 것을 파고드는가 | 새 기술을 익힌 때. 모르는 것을 맡아 해결한 방법 |
+| Hire and Develop the Best | 남의 성장을 돕는가 | 동료의 커리어 성장을 도운 때(도움이 된 경우와 안 된 경우 둘 다). 기술적으로 막힌 신입을 어떻게 돕겠나 |
+| Insist on the Highest Standards | 품질 기준을 높게 잡고 문제를 끝까지 고치는가 | 마감 때문에 품질을 타협해야 했던 때 |
+| Think Big | 큰 방향을 제시하는가 | - |
+| Bias for Action | 되돌릴 수 있는 결정이면 빨리 움직이고 계산된 위험을 지는가 | 데이터 없이 중요한 결정을 내린 때. 상사와 상의하지 않고(승인 없이) 결정한 때. 시간이 없어 선택지를 다 검토하지 못한 때. 위험을 감수한 때 |
+| Frugality | 적은 자원으로 더 해내는가 | 시간 제약이 빡빡한 프로젝트를 해낸 방법 |
+| Earn Trust | 잘 듣고, 솔직하게 말하고, 자기 잘못을 인정하는가 | 팀원의 신뢰를 얻은 때. 실수한 때. 실패하고 배운 것. 매니저에게 부정적 피드백을 받고 대응한 방법 |
+| Dive Deep | 세부를 직접 보고, 지표와 일화가 어긋나면 의심하는가 | - |
+| Have Backbone; Disagree and Commit | 반대 의견을 근거로 말하고, 결정 뒤에는 온전히 따르는가 | 팀원과 의견이 갈린 때. 팀원과 갈등이 있었던 때. 팀이 반대해도 더 나은 해법을 밀어붙인 때. 장기적 이익을 위해 경영진 결정에 반대한 때 |
+| Deliver Results | 장애물이 있어도 제때 품질 있게 결과를 내는가 | 마감을 못 지킨 때. 약속을 지키지 못한 때. 장애물을 넘은 때. 초반 좌절에도 목표를 이룬 때. 막판에 방향을 틀어야 했던 때 |
+| Strive to be Earth's Best Employer | 안전하고 포용적인 환경과 동료의 성장을 만드는가 | - |
+| Success and Scale Bring Broad Responsibility | 큰 영향력에 따르는 책임을 생각하는가 | - |
+
+- **실패·마감·갈등 질문이 가장 자주 나온다.** Earn Trust와 Deliver Results는 실패를 인정하는 정직함과 거기서 바꾼 행동을 함께 본다.
+- **Bias for Action과 Have Backbone은 짝으로 준비한다.** 혼자 빨리 결정한 사례(그리고 그 결정이 되돌릴 수 있었던 이유)와, 반대했지만 결정에 따른 사례가 둘 다 필요하다.
+- 마지막 두 원칙은 2021년에 더해져 질문 모음에 아직 드물다. 동료의 성장·안전을 챙긴 사례, 내 일이 팀 밖에 끼칠 영향을 따진 사례를 하나씩 준비해 두면 빈칸이 메워진다.
 
 ### 마지막 역질문
 
