@@ -5,13 +5,14 @@ summary: "개발자 기술 면접은 코딩, 시스템 디자인, 객체 지향 
 tags: ["career", "interview", "job-search", "architecture", "algorithm"]
 source: other
 date: "2026-11-01"
-sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss", "https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview", "https://jeinalog.tistory.com/30", "https://github.com/donnemartin/system-design-primer", "https://www.techinterviewhandbook.org/software-engineering-interview-guide/", "https://www.techinterviewhandbook.org/coding-interview-prep/", "https://www.techinterviewhandbook.org/coding-interview-study-plan/", "https://www.techinterviewhandbook.org/coding-interview-cheatsheet/", "https://www.techinterviewhandbook.org/best-practice-questions/", "https://www.techinterviewhandbook.org/programming-languages-for-coding-interviews/", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://www.techinterviewhandbook.org/mock-interviews/", "https://www.techinterviewhandbook.org/landscape/", "https://www.techinterviewhandbook.org/system-design/", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://www.reddit.com/r/ExperiencedDevs/comments/q4xj42/best_way_to_learnpracticeprepare_for_system/"]
+sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss", "https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview", "https://jeinalog.tistory.com/30", "https://github.com/donnemartin/system-design-primer", "https://www.techinterviewhandbook.org/software-engineering-interview-guide/", "https://www.techinterviewhandbook.org/coding-interview-prep/", "https://www.techinterviewhandbook.org/coding-interview-study-plan/", "https://www.techinterviewhandbook.org/coding-interview-cheatsheet/", "https://www.techinterviewhandbook.org/best-practice-questions/", "https://www.techinterviewhandbook.org/programming-languages-for-coding-interviews/", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://www.techinterviewhandbook.org/mock-interviews/", "https://www.techinterviewhandbook.org/landscape/", "https://www.techinterviewhandbook.org/system-design/", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://www.reddit.com/r/ExperiencedDevs/comments/q4xj42/best_way_to_learnpracticeprepare_for_system/", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How to Ace System Design Interviews](https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss)」, 「[Recommended Materials for Technical Interviews](https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview)」를 바탕으로 재구성한 노트다.
 > 진행 형식, 언어, 준비 계획, 코딩 인터뷰 진행 순서, 시스템 디자인 면접 유형은 Tech Interview Handbook의 「[Software Engineer Interview Guide](https://www.techinterviewhandbook.org/software-engineering-interview-guide/)」, 「[Coding Interview Prep](https://www.techinterviewhandbook.org/coding-interview-prep/)」, 「[Study Plan](https://www.techinterviewhandbook.org/coding-interview-study-plan/)」, 「[Best Practice Questions](https://www.techinterviewhandbook.org/best-practice-questions/)」, 「[Programming Languages](https://www.techinterviewhandbook.org/programming-languages-for-coding-interviews/)」, 「[Coding Interview Cheatsheet](https://www.techinterviewhandbook.org/coding-interview-cheatsheet/)」, 「[Interview Formats](https://www.techinterviewhandbook.org/interview-formats-top-companies/)」, 「[Mock Interviews](https://www.techinterviewhandbook.org/mock-interviews/)」, 「[Landscape](https://www.techinterviewhandbook.org/landscape/)」, 「[System Design](https://www.techinterviewhandbook.org/system-design/)」로, 코딩 인터뷰의 말하기 원칙은 「[구글 신입 엔지니어 인터뷰 준비 후기](https://jeinalog.tistory.com/30)」를 바탕으로 보강했다.
 > Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」로 면접관이 보는 것, 준비의 세 갈래, 면접의 변천, 답하는 요령, 단골 문제를 보강했다.
 > 시스템 디자인 준비·연습법과 책 목록은 Reddit r/ExperiencedDevs의 「[Best way to learn/practice/prepare for system design interviews](https://www.reddit.com/r/ExperiencedDevs/comments/q4xj42/best_way_to_learnpracticeprepare_for_system/)」 토론을 바탕으로 보강했다.
+> 시스템 디자인 면접의 확장 요구 사항, 추정 질문, 데이터 모델 순서, 병목 체크리스트, 태도는 karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 보강했다.
 
 ## 면접 유형과 준비 자료
 
@@ -194,6 +195,12 @@ flowchart TB
 | 6. 확장성·성능 | 수직·수평 확장, 캐시, 인덱스, 비정규화, 샤딩, 복제, CDN 중 병목에 맞는 처방을 낸다 | 병목이 어디인지 말하지 않고 기술 이름만 나열한다 |
 | 7. 신뢰성·복원력 | 단일 장애 지점을 찾아 이중화, 장애 조치, 재시도·서킷 브레이커로 영향을 줄인다 | 장애 시나리오를 묻기 전까지 다루지 않는다 |
 
+- 요구 사항은 기능·비기능에 **확장 요구 사항**(지표, 분석, 상태 모니터링처럼 있으면 좋은 것)을 셋째 묶음으로 더해 합의만 하고 일단 미룬다.
+- 용량 추정 때는 늘 같은 질문을 던진다. 목표 규모는? 읽기·쓰기 비율은? 초당 요청은? 저장 공간은?
+- 데이터 모델은 추정 바로 다음에 잡는다. 데이터 흐름이 드러나기 때문이다. 어떤 개체와 관계가 있나, 테이블은 몇 개인가, NoSQL이 더 맞나를 묻는다. API는 `createUser(name, email): User`처럼 최소한으로 적고, 확장 요구 사항을 다룰 때 다시 돌아온다.
+- 병목 점검은 체크리스트로 한다. DB 복제본이 충분한가? 단일 장애 지점은? 샤딩이 필요한가? 캐시의 가용성은 어떻게 지키나? 더 견고하게 만들 곳은?
+- 「NoSQL이 그냥 더 낫다」, 「SQL은 확장이 안 된다」 같은 단정을 하지 않는다. 모르는 것은 솔직히 말하고 예시로 근거를 댄다.
+- 지원하는 회사의 기술 블로그로 스택과 그 회사가 중요하게 여기는 문제를 미리 읽는다. 면접은 양방향이고, 연차에 따라 기대하는 깊이가 다르다.
 - 시작할 때 **아는 것부터 말한다.** 필요한 기능, 예상되는 문제, 예상 트래픽을 먼저 말하면 계획하는 능력이 보이고, 면접관이 잘못된 가정을 일찍 바로잡아 줄 수 있다.
 - 각 단계에서 **선택의 이유와 대가**를 말한다. 결정마다 좋은 점과 나쁜 점을 적어도 하나씩 든다. 면접관은 답보다 판단 과정을 본다.
 - 끝에는 시스템이 앞으로 어디서 더 나아질 수 있는지(예: 추천·이상 탐지에 머신러닝을 쓰는 지점)를 짧게 덧붙이면, 지금의 해법 너머를 보는 사람이라는 인상을 준다.
