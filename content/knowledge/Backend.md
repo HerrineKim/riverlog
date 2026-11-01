@@ -146,6 +146,7 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [위치 기반 서비스 설계: 지오해시, 쿼드트리, 지도](/knowledge/dictionary/backend/architecture/location-based-service): 격자 색인, 지오해시·쿼드트리, 지도 타일
 - [라이브 스트리밍의 구조: 인코딩, 세그먼트, ABR, CDN](/knowledge/dictionary/backend/architecture/live-streaming): 인코딩·세그먼트·적응형 비트레이트·CDN 전송
 - [이미지·동영상 처리 서버 설계](/knowledge/dictionary/backend/architecture/media-processing-pipeline): 사전 생성과 온디맨드 리사이징, 캐시·CDN, 트랜스코딩 파이프라인
+- [동영상 스트리밍 서비스 설계: Netflix·YouTube](/knowledge/dictionary/backend/architecture/video-streaming-design): 업로드 처리 파이프라인(장면 청크·콘텐츠 검사·트랜스코딩), Open Connect와 ABR, 지역 차단·추천
 - [실시간 공동 편집: OT와 CRDT](/knowledge/dictionary/backend/architecture/collaborative-editing): 연산 단위 전송, OT와 CRDT 비교
 - [대규모 웹 크롤러 설계](/knowledge/dictionary/backend/architecture/web-crawler-at-scale): 예의 제약, 도메인 샤드 노드, 프런티어
 - [URL 단축기 설계](/knowledge/dictionary/backend/architecture/url-shortener-design): 301·302, 고유 ID+Base62, 캐시 중심 읽기 경로
