@@ -4,11 +4,12 @@ concept: "Distributed Transaction"
 summary: "여러 DB·서비스에 걸친 작업을 하나처럼 끝내는 방법을 정리했다. 2단계 커밋(2PC)의 동작과 블로킹·코디네이터 장애 문제, 그 대안인 사가 패턴의 보상 트랜잭션 설계, 보상이 실패할 때의 처리, 격리가 없어 생기는 중간 상태와 대응책(시맨틱 락 등), 코레오그래피·오케스트레이션 구현 비교를 다룬다."
 tags: ["backend", "architecture", "msa", "transaction", "distributed-system"]
 source: other
-date: "2026-10-30"
-sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://microservices.io/patterns/data/saga.html"]
+date: "2026-11-01"
+sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://microservices.io/patterns/data/saga.html", "https://github.com/karanpratapsingh/system-design"]
 ---
 
 > 「fru1tworld/cs-basic 모의 면접 질문 목록」의 분산 트랜잭션·사가 항목이 묻는 개념을 바탕으로, Chris Richardson의 「[Pattern: Saga](https://microservices.io/patterns/data/saga.html)」를 참고해 재구성한 노트다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 3단계 커밋의 단계와 한계, 사가의 디버깅·테스트 어려움을 보강했다.
 
 ## 분산 트랜잭션이란
 
@@ -52,7 +53,15 @@ YES로 투표한 참여자는 그 뒤로 **혼자서는 커밋도 취소도 할 
 | 지원 범위 | 참여자 모두 XA를 지원해야 한다. 대부분의 메시지 브로커, NoSQL, 외부 REST API는 참여할 수 없다 |
 | 결합 | 서비스들이 같은 트랜잭션 관리자와 잠금 수명에 묶여 독립 배포·확장이라는 마이크로서비스의 목적과 어긋난다 |
 
-3단계 커밋(3PC)은 블로킹을 줄이려 단계를 하나 더 넣었지만, 메시지 지연에 상한이 있다고 가정하므로 네트워크 분할이 있는 실제 환경에서는 안전하지 않다. 대신 분산 DB는 참여자 각각을 합의(Paxos·Raft)로 복제한 그룹으로 만들어, 참여자가 「죽지 않는」 상태에서 2PC를 돈다(Google Spanner). 샤딩 미들웨어 중에도 여러 노드에 걸친 쓰기를 내부에서 2PC로 처리하는 것이 있다(Citus 등). 결국 2PC는 **한 DB 제품 내부**에서는 쓰이지만, 서비스 사이 연동에는 사가를 쓴다.
+**3단계 커밋(3PC)** 은 2PC의 커밋 단계를 둘로 나눠 블로킹을 줄이려 한다.
+
+| 단계 | 하는 일 |
+| --- | --- |
+| 1. 준비(prepare, can-commit) | 2PC의 1단계와 같다. 모두 YES여야 다음으로 간다 |
+| 2. 사전 커밋(pre-commit) | 코디네이터가 「모두 준비됐다」는 사실을 알리고 참여자 전원의 확인을 받는다. 정해진 시간 안에 이 메시지를 못 받은 참여자는 중단한다 |
+| 3. 커밋(do-commit) | 2PC의 2단계처럼 확정한다 |
+
+사전 커밋을 받은 참여자는 **모든 참여자가 1단계를 끝냈다**는 것을 안다. 그래서 그 뒤에 코디네이터가 죽어도 참여자끼리 타임아웃 후 커밋으로 진행할 수 있고, 단계마다 타임아웃이 있어 무한정 기다리지 않는다. 하지만 이 추론은 메시지 지연에 상한이 있다고 가정하므로, 네트워크 분할로 일부는 사전 커밋을 받고 일부는 못 받으면 양쪽이 서로 다른 결정을 내릴 수 있다. 왕복도 한 번 더 늘어 실제로는 거의 쓰이지 않는다. 대신 분산 DB는 참여자 각각을 합의(Paxos·Raft)로 복제한 그룹으로 만들어, 참여자가 「죽지 않는」 상태에서 2PC를 돈다(Google Spanner). 샤딩 미들웨어 중에도 여러 노드에 걸친 쓰기를 내부에서 2PC로 처리하는 것이 있다(Citus 등). 결국 2PC는 **한 DB 제품 내부**에서는 쓰이지만, 서비스 사이 연동에는 사가를 쓴다.
 
 ## 사가 패턴
 
@@ -146,6 +155,8 @@ ACID의 A·C·I·D 중 사가는 **격리(I)를 포기**한 대가로 가용성�
 | 보상 | 실패 이벤트를 각 서비스가 구독해 각자 보상한다. 단계가 늘면 누가 무엇에 반응하는지 추적하기 어렵다 | 오케스트레이터가 역순으로 보상 명령을 보낸다 |
 | 결합 | 서비스끼리 서로의 이벤트를 안다. 순환 의존이 생기기 쉽다 | 서비스는 오케스트레이터의 명령만 안다. 오케스트레이터에 로직이 몰린다 |
 | 맞는 곳 | 단계가 2~4개인 단순한 흐름 | 단계가 많고, 분기·타임아웃·보상이 복잡한 흐름 |
+
+사가는 운영도 어렵다. 여러 서비스에 흩어진 흐름이라 **디버깅이 특히 어렵고**(분산 추적과 사가 ID 로그가 필요하다), 한 흐름을 시험하려면 관련 서비스를 모두 띄워야 해 **테스트가 어렵다.** 참여자 사이에 격리가 없어 다른 사가가 중간 상태를 읽고 덮어쓸 수 있다(위 「중간 상태와 격리 부재」).
 
 오케스트레이터는 Temporal, Camunda, AWS Step Functions 같은 워크플로 엔진으로 만들면 상태 영속화·재시도·타이머를 엔진이 맡는다. 두 방식의 일반 비교(신뢰성, 변경 비용, 성능)는 [[microservices-architecture|마이크로서비스 아키텍처]]에 있다. 어느 쪽이든 단계 사이의 메시지는 아웃박스로 발행해야 「로컬 커밋은 됐는데 다음 단계 메시지가 사라지는」 일이 없다.
 
