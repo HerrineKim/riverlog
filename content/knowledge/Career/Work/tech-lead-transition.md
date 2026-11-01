@@ -5,10 +5,10 @@ summary: "리더의 성과는 내 산출물이 아니라 팀이 만든 가치다
 tags: ["career", "leadership", "collaboration", "feedback", "growth"]
 source: other
 date: "2026-10-21"
-sources: ["https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mistakes.ko.html", "https://zzsza.github.io/diary/2020/04/26/novice-leader-retrospect"]
+sources: ["https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mistakes.ko.html", "https://zzsza.github.io/diary/2020/04/26/novice-leader-retrospect", "https://sofiakodar.github.io/posts/becomingmanager/"]
 ---
 
-> 「[개발자에서 개발팀장이 되기까지 겪은 5가지 실수](https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mistakes.ko.html)」(Patrick Kua의 「Techie to Tech Lead」 번역), 「[초보 개발 팀장의 1년 회고 - 좋은 팀장이 되기 위한 노력들](https://zzsza.github.io/diary/2020/04/26/novice-leader-retrospect)」(2020.04)을 바탕으로 재구성한 노트다.
+> 「[개발자에서 개발팀장이 되기까지 겪은 5가지 실수](https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mistakes.ko.html)」(Patrick Kua의 「Techie to Tech Lead」 번역), 「[초보 개발 팀장의 1년 회고 - 좋은 팀장이 되기 위한 노력들](https://zzsza.github.io/diary/2020/04/26/novice-leader-retrospect)」(2020.04)을 바탕으로 재구성한 노트다. 매니저 자리에서 달라지는 것은 Sofia의 「[The Truth About Being a Manager](https://sofiakodar.github.io/posts/becomingmanager/)」(2026.06)로 보강했다.
 
 ## 역할이 바뀌면 성공 기준이 바뀐다
 
@@ -63,6 +63,33 @@ sources: ["https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mist
 
 자신의 스트레스 요인, 능률이 높은 시간, 원하는 커리어를 알아야 팀원의 이야기를 여유 있게 들을 수 있다.
 
+## 매니저 자리에서 달라지는 것
+
+엔지니어링 매니저는 권한과 책임을 함께 진다. 그래서 같은 사람이라도 팀과의 관계, 말의 무게, 일하는 시간의 단위가 바뀐다.
+
+| 달라지는 것 | 무슨 일이 생기나 | 대응 |
+| --- | --- | --- |
+| **팀과의 거리** | 연봉 협상·어려운 결정 뒤로 팀원 사이의 대화에서 빠지게 된다 | 자연스러운 변화로 받아들인다. 속을 털어놓을 동료 매니저를 최소 한 명 둔다 |
+| **말의 무게** | 가벼운 한마디가 지시로 들려 혼란과 걱정을 만든다 | 말을 줄이고, **의견인지 결정인지** 밝히고, 다른 사람이 먼저 말하게 한다 |
+| **공유할 수 없는 정보** | 조직 개편, 성과 문제, 예산 삭감, 개인 사정을 알고도 말할 수 없다 | 질문에 신중하게 답하고 감정을 드러내지 않는다 |
+| **동의하지 않는 결정** | 위에서 내린 결정을 팀에 설명하고 설득해야 한다 | 팀 앞에서 불만을 털어놓지 않는다. 반대는 위로 전한다 |
+| **보이지 않는 진척** | 하루가 끝나도 손에 잡히는 산출물이 없고, 일이 몇 주 단위로 굴러간다 | 분명한 목표를 세워 추적하고 작은 성과도 짚는다. 회의만으로 하루를 채우지 않는다 |
+| **업무 바깥의 압박** | 어려운 대화와 사내 정치, 팀원의 개인 위기가 퇴근 뒤에도 머리에 남는다 | 스트레스와 되새김을 빨리 끊는 자기 관리 방법을 만든다 |
+| **무력감** | 내 의견 없이 결정이 나고 예산이 깎인다. 책임보다 통제권이 작다 | 감정을 조절해 팀에게 흔들리지 않는 존재가 된다 |
+
+### 매니저가 새로 익혀야 하는 일
+
+- **피드백을 미루지 않는다.** 분명한 피드백을 피하면 문제 행동이 이어지고 팀 전체가 그걸 본다. 반대로 팀원·동료에게 솔직한 피드백을 청하고, 실수를 인정하고, 내 상사에게도 피드백한다. 매니저의 태도가 팀 문화의 기준이 된다.
+- **호감보다 존중을 택한다.** 인기 없는 결정, 어려운 대화, 때로는 내보내는 일까지 해야 한다. 모두에게 사랑받으려 하면 신뢰와 존중을 둘 다 잃는다.
+- **방 안의 어른이 된다.** 압박 속에서도 침착하게 갈등을 풀고 미성숙한 행동을 가라앉힌다. 팀은 매니저의 행동을 따라 한다.
+- **비즈니스와 옆 조직을 안다.** 제품·디자인·데이터·영업·마케팅·고객 지원과 관계를 쌓고, 회사의 핵심 지표와 전략을 이해해야 팀의 맥락과 의존성을 챙길 수 있다.
+- **팀을 대변한다.** 좋은 일도 누군가 알리지 않으면 인정받지 못한다. 팀의 성과를 다른 조직에 알리고, 팀원의 보상·승진을 위해 싸운다.
+- **위로 관리한다(managing up).** 상사의 우선순위를 알고, 나쁜 소식은 분명하게 전하고, 상사를 막는 문제를 풀어 준다. 상사의 성공은 나중에 팀을 도울 신뢰 자본이 된다.
+- **전체 그림을 지킨다.** 여러 매니저·부서와 이야기하면 팀 사이의 의존성과 오해를 위기 전에 발견할 수 있다. 이 시야는 매니저만 줄 수 있는 기여다.
+- **스스로 배운다.** 매니저 교육을 제대로 하는 회사는 드물다. 학습 목표를 정해 공부하고, 휴가·휴직 규정과 노동 법규의 기본을 익히고, 인사 담당자와 관계를 만들고, 멘토를 찾는다.
+
+엔지니어링을 그리워하는 것은 자연스럽다. 대신 코칭한 사람이 자라고 팀이 성과를 내는 것을 보는 데서 오는 보람이 있다.
+
 ## 리더십은 직함이 아니다
 
 - 리더십은 직선으로 자라지 않는다. 리더를 하다 다시 개발자로 돌아가는 것도 경력의 한 경로다.
@@ -74,5 +101,6 @@ sources: ["https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mist
 - 직접 생산과 통제를 줄이고, 위임과 장애물 제거에 시간을 쓴다.
 - 1:1 면담, 사람에 맞춘 업무 배정, 근거 있는 피드백, 문서화된 규칙이 팀을 키운다.
 - 기술 지표가 아니라 사람의 신호를 읽는 감각을 기른다.
+- 매니저는 말의 무게, 공유할 수 없는 정보, 보이지 않는 진척을 안고 일한다. 의견과 결정을 구분하고, 피드백을 미루지 않고, 팀을 대변하고 위로 관리한다.
 
 관련 노트: [[kind-engineering|친절한 엔지니어링]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[effective-meetings|회의 잘하는 법]], [[collaborative-developer|협업을 잘하는 개발자]], [[engineering-levels|엔지니어 레벨]]

@@ -1,14 +1,14 @@
 ---
 title: "Claude Code 활용 가이드"
 concept: "Claude Code"
-summary: "채팅형 AI와 무엇이 다른지부터 설치, 질문 → 편집 → 도구 → 맥락 → 자동화로 익숙해지는 순서, 슬래시 명령·단축키, MCP 연결, Skills와 CLAUDE.md, 팀 설정 공유, `claude -p` 자동화, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하는 작업 방식까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
+summary: "채팅형 AI와 무엇이 다른지부터 설치, 질문 → 편집 → 도구 → 맥락 → 자동화로 익숙해지는 순서, 슬래시 명령·단축키, MCP 연결, Skills와 CLAUDE.md, 팀 설정 공유, 권한 모드와 자동 모드, `claude -p` 자동화, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하는 작업 방식까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
 tags: ["ai", "llm", "claude-code", "agentic-coding", "prompting", "mcp"]
 source: other
 date: "2026-10-20"
-sources: ["https://www.youtube.com/watch?v=6eBSHbLKuN0", "https://www.youtube.com/watch?v=kPUuh2ZnzEM", "https://code.claude.com/docs/en/headless", "https://gayuna.github.io/llm/claude-code/", "https://code.claude.com/docs/en/model-config", "https://code.claude.com/docs/en/github-actions", "https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five", "https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp"]
+sources: ["https://www.youtube.com/watch?v=6eBSHbLKuN0", "https://www.youtube.com/watch?v=kPUuh2ZnzEM", "https://code.claude.com/docs/en/headless", "https://gayuna.github.io/llm/claude-code/", "https://code.claude.com/docs/en/model-config", "https://code.claude.com/docs/en/github-actions", "https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five", "https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp", "https://claude.com/blog/auto-mode", "https://code.claude.com/docs/en/permission-modes"]
 ---
 
-> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다. 위임 방식은 Kieran Klaassen의 「[How I Use Claude Code to Ship Like a Team of Five](https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five)」(2025.07)를, 도입 순서와 팀 설정은 Claude Code를 만든 Boris Cherny의 강연 「[Mastering Claude Code in 30 minutes](https://www.youtube.com/watch?v=6eBSHbLKuN0)」(Code w/ Claude, 2025.05, [한글 자막판](https://www.youtube.com/watch?v=kPUuh2ZnzEM))을, 동작 원리·맥락 관리·GitHub 연동은 Anthropic 강의 「Claude Code in Action」을 정리한 hello.gayuna의 [글](https://gayuna.github.io/llm/claude-code/)(2025.09)을 더했다.
+> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다. 위임 방식은 Kieran Klaassen의 「[How I Use Claude Code to Ship Like a Team of Five](https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five)」(2025.07)를, 도입 순서와 팀 설정은 Claude Code를 만든 Boris Cherny의 강연 「[Mastering Claude Code in 30 minutes](https://www.youtube.com/watch?v=6eBSHbLKuN0)」(Code w/ Claude, 2025.05, [한글 자막판](https://www.youtube.com/watch?v=kPUuh2ZnzEM))을, 동작 원리·맥락 관리·GitHub 연동은 Anthropic 강의 「Claude Code in Action」을 정리한 hello.gayuna의 [글](https://gayuna.github.io/llm/claude-code/)(2025.09)을 더했다. 권한 모드와 자동 모드는 Anthropic의 「[Auto mode for Claude Code](https://claude.com/blog/auto-mode)」(2026.03)와 [권한 모드 공식 문서](https://code.claude.com/docs/en/permission-modes)로 정리했다.
 
 ## 채팅형 AI와 다른 점
 
@@ -346,6 +346,33 @@ Claude Code를 잘 쓰면 개발자의 자리는 **코드를 치는 사람**에�
 터미널은 편집기가 제각각인 사람들의 **공통분모**이고, 모델이 빠르게 좋아지는 동안 곧 낡을 UI 계층에 묶이지 않는다. 그래서 어떤 IDE, 원격 SSH, tmux 안에서도 같은 방식으로 돌아간다. 같은 에이전트를 IDE 확장과 데스크톱·웹 앱으로도 쓴다.
 
 터미널 에이전트의 핵심 난제는 **셸 명령의 안전성**이다. 명령마다 승인을 받으면 일이 안 되므로, 읽기 전용 명령을 구분하고, 정적 분석으로 안전하게 조합되는 명령을 가려내고, 여러 계층에서 허용·차단 목록을 두는 권한 체계로 푼다.
+
+### 권한 모드
+
+권한 모드는 **무엇을 묻지 않고 실행할지**를 정한다. `Shift+Tab`으로 돌아가며 바꾸고, 시작할 때는 `--permission-mode <값>`으로 고른다. 허용·거부 규칙(`/permissions`)은 어느 모드 위에나 겹쳐 적용되고, **거부 규칙은 모든 모드에서 이긴다.**
+
+| 모드 (설정값) | 묻지 않고 실행하는 것 | 쓰는 곳 |
+| --- | --- | --- |
+| 수동 (`default`) | 읽기만 | 낯선 저장소, 처음 맡기는 일 |
+| 편집 수락 (`acceptEdits`) | 읽기, 작업 폴더 안의 파일 편집과 흔한 파일 명령(`mkdir`, `mv`, `rm` 등) | 방향이 맞다고 확신이 선 구현 |
+| 계획 (`plan`) | 읽기와 탐색. 계획을 승인할 때까지 편집하지 않는다 | 여러 파일에 걸친 변경 전 |
+| 자동 (`auto`) | 전부. 단 분류기가 실행 전에 하나씩 검사한다 | 오래 걸리는 작업을 덜 끊기며 돌릴 때 |
+| 묻지 않음 (`dontAsk`) | 미리 허용한 도구와 읽기. 물어야 할 것은 모두 거부 | 무인 실행(CI) |
+| 권한 우회 (`bypassPermissions`, `--dangerously-skip-permissions`) | 전부, 검사 없음 | 격리된 컨테이너·VM에서만 |
+
+**자동 모드(auto mode)** 는 「매번 승인」과 「전부 허용」 사이의 절충이다. 별도의 분류기 모델이 도구 호출을 실행 전에 보고, 요청 범위를 넘어서는 행동, 모르는 인프라를 건드리는 행동, 읽은 파일·웹 페이지의 적대적 내용에 끌려간 듯한 행동을 막는다.
+
+| 구분 | 예시 |
+| --- | --- |
+| 기본으로 막는 것 | `curl \| bash`, 민감한 데이터를 외부로 보내기, 운영 배포·마이그레이션, force push, `git reset --hard`, `terraform destroy`, IAM 권한 부여 |
+| 기본으로 허용하는 것 | 작업 폴더 안 파일 작업, lock 파일·매니페스트에 적힌 의존성 설치, 읽기 전용 HTTP 요청, 현재 저장소 브랜치로 푸시 |
+
+- 분류기는 사용자 메시지, 읽기 전용이 아닌 도구 호출, CLAUDE.md만 본다. **도구 결과는 빼고 보므로** 파일이나 웹 페이지에 심은 지시가 분류기를 직접 속이기 어렵다.
+- 자동 모드에 들어가면 `Bash(*)`처럼 임의 코드 실행을 통째로 허용하는 넓은 규칙은 잠시 꺼지고, `Bash(npm test)` 같은 좁은 규칙만 남는다.
+- 막히면 Claude는 이유를 받고 다른 방법을 찾는다. 연속 3번 또는 누적 20번 막히면 자동 모드를 멈추고 다시 사람에게 묻는다.
+- 대화에서 「푸시하지 마」, 「내 리뷰 기다려」처럼 경계를 말하면 그 경계를 지킨다. 「force push 해도 돼」 같은 모호한 허락보다 브랜치 이름까지 짚은 구체적 승인만 차단을 푼다.
+- 분류기도 틀린다. 의도가 모호하거나 환경 맥락이 부족하면 위험한 행동을 통과시키거나 무해한 행동을 막을 수 있고, 검사만큼 토큰·지연이 더 든다. 중요한 환경에서는 격리된 곳에서 돌린다.
+- 조직 관리자는 관리 설정의 `permissions.disableAutoMode: "disable"`로 끌 수 있다.
 
 ## 요금제
 

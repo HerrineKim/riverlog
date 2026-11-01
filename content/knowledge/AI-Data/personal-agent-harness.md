@@ -131,4 +131,4 @@ flowchart TB
 - 자동화는 cron과 `claude -p`로 충분하다. 사람이 따라갈 수 있게 보고서와 공부 과제를 남기게 한다.
 - 병목은 토큰 → 머지 → thinking → 추론 속도로 옮겨 간다. 안 되는 일은 두 달 미룬다.
 
-관련 노트: [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[loop-engineering|루프 엔지니어링]], [[claude-code-guide|Claude Code 활용 가이드]], [[organizational-ax|조직 AX]], [[multi-agent|멀티 에이전트]], [[ai-era-developer|AI 시대 개발자의 역할]]
+관련 노트: [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[loop-engineering|루프 엔지니어링]], [[claude-code-guide|Claude Code 활용 가이드]], [[organizational-ax|조직 AX]], [[multi-agent|멀티 에이전트]], [[ai-era-developer|AI 시대 개발자의 역할]], [[llm-wiki|LLM 위키]]

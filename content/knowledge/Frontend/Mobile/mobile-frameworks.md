@@ -1,14 +1,14 @@
 ---
 title: "모바일 앱 프레임워크 비교: 네이티브·하이브리드·크로스 플랫폼"
 concept: "Cross Platform"
-summary: "네이티브, 웹뷰 기반 하이브리드, 네이티브로 컴파일되는 크로스 플랫폼 앱의 원리와 장단점. PhoneGap·Cordova에서 Capacitor로 이어진 하이브리드 계보와 흔한 실수(deviceready, CDN 자산, 버전 고정, CSP, 웹사이트 감싸기)도 정리한다."
+summary: "네이티브, 웹뷰 기반 하이브리드, 네이티브로 컴파일되는 크로스 플랫폼 앱의 원리와 장단점. PhoneGap·Cordova에서 Capacitor로 이어진 하이브리드 계보와 흔한 실수(deviceready, CDN 자산, 버전 고정, CSP, 웹사이트 감싸기)도 정리한다. 코딩 에이전트가 이중 구현 비용을 낮추며 네이티브로 돌아가는 판단 기준과 대규모 이전 원칙도 다룬다."
 tags: ["mobile", "react-native", "flutter", "architecture"]
 source: notion
 date: "2026-10-21"
-sources: ["https://d2.naver.com/helloworld/3384599", "https://github.com/jessemonroy650/top-phonegap-mistakes/blob/master/new-to-Phonegap.md"]
+sources: ["https://d2.naver.com/helloworld/3384599", "https://github.com/jessemonroy650/top-phonegap-mistakes/blob/master/new-to-Phonegap.md", "https://shopify.engineering/back-to-native"]
 ---
 
-> 크로스 플랫폼을 평가하는 기준과 방법은 NAVER D2의 「[지식iN 앱을 Flutter로 개발하는 이유](https://d2.naver.com/helloworld/3384599)」를 바탕으로, 하이브리드 앱의 흔한 실수는 「[Top Mistakes by Developers new to Cordova/Phonegap](https://github.com/jessemonroy650/top-phonegap-mistakes/blob/master/new-to-Phonegap.md)」을 바탕으로 보강했다.
+> 크로스 플랫폼을 평가하는 기준과 방법은 NAVER D2의 「[지식iN 앱을 Flutter로 개발하는 이유](https://d2.naver.com/helloworld/3384599)」를 바탕으로, 하이브리드 앱의 흔한 실수는 「[Top Mistakes by Developers new to Cordova/Phonegap](https://github.com/jessemonroy650/top-phonegap-mistakes/blob/master/new-to-Phonegap.md)」을 바탕으로 보강했다. 코딩 에이전트가 바꾼 비용 계산은 Shopify Engineering의 「[Native is now the future of mobile at Shopify](https://shopify.engineering/back-to-native)」(2026.09)를 바탕으로 정리했다.
 
 모바일 앱을 만드는 방법은 크게 세 가지다. Android와 iOS를 각각 따로 만드는 **네이티브**, 웹 페이지를 앱 껍데기에 담는 **하이브리드**, 공통 코드 하나로 두 플랫폼의 네이티브 앱을 만드는 **크로스 플랫폼**. 두 플랫폼의 UI·기능이 서로 비슷해지면서 한 코드베이스로 둘 다 만드는 방식이 널리 쓰이게 됐다.
 
@@ -88,10 +88,31 @@ sources: ["https://d2.naver.com/helloworld/3384599", "https://github.com/jessemo
 
 Flutter는 브리지 없이 자체 엔진으로 화면을 직접 그려 네이티브와 구분하기 어려운 성능을 내고, **선언형 UI**로 복잡한 화면을 빨리 만든다. 선언형 UI는 SwiftUI·Jetpack Compose도 택한 방향이라 네이티브 쪽도 같은 방식으로 수렴하고 있다. 구조는 [[flutter-architecture|Flutter의 구조와 위젯 트리]]에 있다.
 
+### 코딩 에이전트가 바꾼 비용 계산
+
+크로스 플랫폼을 고르는 가장 큰 이유는 **같은 기능을 두 번 만드는 비용**이었다. 코딩 에이전트가 이 비용을 크게 낮추면서, 대규모 앱이 크로스 플랫폼에서 네이티브(Swift·Kotlin)로 돌아가는 사례가 나왔다. Shopify는 2020년부터 React Native로 앱을 만들다가 2026년 네이티브로 다시 짓는 쪽으로 방향을 바꿨다.
+
+| 관점 | 크로스 플랫폼을 고른 이유 | 에이전트가 있을 때 |
+| --- | --- | --- |
+| 이중 구현 | 같은 기능을 두 번 만들지 않는다 | 한 플랫폼 구현을 참고 삼아 에이전트가 다른 플랫폼을 구현한다 |
+| 기능 동등성 | 한 코드라 자동으로 맞는다 | 공통 명세·테스트·리뷰 체크포인트로 맞춘다 |
+| 인력 | 웹 개발자가 앱까지 맡는다 | 에이전트가 주력 스택 밖 기여를 돕는다 |
+| 남는 비용 | 성능 튜닝, 프레임워크 업그레이드, 의존성 관리 | 코드베이스 두 개의 유지 비용(여전히 있다) |
+
+네이티브는 플랫폼 기능과 1차 도구에 가깝고, 프레임워크·의존성 계층이 줄어든다. 두 코드베이스를 유지하는 비용은 사라지지 않았지만, 구현·테스트·리뷰의 상당 부분을 에이전트가 맡으면서 그 비용이 더는 결정적이지 않게 됐다.
+
+에이전트로 대규모 이전을 할 때 드러난 원칙은 다음과 같다.
+
+- **통째로 옮기게 하지 않는다.** 에이전트에게 기존 코드베이스를 그대로 넘기면 크고 유지하기 어려운 코드가 나온다. 화면 하나를 작고 순서 있는 체크포인트로 쪼개고, 체크포인트마다 자체 테스트, 실행 중인 앱과의 시각 비교, 적대적 코드 리뷰, 사람의 승인을 거쳐야 커밋한다. 리뷰 피드백은 다음 체크포인트에 반영해 점점 자율성을 높인다.
+- **피드백 루프를 짧게 만든다.** 에이전트가 시뮬레이터를 접근성 트리나 스크린샷으로 조작하면 몇 초면 쓸 코드를 몇 분씩 확인한다. 비즈니스 로직을 UI에서 떼어 헤드리스(데스크톱 포함)로 돌리고, 상태 확인·화면 이동·동작을 CLI로 열어 주면 반복 주기가 크게 줄어든다.
+- **점진 이전보다 새로 짓기를 고려한다.** 에이전트가 재작성 속도를 높이면, 옛 제약을 안고 가는 점진적 이전(brownfield)보다 새로 짓기(greenfield)가 나을 수 있다. 다만 성능·안정성·접근성·제품 품질이 기존 이상이어야 한다는 기준은 그대로다.
+- **전제가 바뀌면 결정을 다시 본다.** 기술 선택은 당시의 비용 구조에 대한 답이다. 비용 구조가 바뀌면 같은 질문에 다른 답이 나온다.
+
 ## 핵심 정리
 
 - 하이브리드 = WebView에 웹 페이지를 담은 앱(빠른 개발, 느린 성능).
 - 크로스 플랫폼 = 하나의 코드로 네이티브 앱 생성(React Native, Flutter).
 - 크로스 플랫폼도 네이티브를 100% 대체하지는 못한다. 기본기는 네이티브다.
+- 코딩 에이전트가 이중 구현 비용을 낮추면 크로스 플랫폼의 핵심 이점이 줄어든다. 프레임워크 선택은 비용 구조가 바뀔 때마다 다시 따져 본다.
 
-관련 노트: [[flutter-architecture|Flutter의 구조와 위젯 트리]], [[android-fundamentals|Android 핵심 개념]]
+관련 노트: [[flutter-architecture|Flutter의 구조와 위젯 트리]], [[android-fundamentals|Android 핵심 개념]], [[agent-trust-environment|에이전트를 믿을 수 있는 환경 만들기]]
