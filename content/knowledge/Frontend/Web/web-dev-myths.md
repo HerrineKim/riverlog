@@ -49,7 +49,7 @@ sources: ["https://velog.io/@sehyunny/weired-things-engineers-believe", "https:/
 | SPA | 오래 사는 DOM 트리를 스크립트로 갱신한다 |
 | MPA | 네트워크에서 다른 HTML 문서로 이동해 바꾼다(최상위 이동만이 아니라 `<iframe>` 이동도 포함) |
 
-이 기준으로 보면 문서마다 URL이 있는 Google Docs도 한 문서를 JS로 계속 갱신하므로 SPA이고, YouTube도 탐색을 가로채 스크립트로 내용을 바꾸는 SPA다. 문서 간 [[view-transitions|View Transitions]]가 생기며 MPA도 SPA처럼 매끄러운 전환을 낼 수 있게 된 것은 반가운 변화다. 하지만 **모든 SPA가 MPA로 바뀌지는 않는다.**
+이 기준으로 보면 문서마다 URL이 있는 Google Docs도 한 문서를 JS로 계속 갱신하므로 SPA이고, YouTube도 탐색을 가로채 스크립트로 내용을 바꾸는 SPA다. 문서 간 [[view-transitions|View Transitions]]가 생기며 MPA도 SPA처럼 매끄러운 전환을 낼 수 있게 됐다. 하지만 **모든 SPA가 MPA로 바뀌지는 않는다.**
 
 - Figma, 웹 Photoshop, Slack, Discord, Google Maps를 문서 이동 방식으로 만들기는 어렵다.
 - 독립적으로 탐색하는 패널과 오프라인 우선 요구가 있는 앱을 MPA로 바꾸려면 `<iframe>`으로 HTML을 쪼개야 한다. 그러면 양방향 동기화가 3방향 동기화가 되어 복잡도는 크게 늘고, 사용자가 얻는 이득은 없이 버그와 지연만 는다.

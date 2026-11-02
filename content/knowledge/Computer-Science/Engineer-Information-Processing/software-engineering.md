@@ -4,7 +4,7 @@ concept: "Software Engineering"
 summary: "개발 생명주기 모델(폭포수·원형·나선형·V·UP·애자일), 요구공학(추출·분석·명세·검증, EARS, 추적 매트릭스), 구조적 분석·설계(문맥도·DFD·구조 차트)와 UML 객체지향 분석·설계(경계·제어·실체 클래스, 시퀀스·활동·상태 머신), 모듈 결합도·응집도와 복잡도 척도(McCabe 순환 복잡도, Halstead), 사용자 인터페이스 황금률, 디자인 패턴, 프로젝트 관리(CMMI, WBS, COCOMO, 기능 점수 계산, PERT 주 경로, EVM, 위험 관리), 유지보수 유형과 Lehman 법칙·재공학, 형상 관리, CASE 도구 정리."
 tags: ["certificate", "software-engineering", "design-pattern", "uml", "requirements", "project-management"]
 source: notion
-date: "2026-11-01"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/a-cheatsheet-for-uml-class-diagrams", "https://www.youtube.com/watch?v=O753uuutqH8", "고려사이버대학교 소프트웨어공학 강의(도성룡 교수, 2024-1학기)", "고려사이버대학교 소프트웨어 분석설계 강의(도성룡 교수, 2023-2학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS", "https://github.com/tssovi/grokking-the-object-oriented-design-interview"]
 ---
 
@@ -399,7 +399,7 @@ V(G) = P + 1          P: 판단 노드(분기 조건) 수
 V(G) = 닫힌 영역 수 + 1   평면 그래프로 그렸을 때
 ```
 
-간선 10개, 노드 8개면 `10 - 8 + 2 = 4`다. 이 값은 모든 독립 경로를 한 번씩 지나는 데 필요한 테스트 케이스 수의 상한이 되어, 화이트박스 테스트의 기본 경로 수로 쓰인다. 모듈당 **10 이하**가 흔한 권장 기준(McCabe)이고, 넘으면 함수를 나눈다. 요즘은 정적 분석 도구와 린터(ESLint `complexity`, SonarQube)가 자동으로 잰다.
+간선 10개, 노드 8개면 `10 - 8 + 2 = 4`다. 이 값은 모든 독립 경로를 한 번씩 지나는 데 필요한 테스트 케이스 수의 상한이 되어, 화이트박스 테스트의 기본 경로 수로 쓰인다. 모듈당 **10 이하**가 흔한 권장 기준(McCabe)이고, 넘으면 함수를 나눈다. 정적 분석 도구와 린터(ESLint `complexity`, SonarQube)가 자동으로 잰다.
 
 **Halstead 척도(1977)** 는 프로그램을 연산자와 피연산자 토큰의 나열로 보고 소스 코드에서 정적으로 계산한다.
 

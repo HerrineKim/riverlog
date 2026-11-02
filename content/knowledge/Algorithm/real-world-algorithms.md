@@ -4,16 +4,14 @@ concept: "Applied Algorithms"
 summary: "일상 소프트웨어에서 자료구조가 쓰이는 곳(피드의 리스트, 실행 취소의 스택, 캐시의 해시 테이블, DOM의 트리, 지도 검색의 R-트리), 대규모 시스템 설계에 자주 나오는 알고리즘(일관된 해싱, 지오해시·쿼드트리, 블룸 필터, HyperLogLog, 토큰 버킷, 머클 트리, 합의 알고리즘), 세상을 움직이는 아홉 가지 알고리즘을 정리한다. 블룸 필터는 중복 URL 크롤링 방지 예로 자세히 본다."
 tags: ["algorithm", "data-structure", "architecture", "scalability", "search"]
 source: other
-date: "2026-10-31"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://bytebytego.com/guides/algorithms-you-should-know-before-taking-system-design-interviews", "https://bytebytego.com/guides/the-9-algorithms-that-dominate-our-world", "https://bytebytego.com/guides/how-to-avoid-crawling-duplicate-urls-at-google-scale", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[10 Key Data Structures We Use Every Day](https://bytebytego.com/guides/10-key-data-structures-we-use-every-day)」, 「[Algorithms for System Design Interviews](https://bytebytego.com/guides/algorithms-you-should-know-before-taking-system-design-interviews)」, 「[The 9 Algorithms That Dominate Our World](https://bytebytego.com/guides/the-9-algorithms-that-dominate-our-world)」, 「[How to Avoid Crawling Duplicate URLs at Google Scale?](https://bytebytego.com/guides/how-to-avoid-crawling-duplicate-urls-at-google-scale)」를 바탕으로 재구성한 노트다.
 > 블룸 필터의 거짓 음성이 없는 이유와 거짓 양성률 식은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 
-## 이 노트의 관점
-
-알고리즘 공부는 구현에 치우치기 쉽다. 시스템을 설계할 때는 "이 알고리즘이 실제 시스템의 어느 문제를 푸는가"를 아는 것이 구현 세부보다 중요하다. 이 노트는 자료구조와 알고리즘을 쓰임새 중심으로 묶는다.
+알고리즘 공부는 구현에 치우치기 쉽다. 시스템을 설계할 때는 「이 알고리즘이 실제 시스템의 어느 문제를 푸는가」를 아는 것이 구현 세부보다 중요하다. 그래서 자료구조와 알고리즘을 쓰임새 중심으로 묶어 본다.
 
 ## 일상 속 자료구조
 

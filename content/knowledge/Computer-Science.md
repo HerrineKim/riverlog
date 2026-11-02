@@ -15,7 +15,7 @@ date: "2026-10-13"
 - [Network](Computer-Science/Network.md): 네트워크 기초와 OSI 7계층, IP와 서브넷·라우팅·NAT, 전송 계층과 포트, TCP, HTTP·HTTPS, 프록시, 리눅스 네트워크 네임스페이스, RFC, WebRTC
 - [Database](Computer-Science/Database.md): 데이터 모델, 트랜잭션, 정규화, SQL
 - [C-Programming](Computer-Science/C-Programming.md): C 기초와 포인터, 자료형과 형 변환, 구조체·스코프·링키지, 입출력, gcc·make 빌드와 디버깅 도구, 호출 규약과 저수준 최적화, C의 역사와 표준
-- [Programming-Languages](Computer-Science/Programming-Languages.md): C++ 문법·템플릿·STL·예외·vtable·메모리 풀, Java·JVM과 Go, 언어의 계보·패러다임·실행 방식, 추상 클래스와 인터페이스·위임·DTO/VO·클린 코드·GoF 디자인 패턴 같은 객체 지향 설계
+- [Programming-Languages](Computer-Science/Programming-Languages.md): 언어의 계보·패러다임·실행 방식·의미론·타입 시스템, C++ 문법·템플릿·STL·예외·vtable·메모리 풀, Java·JVM·Kotlin·Python·Go, 추상 클래스와 인터페이스·위임·DTO/VO·클린 코드·GoF 디자인 패턴·책임 주도 설계와 객체 지향 설계 사례
 - [Engineer-Information-Processing](Computer-Science/Engineer-Information-Processing.md): 정보처리기사 실기의 반복 출제 개념에서 출발해 소프트웨어 공학(요구공학, 구조적·객체지향 분석 설계, 프로젝트 관리)과 소프트웨어 테스트(설계 기법, 테스트 프로세스, AI 테스트)까지 넓힌 정리
 - [개발자가 빠지는 함정 모음](Computer-Science/developer-traps.md): CSS·유니코드·부동소수점·시간·SQL·동시성·Git 등에서 직관과 다르게 동작하는 지점
 - [달력과 시간에 대한 개발자의 착각](Computer-Science/calendar-fallacies.md): 하루·주·달·해·시간대·서머타임에 대한 흔한 가정과 그것을 깨는 실제 사례

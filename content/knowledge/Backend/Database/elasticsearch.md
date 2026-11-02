@@ -169,7 +169,7 @@ PUT _index_template/logs
 | `max_age` | 만든 지 30일이 지나면 |
 | `max_docs`, `max_primary_shard_docs` | 문서 수 기준 |
 
-요즘은 **데이터 스트림(data stream)** 이 이 구조를 감싼다. 이름 하나(`logs-app-default`)로 쓰고 읽으면, 실제로는 숨은 백업 인덱스(`.ds-logs-app-default-2026.10.30-000001`)들이 롤오버로 이어진다. 데이터 스트림은 추가 전용이라 `@timestamp` 필드가 있어야 하고, 개별 문서 수정은 백업 인덱스를 직접 지정해서 한다.
+**데이터 스트림(data stream)** 이 이 구조를 감싼다. 이름 하나(`logs-app-default`)로 쓰고 읽으면, 실제로는 숨은 백업 인덱스(`.ds-logs-app-default-2026.10.30-000001`)들이 롤오버로 이어진다. 데이터 스트림은 추가 전용이라 `@timestamp` 필드가 있어야 하고, 개별 문서 수정은 백업 인덱스를 직접 지정해서 한다.
 
 ### ILM과 데이터 티어(Hot-Warm-Cold)
 

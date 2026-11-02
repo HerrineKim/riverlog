@@ -4,7 +4,7 @@ concept: "Cloud Computing"
 summary: "온프레미스와 클라우드의 차이, NIST가 정의한 다섯 가지 특징과 배포 모델, 제공자가 어디까지 관리하느냐로 나뉘는 IaaS·PaaS·SaaS와 공동 책임 모델, 클라우드를 받치는 가상화·네트워크 가상화(SDN·NFV), 리전·가용 영역·엣지 로케이션으로 이루어진 AWS 글로벌 인프라, EC2의 인스턴스 유형과 요금 모델, 관리형 서비스(ECS·EKS·Lambda), 보안 그룹으로 RDS 접속을 여는 법과 배스천 SSH 터널, 콘솔·CLI·SDK와 코드형 인프라."
 tags: ["aws", "cloud", "devops", "infra", "security", "virtualization"]
 source: other
-date: "2026-10-20"
+date: "2026-11-02"
 sources: ["https://80000coding.notion.site/94f23792f49b4c63a6701af578e74de1", "https://80000coding.notion.site/2049542166a4492cbe8a3a42e99467bb", "https://aws.amazon.com/about-aws/global-infrastructure/regions_az/", "https://aws.amazon.com/ec2/pricing/", "https://80000coding.notion.site/99481ed22b3e4d0da3f57f8930f8d8e7", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)"]
 ---
 
@@ -90,7 +90,7 @@ flowchart TB
   el["엣지 로케이션<br/>전 세계 수백 곳. CloudFront(CDN)·Route 53(DNS)이 사용자 가까이서 응답"]
 ```
 
-- 2026년 기준 39개 리전, 120여 개 AZ가 운영되며 계속 늘고 있다([AWS 공식 현황](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)).
+- 2026년 11월 기준 39개 리전, 124개 AZ가 운영되며 계속 늘고 있다([AWS 공식 현황](https://aws.amazon.com/about-aws/global-infrastructure/regions_az/)).
 - AZ 하나의 장애가 다른 AZ로 번지지 않게 설계되어 있으므로, 서비스는 여러 AZ에 나눠 배치해야 장애에 견딘다.
 - 리전은 세 가지로 고른다: 데이터를 특정 국가에 둬야 하는 **규제**, 사용자와의 **지연 시간**, 리전마다 다른 **가격과 제공 서비스**.
 

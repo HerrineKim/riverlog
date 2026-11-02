@@ -4,7 +4,7 @@ concept: "Regular Expression"
 summary: "JavaScript 정규 표현식을 사전처럼 찾아보는 표 모음. 문자 클래스·세트·앵커·수량자·그룹·역참조·대안·전후방탐색 문법, g·i·m·s·u·v·y·d 플래그, match·matchAll·replace·split·exec·test의 반환값과 lastIndex 함정, 명명된 그룹과 중복 이름, v 플래그의 집합 연산, d 플래그의 indices, 인라인 플래그 수정자, 사용자 입력을 안전하게 넣는 RegExp.escape까지."
 tags: ["javascript", "regex", "string", "frontend"]
 source: other
-date: "2026-10-17"
+date: "2026-11-02"
 sources: ["https://ko.javascript.info/regexp-introduction", "https://ko.javascript.info/regexp-character-classes", "https://ko.javascript.info/regexp-unicode", "https://ko.javascript.info/regexp-anchors", "https://ko.javascript.info/regexp-multiline-mode", "https://ko.javascript.info/regexp-boundary", "https://ko.javascript.info/regexp-escaping", "https://ko.javascript.info/regexp-character-sets-and-ranges", "https://ko.javascript.info/regexp-quantifiers", "https://ko.javascript.info/regexp-groups", "https://ko.javascript.info/regexp-backreferences", "https://ko.javascript.info/regexp-alternation", "https://ko.javascript.info/regexp-sticky", "https://ko.javascript.info/regexp-methods", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/escape", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/unicodeSets", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Modifier", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Named_capturing_group", "https://github.com/tc39/proposals/blob/main/finished-proposals.md", "https://github.com/ziishaned/learn-regex"]
 ---
 
@@ -204,7 +204,7 @@ re.exec('let varName');   // ['varName']
 
 ## 사용자 입력으로 패턴 만들기: RegExp.escape
 
-검색어를 그대로 `new RegExp(input)`에 넣으면 `.`이나 `(`가 문법으로 해석되고, 일부러 무거운 패턴을 넣는 공격(ReDoS)도 가능하다. **`RegExp.escape()`(ES2026, Baseline 2025)** 가 입력을 문자 그대로 맞는 패턴으로 바꾼다.
+검색어를 그대로 `new RegExp(input)`에 넣으면 `.`이나 `(`가 문법으로 해석되고, 일부러 무거운 패턴을 넣는 공격(ReDoS)도 가능하다. **`RegExp.escape()`(ES2025, Baseline 2025)** 가 입력을 문자 그대로 맞는 패턴으로 바꾼다.
 
 ```js
 const domain = 'example.com';

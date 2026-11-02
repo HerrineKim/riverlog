@@ -116,7 +116,7 @@ Object.entries(prices).sort(([, a], [, b]) => b - a) // 객체를 값 기준으�
 
 - 콜백은 **호출하지 않고 함수 자체를 넘긴다**. `arr.map(capitalize)`이지 `arr.map(capitalize())`가 아니다.
 - `map`·`filter`는 새 배열을 돌려주므로 한 줄에 하나씩 이어 쓸 수 있다: `text.split('').filter(isValidChar).map(toLower)`.
-- 콜백을 받는 메서드 대부분(`sort` 제외)은 마지막 인자 `thisArg`를 받아 콜백의 `this`로 쓴다. `users.filter(army.canJoin, army)`처럼 메서드를 넘길 때 `this`를 잃지 않게 한다. 요즘은 `users.filter((u) => army.canJoin(u))`처럼 화살표 함수로 감싸는 편이 흔하다([[functions|함수와 this]]).
+- 콜백을 받는 메서드 대부분(`sort` 제외)은 마지막 인자 `thisArg`를 받아 콜백의 `this`로 쓴다. `users.filter(army.canJoin, army)`처럼 메서드를 넘길 때 `this`를 잃지 않게 한다. 지금은 `users.filter((u) => army.canJoin(u))`처럼 화살표 함수로 감싸는 편이 흔하다([[functions|함수와 this]]).
 - `map` 안에서 DOM을 바꾸는 등 바깥을 건드리지 않는다. 그런 일은 `forEach`나 `for...of`가 맡는다. 반환값이 필요 없는데 `map`을 쓰면 버려지는 배열이 생긴다.
 
 ### 콜백을 만드는 함수

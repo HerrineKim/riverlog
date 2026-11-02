@@ -4,7 +4,7 @@ concept: "Location-Based Service"
 summary: "'내 주변 식당'은 모든 점과의 거리를 계산하면 느리므로 지도를 격자로 나눠 색인한다. 지오해시는 위경도를 접두사가 같으면 가까운 문자열로 바꿔 DB 색인으로 찾고, 쿼드트리는 밀도에 따라 칸을 쪼갠 메모리 트리로 찾는다. 지도 서비스는 위치 수집, 미리 잘라 둔 타일의 CDN 서빙, 지오코딩과 경로 계산으로 나뉜다."
 tags: ["backend", "architecture", "algorithm", "data-structure", "scalability"]
 source: other
-date: "2026-11-01"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/proximity-service", "https://bytebytego.com/guides/quadtree", "https://bytebytego.com/guides/design-google-maps", "https://bytebytego.com/guides/how-do-airtags-work", "https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view", "https://techblog.woowahan.com/2608/", "http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://github.com/karanpratapsingh/system-design"]
 ---
 
@@ -176,9 +176,9 @@ flowchart TB
 - **결제**: 직접 만들지 않고 Stripe 같은 결제 대행사에 맡기고, 결제가 끝나면 대행사가 앱으로 돌려보낸다([[payment-system|결제 시스템 설계]]).
 - **알림·분석**: 알림은 Kafka 같은 브로커를 거쳐 FCM·APNs로 보내고([[notification-system|알림 시스템 설계]]), 이벤트는 Spark로 분석한다. 최근 위치는 Redis에 두고 LRU로 내보낸다.
 
-### 면접 풀이: 기사 위치 갱신과 전파
+### 기사 위치 갱신과 전파
 
-면접에서 차량 호출을 설계할 때는 「기사 위치가 3초마다 바뀐다」는 쓰기 부하를 어떻게 받아 내는지가 핵심이다.
+차량 호출 설계의 핵심은 「기사 위치가 3초마다 바뀐다」는 쓰기 부하를 어떻게 받아 내느냐다.
 
 | 요구 사항 | 내용 |
 | --- | --- |

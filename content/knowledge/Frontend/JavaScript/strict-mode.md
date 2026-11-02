@@ -40,7 +40,7 @@ function legacy() {
 
 ### 자동으로 켜지는 곳
 
-**ES 모듈(`<script type="module">`, `import`/`export`가 있는 파일)과 `class` 본문은 항상 strict mode다.** 끌 방법도 없다. 번들러로 빌드하는 요즘 코드는 대부분 모듈이라 `'use strict'`를 따로 적을 일이 거의 없다. 옛 방식의 `<script>`, 콘솔, Node.js의 CommonJS 파일은 따로 켜야 한다.
+**ES 모듈(`<script type="module">`, `import`/`export`가 있는 파일)과 `class` 본문은 항상 strict mode다.** 끌 방법도 없다. 번들러로 빌드하는 코드는 대부분 모듈이라 `'use strict'`를 따로 적을 일이 거의 없다. 옛 방식의 `<script>`, 콘솔, Node.js의 CommonJS 파일은 따로 켜야 한다.
 
 ### 브라우저 콘솔에서 시험할 때
 

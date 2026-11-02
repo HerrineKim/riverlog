@@ -4,7 +4,7 @@ concept: "Web AI Platform"
 summary: "웹 AI는 모델이 어디서 도나(브라우저 / 서버)와 얼마나 고칠 수 있나(가중치 접근)로 네 가지 선택지가 생긴다. 내장 AI·커스텀 클라이언트 모델·관리형 API·자체 호스팅을 모델 성능·비용·프라이버시·호환성·유지 보수로 비교하고, 요구 사항에서 플랫폼을 고르는 법과 클라이언트 우선 하이브리드 라우팅을 정리한다."
 tags: ["ai", "llm", "architecture", "web", "performance"]
 source: other
-date: "2026-10-17"
+date: "2026-11-02"
 sources: ["https://web.dev/learn/ai/platform", "https://web.dev/learn/ai/glossary", "https://developer.chrome.com/docs/ai/built-in-apis", "https://bytebytego.com/guides/the-open-source-ai-stack"]
 ---
 
@@ -21,7 +21,7 @@ AI 기능을 어디에 올릴지는 속도·비용·확장성·신뢰를 함께 
 | | 고칠 수 없음 | 고칠 수 있음 |
 | --- | --- | --- |
 | **클라이언트** | 브라우저 내장 AI (Chrome의 Gemini Nano 등) | 커스텀 모델 + 라이브러리 (Transformers.js, MediaPipe 등) |
-| **서버** | 관리형 서비스 (Gemini, GPT 같은 API) | 자체 호스팅 오픈 웨이트 모델 (Gemma, Llama를 자체 인프라·Vertex AI·Hugging Face Inference에) |
+| **서버** | 관리형 서비스 (Gemini, GPT 같은 API) | 자체 호스팅 오픈 웨이트 모델 (Gemma, Llama를 자체 인프라·Google Cloud Gemini Enterprise Agent Platform(구 Vertex AI)·Hugging Face Inference에) |
 
 ### 클라이언트 사이드 AI
 

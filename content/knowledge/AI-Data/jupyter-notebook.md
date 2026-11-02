@@ -4,7 +4,7 @@ concept: "Jupyter"
 summary: "코드·실행 결과·마크다운 문서·시각화를 한 파일에 담는 웹 기반 인터랙티브 개발 환경으로, 데이터 과학의 사실상 표준 도구."
 tags: ["data-science", "python", "jupyter", "tools"]
 source: notion
-date: "2026-10-13"
+date: "2026-11-02"
 sources: ["https://jupyter.org/", "https://jupyter-notebook.readthedocs.io/en/latest/"]
 ---
 
@@ -33,7 +33,7 @@ Jupyter Notebook은 실행되는 문서다. 하나의 노트북 안에 설명(�
 | 설치형 | Docker | 재현 가능한 환경 |
 | 서비스형 | Google Colab | 설치 없이 브라우저에서, 무료 GPU |
 | 서비스형 | **Kaggle Notebooks** | 데이터셋·대회와 바로 연결 |
-| 서비스형 | AWS SageMaker, GCP Vertex AI(구 AI Platform), Azure ML | 클라우드 노트북 서비스. 데이터·모델 인프라와 같은 계정 안에서 쓴다 |
+| 서비스형 | AWS SageMaker, Google Cloud Gemini Enterprise Agent Platform(구 Vertex AI), Azure ML | 클라우드 노트북 서비스. 데이터·모델 인프라와 같은 계정 안에서 쓴다 |
 
 ## 알아 두면 좋은 기능
 

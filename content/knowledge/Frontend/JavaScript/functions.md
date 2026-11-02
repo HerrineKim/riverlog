@@ -256,7 +256,7 @@ button.addEventListener('click', function () {
 
 sloppy mode에서는 `fn.call(null)`의 this가 전역 객체로, `fn.call(10)`의 this가 래퍼 객체 `Number {10}`으로 바뀐다. strict mode에서는 넘긴 값이 그대로 this가 된다([[strict-mode|strict mode]]).
 
-ES 모듈과 `class` 본문은 자동으로 strict mode이므로, 요즘 코드에서 메서드를 떼어 부르면 this는 대개 `undefined`다.
+ES 모듈과 `class` 본문은 자동으로 strict mode이므로, 모듈로 쓰는 코드에서 메서드를 떼어 부르면 this는 대개 `undefined`다.
 
 ```javascript
 function getFullName() {

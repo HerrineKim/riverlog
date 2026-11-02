@@ -4,7 +4,7 @@ concept: "Singleton"
 summary: "인스턴스를 하나만 두는 싱글턴 패턴의 목적과 Java 구현 방식(이른 초기화, synchronized, DCL과 volatile, 홀더 클래스, enum)을 스레드 안전성과 비용으로 비교하고, C++의 함수 안 static(Meyers 싱글턴)과 복사 금지, 전역 상태가 되는 단점과 DI 컨테이너·모듈로 대신하는 방법을 정리한다."
 tags: ["design-pattern", "java", "cpp", "oop", "concurrency"]
 source: other
-date: "2026-10-31"
+date: "2026-11-02"
 sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DesignPattern/README.md", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
@@ -154,7 +154,7 @@ Logger::instance().log("start");
 | 동시성 위험 | 하나뿐인 객체의 필드를 여러 스레드가 고친다 |
 | 클래스로더·프로세스마다 하나 | 「하나」의 범위가 JVM 전체가 아니다. 여러 서버로 늘리면 각자 하나씩이다 |
 
-그래서 요즘은 클래스가 스스로 하나임을 지키기보다 **DI 컨테이너가 하나만 만들어 주입**하게 한다. Spring 빈의 기본 스코프가 싱글턴이고, 이때 빈을 상태 없이 짜는 법은 [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]]에 있다. JavaScript·Python에서는 **모듈이 한 번만 평가되므로** 모듈 최상위에서 만든 객체가 곧 싱글턴이다([[js-design-patterns|JavaScript 생성 패턴]], [[singleton-service-pattern|Express 싱글톤 패턴]]).
+그래서 실무에서는 클래스가 스스로 하나임을 지키기보다 **DI 컨테이너가 하나만 만들어 주입**하게 한다. Spring 빈의 기본 스코프가 싱글턴이고, 이때 빈을 상태 없이 짜는 법은 [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]]에 있다. JavaScript·Python에서는 **모듈이 한 번만 평가되므로** 모듈 최상위에서 만든 객체가 곧 싱글턴이다([[js-design-patterns|JavaScript 생성 패턴]], [[singleton-service-pattern|Express 싱글톤 패턴]]).
 
 ## 정리
 

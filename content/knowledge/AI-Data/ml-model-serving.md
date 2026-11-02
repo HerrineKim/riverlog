@@ -4,7 +4,7 @@ concept: "Model Serving"
 summary: "학습한 모델을 서비스에서 호출할 수 있게 띄우는 방법. VM·컨테이너·서버리스·모델 서버 같은 배포 형태와 CPU·GPU 추론 선택, 모바일·엣지 배포, 동기 API와 큐 기반 비동기 워커 중 무엇을 고를지, 가중치·이미지 분리, 배치 처리, 헬스 체크, 배포 게이트 같은 설계 원칙과, BentoML처럼 모델을 API·컨테이너로 묶어 주는 프레임워크의 역할을 정리했다."
 tags: ["ai", "machine-learning", "mlops", "deep-learning", "architecture"]
 source: other
-date: "2026-10-31"
+date: "2026-11-02"
 sources: ["https://tech.socar.kr/data/2020/03/10/ml-model-serving", "https://zuminternet.github.io/BentoML/", "https://docs.bentoml.com/", "https://github.com/alirezadir/Production-Level-Deep-Learning", "https://zzsza.github.io/mlops/2019/10/06/fullstack-deeplearning-bootcamp/", "https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html"]
 ---
 
@@ -18,7 +18,7 @@ sources: ["https://tech.socar.kr/data/2020/03/10/ml-model-serving", "https://zum
 
 | 방식 | 내용 | 맞는 경우 |
 | --- | --- | --- |
-| 관리형·엔드투엔드 플랫폼 | 학습부터 배포까지 묶은 플랫폼(SageMaker, Vertex AI, Kubeflow 등) | 팀이 크고 모델이 많을 때. 기능은 넓지만 익히는 비용과 플랫폼 의존이 생긴다 |
+| 관리형·엔드투엔드 플랫폼 | 학습부터 배포까지 묶은 플랫폼(SageMaker, Google Cloud Gemini Enterprise Agent Platform(구 Vertex AI), Kubeflow 등) | 팀이 크고 모델이 많을 때. 기능은 넓지만 익히는 비용과 플랫폼 의존이 생긴다 |
 | 직접 구성하는 가벼운 서빙 | 기존 인프라(컨테이너, 큐, 오케스트레이터) 위에 추론 서버만 얹는다 | 모델이 몇 개이고 기존 시스템과 붙이는 일이 중요할 때 |
 
 LLM처럼 토큰을 하나씩 생성하는 모델은 KV 캐시·연속 배치 같은 별도 문제가 있다. 그 내용은 [[llm-serving-at-scale|LLM 서빙의 병목]]에 정리했다. 서빙은 모델 운영의 한 부분이고, 버전 관리·모니터링·재학습까지 이어지는 전체 흐름은 [[mlops|MLOps]]에 있다.

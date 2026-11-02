@@ -4,7 +4,7 @@ concept: "Presentation Design"
 summary: "3의 법칙, 정렬, 자간, 굵기로 하는 강조, 키워드 중심 구성 등 발표 자료를 깔끔하게 만드는 원칙과 상업적 이용 가능한 무료 폰트를 구하는 곳."
 tags: ["design", "presentation", "typography", "portfolio", "resources"]
 source: notion
-date: "2026-10-12"
+date: "2026-11-02"
 ---
 
 발표 자료와 포트폴리오는 화려함보다 **정돈됨**이 중요하다. 디자이너가 아니어도 바로 적용할 수 있는 원칙들을 구성·레이아웃·타이포그래피·이미지 순으로 정리했다.
@@ -34,11 +34,11 @@ date: "2026-10-12"
 | --- | --- |
 | [눈누](https://noonnu.cc/) | 상업용 무료 한글 폰트 큐레이션. 라이선스 범위가 표로 정리되어 있다 |
 | [Google Fonts](https://fonts.google.com/) | 오픈 라이선스 폰트. Noto 계열도 여기서 받는다. 웹 폰트로 바로 쓴다 |
-| [Adobe Fonts](https://fonts.adobe.com/) | Creative Cloud 구독자용 |
+| [Adobe Fonts](https://fonts.adobe.com/) | 무료 Adobe 계정으로도 일부(공식 안내 기준 5,000여 종)를 쓸 수 있고, 전체 라이브러리는 Creative Cloud 구독에 포함된다 |
 | [DaFont](https://www.dafont.com/) | 영문 디스플레이·장식 폰트가 많다. 개인용 한정 폰트가 섞여 있다 |
 | [1001 Free Fonts](https://www.1001freefonts.com/) | 일부 유료 포함. 동봉된 read me를 확인한다 |
 | [Pixel Surplus](https://www.pixelsurplus.com/freebies/) | 「Free for commercial use」 표시를 확인한다 |
-| [fontfree.me](http://fontfree.me/) | 일본어 폰트. 「商用OK」 표시가 상업적 이용 가능이다 |
+| [fontfree.me](https://fontfree.me/) | 일본어 폰트. 「商用OK」 표시가 상업적 이용 가능이고, 「商用個人利用のみ」는 개인 상업 이용까지만이다 |
 
 | 용도 | 많이 쓰는 무료 한글 폰트 |
 | --- | --- |

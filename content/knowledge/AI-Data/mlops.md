@@ -4,7 +4,7 @@ concept: "MLOps"
 summary: "MLOps는 머신러닝(ML)과 운영(Ops)을 합친 말로, 모델을 서비스에 올리고 데이터·모델 버전 관리, 모니터링, 재학습까지 계속 돌리는 일이다. 생명 주기별 구성 요소와 도구, 프로젝트를 고르고 지표·베이스라인을 정하는 법, Kubeflow Pipelines로 본 학습·배포 파이프라인, ML 시스템에 필요한 테스트, 피처 테이블과 학습·서빙 불일치를 막는 법, 파이프라인을 먼저 잇고 모델은 나중에 키우는 원칙을 정리했다."
 tags: ["ai", "machine-learning", "mlops", "devops", "data"]
 source: other
-date: "2026-10-31"
+date: "2026-11-02"
 sources: ["https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/MLOps", "https://en.wikipedia.org/wiki/MLOps", "https://fullstackdeeplearning.com/march2019", "https://zzsza.github.io/mlops/2019/10/06/fullstack-deeplearning-bootcamp/", "https://github.com/alirezadir/Production-Level-Deep-Learning", "https://jameskle.com/writes/deep-learning-infrastructure-tooling", "https://medium.com/daangn/%EB%94%A5%EB%9F%AC%EB%8B%9D-%EC%B6%94%EC%B2%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-in-production-fa623877e56a", "https://docs.google.com/presentation/d/1AqiRVm32zCg59TKDgbs14FaVgNf8kqfXFkCYxAPw8ac/edit", "https://www.kubeflow.org/docs/components/pipelines/"]
 ---
 
@@ -46,7 +46,7 @@ MLOps는 **머신러닝(Machine Learning)과 운영(Operations)을 합친 말로
 | 모델 레지스트리 | 학습된 모델을 이름·버전·단계(스테이징·운영)로 등록하고 승격한다 | MLflow Model Registry, 클라우드 레지스트리 |
 | 모니터링 | 다운타임·오류 알림, 입력·예측 분포 변화, 서비스·데이터 회귀를 잡는다. 기록할 수 있는 것은 모두 모니터링 대상이다 | Evidently, 클라우드 모니터링, Prometheus |
 
-학습부터 배포까지 묶은 올인원 플랫폼(SageMaker, Vertex AI, Databricks, TFX 기반 구성)도 있다. 기능은 넓지만 익히는 비용과 플랫폼 의존이 생긴다.
+학습부터 배포까지 묶은 올인원 플랫폼(SageMaker, Google Cloud Gemini Enterprise Agent Platform(구 Vertex AI), Databricks, TFX 기반 구성)도 있다. 기능은 넓지만 익히는 비용과 플랫폼 의존이 생긴다.
 
 ## 프로젝트를 고르고 목표를 정하는 법
 

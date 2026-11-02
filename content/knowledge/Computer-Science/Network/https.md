@@ -4,7 +4,7 @@ concept: "HTTPS"
 summary: "HTTP를 TLS로 감싸 도청·변조·위장을 막는 HTTPS. 대칭키·공개키를 섞어 쓰는 TLS 핸드셰이크, 첫 HTTP 요청의 빈틈을 막는 HSTS와 preload, HTTPS만으로는 부족한 경우를 정리한다."
 tags: ["network", "security", "http", "web", "frontend"]
 source: mixed
-date: "2026-11-01"
+date: "2026-11-02"
 sources: ["https://yozm.wishket.com/magazine/detail/1852/", "https://yozm.wishket.com/magazine/detail/1862/", "https://www.ssl.com/article/ssl-certificate-validity-changes-what-you-need-to-know/", "https://www.encryptionconsulting.com/x25519mlkem768-tls-deployment-guide/", "https://howhttps.works/", "https://bytebytego.com/guides/how-does-https-work", "https://bytebytego.com/guides/https-ssl-handshake-and-data-encryption-explained-to-kids", "https://bytebytego.com/guides/is-https-safe", "https://bytebytego.com/guides/symmetric-encryption-vs-asymmetric-encryption", "https://parksb.github.io/article/24.html", "https://brunch.co.kr/@mobiinside/1482", "https://engineering.linecorp.com/ko/blog/best-practices-to-secure-your-ssl-tls/", "https://github.com/karanpratapsingh/system-design"]
 ---
 
@@ -58,11 +58,7 @@ TLS는 SSL(Secure Sockets Layer)을 개선한 후속 규격이다. 지금 쓰는
 
 ## 대칭키와 공개키
 
-| 구분 | 대칭키 | 공개키(비대칭키) |
-| --- | --- | --- |
-| 키 | 하나로 암호화·복호화 | 공개키·개인키 한 쌍. 짝이 맞는 키로만 풀린다 |
-| 장점 | 빠르고 가볍다 | 키를 미리 나눠 갖지 않아도 된다 |
-| 약점 | 키를 안전하게 건네기 어렵다. 유출되면 끝 | 연산이 무거워 대량 데이터에 부적합 |
+대칭키는 키 하나로 암호화·복호화해 빠르지만 키를 안전하게 건네기 어렵고, 공개키(비대칭키)는 공개키·개인키 한 쌍을 써서 키를 미리 나눠 갖지 않아도 되지만 연산이 무겁다. 두 방식과 해시의 비교표, 대표 알고리즘(AES·ChaCha20, RSA·ECDH)과 약점은 [[network-security|네트워크 보안]]의 「위협의 네 갈래와 암호」에 있다.
 
 공개키 방식은 반대 방향으로도 쓴다. **개인키로 서명한 것은 짝인 공개키로만 검증된다.** 이것이 디지털 서명이고, 인증서가 "이 공개키의 주인이 맞다"를 증명하는 원리다.
 
@@ -101,7 +97,7 @@ flowchart TB
 
 Let's Encrypt 같은 무료 CA와 Vercel·Netlify 같은 호스팅이 인증서를 ACME 프로토콜로 자동 발급·갱신한다.
 
-공개 인증서의 최대 유효 기간은 CA/브라우저 포럼 규정(Ballot SC-081)에 따라 단계적으로 줄어든다. 2026년 3월 15일부터 200일, 2027년 3월 15일부터 100일, 2029년 3월 15일부터 47일이다. 수동 갱신은 사실상 불가능해지므로 **자동 갱신과 만료 모니터링이 전제**다. 유효 기간이 짧아진 배경(CA 침해, 폐기 실패, 브라우저 주도의 규칙 변경)은 [[web-pki-evolution|웹 PKI의 변천]]에 있다.
+공개 인증서의 최대 유효 기간은 CA/브라우저 포럼 규정(Ballot SC-081)에 따라 단계적으로 줄어든다. 2026년 3월 15일부터 **200일**이 상한이고, 2027년 3월 15일부터 100일, 2029년 3월 15일부터 47일로 더 줄어든다. 수동 갱신은 사실상 불가능해지므로 **자동 갱신과 만료 모니터링이 전제**다. 유효 기간이 짧아진 배경(CA 침해, 폐기 실패, 브라우저 주도의 규칙 변경)은 [[web-pki-evolution|웹 PKI의 변천]]에 있다.
 
 ## TLS 핸드셰이크 (TLS 1.3 기준)
 

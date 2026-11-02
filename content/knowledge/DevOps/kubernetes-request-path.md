@@ -4,7 +4,7 @@ concept: "Cloud Native Stack"
 summary: "브라우저 요청이 로드 밸런서, 게이트웨이, 서비스 메시를 거쳐 파드의 컨테이너에 닿고, 그 트래픽이 Prometheus·Grafana로 관측되기까지의 경로와 각 구성 요소(Terraform, Kubernetes, Helm, Istio, API 게이트웨이)의 역할을 프론트엔드 개발자 관점에서 정리했다."
 tags: ["devops", "infra", "kubernetes", "msa", "monitoring"]
 source: other
-date: "2026-10-13"
+date: "2026-11-02"
 sources: ["https://blog.mathpresso.com/modern-frontend-infrastructure-overview-99b5a8c669df"]
 ---
 
@@ -77,7 +77,7 @@ Istio는 Prometheus용 지표 노출을 기본으로 켜 두기 때문에, Prome
 
 ### 클러스터 입구: Ingress에서 Gateway API로
 
-클러스터 밖 트래픽을 받는 방식은 **Kubernetes Gateway API**가 표준이 되고 있다. 기존 Ingress 리소스는 호스트·경로 라우팅만 표현할 수 있어 기능마다 구현체 전용 어노테이션이 필요했다. Gateway API는 역할별 리소스(GatewayClass, Gateway, HTTPRoute)로 나뉘고 가중치 분배, 헤더 매칭 같은 기능을 명세에 담았다. 2023년 v1.0이 나왔고, Istio·Envoy Gateway·Kong·Cilium 등이 구현한다. 널리 쓰이던 커뮤니티 Ingress NGINX 컨트롤러는 2026년 3월 유지보수가 끝났다.
+클러스터 밖 트래픽을 받는 리소스는 Ingress에서 **Gateway API**로 옮겨 가고 있다. Ingress는 호스트·경로 라우팅만 표현해 그 밖의 기능은 구현체 전용 어노테이션에 기댔고, Gateway API는 역할별 리소스(GatewayClass, Gateway, HTTPRoute)와 가중치 분배·헤더 매칭을 명세에 담았다. 두 API의 차이, 컨트롤러 목록, 커뮤니티 Ingress NGINX의 유지보수 종료는 [[kubernetes-networking#Ingress|쿠버네티스 네트워킹]]에 있다.
 
 ## 관측: 무엇을 보면 되나
 
@@ -99,4 +99,4 @@ Istio는 Prometheus용 지표 노출을 기본으로 켜 두기 때문에, Prome
 - 클러스터 입구는 Ingress에서 Gateway API로, 서비스 메시는 사이드카에서 앰비언트 방식으로 옮겨 가고 있다.
 - 서버에서 도는 프론트엔드 코드가 늘수록, 요청 경로와 지표를 직접 읽을 줄 아는 것이 성능 작업의 출발점이다.
 
-관련 노트: [[vm-vs-container|VM과 컨테이너]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[ci-cd|CI/CD]]
+관련 노트: [[kubernetes-networking|쿠버네티스 네트워킹]], [[kubernetes-architecture|쿠버네티스 구조와 핵심 개념]], [[observability|관측 가능성]], [[vm-vs-container|VM과 컨테이너]], [[startup-infra-decisions|스타트업 인프라 선택 원칙]], [[ci-cd|CI/CD]]
