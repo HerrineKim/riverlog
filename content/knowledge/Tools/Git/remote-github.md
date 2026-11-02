@@ -4,7 +4,7 @@ concept: "Remote Repository"
 summary: "Git(버전 관리 도구)과 GitHub(호스팅·협업 서비스)의 차이, remote·push·pull·fetch·clone으로 로컬 저장소를 GitHub 같은 원격 저장소와 동기화하는 방법과, 이력을 유지한 채 다른 서비스로 옮기는 미러링."
 tags: ["git", "github", "collaboration"]
 source: til
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://riverkim.kr/94", "https://riverkim.kr/162", "https://80000coding.notion.site/19c283f564a6492d98945e4558a990d7", "https://bytebytego.com/guides/git-vs-github", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://git-scm.com/docs/git-submodule", "https://git-scm.com/docs/git-push", "https://parksb.github.io/article/28.html", "https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md"]
 ---
 
@@ -74,9 +74,9 @@ $ git push origin --delete <브랜치>         # 원격 브랜치 삭제 (옛 �
 로컬 브랜치의 커밋을 원격 저장소에 반영한다.
 
 ```bash
-$ git push origin master     # 기본 브랜치가 main이면 main
+$ git push origin main
 # 처음 한 번 -u 옵션으로 추적 관계를 만들어 두면 이후엔 git push 만으로 충분하다
-$ git push -u origin master
+$ git push -u origin main
 ```
 
 ### 안전한 강제 push
@@ -99,14 +99,14 @@ $ git push --force-with-lease origin feature
 
 | 명령 | 동작 |
 | --- | --- |
-| `git fetch` | 원격의 새 커밋을 **받아오기만** 한다. 내 브랜치는 그대로 (`origin/master`만 갱신) |
+| `git fetch` | 원격의 새 커밋을 **받아오기만** 한다. 내 브랜치는 그대로 (`origin/main`만 갱신) |
 | `git pull` | `fetch` + 통합. 받아온 뒤 현재 브랜치에 **반영까지** 한다 |
 
 ```bash
-$ git pull origin master
+$ git pull origin main
 From https://github.com/username/repository
- * branch            master     -> FETCH_HEAD
-   ee084e8..d58b853  master     -> origin/master
+ * branch            main       -> FETCH_HEAD
+   ee084e8..d58b853  main       -> origin/main
 Updating ee084e8..d58b853
 Fast-forward
  README.md | 0
@@ -169,15 +169,15 @@ $ git push --mirror https://github.com/username/project.git    # 빈 새 저장�
 | 막히는 지점 | 원인 | 해결 |
 | --- | --- | --- |
 | push가 크기 제한으로 거절됨 | 이력 어딘가에 대용량 파일(빌드 결과물, 데이터 등)이 커밋되어 있음 | Git LFS로 옮기거나 `git filter-repo`(또는 BFG Repo-Cleaner)로 이력에서 큰 파일을 지운 뒤 push |
-| 기본 브랜치가 엉뚱하게 잡힘 | 두 저장소의 기본 브랜치 이름이 다름(`master` vs `main`) | 옮기기 전에 이름을 맞추거나, 옮긴 뒤 저장소 설정에서 기본 브랜치를 바꿈 |
+| 기본 브랜치가 엉뚱하게 잡힘 | 두 저장소의 기본 브랜치 이름이 다름(옛 저장소는 `master`, 새 저장소는 `main`인 경우 등) | 옮기기 전에 이름을 맞추거나, 옮긴 뒤 저장소 설정에서 기본 브랜치를 바꿈 |
 
 ### 여러 저장소를 하나로 모으기: `git subtree`
 
 따로 관리하던 작은 저장소 여러 개를 한 저장소의 하위 폴더로 합치되 **각자의 커밋 이력도 함께 가져오려면** `git subtree add`를 쓴다.
 
 ```bash
-$ git subtree add --prefix=fdf https://example.com/fdf.git master           # 이력까지 가져오기
-$ git subtree add --prefix=fdf https://example.com/fdf.git master --squash  # 커밋 하나로 합쳐 가져오기
+$ git subtree add --prefix=fdf https://example.com/fdf.git main           # 이력까지 가져오기
+$ git subtree add --prefix=fdf https://example.com/fdf.git main --squash  # 커밋 하나로 합쳐 가져오기
 ```
 
 `--prefix`는 새로 만들 폴더 이름이다. 이후에도 원래 저장소와 주고받으려면 `git subtree pull`/`push`를 쓰고, 한 번 합치고 끝이면 `add`만으로 충분하다. 하위 폴더를 외부 저장소의 특정 커밋에 연결해 두는 방식인 `git submodule`과 달리, subtree는 파일을 저장소 안에 실제로 복사하므로 clone하는 사람이 추가 명령을 몰라도 된다. 하위 폴더만 다른 브랜치로 내보낼 때도 쓴다(`git subtree push --prefix=docs origin gh-pages`).
