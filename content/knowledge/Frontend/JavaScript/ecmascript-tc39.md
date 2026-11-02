@@ -4,7 +4,7 @@ concept: "ECMAScript"
 summary: "JavaScript의 표준 ECMA-262를 누가 어떻게 정하는지 정리한다. ECMA International과 TC39, 제안이 Stage 0부터 4까지 올라가 매년 새 판(ES2015, ES2016 …)에 실리는 과정, ES6와 ES2015 같은 이름 규칙, ES2015~ES2021 판별 주요 기능, ES2022의 클래스 필드·top-level await·at()·Object.hasOwn부터 ES2026까지의 주요 추가 기능, Java와 무관한 이름과 실행 환경별 제약, 표준 내장 객체와 호스트 객체, 명세·MDN 같은 참고 자료, 새 기능을 옛 환경에서 쓰는 트랜스파일러와 폴리필을 다룬다."
 tags: ["javascript", "frontend", "ecmascript", "history"]
 source: other
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es6.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es7-es8.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es9-es10.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es11.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/native-host.md", "https://ko.javascript.info/intro", "https://ko.javascript.info/manuals-specifications", "https://ko.javascript.info/polyfills", "https://80000coding.notion.site/702242eb995e4cb2b7ca68cd66c64d7a", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://tc39.es/process-document/", "https://github.com/tc39/proposals/blob/main/finished-proposals.md", "https://auth0.com/blog/a-brief-history-of-javascript/", "https://remysharp.com/2010/10/08/what-is-a-polyfill"]
 ---
 
@@ -24,13 +24,13 @@ sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/
 
 ```mermaid
 timeline
-  1995.05 : Mocha — Brendan Eich가 Netscape에서 짧은 기간에 만든 프로토타입 → LiveScript
-  1995.12 : JavaScript로 개명 — Java는 큰 컴포넌트, JavaScript는 작은 브라우저 스크립트라는 역할 분담
-  1996 : Microsoft JScript(IE 3) — 구현 차이로 오랜 브라우저 호환성 문제의 시작
+  1995.05 : Mocha: Brendan Eich가 Netscape에서 짧은 기간에 만든 프로토타입 → LiveScript
+  1995.12 : JavaScript로 개명: Java는 큰 컴포넌트, JavaScript는 작은 브라우저 스크립트라는 역할 분담
+  1996 : Microsoft JScript(IE 3): 구현 차이로 오랜 브라우저 호환성 문제의 시작
   1997 : ES1
   1998 : ES2(ISO 표준과 맞춤)
   1999 : ES3(정규식, try/catch)
-  2000년대 : AJAX 확산 — ES4(클래스·모듈·정적 타입까지 넣은 대개편) 논쟁으로 정체
+  2000년대 : AJAX 확산: ES4(클래스·모듈·정적 타입까지 넣은 대개편) 논쟁으로 정체
   2008 : 오슬로 회의#58; ES4 폐기, 작은 개정 ES3.1과 장기 계획 Harmony로 정리
   2009 : ES3.1이 ES5로
   2011 : ES5.1
@@ -119,10 +119,10 @@ ES2015부터 공식 이름은 연도다. ES6·ES8 같은 판 번호는 관용적
 | --- | --- |
 | ES2023 | `findLast`·`findLastIndex`, 원본을 바꾸지 않는 `toSorted`·`toReversed`·`toSpliced`·`with`, 해시뱅(`#!`) 문법 |
 | ES2024 | `Object.groupBy`·`Map.groupBy`, `Promise.withResolvers`, 정규식 `v` 플래그, 크기 조절 가능한 `ArrayBuffer` |
-| ES2025 | 이터레이터 헬퍼(`iterator.map().filter().take()`), `Set`의 합집합·교집합 메서드, JSON 모듈과 import 속성(`with { type: 'json' }`), 정규식 패턴 수식자(`(?i:abc)`)와 중복 이름 캡처 그룹, `Promise.try`, `Float16Array`, `ArrayBuffer`의 `transfer` |
-| ES2026 | `Array.fromAsync`, `Error.isError`, `Math.sumPrecise`, `Uint8Array`의 Base64·hex 변환, 이터레이터 이어 붙이기(`Iterator.concat`), `Map`·`WeakMap`의 `getOrInsert`(Upsert), `JSON.parse` 원문 접근([[json\|JSON]]), `RegExp.escape` |
+| ES2025 | 이터레이터 헬퍼(`iterator.map().filter().take()`), `Set`의 합집합·교집합 메서드, JSON 모듈과 import 속성(`with { type: 'json' }`), 정규식 패턴 수식자(`(?i:abc)`)와 중복 이름 캡처 그룹, `Promise.try`, `Float16Array`, `ArrayBuffer`의 `transfer`, `RegExp.escape` |
+| ES2026 | `Array.fromAsync`, `Error.isError`, `Math.sumPrecise`, `Uint8Array`의 Base64·hex 변환, 이터레이터 이어 붙이기(`Iterator.concat`), `Map`·`WeakMap`의 `getOrInsert`(Upsert), `JSON.parse` 원문 접근([[json\|JSON]]) |
 
-날짜·시간 API **Temporal**과 `using` 선언(Explicit Resource Management), 이터레이터 `chunks`·`join`·`includes`, `Atomics.pause`는 Stage 4를 마쳐 ES2027에 실릴 예정이다. 정규식 기능 전반은 [[regular-expressions|정규 표현식: 문법·플래그·메서드]]에 있다.
+날짜·시간 API **Temporal**과 `using` 선언(Explicit Resource Management), 이터레이터 `chunks`·`join`·`includes`와 여러 이터레이터를 나란히 도는 `Iterator.zip`, `Atomics.pause`는 Stage 4를 마쳐 ES2027에 실린다. ES2026은 새 문법 없이 내장 함수만 더한 판이다. 정규식 기능 전반은 [[regular-expressions|정규 표현식: 문법·플래그·메서드]]에 있다.
 
 새 기능을 실제 서비스에 쓸 때는 판 번호보다 **브라우저 지원 범위**가 기준이다. MDN의 호환성 표나 Baseline 표시로 대상 브라우저에서 되는지 확인한다([[responsible-javascript|책임감 있는 자바스크립트]]).
 

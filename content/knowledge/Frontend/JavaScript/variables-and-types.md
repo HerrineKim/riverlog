@@ -68,7 +68,7 @@ let bar = 0    // 선언 + 할당 = 초기화
 
 ### 선언 없이 대입하면: 암묵적 전역
 
-초기 JavaScript는 선언하지 않은 이름에 값을 넣으면(`dog = 'snickers'`) 함수·블록 안이라도 전역 변수를 만들어 줬다(implied global). 오타 하나가 전역 변수가 되는 셈이다. 정확히는 변수 선언이 아니라 **전역 객체에 속성을 더하는 것**(`window.dog = …`)이라, 호이스팅되지 않고 `delete dog`로 지울 수도 있다. `var`로 선언한 전역 변수는 지워지지 않는다. 연쇄 대입에도 숨어 있다. `let x = (y = 10)`은 `y = 10; let x = y`와 같아서 `x`만 지역 변수이고 `y`는 암묵적 전역이 된다(함수가 끝난 뒤 바깥에서 `typeof y`는 `'number'`). 하위 호환 때문에 이 동작은 지금도 남아 있고, **strict mode에서는 `ReferenceError`** 가 난다. ES 모듈과 `class` 본문은 자동으로 strict mode라서 요즘 코드는 대부분 따로 적지 않아도 막힌다. 켜는 방법과 달라지는 동작 전체는 [[strict-mode|strict mode]]에 있다.
+초기 JavaScript는 선언하지 않은 이름에 값을 넣으면(`dog = 'snickers'`) 함수·블록 안이라도 전역 변수를 만들어 줬다(implied global). 오타 하나가 전역 변수가 되는 셈이다. 정확히는 변수 선언이 아니라 **전역 객체에 속성을 더하는 것**(`window.dog = …`)이라, 호이스팅되지 않고 `delete dog`로 지울 수도 있다. `var`로 선언한 전역 변수는 지워지지 않는다. 연쇄 대입에도 숨어 있다. `let x = (y = 10)`은 `y = 10; let x = y`와 같아서 `x`만 지역 변수이고 `y`는 암묵적 전역이 된다(함수가 끝난 뒤 바깥에서 `typeof y`는 `'number'`). 하위 호환 때문에 이 동작은 지금도 남아 있고, **strict mode에서는 `ReferenceError`** 가 난다. ES 모듈과 `class` 본문은 자동으로 strict mode라서 모듈로 쓰는 코드는 따로 적지 않아도 막힌다. 켜는 방법과 달라지는 동작 전체는 [[strict-mode|strict mode]]에 있다.
 
 ## 데이터 타입
 

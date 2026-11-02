@@ -4,8 +4,8 @@ concept: "Sustainable Web"
 summary: "웹사이트의 에너지 사용은 전송 데이터·CPU·서버 자원으로 어림할 수 있고, 이를 줄이는 일은 곧 성능·접근성·SEO 개선이다. 필요 없는 요청과 기능을 빼고, 이미지·폰트·영상·분석 도구를 의심하고, 서버 캐시와 재생 에너지 호스팅을 쓴다."
 tags: ["frontend", "web", "performance", "design"]
 source: other
-date: "2026-10-13"
-sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8-%ec%84%b1%eb%8a%a5%ec%9d%84-%ea%b0%9c%ec%84%a0%ed%95%b4-%ec%a7%80%ea%b5%ac%eb%a5%bc-%ea%b5%ac%ed%95%98%eb%8a%94-%eb%b0%a9%eb%b2%95/"]
+date: "2026-11-02"
+sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%b8-%ec%84%b1%eb%8a%a5%ec%9d%84-%ea%b0%9c%ec%84%a0%ed%95%b4-%ec%a7%80%ea%b5%ac%eb%a5%bc-%ea%b5%ac%ed%95%98%eb%8a%94-%eb%b0%a9%eb%b2%95/", "https://www.w3.org/TR/web-sustainability-guidelines/"]
 ---
 
 > Jack Lenox의 「웹사이트 성능을 개선해 지구를 구하는 방법」(웹액츄얼리 번역, 2019.03)을 바탕으로 재구성한 노트다.
@@ -49,7 +49,7 @@ sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%
 
 ### 3. CSS도 바이트다
 
-- 쓰지 않는 CSS를 걷어내는 도구(PurgeCSS)로 CSS를 259KB에서 9KB로 줄인 사례(사라 다얀)를 원문이 소개한다.
+- 쓰지 않는 CSS를 걷어내는 도구(PurgeCSS)로 CSS를 259KB에서 9KB로 줄인 사례가 있다.
 - `div`와 클래스를 남발하기보다 요소 선택자와 상속을 활용하면 HTML·CSS가 함께 준다.
 - HTML·CSS·JS는 늘 압축(minify)하고, 이미지는 늘 최적화하고, 점진적으로 렌더링되게 한다.
 
@@ -60,7 +60,7 @@ sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%
 | 압축 | 텍스트 자원은 Brotli(또는 gzip)로 항상 압축한다 |
 | 서버 캐시 | Nginx FastCGI 캐시, WordPress 캐시 플러그인으로 매 요청마다 PHP·DB를 돌리지 않는다 |
 | HTTPS + HTTP/2·HTTP/3 | 연결 수립을 줄이고, 서비스 워커 같은 기술을 쓸 수 있게 된다([[pwa-service-worker\|PWA와 서비스 워커 캐시 전략]]) |
-| 재생 에너지 호스팅 | 원문 글쓴이는 개발자가 줄 수 있는 가장 큰 영향으로 꼽는다. The Green Web Foundation이 친환경 호스트 목록을 관리한다 |
+| 재생 에너지 호스팅 | 호스팅을 재생 에너지로 옮기는 것이 개발자가 줄 수 있는 가장 큰 영향 중 하나다. The Green Web Foundation이 친환경 호스트 목록을 관리한다 |
 
 피할 수 없는 배출은 탄소 상쇄를 고려할 수 있지만, 나무가 탄소를 흡수하는 기간은 100년 단위라 지금 배출을 줄이는 대안은 아니다. **먼저 줄이고, 남는 것을 상쇄한다.**
 
@@ -74,7 +74,7 @@ sources: ["https://webactually.com/2019/03/18/%ec%9b%b9%ec%82%ac%ec%9d%b4%ed%8a%
 - 더 낮은 서버 부하
 - 더 나은 검색 엔진 최적화
 
-방문자가 많은 사이트일수록 효과가 커진다. W3C 커뮤니티 그룹이 낸 「Web Sustainability Guidelines(WSG)」는 이 원칙들을 UX·개발·호스팅·비즈니스 항목별 체크리스트로 정리한다. 환경을 이유로 한 양보가 아니라 원래 해야 할 웹 모범 사례다.
+방문자가 많은 사이트일수록 효과가 커진다. W3C Sustainable Web Interest Group이 펴내는 「[Web Sustainability Guidelines(WSG)](https://www.w3.org/TR/web-sustainability-guidelines/)」(2026년 기준 Draft Note)는 이 원칙들을 UX·개발·호스팅·비즈니스 항목별 지침으로 정리한다. 환경을 이유로 한 양보가 아니라 원래 해야 할 웹 모범 사례다.
 
 ## 정리
 

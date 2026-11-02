@@ -122,7 +122,7 @@ flowchart LR
 ```
 
 - `paths`는 **타입 검사용 별칭일 뿐** 실행 코드의 경로를 바꾸지 않는다. 번들러의 `resolve.alias`나 `package.json`의 `imports`도 같이 맞춘다. 번들러와 Node.js가 모두 이해하는 `imports`(`"#/*": "./src/*"`)가 가장 이식성이 좋다.
-- 예전 `moduleResolution: node`는 `exports`를 읽지 않아 요즘 패키지의 타입을 잘못 찾았다. 그래서 폐기됐다.
+- 예전 `moduleResolution: node`는 `exports`를 읽지 않아 `exports` 필드를 쓰는 패키지의 타입을 잘못 찾았다. 그래서 폐기됐다.
 
 ### 타입 전용 import와 verbatimModuleSyntax
 

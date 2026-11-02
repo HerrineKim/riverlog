@@ -4,7 +4,7 @@ concept: "Career Tracks"
 summary: "주니어 이후 프론트엔드 엔지니어가 깊어질 방향을 웹 특화(소프트웨어 엔지니어)·제품 특화(프로덕트 엔지니어)·운영 특화(풀스택 엔지니어) 세 트랙으로 나누고, 트랙별 지식·성장법·함정·시니어 이후 진로, 모든 트랙의 바탕인 탁월한 엔지니어의 다섯 역량과 시니어다운 일하기를 정리한다."
 tags: ["frontend", "career", "growth", "roadmap"]
 source: other
-date: "2026-10-20"
+date: "2026-11-02"
 sources: ["https://steady-study.super.site/frontend-engineer-career-roadmap"]
 ---
 
@@ -59,7 +59,7 @@ AI를 비서처럼 부리는 능력도 바탕 역량이 됐다. 원하는 것을
 
 ## 트랙 1: 웹 특화
 
-웹 플랫폼 자체의 전문가다. 원문 글쓴이는 경험상 엔지니어링 팀이 두 자릿수를 넘으면 개발자 열 명당 최소 한 명 정도는 웹 전문가가 있어야 서비스 품질과 성능을 끌어올릴 수 있다고 본다.
+웹 플랫폼 자체의 전문가다. 경험칙으로, 엔지니어링 팀이 두 자릿수를 넘으면 개발자 열 명당 한 명 정도는 웹 전문가가 있어야 서비스 품질과 성능을 끌어올릴 수 있다.
 
 | 영역 | 알아야 할 것 | 관련 노트 |
 | --- | --- | --- |
@@ -71,7 +71,7 @@ AI를 비서처럼 부리는 능력도 바탕 역량이 됐다. 원하는 것을
 | JS와 도구 체인 | ES2015 이후 문법, ESM과 CommonJS, TypeScript, 빌드·린트·테스트·배포 도구 | [[typescript-basics\|TypeScript 학습]] |
 | 새 기술 | Rust 기반 도구, WebAssembly, 엣지 컴퓨팅이 프론트엔드에 주는 영향 | |
 
-도구 체인은 계속 바뀐다. 번들러는 webpack에서 Vite·Turbopack처럼 Rust·Go로 만든 도구로, 테스트는 Jest에서 Vitest·Playwright로 무게가 옮겨 가고 있다. 특정 도구보다 **각 도구가 푸는 문제**를 이해하는 것이 이 트랙의 핵심이다.
+도구 체인은 계속 바뀐다. 번들러는 webpack에서 Vite·Turbopack처럼 Rust·Go로 만든 도구로, 테스트는 Jest에서 Vitest·Playwright로 무게가 옮겨 왔다. 특정 도구보다 **각 도구가 푸는 문제**를 이해하는 것이 이 트랙의 핵심이다.
 
 이 트랙의 성장 경로는 **자기가 겪은 문제를 도구로 만들어 공개하는 것**이다. Testing Library, TanStack Query 같은 오픈소스가 그렇게 나왔다.
 
