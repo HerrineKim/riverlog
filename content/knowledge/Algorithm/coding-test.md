@@ -4,7 +4,7 @@ concept: "Coding Test"
 summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법과 그 방식이 자기기만이 되는 함정, 랜덤 비교 테스트로 반례 찾기, 막혔을 때 접근을 찾는 관점과 이론상 최선 복잡도(BTTC)를 기준으로 시간·공간을 줄이는 최적화 기법, 파이썬·자바스크립트 실전 팁."
 tags: ["coding-test", "algorithm", "python", "javascript", "problem-solving"]
 source: mixed
-date: "2026-11-01"
+date: "2026-11-02"
 sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%99%84%EC%A3%BC%ED%95%98%EC%A7%80%20%EB%AA%BB%ED%95%9C%20%EC%84%A0%EC%88%98.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%B4%EB%A7%98%EB%8C%80%EB%A1%9C%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/3%EC%A7%84%EB%B2%95%20%EB%92%A4%EC%A7%91%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EC%A0%95%EC%88%98%EC%82%AC%EC%9D%B4%EC%9D%98%20%ED%95%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/2016%EB%85%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EA%B0%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EB%8D%94%ED%95%98%EA%B8%B0.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://www.techinterviewhandbook.org/coding-interview-techniques/", "https://www.techinterviewhandbook.org/algorithms/study-cheatsheet/", "https://www.techinterviewhandbook.org/algorithms/math/", "https://www.techinterviewhandbook.org/algorithms/interval/", "https://codeforces.com/blog/entry/98621"]
 ---
 
@@ -83,7 +83,7 @@ sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.ti
 
 좋은 연습법은 **자기를 속일 수 없게 만드는 합리적인 방법이면 무엇이든** 된다. 문제 자체에 대한 흥미가 깊으면 거의 어떤 방법도 이 조건을 만족하고, 흥미 없이 취업 같은 외부 동기만 있으면 거의 어떤 방법도 만족하지 못한다. 풀이를 보는 것 자체가 나쁜 것은 아니다. 다만 한동안 풀이 없이 끝까지 풀어 보면 아이디어를 떠올리는 일이 생각보다 가능하다는 것을 알게 된다.
 
-목표 난이도는 회사마다 다르다. [한 블로그 글](https://mungto.tistory.com/516)은 네카라쿠배급 기업은 프로그래머스 3레벨, 대기업 SI는 2레벨을 풀 수 있으면 된다고 본다. 연습 사이트는 국내 기업 대비로 백준·프로그래머스, 삼성 대비로 SW Expert Academy, 해외 기업 대비로 LeetCode·Codeforces가 대표적이다.
+목표 난이도는 회사마다 다르다. 대체로 대형 IT 기업은 프로그래머스 3레벨, 대기업 SI는 2레벨 수준을 기준으로 잡는다. 연습 사이트는 국내 기업 대비로 백준·프로그래머스, 삼성 대비로 SW Expert Academy, 해외 기업 대비로 LeetCode·Codeforces가 대표적이다.
 
 코딩 테스트는 입구일 뿐이다. 프로젝트와 CS 기초 공부를 함께 가져간다.
 
