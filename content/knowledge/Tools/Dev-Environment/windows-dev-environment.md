@@ -4,7 +4,7 @@ concept: "Windows Dev Setup"
 summary: "터미널·셸의 뜻과 CMD·PowerShell·Git Bash의 차이, Windows용 Git 설치 때 고를 옵션, 그리고 Windows에서 자주 만나는 CRLF 줄바꿈 오류(Prettier의 Delete ␍)를 정리한 노트."
 tags: ["tools", "cli", "git", "productivity"]
 source: mixed
-date: "2026-10-13"
+date: "2026-11-02"
 sources: ["https://riverkim.kr/231", "https://riverkim.kr/142", "https://riverkim.kr/85", "https://nomadcoders.co/windows-setup-for-developers/"]
 ---
 
@@ -38,7 +38,7 @@ bash는 GNU 프로젝트에서 Brian Fox가 만든 유닉스 셸로, 리눅스�
 
 ## Windows에 Git 설치하기
 
-[git-scm.com](https://git-scm.com/)에서 Windows용 설치 파일을 받아 실행한다. 대부분 기본값으로 두되 두 가지는 직접 고른다.
+터미널에서 `winget install --id Git.Git -e --source winget`으로 설치하거나, [git-scm.com](https://git-scm.com/install/windows)에서 Windows용 설치 파일(x64·ARM64)을 받아 실행한다. winget·Chocolatey 패키지는 Git for Windows 프로젝트가 직접 관리하지 않아 최신 공식 버전과 조금 어긋날 수 있다. 설치 파일을 실행할 때는 대부분 기본값으로 두되 두 가지는 직접 고른다.
 
 | 설치 옵션 | 고를 것 |
 | --- | --- |

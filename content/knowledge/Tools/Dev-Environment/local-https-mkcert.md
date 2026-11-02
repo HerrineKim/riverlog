@@ -4,7 +4,7 @@ concept: "mkcert"
 summary: "localhost는 대부분 보안 컨텍스트로 취급되지만 Secure 쿠키·HTTP/2·커스텀 호스트가 필요하면 로컬 HTTPS가 필요하다. mkcert로 내 기기만 믿는 로컬 CA를 만들어 인증서를 발급하고, 웹 서버·Node·프레임워크 개발 서버에 붙인다."
 tags: ["security", "http", "network", "frontend", "tips"]
 source: other
-date: "2026-10-13"
+date: "2026-11-02"
 sources: ["https://velog.io/@sejinkim/%EB%A1%9C%EC%BB%AC-%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD%EC%97%90-HTTPS-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0"]
 ---
 
@@ -39,8 +39,9 @@ Let's Encrypt도 로컬 개발에는 이 방식을 권한다.
 brew install mkcert
 brew install nss
 
-# Windows
+# Windows (Chocolatey 또는 Scoop)
 choco install mkcert
+scoop bucket add extras && scoop install mkcert
 
 # Linux: 인증서 도구(libnss3-tools 등)를 먼저 설치하고 릴리스 바이너리를 받는다
 ```

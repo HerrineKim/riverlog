@@ -4,7 +4,7 @@ concept: "Git Internals"
 summary: ".git 폴더 안의 objects(blob·tree·commit)와 index가 add·commit 때 어떻게 만들어지는지, 내용 기반 해시(체크섬)로 데이터를 관리하고 변경분이 아닌 스냅숏을 저장하는 원리."
 tags: ["git", "version-control", "computer-science"]
 source: other
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://80000coding.notion.site/7267f19f53594799a7405d0f316fb589", "https://git-scm.com/book/ko/v2/Git%EC%9D%98-%EB%82%B4%EB%B6%80-Git-%EA%B0%9C%EC%B2%B4", "https://github.com/mingrammer/git-tips", "https://jusths.tistory.com/64", "https://johngrib.github.io/wiki/git-tutorial/"]
 ---
 
@@ -82,7 +82,7 @@ git cat-file -p HEAD                         # 커밋 객체: tree, parent, auth
 - 해시는 이름·시각이 아니라 **내용만으로** 결정된다. 내용이 같은 파일 세 개는 blob 하나를 공유하고, 바뀌지 않은 파일은 다음 커밋에서도 같은 blob을 다시 가리킨다.
 - 내용이 1비트라도 바뀌면 해시가 달라지므로, 저장된 데이터가 손상되거나 몰래 바뀌면 바로 드러난다.
 - 커밋 해시는 부모 해시를 포함해 계산되므로, 과거 커밋 하나를 고치면 그 뒤 모든 커밋의 해시가 바뀐다. rebase가 "커밋을 새로 만든다"고 하는 이유다.
-- Git은 SHA-256 저장소도 지원하며, Git 3.0부터 새 저장소의 기본값을 SHA-256으로 바꿀 예정이다.
+- Git은 SHA-256 저장소도 지원하며, 다음 메이저 버전인 Git 3.0부터 새 저장소의 기본값을 SHA-256으로 바꿀 예정이다. 2026년 11월 기준 최신 버전은 2.56이고 3.0의 출시일은 정해지지 않았다([Git BreakingChanges](https://git-scm.com/docs/BreakingChanges)). GitHub 등 호스팅 서비스의 SHA-256 저장소 지원도 아직 제한적이라 실무 저장소는 SHA-1이다.
 
 ## 커밋 그래프와 참조
 
