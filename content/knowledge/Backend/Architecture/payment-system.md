@@ -4,7 +4,7 @@ concept: "Payment System"
 summary: "구매 버튼 뒤에서 결제 서비스·결제 실행기·PSP·지갑·원장이 어떻게 맞물리는지 정리했다. 이중 결제를 막는 재시도+멱등 키, 정보 흐름과 자금 흐름의 어긋남을 메우는 대사(reconciliation), 한 계좌에 쓰기가 몰리는 핫스팟 계정 대응, 결제 시스템을 장애에 강하게 만드는 운영 원칙까지 다룬다."
 tags: ["backend", "architecture", "payment", "idempotency", "resilience", "database"]
 source: other
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/payment-system", "https://bytebytego.com/guides/how-to-avoid-double-payment", "https://bytebytego.com/guides/reconciliation-in-payment", "https://bytebytego.com/guides/handling-hotspot-accounts", "https://bytebytego.com/guides/10-principles-for-building-resilient-payment-systems-by-shopify", "https://bytebytego.com/guides/e-commerce-workflow"]
 ---
 
@@ -81,8 +81,8 @@ POST /payments
 Idempotency-Key: 01J9Z3K8Q4V6X2...
 ```
 
-- 서버는 키를 고유 제약이 걸린 저장소에 기록한다. 같은 키가 다시 오면 **실행하지 않고 처음 결과를 그대로 돌려준다.**
-- 키는 일정 기간이 지나면 만료한다.
+서버는 키를 고유 제약이 걸린 저장소에 기록하고, 같은 키가 다시 오면 **실행하지 않고 처음 결과를 그대로 돌려준다.** 키 기록의 원자성, 요청 지문 대조, 처리 중 재시도의 `409`, 만료 같은 구현 세부는 [[resiliency-patterns#멱등 키 구현의 세부|복원력 패턴]]에 있다. 결제에서 더 챙길 것은 두 가지다.
+
 - 키로는 UUID v4를 흔히 쓰지만, **ULID처럼 시간순으로 정렬되는 ID**를 쓰면 인덱스 삽입 위치가 몰려 B-트리 쓰기 효율이 좋아지고 생성 시각으로 조회·정리하기 쉽다.
 - 재시도는 지수 백오프와 지터를 넣어 PSP에 부하를 몰지 않는다.
 
@@ -144,4 +144,4 @@ flowchart LR
 - 한 계정에 쓰기가 몰리면 잠금 대신 하위 계정 분할이나 비동기 집계로 푼다.
 - 결제 시스템의 신뢰는 빠른 처리보다 "두 번 청구하지 않고, 어긋나면 반드시 잡아낸다"에서 나온다.
 
-관련 노트: [[card-payment-network|카드 결제망과 간편결제]], [[money-movement|자금 이동: 청산과 결제]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[rest-api|REST API]], [[transaction|트랜잭션과 회복]], [[payment-address-forms|결제·주소 폼]]
+관련 노트: [[card-payment-network|카드 결제망과 간편결제]], [[money-movement|자금 이동: 청산과 결제]], [[resiliency-patterns|장애 확산을 막는 복원력 패턴]], [[high-traffic-resilience|대규모 트래픽에서 서비스를 지키는 설계]], [[rest-api|REST API]], [[transaction|트랜잭션과 회복]], [[payment-address-forms|결제·주소 폼]]

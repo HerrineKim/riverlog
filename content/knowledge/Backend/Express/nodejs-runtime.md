@@ -4,7 +4,7 @@ concept: "Node.js"
 summary: "브라우저 밖에서 JavaScript를 실행하는 런타임 Node.js를 정리한다. V8·libuv·스레드 풀로 이뤄진 구조, timers·poll·check 단계로 도는 Node 이벤트 루프와 nextTick·setImmediate의 차이, EventEmitter와 Buffer, cluster·worker_threads·child_process로 멀티코어 쓰기, 비동기 에러 처리와 --inspect 디버깅, 힙 크기 설정과 운영 관례, Node의 설계를 반성하며 나온 Deno·Bun, Windows·macOS 차이로 깨지는 환경 변수와 경로를 cross-env와 path 모듈로 푸는 법까지."
 tags: ["nodejs", "backend", "javascript", "config", "concurrency"]
 source: mixed
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://riverkim.kr/167", "https://riverkim.kr/158", "https://riverkim.kr/230", "https://blog.ull.im/engineering/2019/04/14/deno-ryan-dahl-2019-04-04.html", "https://docs.deno.com/runtime/fundamentals/security/", "https://nodejs.org/api/permissions.html", "https://webapplog.com/you-dont-know-node/", "https://nodesource.com/blog/understanding-the-nodejs-event-loop/", "https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/", "https://blog.risingstack.com/node-js-at-scale-node-js-garbage-collection/", "https://blog.risingstack.com/how-to-debug-nodej-js-with-the-best-tools-available/", "https://devcenter.heroku.com/articles/node-best-practices", "https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick", "https://nodejs.org/en/about/previous-releases"]
 ---
 
@@ -101,7 +101,7 @@ JavaScript 스레드가 하나라 코어 8개짜리 서버에 프로세스 하�
 | --- | --- | --- |
 | `cluster` 모듈 | 프로세스. 주 프로세스가 워커를 `fork`하고 워커들이 **같은 포트**를 나눠 받는다 | 한 서버에서 HTTP 처리량을 늘릴 때 |
 | 프로세스 관리자(PM2 `-i max`) | 위와 같고, 재시작·무중단 리로드·로그를 대신 맡는다 | 직접 cluster 코드를 짜지 않을 때 |
-| 컨테이너 여러 개 + 로드 밸런서 | 컨테이너당 프로세스 하나 | 쿠버네티스 등. 요즘의 기본 배치다([[load-balancer\|로드 밸런서]]) |
+| 컨테이너 여러 개 + 로드 밸런서 | 컨테이너당 프로세스 하나 | 쿠버네티스 등. 지금의 기본 배치다([[load-balancer\|로드 밸런서]]) |
 | `worker_threads` | 같은 프로세스 안의 스레드. 각자 V8 인스턴스·이벤트 루프를 갖고 `postMessage`·`SharedArrayBuffer`로 통신 | 요청 처리 중의 **CPU 집약 작업**(이미지 리사이즈, 해시)을 메인 루프 밖으로 뺄 때([[shared-memory-atomics\|SharedArrayBuffer와 Atomics]]) |
 
 플랫폼이 주는 값(`WEB_CONCURRENCY` 등)으로 워커 수를 정하고, 적절한 수는 부하 테스트로 찾는다. 코어 수를 넘기면 이득이 줄어든다.
@@ -156,7 +156,7 @@ V8의 GC는 게으르게 동작해 꼭 필요할 때까지 회수를 미루기�
 
 ### 버전 고르기
 
-서버를 돌릴 Node.js는 **LTS 버전**을 쓴다. 2026년 10월 기준 LTS는 22와 24이고 20은 2026년 4월에 지원이 끝났다. 짝수 버전이 Current로 나온 뒤 6개월 지나 LTS가 되며, 27부터는 1년 주기로 바뀐다. ([Node.js Releases](https://nodejs.org/en/about/previous-releases))
+서버를 돌릴 Node.js는 **LTS 버전**을 쓴다. 2026년 11월 기준 LTS는 22(유지 보수, 2027년 4월 종료)·24(유지 보수, 2028년 4월 종료)·26(활성 LTS, 2026년 10월 승격)이고, 20은 2026년 4월에 지원이 끝났다. 새 프로젝트는 26, 기존 서비스는 24 이상으로 맞춘다. 짝수 버전이 Current로 나온 뒤 6개월 지나 LTS가 되며, 27부터는 1년 주기로 바뀐다. ([Node.js Releases](https://nodejs.org/en/about/previous-releases))
 
 `package.json`의 `engines`에 Node 버전을 적어 두면 배포 플랫폼이 같은 버전을 고른다. 새 프로젝트는 `npm init -y`로 매니페스트부터 만든다.
 
