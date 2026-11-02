@@ -185,4 +185,4 @@ Web 3.0은 구상이자 운동에 가깝고, 실제 서비스 상당수는 여�
 - UPI는 가상 주소(VPA)와 중앙 스위치로 앱과 은행을 하나의 실시간 이체망으로 묶었다.
 - 블록체인 지갑은 여러 장부를 하나의 공유 원장으로 바꿔 일괄 정산을 없애는 대신, 키 관리와 확정 지연이라는 새 문제를 가져온다.
 
-관련 노트: [[payment-system|결제 시스템 설계]], [[card-payment-network|카드 결제망과 간편결제]], [[web-services-and-it-trends|웹 서비스와 IT 신기술 용어]]
+관련 노트: [[payment-system|결제 시스템 설계]], [[card-payment-network|카드 결제망과 간편결제]], [[web-services-and-it-trends|웹 서비스·시스템 통합·신기술 용어 색인]]

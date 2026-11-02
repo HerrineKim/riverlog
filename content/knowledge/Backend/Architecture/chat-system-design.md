@@ -4,7 +4,7 @@ concept: "Chat System Design"
 summary: "채팅 서버는 클라이언트와 WebSocket을 유지하고, 메시지는 순서를 매겨 저장한 뒤 받는 사람이 붙어 있는 서버로 전달한다. 서버가 여러 대이면 Redis pub/sub·메시지 큐로 서버 간에 메시지를 넘기고, 접속 상태 서비스가 온라인이면 소켓으로, 오프라인이면 푸시 알림으로 보낸다."
 tags: ["backend", "architecture", "websocket", "realtime", "scalability"]
 source: other
-date: "2026-11-01"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/how-do-we-design-a-chat-application-like-whatsapp-facebook-messenger-or-discord", "https://bytebytego.com/guides/build-a-simple-chat-application", "https://redis.io/docs/latest/develop/interact/pubsub/", "http://highscalability.com/blog/2014/2/26/the-whatsapp-architecture-facebook-bought-for-19-billion.html", "http://www.erlang-factory.com/upload/presentations/31/EugeneLetuchy-ErlangatFacebook.pdf", "https://www.facebook.com/note.php?note_id=14218138919&id=9445547199&index=0", "https://github.com/karanpratapsingh/system-design"]
 ---
 
@@ -25,7 +25,7 @@ sources: ["https://bytebytego.com/guides/how-do-we-design-a-chat-application-lik
 
 ## 요구 사항과 규모 추정
 
-WhatsApp 같은 메신저를 면접에서 설계할 때의 전형적인 범위다.
+메신저 설계의 전형적인 범위다.
 
 | 구분 | 내용 |
 | --- | --- |

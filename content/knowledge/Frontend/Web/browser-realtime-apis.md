@@ -225,4 +225,4 @@ function connect(attempt = 0) {
 - WebSocket은 `open` 뒤에 보내고, 바이너리는 `binaryType`, 송신 속도는 `bufferedAmount`로 다룬다. 서버는 `Origin`을 검사한다.
 - 재연결은 직접 만든다: 지수 백오프 + jitter, 정상·인증 종료는 제외, 재연결 후 재동기화.
 
-관련 노트: [[websocket|WebSocket]], [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름]], [[ajax|AJAX와 HTTP 요청]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[windows-and-frames|창과 프레임]]
+관련 노트: [[websocket|WebSocket]], [[realtime-websocket-server|실시간 웹소켓 서버 설계]], [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름]], [[ajax|AJAX와 HTTP 요청]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[windows-and-frames|창과 프레임]]

@@ -1,10 +1,10 @@
 ---
 title: "gRPC: Protocol Buffers로 정의하는 RPC"
 concept: "gRPC"
-summary: "gRPC는 .proto 파일로 서비스 계약을 정의하고, 생성된 스텁으로 원격 메서드를 로컬 함수처럼 부르는 HTTP/2 기반 이진 RPC 프레임워크다. Protocol Buffers의 태그·varint 직렬화와 JSON 비교, 네 가지 호출 방식, Node.js 예제, REST와의 비교, 브라우저 제약과 도입 판단 기준을 정리했다."
+summary: "gRPC는 .proto 파일로 서비스 계약을 정의하고, 생성된 스텁으로 원격 메서드를 로컬 함수처럼 부르는 HTTP/2 기반 이진 RPC 프레임워크다. Protocol Buffers의 태그·varint 직렬화와 JSON 비교, 네 가지 호출 방식, Node.js 예제, 브라우저 제약과 도입 판단 기준을 정리했다."
 tags: ["backend", "api", "http", "grpc", "microservices"]
 source: other
-date: "2026-10-18"
+date: "2026-11-02"
 sources: ["https://www.itworld.co.kr/article/3567853/", "https://grpc.io/docs/", "https://connectrpc.com/docs/introduction", "https://bytebytego.com/guides/what-is-grpc", "https://bytebytego.com/guides/how-does-grpc-work", "https://protobuf.dev/programming-guides/encoding/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
 ---
 
@@ -135,21 +135,6 @@ client.squareNumber({ value: Number(process.argv[2]) }, (err, res) => {
 
 `createInsecure()`는 TLS 없는 평문 연결이라 로컬 개발용이다. 운영에서는 `createSsl()`로 TLS를 건다. Java·Go처럼 정적 타입 언어는 `protoc`(또는 Gradle·Maven의 protobuf 플러그인, `buf generate`)로 빌드 단계에서 코드를 생성한다.
 
-## REST와 비교
-
-| 항목 | REST | gRPC |
-| --- | --- | --- |
-| 단위 | 리소스(URI) + HTTP 메서드 | 서비스의 메서드 |
-| 계약 | 느슨하다. OpenAPI로 보강 | `.proto`로 엄격하다. 타입이 생성된다 |
-| 데이터 | 주로 JSON 텍스트 | protobuf 이진. 작고 빠르다 |
-| 전송 | HTTP/1.1·2 | HTTP/2 필수 |
-| 스트리밍 | SSE·WebSocket을 따로 | 기본 제공 |
-| 브라우저 | 바로 쓴다 | 프록시나 별도 프로토콜이 필요하다 |
-| 디버깅 | curl·브라우저로 바로 본다 | grpcurl·Postman 같은 전용 도구 |
-| 설정 부담 | 낮다 | 코드 생성과 정의 파일 관리가 든다 |
-
-API 스타일 전체(SOAP·REST·GraphQL·gRPC·WebSocket·Webhook) 비교는 [[api-architectural-styles|API 아키텍처 스타일]]에 있다.
-
 ## 브라우저에서 쓰기
 
 gRPC는 HTTP 트레일러(trailers)로 상태를 전달하는데, 브라우저는 JavaScript에 트레일러를 노출하지 않는다. 그래서 브라우저가 gRPC 서버를 직접 부를 수 없다.
@@ -161,6 +146,8 @@ gRPC는 HTTP 트레일러(trailers)로 상태를 전달하는데, 브라우저�
 | gRPC-Gateway / JSON 트랜스코딩 | 게이트웨이가 REST+JSON을 받아 gRPC로 바꾼다 |
 
 ## 언제 쓰나
+
+REST와 갈리는 지점은 **계약의 엄격함, 이진 데이터와 HTTP/2, 기본 제공 스트리밍, 그리고 브라우저·디버깅 도구의 불편**이다. 이 축을 REST·GraphQL과 나란히 놓은 비교는 [[api-architectural-styles|API 아키텍처 스타일]]에 있다.
 
 - **잘 맞는다**: 서비스가 많은 마이크로서비스 내부 통신, 다언어 환경, 높은 처리량·낮은 지연이 중요한 곳, 스트리밍이 필요한 곳. 명시적 계약이 팀 간 경계를 지켜 준다.
 - **덜 맞는다**: 외부에 공개하는 API, 브라우저가 주 소비자인 API, 빠르게 실험하는 작은 팀. 코드 생성·정의 관리·학습 비용이 이득보다 크다.

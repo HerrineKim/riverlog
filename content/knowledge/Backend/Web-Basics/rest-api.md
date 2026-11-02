@@ -1,10 +1,10 @@
 ---
 title: "REST API 설계"
 concept: "REST API"
-summary: "자원을 URI로 표현하고 HTTP 메서드로 행위를 나타내는 API 설계 방식과 그 규칙. REST의 여섯 제약과 균일한 인터페이스(자기 서술적 메시지·HATEOAS), URI 규칙과 자원 원형, 상태 코드와 오류 응답(RFC 9457), 멱등 키·버전 관리 방식·비동기 요청·조건부 요청·응답 모양 같은 실무 설계 팁까지."
+summary: "자원을 URI로 표현하고 HTTP 메서드로 행위를 나타내는 API 설계 방식과 그 규칙. REST의 여섯 제약과 균일한 인터페이스(자기 서술적 메시지·HATEOAS), PUT·PATCH·POST 고르기, URI 규칙과 자원 원형, 상태 코드 선택과 오류 응답(RFC 9457), 멱등 키·버전 관리 방식·비동기 요청·조건부 요청·응답 모양 같은 실무 설계 팁까지."
 tags: ["http", "api", "rest", "backend"]
 source: til
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://riverkim.kr/308", "https://bytebytego.com/guides/8-tips-for-efficient-api-design", "https://bytebytego.com/guides/how-do-we-design-effective-and-safe-apis", "https://bytebytego.com/guides/rest-api-cheatsheet", "https://bytebytego.com/guides/how-does-rest-api-work", "https://blog.npcode.com/2017/04/03/rest의-representation이란-무엇인가/", "https://sanghaklee.tistory.com/57", "https://evan-moon.github.io/2020/04/07/about-restful-api/", "https://1ambda.github.io/javascripts/rest-api-put-vs-post/", "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design", "https://github.com/microsoft/api-guidelines", "https://github.com/interagent/http-api-design", "https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api", "https://blog.restcase.com/rest-api-error-codes-101/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/REST%20API.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%20-%20%EC%84%9C%EB%B2%84%20API%20URI%20%EC%84%A4%EA%B3%84%EB%B2%95.md"]
 ---
 
@@ -31,17 +31,17 @@ REST(Representational State Transfer)는 **자원(Resource)을 이름(URI)으로
 | Update(부분) | `PATCH` | `PATCH /cats/:id`: 일부 필드만 수정 |
 | Delete | `DELETE` | `DELETE /cats/:id` |
 
-### POST, PUT, PATCH의 차이와 멱등성
+### 수정과 생성에 어느 메서드를 쓰나
 
-같은 요청을 여러 번(또는 동시에) 보내도 리소스가 손상되지 않고 결과가 항상 같으면 **멱등(idempotent)하다고** 한다. 재시도해도 안전한지가 여기서 갈린다.
+아홉 메서드의 뜻과 안전·멱등 성질, PUT·PATCH·POST가 프로토콜 차원에서 어떻게 다른지는 [[http#주요 메서드|HTTP 프로토콜]]에 있다. REST 설계에서 실제로 갈리는 지점은 셋이다.
 
-| 메서드 | 할 수 있는 일 | URI | 멱등성 |
-| --- | --- | --- | --- |
-| POST | 리소스 생성, 또는 서버가 정의한 다양한 작업 | 컬렉션 URI면 된다 (`POST /cats`) | 보장되지 않음. 두 번 보내면 두 개가 생길 수 있다 |
-| PUT | 리소스를 **통째로** 교체하거나, 없으면 그 URI로 생성 | 대상 URI를 정확히 알아야 한다 (`PUT /cats/3`) | 멱등. 같은 내용으로 몇 번을 덮어써도 결과가 같다 |
-| PATCH | 리소스의 **일부**만 수정. 생성은 하지 않는다 | 대상 URI를 정확히 알아야 한다 | 보장되지 않음. "나이 +1"처럼 상대적 변경이면 보낼 때마다 결과가 달라진다 |
+| 결정 | 기준 |
+| --- | --- |
+| 수정: PUT인가 PATCH인가 | PUT은 표현을 통째로 바꾸므로 보내지 않은 필드가 비워진다. 필드 몇 개만 고치는 화면이면 PATCH가 의도에 맞다. PATCH 본문 형식(JSON Merge Patch, JSON Patch 등)은 해석이 갈리므로 팀이 미리 정한다 |
+| 생성: POST인가 PUT인가 | 새 자원의 URI를 서버가 정하면 컬렉션에 `POST /cats`하고 `201 Created` + `Location`으로 알린다. 클라이언트가 URI를 정하는 스토어(`PUT /files/star.jpg`)면 PUT이다(아래 「URI 설계 규칙」의 자원 원형) |
+| POST의 재시도 | POST는 멱등이 아니라 두 번 보내면 두 개가 생길 수 있다. 클라이언트가 보낸 멱등 키로 같은 요청을 한 번만 처리하게 만든다(아래 「실무 설계 팁」) |
 
-**리소스의 위치를 누가 정하느냐**로도 갈린다. POST는 서버가 새 리소스의 URI를 정해 `201 Created`와 `Location` 헤더로 알려 주고, PUT은 클라이언트가 URI를 지정한다. PUT으로 일부 필드만 보내면 빠진 필드가 비워질 수 있다. 필드 몇 개만 고치는 화면이라면 PATCH가 의도에 맞다. ([POST, PUT, PATCH의 차이점, 토스페이먼츠 개발자센터](https://docs.tosspayments.com/blog/rest-api-post-put-patch))
+([POST, PUT, PATCH의 차이점, 토스페이먼츠 개발자센터](https://docs.tosspayments.com/blog/rest-api-post-put-patch))
 
 ## REST의 제약 조건
 
@@ -150,21 +150,19 @@ Django에서 이 설계를 구현하는 방법은 [[drf-serializer|DRF Serialize
 
 ## 상태 코드와 오류 응답
 
-상태 코드는 먼저 **누구 잘못인가**를 알린다. `4xx`는 클라이언트가 요청을 고쳐야 하므로 그대로 다시 보내도 소용없다. `5xx`는 서버 문제라 같은 요청을 나중에 다시 보내면 성공할 수 있다([[resiliency-patterns\|재시도 규칙]]). 쓰는 코드 집합을 200·201·204·400·401·403·404·409·429·500 정도로 정해 두면 클라이언트 분기가 단순해진다.
+코드의 뜻, 헷갈리는 코드 쌍, `4xx`는 고쳐서 보내고 `5xx`는 나중에 다시 보내는 재시도 규칙은 [[http#상태 코드|HTTP 프로토콜]]에 있다. API 설계에서 정할 것은 **어느 코드를 쓰고, 애매한 상황에서 무엇을 고르나**다. 쓰는 코드 집합을 200·201·204·400·401·403·404·409·429·500 정도로 정해 두면 클라이언트 분기가 단순해지고, 클라이언트의 재시도 정책은 [[resiliency-patterns|재시도 규칙]]을 따른다.
 
-자주 헷갈리는 경우는 다음과 같다.
+생성은 `201`, 검증 실패는 `400`, 대상 없음은 `404`처럼 코드 뜻 그대로 고르면 되는 경우를 빼면, 판단이 필요한 상황은 다음과 같다.
 
-| 상황 | 응답 |
+| 상황 | 결정 |
 | --- | --- |
-| 생성 성공 | `201 Created` |
-| 삭제 성공 | `204 No Content` (본문 없음. 메시지를 보내려면 `200 OK`) |
-| 입력 검증 실패 | `400 Bad Request` |
-| 대상 없음 | `404 Not Found` |
-| 목록이 비어 있음 | `200 OK` + 빈 배열 `[]` (빈 목록은 정상 상태이므로 404로 처리하지 않는다) |
-| 메서드를 지원하지 않음 | `405 Method Not Allowed` + `Allow` 헤더로 허용 메서드를 알린다 |
-| 업무 규칙상 지금 처리할 수 없음 (이미 취소된 주문 결제 등) | `409 Conflict` |
-| 읽은 뒤 그사이 바뀐 자원을 고치려 함 | `412 Precondition Failed` (아래 「조건부 요청」) |
-| 요청이 너무 많음 | `429 Too Many Requests` + `Retry-After` |
+| 삭제·수정에 성공했고 돌려줄 본문이 없다 | `204 No Content`. 메시지나 바뀐 표현을 돌려주려면 `200 OK` |
+| 목록이 비어 있다 | `200 OK` + 빈 배열 `[]`. 빈 목록은 정상 상태이므로 `404`가 아니다 |
+| 자원은 있지만 그 메서드는 지원하지 않는다 | `405 Method Not Allowed` + `Allow` 헤더. `404`로 뭉개지 않는다 |
+| 형식은 맞지만 업무 규칙상 지금 처리할 수 없다 (이미 취소된 주문 결제 등) | `409 Conflict`. 형식·값 오류인 `400`과 구분한다 |
+| 읽은 뒤 그사이 바뀐 자원을 고치려 한다 | `412 Precondition Failed` (아래 「조건부 요청」) |
+| 처리에 수 초 이상 걸린다 | `202 Accepted` + 상태 URL (아래 「비동기 요청」) |
+| 요청이 너무 많다 | `429 Too Many Requests` + `Retry-After` |
 
 오류 응답은 다음 규칙을 따른다.
 
@@ -273,11 +271,11 @@ REST 이전의 웹 서비스는 이 세 기술을 묶어 썼다. SOAP은 메시�
 ## 핵심 정리
 
 - URI는 **무엇을**(자원), 메서드는 **어떻게**(행위)를 나타낸다.
-- PUT은 전체 교체(멱등), PATCH는 부분 수정(멱등 보장 안 됨), POST는 생성·기타 작업(멱등 아님)이다.
-- 응답에는 적절한 상태 코드(200, 201, 400, 401, 404 …)를 함께 돌려준다. `4xx`는 고쳐서 보내야 하고 `5xx`는 다시 보내면 될 수 있다. 세부 오류는 `application/problem+json`으로 준다.
+- 수정은 전체 교체면 PUT, 일부면 PATCH다. 생성은 서버가 URI를 정하면 POST(재시도는 멱등 키로), 클라이언트가 정하면 PUT이다.
+- 쓰는 상태 코드 집합을 정해 두고, 빈 목록은 `200`, 업무 규칙 위반은 `409`처럼 애매한 상황의 선택을 통일한다. 세부 오류는 `application/problem+json`으로 준다.
 - 경로 다음으로 버전 방식, 오래 걸리는 작업(`202`), 동시 수정(`If-Match`), 응답 모양까지 계약으로 정한다.
 
-관련 노트: [[api-architectural-styles|API 아키텍처 스타일]], [[graphql|GraphQL]], [[api-pagination|API 페이지네이션]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[web-services-and-it-trends|웹 서비스와 IT 신기술 용어]], [[drf-serializer|DRF Serializer와 관계 표현]], [[grpc|gRPC]]
+관련 노트: [[api-architectural-styles|API 아키텍처 스타일]], [[graphql|GraphQL]], [[api-pagination|API 페이지네이션]], [[Computer-Science/Network/http|HTTP 프로토콜]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[web-services-and-it-trends|웹 서비스·시스템 통합·신기술 용어 색인]], [[drf-serializer|DRF Serializer와 관계 표현]], [[grpc|gRPC]]
 
 더 읽을거리: 「[그런 REST API로 괜찮은가](https://www.youtube.com/watch?v=RP_f5dMoHFc)」(DEVIEW 2017 영상)
 

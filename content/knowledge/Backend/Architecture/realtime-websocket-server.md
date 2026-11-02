@@ -118,4 +118,4 @@ HTTP API용 부하 도구로 웹소켓을 시험하면 결과를 믿기 어렵�
 - 연결 상한은 포트가 아니라 파일 디스크립터와 메모리다. 앞단 로드밸런서도 한계가 된다.
 - 부하 테스트는 연결 수명 주기 전체를 확인하는 전용 클라이언트로, 변수를 하나씩 바꿔 가며 한다.
 
-관련 노트: [[websocket|WebSocket]], [[chat-system-design|채팅 시스템 설계: 연결, 접속 상태, 메시지 전달]], [[event-driven-architecture|이벤트 기반 아키텍처 설계]], [[redis|Redis]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[transport-layer|전송 계층: 포트, TCP, UDP]], [[multiplayer-game-server|멀티플레이 게임 서버 설계]]
+관련 노트: [[websocket|WebSocket]], [[browser-realtime-apis|브라우저 실시간 통신: 롱 폴링, SSE, WebSocket 클라이언트]], [[chat-system-design|채팅 시스템 설계: 연결, 접속 상태, 메시지 전달]], [[event-driven-architecture|이벤트 기반 아키텍처 설계]], [[redis|Redis]], [[concurrency-models|동시성·병렬·비동기·논블로킹과 동시성 모델]], [[transport-layer|전송 계층: 포트, TCP, UDP]], [[multiplayer-game-server|멀티플레이 게임 서버 설계]]
