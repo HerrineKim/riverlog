@@ -143,4 +143,4 @@ As a [role], I want [goal], so that [benefit].
 - 스토리 포인트는 상대 크기이고, 플래닝 포커의 가치는 숫자보다 의견이 갈릴 때의 대화다.
 - 속도·번다운·번업은 계획을 돕는 설명 지표다. 성과 목표로 쓰면 망가진다.
 
-관련 노트: [[scrum-framework|스크럼: 책임·이벤트·산출물]], [[agile-sprint|애자일과 스프린트]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]], [[kanban-lean-flow|칸반과 린: 흐름과 낭비]], [[technical-debt|기술 부채]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[github-issue-workflow|GitHub 이슈·프로젝트로 진행 상황 관리하기]]
+관련 노트: [[scrum-framework|스크럼: 책임·이벤트·산출물]], [[agile-sprint|애자일과 스프린트]], [[bdd-sdd-task-design|BDD·SDD로 태스크 나누기]], [[kanban-lean-flow|칸반과 린: 흐름과 낭비]], [[technical-debt|기술 부채]], [[jira|Jira: 이슈 구성, JQL, 워크플로]], [[github-issue-workflow|GitHub 이슈·프로젝트로 진행 상황 관리하기]], [[software-project-management|소프트웨어 프로젝트 관리: 비용 산정·일정·위험]]

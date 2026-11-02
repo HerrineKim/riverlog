@@ -1,11 +1,11 @@
 ---
 title: "HTTP 프로토콜"
 concept: "HTTP"
-summary: "웹 통신 규약 HTTP의 Stateless·Connectionless 성질, 요청·응답 메시지 형식, 아홉 가지 메서드와 안전·멱등, 상태 코드(API에서 자주 쓰는 코드와 비표준 코드), 헤더 종류, URL의 구성 요소와 URI·URL·URN의 차이, HTTP/1.1·2·3 비교와 HTTP/2가 빠른 이유."
+summary: "웹 통신 규약 HTTP의 Stateless·Connectionless 성질, 요청·응답 메시지 형식, 아홉 가지 메서드와 안전·멱등(PUT·PATCH·POST의 차이), 상태 코드(API에서 자주 쓰는 코드와 비표준 코드), 헤더 종류, URL의 구성 요소와 URI·URL·URN의 차이, HTTP/1.1·2·3 비교와 HTTP/2가 빠른 이유."
 tags: ["network", "http", "web", "application-layer"]
 source: notion
 sources: ["https://app.notion.com/p/49200e54fe6d461ab1ebc5180b35337b", "https://80000coding.notion.site/d0f4fab2a1ca49c8ad36a81fd2329fcb", "https://bytebytego.com/guides/top-9-http-request-methods", "https://bytebytego.com/guides/http-status-code-you-should-know", "https://bytebytego.com/guides/5-http-status-codes-that-should-never-have-been-created", "https://bytebytego.com/guides/important-things-about-http-headers-you-may-not-know", "https://bytebytego.com/guides/do-you-know-all-the-components-of-a-url", "https://bytebytego.com/guides/url-uri-urn-do-you-know-the-differences", "https://bytebytego.com/guides/http1-http2-http3", "https://bytebytego.com/guides/what-makes-http2-faster-than-http1", "https://blog.outsider.ne.kr/312", "https://evan-moon.github.io/2020/03/15/about-http-status-code/", "https://developer.mozilla.org/ko/docs/Web/HTTP/Redirections", "https://www.popit.kr/나만-모르고-있던-http2/", "https://evan-moon.github.io/2019/10/08/what-is-http3", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/network/http1.1-2.md", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Evolution_of_HTTP", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Connection_management_in_HTTP_1.x", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/MIME_types", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Compression", "https://mnot.net/blog/2016/ideal-http", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/HTTP%20%EC%83%81%ED%83%9C%20%EC%BD%94%EB%93%9C.md", "https://www.youtube.com/watch?v=guvsH5OFizE", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md"]
-date: "2026-10-21"
+date: "2026-11-02"
 ---
 
 > 고무오리 CS 스터디의 네트워크 학습 노트(HTTP 프로토콜)를 바탕으로 재구성한 노트다. 줄 끝 CRLF 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「나만 몰랐던 이야기 - \r\n편」을 바탕으로 보강했다. 메서드·상태 코드·헤더·URL 구성·HTTP 버전 부분은 ByteByteGo의 System Design 101 가이드 「[Top 9 HTTP Request Methods](https://bytebytego.com/guides/top-9-http-request-methods)」, 「[HTTP Status Codes You Should Know](https://bytebytego.com/guides/http-status-code-you-should-know)」, 「[5 HTTP Status Codes That Should Never Have Been Created](https://bytebytego.com/guides/5-http-status-codes-that-should-never-have-been-created)」, 「[Important Things About HTTP Headers](https://bytebytego.com/guides/important-things-about-http-headers-you-may-not-know)」, 「[Do you know all the components of a URL?](https://bytebytego.com/guides/do-you-know-all-the-components-of-a-url)」, 「[URL, URI, URN](https://bytebytego.com/guides/url-uri-urn-do-you-know-the-differences)」, 「[HTTP/1 -> HTTP/2 -> HTTP/3](https://bytebytego.com/guides/http1-http2-http3)」, 「[What makes HTTP2 faster than HTTP1?](https://bytebytego.com/guides/what-makes-http2-faster-than-http1)」로 보강했다.
@@ -72,7 +72,9 @@ HTTP/1.1의 시작줄과 헤더는 각 줄을 **`\r\n`(CRLF)** 으로 끝내고,
 | CONNECT | 대상 서버까지 터널을 연다. 프록시를 거쳐 HTTPS를 주고받을 때 쓴다 | 없음 | X | X |
 | TRACE | 요청이 경로를 따라 어떻게 도착했는지 되돌려 받는 루프백 진단 | 없음 | O | O |
 
-**안전(safe)** 은 서버의 상태를 바꾸지 않는다는 뜻이고, **멱등(idempotent)** 은 같은 요청을 여러 번 보내도 결과가 한 번 보낸 것과 같다는 뜻이다. 멱등한 요청은 네트워크 오류 때 그대로 재시도해도 된다. POST를 안전하게 재시도하는 법은 [[rest-api|REST API 설계]]의 멱등 키에 있다. TRACE는 쿠키 같은 헤더를 그대로 되돌려 주므로 운영 서버에서는 보통 꺼 둔다.
+**안전(safe)** 은 서버의 상태를 바꾸지 않는다는 뜻이고, **멱등(idempotent)** 은 같은 요청을 여러 번(또는 동시에) 보내도 결과가 한 번 보낸 것과 같다는 뜻이다. 멱등한 요청은 네트워크 오류 때 그대로 재시도해도 된다. TRACE는 쿠키 같은 헤더를 그대로 되돌려 주므로 운영 서버에서는 보통 꺼 둔다.
+
+본문을 싣는 세 메서드는 뜻이 다르다. **PUT은 대상 URI의 자원을 보낸 표현으로 통째로 바꾸고**, 없으면 그 URI에 만든다. 같은 본문을 몇 번 보내도 결과가 같아 멱등이고, 보낸 표현이 자원 전체가 되므로 빠진 필드는 비워진다. **PATCH는 자원의 일부를 고치는 변경 명령**을 보낸다. 「나이를 1 올려라」 같은 상대적 변경이면 보낼 때마다 결과가 달라지므로 멱등을 보장하지 않는다. **POST는 대상 자원이 본문을 자기 규칙대로 처리**하게 한다. 컬렉션에 POST해 새 자원을 만들면 서버가 URI를 정해 `201 Created`의 `Location` 헤더로 알리고, PUT은 클라이언트가 URI를 정한다. POST는 두 번 보내면 두 개가 생길 수 있어 그대로 재시도하면 위험하다. 안전하게 재시도하는 법은 [[rest-api|REST API 설계]]의 멱등 키에 있다.
 
 **GET은 가져오기만 하고, 상태를 바꾸는 일은 POST 이상으로 한다.** 브라우저의 링크 미리 가져오기(prefetch), 검색 엔진 크롤러, 링크 미리보기 봇은 GET 링크를 사람 대신 마구 따라간다. `/delete?id=42` 같은 GET 링크로 삭제를 만들면 이런 도구가 지나가기만 해도 데이터가 사라진다. 반대로 GET으로 가져오는 자원은 URL만으로 공유·북마크·캐시할 수 있다. GET의 쿼리 문자열은 URL 길이 제한을 받고 서버 로그·브라우저 기록에 남으므로, 큰 데이터와 민감한 값은 본문으로 보낸다.
 
@@ -110,14 +112,17 @@ Content-Type: text/html             ← Headers
 | 4xx | 클라이언트 에러 | 400 Bad Request, 404 Not Found |
 | 5xx | 서버 에러 | 500 Internal Server Error, 503 Service Unavailable(일시적으로 처리 불가, 세션 초과 등) |
 
-API에서 자주 고르는 코드는 다음과 같다.
+앞자리는 먼저 **누구 잘못인가**를 알린다. `4xx`는 클라이언트가 요청을 고쳐야 하므로 그대로 다시 보내도 소용없다. `5xx`는 서버 문제라 같은 요청을 나중에 다시 보내면 성공할 수 있다. API에서 자주 고르는 코드는 다음과 같다.
 
 | 코드 | 쓰는 때 |
 | --- | --- |
-| 201 Created / 204 No Content | 생성 성공(`Location` 헤더에 새 주소) / 성공했지만 돌려줄 본문 없음(문서 저장 버튼처럼 결과만 알리면 될 때) |
+| 201 Created / 204 No Content | 생성 성공(`Location` 헤더에 새 주소) / 성공했지만 돌려줄 본문 없음(삭제, 문서 저장 버튼처럼 결과만 알리면 될 때) |
 | 202 Accepted | 요청은 접수했지만 처리는 아직이다. 배치·영상 변환처럼 나중에 처리하는 작업. 진행 상태를 볼 URL을 함께 준다 |
+| 400 Bad Request | 요청의 문법이나 값이 틀려 처리할 수 없음. 입력 검증 실패가 대표적이다 |
 | 401 Unauthorized / 403 Forbidden | 인증이 없거나 틀림 / 인증은 됐지만 권한이 없음. 이름과 달리 401은 **인증**(누구인지) 실패이고, 응답에 `WWW-Authenticate` 헤더로 인증 방법을 알려야 한다. 403은 **인가**(무엇을 해도 되는지) 실패다 |
-| 409 Conflict | 현재 상태와 충돌 (중복 생성, 버전 충돌) |
+| 405 Method Not Allowed | 자원은 있지만 그 메서드를 지원하지 않음. 응답에 `Allow` 헤더로 지원하는 메서드 목록을 반드시 알린다 |
+| 409 Conflict | 현재 상태와 충돌해 처리할 수 없음 (중복 생성, 버전 충돌, 이미 취소된 주문의 결제처럼 지금 상태에서는 할 수 없는 요청) |
+| 412 Precondition Failed | `If-Match`·`If-None-Match` 같은 조건부 요청의 조건이 맞지 않음. 읽은 뒤 바뀐 자원을 덮어쓰려 할 때 나는 낙관적 동시성 제어의 충돌 신호다 |
 | 429 Too Many Requests | 레이트 리밋 초과. `Retry-After` 헤더로 다시 시도할 시점을 알린다 |
 | 502 Bad Gateway / 504 Gateway Timeout | 프록시·게이트웨이가 뒤 서버에서 잘못된 응답을 받음 / 제때 응답을 받지 못함 |
 
