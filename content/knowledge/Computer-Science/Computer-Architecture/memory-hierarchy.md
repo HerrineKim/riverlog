@@ -4,7 +4,7 @@ concept: "Memory Hierarchy"
 summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 저장 장치를 계층으로 묶는 구조(계층별 지연 시간의 자릿수)와 RAM의 종류(SRAM·DRAM의 셀 구조, DRAM의 행·열 접근 타이밍과 순차 접근이 빠른 이유, NUMA), 칩을 병렬·직렬로 이어 만드는 기억장치 모듈, 하드 디스크·플래시 메모리(셀 원리, NOR·NAND, SSD와 FTL), RAID(작은 쓰기 문제), 연관 메모리."
 tags: ["computer-architecture", "memory", "storage", "raid"]
 source: mixed
-date: "2026-11-01"
+date: "2026-11-02"
 sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/", "https://www.youtube.com/watch?v=m2NfFJEvssY", "https://www.youtube.com/watch?v=lgFmNUG_Atw", "https://www.youtube.com/watch?v=TQCr9RV7twk", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "고려사이버대학교 컴퓨터구조 강의(권오상 교수, 2024-1학기)", "https://github.com/karanpratapsingh/system-design"]
 ---
 
@@ -312,7 +312,8 @@ flowchart LR
 | RAID 6 | 4 | (N−2)/N, 4장이면 50% | 2장 | 높음 | 패리티가 둘이라 RAID 5보다 더 떨어진다 |
 | RAID 10 | 4 | 50% | 미러 쌍마다 1장(같은 쌍 두 장이 죽으면 손실) | 높음 | 중간(두 번씩 쓴다) |
 
-디스크가 커질수록 재구성에 몇 시간~며칠이 걸리고, 그동안 한 장이 더 고장 나거나 읽기 오류가 나면 RAID 5는 데이터를 잃는다. 그래서 대용량 디스크 배열은 RAID 6이나 RAID 10을 고르는 편이다. RAID는 디스크 고장 대비일 뿐 **실수로 지운 파일이나 랜섬웨어를 되돌려 주지 않으므로** 백업을 대신하지 않는다.
+디스크가 커질수록 재구성에 몇 시간~며칠이 걸리고, 그동안 한 장이 더 고장 나거나 읽기 오류가 나면 RAID 5는 데이터를 잃는다. 그래서 대용량 디스크 배열은 RAID 6이나 RAID 10을 고르는 편이다.
+
 - 디스크 여러 장에 줄무늬처럼 나뉘어 놓인 데이터 조각을 **스트라이프**(stripe), 그렇게 나눠 저장하는 일을 **스트라이핑**이라 한다. 한 디스크에 연속으로 쓰는 조각의 크기(stripe size)는 RAID 볼륨을 만들 때 정한다.
 - 일반적인 패리티 비트는 오류를 **검출**만 하지만, RAID의 패리티는 나머지 디스크의 데이터와 XOR해 고장 난 디스크 한 장의 내용을 **복구**할 수 있다.
 - RAID는 메인보드 펌웨어(BIOS·UEFI 설정의 RAID 모드), 전용 RAID 컨트롤러, 운영체제의 소프트웨어 RAID([[disk-scheduling|디스크 관리와 스케줄링]]의 md) 중 어디서든 구성할 수 있다.

@@ -1,13 +1,13 @@
 ---
 title: "프로그래밍 언어와 객체 지향 설계"
 concept: "Programming Languages"
-summary: "C++의 문법·템플릿·STL·예외·가상 함수·스마트 포인터·메모리 풀 같은 언어 내부 동작과, 추상 클래스·인터페이스·위임·DTO/VO·클린 코드 같은 객체 지향 설계 개념 모음."
-tags: ["cpp", "oop", "design-pattern", "clean-code", "computer-science"]
+summary: "언어 일반(계보·패러다임·실행 방식·의미론·타입 시스템), C++의 문법·템플릿·STL·예외·가상 함수·스마트 포인터·메모리 풀, Java·Kotlin·Python·Go의 언어 동작과 관용구, 추상 클래스·인터페이스·위임·DTO/VO·클린 코드·GoF 패턴·책임 주도 설계와 객체 지향 설계 사례 모음."
+tags: ["cpp", "java", "oop", "design-pattern", "clean-code", "computer-science"]
 source: other
-date: "2026-11-01"
+date: "2026-11-02"
 ---
 
-언어의 문법은 금방 익히지만, 그 문법이 컴파일된 뒤 무엇이 되는지(템플릿 인스턴스화, vtable, 예외 테이블)를 알면 성능과 버그를 설명할 수 있다. 이 주제에는 C++를 중심으로 한 언어 내부 동작과, 언어를 넘어 쓰이는 객체 지향 설계 개념을 모았다. C 언어와 포인터는 [C-Programming](Computer-Science/C-Programming.md)에 있다.
+언어의 문법은 금방 익히지만, 그 문법이 컴파일된 뒤 무엇이 되는지(템플릿 인스턴스화, vtable, 예외 테이블)를 알면 성능과 버그를 설명할 수 있다. 이 주제에는 언어 일반 이론, C++·Java·Kotlin·Python·Go의 언어 내부 동작과 관용구, 언어를 넘어 쓰이는 객체 지향 설계 개념과 설계 사례를 모았다. C 언어와 포인터는 [C-Programming](Computer-Science/C-Programming.md)에 있다.
 
 ## 하위 노트
 
@@ -34,7 +34,6 @@ date: "2026-11-01"
 
 - [객체 지향의 본질: 메시징](Computer-Science/Programming-Languages/oop-messaging.md): 앨런 케이가 본 OOP의 본질(메시징·캡슐화·늦은 바인딩)과 클래스·상속이 본질이 아닌 이유
 - [추상 클래스와 인터페이스](Computer-Science/Programming-Languages/abstract-class-vs-interface.md): is-a와 can-do, 템플릿 메서드와 훅, Java 8 디폴트 메서드, 고르는 기준
-- [Kotlin 핵심 문법: 널 안전성, 클래스 종류, 지연 초기화, 스코프 함수](Computer-Science/Programming-Languages/kotlin-basics.md): 널 안전성, data·sealed·object·companion object, lateinit과 by lazy, 스코프 함수 비교
 - [위임 패턴과 Kotlin by](Computer-Science/Programming-Languages/kotlin-delegation.md): 상속 대신 위임, 클래스·프로퍼티 위임, by lazy와 by viewModels()
 - [DTO와 VO, DAO와 Repository](Computer-Science/Programming-Languages/dto-vo-dao-repository.md): 전송 객체와 값 객체, 테이블 중심 DAO와 도메인 중심 Repository
 - [클린 코드: 함수와 이름](Computer-Science/Programming-Languages/clean-code-functions-naming.md): 작은 함수와 추상화 수준, 팩터리로 분기 가두기, 의미 있는 이름
@@ -48,16 +47,17 @@ date: "2026-11-01"
 - [좋은 코드를 위한 열 가지 원칙](Computer-Science/Programming-Languages/coding-principles.md): 규약·주석·견고함·SOLID·테스트 용이성·적당한 추상화, 원칙끼리 부딪칠 때의 판단
 - [같은 문제, 열다섯 가지 설계: 상태와 결합을 다루는 법](Computer-Science/Programming-Languages/state-and-decoupling-designs.md): 터틀 그래픽을 클래스·순수 함수·의존성 주입·상태 모나드·이벤트 소싱·인터프리터 등으로 구현하며 상태 소유와 결합 비교
 
-### Java와 Go
+### Java·Kotlin·Python·Go
 
-- [Java 코딩 컨벤션: Google 스타일과 캠퍼스 핵데이 규칙](Computer-Science/Programming-Languages/java-coding-convention.md): 두 컨벤션 비교, 이름·import·중괄호·Javadoc 규칙, Checkstyle·EditorConfig 자동 적용
-- [Java 언어 기본: 접근 제어자, static, 객체 비교, 제네릭, 리플렉션](Computer-Science/Programming-Languages/java-language-basics.md): 접근 제어자, final·finalize, 오버로딩·오버라이딩, 오토박싱, 제네릭 타입 소거, 어노테이션, 동시성 컬렉션, ThreadLocal
+- [Java 언어 기본: 접근 제어자, static, 객체 비교, 제네릭, 리플렉션](Computer-Science/Programming-Languages/java-language-basics.md): 접근 제어자와 패키지, final·finalize, static, 오버로딩·오버라이딩, equals·hashCode와 String 비교, call by value, 상속보다 컴포지션, 오토박싱, 제네릭 타입 소거, 리플렉션·어노테이션·동적 프록시, 컬렉션 프레임워크
+- [모던 Java 기능: 모듈, var, record, sealed, 패턴 매칭, switch 식](Computer-Science/Programming-Languages/modern-java-features.md): LTS별 기능 표, 모듈 시스템, var 제약, record·sealed, 패턴 매칭, switch 식, Sequenced Collections
 - [Java 실무 관용구: Enum, Optional, 예외와 자원, 날짜 API, 람다와 스트림, 비동기](Computer-Science/Programming-Languages/java-idioms.md): Enum에 행위 묶기, Optional 규칙, unchecked 예외 전환, java.time, CompletableFuture
+- [Java 동시성: 메모리 모델, 동기화, 스레드 풀, 가상 스레드](Computer-Science/Programming-Languages/java-concurrency.md): happens-before, synchronized·volatile·Atomic·Lock, ConcurrentHashMap, ThreadLocal과 ScopedValue, ThreadPoolExecutor, Fork/Join, 가상 스레드
 - [Java 입출력과 직렬화: 스트림, Path·Files, Serializable, Jackson](Computer-Science/Programming-Languages/java-serialization-jackson.md): 바이트·문자 스트림과 인코딩, 데코레이터 구조의 보조 스트림, 버퍼링, Path·Files, Serializable·serialVersionUID와 보안 문제, Jackson 어노테이션과 타입 정보 보존
 - [JVM 내부 구조: 실행 엔진, 클래스 로딩, 메모리 영역, GC](Computer-Science/Programming-Languages/jvm-internals.md): 바이트코드와 클래스 로딩, 런타임 데이터 영역, 세대별 GC, GC 로그·힙 덤프 진단
+- [Java 코딩 컨벤션: Google 스타일과 캠퍼스 핵데이 규칙](Computer-Science/Programming-Languages/java-coding-convention.md): 두 컨벤션 비교, 이름·import·중괄호·Javadoc 규칙, Checkstyle·EditorConfig 자동 적용
+- [Kotlin 핵심 문법: 널 안전성, 클래스 종류, 지연 초기화, 스코프 함수](Computer-Science/Programming-Languages/kotlin-basics.md): 널 안전성, data·sealed·object·companion object, lateinit과 by lazy, 스코프 함수 비교
+- [Python 언어 기본: 객체와 가변성, 함수, 데코레이터, 클래스, 타입 힌트, import](Computer-Science/Programming-Languages/python-language-basics.md): 가변·불변과 복사, 인자 종류, LEGB·nonlocal, 데코레이터, 컨텍스트 매니저, 매직 메서드, 디스크립터, 타입 힌트, import
 - [Python 언어 동작: 제너레이터, MRO, 메모리 관리, 동시성, 성능](Computer-Science/Programming-Languages/python-internals.md): 이터러블·이터레이터·제너레이터, C3 MRO와 super(), 참조 카운팅과 세대별 순환 수집, 누수 패턴, PyPy 추적 JIT, 덕 타이핑과 Protocol
 - [Go 언어: 설계 원칙, 타입, 에러 처리, 빌드와 테스트, GC](Computer-Science/Programming-Languages/go-language.md): The Zen of Go, G·M·P 스케줄러, 동시 GC와 GOGC·GOMEMLIMIT, 계층별 프로젝트 구조
-- [Java 동시성: 메모리 모델, 동기화, 스레드 풀, 가상 스레드](Computer-Science/Programming-Languages/java-concurrency.md): happens-before, synchronized·volatile·Atomic·Lock, ConcurrentHashMap, ThreadLocal과 ScopedValue, ThreadPoolExecutor, Fork/Join, 가상 스레드
-- [모던 Java 기능: 모듈, var, record, sealed, 패턴 매칭, switch 식](Computer-Science/Programming-Languages/modern-java-features.md): LTS별 기능 표, 모듈 시스템, var 제약, record·sealed, 패턴 매칭, switch 식, Sequenced Collections
-- [Python 언어 기본: 객체와 가변성, 함수, 데코레이터, 클래스, 타입 힌트, import](Computer-Science/Programming-Languages/python-language-basics.md): 가변·불변과 복사, 인자 종류, LEGB·nonlocal, 데코레이터, 컨텍스트 매니저, 매직 메서드, 디스크립터, 타입 힌트, import
 - [Go 동시성: 고루틴, 채널, select, context, sync](Computer-Science/Programming-Languages/go-concurrency.md): G·M·P 스케줄러, 채널 상태별 동작, select, context 취소 전파, sync와 atomic, 레이스 디텍터

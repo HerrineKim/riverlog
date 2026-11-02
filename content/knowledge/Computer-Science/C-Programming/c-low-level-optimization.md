@@ -4,7 +4,7 @@ concept: "Low-level Optimization"
 summary: "컴파일러가 이미 해 주는 최적화와 프로그래머가 힌트로 도울 수 있는 부분을 구분한다. switch를 룩업 테이블·점프 테이블로 바꾸는 원리, 분기 예측 힌트(__builtin_expect, [[likely]]), 도달 불가 힌트, SIMD 내장 함수, memset 같은 라이브러리 함수를 직접 최적화하지 말아야 하는 이유."
 tags: ["c", "performance", "computer-architecture", "assembly", "compile"]
 source: other
-date: "2026-10-14"
+date: "2026-11-02"
 sources: ["https://80000coding.notion.site/c4f3f1f21573477ebcc1a3f5caa960b6", "https://80000coding.notion.site/7c87e26aaaa545b5af38bd60968a2832", "https://80000coding.notion.site/4beea92ae6944b5c932db53258d40817", "https://80000coding.notion.site/3ba610f3ffdb4b16bb1c71a80c08525f", "https://80000coding.notion.site/cafa9acc2af849fd8e2a855d1b71b394", "https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html"]
 ---
 
@@ -46,7 +46,7 @@ int score_lut(int n)
 }
 ```
 
-Clang과 GCC는 위 `switch`를 실제로 범위 검사 한 번과 테이블 읽기 한 번으로 컴파일한다. 각 `case`가 값이 아니라 코드를 실행해야 하면 테이블에 **점프할 주소**를 담는 **점프 테이블**을 만든다. 요즘 컴파일러는 같은 조건의 `if-else` 사슬도 똑같이 바꾸므로, `switch`와 `if-else`의 성능 차이를 걱정할 필요는 거의 없다.
+Clang과 GCC는 위 `switch`를 실제로 범위 검사 한 번과 테이블 읽기 한 번으로 컴파일한다. 각 `case`가 값이 아니라 코드를 실행해야 하면 테이블에 **점프할 주소**를 담는 **점프 테이블**을 만든다. Clang과 GCC는 같은 조건의 `if-else` 사슬도 똑같이 바꾸므로, `switch`와 `if-else`의 성능 차이를 걱정할 필요는 거의 없다.
 
 ### 도달 불가 힌트
 
@@ -85,7 +85,7 @@ C++20에는 `[[likely]]`·`[[unlikely]]` 속성이 있다(C23에는 아직 없�
 | 명령어 집합 | 레지스터 폭 | 환경 |
 | --- | --- | --- |
 | SSE ~ SSE4.2 | 128비트 (`xmm`) | 모든 x86-64 |
-| AVX, AVX2 | 256비트 (`ymm`) | 최근 x86-64 대부분 |
+| AVX, AVX2 | 256비트 (`ymm`) | 2013년(Haswell) 이후의 x86-64 대부분 |
 | AVX-512 | 512비트 (`zmm`) | 서버·일부 데스크톱 CPU |
 | NEON | 128비트 | ARM64(Apple Silicon 포함) |
 

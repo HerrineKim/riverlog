@@ -4,7 +4,7 @@ concept: "Computing History"
 summary: "주판·기계식 계산기에서 범용 기계의 구상, 릴레이→진공관→트랜지스터→집적회로로 이어진 스위치의 세대교체, 무어의 법칙과 2026년의 미세화 한계, 프로그램을 넣는 수단의 변천, 튜링 머신과 정지 문제, 개인용 컴퓨터가 보급된 조건을 「앞 단계의 어떤 병목을 풀었나」로 정리한다."
 tags: ["computer-science", "history", "computer-architecture", "semiconductor", "computability"]
 source: other
-date: "2026-10-23"
+date: "2026-11-02"
 sources: ["https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo", "https://www.youtube.com/watch?v=tpIctyqH29Q", "https://www.youtube.com/watch?v=O5nskjZ_GoI", "https://www.youtube.com/watch?v=LN0ucKNX0hc", "https://www.youtube.com/watch?v=nwDq4adJwzM", "https://www.youtube.com/watch?v=7TycxwFmdB0", "https://www.youtube.com/watch?v=6-tKOHICqrI", "https://www.youtube.com/watch?v=m8i38Yq1wX4", "https://www.youtube.com/watch?v=M5BZou6C01w", "https://en.wikipedia.org/wiki/Apple_A17_Pro", "https://nvidianews.nvidia.com/news/nvidia-blackwell-platform-arrives-to-power-a-new-era-of-computing", "https://www.sec.gov/Archives/edgar/data/0000937966/000162828026011378/asml-20251231.htm", "https://www.tsmc.com/english/dedicatedFoundry/technology/logic/l_2nm"]
 ---
 
@@ -101,7 +101,7 @@ flowchart TB
 
 트랜지스터가 작아지면 개수만 느는 것이 아니다. 옮길 전하가 줄어 **더 빨리 전환되고 전력을 덜 쓰며**, 회로가 촘촘해져 신호 지연이 줄고 클럭을 올릴 수 있었다. IC 값도 1962년 평균 50달러에서 1968년 2달러 수준으로 떨어졌고, 같은 효과가 CPU뿐 아니라 RAM·그래픽 카드·SSD·카메라 센서에 두루 미쳤다. 수십억 개의 트랜지스터는 사람이 배치할 수 없어, 1970년대부터 높은 수준의 설계(예: 캐시 한 덩어리)를 회로로 바꿔 주는 **논리 합성(logic synthesis)** 같은 칩 설계 자동화 소프트웨어가 설계를 맡는다.
 
-### 미세화의 한계와 2026년 현황
+### 미세화의 한계와 업계의 대응
 
 | 한계 | 원인 | 업계의 대응 |
 | --- | --- | --- |

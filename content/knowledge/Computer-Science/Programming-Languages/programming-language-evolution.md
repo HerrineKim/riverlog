@@ -4,7 +4,7 @@ concept: "Language Evolution"
 summary: "기계어·어셈블리에서 고급 언어까지 세대 구분, 1950년대 Fortran·LISP부터 2010년대 Rust·Go·Kotlin·Swift·TypeScript까지 언어가 어떤 문제를 풀려고 이어져 왔는지, C++가 여전히 쓰이는 분야, 언어별 에너지 효율 연구의 결론을 정리한다."
 tags: ["computer-science", "programming-paradigm", "cpp", "performance", "history"]
 source: other
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/a-brief-history-og-programming-languages", "https://bytebytego.com/guides/top-8-c++-use-cases", "https://bytebytego.com/guides/what-are-the-greenest-programming-languages", "https://greenlab.di.uminho.pt/wp-content/uploads/2017/10/sleFinal.pdf", "https://www.youtube.com/watch?v=RU1u-js7db8", "https://en.wikipedia.org/wiki/Exception_handling_(programming)"]
 ---
 
@@ -88,7 +88,7 @@ C++의 강점은 **하드웨어와 메모리를 세밀하게 제어하면서도 
 
 - 언어는 기계어 → 어셈블리 → 고급 언어로 추상화 수준을 높여 왔다.
 - 재귀·GC는 1950년대에, 예외 처리는 1960년대 초에 나왔고, 이후 언어는 그것을 다듬고 조합했다.
-- 최근 언어는 대부분 기존 언어의 약점(메모리 안전성, 장황함, 타입 부재)을 고치는 후계자다.
+- Rust·Go·Kotlin 같은 새 언어는 대부분 기존 언어의 약점(메모리 안전성, 장황함, 타입 부재)을 고치는 후계자다.
 - C++는 성능과 자원 통제가 핵심인 분야에 남아 있다. 에너지 효율도 대체로 네이티브 언어가 앞선다.
 
 관련 노트: [[computing-history|컴퓨터의 역사]], [[how-programs-run|프로그램이 실행되기까지]], [[programming-paradigms|프로그래밍 패러다임]], [[c-history-and-standards|C의 역사와 표준]], [[cpp-basics|C++ 기초]]

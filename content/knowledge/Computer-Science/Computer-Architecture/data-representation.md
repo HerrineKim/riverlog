@@ -4,7 +4,7 @@ concept: "Data Representation"
 summary: "컴퓨터가 숫자와 문자를 비트로 저장하는 방식: 진법과 변환, KB와 KiB, 워드 크기와 32비트·64비트의 차이, 문자 코드, 보수와 부호 확장, 고정·부동 소수점(IEEE 754 단정밀도·배정밀도의 범위와 특수값), 패리티와 해밍 코드."
 tags: ["computer-architecture", "binary", "floating-point", "encoding"]
 source: notion
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://riverkim.kr/188", "https://app.notion.com/p/2feed0e004c34d109f13acc2be4524ca", "https://80000coding.notion.site/d075c64cff124ad691c80b24f9787265", "https://80000coding.notion.site/ff67143d786f44579b657a0891a7ed3e", "https://80000coding.notion.site/5327ae7d323146b89df6ac45f74b0a48", "https://80000coding.notion.site/cf6277352ff84d0488499e356269e57e", "https://80000coding.notion.site/c51ad838cde04f1eb93b7dd8d60ef6a2", "https://80000coding.notion.site/2576e45f18e847aaae2e87773815351a", "https://80000coding.notion.site/a22e9b385e1548f687950dad4990fe7e", "https://bytebytego.com/guides/big-endian-vs-little-endian", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%EC%95%84%EC%8A%A4%ED%82%A4%EC%BD%94%EB%93%9C%20%EC%99%80%20%EC%9C%A0%EB%8B%88%EC%BD%94%EB%93%9C.md", "https://www.joelonsoftware.com/articles/Unicode.html", "https://www.youtube.com/watch?v=peg8c6Gn-zc", "https://www.youtube.com/watch?v=upoRINMqlrw", "https://www.youtube.com/watch?v=1GSjbWt0c9M", "https://www.youtube.com/watch?v=KN8YgJnShPM", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "고려사이버대학교 컴퓨터구조 강의(권오상 교수, 2024-1학기)"]
 ---
 
@@ -287,6 +287,16 @@ JavaScript의 `Number`는 배정밀도 부동 소수점 하나뿐이다. 그래�
 
 해밍 코드(Hamming code)는 패리티 비트를 여러 개 두어 **틀린 비트의 위치까지 찾아 고친다.**
 
+m비트 데이터에 패리티 r비트를 붙이면, r비트가 나타내는 2^r가지 경우로 「m+r개 위치 중 어디가 틀렸나」와 「오류 없음」을 모두 구분해야 한다.
+
+```text
+2^r ≥ m + r + 1
+
+m = 4  → r = 3  (해밍(7,4): 4비트에 3비트를 붙여 7비트)
+m = 7  → r = 4  (7비트 ASCII 문자 하나: 2^4 = 16 ≥ 7 + 4 + 1 = 12)
+m = 8  → r = 4  (아래 예: 총 12비트)
+```
+
 - 패리티 비트는 2의 거듭제곱 위치(1, 2, 4, 8, …)에 둔다. 나머지 자리에 데이터를 넣는다.
 - 위치 p의 패리티는 **위치 번호를 2진수로 썼을 때 p 비트가 1인 자리들**을 검사한다. p1은 1·3·5·7·9·11…, p2는 2·3·6·7·10·11…, p4는 4~7·12~15….
 - 받은 쪽이 각 패리티 그룹을 다시 계산해 틀린 그룹 번호를 더하면 **그 합이 오류 위치**다. 합이 0이면 오류가 없다.
@@ -299,7 +309,7 @@ JavaScript의 `Number`는 배정밀도 부동 소수점 하나뿐이다. 그래�
 수신 후 p2·p4 그룹만 틀림 → 2 + 4 = 6번 비트를 뒤집는다
 ```
 
-비트 하나 정정(SEC)에 전체 패리티 하나를 더하면 두 비트 오류를 검출(SECDED)할 수 있다. 서버용 ECC 메모리가 이 방식이다.
+비트 하나 정정(SEC)에 전체 패리티 하나를 더하면 두 비트 오류를 검출(SECDED)할 수 있다. 서버용 ECC 메모리가 이 방식이다. 통신 선로의 오류 유형(버스트 오류)과 체크섬·CRC, 재전송(BEC)과 순방향 정정(FEC)의 선택은 [[network-basics|네트워크 기초]]에 있다.
 
 ## 바이트 순서: 빅 엔디언과 리틀 엔디언
 

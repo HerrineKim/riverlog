@@ -5,7 +5,7 @@ summary: "네트워크의 정의(노드·링크·대역폭)와 분류(PAN·LAN·
 tags: ["network", "lan", "ethernet", "packet", "protocol"]
 source: notion
 sources: ["https://app.notion.com/p/8f9395070a2142f18b1eeb9d6853e79b", "https://app.notion.com/p/7b2a147be0b54d499f6e1617865fa855", "https://80000coding.notion.site/881854082fa847818b417648d8d05612", "https://80000coding.notion.site/1f0bc84be25e461d9c50c1caddcf479a", "https://80000coding.notion.site/5b5856de30ec4548ab3c8ac850b43cef", "https://80000coding.notion.site/875cb26a017f43d2a0ab58915fd21686", "https://80000coding.notion.site/17d8f803479c4e67ab770be44da1e6d4", "https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man", "https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast", "https://bytebytego.com/guides/how-is-data-transmitted-between-applications", "https://d2.naver.com/helloworld/47667", "https://d2.naver.com/helloworld/7847943", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EC%9D%98%20%EB%B0%8F%20%EC%97%AD%EC%82%AC.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EA%B5%AC%EC%A1%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%AC%BC%EB%A6%AC%EA%B3%84%EC%B8%B5%20%EC%9E%A5%EB%B9%84%EC%99%80%20%EC%BC%80%EC%9D%B4%EB%B8%94.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A7%81%ED%81%AC%20%EC%97%AD%ED%99%9C%EA%B3%BC%20%EA%B8%B0%EB%8A%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%A7%81%ED%81%AC%20%EC%8A%A4%EC%9C%84%EC%B9%98%EC%99%80%20ARP.md", "https://www.youtube.com/watch?v=3QhU9jd03a0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/network.md", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)", "고려사이버대학교 정보통신개론 강의(권오상 교수, 2023 겨울계절학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
-date: "2026-10-31"
+date: "2026-11-02"
 ---
 
 > 고무오리 CS 스터디의 네트워크 학습 노트(네트워크와 모델, 데이터 통신)를 바탕으로 재구성한 노트다. 네트워크 장비와 스위치·라우터의 프레임 처리 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「Network에 대한 정리(1)~(4)」, 「netpractice를 위한 네트워크 통신 기초 - 1. LAN 통신」을 바탕으로 보강했다. 네트워크 크기 분류(PAN·MAN)와 애니캐스트는 ByteByteGo의 System Design 101 가이드 「[What are the differences between WAN, LAN, PAN and MAN?](https://bytebytego.com/guides/what-are-the-differences-between-wan-lan-pan-and-man)」, 「[Unicast vs Broadcast vs Multicast vs Anycast](https://bytebytego.com/guides/unicast-vs-broadcast-vs-multicast-vs-anycast)」로 보강했다. 커널과 NIC를 지나는 데이터 경로는 「[Data Transmission Between Applications](https://bytebytego.com/guides/how-is-data-transmitted-between-applications)」를 바탕으로 보강했다.
@@ -154,7 +154,7 @@ date: "2026-10-31"
 | 규모 | 경로 | 특징 |
 | --- | --- | --- |
 | 가정 | 인터넷 → ISP → 모뎀 → 공유기 → PC·휴대폰 | ISP가 공인 IP 하나를 주고, 공유기가 NAT·DHCP로 여러 기기에 사설 IP를 나눠 준다 |
-| 기업 | 인터넷 → ISP 전용선 → 라우터 → 방화벽 → ① L3 백본 스위치 → 팀별 L2 스위치 → PC ② L4 로드 밸런서 → **DMZ**의 공개 서버 | 외부에 공개할 서버는 내부망과 분리한 DMZ에 두고, 로드 밸런서로 부하를 나눈다([[load-balancer\|로드 밸런서]]). 요즘 방화벽은 라우팅도 겸한다 |
+| 기업 | 인터넷 → ISP 전용선 → 라우터 → 방화벽 → ① L3 백본 스위치 → 팀별 L2 스위치 → PC ② L4 로드 밸런서 → **DMZ**의 공개 서버 | 외부에 공개할 서버는 내부망과 분리한 DMZ에 두고, 로드 밸런서로 부하를 나눈다([[load-balancer\|로드 밸런서]]). 방화벽이 라우팅을 겸하기도 한다 |
 | 클라우드(AWS) | 인터넷 → Route 53(DNS) → 인터넷 게이트웨이 → VPC → ELB → 보안 그룹 → EC2(Auto Scaling) | 라우터·스위치·방화벽을 VPC, 보안 그룹 같은 논리 자원으로 설정한다. Auto Scaling은 부하에 따라 **서버 수**를 늘리고 줄인다 |
 
 ## 1계층: 비트를 신호로 바꾸기
@@ -362,22 +362,13 @@ WDM은 새 케이블을 깔지 않고 파장만 늘려 용량을 키울 수 있�
 | 후진 오류 정정(BEC) | 받는 쪽이 오류를 알리고 **다시 보내 달라고** 한다. 위의 ARQ가 이것이다 | 재전송이 싼 유선·광 링크 |
 | 순방향 오류 정정(FEC) | 처음부터 정정 부호를 넉넉히 붙여 보내 **받는 쪽이 스스로 고친다** | 재전송이 비싸거나 늦는 무선·위성·심우주 통신, 실시간 미디어, 저장 장치. 해밍 부호, 리드-솔로몬(QR 코드·CD), LDPC(Wi-Fi·5G), 터보 부호(LTE) |
 
-정정하려면 **어느 비트가 틀렸는지** 알아야 한다. m비트 데이터에 r비트 중복을 붙이면, r비트가 나타낼 수 있는 2^r가지 경우로 「m+r개 위치 중 어디가 틀렸나」와 「오류 없음」을 모두 구분해야 하므로 다음 조건이 필요하다.
-
-```text
-2^r ≥ m + r + 1
-
-m = 4  → r = 3  (해밍(7,4): 4비트에 3비트를 붙여 7비트)
-m = 7  → r = 4  (7비트 ASCII 문자 하나: 2^4 = 16 ≥ 7 + 4 + 1 = 12)
-```
-
-**해밍 부호**(Hamming code)는 중복 비트를 1, 2, 4, 8…번째 자리에 두고, 각 중복 비트가 자기 자리 번호의 해당 비트가 켜진 위치들의 패리티를 맡는다. 받는 쪽이 패리티를 다시 계산해 틀린 것들을 2진수로 읽으면 그 값이 **틀린 비트의 위치**다. 단일 비트 오류를 고치고, 패리티 1비트를 더한 확장 해밍 부호(SECDED)는 2비트 오류까지 검출한다. 서버용 ECC 메모리가 이 방식이다.
+정정하려면 **어느 비트가 틀렸는지** 알아야 한다. 패리티 비트 여러 개를 2의 거듭제곱 자리에 두어 틀린 비트의 위치를 찾아 고치는 **해밍 부호**(Hamming code), 필요한 중복 비트 수의 조건(2^r ≥ m + r + 1), SECDED와 ECC 메모리는 [[data-representation|데이터의 표현]]의 「에러 정정: 해밍 코드」에 있다.
 
 ### MAC 주소
 
 - 물리적인 네트워크 장비마다 부여된 고유한 **물리 주소**
 - 16진수 12자리, 총 **6바이트**(48비트, 16진수 두 자리 = 1바이트). 예: `AA:AA:AA:AA:AA:AA`
-- 앞 3바이트는 제조사 식별 번호(**OUI**, IEEE가 할당), 뒤 3바이트는 제조사가 장비마다 붙인다. 요즘 휴대폰·노트북은 사생활 보호를 위해 Wi-Fi 네트워크마다 무작위 MAC을 쓰기도 한다.
+- 앞 3바이트는 제조사 식별 번호(**OUI**, IEEE가 할당), 뒤 3바이트는 제조사가 장비마다 붙인다. 휴대폰·노트북은 사생활 보호를 위해 Wi-Fi 네트워크마다 무작위 MAC을 쓰기도 한다.
 
 ### 이더넷 프레임 헤더
 

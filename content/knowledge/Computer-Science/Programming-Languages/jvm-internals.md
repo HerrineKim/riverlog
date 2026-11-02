@@ -4,7 +4,7 @@ concept: "JVM"
 summary: "JVM의 구성 요소(클래스로더·런타임 데이터 영역·실행 엔진)와 계층형 JIT, javac가 만든 바이트코드가 클래스 로딩(로딩·링크·초기화, 부모 위임)을 거쳐 실행되는 과정, 스택과 힙의 역할, 세대별 GC와 Serial·Parallel·G1·ZGC·Shenandoah 비교, GC 로그·힙 덤프로 메모리 문제를 진단하는 방법, GraalVM Native Image와 AOT 캐시를 정리한다."
 tags: ["java", "jvm", "memory", "performance", "computer-science"]
 source: other
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://github.com/HomoEfficio/dev-tips/blob/master/Back%20to%20the%20Essence%20-%20Java%20%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C%20%EC%8B%A4%ED%96%89%EA%B9%8C%EC%A7%80%20-%20(1).md", "https://github.com/HomoEfficio/dev-tips/blob/master/Back%20to%20the%20Essence%20-%20Java%20%EC%BB%B4%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C%20%EC%8B%A4%ED%96%89%EA%B9%8C%EC%A7%80%20-%20(2).md", "https://yaboong.github.io/java/2018/05/26/java-memory-management/", "https://yaboong.github.io/java/2018/06/09/java-garbage-collection/", "https://12bme.tistory.com/543?category=785013", "https://brunch.co.kr/@springboot/367", "https://blog.jetbrains.com/kr/2020/05/25-things-we-love-about-java-ko/", "https://javaalmanac.io/", "https://docs.oracle.com/javase/specs/jvms/se21/html/jvms-5.html", "https://openjdk.org/jeps/158", "https://openjdk.org/jeps/490", "https://docs.oracle.com/en/java/javase/25/gctuning/garbage-first-g1-garbage-collector1.html", "https://www.graalvm.org/latest/reference-manual/native-image/", "https://openjdk.org/jeps/483", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md"]
 ---
 
@@ -109,7 +109,7 @@ flowchart LR
 
 - **스택**에는 지역 변수가 놓인다. 기본형은 값 자체, 참조형은 힙 객체를 가리키는 참조값이다. 스레드마다 따로 있어 다른 스레드가 볼 수 없고, 메서드가 끝나면 프레임째 사라진다.
 - **힙**은 JVM에 하나이고 모든 스레드가 공유한다. 스레드 사이에서 공유되는 상태는 언제나 힙에 있으므로 동시성 문제도 힙 객체에서 생긴다.
-- **Java는 언제나 값으로 전달한다(pass by value).** 객체를 넘기면 참조값이 복사된다. 그래서 메서드 안에서 객체의 필드를 바꾸면 호출자에게 보이지만, 매개변수에 새 객체를 대입해도 호출자의 변수는 그대로다.
+- 메서드 인자는 언제나 값(참조형이면 참조값)의 복사다. 그 결과와 `swap`을 짤 수 없는 이유는 [[java-language-basics|Java 언어 기본]]의 「값 전달」에 있다.
 - `String`, `Integer` 같은 불변 객체는 "바꾸는" 연산이 새 객체를 만든다. 문자열 상수 풀은 Java 7부터 힙에 있다.
 
 ## 가비지 컬렉션
