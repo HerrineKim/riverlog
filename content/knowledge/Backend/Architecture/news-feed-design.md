@@ -4,7 +4,7 @@ concept: "News Feed Design"
 summary: "뉴스 피드는 「누구와 연결됐나」와 「누가 무엇을 했나」 두 데이터를 합쳐 사용자마다 다른 목록을 만드는 문제다. 읽을 때 모으는 방식(스캐터·개더)과 쓸 때 받은편지함에 뿌리는 방식(팬아웃)의 차이, 활동 복제와 집계·중복 제거·점수 매기기, 비정규화와 캐시로 타임라인을 빠르게 만드는 법을 정리했다."
 tags: ["backend", "architecture", "cache", "database", "realtime"]
 source: other
-date: "2026-11-01"
+date: "2026-11-02"
 sources: ["https://github.com/checkcheckzz/system-design-interview", "http://www.slideshare.net/danmckinley/etsy-activity-feeds-architecture", "https://www.facebook.com/note.php?note_id=10150468255628920", "http://highscalability.com/blog/2012/1/23/facebook-timeline-brought-to-you-by-the-power-of-denormaliza.html", "http://highscalability.com/blog/2012/2/13/tumblr-architecture-15-billion-page-views-a-month-and-harder.html", "http://highscalability.com/scaling-twitter-making-twitter-10000-percent-faster", "http://highscalability.com/blog/2011/12/6/instagram-architecture-14-million-users-terabytes-of-photos.html", "http://lethain.com/introduction-to-architecting-systems-for-scale/", "https://github.com/karanpratapsingh/system-design"]
 ---
 
@@ -70,7 +70,7 @@ Facebook 타임라인은 최근 며칠이 아니라 **평생의 기록**을 보�
 
 ## 사례: Twitter 전체를 설계할 때
 
-면접에서 「Twitter를 설계하라」는 피드에 트윗 저장·검색·알림이 붙은 문제다.
+Twitter 전체 설계는 피드에 트윗 저장·검색·알림이 붙은 문제다.
 
 | 구분 | 내용 |
 | --- | --- |

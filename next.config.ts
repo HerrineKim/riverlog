@@ -116,6 +116,9 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/backend/architecture/data-flow": "/knowledge/dictionary/backend/architecture/web-scalability-components",
   "/knowledge/dictionary/devops/rds-security-group": "/knowledge/dictionary/devops/aws-cloud-basics",
   "/knowledge/dictionary/frontend/javascript/clear-code-principles": "/knowledge/dictionary/computer-science/programming-languages/clean-code-functions-naming",
+  "/knowledge/dictionary/life-and-learning/us-study-funding": "/knowledge/dictionary/life-and-learning/study-abroad/us-study-funding",
+  "/knowledge/dictionary/life-and-learning/georgia-tech-omscs": "/knowledge/dictionary/life-and-learning/study-abroad/georgia-tech-omscs",
+  "/knowledge/dictionary/life-and-learning/non-cs-masters-path": "/knowledge/dictionary/life-and-learning/study-abroad/non-cs-masters-path",
 };
 
 const nextConfig: NextConfig = {

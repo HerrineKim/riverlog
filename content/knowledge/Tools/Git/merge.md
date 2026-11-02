@@ -4,7 +4,7 @@ concept: "Merge"
 summary: "갈라진 브랜치를 하나로 합치는 방법으로, Fast-Forward·3-Way Merge·Merge Conflict 세 가지 상황이 있다."
 tags: ["git", "version-control", "branch", "merge"]
 source: mixed
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://wizardzines.com/comics/merge-commits/", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips"]
 ---
 
@@ -15,7 +15,7 @@ sources: ["https://wizardzines.com/comics/merge-commits/", "https://github.com/a
 ## `git merge` 기본
 
 ```bash
-$ git switch master      # 1. 결과를 받을(합쳐질) 브랜치로 먼저 이동
+$ git switch main        # 1. 결과를 받을(합쳐질) 브랜치로 먼저 이동
 $ git merge feature      # 2. 가져올 브랜치를 지정
 ```
 
@@ -23,14 +23,14 @@ $ git merge feature      # 2. 가져올 브랜치를 지정
 
 ## 1. Fast-Forward
 
-`feature` 브랜치를 만든 뒤 `master`에 새 커밋이 없는 경우이다. `feature`의 커밋이 `master` 커밋을 그대로 이어받았으므로, 새 커밋을 만들 필요 없이 **`master` 포인터를 앞으로 옮기기만** 하면 된다(빨리 감기).
+`feature` 브랜치를 만든 뒤 `main`에 새 커밋이 없는 경우이다. `feature`의 커밋이 `main` 커밋을 그대로 이어받았으므로, 새 커밋을 만들 필요 없이 **`main` 포인터를 앞으로 옮기기만** 하면 된다(빨리 감기).
 
 ![fast-forward](/images/til/ETC/Git/md-images/fast.png)
 
 ```bash
 $ git switch -c login
 $ touch login.txt && git add . && git commit -m "login test 1"
-$ git switch master
+$ git switch main
 $ git merge login
 Updating 43fab3e..2fe539c
 Fast-forward
@@ -38,8 +38,8 @@ Fast-forward
  1 file changed, 0 insertions(+), 0 deletions(-)
 
 $ git log --oneline --all --graph
-* 2fe539c (HEAD -> master, login) login test 1
-* 43fab3e master test 1
+* 2fe539c (HEAD -> main, login) login test 1
+* 43fab3e main test 1
 
 $ git branch -d login     # 병합이 끝난 브랜치는 삭제
 ```
@@ -55,8 +55,8 @@ $ git branch -d login     # 병합이 끝난 브랜치는 삭제
 ```bash
 $ git switch -c signout
 $ touch signout.txt && git add . && git commit -m "signout test 1"
-$ git switch master
-$ touch master.txt && git add . && git commit -m "master test 2"
+$ git switch main
+$ touch main.txt && git add . && git commit -m "main test 2"
 
 $ git merge signout
 Merge made by the 'ort' strategy.
@@ -64,13 +64,13 @@ Merge made by the 'ort' strategy.
  1 file changed, 0 insertions(+), 0 deletions(-)
 
 $ git log --oneline --all --graph
-*   1170a02 (HEAD -> master) Merge branch 'signout'
+*   1170a02 (HEAD -> main) Merge branch 'signout'
 |\
 | * d9f33e2 (signout) signout test 1
-* | 07fae72 master test 2
+* | 07fae72 main test 2
 |/
 * 2fe539c login test 1
-* 43fab3e master test 1
+* 43fab3e main test 1
 ```
 
 > 참고: Git 2.33까지는 기본 전략이 `recursive`여서 `Merge made by the 'recursive' strategy.`로 표시된다. 2.34부터는 `ort`가 기본이다.
@@ -96,7 +96,7 @@ $ git log --oneline --all --graph
 
    ```bash
    $ git status
-   On branch master
+   On branch main
    You have unmerged paths.
      (fix conflicts and run "git commit")
      (use "git merge --abort" to abort the merge)
@@ -109,19 +109,19 @@ $ git log --oneline --all --graph
 3. **파일을 열어 충돌 표시 정리**
 
    ```text
-   master test 1
+   main test 1
    <<<<<<< HEAD
-   이건 master에서 작성한 문장
+   이건 main에서 작성한 문장
    =======
    이건 hotfix에서 작성한 문장
    >>>>>>> hotfix
    ```
 
-   - `=======` 위는 현재 브랜치(HEAD, 여기서는 `master`), 아래는 병합하려는 브랜치(`hotfix`)의 내용이다.
+   - `=======` 위는 현재 브랜치(HEAD, 여기서는 `main`), 아래는 병합하려는 브랜치(`hotfix`)의 내용이다.
    - 한쪽을 고르거나, 둘 다 남기거나, 새로 작성한 뒤 `<<<<<<<`, `=======`, `>>>>>>>` 줄을 모두 지운다.
 
    ```text
-   master test 1
+   main test 1
    충돌을 해결한 최종 문장
    ```
 
@@ -130,7 +130,7 @@ $ git log --oneline --all --graph
    ```bash
    $ git add .
    $ git commit        # 에디터에 'Merge branch 'hotfix'' 메시지가 자동 작성됨 → Esc, :wq
-   [master eec8da4] Merge branch 'hotfix'
+   [main eec8da4] Merge branch 'hotfix'
    ```
 
 병합을 포기하려면 `git merge --abort`를 쓴다([[git-undo-and-rewrite|Git 되돌리기와 이력 다루기]] 참고).

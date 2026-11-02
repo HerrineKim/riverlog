@@ -4,7 +4,7 @@ concept: "Microservices"
 summary: "큰 시스템을 비즈니스 기능 단위의 작은 서비스로 나누고, 서비스마다 데이터와 배포를 따로 갖게 하는 구조다. 운영에는 API 게이트웨이, 서비스 레지스트리, 인증 서버, 비동기 메시징, 메트릭·로그 수집이 따라붙는다. 서비스 협업은 오케스트레이션과 코레오그래피 두 방식이 있고, 지연에 민감하거나 상태를 메모리에 둬야 하는 시스템에는 모놀리스가 낫다."
 tags: ["backend", "architecture", "msa", "scalability", "api"]
 source: other
-date: "2026-11-01"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/what-does-a-typical-microservice-architecture-look-like", "https://bytebytego.com/guides/9-essential-components-of-a-production-microservice-application", "https://bytebytego.com/guides/9-best-practices-for-building-microservices", "https://bytebytego.com/guides/9-best-practices-for-developing-microservices", "https://bytebytego.com/guides/orchestration-vs-choreography-microservices", "https://bytebytego.com/guides/is-microservice-architecture-the-silver-bullet", "https://bytebytego.com/guides/amazon-prime-video-monitoring-service", "http://channy.creation.net/articles/microservices-by-james_lewes-martin_fowler", "https://www.uber.com/blog/microservice-architecture/", "https://www.slideshare.net/arawnkr/ss-195979955", "http://guruble.com/마이크로서비스microservice-아키텍처-그것이-뭣이-중헌디/", "https://microservices.io/patterns/index.html", "https://microservices.io/patterns/microservices.html", "https://microservices.io/patterns/monolithic.html", "https://microservices.io/patterns/decomposition/decompose-by-business-capability.html", "https://microservices.io/patterns/decomposition/decompose-by-subdomain.html", "https://microservices.io/patterns/data/database-per-service.html", "https://microservices.io/patterns/data/shared-database.html", "https://microservices.io/patterns/client-side-discovery.html", "https://microservices.io/patterns/server-side-discovery.html", "https://microservices.io/patterns/service-registry.html", "https://microservices.io/patterns/microservice-chassis.html", "https://microservices.io/patterns/externalized-configuration.html", "https://microservices.io/patterns/communication-style/rpi.html", "https://microservices.io/patterns/deployment/service-per-container.html", "https://microservices.io/patterns/deployment/service-deployment-platform.html", "https://github.com/remotty/documents.docker.co.kr", "http://www.slideshare.net/subicura/automatic-docker-service-announcement-with-registrator-and-confd", "https://gist.github.com/nacyot/514b904f7ae569e801e4", "http://slides.com/seapy/docker-ambassador#/", "http://slides.com/anarcher/docker-2014-11-30-springsprout#/", "http://junolab.blogspot.kr/2014/09/confd.html", "https://developer.hashicorp.com/consul/commands/agent", "https://github.com/kelseyhightower/confd/releases", "https://github.com/karanpratapsingh/system-design"]
 ---
 
@@ -210,6 +210,15 @@ DNS   dig @127.0.0.1 -p 8600 database.service.consul
 ## SOA·ESB와 무엇이 다른가
 
 **서비스 지향 아키텍처(SOA)** 와 마이크로서비스는 둘 다 시스템을 서비스로 나누지만 **범위와 목적**이 다르다. SOA는 전사 시스템의 기능을 공통 통신 표준(SOAP·WSDL 등)의 서비스 인터페이스로 열어 **재사용**을 극대화하려 한다. 마이크로서비스는 팀이 혼자 배포할 수 있는 가장 작은 단위로 나눠 **팀의 자율성과 분리**를 노린다.
+
+기업 안의 서로 다른 플랫폼·애플리케이션을 연계하는 일을 **EAI(Enterprise Application Integration)** 라 부르고, 연결 토폴로지로 네 유형을 구분한다. ESB는 이 가운데 메시지 버스형의 대표다.
+
+| EAI 연계 유형 | 구조 | 장점 | 약점 |
+| --- | --- | --- | --- |
+| Point to Point | 애플리케이션끼리 1:1로 직접 연결 | 단순하다 | 연결 수가 애플리케이션 수의 제곱에 비례해 늘고, 바꾸거나 다시 쓰기 어렵다 |
+| Hub & Spoke | 중앙 허브를 거쳐 연결 | 확장·유지보수가 쉽다 | 허브 장애가 전체로 번진다 |
+| Message Bus (ESB) | 애플리케이션 사이에 미들웨어(버스)를 둔다 | 확장성이 좋아 대용량 처리에 맞다 | 버스에 로직이 몰리면 아래 ESB의 문제가 그대로 생긴다 |
+| Hybrid | 그룹 안은 Hub & Spoke, 그룹 사이는 Message Bus | 병목을 줄인다 | 두 구조를 함께 운영해야 한다 |
 
 SOA를 받치던 것이 **엔터프라이즈 서비스 버스(ESB)** 다. 애플리케이션 사이의 통합을 중앙 소프트웨어 하나가 맡는 패턴으로, 데이터 모델 변환, 연결 관리, 메시지 라우팅, 프로토콜 변환, 여러 요청의 조합까지 한다. 이 통합을 서비스 인터페이스로 열어 새 애플리케이션이 다시 쓰게 한다.
 

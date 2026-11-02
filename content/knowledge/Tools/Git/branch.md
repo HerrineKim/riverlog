@@ -4,7 +4,7 @@ concept: "Branch"
 summary: "원본에 영향을 주지 않고 독립적으로 작업할 수 있도록 커밋 흐름을 나누는 Git의 핵심 기능."
 tags: ["git", "version-control", "branch"]
 source: mixed
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://git-scm.com/docs/git-tag", "https://git-scm.com/docs/git-branch"]
 ---
 
@@ -16,7 +16,7 @@ sources: ["https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/
 
 ## 왜 브랜치를 쓰는가
 
-- 기본 브랜치(`master`/`main`)는 보통 **배포된 상용 코드**를 의미한다. 사용자가 쓰고 있는 코드를 직접 수정하거나 되돌리는 것은 위험하다.
+- 기본 브랜치(`main`)는 보통 **배포된 상용 코드**를 의미한다. 사용자가 쓰고 있는 코드를 직접 수정하거나 되돌리는 것은 위험하다.
 - 브랜치를 따로 만들어 그곳에서 기능 개발·버그 수정·실험을 하면 원본은 안전하게 유지된다.
 - 작업이 끝나면 그 결과만 원본에 [병합](merge.md)하면 된다.
 - 하나의 작업 = 하나의 브랜치로 나누면 개발 과정이 체계적이 된다. 한 브랜치에서 여러 기능을 섞어 작업하면, 그중 일부만 먼저 머지해야 할 때 변경을 손으로 다시 나눠야 한다. 기능마다 **처음부터** 브랜치를 따로 만든다.
@@ -60,25 +60,25 @@ $ git switch --detach v1.2.0  # 브랜치 없이 특정 커밋·태그로 (detac
 
 ## 예시: 갈라지는 브랜치
 
-`master`에서 커밋 3개를 만든 뒤 `login` 브랜치를 만들고, `master`에 커밋을 하나 더 쌓은 상황이다.
+`main`에서 커밋 3개를 만든 뒤 `login` 브랜치를 만들고, `main`에 커밋을 하나 더 쌓은 상황이다.
 
 ```bash
 $ git branch login
-$ # ... master에서 master-4 커밋 ...
+$ # ... main에서 main-4 커밋 ...
 $ git log --oneline
-5ca7701 (HEAD -> master) master-4
-0604dcd (login) master-3
-9c22c89 master-2
-3d71510 master-1
+5ca7701 (HEAD -> main) main-4
+0604dcd (login) main-3
+9c22c89 main-2
+3d71510 main-1
 ```
 
-`login`으로 이동하면 `test.txt`에서 `master-4` 내용이 사라지고, `git log`에서도 `master` 브랜치가 보이지 않는다. 브랜치가 지워진 것이 아니라 **HEAD 기준으로 이력을 보여주기 때문**이다. `--all` 옵션을 주면 모든 브랜치를 볼 수 있다.
+`login`으로 이동하면 `test.txt`에서 `main-4` 내용이 사라지고, `git log`에서도 `main` 브랜치가 보이지 않는다. 브랜치가 지워진 것이 아니라 **HEAD 기준으로 이력을 보여주기 때문**이다. `--all` 옵션을 주면 모든 브랜치를 볼 수 있다.
 
 ```bash
 $ git switch login
 $ git log --oneline --all
-5ca7701 (master) master-4
-0604dcd (HEAD -> login) master-3
+5ca7701 (main) main-4
+0604dcd (HEAD -> login) main-3
 ...
 ```
 
@@ -87,11 +87,11 @@ $ git log --oneline --all
 ```bash
 $ git log --oneline --graph --all
 * 3b0a091 (HEAD -> login) login-1
-| * 5ca7701 (master) master-4
+| * 5ca7701 (main) main-4
 |/
-* 0604dcd master-3
-* 9c22c89 master-2
-* 3d71510 master-1
+* 0604dcd main-3
+* 9c22c89 main-2
+* 3d71510 main-1
 ```
 
 ![갈라진 브랜치](/images/til/ETC/Git/md-images/44.png)
@@ -147,7 +147,7 @@ $ git push origin --delete v1.2.0 # 원격 태그 삭제
 
 ## 주의: 추적되지 않는 파일은 브랜치를 따라다닌다
 
-`feature` 브랜치에서 `test.txt`를 만들고 `git add` 하지 않은 채 `git switch master` 하면, `test.txt`가 `master`에도 그대로 남아 있다.
+`feature` 브랜치에서 `test.txt`를 만들고 `git add` 하지 않은 채 `git switch main` 하면, `test.txt`가 `main`에도 그대로 남아 있다.
 
 - 브랜치가 독립적인 것은 **Git이 관리하는 파일**에 한해서다.
 - 한 번도 Staging Area에 올라간 적 없는(untracked) 파일은 버전 관리 대상이 아니므로 브랜치를 바꿔도 Working Directory에 계속 남는다.

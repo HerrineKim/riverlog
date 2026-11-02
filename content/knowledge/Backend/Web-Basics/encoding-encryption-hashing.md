@@ -4,7 +4,7 @@ concept: "Encoding vs Encryption"
 summary: "데이터를 바꾸는 네 가지 방법은 목적이 다르다. 인코딩은 형식 변환(키 없음, 보안 아님), 암호화는 키로 기밀성 확보(대칭·비대칭), 해시는 되돌릴 수 없는 지문, 토큰화는 원본을 금고에 두고 의미 없는 대체값을 쓰는 것이다. 해시와 개인키를 엮은 디지털 서명이 위변조와 서명자를 함께 증명한다. 용도별로 쓸 알고리즘(AEAD, HMAC, Argon2id, Ed25519, X25519·ML-KEM)과 nonce 재사용·변조·재전송·타이밍 같은 조합의 함정도 정리한다."
 tags: ["security", "cryptography", "backend", "encoding"]
 source: other
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/encoding-vs-encryption-vs-tokenization", "https://bytebytego.com/guides/symmetric-encryption-vs-asymmetric-encryption", "https://bytebytego.com/guides/how-digital-signatures-work", "https://gist.github.com/lifthrasiir/84a546e8fa080d843a93", "https://gist.github.com/tqbf/be58d2d39690c3b366ad", "https://gist.github.com/paragonie-scott/e9319254c8ecbad4f227", "http://loup-vaillant.fr/articles/rolling-your-own-crypto", "https://web.archive.org/web/2020/https://www.integralist.co.uk/posts/hashing-and-encryption/", "https://csrc.nist.gov/pubs/fips/203/final"]
 ---
 
@@ -26,12 +26,7 @@ sources: ["https://bytebytego.com/guides/encoding-vs-encryption-vs-tokenization"
 
 ## 암호화: 대칭과 비대칭
 
-| 구분 | 대칭 암호화 | 비대칭 암호화(공개키) |
-| --- | --- | --- |
-| 키 | 하나로 암호화·복호화 | 공개키로 암호화, 개인키로 복호화 |
-| 속도 | 빠르다. 대용량에 맞다 | 연산이 무겁다. 작은 데이터(키, 서명)에 쓴다 |
-| 약점 | 키를 상대에게 안전하게 건네기 어렵다. 키를 아는 쪽이 늘수록 유출 위험도 는다 | 공개키가 정말 상대 것인지 확인할 수단(인증서)이 필요하다 |
-| 쓰임 | 대량 개인정보 저장 암호화, TLS 본문 암호화 | 키 교환, 디지털 서명 |
+암호화는 키 하나로 잠그고 여는 **대칭 암호화**(AES, ChaCha20)와, 공개키로 잠그고 개인키로 여는 **비대칭(공개키) 암호화**(RSA, 타원 곡선)로 나뉜다. 대칭키는 빠르지만 키를 건네기 어렵고, 비대칭키는 키 배포 문제를 풀지만 연산이 무겁다. 원리·속도·대표 알고리즘·약점의 비교표는 [[network-security#대칭키·공개키·해시|네트워크 보안]]에 있다.
 
 실무 시스템은 **둘을 섞는다(하이브리드 암호).** 비대칭 방식으로 대칭 키를 안전하게 합의하고, 실제 데이터는 대칭 키로 암호화한다. TLS가 그렇다 → [[https|HTTPS와 TLS]]. 저장 데이터도 데이터를 데이터 키(대칭)로 암호화하고, 데이터 키를 다시 KMS의 마스터 키로 감싸는 **봉투 암호화(envelope encryption)** 를 쓴다.
 

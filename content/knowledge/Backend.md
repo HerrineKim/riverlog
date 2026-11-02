@@ -19,9 +19,9 @@ date: "2026-10-31"
 
 - [웹 앱의 요청·응답 구조](/knowledge/dictionary/backend/web-basics/http-web-architecture): 브라우저·프론트 서버·API 서버·DB의 요청 흐름과 포트
 - [REST API 설계](/knowledge/dictionary/backend/web-basics/rest-api): REST의 여섯 제약, URI 규칙, 멱등 키·버전·일괄 처리
-- [API 아키텍처 스타일: SOAP·REST·GraphQL·gRPC·WebSocket·Webhook](/knowledge/dictionary/backend/web-basics/api-architectural-styles): 여섯 스타일의 통신 방식과 고르는 기준
+- [API 아키텍처 스타일: SOAP·REST·GraphQL·gRPC·WebSocket·Webhook](/knowledge/dictionary/backend/web-basics/api-architectural-styles): 여섯 스타일의 통신 방식, REST·GraphQL·gRPC 축별 비교와 고르는 기준
 - [GraphQL](/knowledge/dictionary/backend/web-basics/graphql): 타입 스키마, 쿼리·뮤테이션·구독, 리졸버와 N+1
-- [gRPC](/knowledge/dictionary/backend/web-basics/grpc): .proto 계약과 스텁, 네 가지 호출 방식, REST와 비교
+- [gRPC](/knowledge/dictionary/backend/web-basics/grpc): .proto 계약과 스텁, protobuf 직렬화, 네 가지 호출 방식, 브라우저 우회
 - [웹훅과 폴링](/knowledge/dictionary/backend/web-basics/webhook): 변화를 묻는 쪽과 알리는 쪽, 서명 검증·재시도·멱등 처리
 - [API 페이지네이션](/knowledge/dictionary/backend/web-basics/api-pagination): 오프셋·페이지 번호·커서·키셋·시간 기반·혼합 방식 비교
 - [API 테스트의 종류](/knowledge/dictionary/backend/web-basics/api-testing): 스모크·기능·통합·회귀·부하·스트레스·보안·퍼즈 테스트

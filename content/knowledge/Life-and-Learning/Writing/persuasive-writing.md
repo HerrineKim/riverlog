@@ -125,4 +125,4 @@ sources: ["https://bloggertip.com/4175"]
 - 문장력: 모으고, 메모하고, 사전을 찾고, 분석하며 읽고, 고친다
 - 짧은 글과 말은 PREP으로, 온라인 글은 목적·독자·첫인상부터 정한다
 
-관련 노트: [[eco-writing-rules|움베르토 에코의 글을 잘 쓰는 규칙]], [[newsletter-lessons|뉴스레터 발행의 35가지 교훈]], [[data-journalism|데이터 저널리즘 실무]], [[ux-writing|UX 라이팅]]
+관련 노트: [[eco-writing-rules|움베르토 에코의 글을 잘 쓰는 규칙]], [[newsletter-lessons|뉴스레터 발행 원칙]], [[data-journalism|데이터 저널리즘 실무]], [[ux-writing|UX 라이팅]]

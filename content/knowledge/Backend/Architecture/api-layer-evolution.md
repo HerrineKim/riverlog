@@ -4,7 +4,7 @@ concept: "Architecture Evolution"
 summary: "대규모 서비스가 모놀리스 → 서비스 분리(SOA·마이크로서비스) → 매크로서비스로 옮겨 가는 이유와, 그에 맞춰 API 계층이 직접 호출 → 게이트웨이 집계 → BFF → GraphQL 페더레이션으로 바뀌는 흐름을 정리했다. 반대로 모놀리스와 단순한 백엔드로 큰 트래픽을 감당하는 사례와 여러 SaaS API를 묶는 통합 플랫폼도 다룬다."
 tags: ["backend", "architecture", "msa", "api", "graphql"]
 source: other
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/airbnb-artchitectural-evolution", "https://bytebytego.com/guides/evolution-of-airbnb's-microservice", "https://bytebytego.com/guides/evolution-of-the-netflix-api-architecture", "https://bytebytego.com/guides/evolution-of-uber's-api-layer", "https://bytebytego.com/guides/how-netflix-really-uses-java", "https://bytebytego.com/guides/how-will-you-design-the-stack-overflow-website", "https://bytebytego.com/guides/how-levelsfyi-scaled-to-millions-of-users-with-google-sheets", "https://bytebytego.com/guides/api-of-apis-app-integrations"]
 ---
 
@@ -86,7 +86,7 @@ BFF 자체는 [[bff|BFF]], GraphQL과 페더레이션 도입 패턴은 [[graphql
 | Stack Overflow | 클라우드 대신 자체 서버, 소수의 웹 서버, **모놀리스** | 트래픽이 크다는 이유만으로 마이크로서비스·이벤트 소싱·샤딩이 필요한 것은 아니다. 캐시와 잘 튜닝된 DB로 멀리 간다 |
 | Levels.fyi | 초기에 **스프레드시트를 DB처럼** 쓰고 서버리스 함수와 정적 프론트엔드로 서비스 | 단순하게 시작하고 병목이 보일 때 바꾼다. 백엔드를 미리 만들지 않아 제품에 집중한다 |
 
-면접에서 기대하는 「정답 구조」(서비스별 DB, 메시지 큐, CQRS, 샤딩)와 실제로 잘 돌아가는 구조는 다를 수 있다. **설계는 요구 사항과 팀 규모에서 출발해야지, 유행하는 부품 목록에서 출발하지 않는다.**
+널리 알려진 참고 설계(서비스별 DB, 메시지 큐, CQRS, 샤딩)와 실제로 잘 돌아가는 구조는 다를 수 있다. **설계는 요구 사항과 팀 규모에서 출발해야지, 유행하는 부품 목록에서 출발하지 않는다.**
 
 ## API를 묶는 API: 통합 플랫폼
 

@@ -1,10 +1,10 @@
 ---
-title: "뉴스레터 발행의 35가지 교훈"
+title: "뉴스레터 발행 원칙"
 concept: "Newsletter"
-summary: "35년 동안 뉴스레터를 낸 CJ 칠버스의 교훈을 독자 관계, 쓰는 법, 지표, 습관, 성장·수익으로 묶었다. 핵심은 한 사람에게 쓰듯 꾸준히 보내고, 답장으로 성과를 재는 것이다."
+summary: "오래 가는 뉴스레터의 원칙을 독자와의 관계, 쓰는 법, 지표와 운영, 습관과 과정, 성장과 수익의 다섯 주제로 묶었다. 핵심은 한 사람에게 쓰듯 꾸준히 보내고, 답장으로 성과를 재는 것이다."
 tags: ["writing", "content-marketing", "newsletter", "habits", "productivity"]
 source: other
-date: "2026-10-13"
+date: "2026-11-02"
 sources: ["https://www.cjchilvers.com/blog/35-lessons-from-35-years-of-newsletter-publishing/"]
 ---
 
@@ -16,7 +16,7 @@ sources: ["https://www.cjchilvers.com/blog/35-lessons-from-35-years-of-newslette
 
 ## 1. 독자와의 관계
 
-| 교훈 | 뜻 |
+| 원칙 | 뜻 |
 | --- | --- |
 | 관계가 목적이다 | 독자 한 명과의 인연이 경력이나 삶을 바꿀 수 있다 |
 | 한 사람에게 쓴다 | 메일은 결국 한 명이 열어 읽는다. 군중이 아니라 개인에게 말하듯 쓴다 |
@@ -61,7 +61,7 @@ sources: ["https://www.cjchilvers.com/blog/35-lessons-from-35-years-of-newslette
 
 ## 5. 성장과 수익
 
-| 교훈 | 뜻 |
+| 원칙 | 뜻 |
 | --- | --- |
 | 관심은 조금씩 얻는다 | 독자는 기본적으로 관심이 없다. 작은 신뢰를 여러 번 쌓아야 한다 |
 | 구독 창구를 어디에나 | 관계가 시작되는 곳이 구독 신청란이다. 모든 채널에서 알린다 |

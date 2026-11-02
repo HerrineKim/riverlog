@@ -1,10 +1,10 @@
 ---
 title: "GraphQL"
 concept: "GraphQL"
-summary: "GraphQL은 타입 스키마 위에서 클라이언트가 필요한 필드를 골라 질의하는 API 질의 언어이자 런타임이다. 쿼리·뮤테이션·구독, REST와의 비교, N+1·캐시·악성 쿼리 같은 약점과 대책, 클라이언트 래핑·BFF·모놀리식·페더레이션 네 가지 도입 패턴, 등록된 쿼리로 운영하는 방식을 정리했다."
+summary: "GraphQL은 타입 스키마 위에서 클라이언트가 필요한 필드를 골라 질의하는 API 질의 언어이자 런타임이다. 쿼리·뮤테이션·구독, REST 대신 고를 때의 기준, N+1·캐시·악성 쿼리 같은 약점과 대책, 클라이언트 래핑·BFF·모놀리식·페더레이션 네 가지 도입 패턴, 등록된 쿼리로 운영하는 방식을 정리했다."
 tags: ["backend", "api", "graphql", "architecture", "http"]
 source: other
-date: "2026-10-21"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/what-is-graphql", "https://bytebytego.com/guides/rest-api-vs-graphql", "https://bytebytego.com/guides/graphql-adoption-patterns", "https://bytebytego.com/guides/how-does-graphql-work-in-the-real-world", "https://graphql.org/learn/", "https://graphql.org/learn/queries/", "https://tech.kakao.com/posts/364", "https://graphql.org/learn/schema/"]
 ---
 
@@ -65,19 +65,9 @@ query {
 
 REST에서는 프론트엔드가 백엔드가 정한 요청·응답 형식에 의존한다. GraphQL에서는 화면에 필요한 모양을 클라이언트가 질의로 정하므로 그 의존이 줄고, 협업의 접점이 **스키마**로 옮겨 간다.
 
-## REST와 비교
+## REST 대신 GraphQL을 고를 때
 
-| 항목 | REST | GraphQL |
-| --- | --- | --- |
-| 엔드포인트 | 리소스마다 여러 개 | 보통 하나(`/graphql`) |
-| 응답 모양 | 서버가 정한다 | 클라이언트가 질의로 정한다 |
-| 관련 데이터 조합 | 여러 엔드포인트를 차례로 불러 조립 (왕복이 늘어난다) | 한 질의로 중첩해 가져온다 |
-| 타입·계약 | 느슨하다. OpenAPI로 보강 | 스키마가 곧 계약. 도구가 타입을 생성한다 |
-| HTTP 캐시 | URL 단위라 쉽다 | 단일 엔드포인트·POST라 기본으로는 어렵다 |
-| 복잡도의 위치 | 서버가 엔드포인트를 늘린다 | 클라이언트 질의와 서버 리졸버로 옮겨 간다 |
-| 잘 맞는 곳 | 단순하고 일관된 계약, 공개 API | 화면이 자주 바뀌고 여러 소스의 데이터를 묶어야 하는 앱 |
-
-**GraphQL은 REST의 대체재라기보다 다른 선택지다.** 계약이 단순하고 고정적이면 REST가 운영하기 쉽고, 프론트엔드 요구가 빠르게 바뀌고 다양하면 GraphQL이 이득이다.
+**GraphQL은 REST의 대체재라기보다 다른 선택지다.** 화면마다 필요한 필드가 제각각이고 여러 소스의 데이터를 한 요청으로 묶어야 하며 프론트엔드 요구가 빠르게 바뀔 때 이득이 크다. 계약이 단순하고 고정적인 공개 API, HTTP 캐시가 중요한 읽기 위주 API는 REST가 운영하기 쉽다. 복잡도는 사라지지 않고 서버의 엔드포인트에서 클라이언트 질의와 서버 리졸버로 옮겨 간다는 점을 감안한다. 엔드포인트·계약·캐시·오류 처리 같은 축별 비교는 [[api-architectural-styles|API 아키텍처 스타일]]에 있다.
 
 ## 약점과 대책
 

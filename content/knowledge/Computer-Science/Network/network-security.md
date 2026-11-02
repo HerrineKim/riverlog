@@ -4,7 +4,7 @@ concept: "Network Security"
 summary: "공용망의 위협은 가로막기·가로채기·변조·위조로 나뉘고 대칭키·공개키(RSA)·해시로 막는다. 방화벽은 정해 둔 규칙(포트·IP·프로토콜·연결 상태·애플리케이션)으로 트래픽을 걸러 내는 문지기이고, 패킷 필터에서 상태 추적·프록시·차세대 방화벽으로 발전했다. 방화벽을 통과한 공격은 IDS·IPS가 탐지·차단한다. VPN은 공용망 위에 암호화된 터널을 만들어 원격 사용자나 지점을 사설망처럼 잇는다. OSI 계층마다 노리는 공격이 달라 방어도 계층별로 겹겹이 쌓는다."
 tags: ["network", "security", "osi", "infra"]
 source: other
-date: "2026-10-31"
+date: "2026-11-02"
 sources: ["https://bytebytego.com/guides/firewall-explained-to-kids-and-adults", "https://bytebytego.com/guides/top-6-firewall-use-cases", "https://bytebytego.com/guides/how-does-a-vpn-work", "https://bytebytego.com/guides/types-of-vpns", "https://bytebytego.com/guides/top-network-security-cheatsheet", "https://medium.com/watcha/watcha-%EC%82%AC%EB%82%B4-vpn-%EA%B0%9C%EB%B0%9C%ED%95%98%EA%B8%B0-e04f946d3ccb", "고려사이버대학교 정보통신개론 강의(권오상 교수, 2023 겨울계절학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
@@ -25,13 +25,15 @@ sources: ["https://bytebytego.com/guides/firewall-explained-to-kids-and-adults",
 
 이 중 기밀성·무결성·인증을 기술로 지키는 중심이 암호다.
 
-| 방식 | 원리 | 예 | 약점 |
-| --- | --- | --- | --- |
-| 대칭키(비밀키) | 보내는 쪽과 받는 쪽이 **같은 키** 하나로 암호화·복호화 | AES, ChaCha20. 과거의 DES는 56비트 키라 깨졌다 | 상대마다 키가 따로 필요하고(n명이면 n(n-1)/2개), 키를 안전하게 나눠 줄 방법이 없다 |
-| 공개키(비대칭) | 각자 **공개키와 개인키** 한 쌍을 갖는다. 공개키로 잠근 것은 개인키로만 연다 | RSA, 타원 곡선(ECDH·ECDSA) | 느리다. 그래서 실제로는 공개키로 대칭키를 합의하고 데이터는 대칭키로 암호화한다(TLS) |
-| 메시지 다이제스트(해시) | 데이터 대신 고정 길이 해시를 보내고, 받는 쪽이 다시 계산해 비교한다 | SHA-256. MD5·SHA-1은 충돌이 발견돼 무결성 용도로 쓰지 않는다 | 키가 없으면 공격자가 내용과 해시를 함께 바꿀 수 있어 HMAC이나 서명과 묶는다 |
+### 대칭키·공개키·해시
 
-각 기법의 선택 기준과 함정은 [[encoding-encryption-hashing|인코딩·암호화·해시·토큰화와 디지털 서명]]에 있다.
+| 방식 | 원리 | 속도와 쓰임 | 예 | 약점 |
+| --- | --- | --- | --- | --- |
+| 대칭키(비밀키) | 보내는 쪽과 받는 쪽이 **같은 키** 하나로 암호화·복호화한다 | 빠르다. 대용량 데이터에 맞아 TLS 본문 암호화, 저장 데이터(대량 개인정보) 암호화에 쓴다 | AES, ChaCha20. 과거의 DES는 56비트 키라 깨졌다 | 키를 상대에게 안전하게 건넬 방법이 없고, 상대마다 키가 따로 필요하다(n명이면 n(n-1)/2개). 키를 아는 쪽이 늘수록 유출 위험도 는다 |
+| 공개키(비대칭) | 각자 **공개키와 개인키** 한 쌍을 갖는다. 공개키로 잠근 것은 개인키로만 연다 | 연산이 무겁다. 키 교환, 디지털 서명처럼 작은 데이터에만 쓴다 | RSA, 타원 곡선(ECDH·ECDSA) | 느리다. 받은 공개키가 정말 상대 것인지 확인할 수단(인증서)이 따로 필요하다 |
+| 메시지 다이제스트(해시) | 데이터 대신 고정 길이 해시를 보내고, 받는 쪽이 다시 계산해 비교한다 | 빠르다. 무결성 확인, 비밀번호 비교에 쓴다 | SHA-256. MD5·SHA-1은 충돌이 발견돼 무결성 용도로 쓰지 않는다 | 키가 없으면 공격자가 내용과 해시를 함께 바꿀 수 있어 HMAC이나 서명과 묶는다 |
+
+실무는 둘을 섞은 **하이브리드 암호**다. 공개키로 대칭키를 합의하고 데이터는 그 대칭키로 암호화한다. TLS가 그렇다([[https|HTTPS와 TLS]]). 인코딩·해시·토큰화와의 구별, 용도별 알고리즘 선택과 조합의 함정은 [[encoding-encryption-hashing|인코딩·암호화·해시·토큰화와 디지털 서명]]에 있다.
 
 **RSA**는 큰 수를 소인수분해하기 어렵다는 점에 안전성을 건 공개키 암호다. 키 만들기와 암호화·복호화는 다음 순서다(수학적 근거인 오일러 정리는 [[number-theory-basics|정수론 기초: 소수·최대공약수·합동식]]).
 

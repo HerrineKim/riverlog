@@ -4,15 +4,16 @@ concept: "Engineer Information Processing"
 summary: "정보처리기사 실기에서 여러 회차에 반복해서 나오는 개념을 주제별로 묶은 요약 노트 모음."
 tags: ["certificate", "software-engineering", "security", "testing"]
 source: notion
-date: "2026-10-31"
+date: "2026-11-02"
 ---
 
 정보처리기사 실기는 소프트웨어 공학, 데이터베이스, 네트워크·운영체제, 보안, 신기술 용어를 폭넓게 묻는다. 이 주제는 문제 원문 대신 여러 회차에 걸쳐 **반복 출제되는 개념**을 주제별로 묶고, 같은 주제의 대학 강의 내용(요구공학, 분석 설계, 테스트 설계, 프로젝트 관리)도 함께 합쳐 둔다.
 
-- [소프트웨어 설계와 공학](Computer-Science/Engineer-Information-Processing/software-engineering.md): 생명주기 모델(반복적·RAD 포함)과 애자일, 타당성 분석, 요구공학(추출 기법, MoSCoW, EARS, 추적 매트릭스), 구조적 분석·설계(DFD, 구조 차트), 모듈 결합도·응집도와 복잡도 척도(McCabe, Halstead), 인터페이스 황금률, 디자인 패턴, UML 객체지향 분석·설계, 프로젝트 관리(COCOMO, 기능 점수, PERT, EVM, 위험), 유지보수와 재공학(Lehman 법칙), 형상 관리, CASE 도구
+- [소프트웨어 설계와 공학](Computer-Science/Engineer-Information-Processing/software-engineering.md): 생명주기 모델(반복적·RAD 포함)과 애자일, 타당성 분석, 요구공학(추출 기법, MoSCoW, EARS, 추적 매트릭스), 구조적 분석·설계(DFD, 구조 차트), 모듈 결합도·응집도와 복잡도 척도(McCabe, Halstead), 인터페이스 황금률, 디자인 패턴, UML 객체지향 분석·설계, 유지보수와 재공학(Lehman 법칙), 형상 관리, CASE 도구
+- [소프트웨어 프로젝트 관리: 비용 산정·일정·위험](Computer-Science/Engineer-Information-Processing/software-project-management.md): 프로젝트 단계와 참고 틀(PMBOK, 12207), CMMI 성숙도, WBS, 비용 산정(델파이, LOC, COCOMO, Putnam, 기능 점수), PERT 주 경로, EVM 지표, 위험 식별·분석·대응
 - [소프트웨어 테스트](Computer-Science/Engineer-Information-Processing/software-testing.md): 테스트 원리, V&V, ISO/IEC 25010 품질 특성과 McCall 모델, QA·QC·감사의 구분, 시스템 테스트 종류, V-모델, 블랙박스 기법과 커버리지(MC/DC)의 케이스 도출, 테스트 오라클, 통합 테스트, 29119 테스트 프로세스와 위험 기반 테스트, 결함 관리, AI 소프트웨어 테스트
 - [정보 시스템 보안](Computer-Science/Engineer-Information-Processing/security.md): 보안 3요소, 공격 기법, 암호 알고리즘, 접근 통제
-- [웹 서비스 기술과 IT 신기술 용어](Computer-Science/Engineer-Information-Processing/web-services-and-it-trends.md): SOAP·WSDL·UDDI, EAI 연계 유형, 데이터 마이닝과 각종 신기술 용어
+- [웹 서비스·시스템 통합·신기술 용어 색인](Computer-Science/Engineer-Information-Processing/web-services-and-it-trends.md): SOAP·WSDL·UDDI, EAI 연계 유형, 데이터 마이닝·빅데이터·SDN 등 단답형 용어가 어느 개념 노트에 있는지 잇는 색인
 
 데이터베이스(트랜잭션, 정규화, SQL), 운영체제(프로세스 스케줄링), 네트워크(OSI 7계층, IP·ARP·ICMP, 라우팅) 관련 출제 개념은 각각 Database, Operating-System, Network 주제의 노트에 통합했다.
 
