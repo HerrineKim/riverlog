@@ -4,7 +4,7 @@ concept: "Claude Code"
 summary: "채팅형 AI와 무엇이 다른지부터 설치, 질문 → 편집 → 도구 → 맥락 → 자동화로 익숙해지는 순서, 슬래시 명령·단축키, MCP 연결, Skills와 CLAUDE.md, 팀 설정 공유, 권한 모드와 자동 모드, `claude -p` 자동화, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하는 작업 방식까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
 tags: ["ai", "llm", "claude-code", "agentic-coding", "prompting", "mcp"]
 source: other
-date: "2026-10-20"
+date: "2026-11-02"
 sources: ["https://www.youtube.com/watch?v=6eBSHbLKuN0", "https://www.youtube.com/watch?v=kPUuh2ZnzEM", "https://code.claude.com/docs/en/headless", "https://gayuna.github.io/llm/claude-code/", "https://code.claude.com/docs/en/model-config", "https://code.claude.com/docs/en/github-actions", "https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five", "https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp", "https://claude.com/blog/auto-mode", "https://code.claude.com/docs/en/permission-modes"]
 ---
 
@@ -59,7 +59,7 @@ claude
 
 - **OS**: macOS 13+, Windows 10 1809+, Ubuntu 20.04+, Debian 10+, Alpine 3.19+. RAM 4GB 이상.
 - **Windows**: PowerShell·CMD에서 바로 설치된다. Git for Windows가 있으면 Git Bash로 셸 명령을 돌리고, 없으면 PowerShell을 쓴다. 샌드박스가 필요하면 WSL 2에 설치한다.
-- **계정**: Pro·Max·Team·Enterprise 구독 또는 Console(API) 계정. 무료 플랜에는 포함되지 않는다.
+- **계정**: Pro·Max·Ultra·Team·Enterprise 구독 또는 Console(API) 계정. 무료 플랜에는 포함되지 않는다.
 - 터미널이 낯설면 데스크톱 앱이나 VS Code·JetBrains 확장으로도 같은 에이전트를 쓴다.
 
 처음 켰을 때 해 두면 편한 설정이 있다.
@@ -376,6 +376,6 @@ Claude Code를 잘 쓰면 개발자의 자리는 **코드를 치는 사람**에�
 
 ## 요금제
 
-구독(Pro·Max·Team·Enterprise)으로 쓰거나, CI/CD·파이프라인처럼 자동화 용도면 API 사용량 과금으로 쓴다. Amazon Bedrock·Google Cloud·Microsoft Foundry를 통해서도 쓸 수 있다. 플랜별 요금과 한도는 자주 바뀌므로 [공식 요금 안내](https://claude.com/pricing)에서 확인하고, 세션 안에서는 `/usage`로 사용량을 본다.
+구독(Pro·Max·Ultra·Team·Enterprise)으로 쓰거나, CI/CD·파이프라인처럼 자동화 용도면 API 사용량 과금으로 쓴다. Amazon Bedrock·Google Cloud Gemini Enterprise Agent Platform(구 Vertex AI)·Microsoft Foundry를 통해서도 쓸 수 있다. 플랜별 요금과 한도는 자주 바뀌므로 [공식 요금 안내](https://claude.com/pricing)에서 확인하고, 세션 안에서는 `/usage`로 사용량을 본다.
 
 관련 노트: [[claude-code-hooks|Claude Code 훅]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]

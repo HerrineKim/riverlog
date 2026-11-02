@@ -4,7 +4,7 @@ concept: "Harness Engineering"
 summary: "AI 개발의 중심은 프롬프트 엔지니어링(무엇을 말할까) → 컨텍스트 엔지니어링(무엇을 보여 줄까) → 하네스 엔지니어링(어떤 시스템을 만들까)으로 옮겨 왔다. 엔지니어링의 엄밀함은 사라지지 않고 위치만 옮긴다. 각 단계의 핵심 기법(CoT·ReAct·플로우 엔지니어링, Write/Select/Compress/Isolate, KV 캐시, 하네스 2×2), 실전 사례, 치명적 삼요소와 2의 규칙을 정리한다."
 tags: ["ai", "llm", "agent", "agentic-coding", "prompting", "context-engineering"]
 source: other
-date: "2026-10-20"
+date: "2026-11-02"
 sources: ["https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html", "https://arxiv.org/abs/2401.08500"]
 ---
 
@@ -78,7 +78,7 @@ Andrew Ng이 정리한 실무 프레임워크다.
 | --- | --- |
 | 정답률 | 경쟁 프로그래밍 데이터셋 CodeContests에서 GPT-4의 pass@5가 잘 짠 단일 프롬프트 19% → AlphaCodium 흐름 44% |
 | 모델 무관 | 오픈 모델(DeepSeek)에서도 같은 방향으로 올랐다 |
-| 비용 | 논문은 DeepMind의 AlphaCode보다 LLM 호출이 약 1만분의 1이면서 더 나은 결과라고 주장한다. AlphaCode 2와의 비교는 저자 측 주장이다 |
+| 비용 | DeepMind의 AlphaCode보다 LLM 호출이 약 1만분의 1이면서 더 나은 결과를 냈다. AlphaCode 2와의 비교는 독립 검증이 아니라 논문 자체 벤치마크다 |
 
 모델을 바꾸지 않고 흐름만 바꿨다는 점에서, 위의 「모델 바깥의 패턴」을 가장 잘 보여 주는 예다. ④·⑤처럼 **스스로 검증 수단을 만들고 돌리는** 단계는 오늘날 코딩 에이전트의 테스트 루프와 같다. 코딩이 아닌 분야에서는 테스트 대신 합성 데이터(synthetic data)를 만들어 답을 확인하는 식으로 같은 구조를 옮길 수 있다.
 
