@@ -4,7 +4,7 @@ concept: "Non-CS to CS Master's"
 summary: "컴퓨터공학을 전공하지 않은 사람이 미국 CS 석사에 지원하는 방법을 정리했다. 입학처가 보는 선수 과목(자료구조·알고리즘·이산수학이 최소선), 한국에서 학점을 만드는 경로(방송대 편입, 대학 비학위 과정, MOOC), ML 전공을 위한 수학 독학 자료, 비전공자 전용 과정인 Northeastern Align MS in CS를 비교한다."
 tags: ["learning", "study-abroad", "career", "computer-science"]
 source: other
-date: "2026-10-20"
+date: "2026-11-02"
 sources: ["https://tech-millennial.tistory.com/5", "https://tech-millennial.tistory.com/8", "https://tech-millennial.tistory.com/10", "https://tech-millennial.tistory.com/23", "https://self-taught-programmer.tistory.com/2", "https://self-taught-programmer.tistory.com/4", "https://self-taught-programmer.tistory.com/8", "https://www.khoury.northeastern.edu/programs/align-masters/"]
 ---
 
@@ -83,7 +83,7 @@ ML 수업을 따라가려면 **미적분, 선형대수, 확률·통계** 세 가
 
 학비는 학점당 과금이고 44학점이라, 총액이 **OMSCS의 열 배 안팎**이다. 학비와 기본 수수료만 수만 달러대 후반이다. 생활비와 보험은 별도다. 코업 급여로 한 학기 학비 정도를 메울 수 있다. 정확한 학비는 [Khoury College](https://www.khoury.northeastern.edu/programs/align-masters/)와 학교 재무 페이지에서 확인한다.
 
-tech-millennial 블로그 2편(2020)은 Northeastern이 QS 종합 순위로는 344위지만 US News CS 순위로는 188개 학교 중 49위라고 소개한다. 학교를 볼 때는 종합 순위보다 **학과별 순위**와 산업 연계를 본다.
+Northeastern처럼 종합 대학 순위와 CS 학과 순위가 크게 다른 학교가 많다. 학교를 볼 때는 종합 순위보다 **학과별 순위**와 산업 연계를 본다.
 
 ## 정리
 
