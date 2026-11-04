@@ -4,7 +4,7 @@ concept: "App Release"
 summary: "모바일 앱은 스토어 심사를 거쳐야 사용자에게 닿기 때문에 웹 배포와 절차가 다르다. 개발자 등록, 빌드와 테스트, 내부·외부 베타와 회귀 테스트, 내부 승인과 정책 준수, 스토어 최적화(ASO), App Store Connect·Google Play Console 제출, 단계적 출시까지의 흐름을 정리한다."
 tags: ["mobile", "deployment", "testing", "product", "ci-cd"]
 source: other
-date: "2026-10-21"
+date: "2026-11-04"
 sources: ["https://bytebytego.com/guides/how-to-release-a-mobile-app", "https://developer.apple.com/help/app-store-connect/", "https://support.google.com/googleplay/android-developer/answer/9859348", "https://techblog.woowahan.com/2611/", "https://ahnheejong.name/articles/galpi-development-diary/", "https://blog.holy.kiwi/js/190127/"]
 ---
 
@@ -54,6 +54,19 @@ flowchart TB
 - 충돌 리포트와 지표를 보고, 문제가 생기면 단계적 출시를 멈춘다.
 - 서버 쪽 기능 플래그로 새 기능을 켜고 끌 수 있게 해 두면 바이너리를 다시 내지 않고도 문제를 막을 수 있다.
 - 지원 종료할 옛 버전이 생기면 강제 업데이트 안내를 띄운다.
+
+### 기기 보안 탐지는 단계적으로
+
+금융·결제 앱은 루팅·탈옥, 개발자 옵션, USB 디버깅, 원격 제어 앱, PC 연결 기능 같은 기기 상태를 탐지한다. 탐지한 뒤 **무엇을 막느냐**가 사용자 경험을 가른다. 개발자 옵션은 개발자만 켜는 기능이 아니어서(애니메이션 배율 조정 등으로 일반 사용자도 켠다), 켜져 있다는 이유만으로 실행 자체를 막으면 이탈과 반발이 커지고 결국 업데이트를 회수·롤백하는 일이 생긴다.
+
+| 위험도 | 대응 예 |
+| --- | --- |
+| 낮음 (개발자 옵션 켜짐) | 경고만 띄우고 계속 쓰게 한다 |
+| 중간 (USB 디버깅, 원격 제어 앱 실행 중) | 송금·결제 같은 민감한 기능만 막거나 추가 인증을 요구한다 |
+| 높음 (루팅·탈옥, 변조된 앱) | 실행을 막는다 |
+
+- 차단 대신 웹뷰·웹 페이지처럼 **대체 경로**를 남겨 두면 막힌 사용자가 아예 떠나지 않는다.
+- 보안 정책 강화도 기능 출시처럼 단계적 출시와 원격 설정으로 내보내, 탐지 조건을 앱 재배포 없이 풀 수 있게 한다.
 
 ## 원격 설정: 배포 없이 바꾸기
 
