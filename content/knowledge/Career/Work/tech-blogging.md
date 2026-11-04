@@ -4,7 +4,7 @@ concept: "Tech Blogging"
 summary: "남에게 설명하며 이해의 빈틈을 찾고, 기록이 포트폴리오와 기회가 된다. 메모가 아닌 완성된 글을 형식을 정해 쓰고, 오래 보존할 수 있는 도구와 검색·구독 채널로 꾸준히 운영한다."
 tags: ["career", "writing", "blog", "growth", "seo"]
 source: other
-date: "2026-10-31"
+date: "2026-11-04"
 sources: ["https://taegon.kim/archives/7107", "https://www.44bits.io/ko/post/8-suggestions-for-tech-programming-blog", "https://diataxis.fr/", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4", "https://brunch.co.kr/@gimmesilver/41", "https://www.slideshare.net/zzsza/intro-102870757"]
 ---
 
@@ -56,10 +56,24 @@ sources: ["https://taegon.kim/archives/7107", "https://www.44bits.io/ko/post/8-s
 | **검색 최적화** | 제목·설명 같은 메타데이터를 정확히 쓰고, 검색하는 사람이 쓰는 말로 제목을 짓는다 |
 | **수익은 동기 장치** | 광고 수익은 대개 작다. 후원, 제휴, 강의·출간 같은 2차 기회가 더 크다 |
 
+### 검색 수요가 있는 주제 고르기: 롱테일 키워드
+
+검색량이 큰 일반 키워드는 경쟁이 세다. 구체적인 여러 단어 조합(롱테일 키워드)은 하나하나 검색량은 작지만 경쟁이 약하고, 찾는 사람의 의도가 분명해 오래 유입된다.
+
+1. **자동완성 수집**: 검색창 자동완성어를 모은다. 사람들이 실제로 치는 말이다.
+2. **씨앗에서 넓히기**: 씨앗 키워드 하나에서 연관 검색어를 트리처럼 펼쳐 30개쯤 만든다.
+3. **조합 만들기**: 키워드 그룹(예: 대상 × 상황 × 속성)을 서로 곱해 후보를 자동으로 만든다.
+4. **시기 맞추기**: 검색량 추이를 보고 수요가 오르기 직전에 글을 올린다.
+5. **고르기**: 검색량과 경쟁도(이미 나온 글 수·품질)를 비교해, 검색은 많고 경쟁은 적은 키워드만 남긴다.
+
+### AI 답변 노출: GEO
+
+사람들이 검색창 대신 ChatGPT·Gemini·Perplexity 같은 AI에 직접 묻는 일이 늘면서, 내 글이나 브랜드가 AI 답변에 언급되는지가 새 노출 지표가 됐다. 이를 위한 최적화를 생성형 엔진 최적화(GEO, Generative Engine Optimization)라고 부른다. 간단한 진단법은 실제 독자가 할 법한 질문 프롬프트를 몇 개(예: 5개) 골라 여러 AI에 던지고, 내가 언급되는지, 경쟁자는 어떻게 언급되는지 비교하는 것이다.
+
 ## 정리
 
 - 블로그는 **설명하며 배우는 도구**이자 실력을 증명하는 기록이다.
 - 메모가 아니라 완성된 글로, 형식을 정해서 쓴다.
 - 도구는 꾸미기보다 **쓰기·보존이 쉬운 것**을 고른다.
 
-관련 노트: [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[data-job-roles|데이터 직군]], [[sustainable-learning-loop|지속 가능한 학습 루프]], [[persuasive-writing|글쓰기 원칙]], [[newsletter-lessons|뉴스레터 발행 원칙]]
+관련 노트: [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[data-job-roles|데이터 직군]], [[sustainable-learning-loop|지속 가능한 학습 루프]], [[persuasive-writing|글쓰기 원칙]], [[newsletter-lessons|뉴스레터 발행 원칙]], [[sponsored-review-rules|협찬 후기와 원고료]]
