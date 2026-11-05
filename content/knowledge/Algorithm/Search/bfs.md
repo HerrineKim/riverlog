@@ -3,9 +3,12 @@ title: "너비 우선 탐색 (BFS)"
 concept: "BFS"
 summary: "시작점에서 가까운 노드부터 큐를 이용해 차례로 방문하는 그래프 탐색으로, 가중치 없는 그래프의 최단 거리를 구한다."
 tags: ["algorithm", "search", "graph", "bfs", "queue"]
-source: til
-date: "2026-10-13"
+source: mixed
+date: "2026-11-05"
+sources: ["https://jih3508.tistory.com/315", "https://leetcode.com/problems/number-of-islands/"]
 ---
+
+> 섬 개수 예제는 「[LeetCode 200. Number of Islands](https://jih3508.tistory.com/315)」 풀이 글로 보강했다.
 
 BFS(Breadth-First Search, 너비 우선 탐색)는 그래프에서 **시작 노드와 가까운 노드부터** 차례로 탐색하는 알고리즘이다. 물결이 퍼지듯 거리 1인 노드를 모두 본 뒤 거리 2, 거리 3으로 넓혀 가므로, 모든 간선의 비용이 같은 그래프에서 최단 거리를 구할 때 가장 먼저 떠올려야 할 방법이다. 미로 탈출 최단 경로, 감염·전파 범위 계산 등에 쓰인다.
 
@@ -108,6 +111,41 @@ def shortest_cells(board, n, start, goal):
 | 정해진 시간(단계) 안에 도달 가능한 칸 세기 | 거리가 한도에 닿은 칸은 꺼낸 뒤 확장하지 않고 `continue`한다. 칸마다 열린 방향이 다르면 현재 칸이 그 방향으로 열려 있고 다음 칸도 반대 방향으로 열려 있는지 둘 다 확인한다 |
 | 연결 요소마다 따로 계산 (값 차이가 1인 칸들의 묶음 크기 등) | 전체 칸을 순회하며 미방문 칸을 만날 때마다 BFS를 새로 시작한다. 한 번의 BFS가 끝나면 그 묶음의 크기·최솟값을 모아 최선값과 비교한다 |
 
+### 연결 요소 세기: 섬 개수
+
+「[Number of Islands](https://leetcode.com/problems/number-of-islands/)」(LeetCode 200)는 `'1'`(땅)·`'0'`(물) 격자에서 상하좌우로 이어진 땅 묶음의 개수를 센다. 대각선은 이어지지 않는다. 모든 칸을 훑다가 아직 방문하지 않은 땅을 만나면 그 칸에서 BFS를 시작해 섬 전체를 방문 처리하고 개수를 1 올린다. 시간은 O(mn), 큐는 최악에 O(mn)이다.
+
+```python
+from collections import deque
+
+def num_islands(grid):
+    m, n = len(grid), len(grid[0])
+    count = 0
+    for x in range(m):
+        for y in range(n):
+            if grid[x][y] != '1':
+                continue
+            count += 1
+            grid[x][y] = '0'                      # 넣을 때 방문 처리
+            queue = deque([(x, y)])
+            while queue:
+                cx, cy = queue.popleft()
+                for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+                    nx, ny = cx + dx, cy + dy
+                    if 0 <= nx < m and 0 <= ny < n and grid[nx][ny] == '1':
+                        grid[nx][ny] = '0'
+                        queue.append((nx, ny))
+    return count
+```
+
+| 함정 | 결과 | 대응 |
+| --- | --- | --- |
+| 꺼낼 때 방문 처리 | 같은 칸이 여러 번 큐에 들어간다. 300×300 전부 땅이면 넣는 횟수가 약 두 배(9만 → 18만)가 된다 | 큐에 넣는 순간 방문 처리한다 |
+| 입력 격자를 `'0'`으로 덮어쓰기 | 방문 배열이 필요 없지만 호출한 쪽의 원본이 사라진다 | 원본을 지켜야 하면 별도 `visited` 배열(O(mn))을 쓴다 |
+| 재귀 DFS | 섬 하나가 9만 칸이면 Python `RecursionError`, Node `RangeError`, Java `StackOverflowError` | BFS나 명시적 스택 DFS로 바꾼다 |
+| 정수 `1`과 비교 | 칸 값이 문자 `'1'`이라 조건이 늘 거짓이 되어 0을 돌려준다 | 입력 타입을 먼저 확인한다 |
+| 아래쪽 범위 검사 누락 | Python은 음수 인덱스가 반대편 끝을 가리켜 오류 없이 틀린 칸을 읽는다 | `0 <=` 검사를 격자를 읽기 전에 둔다 |
+
 ## BFS와 DFS, 언제 무엇을 쓸까
 
 | 상황 | 선택 |
@@ -124,5 +162,6 @@ BFS는 한 레벨의 노드를 모두 큐에 담으므로 그래프가 넓을수
 - BFS = 큐 + 넣을 때 방문 처리, 시간 복잡도 O(V + E)
 - 가중치가 모두 같으면 BFS가 곧 최단 거리 알고리즘이다. (가중치가 다르면 다익스트라)
 - 격자 문제는 방향 배열 `(di, dj)`, 범위 검사, 방문(거리) 배열을 세트로 기억해 둔다.
+- 연결 요소 세기는 전체 칸을 훑으며 미방문 칸마다 BFS를 새로 시작한다. 큰 격자에서는 재귀 DFS 대신 BFS나 명시적 스택을 쓴다.
 
 관련 노트: [[queue-deque|큐와 덱]], [[dfs|DFS]], [[dijkstra|다익스트라]], [[graph-basics|그래프의 기본]], [[web-search-engine|웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리]]
