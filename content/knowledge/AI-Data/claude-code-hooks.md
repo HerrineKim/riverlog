@@ -1,14 +1,15 @@
 ---
 title: "Claude Code 훅: 도구 호출 앞뒤에 규칙 걸기"
 concept: "Claude Code Hooks"
-summary: "훅은 Claude Code의 특정 시점(도구 실행 전후, 응답 종료, 압축 전 등)에 내 명령을 자동으로 실행하는 장치다. 포맷터·타입 검사·민감 파일 차단처럼 모델에게 부탁하지 않고 반드시 지켜야 하는 규칙을 건다. 이벤트 종류, 설정 위치와 matcher, 표준 입력 JSON과 종료 코드 2의 의미, .env 읽기 차단 예제, 유용한 훅, 보안 주의점과 디버깅 방법을 정리했다."
+summary: "훅은 Claude Code의 특정 시점(도구 실행 전후, 응답 종료, 압축 전 등)에 내 명령을 자동으로 실행하는 장치다. 포맷터·타입 검사·민감 파일 차단처럼 모델에게 부탁하지 않고 반드시 지켜야 하는 규칙을 건다. 이벤트 종류, 설정 위치와 matcher, 표준 입력 JSON과 종료 코드 2의 의미, .env 읽기 차단 예제, 유용한 훅(큰 파일 읽기를 저비용 모델로 돌려 토큰을 줄이는 구성 포함), 보안 주의점과 디버깅 방법을 정리했다."
 tags: ["ai", "claude-code", "agentic-coding", "automation", "security"]
 source: other
-date: "2026-10-20"
-sources: ["https://gayuna.github.io/llm/claude-code/", "https://anthropic.skilljar.com/claude-code-in-action", "https://code.claude.com/docs/en/hooks", "https://code.claude.com/docs/en/hooks-guide"]
+date: "2026-11-05"
+sources: ["https://gayuna.github.io/llm/claude-code/", "https://anthropic.skilljar.com/claude-code-in-action", "https://code.claude.com/docs/en/hooks", "https://code.claude.com/docs/en/hooks-guide", "https://engineering.atspotify.com/2026/9/portal-by-spotify-cut-my-claude-code-token-usage-by-90"]
 ---
 
 > Anthropic 강의 「[Claude Code in Action](https://anthropic.skilljar.com/claude-code-in-action)」을 정리한 hello.gayuna의 「[Claude Code in Action](https://gayuna.github.io/llm/claude-code/)」(2025.09)을 바탕으로, 이벤트·설정·출력 형식은 [훅 공식 문서](https://code.claude.com/docs/en/hooks)로 2026년 기준에 맞춰 재구성한 노트다.
+> 토큰 절감 예는 Spotify Engineering의 「[Portal by Spotify cut my Claude Code token usage by 90%](https://engineering.atspotify.com/2026/9/portal-by-spotify-cut-my-claude-code-token-usage-by-90)」(2026.09)로 보강했다.
 
 ## 훅이란
 
@@ -125,6 +126,20 @@ main();
 | 포맷터 | 편집 뒤 Prettier·Black 등을 자동 실행 |
 | 알림 | `Notification`·`Stop`에서 데스크톱 알림을 띄워 자리를 비워도 끝난 것을 안다 |
 
+### 예: 큰 파일 읽기를 싼 모델로 돌려 토큰 줄이기
+
+파일을 통째로 읽거나 테스트·설정·타입 스텁 같은 정형 코드를 쓰는 일은 토큰은 많이 들지만 판단은 적게 든다. 이런 I/O성 작업을 저비용 모델에 넘기고 메인 모델은 추론에만 쓰면 토큰이 크게 준다. Spotify 사내 실험에서는 큰 파일 읽기를 위임해 읽기 토큰을 평균 약 90% 줄였다.
+
+| 계층 | 하는 일 |
+| --- | --- |
+| `PreToolUse` 훅 | `Read`가 임계값(예: 350줄)을 넘는 파일을 통째로 읽으려 하면 막고 위임 스킬을 쓰라고 알려 준다. `offset`·`limit`을 준 부분 읽기는 통과시킨다. `Bash`의 `cat`·`head`·`tail`·`less`로 큰 파일을 여는 것도 같은 식으로 막는다 |
+| 래퍼 스크립트 | 파일들과 질문을 저비용 모델(예: Gemini Flash 계열, 낮은 temperature)에 한 번에 보내 글머리표 요약만 받는다. 코드 생성은 명세와 참고 파일을 보내 결과를 바로 디스크에 쓴다 |
+| 스킬 | 언제 어떤 스크립트를 부를지 Claude에게 알려 준다 |
+
+- **CLAUDE.md 규칙만으로는 지켜지지 않는다.** 「큰 파일은 위임하라」는 지시는 권고라서 모델이 자주 건너뛴다. 훅이 막아야 스킬을 무시해도 비싼 읽기가 일어나지 않는다. 훅을 플러그인으로 묶으면 프로젝트마다 규칙을 복사하지 않아도 된다.
+- **편집과 추론은 위임하지 않는다.** 요약에는 정확한 줄 번호가 없으니 고칠 부분은 메인 모델이 직접 읽는다. 저비용 모델은 미묘한 동시성 버그 같은 것을 놓치므로 디버깅, 설계 판단, 안전에 중요한 코드는 메인 모델이 맡는다.
+- **작은 파일은 직접 읽는 편이 빠르다.** 위임 한 번에 10~30초가 걸리므로 임계값 아래는 그냥 읽게 둔다.
+
 ## 주의점
 
 ### 보안
@@ -158,6 +173,7 @@ main();
 - `PreToolUse`는 막을 수 있고, `PostToolUse`는 결과를 보고 피드백을 준다.
 - 표준 입력으로 JSON을 받고, 종료 코드 2와 stderr로 막고 이유를 전한다.
 - 타입 검사·포맷터·민감 파일 차단처럼 확인 가능한 규칙에 쓴다. 단순 차단은 권한 규칙으로도 된다.
+- CLAUDE.md의 권고를 강제 규칙으로 바꿀 때도 훅을 쓴다. 큰 파일 읽기를 막고 저비용 모델로 돌리면 토큰이 크게 준다.
 - 훅은 내 권한으로 돈다. 입력 검증, 절대 경로, 따옴표를 지킨다.
 
 관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[harness-engineering|프롬프트에서 하네스로]], [[personal-agent-harness|내 일을 줄이는 하네스 만들기]]
