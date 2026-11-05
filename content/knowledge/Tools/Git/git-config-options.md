@@ -1,10 +1,10 @@
 ---
 title: "자주 쓰는 Git 설정 옵션"
 concept: "Git Config"
-summary: "개발자들이 실제로 켜 두는 git config 옵션을 pull·merge·rebase·diff·전역 설정별로 묶었다. 대부분 기본값의 불편함을 고치는 한 줄 설정이다."
+summary: "개발자들이 실제로 켜 두는 git config 옵션을 pull·merge·rebase·diff·전역 설정별로 묶고, 여러 계정의 이메일·인증을 저장소별로 나누는 법도 다룬다. 대부분 기본값의 불편함을 고치는 한 줄 설정이다."
 tags: ["git", "version-control", "config", "tools"]
 source: other
-date: "2026-10-21"
+date: "2026-11-05"
 sources: ["https://news.hada.io/topic?id=13405", "https://jvns.ca/blog/2024/02/16/popular-git-config-options/", "https://80000coding.notion.site/a290d188438f4ebfb6940a1033183340", "https://80000coding.notion.site/19c283f564a6492d98945e4558a990d7", "https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/mingrammer/git-tips", "https://git-scm.com/docs/git-config", "https://johngrib.github.io/wiki/git-alias/", "https://github.com/k88hudson/git-flight-rules/blob/master/README_kr.md"]
 ---
 
@@ -109,6 +109,26 @@ git rebase -i main           # autosquash가 켜져 있으면 자동으로 제�
   path = ~/.gitconfig-work
 ```
 
+### 계정별 인증 나누기
+
+`includeIf`는 커밋에 찍히는 이메일만이 아니라 **푸시할 때 쓰는 인증**도 나눈다. 회사·개인 GitHub 계정을 한 기기에서 쓸 때 전역 인증 하나로는 저장소마다 계정이 엉킨다.
+
+| 방법 | 설정 | 나뉘는 단위 |
+| --- | --- | --- |
+| SSH 키 분리 | `includeIf`로 불러온 파일에 `core.sshCommand "ssh -i ~/.ssh/id_ed25519_work -o IdentitiesOnly=yes"` | 폴더 |
+| HTTPS 자격 증명 분리 | `credential.useHttpPath true`: 호스트만이 아니라 저장소 경로까지 보고 자격 증명을 따로 저장한다 | 저장소 |
+| 환경변수 토큰 | 계정별 토큰을 `GH_TOKEN` 등 환경변수에 넣어 두고, 셸 함수 하나로 바꿔 끼운 뒤 push한다. `gh` CLI는 `gh auth switch`로도 계정을 바꾼다 | 셸 세션 |
+
+```ini
+# ~/.gitconfig-work: includeIf "gitdir:~/work/"로 불러오는 파일
+[user]
+  email = me@company.example
+[core]
+  sshCommand = ssh -i ~/.ssh/id_ed25519_work -o IdentitiesOnly=yes
+```
+
+코딩 에이전트도 같은 문제가 있다. Claude Code의 로그인은 기기 전체에 걸리므로 계정을 나누는 법은 [[claude-code-guide#계정과 인증: 여러 계정 나눠 쓰기|Claude Code 활용 가이드]]에 있다.
+
 ### 커밋 작성자와 GitHub 기여 그래프
 
 커밋에 찍히는 이름·이메일은 `user.name`, `user.email`에서 온다. `--global`은 `~/.gitconfig`에, 옵션 없이 저장소 안에서 실행하면 그 저장소의 `.git/config`에 저장되고 저장소 설정이 우선한다. 현재 값은 `git config --list --show-origin`으로 어느 파일에서 왔는지까지 본다.
@@ -160,7 +180,7 @@ alias 값이 `!`로 시작하면 git 하위 명령이 아니라 **셸 명령**�
 ## 정리
 
 - 처음 켤 만한 것: `pull.ff only`(또는 `pull.rebase true`), `merge.conflictstyle zdiff3`, `rebase.autosquash true`, `diff.algorithm histogram`.
-- 여러 계정을 쓰면 `includeIf`와 `user.useConfigOnly`로 커밋 이메일 실수를 막는다.
+- 여러 계정을 쓰면 `includeIf`와 `user.useConfigOnly`로 커밋 이메일 실수를 막고, 같은 `includeIf` 파일의 `core.sshCommand`나 `credential.useHttpPath`로 인증도 나눈다.
 - 설정은 기기마다 따로라서, `~/.gitconfig`를 dotfiles로 관리하면 여러 기기에서 같은 환경을 유지할 수 있다.
 
 관련 노트: [[git-basics|기본 명령과 파일 상태]], [[merge|브랜치 병합]], [[git-undo-and-rewrite|되돌리기와 이력 다루기]], [[stash-worktree-clean|stash, worktree, clean]]
