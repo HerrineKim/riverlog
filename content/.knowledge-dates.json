@@ -81,11 +81,11 @@
  },
  "AI-Data/claude-code-guide.md": {
   "created": "2026-10-12T14:11:17+09:00",
-  "updated": "2026-11-02T10:13:09+09:00"
+  "updated": "2026-11-05T22:06:49+09:00"
  },
  "AI-Data/claude-code-hooks.md": {
   "created": "2026-10-20T11:44:44+09:00",
-  "updated": "2026-10-20T15:35:59+09:00"
+  "updated": "2026-11-05T22:06:54+09:00"
  },
  "AI-Data/claude-skill-building-guide.md": {
   "created": "2026-10-12T20:35:49+09:00",
@@ -229,7 +229,7 @@
  },
  "AI-Data/prompt-cheat-sheet.md": {
   "created": "2026-10-13T20:00:31+09:00",
-  "updated": "2026-10-31T12:49:41+09:00"
+  "updated": "2026-11-05T22:06:54+09:00"
  },
  "AI-Data/python-data-analysis.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -429,7 +429,7 @@
  },
  "Algorithm/Search/bfs.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T12:52:45+09:00"
+  "updated": "2026-11-05T22:06:54+09:00"
  },
  "Algorithm/Search/binary-search.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1461,7 +1461,7 @@
  },
  "Computer-Science/Network/ssh.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:39:56+09:00"
+  "updated": "2026-11-05T22:06:54+09:00"
  },
  "Computer-Science/Network/transport-layer.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1869,7 +1869,7 @@
  },
  "DevOps/devsecops.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-11-05T22:06:54+09:00"
  },
  "DevOps/disaster-recovery.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -3485,7 +3485,7 @@
  },
  "Tools/Git/git-config-options.md": {
   "created": "2026-10-12T21:32:52+09:00",
-  "updated": "2026-10-31T12:52:45+09:00"
+  "updated": "2026-11-05T22:06:54+09:00"
  },
  "Tools/Git/git-history-search.md": {
   "created": "2026-10-21T14:58:21+09:00",
