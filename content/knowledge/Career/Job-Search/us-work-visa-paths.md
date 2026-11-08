@@ -67,4 +67,4 @@ H-1B는 학사 이상 학위(또는 동등 경력)가 필요한 전문직 비자
 - 연고가 없다면 미국 학위 → OPT → H-1B, 또는 캐나다 지사 → L-1이 현실적이다.
 - 어느 길이든 실력이 기본이다. 코딩 인터뷰와 LinkedIn을 지금부터 준비한다.
 
-관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[resume-writing|합격하는 영문 레주메 작성법]], [[georgia-tech-omscs|조지아텍 온라인 석사: OMSCS와 OMSA]], [[us-study-funding|미국 유학 학비 지원과 장학금]]
+관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[australia-skilled-migration|한국 개발자가 호주에서 일하는 경로: 기술이민 세 갈래]], [[resume-writing|합격하는 영문 레주메 작성법]], [[georgia-tech-omscs|조지아텍 온라인 석사: OMSCS와 OMSA]], [[us-study-funding|미국 유학 학비 지원과 장학금]]
