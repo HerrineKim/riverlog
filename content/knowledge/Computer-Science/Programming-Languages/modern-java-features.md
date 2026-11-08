@@ -110,7 +110,7 @@ public non-sealed class Point implements Payment {}   // 여기서부터 다시 
 | `switch` 패턴 | 21 | `case Circle c ->`처럼 타입으로 분기, `case null`, 가드 `when` |
 | 레코드 패턴 | 21 | `case Point(int x, int y) ->`: 레코드를 컴포넌트로 분해, 중첩 가능 |
 | 이름 없는 패턴 | 22 | 쓰지 않는 컴포넌트는 `_`로 버린다 |
-| 기본형 패턴 | 프리뷰 | `case int i when i > 100` 같은 기본형 타입 패턴(Java 25 기준 프리뷰) |
+| 기본형 패턴 | 프리뷰 | `case int i when i > 100` 같은 기본형 타입 패턴(Java 23부터 프리뷰, Java 26에서 네 번째 프리뷰, JEP 530) |
 
 ```java
 double area(Shape s) {

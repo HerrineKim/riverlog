@@ -1,11 +1,11 @@
 ---
 title: "Next.js App Router의 내비게이션과 데이터 가져오기"
 concept: "App Router"
-summary: "App Router는 서버가 라우팅하고 클라이언트가 내비게이션한다. Link·useRouter, prefetch와 클라이언트 캐시, 서버 컴포넌트의 병렬·순차 fetch, 요청 중복 제거, React cache()와 preload 패턴을 정리한다."
+summary: "App Router는 서버가 라우팅하고 클라이언트가 내비게이션한다. Link·useRouter, prefetch(기존 방식과 부분 프리페치)와 클라이언트 캐시, 서버 컴포넌트의 병렬·순차 fetch, 요청 중복 제거, React cache()와 preload 패턴을 정리한다."
 tags: ["nextjs", "react", "rendering", "cache", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/207", "https://riverkim.kr/214", "https://nextjs.org/docs/app/getting-started/linking-and-navigating", "https://nextjs.org/docs/app/api-reference/config/next-config-js/staleTimes"]
+sources: ["https://riverkim.kr/207", "https://riverkim.kr/214", "https://nextjs.org/docs/app/getting-started/linking-and-navigating", "https://nextjs.org/docs/app/api-reference/config/next-config-js/staleTimes", "https://nextjs.org/docs/app/api-reference/config/next-config-js/partialPrefetching", "https://nextjs.org/docs/app/guides/adopting-partial-prefetching"]
 ---
 
 > riverkim.kr에 쓴 글들을 바탕으로 Next.js 16 공식 문서와 대조해 재구성한 노트다.
@@ -44,6 +44,16 @@ flowchart TB
 | --- | --- |
 | 정적 경로 | 경로 전체 |
 | 동적 경로 | 건너뛰거나, `loading.tsx`가 있으면 공유 레이아웃과 로딩 UI까지만(부분 prefetch) |
+
+위 표는 링크마다 따로 미리 받는 기존 방식이다. Cache Components 앱에서는 **부분 프리페치(Partial Prefetching)** 를 켤 수 있다(`next.config.ts`에 `cacheComponents: true`와 함께 `partialPrefetching: true`, 구획 단위로는 `export const prefetch = 'partial'`). `create-next-app` 기본값으로 만든 새 앱에는 이미 켜져 있다.
+
+| | 기존 prefetch | 부분 프리페치 |
+| --- | --- | --- |
+| 단위 | 보이는 링크마다 그 URL을 하나씩 받는다. 링크 N개면 prefetch도 약 N번 | 경로마다 **앱 셸(App Shell)** 하나를 받아, 같은 경로로 가는 모든 링크가 재사용한다 |
+| 미리 받는 내용 | 위 표대로 정적·동적 경로에 따라 다르다 | URL에 기대지 않는 정적·캐시된 내용만. `params`·`searchParams`에 기대는 내용은 이동한 뒤 스트리밍된다 |
+| 더 받고 싶을 때 | `<Link prefetch={true}>`로 경로 전체 | `<Link prefetch={true}>`로 그 링크의 URL 데이터까지(링크별 prefetch) |
+
+`cookies()`·`headers()`를 읽는 경로의 앱 셸은 세션 데이터를 담으므로 클라이언트가 세션별로 따로 캐시한다. 옵션을 비워 두면 기존 방식으로 동작하며 경고를 남기고, 다음 메이저 버전에서는 두 기능이 기본이 되고 옵션은 없어질 예정이다.
 
 ### 이동이 일어나는 순서
 
