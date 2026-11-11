@@ -4,7 +4,7 @@ concept: "SSH"
 summary: "SSH는 믿을 수 없는 네트워크 위에 암호화된 원격 접속 통로를 만든다. 전송 계층이 키 교환과 서버 호스트 키 확인으로 암호화 채널을 열고, 인증 계층이 공개키 등으로 사용자를 확인하며, 연결 계층이 그 하나의 통로를 셸·명령·포트 포워딩·파일 전송 채널로 나눠 쓴다."
 tags: ["network", "security", "linux", "cryptography", "devops"]
 source: other
-date: "2026-10-21"
+date: "2026-11-05"
 sources: ["https://bytebytego.com/guides/how-does-ssh-work", "https://www.rfc-editor.org/rfc/rfc4251", "https://www.openssh.com/manual.html"]
 ---
 
@@ -72,6 +72,8 @@ TLS는 인증서 체인으로 서버를 믿고, SSH는 기본적으로 직접 �
 
 - 비밀번호 로그인과 root 직접 로그인을 끈다(`PasswordAuthentication no`, `PermitRootLogin no`).
 - 22번 포트를 인터넷 전체에 열지 않는다. 방화벽·보안 그룹으로 출발지를 제한하거나 배스천·VPN 뒤에 둔다 → [[network-security|네트워크 보안: 방화벽, VPN, 계층별 공격]]
+- 개인 서버·NAS처럼 SSH를 공개해야 한다면, 접속할 일이 없는 국가의 IP 대역을 호스트 방화벽(`ufw`·`nftables`)에서 막는 것만으로도 자동화된 무차별 대입 시도가 크게 준다. 국가별 IP 목록은 바뀌므로 주기적으로 갱신한다.
+- 쓰지 않는 서비스와 열린 포트를 함께 점검한다. 자동 스캐너는 SSH뿐 아니라 오래된 관리 페이지·레거시 웹 스택처럼 패치가 끊긴 서비스를 노린다.
 - 키는 사람·용도별로 따로 만들고, 퇴사·유출 시 `authorized_keys`에서 지운다. 많아지면 SSH 인증서로 수명을 짧게 만든다.
 - 최신 OpenSSH는 양자 내성 하이브리드 키 교환을 기본으로 쓴다. 오래된 서버·클라이언트는 갱신한다.
 

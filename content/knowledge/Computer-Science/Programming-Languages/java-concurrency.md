@@ -172,7 +172,7 @@ Thread.ofVirtual().start(task);
 - **CPU 바운드 작업은 빨라지지 않는다.** 캐리어 수(기본은 코어 수)만큼만 실제로 돈다.
 - **고정(pinning)**: JNI 같은 네이티브 프레임 안에서 블로킹하면 가상 스레드가 캐리어에 묶인다. Java 21~23에서는 `synchronized` 안의 블로킹도 묶였지만 **Java 24(JEP 491)부터 해결**됐다. `-Djdk.tracePinnedThreads`나 JFR의 `jdk.VirtualThreadPinned` 이벤트로 찾는다.
 - `ThreadLocal`에 큰 객체를 캐시하던 관용(예: 스레드마다 파서 하나)은 가상 스레드 수만큼 복제되므로 `ScopedValue`나 공유 객체로 바꾼다.
-- 여러 하위 작업을 하나의 단위로 시작·취소·대기하는 구조적 동시성(`StructuredTaskScope`)은 Java 25 기준 아직 프리뷰다([[structured-concurrency|구조적 동시성]]).
+- 여러 하위 작업을 하나의 단위로 시작·취소·대기하는 구조적 동시성(`StructuredTaskScope`)은 Java 26 기준 아직 프리뷰다(여섯 번째 프리뷰, JEP 525)([[structured-concurrency|구조적 동시성]]).
 
 이벤트 루프 서버와의 선택은 [[event-loop-server|비동기 서버의 이벤트 루프]]에, Spring에서 켜는 방법은 [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]]에 있다.
 

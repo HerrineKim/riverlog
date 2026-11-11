@@ -51,7 +51,7 @@ sources: ["https://tech.inflab.com/20261009-jenkins-to-temporal/"]
 | 기존 배치 이미지 | 재구성 필요할 수 있음 | 그대로 재사용 |
 
 - 워크플로를 일반 코드로 쓰므로 타입 검사·단위 테스트·코드 리뷰를 그대로 적용한다.
-- 상태 저장소로 기존 Aurora PostgreSQL에 DB를 추가하면 별도 저장 인프라 없이 비용을 아낄 수 있다.
+- 상태 저장소는 PostgreSQL·MySQL·Cassandra를 지원한다. 이미 운영 중인 PostgreSQL(Aurora 등)에 DB를 하나 추가하면 별도 저장 인프라 없이 비용을 아낄 수 있다.
 
 ## cron·Jenkins와 Temporal의 역할 차이
 

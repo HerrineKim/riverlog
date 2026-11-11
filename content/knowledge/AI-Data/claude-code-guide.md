@@ -1,14 +1,14 @@
 ---
 title: "Claude Code 활용 가이드"
 concept: "Claude Code"
-summary: "채팅형 AI와 무엇이 다른지부터 설치, 질문 → 편집 → 도구 → 맥락 → 자동화로 익숙해지는 순서, 슬래시 명령·단축키, MCP 연결, Skills와 CLAUDE.md, 팀 설정 공유, 권한 모드와 자동 모드, `claude -p` 자동화, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하는 작업 방식까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
+summary: "채팅형 AI와 무엇이 다른지부터 설치, 질문 → 편집 → 도구 → 맥락 → 자동화로 익숙해지는 순서, 슬래시 명령·단축키, MCP 연결, Skills와 CLAUDE.md, 팀 설정 공유, 권한 모드와 자동 모드, 여러 계정을 나눠 쓰는 인증 설정, `claude -p` 자동화, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하는 작업 방식까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
 tags: ["ai", "llm", "claude-code", "agentic-coding", "prompting", "mcp"]
 source: other
-date: "2026-11-02"
-sources: ["https://www.youtube.com/watch?v=6eBSHbLKuN0", "https://www.youtube.com/watch?v=kPUuh2ZnzEM", "https://code.claude.com/docs/en/headless", "https://gayuna.github.io/llm/claude-code/", "https://code.claude.com/docs/en/model-config", "https://code.claude.com/docs/en/github-actions", "https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five", "https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp", "https://claude.com/blog/auto-mode", "https://code.claude.com/docs/en/permission-modes"]
+date: "2026-11-05"
+sources: ["https://www.youtube.com/watch?v=6eBSHbLKuN0", "https://www.youtube.com/watch?v=kPUuh2ZnzEM", "https://code.claude.com/docs/en/headless", "https://gayuna.github.io/llm/claude-code/", "https://code.claude.com/docs/en/model-config", "https://code.claude.com/docs/en/github-actions", "https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five", "https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp", "https://claude.com/blog/auto-mode", "https://code.claude.com/docs/en/permission-modes", "https://code.claude.com/docs/en/authentication", "https://code.claude.com/docs/en/env-vars"]
 ---
 
-> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다. 위임 방식은 Kieran Klaassen의 「[How I Use Claude Code to Ship Like a Team of Five](https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five)」(2025.07)를, 도입 순서와 팀 설정은 Claude Code를 만든 Boris Cherny의 강연 「[Mastering Claude Code in 30 minutes](https://www.youtube.com/watch?v=6eBSHbLKuN0)」(Code w/ Claude, 2025.05, [한글 자막판](https://www.youtube.com/watch?v=kPUuh2ZnzEM))을, 동작 원리·맥락 관리·GitHub 연동은 Anthropic 강의 「Claude Code in Action」을 정리한 hello.gayuna의 [글](https://gayuna.github.io/llm/claude-code/)(2025.09)을 더했다. 권한 모드와 자동 모드는 Anthropic의 「[Auto mode for Claude Code](https://claude.com/blog/auto-mode)」(2026.03)와 [권한 모드 공식 문서](https://code.claude.com/docs/en/permission-modes)로 정리했다.
+> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다. 위임 방식은 Kieran Klaassen의 「[How I Use Claude Code to Ship Like a Team of Five](https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five)」(2025.07)를, 도입 순서와 팀 설정은 Claude Code를 만든 Boris Cherny의 강연 「[Mastering Claude Code in 30 minutes](https://www.youtube.com/watch?v=6eBSHbLKuN0)」(Code w/ Claude, 2025.05, [한글 자막판](https://www.youtube.com/watch?v=kPUuh2ZnzEM))을, 동작 원리·맥락 관리·GitHub 연동은 Anthropic 강의 「Claude Code in Action」을 정리한 hello.gayuna의 [글](https://gayuna.github.io/llm/claude-code/)(2025.09)을 더했다. 권한 모드와 자동 모드는 Anthropic의 「[Auto mode for Claude Code](https://claude.com/blog/auto-mode)」(2026.03)와 [권한 모드 공식 문서](https://code.claude.com/docs/en/permission-modes)로, 계정과 인증은 [인증](https://code.claude.com/docs/en/authentication)·[환경변수](https://code.claude.com/docs/en/env-vars) 공식 문서로 정리했다.
 
 ## 채팅형 AI와 다른 점
 
@@ -373,6 +373,24 @@ Claude Code를 잘 쓰면 개발자의 자리는 **코드를 치는 사람**에�
 - 대화에서 「푸시하지 마」, 「내 리뷰 기다려」처럼 경계를 말하면 그 경계를 지킨다. 「force push 해도 돼」 같은 모호한 허락보다 브랜치 이름까지 짚은 구체적 승인만 차단을 푼다.
 - 분류기도 틀린다. 의도가 모호하거나 환경 맥락이 부족하면 위험한 행동을 통과시키거나 무해한 행동을 막을 수 있고, 검사만큼 토큰·지연이 더 든다. 중요한 환경에서는 격리된 곳에서 돌린다.
 - 조직 관리자는 관리 설정의 `permissions.disableAutoMode: "disable"`로 끌 수 있다.
+
+## 계정과 인증: 여러 계정 나눠 쓰기
+
+`/login`으로 받은 자격 증명은 **설정 폴더 단위**로 저장된다. 기본 설정 폴더는 `~/.claude`이고, macOS는 Keychain에, Linux·Windows는 설정 폴더의 `.credentials.json`(권한 `0600`)에 둔다. 그래서 한 기기에서 연 세션은 모두 같은 계정을 쓴다. 한 터미널에서 로그아웃하고 회사 계정으로 다시 로그인하면, 이미 열려 있던 다른 프로젝트의 세션도 알림 없이 회사 계정의 자격 증명으로 돈다.
+
+| 방법 | 하는 일 | 과금 |
+| --- | --- | --- |
+| `CLAUDE_CONFIG_DIR` | 설정 폴더 자체를 바꾼다. 설정·세션 기록·플러그인·자격 증명(Keychain 항목도)이 폴더별로 나뉜다 | 폴더마다 로그인한 구독 |
+| `ANTHROPIC_API_KEY` | 셸·tmux 창마다 다른 API 키를 export하고 `claude`를 띄운다. 로그인돼 있어도 구독 대신 이 키를 쓴다. 대화형 모드에서는 처음 한 번 승인을 묻고, `claude -p`에서는 바로 쓴다 | API 사용량 |
+| `apiKeyHelper` 설정 | 키를 돌려주는 셸 스크립트를 지정한다. 비밀 관리 도구에서 키를 꺼내 올 때 | API 사용량 |
+| `CLAUDE_CODE_OAUTH_TOKEN` | `claude setup-token`으로 만든 장기 토큰을 환경변수로 준다. CI나 원격 서버에서 구독을 쓸 때 | 구독 |
+
+```bash
+# ~/.zshrc: 회사 계정은 별도 설정 폴더로 띄운다
+alias claude-work='CLAUDE_CONFIG_DIR=~/.claude-work claude'
+```
+
+자격 증명이 여럿이면 Claude Code는 클라우드 제공자(Bedrock·Vertex·Foundry 환경변수) → `ANTHROPIC_AUTH_TOKEN` → `ANTHROPIC_API_KEY` → `apiKeyHelper` → `CLAUDE_CODE_OAUTH_TOKEN` → `/login` 구독 순으로 고른다. 구독으로 쓰는데 엉뚱하게 API 과금이 되거나 인증이 실패하면 셸에 `ANTHROPIC_API_KEY`가 남아 있지 않은지 먼저 본다(`unset ANTHROPIC_API_KEY`). Git 쪽에서 저장소마다 계정을 나누는 방법은 [[git-config-options|Git 설정 옵션]]에 있다.
 
 ## 요금제
 
