@@ -5,11 +5,11 @@ summary: "DevSecOps는 보안 검사를 출시 직전의 관문이 아니라 개
 tags: ["devops", "security", "ci-cd", "automation", "cloud"]
 source: other
 date: "2026-11-05"
-sources: ["https://bytebytego.com/guides/what-is-devsecops", "https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)", "https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5"]
+sources: ["https://bytebytego.com/guides/what-is-devsecops", "https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms", "https://news.hada.io/weekly/202644", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)", "https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[What is DevSecOps?](https://bytebytego.com/guides/what-is-devsecops)」, 「[Top 4 Forms of Authentication Mechanisms](https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms)」를 바탕으로 재구성한 노트다.
-> 클라우드의 보안 위협과 대응, 보안 솔루션 배치는 고려사이버대학교 「클라우드 컴퓨팅」(2023-2학기) 강의 내용으로 보강했다.
+> 클라우드의 보안 위협과 대응, 보안 솔루션 배치는 고려사이버대학교 「클라우드 컴퓨팅」(2023-2학기) 강의 내용으로 보강했다. 취약점 대응의 운영 부담은 GeekNews Weekly의 「[취약점은 쏟아지는데, 방어하는 사람은 지쳐갑니다](https://news.hada.io/weekly/202644)」(2026.10)로 보강했다.
 > 공급망 공격 사례와 감염 대응은 「[NIKKE PC launcher compromise](https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5)」(2026.11) 분석 문서로 보강했다.
 
 ## DevSecOps란
@@ -97,6 +97,17 @@ flowchart LR
 | 대상 | 소프트웨어 자체의 알려진 결함(OpenStack, Xen·KVM·QEMU 같은 플랫폼 포함) | 설정 미흡(약한 비밀번호 정책, 과한 파일 권한, 필요 없는 서비스) |
 | 누가 만들고 고치나 | 벤더가 만들고 벤더가 패치 | 사용자가 만들고 사용자가 고친다 |
 | 관점 | 알려진 취약 버전이 돌고 있나 | 내부 정책과 규제를 지키나 |
+
+#### 병목은 패치가 아니라 운영이다
+
+AI가 취약점을 찾고 악용하는 비용을 낮추면서, 공격자와 방어자가 같은 속도로 결함을 찾아 공개 건수가 한꺼번에 몰린다. 메인테이너 쪽에서는 하위 호환을 깨지 않는 수정안을 찾기 어렵고, 재현되지 않거나 중복된 제보를 걸러 내는 일도 쌓인다. 운영 쪽의 부담은 패치를 쓰는 일보다 **영향받는 구성 요소가 어디에 숨어 있는지 찾고(라이브러리 안, 프로그램별 인증서 저장소까지), 우리 환경이 실제로 노출되는지 판단하고, 업데이트를 테스트하는 일**에 있다. 이 일은 시스템을 가장 잘 아는 소수에게 몰려 번아웃으로 이어진다.
+
+| 대응 | 내용 |
+| --- | --- |
+| 인벤토리 | 서버·컨테이너·구성 요소 버전 목록(SBOM 포함)을 늘 최신으로 둔다. 「어디에 쓰고 있나」에 바로 답할 수 있어야 한다 |
+| 분류(triage) | 모든 권고를 같은 긴급도로 다루지 않는다. 외부 노출 여부, 실제 악용 확인 여부, 공격 조건이 우리 환경에 맞는지로 순서를 매긴다 |
+| 리허설 | 패치 테스트와 배포 절차를 평소에 연습해 둔다 |
+| 패치 전 완화 | 필요 없는 관리 인터페이스를 닫고, 최소 권한을 적용하고, 망을 나눠 한 곳이 뚫려도 퍼지지 않게 한다 |
 
 규모가 크고 정책이 복잡한 클라우드는 CCE 쪽에 특히 약하다. 공개된 버킷, 0.0.0.0/0으로 열린 보안 그룹, 꺼진 로깅 같은 설정 오류를 계속 검사하는 도구(CSPM, Cloud Security Posture Management)를 쓰는 이유이고, 같은 검사를 배포 전 IaC 단계로 당긴 것이 위 표의 「코드형 인프라」 검사다.
 
