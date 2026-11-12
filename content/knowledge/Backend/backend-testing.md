@@ -5,10 +5,10 @@ summary: "도메인 로직은 프레임워크 없는 단위 테스트로, 경계
 tags: ["backend", "testing", "ci-cd", "software-engineering"]
 source: other
 date: "2026-10-21"
-sources: ["https://github.com/cheese10yun/blog-sample/blob/master/test-code/README.md", "https://blog.outsider.ne.kr/1275", "https://blog.shiren.dev/2020-06-15-%EC%9C%A0%EC%9A%A9%ED%95%9C%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%BC%80%EC%9D%B4%EC%8A%A4%EB%A5%BC%EC%9C%84%ED%95%9C%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98%EC%9E%90%EC%84%B8/", "https://gyuwon.github.io/blog/false-positive-in-software-testing/", "https://johngrib.github.io/wiki/junit5-nested/", "http://woowabros.github.io/tools/2019/07/18/localstack-integration.html", "https://engineering.linecorp.com/ko/blog/server-side-test-automation-journey-1/", "https://testcontainers.com/"]
+sources: ["https://github.com/aws/aws-emulator", "https://github.com/cheese10yun/blog-sample/blob/master/test-code/README.md", "https://blog.outsider.ne.kr/1275", "https://blog.shiren.dev/2020-06-15-%EC%9C%A0%EC%9A%A9%ED%95%9C%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%BC%80%EC%9D%B4%EC%8A%A4%EB%A5%BC%EC%9C%84%ED%95%9C%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98%EC%9E%90%EC%84%B8/", "https://gyuwon.github.io/blog/false-positive-in-software-testing/", "https://johngrib.github.io/wiki/junit5-nested/", "http://woowabros.github.io/tools/2019/07/18/localstack-integration.html", "https://engineering.linecorp.com/ko/blog/server-side-test-automation-journey-1/", "https://testcontainers.com/"]
 ---
 
-> 「[테스트 코드 작성에 대한 나름의 고찰](https://github.com/cheese10yun/blog-sample/blob/master/test-code/README.md)」, 「[유닛테스트에 대한 생각](https://blog.outsider.ne.kr/1275)」, 「[유용한 테스트 케이스를 위한 개발자의 자세](https://blog.shiren.dev/2020-06-15-%EC%9C%A0%EC%9A%A9%ED%95%9C%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%BC%80%EC%9D%B4%EC%8A%A4%EB%A5%BC%EC%9C%84%ED%95%9C%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98%EC%9E%90%EC%84%B8/)」, 「[소프트웨어 테스팅의 False Positive](https://gyuwon.github.io/blog/false-positive-in-software-testing/)」, 「[JUnit5로 계층 구조의 테스트 코드 작성하기](https://johngrib.github.io/wiki/junit5-nested/)」, 「[LocalStack을 활용한 Integration Test 환경 만들기](http://woowabros.github.io/tools/2019/07/18/localstack-integration.html)」, 「[서버 사이드 테스트 자동화 여정](https://engineering.linecorp.com/ko/blog/server-side-test-automation-journey-1/)」을 바탕으로 재구성한 노트다.
+> 「[테스트 코드 작성에 대한 나름의 고찰](https://github.com/cheese10yun/blog-sample/blob/master/test-code/README.md)」, 「[유닛테스트에 대한 생각](https://blog.outsider.ne.kr/1275)」, 「[유용한 테스트 케이스를 위한 개발자의 자세](https://blog.shiren.dev/2020-06-15-%EC%9C%A0%EC%9A%A9%ED%95%9C%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%BC%80%EC%9D%B4%EC%8A%A4%EB%A5%BC%EC%9C%84%ED%95%9C%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98%EC%9E%90%EC%84%B8/)」, 「[소프트웨어 테스팅의 False Positive](https://gyuwon.github.io/blog/false-positive-in-software-testing/)」, 「[JUnit5로 계층 구조의 테스트 코드 작성하기](https://johngrib.github.io/wiki/junit5-nested/)」, 「[LocalStack을 활용한 Integration Test 환경 만들기](http://woowabros.github.io/tools/2019/07/18/localstack-integration.html)」, 「[서버 사이드 테스트 자동화 여정](https://engineering.linecorp.com/ko/blog/server-side-test-automation-journey-1/)」을 바탕으로 재구성한 노트다. AWS Emulator는 공식 저장소의 README로 보강했다.
 
 ## 백엔드 테스트에서 정할 것
 
@@ -54,6 +54,15 @@ flowchart TB
 - 로컬 실행은 프로필로 나눈다. `local` 프로필은 에뮬레이터를, 나머지는 실제 클라우드를 본다.
 - 여러 애플리케이션이 메시지를 주고받는 시나리오는 `docker compose`로 공용 에뮬레이터를 띄우고 각 앱이 같은 엔드포인트를 보게 한다.
 - 에뮬레이터는 실제 서비스의 모든 동작(권한, 일관성, 한도)을 재현하지 못한다. 경계 동작은 스테이징에서 한 번 더 확인한다.
+
+AWS는 공식 로컬 에뮬레이터 **[AWS Emulator](https://github.com/aws/aws-emulator)**(Rust로 작성)를 낸다. 계정 없이 로컬·개발 서버·CI에서 AWS API 엔드포인트를 흉내 내며, 쓰임은 LocalStack과 비슷하다. 실행 방식은 두 가지다.
+
+| 모드 | 방법 | 맞는 곳 |
+| --- | --- | --- |
+| 서버 모드 | 에뮬레이터를 띄우고(Linux는 패키지, macOS·Windows는 Docker) 환경 변수로 AWS CLI·SDK의 엔드포인트를 그쪽으로 돌린다 | 언어와 상관없이 CLI·SDK를 쓰는 테스트 |
+| 임베디드 모드 | Rust 테스트에 dev-dependency로 넣어 **테스트마다 격리된 인스턴스**를 프로세스 안에서 돌린다. 엔드포인트·인증서·환경 변수 설정이 없다 | Rust 프로젝트. 첫 빌드가 무거우니 `target/` 캐시와 버전 고정이 필요하다 |
+
+서비스마다 실제 AWS와 얼마나 같은지(fidelity)를 릴리스마다 공개하므로 쓰려는 API가 지원되는지 먼저 확인한다. 개발·테스트용이며 운영이나 보안 테스트에는 쓰지 않는다.
 
 ## 3. 무엇을 남길까: 적고 믿을 수 있게
 

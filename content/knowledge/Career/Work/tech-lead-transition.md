@@ -1,14 +1,14 @@
 ---
 title: "개발자에서 리더로: 테크 리드·팀장이 바꿔야 할 것"
 concept: "Tech Lead"
-summary: "리더의 성과는 내 산출물이 아니라 팀이 만든 가치다. 기술 실력만 믿고 직접 코딩·통제에 매달리는 다섯 가지 실수를 피하고, 1:1 면담·업무 배정·심리적 안전감·피드백·목표와 문서화로 팀을 키운다."
+summary: "리더의 성과는 내 산출물이 아니라 팀이 만든 가치다. 기술 실력만 믿고 직접 코딩·통제에 매달리는 다섯 가지 실수를 피하고, 1:1 면담·업무 배정·심리적 안전감·피드백·목표와 문서화로 팀을 키운다. 사라지는 동기, 역할 누적, 「해결책도 가져오라」의 함정, AI 시대의 평가와 보상 설계도 다룬다."
 tags: ["career", "leadership", "collaboration", "feedback", "growth"]
 source: other
 date: "2026-10-21"
-sources: ["https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mistakes.ko.html", "https://zzsza.github.io/diary/2020/04/26/novice-leader-retrospect", "https://sofiakodar.github.io/posts/becomingmanager/"]
+sources: ["https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mistakes.ko.html", "https://zzsza.github.io/diary/2020/04/26/novice-leader-retrospect", "https://sofiakodar.github.io/posts/becomingmanager/", "https://outstanding.kr/motivation20260713", "https://outstanding.kr/roleaccumulation20260909", "https://outstanding.kr/issuesshrink20261008", "https://outstanding.kr/average20260304", "https://outstanding.kr/performancereviews20261106", "https://outstanding.kr/reward20260608", "https://outstanding.kr/dontplz20260406"]
 ---
 
-> 「[개발자에서 개발팀장이 되기까지 겪은 5가지 실수](https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mistakes.ko.html)」(Patrick Kua의 「Techie to Tech Lead」 번역), 「[초보 개발 팀장의 1년 회고 - 좋은 팀장이 되기 위한 노력들](https://zzsza.github.io/diary/2020/04/26/novice-leader-retrospect)」(2020.04)을 바탕으로 재구성한 노트다. 매니저 자리에서 달라지는 것은 Sofia의 「[The Truth About Being a Manager](https://sofiakodar.github.io/posts/becomingmanager/)」(2026.06)로 보강했다.
+> 「[개발자에서 개발팀장이 되기까지 겪은 5가지 실수](https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mistakes.ko.html)」(Patrick Kua의 「Techie to Tech Lead」 번역), 「[초보 개발 팀장의 1년 회고 - 좋은 팀장이 되기 위한 노력들](https://zzsza.github.io/diary/2020/04/26/novice-leader-retrospect)」(2020.04)을 바탕으로 재구성한 노트다. 매니저 자리에서 달라지는 것은 Sofia의 「[The Truth About Being a Manager](https://sofiakodar.github.io/posts/becomingmanager/)」(2026.06)로, 동기·업무량·평가·보상은 아웃스탠딩의 조직 기고(「[문제는 동기 부여가 아니라 사라지는 동기입니다](https://outstanding.kr/motivation20260713)」, 「[대체 불가능한 직원이 회사를 떠나게 되는 이유](https://outstanding.kr/roleaccumulation20260909)」, 「[평균의 배신](https://outstanding.kr/average20260304)」 등, 2026)로 보강했다.
 
 ## 역할이 바뀌면 성공 기준이 바뀐다
 
@@ -90,6 +90,37 @@ sources: ["https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mist
 
 엔지니어링을 그리워하는 것은 자연스럽다. 대신 코칭한 사람이 자라고 팀이 성과를 내는 것을 보는 데서 오는 보람이 있다.
 
+## 동기·업무량·평가·보상
+
+### 동기를 만들기보다 사라지는 곳을 찾는다
+
+새로 들어온 사람은 대체로 배우고 기여하려는 동기를 이미 갖고 온다. 1년쯤 지나 질문이 줄고 시키는 일만 한다면, 사람이 변했다기보다 **조직이 실제로 어떻게 움직이는지 알게 된 결과**일 수 있다. 리더가 물을 것은 「어떻게 동기를 부여할까」가 아니라 **「있던 동기가 어디서 꺾였나」**다(묵살된 제안, 바뀌지 않는 절차, 보이지 않는 기여 등).
+
+### 역할 누적: 일이 교체되지 않고 쌓인다
+
+일 잘하는 사람에게 프로젝트, 고객, 문제 수습이 몰린다. 새 일이 붙어도 기존 일은 줄지 않아 업무가 **교체가 아니라 추가**로 쌓인다. 처음에는 신뢰의 신호로 받아들이지만 결국 과부하와 이탈로 끝난다. 새 역할을 맡길 때는 **무엇을 내려놓을지 함께 정한다.**
+
+### 「문제만 말고 해결책도 가져오라」의 함정
+
+작은 문제를 거르는 데는 좋은 원칙이다. 그러나 팀장 권한을 넘는 사안(검증이 부족한 채 출시할지)에도 똑같이 적용하면 문제가 왜곡된다. 해결책을 요구받은 사람은 자기 권한 안의 선택지(우선순위, 인력, 일정 조정)만 내놓고, 「이 위험을 감수할 것인가」라는 **판단 문제가 「일정에 어떻게 맞출까」라는 실행 문제로 줄어든다.** 위험 감수처럼 상위 결정이 필요한 사안은 해결책 없이도 그대로 올릴 수 있어야 한다.
+
+### 평가: 평균이 아니라 무엇을 해냈나
+
+| 문제 | 내용 |
+| --- | --- |
+| 평균식 평가 | 평균에 가까운 평가·보상은 공정해 보여서가 아니라 분쟁과 설명 비용을 줄여 관리하기 편해서 택한다. 품질 편차를 줄이던 제조업 시대에는 맞았지만, AI를 쓰면 같은 시간에도 결과물 밀도 차이가 커져 **고성과자의 동기를 꺾는다** |
+| AI와 함께 낸 성과 | 산출물의 양으로는 개인 기여를 판단하기 어렵다. **어떤 문제를 정의했나, 무엇을 AI에 맡겼나, 결과를 어떻게 검증해 업무에 적용했나**를 본다. 평가 항목에 「AI 활용도」를 더하는 것으로는 부족하다. AI를 얼마나 썼는지가 아니라 AI로 무엇을 해냈는지를 평가한다 |
+
+### 보상: 크기보다 기준
+
+| 함정 | 결과 |
+| --- | --- |
+| 지나치게 큰 보상 | 실패 공포와 압박이 커져 일의 본질에 집중하지 못하고(댄 애리얼리), 목표 밖의 가치를 무시한 채 수단을 가리지 않게 되며, 내적 동기가 밀려난다(에드워드 데시) |
+| 소수에게 몰린 보상 | 협업이 줄고 정보 독점과 성과 가로채기가 는다 |
+| 대표 사비로 일부에게만 주는 보상 | 법인과 개인이 섞여 거버넌스가 무너지고, 형평성과 절차적 정당성이 깨지며, 대표 개인에 대한 충성을 요구하는 문화로 흐른다. 받는 쪽에서는 기분에 따라 번복될 수 있는 보상이다 |
+
+보상은 대상, 형평성, 기대 효과, 회사 유보금을 따진 **공식 체계와 기준**으로 준다. 모두가 같은 기준으로 받는 주거 지원 같은 제도는 이와 다르다. 전사 지표 달성률에 연동해 모두에게 같은 비율의 성과급을 주고 예상 지급률을 실시간으로 공개하는 방식도 기준을 드러내는 설계의 예다.
+
 ## 리더십은 직함이 아니다
 
 - 리더십은 직선으로 자라지 않는다. 리더를 하다 다시 개발자로 돌아가는 것도 경력의 한 경로다.
@@ -102,5 +133,6 @@ sources: ["https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mist
 - 1:1 면담, 사람에 맞춘 업무 배정, 근거 있는 피드백, 문서화된 규칙이 팀을 키운다.
 - 기술 지표가 아니라 사람의 신호를 읽는 감각을 기른다.
 - 매니저는 말의 무게, 공유할 수 없는 정보, 보이지 않는 진척을 안고 일한다. 의견과 결정을 구분하고, 피드백을 미루지 않고, 팀을 대변하고 위로 관리한다.
+- 꺾인 동기를 찾고, 새 역할을 줄 때 내려놓을 일을 정하고, 상위 판단이 필요한 위험은 해결책 없이도 올리게 한다. 평가는 AI로 무엇을 해냈는지, 보상은 공식 기준으로 한다.
 
 관련 노트: [[kind-engineering|친절한 엔지니어링]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[effective-meetings|회의 잘하는 법]], [[collaborative-developer|협업을 잘하는 개발자]], [[engineering-levels|엔지니어 레벨]]

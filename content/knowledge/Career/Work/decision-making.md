@@ -1,10 +1,10 @@
 ---
 title: "의사결정 체크리스트"
 concept: "Decision Making"
-summary: "결정을 내리기 전에 무엇을, 언제까지, 누가, 누구와 상의해, 누구의 승인으로, 누구에게 알릴지 정하는 6가지 항목. 수평적인 팀에서는 결정 자체가 아니라 결정권자를 합의로 위임하고, 치열한 결정일수록 빠르게 정한다."
+summary: "결정을 내리기 전에 무엇을, 언제까지, 누가, 누구와 상의해, 누구의 승인으로, 누구에게 알릴지 정하는 6가지 항목. 수평적인 팀에서는 결정 자체가 아니라 결정권자를 합의로 위임하고, 치열한 결정일수록 빠르게 정한다. 이미 쓴 돈(매몰비용)은 빼고 앞으로 넣을 것만으로 판단하며, 철수 조건을 시작할 때 정한다."
 tags: ["career", "decision-making", "collaboration"]
 source: mixed
-sources: ["https://velog.io/@teo/sprint-and-mind", "https://velog.io/@teo/google-sprint-15"]
+sources: ["https://outstanding.kr/exit20261105", "https://velog.io/@teo/sprint-and-mind", "https://velog.io/@teo/google-sprint-15"]
 date: "2026-10-13"
 ---
 
@@ -42,4 +42,13 @@ date: "2026-10-13"
 
 선택이 팽팽하다는 것은 A와 B의 차이가 작다는 뜻이다. 대개 취향 차이이거나 둘 다 해 보고 판단할 수 있다. 이런 결정은 신중함보다 **빠르고 강하게** 정하는 편이 낫다. 반대로 되돌릴 수 없는 결정이라면 신중해야 하고, 다수결로 넘기지 말고 결정권자가 책임지고 정한다.
 
-관련 노트: [[product-minded-engineer|제품 중심 개발자]], [[effective-meetings|회의 잘하는 법]], [[collaborative-developer|협업을 잘하는 개발자]]
+## 매몰비용과 철수 기준
+
+> 이 절은 아웃스탠딩의 「[자영업의 완성은 엑시트.. 불황기 폐업·전업의 4가지 원칙](https://outstanding.kr/exit20261105)」(2026.11)을 바탕으로 일반화했다.
+
+**이미 쓴 돈과 앞으로 쓸 돈을 나눠서 판단한다.** 「들인 돈이 얼만데」, 「조금만 버티면」이라는 생각이 매몰비용 오류(sunk cost fallacy)다. 이미 쓴 돈은 어떤 선택을 해도 돌아오지 않으므로 결정에 넣지 않는다. 기준은 **지금부터 추가로 넣을 돈과 시간이 그만한 결과를 내는가** 하나다.
+
+- 사업이 기울 때 사재나 고금리 대출을 계속 넣으면 보증금, 권리금, 노후 자금까지 잃는다.
+- 투자자가 처음부터 회수(엑시트) 경로를 계산하듯, 사업·프로젝트도 **시작할 때 언제 어떻게 그만둘지**(손실 한도, 기한, 철수 조건)를 정해 둔다. 철수 계획까지가 계획의 일부다.
+
+관련 노트: [[product-minded-engineer|제품 중심 개발자]], [[effective-meetings|회의 잘하는 법]], [[collaborative-developer|협업을 잘하는 개발자]], [[venture-investment-terms|벤처투자의 논리와 투자계약 조항]]

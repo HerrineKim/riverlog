@@ -1,14 +1,14 @@
 ---
 title: "프롬프트 작성법 치트시트"
 concept: "Prompt Cheat Sheet"
-summary: "목표·맥락·과제·제약·형식·예시를 채우면 프롬프트가 된다. 어떤 LLM에나 통하는 원칙(분명하게, 이유를 붙여, 예시로 보여 주고, 구조를 나누고, 금지 대신 할 일을), 앱에 넣는 프롬프트의 구성 요소, 제로샷·퓨샷·생각의 사슬·자기 성찰 기법, 역할·어조·형식을 골라 끼우는 예시, 글의 AI 티를 줄이는 문체 규칙을 한 장으로 정리했다."
+summary: "목표·맥락·과제·제약·형식·예시를 채우면 프롬프트가 된다. 어떤 LLM에나 통하는 원칙(분명하게, 이유를 붙여, 예시로 보여 주고, 구조를 나누고, 금지 대신 할 일을), 앱에 넣는 프롬프트의 구성 요소, 제로샷·퓨샷·생각의 사슬·자기 성찰 기법, 역할·어조·형식을 골라 끼우는 예시, 글의 AI 티를 줄이는 문체 규칙, 결과를 크게가 아니라 깊게 만드는 야심의 네 방향(속도·고도·깊이·범위)을 한 장으로 정리했다."
 tags: ["ai", "llm", "prompting"]
 source: other
 date: "2026-11-05"
-sources: ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices", "https://web.dev/learn/ai/prompt-engineering"]
+sources: ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices", "https://web.dev/learn/ai/prompt-engineering", "https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/"]
 ---
 
-> SNS에서 돌던 이미지 「ChatGPT Cheat Sheet」를 뼈대로, Anthropic의 [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)로 원칙을 확인하고, 구성 요소와 기법은 web.dev 「[Learn AI](https://web.dev/learn/ai/prompt-engineering)」 강좌의 프롬프트 엔지니어링 모듈로 보강해 재구성한 노트다.
+> SNS에서 돌던 이미지 「ChatGPT Cheat Sheet」를 뼈대로, Anthropic의 [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)로 원칙을 확인하고, 구성 요소와 기법은 web.dev 「[Learn AI](https://web.dev/learn/ai/prompt-engineering)」 강좌의 프롬프트 엔지니어링 모듈로 보강해 재구성한 노트다. 「더 깊게 시키기」는 Felix Rieseberg의 「[How to be more ambitious: A tutorial for humans with models](https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/)」(2026.10)를 바탕으로 했다.
 
 ## 핵심: 맥락 없는 신입에게 일을 맡기듯
 
@@ -101,6 +101,30 @@ Input: "This is terrible. I want a refund."          Output: { "label": "negativ
 
 기법을 고를 때는 이 과제가 유추(퓨샷), 단계적 추론(생각의 사슬), 반복 개선(자기 성찰) 중 무엇으로 가장 잘 풀리는지 묻는다. 모델마다 권장 방식이 다르니 쓰는 모델의 공식 프롬프트 가이드도 확인한다.
 
+## 더 깊게 시키기: 야심의 네 방향
+
+모델에게 일을 맡길 때 같은 일을 빨리 하는 데서 멈추면 능력의 일부만 쓴다. 야심(ambition)을 네 방향으로 나눠 보면 무엇을 더 요구할지 보인다.
+
+| 방향 | 뜻 | 요구하는 법 |
+| --- | --- | --- |
+| **속도(Speed)** | 같은 일을 더 빨리 | 기본값. 따로 궁리할 것이 적다 |
+| **고도(Altitude)** | 작업이 아니라 그 뒤의 결과를 맡긴다 | 「다음에 무슨 일이 일어나길 바라나」를 묻는다. 버그 하나 고치기 → **앱을 크래시 없이 유지하기**. 회의 자료 만들기 → 가장 급한 결정 세 개와 찬반 근거 뽑기 → 그 회의가 존재하는 목적을 더 잘 이루는 방식 설계하기. 대신 모델이 혼자 돌 수 있게 데이터 접근, 재현·검증 환경을 먼저 만들어 줘야 한다 |
+| **깊이(Depth)** | 그 분야 최고 전문가처럼 한 층 더 내려간다 | 전문가의 **어휘가 아니라 도구와 방법**을 쓰게 한다(마크다운 표 대신 데이터베이스와 통계 모델). 비현실적으로 높은 목표를 당연한 듯 제시한다(10초 → 5초가 아니라 200ms). 원자료를 주고 믿고 있던 가정을 반박해 보게 한다. 검증은 모델 자신이 아니라 **바깥의 판정자**(돌려 볼 수 있는 도구)에게 맡긴다 |
+| **범위(Range)** | 여러 분야의 관점과 기법을 끌어온다 | 명사를 동사로 바꾼다(「분기 보고서」 → 「바쁜 사람들이 30분 안에 인과관계를 믿고 불확실한 결정을 내리게 하기」). 그 일에 필요한 팀(분석가, 기자, 편집자, 공매도 투자자, 포렌식 회계사)을 꾸려 각 분야가 **무엇을 하는지**를 묻는다. 그 사람처럼 **쓰게** 하는 역할극은 결과를 낫게 하지 않는다 |
+
+### 깊이를 끌어내는 메타 프롬프트
+
+프롬프트를 고쳐 쓰기 전에 모델이 먼저 네 가지에 답하게 하고, 그 답대로 프롬프트를 다시 쓰게 한다. 목표는 **더 크게가 아니라 더 깊게**다.
+
+```text
+이 작업을 더 크게가 아니라 더 깊게 하고 싶다. 다시 쓰기 전에
+1) 이 분야 최고 전문가라면 내가 요청하지 않은 어떤 일을 더 할지 말하고,
+2) 이미 가공된 자료 말고 그들이 출발점으로 삼을 가장 원시적인 자료를 짚고,
+3) 그들이 쓸 구체적인 방법과 도구를 대고,
+4) 너나 나 말고 무엇이 결과가 맞다는 걸 보여 줄지 말하라.
+그다음 정확히 그것을 요구하도록 내 프롬프트를 다시 써라.
+```
+
 ## 그 밖의 요령
 
 1. **목표를 먼저 정의한다.** 무엇을 얻고 싶은지 모르면 프롬프트도 흐려진다.
@@ -108,6 +132,7 @@ Input: "This is terrible. I want a refund."          Output: { "label": "negativ
 3. **세부 사항은 많을수록 좋지만, 정리해서 준다.** 긴 자료는 앞에, 질문은 끝에 둔다.
 4. **여러 모델·대화를 역할별로 나눠 쓴다.** 한 결과를 다음 단계의 입력으로 넘긴다.
 5. **답을 평가하고 피드백한다.** 한 번에 끝내지 말고 고쳐 가며 다듬는다.
+6. **결과가 기대와 다르면 「내가 무엇을 요청하지 않았나」부터 찾는다.** 말하지 않은 상식적 요구를 알아서 채우지 못하는 것은 사람도 같다. 빠진 요구사항, 다음에 미리 적을 것, 예시로 들 다른 앱의 기능을 기록해 두고 다음 프롬프트에 넣는다. 모델 등급보다 요구사항을 명확히 적는 쪽이 결과에 더 크게 영향을 준다.
 
 ## 정리
 
@@ -116,6 +141,7 @@ Input: "This is terrible. I want a refund."          Output: { "label": "negativ
 - 예시는 형식을 맞추는 가장 확실한 방법이다.
 - 역할·어조·형식은 칸을 정해 두고 값만 바꿔 끼운다.
 - 글의 AI 티는 오웰 규칙·ASD-STE100 같은 이름 있는 문체 규칙과 별도 다듬기 단계로 줄인다.
+- 빠르게 하는 데서 멈추지 말고 고도(결과를 맡기기), 깊이(전문가의 도구와 바깥 검증), 범위(여러 분야의 기법)로 요구를 넓힌다.
 - 기법은 제로샷 기준선에서 시작해 퓨샷 → 생각의 사슬 → 자기 성찰 순으로 필요한 만큼만 더한다.
 - AI는 마음을 읽지 못한다. 원하는 것을 말로 꺼내 놓는 만큼 답이 좋아진다.
 

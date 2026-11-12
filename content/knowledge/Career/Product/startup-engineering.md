@@ -84,4 +84,4 @@ sources: ["https://nephtyws.github.io/story/what-is-a-founding-engineer/", "http
 - 고객과 산업은 고정하고 가설을 바꾼다.
 - 작은 제품을 빨리 내고, 지표가 실제 수익으로 이어지는지 본다.
 
-관련 노트: [[side-project-tips|사이드 프로젝트 10가지 팁]], [[investor-ir-deck|투자자가 보는 IR 자료]], [[feature-factory|기능 공장]], [[product-minded-engineer|제품 중심 개발자]]
+관련 노트: [[side-project-tips|사이드 프로젝트 10가지 팁]], [[investor-ir-deck|투자자가 보는 IR 자료]], [[feature-factory|기능 공장]], [[product-minded-engineer|제품 중심 개발자]], [[venture-investment-terms|벤처투자의 논리와 투자계약 조항]]

@@ -37,7 +37,7 @@
  },
  "AI-Data/ai-delegation-toolkit.md": {
   "created": "2026-10-18T14:04:45+09:00",
-  "updated": "2026-10-31T13:20:54+09:00"
+  "updated": "2026-11-12T22:11:43+09:00"
  },
  "AI-Data/ai-era-developer.md": {
   "created": "2026-10-13T19:47:35+09:00",
@@ -89,7 +89,7 @@
  },
  "AI-Data/claude-skill-building-guide.md": {
   "created": "2026-10-12T20:35:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-11-12T22:11:52+09:00"
  },
  "AI-Data/client-side-web-ai.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -205,7 +205,7 @@
  },
  "AI-Data/organizational-ax.md": {
   "created": "2026-10-19T14:44:10+09:00",
-  "updated": "2026-11-12T12:34:16+09:00"
+  "updated": "2026-11-12T22:11:05+09:00"
  },
  "AI-Data/paper-reading-implementation.md": {
   "created": "2026-10-31T18:52:03+09:00",
@@ -229,7 +229,7 @@
  },
  "AI-Data/prompt-cheat-sheet.md": {
   "created": "2026-10-13T20:00:31+09:00",
-  "updated": "2026-11-05T22:06:54+09:00"
+  "updated": "2026-11-12T22:11:28+09:00"
  },
  "AI-Data/python-data-analysis.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -969,11 +969,11 @@
  },
  "Backend/backend-testing.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-11-12T22:12:17+09:00"
  },
  "Career.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-12T12:38:59+09:00"
+  "updated": "2026-11-12T22:07:59+09:00"
  },
  "Career/Job-Search/australia-skilled-migration.md": {
   "created": "2026-11-08T17:29:32+09:00",
@@ -989,11 +989,11 @@
  },
  "Career/Job-Search/coding-interview-rubric.md": {
   "created": "2026-10-30T23:43:44+09:00",
-  "updated": "2026-10-30T23:43:44+09:00"
+  "updated": "2026-11-12T22:09:46+09:00"
  },
  "Career/Job-Search/company-financial-check.md": {
   "created": "2026-10-18T09:38:44+09:00",
-  "updated": "2026-11-04T22:33:45+09:00"
+  "updated": "2026-11-12T22:09:15+09:00"
  },
  "Career/Job-Search/competency-mapping.md": {
   "created": "2026-10-22T15:47:01+09:00",
@@ -1025,7 +1025,7 @@
  },
  "Career/Job-Search/stock-options.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-01T09:25:57+09:00"
+  "updated": "2026-11-12T22:09:29+09:00"
  },
  "Career/Job-Search/tech-interview-prep.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -1033,7 +1033,7 @@
  },
  "Career/Job-Search/us-hiring-process.md": {
   "created": "2026-10-17T18:11:24+09:00",
-  "updated": "2026-10-31T13:38:58+09:00"
+  "updated": "2026-11-12T22:09:46+09:00"
  },
  "Career/Job-Search/us-work-visa-paths.md": {
   "created": "2026-10-20T11:04:43+09:00",
@@ -1073,7 +1073,7 @@
  },
  "Career/Product/investor-ir-deck.md": {
   "created": "2026-10-18T14:52:08+09:00",
-  "updated": "2026-10-18T14:52:08+09:00"
+  "updated": "2026-11-12T22:07:59+09:00"
  },
  "Career/Product/kanban-lean-flow.md": {
   "created": "2026-10-15T20:07:11+09:00",
@@ -1109,7 +1109,7 @@
  },
  "Career/Product/startup-engineering.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-11-12T22:07:59+09:00"
  },
  "Career/Product/technical-debt.md": {
   "created": "2026-10-15T20:07:11+09:00",
@@ -1122,6 +1122,10 @@
  "Career/Product/user-research.md": {
   "created": "2026-10-15T17:29:26+09:00",
   "updated": "2026-10-31T16:02:04+09:00"
+ },
+ "Career/Product/venture-investment-terms.md": {
+  "created": "2026-11-12T22:07:59+09:00",
+  "updated": "2026-11-12T22:07:59+09:00"
  },
  "Career/Product/working-with-designers.md": {
   "created": "2026-10-13T19:43:50+09:00",
@@ -1145,7 +1149,7 @@
  },
  "Career/Work/decision-making.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-15T17:29:26+09:00"
+  "updated": "2026-11-12T22:10:49+09:00"
  },
  "Career/Work/developer-productivity.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -1221,11 +1225,11 @@
  },
  "Career/Work/tech-blogging.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-04T22:33:45+09:00"
+  "updated": "2026-11-12T22:12:25+09:00"
  },
  "Career/Work/tech-lead-transition.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-01T11:36:47+09:00"
+  "updated": "2026-11-12T22:10:36+09:00"
  },
  "Career/Work/work-habits.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -1877,7 +1881,7 @@
  },
  "DevOps/devsecops.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-11-05T22:06:54+09:00"
+  "updated": "2026-11-12T22:12:17+09:00"
  },
  "DevOps/disaster-recovery.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -3305,7 +3309,7 @@
  },
  "Life-and-Learning.md": {
   "created": "2026-10-12T12:22:51+09:00",
-  "updated": "2026-11-08T17:34:49+09:00"
+  "updated": "2026-11-12T22:12:47+09:00"
  },
  "Life-and-Learning/English/business-expressions.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -3361,11 +3365,15 @@
  },
  "Life-and-Learning/asset-pricing-required-return.md": {
   "created": "2026-10-27T15:02:30+09:00",
-  "updated": "2026-10-27T15:02:30+09:00"
+  "updated": "2026-11-12T22:08:32+09:00"
  },
  "Life-and-Learning/household-tips.md": {
   "created": "2026-11-04T22:33:44+09:00",
-  "updated": "2026-11-12T12:33:42+09:00"
+  "updated": "2026-11-12T22:12:47+09:00"
+ },
+ "Life-and-Learning/interest-rate-exchange-rate.md": {
+  "created": "2026-11-12T22:08:32+09:00",
+  "updated": "2026-11-12T22:08:32+09:00"
  },
  "Life-and-Learning/jeonse-housing-market.md": {
   "created": "2026-10-27T15:02:30+09:00",

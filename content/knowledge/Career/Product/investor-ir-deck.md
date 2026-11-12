@@ -62,4 +62,4 @@ sources: ["https://platum.kr/archives/167388"]
 - 유닛 이코노믹스, 성장 요인을 쪼갠 브리지 분석, 고정비·변동비가 경영진의 이해도를 보여 준다.
 - 약점과 불확실성을 먼저 솔직하게 말한다. ESG도 숫자로.
 
-관련 노트: [[company-financial-check|비상장 회사 재무제표 찾아보기]], [[product-minded-engineer|제품 중심 개발자 (Product-Minded Engineer)]], [[presentation-design|발표·포트폴리오 디자인 팁]], [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]]
+관련 노트: [[company-financial-check|비상장 회사 재무제표 찾아보기]], [[venture-investment-terms|벤처투자의 논리와 투자계약 조항]], [[product-minded-engineer|제품 중심 개발자 (Product-Minded Engineer)]], [[presentation-design|발표·포트폴리오 디자인 팁]], [[side-project-tips|사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁]]
