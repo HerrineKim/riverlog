@@ -5,10 +5,11 @@ summary: "요소를 문서 흐름에 영향 없이 이동·확대·회전·기�
 tags: ["css", "layout", "frontend"]
 source: mixed
 date: "2026-10-13"
-sources: ["https://riverkim.kr/233", "https://developer.mozilla.org/en-US/docs/Web/CSS/translate", "https://web.dev/learn/css/functions"]
+sources: ["https://riverkim.kr/233", "https://developer.mozilla.org/en-US/docs/Web/CSS/translate", "https://web.dev/learn/css/functions", "https://www.frontendinterviewhandbook.com/css-questions"]
 ---
 
 > riverkim.kr에 쓴 글을 다시 정리하고, 3D 변형은 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Functions 모듈로 보강한 노트다.
+> 「translate와 위치 지정(top·left) 고르기」는 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 바탕으로 보강했다.
 
 ## transform이란
 
@@ -71,6 +72,25 @@ sources: ["https://riverkim.kr/233", "https://developer.mozilla.org/en-US/docs/W
 
 `transform`·`opacity`만 바꾸면 합성만 다시 돌아 부드럽다([[browser-rendering#변경이 다시 도는 단계|변경이 다시 도는 단계]]). `transform`이 있는 요소는 새 쌓임 맥락을 만들고, 그 안의 `position: fixed` 자식의 기준이 된다([[position|CSS position과 z-index]]).
 
+## translate와 위치 지정(top·left) 고르기
+
+요소를 옮기는 방법은 두 가지다. 기준이 다르다. **움직임이면 `translate`, 놓을 자리면 위치 지정**이다.
+
+| | `translate()`·`translate` 속성 | `position: absolute` + `top`·`left` |
+| --- | --- | --- |
+| 다시 도는 렌더링 단계 | 합성만. 브라우저가 요소를 별도 합성 레이어에 올려 GPU로 처리하기도 한다 | 값이 바뀔 때마다 레이아웃(리플로)부터 다시 한다 |
+| 원래 자리 | 그대로 차지한다(`position: relative`로 옮긴 것과 비슷하다) | 흐름에서 빠져 자리를 비운다 |
+| `%` 기준 | 요소 자기 크기 | 컨테이닝 블록 크기 |
+| 어울리는 곳 | 애니메이션·드래그·스크롤 연동처럼 매 프레임 바뀌는 이동 | 배지·드롭다운·오버레이처럼 레이아웃상 자리를 정하는 배치 |
+
+```css
+.toast { position: fixed; inset-block-end: 1rem; inset-inline-end: 1rem; }  /* 자리는 위치 지정으로 */
+.toast[data-state="enter"] { animation: slide-in .2s ease-out; }
+@keyframes slide-in { from { translate: 0 120%; } }                           /* 움직임은 translate로 */
+```
+
+애니메이션에서 `top`·`left`를 바꾸면 매 프레임 레이아웃을 다시 계산해 버벅이기 쉽다. 반대로 `translate`로 옮긴 요소는 원래 자리를 계속 차지하므로, 레이아웃에서 실제로 자리를 옮겨야 하면 위치 지정이나 플렉스·그리드 배치를 쓴다.
+
 ## 가운데 정렬 패턴
 
 ### 증상
@@ -116,6 +136,7 @@ top/left 50%만        translate(-50%, -50%) 추가
 
 - `transform`은 자리는 그대로, 보이는 모습만 바꾼다.
 - `translate`의 `%`는 자기 크기 기준이다.
+- 움직임은 합성만 다시 도는 `translate`로, 레이아웃상 자리는 위치 지정으로 정한다.
 - 크기를 모르는 팝업의 정중앙 배치: `top·left: 50%` + `translate(-50%, -50%)`. 그리드 `place-items: center`, `inset: 0; margin: auto`, `<dialog>`도 같은 일을 한다.
 - 상태마다 따로 바꿀 값은 `translate`·`rotate`·`scale` 개별 속성으로 쓴다.
 

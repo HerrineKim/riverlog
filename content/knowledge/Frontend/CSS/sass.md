@@ -5,11 +5,12 @@ summary: "CSS 전처리기 Sass의 쓰임새와 설치, 파셜 파일을 폴더�
 tags: ["css", "sass", "architecture", "frontend"]
 source: other
 date: "2026-10-21"
-sources: ["https://webactually.com/2014/08/19/sass-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ec%95%84%ed%82%a4%ed%85%8d%ec%b2%98/", "https://webactually.com/2014/06/03/sass-%eb%b0%b0%eb%82%ad%ea%be%b8%eb%a6%ac%ea%b8%b0/", "https://webactually.com/2019/12/27/sass-%eb%af%b9%ec%8a%a4%ec%9d%b8-%ec%a4%91%eb%b3%b5-%eb%b0%b0%ec%a0%9c%ed%95%98%ea%b8%b0/", "https://webactually.com/2014/06/25/sass%ec%9d%98-extend%eb%a1%9c-%eb%b6%80%ed%8a%b8%ec%8a%a4%ed%8a%b8%eb%9e%a9%ec%9d%84-%ec%8b%9c%eb%a7%a8%ed%8b%b1%ed%95%98%ea%b2%8c-%ed%99%95%ec%9e%a5%ed%95%98%ea%b8%b0/", "https://webactually.com/2014/08/09/%ec%9c%88%eb%8f%84%ec%9a%b0%ec%97%90%ec%84%9c-sass-%ec%84%a4%ec%b9%98%ed%95%98%ea%b8%b0/", "https://sass-lang.com/documentation/breaking-changes/import/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Sass%20vs%20Less%20vs%20Stylus.md"]
+sources: ["https://webactually.com/2014/08/19/sass-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ec%95%84%ed%82%a4%ed%85%8d%ec%b2%98/", "https://webactually.com/2014/06/03/sass-%eb%b0%b0%eb%82%ad%ea%be%b8%eb%a6%ac%ea%b8%b0/", "https://webactually.com/2019/12/27/sass-%eb%af%b9%ec%8a%a4%ec%9d%b8-%ec%a4%91%eb%b3%b5-%eb%b0%b0%ec%a0%9c%ed%95%98%ea%b8%b0/", "https://webactually.com/2014/06/25/sass%ec%9d%98-extend%eb%a1%9c-%eb%b6%80%ed%8a%b8%ec%8a%a4%ed%8a%b8%eb%9e%a9%ec%9d%84-%ec%8b%9c%eb%a7%a8%ed%8b%b1%ed%95%98%ea%b2%8c-%ed%99%95%ec%9e%a5%ed%95%98%ea%b8%b0/", "https://webactually.com/2014/08/09/%ec%9c%88%eb%8f%84%ec%9a%b0%ec%97%90%ec%84%9c-sass-%ec%84%a4%ec%b9%98%ed%95%98%ea%b8%b0/", "https://sass-lang.com/documentation/breaking-changes/import/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Sass%20vs%20Less%20vs%20Stylus.md", "https://www.frontendinterviewhandbook.com/css-questions"]
 ---
 
 > Hugo Giraudel의 「[Sass 프로젝트를 위한 아키텍처](https://webactually.com/2014/08/19/sass-%ed%94%84%eb%a1%9c%ec%a0%9d%ed%8a%b8%eb%a5%bc-%ec%9c%84%ed%95%9c-%ec%95%84%ed%82%a4%ed%85%8d%ec%b2%98/)」(2014.08), Marshall Norman의 「Sass 배낭 꾸리기」(2014.06), Sam Richard의 「Sass 믹스인 중복 배제하기」(2019.12), Brad Barrow의 「Sass의 @extend로 부트스트랩을 시맨틱하게 확장하기」(2014.06), 웹액츄얼리 북스팀의 「윈도우에서 SASS 설치하기」(2014.08)를 바탕으로 재구성한 노트다.
 > 「다른 전처리기와 PostCSS」는 「[Frontend_TIL: Sass vs Less vs Stylus](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Sass%20vs%20Less%20vs%20Stylus.md)」를 바탕으로 각 도구의 현재 상태를 확인해 보강했다.
+> 전처리기의 이점과 비용, Less 변수 표기와 node-sass 재빌드 문제는 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 바탕으로 보강했다.
 
 ## Sass란
 
@@ -42,15 +43,25 @@ Sass에 남는 강점은 **믹스인, 반복문·조건문, 맵 같은 데이터
 | 도구 | 특징 | 지금의 위치 |
 | --- | --- | --- |
 | Sass (2006) | 가장 먼저 나왔다. Ruby 구현이 느려 한때 Less에 밀렸다가, Node에서 도는 구현이 나온 뒤 주류가 됐다 | 전처리기 중 사실상 표준. 공식 구현은 Dart Sass |
-| Less (2009) | JavaScript로 구현되어 브라우저에서도 컴파일할 수 있었다. Bootstrap 3가 써서 퍼졌다 | Bootstrap 4부터 Sass로 옮겨 새 프로젝트에서는 드물다 |
+| Less (2009) | JavaScript로 구현되어 브라우저에서도 컴파일할 수 있었다. Bootstrap 3가 써서 퍼졌다. 변수를 `@color`처럼 `@`로 시작해 `@media`·`@import`·`@font-face` 같은 CSS at 규칙과 헷갈린다 | Bootstrap 4부터 Sass로 옮겨 새 프로젝트에서는 드물다 |
 | Stylus (2010) | 중괄호·세미콜론·콜론을 생략할 수 있는 들여쓰기 문법, 많은 내장 기능 | 유지보수가 뜸해 새로 고를 이유가 적다 |
 | PostCSS | 전처리기가 아니라 **CSS를 파싱해 플러그인으로 변환하는 도구**다. 새 문법을 쓰는 게 아니라 표준 CSS를 입력으로 받는다 | Autoprefixer, 미래 문법을 옛 브라우저용으로 바꾸는 postcss-preset-env, Tailwind CSS 같은 도구가 이 위에서 돈다. Lightning CSS가 같은 일을 빠르게 하는 대안이다 |
 
-전처리기의 공통 이점은 변수·중첩·믹스인으로 반복을 줄이고 파일을 나눠 구조를 잡는 것이고, 비용은 빌드 단계와 별도 문법을 팀 전체(디자이너·퍼블리셔 포함)가 익혀야 한다는 것이다. CSS가 변수와 중첩을 갖게 된 지금은 「전처리기 없이 네이티브 CSS + PostCSS(또는 Lightning CSS)」도 흔한 선택이다.
+전처리기를 쓰는 데 드는 것과 얻는 것은 다음과 같다.
+
+| 이점 | 비용 |
+| --- | --- |
+| 변수로 색·간격 같은 테마 값을 한 곳에서 관리하고, 테마 파일을 여러 프로젝트가 나눠 쓴다 | 빌드 단계가 필요하다. 프로젝트가 크면 다시 컴파일하는 시간이 길어진다 |
+| 중첩으로 선택자를 짧게 쓴다 | 별도 문법을 팀 전체(디자이너·퍼블리셔 포함)가 익혀야 한다 |
+| 믹스인으로 반복되는 선언을 찍어 낸다 | 브라우저가 실행하는 표준 CSS가 아니다. Sass 변수 대신 커스텀 속성처럼 표준이 된 기능을 쓰면 그 지식은 도구가 바뀌어도 남는다 |
+| 반복문·리스트·맵으로 설정을 짧게 표현한다 | 컴파일 결과가 소스와 달라 디버깅에 소스 맵이 필요하다 |
+| 파일을 잘게 나눠도 빌드 때 하나로 합쳐져 요청이 늘지 않는다 | - |
+
+CSS가 변수와 중첩을 갖게 된 지금은 「전처리기 없이 네이티브 CSS + PostCSS(또는 Lightning CSS)」도 흔한 선택이다.
 
 ## 설치: 예전과 지금
 
-공식 구현은 Dart Sass이고 Node 패키지로 설치한다. 과거에는 Ruby를 먼저 깔고 `gem install sass`로 Ruby Sass를 설치했지만, Ruby Sass는 2019년에 지원이 끝났다. C++ 구현인 LibSass(node-sass)도 2020년에 폐기됐다.
+공식 구현은 Dart Sass이고 Node 패키지로 설치한다. 과거에는 Ruby를 먼저 깔고 `gem install sass`로 Ruby Sass를 설치했지만, Ruby Sass는 2019년에 지원이 끝났다. C++ 구현인 LibSass(node-sass)도 2020년에 폐기됐다. node-sass는 네이티브 바이너리라 Node 버전을 바꿀 때마다 다시 빌드(`npm rebuild node-sass`)해야 했다. Dart Sass의 `sass` 패키지는 JavaScript로 컴파일해 배포하므로 이 문제가 없다.
 
 ```bash
 npm install -D sass

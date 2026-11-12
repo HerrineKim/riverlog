@@ -133,6 +133,7 @@ Sitemap: https://example.com/sitemap.xml
 | 방식 | 봇이 처음 받는 HTML | SEO |
 | --- | --- | --- |
 | CSR | 거의 빈 `<div id="root">` | 구글은 JS를 실행해 읽지만 렌더링 대기열을 거쳐 늦어질 수 있다. SNS 미리보기 봇과 GPTBot·ClaudeBot·PerplexityBot 같은 AI 크롤러는 JS를 실행하지 않아 내용을 못 읽는다([Vercel 조사](https://vercel.com/blog/the-rise-of-the-ai-crawler), 2024.12) |
+| 동적 렌더링(dynamic rendering) | 봇에게만 Prerender 같은 서비스나 헤드리스 브라우저로 미리 그린 HTML, 사람에게는 CSR 앱 | CSR 앱을 고치지 않고 색인시키는 우회책이다. 구글은 [장기 해법이 아닌 임시방편](https://developers.google.com/search/docs/crawling-indexing/javascript/dynamic-rendering)으로 보고 SSR·SSG를 권한다 |
 | SSR / SSG | 본문이 채워진 HTML | 가장 안전하다 |
 
 자세한 차이는 [[spa-csr-ssr|SPA와 CSR·SSR]]에 있다.

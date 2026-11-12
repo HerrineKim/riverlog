@@ -5,12 +5,13 @@ summary: "속성 하나짜리 클래스를 조합해 화면을 만들고, 반복
 tags: ["css", "architecture", "design-system", "frontend"]
 source: other
 date: "2026-10-21"
-sources: ["https://adamwathan.me/css-utility-classes-and-separation-of-concerns/", "https://css-irl.info/a-year-of-utility-classes/", "https://css-tricks.com/need-css-utility-library/", "https://tailwindcss.com/docs/styling-with-utility-classes", "https://tailwindcss.com/docs/theme", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Tailwindcss.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/tailwindcss%20Complex%20variants.md", "https://tailwindcss.com/docs/hover-focus-and-other-states"]
+sources: ["https://adamwathan.me/css-utility-classes-and-separation-of-concerns/", "https://css-irl.info/a-year-of-utility-classes/", "https://css-tricks.com/need-css-utility-library/", "https://tailwindcss.com/docs/styling-with-utility-classes", "https://tailwindcss.com/docs/theme", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Tailwindcss.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/tailwindcss%20Complex%20variants.md", "https://tailwindcss.com/docs/hover-focus-and-other-states", "https://www.frontendinterviewhandbook.com/css-questions"]
 ---
 
 > 「[CSS Utility Classes and "Separation of Concerns"](https://adamwathan.me/css-utility-classes-and-separation-of-concerns/)」, 「[A Year of Utility Classes](https://css-irl.info/a-year-of-utility-classes/)」, 「[So you need a CSS utility library?](https://css-tricks.com/need-css-utility-library/)」을 바탕으로, 현재 사용법은 Tailwind CSS 공식 문서로 확인해 재구성한 노트다.
 >
 > 「변형으로 선택자 표현하기」는 「[Frontend_TIL: Tailwindcss](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Tailwindcss.md)」, 「[tailwindcss Complex variants](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/tailwindcss%20Complex%20variants.md)」를 바탕으로 보강했다.
+> 「CSS 프레임워크를 고를 때 보는 것」은 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 바탕으로 보강했다.
 
 ## 유틸리티 우선이란
 
@@ -35,6 +36,18 @@ sources: ["https://adamwathan.me/css-utility-classes-and-separation-of-concerns/
 | 내용 무관 (`.media-card`, `.text-sm`) | HTML이 CSS에 의존 | CSS를 재사용한다. 새 화면에 CSS를 안 써도 된다 | HTML을 고치지 않고는 모양을 못 바꾼다 | Bootstrap, Tailwind |
 
 어느 쪽도 틀리지 않았다. **다시 꾸밀 수 있는 HTML과 재사용할 수 있는 CSS 중 무엇이 더 중요한가**의 선택이다. 한 디자인 시스템으로 앱을 만드는 경우 대개 재사용이 더 중요하다. 이 의존 방향 관점은 [[separation-of-concerns|프론트엔드에서 관심사의 분리]]와 같다.
+
+### CSS 프레임워크를 고를 때 보는 것
+
+CSS 프레임워크는 이 선택을 미리 내려 둔 묶음이다. Bootstrap·Bulma·Semantic UI(지금은 커뮤니티 포크 Fomantic-UI가 잇는다)처럼 완성된 컴포넌트 클래스(`.btn`, `.card`)를 주는 **컴포넌트 프레임워크**와, Tailwind처럼 유틸리티를 주는 **유틸리티 프레임워크**로 나뉜다. 써 보면 불편은 대개 같은 자리에서 드러난다.
+
+| 기준 | 확인할 것 | 흔한 불편 (예) |
+| --- | --- | --- |
+| 테마 바꾸기 | 색·간격·모서리를 Sass 변수나 CSS 커스텀 속성으로 덮을 수 있나 | 독자적인 테마 체계나 라이브러리 안에 박힌 설정 경로 때문에 덮기 어렵다(Semantic UI) |
+| 마크업 부담 | 컴포넌트 하나에 필요한 래퍼·클래스 수 | 의미 없는 클래스와 래퍼가 늘어난다(Bulma) |
+| 업그레이드 | 메이저 버전 사이의 호환성, 마이그레이션 안내 | 버전을 올리면 화면이 미묘하게 깨진다 |
+| 유지 상태 | 릴리스 주기, 이슈 대응 | 다음 메이저가 오래 알파에 머문다(Bootstrap 4는 2015년 알파에서 2018년 정식까지 2년 넘게 걸렸다) |
+| 컴포넌트 범위 | 자주 쓰는 것(로딩 스피너가 든 버튼 등)이 있나 | 빠진 컴포넌트를 직접 만들다 프레임워크 스타일과 자체 스타일이 섞인다 |
 
 ## 유틸리티까지 가는 단계
 

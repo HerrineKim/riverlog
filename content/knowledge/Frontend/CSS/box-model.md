@@ -5,12 +5,13 @@ summary: "모든 요소를 content·padding·border·margin의 네모로 다루�
 tags: ["css", "layout", "frontend"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://mytory.net/archives/16246", "https://developer.mozilla.org/en-US/docs/Web/CSS/length", "https://web.dev/learn/css/box-model", "https://web.dev/learn/css/spacing", "https://web.dev/learn/css/layout", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/bfc.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/margin-collapsing.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/block-inline-inline-block.md", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_display/Block_formatting_context", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/margin%20negative.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/box-sizing%3A%20border-box%EB%A5%BC%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md", "https://github.com/AllThingsSmitty/css-protips", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%ED%99%94%EB%A9%B4%20%EC%A0%84%EC%B2%B4%EB%A5%BC%20%EC%8A%A4%ED%81%AC%EB%A1%A4%EC%97%86%EC%9D%B4%20%EB%86%92%EC%9D%B4%EB%A5%BC%20%EC%B0%A8%EC%A7%80%ED%95%98%EA%B2%8C%20%ED%95%98%EB%8A%94%EB%B0%A9%EB%B2%95.md"]
+sources: ["https://mytory.net/archives/16246", "https://developer.mozilla.org/en-US/docs/Web/CSS/length", "https://web.dev/learn/css/box-model", "https://web.dev/learn/css/spacing", "https://web.dev/learn/css/layout", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/bfc.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/margin-collapsing.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/block-inline-inline-block.md", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_display/Block_formatting_context", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/margin%20negative.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/box-sizing%3A%20border-box%EB%A5%BC%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md", "https://github.com/AllThingsSmitty/css-protips", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%ED%99%94%EB%A9%B4%20%EC%A0%84%EC%B2%B4%EB%A5%BC%20%EC%8A%A4%ED%81%AC%EB%A1%A4%EC%97%86%EC%9D%B4%20%EB%86%92%EC%9D%B4%EB%A5%BC%20%EC%B0%A8%EC%A7%80%ED%95%98%EA%B2%8C%20%ED%95%98%EB%8A%94%EB%B0%A9%EB%B2%95.md", "https://www.frontendinterviewhandbook.com/css-questions"]
 ---
 
 > 직접 정리한 TIL에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Box Model·Spacing·Layout 모듈을 더해 보강한 노트다.
 > 「블록 서식 맥락(BFC)」은 「[Must-Know-About-Frontend: Block Formatting Context](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/bfc.md)」를 MDN으로 확인해 보강했다.
 > 음수 margin과 box-sizing 계산은 「[Frontend_TIL: margin negative](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/margin%20negative.md)」·「[box-sizing: border-box를 사용하는 이유](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/box-sizing%3A%20border-box%EB%A5%BC%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md)」, box-sizing 상속 패턴과 블록 방향 `auto` margin은 「[AllThingsSmitty의 css-protips](https://github.com/AllThingsSmitty/css-protips)」를 바탕으로 보강했다.
+> `display` 값별 차이와 BFC 안에서 float를 피하는 원리는 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 MDN으로 확인해 보강했다.
 
 CSS의 첫 번째 원칙은 **모든 요소는 네모(박스)** 라는 것이다. 요소의 실제 크기와 요소 사이 간격은 박스 모델로 계산되고, 그 박스가 한 줄을 차지할지 옆으로 나란히 놓일지는 `display`가 결정한다.
 
@@ -133,6 +134,8 @@ BFC로 푸는 문제는 세 가지다.
 .media-body { display: flow-root; }  /* float된 썸네일 옆에서 글이 감기지 않는다 */
 ```
 
+세 번째 결과는 BFC 안의 배치 규칙에서 나온다. 한 BFC 안의 블록 박스는 왼쪽 바깥 가장자리가 컨테이닝 블록의 왼쪽 가장자리에 닿는다(RTL이면 오른쪽). float가 있어도 마찬가지라 일반 블록은 float 밑으로 깔리고 그 안의 글만 비켜 흐른다. 반면 **스스로 새 BFC를 만든 박스는 float와 겹치지 않도록** 남은 폭으로 좁아진다.
+
 과거에는 같은 목적으로 `overflow: hidden`을 썼는데, 그림자·드롭다운처럼 박스 밖으로 나가야 하는 내용까지 잘리는 부작용이 있었다. float를 담는 다른 옛 방법(clearfix)은 [[flexbox|Float와 Flexbox]]에 있다.
 
 ### overflow
@@ -175,15 +178,25 @@ html { box-sizing: border-box; }
 
 CSS의 두 번째 원칙: **display에 따라 크기와 배치가 달라진다.**
 
-| 값 | 줄 바꿈 | 너비 | width/height·상하 margin |
-| --- | --- | --- | --- |
-| `block` | 일어남(한 줄 전체 차지) | 기본적으로 부모 가로 폭 전체 | 지정 가능 |
-| `inline` | 일어나지 않음(행의 일부) | 내용만큼 | **지정 불가**. 상하 여백은 `line-height`로 |
-| `inline-block` | 일어나지 않음 | 내용만큼 또는 지정값 | 지정 가능 |
-| `none` | - | 화면에서 제거되어 **공간도 차지하지 않음** | - |
+| 값 | 줄 바꿈 | 너비 | width/height·상하 margin | `vertical-align` |
+| --- | --- | --- | --- | --- |
+| `block` | 일어남(한 줄 전체 차지) | 기본적으로 부모 가로 폭 전체 | 지정 가능 | 효과 없음 |
+| `inline` | 일어나지 않음(행의 일부) | 내용만큼 | **지정 불가**. 상하 여백은 `line-height`로 | 줄 안에서 정렬된다 |
+| `inline-block` | 일어나지 않음 | 내용만큼 또는 지정값 | 지정 가능 | 줄 안에서 정렬된다 |
+| `none` | - | 화면에서 제거되어 **공간도 차지하지 않음** | - | - |
+
+자주 만나는 다른 값은 다음과 같다.
+
+| 값 | 동작 |
+| --- | --- |
+| `table`, `table-row`, `table-cell` | `<table>`·`<tr>`·`<td>`처럼 배치한다. 과거에는 `display: table-cell; vertical-align: middle`로 세로 가운데 정렬을, 표 셀로 높이가 같은 열을 만들었다. 지금은 플렉스·그리드로 한다 |
+| `list-item` | `<li>`처럼 `::marker`를 만들어 `list-style-type`·`list-style-position`이 먹는다([[css-lists-counters\|CSS 목록과 카운터]]) |
+| `flow-root` | 안쪽에 새 BFC를 만드는 블록(위 「블록 서식 맥락」) |
+| `flex`, `grid` | 자식을 플렉스·그리드 아이템으로 배치한다 |
 
 - `display`는 두 가지를 정한다. **바깥**: 형제와 블록처럼 줄을 바꾸며 놓일지, 인라인처럼 문장 속에 놓일지. **안쪽**: 자식을 일반 흐름·플렉스·그리드 중 무엇으로 배치할지. `display: flex`는 바깥은 블록, 자식은 플렉스 아이템이다.
-- 인라인 요소의 위아래 margin·padding은 그려지지만 주변 줄이 자리를 비켜 주지 않는다. `inline-block`은 문장 속에 놓이면서도 위아래 여백을 존중받는다.
+- 인라인 요소의 위아래 padding·border는 그려지지만 주변 줄이 자리를 비켜 주지 않고, 위아래 margin은 아무 효과가 없다. 줄이 차지하는 높이는 `line-height`가 정한다. `inline-block`은 문장 속에 놓이면서도 위아래 여백을 존중받는다.
+- `float`를 주거나 `position: absolute`·`fixed`로 꺼낸 요소는 `inline`이었어도 블록 계열로 바뀌어(blockification) `width`·상하 margin이 먹는다.
 - `inline`·`inline-block` 요소 사이에는 HTML 소스의 줄바꿈·들여쓰기가 **공백 한 칸**(약 4px)으로 그려진다. `inline-block`으로 메뉴를 나란히 놓으면 생기는 틈의 원인이다. 블록은 공백을 무시한다. 간격을 정확히 통제하려면 부모를 플렉스로 만들고 `gap`을 쓴다.
 - 블록 요소 안에는 인라인 요소가 들어갈 수 있다. (대표 블록: `div`, `p`, `ul`, `h1`… / 대표 인라인: `span`, `a`, `img`, `strong`…)
 - `visibility: hidden`은 `display: none`과 달리 **공간은 차지하면서** 보이지만 않게 한다.

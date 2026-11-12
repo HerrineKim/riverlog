@@ -4,13 +4,14 @@ concept: "Selector"
 summary: "스타일을 적용할 요소를 고르는 선택자(속성 연산자, 결합자, 상태·위치·폼 가상 클래스, 가상 요소)와 네이티브 CSS 중첩, 스타일이 겹칠 때 무엇이 적용되는지 정하는 캐스케이딩·특정성, 그리고 상속과 inherit·initial·unset·revert·revert-layer 키워드."
 tags: ["css", "selector", "frontend"]
 source: mixed
-sources: ["https://developer.mozilla.org/en-US/docs/Web/CSS/:has", "https://developer.mozilla.org/en-US/docs/Web/CSS/@layer", "https://web.dev/learn/css/selectors", "https://web.dev/learn/css/pseudo-classes", "https://web.dev/learn/css/pseudo-elements", "https://web.dev/learn/css/nesting", "https://web.dev/learn/css/specificity", "https://web.dev/learn/css/inheritance", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/nth-child%20%EC%95%88%EB%A8%B9%ED%9E%88%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/CSS%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%20%EB%B0%A9%EB%B2%95%28first-child%2C%20last-child%2C%20nth-child%2C%20nth-of-type%2C%20nth-last-of-type%29.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C%20CSS%20%EC%82%AC%EC%9A%A9.md", "https://github.com/AllThingsSmitty/css-protips", "https://www.smashingmagazine.com/2015/07/quantity-ordering-with-css/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%ED%98%B8%EB%B2%84%2C%20%ED%81%B4%EB%A6%AD%EC%8B%9C%20%EB%B3%84%EC%A0%90%20%EA%B8%B0%EB%8A%A5%20UI.md"]
+sources: ["https://developer.mozilla.org/en-US/docs/Web/CSS/:has", "https://developer.mozilla.org/en-US/docs/Web/CSS/@layer", "https://web.dev/learn/css/selectors", "https://web.dev/learn/css/pseudo-classes", "https://web.dev/learn/css/pseudo-elements", "https://web.dev/learn/css/nesting", "https://web.dev/learn/css/specificity", "https://web.dev/learn/css/inheritance", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/nth-child%20%EC%95%88%EB%A8%B9%ED%9E%88%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/CSS%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%20%EB%B0%A9%EB%B2%95%28first-child%2C%20last-child%2C%20nth-child%2C%20nth-of-type%2C%20nth-last-of-type%29.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C%20CSS%20%EC%82%AC%EC%9A%A9.md", "https://github.com/AllThingsSmitty/css-protips", "https://www.smashingmagazine.com/2015/07/quantity-ordering-with-css/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%ED%98%B8%EB%B2%84%2C%20%ED%81%B4%EB%A6%AD%EC%8B%9C%20%EB%B3%84%EC%A0%90%20%EA%B8%B0%EB%8A%A5%20UI.md", "https://www.frontendinterviewhandbook.com/css-questions"]
 date: "2026-10-21"
 ---
 
 > 직접 정리한 TIL에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Selectors·Pseudo-classes·Pseudo-elements·Nesting·Specificity·Inheritance 모듈을 더해 보강한 노트다.
 > 「[Frontend_TIL: nth-child 안먹히는 이유](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/nth-child%20%EC%95%88%EB%A8%B9%ED%9E%88%EB%8A%94%20%EC%9D%B4%EC%9C%A0.md)」·「[CSS 요소 선택 방법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/CSS%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%20%EB%B0%A9%EB%B2%95%28first-child%2C%20last-child%2C%20nth-child%2C%20nth-of-type%2C%20nth-last-of-type%29.md)」·「[효율적으로 CSS 사용](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9C%BC%EB%A1%9C%20CSS%20%EC%82%AC%EC%9A%A9.md)」과 「[CSS Protips](https://github.com/AllThingsSmitty/css-protips)」의 선택자 팁, 「[Quantity Queries with Flexbox](https://www.smashingmagazine.com/2015/07/quantity-ordering-with-css/)」의 수량 쿼리를 바탕으로 보강했다.
 > 별점 예시는 「[Frontend_TIL: 호버, 클릭시 별점 기능 UI](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%ED%98%B8%EB%B2%84%2C%20%ED%81%B4%EB%A6%AD%EC%8B%9C%20%EB%B3%84%EC%A0%90%20%EA%B8%B0%EB%8A%A5%20UI.md)」를 바탕으로 보강했다.
+> 선택자 매칭 예, 가상 요소의 쓰임, 컴포넌트 라이브러리의 특정성은 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 바탕으로 보강했다.
 
 선택자(Selector)는 스타일을 적용할 HTML 요소를 고르는 문법이다. 하나의 CSS 규칙은 **선택자 목록 + 선언 블록**이고, 선언은 속성과 값의 쌍이다. 한 요소에 여러 규칙이 겹치면 CSS는 **캐스케이딩(cascading)** 규칙에 따라 하나를 고른다. "왜 내 스타일이 안 먹지?"의 대부분은 이 우선순위 문제다.
 
@@ -87,7 +88,7 @@ input:checked ~ .switch { background: green; } /* 체크박스 뒤의 커스텀 
 - 0.5점 단위는 별 반쪽을 한 라벨로 삼아 라벨 수를 두 배로 늘린다.
 - 지금은 `:has()`로 **DOM 순서를 뒤집지 않고** 앞의 형제를 고를 수 있다: `.rating:has(label:hover) label { color: gold } .rating label:hover ~ label { color: inherit }`. 시각 순서와 DOM 순서가 같아 스크린 리더·탭 순서도 자연스럽다.
 
-브라우저는 선택자를 **오른쪽 끝(키 선택자)부터 왼쪽으로** 맞춰 본다. 그래서 `button#back`처럼 ID에 태그를 덧붙이거나 `ul li a` 같은 긴 자손 체인을 피하라는 옛 성능 지침이 있었다. 지금 엔진은 키 선택자로 규칙을 분류하고 결과를 공유해([[browser-rendering|브라우저 렌더링 과정]]) 선택자 모양에 따른 속도 차이가 거의 없다. 선택자는 성능보다 **특정성과 읽기 쉬움**으로 고른다.
+브라우저는 선택자를 **오른쪽 끝(키 선택자)부터 왼쪽으로** 맞춰 본다. `p span`이면 먼저 `<span>`인지 보고, 맞을 때만 부모를 따라 루트 쪽으로 올라가며 `<p>`를 찾는다. `<p>`를 하나 만나면 그 자리에서 일치로 끝난다. 대부분의 요소는 키 선택자에서 바로 탈락하므로, 왼쪽부터 자손을 모두 훑는 것보다 일이 훨씬 적다. 그래서 `button#back`처럼 ID에 태그를 덧붙이거나 `ul li a` 같은 긴 자손 체인을 피하라는 옛 성능 지침이 있었다. 지금 엔진은 키 선택자로 규칙을 분류하고 결과를 공유해([[browser-rendering|브라우저 렌더링 과정]]) 선택자 모양에 따른 속도 차이가 거의 없다. 선택자는 성능보다 **특정성과 읽기 쉬움**으로 고른다.
 
 ## 가상 클래스: 요소의 상태
 
@@ -191,7 +192,19 @@ ul:has(> li:only-child) {}                          /* 정확히 1개 */
 p::first-letter { float: inline-start; font-size: 2.6em; line-height: 1; margin-inline-end: .2rem; }  /* 드롭캡 */
 a[href$=".pdf"]::after { content: " (PDF)"; }
 ::selection { background: black; color: white; }
+
+/* 툴팁 꼬리: 삼각형은 장식이라 DOM이 아니라 스타일 쪽에 둔다 */
+.tooltip { position: relative; }
+.tooltip::after {
+  content: "";
+  position: absolute; inset-block-start: 100%; inset-inline-start: 50%;
+  translate: -50% 0;
+  border: 6px solid transparent;
+  border-block-start-color: black;   /* 네 변 중 한 변만 칠하면 삼각형이 된다 */
+}
 ```
+
+`::before`·`::after`의 대표 쓰임은 마크업을 늘리지 않는 장식이다. 툴팁 꼬리, 아이콘, 따옴표, 구분선, 그리고 과거 float를 담던 clearfix(`::after { content: ""; display: block; clear: both }`, [[flexbox#float를 부모 안에 담기|Float와 Flexbox]])가 이 방식이다.
 
 - `::before`·`::after`는 자식을 가질 수 있는 요소에만 붙는다. `<img>`, `<input>`, `<video>` 같은 대체 요소에는 생기지 않는다(체크박스는 예외적으로 된다).
 - `content`가 빈 문자열이 아니면 스크린 리더가 읽을 수 있다. 장식은 `content: ""`로 두고, `url()` 이미지는 원래 크기로만 들어간다.
@@ -288,6 +301,7 @@ div:not(.my-class) {}            /* (0,1,1) */
 - 특정성은 **필요한 만큼만** 높인다. 높게 쌓아 두면 나중에 정말 중요한 스타일을 덮기 어렵다.
 - 불가피하게 올려야 하면 `.my-button.my-button`처럼 같은 클래스를 반복해 (0,2,0)을 만들 수 있다. 자주 필요하다면 다른 선택자가 너무 구체적이라는 신호다.
 - 리셋·기본 스타일은 `:where()`로 0으로 두고, 라이브러리는 `@layer`에 넣어 순서로 다스린다.
+- **UI 컴포넌트 라이브러리는 특정성을 특히 낮게** 둔다. 쓰는 쪽이 클래스 하나로 덮을 수 있어야 한다. 라이브러리 스타일이 세면 사용자는 특정성을 억지로 올리거나 `!important`에 기댄다.
 
 ## 상속
 

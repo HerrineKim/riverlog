@@ -5,11 +5,12 @@ summary: "행과 열을 동시에 다루는 2차원 레이아웃 CSS 그리드�
 tags: ["css", "layout", "grid", "frontend"]
 source: other
 date: "2026-10-21"
-sources: ["https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://webactually.com/2018/07/02/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83-%eb%aa%a8%eb%b2%94-%ec%82%ac%eb%a1%80/", "https://webactually.com/2018/08/06/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%eb%b2%a82-%ec%84%9c%eb%b8%8c%ea%b7%b8%eb%a6%ac%eb%93%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid", "https://web.dev/learn/css/grid", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/grid.md"]
+sources: ["https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://webactually.com/2018/07/02/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83-%eb%aa%a8%eb%b2%94-%ec%82%ac%eb%a1%80/", "https://webactually.com/2018/08/06/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%eb%b2%a82-%ec%84%9c%eb%b8%8c%ea%b7%b8%eb%a6%ac%eb%93%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid", "https://web.dev/learn/css/grid", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/grid.md", "https://www.frontendinterviewhandbook.com/css-questions"]
 ---
 
 > CSS-Tricks의 「[그리드 완벽 가이드](https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/)」(2019.06)와 Rachel Andrew의 「CSS 그리드 레이아웃 모범 사례」(2018.07)·「CSS 그리드 레벨2: 서브그리드」(2018.08, 웹액츄얼리 번역)를 바탕으로 재구성하고, web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Grid 모듈로 보강한 노트다.
 > 「옛 습관을 버린다」의 그리드 시스템 비교는 「[Must-Know-About-Frontend: 그리드 시스템](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/grid.md)」을 바탕으로 보강했다.
+> 프레임워크 그리드 시스템의 변천은 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 Bootstrap 문서로 확인해 보강했다.
 
 ## 그리드란
 
@@ -207,6 +208,8 @@ float 시절의 행 래퍼(row wrapper)나 12열 클래스 시스템을 그리�
 .main { grid-column: span 8; }
 .aside { grid-column: span 4; }
 ```
+
+CSS 프레임워크의 그리드 시스템도 이 순서를 밟았다. Bootstrap은 3까지 float 그리드였고, 4부터 flexbox 그리드로 바꿨으며, 5.1부터 CSS 그리드 기반 그리드를 선택 기능으로 더했다. float 그리드는 flexbox·grid가 널리 지원되기 전까지 지원 범위가 가장 넓다는 이유로 쓰였다.
 
 ### 6. 부모 너비에 반응해야 하면 컨테이너 쿼리
 

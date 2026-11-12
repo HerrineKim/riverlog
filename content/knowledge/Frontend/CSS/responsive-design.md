@@ -5,12 +5,13 @@ summary: "유동 그리드·유동 미디어·미디어 쿼리라는 세 요소�
 tags: ["css", "frontend", "mobile", "typography"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://ethanmarcotte.com/wrote/responsive-design-at-15/", "https://spoqa.github.io/2016/06/03/localize-type-setting.html", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries", "https://web.dev/learn/css/container-queries", "https://caniuse.com/css-container-queries", "https://web.dev/learn/design", "https://web.dev/learn/design/intro", "https://web.dev/learn/design/media-queries", "https://web.dev/learn/design/macro-layouts", "https://web.dev/learn/design/micro-layouts", "https://web.dev/learn/design/typography", "https://web.dev/learn/design/responsive-images", "https://web.dev/learn/design/accessibility", "https://web.dev/learn/design/internationalization"]
+sources: ["https://ethanmarcotte.com/wrote/responsive-design-at-15/", "https://spoqa.github.io/2016/06/03/localize-type-setting.html", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries", "https://web.dev/learn/css/container-queries", "https://caniuse.com/css-container-queries", "https://web.dev/learn/design", "https://web.dev/learn/design/intro", "https://web.dev/learn/design/media-queries", "https://web.dev/learn/design/macro-layouts", "https://web.dev/learn/design/micro-layouts", "https://web.dev/learn/design/typography", "https://web.dev/learn/design/responsive-images", "https://web.dev/learn/design/accessibility", "https://web.dev/learn/design/internationalization", "https://www.frontendinterviewhandbook.com/css-questions"]
 ---
 
 반응형 디자인(Responsive Design)은 한 벌의 HTML·CSS가 휴대폰부터 큰 모니터까지 **어떤 화면에서도 읽기 좋게** 보이도록 만드는 방식이다. 브레이크포인트·모바일 퍼스트·해상도·폴드 같은 용어의 짧은 정의는 [[web-glossary|프론트엔드 용어집]]에 있다.
 
 > 일부 절은 web.dev 「[Learn Responsive Design](https://web.dev/learn/design)」 강좌로, 이름의 유래는 Ethan Marcotte의 「[Responsive web design turns fifteen](https://ethanmarcotte.com/wrote/responsive-design-at-15/)」(2025.05)로 보강했다.
+> 반응형과 적응형의 비교, 모바일 퍼스트 예시는 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 바탕으로 보강했다.
 
 ## 세 요소와 그 뒤
 
@@ -23,6 +24,17 @@ sources: ["https://ethanmarcotte.com/wrote/responsive-design-at-15/", "https://s
 고정폭·리퀴드·적응형 레이아웃에서 반응형으로 온 흐름은 [[web-layout-design|웹 레이아웃 디자인]]에 있다. 지금의 반응형은 화면 폭을 넘어 **사용자 설정**(다크 모드, 움직임 줄이기), **입력 장치**(터치·마우스), **화면 모양**(노치, 폴더블), **언어**에도 반응한다.
 
 「반응형 웹 디자인」은 이선 마콧(Ethan Marcotte)이 2010년에 붙인 이름이다. 지금 반응형은 특별한 기법이 아니라 기본값이어서, 휴대폰·데스크톱·그 밖의 기기에서 모두 동작하는 사이트를 만드는 것은 그냥 해야 할 일로 여겨진다. 관점도 바뀌어, 웹의 유동성을 맞서 싸울 제약이 아니라 함께, 그리고 그것을 위해 디자인하는 자산으로 본다. 남은 과제는 화면 폭이 아니라 기기 성능 격차(저사양 휴대폰에서의 성능)와 접근성 쪽에 있다([[responsible-javascript|책임감 있는 JavaScript]], 아래 「반응형과 접근성」).
+
+### 반응형과 적응형
+
+둘 다 기기마다 알맞은 경험을 주려는 방식이지만, 레이아웃을 몇 벌 두느냐가 다르다.
+
+| | 반응형(responsive) | 적응형(adaptive) |
+| --- | --- | --- |
+| 방식 | **유동적인 레이아웃 한 벌**이 늘고 줄며, 미디어 쿼리·유동 그리드·반응형 이미지로 다듬는다 | 미리 정한 화면 폭·기기 유형마다 **따로 만든 레이아웃**을 골라 준다. 미디어 쿼리로 고정폭 레이아웃을 갈아 끼우거나, 서버가 기기를 판별해 다른 HTML을 보낸다 |
+| 어려운 점 | 한 레이아웃이 모든 상황을 감당해야 한다. 브레이크포인트를 표준값에 맞출지 콘텐츠에 맞출지 정하고, 레이아웃이 바뀌면 다시 정해야 한다 | 기기 판별(User-Agent, 화면 밀도 감지)이 자주 틀린다. 정해 둔 폭 사이에서는 어긋나고, 여러 벌을 따로 유지해야 한다 |
+
+지금은 반응형이 기본이다. 서버가 기기별로 다른 HTML을 보내는 방식(동적 게재)의 검색 엔진 쪽 비용은 [[seo-basics#모바일 우선 색인과 반응형 SEO|SEO 기초]]에 있다.
 
 ## 출발점: 뷰포트 메타 태그
 
@@ -120,7 +132,17 @@ main, aside { container-type: inline-size; }
 
 ## 모바일 퍼스트
 
-모바일 퍼스트(Mobile-first)는 작은 화면용 스타일을 기본으로 쓰고, `min-width` 미디어 쿼리로 큰 화면 스타일을 **덧붙이는** 방식이다.
+모바일 퍼스트(Mobile-first)는 작은 화면용 스타일을 기본으로 쓰고, `min-width` 미디어 쿼리로 큰 화면 스타일을 **덧붙이는** 방식이다. 반응형과 맞서는 개념이 아니라 **반응형 CSS를 쓰는 순서**다. 같은 반응형이라도 어느 쪽을 기본값으로 두느냐가 다르다.
+
+```css
+/* 기본값 없이 양쪽을 모두 조건으로 건다: 모든 화면이 미디어 쿼리를 거친다 */
+@media (min-width: 601px) { .title { font-size: 24px; } }
+@media (max-width: 600px) { .title { font-size: 12px; } }
+
+/* 모바일 퍼스트: 기본값은 조건 없이, 큰 화면만 덧붙인다 */
+.title { font-size: 12px; }
+@media (min-width: 600px) { .title { font-size: 24px; } }
+```
 
 | | 모바일 퍼스트 (`min-width`) | 데스크톱 퍼스트 (`max-width`) |
 | --- | --- | --- |

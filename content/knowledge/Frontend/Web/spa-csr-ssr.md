@@ -5,12 +5,13 @@ summary: "한 페이지에서 필요한 부분만 다시 그리는 SPA와, 렌�
 tags: ["web", "rendering", "spa", "seo"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://riverkim.kr/257", "https://riverkim.kr/321", "https://junilhwang.github.io/TIL/Javascript/Design/Vanilla-JS-Server-Side-Rendering/", "https://zuminternet.github.io/ZUM-Mobile-NodeJS/", "https://github.com/grab/front-end-guide", "https://prepare-frontend-interview.vercel.app/react", "https://react.dev/reference/react-dom/client/hydrateRoot"]
+sources: ["https://riverkim.kr/257", "https://riverkim.kr/321", "https://junilhwang.github.io/TIL/Javascript/Design/Vanilla-JS-Server-Side-Rendering/", "https://zuminternet.github.io/ZUM-Mobile-NodeJS/", "https://github.com/grab/front-end-guide", "https://prepare-frontend-interview.vercel.app/react", "https://react.dev/reference/react-dom/client/hydrateRoot", "https://www.frontendinterviewhandbook.com/html-questions"]
 ---
 
 > 개인 TIL을 바탕으로, SSR의 뼈대는 「[프레임워크 없이 만드는 SSR](https://junilhwang.github.io/TIL/Javascript/Design/Vanilla-JS-Server-Side-Rendering/)」, 「[모바일 줌 SpringBoot → NodeJS 전환기 (feat. VueJS SSR)](https://zuminternet.github.io/ZUM-Mobile-NodeJS/)」를 바탕으로 더한 노트다.
 > Grab의 「[Front End Guide](https://github.com/grab/front-end-guide)」를 바탕으로 보강했다.
 > 「[프론트엔드 면접 준비: React](https://prepare-frontend-interview.vercel.app/react)」 정리로 hydration 불일치를 보강했다.
+> 「HTML 템플릿 언어」는 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/html-questions)」을 바탕으로 보강했다.
 
 **SPA(Single Page Application)** 는 처음에 한 번만 페이지를 받아 오고, 이후에는 서버에서 새 페이지 전체를 받지 않고 현재 페이지의 필요한 부분만 동적으로 다시 그리는 웹 애플리케이션이다. 화면 전환이 매끄러워 네이티브 앱과 비슷한 사용자 경험을 준다. SPA는 주로 CSR 방식으로 동작하므로, CSR과 SSR의 차이를 함께 이해해야 한다.
 
@@ -49,6 +50,26 @@ MPA에서 SPA로, 다시 서버와 클라이언트가 역할을 나누는 구조
 | --- | --- |
 | 초기 화면이 빨리 보인다 | 요청마다 새 페이지를 만들어 전체 새로고침이 반복된다 |
 | HTML에 콘텐츠가 이미 있어 SEO에 유리하다 | 트래픽이 상대적으로 많아 서버 부담이 크다 |
+
+### HTML 템플릿 언어
+
+전통적인 SSR과 정적 사이트 생성기는 **템플릿 언어**로 HTML 틀에 데이터를 채운다. 언어마다 문법은 달라도 하는 일은 거의 같다.
+
+| 템플릿 언어 | 주로 쓰는 곳 |
+| --- | --- |
+| ERB, Slim | Ruby(Rails) |
+| Jinja, Django 템플릿 | Python |
+| Liquid | Shopify, Jekyll, Eleventy |
+| Handlebars, EJS, Pug(옛 이름 Jade), Nunjucks | Node.js |
+
+| 공통 기능 | 내용 |
+| --- | --- |
+| 출력 이스케이프 | `{{ name }}`처럼 끼워 넣은 값을 기본으로 HTML 이스케이프해 XSS를 막는다. 이스케이프하지 않는 문법(`{{{ }}}`, `\|safe`, `<%- %>`)은 믿을 수 있는 값에만 쓴다([[web-security\|웹 보안]]) |
+| 조건·반복 | `if`, `for`로 목록과 분기를 그린다 |
+| 필터·헬퍼 | 날짜 포맷, 대소문자 변환처럼 표시 직전에 값을 가공한다. 대부분 직접 만든 필터를 등록할 수 있다 |
+| 레이아웃·조각 | 공통 틀(레이아웃)을 상속하고 반복되는 조각(partial, include)을 끼운다 |
+
+React의 JSX도 같은 역할을 JavaScript 문법으로 하는 템플릿으로 볼 수 있다. 문자열 대신 요소 트리를 만들고, 끼워 넣은 값을 기본으로 이스케이프한다.
 
 ### Hydration
 

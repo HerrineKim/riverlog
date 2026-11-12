@@ -5,10 +5,11 @@ summary: "새 CSS 기능을 지원하지 않는 브라우저를 '똑같이 보�
 tags: ["css", "browser", "layout", "frontend"]
 source: other
 date: "2026-10-21"
-sources: ["https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb%a1%9c-%eb%af%b8%ec%a7%80%ec%9b%90-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%a7%80%ec%9b%90%ed%95%98%ea%b8%b0/", "https://webactually.com/2017/11/30/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83%ec%9d%84-%ec%a7%80%ea%b8%88-%ec%82%ac%ec%9a%a9%ed%95%b4%eb%8f%84-%ec%a0%95%eb%a7%90-%ea%b4%9c%ec%b0%ae%ec%9d%84%ea%b9%8c%ec%9a%94/", "https://webactually.com/2020/01/29/ie%EC%97%90%EC%84%9C%EC%9D%98-css-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-ie-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%98%A4%ED%95%B4%EB%A5%BC/", "https://webactually.com/2018/10/02/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-css-%ea%b7%b8%eb%a6%ac%eb%93%9c%ec%99%80-autoprefixer/", "https://webactually.com/2018/11/13/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ea%b0%84%ea%b2%a9%ec%9c%bc%eb%a1%9c-%ec%9e%90%eb%8f%99-%eb%b0%b0%ec%b9%98/", "https://webactually.com/2020/07/27/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ec%a4%91%eb%b3%b5%eb%90%9c-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%98%81%ec%97%ad-%ec%9d%b4%eb%a6%84/", "https://web.dev/baseline", "https://web.dev/blog/same-document-view-transitions-are-now-baseline-newly-available", "https://developer.mozilla.org/en-US/docs/Web/CSS/anchor-name", "https://github.com/yui/yui3/wiki/Graded-Browser-Support", "https://www.filamentgroup.com/lab/grade-the-components.html"]
+sources: ["https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb%a1%9c-%eb%af%b8%ec%a7%80%ec%9b%90-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%a7%80%ec%9b%90%ed%95%98%ea%b8%b0/", "https://webactually.com/2017/11/30/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83%ec%9d%84-%ec%a7%80%ea%b8%88-%ec%82%ac%ec%9a%a9%ed%95%b4%eb%8f%84-%ec%a0%95%eb%a7%90-%ea%b4%9c%ec%b0%ae%ec%9d%84%ea%b9%8c%ec%9a%94/", "https://webactually.com/2020/01/29/ie%EC%97%90%EC%84%9C%EC%9D%98-css-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-%EC%9D%BC%EB%B0%98%EC%A0%81%EC%9D%B8-ie-%EA%B7%B8%EB%A6%AC%EB%93%9C-%EC%98%A4%ED%95%B4%EB%A5%BC/", "https://webactually.com/2018/10/02/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-css-%ea%b7%b8%eb%a6%ac%eb%93%9c%ec%99%80-autoprefixer/", "https://webactually.com/2018/11/13/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ea%b0%84%ea%b2%a9%ec%9c%bc%eb%a1%9c-%ec%9e%90%eb%8f%99-%eb%b0%b0%ec%b9%98/", "https://webactually.com/2020/07/27/ie%ec%97%90%ec%84%9c-css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%82%ac%ec%9a%a9%ed%95%98%ea%b8%b0-%ec%a4%91%eb%b3%b5%eb%90%9c-%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%98%81%ec%97%ad-%ec%9d%b4%eb%a6%84/", "https://web.dev/baseline", "https://web.dev/blog/same-document-view-transitions-are-now-baseline-newly-available", "https://developer.mozilla.org/en-US/docs/Web/CSS/anchor-name", "https://github.com/yui/yui3/wiki/Graded-Browser-Support", "https://www.filamentgroup.com/lab/grade-the-components.html", "https://www.frontendinterviewhandbook.com/css-questions"]
 ---
 
 > Rachel Andrew의 「[CSS 그리드로 미지원 브라우저 지원하기](https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb%a1%9c-%eb%af%b8%ec%a7%80%ec%9b%90-%eb%b8%8c%eb%9d%bc%ec%9a%b0%ec%a0%80-%ec%a7%80%ec%9b%90%ed%95%98%ea%b8%b0/)」(2018.01)·「CSS 그리드 레이아웃을 지금 사용해도 정말 괜찮을까」(2017.11)와 Daniel Tonon의 「IE에서 CSS 그리드 사용하기」 시리즈(2018~2020, 웹액츄얼리 번역)를 바탕으로 재구성한 노트다. 지원 등급은 Yahoo의 「[Graded Browser Support](https://github.com/yui/yui3/wiki/Graded-Browser-Support)」와 Filament Group의 「[Grade components, not browsers](https://www.filamentgroup.com/lab/grade-the-components.html)」(2013)를 바탕으로 더했다.
+> 우아한 저하와의 비교, 기능 감지의 변천, 「특정 브라우저에서만 깨질 때」는 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 바탕으로 지금 기준으로 고쳐 보강했다.
 
 ## 점진적 향상이란
 
@@ -20,6 +21,16 @@ sources: ["https://webactually.com/2018/01/19/css-%ea%b7%b8%eb%a6%ac%eb%93%9c%eb
 | 모든 브라우저에서 콘텐츠를 무리 없이 쓸 수 있다 | 새 기능을 지금 쓰고, 옛 브라우저에는 단순한 레이아웃을 준다 |
 
 **모든 브라우저에서 똑같아야 한다면 그 기능을 쓰지 않는다.** 새 기능은 이전에 불가능했던 일을 하려고 쓰는 것이지, 옛 디자인을 똑같이 재현하려고 쓰는 것이 아니다.
+
+반대 방향에서 출발하는 짝 개념이 우아한 저하(Graceful Degradation)다.
+
+| | 점진적 향상 | 우아한 저하 |
+| --- | --- | --- |
+| 출발점 | 모든 브라우저가 쓸 수 있는 기본 경험 | 최신 브라우저용 완성된 경험 |
+| 방향 | 지원하는 브라우저에 기능을 **얹는다** | 지원하지 않는 브라우저에서도 **망가지지 않게** 깎아 낸다 |
+| 기능이 빠진 환경 | 처음부터 설계에 들어 있다 | 나중에 점검하는 예외로 남기 쉽다 |
+
+결과가 비슷해 보여도 점진적 향상이 기본 경험을 먼저 확정하므로 빠뜨리는 환경이 적다. 두 방식 모두 출발점은 대상 브라우저와 기능별 지원 현황(Can I use, Baseline)을 확인하는 일이다.
 
 CSS 그리드·플렉스박스는 이제 모든 주요 브라우저가 지원한다. 같은 원칙이 지금은 지원 시기가 엇갈린 새 기능에 그대로 적용된다. Baseline 연도는 Chrome·Edge·Firefox·Safari가 모두 지원하게 된 해다(Newly available). 그로부터 30개월이 지나면 Widely available이 된다.
 
@@ -111,6 +122,8 @@ C 등급은 블랙리스트, A 등급은 화이트리스트로 브라우저를 �
 
 **피처 쿼리 안에는 새 코드 전체가 아니라 "되돌리거나 덧붙일 값"만 넣는다.** `@supports not (…)`으로 미지원 브라우저 전용 규칙을 쓸 수도 있다. 폴리필도 핵도 아닌, 명세에 정의된 CSS만으로 처리하는 방법이다.
 
+JavaScript에서는 같은 질문을 `CSS.supports('display', 'grid')`나 `CSS.supports('selector(:has(a))')`로 한다. 과거에는 Modernizr 같은 기능 감지 라이브러리가 페이지 로드 때 기능을 하나씩 시험해 `<html class="flexbox no-cssgrid">`처럼 클래스를 붙이고, CSS는 그 클래스로 분기했다. 지금은 `@supports`와 `CSS.supports()`로 충분하다.
+
 ## 무거운 폴리필을 피하는 이유
 
 - 레이아웃 전체를 계산하는 기능을 자바스크립트로 흉내 내면 높이·위치를 다시 계산하느라 로딩이 불안정해진다.
@@ -122,6 +135,20 @@ C 등급은 블랙리스트, A 등급은 화이트리스트로 브라우저를 �
 ## 변환 도구의 한계
 
 PostCSS·Autoprefixer·Lightning CSS 같은 도구는 접두사를 붙이거나 새 문법을 옛 문법으로 바꿔 준다(예: 네이티브 중첩 → 펼친 선택자, 논리 속성 → 물리 속성). 도구는 문법을 옮길 뿐 동작까지 옮기지는 못한다. 대응 문법이 없는 기능은 조용히 깨지므로 경고를 읽고 결과를 실제 브라우저에서 확인한다.
+
+## 특정 브라우저에서만 깨질 때
+
+어떤 브라우저의 어떤 버전에서 깨지는지 먼저 좁힌 뒤, 아래 순서로 손댄다. **브라우저를 판별하지 않고 기능과 값을 다룬다.**
+
+| 순서 | 방법 | 내용 |
+| --- | --- | --- |
+| 1 | 기본 스타일 맞추기 | 리셋이나 노멀라이즈로 브라우저 기본값 차이를 없애고, 남는 차이는 값을 명시한다([[css-basics#리셋과 노멀라이즈\|리셋과 노멀라이즈]]) |
+| 2 | 접두사·문법 변환 자동화 | Autoprefixer·postcss-preset-env(또는 Lightning CSS)가 `browserslist`에 적은 대상에 맞춰 공급자 접두사를 붙이고 새 문법을 옮긴다([[postcss\|PostCSS]]) |
+| 3 | 피처 쿼리로 분기 | 지원 여부에 따라 폴백 값을 되돌리거나 덧붙인다(위 「피처 쿼리로 틈새 메우기」) |
+| 4 | 검증된 라이브러리에 맡기기 | 폼 요소·대화 상자처럼 브라우저 차이가 큰 부분은 이미 차이를 흡수한 컴포넌트 라이브러리를 쓴다 |
+| 5 | 버그 우회 | 특정 엔진의 버그면 우회 코드에 버그 링크와 지울 조건을 주석으로 남긴다. 고쳐지면 지운다 |
+
+과거에는 IE 조건부 주석(`<!--[if IE 8]>…<![endif]-->`)이나 서버의 User-Agent 판별로 브라우저 전용 스타일시트를 따로 불렀다. User-Agent 문자열은 흉내 내기 쉽고 버전이 바뀌면 틀리므로 지금은 쓰지 않는다.
 
 ## 폴백 테스트
 
