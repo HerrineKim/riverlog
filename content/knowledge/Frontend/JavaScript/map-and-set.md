@@ -5,10 +5,10 @@ summary: "Map은 어떤 값이든 키로 쓰고 넣은 순서를 지키는 키-�
 tags: ["javascript", "data-structure", "frontend"]
 source: other
 date: "2026-10-20"
-sources: ["https://wesbos.com/javascript/08-data-types/maps", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap", "https://web.dev/learn/javascript/collections/keyed", "https://ko.javascript.info/map-set", "https://ko.javascript.info/weakmap-weakset"]
+sources: ["https://wesbos.com/javascript/08-data-types/maps", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap", "https://web.dev/learn/javascript/collections/keyed", "https://ko.javascript.info/map-set", "https://ko.javascript.info/weakmap-weakset", "https://www.frontendinterviewhandbook.com/blog/javascript-object-vs-map"]
 ---
 
-> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Keyed collections」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「맵과 셋」, 「위크맵과 위크셋」 글을 더하고 MDN으로 확인해 재구성한 노트다.
+> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Keyed collections」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「맵과 셋」, 「위크맵과 위크셋」 글을 더하고 MDN으로 확인해 재구성한 노트다. 객체를 해시 맵으로 쓸 때의 함정과 성능·메모리 비교는 Zhenghao He의 「[When You Should Prefer Map Over Object In JavaScript](https://www.frontendinterviewhandbook.com/blog/javascript-object-vs-map)」(2022.06, Front End Interview Handbook 블로그)로 보강했다.
 
 ## Map이란
 
@@ -43,15 +43,38 @@ notes.get({ name: 'wes' })   // undefined: 다른 객체
 | | 일반 객체 `{}` | `Map` |
 | --- | --- | --- |
 | 키 타입 | 문자열·Symbol (숫자는 문자열로 바뀜) | **아무 값**(객체, 함수, 숫자, NaN) |
-| 순서 | 정수 키는 오름차순, 나머지는 넣은 순서 | **넣은 순서 그대로** |
-| 크기 | `Object.keys(obj).length` | `map.size` |
-| 순회 | `Object.entries(obj)`로 바꾼 뒤 | 바로 `for...of`, `forEach` |
+| 순서 | 정수 키는 오름차순으로 앞에, 나머지는 넣은 순서. `obj.foo = 1; obj[2] = 2; obj[1] = 3`은 `1, 2, foo` 순으로 돈다 | **넣은 순서 그대로** |
+| 크기 | `Object.keys(obj).length`(열거 불가까지 `Object.getOwnPropertyNames`, Symbol까지 `Reflect.ownKeys`). 키 배열을 만들어야 해서 O(n) | `map.size` |
+| 순회 | 이터러블이 아니라 `Object.entries(obj)`로 배열을 만든 뒤 | 바로 `for...of`, `forEach` |
 | 리터럴 | `{ a: 1 }` | 없음. `new Map([['a', 1]])` |
 | 메서드 저장 | 가능(this로 자기 데이터 접근) | 데이터 전용 |
 | JSON | `JSON.stringify` 그대로 | 그대로는 `{}`가 된다 |
+| 있는지 확인 | `Object.hasOwn(obj, k)` (값이 `undefined`여도 있으면 true) | `map.has(k)` |
+| 전부 지우기 | 속성마다 `delete` | `map.clear()` |
 | 잦은 추가·삭제 | 보통 | 이 용도에 맞게 최적화 |
 
-**고르는 기준**: 모양이 정해진 레코드(사용자, 설정, API 응답)는 객체다. 실행 중에 키가 계속 늘고 줄거나, 키가 문자열이 아니거나, 넣은 순서가 의미 있으면 Map이다.
+**고르는 기준**: 코드를 쓸 때 키를 다 아는 **레코드**(사용자, 설정, API 응답), 한 번 쓰고 버리는 묶음은 객체다. 실행 중에 키가 계속 늘고 줄거나, 키를 미리 알 수 없거나(이벤트 이미터의 이벤트 이름별 리스너 목록), 키가 문자열이 아니거나, 넣은 순서가 의미 있는 **사전(해시 맵)** 은 Map이다.
+
+### 객체를 해시 맵으로 쓸 때의 함정
+
+ES2015 이전에는 해시 맵이 필요하면 빈 객체 `{}`를 썼다. 지금도 습관처럼 그렇게 쓰지만 객체는 사전 용도로 설계되지 않았다.
+
+| 함정 | 내용 | 우회 |
+| --- | --- | --- |
+| 키가 문자열로 바뀐다 | `{ [arr]: 'a', [obj]: 'b' }`(빈 배열과 빈 객체를 계산된 키로)는 `{ '': 'a', '[object Object]': 'b' }`가 된다. 객체 키는 모두 같은 키로 뭉개진다 | Map |
+| 상속받은 속성이 섞인다 | `{}`는 비어 보여도 `Object.prototype`의 `toString`·`constructor`·`hasOwnProperty`를 물려받는다. `for...in`은 누군가 `Object.prototype`에 더한 열거 가능 속성까지 돌고, `'constructor' in obj`는 넣은 적 없어도 true다 | `Object.create(null)`, `Object.keys` |
+| 프로토타입 오염 | `Object.prototype`을 바꾸면 모든 객체에 퍼진다. 사용자 입력을 키로 받아 `obj[key] = value`로 넣으면 `__proto__` 같은 키로 공격받을 수 있다 | `Object.create(null)`, Map |
+| 메서드 이름 충돌 | 사용자 데이터에 `hasOwnProperty`라는 키가 있으면 `obj.hasOwnProperty(k)`가 그 값을 부른다 | `Object.hasOwn(obj, k)`(ES2022). 예전에는 `Object.prototype.hasOwnProperty.call(obj, k)`로 빌려 썼다 |
+
+Map은 데이터를 `get`·`set`으로만 다루므로 **사용자 데이터와 내장 속성이 섞이지 않는다.** 점 표기보다 한 단계 번거로운 대신 얻는 분리다. 객체에 메타데이터를 덧붙이는 용도라면 Map이 아니라 WeakMap을 써야 메모리가 새지 않는다(아래).
+
+### 성능과 메모리
+
+V8에서 잰 벤치마크로는 키가 문자열이거나 `Math.random()`으로 만든 숫자 문자열일 때 **Map이 추가·삭제·순회 모두 빠르다.** 항목이 수천 개 이하일 때 추가 속도가 두 배 가까이 나고, 수백만 개로 늘수록 차이가 줄어든다. 예외는 **작은 정수 키**다. V8은 정수 인덱스 속성을 배열처럼 따로 저장해 최적화하므로, 키가 작은 정수면 객체가 추가에서 더 빠를 수 있다(순회는 여전히 Map이 빠르다).
+
+메모리는 같은 항목 수에서 Map이 20~50% 적게 쓴다. 객체는 속성마다 `writable`·`enumerable`·`configurable` 같은 속성 설명자를 들고 있기 때문이다([[property-descriptors|속성 설명자]]). 문자열 키 객체는 항목이 약 830만 개를 넘으면 엔진 내부 한도 때문에 급격히 느려진다.
+
+벤치마크 결과는 엔진 버전과 키 모양에 따라 달라지므로, 성능 때문에 바꾼다면 실제 앱에서 재 본다. 고르는 1차 기준은 성능이 아니라 위의 레코드·사전 구분이다.
 
 ## 순회와 변환
 
@@ -63,6 +86,7 @@ for (const [points, prize] of prizes) {
 }
 prizes.forEach((prize, points) => {}) // forEach는 (값, 키) 순서
 const allPoints = [...prizes.keys()]  // keys()·values()·entries()는 이터레이터
+const [[firstKey, firstValue]] = prizes // 중첩 구조 분해로 첫 항목 꺼내기
 ```
 
 | 변환 | 코드 |
@@ -109,7 +133,8 @@ ES2025부터 집합 연산 메서드가 표준이다. 모두 새 Set을 반환�
 
 ## 정리
 
-- 정해진 모양의 레코드는 객체, 동적인 키-값 모음은 Map.
+- 정해진 모양의 레코드는 객체, 동적인 키-값 모음은 Map. 객체를 사전으로 쓰면 키 문자열 변환, 상속 속성, 프로토타입 오염, `size` 부재를 떠안는다.
+- Map은 작은 정수 키가 아니면 대체로 더 빠르고 메모리도 적게 쓴다.
 - Map은 아무 값이나 키로 쓰고, 넣은 순서를 지키고, `size`가 있다. 객체 키는 참조로 찾는다.
 - Map은 JSON이 안 된다. `Object.fromEntries`로 바꿔서 보낸다.
 - 중복 제거와 빠른 포함 검사는 Set. 집합 연산은 `union`·`intersection` 등 표준 메서드로.

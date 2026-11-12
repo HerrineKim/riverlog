@@ -5,10 +5,10 @@ summary: "ES5가 하위 호환을 깨지 않고 언어의 오래된 함정을 �
 tags: ["javascript", "frontend", "ecmascript"]
 source: other
 date: "2026-10-21"
-sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/strict-mode.md", "https://ko.javascript.info/strict-mode", "https://ko.javascript.info/eval", "https://web.dev/learn/javascript/appendix", "https://web.dev/learn/javascript/functions/this", "https://web.dev/learn/javascript/functions", "https://web.dev/learn/javascript/objects/property-descriptors", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/strict%20mode.md", "http://dmitrysoshnikov.com/ecmascript/es5-chapter-2-strict-mode/"]
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/strict-mode.md", "https://ko.javascript.info/strict-mode", "https://ko.javascript.info/eval", "https://web.dev/learn/javascript/appendix", "https://web.dev/learn/javascript/functions/this", "https://web.dev/learn/javascript/functions", "https://web.dev/learn/javascript/objects/property-descriptors", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/strict%20mode.md", "http://dmitrysoshnikov.com/ecmascript/es5-chapter-2-strict-mode/", "https://www.frontendinterviewhandbook.com/javascript-questions"]
 ---
 
-> web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 부록·함수·속성 설명자 모듈을 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「엄격 모드」, 「Eval: 문자열 코드 실행하기」 글을 더하고 MDN으로 확인해 재구성한 노트다. 「[Must-Know-About-Frontend: 엄격 모드](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/strict-mode.md)」의 내용을 더해 보강했다. 「[Frontend_TIL: strict mode](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/strict%20mode.md)」을 바탕으로 보강했다. 예약어·`caller`·상속된 읽기 전용 속성 규칙은 Dmitry Soshnikov의 「[ECMA-262-5 in detail. Chapter 2. Strict Mode](http://dmitrysoshnikov.com/ecmascript/es5-chapter-2-strict-mode/)」를 바탕으로 보강했다.
+> web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 부록·함수·속성 설명자 모듈을 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「엄격 모드」, 「Eval: 문자열 코드 실행하기」 글을 더하고 MDN으로 확인해 재구성한 노트다. 「[Must-Know-About-Frontend: 엄격 모드](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/strict-mode.md)」의 내용을 더해 보강했다. 「[Frontend_TIL: strict mode](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/strict%20mode.md)」을 바탕으로 보강했다. 예약어·`caller`·상속된 읽기 전용 속성 규칙은 Dmitry Soshnikov의 「[ECMA-262-5 in detail. Chapter 2. Strict Mode](http://dmitrysoshnikov.com/ecmascript/es5-chapter-2-strict-mode/)」를 바탕으로 보강했다. 켤 때의 대가는 Front End Interview Handbook의 「[JavaScript 질문](https://www.frontendinterviewhandbook.com/javascript-questions)」을 더해 보강했다.
 
 ## strict mode란
 
@@ -54,6 +54,8 @@ DevTools 콘솔은 기본이 sloppy mode이고, 한 줄씩 실행해서 첫 줄�
 ```
 
 **strict mode는 한 번 켜면 끌 수 없다.** 파일 중간에 sloppy로 되돌리는 지시어는 없다.
+
+켜는 대가는 옛 코드와의 호환이다. `arguments.callee`, 함수의 `caller`·`arguments` 속성, `with`, 암묵적 전역에 기대던 옛 스크립트나 라이브러리는 strict로 바꾸면 그 자리에서 에러가 난다. 그래서 옛 코드에 켤 때는 파일 전체가 아니라 새로 쓰는 함수부터 켜고, 위의 이어 붙이기 문제도 함께 확인한다. 새 코드에서는 잃는 것이 거의 없어 늘 켠다.
 
 ## 무엇이 달라지나
 

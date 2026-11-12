@@ -5,10 +5,10 @@ summary: "JavaScript의 표준 ECMA-262를 누가 어떻게 정하는지 정리�
 tags: ["javascript", "frontend", "ecmascript", "history"]
 source: other
 date: "2026-11-02"
-sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es6.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es7-es8.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es9-es10.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es11.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/native-host.md", "https://ko.javascript.info/intro", "https://ko.javascript.info/manuals-specifications", "https://ko.javascript.info/polyfills", "https://80000coding.notion.site/702242eb995e4cb2b7ca68cd66c64d7a", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://tc39.es/process-document/", "https://github.com/tc39/proposals/blob/main/finished-proposals.md", "https://auth0.com/blog/a-brief-history-of-javascript/", "https://remysharp.com/2010/10/08/what-is-a-polyfill"]
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es6.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es7-es8.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es9-es10.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es11.md", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/native-host.md", "https://ko.javascript.info/intro", "https://ko.javascript.info/manuals-specifications", "https://ko.javascript.info/polyfills", "https://80000coding.notion.site/702242eb995e4cb2b7ca68cd66c64d7a", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://tc39.es/process-document/", "https://github.com/tc39/proposals/blob/main/finished-proposals.md", "https://auth0.com/blog/a-brief-history-of-javascript/", "https://remysharp.com/2010/10/08/what-is-a-polyfill", "https://www.frontendinterviewhandbook.com/javascript-questions"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「ECMAScript와 ECMAScript 2022의 제안 알아보기」, 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「자바스크립트란?」, 「매뉴얼과 명세서」, 「폴리필」 글을 더해 재구성한 노트다. 초기 연표는 「[A Brief History of JavaScript](https://auth0.com/blog/a-brief-history-of-javascript/)」를 바탕으로 더했다. ES2015~ES2021 기능 표와 내장·호스트 객체 구분은 「[Must-Know-About-Frontend: ES6](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es6.md)」 등 ES 판별 정리와 「네이티브 객체 vs 호스트 객체」를 바탕으로 보강했다. 폴리필의 정의는 Remy Sharp의 「[What is a Polyfill?](https://remysharp.com/2010/10/08/what-is-a-polyfill)」(2010)으로 보강했다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「ECMAScript와 ECMAScript 2022의 제안 알아보기」, 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로, javascript.info(모던 JavaScript 튜토리얼)의 「자바스크립트란?」, 「매뉴얼과 명세서」, 「폴리필」 글을 더해 재구성한 노트다. 초기 연표는 「[A Brief History of JavaScript](https://auth0.com/blog/a-brief-history-of-javascript/)」를 바탕으로 더했다. ES2015~ES2021 기능 표와 내장·호스트 객체 구분은 「[Must-Know-About-Frontend: ES6](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/es6.md)」 등 ES 판별 정리와 「네이티브 객체 vs 호스트 객체」를 바탕으로 보강했다. 폴리필의 정의는 Remy Sharp의 「[What is a Polyfill?](https://remysharp.com/2010/10/08/what-is-a-polyfill)」(2010)으로 보강했다. 기능 감지·기능 추론·UA 검사의 비교는 Front End Interview Handbook의 「[JavaScript 질문](https://www.frontendinterviewhandbook.com/javascript-questions)」을 더해 보강했다.
 
 **ECMAScript**는 JavaScript의 핵심 문법과 내장 객체를 정의한 언어 표준이다. 규격 문서의 번호는 **ECMA-262**이고, ECMA International의 기술 위원회 **TC39**가 관리한다. JavaScript는 이 표준을 구현한 언어이고, 브라우저의 DOM이나 Node.js의 `fs`처럼 실행 환경이 덧붙이는 API는 ECMAScript 바깥이다.
 
@@ -147,6 +147,18 @@ ES2015부터 공식 이름은 연도다. ES6·ES8 같은 판 번호는 관용적
 | 점진적 향상 | 기본 경험 위에 기능을 얹는다. 폴리필은 반대로 기능이 있다고 가정하고 없는 곳을 채운다 |
 
 폴리필이 내장 프로토타입을 고치는 방식과 그 예외 규칙은 [[prototype-and-inheritance|프로토타입과 상속]]에 있다.
+
+### 기능 감지: 있는지 확인하고 쓴다
+
+폴리필로 채우지 않고 기능이 있을 때만 쓰려면 실행 중에 확인한다. 확인하는 방법은 세 가지이고, 믿을 만한 것은 첫째뿐이다.
+
+| 방법 | 예 | 판단 |
+| --- | --- | --- |
+| **기능 감지(feature detection)** | `if ('geolocation' in navigator) { … }`, `if (typeof structuredClone === 'function')`, CSS는 `CSS.supports('display', 'grid')` | 쓰려는 기능 **그 자체**가 있는지 본다. 이것을 쓴다 |
+| 기능 추론(feature inference) | `if (document.getElementsByTagName) { document.getElementById(id) }` | A가 있으니 B도 있으리라 가정한다. 가정이 틀리면 깨진다 |
+| UA 문자열 검사 | `navigator.userAgent.includes('Safari')` | 브라우저가 보고하는 문자열로 판단한다. Chrome도 `Safari`를 넣어 보내는 등 파싱이 까다롭고 위조할 수 있으며, 같은 브라우저라도 버전·설정에 따라 기능이 다르다. 특정 버그를 피하는 최후의 수단으로만 쓴다 |
+
+기능 감지 결과로 분기하면 지원하지 않는 브라우저에서도 에러 대신 대체 경험을 준다(점진적 향상). 과거에는 Modernizr 같은 라이브러리가 감지 결과를 모아 `<html>`에 클래스로 달아 줬지만, 지금은 위처럼 한 줄로 확인하고 CSS는 `@supports`로 쓴다([[css-progressive-enhancement|CSS 점진적 향상]]).
 
 **과거에는** 요청한 브라우저에 맞는 폴리필을 골라 주는 CDN 서비스 polyfill.io를 `<script>`로 불러 쓰곤 했다. 2024년 도메인 소유권이 넘어간 뒤 그 주소로 악성 코드가 배포되는 공급망 공격이 일어났다. 폴리필은 빌드에 포함해 직접 배포하고, 남의 도메인에서 실행 코드를 불러오는 일은 서드파티 스크립트로 따로 관리한다.
 

@@ -5,13 +5,14 @@ summary: "함수형 프로그래밍을 순수 함수·불변성·선언적 패�
 tags: ["javascript", "frontend", "functional-programming", "programming-paradigm"]
 source: other
 date: "2026-10-21"
-sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://ko.javascript.info/currying-partials", "https://www.youtube.com/watch?v=vK1DazRK_a0", "https://evan-moon.github.io/2020/01/27/safety-function-composition/", "https://evan-moon.github.io/2020/01/05/what-is-immutable/", "https://github.com/lodash/lodash/wiki/FP-Guide", "https://auth0.com/blog/intro-to-immutable-js/", "http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/", "https://hackernoon.com/from-callback-to-future-functor-monad-6c86d9c16cb5", "http://blog.jenkster.com/2016/06/functional-mumbo-jumbo-adts.html", "http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html"]
+sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://ko.javascript.info/currying-partials", "https://www.youtube.com/watch?v=vK1DazRK_a0", "https://evan-moon.github.io/2020/01/27/safety-function-composition/", "https://evan-moon.github.io/2020/01/05/what-is-immutable/", "https://github.com/lodash/lodash/wiki/FP-Guide", "https://auth0.com/blog/intro-to-immutable-js/", "http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/", "https://hackernoon.com/from-callback-to-future-functor-monad-6c86d9c16cb5", "http://blog.jenkster.com/2016/06/functional-mumbo-jumbo-adts.html", "http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html", "https://www.frontendinterviewhandbook.com/javascript-questions"]
 ---
 
 > 테오(teo)의 「[다시 쓰는 함수형 프로그래밍](https://velog.io/@teo/functional-programming)」(2022.05)과 「[함수형 프로그래밍을 배워보자!](https://velog.io/@teo/functional-programming-study)」(2023.01)를 바탕으로 재구성한 노트다. 용어 틀은 에릭 노먼드의 『쏙쏙 들어오는 함수형 코딩』(Grokking Simplicity)에서 왔다. 펑터와 불변성의 비용은 「[어떻게 하면 안전하게 함수를 합성할 수 있을까?](https://evan-moon.github.io/2020/01/27/safety-function-composition/)」, 「[변하지 않는 상태를 유지하는 방법, 불변성(Immutable)](https://evan-moon.github.io/2020/01/05/what-is-immutable/)」를 바탕으로 보강했다. 영속 자료구조, 함수형 라이브러리의 규칙, 어플리커티브와 지연 Future, ADT는 「[lodash FP Guide](https://github.com/lodash/lodash/wiki/FP-Guide)」, 「[Introduction to Immutable.js and Functional Programming Concepts](https://auth0.com/blog/intro-to-immutable-js/)」, 「[Thinking in Ramda](http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/)」, 「[From Callback to Future -> Functor -> Monad](https://hackernoon.com/from-callback-to-future-functor-monad-6c86d9c16cb5)」, 「[Functional Mumbo Jumbo - ADTs](http://blog.jenkster.com/2016/06/functional-mumbo-jumbo-adts.html)」, 「[Functors, Applicatives, And Monads In Pictures](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)」을 바탕으로 보강했다.
 > 명령형과 선언형 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로 더한 노트다.
 > 커링과 부분 적용은 javascript.info(모던 JavaScript 튜토리얼)의 「커링」 글을 바탕으로 더했다.
 > 상태를 줄이고·모으고·미루는 법과 데이터 주도 프로그래밍은 Rafal Dittwald의 Clojure/north 2019 발표 「[Solving Problems the Clojure Way](https://www.youtube.com/watch?v=vK1DazRK_a0)」를 바탕으로 더했다.
+> 불변성의 장단점은 Front End Interview Handbook의 「[JavaScript 질문](https://www.frontendinterviewhandbook.com/javascript-questions)」을 더해 보강했다.
 
 ## 함수형 프로그래밍이란
 
@@ -110,7 +111,9 @@ JavaScript는 객체·배열을 참조로 넘긴다. 계산 안에서 `arr.push(
 
 - `const`는 **재할당**만 막는다. 객체 내부 값은 그대로 바꿀 수 있다. 불변성은 이름이 아니라 메모리의 값을 바꾸지 않는 것이다.
 - React와 Redux는 `Object.is`로 이전·다음 상태를 **참조 비교**해 변화를 감지한다. 원본을 고치면 참조가 같아 변화를 놓치므로 새 객체를 만들어 돌려준다.
-- 비용도 있다. 생성 비용이 큰 인스턴스(오디오 노드, 대형 버퍼)를 매번 새로 만들면 느려지고, 변경을 전제로 설계된 객체지향 API와는 맞지 않는다. 그런 곳은 변경을 한 모듈 안에 가두고 바깥에는 불변처럼 보이게 한다.
+- 불변 값은 함수에 넘기거나 돌려받을 때 **방어적 복사가 필요 없고**, 여러 곳에서 같은 객체를 공유하거나 캐시해도 안전하다. 시간에 따라 어떻게 바뀌는지 추적할 필요가 없어 코드를 읽기 쉽고, 다중 스레드 언어에서는 잠금 없이 스레드끼리 나눠 쓸 수 있다.
+- 비용도 있다. 바꿀 때마다 새 객체를 만드는 단순한 구현은 작은 객체를 대량으로 할당·해제해 GC 부담이 커진다. 큰 데이터라면 구조적 공유를 하는 라이브러리를 쓴다. 생성 비용이 큰 인스턴스(오디오 노드, 대형 버퍼)를 매번 새로 만들면 느려지고, 변경을 전제로 설계된 객체지향 API와는 맞지 않는다. 그래프처럼 **서로를 가리키는 순환 구조**는 만든 뒤 바꿀 수 없으면 짓기 어렵다. 그런 곳은 변경을 한 모듈 안에 가두고 바깥에는 불변처럼 보이게 한다.
+- 언어 차원에서 객체를 잠그는 `Object.freeze`·`seal`·`preventExtensions`의 차이는 [[property-descriptors|속성 설명자]]에 있다. 원시값(숫자·문자열)은 처음부터 불변이다.
 
 ## 3. 계층형 설계와 추상화 벽
 

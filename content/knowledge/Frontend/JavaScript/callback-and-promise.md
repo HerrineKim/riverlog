@@ -5,10 +5,10 @@ summary: "언제 끝날지 모르는 비동기 작업의 결과를 다루는 콜
 tags: ["javascript", "async", "promise", "frontend"]
 source: til
 date: "2026-10-21"
-sources: ["https://riverkim.kr/220", "https://wesbos.com/javascript/12-advanced-flow-control/67-promises", "https://wesbos.com/javascript/12-advanced-flow-control/68-promises-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/69-refactoring-callback-hell-to-promise-land", "https://ko.javascript.info/callbacks", "https://ko.javascript.info/promise-basics", "https://ko.javascript.info/promise-chaining", "https://ko.javascript.info/promise-error-handling", "https://ko.javascript.info/promise-api", "https://ko.javascript.info/promisify", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/try", "https://developers.google.com/web/fundamentals/primers/promises?hl=ko", "https://web.dev/articles/promises", "https://joshua1988.github.io/web-development/javascript/promise-for-beginners/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%94%84%EB%A1%9C%EB%AF%B8%EC%8A%A4.md"]
+sources: ["https://riverkim.kr/220", "https://wesbos.com/javascript/12-advanced-flow-control/67-promises", "https://wesbos.com/javascript/12-advanced-flow-control/68-promises-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/69-refactoring-callback-hell-to-promise-land", "https://ko.javascript.info/callbacks", "https://ko.javascript.info/promise-basics", "https://ko.javascript.info/promise-chaining", "https://ko.javascript.info/promise-error-handling", "https://ko.javascript.info/promise-api", "https://ko.javascript.info/promisify", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/try", "https://developers.google.com/web/fundamentals/primers/promises?hl=ko", "https://web.dev/articles/promises", "https://joshua1988.github.io/web-development/javascript/promise-for-beginners/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%94%84%EB%A1%9C%EB%AF%B8%EC%8A%A4.md", "https://www.frontendinterviewhandbook.com/javascript-questions"]
 ---
 
-> riverkim.kr에 쓴 글을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「콜백」, 「프라미스」, 「프라미스 체이닝」, 「프라미스와 에러 핸들링」, 「프라미스 API」, 「프라미스화」 글을 함께 참고해 재구성한 노트다. `then`의 두 번째 인자와 `catch`의 차이, 동시에 시작해 순서대로 보여 주는 패턴은 web.dev의 「[JavaScript Promise 소개](https://web.dev/articles/promises)」와 「[자바스크립트 Promise 쉽게 이해하기](https://joshua1988.github.io/web-development/javascript/promise-for-beginners/)」를 바탕으로 더했다. 「[Frontend_TIL: 프로미스](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%94%84%EB%A1%9C%EB%AF%B8%EC%8A%A4.md)」을 바탕으로 보강했다.
+> riverkim.kr에 쓴 글을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「콜백」, 「프라미스」, 「프라미스 체이닝」, 「프라미스와 에러 핸들링」, 「프라미스 API」, 「프라미스화」 글을 함께 참고해 재구성한 노트다. `then`의 두 번째 인자와 `catch`의 차이, 동시에 시작해 순서대로 보여 주는 패턴은 web.dev의 「[JavaScript Promise 소개](https://web.dev/articles/promises)」와 「[자바스크립트 Promise 쉽게 이해하기](https://joshua1988.github.io/web-development/javascript/promise-for-beginners/)」를 바탕으로 더했다. 「[Frontend_TIL: 프로미스](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%94%84%EB%A1%9C%EB%AF%B8%EC%8A%A4.md)」을 바탕으로 보강했다. 콜백이 넘겨주는 제어권의 구체적인 위험은 Front End Interview Handbook의 「[JavaScript 질문](https://www.frontendinterviewhandbook.com/javascript-questions)」을 더해 보강했다.
 
 서버 요청, 타이머처럼 **언제 끝날지 모르는 작업**은 비동기로 실행된다. 비동기 작업을 기다리지 않고 다음 코드가 먼저 실행되기 때문에, 결과를 받아 쓰려면 별도의 방법이 필요하다. JavaScript는 이를 위해 **콜백 → Promise → async/await** 순서로 발전해 왔다. 이 노트는 앞의 두 가지를 다루고, async/await는 [다음 노트](/knowledge/dictionary/frontend/javascript/async-await)에서 다룬다.
 
@@ -77,7 +77,7 @@ try {
 }
 ```
 
-- 콜백을 넘기는 순간 **호출 시점의 제어권**이 넘겨받은 함수에 있다. 언제·몇 번 호출될지 우리가 통제할 수 없다.
+- 콜백을 넘기는 순간 **호출 시점의 제어권**이 넘겨받은 함수에 있다(제어의 역전). 남이 만든 함수가 콜백을 너무 일찍(동기적으로) 부르거나, 너무 늦게 또는 아예 부르지 않거나, 두 번 이상 부르거나, 필요한 인자를 빠뜨리거나, 안에서 난 에러를 삼켜도 막을 방법이 없다.
 - 호출하기 **전에** 결과로 무엇을 할지(콜백)를 준비해 둬야 하고, 결과를 받을 함수는 하나뿐이다.
 
 단계마다 `step1`·`step2`처럼 이름 붙인 최상위 함수로 떼어 내면 중첩은 사라진다. 하지만 흐름이 여러 함수에 흩어져 읽는 눈이 이리저리 옮겨 다녀야 하고, 이 함수들은 그 흐름 밖에서 재사용되지도 않는다. 근본 해결은 Promise다.
@@ -297,6 +297,9 @@ Promise의 장점을 흔히 "콜백 지옥 해결"로만 설명하지만, 더 �
 
 1. **반환값을 다시 쓸 수 있다.** 콜백 방식에서는 `return`이 의미가 없었지만, Promise는 결과를 담은 객체를 돌려주므로 변수에 담고 다른 함수에 넘기고 조합할 수 있다(함수 합성).
 2. **에러가 동기 코드처럼 전파된다.** 콜백마다 하던 에러 처리를 `catch` 하나로 모을 수 있어, 동기 코드의 `try...catch`와 흐름이 비슷해진다.
+3. **제어권을 돌려받는다.** 콜백을 남에게 넘기는 대신 결과 객체를 받아 내가 핸들러를 단다. Promise는 한 번만 정해지고(두 번 resolve해도 무시), `then` 핸들러는 이미 정해진 Promise에 달아도 항상 비동기로(마이크로태스크로) 불리며, 실행 중 던진 에러는 거부로 바뀌어 사라지지 않는다. 콜백 방식에서 호출하는 쪽을 믿어야 했던 문제들이 언어 규칙으로 보장된다.
+
+대가는 크지 않다. 단순한 일회성 콜백보다 코드가 조금 길어지고, ES2015 이전 환경에서는 폴리필이 필요했다(Bluebird·Q 같은 라이브러리가 그 역할을 했다). 지금은 모든 환경이 Promise를 내장한다.
 
 즉 Promise는 비동기 흐름을 동기 코드처럼 다룰 수 있게 해 준다. 이 아이디어를 문법 수준으로 완성한 것이 async/await다.
 
