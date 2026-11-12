@@ -5,10 +5,10 @@ summary: "스톡옵션은 주식이 아니라 정해진 행사가로 주식을 �
 tags: ["career", "job-search"]
 source: other
 date: "2026-11-01"
-sources: ["https://evan-moon.github.io/2021/12/04/what-is-stock-options/", "https://github.com/jlevy/og-equity-compensation", "https://blog.carta.com/equity-101-stock-option-basics/", "https://www.techinterviewhandbook.org/understanding-compensation/"]
+sources: ["https://outstanding.kr/stockoption20260814", "https://evan-moon.github.io/2021/12/04/what-is-stock-options/", "https://github.com/jlevy/og-equity-compensation", "https://blog.carta.com/equity-101-stock-option-basics/", "https://www.techinterviewhandbook.org/understanding-compensation/"]
 ---
 
-> 「[개발자가 알아야 할 스톡옵션의 모든 것](https://evan-moon.github.io/2021/12/04/what-is-stock-options/)」을 바탕으로 한국 제도 기준으로 재구성한 노트다. 세율·비과세 한도 같은 수치는 해마다 바뀌므로 넣지 않았다. 계약 전에 회사와 세무 전문가, 국세청 안내로 확인한다. 미국 스타트업의 지분 보상은 「[The Open Guide to Equity Compensation](https://github.com/jlevy/og-equity-compensation)」과 Carta의 「[Equity 101: Stock Option Basics](https://blog.carta.com/equity-101-stock-option-basics/)」를 바탕으로, 베스팅 일정 유형은 Tech Interview Handbook의 「[Understanding compensation](https://www.techinterviewhandbook.org/understanding-compensation/)」을 바탕으로 더했다. 성장 여지와 정책 두 축으로 오퍼를 평가하는 틀은 SNS에서 돌던 ESOP 오퍼 평가 글을 요약·재구성했다.
+> 「[개발자가 알아야 할 스톡옵션의 모든 것](https://evan-moon.github.io/2021/12/04/what-is-stock-options/)」을 바탕으로 한국 제도 기준으로 재구성한 노트다. 세율·비과세 한도 같은 수치는 해마다 바뀌므로 넣지 않았다. 계약 전에 회사와 세무 전문가, 국세청 안내로 확인한다. 미국 스타트업의 지분 보상은 「[The Open Guide to Equity Compensation](https://github.com/jlevy/og-equity-compensation)」과 Carta의 「[Equity 101: Stock Option Basics](https://blog.carta.com/equity-101-stock-option-basics/)」를 바탕으로, 베스팅 일정 유형은 Tech Interview Handbook의 「[Understanding compensation](https://www.techinterviewhandbook.org/understanding-compensation/)」을 바탕으로 더했다. 성장 여지와 정책 두 축으로 오퍼를 평가하는 틀은 SNS에서 돌던 ESOP 오퍼 평가 글을 요약·재구성했다. 국내 행사·매도 통계는 아웃스탠딩의 「[스톡옵션 현금화 엑싯은 언제 이뤄질까](https://outstanding.kr/stockoption20260814)」(2026.08)를 바탕으로 했다.
 
 ## 스톡옵션이란
 
@@ -86,6 +86,19 @@ flowchart LR
 - **클리프는 재직 의무 기간이다.** 연봉 협상에서 스톡옵션을 현금과 맞바꿀 때 이 기간을 함께 따진다.
 - **유동성을 따진다.** 상장이나 인수가 없으면 차익을 현금으로 바꿀 방법이 거의 없다.
 - **퇴사 조건을 읽는다.** 미베스팅분 소멸, 베스팅분 행사 기한은 회사마다 다르다.
+
+### 실제로는 어떻게 행사되고 팔리나
+
+국내 약 8,000개 기업의 스톡옵션 부여 2만 3천여 건을 전수 조사한 결과(2026)는 오퍼를 평가할 때 기준점이 된다.
+
+| 항목 | 결과 | 읽는 법 |
+| --- | --- | --- |
+| 설계 | 2년 단위 클리프와 베스팅이 표준으로 자리 잡았다 | 이 표준보다 불리한 일정은 협상 대상이다 |
+| 행사 시점 | 클리프 종료 후 6개월 안에 행사하는 비중이 75.8%(2024년 17.4%) | 행사는 빨라졌지만 행사 대금과 세금이 먼저 나간다 |
+| 매도 | 행사자의 90.9%는 한 주도 팔지 않았다. 전량 매도 5.1%, 일부 매도 4.0% | **행사와 현금화는 다른 일**이다. 팔 기회가 있어야 돈이 된다 |
+| 엑싯 시점 | 매도의 57.4%가 시리즈B 시점 | 팔 만한 가치와 거래 기회(구주 매각)가 시리즈B 전후에 함께 생긴다 |
+| 반복 부여 | 권리자의 약 1/3이 두 번 이상 받았다 | 한 번의 부여보다 누적 부여 정책을 묻는다 |
+| 수익 | 평가이익 기준 이익 구간은 31.3%, 그중 11배 이상은 15.2% | 대부분은 이익이 나지 않는다. 기대 배수는 보수적으로 잡는다 |
 
 RSU(양도제한조건부주식)는 권리가 아니라 조건이 충족되면 **주식 자체**를 받는다는 점이 다르다. 행사가 납입이 없고 받는 시점의 주가가 과세 기준이 된다.
 
