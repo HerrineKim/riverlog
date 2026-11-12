@@ -4,12 +4,13 @@ concept: "Flexbox"
 summary: "Normal Flow를 벗어나 요소를 배치하는 float와 flow-root로 float 담기, 축을 기준으로 아이템을 정렬하는 1차원 레이아웃 모델 Flexbox. 속성의 초깃값과 flex 키워드, 내용 기반 공간 분배, auto margin으로 그룹 나누기, 쓰기 모드에 따라 바뀌는 축, min-width: auto 함정, 그리고 글을 여러 단으로 흘리는 다단 레이아웃까지."
 tags: ["css", "layout", "flexbox", "frontend"]
 source: mixed
-sources: ["https://heewon26.tistory.com/298", "https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/", "https://developer.mozilla.org/en-US/docs/Web/CSS/gap", "https://developer.mozilla.org/en-US/docs/Web/CSS/display#flow-root", "https://web.dev/learn/css/flexbox", "https://web.dev/learn/css/layout", "https://developer.mozilla.org/en-US/docs/Web/CSS/align-content", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%20%ED%95%B4%EC%A0%9C%20%EB%B0%A9%EB%B2%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Float%20%EB%B0%B0%EC%B9%98%EB%90%98%EB%8A%94%20%EA%B3%BC%EC%A0%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%EC%9C%BC%EB%A1%9C%20%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%20%EA%B5%AC%EC%84%B1%20%EB%B0%8F%20%EC%9D%B4%ED%95%B4.md"]
+sources: ["https://heewon26.tistory.com/298", "https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/", "https://developer.mozilla.org/en-US/docs/Web/CSS/gap", "https://developer.mozilla.org/en-US/docs/Web/CSS/display#flow-root", "https://web.dev/learn/css/flexbox", "https://web.dev/learn/css/layout", "https://developer.mozilla.org/en-US/docs/Web/CSS/align-content", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%20%ED%95%B4%EC%A0%9C%20%EB%B0%A9%EB%B2%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Float%20%EB%B0%B0%EC%B9%98%EB%90%98%EB%8A%94%20%EA%B3%BC%EC%A0%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%EC%9C%BC%EB%A1%9C%20%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%20%EA%B5%AC%EC%84%B1%20%EB%B0%8F%20%EC%9D%B4%ED%95%B4.md", "https://www.frontendinterviewhandbook.com/css-questions"]
 date: "2026-10-21"
 ---
 
 > Rachel Andrew의 「[플렉스박스 플렉스 컨테이너를 만들 때 무슨 일이 벌어질까?](https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/)」(2018.09, 웹액츄얼리 번역)과 곽빵의 「[flexbox에서 가변요소의 자식 width가 부모 width를 넘을 때](https://heewon26.tistory.com/298)」(2021.09)를 바탕으로 재구성하고, web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Layout·Flexbox 모듈로 보강한 노트다.
 > float가 놓이는 규칙과 옛 float 해제법은 「[Frontend_TIL: Float 배치되는 과정](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Float%20%EB%B0%B0%EC%B9%98%EB%90%98%EB%8A%94%20%EA%B3%BC%EC%A0%95.md)」·「[float 해제 방법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%20%ED%95%B4%EC%A0%9C%20%EB%B0%A9%EB%B2%95.md)」·「[float으로 레이아웃 구성 및 이해](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%EC%9C%BC%EB%A1%9C%20%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%20%EA%B5%AC%EC%84%B1%20%EB%B0%8F%20%EC%9D%B4%ED%95%B4.md)」을 CSS 명세로 확인해 보강했다.
+> 바닥에 붙는 푸터 패턴은 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 바탕으로 보강했다.
 
 블록은 위에서 아래로, 인라인은 왼쪽에서 오른쪽으로 쌓이는 Normal Flow만으로는 "옆으로 나란히", "가운데 정렬", "남은 공간 나눠 갖기" 같은 레이아웃을 만들기 어렵다. 예전에는 `float`로 이를 해결했고, 지금은 대부분 **Flexbox**와 **Grid**로 처리한다.
 
@@ -170,6 +171,17 @@ Flexbox·Grid 등장 이후 float로 레이아웃을 짜는 일은 크게 줄었
 ```css
 .hero { min-block-size: 50vh; align-content: center; }   /* display: flex 없이 세로 가운데 */
 ```
+
+### 자주 쓰는 패턴: 바닥에 붙는 푸터
+
+본문이 짧아도 푸터가 화면 아래에 붙고, 본문이 길면 자연스럽게 밀려 내려가게 한다(sticky footer). 과거에는 푸터 높이만큼 음수 margin을 주는 식으로 맞췄다.
+
+```css
+body { display: flex; flex-direction: column; min-block-size: 100dvh; margin: 0; }
+main { flex: 1; }   /* 남는 세로 공간을 본문이 모두 가져간다 */
+```
+
+그리드로는 `body { display: grid; grid-template-rows: auto 1fr auto; min-block-size: 100dvh; }`로 같은 결과를 낸다.
 
 ## 함정: flex 아이템이 컨테이너를 넘칠 때
 

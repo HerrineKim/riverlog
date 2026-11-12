@@ -241,4 +241,4 @@ flowchart TB
 - 시스템 디자인은 요구 확인 → 용량 추정 → 상위 설계 → DB → 인터페이스 → 확장성 → 신뢰성 순으로 진행한다.
 - 모든 단계에서 트레이드오프를 말로 설명한다.
 
-관련 노트: [[coding-interview-rubric|코딩 인터뷰 평가 기준]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[coding-test|코딩 테스트 접근법]], [[behavioral-interview-questions|인성 면접 준비]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]], [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[ood-interview-approach|객체 지향 설계 면접: 풀이 순서와 반복되는 설계 부품]]
+관련 노트: [[coding-interview-rubric|코딩 인터뷰 평가 기준]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]], [[coding-test|코딩 테스트 접근법]], [[behavioral-interview-questions|인성 면접 준비]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]], [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[ood-interview-approach|객체 지향 설계 면접: 풀이 순서와 반복되는 설계 부품]]

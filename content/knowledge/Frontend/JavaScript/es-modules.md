@@ -5,11 +5,12 @@ summary: "ES 모듈의 named·default export와 여러 import·다시 내보내�
 tags: ["javascript", "frontend", "typescript"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://basarat.gitbook.io/typescript/main-1/defaultisbad", "https://basarat.gitbook.io/typescript/main-1/barrel", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/module.md", "https://riverkim.kr/174", "https://riverkim.kr/120", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/78-modules", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/79-currency-module-refactor", "https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require", "https://ko.javascript.info/modules-intro", "https://ko.javascript.info/import-export", "https://ko.javascript.info/modules-dynamic-imports", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta", "https://github.com/myshov/history-of-javascript/tree/master/4_evolution_of_js_modularity", "https://ponyfoo.com/articles/es6-modules-in-depth", "https://jakearchibald.com/2017/es-modules-in-browsers/", "https://hackernoon.com/node-js-tc-39-and-modules-a1118aecf95e", "https://nodejs.org/api/esm.html"]
+sources: ["https://basarat.gitbook.io/typescript/main-1/defaultisbad", "https://basarat.gitbook.io/typescript/main-1/barrel", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/module.md", "https://riverkim.kr/174", "https://riverkim.kr/120", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/78-modules", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/79-currency-module-refactor", "https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require", "https://ko.javascript.info/modules-intro", "https://ko.javascript.info/import-export", "https://ko.javascript.info/modules-dynamic-imports", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import/with", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import.meta", "https://github.com/myshov/history-of-javascript/tree/master/4_evolution_of_js_modularity", "https://ponyfoo.com/articles/es6-modules-in-depth", "https://jakearchibald.com/2017/es-modules-in-browsers/", "https://hackernoon.com/node-js-tc-39-and-modules-a1118aecf95e", "https://nodejs.org/api/esm.html", "https://www.frontendinterviewhandbook.com/javascript-questions"]
 ---
 
 > riverkim.kr에 쓴 글들을 다시 정리하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「모듈 소개」, 「모듈 내보내고 가져오기」, 「동적으로 모듈 가져오기」 글을 함께 참고해 재구성한 노트다. CommonJS·AMD·UMD 비교는 「[Must-Know-About-Frontend: 모듈 시스템](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/module.md)」을 바탕으로 보강했다. 로드 단계, CommonJS 래퍼 함수, Node.js의 형식 판별과 상호 운용은 「[Node.js, TC-39, and Modules](https://hackernoon.com/node-js-tc-39-and-modules-a1118aecf95e)」, 「[ECMAScript modules in browsers](https://jakearchibald.com/2017/es-modules-in-browsers/)」, 「[ES6 Modules in Depth](https://ponyfoo.com/articles/es6-modules-in-depth)」, 「[The Evolution of JavaScript Modularity](https://github.com/myshov/history-of-javascript/tree/master/4_evolution_of_js_modularity)」을 바탕으로 Node.js 공식 [ECMAScript modules 문서](https://nodejs.org/api/esm.html)로 최신화해 보강했다.
 > default export의 단점과 배럴은 basarat의 「[TypeScript Deep Dive](https://basarat.gitbook.io/typescript)」의 TIPs(Avoid Export Default, Barrel)로 보강했다.
+> AMD와 CommonJS의 비교는 Front End Interview Handbook의 「[JavaScript 질문](https://www.frontendinterviewhandbook.com/javascript-questions)」을 더해 보강했다.
 
 ## 모듈과 export
 
@@ -199,6 +200,8 @@ button.addEventListener('click', async () => {
 ```
 
 모듈 패턴보다 앞서는 방식도 있었다. `<script>` 태그 순서로 의존성을 직접 맞추고(1999년 무렵), 전역 이름 충돌을 줄이려 객체 하나에 모두 매다는 **네임스페이스 패턴**(`var App = App || {}; App.utils = …`, 2002년 무렵)을 썼다. 이 둘은 이름 충돌만 줄였을 뿐, 의존 순서를 사람이 관리하는 문제는 그대로였다. 그 순서를 코드 안에 선언하게 만든 것이 CommonJS·AMD다.
+
+브라우저에서는 결국 CommonJS 문법에 번들러를 붙인 조합이 AMD를 밀어냈다. 모든 모듈을 파일 하나로 묶어 내보내면 AMD의 장점인 비동기 로딩이 쓸모없어지고, 남는 것은 `define` 래퍼의 장황함뿐이었다. CommonJS는 다른 언어의 import와 비슷하고 Node.js 코드와 같은 문법이라 서버와 클라이언트를 오갈 때 전환 비용도 없었다. ES 모듈은 정적 구조와 비동기 로딩을 함께 지원해 두 형식을 하나로 합쳤다.
 
 새 코드는 ES 모듈로 쓰고, AMD·UMD는 옛 라이브러리의 배포 파일이나 `<script>`로 바로 넣는 빌드에서 만난다. 번들러는 이런 형식을 모두 해석해 하나로 묶는다.
 

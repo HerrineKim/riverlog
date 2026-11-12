@@ -5,10 +5,10 @@ summary: "페이지를 새로고침하지 않고 서버와 비동기로 데이�
 tags: ["javascript", "http", "async", "frontend"]
 source: til
 date: "2026-10-21"
-sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/ajax.md", "https://vite.dev/config/server-options#server-proxy", "https://developer.mozilla.org/en-US/docs/Web/API/AbortController", "https://developers.google.com/web/updates/2017/09/abortable-fetch", "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API", "https://wesbos.com/javascript/13-ajax-and-fetching-data/74-ajax-and-apis", "https://wesbos.com/javascript/13-ajax-and-fetching-data/75-cors-and-recipes", "https://wesbos.com/javascript/13-ajax-and-fetching-data/76-dad-jokes", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/83-security", "https://ko.javascript.info/fetch", "https://ko.javascript.info/formdata", "https://ko.javascript.info/fetch-progress", "https://ko.javascript.info/fetch-abort", "https://ko.javascript.info/fetch-crossorigin", "https://ko.javascript.info/fetch-api", "https://ko.javascript.info/url", "https://ko.javascript.info/xmlhttprequest", "https://ko.javascript.info/resume-upload", "https://developer.mozilla.org/en-US/docs/Web/API/RequestInit", "https://developer.mozilla.org/en-US/docs/Web/API/URL/parse_static"]
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/ajax.md", "https://vite.dev/config/server-options#server-proxy", "https://developer.mozilla.org/en-US/docs/Web/API/AbortController", "https://developers.google.com/web/updates/2017/09/abortable-fetch", "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API", "https://wesbos.com/javascript/13-ajax-and-fetching-data/74-ajax-and-apis", "https://wesbos.com/javascript/13-ajax-and-fetching-data/75-cors-and-recipes", "https://wesbos.com/javascript/13-ajax-and-fetching-data/76-dad-jokes", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/83-security", "https://ko.javascript.info/fetch", "https://ko.javascript.info/formdata", "https://ko.javascript.info/fetch-progress", "https://ko.javascript.info/fetch-abort", "https://ko.javascript.info/fetch-crossorigin", "https://ko.javascript.info/fetch-api", "https://ko.javascript.info/url", "https://ko.javascript.info/xmlhttprequest", "https://ko.javascript.info/resume-upload", "https://developer.mozilla.org/en-US/docs/Web/API/RequestInit", "https://developer.mozilla.org/en-US/docs/Web/API/URL/parse_static", "https://www.frontendinterviewhandbook.com/javascript-questions"]
 ---
 
-> 직접 정리한 내용에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「fetch」, 「FormData」, 「fetch 다운로드 진행 상황 추적하기」, 「fetch 중단하기」, 「fetch와 Cross-Origin 요청」, 「fetch API」, 「URL 객체」, 「XMLHttpRequest」, 「업로드 재개하기」 글을 함께 참고해 재구성한 노트다. 「[Abortable fetch](https://developer.chrome.com/blog/abortable-fetch)」와 MDN 「[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)」로 취소의 세부·역사와 지연 fetch를 보강했다. 「[Must-Know-About-Frontend: AJAX](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/ajax.md)」의 내용을 더해 보강했다.
+> 직접 정리한 내용에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 javascript.info(모던 JavaScript 튜토리얼)의 「fetch」, 「FormData」, 「fetch 다운로드 진행 상황 추적하기」, 「fetch 중단하기」, 「fetch와 Cross-Origin 요청」, 「fetch API」, 「URL 객체」, 「XMLHttpRequest」, 「업로드 재개하기」 글을 함께 참고해 재구성한 노트다. 「[Abortable fetch](https://developer.chrome.com/blog/abortable-fetch)」와 MDN 「[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API)」로 취소의 세부·역사와 지연 fetch를 보강했다. 「[Must-Know-About-Frontend: AJAX](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/ajax.md)」의 내용을 더해 보강했다. 장단점은 Front End Interview Handbook의 「[JavaScript 질문](https://www.frontendinterviewhandbook.com/javascript-questions)」을 더해 보강했다.
 
 **AJAX(Asynchronous JavaScript And XML)** 는 페이지 전체를 새로 받지 않고, JavaScript로 서버와 **비동기 통신**해 필요한 데이터만 받아 화면 일부를 갱신하는 기법이다. SPA와 CSR의 기반이 되는 기술이다.
 
@@ -17,6 +17,15 @@ sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/
 - 원래 `XMLHttpRequest`(XHR) 객체로 서버와 통신했다.
 - JSON, XML, HTML, 일반 텍스트 등 다양한 형식을 주고받을 수 있다.
 - 이름의 X는 XML이지만, 지금은 더 가볍고 JavaScript 객체와 바로 호환되는 **JSON**을 주로 쓴다.
+
+| 장점 | 단점 |
+| --- | --- |
+| 페이지를 다시 받지 않고 바뀐 부분만 갱신해 반응이 빠르다 | 화면 상태가 URL에 남지 않으면 북마크·공유·뒤로 가기가 안 된다. History API로 URL을 함께 바꿔야 한다 |
+| 스크립트·스타일시트를 한 번만 받으므로 요청이 줄어든다 | JavaScript가 꺼져 있거나 실패하면 콘텐츠가 없다 |
+| 페이지가 그대로라 JavaScript 변수와 DOM 상태(입력 중인 폼, 스크롤)가 유지된다 | JavaScript를 실행하지 않는 크롤러는 나중에 불러온 콘텐츠를 못 본다 |
+| - | 받은 데이터를 템플릿과 합쳐 DOM을 그리는 일이 클라이언트 몫이라, 저사양 기기에서는 파싱·실행 비용이 크다 |
+
+장단점이 SPA·CSR과 거의 같다. AJAX가 그 기반이기 때문이다([[spa-csr-ssr|SPA와 CSR·SSR]]).
 
 ## 요청을 보내는 방법
 

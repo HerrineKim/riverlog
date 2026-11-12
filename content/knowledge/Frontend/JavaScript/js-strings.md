@@ -5,11 +5,12 @@ summary: "JavaScript 문자열은 UTF-16 코드 단위의 나열이고 바꿀 �
 tags: ["javascript", "frontend", "data-structure", "i18n", "styling"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://ko.javascript.info/string", "https://opencollective.com/styled-components/updates", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter", "https://github.com/moonformeli/TIL/blob/master/hangul_unicode.md", "https://github.com/lydiahallie/javascript-questions"]
+sources: ["https://ko.javascript.info/string", "https://opencollective.com/styled-components/updates", "https://ko.javascript.info/types", "https://ko.javascript.info/primitives-methods", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter", "https://github.com/moonformeli/TIL/blob/master/hangul_unicode.md", "https://github.com/lydiahallie/javascript-questions", "https://www.frontendinterviewhandbook.com/javascript-questions"]
 ---
 
 > javascript.info(모던 JavaScript 튜토리얼)의 「문자열」, 「자료형」, 「원시값의 메서드」 글을 바탕으로, ES2022 이후 추가된 메서드는 MDN으로 확인해 재구성한 노트다. 템플릿 리터럴과 태그드 템플릿은 노션에 정리해 둔 내용을 합쳤다. 한글의 코드 영역은 「[한글 인코딩과 자바스크립트](https://github.com/moonformeli/TIL/blob/master/hangul_unicode.md)」를 바탕으로 더했다.
 > 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다.
+> 템플릿 리터럴로 HTML을 만들 때의 XSS 주의는 Front End Interview Handbook의 「[JavaScript 질문](https://www.frontendinterviewhandbook.com/javascript-questions)」을 더해 보강했다.
 
 ## 문자열이란
 
@@ -58,6 +59,12 @@ line 2`
 const classes = `header ${
   isLargeScreen() ? '' : `icon-${item.isCollapsed ? 'expander' : 'collapser'}`
 }`
+```
+
+템플릿 리터럴은 작은 HTML 조각을 만드는 **템플릿 엔진 대용**으로도 쓴다. 다만 Handlebars·JSX 같은 템플릿 도구는 끼워 넣는 값을 기본으로 이스케이프하지만, 템플릿 리터럴은 문자열을 그대로 이어 붙일 뿐이다. 사용자 입력이 섞인 결과를 `innerHTML`에 넣으면 XSS 통로가 된다. 값은 `textContent`로 넣거나 이스케이프·새니타이즈한다([[web-security|웹 보안: CSRF와 XSS]]).
+
+```javascript
+list.innerHTML = `<li>${user.name}</li>` // name이 '<img src=x onerror=alert(1)>'이면 실행된다
 ```
 
 문자열을 이을 때는 `+`보다 템플릿 리터럴이 안전하다. `+`는 피연산자 하나만 숫자여도 계산 순서에 따라 결과가 바뀐다([[operators-and-control-flow|연산자와 제어문]]).
