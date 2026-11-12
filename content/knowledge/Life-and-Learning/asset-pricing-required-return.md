@@ -126,4 +126,4 @@ date: "2026-10-27"
 - 채권·상가 같은 고정수익 자산은 금리 상승을 가격 하락으로만 흡수한다.
 - 단기 가격은 금리가 흔들지만, **장기 가격은 수익의 성장이 결정한다.**
 
-관련 노트: [[jeonse-housing-market|전세와 한국 주택 가격]], [[books/jeonseolro-tteonaneun-wolgaui-yeongung]]
+관련 노트: [[jeonse-housing-market|전세와 한국 주택 가격]], [[interest-rate-exchange-rate|금리·환율·물가의 연결]], [[books/jeonseolro-tteonaneun-wolgaui-yeongung]]
