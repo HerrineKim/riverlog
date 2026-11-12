@@ -293,4 +293,4 @@ Amazon의 인성 질문은 거의 모두 **리더십 원칙(Leadership Principle
 - 지원 동기·차별점·회사별 질문·역질문은 모두 **회사 조사**에서 나온다. 조사가 곧 준비다.
 - 불릿만 적어 두고 소리 내어 연습하면 실제 면접에서 덜 막히고 외운 티도 덜 난다.
 
-관련 노트: [[behavioral-interview-rubrics|인성 면접 평가 기준]], [[interview-attitude|면접 잘 보는 법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]], [[tech-interview-prep|기술 면접 준비]]
+관련 노트: [[behavioral-interview-rubrics|인성 면접 평가 기준]], [[interview-attitude|면접 잘 보는 법]], [[resume-writing|합격하는 영문 레주메 작성법]], [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]], [[tech-interview-prep|기술 면접 준비]], [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]]

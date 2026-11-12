@@ -5,10 +5,10 @@ summary: "프론트엔드의 일을 데이터 흐름 기준 여섯 영역(보여
 tags: ["frontend", "career", "collaboration", "growth"]
 source: other
 date: "2026-10-20"
-sources: ["https://velog.io/@teo/frontend", "https://velog.io/@teo/full-stack-developer", "https://yozm.wishket.com/magazine/detail/1294/"]
+sources: ["https://velog.io/@teo/frontend", "https://velog.io/@teo/full-stack-developer", "https://yozm.wishket.com/magazine/detail/1294/", "https://www.frontendinterviewhandbook.com/blog/are-front-end-development-skills-enough-for-a-career"]
 ---
 
-> 테오(teo)의 「[프론트엔드 역사와 미래, 업무 분야 ... 그리고 잘하는 프론트엔드 개발자란?](https://velog.io/@teo/frontend)」(2021.12)과 「[풀스택 개발자에 대해서 어떻게 생각하나요?](https://velog.io/@teo/full-stack-developer)」(2022.01)를 바탕으로 재구성한 노트다. 앞의 글은 요즘IT에 「[시니어 개발자가 말하는, 프론트엔드 업무와 잘하는 프론트엔드 개발자란](https://yozm.wishket.com/magazine/detail/1294/)」(2022.01)으로도 실렸다.
+> 테오(teo)의 「[프론트엔드 역사와 미래, 업무 분야 ... 그리고 잘하는 프론트엔드 개발자란?](https://velog.io/@teo/frontend)」(2021.12)과 「[풀스택 개발자에 대해서 어떻게 생각하나요?](https://velog.io/@teo/full-stack-developer)」(2022.01)를 바탕으로 재구성한 노트다. 앞의 글은 요즘IT에 「[시니어 개발자가 말하는, 프론트엔드 업무와 잘하는 프론트엔드 개발자란](https://yozm.wishket.com/magazine/detail/1294/)」(2022.01)으로도 실렸다. T자형 기본기의 근거는 Front End Interview Handbook 블로그의 「[Are Front End Development Skills Enough for a Career?](https://www.frontendinterviewhandbook.com/blog/are-front-end-development-skills-enough-for-a-career)」(2019.11)로 보강했다.
 
 ## 프론트엔드는 무엇을 하나
 
@@ -58,7 +58,7 @@ flowchart LR
 | 그래도 찾는 이유(절망편) | 직군 이름을 핑계로 과도한 범위를 요구하거나 인력 부족을 메우는 데 쓴다 |
 | 자칭 풀스택을 꺼리는 이유 | "만능형"의 이면은 어중간함이다. 이것저것 해 봤다고 다 적으면 오히려 신뢰를 잃는다 |
 
-결론은 **T자형**이다. 하나의 전문성을 갖되 관심의 스펙트럼은 넓게 유지한다. 클라우드와 서버리스로 프론트·백 경계는 흐려지고 있고, 웹이라는 생태계 안에서 연결과 협업은 계속해야 한다. 아주 작게라도 **혼자 서비스 한 사이클을 완성해 보는 경험**은 시야를 크게 넓힌다.
+결론은 **T자형**이다. 하나의 전문성을 갖되 관심의 스펙트럼은 넓게 유지한다. 가로획은 알고리즘·자료구조·운영체제·네트워크 같은 컴퓨터 공학 기본기이고, 이것이 있어야 웹 수요가 바뀌어도 모바일·백엔드로 옮겨 갈 수 있다. 프론트엔드만으로 커리어가 충분한지, 경력 천장 논쟁은 [[frontend-career-tracks#프론트엔드 전문성만으로 충분한가|프론트엔드 엔지니어의 세 가지 성장 트랙]]에 있다. 클라우드와 서버리스로 프론트·백 경계는 흐려지고 있고, 웹이라는 생태계 안에서 연결과 협업은 계속해야 한다. 아주 작게라도 **혼자 서비스 한 사이클을 완성해 보는 경험**은 시야를 크게 넓힌다.
 
 ## 잘하는 프론트엔드 개발자
 

@@ -1,20 +1,20 @@
 ---
 title: "프론트엔드 면접 유형과 준비법"
 concept: "Front End Interview"
-summary: "프론트엔드 면접은 알고리즘보다 도메인 지식과 실전 구현을 본다. JavaScript 코딩, UI 코딩, 알고리즘, 퀴즈, 프론트엔드 시스템 디자인, 비헤이비어럴 여섯 유형별로 무엇을 보고 어떻게 준비하는지, 유형별 대표 문제, 시스템 디자인용 RADIO 프레임워크, UI 구현 때 짚을 체크리스트를 정리하고 개념은 Frontend 노트로 잇는다."
+summary: "프론트엔드 면접은 알고리즘보다 도메인 지식과 실전 구현을 본다. JavaScript 코딩, UI 코딩, 알고리즘, 퀴즈, 프론트엔드 시스템 디자인, 비헤이비어럴 여섯 유형별로 무엇을 보고 어떻게 준비하는지, 유형별 대표 문제, 백엔드 시스템 디자인과의 차이, 시스템 디자인용 RADIO 프레임워크, 토론 라운드 주제, UI 구현 때 짚을 체크리스트를 정리하고 개념은 Frontend 노트로 잇는다."
 tags: ["career", "interview", "job-search", "frontend"]
 source: other
 date: "2026-10-17"
-sources: ["https://www.frontendinterviewhandbook.com/kr/introduction", "https://www.frontendinterviewhandbook.com/introduction", "https://www.frontendinterviewhandbook.com/coding/javascript-utility-function", "https://www.frontendinterviewhandbook.com/coding/build-front-end-user-interfaces", "https://www.frontendinterviewhandbook.com/coding/algorithms", "https://www.frontendinterviewhandbook.com/trivia", "https://www.frontendinterviewhandbook.com/front-end-system-design/ui-components", "https://www.frontendinterviewhandbook.com/front-end-system-design/applications", "https://www.frontendinterviewhandbook.com/behavioral", "https://www.frontendinterviewhandbook.com/resume", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91"]
+sources: ["https://www.frontendinterviewhandbook.com/kr/introduction", "https://www.frontendinterviewhandbook.com/introduction", "https://www.frontendinterviewhandbook.com/coding/javascript-utility-function", "https://www.frontendinterviewhandbook.com/coding/build-front-end-user-interfaces", "https://www.frontendinterviewhandbook.com/coding/algorithms", "https://www.frontendinterviewhandbook.com/trivia", "https://www.frontendinterviewhandbook.com/front-end-system-design", "https://www.frontendinterviewhandbook.com/front-end-system-design/ui-components", "https://www.frontendinterviewhandbook.com/front-end-system-design/applications", "https://www.frontendinterviewhandbook.com/behavioral", "https://www.frontendinterviewhandbook.com/resume", "https://www.frontendinterviewhandbook.com/blog/front-end-vs-back-end-system-design-interviews", "https://www.frontendinterviewhandbook.com/blog/a-glimpse-into-front-end-interviews", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91"]
 ---
 
-> Yangshun Tay·GreatFrontEnd의 「[Front End Interview Handbook](https://www.frontendinterviewhandbook.com/introduction)」([한국어판](https://www.frontendinterviewhandbook.com/kr/introduction), 2026.10 갱신)을 바탕으로 재구성한 노트다. 퀴즈 주제 표는 「[프론트엔드 개발자 인터뷰 후기 (면접 질문 정리)](https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91)」를 참고해 보강했다. 페이지 재현 문제는 Tech Interview Handbook의 「[Interview Formats](https://www.techinterviewhandbook.org/interview-formats-top-companies/)」로 보강했다.
+> Yangshun Tay·GreatFrontEnd의 「[Front End Interview Handbook](https://www.frontendinterviewhandbook.com/introduction)」([한국어판](https://www.frontendinterviewhandbook.com/kr/introduction), 2026.10 갱신)을 바탕으로 재구성한 노트다. 퀴즈 주제 표는 「[프론트엔드 개발자 인터뷰 후기 (면접 질문 정리)](https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91)」를 참고해 보강했다. 페이지 재현 문제는 Tech Interview Handbook의 「[Interview Formats](https://www.techinterviewhandbook.org/interview-formats-top-companies/)」로 보강했다. 프론트엔드·백엔드 시스템 디자인 비교는 핸드북 블로그의 「[Front End vs. Back End System Design Interviews](https://www.frontendinterviewhandbook.com/blog/front-end-vs-back-end-system-design-interviews)」(2021.12), 라운드 구성과 토론 라운드는 「[A Glimpse into Front End Interviews](https://www.frontendinterviewhandbook.com/blog/a-glimpse-into-front-end-interviews)」(2021.08)로 보강했다.
 
 ## 프론트엔드 면접의 특징
 
 프론트엔드 면접은 일반 소프트웨어 엔지니어 면접보다 **알고리즘 비중이 낮고 도메인 지식 비중이 높다.** HTML, CSS, JavaScript를 실제 상황에 적용하는 능력을 본다. LeetCode만으로는 부족하지만, 기본 자료구조·알고리즘은 여전히 나온다.
 
-유형 구성은 업계 표준이 없고 회사마다 조합이 다르다. 퀴즈를 아예 안 보는 회사도, UI 코딩 대신 시스템 디자인을 보는 회사도 있다. 지원 회사의 후기와 핸드북의 [회사별 질문 모음](https://www.frontendinterviewhandbook.com/company-interview-questions)으로 조합을 확인하고 그에 맞춰 비중을 정한다. 회사는 같은 문제를 자주 재사용한다.
+유형 구성은 업계 표준이 없고 회사마다 조합이 다르다. 퀴즈를 아예 안 보는 회사도, UI 코딩 대신 시스템 디자인을 보는 회사도 있다. 회사 하나의 기술 면접은 보통 3~4세션이고, 대부분 JavaScript 코딩과 웹 기술 토론이며 나머지가 알고리즘이나 비헤이비어럴이다. **역사가 짧은 회사일수록 JavaScript 비중이 크다.** 오래된 회사는 프론트엔드·백엔드를 가리지 않고 일반 소프트웨어 엔지니어로 뽑아 왔기 때문에 알고리즘 비중이 남아 있다. 지원 회사의 후기와 [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]]로 조합을 확인하고 그에 맞춰 비중을 정한다. 회사는 같은 문제를 자주 재사용한다.
 
 ## 기본기: 모든 유형의 바탕
 
@@ -47,6 +47,7 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 | 기본 | 10~15분 | `Array.prototype`의 `map`·`reduce`·`filter`·`sort`, `Promise`·`Promise.all`·`Promise.any`, `debounce`·`throttle`, `cloneDeep`·`groupBy`·`flatten`, `classnames`, 객체 키 snake_case ↔ camelCase 변환, `getElementsByClassName`·`getElementsByTagName`, 이벤트 이미터(옵저버 패턴) |
 | 고급 (주로 시니어) | 25~30분 | 변수 치환·간단한 조건문이 있는 템플릿 엔진, `JSON.stringify`, HTML 페이지에서 목차 생성 |
 
+- 가장 자주 나오는 문제는 `debounce`·`throttle` 구현이고, 다음이 Promise를 **순서대로** 하나씩 실행해 결과를 모으는 순차판 `Promise.all`이다.
 - 기본 문제는 시간을 다 쓰지 않는다. **대개 한 문제를 더 받는다.** 후속 질문은 앞 답을 확장하는 꼴이 많다. 예: `chunk()` → `map()` → `Promise.all`로 `mapAsync` → 청크 단위로 나눠 돌리는 `mapWithChunksAsync`.
 - lodash처럼 옛 브라우저 예외까지 처리할 필요는 없다. 대신 **시간 복잡도**는 신경 쓴다. 해시맵으로 O(n)이 되면 O(n²)로 쓰지 않는다.
 - 외부 상태에 기대지 않고 부수 효과가 없는 **순수 함수**로 쓴다.
@@ -54,6 +55,8 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 - 개념 노트: [[debounce-throttle|Debounce와 Throttle]], [[callback-and-promise|Promise]], [[arrays-and-objects|배열과 객체]], [[js-design-patterns|이벤트 믹스인과 이벤트 이미터]].
 
 ## UI 코딩
+
+회사에 따라 UI 구현 라운드가 아예 없거나 드물게 나온다. 나오면 HTML·CSS 기본기와 도구·프레임워크 숙련도가 그대로 드러난다(예: Google 같은 자동완성 검색창을 1시간 안에 만들기). 진행 감각은 알고리즘 라운드와 비슷하다. 최선의 방법을 찾으며 생각을 소리 내어 말하고 결정마다 이유를 설명한다.
 
 진행 환경은 네 가지다.
 
@@ -93,9 +96,11 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 
 프론트엔드 지원자에게는 대체로 쉬운 문제가 나온다. 배열·Set·Map 다음으로 **트리**를 우선한다. DOM이 트리이기 때문이다. BFS, DFS, 레벨 순회를 익혀 둔다. 답을 외우지 말고 문제 **패턴**을 익힌다. 풀이 순서와 우선순위는 [[coding-test|코딩 테스트 접근법]]에 있다.
 
-## 퀴즈
+알고리즘 라운드는 언어를 고를 수 있는 경우가 많다. JavaScript에는 내장 최소 힙과 이진 탐색이 없어서, 힙·이진 탐색 문제가 잦으면 Python으로 푸는 선택지도 있다. 언어 고르는 기준은 [[tech-interview-prep#면접 언어 고르기|기술 면접 준비]]에 있다. Google·Meta·Apple·Amazon처럼 프론트엔드 지원자에게도 LeetCode 중간 난이도 이상을 내는 회사가 있으니, 지원 회사의 비중은 따로 확인한다.
 
-전형 초반에 많이 나온다. 답이 짧고 분명해 비개발자 리크루터도 채점할 수 있기 때문이다. 시니어에게는 「React는 어떻게 동작하나, 가상 DOM은 무엇을 푸나」, 「왜 X 대신 Y 라이브러리를 골랐나」처럼 정답이 없는 질문이 나온다. 암기보다 **개념 이해와 실제 적용 경험**으로 준비한다. 시간이 없을 때만 암기로 메운다.
+## 퀴즈와 토론
+
+전형 초반에 많이 나온다. 답이 짧고 분명해 비개발자 리크루터도 채점할 수 있기 때문이다. 초기 평가에서는 변수 호이스팅, 구멍 난 배열(holey array, 빈 슬롯이 있는 희소 배열), 비엄격 모드의 동작, `switch` 문의 fall-through 같은 언어 세부까지 묻기도 한다. 라이브 면접으로 넘어가면 이벤트 루프, Promise, `async`/`await`, 스코프와 클로저처럼 더 깊은 개념을 묻는다. 시니어에게는 「React는 어떻게 동작하나, 가상 DOM은 무엇을 푸나」, 「왜 X 대신 Y 라이브러리를 골랐나」처럼 정답이 없는 질문이 나온다. 암기보다 **개념 이해와 실제 적용 경험**으로 준비한다. 시간이 없을 때만 암기로 메운다.
 
 | 영역 | 자주 나오는 주제 | 개념 노트 |
 | --- | --- | --- |
@@ -109,16 +114,48 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 
 `float` 해제나 JSONP 같은 질문도 나오지만, 각각 Flexbox·Grid와 CORS로 대체된 레거시 기법이라 왜 대체됐는지까지 설명할 수 있으면 된다.
 
+정답 하나를 묻기보다 대화로 이해도를 보는 **토론 라운드**도 있다. 주제는 세 갈래다.
+
+| 주제 | 묻는 것 | 개념 노트 |
+| --- | --- | --- |
+| 웹 개발 도구 | 번들링이란, 트리 셰이킹이란, 지연 로딩은 왜 중요한가, 로더는 어떻게 동작하나. 도구 복잡도를 직접 감당해야 하는 스타트업에서 더 자주 묻는다. 큰 회사는 도구를 추상화해 두는 편이라 그 역할이 아니면 덜 묻는다 | [[bundlers-and-vite\|번들러와 Vite]], [[webpack\|webpack]], [[babel\|Babel]], [[lazy-loading\|지연 로딩]] |
+| React 또는 쓰는 프레임워크 | 공고에 React가 있으면 컴포넌트를 짜거나 개념을 설명한다. `useEffect` 의존성 배열, `shouldComponentUpdate` 같은 리렌더링 제어. React 경험이 없으면 다른 프레임워크로 답해도 되지만 내부에서 일어나는 일을 설명할 수 있어야 한다 | [[hooks\|Hooks]], [[re-rendering\|리렌더링]] |
+| 업무 경험 | 이력서에서 면접관이 흥미를 느낀 항목 한두 개를 깊게 묻는다. 예: Babel 플러그인이나 jscodeshift 코드모드로 코드베이스를 개선한 경험 | [[resume-writing\|레주메 작성법]] |
+
 ## 프론트엔드 시스템 디자인과 RADIO
 
-프론트엔드 시스템 디자인은 분산 시스템 설계가 아니라 **클라이언트 쪽 구조**를 설계한다. UI 코딩보다 범위가 넓고, 1시간 이내 면접이면 코드보다 설계 트레이드오프를 말로 다룬다. DB 스키마, SQL vs NoSQL, 샤딩, 서버 가용성은 보통 다루지 않는다. 서버 쪽 설계 면접은 [[tech-interview-prep|기술 면접 준비]]의 7단계를 따른다.
+프론트엔드 시스템 디자인은 분산 시스템 설계가 아니라 **클라이언트 쪽 구조**를 설계한다. UI 코딩과 겹치는 부분이 많다. UI 코딩 중에도 데이터 모델과 API를 설계하고, 시스템 디자인 중에도 상태 모양을 보여 주려고 코드를 조금 쓴다. 차이는 **범위**다. 여러 컴포넌트와 웹 스택 전반이 걸리므로 각 컴포넌트의 세부 구현까지 내려가지 않고, 클라이언트-서버 API, 컴포넌트 구성과 각 컴포넌트의 API(props)를 중심으로 높은 수준에서 이야기한다. 1시간 이내 면접이면 코드를 쓰기보다 설계 트레이드오프와 가능한 구현을 말로 다룬다.
 
 | 문제 종류 | 예 |
 | --- | --- |
 | 컴포넌트 | 자동완성, 이미지 캐러셀, 드롭다운 메뉴, 모달 대화상자, 리치 텍스트 에디터, 투표 위젯, 데이터 테이블, 툴팁 |
-| 앱 | 뉴스 피드, 채팅, 핀터레스트형 이미지 피드, 공동 문서 편집, 동영상·음악 스트리밍, 디자인 툴, 화상 회의, 숙박 예약, 이커머스, 공동 스프레드시트, 사진 공유, 이메일 클라이언트 |
+| 앱 | 뉴스 피드(Facebook), 채팅(Messenger), 핀터레스트형 이미지 피드, 공동 문서 편집(Google Docs), 동영상 스트리밍(Netflix), 음악 스트리밍(Spotify), 디자인 툴(Figma), 화상 회의(Zoom), 숙박 예약(Airbnb), 이커머스(Amazon), 공동 스프레드시트(Google Sheets), 사진 공유(Instagram), 이메일 클라이언트(Outlook) |
 
-질문은 일부러 모호하게 주어진다. **지원자가 대화를 이끈다.** 화이트보드에 RADIO를 적어 두고 하나씩 다룬다.
+회사별로 실제 나온 설계 문제는 [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]]에 모았다.
+
+### 백엔드 시스템 디자인과 무엇이 같고 다른가
+
+진행 방법은 같다. 요구 사항을 모으고, 큰 구성 요소를 나누고, 끝에서 끝까지 API를 설계하고, 최적화를 논한다. **지원자가 발표를 이끌어야 하고**, 코드는 거의 쓰지 않으며, 체크리스트를 하나씩 지우는 시험이 아니라 열린 질문이다. 모든 항목을 깊게 팔 필요는 없다. 면접관이 특정 부분에 관심을 보이면(대개 그렇다) 그쪽으로 초점을 옮기고, 그렇지 않으면 자기 강점 쪽으로 대화를 끈다.
+
+| 축 | 백엔드 시스템 디자인 | 프론트엔드 시스템 디자인 |
+| --- | --- | --- |
+| 주로 다루는 것 | 서버 쪽 구조와 서비스 구성, DB 종류 선택과 샤드 간 데이터 집계, SQL 테이블 스키마, 전 세계 사용자를 위한 리전 전략, 지연·가용성·장애 허용 | 렌더링 패턴(CSR·SSR·SSG와 그 중간), 데이터 가져오기 방식(REST·GraphQL·gRPC)과 API 모양, UI 컴포넌트 세부, 여러 층의 캐시로 지연을 줄이거나 오프라인 지원, 때로 React 컴포넌트의 props나 복잡한 상태 관리 |
+| 단순화하는 쪽 | 클라이언트는 API 계층으로 축약한다. 브라우저 사정이나 실시간 갱신이 부르는 리렌더링은 따지지 않는다 | 백엔드는 블랙박스로 둔다. DB 확장이나 WebSocket이 로드 밸런서에 스티키 세션을 요구하는 문제는 따지지 않는다 |
+| 사용자 상호작용 | 거의 다루지 않는다 | 면접관을 **PM처럼 대하고** 사용자 스토리마다 해법을 짚어 가는 경우가 많다 |
+| 정량 추정 | 저장 용량·처리량을 추정해 설계가 현실적으로 가능한지 보이는 것이 기본이다 | 드물다. 메시지 크기 × 개수로 클라이언트 메모리를 계산하는 식의 추정은 거의 하지 않는다 |
+| 하지 않아도 되는 것 | - | DB 스키마 설계, SQL vs NoSQL 선택, 서버·DB 확장(샤딩, 수직·수평 확장), 가용성·장애 허용·지연 논의 |
+
+프론트엔드 쪽 구체 주제는 이런 모양이다.
+
+- 이미지를 지연 로딩하는 무한 스크롤 뉴스 피드에서, 레이아웃 이동을 막으려고 이미지 **가로세로 비율을 클라이언트가 미리 받아 두기**([[cls-optimization|CLS 최적화]], [[intersection-observer|Intersection Observer]]).
+- 검색 결과는 묶음 단위로 점진적으로 받고, 이미지는 서버 푸시로 동시에 받는 자동완성.
+- 네트워크 응답이 뒤섞여 도착해도 **올바른 순서**로 이미지를 보여 주는 갤러리.
+
+다만 면접관의 배경(프론트엔드·백엔드·풀스택)과 역할 범위(프론트엔드 팀인지, 스택 전반을 맡는지)에 따라 백엔드 주제가 섞인 **혼합형**이 될 수 있다. 실제로 DB 스키마나 백엔드 다이어그램을 요구하는 회사도 있다. 서버 쪽 설계 면접은 [[tech-interview-prep#시스템 디자인 면접 7단계|기술 면접 준비]]의 7단계를 따른다.
+
+### RADIO 프레임워크
+
+질문은 일부러 모호하게 주어진다. **지원자가 대화를 이끈다.** 화이트보드나 온라인 에디터에 RADIO 다섯 글자를 적어 두고 빠짐없이 다룬다. 순서가 꼭 이대로일 필요는 없다. 면접관이 집중할 영역을 정해 주면 그쪽을 따른다.
 
 | 단계 | 컴포넌트 문제 | 앱 문제 |
 | --- | --- | --- |
@@ -138,7 +175,7 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 - **모바일**: 메모리를 아끼고 터치 영역을 키운다.
 - **보안**: XSS(`innerHTML`, `dangerouslySetInnerHTML`), CSRF, 클릭재킹, 새 창 링크의 `rel="noopener"`.
 
-**성능·접근성·i18n을 먼저 꺼내 깊게 말하는 것이 시니어와 주니어를 가른다.** 면접 시간에 최적화 항목을 다 다룰 수는 없으니 문제와 관련 깊은 것을 골라 깊게 판다. RADIO는 면접 밖에서도 기술 설계 문서의 뼈대로 쓸 수 있다. 실제 앱 설계 사례는 [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름]], 렌더링 전략은 [[spa-csr-ssr|SPA와 CSR·SSR]]에 있다.
+**성능·접근성·i18n을 먼저 꺼내 깊게 말하는 것이 시니어와 주니어를 가른다.** 면접 시간에 최적화 항목을 다 다룰 수는 없으니 문제와 관련 깊은 것을 골라 깊게 판다. RADIO는 면접 밖에서도 새 프론트엔드 프로젝트의 기술 설계 문서 뼈대로 쓸 수 있고, 백엔드 시스템에도 그대로 적용된다. 실제 앱 설계 사례는 [[realtime-chat-app|실시간 채팅 앱의 데이터 흐름]], 렌더링 전략은 [[spa-csr-ssr|SPA와 CSR·SSR]]에 있다.
 
 ## 비헤이비어럴과 레주메
 
@@ -152,6 +189,6 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 - 유형은 JS 코딩, UI 코딩, 알고리즘, 퀴즈, 시스템 디자인, 비헤이비어럴이고 회사마다 조합이 다르니 먼저 조합을 확인한다.
 - JS 코딩은 빨리 끝내고 후속 문제를 받는다. 복잡도와 순수 함수를 챙긴다.
 - UI 코딩은 범위를 먼저 합의하고, 극단적 입력·네트워크·접근성·보안을 짚는다.
-- 시스템 디자인은 RADIO로 대화를 이끌고, 최적화 단계에서 깊이를 보여 준다.
+- 시스템 디자인은 RADIO로 대화를 이끌고, 최적화 단계에서 깊이를 보여 준다. 백엔드와 달리 DB·확장·정량 추정보다 렌더링·데이터 가져오기·캐시·컴포넌트 API를 다룬다.
 
-관련 노트: [[interview-attitude|면접 잘 보는 법]], [[tech-interview-prep|기술 면접 준비]], [[coding-test|코딩 테스트 접근법]], [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[debounce-throttle|Debounce와 Throttle]], [[Accessibility|웹 접근성]], [[web-security|웹 보안: CSRF와 XSS]]
+관련 노트: [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]], [[interview-attitude|면접 잘 보는 법]], [[tech-interview-prep|기술 면접 준비]], [[coding-test|코딩 테스트 접근법]], [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[debounce-throttle|Debounce와 Throttle]], [[Accessibility|웹 접근성]], [[web-security|웹 보안: CSRF와 XSS]]
