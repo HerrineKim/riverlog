@@ -1,14 +1,14 @@
 ---
 title: "백엔드 개발자가 알아야 할 것"
 concept: "Backend Roadmap"
-summary: "인터넷·DNS·HTTP부터 데이터베이스, 언어와 웹 프레임워크, API 스타일(REST·GraphQL·gRPC), 버전 관리, 인증, 리눅스, CI/CD·도커·클라우드, 보안, 아키텍처까지 백엔드 개발자의 지식 지도. 다 외우는 것이 아니라 필요할 때 찾아 쓸 수 있을 만큼 아는 것이 목표다."
+summary: "인터넷·DNS·HTTP부터 데이터베이스, 언어와 웹 프레임워크, API 스타일(REST·GraphQL·gRPC), 버전 관리, 인증, 리눅스, CI/CD·도커·클라우드, 보안, 아키텍처까지 백엔드 개발자의 지식 지도와 연차별 보안 학습 순서. 다 외우는 것이 아니라 필요할 때 찾아 쓸 수 있을 만큼 아는 것이 목표다."
 tags: ["backend", "roadmap", "career", "api"]
 source: other
 date: "2026-10-16"
-sources: ["https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://roadmap.sh/backend"]
+sources: ["https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://roadmap.sh/backend", "https://www.inflearn.com/pages/2026-backend-security-roadmap"]
 ---
 
-> 박승규의 발표 자료 「삶이 편해지는 백엔드 개발 지식」(2023.10)을 바탕으로 재구성한 노트다.
+> 박승규의 발표 자료 「삶이 편해지는 백엔드 개발 지식」(2023.10)을 바탕으로 재구성한 노트다. 연차별 보안 학습 순서는 인프런의 「[2026년 백엔드 개발자를 위한 보안 교육 로드맵](https://www.inflearn.com/pages/2026-backend-security-roadmap)」에서 강의 구성을 걷어 내고 주제만 추렸다.
 
 ## 지식 지도
 
@@ -88,6 +88,19 @@ flowchart TB
 
 GraphQL의 도입 패턴은 [[graphql|GraphQL]]에 있다.
 
+## 연차별 보안 학습 순서
+
+보안팀은 인프라·계정·정책을 챙기지만, **고객이 쓰는 웹·앱의 API는 그것을 만든 개발자가 가장 잘 안다.** 게시글 번호나 파일 경로를 바꿔 요청해도 남의 데이터가 나오지 않는지, 처리 단계에서 권한을 다시 확인하는지는 기능을 만든 사람이 점검할 몫이다. 로그인·권한·게시판·업로드를 만들기 시작하면 그 기능의 보안도 함께 맡는다고 보고, 연차에 맞춰 범위를 넓힌다.
+
+| 단계 | 초점 | 주제 |
+| --- | --- | --- |
+| 취업 준비~신입 | 보안 기초 | OWASP Top 10, 웹 취약점(SQL 인젝션, XSS, CSRF, OS 명령 삽입, 파라미터 변조, URL 접근 제한 누락), 해시·솔트·대칭/비대칭 키·전자 서명·PKI 같은 최소한의 암호 지식, 세션 탈취·퇴사자 키 미회수 같은 사고 사례 |
+| 1~3년차 | 내 코드 지키기 | 인증·인가 구현(프레임워크 보안 필터, 요청·메서드 단위 권한), CSRF·CORS·SameSite, 입력 처리와 오류·로그, 안전한 파일 업로드·다운로드, 시큐어 코딩 |
+| 1~3년차 (클라우드 운영 겸업) | 계정과 접근 통제 | IAM 정책·역할과 임시 자격 증명, 스토리지(S3) 접근 제어, VPC 네트워크 통제, 감사 로그(CloudTrail) 기반 탐지·알림 |
+| 3~7년차 | 배포·운영 보안 | CI/CD에 SAST·DAST·이미지 스캔을 넣고 실패 시 빌드를 막기, 비밀 관리(Secrets Manager·KMS), 컨테이너 보안, WAF와 우회 기법, 접근 통제 도구 |
+
+세부 체크리스트는 [[api-security|API 보안 체크리스트]], 파이프라인 쪽은 [[devsecops|DevSecOps]]에 있다.
+
 ## 백엔드 개발자의 태도
 
 | 대신 | 이렇게 |
@@ -103,5 +116,6 @@ GraphQL의 도입 패턴은 [[graphql|GraphQL]]에 있다.
 - 언어·프레임워크는 안정성과 생태계, 팀의 경험으로 고른다.
 - API는 공개·일반 서비스는 REST, 다양한 화면은 GraphQL, 내부 서비스 간 통신은 gRPC가 기본 선택지다.
 - 판단은 숫자로 한다.
+- 내가 만든 API의 보안은 내가 점검한다. 신입은 웹 취약점, 1~3년차는 인증·인가와 시큐어 코딩, 그 위로 배포·비밀 관리 순으로 넓힌다.
 
 관련 노트: [[frontend-roadmap|프론트엔드 학습 로드맵]], [[web-dev-study-guide|초보 웹 개발자의 공부 방향과 차별화]], [[database-models|데이터베이스 모델]], [[rest-api|REST API]]
