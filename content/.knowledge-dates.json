@@ -169,7 +169,7 @@
  },
  "AI-Data/loop-engineering.md": {
   "created": "2026-10-12T20:35:49+09:00",
-  "updated": "2026-10-31T13:02:04+09:00"
+  "updated": "2026-11-13T22:05:06+09:00"
  },
  "AI-Data/machine-learning-basics.md": {
   "created": "2026-10-13T19:48:50+09:00",
@@ -273,7 +273,7 @@
  },
  "AI-Data/web-scraping-strategy.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-31T18:52:03+09:00"
+  "updated": "2026-11-13T22:05:06+09:00"
  },
  "Algorithm.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -953,7 +953,7 @@
  },
  "Backend/Web-Basics/two-factor-totp-passkey.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T13:03:08+09:00"
+  "updated": "2026-11-13T22:05:05+09:00"
  },
  "Backend/Web-Basics/web-server-and-nginx.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -1609,7 +1609,7 @@
  },
  "Computer-Science/Operating-System/virtualization.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-31T18:52:03+09:00"
+  "updated": "2026-11-13T22:05:06+09:00"
  },
  "Computer-Science/Programming-Languages.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1881,7 +1881,7 @@
  },
  "DevOps/devsecops.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-11-12T22:12:17+09:00"
+  "updated": "2026-11-13T22:05:05+09:00"
  },
  "DevOps/disaster-recovery.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -3369,7 +3369,7 @@
  },
  "Life-and-Learning/household-tips.md": {
   "created": "2026-11-04T22:33:44+09:00",
-  "updated": "2026-11-12T22:12:47+09:00"
+  "updated": "2026-11-13T22:05:05+09:00"
  },
  "Life-and-Learning/interest-rate-exchange-rate.md": {
   "created": "2026-11-12T22:08:32+09:00",

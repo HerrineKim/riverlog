@@ -4,7 +4,7 @@ concept: "Web Scraping Strategy"
 summary: "크롤링은 먼저 페이지가 정적인지 동적인지 판별하고, 공식 API → 숨은 데이터 엔드포인트 직접 호출(네트워크 리버싱) → 헤드리스 브라우저 순으로 가벼운 방식을 고른다. 브라우저 자동화는 편하지만 느리고 무거우며, 엔드포인트를 찾으면 훨씬 가볍고 빨라진다. 로그인 페이지의 쿠키·세션·CSRF 토큰, 브라우저 자동화의 암묵적·명시적 대기, 멀티프로세싱·스레드·비동기로 병렬 수집하는 법도 다룬다."
 tags: ["python", "data-science", "automation", "http", "tools"]
 source: other
-date: "2026-10-31"
+date: "2026-11-13"
 sources: ["https://www.slideshare.net/wangwonLee/2018-datayanolja-moreeffectivewebcrawling", "https://beomi.github.io/gb-crawling/", "https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki/%EA%B3%B5%EB%B6%80%ED%95%98%EB%A9%B4-%EC%A2%8B%EC%9D%80-List"]
 ---
 
@@ -95,6 +95,7 @@ ajax로 화면을 바꾸는 SPA가 대부분이므로 명시적 대기를 기본
 ## 지킬 것
 
 - `robots.txt`와 이용 약관을 확인한다. 로그인 뒤 데이터, 개인정보, 유료 콘텐츠 수집은 법적 문제가 될 수 있다.
+- 크롤러를 배포하거나 공개 서비스로 만들면 법적 위험이 커진다. 개인이 로컬에서 필요한 정보를 모으는 용도에 그치는 편이 안전하고, 그때도 저작물 수집의 적법성은 따로 따진다.
 - 요청 간격(rate limit)을 두고, 같은 데이터는 캐시해 다시 받지 않는다.
 - 엔드포인트 방식은 사이트 개편에 약하므로 응답 구조가 바뀌면 바로 알아채도록 검증 코드를 둔다.
 
