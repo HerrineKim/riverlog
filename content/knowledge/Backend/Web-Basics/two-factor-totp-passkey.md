@@ -4,7 +4,7 @@ concept: "TOTP & Passkey"
 summary: "인증기 앱의 6자리 코드(TOTP)는 등록 때 공유한 비밀 키와 현재 시각으로 서버와 앱이 같은 숫자를 각자 계산하는 방식이다. 패스키는 비밀을 공유하지 않는다: 기기가 사이트마다 키 쌍을 만들고 공개키만 서버에 주며, 로그인 때 서버의 챌린지에 개인키로 서명한다. 도메인에 묶여 있어 피싱에 강하다."
 tags: ["security", "auth", "backend", "cryptography", "web"]
 source: other
-date: "2026-10-21"
+date: "2026-11-13"
 sources: ["https://bytebytego.com/guides/how-does-google-authenticator-or-other-types-of-2-factor-authenticators-work", "https://bytebytego.com/guides/is-passkey-shaping-a-passwordless-future", "https://www.rfc-editor.org/rfc/rfc6238", "https://www.w3.org/TR/webauthn-3/", "https://www.youtube.com/watch?v=bPVaOlJ6ln0"]
 ---
 
@@ -109,6 +109,18 @@ sequenceDiagram
 - 다른 기기의 패스키는 QR 코드를 찍고 블루투스로 근접을 확인하는 교차 기기 인증으로 쓴다.
 - 웹 쪽 구현(자동 완성 UI, `autocomplete="username webauthn"`)은 [[sign-in-sign-up-forms|로그인·가입 폼과 인증 입력]]에 있다.
 
+## 인증 수단의 가용성: 대체 경로를 둔다
+
+두 번째 요소는 보안 장치이면서 **로그인의 단일 장애 지점**이기도 하다. 사내 시스템의 인증 코드를 특정 클라우드 메일 하나로만 받게 해 두면, 그 메일 서비스에 장애가 났을 때 로그인과 계정 전환이 모두 막혀 업무가 통째로 멈춘다. 코드를 받는 채널이 죽으면 비밀번호를 알아도 들어갈 수 없기 때문이다.
+
+| 준비 | 내용 |
+| --- | --- |
+| 외부 서비스에 기대지 않는 수단 | 인증기 앱의 TOTP는 기기 안에서 계산하므로 메일·문자 서비스 장애와 무관하다 |
+| 백업 코드 | 등록할 때 일회용 복구 코드를 발급해 오프라인에 보관하게 한다 |
+| 보조 채널 | 메일 외에 두 번째 수단(다른 메일, 보안 키, 다른 기기의 패스키)을 함께 등록하게 한다 |
+
+대체 경로는 가장 약한 수단만큼만 안전하다. 복구 절차가 SMS나 메일 링크 하나로 끝나면 공격자도 그 길로 들어온다.
+
 ## 고르는 기준
 
 | 방식 | 피싱 저항 | 서버 유출 시 | 사용자 부담 |
@@ -123,6 +135,7 @@ sequenceDiagram
 - MFA는 서로 다른 종류의 증거를 요구한다.
 - TOTP는 공유한 비밀 키 + 현재 시각으로 양쪽이 같은 코드를 계산한다. 시도 횟수 제한과 비밀 키 암호화 저장이 필수이고, 피싱은 막지 못한다.
 - 패스키는 사이트마다 기기에서 만든 키 쌍으로 챌린지에 서명한다. 서버에 비밀이 없고 도메인에 묶여 피싱에 강하다.
+- 인증 코드를 메일 하나로만 받으면 그 메일의 장애가 곧 로그인 장애다. TOTP, 백업 코드, 보조 채널을 함께 둔다.
 - 새로 만드는 서비스는 패스키를 기본으로, TOTP를 대안으로 둔다.
 
 관련 노트: [[sign-in-sign-up-forms|로그인·가입 폼과 인증 입력]], [[password-storage|비밀번호 저장과 비밀번호 관리자]], [[encoding-encryption-hashing|인코딩·암호화·해시·토큰화와 디지털 서명]], [[session-vs-token-auth|세션 기반 인증과 토큰 기반 인증]], [[oauth2|OAuth 2.0]]
