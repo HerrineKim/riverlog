@@ -1,17 +1,18 @@
 ---
 title: "SQL 기초"
 concept: "SQL"
-summary: "SQL 명령어 분류(DDL·DML·DCL)와 테이블 구조 변경과 제약 조건(기본 키·외래 키·CASCADE, 자연 키와 대리 키), 뷰·시퀀스·동의어, 데이터를 생성·조회·수정·삭제하고 조건·정렬·집계·그룹화하는 기본 문법, WHERE와 HAVING·DISTINCT·CROSS JOIN처럼 헷갈리기 쉬운 지점, 서브쿼리(상관 서브쿼리, EXISTS와 NOT IN의 NULL 함정), 저장 프로시저와 PL/SQL(블록, 예외, 커서, BULK COLLECT, 함수·패키지·트리거)."
+summary: "SQL 명령어 분류(DDL·DQL·DML·DCL·TCL)와 연산자, 테이블 구조 변경과 제약 조건(기본 키·외래 키·CASCADE, 자연 키와 대리 키), 뷰·시퀀스·동의어, 데이터를 생성·조회·수정·삭제하고 조건·정렬·집계·그룹화하는 기본 문법, WHERE와 HAVING·DISTINCT·CROSS JOIN처럼 헷갈리기 쉬운 지점, 서브쿼리(상관 서브쿼리, EXISTS와 NOT IN의 NULL 함정), 집합 연산(UNION·INTERSECT·EXCEPT), 저장 프로시저와 PL/SQL(블록, 예외, 커서, BULK COLLECT, 함수·패키지·트리거)."
 tags: ["sql", "database", "mysql", "oracle", "certificate"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "고려사이버대학교 데이터베이스시스템 강의(나홍석 교수, 2024-1학기)"]
+sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "https://github.com/swapnakpanda/Infographics", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "고려사이버대학교 데이터베이스시스템 강의(나홍석 교수, 2024-1학기)"]
 ---
 
 > 여러 자료를 종합한 노트에, SQL 다섯 분류는 ByteByteGo의 System Design 101 가이드 「[What is the Best Way to Learn SQL?](https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql)」를, JOIN은 「[How do SQL Joins Work?](https://bytebytego.com/guides/how-do-sql-joins-work)」를 바탕으로 보강했다.
 > 제약 조건·자연 키와 대리 키, 구조 변경과 DELETE·TRUNCATE·DROP, 뷰, CSV 가져오기는 「[Frontend_TIL: Constraint 제약조건](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md)」, 「[SQL문](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md)」, 「[CSV 파일로 테이블 생성](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md)」을 바탕으로 보강했다.
 > 「파라미터 바인딩과 Prepared Statement」는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로 보강했다.
 > 키의 종류와 저장 프로시저는 gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 저장소의 Database 문서를 바탕으로 보강했다.
+> 명령어 5분류의 전체 목록, 연산자, 집합 연산은 Swapna Kumar Panda의 인포그래픽 모음 「[Infographics](https://github.com/swapnakpanda/Infographics)」의 SQL 치트시트를 바탕으로 보강했다.
 > 기본 키 변경, 외래 키의 NULL, 갱신 가능한 뷰, COUNT의 동작은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다.
 > 무결성의 종류와 강화 방법, 컬럼·테이블 제약과 컬럼 추가 규칙은 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기)과 「데이터베이스시스템」(2024-1학기) 강의 내용으로 보강했다.
 > 뷰를 쓰는 이유와 `WITH CHECK OPTION`, 시퀀스·동의어, PL/SQL은 「데이터베이스 설계구축」(2023-2학기), 서브쿼리는 「데이터베이스시스템」(2024-1학기) 강의 내용으로 보강했다.
@@ -32,11 +33,13 @@ SQL(Structured Query Language)은 RDBMS에서 데이터를 관리하기 위해 �
 
 | 5분류 | 명령어 | 주로 쓰는 사람 |
 | --- | --- | --- |
-| DDL | `CREATE`, `ALTER`, `DROP` | 백엔드 개발자, DBA |
+| DDL | `CREATE`, `ALTER`, `DROP`, `TRUNCATE`, `RENAME`, `COMMENT` | 백엔드 개발자, DBA |
 | DQL | `SELECT` | 모두. 데이터 분석가는 이것이 대부분이다 |
-| DML | `INSERT`, `UPDATE`, `DELETE` | 백엔드 개발자 |
+| DML | `INSERT`, `UPDATE`, `DELETE`, `MERGE`, (`LOCK TABLE`, `CALL`, `EXPLAIN PLAN`) | 백엔드 개발자 |
 | DCL | `GRANT`, `REVOKE` | DBA, 운영 |
-| TCL | `COMMIT`, `ROLLBACK` | 백엔드 개발자 |
+| TCL | `COMMIT`, `ROLLBACK`, `SAVEPOINT`, `SET TRANSACTION` | 백엔드 개발자 |
+
+괄호 안의 `LOCK TABLE`, `CALL`, `EXPLAIN PLAN`은 Oracle 문서가 DML로 분류하는 명령이다. 데이터를 바꾸지는 않지만 데이터 접근에 딸린 문장이라 그렇게 묶었다. DBMS마다 경계가 조금씩 다르므로 분류 이름보다 각 명령이 하는 일을 기억한다. `TRUNCATE`는 행을 지우지만 구조를 다시 만드는 방식이라 DDL에 들어간다. MySQL·Oracle에서는 롤백할 수 없고, PostgreSQL은 트랜잭션 안이면 되돌릴 수 있다(아래 「구조 바꾸기」).
 
 역할에 따라 필요한 범위가 다르므로, 분석이 목적이면 DQL(조회·집계·조인)부터 깊게 익힌다.
 
@@ -260,6 +263,19 @@ SELECT COUNT(*) FROM users_user WHERE phone LIKE '02-%';
 
 `LIKE` 와일드카드: `%`는 **0개 이상의 임의 문자**, `_`는 **정확히 1개의 임의 문자**. (예: `'2_'` → 20~29 같은 두 글자 값)
 
+### 연산자
+
+| 분류 | 연산자 | 비고 |
+| --- | --- | --- |
+| 산술 | `+`, `-`, `*`, `/`, `%` | 정수끼리 `/`는 DBMS마다 다르다. PostgreSQL·SQL Server는 몫만 남기고(`7 / 2` → `3`) MySQL은 소수(`3.5000`)를 낸다. 나머지는 `MOD(a, b)`가 더 이식성이 높다 |
+| 비트 | `&`, `\|`, `^` | MySQL·SQL Server 기준. PostgreSQL의 XOR는 `#`이고 `^`는 거듭제곱이다 |
+| 비교 | `=`, `<>`(표준), `!=`, `<`, `>`, `<=`, `>=` | `!<`, `!>`(~보다 작지 않다/크지 않다)는 SQL Server에만 있다 |
+| 복합 할당 | `+=`, `-=`, `*=`, `/=`, `%=`, `&=`, `\|=`, `^=` | SQL Server(T-SQL)의 변수·`SET` 절 전용이다. 표준 SQL에는 없다 |
+| 논리 | `AND`, `OR`, `NOT` | NULL이 끼면 결과가 `UNKNOWN`이 되는 3값 논리다. `WHERE`는 `TRUE`인 행만 남긴다 |
+| 술어 | `BETWEEN a AND b`(양 끝 포함), `IN (...)`, `LIKE`, `IS NULL`, `EXISTS`, `ANY`·`SOME`, `ALL`, `UNIQUE` | `= NULL`은 언제나 `UNKNOWN`이라 `IS NULL`로 쓴다. `SOME`은 `ANY`의 다른 이름이다. 서브쿼리 결과에 중복이 없는지 보는 `UNIQUE` 술어는 표준에 있지만 지원하는 DBMS가 드물다 |
+
+`ANY`·`ALL`·`EXISTS`처럼 서브쿼리를 받는 술어의 동작과 NULL 함정은 아래 「서브쿼리」에 있다.
+
 ## 정렬과 개수 제한
 
 ```sql
@@ -324,6 +340,31 @@ LEFT JOIN customers c ON o.customer_id = c.id;
 - "짝이 없는 행만" 찾으려면 `LEFT JOIN` 후 `WHERE 오른쪽.id IS NULL`로 거른다(예: 주문이 없는 고객).
 - 조건 없이 모든 조합을 만드는 `CROSS JOIN`, 같은 테이블끼리 잇는 셀프 조인도 있다. 관계대수의 조인 연산은 [[sql-and-relational-algebra|관계대수와 DB 설계]]에 있다.
 - 조인 종류를 벤 다이어그램으로 고르고 해당 SQL을 바로 받아 보려면 「[SQL Joins Visualizer](https://sql-joins.leopard.in.ua/)」가 편하다.
+
+## 집합 연산: UNION·INTERSECT·EXCEPT
+
+JOIN이 테이블을 **옆으로** 붙인다면 집합 연산은 두 `SELECT` 결과를 **위아래로** 합친다. 두 결과의 열 개수와 각 열의 타입이 맞아야 하고, 결과의 열 이름은 첫 `SELECT`를 따른다.
+
+| 연산 | 결과 | 비고 |
+| --- | --- | --- |
+| `UNION` | 어느 한쪽에라도 있는 행. 중복 제거 | 중복을 지우려고 정렬·해시를 한다 |
+| `UNION ALL` | 양쪽 행을 모두 이어 붙인다. 중복 유지 | 중복이 없거나 상관없으면 이쪽이 빠르다 |
+| `INTERSECT` | 양쪽에 모두 있는 행 | MySQL은 8.0.31부터 지원한다 |
+| `EXCEPT` | 첫 결과에서 둘째 결과에 있는 행을 뺀 것 | Oracle의 옛 이름은 `MINUS`다(21c부터 `EXCEPT`도 받는다). MySQL은 8.0.31부터 지원한다 |
+
+```sql
+SELECT email FROM customers
+UNION
+SELECT email FROM newsletter_subscribers;     -- 둘 중 한 곳이라도 있는 이메일
+
+SELECT email FROM customers
+EXCEPT
+SELECT email FROM unsubscribed;               -- 수신 거부하지 않은 고객
+```
+
+- `ORDER BY`는 맨 끝에 한 번만 쓰고 전체 결과에 적용된다.
+- 집합 연산은 행 전체를 비교하고, 이때 **NULL끼리는 같은 값**으로 본다. `WHERE a = b`에서 NULL이 같지 않은 것과 다르다.
+- 관계대수의 합집합·교집합·차집합에 대응한다([[sql-and-relational-algebra|관계대수와 DB 설계]]).
 
 ## 서브쿼리
 
@@ -601,6 +642,7 @@ ps.executeQuery();
 
 - `INSERT / SELECT / UPDATE / DELETE` + `WHERE`가 CRUD의 전부다.
 - `ORDER BY … LIMIT … OFFSET`으로 정렬·페이지네이션, `GROUP BY` + 집계 함수로 요약.
+- 테이블을 옆으로 붙이면 `JOIN`, 결과를 위아래로 합치면 `UNION`·`INTERSECT`·`EXCEPT`. 중복이 상관없으면 `UNION ALL`.
 - 서브쿼리는 `WHERE`(값·목록)·`FROM`(인라인 뷰)·`SELECT`(스칼라)에 들어간다. 부정 조건은 `NOT IN` 대신 `NOT EXISTS`로 쓴다.
 - 절차형 로직은 PL/SQL 같은 블록으로 쓰되, 행 단위 루프보다 한 문장 SQL과 `BULK COLLECT`·`FORALL`을 먼저 고려한다.
 - 같은 쿼리를 Django ORM으로 쓰는 법은 [[orm-queryset|Django ORM과 QuerySet]]에 대응표로 있다.

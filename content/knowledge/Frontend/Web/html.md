@@ -1,16 +1,17 @@
 ---
 title: "HTML 기초와 HTML5"
 concept: "HTML"
-summary: "웹 문서의 구조와 의미를 태그로 표현하는 마크업 언어와 그 핵심 문법. 요소와 태그, 대체·빈 요소, 생략 가능한 태그, 불리언·열거형·전역 속성, data-* 속성, 속성 하나로 끝나는 기능(enterkeyhint·form·download·loading·fetchpriority·integrity·popover 등), DOCTYPE, form 데이터 규칙, HTML5까지 다룬다."
+summary: "웹 문서의 구조와 의미를 태그로 표현하는 마크업 언어와 그 핵심 문법. 요소와 태그, 대체·빈 요소, 생략 가능한 태그, 불리언·열거형·전역 속성, data-* 속성, 속성 하나로 끝나는 기능(enterkeyhint·form·download·loading·fetchpriority·integrity·popover 등), DOCTYPE, form 데이터 규칙, HTML5까지 다룬다. MDN 분류에 따른 요소 목록과 폐기된 요소도 정리한다."
 tags: ["html", "web", "semantic", "frontend", "form"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://riverkim.kr/280", "https://riverkim.kr/282", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://web.dev/learn/html/overview", "https://web.dev/learn/html/attributes", "https://web.dev/learn/html/forms", "https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/html/data.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/XML%EA%B3%BC%20XHTML.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/XHTML%EC%9D%98%20%ED%95%9C%EA%B3%84%EC%A0%90.md", "http://diveintohtml5.info/past.html"]
+sources: ["https://riverkim.kr/280", "https://riverkim.kr/282", "https://www.frontendinterviewhandbook.com/kr/html-questions", "https://web.dev/learn/html/overview", "https://web.dev/learn/html/attributes", "https://web.dev/learn/html/forms", "https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/html/data.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/XML%EA%B3%BC%20XHTML.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/XHTML%EC%9D%98%20%ED%95%9C%EA%B3%84%EC%A0%90.md", "http://diveintohtml5.info/past.html", "https://github.com/swapnakpanda/Infographics"]
 ---
 
 > 「DOCTYPE과 렌더링 모드」와 「HTML5와 웹 플랫폼」 부분은 Front End Interview Handbook의 「[HTML 질문](https://www.frontendinterviewhandbook.com/kr/html-questions)」을 HTML Living Standard·MDN으로 확인해 보강한 노트다. 「요소의 종류」와 「속성 문법」은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Overview of HTML」·「Attributes」 모듈을 바탕으로 보강했다. 「data-* 속성」은 같은 Front End Interview Handbook으로, 「속성 하나로 끝나는 기능」은 Louis Lazaris의 「[Those HTML Attributes You Never Use](https://www.smashingmagazine.com/2022/03/html-attributes-you-never-use/)」(Smashing Magazine, 2022.03)를 바탕으로 브라우저 지원을 2026년 기준으로 고쳐 보강했다.
 > 「XML·XHTML에서 HTML5로」는 「[Frontend_TIL: XML과 XHTML](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/XML%EA%B3%BC%20XHTML.md)」·「[XHTML의 한계점](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/HTML/XHTML%EC%9D%98%20%ED%95%9C%EA%B3%84%EC%A0%90.md)」을 W3C·WHATWG 기록으로 확인해 보강했다. 「HTML이 자라 온 방식」과 MIME 타입 문단은 Dive Into HTML5의 「[A Quite Biased History of HTML5](http://diveintohtml5.info/past.html)」를 바탕으로 보강했다.
 > 「data-* 속성」의 용도 범위는 「[Must-Know-About-Frontend: data- 속성](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/html/data.md)」을 바탕으로 보강했다.
+> 「요소 분류 한눈에 보기」는 Swapna Kumar Panda의 「[Infographics](https://github.com/swapnakpanda/Infographics)」 중 HTML Elements·HTML Elements Category 치트시트를 바탕으로 MDN HTML 요소 참조와 확인해 보강했다.
 
 HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 마크업 언어다. 마크업 언어란 태그 등을 이용해 문서나 데이터의 구조를 명시하는 언어로, HTML과 Markdown이 대표적이다. 스타일은 CSS가, 동작은 JavaScript가 맡고 HTML은 "무엇이 어떤 의미의 내용인가"를 표현한다.
 
@@ -59,9 +60,35 @@ HTML(HyperText Markup Language)은 웹 페이지의 **구조**를 정의하는 �
 | --- | --- | --- |
 | 비대체 요소(non-replaced) | 태그가 감싼 글과 요소를 그대로 그린다 | `<p>`, `<h1>`, `<ul>`, `<a>` |
 | 대체 요소(replaced) | 내용이 바깥 객체(이미지, 폼 위젯)로 **바뀌어** 그려진다. 기본 모양이 있고 CSS로 꾸밀 수 있는 범위가 좁다 | `<img>`, `<input>`, `<video>`, `<iframe>` |
-| 빈 요소(void) | 내용을 가질 수 없어 **닫는 태그가 없다** | `<br>`, `<hr>`, `<img>`, `<input>`, `<link>`, `<meta>`, `<source>`, `<track>`, `<wbr>`, `<col>`, `<embed>` |
+| 빈 요소(void) | 내용을 가질 수 없어 **닫는 태그가 없다** | `<area>`, `<base>`, `<br>`, `<col>`, `<embed>`, `<hr>`, `<img>`, `<input>`, `<link>`, `<meta>`, `<source>`, `<track>`, `<wbr>` (명세의 빈 요소 전부) |
 
 대체 요소와 빈 요소는 다른 개념이다. `<video>`, `<picture>`, `<iframe>`은 대체 요소지만 대체 콘텐츠를 담으므로 닫는 태그가 있다. `<link>`, `<meta>`, `<base>`는 빈 요소지만 아무것도 그리지 않고 속성으로 정보만 준다. 빈 요소 끝의 `/`(`<img />`)는 XML(XHTML·SVG)의 습관이다. HTML 파서는 무시하고 검사기는 경고를 낸다. 일관되게 쓰기만 하면 된다. 다만 따옴표 없는 속성 값 바로 뒤에 붙이면 `/`가 값에 들어간다.
+
+### 요소 분류 한눈에 보기
+
+HTML 요소는 100개 남짓이다. MDN은 하는 일에 따라 다음처럼 묶는다. 굵게 쓴 요소는 기본 `display`가 블록이고(형제와 줄을 바꿔 놓인다), 나머지는 대부분 인라인이다.
+
+| 분류 | 요소 | 자세히 |
+| --- | --- | --- |
+| 루트 | `<html>` | 아래 「기본 구조」 |
+| 문서 메타데이터 | `<head>`, `<title>`, `<base>`, `<link>`, `<meta>`, `<style>` | [[html-head-metadata\|문서 head와 메타데이터]] |
+| 섹션 루트 | `<body>` | |
+| 콘텐츠 구획 | **`<header>`, `<footer>`, `<main>`, `<nav>`, `<section>`, `<article>`, `<aside>`, `<address>`, `<h1>`~`<h6>`, `<hgroup>`, `<search>`** | [[semantic-html\|시맨틱 HTML과 문서 구조]] |
+| 텍스트 콘텐츠(그룹) | **`<p>`, `<div>`, `<pre>`, `<blockquote>`, `<hr>`, `<ul>`, `<ol>`, `<li>`, `<menu>`, `<dl>`, `<dt>`, `<dd>`, `<figure>`, `<figcaption>`** | [[html-lists-tables\|목록과 표 마크업]] |
+| 인라인 텍스트 의미 | `<a>`, `<em>`, `<strong>`, `<b>`, `<i>`, `<u>`, `<s>`, `<small>`, `<mark>`, `<abbr>`, `<dfn>`, `<cite>`, `<q>`, `<code>`, `<kbd>`, `<samp>`, `<var>`, `<data>`, `<time>`, `<sub>`, `<sup>`, `<span>`, `<br>`, `<wbr>`, `<bdi>`, `<bdo>`, `<ruby>`, `<rt>`, `<rp>` | [[html-text-elements\|텍스트 의미 요소와 문자 참조]] |
+| 이미지·멀티미디어 | `<img>`, `<picture>`, `<audio>`, `<video>`, `<track>`, `<map>`, `<area>` | [[html-media-elements\|이미지·오디오·비디오 임베드]] |
+| 임베디드 콘텐츠 | `<iframe>`, `<embed>`, `<object>`, `<source>` | [[windows-and-frames\|창과 프레임: 팝업, iframe, postMessage]] |
+| 스크립트 | `<script>`, `<noscript>`, `<canvas>` | [[script-loading\|스크립트·스타일 로딩 순서]] |
+| 수정 표시 | `<ins>`, `<del>` | |
+| 표 | **`<table>`**, `<caption>`, `<thead>`, `<tbody>`, `<tfoot>`, `<tr>`, `<th>`, `<td>`, `<colgroup>`, `<col>` | [[html-lists-tables\|목록과 표 마크업]] |
+| 폼 | **`<form>`, `<fieldset>`**, `<legend>`, `<label>`, `<input>`, `<button>`, `<select>`, `<option>`, `<optgroup>`, `<datalist>`, `<textarea>`, `<output>`, `<progress>`, `<meter>` | [[html-input-types\|HTML 입력 요소 치트시트]] |
+| 상호작용 | **`<details>`**, `<summary>`, **`<dialog>`** | [[html-interactive-elements\|포커스 속성과 details·dialog]] |
+| 웹 컴포넌트 | `<template>`, `<slot>` | [[web-components\|웹 컴포넌트: template·slot·Shadow DOM]] |
+| 외부 어휘 | `<svg>`, `<math>` | HTML 안에 SVG·MathML을 그대로 쓴다 |
+
+- 블록·인라인 구분은 HTML 4의 분류다. HTML5는 콘텐츠 카테고리(흐름·구문·대화형 콘텐츠 등)로 「어디에 무엇을 넣을 수 있나」를 정하고, 보이는 모양은 CSS의 `display`가 정한다([[box-model#display\|display]]). `<button>`, `<input>`, `<select>`는 기본이 `inline-block`이다.
+- 폐기된 요소는 쓰지 않는다. `<acronym>` → `<abbr>`, `<big>` → CSS `font-size`, `<tt>` → `<code>`·`<kbd>`·`<samp>`, `<center>`·`<font>` → CSS. 플러그인 매개변수를 넘기던 `<param>`은 `<object>`의 플러그인 지원이 사라지며 폐기됐다. Chrome이 실험하던 `<portal>`(페이지 미리 띄우기)은 표준이 되지 못하고 빠졌다.
+- `<search>`는 검색 영역을 나타내는 랜드마크 요소로, 2023년 명세에 들어와 모든 주요 브라우저가 지원한다.
 
 ### 브라우저는 관대하다, 그래도 닫는다
 
@@ -96,7 +123,7 @@ HTML 파서는 틀린 마크업에도 실패하지 않는다. 생략한 `</li>`,
 | `title` | 요소에 대한 추가 정보(툴팁). 키보드·터치 사용자는 보기 어렵다 |
 | `tabindex`, `contenteditable`, `inert`, `autofocus`, `hidden` | 포커스·편집·비활성·숨김([[html-interactive-elements\|포커스 속성과 details·dialog]]) |
 | `role`, `aria-*` | HTML 명세가 아니라 ARIA 명세의 속성. 의미만 바꾸고 동작은 더하지 않는다([[aria-basics\|ARIA와 접근 가능한 이름]]) |
-| `slot`, `part` | 웹 컴포넌트의 슬롯 지정과 섀도 트리 꾸미기([[web-components\|웹 컴포넌트]]) |
+| `slot`, `part` | 웹 컴포넌트의 슬롯 지정과 섀도 트리 꾸미기([[web-components\|웹 컴포넌트: template·slot·Shadow DOM]]) |
 
 `getElementsByClassName()`은 DOM이 바뀌면 함께 바뀌는 살아 있는 `HTMLCollection`을, `querySelectorAll()`은 호출 시점의 정적 `NodeList`를 돌려준다.
 

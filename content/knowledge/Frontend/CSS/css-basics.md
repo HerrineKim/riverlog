@@ -1,15 +1,16 @@
 ---
 title: "CSS 기초: 문법, 적용 방법, 단위"
 concept: "CSS Syntax"
-summary: "선택자와 선언으로 이루어진 CSS 문법, 스타일 적용 방법 3가지, 수·퍼센트·절대·상대 길이와 각도·해상도 단위, 그리고 hex·rgb·hsl부터 oklch·display-p3·color()·상대 색상 문법까지의 색 표현, 브라우저 기본 스타일을 맞추는 리셋과 노멀라이즈."
+summary: "선택자와 선언으로 이루어진 CSS 문법, 스타일 적용 방법 3가지, 수·퍼센트·절대·상대 길이와 각도·해상도 단위, 그리고 hex·rgb·hsl부터 oklch·display-p3·color()·상대 색상 문법까지의 색 표현, 브라우저 기본 스타일을 맞추는 리셋과 노멀라이즈. 색 이름 키워드와 축약 속성(shorthand)의 동작·목록도 다룬다."
 tags: ["css", "frontend"]
 source: til
 date: "2026-10-21"
-sources: ["https://riverkim.kr/263", "https://riverkim.kr/271", "https://riverkim.kr/225", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value", "https://web.dev/learn/css/sizing", "https://web.dev/learn/css/color", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/reset-normalize.md", "http://nicolasgallagher.com/about-normalize-css/", "http://meyerweb.com/eric/tools/css/reset/", "https://css-tricks.com/rems-ems/", "https://webkit.org/blog/10042/wide-gamut-color-in-css-with-display-p3/"]
+sources: ["https://riverkim.kr/263", "https://riverkim.kr/271", "https://riverkim.kr/225", "https://developer.mozilla.org/en-US/docs/Web/CSS/color_value", "https://web.dev/learn/css/sizing", "https://web.dev/learn/css/color", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/reset-normalize.md", "http://nicolasgallagher.com/about-normalize-css/", "http://meyerweb.com/eric/tools/css/reset/", "https://css-tricks.com/rems-ems/", "https://webkit.org/blog/10042/wide-gamut-color-in-css-with-display-p3/", "https://github.com/swapnakpanda/Infographics"]
 ---
 
 > riverkim.kr에 쓴 글을 정리한 노트에 web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Sizing Units·Color 모듈을 더해 보강했다.
 > 「리셋과 노멀라이즈」는 「[Must-Know-About-Frontend: Reset.css vs Normalize.css](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/reset-normalize.md)」를 바탕으로, 「[About normalize.css](http://nicolasgallagher.com/about-normalize-css/)」와 「[Reset CSS](http://meyerweb.com/eric/tools/css/reset/)」로 보강했다. rem과 em을 섞어 쓰는 법은 「[Font Size Idea: px at the Root, rem for Components, em for Text Elements](https://css-tricks.com/rems-ems/)」를 바탕으로 보강했다.
+> 「색 이름 키워드」, 「축약 속성」, `oblique` 각도는 Swapna Kumar Panda의 「[Infographics](https://github.com/swapnakpanda/Infographics)」 중 HTML Color Names·CSS Shorthand Properties·Font Properties 치트시트를 바탕으로 CSS 명세와 확인해 보강했다.
 
 CSS는 "어떤 요소를(선택자) 어떻게 바꿀지(선언)"를 적는 언어다. 문법 자체는 단순하지만, 스타일을 어디에 작성하느냐와 어떤 단위를 쓰느냐에 따라 유지보수성과 반응형 대응이 크게 달라진다.
 
@@ -163,6 +164,26 @@ h1 {
 - OKLCH는 색역에 묶이지 않아 `oklch(80% 0.4 200)`처럼 **어떤 화면도 못 내는 색**도 적을 수 있다. 화면이 못 내는 색은 브라우저가 가까운 색으로 바꾼다(gamut mapping). 화면별로 직접 고르려면 `@media (color-gamut: p3)`를 쓴다.
 - 실무에서는 Hex·`rgb()`를 읽을 줄 알고, 값을 손으로 조절할 때는 `oklch()`나 `hsl()`처럼 채널 뜻이 분명한 형식을 쓴다.
 
+### 색 이름 키워드
+
+`red`, `tomato`, `rebeccapurple`처럼 이름으로 쓰는 색은 CSS Color 명세에 **148개**(회색 계열의 `grey` 철자 포함)가 있다. 모두 sRGB의 고정된 Hex 값이고 대소문자는 구분하지 않는다. 색상 계열로 묶으면 다음과 같다.
+
+| 계열 | 예 (Hex) |
+| --- | --- |
+| 빨강·분홍 | `red`(#FF0000), `crimson`(#DC143C), `salmon`(#FA8072), `pink`(#FFC0CB), `hotpink`(#FF69B4), `deeppink`(#FF1493) |
+| 주황·노랑 | `orange`(#FFA500), `tomato`(#FF6347), `coral`(#FF7F50), `gold`(#FFD700), `khaki`(#F0E68C) |
+| 초록 | `lime`(#00FF00), `green`(#008000), `seagreen`(#2E8B57), `olive`(#808000), `teal`(#008080) |
+| 파랑·청록 | `blue`(#0000FF), `navy`(#000080), `dodgerblue`(#1E90FF), `skyblue`(#87CEEB), `cyan`(#00FFFF), `turquoise`(#40E0D0) |
+| 보라 | `purple`(#800080), `indigo`(#4B0082), `violet`(#EE82EE), `lavender`(#E6E6FA), `rebeccapurple`(#663399) |
+| 갈색 | `brown`(#A52A2A), `chocolate`(#D2691E), `sienna`(#A0522D), `tan`(#D2B48C), `maroon`(#800000) |
+| 흰색 계열 | `white`(#FFFFFF), `snow`(#FFFAFA), `ivory`(#FFFFF0), `whitesmoke`(#F5F5F5), `beige`(#F5F5DC) |
+| 회색 | `black`(#000000), `dimgray`(#696969), `gray`(#808080), `darkgray`(#A9A9A9), `silver`(#C0C0C0), `lightgray`(#D3D3D3) |
+
+- 같은 색의 다른 이름이 있다. `aqua` = `cyan`, `fuchsia` = `magenta`, `gray` = `grey`.
+- 이름이 밝기를 보장하지 않는다. **`darkgray`(#A9A9A9)가 `gray`(#808080)보다 밝고**, `green`(#008000)은 `lime`(#00FF00)보다 훨씬 어둡다. 이름이 서로 다른 두 체계(HTML 4의 16색과 X11 색 목록)에서 왔기 때문이다.
+- `rebeccapurple`은 Eric Meyer의 딸을 기려 CSS Color 4에 들어갔다.
+- 프로토타입·예제에는 편하지만 디자인 시스템에는 쓰지 않는다. 브랜드 색과 맞지 않고 명도 단계도 고르지 않다. 실제 색은 토큰으로 정한다([[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]]).
+
 ### 특수 키워드와 시스템 색
 
 - `transparent`: 완전 투명. `background-color`의 초깃값이다.
@@ -191,12 +212,39 @@ h1 {
 | --- | --- |
 | `normal` | 글꼴의 기본 모양 |
 | `italic` | 이탤릭체. 글꼴에 이탤릭 서체가 있으면 그것을 쓴다(필기체처럼 보이기도 한다) |
-| `oblique` | 기본 서체를 기울이기만 한다. 대부분의 글꼴에서 `italic`과 비슷하게 보인다 |
+| `oblique` | 기본 서체를 기울이기만 한다. 대부분의 글꼴에서 `italic`과 비슷하게 보인다. `oblique 20deg`처럼 각도(-90deg~90deg, 기본 14deg)를 줄 수 있고, 가변 글꼴의 기울기 축(`slnt`)이 있으면 그 각도로 그린다 |
 | `inherit` | 부모 요소의 값을 물려받는다 |
 
 ```css
 .coming-soon { font-style: italic; }
 ```
+
+## 축약 속성(shorthand)
+
+**축약 속성**은 관련된 여러 속성(**개별 속성**, longhand)을 한 선언에 쓰는 속성이다. `margin: 10px 20px`은 `margin-top`·`margin-right`·`margin-bottom`·`margin-left` 네 선언으로 풀린다. 브라우저는 파싱 단계에서 축약형을 개별 속성으로 바꾼 뒤 캐스케이드를 계산한다([[how-css-works|CSS가 동작하는 방식]]).
+
+| 규칙 | 결과 |
+| --- | --- |
+| 축약형에서 뺀 값 | **초깃값으로 되돌아간다.** `background: red`는 앞서 준 `background-image`까지 `none`으로 지운다 |
+| 개별 속성을 축약형 **뒤에** 쓴다 | 그 하나만 덮어쓴다. 축약형으로 기본을 깔고 개별 속성으로 고치는 순서가 안전하다 |
+| 개별 속성을 축약형 **앞에** 쓴다 | 뒤의 축약형이 덮어 사라진다 |
+| 값이 1~4개인 상자형 축약 (`margin`, `padding`, `border-width`, `border-style`, `border-color`, `inset`) | 위 → 오른쪽 → 아래 → 왼쪽 시계 방향. 빠진 값은 마주 보는 쪽을 따른다([[box-model#shorthand\|박스 모델의 shorthand]]) |
+| 쓰기 모드를 따르는 논리 축약 (`margin-block`, `padding-inline`, `inset-inline`, `border-block` 등) | 값 두 개가 시작·끝이다([[logical-properties\|쓰기 모드와 논리적 속성]]) |
+
+축약형 하나가 다른 축약형을 품기도 한다. `border`는 `border-width`·`border-style`·`border-color`를, 그 각각은 네 변의 개별 속성을 묶는다. `border-top`처럼 변 하나의 세 속성을 묶는 축약형도 있다.
+
+| 분야 | 축약형 → 묶는 속성 |
+| --- | --- |
+| 상자 | `margin`, `padding`, `inset`(→ `top`·`right`·`bottom`·`left`), `overflow`(→ `overflow-x`·`-y`), `overscroll-behavior`(→ `-x`·`-y`), `scroll-margin`, `scroll-padding` |
+| 테두리 | `border`, `border-top`·`-right`·`-bottom`·`-left`, `border-width`·`-style`·`-color`, `border-block`·`border-inline`과 그 `-start`·`-end`·`-width`·`-style`·`-color`, `border-radius`(→ 네 모서리), `border-image`(→ `-source`·`-slice`·`-width`·`-outset`·`-repeat`), `outline`(→ `-color`·`-style`·`-width`) |
+| 배경·마스크 | `background`(→ `-color`·`-image`·`-position`·`-size`·`-repeat`·`-attachment`·`-origin`·`-clip`), `background-position`(→ `-x`·`-y`), `mask`(→ `-image`·`-mode`·`-position`·`-size`·`-repeat`·`-origin`·`-clip`·`-composite`) |
+| 글자 | `font`(→ `-style`·`-variant`·`-weight`·`-stretch`·`-size`·`line-height`·`-family`), `text-decoration`(→ `-line`·`-style`·`-color`·`-thickness`), `text-emphasis`(→ `-style`·`-color`), `list-style`(→ `-type`·`-position`·`-image`) |
+| 레이아웃 | `flex`(→ `-grow`·`-shrink`·`-basis`), `flex-flow`(→ `flex-direction`·`flex-wrap`), `gap`(→ `row-gap`·`column-gap`), `place-content`·`place-items`·`place-self`(→ `align-*` + `justify-*`), `grid`, `grid-template`, `grid-area`, `grid-row`, `grid-column`, `columns`(→ `column-width`·`column-count`), `column-rule`(→ `-width`·`-style`·`-color`) |
+| 움직임 | `transition`(→ `-property`·`-duration`·`-timing-function`·`-delay`·`-behavior`), `animation`(→ `-name`·`-duration`·`-timing-function`·`-delay`·`-iteration-count`·`-direction`·`-fill-mode`·`-play-state`), `offset`(→ `-position`·`-path`·`-distance`·`-rotate`·`-anchor`) |
+
+- `all`은 `direction`·`unicode-bidi`를 뺀 **모든 속성**의 축약형이다. `all: unset`·`all: revert`처럼 전역 키워드만 받는다([[selectors#값을 되돌리는 전역 키워드\|값을 되돌리는 전역 키워드]]).
+- 명세 초안에만 있고 브라우저가 구현하지 않은 축약형도 있다. 줄 간격 리듬을 맞추는 `block-step`, 음성 출력용 `pause` 등이다.
+- 축약형 하나로 여러 속성을 초기화하는 성질은 편하지만 함정이기도 하다. 상태별 규칙(`:hover`)에서는 바꿀 속성 하나만 개별 속성으로 쓴다.
 
 ## 속성 선언 순서
 
@@ -274,5 +322,6 @@ p { text-wrap: pretty; }
 - 속성은 레이아웃에 큰 영향을 주는 것부터 순서를 정해 쓴다.
 - 브라우저마다 기본 스타일이 다르다. 짧은 리셋으로 출발점을 맞추고, 버튼 글자색 같은 기본값은 명시한다.
 - 색 값을 손으로 조절할 땐 `oklch()`, 파생 색은 `color-mix()`와 상대 색상 문법으로 만든다.
+- 축약형에서 뺀 값은 초깃값으로 돌아간다. 일부만 바꿀 때는 축약형 뒤에 개별 속성을 쓴다.
 
 관련 노트: [[css-functions|CSS 함수: calc()·clamp()와 수학 함수]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[selectors|CSS 선택자와 우선순위]]

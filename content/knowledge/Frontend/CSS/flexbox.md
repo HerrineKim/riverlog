@@ -4,13 +4,14 @@ concept: "Flexbox"
 summary: "Normal Flow를 벗어나 요소를 배치하는 float와 flow-root로 float 담기, 축을 기준으로 아이템을 정렬하는 1차원 레이아웃 모델 Flexbox. 속성의 초깃값과 flex 키워드, 내용 기반 공간 분배, auto margin으로 그룹 나누기, 쓰기 모드에 따라 바뀌는 축, min-width: auto 함정, 그리고 글을 여러 단으로 흘리는 다단 레이아웃까지."
 tags: ["css", "layout", "flexbox", "frontend"]
 source: mixed
-sources: ["https://heewon26.tistory.com/298", "https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/", "https://developer.mozilla.org/en-US/docs/Web/CSS/gap", "https://developer.mozilla.org/en-US/docs/Web/CSS/display#flow-root", "https://web.dev/learn/css/flexbox", "https://web.dev/learn/css/layout", "https://developer.mozilla.org/en-US/docs/Web/CSS/align-content", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%20%ED%95%B4%EC%A0%9C%20%EB%B0%A9%EB%B2%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Float%20%EB%B0%B0%EC%B9%98%EB%90%98%EB%8A%94%20%EA%B3%BC%EC%A0%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%EC%9C%BC%EB%A1%9C%20%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%20%EA%B5%AC%EC%84%B1%20%EB%B0%8F%20%EC%9D%B4%ED%95%B4.md", "https://www.frontendinterviewhandbook.com/css-questions"]
+sources: ["https://heewon26.tistory.com/298", "https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/", "https://developer.mozilla.org/en-US/docs/Web/CSS/gap", "https://developer.mozilla.org/en-US/docs/Web/CSS/display#flow-root", "https://web.dev/learn/css/flexbox", "https://web.dev/learn/css/layout", "https://developer.mozilla.org/en-US/docs/Web/CSS/align-content", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%20%ED%95%B4%EC%A0%9C%20%EB%B0%A9%EB%B2%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Float%20%EB%B0%B0%EC%B9%98%EB%90%98%EB%8A%94%20%EA%B3%BC%EC%A0%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%EC%9C%BC%EB%A1%9C%20%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%20%EA%B5%AC%EC%84%B1%20%EB%B0%8F%20%EC%9D%B4%ED%95%B4.md", "https://www.frontendinterviewhandbook.com/css-questions", "https://github.com/swapnakpanda/Infographics"]
 date: "2026-10-21"
 ---
 
 > Rachel Andrew의 「[플렉스박스 플렉스 컨테이너를 만들 때 무슨 일이 벌어질까?](https://webactually.com/2018/09/18/%ed%94%8c%eb%a0%89%ec%8a%a4%eb%b0%95%ec%8a%a4-%ed%94%8c%eb%a0%89%ec%8a%a4-%ec%bb%a8%ed%85%8c%ec%9d%b4%eb%84%88%eb%a5%bc-%eb%a7%8c%eb%93%a4-%eb%95%8c-%eb%ac%b4%ec%8a%a8-%ec%9d%bc%ec%9d%b4-%eb%b2%8c/)」(2018.09, 웹액츄얼리 번역)과 곽빵의 「[flexbox에서 가변요소의 자식 width가 부모 width를 넘을 때](https://heewon26.tistory.com/298)」(2021.09)를 바탕으로 재구성하고, web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Layout·Flexbox 모듈로 보강한 노트다.
 > float가 놓이는 규칙과 옛 float 해제법은 「[Frontend_TIL: Float 배치되는 과정](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/Float%20%EB%B0%B0%EC%B9%98%EB%90%98%EB%8A%94%20%EA%B3%BC%EC%A0%95.md)」·「[float 해제 방법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%20%ED%95%B4%EC%A0%9C%20%EB%B0%A9%EB%B2%95.md)」·「[float으로 레이아웃 구성 및 이해](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/CSS/float%EC%9C%BC%EB%A1%9C%20%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%20%EA%B5%AC%EC%84%B1%20%EB%B0%8F%20%EC%9D%B4%ED%95%B4.md)」을 CSS 명세로 확인해 보강했다.
 > 바닥에 붙는 푸터 패턴은 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 바탕으로 보강했다.
+> 정렬 속성의 전체 값 목록(`start`·`self-start`·`first baseline`·`safe` 등)과 `flex-basis` 키워드는 Swapna Kumar Panda의 「[Infographics](https://github.com/swapnakpanda/Infographics)」 중 CSS Flexbox 치트시트를 바탕으로 MDN과 확인해 보강했다.
 
 블록은 위에서 아래로, 인라인은 왼쪽에서 오른쪽으로 쌓이는 Normal Flow만으로는 "옆으로 나란히", "가운데 정렬", "남은 공간 나눠 갖기" 같은 레이아웃을 만들기 어렵다. 예전에는 `float`로 이를 해결했고, 지금은 대부분 **Flexbox**와 **Grid**로 처리한다.
 
@@ -107,6 +108,9 @@ Flexbox·Grid 등장 이후 float로 레이아웃을 짜는 일은 크게 줄었
 | `space-between` | 양 끝을 붙이고 아이템 **사이** 간격을 균등하게 |
 | `space-around` | 각 아이템 **둘레**에 같은 여백(양 끝 여백은 사이 간격의 절반) |
 | `space-evenly` | 양 끝을 포함한 **모든** 간격을 균등하게 |
+| `start` / `end` | 쓰기 모드 기준 시작 / 끝. `flex-start`와 달리 `row-reverse`여도 뒤집히지 않는다 |
+| `left` / `right` | 물리 방향 왼쪽 / 오른쪽. `justify-content`에만 있다 |
+| `normal` | 플렉스에서는 `stretch`처럼, `stretch`는 플렉스 주축에서 `flex-start`처럼 동작한다. 주축 늘리기는 `flex-grow`가 맡는다 |
 
 #### align-items / align-self 값
 
@@ -117,7 +121,21 @@ Flexbox·Grid 등장 이후 float로 레이아웃을 짜는 일은 크게 줄었
 | `stretch` | 교차축 방향으로 컨테이너를 가득 채움 |
 | `flex-start` / `flex-end` | 교차축의 시작 / 끝 |
 | `center` | 가운데 |
-| `baseline` | 텍스트 기준선을 맞춤 |
+| `baseline` (= `first baseline`) / `last baseline` | 첫 줄 / 마지막 줄 텍스트 기준선을 맞춤 |
+| `start` / `end` | 쓰기 모드 기준 교차축 시작 / 끝 |
+| `self-start` / `self-end` | 아이템 **자신의** 쓰기 모드 기준 시작 / 끝. 아이템만 `writing-mode`가 다를 때 차이가 난다 |
+| `normal` | 플렉스 아이템에서는 `stretch`와 같다(`align-items`의 초깃값) |
+| `auto` | `align-self`에만 있다. 부모의 `align-items` 값을 따른다 |
+
+`flex-start`·`flex-end`는 **플렉스 방향**을 따르고 `start`·`end`는 **쓰기 모드**를 따른다. `flex-direction: row-reverse`에서 `justify-content: flex-start`는 오른쪽에, `start`는 왼쪽에 모은다(가로쓰기·왼→오 기준).
+
+정렬 값 앞에는 **넘침 처리 키워드**를 붙일 수 있다. 아이템이 컨테이너보다 커서 넘칠 때 `center`는 양쪽으로 넘쳐 시작쪽 내용이 화면 밖(스크롤로도 닿지 않는 곳)으로 잘린다. `align-items: safe center`는 넘칠 때만 `start`로 바꿔 내용이 잘리지 않게 하고, `unsafe center`는 넘쳐도 가운데를 고집한다. 아무것도 쓰지 않으면 브라우저가 정한다.
+
+```css
+.dialog-body { display: flex; flex-direction: column; justify-content: safe center; }  /* 내용이 많으면 위에서부터 */
+```
+
+정렬 속성 중 `justify-items`·`justify-self`는 그리드와 블록 레이아웃용이라 플렉스 아이템에는 효과가 없다. `place-items`(`align-items` + `justify-items`), `place-self`도 플렉스에서는 앞쪽 값만 의미가 있다.
 
 ### 아이템 속성
 
@@ -126,7 +144,7 @@ Flexbox·Grid 등장 이후 float로 레이아웃을 짜는 일은 크게 줄었
 | `align-self` | `auto` | **개별 아이템**의 교차축 정렬. 컨테이너가 아니라 아이템에 준다 |
 | `flex-grow` | `0` | 남은 공간을 나눠 받는 비율. 초깃값이면 공간이 남아도 커지지 않는다 |
 | `flex-shrink` | `1` | 공간이 부족할 때 줄어드는 비율. 초깃값이면 모자랄 때 줄어든다 |
-| `flex-basis` | `auto` | 늘거나 줄기 전의 기본 크기. 크기를 정하지 않았으면 `max-content`(한 줄로 늘였을 때 크기)에서 출발 |
+| `flex-basis` | `auto` | 늘거나 줄기 전의 기본 크기. 길이·`%`, `auto`(아이템의 `width`·`height`를 쓰고 없으면 내용 크기), `content`(`width`를 무시하고 내용 크기), `min-content`·`max-content`·`fit-content`를 받는다. 크기를 정하지 않았으면 `max-content`(한 줄로 늘였을 때 크기)에서 출발 |
 | `flex` | `0 1 auto` | `grow shrink basis` 축약. 예: `flex: 1`(= `1 1 0%`) |
 | `order` | `0` | 배치 순서(작을수록 앞). HTML 순서는 그대로다 |
 

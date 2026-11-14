@@ -5,12 +5,13 @@ summary: "행과 열을 동시에 다루는 2차원 레이아웃 CSS 그리드�
 tags: ["css", "layout", "grid", "frontend"]
 source: other
 date: "2026-10-21"
-sources: ["https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://webactually.com/2018/07/02/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83-%eb%aa%a8%eb%b2%94-%ec%82%ac%eb%a1%80/", "https://webactually.com/2018/08/06/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%eb%b2%a82-%ec%84%9c%eb%b8%8c%ea%b7%b8%eb%a6%ac%eb%93%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid", "https://web.dev/learn/css/grid", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/grid.md", "https://www.frontendinterviewhandbook.com/css-questions"]
+sources: ["https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/", "https://webactually.com/2018/07/02/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%ec%9d%b4%ec%95%84%ec%9b%83-%eb%aa%a8%eb%b2%94-%ec%82%ac%eb%a1%80/", "https://webactually.com/2018/08/06/css-%ea%b7%b8%eb%a6%ac%eb%93%9c-%eb%a0%88%eb%b2%a82-%ec%84%9c%eb%b8%8c%ea%b7%b8%eb%a6%ac%eb%93%9c-2/", "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout/Subgrid", "https://web.dev/learn/css/grid", "https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/grid.md", "https://www.frontendinterviewhandbook.com/css-questions", "https://github.com/swapnakpanda/Infographics"]
 ---
 
 > CSS-Tricks의 「[그리드 완벽 가이드](https://webactually.com/2019/06/05/%ea%b7%b8%eb%a6%ac%eb%93%9c-%ec%99%84%eb%b2%bd-%ea%b0%80%ec%9d%b4%eb%93%9c/)」(2019.06)와 Rachel Andrew의 「CSS 그리드 레이아웃 모범 사례」(2018.07)·「CSS 그리드 레벨2: 서브그리드」(2018.08, 웹액츄얼리 번역)를 바탕으로 재구성하고, web.dev 「[Learn CSS](https://web.dev/learn/css)」 강좌의 Grid 모듈로 보강한 노트다.
 > 「옛 습관을 버린다」의 그리드 시스템 비교는 「[Must-Know-About-Frontend: 그리드 시스템](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/css/grid.md)」을 바탕으로 보강했다.
 > 프레임워크 그리드 시스템의 변천은 Front End Interview Handbook의 「[CSS 질문](https://www.frontendinterviewhandbook.com/css-questions)」을 Bootstrap 문서로 확인해 보강했다.
+> 라인 이름에 번호·`span`을 붙이는 배치 문법과 배치 축약형 표는 Swapna Kumar Panda의 「[Infographics](https://github.com/swapnakpanda/Infographics)」 중 CSS Grid Layout 치트시트를 바탕으로 보강했다.
 
 ## 그리드란
 
@@ -125,6 +126,16 @@ CSS 그리드(Grid Layout)는 **행과 열을 동시에** 다루는 2차원 레�
 
 - 라인 번호는 1부터, 쓰기 모드와 방향을 따른다(RTL이면 1번 라인이 오른쪽).
 - `[이름]`으로 라인에 이름을 붙이고 번호 대신 쓴다. 한 라인에 이름을 여러 개 줄 수 있다. `content-start`·`content-end`처럼 `-start`·`-end`로 끝나는 쌍은 `content`라는 영역 이름처럼도 쓸 수 있다.
+- 같은 이름의 라인이 여럿이면 번호를 붙여 고른다. `repeat(4, [col] 1fr)`이면 `grid-column: col 2`는 `col`이라는 이름의 **두 번째** 라인이고, `col -1`은 뒤에서 첫 번째다. 이름이 없는 번호(`3`)와 섞어 쓸 수 있다.
+- `span`도 이름을 받는다. `grid-column: 2 / span col`은 2번 라인에서 시작해 다음 `col` 라인까지, `span col 2`는 두 번째 `col` 라인까지 걸친다. 숫자만 쓴 `span 2`는 트랙 두 개다.
+- 시작·끝 라인을 따로 주는 개별 속성(`grid-row-start`, `grid-row-end`, `grid-column-start`, `grid-column-end`)이 있고, 위 축약형이 이를 묶는다.
+
+| 축약형 | 풀어 쓰면 | 예 |
+| --- | --- | --- |
+| `grid-row` | `grid-row-start / grid-row-end` | `grid-row: 1 / 3` |
+| `grid-column` | `grid-column-start / grid-column-end` | `grid-column: content` |
+| `grid-area` | `row-start / column-start / row-end / column-end`, 또는 영역 이름 하나 | `grid-area: 1 / 1 / 3 / 4` |
+
 - `grid-template-areas` 규칙: 모든 칸을 채워야 하고, 이름을 반복해 칸을 합치며, 합친 영역은 **직사각형이고 끊기지 않아야** 한다. 빈칸은 `.`(붙여 쓴 `...`도 하나의 빈칸)이다. 규칙을 어기면 선언 전체가 무효다. `auto`, `span`은 영역 이름으로 쓸 수 없다.
 - 한 곳에 레이아웃이 다 보여, 미디어 쿼리에서 `grid-template-areas`만 바꿔 배치를 재구성하기 쉽다.
 

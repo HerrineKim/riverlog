@@ -5,16 +5,34 @@ summary: "연산자 우선순위와 그룹 연산자, 단항 +·전위/후위 �
 tags: ["javascript", "frontend"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/identity-equal.md", "https://riverkim.kr/166", "https://riverkim.kr/104", "https://wesbos.com/javascript/07-logic-and-flow-control/bedmas", "https://wesbos.com/javascript/07-logic-and-flow-control/if-statements-function-returns-truthy-falsy", "https://wesbos.com/javascript/07-logic-and-flow-control/coercion-ternaries-and-conditional-abuse", "https://wesbos.com/javascript/07-logic-and-flow-control/case-switch-and-animating-a-turtle-with-css-variables", "https://wesbos.com/javascript/01-the-basics/types-booleans-and-equality", "https://wesbos.com/javascript/09-gettin-loopy/54-looping-and-iterating-for-for-in-for-off-and-while-loops", "https://web.dev/learn/javascript/comparison", "https://web.dev/learn/javascript/control-flow", "https://ko.javascript.info/operators", "https://ko.javascript.info/comparison", "https://ko.javascript.info/type-conversions", "https://ko.javascript.info/logical-operators", "https://ko.javascript.info/nullish-coalescing-operator", "https://ko.javascript.info/optional-chaining", "https://ko.javascript.info/ifelse", "https://ko.javascript.info/while-for", "https://ko.javascript.info/switch", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%83%80%EC%9E%85%EB%B3%80%ED%99%98%EA%B3%BC%20%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%97%B0%EC%82%B0%EC%9E%90.md", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness", "http://dmitrysoshnikov.com/notes/note-2-ecmascript-equality-operators/", "https://dmitripavlutin.com/the-legend-of-javascript-equality-operator/", "https://github.com/lydiahallie/javascript-questions", "https://www.frontendinterviewhandbook.com/javascript-questions"]
+sources: ["https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/identity-equal.md", "https://riverkim.kr/166", "https://riverkim.kr/104", "https://wesbos.com/javascript/07-logic-and-flow-control/bedmas", "https://wesbos.com/javascript/07-logic-and-flow-control/if-statements-function-returns-truthy-falsy", "https://wesbos.com/javascript/07-logic-and-flow-control/coercion-ternaries-and-conditional-abuse", "https://wesbos.com/javascript/07-logic-and-flow-control/case-switch-and-animating-a-turtle-with-css-variables", "https://wesbos.com/javascript/01-the-basics/types-booleans-and-equality", "https://wesbos.com/javascript/09-gettin-loopy/54-looping-and-iterating-for-for-in-for-off-and-while-loops", "https://web.dev/learn/javascript/comparison", "https://web.dev/learn/javascript/control-flow", "https://ko.javascript.info/operators", "https://ko.javascript.info/comparison", "https://ko.javascript.info/type-conversions", "https://ko.javascript.info/logical-operators", "https://ko.javascript.info/nullish-coalescing-operator", "https://ko.javascript.info/optional-chaining", "https://ko.javascript.info/ifelse", "https://ko.javascript.info/while-for", "https://ko.javascript.info/switch", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%83%80%EC%9E%85%EB%B3%80%ED%99%98%EA%B3%BC%20%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%97%B0%EC%82%B0%EC%9E%90.md", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness", "http://dmitrysoshnikov.com/notes/note-2-ecmascript-equality-operators/", "https://dmitripavlutin.com/the-legend-of-javascript-equality-operator/", "https://github.com/lydiahallie/javascript-questions", "https://www.frontendinterviewhandbook.com/javascript-questions", "https://github.com/swapnakpanda/Infographics"]
 ---
 
 > 개인 TIL을 바탕으로, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(비교 연산자·제어 흐름 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「기본 연산자와 수학」, 「비교 연산자」, 「형 변환」, 「논리 연산자」, 「nullish 병합 연산자 '??'」, 「옵셔널 체이닝 '?.'」, 「if와 '?'를 사용한 조건 처리」, 「while과 for 반복문」, 「switch문」 글을 함께 참고해 보강했다. 「[Must-Know-About-Frontend: == vs ===](https://github.com/baeharam/Must-Know-About-Frontend/blob/main/Notes/javascript/identity-equal.md)」의 내용을 더해 보강했다. 「[Frontend_TIL: 타입변환과 단축평가](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%83%80%EC%9E%85%EB%B3%80%ED%99%98%EA%B3%BC%20%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80.md)」, 「[Frontend_TIL: 연산자](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%EC%97%B0%EC%82%B0%EC%9E%90.md)」을 바탕으로 보강했다. 같음 비교의 네 알고리즘과 `==`의 비추이성은 MDN의 「[Equality comparisons and sameness](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness)」, Dmitry Soshnikov의 「[Equality operators](http://dmitrysoshnikov.com/notes/note-2-ecmascript-equality-operators/)」, 「[The Legend of JavaScript Equality Operator](https://dmitripavlutin.com/the-legend-of-javascript-equality-operator/)」을 바탕으로 보강했다.
 > 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다.
 > 삼항 연산자라는 이름의 뜻은 Front End Interview Handbook의 「[JavaScript 질문](https://www.frontendinterviewhandbook.com/javascript-questions)」을 더해 보강했다.
+> 「연산자 한눈에 보기」 표는 Swapna Kumar Panda의 「[Infographics](https://github.com/swapnakpanda/Infographics)」 중 JS Operators 치트시트를 바탕으로 보강했다.
 
 연산자와 제어문은 대부분의 언어와 비슷하지만, JavaScript에는 **암묵적 형변환**을 하는 `+`와 `==`, 객체용 `for...in`과 iterable용 `for...of`의 구분처럼 헷갈리기 쉬운 지점이 있다.
 
 ## 연산자
+
+### 연산자 한눈에 보기
+
+| 분류 | 연산자 | 결과 타입 | 자세히 |
+| --- | --- | --- | --- |
+| 산술 | `+x`, `-x`, `+`, `-`, `*`, `/`, `%`, `**`, `++`, `--` | 숫자(`+`는 한쪽이 문자열이면 문자열 연결) | [[js-numbers\|숫자와 Math]] |
+| 할당 | `=`, `+=`, `-=`, `*=`, `/=`, `%=`, `**=`, 비트 할당(`&=`, `\|=`, `^=`, `<<=`, `>>=`, `>>>=`) | 대입한 값 | 아래 「단항·증감·할당·쉼표」 |
+| 논리 할당 | `&&=`, `\|\|=`, `??=` | 대입한 값 또는 원래 값 | 아래 「옵셔널 체이닝과 null 병합」 |
+| 비교 | `==`, `!=`, `===`, `!==`, `<`, `<=`, `>`, `>=` | 불리언 | 아래 「`==` vs `===`」 |
+| 논리 | `!`, `&&`, `\|\|`, `??` | `!`만 불리언, 나머지는 **피연산자 중 하나** | 아래 「논리 연산자와 단축 평가」 |
+| 비트 | `~`, `&`, `\|`, `^`, `<<`, `>>`(부호 유지), `>>>`(0으로 채움) | 32비트 정수 | |
+| 타입 검사 | `typeof x`, `x instanceof C` | 문자열 / 불리언 | [[variables-and-types\|변수와 데이터 타입]] |
+| 객체 | `.`, `[]`, `?.`, `in`, `delete`, `new` | 값 / 불리언 / 객체 | [[arrays-and-objects\|배열·객체 다루기]] |
+| 구조 분해·전개 | `[a, b] = arr`, `{ a } = obj`, `...`(전개·나머지) | 여러 값 | [[destructuring\|구조 분해 할당]] |
+| 기타 | `? :`(삼항), `,`(쉼표), `void x`(언제나 `undefined`), `( )`(그룹) | | 아래 「삼항 연산자」 |
+
+`...`와 구조 분해는 엄밀히는 연산자가 아니라 문법이지만 같은 자리에 쓰여 함께 묶었다.
 
 할당 연산자(`=`, `+=`, `*=`, `++`, `--`)와 산술 연산자는 다른 언어와 같다. 거듭제곱은 `**`, 나머지는 `%`다(숫자 연산의 세부는 [[js-numbers|숫자와 Math]]).
 
