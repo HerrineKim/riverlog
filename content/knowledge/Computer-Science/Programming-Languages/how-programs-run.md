@@ -1,14 +1,15 @@
 ---
 title: "프로그램이 실행되기까지: 컴파일, 바이트코드, 인터프리터, GC"
 concept: "Program Execution"
-summary: "소스 코드가 CPU에서 돌기까지의 세 갈래(네이티브 컴파일, 바이트코드 + VM·JIT, 인터프리터)와, 운영체제가 실행 파일을 띄워 종료하기까지의 단계, 가비지 컬렉션이 관리하는 영역과 추적·참조 카운팅의 비교, 순환 참조와 retain cycle, GC의 장단점과 Java·Python·Go의 방식, 브라우저에서 네이티브 코드를 돌리는 WebAssembly를 정리한다."
+summary: "소스 코드가 CPU에서 돌기까지의 세 갈래(네이티브 컴파일, 바이트코드 + VM·JIT, 인터프리터)와, 운영체제가 실행 파일을 띄워 종료하기까지의 단계, 가비지 컬렉션이 관리하는 영역과 추적·참조 카운팅의 비교, 순환 참조와 retain cycle, GC의 장단점과 Java·Python·Go의 방식, 브라우저에서 네이티브 코드를 돌리는 WebAssembly를 정리한다. 언어마다 실행이 어디서 시작하는지(main 함수와 최상위 코드)도 비교한다."
 tags: ["computer-science", "programming-paradigm", "memory", "os", "performance"]
 source: other
 date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/how-do-c++-java-python-work", "https://bytebytego.com/guides/how-do-computer-programs-run", "https://bytebytego.com/guides/how-does-garbage-collection-work", "https://bytebytego.com/guides/is-it-possible-to-run-c-c++-or-rust-on-a-web-browser", "https://docs.oracle.com/en/java/javase/21/gctuning/available-collectors.html", "https://webassembly.org/", "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "http://journal.stuffwithstuff.com/2013/12/08/babys-first-garbage-collector/"]
+sources: ["https://bytebytego.com/guides/how-do-c++-java-python-work", "https://bytebytego.com/guides/how-do-computer-programs-run", "https://bytebytego.com/guides/how-does-garbage-collection-work", "https://bytebytego.com/guides/is-it-possible-to-run-c-c++-or-rust-on-a-web-browser", "https://docs.oracle.com/en/java/javase/21/gctuning/available-collectors.html", "https://webassembly.org/", "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/automaticreferencecounting/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "http://journal.stuffwithstuff.com/2013/12/08/babys-first-garbage-collector/", "https://github.com/swapnakpanda/Infographics"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How Do C++, Java, Python Work?](https://bytebytego.com/guides/how-do-c++-java-python-work)」, 「[How Do Computer Programs Run?](https://bytebytego.com/guides/how-do-computer-programs-run)」, 「[How does Garbage Collection work?](https://bytebytego.com/guides/how-does-garbage-collection-work)」, 「[Running C, C++, or Rust in a Web Browser](https://bytebytego.com/guides/is-it-possible-to-run-c-c++-or-rust-on-a-web-browser)」를 바탕으로, JVM 수집기 목록은 Oracle 문서로 확인해 재구성한 노트다. GC가 관리하는 영역, 추적과 참조 카운팅, retain cycle, 장단점은 fru1tworld/cs-basic 모의 면접 질문 목록의 가비지 컬렉션 질문을 바탕으로 Swift ARC 문서로 확인해 보강했다. 가장 단순한 mark-sweep 구현은 Bob Nystrom의 「[Baby's First Garbage Collector](http://journal.stuffwithstuff.com/2013/12/08/babys-first-garbage-collector/)」(2013)로 보강했다.
+> 「진입점」은 Swapna Kumar Panda의 「[Infographics](https://github.com/swapnakpanda/Infographics)」 중 여러 언어의 Hello, World! 그림을 바탕으로 각 언어 문서와 확인해 보강했다.
 
 ## 소스 코드가 기계어가 되는 세 갈래
 
@@ -47,6 +48,26 @@ flowchart LR
 *경계는 흐리다. 컴파일과 해석은 언어가 아니라 구현의 성질이고, 한 구현이 인터프리터·바이트코드·JIT를 함께 쓰는 것이 보통이다([[programming-language-semantics|프로그래밍 언어 의미론]]). JavaScript 엔진(V8)은 인터프리터로 시작해 뜨거운 코드를 JIT 컴파일한다([[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]]). CPython도 내부적으로 소스를 바이트코드로 바꾼 뒤 해석한다. "컴파일 언어가 인터프리터 언어보다 빠르다"는 일반론은 맞지만, 언어가 아니라 **구현**의 성질이다.
 
 C 코드가 기계어 실행 파일이 되는 과정(전처리 → 컴파일 → 어셈블 → 링크)은 [[gcc-compile-and-link|GCC 컴파일과 링크]]에 있다.
+
+## 진입점: 실행은 어디서 시작하나
+
+**진입점(entry point)** 은 프로그램이 실행될 때 처음 도는 코드다. 「Hello, World!」 한 줄을 찍는 최소 프로그램을 언어별로 비교하면 진입점을 정하는 방식이 두 갈래로 갈린다.
+
+| 방식 | 언어 | 최소 프로그램 |
+| --- | --- | --- |
+| **`main` 함수**: 이름이 정해진 함수를 런타임이 찾아 부른다 | C, C++, Objective-C | `int main() { printf("Hello, World!"); return 0; }`. 반환값이 프로세스의 종료 코드(0 = 성공)다 |
+| | Java | `class HelloWorld { public static void main(String[] args) { System.out.println("Hello, World!"); } }`. JDK 25부터는 클래스 없이 `void main() { IO.println("Hello, World!"); }`도 된다 |
+| | Go | `package main` + `func main()`. 실행 파일이 되는 패키지 이름도 `main`이어야 한다 |
+| | Rust, Kotlin, Dart | `fn main()`, `fun main()`, `void main()` |
+| | C# | 원래 `static void Main()`. C# 9부터 최상위 문(top-level statements)으로 `Console.WriteLine("Hello, World!");` 한 줄이면 컴파일러가 `Main`을 만들어 준다 |
+| | Haskell, Pascal | `main = putStrLn "Hello, World!"`, `program Hello; begin writeln('Hello, World!'); end.` |
+| **최상위 코드**: 파일을 위에서부터 그대로 실행한다 | Python, Ruby, JavaScript, PHP, Perl, Lua, R, Julia, Groovy, Elixir 스크립트, MATLAB | `print('Hello, World!')`, `puts "Hello, World!"`, `console.log('Hello, World!')` |
+| | 셸: Bash, PowerShell | `echo "Hello, World!"`, `Write-Host 'Hello, World!'` |
+| | Swift | `main.swift` 파일의 최상위 코드가 진입점이다. 앱에서는 `@main`을 붙인 타입이 맡는다 |
+
+- 최상위 코드 언어도 「직접 실행했을 때만」 도는 진입점을 흉내 낸다. Python의 `if __name__ == "__main__":` 블록은 다른 파일이 `import`할 때는 실행되지 않는다.
+- 진입점이 따로 없는 것도 있다. HTML·CSS는 프로그램이 아니라 브라우저가 해석하는 문서다(CSS로는 `body::before { content: "Hello, World!"; }`처럼 글자를 그릴 뿐이다). SQL의 PL/SQL 익명 블록(`BEGIN … END;`)은 DB 서버가 실행하고, Solidity 계약은 배포된 뒤 트랜잭션이 함수를 부를 때만 돈다.
+- 출력 함수마다 줄바꿈을 붙이는지가 다르다. `println`·`puts`·Python `print`·`console.log`는 붙이고, C `printf`·PHP `echo`는 `\n`을 직접 써야 한다.
 
 ## 실행 파일이 프로세스가 되기까지
 
