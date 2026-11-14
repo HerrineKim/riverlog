@@ -1,14 +1,15 @@
 ---
 title: "숫자와 Math"
 concept: "Number"
-summary: "JavaScript의 숫자 타입 하나(double)로 생기는 일: 지수·진법 리터럴과 toString(base), 산술·나머지·거듭제곱 연산자, Math의 반올림·무작위 수, 문자열을 숫자로 바꾸는 방법의 차이, NaN이 생기는 경우와 Infinity 판별, 0과 -0을 가르는 Object.is, 0.1 + 0.2 오차와 돈은 정수 최소 단위로 다루는 원칙, 안전한 정수 범위를 넘는 BigInt, Intl.NumberFormat으로 표시하기."
+summary: "JavaScript의 숫자 타입 하나(double)로 생기는 일: 지수·진법 리터럴과 toString(base), 산술·나머지·거듭제곱 연산자, Math의 반올림·무작위 수, 문자열을 숫자로 바꾸는 방법의 차이, NaN이 생기는 경우와 Infinity 판별, 0과 -0을 가르는 Object.is, 0.1 + 0.2 오차와 돈은 정수 최소 단위로 다루는 원칙, 안전한 정수 범위를 넘는 BigInt, Intl.NumberFormat으로 표시하기. Math의 상수와 지수·로그·삼각함수·32비트 함수 목록도 담는다."
 tags: ["javascript", "frontend", "computer-science"]
 source: other
 date: "2026-10-17"
-sources: ["https://wesbos.com/javascript/01-the-basics/types-numbers", "https://wesbos.com/javascript/07-logic-and-flow-control/bedmas", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat", "https://web.dev/learn/javascript/data-types/number", "https://web.dev/learn/javascript/data-types/bigint", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt", "https://ko.javascript.info/number", "https://ko.javascript.info/operators", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is"]
+sources: ["https://wesbos.com/javascript/01-the-basics/types-numbers", "https://wesbos.com/javascript/07-logic-and-flow-control/bedmas", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat", "https://web.dev/learn/javascript/data-types/number", "https://web.dev/learn/javascript/data-types/bigint", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt", "https://ko.javascript.info/number", "https://ko.javascript.info/operators", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is", "https://github.com/swapnakpanda/Infographics"]
 ---
 
 > Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 Numbers·BigInt 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「숫자형」, 「기본 연산자와 수학」 글을 더하고 MDN으로 확인해 재구성한 노트다.
+> Math의 상수와 지수·로그·삼각·비트 함수 표는 Swapna Kumar Panda의 「[Infographics](https://github.com/swapnakpanda/Infographics)」 중 JavaScript Math Object 치트시트를 바탕으로 MDN과 확인해 보강했다.
 
 ## 숫자 타입은 하나다
 
@@ -59,6 +60,25 @@ parseInt('2n9c', 36)   // 123456
 소수점 **n번째 자리**에서 자르려면 10의 거듭제곱을 곱했다가 나누거나(`Math.floor(1.23456 * 100) / 100` → `1.23`), 문자열이 필요하면 `toFixed(n)`을 쓴다(아래 「숫자 표시하기」). 곱했다 나누는 방법도 부동소수점 오차를 완전히 없애지는 못한다(`(0.28 * 100 + 0.14 * 100) / 100` → `0.4200000000000001`).
 
 `Math.max(...arr)`, `Math.min(...arr)`, `Math.abs(x)`도 자주 쓴다. 나이처럼 "아직 채우지 못한 값"은 `round`가 아니라 `floor`다.
+
+`Math`는 생성자가 아니라 상수와 함수를 모아 둔 **네임스페이스 객체**다(`new Math()`는 TypeError). 모든 함수는 인자를 숫자로 바꿔 계산하고, 바꿀 수 없으면 `NaN`을 돌려준다.
+
+| 분류 | 멤버 | 예 → 결과 |
+| --- | --- | --- |
+| 상수 | `Math.PI`(π), `Math.E`(자연로그의 밑 e), `Math.LN2`, `Math.LN10`, `Math.LOG2E`, `Math.LOG10E`, `Math.SQRT2`, `Math.SQRT1_2` | `Math.PI` → `3.141592653589793` |
+| 부호·크기 | `abs`, `sign`(-1·0·1, `-0`이면 `-0`), `max`, `min` | `Math.sign(-3)` → `-1`, `Math.max()` → `-Infinity` |
+| 거듭제곱·근 | `pow(x, y)`(= `x ** y`), `sqrt`, `cbrt`(세제곱근), `hypot(...)`(제곱합의 제곱근) | `Math.hypot(3, 4)` → `5`, `Math.cbrt(27)` → `3` |
+| 지수·로그 | `exp`(eˣ), `expm1`(eˣ − 1), `log`(자연로그), `log1p`(ln(1 + x)), `log10`, `log2` | `Math.log2(8)` → `3`, `Math.log(0)` → `-Infinity` |
+| 삼각 | `sin`, `cos`, `tan`, `asin`, `acos`, `atan`, `atan2(y, x)` | 각은 **라디안**이다. `Math.sin(Math.PI / 2)` → `1` |
+| 쌍곡선 | `sinh`, `cosh`, `tanh`, `asinh`, `acosh`, `atanh` | `Math.atanh(1)` → `Infinity` |
+| 정밀도·비트 | `fround`(32비트 float로 반올림), `f16round`(16비트 float, ES2025), `imul`(32비트 정수 곱), `clz32`(32비트 표현의 앞쪽 0 개수) | `Math.fround(1.05)` → `1.0499999523162842`, `Math.clz32(1)` → `31` |
+
+- `Math.max()`·`Math.min()`에 인자가 없으면 각각 `-Infinity`·`Infinity`다. 빈 배열을 펼치면 이 값이 나오므로 빈 경우를 따로 처리한다. 원소가 수십만 개인 배열을 펼치면 인자 수 한도에 걸릴 수 있어 `reduce`로 구한다.
+- 삼각함수는 도(degree)가 아니라 라디안을 받는다. `deg * Math.PI / 180`으로 바꾼다. `Math.tan(Math.PI / 4)`는 부동소수점 오차로 `0.9999999999999999`다.
+- `atan2(y, x)`는 원점에서 점 (x, y)를 보는 각을 -π~π로 준다. `atan(y / x)`와 달리 사분면을 구분하고 `x`가 0이어도 된다. 두 점 사이 방향, 마우스 위치로 회전 각 구하기에 쓴다.
+- `expm1`·`log1p`는 x가 0에 아주 가까울 때 `Math.exp(x) - 1`, `Math.log(1 + x)`보다 정확하다. 1을 더하고 빼는 순간 작은 값의 유효숫자가 사라지기 때문이다.
+- `hypot`은 큰 수를 제곱할 때 생기는 넘침을 피한다. 2차원 거리 `Math.hypot(x2 - x1, y2 - y1)`에 쓴다.
+- `fround`·`imul`·`clz32`는 asm.js·WebAssembly처럼 32비트 산술을 흉내 내는 코드를 위해 들어왔다. 일반 코드에서는 거의 쓰지 않는다.
 
 `Math.random()`은 0 이상 1 미만의 실수를 준다. 정수 범위로 바꾸는 공식은 다음과 같다.
 
