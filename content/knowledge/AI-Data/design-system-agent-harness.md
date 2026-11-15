@@ -54,7 +54,7 @@ flowchart LR
 - **설계·의사결정**은 직접 통제하는 하네스 하나에 모은다
 - **코드 작성**처럼 이미 강력한 도구가 있는 일은 Claude Code에 위임한다. Claude Agent SDK의 `query()`로 로컬 `claude`를 띄워 실행하는 어댑터 도구(`runCodingAgent`)를 쓴다
 
-위임할 때는 도구를 **화이트리스트**로 제한한다: `Read`/`Edit`/`Write`/`Bash`/`Glob`/`Grep` + 디자인 시스템 문서 MCP. 결과(파일 변경, 도구 호출 이벤트, 세션 ID)는 하네스로 다시 흘려보낸다.
+위임할 때는 도구를 **화이트리스트**로 제한한다: `Read`/`Edit`/`Write`/`Bash`/`Glob`/`Grep` + 디자인 시스템 문서 MCP. 쓸 수 있는 내장 도구는 `tools`로 좁히고, 묻지 않고 실행할 도구는 `allowedTools`에 따로 적는다. `allowedTools`는 자동 승인 목록일 뿐이라 여기에만 적으면 목록 밖 도구도 그대로 남는다. 결과(파일 변경, 도구 호출 이벤트, 세션 ID)는 하네스로 다시 흘려보낸다.
 
 ```ts
 // 개념 예시: 코딩은 Claude Code에 맡기고, 설계 맥락은 하네스가 쥔다
@@ -62,7 +62,8 @@ async function runCodingAgent(spec: DesignSpec) {
   for await (const event of query({
     prompt: renderImplementationPrompt(spec), // 스펙을 구현 지시로 변환
     options: {
-      allowedTools: ["Read", "Edit", "Write", "Bash", "Glob", "Grep", "mcp__design-docs"],
+      tools: ["Read", "Edit", "Write", "Bash", "Glob", "Grep"], // 쓸 수 있는 내장 도구
+      allowedTools: ["Read", "Edit", "Write", "Bash", "Glob", "Grep", "mcp__design-docs"], // 자동 승인
     },
   })) {
     forwardToHarness(event); // 파일 변경·도구 호출을 상위 루프로 전달

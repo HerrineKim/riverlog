@@ -25,9 +25,9 @@ sources: ["https://medium.freecodecamp.org/how-open-source-licenses-work-and-how
 | 계열 | 원칙 | 대표 |
 | --- | --- | --- |
 | **허용형(permissive)** | 고지만 남기면 무엇이든 해도 된다. 수정본을 비공개 상용 제품에 넣어도 된다 | MIT, BSD-2/3-Clause, Apache 2.0, ISC |
-| **약한 카피레프트(weak copyleft)** | 그 라이브러리(또는 파일) 자체를 고친 부분만 같은 라이선스로 공개한다. 가져다 쓰는 쪽 코드는 자유다 | MPL 2.0(파일 단위), LGPL(라이브러리 단위) |
+| **약한 카피레프트(weak copyleft)** | 배포할 때 그 라이브러리(또는 파일) 자체의 소스를, 고치지 않았어도 같은 라이선스로 제공한다. 가져다 쓰는 쪽 코드는 자유다 | MPL 2.0(파일 단위), LGPL(라이브러리 단위) |
 | **강한 카피레프트(strong copyleft)** | 배포하는 파생물 **전체**를 같은 라이선스로, 소스와 함께 공개한다 | GPLv2, GPLv3 |
-| **네트워크 카피레프트** | 배포하지 않고 서버에서 서비스로만 제공해도 사용자에게 소스를 공개한다. GPL의 「SaaS 구멍」을 막는다 | AGPLv3 |
+| **네트워크 카피레프트** | 프로그램을 수정했다면(다른 코드와 결합한 경우 포함) 배포하지 않고 서버에서 서비스로만 제공해도 사용자에게 소스를 공개한다. GPL의 「SaaS 구멍」을 막는다 | AGPLv3 |
 
 ## 주요 라이선스 비교
 
@@ -35,10 +35,10 @@ sources: ["https://medium.freecodecamp.org/how-open-source-licenses-work-and-how
 
 | 라이선스 | 배포할 때 소스 공개 | 수정본도 같은 라이선스 | 변경 사항 표시 | 특허 | 대표 프로젝트 |
 | --- | --- | --- | --- | --- | --- |
-| AGPLv3 | 필수(네트워크 제공 포함) | 필수 | 필수 | 명시적 특허 허락 | Grafana, MongoDB(2018년 전), Nextcloud |
+| AGPLv3 | 필수(수정본의 네트워크 제공 포함) | 필수 | 필수 | 명시적 특허 허락 | Grafana, MongoDB(2018년 전), Nextcloud |
 | GPLv3 | 필수 | 필수 | 필수 | 명시적 특허 허락. 특허 소송을 걸면 권리를 잃는다 | Bash, GIMP |
 | GPLv2 | 필수 | 필수 | 필수 | 명시 없음(v3에서 추가) | Linux 커널, Git |
-| LGPL·MPL 2.0 | 그 라이브러리·파일만 | 그 부분만 | 필수 | 명시적 허락 | Firefox(MPL) |
+| LGPL·MPL 2.0 | 그 라이브러리·파일만 | 그 부분만 | LGPL 필수, MPL 2.0은 필요 없음(라이선스 고지만 유지) | 명시적 허락 | Firefox(MPL) |
 | Apache 2.0 | 필요 없음 | 아무 라이선스나 | 필수(NOTICE 유지) | 명시적 특허 허락. 상표 사용 금지 | Android, Kubernetes, Swift |
 | BSD-3-Clause | 필요 없음 | 아무 라이선스나 | 필요 없음 | 명시 없음. 저작자 이름으로 파생물 홍보 금지 | Go |
 | MIT | 필요 없음 | 아무 라이선스나 | 필요 없음 | 명시 없음 | React, Rails, jQuery, Bootstrap |
@@ -74,7 +74,7 @@ Apache 2.0 코드는 GPLv3 프로젝트에 넣을 수 있지만 GPLv2 전용 프
 | 라이선스 | 제한 | 바꾼 예와 그 뒤 |
 | --- | --- | --- |
 | SSPL | 서비스로 제공하면 서비스 운영 스택 전체의 소스를 공개 | MongoDB(2018), Elasticsearch(2021). Elastic은 2024년 AGPL을 선택지로 다시 더했다 |
-| BSL(Business Source License) | 경쟁하는 상용 사용 금지. 몇 년 뒤 오픈소스 라이선스로 자동 전환 | HashiCorp Terraform(2023) → 커뮤니티가 MPL 시절 코드를 포크해 OpenTofu를 만들었다 |
+| BSL(Business Source License) | 기본은 비프로덕션 사용만 허락하고, 프로덕션 사용 범위는 라이선스 주체가 추가 사용 허가(Additional Use Grant)로 정한다(HashiCorp는 경쟁 제품이 아니면 허용). 몇 년 뒤 오픈소스 라이선스로 자동 전환 | HashiCorp Terraform(2023) → 커뮤니티가 MPL 시절 코드를 포크해 OpenTofu를 만들었다 |
 | RSAL·SSPL 이중 | 관리형 서비스 제공 제한 | Redis(2024) → Valkey 포크가 생겼고, Redis 8(2025)은 AGPLv3를 선택지로 더했다 |
 
 의존성의 라이선스는 버전마다 바뀔 수 있다. 메이저 업그레이드 때 라이선스도 다시 확인한다.
