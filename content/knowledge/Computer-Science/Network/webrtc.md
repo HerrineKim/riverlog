@@ -161,14 +161,29 @@ pc.ondatachannel = ({ channel }) => {
 const CHUNK_LEN = 64000;
 const HIGH_WATER = 1024 * 1024; // 송신 버퍼에 쌓아 둘 상한(1MB)
 
+// 버퍼가 줄 때까지 기다리되, 채널이 닫히거나 오류가 나면 거부한다.
+// 닫힌 채널은 bufferedAmount가 0으로 돌아가지 않아 bufferedamountlow가 다시 오지 않는다.
+function waitForLow(channel) {
+  return new Promise((resolve, reject) => {
+    const cleanup = () => {
+      channel.removeEventListener('bufferedamountlow', onLow);
+      channel.removeEventListener('close', onClose);
+      channel.removeEventListener('error', onClose);
+    };
+    const onLow = () => { cleanup(); resolve(); };
+    const onClose = () => { cleanup(); reject(new Error('data channel closed')); };
+    channel.addEventListener('bufferedamountlow', onLow);
+    channel.addEventListener('close', onClose);
+    channel.addEventListener('error', onClose);
+  });
+}
+
 async function sendBytes(channel, bytes) {
   channel.bufferedAmountLowThreshold = HIGH_WATER / 2;
   channel.send(String(bytes.byteLength)); // 전체 길이 먼저
   for (let start = 0; start < bytes.byteLength; start += CHUNK_LEN) {
-    if (channel.bufferedAmount > HIGH_WATER) {
-      await new Promise((resolve) =>
-        channel.addEventListener('bufferedamountlow', resolve, { once: true }));
-    }
+    if (channel.bufferedAmount > HIGH_WATER) await waitForLow(channel);
+    if (channel.readyState !== 'open') throw new Error('data channel closed');
     channel.send(bytes.subarray(start, start + CHUNK_LEN));
   }
 }

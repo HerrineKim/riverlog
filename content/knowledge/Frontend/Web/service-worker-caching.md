@@ -149,18 +149,20 @@ event.respondWith(
 
 // stale-while-revalidate
 const network = fetch(event.request);
+const runtime = caches.open('runtime');            // 읽기와 갱신을 같은 캐시에서 한다
 event.waitUntil(                                   // 응답한 뒤에도 캐시 갱신이 끝날 때까지 워커를 살려 둔다
   network.then(async (res) => {
     if (!res.ok) return;
     const copy = res.clone();                      // 본문은 한 번만 읽히므로 먼저 복제
-    const cache = await caches.open('runtime');
-    await cache.put(event.request, copy);
+    await (await runtime).put(event.request, copy);
   }).catch(() => {})                               // 오프라인이면 갱신만 건너뛴다
 );
-event.respondWith(caches.match(event.request).then((cached) => cached || network));
+event.respondWith(
+  runtime.then((cache) => cache.match(event.request)).then((cached) => cached || network)
+);
 ```
 
-- Stale-while-revalidate는 캐시가 맞아도 **항상 네트워크 요청을 보낸다.** 갱신된 내용은 다음 요청에서야 보인다.
+- Stale-while-revalidate는 캐시가 맞아도 **항상 네트워크 요청을 보낸다.** 갱신된 내용은 다음 요청에서야 보인다. 읽을 때 `caches.match()`를 쓰면 모든 캐시를 만든 순서대로 뒤지므로, 같은 URL이 프리캐시에 있으면 갱신한 `runtime` 대신 옛 프리캐시 응답이 계속 나간다. 갱신하는 캐시에서 읽는다.
 - 전략은 URL 패턴별로 다르게 고른다. `event.request.url`을 정규식으로 보거나 `URLPattern`을 쓴다. `URLPattern`은 2025년 9월부터 Baseline이다.
 - 직접 만든 전략도 된다. 예: 네트워크 우선이되 3초가 지나면 캐시로 응답하기, 캐시와 네트워크 응답을 합치기.
 - 업데이트 확인 때문에 **렌더링을 막지 않는다.** Core Web Vitals를 해친다([[web-vitals|웹 성능 지표와 Lighthouse]]).
