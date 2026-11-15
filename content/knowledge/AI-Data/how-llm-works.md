@@ -4,7 +4,7 @@ concept: "How LLMs Work"
 summary: "대규모 언어 모델은 '지금까지의 글에 이어질 그럴듯한 다음 토큰'을 하나씩 확률로 고르는 기계다. 다음 토큰 예측, 매개변수 파일과 실행 코드 두 개로 된 모델, 인터넷의 손실 압축으로서의 사전 학습과 환각, 역전 저주, 임베딩, 트랜스포머 내부 구조, 기본 모델에서 어시스턴트로 가는 학습 단계, 스케일링 법칙, 계산 환원 불가능성에서 오는 한계와 이를 보완하는 시스템 2 추론·자기 개선·도구 사용까지 정리한다."
 tags: ["ai", "llm", "deep-learning", "nlp", "machine-learning"]
 source: other
-date: "2026-10-20"
+date: "2026-11-15"
 sources: ["https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/", "https://blog.pragmaticengineer.com/how-does-chatgpt-work/", "https://www.youtube.com/watch?v=zjkBMFhNj_g", "https://bytebytego.com/guides/how-does-chatgpt-work", "https://bytebytego.com/guides/chatgpt-timeline", "https://bytebytego.com/guides/deepseek-1-pager"]
 ---
 
@@ -159,7 +159,7 @@ Llama 2처럼 기본 모델과 어시스턴트 모델을 함께 공개하면, �
 
 ### 스케일링 법칙
 
-다음 단어 예측의 정확도는 놀랍게도 **두 변수**, 매개변수 수(N)와 학습 텍스트 양(D)의 매끄럽고 예측 가능한 함수다. 더 큰 모델을 더 많은 텍스트로 학습하면 나아진다고 꽤 확신할 수 있고, 강연 시점(2023년)에는 꺾이는 기미가 보이지 않았다. 실제로 신경 쓰는 여러 평가 점수도 이 정확도를 따라 오른다. 알고리즘 발전은 보너스이고, **더 큰 컴퓨터가 보장된 길**이라는 믿음이 GPU 확보 경쟁을 이끈다. 이 믿음이 조직의 결정에 어떻게 작용했는지는 [[scale-and-intelligence-utility|스케일과 지능 유틸리티]]에 있다.
+다음 단어 예측의 정확도는 놀랍게도 **두 변수**, 매개변수 수(N)와 학습 텍스트 양(D)의 매끄럽고 예측 가능한 함수다. 더 큰 모델을 더 많은 텍스트로 학습하면 나아진다고 꽤 확신할 수 있다. 이 관계는 사전 학습에서 오래 이어졌고, 2024년 이후에는 추론 단계 연산을 늘리는 방향이 더해졌다(아래 추론 모델). 실제로 신경 쓰는 여러 평가 점수도 이 정확도를 따라 오른다. 알고리즘 발전은 보너스이고, **더 큰 컴퓨터가 보장된 길**이라는 믿음이 GPU 확보 경쟁을 이끈다. 이 믿음이 조직의 결정에 어떻게 작용했는지는 [[scale-and-intelligence-utility|스케일과 지능 유틸리티]]에 있다.
 
 모델 간 순위는 LMArena(옛 Chatbot Arena) 같은 리더보드가 매긴다. 사용자가 이름을 가린 두 모델의 답 중 나은 것을 고르면, 체스처럼 Elo 점수를 계산한다. 대체로 비공개 모델이 앞서고 공개 가중치 모델이 뒤쫓는다.
 

@@ -4,7 +4,7 @@ concept: "Kubernetes Operations"
 summary: "쿠버네티스 클러스터와 앱을 운영하는 데 필요한 것들: Helm 차트·릴리스·훅, 버전 업그레이드 순서와 etcd 백업·복구, cordon·drain과 PodDisruptionBudget, 로그 구조와 kubectl logs, metrics-server와 Prometheus 모니터링, CrashLoopBackOff·ImagePullBackOff 진단과 kubectl debug, CRD와 오퍼레이터 패턴, Argo CD·Flux GitOps, 멀티 클러스터 관리."
 tags: ["devops", "kubernetes", "infra", "monitoring", "ci-cd"]
 source: other
-date: "2026-10-30"
+date: "2026-11-15"
 sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastructure/kubernetes.md", "https://helm.sh/docs/", "https://www.cncf.io/announcements/2025/11/12/helm-marks-10-years-with-release-of-version-4/", "https://kubernetes.io/releases/version-skew-policy/", "https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/", "https://kubernetes.io/docs/tasks/run-application/configure-pdb/", "https://kubernetes.io/docs/concepts/cluster-administration/logging/", "https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/", "https://kubernetes.io/docs/concepts/extend-kubernetes/operator/", "https://opengitops.dev/"]
 ---
 
@@ -126,7 +126,7 @@ Helm은 훅 Job이 끝날 때까지 기다리고, 실패하면 릴리스도 실�
 | kubelet · kube-proxy | 같거나 최대 3단계 낮게. 새로우면 안 된다 |
 | kubectl | 위아래 1단계 |
 
-그래서 순서가 정해진다. **컨트롤 플레인을 먼저, 노드를 나중에** 올리고, 마이너 버전은 **한 번에 하나씩**(1.34 → 1.35 → 1.36) 올린다. 건너뛸 수 없다.
+그래서 순서가 정해진다. **컨트롤 플레인을 먼저, 노드를 나중에** 올리고, 마이너 버전은 **한 번에 하나씩**(1.35 → 1.36 → 1.37) 올린다. 건너뛸 수 없다.
 
 ### 절차
 
@@ -134,7 +134,7 @@ Helm은 훅 Job이 끝날 때까지 기다리고, 실패하면 릴리스도 실�
 flowchart TB
   S1["1. 준비<br>릴리스 노트의 제거된 API·동작 변경 확인<br>(쓰는 매니페스트·차트에 제거될 apiVersion이 있는지 점검)<br>etcd 백업, 애드온(CNI, CoreDNS, CSI, Ingress 컨트롤러)의 호환 버전 확인, 스테이징에서 먼저"]
   subgraph CP["2. 컨트롤 플레인"]
-    C1["첫 노드에서 kubeadm upgrade plan"] --> C2["kubeadm upgrade apply v1.36.x"]
+    C1["첫 노드에서 kubeadm upgrade plan"] --> C2["kubeadm upgrade apply v1.37.x"]
     C2 --> C3["나머지 컨트롤 플레인 노드에서<br>kubeadm upgrade node, kubelet·kubectl 올리기"]
   end
   S3["3. 애드온<br>CNI 등 업그레이드"]
