@@ -1,0 +1,103 @@
+---
+title: "소프트웨어 문서화: 네 가지 문서 유형과 코드에서 문서 만들기"
+concept: "Diátaxis"
+summary: "소프트웨어 문서는 목적에 따라 튜토리얼·하우투 가이드·레퍼런스·해설의 네 유형으로 나뉘고(Diátaxis), 한 문서는 한 유형만 따른다. 레퍼런스는 코드 구조를 따라 주석에서 자동 생성해 코드와 어긋나지 않게 한다. 무엇은 이름으로, 왜는 기록으로 남긴다. 프로젝트의 입구인 README에 담을 것과 README를 먼저 쓰는 README 주도 개발도 다룬다."
+tags: ["writing", "collaboration", "software-engineering", "api"]
+source: other
+date: "2026-10-21"
+sources: ["http://blog.weirdx.io/post/60414", "https://diataxis.fr/", "https://engineering.linecorp.com/ko/blog/comments-parsing-api-documentation/", "https://techblog.woowahan.com/2677/", "http://tom.preston-werner.com/2010/08/23/readme-driven-development.html", "https://changelog.com/posts/top-ten-reasons-why-i-wont-use-your-open-source-project", "https://github.com/zalando/zalando-howto-open-source/blob/master/READMEtemplate.md"]
+---
+
+> Daniele Procida의 「What nobody tells you about documentation」 번역 「[문서화에 대해 아무도 말해주지 않는 것들](http://blog.weirdx.io/post/60414)」, 「[주석 분석기를 이용한 간단한 API 문서화 방법](https://engineering.linecorp.com/ko/blog/comments-parsing-api-documentation/)」, 「[팀 문화의 탄생](https://techblog.woowahan.com/2677/)」을 바탕으로 재구성한 노트다. 네 유형 분류는 이후 [Diátaxis](https://diataxis.fr/)라는 이름의 프레임워크로 정리됐다. README 부분은 「[Readme Driven Development](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html)」, 「[Top ten reasons why I won't use your open source project](https://changelog.com/posts/top-ten-reasons-why-i-wont-use-your-open-source-project)」, 「[Zalando's README Template](https://github.com/zalando/zalando-howto-open-source/blob/master/READMEtemplate.md)」을 바탕으로 보강했다.
+
+## 문서가 실패하는 이유
+
+문서가 쓸모없어지는 흔한 이유는 양이 아니라 **종류를 섞기 때문**이다. 시작 가이드 중간에 설계 배경을 길게 늘어놓거나, API 레퍼런스에 사용 팁을 섞으면 어느 목적에도 맞지 않는 문서가 된다. 독자는 상황마다 다른 종류의 문서를 찾는다.
+
+## 네 가지 문서 유형
+
+문서는 두 축으로 나뉜다. **실용(하기) vs 이론(알기)**, **배우는 중 vs 일하는 중**.
+
+```mermaid
+quadrantChart
+  x-axis "배우는 중" --> "일하는 중"
+  y-axis "이론 (알기)" --> "실용 (하기)"
+  quadrant-1 "하우투 가이드"
+  quadrant-2 "튜토리얼"
+  quadrant-3 "해설"
+  quadrant-4 "레퍼런스"
+```
+
+| 유형 | 목적 | 비유 | 쓰는 법 |
+| --- | --- | --- | --- |
+| **튜토리얼** | 처음 온 사람이 직접 해 보며 배운다 | 아이에게 요리 가르치기 | 작성자가 교사처럼 과정을 책임진다. 따라 하면 **항상 같은 결과**가 나와야 한다. 설명은 최소로, 대안·옵션은 다루지 않는다 |
+| **하우투 가이드** | 이미 목표가 있는 사람이 특정 문제를 푼다 | 요리책의 레시피 | 기본 지식을 가정한다. 결과에 집중하고 개념 설명은 링크로 넘긴다. 제목이 무엇을 푸는지 정확히 말한다 |
+| **레퍼런스** | 정확한 사실을 찾아본다 | 백과사전 항목 | 코드 구조를 그대로 따른다. 어조와 형식이 일정하고, 의견·조언은 넣지 않는다. 늘 실제 동작과 일치해야 한다 |
+| **해설** | 배경, 설계 이유, 대안, 역사를 이해한다 | 요리의 역사에 관한 글 | 작업 지시를 넣지 않는다. 여러 관점을 비교해도 된다. 명시적으로 만들지 않으면 여기저기 흩어진다 |
+
+- **한 문서는 한 유형만** 따른다. 다른 유형의 내용이 필요하면 링크한다.
+- 변경 이력, 기여 가이드 같은 **프로젝트 문서**는 이 넷과 따로 둔다.
+- 분류가 명확하면 쓰는 사람은 무엇을 쓸지 덜 고민하고, 읽는 사람은 어디를 볼지 안다.
+
+## 레퍼런스는 코드에서 만든다
+
+레퍼런스는 코드와 어긋나는 순간 해롭다. 그래서 **코드 옆의 주석에서 자동으로 뽑는** 방식이 흔하다. JSDoc, Javadoc, TypeDoc, rustdoc, OpenAPI 생성기가 모두 이 방식이다. 기존 도구가 없는 언어라도 같은 흐름으로 만들 수 있다.
+
+```mermaid
+flowchart TB
+  n1["문서용 주석<br/>(/** ... */ 처럼 구분자로 표시)"] --> n2["파서: 주석 블록 추출 + 시그니처 분석(이름·타입·인자)"]
+  n2 --> n3["구조화된 중간 형식<br/>(JSON 등, 위치 정보 포함)"]
+  n3 --> n4["템플릿 엔진"]
+  n4 --> n5["Markdown / HTML"]
+  n5 --> n6["CI에서 자동 생성·배포"]
+```
+
+| 결정 | 원칙 |
+| --- | --- |
+| 주석 문법 | 필요한 정보를 먼저 정하고, `@param`처럼 익숙한 태그 관례를 빌린다. 단순할수록 추출이 쉽다 |
+| 구분자 | 일반 주석과 문서 주석을 구분하는 표시를 둔다 |
+| 파서 | 처음부터 짜기보다 기존 파서를 확장한다 |
+| 출력 | 중간 형식을 두면 템플릿만 바꿔 여러 산출물(문서, 변경 보고서, CMS 콘텐츠)을 만든다 |
+
+## 무엇은 이름으로, 왜는 기록으로
+
+모든 것을 문서로 남길 필요는 없다.
+
+| 정보 | 둘 곳 |
+| --- | --- |
+| 무엇을 하나 | 이름(함수·변수·모듈)으로 드러낸다 |
+| 왜 이렇게 했나(직관에 어긋나는 이유) | 주석, 테스트, 설계 문서 링크 |
+| 어떻게 쓰나 | 테스트와 하우투 가이드 |
+
+**같은 질문이 반복되면** 질문한 사람이 아니라 문서와 소통 방식에 빈틈이 있다는 신호다. 새로 합류한 사람의 질문은 문서를 검증할 가장 좋은 재료다.
+
+## README: 프로젝트의 첫 문서
+
+README는 저장소를 연 사람이 **가장 먼저, 대개 유일하게** 읽는 문서다. 네 유형으로 치면 짧은 해설(무엇·왜) + 최소 튜토리얼(설치·첫 실행) + 다른 문서로 가는 입구다. README가 없거나, 무엇을 하는 프로젝트인지 첫 문단에서 말하지 않거나, 라이선스가 불분명하면 사람들은 쓰지도 기여하지도 않는다.
+
+| 섹션 | 담을 것 |
+| --- | --- |
+| 이름과 한 줄 소개 | 무엇을 하고 어떤 문제를 푸는가. 개발 상태(실험·안정·유지보수 중단), 배지, 가능하면 스크린샷·데모 |
+| 왜 있나 | 비슷한 프로젝트와 무엇이 다른가, 영감을 받은 곳·포크 원본 |
+| 시작하기 | 요구 사항, 설치, 설정, 실행. 복사해 붙이면 되는 명령으로 |
+| 사용 예 | 가장 흔한 쓰임 한두 개의 코드. 나머지는 문서 사이트·`examples/`로 링크 |
+| 더 알기 | 버전 정책, 자주 나는 오류, 테스트 실행법 |
+| 기여하기 | 기여 안내(`CONTRIBUTING.md`), 코드 스타일, 커밋 메시지 형식, 기여자 |
+| 도움 받을 곳 | 이슈·토론·채팅 채널 |
+| 라이선스 | `LICENSE` 파일과 한 줄 요약. 라이선스가 없으면 법적으로 아무도 쓸 수 없다 |
+
+모든 섹션이 필요하지는 않다. 작은 라이브러리는 소개·설치·사용 예·라이선스면 충분하다.
+
+### README 주도 개발
+
+**README를 코드보다 먼저 쓰는** 방식이다(Readme Driven Development). 공개 API와 쓰는 법을 글로 먼저 써 보면, 코드를 고칠 부담 없이 설계를 몇 번이고 바꿔 볼 수 있다. 팀이라면 구현이 끝나기 전에 다른 사람이 그 인터페이스에 맞춰 일을 시작할 수 있고, 말로 빙빙 돌던 논의가 글 하나를 놓고 구체적으로 바뀐다. 설계 문서를 README 한 파일로 제한하므로 긴 명세가 폭포수처럼 불어나는 것도 막는다. 나중에 쓰는 README는 동기가 떨어진 상태라 중요한 내용을 빠뜨리기 쉽다는 점에서도 먼저 쓰는 편이 낫다.
+
+## 정리
+
+- 문서는 튜토리얼·하우투·레퍼런스·해설 네 종류이고, 섞지 않는다.
+- 레퍼런스는 코드에서 생성해 동작과 일치시킨다.
+- 이름이 「무엇」을, 기록이 「왜」를 맡는다.
+- 반복되는 질문은 문서를 고칠 신호다.
+- README는 무엇·왜·설치·사용 예·라이선스를 첫 화면에 담는 입구다. 코드보다 먼저 쓰면 설계 도구가 된다.
+
+관련 노트: [[open-source-maintenance|오픈소스 운영]], [[markdown|마크다운]], [[finding-dev-references|개발 자료 찾는 법]], [[swagger|Swagger]], [[js-comments|JavaScript 주석]], [[eco-writing-rules|에코 글쓰기 규칙]]
