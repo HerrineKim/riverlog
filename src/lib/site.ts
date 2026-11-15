@@ -3,7 +3,7 @@ export const site = {
   author: "Hyerin Kim",
   nickname: "River",
   description: "River의 블로그이자 지식 창고.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://riverlog-five.vercel.app",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://riverlog.me",
   email: "aprilhyerinkim@gmail.com",
   github: "https://github.com/HerrineKim",
   repo: "https://github.com/HerrineKim/riverlog",
