@@ -57,7 +57,22 @@ export class AppModule implements NestModule {
 
 로깅, 응답 포맷, 실행 시간 측정, 캐싱처럼 여러 기능(세로 기둥)에 공통으로 걸쳐 있는 **횡단 관심사**(cross-cutting concern)를 각 기능 안에 흩어 쓰지 않고 하나의 모듈로 분리해 모듈성을 높이는 패러다임이다.
 
-![AOP: 여러 컨트롤러에 걸친 공통 관심사](/images/til/BACKEND/Nestjs/-Deprecated-%ED%83%84%ED%83%84%ED%95%9C-%EB%B0%B1%EC%97%94%EB%93%9C-NestJS-%EA%B8%B0%EC%B4%88%EB%B6%80%ED%84%B0-%EC%8B%AC%ED%99%94%EA%B9%8C%EC%A7%80/04-NestJS-%EA%B0%9C%EC%9A%94-%EB%B0%8F-%EA%B0%9D%EC%B2%B4%EC%A7%80%ED%96%A5-%EB%94%94%EC%9E%90%EC%9D%B8-%ED%8C%A8%ED%84%B4/08-Interceptors-AOP-%ED%8C%A8%ED%84%B4.assets/image-20221227095708963.png)
+```mermaid
+flowchart TB
+  subgraph aspects["횡단 관심사: 모듈 하나로 분리"]
+    direction LR
+    log["로깅·실행 시간 측정"]
+    fmt["응답 포맷·캐싱"]
+  end
+  subgraph core["핵심 관심사: 기능별 컨트롤러"]
+    direction LR
+    c1["회원"]
+    c2["게시글"]
+    c3["결제"]
+    c4["알림"]
+  end
+  aspects -->|"모든 핸들러의 앞뒤에 끼워 넣는다"| core
+```
 
 ### 실행 시간 측정 인터셉터
 

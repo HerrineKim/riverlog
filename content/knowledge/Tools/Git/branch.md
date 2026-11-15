@@ -12,7 +12,22 @@ sources: ["https://github.com/arslanbilal/git-cheat-sheet", "https://github.com/
 
 브랜치(branch)는 나뭇가지처럼 작업 흐름을 여러 갈래로 나누어 **서로 독립적으로 개발**할 수 있게 해 주는 기능이다. Git의 브랜치는 특정 커밋을 가리키는 가벼운 포인터일 뿐이라서, 만들고 이동하는 비용이 거의 없다.
 
-![브랜치 개념](/images/til/ETC/Git/md-images/branch.png)
+```mermaid
+gitGraph
+  commit
+  commit
+  branch feature-a
+  commit
+  commit
+  checkout main
+  commit
+  commit
+  branch feature-b
+  commit
+  commit
+  checkout main
+  commit
+```
 
 ## 왜 브랜치를 쓰는가
 
@@ -94,7 +109,16 @@ $ git log --oneline --graph --all
 * 3d71510 main-1
 ```
 
-![갈라진 브랜치](/images/til/ETC/Git/md-images/44.png)
+```mermaid
+gitGraph
+  commit id: "main-1"
+  commit id: "main-2"
+  commit id: "main-3"
+  branch login
+  commit id: "login-1"
+  checkout main
+  commit id: "main-4"
+```
 
 ## 브랜치 관리
 

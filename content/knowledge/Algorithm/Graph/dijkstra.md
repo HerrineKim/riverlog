@@ -13,7 +13,15 @@ sources: ["https://www.youtube.com/watch?v=rL8X2mlNHPM", "https://github.com/fru
 
 다익스트라(Dijkstra) 알고리즘은 **한 출발 정점에서 다른 모든 정점까지의 최단 거리**를 구한다. 간선 가중치가 모두 같다면 BFS로 충분하지만, 가중치가 서로 다르면 "먼저 도착한 경로"가 최단이라는 보장이 없으므로 다익스트라가 필요하다.
 
-![다익스트라](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/13-%EA%B7%B8%EB%9E%98%ED%94%84-%EB%8B%A4%EC%9D%B5%EC%8A%A4%ED%8A%B8%EB%9D%BC-BFS-DFS-.assets/image_6359776771485841053989.jpg)
+```mermaid
+flowchart LR
+  A["A"] ---|"10"| B["B"]
+  B ---|"50"| C["C"]
+  B ---|"20"| D["D"]
+  D ---|"20"| C
+```
+
+A에서 C로 가는 길은 A→B→C(10 + 50 = 60)보다 간선이 하나 더 많은 A→B→D→C(10 + 20 + 20 = 50)가 짧다. 간선 수로 거리를 재는 BFS는 이 차이를 보지 못한다.
 
 ## 핵심 아이디어
 

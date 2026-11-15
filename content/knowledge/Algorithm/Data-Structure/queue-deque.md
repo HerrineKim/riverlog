@@ -13,7 +13,15 @@ sources: ["https://80000coding.notion.site/6b362391f808445f8e5f1e1f017c1bfb", "h
 
 ## 큐 (Queue)
 
-![큐](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/09-%ED%81%90-%EB%8D%B1-queue-deque-.assets/images-2Fnnnyeong-2Fpost-2F3244e9fd-82e5-4c52-bef4-dee97640e246-2Fimage.png)
+```mermaid
+flowchart LR
+  push["push(5)"] --> e1
+  subgraph q["큐: 뒤로 넣고 앞에서 꺼낸다"]
+    direction LR
+    e1["5 (rear)"] --- e2["9"] --- e3["3"] --- e4["2 (front)"]
+  end
+  e4 --> pop["pop() → 2"]
+```
 
 큐는 한쪽 끝(`rear`)에서 넣고 반대쪽 끝(`front`)에서 꺼내는 자료구조다. 줄 서기처럼 **먼저 들어온 것이 먼저 나가는(FIFO, First In First Out)** 구조다. 꺼내기 전에는 큐가 비어 있는지(empty), 넣기 전에는 가득 찼는지(full)를 확인해야 한다.
 
@@ -89,7 +97,15 @@ print(queue.popleft())  # 4, front에서 삭제, O(1)
 
 ## 덱 (Deque)
 
-![덱](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/09-%ED%81%90-%EB%8D%B1-queue-deque-.assets/images-2Fnnnyeong-2Fpost-2Fc412c1f6-9cf2-4fe2-b1c6-b166e2a58c99-2Fimage.png)
+```mermaid
+flowchart LR
+  f["push_front()<br/>pop_front()"] <--> e1
+  subgraph dq["덱: 양쪽 끝에서 넣고 꺼낸다"]
+    direction LR
+    e1["front"] --- e2["…"] --- e3["rear"]
+  end
+  e3 <--> b["push_back()<br/>pop_back()"]
+```
 
 덱(Deque)은 **Double-Ended Queue**의 줄임말로, 앞(`front`)과 뒤(`rear`) 양쪽에서 모두 삽입과 삭제가 가능한 자료구조다. 덱 하나로 스택(한쪽만 사용)과 큐(양쪽을 나눠 사용)를 모두 표현할 수 있다.
 

@@ -45,7 +45,13 @@ document.getElementById('decrease').onclick = () => {
 
 실제 DOM을 매번 다시 만들면 느리므로, React는 메모리 속 JavaScript 객체 트리인 **가상 DOM(Virtual DOM)** 에 먼저 그린 뒤 이전 트리와 비교해 **달라진 곳만 실제 DOM에 반영**한다.
 
-![상태 변경 → 가상 DOM 렌더링 → 비교 → 바뀐 부분만 실제 DOM에 패치](https://i.imgur.com/u6YnxUS.png)
+```mermaid
+flowchart LR
+  s["상태 변경"] --> v["새 가상 DOM 트리를<br/>처음부터 그린다"]
+  prev["이전 가상 DOM 트리"] --> d
+  v --> d["두 트리 비교 (diff)"]
+  d --> p["달라진 노드만<br/>실제 DOM에 반영 (patch)"]
+```
 
 부모가 리렌더링되면 자식도 함께 다시 렌더링(가상 DOM 계산)되지만, 실제 DOM이 바뀌는 곳은 결과가 달라진 노드뿐이다. 다시 렌더링 자체를 줄이는 방법은 [[re-rendering|리렌더링 원인과 추적]]에, 두 트리를 비교하는 규칙과 그에 따라 state가 유지·초기화되는 원리는 [[reconciliation|재조정과 state 보존]]에 있다.
 

@@ -12,7 +12,18 @@ sources: ["https://ko.javascript.info/browser-environment", "https://ko.javascri
 
 텍스트 파일인 HTML을 화면에 그리려면 브라우저가 이해할 수 있는 구조로 메모리에 올려야 한다. 브라우저의 렌더링 엔진은 문서를 **파싱(parsing)** 해 모든 요소·속성·텍스트를 객체로 만들고, 이 객체들을 부모-자식 관계의 트리로 구성한다. 이것이 **DOM(Document Object Model)** 이다. JavaScript로 DOM을 바꾸면 그 변경이 곧바로 화면에 반영된다.
 
-![브라우저 동작 원리](/images/til/FRONTEND/Web/DOM.assets/client-server.png)
+```mermaid
+flowchart LR
+  html["HTML"] -->|"파싱"| dom["DOM 트리"]
+  css["CSS"] -->|"파싱"| cssom["CSSOM 트리"]
+  js["JavaScript"] -->|"DOM API로 수정"| dom
+  js -->|"CSSOM API로 수정"| cssom
+  dom --> rt["렌더 트리"]
+  cssom --> rt
+  rt --> lay["레이아웃"] --> paint["페인트"]
+```
+
+브라우저는 서버에서 HTML을 받아 파싱하다가 `<link>`·`<script>`를 만나면 CSS·JavaScript를 따로 요청한다. 단계별 자세한 내용은 [[browser-rendering|브라우저 렌더링 과정]]에 있다.
 
 ## 브라우저라는 호스트 환경
 
@@ -49,7 +60,20 @@ DOM은 HTML·ECMAScript가 아닌 W3C/WHATWG의 별도 표준이며, 플랫폼·
 
 ## DOM tree와 노드
 
-![DOM tree](/images/til/FRONTEND/Web/DOM.assets/dom-tree.png)
+```mermaid
+flowchart TB
+  doc["document (문서)"] --> html["html"] --> body["body"] --> div["div"]
+  div --> h1["h1"] --> t0["텍스트"]
+  div --> ul["ul"]
+  ul --> li1["li"]
+  ul --> li2["li"]
+  ul --> li3["li"]
+  li1 --> a1["class 속성"]
+  li1 --> t1["텍스트"]
+  li2 --> a2["class 속성"]
+  li2 --> t2["텍스트"]
+  li3 --> t3["텍스트"]
+```
 
 DOM tree의 진입점(entry point)은 `document` 객체이고, 끝은 텍스트 노드다. 트리는 네 종류의 노드로 이루어진다.
 

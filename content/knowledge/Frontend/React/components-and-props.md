@@ -13,7 +13,10 @@ sources: ["https://riverkim.kr/102", "https://react.dev/blog/2024/04/25/react-19
 
 **컴포넌트**는 화면을 독립적이고 재사용 가능한 조각으로 나눈 단위다. 개념적으로는 함수와 같아서, **props**라는 입력을 받아 화면에 무엇을 그릴지(React 엘리먼트)를 반환한다. 컴포넌트 하나당 파일 하나를 두면 모듈화도 쉬워진다.
 
-![컴포넌트는 props를 받아 엘리먼트를 반환한다](/images/til/FRONTEND/React/-inflearn-%EC%B2%98%EC%9D%8C-%EB%A7%8C%EB%82%98%EB%8A%94-%EB%A6%AC%EC%95%A1%ED%8A%B8/%EC%8B%A4%EC%8A%B5_%EC%A0%95%EB%A6%AC/5_Components_and_Props.assets/image-20220626224207253.png)
+```mermaid
+flowchart LR
+  p["props"] --> c["React 컴포넌트"] --> e["React 엘리먼트"]
+```
 
 ## 함수 컴포넌트
 

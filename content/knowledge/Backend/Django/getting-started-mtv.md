@@ -64,7 +64,21 @@ INSTALLED_APPS = [
 
 ## MTV 패턴
 
-![Django 기본 개발 흐름](/images/til/BACKEND/Django/00_django_intro.assets/image-20220302134411476.png)
+```mermaid
+sequenceDiagram
+  participant C as 클라이언트
+  participant U as urls.py
+  participant V as views.py
+  participant M as models.py
+  participant T as templates
+  C->>U: 요청 (URL)
+  U->>V: URL에 맞는 view 호출
+  V->>M: 데이터 조회·저장
+  M-->>V: 데이터
+  V->>T: 데이터를 넘겨 렌더링
+  T-->>V: HTML
+  V-->>C: 응답 (HTML, JSON)
+```
 
 | MTV | MVC 대응 | 파일 | 하는 일 |
 | --- | --- | --- | --- |
