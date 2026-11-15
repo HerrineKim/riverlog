@@ -1,0 +1,326 @@
+---
+title: "데이터베이스 모델: RDB, NoSQL, NewSQL"
+concept: "Database Model"
+summary: "DBMS가 파일 처리 시스템의 어떤 문제를 푸는지와 1·2·3계층 구조, 관계형 DB의 특징과 한계, 코드의 규칙, NoSQL 유형(문서·키-값·와이드 컬럼·그래프·시계열·검색·멀티 모델과 그 밖의 모델)별 대표 제품과 BASE·CAP 정리, 둘의 장점을 합치려는 NewSQL을 비교하고, 프로젝트에서 무엇을 고를지와 PostgreSQL·MySQL의 차이를 정리. 평면·계층·네트워크 모델에서 관계형까지의 계보와 분석용 스타·스노플레이크 스키마도 다룬다."
+tags: ["database", "rdbms", "nosql", "newsql", "sql", "mongodb"]
+source: mixed
+date: "2026-11-01"
+sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS", "https://github.com/henryr/cap-faq", "http://ksat.me/a-plain-english-introduction-to-cap-theorem", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://github.com/karanpratapsingh/system-design", "https://github.com/swapnakpanda/Infographics"]
+---
+
+> 노션 정리를 바탕으로, 데이터 모델의 계보와 CAP 정리의 오해는 ByteByteGo의 System Design 101 가이드 「[Top 6 Database Models](https://bytebytego.com/guides/top-6-database-models)」, 「[CAP Theorem: One of the Most Misunderstood Terms](https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms)」로, PostgreSQL 구조와 문자열 비교 차이는 「[한 눈에 살펴보는 PostgreSQL](https://d2.naver.com/helloworld/227936)」, 「[MySQL 'a' = 'a '가 true인가?](http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html)」로 보강했다. RDB와 NoSQL의 비용 비교는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다. CAP의 정확한 정의와 흔한 오해는 Henry Robinson의 「[The CAP FAQ](https://github.com/henryr/cap-faq)」와 「[A Plain English Introduction to CAP Theorem](http://ksat.me/a-plain-english-introduction-to-cap-theorem)」으로 보강했다.
+> 파일 처리 시스템과의 비교, DBMS 사용자와 1·2·3계층 구조, 코드의 규칙, BASE는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 DBMS 면접 정리를 바탕으로 보강했다.
+> Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 PACELC 설명으로 분류 예시를 더했다. 원문이 BigTable·HBase를 PA/EC로 적은 부분은 PC/EC로 바로잡았다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 문서형·키-값형·그래프형의 장단점, 시계열형과 멀티 모델 DB를 보강했다.
+> 유형별 대표 제품, 검색 엔진형, 그 밖의 모델(RDF·객체 지향·XML·이벤트 저장소 등)은 Swapna Kumar Panda의 「[Infographics](https://github.com/swapnakpanda/Infographics)」 중 Database Categories 그림을 바탕으로 보강했다.
+
+데이터베이스는 데이터의 집합이고, 이를 저장·관리하는 소프트웨어가 **DBMS(Database Management System)**다. 데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
+
+## DBMS가 해결하는 문제
+
+DBMS 이전에는 응용 프로그램마다 운영체제의 파일에 데이터를 따로 저장했다(파일 처리 시스템). 학적 프로그램과 수강 프로그램이 학생 정보를 각자 파일로 갖는 식이다. DBMS는 데이터를 한곳에 모아 여러 프로그램이 공유하게 해서 이 방식의 문제를 푼다. 데이터베이스, DBMS, 그 위의 응용 프로그램을 함께 **데이터베이스 시스템**이라 부른다.
+
+| 파일 처리 시스템의 문제 | DBMS의 해결 |
+| --- | --- |
+| 중복과 불일치: 같은 학생 주소가 파일마다 있고, 한쪽만 고치면 어긋난다 | 데이터를 한 번만 저장해 공유하고, 정규화로 중복을 줄인다 |
+| 접근의 어려움: 새 질문(「서울에 사는 3학년」)마다 프로그램을 새로 짠다 | SQL로 원하는 것만 선언하면 DBMS가 찾는다 |
+| 데이터 고립: 파일마다 형식이 달라 합치기 어렵다 | 하나의 스키마로 기술하고 조인으로 잇는다 |
+| 무결성: 「잔액은 음수가 아니다」 같은 규칙이 프로그램 곳곳에 흩어진다 | 제약 조건으로 DB가 직접 검사한다 |
+| 원자성: 이체 도중 장애가 나면 출금만 반영된다 | 트랜잭션과 회복 |
+| 동시 접근: 둘이 같은 파일을 동시에 고치면 한쪽 변경이 사라진다 | 병행 제어(잠금·MVCC) |
+| 보안: 파일 단위로만 권한을 줄 수 있다 | 사용자·테이블·컬럼 단위 권한(`GRANT`·`REVOKE`)과 뷰 |
+| 백업·복구를 프로그램마다 직접 챙긴다 | 로그와 백업 기반 복구 |
+| 저장 형식이 바뀌면 프로그램을 고쳐야 한다 | 3단계 스키마로 데이터 독립성을 준다([[sql-and-relational-algebra#3단계 스키마와 데이터 독립성\|3단계 스키마]]) |
+
+대가는 DBMS 자체의 비용(라이선스·서버·운영 인력)과 단순한 작업에도 붙는 처리 오버헤드다. 데이터가 작고 한 프로그램만 쓰면 파일이 더 싸다.
+
+DBMS를 다루는 사람은 역할로 나뉜다. **DBA(데이터베이스 관리자)** 는 스키마 정의, 저장 구조와 접근 방법 결정, 권한 부여, 백업·복구, 성능 감시를 맡는다. 설계자는 개체·관계·제약·뷰를 설계하고, 최종 사용자는 응용 프로그램이나 질의로 데이터를 쓴다.
+
+### 1계층·2계층·3계층 구조
+
+DBMS를 어떤 층을 거쳐 쓰느냐로 구조를 나눈다.
+
+| 구조 | 모양 | 쓰임과 한계 |
+| --- | --- | --- |
+| 1계층 | 사용자가 DBMS에 직접 붙어 SQL을 실행한다 | DB 설계자·개발자가 SQL 클라이언트로 개발·관리할 때 |
+| 2계층(클라이언트-서버) | 클라이언트 응용 프로그램이 DB 서버에 직접 접속한다(JDBC·ODBC) | 사내 데스크톱 업무 프로그램. 클라이언트마다 DB 연결과 계정이 필요해 사용자가 늘면 연결 수와 보안이 문제가 되고, 업무 규칙을 바꾸면 모든 클라이언트를 다시 배포해야 한다 |
+| 3계층 | 클라이언트(표현층) ─ 애플리케이션 서버(응용층) ─ DB 서버(데이터층) | 웹 서비스의 표준. 클라이언트는 DB를 모르고 DB는 애플리케이션 서버만 안다. 업무 규칙을 가운데 층에 모으고, 연결은 [[connection-pool\|커넥션 풀]]로 공유하고, DB를 외부에 드러내지 않는다 |
+
+## 한눈에 비교
+
+| 구분 | 관계형(RDB) | NoSQL | NewSQL |
+| --- | --- | --- | --- |
+| 데이터 구조 | 정해진 스키마의 테이블 | 스키마가 없거나 유연함 | 테이블 + SQL |
+| 일관성 | ACID 트랜잭션 | 대체로 완화된 일관성 | ACID 지원 |
+| 확장 | 주로 수직 확장(scale-up) | 수평 확장(scale-out) 용이 | 수평 확장 지원 |
+| 질의 | 표준 SQL, JOIN | 제품별 API | SQL |
+| 예 | MySQL, PostgreSQL, Oracle, SQL Server | MongoDB, Redis, Cassandra, Neo4j | Google Spanner, CockroachDB, TiDB, YugabyteDB |
+
+## 데이터 모델의 계보
+
+관계형 이전에도 데이터를 구조화하는 모델이 있었고, 관계형은 그 한계를 풀며 표준이 되었다.
+
+| 모델 | 구조 | 강점 | 한계 |
+| --- | --- | --- | --- |
+| 평면(flat) | 표 하나. 행은 레코드, 열은 속성 | 스프레드시트처럼 단순하다 | 엔터티 간 관계를 표현하지 못하고 중복이 많다 |
+| 계층(hierarchical) | 트리. 레코드마다 부모가 하나, 자식은 여럿 | 부모-자식 관계가 뚜렷한 데이터를 빨리 따라간다 | 다대다 관계를 표현하기 어렵고 구조가 경직된다 |
+| 네트워크(network) | 그래프. 레코드가 부모를 여럿 가질 수 있다 | 다대다 관계를 직접 표현한다 | 레코드 사이 포인터를 따라가는 질의를 코드로 짜야 해 복잡하다 |
+| **관계형(relational)** | 1970년 E. F. Codd가 제안. 테이블(릴레이션)과 키로 관계를 표현 | 정규화로 중복을 줄이고, SQL로 무엇을 원하는지만 선언한다. 다대다·복잡한 질의·트랜잭션 | 아래 「관계형 데이터베이스」 절 |
+
+계층·네트워크 모델의 발상은 사라지지 않았다. 문서형 DB는 계층(트리) 모델을, 그래프 DB는 네트워크 모델을 현대적으로 되살린 셈이다.
+
+### 분석용 모델: 스타 스키마와 스노플레이크 스키마
+
+데이터 웨어하우스(OLAP)에서는 정규화보다 **집계 쿼리를 빨리 돌리는 것**이 중요해 테이블을 다르게 배치한다.
+
+스타 스키마
+
+```mermaid
+flowchart TB
+  dt["dim_날짜"] --- fact["fact_매출"]
+  pr["dim_상품"] --- fact
+  fact --- sh["dim_매장"]
+  fact --- cu["dim_고객"]
+```
+
+스노플레이크 스키마
+
+```mermaid
+flowchart TB
+  ct["dim_카테고리"] --- pr["dim_상품"] --- fact["fact_매출"] --- sh["dim_매장"] --- rg["dim_지역"]
+  dt["dim_날짜"] --- fact
+  fact --- cu["dim_고객"]
+```
+
+| 항목 | 스타 스키마 | 스노플레이크 스키마 |
+| --- | --- | --- |
+| 구조 | 가운데 **사실 테이블(fact)** 에 측정값(매출액, 수량)과 차원 키를 두고, 둘레에 **차원 테이블(dimension)** 을 하나씩 붙인다 | 차원 테이블을 정규화해 하위 차원 테이블로 더 쪼갠다 |
+| 조인 | 적다. 질의가 단순하고 빠르다 | 많다. 질의가 복잡해진다 |
+| 중복 | 차원 테이블에 중복이 있다 | 중복이 적고 저장 효율·정합성이 좋다 |
+| 맞는 곳 | 대부분의 분석·BI | 차원 테이블이 크거나 자주 바뀔 때 |
+
+어떤 질문에 어떤 DB를 쓰는지는 [[database-selection|용도별 데이터베이스와 고르는 법]]에 있다.
+
+## 관계형 데이터베이스 (RDB)
+
+데이터를 행과 열로 이루어진 테이블(릴레이션)에 저장하고, 테이블 간 관계를 키로 표현한다.
+
+- **ACID** 트랜잭션: 원자성, 일관성, 격리성, 지속성
+- **정규화**(1NF, 2NF, 3NF …)로 중복과 이상 현상을 줄임
+- ANSI 표준 SQL과 **JOIN**으로 복잡한 질의 가능
+- 확장은 주로 더 좋은 서버로 바꾸는 **scale-up** 방식. 서버를 늘리는 scale-out(읽기 복제본, 샤딩)은 따로 설계해야 한다([[database-scaling|데이터베이스 확장과 성능 최적화]], [[database-sharding|데이터베이스 샤딩]])
+
+한계: 스키마가 경직되어 있어 구조가 자주 바뀌거나 비정형인 대용량 데이터(빅데이터)를 다루기에는 불리하다.
+
+**무엇이 관계형인가: 코드의 규칙.** 관계형 모델을 제안한 E. F. Codd는 1985년 DBMS가 「관계형」이라 불리려면 지켜야 할 규칙을 0번 기초 규칙(관계형 기능만으로 데이터를 관리한다)과 1~12번으로 정리했다(번호가 13개지만 흔히 「12규칙」이라 부른다). 모두 지키는 상용 제품은 사실상 없고, 관계형다움을 재는 기준으로 쓴다.
+
+| 규칙 | 뜻 |
+| --- | --- |
+| 1. 정보 | 메타데이터까지 모든 정보를 테이블의 값으로 표현한다 |
+| 2. 접근 보장 | 모든 값은 테이블 이름 + 기본 키 + 컬럼 이름으로 찾을 수 있다 |
+| 3. NULL의 체계적 처리 | 「값 없음」을 타입과 무관하게 NULL로 일관되게 다룬다 |
+| 4. 온라인 카탈로그 | 데이터 사전(스키마 정보)도 테이블로 두고 같은 질의 언어로 조회한다 |
+| 5. 포괄적 데이터 언어 | 정의·조작·권한·트랜잭션을 모두 하나의 언어(SQL)로 할 수 있다 |
+| 6. 뷰 갱신 | 이론적으로 갱신할 수 있는 뷰는 시스템도 갱신할 수 있다 |
+| 7. 집합 단위 연산 | 조회뿐 아니라 삽입·수정·삭제도 행 하나씩이 아니라 집합 단위로 한다 |
+| 8. 물리적 데이터 독립성 | 저장 구조가 바뀌어도 응용 프로그램은 그대로다 |
+| 9. 논리적 데이터 독립성 | 테이블 구조가 바뀌어도(정보가 보존되면) 응용 프로그램은 그대로다 |
+| 10. 무결성 독립성 | 무결성 제약을 프로그램이 아니라 카탈로그에 선언한다 |
+| 11. 분산 독립성 | 데이터가 여러 곳에 나뉘어도 사용자는 몰라도 된다 |
+| 12. 비전복 | 저수준(레코드 단위) 접근으로 무결성 규칙을 우회할 수 없다 |
+
+대표 제품
+
+- **MySQL**: 가장 널리 쓰이는 오픈소스 RDBMS 중 하나, 가볍고 다중 사용자 환경에 강함
+- **PostgreSQL**: 표준 준수와 확장성이 뛰어난 오픈소스 RDBMS (아래 절 참고)
+- **Oracle**: 대기업·금융권에서 많이 쓰는 상용 RDBMS
+- **Microsoft SQL Server**
+
+### PostgreSQL과 MySQL
+
+PostgreSQL은 사용자 정의 타입, 테이블 상속, 배열·JSON 컬럼 같은 객체 지향 기능을 갖춰 **객체관계형 DBMS(ORDBMS)**로 분류된다. 다만 지금은 주요 RDBMS 대부분이 이런 기능을 받아들여, ORDBMS와 RDBMS를 나누는 의미는 작다. 로고의 코끼리 이름은 Slonik이다.
+
+| 구분 | PostgreSQL | MySQL |
+| --- | --- | --- |
+| SQL 표준 | 충실하게 따른다 | 상대적으로 느슨하다 |
+| 강점 | 복잡한 쿼리, 확장 기능(JSONB, 전문 검색 등) | 단순한 CRUD가 가볍고 빠르다 |
+| 쓰임 | Stack Overflow 개발자 설문에서 2023년부터 사용률 1위. Supabase·Neon 같은 관리형 서비스의 기본 엔진 | 국내 웹 서비스에서 오래 쓰여 레거시가 많다 |
+
+버전이 오르며 두 DB의 기능 격차는 많이 줄었고, 기본 기능이 비슷해 서로 옮기기도 어렵지 않다.
+
+**PostgreSQL의 구조**: 클라이언트가 접속하면 postmaster(현재 이름은 postgres 서버 프로세스)가 **연결마다 백엔드 프로세스를 하나씩 띄운다.** 스레드가 아니라 프로세스라서 연결이 많아지면 메모리 부담이 크므로, 앞단에 PgBouncer 같은 커넥션 풀러를 두는 경우가 많다([[connection-pool|DB 커넥션 풀]]). 쿼리는 파싱 → 의미 분석 → **규칙(rule) 기반 재작성** → 실행 계획 선택 → 실행 순서로 처리된다. 타입·함수·인덱스 접근 방식까지 시스템 카탈로그에 정의할 수 있어 확장이 쉽고, PostGIS(공간), pgvector(벡터 검색), hstore(키-값) 같은 확장이 이 구조 위에 올라간다.
+
+**옮길 때 걸리는 차이: 문자열 끝 공백.** SQL 표준의 **PAD SPACE** 비교는 길이가 다른 두 문자열의 짧은 쪽 뒤에 공백을 채운 뒤 비교한다. 그래서 `'a' = 'a '`의 결과가 DB와 설정마다 다르다.
+
+| DB | 동작 |
+| --- | --- |
+| MySQL 5.7 이전·`PAD SPACE` 콜레이션 | 끝 공백을 무시해 참 |
+| MySQL 8.0 기본 콜레이션(`utf8mb4_0900_ai_ci`) | `NO PAD`라서 VARCHAR끼리는 거짓. CHAR 컬럼은 읽을 때 끝 공백을 지운다 |
+| PostgreSQL | CHAR(n)은 끝 공백을 무시하고, VARCHAR·TEXT는 공백까지 비교해 거짓 |
+
+DB를 옮기거나 둘을 섞어 쓸 때는 컬럼 타입(CHAR·VARCHAR)과 콜레이션을 함께 확인하고, 입력 단계에서 공백을 정리해 두는 편이 안전하다. GUI 클라이언트로 접속하는 방법은 [[dbeaver|DBeaver]]에 있다.
+
+## NoSQL
+
+"Not only SQL". 비정형 데이터를 다루며 고정 스키마가 없고, 애플리케이션의 도움 없이도 여러 서버에 데이터를 나눠 저장(자동 분산·밸런싱)하는 경우가 많다. 캐싱이 통합된 제품도 있다.
+
+RDB의 ACID에 대비해 많은 NoSQL이 따르는 성질을 **BASE**라 부른다. 기본적으로 가용하고(Basically Available: 일부 노드가 죽어도 응답한다), 상태가 고정돼 있지 않으며(Soft state: 입력이 없어도 복제가 따라잡는 동안 값이 바뀐다), 결국 일관해진다(Eventually consistent: 쓰기가 멈추면 언젠가 모든 복제본이 같은 값이 된다). 일관성을 늦추는 대신 가용성과 확장성을 얻는다는 뜻으로, 아래 CAP 정리의 AP 쪽 선택과 같은 방향이다. MongoDB·DynamoDB처럼 단일 문서·다중 문서 트랜잭션을 지원하는 NoSQL도 많아 BASE와 NoSQL이 같은 말은 아니다.
+
+### 문서형 (Document)
+
+- JSON(BSON) 같은 트리 구조 문서를 저장. 문서마다 구조가 달라도 된다.
+- 문서 내부 필드로 검색하기 쉽다.
+- 객체 모양 그대로 저장해 직관적이고 수평 확장이 쉽다. 대신 스키마가 없다는 것이 양날이다. 형식이 문서마다 어긋나도 DB가 막지 않고, 문서 사이의 관계(조인)는 약하다.
+- 예: MongoDB, Couchbase, CouchDB, Amazon DocumentDB(MongoDB 호환), Google Firestore와 Firebase Realtime Database(모바일·웹 앱이 직접 붙는 실시간 동기화 DB)
+
+### 키-값형 (Key-Value)
+
+- 하나의 키에 하나의 값을 매핑하는 가장 단순한 구조. 키로 바로 찾으므로 단순 조회가 빠르다.
+- 주로 메모리에 두고 세션, 캐시, 실시간 순위·시세 같은 상태 저장에 쓴다.
+- 기본 연산이 키 단위 CRUD뿐이다. 값의 내용으로 거르거나 범위를 훑거나 보조 인덱스로 찾는 복잡한 질의에는 맞지 않는다(제품마다 자료구조·보조 인덱스를 일부 더한다).
+- 예: Redis, Valkey, Memcached(순수 캐시), etcd(분산 설정 저장소. 쿠버네티스의 상태를 담는다), Hazelcast·Oracle Coherence(분산 인메모리 데이터 그리드), Amazon DynamoDB(키-값 + 문서)
+
+### 와이드 컬럼형 (Wide Column)
+
+- 행마다 서로 다른 컬럼 집합을 가질 수 있는 거대한 2차원 맵 구조.
+- 대규모 분산 저장과 대량 쓰기·조회에 강하다.
+- 예: Cassandra, ScyllaDB, HBase, Google Bigtable, Amazon Keyspaces(Cassandra 호환 관리형), DataStax(Cassandra 상용 배포판과 관리형 Astra DB)
+- 파티션 키·클러스터링 키 설계, LSM 트리 저장 엔진, 핫 파티션 대응은 [[wide-column-database|와이드 컬럼 DB와 대규모 메시지 저장: Cassandra·ScyllaDB]]에 있다.
+
+### 그래프형 (Graph)
+
+- 데이터를 **노드**, 관계를 **엣지**로 저장한다. 관계 자체가 저장되어 있어 여러 단계의 관계를 따라갈 때 RDB처럼 단계마다 JOIN을 할 필요가 없다.
+- 소셜 네트워크, 추천 시스템, 사기 탐지(계좌·기기·사람 사이의 수상한 고리 찾기), 네트워크·인프라 의존 관계 지도에 적합.
+- 관계를 따라가는 질의는 빠르지만, 모델링과 운영이 익숙하지 않고 분산이 어렵다. 질의 언어는 오래 제품마다 달랐지만(Neo4j의 Cypher, Apache TinkerPop의 Gremlin), 2024년에 ISO 표준 그래프 질의 언어 **GQL**(ISO/IEC 39075)이 나왔다.
+- 예: Neo4j, Amazon Neptune, Dgraph, GraphDB(RDF 기반)
+
+### 시계열형 (Time Series)
+
+- 시각이 찍힌 측정값(지표, 센서 값, 시세)을 쓰기 순서대로 빠르게 쌓고, 시간 구간으로 집계하는 데 최적화했다. 압축과 오래된 데이터 자동 삭제·다운샘플링으로 저장 효율을 높인다.
+- IoT 데이터, 애플리케이션 모니터링 지표, 금융 시세 분석에 쓴다.
+- 예: InfluxDB, Prometheus, TimescaleDB, Graphite, kdb+(금융 시세 분석에서 오래 쓴 열 지향 시계열 DB). 고르는 기준은 [[database-selection#시계열 DB|용도별 데이터베이스와 고르는 법]]에 있다.
+
+### 멀티 모델 (Multi-model)
+
+- 관계형·문서·키-값·그래프 같은 여러 모델을 **한 DB 엔진**에서 함께 제공한다. 데이터 종류마다 다른 DB를 두는 대신 한 저장소에서 여러 모델로 저장·색인·질의한다.
+- 저장소를 여럿 운영하지 않아도 되고 모델 사이 일관성을 지키기 쉽다. 대신 엔진이 복잡하고, 각 모델의 기능은 전용 DB보다 덜 성숙한 경우가 많다.
+- 예: ArangoDB, Azure Cosmos DB(여러 API), Amazon DynamoDB(키-값 + 문서), Oracle NoSQL Database, 그리고 JSONB·확장으로 문서·벡터·지리 데이터까지 다루는 PostgreSQL도 이 방향이다
+
+### 검색 엔진형 (Search)
+
+- 문서를 단어 단위로 쪼갠 **역색인(inverted index)** 에 저장해, 「이 단어들이 들어간 문서를 관련도 순으로」 같은 전문 검색에 답한다. 오타 허용, 형태소 분석, 집계(facet)도 한다.
+- 원본 DB를 대체하기보다 원본에서 복사해 채우는 **파생 저장소**로 둔다.
+- 예: Elasticsearch, OpenSearch(Elasticsearch 7.10에서 갈라진 오픈 소스 판), Apache Solr, Algolia(관리형 검색 API), Splunk(로그 검색·분석)
+- 역색인과 랭킹의 원리는 [[search-engine-basics|검색엔진의 원리: 역인덱스와 랭킹]], 운영은 [[elasticsearch|Elasticsearch와 ELK 스택]]에 있다.
+
+### 그 밖의 모델
+
+| 모델 | 저장하는 것 | 예 |
+| --- | --- | --- |
+| RDF 저장소(triple store) | 「주어-술어-목적어」 세 쌍(트리플). 시맨틱 웹·지식 그래프. 질의는 SPARQL | GraphDB, Apache Jena |
+| 객체 지향 DBMS | 프로그래밍 언어의 객체를 그대로 저장. ORM 없이 객체 그래프를 영속화 | db4o(개발 중단), ObjectDB |
+| 다중값(multivalue) DBMS | 한 필드에 여러 값을 넣는 비정규형 레코드. 1960년대 Pick 계열 | Rocket UniVerse |
+| 네이티브 XML DBMS | XML 문서를 트리 그대로 저장. 질의는 XQuery·XPath | BaseX, eXist-db |
+| 공간(spatial) DBMS | 점·선·다각형과 공간 인덱스(R-트리) | PostGIS, Oracle Spatial |
+| 내비게이셔널(navigational) DBMS | 레코드 사이 포인터를 따라 이동. 위 「데이터 모델의 계보」의 계층·네트워크 모델 | IBM IMS |
+| 콘텐츠 저장소 | 문서·이미지 같은 디지털 자산과 메타데이터, 버전 | Apache Jackrabbit |
+| 이벤트 저장소(event store) | 상태 대신 「일어난 일」을 덧붙이기만 하는 로그로 저장. [[distributed-data-patterns\|이벤트 소싱]]의 저장소 | EventStoreDB(현 KurrentDB) |
+
+관계형도 제품별로 성격이 갈린다. Oracle, MySQL, MariaDB, PostgreSQL, SQL Server, IBM Db2, Informix, SQLite, MS Access는 트랜잭션 처리(OLTP)용이고, Amazon Redshift, Snowflake, Google BigQuery, Teradata는 열 지향 저장을 쓰는 분석용 웨어하우스(OLAP), SAP HANA는 둘을 한 인메모리 엔진에서 하려는 제품, CockroachDB는 아래 NewSQL이다. 용도별 고르는 법은 [[database-selection|용도별 데이터베이스와 고르는 법]]에 있다.
+
+### CAP 정리
+
+분산 데이터베이스는 네트워크가 끊겨 노드끼리 연락이 안 되는 상황(분할)을 피할 수 없다. CAP 정리(CAP theorem)는 **분할이 생겼을 때 일관성과 가용성 중 하나를 포기해야 한다**는 뜻이다.
+
+| 성질 | 뜻 |
+| --- | --- |
+| 일관성(Consistency) | 어느 노드에서 읽어도 가장 최근에 쓴 값을 본다 |
+| 가용성(Availability) | 살아 있는 노드는 항상 응답한다 |
+| 분할 내성(Partition tolerance) | 노드 사이 통신이 끊겨도 시스템이 동작한다 |
+
+CAP을 정확히 읽으려면 정리가 쓰는 말의 뜻을 알아야 한다. 2000년 Eric Brewer가 추측으로 제시했고 2002년 Gilbert와 Lynch가 증명했다.
+
+| 용어 | 정리에서의 뜻 |
+| --- | --- |
+| 대상 | 읽기·쓰기 저장소, 정확히는 `set(x)`와 `get()`만 있는 **레지스터**. 키-값 저장소는 레지스터의 모음이다 |
+| 일관성 | **선형화 가능성**(linearizability). 모든 연산이 한 대의 기계에서 도착 순서대로 처리된 것처럼 보인다. `set(10), set(5), get() = 10` 같은 최종 일관성 실행은 허용하지 않는다 |
+| 가용성 | 장애가 나지 않은 노드에 온 **모든** 요청이 언젠가 정상 응답을 받는다. 오류 응답은 응답으로 치지 않는다(늘 오류를 내면 누구나 가용하다). 시간 상한은 없다 |
+| 분할 | 네트워크가 일부 메시지를 **잃는** 것. 늦게라도 도착하면 분할이 아니다. 증명은 두 집합 사이가 완전히 끊긴 경우를 쓴다 |
+| 비동기 네트워크 | 메시지 전달 시간에 상한이 없어 **죽은 노드와 느린 노드를 구별할 수 없다** |
+
+증명의 핵심은 간단하다. 분할 한쪽에 쓰기가 들어오면 반대쪽 읽기는 그 값을 알 수 없다. 옛 값을 주면 일관성이, 저쪽 소식을 끝없이 기다리면 가용성이 깨진다. 전화로 기억을 대신해 주는 회사를 두 직원이 나눠 맡았는데 둘 사이 연락이 끊긴 상황을 떠올리면 된다. 고객에게 답할지(가용성), 상대에게 확인될 때까지 답을 미룰지(일관성)를 골라야 한다.
+
+분할 내성은 분산 시스템에서 뺄 수 없으므로 실제 선택은 **CP**(분할 중에는 일부 요청을 거절하고 정확성을 지킨다)와 **AP**(일단 응답하고 나중에 맞춘다, 최종 일관성) 사이다. 분할이 없을 때도 지연 시간과 일관성을 맞바꾼다는 점까지 넣은 확장이 PACELC다. 많은 제품은 하나로 고정되지 않고 설정(복제 수, 읽기·쓰기 정족수)으로 조절한다.
+
+**PACELC**는 복제하는 시스템에 대해 「분할(P)이 나면 가용성(A)과 일관성(C) 중에, 그렇지 않으면(E) 지연(L)과 일관성(C) 중에 고른다」고 말한다. 앞의 PAC은 CAP과 같고, ELC가 평소 상태를 다룬다. 가용성을 복제로 얻는다고 가정하므로, 장애가 없을 때도 복제본을 기다릴지(일관성) 바로 답할지(지연)를 정해야 한다.
+
+| 분류 | 분할 시 | 평소 | 예 |
+| --- | --- | --- | --- |
+| PA/EL | 가용성 | 낮은 지연 | Dynamo, Cassandra, Riak |
+| PC/EC | 일관성 | 일관성 | BigTable, HBase |
+| PA/EC | 가용성 | 일관성 | MongoDB |
+
+CAP은 자주 오해된다.
+
+- **「셋 중 둘을 고른다」는 표현은 거친 단순화다.** CAP이 금지하는 것은 「분할이 난 상황에서 완벽한 일관성과 완벽한 가용성을 동시에」뿐이다. 분할이 없을 때는 둘 다 가질 수 있다.
+- CAP의 C와 A는 **100%** 를 뜻한다. 실제 설계 논의는 분할이 없는 평소에 지연과 일관성을 어떻게 맞바꾸느냐(PACELC의 ELC)가 더 자주 문제가 된다.
+- **「CA 시스템」이라는 말은 성립하지 않는다.** 분할 내성은 고르는 성질이 아니라 네트워크가 정하는 조건이다. 분할을 겪을 수 있는 분산 시스템이라면 「분할 가능성 → C와 A를 늘 함께 가질 수는 없다」로 읽는다. 분할이 없는 단일 노드 DB만 CA라고 부를 수 있다.
+- 정리는 **어떤** 상황에서 C나 A를 포기해야 한다고만 말하고, 그 상황이 얼마나 자주 오는지는 말하지 않는다. 다만 오래 도는 시스템은 언젠가 그 상황을 만난다.
+- 실제 시스템은 둘 중 하나를 느슨하게 만든다. ZooKeeper처럼 정확성이 우선이면 가용성을, Dynamo처럼 쓰기 가용성이 우선이면 일관성을 늦춘다. 정의를 하나라도 약하게 바꾸면 CAP의 불가능성은 더 이상 그대로 적용되지 않는다.
+- **CAP과 FLP는 다른 정리다.** FLP 불가능성은 노드 하나가 멈출 수 있는 비동기 네트워크에서 결정적 합의 알고리즘이 항상 끝난다는 보장은 불가능하다는 결과다. FLP는 메시지 유실을 가정하지 않고 합의를 다루며, CAP은 메시지 유실을 허용하고 저장소의 일관성을 다룬다. 합의 알고리즘 쪽은 [[distributed-time-and-failure|분산 시스템의 시간과 장애]]에 있다.
+- 죽은 노드는 응답 의무가 없지만 분할된 노드는 응답해야 한다는 점에서 둘은 다르고, 느린 노드는 메시지가 결국 도착한다는 점에서 분할과 다르다. 그런데 셋을 바깥에서 구별할 수 없다는 사실이 CAP·FLP가 성립하는 이유다.
+
+- **CAP만으로 DB를 고르지 않는다.** 채팅 메시지 저장에 Cassandra를 쓰는 이유는 AP라서가 아니라 쓰기 처리량, 파티션 단위 조회 같은 특성 때문이다. CAP은 트레이드오프를 따져 보게 하는 출발점이다.
+
+## NewSQL
+
+RDB의 **ACID와 SQL**을 유지하면서 NoSQL 수준의 **수평 확장성과 성능**을 얻으려는 데이터베이스.
+
+- 파티셔닝/샤딩으로 데이터를 여러 노드에 분산
+- 분산 환경에서의 동시성 제어
+- 복제(replication)와 장애 복구(crash recovery)
+- 예: Google Spanner, CockroachDB, TiDB, YugabyteDB. "분산 SQL(Distributed SQL)"이라고도 부른다. 초기 대표 제품이던 NuoDB는 2020년 다쏘시스템에 인수되었다.
+
+## 무엇을 고를까
+
+판단 기준은 **데이터가 테이블에 담기는 쪽이 유리한지, 문서에 담기는 쪽이 유리한지**다.
+
+### RDB가 무거워지는 지점과 NoSQL이 치르는 대가
+
+**NoSQL이 늘 빠른 것은 아니다.** NoSQL은 RDB가 기본으로 제공하는 기능 일부를 빼서 그 비용을 아낀다. 빠진 기능이 워크로드에 필요하면 결국 애플리케이션이 그 비용을 다시 치른다.
+
+| RDB가 기본으로 치르는 비용 | 어디서 부하가 되나 | NoSQL의 선택 |
+| --- | --- | --- |
+| 정규화된 스키마와 JOIN | 화면 하나를 그리려고 여러 테이블을 조인한다. 데이터가 커지면 조인 비용과 실행 계획의 변동이 커진다 | 함께 읽는 데이터를 문서·파티션 하나에 모아 둔다(반정규화). 대신 중복 데이터를 함께 고쳐야 한다 |
+| 다중 행 ACID 트랜잭션, 잠금, MVCC | 쓰기마다 WAL·undo 기록, 잠금 경합, 옛 버전 정리 비용 | 단일 문서·단일 키 원자성으로 제한하거나 최종 일관성을 택한다 |
+| 스키마·제약 조건 검사 | 외래 키·유니크·CHECK를 쓰기마다 검사한다. 큰 테이블의 스키마 변경이 무겁다 | 스키마를 강제하지 않는다. 검증 책임이 애플리케이션으로 간다 |
+| 범용 질의(임의 조건·집계) | 어떤 질의든 받기 위해 옵티마이저·인덱스를 갖춘다 | 키·파티션으로 접근하는 정해진 질의만 빠르다. 질의 패턴이 바뀌면 데이터를 다시 짜야 한다 |
+| 단일 노드 중심 설계 | 쓰기와 용량이 한 서버의 한계에 묶인다 | 처음부터 파티셔닝·복제를 전제로 해 수평 확장이 쉽다 |
+
+| NoSQL의 강점 | NoSQL의 약점 |
+| --- | --- |
+| 수평 확장과 대량 쓰기 처리량 | 여러 엔터티에 걸친 트랜잭션·조인이 약하거나 없다 |
+| 스키마 변경 없이 필드를 더하는 유연함 | 데이터 정합성(중복 데이터 동기화, 참조 무결성)을 앱이 책임진다 |
+| 키·파티션 단위 조회의 예측 가능한 지연 | 미리 정하지 않은 질의·집계가 비싸다 |
+| 데이터 모양(문서·그래프·시계열)에 맞는 모델 | 제품마다 질의 언어와 일관성 모델이 달라 학습·이전 비용이 크다 |
+
+그래서 NoSQL을 고르는 근거는 「빠르다」가 아니라 **워크로드의 모양**이다. 접근 패턴이 키 중심으로 정해져 있고, 쓰기량이나 데이터 양이 한 서버를 넘고, 다중 엔터티 트랜잭션이 거의 필요 없을 때 NoSQL이 이득이다. 반대로 질의가 다양하고 정합성이 중요한 데이터는 RDB가 싸다.
+
+| 상황 | 유리한 쪽 |
+| --- | --- |
+| 데이터 간 관계가 많고 정합성이 중요하다 (결제, 재고) | RDB |
+| 스키마가 자주 바뀌거나 비정형 데이터가 많다 | 문서형 NoSQL (MongoDB 등) |
+| 특별한 요구가 없는 일반 서비스 (쇼핑몰, 블로그) | 어느 쪽으로도 만들 수 있다 |
+
+흔히 "MongoDB는 쉽다"고 하는데, 이는 쿼리 문법이 JavaScript 객체와 닮아 입문 장벽이 낮다는 뜻이다. 초보용·숙련자용을 가르는 기준은 아니다.
+
+검색·분석·시계열·벡터처럼 용도별로 DB를 고르는 순서와 결정 트리는 [[database-selection|용도별 데이터베이스와 고르는 법]]에 있다.
+
+## 애플리케이션에서 접근하기: ORM과 ODM
+
+애플리케이션 코드는 보통 DB를 직접 다루지 않고 매핑 도구를 거친다.
+
+- **ORM**(Object-Relational Mapping): 테이블 행을 객체로 매핑한다. 예: Django ORM, TypeORM, Prisma
+- **ODM**(Object-Document Mapping): 문서를 객체로 매핑한다. 예: Mongoose
+
+관련 노트: [[sql-basics|SQL 기초]], [[mongodb|MongoDB 시작하기와 CRUD]], [[transaction|트랜잭션과 회복]], [[normalization|정규화와 반정규화]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[database-sharding|데이터베이스 샤딩]], [[database-selection|용도별 데이터베이스와 고르는 법]]
