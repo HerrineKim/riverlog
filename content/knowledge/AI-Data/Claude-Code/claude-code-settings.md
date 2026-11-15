@@ -103,7 +103,7 @@ Claude Code의 동작(시작 모델, 묻지 않고 실행할 것, 읽으면 안 
 | Agent(구 Task) | `Agent(Explore)`, `Agent(*)` | 띄울 수 있는 서브에이전트 제한 |
 | MCP | `mcp__github__*`, `mcp__memory__create_entities` | |
 | 파라미터 | `Agent(model:opus)`, `Bash(run_in_background:true)` | deny·ask 전용. `Bash(command:rm *)`처럼 본문 필드는 금지 |
-| 전면 차단 | `"deny": ["*"]` | 이후 개별 allow로 허용 목록 방식을 만든다 |
+| 전면 차단 | `"deny": ["*"]` | 모든 도구를 막는다. allow는 deny에 예외를 낼 수 없어 이후 allow로 풀리지 않는다. 허용 목록 방식은 `defaultMode: "dontAsk"`(묻는 대신 거부)에 allow를 더해 만든다 |
 
 - allow의 도구 이름 글롭은 `mcp__<서버>__` 뒤에서만 인정된다. `"*"`, `"mcp__*"`를 allow에 넣으면 경고 후 무시된다.
 - 심링크는 allow면 링크와 대상이 **둘 다**, deny면 **둘 중 하나만** 맞아도 적용된다.
