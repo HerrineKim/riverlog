@@ -4,7 +4,7 @@ concept: "Cohesion"
 summary: "응집도는 함께 수정돼야 할 코드가 항상 함께 수정되는지다. 모듈 응집도의 고전적 7단계 분류(기능적~우연적)와 낮은 응집의 신호를 정리하고, 함께 바뀌는 파일을 도메인 디렉토리에 모으고, 매직 넘버를 상수로 묶어 한쪽만 바뀌는 일을 막고, 폼은 변경 단위에 따라 필드 단위 검증과 스키마 기반 폼 전체 검증 중 하나를 고른다."
 tags: ["frontend", "clean-code", "architecture", "react", "software-engineering"]
 source: other
-date: "2026-10-20"
+date: "2026-11-15"
 sources: ["https://frontend-fundamentals.com/code-quality/code/", "https://webactually.com/2018/02/06/%eb%aa%85%ed%99%95%ed%95%9c-%ec%bd%94%eb%93%9c-%ec%9e%91%ec%84%b1%eb%b2%95/"]
 ---
 
@@ -82,7 +82,7 @@ async function onLikeClick() {
 }
 ```
 
-`300`이 애니메이션 완료를 기다리는 값이라면, 애니메이션을 바꿀 때 이 숫자는 같이 바뀌지 않는다. 그러면 서비스가 조용히 깨진다. 같이 바뀌어야 할 두 값 중 한쪽만 바뀌는 상태가 낮은 응집도다.
+`delay(300)`만 보면 애니메이션을 기다리는지, 서버 반영을 기다리는지, 지우지 않은 테스트 코드인지 알 수 없다. `300`이 애니메이션 완료를 기다리는 값이라면, 애니메이션을 바꿀 때 이 숫자는 같이 바뀌지 않는다. 그러면 서비스가 조용히 깨진다. 같이 바뀌어야 할 두 값 중 한쪽만 바뀌는 상태가 낮은 응집도다.
 
 ```ts
 const ANIMATION_DELAY_MS = 300;
