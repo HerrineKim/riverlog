@@ -129,6 +129,7 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/ai-data/claude-code-workflows": "/knowledge/dictionary/ai-data/claude-code/claude-code-workflows",
   "/knowledge/dictionary/ai-data/claude-code-tips": "/knowledge/dictionary/ai-data/claude-code/claude-code-tips",
   "/knowledge/dictionary/ai-data/claude-code-design-philosophy": "/knowledge/dictionary/ai-data/claude-code/claude-code-design-philosophy",
+  "/knowledge/dictionary/backend/architecture/system-design-primer-database-scaling": "/knowledge/dictionary/backend/database/database-scaling",
 };
 
 const nextConfig: NextConfig = {
