@@ -1717,7 +1717,7 @@
  },
  "Computer-Science/Operating-System/memory-management.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-31T23:18:39+09:00"
+  "updated": "2026-11-15T20:25:31+09:00"
  },
  "Computer-Science/Operating-System/multithreading-patterns.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1777,7 +1777,7 @@
  },
  "Computer-Science/Programming-Languages.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-11-02T10:13:09+09:00"
+  "updated": "2026-11-15T20:25:31+09:00"
  },
  "Computer-Science/Programming-Languages/abstract-class-vs-interface.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1879,21 +1879,9 @@
   "created": "2026-10-30T23:43:44+09:00",
   "updated": "2026-11-08T20:21:47+09:00"
  },
- "Computer-Science/Programming-Languages/ood-booking-rental-systems.md": {
-  "created": "2026-11-01T09:58:23+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
- },
  "Computer-Science/Programming-Languages/ood-interview-approach.md": {
   "created": "2026-11-01T09:58:23+09:00",
-  "updated": "2026-11-01T09:58:23+09:00"
- },
- "Computer-Science/Programming-Languages/ood-machines-and-games.md": {
-  "created": "2026-11-01T09:58:23+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
- },
- "Computer-Science/Programming-Languages/ood-platform-systems.md": {
-  "created": "2026-11-01T09:58:23+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T20:25:31+09:00"
  },
  "Computer-Science/Programming-Languages/oop-messaging.md": {
   "created": "2026-10-14T10:06:44+09:00",
@@ -2237,7 +2225,7 @@
  },
  "Frontend/Architecture/code-cohesion.md": {
   "created": "2026-10-17T23:13:04+09:00",
-  "updated": "2026-10-31T12:48:44+09:00"
+  "updated": "2026-11-15T20:25:31+09:00"
  },
  "Frontend/Architecture/code-coupling.md": {
   "created": "2026-10-17T23:13:04+09:00",
@@ -2249,7 +2237,7 @@
  },
  "Frontend/Architecture/code-readability.md": {
   "created": "2026-10-17T23:13:04+09:00",
-  "updated": "2026-10-31T12:50:12+09:00"
+  "updated": "2026-11-15T20:25:31+09:00"
  },
  "Frontend/Architecture/component-splitting.md": {
   "created": "2026-10-14T18:05:44+09:00",
@@ -3661,7 +3649,7 @@
  },
  "Tools/Git/commit-convention.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-11-15T20:25:31+09:00"
  },
  "Tools/Git/commit-message-verbs.md": {
   "created": "2026-10-14T18:14:10+09:00",
