@@ -1,0 +1,38 @@
+---
+title: "Frontend"
+concept: "Frontend"
+summary: "브라우저와 모바일 화면에서 사용자가 직접 만나는 UI를 만드는 분야의 지식 모음."
+tags: ["frontend", "html", "css", "javascript", "react"]
+source: mixed
+date: "2026-10-13"
+---
+
+프론트엔드는 사용자가 직접 보고 조작하는 화면을 만드는 분야다. 브라우저가 HTML·CSS·JavaScript를 해석해 화면을 그리는 원리에서 출발해, React 같은 UI 라이브러리로 컴포넌트를 조립하고, Next.js로 렌더링 전략을 고르고, React Native로 모바일 앱까지 확장한다. 이 분야의 노트는 "웹 기초 → 언어 → 라이브러리 → 플랫폼 확장 → 품질(테스트)" 순서로 읽으면 자연스럽다.
+
+## 하위 주제
+
+| 주제 | 내용 |
+| --- | --- |
+| [Web](Frontend/Web.md) | HTML·시맨틱 마크업, DOM과 브라우저 렌더링, SPA와 CSR/SSR/SSG/ISR·스트리밍 SSR, 웹 성능 지표(Core Web Vitals), SEO, PWA, 쿠키·세션·OAuth, CSRF·XSS 같은 웹 보안, 용어집 |
+| [CSS](Frontend/CSS.md) | 문법과 단위, 선택자와 우선순위, 박스 모델, position, Flexbox·Grid, 반응형 디자인, 애니메이션, CSS의 역사 |
+| [JavaScript](Frontend/JavaScript.md) | 변수·타입, 연산자·제어문, 함수와 this, 배열·객체, 템플릿 리터럴, class, DOM 조작과 이벤트, 비동기(콜백·Promise·async/await), AJAX, TypeScript, 패키지 매니저·번들러 |
+| [React](Frontend/React.md) | JSX, 컴포넌트·Props, State·생명주기, Hooks, 폼·리스트·조건부 렌더링, Context, 스타일링, SWR·TanStack Query, Redux, 리렌더링 추적, react-hook-form·react-router·MUI 실무 패턴 |
+| [Next.js](Frontend/Next.js.md) | React 기반 프레임워크를 쓰는 이유(SSR·SSG와 SEO), App Router의 내비게이션과 데이터 가져오기, `proxy.ts`, `fetch` 캐싱과 `use cache`, 서버·클라이언트 컴포넌트 조합 규칙 |
+| [Architecture](Frontend/Architecture.md) | 변경하기 쉬운 코드의 네 기준(가독성·예측 가능성·응집도·결합도), 의존성 관리, SOLID, 관심사의 분리, 컴포넌트 분리, 추상화 계층, MV*·MVI 아키텍처, Atomic Design, 폴더 구조의 진화, Feature-Sliced Design |
+| [Mobile](Frontend/Mobile.md) | 네이티브·하이브리드·크로스 플랫폼 비교, React Native 핵심과 실무 팁, CodePush OTA 업데이트, Flutter 구조와 Dart 문법, Swift Codable, Android 상태·Context·SDK 버전 |
+| [Testing](Frontend/Testing.md) | 테스트의 층(정적·단위·통합·E2E)과 테스트 대역, 기본 요소와 모범 사례, 실행 환경과 실행 시점(로컬·PR·CI), 의존성 있는 컴포넌트 테스트, 정적 분석, TDD, 험블 객체 패턴, 접근성 기반 UI 테스트, Vitest·Jest·Testing Library·Playwright |
+| [Accessibility](Frontend/Accessibility.md) | 장애 유형별 웹 사용, WCAG, 시맨틱 구조·대체 텍스트·폼·ARIA·키보드·위젯·CSS의 접근성, 자동·수동 평가와 스크린 리더 테스트 |
+| [UI Design](Frontend/UI-Design.md) | 디자인 시스템과 핸드오프, 레이아웃, 전자상거래·제스처 UI 패턴, UX 라이팅 (AI로 디자인을 뽑는 프롬프트 기법은 [[ai-frontend-design-prompting\|AI & Data]] 분야에 있다) |
+| [Graphics](Frontend/Graphics.md) | WebGL·WebGPU와 셰이더, Three.js로 웹에서 3D 그리기, Animated Icon |
+
+학습 순서는 [프론트엔드 로드맵](/knowledge/dictionary/frontend/frontend-roadmap)에 정리했다.
+
+- [프론트엔드 개발자의 업무 범위와 역량](Frontend/frontend-developer-role.md): 데이터 흐름으로 본 여섯 업무 영역, 퍼블리셔·백엔드·풀스택과의 경계, 잘하는 프론트엔드 개발자의 조건
+- [프론트엔드 엔지니어의 세 가지 성장 트랙](Frontend/frontend-career-tracks.md): 웹 특화·제품 특화·운영 특화 트랙별 지식과 진로, 탁월한 엔지니어의 다섯 역량, 시니어다운 일하기
+- [UI 엔지니어링의 열두 가지 문제](Frontend/ui-engineering-problems.md): 일관성·반응성·지연·내비게이션·낡은 캐시·엔트로피·우선순위·접근성·국제화·전달·복원력·추상화, 라이브러리 없이 문제를 재현하며 배우기
+- [기술 스택 고르기](Frontend/tech-stack-selection.md): 기술 수용 주기·캐즘·하이프 사이클, 스택을 고르는 다섯 기준, 범주로 트렌드 읽기, 레거시를 대하는 자세
+- [React와 Vue 비교](Frontend/react-vs-vue.md): JSX와 템플릿, 불변 상태와 반응형 상태, v-model의 정체, 생태계 범위와 고르는 기준
+- [React와 Vue 말고: 다른 프론트엔드 프레임워크](Frontend/frontend-frameworks.md): Svelte, Angular, Preact, Alpine.js, HTMX의 성격과 쓰임
+- [Electron: 웹 기술로 데스크톱 앱 만들기](Frontend/electron.md): 메인·렌더러 프로세스와 preload·IPC, 컨텍스트 격리·샌드박스 기본값, 패키징과 릴리스, Tauri와 비교
+- [Vue 상태 관리: Pinia(옛 Vuex)](Frontend/vuex.md): Pinia `defineStore`(옵션·setup 스토어), 옛 Vuex의 mutations·actions, Vite 환경 변수
+- [Quasar 프레임워크 기초](Frontend/quasar.md): Vue 기반 UI 프레임워크 Quasar
