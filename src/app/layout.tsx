@@ -29,15 +29,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: THEME_BG.dark },
-    { media: "(prefers-color-scheme: light)", color: THEME_BG.light },
-  ],
+  themeColor: THEME_BG.dark,
 };
 
-// A saved toggle choice wins; a first visit follows the OS. The browser bar color follows the same choice,
-// repainted once the theme-color metas (which may come after this script) are parsed
-const themeScript = `(function(){var t;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t);var c=${JSON.stringify(THEME_BG)}[t];function p(){document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}p();document.addEventListener("DOMContentLoaded",p)})()`;
+// A saved toggle choice wins; a first visit starts in dark mode whatever the OS says. The browser bar color follows
+// the same choice, repainted once the theme-color metas (which may come after this script) are parsed
+const themeScript = `(function(){var t;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark")t="dark";document.documentElement.setAttribute("data-theme",t);var c=${JSON.stringify(THEME_BG)}[t];function p(){document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute("content",c)})}p();document.addEventListener("DOMContentLoaded",p)})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
