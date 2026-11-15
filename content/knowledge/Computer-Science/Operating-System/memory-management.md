@@ -4,7 +4,7 @@ concept: "Memory Management"
 summary: "논리·물리 주소와 주소 바인딩, MMU, 동적 로딩·링킹과 스와핑, 연속 할당과 단편화, 페이징(TLB·다단계 페이지 테이블·쓰기 시 복사)과 세그멘테이션."
 tags: ["os", "memory", "paging", "segmentation", "mmu"]
 source: notion
-date: "2026-10-31"
+date: "2026-11-15"
 sources: ["https://app.notion.com/p/4183234d082949c9b0b5ef03f60f4bb2", "https://riverkim.kr/196", "https://riverkim.kr/216", "https://bytebytego.com/guides/what-are-the-differences-between-paging-and-segmentation", "https://brunch.co.kr/@toughrogrammer/15", "https://www.youtube.com/watch?v=bNFLpMUYqSE", "https://www.youtube.com/watch?v=8ufliWkgqMo", "https://www.youtube.com/watch?v=i4rpeyqAODo", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "고려사이버대학교 운영체제이론 및 실습 강의(위성홍 교수, 2024-1학기)", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS"]
 ---
 
@@ -217,7 +217,7 @@ fork() 직후 : 자식의 페이지 테이블이 부모와 같은 프레임을 �
 
 예를 들어 부모와 자식이 프레임 5, 4, 6을 함께 가리키다가 자식이 2번 페이지에 쓰면, 2번 페이지의 사본만 새 프레임에 만들어지고 자식만 그쪽을 가리킨다. 부모는 영향을 받지 않는다. 읽기만 하는 동안에는 한 벌만 있으므로 생성이 빠르고 메모리도 아낀다. `fork()` 직후 바로 `exec()`로 다른 프로그램을 올리는 흔한 경우에는 복사가 거의 일어나지 않는다([[process-and-thread|프로세스와 스레드]]).
 
-페이징도 마지막 페이지에는 **내부 단편화**가 남는다. 페이지가 10KB, 프로세스가 108KB면 마지막 페이지의 2KB가 낭비된다. 그래서 페이지 크기는 내부 단편화와 페이지 테이블 크기 사이에서 정한다.
+페이징도 마지막 페이지에는 **내부 단편화**가 남는다. 페이지가 10KB, 프로세스가 108KB면 마지막 페이지의 2KB가 낭비된다. 그래서 페이지 크기는 내부 단편화와 페이지 테이블 크기 사이에서 정한다. 디스크 전송 효율과 폴트 수까지 넣은 비교, huge page는 [[virtual-memory#페이지 크기의 결정|가상 메모리]]의 「페이지 크기의 결정」에 있다.
 
 ## 세그멘테이션 (Segmentation)
 

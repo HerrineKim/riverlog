@@ -130,6 +130,9 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/ai-data/claude-code-tips": "/knowledge/dictionary/ai-data/claude-code/claude-code-tips",
   "/knowledge/dictionary/ai-data/claude-code-design-philosophy": "/knowledge/dictionary/ai-data/claude-code/claude-code-design-philosophy",
   "/knowledge/dictionary/backend/architecture/system-design-primer-database-scaling": "/knowledge/dictionary/backend/database/database-scaling",
+  "/knowledge/dictionary/computer-science/programming-languages/ood-booking-rental-systems": "/knowledge/dictionary/computer-science/programming-languages/ood-interview-approach",
+  "/knowledge/dictionary/computer-science/programming-languages/ood-machines-and-games": "/knowledge/dictionary/computer-science/programming-languages/ood-interview-approach",
+  "/knowledge/dictionary/computer-science/programming-languages/ood-platform-systems": "/knowledge/dictionary/computer-science/programming-languages/ood-interview-approach",
 };
 
 const nextConfig: NextConfig = {
