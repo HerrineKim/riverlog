@@ -84,6 +84,7 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 
 **기초·품질 속성**
 
+- [System Design Primer 개념 지도](/knowledge/dictionary/backend/architecture/system-design-primer): 설계 절차·확장성·CAP·캐시·DB·통신·보안 및 설계 사례 8개와 객체 설계 예시 6개
 - [웹 확장성의 구성 요소: 한 장으로 보는 웹 아키텍처](/knowledge/dictionary/backend/architecture/web-scalability-components): 3-Tier·MSA·확장의 세 축·캐시·메시지 큐
 - [시스템 설계의 품질 속성과 트레이드오프](/knowledge/dictionary/backend/architecture/system-design-fundamentals): 확장성·가용성·신뢰성·성능과 다섯 가지 트레이드오프
 - [시스템 설계의 선택지와 흔한 문제의 해법](/knowledge/dictionary/backend/architecture/system-design-choices): 수직·수평 확장, SQL·NoSQL, 배치·스트림, 일관성 수준 등 양자택일 모음

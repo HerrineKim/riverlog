@@ -39,4 +39,4 @@ flowchart TB
 - OSTEP: 가상화·동시성·영속성 관점으로 프로세스와 메모리, 파일 시스템을 다룬다.
 - 네트워크: 응용 계층에서 링크까지 캡슐화·혼잡·손실·재전송을 추적한다.
 
-관련 노트: [[how-programs-run|프로그램 실행 원리]], [[os-kernel|커널]], [[tcp|TCP]], [[computer-architecture|컴퓨터 구조]]
+관련 노트: [[how-programs-run|프로그램 실행 원리]], [[os-overview|운영체제 개요]], [[transport-layer|전송 계층]], [[Computer-Architecture|컴퓨터 구조]]

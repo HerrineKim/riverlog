@@ -183,4 +183,4 @@ flowchart TB
 - 모든 선택은 트레이드오프다. 무엇을 얻고 무엇을 내주는지 말로 적어 둔다.
 - 설계는 빌딩 블록의 조합이다. 부품 하나하나의 역할과 한계를 알면 처음 보는 문제도 조립할 수 있다.
 
-관련 노트: [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[software-architecture-patterns|소프트웨어 아키텍처 패턴]], [[web-scalability-components|웹 확장성의 구성 요소]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[resiliency-patterns|장애 확산을 막는 복원력 패턴]], [[distributed-system-patterns|분산 시스템의 통신·데이터 흐름 패턴]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]]
+관련 노트: [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[software-architecture-patterns|소프트웨어 아키텍처 패턴]], [[web-scalability-components|웹 확장성의 구성 요소]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[resiliency-patterns|장애 확산을 막는 복원력 패턴]], [[distributed-system-patterns|분산 시스템의 통신·데이터 흐름 패턴]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]], [[system-design-primer|System Design Primer 개념 지도]]
