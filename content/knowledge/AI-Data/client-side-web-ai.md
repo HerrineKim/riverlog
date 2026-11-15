@@ -152,7 +152,7 @@ RAG, 에이전트, 복잡한 워크플로가 필요하면 라이브러리 런타
 | --- | --- | --- | --- |
 | Transformers.js | 지원 | 지원 | 실험 |
 | TensorFlow.js | 지원 | 실험 | 미지원 |
-| WebLLM | 실험 | 지원 | 미지원 |
+| WebLLM | 미지원(WebGPU 필수) | 지원 | 미지원 |
 | MediaPipe | 지원 | 실험 | 미지원 |
 | ONNX Runtime Web | 지원 | 실험 | 실험 |
 

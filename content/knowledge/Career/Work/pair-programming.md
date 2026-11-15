@@ -96,7 +96,7 @@ sequenceDiagram
 | 도구 | 특징 |
 | --- | --- |
 | VS Code Live Share | 확장 설치 후 링크로 초대한다. 같은 파일 동시 편집, 터미널·로컬 서버 공유, 상대 커서 따라가기(Follow)를 지원한다. 게스트에게 읽기 전용 또는 읽기·쓰기 권한을 줄 수 있다 |
-| JetBrains Code With Me | IntelliJ 계열 IDE의 같은 용도 기능 |
+| JetBrains Code With Me | IntelliJ 계열 IDE의 같은 용도 플러그인. 2026.1부터 IDE에서 분리돼 마켓플레이스 플러그인이 됐고, 2026.1이 공식 지원하는 마지막 IDE 버전이다(서비스 종료는 2027년 1분기 예정) |
 | 화면 공유 + 역할 교대 시 `git push`/`pull` | 도구 설치 없이 가능. 교대할 때마다 커밋을 넘긴다 |
 
 ## 정리
