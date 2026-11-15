@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="15" fill="#1f2328">
+  <title>2단계 잠금: 확장 단계에서는 잠금 수가 늘기만 하고, 잠금 지점 이후 축소 단계에서는 줄기만 한다</title>
+  <rect x="0" y="0" width="760" height="420" fill="#ffffff"/>
+  <rect x="80" y="70" width="260" height="250" fill="#dbe7ff" opacity="0.55"/>
+  <rect x="340" y="70" width="340" height="250" fill="#ffe8cc" opacity="0.55"/>
+  <g stroke="#57606a" stroke-width="1.5" fill="none">
+    <line x1="80" y1="320" x2="720" y2="320"/>
+    <line x1="80" y1="320" x2="80" y2="50"/>
+    <polyline points="74,60 80,50 86,60"/>
+    <polyline points="710,314 720,320 710,326"/>
+  </g>
+  <text x="80" y="38" font-weight="600" text-anchor="middle">잠금 수</text>
+  <text x="720" y="346" font-weight="600" text-anchor="end">시간</text>
+  <polyline points="80,320 110,320 110,270 170,270 170,220 240,220 240,170 340,170 340,120 400,120 400,170 470,170 470,220 550,220 550,270 620,270 620,320 680,320" fill="none" stroke="#2f5fb3" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="340" y1="120" x2="340" y2="320" stroke="#1f2328" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <circle cx="340" cy="120" r="5" fill="#1f2328"/>
+  <text x="352" y="104" font-weight="600">잠금 지점(lock point)</text>
+  <text x="352" y="86" fill="#57606a" font-size="14">마지막 잠금을 얻은 순간</text>
+  <g text-anchor="middle">
+    <text x="210" y="366" font-weight="600" fill="#2f5fb3">확장 단계</text>
+    <text x="210" y="388" fill="#57606a">잠금만 얻는다</text>
+    <text x="510" y="366" font-weight="600" fill="#b35c00">축소 단계</text>
+    <text x="510" y="388" fill="#57606a">잠금만 푼다 (새 잠금 불가)</text>
+  </g>
+</svg>

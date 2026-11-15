@@ -26,13 +26,13 @@ sources: ["https://quasar.dev/quasar-cli-vite/lint-and-format-code", "https://ve
 
 Quasar 앱은 **레이아웃**(헤더·사이드 메뉴 같은 틀)과 그 안에 바뀌어 들어가는 **페이지**로 나뉜다. Vue Router의 중첩 라우트(nested routes)를 그대로 쓴다.
 
-```text
-<q-layout>                  ← src/layouts/MainLayout.vue
-  ├─ <q-header>             ← 상단 바
-  ├─ <q-drawer>             ← 햄버거 버튼으로 여닫는 사이드 메뉴(Layout Drawer)
-  └─ <q-page-container>
-       └─ <router-view />   ← 자식 라우트의 페이지가 들어가는 자리
-            └─ <q-page>     ← src/pages/*.vue 의 최상위
+```mermaid
+flowchart TB
+  layout["q-layout<br/>(src/layouts/MainLayout.vue)"] --> header["q-header<br/>상단 바"]
+  layout --> drawer["q-drawer<br/>햄버거 버튼으로 여닫는 사이드 메뉴(Layout Drawer)"]
+  layout --> pc["q-page-container"]
+  pc --> rv["router-view<br/>자식 라우트의 페이지가 들어가는 자리"]
+  rv --> page["q-page<br/>(src/pages/*.vue 의 최상위)"]
 ```
 
 ```vue

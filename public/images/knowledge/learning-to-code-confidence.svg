@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="15" fill="#1f2328">
+  <title>개발 학습의 자신감과 실력 곡선: 강의 단계에서 치솟고 혼란의 절벽에서 떨어져 절망의 사막을 지나 상승기에 다시 오른다</title>
+  <rect x="0" y="0" width="800" height="420" fill="#ffffff"/>
+  <g stroke="#57606a" stroke-width="1.5" fill="none">
+    <line x1="70" y1="340" x2="760" y2="340"/>
+    <line x1="70" y1="340" x2="70" y2="40"/>
+    <polyline points="64,50 70,40 76,50"/>
+    <polyline points="750,334 760,340 750,346"/>
+  </g>
+  <text x="70" y="28" font-weight="600" text-anchor="middle">자신감</text>
+  <text x="760" y="366" font-weight="600" text-anchor="end">실력</text>
+  <path d="M72,320 C120,220 140,90 190,90 C240,90 250,290 310,300 C360,308 440,308 500,292 C570,272 650,190 730,90" fill="none" stroke="#2f5fb3" stroke-width="3" stroke-linecap="round"/>
+  <polyline points="716,94 730,90 726,104" fill="none" stroke="#2f5fb3" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+  <g font-weight="600">
+    <text x="190" y="72" text-anchor="middle">① 강의 단계</text>
+    <text x="252" y="190">② 혼란의 절벽</text>
+    <text x="405" y="282" text-anchor="middle">③ 절망의 사막</text>
+    <text x="606" y="196" text-anchor="end">④ 상승기</text>
+  </g>
+  <g fill="#57606a" font-size="14">
+    <text x="190" y="50" text-anchor="middle">Hand-Holding Honeymoon</text>
+    <text x="252" y="210">Cliff of Confusion</text>
+    <text x="405" y="262" text-anchor="middle">Desert of Despair</text>
+    <text x="606" y="216" text-anchor="end">Upswing of Awesome</text>
+  </g>
+</svg>

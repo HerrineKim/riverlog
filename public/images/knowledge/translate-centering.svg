@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 320" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="15" fill="#1f2328">
+  <title>top/left 50%만 주면 요소의 왼쪽 위 모서리가 중앙에 오고, translate(-50%, -50%)를 더하면 요소의 중심이 중앙에 온다</title>
+  <rect x="0" y="0" width="700" height="320" fill="#ffffff"/>
+  <text x="180" y="36" text-anchor="middle" font-weight="600">top/left 50%만</text>
+  <text x="520" y="36" text-anchor="middle" font-weight="600">translate(-50%, -50%) 추가</text>
+  <!-- left -->
+  <rect x="40" y="56" width="280" height="190" fill="#f6f8fa" stroke="#57606a" stroke-width="2"/>
+  <line x1="180" y1="56" x2="180" y2="246" stroke="#8c959f" stroke-width="1" stroke-dasharray="5 4"/>
+  <line x1="40" y1="151" x2="320" y2="151" stroke="#8c959f" stroke-width="1" stroke-dasharray="5 4"/>
+  <rect x="180" y="151" width="80" height="54" fill="#ffe8cc" stroke="#b35c00" stroke-width="2"/>
+  <circle cx="180" cy="151" r="5" fill="#b35c00"/>
+  <text x="180" y="282" text-anchor="middle">모서리가 중앙</text>
+  <!-- right -->
+  <rect x="380" y="56" width="280" height="190" fill="#f6f8fa" stroke="#57606a" stroke-width="2"/>
+  <line x1="520" y1="56" x2="520" y2="246" stroke="#8c959f" stroke-width="1" stroke-dasharray="5 4"/>
+  <line x1="380" y1="151" x2="660" y2="151" stroke="#8c959f" stroke-width="1" stroke-dasharray="5 4"/>
+  <rect x="480" y="124" width="80" height="54" fill="#d3f4dc" stroke="#1a7f37" stroke-width="2"/>
+  <circle cx="520" cy="151" r="5" fill="#1a7f37"/>
+  <text x="520" y="282" text-anchor="middle">요소의 중심이 중앙</text>
+  <text x="350" y="308" text-anchor="middle" font-size="13" fill="#57606a">점선의 교차점 = 뷰포트 중앙</text>
+</svg>

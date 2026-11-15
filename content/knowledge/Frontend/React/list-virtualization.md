@@ -18,16 +18,19 @@ sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/reac
 
 ## 원리
 
-```text
-스크롤 컨테이너 (height: 500px, overflow: auto)
-└─ 안쪽 박스 (height: 항목 수 × 항목 높이 = 10000 × 50 = 500000px)  ← 스크롤바 길이를 만든다
-   ├─ 항목 #120 (position: absolute; transform: translateY(6000px))
-   ├─ 항목 #121 (translateY(6050px))
-   └─ … 보이는 구간 + overscan 몇 개만
+```mermaid
+flowchart TB
+  box["스크롤 컨테이너<br/>(height: 500px, overflow: auto)"] --> inner["안쪽 박스<br/>(height: 항목 수 × 항목 높이 = 10000 × 50 = 500000px)<br/>스크롤바 길이를 만든다"]
+  inner --> i120["항목 #35;120<br/>(position: absolute; transform: translateY(6000px))"]
+  inner --> i121["항목 #35;121<br/>(translateY(6050px))"]
+  inner --> rest["… 보이는 구간 + overscan 몇 개만"]
+```
 
-scrollTop이 바뀔 때마다
-  시작 인덱스 = floor(scrollTop / 항목 높이) - overscan
-  끝 인덱스   = ceil((scrollTop + 컨테이너 높이) / 항목 높이) + overscan
+scrollTop이 바뀔 때마다 그릴 구간을 다시 계산한다.
+
+```text
+시작 인덱스 = floor(scrollTop / 항목 높이) - overscan
+끝 인덱스   = ceil((scrollTop + 컨테이너 높이) / 항목 높이) + overscan
 ```
 
 그래서 라이브러리는 **컨테이너 크기, 항목 수, 항목 높이(또는 추정치), 항목을 그리는 함수**를 받는다. 각 항목에는 라이브러리가 계산한 위치 스타일을 반드시 붙여야 한다. 빠뜨리면 모든 항목이 맨 위에 겹친다.

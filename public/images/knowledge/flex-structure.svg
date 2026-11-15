@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 370" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="15" fill="#1f2328">
+  <title>Flexbox 구조: 컨테이너, 아이템, 주축과 교차축</title>
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b35c00"/></marker></defs>
+  <rect width="660" height="370" fill="#ffffff"/>
+  <rect x="60.0" y="70.0" width="420.0" height="170.0" rx="6" fill="#fff4d6" stroke="#b35c00" stroke-width="2"/>
+  <rect x="80.0" y="90.0" width="130.0" height="130.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="145.0" y="160.2" text-anchor="middle" font-size="15" font-weight="600">item</text>
+  <rect x="226.0" y="90.0" width="80.0" height="130.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="266.0" y="160.2" text-anchor="middle" font-size="15" font-weight="600">item</text>
+  <rect x="322.0" y="90.0" width="138.0" height="130.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="391.0" y="160.2" text-anchor="middle" font-size="15" font-weight="600">item</text>
+  <text x="270.0" y="48.0" text-anchor="middle" font-size="15" font-weight="600">Flex Container (display: flex)</text>
+  <line x1="270" y1="54" x2="270" y2="70" stroke="#57606a" stroke-width="1.5"/>
+  <text x="145.0" y="280.0" text-anchor="middle" font-size="15" font-weight="600">Flex Item</text>
+  <line x1="145" y1="264" x2="145" y2="220" stroke="#57606a" stroke-width="1.5"/>
+  <line x1="60.0" y1="320.0" x2="540.0" y2="320.0" stroke="#b35c00" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="300.0" y="346.0" text-anchor="middle" font-size="15" fill="#b35c00">main axis (주축): 아이템이 나열되는 방향</text>
+  <line x1="540.0" y1="250.0" x2="540.0" y2="40.0" stroke="#b35c00" stroke-width="2" marker-end="url(#ah)"/>
+  <text x="556.0" y="150.0" text-anchor="start" font-size="15" fill="#b35c00">cross axis</text>
+  <text x="556.0" y="170.0" text-anchor="start" font-size="15" fill="#b35c00">(교차축)</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 540" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="15" fill="#1f2328">
+  <title>요소 하나의 상자: offsetWidth는 테두리까지, clientWidth는 스크롤바를 뺀 패딩 안쪽, scrollTop은 위로 가려진 길이</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker>
+  </defs>
+  <rect x="0" y="0" width="880" height="540" fill="#ffffff"/>
+  <!-- border box -->
+  <rect x="140" y="150" width="560" height="320" fill="#eaeef2" stroke="#57606a" stroke-width="2"/>
+  <!-- hidden scrolled part -->
+  <rect x="164" y="80" width="492" height="94" fill="#dbe7ff" fill-opacity="0.35" stroke="#2f5fb3" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="410" y="122" text-anchor="middle" fill="#57606a">스크롤로 위가 가려진 부분</text>
+  <!-- padding box -->
+  <rect x="164" y="174" width="492" height="272" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="2"/>
+  <!-- content box -->
+  <rect x="188" y="198" width="444" height="224" fill="#d3f4dc" stroke="#1a7f37" stroke-width="1.5"/>
+  <!-- scrollbar -->
+  <rect x="656" y="174" width="20" height="272" fill="#f6f8fa" stroke="#57606a" stroke-width="1.5"/>
+  <rect x="660" y="190" width="12" height="80" rx="6" fill="#8c959f"/>
+  <text x="150" y="167" font-size="13" fill="#57606a">border</text>
+  <text x="172" y="192" font-size="13" fill="#2f5fb3">padding</text>
+  <text x="410" y="306" text-anchor="middle" font-weight="600">content (보이는 부분)</text>
+  <!-- scrollbar callout -->
+  <line x1="680" y1="250" x2="722" y2="250" stroke="#57606a" stroke-width="1.5"/>
+  <text x="728" y="255">세로 스크롤바</text>
+  <!-- offsetWidth -->
+  <line x1="140" y1="36" x2="140" y2="150" stroke="#8c959f" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="700" y1="36" x2="700" y2="150" stroke="#8c959f" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="142" y1="50" x2="698" y2="50" stroke="#57606a" stroke-width="1.5" marker-start="url(#a)" marker-end="url(#a)"/>
+  <rect x="356" y="38" width="128" height="24" fill="#ffffff"/>
+  <text x="420" y="56" text-anchor="middle" font-weight="600">offsetWidth</text>
+  <!-- clientWidth -->
+  <line x1="164" y1="446" x2="164" y2="514" stroke="#8c959f" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="656" y1="446" x2="656" y2="514" stroke="#8c959f" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="166" y1="500" x2="654" y2="500" stroke="#2f5fb3" stroke-width="1.5" marker-start="url(#a)" marker-end="url(#a)"/>
+  <rect x="352" y="488" width="116" height="24" fill="#ffffff"/>
+  <text x="410" y="506" text-anchor="middle" font-weight="600" fill="#2f5fb3">clientWidth</text>
+  <!-- scrollTop -->
+  <line x1="100" y1="80" x2="164" y2="80" stroke="#8c959f" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="100" y1="174" x2="140" y2="174" stroke="#8c959f" stroke-width="1" stroke-dasharray="3 3"/>
+  <line x1="112" y1="82" x2="112" y2="172" stroke="#57606a" stroke-width="1.5" marker-start="url(#a)" marker-end="url(#a)"/>
+  <text x="102" y="132" text-anchor="end" font-weight="600">scrollTop</text>
+</svg>

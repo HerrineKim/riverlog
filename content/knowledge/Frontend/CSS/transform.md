@@ -111,16 +111,7 @@ sources: ["https://riverkim.kr/233", "https://developer.mozilla.org/en-US/docs/W
 }
 ```
 
-```text
-top/left 50%만        translate(-50%, -50%) 추가
-┌──────────────┐      ┌──────────────┐
-│              │      │              │
-│       ┌───┐  │      │     ┌───┐    │
-│       │   │  │      │     │ ● │    │
-│       └───┘  │      │     └───┘    │
-└──────────────┘      └──────────────┘
- 모서리가 중앙          요소의 중심이 중앙
-```
+![top/left 50%만 주면 요소의 왼쪽 위 모서리가 화면 중앙에 오고, translate(-50%, -50%)를 더하면 요소의 중심이 중앙에 온다](/images/knowledge/translate-centering.svg)
 
 요소 크기를 몰라도 동작한다는 점이 장점이다. 부모 안에서 가운데 두려면 `position: absolute`와 부모의 `position: relative`를 쓴다([[position|position]]).
 

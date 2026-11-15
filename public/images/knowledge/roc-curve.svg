@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="15" fill="#1f2328">
+  <title>ROC 곡선: 좋은 모델의 곡선은 왼쪽 위로 붙고, 대각선은 무작위 추측(AUC 0.5)이다</title>
+  <rect x="0" y="0" width="760" height="420" fill="#ffffff"/>
+  <path d="M80,360 C92,160 200,52 400,40 L400,360 Z" fill="#dbe7ff" opacity="0.6"/>
+  <g stroke="#57606a" stroke-width="1.5">
+    <line x1="80" y1="360" x2="410" y2="360"/>
+    <line x1="80" y1="360" x2="80" y2="30"/>
+    <line x1="400" y1="360" x2="400" y2="366"/>
+    <line x1="74" y1="40" x2="80" y2="40"/>
+  </g>
+  <rect x="80" y="40" width="320" height="320" fill="none" stroke="#d0d7de" stroke-dasharray="4 4"/>
+  <line x1="80" y1="360" x2="400" y2="40" stroke="#57606a" stroke-width="2" stroke-dasharray="7 6"/>
+  <path d="M80,360 C92,160 200,52 400,40" fill="none" stroke="#2f5fb3" stroke-width="3"/>
+  <g fill="#57606a">
+    <text x="68" y="45" text-anchor="end">1</text>
+    <text x="68" y="365" text-anchor="end">0</text>
+    <text x="80" y="384" text-anchor="middle">0</text>
+    <text x="400" y="384" text-anchor="middle">1</text>
+  </g>
+  <text x="80" y="22" font-weight="600" text-anchor="middle">TPR</text>
+  <text x="420" y="365" font-weight="600">FPR</text>
+  <circle cx="98" cy="250" r="5" fill="#b35c00"/>
+  <circle cx="290" cy="60" r="5" fill="#b35c00"/>
+  <text x="110" y="276" fill="#b35c00">임계값 높음</text>
+  <text x="290" y="88" fill="#b35c00" text-anchor="middle">임계값 낮음</text>
+  <line x1="372" y1="43" x2="440" y2="56" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="448" y="62" font-weight="600" fill="#2f5fb3">좋은 모델</text>
+  <text x="448" y="84" fill="#57606a">왼쪽 위로 붙는다</text>
+  <line x1="300" y1="140" x2="440" y2="200" stroke="#57606a" stroke-width="1.5"/>
+  <text x="448" y="200" font-weight="600">대각선</text>
+  <text x="448" y="222" fill="#57606a">무작위 추측 (AUC 0.5)</text>
+  <text x="250" y="300" fill="#2f5fb3" text-anchor="middle">AUC: 곡선 아래 넓이</text>
+</svg>

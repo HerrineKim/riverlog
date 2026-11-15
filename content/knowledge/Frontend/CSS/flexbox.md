@@ -71,7 +71,7 @@ Flexbox·Grid 등장 이후 float로 레이아웃을 짜는 일은 크게 줄었
 
 ## Flexbox
 
-![Flexbox 구조](/images/til/FRONTEND/CSS/CSS-Layout-float-flexbox-grid-.assets/image-20220824102559063.png)
+![Flexbox 구조: 컨테이너 안의 아이템, 가로 주축과 세로 교차축](/images/knowledge/flex-structure.svg)
 
 행 또는 열 **한 방향**으로 아이템을 배치하는 1차원 레이아웃 모델이다. 수동으로 값을 계산하지 않아도 정렬과 공간 분배를 해 준다.
 
@@ -93,13 +93,13 @@ Flexbox·Grid 등장 이후 float로 레이아웃을 짜는 일은 크게 줄었
 | 정렬 | `align-items` | `stretch` | 모든 아이템을 교차축 기준으로 정렬. 기본은 가장 높은 아이템에 맞춰 모두 늘어난다 |
 | 간격 | `gap` (`row-gap`, `column-gap`) | `normal`(0) | 아이템 사이 간격. 모든 주요 브라우저가 플렉스에서도 지원해, 아이템마다 margin을 주고 마지막 것만 빼는 우회가 필요 없다 |
 
-![flex-direction](/images/til/FRONTEND/CSS/CSS-Layout-float-flexbox-grid-.assets/image-20220824103520725.png)
+![flex-direction 네 값에 따른 주축 방향과 아이템 순서](/images/knowledge/flex-direction.svg)
 
 `row-reverse`, `column-reverse`는 순서를 바꾸는 것이 아니라 **주축의 시작점(main-start)을 반대편으로 옮길 뿐**이다. 화면 순서가 HTML 선언 순서와 달라져도 스크린 리더·키보드 탐색 순서는 소스 그대로라 어긋날 수 있다(접근성 주의). 행과 열이 쓰기 모드를 따르는 원리는 [[logical-properties|쓰기 모드와 논리적 속성]]에 있다.
 
 #### justify-content / align-content 값
 
-![justify-content](/images/til/FRONTEND/CSS/CSS-Layout-float-flexbox-grid-.assets/image-20220824104802744.png)
+![justify-content 여섯 값에 따른 주축 방향 배치](/images/knowledge/justify-content.svg)
 
 | 값 | 의미 |
 | --- | --- |
@@ -114,7 +114,7 @@ Flexbox·Grid 등장 이후 float로 레이아웃을 짜는 일은 크게 줄었
 
 #### align-items / align-self 값
 
-![align-items](/images/til/FRONTEND/CSS/CSS-Layout-float-flexbox-grid-.assets/image-20221015143757312.png)
+![align-items 다섯 값에 따른 교차축 정렬](/images/knowledge/align-items.svg)
 
 | 값 | 의미 |
 | --- | --- |
