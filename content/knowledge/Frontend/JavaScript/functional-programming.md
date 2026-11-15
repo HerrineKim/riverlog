@@ -1,0 +1,338 @@
+---
+title: "함수형 프로그래밍"
+concept: "Functional Programming"
+summary: "함수형 프로그래밍을 순수 함수·불변성·선언적 패턴이라는 학술 용어 대신 액션·계산·데이터 구분, 카피 온 라이트와 방어적 복사, 계층형 설계와 추상화 벽으로 다시 읽고, 인자를 미리 채워 함수를 특수화하는 커링과 부분 적용을 다룬다. 액션에서 계산을 빼내 테스트하기 쉬운 코드를 늘리고, 상태·변경·효과를 줄이고 모으고 미루는 리팩터링, 효과를 데이터로 반환하는 기법, 로직을 데이터로 적는 데이터 주도 프로그래밍, 프론트엔드의 요구사항을 입력에서 화면까지의 파이프라인으로 보는 법을 정리한다. 구조적 공유(영속 자료구조), data-last·자동 커링 라이브러리 규칙, 어플리커티브와 지연 Future, 대수적 데이터 타입까지."
+tags: ["javascript", "frontend", "functional-programming", "programming-paradigm"]
+source: other
+date: "2026-10-21"
+sources: ["https://velog.io/@teo/functional-programming", "https://velog.io/@teo/functional-programming-study", "https://80000coding.notion.site/d486a93b761940068431241a6c10cc45", "https://ko.javascript.info/currying-partials", "https://www.youtube.com/watch?v=vK1DazRK_a0", "https://evan-moon.github.io/2020/01/27/safety-function-composition/", "https://evan-moon.github.io/2020/01/05/what-is-immutable/", "https://github.com/lodash/lodash/wiki/FP-Guide", "https://auth0.com/blog/intro-to-immutable-js/", "http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/", "https://hackernoon.com/from-callback-to-future-functor-monad-6c86d9c16cb5", "http://blog.jenkster.com/2016/06/functional-mumbo-jumbo-adts.html", "http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html", "https://www.frontendinterviewhandbook.com/javascript-questions"]
+---
+
+> 테오(teo)의 「[다시 쓰는 함수형 프로그래밍](https://velog.io/@teo/functional-programming)」(2022.05)과 「[함수형 프로그래밍을 배워보자!](https://velog.io/@teo/functional-programming-study)」(2023.01)를 바탕으로 재구성한 노트다. 용어 틀은 에릭 노먼드의 『쏙쏙 들어오는 함수형 코딩』(Grokking Simplicity)에서 왔다. 펑터와 불변성의 비용은 「[어떻게 하면 안전하게 함수를 합성할 수 있을까?](https://evan-moon.github.io/2020/01/27/safety-function-composition/)」, 「[변하지 않는 상태를 유지하는 방법, 불변성(Immutable)](https://evan-moon.github.io/2020/01/05/what-is-immutable/)」를 바탕으로 보강했다. 영속 자료구조, 함수형 라이브러리의 규칙, 어플리커티브와 지연 Future, ADT는 「[lodash FP Guide](https://github.com/lodash/lodash/wiki/FP-Guide)」, 「[Introduction to Immutable.js and Functional Programming Concepts](https://auth0.com/blog/intro-to-immutable-js/)」, 「[Thinking in Ramda](http://randycoulman.com/blog/2016/05/24/thinking-in-ramda-getting-started/)」, 「[From Callback to Future -> Functor -> Monad](https://hackernoon.com/from-callback-to-future-functor-monad-6c86d9c16cb5)」, 「[Functional Mumbo Jumbo - ADTs](http://blog.jenkster.com/2016/06/functional-mumbo-jumbo-adts.html)」, 「[Functors, Applicatives, And Monads In Pictures](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html)」을 바탕으로 보강했다.
+> 명령형과 선언형 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JavaScript] JavaScript 는 어떤 언어인가?」를 바탕으로 더한 노트다.
+> 커링과 부분 적용은 javascript.info(모던 JavaScript 튜토리얼)의 「커링」 글을 바탕으로 더했다.
+> 상태를 줄이고·모으고·미루는 법과 데이터 주도 프로그래밍은 Rafal Dittwald의 Clojure/north 2019 발표 「[Solving Problems the Clojure Way](https://www.youtube.com/watch?v=vK1DazRK_a0)」를 바탕으로 더했다.
+> 불변성의 장단점은 Front End Interview Handbook의 「[JavaScript 질문](https://www.frontendinterviewhandbook.com/javascript-questions)」을 더해 보강했다.
+
+## 함수형 프로그래밍이란
+
+프로그램은 결국 **상태(데이터)의 변화를 다루는 일**이다. 커질수록 바뀌는 상태가 많아져 문제의 후보지가 늘어난다. 두 패러다임은 이것을 다르게 정리한다.
+
+| 패러다임 | 관점 | 강점 |
+| --- | --- | --- |
+| 객체 지향 | **관심사가 같은 것끼리 묶어** 작은 프로그램(객체)으로 조립한다 | `.`만 찍어도 할 수 있는 일이 보인다. 캡슐화로 내부를 숨긴다. 익숙하다 |
+| 함수형 | **상태를 바꾸는 것과 바꾸지 않는 것을 나눈다** | 검증된 순수 함수를 조립하면 문제 범위가 부수 효과로 좁혀진다. 테스트가 쉽다 |
+
+천동설과 지동설처럼 둘 다 현상을 설명할 수 있다. 어느 쪽이 더 간결한지의 문제다. 함수형이 객체 지향보다 늘 나은 것도 아니다. 다만 JavaScript는 함수형 기반 위에 Java 문법을 입힌 **멀티 패러다임 언어**라([[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]]), 배열 메서드·Promise·이벤트 리스너·React 훅·Redux에 이미 함수형 사고가 녹아 있다. 두 패러다임을 구분해 섞을 줄 알아야 JavaScript를 잘 쓴다.
+
+프론트엔드에서 함수가 유리한 이유가 하나 더 있다. 객체의 메서드·속성 이름은 문자열로도 접근할 수 있어 **minify로 줄일 수 없고**, 클래스는 메서드 단위로 **트리 셰이킹**이 안 된다. 함수는 둘 다 된다.
+
+## 학술 용어 다시 쓰기
+
+| 흔한 용어 | 다시 쓴 말 | 실천 |
+| --- | --- | --- |
+| 순수 함수 vs 부수 효과 | **액션 · 계산 · 데이터** | 액션에서 계산을 빼낸다 |
+| 불변성 | **카피 온 라이트, 방어적 복사** | 원본을 고치지 않고 복사해서 바꾼다 |
+| 선언적 패턴 | **계층형 설계, 추상화 벽** | "무엇"과 "어떻게"를 층으로 나눈다 |
+
+"부수 효과를 멀리하라"는 말은 오해를 부른다. 서버 통신, DOM 변경, 로그가 없는 프로그램은 쓸모가 없다. 부수 효과를 없애는 게 아니라 **구분해서 최소화하는** 것이 목표다.
+
+## 명령형과 선언형
+
+**명령형**은 "어떻게(how)"를 단계별로 지시하고, **선언형**은 "무엇을(what)" 원하는지 적는다. 절차적·객체 지향 코드는 명령형에, 함수형·논리형 코드는 선언형에 속한다.
+
+```js
+const fruits = ['yellow banana', 'red apple', 'black banana'];
+
+// 명령형: 반복 변수, 조건, 결과 배열을 직접 관리한다
+const bananas = [];
+for (let i = 0; i < fruits.length; i++) {
+  if (fruits[i].includes('banana')) bananas.push(fruits[i]);
+}
+
+// 선언형: 조건만 말하고 반복은 filter에 맡긴다
+const bananas2 = fruits.filter((f) => f.includes('banana'));
+```
+
+명령형은 중간에 멈추기(`break`) 같은 세밀한 제어가 쉽고 경우에 따라 더 빠르다. 대신 길어지고 인덱스·조건 실수로 버그가 끼기 쉽다. 선언형은 의도가 한눈에 보인다. JavaScript에서 이것이 가능한 이유는 **함수가 일급 객체**라서다. 함수를 값처럼 변수에 담고, 인자로 넘기고, 반환할 수 있으므로 `filter`·`map` 같은 고차 함수에 "무엇을"을 함수로 건넬 수 있다.
+
+## 1. 액션, 계산, 데이터
+
+| 구분 | 정의 | 카운터 예 |
+| --- | --- | --- |
+| 데이터 | 이벤트에 대한 사실 | 현재 숫자 |
+| 계산 | 입력으로 출력을 만든다. 같은 입력이면 늘 같은 출력, 외부에 영향 없음 (= 순수 함수) | `value + 1` |
+| 액션 | **호출 시점과 횟수에 따라** 결과가 달라진다 | 클릭해서 숫자를 올린다 |
+
+```tsx
+function Counter() {
+  const [count, setCount] = useState(0);         // 데이터
+  const increase = (n: number) => n + 1;          // 계산
+  const onClick = () => setCount(increase(count)); // 액션
+  return <button onClick={onClick}>{count}</button>;
+}
+```
+
+함수를 쪼갰다고 계산이 되는 건 아니다. 안에서 `setState`를 부르는 `increase()`는 여전히 액션이다. **액션은 그것을 부르는 함수까지 전염된다.** 그래서 목표는 액션을 최소로, 계산을 최대로 두는 것이다.
+
+### 액션에서 계산 빼내기
+
+함수에는 명시적 입출력(인자, 반환값) 말고 **암묵적 입출력**이 있다. 함수 밖 변수를 읽는 것이 암묵적 입력, 전역 변수·DOM·콘솔을 바꾸는 것이 암묵적 출력이다. 둘이 섞여 있으면 액션이고 테스트하기 어렵다.
+
+1. 암묵적 출력 하나하나를 기준으로 관련 코드를 모아 함수로 뺀다.
+2. 반환값이 없으면 만든다(대개 마지막에 쓰는 변수).
+3. 안에서 쓰는 모든 데이터를 인자로 받게 바꾼다.
+4. 외부를 바꾸지 않도록 필요하면 복사한다.
+5. 암묵적 입출력은 바깥 액션에 모은다.
+
+```ts
+const increase = (count: number, step: number) => count + step; // 계산
+const onClick = () => setCount(increase(count, 1));             // 액션
+```
+
+## 2. 불변성: 복사해서 바꾼다
+
+JavaScript는 객체·배열을 참조로 넘긴다. 계산 안에서 `arr.push()`를 하면 바깥 원본이 바뀌어 다시 액션이 된다.
+
+| 기법 | 언제 | 방법 |
+| --- | --- | --- |
+| 카피 온 라이트(얕은 복사) | 내가 쓰는 변경 코드 | `[...arr, x]`, `{ ...obj, name }` |
+| 방어적 복사(깊은 복사) | 고칠 수 없는 라이브러리가 인자를 변경할 때 | `structuredClone(obj)`로 사본을 넘긴다 |
+
+중첩 객체를 카피 온 라이트로 바꾸면 스프레드가 겹겹이 쌓인다. JavaScript가 불변 문법을 지원하지 않아서다. immer, Immutable.js 같은 라이브러리가 이 빈자리를 메운다.
+
+| 방식 | 원리 | 비용 |
+| --- | --- | --- |
+| 스프레드로 경로 복사 | 바뀐 경로의 객체만 새로 만들고 나머지는 참조를 그대로 둔다 | 깊을수록 코드가 길어진다 |
+| immer | 초안(draft) 객체를 마음대로 고치게 하고, `Proxy`로 기록한 변경만 반영해 새 객체를 만든다 | 일반 객체·배열을 그대로 쓴다. Redux Toolkit이 내장한다 |
+| Immutable.js(영속 자료구조) | `Map`·`List`를 트리(해시 배열 매핑 트라이)로 저장한다. `set`은 바뀐 노드의 경로만 새로 만들고 나머지 가지는 이전 버전과 **공유**한다(구조적 공유) | 큰 컬렉션의 잦은 변경이 싸다. 대신 `get('key')` 같은 전용 API를 써야 하고 일반 객체와 오갈 때 `toJS()` 변환 비용이 든다 |
+
+구조적 공유 덕분에 이전 버전이 그대로 남아, 변경 감지는 참조 비교 한 번(`prev !== next`)으로 끝나고 실행 취소(undo)도 이전 참조를 들고 있으면 된다.
+
+- `const`는 **재할당**만 막는다. 객체 내부 값은 그대로 바꿀 수 있다. 불변성은 이름이 아니라 메모리의 값을 바꾸지 않는 것이다.
+- React와 Redux는 `Object.is`로 이전·다음 상태를 **참조 비교**해 변화를 감지한다. 원본을 고치면 참조가 같아 변화를 놓치므로 새 객체를 만들어 돌려준다.
+- 불변 값은 함수에 넘기거나 돌려받을 때 **방어적 복사가 필요 없고**, 여러 곳에서 같은 객체를 공유하거나 캐시해도 안전하다. 시간에 따라 어떻게 바뀌는지 추적할 필요가 없어 코드를 읽기 쉽고, 다중 스레드 언어에서는 잠금 없이 스레드끼리 나눠 쓸 수 있다.
+- 비용도 있다. 바꿀 때마다 새 객체를 만드는 단순한 구현은 작은 객체를 대량으로 할당·해제해 GC 부담이 커진다. 큰 데이터라면 구조적 공유를 하는 라이브러리를 쓴다. 생성 비용이 큰 인스턴스(오디오 노드, 대형 버퍼)를 매번 새로 만들면 느려지고, 변경을 전제로 설계된 객체지향 API와는 맞지 않는다. 그래프처럼 **서로를 가리키는 순환 구조**는 만든 뒤 바꿀 수 없으면 짓기 어렵다. 그런 곳은 변경을 한 모듈 안에 가두고 바깥에는 불변처럼 보이게 한다.
+- 언어 차원에서 객체를 잠그는 `Object.freeze`·`seal`·`preventExtensions`의 차이는 [[property-descriptors|속성 설명자]]에 있다. 원시값(숫자·문자열)은 처음부터 불변이다.
+
+## 3. 계층형 설계와 추상화 벽
+
+액션·계산·데이터로 나누고 조합하다 보면 함수 사이에 자연스럽게 **계층**이 생긴다.
+
+```mermaid
+flowchart TB
+  up["위: 액션에 가까움<br/>#quot;무엇을 하나#quot; 기획서 같은 코드, 데이터 구조를 몰라도 된다"]
+  wall["추상화 벽<br/>위의 변화가 아래로, 아래의 변화가 위로 번지지 않는다"]
+  down["아래: 계산·데이터에 가까움<br/>재사용성이 높고 테스트하기 쉬운 조각"]
+  up --- wall --- down
+```
+
+**계층을 건너뛰는 호출을 만들지 않는 것**이 좋은 구조를 유지하는 규칙이다. mock API든 실서버든 같은 호출부를 쓰는 것과 같은 원리다. 연습 방법은 함수 이름만 블록으로 적고 콜 트리를 그린 뒤, 같은 층에 비슷한 함수가 모였는지, 층을 한꺼번에 뛰어넘는 곳이 없는지 보는 것이다.
+
+## 4. 프론트엔드 요구사항은 파이프라인이다
+
+함수형에서는 호출을 콜 스택보다 **데이터의 단방향 흐름**으로 본다. 순수 함수를 조립하면 결국 입력과 출력을 가진 큰 함수 하나가 된다. 프론트엔드 요구사항은 대개 이 틀이다.
+
+```mermaid
+flowchart LR
+  n1["사용자 행동<br/>(event)"] --> n2["기존 데이터 조회<br/>(state, fetch)"] --> n3["조건 판단<br/>(if)"] --> n4["가공<br/>(logic)"] --> n5["보기 좋게 변환<br/>(formatter)"] --> n6["화면 데이터<br/>(render)"]
+```
+
+`UI = f(state)`의 관점이다. 왼쪽에 행동과 인자, 오른쪽에 화면에서 바뀔 데이터를 놓고 가운데 함수를 채우면 구조가 보인다.
+
+## 5. 상태를 줄이고, 모으고, 미룬다
+
+부수 효과를 없앨 수는 없다. 대신 상태(제자리에서 바뀌는 값), 그 상태를 바꾸는 변경, 바깥에 영향을 주는 효과 세 가지를 모두 **줄이고(minimize), 한곳에 모으고(concentrate), 끝으로 미룬다(defer).**
+
+| 방법 | 기법 |
+| --- | --- |
+| 줄이기 | **값을 저장하지 말고 계산한다.** 틱택토의 「누구 차례」는 채워진 칸 수로 알 수 있으니 변수로 들고 있지 않는다. 바꾸는 대신 **복사**한다. 반복문 대신 `map`·`filter`·`reduce` 같은 고차 함수와 재귀로 반복 상태를 언어에 맡긴다 |
+| 모으기 | 상태는 흩어진 변수 여럿이 아니라 **값 하나**로 묶고, 변경과 효과는 프로그램 바깥쪽 한곳에서만 일어나게 한다 |
+| 미루기 | 효과를 마지막 단계나 별도 시스템으로 넘긴다. React는 DOM 변경을, 데이터베이스는 저장을 대신 맡는다. 코드는 「무엇을 원하는지」만 선언한다 |
+
+복사가 비싸 보이지만, Clojure 같은 함수형 언어의 **영속 자료 구조**(persistent data structure)는 원본과 구조를 공유해 바뀐 부분만 새로 만든다. 아무도 원본을 바꿀 수 없으니 공유해도 안전하다. JavaScript에서는 immer·Immutable.js가 이 역할을 한다.
+
+### 리팩터링 순서: 명령형 게임 루프를 순수하게
+
+카드 게임 한 판을 돌리는 명령형 코드(전역 변수 몇 개, `while` 루프 안의 `splice`·점수 증가·`console.log`)를 함수형으로 바꾸는 순서다. 처음부터 함수형으로 쓰려 애쓰기보다 **아무렇게나 짠 뒤 조금씩 옮기면** 습관이 붙는다.
+
+```mermaid
+flowchart TB
+  s1["1. 안쪽 함수의 console.log를 바깥 루프로 옮긴다<br/>효과 모으기"]
+  s2["2. 배열을 splice하던 helper가 고른 값만 반환하게 한다<br/>helper가 순수해진다. 변경은 루프로"]
+  s3["3. 메시지를 정하는 if문과 출력을 떼어 낸다<br/>winMessage(scores) → 문자열"]
+  s4["4. 흩어진 상태 변수를 state 객체 하나로 묶는다"]
+  s5["5. nextState(state) → 새 state 함수를 만든다<br/>게임 규칙 전체가 순수 함수에 들어간다"]
+  s6["6. state 하나를 덮어쓰지 말고 states 배열에 쌓는다<br/>매 턴의 상태가 기록으로 남는다"]
+  s7["7. 「상태를 만드는 단계」와 「출력하는 단계」로 나눈다<br/>report(states, turnMessage, endMessage)"]
+  s8["8. while 루프를 재귀로 바꾼다 (선택)<br/>변경하는 코드가 사라진다"]
+  s1 --> s2 --> s3 --> s4 --> s5 --> s6 --> s7 --> s8
+```
+
+끝나면 코드의 대부분이 입력을 받아 출력을 돌려주는 순수 함수이고, 효과는 마지막 보고 함수 한곳에만 남는다. 과정에서 `nextState`, `turnMessage`, `endMessage`처럼 **이름 붙일 만한 책임**이 저절로 드러난다. 객체 지향으로 `Game`·`Player`·`Deck` 클래스를 나누는 것은 상태를 정리할 뿐 줄이지 않는다. 변경과 효과가 여전히 객체마다 흩어져 있다.
+
+순수 함수가 좋은 이유는 이것이다.
+
+- 그 함수만 보면 이해된다. 나머지 세계를 무시해도 된다.
+- 테스트가 값 비교로 끝난다. 콘솔·DB를 목으로 만들 필요가 없다([[humble-object-pattern|험블 객체 패턴]]).
+- 병렬로 돌리기 쉽다.
+- 같은 입력이면 같은 출력이라 **메모이제이션**이 공짜다. 재귀 피보나치처럼 지수 시간이 드는 계산도 캐시만 씌우면 빨라진다.
+
+### 프론트엔드 상태가 위로 모이는 이유
+
+React 초기에는 객체 지향 습관대로 상태를 쓰는 컴포넌트 안에 넣었다. 그런데 형제 컴포넌트가 같은 상태를 보거나 바꿔야 하면 공통 조상으로 올려야 하고, 앱이 커지면 상태는 결국 루트까지 올라간다. 그래서 **처음부터 한곳(스토어)에 모으고** 컴포넌트는 값을 받아 화면을 돌려주는 순수 함수로 두는 방식이 자리 잡았다. 여러 단계로 props를 내려보내는 번거로움 때문에 스토어를 어디서든 읽게 하면 컴포넌트가 다시 조금 불순해지지만, 전역이 **하나뿐이라면** 감수할 만하다. Redux와 ClojureScript의 re-frame이 이 모델이다([[redux|Redux]], [[react-state-management|React 상태 관리]]).
+
+### 효과를 데이터로 돌려준다
+
+이벤트 핸들러가 AJAX 호출, 다른 이벤트 발행, 상태 갱신을 직접 하면 테스트하려면 네트워크를 목으로 만들어야 한다. re-frame은 핸들러가 **하고 싶은 효과를 기술한 데이터만 반환**하고 실행은 프레임워크가 맡게 바꿨다.
+
+```js
+// 직접 한다: 액션
+function addToCart(db, product) {
+  ajax.post('/cart', { id: product.id });
+  dispatch('cart-updated');
+  return { ...db, cart: [...db.cart, product] };
+}
+
+// 원하는 것만 적는다: 계산
+function addToCart(db, product) {
+  return {
+    db: { ...db, cart: [...db.cart, product] },
+    http: { method: 'post', url: '/cart', body: { id: product.id } },
+    dispatch: 'cart-updated',
+  };
+}
+```
+
+두 번째 함수의 테스트는 반환값 비교뿐이다. 효과를 실제로 일으키는 복잡한 부분은 한곳에 모여 따로 테스트된다. React의 선언적 렌더링, Elm 아키텍처의 명령(Cmd), redux-loop도 같은 생각이다.
+
+## 6. 데이터 주도: 로직을 데이터로 적는다
+
+함수형과 함께 Clojure 커뮤니티가 강조하는 축이 **데이터 주도**(data-driven) 프로그래밍이다. 합의된 정의는 없지만 세 가지 뜻으로 쓰인다.
+
+| 뜻 | 내용 |
+| --- | --- |
+| 데이터 먼저 생각하기 | 프로그램을 데이터가 어디서 와서 어떻게 변환되는지의 파이프라인으로 설계한다 |
+| 평범한 자료 구조 | 클래스·전용 타입 대신 맵과 벡터(객체와 배열)로 데이터를 주고받는다. 어디서나 같은 함수로 다룰 수 있다 |
+| 데이터로 제어 흐름 기술 | 동작을 코드 대신 **데이터 구조로 적고**, 그것을 해석하는 코드는 하나만 둔다. 「설정 주도 개발」이라고 생각하면 쉽다 |
+
+세 번째 뜻의 예:
+
+- **AWS SDK**: 각 서비스의 작업·입력·출력·오류를 언어 중립 모델 파일(JSON)로 기술하고, 언어별 SDK는 이 모델에서 생성된다. 수천 개의 API를 언어마다 손으로 구현하지 않는다.
+- **Hiccup**: HTML을 `[:div {:class "card"} [:h2 "제목"]]` 같은 벡터·맵으로 적는다. JSX처럼 별도 문법이 섞이지 않고, 평소 쓰는 데이터 함수로 만들고 고칠 수 있다. CSS도 같은 방식이 있다.
+- **라우팅**: 매크로·함수로 라우트를 정의하면 결과가 불투명한 함수 하나뿐이지만, 라우트 표를 데이터로 적으면 검사·변환·문서화가 된다.
+
+데이터는 동작이 없는 가장 순수한 값이라 **눈으로 볼 수 있고, 다른 코드로 조작할 수 있다.** 코드를 데이터로 다루는 매크로보다 데이터를 해석하는 함수를 선호하는 이유다.
+
+이상은 순수 함수와 데이터지만 실제 문제는 지저분하다. 필요하면 상태를 쓰되, 기본값을 함수형과 데이터 쪽에 둔다.
+
+## 7. 커링과 부분 적용
+
+**부분 적용(partial application)** 은 인자 일부를 미리 채워 둔, 인자가 더 적은 새 함수를 만드는 것이다. **커링(currying)** 은 `f(a, b, c)`를 `f(a)(b)(c)`처럼 인자를 하나씩 받는 함수의 연쇄로 **변환**하는 것이다. 커링은 함수를 호출하지 않고 모양만 바꾼다. 커링한 함수는 앞쪽 인자만 넘겨 호출하는 것만으로 부분 적용된 함수가 나오므로, 둘은 함께 쓰인다.
+
+```javascript
+function curry(fn) {
+  return function curried(...args) {
+    if (args.length >= fn.length) return fn.apply(this, args) // 인자가 다 모이면 원래 함수 호출
+    return (...more) => curried.apply(this, [...args, ...more]) // 모자라면 모아 둔 채 다음 인자를 기다린다
+  }
+}
+
+const log = curry((date, level, message) => console.log(`[${date.toISOString()}] [${level}] ${message}`))
+log(new Date(), 'INFO', '그대로 호출해도 된다') // 원래처럼
+const logNow = log(new Date())                  // 첫 인자를 고정한 부분 적용 함수
+const debugNow = logNow('DEBUG')                // 하나 더 고정
+debugNow('메시지')
+```
+
+| 기법 | 형태 | 비고 |
+| --- | --- | --- |
+| 클로저로 직접 | `const add5 = (b) => add(5, b)` | 가장 읽기 쉽다. 순서와 상관없이 어느 인자든 고정할 수 있다 |
+| `bind` | `const double = mul.bind(null, 2)` | 앞쪽 인자를 채운다. `this`도 함께 정해지므로 메서드에는 주의한다([[functions\|함수와 this]]) |
+| `partial` 헬퍼 | `user.sayNow = partial(user.say, '10:00')` | 인자만 채우고 **this는 호출할 때 정한다**. 메서드에 쓴다(lodash `_.partial`) |
+| 커링 헬퍼 | `_.curry(fn)`(lodash), Ramda의 모든 함수 | 한 번에 다 넘겨도, 나눠 넘겨도 된다 |
+
+`bind`는 첫 인자로 반드시 `this`를 받으므로, 메서드처럼 this는 그대로 두고 인자만 고정하려면 헬퍼를 쓴다.
+
+```javascript
+function partial(func, ...bound) {
+  return function (...args) {
+    return func.call(this, ...bound, ...args) // this는 호출 시점의 것
+  }
+}
+```
+
+- 커링 헬퍼는 `fn.length`(선언된 매개변수 수)로 인자가 다 모였는지 판단한다. 그래서 **매개변수 개수가 고정된 함수**에만 쓴다. rest 매개변수(`...args`)와, 기본값이 있는 첫 매개변수부터 뒤의 매개변수는 `length`에 세지 않아 의도대로 동작하지 않는다.
+- 커링은 **자주 바뀌지 않는 인자를 앞에** 둘 때 쓸모가 있다. 설정·날짜·로그 레벨처럼 한 번 정하면 반복되는 인자를 고정해 두고, 매번 달라지는 데이터는 마지막에 받는다. `map(logNow('INFO'))`처럼 고차 함수에 바로 넘길 수 있는 인자 하나짜리 함수가 나오는 것도 장점이다.
+- 함수를 이어 붙이는 `pipe`·`compose`가 인자 하나짜리 함수를 기대하므로, 함수형 라이브러리는 데이터를 마지막 인자로 받고 자동으로 커링한다.
+
+함수형 라이브러리(Ramda, `lodash/fp`)가 일반 유틸 라이브러리와 다른 점은 다섯 가지다.
+
+| 규칙 | 뜻 | 예 |
+| --- | --- | --- |
+| 데이터는 마지막(data-last) | 변환 함수를 먼저, 데이터를 나중에 받는다 | `_.map(arr, fn)` → `fp.map(fn)(arr)` |
+| 자동 커링 | 인자를 나눠 넘겨도 된다 | `const toNames = R.map(R.prop('name'))`: 데이터 없이 함수를 만든다(포인트 프리) |
+| 고정된 인자 수 | 선택 인자를 없애 커링이 예측 가능하다 | `fp.padStart(3)('a')`는 공백, 채울 문자는 `fp.padCharsStart('-')(3)('a')`로 따로 |
+| 콜백 인자 개수 제한 | `map` 콜백에 값 하나만 넘긴다 | `['6', '8', '10'].map(parseInt)`는 `parseInt('8', 1)`처럼 인덱스가 진법으로 들어가 `[6, NaN, 2]`다. `fp.map(parseInt)`는 `[6, 8, 10]` |
+| 불변 | 입력을 바꾸지 않고 새 값을 돌려준다 | `fp.set('a.b', 1)(obj)` |
+
+마지막 `parseInt` 함정은 함수형 라이브러리를 쓰지 않아도 알아 둘 만하다. 콜백에 함수 참조를 바로 넘기면 `map`이 넘기는 `(value, index, array)`가 모두 들어간다. 의도한 인자만 넘기려면 `arr.map((s) => parseInt(s, 10))`이나 `arr.map(Number)`로 감싼다.
+
+## 8. 펑터와 Maybe: 실패할 수 있는 함수를 안전하게 합성한다
+
+두 함수를 합성하려면 앞 함수의 출력 타입이 뒤 함수의 입력 타입과 맞아야 한다. 그런데 순수 함수라도 빈 문자열을 받으면 `undefined`를 돌려주는 식으로 **예상 밖의 값**을 낼 수 있고, 그 값이 다음 함수로 흘러가면 합성 전체가 깨진다. 호출할 때마다 `if (x == null)`을 넣으면 검사가 곳곳에 흩어진다.
+
+해법은 값을 **상자(문맥)에 담고, 검사를 상자 안에 한 번만** 두는 것이다.
+
+| 개념 | 뜻 | JavaScript에서 |
+| --- | --- | --- |
+| **펑터(Functor)** | 값을 감싼 상자. `map`으로 안의 값을 바꾸고 **새 상자**를 돌려준다. 상자의 구조는 그대로다 | `Array.prototype.map`, `Promise.then`(값이 나중에 생기는 상자) |
+| **Maybe** | 값이 있을 수도 없을 수도 있는 상자. `Just(x)`는 `map`을 적용하고, `Nothing`은 `map`을 무시하고 자기 자신을 돌려준다 | 옵셔널 체이닝 `a?.b?.c`가 같은 생각의 문법 버전이다 |
+| **어플리커티브(Applicative)** | 상자에 든 **함수**를 상자에 든 값에 적용(`ap`)한다. 서로 의존하지 않는 상자 여러 개를 합칠 때 쓴다 | `Promise.all([a, b]).then(([x, y]) => f(x, y))`가 같은 일을 한다 |
+| **모나드(Monad)** | 상자를 돌려주는 함수를 이어 붙일 때 상자가 겹치지 않게 펴 주는(`flatMap`, `chain`) 상자 | `Array.prototype.flatMap`, 중첩 Promise를 자동으로 펴는 `then` |
+
+세 개념의 차이는 "무엇이 상자에 들어 있나"다. 펑터는 평범한 함수를 상자 속 값에, 어플리커티브는 상자 속 함수를 상자 속 값에, 모나드는 상자를 돌려주는 함수를 상자 속 값에 적용한다.
+
+Promise는 이 성질을 대부분 갖지만 순수한 모나드는 아니다. **만드는 순간 실행되고(eager)**, `then`이 값과 Promise를 구분해 자동으로 펴기 때문이다. 함수형 라이브러리의 Future·Task는 `fork()`나 `run()`을 부르기 전까지 아무것도 하지 않는 **지연(lazy)** 상자라서, 비동기 작업을 값처럼 조합해 두고 실행 시점을 바깥에서 정한다. 콜백을 받는 함수 → 그 콜백을 감싼 상자(Future) → `map`(펑터) → `chain`(모나드)으로 넓혀 가면 콜백 지옥이 평평한 사슬이 된다.
+
+```js
+const Just = (x) => ({ map: (f) => Maybe(f(x)), get: () => x });
+const Nothing = { map: () => Nothing, get: () => undefined };
+const Maybe = (x) => (x == null ? Nothing : Just(x));
+
+Maybe(user).map((u) => u.profile).map((p) => p.name).get(); // 중간이 비어도 터지지 않는다
+```
+
+중간마다 검사하지 않고 **합성에만 집중**한 뒤 마지막에 한 번 결과를 확인한다. 실패 이유까지 전달하려면 성공·실패 두 갈래를 갖는 `Either`(`Result`) 상자를 쓰고, 이 방식으로 오류 처리를 이어 붙이는 것을 철도 지향 프로그래밍(Railway Oriented Programming)이라 부른다.
+
+## 9. 대수적 데이터 타입: 불가능한 상태를 만들 수 없게
+
+**대수적 데이터 타입(ADT)** 은 타입을 두 연산으로 조합하는 방식이다.
+
+| 종류 | 연산 | 가능한 값의 수 | JavaScript·TypeScript에서 |
+| --- | --- | --- | --- |
+| 곱 타입(product) | A **그리고** B | A의 경우의 수 × B의 경우의 수 | 객체, 튜플 `{ name: string; age: number }` |
+| 합 타입(sum) | A **또는** B 중 하나 | A + B | 태그가 붙은 유니언 `{ type: 'ok'; id: string } \| { type: 'expired'; card: Card }` |
+
+곱 타입만 쓰면 불리언 플래그와 선택 필드가 늘어나, `isLoading: true`인데 `error`도 있는 식의 **있을 수 없는 조합**이 타입상 허용된다. 합 타입으로 "로딩 중 / 성공(데이터) / 실패(에러)" 중 정확히 하나만 되게 짜면 그런 상태를 아예 만들 수 없다. 결제 응답처럼 결과마다 딸린 데이터가 다른 경우가 대표적이다. TypeScript에서는 판별 필드(`type`·`status`)로 나눈 유니언과 `switch`의 철저성 검사로 구현한다([[typescript-basics#구분된 유니언|TypeScript 기초]]). Maybe·Either도 합 타입이다.
+
+## 한계: 왜 널리 쓰이지 못하나
+
+- 불변 갱신 문법이 없어 바닐라 JS로는 코드가 장황하다. 결국 라이브러리가 필요해진다.
+- `pluck`, `groupBy` 같은 유틸이 쌓이면 lodash·Ramda로 가는데, 어휘가 너무 많아 아는 사람에겐 간결하고 모르는 사람에겐 암호다.
+- 그래서 함수형 개념은 Redux(상태 관리), RxJS(반응형), Immutable.js(불변성), date-fns(날짜)처럼 **특정 목적의 라이브러리에 섞이는** 방향으로 퍼졌다.
+
+함수형을 배우는 목적은 함수형 라이브러리를 익히기보다 코드를 보는 관점을 하나 더 얻는 데 있다. 커링·파이프 같은 기법은 그다음이다.
+
+## 정리
+
+- 프로그램을 **액션·계산·데이터**로 나눠 본다. 목표는 계산의 비중을 늘리는 것이다.
+- 암묵적 입출력을 인자와 반환값으로 바꾸면 액션에서 계산이 빠져나온다.
+- 원본을 고치지 않는다. 카피 온 라이트, 안 되면 방어적 복사.
+- 함수의 계층을 그리고 계층을 뛰어넘지 않게 짠다. 위는 선언적, 아래는 테스트하기 쉬운 조각.
+- 상태·변경·효과는 줄이고, 한곳에 모으고, 끝으로 미룬다. 효과는 직접 일으키지 말고 원하는 효과를 데이터로 돌려준다.
+- 동작을 데이터 구조로 적고 해석기는 하나만 둔다(데이터 주도). 데이터는 보고 조작할 수 있다.
+- 커링·부분 적용으로 자주 바뀌지 않는 인자를 고정해 함수를 특수화한다. 커링 헬퍼는 매개변수 수가 고정된 함수에만 쓴다.
+- 100% 함수형을 목표로 하지 않고 객체 지향과 균형 있게 섞는다.
+
+관련 노트: [[oop-and-javascript|객체 지향 프로그래밍과 JavaScript]], [[arrays-and-objects|배열·객체·문자열 다루기]], [[frontend-solid|프론트엔드와 SOLID 원칙]], [[reactive-programming|반응형 프로그래밍과 RxJS]], [[tdd|프론트엔드에서의 TDD]], [[redux|Redux]], [[humble-object-pattern|험블 객체 패턴]]
