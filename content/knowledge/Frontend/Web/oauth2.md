@@ -1,0 +1,185 @@
+---
+title: "OAuth 2.0"
+concept: "OAuth2"
+summary: "비밀번호를 넘기지 않고 다른 서비스의 자원 접근 권한을 위임하는 OAuth 2.0. 네 역할, Authorization Code + PKCE 흐름, 토큰 종류, OIDC와의 차이, 프론트엔드 보안 주의점, OIDC로 구현하는 SSO를 정리한다."
+tags: ["security", "web", "auth", "oauth", "frontend"]
+source: mixed
+date: "2026-11-01"
+sources: ["https://riverkim.kr/323", "https://www.rfc-editor.org/rfc/rfc9700", "https://80000coding.notion.site/7e32a39070024199bf98063452f5fcb3", "https://bytebytego.com/guides/oauth-2-explained-with-siple-terms", "https://bytebytego.com/guides/oauth-20-flows", "https://bytebytego.com/guides/v1what-is-sso-single-sign-on", "https://www.rfc-editor.org/rfc/rfc8628", "https://github.com/karanpratapsingh/system-design"]
+---
+
+> SSO 섹션에 팔만코딩경(42Seoul 커뮤니티 위키)의 「싱글 사인온 (Single Sign On)」을 재구성해 더한 노트다.
+> 그랜트 유형과 중앙 인증 서버의 SSO 흐름은 ByteByteGo의 System Design 101 가이드 「[OAuth 2.0 Flows](https://bytebytego.com/guides/oauth-20-flows)」, 「[OAuth 2.0 Explained With Simple Terms](https://bytebytego.com/guides/oauth-2-explained-with-siple-terms)」, 「[What is SSO](https://bytebytego.com/guides/v1what-is-sso-single-sign-on)」를 바탕으로 재구성해 보탰다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 스코프와 OAuth의 한계, OIDC의 구성 요소, SSO의 구성 요소(ID 브로커 포함)와 SAML·OIDC 비교를 보강했다.
+
+## OAuth 2.0이란
+
+OAuth 2.0은 **사용자가 비밀번호를 넘기지 않고, 내 앱이 다른 서비스(구글·깃허브 등)의 자원에 접근할 권한을 위임받는 표준**이다. 「구글로 로그인」, 「깃허브 저장소 접근 허용」 버튼 뒤에서 동작한다.
+
+OAuth가 다루는 것은 **인가(Authorization)**, 즉 "무엇을 할 수 있나"다. "누구인가"를 확인하는 **인증(Authentication)** 은 그 위에 얹은 OIDC가 맡는다.
+
+OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 "비밀번호를 건네지 않고 다른 사이트의 내 정보에 접근 권한을 줄 공통 수단"이 필요하다는 논의에서 시작했고, 구글 등의 지원으로 공개 표준이 되었다. 첫 버전인 OAuth 1.0은 모바일을 제대로 지원하지 못하고 서명 방식이 복잡했으며 보안 문제도 있어, 이를 보완한 **OAuth 2.0**이 2012년에 나왔다. 소셜 로그인이 가장 흔한 예지만, 로그인이 아니라 "내 연락처를 이 앱이 읽어도 된다"처럼 **제한된 범위의 접근 위임**이면 모두 OAuth의 쓰임새다.
+
+## 네 가지 역할
+
+| 역할 | 의미 | 예 |
+| --- | --- | --- |
+| Resource Owner | 자원의 주인 | 사용자 |
+| Client | 권한을 위임받으려는 앱 | 내 서비스 |
+| Authorization Server | 로그인·동의를 받고 토큰을 발급 | accounts.google.com |
+| Resource Server | 토큰을 확인하고 자원을 내준다 | Google Calendar API |
+
+**스코프(scope)** 는 무엇에 대한 접근을 허락하는지 정하는 문자열이다(`calendar.readonly` 등). 어떤 스코프가 있고 무슨 자원과 이어지는지는 자원 서버마다 정하므로 서비스 사이에 공통 스코프 체계는 없다. OAuth 2.0 자체도 틀(framework)이라 구현 방식이 제각각이고, 보안 장치(PKCE, 정확한 리다이렉트 URI 검사 등)는 뒤에 나온 권고(RFC 9700)로 보완했다.
+
+## Authorization Code + PKCE 흐름
+
+브라우저 앱·모바일 앱·서버 앱 모두에 권장되는 방식이다. OAuth 2.0 보안 모범 사례(RFC 9700, 2025)와 이를 본문에 합친 OAuth 2.1 초안이 모든 클라이언트에 PKCE를 요구한다.
+
+```text
+1. 앱이 code_verifier(난수)를 만들고, 그 해시인 code_challenge를 준비
+2. 브라우저를 인가 서버로 이동
+   /authorize?response_type=code&client_id=..&redirect_uri=..
+             &scope=calendar.read&state=<난수>&code_challenge=..
+3. 사용자가 로그인하고 "허용"을 누름
+4. 인가 서버가 redirect_uri?code=<인가 코드>&state=<난수>로 돌려보냄
+5. 앱이 state를 확인한 뒤, code + code_verifier로 토큰 요청 (/token)
+6. 인가 서버가 Access Token (+ Refresh Token) 발급
+7. 앱이 Authorization: Bearer <access token>으로 API 호출
+```
+
+- **state**: 4단계 응답이 내가 시작한 요청인지 확인한다. OAuth판 CSRF 방어다.
+- **PKCE**: 인가 코드를 중간에 가로채도 `code_verifier`가 없으면 토큰으로 바꿀 수 없다.
+- 과거 SPA에 쓰던 Implicit 방식(토큰을 URL로 바로 받음)과 사용자 비밀번호를 앱이 직접 받는 Password 방식은 **쓰지 않는다.**
+
+## 그랜트 유형: 상황별 토큰 받는 법
+
+OAuth 2.0은 클라이언트가 토큰을 받는 방법(grant type)을 여러 개 정의한다. 누가 자원의 주인이고 클라이언트가 비밀을 지킬 수 있느냐에 따라 고른다.
+
+| 그랜트 | 흐름 | 쓰는 곳 | 지금의 위치 |
+| --- | --- | --- | --- |
+| Authorization Code (+PKCE) | 사용자 동의 후 인가 코드를 받고, 그 코드를 토큰으로 바꾼다 | 사용자가 있는 모든 앱(웹·SPA·모바일) | **기본값** |
+| Client Credentials | 클라이언트가 자기 `client_id`·`client_secret`으로 바로 토큰을 받는다. 사용자가 없다 | 서버 간 통신(배치 작업, 마이크로서비스 호출) | 권장. 비밀을 지킬 수 있는 서버에서만 |
+| Device Authorization (RFC 8628) | 기기가 짧은 코드를 보여 주면 사용자가 휴대폰·PC에서 그 코드를 입력해 승인한다 | 키보드가 불편한 TV·콘솔·CLI | 권장 |
+| Refresh Token | 만료된 Access Token을 새로 받는다 | 위 그랜트로 받은 Refresh Token이 있을 때 | 권장. 회전과 함께 |
+| Implicit | 인가 코드 없이 Access Token을 리다이렉트 URL로 바로 받는다 | 과거의 SPA | **폐기**. 토큰이 URL·히스토리에 남는다. OAuth 2.1에서 빠진다 |
+| Resource Owner Password | 앱이 사용자 아이디·비밀번호를 직접 받아 토큰으로 바꾼다 | 과거의 1st-party 앱 | **폐기**. 비밀번호를 넘기지 않는다는 OAuth의 목적과 반대다 |
+
+OAuth 토큰 하나로 할 수 있는 일은 세 갈래다. 여러 서비스에 한 번에 로그인(SSO, 실제 인증은 OIDC), 여러 시스템에 걸친 권한 공유, 사용자가 허락한 범위만큼의 프로필 조회다.
+
+## 토큰
+
+| 토큰 | 용도 | 특징 |
+| --- | --- | --- |
+| Access Token | API 호출 권한 | 수명이 짧다(분~시간). scope만큼만 허용 |
+| Refresh Token | 새 Access Token 발급 | 수명이 길다. 유출되면 위험하므로 가장 조심해서 보관 |
+| ID Token (OIDC) | 사용자가 누구인지 | JWT. 이름·이메일 같은 프로필 클레임을 담는다 |
+
+## OAuth vs OIDC
+
+| 구분 | OAuth 2.0 | OpenID Connect |
+| --- | --- | --- |
+| 목적 | 인가: 자원 접근 권한 위임 | 인증: 로그인한 사용자 확인 |
+| 결과물 | Access Token | ID Token + Access Token |
+| 예 | 내 앱이 사용자의 캘린더를 읽기 | 「구글로 로그인」 |
+
+**Access Token으로 로그인을 판단하면 안 된다.** 로그인은 OIDC의 ID Token으로 확인한다.
+
+OIDC는 OAuth 2.0 위에 로그인과 프로필 정보를 얹은 얇은 층이다. OIDC를 지원하는 인가 서버를 **ID 제공자**(IdP)라 부른다.
+
+| OIDC 용어 | 뜻 |
+| --- | --- |
+| 신뢰 당사자(Relying Party) | 로그인을 맡기는 우리 앱. OAuth의 Client |
+| OpenID 제공자(OpenID Provider) | 사용자를 인증하고 인가 코드를 내주는 쪽. OIDC를 지원하는 인가 서버 |
+| 토큰 엔드포인트 | 인가 코드(일회용)를 받고 ID Token(JWT)과 Access Token을 돌려준다 |
+| UserInfo 엔드포인트 | Access Token을 내면 사용자 정보(클레임)를 돌려준다 |
+
+OIDC는 2014년에 나온 뒤 Google·Apple·Microsoft 로그인을 비롯한 웹·모바일 로그인의 표준이 됐다. 명세가 기본 OAuth보다 엄격해(ID Token 형식과 검증 규칙이 정해져 있다) 구현마다 덜 어긋난다.
+
+## SSO: 한 번 로그인으로 여러 서비스
+
+**SSO(Single Sign-On)** 는 한 번의 인증으로 여러 애플리케이션을 쓰게 하는 방식이다. 회사 계정 하나로 메일·메신저·사내 위키에 들어가거나, Google 계정 하나로 Gmail·YouTube를 오가는 것이 예다. 인증은 한 곳(IdP, Identity Provider)이 맡고, 각 서비스는 그 결과를 믿는다.
+
+| 구축 방식 | 동작 | 쓰는 곳 |
+| --- | --- | --- |
+| 인증 대행 | 에이전트가 사용자의 각 서비스 계정 정보를 보관했다가 대신 로그인해 준다 | 인증 방식을 고칠 수 없는 레거시 시스템 |
+| 인증 정보 전달 | IdP가 인증 후 토큰·어설션을 발급하고, 각 서비스는 그것을 검증해 사용자를 확인한다 | 웹 SSO의 표준 방식 |
+
+중앙 인증 서버(CAS, Central Authentication Service 계열)를 두는 SSO의 흐름은 이렇다.
+
+서비스 A 첫 방문
+
+```mermaid
+sequenceDiagram
+  participant U as 사용자
+  participant A as 서비스 A
+  participant S as SSO 서버
+  U->>A: 접근
+  A->>S: 로그인 안 됨 → SSO 서버로 리다이렉트
+  Note over S: 전역 세션 없음 → 로그인 페이지 → 자격 증명 확인
+  Note over S: 전역 세션(SSO 도메인 쿠키) 생성 + 서비스 A용 토큰 발급
+  S->>A: A로 리다이렉트
+  A->>S: 토큰 유효한가?
+  S-->>A: "유효" (SSO 서버는 A를 로그인된 서비스로 기록)
+  Note over A: 자기 로컬 세션을 만듦
+  A-->>U: 자원 응답
+```
+
+서비스 B 방문
+
+```mermaid
+sequenceDiagram
+  participant U as 사용자
+  participant B as 서비스 B
+  participant S as SSO 서버
+  U->>B: 접근
+  B->>S: 로그인 안 됨 → SSO 서버로 리다이렉트
+  Note over S: 전역 세션 있음 → 비밀번호 없이 B용 토큰 발급
+  S->>B: B로 리다이렉트
+  B->>S: 토큰 검증
+  S-->>B: "유효"
+  B-->>U: 자원 응답
+```
+
+이 흐름에서는 전역 세션(SSO 서버)과 로컬 세션(각 서비스)이 따로 있다. SSO 서버가 어떤 서비스에 토큰을 줬는지 기록해 두기 때문에, 로그아웃할 때 그 목록의 서비스들에 로컬 세션 종료를 알릴 수 있다.
+
+인증 정보 전달 방식의 표준 프로토콜은 둘이다. 웹·모바일의 새 서비스는 **OIDC**(위의 ID Token 흐름), 기업용 레거시 시스템은 XML 기반 **SAML 2.0**을 많이 쓴다. 사용자가 IdP에 한 번 로그인하면 IdP 도메인에 세션 쿠키가 남으므로, 다른 서비스가 IdP로 보내도 다시 비밀번호를 묻지 않고 바로 토큰을 돌려준다.
+
+SSO의 구성 요소는 셋이다.
+
+| 구성 요소 | 하는 일 |
+| --- | --- |
+| ID 제공자(IdP) | 사용자 신원을 저장·관리하고 인증한다. 비밀번호를 직접 확인하거나, 다른 IdP가 내준 신원 주장(assertion)을 검증한다. 서비스는 신원 관리를 IdP에 맡긴다 |
+| 서비스 제공자(SP) | 사용자에게 실제 서비스를 준다. 신원은 IdP의 주장을 믿되, 자기 서비스에만 필요한 속성은 로컬 계정에 따로 둘 수 있다 |
+| ID 브로커(identity broker) | 여러 서비스 제공자와 여러 IdP 사이의 중개자. 각 IdP의 프로토콜(SAML, OIDC, 소셜 로그인)을 브로커가 맞춰 주므로 서비스는 브로커 하나에만 붙는다(Keycloak, Auth0, Amazon Cognito) |
+
+**SAML**(Security Assertion Markup Language) 2.0은 IdP가 인증한 신원과 속성을 XML 어설션으로 서비스 제공자에게 넘기는 **신원 연합**(identity federation) 표준이다.
+
+| 비교 | SAML 2.0 | OAuth 2.0 + OIDC |
+| --- | --- | --- |
+| 메시지 형식 | XML(서명된 어설션) | JSON, JWT |
+| 통신 | 브라우저 리다이렉트·POST로 어설션을 넘기고, SP가 세션 쿠키를 만든다 | REST 호출 중심이라 모바일·SPA·API와 잘 맞는다 |
+| 동의 화면 | 프로토콜에 없어 개발자가 따로 만든다 | 스코프 동의가 프로토콜에 들어 있다 |
+| 구현 | 설정과 유지가 무겁다. 기업용 SaaS·사내 시스템에서 여전히 흔하다 | 언어마다 라이브러리가 많아 빨리 붙인다 |
+
+| 장점 | 주의 |
+| --- | --- |
+| 사용자는 비밀번호 하나만 관리한다 | IdP 계정이 털리면 모든 서비스가 열린다. MFA를 함께 건다 |
+| 비밀번호 정책·접근 권한·계정 정지를 한 곳에서 관리해 IT 지원 비용이 준다 | IdP가 멈추면 모든 서비스 로그인이 멈춘다. 서비스마다 IdP에 확인하는 왕복이 붙어 첫 로그인이 조금 느리다 |
+| 각 서비스는 인증 구현을 직접 하지 않아도 된다 | 로그아웃을 모든 서비스에 전파하려면 별도 처리(OIDC 로그아웃 규격 등)가 필요하다 |
+
+## 프론트엔드 보안 주의점
+
+- `client_secret`은 브라우저 코드에 넣지 않는다. 노출되는 클라이언트는 PKCE로 대신한다.
+- 토큰을 `localStorage`에 두면 XSS 한 번에 털린다. 가능하면 **BFF(Backend for Frontend) 서버가 토큰을 보관**하고, 브라우저에는 `HttpOnly; Secure; SameSite` 세션 쿠키만 준다.
+- `redirect_uri`는 인가 서버에 정확히 등록한 값만 허용되게 한다.
+- scope는 필요한 최소한만 요청한다.
+- 실제 구현은 직접 짜기보다 검증된 라이브러리(Auth.js, 각 IdP의 SDK)를 쓴다.
+
+## 정리
+
+- OAuth 2.0은 비밀번호 대신 토큰으로 권한을 위임하는 인가 표준이다.
+- 지금의 기본 흐름은 Authorization Code + PKCE, 그리고 state 검증이다. 사용자가 없는 서버 간 호출은 Client Credentials, 입력이 불편한 기기는 Device 그랜트를 쓴다. Implicit과 Password 그랜트는 폐기됐다.
+- 로그인(인증)은 OAuth 위의 OIDC가 맡는다. OIDC·SAML로 IdP 한 곳에 인증을 모으면 SSO가 된다.
+- 토큰을 어디에 두느냐가 프론트엔드 보안의 핵심이다.
+
+관련 노트: [[cookie-session|쿠키와 세션]], [[web-security|웹 보안: CSRF와 XSS]], [[auth-jwt-passport|NestJS JWT 인증]], [[swr|SWR로 서버 데이터 가져오기(로그인 상태 판단)]], [[https|HTTPS와 TLS]]
