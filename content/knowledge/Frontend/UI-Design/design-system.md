@@ -147,7 +147,10 @@ flowchart TB
 ```json
 {
   "color": {
-    "primary": { "$type": "color", "$value": "#5B5CFF" },
+    "primary": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.357, 0.361, 1], "hex": "#5b5cff" }
+    },
     "action": { "$value": "{color.primary}" }
   },
   "spacing": {
@@ -156,7 +159,7 @@ flowchart TB
 }
 ```
 
-토큰 파일 형식은 W3C 디자인 토큰 커뮤니티 그룹(DTCG)의 [Design Tokens Format Module](https://www.designtokens.org/TR/drafts/format/)이 표준이고, 2025년 10월 첫 안정판이 나왔다. `$value`가 있는 객체가 토큰이고, `{color.primary}`처럼 다른 토큰을 참조(alias)한다. 토큰 JSON에서 CSS 변수, TypeScript 상수, 테마 객체를 자동 생성하고(예: Style Dictionary), Figma 변수와도 주고받는다. 토큰을 「결정의 인코딩」으로 보는 관점과 섣부른 시맨틱 토큰의 함정은 [[product-language-design-system|제품 언어로서의 디자인 시스템]]에 있다.
+토큰 파일 형식은 W3C 디자인 토큰 커뮤니티 그룹(DTCG)의 [Design Tokens Format Module](https://www.designtokens.org/TR/drafts/format/)이 표준이고, 2025년 10월 첫 안정판이 나왔다. `$value`가 있는 객체가 토큰이고, 색 값은 hex 문자열 하나가 아니라 `colorSpace`·`components` 객체로 적는다(`hex`는 선택 필드). `{color.primary}`처럼 다른 토큰을 참조(alias)한다. 토큰 JSON에서 CSS 변수, TypeScript 상수, 테마 객체를 자동 생성하고(예: Style Dictionary), Figma 변수와도 주고받는다. 토큰을 「결정의 인코딩」으로 보는 관점과 섣부른 시맨틱 토큰의 함정은 [[product-language-design-system|제품 언어로서의 디자인 시스템]]에 있다.
 
 ### 컴포넌트
 

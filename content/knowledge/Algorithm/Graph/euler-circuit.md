@@ -41,13 +41,16 @@ sources: ["https://80000coding.notion.site/230ab39f47f84b12ad9791c9fd50919a", "h
 먼저 간 길이 막다른 곳에 일찍 닿아도 괜찮다. 되돌아오는 도중 남은 간선이 있는 정점에서 다시 들어가 작은 회로를 만들고, 그 회로가 후위 순서 덕분에 올바른 자리에 끼워진다.
 
 ```python
-def euler_circuit(n, edges, start=0):
+def euler_circuit(n, edges, start=None):
     graph = [[] for _ in range(n)]
     for i, (u, v) in enumerate(edges):      # 간선마다 번호를 붙여 다중 간선도 구분
         graph[u].append((v, i))
         graph[v].append((u, i))
     if any(len(adj) % 2 for adj in graph):  # 홀수 차수 정점이 있으면 회로 없음
         return None
+
+    if start is None:                       # 간선이 붙은 정점에서 시작한다(고립 정점 제외)
+        start = next((v for v in range(n) if graph[v]), 0)
 
     used = [False] * len(edges)
     ptr = [0] * n                           # 정점마다 "다음에 볼 간선" 위치
@@ -62,6 +65,8 @@ def euler_circuit(n, edges, start=0):
             nxt, eid = graph[v][ptr[v]]
             used[eid] = True
             stack.append(nxt)
+    if len(circuit) != len(edges) + 1:      # 간선이 여러 연결 요소에 흩어져 있으면 실패
+        return None
     return circuit[::-1]
 
 print(euler_circuit(5, [(0, 1), (1, 2), (2, 0), (0, 3), (3, 4), (4, 0)]))

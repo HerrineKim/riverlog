@@ -76,8 +76,10 @@ new MutationObserver((records) => {
   for (const r of records) {
     for (const node of r.addedNodes) {
       if (!(node instanceof HTMLElement)) continue        // 텍스트 노드 등은 건너뛴다
-      if (node.matches('pre[class*="language-"]')) Prism.highlightElement(node)
-      node.querySelectorAll('pre[class*="language-"]').forEach((el) => Prism.highlightElement(el))
+      // pre가 아니라 안쪽 code를 넘긴다. highlightElement는 넘긴 요소의 innerHTML을 갈아 끼운다
+      const sel = 'code[class*="language-"], [class*="language-"] code'
+      if (node.matches(sel)) Prism.highlightElement(node)
+      node.querySelectorAll(sel).forEach((el) => Prism.highlightElement(el))
     }
   }
 }).observe(document.body, { childList: true, subtree: true })

@@ -44,7 +44,7 @@ sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/r
 
 1. **스킬**이 가장 먼저 뜬다. 인라인이라 오버헤드가 없다.
 2. 스킬이 없거나 `disable-model-invocation: true`면 **에이전트**가 뜬다. 별도 맥락이라 무겁다.
-3. **커맨드**는 사용자가 `/`로 부를 때만 돈다.
+3. **커맨드**도 이제 스킬로 합쳐져 Claude가 스스로 부를 수 있다. 사용자가 `/`로 부를 때만 돌게 하려면(배포·푸시처럼) 커맨드 파일에도 `disable-model-invocation: true`를 넣는다.
 
 둘 다 막으면 Claude가 직접 `TZ='Asia/Karachi' date` 같은 명령을 실행한다.
 

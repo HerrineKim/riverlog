@@ -65,7 +65,7 @@ flowchart LR
 | 방법 | 없애는 조건 | 예 |
 | --- | --- | --- |
 | 공유하지 않기(스레드 한정) | 공유 | 지역 변수만 쓰는 함수, 스레드 로컬 저장소(Java `ThreadLocal`, C `_Thread_local`), 데이터를 나눠 스레드마다 자기 몫만 다루게 하기 |
-| 바꾸지 않기(불변 객체) | 가변 상태 | 만든 뒤 바뀌지 않는 객체(Java `String`·`record`), 바꿀 때마다 새 객체를 만드는 영속 자료구조 |
+| 바꾸지 않기(불변 객체) | 가변 상태 | 만든 뒤 바뀌지 않는 객체(Java `String`, 불변 값만 담은 `record`. record는 얕은 불변이라 `List` 같은 가변 필드는 방어적으로 복사해야 한다), 바꿀 때마다 새 객체를 만드는 영속 자료구조 |
 | 원자 연산 | 동기화 없음 (락 없이) | `AtomicInteger`, C11 `atomic_int`, 아래의 CAS 기반 논블로킹 자료구조 |
 | 락 | 동기화 없음 | 뮤텍스, `synchronized`, 읽기-쓰기 락 |
 | 스레드 안전한 라이브러리 | 동기화를 라이브러리에 맡긴다 | `ConcurrentHashMap`, `BlockingQueue` |
@@ -83,8 +83,8 @@ flowchart LR
 | 언어 | 기본 컬렉션 | 스레드 안전한 선택지 |
 | --- | --- | --- |
 | Java | `ArrayList`, `HashMap`은 안전하지 않다 | 동기화 래퍼 `Collections.synchronizedMap` 등, 동시성 컬렉션 `ConcurrentHashMap`·`CopyOnWriteArrayList`·`BlockingQueue`([[java-concurrency\|Java 동시성]]) |
-| C++ | STL 컨테이너는 여러 스레드의 동시 읽기(const 멤버 호출)만 안전하다. 쓰기가 하나라도 섞이면 외부에서 잠가야 한다 | 표준 동시성 컨테이너는 없다. `std::mutex`로 감싸거나 TBB 같은 라이브러리 |
-| Go | `map`, 슬라이스는 안전하지 않다. 동시 쓰기를 런타임이 감지하면 프로세스를 죽인다 | `sync.Mutex`로 감싼 맵, `sync.Map`, 채널로 소유권 넘기기([[go-concurrency\|Go 동시성]]) |
+| C++ | STL 컨테이너는 여러 스레드의 동시 읽기(const 멤버 호출)와, 서로 다른 원소를 동시에 고치는 것(`vector<bool>` 제외)만 안전하다. 삽입·삭제·크기 변경처럼 컨테이너 구조를 바꾸는 쓰기가 섞이면 외부에서 잠가야 한다 | 표준 동시성 컨테이너는 없다. `std::mutex`로 감싸거나 TBB 같은 라이브러리 |
+| Go | `map`, 슬라이스는 안전하지 않다. `map`은 동시 쓰기를 런타임이 감지하면 프로세스를 죽인다. 슬라이스는 그런 검사가 없어, 같은 원소나 슬라이스 헤더(`append`)를 동시에 바꾸면 조용히 데이터 경쟁이 난다(서로 다른 원소만 쓰면 안전) | `sync.Mutex`로 감싼 맵, `sync.Map`, 채널로 소유권 넘기기([[go-concurrency\|Go 동시성]]) |
 | Python | CPython의 `list`·`dict` 개별 연산은 원자적이다. GIL 빌드는 GIL이, free-threaded 빌드는 객체별 내부 잠금이 보장한다. `d[k] += 1` 같은 복합 연산은 안전하지 않다 | `queue.Queue`, `threading.Lock` |
 | C# | `List<T>`, `Dictionary<K,V>`는 안전하지 않다 | `System.Collections.Concurrent`의 `ConcurrentDictionary`, `ConcurrentQueue` |
 | Rust | 스레드 사이에 공유하려면 타입이 `Send`·`Sync`여야 해서, 동기화 없는 공유는 컴파일되지 않는다 | `Arc<Mutex<T>>`, `RwLock`, 채널 |
@@ -166,12 +166,14 @@ solve(작업):
 ```text
 반복:
   tail ← 현재 꼬리 읽기
+  next ← tail.next 읽기
+  next가 null이 아님 → 꼬리가 뒤처졌다. CAS(꼬리, 기대값=tail, 새값=next)로 앞당겨 주고 처음부터 다시
   CAS(tail.next, 기대값=null, 새값=새 노드)
-    성공 → 꼬리 포인터를 새 노드로 옮기고 끝
+    성공 → CAS(꼬리, 기대값=tail, 새값=새 노드)로 꼬리를 옮기고 끝(실패하면 다른 스레드가 이미 옮겨 준 것)
     실패 → 다른 스레드가 먼저 넣었다. 처음부터 다시
 ```
 
-CAS는 "메모리 값이 기대한 값과 같을 때만 새 값으로 바꾼다"를 하드웨어가 원자적으로 처리하는 명령이다. 실패해도 아무것도 망가지지 않으므로 다시 읽고 시도하면 된다. 이 방식의 대표 구현이 Michael-Scott 큐이고, Java의 `ConcurrentLinkedQueue`가 이를 바탕으로 한다. CAS는 값이 A → B → A로 바뀐 것을 알아채지 못하는 **ABA 문제**가 있어 버전 번호를 함께 비교하는 식으로 보완한다.
+CAS는 "메모리 값이 기대한 값과 같을 때만 새 값으로 바꾼다"를 하드웨어가 원자적으로 처리하는 명령이다. 실패해도 아무것도 망가지지 않으므로 다시 읽고 시도하면 된다. 노드를 붙인 스레드가 꼬리를 옮기기 전에 멈춰도, 다른 스레드가 뒤처진 꼬리를 대신 앞당겨 주므로 전체가 멈추지 않는다(락 프리). 이 방식의 대표 구현이 Michael-Scott 큐이고, Java의 `ConcurrentLinkedQueue`가 이를 바탕으로 한다. CAS는 값이 A → B → A로 바뀐 것을 알아채지 못하는 **ABA 문제**가 있어 버전 번호를 함께 비교하는 식으로 보완한다.
 
 ### 진행 보장의 단계
 

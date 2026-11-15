@@ -72,7 +72,7 @@ double ms = (b.tv_sec - a.tv_sec) * 1e3 + (b.tv_nsec - a.tv_nsec) / 1e6;
 - 잠든 프로세스는 CPU를 받지 않는다. 시그널이 오면 일찍 깬다.
 - 요청한 시간은 **최소 시간**이다. 스케줄링 때문에 더 늦게 깰 수 있다.
 - 주기 작업을 `sleep(간격)`으로 반복하면 작업 시간만큼 오차가 누적된다. 다음 깰 절대 시각을 계산해 `clock_nanosleep(..., TIMER_ABSTIME, ...)`을 쓰면 밀리지 않는다.
-- CPU 시간 시계로는 `clock_nanosleep`을 쓸 수 없다. 잠든 동안 그 시계가 흐르지 않기 때문이다.
+- `CLOCK_THREAD_CPUTIME_ID`로는 `clock_nanosleep`을 쓸 수 없다(`EINVAL`). 잠든 동안 그 스레드의 CPU 시간이 흐르지 않기 때문이다. `CLOCK_PROCESS_CPUTIME_ID`와 `clock_getcpuclockid()`로 얻은 CPU 시계는 되지만, 다른 스레드가 CPU를 쓰지 않으면 영원히 깨지 않을 수 있다.
 
 ## 알람과 타이머
 

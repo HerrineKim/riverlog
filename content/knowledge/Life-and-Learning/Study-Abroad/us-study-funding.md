@@ -12,7 +12,7 @@ sources: ["https://www.scholars4dev.com/6499/scholarships-in-usa-for-internation
 
 ## 국제학생 학비 지원의 기본 구조
 
-미국 정부의 연방 학자금 지원(FAFSA로 신청하는 Pell Grant, 연방 학자금 대출)은 미국 시민권자·영주권자만 받는다. **국제학생의 돈줄은 학교 자체 지원, 대학원 조교직, 외부 장학금 세 가지**다.
+미국 정부의 연방 학자금 지원(FAFSA로 신청하는 Pell Grant, 연방 학자금 대출)은 미국 시민권자·영주권자와 난민·망명자 같은 일부 「적격 비시민권자(eligible noncitizen)」만 받고, F-1 국제학생은 대상이 아니다. **국제학생의 돈줄은 학교 자체 지원, 대학원 조교직, 외부 장학금 세 가지**다.
 
 | 경로 | 주로 쓰는 과정 | 특징 |
 | --- | --- | --- |
@@ -45,7 +45,7 @@ sources: ["https://www.scholars4dev.com/6499/scholarships-in-usa-for-internation
 
 ### 일해서 버는 데는 한계가 있다
 
-F-1 학생은 학기 중 **교내 근로 주 20시간**까지만 할 수 있다. 교외 근로는 전공과 연계된 CPT, 졸업 전후 OPT로만 가능하다. 생활비를 아르바이트로 메운다는 계획은 세우지 않는다.
+F-1 학생은 학기 중 **교내 근로 주 20시간**까지만 할 수 있다. 교외 근로는 원칙적으로 전공과 연계된 CPT, 졸업 전후 OPT로 한다. 예상하지 못한 심각한 경제적 어려움이 생기면 요건을 갖춰 USCIS 승인을 받는 교외 근로 허가(severe economic hardship) 길도 있지만, 처음부터 기댈 수단은 아니다. 생활비를 아르바이트로 메운다는 계획은 세우지 않는다.
 
 ## 대표 장학 프로그램
 
@@ -54,7 +54,7 @@ F-1 학생은 학기 중 **교내 근로 주 20시간**까지만 할 수 있다.
 | Fulbright 외국인 학생 프로그램 | 석·박사 유학생. 한국은 한미교육위원단(Fulbright Korea)이 선발한다 | 학비, 생활비, 항공료, 보험 |
 | Humphrey Fellowship | 지정 국가의 공공 부문 경력자 | 1년 비학위 연수 전액 |
 | AAUW International Fellowships | 미국 시민·영주권자가 아닌 여성 | 석·박사·박사후 과정 연구비 |
-| Joint Japan/World Bank Graduate Scholarship | 세계은행 회원국 출신 개발 분야 전공자 | 지정 대학원 학위 전액 |
+| Joint Japan/World Bank Graduate Scholarship | 세계은행이 지정한 개발도상국 국적자(선진국 이중국적 불가) 중 학사 뒤 개발 분야 유급 경력 3년 이상인 사람. 일본 국적자는 별도 트랙 | 지정 대학원 학위 전액 |
 | East-West Center Fellowship | 아시아·태평양 출신 대학원생 | University of Hawaiʻi 석·박사 최대 24개월 |
 | Aga Khan Foundation 장학 | 일부 개발도상국 출신 대학원생 | 50% 장학금 + 50% 대출 |
 

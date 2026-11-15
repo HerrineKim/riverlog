@@ -51,7 +51,7 @@ flowchart LR
 | 슬롯 | 담는 것 |
 | --- | --- |
 | LexicalEnvironment | `let`·`const`·`class` 선언. 블록에 들어갈 때마다 새 환경으로 바뀐다 |
-| VariableEnvironment | `var`와 함수 선언. 함수(또는 스크립트) 단위로 하나이고 블록에서 바뀌지 않는다 |
+| VariableEnvironment | `var`와 함수 본문(또는 스크립트) 최상위의 함수 선언. 함수(또는 스크립트) 단위로 하나이고 블록에서 바뀌지 않는다. 블록 안의 함수 선언은 그 블록의 LexicalEnvironment에 들어가, strict mode에서는 블록 밖에서 보이지 않는다 |
 | PrivateEnvironment | 클래스 본문의 `#private` 이름(ES2022에 추가) |
 
 각 환경은 **환경 레코드(Environment Record)** 와 **바깥 환경 참조(outer)** 로 이뤄진다. 레코드에서 이름을 못 찾으면 outer를 따라 올라가고, outer가 `null`인 전역 환경에서도 없으면 `ReferenceError`다. 이 연결이 스코프 체인이다([[scope-and-closures#렉시컬 환경으로 보는 원리|스코프와 클로저]]).

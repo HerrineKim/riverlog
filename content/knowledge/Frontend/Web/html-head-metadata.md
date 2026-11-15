@@ -70,7 +70,7 @@ sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/lear
 | `manifest` | 웹 앱 매니페스트 | 앱 이름, 아이콘, 테마 색, 표시 방식을 JSON 하나로 |
 | `alternate` | 같은 내용의 다른 버전 | 번역본이면 `hreflang` 필수, RSS면 `type="application/rss+xml"` |
 | `alternate stylesheet` | 대체 스타일시트 | `title` 필수. 사용자가 브라우저 메뉴에서 고르는데, **Firefox만** 메뉴(보기 → 페이지 스타일)를 주고 Chromium 계열은 지원하지 않는다. 고대비·다크 테마는 `prefers-color-scheme`·`prefers-contrast`와 사이트 안 테마 전환으로 한다(→ [[color-motion-accessibility\|색과 움직임의 접근성]]) |
-| `canonical` | 대표 URL | 번역본·복제본·신디케이션된 글이 원본을 가리킨다(→ [[seo-basics\|SEO 기초]]) |
+| `canonical` | 대표 URL | 복제본·신디케이션된 글이 원본을 가리킨다. 번역본은 원문을 가리키지 않고 언어별로 자기 URL을 canonical로 두며, 서로는 `alternate` + `hreflang`으로 잇는다(→ [[seo-basics\|SEO 기초]]) |
 | `preload`, `preconnect` 등 | 성능 힌트 | 로딩 순서는 [[script-loading\|스크립트·스타일 로딩 순서와 점진적 렌더링]] |
 | `prev`, `next` | 연재물·페이지네이션의 이전·다음 문서 | Google은 2019년부터 색인 신호로 쓰지 않는다. 각 페이지가 스스로 색인될 수 있게 만든다 |
 | `me` | 이 페이지와 같은 사람의 다른 프로필 | Mastodon 같은 서비스가 양쪽에서 서로를 가리키는 `rel="me"`를 보고 프로필 링크를 인증한다 |

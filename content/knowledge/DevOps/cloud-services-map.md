@@ -77,7 +77,7 @@ AWS는 2006년 S3·SQS·EC2 세 서비스로 시작해 관리형 DB, 서버리�
 | --- | --- | --- | --- |
 | L7 리전 | Application Load Balancer | Application Gateway | 리전 Application Load Balancer |
 | L4 리전 | Network Load Balancer | Azure Load Balancer | 리전 Network Load Balancer |
-| 전역 L7 | CloudFront + ALB, Global Accelerator | Front Door | 전역 외부 Application Load Balancer |
+| 전역 L7 | CloudFront + ALB, Global Accelerator(자체는 L4라 뒤에 ALB를 둔다) | Front Door | 전역 외부 Application Load Balancer |
 | DNS 기반 전역 분산 | Route 53 라우팅 정책 | Traffic Manager | Cloud DNS 라우팅 정책 |
 | 보안 장비 앞단 | Gateway Load Balancer | Gateway Load Balancer | - |
 

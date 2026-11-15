@@ -25,7 +25,7 @@ Android 앱은 시스템이 직접 띄우고 거둘 수 있는 **네 가지 구�
 | BroadcastReceiver | 시스템·앱이 보내는 방송 이벤트를 받는다 | 부팅 완료, 충전 연결. Android 8부터 대부분의 암시적 방송은 매니페스트로 받을 수 없어 코드에서 등록한다 |
 | ContentProvider | 앱 사이에 데이터를 공유하는 인터페이스 | 연락처, 미디어 저장소 |
 
-구성 요소끼리는 **인텐트(Intent)** 메시지로 서로를 시작한다. 시작할 클래스를 지정하면 **명시적 인텐트**, 「이 URL을 연다」처럼 동작만 적으면 **암시적 인텐트**다. 암시적 인텐트를 받을 수 있는 앱은 매니페스트의 **인텐트 필터**로 「이런 동작·데이터를 처리한다」고 알리고, 후보가 여럿이면 사용자가 고른다. 인텐트로 객체를 넘기려면 프로세스 경계를 넘을 수 있게 `Parcelable`(또는 `Serializable`)로 직렬화해야 하고, 큰 데이터는 ID만 넘긴다. 다른 화면의 결과를 받을 때는 옛 `startActivityForResult` 대신 Activity Result API(`registerForActivityResult`)를 쓴다.
+Activity·Service·BroadcastReceiver는 **인텐트(Intent)** 메시지로 시작한다. ContentProvider는 인텐트가 아니라 `ContentResolver`의 `query()` 같은 요청으로 활성화된다. 시작할 클래스를 지정하면 **명시적 인텐트**, 「이 URL을 연다」처럼 동작만 적으면 **암시적 인텐트**다. 암시적 인텐트를 받을 수 있는 앱은 매니페스트의 **인텐트 필터**로 「이런 동작·데이터를 처리한다」고 알리고, 후보가 여럿이면 사용자가 고른다. 인텐트로 객체를 넘기려면 프로세스 경계를 넘을 수 있게 `Parcelable`(또는 `Serializable`)로 직렬화해야 하고, 큰 데이터는 ID만 넘긴다. 다른 화면의 결과를 받을 때는 옛 `startActivityForResult` 대신 Activity Result API(`registerForActivityResult`)를 쓴다.
 
 ## Activity 생명 주기와 구성 변경
 
@@ -72,7 +72,7 @@ UI는 **메인(UI) 스레드 하나**에서만 그리고 고친다. 메인 스�
 | 도구 | 성격 | 생명주기 인식 | 스레드 제어 | 지금의 자리 |
 | --- | --- | --- | --- | --- |
 | LiveData | 값 하나를 담는 관찰 가능한 홀더 (Jetpack) | **내장**. 관찰자가 STARTED·RESUMED일 때만 알리고 DESTROYED면 자동 해지 | 없음. 메인 스레드에서 관찰 | 기존 View·DataBinding 코드에서 여전히 쓰인다 |
-| `StateFlow` / `SharedFlow` | Kotlin 코루틴의 핫 스트림. StateFlow는 항상 현재 값을 가진 상태 홀더 | 수집하는 쪽에서 `repeatOnLifecycle`, Compose의 `collectAsStateWithLifecycle`로 맞춘다 | 코루틴 디스패처(`flowOn`)로 지정 | **새 코드의 권장 기본값**. 공식 아키텍처 가이드가 UI 상태를 StateFlow로 노출한다 |
+| `StateFlow` / `SharedFlow` | Kotlin 코루틴의 핫 스트림. StateFlow는 항상 현재 값을 가진 상태 홀더 | 수집하는 쪽에서 `repeatOnLifecycle`, Compose의 `collectAsStateWithLifecycle`로 맞춘다 | 핫 플로우 자체에는 `flowOn`이 효과가 없다. `stateIn`·`shareIn` 앞의 콜드 업스트림에 `flowOn`을 걸거나, 값을 내보내는 코루틴의 디스패처를 정한다 | **새 코드의 권장 기본값**. 공식 아키텍처 가이드가 UI 상태를 StateFlow로 노출한다 |
 | RxJava | 범용 반응형 스트림 라이브러리 | 없음. 직접 `dispose`해야 한다 | `subscribeOn`·`observeOn`으로 세밀하게 | Kotlin 이전의 레거시 코드. 새 코드는 Flow로 옮겨 가는 추세 |
 
 - **LiveData의 장점은 단순함**이다. 생명주기를 알아서 처리해 메모리 누수와 죽은 화면 갱신을 막고, 러닝 커브가 낮다. 대신 변환 연산이 빈약하고, 도메인·데이터 계층에서 쓰기에는 Android 의존성이 생긴다.

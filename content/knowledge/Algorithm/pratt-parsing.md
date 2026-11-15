@@ -44,7 +44,7 @@ flowchart LR
 백트래킹이 없는 재귀 하향 파서는 지금도 가장 흔한 손 파서다. 다음 토큰 하나만 보고 어느 규칙인지 결정할 수 있는 문법(LL(1))이면 되돌아갈 일이 없다. JSON이 대표적이다. 문법을 BNF(Backus-Naur Form)로 적으면 규칙 하나가 함수 하나가 된다.
 
 ```text
-<json>   ::= <object> | <array>
+<json>   ::= <value>
 <object> ::= '{' [ <member> *( ',' <member> ) ] '}'
 <member> ::= <string> ':' <value>
 <array>  ::= '[' [ <value> *( ',' <value> ) ] ']'
@@ -101,28 +101,30 @@ flowchart TB
 프랫 파서의 중심은 함수 하나다. "현재 최소 바인딩 파워보다 센 연산자가 오는 동안 계속 왼쪽 트리를 키운다."
 
 ```python
+from collections import deque
+
 BP = {'+': (1, 2), '-': (1, 2), '*': (3, 4), '/': (3, 4), '^': (6, 5)}  # (lbp, rbp)
 
 def parse_expr(tokens, min_bp=0):
-    lhs = tokens.pop(0)                        # 전위 위치: 피연산자(또는 괄호·전위 연산자)
+    lhs = tokens.popleft()                     # 전위 위치: 피연산자(또는 괄호·전위 연산자)
     if lhs == '(':
         lhs = parse_expr(tokens, 0)
-        tokens.pop(0)                          # ')'
+        tokens.popleft()                       # ')'
     while tokens and tokens[0] in BP:
         op = tokens[0]
         lbp, rbp = BP[op]
         if lbp < min_bp:                       # 왼쪽 연산자가 더 세다 → 여기서 멈춤
             break
-        tokens.pop(0)
+        tokens.popleft()
         rhs = parse_expr(tokens, rbp)          # 오른쪽은 rbp 이상인 연산자만 가져간다
         lhs = (op, lhs, rhs)
     return lhs
 
-print(parse_expr(list("a+b*c-d")))   # ('-', ('+', 'a', ('*', 'b', 'c')), 'd')
-print(parse_expr(list("2^3^2")))     # ('^', '2', ('^', '3', '2'))
+print(parse_expr(deque("a+b*c-d")))  # ('-', ('+', 'a', ('*', 'b', 'c')), 'd')
+print(parse_expr(deque("2^3^2")))    # ('^', '2', ('^', '3', '2'))
 ```
 
-토큰마다 한 번씩만 소비하므로 O(n)이다. 전위 연산자(`-x`), 후위 연산자(`x!`), 괄호, 함수 호출은 "토큰이 맨 앞에 올 때(nud)"와 "중간에 올 때(led)"의 처리를 토큰별로 등록하는 식으로 늘려 간다.
+토큰마다 한 번씩만 소비하므로 O(n)이다. 토큰을 `deque.popleft()`로 꺼내야 한 번 소비가 O(1)이다. 리스트의 `pop(0)`은 뒤 원소를 모두 당기므로 전체가 O(n²)이 된다. 전위 연산자(`-x`), 후위 연산자(`x!`), 괄호, 함수 호출은 "토큰이 맨 앞에 올 때(nud)"와 "중간에 올 때(led)"의 처리를 토큰별로 등록하는 식으로 늘려 간다.
 
 ## 예: 셸 문법에 적용하기
 

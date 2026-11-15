@@ -176,7 +176,7 @@ try (var in = new ObjectInputStream(new ByteArrayInputStream(bytes))) {
 | --- | --- | --- |
 | 이름·순서 | `@JsonProperty`, `@JsonPropertyOrder` | JSON 키 이름, 출력 순서 |
 | 제외 | `@JsonIgnore`, `@JsonIgnoreProperties`, `@JsonIgnoreType` | 필드·클래스·타입 단위로 뺀다. `@JsonIgnoreProperties(ignoreUnknown = true)`는 모르는 키를 무시한다 |
-| 조건부 포함 | `@JsonInclude(Include.NON_NULL)` | null이나 빈 값은 출력하지 않는다 |
+| 조건부 포함 | `@JsonInclude(Include.NON_NULL)` | null 값은 출력하지 않는다. 빈 문자열·컬렉션까지 빼려면 `Include.NON_EMPTY` |
 | 생성 | `@JsonCreator` | 생성자·팩토리 메서드로 역직렬화한다. 불변 객체에 쓴다 |
 | 값 하나로 | `@JsonValue` | enum이나 값 객체를 특정 값 하나로 직렬화한다 |
 | 펼치기 | `@JsonUnwrapped` | 중첩 객체의 필드를 상위 레벨로 올린다 |
@@ -197,7 +197,7 @@ API 응답용 JSON과 달리 캐시 저장용 직렬화는 **같은 타입으로
 | 클래스가 바뀐 뒤 조용히 잘못 읽힌다 | 모르는 속성을 무시하도록 설정돼 있다 | 캐시용 매퍼는 `FAIL_ON_UNKNOWN_PROPERTIES`를 켜서 크게 실패하게 한다 |
 | `Object`로 읽으면 `LinkedHashMap`이 된다 | JSON에는 타입 정보가 없다 | 읽을 때 대상 타입을 명시한다(`readValue(json, type)`). 메서드 반환 타입에서 `JavaType`을 얻으면 제네릭도 보존된다 |
 | 타입 정보를 JSON에 넣고 싶다 | 다형성 필드 | `@JsonTypeInfo`로 필요한 곳만 지정한다. 전역 기본 타이핑(`activateDefaultTyping`)은 `PolymorphicTypeValidator`로 허용 타입을 제한해야 한다 |
-| 예외 객체 직렬화가 무한 루프 | `Throwable.cause`의 기본값이 자기 자신 | `SerializationFeature.WRITE_SELF_REFERENCES_AS_NULL`(2.11+)로 자기 참조를 null로 쓴다 |
+| 예외 객체 직렬화가 무한 루프 | `Throwable.cause`의 기본값이 자기 자신 | 기본으로 켜진 `SerializationFeature.FAIL_ON_SELF_REFERENCES`를 끄고 `WRITE_SELF_REFERENCES_AS_NULL`(2.11+)을 켜서 자기 참조를 null로 쓴다 |
 
 - **전역 기본 타이핑은 보안 위험이다.** JSON에 적힌 클래스 이름으로 아무 클래스나 만들 수 있으면 Java 기본 직렬화와 같은 가젯 공격이 가능하다. 옛 `enableDefaultTyping()`은 그래서 폐기됐다.
 - API용 매퍼와 캐시용 매퍼는 요구가 정반대이므로 **`ObjectMapper`를 따로 둔다.**

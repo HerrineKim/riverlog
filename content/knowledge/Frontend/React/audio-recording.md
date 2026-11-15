@@ -28,33 +28,47 @@ flowchart TB
 ## 1. 직접 구현: MediaRecorder
 
 ```tsx
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export function Recorder() {
   const recorderRef = useRef<MediaRecorder | null>(null)
-  const chunksRef = useRef<Blob[]>([])
+  const [busy, setBusy] = useState(false) // 권한 요청·녹음 중에는 다시 시작하지 못하게 막는다
   const [audio, setAudio] = useState<Blob | null>(null)
+  const [audioUrl, setAudioUrl] = useState<string | null>(null)
+
+  // URL이 바뀌거나 컴포넌트가 사라지면 이전 object URL을 해제한다
+  useEffect(() => () => { if (audioUrl) URL.revokeObjectURL(audioUrl) }, [audioUrl])
 
   const start = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-    const recorder = new MediaRecorder(stream)
-    chunksRef.current = []
-    recorder.ondataavailable = (e) => chunksRef.current.push(e.data)
-    recorder.onstop = () => {
-      setAudio(new Blob(chunksRef.current, { type: recorder.mimeType }))
-      stream.getTracks().forEach((track) => track.stop()) // 마이크 사용 표시 끄기
+    if (busy) return
+    setBusy(true)
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const recorder = new MediaRecorder(stream)
+      const chunks: Blob[] = [] // 녹음마다 따로 둔다
+      recorder.ondataavailable = (e) => chunks.push(e.data)
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: recorder.mimeType })
+        setAudio(blob)
+        setAudioUrl(URL.createObjectURL(blob))
+        stream.getTracks().forEach((track) => track.stop()) // 마이크 사용 표시 끄기
+        recorderRef.current = null
+        setBusy(false)
+      }
+      recorder.start()
+      recorderRef.current = recorder
+    } catch {
+      setBusy(false) // 권한 거부 등
     }
-    recorder.start()
-    recorderRef.current = recorder
   }
 
   const stop = () => recorderRef.current?.stop()
 
   return (
     <div>
-      <button onClick={start}>녹음 시작</button>
-      <button onClick={stop}>녹음 중지</button>
-      {audio && <audio src={URL.createObjectURL(audio)} controls />}
+      <button onClick={start} disabled={busy}>녹음 시작</button>
+      <button onClick={stop} disabled={!busy}>녹음 중지</button>
+      {audioUrl && <audio src={audioUrl} controls />}
     </div>
   )
 }
@@ -62,6 +76,8 @@ export function Recorder() {
 
 - `stop()`을 부르면 `dataavailable` 이벤트로 녹음 데이터가 들어오고, 이어서 `stop` 이벤트가 온다. Blob은 `onstop`에서 합친다.
 - 스트림의 모든 트랙에 `stop()`을 불러야 브라우저의 "마이크 사용 중" 표시가 꺼진다.
+- 녹음 중에 시작을 다시 누르면 녹음기가 둘 생기고, ref는 두 번째만 기억하므로 첫 번째는 멈출 수 없다. 그래서 `busy` 동안 시작 버튼을 막고, 조각 배열도 녹음마다 새로 만든다.
+- object URL은 렌더링 중에 만들지 않는다. 렌더링마다 새 URL이 생기고 해제되지 않은 URL은 Blob을 계속 붙잡는다. 녹음이 끝날 때 한 번 만들고 effect cleanup에서 `revokeObjectURL`로 해제한다.
 - 녹음 형식은 브라우저가 정한다. Chrome은 `audio/webm`(확장자 `.weba`/`.webm`), Safari는 `audio/mp4`다. 확장자만 `.mp3`로 바꿔도 형식은 바뀌지 않는다. 서버에서 특정 형식이 필요하면 서버에서 변환한다.
 - 녹음 길이 제한(예: 60초)은 `setTimeout`으로 `stop()`을 예약해 구현한다. 옛 예제에서 보이는 `AudioContext.createScriptProcessor`의 `onaudioprocess`로 시간을 재는 방식은 **deprecated** API다(대체는 `AudioWorklet`). 시간 제한만 필요하면 오디오 처리 API는 쓸 필요가 없다.
 

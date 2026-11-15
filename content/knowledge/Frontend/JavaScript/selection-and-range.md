@@ -137,7 +137,7 @@ button.addEventListener('click', () => {
 input.setRangeText(`**${input.value.slice(input.selectionStart, input.selectionEnd)}**`)
 ```
 
-입력란 안의 선택은 문서의 Selection과 별개다. 명세상 `document`의 `selectionchange`는 입력란 안의 선택에 일어나지 않아야 하므로 기대지 않는다. `value`를 통째로 바꾸면 커서가 끝으로 튀므로, 입력 중에 값을 고칠 때는 `setRangeText`나 위치를 저장했다가 되돌리는 방식을 쓴다([[form-usability|더 나은 폼을 만드는 팁]]의 커서 빼앗지 않기).
+입력란 안의 선택은 문서의 Selection과 별개다. 현재 명세는 입력란 안의 선택이 바뀌면 `selectionchange`를 그 `<input>`·`<textarea>`에서 발생시키고, 이 이벤트는 버블링하므로 `document`의 리스너도 받는다. 문서 자체의 선택 변화(버블링하지 않는다)와 구분하려면 `event.target`을 본다. `value`를 통째로 바꾸면 커서가 끝으로 튀므로, 입력 중에 값을 고칠 때는 `setRangeText`나 위치를 저장했다가 되돌리는 방식을 쓴다([[form-usability|더 나은 폼을 만드는 팁]]의 커서 빼앗지 않기).
 
 ### 커서의 화면 좌표 구하기
 

@@ -21,7 +21,7 @@ sources: ["https://kafka.apache.org/documentation/", "https://kafka.apache.org/4
 | 개념 | 뜻 |
 | --- | --- |
 | ISR(in-sync replicas) | 리더를 제때 따라오는 복제본 집합(리더 포함). `replica.lag.time.max.ms`(기본 30초) 동안 리더 끝까지 따라오지 못한 팔로워는 ISR에서 빠지고, 다시 따라잡으면 들어온다 |
-| 하이 워터마크(high watermark) | ISR 전원이 복제한 마지막 오프셋. **컨슈머는 하이 워터마크까지만 읽는다.** 그래서 리더만 가진 메시지는 리더가 바뀌어도 소비자에게 보인 적이 없다 |
+| 하이 워터마크(high watermark) | ISR 전원이 복제한 마지막 오프셋. 4.1부터 신규 클러스터에 기본으로 켜지는 ELR에서는 ISR 크기가 `min.insync.replicas`보다 작으면 하이 워터마크가 전진하지 않는다(strict min ISR). **컨슈머는 하이 워터마크까지만 읽는다.** 그래서 리더만 가진 메시지는 리더가 바뀌어도 소비자에게 보인 적이 없다 |
 | 리더 에포크(leader epoch) | 리더가 바뀔 때마다 오르는 번호. 복구된 옛 리더는 새 리더의 에포크 기록을 보고 갈라진 꼬리를 잘라 내(truncate) 로그를 맞춘다 |
 | 언클린 리더 선출 | ISR이 모두 죽었을 때 ISR 밖 복제본을 리더로 세우는 것. 가용성은 얻지만 복제되지 않은 메시지를 잃는다. `unclean.leader.election.enable=false`가 기본이다 |
 

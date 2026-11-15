@@ -49,7 +49,7 @@ function useNews() {
   return { news: data, error, isLoading }
 }
 
-function Headline() { const { news } = useNews(); return <h2>{news?.[0].title}</h2> }
+function Headline() { const { news } = useNews(); return <h2>{news?.[0]?.title}</h2> }
 function NewsList() { const { news } = useNews(); return <ul>{news?.map((n) => <li key={n.id}>{n.title}</li>)}</ul> }
 ```
 
@@ -113,7 +113,7 @@ flowchart LR
 
 ```tsx
 function Workspace({ children }) {
-  const { data: user, mutate } = useSWR('/api/users', fetcher)
+  const { data: user, error, mutate } = useSWR('/api/users', fetcher)
 
   const onLogout = useCallback(() => {
     axios.post('/api/users/logout', null, { withCredentials: true })
@@ -121,6 +121,7 @@ function Workspace({ children }) {
   }, [mutate])
 
   // 조건부 return은 모든 Hook 호출 뒤에 둔다
+  if (error) return <div>로그인 정보를 불러오지 못했습니다. <button onClick={() => mutate()}>다시 시도</button></div>
   if (user === undefined) return <div>로딩 중...</div>
   if (user === false) return <Navigate to="/login" />
 

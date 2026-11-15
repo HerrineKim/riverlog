@@ -46,6 +46,7 @@ enterButton.addEventListener('click', async () => {      // 몰입형 세션은 
   const gl = canvas.getContext('webgl2', { xrCompatible: true })
   session.updateRenderState({ baseLayer: new XRWebGLLayer(session, gl) })
   const refSpace = await session.requestReferenceSpace('local-floor')
+    .catch(() => session.requestReferenceSpace('local'))   // 선택 기능이라 못 받으면 local로
 
   session.requestAnimationFrame(function onFrame(time, frame) {
     const pose = frame.getViewerPose(refSpace)

@@ -126,6 +126,9 @@ Context는 props를 여러 단계로 내려보내지(prop drilling) 않고 트�
 test('고르면 그 사용자 ID로 콜백을 부른다', async () => {
   const user = userEvent.setup()
   const userChosen = vi.fn()
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ // afterEach에서 복원되므로 이 테스트에서 다시 건다
+    json: () => Promise.resolve([{ id: 'sam', name: 'Sam' }]),
+  }))
 
   render(
     <UserContext.Provider value={{ userChosen }}>
@@ -138,7 +141,7 @@ test('고르면 그 사용자 ID로 콜백을 부른다', async () => {
 })
 ```
 
-`vi.fn()`이 호출과 인자를 기록하는 스파이 역할을 한다. 앞의 `fetch` 대역이 ID가 `sam`인 사용자를 주므로 `'sam'`으로 불렸는지 확인할 수 있다. 콜백 호출은 컴포넌트 밖으로 나가는 결과라서 검증할 만한 요구사항이다. 여러 테스트에서 쓰면 Provider를 감싼 `renderWithProviders` 도우미나 `render`의 `wrapper` 옵션으로 묶는다.
+`vi.fn()`이 호출과 인자를 기록하는 스파이 역할을 한다. 테스트 안에서 건 `fetch` 대역이 ID가 `sam`인 사용자를 주므로 `'sam'`으로 불렸는지 확인할 수 있다. 콜백 호출은 컴포넌트 밖으로 나가는 결과라서 검증할 만한 요구사항이다. 여러 테스트에서 쓰면 Provider를 감싼 `renderWithProviders` 도우미나 `render`의 `wrapper` 옵션으로 묶는다.
 
 ## 언제 이 기법을 멈추나
 

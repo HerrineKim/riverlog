@@ -66,7 +66,8 @@ const React = (() => {
     hooks[i] = deps
   }
 
-  function render(Component) { cursor = 0; return Component() }
+  let current                                 // setState가 다시 그릴 컴포넌트
+  function render(Component = current) { current = Component; cursor = 0; return Component() }
   return { useState, useEffect, render }
 })()
 ```
@@ -172,7 +173,7 @@ useEffect(() => {
 
 ### useLayoutEffect: 그리기 전에 측정하고 고친다
 
-`useEffect`는 브라우저가 화면을 그린 **뒤에** 돈다. effect에서 DOM 크기를 재고 그 값으로 state를 바꾸면, 사용자는 잘못된 위치의 첫 화면을 한 번 본 뒤 고쳐진 화면을 보게 된다(깜빡임). `useLayoutEffect`는 React가 DOM을 바꾼 직후, **페인트 전에 동기로** 돈다. 그 안에서 state를 바꾸면 React가 그리기 전에 다시 렌더링하므로 중간 화면이 보이지 않는다.
+`useEffect`는 보통 브라우저가 화면을 그린 **뒤에** 돈다(클릭 같은 상호작용으로 생긴 업데이트라면 페인트 전에 돌 수도 있어서, 그린 뒤 실행이 보장되지는 않는다). effect에서 DOM 크기를 재고 그 값으로 state를 바꾸면, 사용자는 잘못된 위치의 첫 화면을 한 번 본 뒤 고쳐진 화면을 보게 된다(깜빡임). `useLayoutEffect`는 React가 DOM을 바꾼 직후, **페인트 전에 동기로** 돈다. 그 안에서 state를 바꾸면 React가 그리기 전에 다시 렌더링하므로 중간 화면이 보이지 않는다.
 
 ```jsx
 function Tooltip({ targetRect, children }) {

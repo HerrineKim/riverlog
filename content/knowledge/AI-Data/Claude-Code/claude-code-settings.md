@@ -75,8 +75,10 @@ Claude Code의 동작(시작 모델, 묻지 않고 실행할 것, 읽으면 안 
 
 | 양쪽에 다 있는 것 | 전역 | 프로젝트 | 관계 |
 | --- | --- | --- | --- |
-| CLAUDE.md, rules, agents | `~/.claude/…` | `.claude/…` | 이름이 같으면 프로젝트가 덮는다 |
-| commands, skills, hooks | `~/.claude/…` | `.claude/…` | 둘 다 쓴다(훅은 둘 다 실행) |
+| CLAUDE.md, rules | `~/.claude/…` | `.claude/…` | 둘 다 불러온다. 사용자 쪽을 먼저 싣고 프로젝트 쪽이 뒤에 붙을 뿐 어느 쪽도 덮지 않으므로, 충돌하는 지시는 직접 맞춰 둔다 |
+| agents | `~/.claude/agents/` | `.claude/agents/` | 이름이 같으면 프로젝트가 덮는다 |
+| commands, skills | `~/.claude/…` | `.claude/…` | 이름이 다르면 둘 다 쓴다. 이름이 같은 스킬은 **개인(전역)이 프로젝트보다 우선**한다 |
+| hooks | `~/.claude/settings.json` | `.claude/settings.json` | 둘 다 실행한다 |
 | MCP 서버 | `~/.claude.json` | `.mcp.json` | 로컬 > 프로젝트 > 사용자 |
 
 ## 권한 규칙
@@ -98,7 +100,7 @@ Claude Code의 동작(시작 모델, 묻지 않고 실행할 것, 읽으면 안 
 | Bash | `Bash(npm run *)`, `Bash(* install)`, `Bash(git * main)` | 아래 「Bash 매칭」 |
 | PowerShell | `PowerShell(cmd *)` | `gci`·`ls`·`dir`는 `Get-ChildItem`으로 정규화 |
 | Read·Edit | `Read(.env)`, `Edit(src/**)` | gitignore식 경로 패턴 |
-| Write·NotebookEdit·Glob | 경로 패턴 | **deny·ask에서만 유효.** allow에 쓰면 무시되고 경고. allow 평가는 `Read`·`Edit`만 본다 |
+| Write·NotebookEdit·Glob·Grep | 경로 패턴 | 규칙은 받아들이지만 **실제 파일 접근과 매칭하지 않는다.** 경로 검사는 `Read`·`Edit` 규칙만 본다. 쓰기를 막으려면 `Edit(secrets/**)`, 검색을 막으려면 `Read(secrets/**)`로 쓴다. 경로 없이 도구 이름만 쓴 전면 차단(`Write`)과는 다르다 |
 | WebFetch | `WebFetch(domain:example.com)` | |
 | Agent(구 Task) | `Agent(Explore)`, `Agent(*)` | 띄울 수 있는 서브에이전트 제한 |
 | MCP | `mcp__github__*`, `mcp__memory__create_entities` | |

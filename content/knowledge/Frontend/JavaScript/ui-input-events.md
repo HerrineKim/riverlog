@@ -182,8 +182,8 @@ thumb.addEventListener('pointerdown', (e) => {
 ```
 
 - 슬라이더 손잡이를 끌다 포인터가 손잡이 위아래로 벗어나도 이벤트가 계속 온다. `document`에 리스너를 붙였다 떼는 정리가 필요 없다.
-- 문서의 다른 `pointermove` 리스너가 드래그 중에 엉뚱하게 반응하지 않는다.
-- 캡처는 `target`·`currentTarget`만 바꾼다. `clientX` 같은 좌표는 실제 위치 그대로다.
+- 포인터 아래에 있는 다른 요소가 드래그 중에 `pointermove`·`pointerover`를 받지 않는다. 다만 이벤트는 `el`에서 버블링하므로 조상과 `document`의 리스너는 여전히 받는다. 거기서는 `event.target`으로 거르거나 전파를 막는다.
+- 캡처는 이벤트의 `target`만 `el`로 바꾼다. `currentTarget`은 늘 그렇듯 지금 실행 중인 리스너가 붙은 요소이고, `clientX` 같은 좌표는 실제 위치 그대로다.
 
 ### 포인터 락: 커서를 가두고 이동량만 받기
 

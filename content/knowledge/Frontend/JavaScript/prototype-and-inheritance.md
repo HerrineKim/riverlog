@@ -166,7 +166,7 @@ Object.hasOwn(pepperoni, 'size') // true: 자기 속성인지 확인
 | `F.prototype`의 성질 | 결과 |
 | --- | --- |
 | `new F()`를 **실행하는 순간에만** 읽힌다 | 나중에 `F.prototype = 다른객체`로 바꾸면 그 뒤 만든 인스턴스만 영향을 받고, 이미 만든 인스턴스의 프로토타입은 그대로다 |
-| 모든 함수(화살표 함수 제외)는 기본으로 `{ constructor: F }`를 가진다 | 인스턴스는 체인을 통해 `instance.constructor === F`를 읽는다. 누가 만들었는지 모르는 객체로 `new obj.constructor(…)`처럼 같은 종류를 하나 더 만들 수 있다 |
+| 일반 함수 선언·표현식과 `class`는 기본으로 `{ constructor: F }`를 가진다. 화살표 함수·단축 메서드·`async` 함수·`bind`로 만든 함수에는 자기 `prototype`이 없다(`bind`로 만든 함수는 그래도 `new`로 부를 수 있다) | 인스턴스는 체인을 통해 `instance.constructor === F`를 읽는다. 누가 만들었는지 모르는 객체로 `new obj.constructor(…)`처럼 같은 종류를 하나 더 만들 수 있다 |
 | JavaScript는 올바른 `constructor`를 **보장하지 않는다** | `F.prototype = { jumps: true }`로 통째로 덮으면 `constructor`가 사라진다. 덮지 말고 `F.prototype.jumps = true`로 속성을 더하거나, 덮을 때 `constructor: F`를 직접 넣는다 |
 | 일반 객체의 `prototype` 속성은 아무 의미가 없다 | `{ prototype: … }`은 그냥 이름이 prototype인 속성이다 |
 

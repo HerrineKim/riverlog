@@ -54,11 +54,16 @@ Oracle은 갱신 시점과 방식을 고를 수 있고, 원본 집계 질의를 
 
 ```sql
 -- Oracle
+-- 빠른 갱신에는 원본의 구체화된 뷰 로그가 필요하다
+CREATE MATERIALIZED VIEW LOG ON orders
+  WITH ROWID, SEQUENCE (ordered_at, region, amount) INCLUDING NEW VALUES;
+
 CREATE MATERIALIZED VIEW mv_monthly_sales
 REFRESH FAST ON DEMAND        -- 바뀐 부분만, 요청할 때
 ENABLE QUERY REWRITE          -- 원본에 대한 같은 집계 질의를 이 뷰로 대체
 AS
-SELECT TRUNC(ordered_at, 'MM') AS month, region, SUM(amount) AS total
+SELECT TRUNC(ordered_at, 'MM') AS month, region, SUM(amount) AS total,
+       COUNT(amount) AS cnt_amount, COUNT(*) AS cnt  -- 갱신·삭제까지 빠른 갱신하려면 필요
 FROM orders GROUP BY TRUNC(ordered_at, 'MM'), region;
 ```
 

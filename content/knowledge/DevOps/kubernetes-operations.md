@@ -139,7 +139,7 @@ flowchart TB
   end
   S3["3. 애드온<br>CNI 등 업그레이드"]
   subgraph WK["4. 워커 노드 (한 대씩, 또는 새 버전 노드를 추가하고 옛 노드를 빼는 방식)"]
-    W1["kubectl drain"] --> W2["kubeadm·kubelet 패키지 업그레이드"] --> W3["kubelet 재시작"] --> W4["kubectl uncordon"]
+    W1["kubectl drain"] --> W2["kubeadm 패키지 업그레이드<br>kubeadm upgrade node"] --> W3["kubelet·kubectl 패키지 업그레이드<br>kubelet 재시작"] --> W4["kubectl uncordon"]
   end
   S5["5. 확인<br>노드 버전, 파드 상태, 지표·알림"]
   S1 --> CP --> S3 --> WK --> S5

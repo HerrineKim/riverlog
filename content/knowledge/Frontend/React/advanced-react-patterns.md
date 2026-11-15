@@ -73,7 +73,7 @@ function Counter({ value, onChange, defaultValue = 0 }) {
 
 - **장점**: 상태가 바깥에 보여서 다른 UI와 동기화하거나 값을 제한하기 쉽다.
 - **단점**: 쓰는 쪽이 `useState`와 핸들러를 직접 연결해야 한다.
-- 렌더 도중 제어↔비제어가 바뀌면 React가 경고하므로 `value`를 `undefined`로 바꾸지 않는다.
+- 제어↔비제어 전환 경고는 `<input>` 같은 네이티브 폼 요소에만 React가 띄운다. 이 `Counter`처럼 직접 만든 `value` 규칙은 React가 검사하지 않으므로, `value`가 `undefined`로 바뀌면 경고 없이 묵은 내부 상태가 드러난다. 컴포넌트가 이 규칙을 스스로 지키게 하고(예: 개발 모드에서 전환을 감지해 경고), 쓰는 쪽은 `value`를 `undefined`로 바꾸지 않는다.
 
 ### 3. Custom Hook
 

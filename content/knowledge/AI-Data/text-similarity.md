@@ -92,7 +92,7 @@ def recommend(words_list, target_idx, top_n=6):
         .fit_transform(words_list).toarray()
     similarity = cosine_similarity(vectors)
     ranked = sorted(enumerate(similarity[target_idx]), key=lambda x: x[1], reverse=True)
-    return [idx for idx, _ in ranked[1:top_n + 1]]  # 0번은 자기 자신
+    return [idx for idx, _ in ranked if idx != target_idx][:top_n]  # 자기 자신 제외
 ```
 
 - 단순 빈도 대신 TF-IDF(`TfidfVectorizer`)를 쓰면 흔한 단어의 영향이 줄어든다.
@@ -120,7 +120,7 @@ def recommend(words_list, target_idx, top_n=6):
 | 랜덤 프로젝션 | 무작위 방향 몇 개에 벡터를 투영해 차원을 줄인다. 거리가 대략 보존된다 |
 | 지역 민감 해싱(LSH) | 가까운 벡터일수록 같은 해시 버킷에 들어가게 설계한 해시로, 같은 버킷 안에서만 비교한다 |
 
-비슷한 문서끼리 묶을 때는 **k-means가 잘 맞고**, DBSCAN 같은 밀도 기반이나 계층적 군집, 가우시안 혼합은 잘 맞지 않는다. 고차원 희소 벡터에서는 거리가 고르게 퍼져 밀도의 경계가 뚜렷하지 않기 때문이다. 문서 벡터를 단위 길이로 정규화한 뒤 k-means를 돌리면 코사인 기준 군집이 된다.
+비슷한 문서끼리 묶을 때는 **k-means가 잘 맞고**, DBSCAN 같은 밀도 기반이나 계층적 군집, 가우시안 혼합은 잘 맞지 않는다. 고차원 희소 벡터에서는 거리가 고르게 퍼져 밀도의 경계가 뚜렷하지 않기 때문이다. 문서 벡터를 단위 길이로 정규화한 뒤 k-means를 돌리면 코사인에 가까운 군집이 된다. 엄밀히 코사인 기준으로 묶으려면 중심도 매 갱신마다 단위 길이로 맞추는 spherical k-means를 쓴다.
 
 ## 정리
 

@@ -30,7 +30,7 @@ Java는 1995년 Sun Microsystems(지금은 Oracle)가 내놓은 **객체 지향,
 | 멀티스레드 | 언어와 표준 라이브러리가 스레드를 지원해, 예컨대 네트워크 입력을 기다리는 일을 별도 스레드에 맡겨 GUI가 멈추지 않게 한다([[java-concurrency\|Java 동시성]]) |
 | 전처리기 없음 | C·C++의 헤더 파일 포함이나 매크로가 없다. 의존은 `import`와 모듈로 표현한다 |
 
-과거에는 웹 브라우저 안에서 도는 **애플릿(applet)** 이 Java의 대표 기능이었지만, 브라우저들이 Java 플러그인을 끊으면서 Java 9에서 폐기 예정이 되고 Java 11에서 제거됐다.
+과거에는 웹 브라우저 안에서 도는 **애플릿(applet)** 이 Java의 대표 기능이었지만, 브라우저들이 Java 플러그인을 끊으면서 Java 9에서 폐기 예정(deprecated)이 됐다. Java 11에서 브라우저 플러그인·Web Start·`appletviewer`가 빠졌고, Java 17에서 제거 예정으로 표시된 Applet API(`java.applet`)는 Java 26(JEP 504)에서 제거됐다.
 
 ### 개발 환경
 
@@ -268,7 +268,7 @@ int x = list.get(0);    // 언박싱: intValue()
 제네릭은 타입을 매개변수로 받아 **컴파일 시점에 타입을 검사**한다. 꺼낼 때 형 변환이 필요 없고, 잘못된 타입을 넣으면 컴파일 오류가 난다.
 
 - **타입 소거(type erasure)**: 타입 인자는 컴파일 뒤 지워지고 바이트코드에는 `Object`(또는 상한 타입)로 남는다. 그래서 실행 중에 `List<String>`과 `List<Integer>`를 구분할 수 없고, `new T()`, `T[]` 생성, `instanceof List<String>`이 안 된다.
-- **와일드카드**: `List<? extends Number>`는 읽기 전용(생산자), `List<? super Integer>`는 쓰기용(소비자)이다. 「Producer Extends, Consumer Super(PECS)」로 외운다.
+- **와일드카드**: `List<? extends Number>`는 꺼내 읽는 쪽(생산자, `null` 말고는 원소를 넣을 수 없다), `List<? super Integer>`는 쓰기용(소비자)이다. 「Producer Extends, Consumer Super(PECS)」로 외운다.
 - 제네릭은 **불공변**이다. `Integer`가 `Number`의 하위 타입이어도 `List<Integer>`는 `List<Number>`의 하위 타입이 아니다.
 
 ## 리플렉션, 어노테이션, 동적 프록시
@@ -327,6 +327,7 @@ UserService proxy = (UserService) Proxy.newProxyInstance(
     (p, method, args) -> {                         // InvocationHandler
         long t = System.nanoTime();
         try { return method.invoke(target, args); }  // 실제 객체에 위임
+        catch (InvocationTargetException e) { throw e.getCause(); }  // 감싼 예외를 벗겨 원래 예외를 던진다
         finally { log(method.getName(), System.nanoTime() - t); }
     });
 ```

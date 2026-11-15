@@ -115,9 +115,11 @@ word2vec은 문장 안에서 가까이 나오는 단어끼리 비슷한 벡터�
 from gensim.models import Word2Vec
 
 sessions = [["item1", "item2", "item3"], ["item1", "item12", "item23"]]  # 사용자·세션별 아이템 ID 나열
-model = Word2Vec(sessions, vector_size=100, window=10, min_count=3, sg=1, negative=5)
+model = Word2Vec(sessions, vector_size=100, window=10, min_count=1, sg=1, negative=5)
 model.wv.most_similar("item1")   # 같이 소비되는 아이템
 ```
+
+`min_count`보다 적게 나온 아이템은 어휘에서 빠진다. 위처럼 데이터가 작으면 1로 두고, 실제 로그에서는 3~5 정도로 올려 드문 아이템을 걸러 낸다.
 
 | 설정 | 의미 |
 | --- | --- |

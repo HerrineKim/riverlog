@@ -101,17 +101,24 @@ const status = document.querySelector('#comment-status'); // aria-live="polite"
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();                 // 기본 페이지 이동을 막는다
-  const button = event.submitter;         // 어떤 버튼으로 제출했나
-  button.disabled = true;                 // 중복 제출 방지
+  if (form.dataset.submitting) return;   // 중복 제출 방지
+  form.dataset.submitting = 'true';
+  const button = event.submitter;         // 어떤 버튼으로 제출했나. requestSubmit()·엔터 제출이면 null일 수 있다
+  if (button) button.disabled = true;
 
-  const res = await fetch(form.action, {
-    method: form.method,
-    body: new FormData(form),             // name/value 쌍, 파일 포함
-    headers: { Accept: 'application/json' },
-  });
-
-  status.textContent = res.ok ? '댓글을 올렸다.' : '댓글을 올리지 못했다. 다시 시도한다.';
-  button.disabled = false;
+  try {
+    const res = await fetch(form.action, {
+      method: form.method,
+      body: new FormData(form),           // name/value 쌍, 파일 포함
+      headers: { Accept: 'application/json' },
+    });
+    status.textContent = res.ok ? '댓글을 올렸다.' : '댓글을 올리지 못했다. 다시 시도한다.';
+  } catch {
+    status.textContent = '연결에 실패했다. 네트워크를 확인하고 다시 시도한다.'; // 오프라인이면 fetch가 reject된다
+  } finally {
+    delete form.dataset.submitting;
+    if (button) button.disabled = false;
+  }
 });
 ```
 

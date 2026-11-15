@@ -25,6 +25,8 @@ He explained (to me) that the price had changed.  (O)
 He explained me that ...                          (X)
 ```
 
+단, advise는 「권고하다」 뜻이면 사람 목적어 없이 `advise that ~`도 맞다(`The airline advises that you carry your passport.`). 사람 목적어가 꼭 필요한 것은 「(공식적으로) 알리다」 뜻의 `advise 사람 that ~`일 때다.
+
 ### 자동사 vs 타동사
 
 타동사는 전치사 없이 목적어를 받고, 자동사는 전치사가 있어야 목적어를 받는다.

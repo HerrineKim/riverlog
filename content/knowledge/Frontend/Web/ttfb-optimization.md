@@ -45,7 +45,7 @@ HTML 캐시는 까다롭다. HTML이 가리키는 CSS·JS는 보통 파일명에
 | 짧은 수명 캐시 | `Cache-Control: max-age=300`처럼 몇 분만. CDN이 원 서버 대신 응답하고, 브라우저는 재검증으로 끝낼 수 있다 | 누구에게나 같은 정적 HTML |
 | `ETag` 재검증 | 내용 해시 같은 식별자를 준다. 브라우저가 `If-None-Match`로 보내고, 같으면 서버가 본문 없이 `304 Not Modified` | 바뀔 수 있는 HTML. 왕복 한 번은 여전히 든다 |
 | `Last-Modified` 재검증 | 같은 방식이지만 마지막 수정 시각으로 비교(`If-Modified-Since`) | ETag를 만들기 어려울 때 |
-| 캐시하지 않음 | `Cache-Control: no-store` 또는 `private` | 로그인 사용자용 개인화 HTML. 브라우저 캐시는 서버가 지울 수 없다 |
+| 캐시하지 않음 | `Cache-Control: no-store`(브라우저·CDN 모두 저장 금지). `private`는 저장 금지가 아니라 CDN 같은 공유 캐시만 막고 브라우저 캐시는 허용한다 | 로그인 사용자용 개인화 HTML. 브라우저 캐시는 서버가 지울 수 없다 |
 
 ```http
 HTTP/1.1 200 OK

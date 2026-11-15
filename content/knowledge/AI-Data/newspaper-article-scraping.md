@@ -136,7 +136,8 @@ article = Article(url, config=config, language="ko")
 
 | 증상 | 원인 | 대응 |
 | --- | --- | --- |
-| `text`가 비어 있다 | JS 렌더링 페이지, 언어 오감지, 짧은 글 | 브라우저로 받은 HTML을 `input_html`로, `language` 지정, `min_word_count` 낮추기 |
+| `text`가 비어 있다 | JS 렌더링 페이지, 언어 오감지 | 브라우저로 받은 HTML을 `input_html`로, `language` 지정 |
+| `Source`에서 짧은 기사가 빠진다 | `min_word_count`(기본 300)보다 짧은 본문은 유효한 기사로 치지 않는다 | `min_word_count` 낮추기. 개별 `Article`의 본문 추출 결과는 바뀌지 않는다 |
 | 403·차단 | 봇 탐지 | User-Agent·프록시 설정, `[cloudflare]` extra, 요청 속도 줄이기 |
 | 작성자·날짜가 틀린다 | 사이트마다 메타데이터 품질이 다르다 | 중요한 필드는 사이트별 선택자로 검증한다 |
 | 두 번째 `build()`가 0건 | `memoize_articles` 캐시 | `memoize_articles=False` |

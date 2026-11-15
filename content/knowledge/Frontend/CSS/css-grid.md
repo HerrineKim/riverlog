@@ -75,7 +75,7 @@ CSS 그리드(Grid Layout)는 **행과 열을 동시에** 다루는 2차원 레�
 | `repeat(n, …)` | 패턴 반복 | `repeat(12, 1fr)` |
 | `auto-fill` / `auto-fit` | 들어갈 수 있는 만큼 트랙 생성 | 미디어 쿼리 없이 열 개수가 바뀌는 카드 목록 |
 | `min-content` / `max-content` | 내용의 최소(가장 긴 단어)·최대(한 줄로 늘인) 크기 | 내용에 딱 맞는 열 |
-| `fit-content(한계)` | `max-content`처럼 굴다가 한계에 닿으면 줄바꿈 | `fit-content(20ch)`: 짧은 내용엔 좁게, 길어도 20ch까지 |
+| `fit-content(한계)` | `max-content`처럼 굴다가 한계에 닿으면 줄바꿈. 끊을 수 없는 긴 단어처럼 최소 크기가 한계보다 크면 한계를 넘는다 | `fit-content(20ch)`: 짧은 내용엔 좁게, 길면 대체로 20ch까지 |
 | `auto` | 내용 크기. 컨테이너에 공간이 남으면 **늘어난다** | 트랙의 기본값 |
 
 ```css

@@ -24,7 +24,7 @@ sources: ["https://github.com/trekhleb/javascript-algorithms", "https://github.c
 
 각 단계에서 현재 최선의 선택을 확정한다. 그 선택의 정당성이 필요하다.
 
-대표 예제: [Jump Game](https://github.com/trekhleb/javascript-algorithms/tree/85293e3e2b88f4d2ce330d956b139cf628aa1e82/src/algorithms/uncategorized/jump-game), [Unbound Knapsack Problem](https://github.com/trekhleb/javascript-algorithms/tree/85293e3e2b88f4d2ce330d956b139cf628aa1e82/src/algorithms/sets/knapsack-problem), [Dijkstra Algorithm](https://github.com/trekhleb/javascript-algorithms/tree/85293e3e2b88f4d2ce330d956b139cf628aa1e82/src/algorithms/graph/dijkstra), [Prim’s Algorithm](https://github.com/trekhleb/javascript-algorithms/tree/85293e3e2b88f4d2ce330d956b139cf628aa1e82/src/algorithms/graph/prim), [Kruskal’s Algorithm](https://github.com/trekhleb/javascript-algorithms/tree/85293e3e2b88f4d2ce330d956b139cf628aa1e82/src/algorithms/graph/kruskal).
+대표 예제: [Jump Game](https://github.com/trekhleb/javascript-algorithms/tree/85293e3e2b88f4d2ce330d956b139cf628aa1e82/src/algorithms/uncategorized/jump-game), [Dijkstra Algorithm](https://github.com/trekhleb/javascript-algorithms/tree/85293e3e2b88f4d2ce330d956b139cf628aa1e82/src/algorithms/graph/dijkstra), [Prim’s Algorithm](https://github.com/trekhleb/javascript-algorithms/tree/85293e3e2b88f4d2ce330d956b139cf628aa1e82/src/algorithms/graph/prim), [Kruskal’s Algorithm](https://github.com/trekhleb/javascript-algorithms/tree/85293e3e2b88f4d2ce330d956b139cf628aa1e82/src/algorithms/graph/kruskal). [Unbound Knapsack Problem](https://github.com/trekhleb/javascript-algorithms/tree/85293e3e2b88f4d2ce330d956b139cf628aa1e82/src/algorithms/sets/knapsack-problem)의 무게당 가치 순 탐욕 풀이는 최적을 보장하지 않는 휴리스틱이다(용량 4, (무게 3, 가치 5)·(무게 2, 가치 3)이면 5를 고르지만 최적은 6).
 
 ### Divide and Conquer
 

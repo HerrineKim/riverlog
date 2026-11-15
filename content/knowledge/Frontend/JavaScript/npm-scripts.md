@@ -38,7 +38,7 @@ sources: ["https://www.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/", "http
 | 기능 | 쓰는 법 | 주의 |
 | --- | --- | --- |
 | pre/post 훅 | `prebuild`, `postbuild`를 정의하면 `npm run build` 앞뒤로 자동 실행된다. 이름은 아무것이나 된다(`prelint`) | 훅이 겹치면 숨은 순서가 생긴다. 명시적인 `&&` 조합이 읽기 쉽다 |
-| 인자 전달 | `npm run test -- --grep parser` → `vitest run --grep parser`. `--` 뒤는 그대로 넘어간다 | `--` 없이 쓰면 npm 자신의 옵션으로 해석된다 |
+| 인자 전달 | `npm run test -- --testNamePattern parser` → `vitest run --testNamePattern parser`. `--` 뒤는 그대로 넘어간다 | `--` 없이 쓰면 npm 자신의 옵션으로 해석된다 |
 | 환경 변수 | 스크립트 안에서 `npm_package_name`, `npm_package_version`, `npm_lifecycle_event`(지금 실행 중인 스크립트 이름)를 읽는다 | 셸 변수 문법(`$X`, `%X%`)이 OS마다 다르다. Node 스크립트 안에서 `process.env`로 읽으면 안전하다 |
 | `config` 필드 | `"config": { "port": "8080" }` → `npm_package_config_port` | 잘 쓰이지 않는다. `.env`나 도구 자체 설정이 낫다 |
 | 버전 올리기 | `npm version patch \| minor \| major`가 `package.json`을 고치고 커밋·태그까지 만든다. `--no-git-tag-version`으로 끈다 | 버전 규칙은 [[semantic-versioning\|유의적 버전(SemVer)]] |

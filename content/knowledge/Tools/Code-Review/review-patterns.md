@@ -44,12 +44,14 @@ await getList({
 })
 
 // After
-const DEFAULT_PARAMS = { yearMonth: '', pNumber: '', exNo: '' }
-const yearMonth = date?.slice(0, 6) ?? ''
-await getList({ ...DEFAULT_PARAMS, ...value, yearMonth })
+await getList({
+  yearMonth: date?.slice(0, 6) ?? '',
+  pNumber: value.pNumber ?? '',
+  exNo: value.exNo ?? '',
+})
 ```
 
-`||`는 `0`, `''`, `false`도 기본값으로 바꿔 버린다. `null`/`undefined`일 때만 기본값을 쓰려면 `??`를 쓴다.
+`||`는 `0`, `''`, `false`도 기본값으로 바꿔 버린다. `null`/`undefined`일 때만 기본값을 쓰려면 `??`를 쓴다. `{ ...DEFAULT_PARAMS, ...value }`처럼 펼쳐서 기본값을 대신하려 하면 안 된다. spread는 나중 값이 이기므로 `value`의 `null`·`undefined`도 그대로 덮어쓴다.
 
 ## 4. 불리언 변수 이름은 질문처럼
 
@@ -95,10 +97,15 @@ const toPromise = <T>(source: Observable<T>) =>
     }
   })
 
-// After
+// After: take(1)이 첫 값 뒤에 구독을 끊는다. resolve만 해서는 interval 같은 소스가 계속 돈다
+import { take } from 'rxjs'
 const toPromise = <T>(source: Observable<T>) =>
   new Promise<T>((resolve, reject) => {
-    source.subscribe({ next: resolve, error: reject })
+    source.pipe(take(1)).subscribe({
+      next: resolve,
+      error: reject,
+      complete: () => reject(new Error('값 없이 끝났다')), // 이미 resolve했으면 무시된다
+    })
   })
 
 // 또는 (RxJS 7+)
@@ -114,7 +121,7 @@ const value = await firstValueFrom(source)
 
 ## 9. 불변 업데이트: 원본 배열·객체를 건드리지 않기
 
-Pinia·Redux 같은 스토어의 state나 React state를 직접 바꾸면 에러가 나거나 화면이 갱신되지 않는다. `map` 안에서 spread로 **새 객체**를 만들어 반환한다.
+Redux 스토어의 state나 React state를 직접 바꾸면 에러가 나거나 화면이 갱신되지 않는다. Pinia는 반응형이라 `store.count++`처럼 state를 직접 바꿔도 되지만, 인자로 받은 배열·객체를 그 자리에서 고치지 않는다는 원칙은 같다. `map` 안에서 spread로 **새 객체**를 만들어 반환한다.
 
 ```javascript
 // Before: [...undefined]는 TypeError, 배열은 항상 truthy라 || []는 의미가 없다

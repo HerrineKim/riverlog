@@ -77,7 +77,7 @@ Java 1.4의 **NIO(New I/O)** 가 JVM에서 멀티플렉싱을 쓰는 표준 API�
 | `MappedByteBuffer` (`FileChannel.map`) | 파일을 매핑한 네이티브 메모리 | 파일 일부를 메모리처럼 다룬다 |
 
 - **힙 버퍼로 채널 I/O를 하면 JDK가 내부에서 임시 다이렉트 버퍼를 만들어 한 번 더 복사한다.** 임시 버퍼는 스레드별 캐시에 보관해 재사용하지만, 크기가 제각각이면 캐시가 맞지 않아 할당·해제가 반복된다.
-- 다이렉트 버퍼의 네이티브 메모리는 그 버퍼 객체가 GC될 때 풀린다. 힙에 여유가 있어 GC가 늦게 돌면 네이티브 메모리가 먼저 차서 `OutOfMemoryError: Direct buffer memory`가 난다. `-XX:MaxDirectMemorySize`는 상한일 뿐 회수를 앞당기지 않는다.
+- 다이렉트 버퍼의 네이티브 메모리는 그 버퍼 객체가 GC될 때 풀린다. 힙에 여유가 있으면 GC가 늦게 돌아 죽은 버퍼가 네이티브 메모리를 쥐고 있게 된다. 할당이 `-XX:MaxDirectMemorySize` 상한에 닿으면 OpenJDK는 참조 처리를 기다리고 `System.gc()`를 요청한 뒤 다시 시도하고, 그래도 모자라면 `OutOfMemoryError: Direct buffer memory`를 낸다. 그래서 실제 원인은 살아 있는 버퍼를 너무 많이 쥐고 있거나, `-XX:+DisableExplicitGC`로 이 `System.gc()`가 무시되거나, 할당 경로에서 GC를 기다리느라 지연이 생기는 경우다.
 - 그래서 큰 파일·소켓 I/O가 잦으면 다이렉트 버퍼를 **직접 할당해 오래 재사용**한다. 내부 API(`sun.nio.ch.DirectBuffer.cleaner()`)로 강제 해제하는 방법은 JDK 9 모듈 캡슐화 이후 막혔다. 해제 시점을 코드로 정해야 하면 Java 22에 정식화된 FFM API의 `Arena`로 네이티브 메모리를 할당하고 `close()`로 바로 돌려준다.
 
 ## Reactor 패턴: 루프와 핸들러를 나눈다
@@ -135,7 +135,7 @@ Armeria는 소켓 I/O와 논블로킹 로직을 이벤트 루프(`armeria-common
 | `@Blocking` | 어노테이션 서비스의 메서드·클래스를 블로킹 실행기에서 돌린다 |
 | `useBlockingTaskExecutor(true)` | gRPC·Thrift 서비스 빌더 |
 
-이벤트 루프에서 `CompletableFuture`의 `join()`·`get()`을 부르면 Armeria가 `Blocking event loop, don't do this.` 경고 로그를 남긴다. 이 경고는 버그로 다룬다. Node.js도 같은 원칙이라 CPU를 오래 쓰는 일은 `worker_threads`로 뺀다([[nodejs-runtime|Node.js 런타임과 OS 차이 다루기]]).
+이벤트 루프에서 Armeria가 돌려준 `EventLoopCheckingFuture`의 `join()`·`get()`을 부르면 Armeria가 `Blocking event loop, don't do this.` 경고 로그를 남긴다. 일반 JDK `CompletableFuture`나 다른 라이브러리의 future는 검사하지 않으므로, 경고가 없다고 블로킹이 없는 것은 아니다. 이 경고는 버그로 다룬다. Node.js도 같은 원칙이라 CPU를 오래 쓰는 일은 `worker_threads`로 뺀다([[nodejs-runtime|Node.js 런타임과 OS 차이 다루기]]).
 
 ## 가상 스레드와의 관계
 

@@ -16,7 +16,7 @@ sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/mai
 
 | 개념 | 조건 | 예 |
 | --- | --- | --- |
-| 이터러블(iterable) | `__iter__()`로 이터레이터를 돌려준다. 여러 번 순회할 수 있다 | `list`, `dict`, `str`, `range` |
+| 이터러블(iterable) | `__iter__()`로 이터레이터를 돌려준다. `list` 같은 컨테이너는 매번 새 이터레이터를 줘 여러 번 순회할 수 있지만, 이터레이터는 한 번 소진되면 끝이다 | `list`, `dict`, `str`, `range` |
 | 이터레이터(iterator) | `__next__()`로 다음 값을 주고, 끝나면 `StopIteration`. 자기 자신이 이터러블이다 | `iter([1, 2])`, 파일 객체 |
 | 제너레이터(generator) | `yield`가 든 함수를 호출하면 나오는 **이터레이터** | `def f(): yield 1`, `(x for x in xs)` |
 

@@ -138,7 +138,7 @@ flowchart LR
 
 | 특징 | 효과 |
 | --- | --- |
-| 컴포넌트 하나가 아니라 **앱 전체**에 적용, 데이터는 전역 | 컴포넌트 간 통신에 기대지 않아 상태가 일관된다 |
+| 컴포넌트 하나가 아니라 **앱 전체**에 적용, 데이터는 전역(테오의 정리. Cycle.js의 MVI는 컴포넌트 단위로도 쓰며 전역 스토어가 필수는 아니다) | 컴포넌트 간 통신에 기대지 않아 상태가 일관된다 |
 | 데이터가 **한 방향으로 순환** | 흐름을 이해하고 디버깅하기 쉽다 |
 | 비즈니스 로직이 뷰에 의존하지 않는다 | UI 요구 변화에 유연하고 따로 테스트하기 쉽다 |
 | 상태가 뷰 생명주기와 무관 | 마운트·언마운트에 따른 동기화 문제가 없다 |
@@ -180,7 +180,7 @@ Flux 이후 나온 단방향 UI 아키텍처들은 모두 사용자 이벤트 �
 | Flux | Action · Dispatcher · Store · View | 계층 구조는 View 쪽에만 있고, Store와 Dispatcher가 전체를 조율한다 |
 | Redux | 단일 Store · Reducer · Middleware | 상태 변경을 「이전 상태 + 액션 → 새 상태」인 순수 함수로 제한한다. 미들웨어로 dispatch를 확장한다 |
 | BEST | Behavior · Event · State · Tree | 렌더링 트리, 상태, 이벤트 리스너, 상태에 따라 달라지는 동작을 나눠 이벤트 처리를 렌더링에서 떼어 낸다 |
-| MVU (Elm) | Model · view 함수 · update 함수 | 모두 순수 함수다. 각 부분을 그대로 중첩할 수 있어 컴포넌트를 조각으로 떼어 내기 쉽다 |
+| MVU (Elm) | Model · view 함수 · update 함수 | `view`와 `update`는 순수 함수이고 Model은 불변 상태 데이터다. 각 부분을 그대로 중첩할 수 있어 컴포넌트를 조각으로 떼어 내기 쉽다 |
 | MVI (Cycle.js) | Intent · Model · View, 모두 스트림 | 입력·모델·렌더링을 Observable 스트림으로 이어 흐름이 코드에 드러난다. 스트림 라이브러리에 강하게 의존한다 |
 
 Flux에서 Redux로 줄어든 과정은 이렇다. Flux에서 Store는 액션에만 반응해 바뀌고 공개 setter 없이 getter만 둔다. 액션은 `{ type: 'delete-todo', todoID }`처럼 구현 단계가 아니라 일어난 일을 의미 있게 이름 붙인다(`delete-user`를 `clear-user-data`, `refresh-credentials`로 쪼개지 않는다). Redux는 핫 리로딩과 시간 여행 디버깅을 하려고 Store에서 구독·등록 같은 부수 효과를 빼냈다. 남은 Store의 핵심은 `(state, action) => newState`라는 순수 함수, 곧 **reducer**다. reducer들을 루트 reducer 하나로 합치자 액션을 Store마다 나눠 주던 Dispatcher가 필요 없어졌다. 컴포넌트 트리에 루트가 하나인 것처럼 상태 트리에도 루트가 하나가 됐고, 이 모양은 Elm Architecture(Model·view·update)와 같다. 상태가 불변이고 갱신이 순수 함수라 액션 기록을 다시 재생하면 어느 시점의 상태든 재현된다.

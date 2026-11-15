@@ -80,13 +80,11 @@ ny.getHours(); // 뉴욕 기준 시
 서머타임이 없는 한국 시간이라면 UTC로 맞춘 뒤 +9시간 하는 식으로 단순해진다. 해외 리전 서버에서 "한국 시간 오전 9시~오후 6시에만 배너 표시" 같은 조건을 계산할 때 쓴다.
 
 ```js
-const now = new Date();
-const utcMs = now.getTime() + now.getTimezoneOffset() * 60 * 1000;
-const koreaNow = new Date(utcMs + 9 * 60 * 60 * 1000);
-koreaNow.getHours(); // 어디서 실행해도 한국 기준 시
+const koreaNow = new Date(Date.now() + 9 * 60 * 60 * 1000);
+koreaNow.getUTCHours(); // 어디서 실행해도 한국 기준 시. 로컬 getter(getHours)는 쓰지 않는다
 ```
 
-이렇게 옮긴 `Date`는 getter가 다른 타임존의 숫자를 돌려주도록 **값을 옮겨 놓은** 객체다. 비교와 표시에만 쓰고, `toISOString()`으로 서버에 보내거나 저장하면 오프셋만큼 어긋난다.
+`getTimezoneOffset()`으로 UTC에 맞춘 뒤 로컬 getter로 읽으면, 옮긴 시각이 실행 환경의 서머타임 전환을 넘을 때 한 시간 어긋난다(뉴욕 서버에서 2026-03-08T06:30Z면 15시가 아니라 16시). 이렇게 옮긴 `Date`는 UTC getter가 다른 타임존의 숫자를 돌려주도록 **값을 옮겨 놓은** 객체다. 비교와 표시에만 쓰고, `toISOString()`으로 서버에 보내거나 저장하면 오프셋만큼 어긋난다.
 
 **표시만 할 때는 된다. 날짜 연산에서 깨진다.**
 

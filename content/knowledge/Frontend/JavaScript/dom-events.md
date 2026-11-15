@@ -226,9 +226,9 @@ list.addEventListener('items-updated', saveToStorage)
 
 - 데이터는 `detail`에 담는다. 일반 `Event`에 속성을 직접 붙여도 되지만, `detail`은 표준 속성과 이름이 겹칠 걱정이 없고 「커스텀 이벤트」임을 코드로 드러낸다.
 - 커스텀 이벤트는 기본으로 **버블링하지 않는다.** 부모나 `document`에서 받으려면 `bubbles: true`를 준다.
-- 섀도 루트를 건너는 이벤트는 바깥에서 볼 때 `target`이 호스트 요소로 **다시 지정(retarget)** 된다. 커스텀 이벤트가 섀도 루트 밖으로 나가려면 `bubbles: true`와 `composed: true`가 **둘 다** 필요하다([[web-components|웹 컴포넌트: template·slot·Shadow DOM]]).
+- 섀도 루트를 건너는 이벤트는 바깥에서 볼 때 `target`이 호스트 요소로 **다시 지정(retarget)** 된다. 섀도 루트 경계를 넘을지는 `composed`가, 그 뒤 위로 올라갈지는 `bubbles`가 정한다. `composed: true`만 주면 바깥의 캡처 리스너와 호스트(타깃 단계)까지는 닿고, 호스트의 조상에서 버블링으로 받으려면 `bubbles: true`도 함께 준다([[web-components|웹 컴포넌트: template·slot·Shadow DOM]]).
 - 커스텀 이벤트에는 `on<event>` 속성이 없다. `document.onhello`는 동작하지 않으므로 `addEventListener`로 받는다.
-- 코드로 보낸 이벤트는 `event.isTrusted`가 `false`다. 사용자의 실제 입력만 받아야 하는 곳(게임, 결제 확인)에서 구분할 수 있다.
+- `dispatchEvent`로 보낸 이벤트는 `event.isTrusted`가 `false`다. 다만 `true`라고 사용자의 실제 입력이라는 보장은 없다. `element.focus()`처럼 코드가 부른 브라우저 동작이 만든 이벤트도 `true`다. 브라우저가 만든 이벤트와 스크립트가 꾸며 보낸 이벤트를 가르는 값으로 쓴다.
 
 ### 이벤트 만들기 옵션
 

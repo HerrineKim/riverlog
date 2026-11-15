@@ -49,8 +49,8 @@ function throttle(callback, delay) {
   return function (...args) {
     if (timer) return            // 예약이 걸려 있으면 무시
     timer = setTimeout(() => {
+      timer = null               // 먼저 비운다: callback이 예외를 던져도 다음 예약을 받는다
       callback.apply(this, args)
-      timer = null               // 실행 후 다음 예약을 받을 수 있게 비운다
     }, delay)
   }
 }
@@ -58,7 +58,7 @@ function throttle(callback, delay) {
 window.addEventListener('scroll', throttle(loadMoreIfNeeded, 200))
 ```
 
-처음 호출된 시점에만 실행을 예약하고, 그 뒤 `delay` 동안의 호출은 모두 무시한다. 그래서 callback은 **최대 `delay`마다 한 번** 실행된다. 실행이 끝나면 `timer`를 비워야 다음 주기에 다시 예약된다.
+처음 호출된 시점에만 실행을 예약하고, 그 뒤 `delay` 동안의 호출은 모두 무시한다. 그래서 callback은 **최대 `delay`마다 한 번** 실행된다. 콜백을 부르기 전에 `timer`를 비워야 다음 주기에 다시 예약된다. 콜백 뒤에 비우면 콜백이 예외를 던졌을 때 `timer`가 남아 쓰로틀이 영영 멈춘다.
 
 ## 쓰로틀보다 나은 대안
 

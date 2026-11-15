@@ -145,7 +145,7 @@ chrome --headless --remote-debugging-port=9222                   # DevTools 프�
 | --- | --- |
 | 새 헤드리스 | 지금 Chrome의 `--headless`는 **일반 Chrome과 같은 코드**를 창만 없이 돌린다. 헤드리스에서만 다르게 동작하는 문제가 줄었다 |
 | `chrome-headless-shell` | Chrome 59에서 처음 나온 옛 헤드리스 구현. 따로 배포되는 가벼운 실행 파일로 남았고, 자동화·스크린숏처럼 빠른 실행이 중요한 곳에 쓴다(Puppeteer `headless: 'shell'`) |
-| 창 있는 브라우저가 필요할 때 | 리눅스 CI에서 확장 프로그램 테스트처럼 headed 모드가 필요하면 **Xvfb**(X virtual framebuffer)를 쓴다. 화면 출력 없이 메모리에서 그리는 X 디스플레이 서버다. `xvfb-run npx playwright test --headed`처럼 감싸면 빈 디스플레이 번호를 찾아 준다 |
+| 창 있는 브라우저가 필요할 때 | 리눅스 CI에서 확장 프로그램 테스트처럼 headed 모드가 필요하면 **Xvfb**(X virtual framebuffer)를 쓴다. 화면 출력 없이 메모리에서 그리는 X 디스플레이 서버다. `xvfb-run -a npx playwright test --headed`처럼 감싼다. `-a`(`--auto-servernum`)를 줘야 빈 디스플레이 번호를 찾아 주고, 없으면 기본값 `:99`를 쓴다 |
 
 ### 깨지지 않는 브라우저 테스트
 

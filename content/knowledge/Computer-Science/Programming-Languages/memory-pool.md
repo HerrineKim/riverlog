@@ -48,14 +48,17 @@ class FixedPool {
     size_t top = N;
 public:
     FixedPool() { for (size_t i = 0; i < N; ++i) freeIndex[i] = N - 1 - i; }
-    void* allocate()        { assert(top > 0); return storage + freeIndex[--top] * sizeof(T); }
+    void* allocate() {
+        if (top == 0) throw std::bad_alloc();   // 다 쓰면 실패를 알린다
+        return storage + freeIndex[--top] * sizeof(T);
+    }
     void  deallocate(void* p) {
         freeIndex[top++] = (static_cast<unsigned char*>(p) - storage) / sizeof(T);
     }
 };
 ```
 
-- `assert`는 디버그 빌드에서만 검사하고 릴리스 빌드에서는 사라지므로 정상 경로 비용이 없다.
+- 빈 칸이 없으면 `std::bad_alloc`을 던진다. `assert(top > 0)`만 두면 릴리스 빌드(`NDEBUG`)에서 검사가 사라져, 다 쓴 뒤의 할당이 0인 `top`을 줄이며 배열 밖을 읽는다. 비교 한 번이라 정상 경로 비용은 거의 없다.
 - 이 풀은 생 메모리만 돌려준다. 객체는 placement new(`new (p) T(...)`)로 생성하고, 반납 전에 소멸자를 직접 불러야 한다.
 
 ## 가변 풀: 고정 풀을 청크로 잇기

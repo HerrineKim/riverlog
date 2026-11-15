@@ -137,7 +137,7 @@ GitHub 프로필의 기여 그래프(잔디)는 **커밋 작성자 이메일이 
 
 - 이메일을 바꿀 때는 옛 이메일을 지우지 말고 **보조 이메일로 남겨 둔다.** 가장 안전하다.
 - 주소를 공개하고 싶지 않으면 GitHub가 주는 `아이디@users.noreply.github.com` 주소를 `user.email`로 쓴다.
-- 이미 지웠다면 과거 커밋의 작성자를 다시 써야 한다. 이력 재작성이므로 [[git-undo-and-rewrite|되돌리기와 이력 다루기]]의 `git filter-repo --mailmap`을 참고한다.
+- 이미 지웠다면 먼저 그 이메일을 계정에 다시 추가한다. GitHub가 기여 그래프를 다시 계산해 과거 커밋이 돌아온다. 그 주소를 다시 등록할 수 없을 때만 과거 커밋의 작성자를 고쳐 쓴다. 해시가 바뀌는 이력 재작성이므로 [[git-undo-and-rewrite|되돌리기와 이력 다루기]]의 `git filter-repo --mailmap`을 참고한다.
 
 ### 명령에 별명 붙이기: alias
 
@@ -162,7 +162,8 @@ alias 값이 `!`로 시작하면 git 하위 명령이 아니라 **셸 명령**�
   sync = "!f() { git fetch \"$1\" && git reset --hard \"$1/$(git branch --show-current)\"; }; f"
   # fzf로 고르기: 브랜치를 골라 이동, 파일을 여러 개 골라 add
   sw   = "!git switch $(git branch | grep -v '^\\*' | fzf | awk '{print $1}')"
-  a    = "!git add $(git status -s | fzf -m | awk '{print $2}')"
+  # 파일 이름에 공백이 있어도 깨지지 않게 NUL로 구분해 넘긴다
+  a    = "!git ls-files -m -o --exclude-standard -z | fzf -m --read0 --print0 | xargs -0 git add --"
   aliases = "!git config --get-regexp '^alias\\.' | sed 's/^alias\\.//'"
 ```
 

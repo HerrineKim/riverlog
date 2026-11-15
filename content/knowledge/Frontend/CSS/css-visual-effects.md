@@ -24,7 +24,7 @@ sources: ["https://web.dev/learn/css/filters", "https://web.dev/learn/css/blend-
 | `shape-outside` | float 주변 글이 흐르는 경계 | 원형 사진을 둘러싸는 본문 |
 | `-webkit-box-reflect` (비표준) | 요소 아래·옆에 비친 상 | 로고·앨범 커버 반사. Firefox 미지원이라 `mask-image`로 대체 |
 
-잘라 내거나 가려도 **박스 자체는 그대로**다. 레이아웃·클릭 영역은 원래 사각형을 기준으로 한다.
+잘라 내거나 가려도 **박스 자체는 그대로**라 레이아웃은 원래 사각형을 기준으로 한다. 클릭 영역은 둘이 다르다. `clip-path`로 잘린 바깥은 클릭을 받지 않고, `mask-image`는 클릭 영역을 바꾸지 않아 투명한 부분도 클릭된다.
 
 ## filter
 

@@ -1,7 +1,7 @@
 ---
 title: "로컬 개발 환경에 HTTPS 적용하기"
 concept: "mkcert"
-summary: "localhost는 대부분 보안 컨텍스트로 취급되지만 Secure 쿠키·HTTP/2·커스텀 호스트가 필요하면 로컬 HTTPS가 필요하다. mkcert로 내 기기만 믿는 로컬 CA를 만들어 인증서를 발급하고, 웹 서버·Node·프레임워크 개발 서버에 붙인다."
+summary: "localhost는 대부분 보안 컨텍스트로 취급되지만 HTTP/2·커스텀 호스트(그 위의 Secure 쿠키 포함)가 필요하면 로컬 HTTPS가 필요하다. mkcert로 내 기기만 믿는 로컬 CA를 만들어 인증서를 발급하고, 웹 서버·Node·프레임워크 개발 서버에 붙인다."
 tags: ["security", "http", "network", "frontend", "tips"]
 source: other
 date: "2026-11-02"
@@ -17,7 +17,7 @@ sources: ["https://velog.io/@sejinkim/%EB%A1%9C%EC%BB%AC-%EA%B0%9C%EB%B0%9C%ED%9
 | 상황 | 이유 |
 | --- | --- |
 | Mixed Content 디버깅 | 운영과 같은 조건(HTTPS 페이지)을 재현해야 한다 |
-| `Secure` 쿠키 | HTTPS 연결에서만 전송된다 |
+| `Secure` 쿠키 | HTTPS 연결에서만 전송된다. `http://localhost`는 예외로 허용하는 브라우저가 많지만(Chrome·Firefox), 커스텀 호스트 이름에서는 HTTPS가 있어야 한다 |
 | HTTP/2 이상 | 브라우저는 HTTPS에서만 HTTP/2를 쓴다 |
 | HTTPS를 요구하는 라이브러리·API | 외부 SDK, OAuth 콜백 등 |
 | 커스텀 호스트 이름 (`example.dev`) | `localhost`가 아니면 보안 컨텍스트 예외를 받지 못한다 |
@@ -49,8 +49,10 @@ scoop bucket add extras && scoop install mkcert
 ```bash
 mkcert -install        # 로컬 루트 CA 생성 + 시스템·브라우저 신뢰 목록에 등록
 mkcert -CAROOT         # rootCA.pem 위치 (모바일 기기에 설치할 때)
-mkcert "*.example.dev" localhost 127.0.0.1 ::1   # 인증서 발급 (와일드카드 가능)
-# → 현재 폴더에 인증서(.pem)와 개인키(-key.pem) 파일이 생긴다
+mkcert -cert-file example.dev.pem -key-file example.dev-key.pem \
+  "*.example.dev" localhost 127.0.0.1 ::1        # 인증서 발급 (와일드카드 가능)
+# → example.dev.pem(인증서)과 example.dev-key.pem(개인키)이 생긴다.
+#   파일 이름 옵션을 빼면 _wildcard.example.dev+3.pem 같은 이름이 된다
 ```
 
 **루트 CA 파일(`rootCA-key.pem`)은 절대 공유하지 않는다.** 누군가 손에 넣으면 그 기기의 통신을 가로챌 수 있는 인증서를 마음대로 만들 수 있다. 팀원은 각자 `mkcert -install`을 실행한다.

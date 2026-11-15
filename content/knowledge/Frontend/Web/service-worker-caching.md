@@ -63,24 +63,25 @@ flowchart LR
 
 ```javascript
 // install 단계 프리캐시
-const PRECACHE = 'app-v3';
+const APP = 'myapp-';                 // Cache Storage는 출처 단위라 같은 출처의 다른 앱과 이름 공간을 나눈다
+const PRECACHE = `${APP}precache-v3`;
 const urls = ['/', '/app.js', '/styles.css', '/logo.svg', '/offline.html'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(PRECACHE).then((cache) => cache.addAll(urls)));
 });
 
-// activate 단계에서 현재 버전이 아닌 캐시를 지운다
+// activate 단계에서 이 앱의 옛 버전 캐시만 지운다
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((names) =>
-      Promise.all(names.filter((n) => n !== PRECACHE).map((n) => caches.delete(n)))
+      Promise.all(names.filter((n) => n.startsWith(APP) && n !== PRECACHE).map((n) => caches.delete(n)))
     )
   );
 });
 ```
 
-새 서비스 워커를 설치해도 **옛 캐시는 저절로 지워지지 않는다.** 캐시 이름에 버전을 붙이고 `activate`에서 정리한다.
+새 서비스 워커를 설치해도 **옛 캐시는 저절로 지워지지 않는다.** 캐시 이름에 버전을 붙이고 `activate`에서 정리한다. 이때 `n !== PRECACHE`만으로 거르면 같은 출처를 쓰는 다른 앱의 캐시나 이 앱의 런타임 캐시까지 지우므로, 앱 접두사와 남길 이름을 정해 그 범위에서만 지운다.
 
 ### 캐시에 넣는 시점: 세분한 패턴
 
@@ -147,16 +148,16 @@ event.respondWith(
 );
 
 // stale-while-revalidate
-event.respondWith(
-  caches.open('runtime').then(async (cache) => {
-    const cached = await cache.match(event.request);
-    const network = fetch(event.request).then((res) => {
-      if (res.ok) cache.put(event.request, res.clone()); // 본문은 한 번만 읽히므로 clone
-      return res;
-    });
-    return cached || network;
-  })
+const network = fetch(event.request);
+event.waitUntil(                                   // 응답한 뒤에도 캐시 갱신이 끝날 때까지 워커를 살려 둔다
+  network.then(async (res) => {
+    if (!res.ok) return;
+    const copy = res.clone();                      // 본문은 한 번만 읽히므로 먼저 복제
+    const cache = await caches.open('runtime');
+    await cache.put(event.request, copy);
+  }).catch(() => {})                               // 오프라인이면 갱신만 건너뛴다
 );
+event.respondWith(caches.match(event.request).then((cached) => cached || network));
 ```
 
 - Stale-while-revalidate는 캐시가 맞아도 **항상 네트워크 요청을 보낸다.** 갱신된 내용은 다음 요청에서야 보인다.
@@ -168,7 +169,7 @@ event.respondWith(
 
 | 패턴 | 방식 | 어울리는 경우 |
 | --- | --- | --- |
-| 캐시·네트워크 경주 | `Promise.any([caches.match(req), fetch(req)])`로 먼저 성공한 쪽을 쓴다 | 디스크가 느린 기기의 작은 자산. 이미 가진 것을 또 받으니 데이터는 낭비된다 |
+| 캐시·네트워크 경주 | `Promise.any([caches.match(req).then((r) => r || Promise.reject(new Error('miss'))), fetch(req)])`로 먼저 성공한 쪽을 쓴다. 캐시에 없으면 `match()`가 `undefined`로 이행하므로 거부로 바꿔야 네트워크 응답을 기다린다 | 디스크가 느린 기기의 작은 자산. 이미 가진 것을 또 받으니 데이터는 낭비된다 |
 | 캐시 다음 네트워크(cache then network) | **페이지가** 캐시와 네트워크에 동시에 요청해 캐시로 먼저 그리고, 네트워크 응답이 오면 다시 그린다 | 타임라인·순위표. 네트워크 우선의 약점(느린 연결에서 실패할 때까지 기다림)을 피한다. 새 내용은 사용자가 읽던 것을 밀어내지 않게 위에 끼우고 스크롤 위치를 맞춘다 |
 | 범용 대체 | 캐시·네트워크가 모두 실패하면 미리 캐시한 대체물 | 아바타 자리 표시 이미지, 실패한 POST, 「오프라인에서는 쓸 수 없음」 페이지 |
 | 서비스 워커 템플릿 | 캐시한 HTML 템플릿 + JSON 데이터를 워커에서 합쳐 `new Response(html, { headers: { 'Content-Type': 'text/html' } })` | 「~로 로그인됨」처럼 사용자별 상태가 섞여 서버 HTML을 그대로 캐시할 수 없는 페이지 |

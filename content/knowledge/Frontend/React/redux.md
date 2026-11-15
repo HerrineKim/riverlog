@@ -110,7 +110,7 @@ export const store = configureStore({ reducer: { counter: counterSlice.reducer }
 - action type은 `슬라이스 이름/리듀서 이름`(`counter/plus`)으로 자동 생성된다.
 - `createSlice`는 안에서 `createAction`과 `createReducer`를 쓴다. 슬라이스 밖에서도 쓸 수 있다. `createAction('todos/add', prepare)`는 타입 상수와 액션 생성 함수를 한 번에 만들고(생성 함수의 `.type`이 곧 타입), 두 번째 인자 `prepare`로 payload를 가공한다(`(text) => ({ payload: { id: nanoid(), text } })`). `createReducer(initialState, (builder) => builder.addCase(add, (state, action) => { … }))`는 switch 문 대신 액션별 케이스를 등록한다. 다른 슬라이스의 액션이나 thunk 결과에 반응할 때는 슬라이스의 `extraReducers`에 같은 builder를 쓴다.
 
-과거에는 `createStore(reducer)`로 store를 만들고 `switch` 문 reducer와 action type 상수를 손으로 썼다. 이를 줄이려고 redux-actions의 `createAction`·`handleActions`(값은 늘 `action.payload`로 꺼낸다)를 쓰기도 했다. 지금 `createStore`는 deprecated 표시가 붙어 `legacy_createStore`로만 남았다.
+과거에는 `createStore(reducer)`로 store를 만들고 `switch` 문 reducer와 action type 상수를 손으로 썼다. 이를 줄이려고 redux-actions의 `createAction`·`handleActions`(값은 늘 `action.payload`로 꺼낸다)를 쓰기도 했다. 지금 `createStore`는 RTK의 `configureStore`로 옮기라는 뜻으로 deprecated 표시가 붙었을 뿐, 여전히 export되고 동작하며 없어질 계획도 없다. 경고 표시 없이 쓰고 싶으면 같은 함수의 별칭인 `legacy_createStore`를 import한다.
 
 ### 파일 구성: Ducks에서 슬라이스로
 

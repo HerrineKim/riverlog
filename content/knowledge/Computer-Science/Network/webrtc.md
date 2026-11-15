@@ -21,7 +21,7 @@ WebRTC(Web Real-Time Communication)는 웹 브라우저와 네이티브 앱이 *
 | `RTCPeerConnection` | 피어 간 연결을 맺고 오디오·비디오 스트리밍 |
 | `RTCDataChannel` | 피어 간 임의의 데이터(텍스트, 파일 등) 전송 |
 
-보안상 모든 WebRTC 통신은 **암호화가 필수**이고, API는 **보안 컨텍스트(HTTPS 또는 localhost)** 에서만 동작한다.
+보안상 모든 WebRTC 통신은 **암호화가 필수**다. `getUserMedia()` 같은 미디어 캡처 API는 **보안 컨텍스트(HTTPS 또는 localhost)** 에서만 동작하므로 실서비스는 HTTPS로 띄운다. `RTCPeerConnection`·데이터 채널은 표준상 보안 컨텍스트로 제한되지 않는다.
 
 ## 연결에 필요한 것들
 
@@ -43,7 +43,7 @@ WebRTC 표준은 이 메타데이터를 **어떻게 전달할지 정하지 않�
 | STUN | "밖에서 보이는 내 공인 IP·포트가 무엇인지" 알려 줌. 대부분 이것으로 직접 연결 가능 |
 | TURN | 직접 연결이 불가능할 때(대칭형 NAT, 엄격한 방화벽) 미디어를 **중계(relay)** 하는 서버 |
 
-ICE는 지연이 가장 짧은 **UDP 직접 연결**을 먼저 시도하고, 안 되면 TCP, 그래도 안 되면 TURN 중계로 내려간다. 후보는 종류별로 이름이 있다.
+ICE는 아래 세 종류의 후보를 모아 양쪽 후보를 짝지은 **후보 쌍**에 우선순위를 매기고, 우선순위 순으로 연결 검사를 한 뒤 통하는 쌍 하나를 고른다(nomination). TURN 중계 후보도 처음부터 함께 검사 대상이다. 보통 직접 연결(`host`) > NAT 바깥 주소(`srflx`) > 중계(`relay`), TCP보다 UDP 순으로 우선순위가 높아 직접 연결이 되면 그쪽이 뽑힌다. 후보는 종류별로 이름이 있다.
 
 | 후보 종류 | 주소 | 얻는 곳 |
 | --- | --- | --- |
@@ -106,7 +106,7 @@ signaling.onmessage = async (msg) => {
 };
 ```
 
-이 offer/answer 구조를 **JSEP(JavaScript Session Establishment Protocol)** 라고 한다. 브라우저는 시그널링 상태를 저장하지 않고 SDP를 만들고 받는 일만 하며, 전달은 앱에 맡긴다.
+이 offer/answer 구조를 **JSEP(JavaScript Session Establishment Protocol)** 라고 한다. 브라우저는 SDP를 만들고 offer/answer 협상 상태(`signalingState`, 대기 중인 description)를 관리하지만, 시그널링 메시지를 상대에게 전달하는 일은 앱에 맡긴다.
 
 - `setLocalDescription()`을 불러야 후보 수집이 시작된다.
 - **트리클 ICE(Trickle ICE)**: 후보를 다 모을 때까지 기다리지 않고, 찾는 즉시 하나씩 보내고 받는 즉시 `addIceCandidate()`한다. 연결 시간이 크게 줄어든다.
@@ -155,14 +155,20 @@ pc.ondatachannel = ({ channel }) => {
 };
 ```
 
-큰 데이터(예: 캔버스로 캡처한 사진의 픽셀 배열)는 한 번에 보내지 말고 **약 64KB 이하의 청크로 나눠** 보낸다. 먼저 전체 길이를 보내고, 받는 쪽은 그 길이만큼 버퍼를 만들어 청크를 이어 붙인 뒤 다 모이면 렌더링한다.
+큰 데이터(예: 캔버스로 캡처한 사진의 픽셀 배열)는 한 번에 보내지 말고 **약 64KB 이하의 청크로 나눠** 보낸다. 먼저 전체 길이를 보내고, 받는 쪽은 그 길이만큼 버퍼를 만들어 청크를 이어 붙인 뒤 다 모이면 렌더링한다. 청크로 나눠도 한꺼번에 `send()`하면 송신 버퍼가 넘쳐 `OperationError`가 나므로, `bufferedAmount`가 일정량을 넘으면 `bufferedamountlow` 이벤트까지 멈춘다.
 
 ```javascript
 const CHUNK_LEN = 64000;
+const HIGH_WATER = 1024 * 1024; // 송신 버퍼에 쌓아 둘 상한(1MB)
 
-function sendBytes(channel, bytes) {
+async function sendBytes(channel, bytes) {
+  channel.bufferedAmountLowThreshold = HIGH_WATER / 2;
   channel.send(String(bytes.byteLength)); // 전체 길이 먼저
   for (let start = 0; start < bytes.byteLength; start += CHUNK_LEN) {
+    if (channel.bufferedAmount > HIGH_WATER) {
+      await new Promise((resolve) =>
+        channel.addEventListener('bufferedamountlow', resolve, { once: true }));
+    }
     channel.send(bytes.subarray(start, start + CHUNK_LEN));
   }
 }
@@ -177,8 +183,9 @@ function sendBytes(channel, bytes) {
 
 ```javascript
 io.on('connection', (socket) => {
-  socket.on('message', (message) => {
-    socket.broadcast.emit('message', message); // 상대에게 중계
+  socket.on('message', (room, message) => {
+    if (!socket.rooms.has(room)) return;      // 방에 들어온 소켓만 중계
+    socket.to(room).emit('message', message); // 같은 방의 상대에게만 중계
   });
 
   socket.on('create or join', (room) => {

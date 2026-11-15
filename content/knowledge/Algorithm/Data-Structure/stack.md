@@ -148,12 +148,15 @@ def to_postfix(tokens):
             out.append(t)
     return out + ops[::-1]
 
+OPS = {'+': lambda a, b: a + b, '-': lambda a, b: a - b,
+       '*': lambda a, b: a * b, '/': lambda a, b: a / b}
+
 def eval_postfix(tokens):
     st = []
     for t in tokens:
-        if t in PREC:
+        if t in OPS:
             b, a = st.pop(), st.pop()        # 먼저 꺼낸 b가 오른쪽
-            st.append({'+': a + b, '-': a - b, '*': a * b, '/': a / b}[t])
+            st.append(OPS[t](a, b))          # 고른 연산만 실행한다
         else:
             st.append(float(t))
     return st.pop()

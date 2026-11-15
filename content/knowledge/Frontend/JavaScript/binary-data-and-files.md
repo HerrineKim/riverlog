@@ -112,7 +112,7 @@ const blob = new Blob(['<h1>hi</h1>'], { type: 'text/html' }) // 첫 인자는 �
 const part = blob.slice(0, 4, 'text/plain')                   // (start, end, type), 음수도 된다
 ```
 
-- `fetch`·`XMLHttpRequest`·`WebSocket.send`는 Blob을 그대로 본문으로 받는다. **Blob의 `type`이 요청의 `Content-Type`이 된다.**
+- `fetch`·`XMLHttpRequest`·`WebSocket.send`는 Blob을 그대로 본문으로 받는다. `fetch`·`XMLHttpRequest`에서는 **Blob의 `type`이 요청의 `Content-Type`이 된다.** `WebSocket.send`는 바이트만 바이너리 프레임으로 보내고 `type`은 버리므로, 종류가 필요하면 따로 보낸다.
 - 큰 파일을 조각내 올리는 업로드(재개 가능한 업로드)는 `file.slice(start)`로 이어서 보낸다. 흐름은 [[ajax#업로드 재개|AJAX와 HTTP 요청]]에 있다.
 
 ### Blob에서 데이터 꺼내기
@@ -148,7 +148,7 @@ a.click()
 URL.revokeObjectURL(url) // 한 번 쓰고 버리는 URL은 바로 해제한다
 ```
 
-브라우저는 object URL마다 「URL → Blob」 연결을 들고 있어서, 해제하지 않으면 SPA처럼 오래 사는 페이지에서 Blob이 계속 메모리에 남는다. 반대로 화면에 계속 걸려 있는 `<img src>`의 URL을 해제하면 다음 로드부터 깨진다. 이미지 미리보기라면 `img.onload`에서 해제한다.
+브라우저는 object URL마다 「URL → Blob」 연결을 들고 있어서, 해제하지 않으면 SPA처럼 오래 사는 페이지에서 Blob이 계속 메모리에 남는다. 반대로 화면에 계속 걸려 있는 `<img src>`의 URL을 해제하면 다음 로드부터 깨진다. `img.onload`에서 바로 해제하면 화면의 이미지는 남지만 새 탭에서 열기·다른 이름으로 저장처럼 URL을 다시 읽는 동작이 깨진다. 이미지 미리보기는 그 이미지를 지우거나 다른 것으로 바꿀 때 해제한다.
 
 ### base64 변환
 

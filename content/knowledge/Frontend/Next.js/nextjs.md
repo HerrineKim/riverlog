@@ -152,7 +152,7 @@ Next.js 12까지의 튜토리얼과 오래된 프로젝트는 대부분 Pages Ro
 - **`<Link>`**: 클라이언트 측 내비게이션. 배포 빌드에서는 화면에 보이는 링크의 페이지 코드를 백그라운드에서 미리 받아(prefetch) 전환이 빠르다. Next.js 13부터는 자식에 `<a>`를 넣지 않는다.
 - **`next/image`**: 크기 자동 조정, 최신 포맷 변환, 기본 지연 로딩. 크기를 알고 그려 레이아웃 이동(CLS)을 막는다.
 - **`next/script`**: 서드파티 스크립트의 로드 시점을 `strategy`로 조절한다.
-- **CSS Modules**: `*.module.css`로 import하면 클래스 이름이 파일마다 고유하게 바뀌어 충돌하지 않는다. 전역 CSS는 `_app`(Pages)이나 루트 레이아웃(App)에서만 import한다.
+- **CSS Modules**: `*.module.css`로 import하면 클래스 이름이 파일마다 고유하게 바뀌어 충돌하지 않는다. 전역 CSS는 Pages Router에서는 `_app`에서만 import한다. App Router는 `app` 안 어느 레이아웃·페이지·컴포넌트에서도 import할 수 있지만, 이동해도 스타일시트가 빠지지 않아 충돌할 수 있으므로 정말 전역인 스타일만 루트 레이아웃에 두기를 권한다.
 - `getStaticProps`처럼 서버에서만 도는 코드에서 **자기 앱의 API Route를 `fetch`하지 않는다.** 같은 서버 안이므로 DB나 라이브러리 함수를 직접 부른다.
 
 미리 렌더링한 페이지(SSG·ISR)는 [[cdn|CDN]]에 캐시하기 좋아 Next.js와 궁합이 맞고, 요청 앞단의 가벼운 로직은 엣지에서 돌리기도 한다(Next.js 16의 `proxy.ts`는 Node.js 런타임).

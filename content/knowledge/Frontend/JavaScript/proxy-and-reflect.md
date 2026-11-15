@@ -51,7 +51,7 @@ for (const key in proxy) console.log(key) // 'test'
 | `getPrototypeOf`·`setPrototypeOf` | `Object.getPrototypeOf`·`setPrototypeOf` |
 | `isExtensible`·`preventExtensions` | `Object.isExtensible`·`preventExtensions` |
 
-트랩은 **불변 조건(invariant)** 을 지켜야 한다. `set`·`deleteProperty`는 성공하면 `true`를 돌려줘야 하고, falsy를 돌려주면 strict mode에서 `TypeError`가 난다. `getPrototypeOf`는 target의 프로토타입과 같은 값을 돌려줘야 한다. 이런 규칙은 Proxy가 언어의 일관성을 깨지 못하게 막는다.
+트랩은 **불변 조건(invariant)** 을 지켜야 한다. `set`·`deleteProperty`는 성공하면 `true`를 돌려줘야 하고, falsy를 돌려주면 strict mode에서 `TypeError`가 난다. target이 확장 불가(non-extensible)면 `getPrototypeOf`는 target의 실제 프로토타입과 같은 값을 돌려줘야 한다. 확장 가능한 동안은 다른 객체나 `null`을 돌려줘도 된다. 이런 규칙은 Proxy가 언어의 일관성을 깨지 못하게 막는다.
 
 ## 쓰임새
 

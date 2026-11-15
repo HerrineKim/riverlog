@@ -126,7 +126,8 @@ BFC로 푸는 문제는 세 가지다.
 
 | 문제 | BFC를 만들 곳 | 결과 |
 | --- | --- | --- |
-| 자식 margin이 부모 밖으로 새거나 형제끼리 병합됨 | 부모, 또는 한쪽 형제를 감싼 래퍼 | BFC 경계를 넘는 margin은 합쳐지지 않는다 |
+| 자식 margin이 부모 밖으로 샘 | 부모 | BFC 경계를 넘는 margin은 합쳐지지 않는다 |
+| 형제끼리 margin이 병합됨 | 한쪽 형제를 감싼 래퍼 | 래퍼 안 margin이 경계를 넘지 않는다. 부모를 BFC로 만들어도 두 형제는 같은 BFC라 그대로 병합된다 |
 | float만 담은 부모의 높이가 0이 됨 | 부모 | 부모가 float까지 포함해 높이를 잡는다 |
 | float 옆 문단의 줄이 float 아래로 감겨 들어감 | 문단 | 문단 박스가 float을 피해 옆에 한 덩어리로 선다(2단처럼 보인다) |
 
@@ -144,7 +145,7 @@ BFC로 푸는 문제는 세 가지다.
 
 ### box-sizing
 
-기본값 `content-box`에서는 `width`가 content 영역만의 너비라 padding·border를 더하면 실제 크기가 커진다. `width: 350px; padding: 25px; border: 5px`인 박스는 화면에서 `350 + 25×2 + 5×2 = 410px`을 차지한다. `border-box`로 바꾸면 `width`가 border까지 포함한 크기가 되어 박스는 350px 그대로이고, content 영역이 `350 − 60 = 290px`로 줄어든다.
+기본값 `content-box`에서는 `width`가 content 영역만의 너비라 padding·border를 더하면 실제 크기가 커진다. `width: 350px; padding: 25px; border: 5px solid`인 박스는 화면에서 `350 + 25×2 + 5×2 = 410px`을 차지한다. `border-box`로 바꾸면 `width`가 border까지 포함한 크기가 되어 박스는 350px 그대로이고, content 영역이 `350 − 60 = 290px`로 줄어든다.
 
 ```css
 html { box-sizing: border-box; }

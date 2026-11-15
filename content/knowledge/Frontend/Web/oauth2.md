@@ -36,10 +36,11 @@ OAuth는 2007년 오픈소스 개발자와 소셜 미디어 업계 사람들이 
 브라우저 앱·모바일 앱·서버 앱 모두에 권장되는 방식이다. OAuth 2.0 보안 모범 사례(RFC 9700, 2025)와 이를 본문에 합친 OAuth 2.1 초안이 모든 클라이언트에 PKCE를 요구한다.
 
 ```text
-1. 앱이 code_verifier(난수)를 만들고, 그 해시인 code_challenge를 준비
+1. 앱이 code_verifier(난수)를 만들고, 그 SHA-256 해시인 code_challenge를 준비
 2. 브라우저를 인가 서버로 이동
    /authorize?response_type=code&client_id=..&redirect_uri=..
              &scope=calendar.read&state=<난수>&code_challenge=..
+             &code_challenge_method=S256   (빠뜨리면 plain으로 간주)
 3. 사용자가 로그인하고 "허용"을 누름
 4. 인가 서버가 redirect_uri?code=<인가 코드>&state=<난수>로 돌려보냄
 5. 앱이 state를 확인한 뒤, code + code_verifier로 토큰 요청 (/token)

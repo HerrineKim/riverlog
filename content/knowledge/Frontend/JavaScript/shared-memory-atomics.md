@@ -52,9 +52,9 @@ onmessage = ({ data }) => {
 | `Atomics.load(ta, i)` / `store(ta, i, v)` | 순서가 보장되는 읽기·쓰기 |
 | `Atomics.add` · `sub` · `and` · `or` · `xor` · `exchange` | 읽고-바꾸고-쓰기를 한 번에. 바꾸기 **전** 값을 돌려준다 |
 | `Atomics.compareExchange(ta, i, expected, v)` | 현재 값이 `expected`일 때만 `v`로 바꾼다(CAS). 락·락 없는 자료구조의 기본 부품 |
-| `Atomics.wait(ta, i, v, timeout)` | 값이 `v`인 동안 **스레드를 재운다**. `'ok'`·`'not-equal'`·`'timed-out'`을 돌려준다 |
+| `Atomics.wait(ta, i, v, timeout)` | 들어갈 때 값이 `v`면 `notify`나 시간 초과까지 **스레드를 재운다**(값이 바뀌기만 해서는 깨지 않는다). `'ok'`·`'not-equal'`·`'timed-out'`을 돌려준다. `'ok'`여도 값이 그대로일 수 있어 루프에서 조건을 다시 확인한다 |
 | `Atomics.notify(ta, i, count)` | 그 칸에서 자는 에이전트를 `count`개 깨운다. 초기 이름은 `wake`(Firefox 46·47에서는 `futexWake`)였다 |
-| `Atomics.waitAsync(ta, i, v)` | 재우는 대신 Promise를 돌려준다(ES2024). 메인 스레드에서 쓴다 |
+| `Atomics.waitAsync(ta, i, v)` | 재우는 대신 `{ async, value }` 객체를 돌려준다(ES2024). `value`는 기다릴 때 Promise, 바로 끝나면 `'not-equal'`·`'timed-out'` 문자열이라 `await result.value`로 기다린다. 메인 스레드에서 쓴다 |
 | `Atomics.pause()` | 스핀 대기 루프에서 CPU에 "잠깐 쉰다"는 힌트를 준다(Stage 4) |
 
 ```javascript
@@ -62,12 +62,12 @@ onmessage = ({ data }) => {
 Atomics.store(flags, 0, 1)
 Atomics.notify(flags, 0)
 
-// 워커 B: 플래그가 0인 동안 잔다(바쁜 대기 없이)
-Atomics.wait(flags, 0, 0)
+// 워커 B: 플래그가 0인 동안 잔다(바쁜 대기 없이). 깬 뒤에도 조건을 다시 본다
+while (Atomics.load(flags, 0) === 0) Atomics.wait(flags, 0, 0)
 const result = Atomics.load(data, 0)
 ```
 
-**메인 스레드는 `Atomics.wait`를 부를 수 없다.** 화면을 멈추게 하기 때문이다(브라우저에서 `TypeError`). 메인 스레드는 `Atomics.waitAsync`의 Promise를 기다리거나, 워커가 `postMessage`로 알려 주는 이벤트를 받는다. Node.js의 메인 스레드는 `wait`를 쓸 수 있다.
+**메인 스레드는 `Atomics.wait`를 부를 수 없다.** 화면을 멈추게 하기 때문이다(브라우저에서 `TypeError`). 메인 스레드는 `Atomics.waitAsync`가 돌려준 `value`의 Promise를 기다리거나, 워커가 `postMessage`로 알려 주는 이벤트를 받는다. Node.js의 메인 스레드는 `wait`를 쓸 수 있다.
 
 `wait`·`notify`는 리눅스 futex처럼 낮은 수준의 부품이다. 실제 동기화(뮤텍스, 세마포어, 채널)는 이 위에 `compareExchange`로 상태를 바꾸는 코드를 직접 짜거나 라이브러리를 쓴다.
 

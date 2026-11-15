@@ -173,10 +173,12 @@ jobs:
         uses: docker/metadata-action@v6               # 태그 자동 생성
         with:
           images: ghcr.io/${{ github.repository }}
+          # 블록(|) 안의 #은 주석이 아니라 값이 되므로 설명은 블록 밖에 둔다.
+          # type=sha,format=long → sha-<전체 커밋 해시>, v1.4.2 태그 → 1.4.2와 1.4
           tags: |
-            type=sha                                  # sha-3f9c2a1
-            type=semver,pattern={{version}}           # v1.4.2 태그 → 1.4.2
-            type=semver,pattern={{major}}.{{minor}}   # → 1.4
+            type=sha,format=long
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
       - uses: docker/build-push-action@v7
         with:
           push: true

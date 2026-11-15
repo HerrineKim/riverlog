@@ -68,7 +68,7 @@ sources: ["https://github.com/donnemartin/system-design-primer", "https://github
 - ****Bigtable** - Distributed column-oriented database from Google**: [harvard.edu](http://www.read.seas.harvard.edu/~kohler/class/cs239-w08/chang06bigtable.pdf)
 - ****HBase** - Open source implementation of Bigtable**: [slideshare.net](http://www.slideshare.net/alexbaranau/intro-to-hbase)
 - ****Cassandra** - Distributed column-oriented database from Facebook**: [slideshare.net](http://www.slideshare.net/planetcassandra/cassandra-introduction-features-30103666)
-- ****DynamoDB** - Document-oriented database from Amazon**: [harvard.edu](http://www.read.seas.harvard.edu/~kohler/class/cs239-w08/decandia07dynamo.pdf)
+- ****Dynamo** - Key-value store from Amazon (DynamoDB와는 다른 사내 시스템)**: [harvard.edu](http://www.read.seas.harvard.edu/~kohler/class/cs239-w08/decandia07dynamo.pdf)
 - ****MongoDB** - Document-oriented database**: [slideshare.net](http://www.slideshare.net/mdirolf/introduction-to-mongodb)
 - ****Spanner** - Globally-distributed database from Google**: [research.google.com](http://research.google.com/archive/spanner-osdi2012.pdf)
 - ****Memcached** - Distributed memory caching system**: [slideshare.net](http://www.slideshare.net/oemebamo/introduction-to-memcached)

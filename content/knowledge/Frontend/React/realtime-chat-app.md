@@ -36,21 +36,30 @@ GET  /workspaces/:workspace/channels/:channel/unreads    ?after=timestamp 이후
 
 ```tsx
 // 범위별로 소켓을 하나만 보관하는 훅의 골격
-const sockets: Record<string, Socket> = {}
+const sockets: Record<string, { socket: Socket; users: number }> = {}
 
 function useSocket(scope?: string) {
-  const disconnect = useCallback(() => {
+  const [socket, setSocket] = useState<Socket>()
+  useEffect(() => {
     if (!scope) return
-    sockets[scope]?.disconnect()
-    delete sockets[scope]
+    // 연결과 해제를 둘 다 effect에 두어야 StrictMode의 setup → cleanup → setup에서도 짝이 맞는다
+    const entry = (sockets[scope] ??= { socket: io(`/ws-${scope}`, { transports: ['websocket'] }), users: 0 })
+    entry.users += 1
+    setSocket(entry.socket)
+    return () => {
+      entry.users -= 1
+      if (entry.users === 0) {
+        entry.socket.disconnect() // 명시적 disconnect는 자동 재연결도 끈다
+        delete sockets[scope]
+      }
+      setSocket(undefined)
+    }
   }, [scope])
-  if (!scope) return [undefined, disconnect] as const
-  sockets[scope] ??= io(`/ws-${scope}`, { transports: ['websocket'] })
-  return [sockets[scope], disconnect] as const
+  return socket
 }
 ```
 
-- 범위를 떠나면 `disconnect()`한다. effect의 cleanup이 그 자리다.
+- 범위를 떠나면(마지막 사용처가 사라지면) cleanup에서 `disconnect()`한다. 소켓을 렌더링 중에 만들고 해제만 cleanup에 두면, 개발 모드 StrictMode가 effect를 한 번 더 돌릴 때 이미 끊긴 소켓을 다시 받게 된다.
 - 이벤트 리스너를 `on`으로 등록한 effect는 **반드시 cleanup에서 `off`** 한다. 빠뜨리면 리렌더링마다 리스너가 쌓여 한 메시지가 여러 번 처리된다.
 
 ## 두 채널이 만나는 곳: 메시지 캐시

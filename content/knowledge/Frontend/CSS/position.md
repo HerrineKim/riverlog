@@ -39,7 +39,7 @@ date: "2026-10-21"
 }
 ```
 
-"좌표 시스템을 쓴다" = `position`이 `static`이 아니다. `absolute`는 그런 조상 중 가장 가까운 것을 기준으로 삼는다.
+"좌표 시스템을 쓴다" = `position`이 `static`이 아니다. `absolute`는 그런 조상 중 가장 가까운 것을 기준으로 삼는다. 단 `position`이 `static`이어도 `transform`·`filter`·`perspective`가 있거나 `contain: layout`(또는 `paint`)인 조상은 기준이 되고, 더 가까우면 그쪽이 이긴다.
 
 ### sticky
 

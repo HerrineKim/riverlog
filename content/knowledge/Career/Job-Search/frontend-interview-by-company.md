@@ -87,7 +87,7 @@ sources: ["https://www.frontendinterviewhandbook.com/company-interview-questions
 ### Adobe
 
 - **전형**: HackerRank와 매니저 질의응답 뒤 온사이트 5라운드. 다른 형식으로는 기술 스택 전반의 빠른 질문 + 앱 디버깅 + 성능 개선 토론(사전 온사이트), 아키텍처, 행동·기술 토론, 커스텀 훅 코딩, 매니저 대화가 보고됐다.
-- **JS 코딩**: 페이지의 링크를 돌려주는 `getAllLinks(url)`로 모든 후손 링크 모으기(순환 참조, Promise 반환, 비동기 효율, 시간 복잡도까지 확장), `Array.prototype.reduce` 폴리필, 배열의 리더 찾기(오른쪽 모든 원소보다 큰 원소), `setInterval`을 쓰는 커스텀 React 훅(콜백을 `useState`가 아니라 `useRef`에 두지 않으면 인터벌이 두 번 실행된다).
+- **JS 코딩**: 페이지의 링크를 돌려주는 `getAllLinks(url)`로 모든 후손 링크 모으기(순환 참조, Promise 반환, 비동기 효율, 시간 복잡도까지 확장), `Array.prototype.reduce` 폴리필, 배열의 리더 찾기(오른쪽 모든 원소보다 큰 원소), `setInterval`을 쓰는 커스텀 React 훅(최신 콜백은 `useRef`에 담아 읽고, Effect 정리 함수에서 `clearInterval`하지 않으면 Strict Mode에서 인터벌이 두 개 돈다).
 - **UI 코딩**: 아코디언(Vanilla JS 또는 React), 문서 상단 헤더 디자인을 React 컴포넌트로, m × n 격자의 플러드 필(도형 안을 클릭하면 그 도형만, 밖을 클릭하면 도형을 뺀 전체를 채운다. 의사 코드 허용).
 - **시스템 디자인**: LRU 캐시 설계, 체스 게임의 클래스·인터페이스 설계(OOD). 프론트엔드가 아닌 일반 설계가 나올 수 있다.
 - **알고리즘**: 0과 1 배열에서 섬 개수(LC 중간), 날짜 문자열 변환(LC 쉬움).

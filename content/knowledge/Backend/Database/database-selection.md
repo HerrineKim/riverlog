@@ -77,7 +77,7 @@ flowchart TB
 | 필드(field) | 측정값. 인덱스하지 않는다 | `temperature=21.5` |
 | 타임스탬프 | 시각 | `2026-10-21T09:00:00Z` |
 
-InfluxDB는 `측정 + 태그 조합`을 하나의 시리즈로 보고, 시리즈별 값을 시간순으로 붙여 TSM(Time-Structured Merge Tree)이라는 LSM 계열 구조에 압축 저장한다. 그래서 「태그로 고르고 시간으로 자르는」 집계가 빠르다.
+InfluxDB 1.x·2.x는 `측정 + 태그 조합`을 하나의 시리즈로 보고, 시리즈별 값을 시간순으로 붙여 TSM(Time-Structured Merge Tree)이라는 LSM 계열 구조에 압축 저장한다(InfluxDB 3는 Rust로 다시 짜 Apache Arrow·DataFusion과 객체 저장소의 Parquet 파일을 쓰는 열 기반 구조다). 그래서 「태그로 고르고 시간으로 자르는」 집계가 빠르다.
 
 | 기법 | 이유 |
 | --- | --- |

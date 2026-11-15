@@ -27,6 +27,8 @@ const document = SwaggerModule.createDocument(app, config);
 SwaggerModule.setup('docs', app, document); // http://localhost:8000/docs
 ```
 
+`addBearerAuth()`는 인증 방식을 정의할 뿐이다. JWT 가드가 걸린 컨트롤러나 메서드에 `@ApiBearerAuth()`를 붙여야 Swagger UI에 넣은 토큰이 그 요청의 `Authorization` 헤더로 실린다.
+
 ## 엔드포인트 설명
 
 ```typescript

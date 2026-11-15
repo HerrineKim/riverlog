@@ -83,8 +83,8 @@ ipcMain.handle('save-file', async (event, text) => {
 
 ## 패키징과 릴리스
 
-- 새 프로젝트는 공식 도구 **Electron Forge**로 만들고 패키징·서명·배포한다. electron-builder도 널리 쓴다. macOS는 코드 서명과 공증(notarization), Windows는 코드 서명을 해야 경고 없이 설치된다.
-- 자동 업데이트는 `autoUpdater` 모듈과 업데이트 서버(또는 GitHub Releases)로 한다.
+- 새 프로젝트는 공식 도구 **Electron Forge**로 만들고 패키징·서명·배포한다. electron-builder도 널리 쓴다. macOS는 코드 서명과 공증(notarization)을 해야 경고 없이 설치된다. Windows도 코드 서명을 하지만, 서명만으로 SmartScreen 경고가 사라지지는 않는다. 새로 서명한 파일은 평판이 쌓일 때까지 경고가 뜰 수 있고, EV 인증서도 더는 바로 통과시켜 주지 않는다.
+- 자동 업데이트는 `autoUpdater` 모듈과 업데이트 서버(또는 GitHub Releases)로 한다. 내장 `autoUpdater`는 macOS·Windows만 지원하고, Linux는 배포판 패키지 관리자에 맡기거나 electron-builder의 `electron-updater` 같은 서드파티 구현을 쓴다.
 - 메이저 버전은 **8주마다** 나오고 최신 세 개 메이저만 지원한다. 메이저마다 Chromium·Node 버전이 함께 오르므로 낡은 Electron을 쓰면 브라우저 보안 패치를 놓친다.
 
 ## Tauri와 비교

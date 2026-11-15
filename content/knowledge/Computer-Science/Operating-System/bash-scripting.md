@@ -152,7 +152,7 @@ trap 'rm -rf "$tmp"' EXIT     # 정상 종료든 오류든 임시 파일 정리
 | `alias` | 자주 치는 명령에 짧은 이름을 붙인다. `alias gs="git status"`를 `~/.bashrc`(zsh는 `~/.zshrc`)에 적고 `source ~/.bashrc`나 새 셸로 적용한다. `=` 앞뒤에 공백을 넣지 않고, 공백이 있는 명령은 따옴표로 감싼다. git 하위 명령만 줄일 거면 `git config alias.*`도 된다([[git-config-options\|Git 설정 옵션]]) |
 | `xargs` | 앞 명령 출력을 인자로 넘긴다. `-P 8`로 병렬, `-0`과 `find -print0`으로 공백 안전 |
 | 프로세스 치환 | `diff <(sort a.txt) <(sort b.txt)`: 명령 출력을 파일처럼 넘긴다 |
-| 집합 연산 | `sort a b \| uniq`(합집합), `sort a b \| uniq -d`(교집합), `sort a b b \| uniq -u`(a - b) |
+| 집합 연산 | `sort a b \| uniq`(합집합), `sort a b \| uniq -d`(교집합), `sort a b b \| uniq -u`(a - b). 교집합·차집합은 a와 b 각각에 중복 줄이 없어야 맞으므로, 있으면 `sort -u`로 먼저 없앤다 |
 | `awk` 집계 | `awk '{s += $3} END {print s}'`: 열 합계 같은 계산을 한 줄로 |
 | 디스크 찾기 | `du -sh * \| sort -h`, 대화형으로는 `ncdu` |
 | 매뉴얼 | `man bash`를 한 번은 훑는다. 명령 요약은 `tldr <명령>` |

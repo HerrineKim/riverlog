@@ -85,7 +85,8 @@ void put_pixel(t_img *img, int x, int y, unsigned int color)
 32비트 정수 하나에 투명도와 RGB를 8비트씩 담는다. 비트 시프트와 마스크로 넣고 뺀다.
 
 ```c
-unsigned int argb(int a, int r, int g, int b) { return (a << 24) | (r << 16) | (g << 8) | b; }
+unsigned int argb(unsigned a, unsigned r, unsigned g, unsigned b) { return (a << 24) | (r << 16) | (g << 8) | b; }
+// int로 받으면 a = 255일 때 a << 24가 int 범위를 넘어 미정의 동작이다
 int get_r(unsigned int c) { return (c >> 16) & 0xFF; }
 ```
 

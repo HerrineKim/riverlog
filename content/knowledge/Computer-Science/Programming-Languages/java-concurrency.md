@@ -41,7 +41,7 @@ sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/mai
 | 도구 | 보장 | 맞는 곳 |
 | --- | --- | --- |
 | `synchronized` | 상호 배제 + 가시성. 블록을 나가면 자동으로 풀린다 | 여러 필드를 함께 바꾸는 임계 구역 |
-| `ReentrantLock`, `ReadWriteLock`, `StampedLock` | 상호 배제 + 가시성. `tryLock`·시간 제한·인터럽트 가능한 대기·공정성 옵션·여러 `Condition` | 대기를 포기해야 하거나 읽기가 압도적으로 많을 때. `finally`에서 `unlock()`한다 |
+| `ReentrantLock`, `ReadWriteLock`, `StampedLock` | 상호 배제 + 가시성. `ReentrantLock`·`ReentrantReadWriteLock`은 `tryLock`·시간 제한·인터럽트 가능한 대기·공정성 옵션·여러 `Condition`(읽기 잠금은 제외)을 준다. `StampedLock`은 재진입·`Condition`·공정성 옵션이 없는 대신 낙관적 읽기를 준다 | 대기를 포기해야 하거나 읽기가 압도적으로 많을 때. `finally`에서 `unlock()`한다 |
 | `volatile` | 쓰기가 다른 스레드에 **바로 보인다**(가시성)와 앞뒤 재배치 금지. **원자성은 보장하지 않는다** | 한 스레드가 쓰고 여럿이 읽는 상태 플래그(`running = false`), 안전한 발행 |
 | `AtomicInteger`, `AtomicReference`, `LongAdder` | 잠금 없이 CAS(compare-and-swap)로 단일 변수의 원자적 갱신 | 카운터, 상태 전환. 경합이 심한 카운터는 셀을 나눠 더하는 `LongAdder` |
 | `Semaphore`, `CountDownLatch`, `CyclicBarrier`, `Phaser` | 허용 개수 제한, 여러 스레드의 완료·도착 기다리기 | 동시 접근 수 제한, 작업 묶음 동기화 |
@@ -170,7 +170,7 @@ Thread.ofVirtual().start(task);
 - **블로킹 코드로 다시 확장한다.** 콜백·`CompletableFuture` 체인·리액티브 스트림으로 스레드를 아끼던 코드를 순차적인 블로킹 코드로 써도 동시 연결 수가 늘어난다. 스택 트레이스와 디버거도 평소처럼 동작한다.
 - **동시성 제한은 풀 크기가 아니라 `Semaphore`로 한다.** 스레드 수가 더는 자원 상한 역할을 하지 않으므로, DB 커넥션·외부 API 호출 수를 세마포어로 직접 제한한다.
 - **CPU 바운드 작업은 빨라지지 않는다.** 캐리어 수(기본은 코어 수)만큼만 실제로 돈다.
-- **고정(pinning)**: JNI 같은 네이티브 프레임 안에서 블로킹하면 가상 스레드가 캐리어에 묶인다. Java 21~23에서는 `synchronized` 안의 블로킹도 묶였지만 **Java 24(JEP 491)부터 해결**됐다. `-Djdk.tracePinnedThreads`나 JFR의 `jdk.VirtualThreadPinned` 이벤트로 찾는다.
+- **고정(pinning)**: JNI 같은 네이티브 프레임 안에서 블로킹하면 가상 스레드가 캐리어에 묶인다. Java 21~23에서는 `synchronized` 안의 블로킹도 묶였지만 **Java 24(JEP 491)부터 해결**됐다. JFR의 `jdk.VirtualThreadPinned` 이벤트로 찾는다. `-Djdk.tracePinnedThreads`는 Java 21~23에서만 쓸 수 있고 Java 24에서 제거됐다.
 - `ThreadLocal`에 큰 객체를 캐시하던 관용(예: 스레드마다 파서 하나)은 가상 스레드 수만큼 복제되므로 `ScopedValue`나 공유 객체로 바꾼다.
 - 여러 하위 작업을 하나의 단위로 시작·취소·대기하는 구조적 동시성(`StructuredTaskScope`)은 Java 26 기준 아직 프리뷰다(여섯 번째 프리뷰, JEP 525)([[structured-concurrency|구조적 동시성]]).
 

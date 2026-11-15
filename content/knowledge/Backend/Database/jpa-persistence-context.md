@@ -63,7 +63,7 @@ stateDiagram-v2
 | 기능 | 동작 | 효과 |
 | --- | --- | --- |
 | 1차 캐시 | 조회한 엔티티를 식별자로 보관하고, 같은 키를 다시 찾으면 DB에 가지 않는다 | 같은 트랜잭션 안에서 반복 조회 비용과 동일성 문제가 사라진다 |
-| 쓰기 지연(write-behind) | INSERT·UPDATE·DELETE를 모아 두었다가 flush 때 실행한다 | JDBC 배치로 묶을 수 있다 |
+| 쓰기 지연(write-behind) | INSERT·UPDATE·DELETE를 모아 두었다가 flush 때 실행한다. 단, `GenerationType.IDENTITY`는 식별자를 DB에서 받아야 해서 `persist()` 때 바로 INSERT한다 | JDBC 배치로 묶을 수 있다. IDENTITY 엔티티의 INSERT는 Hibernate가 배치로 묶지 않는다 |
 | 변경 감지(dirty checking) | 처음 읽었을 때의 스냅샷과 비교해 바뀐 필드를 UPDATE한다 | `update()` 호출이 필요 없다 |
 | 지연 로딩 | 연관 엔티티 자리에 프록시를 두고, 실제로 쓸 때 조회한다 | 필요한 만큼만 읽는다. 대신 N+1의 원인이 된다 |
 

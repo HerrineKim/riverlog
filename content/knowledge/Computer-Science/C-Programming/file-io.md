@@ -95,7 +95,11 @@ int main(int argc, char *argv[])
     }
 
     unsigned char bytes[3];            // 0~255 범위로 다루기 위해 unsigned
-    fread(bytes, 3, 1, file);          // 3바이트짜리 덩어리 1개 읽기
+    if (fread(bytes, 3, 1, file) != 1) // 3바이트짜리 덩어리 1개 읽기. 짧은 파일·오류면 0
+    {
+        fclose(file);
+        return 1;
+    }
 
     if (bytes[0] == 0xff && bytes[1] == 0xd8 && bytes[2] == 0xff)
     {

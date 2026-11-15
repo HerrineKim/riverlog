@@ -110,7 +110,9 @@ class Form {
 flowchart LR
   x["import { x } from './util'"] -->|"상대 경로: 현재 파일 기준으로"| x1["util.ts"] --> x2["util.tsx"] --> x3["util.d.ts"] --> x4["util/index.ts"] --> x5["…"]
   y["import { y } from 'pkg/sub'"] -->|"패키지"| y1["./node_modules/pkg"] --> y2["../node_modules/pkg"] --> y3["… 루트까지 올라간다"]
-  y3 -->|"찾은 패키지에서 package.json을 이 순으로 본다"| y4["exports(types 조건)"] --> y5["types"] --> y6["main"]
+  y3 -->|"찾은 패키지의 package.json"| y4{"exports가 있고 읽는 모드인가<br/>(node16·nodenext·bundler)"}
+  y4 -->|"예"| y5["exports(types 조건)만 본다<br/>실패해도 types·main으로 내려가지 않는다"]
+  y4 -->|"아니오"| y6["types"] --> y7["main"]
 ```
 
 별칭과 subpath imports는 이렇게 찾는다.

@@ -18,7 +18,7 @@ sources: ["https://riverkim.kr/315", "https://velog.io/@teo/왜-Svelte스벨트�
 
 | 이름 | 성격 | 강점 | 어울리는 경우 |
 | --- | --- | --- | --- |
-| Svelte | 런타임이 아닌 **컴파일러** | 작은 번들, 빠른 동작, HTML에 가까운 간결한 문법 | 성능과 코드량이 중요할 때 |
+| Svelte | 무거운 런타임 대신 **컴파일러** | 작은 번들, 빠른 동작, HTML에 가까운 간결한 문법 | 성능과 코드량이 중요할 때 |
 | Angular 2+ | 구글의 TypeScript 기반 **풀스택 프레임워크** | 안정적인 지원, 컴포넌트 구조, 내장 기능·라이브러리가 많음 | 큰 규모의 기업 애플리케이션 |
 | Preact | React와 거의 같은 API의 **경량 대체재** | 작고 빠름, React 지식 그대로 사용 | React 문법이 익숙하고 용량을 줄이고 싶을 때 |
 | Alpine.js | HTML 속성으로 상태·동작을 붙이는 **경량 라이브러리** | 빌드 설정 없이 바로 사용 | 서버 렌더링 페이지에 약간의 동적 동작을 더할 때 |
@@ -26,11 +26,11 @@ sources: ["https://riverkim.kr/315", "https://velog.io/@teo/왜-Svelte스벨트�
 
 ### Svelte
 
-2016년에 나왔다. 다른 프레임워크처럼 브라우저에서 돌아가는 런타임을 싣지 않고, **빌드 시점에 컴포넌트를 순수 JavaScript로 컴파일**한다. 그래서 번들이 작고 빠르다. 문법이 HTML과 비슷해 코드가 짧고 읽기 쉽다.
+2016년에 나왔다. 무거운 런타임 라이브러리와 가상 DOM을 싣는 대신 **빌드 시점에 컴포넌트를 JavaScript로 컴파일**하고, 작은 런타임만 함께 싣는다. 그래서 번들이 작고 빠르다. 문법이 HTML과 비슷해 코드가 짧고 읽기 쉽다.
 
 #### 컴파일러 방식이 빠르고 작은 이유
 
-React·Vue·Angular는 브라우저에서 돌아가는 **런타임 라이브러리**다. 한 줄만 써도 엔진 전체를 함께 실어야 한다. Svelte는 빌드할 때 `.svelte` 파일을 분석해, "이 이벤트가 오면 이 값이 바뀌고, 그러면 이 엘리먼트만 고친다"는 코드를 미리 계산한 **바닐라 JavaScript**를 만들어 낸다.
+React·Vue·Angular는 브라우저에서 돌아가는 **런타임 라이브러리**다. 한 줄만 써도 엔진 전체를 함께 실어야 한다. Svelte는 빌드할 때 `.svelte` 파일을 분석해, 값이 바뀌면 그 값을 쓰는 엘리먼트만 직접 고치는 **바닐라 JavaScript**를 만들어 낸다. 가상 DOM 비교(diffing)가 없다. Svelte 5부터는 어떤 값이 어디에 쓰이는지를 컴파일 시점에 다 정하지 않고, 작은 런타임의 시그널(runes)이 실행 중에 의존성을 추적한다.
 
 | | 가상 DOM 런타임 (React) | 컴파일러 (Svelte) |
 | --- | --- | --- |
@@ -107,7 +107,7 @@ AngularJS가 "더는 업데이트하지 않겠다"고 선언하고 Angular 2가 
 
 - React·Vue가 압도적이지만 Svelte와 Angular도 꾸준히 쓰인다.
 - 성격은 넷으로 갈린다: 컴파일러(Svelte), 다 갖춘 프레임워크(Angular), 경량 React(Preact), HTML 속성 기반 도구(Alpine.js, HTMX).
-- Svelte는 런타임 대신 **컴파일러**로 바닐라 JS를 생성해 작고 빠르다. 약점은 성능이 아니라 생태계다.
+- Svelte는 무거운 런타임 대신 **컴파일러**로 바닐라 JS를 생성해 작고 빠르다(작은 런타임은 남는다). 약점은 성능이 아니라 생태계다.
 - 회사에서는 생태계가 큰 React·Vue를 쓰게 되는 경우가 많다. 개인 프로젝트에서는 성능 중심인지, 기능 중심인지, 얼마나 가벼워야 하는지에 따라 골라 볼 만하다.
 
 관련 노트: [[spa-csr-ssr|SPA와 CSR·SSR]], [[tech-stack-selection|기술 스택 고르기]], [[bundlers-and-vite|번들러의 역사와 Vite]], [[webs-next-transition|웹 아키텍처의 다음 전환]], [[mobile-frameworks|모바일 프레임워크 비교]], [[react-vs-vue|React와 Vue 비교]], [[web-components|웹 컴포넌트: template·slot·Shadow DOM]]

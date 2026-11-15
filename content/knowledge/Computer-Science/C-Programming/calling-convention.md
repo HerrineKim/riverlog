@@ -53,10 +53,10 @@ x86-64와 ARM64에서 스택은 **높은 주소에서 낮은 주소로** 자란�
 | cdecl | 32비트 x86의 C 기본 | 모두 스택, **오른쪽 인자부터** push | 호출한 쪽 |
 | stdcall | 32비트 Win32 API | 스택, 오른쪽부터 | 불린 쪽 (가변 인자 불가) |
 | System V AMD64 | 64비트 리눅스·macOS·BSD | 정수·포인터 6개는 `rdi rsi rdx rcx r8 r9`, 실수 8개는 `xmm0~7`, 나머지는 스택 | 호출한 쪽 |
-| Microsoft x64 | 64비트 윈도 | `rcx rdx r8 r9` 4개 + 스택, 호출 전 32바이트 그림자 공간 | 호출한 쪽 |
+| Microsoft x64 | 64비트 윈도 | 정수·포인터는 `rcx rdx r8 r9`, 실수는 같은 자리의 `xmm0~3`, 나머지는 스택, 호출 전 32바이트 그림자 공간 | 호출한 쪽 |
 | AAPCS64 | ARM64(Apple Silicon 포함) | `x0~x7`, 실수는 `v0~v7` | 호출한 쪽 |
 
-반환값은 x86에서 `eax`/`rax`, ARM64에서 `x0`에 담긴다. cdecl의 예를 보면 구조가 단순하다.
+정수 반환값은 x86에서 `eax`/`rax`, ARM64에서 `x0`에, 실수 반환값은 x86-64에서 `xmm0`, ARM64에서 `v0`에 담긴다. cdecl의 예를 보면 구조가 단순하다.
 
 ```asm
 ; int res = add(1, 3);  (32비트 cdecl)

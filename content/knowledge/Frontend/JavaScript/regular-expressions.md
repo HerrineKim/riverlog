@@ -186,7 +186,7 @@ re.test('a');   // false! 1번 위치부터 찾았다. lastIndex → 0
 
 - `exec`·`test`는 일치하면 `lastIndex`를 일치 끝으로 옮기고, 실패하면 0으로 되돌린다.
 - **`g`가 붙은 정규식을 모듈 상수로 두고 여러 문자열에 `test`하면 번갈아 실패한다.** 검사용 정규식에는 `g`를 빼거나, 매번 `re.lastIndex = 0`을 한다.
-- 문자열 메서드(`match`, `matchAll`, `replace`)는 시작할 때 `lastIndex`를 직접 관리하므로 이 함정이 없다. `matchAll`은 정규식을 복제해 쓴다.
+- `g` 정규식으로 부른 `match`·`replace`는 시작할 때 `lastIndex`를 0으로 되돌리므로 이 함정이 없다. `matchAll`은 정규식을 복제해 원본의 `lastIndex`를 건드리지 않지만, 복제할 때 **현재 `lastIndex`를 그대로 가져간다.** `re.test('a')` 뒤의 `[...'a'.matchAll(re)]`는 빈 배열이다.
 
 ### y: 정해진 위치에서만
 

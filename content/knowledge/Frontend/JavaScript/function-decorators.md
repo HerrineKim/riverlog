@@ -72,7 +72,7 @@ worker.slow(3) // TypeError, 래퍼 안의 func(x)는 일반 함수 호출이라
 `worker.slow(3)`을 부르면 **래퍼**의 `this`는 `worker`다. 문제는 래퍼가 원래 함수를 `func(x)`로 부르면서 그 `this`를 전달하지 않는다는 점이다. 래퍼는 받은 `this`와 인자를 **그대로** 원래 함수에 넘겨야 한다. 이것을 **콜 포워딩(call forwarding)** 이라 한다.
 
 ```javascript
-function cachingDecorator(func, hash = (args) => args.join(',')) {
+function cachingDecorator(func, hash = (args) => JSON.stringify(args)) {
   const cache = new Map()
   return function (...args) {
     const key = hash(args)              // 여러 인자를 키 하나로
@@ -85,7 +85,7 @@ function cachingDecorator(func, hash = (args) => args.join(',')) {
 ```
 
 - 래퍼는 반드시 `function`으로 쓴다. 화살표 함수는 자기 `this`가 없어서, 래퍼를 부른 객체를 받을 수 없다.
-- `Map`의 키는 값 하나라서, 인자가 여러 개면 해시 함수로 문자열 하나로 합치거나 중첩 `Map`을 쓴다.
+- `Map`의 키는 값 하나라서, 인자가 여러 개면 해시 함수로 문자열 하나로 합치거나 중첩 `Map`을 쓴다. `args.join(',')`은 `('a,b', 'c')`와 `('a', 'b,c')`, `1`과 `'1'`을 같은 키로 만든다. `JSON.stringify`는 이 둘을 구분하지만 함수·`undefined`·순환 객체는 다루지 못하니, 인자 모양에 맞는 해시를 넘긴다.
 
 ### call과 apply
 

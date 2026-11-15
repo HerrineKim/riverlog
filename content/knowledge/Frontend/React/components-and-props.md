@@ -36,7 +36,7 @@ function App() {
 - 컴포넌트 이름은 **반드시 대문자로 시작**한다. 소문자로 시작하면 React가 `<div>` 같은 HTML 태그로 해석한다.
 - 위처럼 작은 컴포넌트를 조합해 큰 화면을 만드는 것을 **합성(composition)** 이라 한다([합성](/knowledge/dictionary/frontend/react/composition) 참고).
 - 예전에는 state가 있으면 클래스, 없으면 함수 컴포넌트로 나눠 썼지만, Hooks 등장 이후로는 함수 컴포넌트가 표준이다. 클래스 컴포넌트는 옛 코드를 읽을 때만 만난다([[lifecycle|생명주기]]).
-- 공식 용어는 「함수형 컴포넌트(functional component)」가 아니라 **함수 컴포넌트(function component)**다. Hooks로 state와 effect를 갖는 컴포넌트는 함수형 프로그래밍의 순수 함수가 아니므로, 「함수로 정의한 컴포넌트」라는 뜻만 남긴 이름이다.
+- 공식 용어는 「함수형 컴포넌트(functional component)」가 아니라 **함수 컴포넌트(function component)**다. 「함수로 정의한 컴포넌트」라는 뜻일 뿐이다. 이름과 별개로, Hooks로 state와 effect를 쓰는 컴포넌트도 렌더링 자체는 순수해야 한다. props·state·context를 입력으로 같은 JSX를 돌려주고, 부수 효과는 이벤트 핸들러나 effect에서 실행한다([Keeping Components Pure](https://react.dev/learn/keeping-components-pure) 참고).
 
 ## Props
 

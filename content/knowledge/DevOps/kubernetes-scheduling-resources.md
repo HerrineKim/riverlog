@@ -161,7 +161,9 @@ CPU는 압축 가능한 자원이라 넘쳐도 느려질 뿐이고, 메모리는
 | --- | --- | --- |
 | Guaranteed | 모든 컨테이너가 CPU·메모리 requests와 limits를 **같은 값**으로 가진다 | 가장 마지막에 축출 |
 | Burstable | Guaranteed는 아니지만 하나 이상의 requests나 limits가 있다 | requests를 넘게 쓰는 파드부터 축출 |
-| BestEffort | 어떤 컨테이너에도 requests·limits가 없다 | 가장 먼저 축출 |
+| BestEffort | 어떤 컨테이너에도 requests·limits가 없다 | 대체로 가장 먼저 축출 |
+
+압박 시 순서는 경향일 뿐이다. kubelet은 실제로 「사용량이 requests를 넘었는가 → 파드 우선순위(Priority) → requests 대비 사용량」 순으로 고르므로, 우선순위가 높은 BestEffort 파드보다 우선순위가 낮고 requests를 넘긴 Burstable 파드가 먼저 축출될 수 있다.
 
 ## 네임스페이스 단위 통제
 

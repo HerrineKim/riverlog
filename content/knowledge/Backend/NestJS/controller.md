@@ -22,12 +22,12 @@ export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Get()            getAllCat() {}        // GET    /cats
+  @Get('hello')     getHello() {}         // GET    /cats/hello (:id보다 먼저)
   @Get(':id')       getOneCat() {}        // GET    /cats/:id
   @Post()           createCat() {}        // POST   /cats
   @Put(':id')       updateCat() {}        // PUT    /cats/:id
   @Patch(':id')     updatePartialCat() {} // PATCH  /cats/:id
   @Delete(':id')    deleteCat() {}        // DELETE /cats/:id
-  @Get('hello')     getHello() {}         // GET    /cats/hello
 }
 ```
 

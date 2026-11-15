@@ -50,7 +50,7 @@ flowchart LR
 | `ReadWriteMany` (RWX) | 여러 노드가 동시에 읽고 쓰게 | 파일 스토리지(NFS, EFS, CephFS) |
 | `ReadWriteOncePod` (RWOP) | **파드 하나**만 읽고 쓰게 | 한 파드만 써야 하는 데이터를 강제할 때(1.29 정식) |
 
-접근 모드는 드라이버가 지원해야 한다. 블록 볼륨은 RWX를 지원하지 않는다. RWO 볼륨을 쓰는 Deployment를 롤링 업데이트하면 새 파드가 다른 노드에 놓여 볼륨을 붙이지 못하고 멈출 수 있어, 그런 앱은 `Recreate` 전략이나 StatefulSet을 쓴다.
+접근 모드는 드라이버가 지원해야 한다. EBS 같은 클라우드 블록 디스크를 파일 시스템으로 마운트하면 보통 RWX를 지원하지 않는다(Ceph RBD의 Block 모드 RWX처럼 드라이버·볼륨 모드에 따라 예외가 있다). RWO 볼륨을 쓰는 Deployment를 롤링 업데이트하면 새 파드가 다른 노드에 놓여 볼륨을 붙이지 못하고 멈출 수 있어, 그런 앱은 `Recreate` 전략이나 StatefulSet을 쓴다.
 
 ### 회수 정책(Reclaim Policy)
 

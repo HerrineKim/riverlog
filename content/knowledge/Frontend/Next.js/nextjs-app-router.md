@@ -138,7 +138,7 @@ export default async function Page({ params }: { params: Promise<{ username: str
 
 레이아웃에서 데이터를 기다리면 그 아래 모든 구획이 데이터가 올 때까지 렌더링되지 않는다. Pages Router의 `getServerSideProps`도 끝날 때까지 페이지 전체를 막는 "전부 아니면 전무" 방식이었다. App Router에서는 두 가지로 피한다.
 
-- `loading.js`를 두어 기다리는 동안 그 구획의 로딩 UI를 스트리밍한다.
+- 기다리는 레이아웃보다 **위쪽**(부모 세그먼트)에 `loading.js`를 두거나, 레이아웃 안의 기다리는 부분을 직접 `<Suspense>`로 감싸 로딩 UI를 스트리밍한다. 같은 세그먼트의 `loading.js`는 레이아웃 안쪽에 들어가므로 그 레이아웃이 기다리는 데이터는 가리지 못한다.
 - 데이터 요청을 트리의 **아래쪽**(실제로 쓰는 컴포넌트)으로 내려, 막히는 범위를 줄인다.
 
 HTML을 Suspense 경계 단위로 나눠 보내는 원리와 상태 코드·버퍼링 같은 제약은 [[streaming-ssr|스트리밍 SSR]]에 있다.

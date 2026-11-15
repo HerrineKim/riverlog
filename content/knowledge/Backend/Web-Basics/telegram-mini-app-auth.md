@@ -75,8 +75,8 @@ export function validateTelegramInitData(telegramInitData: string, botToken: str
   const calculated = crypto.createHmac('sha256', secretKey).update(dataCheckString).digest('hex')
 
   const valid =
-    calculated.length === hash.length &&
-    crypto.timingSafeEqual(Buffer.from(calculated), Buffer.from(hash))
+    /^[0-9a-f]{64}$/.test(hash) && // 바이트 길이가 다르면 timingSafeEqual이 예외를 던진다
+    crypto.timingSafeEqual(Buffer.from(calculated, 'hex'), Buffer.from(hash, 'hex'))
   if (!valid) return { ok: false, message: 'Hash validation failed' } as const
 
   const user = JSON.parse(params.get('user') ?? '{}')

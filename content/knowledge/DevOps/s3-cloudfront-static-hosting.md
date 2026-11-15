@@ -125,7 +125,9 @@ jobs:
           aws-region: ap-northeast-2
 
       # 해시가 붙은 정적 자산: 오래 캐시
-      - run: aws s3 sync dist s3://${{ vars.S3_BUCKET }} --delete --exclude index.html --cache-control "public,max-age=31536000,immutable"
+      - run: aws s3 sync dist/assets s3://${{ vars.S3_BUCKET }}/assets --cache-control "public,max-age=31536000,immutable"
+      # 해시가 없는 나머지 파일(config.json 등): 매번 확인
+      - run: aws s3 sync dist s3://${{ vars.S3_BUCKET }} --exclude "assets/*" --exclude index.html --cache-control "no-cache"
       # index.html: 항상 다시 확인
       - run: aws s3 cp dist/index.html s3://${{ vars.S3_BUCKET }}/index.html --cache-control "no-cache"
       - run: aws cloudfront create-invalidation --distribution-id ${{ vars.CF_DISTRIBUTION_ID }} --paths "/index.html"
@@ -134,8 +136,8 @@ jobs:
 | 단계 | 요점 |
 | --- | --- |
 | `npm ci` | lockfile 그대로 설치한다. CI에서는 `npm install` 대신 쓴다 |
-| `aws s3 sync … --delete` | 로컬 폴더와 버킷을 맞춘다. `--delete`는 **로컬에 없는 객체를 버킷에서 지운다**(로컬 파일을 지우지 않는다) |
-| 캐시 헤더 | 파일 이름에 해시가 붙은 자산은 내용이 바뀌면 이름이 바뀌므로 1년 캐시해도 된다. 그 이름을 가리키는 `index.html`만 짧게(`no-cache`) 둔다 |
+| `aws s3 sync` | 로컬 폴더를 버킷에 올린다. `--delete`를 붙이면 **로컬에 없는 객체를 버킷에서 지우는데**, 옛 `index.html`을 연 채 남아 있는 탭이 아직 옛 청크를 불러오다 실패한다. 그래서 위 예에서는 빼고, 옛 해시 자산은 수명 주기 규칙 등으로 며칠 유예한 뒤 지운다 |
+| 캐시 헤더 | 파일 이름에 해시가 붙은 자산(Vite 기본값 `assets/`)은 내용이 바뀌면 이름이 바뀌므로 1년 `immutable`로 캐시해도 된다. `index.html`과 `config.json`처럼 이름이 고정된 파일은 `no-cache`로 둔다 |
 | 무효화 | 엣지에 남은 옛 파일을 지운다. 위처럼 캐시를 나눴으면 `index.html`만 무효화하면 된다. `"/*"` 하나는 경로 하나로 계산되지만 모든 엣지 캐시를 비워 원본 요청이 몰린다 |
 | IAM 역할 | 그 버킷의 `s3:PutObject`·`DeleteObject`·`ListBucket`, 그 배포의 `cloudfront:CreateInvalidation`만 허용한다. 신뢰 정책은 이 저장소·브랜치(`repo:org/repo:ref:refs/heads/main`)에서 온 토큰만 받는다 |
 

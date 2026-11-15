@@ -96,12 +96,9 @@ useEffect(() => {
 }, [detail, setValue, reset])
 ```
 
-`setValue`는 값을 바꿔도 기본적으로 리렌더링을 일으키지 않는다. 다음 경우에만 폼 상태 구독자가 다시 렌더링된다.
+`setValue`는 불필요한 리렌더링을 피하도록 만들어졌지만 리렌더링이 아예 없지는 않다. 기본 동작은 값만 바꾸고 그 값을 구독하는 쪽(`watch`, `useWatch`, `subscribe`, 그리고 그 필드를 쓰는 `Controller`)에 알리는 것이어서, 구독자는 다시 렌더링된다. 검증과 dirty·touched 표시는 기본으로 하지 않는다.
 
-- 값을 바꾸면서 에러가 생기거나 해소될 때(검증이 켜져 있을 때)
-- 처음으로 폼이 dirty 상태(`isDirty: true`)가 될 때
-
-`setValue(name, value, { shouldValidate: true, shouldDirty: true })`처럼 옵션으로 검증·dirty 처리를 함께 요청할 수 있다.
+`setValue(name, value, { shouldValidate: true, shouldDirty: true })`처럼 옵션으로 검증·dirty 처리를 함께 요청할 수 있다. 이때는 에러나 `isDirty` 같은 폼 상태가 바뀌면 그 상태를 구독하는 컴포넌트도 다시 렌더링된다.
 
 ## 핵심 정리
 

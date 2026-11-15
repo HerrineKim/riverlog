@@ -89,7 +89,7 @@ clang-format -i src/*.cpp include/*.hpp                    # 파일을 제자리
 
 - 저장소 루트에 `.clang-format` 파일을 두면 에디터·CI·팀원 모두가 같은 규칙을 쓴다. 기본 스타일 하나를 `BasedOnStyle`로 고르고 다른 부분만 덮어쓴다.
 - VS Code에서는 Microsoft C/C++ 확장이나 clangd 확장 중 **하나만** 켠다. 둘 다 켜면 IntelliSense와 서식 기능이 충돌한다. `"editor.formatOnSave": true`로 저장할 때마다 정렬하고, `.clang-format`이 없을 때 쓸 스타일은 C/C++ 확장의 `C_Cpp.clang_format_fallbackStyle`로 정한다.
-- CI에서 `clang-format --dry-run --Werror`를 돌리면 정렬되지 않은 코드가 병합되는 것을 막는다.
+- CI에서 `clang-format --dry-run --Werror $(git ls-files '*.cpp' '*.h')`처럼 검사할 파일을 넘겨 돌리면 정렬되지 않은 코드가 병합되는 것을 막는다. 파일을 넘기지 않으면 표준 입력만 읽어 저장소를 검사하지 않는다.
 
 ## 정리
 
