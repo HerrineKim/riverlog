@@ -65,15 +65,15 @@ flowchart TB
   doc["document (문서)"] --> html["html"] --> body["body"] --> div["div"]
   div --> h1["h1"] --> t0["텍스트"]
   div --> ul["ul"]
-  ul --> li1["li"]
-  ul --> li2["li"]
+  ul --> li1["li (class 속성)"]
+  ul --> li2["li (class 속성)"]
   ul --> li3["li"]
-  li1 --> a1["class 속성"]
   li1 --> t1["텍스트"]
-  li2 --> a2["class 속성"]
   li2 --> t2["텍스트"]
   li3 --> t3["텍스트"]
 ```
+
+속성은 요소에 딸린 정보라 트리의 자식으로 그리지 않았다. 어트리뷰트 노드는 부모 노드를 갖지 않는다.
 
 DOM tree의 진입점(entry point)은 `document` 객체이고, 끝은 텍스트 노드다. 트리는 네 종류의 노드로 이루어진다.
 
