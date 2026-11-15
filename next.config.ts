@@ -119,6 +119,16 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/life-and-learning/us-study-funding": "/knowledge/dictionary/life-and-learning/study-abroad/us-study-funding",
   "/knowledge/dictionary/life-and-learning/georgia-tech-omscs": "/knowledge/dictionary/life-and-learning/study-abroad/georgia-tech-omscs",
   "/knowledge/dictionary/life-and-learning/non-cs-masters-path": "/knowledge/dictionary/life-and-learning/study-abroad/non-cs-masters-path",
+  "/knowledge/dictionary/ai-data/claude-code-guide": "/knowledge/dictionary/ai-data/claude-code/claude-code-guide",
+  "/knowledge/dictionary/ai-data/claude-code-hooks": "/knowledge/dictionary/ai-data/claude-code/claude-code-hooks",
+  "/knowledge/dictionary/ai-data/claude-skill-building-guide": "/knowledge/dictionary/ai-data/claude-code/claude-skill-building-guide",
+  "/knowledge/dictionary/ai-data/claude-code-settings": "/knowledge/dictionary/ai-data/claude-code/claude-code-settings",
+  "/knowledge/dictionary/ai-data/claude-code-memory": "/knowledge/dictionary/ai-data/claude-code/claude-code-memory",
+  "/knowledge/dictionary/ai-data/claude-code-extensions": "/knowledge/dictionary/ai-data/claude-code/claude-code-extensions",
+  "/knowledge/dictionary/ai-data/claude-code-commands": "/knowledge/dictionary/ai-data/claude-code/claude-code-commands",
+  "/knowledge/dictionary/ai-data/claude-code-workflows": "/knowledge/dictionary/ai-data/claude-code/claude-code-workflows",
+  "/knowledge/dictionary/ai-data/claude-code-tips": "/knowledge/dictionary/ai-data/claude-code/claude-code-tips",
+  "/knowledge/dictionary/ai-data/claude-code-design-philosophy": "/knowledge/dictionary/ai-data/claude-code/claude-code-design-philosophy",
 };
 
 const nextConfig: NextConfig = {
