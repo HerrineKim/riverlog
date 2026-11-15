@@ -4,11 +4,11 @@ concept: "DevTools AI & MCP"
 summary: "DevTools 안에서 Gemini와 채팅하며 스타일·네트워크·소스·성능을 묻는 AI 지원 패널과 코드 생성, 그때 Google로 가는 데이터와 끄는 정책, 그리고 코딩 에이전트가 MCP로 실제 Chrome을 조작하게 하는 Chrome DevTools MCP 서버(설정 플래그, 자동 연결, 에뮬레이션·Lighthouse·메모리·확장 프로그램·서드파티 도구)와 WebMCP 디버깅을 정리한다."
 tags: ["devtools", "tools", "ai", "mcp", "agent", "debugging"]
 source: other
-date: "2026-10-15"
-sources: ["https://developer.chrome.com/docs/devtools/ai-assistance", "https://developer.chrome.com/docs/devtools/ai-assistance/get-started", "https://developer.chrome.com/docs/devtools/ai-assistance/chat", "https://developer.chrome.com/docs/devtools/ai-assistance/code-generation", "https://developer.chrome.com/docs/devtools/ai-assistance/data-usage-and-enterprise-controls", "https://developer.chrome.com/docs/devtools/settings/ai-innovations", "https://developer.chrome.com/docs/devtools/agents", "https://developer.chrome.com/docs/devtools/agents/get-started", "https://developer.chrome.com/docs/devtools/agents/get-started/configuration", "https://developer.chrome.com/docs/devtools/agents/use-cases/auto-connect", "https://developer.chrome.com/docs/devtools/agents/use-cases/emulation", "https://developer.chrome.com/docs/devtools/agents/use-cases/lighthouse-audit", "https://developer.chrome.com/docs/devtools/agents/use-cases/third-party-tools", "https://developer.chrome.com/docs/devtools/agents/memory", "https://developer.chrome.com/docs/devtools/agents/extensions", "https://developer.chrome.com/docs/devtools/agents/webmcp-debugging", "https://developer.chrome.com/docs/devtools/application/webmcp"]
+date: "2026-11-15"
+sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/reports/claude-in-chrome-v-chrome-devtools-mcp.md", "https://developer.chrome.com/docs/devtools/ai-assistance", "https://developer.chrome.com/docs/devtools/ai-assistance/get-started", "https://developer.chrome.com/docs/devtools/ai-assistance/chat", "https://developer.chrome.com/docs/devtools/ai-assistance/code-generation", "https://developer.chrome.com/docs/devtools/ai-assistance/data-usage-and-enterprise-controls", "https://developer.chrome.com/docs/devtools/settings/ai-innovations", "https://developer.chrome.com/docs/devtools/agents", "https://developer.chrome.com/docs/devtools/agents/get-started", "https://developer.chrome.com/docs/devtools/agents/get-started/configuration", "https://developer.chrome.com/docs/devtools/agents/use-cases/auto-connect", "https://developer.chrome.com/docs/devtools/agents/use-cases/emulation", "https://developer.chrome.com/docs/devtools/agents/use-cases/lighthouse-audit", "https://developer.chrome.com/docs/devtools/agents/use-cases/third-party-tools", "https://developer.chrome.com/docs/devtools/agents/memory", "https://developer.chrome.com/docs/devtools/agents/extensions", "https://developer.chrome.com/docs/devtools/agents/webmcp-debugging", "https://developer.chrome.com/docs/devtools/application/webmcp"]
 ---
 
-> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다.
+> Chrome for Developers의 「[Chrome DevTools 문서](https://developer.chrome.com/docs/devtools?hl=ko)」를 바탕으로 재구성한 노트다. 브라우저 자동화 MCP 비교는 shanraisshan의 「[claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice)」(MIT) 리포트(2025.12)로 보강했다.
 
 ## 두 방향의 AI
 
@@ -168,6 +168,23 @@ SSO·VPN 뒤의 사내 대시보드처럼 **에이전트가 로그인하지 못�
 
 - 에이전트는 연결된 브라우저의 콘텐츠를 읽고 고칠 수 있다. 로그인된 세션에 붙이면 **사실상 나를 대신해 행동한다.** 자동 연결은 쿠키·저장소·열린 탭 전부를 넘겨주는 것이니 신뢰하는 에이전트에만 쓴다.
 - 서버는 로컬 프로세스지만 기본값으로 **사용 통계**와 **성능 트레이스의 URL**(CrUX 실사용 데이터 조회용)을 Google로 보낸다. 끄려면 `--no-usage-statistics`, `--no-performance-crux`를 쓴다. 환경 변수 `CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS`나 `CI`가 있어도 통계 수집이 꺼진다.
+
+### 다른 브라우저 자동화 MCP와 비교
+
+코딩 에이전트에 붙이는 브라우저 도구는 셋이 많이 쓰인다. 셋 다 도구 정의만으로 맥락을 13K~19K 토큰(200K 창의 7~10%) 차지하므로([[claude-advanced-tool-use|도구 검색]]) 목적에 맞는 것만 붙인다.
+
+| | Chrome DevTools MCP | Playwright MCP | Claude in Chrome |
+| --- | --- | --- | --- |
+| 만든 곳 | Google Chrome 팀 | Microsoft | Anthropic(브라우저 확장) |
+| 기반 | CDP + Puppeteer | 접근성 트리 | 확장 + 컴퓨터 사용 |
+| 강점 | 성능 트레이스, 깊은 네트워크 분석, Core Web Vitals | 크로스 브라우저(Chromium·Firefox·WebKit), 의미 기반이라 덜 깨지는 요소 선택, 테스트 파일 생성 | **내 로그인 세션 그대로** 빠른 시각 확인, 예약 작업 |
+| CI·헤드리스 | 된다 | 된다 | 안 된다(로그인 필요) |
+| 격리 | 기본은 별도 프로필 | 격리된 컨텍스트 | 실제 브라우저 세션(쿠키 노출 위험) |
+| 비용 | 무료 | 무료 | 유료 플랜 |
+
+- **기본은 Playwright**(E2E·CI), **「왜 느린가」는 DevTools MCP**, **로그인된 상태로 「제대로 보이나」만 빠르게 볼 때 Claude in Chrome**으로 나눈다. 흐름으로 쓰면 구현 → Playwright로 테스트 → DevTools MCP로 디버그 → Claude in Chrome으로 시각 확인 → CI는 다시 Playwright다.
+- Claude in Chrome은 공개 평가(2025-12)에서 완화 장치 없이 프롬프트 인젝션 성공률 23.6%, 방어 적용 후 11.2%가 남았다. 신뢰하는 작업에만 쓰고 CI에는 쓰지 않는다.
+- 사용자 범위로 추가: `claude mcp add playwright -s user -- npx @playwright/mcp@latest`.
 
 ## WebMCP 디버깅
 
