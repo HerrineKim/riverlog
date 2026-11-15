@@ -1,0 +1,79 @@
+---
+title: "AI-Data"
+concept: "AI & Data"
+summary: "LLM·에이전트 도구(Claude Code, 스킬, 루프 엔지니어링)와 AI 활용법, 머신 러닝·딥러닝·강화 학습·자연어 처리의 기초 개념, 파이썬 데이터 분석·Jupyter 같은 데이터 도구에 관한 노트."
+tags: ["data-science", "python", "analysis", "ai", "llm"]
+source: notion
+date: "2026-10-31"
+---
+
+AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 목표를 공유하는 분야이다. 이 분야에는 Claude Code·스킬·루프 엔지니어링 같은 LLM 에이전트 도구와 프롬프트 설계, AI로 UI를 만드는 방법, 퍼셉트론·트리 앙상블·강화 학습·자연어 처리 같은 머신 러닝 기초 개념, 그리고 파이썬 데이터 분석 흐름과 표준 도구인 Jupyter Notebook을 정리했다.
+
+## 하위 노트
+
+- [파이썬 데이터 분석 프로세스](AI-Data/python-data-analysis.md): 데이터 수집 → 처리 → EDA·시각화 → 성능 개선
+- [데이터 파이프라인과 저장소 용어](AI-Data/data-pipeline-basics.md): 수집 → 적재 → 저장 → 처리 → 활용, 단계별 도구 지도, 배치·스트림과 Lambda·Kappa, ETL·ELT, 웨어하우스·레이크·레이크하우스·데이터 메시
+- [이벤트 로그 설계와 수집](AI-Data/event-log-design.md): 지표에서 거꾸로 설계, 기록 시점 기준·검증, 테이블 모양 로그, 스키마 공유, 에이전트 → 스트림 버퍼 → 원본·검색 인덱스, 수집 감시
+- [분산 데이터 처리: MapReduce, Spark, SQL 엔진](AI-Data/distributed-data-processing.md): 빅데이터의 기준, RDD 계보·지연 실행·좁은/넓은 의존성, DataFrame·Spark SQL, Trino, Parquet
+- [프로덕트 데이터 분석: 지표, 로그, 실험](AI-Data/product-analytics.md): AARRR·OMTM, 지표의 조작적 정의·저량과 유량·선행 지표, 로그 설계와 품질, 심슨의 역설·코호트·퍼널, A/B 테스트와 밴딧
+- [데이터 직군: 분석가·엔지니어·머신러닝 엔지니어·사이언티스트](AI-Data/data-job-roles.md): 성향으로 나눈 네 데이터 직군의 업무·역량·자격 요건, 새 직군, 기대와 현실, 학습 로드맵, 포트폴리오와 채용 면접
+- [데이터의 위치 추정: 평균·절사평균·가중평균·중앙값](AI-Data/location-estimation.md): 이상치에 흔들리는 산술평균과 그 대안, 상황별 대푯값 고르기
+- [시계열 분석: 정상성·분해·ARIMA에서 Prophet과 딥러닝 예측까지](AI-Data/time-series-analysis.md): 정상성과 단위근 검정, STL 분해, 지수평활·ARIMA·SARIMAX, Prophet, seq2seq·인과 합성곱 예측, 시간 순서 평가, DTW 분류·군집
+- [newspaper로 기사 본문 추출하기](AI-Data/newspaper-article-scraping.md): 사이트별 파서 없이 기사 제목·본문·메타데이터 추출, newspaper4k, Source로 기사 URL 모으기, 설정과 한계
+- [네이버 블로그 크롤링](AI-Data/naver-blog-crawling.md): 검색 API로 글 목록, PostView 주소로 iframe 속 본문 받기, 선택자 변경·예외 처리 함정
+- [웹 크롤링 전략: 정적·동적 판별과 수집 방식 고르기](AI-Data/web-scraping-strategy.md): 공식 API → 숨은 데이터 엔드포인트 → 헤드리스 브라우저 순으로 가벼운 방식 고르기
+- [Jupyter Notebook](AI-Data/jupyter-notebook.md): 코드·문서·시각화를 한데 담는 "실행되는 문서"
+- [문자열·문서 유사도: 편집 거리와 코사인 유사도](AI-Data/text-similarity.md): 오타에 강한 제목 검색(Jaro-Winkler)과 키워드 벡터 기반 영화 추천
+- [추천 시스템](AI-Data/Recommender-System.md): 협업·콘텐츠 기반 필터링, 후보 생성 → 랭킹의 딥러닝 구조, 밴딧과 실시간 피드백·A/B 테스트, 실서비스에서 반복되는 설계 원칙 (하위 노트 3편)
+- [머신 러닝 기초: 네 단계 추상화](AI-Data/machine-learning-basics.md): 데이터 → 모델 → 손실 → 최적화, 지도·비지도, 최소제곱법, 과적합·MLE·MAP·정규화
+- [퍼셉트론과 다층 퍼셉트론](AI-Data/perceptron-mlp.md): 인공 뉴런·활성화 함수, 퍼셉트론 학습과 XOR 한계, MLP와 오류 역전파
+- [딥러닝 직관으로 이해하기: 신경망으로 숫자에서 패턴 찾기](AI-Data/deep-learning-intuition.md): 모든 것이 숫자인 컴퓨터, 규칙으로 못 적는 패턴, 프로그래밍과 학습의 차이, 층별 특징과 해석의 어려움, 강화 학습과 알파제로, 전이 학습
+- [컴퓨터 비전 기초: 커널과 합성곱에서 CNN까지](AI-Data/computer-vision-basics.md): 영상 처리와의 차이, 분류·탐지·분할 등 세부 과제, 색 추적, 패치·커널·합성곱과 프리윗 에지 검출, Viola-Jones 얼굴 검출, 커널을 학습하는 CNN과 비전 트랜스포머, 랜드마크·표정·생체 인식
+- [결정 트리와 앙상블: 랜덤 포레스트와 부스팅](AI-Data/decision-tree-ensemble.md): 지니 불순도, 배깅과 부스팅 비교, 정형 데이터에 강한 트리 모델, 서버·엣지 배포
+- [분류 모델 성능 평가 지표](AI-Data/classification-metrics.md): 혼동 행렬, 정밀도·재현율·정확도·F1, ROC·AUC, 회귀 지표, 객체 탐지의 IoU·PR 곡선·AP·mAP
+- [논문 읽기와 구현](AI-Data/paper-reading-implementation.md): 논문 고르기와 여러 번 나눠 읽기, 이해 점검 네 질문, 구현할 때의 태도, 재현 가능한 코드 공개 다섯 가지
+- [서비스용 텍스트 분류 모델 만들기](AI-Data/text-classification-in-production.md): 라벨 기준, 노이즈 많은 텍스트 토큰화, 가벼운 모델, 클래스 불균형, 라벨 오류 찾기와 재학습, 다중 입력 모델
+- [머신러닝 모델 서빙](AI-Data/ml-model-serving.md): 배포 방식과 CPU·GPU 선택, 동기 API와 큐 기반 비동기 워커, 가중치·이미지 분리, 배치 처리, 헬스 체크·배포 게이트, BentoML
+- [MLOps: 머신러닝을 운영 환경에서 굴리기](AI-Data/mlops.md): 서빙·버전 관리·모니터링·재학습, 생명 주기별 도구, Kubeflow Pipelines, ML 테스트, 학습·서빙 불일치
+- [불확실한 지식으로 추론하기: 베이지안 분류기와 퍼지 추론](AI-Data/bayesian-fuzzy-inference.md): 베이즈 정리·최소 오류/위험 분류기·나이브 베이즈, 퍼지 집합·관계·논리
+- [지능형 튜터링 시스템과 베이지안 지식 추적](AI-Data/intelligent-tutoring-system.md): 생성 규칙·버그 규칙의 도메인 모델, 학생 모델, 숙달·추측·실수·전이 확률의 BKT 갱신식, 숙달 학습과 적응형 순서, LLM 튜터
+- [강화 학습: 에이전트·MDP·가치 함수와 알고리즘 분류](AI-Data/reinforcement-learning.md): 상태·행동·보상, MDP, 리턴·Q 함수·벨만 방정식, 모델 기반/프리·가치/정책·온/오프 정책
+- [비헤이비어 트리](AI-Data/behavior-tree.md): 틱마다 깊이 우선 평가, Success·Failure·Running, Sequence·Selector·Parallel과 데코레이터, FSM과 비교
+- [자연어 처리 파이프라인: 전처리부터 언어 모델까지](AI-Data/nlp-pipeline.md): 과제 분류, 말뭉치 → 토큰화·정규화·인코딩 → 언어 모델(n-gram → 트랜스포머 → LLM) → 평가
+- [LLM은 무엇을 하고 왜 작동하나](AI-Data/how-llm-works.md): 다음 토큰 예측과 온도, 파일 두 개와 손실 압축, 환각과 역전 저주, 임베딩, 트랜스포머 내부 구조, 사전·사후 학습, 스케일링 법칙, 계산 환원 불가능성과 시스템 2·자기 개선·도구로 넘는 법
+- [LLM 보안 공격: 탈옥, 프롬프트 인젝션, 데이터 중독](AI-Data/llm-security-attacks.md): 역할극·Base64·최적화된 접미사 탈옥, 숨은 글씨·검색 결과·공유 문서로 데이터 빼내기, 250개 문서로 심는 백도어, 고양이와 쥐 게임
+- [LLM 서빙의 병목: KV 캐시, 배치, GPU](AI-Data/llm-serving-at-scale.md): 어텐션 비용과 KV 캐시, 산술 강도와 배치 크기, 속이는 GPU 사용률, GPU를 따라가는 배치와 오토스케일 불가, PagedAttention·연속 배치·프롬프트 캐싱
+- [시스템 프롬프트 설계 패턴](AI-Data/system-prompt-patterns.md): 정체성 → 거절 → 출력 형식 → 환경·도구의 골격, 유출된 제품 프롬프트에서 보이는 설계 패턴과 보안 교훈
+- [프롬프트 작성법 치트시트](AI-Data/prompt-cheat-sheet.md): 목표·맥락·과제·제약·형식·예시 7칸, 이유 붙이기·금지 대신 할 일 같은 원칙, 어조·문체·형식 목록과 제약 템플릿, 제로샷·퓨샷·생각의 사슬·자기 성찰 기법
+- [AI 모델로 완성도 높은 프론트엔드 디자인 뽑기](AI-Data/ai-frontend-design-prompting.md): 디자인 시스템·와이어프레임·스크린샷·무드보드로 보여 주고 기본 폰트·아이콘을 바꿔 템플릿 티를 없애는 프롬프트 기법
+- [미드저니 프롬프트 파라미터](AI-Data/midjourney-prompt-parameters.md): --ar·--s·--c·--w·--sref·--sw·--p·--v의 뜻과 범위, 크리스마스 디자인용 프롬프트 예시
+- [AI 이미지를 쓸모 있는 벡터로 바꾸기](AI-Data/ai-image-to-vector.md): Midjourney → 업스케일러 → Illustrator 이미지 추적 → 확장, 단계별 역할과 추적 설정
+- [디자인 시스템을 아는 화면 생성 에이전트 설계하기](AI-Data/design-system-agent-harness.md): 구체화·검증·메모리 루프로 일관된 결과를 내는 에이전틱 코딩 하네스
+- [Claude Code](AI-Data/Claude-Code.md): 활용 가이드, 명령어·플래그 레퍼런스, 설정·권한, CLAUDE.md 메모리, 훅, 커맨드·스킬·서브에이전트와 스킬 만들기, RPI 같은 개발 워크플로, 실전 팁, 설계 원칙 (하위 노트 10편)
+- [AI 코딩 실무 가드레일](AI-Data/ai-coding-guardrails.md): 규모별 세 가지 모드, CLAUDE.md·앵커 주석, 사람이 쓰는 테스트, AI가 건드리면 안 되는 영역
+- [AI로 개발 가속하기: AI 네이티브 작업 방식과 규칙을 키우는 개발](AI-Data/ai-accelerated-development.md): AI부터 시도하고 검증하기, 도구 네 범주와 생명 주기별 활용, PRD → 태스크 리스트, 바이브 코딩의 현실적 패턴, Rule-Growing Development, AI가 찾기 쉬운 주석·이름, 작업 길이, 팀·윤리 규칙
+- [AI에게 일 맡기기: 권한·정보·도구](AI-Data/ai-delegation-toolkit.md): 위임 단계와 모니터링, STICC와 인지 작업 분석(CTA), 되묻게 하기·불확실성 지도·메타 프롬프트, 템플릿, MCP 선별과 검증 장치, 계획까지 커밋하는 작업 흐름
+- [루프 엔지니어링](AI-Data/loop-engineering.md): 자동화·워크트리·스킬·서브에이전트·상태 파일로 에이전트가 스스로 도는 루프 설계하기
+- [프롬프트에서 하네스로: 에이전틱 패턴의 진화](AI-Data/harness-engineering.md): 프롬프트 → 컨텍스트 → 하네스 엔지니어링, 플로우 엔지니어링(AlphaCodium), Write/Select/Compress/Isolate와 KV 캐시, 하네스 네 사분면, 치명적 삼요소와 2의 규칙
+- [바이브 코딩에서 에이전틱 엔지니어링으로](AI-Data/agentic-engineering.md): Software 3.0, 검증 가능성과 들쭉날쭉한 지능, 바이브 코딩 대 에이전틱 엔지니어링, 사람이 맡는 판단·이해, 에이전트 네이티브 인프라
+- [Claude API 고급 도구 사용: 코드로 호출하기·도구 검색·예시](AI-Data/claude-advanced-tool-use.md): Programmatic Tool Calling, Dynamic Filtering, Tool Search, Tool Use Examples, Claude Code의 MCP 도구 검색
+- [LLM 동작은 왜 날마다 다른가](AI-Data/llm-behavior-variability.md): 가중치 위의 층, MoE·배치 잡음, 2025년 인프라 버그 세 건, seed 없는 결정성, CLI와 SDK의 시스템 프롬프트 차이, 카나리
+- [내 일을 줄이는 하네스 만들기](AI-Data/personal-agent-harness.md): 결과물이 아니라 생성 장치를 만드는 순서, PLAN/PROGRESS·참고 자료 캐시, 서브에이전트 분할, cron + claude -p 이슈 파이프라인, 병목의 이동
+- [LLM 위키: LLM이 쓰고 관리하는 지식 창고](AI-Data/llm-wiki.md): RAG 대신 원문을 미리 종합해 쌓는 위키, 원문·위키·스키마 세 층, 입수·질의·점검, index·log 파일, 유사도 검색이 관계형 질문에 약한 이유
+- [에이전트를 믿을 수 있는 환경 만들기](AI-Data/agent-trust-environment.md): 신뢰가 병렬화를 막는 이유, 검증 스킬(CLI + 기능 지도), 교정을 넣는 다섯 층, 번지는 나쁜 패턴과 복제되는 주석, 에이전트 친화 프레임워크와 정원사
+- [멀티 에이전트](AI-Data/multi-agent.md): 여러 AI가 역할을 나눠 일하는 구조, 작동 흐름·구성 요소·주의점, 주요 프레임워크
+- [AI 시대 개발자의 역할](AI-Data/ai-era-developer.md): LLM의 구조적 한계, 지시에서 위임으로, 하네스와 오라클, 맥락 보존, 갈라지는 역할과 길러야 할 역량
+- [AI 플랫폼 전환과 일의 재편](AI-Data/ai-platform-shift.md): 네 번째 플랫폼 전환, SQL 같은 모델 층과 피드백 루프, 메모리·도구·권한, 경제적 잉여와 사회적 허가, 변화 관리, 아키텍트가 되는 엔지니어
+- [조직 AX: 개발 자동화에서 전사 AI 전환까지](AI-Data/organizational-ax.md): PR 재현·마이그레이션·신규 서비스 실험, 맥락을 자산으로, Quick Win과 비개발자 온보딩, 사내 AI 플랫폼, 보안 스캔·승인·인증 프록시를 갖춘 바이브 코딩 앱 배포
+- [스케일과 지능 유틸리티](AI-Data/scale-and-intelligence-utility.md): 합의를 넘어 키울 때 나오는 창발 속성, 스케일의 반대 이유를 쪼개 풀기, 킬러 앱은 사용자가 찾는다, 밤의 빛 비유, 토큰 추상화와 추론 스택, 컴퓨트 부족, 민주화 갈림길, 교육 재설계
+- [AI 네이티브 프론트엔드 개발](AI-Data/ai-native-frontend.md): 대화로 뽑은 리팩터링 스킬, 의도 정렬 순서, 이슈·PR 맥락 관리, 픽셀 diff·상태 재현 환경, BE·디자인을 정본으로 FE 얇게 만들기, 통합과 완성도로 옮겨 가는 역할
+- [AI 기능 기획: 시스템 블루프린트와 유스케이스 발굴](AI-Data/ai-feature-blueprint.md): 기회·솔루션·거버넌스 블루프린트, 가치 5범주와 사용자 여정 매핑, 비용·실패 모드 추정, 프로토타입
+- [예측형 AI와 생성형 AI](AI-Data/predictive-vs-generative-ai.md): 출력 공간과 모델 차이, 이탈 예측·글쓰기 도우미로 본 두 개발 루프, 흔한 함정과 대응
+- [책임 있는 AI: 윤리, 프라이버시·공정성·신뢰](AI-Data/responsible-ai-governance.md): 세 축을 데이터·지능·UX 층별로, PII 최소화, 데이터 편향과 COMPAS, 보정된 신뢰, 트롤리 딜레마·모럴 머신
+- [AI 2027: 초지능 도래 시나리오와 정렬 문제](AI-Data/ai-2027-scenario.md): AI가 AI 연구를 자동화하는 지능 폭발 연대기, 진전 배수와 시간 지평, IDA·뉴럴리즈, 정렬이 어긋나는 단계와 통제 기법, 가중치 보안과 미·중 경쟁, 경쟁·감속 두 결말
+- [웹 AI 플랫폼 고르기: 클라이언트, 서버, 하이브리드](AI-Data/web-ai-platform-choice.md): 내장 AI·커스텀 모델·관리형 API·자체 호스팅 비교, 요구 사항에서 고르기, 클라이언트 우선 하이브리드
+- [클라이언트 사이드 웹 AI: 내장 AI API, 라이브러리, 런타임](AI-Data/client-side-web-ai.md): Chrome 내장 AI API 상태와 쓰는 순서, Transformers.js·WebLLM 등, Wasm·WebGPU·WebNN
+- [평가 주도 개발(EDD): AI 기능을 테스트하며 다듬기](AI-Data/evaluation-driven-development.md): AI용 TDD, 결정적·주관적 지표, 코드·사람·LLM 심판, 프롬프트 CI
+- [AI 기능의 UX 패턴: 배경형·제한형·개방형](AI-Data/ai-ux-patterns.md): 노출 단계별 예와 모범 사례, 배경형과 제한형 사이에서 고르기, 투명성·제어·신뢰 보정 패턴 표
+- [데이터 시각화: 인코딩, 차트 고르기, 디자인 원칙](AI-Data/data-visualization.md): 그래픽 문법과 시각 채널의 정확도, 색 스케일과 좌표계, 지각과 주의, 수량·분포·비율·관계·시계열별 차트, 잉크 비례·겹침·직접 레이블·3D 피하기
+- [시각화 설계 과정: 과업 분석, 상호작용, 평가](AI-Data/visualization-design-process.md): 과업 분석, 다섯 장 디자인 시트, 정보 탐색 만트라와 상호작용, 시각화 평가
