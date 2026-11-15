@@ -92,11 +92,11 @@ your-skill/
 
 | | CLAUDE.md | 스킬 |
 | --- | --- | --- |
-| 조상 폴더 | 시작할 때 즉시 읽는다 | 읽지 않는다 |
-| 하위 폴더 | 그 폴더 파일을 읽을 때 | `packages/frontend/.claude/skills/`처럼 중첩된 폴더를 그 안의 파일을 다룰 때 찾는다 |
+| 조상 폴더 | 시작할 때 즉시 읽는다 | 시작 폴더부터 저장소 루트까지 `.claude/skills/`를 시작할 때 읽는다(링크된 worktree는 worktree 루트까지) |
+| 하위 폴더 | 그 폴더 파일을 읽을 때 | `packages/frontend/.claude/skills/`처럼 중첩된 폴더는 그 안의 파일을 처음 읽거나 편집할 때 찾는다. 그 전에는 `/` 메뉴에도 없고, 미리 쓰려면 `/add-dir` |
 | 읽는 양 | 전체 | description만, 본문은 부를 때 |
 
-예를 들어 루트에서 시작하면 루트 `.claude/skills/`의 `shared-conventions`만 보이고, `packages/frontend/src/App.tsx`를 편집한 뒤에야 `react-patterns`가 더해진다. 그래서 공용 워크플로는 루트에, 패키지 전용 스킬은 패키지 폴더에 두고, 이름에 패키지 접두사(`frontend-review`, `backend-deploy`)를 붙인다.
+예를 들어 루트에서 시작하면 루트 `.claude/skills/`의 `shared-conventions`만 보이고, `packages/frontend/src/App.tsx`를 편집한 뒤에야 `react-patterns`가 더해진다. 반대로 `packages/frontend`에서 시작하면 둘 다 처음부터 보인다. 그래서 공용 워크플로는 루트에, 패키지 전용 스킬은 패키지 폴더에 두고, 이름에 패키지 접두사(`frontend-review`, `backend-deploy`)를 붙인다.
 
 ## 스킬의 아홉 가지 유형
 

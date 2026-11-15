@@ -44,7 +44,7 @@ sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/b
 - 그래서 **공용 규약(코딩 표준, 커밋 형식, PR 템플릿)은 루트에, 컴포넌트 전용 규약은 그 폴더에** 둔다.
 - 서드파티 폴더의 CLAUDE.md를 빼려면 설정의 `claudeMdExcludes`(`["**/vendor/**/CLAUDE.md"]`)를 쓴다.
 
-스킬은 이 규칙과 다르다. 스킬은 조상 폴더에서 올라오지 않고, 중첩된 `.claude/skills/`를 그 폴더에서 작업할 때 찾는다. 자세한 것은 [[claude-skill-building-guide#모노레포에서 스킬 찾기|스킬 가이드의 모노레포 절]]에 있다.
+스킬도 비슷하다. 시작 폴더부터 저장소 루트까지 조상의 `.claude/skills/`는 시작할 때 읽고, 중첩된 하위 `.claude/skills/`는 그 폴더 파일을 처음 읽거나 편집할 때 찾는다. 다만 스킬은 description만 먼저 올라온다. 자세한 것은 [[claude-skill-building-guide#모노레포에서 스킬 찾기|스킬 가이드의 모노레포 절]]에 있다.
 
 ## rules: 조건부 지시
 
