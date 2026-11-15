@@ -5,12 +5,13 @@ summary: "컴포넌트가 스스로 관리하는 변하는 데이터인 state, u
 tags: ["react", "state", "hooks", "frontend"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://edykim.com/ko/post/learn-react-before-using-redux/", "https://react.vlpt.us/basic/07-useState.html", "https://react.vlpt.us/basic/09-multiple-inputs.html", "https://react.vlpt.us/basic/13-array-insert.html", "https://react.vlpt.us/basic/14-array-remove.html", "https://react.vlpt.us/basic/15-array-modify.html", "https://react.vlpt.us/basic/23-immer.html", "https://immerjs.github.io/immer/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/React%20Hook%20useState.md", "https://react.dev/reference/react/useState"]
+sources: ["https://edykim.com/ko/post/learn-react-before-using-redux/", "https://react.vlpt.us/basic/07-useState.html", "https://react.vlpt.us/basic/09-multiple-inputs.html", "https://react.vlpt.us/basic/13-array-insert.html", "https://react.vlpt.us/basic/14-array-remove.html", "https://react.vlpt.us/basic/15-array-modify.html", "https://react.vlpt.us/basic/23-immer.html", "https://immerjs.github.io/immer/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/React%20Hook%20useState.md", "https://react.dev/reference/react/useState", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 개인 TIL을 바탕으로, state 내리기와 라이브러리 전에 해 볼 순서는 「[React에서 Redux 전에 배워야 할 8가지](https://edykim.com/ko/post/learn-react-before-using-redux/)」를 바탕으로 더한 노트다.
 > 배열 불변 업데이트와 Immer는 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[배열에 항목 추가하기](https://react.vlpt.us/basic/13-array-insert.html)」~「[배열 항목 수정하기](https://react.vlpt.us/basic/15-array-modify.html)」, 「[Immer를 사용한 더 쉬운 불변성 관리](https://react.vlpt.us/basic/23-immer.html)」를 바탕으로 보강했다.
 > 일괄 처리와 지연 초기화는 「[Frontend_TIL: React Hook useState](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/React%20Hook%20useState.md)」를 바탕으로 보강했다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 「setState는 비동기인가」라는 질문의 정확한 답을 보강했다.
 
 **State**는 컴포넌트 안에서 관리되는, 시간에 따라 변하는 데이터다. props가 바깥에서 넘겨받는 값(함수의 매개변수)이라면, state는 컴포넌트 내부에 선언한 변수에 해당한다. 일반 변수와 달리 state를 바꾸면 **React가 컴포넌트를 다시 렌더링**해 화면에 반영한다. "데이터가 바뀔 때마다 직접 다시 그리는" 대신 "데이터를 React에 맡겨 두고 바뀌면 알아서 그리게" 하는 것이 React의 핵심이다.
 
@@ -76,6 +77,8 @@ function onClickQueued() {
 ```
 
 React 18부터는 이벤트 핸들러뿐 아니라 `setTimeout`·Promise·네이티브 이벤트 안의 업데이트도 자동으로 모은다(automatic batching). 과거에는 React 이벤트 핸들러 안에서만 모았다. 즉시 DOM에 반영해야 하는 드문 경우에만 `flushSync`로 감싼다.
+
+흔히 「setState는 비동기」라고 하지만 정확한 말은 아니다. setter는 Promise를 돌려주지 않으므로 `await`할 수 없고, 이벤트 루프의 다른 작업을 기다리는 것도 아니다. **업데이트를 큐에 넣고 다음 렌더링으로 미룰 뿐**이다. 그래서 setter 바로 뒤의 `console.log(count)`는 이전 값을 찍고, 바뀐 값으로 할 일은 다음 렌더링(렌더링 중 계산이나 effect)이나 함수형 업데이트에서 한다. 미루는 이유는 한 이벤트에서 state를 여러 번 바꿀 때마다 다시 그리지 않고, 중간 상태가 화면에 비치지 않게 하기 위해서다.
 
 ### 지연 초기화
 

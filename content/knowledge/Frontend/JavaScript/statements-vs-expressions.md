@@ -5,10 +5,10 @@ summary: "식은 값을 만들어 내는 코드이고, 문은 무언가를 하�
 tags: ["javascript", "frontend", "react", "jsx"]
 source: other
 date: "2026-10-21"
-sources: ["https://www.joshwcomeau.com/javascript/statements-vs-expressions/", "https://wesbos.com/javascript/01-the-basics/variables-and-statements", "https://web.dev/learn/javascript/introduction", "https://web.dev/learn/javascript/appendix", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar", "https://ko.javascript.info/structure", "https://ko.javascript.info/javascript-specials", "https://bakyeono.net/post/2018-01-19-javascript-use-semicolon-or-not.html", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%91%9C%ED%98%84%EC%8B%9D%EA%B3%BC%20%EB%AC%B8.md"]
+sources: ["https://www.joshwcomeau.com/javascript/statements-vs-expressions/", "https://wesbos.com/javascript/01-the-basics/variables-and-statements", "https://web.dev/learn/javascript/introduction", "https://web.dev/learn/javascript/appendix", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar", "https://ko.javascript.info/structure", "https://ko.javascript.info/javascript-specials", "https://bakyeono.net/post/2018-01-19-javascript-use-semicolon-or-not.html", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%91%9C%ED%98%84%EC%8B%9D%EA%B3%BC%20%EB%AC%B8.md", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
-> Josh W. Comeau의 「[Statements Vs. Expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)」(2025.08 갱신)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(소개·부록 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「코드 구조」, 「기본 문법 요약」 글을 함께 참고했다. 세미콜론 논쟁은 「[자바스크립트, 세미콜론을 써야 하나 말아야 하나](https://bakyeono.net/post/2018-01-19-javascript-use-semicolon-or-not.html)」를 바탕으로 더했다. 「[Frontend_TIL: 표현식과 문](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%91%9C%ED%98%84%EC%8B%9D%EA%B3%BC%20%EB%AC%B8.md)」을 바탕으로 보강했다.
+> Josh W. Comeau의 「[Statements Vs. Expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)」(2025.08 갱신)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌(소개·부록 모듈), javascript.info(모던 JavaScript 튜토리얼)의 「코드 구조」, 「기본 문법 요약」 글을 함께 참고했다. 세미콜론 논쟁은 「[자바스크립트, 세미콜론을 써야 하나 말아야 하나](https://bakyeono.net/post/2018-01-19-javascript-use-semicolon-or-not.html)」를 바탕으로 더했다. 「[Frontend_TIL: 표현식과 문](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Javascript/%ED%91%9C%ED%98%84%EC%8B%9D%EA%B3%BC%20%EB%AC%B8.md)」을 바탕으로 보강했다. junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 리터럴의 정의를 보강했다.
 
 ## 식과 문
 
@@ -31,6 +31,8 @@ while (/* 식 */) { }
 여러 문을 중괄호로 묶은 것을 **블록 문(block statement)** 이라 한다. 문법상 문이 하나만 올 자리(`if (…)` 뒤, `for (…)` 뒤)에 여러 문을 넣게 해 주고, `let`·`const`의 스코프 경계가 된다.
 
 식은 다른 식을 품을 수 있다. `num > 100 ? a * 2 : b`에는 `num`, `100`, `num > 100`, `a`, `2`, `a * 2`, `b`, 그리고 전체 삼항식까지 여러 식이 겹쳐 있다.
+
+더 쪼갤 수 없는 가장 작은 식은 식별자(`num`)와 **리터럴(literal)** 이다. 리터럴은 값을 코드에 직접 적어 만드는 표기법이다. `3`, `'hi'`, `true`, `null`, `10n`, `[1, 2]`, `{ a: 1 }`, `/ab+c/`, `` `hi ${name}` `` 이 모두 리터럴이고, 엔진은 실행 중에 이를 평가해 값을 만든다. 그래서 객체·배열 리터럴은 평가될 때마다 새 객체를 만든다. 루프나 함수 안의 `{}`는 돌 때마다 다른 객체이고, `[] === []`가 `false`인 것도 이 때문이다.
 
 ## 식은 혼자 있을 수 없다
 

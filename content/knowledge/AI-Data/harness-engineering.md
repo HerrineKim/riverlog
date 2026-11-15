@@ -1,14 +1,14 @@
 ---
 title: "프롬프트에서 하네스로: 에이전틱 패턴의 진화"
 concept: "Harness Engineering"
-summary: "AI 개발의 중심은 프롬프트 엔지니어링(무엇을 말할까) → 컨텍스트 엔지니어링(무엇을 보여 줄까) → 하네스 엔지니어링(어떤 시스템을 만들까)으로 옮겨 왔다. 엔지니어링의 엄밀함은 사라지지 않고 위치만 옮긴다. 각 단계의 핵심 기법(CoT·ReAct·플로우 엔지니어링, Write/Select/Compress/Isolate, KV 캐시, 하네스 2×2), 실전 사례, 치명적 삼요소와 2의 규칙을 정리한다."
+summary: "AI 개발의 중심은 프롬프트 엔지니어링(무엇을 말할까) → 컨텍스트 엔지니어링(무엇을 보여 줄까) → 하네스 엔지니어링(어떤 시스템을 만들까)으로 옮겨 왔다. 엔지니어링의 엄밀함은 사라지지 않고 위치만 옮긴다. 각 단계의 핵심 기법(CoT·ReAct·플로우 엔지니어링, Write/Select/Compress/Isolate, KV 캐시, 하네스 2×2), 실전 사례, 프롬프트로 흉내 낼 수 없는 하네스의 능력, 치명적 삼요소와 2의 규칙을 정리한다."
 tags: ["ai", "llm", "agent", "agentic-coding", "prompting", "context-engineering"]
 source: other
-date: "2026-11-02"
-sources: ["https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html", "https://arxiv.org/abs/2401.08500"]
+date: "2026-11-15"
+sources: ["https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html", "https://arxiv.org/abs/2401.08500", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/reports/why-harness-is-important.md"]
 ---
 
-> Jonas Kim의 「[From Prompts to Harnesses: Four Years of AI Agentic Patterns](https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html)」(2026.04)를 바탕으로, 플로우 엔지니어링은 AlphaCodium 논문 「[Code Generation with AlphaCodium: From Prompt Engineering to Flow Engineering](https://arxiv.org/abs/2401.08500)」(2024.01)으로 확인해 재구성한 노트다.
+> Jonas Kim의 「[From Prompts to Harnesses: Four Years of AI Agentic Patterns](https://bits-bytes-nn.github.io/insights/agentic-ai/2026/04/05/evolution-of-ai-agentic-patterns-en.html)」(2026.04)를 바탕으로, 플로우 엔지니어링은 AlphaCodium 논문 「[Code Generation with AlphaCodium: From Prompt Engineering to Flow Engineering](https://arxiv.org/abs/2401.08500)」(2024.01)으로 확인해 재구성한 노트다. 「결국 다 프롬프트 아닌가」에 대한 답은 shanraisshan의 「[claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice)」(MIT)의 하네스 리포트로 보강했다.
 
 ## 세 단계와 하나의 원칙
 
@@ -94,7 +94,7 @@ Andrew Ng이 정리한 실무 프레임워크다.
 
 > LLM이 모든 코드를 썼더라도 사람이 리뷰하고 테스트했다면 그것은 바이브 코딩이 아니다. (Simon Willison)
 
-핵심은 **누가 코드를 썼느냐가 아니라 엄밀함이 어디 있느냐**다. 바이브 코딩은 엄밀함의 세 원칙을 모두 어긴다.
+핵심은 **누가 코드를 썼느냐가 아니라 엄밀함이 어디 있느냐**다. 바닥을 올리는 바이브 코딩과 품질 기준을 지키며 빨라지는 에이전틱 엔지니어링의 구분은 [[agentic-engineering|바이브 코딩에서 에이전틱 엔지니어링으로]]에 있다. 바이브 코딩은 엄밀함의 세 원칙을 모두 어긴다.
 
 ## 2. 컨텍스트 엔지니어링
 
@@ -187,6 +187,36 @@ flowchart TB
 
 하네스는 **에이전트에서 모델을 뺀 전부**다. 모델이 CPU라면 하네스는 운영체제(컨텍스트 관리, 도구 관리, 권한 통제, 에러 복구)다. 말이 아무리 힘세도 고삐와 마구가 없으면 밭을 갈 수 없다. 에이전트의 정의 "목표를 이루려고 루프 안에서 도구를 실행하는 LLM"에서 핵심은 **루프**이고, 하네스는 그 루프를 통제한다.
 
+### 「결국 다 프롬프트 아닌가」에 대한 답
+
+스킬·커맨드·서브에이전트·훅도 모델에게는 결국 토큰이니 강한 프롬프트 하나면 같지 않느냐는 반론이 있다. 추론 호출 한 번만 보면 맞다. 재귀 피보나치 같은 단발성 질문에서는 출력 품질이 곧 프롬프트 품질이다. 그러나 코드베이스 작업에서는 무너진다. 하네스는 프롬프트 전달 장치가 아니라 **프롬프트를 구성하고, 결정적으로 실행하고, 맥락을 설계하는 시스템**이기 때문이다.
+
+먼저 「프롬프트」에는 두 뜻이 있다.
+
+| 뜻 | 통제 주체 | 크기 |
+| --- | --- | --- |
+| 사용자가 친 것 | 사용자 | 수~수십 토큰 |
+| 추론 시점에 모델이 보는 것 | 하네스 | 수천~수만 토큰 |
+
+챗봇에서는 둘이 같지만, 코딩 에이전트에서는 두 번째가 CLAUDE.md, 경로에 맞는 규칙 파일, 시스템 프롬프트 조각, 도구 정의, 환경 정보, 이전 턴, 읽은 파일로 채워진다. **출력 품질은 두 번째의 함수**다. 「재귀 flatten 함수를 써 줘」라는 같은 요청이 도구 없는 챗봇에서는 교과서 답을, 규칙만 있는 에이전트에서는 선언된 관례를 따른 답을, 인접 파일을 읽고 테스트를 돌리는 에이전트 루프에서는 기존 코드의 엣지 케이스까지 다룬 답을 낸다. 품질은 실효 맥락, 모델 능력, 반복 루프의 함수다.
+
+프롬프트로는 흉내 낼 수 없는 하네스의 능력은 이렇다.
+
+| 능력 | 프롬프트로 안 되는 이유 |
+| --- | --- |
+| 맥락 격리(서브에이전트) | 프롬프트는 창 하나다. N개 병렬이면 실효 맥락이 약 N배 |
+| 강제된 도구 제한(`allowed-tools`, deny 규칙) | 프롬프트 지시는 권고일 뿐이다 |
+| 지연 로드(`paths:` 규칙, 하위 폴더 CLAUDE.md) | 프롬프트는 정적이라 런타임에 읽는 파일에 따라 조건부로 실을 수 없다 |
+| 훅 | 프롬프트는 자기 도구 호출을 가로채지 못한다 |
+| 모델 라우팅(에이전트별 `model:`) | 어떤 토큰도 응답할 모델을 바꾸지 못한다 |
+| 병렬 실행 | 프롬프트는 순차다 |
+| 세션 간 지속(메모리, 설정 계층) | 프롬프트는 세션과 함께 사라진다 |
+| 모듈식 시스템 프롬프트 | 상황별로 붙는 내부 조각을 사용자가 쓸 수 없다 |
+| 스킬 프리로드 | 다른 에이전트의 시작 맥락을 미리 채우는 건 로더만 할 수 있다 |
+| 실행 전 권한 분류 | 프롬프트는 자기 행동 앞에 안전층을 붙이지 못한다 |
+
+프롬프트가 레시피라면 하네스는 주방이다. 강한 프롬프트는 필요조건이지 충분조건이 아니다. Claude Code에서 각 능력이 어디에 있는지는 [[claude-code-extensions|커맨드·스킬·서브에이전트 고르기]]와 [[claude-code-settings|Claude Code 설정과 권한 규칙]]에 있다.
+
 ### 하네스의 네 사분면
 
 | | 사전 유도(feedforward) | 사후 교정(feedback) |
@@ -231,7 +261,7 @@ flowchart TB
 
 ### 하네스는 걷어 낼 수 있어야 한다
 
-모델이 좋아지면 하네스의 "똑똑한" 로직 일부는 쓸모없어진다. 이전 모델용 에러 복구 로직의 절반이 다음 모델에서는 짐이 될 수 있다. 하네스 설계는 **무엇을 만들까만큼 무엇을 쉽게 뗄 수 있게 할까**의 문제다. 오늘의 과잉 설계는 내일의 모델 업데이트에 족쇄가 된다.
+모델이 좋아지면 하네스의 "똑똑한" 로직 일부는 쓸모없어진다. 이전 모델용 에러 복구 로직의 절반이 다음 모델에서는 짐이 될 수 있다. 하네스 설계는 **무엇을 만들까만큼 무엇을 쉽게 뗄 수 있게 할까**의 문제다. 오늘의 과잉 설계는 내일의 모델 업데이트에 족쇄가 된다. Claude Code 팀은 스캐폴딩이 성능을 10~20% 올려도 다음 모델에서 대개 사라진다고 보고 기술 부채로 다룬다. 새 모델이 나오자 시스템 프롬프트에서 약 2,000토큰을 지운 적도 있다([[claude-code-design-philosophy|Claude Code의 설계 원칙]]).
 
 ## 다음에 옮겨 갈 자리
 
@@ -267,4 +297,4 @@ GitHub Copilot의 변화가 세 단계의 축소판이다. 현재 파일 자동�
 - 만드는 쪽과 판정하는 쪽을 나누고, 볼 수 없는 지식은 레포에 넣고, 실수는 하네스를 고쳐 구조적으로 막는다.
 - 외부 입력·민감 데이터·상태 변경 중 **둘까지만** 허용하고, 모델이 좋아지면 걷어 낼 수 있게 만든다.
 
-관련 노트: [[personal-agent-harness|내 일을 줄이는 하네스 만들기]], [[loop-engineering|루프 엔지니어링]], [[ai-era-developer|AI 시대 개발자의 역할]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[multi-agent|멀티 에이전트]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[evaluation-driven-development|평가 주도 개발]]
+관련 노트: [[personal-agent-harness|내 일을 줄이는 하네스 만들기]], [[loop-engineering|루프 엔지니어링]], [[ai-era-developer|AI 시대 개발자의 역할]], [[design-system-agent-harness|디자인 시스템을 아는 화면 생성 에이전트 설계하기]], [[multi-agent|멀티 에이전트]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[evaluation-driven-development|평가 주도 개발]], [[agentic-engineering|바이브 코딩에서 에이전틱 엔지니어링으로]], [[claude-code-workflows|Claude Code 개발 워크플로]]

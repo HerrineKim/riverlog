@@ -1,14 +1,14 @@
 ---
 title: "Map과 Set"
 concept: "Map & Set"
-summary: "Map은 어떤 값이든 키로 쓰고 넣은 순서를 지키는 키-값 컬렉션, Set은 중복 없는 값의 모음이다. 일반 객체와 비교해 언제 무엇을 쓸지, 주요 메서드와 순회, 객체와 서로 바꾸기, JSON으로 보낼 때의 제약, WeakMap·WeakSet, ES2025의 Set 집합 연산까지."
+summary: "Map은 어떤 값이든 키로 쓰고 넣은 순서를 지키는 키-값 컬렉션, Set은 중복 없는 값의 모음이다. 일반 객체와 비교해 언제 무엇을 쓸지, 주요 메서드와 순회, 객체와 서로 바꾸기, JSON으로 보낼 때의 제약, WeakMap·WeakSet, ES2025의 Set 집합 연산, 객체·Map으로 만드는 룩업 테이블과 Set을 고르는 기준까지."
 tags: ["javascript", "data-structure", "frontend"]
 source: other
 date: "2026-10-20"
-sources: ["https://wesbos.com/javascript/08-data-types/maps", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap", "https://web.dev/learn/javascript/collections/keyed", "https://ko.javascript.info/map-set", "https://ko.javascript.info/weakmap-weakset", "https://www.frontendinterviewhandbook.com/blog/javascript-object-vs-map"]
+sources: ["https://wesbos.com/javascript/08-data-types/maps", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap", "https://web.dev/learn/javascript/collections/keyed", "https://ko.javascript.info/map-set", "https://ko.javascript.info/weakmap-weakset", "https://www.frontendinterviewhandbook.com/blog/javascript-object-vs-map", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
-> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Keyed collections」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「맵과 셋」, 「위크맵과 위크셋」 글을 더하고 MDN으로 확인해 재구성한 노트다. 객체를 해시 맵으로 쓸 때의 함정과 성능·메모리 비교는 Zhenghao He의 「[When You Should Prefer Map Over Object In JavaScript](https://www.frontendinterviewhandbook.com/blog/javascript-object-vs-map)」(2022.06, Front End Interview Handbook 블로그)로 보강했다.
+> Wes Bos의 「[Beginner JavaScript](https://wesbos.com/javascript)」 강의 노트를 바탕으로, web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Keyed collections」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「맵과 셋」, 「위크맵과 위크셋」 글을 더하고 MDN으로 확인해 재구성한 노트다. 객체를 해시 맵으로 쓸 때의 함정과 성능·메모리 비교는 Zhenghao He의 「[When You Should Prefer Map Over Object In JavaScript](https://www.frontendinterviewhandbook.com/blog/javascript-object-vs-map)」(2022.06, Front End Interview Handbook 블로그)로 보강했다. junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 룩업 테이블과 Set을 고르는 기준을 보강했다.
 
 ## Map이란
 
@@ -122,6 +122,24 @@ ES2025부터 집합 연산 메서드가 표준이다. 모두 새 Set을 반환�
 | `a.union(b)` / `a.intersection(b)` | 합집합 / 교집합 |
 | `a.difference(b)` / `a.symmetricDifference(b)` | 차집합 / 대칭차 |
 | `a.isSubsetOf(b)` / `a.isSupersetOf(b)` / `a.isDisjointFrom(b)` | 부분집합 / 상위집합 / 서로소 여부 |
+
+## 룩업 테이블
+
+**룩업 테이블(lookup table)은 키로 값을 바로 꺼내도록 미리 만들어 둔 표**다. 배열을 매번 처음부터 훑는 검색(O(n))이나 길게 늘어진 `if`·`switch` 분기를 해시 조회 한 번(평균 O(1))으로 바꾼다. JavaScript에서는 객체나 Map이 그 표 역할을 한다.
+
+| 쓰임 | 예 |
+| --- | --- |
+| 분기 대신 조회 | `const labels = { draft: '임시 저장', done: '완료' }`를 두고 `labels[status] ?? '알 수 없음'` |
+| id로 찾기 | `const byId = new Map(users.map((u) => [u.id, u]))`로 한 번 바꿔 두고 `byId.get(id)` |
+| 키별로 묶기 | 메시지를 날짜별로: `Object.groupBy(messages, (m) => m.date)`, 키가 객체면 `Map.groupBy` |
+| 키 기준 중복 제거 | `new Map(items.map((x) => [x.id, x]))`는 같은 id 중 **마지막** 항목만 남긴다. 첫 항목을 남기려면 `if (!map.has(k)) map.set(k, x)`로 넣는다 |
+
+Set과 고르는 기준은 「무엇이 중복인가」다.
+
+- 값 자체가 겹치는지만 보면 Set이다(`[...new Set(ids)]`). 객체는 참조로 비교하므로 내용이 같은 객체 두 개를 Set으로는 걸러 내지 못한다.
+- 객체를 어떤 키(id, 날짜) 기준으로 거르거나 묶거나, 키에 딸린 값을 다시 꺼내야 하면 룩업 테이블이다.
+- 표를 따로 만드는 만큼 메모리를 더 쓰고, 원본이 바뀌면 다시 만들어야 한다. 한두 번 찾고 끝날 일이면 `find`로 충분하다.
+- 순서가 중요하면 Map을 쓴다. Set과 Map은 넣은 순서를 지키지만, 객체 룩업 테이블은 `'2'`, `'10'`처럼 정수로 읽히는 키를 오름차순으로 먼저 늘어놓는다.
 
 ## WeakMap과 WeakSet
 

@@ -5,10 +5,11 @@ summary: "역할 기반 폴더(components·hooks·services)에서 출발해 순�
 tags: ["frontend", "architecture", "design", "react"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/folder-structure"]
+sources: ["https://velog.io/@teo/folder-structure", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 테오(teo.v)의 글 「[폴더구조의 변화로 이해하는 프론트엔드 멘탈모델 변천사](https://velog.io/@teo/folder-structure)」(2025.06)를 요약·재구성한 노트다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 기능 + 역할 혼합형 구조를 보강했다.
 
 ## 폴더 구조는 멘탈 모델이다
 
@@ -46,7 +47,7 @@ Button처럼 props로 모든 걸 주입받는 방식을 도메인 컴포넌트�
 
 | 패턴 | 푸는 문제 |
 | --- | --- |
-| Container–Presenter | 로직(컨테이너)과 UI(프레젠터) 분리. 카탈로그용·장바구니용 컨테이너가 각자 맥락에 맞는 로직을 갖는다 |
+| Container·Presenter | 로직(컨테이너)과 UI(프레젠터) 분리. 카탈로그용·장바구니용 컨테이너가 각자 맥락에 맞는 로직을 갖는다 |
 | 커스텀 훅 | 비즈니스 로직을 컴포넌트 밖으로 |
 | Context·전역 상태 | props drilling 없이 도메인 상태에 직접 접근 ("모두 props로" → "필요한 것을 직접") |
 
@@ -73,6 +74,20 @@ Button처럼 props로 모든 걸 주입받는 방식을 도메인 컴포넌트�
 ```
 
 **역할(1차) + 도메인(2차) + 독립된 페이지.** 필요할 때 폴더를 하나씩 더하며 점진적으로 키울 수 있어서 널리 쓰인다. 중간 규모까지는 이걸로 충분하다.
+
+순서를 뒤집은 **기능(1차) + 역할(2차)** 혼합형도 흔하다. 최상위를 기능으로 나누고, 기능 안을 다시 역할 폴더로 나눈다.
+
+```text
+/src
+  /app              라우팅, Provider 설정
+  /features
+    /auth           components / hooks / api / store / types
+    /dashboard      components / hooks / api ...
+  /shared           여러 기능이 함께 쓰는 UI(Button, Modal), 훅, utils, types
+  /styles           전역 테마, UI 라이브러리 커스터마이징
+```
+
+기능 하나를 고치거나 걷어 낼 때 한 폴더만 보면 된다. 대신 **무엇을 `/shared`로 올릴지**가 계속 판단거리다. 한 기능에서만 쓰는데 미리 올리면 섣부른 추상화가 되고, 두 기능이 같은 코드를 쓰게 됐을 때 올리는 것이 기본이다([[component-splitting|컴포넌트를 분리하는 기준과 방법]]). 기능끼리 서로 import하기 시작하면 아래 2부의 엔티티·기능 분리를 검토할 때다.
 
 ## 2부. 더 커지면: 기능 중심 응집
 

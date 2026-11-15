@@ -5,12 +5,13 @@ summary: "정점과 간선으로 이루어진 그래프의 종류, 사이클 없
 tags: ["algorithm", "graph", "data-structure"]
 source: mixed
 date: "2026-10-30"
-sources: ["https://80000coding.notion.site/125156cf79bb48da82ae1f2ee7896bb8", "https://80000coding.notion.site/2d42782f28464dfa837f0a06cca24379", "https://www.techinterviewhandbook.org/algorithms/graph/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
+sources: ["https://80000coding.notion.site/125156cf79bb48da82ae1f2ee7896bb8", "https://80000coding.notion.site/2d42782f28464dfa837f0a06cca24379", "https://www.techinterviewhandbook.org/algorithms/graph/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/jwasham/coding-interview-university"]
 ---
 
 > 용어 정리와 그래프·트리 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[자료구조] 그래프(Graph) 개념 정리」, 「그래프 자료구조」를 바탕으로 보강했다.
 > 딕셔너리 인접 리스트, 탐색 기법의 빈도, 「놓치기 쉬운 것」은 Tech Interview Handbook의 「[Graph cheatsheet](https://www.techinterviewhandbook.org/algorithms/graph/)」를 바탕으로 보강했다.
 > 사이클 없는 그래프와 트리의 차이, 밀집·중복 간선의 표현은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
+> 그래프 표현 네 가지와 2색 칠하기(이분 그래프 판별)는 jwasham의 「[Coding Interview University](https://github.com/jwasham/coding-interview-university)」(CC-BY-SA-4.0)의 그래프 항목을 바탕으로 보강했다.
 
 그래프(Graph)는 **정점(vertex, node)과** 정점을 잇는 **간선(edge)으로** 이루어진 자료구조다. 간선에 방향이 있으면 **방향(단방향) 그래프**, 없으면 **무방향(양방향) 그래프**다.
 
@@ -106,6 +107,8 @@ for a, b, cost in edges:
 
 정점이 10만 개라면 인접 행렬은 100억 칸이라 메모리 초과가 난다. 코딩 테스트에서는 **인접 리스트가 기본**이고, 정점이 수백 개 이하이거나 연결 여부를 자주 물을 때 인접 행렬을 쓴다. 정점이 문자열이거나 번호가 듬성듬성하면 딕셔너리 인접 리스트(`defaultdict(set)`, 가중치가 있으면 딕셔너리의 딕셔너리)가 가장 간단하다. 간선 목록으로 주어지면 먼저 이런 구조로 바꾼 뒤 탐색한다.
 
+정리하면 그래프를 메모리에 두는 방식은 네 가지다. **객체와 포인터**(정점 객체가 이웃 객체를 참조로 들고 있다. 클론 그래프처럼 노드가 직접 주어지는 문제의 형태), **인접 행렬**, **인접 리스트**, **인접 맵**(정점 → 이웃 집합 또는 이웃 → 가중치 딕셔너리. 연결 확인이 O(1)이면서 공간은 O(V + E))이다.
+
 ## 그래프 탐색 기법
 
 | 기법 | 핵심 자료구조 | 용도 |
@@ -115,6 +118,7 @@ for a, b, cost in edges:
 | 다익스트라 | 우선순위 큐 | 음이 아닌 가중치 그래프의 최단 거리 |
 | Union-Find | parent 배열 | 연결 여부, 무방향 사이클 판별 |
 | [[topological-sort\|위상 정렬]] | 진입 차수 + 큐 | 방향 비순환 그래프의 의존 순서, 방향 사이클 판별 |
+| 2색 칠하기 | BFS/DFS + 색 배열 | 이분 그래프 판별: 이웃을 반대 색으로 칠하다 같은 색 이웃을 만나면 이분 그래프가 아니다(홀수 길이 사이클이 있다) |
 
 BFS·DFS·위상 정렬은 모두 O(V + E)다. 가중치·음수 간선·전체 쌍 여부에 따라 최단 경로 알고리즘을 고르는 기준은 [[shortest-path|최단 경로 알고리즘 고르기]]에 있다. 면접에서는 BFS·DFS가 대부분이고 위상 정렬·다익스트라가 가끔 나온다. 벨만-포드, 플로이드-워셜, 최소 신장 트리는 드물다.
 

@@ -5,14 +5,15 @@ summary: "컴포넌트를 나누는 이유는 재사용, 복잡성, 렌더링 �
 tags: ["frontend", "react", "architecture", "design", "rendering"]
 source: other
 date: "2026-10-14"
-sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EB%A5%BC-%EB%B6%84%EB%A6%AC%ED%95%98%EB%8A%94-%EA%B8%B0%EC%A4%80%EA%B3%BC-%EB%B0%A9%EB%B2%95-e7cf16bb157a"]
+sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EB%A5%BC-%EB%B6%84%EB%A6%AC%ED%95%98%EB%8A%94-%EA%B8%B0%EC%A4%80%EA%B3%BC-%EB%B0%A9%EB%B2%95-e7cf16bb157a", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 이문기의 글 「[프론트엔드 아키텍처: 컴포넌트를 분리하는 기준과 방법](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%EB%A5%BC-%EB%B6%84%EB%A6%AC%ED%95%98%EB%8A%94-%EA%B8%B0%EC%A4%80%EA%B3%BC-%EB%B0%A9%EB%B2%95-e7cf16bb157a)」(Medium, 2023.02)을 바탕으로 재구성한 노트다. 코드는 설명용으로 줄여 다시 썼다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 로직을 쓰이는 범위에 따라 두는 기준과 「두 번째 사용처」 원칙을 보강했다.
 
 ## 컴포넌트 분리란
 
-React에서 컴포넌트는 페이지부터 버튼까지 화면을 이루는 **가장 작은 설계 단위**다. 그래서 "언제, 어떻게 더 작게 나눌까"가 계속 문제가 된다. Container–Presentational, [[atomic-design|Atomic Design]] 같은 기준은 이해하기 쉽지만 예외가 많아 적용이 흔들리고, 일관성이 깨진 앱은 금방 유지보수하기 어려워진다.
+React에서 컴포넌트는 페이지부터 버튼까지 화면을 이루는 **가장 작은 설계 단위**다. 그래서 "언제, 어떻게 더 작게 나눌까"가 계속 문제가 된다. Container·Presentational, [[atomic-design|Atomic Design]] 같은 기준은 이해하기 쉽지만 예외가 많아 적용이 흔들리고, 일관성이 깨진 앱은 금방 유지보수하기 어려워진다.
 
 분리의 이유는 세 가지로 모인다.
 
@@ -138,6 +139,20 @@ flowchart TB
 UI와 비즈니스 로직은 **변경 빈도가 다르다.** 상품 카드에 환불 가능 여부를 빨간 배지로 보일지 회색 글씨로 보일지는 자주 바뀌지만, 환불 가능 조건 자체는 거의 바뀌지 않는다. 둘이 한 컴포넌트에 섞여 있으면 잦은 UI 수정이 드문 규칙 코드까지 건드린다.
 
 공용 로직을 함수로 빼도 문제는 남는다. 쓰는 컴포넌트마다 원하는 반환 모양이 달라지면 `isRefundable`, `getRefundableWithType`처럼 같은 규칙을 이름만 바꿔 복제하게 된다. 규칙 판단은 한 곳에 두고, 화면별로 필요한 모양은 쓰는 쪽에서 조합한다. 의존 방향을 잡는 방법은 [[frontend-dependency|프론트엔드에서 의존성 관리하기]], 계층을 나누는 기준은 [[separation-of-concerns|관심사의 분리]]에 있다.
+
+### 로직은 쓰이는 범위만큼만 밖으로 뺀다
+
+로직을 어디에 둘지는 **몇 곳에서 쓰이는가**로 정한다.
+
+| 쓰이는 범위 | 두는 곳 |
+| --- | --- |
+| 컴포넌트 하나 | 컴포넌트 안. 쓰는 곳이 하나인데 미리 빼면 불필요한 추상화다 |
+| 여러 컴포넌트가 같은 상태 로직을 쓴다 | 커스텀 훅 ([[logic-reuse-patterns\|로직 재사용 패턴]]) |
+| React와 무관한 순수 규칙(계산, 검증, 변환) | 일반 함수나 서비스 모듈. 훅도 아니므로 테스트가 가장 쉽다 |
+
+처음부터 나누기보다 **두 번째 사용처가 생길 때 추출한다.** 하나뿐일 때는 무엇이 공통이고 무엇이 고유한지 아직 알 수 없어, 섣부른 추상화(premature abstraction)는 위의 「모양이 같다고 중복은 아니다」 문제를 그대로 만든다. 예외는 공통이 될 것이 처음부터 분명한 것, 예컨대 디자인 시스템의 버튼·모달이다.
+
+Container·Presentational 분리는 Hooks 이후 필수 규칙이 아니다. 데이터를 가져와 조합하는 컴포넌트와 받은 값을 그리기만 하는 컴포넌트를 나눠 보는 관점은 여전히 쓸모 있지만, 로직은 대개 커스텀 훅으로 옮긴다. 둘 중 무엇을 재사용 단위로 고를지는 [[logic-reuse-patterns#컨테이너 컴포넌트와 커스텀 훅|로직 재사용 패턴]]에 있다.
 
 ## 3. 렌더링 범위: 무관한 상태는 따로 둔다
 

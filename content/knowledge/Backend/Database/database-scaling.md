@@ -1,16 +1,17 @@
 ---
 title: "데이터베이스 확장과 성능 최적화"
 concept: "Database Scaling"
-summary: "DB가 느려지거나 한계에 닿을 때 싼 것부터 쓰는 수단을 순서대로 정리했다. 인덱스·쿼리 튜닝·커넥션 풀·캐시·구체화된 뷰(갱신 방식)·반정규화·수직 확장·읽기 복제본·파티셔닝(프루닝, 분할 방식, 로컬·글로벌 인덱스)·샤딩의 효과와 대가, 복제 구조(단일 리더·다중 리더·리더 없음)와 동기화 방식, 읽기 복제본 패턴의 복제 지연과 라우팅(애플리케이션 vs 미들웨어)을 다룬다."
-tags: ["database", "backend", "performance", "scalability", "architecture"]
+summary: "DB가 느려지거나 한계에 닿을 때 싼 것부터 쓰는 수단을 순서대로 정리했다. 저장소(관계형·NoSQL) 선택이 먼저라는 전제 위에서 인덱스·쿼리 튜닝·커넥션 풀·캐시·구체화된 뷰(갱신 방식)·반정규화·수직 확장·읽기 복제본·파티셔닝(프루닝, 분할 방식, 로컬·글로벌 인덱스)·샤딩의 효과와 대가, 복제 구조(단일 리더·다중 리더·리더 없음)와 동기화 방식, 읽기 복제본 패턴의 복제 지연과 라우팅(애플리케이션 vs 미들웨어)을 다룬다."
+tags: ["database", "backend", "performance", "scalability", "architecture", "system-design", "replication"]
 source: other
-date: "2026-11-01"
-sources: ["https://bytebytego.com/guides/7-must-know-strategies-to-scale-your-database", "https://bytebytego.com/guides/a-cheatsheet-on-database-performance", "https://bytebytego.com/guides/read-replica-pattern", "https://bytebytego.com/guides/how-to-implement-read-replica-pattern", "https://bytebytego.com/guides/database-middleware", "https://www.postgresql.org/docs/current/rules-materializedviews.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://dev.mysql.com/doc/refman/8.4/en/replication-semisync.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "https://github.com/karanpratapsingh/system-design"]
+date: "2026-11-15"
+sources: ["https://bytebytego.com/guides/7-must-know-strategies-to-scale-your-database", "https://bytebytego.com/guides/a-cheatsheet-on-database-performance", "https://bytebytego.com/guides/read-replica-pattern", "https://bytebytego.com/guides/how-to-implement-read-replica-pattern", "https://bytebytego.com/guides/database-middleware", "https://www.postgresql.org/docs/current/rules-materializedviews.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md", "https://dev.mysql.com/doc/refman/8.4/en/replication-semisync.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "https://github.com/karanpratapsingh/system-design", "https://github.com/donnemartin/system-design-primer", "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[7 Must-Know Strategies to Scale Your Database](https://bytebytego.com/guides/7-must-know-strategies-to-scale-your-database)」, 「[A Cheatsheet on Database Performance](https://bytebytego.com/guides/a-cheatsheet-on-database-performance)」, 「[Read Replica Pattern](https://bytebytego.com/guides/read-replica-pattern)」, 「[How to Implement Read Replica Pattern](https://bytebytego.com/guides/how-to-implement-read-replica-pattern)」, 「[Database Middleware](https://bytebytego.com/guides/database-middleware)」을 바탕으로 재구성한 노트다. 복제 구조와 동기화 방식, 클러스터링 구조는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 DB·[시스템 설계](https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/system_design.md) 질문을 실마리로 보강했다.
 > 구체화된 뷰의 갱신 방식과 파티셔닝은 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기) 강의 내용으로 보강했다.
 > karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 복제본의 운영 활용, 계단식 복제, 리더 장애 시 읽기 전용 운영을 보강했다.
+> Donne Martin의 「[The System Design Primer](https://github.com/donnemartin/system-design-primer)」([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/))의 데이터베이스 항목으로 저장소 선택을 먼저 따지는 순서와 페더레이션을 보강했다.
 
 ## 순서가 중요하다
 
@@ -31,6 +32,8 @@ DB 성능 문제의 해법은 많지만 **비용과 복잡도가 크게 다르�
 | 10 | **샤딩** | 여러 서버에 행을 나눠 **쓰기와 용량**까지 늘린다 | 샤드 간 조인·트랜잭션이 어렵고 운영이 복잡하다. [[database-sharding\|데이터베이스 샤딩]] |
 
 복제와 샤딩을 고르는 기준은 간단하다. **읽기가 많으면 복제, 쓰기나 데이터 양이 한 서버를 넘으면 샤딩**이다.
+
+이 사다리는 저장소가 이미 정해졌다는 전제다. 그 전에 **질의 패턴·트랜잭션 경계·데이터 모델·일관성 요구·운영 역량**에 관계형과 NoSQL 중 무엇이 맞는지 먼저 본다. NoSQL도 트랜잭션·일관성 지원 범위가 제품마다 다르므로 SQL·NoSQL 이분법보다 실제 기능과 장애 시 동작으로 고른다. 비교와 선택 기준은 [[database-models#무엇을 고를까|데이터베이스 모델]], ACID의 일관성과 CAP의 일관성이 다른 말이라는 점은 [[transaction|트랜잭션과 회복]]에 있다.
 
 ### 구체화된 뷰
 
@@ -155,7 +158,7 @@ MySQL 바이너리 로그는 SQL 문장(statement)이나 바뀐 행(row, 기본�
 | --- | --- | --- |
 | 수직 확장, 쿼리·인덱스 정리 | 불필요한 인덱스와 긴 트랜잭션을 줄이면 쓰기 비용 자체가 준다 | 한계가 있다 |
 | 쓰기 줄이기 | 여러 건을 모아 한 번에 쓰거나(배치), 큐에 넣어 비동기로 쓰거나, 카운터처럼 자주 바뀌는 값은 캐시에서 모아 주기적으로 반영한다 | 반영이 늦고 장애 때 큐·캐시의 내용을 잃지 않게 해야 한다 |
-| 수직 분할 | 도메인별로 DB를 떼어 리더를 여러 개로 만든다 | 도메인 간 조인·트랜잭션이 끊긴다 |
+| 수직 분할(페더레이션) | 도메인별로 DB를 떼어 리더를 여러 개로 만든다([[database-sharding#기능별 분할과 연합 데이터베이스\|기능별 분할]]) | 도메인 간 조인·트랜잭션이 끊긴다 |
 | 샤딩 | 샤드마다 자기 리더를 둬 쓰기를 키 단위로 나눈다. 리더가 샤드 수만큼 생긴다 | [[database-sharding\|샤딩]]의 운영 복잡도 |
 | 다중 리더·리더 없음 | 여러 노드가 같은 데이터의 쓰기를 받는다 | 쓰기 충돌을 해결해야 한다 |
 
@@ -245,4 +248,4 @@ flowchart TB
 - 복제는 가용성과 읽기 확장을 준다. 단일 리더는 충돌이 없는 대신 쓰기가 리더 한 대에 묶이고, 다중 리더·리더 없음은 쓰기를 나누는 대신 쓰기 충돌을 감지·해결해야 한다. LWW는 동시 쓰기를 조용히 버린다.
 - 읽기 복제본은 복제 지연 때문에 쓴 뒤 읽기 일관성이 깨질 수 있다. 중요한 읽기와 쓰기 직후 읽기는 원본으로 보낸다.
 
-관련 노트: [[index-design|인덱스 설계와 쿼리 튜닝]], [[connection-pool|DB 커넥션 풀]], [[database-sharding|데이터베이스 샤딩]], [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]], [[web-scalability-components|웹 확장성의 구성 요소: 한 장으로 보는 웹 아키텍처]], [[normalization|정규화와 반정규화]], [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[distributed-time-and-failure|분산 시스템의 시간과 장애: 8가지 착각부터 논리 시계까지]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]]
+관련 노트: [[index-design|인덱스 설계와 쿼리 튜닝]], [[connection-pool|DB 커넥션 풀]], [[database-sharding|데이터베이스 샤딩]], [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]], [[db-fetching-patterns|빠르고 유지보수하기 좋은 DB 조회 패턴]], [[web-scalability-components|웹 확장성의 구성 요소: 한 장으로 보는 웹 아키텍처]], [[normalization|정규화와 반정규화]], [[distributed-data-patterns|데이터 관리 패턴: CDC, 이벤트 소싱, CQRS, 최종 일관성]], [[distributed-time-and-failure|분산 시스템의 시간과 장애: 8가지 착각부터 논리 시계까지]], [[high-availability-redundancy|고가용성 이중화 구조와 장애 감지]], [[database-models|데이터베이스 모델]], [[distributed-transaction|분산 트랜잭션]]

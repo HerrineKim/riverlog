@@ -5,10 +5,10 @@ summary: "webpack은 진입점에서 import를 정적으로 따라가 의존성 
 tags: ["javascript", "webpack", "bundler", "build", "frontend"]
 source: other
 date: "2026-10-21"
-sources: ["https://webpack.js.org/concepts/", "https://survivejs.com/webpack/what-is-webpack/", "https://webpack.js.org/guides/shimming/", "https://webpack.js.org/loaders/exports-loader/", "https://webpack.js.org/plugins/define-plugin/", "https://webpack.js.org/plugins/environment-plugin/", "https://webpack.js.org/plugins/provide-plugin/", "https://webpack.js.org/plugins/ignore-plugin/", "https://webpack.js.org/plugins/watch-ignore-plugin/", "https://webpack.js.org/plugins/module-concatenation-plugin/", "https://webpack.js.org/concepts/hot-module-replacement/", "https://webpack.js.org/guides/hot-module-replacement/", "https://medium.com/webpack/webpack-and-rollup-the-same-but-different-a41ad427058c"]
+sources: ["https://webpack.js.org/concepts/", "https://survivejs.com/webpack/what-is-webpack/", "https://webpack.js.org/guides/shimming/", "https://webpack.js.org/loaders/exports-loader/", "https://webpack.js.org/plugins/define-plugin/", "https://webpack.js.org/plugins/environment-plugin/", "https://webpack.js.org/plugins/provide-plugin/", "https://webpack.js.org/plugins/ignore-plugin/", "https://webpack.js.org/plugins/watch-ignore-plugin/", "https://webpack.js.org/plugins/module-concatenation-plugin/", "https://webpack.js.org/concepts/hot-module-replacement/", "https://webpack.js.org/guides/hot-module-replacement/", "https://medium.com/webpack/webpack-and-rollup-the-same-but-different-a41ad427058c", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
-> webpack 공식 문서의 「[Concepts](https://webpack.js.org/concepts/)」·「[Shimming](https://webpack.js.org/guides/shimming/)」·「[ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/)」·「[Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/)」과 SurviveJS의 「[What is Webpack](https://survivejs.com/webpack/what-is-webpack/)」을 바탕으로 재구성하고, Rollup과의 비교는 「[Webpack and Rollup: the same but different](https://medium.com/webpack/webpack-and-rollup-the-same-but-different-a41ad427058c)」(2017.04)에서 뼈대를 빌려 지금 기준으로 고쳐 썼다.
+> webpack 공식 문서의 「[Concepts](https://webpack.js.org/concepts/)」·「[Shimming](https://webpack.js.org/guides/shimming/)」·「[ModuleConcatenationPlugin](https://webpack.js.org/plugins/module-concatenation-plugin/)」·「[Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/)」과 SurviveJS의 「[What is Webpack](https://survivejs.com/webpack/what-is-webpack/)」을 바탕으로 재구성하고, Rollup과의 비교는 「[Webpack and Rollup: the same but different](https://medium.com/webpack/webpack-and-rollup-the-same-but-different-a41ad427058c)」(2017.04)에서 뼈대를 빌려 지금 기준으로 고쳐 썼다. junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 MPA용 다중 entry와 출력 파일 이름 치환자를 보강했다.
 
 ## webpack이란
 
@@ -44,6 +44,8 @@ flowchart TB
 **로더는 아래에서 위로, 오른쪽에서 왼쪽으로 적용된다.** `use: ['style-loader', 'css-loader']`는 `styleLoader(cssLoader(file))`이다. css-loader가 `@import`·`url()`을 모듈 의존성으로 바꾸고, style-loader가 결과를 `<style>`로 넣는다. 순서를 거꾸로 쓰면 깨진다.
 
 `mode`(`development`·`production`)는 압축, 소스 맵, 최적화의 기본값을 한꺼번에 바꾼다. 스코프 호이스팅과 트리 셰이킹은 production에서 기본으로 켜진다.
+
+`entry`는 경로 문자열 하나로도, 이름을 키로 한 객체로도 준다. SPA는 진입점이 하나(`entry: './src/index.js'`)지만, 페이지마다 서버가 다른 HTML을 내려 주는 MPA는 `entry: { login: './src/login.js', main: './src/main.js' }`처럼 페이지별 진입점을 둔다. 이때 `output.filename`에 `[name].[contenthash].js` 같은 **치환자**를 쓰면 entry 이름마다 번들이 따로 나온다(`[name]`은 entry 이름, `[contenthash]`는 내용 해시). `plugins` 배열에는 `new HtmlWebpackPlugin()`처럼 플러그인 **인스턴스**를 넣는다.
 
 ## 빌드할 때 코드를 바꿔 넣는 플러그인
 

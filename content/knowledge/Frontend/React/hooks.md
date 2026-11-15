@@ -5,12 +5,13 @@ summary: "함수 컴포넌트에서 state·생명주기·메모이제이션을 �
 tags: ["react", "hooks", "state", "lifecycle", "frontend"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://react.dev/reference/react/hooks", "https://react.dev/blog/2025/10/01/react-19-2", "https://react.dev/blog/2025/10/07/react-compiler-1", "https://rinae.dev/posts/a-complete-guide-to-useeffect-ko", "https://react.vlpt.us/basic/10-useRef.html", "https://react.vlpt.us/basic/12-variable-with-useRef.html", "https://react.vlpt.us/basic/16-useEffect.html", "https://react.vlpt.us/basic/17-useMemo.html", "https://react.vlpt.us/basic/18-useCallback.html", "https://react.vlpt.us/basic/19-React.memo.html", "https://react.vlpt.us/basic/20-useReducer.html", "https://react.vlpt.us/basic/21-custom-hook.html", "https://react.dev/reference/react/useRef", "https://react.dev/reference/react/useReducer", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Vanilla%20Javascript%20useState.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Vanilla%20Javascript%20useEffect.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Ref.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%EC%9D%B4%EC%A0%84%20state%2C%20props%20%EC%96%BB%EB%8A%94%20%EB%B0%A9%EB%B2%95.md", "https://react.dev/learn/you-might-not-need-an-effect"]
+sources: ["https://react.dev/reference/react/hooks", "https://react.dev/blog/2025/10/01/react-19-2", "https://react.dev/blog/2025/10/07/react-compiler-1", "https://rinae.dev/posts/a-complete-guide-to-useeffect-ko", "https://react.vlpt.us/basic/10-useRef.html", "https://react.vlpt.us/basic/12-variable-with-useRef.html", "https://react.vlpt.us/basic/16-useEffect.html", "https://react.vlpt.us/basic/17-useMemo.html", "https://react.vlpt.us/basic/18-useCallback.html", "https://react.vlpt.us/basic/19-React.memo.html", "https://react.vlpt.us/basic/20-useReducer.html", "https://react.vlpt.us/basic/21-custom-hook.html", "https://react.dev/reference/react/useRef", "https://react.dev/reference/react/useReducer", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Vanilla%20Javascript%20useState.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Vanilla%20Javascript%20useEffect.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Ref.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%EC%9D%B4%EC%A0%84%20state%2C%20props%20%EC%96%BB%EB%8A%94%20%EB%B0%A9%EB%B2%95.md", "https://react.dev/learn/you-might-not-need-an-effect", "https://react.dev/reference/react/useLayoutEffect", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > React 공식 문서를 바탕으로, effect를 동기화로 보는 관점과 deps를 줄이는 법은 Dan Abramov의 「A Complete Guide to useEffect」 번역 「[useEffect 완벽 가이드](https://rinae.dev/posts/a-complete-guide-to-useeffect-ko)」를 바탕으로 더한 노트다.
 > useRef의 두 쓰임, useReducer, memo와 함수형 업데이트, useInputs는 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[useRef로 특정 DOM 선택하기](https://react.vlpt.us/basic/10-useRef.html)」~「[커스텀 Hooks 만들기](https://react.vlpt.us/basic/21-custom-hook.html)」를 바탕으로 보강했다.
 > 훅을 직접 흉내 낸 구현, 콜백 ref, 이전 값 기억하기는 「[Frontend_TIL: Vanilla Javascript useState](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Vanilla%20Javascript%20useState.md)」·「[Vanilla Javascript useEffect](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Vanilla%20Javascript%20useEffect.md)」·「[Ref](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Ref.md)」·「[이전 state, props 얻는 방법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%EC%9D%B4%EC%A0%84%20state%2C%20props%20%EC%96%BB%EB%8A%94%20%EB%B0%A9%EB%B2%95.md)」을 바탕으로 보강했다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 useLayoutEffect로 깜빡임을 막는 경우를 보강했다.
 
 **Hook**은 함수 컴포넌트가 클래스 컴포넌트의 기능(state, 생명주기 등)을 쓸 수 있게 해 주는 함수다. React 16.8(2019)에 추가되었고, 지금은 함수 컴포넌트 + Hooks가 React의 표준 작성 방식이다. 기존 클래스 컴포넌트를 굳이 Hooks로 다시 쓸 필요는 없다.
 
@@ -168,6 +169,28 @@ useEffect(() => {
   return () => conn.disconnect()
 }, [roomId]) // theme이 바뀌어도 다시 연결하지 않는다. onConnected는 deps에 넣지 않는다
 ```
+
+### useLayoutEffect: 그리기 전에 측정하고 고친다
+
+`useEffect`는 브라우저가 화면을 그린 **뒤에** 돈다. effect에서 DOM 크기를 재고 그 값으로 state를 바꾸면, 사용자는 잘못된 위치의 첫 화면을 한 번 본 뒤 고쳐진 화면을 보게 된다(깜빡임). `useLayoutEffect`는 React가 DOM을 바꾼 직후, **페인트 전에 동기로** 돈다. 그 안에서 state를 바꾸면 React가 그리기 전에 다시 렌더링하므로 중간 화면이 보이지 않는다.
+
+```jsx
+function Tooltip({ targetRect, children }) {
+  const ref = useRef(null)
+  const [height, setHeight] = useState(0)
+
+  useLayoutEffect(() => {
+    setHeight(ref.current.getBoundingClientRect().height) // 그리기 전에 실제 높이를 잰다
+  }, [])
+
+  const top = targetRect.top - height // 위 공간이 모자라면 아래로 보내는 계산도 여기서
+  return <div ref={ref} style={{ position: 'absolute', top }}>{children}</div>
+}
+```
+
+- **쓸 곳은 레이아웃 측정뿐이다.** 툴팁·팝오버 위치, 스크롤 위치 보정, 요소 크기에 따른 배치처럼 「그려진 크기를 알아야 다음 배치를 정하는」 경우다. 고정값이나 요청한 데이터를 state에 넣는 일은 깜빡임이 보여도 `useLayoutEffect`로 옮길 일이 아니다. 초깃값으로 바로 주거나 렌더링 중에 계산한다.
+- 페인트를 막고 동기로 돌기 때문에 무거운 작업을 넣으면 화면이 늦게 뜬다. 기본은 `useEffect`다.
+- 서버 렌더링에서는 실행되지 않는다. 서버 HTML은 측정 전 모습이므로, 측정이 필요한 부분은 클라이언트에서만 그리거나 측정 전에도 어색하지 않은 초기 배치를 준다.
 
 ## useRef: DOM 참조와 리렌더링 없는 변수
 

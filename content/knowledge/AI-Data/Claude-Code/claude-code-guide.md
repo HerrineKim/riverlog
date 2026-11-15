@@ -1,14 +1,14 @@
 ---
 title: "Claude Code 활용 가이드"
 concept: "Claude Code"
-summary: "채팅형 AI와 무엇이 다른지부터 설치, 질문 → 편집 → 도구 → 맥락 → 자동화로 익숙해지는 순서, 슬래시 명령·단축키, MCP 연결, Skills와 CLAUDE.md, 팀 설정 공유, 권한 모드와 자동 모드, 여러 계정을 나눠 쓰는 인증 설정, `claude -p` 자동화, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하는 작업 방식까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
+summary: "채팅형 AI와 무엇이 다른지부터 설치, 질문 → 편집 → 도구 → 맥락 → 자동화로 익숙해지는 순서, 슬래시 명령·단축키, MCP 연결과 범위·추천 서버, Skills와 CLAUDE.md, 팀 설정 공유, 권한 모드와 자동 모드, 여러 계정을 나눠 쓰는 인증 설정, 플랜 한도·API 크레딧·사용량 크레딧으로 나뉜 과금 구조, `claude -p` 자동화, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하는 작업 방식까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
 tags: ["ai", "llm", "claude-code", "agentic-coding", "prompting", "mcp"]
 source: other
-date: "2026-11-05"
-sources: ["https://www.youtube.com/watch?v=6eBSHbLKuN0", "https://www.youtube.com/watch?v=kPUuh2ZnzEM", "https://code.claude.com/docs/en/headless", "https://gayuna.github.io/llm/claude-code/", "https://code.claude.com/docs/en/model-config", "https://code.claude.com/docs/en/github-actions", "https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five", "https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp", "https://claude.com/blog/auto-mode", "https://code.claude.com/docs/en/permission-modes", "https://code.claude.com/docs/en/authentication", "https://code.claude.com/docs/en/env-vars"]
+date: "2026-11-15"
+sources: ["https://www.youtube.com/watch?v=6eBSHbLKuN0", "https://www.youtube.com/watch?v=kPUuh2ZnzEM", "https://code.claude.com/docs/en/headless", "https://gayuna.github.io/llm/claude-code/", "https://code.claude.com/docs/en/model-config", "https://code.claude.com/docs/en/github-actions", "https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five", "https://code.claude.com/docs/en/setup", "https://code.claude.com/docs/en/interactive-mode", "https://code.claude.com/docs/en/commands", "https://code.claude.com/docs/en/memory", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp", "https://claude.com/blog/auto-mode", "https://code.claude.com/docs/en/permission-modes", "https://code.claude.com/docs/en/authentication", "https://code.claude.com/docs/en/env-vars", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/best-practice/claude-mcp.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/reports/claude-usage-and-rate-limits.md"]
 ---
 
-> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다. 위임 방식은 Kieran Klaassen의 「[How I Use Claude Code to Ship Like a Team of Five](https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five)」(2025.07)를, 도입 순서와 팀 설정은 Claude Code를 만든 Boris Cherny의 강연 「[Mastering Claude Code in 30 minutes](https://www.youtube.com/watch?v=6eBSHbLKuN0)」(Code w/ Claude, 2025.05, [한글 자막판](https://www.youtube.com/watch?v=kPUuh2ZnzEM))을, 동작 원리·맥락 관리·GitHub 연동은 Anthropic 강의 「Claude Code in Action」을 정리한 hello.gayuna의 [글](https://gayuna.github.io/llm/claude-code/)(2025.09)을 더했다. 권한 모드와 자동 모드는 Anthropic의 「[Auto mode for Claude Code](https://claude.com/blog/auto-mode)」(2026.03)와 [권한 모드 공식 문서](https://code.claude.com/docs/en/permission-modes)로, 계정과 인증은 [인증](https://code.claude.com/docs/en/authentication)·[환경변수](https://code.claude.com/docs/en/env-vars) 공식 문서로 정리했다.
+> Aakash Gupta의 인포그래픽 「Master Claude Code: The Complete Guide for Everyone」(2026.01)을 바탕으로, 명령어·설치·메모리 설명은 [Claude Code 공식 문서](https://code.claude.com/docs/en/overview)로 확인해 재구성한 노트다. 위임 방식은 Kieran Klaassen의 「[How I Use Claude Code to Ship Like a Team of Five](https://every.to/source-code/how-i-use-claude-code-to-ship-like-a-team-of-five)」(2025.07)를, 도입 순서와 팀 설정은 Claude Code를 만든 Boris Cherny의 강연 「[Mastering Claude Code in 30 minutes](https://www.youtube.com/watch?v=6eBSHbLKuN0)」(Code w/ Claude, 2025.05, [한글 자막판](https://www.youtube.com/watch?v=kPUuh2ZnzEM))을, 동작 원리·맥락 관리·GitHub 연동은 Anthropic 강의 「Claude Code in Action」을 정리한 hello.gayuna의 [글](https://gayuna.github.io/llm/claude-code/)(2025.09)을 더했다. 권한 모드와 자동 모드는 Anthropic의 「[Auto mode for Claude Code](https://claude.com/blog/auto-mode)」(2026.03)와 [권한 모드 공식 문서](https://code.claude.com/docs/en/permission-modes)로, 계정과 인증은 [인증](https://code.claude.com/docs/en/authentication)·[환경변수](https://code.claude.com/docs/en/env-vars) 공식 문서로 정리했다. MCP 범위·추천 서버와 요금 구조(2026-11)는 shanraisshan의 「[claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice)」(MIT)로 보강했다.
 
 ## 채팅형 AI와 다른 점
 
@@ -128,7 +128,7 @@ Claude가 **스스로 결과를 볼 수 있으면 반복해서 고친다.** 단�
 | `/usage` | 비용과 플랜 사용 한도 확인 |
 | `/config` | 설정 열기 |
 
-설치 문제는 터미널에서 `claude doctor`로 진단한다.
+설치 문제는 터미널에서 `claude doctor`로 진단한다. 세션 분기(`/branch`, `/fork`, `/btw`), 원격(`/teleport`, `/remote-control`), 시작 플래그까지 전체 목록은 [[claude-code-commands|Claude Code 명령어·플래그 레퍼런스]]에 있다.
 
 ### 파일 참조와 단축키
 
@@ -157,7 +157,7 @@ Claude가 **스스로 결과를 볼 수 있으면 반복해서 고친다.** 단�
 claude mcp add --transport http notion https://mcp.notion.com/mcp
 ```
 
-추가한 뒤 `/mcp`로 연결 상태를 확인한다. MCP 도구는 처음 쓸 때마다 권한을 묻는다. 늘 허용할 서버는 설정 파일의 허용 목록에 `mcp__서버이름` 형식으로 넣는다(밑줄이 두 개다).
+추가한 뒤 `/mcp`로 연결 상태를 확인한다(`/mcp reconnect <서버>`로 재연결). MCP 도구는 처음 쓸 때마다 권한을 묻는다. 늘 허용할 서버는 설정 파일의 허용 목록에 `mcp__서버이름` 형식으로 넣는다(밑줄이 두 개다). `mcp__context7__*`처럼 서버 단위 와일드카드나 `mcp__playwright__browser_snapshot`처럼 도구 단위로도 쓴다.
 
 ```bash
 claude mcp add playwright npx @playwright/mcp@latest
@@ -168,9 +168,31 @@ claude mcp add playwright npx @playwright/mcp@latest
 { "permissions": { "allow": ["mcp__playwright"] } }
 ```
 
+| 범위 | 위치 | 쓰는 곳 |
+| --- | --- | --- |
+| 서브에이전트 | 에이전트 프론트매터 `mcpServers` | 그 에이전트만 쓰는 서버. 가장 우선한다 |
+| 프로젝트 | 저장소 루트 `.mcp.json`(커밋) | 팀 공용 서버 |
+| 사용자 | `~/.claude.json`의 `mcpServers` | 내 모든 프로젝트 |
+
+- `.mcp.json` 서버는 자동 승인되지 않는다. `.claude/settings.json`의 `enableAllProjectMcpServers`(전부 승인) 또는 `enabledMcpjsonServers`·`disabledMcpjsonServers`(이름 목록)로 고른다.
+- 토큰은 커밋하지 말고 환경변수로 펼친다: `"url": "https://mcp.example.com/mcp?token=${MCP_API_TOKEN}"`.
+- 서버 연결 방식은 로컬 프로세스(stdio: `npx`, `python`, 바이너리)와 원격 URL(http) 두 가지다.
+- MCP 도구 설명이 맥락의 일정 비율을 넘으면 Claude Code가 정의를 미뤄 두고 필요할 때 검색해 불러온다(도구 검색). 원리는 [[claude-advanced-tool-use|Claude API 고급 도구 사용]]에 있다.
+
+많이 깔아도 매일 쓰는 것은 몇 개뿐이다. 자주 꼽히는 조합은 **조사 → 디버그 → 문서화** 흐름이다.
+
+| 서버 | 하는 일 |
+| --- | --- |
+| Context7 (`@upstash/context7-mcp`) | 최신 라이브러리 문서를 맥락에 넣어 없는 API를 지어내지 않게 한다 |
+| DeepWiki | GitHub 저장소를 위키형 문서로 읽는다 |
+| Playwright (`@playwright/mcp`) | 브라우저를 조작해 UI를 구현·검증한다 |
+| Claude in Chrome | 로그인된 실제 Chrome의 콘솔·네트워크·DOM을 본다 |
+| Excalidraw | 프롬프트로 손그림풍 아키텍처 다이어그램을 그린다 |
+| Sentry, Slack, 이슈 트래커 | 에러 로그·버그 스레드·티켓을 바로 재료로 쓴다 |
+
 브라우저 도구를 붙이면 확인 수단과 프롬프트 개선을 한 번에 엮을 수 있다. 「localhost:3000을 열어 컴포넌트를 하나 만들어 보고, 스타일을 검토한 뒤, 앞으로 더 나은 컴포넌트가 나오도록 @src/lib/prompts/generation.tsx의 생성 프롬프트를 고쳐라」.
 
-프런트엔드 작업이라면 Chrome DevTools MCP를 붙여 Claude Code가 실제 브라우저를 열고 성능 트레이스·Lighthouse·콘솔로 결과를 직접 확인하게 할 수 있다. 설치와 플래그는 [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]]에 있다.
+프런트엔드 작업이라면 Chrome DevTools MCP를 붙여 Claude Code가 실제 브라우저를 열고 성능 트레이스·Lighthouse·콘솔로 결과를 직접 확인하게 할 수 있다. 설치와 플래그, Playwright MCP·Claude in Chrome과의 비교는 [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]]에 있다.
 
 ## Skills와 CLAUDE.md
 
@@ -225,9 +247,9 @@ Claude Code에는 `/loop`(주기 실행), `/batch`(대규모 병렬 변경), `/s
 | 이 프로젝트, 나만 | `./CLAUDE.local.md` (`.gitignore`에 추가) |
 | 특정 파일 유형에만 | `.claude/rules/*.md` |
 
-CLAUDE.md에는 자주 쓰는 셸 명령, MCP 도구, 아키텍처 결정, 핵심 파일처럼 **이 코드베이스에서 일하려면 알아야 할 것**만 짧게 둔다. 길어지면 맥락만 차지하고 효과는 적다. 하위 폴더에 둔 CLAUDE.md는 Claude가 그 폴더에서 일할 때 필요할 때만 읽힌다. 어떤 메모리 파일이 읽히고 있는지는 `/memory`로 보고 고친다.
+CLAUDE.md에는 자주 쓰는 셸 명령, MCP 도구, 아키텍처 결정, 핵심 파일처럼 **이 코드베이스에서 일하려면 알아야 할 것**만 짧게 둔다. 길어지면 맥락만 차지하고 효과는 적다. 어떤 메모리 파일이 읽히고 있는지는 `/memory`로 보고 고친다. 모노레포에서 어느 CLAUDE.md가 언제 읽히는지, rules의 `paths:` 지연 로드, Claude가 스스로 쓰는 자동 메모리와 에이전트 메모리, CLAUDE.md를 짧게 유지하는 운영법은 [[claude-code-memory|Claude Code 메모리]]에 따로 정리했다.
 
-CLAUDE.md는 사람이 쓰는 지시이고, **자동 메모리**는 Claude가 내 교정과 선호를 스스로 적어 두는 노트다(`~/.claude/projects/<프로젝트>/memory/MEMORY.md`). 저장소에 `AGENTS.md`만 있으면 그것을 대신 읽는다.
+반복 작업을 맡기는 단위는 스킬 말고도 커맨드와 서브에이전트가 있다. 셋의 차이와 조합은 [[claude-code-extensions|커맨드·스킬·서브에이전트 고르기]]에 있다.
 
 ### 팀과 설정 공유하기
 
@@ -240,7 +262,7 @@ CLAUDE.md는 사람이 쓰는 지시이고, **자동 메모리**는 Claude가 �
 | 프로젝트 (`.claude/`, `.mcp.json`, 커밋) | 저장소를 쓰는 팀 전원 | 공용 권한 규칙, 공용 MCP 서버, 팀 스킬 |
 | 로컬 (`CLAUDE.local.md`, `.claude/settings.local.json`) | 이 저장소에서 나만 | 실험 중인 설정 |
 
-무엇부터 할지 모르겠으면 **프로젝트 공유 설정**부터 만든다. 한 사람이 한 번 다듬으면 팀 전원이 덕을 보는 네트워크 효과가 생긴다. 예를 들어 브라우저 MCP 서버를 `.mcp.json`으로 커밋해 두면 누구든 따로 설치하지 않고 E2E 테스트와 스크린샷 반복을 쓴다. 맥락 문서는 누구를 위한 것인지(매번 읽힐지, 필요할 때만 읽힐지, 팀 공유인지 개인 선호인지)를 따져 배치하고, 시간을 들여 다듬을수록 성능이 크게 오른다.
+설정 파일의 우선순위와 병합 규칙, 권한 규칙 문법, 주요 키와 환경변수는 [[claude-code-settings|Claude Code 설정과 권한 규칙]]에 있다. 무엇부터 할지 모르겠으면 **프로젝트 공유 설정**부터 만든다. 한 사람이 한 번 다듬으면 팀 전원이 덕을 보는 네트워크 효과가 생긴다. 예를 들어 브라우저 MCP 서버를 `.mcp.json`으로 커밋해 두면 누구든 따로 설치하지 않고 E2E 테스트와 스크린샷 반복을 쓴다. 맥락 문서는 누구를 위한 것인지(매번 읽힐지, 필요할 때만 읽힐지, 팀 공유인지 개인 선호인지)를 따져 배치하고, 시간을 들여 다듬을수록 성능이 크게 오른다.
 
 ## 자동화: `claude -p`
 
@@ -372,7 +394,7 @@ Claude Code를 잘 쓰면 개발자의 자리는 **코드를 치는 사람**에�
 - 막히면 Claude는 이유를 받고 다른 방법을 찾는다. 연속 3번 또는 누적 20번 막히면 자동 모드를 멈추고 다시 사람에게 묻는다.
 - 대화에서 「푸시하지 마」, 「내 리뷰 기다려」처럼 경계를 말하면 그 경계를 지킨다. 「force push 해도 돼」 같은 모호한 허락보다 브랜치 이름까지 짚은 구체적 승인만 차단을 푼다.
 - 분류기도 틀린다. 의도가 모호하거나 환경 맥락이 부족하면 위험한 행동을 통과시키거나 무해한 행동을 막을 수 있고, 검사만큼 토큰·지연이 더 든다. 중요한 환경에서는 격리된 곳에서 돌린다.
-- 조직 관리자는 관리 설정의 `permissions.disableAutoMode: "disable"`로 끌 수 있다.
+- 조직 관리자는 관리 설정의 최상위 키 `disableAutoMode`로 끌 수 있다(`permissions` 아래가 아니다).
 
 ## 계정과 인증: 여러 계정 나눠 쓰기
 
@@ -396,4 +418,15 @@ alias claude-work='CLAUDE_CONFIG_DIR=~/.claude-work claude'
 
 구독(Pro·Max·Ultra·Team·Enterprise)으로 쓰거나, CI/CD·파이프라인처럼 자동화 용도면 API 사용량 과금으로 쓴다. Amazon Bedrock·Google Cloud Gemini Enterprise Agent Platform(구 Vertex AI)·Microsoft Foundry를 통해서도 쓸 수 있다. 플랜별 요금과 한도는 자주 바뀌므로 [공식 요금 안내](https://claude.com/pricing)에서 확인하고, 세션 안에서는 `/usage`로 사용량을 본다.
 
-관련 노트: [[claude-code-hooks|Claude Code 훅]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]
+구독 한도와 과금은 세 갈래로 나뉜다(2026-11 기준. 2026-10-30에 Max 20x는 Ultra, Max 5x는 Max로 이름이 바뀌었다).
+
+| 갈래 | 내용 | 확인·설정 |
+| --- | --- | --- |
+| 플랜 한도 | 주간 한도 + 대부분 플랜의 5시간 세션 한도. 계정 단위라 웹·터미널이 같이 쓴다 | `/usage` |
+| 무료 한도 리셋 | 출시·보상 때 지급되는 일회성 리셋. 웹·데스크톱·모바일의 Settings > Usage에서만 누를 수 있지만 Claude Code에도 바로 적용된다 | 한도에 걸리면 결제 전에 먼저 확인 |
+| 월간 API 크레딧 | Max $100, Ultra $200, Team 좌석별. Console 조직을 연결하면 받는다. Agent SDK와 API 키로 쓰는 `claude -p`에만 쓰이고 대화형 Claude Code에는 안 쓰인다. 이월 없음 | Settings > Billing |
+| 사용량 크레딧(usage credits) | 한도를 넘긴 뒤 표준 API 단가로 계속 쓰기. 월 지출 상한을 둘 수 있고 하루 상한은 $2,000. `/fast`는 처음부터 항상 여기서 과금된다 | `/usage-credits`(옛 `/extra-usage`), `/rate-limit-options` |
+
+플랜으로 로그인한 `claude -p`는 플랜 한도를 깎는다. API 키 사용자는 `/cost`로 세션 비용을 보고, print 모드에서 `--max-budget-usd`·`--max-turns`로 상한을 건다.
+
+관련 노트: [[claude-code-hooks|Claude Code 훅]], [[claude-code-settings|Claude Code 설정과 권한 규칙]], [[claude-code-memory|Claude Code 메모리]], [[claude-code-extensions|커맨드·스킬·서브에이전트 고르기]], [[claude-code-commands|Claude Code 명령어·플래그 레퍼런스]], [[claude-code-workflows|Claude Code 개발 워크플로]], [[claude-code-tips|Claude Code 실전 팁]], [[claude-code-design-philosophy|Claude Code의 설계 원칙]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[prompt-cheat-sheet|프롬프트 작성법 치트시트]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]], [[ai-delegation-toolkit|AI에게 일 맡기기: 권한·정보·도구]]

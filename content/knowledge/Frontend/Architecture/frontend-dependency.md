@@ -5,10 +5,11 @@ summary: "의존성은 곧 변경에 노출되는 관계다. 변수는 스코프
 tags: ["frontend", "react", "typescript", "architecture", "design"]
 source: other
 date: "2026-10-12"
-sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%EC%9D%98%EC%A1%B4%EC%84%B1-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0-b242a2fd4e85"]
+sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%EC%9D%98%EC%A1%B4%EC%84%B1-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0-b242a2fd4e85", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 이문기의 글 「[프론트엔드에서 의존성 살펴보기](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%EC%9D%98%EC%A1%B4%EC%84%B1-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0-b242a2fd4e85)」(Medium, 2023.09)를 요약·재구성한 노트다. 코드는 설명용으로 줄여 다시 썼다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 API 응답 타입을 도메인 타입으로 바꾸는 변환 계층을 보강했다.
 
 ## 의존성이란
 
@@ -124,6 +125,23 @@ function PostDetail(props: { post?: Omit<Post, 'userId'>; readonly?: boolean }) 
 **왜 2단계가 나은가.** `Post`가 바뀌려면 백엔드까지 함께 바뀌어야 한다. 즉 **잘 바뀌지 않는 대상**이다. 의존 수가 많아도 안정적인 것에 기대는 편이 낫다. 코드 전체가 `Post`라는 도메인에 기반한다고 보면 된다.
 
 **props 타입의 책임은 컴포넌트에 있다.** `PostDetail`은 "게시글 정보를 받아 요소를 그린다"는 인터페이스를 갖는다. `Omit`·추가 props로 자기 필요를 스스로 표현하고, `Post`의 `createdAt`이 `string`으로 바뀌는 식의 변경은 컴파일 에러로 바로 드러난다.
+
+**응답 모양이 도메인과 다르면 변환 계층을 둔다.** 위 코드는 응답이 도메인 타입을 그대로 포함한다고 가정한다. 실제 응답은 `created_at`처럼 snake_case이거나, 화면에 필요 없는 필드가 섞이거나, 중첩이 깊을 때가 많다. 이때는 응답 타입과 도메인 타입을 따로 선언하고, API 함수가 응답을 받자마자 도메인 타입으로 바꿔 돌려준다.
+
+```ts
+type PostResponse = { post_id: number; title: string; body: string; created_at: string; internal_flag: boolean }
+
+function toPost(res: PostResponse): Post {
+  return { id: res.post_id, title: res.title, content: res.body, createdAt: res.created_at } // internal_flag는 버린다
+}
+
+export async function getPost(id: number): Promise<Post> {
+  const res = await http.get<PostResponse>(`/posts/${id}`)
+  return toPost(res)
+}
+```
+
+백엔드가 필드 이름을 바꾸면 `PostResponse`와 `toPost`만 고치고, 컴포넌트는 그대로다. 변환 함수만큼 코드가 늘어나므로 응답과 도메인 모양이 같은 작은 프로젝트라면 위 2단계로 충분하다. 백엔드 쪽에서 이 변환을 맡는 계층이 [[bff|BFF]]다.
 
 ### 미래를 미리 들이지 않기
 

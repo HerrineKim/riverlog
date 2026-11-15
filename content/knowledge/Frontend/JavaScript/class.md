@@ -5,11 +5,11 @@ summary: "ES6 class로 객체의 틀을 정의하는 방법: 선언과 표현식
 tags: ["javascript", "oop", "frontend"]
 source: mixed
 date: "2026-10-17"
-sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493", "https://riverkim.kr/178", "https://riverkim.kr/256", "https://web.dev/learn/javascript/classes", "https://web.dev/learn/javascript/classes/extends", "https://web.dev/learn/javascript/classes/class-fields", "https://web.dev/learn/javascript/classes/static-initialization-blocks", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks", "https://ko.javascript.info/class", "https://ko.javascript.info/class-inheritance", "https://ko.javascript.info/static-properties-methods", "https://ko.javascript.info/private-protected-properties-methods", "https://ko.javascript.info/extend-natives", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species", "https://github.com/lydiahallie/javascript-questions"]
+sources: ["https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493", "https://riverkim.kr/178", "https://riverkim.kr/256", "https://web.dev/learn/javascript/classes", "https://web.dev/learn/javascript/classes/extends", "https://web.dev/learn/javascript/classes/class-fields", "https://web.dev/learn/javascript/classes/static-initialization-blocks", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Static_initialization_blocks", "https://ko.javascript.info/class", "https://ko.javascript.info/class-inheritance", "https://ko.javascript.info/static-properties-methods", "https://ko.javascript.info/private-protected-properties-methods", "https://ko.javascript.info/extend-natives", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/species", "https://github.com/lydiahallie/javascript-questions", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 직접 정리한 내용에 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 클래스 모듈과 javascript.info(모던 JavaScript 튜토리얼)의 클래스 글(「클래스와 기본 문법」, 「클래스 상속」, 「정적 메서드와 정적 프로퍼티」, 「private, protected 프로퍼티와 메서드」, 「내장 클래스 확장하기」)을 더해, MDN으로 확인해 보강한 노트다. 프론트엔드에서의 쓰임은 이문기의 「[프론트엔드에서 클래스와 즉시 실행 함수 쓰기](https://medium.com/@junep/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%EC%97%90%EC%84%9C-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%99%80-%EC%A6%89%EC%8B%9C-%EC%8B%A4%ED%96%89-%ED%95%A8%EC%88%98-%EC%93%B0%EA%B8%B0-315c21bb2493)」(2023.08)를 더했다.
-> 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다.
+> 헷갈리기 쉬운 출력 문제는 Lydia Hallie의 「[JavaScript Questions](https://github.com/lydiahallie/javascript-questions)」에서 개념별로 뽑아 보강했다. junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 오버로딩이 없다는 점을 보강했다.
 
 **class**는 같은 모양의 객체를 찍어 내기 위한 템플릿이다. 데이터, 그 데이터를 다루는 메서드를 한 블록에 묶고, 이들을 통틀어 클래스의 **멤버**라고 한다. ES5까지는 생성자 함수와 프로토타입 체인으로 구현했고, ES6(2015)에서 `class`가 도입됐다. 내부 동작은 여전히 프로토타입 기반이라 `typeof MyClass`는 `'function'`이다.
 
@@ -238,6 +238,7 @@ child.mother          // 'mother', 인스턴스 필드
 
 - 자식 클래스는 부모의 **정적 멤버**와 **인스턴스 멤버**를 모두 물려받는다(`#private`만 예외다).
 - 같은 이름의 메서드를 다시 정의하면 오버라이딩되고, 부모 쪽 구현은 `super.method()`로 부른다.
+- 이름은 같고 매개변수의 개수·타입이 다른 메서드를 여럿 두는 **오버로딩(overloading)** 은 JavaScript에 없다. 한 클래스에 같은 이름의 메서드를 두 번 쓰면 나중 것이 앞의 것을 덮는다. 한 메서드 안에서 rest 매개변수·기본값·`typeof` 검사로 경우를 나누거나, 아예 `fromJSON`·`fromString`처럼 이름을 나눈 정적 팩토리 메서드로 만든다. TypeScript의 오버로드도 시그니처만 여럿이고 구현은 하나다([[typescript-basics|TypeScript 기초]]).
 - 자식이 constructor를 **생략하면** 받은 인자를 그대로 `super(...args)`에 넘기는 constructor가 자동으로 생긴다. constructor를 **쓰면** `this`를 건드리기 전에 `super()`를 불러야 한다. 안 그러면 `ReferenceError`다.
 - `super()`가 필수인 이유: 기반 클래스는 `new` 때 빈 객체를 만들어 `this`로 주지만, 파생 클래스의 constructor(`[[ConstructorKind]]: "derived"`)는 **그 일을 부모 constructor에 맡긴다.** `super()`를 부르기 전에는 `this`가 될 객체 자체가 없다.
 - `extends` 뒤에는 **식**이 와도 된다. `class User extends makeBase('Hello') {}`처럼 함수가 돌려준 클래스를 상속할 수 있어, 조건에 따라 부모를 고르거나 믹스인을 만든다([[js-design-patterns|JavaScript 디자인 패턴]]).

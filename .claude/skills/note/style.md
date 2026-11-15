@@ -1,6 +1,6 @@
 # riverlog 지식 노트 스타일
 
-기준 예시: `content/knowledge/AI-Data/loop-engineering.md`, `AI-Data/ai-frontend-design-prompting.md`, `AI-Data/claude-skill-building-guide.md`. 애매하면 이 세 편을 열어 보고 맞춘다.
+기준 예시: `content/knowledge/AI-Data/loop-engineering.md`, `AI-Data/ai-frontend-design-prompting.md`, `AI-Data/Claude-Code/claude-skill-building-guide.md`. 애매하면 이 세 편을 열어 보고 맞춘다.
 
 ## frontmatter
 

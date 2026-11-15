@@ -28,7 +28,7 @@ flowchart LR
 - [요구사항·설계 절차와 대략 계산](Backend/Architecture/system-design-primer-requirements.md): 가정, 데이터 흐름, 병목 분석
 - [성능·확장·일관성·가용성](Backend/Architecture/system-design-primer-tradeoffs.md): 지연과 처리량, CAP, 장애조치와 복제
 - [DNS·CDN·로드 밸런서와 앱 계층](Backend/Architecture/system-design-primer-edge-delivery.md): 클라이언트에서 서비스까지의 요청 전달
-- [DB 확장 전략](Backend/Architecture/system-design-primer-database-scaling.md): 관계형·NoSQL, 복제·샤딩·비정규화
+- [데이터베이스 확장과 성능 최적화](Backend/Database/database-scaling.md): 저장소 선택을 먼저 따지는 순서, 인덱스·캐시·반정규화·복제·페더레이션·샤딩
 - [캐시·비동기·큐](Backend/Architecture/system-design-primer-caching-async.md): 캐시 갱신과 백프레셔
 - [통신 계층과 보안](Backend/Architecture/system-design-primer-communication-security.md): HTTP·TCP·UDP·RPC·REST와 기본 보안
 - [시스템 설계 사례 8개](Backend/Architecture/system-design-primer-case-studies.md): 링크 단축·피드·크롤러·거래 분류·소셜 그래프·캐시·랭킹·AWS

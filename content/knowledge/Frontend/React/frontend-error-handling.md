@@ -5,12 +5,13 @@ summary: "에러를 '예상 가능한가'와 '사용자가 해결할 수 있는�
 tags: ["react", "frontend", "error-handling", "suspense", "monitoring"]
 source: other
 date: "2026-10-21"
-sources: ["https://jbee.io/articles/react/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8%20%ED%94%84%EB%9F%B0%ED%8A%B8%EC%97%94%EB%93%9C%20%EC%97%90%EB%9F%AC%20%ED%95%B8%EB%93%A4%EB%A7%81", "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary", "https://github.com/bvaughn/react-error-boundary", "https://react.vlpt.us/basic/26-componentDidCatch-and-sentry.html", "https://docs.sentry.io/platforms/javascript/guides/react/", "https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/error_boundaries", "https://github.com/grab/front-end-guide"]
+sources: ["https://jbee.io/articles/react/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8%20%ED%94%84%EB%9F%B0%ED%8A%B8%EC%97%94%EB%93%9C%20%EC%97%90%EB%9F%AC%20%ED%95%B8%EB%93%A4%EB%A7%81", "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary", "https://github.com/bvaughn/react-error-boundary", "https://react.vlpt.us/basic/26-componentDidCatch-and-sentry.html", "https://docs.sentry.io/platforms/javascript/guides/react/", "https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/error_boundaries", "https://github.com/grab/front-end-guide", "https://react.dev/reference/react/Suspense", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > Jbee의 연재 「[효율적인 프런트엔드 에러 핸들링](https://jbee.io/articles/react/%ED%9A%A8%EC%9C%A8%EC%A0%81%EC%9D%B8%20%ED%94%84%EB%9F%B0%ED%8A%B8%EC%97%94%EB%93%9C%20%EC%97%90%EB%9F%AC%20%ED%95%B8%EB%93%A4%EB%A7%81)」(2021.03, 3편)을 바탕으로 React 19·TanStack Query v5·react-error-boundary 기준으로 재구성한 노트다.
 > 최소 에러 경계와 Sentry 연동은 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[componentDidCatch로 에러 잡아내기 / Sentry 연동](https://react.vlpt.us/basic/26-componentDidCatch-and-sentry.html)」을 바탕으로 보강했다.
 > Grab의 「[Front End Guide](https://github.com/grab/front-end-guide)」를 바탕으로 보강했다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 Suspense가 반응하는 데이터 소스와 중첩 경계를 보강했다.
 
 ## 에러 분류: 두 개의 축
 
@@ -68,6 +69,16 @@ function UserMenu() {
 ```
 
 두 경계를 묶은 컴포넌트를 흔히 **AsyncBoundary**라 부른다. 경계를 화면 단위가 아니라 **API를 부르는 영역 단위로** 감싸면 원칙 3(격리)이 자연히 지켜진다. Promise를 직접 다루는 경우는 [[react-use-hook|use 훅]]에 있다.
+
+Suspense 자체는 데이터를 가져오는 도구가 아니다. 자식이 「아직 준비되지 않았다」고 알리면(렌더링이 일시 중단, suspend) 가장 가까운 경계의 fallback을 대신 보여 주는 **메커니즘**이다. 그래서 반응하는 데이터 소스가 정해져 있다.
+
+| Suspense가 알아채는 것 | 알아채지 못하는 것 |
+| --- | --- |
+| `lazy()`로 불러오는 컴포넌트, 캐시된 Promise를 읽는 `use`, `useSuspenseQuery` 같은 Suspense 지원 라이브러리, Next.js 서버 컴포넌트의 `async` 데이터 | `useEffect`나 이벤트 핸들러 안에서 직접 `fetch`한 데이터. 컴포넌트가 이미 그려진 뒤라 중단할 렌더링이 없다 |
+
+- 경계를 **중첩**하면 바깥 내용이 먼저 보이고 안쪽은 따로 로딩된다. 프로필은 먼저, 타임라인은 나중에처럼 드러나는 순서를 경계 배치로 설계한다. 경계 하나 안의 형제들은 모두 준비될 때까지 함께 기다린다.
+- 이미 보이던 화면이 다시 중단되면 fallback으로 바뀌어 화면이 사라진다. 탭 이동처럼 이전 화면을 잠시 유지하고 싶으면 갱신을 `startTransition`으로 감싼다([[concurrent-rendering|동시성 렌더링]]).
+- 로딩 분기를 컴포넌트마다 `if (isLoading)`으로 흩지 않고 경계에 모으므로, 늦게 온 응답이 앞선 응답을 덮는 경쟁 상태를 컴포넌트가 직접 다룰 일이 줄어든다.
 
 ### ErrorBoundary에 필요한 기능
 

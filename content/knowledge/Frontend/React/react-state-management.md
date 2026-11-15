@@ -5,10 +5,11 @@ summary: "상태를 종류(로컬·서버·URL·폼·전역 클라이언트)로 
 tags: ["react", "state", "frontend", "architecture", "performance"]
 source: other
 date: "2026-10-15"
-sources: ["https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%ED%9D%90%EB%A6%84-6e5ed0022e39", "https://frontendmastery.com/posts/the-new-wave-of-react-state-management/", "https://techblog.woowahan.com/2599/"]
+sources: ["https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%ED%9D%90%EB%A6%84-6e5ed0022e39", "https://frontendmastery.com/posts/the-new-wave-of-react-state-management/", "https://techblog.woowahan.com/2599/", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 「[리액트 상태 관리의 새로운 흐름](https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%83%81%ED%83%9C-%EA%B4%80%EB%A6%AC%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9A%B4-%ED%9D%90%EB%A6%84-6e5ed0022e39)」을 바탕으로 재구성한 노트다. 원 자료는 Frontend Mastery의 「The new wave of React state management」(2022.06)다. MobX는 우아한형제들 기술 블로그의 「[React에서 mobx 경험기 (Redux와 비교기)](https://techblog.woowahan.com/2599/)」를 바탕으로 더했다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 기존 Redux와 새 도구를 공존시키는 점진적 이전을 보강했다.
 
 ## 먼저 상태의 종류를 나눈다
 
@@ -23,6 +24,8 @@ sources: ["https://medium.com/@yujso66/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%
 | 전역 클라이언트 상태 | 테마, 로그인 사용자 정보, 장바구니, 여러 화면이 함께 쓰는 편집 상태 | Context, Zustand, Jotai, Redux Toolkit, Valtio |
 
 **로컬 상태로 시작하고, 정말 공유가 필요할 때만 끌어올린다.** 많은 앱의 "전역 상태"는 사실 서버 데이터의 사본이었고, 서버 상태 라이브러리로 옮기면 거의 사라진다.
+
+이미 Redux로 짜인 코드베이스는 한 번에 갈아엎지 않는다. 서버 데이터의 `isLoading`·`error`·`data`를 손으로 관리하던 부분부터 서버 상태 라이브러리로 옮기고, 새 기능의 클라이언트 상태만 가벼운 스토어로 쓰는 식으로 **점진적으로** 옮긴다. 두 도구가 공존하는 동안 지킬 규칙은 하나다. **같은 데이터를 두 곳에 두지 않는다.** 서버 데이터를 TanStack Query 캐시와 Redux store에 함께 복사해 두면 어느 쪽이 최신인지 알 수 없게 된다.
 
 ## 전역 상태 라이브러리가 푸는 네 가지 문제
 

@@ -222,6 +222,7 @@ flowchart TB
 ## 더 볼 자료
 
 - [Tech Interview Handbook](https://www.techinterviewhandbook.org/): 코딩 면접 기법, 3개월 학습 계획, 알고리즘 치트시트, [Grind 75](https://www.techinterviewhandbook.org/grind75/), 행동 면접 질문 모음을 모은 공개 가이드.
+- [Coding Interview University](https://github.com/jwasham/coding-interview-university): 비전공자가 대기업 SWE 면접에 필요한 CS를 몇 달에 걸쳐 따라가는 체크리스트형 학습 계획. 주제별 구현 목록과 진행 방식은 [[coding-interview-university|Coding Interview University 학습 계획]]에 있다.
 - [System Design Primer](https://github.com/donnemartin/system-design-primer): 시스템 설계 개념(확장성, 일관성, 캐시, DB, 비동기)과 면접 예제를 모은 공개 저장소. 플래시 카드와 문제별 풀이가 있다. 가장 방대해서 시간이 넉넉할 때 맞다.
 - [System Design in a Hurry](https://www.hellointerview.com/learn/system-design/in-a-hurry/introduction): 면접 진행 방식, 핵심 개념·기술, 단골 문제의 설계 결정을 짧게 정리한 무료 가이드.
 - [System Design Roadmap](https://roadmap.sh/system-design): 시스템 설계 주제를 순서대로 잇고 글·영상을 연결한 학습 지도.
@@ -241,4 +242,4 @@ flowchart TB
 - 시스템 디자인은 요구 확인 → 용량 추정 → 상위 설계 → DB → 인터페이스 → 확장성 → 신뢰성 순으로 진행한다.
 - 모든 단계에서 트레이드오프를 말로 설명한다.
 
-관련 노트: [[coding-interview-rubric|코딩 인터뷰 평가 기준]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]], [[coding-test|코딩 테스트 접근법]], [[behavioral-interview-questions|인성 면접 준비]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]], [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[ood-interview-approach|객체 지향 설계 면접: 풀이 순서와 반복되는 설계 부품]]
+관련 노트: [[coding-interview-rubric|코딩 인터뷰 평가 기준]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]], [[coding-test|코딩 테스트 접근법]], [[behavioral-interview-questions|인성 면접 준비]], [[system-design-fundamentals|시스템 설계의 품질 속성과 트레이드오프]], [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]], [[ood-interview-approach|객체 지향 설계 면접: 풀이 순서와 반복되는 설계 부품]], [[coding-interview-university|Coding Interview University 학습 계획]]

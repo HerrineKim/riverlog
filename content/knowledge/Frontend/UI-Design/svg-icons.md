@@ -5,10 +5,11 @@ summary: "아이콘은 콘텐츠가 아니라 인터페이스의 일부라 글�
 tags: ["design", "frontend", "accessibility", "media", "responsive"]
 source: other
 date: "2026-10-21"
-sources: ["https://web.dev/learn/design/icons", "https://developer.mozilla.org/en-US/docs/Web/SVG/Element/use", "https://www.smashingmagazine.com/2014/11/styling-and-animating-svgs-with-css/", "https://developer.mozilla.org/en-US/docs/Web/CSS/transform-box"]
+sources: ["https://web.dev/learn/design/icons", "https://developer.mozilla.org/en-US/docs/Web/SVG/Element/use", "https://www.smashingmagazine.com/2014/11/styling-and-animating-svgs-with-css/", "https://developer.mozilla.org/en-US/docs/Web/CSS/transform-box", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > web.dev의 「[Learn Responsive Design](https://web.dev/learn/design)」 강좌의 Icons 모듈을 바탕으로 재구성한 노트다. CSS로 SVG를 꾸미고 움직이는 법은 「[Styling And Animating SVGs With CSS](https://www.smashingmagazine.com/2014/11/styling-and-animating-svgs-with-css/)」를 바탕으로, 브라우저 지원은 MDN으로 확인해 보강했다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 SVG의 장단점과 기본 도형을 보강했다.
 
 ## 왜 SVG인가
 
@@ -23,6 +24,24 @@ sources: ["https://web.dev/learn/design/icons", "https://developer.mozilla.org/e
 | 맞는 곳 | 사진처럼 복잡한 그림 | 아이콘, 로고, 단순한 도형 |
 
 사진 형식(JPEG·WebP·AVIF)은 [[image-formats|웹 이미지 형식]]에 있다. 디자인 도구에서 내보낸 SVG에는 쓸모없는 메타데이터가 많으니 SVGO(SVGOMG) 같은 도구로 줄인다.
+
+SVG는 텍스트(XML)라서 편집기로 직접 쓰고 고칠 수 있고, gzip·Brotli로 잘 압축되며, 인라인이면 DOM 요소처럼 CSS·JavaScript로 다룰 수 있다. 반대로 **도형이 많아질수록 파일이 커지고 그리는 비용도 늘어** 사진이나 복잡한 일러스트에서는 장점이 사라진다.
+
+### 기본 도형과 좌표계
+
+SVG 안의 좌표는 `viewBox="x y 너비 높이"`가 정한 사용자 좌표계를 따른다. `viewBox="0 0 24 24"`로 그린 아이콘은 `width`를 16px로 주든 64px로 주든 같은 비율로 커지고 줄어든다.
+
+| 요소 | 그리는 것 | 주요 속성 |
+| --- | --- | --- |
+| `<rect>` | 사각형 | `x`·`y`(왼쪽 위), `width`·`height`, 둥근 모서리 반지름 `rx`·`ry` |
+| `<circle>` | 원 | 중심 `cx`·`cy`, 반지름 `r` |
+| `<ellipse>` | 타원 | 중심 `cx`·`cy`, 가로·세로 반지름 `rx`·`ry` |
+| `<line>` | 선분 하나 | 두 끝점 `x1`·`y1`·`x2`·`y2` |
+| `<polyline>` | 이어진 직선(열린 모양) | `points="x,y x,y …"` 좌표 목록 |
+| `<polygon>` | 닫힌 다각형 | `points`, 마지막 점이 첫 점으로 이어진다 |
+| `<path>` | 직선·곡선·호를 섞은 임의의 모양 | `d` 속성의 명령(`M` 이동, `L` 직선, `C`·`Q` 베지어 곡선, `A` 호, `Z` 닫기) |
+
+나머지 도형은 모두 `<path>` 하나로 표현할 수 있어서, 디자인 도구에서 내보낸 아이콘은 대개 `<path>`만으로 이뤄진다. 색과 선은 `fill`·`stroke`·`stroke-width`로 정한다(아래 「스타일」).
 
 ## 넣는 세 가지 방법
 

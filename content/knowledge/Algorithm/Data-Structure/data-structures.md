@@ -4,7 +4,7 @@ concept: "Basic Data Structures"
 summary: "연산의 약속(추상 자료형)과 구현(자료구조)을 나누는 관점, 배열과 realloc 크기 조정 비용, 배열·행렬 문제의 요령(부분 배열과 부분 수열, 인덱스 변환, 전치), 연결 리스트(C 구조체·Kotlin 예제)와 둘 중 고르는 기준, 더미 노드·제자리 뒤집기 같은 연결 리스트 기법, 층을 쌓아 건너뛰는 스킵 리스트, 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 얕은 복사와 깊은 복사."
 tags: ["data-structure", "cs50", "linked-list", "hash-table", "tree", "c"]
 source: notion
-sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/", "https://www.youtube.com/watch?v=DuDz6B4cqVc", "https://www.techinterviewhandbook.org/algorithms/array/", "https://www.techinterviewhandbook.org/algorithms/matrix/", "https://www.techinterviewhandbook.org/algorithms/linked-list/", "https://www.techinterviewhandbook.org/algorithms/trie/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)"]
+sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/", "https://www.youtube.com/watch?v=DuDz6B4cqVc", "https://www.techinterviewhandbook.org/algorithms/array/", "https://www.techinterviewhandbook.org/algorithms/matrix/", "https://www.techinterviewhandbook.org/algorithms/linked-list/", "https://www.techinterviewhandbook.org/algorithms/trie/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "https://github.com/jwasham/coding-interview-university"]
 date: "2026-10-30"
 ---
 
@@ -12,6 +12,7 @@ date: "2026-10-30"
 > 「다차원 배열과 구조체」 절과 배열 인덱스·연결 리스트 끝 표시·연결 리스트로 만든 스택과 큐 등 일부 설명은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 > 배열 문제의 요령, 행렬 다루기, 연결 리스트 문제 기법, 트라이의 연산 복잡도는 Tech Interview Handbook의 「[Array](https://www.techinterviewhandbook.org/algorithms/array/)」, 「[Matrix](https://www.techinterviewhandbook.org/algorithms/matrix/)」, 「[Linked list](https://www.techinterviewhandbook.org/algorithms/linked-list/)」, 「[Trie](https://www.techinterviewhandbook.org/algorithms/trie/)」 치트시트를 바탕으로 보강했다.
 > 스킵 리스트 절은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
+> 동적 배열의 늘리기·줄이기 정책은 jwasham의 「[Coding Interview University](https://github.com/jwasham/coding-interview-university)」(CC-BY-SA-4.0)의 벡터 구현 과제를 바탕으로 보강했다.
 > 「추상 자료형(ADT)」 절은 고려사이버대학교 「자료구조」(2024-1학기) 강의 내용을 바탕으로 보강했다.
 
 자료구조는 데이터를 메모리에 어떻게 배치하고 연결하느냐의 문제다. 배열처럼 연속된 공간을 쓰면 접근은 빠르지만 크기를 바꾸기 어렵고, [[pointers-and-memory|포인터]]로 흩어진 공간을 이으면 크기는 자유롭지만 접근이 느려진다. 예제는 C와 Kotlin으로 든다.
@@ -98,6 +99,16 @@ free(list);
 ```
 
 `realloc`이 복사를 대신해 줄 뿐, 뒤 공간이 비어 있지 않으면 새 공간을 잡고 원소를 모두 옮기는 비용은 그대로다.
+
+**동적 배열(벡터)** 은 이 비용을 드물게 만드는 정책으로 끝 추가를 분할 상환 O(1)로 만든다. 직접 구현할 때의 기본 정책은 다음과 같다.
+
+| 상황 | 정책 | 이유 |
+| --- | --- | --- |
+| 처음 할당 | 16칸, 더 크게 시작하면 2의 거듭제곱(32, 64, 128 …) | 작은 크기에서 잦은 재할당을 피한다 |
+| 가득 찬 상태에서 추가 | 용량을 **두 배**로 늘려 옮긴다 | 복사 비용 n이 그동안 한 추가 n번에 나뉘어 한 번에 O(1)이 된다. 일정량씩 늘리면 O(n)이 된다 |
+| 삭제로 원소 수가 용량의 **1/4**이 됨 | 용량을 **절반**으로 줄인다 | 1/2에서 줄이면 경계에서 추가·삭제를 번갈아 할 때마다 늘리고 줄이기를 반복(thrashing)한다. 1/4로 여유를 둬야 분할 상환 O(1)이 유지된다 |
+
+용량이 2n이어도 공간은 O(n)이다. 구현할 연산은 `size`·`capacity`·`is_empty`·`at`(범위 밖이면 오류)·`push`·`insert`(뒤를 오른쪽으로 민다)·`prepend`·`pop`·`delete`(뒤를 왼쪽으로 당긴다)·`remove`(값이 있는 모든 자리 삭제)·`find`(없으면 -1)와 내부용 `resize`다.
 
 ### 배열 문제의 기본 요령
 

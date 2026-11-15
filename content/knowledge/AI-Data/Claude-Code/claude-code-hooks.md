@@ -4,11 +4,12 @@ concept: "Claude Code Hooks"
 summary: "훅은 Claude Code의 특정 시점(도구 실행 전후, 응답 종료, 압축 전 등)에 내 명령을 자동으로 실행하는 장치다. 포맷터·타입 검사·민감 파일 차단처럼 모델에게 부탁하지 않고 반드시 지켜야 하는 규칙을 건다. 이벤트 종류, 설정 위치와 matcher, 표준 입력 JSON과 종료 코드 2의 의미, .env 읽기 차단 예제, 유용한 훅(큰 파일 읽기를 저비용 모델로 돌려 토큰을 줄이는 구성 포함), 보안 주의점과 디버깅 방법을 정리했다."
 tags: ["ai", "claude-code", "agentic-coding", "automation", "security"]
 source: other
-date: "2026-11-05"
-sources: ["https://gayuna.github.io/llm/claude-code/", "https://anthropic.skilljar.com/claude-code-in-action", "https://code.claude.com/docs/en/hooks", "https://code.claude.com/docs/en/hooks-guide", "https://engineering.atspotify.com/2026/9/portal-by-spotify-cut-my-claude-code-token-usage-by-90"]
+date: "2026-11-15"
+sources: ["https://github.com/shanraisshan/claude-code-best-practice/tree/main/tips", "https://gayuna.github.io/llm/claude-code/", "https://anthropic.skilljar.com/claude-code-in-action", "https://code.claude.com/docs/en/hooks", "https://code.claude.com/docs/en/hooks-guide", "https://engineering.atspotify.com/2026/9/portal-by-spotify-cut-my-claude-code-token-usage-by-90"]
 ---
 
 > Anthropic 강의 「[Claude Code in Action](https://anthropic.skilljar.com/claude-code-in-action)」을 정리한 hello.gayuna의 「[Claude Code in Action](https://gayuna.github.io/llm/claude-code/)」(2025.09)을 바탕으로, 이벤트·설정·출력 형식은 [훅 공식 문서](https://code.claude.com/docs/en/hooks)로 2026년 기준에 맞춰 재구성한 노트다.
+> 이벤트 목록과 활용 예(Stop 루프, 권한 요청 위임, 온디맨드 훅)는 shanraisshan의 「[claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice)」(MIT, 2026-11)에 모인 Claude Code 팀의 팁으로 보강했다.
 > 토큰 절감 예는 Spotify Engineering의 「[Portal by Spotify cut my Claude Code token usage by 90%](https://engineering.atspotify.com/2026/9/portal-by-spotify-cut-my-claude-code-token-usage-by-90)」(2026.09)로 보강했다.
 
 ## 훅이란
@@ -38,7 +39,7 @@ sources: ["https://gayuna.github.io/llm/claude-code/", "https://anthropic.skillj
 | | `InstructionsLoaded` | CLAUDE.md나 규칙 파일이 읽힐 때 |
 | 알림 | `Notification` | 권한 요청이 필요하거나 일정 시간 입력을 기다릴 때 |
 
-이 밖에도 작업 디렉터리 변경, 파일 변경 감시, 워크트리 생성, 모델 전환 같은 이벤트가 있다. 전체 목록은 [공식 문서](https://code.claude.com/docs/en/hooks)에 있다.
+이 밖에도 도구 묶음이 끝난 뒤(`PostToolBatch`), 프롬프트 확장(`UserPromptExpansion`), 응답 실패(`StopFailure`), 작업 디렉터리 변경(`CwdChanged`), 파일 변경 감시(`FileChanged`), 워크트리 생성·삭제(`WorktreeCreate`·`WorktreeRemove`), 권한 거부(`PermissionDenied`), 작업 생성(`TaskCreated`), MCP 입력 요청(`Elicitation`) 같은 이벤트가 있다(v2.1.322 기준 30개가 넘는다). 핸들러는 셸 명령 말고도 HTTP 요청과 MCP 도구 호출이 될 수 있다. 전체 목록은 [공식 문서](https://code.claude.com/docs/en/hooks)에 있다.
 
 ## 설정
 
@@ -125,6 +126,12 @@ main();
 | 쿼리 중복 방지 | 새 쿼리 파일을 만들려 할 때 별도의 Claude(`claude -p`)를 띄워 비슷한 쿼리가 이미 있는지 묻고, 있으면 막고 기존 것을 쓰게 한다 |
 | 포맷터 | 편집 뒤 Prettier·Black 등을 자동 실행 |
 | 알림 | `Notification`·`Stop`에서 데스크톱 알림을 띄워 자리를 비워도 끝난 것을 안다 |
+| 끝날 때까지 계속 | `Stop`에서 테스트를 돌려 실패하면 「계속하라」를 돌려준다. 비결정적 모델이라도 결정적인 종료 조건을 얻는다. `claude -p`·SDK와 묶으면 무인 루프가 된다 |
+| 권한 요청 위임 | `PermissionRequest`에서 요청을 강한 모델에게 넘겨 공격 여부를 보고 안전한 것만 자동 승인하거나, Slack·메신저로 보내 자리를 비워도 원격으로 승인한다 |
+| 맥락 주입·기록 | `SessionStart`에서 매번 필요한 맥락을 동적으로 넣고(클라우드 세션의 환경 구성에도 쓴다), `PreToolUse`에서 모든 bash 명령과 스킬 호출을 로깅해 자주 쓰는·안 쓰는 스킬을 찾는다 |
+| 온디맨드 훅 | 스킬 프론트매터의 `hooks`로 그 스킬을 부를 때만 켜지고 세션 동안 유지되는 훅. `/careful`은 `rm -rf`·`DROP TABLE`·force push·`kubectl delete`를 막고, `/freeze`는 특정 폴더 밖 편집을 막는다 |
+
+훅이라는 기능 자체가 「권한 요청이 떴는데 자리를 비워서 몰랐다, Slack으로 알려 달라」 같은 요청에 통합 기능을 하나씩 만드는 대신 열어 둔 확장점이다.
 
 ### 예: 큰 파일 읽기를 싼 모델로 돌려 토큰 줄이기
 
@@ -176,4 +183,4 @@ main();
 - CLAUDE.md의 권고를 강제 규칙으로 바꿀 때도 훅을 쓴다. 큰 파일 읽기를 막고 저비용 모델로 돌리면 토큰이 크게 준다.
 - 훅은 내 권한으로 돈다. 입력 검증, 절대 경로, 따옴표를 지킨다.
 
-관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[harness-engineering|프롬프트에서 하네스로]], [[personal-agent-harness|내 일을 줄이는 하네스 만들기]]
+관련 노트: [[claude-code-guide|Claude Code 활용 가이드]], [[claude-code-settings|Claude Code 설정과 권한 규칙]], [[claude-code-tips|Claude Code 실전 팁]], [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[harness-engineering|프롬프트에서 하네스로]], [[personal-agent-harness|내 일을 줄이는 하네스 만들기]]
