@@ -85,7 +85,7 @@
  },
  "AI-Data/ai-delegation-toolkit.md": {
   "created": "2026-10-18T14:04:45+09:00",
-  "updated": "2026-11-15T19:14:19+09:00"
+  "updated": "2026-11-15T19:14:20+09:00"
  },
  "AI-Data/ai-era-developer.md": {
   "created": "2026-10-13T19:47:35+09:00",
@@ -341,11 +341,11 @@
  },
  "Algorithm/Data-Structure/heap-priority-queue.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T12:52:45+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Algorithm/Data-Structure/queue-deque.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Algorithm/Data-Structure/segment-tree.md": {
   "created": "2026-10-31T13:48:56+09:00",
@@ -369,7 +369,7 @@
  },
  "Algorithm/Graph/dijkstra.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Algorithm/Graph/euler-circuit.md": {
   "created": "2026-10-14T10:57:28+09:00",
@@ -377,7 +377,7 @@
  },
  "Algorithm/Graph/graph-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T14:10:50+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Algorithm/Graph/lowest-common-ancestor.md": {
   "created": "2026-10-30T16:00:02+09:00",
@@ -473,7 +473,7 @@
  },
  "Algorithm/Search/bfs.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Algorithm/Search/binary-search.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -481,11 +481,11 @@
  },
  "Algorithm/Search/brute-force.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Algorithm/Search/dfs.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T12:52:45+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Algorithm/Sorting.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -885,7 +885,7 @@
  },
  "Backend/Django/getting-started-mtv.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Backend/Django/model-migration.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -965,7 +965,7 @@
  },
  "Backend/NestJS/interceptor-aop.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-20T15:35:59+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Backend/NestJS/module.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -2289,7 +2289,7 @@
  },
  "Frontend/CSS/box-model.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Frontend/CSS/css-animation.md": {
   "created": "2026-10-14T18:18:27+09:00",
@@ -2341,7 +2341,7 @@
  },
  "Frontend/CSS/css-methodologies.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-31T12:50:12+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Frontend/CSS/css-overflow-scroll.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -2365,7 +2365,7 @@
  },
  "Frontend/CSS/flexbox.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Frontend/CSS/how-css-works.md": {
   "created": "2026-10-13T19:46:37+09:00",
@@ -2833,7 +2833,7 @@
  },
  "Frontend/React/components-and-props.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Frontend/React/composition.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -2869,7 +2869,7 @@
  },
  "Frontend/React/jsx.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T12:50:00+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Frontend/React/lifecycle.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -2881,7 +2881,7 @@
  },
  "Frontend/React/lists-and-keys.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Frontend/React/logic-reuse-patterns.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -2933,7 +2933,7 @@
  },
  "Frontend/React/redux-middleware.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-31T13:02:11+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Frontend/React/redux.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -3049,7 +3049,7 @@
  },
  "Frontend/UI-Design/layout-grid-spacing.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-31T12:51:38+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Frontend/UI-Design/loading-ui.md": {
   "created": "2026-10-20T11:04:43+09:00",
@@ -3153,7 +3153,7 @@
  },
  "Frontend/Web/dom.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T13:02:11+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Frontend/Web/form-autofill.md": {
   "created": "2026-10-17T23:13:04+09:00",
@@ -3349,7 +3349,7 @@
  },
  "Frontend/Web/spa-csr-ssr.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T14:10:50+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Frontend/Web/static-site-generator.md": {
   "created": "2026-10-13T19:48:49+09:00",
@@ -3653,7 +3653,7 @@
  },
  "Tools/Git/branch.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-02T10:37:21+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Tools/Git/branching-strategies.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -3669,7 +3669,7 @@
  },
  "Tools/Git/git-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-02T10:37:21+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Tools/Git/git-config-options.md": {
   "created": "2026-10-12T21:32:52+09:00",
@@ -3705,7 +3705,7 @@
  },
  "Tools/Git/merge.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-02T10:37:21+09:00"
+  "updated": "2026-11-15T19:36:21+09:00"
  },
  "Tools/Git/monorepo-vs-polyrepo.md": {
   "created": "2026-10-21T14:58:21+09:00",

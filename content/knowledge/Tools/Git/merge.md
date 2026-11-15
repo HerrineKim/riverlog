@@ -25,7 +25,15 @@ $ git merge feature      # 2. 가져올 브랜치를 지정
 
 `feature` 브랜치를 만든 뒤 `main`에 새 커밋이 없는 경우이다. `feature`의 커밋이 `main` 커밋을 그대로 이어받았으므로, 새 커밋을 만들 필요 없이 **`main` 포인터를 앞으로 옮기기만** 하면 된다(빨리 감기).
 
-![fast-forward](/images/til/ETC/Git/md-images/fast.png)
+```mermaid
+flowchart LR
+  c1["43fab3e<br/>main test 1"] --> c2["2fe539c<br/>login test 1"]
+  before["main (병합 전)"] -.-> c1
+  after["main (병합 후)"] -.-> c2
+  login["login"] -.-> c2
+```
+
+새 커밋 없이 `main` 포인터만 `login`이 가리키는 커밋으로 옮겨 간다.
 
 ```bash
 $ git switch -c login
@@ -48,7 +56,16 @@ $ git branch -d login     # 병합이 끝난 브랜치는 삭제
 
 브랜치를 만든 뒤 **양쪽 모두에 새 커밋이 생긴** 경우이다. 포인터 이동만으로는 합칠 수 없으므로, Git은 **두 브랜치의 최신 커밋 2개 + 공통 조상 1개**를 비교해 결과를 계산하고, 이를 새로운 **Merge Commit**으로 남긴다. Merge Commit은 부모가 둘이다.
 
-![3-way merge](/images/til/ETC/Git/md-images/way.png)
+```mermaid
+gitGraph
+  commit id: "43fab3e"
+  commit id: "2fe539c"
+  branch signout
+  commit id: "d9f33e2"
+  checkout main
+  commit id: "07fae72"
+  merge signout id: "1170a02"
+```
 
 두 브랜치가 **서로 다른 파일** 또는 **같은 파일의 다른 부분**을 수정했다면 자동으로 병합된다.
 
@@ -79,7 +96,17 @@ $ git log --oneline --all --graph
 
 두 브랜치가 **같은 파일의 같은 부분**을 다르게 수정하면, Git은 어느 쪽을 택할지 판단하지 못하고 충돌(conflict)을 알린다. 이때는 사람이 직접 결과를 정해야 한다.
 
-![conflict](/images/til/ETC/Git/md-images/conflict.png)
+```mermaid
+gitGraph
+  commit id: "main test 1"
+  branch hotfix
+  commit id: "hotfix 문장"
+  checkout main
+  commit id: "main 문장"
+  merge hotfix id: "eec8da4" type: HIGHLIGHT
+```
+
+두 커밋이 `test.txt`의 같은 줄을 고쳐 자동 병합이 멈춘다. 사람이 충돌을 정리하고 커밋해야 병합 커밋(`eec8da4`)이 생긴다.
 
 ### 해결 순서
 

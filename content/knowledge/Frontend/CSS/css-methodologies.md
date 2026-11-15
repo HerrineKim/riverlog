@@ -74,8 +74,6 @@ ITCSS(Inverted Triangle CSS)는 Harry Roberts가 만든 **파일 배치** 방법
       ▽ Utilities  앞의 모든 것을 이기는 도우미(.u-hidden)
 ```
 
-![ITCSS 역삼각형 층](https://cdn.prod.website-files.com/6a43a37920abffc0916725ea/6a43a37920abffc091672c81_itcss-layers.avif)
-
 ### BEMIT: 층을 이름에 적는다
 
 BEM에 층 접두사를 붙이면 클래스만 보고 어느 층인지 안다.

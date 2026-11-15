@@ -53,8 +53,6 @@ flowchart LR
   m1 -->|"store.dispatch(다른 액션)<br/>체인 맨 앞부터 다시 시작"| d
 ```
 
-![리덕스 미들웨어가 액션을 차례로 넘기는 구조](https://i.imgur.com/fZs5yvY.png)
-
 - `next(action)`은 **다음 단계로 넘기기**, `store.dispatch(action)`은 **처음부터 다시 보내기**다. 미들웨어 안에서 `store.dispatch`로 같은 액션을 보내면 무한 루프가 된다.
 - `next`를 부르지 않으면 액션은 reducer에 닿지 않고 사라진다.
 - 등록 순서대로 실행된다. redux-logger처럼 최종 액션을 찍는 미들웨어는 **맨 뒤**에 둔다. 그래야 thunk 함수가 아니라 실제 액션 객체가 기록된다.

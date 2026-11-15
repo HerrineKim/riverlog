@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 240" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="16" fill="#1f2328">
+  <title>12단 그리드: 60px 칼럼 12개와 20px 거터 11개, 합계 940px</title>
+  <rect x="0" y="0" width="1000" height="240" fill="#ffffff"/>
+  <g fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5">
+    <rect x="30" y="80" width="60" height="90"/><rect x="110" y="80" width="60" height="90"/>
+    <rect x="190" y="80" width="60" height="90"/><rect x="270" y="80" width="60" height="90"/>
+    <rect x="350" y="80" width="60" height="90"/><rect x="430" y="80" width="60" height="90"/>
+    <rect x="510" y="80" width="60" height="90"/><rect x="590" y="80" width="60" height="90"/>
+    <rect x="670" y="80" width="60" height="90"/><rect x="750" y="80" width="60" height="90"/>
+    <rect x="830" y="80" width="60" height="90"/><rect x="910" y="80" width="60" height="90"/>
+  </g>
+  <g fill="#ffe8cc">
+    <rect x="90" y="80" width="20" height="90"/><rect x="170" y="80" width="20" height="90"/>
+  </g>
+  <line x1="60" y1="40" x2="60" y2="76" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="60" y="32" text-anchor="middle" font-weight="600">칼럼 60px</text>
+  <line x1="180" y1="40" x2="180" y2="76" stroke="#b35c00" stroke-width="1.5"/>
+  <text x="180" y="32" text-anchor="middle" font-weight="600">거터 20px</text>
+  <line x1="30" y1="190" x2="970" y2="190" stroke="#57606a" stroke-width="1.5"/>
+  <line x1="30" y1="182" x2="30" y2="198" stroke="#57606a" stroke-width="1.5"/>
+  <line x1="970" y1="182" x2="970" y2="198" stroke="#57606a" stroke-width="1.5"/>
+  <text x="500" y="222" text-anchor="middle">칼럼 12개 × 60px + 거터 11개 × 20px = 940px</text>
+</svg>

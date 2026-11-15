@@ -30,7 +30,7 @@ sources: ["https://webdesign.tutsplus.com/articles/a-comprehensive-introduction-
 | 칼럼(column) | 단위 여러 개와 거터를 묶은 콘텐츠 그릇 |
 | 필드(field) | 칼럼들이 만드는 가로 띠. 높이를 맞추면 페이지가 정돈된다 |
 
-![칼럼 그리드의 칼럼·거터·여백](https://raw.githubusercontent.com/AI-Dev-Lex-Kim/Frontend_TIL/master/Images/Grid%20System/Grid%20System-2.png)
+![12단 그리드: 60px 칼럼 12개와 20px 거터 11개를 합쳐 940px](/images/knowledge/column-grid-940.svg)
 
 ### 12단 그리드
 

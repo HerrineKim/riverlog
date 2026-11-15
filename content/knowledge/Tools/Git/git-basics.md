@@ -45,8 +45,6 @@ Git은 도구이고 GitHub·GitLab은 Git 저장소를 호스팅하며 PR·이�
 | Staging Area (Index) | 다음 커밋에 포함할 변경 사항을 모아 두는 곳 |
 | Repository (`.git`) | 커밋(버전)이 영구히 기록되는 저장소 |
 
-![Git의 세 영역](/images/til/ETC/Git/git.assets/image-20220113101851253.png)
-
 Staging Area와 Repository는 `.git` 폴더 안에서 관리되는 논리적 공간이다. 즉 `.git` 폴더를 지우면 **모든 버전 기록이 사라지니** 주의해야 한다.
 
 ### 원격까지 네 곳: 명령은 코드를 옮기는 일
@@ -88,7 +86,15 @@ clone: Remote Repo 전체를 처음 복사해 와 네 곳을 만든다
   - **modified**: 마지막 커밋 이후 수정된 상태
   - **staged**: 수정 사항이 Staging Area에 올라가 다음 커밋을 기다리는 상태
 
-![파일 상태 변화](/images/til/ETC/Git/git.assets/image-20220113101938077.png)
+```mermaid
+stateDiagram-v2
+  [*] --> Untracked : 새 파일
+  Untracked --> Staged : git add
+  Unmodified --> Modified : 파일 수정
+  Modified --> Staged : git add
+  Staged --> Unmodified : git commit
+  Unmodified --> Untracked : git rm --cached (추적 해제)
+```
 
 커밋된 내용은 언제든 되살릴 수 있지만, 한 번도 커밋되지 않은 변경은 Git이 복구해 줄 수 없다. (`git restore <file>`로 작업 내용을 되돌리면 그 변경은 영영 사라지니 주의한다.)
 

@@ -28,7 +28,12 @@ MPA에서 SPA로, 다시 서버와 클라이언트가 역할을 나누는 구조
 
 ## CSR (Client Side Rendering)
 
-![CSR](/images/til/FRONTEND/Web/SPA.assets/CSR.png)
+```mermaid
+flowchart LR
+  a["서버가 빈 HTML 뼈대 응답<br/>(화면: 로딩)"] --> b["브라우저가 JS 다운로드<br/>(화면: 로딩)"]
+  b --> c["브라우저가 React 실행<br/>(화면: 로딩)"]
+  c --> d["화면이 보이고 동작한다"]
+```
 
 - 최초 요청 시 데이터가 비어 있는 HTML 뼈대와 CSS·JS 리소스를 받는다.
 - 이후 클라이언트가 필요한 **데이터만** 요청하고, JavaScript로 DOM을 그린다.
@@ -42,7 +47,14 @@ MPA에서 SPA로, 다시 서버와 클라이언트가 역할을 나누는 구조
 
 ## SSR (Server Side Rendering)
 
-![SSR](/images/til/FRONTEND/Web/SPA.assets/SSR.png)
+```mermaid
+flowchart LR
+  a["서버가 완성된 HTML 응답<br/>(화면: 로딩)"] --> b["브라우저가 HTML을 그린다<br/>화면이 보임, JS 다운로드"]
+  b --> c["브라우저가 React 실행<br/>(하이드레이션)"]
+  c --> d["JS 이벤트 핸들러가 동작한다"]
+```
+
+CSR은 JS 실행이 끝나야 화면이 보이고, SSR은 HTML이 도착하면 바로 보인다. 다만 JS 이벤트 핸들러에 기대는 상호작용(버튼의 `onClick` 등)은 하이드레이션이 끝나야 반응한다. 일반 링크와 폼 제출은 브라우저 기본 동작이라 JS 없이도 작동한다.
 
 - 서버가 데이터를 채운 완성된 HTML을 만들어 응답한다.
 - JavaScript 웹 프레임워크 이전의 전통적인 방식이다(예: Django 템플릿 렌더링).

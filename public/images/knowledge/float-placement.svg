@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 380" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="15" fill="#1f2328">
+  <title>float 배치 규칙: 폭 300px 컨테이너에 100px, 210px 왼쪽 float와 20px 오른쪽 float</title>
+  <rect x="0" y="0" width="680" height="380" fill="#ffffff"/>
+  <text x="40" y="28" font-weight="600">컨테이너 폭 300px</text>
+  <rect x="40" y="44" width="600" height="300" fill="#f6f8fa" stroke="#57606a" stroke-width="2"/>
+  <rect x="40" y="44" width="200" height="140" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="2"/>
+  <text x="140" y="108" text-anchor="middle" font-weight="600">① float: left</text>
+  <text x="140" y="130" text-anchor="middle">100px</text>
+  <rect x="240" y="44" width="400" height="140" fill="none" stroke="#8c959f" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="440" y="100" text-anchor="middle" fill="#57606a">남은 폭 200px: ②(210px)가 안 들어간다</text>
+  <text x="440" y="124" text-anchor="middle" fill="#57606a">③도 ②보다 위로 올라갈 수 없다</text>
+  <rect x="40" y="184" width="420" height="90" fill="#ffe8cc" stroke="#b35c00" stroke-width="2"/>
+  <text x="250" y="224" text-anchor="middle" font-weight="600">② float: left</text>
+  <text x="250" y="246" text-anchor="middle">210px, 다음 줄로 밀림</text>
+  <rect x="600" y="184" width="40" height="70" fill="#d3f4dc" stroke="#1a7f37" stroke-width="2"/>
+  <text x="620" y="224" text-anchor="middle" font-weight="600">③</text>
+  <text x="590" y="296" text-anchor="end">③ float: right, 20px: ②와 같은 줄 오른쪽에 붙는다</text>
+  <line x1="594" y1="290" x2="616" y2="258" stroke="#1a7f37" stroke-width="1.5"/>
+</svg>

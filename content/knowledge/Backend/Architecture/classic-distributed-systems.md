@@ -34,10 +34,17 @@ sources: ["https://static.googleusercontent.com/media/research.google.com/en//ar
 
 **설계 가정이 일반 파일 시스템과 다르다.** 부품 고장은 예외가 아니라 상시 상태이고, 파일은 수백 MB~수 GB로 크며, 쓰기는 대부분 덮어쓰기가 아니라 **덧붙이기(append)** 이고, 지연보다 대역폭이 중요하다.
 
-```text
-클라이언트 --(파일 이름, 청크 번호)--> 마스터 : 청크 핸들과 복제본 위치를 알려 준다
-클라이언트 --(청크 핸들, 바이트 범위)--> 청크 서버 : 데이터는 마스터를 거치지 않는다
-마스터 <--하트비트--> 청크 서버 : 지시를 내리고 상태를 모은다
+```mermaid
+sequenceDiagram
+  participant C as 클라이언트
+  participant M as 마스터
+  participant CS as 청크 서버
+  C->>M: 파일 이름, 청크 번호
+  M-->>C: 청크 핸들과 복제본 위치
+  C->>CS: 청크 핸들, 바이트 범위
+  CS-->>C: 데이터 (마스터를 거치지 않는다)
+  M->>CS: 하트비트로 지시를 내린다
+  CS-->>M: 하트비트로 상태를 보고한다
 ```
 
 | 결정 | 내용 | 이유 |
@@ -65,9 +72,11 @@ map(k1, v1)          → list(k2, v2)     예: (문서 이름, 본문) → (단�
 reduce(k2, list(v2)) → list(v2)         예: (단어, [1,1,1]) → 3
 ```
 
-```text
-입력 → M개 조각(16~64MB) → 맵 워커들 → 중간 결과를 로컬 디스크에 R개 파티션(hash(key) mod R)으로
-     → 리듀스 워커가 원격으로 읽어 키로 정렬 → reduce → GFS에 R개 출력 파일
+```mermaid
+flowchart LR
+  in["입력"] --> sp["M개 조각<br/>(16~64MB)"] --> mw["맵 워커들"]
+  mw -->|"hash(key) mod R"| part["중간 결과:<br/>로컬 디스크에 R개 파티션"]
+  part -->|"원격으로 읽기"| rw["리듀스 워커:<br/>키로 정렬"] --> red["reduce"] --> out["GFS에 R개 출력 파일"]
 ```
 
 - **지역성**: 마스터는 입력 청크의 복제본이 있는 서버(아니면 같은 랙)에 맵 작업을 배치한다. 네트워크가 가장 귀한 자원이라 대부분의 입력을 로컬 디스크에서 읽는다.
@@ -98,12 +107,14 @@ reduce(k2, list(v2)) → list(v2)         예: (단어, [1,1,1]) → 3
 
 저장 구조가 오늘날 **LSM 트리**의 원형이다.
 
-```text
-쓰기 → 커밋 로그(GFS) → memtable(메모리, 정렬)
-memtable이 차면 → SSTable(불변, 정렬된 파일)로 내림        ← 마이너 컴팩션
-SSTable 몇 개 + memtable → 새 SSTable 하나               ← 병합 컴팩션
-모든 SSTable → 하나, 삭제 표시까지 정리                    ← 메이저 컴팩션
-읽기 → memtable과 SSTable들을 합쳐 본다. 블룸 필터로 키가 없는 SSTable은 건너뛴다
+```mermaid
+flowchart LR
+  w["쓰기"] --> log["커밋 로그(GFS)"] --> mt["memtable<br/>(메모리, 정렬)"]
+  mt -->|"차면 내림<br/>마이너 컴팩션"| ss["SSTable<br/>(불변, 정렬된 파일)"]
+  ss -->|"SSTable 몇 개 + memtable<br/>병합 컴팩션"| ss2["새 SSTable 하나"]
+  ss2 -->|"모든 SSTable을 하나로,<br/>삭제 표시까지 정리<br/>메이저 컴팩션"| ss3["SSTable 하나"]
+  r["읽기"] -->|"합쳐 본다"| mt
+  r -->|"블룸 필터로 키가 없는<br/>SSTable은 건너뛴다"| ss
 ```
 
 - **불변성이 설계를 단순하게 한다.** SSTable은 한 번 쓰면 바뀌지 않으니 읽기에 락이 필요 없고, 영구 삭제는 낡은 SSTable을 회수하는 문제로 바뀌며, 태블릿을 쪼갤 때 자식이 부모의 SSTable을 공유한다.

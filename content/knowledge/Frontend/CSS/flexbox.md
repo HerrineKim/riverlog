@@ -39,7 +39,7 @@ float는 「같은 방향으로 가능한 한 위, 가능한 한 바깥쪽」에
 | 밀려난 자리 위로는 아무것도 못 간다 | 위 예에서 뒤따르는 20px짜리 `float: right`는 첫 줄 오른쪽에 빈 공간이 있어도 그 줄로 못 올라가고, 밀려난 float와 같은 줄 오른쪽에 붙는다 |
 | 왼쪽 float와 오른쪽 float는 서로 겹치지 않는다 | 한 줄에 둘이 다 안 들어가면 뒤에 나온 쪽이 아래로 밀린다 |
 
-![float 배치 예](https://raw.githubusercontent.com/AI-Dev-Lex-Kim/Frontend_TIL/master/Images/inline-box.jpg)
+![폭 300px 컨테이너: 100px 왼쪽 float, 아래로 밀린 210px 왼쪽 float, 그 줄 오른쪽에 붙은 20px 오른쪽 float](/images/knowledge/float-placement.svg)
 
 float로 여러 칸을 늘어놓으면 높이가 다른 칸 하나가 뒤의 칸들을 엉뚱한 줄에 걸리게 만든다. 칸 배치는 플렉스·그리드로 한다.
 

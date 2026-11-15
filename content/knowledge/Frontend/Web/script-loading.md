@@ -16,13 +16,22 @@ sources: ["https://www.frontendinterviewhandbook.com/kr/html-questions", "https:
 
 ## script, async, defer, module
 
-```text
-<script>          파싱 ──■ 받기 ■ 실행 ■── 파싱 계속
-<script async>    파싱 ──────────■ 실행 ■── 파싱 계속
-                  받기 ═════════╝            (받는 대로 바로 실행)
-<script defer>    파싱 ─────────────────────── 파싱 끝 ■ 실행
-                  받기 ═══════╝                (문서 순서대로)
+```mermaid
+flowchart LR
+  subgraph plain["script"]
+    p1["파싱"] --> p2["받기"] --> p3["실행"] --> p4["파싱 계속"]
+  end
+  subgraph asy["script async"]
+    a1["파싱"] --> a3["실행"] --> a4["파싱 계속"]
+    a2["받기<br/>(파싱과 병렬)"] -->|"받는 대로 바로 실행"| a3
+  end
+  subgraph dfr["script defer"]
+    d1["파싱"] --> d3["파싱 끝"] --> d4["실행"]
+    d2["받기<br/>(파싱과 병렬)"] -->|"문서 순서대로"| d4
+  end
 ```
+
+일반 `<script>`는 받기와 실행 동안 파싱이 멈춘다. `async`와 `defer`는 파싱하는 동안 함께 받는다.
 
 | 방식 | 내려받기 | 실행 시점 | 실행 순서 | 쓰는 곳 |
 | --- | --- | --- | --- | --- |

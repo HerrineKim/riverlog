@@ -47,8 +47,6 @@ CSS의 첫 번째 원칙은 **모든 요소는 네모(박스)** 라는 것이다
 
 ### shorthand
 
-![margin·padding shorthand](/images/til/FRONTEND/CSS/CSS%EB%9E%80.assets/image-20220814220142594.png)
-
 ```css
 margin: 10px;                /* 상하좌우 */
 margin: 10px 20px;           /* 상하 | 좌우 */
