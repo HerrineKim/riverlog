@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 732 376" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="15" fill="#1f2328">
+  <title>align-items 값별 교차축 정렬</title>
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b35c00"/></marker></defs>
+  <rect width="732" height="376" fill="#ffffff"/>
+  <text x="30.0" y="34.0" text-anchor="start" font-size="15" font-weight="600">stretch</text>
+  <rect x="30.0" y="46.0" width="200.0" height="120.0" rx="4" fill="#f6f8fa" stroke="#57606a" stroke-width="1.5"/>
+  <rect x="40.0" y="56.0" width="40.0" height="100.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="60.0" y="111.2" text-anchor="middle" font-size="15" font-weight="600">1</text>
+  <rect x="88.0" y="56.0" width="40.0" height="100.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="108.0" y="111.2" text-anchor="middle" font-size="15" font-weight="600">2</text>
+  <rect x="136.0" y="56.0" width="40.0" height="100.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="156.0" y="111.2" text-anchor="middle" font-size="15" font-weight="600">3</text>
+  <text x="266.0" y="34.0" text-anchor="start" font-size="15" font-weight="600">flex-start</text>
+  <rect x="266.0" y="46.0" width="200.0" height="120.0" rx="4" fill="#f6f8fa" stroke="#57606a" stroke-width="1.5"/>
+  <rect x="276.0" y="56.0" width="40.0" height="40.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="296.0" y="81.2" text-anchor="middle" font-size="15" font-weight="600">1</text>
+  <rect x="324.0" y="56.0" width="40.0" height="40.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="344.0" y="81.2" text-anchor="middle" font-size="15" font-weight="600">2</text>
+  <rect x="372.0" y="56.0" width="40.0" height="40.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="392.0" y="81.2" text-anchor="middle" font-size="15" font-weight="600">3</text>
+  <text x="502.0" y="34.0" text-anchor="start" font-size="15" font-weight="600">flex-end</text>
+  <rect x="502.0" y="46.0" width="200.0" height="120.0" rx="4" fill="#f6f8fa" stroke="#57606a" stroke-width="1.5"/>
+  <rect x="512.0" y="116.0" width="40.0" height="40.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="532.0" y="141.2" text-anchor="middle" font-size="15" font-weight="600">1</text>
+  <rect x="560.0" y="116.0" width="40.0" height="40.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="580.0" y="141.2" text-anchor="middle" font-size="15" font-weight="600">2</text>
+  <rect x="608.0" y="116.0" width="40.0" height="40.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="628.0" y="141.2" text-anchor="middle" font-size="15" font-weight="600">3</text>
+  <text x="30.0" y="214.0" text-anchor="start" font-size="15" font-weight="600">center</text>
+  <rect x="30.0" y="226.0" width="200.0" height="120.0" rx="4" fill="#f6f8fa" stroke="#57606a" stroke-width="1.5"/>
+  <rect x="40.0" y="266.0" width="40.0" height="40.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="60.0" y="291.2" text-anchor="middle" font-size="15" font-weight="600">1</text>
+  <rect x="88.0" y="266.0" width="40.0" height="40.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="108.0" y="291.2" text-anchor="middle" font-size="15" font-weight="600">2</text>
+  <rect x="136.0" y="266.0" width="40.0" height="40.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="156.0" y="291.2" text-anchor="middle" font-size="15" font-weight="600">3</text>
+  <text x="266.0" y="214.0" text-anchor="start" font-size="15" font-weight="600">baseline</text>
+  <rect x="266.0" y="226.0" width="200.0" height="120.0" rx="4" fill="#f6f8fa" stroke="#57606a" stroke-width="1.5"/>
+  <rect x="276.0" y="236.0" width="48.0" height="42.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="300.0" y="266.0" text-anchor="middle" font-size="28" font-weight="600">1</text>
+  <rect x="332.0" y="246.0" width="40.0" height="30.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="352.0" y="266.0" text-anchor="middle" font-size="15" font-weight="600">2</text>
+  <rect x="380.0" y="246.0" width="40.0" height="30.0" rx="4" fill="#dbe7ff" stroke="#2f5fb3" stroke-width="1.5"/>
+  <text x="400.0" y="266.0" text-anchor="middle" font-size="15" font-weight="600">3</text>
+  <line x1="270" y1="266" x2="462" y2="266" stroke="#b35c00" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="458.0" y="334.0" text-anchor="end" font-size="13" fill="#b35c00">점선: 첫 줄 텍스트 기준선</text>
+  <text x="502.0" y="256.0" text-anchor="start" font-size="14" fill="#57606a">교차축(여기서는 세로)으로</text>
+  <text x="502.0" y="278.0" text-anchor="start" font-size="14" fill="#57606a">아이템을 정렬한다.</text>
+  <text x="502.0" y="306.0" text-anchor="start" font-size="14" fill="#57606a">기본값 stretch는 높이를 정하지</text>
+  <text x="502.0" y="328.0" text-anchor="start" font-size="14" fill="#57606a">않은 아이템을 가득 늘린다.</text>
+</svg>
