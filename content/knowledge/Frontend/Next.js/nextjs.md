@@ -5,12 +5,14 @@ summary: "SSR·SSG·파일 기반 라우팅·자동 코드 스플리팅을 제�
 tags: ["nextjs", "react", "rendering", "seo", "cache", "frontend"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://riverkim.kr/214", "https://80000coding.notion.site/a688c09821014d51a01f37d773906165", "https://80000coding.notion.site/bc0ccbe2aabe4205aaa7e9233bb5ead6", "https://80000coding.notion.site/286aebc32d214857abe04c9a306aa02d", "https://nextjs.org/docs/app/getting-started/caching", "https://nextjs.org/docs/app/getting-started/proxy", "https://nextjs.org/docs/app/guides/upgrading/version-16", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%281%29%20-%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0%2C%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%288%29%20-%20Middleware.md"]
+sources: ["https://riverkim.kr/214", "https://80000coding.notion.site/a688c09821014d51a01f37d773906165", "https://80000coding.notion.site/bc0ccbe2aabe4205aaa7e9233bb5ead6", "https://80000coding.notion.site/286aebc32d214857abe04c9a306aa02d", "https://nextjs.org/docs/app/getting-started/caching", "https://nextjs.org/docs/app/getting-started/proxy", "https://nextjs.org/docs/app/guides/upgrading/version-16", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%281%29%20-%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0%2C%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%288%29%20-%20Middleware.md", "https://nextjs.org/docs/pages/api-reference/functions/get-initial-props", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「Next.js 공식 문서 읽기(1) - FOUNDATIONS」, 「Next.js 공식 문서 읽기(2) - CREATE YOUR FIRST APP」, 「Next.js (SSR) 공식문서 읽어보기 (12.0 버전)」에서 Pages Router 내용을 더한 노트다.
 >
 > `proxy.ts`의 matcher·쿠키는 「[Frontend_TIL: Next.js(8) - Middleware](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%288%29%20-%20Middleware.md)」를 바탕으로 보강했다.
+>
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 `_app`·`_document`·`_error`의 역할과 `getInitialProps`를 보강했다.
 
 **Next.js**는 React 기반 웹 애플리케이션 **프레임워크**다. React가 UI 라이브러리라면, Next.js는 라우팅·렌더링 전략·빌드 최적화까지 정해진 틀을 제공한다. 가장 큰 장점은 React의 기본 방식인 CSR의 약점, 즉 **검색 엔진이 내용을 읽기 어렵다는 점**을 SSR·SSG로 보완해 준다는 것이다. Node.js(브라우저 밖에서 JavaScript를 실행하는 Chrome V8 기반 런타임) 위에서 동작한다.
 
@@ -133,13 +135,16 @@ Next.js 12까지의 튜토리얼과 오래된 프로젝트는 대부분 Pages Ro
 
 | 하는 일 | Pages Router (`pages/`) | App Router (`app/`) |
 | --- | --- | --- |
-| 공통 레이아웃·전역 CSS | `pages/_app.js`, `pages/_document.js` | `app/layout.tsx` (루트 레이아웃) |
+| 공통 레이아웃·전역 CSS, 페이지를 오가도 유지할 상태 | `pages/_app.js`: 모든 페이지를 감싸는 컴포넌트. 페이지가 바뀌어도 다시 마운트되지 않는다 | `app/layout.tsx` (루트 레이아웃) |
+| `<html>`·`<body>` 뼈대(`lang`, 폰트 `<link>`, CSS-in-JS 서버 설정) | `pages/_document.js`: 서버에서만 그려지고 이벤트 핸들러를 붙일 수 없다 | `app/layout.tsx`가 `<html>`·`<body>`를 직접 그린다 |
+| 데이터 가져오기(옛 방식) | `getInitialProps`: 첫 요청은 서버, `<Link>` 이동 때는 브라우저에서 돈다. Next.js 9.3 이전의 유일한 방식이었고 지금은 레거시. `_app`에 두면 모든 페이지의 자동 정적 최적화가 꺼진다 | 서버 컴포넌트의 `fetch` |
 | 빌드 때 데이터 가져오기(SSG) | `export async function getStaticProps()` | 서버 컴포넌트에서 캐시되는 `fetch`·`'use cache'` |
 | 요청마다 가져오기(SSR) | `getServerSideProps(context)` | 캐시하지 않는 `fetch`, `cookies()` 같은 동적 API |
 | 동적 경로 미리 만들기 | `getStaticPaths` → `{ paths: [{ params: { id } }], fallback }` | `generateStaticParams()` |
 | `<head>` 수정 | `next/head`의 `<Head>` | `metadata` 객체, `generateMetadata()` |
 | API 엔드포인트 | `pages/api/hello.js`의 `handler(req, res)` | `app/api/hello/route.ts`의 `GET`·`POST` (Route Handler) |
 | 404 페이지 | `pages/404.js` | `app/not-found.tsx` |
+| 에러 페이지 | `pages/_error.js`(프로덕션에서 처리되지 않은 에러와 500), `pages/500.js` | 세그먼트별 `error.tsx`, 루트 레이아웃까지 실패하면 `global-error.tsx` ([[nextjs-routing-conventions\|라우팅 파일 규칙]]) |
 | CMS 초안 미리보기 | Preview Mode | Draft Mode |
 
 두 방식에 공통인 기능도 있다.

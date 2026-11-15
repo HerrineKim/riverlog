@@ -5,7 +5,10 @@ summary: "JSX 속성으로 핸들러 함수를 넘기는 React의 이벤트 처�
 tags: ["react", "event", "frontend"]
 source: til
 date: "2026-10-13"
+sources: ["https://github.com/junh0328/prepare_frontend_interview"]
 ---
+
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 핸들러 자리에서 함수를 호출할 때 생기는 무한 렌더링을 보강했다.
 
 **이벤트(Event)** 는 사용자의 클릭·입력 같은 사건이고, **이벤트 핸들러**는 그 사건이 일어났을 때 실행되는 함수다. React에서는 `addEventListener`를 직접 호출하는 대신, JSX 속성으로 핸들러 함수를 넘긴다.
 
@@ -27,7 +30,7 @@ date: "2026-10-13"
 | 값 | 실행할 코드 문자열 | **함수 참조** `{activate}` |
 | 기본 동작 막기 | `return false` 가능 | 반드시 `e.preventDefault()` |
 
-`onClick={activate()}`처럼 괄호를 붙이면 렌더링할 때 **즉시 호출**되고 그 반환값이 핸들러로 들어간다. 함수 자체를 넘겨야 한다.
+`onClick={activate()}`처럼 괄호를 붙이면 렌더링할 때 **즉시 호출**되고 그 반환값이 핸들러로 들어간다. 함수 자체를 넘겨야 한다. 그 자리에서 setter를 부르면(`onClick={setCount(count + 1)}`) 렌더링할 때마다 state가 바뀌어 다시 렌더링되는 고리가 생기고, React가 「Too many re-renders」 오류로 멈춘다. 인자가 필요하면 아래처럼 화살표 함수로 감싼다.
 
 ## 함수 컴포넌트에서 핸들러 정의
 

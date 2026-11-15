@@ -5,10 +5,11 @@ summary: "프론트엔드 하나마다 그 화면에 맞춘 중간 서버를 두
 tags: ["backend", "architecture", "frontend", "graphql", "nextjs"]
 source: other
 date: "2026-10-20"
-sources: ["https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/", "https://zuminternet.github.io/ZUM-Mobile-NodeJS/"]
+sources: ["https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/", "https://zuminternet.github.io/ZUM-Mobile-NodeJS/", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 카카오엔터테인먼트 박수빈(cheese)의 글 「[카카오페이지는 BFF(Backend For Frontend)를 어떻게 적용했을까?](https://tech.kakaoent.com/front-end/2022/220310-kakaopage-bff/)」(2022.03)를 요약·재구성한 노트다. SSR·캐시 역할은 「[모바일 줌 SpringBoot → NodeJS 전환기 (feat. VueJS SSR)](https://zuminternet.github.io/ZUM-Mobile-NodeJS/)」를 바탕으로 더했다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 인증 통합과 BFF의 단일 장애점 같은 비용을 보강했다.
 
 ## BFF란
 
@@ -77,6 +78,16 @@ query userAndCash {
 ```
 
 브라우저 요청은 하나로 준다. 불필요한 필드 제거, snake_case → camelCase, 날짜 포맷 변환, 공통 에러 객체 감싸기를 BFF가 맡는다.
+
+## BFF가 만드는 비용
+
+웹 하나뿐인 서비스에서도 MSA로 쪼개진 뒤 BFF를 두는 흔한 이유는 **인증 처리의 분산**이다. 프론트엔드가 여러 서비스에 직접 붙으면 서비스마다 토큰 검증 코드가 중복되고, 브라우저는 서비스별 인증 상태를 따로 챙겨야 한다. BFF가 토큰 검증을 한곳에서 맡고 각 서비스에는 인증된 요청만 넘기면 프론트엔드는 BFF 하나만 바라본다. 인증을 어느 층에 둘지는 [[auth-placement|인증·인가 로직은 어디에 두나]]에 있다. 대신 서버가 하나 더 생기는 만큼 비용이 따른다.
+
+| 비용 | 내용 | 대응 |
+| --- | --- | --- |
+| 단일 장애점(SPOF) | 모든 화면 요청이 BFF를 지나므로 BFF가 죽으면 서비스 전체가 멈춘다 | 인스턴스를 여럿 두고 health check로 죽은 인스턴스를 로드 밸런서에서 뺀다. 배포 때는 graceful shutdown으로 처리 중인 요청을 마치고 내린다 |
+| 운영 부담 | 배포 파이프라인·모니터링·장애 대응 대상이 하나 는다 | 플랫폼이 하나면 Next.js Route Handler처럼 프론트엔드 배포에 얹는다 |
+| 로직 비대화 | 집계(aggregation)를 넘어 비즈니스 규칙이 BFF로 새어 들어온다 | 위 원칙대로 조합·가공만 맡기고, 규칙은 도메인 API에 둔다 |
 
 ## Next.js를 BFF로
 

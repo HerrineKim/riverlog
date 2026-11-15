@@ -5,11 +5,12 @@ summary: "React 컴포넌트에 스타일을 입히는 방법들. Sass와 clsx�
 tags: ["react", "css", "styling", "frontend"]
 source: mixed
 date: "2026-10-21"
-sources: ["https://styled-components.com/docs/faqs", "https://github.com/styled-components/styled-components/releases", "https://react.vlpt.us/styling/", "https://react.vlpt.us/styling/01-sass.html", "https://react.vlpt.us/styling/02-css-module.html", "https://react.vlpt.us/styling/03-styled-components.html", "https://react.vlpt.us/mashup-todolist/01-create-components.html", "https://vite.dev/guide/features.html#css-pre-processors", "https://styled-components.com/docs/api#transient-props", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%20%EC%8A%A4%ED%83%80%EC%9D%BC%EB%A7%81.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Styled%20Component.md"]
+sources: ["https://styled-components.com/docs/faqs", "https://github.com/styled-components/styled-components/releases", "https://react.vlpt.us/styling/", "https://react.vlpt.us/styling/01-sass.html", "https://react.vlpt.us/styling/02-css-module.html", "https://react.vlpt.us/styling/03-styled-components.html", "https://react.vlpt.us/mashup-todolist/01-create-components.html", "https://vite.dev/guide/features.html#css-pre-processors", "https://styled-components.com/docs/api#transient-props", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%20%EC%8A%A4%ED%83%80%EC%9D%BC%EB%A7%81.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Styled%20Component.md", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 개인 TIL과 공식 문서를 바탕으로, Sass·CSS Module·styled-components 활용은 벨로퍼트의 「[벨로퍼트와 함께하는 모던 리액트](https://react.vlpt.us/)」 중 「[리액트 컴포넌트 스타일링하기](https://react.vlpt.us/styling/)」 장과 「[멋진 투두리스트 만들기 - 컴포넌트 만들기](https://react.vlpt.us/mashup-todolist/01-create-components.html)」를 바탕으로 보강했다.
 > Sass 공통 파일 자동 불러오기와 `.attrs`·`as`는 「[Frontend_TIL: 컴포넌트 스타일링](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8%20%EC%8A%A4%ED%83%80%EC%9D%BC%EB%A7%81.md)」·「[Styled Component](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/React/Styled%20Component.md)」를 바탕으로 보강했다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 UI 라이브러리를 래퍼로 감싸는 전략과 그 트레이드오프를 보강했다.
 
 React에서는 스타일을 **컴포넌트 단위**로 관리하려는 방법이 여럿 있다. 전역 CSS 파일 하나에 모든 클래스를 쌓으면 이름이 충돌하기 쉽기 때문이다. 충돌을 막는 길은 세 갈래다. **이름 규칙**을 지키거나(일반 CSS·Sass), **빌드 도구가 이름을 고유하게** 바꾸게 하거나(CSS Modules), **스타일을 컴포넌트에 붙여** JS에서 만들거나(CSS-in-JS). 여기에 인라인 스타일과 완성된 컴포넌트 라이브러리(MUI 등)가 더해진다.
 
@@ -258,6 +259,31 @@ npm install @mui/material @emotion/react @emotion/styled
 ```
 
 버튼, 표(Data Grid), 다이얼로그 같은 완성된 컴포넌트를 import해 바로 쓸 수 있다. emotion을 스타일 엔진으로 쓰기 때문에 함께 설치한다. 필요한 컴포넌트를 문서에서 찾아 일단 적용해 보면서 익히는 것이 빠르다.
+
+### UI 라이브러리를 감싸서 쓰기
+
+제품 코드 곳곳에서 `@mui/material`의 `Button`을 바로 import하면, 디자인 시스템이 바뀌거나 라이브러리를 갈아탈 때 모든 사용처를 고쳐야 한다. 그래서 `shared/components/Button.tsx`처럼 **프로젝트 자체 컴포넌트로 한 겹 감싸고**, 화면 코드는 이 래퍼만 import한다. 공통 스타일·기본 props는 래퍼 안에서 정하고, 변경은 래퍼 한 곳에서 끝난다.
+
+```tsx
+// shared/components/Button.tsx
+import MuiButton, { type ButtonProps as MuiButtonProps } from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
+
+const StyledButton = styled(MuiButton)({ borderRadius: 8, textTransform: 'none' })
+
+type ButtonProps = Pick<MuiButtonProps, 'variant' | 'size' | 'disabled' | 'onClick' | 'children'>
+
+export function Button(props: ButtonProps) {
+  return <StyledButton disableElevation {...props} />
+}
+```
+
+| 래퍼가 여는 props | 장점 | 단점 |
+| --- | --- | --- |
+| 전부 (`MuiButtonProps` 그대로) | 라이브러리 기능을 빠짐없이 쓴다 | 사용처가 라이브러리 API에 다시 묶여 교체 효과가 줄어든다 |
+| 필요한 것만 (`Pick`, 자체 이름) | 디자인 시스템이 허용한 변형만 쓰게 강제하고 교체가 쉽다 | 새 요구가 올 때마다 래퍼에 props를 하나씩 뚫어야 한다 |
+
+디자인 시스템 컴포넌트처럼 공통으로 쓸 것이 분명하면 처음부터 감싼다. 감싸는 원리(외부 의존을 내 계약 뒤로 숨기기)는 [[frontend-dependency|프론트엔드에서 의존성 관리하기]]의 의존성 역전과 같다.
 
 ## 핵심 정리
 

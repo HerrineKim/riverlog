@@ -5,10 +5,11 @@ summary: "MVC·MVP·MVVM의 구조와 차이, 수동적 뷰·감독 컨트롤러
 tags: ["frontend", "architecture", "state", "design-pattern"]
 source: other
 date: "2026-10-21"
-sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://yozm.wishket.com/magazine/detail/1663/", "https://beomy.tistory.com/43", "https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns", "https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html", "https://staltz.com/unidirectional-user-interface-architectures.html", "https://blog.nodejitsu.com/scaling-isomorphic-javascript-code/", "https://addyosmani.com/blog/understanding-mvc-and-mvp-for-javascript-and-backbone-developers/", "https://addyosmani.com/blog/understanding-mvvm-a-guide-for-javascript-developers/", "https://martinfowler.com/eaaDev/", "https://github.com/facebook/flux/tree/master/examples/flux-concepts", "https://survivejs.com/blog/redux-interview/", "https://guide.elm-lang.org/architecture/", "https://cycle.js.org/model-view-intent.html"]
+sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://yozm.wishket.com/magazine/detail/1663/", "https://beomy.tistory.com/43", "https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns", "https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html", "https://staltz.com/unidirectional-user-interface-architectures.html", "https://blog.nodejitsu.com/scaling-isomorphic-javascript-code/", "https://addyosmani.com/blog/understanding-mvc-and-mvp-for-javascript-and-backbone-developers/", "https://addyosmani.com/blog/understanding-mvvm-a-guide-for-javascript-developers/", "https://martinfowler.com/eaaDev/", "https://github.com/facebook/flux/tree/master/examples/flux-concepts", "https://survivejs.com/blog/redux-interview/", "https://guide.elm-lang.org/architecture/", "https://cycle.js.org/model-view-intent.html", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08, 요즘IT 재게재)를 바탕으로 재구성하고, MVVM-C·VIPER는 ByteByteGo의 System Design 101 가이드 「[MVC, MVP, MVVM, VIPER Patterns](https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns)」로, 「MVC·MVP·MVVM 비교」는 beomy의 「[MVC, MVP, MVVM 비교](https://beomy.tistory.com/43)」(2018.09)로 보강한 노트다. 단방향 아키텍처의 변형은 「[단방향 사용자 인터페이스 아키텍쳐](https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html)」(André Staltz 글의 번역)로 보강했다. MVP의 변형과 Model 2는 Nodejitsu의 「[Scaling Isomorphic Javascript Code](https://blog.nodejitsu.com/scaling-isomorphic-javascript-code/)」(2011)와 Addy Osmani의 「[Understanding MVC And MVP](https://addyosmani.com/blog/understanding-mvc-and-mvp-for-javascript-and-backbone-developers/)」·「[Understanding MVVM](https://addyosmani.com/blog/understanding-mvvm-a-guide-for-javascript-developers/)」로, Flux에서 Redux로의 과정은 Flux 저장소의 「[Flux Concepts](https://github.com/facebook/flux/tree/master/examples/flux-concepts)」와 「[Redux - Reinventing Flux](https://survivejs.com/blog/redux-interview/)」(Dan Abramov 인터뷰, 2015)로 더했다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 Flux가 나온 계기인 알림 배지 사례를 보강했다.
 
 ## 아키텍처란
 
@@ -111,7 +112,7 @@ Redux 이후 진영마다 비슷한 도구가 나왔다. Vue의 Vuex(지금은 [
 
 ### props drilling이 드러낸 문제
 
-**컴포넌트 계층과 데이터 계층은 모양이 다르다.** 독립과 재사용을 위해 컴포넌트를 나눴는데, 데이터를 나르려고 중간 컴포넌트에 props를 뚫다 보니 오히려 위아래 컴포넌트가 더 단단히 묶였다. Facebook이 Flux를 발표하며 "MVC의 양방향이 문제"라고 한 것도, 정확히는 MVC 자체가 아니라 컴포넌트 단위로 모델이 파편화되는 경계 문제였다.
+**컴포넌트 계층과 데이터 계층은 모양이 다르다.** 독립과 재사용을 위해 컴포넌트를 나눴는데, 데이터를 나르려고 중간 컴포넌트에 props를 뚫다 보니 오히려 위아래 컴포넌트가 더 단단히 묶였다. Facebook이 Flux를 발표하며 "MVC의 양방향이 문제"라고 한 것도, 정확히는 MVC 자체가 아니라 컴포넌트 단위로 모델이 파편화되는 경계 문제였다. 발표에서 든 사례가 메신저 알림 배지다. 상단 배지에는 읽지 않은 메시지가 있다고 뜨는데 채팅창을 열면 새 메시지가 없는 버그가 고쳐도 다시 생겼다. 같은 「읽음」 데이터를 여러 모델과 뷰가 서로 고치다 보니 어떤 변경이 어느 화면을 바꿨는지 따라갈 수 없었고, 그래서 변경이 한 통로(Action → Dispatcher → Store → View)로만 흐르게 했다.
 
 ## MVI: 흐름을 아키텍처로 정리하기
 

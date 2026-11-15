@@ -5,10 +5,10 @@ summary: "모듈 없이 태어난 JavaScript가 CommonJS·AMD·ES 모듈을 거�
 tags: ["frontend", "javascript", "tools", "performance"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://vite.dev/blog/announcing-vite8", "https://vite.dev/config/build-options#build-target", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/81-bundling-and-building-with-parcel", "https://joshua1988.github.io/webpack-guide/"]
+sources: ["https://velog.io/@teo/vite", "https://velog.io/@teo/Svelte-Rxjs-Vite-AdorableCSS", "https://vite.dev/blog/announcing-vite8", "https://vite.dev/config/build-options#build-target", "https://wesbos.com/javascript/14-es-modules-and-structuring-larger-apps/81-bundling-and-building-with-parcel", "https://joshua1988.github.io/webpack-guide/", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
-> 테오(teo)의 「[Vite 이야기 (feat. Svelte)](https://velog.io/@teo/vite)」(2022.07)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다. webpack 설정의 뼈대는 「[웹팩 핸드북](https://joshua1988.github.io/webpack-guide/)」의 목차를 따라 더했다.
+> 테오(teo)의 「[Vite 이야기 (feat. Svelte)](https://velog.io/@teo/vite)」(2022.07)를 바탕으로 재구성하고, Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)를 함께 참고했다. webpack 설정의 뼈대는 「[웹팩 핸드북](https://joshua1988.github.io/webpack-guide/)」의 목차를 따라 더했다. junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 번들러 이전 태스크 러너(Grunt·Gulp)의 역할을 보강했다.
 
 ## 번들러가 필요한 이유
 
@@ -50,6 +50,7 @@ timeline
 
 | 도구 | 들고 나온 개념 |
 | --- | --- |
+| Grunt·Gulp | 번들러가 아니라 **태스크 러너(task runner)**. HTML·CSS·JS 압축, 이미지 최적화, Sass 같은 전처리기 변환, 파일 병합, 저장 시 새로고침처럼 손으로 반복하던 작업을 스크립트로 자동화했다. 모듈 의존성 그래프는 모른다. 지금은 번들러와 [[npm-scripts\|npm 스크립트]]가 이 역할을 흡수했다 |
 | webpack | 처음 크게 퍼진 번들러. 로더·플러그인으로 트랜스파일, 코드 스플리팅, HMR, CSS·에셋까지 다루는 **통합 개발 도구**로 커졌다. 설정이 복잡하다 |
 | Parcel | webpack 설정이 불편하다는 반응에서 나온 **설정 없는(zero-config)** 번들러 |
 | Rollup | 쓰지 않는 코드를 걷어 내는 **트리 셰이킹(tree-shaking)** 을 앞세웠다. Svelte를 만든 Rich Harris가 먼저 만든 도구다 |

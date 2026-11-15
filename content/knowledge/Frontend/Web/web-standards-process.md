@@ -5,10 +5,25 @@ summary: "웹 플랫폼의 표준은 W3C 권고안 트랙(WD → CR → REC), WH
 tags: ["web", "browser", "html", "css", "history"]
 source: other
 date: "2026-10-21"
-sources: ["https://www.w3.org/policies/process/", "https://www.w3.org/2014/Process-20140801/#rec-advance", "http://fantasai.inkedblade.net/weblog/2011/inside-csswg/", "http://fantasai.inkedblade.net/weblog/2011/inside-csswg/decisions", "http://fantasai.inkedblade.net/weblog/2011/inside-csswg/modules", "http://fantasai.inkedblade.net/weblog/2011/inside-csswg/process", "https://whatwg.org/faq", "http://developer.telerik.com/featured/w3c-vs-whatwg-html5-specs-differences-documented/", "https://www.chromestatus.com/features", "https://webkit.org/status/"]
+sources: ["https://www.w3.org/policies/process/", "https://www.w3.org/2014/Process-20140801/#rec-advance", "http://fantasai.inkedblade.net/weblog/2011/inside-csswg/", "http://fantasai.inkedblade.net/weblog/2011/inside-csswg/decisions", "http://fantasai.inkedblade.net/weblog/2011/inside-csswg/modules", "http://fantasai.inkedblade.net/weblog/2011/inside-csswg/process", "https://whatwg.org/faq", "http://developer.telerik.com/featured/w3c-vs-whatwg-html5-specs-differences-documented/", "https://www.chromestatus.com/features", "https://webkit.org/status/", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > fantasai의 「[An Inside View of the CSS Working Group at W3C](http://fantasai.inkedblade.net/weblog/2011/inside-csswg/)」(2011) 연재, WHATWG의 「[FAQ](https://whatwg.org/faq)」, 「[W3C vs. WHATWG HTML5 Specs – The Differences Documented](http://developer.telerik.com/featured/w3c-vs-whatwg-html5-specs-differences-documented/)」(2014)를 바탕으로, 권고안 단계는 현행 「[W3C Process Document](https://www.w3.org/policies/process/)」(2025.08)로 확인해 재구성한 노트다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 웹 표준과 크로스 브라우징의 정의를 보강했다.
+
+## 웹 표준과 크로스 브라우징
+
+**웹 표준**은 HTML·CSS·DOM·JavaScript처럼 웹 플랫폼을 이루는 기술을 표준 기구가 명세로 정한 것이다. 명세대로 쓴 페이지는 브라우저·운영체제·기기·보조 기술(스크린 리더 등)이 같은 의미로 해석한다. 그래서 표준을 지키면 접근성, 검색 엔진의 해석, 유지보수가 함께 좋아진다. 「HTML5·CSS3가 최신 버전」이라는 설명은 낡았다. HTML은 버전 없이 계속 고쳐지는 리빙 스탠더드이고 CSS는 모듈마다 레벨이 따로 오른다(아래 「CSS: 하나의 명세에서 레벨 단위 모듈로」, 「WHATWG와 리빙 스탠더드」).
+
+**크로스 브라우징(cross-browser compatibility)** 은 서로 다른 브라우저와 그 버전에서 페이지가 **같은 기능과 정보를 제공하게** 만드는 일이다. 모든 브라우저에서 픽셀까지 똑같이 보이게 하는 것이 목표가 아니다. 지금은 Chromium·Gecko·WebKit 세 엔진을 기준으로 생각한다.
+
+| 할 일 | 방법 |
+| --- | --- |
+| 지원 범위 정하기 | 사용자 통계로 대상 브라우저를 정하고 `browserslist`나 Baseline 기준으로 적어 둔다 |
+| 쓸 수 있는지 확인 | 아래 「상태 확인하기」의 Baseline·Can I use·MDN 호환성 표 |
+| 미지원 대비 | 브라우저 판별(User-Agent) 대신 기능 감지, 폴백, 점진적 향상([[css-progressive-enhancement\|CSS 점진적 향상]]) |
+| 차이 흡수 | 리셋·노멀라이즈, Autoprefixer 같은 변환 도구, 필요한 만큼만 폴리필 |
+| 검증 | 세 엔진 실제 브라우저와 실기기로 확인한다. Playwright는 세 엔진 모두로 자동 테스트를 돌릴 수 있다 |
 
 ## 누가 무엇을 만드나
 

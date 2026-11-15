@@ -5,10 +5,11 @@ summary: "<head>는 화면에 보이지 않지만 인코딩·제목·뷰포트·
 tags: ["html", "frontend", "web", "seo", "performance"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/learn/html/metadata", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta", "https://www.youtube.com/watch?v=Bat8HyGzkU8", "https://ogp.me/", "https://developers.google.com/search/docs/crawling-indexing/special-tags", "https://developers.google.com/search/docs/appearance/site-names", "https://htmlhead.dev/", "https://rviscomi.github.io/capo.js/user/rules/"]
+sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/learn/html/metadata", "https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta", "https://www.youtube.com/watch?v=Bat8HyGzkU8", "https://ogp.me/", "https://developers.google.com/search/docs/crawling-indexing/special-tags", "https://developers.google.com/search/docs/appearance/site-names", "https://htmlhead.dev/", "https://rviscomi.github.io/capo.js/user/rules/", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Document structure」와 「Metadata」 모듈을 바탕으로, 브라우저 지원은 MDN으로 확인해 재구성한 노트다. 「Open Graph와 SEO」는 freeCodeCamp Concepts의 「[What is the role of the Open graph tags and how does it affect SEO?](https://www.youtube.com/watch?v=Bat8HyGzkU8)」(2025.04)를 바탕으로 [Open Graph 프로토콜](https://ogp.me/)과 Google 검색 센터 문서로 확인해 보강했다. 요소 순서와 meta·link 목록은 Josh Buchea의 「[HEAD: A Guide to HTML <head> Elements](https://htmlhead.dev/)」를 바탕으로, 순서 규칙은 [capo.js](https://rviscomi.github.io/capo.js/user/rules/)로 확인해 보강했다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 `author` meta를 보강했다.
 
 ## head가 하는 일
 
@@ -122,6 +123,7 @@ sources: ["https://web.dev/learn/html/document-structure", "https://web.dev/lear
 | 이름 | 판단 |
 | --- | --- |
 | `description` | 검색 결과의 요약문 후보, 일부 브라우저의 북마크 설명. 페이지 내용을 짧고 정확하게 |
+| `author` | 페이지 작성자 이름. HTML 표준에 정의된 이름이지만 검색 순위나 결과 표시에는 쓰이지 않는다. 검색 엔진에 글쓴이를 알리려면 구조화 데이터(`Article`의 `author`)를 쓴다 |
 | `robots` | `noindex, nofollow`로 색인·링크 추적 거부를 **요청**한다. 강제력은 없다. 기본값이 `index, follow`라 허용은 적을 필요가 없다 |
 | `theme-color` | 브라우저 UI(주소창, 상태 표시줄) 색 제안. `media` 속성으로 라이트·다크별 값을 줄 수 있는 유일한 meta다. 사파리와 안드로이드 크롬이 쓰고 데스크톱 크롬·파이어폭스는 대부분 무시한다 |
 | `color-scheme` | `light dark`처럼 페이지가 지원하는 색 구성을 알린다. CSS가 도착하기 전에 브라우저가 배경·폼 컨트롤·스크롤바를 맞는 색으로 그려 다크 모드의 흰 화면 깜빡임을 줄인다(→ [[dark-mode-theming\|테마와 다크 모드 구현]]) |

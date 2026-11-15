@@ -5,10 +5,10 @@ summary: "JavaScript 언어 차원의 에러 처리. try...catch...finally가 �
 tags: ["javascript", "error-handling", "frontend", "debugging"]
 source: other
 date: "2026-10-21"
-sources: ["https://ko.javascript.info/try-catch", "https://ko.javascript.info/custom-errors", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch", "https://www.sitepoint.com/proper-error-handling-javascript/", "https://www.thoughtworks.com/radar/techniques/capturing-client-side-javascript-errors"]
+sources: ["https://ko.javascript.info/try-catch", "https://ko.javascript.info/custom-errors", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch", "https://www.sitepoint.com/proper-error-handling-javascript/", "https://www.thoughtworks.com/radar/techniques/capturing-client-side-javascript-errors", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「try..catch와 에러 핸들링」, 「커스텀 에러와 에러 확장」 글을 바탕으로, MDN으로 확인해 재구성한 노트다. 에러 수집은 「[A Guide to Proper Error Handling in JavaScript](https://www.sitepoint.com/proper-error-handling-javascript/)」와 Thoughtworks Technology Radar의 「[Capturing client-side JavaScript errors](https://www.thoughtworks.com/radar/techniques/capturing-client-side-javascript-errors)」를 바탕으로 보강했다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「try..catch와 에러 핸들링」, 「커스텀 에러와 에러 확장」 글을 바탕으로, MDN으로 확인해 재구성한 노트다. 에러 수집은 「[A Guide to Proper Error Handling in JavaScript](https://www.sitepoint.com/proper-error-handling-javascript/)」와 Thoughtworks Technology Radar의 「[Capturing client-side JavaScript errors](https://www.thoughtworks.com/radar/techniques/capturing-client-side-javascript-errors)」를 바탕으로 보강했다. junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 에러 객체 생성과 throw의 구분을 보강했다.
 
 ## 에러 처리란
 
@@ -110,6 +110,8 @@ if (!user.name) {
 ```
 
 **`throw`에는 `Error`(또는 하위 클래스)만 넘긴다.** 문자열을 던지면 `stack`이 없어 어디서 났는지 추적할 수 없고, `instanceof`로 종류를 가릴 수도 없다.
+
+**에러 객체를 만드는 것과 던지는 것은 다르다.** `new Error('x')`만 쓰면 평범한 객체가 하나 생길 뿐 실행은 그대로 이어지고 `catch`도 돌지 않는다. 흐름을 끊는 것은 `throw`다. 또 `stack`은 객체를 **만든 순간**의 호출 스택이라, 에러를 미리 만들어 두었다가 다른 곳에서 던지면 `stack`이 던진 자리가 아니라 만든 자리를 가리킨다. 그래서 던지는 자리에서 새로 만든다.
 
 ## 다시 던지기: 아는 에러만 처리한다
 

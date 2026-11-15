@@ -5,11 +5,12 @@ summary: "상태가 없는 HTTP에서 브라우저와 서버가 사용자를 기
 tags: ["http", "web", "browser", "security"]
 source: til
 date: "2026-10-20"
-sources: ["https://ko.javascript.info/cookie", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies", "https://web.dev/learn/privacy/third-parties", "https://privacysandbox.google.com/blog/privacy-sandbox-next-steps", "https://bytebytego.com/guides/what-are-the-differences-between-cookies-and-sessions", "https://bytebytego.com/guides/http-cookies-explained-with-a-simple-diagram", "https://bytebytego.com/guides/what-is-a-cookie"]
+sources: ["https://ko.javascript.info/cookie", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies", "https://web.dev/learn/privacy/third-parties", "https://privacysandbox.google.com/blog/privacy-sandbox-next-steps", "https://bytebytego.com/guides/what-are-the-differences-between-cookies-and-sessions", "https://bytebytego.com/guides/http-cookies-explained-with-a-simple-diagram", "https://bytebytego.com/guides/what-is-a-cookie", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > TIL을 정리하고, 서드파티 쿠키 부분은 web.dev의 「[Learn Privacy](https://web.dev/learn/privacy)」 강좌와 Privacy Sandbox 공식 발표로 보강했다.
 > 쿠키와 세션 비교표는 ByteByteGo의 System Design 101 가이드 「[What are the differences between cookies and sessions?](https://bytebytego.com/guides/what-are-the-differences-between-cookies-and-sessions)」, 「[What is a cookie?](https://bytebytego.com/guides/what-is-a-cookie)」를 바탕으로 보탰다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 쿠키 개수·크기 제한의 기준을 보강했다.
 
 HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토콜이라, 그대로는 "방금 로그인한 그 사용자"를 기억하지 못한다. **쿠키(Cookie)** 는 서버가 브라우저에 보내 저장시키는 작은 데이터 조각으로, 이후 같은 서버에 요청할 때마다 함께 전송되어 상태를 유지하게 해 준다. **세션(Session)** 은 쿠키를 이용해 상태를 서버 쪽에 보관하는 방식이다.
 
@@ -58,7 +59,7 @@ HTTP는 요청 하나하나가 독립적인 **무상태(stateless)** 프로토�
 | 쓰기 | `document.cookie = "user=" + encodeURIComponent(v) + "; path=/; max-age=3600"` | 대입 한 번에 **쿠키 하나만** 바뀐다. 다른 쿠키는 지워지지 않는다 |
 | 지우기 | 같은 이름·`path`·`domain`으로 `max-age=0` | path나 domain이 다르면 다른 쿠키로 취급돼 지워지지 않는다 |
 
-이름과 값은 `encodeURIComponent`로 인코딩한다. 쿠키 하나는 약 4KB, 도메인당 개수도 제한이 있다. 비동기로 쿠키를 읽고 쓰며 변경 이벤트까지 받는 Cookie Store API(`cookieStore.get()`·`set()`, `change` 이벤트)가 2025년에 Baseline이 됐다.
+이름과 값은 `encodeURIComponent`로 인코딩한다. 쿠키 하나는 약 4KB, 도메인당 개수도 제한이 있다. 현행 RFC 6265는 브라우저가 **최소한** 쿠키당 4096바이트, 도메인당 50개, 전체 3000개를 저장할 수 있어야 한다고 정한다. 흔히 인용되는 「전체 300개, 도메인당 20개」는 1997년 RFC 2109의 옛 최솟값이다. 실제 상한은 브라우저마다 다르고, 넘치면 오래된 쿠키부터 지워질 수 있으니 쿠키는 적고 작게 유지한다. 비동기로 쿠키를 읽고 쓰며 변경 이벤트까지 받는 Cookie Store API(`cookieStore.get()`·`set()`, `change` 이벤트)가 2025년에 Baseline이 됐다.
 
 ### 퍼스트파티와 서드파티 쿠키
 

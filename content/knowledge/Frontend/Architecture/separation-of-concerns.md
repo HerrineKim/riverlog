@@ -5,10 +5,11 @@ summary: "관심사의 분리는 한 단위가 하나의 선명한 기준으로 
 tags: ["frontend", "architecture", "design-principles", "software-engineering"]
 source: other
 date: "2026-10-13"
-sources: ["https://velog.io/@teo/separation-of-concerns-of-frontend"]
+sources: ["https://velog.io/@teo/separation-of-concerns-of-frontend", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 테오(teo)의 「[프론트엔드 개발자 관점으로 바라보는 관심사의 분리와 좋은 폴더 구조 (feat. FSD)](https://velog.io/@teo/separation-of-concerns-of-frontend)」(2024.09)를 바탕으로 재구성한 노트다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 UI·비즈니스 로직·데이터 접근 계층의 의존 방향을 보강했다.
 
 ## 관심사의 분리란
 
@@ -63,6 +64,21 @@ flowchart LR
 계층으로 나누면 독립 기능이 필요해지고, 기능으로 나누면 다시 계층이 필요해진다. 어느 쪽이 맞는 게 아니라 지금 필요한 관심사가 무엇이냐의 문제다.
 
 문제는 폴더 구조가 태그와 달리 **하나만 고를 수 있다**는 점이다. `/cart/api`와 `/api/cart` 중 하나를 골라야 하고, 그 선택이 팀 전체에 영향을 준다. 이것이 폴더 구조 고민의 본질이다. 역할 기반 구조는 작을 때 충분히 좋지만, 커지면 장바구니 같은 관심사가 역할 폴더마다 찢어진다. FSD는 이 문제에 대한 문서화된 표준 하나다([[feature-sliced-design|Feature-Sliced Design]]).
+
+### 코드 계층: 의존은 한 방향으로
+
+폴더를 어떻게 고르든, 기능 하나의 코드 안에서는 흔히 세 계층을 의식한다.
+
+```mermaid
+flowchart LR
+  ui["UI 계층<br/>컴포넌트"] --> logic["비즈니스 로직 계층<br/>커스텀 훅, 서비스"] --> data["데이터 접근 계층<br/>API 함수, 쿼리 훅"]
+```
+
+- **화살표 반대로는 의존하지 않는다.** 커스텀 훅은 자기를 쓰는 컴포넌트의 구현을 모르고, 데이터 접근 계층은 화면을 모른다.
+- 컴포넌트는 `fetch`·axios를 직접 부르지 않고 쿼리 훅이나 API 함수를 거친다. 그래서 API 응답 구조가 바뀌면 데이터 접근 계층만, 화면을 다시 디자인하면 UI 계층만 고친다. 각 계층을 따로 바꾸고 따로 테스트할 수 있다.
+- 계층 사이의 계약은 TypeScript 타입으로 적는다. API 응답 타입, 도메인 타입, 컴포넌트 props 타입을 나눠 두면 한 계층의 변경이 어디까지 번지는지 컴파일 에러로 바로 드러난다. 응답 타입과 도메인 타입을 나누는 기준은 [[frontend-dependency|프론트엔드에서 의존성 관리하기]]의 「타입 의존성」에 있다.
+- 계층은 비용이다. 작고 수명이 짧은 프로젝트에서 세 계층을 엄격히 지키면 과설계(over-engineering)가 되고, 크고 오래 가는 프로젝트에서 구조가 없으면 유지보수가 무너진다. 팀 규모와 프로젝트 수명을 보고 수준을 고른다.
+- 정한 구조는 ADR(Architecture Decision Record, 결정의 배경·대안·결과를 짧게 남기는 문서)이나 코드 리뷰 규약으로 남겨, 새 팀원이 「왜 이렇게 나눴나」를 코드 밖에서도 읽을 수 있게 한다.
 
 ## 시기에 따라 관심사가 바뀐다
 

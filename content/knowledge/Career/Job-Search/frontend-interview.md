@@ -1,20 +1,32 @@
 ---
 title: "프론트엔드 면접 유형과 준비법"
 concept: "Front End Interview"
-summary: "프론트엔드 면접은 알고리즘보다 도메인 지식과 실전 구현을 본다. JavaScript 코딩, UI 코딩, 알고리즘, 퀴즈, 프론트엔드 시스템 디자인, 비헤이비어럴 여섯 유형별로 무엇을 보고 어떻게 준비하는지, 유형별 대표 문제, 백엔드 시스템 디자인과의 차이, 시스템 디자인용 RADIO 프레임워크, 토론 라운드 주제, UI 구현 때 짚을 체크리스트를 정리하고 개념은 Frontend 노트로 잇는다."
+summary: "프론트엔드 면접은 알고리즘보다 도메인 지식과 실전 구현을 본다. JavaScript 코딩, UI 코딩, 알고리즘, 퀴즈, 프론트엔드 시스템 디자인, 비헤이비어럴 여섯 유형별로 무엇을 보고 어떻게 준비하는지, 유형별 대표 문제, 백엔드 시스템 디자인과의 차이, 시스템 디자인용 RADIO 프레임워크, 토론 라운드 주제, 국내 면접의 진행 형식과 꼬리 질문 사슬, 「아키텍처는 어떻게 고민하나」에 답하는 네 층위, UI 구현 때 짚을 체크리스트를 정리하고 개념은 Frontend 노트로 잇는다."
 tags: ["career", "interview", "job-search", "frontend"]
 source: other
 date: "2026-10-17"
-sources: ["https://www.frontendinterviewhandbook.com/kr/introduction", "https://www.frontendinterviewhandbook.com/introduction", "https://www.frontendinterviewhandbook.com/coding/javascript-utility-function", "https://www.frontendinterviewhandbook.com/coding/build-front-end-user-interfaces", "https://www.frontendinterviewhandbook.com/coding/algorithms", "https://www.frontendinterviewhandbook.com/trivia", "https://www.frontendinterviewhandbook.com/front-end-system-design", "https://www.frontendinterviewhandbook.com/front-end-system-design/ui-components", "https://www.frontendinterviewhandbook.com/front-end-system-design/applications", "https://www.frontendinterviewhandbook.com/behavioral", "https://www.frontendinterviewhandbook.com/resume", "https://www.frontendinterviewhandbook.com/blog/front-end-vs-back-end-system-design-interviews", "https://www.frontendinterviewhandbook.com/blog/a-glimpse-into-front-end-interviews", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91"]
+sources: ["https://www.frontendinterviewhandbook.com/kr/introduction", "https://www.frontendinterviewhandbook.com/introduction", "https://www.frontendinterviewhandbook.com/coding/javascript-utility-function", "https://www.frontendinterviewhandbook.com/coding/build-front-end-user-interfaces", "https://www.frontendinterviewhandbook.com/coding/algorithms", "https://www.frontendinterviewhandbook.com/trivia", "https://www.frontendinterviewhandbook.com/front-end-system-design", "https://www.frontendinterviewhandbook.com/front-end-system-design/ui-components", "https://www.frontendinterviewhandbook.com/front-end-system-design/applications", "https://www.frontendinterviewhandbook.com/behavioral", "https://www.frontendinterviewhandbook.com/resume", "https://www.frontendinterviewhandbook.com/blog/front-end-vs-back-end-system-design-interviews", "https://www.frontendinterviewhandbook.com/blog/a-glimpse-into-front-end-interviews", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > Yangshun Tay·GreatFrontEnd의 「[Front End Interview Handbook](https://www.frontendinterviewhandbook.com/introduction)」([한국어판](https://www.frontendinterviewhandbook.com/kr/introduction), 2026.10 갱신)을 바탕으로 재구성한 노트다. 퀴즈 주제 표는 「[프론트엔드 개발자 인터뷰 후기 (면접 질문 정리)](https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91)」를 참고해 보강했다. 페이지 재현 문제는 Tech Interview Handbook의 「[Interview Formats](https://www.techinterviewhandbook.org/interview-formats-top-companies/)」로 보강했다. 프론트엔드·백엔드 시스템 디자인 비교는 핸드북 블로그의 「[Front End vs. Back End System Design Interviews](https://www.frontendinterviewhandbook.com/blog/front-end-vs-back-end-system-design-interviews)」(2021.12), 라운드 구성과 토론 라운드는 「[A Glimpse into Front End Interviews](https://www.frontendinterviewhandbook.com/blog/a-glimpse-into-front-end-interviews)」(2021.08)로 보강했다.
+> 국내 면접의 진행 형식, 꼬리 질문 사슬, 아키텍처 열린 질문은 junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북과 그 안의 실제 질문 목록을 바탕으로 보강했다. 핸드북의 개념 문답은 각 개념 노트에 나눠 흡수했다.
 
 ## 프론트엔드 면접의 특징
 
 프론트엔드 면접은 일반 소프트웨어 엔지니어 면접보다 **알고리즘 비중이 낮고 도메인 지식 비중이 높다.** HTML, CSS, JavaScript를 실제 상황에 적용하는 능력을 본다. LeetCode만으로는 부족하지만, 기본 자료구조·알고리즘은 여전히 나온다.
 
 유형 구성은 업계 표준이 없고 회사마다 조합이 다르다. 퀴즈를 아예 안 보는 회사도, UI 코딩 대신 시스템 디자인을 보는 회사도 있다. 회사 하나의 기술 면접은 보통 3~4세션이고, 대부분 JavaScript 코딩과 웹 기술 토론이며 나머지가 알고리즘이나 비헤이비어럴이다. **역사가 짧은 회사일수록 JavaScript 비중이 크다.** 오래된 회사는 프론트엔드·백엔드를 가리지 않고 일반 소프트웨어 엔지니어로 뽑아 왔기 때문에 알고리즘 비중이 남아 있다. 지원 회사의 후기와 [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]]로 조합을 확인하고 그에 맞춰 비중을 정한다. 회사는 같은 문제를 자주 재사용한다.
+
+국내 프론트엔드 기술 면접은 개념 문답의 비중이 크다. 질문 빈도는 대체로 **JavaScript > CS(네트워크·브라우저·운영체제) > React > HTML·CSS** 순이다. 진행 형식은 아래처럼 섞인다.
+
+| 형식 | 진행 | 준비 |
+| --- | --- | --- |
+| 개념 문답 | 짧은 질문 하나에 답하면 그 답에서 꼬리 질문이 이어진다 | 아래 「꼬리 질문 사슬」처럼 개념을 연결해서 익힌다 |
+| 포트폴리오 발표 | 동작하는 서비스를 시연하고 질의응답을 받는다. 길면 1시간씩 발표와 기술 토론으로 나뉜다 | 기술 선택 이유(예: Next.js를 도입한 이유), 겪은 문제와 해결 과정을 설명할 수 있게 한다 |
+| 구술 코딩 | 가벼운 알고리즘 문제를 코드로 다 쓰기보다 **어떻게 접근하고 풀지**를 말로 설명한다. 예고 없이 들어오기도 한다 | 문제 이해, 접근법, 복잡도를 소리 내어 말하는 연습을 한다([[coding-test\|코딩 테스트 접근법]]) |
+| 의견 묻기 | 정답이 없는 질문으로 문제를 마주했을 때의 사고 과정을 본다. 예: 「브라우저마다 CSS가 다르게 보이면 무엇을 기준으로 삼나」, 「이 프레임워크는 언제까지 쓰일 것 같나」 | 근거와 함께 자기 기준을 말한다([[web-standards-process\|웹 표준과 크로스 브라우징]]) |
+
+한 면접에 프론트엔드가 아닌 리드 개발자(백엔드, 게임 클라이언트 등)가 들어오면 웹 세부보다 일반 CS와 협업 질문이 늘어난다.
 
 ## 기본기: 모든 유형의 바탕
 
@@ -114,6 +126,29 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 
 `float` 해제나 JSONP 같은 질문도 나오지만, 각각 Flexbox·Grid와 CORS로 대체된 레거시 기법이라 왜 대체됐는지까지 설명할 수 있으면 된다.
 
+### 꼬리 질문 사슬
+
+개념 문답은 한 질문으로 끝나지 않는다. 앞 답의 한 단어를 붙잡아 한 단계씩 깊어진다. 답할 때 **다음 고리를 스스로 꺼낼 수 있으면** 대화를 원하는 방향으로 끌고 갈 수 있다. 실제 면접에서 자주 이어지는 사슬은 이렇다.
+
+| 출발 질문 | 이어지는 질문 | 개념 노트 |
+| --- | --- | --- |
+| 변수 선언 방법 | `var`와 `let`·`const`의 차이 → 호이스팅의 차이 → TDZ → 변수 호이스팅과 함수 호이스팅의 차이 | [[variables-and-types\|변수와 타입]], [[scope-and-closures\|스코프와 클로저]] |
+| 원시 값과 객체 | 저장 방식(값·참조)의 차이 → 얕은 복사와 깊은 복사 | [[variables-and-types\|변수와 타입]], [[arrays-and-objects\|배열과 객체]] |
+| 실행 컨텍스트 | 스코프 → 클로저 → 클로저와 가비지 컬렉션의 관계 | [[execution-context\|실행 컨텍스트]], [[garbage-collection\|가비지 컬렉션]] |
+| 동기와 비동기 | 이벤트 루프 → 태스크 큐와 마이크로태스크 큐 → 콜백을 쓰는 이유 → Promise → `async`/`await`의 장단점 | [[event-loop\|이벤트 루프]], [[callback-and-promise\|콜백과 Promise]], [[async-await\|async/await]] |
+| 데이터 요청 | `XMLHttpRequest`와 `fetch`의 차이 → 응답 상태 코드 종류 | [[ajax\|Ajax]], [[http\|HTTP]] |
+| 브라우저 렌더링 과정 | 렌더링 중 JavaScript가 끼어드는 방식(파싱 중단, `defer`·`async`) → 리플로우와 리페인트 | [[browser-rendering\|브라우저 렌더링]], [[script-loading\|스크립트 로딩]] |
+| 에러 처리를 하는 이유 | 처리하지 않으면 생기는 일 → 처리 방법 | [[js-error-handling\|에러 처리]] |
+| React를 쓰는 이유 | 가상 DOM → `setState`는 동기인가 → 배칭 | [[ui-change-detection\|UI 변경 감지]], [[state\|State]] |
+| 써 본 훅 | 함수 컴포넌트와 클래스 컴포넌트의 차이 → 라이프사이클 메서드와 훅의 대응 → `useEffect`와 `useLayoutEffect`의 차이 → `useMemo`와 `useCallback`의 차이 | [[hooks\|Hooks]], [[lifecycle\|라이프사이클]] |
+| Redux를 쓴 경험 | 기본 원칙 → 리듀서에서 불변성을 지킬 때 얕은 복사인가 깊은 복사인가(얕은 복사다. 바뀐 경로만 새로 만든다) → Flux 패턴 → thunk와 saga의 차이 → Redux Toolkit을 쓰는 이유 | [[redux\|Redux]], [[frontend-mv-architecture\|MVC와 Flux]], [[redux-middleware\|Redux 미들웨어]] |
+| 쿠키와 세션 | 저장 위치와 수명 → 토큰을 어디에 저장하나 | [[cookie-session\|쿠키와 세션]], [[session-vs-token-auth\|세션과 토큰 인증]] |
+| TypeScript를 쓰는 이유 | 타입과 인터페이스의 차이 → 언제 무엇을 쓰나 | [[typescript-basics\|TypeScript 기초]] |
+| SPA와 SSR의 차이 | 하이드레이션 → SEO | [[spa-csr-ssr\|SPA·CSR·SSR]], [[seo-basics\|SEO 기초]] |
+| 반응형에 쓴 상대 단위 | CSS 선택자 → 우선순위(명시도) → `id`와 `class` 중 무엇이 이기나 | [[css-basics\|CSS 기초]], [[selectors\|선택자]], [[responsive-design\|반응형 디자인]] |
+
+긴장하면 아는 것도 뒤집어 말하기 쉽다(예: 얕은 복사를 깊은 복사로 정정). 사슬의 아래 고리(복사의 종류)가 단단하면 위 고리(리듀서의 불변성)에서 흔들려도 스스로 바로잡을 수 있다.
+
 정답 하나를 묻기보다 대화로 이해도를 보는 **토론 라운드**도 있다. 주제는 세 갈래다.
 
 | 주제 | 묻는 것 | 개념 노트 |
@@ -121,6 +156,19 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 | 웹 개발 도구 | 번들링이란, 트리 셰이킹이란, 지연 로딩은 왜 중요한가, 로더는 어떻게 동작하나. 도구 복잡도를 직접 감당해야 하는 스타트업에서 더 자주 묻는다. 큰 회사는 도구를 추상화해 두는 편이라 그 역할이 아니면 덜 묻는다 | [[bundlers-and-vite\|번들러와 Vite]], [[webpack\|webpack]], [[babel\|Babel]], [[lazy-loading\|지연 로딩]] |
 | React 또는 쓰는 프레임워크 | 공고에 React가 있으면 컴포넌트를 짜거나 개념을 설명한다. `useEffect` 의존성 배열, `shouldComponentUpdate` 같은 리렌더링 제어. React 경험이 없으면 다른 프레임워크로 답해도 되지만 내부에서 일어나는 일을 설명할 수 있어야 한다 | [[hooks\|Hooks]], [[re-rendering\|리렌더링]] |
 | 업무 경험 | 이력서에서 면접관이 흥미를 느낀 항목 한두 개를 깊게 묻는다. 예: Babel 플러그인이나 jscodeshift 코드모드로 코드베이스를 개선한 경험 | [[resume-writing\|레주메 작성법]] |
+
+### 열린 질문: 「아키텍처는 어떻게 고민하나」
+
+경력자에게 자주 나오는 열린 질문이다. 범위가 넓으므로 **층위를 먼저 나누고** 면접관의 반응에 따라 한 층을 깊게 판다. 네 층으로 나누면 빠뜨리는 곳이 없다.
+
+| 층위 | 다룰 것 | 대표 꼬리 질문 | 개념 노트 |
+| --- | --- | --- | --- |
+| 시스템·인프라 | 모놀리식, 마이크로서비스, BFF. 서비스가 쪼개지며 흩어진 인증·권한 처리를 BFF 한 곳으로 모으는 식의 도입 배경 | BFF의 단점(단일 장애점, 운영 부담), 마이크로서비스로 옮길 기준(팀 규모, 독립 배포, 도메인 경계), BFF에 어디까지 맡기나 | [[bff\|BFF]], [[microservices-architecture\|마이크로서비스]] |
+| 프론트엔드 애플리케이션 | 상태를 성격(서버 상태, 전역 클라이언트 상태, 레거시)에 따라 다른 도구로 나누기, 기능 단위와 역할 단위를 섞은 폴더 구조 | 두 상태 라이브러리가 공존해도 되나, 서버 상태 라이브러리의 역할, 기능 단위 구조의 단점 | [[react-state-management\|React 상태 관리]], [[frontend-folder-structure\|폴더 구조]] |
+| 컴포넌트 설계 | 공통 UI 라이브러리를 자체 컴포넌트로 감싸기, 재사용 범위에 따라 로직을 둘 자리 정하기 | 감싸기의 단점, Container·Presentational 분리, 추상화 시점 | [[styling\|React 스타일링]], [[component-splitting\|컴포넌트 분리]] |
+| 코드 설계 | 의존성을 UI → 비즈니스 로직 → 데이터 접근 한 방향으로 두기, 타입을 레이어 간 계약으로 쓰기 | API 타입과 도메인 타입 분리, 과한 추상화, 팀에 공유하는 방법(ADR, 리뷰 규칙) | [[separation-of-concerns\|관심사 분리]], [[frontend-dependency\|프론트엔드 의존성]] |
+
+마무리는 원칙 한 줄로 맺는다. **구조에 정답은 없고 규모·팀 상황·변경 가능성에 맞는 수준을 고른다.** 작은 프로젝트의 엄격한 레이어는 과잉 설계이고, 큰 프로젝트의 무구조는 유지 보수 비용이 된다.
 
 ## 프론트엔드 시스템 디자인과 RADIO
 

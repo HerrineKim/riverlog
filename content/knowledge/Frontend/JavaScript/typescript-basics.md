@@ -5,7 +5,7 @@ summary: "TypeScript는 JavaScript에 타입 검사와 자동완성을 더한 �
 tags: ["typescript", "javascript", "frontend", "type-system", "tools"]
 source: other
 date: "2026-10-30"
-sources: ["https://www.heropy.dev/p/WhqSC8", "https://velog.io/@teo/typescript", "https://www.typescriptlang.org/docs/handbook/intro.html", "https://www.typescriptlang.org/docs/handbook/utility-types.html", "https://basarat.gitbooks.io/typescript/content/", "https://basarat.gitbook.io/typescript/type-system/type-inference", "https://basarat.gitbook.io/typescript/type-system/type-assertion", "https://basarat.gitbook.io/typescript/type-system/index-signatures", "https://basarat.gitbook.io/typescript/type-system/readonly", "https://basarat.gitbook.io/typescript/type-system/never", "https://basarat.gitbook.io/typescript/type-system/callable", "https://ahnheejong.gitbook.io/ts-for-jsdev/", "https://www.typescriptlang.org/ko/docs/handbook/intro.html", "https://jameshenry.blog/typescript-the-missing-introduction/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%281%29%20-%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%2C%20%20Annotaions.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%282%29%20-%20%ED%83%80%EC%9E%85%20%EC%B6%94%EB%A1%A0%2C%20%ED%83%80%EC%9E%85%20%EC%95%A8%EB%A6%AC%EC%96%B4%EC%8A%A4%2C%20%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%283%29%20-%20Union%2C%20Intersection%2C%20%EB%A6%AC%ED%84%B0%EB%9F%B4%20%ED%83%80%EC%9E%85%2C%20Enum%20%2C%20never%20%20%2CGenerics.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%285%29%20-%20%EC%BB%A8%EB%94%94%EC%85%94%EB%84%90%20%ED%83%80%EC%9E%85%2C%ED%95%A8%EC%88%98%20%EB%A9%94%EC%84%9C%EB%93%9C%20%ED%83%80%EC%9D%B4%ED%95%91%2C%20%EC%98%A4%EB%B2%84%EB%A1%9C%EB%94%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%287%29%20-%20satisfies%2C%20%ED%83%80%EC%9E%85%ED%99%95%EC%9E%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/Typescript%289%29%20-%20%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%EC%BB%B4%ED%8C%8C%EC%9D%BC.md", "https://medium.freecodecamp.com/why-use-static-types-in-javascript-part-1-8382da1e0adb", "https://flow.org/blog/2015/02/20/Flow-Comments/", "https://github.com/grab/front-end-guide", "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html", "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-5.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/javascript.md", "https://www.frontendinterviewhandbook.com/javascript-questions"]
+sources: ["https://www.heropy.dev/p/WhqSC8", "https://velog.io/@teo/typescript", "https://www.typescriptlang.org/docs/handbook/intro.html", "https://www.typescriptlang.org/docs/handbook/utility-types.html", "https://basarat.gitbooks.io/typescript/content/", "https://basarat.gitbook.io/typescript/type-system/type-inference", "https://basarat.gitbook.io/typescript/type-system/type-assertion", "https://basarat.gitbook.io/typescript/type-system/index-signatures", "https://basarat.gitbook.io/typescript/type-system/readonly", "https://basarat.gitbook.io/typescript/type-system/never", "https://basarat.gitbook.io/typescript/type-system/callable", "https://ahnheejong.gitbook.io/ts-for-jsdev/", "https://www.typescriptlang.org/ko/docs/handbook/intro.html", "https://jameshenry.blog/typescript-the-missing-introduction/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%281%29%20-%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95%2C%20%20Annotaions.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%282%29%20-%20%ED%83%80%EC%9E%85%20%EC%B6%94%EB%A1%A0%2C%20%ED%83%80%EC%9E%85%20%EC%95%A8%EB%A6%AC%EC%96%B4%EC%8A%A4%2C%20%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%283%29%20-%20Union%2C%20Intersection%2C%20%EB%A6%AC%ED%84%B0%EB%9F%B4%20%ED%83%80%EC%9E%85%2C%20Enum%20%2C%20never%20%20%2CGenerics.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%285%29%20-%20%EC%BB%A8%EB%94%94%EC%85%94%EB%84%90%20%ED%83%80%EC%9E%85%2C%ED%95%A8%EC%88%98%20%EB%A9%94%EC%84%9C%EB%93%9C%20%ED%83%80%EC%9D%B4%ED%95%91%2C%20%EC%98%A4%EB%B2%84%EB%A1%9C%EB%94%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/TypeScript%287%29%20-%20satisfies%2C%20%ED%83%80%EC%9E%85%ED%99%95%EC%9E%A5.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/TypeScript/Typescript%289%29%20-%20%ED%83%80%EC%9E%85%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%EC%BB%B4%ED%8C%8C%EC%9D%BC.md", "https://medium.freecodecamp.com/why-use-static-types-in-javascript-part-1-8382da1e0adb", "https://flow.org/blog/2015/02/20/Flow-Comments/", "https://github.com/grab/front-end-guide", "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html", "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-5.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/javascript.md", "https://www.frontendinterviewhandbook.com/javascript-questions", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > HEROPY의 「[한눈에 보는 타입스크립트](https://www.heropy.dev/p/WhqSC8)」(2020.01 작성, 2026.08 갱신)를 바탕으로, 역사와 익히는 순서는 테오(teo)의 「[Typescript는 어떻게 공부해야 하나요?](https://velog.io/@teo/typescript)」(2022.02)로 보강해 재구성한 노트다. 컴파일 타임과 런타임 구분은 「[TypeScript: the missing introduction](https://jameshenry.blog/typescript-the-missing-introduction/)」을 바탕으로 보강했다. 튜플·인덱스 시그니처·enum·제네릭의 함정·좁히기 연산자·오버로드 순서는 「[Frontend_TIL: TypeScript 시리즈](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/TypeScript)」를 바탕으로 보강했다. 정적 타입의 득실과 Flow는 「[Why use static types in JavaScript?](https://medium.freecodecamp.com/why-use-static-types-in-javascript-part-1-8382da1e0adb)」, 「[Flow Comments](https://flow.org/blog/2015/02/20/Flow-Comments/)」을 바탕으로 보강했다.
@@ -13,6 +13,7 @@ sources: ["https://www.heropy.dev/p/WhqSC8", "https://velog.io/@teo/typescript",
 > 추론의 방향, 단언 규칙, 인덱스 시그니처, readonly, never, 호출 가능 타입은 basarat의 「[TypeScript Deep Dive](https://basarat.gitbook.io/typescript)」의 Type System 장을 바탕으로 보강했다.
 > 단언 함수, 추론되는 타입 서술어, 표준 데코레이터의 종류와 적용 순서는 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/javascript.md)」의 질문을 계기로 TypeScript 5.0·5.5 릴리스 노트를 바탕으로 보강했다.
 > JavaScript로 컴파일되는 언어의 득실은 Front End Interview Handbook의 「[JavaScript 질문](https://www.frontendinterviewhandbook.com/javascript-questions)」을 더해 보강했다.
+> junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 type과 interface의 `implements`·컴파일 결과 비교와 유틸리티 타입의 흔한 쓰임을 보강했다.
 
 ## TypeScript란
 
@@ -177,6 +178,10 @@ TypeScript 5.5부터는 본문이 단순한 함수에서 타입 서술어를 **�
 | 표현 범위 | 유니언, 튜플, 원시값, 조건부·매핑 타입까지 무엇이든 | 객체 모양만 |
 | 확장 | `&` 인터섹션 | `extends` |
 | 같은 이름 재선언 | 오류 | **선언 병합**(라이브러리 타입 보강에 쓴다) |
+| 클래스 `implements` | 객체 타입(과 그 인터섹션)이면 된다. 유니언 타입은 구현할 수 없다 | 된다 |
+| 컴파일 결과 | 지워진다 | 지워진다 |
+
+「`interface`만 지워지고 `type`은 JavaScript에 남는다」는 흔한 오해다. 둘 다 타입 공간에만 있어서 컴파일하면 흔적 없이 사라진다. 런타임에 남는 것은 `class`·`enum`처럼 값을 함께 만드는 선언이다([[typescript-project-config#선언 공간: 타입과 값|선언 공간]]).
 
 둘 다 객체 모양을 적을 수 있고 대부분 바꿔 써도 된다. 팀 안에서 한 가지 기준을 정한다(→ [[typescript-coding-convention|TypeScript 코딩 컨벤션]]).
 
@@ -319,6 +324,18 @@ class Calc {
 | this | `ThisParameterType<F>`, `OmitThisParameter<F>`, `ThisType<T>` | 명시적 this 다루기 |
 | 추론 제어 | `NoInfer<T>` | 이 자리에서는 제네릭을 추론하지 않게 한다 |
 | 문자열 | `Uppercase`, `Lowercase`, `Capitalize`, `Uncapitalize` | 문자열 리터럴 타입 변환 |
+
+자주 쓰는 자리:
+
+| 타입 | 흔한 쓰임 |
+| --- | --- |
+| `Partial<T>` | 일부 필드만 고치는 수정 요청 본문(`updateUser(id, data: Partial<User>)`), 폼 초기값 |
+| `Required<T>` | 선택 필드가 많은 설정을 기본값으로 채운 뒤 내부 로직에 넘기는 타입 |
+| `Readonly<T>` | 함수가 인자로 받은 객체를 고치지 못하게, 상태·설정 객체를 불변으로. 얕게만 막는다 |
+| `Pick<T, K>` | 목록 화면처럼 큰 모델에서 몇 필드만 쓰는 컴포넌트 props |
+| `Omit<T, K>` | 같은 모델에서 `id`·`password`처럼 폼마다 빠지는 필드 제외, HTML 속성 타입에서 일부 prop 빼기 |
+| `Record<K, V>` | 에러 코드 → 메시지, 역할 → 권한, 상태 → 핸들러 같은 매핑 객체 |
+| `Exclude<T, U>`·`Extract<T, U>` | 문자열 리터럴 유니언에서 일부 값을 빼거나 남기기(`Exclude<Action, 'delete'>`) |
 
 ## 익히는 순서
 
