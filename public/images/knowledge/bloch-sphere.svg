@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 440" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="15" fill="#1f2328">
+  <title>블로흐 구면: 북극은 |0⟩, 남극은 |1⟩, 적도는 0과 1이 50%씩 중첩된 상태</title>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker>
+    <marker id="o" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b35c00"/></marker>
+  </defs>
+  <rect x="0" y="0" width="720" height="440" fill="#ffffff"/>
+  <circle cx="260" cy="220" r="150" fill="#dbe7ff" fill-opacity="0.45" stroke="#2f5fb3" stroke-width="2"/>
+  <!-- equator: back half dashed, front half solid -->
+  <path d="M110,220 A150,42 0 0 1 410,220" fill="none" stroke="#2f5fb3" stroke-width="1.5" stroke-dasharray="5 5"/>
+  <path d="M110,220 A150,42 0 0 0 410,220" fill="none" stroke="#2f5fb3" stroke-width="2.5"/>
+  <!-- z axis -->
+  <line x1="260" y1="395" x2="260" y2="52" stroke="#57606a" stroke-width="1.5" marker-end="url(#g)"/>
+  <text x="270" y="54" fill="#57606a" font-size="14">z</text>
+  <circle cx="260" cy="220" r="4" fill="#1f2328"/>
+  <circle cx="260" cy="70" r="7" fill="#1a7f37"/>
+  <circle cx="260" cy="370" r="7" fill="#1a7f37"/>
+  <!-- state arrow to a point on the equator -->
+  <line x1="260" y1="220" x2="356" y2="252" stroke="#b35c00" stroke-width="2.5" marker-end="url(#o)"/>
+  <!-- labels -->
+  <text x="300" y="36" font-weight="600" font-size="17">|0⟩</text>
+  <text x="336" y="36" fill="#57606a">북극: 0일 확률 100%</text>
+  <line x1="298" y1="40" x2="268" y2="64" stroke="#57606a" stroke-width="1"/>
+  <text x="300" y="420" font-weight="600" font-size="17">|1⟩</text>
+  <text x="336" y="420" fill="#57606a">남극: 1일 확률 100%</text>
+  <line x1="298" y1="404" x2="268" y2="376" stroke="#57606a" stroke-width="1"/>
+  <line x1="412" y1="220" x2="450" y2="220" stroke="#57606a" stroke-width="1"/>
+  <text x="456" y="214">적도: 0과 1이 50%씩 중첩</text>
+  <text x="456" y="236" fill="#57606a" font-size="14">(적도 위 점끼리는 위상만 다르다)</text>
+  <text x="456" y="290" fill="#b35c00">상태 화살표</text>
+  <line x1="452" y1="285" x2="352" y2="254" stroke="#b35c00" stroke-width="1"/>
+</svg>

@@ -21,18 +21,9 @@ sources: ["https://ko.javascript.info/size-and-scroll", "https://ko.javascript.i
 
 ## 요소 하나의 상자
 
-```text
-┌──────────── offsetWidth ────────────┐
-│ border                               │
-│  ┌──────── clientWidth ─────────┐ ┌┐ │
-│  │ padding                      │ ││ │ ← 세로 스크롤바
-│  │   content (보이는 부분)        │ ││ │
-│  │   ↑ scrollTop만큼 위가 가려짐   │ ││ │
-│  └──────────────────────────────┘ └┘ │
-└──────────────────────────────────────┘
-clientLeft·clientTop = 왼쪽·위 테두리 두께
-scrollHeight = 가려진 부분까지 포함한 안쪽 전체 높이
-```
+![요소 상자: offsetWidth는 테두리까지 포함한 바깥 폭, clientWidth는 세로 스크롤바를 뺀 패딩 안쪽 폭, scrollTop은 스크롤로 위에 가려진 길이](/images/knowledge/dom-box-geometry.svg)
+
+`clientLeft`·`clientTop`은 왼쪽·위 테두리 두께, `scrollHeight`는 가려진 부분까지 포함한 안쪽 전체 높이다.
 
 | 속성 | 재는 것 | 포함 |
 | --- | --- | --- |

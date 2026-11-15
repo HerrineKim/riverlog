@@ -58,15 +58,15 @@ VarKeyword  Identifier  EqualsToken  NumericLiteral  SemicolonToken
 
 `foo`의 범위가 `3-7`인 것은 앞 공백까지 포함하기 때문이다(아래 「트리비아」). 파서는 이 토큰으로 트리를 만든다.
 
-```text
-SourceFile 0-14
-└─ VariableStatement 0-14
-   ├─ VariableDeclarationList 0-13
-   │  └─ VariableDeclaration 3-13
-   │     ├─ Identifier "foo" 3-7
-   │     └─ NumericLiteral "123" 9-13
-   └─ SemicolonToken 13-14
-EndOfFileToken 14-14
+```mermaid
+flowchart TB
+  sf["SourceFile 0-14"] --> vs["VariableStatement 0-14"]
+  sf --> eof["EndOfFileToken 14-14"]
+  vs --> vdl["VariableDeclarationList 0-13"]
+  vs --> semi["SemicolonToken 13-14"]
+  vdl --> vd["VariableDeclaration 3-13"]
+  vd --> id["Identifier #quot;foo#quot; 3-7"]
+  vd --> num["NumericLiteral #quot;123#quot; 9-13"]
 ```
 
 AST를 직접 보려면 [TypeScript AST Viewer](https://ts-ast-viewer.com) 같은 도구가 편하다. 코드로는 `typescript` 패키지의 API로 순회한다.

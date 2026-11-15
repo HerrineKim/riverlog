@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 360" font-family="-apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="15" fill="#1f2328">
+  <title>방향 d와 평행한 분할선을 cross 값이 작은 쪽에서 큰 쪽으로 한 줄씩 밀어 올리는 평면 스위핑</title>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57606a"/></marker>
+    <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2f5fb3"/></marker>
+  </defs>
+  <rect x="0" y="0" width="820" height="360" fill="#ffffff"/>
+  <!-- direction d -->
+  <line x1="60" y1="40" x2="150" y2="40" stroke="#57606a" stroke-width="2" marker-end="url(#g)"/>
+  <text x="160" y="46" font-weight="600">d</text>
+  <!-- level lines: cross = 0 (bottom) .. 2 (top) -->
+  <line x1="40" y1="290" x2="520" y2="290" stroke="#8c959f" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line x1="40" y1="200" x2="520" y2="200" stroke="#8c959f" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <line x1="40" y1="110" x2="520" y2="110" stroke="#8c959f" stroke-width="1.2" stroke-dasharray="6 5"/>
+  <text x="530" y="295" fill="#57606a">cross = 0</text>
+  <text x="530" y="205" fill="#57606a">cross = 1</text>
+  <text x="530" y="115" fill="#57606a">cross = 2</text>
+  <!-- points -->
+  <circle cx="150" cy="290" r="7" fill="#b35c00"/>
+  <circle cx="300" cy="290" r="7" fill="#b35c00"/>
+  <circle cx="230" cy="200" r="7" fill="#b35c00"/>
+  <circle cx="380" cy="110" r="7" fill="#b35c00"/>
+  <!-- current division line between cross 0 and 1 -->
+  <line x1="40" y1="245" x2="520" y2="245" stroke="#2f5fb3" stroke-width="3"/>
+  <text x="530" y="250" fill="#2f5fb3" font-weight="600">분할선</text>
+  <line x1="460" y1="240" x2="460" y2="162" stroke="#2f5fb3" stroke-width="2" marker-end="url(#b)"/>
+  <line x1="40" y1="155" x2="520" y2="155" stroke="#2f5fb3" stroke-width="1.5" stroke-dasharray="3 4" stroke-opacity="0.7"/>
+  <text x="40" y="335" fill="#57606a">분할선을 d와 평행하게 유지한 채 cross 값이 작은 쪽에서 큰 쪽으로 한 줄씩 밀어 올린다</text>
+</svg>

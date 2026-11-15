@@ -109,14 +109,14 @@ Hive는 SQL을 MapReduce로 바꿔 디스크를 오가므로 느리다. Presto�
 
 분석 질의는 `SELECT *`보다 몇 개 컬럼만 고르는 경우가 많다. Parquet은 **같은 컬럼 값을 디스크에 모아 두는 열 지향(columnar) 파일 포맷**이다.
 
-```text
-Parquet 파일
-├─ 로우 그룹 1
-│   ├─ 컬럼 청크: user_id
-│   ├─ 컬럼 청크: status     ← LOGIN/LOGOUT처럼 종류가 적으면 사전 인코딩
-│   └─ 컬럼 청크: city_id
-├─ 로우 그룹 2 ...
-└─ 푸터: 스키마, 로우 그룹별 컬럼 통계(최솟값·최댓값·사전)
+```mermaid
+flowchart TB
+  file["Parquet 파일"] --> rg1["로우 그룹 1"]
+  file --> rg2["로우 그룹 2 ..."]
+  file --> footer["푸터: 스키마, 로우 그룹별 컬럼 통계<br/>(최솟값·최댓값·사전)"]
+  rg1 --> c1["컬럼 청크: user_id"]
+  rg1 --> c2["컬럼 청크: status<br/>LOGIN/LOGOUT처럼 종류가 적으면 사전 인코딩"]
+  rg1 --> c3["컬럼 청크: city_id"]
 ```
 
 - **필요한 컬럼만 읽는다**(column pruning). 중첩 구조(`base.city_id`)도 필요한 하위 필드만 읽는다.
