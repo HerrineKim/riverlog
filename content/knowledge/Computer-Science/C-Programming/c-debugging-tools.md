@@ -56,7 +56,7 @@ GDB는 GNU 툴체인, LLDB는 LLVM 툴체인의 디버거다. 리눅스에서는
 
 ## Sanitizer: 런타임 검사
 
-컴파일러가 코드에 검사 코드를 심어, 문제가 생긴 **바로 그 순간** 스택 트레이스와 함께 멈춘다. GCC와 Clang 모두 지원한다.
+컴파일러가 코드에 검사 코드를 심어, 문제가 생긴 **바로 그 순간** 스택 트레이스와 함께 보고한다. ASan은 첫 오류에서 멈추지만, UBSan은 기본으로 보고만 하고 계속 실행한다. 멈추게 하려면 `-fno-sanitize-recover=undefined`(또는 `-fsanitize-trap=undefined`)를 더한다. GCC와 Clang 모두 지원한다.
 
 | 옵션 | 잡는 것 |
 | --- | --- |

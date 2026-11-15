@@ -119,7 +119,7 @@ getFunc()() // 'undefined': 바깥 함수의 value를 보지 못한다
 | --- | --- | --- |
 | `name` | 함수 이름 | 익명 함수라도 `const sayHi = function () {}`, 기본값 `(f = () => {})`, 객체 메서드처럼 **문맥에서 이름을 추론**한다(contextual name). `[function () {}]`처럼 추론할 곳이 없으면 빈 문자열 |
 | `length` | 선언한 매개변수 개수 | rest 매개변수와, 기본값이 있는 첫 매개변수부터 뒤는 세지 않는다. `(a, b = 1, c) => {}`의 `length`는 1 |
-| `prototype` | `new`로 만들 인스턴스의 프로토타입이 될 객체 | **생성자가 될 수 있는 함수**(함수 선언·표현식, `class`)에만 있다. 화살표 함수와 `{ method() {} }` 단축 메서드에는 없다([[prototype-and-inheritance\|프로토타입과 상속]]) |
+| `prototype` | `new`로 만들 인스턴스의 프로토타입이 될 객체 | 일반 함수 선언·표현식과 `class`에 있다. 화살표 함수, `{ method() {} }` 단축 메서드, `async` 함수, `bind`로 만든 함수에는 없다. 제너레이터 함수에도 있지만 `new`로 부를 수 없고, 돌려줄 제너레이터 객체의 프로토타입이 된다. 그래서 `prototype`이 있는지로 생성자인지 판단할 수는 없다([[prototype-and-inheritance\|프로토타입과 상속]]) |
 | `__proto__` | 함수 자신의 프로토타입(`Function.prototype`) | 함수의 속성이 아니라 `Object.prototype`에서 물려받은 접근자다 |
 | `arguments`·`caller` | 함수 객체에 붙은 인자 목록, 자신을 부른 함수 | 비표준이거나 폐기된 속성이다. strict mode 함수에서는 읽으면 `TypeError`다. 인자는 함수 안의 지역 `arguments`나 rest 매개변수로 읽는다 |
 | 커스텀 속성 | `fn.counter = 0`처럼 직접 붙인 값 | 함수 안의 지역 변수와 아무 관계가 없다 |
@@ -259,7 +259,7 @@ button.addEventListener('click', function () {
 | 일반 함수 호출 `fn()` | strict mode에서는 `undefined`, 아니면 전역 객체(`window`) |
 | 화살표 함수 | 바깥 스코프의 this |
 | `fn.call(x)`·`fn.bind(x)` | 명시한 `x`. 메서드 호출의 this보다 우선한다 |
-| 함수 바깥(최상위) | 일반 스크립트에서는 전역 객체(`globalThis`: 브라우저 `window`, Node.js `global`), ES 모듈에서는 `undefined` |
+| 함수 바깥(최상위) | 브라우저 일반 스크립트에서는 전역 객체(`window`), Node.js CommonJS 모듈에서는 `module.exports`, ES 모듈에서는 `undefined` |
 
 여러 규칙이 겹치면 **`new` > 명시적 바인딩(`call`·`apply`·`bind`) > 메서드 호출(암시적 바인딩) > 일반 호출(기본 바인딩)** 순으로 이긴다. `bind`로 묶은 함수도 `new`로 부르면 묶은 값이 무시되고 새 인스턴스가 this가 된다. 화살표 함수는 이 순위 밖이다. 자기 this가 없어 `call`·`bind`·`new` 어느 것으로도 바꿀 수 없다([[execution-context|실행 컨텍스트]]). 그래서 콜백을 `call`로 부르며 this를 정해 주는 API에 화살표 함수를 넘기면 그 this를 받지 못한다. `addEventListener`와 jQuery 이벤트 핸들러는 this로 요소를 넘기는데, 핸들러를 화살표 함수로 바꾸면 this가 바깥 것이 된다. 옛 코드를 화살표 함수로 옮길 때는 본문이 this에 기대는지 먼저 본다.
 

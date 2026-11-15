@@ -135,10 +135,12 @@ function User(name, birthday) {
 중첩 객체까지 모두 얼린 **불변 객체**가 필요하면 객체인 속성을 재귀로 따라가며 `freeze`한다.
 
 ```javascript
-function deepFreeze(target) {
-  if (target && typeof target === 'object' && !Object.isFrozen(target)) {
+function deepFreeze(target, seen = new WeakSet()) {
+  // isFrozen으로 건너뛰면 이미 얕게 얼린 객체의 자식이 남는다. 순환은 seen으로 막는다
+  if (target && typeof target === 'object' && !seen.has(target)) {
+    seen.add(target)
     Object.freeze(target)
-    Object.values(target).forEach(deepFreeze)
+    Object.values(target).forEach((value) => deepFreeze(value, seen))
   }
   return target
 }

@@ -71,7 +71,7 @@ webpack은 ES 모듈, CommonJS, AMD를 이해한다. 그런데 오래된 라이�
 | 파싱할 필요가 없는 미리 빌드된 파일 | `module.noParse`로 그대로 포함한다. 빌드가 빨라지지만 AST가 필요한 기능(ProvidePlugin 등)은 그 파일에 안 먹는다 |
 | Node 내장 모듈(`buffer`, `process`) | webpack 5는 자동 폴리필을 하지 않는다. `ProvidePlugin`이나 `resolve.fallback`으로 직접 채운다 |
 
-폴리필은 모든 사용자에게 보내지 않는다. **최신 브라우저용과 옛 브라우저용 빌드를 두 벌 만들고**(설정 배열 두 개, 옛 쪽은 `output.environment`에서 화살표 함수·`const`·동적 `import()` 등을 끈다), `<script type="module">`과 `nomodule`로 나눠 내려보내는 방식을 쓸 수 있다. 폴리필 고르는 법은 [[babel|Babel과 AST 변환]]에 있다.
+폴리필은 모든 사용자에게 보내지 않는다. **최신 브라우저용과 옛 브라우저용 빌드를 두 벌 만들고**(설정 배열 두 개. 옛 쪽은 Babel 같은 트랜스파일러로 앱 코드를 옛 문법으로 낮추고, `output.environment`에서 화살표 함수·`const`·동적 `import()` 등을 꺼 webpack이 만드는 런타임 코드도 맞춘다), `<script type="module">`과 `nomodule`로 나눠 내려보내는 방식을 쓸 수 있다. 폴리필 고르는 법은 [[babel|Babel과 AST 변환]]에 있다.
 
 ## 스코프 호이스팅
 

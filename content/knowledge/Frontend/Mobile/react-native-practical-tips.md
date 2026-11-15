@@ -38,7 +38,7 @@ import { KeyboardAvoidingView, ScrollView, Platform } from 'react-native'
 | `height` | 뷰의 높이 자체를 키보드만큼 줄인다. Android에서 많이 쓴다 |
 | `position` | 뷰 전체를 위로 옮긴다. 원래 키보드 위치와 떨어져 있던 만큼 떨어진 채로 올라온다 |
 
-- **`keyboardVerticalOffset`**: 키보드와 내용 사이에 추가로 둘 거리. 헤더 높이처럼 기기·OS마다 다른 값이 있어 `Platform.OS`로 나눠 준다.
+- **`keyboardVerticalOffset`**: 화면 위쪽과 React Native 뷰 사이의 거리. 키보드와 내용 사이의 여백이 아니라, `KeyboardAvoidingView` 위에 있는 내비게이션 헤더처럼 좌표가 어긋나는 만큼을 보정하는 값이다. OS별 고정값보다 실제 헤더 높이(React Navigation의 `useHeaderHeight()` 등)에서 얻는다.
 - 예전 Android 앱은 `AndroidManifest.xml`의 `windowSoftInputMode="adjustResize"`만으로 해결되는 경우가 많았다. 하지만 Android 15(target SDK 35)부터 앱이 기본으로 **edge-to-edge**로 그려지면서 `adjustResize`가 화면을 줄여 주지 않는다. React Native 0.86에서 edge-to-edge 환경의 `KeyboardAvoidingView`가 고쳐졌고, 더 세밀한 제어가 필요하면 `react-native-keyboard-controller`를 쓴다(Expo 문서도 이것을 권한다).
 
 ### ScrollView에 정렬 스타일을 줬더니 에러가 날 때

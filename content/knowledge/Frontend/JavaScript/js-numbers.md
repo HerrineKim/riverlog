@@ -61,7 +61,7 @@ parseInt('2n9c', 36)   // 123456
 
 `Math.max(...arr)`, `Math.min(...arr)`, `Math.abs(x)`도 자주 쓴다. 나이처럼 "아직 채우지 못한 값"은 `round`가 아니라 `floor`다.
 
-`Math`는 생성자가 아니라 상수와 함수를 모아 둔 **네임스페이스 객체**다(`new Math()`는 TypeError). 모든 함수는 인자를 숫자로 바꿔 계산하고, 바꿀 수 없으면 `NaN`을 돌려준다.
+`Math`는 생성자가 아니라 상수와 함수를 모아 둔 **네임스페이스 객체**다(`new Math()`는 TypeError). 모든 함수는 인자를 숫자로 바꿔 계산하고, 바꿀 수 없으면 `NaN`을 돌려준다. 다만 Symbol과 BigInt는 숫자로 바꾸는 단계에서 `TypeError`를 던진다(`Math.abs(1n)`). 객체의 `valueOf`·`toString`이 던져도 마찬가지다.
 
 | 분류 | 멤버 | 예 → 결과 |
 | --- | --- | --- |

@@ -42,10 +42,15 @@ HTTP 요청·응답, `process.stdin`·`stdout`, 파일, 소켓, `zlib`, `crypto`
 
 ```javascript
 import { Transform } from 'node:stream'
+import { StringDecoder } from 'node:string_decoder'
 
+const decoder = new StringDecoder('utf8') // 조각 경계에서 잘린 한글 바이트를 다음 조각까지 보관
 const upper = new Transform({
   transform(chunk, encoding, callback) {
-    callback(null, chunk.toString().toUpperCase()) // push + 완료 알림
+    callback(null, decoder.write(chunk).toUpperCase()) // push + 완료 알림
+  },
+  flush(callback) {
+    callback(null, decoder.end().toUpperCase()) // 남은 바이트 처리
   },
 })
 process.stdin.pipe(upper).pipe(process.stdout)
@@ -94,7 +99,7 @@ function writeMany(writable, lines) {
 
 ## objectMode: 바이트 대신 객체를 흘린다
 
-기본 스트림은 `Buffer`·문자열만 다룬다. `objectMode: true`면 **아무 JavaScript 값**을 조각으로 흘리고, `highWaterMark`는 바이트가 아니라 **객체 개수**로 센다. 코어 모듈은 쓰지 않지만 사용자 코드에서는 흔하다.
+기본 스트림은 `Buffer`·문자열(쓰기와 `push`에는 `TypedArray`·`DataView`도)만 다룬다. `objectMode: true`면 **`null`을 뺀 아무 JavaScript 값**을 조각으로 흘리고(`null`은 스트림 끝 신호다), `highWaterMark`는 바이트가 아니라 **객체 개수**로 센다. 코어 모듈은 쓰지 않지만 사용자 코드에서는 흔하다.
 
 | 쓰임 | 예 |
 | --- | --- |

@@ -116,7 +116,7 @@ services:
     depends_on:
       db:
         condition: service_healthy            # db의 healthcheck가 healthy가 된 뒤
-        restart: true                         # db가 다시 시작되면 api도 다시 시작
+        restart: true                         # compose restart 등으로 db를 다시 시작하면 api도 다시 시작(런타임 자동 재시작은 제외)
       migrate:
         condition: service_completed_successfully   # 마이그레이션이 0으로 끝난 뒤
   db:

@@ -27,7 +27,7 @@ sources: ["https://80000coding.notion.site/f863faecbc414713b46016117cbe9475", "h
 | `docker stop` · `kill` | `stop`은 SIGTERM 후 유예 시간(기본 10초)이 지나면 SIGKILL, `kill`은 바로 SIGKILL |
 | `docker start` | 멈춘 컨테이너를 다시 시작한다. 쓰기 층의 파일은 멈춘 시점 그대로지만 메모리 상태는 없다 |
 | `docker rm` · `rmi` | `rm`은 컨테이너, `rmi`는 이미지. 그 이미지로 만든 컨테이너가 멈춘 상태로라도 남아 있으면 `rmi`가 거부되므로 컨테이너부터 지운다 |
-| `docker commit` | 컨테이너의 쓰기 층을 굳혀 새 이미지로 만든다. 무엇을 어떻게 바꿨는지 남지 않아 재현이 안 되므로 디버깅용으로만 쓰고, 이미지는 Dockerfile로 짓는다. commit·import로 만든 이미지는 CMD·EXPOSE 같은 메타데이터가 비어 있다(`--change`로 채운다) |
+| `docker commit` | 컨테이너의 쓰기 층을 굳혀 새 이미지로 만든다. 무엇을 어떻게 바꿨는지 남지 않아 재현이 안 되므로 디버깅용으로만 쓰고, 이미지는 Dockerfile로 짓는다. commit은 원래 컨테이너의 CMD·ENV 같은 설정을 이어받고 `--change`로 바꿀 수 있다. `export`한 파일 시스템을 `import`로 만든 이미지는 이런 메타데이터가 비어 있다(`--change`로 채운다) |
 
 Docker Hub의 공식 이미지(`nginx`, `mariadb`)를 그대로 쓸 수도 있고, Dockerfile로 직접 빌드한 커스텀 이미지를 레지스트리에 올려 쓸 수도 있다. VM과의 차이는 [[vm-vs-container|VM과 컨테이너]]에 있다.
 
@@ -57,13 +57,19 @@ flowchart BT
 ## Dockerfile 기본 명령
 
 ```dockerfile
-FROM alpine:3.24                         # 베이스 이미지 (태그를 고정한다)
-RUN apk add --no-cache nginx             # 빌드할 때 실행 → 결과가 이미지 층으로 남음
+# 베이스 이미지 (태그를 고정한다)
+FROM alpine:3.24
+# 빌드할 때 실행 → 결과가 이미지 층으로 남음
+RUN apk add --no-cache nginx
 COPY conf/default.conf /etc/nginx/http.d/default.conf
-WORKDIR /var/www/html                    # 이후 명령의 작업 디렉터리
-EXPOSE 443                               # 문서용 표시. 실제 공개는 run -p / compose ports
-ENTRYPOINT ["nginx"]                     # 컨테이너 시작 시 실행할 프로그램
-CMD ["-g", "daemon off;"]                # ENTRYPOINT에 넘길 기본 인자
+# 이후 명령의 작업 디렉터리
+WORKDIR /var/www/html
+# 문서용 표시. 실제 공개는 run -p / compose ports
+EXPOSE 443
+# 컨테이너 시작 시 실행할 프로그램
+ENTRYPOINT ["nginx"]
+# ENTRYPOINT에 넘길 기본 인자
+CMD ["-g", "daemon off;"]
 ```
 
 ### RUN · CMD · ENTRYPOINT
@@ -97,7 +103,7 @@ ENTRYPOINT와 CMD를 함께 쓰면 **CMD가 ENTRYPOINT의 기본 인자**가 된
 | `ARG` | **빌드할 때만** 쓰는 변수. `docker build --build-arg VERSION=1.2`로 넘긴다. FROM 앞에 선언하면 FROM에서만 쓰이고, 스테이지마다 다시 선언해야 한다 |
 | `ENV` | 빌드 중에도 쓰이고 **실행 중인 컨테이너에도 남는** 환경 변수. `docker run -e`로 덮어쓴다 |
 | `WORKDIR` | 이후 RUN·CMD·COPY의 작업 디렉터리. 없으면 만든다. `RUN cd /app`은 그 RUN 안에서만 유효하므로 WORKDIR을 쓰고, 상대 경로가 앞 WORKDIR에 이어 붙으므로 절대 경로로 쓴다 |
-| `USER` | 이후 명령과 컨테이너 실행 사용자. 숫자 UID로 지정해야 쿠버네티스의 `runAsNonRoot` 검증을 통과한다. 사용자를 먼저 만들고, 앱 파일 소유권을 맞춘다 |
+| `USER` | 이후 명령과 컨테이너 실행 사용자. 매니페스트에서 `runAsUser`를 주지 않는다면 숫자 UID로 지정해야 쿠버네티스의 `runAsNonRoot` 검증을 통과한다. 사용자를 먼저 만들고, 앱 파일 소유권을 맞춘다 |
 | `HEALTHCHECK` | 컨테이너 안에서 주기적으로 명령을 실행해 상태(starting·healthy·unhealthy)를 매긴다 |
 | `EXPOSE` | 듣는 포트를 문서로 표시한다. 실제 공개는 `-p`([[docker-network-volume\|Docker 네트워크와 볼륨]]) |
 | `LABEL` | 이미지 메타데이터(출처, 버전) |
@@ -149,7 +155,7 @@ HEALTHCHECK 결과는 `docker ps`의 상태와 Compose의 `depends_on: condition
 
 **컨테이너는 PID 1 프로세스가 살아 있는 동안만 산다.** 시작 명령이 끝나면 컨테이너도 종료된다.
 
-- `nginx`, `php-fpm`, `mysqld`처럼 기본적으로 백그라운드(데몬)로 빠지는 서버는 실행 직후 PID 1이 끝나 버린다. `nginx -g 'daemon off;'`, `php-fpm -F`(`--nodaemonize`)처럼 포그라운드 실행 옵션을 줘야 한다.
+- `nginx`, `php-fpm`처럼 기본적으로 백그라운드(데몬)로 빠지는 서버는 실행 직후 PID 1이 끝나 버린다. `nginx -g 'daemon off;'`, `php-fpm -F`(`--nodaemonize`)처럼 포그라운드 실행 옵션을 줘야 한다.
 - `tail -f /dev/null`, `sleep infinity`, `while true` 같은 무한 대기로 컨테이너를 살려 두는 것은 꼼수다. 실제 서비스가 죽어도 컨테이너는 살아 있어 장애를 감춘다.
 
 CMD는 하나뿐이라 「DB 계정·초기 데이터를 만드는 스크립트」와 「DB 서버 실행」을 둘 다 하려면 **엔트리포인트 스크립트 하나에서 초기화를 마친 뒤 마지막 줄에서 서버를 `exec`로 포그라운드 실행**한다. `exec`를 써야 서버가 셸 대신 PID 1이 되어 신호를 받는다.
@@ -178,7 +184,8 @@ exec mysqld "$@"
 해결책은 신호 전달과 좀비 회수만 하는 작은 init을 PID 1로 두고 앱을 그 자식으로 띄우는 것이다.
 
 ```dockerfile
-RUN apk add --no-cache tini              # 또는 dumb-init
+# 또는 dumb-init
+RUN apk add --no-cache tini
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["php-fpm83", "-F"]
 ```
@@ -222,9 +229,11 @@ docker exec -it app /bin/sh               # 실행 중인 컨테이너 안에 �
 # 빌드 스테이지
 FROM node:24-alpine AS build
 WORKDIR /app
-COPY package.json package-lock.json ./   # 의존성 목록 먼저 → 캐시 재사용
+# 의존성 목록 먼저 → 캐시 재사용
+COPY package.json package-lock.json ./
 RUN npm ci
-COPY . .                                 # 소스는 나중에
+# 소스는 나중에
+COPY . .
 RUN npm run build
 
 # 실행 스테이지: 결과물만
@@ -233,7 +242,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
-USER node                                # root가 아닌 사용자
+# root가 아닌 사용자
+USER node
 CMD ["node", "dist/server.js"]
 ```
 
@@ -247,11 +257,13 @@ CMD ["node", "dist/server.js"]
 FROM golang:1.25 AS build
 WORKDIR /src
 COPY go.mod go.sum ./
-RUN go mod download                       # 의존성 층을 캐시
+# 의존성 층을 캐시
+RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/app ./cmd/app
 
-FROM gcr.io/distroless/static-debian12:nonroot   # CA 인증서·시간대 포함, 셸 없음, 비root
+# CA 인증서·시간대 포함, 셸 없음, 비root
+FROM gcr.io/distroless/static-debian12:nonroot
 COPY --from=build /out/app /app
 ENTRYPOINT ["/app"]
 ```

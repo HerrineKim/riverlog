@@ -142,7 +142,7 @@ fallbackRender={({ error, resetErrorBoundary }) => {
 
 ## 이벤트 핸들러와 비동기 코드의 에러
 
-에러 경계는 **렌더링 중** 던진 에러만 잡는다. 이벤트 핸들러, `setTimeout`, 렌더링 밖의 `await`에서 난 에러는 잡지 못한다. 폼 제출처럼 렌더링 밖의 에러는 셋 중 하나로 처리한다.
+에러 경계는 **렌더링·생명주기·effect** 중 던진 에러와 Transition(`startTransition`·`useTransition`의 Action) 안에서 난 에러를 잡는다. 일반 이벤트 핸들러, `setTimeout`, 그 밖의 렌더링 밖 `await`에서 난 에러는 잡지 못한다. 폼 제출처럼 렌더링 밖의 에러는 셋 중 하나로 처리한다.
 
 | 방법 | 언제 | 코드 |
 | --- | --- | --- |

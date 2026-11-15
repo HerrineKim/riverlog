@@ -142,7 +142,8 @@ toggle.addEventListener('click', () => {
 ```
 
 ```js
-if (await PublicKeyCredential.isConditionalMediationAvailable?.()) {
+// PublicKeyCredential 자체가 없는 환경에서는 ?.로도 ReferenceError가 나므로 window에서 먼저 확인한다
+if (window.PublicKeyCredential && await PublicKeyCredential.isConditionalMediationAvailable?.()) {
   const credential = await navigator.credentials.get({
     mediation: 'conditional',
     publicKey: {

@@ -1,7 +1,7 @@
 ---
 title: "리렌더링 원인과 추적"
 concept: "Re-rendering"
-summary: "리렌더링을 일으키는 원인, React.memo가 효과 없는 경우, useQuery가 최소 두 번 렌더링하는 이유, DevTools로 추적하고 줄이는 순서."
+summary: "리렌더링을 일으키는 원인, React.memo가 효과 없는 경우, 캐시 없는 useQuery가 두 번 이상 렌더링하는 이유, DevTools로 추적하고 줄이는 순서."
 tags: ["react", "rendering", "performance", "debugging", "frontend"]
 source: notion
 date: "2026-10-13"
@@ -32,20 +32,20 @@ React 컴포넌트는 **state가 바뀌거나, 부모가 렌더링되거나, 구
 | --- | --- | --- |
 | 부모가 새 객체·배열·함수를 props로 넘김 | 부모가 렌더링될 때마다 참조가 바뀌어 props가 달라진 것으로 판단된다 | `useMemo`/`useCallback`으로 참조 고정 |
 | 컴포넌트 자신의 state·Context가 바뀜 | memo는 props 비교만 하므로 내부 변화는 막지 못한다 | state를 쓰는 쪽으로 내리거나 Context 분리 |
-| 렌더링의 출발점이 부모 쪽 데이터 흐름 | 자식만 감싸면 부모가 계속 렌더링되고, 계층 전체를 감싸도 같다 | 어느 층에서 렌더링이 시작되는지 찾아 그 층을 고친다 |
+| 문제가 부모 자체의 렌더링 | memo는 props가 같은 자식의 렌더링은 건너뛰지만, 부모 자신이 렌더링되는 횟수는 줄이지 못한다 | 어느 층에서 렌더링이 시작되는지 찾아 그 층을 고친다 |
 
 자식 컴포넌트가 여러 번 렌더링될 때는 자식이 아니라 **그 위 컴포넌트가 이미 여러 번 렌더링되고 있는 것**일 수 있다. 자식은 결과일 뿐이다.
 
-## useQuery가 최소 두 번 렌더링하는 이유
+## useQuery가 두 번 이상 렌더링하는 이유
 
-react-query(TanStack Query)의 `useQuery`를 쓰는 컴포넌트는 최소 두 번 렌더링된다.
+react-query(TanStack Query)의 `useQuery`가 캐시에 없는 데이터를 실제로 요청하면, 그 컴포넌트는 최소 두 번 렌더링된다.
 
 1. 데이터를 받기 전(로딩 상태)에 한 번
 2. 데이터를 받은 뒤 한 번 더
 
 `isFetching`처럼 요청 상태가 바뀔 때마다 렌더링이 추가로 생길 수도 있다. 따라서 `useQuery`를 쓰는 부모 아래의 자식은 여러 번 렌더링될 수 있다. 이런 동작을 알고 있어야 어디에 로그를 찍을지도 판단할 수 있다.
 
-> 참고: TanStack Query는 기본적으로 컴포넌트가 실제로 읽은 속성이 바뀔 때만 다시 렌더링하도록 최적화되어 있다(tracked queries). 그래도 로딩→성공 전환에 따른 렌더링은 피할 수 없다.
+> 참고: TanStack Query는 기본적으로 컴포넌트가 실제로 읽은 속성이 바뀔 때만 다시 렌더링하도록 최적화되어 있다(tracked queries). 그래도 로딩→성공 전환에 따른 렌더링은 피할 수 없다. 반대로 캐시에 신선한 데이터가 있거나 `initialData`와 `staleTime`을 주면 로딩 상태 없이 한 번에 그려지고, `enabled: false`인 쿼리도 이 전환을 거치지 않는다.
 
 ## 추적 방법
 
@@ -64,7 +64,7 @@ react-query(TanStack Query)의 `useQuery`를 쓰는 컴포넌트는 최소 두 �
 
 - 리렌더링 원인: state, 부모 렌더링, Context·외부 스토어 변경.
 - `React.memo`는 props가 같을 때만 효과가 있다. 원인을 모른 채 씌우면 소용없다.
-- `useQuery` 같은 데이터 패칭 훅은 로딩→성공 전환만으로도 최소 두 번 렌더링한다.
+- `useQuery` 같은 데이터 패칭 훅은 캐시 없이 요청을 시작하면 로딩→성공 전환만으로도 최소 두 번 렌더링한다.
 - DevTools의 하이라이트와 Profiler로 원인을 찾은 다음 고친다.
 
 관련 노트: [[inp-optimization|INP 최적화: 긴 작업 쪼개기와 양보]], [[frontend-performance-strategy|프론트엔드 성능 최적화: 언제, 무엇을]]

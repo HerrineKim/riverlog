@@ -46,7 +46,7 @@ sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers", "ht
 
 ### 2. 유니코드와 텍스트
 
-- 사람이 보는 한 글자(grapheme cluster)는 여러 코드 포인트일 수 있다. **어떤 주류 언어도 문자열 길이를 "보이는 글자 수"로 세지 않는다.** JS·Java는 UTF-16 코드 유닛, Python은 코드 포인트, Go·C++은 바이트 단위다.
+- 사람이 보는 한 글자(grapheme cluster)는 여러 코드 포인트일 수 있다. **대부분의 주류 언어는 문자열 길이를 "보이는 글자 수"로 세지 않는다.** JS·Java는 UTF-16 코드 유닛, Python은 코드 포인트, Go·C++은 바이트 단위다. Swift의 `String.count`는 예외로 grapheme cluster를 센다.
 - 바이트 스트림을 조각별로 디코딩하면 멀티바이트 문자가 잘려 깨진다.
 - 같은 모양의 문자열도 정규화(normalization) 형태가 다르면 비교가 실패한다. 한글 자모 분리(NFD) 파일 이름이 대표적이다.
 - 바이너리를 텍스트로 바꾸면 정보가 사라진다. JSON에 넣으려면 Base64로 인코딩한다.
@@ -66,7 +66,7 @@ sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers", "ht
 - 서머타임이 끝나는 날에는 같은 현지 시각이 두 번 있어, 현지 시각 → 타임스탬프 변환이 모호하다.
 - NTP 보정으로 시계가 뒤로 갈 수 있다. 경과 시간은 단조 시계로 잰다.
 - 타임스탬프 단위(초·밀리초·나노초)가 시스템마다 다르다.
-- Java·JS의 월은 0부터 시작한다. 날짜 포맷 문자 `M`/`m`의 뜻도 언어마다 다르다.
+- JS `Date`와 Java의 옛 `Calendar`·`Date`의 월은 0부터 시작한다(`java.time`은 1~12). 날짜 포맷 문자 `M`/`m`의 뜻도 언어마다 다르다.
 - MySQL `timestamp`는 2038년에 넘친다.
 - 달력·시간대·서머타임에 대한 더 많은 착각은 [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]]에 모았다.
 
@@ -74,11 +74,11 @@ sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers", "ht
 
 | 함정 | 해결 |
 | --- | --- |
-| `= null`은 항상 거짓이다 | `is null` |
+| `= null`은 참도 거짓도 아닌 UNKNOWN이라 `WHERE`에서 늘 걸러진다 | `is null` |
 | 유니크 인덱스가 null을 여러 개 허용한다 | 필요하면 not null 제약 |
 | 여러 테이블을 join하면 행이 불어나 집계가 틀린다 | 서브쿼리로 먼저 집계 |
 | MySQL `utf8`은 이모지(4바이트)를 못 담는다 | `utf8mb4` |
-| 복합 인덱스는 앞 컬럼 없이 못 쓰고, `LIKE '%x'`도 인덱스를 못 탄다 | 쿼리 패턴에 맞게 인덱스 설계 |
+| 복합 인덱스는 앞 컬럼 조건이 없으면 효율이 크게 떨어지고(PostgreSQL 18의 skip scan처럼 쓸 수 있는 경우도 있다), `LIKE '%x'`는 일반 B-tree 인덱스를 못 탄다 | 쿼리 패턴에 맞게 인덱스 설계 |
 | 운영 중 인덱스·FK 추가가 테이블 전체를 잠근다 | PostgreSQL `CONCURRENTLY`, `NOT VALID` 후 `VALIDATE` |
 | N+1 쿼리는 하나하나가 빨라 슬로 쿼리 로그에 안 잡힌다 | 요청당 쿼리 수를 본다 |
 | auto increment ID는 연속적이지도, 커밋 순서대로도 아니다 | 순서에 의존하지 않는다 |
@@ -125,8 +125,8 @@ sources: ["https://qouteall.fun/qouteall-blog/2025/Traps%20to%20Developers", "ht
 - 해시맵 순회 순서와 디렉터리 목록 순서는 정해져 있지 않다. 필요하면 정렬한다.
 - 반복문 안 문자열 `+` 연결은 O(n²)이 될 수 있다.
 - 파일 쓰기는 임시 파일에 쓰고 rename해야 원자적이다. 전원이 나가면 fsync 안 된 데이터는 사라진다.
-- 셸에서 변수가 비면 `rm -rf "$DIR/"`가 `rm -rf /`가 된다. `set -u`를 쓴다.
-- YAML에서 따옴표 없는 `NO`는 false가 된다.
+- 셸에서 변수가 비면 `rm -rf "$DIR/"`가 `rm -rf /`가 된다. `set -u`는 빈 문자열을 못 막으므로 `"${DIR:?}"`처럼 비어 있으면 멈추게 한다.
+- YAML 1.1 규칙을 따르는 파서(PyYAML 등)에서는 따옴표 없는 `NO`가 false가 된다. YAML 1.2 core 스키마에서는 문자열이다.
 - 문자열 정렬에서는 "10"이 "9"보다 앞선다.
 
 ## 현실 데이터에 대한 착각

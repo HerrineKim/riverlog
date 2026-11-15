@@ -94,7 +94,7 @@ C 등급은 블랙리스트, A 등급은 화이트리스트로 브라우저를 �
 | `display: table-cell` | 그리드 아이템이 되어 테이블처럼 동작하지 않는다 |
 | `vertical-align` | 무시된다. 대신 박스 정렬(`align-self` 등)을 쓴다 |
 | `flex`, `flex-grow` 등 | 무시된다 |
-| 다단 `column-count`, `column-width` | 무시된다 |
+| 다단 `column-count`, `column-width` | 아이템 자신의 다단은 그대로 남는다. 다단 컨테이너 자체를 `display: grid`로 바꿀 때 무시된다 |
 
 ## 피처 쿼리로 틈새 메우기
 

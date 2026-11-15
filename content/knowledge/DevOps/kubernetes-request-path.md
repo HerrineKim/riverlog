@@ -73,7 +73,7 @@ flowchart LR
 | 사이드카 | 파드마다 앱 컨테이너 옆에 프록시(Envoy) 컨테이너를 주입. 네임스페이스에 `istio-injection=enabled` 라벨을 붙이면 새 파드에 자동 주입된다 | 기능이 풍부하지만 파드마다 메모리·지연 비용이 든다 |
 | 앰비언트 | 노드마다 공용 L4 프록시(ztunnel)를 두고, L7 기능이 필요한 곳에만 waypoint 프록시를 둔다 | 사이드카 비용이 없고 파드 재시작 없이 붙인다. Istio 1.24(2024.11)에서 정식 지원 |
 
-Istio는 Prometheus용 지표 노출을 기본으로 켜 두기 때문에, Prometheus를 설치하면 별도 설정 없이 프록시 지표가 수집된다.
+Istio는 Prometheus용 지표 노출과 `prometheus.io` 수집 어노테이션을 기본으로 켜 둔다. 그래서 어노테이션 기반 수집이 설정된 Prometheus(Istio 샘플 애드온 등)는 별도 설정 없이 프록시 지표를 모으지만, 그렇지 않은 설치는 scrape job이나 Operator의 모니터 리소스를 추가해야 한다.
 
 ### 클러스터 입구: Ingress에서 Gateway API로
 

@@ -26,7 +26,7 @@ app.useGlobalPipes(new ValidationPipe());
 ```
 
 > 실무에서 자주 쓰는 옵션: `new ValidationPipe({ whitelist: true, transform: true })`
-> - `whitelist`: DTO에 정의되지 않은 필드를 자동으로 제거
+> - `whitelist`: class-validator 데코레이터가 없는 필드를 자동으로 제거. DTO에 선언만 하고 데코레이터가 없는 필드도 지워지므로, 검증할 것이 없는 필드에는 `@Allow()`를 붙인다
 > - `transform`: 바디를 실제 DTO 클래스 인스턴스로, 파라미터를 선언한 타입으로 변환
 
 ## DTO 정의

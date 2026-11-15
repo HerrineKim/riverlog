@@ -239,7 +239,7 @@ button { & + & { margin-inline-start: .5rem; } }   /* 버튼 바로 뒤 버튼 *
 | `&` | 부모 선택자를 뜻한다. **복합 선택자를 만들 때는 필수**(`&:hover`, `&.active`) |
 | 타입 선택자와 붙일 때 | 타입이 앞: `p&`는 유효, `&p`는 무효. Sass에서 `&p`가 `.featurep`로 이어 붙는 문법과 충돌하지 않게 하려는 규칙이다 |
 | 특정성 | `&`는 `:is(부모 목록)`처럼 계산된다. `#main-header, .intro { & a {} }`는 `:is(#main-header, .intro) a`라 (1,0,1)이다. `.intro a`(0,1,1)로 덮어쓸 수 없다 |
-| 가상 요소 | `&`는 가상 요소를 나타낼 수 없다. `blockquote::before { & {} }` 안의 선언은 `blockquote`에만 적용된다 |
+| 가상 요소 | `&`는 가상 요소를 나타낼 수 없다. `blockquote::before { & {} }`는 `:is(blockquote::before)`와 같아 아무 요소에도 적용되지 않는다 |
 | 중첩 가능한 at 규칙 | `@media`, `@container`, `@supports`, `@layer` 등 조건부 그룹 규칙. `@import`는 안 된다 |
 | 깊이 | 제한은 없지만 2~3단계를 넘으면 특정성과 가독성이 나빠진다 |
 

@@ -72,7 +72,7 @@ const routes = [
 | `q-list` + `q-item` | 목록과 항목 | `q-item-section`으로 왼쪽 체크박스·아바타, 가운데 텍스트를 나눈다 |
 | `q-item clickable` | 클릭 가능한 항목 | `clickable`을 줘야 클릭 효과(ripple)와 이벤트가 붙는다 |
 | `q-drawer` | 사이드 메뉴 | `v-model`로 열림 상태 제어 |
-| `q-btn`, `q-input`, `q-checkbox` | 기본 입력 | `rules` 속성으로 간단한 검증 가능 |
+| `q-btn`, `q-input`, `q-checkbox` | 기본 입력 | `rules` 속성 검증은 `q-input`·`q-select`(와 `q-field`로 감싼 컨트롤)만 된다. 필수 동의 체크박스는 `q-field`로 감싸거나 제출할 때 직접 검사한다 |
 
 ## 플러그인으로 쓰는 기능
 

@@ -34,7 +34,7 @@ sources: ["https://www.mimul.com/blog/linux-server-operations/", "https://brunch
 
 | 항목 | 뜻 |
 | --- | --- |
-| `used` | 프로세스가 실제로 쓰는 메모리 |
+| `used` | 쓸 수 없는 메모리(`total - available`로 계산). 프로세스 메모리뿐 아니라 회수할 수 없는 커널 메모리도 들어간다 |
 | `buff/cache` | 디스크 내용을 담아 둔 캐시. 프로세스가 메모리를 요구하면 커널이 회수해 넘겨준다 |
 | `available` | 스와핑 없이 새로 쓸 수 있는 메모리 추정치. **사용률은 이 값으로 계산한다** |
 

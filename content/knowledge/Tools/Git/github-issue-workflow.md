@@ -94,8 +94,10 @@ git switch main && git pull              # 1. 작업 전 로컬을 최신으로
 git switch -c feat/42-login              # 2. 이슈 하나에 브랜치 하나
 git commit -m "feat: 로그인 폼 추가 #42"  # 3. 커밋 메시지에 #이슈번호
 git push -u origin feat/42-login         # 4. 원격에 올린다
-gh pr create --fill                      # 5. PR 생성, 본문에 "Closes #42"
+gh pr create --title "feat: 로그인 폼 추가" --body "Closes #42"  # 5. PR 생성, 닫을 이슈를 본문에 직접 적는다
 ```
+
+`--fill`은 커밋 제목·본문을 그대로 PR에 옮길 뿐 `Closes` 같은 키워드를 만들어 주지 않는다. 커밋에 `#42`만 적었다면 PR을 합쳐도 이슈가 닫히지 않으므로 본문에 `Closes #42`를 직접 넣는다.
 
 6. 동료가 리뷰하고 합치거나 닫는다. 리뷰는 **Comment**(의견만), **Approve**(승인), **Request changes**(고쳐야 머지 가능) 중 하나로 제출한다. CI가 실패한 PR은 고쳐서 빌드가 통과한 뒤에 리뷰를 받는다. 합친 브랜치는 지운다(저장소 설정의 *Automatically delete head branches*).
 7. 개발 서버에 배포해 확인한다. 자동화된 테스트가 있으면 이 단계가 가벼워진다.

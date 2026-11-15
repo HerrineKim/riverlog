@@ -28,7 +28,7 @@ PR이나 코드 리뷰가 없는 개인 프로젝트에서는 main의 CI가 마�
 
 ## 시작점: `test` 스크립트
 
-npm·pnpm·Bun은 `package.json`의 `test` 스크립트를 특별하게 취급한다(`npm test`). 예외를 던지는 파일 하나(`node tests.js`)를 가리켜도 되지만, 보통은 테스트 러너를 가리킨다.
+npm·pnpm은 `package.json`의 `test` 스크립트를 특별하게 취급한다(`npm test`). Bun은 다르다. `bun test`는 스크립트가 아니라 Bun 내장 테스트 러너를 실행하므로, 아래 Vitest 스크립트를 돌리려면 `bun run test`라고 쓴다. 예외를 던지는 파일 하나(`node tests.js`)를 가리켜도 되지만, 보통은 테스트 러너를 가리킨다.
 
 ```json
 {

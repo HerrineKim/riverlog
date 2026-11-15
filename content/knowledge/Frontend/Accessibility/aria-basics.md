@@ -35,7 +35,7 @@ W3C의 「ARIA in HTML」은 HTML과 ARIA를 섞을 때 다음 네 가지를 경
 
 | 경계할 것 | 나쁜 예 | 바로잡기 |
 | --- | --- | --- |
-| 기본 role 덮어쓰기 | `<h2 role="tab">`: 제목 의미가 사라진다. `<a role="heading">`: 링크가 제목이 된다 | `<div role="tab"><h2>…</h2></div>`처럼 감싼다. 링크는 링크로 두고 이름을 구체적으로 준다 |
+| 기본 role 덮어쓰기 | `<h2 role="tab">`: 제목 의미가 사라진다. `<a role="heading">`: 링크가 제목이 된다 | 제목은 탭 목록 밖에 두고 탭은 `<button role="tab">`으로 만든다. `tab`은 자식을 표현용으로만 다뤄서 안에 넣은 `<h2>`도 제목 의미를 잃는다. 링크는 링크로 두고 이름을 구체적으로 준다 |
 | 중복 | `<ul role="list">` | 보통 `<ul>`이면 된다. 예외: Safari는 `list-style: none`인 목록을 `<nav>` 밖에서 목록으로 노출하지 않으므로 이때만 `role="list"`를 덧붙인다([[accessible-page-structure\|접근 가능한 페이지 구조]]) |
 | 네이티브 동작·상태와 충돌 | `<input type="checkbox" role="radio">`: 브라우저는 체크박스로 동작하는데 스크린 리더는 라디오로 알린다. `<input type="checkbox" aria-checked="false">`: HTML의 `checked`와 ARIA 상태가 어긋날 수 있다 | role은 브라우저 동작을 바꾸지 못하니 동작에 맞는 요소를 고른다. 네이티브 상태는 HTML 속성(`checked`, `disabled`, `required`)으로만 둔다 |
 | 예상 못 한 부작용 | `<details>` 안의 `<summary role="button">` | `<summary>`에는 role을 주지 않는다(HTML이 허용하지 않는다) |
@@ -102,7 +102,7 @@ HTML의 `<label>` 요소와 WCAG의 「레이블」, HTML의 `name` 속성과 �
 
 | 순위 | 출처 | 해당 요소 | 비고 |
 | --- | --- | --- | --- |
-| 0 | `hidden`, `display: none`, `aria-hidden="true"` | 모든 요소 | 트리에서 빠져 이름 자체가 없다. 숨긴 `<label>`도 읽히지 않는다. 단 `aria-labelledby`·`aria-describedby`가 가리키는 숨은 요소의 텍스트는 이름·설명으로 **읽힌다** |
+| 0 | `hidden`, `display: none`, `aria-hidden="true"` | 모든 요소 | 트리에서 빠져 이름 자체가 없다. 단 `aria-labelledby`·`aria-describedby`가 가리키는 숨은 요소와, `for`로 컨트롤에 연결된 숨은 `<label>`의 텍스트는 이름·설명으로 **읽힌다** |
 | 1 | `aria-labelledby` | 이름을 가질 수 있는 모든 요소 | id 여러 개를 적으면 그 순서로 이어 붙인다. 가리킨 요소의 링크·목록 같은 의미는 사라지고 글자만 남는다 |
 | 2 | `aria-label` | 같음 | 화면에 보이지 않는 문자열 |
 | 3 | 네이티브 레이블 | 입력 → 연결된 `<label>`, `<img>` → `alt`, `<fieldset>` → 첫 `<legend>`, `<table>` → `<caption>`, `<input type="submit">` → `value`, `<figure>` → `<figcaption>` | `<label>`이 여럿이면 DOM 순서로 이어 붙인다 |

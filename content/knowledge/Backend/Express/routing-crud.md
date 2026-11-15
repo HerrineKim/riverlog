@@ -18,7 +18,7 @@ npm i -D @types/express typescript
 
 - `-D`(devDependencies)로 설치한 패키지는 개발·빌드 때만 필요하고 운영 의존성에는 포함되지 않는다. 타입 정의(`@types/*`)가 대표적이다.
 - `npm i express`는 Express 5를 설치한다(2025년 3월부터 npm 기본 버전). 라우트 경로 문법이 4와 조금 달라, 와일드카드는 `/*splat`처럼 이름을 붙인다.
-- `npm run start:dev` 같은 스크립트에 `tsc --watch`나 `tsx watch`를 걸어 두면 코드가 바뀔 때마다 자동으로 다시 컴파일·실행된다. `npm run start`는 `prestart`에서 `tsconfig.json` 기준으로 `dist/`에 빌드한 뒤 `node dist/app.js`를 실행하는 식으로 구성한다.
+- `npm run start:dev` 같은 스크립트에 `tsx watch`를 걸어 두면 코드가 바뀔 때마다 자동으로 다시 컴파일·실행된다. `tsc --watch`는 다시 컴파일만 하므로 `node --watch dist/app.js`나 nodemon을 함께 돌려야 서버가 다시 뜬다. `npm run start`는 `prestart`에서 `tsconfig.json` 기준으로 `dist/`에 빌드한 뒤 `node dist/app.js`를 실행하는 식으로 구성한다.
 
 ```typescript
 // app.ts

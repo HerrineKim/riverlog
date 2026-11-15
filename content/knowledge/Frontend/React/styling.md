@@ -135,7 +135,7 @@ function Button({ text }) {
 | 모듈 파일 안에서 전역 클래스 그대로 쓰기 | `:global .my-global-name { ... }` (Sass에서는 `:global { .a { } .b { } }`로 묶을 수 있다) |
 ## CSS-in-JS: styled-components와 emotion
 
-**tagged template literal** 문법으로 CSS가 적용된 컴포넌트를 만든다. 스타일이 컴포넌트에 붙어 있어 이름 충돌이 없고, props로 스타일을 바꿀 수 있다. styled-components와 emotion(`@emotion/styled`)은 API가 거의 같아 아래 내용이 둘 다에 통한다.
+**tagged template literal** 문법으로 CSS가 적용된 컴포넌트를 만든다. 스타일이 컴포넌트에 붙어 있어 이름 충돌이 없고, props로 스타일을 바꿀 수 있다. styled-components와 emotion(`@emotion/styled`)은 기본 문법(`styled.태그`, 확장, props 함수, 중첩 선택자)이 거의 같다. 다만 아래 「자주 쓰는 도구」 표는 styled-components 기준이라 emotion에서는 일부가 다르다.
 
 ### 기본 문법
 
@@ -190,6 +190,7 @@ function Sample() {
 | `as` prop | 스타일은 그대로 두고 렌더링할 태그·컴포넌트만 바꾼다 | `<Button as="a" href="/">` |
 | 컴포넌트 선택자 | 다른 styled 컴포넌트를 선택자로 쓴다 | `&:hover ${Remove} { display: initial; }` (항목에 마우스를 올리면 삭제 아이콘 표시) |
 
+- emotion에는 `createGlobalStyle` 대신 `<Global styles={...} />` 컴포넌트가 있고, `.attrs`는 없다. `$` transient props 규칙도 따로 없어서, DOM으로 넘길 prop을 거르려면 `styled('div', { shouldForwardProp })` 옵션을 쓴다.
 - 색상 함수가 필요하면 `polished`(`lighten`, `darken`, `rgba` 등)를 쓴다. 지금은 CSS의 `color-mix()`와 상대 색상 문법으로도 할 수 있다([[css-color-variables|CSS 색상과 변수]]).
 - 옵션별 스타일은 `sizeStyles`, `colorStyles`처럼 `css` 조각으로 떼어 두면 Sass의 믹스인처럼 관리할 수 있다.
 - `styled(Button)`으로 다른 컴포넌트의 스타일을 덮어쓰려면 그 컴포넌트가 받은 `className`을 실제 요소에 넘겨야 한다. 넘기지 않으면 아무 일도 일어나지 않는다.
@@ -258,7 +259,7 @@ function Dialog({ visible, children }) {
 npm install @mui/material @emotion/react @emotion/styled
 ```
 
-버튼, 표(Data Grid), 다이얼로그 같은 완성된 컴포넌트를 import해 바로 쓸 수 있다. emotion을 스타일 엔진으로 쓰기 때문에 함께 설치한다. 필요한 컴포넌트를 문서에서 찾아 일단 적용해 보면서 익히는 것이 빠르다.
+버튼, 표(`Table`), 다이얼로그 같은 완성된 컴포넌트를 import해 바로 쓸 수 있다. 정렬·필터·페이지네이션이 붙은 Data Grid는 MUI X 소속이라 `npm install @mui/x-data-grid`로 따로 설치한다(Pro·Premium은 별도 패키지). emotion을 스타일 엔진으로 쓰기 때문에 함께 설치한다. 필요한 컴포넌트를 문서에서 찾아 일단 적용해 보면서 익히는 것이 빠르다.
 
 ### UI 라이브러리를 감싸서 쓰기
 

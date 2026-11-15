@@ -113,7 +113,7 @@ flowchart TB
 | 구성 요소 | 역할 |
 | --- | --- |
 | containerd | **고수준 런타임.** 이미지 내려받기·저장(스냅숏), 컨테이너 생성·시작·삭제를 관리하는 데몬. Docker에서 떼어 내 CNCF에 기증됐고, 쿠버네티스 노드도 Docker 없이 containerd를 직접 쓴다 |
-| containerd-shim | 컨테이너마다 하나씩 뜨는 작은 프로세스. 덕분에 dockerd·containerd를 재시작·업그레이드해도 컨테이너가 죽지 않는다 |
+| containerd-shim | 컨테이너마다 하나씩 뜨는 작은 프로세스. 덕분에 containerd를 재시작해도 컨테이너가 죽지 않는다. dockerd는 기본 설정이면 멈출 때 컨테이너도 함께 내리므로, 재시작 중에도 살려 두려면 `live-restore`를 켜야 한다(메이저 업그레이드 등에는 제약이 있다) |
 | runc | **저수준 런타임.** OCI 런타임 명세(설정 파일 + 루트 파일 시스템)를 받아 리눅스 네임스페이스·cgroups를 설정하고 컨테이너 프로세스를 띄운다. gVisor(runsc), Kata Containers처럼 같은 명세를 다른 격리 방식으로 구현한 런타임으로 바꿀 수 있다 |
 
 **OCI(Open Container Initiative)** 는 컨테이너 형식이 특정 회사에 묶이지 않도록 2015년 Docker 등이 리눅스 재단 아래 만든 표준 단체다. 세 가지 명세를 정한다.
@@ -186,7 +186,7 @@ docker stack deploy -c compose.yaml shop                     # Compose 파일을
 | 서비스 | 태스크를 지정한 수만큼 유지하고, 죽으면 다시 띄우고, 로드 밸런서에 붙인다. 레플리카형과 호스트마다 하나씩인 데몬형이 있다 | Deployment, DaemonSet |
 | 실행 기반 | EC2(인스턴스를 직접 관리, ecs-agent가 클러스터에 등록) 또는 Fargate(서버 관리 없이 태스크 단위 과금) | 노드 |
 
-태스크 정의(JSON)에서 `cpu`는 1024가 vCPU 1개인 단위, `memory`는 MiB다. `essential: true`인 컨테이너가 죽으면 태스크 전체가 멈춘다. 네트워크 모드는 태스크마다 ENI(VPC IP)를 주는 `awsvpc`가 기본 선택지이고 Fargate는 이것만 쓴다. 옛 `links`·`volumesFrom`은 `bridge` 모드에서만 쓰는 레거시다.
+태스크 정의(JSON)에서 `cpu`는 1024가 vCPU 1개인 단위, `memory`는 MiB다. `essential: true`인 컨테이너가 죽으면 태스크 전체가 멈춘다. 네트워크 모드는 태스크마다 ENI(VPC IP)를 주는 `awsvpc`가 기본 선택지이고 Fargate는 이것만 쓴다. 옛 `links`는 `bridge` 모드에서만 쓰는 레거시다. 컨테이너 사이 볼륨 공유(`volumesFrom`)는 `awsvpc`·Fargate에서도 된다.
 
 태스크를 직접 실행하면 죽어도 다시 뜨지 않는다. 웹 서버처럼 계속 떠 있어야 하는 것은 서비스로 띄운다. 스케줄러가 어느 호스트에 놓을지 정하므로 **어떤 호스트에서 돌아도 되게** 만든다(로컬 디스크·고정 IP에 기대지 않는다). 이미지는 ECR 같은 비공개 레지스트리에 두고 IAM으로 권한을 준다.
 

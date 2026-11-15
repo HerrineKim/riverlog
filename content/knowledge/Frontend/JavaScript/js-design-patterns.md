@@ -168,7 +168,13 @@ class EventEmitter {
   }
 
   once(name, handler) {
-    const off = this.on(name, (...args) => { off(); handler(...args) })
+    let called = false // 바깥 emit의 복사본에 남은 래퍼가 중첩 emit 뒤에 다시 불려도 한 번만 실행한다
+    const off = this.on(name, (...args) => {
+      if (called) return
+      called = true
+      off()
+      handler(...args)
+    })
     return off
   }
 
@@ -179,7 +185,7 @@ class EventEmitter {
 }
 ```
 
-짚을 지점은 세 가지다. 핸들러를 `Set`에 두면 같은 함수의 중복 등록이 막힌다(중복을 허용하려면 배열). `emit` 중에 구독이 바뀌어도 안전하도록 **복사본을 순회**한다. `on`이 해제 함수를 돌려주면 익명 함수도 해제할 수 있다.
+짚을 지점은 세 가지다. 핸들러를 `Set`에 두면 같은 함수의 중복 등록이 막힌다(중복을 허용하려면 배열). `emit` 중에 구독이 바뀌어도 안전하도록 **복사본을 순회**한다. `on`이 해제 함수를 돌려주면 익명 함수도 해제할 수 있다. 복사본 순회 때문에 `once`는 해제만으로 부족하다. 앞선 핸들러가 같은 이벤트를 다시 `emit`하면 바깥 발행의 복사본에 래퍼가 남아 두 번 불리므로 `called` 플래그로 막는다.
 
 브라우저와 Node.js에서는 직접 만들 필요 없이 표준 `EventTarget`을 상속하면 같은 일을 한다(`class Menu extends EventTarget`, `menu.dispatchEvent(new CustomEvent('select', { detail }))`). 다만 이미 다른 부모가 있으면 상속할 수 없으니, 그때 믹스인이 필요하다. `CustomEvent`는 [[dom-events|DOM 이벤트]]에 있다.
 

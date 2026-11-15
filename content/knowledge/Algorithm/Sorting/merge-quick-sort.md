@@ -137,24 +137,30 @@ def quickselect(a, k):                 # 0-based로 k번째로 작은 값. a를 
     while True:
         if lo == hi:
             return a[lo]
-        p = random.randint(lo, hi)     # 무작위 피벗으로 최악 입력을 피한다
-        a[p], a[hi] = a[hi], a[p]
-        store = lo
-        for i in range(lo, hi):        # 로무토 분할: 피벗보다 작은 값을 앞으로
-            if a[i] < a[hi]:
-                a[i], a[store] = a[store], a[i]
-                store += 1
-        a[store], a[hi] = a[hi], a[store]
-        if k == store:
-            return a[k]
-        if k < store:
-            hi = store - 1
-        else:
-            lo = store + 1
+        pivot = a[random.randint(lo, hi)]  # 무작위 피벗으로 최악 입력을 피한다
+        lt, i, gt = lo, lo, hi         # 3-way 분할: [lo, lt) 작음, [lt, gt] 같음, (gt, hi] 큼
+        while i <= gt:
+            if a[i] < pivot:
+                a[lt], a[i] = a[i], a[lt]
+                lt += 1
+                i += 1
+            elif a[i] > pivot:
+                a[i], a[gt] = a[gt], a[i]
+                gt -= 1
+            else:
+                i += 1
+        if k < lt:
+            hi = lt - 1
+        elif k > gt:
+            lo = gt + 1
+        else:                          # k가 피벗과 같은 구역에 있다
+            return pivot
 
 nums = [7, 2, 9, 4, 1, 5]
 print(quickselect(nums[:], len(nums) // 2))   # 5 (정렬하면 1 2 4 5 7 9)
 ```
+
+피벗보다 작은 값만 앞으로 보내는 2-way 분할은 값이 모두 같은 배열에서 한 번에 원소 하나씩만 줄어 무작위 피벗이어도 O(n²)이 된다. 같은 값을 한 구역에 모으면 k가 그 구역에 들 때 바로 끝난다.
 
 | 방법 | 시간 | 특징 |
 | --- | --- | --- |
@@ -173,7 +179,7 @@ k번째로 큰 값은 `n - k`번째로 작은 값이다. 원소 수가 짝수일
 | 선택 | O(n²) | O(n²) | O(n²) | O(1) | 불안정 |
 | 삽입 | O(n) | O(n²) | O(n²) | O(1) | 안정 |
 | 병합 | O(n log n) | O(n log n) | O(n log n) | O(n) | 안정 |
-| 퀵 | O(n log n) | O(n log n) | O(n²) | O(log n) | 불안정 |
+| 퀵 | O(n log n) | O(n log n) | O(n²) | 평균 O(log n), 최악 O(n) (작은 쪽만 재귀하면 O(log n) 보장) | 불안정 |
 | 힙 | O(n log n) | O(n log n) | O(n log n) | O(1) | 불안정 |
 | 팀소트(Timsort) | O(n) | O(n log n) | O(n log n) | O(n) | 안정 |
 | 계수 | O(n + k) | O(n + k) | O(n + k) | O(n + k) | 안정 |

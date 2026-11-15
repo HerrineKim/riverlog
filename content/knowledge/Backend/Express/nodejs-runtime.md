@@ -70,9 +70,10 @@ class Job extends EventEmitter {
 const job = new Job()
 job.on('done', ({ completedOn }) => console.log('완료', completedOn))
 job.once('done', () => {}) // 한 번만
-job.run()
 
-const [details] = await once(job, 'done') // 이벤트 한 번을 Promise로 기다린다
+const done = once(job, 'done') // 이벤트 한 번을 Promise로 기다린다. emit보다 먼저 건다
+job.run()
+const [details] = await done
 ```
 
 - **`emit`은 동기다.** 등록된 리스너를 등록 순서대로 그 자리에서 모두 실행한 뒤에야 다음 줄로 간다. 비동기 작업의 완료를 알리는 데 자주 쓰여 비동기처럼 보일 뿐이다.
@@ -197,12 +198,12 @@ npm install -D cross-env
 import path from 'path';
 
 path.join('homepage', 'books', 'book');      // 'homepage/books/book' (Windows: 'homepage\\books\\book')
-path.join(process.cwd(), 'content', 'blog'); // 프로젝트 기준 절대 경로
+path.join(process.cwd(), 'content', 'blog'); // 현재 작업 디렉터리 기준 절대 경로
 path.resolve('content', 'blog');             // 오른쪽부터 붙여 절대 경로를 만든다
 path.extname('cover.png');                   // '.png'
 ```
 
-Next.js 프로젝트를 Vercel에 배포할 때 경로 관련 오류가 난다면, 먼저 문자열로 이어 붙인 경로를 `path.join(process.cwd(), ...)`처럼 path 모듈로 바꿔 본다. 그러면 실행 위치와 OS에 상관없이 같은 파일을 가리킨다.
+Next.js 프로젝트를 Vercel에 배포할 때 경로 관련 오류가 난다면, 먼저 문자열로 이어 붙인 경로를 `path.join(process.cwd(), ...)`처럼 path 모듈로 바꿔 본다. 그러면 OS마다 다른 경로 구분자 문제가 사라진다. `process.cwd()`는 프로세스를 띄운 디렉터리라, Next.js처럼 프로젝트 루트에서 실행하는 환경을 전제로 한다. 실행 위치와 무관해야 하면 모듈 파일 위치(`import.meta.dirname`, CommonJS는 `__dirname`)를 기준으로 잡는다.
 
 **파일 이름은 소문자 + 하이픈**(`auth-handler.js`)으로 통일한다. macOS·Windows의 기본 파일 시스템은 대소문자를 구분하지 않고 Linux는 구분한다. `require('./Auth')`가 `auth.js`를 찾는 코드는 로컬에서만 되고 Linux 서버에서 깨진다.
 
@@ -220,7 +221,7 @@ Node.js를 만든 Ryan Dahl은 Node의 설계에서 아쉬운 점을 짚고 **De
 | Node의 아쉬운 점 | Deno의 답 | 지금의 Node |
 | --- | --- | --- |
 | 스크립트가 파일·네트워크·환경 변수에 **무제한 접근**한다 | 기본 차단, `--allow-read=./data`·`--allow-net=api.example.com`처럼 범위를 좁혀 허락한다(`-A`는 전부) | `--permission` 플래그로 켜는 권한 모델이 22.13·23.5부터 안정 단계다. 플래그를 주지 않으면 여전히 무제한이다 |
-| `node_modules`와 중앙 레지스트리에 묶인 모듈 해석, CommonJS와 ES 모듈의 공존 | ES 모듈만 쓰고 URL·`jsr:`·`npm:` 지정자로 가져온다 | ESM과 CJS를 함께 지원한다. `require(esm)`이 가능해졌다 |
+| `node_modules`와 중앙 레지스트리에 묶인 모듈 해석, CommonJS와 ES 모듈의 공존 | ES 모듈을 기본으로 쓰고 URL·`jsr:`·`npm:` 지정자로 가져온다. Deno 2부터는 `.cjs`·`require()` 같은 CommonJS도 돌린다 | ESM과 CJS를 함께 지원한다. `require(esm)`이 가능해졌다 |
 | TypeScript를 따로 빌드해야 한다 | TypeScript를 바로 실행한다 | 타입 제거(type stripping)로 `.ts`를 바로 실행한다([[typescript-basics\|TypeScript 기초]]) |
 | 표준 라이브러리가 얇아 작은 유틸까지 패키지로 받는다 | 검수된 표준 라이브러리(`@std/*`)와 포매터·린터·테스트 러너 내장 | `node:test`, `fetch`, `--env-file`, `--watch`를 내장했다 |
 | 브라우저와 API가 다르다 | `fetch`, `URL`, `import.meta` 같은 **웹 표준 API**를 우선한다 | 웹 표준 API를 점점 들이고 있다 |

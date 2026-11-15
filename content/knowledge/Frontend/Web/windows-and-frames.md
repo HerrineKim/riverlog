@@ -114,7 +114,7 @@ window.addEventListener('message', (event) => {
 
 ### 같은 출처 탭끼리: BroadcastChannel
 
-창 참조 없이 **같은 출처의 모든 탭·iframe·워커**에 알릴 때는 `BroadcastChannel`을 쓴다. 로그아웃을 모든 탭에 퍼뜨리거나 다른 탭의 장바구니 갱신을 알릴 때 쓴다. localStorage의 `storage` 이벤트와 달리 임의의 구조화된 값을 보낸다.
+창 참조 없이 **같은 출처의 모든 탭·iframe·워커**에 알릴 때는 `BroadcastChannel`을 쓴다. 단 같은 저장소 파티션 안에서만 닿는다. `a.com`에 삽입된 `b.com` iframe은 최상위 `b.com` 탭과 파티션이 달라 서로 메시지를 받지 못한다. 로그아웃을 모든 탭에 퍼뜨리거나 다른 탭의 장바구니 갱신을 알릴 때 쓴다. localStorage의 `storage` 이벤트와 달리 임의의 구조화된 값을 보낸다.
 
 ```javascript
 const channel = new BroadcastChannel('auth')

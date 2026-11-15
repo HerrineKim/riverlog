@@ -44,12 +44,12 @@ sources: ["https://grokkingtechinterview.com/the-complete-guide-to-the-system-de
 
 ### 테이블별 크기
 
-int와 dateTime을 4바이트로 잡고 10년치를 계산한다.
+int와 dateTime을 4바이트로 잡고 10년치를 계산한다. 단 PhotoID는 10년이면 73억 개(하루 200만 × 3,650일)라 4바이트(최대 약 43억)로 모자라므로 8바이트로 잡는다.
 
 | 테이블 | 한 행 | 계산 | 크기 |
 | --- | --- | --- | --- |
 | User | UserID 4 + Name 20 + Email 32 + 생년월일 4 + 가입일 4 + 마지막 로그인 4 = 68B | 5억 × 68B | 약 34GB |
-| Photo | PhotoID 4 + UserID 4 + 경로 256 + 사진 위경도 8 + 사용자 위경도 8 + 생성일 4 = 284B | 200만 × 284B = 하루 약 0.57GB, × 3,650일 | 약 2TB |
+| Photo | PhotoID 8 + UserID 4 + 경로 256 + 사진 위경도 8 + 사용자 위경도 8 + 생성일 4 = 288B | 200만 × 288B = 하루 약 0.58GB, × 3,650일 | 약 2.1TB |
 | UserFollow | 두 ID 8B | 5억 명 × 평균 500명 팔로우 × 8B | 약 2TB |
 | 합계 | | | 약 4TB (1,024 단위로 약 3.7TB) |
 

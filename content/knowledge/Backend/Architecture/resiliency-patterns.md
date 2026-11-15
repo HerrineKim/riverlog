@@ -60,7 +60,7 @@ Resilience4j는 `SemaphoreBulkhead`와 `ThreadPoolBulkhead`를 모두 제공한�
 
 | 전략 | 동작 | 맞는 곳 |
 | --- | --- | --- |
-| 수요 신호(pull) | 소비자가 처리할 수 있는 만큼만 요청한다. Reactive Streams의 `request(n)`, TCP 수신 윈도, Kafka 컨슈머의 `poll()` | 생산자를 늦출 수 있는 내부 파이프라인 |
+| 수요 신호(pull) | 소비자가 처리할 수 있는 만큼만 요청한다. Reactive Streams의 `request(n)`, TCP 수신 윈도, Kafka 컨슈머의 `poll()`. 단 Kafka의 `poll()`은 브로커에서 컨슈머로 가는 구간만 조절할 뿐 프로듀서를 늦추지 않아, 컨슈머가 느리면 랙이 쌓이고 보존 기간을 넘긴 메시지는 지워진다. 프로듀서까지 늦추려면 별도 장치(쿼터 등)가 필요하다 | 생산자를 늦출 수 있는 내부 파이프라인 |
 | 생산자 막기 | 크기가 정해진 큐가 차면 넣는 쪽이 기다린다(`BlockingQueue.put`, Kafka 프로듀서의 `buffer.memory`) | 생산자가 같은 프로세스·시스템 안에 있을 때 |
 | 제한된 버퍼 | 순간 폭주만 흡수할 크기의 버퍼를 둔다. **무한 버퍼는 배압이 아니라 메모리 부족을 미루는 것**이다 | 짧은 버스트 |
 | 버리기·샘플링 | 가장 새 것 또는 가장 오래된 것을 버리거나, 일부만 남긴다(Reactor의 `onBackpressureDrop`·`onBackpressureLatest`) | 지표, 위치·시세처럼 최신 값만 의미 있는 데이터 |

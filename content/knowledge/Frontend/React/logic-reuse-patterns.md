@@ -35,6 +35,7 @@ function withSubscription(WrappedComponent, selectData) {
     const [data, setData] = useState(() => selectData(DataSource, props))
     useEffect(() => {
       const handleChange = () => setData(selectData(DataSource, props))
+      handleChange()   // props(예: id)가 바뀌면 바로 다시 고른다. useState 초기화 함수는 첫 렌더링에만 돈다
       DataSource.addChangeListener(handleChange)
       return () => DataSource.removeChangeListener(handleChange)
     }, [props])
@@ -61,11 +62,12 @@ const BlogPostWithSubscription = withSubscription(BlogPost, (ds, props) => ds.ge
 **Render props**는 「무엇을 그릴지」를 함수 prop으로 받아, 컴포넌트가 가진 값을 인자로 그 함수를 호출하는 패턴이다. prop 이름은 `render`든 `children`이든 상관없다.
 
 ```jsx
-function Mouse({ render }) {
+function Mouse({ render, children }) {
+  const draw = render ?? children   // React가 둘을 자동으로 이어 주지 않으므로 직접 받는다
   const [pos, setPos] = useState({ x: 0, y: 0 })
   return (
     <div style={{ height: '100vh' }} onPointerMove={(e) => setPos({ x: e.clientX, y: e.clientY })}>
-      {render(pos)}
+      {draw(pos)}
     </div>
   )
 }

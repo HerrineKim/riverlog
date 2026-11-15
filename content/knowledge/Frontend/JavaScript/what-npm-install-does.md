@@ -87,7 +87,7 @@ npm 자체는 여전히 기본으로 스크립트를 실행한다. 매니저별 
 | Node.js 서버 | 서버에서 `npm ci --omit=dev`로 `dependencies`를 설치해 그대로 쓴다. 이미지·함수 크기와 콜드 스타트에 영향을 준다 |
 | 라이브러리(내가 배포하는 패키지) | 내 `dependencies`가 내 패키지를 쓰는 사람의 `node_modules`에도 설치된다 |
 
-`devDependencies`(번들러, 테스트 도구, 타입 정의)는 개발 컴퓨터와 CI에서만 쓰이고 사용자에게 가지 않는다. 번들 크기를 보려면 빌드 결과 리포트나 `vite-bundle-visualizer` 같은 분석 도구를 쓴다.
+`devDependencies`(번들러, 테스트 도구, 타입 정의)는 개발 컴퓨터와 CI에서만 쓰이고 사용자에게 가지 않는다. 다만 이 구분은 설치 범주일 뿐 배포 경계가 아니다. 번들러를 쓰는 앱에서는 앱 코드가 import한 패키지라면 `devDependencies`에 있어도 번들에 들어간다. 번들 크기를 보려면 빌드 결과 리포트나 `vite-bundle-visualizer` 같은 분석 도구를 쓴다.
 
 ### 함께 떠안는 것
 

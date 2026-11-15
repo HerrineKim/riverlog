@@ -86,7 +86,7 @@ async def main():
 | Swift | `async let`, `withTaskGroup` |
 | Java | 가상 스레드와 함께 쓰는 `StructuredTaskScope` (Java 26 기준 아직 프리뷰 API) |
 | Go | 언어 차원 지원은 없다. `errgroup`, `sync.WaitGroup`으로 관례적으로 흉내 낸다 |
-| Rust | `std::thread::scope`(스레드), 비동기에서는 `JoinSet` 등 라이브러리 수준 |
+| Rust | `std::thread::scope`(스레드), 비동기에서는 `JoinSet` 등 라이브러리 수준. `JoinSet`은 drop하면 중단만 요청하고 끝나기를 기다리지 않으므로, 스코프를 벗어나기 전에 `join_next()`나 `shutdown().await`로 직접 기다려야 한다 |
 
 Erlang의 슈퍼바이저 트리, CSP의 병렬 합성, fork/join 모델도 같은 계열의 생각이다.
 

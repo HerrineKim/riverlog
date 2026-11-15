@@ -28,7 +28,7 @@ sources: ["https://ko.javascript.info/clickjacking", "https://wesbos.com/javascr
 서버가 매 요청마다 예측할 수 없는 난수 토큰을 발급해 폼에 숨겨 두고, 요청을 받을 때 토큰이 유효한지 검증한다. 공격자 페이지는 이 토큰 값을 알 수 없으므로 위조 요청이 거부된다.
 
 - 데이터를 변경하는 `POST`, `PUT`/`PATCH`, `DELETE` 요청에 주로 적용한다.
-- 쿠키의 `SameSite` 속성으로 다른 사이트에서 시작된 요청에 쿠키가 실리지 않게 하는 방법도 함께 쓴다. 크롬·엣지는 값을 생략하면 `Lax`로 다뤄 다른 사이트의 `POST`에 쿠키를 싣지 않지만, 브라우저마다 기본값이 다르므로 명시한다([[cookie-session|쿠키와 세션]]).
+- 쿠키의 `SameSite` 속성으로 다른 사이트에서 시작된 요청에 쿠키가 실리지 않게 하는 방법도 함께 쓴다. 크롬·엣지는 값을 생략하면 `Lax`로 다루지만, 새로 설정된 쿠키는 2분 동안 다른 사이트의 최상위 `POST`에도 실어 보내는 예외가 있다. 명시한 `SameSite=Lax`에는 이 예외가 없고 브라우저마다 기본값도 다르므로 직접 적는다([[cookie-session|쿠키와 세션]]).
 - 요청의 `Origin`·`Sec-Fetch-Site` 헤더로 다른 사이트에서 온 변경 요청을 거부하는 방법도 있다.
 
 Django는 `CsrfViewMiddleware`와 폼에 숨은 입력을 넣는 `{% csrf_token %}`으로 이 방식을 처리한다 → [[auth-user|Django User와 인증]].

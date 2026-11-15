@@ -87,7 +87,7 @@ body {
 ## 정리
 
 - 화면 끝까지 그리려면 `viewport-fit=cover`를 켜고, 글과 조작 요소는 `env(safe-area-inset-*)`만큼 안으로 들인다.
-- `env()`는 대체값을 받는다. 지원하지 않는 기기에서도 여백이 남게 한다.
+- `env()`의 대체값은 변수가 없는 환경에서만 쓰인다. 가리는 것이 없는 화면에서는 값이 `0`이라 대체값이 쓰이지 않으므로, 기본 여백을 지키려면 `max(1em, env(safe-area-inset-left))`처럼 쓴다.
 - 폴더블은 `*-viewport-segments`로 감지하고 `env(viewport-segment-*)`로 경첩을 피한다. 실험 기능이라 없어도 되는 향상으로만 쓴다.
 
 관련 노트: [[responsive-design|반응형 디자인과 다국어 타이포그래피]], [[media-features|미디어 쿼리 문법과 미디어 기능]], [[devtools-device-emulation|DevTools로 기기·환경 에뮬레이션하기]]

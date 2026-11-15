@@ -16,7 +16,7 @@ sources: ["https://engineering.linecorp.com/ko/blog/ios-refactoring-uicollection
 | --- | --- | --- |
 | 모양 | 세로로 쌓인 행 | 레이아웃 객체가 정하는 아무 배치 |
 | 셀 밖 요소 | 날짜 구분선·읽음 표시를 넣으려면 셀 안에 서브뷰를 끼우거나 섹션을 억지로 나눈다 | **보조 뷰(supplementary view)·장식 뷰(decoration view)** 로 셀과 따로 배치한다 |
-| 높이 계산 | 테이블이 묻는 높이를 미리 계산해 따로 캐시해야 한다 | 레이아웃 객체가 위치·크기 계산을 맡는다 |
+| 높이 계산 | Auto Layout으로 셀 높이를 자동 계산(`automaticDimension`)하거나 델리게이트가 직접 돌려준다. 복잡한 셀은 계산한 높이를 따로 캐시하기도 한다 | 레이아웃 객체가 위치·크기 계산을 맡는다 |
 
 단순하고 균일한 목록은 UITableView로 충분하다. **데이터 모델과 배치 규칙을 분리**해야 하는 복잡한 목록에서 UICollectionView가 유리하다.
 

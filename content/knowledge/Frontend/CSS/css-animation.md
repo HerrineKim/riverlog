@@ -37,7 +37,7 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 | `transition-delay` | 시작 전 대기 |
 
 - `transition-timing-function`의 초깃값은 `ease`, `duration`·`delay`의 초깃값은 `0s`다. 축약형 순서는 `속성 길이 곡선 지연`(`transition: transform 300ms ease-in-out 0s`).
-- **중간 상태가 있는 속성만** 부드럽게 이어진다. `font-size`(길이)는 되고 `font-family`(serif와 monospace의 중간은 없다)는 안 된다. 이어지지 않는 속성은 끝에서 한 번에 바뀐다(이산 전환).
+- **중간 상태가 있는 속성만** 부드럽게 이어진다. `font-size`(길이)는 되고 `font-family`(serif와 monospace의 중간은 없다)는 안 된다. 이어지지 않는 속성은 기본(`transition-behavior: normal`)이면 전환 없이 바로 바뀐다. `transition-behavior: allow-discrete`를 주면 진행의 50% 지점에서 바뀐다(이산 전환). `display: none`과 `content-visibility: hidden`은 전환 내내 보이도록 시작이나 끝에서 바뀐다.
 - 전환은 값이 바뀌어야 시작한다. 흔한 계기는 `:hover`, `:focus`, `:focus-within`, `:target`, `:active`, JS로 클래스를 바꾸는 것이다.
 - **들어갈 때와 나올 때를 다르게** 하려면 각 상태에 다른 `transition`을 준다. 목표 상태 쪽 규칙의 `transition`이 쓰인다.
 - 형제마다 `transition-delay`를 조금씩 늘리면 차례로 움직이는 스태거(stagger) 효과가 된다. 음수 지연은 중간부터 시작한다.

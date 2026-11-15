@@ -197,7 +197,7 @@ flowchart TB
 - 디스크 여러 장의 빈 공간을 합쳐 하나의 논리 볼륨으로 쓸 수 있다. 디스크0에 2GB, 디스크1에 5GB가 남아도 7GB 파일을 담을 수 있다.
 - 운영 중에 볼륨을 늘릴 수 있다. 새 디스크를 `pvcreate` → `vgextend`로 그룹에 넣고, `lvextend -r -L +10G /dev/vg0/home`으로 볼륨과 파일 시스템을 함께 키운다. 스냅샷도 만들 수 있다.
 - 확인 명령: `lsblk`(블록 장치 트리), `pvs`·`vgs`·`lvs`.
-- LVM 자체는 중복 저장을 하지 않는다. 디스크 한 장이 고장 나면 그 위에 걸친 볼륨이 손상되므로 신뢰성은 RAID와 백업으로 따로 챙긴다.
+- 기본(선형·스트라이프) 논리 볼륨은 중복 저장을 하지 않는다. 디스크 한 장이 고장 나면 그 위에 걸친 볼륨이 손상되므로, LVM RAID 볼륨(`lvcreate --type raid1` 등, RAID1·5·6·10 지원)을 쓰거나 RAID와 백업으로 따로 챙긴다.
 
 ## RAID (Redundant Array of Independent Disks)
 

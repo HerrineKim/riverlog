@@ -88,11 +88,11 @@ delete a.y                       // 사전 모드로 떨어질 수 있다
 
 ### 배열의 요소 종류
 
-배열도 담긴 값의 종류(elements kind)를 추적한다. `[1, 2, 3]`은 작은 정수만 든 `PACKED_SMI_ELEMENTS`로 연속 메모리에 빽빽이 담긴다. 실수가 들어오면 `PACKED_DOUBLE_ELEMENTS`, 문자열·객체가 들어오면 `PACKED_ELEMENTS`로 넓어진다. 빈칸(hole)이 생기면 `HOLEY_*`가 된다. **전이는 한 방향이라 다시 좁아지지 않는다.**
+배열도 담긴 값의 종류(elements kind)를 추적한다. `[1, 2, 3]`은 작은 정수만 든 `PACKED_SMI_ELEMENTS`로 연속 메모리에 빽빽이 담긴다. 실수가 들어오면 `PACKED_DOUBLE_ELEMENTS`, 문자열·객체가 들어오면 `PACKED_ELEMENTS`로 넓어진다. 빈칸(hole)이 생기면 `HOLEY_*`가 된다. **전이는 한 방향이라 다시 좁아지지 않는다.** 예외로 2025년부터 `Array.prototype.fill`은 HOLEY 배열을 PACKED로 되돌릴 수 있다.
 
 | 하지 않는다 | 이유 |
 | --- | --- |
-| `new Array(n)`으로 만든 뒤 채우기, `arr[100] = x`처럼 건너뛰어 쓰기 | 빈칸이 생겨 HOLEY가 되고, 다 채워도 돌아오지 않는다. 리터럴이나 `push`로 만든다 |
+| `new Array(n)`으로 만든 뒤 하나씩 채우기, `arr[100] = x`처럼 건너뛰어 쓰기 | 빈칸이 생겨 HOLEY가 되고, 다 채워도 돌아오지 않는다. 리터럴이나 `push`로 만든다. `new Array(n).fill(v)`는 위 예외라 최신 V8에서는 괜찮다 |
 | 숫자 배열에 `NaN`·`-0`·문자열 섞기 | 더 일반적인 종류로 넓어진다 |
 | `i <= arr.length`처럼 길이 밖을 읽기 | 프로토타입 체인까지 조회하게 만든다 |
 | 여러 종류의 배열을 한 함수에 번갈아 넘기기 | 그 함수의 IC가 다형이 된다 |

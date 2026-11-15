@@ -155,7 +155,7 @@ flowchart TB
 
 ### 같은 좌석의 동시 예매 막기
 
-DB 트랜잭션으로 행을 잠근다. 가장 높은 격리 수준인 `SERIALIZABLE`은 더티 리드, 반복 불가능 읽기, 팬텀 읽기를 모두 막는다. 트랜잭션 안에서 읽은 행에는 쓰기 잠금이 걸려 다른 트랜잭션이 갱신하지 못한다.
+DB 트랜잭션으로 막는다. 가장 높은 격리 수준인 `SERIALIZABLE`은 더티 리드, 반복 불가능 읽기, 팬텀 읽기를 모두 막는데, 방식은 DB마다 다르다. 잠금 기반 구현(SQL Server, MySQL InnoDB)은 읽은 행과 범위에 공유 잠금을 걸어 다른 트랜잭션의 갱신을 기다리게 한다. PostgreSQL은 잠그지 않고 충돌을 감지해 한쪽 트랜잭션을 직렬화 실패로 중단시키므로, 실패한 트랜잭션을 다시 시도하는 경로가 있어야 한다. 행을 직접 잠그려면 `SELECT ... FOR UPDATE`를 쓴다.
 
 ```sql
 SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;

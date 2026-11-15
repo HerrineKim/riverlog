@@ -354,7 +354,7 @@ class EventDate {
   #offset
 
   constructor(lastDate, offset = 0) {
-    this.#lastDate = lastDate
+    this.#lastDate = new Date(lastDate) // 받은 Date를 복사한다. 원본을 바깥에서 setFullYear로 바꿔도 영향이 없다
     this.#offset = offset
   }
 
@@ -370,7 +370,7 @@ class EventDate {
 
 | 규칙 | 이유 |
 | --- | --- |
-| **setter를 두지 않는다(불변)** | `10 === 20`이 중간 로직을 거친 뒤 `true`가 되면 코드를 믿을 수 없다. 값을 바꾸려면 새 인스턴스를 만든다 |
+| **setter를 두지 않는다(불변)** | `10 === 20`이 중간 로직을 거친 뒤 `true`가 되면 코드를 믿을 수 없다. 값을 바꾸려면 새 인스턴스를 만든다. `Date`처럼 바뀌는 객체를 받으면 생성자에서 복사해 둔다. `#private`은 참조를 숨길 뿐 그 객체를 지켜 주지 않는다 |
 | **같은 타입끼리 비교 메서드를 둔다** | `isEqual`, `isLaterThan`처럼 값으로 비교한다. `===`는 참조를 비교하므로 쓰지 않는다 |
 | **비교가 거짓이면 다른 값이다** | 식별자가 아니라 속성 값이 같은지로 같음을 정한다 |
 

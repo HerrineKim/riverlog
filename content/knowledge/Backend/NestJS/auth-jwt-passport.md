@@ -63,8 +63,10 @@ export class AuthService {
 
   async jwtLogIn({ email, password }: LoginRequestDto) {
     const cat = await this.catsRepository.findCatByEmail(email);
-    // 이메일이 없든 비밀번호가 틀리든 같은 메시지 → 계정 존재 여부를 노출하지 않음
-    if (!cat || !(await bcrypt.compare(password, cat.password))) {
+    // 계정이 없어도 같은 비용의 더미 해시(DUMMY_HASH, 미리 bcrypt로 만든 값)와 비교한다.
+    // 메시지도 응답 시간도 같아야 계정 존재 여부가 드러나지 않는다
+    const matched = await bcrypt.compare(password, cat?.password ?? DUMMY_HASH);
+    if (!cat || !matched) {
       throw new UnauthorizedException('이메일과 비밀번호를 확인해주세요.');
     }
     const payload = { email: cat.email, sub: cat.id };

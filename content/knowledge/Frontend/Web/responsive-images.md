@@ -148,7 +148,7 @@ CSS의 `calc()`처럼 `+`·`-` 양옆에 공백이 있어야 한다(`calc(100vw 
 | --- | --- |
 | `<img>`는 맨 뒤에 둔다 | 맞는 `<source>`가 없을 때의 기본값이다. `alt`도 여기서 온다 |
 | 순서대로 보고 **처음 맞는 `<source>` 하나**를 쓴다 | `min-width` 조건이면 큰 것부터, `max-width` 조건이면 작은 것부터 쓴다 |
-| 고른 `<source>`의 `srcset`은 `<img>`에 있던 것처럼 쓰인다 | 그래서 `<img>`의 `sizes`가 `<source>` 후보에도 적용된다 |
+| 고른 `<source>`의 `srcset`은 `<img>`에 있던 것처럼 쓰인다 | 단 `sizes`는 물려받지 않는다. 브라우저는 고른 `<source>`의 `sizes`를 읽고, 없으면 `100vw`로 본다. 폭(`w`) 후보를 쓰는 `<source>`마다 `sizes`를 준다 |
 | `<picture>`를 모르는 브라우저는 `<picture>`·`<source>`를 무시한다 | `<img src>`만 보이므로 안전하게 대체된다 |
 
 CSS로 잘라 보여 주면 보이지 않는 부분까지 내려받는다. 아트 디렉션은 잘린 파일 자체를 따로 준다.
@@ -157,6 +157,7 @@ CSS로 잘라 보여 주면 보이지 않는 부분까지 내려받는다. 아�
 <picture>
   <source media="(min-width: 800px)"
           srcset="wide-1600.jpg 1600w, wide-1000.jpg 1000w"
+          sizes="calc(100vw - 2em)"
           width="1600" height="800">
   <img src="close-800.jpg"
        srcset="close-1200.jpg 1200w, close-800.jpg 800w"

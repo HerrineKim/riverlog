@@ -35,7 +35,7 @@ BFS가 큐로 "가까운 순서"를 보장한다면, 다익스트라는 우선�
 ```python
 import sys
 input = sys.stdin.readline
-INF = int(1e9)
+INF = float('inf')                      # 어떤 경로 비용보다도 크다
 
 n, m = map(int, input().split())
 start = int(input())
@@ -78,7 +78,7 @@ for i in range(1, n + 1):
 import heapq
 import sys
 input = sys.stdin.readline
-INF = int(1e9)
+INF = float('inf')                      # 어떤 경로 비용보다도 크다
 
 def dijkstra(graph, start, n):
     distance = [INF] * (n + 1)

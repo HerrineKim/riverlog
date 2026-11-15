@@ -113,7 +113,7 @@ bfcache는 뒤로·앞으로 이동 때 페이지를 메모리 스냅샷에서 �
 | 지원 대기 중 | Chrome이 아직 지원하지 않는 기능 때문. 나중에 풀린다 |
 | 조치 불가 | 페이지 밖 요인 |
 
-가장 흔한 두 원인은 `Cache-Control: no-store` 헤더와 `unload` 이벤트 핸들러다. 최신성이 필요하면 `no-store` 대신 `no-cache`나 짧은 `max-age`를 쓰고, `unload` 대신 `pagehide`를 쓴다. `Permissions-Policy: unload=()` 헤더로 확장 프로그램이 `unload`를 붙이는 것도 막을 수 있다. 헤더를 바꿔 보는 실험은 네트워크 패널의 **재정의(Overrides)**로 응답 헤더를 흉내 내면 서버 배포 없이 된다.
+흔한 원인은 `unload` 이벤트 핸들러와 `Cache-Control: no-store` 헤더다. `unload` 대신 `pagehide`를 쓴다. `no-store`는 Chrome에서는 그것만으로 bfcache를 막지 않게 바뀌었다(2025년 단계적 적용). 다만 쿠키·인증 상태가 바뀌었거나(로그아웃 등), WebSocket·WebRTC를 썼거나, 페이지의 fetch 응답도 `no-store`면 여전히 제외되고, 다른 브라우저는 계속 막을 수 있다. 그러니 헤더를 바꾸기 전에 패널이 보여 주는 실제 원인을 먼저 확인하고, 최신성만 필요했다면 `no-cache`나 짧은 `max-age`를 검토한다. `Permissions-Policy: unload=()` 헤더로 확장 프로그램이 `unload`를 붙이는 것도 막을 수 있다. 헤더를 바꿔 보는 실험은 네트워크 패널의 **재정의(Overrides)**로 응답 헤더를 흉내 내면 서버 배포 없이 된다.
 
 ## 추측 규칙(Speculation Rules) 디버깅
 

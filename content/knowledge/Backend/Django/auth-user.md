@@ -53,7 +53,7 @@ if form.is_valid():
     login(request, form.get_user())
 ```
 
-로그인한 사용자만 접근하게 하려면 view에 `@login_required` 데코레이터를 붙인다. 비로그인 사용자는 로그인 페이지로 이동하며 `?next=/movies/create/`가 붙는다. 로그인 view에서 `redirect(request.GET.get('next') or 'movies:index')`로 원래 가려던 페이지로 돌려보낼 수 있고, 이때 로그인 템플릿의 `<form action="">`을 비워 두어야 쿼리스트링의 `next`가 유지된다.
+로그인한 사용자만 접근하게 하려면 view에 `@login_required` 데코레이터를 붙인다. 비로그인 사용자는 로그인 페이지로 이동하며 `?next=/movies/create/`가 붙는다. 로그인 view에서 `next`로 원래 가려던 페이지로 돌려보낼 수 있다. 다만 `redirect()`는 주소를 검사하지 않아 `?next=https://attacker.example` 같은 외부 주소로도 보내므로, `url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure())`로 확인한 뒤에만 쓰고 아니면 `'movies:index'`로 보낸다(내장 `LoginView`는 이 검사를 해 준다). 로그인 템플릿의 `<form action="">`을 비워 두어야 쿼리스트링의 `next`가 유지된다.
 
 ### 계정 관리 도구
 

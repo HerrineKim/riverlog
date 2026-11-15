@@ -132,7 +132,7 @@ $(SUBDIRS):
 | 레시피에서 `missing separator` 오류 | 탭 대신 공백으로 들여씀 | 편집기 설정에서 Makefile은 탭 유지 |
 | 하위 Makefile을 `cd dir && make`로 부른다 | 동작은 하지만 옵션 전달이 어색하다 | `$(MAKE) -C dir`를 쓴다. `$(MAKE)`는 `-j` 같은 옵션을 하위 make에 넘긴다 |
 
-디버깅 빌드는 Makefile을 고치지 않고 변수로 바꾼다. `ifdef DEBUG` 블록에서 `CFLAGS += -g -fsanitize=address,undefined`를 더하면 `make DEBUG=1`로 켤 수 있다. 다만 옵션이 바뀌어도 오브젝트의 수정 시각은 그대로라 기존 `.o`가 재사용되므로, 모드를 바꿀 때는 `make re`를 한다.
+디버깅 빌드는 Makefile을 고치지 않고 변수로 바꾼다. `ifdef DEBUG` 블록에서 `CFLAGS += -g -fsanitize=address,undefined`와 `LDFLAGS += -fsanitize=address,undefined`를 더하면 `make DEBUG=1`로 켤 수 있다. 위 링크 레시피는 `CFLAGS`를 쓰지 않으므로 `LDFLAGS`에도 넣어야 sanitizer 런타임이 링크된다. 다만 옵션이 바뀌어도 오브젝트의 수정 시각은 그대로라 기존 `.o`가 재사용되므로, 모드를 바꿀 때는 `make re`를 한다.
 
 ## 큰 프로젝트 구성
 

@@ -91,7 +91,7 @@ const [state] = useAsync(() => getUser(id), [id])
 | stale 처리 | 일정 시간이 지난 데이터는 오래된(stale) 것으로 보고 다시 가져온다 |
 | 자동 재요청 | 사용자가 다른 탭에 갔다가 돌아오면(window focus) 다시 가져온다 |
 | 이전 데이터 유지 | 다시 가져오는 동안에는 기존 데이터를 계속 보여 주고, 로딩 상태를 따로 알려 준다 |
-| 무효화 | 데이터를 바꾼 뒤 `invalidateQueries`로 관련 캐시를 버리고 새로 가져온다 |
+| 무효화 | 데이터를 바꾼 뒤 `invalidateQueries`로 관련 쿼리를 stale로 표시한다. 캐시 데이터는 그대로 두고, 화면에 쓰이는(active) 쿼리는 백그라운드에서 다시 가져온다 |
 | 무한 스크롤 | `useInfiniteQuery`로 페이지 단위 로딩 |
 
 ## 설정: QueryClient와 QueryClientProvider

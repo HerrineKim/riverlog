@@ -132,11 +132,16 @@ self.addEventListener('activate', (event) => {
 ```javascript
 // 페이지 쪽: 새 버전이 대기 중인지 감지
 const reg = await navigator.serviceWorker.register('/sw.js');
+const askToUpdate = (worker) => showUpdateBanner(() => worker.postMessage({ type: 'SKIP_WAITING' }));
+
+// 다른 탭이 이미 설치해 둔 워커는 updatefound가 다시 오지 않으므로 지금 대기 중인지 먼저 본다
+if (reg.waiting && navigator.serviceWorker.controller) askToUpdate(reg.waiting);
+
 reg.addEventListener('updatefound', () => {
   const worker = reg.installing;
   worker.addEventListener('statechange', () => {
     if (worker.state === 'installed' && navigator.serviceWorker.controller) {
-      showUpdateBanner(() => worker.postMessage({ type: 'SKIP_WAITING' }));
+      askToUpdate(worker);
     }
   });
 });

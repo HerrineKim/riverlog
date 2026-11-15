@@ -55,7 +55,7 @@ test('JWT를 해석한다', () => {
   assert.ok(json.payload.admin, '관리자여야 한다')
   assert.deepEqual(json.payload.groups, ['role:Admin', 'role:Submitter'])
   assert.equal(json.header.alg, 'RS256')
-  assert.isAbove(json.payload.exp, Date.now(), '만료 시각은 미래여야 한다')
+  assert.isAbove(json.payload.exp, Date.now() / 1000, '만료 시각은 미래여야 한다') // exp는 초, Date.now()는 밀리초
 })
 ```
 

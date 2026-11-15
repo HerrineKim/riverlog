@@ -79,7 +79,7 @@ args가 컴포넌트 props와 맞지 않으면 타입 오류가 난다. 별도 �
 
 ## 설정의 세 층
 
-같은 설정(args, decorators, parameters)을 세 곳에 둘 수 있고, **아래로 갈수록 범위가 좁고 우선한다.**
+같은 설정(args, decorators, parameters)을 세 곳에 둘 수 있고, **아래로 갈수록 범위가 좁고 우선한다.** 단 decorators는 덮어쓰지 않고 쌓인다. 전역·meta·스토리의 decorator가 모두 실행되고, 스토리 decorator가 가장 안쪽에서 감싼다. 우선순위는 args·parameters의 같은 키 값에 적용된다.
 
 ```text
 .storybook/preview.ts   전역     모든 스토리

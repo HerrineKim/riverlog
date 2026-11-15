@@ -97,7 +97,7 @@ sequenceDiagram
 
 ### 배경과 요구 사항
 
-개발자가 묻고 답하는 커뮤니티다. 답변이 추천을 받으면 **평판 10점**, 질문이 추천을 받으면 **5점**을 얻고, 기여에 따라 배지를 받는다. 평판이 높아지면 투표, 댓글, 남의 글 편집 같은 권한이 열린다. 글은 위키처럼 고칠 수 있다.
+개발자가 묻고 답하는 커뮤니티다. 답변이나 질문이 추천을 받으면 **평판 10점**을 얻고, 기여에 따라 배지를 받는다. 평판이 높아지면 투표, 댓글, 남의 글 편집 같은 권한이 열린다. 글은 위키처럼 고칠 수 있다.
 
 - 손님은 질문을 검색·조회만 한다. 질문하거나 추천하려면 회원이 된다.
 - 회원은 질문을 올리고, 열린 질문에 답하고, 질문·답변에 댓글을 단다. 질문·답변·댓글을 추천하고, 심각한 문제나 운영자 확인이 필요하면 신고(flag)한다.
@@ -365,7 +365,7 @@ flowchart LR
 | `MatchFormat` | `ODI, T20, TEST` |
 | `MatchResult` | `LIVE, FINISHED, DRAWN, CANCELLED` |
 | `UmpireType` | `FIELD, RESERVED, TV` |
-| `WicketType` | `BOLD`(볼드), `CAUGHT, STUMPED, RUN_OUT, LBW, RETIRED_HURT, HIT_WICKET, OBSTRUCTING` |
+| `WicketType` | `BOLD`(볼드), `CAUGHT, STUMPED, RUN_OUT, LBW, RETIRED_OUT, HIT_WICKET, OBSTRUCTING`. 부상으로 물러나는 retired hurt는 아웃이 아니라(retired not out) 넣지 않는다 |
 | `BallType` | `NORMAL, WIDE, WICKET, NO_BALL` |
 | `RunType` | `NORMAL, FOUR, SIX, LEG_BYE, BYE, NO_BALL, OVERTHROW` |
 

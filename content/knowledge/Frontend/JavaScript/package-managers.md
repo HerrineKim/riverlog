@@ -94,7 +94,7 @@ echo "22" > .nvmrc     # 프로젝트 버전 기록 → 이 폴더에서 nvm use
 ```
 
 - 프로젝트 루트의 `.nvmrc`(fnm·mise도 읽는다)와 `package.json`의 `engines.node`에 버전을 적어 팀과 CI가 같은 Node를 쓰게 한다. GitHub Actions의 `actions/setup-node`도 `node-version-file: .nvmrc`로 읽는다.
-- 운영에는 짝수 메이저의 **LTS**를 쓴다. 홀수 버전은 6개월만 지원된다.
+- 운영에는 **LTS**(Active·Maintenance) 버전을 쓴다. Node.js 26까지는 짝수 메이저만 LTS가 되고 홀수 버전은 6개월만 지원됐다. Node.js 27부터는 1년에 한 번 메이저가 나오고 모든 메이저가 Current 6개월 뒤 LTS가 된다.
 - 버전 관리자로 깐 Node에서는 `npm install -g`가 그 버전 폴더 안에 들어가 `sudo`가 필요 없다. 대신 Node 버전을 바꾸면 전역 패키지도 따로다. 도구는 전역 설치보다 `devDependencies` + `npx`를 쓴다.
 
 ## 공급망 보안 기본값

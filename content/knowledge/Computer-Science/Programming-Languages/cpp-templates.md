@@ -50,6 +50,8 @@ class Array {
 public:
     Array() : buf(new T[Capacity]), size(0) {}
     ~Array() { delete[] buf; }
+    Array(const Array&) = delete;             // 포인터만 복사되면 delete[]가 두 번 불린다
+    Array& operator=(const Array&) = delete;
     void add(const T& v) { buf[size++] = v; }
     const T& operator[](int i) const { return buf[i]; }
     int getSize() const { return size; }

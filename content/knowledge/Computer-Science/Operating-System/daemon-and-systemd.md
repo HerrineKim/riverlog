@@ -41,7 +41,7 @@ flowchart TB
 | 단계 | 하는 일 | 이유 |
 | --- | --- | --- |
 | 1 | 0·1·2를 뺀 fd를 모두 닫고, 시그널 핸들러·마스크·환경 변수를 초기화 | 부모에게서 물려받은 것 정리 |
-| 2 | `fork()` 후 부모는 종료 | 셸에 제어를 돌려주고, 자식은 프로세스 그룹 리더가 아니게 됨 |
+| 2 | `fork()`로 자식을 만든다. 원래 프로세스는 7단계의 준비 완료 알림을 기다린다 | 자식은 프로세스 그룹 리더가 아니게 되어 `setsid()`를 부를 수 있음 |
 | 3 | 자식에서 `setsid()` | 새 세션의 리더가 되어 제어 터미널과 분리 |
 | 4 | 다시 `fork()` 후 첫 자식은 종료 | 세션 리더가 아니게 만들어 터미널을 다시 얻을 수 없게 함. 남은 손자는 init(PID 1)에 입양됨 |
 | 5 | 0·1·2를 `/dev/null`에 연결, `umask(0)`, `chdir("/")` | 터미널 출력 차단, 생성 파일 권한을 직접 통제, 마운트 해제를 막지 않게 |
@@ -129,7 +129,7 @@ Podman은 이를 정식 기능으로 만들었다. **Quadlet**은 `/etc/containe
 
 ## cron 대신 systemd 타이머
 
-cron은 `/etc/crontab`이나 `crontab -e`에 `분 시 일 월 요일 명령`을 적는다. systemd 타이머는 같은 일을 하는 `.timer` 유닛이다. 기본으로 **같은 이름의 `.service`를 실행**한다.
+cron은 `crontab -e`에 `분 시 일 월 요일 명령`을 적는다. 시스템 crontab(`/etc/crontab`)은 요일과 명령 사이에 실행할 사용자 이름을 하나 더 적는다(`분 시 일 월 요일 사용자 명령`). systemd 타이머는 같은 일을 하는 `.timer` 유닛이다. 기본으로 **같은 이름의 `.service`를 실행**한다.
 
 ```ini
 # /etc/systemd/system/myapp.timer
@@ -137,14 +137,20 @@ cron은 `/etc/crontab`이나 `crontab -e`에 `분 시 일 월 요일 명령`을 
 Description=Run myapp hourly
 
 [Timer]
-OnCalendar=hourly          # *-*-* *:00:00 과 같음
-OnBootSec=30s              # 부팅 30초 뒤에도 한 번
-Persistent=true            # 꺼져 있어 놓친 실행은 켜진 뒤 바로
-RandomizedDelaySec=1min    # 여러 서버가 동시에 몰리지 않게
+# *-*-* *:00:00 과 같음
+OnCalendar=hourly
+# 부팅 30초 뒤에도 한 번
+OnBootSec=30s
+# 꺼져 있어 놓친 실행은 켜진 뒤 바로
+Persistent=true
+# 여러 서버가 동시에 몰리지 않게
+RandomizedDelaySec=1min
 
 [Install]
 WantedBy=timers.target
 ```
+
+유닛 파일은 줄 끝 주석을 지원하지 않는다. `#`이나 `;`로 시작하는 줄만 주석이므로 설명은 따로 한 줄에 쓴다.
 
 | 비교 | cron | systemd 타이머 |
 | --- | --- | --- |

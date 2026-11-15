@@ -15,10 +15,10 @@ sources: ["https://ko.javascript.info/onload-ondomcontentloaded", "https://ko.ja
 ```mermaid
 flowchart TB
   subgraph loading["document.readyState: loading"]
-    p1["HTML 파싱"] --> p2["동기 스크립트 실행"] --> p3["defer·module 스크립트 실행"]
+    p1["HTML 파싱"] --> p2["동기 스크립트 실행"]
   end
   subgraph interactive["document.readyState: interactive"]
-    e1["DOMContentLoaded (document)<br/>DOM 완성. 이미지·iframe은 아직일 수 있다"] --> e2["이미지·iframe·스타일시트 등 load"]
+    p3["defer·module 스크립트 실행"] --> e1["DOMContentLoaded (document)<br/>DOM 완성. 이미지·iframe은 아직일 수 있다"] --> e2["이미지·iframe·스타일시트 등 load"]
   end
   subgraph complete["document.readyState: complete"]
     e3["load (window)<br/>모든 리소스 완료"]
@@ -27,7 +27,7 @@ flowchart TB
   subgraph leave["떠날 때"]
     l1["beforeunload"] --> l2["pagehide"] --> l3["visibilitychange(hidden)"] --> l4["(unload)"]
   end
-  p3 --> e1
+  p2 --> p3
   e2 --> e3
   e3 --> use --> l1
 ```

@@ -82,8 +82,9 @@ bfs(graph, 1, visited)  # 1 2 3 8 4 5 6 7
 ```python
 from collections import deque
 
-def shortest_cells(board, n, start, goal):
-    dist = [[-1] * n for _ in range(n)]      # -1 = 미방문, 그 외 = 출발점에서의 거리
+def shortest_cells(board, start, goal):
+    n, m = len(board), len(board[0])         # 행 수 N, 열 수 M
+    dist = [[-1] * m for _ in range(n)]      # -1 = 미방문, 그 외 = 출발점에서의 거리
     dist[start[0]][start[1]] = 0
     queue = deque([start])
     while queue:
@@ -92,7 +93,7 @@ def shortest_cells(board, n, start, goal):
             return dist[ci][cj] - 1          # 출발·도착 칸을 뺀 '지나는 칸' 수
         for di, dj in ((-1, 0), (1, 0), (0, -1), (0, 1)):
             ni, nj = ci + di, cj + dj
-            if 0 <= ni < n and 0 <= nj < n and dist[ni][nj] == -1 and board[ni][nj] != '1':
+            if 0 <= ni < n and 0 <= nj < m and dist[ni][nj] == -1 and board[ni][nj] != '1':
                 dist[ni][nj] = dist[ci][cj] + 1
                 queue.append((ni, nj))
     return 0                                 # 도달 불가

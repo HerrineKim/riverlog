@@ -35,11 +35,11 @@ sources: ["https://github.com/fru1tworld/cs-basic/blob/main/interview/infrastruc
 
 ### EndpointSlice와 kube-proxy
 
-서비스의 ClusterIP는 어느 인터페이스에도 붙어 있지 않은 가상 IP다. 핑에 응답하지 않는 것도 그래서다. 실제 전달은 두 구성 요소가 나눠 맡는다.
+iptables·nftables 모드에서 서비스의 ClusterIP는 어느 인터페이스에도 붙어 있지 않은 가상 IP다. 핑에 응답하지 않는 것도 그래서다(IPVS 모드는 `kube-ipvs0` 더미 인터페이스에 서비스 IP를 붙인다). 실제 전달은 두 구성 요소가 나눠 맡는다.
 
 ```mermaid
 flowchart TB
-  esc["EndpointSlice 컨트롤러"] -->|"셀렉터에 맞고 Ready인 파드 IP:포트 목록을 기록"| es["EndpointSlice"]
+  esc["EndpointSlice 컨트롤러"] -->|"셀렉터에 맞는 파드 IP:포트와 ready 조건을 기록"| es["EndpointSlice"]
   svc["Service"] -->|"watch"| kp["kube-proxy (노드마다)"]
   es -->|"watch"| kp
   kp -->|"규칙을 심음"| kr["노드 커널 규칙"]
@@ -249,7 +249,8 @@ kubectl run tmp --rm -it --image=busybox:1.37 -- wget -qO- http://api:80/healthz
 
 | 증상 | 원인 |
 | --- | --- |
-| 엔드포인트가 비었다 | 셀렉터와 파드 라벨 불일치, 또는 파드가 readiness 실패로 Ready가 아님 |
+| 엔드포인트가 비었다 | 셀렉터와 파드 라벨 불일치 |
+| 엔드포인트는 있지만 `conditions.ready`가 false | 파드가 readiness 실패로 Ready가 아님. kube-proxy는 ready가 아닌 엔드포인트로 보내지 않는다 |
 | 엔드포인트는 있는데 연결 거부 | `targetPort`가 컨테이너가 실제로 듣는 포트와 다름, 앱이 `127.0.0.1`에만 바인드 |
 | 타임아웃 | NetworkPolicy 차단, 다른 네임스페이스 이름을 짧게 씀 |
 | 파드 IP로는 되고 서비스 IP로는 안 된다 | kube-proxy·CNI 이상. 노드의 kube-proxy 로그 확인 |

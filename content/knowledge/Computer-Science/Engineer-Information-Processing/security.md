@@ -39,7 +39,7 @@ sources: ["https://riverkim.kr/201", "https://80000coding.notion.site/5c5a05d1cc
 | --- | --- |
 | Land Attack | 출발지와 목적지 주소(포트)를 **모두 피해자**로 위조 → 자기 자신에게 계속 응답하다 마비 |
 | Smurfing | 출발지를 피해자 IP로 위조한 ICMP Echo를 **브로드캐스트** → 수많은 응답이 피해자에게 몰림 |
-| Ping of Death | 허용 크기를 넘는 ICMP 패킷을 보내 잘게 쪼개진 조각을 대량으로 처리하게 함 |
+| Ping of Death | IP 최대 크기(65,535바이트)를 넘는 ICMP 패킷을 조각으로 나눠 보내, 재조합할 때 버퍼 오버플로를 일으킴 |
 | HTTP GET Flooding | 과도한 GET 요청으로 웹 서버를 과부하시키는 응용 계층 DDoS |
 | SYN Flooding | TCP 3-way handshake의 구조를 악용해 SYN만 대량으로 보내 연결 대기열을 가득 채움 |
 | UDP Flooding | 대량의 UDP 패킷을 임의의 포트로 보내 응답(ICMP Unreachable) 처리로 자원 고갈 |
@@ -53,7 +53,7 @@ sources: ["https://riverkim.kr/201", "https://80000coding.notion.site/5c5a05d1cc
 | --- | --- |
 | Sniffing | 네트워크 패킷을 몰래 엿보는 **수동적** 공격 |
 | Spoofing | 신뢰된 대상으로 위장 (IP·ARP·DNS 스푸핑). ARP 스푸핑은 MAC 주소를 위조해 트래픽을 가로챔 |
-| Session Hijacking | 정상 연결을 RST로 끊고 재연결 시 공격자와 연결되게 해 세션을 가로챔 |
+| Session Hijacking | 인증이 끝난 세션을 가로챔. 세션 토큰을 훔치거나 예측하는 방식(응용 계층)과 TCP 순서 번호를 예측해 기존 연결에 끼어드는 방식(TCP 세션 하이재킹)이 있음 |
 
 SYN Flooding·Session Hijacking이 악용하는 TCP 연결 과정은 [[transport-layer|전송 계층의 TCP 절]], ARP 스푸핑의 대상인 ARP는 [[network-layer|네트워크 계층]]에 정리했다.
 
@@ -98,7 +98,7 @@ XSS와 CSRF의 원리와 실제 방어법은 [[web-security|웹 보안: CSRF와 
 
 | 시점 | 상태 | 위험 |
 | --- | --- | --- |
-| 제로데이(0-day) | 공급자가 모르거나 패치가 없음 | 막을 수단이 없다. 고가에 거래된다 |
+| 제로데이(0-day) | 공급자가 모르거나 패치가 없음 | 패치로는 막을 수 없어 격리·기능 끄기·WAF 같은 임시 완화책에 기댄다. 고가에 거래된다 |
 | 원데이·N데이 | 패치는 나왔지만 적용되지 않음 | 패치 내용을 분석하면 공격법이 드러나므로 공개 직후가 가장 위험하다 |
 | 패치 미적용이 방치된 상태 | 오래전 패치가 있는데도 관리 소홀로 남음 | 패치와 공격법이 모두 알려져 있어 쉽게 뚫리지만, 패치만 적용하면 막을 수 있다 |
 

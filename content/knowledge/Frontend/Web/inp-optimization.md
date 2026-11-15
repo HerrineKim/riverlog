@@ -22,7 +22,7 @@ INP는 75번째 백분위에서 **200ms 이하**가 목표다. 상호작용 하�
 | --- | --- |
 | 필드에서 찾기 | RUM이 가장 좋다. `web-vitals`의 attribution 빌드는 **어떤 요소의 어떤 상호작용이, 페이지 로딩 중이었나 후였나, 어느 구간이 길었나**를 알려 준다. CrUX는 요약만 준다 |
 | 실험실에서 재현 | 필드에서 찾은 흐름을 DevTools Performance 패널에서 직접 조작하며 녹화한다. 특히 **페이지가 로딩되는 중에** 눌러 본다. 메인 스레드가 가장 바쁜 때다 |
-| 구간 나누기 | 같은 프레임의 이벤트(`pointerup`, `mouseup`, `click`)를 하나로 묶어 본다. iframe은 자기 메인 스레드가 따로 있으니 어느 프레임에서 일어났는지 확인한다 |
+| 구간 나누기 | 같은 프레임의 이벤트(`pointerup`, `mouseup`, `click`)를 하나로 묶어 본다. 어느 프레임에서 일어났는지도 확인한다. 같은 사이트 iframe은 부모와 렌더러 프로세스·메인 스레드를 함께 써서 iframe의 무거운 스크립트가 부모의 입력 처리를 늦춘다. 다른 사이트 iframe은 Chromium의 사이트 격리로 별도 프로세스에서 돌 수 있다 |
 
 느린 상호작용 하나를 고치면 다음 것이 드러난다. INP 최적화는 반복 작업이다.
 
@@ -84,12 +84,15 @@ async function processAll(items) {
 | `requestAnimationFrame` + `setTimeout` | 화면을 먼저 그리고 나서 나머지를 한다 |
 | `requestIdleCallback(cb, { timeout })` | 급하지 않은 일(분석 전송, 미리 계산)을 프레임이 끝나고 남는 시간이나 사용자가 쉬는 동안 실행한다. 아래 참고 |
 
-**유휴 콜백(`requestIdleCallback`)** 은 콜백에 `deadline`을 넘긴다. `deadline.timeRemaining()`이 0이 될 때까지만 일하고, 남은 일은 다시 예약한다. 한 번에 주는 시간은 최대 50ms라 그 사이 들어온 입력도 100ms 안에 처리된다. 바쁜 페이지에서는 영영 불리지 않을 수 있으므로 `timeout`을 주면 그 시간이 지나 `deadline.didTimeout`이 `true`인 채로 불린다.
+**유휴 콜백(`requestIdleCallback`)** 은 콜백에 `deadline`을 넘긴다. `deadline.timeRemaining()`이 0이 될 때까지만 일하고, 남은 일은 다시 예약한다. 한 번에 주는 시간은 최대 50ms라 그 사이 들어온 입력도 100ms 안에 처리된다. 바쁜 페이지에서는 영영 불리지 않을 수 있으므로 `timeout`을 주면 그 시간이 지나 `deadline.didTimeout`이 `true`인 채로 불린다. 이때는 시간 예산이 없으므로 처리할 개수를 따로 제한한다.
 
 ```js
 function work(deadline) {
-  while ((deadline.timeRemaining() > 0 || deadline.didTimeout) && tasks.length) {
+  let done = 0
+  // timeout으로 불렸으면(didTimeout) 남은 시간과 상관없이 몇 개만 처리하고 넘긴다. 다 처리하면 긴 작업이 된다
+  while (tasks.length && (deadline.timeRemaining() > 0 || (deadline.didTimeout && done < 10))) {
     sendAnalytics(tasks.shift())
+    done++
   }
   if (tasks.length) requestIdleCallback(work, { timeout: 2000 })
 }

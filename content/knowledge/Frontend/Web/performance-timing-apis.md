@@ -43,7 +43,7 @@ flowchart TB
 | 서비스 워커 + 응답 | `workerStart > 0`일 때 `responseEnd - workerStart` |
 | 리디렉션 | `redirectEnd - redirectStart`, 횟수는 `redirectCount` |
 
-- 값이 **0일 수 있다.** DNS를 로컬 캐시로 풀었거나, 연결을 재사용했거나, 서비스 워커가 없으면 해당 필드가 0이다. 0을 걸러 내고 계산한다.
+- **구간 길이가 0일 수 있다.** DNS를 캐시로 풀었거나 연결을 재사용하면 해당 시작·끝 시각이 이번 요청의 시작 시각으로 맞춰져, 시각은 0이 아닌데 차이가 0이 된다. 필드 값 자체가 0인 경우는 따로 있다. 서비스 워커가 없을 때의 `workerStart`, TLS를 쓰지 않을 때의 `secureConnectionStart`가 그렇다. 그러니 단계를 건너뛰었는지는 구간 길이가 0인지로 판단하고, 필드 값이 0인지는 이런 필드에서만 확인한다.
 - `unloadEvent*`, `dom*`, `loadEvent*`는 문서에만 있다.
 - 과거에는 `performance.timing`(Navigation Timing Level 1)으로 같은 값을 읽었다. 이 객체는 폐기 예정이며 Level 2 항목을 쓴다.
 
@@ -56,7 +56,7 @@ CSS, JS, 이미지, 폰트, `fetch` 요청마다 `PerformanceResourceTiming` 항
 | 필드 | 뜻 |
 | --- | --- |
 | `initiatorType` | 무엇이 요청했나(`link`, `script`, `img`, `css`, `fetch`, `xmlhttprequest` 등) |
-| `transferSize`, `encodedBodySize`, `decodedBodySize` | 전송 바이트(헤더 포함), 압축된 본문, 푼 본문. `transferSize`가 0이면 캐시에서 왔다 |
+| `transferSize`, `encodedBodySize`, `decodedBodySize` | 전송 바이트(헤더 포함), 압축된 본문, 푼 본문. `transferSize`가 0이고 `decodedBodySize`가 0보다 크면 캐시에서 왔다. 교차 출처 자원은 `Timing-Allow-Origin` 허용이 없으면 네트워크로 받았어도 `transferSize`가 0이라 구별할 수 없다 |
 | `nextHopProtocol` | `h2`, `h3` 같은 프로토콜 |
 | `responseStatus` | HTTP 상태 코드. 아직 Baseline이 아니다 |
 | `renderBlockingStatus` | 렌더링을 막았는지(`blocking`/`non-blocking`). Chromium 계열 |

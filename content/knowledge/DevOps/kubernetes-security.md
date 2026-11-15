@@ -32,7 +32,7 @@ flowchart TB
 | 웹훅 토큰 인증 | API 서버가 토큰 검증을 외부 서비스에 묻는다 | 관리형 클러스터의 클라우드 IAM 연동(EKS의 IAM 인증 등) |
 | 인증 프록시 | 앞단 프록시가 인증하고 헤더로 사용자를 넘긴다 | 기존 SSO 게이트웨이 재사용 |
 
-어느 방식으로도 확인되지 않은 요청은 `system:anonymous`로 취급된다. 익명 요청에는 권한을 주지 않는다.
+자격 증명 없이 온 요청은 익명 인증이 켜져 있으면 `system:anonymous`로 취급된다. 자격 증명을 냈지만 검증에 실패한 요청(잘못된 토큰 등)은 익명으로 넘어가지 않고 `401 Unauthorized`를 받는다. 익명 요청에는 권한을 주지 않는다.
 
 ### kubeconfig
 
@@ -51,6 +51,7 @@ users:                             # 누구로: 자격 증명
         apiVersion: client.authentication.k8s.io/v1
         command: kubectl
         args: [oidc-login, get-token, --oidc-issuer-url=https://idp.example.com]
+        interactiveMode: IfAvailable   # v1에서는 필수(Never·IfAvailable·Always)
 contexts:                          # 조합: 클러스터 + 사용자 + 기본 네임스페이스
   - name: prod-alice
     context: { cluster: prod, user: alice, namespace: shop }
@@ -172,7 +173,7 @@ spec:
 | 필드 | 효과 |
 | --- | --- |
 | `runAsUser` · `runAsGroup` | 프로세스의 UID·GID. 이미지의 `USER`를 덮어쓴다 |
-| `runAsNonRoot: true` | UID 0으로 시작하려 하면 kubelet이 **컨테이너 실행을 거부**한다. 이미지가 숫자 UID를 지정해야 검증된다 |
+| `runAsNonRoot: true` | UID 0으로 시작하려 하면 kubelet이 **컨테이너 실행을 거부**한다. `runAsUser`로 0이 아닌 UID를 주거나, 이미지가 숫자 UID를 지정해야 검증된다(이름만 있으면 확인할 수 없어 거부) |
 | `fsGroup` | 볼륨 파일을 이 그룹 소유로 맞춰, 루트가 아닌 프로세스도 쓰게 한다 |
 | `readOnlyRootFilesystem` | 컨테이너 파일 시스템을 읽기 전용으로. 공격자가 도구를 내려받거나 바이너리를 바꾸지 못한다. 쓸 곳은 emptyDir로 따로 준다 |
 | `allowPrivilegeEscalation: false` | setuid 바이너리 등으로 부모보다 큰 권한을 얻지 못하게 한다(no_new_privs) |

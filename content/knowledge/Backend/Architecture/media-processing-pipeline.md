@@ -50,7 +50,7 @@ flowchart LR
 
 ### 서버와 엣지 함수
 
-변환을 상시 서버에서 할 수도, CDN 엣지에서 실행되는 함수(CloudFront Lambda@Edge·CloudFront Functions, Cloudflare Workers 등)에서 할 수도 있다. 엣지 함수는 캐시 미스 처리를 사용자 가까이에서 하고 서버 관리가 필요 없다. 다만 **요청이 많고 꾸준하면 상시 서버보다 비싸질 수 있고**, 실행 시간·메모리·패키지 크기 제한이 있다([[cdn|CDN]], [[aws-lambda-internals|AWS Lambda의 내부 구조]]). 많은 CDN·클라우드가 이미지 변환을 관리형 기능으로 제공하므로, 직접 만들기 전에 그쪽을 먼저 검토한다.
+변환을 상시 서버에서 할 수도, CDN 엣지에서 실행되는 함수(CloudFront Lambda@Edge, Cloudflare Workers 등)에서 할 수도 있다. CloudFront Functions는 네트워크 접근이 없고 실행 시간이 1ms 미만으로 제한돼 원본을 가져와 변환하지는 못한다. 크기·포맷 파라미터를 정규화하거나 URL을 다시 쓰는 앞단 역할에 둔다. 엣지 함수는 캐시 미스 처리를 사용자 가까이에서 하고 서버 관리가 필요 없다. 다만 **요청이 많고 꾸준하면 상시 서버보다 비싸질 수 있고**, 실행 시간·메모리·패키지 크기 제한이 있다([[cdn|CDN]], [[aws-lambda-internals|AWS Lambda의 내부 구조]]). 많은 CDN·클라우드가 이미지 변환을 관리형 기능으로 제공하므로, 직접 만들기 전에 그쪽을 먼저 검토한다.
 
 포맷도 같이 고른다. 브라우저가 `Accept` 헤더로 AVIF·WebP 지원을 알리면 그에 맞는 포맷으로 변환해 같은 화질에서 크기를 줄인다. 이때 응답에 `Vary: Accept`를 붙여 캐시가 포맷별로 따로 저장하게 한다.
 

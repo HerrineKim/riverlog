@@ -147,7 +147,7 @@ export const write = (ctx) => {
 
 | 방법 | 설정 |
 | --- | --- |
-| Node 내장 | `node --watch src/index.js` (Node 22부터 안정). `--watch-path=src`로 감시 범위를 정한다 |
+| Node 내장 | `node --watch src/index.js` (Node 22부터 안정). `--watch-path=src`로 감시 범위를 정한다(macOS·Windows에서만 되고 Linux에서는 오류로 끝난다) |
 | nodemon | `npm i -D nodemon` 후 `"start:dev": "nodemon --watch src/ src/index.js"`. 감시 확장자·무시 경로 설정이 더 세밀하다 |
 
 과거에는 nodemon이 사실상 표준이었지만 지금은 내장 `--watch`로 충분한 경우가 많다([[nodejs-runtime|Node.js 런타임]]).

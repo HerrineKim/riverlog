@@ -312,11 +312,15 @@ export default defineConfig(
     languageOptions: {
       parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
     },
+    rules: {
+      eqeqeq: 'error',                                       // 위 프리셋에 없다
+      '@typescript-eslint/switch-exhaustiveness-check': 'error', // 위 프리셋에 없다
+    },
   },
 );
 ```
 
-이 노트의 규칙 상당수가 여기에 이미 들어 있다(`no-explicit-any`, `prefer-const`, `eqeqeq`, `no-namespace`, `switch-exhaustiveness-check`). 타입 정보를 쓰는 규칙은 TypeScript 컴파일러 API로 돌아가므로, 안정 API가 없는 TypeScript 7.0에서는 `typescript@6` 패키지를 함께 둔다. 스타일 논쟁의 기준은 늘 두 질문이다. **"더 읽기 쉬운가?", "실수를 더 줄이는가?"**
+이 노트의 규칙 상당수가 프리셋에 이미 들어 있다(`no-explicit-any`, `prefer-const`, `no-namespace`). `eqeqeq`와 `switch-exhaustiveness-check`는 어느 프리셋에도 없어 `rules`에 직접 켰다. 타입 정보를 쓰는 규칙은 TypeScript 컴파일러 API로 돌아가므로, 안정 API가 없는 TypeScript 7.0에서는 `typescript@6` 패키지를 함께 둔다. 스타일 논쟁의 기준은 늘 두 질문이다. **"더 읽기 쉬운가?", "실수를 더 줄이는가?"**
 
 ### 공개 스타일 가이드가 갈리는 지점
 

@@ -95,7 +95,7 @@ sources: ["https://web.dev/learn/forms/payment", "https://web.dev/learn/forms/ad
 | 원칙 | 방법 |
 | --- | --- |
 | 나라마다 형식이 다르다 | 미국식 「번지 / 도로명 / 시 / 주 / ZIP」 구조를 강제하지 않는다. 번지가 없는 주소도 있다 |
-| 가장 유연한 방법 | 주소 전체를 `<textarea>` 하나에 `street-address`로. 어떤 형식이든 받고 붙여넣기도 쉽다. 단, 줄 단위로 저장한 자동 완성 데이터와는 덜 맞는다 |
+| 가장 유연한 방법 | 거리 주소 부분을 `<textarea>` 하나에 `street-address`로. 어떤 형식이든 받고 붙여넣기도 쉽다. 단, `street-address`에는 도시·우편번호·국가가 들어가지 않으므로 도시·시도가 필요한 나라라면 `address-level` 칸을 따로 둔다. 줄 단위로 저장한 자동 완성 데이터와는 덜 맞는다 |
 | 줄을 나눈다면 | `address-line1`·`address-line2`. 「주소 2」는 사용자를 헷갈리게 하므로 「주소 2 (선택)」로 밝히거나 「주소 추가」 버튼 뒤에 숨긴다 |
 | 많은 주소에 없는 칸은 선택 항목 | 우편번호, 영국의 county처럼 없는 나라·주소가 있는 칸에 `required`를 걸지 않는다 |
 | 행정 구역 | `address-level1`(시·도, 주), `address-level2`(시·군·구, 도시) |

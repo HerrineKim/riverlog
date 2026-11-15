@@ -85,7 +85,7 @@ const a = identity<string>('yes') // T = string
 const b = identity('yes')          // T = "yes" (리터럴로 추론)
 ```
 
-제네릭을 명시하지 않으면 TypeScript는 인자를 보고 **가장 좁은 리터럴 타입**으로 추론한다. 이를 이용해 경로 문자열 자체를 타입으로 받는다.
+제네릭을 명시하지 않으면 TypeScript는 인자를 보고 타입을 추론한다. 위처럼 원시 값을 바로 받거나 `T extends string`으로 제약하면 **리터럴 타입**이 남는다. 객체·배열 안의 리터럴은 넓어져서 `identity({ kind: 'GET' })`의 `T`는 `{ kind: string }`, `identity(['GET'])`는 `string[]`이다. 그대로 남기려면 `as const`나 `const` 타입 매개변수(`<const T>`, TypeScript 5.0)를 쓴다. 이 성질을 이용해 경로 문자열 자체를 타입으로 받는다.
 
 ```typescript
 function get<Path extends string>(

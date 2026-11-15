@@ -229,7 +229,7 @@ const blob = new Blob(chunks)                // 문자열이면 await blob.text(
 ```
 
 - 스트림을 읽으면 그 응답의 `json()` 등은 더 쓸 수 없다. 조각을 모아 직접 합친다. `Uint8Array` 하나로 합치려면 전체 길이로 만든 배열에 `set(chunk, offset)`으로 차례로 복사하고, 문자열은 `TextDecoder`로 바꾼다.
-- `Content-Length`는 서버가 보내지 않을 수 있고, 교차 출처 응답에서는 서버가 `Access-Control-Expose-Headers: Content-Length`를 줘야 읽힌다. 응답이 gzip 등으로 압축되면 헤더 값은 압축된 크기인데 스트림은 풀린 바이트를 주므로 100%를 넘을 수 있다.
+- `Content-Length`는 서버가 보내지 않을 수 있다. CORS 안전 목록에 든 응답 헤더라 교차 출처 응답에서도 `Access-Control-Expose-Headers` 없이 읽힌다. 응답이 gzip 등으로 압축되면 헤더 값은 압축된 크기인데 스트림은 풀린 바이트를 주므로 100%를 넘을 수 있다.
 - `ReadableStream`의 `for await…of`는 사파리가 가장 늦게 지원했다. 구형 브라우저를 고려하면 `const reader = response.body.getReader()`와 `while` 루프를 쓴다.
 - 서버가 조금씩 보내는 텍스트 이벤트(SSE, LLM 응답)를 이 방식으로 읽는 예는 [[browser-realtime-apis|브라우저 실시간 통신]]에 있다.
 
@@ -277,10 +277,10 @@ flowchart TB
 | `mode` | `'cors'` | `'same-origin'`: 교차 출처 요청을 아예 막는 안전장치. `'no-cors'`: 단순 요청만 보내고 응답은 **읽을 수 없는 불투명(opaque) 응답**이 된다. CORS 오류를 「해결」하는 옵션이 아니다 |
 | `cache` | `'default'` (HTTP 캐시 규칙) | `'no-store'`(캐시 무시·저장 안 함), `'reload'`(무시하고 새로 받아 저장), `'no-cache'`(조건부 요청으로 재검증), `'force-cache'`(오래돼도 캐시 우선), `'only-if-cached'`(캐시에 없으면 오류, `same-origin` 전용) |
 | `redirect` | `'follow'` | `'error'`: 리다이렉트면 실패. `'manual'`: 따라가지 않는다 |
-| `referrerPolicy` | `'strict-origin-when-cross-origin'` | 같은 출처엔 전체 URL, 다른 출처엔 출처만, HTTPS→HTTP엔 안 보낸다. `'no-referrer'`, `'origin'`, `'same-origin'` 등. 페이지 전체는 `Referrer-Policy` 헤더나 `<a rel="noreferrer">`로 정한다 |
+| `referrerPolicy` | `'strict-origin-when-cross-origin'` | 같은 출처엔 전체 URL, 다른 출처엔 출처만, HTTPS→HTTP엔 안 보낸다. `'no-referrer'`, `'origin'`, `'same-origin'` 등. 페이지 전체는 `Referrer-Policy` 헤더나 `<meta name="referrer" content="no-referrer">`로 정한다. `<a rel="noreferrer">`는 그 링크로 이동할 때만 적용된다 |
 | `referrer` | 현재 페이지 | `''`이면 `Referer`를 보내지 않는다. 같은 출처 안의 다른 URL로만 바꿀 수 있다 |
 | `integrity` | 없음 | `'sha384-…'`: 받은 본문의 해시가 다르면 실패한다(하위 리소스 무결성) |
-| `keepalive` | `false` | `true`: 페이지를 떠난 뒤에도 요청을 끝까지 보낸다. 본문 합계가 **64KiB 이하**여야 하고 응답은 처리할 수 없다 |
+| `keepalive` | `false` | `true`: 페이지를 떠난 뒤에도 요청을 끝까지 보낸다. 본문 합계가 **64KiB 이하**여야 한다. 문서가 살아 있는 동안은 응답도 평소처럼 읽을 수 있지만, 페이지가 닫힌 뒤에는 응답을 처리할 코드가 없다 |
 
 페이지를 떠날 때 분석 데이터를 보내는 용도로는 `keepalive` fetch나 `navigator.sendBeacon(url, data)`를 쓴다. 보내는 시점은 `unload`가 아니라 `visibilitychange`에서 `document.visibilityState === 'hidden'`일 때가 안정적이다. `unload`는 모바일에서 잘 발생하지 않고 bfcache를 막는다. Chromium에는 보낼 시점을 브라우저에 맡기는 `fetchLater(url, { activateAfter })`(지연 fetch)도 있다. 페이지를 닫거나 떠날 때, 또는 정한 시간이 지나면 보내 준다. 아직 Baseline이 아니다.
 

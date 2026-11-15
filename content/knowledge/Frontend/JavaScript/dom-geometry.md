@@ -36,7 +36,7 @@ scrollHeight = 가려진 부분까지 포함한 안쪽 전체 높이
 
 | 속성 | 재는 것 | 포함 |
 | --- | --- | --- |
-| `offsetParent` | 좌표의 기준이 되는 조상 | `position`이 `static`이 아닌 가장 가까운 조상, 없으면 `td`·`th`·`table`, 그것도 없으면 `body`. `position: fixed` 요소와 `body`·`html`은 `null` |
+| `offsetParent` | 좌표의 기준이 되는 조상 | `position`이 `static`이 아니거나 `transform`·`perspective`·`filter` 등으로 컨테이닝 블록을 만드는 가장 가까운 조상, 없으면 `td`·`th`·`table`, 그것도 없으면 `body`. 컨테이닝 블록이 뷰포트인 `position: fixed` 요소와 `body`·`html`은 `null` |
 | `offsetLeft`·`offsetTop` | `offsetParent`의 왼쪽 위에서 떨어진 거리 | |
 | `offsetWidth`·`offsetHeight` | 바깥 크기 | 콘텐츠 + 패딩 + 스크롤바 + 테두리. 마진은 빠진다 |
 | `clientLeft`·`clientTop` | 바깥 테두리에서 안쪽 영역까지 거리 | 보통 테두리 두께. 오른쪽에서 왼쪽으로 쓰는 언어(아랍어·히브리어)에서는 스크롤바가 왼쪽에 생겨 `clientLeft`에 스크롤바 폭이 더해진다 |
@@ -111,7 +111,7 @@ el.scrollTop += 10                              // 스크롤 상자 안에서
 
 스크롤바가 사라져 레이아웃이 밀리는 문제는 과거에는 잠그기 전후의 `clientWidth` 차이만큼 `body`에 `padding-right`를 줘서 보정했다. 지금은 CSS `scrollbar-gutter: stable`(Baseline 2024)로 스크롤바 자리를 늘 비워 두면 된다. 스크롤 상자 끝에서 바깥 페이지로 스크롤이 이어지는 것은 `overscroll-behavior: contain`으로 막는다.
 
-스크롤 위치에 따라 무언가를 보이거나 더 불러오는 일은 `scroll` 이벤트에서 위치를 계산하기보다 `IntersectionObserver`에 맡긴다([[intersection-observer|Intersection Observer]]). `scroll` 리스너가 꼭 필요하면 [[debounce-throttle|쓰로틀]]이나 `requestAnimationFrame`으로 횟수를 줄인다.
+스크롤 위치에 따라 무언가를 보이거나 더 불러오는 일은 `scroll` 이벤트에서 위치를 계산하기보다 `IntersectionObserver`에 맡긴다([[intersection-observer|Intersection Observer]]). `scroll` 리스너가 꼭 필요하면 [[debounce-throttle|쓰로틀]]로 횟수를 줄인다. `requestAnimationFrame`은 작업을 프레임에 맞출 뿐이다. 스크롤 이벤트도 보통 프레임마다 한 번꼴로 오므로 횟수는 거의 줄지 않는다.
 
 ## 좌표
 

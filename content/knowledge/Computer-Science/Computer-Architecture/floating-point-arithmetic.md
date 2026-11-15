@@ -72,7 +72,7 @@ static boolean nearlyEqual(float a, float b, float epsilon) {
 
 - `(a - b) / b`만으로는 부족하다. a, b가 모두 0이면 NaN, b만 0이면 무한대, 0을 사이에 둔 아주 작은 두 수는 늘 다르다고 나온다. 또 `nearlyEqual(a, b)`와 `(b, a)`가 달라진다.
 - 다른 방법은 **ulp 거리로 비교**하는 것이다. IEEE 754 비트 패턴은 정수로 읽어도 크기 순서가 유지되므로, 두 값 사이에 표현 가능한 부동소수점이 몇 개인지를 세어 허용 오차로 쓴다. 크기에 따라 허용 오차가 저절로 조정된다.
-- 어떤 허용 오차가 맞는지는 응용에 따라 다르다. 테스트에서는 Jest `toBeCloseTo`, Python `math.isclose(a, b, rel_tol=…, abs_tol=…)`처럼 상대·절대 오차를 함께 받는 함수를 쓴다.
+- 어떤 허용 오차가 맞는지는 응용에 따라 다르다. 테스트에서는 Python `math.isclose(a, b, rel_tol=…, abs_tol=…)`처럼 상대·절대 오차를 함께 받는 함수를 쓴다. Jest `toBeCloseTo(x, 자릿수)`는 소수 자릿수로 정한 절대 오차만 보므로(기본은 차이 < 0.005) 아주 크거나 작은 값에는 맞지 않는다.
 
 ## 오차가 커지는 계산: 흡수와 상쇄
 

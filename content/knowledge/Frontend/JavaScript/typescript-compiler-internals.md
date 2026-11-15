@@ -135,7 +135,7 @@ walk(sf);
 | --- | --- |
 | `.js` | 기본. `noEmit`이면 검사만 한다 |
 | `.d.ts` | `declaration`. 공개 API의 타입만 남긴다 |
-| `.js.map` | `sourceMap`, `inlineSourceMap`, `inlineSources` |
+| `.js.map` | `sourceMap`. `inlineSourceMap`은 파일 대신 `.js` 안에 맵을 넣고(`sourceMap`과 함께 못 쓴다), `inlineSources`는 켜 둔 맵에 원본 코드를 덧붙인다 |
 | `.d.ts.map` | `declarationMap`. 사용처에서 정의로 이동하면 원본 `.ts`로 간다 |
 
 **소스맵(source map)** 은 출력 파일의 위치를 원본 위치로 되돌리는 지도다. JSON 안의 `mappings` 문자열에 「출력의 몇 번째 줄 몇 번째 열 ↔ 원본 파일의 몇 번째 줄 몇 번째 열」을 이전 값과의 차이로, Base64 VLQ로 압축해 담는다. 디버거와 에러 리포터(Sentry 등)가 이것으로 스택 트레이스를 원본 코드로 보여 준다.

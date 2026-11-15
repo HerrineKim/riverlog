@@ -64,7 +64,7 @@ sources: ["https://web.dev/learn/html/images", "https://web.dev/learn/html/audio
 
 | 기능 | 내용 |
 | --- | --- |
-| 깨진 이미지 대체 | 주소가 틀리거나 파일이 없으면 `error` 이벤트가 난다. 핸들러에서 `src`를 대체 이미지로 바꾼다. React: `onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/img/fallback.png' }}`. 대체 이미지마저 없을 때 무한 반복되지 않게 핸들러를 먼저 떼거나, state로 한 번만 바꾼다 |
+| 깨진 이미지 대체 | 주소가 틀리거나 파일이 없으면 `error` 이벤트가 난다. 핸들러에서 `src`를 대체 이미지로 바꾼다. HTML: `onerror="this.onerror = null; this.src = '/img/fallback.png'"`. React: `onError={(e) => { const img = e.currentTarget; if (img.dataset.fallback) return; img.dataset.fallback = '1'; img.src = '/img/fallback.png' }}`. 대체 이미지마저 없을 때 무한 반복되지 않게 한 번만 바꾼다. React의 `onError`는 DOM의 `onerror`를 `null`로 지워도 떼어지지 않으므로, 이렇게 표시를 남기거나 state로 막는다 |
 | `<input type="image">` | 이미지로 된 제출 버튼. 클릭 좌표가 `이름.x=169&이름.y=66`으로 함께 전송된다(이름이 없으면 `x`, `y`) |
 | `ismap` | 서버 측 이미지 맵. 거의 쓰지 않고, 쓰면 포인터 없는 사용자를 위해 링크로 감싼다 |
 

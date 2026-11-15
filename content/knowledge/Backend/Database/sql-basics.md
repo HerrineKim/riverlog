@@ -311,7 +311,8 @@ SELECT country, COUNT(*) FROM users_user GROUP BY country HAVING COUNT(*) >= 10;
 - **CROSS JOIN**은 두 테이블의 모든 행 조합(카티션 곱)을 만든다. 행이 m개, n개면 결과는 m × n개다.
 
 ```sql
--- 편의점이 4곳 이상인 광역시에서, 판매액 100만 원 초과 편의점의 평균 판매액
+-- 판매액 100만 원 초과 편의점이 4곳 이상인 광역시에서, 그 편의점들의 평균 판매액
+-- (WHERE가 먼저 걸러 COUNT(*)는 100만 원 초과 편의점만 센다)
 SELECT 광역시, AVG(판매액)
 FROM 편의점
 WHERE 판매액 > 1000000      -- 행 조건: 그룹 만들기 전
