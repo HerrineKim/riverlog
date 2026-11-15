@@ -4,7 +4,7 @@ concept: "Commit Convention"
 summary: "좋은 커밋 메시지의 7가지 규칙(빈 줄, 50/72자, 명령문 제목, 무엇·왜 본문)과 type(scope): subject 형식의 컨벤션, 커밋 템플릿 설정, husky와 commitlint로 규칙을 자동 검사하는 방법."
 tags: ["git", "collaboration", "convention", "automation"]
 source: notion
-date: "2026-10-14"
+date: "2026-11-15"
 sources: ["https://meetup.nhncloud.com/posts/106", "https://cbea.ms/git-commit/", "https://www.conventionalcommits.org/ko/v1.0.0/", "https://commitlint.js.org/", "https://80000coding.notion.site/00bcbffd6fbb4be481abef0925efd267", "https://80000coding.notion.site/eed9ae12cbf24ee58256821ca5c5947c", "https://pre-commit.com/"]
 ---
 
@@ -157,7 +157,7 @@ Git hook은 저장소의 `.git/hooks/`에 이벤트 이름(`pre-commit`, `commit
 # .pre-commit-config.yaml: C/C++ 코드를 clang-format으로 검사
 repos:
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v21.1.0          # 고정된 태그. pre-commit autoupdate로 갱신
+    rev: v23.1.5          # 고정된 태그. pre-commit autoupdate로 갱신
     hooks:
       - id: clang-format
         args: [--style=Google]
