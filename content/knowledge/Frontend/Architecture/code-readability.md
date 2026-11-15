@@ -4,7 +4,7 @@ concept: "Readability"
 summary: "읽기 좋은 코드는 한 번에 고려할 맥락이 적고, 위에서 아래로 읽히고, 시각적 배치와 의미적 묶음이 일치한다. 같이 실행되지 않는 코드 분리, 구현 상세 추상화, 로직 종류별 함수 쪼개기로 맥락을 줄이고, 복잡한 조건·매직 넘버에 이름을 붙이고, 시점 이동과 중첩 삼항을 줄이고, 게슈탈트 법칙(근접성·공통 영역·유사성·연속성·폐쇄성)으로 빈 줄·주석·배치·이름을 점검한다."
 tags: ["frontend", "clean-code", "react", "code-review", "javascript"]
 source: other
-date: "2026-10-20"
+date: "2026-11-15"
 sources: ["https://frontend-fundamentals.com/code-quality/code/", "https://velog.io/@teo/cleancode"]
 ---
 
@@ -122,7 +122,7 @@ const matchedProducts = products.filter((product) =>
 
 ### 매직 넘버에 이름 붙이기
 
-매직 넘버(magic number)는 뜻을 밝히지 않고 코드에 직접 넣은 숫자다. `await delay(300)`만 보면 애니메이션을 기다리는지, 서버 반영을 기다리는지, 지우지 않은 테스트 코드인지 알 수 없다. `ANIMATION_DELAY_MS`처럼 상수로 이름을 붙인다. 매직 넘버는 응집도 문제이기도 하다. 자세한 내용은 [[code-cohesion|응집도를 높이는 전략]]에 있다.
+`delay(300)`처럼 뜻을 밝히지 않은 숫자(매직 넘버)는 `ANIMATION_DELAY_MS` 같은 상수로 이름을 붙인다. 정의와 예시, 한쪽만 바뀌는 응집도 문제는 [[code-cohesion|응집도를 높이는 전략]]에 있다.
 
 ## 3. 위에서 아래로 읽히게 하기
 
