@@ -149,11 +149,15 @@ flowchart LR
 
 컨테이너가 동적 포트로 뜨고 지는 환경에서 이 구조는 역할 셋으로 나뉜다. **등록**(무엇이 어디에 떴나 알린다), **레지스트리**(주소를 저장하고 변경을 알린다), **소비**(주소를 읽어 설정이나 호출에 반영한다).
 
-```text
-컨테이너 시작 ─▶ registrator ─▶ etcd/Consul ─▶ confd ─▶ nginx.conf 다시 쓰고 reload
-               (Docker 이벤트    /services/web/web_1     (키 감시 →
-                감시, 공개 포트)  = 172.17.8.101:49155     템플릿 렌더링)
+```mermaid
+flowchart LR
+  start["컨테이너 시작"] --> reg["registrator<br/>(Docker 이벤트 감시, 공개 포트)"]
+  reg -->|"/services/web/web_1<br/>= 172.17.8.101:49155"| kv["etcd/Consul"]
+  kv --> confd["confd<br/>(키 감시, 템플릿 렌더링)"]
+  confd --> ngx["nginx.conf 다시 쓰고 reload"]
+```
 
+```text
 # confd 템플릿: 서비스마다 upstream 블록을 만든다
 {{ range $dir := lsdir "/services" }}
 upstream backend_{{ base $dir }} {
