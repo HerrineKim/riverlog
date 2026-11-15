@@ -1,0 +1,132 @@
+---
+title: "API 아키텍처 스타일: SOAP·REST·GraphQL·gRPC·WebSocket·Webhook"
+concept: "API Styles"
+summary: "API는 시스템끼리 기능과 데이터를 주고받는 약속이다. 대표적인 여섯 가지 스타일(SOAP, REST, GraphQL, gRPC, WebSocket, Webhook)을 통신 방향·데이터 형식·잘 맞는 곳으로 비교하고, REST·GraphQL·gRPC를 계약·응답 모양·전송·스트리밍·오류 처리·캐시·브라우저 지원·버전 관리 등 축별로 나란히 놓았다. API와 SDK의 차이, 공개 범위에 따른 API 종류, API를 배울 때 거치는 주제 지도도 정리했다."
+tags: ["backend", "api", "http", "architecture", "rest", "graphql"]
+source: other
+date: "2026-11-02"
+sources: ["https://bytebytego.com/guides/a-cheatsheet-on-comparing-api-architectural-styles", "https://bytebytego.com/guides/soap-vs-rest-vs-graphql-vs-rpc", "https://bytebytego.com/guides/the-evolving-landscape-of-api-protocols-in-2023", "https://bytebytego.com/guides/api-vs-sdk", "https://bytebytego.com/guides/the-ultimate-api-learning-roadmap", "https://github.com/karanpratapsingh/system-design", "https://bytebytego.com/guides/rest-api-vs-graphql", "https://www.itworld.co.kr/article/3567853/"]
+---
+
+> ByteByteGo의 System Design 101 가이드 「[A Cheatsheet on Comparing API Architectural Styles](https://bytebytego.com/guides/a-cheatsheet-on-comparing-api-architectural-styles)」, 「[SOAP vs REST vs GraphQL vs RPC](https://bytebytego.com/guides/soap-vs-rest-vs-graphql-vs-rpc)」, 「[The Evolving Landscape of API Protocols](https://bytebytego.com/guides/the-evolving-landscape-of-api-protocols-in-2023)」, 「[API vs SDK](https://bytebytego.com/guides/api-vs-sdk)」, 「[The Ultimate API Learning Roadmap](https://bytebytego.com/guides/the-ultimate-api-learning-roadmap)」을 바탕으로 재구성한 노트다.
+> karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 REST·GraphQL·gRPC의 축별 비교를 보강했다. REST와 GraphQL의 비교 축은 ByteByteGo의 「[REST API vs. GraphQL](https://bytebytego.com/guides/rest-api-vs-graphql)」, REST와 gRPC의 비교 축은 ITWorld의 「REST의 현실적인 대안, gRPC 프로토콜의 이해」(2023.08)를 바탕으로 더했다.
+
+## API란
+
+API(Application Programming Interface)는 **한 소프트웨어가 다른 소프트웨어의 기능과 데이터를 쓰는 규칙**이다. 어떤 주소(엔드포인트)로, 어떤 형식의 요청을 보내면, 어떤 응답이 오는지를 정한다. 웹 개발에서 API라고 하면 보통 네트워크 너머 서버의 API를 말한다.
+
+API 스타일은 이 약속을 **어떤 단위로 나누고, 어떤 형식으로 실어 나르고, 누가 먼저 말을 거는지**에 대한 선택이다. 한 시스템 안에서도 바깥 공개 API는 REST, 내부 서비스 간 통신은 gRPC, 실시간 알림은 WebSocket처럼 섞어 쓴다.
+
+## 여섯 가지 스타일 한눈에
+
+| 스타일 | 단위 | 데이터 형식 | 통신 방향 | 잘 맞는 곳 |
+| --- | --- | --- | --- | --- |
+| SOAP | 오퍼레이션(XML 메시지) | XML, WSDL로 계약 정의 | 요청·응답 | 금융·공공 같은 기존 기업 시스템 연계, 엄격한 계약과 트랜잭션 규격이 필요한 곳 |
+| REST | 리소스(URI) + HTTP 메서드 | 주로 JSON | 요청·응답 | 공개 API, 일반 웹 서비스 |
+| GraphQL | 스키마 위의 질의 | JSON | 요청·응답 + 구독 | 화면이 다양해 필요한 필드가 제각각인 앱, 여러 데이터 소스를 묶는 층 |
+| gRPC | 서비스의 메서드(RPC) | Protocol Buffers(이진) | 요청·응답 + 스트리밍 | 내부 마이크로서비스 간 고성능 통신 |
+| WebSocket | 메시지 | 텍스트·이진 프레임 | 연결 하나로 양방향 | 채팅, 협업 편집, 게임 같은 저지연 실시간 통신 |
+| Webhook | 이벤트 | 주로 JSON(HTTP POST) | 서버 → 서버 콜백 | 결제 완료, 배송 상태 변경 같은 외부 서비스의 이벤트 알림 |
+
+앞의 네 가지는 **클라이언트가 묻고 서버가 답하는** 모델이다. WebSocket은 연결을 열어 둔 뒤 양쪽이 아무 때나 말하고, Webhook은 **이벤트를 가진 쪽이 먼저 호출**한다는 점에서 방향이 다르다.
+
+## 등장 순서와 흐름
+
+```mermaid
+flowchart TB
+  rpc["RPC(원격 함수 호출) 개념"] --> soap["SOAP (XML·WSDL, 엄격한 계약)"]
+  soap --> rest["REST (HTTP 의미를 그대로 쓰는 가벼운 스타일)"]
+  rest --> ws["WebSocket (HTTP에서 갈아타는 양방향 연결)"]
+  rest --> gql["GraphQL (클라이언트가 필드를 고르는 질의)"]
+  rest --> grpc["gRPC (RPC의 재등장: protobuf + HTTP/2)"]
+```
+
+흐름을 보면 **계약의 엄격함과 단순함 사이를 오간다.** SOAP의 무거운 계약에 지친 쪽이 REST로 옮겼고, REST의 느슨함과 과다·과소 조회(over/under-fetching)를 메우려고 GraphQL과 gRPC가 다시 스키마를 앞세웠다.
+
+## REST · GraphQL · gRPC 축별 비교
+
+셋은 모두 요청·응답형이지만 **계약을 누가 정하고, 응답 모양을 누가 정하고, 복잡도를 어디서 지느냐**가 다르다. REST는 HTTP의 의미와 캐시를 그대로 써서 단순하고 생태계가 가장 넓지만, 화면마다 필요한 데이터가 다르면 요청이 늘거나 남는다(과소·과다 조회). GraphQL은 클라이언트가 필드를 고르는 대신 캐시와 쿼리 비용 통제를 서버가 떠안는다. gRPC는 `.proto` 계약과 이진 직렬화로 가장 빠르지만 브라우저가 바로 부를 수 없다. 아래 값은 상대 비교다.
+
+### 모양과 계약
+
+| 축 | REST | GraphQL | gRPC |
+| --- | --- | --- | --- |
+| 단위와 엔드포인트 | 리소스(URI) + HTTP 메서드. 리소스마다 엔드포인트가 여러 개 | 스키마 위의 질의. 엔드포인트는 보통 하나(`/graphql`) | 서비스의 메서드. 메서드마다 HTTP/2 경로 하나(`/패키지.서비스/메서드`) |
+| 계약·스키마 | 느슨하다. OpenAPI로 보완한다 | 타입 스키마가 곧 계약이다 | `.proto`가 계약이다. 타입이 컴파일 시점에 검사된다 |
+| 응답 모양을 정하는 쪽 | 서버 | 클라이언트(질의) | `.proto`의 메시지 타입(양쪽이 공유) |
+| 데이터 형식 | 주로 JSON 텍스트 | JSON | Protocol Buffers 이진. 작고 빠르다 |
+| 전송 | HTTP/1.1·2 | HTTP, 보통 POST. 구독은 WebSocket·SSE | HTTP/2 필수(멀티플렉싱과 트레일러를 쓴다) |
+| 스트리밍 | SSE·WebSocket을 따로 붙인다 | 구독(subscription)으로 서버 → 클라이언트 푸시 | 서버·클라이언트·양방향 스트리밍을 기본 제공 |
+| 오류 처리 | HTTP 상태 코드 + 본문(`application/problem+json`) | 부분 성공이 있어 `200`에 `errors` 배열로 온다. 상태 코드만으로 판단할 수 없다 | HTTP 상태와 별개로 gRPC 상태 코드(`OK`, `NOT_FOUND` 등)를 트레일러로 전달한다 |
+
+### 운영과 생태계
+
+| 축 | REST | GraphQL | gRPC |
+| --- | --- | --- | --- |
+| 결합도(클라이언트와 서버가 얼마나 묶이나) | 낮다 | 중간(스키마 공유) | 높다(같은 `.proto`에서 생성한 코드를 공유) |
+| 호출 수(필요한 정보를 얻는 왕복) | 많다. 화면 하나에 여러 엔드포인트를 차례로 불러 조립한다 | 적다. 질의 하나로 중첩해 모은다 | 중간 |
+| 성능 | 좋다 | 좋다 | 매우 좋다(이진 직렬화, HTTP/2) |
+| 캐시 | HTTP 캐시를 그대로 쓴다(URL 단위) | 단일 엔드포인트·POST라 기본으로는 어렵다. 클라이언트 정규화 캐시를 두거나, 등록된(persisted) 쿼리를 GET으로 보내 CDN에 캐시한다 | 직접 만든다 |
+| 복잡도의 위치 | 서버가 엔드포인트를 늘린다 | 클라이언트 질의와 서버 리졸버로 옮겨 간다(쿼리 비용 통제, N+1) | 코드 생성이 뼈대를 만들어 서버 구현은 낮다~중간. 대신 정의 파일과 생성 단계를 관리한다 |
+| 도입 비용 | 낮다 | 중간. 스키마·리졸버·필드 단위 인가를 갖춘다 | 코드 생성 도구와 `.proto` 관리, 학습 비용이 든다 |
+| 코드 생성 | 기본은 없다(OpenAPI로 보완) | 좋다(스키마에서 타입 생성) | 매우 좋다(스텁까지 생성) |
+| 발견 가능성과 디버깅 | 좋다. URL·문서로 둘러보고 curl·브라우저로 바로 본다 | 좋다. 인트로스펙션, GraphiQL 같은 탐색 도구 | 나쁘다. 정의 파일이 있어야 알고, grpcurl·Postman 같은 전용 도구가 필요하다 |
+| 브라우저 지원 | 바로 쓴다 | 바로 쓴다(HTTP POST) | 직접 못 부른다. gRPC-Web·Connect 같은 변형이나 프록시가 필요하다 |
+| 버전 관리 | 쉽다(URL·헤더 버전) | 버전 대신 필드 추가와 폐기 표시(`@deprecated`)로 진화 | 어렵다. 필드 번호 규칙을 지켜 하위 호환을 유지해야 한다 |
+
+어느 하나가 정답은 아니다. 사용자에게는 API를 **일관되게** 쓸 수 있는 것이 중요하므로, 도메인과 요구에 맞춰 고른다. 각 스타일의 안쪽(REST의 URI·상태 코드 설계, GraphQL의 N+1·DataLoader·도입 패턴, gRPC의 protobuf 직렬화·브라우저 우회)은 [[rest-api|REST API 설계]], [[graphql|GraphQL]], [[grpc|gRPC]]에 있다.
+
+## 고르는 기준
+
+| 질문 | 기울어지는 쪽 |
+| --- | --- |
+| 외부 개발자나 브라우저가 직접 부르나 | REST (도구·캐시·문서화 생태계가 가장 넓다) |
+| 화면마다 필요한 데이터 모양이 크게 다른가 | GraphQL, 또는 [[bff\|BFF]] |
+| 내부 서비스끼리 많이, 빠르게 주고받나 | gRPC |
+| 서버가 먼저 보내야 하나 (브라우저 대상) | WebSocket, 단방향이면 SSE([[websocket\|WebSocket]]) |
+| 다른 회사 서비스의 상태 변화를 알아야 하나 | Webhook([[webhook\|웹훅과 폴링]]) |
+| 기존 기업 시스템이 SOAP로만 열려 있나 | SOAP (선택이라기보다 제약) |
+
+## API와 SDK
+
+| 구분 | API | SDK (Software Development Kit) |
+| --- | --- | --- |
+| 정체 | 소프트웨어끼리 통신하는 **규칙** | 특정 플랫폼용 개발을 돕는 **도구 묶음** |
+| 들어 있는 것 | 엔드포인트, 요청·응답 형식, 인증 방식 | 라이브러리, 타입, 예제 코드, 문서, 디버깅 도구 |
+| 추상화 수준 | 낮다. HTTP 요청을 직접 만든다 | 높다. `client.payments.create()`처럼 함수로 부른다 |
+| 언어·플랫폼 | 무관 | 특정 언어·플랫폼 전용 |
+
+SDK는 보통 **API를 감싼 것**이다. 결제·지도·클라우드 서비스는 API를 공개하고, 언어별 SDK로 인증·재시도·직렬화를 대신 처리해 준다. SDK가 없는 언어에서도 API는 직접 부를 수 있다.
+
+## 공개 범위에 따른 종류
+
+| 종류 | 누가 쓰나 | 예 |
+| --- | --- | --- |
+| 공개(public) API | 누구나 (보통 API 키 발급 후) | 날씨·지도·결제 API |
+| 파트너(partner) API | 계약한 회사만 | 제휴사 주문 연동 |
+| 내부(private) API | 같은 조직의 서비스·앱 | 사내 마이크로서비스, 자사 앱의 백엔드 |
+
+공개 범위가 넓을수록 하위 호환성, 문서, 레이트 리밋, 버전 관리의 무게가 커진다.
+
+## API를 배울 때 거치는 주제
+
+| 주제 | 다루는 것 | 상세 노트 |
+| --- | --- | --- |
+| 기반 용어 | HTTP 버전, 메서드, 상태 코드, 헤더, 쿠키, 캐시 | [[Computer-Science/Network/http\|HTTP 프로토콜]], [[http-cache\|HTTP 캐시]] |
+| 스타일 | REST, SOAP, GraphQL, gRPC, WebSocket | [[rest-api\|REST API 설계]], [[graphql\|GraphQL]], [[grpc\|gRPC]] |
+| 인증 | Basic, 세션, 토큰(JWT), OAuth, 요청 서명 | [[session-vs-token-auth\|세션과 토큰 인증]], [[oauth2\|OAuth 2.0]], [[api-request-signing\|API 키와 HMAC 요청 서명]] |
+| 설계 기능 | 페이지네이션, 멱등성, 버전 관리, HATEOAS, 콘텐츠 협상 | [[api-pagination\|API 페이지네이션]] |
+| 문서화 | OpenAPI(Swagger), Postman, Redoc | [[swagger\|NestJS Swagger]] |
+| 성능 | 캐시, 레이트 리밋, 로드 밸런싱, DB 인덱스, 수평 확장 | [[load-balancer\|로드 밸런서]] |
+| 입구 | API 게이트웨이 | [[api-gateway\|API 게이트웨이]] |
+| 연동 패턴 | 게이트웨이, 이벤트 기반, 웹훅, 폴링, 배치 | [[webhook\|웹훅과 폴링]] |
+| 품질 | 테스트, 보안 | [[api-testing\|API 테스트의 종류]], [[api-security\|API 보안 체크리스트]] |
+
+## 정리
+
+- API 스타일은 단위(리소스·질의·메서드·메시지·이벤트), 형식, 통신 방향으로 갈린다.
+- 요청·응답형은 REST·GraphQL·gRPC·SOAP, 연결 유지형은 WebSocket, 이벤트 콜백형은 Webhook이다.
+- 한 시스템에서도 **공개는 REST, 내부는 gRPC, 실시간은 WebSocket, 외부 이벤트는 Webhook**처럼 경계마다 다르게 쓴다.
+- SDK는 API를 언어별로 감싼 도구 묶음이다.
+
+관련 노트: [[rest-api|REST API 설계]], [[graphql|GraphQL]], [[grpc|gRPC: Protocol Buffers로 정의하는 RPC]], [[websocket|WebSocket]], [[webhook|웹훅과 폴링]], [[backend-developer-roadmap|백엔드 개발자가 알아야 할 것]]
