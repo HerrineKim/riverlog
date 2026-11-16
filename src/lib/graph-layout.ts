@@ -1,5 +1,5 @@
 import { forceCenter, forceLink, forceManyBody, forceSimulation } from "d3-force-3d";
-import type { GraphLink, GraphNode } from "@/lib/knowledge";
+import type { GraphLink, GraphNode } from "@/lib/knowledge-graph";
 
 export type PlacedNode = GraphNode & { x: number; y: number; z: number };
 

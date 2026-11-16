@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import type { PlacedNode } from "@/lib/graph-layout";
-import type { GraphLink } from "@/lib/knowledge";
+import type { GraphLink } from "@/lib/knowledge-graph";
 
 /**
  * The whole map is three draw calls: every node in one THREE.Points, every edge in one
@@ -109,6 +109,88 @@ const POINT_FRAGMENT = /* glsl */ `
   }
 `;
 
+/** One point per node; per-node color is written later by setStyle. */
+function createPoints(nodes: PlacedNode[]): THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial> {
+  const pg = new THREE.BufferGeometry();
+  pg.setAttribute("position", new THREE.Float32BufferAttribute(nodes.flatMap((n) => [n.x, n.y, n.z]), 3));
+  pg.setAttribute("size", new THREE.Float32BufferAttribute(nodes.map((n) => n.size), 1));
+  pg.setAttribute("rgba", new THREE.Float32BufferAttribute(new Float32Array(nodes.length * 4), 4));
+  return new THREE.Points(
+    pg,
+    new THREE.ShaderMaterial({
+      vertexShader: POINT_VERTEX,
+      fragmentShader: POINT_FRAGMENT,
+      transparent: true,
+      depthWrite: false,
+      uniforms: {
+        uScale: { value: 1 },
+        uSprite: { value: 1 },
+        uGlow: { value: 0 },
+        uFogNear: { value: 0 },
+        uFogFar: { value: 1 },
+        uFogColor: { value: new THREE.Color() },
+      },
+    }),
+  );
+}
+
+/**
+ * Line-segment vertices for every link, with each link's first vertex and vertex count.
+ * Reference links bow outward from the center as a curve; the rest are straight.
+ */
+function tessellateLinks(links: GraphLink[], posOf: (id: string) => THREE.Vector3) {
+  const positions: number[] = [];
+  const starts: number[] = [];
+  const counts: number[] = [];
+  const a = new THREE.Vector3();
+  const b = new THREE.Vector3();
+  const c = new THREE.Vector3();
+  const curve = new THREE.QuadraticBezierCurve3(a, c, b);
+  for (const l of links) {
+    a.copy(posOf(l.source));
+    b.copy(posOf(l.target));
+    starts.push(positions.length / 3);
+    if (l.kind === "reference") {
+      const mid = a.clone().add(b).multiplyScalar(0.5);
+      const out = mid.lengthSq() > 1 ? mid.clone().normalize() : new THREE.Vector3(0, 1, 0);
+      c.copy(mid).addScaledVector(out, a.distanceTo(b) * 0.18);
+      const pts = curve.getPoints(CURVE_SEGMENTS);
+      for (let i = 0; i < CURVE_SEGMENTS; i++) positions.push(...pts[i].toArray(), ...pts[i + 1].toArray());
+      counts.push(CURVE_SEGMENTS * 2);
+    } else {
+      positions.push(...a.toArray(), ...b.toArray());
+      counts.push(2);
+    }
+  }
+  return { positions, starts, counts };
+}
+
+/** Edge mesh over pre-tessellated vertices; per-vertex color is written later by setStyle. */
+function createLines(positions: number[]): THREE.LineSegments<THREE.BufferGeometry, THREE.LineBasicMaterial> {
+  const lg = new THREE.BufferGeometry();
+  lg.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  lg.setAttribute("color", new THREE.Float32BufferAttribute(new Float32Array((positions.length / 3) * 4), 4));
+  return new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, depthWrite: false }));
+}
+
+/** A hidden label span; placeLabels shows and positions the visible ones. */
+function createLabel(n: PlacedNode): HTMLSpanElement {
+  const s = document.createElement("span");
+  s.textContent = n.name;
+  Object.assign(s.style, {
+    position: "absolute",
+    left: "0",
+    top: "0",
+    display: "none",
+    whiteSpace: "nowrap",
+    font: `${n.kind === "doc" ? 500 : 700} ${n.kind === "doc" ? 11 : 13}px ${FONT}`,
+    padding: n.kind === "doc" ? "1px 4px" : "0",
+    borderRadius: "3px",
+    willChange: "transform",
+  });
+  return s;
+}
+
 export class MindMapScene {
   private renderer: THREE.WebGLRenderer;
   private camera: THREE.PerspectiveCamera;
@@ -166,80 +248,23 @@ export class MindMapScene {
     this.controls.addEventListener("change", this.requestRender);
     this.controls.addEventListener("start", this.stopMotion);
 
-    // Nodes
-    const pg = new THREE.BufferGeometry();
-    pg.setAttribute("position", new THREE.Float32BufferAttribute(nodes.flatMap((n) => [n.x, n.y, n.z]), 3));
-    pg.setAttribute("size", new THREE.Float32BufferAttribute(nodes.map((n) => n.size), 1));
-    pg.setAttribute("rgba", new THREE.Float32BufferAttribute(new Float32Array(nodes.length * 4), 4));
-    this.points = new THREE.Points(
-      pg,
-      new THREE.ShaderMaterial({
-        vertexShader: POINT_VERTEX,
-        fragmentShader: POINT_FRAGMENT,
-        transparent: true,
-        depthWrite: false,
-        uniforms: {
-          uScale: { value: 1 },
-          uSprite: { value: 1 },
-          uGlow: { value: 0 },
-          uFogNear: { value: 0 },
-          uFogFar: { value: 1 },
-          uFogColor: { value: new THREE.Color() },
-        },
-      }),
-    );
+    this.points = createPoints(nodes);
     this.points.frustumCulled = false;
     this.points.renderOrder = 1; // nodes always over edges, whatever the camera angle
     this.scene.add(this.points);
 
     // Edges; note-to-note links bow outward as curves, pre-tessellated into short segments
     this.visibleLinks = links.filter((l) => l.kind !== "hub" && this.byId.has(l.source) && this.byId.has(l.target));
-    const pos: number[] = [];
-    const a = new THREE.Vector3();
-    const b = new THREE.Vector3();
-    const c = new THREE.Vector3();
-    const curve = new THREE.QuadraticBezierCurve3(a, c, b);
-    for (const l of this.visibleLinks) {
-      a.copy(this.nodePos[this.byId.get(l.source)!]);
-      b.copy(this.nodePos[this.byId.get(l.target)!]);
-      this.linkVerts.push(pos.length / 3);
-      if (l.kind === "reference") {
-        const mid = a.clone().add(b).multiplyScalar(0.5);
-        const out = mid.lengthSq() > 1 ? mid.clone().normalize() : new THREE.Vector3(0, 1, 0);
-        c.copy(mid).addScaledVector(out, a.distanceTo(b) * 0.18);
-        const pts = curve.getPoints(CURVE_SEGMENTS);
-        for (let i = 0; i < CURVE_SEGMENTS; i++) pos.push(...pts[i].toArray(), ...pts[i + 1].toArray());
-        this.linkVertCount.push(CURVE_SEGMENTS * 2);
-      } else {
-        pos.push(...a.toArray(), ...b.toArray());
-        this.linkVertCount.push(2);
-      }
-    }
-    const lg = new THREE.BufferGeometry();
-    lg.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
-    lg.setAttribute("color", new THREE.Float32BufferAttribute(new Float32Array((pos.length / 3) * 4), 4));
-    this.lines = new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, depthWrite: false }));
+    const edges = tessellateLinks(this.visibleLinks, (id) => this.nodePos[this.byId.get(id)!]);
+    this.linkVerts = edges.starts;
+    this.linkVertCount = edges.counts;
+    this.lines = createLines(edges.positions);
     this.lines.frustumCulled = false;
     this.scene.add(this.lines);
 
     // Labels: one span per node, only the visible ones get displayed and positioned
-    for (const n of nodes) {
-      const s = document.createElement("span");
-      s.textContent = n.name;
-      Object.assign(s.style, {
-        position: "absolute",
-        left: "0",
-        top: "0",
-        display: "none",
-        whiteSpace: "nowrap",
-        font: `${n.kind === "doc" ? 500 : 700} ${n.kind === "doc" ? 11 : 13}px ${FONT}`,
-        padding: n.kind === "doc" ? "1px 4px" : "0",
-        borderRadius: "3px",
-        willChange: "transform",
-      });
-      this.labelLayer.appendChild(s);
-      this.labels.push(s);
-    }
+    this.labels = nodes.map(createLabel);
+    this.labelLayer.append(...this.labels);
 
     const el = this.renderer.domElement;
     el.addEventListener("pointerdown", this.onPointerDown);

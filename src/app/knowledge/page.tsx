@@ -3,7 +3,8 @@ import MindMap from "@/components/knowledge/MindMap";
 import ViewSwitch from "@/components/knowledge/ViewSwitch";
 import { placeGraph } from "@/lib/graph-layout";
 import { packGraph } from "@/lib/graph-wire";
-import { categoryColor, getGraphData, getKnowledgeTree, knowledgeStats } from "@/lib/knowledge";
+import { categoryColor, getKnowledgeTree, knowledgeStats } from "@/lib/knowledge";
+import { getGraphData } from "@/lib/knowledge-graph";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
