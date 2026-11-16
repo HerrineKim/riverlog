@@ -6,7 +6,7 @@ import useSearchOnEnter from "@/hooks/useSearchOnEnter";
 import useTheme from "@/hooks/useTheme";
 import useUrlState from "@/hooks/useUrlState";
 import type { PlacedNode } from "@/lib/graph-layout";
-import type { GraphLink } from "@/lib/knowledge";
+import type { GraphLink } from "@/lib/knowledge-graph";
 import { makeMatcher } from "@/lib/search";
 import { MindMapScene, REFERENCE_COLOR, toneFor } from "./mindmap-scene";
 

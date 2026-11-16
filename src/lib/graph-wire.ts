@@ -1,5 +1,5 @@
 import type { PlacedNode } from "./graph-layout";
-import type { GraphLink } from "./knowledge";
+import type { GraphLink } from "./knowledge-graph";
 
 /**
  * The map has ~20k links, so spelling each one as two note paths made /knowledge a 3 MB page.

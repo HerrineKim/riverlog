@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import type { PlacedNode } from "@/lib/graph-layout";
-import type { GraphLink } from "@/lib/knowledge";
+import type { GraphLink } from "@/lib/knowledge-graph";
 
 /**
  * The whole map is three draw calls: every node in one THREE.Points, every edge in one
