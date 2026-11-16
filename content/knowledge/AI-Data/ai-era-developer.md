@@ -4,13 +4,14 @@ concept: "AI-era Developer"
 summary: "LLM이 코드 작성을 맡게 되면서 개발자의 일은 모호한 요구를 명확한 문제로 재정의하고, 비결정적 AI를 결정적 검증 장치(하네스·오라클)로 묶고, 결과를 판단·책임지고, 코딩하며 저절로 쌓이던 맥락을 따로 보존하는 쪽으로 옮겨 갔다. 구조적 한계, 시장의 변화, 지시에서 위임으로의 전환, 길러야 할 역량을 정리했다. AI가 주니어의 일을 가져간 뒤 의도적 연습을 일부러 설계하고 시니어가 가르치는 법을 배워야 하는 이유도 정리했다."
 tags: ["ai", "llm", "career", "agent", "growth"]
 source: other
-date: "2026-10-13"
+date: "2026-11-16"
 sources: ["https://velog.io/@teo/ai-and-developer", "https://velog.io/@teo/we-programmer", "https://velog.io/@teo/ai-era-developer-role", "https://www.youtube.com/watch?v=palpFFMKuSU", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md"]
 ---
 
 > 테오(teo)의 「[AI 시대의 개발자: 현업 개발자의 솔직한 이야기](https://velog.io/@teo/ai-and-developer)」(2025.11), 「[우리, 프로그래머들: .md로 코딩하는 시대](https://velog.io/@teo/we-programmer)」(2026.03), 「[더이상 사람이 코딩하지 않는 시대, 개발자는 무엇을 해야 할까?](https://velog.io/@teo/ai-era-developer-role)」(2026.06)를 바탕으로 재구성한 노트다.
 > 「주니어는 어떻게 시니어가 되나」는 Meri Williams의 LDX3 London 2025 발표 「[Rethinking growing engineers in the age of AI](https://www.youtube.com/watch?v=palpFFMKuSU)」를 바탕으로 더했다.
 > 「길러야 할 역량」의 작은 CTO 역할은 위니브의 「[프론트엔드 개발자 가이드](https://github.com/weniv/frontend-developer-guide)」를 바탕으로 보강했다.
+> 「벤치마크와 실제 개발」은 강대명의 발표 자료 「좋은 개발자가 되기 위해서, 대학생 때 알면 좋은 것들」(GREEDYCON)을 바탕으로 더했다.
 
 ## 코딩 노동력이 병목이던 산업
 
@@ -64,6 +65,17 @@ AI에게 일을 시키는 방식도 바뀌었다.
 ```
 
 AI가 쉽게 푸는 것은 이미 추상화가 끝난 **잘 정의된 문제**다. 생성 비용은 싸졌지만 조립·관리·검증 비용은 그대로다. 개발자의 일은 예전에는 가끔 만나던 고난도 영역, 곧 **비결정적인 엣지 케이스 통제**로 채워진다. 실무 규칙은 [[ai-coding-guardrails|AI 코딩 실무 가드레일]]에 있다.
+
+### 벤치마크와 실제 개발
+
+벤치마크는 문제와 성공 조건이 주어진다. 실제 개발에서는 **무엇을 성공으로 볼지부터 정해야** 한다. AI는 주어진 문제를 잘 풀고, 개발자는 풀 문제를 정한다. AI가 유능해질수록 결과를 **채택한 사람의 책임**이 커진다. 코드를 누가 썼는지보다 누가 배포를 승인했는지가 중요하다. 승인하는 사람이 내려야 하는 판단은 넷이다.
+
+- 이 문제를 AI에게 맡겨도 되는가
+- 결과가 우리 데이터와 운영 조건에 맞는가
+- 실패 가능성을 어디까지 확인해야 하는가
+- 문제가 생기면 되돌릴 수 있는가
+
+이 판단력을 기르는 학습법은 [[sustainable-learning-loop#판단을 위한 학습: 예상을 먼저 적는다|판단을 위한 학습]]에 있다.
 
 ## 코딩 밖의 개발이 드러난다
 
