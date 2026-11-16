@@ -20,6 +20,9 @@ import { remarkObsidian } from "./wikilinks";
 /** [[target|alias]] in plain-text contexts (TOC, excerpts); group 1 is the target, group 2 the alias. */
 const WIKILINK_TEXT = /\[\[([^\]|\n]+?)(?:\\?\|([^\]\n]+))?\]\]/g;
 
+/** Visible text of a [[wikilink]]: its alias, else the note name without folders or heading. */
+const wikilinkLabel = (_: string, target: string, alias?: string) => alias ?? target.split("#")[0].split("/").pop()!;
+
 export type TocItem = { id: string; text: string; depth: 2 | 3 };
 
 // GitHub's schema, minus the `user-content-` id prefix (rehype-slug adds heading ids afterwards anyway),
@@ -199,7 +202,7 @@ function stripInline(s: string) {
     .replace(/<[^>]+>/g, "")
     .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(WIKILINK_TEXT, (_, t: string, a?: string) => a ?? t.split("#")[0].split("/").pop()!)
+    .replace(WIKILINK_TEXT, wikilinkLabel)
     .replace(/[`*_~]/g, "")
     .trim();
 }
@@ -211,7 +214,7 @@ export function excerptOf(markdown: string, length = 140): string {
     .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
     .replace(/!\[\[[^\]]*\]\]/g, " ")
     .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(WIKILINK_TEXT, (_, t: string, a?: string) => a ?? t.split("#")[0].split("/").pop()!)
+    .replace(WIKILINK_TEXT, wikilinkLabel)
     .replace(/^\s*(#{1,6}|>|[-*+]|\d+\.|\|)\s?/gm, "")
     .replace(/[`*_~|]/g, "")
     .replace(/-{3,}/g, " ")
