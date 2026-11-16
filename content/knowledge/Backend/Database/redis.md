@@ -4,11 +4,11 @@ concept: "Redis"
 summary: "Redis는 메모리에 데이터를 두는 키-값 저장소로, 캐시를 넘어 세션·분산 락·카운터·레이트 리미터·랭킹·큐로 쓰인다. 빠른 이유(메모리, 단일 스레드 이벤트 루프와 I/O 다중화, 효율적인 자료구조), 자료구조별 쓰임, 영속성(RDB·AOF·혼합)과 큰 키의 영향, 만료·교체 정책과 메모리 지표, 트랜잭션(MULTI·WATCH)과 Lua, 복제·센티널·클러스터와 리샤딩, ACL, 장애 진단, Memcached와의 차이를 정리한다."
 tags: ["backend", "database", "redis", "cache", "nosql"]
 source: other
-date: "2026-10-21"
+date: "2026-11-16"
 sources: ["https://bytebytego.com/guides/the-ultimate-redis-101", "https://bytebytego.com/guides/why-is-redis-so-fast", "https://bytebytego.com/guides/how-can-redis-be-used", "https://bytebytego.com/guides/memcached-vs-redis", "https://bytebytego.com/guides/how-does-redis-persist-data", "https://bytebytego.com/guides/how-do-big-keys-impact-redis-persistence", "https://bytebytego.com/guides/how-redis-architecture-evolve", "https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/", "https://www.slideshare.net/charsyam2/redis-196314086", "https://mingrammer.com/redis-migration/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/database/redis.md", "https://redis.io/docs/latest/develop/reference/eviction/", "https://redis.io/docs/latest/develop/using-commands/transactions/", "https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[The Ultimate Redis 101](https://bytebytego.com/guides/the-ultimate-redis-101)」, 「[Why is Redis so Fast?](https://bytebytego.com/guides/why-is-redis-so-fast)」, 「[How can Redis be used?](https://bytebytego.com/guides/how-can-redis-be-used)」, 「[Memcached vs Redis](https://bytebytego.com/guides/memcached-vs-redis)」, 「[How Does Redis Persist Data?](https://bytebytego.com/guides/how-does-redis-persist-data)」, 「[How Big Keys Impact Redis Persistence](https://bytebytego.com/guides/how-do-big-keys-impact-redis-persistence)」, 「[How Redis Architecture Evolved](https://bytebytego.com/guides/how-redis-architecture-evolve)」을 바탕으로, 영속성 설정은 Redis 공식 문서로 확인해 재구성한 노트다. 운영 주의점은 「[우아한 Redis](https://www.slideshare.net/charsyam2/redis-196314086)」(발표 슬라이드, [영상](https://youtu.be/mPB2CZiAkKM)), 데이터 이전은 「[IDC에서 AWS로 Redis 데이터 이전하기](https://mingrammer.com/redis-migration/)」로 보강했다. 만료·교체 정책, 트랜잭션과 Lua, 복제와 정합성, 리샤딩, ACL, 메모리 지표와 장애 진단은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/database/redis.md)」의 질문을 실마리로 Redis 공식 문서로 확인해 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[The Ultimate Redis 101](https://bytebytego.com/guides/the-ultimate-redis-101)」, 「[Why is Redis so Fast?](https://bytebytego.com/guides/why-is-redis-so-fast)」, 「[How can Redis be used?](https://bytebytego.com/guides/how-can-redis-be-used)」, 「[Memcached vs Redis](https://bytebytego.com/guides/memcached-vs-redis)」, 「[How Does Redis Persist Data?](https://bytebytego.com/guides/how-does-redis-persist-data)」, 「[How Big Keys Impact Redis Persistence](https://bytebytego.com/guides/how-do-big-keys-impact-redis-persistence)」, 「[How Redis Architecture Evolved](https://bytebytego.com/guides/how-redis-architecture-evolve)」을 바탕으로, 영속성 설정은 Redis 공식 문서로 확인해 재구성한 노트다. 운영 주의점은 「[우아한 Redis](https://www.slideshare.net/charsyam2/redis-196314086)」(발표 슬라이드, [영상](https://youtu.be/mPB2CZiAkKM)), 데이터 이전은 「[IDC에서 AWS로 Redis 데이터 이전하기](https://mingrammer.com/redis-migration/)」로 보강했다. 만료·교체 정책, 트랜잭션과 Lua, 복제와 정합성, 리샤딩, ACL, 메모리 지표와 장애 진단은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/database/redis.md)」의 질문을 실마리로 Redis 공식 문서로 확인해 보강했다. 만료 구현 방식의 비교는 강대명의 발표 자료 「알아도 도움안되는 얕은 개발 지식들」을 바탕으로 더했다.
 
 ## Redis란
 
@@ -127,7 +127,16 @@ Redis에는 테이블이 없으므로 **키 이름이 곧 구조**다. `서비�
 
 ### 만료가 처리되는 방식
 
-만료 시각이 지난다고 그 순간 지워지지는 않는다. 키마다 타이머를 두면 비싸므로 두 방식을 섞는다.
+만료 시각이 지난다고 그 순간 지워지지는 않는다. 키마다 타이머를 두면 비싸고, 만료를 구현하는 단순한 방법은 저마다 한계가 있다.
+
+| 방법 | 동작 | 한계 |
+| --- | --- | --- |
+| 주기적 전체 검사 | 일정 주기마다 모든 키의 만료 시각을 현재 시각과 비교해 지난 것을 지운다 | 검사 비용이 키 수에 비례한다(O(N)). 주기가 짧으면 CPU를 쓰고, 길면 늦게 지운다 |
+| 만료 시각 순 정렬 | 만료 시각으로 정렬된 구조를 두고 앞에서부터 지운다. 아직 안 지난 첫 키에서 멈춘다 | 키로 찾는 조회는 해시가 맡아야 하므로 구조를 둘 유지한다. 메모리가 더 들고 쓸 때마다 둘을 고친다. 같은 시각에 만료되는 키가 많으면 여전히 O(N)이다 |
+| 접근할 때 삭제 (lazy) | 키를 읽을 때 만료됐으면 지우고 없다고 답한다 | 다시 읽지 않는 만료 키는 메모리를 계속 차지한다 |
+| 표본 주기 삭제 | 주기마다 일부 키만 골라 만료된 것을 지운다 | 만료 키가 잠시 남는다 |
+
+실제 캐시는 이들을 섞는다. Redis는 TTL이 있는 키만 따로 모은 해시 테이블(`expires`)을 두고, 정렬을 유지하는 대신 그 안에서 무작위 표본을 뽑는다. Memcached도 접근할 때 지우는 방식을 기본으로 하고, 백그라운드 LRU 크롤러가 만료된 항목의 메모리를 거둔다. Redis의 두 방식은 다음과 같다.
 
 | 방식 | 동작 |
 | --- | --- |
