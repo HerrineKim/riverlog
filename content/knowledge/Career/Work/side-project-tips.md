@@ -4,12 +4,13 @@ concept: "Side Project"
 summary: "꾸준히 하나는 굴리기, 내 불편에서 아이디어 찾기, 틈새 겨냥, 작게 시작, 1~2주 단위 기한, 코딩 전 랜딩 페이지로 검증하기까지 사이드 프로젝트를 시작하고 유지하는 원칙. 내가 쓸 것을 내가 만드는 출발점과 불편 일기, MVP·MMP·MLP로 나눈 검증, 빌드 인 퍼블릭까지 다룬다."
 tags: ["career", "growth", "productivity", "side-project"]
 source: other
-date: "2026-10-31"
+date: "2026-11-16"
 sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM", "https://webactually.com/2015/04/17/%ed%95%9c%ea%b3%84%ec%97%90%ec%84%9c-%ec%9d%b4%ec%96%b4%ec%a7%84-%eb%82%98%ec%9d%98-%ec%95%b1%ec%8a%a4%ed%86%a0%ec%96%b4-%ec%84%b1%ea%b3%b5%ea%b3%bc-%ec%8b%a4%ed%8c%a8-%ec%9d%b4%ec%95%bc%ea%b8%b0/", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://techblog.woowahan.com/2590/", "https://wormwlrm.github.io/2019/10/13/Kwakcheolyong-Image-Creator-Development-Story.html", "https://wormwlrm.github.io/2022/05/07/Bamboo-Forest-Slack-App.html", "https://cho.sh/ko/w/5ADC58", "https://api.slack.com/interactivity/handling"]
 ---
 
 > Chris Yang의 「[당신의 사이드 프로젝트를 위한 10가지 팁](https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects)」(2019.08)을 바탕으로 재구성한 노트다. 원 자료는 Traversy Media의 영상 「[10 Tips For Starting & Creating Side Projects](https://www.youtube.com/watch?v=eCAj3mWFpNM)」다. 출시 이후의 원칙은 웹액츄얼리가 번역한 「한계에서 이어진 나의 앱스토어 성공과 실패 이야기」(2015.04)를 바탕으로 덧붙였다.
 > 「내가 쓸 것을 내가 만든다」, MVP·MMP·MLP, 빌드 인 퍼블릭은 배휘동의 발표 자료 「나날이 발전하고픈 개발자를 위한 AI 활용법」(2025.08) 2부를 바탕으로 더했다.
+> 「만들기에서 운영하기로」는 강대명의 발표 자료 「좋은 개발자가 되기 위해서, 대학생 때 알면 좋은 것들」(GREEDYCON)을 바탕으로 더했다.
 > 업무에서 얻기 어려운 경험, 「빨리 내고 관찰한다」, 「이름과 상표를 먼저 점검한다」는 「[프로젝트가 장난이야?!](https://techblog.woowahan.com/2590/)」, 「[곽철용 짤 생성기, 이렇게 만들어졌습니다](https://wormwlrm.github.io/2019/10/13/Kwakcheolyong-Image-Creator-Development-Story.html)」(2019.10), 「[임금님 귀는 당나귀 귀! 대나무숲 슬랙 앱 만들기](https://wormwlrm.github.io/2022/05/07/Bamboo-Forest-Slack-App.html)」(2022.05), 「[마이크로소프트에게 내용증명 받고 23만 유저 앱 삭제한 건에 대하여](https://cho.sh/ko/w/5ADC58)」를 바탕으로 보강했다.
 
 ## 사이드 프로젝트가 필요한 이유
@@ -82,6 +83,15 @@ flowchart TB
 | 처음부터 세계용으로 | 다국어를 지원하지 않으면 해외 사용자를 놓친다. 날짜·시간은 특히 위험하다. 서머타임으로 자정이 없는 날, 윤일, 음력·이슬람력 같은 다른 달력이 있으니 직접 계산하지 말고 OS의 날짜 라이브러리를 쓴다. 주말·근무 시간도 문화와 야간 근무 여부에 따라 다르다 |
 | 작은 디테일에 공을 들인다 | 사람들은 기능 목록보다 로딩 애니메이션 같은 작은 즐거움을 기억한다 |
 | 업데이트를 끊지 않는다 | 업데이트가 멈추면 버그와 OS 변화로 신뢰를 잃고 사용자가 빠르게 떠난다. 매일 쓰는 앱이라면 시간이 지나며 어떻게 개선할지까지 계획한다 |
+
+### 만들기에서 운영하기로
+
+**만들기**는 정상 경로에서 동작하게 하는 일이고, **운영하기**는 데이터와 사용 방식이 바뀌어도 계속 동작하게 하는 일이다. 기술의 숨은 제약은 실제 사용자를 거쳐야 드러나므로, 완성은 공부의 끝이 아니라 관찰을 시작할 수 있는 상태다. 운영하며 배우는 것은 예상하지 못한 입력과 사용법, 데이터 증가에 따른 성능 변화, 동시 실행과 재시도, 장애 처리다.
+
+| 오해 | 실제 |
+| --- | --- |
+| 사용자가 많아야 운영이다 | 중요한 것은 사용자 수가 아니라 **반복해서 쓰이는가**다. 3~4명이면 충분하다. 나부터 매일 쓰고, 나와 다른 방식으로 쓰는 사람이 있으면 더 좋다. 같은 기능을 반복해 써야 불편과 예외가 보인다 |
+| 배포하면 운영이다 | 운영은 기능 추가가 아니라 기능을 안정적으로 유지하는 일이다. 지금 정상 동작하는가, 응답이 느려지고 있지 않은가, 오류가 얼마나 나는가, CPU·메모리·디스크를 얼마나 쓰는가에 답할 수 있어야 한다([[observability\|관측 가능성]]) |
 
 ### 빨리 내고 관찰한다
 

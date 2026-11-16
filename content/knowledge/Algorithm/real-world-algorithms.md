@@ -4,12 +4,13 @@ concept: "Applied Algorithms"
 summary: "일상 소프트웨어에서 자료구조가 쓰이는 곳(피드의 리스트, 실행 취소의 스택, 캐시의 해시 테이블, DOM의 트리, 지도 검색의 R-트리), 대규모 시스템 설계에 자주 나오는 알고리즘(일관된 해싱, 지오해시·쿼드트리, 블룸 필터, HyperLogLog, 토큰 버킷, 머클 트리, 합의 알고리즘), 세상을 움직이는 아홉 가지 알고리즘을 정리한다. 블룸 필터는 중복 URL 크롤링 방지 예로 자세히 본다."
 tags: ["algorithm", "data-structure", "architecture", "scalability", "search"]
 source: other
-date: "2026-11-02"
+date: "2026-11-16"
 sources: ["https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://bytebytego.com/guides/algorithms-you-should-know-before-taking-system-design-interviews", "https://bytebytego.com/guides/the-9-algorithms-that-dominate-our-world", "https://bytebytego.com/guides/how-to-avoid-crawling-duplicate-urls-at-google-scale", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[10 Key Data Structures We Use Every Day](https://bytebytego.com/guides/10-key-data-structures-we-use-every-day)」, 「[Algorithms for System Design Interviews](https://bytebytego.com/guides/algorithms-you-should-know-before-taking-system-design-interviews)」, 「[The 9 Algorithms That Dominate Our World](https://bytebytego.com/guides/the-9-algorithms-that-dominate-our-world)」, 「[How to Avoid Crawling Duplicate URLs at Google Scale?](https://bytebytego.com/guides/how-to-avoid-crawling-duplicate-urls-at-google-scale)」를 바탕으로 재구성한 노트다.
 > 블룸 필터의 거짓 음성이 없는 이유와 거짓 양성률 식은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
+> 단일 해시 비트맵과의 비교, 디스크 읽기를 줄이는 쓰임과 LSM 트리와의 관계는 강대명의 발표 자료 「알아도 도움안되는 얕은 개발 지식들」을 바탕으로 더했다.
 
 알고리즘 공부는 구현에 치우치기 쉽다. 시스템을 설계할 때는 「이 알고리즘이 실제 시스템의 어느 문제를 푸는가」를 아는 것이 구현 세부보다 중요하다. 그래서 자료구조와 알고리즘을 쓰임새 중심으로 묶어 본다.
 
@@ -51,12 +52,15 @@ sources: ["https://bytebytego.com/guides/10-key-data-structures-we-use-every-day
 
 ## 블룸 필터: 중복 URL 걸러 내기
 
-웹 크롤러는 수십억 개의 URL 중 이미 본 것을 다시 넣지 않아야 한다. 선택지는 셋이다.
+블룸 필터는 「이 원소가 집합에 있는가」를 묻는 **멤버십 질의**(membership query)에 답하는 **확률적 자료구조**(probabilistic data structure)다. 「없다」고 하면 정말 없고, 「있다」고 하면 없을 수도 있다. 이 성질은 비싼 확인을 건너뛸 때 쓸모 있다. 메모리 접근(약 100ns)은 SSD 임의 읽기(수십~수백 µs)보다 1,000배 안팎 빠르므로, 메모리의 작은 필터가 「없다」고 하면 디스크를 읽지 않아도 된다.
+
+웹 크롤러는 수십억 개의 URL 중 이미 본 것을 다시 넣지 않아야 한다. 선택지는 넷이다.
 
 | 방법 | 장점 | 단점 |
 | --- | --- | --- |
 | 메모리의 집합(Set) | 빠르고 정확하다 | URL 전체를 저장해 메모리가 감당이 안 된다 |
 | DB에 저장하고 조회 | 정확하다 | 조회마다 DB 부하가 크다 |
+| 해시 하나 + 비트맵 | 해시값 자리의 비트 하나만 본다. 비트가 0이면 확실히 없다 | 해시값을 그대로 자리로 쓰면 크기가 해시 범위로 고정된다. CRC16이면 2^16비트(8KB)지만 충돌이 잦고, CRC32면 2^32비트(512MB)를 원소 수와 상관없이 늘 차지한다. `h(x) % m`으로 크기를 줄일 수는 있지만, 그러면 해시가 1개(k = 1)인 블룸 필터가 된다 |
 | **블룸 필터** | 비트 배열만 써서 메모리가 매우 적고 빠르다 | 가끔 "있다"고 잘못 답한다 |
 
 ```mermaid
@@ -74,8 +78,11 @@ flowchart LR
 
 - **거짓 음성은 없고 거짓 양성만 있다.** 비트는 0에서 1로 세우기만 하고 되돌리지 않으므로, 한 번 넣은 원소의 k칸은 언제까지나 1이다. 그래서 "없다"(어느 한 칸이 0)는 답은 항상 맞다. 반대로 "있다"는 다른 원소들이 세운 비트가 우연히 k칸을 모두 덮었을 때도 나오므로 틀릴 수 있다. 크롤러가 새 URL을 가끔 놓치는 것은 감수할 수 있으므로 잘 맞는다.
 - 거짓 양성률은 비트 배열 크기 m, 해시 함수 개수 k, 넣은 원소 수 n으로 정해진다. 근사식은 p ≈ (1 - e^(-kn/m))^k이고, 가장 낮아지는 k는 (m/n)·ln 2다. 이때 원소당 약 9.6비트면 1%, 14.4비트면 0.1%다. 원소가 기대보다 많이 들어오면 비율이 급격히 나빠지므로 기대 원소 수에 맞춰 크기를 미리 잡는다.
+- 해시를 k개 쓰는 이유는 충돌이 한 해시에서 나도 k개 모두에서 동시에 나기는 어렵기 때문이다. 크기 m은 해시가 하나여도 `% m`으로 정할 수 있으므로, 블룸 필터의 이점은 같은 메모리(m)와 원소 수(n)에서 k를 최적값으로 골라 거짓 양성률을 낮추는 데 있다.
 - 해시 함수는 고르게 퍼지고 빨라야 한다. 암호 해시 대신 MurmurHash, xxHash 같은 비암호 해시를 쓴다.
 - 기본 블룸 필터는 원소를 지울 수 없다. 지우려고 비트를 0으로 되돌리면 그 비트를 함께 쓰던 다른 원소가 "없다"로 나와 거짓 음성이 생긴다. 삭제가 필요하면 칸마다 비트 대신 카운터를 두는 카운팅 블룸 필터나 쿠쿠 필터를 쓴다.
+- 삭제가 안 되는 제약은 **LSM 트리**와 잘 맞는다. Cassandra·HBase·RocksDB는 한 번 쓰면 바꾸지 않는 SSTable 파일마다 블룸 필터를 만들어 두고, 키를 찾을 때 「없다」고 답한 파일은 디스크에서 읽지 않는다. 파일이 병합되면 필터도 새로 만든다([[database-internals|DB 내부 구조]]의 B-트리와 LSM 트리). MySQL(InnoDB)은 행을 클러스터드 B-트리에 두고 제자리에서 고치고, PostgreSQL은 행을 힙 테이블에 두고 고칠 때마다 새 행 버전을 쌓으며 B-트리 인덱스를 따로 둔다. 어느 쪽이든 키 하나는 인덱스를 따라 한 곳에서 찾으므로, 여러 파일을 뒤져야 하는 LSM 트리와 달리 블룸 필터가 기본 구성 요소로 들어가지 않는다. PostgreSQL은 여러 열의 동등 조건을 거르는 `bloom` 확장 인덱스를 따로 제공한다.
+- 그 밖의 쓰임: 없는 키 요청이 DB까지 가지 않게 막는 캐시 앞단([[caching-strategies|캐시 전략]]의 캐시 관통), 크롤러의 방문 여부 확인, 이미 본 추천 항목 거르기. Redis 8은 블룸 필터를 기본 자료형으로 제공한다([[redis|Redis]]).
 
 크롤러 전체 설계에서 블룸 필터가 놓이는 자리는 [[web-crawler-at-scale|대규모 웹 크롤러 설계]]에 있다.
 

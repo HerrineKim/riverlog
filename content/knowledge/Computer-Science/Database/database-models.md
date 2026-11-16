@@ -4,7 +4,7 @@ concept: "Database Model"
 summary: "DBMS가 파일 처리 시스템의 어떤 문제를 푸는지와 1·2·3계층 구조, 관계형 DB의 특징과 한계, 코드의 규칙, NoSQL 유형(문서·키-값·와이드 컬럼·그래프·시계열·검색·멀티 모델과 그 밖의 모델)별 대표 제품과 BASE·CAP 정리, 둘의 장점을 합치려는 NewSQL을 비교하고, 프로젝트에서 무엇을 고를지와 PostgreSQL·MySQL의 차이를 정리. 평면·계층·네트워크 모델에서 관계형까지의 계보와 분석용 스타·스노플레이크 스키마도 다룬다."
 tags: ["database", "rdbms", "nosql", "newsql", "sql", "mongodb"]
 source: mixed
-date: "2026-11-01"
+date: "2026-11-16"
 sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-81ec/262366350", "https://bytebytego.com/guides/top-6-database-models", "https://bytebytego.com/guides/cap-theorem-one-of-the-most-misunderstood-terms", "https://d2.naver.com/helloworld/227936", "http://woowabros.github.io/study/2018/02/26/mysql-char-comparison.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS", "https://github.com/henryr/cap-faq", "http://ksat.me/a-plain-english-introduction-to-cap-theorem", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://github.com/karanpratapsingh/system-design", "https://github.com/swapnakpanda/Infographics"]
 ---
 
@@ -13,6 +13,7 @@ sources: ["https://riverkim.kr/175", "https://www.slideshare.net/slideshow/pdf-8
 > Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 PACELC 설명으로 분류 예시를 더했다. 원문이 BigTable·HBase를 PA/EC로 적은 부분은 PC/EC로 바로잡았다.
 > karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 문서형·키-값형·그래프형의 장단점, 시계열형과 멀티 모델 DB를 보강했다.
 > 유형별 대표 제품, 검색 엔진형, 그 밖의 모델(RDF·객체 지향·XML·이벤트 저장소 등)은 Swapna Kumar Panda의 「[Infographics](https://github.com/swapnakpanda/Infographics)」 중 Database Categories 그림을 바탕으로 보강했다.
+> 그래프형의 분산이 어려운 이유와 분할 방식은 강대명의 발표 자료 「좋은 개발자가 되기 위해서, 대학생 때 알면 좋은 것들」(GREEDYCON)의 Neo4j 사례를 바탕으로 더했다.
 
 데이터베이스는 데이터의 집합이고, 이를 저장·관리하는 소프트웨어가 **DBMS(Database Management System)**다. 데이터를 어떤 구조로 저장하느냐에 따라 데이터베이스 모델이 나뉜다. 정해진 스키마와 강한 일관성을 원하면 관계형, 유연한 구조와 수평 확장을 원하면 NoSQL, 둘 다 원하면 NewSQL이라는 식으로 요구사항에 맞춰 고른다.
 
@@ -193,6 +194,15 @@ RDB의 ACID에 대비해 많은 NoSQL이 따르는 성질을 **BASE**라 부른�
 - 소셜 네트워크, 추천 시스템, 사기 탐지(계좌·기기·사람 사이의 수상한 고리 찾기), 네트워크·인프라 의존 관계 지도에 적합.
 - 관계를 따라가는 질의는 빠르지만, 모델링과 운영이 익숙하지 않고 분산이 어렵다. 질의 언어는 오래 제품마다 달랐지만(Neo4j의 Cypher, Apache TinkerPop의 Gremlin), 2024년에 ISO 표준 그래프 질의 언어 **GQL**(ISO/IEC 39075)이 나왔다.
 - 예: Neo4j, Amazon Neptune, Dgraph, GraphDB(RDF 기반)
+- **분산이 어려운 이유**: 노드를 서버에 고르게 나누면 서버를 넘는 간선이 생기고, 그 간선을 따라갈 때마다 네트워크 요청이 든다. 그래서 그래프 분할(graph partitioning)은 **저장량 균등**과 **탐색 지역성**(자주 함께 찾는 노드를 같은 서버에 두기)이 부딪치는 문제다. 어느 쪽을 우선할지는 실제 질의 기록(한 단계 이웃 조회 위주인가, 여러 단계 탐색인가, 전체 그래프 분석이 있는가)을 보고 정한다.
+
+| 분할·배치 방식 | 동작 | 대가 |
+| --- | --- | --- |
+| 간선 자르기(edge cut) | 노드는 한 서버에 두고, 서버를 넘는 간선은 원격 참조로 둔다 | 탐색이 서버 경계를 넘을 때마다 네트워크 비용 |
+| 노드 자르기(vertex cut) | 간선을 서버에 나누고, 여러 서버에 걸친 노드는 복제한다 | 복제본끼리 최신 상태를 맞추는 쓰기·일관성 비용 |
+| 복제 | 그래프 전체나 일부를 여러 서버에 둔다 | 읽기는 가까운 복제본에서 빠르지만 쓰기마다 모든 복제본을 맞춘다 |
+
+- 연결이 몰린 **슈퍼노드**(유명 사용자, 인기 상품)는 노드 수가 균등해도 부하를 한 서버에 모은다. 간선이 늘고 인기 노드가 바뀌면 오늘의 좋은 분할이 다음 달에는 나빠지므로 재분할과 데이터 이동이 필요하다. 읽기·쓰기 비율이 방식을 고르는 기준이 된다.
 
 ### 시계열형 (Time Series)
 

@@ -89,7 +89,7 @@
  },
  "AI-Data/ai-era-developer.md": {
   "created": "2026-10-13T19:47:35+09:00",
-  "updated": "2026-10-31T13:20:54+09:00"
+  "updated": "2026-11-16T22:31:22+09:00"
  },
  "AI-Data/ai-feature-blueprint.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -117,7 +117,7 @@
  },
  "AI-Data/bayesian-fuzzy-inference.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-23T13:09:01+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "AI-Data/behavior-tree.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -125,7 +125,7 @@
  },
  "AI-Data/classification-metrics.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-11-15T17:12:12+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "AI-Data/claude-advanced-tool-use.md": {
   "created": "2026-11-15T14:10:50+09:00",
@@ -145,7 +145,7 @@
  },
  "AI-Data/data-pipeline-basics.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-15T17:12:12+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "AI-Data/data-visualization.md": {
   "created": "2026-10-31T16:02:04+09:00",
@@ -165,7 +165,7 @@
  },
  "AI-Data/distributed-data-processing.md": {
   "created": "2026-10-31T18:52:03+09:00",
-  "updated": "2026-11-15T17:12:12+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "AI-Data/evaluation-driven-development.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -281,7 +281,7 @@
  },
  "AI-Data/reinforcement-learning.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-31T18:52:03+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "AI-Data/responsible-ai-governance.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -329,7 +329,7 @@
  },
  "Algorithm/Data-Structure/data-structures.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Algorithm/Data-Structure/disjoint-set.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -461,7 +461,7 @@
  },
  "Algorithm/Paradigm/sweep-line.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-10-31T12:52:45+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Algorithm/Paradigm/two-pointers.md": {
   "created": "2026-10-30T23:43:44+09:00",
@@ -553,7 +553,7 @@
  },
  "Algorithm/real-world-algorithms.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-15T12:08:52+09:00"
+  "updated": "2026-11-16T22:27:47+09:00"
  },
  "Backend.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -849,7 +849,7 @@
  },
  "Backend/Database/redis.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-16T22:27:47+09:00"
  },
  "Backend/Database/search-engine-basics.md": {
   "created": "2026-10-14T10:18:30+09:00",
@@ -1289,7 +1289,7 @@
  },
  "Career/Work/learning-to-code-stages.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-10-21T14:58:22+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Career/Work/open-source-contribution.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -1321,7 +1321,7 @@
  },
  "Career/Work/side-project-tips.md": {
   "created": "2026-10-13T19:31:42+09:00",
-  "updated": "2026-10-31T18:52:03+09:00"
+  "updated": "2026-11-16T22:31:22+09:00"
  },
  "Career/Work/software-documentation.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -1329,7 +1329,7 @@
  },
  "Career/Work/sustainable-learning-loop.md": {
   "created": "2026-10-17T19:04:42+09:00",
-  "updated": "2026-10-31T13:02:11+09:00"
+  "updated": "2026-11-16T22:31:22+09:00"
  },
  "Career/Work/tech-blogging.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -1477,7 +1477,7 @@
  },
  "Computer-Science/Database/database-models.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-16T22:31:22+09:00"
  },
  "Computer-Science/Database/normalization.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1489,7 +1489,7 @@
  },
  "Computer-Science/Database/transaction.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Computer-Science/Engineer-Information-Processing.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1961,7 +1961,7 @@
  },
  "Computer-Science/quantum-computing.md": {
   "created": "2026-10-17T18:56:44+09:00",
-  "updated": "2026-10-31T13:21:34+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Computer-Science/quantum-mechanics-basics.md": {
   "created": "2026-10-17T18:56:44+09:00",
@@ -2353,7 +2353,7 @@
  },
  "Frontend/CSS/flexbox.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T19:48:28+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Frontend/CSS/how-css-works.md": {
   "created": "2026-10-13T19:46:37+09:00",
@@ -2409,7 +2409,7 @@
  },
  "Frontend/CSS/transform.md": {
   "created": "2026-10-12T21:27:28+09:00",
-  "updated": "2026-11-12T12:38:59+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Frontend/CSS/utility-first-css.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -2501,7 +2501,7 @@
  },
  "Frontend/JavaScript/dom-geometry.md": {
   "created": "2026-10-17T23:13:05+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Frontend/JavaScript/dom-manipulation.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -2693,7 +2693,7 @@
  },
  "Frontend/JavaScript/typescript-compiler-internals.md": {
   "created": "2026-10-30T15:57:24+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Frontend/JavaScript/typescript-error-messages.md": {
   "created": "2026-10-30T15:57:24+09:00",
@@ -2865,7 +2865,7 @@
  },
  "Frontend/React/list-virtualization.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Frontend/React/lists-and-keys.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -3021,7 +3021,7 @@
  },
  "Frontend/UI-Design/ecommerce-ui.md": {
   "created": "2026-10-13T19:48:01+09:00",
-  "updated": "2026-10-31T13:02:11+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Frontend/UI-Design/gesture-interface.md": {
   "created": "2026-10-13T19:48:01+09:00",
@@ -3069,7 +3069,7 @@
  },
  "Frontend/UI-Design/ui-motion-principles.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-10-31T12:51:38+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Frontend/UI-Design/ux-writing.md": {
   "created": "2026-10-15T16:28:51+09:00",
@@ -3437,11 +3437,11 @@
  },
  "Frontend/frontend-roadmap.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T13:03:08+09:00"
+  "updated": "2026-11-16T22:17:46+09:00"
  },
  "Frontend/quasar.md": {
   "created": "2026-10-12T21:27:28+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-15T20:31:50+09:00"
  },
  "Frontend/react-vs-vue.md": {
   "created": "2026-10-14T10:57:31+09:00",
