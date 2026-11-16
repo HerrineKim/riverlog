@@ -1,11 +1,11 @@
 ---
 title: "멀티 에이전트"
 concept: "Multi Agent"
-summary: "여러 AI 에이전트가 조사·작성·검토·실행 역할을 나눠 일하는 방식. 목표 설정 → 분업 → 병렬 수행 → 통합 → 검토로 돌아가며, 에이전트 수보다 역할 설계와 연결(공유 컨텍스트·가드레일)이 품질을 좌우한다."
+summary: "여러 AI 에이전트가 조사·작성·검토·실행 역할을 나눠 일하는 방식. 목표 설정 → 분업 → 병렬 수행 → 통합 → 검토로 돌아가며, 에이전트 수보다 역할 설계와 연결(공유 컨텍스트·가드레일)이 품질을 좌우한다. 오케스트레이터-워커 구조의 효과(단일 에이전트 대비 90.2%)와 비용(토큰 약 15배), 실패 유형 세 범주, 테스트·이슈·수정 팀으로 나눈 대규모 사례도 다룬다."
 tags: ["ai", "llm", "agent", "architecture"]
 source: mixed
 date: "2026-10-20"
-sources: ["https://riverkim.kr/331", "https://learn.microsoft.com/en-us/agent-framework/overview/", "https://code.claude.com/docs/en/sub-agents", "https://bytebytego.com/guides/what-is-an-ai-agent"]
+sources: ["https://riverkim.kr/331", "https://learn.microsoft.com/en-us/agent-framework/overview/", "https://code.claude.com/docs/en/sub-agents", "https://bytebytego.com/guides/what-is-an-ai-agent", "https://www.anthropic.com/engineering/multi-agent-research-system", "https://arxiv.org/abs/2503.13657", "https://www.aboutamazon.com/news/aws/how-autonomous-ai-agents-built-aws-emulator"]
 ---
 
 > riverkim.kr에 쓴 카드뉴스(2026.07)를 다시 정리한 노트다.
@@ -85,6 +85,53 @@ flowchart TB
 | 확장성: 업무가 커져도 구조적으로 늘리기 쉽다 | 최종 책임: 중요한 결정은 사람의 검수와 판단이 필요하다 |
 
 역할 설계와 컨텍스트 관리가 어렵다면 에이전트를 여럿 두는 대신 **하네스 하나 + 외부 위임**으로 푸는 길도 있다. [[design-system-agent-harness#멀티 에이전트 대신 "하네스 + 외부 위임"|디자인 시스템을 아는 화면 생성 에이전트 설계하기]]의 「멀티 에이전트 대신 하네스 + 외부 위임」이 그 예다.
+
+## 오케스트레이터-워커 구조의 효과와 비용
+
+가장 흔한 수직 구조는 **조율자(오케스트레이터) 에이전트가 목표를 쪼개고, 워커 에이전트가 큰 그림 없이 자기 조각만 처리**하는 형태다. 층을 하나 더 두어 조사·검증·작성 같은 영역별 관리자 에이전트를 끼우기도 한다.
+
+Anthropic의 리서치 기능이 이 구조다. 「[How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)」(2025.06)에 따르면 상위 모델(Claude Opus 4) 하나가 하위 모델(Claude Sonnet 4) 서브에이전트 여럿을 병렬로 지휘했을 때의 결과는 다음과 같다.
+
+| 항목 | 수치·조건 |
+| --- | --- |
+| 효과 | 내부 리서치 평가에서 단일 에이전트(Claude Opus 4)보다 90.2% 높은 성과 |
+| 비용 | 에이전트는 일반 채팅의 약 4배, 멀티 에이전트는 약 15배의 토큰을 쓴다 |
+| 잘 맞는 일 | 병렬화할 여지가 크고, 정보가 컨텍스트 윈도 하나를 넘고, 복잡한 도구를 여럿 다루는 일. 폭넓게 훑는 조사(breadth-first)에 강하다 |
+| 안 맞는 일 | 모든 에이전트가 같은 맥락을 공유해야 하거나 에이전트 사이 의존성이 많은 일. 코딩 작업 대부분은 리서치보다 병렬화할 수 있는 부분이 적다 |
+
+**토큰을 15배 쓰고도 남을 만큼 가치가 큰 작업**에만 경제성이 맞는다.
+
+### 왜 실패하나
+
+UC Berkeley 연구진의 「[Why Do Multi-Agent LLM Systems Fail?](https://arxiv.org/abs/2503.13657)」(2025)은 널리 쓰이는 멀티 에이전트 프레임워크 7종의 실행 기록 1,600여 건에 주석을 달아 실패 유형 14가지를 세 범주로 분류했다(MAST). 조사한 오픈소스 시스템 7종의 실패율은 41%에서 86.7%였다.
+
+| 범주 | 내용 |
+| --- | --- |
+| 시스템 설계 문제 | 작업·역할 명세를 지키지 않는다, 같은 단계를 반복한다, 종료 조건을 모른다 |
+| 에이전트 간 불일치 | 정보를 넘기지 않는다, 다른 에이전트의 입력을 무시한다, 작업이 옆길로 샌다 |
+| 작업 검증 | 검증이 없거나 불완전하다, 너무 일찍 끝낸다 |
+
+실패의 큰 몫이 모델 성능이 아니라 **설계와 검증 단계**에서 나온다. 에이전트를 늘리기 전에 역할 명세와 마지막 검증부터 손본다.
+
+### 사례: 테스트·이슈·수정으로 나눈 에이전트 팀
+
+AWS 서비스를 로컬에서 흉내 내는 AWS Emulator는 코드 전체를 자율 에이전트가 썼다(「[How we built the agents that built AWS Emulator](https://www.aboutamazon.com/news/aws/how-autonomous-ai-agents-built-aws-emulator)」, 2026.11). 사람은 코드를 쓰지도 검토하지도 않았고, 대신 **에이전트가 통과해야 할 기준**을 만들었다.
+
+```mermaid
+flowchart LR
+  A["테스트 작성 팀<br/>API 모델과 실제 AWS로<br/>충실도 테스트 생성"] --> B["이슈 발견 팀<br/>에뮬레이터에 테스트 재실행<br/>실패를 이슈로 등록"]
+  B --> C["수정 팀<br/>이슈 하나에 에이전트 하나"]
+  C --> D{"머지 게이트<br/>빌드 · 코딩 표준 리뷰<br/>보안 검사 · 회귀 검사"}
+  D -->|"통과"| E["릴리스 브랜치"]
+  D -->|"실패"| C
+```
+
+- **정답의 출처를 밖에 둔다.** 충실도 테스트(fidelity test)는 AWS API 모델(Smithy)과 실제 AWS의 응답을 근거로 만든다. 수만 개 테스트를 실제 AWS를 다시 호출하지 않고 재실행할 수 있다.
+- **작업 단위는 이슈 하나다.** 시작점은 API 모델 438개에 대한 빈 웹 서버였고, 실패한 테스트가 이슈가 되어 에이전트 하나씩에 배정된다. 수백 개 에이전트가 동시에 일한다.
+- **게이트를 통과하지 못하면 에이전트에게 되돌린다.** 사람의 리뷰 대신 빌드, 코딩 표준 리뷰, 보안 검사, 충실도 회귀 검사가 문을 지킨다.
+- **지침이 없으면 엉뚱한 길로 간다.** Lambda 지원을 위해 에이전트가 Python 인터프리터를 직접 만든 일이 있었고, 이후 기존 라이브러리를 재사용하라는 지침이 들어갔다.
+
+앞의 실패 유형과 맞춰 보면, 이 구조는 역할 명세(팀 셋), 정보 전달(이슈), 검증(머지 게이트)을 각각 시스템으로 고정한 것이다.
 
 ## 주요 프레임워크
 

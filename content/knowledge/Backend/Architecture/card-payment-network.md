@@ -1,11 +1,11 @@
 ---
 title: "카드 결제망과 간편결제"
 concept: "Card Payment Network"
-summary: "카드를 긁는 순간부터 가맹점이 돈을 받기까지의 승인·매입·정산 흐름과, 발급사·매입사·카드 네트워크·PG·프로세서가 각각 맡는 일, 수수료가 나뉘는 구조를 정리했다. 카드 번호 대신 토큰을 쓰는 Apple Pay·Google Pay, QR 결제의 네 가지 방식과 「스캔해서 결제」 흐름까지 다룬다."
+summary: "카드를 긁는 순간부터 가맹점이 돈을 받기까지의 승인·매입·정산 흐름과, 발급사·매입사·카드 네트워크·PG·프로세서가 각각 맡는 일, 수수료가 나뉘는 구조를 정리했다. 카드 번호 대신 토큰을 쓰는 Apple Pay·Google Pay, QR 결제의 네 가지 방식과 「스캔해서 결제」 흐름, 발급사가 결제를 되돌리는 차지백의 진행과 대응 설계까지 다룬다."
 tags: ["backend", "payment", "fintech", "security", "architecture"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/how-does-visa-work-when-we-swipe-a-credit-card-at-a-merchant's-shop", "https://bytebytego.com/guides/how-does-visa-make-money", "https://bytebytego.com/guides/the-payments-ecosystem", "https://bytebytego.com/guides/how-applegoogle-pay-works", "https://bytebytego.com/guides/4-ways-of-qr-code-payment", "https://bytebytego.com/guides/how-does-scan-to-pay-work", "https://support.apple.com/en-us/101554", "https://developers.google.com/pay/api"]
+sources: ["https://bytebytego.com/guides/how-does-visa-work-when-we-swipe-a-credit-card-at-a-merchant's-shop", "https://bytebytego.com/guides/how-does-visa-make-money", "https://bytebytego.com/guides/the-payments-ecosystem", "https://bytebytego.com/guides/how-applegoogle-pay-works", "https://bytebytego.com/guides/4-ways-of-qr-code-payment", "https://bytebytego.com/guides/how-does-scan-to-pay-work", "https://support.apple.com/en-us/101554", "https://developers.google.com/pay/api", "https://docs.stripe.com/disputes/how-disputes-work", "https://docs.stripe.com/disputes/measuring", "https://outstanding.kr/chargeback20260716"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How VISA Works When Swiping a Credit Card](https://bytebytego.com/guides/how-does-visa-work-when-we-swipe-a-credit-card-at-a-merchant's-shop)」, 「[How does Visa make money?](https://bytebytego.com/guides/how-does-visa-make-money)」, 「[The Payments Ecosystem](https://bytebytego.com/guides/the-payments-ecosystem)」, 「[How do Apple Pay and Google Pay work?](https://bytebytego.com/guides/how-applegoogle-pay-works)」, 「[4 Ways of QR Code Payment](https://bytebytego.com/guides/4-ways-of-qr-code-payment)」, 「[How Scan to Pay Works](https://bytebytego.com/guides/how-does-scan-to-pay-work)」를 바탕으로 재구성한 노트다.
@@ -85,6 +85,46 @@ sequenceDiagram
 
 교환 수수료율은 카드 종류, 가맹점 업종·규모, 국가 규제에 따라 다르다. 구체적인 요율은 수시로 바뀌므로 각 네트워크와 감독 당국의 공시를 확인한다.
 
+## 차지백: 카드사가 결제를 되돌린다
+
+**차지백(chargeback)은 카드 회원이 발급사에 결제 이의를 제기하면, 발급사가 가맹점 동의 없이 그 금액을 가맹점 쪽에서 도로 가져가는 절차**다. 가맹점이 스스로 돈을 돌려주는 환불(refund)과 주체가 다르다.
+
+| | 환불 | 차지백 |
+| --- | --- | --- |
+| 누가 시작하나 | 고객이 가맹점에 요청한다 | 고객이 카드 발급사에 이의를 제기한다 |
+| 누가 결정하나 | 가맹점 | 발급사(카드 네트워크 규칙에 따라) |
+| 가맹점의 비용 | 환불 금액 | 분쟁 금액 + 분쟁 수수료, 대응 인력 |
+
+한국의 온라인 결제는 고객이 쇼핑몰에 취소·환불을 요청하고 카드사도 가맹점과 해결하라고 안내하는 흐름이 보통이다. 해외 카드 결제에서는 고객이 발급사에 바로 이의를 제기하는 일이 흔하다. 그래서 **글로벌 결제를 붙이는 서비스는 주문 취소·환불 흐름과 별개로 차지백 대응을 설계**해야 한다.
+
+### 분쟁의 진행
+
+Stripe 문서 「[How disputes work](https://docs.stripe.com/disputes/how-disputes-work)」 기준의 흐름이다. 기한은 카드 네트워크마다 다르다.
+
+```mermaid
+flowchart LR
+  A["회원이 발급사에<br/>이의 제기"] --> B["차지백 발생<br/>분쟁 금액과 수수료가<br/>가맹점 잔액에서 빠진다"]
+  B --> C["가맹점이 증빙 제출<br/>보통 7~21일 안"]
+  C --> D{"발급사 판단<br/>보통 60~75일"}
+  D -->|"가맹점 승"| E["금액 반환"]
+  D -->|"회원 승"| F["차지백 확정"]
+```
+
+- 회원은 보통 **결제일로부터 120일 안**에 이의를 제기할 수 있고, 사유에 따라 더 길다.
+- 차지백이 걸리면 금액은 판단이 끝날 때까지 묶인다. 전체 과정은 2~3개월쯤 걸린다.
+- American Express와 Discover는 차지백 전에 정보 요청(inquiry) 단계를 두기도 한다. Visa와 Mastercard는 이 단계를 쓰지 않는다.
+- 가맹점이 증빙을 내지 않으면 회원 쪽으로 확정된다.
+
+### 설계에 반영할 것
+
+| 항목 | 내용 |
+| --- | --- |
+| 증빙 보관 | 주문 내역, 배송 추적·수령 확인, 고객과 주고받은 메시지, 접속 IP·기기 정보, 약관·환불 정책 동의 기록을 주문과 연결해 남긴다 |
+| 분쟁 이벤트 처리 | PSP가 보내는 분쟁 생성·종결 웹훅을 받아 주문 상태, 서비스 접근 권한, 재고를 맞춘다 |
+| 원장 반영 | 분쟁 금액과 수수료를 원장에 별도 항목으로 기록하고 대사에 포함한다. 승소하면 되돌린다 |
+| 분쟁률 관리 | 결제 건수 대비 분쟁 비율을 지표로 본다. 업계에서는 0.75%를 넘으면 과도하다고 본다. 분쟁이 많은 가맹점은 카드 네트워크의 모니터링 프로그램 대상이 되어 벌금이나 계정 제한을 받을 수 있다 |
+| 예방 | 청구서에 찍히는 가맹점 이름을 알아보기 쉽게 하고, 환불 경로를 쉽게 열어 둔다. 환불이 어려우면 고객은 차지백을 고른다 |
+
 ## 토큰 결제: Apple Pay와 Google Pay
 
 간편결제는 **실제 카드 번호(PAN)를 가맹점에 넘기지 않고 대체 값(토큰)을 쓴다.** 토큰이 유출돼도 다른 곳에서 쓸 수 없다. 예외로 Google Pay의 온라인(웹·앱) 결제 중 Google 계정에 저장된 카드로 하는 `PAN_ONLY` 방식은 암호화된 결제 데이터 안에 실제 PAN과 만료일을 담아 가맹점·PG에 넘긴다. 아래 설명은 기기 토큰(`CRYPTOGRAM_3DS`)을 쓰는 매장·기기 결제 기준이다. 두 서비스는 토큰을 어디에 두느냐가 다르다.
@@ -147,6 +187,7 @@ QR 하나가 주문 하나에 묶이므로 PSP는 **같은 QR이 두 번 결제�
 - 카드 네트워크는 수많은 발급사·매입사 사이의 일대일 정산을 대신하고 수수료를 받는다.
 - 가맹점 수수료는 매입사 마진, 교환 수수료(발급사), 네트워크 이용료로 나뉜다. 발급사 몫이 큰 것은 신용 위험과 자금 부담을 지기 때문이다.
 - 간편결제는 카드 번호 대신 토큰과 일회용 암호값을 쓴다. Apple Pay는 기기에, Google Pay는 서버에 카드 정보를 둔다.
+- 차지백은 발급사가 가맹점 동의 없이 결제를 되돌리는 절차다. 글로벌 결제에서는 환불과 별개로 증빙·웹훅·원장·분쟁률을 설계한다.
 - QR 결제는 "누가 보여 주나 × 정적·동적" 네 가지이고, 동적 QR은 주문 단위 일회용이라 안전하다.
 
 관련 노트: [[payment-system|결제 시스템 설계]], [[money-movement|자금 이동: 청산과 결제]], [[payment-address-forms|결제·주소 폼]], [[security|정보 시스템 보안(공격 기법과 암호)]]

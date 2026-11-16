@@ -5,7 +5,7 @@ summary: "코딩 에이전트로 기능을 만드는 워크플로를 비교한�
 tags: ["ai", "claude-code", "agentic-coding", "agent", "context-engineering"]
 source: other
 date: "2026-11-15"
-sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/development-workflows/rpi/rpi-workflow.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/development-workflows/cross-model-workflow/cross-model-workflow.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/agent-teams/agent-teams-prompt.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/implementation/claude-goal-implementation.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/implementation/claude-scheduled-tasks-implementation.md", "https://youtu.be/YwZR6tc7qYg", "https://youtu.be/-QFHIoCo-Ko"]
+sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/development-workflows/rpi/rpi-workflow.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/development-workflows/cross-model-workflow/cross-model-workflow.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/agent-teams/agent-teams-prompt.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/implementation/claude-goal-implementation.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/implementation/claude-scheduled-tasks-implementation.md", "https://youtu.be/YwZR6tc7qYg", "https://youtu.be/-QFHIoCo-Ko", "https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/", "https://kiro.dev/blog/general-availability/", "https://www.thoughtworks.com/radar/techniques/spec-driven-development"]
 ---
 
 > shanraisshan의 「[claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice)」(MIT)의 RPI·교차 모델·에이전트 팀 문서와 README 워크플로 비교표, 그리고 거기 실린 Dex Horthy의 「Everything We Got Wrong About Research-Plan-Implement」(MLOps Community, 2026.03)와 Matt Pocock의 「Full Walkthrough: Workflow for AI Coding」(2026.04) 강연 녹취를 바탕으로 재구성한 노트다. 모델 이름은 각 문서 시점(2026.03) 기준이다.
@@ -205,6 +205,21 @@ README 표(2026-11)의 단계명이다. 별표(\*)는 작업마다 반복하는 
 | HumanLayer | research → design-discussion → codebase-design → subagent-orchestrator\* → test-it-locally\* → bump-version |
 
 거의 모두 **맨 앞에 정렬 단계**(grill-me, brainstorming, office-hours, deep-interview, forge-idea, explore)를 두고 구현·검증을 하위 루프로 돌린다. 정답이 정해지지 않은 시기에는 프레임워크를 그대로 들이기보다 **계획 스택을 직접 소유**하는 편이 낫다.
+
+### 스펙 기반 개발(SDD)의 전제와 한계
+
+표의 Spec Kit, OpenSpec, BMAD-METHOD는 **스펙 기반 개발(Spec-Driven Development)** 계열이다. 코드보다 명세서를 먼저 쓰고 버전 관리하며, 에이전트가 그 명세서를 읽고 구현한다. 계획 없이 던지는 바이브 코딩의 대안으로 자리 잡았다. GitHub의 [Spec Kit](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)(2025.09 공개)은 `/specify`(무엇을·왜) → `/plan`(스택·아키텍처·제약) → `/tasks`(작업 분해) → 구현 순서를 따르고, AWS의 IDE [Kiro](https://kiro.dev/blog/general-availability/)(2025.07 미리보기, 2025.11 정식 출시)는 같은 흐름을 편집기에 내장했다.
+
+| 장점 | 한계 |
+| --- | --- |
+| 요구사항이 글로 고정돼 에이전트와의 오해가 줄어든다 | 명세가 코드보다 길어진다. 긴 명세 파일은 검토하기 어렵다 |
+| 여러 사람과 여러 에이전트의 기준점이 하나로 모인다 | 시간이 지나면 명세와 코드가 어긋나 중복과 모순이 쌓인다 |
+| 리뷰어가 코드보다 명세부터 볼 수 있다 | 작업의 크기와 종류에 따라 도구의 결과가 크게 달라진다 |
+| 인수인계 문서가 따로 필요 없다 | 충분히 상세한 명세는 코드와 구분되지 않는다 |
+
+**「명세를 다 쓴 뒤에 코드를 짠다」는 전제가 가장 약한 고리**다. 요구사항은 만들면서 드러나므로 명세도 코드와 함께 계속 고쳐야 한다. 방향이 자주 바뀌는 작업에서는 잘게 쪼개 둔 하위 작업이 방향 전환 한 번에 전부 어긋난다. Thoughtworks 기술 레이더(2025.11)는 이 기법을 Assess(지켜볼 단계)에 두면서 워크플로가 정교하고 주관이 강하다는 점, AI를 위한 세부 규칙을 손으로 짜는 방식은 결국 확장되지 않는다는 교훈을 다시 배우는 중일 수 있다는 점을 짚었다.
+
+범위가 분명하고 문서를 남겨야 하는 작업에는 SDD가 잘 맞고, 방향을 잡아 가며 만드는 작업에는 앞의 「짧은 정렬 문서 + 코드 읽기」가 맞다.
 
 ## 정리
 
