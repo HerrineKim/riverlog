@@ -5,7 +5,7 @@ summary: "비상장 스타트업의 매출·손익은 외부감사 대상이면 
 tags: ["career", "job-search", "startup"]
 source: other
 date: "2026-11-04"
-sources: ["https://dart.fss.or.kr/", "https://www.smes.go.kr/venturein/pbntc/searchVntrCmp", "https://outstanding.kr/profit20260724", "https://outstanding.kr/startupdbipo20261102", "https://outstanding.kr/2025myrealtrip20260612", "https://outstanding.kr/naverdeficit20260306", "https://outstanding.kr/2025turnaround20260707", "https://outstanding.kr/people20260324", "https://outstanding.kr/joinandquit20260819", "https://outstanding.kr/value20260709", "https://outstanding.kr/growth20261022", "https://outstanding.kr/omishard20260330"]
+sources: ["https://dart.fss.or.kr/", "https://www.smes.go.kr/venturein/pbntc/searchVntrCmp", "https://outstanding.kr/profit20260724", "https://outstanding.kr/startupdbipo20261102", "https://outstanding.kr/2025myrealtrip20260612", "https://outstanding.kr/naverdeficit20260306", "https://outstanding.kr/2025turnaround20260707", "https://outstanding.kr/people20260324", "https://outstanding.kr/joinandquit20260819", "https://outstanding.kr/value20260709", "https://outstanding.kr/growth20261022", "https://outstanding.kr/omishard20260330", "https://outstanding.kr/salary20260410"]
 ---
 
 > SNS에서 돈 짧은 글(스타트업 리더를 만나면 그 회사 재무제표를 찾아본다는 내용)을 바탕으로, 공시 기준을 확인해 재구성한 노트다. 읽는 법은 아웃스탠딩의 스타트업 실적 분석 기사(「[영업이익률이 높은 주요 스타트업 20곳](https://outstanding.kr/profit20260724)」, 「[재무제표에 뜬 경고등 셋](https://outstanding.kr/2025myrealtrip20260612)」, 「[흑자 전환한 주요 스타트업 23곳](https://outstanding.kr/2025turnaround20260707)」 등, 2026)을 바탕으로 더했다.
@@ -60,6 +60,7 @@ flowchart TB
 | 현금성 자산 vs 현금 소진 속도 | 남은 현금 ÷ 같은 기간의 순현금유출(번 레이트) ≈ 버틸 수 있는 기간(런웨이). 회계상 손실에는 감가상각·손상차손처럼 현금이 나가지 않는 비용이 섞여 있어 손실로 나누면 어긋날 수 있다. 현금흐름표로 번 레이트를 구하고, 없으면 손실로 대략 가늠한다. 1년 안팎이면 다음 투자 유치가 급하다 |
 | 자본총계 | 음수면 자본잠식. 누적 손실이 투자금을 넘어섰다는 뜻이다 |
 | 감사의견 (DART) | 「적정」이 아니면, 또는 계속기업 불확실성 문단이 있으면 위험 신호 |
+| 직원 평균 급여 (사업보고서) | 평균은 쉽게 왜곡된다. 미등기 임원의 보수가 직원 평균에 포함되므로, 스톡옵션 행사이익으로 큰 금액을 받은 미등기 임원이 있으면 평균이 1년 만에 두 배 가까이 뛸 수 있다. 반대로 인원이 급증하거나 계약직 비중이 늘면 평균이 내려간다. 인원 변화, 계약직 비중, 스톡옵션 행사 여부를 함께 본다 |
 | 부채성 항목 | 상환전환우선주(RCPS), 진행 중인 소송, 고객에게 돌려줄 미정산금. 현금이 많아 보여도 이 돈이 섞여 있을 수 있다 |
 
 ## 손익과 현금은 다르다
