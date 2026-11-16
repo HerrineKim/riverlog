@@ -8,7 +8,7 @@ date: "2026-10-21"
 sources: ["https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/frontEnd/%EC%8B%A4%EB%A0%A5%EC%9E%88%EB%8A%94%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EA%B0%9C%EB%B0%9C%EC%9E%90.md", "https://miryang.dev/blog/how-studied-frontend", "https://roadmap.sh/frontend", "https://www.zerocho.com", "https://poiemaweb.com/", "https://github.com/yjs03057/33-js-concepts", "https://github.com/lydiahallie/javascript-questions/blob/master/ko-KR/README-ko_KR.md", "https://ui.toast.com/fe-guide/ko", "https://github.com/naver/fe-news", "https://ko.javascript.info", "https://developer.mozilla.org/ko/docs/A_re-introduction_to_JavaScript", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md"]
 ---
 
-> MiryangJung의 「내가 프론트엔드를 학습한 방법」(2022.05), roadmap.sh의 Frontend 로드맵, 제로초(ZeroCho)의 프론트엔드 로드맵 다이어그램을 바탕으로 재구성한 노트다.
+> MiryangJung의 「내가 프론트엔드를 학습한 방법」(2022.05), roadmap.sh의 Frontend 로드맵, 제로초(ZeroCho)의 프론트엔드 로드맵 다이어그램(draw.io)을 바탕으로 재구성한 노트다.
 > 「공부하는 방법」의 범위 좁히기·기술이 생긴 이유 읽기·원문 따라가기는 「[Frontend_TIL: 실력있는 프론트엔드 개발자](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/frontEnd/%EC%8B%A4%EB%A0%A5%EC%9E%88%EB%8A%94%20%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%EA%B0%9C%EB%B0%9C%EC%9E%90.md)」를 바탕으로 보강했다.
 > Git과 디자인 도구를 병행하는 줄기는 위니브의 「[프론트엔드 개발자 가이드](https://github.com/weniv/frontend-developer-guide)」를 바탕으로 보강했다.
 
@@ -30,8 +30,8 @@ flowchart LR
 | JavaScript | 화면을 어떻게 동적으로 바꾸는가. 타입, 함수, 비동기 | [[variables-and-types\|변수와 데이터 타입]], [[async-await\|async/await]] |
 | DOM·브라우저 | 브라우저는 문서를 어떤 구조로 들고 어떻게 그리는가 | [[dom\|DOM]], [[dom-manipulation\|DOM 조작]], [[browser-rendering\|브라우저 렌더링 과정]] |
 | Git/GitHub | 코드를 어떻게 관리·협업하는가 | [[git-basics\|Git 기초]] |
-| TypeScript | 타입으로 실수를 어떻게 컴파일 단계에서 잡는가. 사실상 필수다 | [[typescript-basics\|TypeScript 학습]] |
-| React | UI를 컴포넌트와 상태로 어떻게 조립하는가 | [[jsx\|JSX]], [[hooks\|Hooks]] |
+| TypeScript | 타입으로 실수를 어떻게 컴파일 단계에서 잡는가. 사실상 필수다. 타입에 익숙해지면 디자인 패턴과 SOLID 원칙으로 설계 감각을 넓힌다 | [[typescript-basics\|TypeScript 학습]], [[frontend-solid\|프론트엔드와 SOLID 원칙]], [[js-design-patterns\|JavaScript 디자인 패턴]] |
+| React | UI를 컴포넌트와 상태로 어떻게 조립하는가. 화면 전환은 React Router, 간단한 공유 상태는 Context | [[jsx\|JSX]], [[hooks\|Hooks]], [[react-router-layout\|React Router]], [[context\|Context]] |
 | 메타 프레임워크 | 라우팅·서버 렌더링·캐싱을 어떻게 고르는가 | [[nextjs\|Next.js를 쓰는 이유]], [[spa-csr-ssr\|SPA와 CSR·SSR]] |
 | 데이터 가져오기 | 프론트가 데이터를 어디서 어떻게 받아오는가 | [[ajax\|AJAX]], [[tanstack-query\|TanStack Query]] |
 | 테스트 | 동작을 어떻게 자동으로 확인하는가 | [[frontend-test-types\|프론트엔드 테스트의 종류와 도구]] |
@@ -50,14 +50,14 @@ flowchart LR
 
 | 영역 | 필수 | 관심·직무에 따라 |
 | --- | --- | --- |
-| 상태 관리 | `useState`·[[context\|Context]], 서버 데이터는 [[tanstack-query\|TanStack Query]] | Zustand(가장 가벼운 전역 스토어), [[redux\|Redux Toolkit]](레거시·대규모 코드베이스에서 여전히 많다), [[swr\|SWR]]. 고르는 기준은 [[react-state-management\|리액트 상태 관리]] |
+| 상태 관리 | `useState`·[[context\|Context]], 서버 데이터는 [[tanstack-query\|TanStack Query]] | Zustand(가장 가벼운 전역 스토어), [[redux\|Redux Toolkit]](레거시·대규모 코드베이스에서 여전히 많다. Context는 값을 전달할 뿐 구독 단위 최적화가 없어 Redux를 대체하지 못한다. 상태 관리의 원형이라 Redux Toolkit으로 한 번 익힌 뒤 더 간단한 Zustand로 옮기는 경로가 흔하다), [[swr\|SWR]]. 고르는 기준은 [[react-state-management\|리액트 상태 관리]] |
 | 서버 통신 | fetch·[[ajax\|AJAX]], 실시간이 필요하면 [[websocket\|WebSocket]]과 Socket.IO | GraphQL(Apollo·urql). 쓰는 팀이면 Redux 같은 전역 스토어 대신 GraphQL 클라이언트 캐시가 그 역할을 한다 |
 | 메타 프레임워크 | [[nextjs\|Next.js]](App Router) | React Router 프레임워크 모드(옛 Remix) |
 | 스타일링 | CSS, Tailwind CSS | CSS Modules, Emotion. styled-components는 유지보수 모드다([[styling\|스타일링]]) |
 | 인증 | 쿠키·세션·토큰의 원리([[cookie-session\|쿠키와 세션]]) | Better Auth, Auth.js(2025년부터 Better Auth 팀이 관리하며 보안 패치 위주) |
 | 테스트 | Vitest·Jest, Testing Library([[js-testing-best-practices\|테스트 모범 사례]]) | MSW(필수는 아니지만 강력 추천), Playwright |
 | 플랫폼 확장 | | 앱: [[react-native-basics\|React Native]] + Expo, Flutter(Dart) ([[mobile-frameworks\|모바일 프레임워크]]). 데스크톱: Electron, 더 가벼운 Tauri |
-| 레거시 | | jQuery는 오래된 사이트를 유지보수할 때만. JavaScript와 DOM을 알면 금방 읽힌다 |
+| 레거시 | | jQuery는 DOM 조작 위주의 오래된 사이트를 유지보수할 때만. JavaScript와 DOM을 알면 2주 정도면 익힌다 |
 
 ## 함께 쌓을 CS 기초
 
@@ -66,8 +66,8 @@ flowchart LR
 | 과목 | 프론트엔드에서 특히 볼 것 | 관련 노트 |
 | --- | --- | --- |
 | 자료구조·알고리즘 | 스택·큐·트리·그래프·해시. 코딩 테스트 대비 | [[data-structures\|기초 자료구조]], [[coding-test\|코딩 테스트]] |
-| 네트워크 | HTTP 요청·응답, 헤더·바디, 쿠키·토큰, OSI 7계층 | [[http\|HTTP]], [[osi-7-layer\|OSI 7계층]] |
-| 데이터베이스 | CRUD, JOIN, PK·FK, 인덱스, 트랜잭션 | [[sql-basics\|SQL 기초]], [[transaction\|트랜잭션]] |
+| 네트워크 | HTTP 요청·응답, 헤더·바디, 쿠키·토큰, OSI 7계층과 TCP/IP, DNS, HTTPS, WebSocket | [[http\|HTTP]], [[osi-7-layer\|OSI 7계층]], [[transport-layer\|전송 계층]], [[dns\|DNS]], [[https\|HTTPS와 TLS]], [[websocket\|WebSocket]] |
+| 데이터베이스 | CRUD, JOIN, PK·FK, 인덱스, 트랜잭션, `EXPLAIN`으로 실행 계획 읽기 | [[sql-basics\|SQL 기초]], [[transaction\|트랜잭션]], [[index-design\|인덱스 설계와 쿼리 튜닝]] |
 | 운영체제 | 프로세스·스레드, 리눅스 기본 | [[process-and-thread\|프로세스와 스레드]] |
 
 프론트엔드 다음 단계로 백엔드를 넓히고 싶다면 Supabase 같은 BaaS로 인증·DB·API의 개념을 먼저 잡고, Node.js(Express·NestJS)로 직접 서버를 만든다.
