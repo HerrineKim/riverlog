@@ -50,6 +50,7 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [AI 이미지를 쓸모 있는 벡터로 바꾸기](AI-Data/ai-image-to-vector.md): Midjourney → 업스케일러 → Illustrator 이미지 추적 → 확장, 단계별 역할과 추적 설정
 - [디자인 시스템을 아는 화면 생성 에이전트 설계하기](AI-Data/design-system-agent-harness.md): 구체화·검증·메모리 루프로 일관된 결과를 내는 에이전틱 코딩 하네스
 - [Claude Code](AI-Data/Claude-Code.md): 활용 가이드, 명령어·플래그 레퍼런스, 설정·권한, CLAUDE.md 메모리, 훅, 커맨드·스킬·서브에이전트와 스킬 만들기, RPI 같은 개발 워크플로, 실전 팁, 설계 원칙 (하위 노트 10편)
+- [AI 슬롭: 만드는 비용과 검토하는 비용의 비대칭](AI-Data/ai-slop.md): 슬롭의 정의, 생성·검토 비용의 비대칭, 우선순위 다섯 가지, 토큰맥싱, 검토 병목과의 균형
 - [AI 코딩 실무 가드레일](AI-Data/ai-coding-guardrails.md): 규모별 세 가지 모드, CLAUDE.md·앵커 주석, 사람이 쓰는 테스트, AI가 건드리면 안 되는 영역
 - [AI로 개발 가속하기: AI 네이티브 작업 방식과 규칙을 키우는 개발](AI-Data/ai-accelerated-development.md): AI부터 시도하고 검증하기, 도구 네 범주와 생명 주기별 활용, PRD → 태스크 리스트, 바이브 코딩의 현실적 패턴, Rule-Growing Development, AI가 찾기 쉬운 주석·이름, 작업 길이, 팀·윤리 규칙
 - [AI에게 일 맡기기: 권한·정보·도구](AI-Data/ai-delegation-toolkit.md): 위임 단계와 모니터링, STICC와 인지 작업 분석(CTA), 되묻게 하기·불확실성 지도·메타 프롬프트, 템플릿, MCP 선별과 검증 장치, 계획까지 커밋하는 작업 흐름
