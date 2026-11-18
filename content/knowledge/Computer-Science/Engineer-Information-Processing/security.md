@@ -1,11 +1,11 @@
 ---
 title: "정보 시스템 보안"
 concept: "Security"
-summary: "보안 3요소와 위협 모델, 주요 공격 기법(사회공학·악성 코드·봇넷 포함)과 익스플로잇·취약점 생명주기, 버퍼 오버플로 방어, 포트 스캔, 안전한 프로그램의 원칙(심층 방어·격리), 대칭·비대칭·해시 암호와 키 길이·디피-헬만 원리, 고전 암호·인코딩 구별, 보안 프로토콜(TLS·IPSec), 접근 통제 모델(벨-라파듈라·비바)과 AAA 정리."
+summary: "보안 3요소와 위협 모델, 주요 공격 기법(사회공학·악성 코드·봇넷 포함)과 익스플로잇·취약점 생명주기와 CVSS 벡터 문자열, 버퍼 오버플로 방어, 포트 스캔, 안전한 프로그램의 원칙(심층 방어·격리), 대칭·비대칭·해시 암호와 키 길이·디피-헬만 원리, 고전 암호·인코딩 구별, 보안 프로토콜(TLS·IPSec), 접근 통제 모델(벨-라파듈라·비바)과 AAA 정리."
 tags: ["certificate", "security", "network", "cryptography"]
 source: notion
-date: "2026-10-14"
-sources: ["https://riverkim.kr/201", "https://80000coding.notion.site/5c5a05d1cc404dbf872088a4d4f985a8", "https://80000coding.notion.site/1aeb2f5708a4404cbbf73265af6900a5", "https://80000coding.notion.site/8bdc5afbe56f49a3bc5d67f1d7243e26", "https://80000coding.notion.site/2546b097b05d487295afbefc758b6cc0", "https://80000coding.notion.site/926ddbd86b334c348fcbb8645ec95018", "https://www.youtube.com/watch?v=bPVaOlJ6ln0", "https://www.youtube.com/watch?v=_GzE99AmAQU", "https://www.youtube.com/watch?v=jhXCTbFnK8o"]
+date: "2026-11-18"
+sources: ["https://riverkim.kr/201", "https://80000coding.notion.site/5c5a05d1cc404dbf872088a4d4f985a8", "https://80000coding.notion.site/1aeb2f5708a4404cbbf73265af6900a5", "https://80000coding.notion.site/8bdc5afbe56f49a3bc5d67f1d7243e26", "https://80000coding.notion.site/2546b097b05d487295afbefc758b6cc0", "https://80000coding.notion.site/926ddbd86b334c348fcbb8645ec95018", "https://www.youtube.com/watch?v=bPVaOlJ6ln0", "https://www.youtube.com/watch?v=_GzE99AmAQU", "https://www.youtube.com/watch?v=jhXCTbFnK8o", "https://www.first.org/cvss/v4.0/specification-document"]
 ---
 
 > 안전한 프로그램의 원칙, 익스플로잇·취약점 생명주기, 포트 스캔, 고전 암호 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「해킹/보안) 0. 안전한 프로그램을 만들기 위해 생각해야 하는 것들」, 「1-1. 포트 스캔」, 「1-2. 익스플로잇」, 「42 Common Core 암호문 해독 입문」·「실전」을 바탕으로 보강했다.
@@ -103,6 +103,36 @@ XSS와 CSRF의 원리와 실제 방어법은 [[web-security|웹 보안: CSRF와 
 | 패치 미적용이 방치된 상태 | 오래전 패치가 있는데도 관리 소홀로 남음 | 패치와 공격법이 모두 알려져 있어 쉽게 뚫리지만, 패치만 적용하면 막을 수 있다 |
 
 방어의 기본은 **빠른 패치와 의존성 업데이트**다(`npm audit`, Dependabot 같은 도구로 알림을 받는다).
+
+#### CVSS 벡터 문자열 읽기
+
+CVSS(Common Vulnerability Scoring System)는 취약점의 특성을 지표별 값으로 적은 **벡터 문자열**과, 거기서 계산한 0.0~10.0 점수로 심각도를 나타낸다. 최신판은 4.0이고 문자열은 `CVSS:4.0`으로 시작해 `/지표:값`이 이어진다. 보안 공지와 버그 바운티 제보 양식은 이 문자열을 받아 점수를 계산한다.
+
+```text
+CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:P/VC:N/VI:H/VA:N/SC:H/SI:H/SA:H
+```
+
+| 지표 | 뜻 | 값 |
+| --- | --- | --- |
+| AV (Attack Vector) | 공격 경로 | N 네트워크, A 인접망, L 로컬, P 물리 |
+| AC (Attack Complexity) | 공격 복잡도 | L 낮음, H 높음 |
+| AT (Attack Requirements) | 공격에 필요한 전제 조건 | N 없음, P 있음 |
+| PR (Privileges Required) | 필요한 권한 | N 없음, L 낮음, H 높음 |
+| UI (User Interaction) | 사용자 상호작용 | N 없음, P 수동적, A 능동적 |
+| VC · VI · VA | 취약한 시스템의 기밀성·무결성·가용성 영향 | H 높음, L 낮음, N 없음 |
+| SC · SI · SA | 그 뒤에 이어진 시스템의 기밀성·무결성·가용성 영향 | H 높음, L 낮음, N 없음 |
+
+위 예시는 「로컬에서, 낮은 권한으로, 사용자의 수동적 상호작용이 있으면 공격할 수 있고, 취약한 시스템의 무결성과 후속 시스템 전체에 큰 영향을 준다」로 읽는다.
+
+| 점수 | 등급 |
+| --- | --- |
+| 0.0 | None |
+| 0.1~3.9 | Low |
+| 4.0~6.9 | Medium |
+| 7.0~8.9 | High |
+| 9.0~10.0 | Critical |
+
+점수에 어떤 지표군을 썼는지는 이름으로 밝힌다. 기본 지표만 쓰면 CVSS-B, 위협 지표를 더하면 CVSS-BT, 환경 지표를 더하면 CVSS-BE, 셋 다 쓰면 CVSS-BTE다. 패치 우선순위는 점수와 함께 **인증 없이 원격으로 악용할 수 있는가**(AV:N, PR:N)를 본다.
 
 ### 버퍼 오버플로와 메모리 보호
 
