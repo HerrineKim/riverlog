@@ -4,7 +4,7 @@ concept: "Interview Attitude"
 summary: "면접관은 말보다 태도를 먼저 읽는다. 눈 맞춤과 미러링, 일찍 도착하기, 겸손과 감사, 결론부터 짧게 답하기, 이력서 숙지와 모르면 모른다고 하기, 실수를 빨리 인정하기, 압박 면접 대응, 역질문과 감점되는 질문, 감사 메일, 기술 질문 준비, 면접에서 피할 회사를 가려내는 신호까지 면접 전·중·후의 원칙을 정리한다."
 tags: ["career", "interview", "job-search", "communication"]
 source: other
-date: "2026-11-01"
+date: "2026-11-18"
 sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md", "https://www.techinterviewhandbook.org/final-questions/", "https://github.com/viraptor/reverse-interview", "https://github.com/Twipped/InterviewThis", "https://www.educative.io/blog/behavioral-interviews-how-to-prepare-and-ace-interview-questions"]
 ---
 
@@ -54,6 +54,7 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 | 첫인사 | 악수가 없으니 면접관의 신호를 기다렸다가 「안녕하세요, 시간 내 주셔서 감사합니다. ○○○입니다」처럼 짧게 인사한다 |
 | 사람 사이의 연결 | 잡담할 틈이 적으니 공유하는 가치, 면접관의 역할에 대한 질문, 자연스럽게 나온 공통 관심사로 연결을 만든다. 선은 지킨다 |
 | 자세 | 바르게 앉으면 목소리도 또렷해진다. 전화 면접은 걷거나 몸을 많이 움직이면 소리가 흔들리고 긴장한 것처럼 들린다. 화상 면접은 구부정함, 다리 떨기, 머리 만지기가 다 보인다. 카메라를 보며 눈을 맞추고, 손은 책상 위에 두고 말하며 자연스럽게 쓴다 |
+| 녹화형 AI 면접 | 정해진 질문을 음성으로 들려주고 답하는 모습을 카메라로 녹화하는 형태가 많다. 듣는 사람이 없어도 카메라를 보고 또렷하게 말한다 |
 
 코딩 면접을 화상으로 볼 때의 준비(공유 편집기, 이어폰, 펜과 종이)는 [[tech-interview-prep|기술 면접 준비]]에 있다.
 
@@ -207,6 +208,8 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 ## 기술 질문 준비
 
 **프로젝트 질문에 가장 깊이 대비한다.** 서류에 쓴 프로젝트마다 그 기술을 왜 골랐는지, 장단점과 대안은 무엇인지, 가장 어려웠던 부분과 생산성을 높이려고 한 시도, 끝나고 부족했던 점과 그것을 어떻게 채웠는지를 말할 수 있어야 한다. 내가 맡은 부분은 빈틈없이 설명할 수 있게 준비한다.
+
+이력서 기반 면접에서는 적어 낸 항목마다 꼬리질문이 이어진다. **항목별로 「왜 → 대안은 → 그 선택의 한계는 → 다시 한다면」처럼 3~4단계 깊이까지** 답을 준비한다. AI 도구를 쓸 수 없는 망분리 환경의 조직은 「도구 없이 어떻게 개발할 것인가」를 묻기도 하므로, 도구에 맡긴 부분도 원리를 설명할 수 있어야 한다.
 
 **읽기만 하지 말고 말로 꺼내 본다.** 글로 읽을 때는 다 아는 것 같아도 막상 소리 내어 답하면 막힌다. 실전처럼 말하거나 글로 써 보고, 가장 좋은 방법은 그 주제를 남에게 설명해 보는 것이다.
 

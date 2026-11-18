@@ -4,7 +4,7 @@ concept: "Claude Code Tips"
 summary: "Claude Code를 만든 Anthropic 팀(Boris Cherny, Thariq, Cat Wu)과 Dex Horthy·Matt Pocock 같은 실무자의 팁을 주제별로 묶었다. 계획에 힘을 쏟아 한 번에 구현하기, 검증 수단 주기와 /go 패턴, worktree 병렬 세션, 맥락 관리 수치(context rot 30만~40만 토큰, dumb zone 40%)와 compact·clear·rewind·서브에이전트 선택법, 훅·권한·샌드박스, 모델과 추론 강도, Claude에게 도전하는 프롬프트, 모바일·원격 세션, /loop로 돌리는 실제 루프, squash와 작은 PR, 터미널 설정까지 정리했다."
 tags: ["ai", "claude-code", "agentic-coding", "prompting", "productivity"]
 source: other
-date: "2026-11-15"
+date: "2026-11-18"
 sources: ["https://github.com/shanraisshan/claude-code-best-practice/tree/main/tips", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/README.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/reports/claude-spinner-verbs-and-tips.md", "https://github.com/shanraisshan/claude-code-best-practice/tree/main/videos"]
 ---
 
@@ -106,6 +106,9 @@ Claude Code 제작자의 설정은 놀랄 만큼 기본값에 가깝고, 팀원�
 
 - 제작자는 늘 가장 강한 모델과 높은 추론 강도를 쓴다. 싼 모델은 교정과 손잡기가 늘어 결국 토큰을 더 쓰는 경우가 많아 꼭 싸지 않다.
 - 계획은 Opus, 코드는 Sonnet으로 나누는 방식(`opusplan` 별칭)도 있다.
+- **구독 한도가 빠듯하면 역할별로 모델을 내린다.** 계획·설계는 상위 모델이 맡고, 구현은 한 단계 낮은 모델의 서브에이전트로 병렬 실행하고, 문서·코드를 읽기만 하는 탐색 서브에이전트는 가장 가벼운 모델로 돌린다. CLAUDE.md에 적은 지침은 가끔 무시되므로 서브에이전트 정의의 `model` 필드나 스킬로 고정하는 편이 안정적이다.
+- 서브에이전트는 저마다 맥락 창을 새로 채우므로 **띄운 수만큼 토큰이 곱으로 든다.** 검사·조사처럼 양이 많아 병렬화가 필요한 일에만 쓰고, 나머지는 역할별 세션을 따로 열어 두고 필요할 때 그 세션에 직접 요청한다.
+- 높은 추론 강도는 정밀도가 필요한 계획·설계에 쓰고, 단순 구현까지 최고 단계로 돌리지 않는다.
 - 낯선 코드베이스에서는 `/config`에서 thinking 표시를 켜고 출력 스타일을 Explanatory(프레임워크·패턴 설명) 또는 Learning(변경을 코칭)으로 둔다. 신규 합류자에게 특히 좋다.
 
 ## 8. 프롬프트 습관

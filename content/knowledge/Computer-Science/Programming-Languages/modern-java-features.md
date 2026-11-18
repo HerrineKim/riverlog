@@ -4,7 +4,7 @@ concept: "Modern Java"
 summary: "Java 9 이후 LTS 버전에 들어온 언어 기능을 정리한다. LTS별 주요 기능 표, 모듈 시스템의 requires·exports·opens와 강한 캡슐화, var의 지역 타입 추론과 제약, 불변 데이터 운반 클래스 record, 상속을 닫는 sealed, instanceof·switch·레코드 패턴 매칭, 화살표 문법과 yield·완전성 검사를 갖춘 switch 식, 처음과 끝 접근을 통일한 Sequenced Collections."
 tags: ["java", "backend", "oop", "type-system"]
 source: other
-date: "2026-10-30"
+date: "2026-11-18"
 sources: ["https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5Bjava%5D%20Java%20major%20feature%20changes.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md", "https://openjdk.org/jeps/261", "https://openjdk.org/jeps/286", "https://openjdk.org/jeps/361", "https://openjdk.org/jeps/395", "https://openjdk.org/jeps/409", "https://openjdk.org/jeps/431", "https://openjdk.org/jeps/440", "https://openjdk.org/jeps/441", "https://openjdk.org/jeps/456", "https://javaalmanac.io/"]
 ---
 
@@ -23,6 +23,8 @@ Java는 6개월마다 새 버전을 내고 2년마다 LTS를 지정한다. 대�
 | 17 (2021) | `record`, `sealed` 클래스, `switch` 식, 텍스트 블록(`"""`), `instanceof` 패턴 매칭, JDK 내부 API 강한 캡슐화 |
 | 21 (2023) | 가상 스레드, `switch` 패턴 매칭과 레코드 패턴, Sequenced Collections, 세대별 ZGC |
 | 25 (2025) | `ScopedValue`, 모듈 import 선언, 단순한 소스 파일과 인스턴스 `main`(클래스 선언 없이 실행), 생성자 본문에서 `super()` 앞에 문장 쓰기, 압축 객체 헤더 |
+
+**Java 8과 1.8은 같은 버전이다.** 8까지는 버전 문자열이 `1.x` 꼴이었고(`java -version`이 `1.8.0_xxx`로 나온다), 9부터 앞의 `1.`을 뗐다(JEP 223). 보안 공지의 영향 버전에 「8」이 있으면 1.8을 쓰는 시스템도 대상이다. 벤더의 정기 보안 패치 공지는 지원 중인 LTS 전체를 영향 버전에 올리는 일이 많으므로, 구버전이라 해당 없다고 짐작하지 말고 목록의 업데이트 번호까지 확인한다.
 
 22에서 이름 없는 변수와 패턴(`_`)이 정식이 됐다. 버전별 기능·상태는 [The Java Version Almanac](https://javaalmanac.io/)에서 찾는다.
 

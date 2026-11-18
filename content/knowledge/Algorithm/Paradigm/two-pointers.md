@@ -1,10 +1,10 @@
 ---
 title: "투 포인터와 슬라이딩 윈도우"
 concept: "Two Pointers"
-summary: "인덱스 두 개를 규칙에 따라 움직여 이중 반복문 O(n²)을 O(n)으로 줄이는 기법. 양 끝에서 좁히기, 같은 방향 윈도우, 두 배열 병합·교집합, 빠른·느린 포인터의 네 가지 모양과 회문 판정·중심 확장을 정리한다."
+summary: "인덱스 두 개를 규칙에 따라 움직여 이중 반복문 O(n²)을 O(n)으로 줄이는 기법. 양 끝에서 좁히기, 같은 방향 윈도우, 두 배열 병합·교집합, 빠른·느린 포인터, 읽기·쓰기 포인터의 다섯 가지 모양과 회문 판정·중심 확장을 정리한다."
 tags: ["algorithm", "array", "string", "coding-test", "python"]
 source: other
-date: "2026-10-30"
+date: "2026-11-18"
 sources: ["https://www.techinterviewhandbook.org/algorithms/array/", "https://www.techinterviewhandbook.org/algorithms/string/", "https://www.techinterviewhandbook.org/algorithms/linked-list/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
 ---
 
@@ -17,7 +17,7 @@ sources: ["https://www.techinterviewhandbook.org/algorithms/array/", "https://ww
 
 관건은 「지금 상태에서 어느 포인터를 옮겨야 답을 놓치지 않는가」를 증명할 수 있느냐다. 그 근거는 대개 정렬된 순서나 구간 조건의 단조성(구간을 늘리면 합이 커지기만 한다 등)에서 나온다.
 
-## 네 가지 모양
+## 다섯 가지 모양
 
 | 모양 | 움직임 | 전제 | 대표 문제 |
 | --- | --- | --- | --- |
@@ -25,6 +25,7 @@ sources: ["https://www.techinterviewhandbook.org/algorithms/array/", "https://ww
 | 같은 방향 윈도우 | `l ≤ r`, 둘 다 오른쪽으로만 이동 | 구간 조건이 단조적이다 | 중복 없는 가장 긴 부분 문자열, 합이 S 이상인 가장 짧은 부분 배열 |
 | 두 배열에 하나씩 | 각 배열에 포인터 하나, 작은 쪽을 전진 | 두 입력이 정렬돼 있다 | 정렬된 두 배열 병합, 교집합 |
 | 빠른·느린 포인터 | 한쪽이 두 칸, 다른 쪽이 한 칸 | 연결 리스트처럼 앞으로만 갈 수 있다 | 사이클 판별, 가운데 노드, 뒤에서 k번째 노드 |
+| 읽기·쓰기 포인터 | 읽기는 매번 한 칸, 쓰기는 남길 값을 만날 때만 한 칸 | 배열을 제자리에서 다시 채운다 | 0을 뒤로 보내기, 정렬된 배열의 중복 제거 |
 
 ### 양 끝에서 좁히기
 
@@ -113,6 +114,21 @@ def has_cycle(head):
 ```
 
 공간 O(1)로 사이클을 찾는다는 점이 방문 집합을 쓰는 방법(공간 O(n))과 다르다. 연결 리스트의 다른 기법은 [[data-structures|기초 자료구조]]의 연결 리스트 절에 있다.
+
+### 읽기·쓰기 포인터: 제자리 재배치
+
+배열을 추가 공간 없이 다시 채울 때는 같은 방향으로 가는 포인터 둘을 **읽는 자리**와 **쓰는 자리**로 나눈다. 읽기 포인터는 매번 한 칸씩 가고, 쓰기 포인터는 남길 값을 만났을 때만 한 칸 간다. 0을 뒤로 보내기(LeetCode 283 Move Zeroes), 정렬된 배열의 중복 제거, 특정 값 지우기가 모두 이 모양이다.
+
+```python
+def move_zeroes(nums):
+    write = 0
+    for read in range(len(nums)):
+        if nums[read] != 0:
+            nums[write], nums[read] = nums[read], nums[write]
+            write += 1
+```
+
+같은 배열을 읽으면서 써도 값이 망가지지 않는 이유는 **쓰기 위치가 읽기 위치보다 항상 같거나 뒤에 있기** 때문이다(`write ≤ read`). 쓰기 포인터가 덮어쓰는 칸은 이미 읽고 지나간 칸이라, 아직 읽지 않은 값은 건드리지 않는다. 0이 아닌 값들의 상대 순서도 그대로 유지된다.
 
 ## 회문 판정과 중심 확장
 

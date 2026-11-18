@@ -4,7 +4,7 @@ concept: "Wireless Network"
 summary: "도달 거리로 나눈 무선망(WPAN·WLAN·WWAN)과 블루투스·지그비 같은 근거리 무선, IEEE 802.11 무선 LAN의 구조와 규격 변천, 충돌을 감지할 수 없는 무선의 CSMA/CA(숨은 터미널, IFS, 백오프, RTS/CTS와 NAV), 셀을 나눠 주파수를 재사용하는 셀룰러 구조와 핸드오프, 다중 접속(FDMA·TDMA·CDMA·OFDMA), 1G에서 5G까지 세대별 변화를 정리했다."
 tags: ["network", "computer-science", "wireless", "lan", "protocol", "history"]
 source: other
-date: "2026-11-02"
+date: "2026-11-18"
 sources: ["고려사이버대학교 정보통신개론 강의(권오상 교수, 2023 겨울계절학기)", "고려사이버대학교 컴퓨터네트워크 강의(위성홍 교수, 2023-2학기)", "https://arxiv.org/abs/2309.15951"]
 ---
 
@@ -59,6 +59,8 @@ AP 하나와 붙은 단말들의 묶음이 **BSS(Basic Service Set)** 다. 여�
 | 802.11be (Wi-Fi 7, 2025) | 2.4/5/6GHz | 수십 Gbps급(이론 최대 약 46Gbps) | 320MHz 채널, 4096-QAM, 여러 대역의 링크를 한 연결로 묶는 다중 링크 동작(MLO). 6GHz 대역은 나라마다 허용 범위가 다르다 |
 
 속도를 올린 방법은 셋이다. 채널을 넓히고, 변조 단계(QAM)를 높이고([[network-basics|네트워크 기초]]의 「신호 변환과 변조」), 안테나를 늘린다(MIMO). Wi-Fi 7은 여기에 대역 여러 개를 동시에 쓰는 MLO를 더해 지연과 끊김을 줄였다. LTE-Advanced와 5G도 같은 수단을 쓴다.
+
+대역은 양쪽이 모두 지원해야 쓸 수 있다. **6GHz로만 신호를 내는 AP나 휴대폰 핫스팟은 6GHz를 지원하지 않는 기기(Wi-Fi 6 이하)의 목록에 아예 나타나지 않는다.** 핫스팟이 특정 노트북에서만 안 보이면 핫스팟 설정의 대역을 2.4GHz나 5GHz로 바꾼다.
 
 ### CSMA/CA: 충돌을 미리 피하기
 

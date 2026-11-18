@@ -37,7 +37,7 @@
  },
  "AI-Data/Claude-Code/claude-code-tips.md": {
   "created": "2026-11-15T14:10:50+09:00",
-  "updated": "2026-11-15T14:10:50+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "AI-Data/Claude-Code/claude-code-workflows.md": {
   "created": "2026-11-15T14:10:50+09:00",
@@ -45,7 +45,7 @@
  },
  "AI-Data/Claude-Code/claude-skill-building-guide.md": {
   "created": "2026-10-12T20:35:49+09:00",
-  "updated": "2026-11-15T15:54:51+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "AI-Data/Recommender-System.md": {
   "created": "2026-10-20T11:04:43+09:00",
@@ -81,7 +81,7 @@
  },
  "AI-Data/ai-coding-guardrails.md": {
   "created": "2026-10-12T23:56:47+09:00",
-  "updated": "2026-11-16T23:09:56+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "AI-Data/ai-delegation-toolkit.md": {
   "created": "2026-10-18T14:04:45+09:00",
@@ -469,7 +469,7 @@
  },
  "Algorithm/Paradigm/two-pointers.md": {
   "created": "2026-10-30T23:43:44+09:00",
-  "updated": "2026-10-31T12:52:45+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "Algorithm/Search.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1125,15 +1125,15 @@
  },
  "Career/Job-Search/interview-attitude.md": {
   "created": "2026-10-16T13:20:09+09:00",
-  "updated": "2026-11-16T23:09:56+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "Career/Job-Search/job-offer-negotiation.md": {
   "created": "2026-10-21T15:52:08+09:00",
-  "updated": "2026-11-16T23:09:56+09:00"
+  "updated": "2026-11-18T23:08:33+09:00"
  },
  "Career/Job-Search/resume-writing.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-10-31T12:48:13+09:00"
+  "updated": "2026-11-18T23:08:33+09:00"
  },
  "Career/Job-Search/stock-options.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -1501,7 +1501,7 @@
  },
  "Computer-Science/Engineer-Information-Processing/security.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "Computer-Science/Engineer-Information-Processing/software-engineering.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1613,7 +1613,7 @@
  },
  "Computer-Science/Network/wireless-network.md": {
   "created": "2026-10-31T16:02:04+09:00",
-  "updated": "2026-11-02T10:13:09+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "Computer-Science/OSSU.md": {
   "created": "2026-11-15T11:58:39+09:00",
@@ -1881,7 +1881,7 @@
  },
  "Computer-Science/Programming-Languages/modern-java-features.md": {
   "created": "2026-10-30T23:43:44+09:00",
-  "updated": "2026-11-08T20:21:47+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "Computer-Science/Programming-Languages/ood-interview-approach.md": {
   "created": "2026-11-01T09:58:23+09:00",
@@ -1989,7 +1989,7 @@
  },
  "DevOps.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T18:52:03+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "DevOps/aws-cloud-basics.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -2062,6 +2062,10 @@
  "DevOps/durable-workflow-temporal.md": {
   "created": "2026-10-23T17:37:45+09:00",
   "updated": "2026-11-15T16:52:53+09:00"
+ },
+ "DevOps/home-server-hosting.md": {
+  "created": "2026-11-18T23:08:34+09:00",
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "DevOps/incident-postmortem.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -3525,7 +3529,7 @@
  },
  "Life-and-Learning/household-tips.md": {
   "created": "2026-11-04T22:33:44+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "Life-and-Learning/interest-rate-exchange-rate.md": {
   "created": "2026-11-12T22:08:32+09:00",
@@ -3541,7 +3545,7 @@
  },
  "Life-and-Learning/presentation-design.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-02T10:13:09+09:00"
+  "updated": "2026-11-18T23:08:34+09:00"
  },
  "Life-and-Learning/sponsored-review-rules.md": {
   "created": "2026-11-04T22:33:44+09:00",

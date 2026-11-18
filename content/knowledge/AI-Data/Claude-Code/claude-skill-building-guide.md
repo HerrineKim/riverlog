@@ -4,7 +4,7 @@ concept: "Claude Skills"
 summary: "Anthropic의 스킬 제작 가이드 요점: 3단계 프로그레시브 디스클로저, 트리거를 담은 description과 when_to_use, 폴더·이름 규칙, Claude Code 프론트매터 필드 전체, 모노레포에서 스킬을 찾는 규칙, 스킬의 아홉 가지 유형과 gotchas 중심 작성법, 테스트와 증상별 대응, 배포 방식과 팀 공용 스킬 패키지화·사내 마켓플레이스, 실전 패턴 5가지."
 tags: ["ai", "llm", "claude-code", "skills", "mcp", "agent"]
 source: other
-date: "2026-11-15"
+date: "2026-11-18"
 sources: ["https://riverkim.kr/328", "https://agentskills.io/specification", "https://code.claude.com/docs/en/skills", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/best-practice/claude-skills.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/reports/claude-skills-for-larger-mono-repos.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/tips/claude-thariq-tips-17-mar-26.md"]
 ---
 
@@ -202,6 +202,8 @@ $ npx @my-org/skill-installer install team-dev-guide
 | 반복 개선 | 초안 → 검증 스크립트 → 수정 → 재검증 루프. 품질 기준과 **언제 멈출지**를 미리 정한다 | 보고서 초안을 검사 통과까지 다듬기 |
 | 상황별 도구 선택 | 목표가 같아도 상황에 따라 도구를 고르고, 판단 기준과 선택 이유를 드러낸다 | 큰 파일은 클라우드 스토리지, 협업 문서는 Notion, 코드는 GitHub |
 | 도메인 전문 지식 | 도구 연결은 누구나 하므로, 차별점은 지식을 코드화하는 데 있다 | 결제 전 컴플라이언스: 제재 목록 확인 → 관할권 검증 → 리스크 평가 → 감사 기록 |
+
+스킬이 늘어나 무엇을 부를지 기억하기 어려워지면 **오케스트레이션 스킬** 하나를 둔다. 이 스킬은 작업을 받아 스킬 목록에서 맞는 것을 고르고 순서대로 부르는 일만 한다. 사용자가 직접 부르는 진입점이 하나로 줄어든다. 무엇부터 스킬로 만들지 모르겠으면 **팀이 함께 쓰는 산출물**(문서 양식, 이슈 작성, 저장소별 코드 컨벤션)부터 시작한다. 형식이 사람마다 달라지는 문제가 바로 줄어든다.
 
 ## 정리
 

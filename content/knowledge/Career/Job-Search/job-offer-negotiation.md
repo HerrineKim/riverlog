@@ -4,7 +4,7 @@ concept: "Offer Negotiation"
 summary: "취업은 일자리를 얻는 것이 아니라 내 노동을 파는 거래이고, 협상은 그 거래의 당연한 일부다. 기본급·보너스·지분·사이닝 보너스로 이뤄진 총보상(TC)을 읽는 법, 모든 것을 기록하기, 결정을 미루며 문 열어 두기, 정보 지키기, 긍정적인 태도, 결정권자를 밖에 두기, 대안(BATNA) 만들기, 이유 붙이기, 돈 밖의 조건, 상대가 중시하는 것 알기, 이길 수 있는 조건 주기의 열 가지 원칙, 복수 오퍼·시한부 오퍼 다루는 법, 재직 중 연봉 재협상 준비, 오퍼를 비교할 때 볼 일곱 가지 축을 정리한다."
 tags: ["career", "job-search", "communication", "decision-making"]
 source: other
-date: "2026-10-31"
+date: "2026-11-18"
 sources: ["https://medium.com/free-code-camp/ten-rules-for-negotiating-a-job-offer-ee17cccbdab6", "https://github.com/jlevy/og-equity-compensation", "https://www.techinterviewhandbook.org/negotiation/", "https://www.techinterviewhandbook.org/negotiation-rules/", "https://www.techinterviewhandbook.org/understanding-compensation/", "https://www.techinterviewhandbook.org/choosing-between-companies/", "https://media-ai.tistory.com/7", "https://ppss.kr/archives/53935"]
 ---
 
@@ -77,8 +77,11 @@ flowchart TB
 
 헤드헌터를 통한 지원과 직접 지원은 **합격 확률에 큰 차이가 없다.** 회사는 공고와 별개로 인력 탐색을 의뢰하고 수수료는 이미 채용 예산에 잡혀 있다. 그래서 헤드헌터 경유라고 가점을 주지도, 수수료 때문에 더 까다롭게 보지도 않는다. 포지션을 넓게 뿌리는 헤드헌터가 많다는 점도 감안한다.
 
+수수료는 **채용하는 회사가 낸다.** 구직자가 내는 비용은 없고, 전형 절차도 일반 지원과 같다. 헤드헌터는 성사돼야 수수료를 받으므로 맞지 않는 자리에도 일단 지원시키려는 경우가 있다. 제안은 열어 두고 받되 자리마다 직접 따져 보고 정한다. 채용 플랫폼은 공고 게시와 지원 제안까지만 하고, 전형 진행부터 계약까지 중개하지는 않는다는 점이 헤드헌터와 다르다.
+
 | 도움이 되는 경우 | 주의할 것 |
 | --- | --- |
+| 서류 접수·일정 조율 같은 번거로운 일을 대신 하고, 인사팀에 직접 묻기 어려운 것을 대신 물어봐 준다 | 직접 지원과 병행하면 구직 통로가 넓어진다. 한쪽에만 기대지 않는다 |
 | 연봉 등 조건 협상을 대신 전달해 준다 | 같은 포지션에 직접 지원과 헤드헌터 지원이 겹치지 않게 한다 |
 | 채용 담당 매니저와 긴밀히 소통하는 헤드헌터는 찾는 인재상을 구체적으로 알려 준다(드물다) | 「최대 월 얼마, 경력에 따름」 같은 제안의 숫자는 상한선이다. 내 경력에 적용되는 금액과 세금·생활비·비자 같은 숨은 비용을 먼저 확인한다 |
 
