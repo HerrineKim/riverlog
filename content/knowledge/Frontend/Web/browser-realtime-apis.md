@@ -4,12 +4,14 @@ concept: "Server-Sent Events"
 summary: "서버가 먼저 보내는 데이터를 브라우저에서 받는 세 가지 방법의 클라이언트 쪽 구현을 정리한다. 재요청 루프로 만드는 롱 폴링, HTTP 위의 텍스트 스트림인 SSE(EventSource의 메시지 형식·자동 재연결·Last-Event-ID와 fetch로 직접 읽는 방법), 그리고 WebSocket API의 바이너리·버퍼·종료 코드·재연결까지."
 tags: ["realtime", "network", "http", "browser", "javascript", "frontend"]
 source: other
-date: "2026-11-01"
-sources: ["https://ko.javascript.info/long-polling", "https://ko.javascript.info/server-sent-events", "https://ko.javascript.info/websocket", "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events", "https://html.spec.whatwg.org/multipage/server-sent-events.html", "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/close", "https://developer.mozilla.org/en-US/docs/Web/API/WebSocketStream", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448"]
+date: "2026-11-20"
+sources: ["https://ko.javascript.info/long-polling", "https://ko.javascript.info/server-sent-events", "https://ko.javascript.info/websocket", "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events", "https://html.spec.whatwg.org/multipage/server-sent-events.html", "https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/close", "https://developer.mozilla.org/en-US/docs/Web/API/WebSocketStream", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://eloquentjavascript.net/21_skillsharing.html"]
 ---
 
 > javascript.info(모던 JavaScript 튜토리얼)의 「롱 폴링」, 「Server Sent Events」, 「웹소켓」 글을 바탕으로, 형식과 제약은 HTML 명세·MDN으로 확인해 재구성한 노트다.
 > Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 폴링 설명으로 용어를 보탰다.
+>
+> Marijn Haverbeke의 『[Eloquent JavaScript](https://eloquentjavascript.net/)』(4판, 2024) 21장 「Project: Skill-Sharing Website」에서 ETag·`Prefer: wait`로 짜는 롱 폴링을 보강했다.
 
 ## 무엇을 고르나
 
@@ -45,6 +47,30 @@ subscribe(controller.signal)                // 화면을 떠날 때 controller.a
 | 메시지가 **잦으면 맞지 않는다** | 메시지마다 요청 하나(헤더, 인증 오버헤드)라 요청-응답이 톱니 모양으로 반복된다. 이때는 SSE나 WebSocket |
 | 응답과 재요청 사이 빈틈 | 그 사이에 생긴 메시지를 놓치지 않게 서버는 「마지막으로 받은 ID 이후」를 돌려주게 설계한다 |
 | 캐시 | 응답에 `Cache-Control: no-store`를 둔다 |
+
+### 표준 헤더로 짜는 롱 폴링: ETag와 Prefer: wait
+
+전용 엔드포인트 대신 **조건부 요청**으로 일반 조회와 롱 폴링을 한 URL에 합칠 수 있다.
+
+```mermaid
+sequenceDiagram
+  participant C as 브라우저
+  participant S as 서버
+  C->>S: GET /talks
+  S-->>C: 200, ETag: 3, 목록
+  C->>S: GET /talks, If-None-Match: 3, Prefer: wait=90
+  Note over S: 버전이 3 그대로면 대기 목록에 넣고 붙잡아 둔다
+  S-->>C: 변경 발생 → 200, ETag: 4, 새 목록 (90초 지나면 304)
+  C->>S: GET /talks, If-None-Match: 4, Prefer: wait=90
+```
+
+1. 서버는 데이터가 바뀔 때마다 버전 번호를 올리고, 응답의 `ETag`에 그 버전을 담는다.
+2. 클라이언트는 받은 ETag를 `If-None-Match`에 넣고, 기다려도 된다는 뜻으로 `Prefer: wait=90`을 붙여 다시 요청한다.
+3. 버전이 다르면 즉시 새 목록으로 답한다. 같으면 `Prefer`가 있을 때 응답 콜백을 **대기 목록**에 넣고, 없으면 바로 `304 Not Modified`로 답한다.
+4. 변경이 생기면 버전을 올리고 대기 목록의 콜백을 모두 깨워 새 목록을 보낸다. 대기 시간이 다 되면 `304`로 답해 연결이 타임아웃으로 끊기지 않게 한다.
+5. 클라이언트는 응답을 받는 즉시(304든 200이든) 다음 요청을 보낸다. 주기적으로 요청을 새로 거는 구조라 일시적인 네트워크·서버 장애에서도 저절로 회복된다.
+
+대기 중인 요청 수천 개가 각각 TCP 연결을 잡고 있으므로, 연결마다 스레드를 만들지 않는 이벤트 루프 서버(Node.js)가 잘 맞는다. ETag와 조건부 요청 자체는 [[http-cache|HTTP 캐시]]에 있다.
 
 ## Server-Sent Events (SSE)
 
