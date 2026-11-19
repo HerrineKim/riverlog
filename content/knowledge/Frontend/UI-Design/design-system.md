@@ -4,7 +4,7 @@ concept: "Design System"
 summary: "디자인 시스템은 팀이 같은 UI를 같은 규칙으로 만들게 하는 원칙·스타일·컴포넌트·문서의 묶음이다. 무엇으로 이루어지는지, 작은 팀도 필요한 이유와 도입 시점, 감사→기준 합의→파운데이션·컴포넌트 정리→개발 합의→QA로 이어지는 구축 절차, 토큰과 컴포넌트를 중앙 모노레포에서 패키지로 배포하는 구조까지 정리했다. 감사는 인터페이스 인벤토리로, 시각 방향은 스타일 타일·요소 콜라주로 가볍게 합의한다."
 tags: ["design-system", "frontend", "collaboration", "design", "monorepo"]
 source: mixed
-sources: ["https://www.inflearn.com/pages/infmation-64-20231017", "https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333", "https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564", "https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/", "https://tech.socarcorp.kr/design/2020/07/31/component-01.html", "https://medium.com/@kykkjh2984/%EC%BD%94%EB%93%9C%EB%A1%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-design-system-b04bb916a02b", "https://www.smashingmagazine.com/atomic-design-workflow/", "https://css-tricks.com/what-are-design-tokens/"]
+sources: ["https://www.inflearn.com/pages/infmation-64-20231017", "https://blog.kmong.com/%ED%81%AC%EB%AA%BD-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-v-2-0%EA%B5%AC%EC%B6%95%EA%B8%B0-292dd0872333", "https://medium.com/uniquegood/%EC%9A%B0%EB%8B%B9%ED%83%95%ED%83%95-%EB%A6%AC%EC%96%BC%EC%9B%94%EB%93%9C-%EC%8A%A4%ED%8A%9C%EB%94%94%EC%98%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EC%A0%9C%EC%9E%91%EA%B8%B0-1%ED%83%84-ffaac9cd5564", "https://www.w3.org/community/reports/design-tokens/CG-FINAL-format-20251028/", "https://tech.socarcorp.kr/design/2020/07/31/component-01.html", "https://medium.com/@kykkjh2984/%EC%BD%94%EB%93%9C%EB%A1%9C-%EB%A7%8C%EB%93%9C%EB%8A%94-design-system-b04bb916a02b", "https://www.smashingmagazine.com/atomic-design-workflow/", "https://css-tricks.com/what-are-design-tokens/", "https://www.krds.go.kr/html/site/outline/outline_03.html"]
 date: "2026-10-21"
 ---
 
@@ -143,6 +143,8 @@ flowchart TB
 ### 디자인 토큰
 
 색상, 간격, 모서리, 폰트 크기, 브레이크포인트처럼 **디자인 결정을 값으로 정의**한 것이 디자인 토큰이다. 값을 Sass·CSS 파일에 두지 않고 플랫폼 중립 형식(JSON)에 한 번만 적어, 웹·iOS·안드로이드가 같은 원천에서 각자의 변수를 생성한다. Salesforce Lightning 디자인 시스템이 처음 이름 붙여 퍼뜨렸다.
+
+공개된 디자인 시스템도 같은 구조로 배포된다. 행정안전부의 **KRDS**(Korea Design System, 정부 디지털 서비스 디자인 시스템)는 Figma의 토큰을 JSON으로 내보내 CSS 변수로 바꾸고, HTML 컴포넌트 키트를 NPM·CDN·GitHub 다운로드로 제공한다(React·Vue용 패키지와 Storybook 문서 포함). 토큰 값을 바꾸고 싶으면 원본을 고치지 않고 **프로젝트 스타일시트에서 같은 CSS 변수를 다시 선언**해 덮어쓴다. 공공 웹 서비스의 색·타이포그래피·컴포넌트·서비스 패턴 기준을 참고할 때 쓴다([KRDS 개발자 시작하기](https://www.krds.go.kr/html/site/outline/outline_03.html)).
 
 ```json
 {

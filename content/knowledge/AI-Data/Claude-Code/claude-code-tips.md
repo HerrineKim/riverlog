@@ -5,7 +5,7 @@ summary: "Claude Code를 만든 Anthropic 팀(Boris Cherny, Thariq, Cat Wu)과 D
 tags: ["ai", "claude-code", "agentic-coding", "prompting", "productivity"]
 source: other
 date: "2026-11-18"
-sources: ["https://github.com/shanraisshan/claude-code-best-practice/tree/main/tips", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/README.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/reports/claude-spinner-verbs-and-tips.md", "https://github.com/shanraisshan/claude-code-best-practice/tree/main/videos"]
+sources: ["https://github.com/shanraisshan/claude-code-best-practice/tree/main/tips", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/README.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/reports/claude-spinner-verbs-and-tips.md", "https://github.com/shanraisshan/claude-code-best-practice/tree/main/videos", "https://github.com/alibaba/open-code-review"]
 ---
 
 > shanraisshan의 「[claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice)」(MIT)가 모은 Boris Cherny의 팁 스레드(2026.01~04), Thariq의 스킬·세션 관리 글(2026.03·04), README의 팁 84개, 제작자 인터뷰 녹취를 주제별로 재구성한 노트다. 모델 이름은 각 팁의 시점 기준이다.
@@ -108,7 +108,8 @@ Claude Code 제작자의 설정은 놀랄 만큼 기본값에 가깝고, 팀원�
 - 계획은 Opus, 코드는 Sonnet으로 나누는 방식(`opusplan` 별칭)도 있다.
 - **구독 한도가 빠듯하면 역할별로 모델을 내린다.** 계획·설계는 상위 모델이 맡고, 구현은 한 단계 낮은 모델의 서브에이전트로 병렬 실행하고, 문서·코드를 읽기만 하는 탐색 서브에이전트는 가장 가벼운 모델로 돌린다. CLAUDE.md에 적은 지침은 가끔 무시되므로 서브에이전트 정의의 `model` 필드나 스킬로 고정하는 편이 안정적이다.
 - 서브에이전트는 저마다 맥락 창을 새로 채우므로 **띄운 수만큼 토큰이 곱으로 든다.** 검사·조사처럼 양이 많아 병렬화가 필요한 일에만 쓰고, 나머지는 역할별 세션을 따로 열어 두고 필요할 때 그 세션에 직접 요청한다.
-- 높은 추론 강도는 정밀도가 필요한 계획·설계에 쓰고, 단순 구현까지 최고 단계로 돌리지 않는다.
+- 높은 추론 강도는 정밀도가 필요한 계획·설계에 쓰고, 단순 구현까지 최고 단계로 돌리지 않는다. 최상위 모델을 높은 추론 강도로 계속 돌리면 고가 플랜의 한도도 몇 시간 만에 바닥날 수 있다.
+- **모델을 바꾸기 전에 사용량을 추산하게 한다.** 최근 며칠의 사용량을 근거로 「다른 모델로 바꾸면 남은 기간에 몇 시간쯤 쓸 수 있나」를 물으면 대략적인 숫자가 나온다. 정확하지는 않지만 모델 간 차이가 클 때 판단 근거가 된다. 프로젝트 한두 개에만 집중하고 worktree를 대량으로 병렬 실행하지 않으면 기본 모델만으로 한도가 빨리 녹지는 않는다.
 - 낯선 코드베이스에서는 `/config`에서 thinking 표시를 켜고 출력 스타일을 Explanatory(프레임워크·패턴 설명) 또는 Learning(변경을 코칭)으로 둔다. 신규 합류자에게 특히 좋다.
 
 ## 8. 프롬프트 습관
@@ -147,6 +148,7 @@ Claude Code 제작자의 설정은 놀랄 만큼 기본값에 가깝고, 팀원�
 - **PR은 작게**: 하루 PR 141개를 낸 날의 크기 분포가 p50 118줄, p90 498줄이었다. 최소 한 시간에 한 번, 작업이 끝나는 즉시 커밋한다.
 - **리뷰 계층**: CI에서 `claude -p`가 모든 PR을 1차 리뷰해 버그의 약 80%를 잡고, 사람이 반드시 2차 리뷰한다. 여러 에이전트 + 오탐을 거르는 에이전트(best-of-N)로 LLM 리뷰의 비결정성을 줄인다. 코드 산출량이 늘수록 리뷰가 병목이 되므로 리뷰도 자동화한다(`/code-review`).
 - **같은 기준**: 모델이 쓴 코드에도 사람 코드와 같은 머지 기준을 둔다. 나쁘면 머지하지 말고 고치게 한다.
+- **외부 리뷰 도구도 같은 계층에 붙인다**: Alibaba의 [open-code-review](https://github.com/alibaba/open-code-review)(`ocr`, Apache-2.0)는 Git diff를 읽어 설정한 LLM으로 줄 단위 리뷰 코멘트를 남기는 CLI다. NPE·스레드 안전성·XSS·SQL 인젝션 같은 내장 규칙이 있고, GitHub Actions·GitLab CI에 붙이거나 Claude Code 같은 에이전트 안에서 스킬로 부를 수 있다(이때는 호스트 에이전트의 모델을 쓴다).
 - **반복 지적은 자동화로**: 같은 리뷰 지적이 2~3번 나오면 PR에서 Claude에게 린트 규칙을 쓰게 한다.
 
 ## 12. 데이터와 학습

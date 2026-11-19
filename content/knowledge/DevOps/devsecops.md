@@ -5,11 +5,12 @@ summary: "DevSecOps는 보안 검사를 출시 직전의 관문이 아니라 개
 tags: ["devops", "security", "ci-cd", "automation", "cloud"]
 source: other
 date: "2026-11-13"
-sources: ["https://bytebytego.com/guides/what-is-devsecops", "https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms", "https://news.hada.io/weekly/202644", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)", "https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5"]
+sources: ["https://bytebytego.com/guides/what-is-devsecops", "https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms", "https://news.hada.io/weekly/202644", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)", "https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5", "https://xint.io/ko/blog/nginx2root-remote-code-execution", "https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities", "https://www.cyberkendra.com/2026/11/cve-2026-114938-pre-auth-rce-flaw-in-java-17-puts-servers-at-risk.html"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[What is DevSecOps?](https://bytebytego.com/guides/what-is-devsecops)」, 「[Top 4 Forms of Authentication Mechanisms](https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms)」를 바탕으로 재구성한 노트다.
 > 클라우드의 보안 위협과 대응, 보안 솔루션 배치는 고려사이버대학교 「클라우드 컴퓨팅」(2023-2학기) 강의 내용으로 보강했다. 취약점 대응의 운영 부담은 GeekNews Weekly의 「[취약점은 쏟아지는데, 방어하는 사람은 지쳐갑니다](https://news.hada.io/weekly/202644)」(2026.10)로 보강했다.
+> 「공지를 받고 움직이는 순서」의 사례는 Xint의 「[nginx2root](https://xint.io/ko/blog/nginx2root-remote-code-execution)」(2026.11), Wiz의 「[NGINX HTTP/2 RCE vulnerabilities](https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities)」(2026.11), Cyber Kendra의 「[CVE-2026-114938](https://www.cyberkendra.com/2026/11/cve-2026-114938-pre-auth-rce-flaw-in-java-17-puts-servers-at-risk.html)」(2026.11) 분석으로 보강했다.
 > 공급망 공격 사례와 감염 대응은 「[NIKKE PC launcher compromise](https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5)」(2026.11) 분석 문서로 보강했다.
 
 ## DevSecOps란
@@ -135,6 +136,18 @@ AI가 취약점을 찾고 악용하는 비용을 낮추면서, 공격자와 방�
 | 로그 | 워커 프로세스의 비정상 종료, 오류 급증 같은 이상 징후가 있는가 |
 
 실제 공격 코드로 검증해야 한다면 본인 소유이거나 명시적으로 허가받은, 운영과 분리된 테스트 환경에서만 한다.
+
+#### 공지를 받고 움직이는 순서
+
+| 단계 | 할 일 | 놓치기 쉬운 점 |
+| --- | --- | --- |
+| 1. 공지 확인 | 벤더 보안 권고(Oracle의 Critical Patch Update, F5·nginx 보안 공지 등), 국내 공지는 KISA 보호나라의 보안공지, CVE 상세는 cve.org·NVD에서 본다 | 같은 취약점이라도 기관마다 CVSS 버전과 점수가 다를 수 있다. 벡터 문자열로 공격 조건을 읽는다([[security#CVSS 벡터 문자열 읽기\|CVSS 벡터 문자열 읽기]]) |
+| 2. 영향 판단 | 위 표처럼 기능 활성화·버전·플랫폼 조건을 맞춰 본다 | **배포판 패키지는 수정 사항만 백포트하고 원래 버전 번호를 유지하는 경우가 많다.** `nginx -v` 같은 버전 문자열만으로 패치 여부를 판단하지 말고 배포판의 보안 권고와 패키지 변경 기록을 본다 |
+| 3. 임시 완화 | 패치가 늦으면 취약한 기능을 끈다. 웹 서버라면 HTTP/2를 끄고(`http2 off;`), JVM이라면 문제의 내장 최적화(intrinsic)를 끄는 실행 옵션을 쓰는 식이다. 쓰지 않는 서비스(예: 프린터 탐색 데몬 `cups-browsed`)는 아예 끈다 | 완화책은 **그 기능에 걸린 취약점만** 막는다. 같은 공지에 묶인 다른 CVE(HTTP/3, DNS 리졸버, 메일 프록시 등)는 각각 조건을 따로 확인한다 |
+| 4. 패치 | 수정 버전으로 올린다 | 설정 리로드는 실행 중인 바이너리를 바꾸지 않는다. **프로세스를 재시작**해야 새 바이너리가 올라온다. 리로드 뒤에도 옛 워커가 남아 있지 않은지 확인한다 |
+| 5. 사후 점검 | 패치 전 기간의 로그에서 워커 비정상 종료, 낯선 자식 프로세스 같은 악용 흔적을 찾는다 | 취약한 프로세스 하나가 뚫리면 커널 권한 상승 취약점과 엮여 호스트·컨테이너 탈출로 번질 수 있다 |
+
+**침해가 의심되면 분석보다 차단이 먼저다.** 시스템을 돌린 채로 원인을 찾는 동안에도 공격자는 권한을 넓히고 데이터를 빼 간다. 외부 연결을 끊거나 서비스를 내린 뒤, 디스크·메모리 같은 증거를 보존한 상태에서 분석한다. 사후 기록 방법은 [[incident-postmortem|장애 대응과 포스트모템]]에 있다.
 
 규모가 크고 정책이 복잡한 클라우드는 CCE 쪽에 특히 약하다. 공개된 버킷, 0.0.0.0/0으로 열린 보안 그룹, 꺼진 로깅 같은 설정 오류를 계속 검사하는 도구(CSPM, Cloud Security Posture Management)를 쓰는 이유이고, 같은 검사를 배포 전 IaC 단계로 당긴 것이 위 표의 「코드형 인프라」 검사다.
 
