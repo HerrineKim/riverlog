@@ -104,6 +104,8 @@ hero.run = function () {
 
 인터랙티브 포트폴리오, 커서에 반응하는 3D 상품 소개, 물리 엔진(cannon-es 등)과 결합한 웹 게임, 드래그로 돌려 보는 비주얼 저널리즘에 쓴다.
 
+스크롤에 맞춰 제품이 돌고 분해되는 **제품 쇼케이스 페이지**는 보통 React(Next.js) + Three.js(React Three Fiber) + GSAP ScrollTrigger로 만들고, 모델은 Blender에서 다듬는다고 알려져 있다. 그런데 실제로 열어 보면 실시간 3D가 아닌 경우가 많다. **미리 렌더링한 영상이나 프레임 이미지 수백 장을 받아 두고 스크롤 위치에 맞는 프레임을 Canvas에 그리는 방식**(이미지 시퀀스)이 흔하다. 따라 만들기 전에 개발자 도구의 네트워크 패널에서 어떤 에셋(mp4, 연속 이미지, glTF 모델)을 받는지부터 확인한다. 질감 같은 표현력은 코드보다 3D 아트 작업에서 나온다. AI 3D 생성 도구로 만든 모델도 Blender에서 손봐야 쓸 만해진다.
+
 ## 장점과 한계
 
 | 장점 | 한계 |
@@ -124,4 +126,4 @@ hero.run = function () {
 - Mesh = Geometry + Material, 애니메이션은 `setAnimationLoop`로 매 프레임 렌더링한다.
 - 복잡한 모델은 외부 툴에서 만들어 불러오고, React에서는 react-three-fiber를 쓴다.
 
-관련 노트: [[webgl-shaders|WebGL과 셰이더]], [[transformation-matrix|변환 행렬]]
+관련 노트: [[webgl-shaders|WebGL과 셰이더]], [[transformation-matrix|변환 행렬]], [[canvas-2d|Canvas 2D]], [[devtools-network|DevTools 네트워크 패널]]
