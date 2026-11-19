@@ -57,15 +57,15 @@ sequenceDiagram
   participant C as 브라우저
   participant S as 서버
   C->>S: GET /talks
-  S-->>C: 200, ETag: 3, 목록
-  C->>S: GET /talks, If-None-Match: 3, Prefer: wait=90
+  S-->>C: 200, ETag: #quot;3#quot;, 목록
+  C->>S: GET /talks, If-None-Match: #quot;3#quot;, Prefer: wait=90
   Note over S: 버전이 3 그대로면 대기 목록에 넣고 붙잡아 둔다
-  S-->>C: 변경 발생 → 200, ETag: 4, 새 목록 (90초 지나면 304)
-  C->>S: GET /talks, If-None-Match: 4, Prefer: wait=90
+  S-->>C: 변경 발생 → 200, ETag: #quot;4#quot;, 새 목록 (90초 지나면 304)
+  C->>S: GET /talks, If-None-Match: #quot;4#quot;, Prefer: wait=90
 ```
 
 1. 서버는 데이터가 바뀔 때마다 버전 번호를 올리고, 응답의 `ETag`에 그 버전을 담는다.
-2. 클라이언트는 받은 ETag를 `If-None-Match`에 넣고, 기다려도 된다는 뜻으로 `Prefer: wait=90`을 붙여 다시 요청한다.
+2. 클라이언트는 받은 ETag를 따옴표까지 그대로 `If-None-Match`에 넣고(`If-None-Match: "3"`, ETag 값은 숫자여도 큰따옴표로 감싼다), 기다려도 된다는 뜻으로 `Prefer: wait=90`을 붙여 다시 요청한다.
 3. 버전이 다르면 즉시 새 목록으로 답한다. 같으면 `Prefer`가 있을 때 응답 콜백을 **대기 목록**에 넣고, 없으면 바로 `304 Not Modified`로 답한다.
 4. 변경이 생기면 버전을 올리고 대기 목록의 콜백을 모두 깨워 새 목록을 보낸다. 대기 시간이 다 되면 `304`로 답해 연결이 타임아웃으로 끊기지 않게 한다.
 5. 클라이언트는 응답을 받는 즉시(304든 200이든) 다음 요청을 보낸다. 주기적으로 요청을 새로 거는 구조라 일시적인 네트워크·서버 장애에서도 저절로 회복된다.
