@@ -39,7 +39,7 @@ Next.js는 라우팅과 렌더링을 정해 주지만, 실제 서비스를 만�
 | `next build` | 프로덕션 빌드. 라우트마다 렌더링 방식을 기호로 보여 준다: `○` 정적(빌드 때 HTML 생성), `ƒ` 동적(요청마다 서버 렌더링) |
 | `next start` | 빌드 결과를 프로덕션 모드로 띄운다. 배포 전 로컬 확인과 Node.js 자체 호스팅에 쓴다 |
 
-빌드 결과의 `○`와 `ƒ` 기호는 "이 페이지가 의도대로 정적으로 나갔나"를 확인하는 가장 빠른 방법이다. 동적 API(`cookies()`, 캐시하지 않는 `fetch`)를 하나만 써도 그 라우트는 `ƒ`가 된다.
+빌드 결과의 `○`와 `ƒ` 기호는 "이 페이지가 의도대로 정적으로 나갔나"를 확인하는 가장 빠른 방법이다. Cache Components를 켜지 않은 기본 모델에서는 동적 API(`cookies()`, 캐시하지 않는 `fetch`)를 하나만 써도 그 라우트 전체가 `ƒ`가 된다. Cache Components를 켜면 **부분 사전 렌더링(Partial Prerendering)** 이 기본이라, 동적 API를 쓰는 부분을 `<Suspense>`로 감싸면 정적·캐시된 내용은 미리 만든 셸에 남고 그 부분만 요청 때 스트리밍된다.
 
 ### 린터와 포매터
 
@@ -124,6 +124,7 @@ Express 같은 서버로 Next.js의 요청 처리를 감싸는 **커스텀 서�
 
 ```bash
 npm install @next/mdx @mdx-js/loader @mdx-js/react @types/mdx
+npm install remark-gfm   # 아래 설정에서 쓰는 플러그인. 문자열로 적어도 설치는 따로 해야 한다
 ```
 
 ```js
