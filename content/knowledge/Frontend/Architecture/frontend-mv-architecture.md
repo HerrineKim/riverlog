@@ -4,12 +4,14 @@ concept: "MV* Architecture"
 summary: "MVC·MVP·MVVM의 구조와 차이, 수동적 뷰·감독 컨트롤러·프레젠테이션 모델·Model 2 같은 변형, 웹 프론트엔드의 아키텍처가 MVC → MVVM → Container-Presenter → Flux → 가벼운 전역 스토어·서버 상태 관리로 바뀌어 온 흐름과, Flux가 reducer와 단일 스토어의 Redux로 줄어든 과정, 그 흐름을 정리한 MVI(Model-View-Intent) 아키텍처. 뷰와 비즈니스 로직을 분리하고, 뷰는 의도만 전하고, 데이터는 한 방향으로 돈다."
 tags: ["frontend", "architecture", "state", "design-pattern"]
 source: other
-date: "2026-10-21"
-sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://yozm.wishket.com/magazine/detail/1663/", "https://beomy.tistory.com/43", "https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns", "https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html", "https://staltz.com/unidirectional-user-interface-architectures.html", "https://blog.nodejitsu.com/scaling-isomorphic-javascript-code/", "https://addyosmani.com/blog/understanding-mvc-and-mvp-for-javascript-and-backbone-developers/", "https://addyosmani.com/blog/understanding-mvvm-a-guide-for-javascript-developers/", "https://martinfowler.com/eaaDev/", "https://github.com/facebook/flux/tree/master/examples/flux-concepts", "https://survivejs.com/blog/redux-interview/", "https://guide.elm-lang.org/architecture/", "https://cycle.js.org/model-view-intent.html", "https://github.com/junh0328/prepare_frontend_interview"]
+date: "2026-11-20"
+sources: ["https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요", "https://velog.io/@teo/MVI-Architecture", "https://yozm.wishket.com/magazine/detail/1663/", "https://beomy.tistory.com/43", "https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns", "https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html", "https://staltz.com/unidirectional-user-interface-architectures.html", "https://blog.nodejitsu.com/scaling-isomorphic-javascript-code/", "https://addyosmani.com/blog/understanding-mvc-and-mvp-for-javascript-and-backbone-developers/", "https://addyosmani.com/blog/understanding-mvvm-a-guide-for-javascript-developers/", "https://martinfowler.com/eaaDev/", "https://github.com/facebook/flux/tree/master/examples/flux-concepts", "https://survivejs.com/blog/redux-interview/", "https://guide.elm-lang.org/architecture/", "https://cycle.js.org/model-view-intent.html", "https://github.com/junh0328/prepare_frontend_interview", "https://eloquentjavascript.net/19_paint.html"]
 ---
 
 > 테오(teo)의 「[프론트엔드에서 MV* 아키텍쳐란 무엇인가요?](https://velog.io/@teo/프론트엔드에서-MV-아키텍쳐란-무엇인가요)」(2021.12)와 「[프론트엔드에서 비즈니스 로직과 뷰 로직 분리하기 (feat. MVI 아키텍쳐)](https://velog.io/@teo/MVI-Architecture)」(2022.08, 요즘IT 재게재)를 바탕으로 재구성하고, MVVM-C·VIPER는 ByteByteGo의 System Design 101 가이드 「[MVC, MVP, MVVM, VIPER Patterns](https://bytebytego.com/guides/mvc-mvp-mvvm-viper-patterns)」로, 「MVC·MVP·MVVM 비교」는 beomy의 「[MVC, MVP, MVVM 비교](https://beomy.tistory.com/43)」(2018.09)로 보강한 노트다. 단방향 아키텍처의 변형은 「[단방향 사용자 인터페이스 아키텍쳐](https://pilgwon.github.io/blog/2018/12/12/Unidirectional-User-Interface-Architectures.html)」(André Staltz 글의 번역)로 보강했다. MVP의 변형과 Model 2는 Nodejitsu의 「[Scaling Isomorphic Javascript Code](https://blog.nodejitsu.com/scaling-isomorphic-javascript-code/)」(2011)와 Addy Osmani의 「[Understanding MVC And MVP](https://addyosmani.com/blog/understanding-mvc-and-mvp-for-javascript-and-backbone-developers/)」·「[Understanding MVVM](https://addyosmani.com/blog/understanding-mvvm-a-guide-for-javascript-developers/)」로, Flux에서 Redux로의 과정은 Flux 저장소의 「[Flux Concepts](https://github.com/facebook/flux/tree/master/examples/flux-concepts)」와 「[Redux - Reinventing Flux](https://survivejs.com/blog/redux-interview/)」(Dan Abramov 인터뷰, 2015)로 더했다.
 > junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 Flux가 나온 계기인 알림 배지 사례를 보강했다.
+>
+> Marijn Haverbeke의 『[Eloquent JavaScript](https://eloquentjavascript.net/)』(4판, 2024) 19장 「Project: A Pixel Art Editor」에서 프레임워크 없는 단방향 흐름과 실행 취소 기록을 보강했다.
 
 ## 아키텍처란
 
@@ -187,6 +189,23 @@ Flux에서 Redux로 줄어든 과정은 이렇다. Flux에서 Store는 액션에
 
 - **프랙탈 구조**: 하위 컴포넌트가 앱 전체와 같은 모양(MVU 안의 MVU)이면, 앱을 통째로 더 큰 앱의 컴포넌트로 재사용할 수 있다.
 - **드라이버**: Cycle.js는 DOM뿐 아니라 HTTP 같은 바깥 세계도 입력·출력 스트림으로 맞춰 UI 프로그램에 연결한다. 부수 효과를 프로그램 밖 드라이버로 밀어내 본체를 순수하게 유지한다.
+### 프레임워크 없이 단방향 흐름 만들기
+
+라이브러리 없이도 같은 순환을 직접 세울 수 있다. 픽셀 아트 편집기처럼 작은 앱을 예로 든다.
+
+**상태를 화면 곳곳에 흩어 두면** 처음엔 쉽다. 현재 색이 필요하면 색 입력란의 값을 읽으면 된다. 그런데 그림에서 색을 찍어 오는 스포이트 도구를 더하면, 그 도구가 색 입력란의 존재를 알고 갱신해 줘야 한다. 색을 보여 주는 곳이 하나 더 생기면 색을 바꾸는 모든 코드를 고쳐야 한다. **화면의 각 부분이 다른 모든 부분을 알아야 하는 구조**가 된다.
+
+그래서 흐름을 엄격히 정한다.
+
+1. 앱 상태는 **값 하나**(`{ picture, tool, color }`)에 모은다. 그림은 불변 값으로 다룬다.
+2. 컴포넌트는 생성자에서 상태와 `dispatch` 함수를 받아 자기 DOM(`dom` 속성)을 만들고, `syncState(state)`로 새 상태에 맞춰 자신과 자식을 갱신한다.
+3. 사용자 조작은 상태를 직접 바꾸지 않고 **액션 객체**(`{ color: '#ff00ff' }`)를 `dispatch`한다.
+4. 중앙의 갱신 함수가 `(state, action) => ({ ...state, ...action })`처럼 다음 상태를 계산하고, 루트 컴포넌트의 `syncState`를 부른다.
+
+DOM을 다루는 부분은 여전히 부수 효과투성이지만, 「상태가 DOM 모양을 정하고, DOM 이벤트는 액션으로만 상태를 바꾼다」는 단순한 뼈대가 받친다. 변형은 많아도 핵심은 같다. **상태 변경은 잘 정의된 한 통로로만 지나간다.** 자식에게 변경을 일일이 전파하는 일이 번거로운데, 이 수고를 덜어 주는 것이 React·Svelte 같은 UI 라이브러리의 주된 가치다([[ui-change-detection|UI 변경 감지]]).
+
+**실행 취소는 불변 상태의 덤이다.** 그림이 불변 값이면 이전 그림들을 배열(`done`)에 쌓아 두기만 하면 된다. 다만 드래그 중의 픽셀 하나하나를 모두 쌓으면 기록이 너무 잘다. 마지막으로 저장한 시각(`doneAt`)을 함께 두고, **1초 이상 지났을 때만** 이전 그림을 기록에 넣는다. 되돌리기 액션은 가장 최근 그림을 꺼내 현재 그림으로 삼고 `doneAt`을 0으로 돌려, 다음 변경이 반드시 기록되게 한다. 되돌릴 것이 없으면 버튼을 비활성화한다.
+
 - 입력과 출력의 모양만 정해 두고 내부 구조(Flux든 MVU든)는 자유롭게 두면 여러 아키텍처를 섞어 쓸 수 있지만, 팀에 줄 구조 지침이 사라져 일관성이 떨어질 수 있다.
 
 ## 정리

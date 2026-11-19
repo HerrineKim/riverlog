@@ -295,4 +295,4 @@ C 전처리기 매크로는 텍스트 치환이라 `#define SQ(x) x*x`에서 `SQ
 - 값·이름·필요에 의한 호출은 평가 시점, 값·참조·공유에 의한 호출은 대입이 호출자에게 보이는지의 차이다.
 - 부수 효과가 있으면 참조 투명성이 깨져 최적화와 추론의 자유가 줄어든다. 동치는 관찰 대상에 따라 달라진다.
 
-관련 노트: [[type-systems|타입 시스템]], [[how-programs-run|프로그램이 실행되기까지]], [[programming-paradigms|프로그래밍 패러다임]], [[functional-programming|함수형 프로그래밍]], [[concurrency-models|동시성 모델]], [[pratt-parsing|프랫 파싱]], [[execution-context|실행 컨텍스트]]
+관련 노트: [[type-systems|타입 시스템]], [[how-programs-run|프로그램이 실행되기까지]], [[programming-paradigms|프로그래밍 패러다임]], [[functional-programming|함수형 프로그래밍]], [[concurrency-models|동시성 모델]], [[pratt-parsing|프랫 파싱]], [[execution-context|실행 컨텍스트]], [[tiny-interpreter|작은 언어 인터프리터 만들기]]

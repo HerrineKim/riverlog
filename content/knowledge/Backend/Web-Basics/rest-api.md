@@ -4,12 +4,14 @@ concept: "REST API"
 summary: "자원을 URI로 표현하고 HTTP 메서드로 행위를 나타내는 API 설계 방식과 그 규칙. REST의 여섯 제약과 균일한 인터페이스(자기 서술적 메시지·HATEOAS), PUT·PATCH·POST 고르기, URI 규칙과 자원 원형, 상태 코드 선택과 오류 응답(RFC 9457), 멱등 키·버전 관리 방식·비동기 요청·조건부 요청·응답 모양 같은 실무 설계 팁까지."
 tags: ["http", "api", "rest", "backend"]
 source: til
-date: "2026-11-02"
-sources: ["https://riverkim.kr/308", "https://bytebytego.com/guides/8-tips-for-efficient-api-design", "https://bytebytego.com/guides/how-do-we-design-effective-and-safe-apis", "https://bytebytego.com/guides/rest-api-cheatsheet", "https://bytebytego.com/guides/how-does-rest-api-work", "https://blog.npcode.com/2017/04/03/rest의-representation이란-무엇인가/", "https://sanghaklee.tistory.com/57", "https://evan-moon.github.io/2020/04/07/about-restful-api/", "https://1ambda.github.io/javascripts/rest-api-put-vs-post/", "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design", "https://github.com/microsoft/api-guidelines", "https://github.com/interagent/http-api-design", "https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api", "https://blog.restcase.com/rest-api-error-codes-101/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/REST%20API.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%20-%20%EC%84%9C%EB%B2%84%20API%20URI%20%EC%84%A4%EA%B3%84%EB%B2%95.md"]
+date: "2026-11-20"
+sources: ["https://riverkim.kr/308", "https://bytebytego.com/guides/8-tips-for-efficient-api-design", "https://bytebytego.com/guides/how-do-we-design-effective-and-safe-apis", "https://bytebytego.com/guides/rest-api-cheatsheet", "https://bytebytego.com/guides/how-does-rest-api-work", "https://blog.npcode.com/2017/04/03/rest의-representation이란-무엇인가/", "https://sanghaklee.tistory.com/57", "https://evan-moon.github.io/2020/04/07/about-restful-api/", "https://1ambda.github.io/javascripts/rest-api-put-vs-post/", "https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design", "https://github.com/microsoft/api-guidelines", "https://github.com/interagent/http-api-design", "https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api", "https://blog.restcase.com/rest-api-error-codes-101/", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/REST%20API.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%20-%20%EC%84%9C%EB%B2%84%20API%20URI%20%EC%84%A4%EA%B3%84%EB%B2%95.md", "https://github.com/elsewhencode/project-guidelines"]
 ---
 
 > 「실무 설계 팁」 섹션은 ByteByteGo의 System Design 101 가이드 「[8 Tips for Efficient API Design](https://bytebytego.com/guides/8-tips-for-efficient-api-design)」, 「[How to Design Effective and Safe APIs](https://bytebytego.com/guides/how-do-we-design-effective-and-safe-apis)」, 「[REST API Cheatsheet](https://bytebytego.com/guides/rest-api-cheatsheet)」, 「[How does REST API work?](https://bytebytego.com/guides/how-does-rest-api-work)」을 바탕으로 보강했다. 「리소스와 표현」은 「[REST의 representation이란 무엇인가](https://blog.npcode.com/2017/04/03/rest의-representation이란-무엇인가/)」와 「[프론트엔드와 백엔드가 소통하는 엔드포인트, RESTful API](https://evan-moon.github.io/2020/04/07/about-restful-api/)」, 오류 응답 규칙은 「[RESTful API 설계 가이드](https://sanghaklee.tistory.com/57)」, POST와 PUT의 위치 결정은 「[REST API에서 PUT과 POST의 차이](https://1ambda.github.io/javascripts/rest-api-put-vs-post/)」로 보강했다. 버전 관리·비동기 요청·조건부 요청·응답 모양·오류 형식·성숙도 모델은 Microsoft의 「[Best practices for RESTful web API design](https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design)」, 「[Microsoft REST API Guidelines](https://github.com/microsoft/api-guidelines)」, Heroku의 「[HTTP API Design Guide](https://github.com/interagent/http-api-design)」, 「[Best Practices for Designing a Pragmatic RESTful API](https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)」, 「[REST API Error Codes 101](https://blog.restcase.com/rest-api-error-codes-101/)」을 바탕으로 보강했다.
 > 균일한 인터페이스의 네 조건과 독립적 진화는 「[Frontend_TIL: REST API](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC/REST%20API.md)」(이응준의 「그런 REST API로 괜찮은가」 강연 정리)를, URI 원형은 「[클라이언트 - 서버 API URI 설계법](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%9B%B9%20%EC%A7%80%EC%8B%9D/%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%20-%20%EC%84%9C%EB%B2%84%20API%20URI%20%EC%84%A4%EA%B3%84%EB%B2%95.md)」을 바탕으로 보강했다.
+>
+> elsewhen의 「[project-guidelines](https://github.com/elsewhencode/project-guidelines)」에서 경로 모양·이름 표기 규칙과 인증 실패 메시지 규칙을 보강했다.
 
 REST(Representational State Transfer)는 **자원(Resource)을 이름(URI)으로 구분하고, 그 자원의 상태를 HTTP로 주고받는** 아키텍처 스타일이다. REST 원칙을 따르는 API를 REST API(또는 RESTful API)라 부른다. 프론트엔드와 백엔드가 같은 규칙으로 대화하므로 API를 보지 않고도 의도를 짐작할 수 있다는 것이 가장 큰 장점이다.
 
@@ -121,6 +123,9 @@ REST에서 서버가 주고받는 것은 **리소스 자체가 아니라 리소�
 3. 단어 구분은 언더바(`_`) 대신 **하이픈(`-`)을** 쓴다. (`/cat-profiles`)
 4. 파일 확장자를 URI에 넣지 않는다. 형식은 `Accept`/`Content-Type` 헤더로 표현한다.
 5. 컬렉션은 복수형, 계층 관계는 경로로 표현한다. (`/cats/3/friends`)
+6. 경로는 컬렉션으로 시작해 식별자로 끝나는 모양을 기본으로 한다(`/students/245743`, `/airports/kjfk`). `/blogs/:blogId/posts/:postId/summary`처럼 자원의 **속성**을 가리키는 경로는 만들지 않는다. 필요한 필드만 받고 싶으면 `?fields=id,title`처럼 매개변수로 응답을 줄인다.
+7. URL 경로는 kebab-case, 쿼리 매개변수와 JSON 필드는 camelCase로 통일한다(JavaScript가 만들고 읽는 API일 때). 자원 이름에 DB의 `table_name`·`column_name`을 그대로 쓰지 않는다. 노출하는 것은 자원이지 스키마가 아니다.
+8. URL의 복수형은 읽기 좋지만, 코드 안에서 `users`와 `user`는 한 글자 차이라 헷갈린다. 코드에서는 `userList`처럼 `List` 접미사를 붙인다.
 
 URI가 가리키는 자원은 네 가지 원형(archetype)으로 나눈다.
 
@@ -168,6 +173,7 @@ Django에서 이 설계를 구현하는 방법은 [[drf-serializer|DRF Serialize
 
 - **실패를 `200 OK`로 보내고 본문으로 성공 여부를 알리지 않는다.** 캐시·모니터링·클라이언트 라이브러리가 모두 상태 코드를 보고 동작한다.
 - 세부 오류는 상태 코드를 반복하지 말고 본문에 **프로그램이 분기할 오류 종류**와 사람이 읽을 설명을 나눠 담는다. 표준 형식은 `application/problem+json`(RFC 9457)이다.
+- 인증 실패 메시지는 일부러 뭉뚱그린다. 「비밀번호가 틀렸습니다」 대신 「아이디 또는 비밀번호가 올바르지 않습니다」라고 해야 아이디가 존재한다는 사실을 흘리지 않는다.
 - `400`에는 어느 필드가, 어떤 값 때문에, 왜 틀렸는지를 담는다. problem 형식에서는 확장 필드(`errors: [{field, message}]`)로 덧붙인다.
 - `5xx`의 내부 정보(스택 트레이스, 쿼리)는 노출하지 않는다. 대신 요청 ID를 줘서 로그와 잇게 한다.
 

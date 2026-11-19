@@ -36,3 +36,4 @@ date: "2026-10-13"
 - [Electron: 웹 기술로 데스크톱 앱 만들기](Frontend/electron.md): 메인·렌더러 프로세스와 preload·IPC, 컨텍스트 격리·샌드박스 기본값, 패키징과 릴리스, Tauri와 비교
 - [Vue 상태 관리: Pinia(옛 Vuex)](Frontend/vuex.md): Pinia `defineStore`(옵션·setup 스토어), 옛 Vuex의 mutations·actions, Vite 환경 변수
 - [Quasar 프레임워크 기초](Frontend/quasar.md): Vue 기반 UI 프레임워크 Quasar
+- [Aurelia: 뷰·뷰모델 짝과 의존성 주입 관례](Frontend/aurelia.md): 관례로 짝짓는 뷰·뷰모델, 파일당 컴포넌트 하나·작은 함수 규칙, 부트스트랩, @inject·static inject·@autoinject·resolve(), 리졸버

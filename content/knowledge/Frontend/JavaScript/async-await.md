@@ -4,11 +4,13 @@ concept: "Async Await"
 summary: "Promise를 동기 코드처럼 읽히게 해 주는 async/await 문법, 순차·동시 실행과 반복문 안의 await, try/catch·호출 시점 catch·고차 함수로 나누는 에러 처리, 실무에서 주의할 점."
 tags: ["javascript", "async", "promise", "frontend"]
 source: mixed
-date: "2026-10-13"
-sources: ["https://wesbos.com/javascript/12-advanced-flow-control/70-async-await", "https://wesbos.com/javascript/12-advanced-flow-control/71-async-await-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/72-async-await-prompt-ui", "https://web.dev/learn/javascript/control-flow", "https://ko.javascript.info/async-await", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await", "https://joshua1988.github.io/web-development/javascript/js-async-await/"]
+date: "2026-11-20"
+sources: ["https://wesbos.com/javascript/12-advanced-flow-control/70-async-await", "https://wesbos.com/javascript/12-advanced-flow-control/71-async-await-error-handling", "https://wesbos.com/javascript/12-advanced-flow-control/72-async-await-prompt-ui", "https://web.dev/learn/javascript/control-flow", "https://ko.javascript.info/async-await", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await", "https://joshua1988.github.io/web-development/javascript/js-async-await/", "https://eloquentjavascript.net/11_async.html"]
 ---
 
 > 직접 정리한 내용에 Wes Bos의 「Beginner JavaScript」 강의 노트(wesbos.com/javascript)와 web.dev의 「[Learn JavaScript](https://web.dev/learn/javascript)」 강좌의 「Control flow」 모듈, javascript.info(모던 JavaScript 튜토리얼)의 「async와 await」 글, 「[자바스크립트 async와 await](https://joshua1988.github.io/web-development/javascript/js-async-await/)」를 함께 참고해 재구성한 노트다.
+>
+> Marijn Haverbeke의 『[Eloquent JavaScript](https://eloquentjavascript.net/)』(4판, 2024) 11장 「Asynchronous Programming」에서 `await` 사이의 틈이 만드는 경쟁 상태를 보강했다.
 
 `async`/`await`(ES2017)는 Promise 위에 얹은 문법이다. Promise의 결과를 `then`으로 받는 대신 **변수에 바로 담아** 동기 코드처럼 위에서 아래로 읽히게 작성할 수 있다. 원래 콜백이 만드는 깊은 들여쓰기(콜백 지옥)를 해결하려던 흐름의 마지막 단계다. Promise 자체는 [콜백과 Promise](/knowledge/dictionary/frontend/javascript/callback-and-promise) 노트 참고.
 
@@ -95,6 +97,32 @@ async function askMany(questions) {
 
 const users = await Promise.all(ids.map((id) => fetchUser(id))) // 동시에
 ```
+
+### await 사이의 틈: 비동기 경쟁 상태
+
+동기 코드는 한 번에 끝까지 돌기 때문에 그 사이에 다른 코드가 상태를 바꿀 수 없다. **`await`가 있는 곳마다 실행이 끊기고, 그 틈에 다른 코드가 돈다.** 이 틈을 사이에 두고 공유 변수를 읽고 쓰면 단일 스레드에서도 경쟁 상태가 생긴다.
+
+```javascript
+// 버그: 항상 가장 늦게 끝난 파일 한 줄만 남는다
+async function fileSizes(files) {
+  let list = ''
+  await Promise.all(files.map(async (name) => {
+    list += name + ': ' + (await textFile(name)).length + '\n'
+  }))
+  return list
+}
+```
+
+`list += x`는 `list = list + x`다. 오른쪽의 `list`는 **문장이 시작될 때** 읽히는데, 모든 콜백이 아직 아무것도 더해지지 않은 빈 문자열을 읽은 뒤 `await`에서 멈춘다. 각자 깨어나 `'' + 자기 줄`을 대입하므로 마지막에 끝난 것만 남는다. 공유 변수를 바꾸지 말고 **값을 돌려받아 합친다.**
+
+```javascript
+async function fileSizes(files) {
+  const lines = files.map(async (name) => name + ': ' + (await textFile(name)).length)
+  return (await Promise.all(lines)).join('\n')
+}
+```
+
+`await`·`.then`·콜백이 코드에 드러나 있으니 틈이 어디인지 눈으로 찾을 수 있다. 틈 앞에서 읽은 값을 틈 뒤에서 쓰는 코드가 의심 지점이다. React에서 응답 순서가 뒤바뀌어 옛 검색 결과가 새 결과를 덮는 문제도 같은 원리다.
 
 `forEach`·`map`·`filter`·`reduce`는 콜백이 반환한 Promise를 기다리지 않는다. 순차가 필요하면 `for...of`, 동시가 필요하면 `map` + `Promise.all`로 바꾼다. 요청 수가 많으면 동시에 너무 많이 보내지 않도록 몇 개씩 끊어서 보낸다.
 

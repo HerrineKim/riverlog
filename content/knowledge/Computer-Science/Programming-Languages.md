@@ -58,3 +58,4 @@ date: "2026-11-15"
 - [Python 언어 동작: 제너레이터, MRO, 메모리 관리, 동시성, 성능](Computer-Science/Programming-Languages/python-internals.md): 이터러블·이터레이터·제너레이터, C3 MRO와 super(), 참조 카운팅과 세대별 순환 수집, 누수 패턴, PyPy 추적 JIT, 덕 타이핑과 Protocol
 - [Go 언어: 설계 원칙, 타입, 에러 처리, 빌드와 테스트, GC](Computer-Science/Programming-Languages/go-language.md): The Zen of Go, G·M·P 스케줄러, 동시 GC와 GOGC·GOMEMLIMIT, 계층별 프로젝트 구조
 - [Go 동시성: 고루틴, 채널, select, context, sync](Computer-Science/Programming-Languages/go-concurrency.md): G·M·P 스케줄러, 채널 상태별 동작, select, context 취소 전파, sync와 atomic, 레이스 디텍터
+- [작은 언어 인터프리터 만들기: 파서와 평가기](Computer-Science/Programming-Languages/tiny-interpreter.md): 재귀 하강 파서와 구문 트리, 트리 순회 평가기, 특수 형식, 프로토타입 체인 스코프와 클로저, define과 set, 인터프리터와 컴파일, DSL

@@ -4,13 +4,15 @@ concept: "Why Next.js"
 summary: "SSR·SSG·파일 기반 라우팅·자동 코드 스플리팅을 제공해 React 앱의 초기 로딩과 SEO를 개선하는 프레임워크. App Router의 fetch 캐싱과 재검증, Next.js 16의 'use cache'까지."
 tags: ["nextjs", "react", "rendering", "seo", "cache", "frontend"]
 source: mixed
-date: "2026-10-21"
-sources: ["https://riverkim.kr/214", "https://80000coding.notion.site/a688c09821014d51a01f37d773906165", "https://80000coding.notion.site/bc0ccbe2aabe4205aaa7e9233bb5ead6", "https://80000coding.notion.site/286aebc32d214857abe04c9a306aa02d", "https://nextjs.org/docs/app/getting-started/caching", "https://nextjs.org/docs/app/getting-started/proxy", "https://nextjs.org/docs/app/guides/upgrading/version-16", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%281%29%20-%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0%2C%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%288%29%20-%20Middleware.md", "https://nextjs.org/docs/pages/api-reference/functions/get-initial-props", "https://github.com/junh0328/prepare_frontend_interview"]
+date: "2026-11-20"
+sources: ["https://riverkim.kr/214", "https://masteringnextjs.com/", "https://80000coding.notion.site/a688c09821014d51a01f37d773906165", "https://80000coding.notion.site/bc0ccbe2aabe4205aaa7e9233bb5ead6", "https://80000coding.notion.site/286aebc32d214857abe04c9a306aa02d", "https://nextjs.org/docs/app/getting-started/caching", "https://nextjs.org/docs/app/getting-started/proxy", "https://nextjs.org/docs/app/guides/upgrading/version-16", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%281%29%20-%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EC%9D%B4%EC%9C%A0%2C%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%288%29%20-%20Middleware.md", "https://nextjs.org/docs/pages/api-reference/functions/get-initial-props", "https://github.com/junh0328/prepare_frontend_interview"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「Next.js 공식 문서 읽기(1) - FOUNDATIONS」, 「Next.js 공식 문서 읽기(2) - CREATE YOUR FIRST APP」, 「Next.js (SSR) 공식문서 읽어보기 (12.0 버전)」에서 Pages Router 내용을 더한 노트다.
 >
 > `proxy.ts`의 matcher·쿠키는 「[Frontend_TIL: Next.js(8) - Middleware](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/Tool/Next.js%288%29%20-%20Middleware.md)」를 바탕으로 보강했다.
+>
+> Lee Robinson의 강의 「[Mastering Next.js](https://masteringnextjs.com/)」(2020) 1강에서 Gatsby·Create React App과의 비교를 보강했다.
 >
 > junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북에서 `_app`·`_document`·`_error`의 역할과 `getInitialProps`를 보강했다.
 
@@ -166,6 +168,17 @@ Next.js 12까지의 튜토리얼과 오래된 프로젝트는 대부분 Pages Ro
 | 초기 로딩 성능·접근성 점수 개선 | Lighthouse 성능 지표 개선에 유리 |
 | 라우팅·빌드 설정을 직접 하기 싫을 때 | 파일 기반 라우팅, 최적화 기본 제공 |
 
+비슷한 자리의 도구와 비교하면 다음과 같다.
+
+| 도구 | 성격 | Next.js와 다른 점 |
+| --- | --- | --- |
+| Vite + React (SPA) | 클라이언트 렌더링 앱 | 서버 렌더링·파일 라우팅이 없다. 라우터·코드 스플리팅을 직접 구성한다([[tooling\|React 빌드 환경]]) |
+| Create React App | 과거의 SPA 시작 도구 | 2025년 2월 지원 종료. 서버 렌더링 계획도 없었다 |
+| Gatsby | GraphQL 데이터 계층과 플러그인 생태계를 갖춘 React SSG | 서버 없이 정적 사이트만. 페이지가 많으면 빌드가 길다. 2023년 Netlify 인수 뒤 새 기능 없이 유지보수만 된다 |
+| Astro | 콘텐츠 중심 SSG, 기본 JS 0 | 블로그·문서처럼 상호작용이 적은 사이트에 더 가볍다([[static-site-generator\|정적 사이트 생성기]]) |
+
+Next.js는 정적 페이지와 동적 페이지(로그인 뒤 대시보드, API)를 한 앱에서 섞을 수 있다는 점이 가장 큰 차이다. 마케팅 페이지는 정적 HTML로, 검색·추천 화면은 DB를 읽는 동적 페이지로 같은 저장소에서 만든다. 대신 `layout`·캐싱 규칙 같은 프레임워크 고유 지식을 익혀야 한다. 앱을 완성하는 데 필요한 주변 영역(스타일링, 인증, 테스트, 배포)은 [[nextjs-app-stack|Next.js 앱을 이루는 영역별 선택지]]에 있다.
+
 ## 핵심 정리
 
 - Next.js = React + 라우팅 + 렌더링 전략(SSR·SSG·CSR) + 빌드 최적화.
@@ -175,4 +188,4 @@ Next.js 12까지의 튜토리얼과 오래된 프로젝트는 대부분 Pages Ro
 - 재검증은 시간 기반(`revalidate`·`cacheLife`)과 요청 기반(`revalidateTag`·`updateTag`·`revalidatePath`) 두 가지다. 여러 값이 겹치면 가장 짧은 값이 이긴다.
 - 요청 앞단 처리는 `proxy.ts`(옛 이름 Middleware), 번들러는 Turbopack이 기본이다.
 
-관련 노트: [[nextjs-app-router|App Router의 내비게이션과 데이터 가져오기]], [[nextjs-routing-conventions|App Router의 파일 규칙과 라우팅]], [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[streaming-ssr|스트리밍 SSR]]
+관련 노트: [[nextjs-app-router|App Router의 내비게이션과 데이터 가져오기]], [[nextjs-app-stack|Next.js 앱을 이루는 영역별 선택지]], [[nextjs-routing-conventions|App Router의 파일 규칙과 라우팅]], [[server-client-components|서버 컴포넌트와 클라이언트 컴포넌트 조합 규칙]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[streaming-ssr|스트리밍 SSR]]
