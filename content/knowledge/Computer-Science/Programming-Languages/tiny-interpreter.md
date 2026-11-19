@@ -237,4 +237,4 @@ application = expr '(' (expr (',' expr)*)? ')'
 - "새 바인딩 만들기"와 "기존 바인딩 바꾸기"를 한 형식으로 겸하면 바깥 변수를 바꿀 수 없다. 선언과 대입을 나눈다.
 - 실행 전에 다른 표현으로 바꾸는 단계를 넣으면 컴파일이다. 작은 언어 구조는 DSL을 만들 때 그대로 쓰인다.
 
-관련 노트: [[programming-language-semantics|프로그래밍 언어 의미론]], [[how-programs-run|프로그램은 어떻게 실행되나]], [[scope-and-closures|스코프와 클로저]], [[prototype-and-inheritance|프로토타입과 상속]], [[typescript-compiler-internals|TypeScript 컴파일러 내부 구조]], [[regular-expressions|정규 표현식]]
+관련 노트: [[programming-language-semantics|프로그래밍 언어 의미론]], [[pratt-parsing|프랫 파싱]], [[how-programs-run|프로그램은 어떻게 실행되나]], [[scope-and-closures|스코프와 클로저]], [[prototype-and-inheritance|프로토타입과 상속]], [[typescript-compiler-internals|TypeScript 컴파일러 내부 구조]], [[regular-expressions|정규 표현식]]
