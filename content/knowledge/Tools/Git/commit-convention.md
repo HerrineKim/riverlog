@@ -178,4 +178,4 @@ pre-commit run --all-files  # 전체 파일에 한 번 실행
 - 이슈는 `Closes #번호`로 닫는다(기본 브랜치에 들어갈 때 동작).
 - 커밋 템플릿으로 안내하고, husky + commitlint(또는 pre-commit)로 강제한다. 필수 검사는 CI에서도 돌린다.
 
-관련 노트: [[remote-github|원격 저장소와 GitHub]], [[github-collaboration|GitHub 협업 저장소 설정]], [[principles|코드 리뷰 원칙]], [[ci-cd|CI/CD]], [[commit-message-verbs|영어 커밋 메시지 동사 사전]]
+관련 노트: [[remote-github|원격 저장소와 GitHub]], [[github-collaboration|GitHub 협업 저장소 설정]], [[principles|코드 리뷰 원칙]], [[ci-cd|CI/CD]], [[commit-message-verbs|영어 커밋 메시지 동사 사전]], [[project-guidelines|팀 JavaScript 프로젝트 기본 규칙]]

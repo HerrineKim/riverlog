@@ -15,6 +15,7 @@ date: "2026-10-14"
 - [Git](Tools/Git.md): 버전 관리 기본, 브랜치와 병합, 원격 저장소·미러링, 되돌리기와 이력 다루기, 커밋 컨벤션, GitHub 협업 설정
 - [유의적 버전(SemVer)](/knowledge/dictionary/tools/semantic-versioning): MAJOR.MINOR.PATCH를 올리는 기준, 0.x와 프리릴리스, 버전 비교 순서, npm의 ^·~ 범위
 - [Chrome DevTools](Tools/Chrome-DevTools.md): 패널 지도와 명령 메뉴·단축키, DOM·CSS, Console, JavaScript 디버깅, Network, 성능·메모리, Application, 기기 에뮬레이션, AI 지원과 DevTools MCP
+- [팀 JavaScript 프로젝트 기본 규칙](Tools/project-guidelines.md): Git 흐름·커밋 메시지, 환경 변수와 개발 환경 고정, 의존성 점검, 기능 기준 폴더, 스타일 강제, 로깅, API 설계·보안·문서, 접근성, 라이선스 체크리스트
 - [Markdown](/knowledge/dictionary/tools/markdown): 문서 작성용 마크업 문법, Mermaid 다이어그램, markdownlint
 - [다이어그램 코드](/knowledge/dictionary/tools/diagram-as-code): 텍스트로 그려 버전 관리하는 다이어그램, Diagrams·Mermaid·PlantUML·Markmap·JSON Crack
 - [LaTeX 시작하기](Tools/latex.md): 구조를 명령어로 쓰고 서식은 컴파일러에 맡기는 조판 언어, Overleaf, 문서 기본 구조와 kotex
