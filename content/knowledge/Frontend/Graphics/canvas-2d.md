@@ -4,22 +4,28 @@ concept: "Canvas API"
 summary: "<canvas>에 JavaScript로 픽셀을 그리는 즉시 모드 그래픽 API. SVG와의 차이(비트맵 vs DOM), getContext의 종류, 상태 스택과 Path2D, 고해상도 화면에서 흐려지지 않게 devicePixelRatio로 키우는 법, 레이어 분리·오프스크린 미리 그리기·정수 좌표·alpha: false 같은 성능 요령, OffscreenCanvas로 워커에서 그리기, 접근성 한계를 정리한다."
 tags: ["frontend", "graphics", "browser", "performance", "javascript"]
 source: other
-date: "2026-10-21"
-sources: ["https://developer.mozilla.org/en-US/docs/HTML/Canvas", "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas", "https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas"]
+date: "2026-11-20"
+sources: ["https://developer.mozilla.org/en-US/docs/HTML/Canvas", "https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas", "https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas", "https://eloquentjavascript.net/17_canvas.html"]
 ---
 
 > MDN의 「[Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API)」, 「[Optimizing canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas)」를 바탕으로 재구성한 노트다.
+>
+> Marijn Haverbeke의 『[Eloquent JavaScript](https://eloquentjavascript.net/)』(4판, 2024) 17장 「Drawing on Canvas」에서 HTML·SVG·Canvas 선택 기준을 보강했다.
 
 ## Canvas란
 
 `<canvas>`는 **JavaScript로 픽셀을 칠하는 비트맵 영역**이다. 무엇을 그렸는지 기억하지 않는 즉시 모드(immediate mode)라, 한 번 칠한 도형은 객체가 아니라 픽셀일 뿐이다. 움직이려면 지우고 다시 그린다. 애니메이션, 게임, 데이터 시각화, 사진 편집, 실시간 영상 처리에 쓴다. 2015년 7월부터 모든 주요 브라우저에서 쓸 수 있다.
 
-| | Canvas | SVG |
-| --- | --- | --- |
-| 모델 | 즉시 모드 비트맵 | 유지 모드(retained) DOM 트리 |
-| 그린 것 | 픽셀. 개별 도형을 선택·이벤트 처리할 수 없다 | 요소. CSS·이벤트·접근성 트리가 그대로 적용된다 |
-| 확대 | 픽셀이 커져 흐려진다 | 어떤 크기에서도 선명하다 |
-| 강한 곳 | 수천~수만 개 객체, 매 프레임 바뀌는 장면, 픽셀 조작 | 도형 수가 적고 상호작용·스타일링·확대가 중요한 그림, 아이콘 |
+| | Canvas | SVG | 일반 HTML 요소 |
+| --- | --- | --- | --- |
+| 모델 | 즉시 모드 비트맵 | 유지 모드(retained) DOM 트리 | 유지 모드 DOM 트리 |
+| 그린 것 | 픽셀. 개별 도형을 선택·이벤트 처리할 수 없다 | 요소. CSS·이벤트·접근성 트리가 그대로 적용된다 | 요소. 상자 모델로 배치된다 |
+| 확대 | 픽셀이 커져 흐려진다 | 어떤 크기에서도 선명하다 | 선명하다 |
+| 글자 | 그릴 수는 있지만 줄바꿈·배치를 직접 계산한다 | 그릴 수는 있지만 줄바꿈이 없다 | 줄바꿈·배치가 자동이라 글이 많은 그림에 가장 쉽다 |
+| 일부만 고치기 | 전체를 지우고 다시 그린다 | 해당 요소만 바꾼다 | 해당 요소만 바꾼다 |
+| 강한 곳 | 수천~수만 개 객체, 매 프레임 바뀌는 장면, 픽셀 단위 렌더링(레이 트레이싱), 이미지 후처리(흐림·왜곡) | 도형 수가 적고 상호작용·스타일링·확대가 중요한 그림, 아이콘 | 사각형 위주의 단순한 그림, 글과 섞인 그림 |
+
+도형 하나당 비용은 자료 구조를 만들지 않는 Canvas가 가장 싸고, 큰 그림의 작은 부분을 자주 바꿀 때는 DOM 쪽이 싸다. 셋을 섞어도 된다. 그래프는 Canvas·SVG로 그리고 설명 글은 그 위에 HTML 요소로 띄우는 식이다. 요구가 단순하면 무엇을 고르든 큰 차이가 없다([[browser-2d-game|브라우저 2D 게임의 구조]]는 같은 게임을 DOM과 Canvas 디스플레이로 각각 그린다).
 
 SVG를 CSS로 다루는 법은 [[svg-icons|SVG 아이콘]]에, 3D와 GPU 셰이더는 [[webgl-shaders|WebGL과 셰이더]]에 있다.
 
@@ -122,4 +128,4 @@ onmessage = ({ data }) => {
 - 그린 내용은 보조 기술에 보이지 않으므로 핵심 정보는 HTML로도 준다.
 - 도형이 많고 매 프레임 바뀌면 Canvas, 적고 상호작용·확대가 중요하면 SVG.
 
-관련 노트: [[webgl-shaders|WebGL과 셰이더]], [[threejs|Three.js로 웹에서 3D 그리기]], [[svg-icons|SVG 아이콘]], [[web-workers|웹 워커로 메인 스레드 비우기]], [[media-capture-web-audio|미디어 캡처와 Web Audio API]]
+관련 노트: [[webgl-shaders|WebGL과 셰이더]], [[threejs|Three.js로 웹에서 3D 그리기]], [[svg-icons|SVG 아이콘]], [[web-workers|웹 워커로 메인 스레드 비우기]], [[media-capture-web-audio|미디어 캡처와 Web Audio API]], [[browser-2d-game|브라우저 2D 게임의 구조]]
