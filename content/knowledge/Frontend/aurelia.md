@@ -90,7 +90,7 @@ JavaScript에는 생성자 매개변수의 타입 정보가 실행 시점에 없
 | --- | --- | --- |
 | 데코레이터 | `@inject(HttpClient) export class App { constructor(http) {} }` | 가장 흔한 형태. 데코레이터 지원이 필요하다 |
 | 정적 속성 | `static inject = [HttpClient]` | 프레임워크 import 없이 표준 문법만으로. 데코레이터가 없어도 된다 |
-| 정적 getter | `static get parameters() { return [[HttpClient]] }` | 클래스 필드 문법이 없던 시절의 대안 |
+| 정적 getter | `static get inject() { return [HttpClient] }` | 클래스 필드 문법이 없던 시절의 대안. 정적으로 선언할 때 컨테이너가 찾는 속성 이름은 `inject`다(`parameters` 같은 다른 이름은 읽지 않는다). `@inject`는 데코레이터가 기록한 메타데이터로, `@autoinject`는 TypeScript가 남긴 `design:paramtypes`로 따로 전달된다 |
 | `@autoinject` (Aurelia 1, TypeScript) | `@autoinject export class App { constructor(private http: HttpClient) {} }` | `emitDecoratorMetadata`로 TypeScript가 남긴 타입 메타데이터를 읽어 타입을 두 번 적지 않는다 |
 | `resolve()` (Aurelia 2) | `private http = resolve(HttpClient)` | 클래스 필드에서 바로 꺼낸다. 생성자도, 데코레이터 메타데이터도 필요 없다 |
 
