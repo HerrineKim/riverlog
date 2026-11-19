@@ -4,11 +4,13 @@ concept: "Small Modules"
 summary: "한 가지 일만 하는 작은 모듈을 조합한다는 Node.js·npm의 유닉스 철학과, 한 줄짜리 패키지까지 의존성으로 들이는 하이퍼 모듈화를 둘러싼 찬반을 정리한다. left-pad 삭제(2016)가 바꾼 npm 정책, 의존성 트리가 깊어질수록 커지는 공급망 위험, 표준 API가 작은 패키지를 대체해 온 흐름, 지금 의존성을 들일 때의 판단 기준까지."
 tags: ["javascript", "npm", "open-source", "security", "frontend"]
 source: other
-date: "2026-10-21"
-sources: ["http://blog.izs.me/post/48281998870/unix-philosophy-and-nodejs", "https://github.com/sindresorhus/ama/issues/10#issuecomment-117766328", "https://medium.freecodecamp.com/in-defense-of-hyper-modular-javascript-33934c79e113", "https://docs.npmjs.com/policies/unpublish", "https://e18e.dev/"]
+date: "2026-11-20"
+sources: ["http://blog.izs.me/post/48281998870/unix-philosophy-and-nodejs", "https://github.com/sindresorhus/ama/issues/10#issuecomment-117766328", "https://medium.freecodecamp.com/in-defense-of-hyper-modular-javascript-33934c79e113", "https://docs.npmjs.com/policies/unpublish", "https://e18e.dev/", "https://eloquentjavascript.net/10_modules.html"]
 ---
 
 > 「[Unix Philosophy and Node.js](http://blog.izs.me/post/48281998870/unix-philosophy-and-nodejs)」, sindresorhus AMA의 「[One-line node modules](https://github.com/sindresorhus/ama/issues/10#issuecomment-117766328)」, 「[In Defense of Hyper Modular JavaScript](https://medium.freecodecamp.com/in-defense-of-hyper-modular-javascript-33934c79e113)」을 바탕으로, npm 정책 문서와 이후의 공급망 사고로 최신화해 재구성한 노트다.
+>
+> Marijn Haverbeke의 『[Eloquent JavaScript](https://eloquentjavascript.net/)』(4판, 2024) 10장 「Modules」에서 좋은 모듈 인터페이스의 원칙을 보강했다.
 
 ## 작은 모듈 철학이란
 
@@ -79,6 +81,20 @@ lock 파일로 정확한 버전과 무결성 해시를 고정하는 관행도 �
 | `minimist`, `yargs`(단순 CLI) | `util.parseArgs` |
 | `uuid`(v4만) | `crypto.randomUUID()` |
 | `lodash.clonedeep` | `structuredClone()` |
+
+## 좋은 모듈 인터페이스
+
+모듈을 쓰는 사람(석 달 뒤의 나 포함)에게 **단순하고 예측 가능한 인터페이스**가 좋은 설계다.
+
+| 원칙 | 예 |
+| --- | --- |
+| 익숙한 관례를 흉내 낸다 | INI 파서 `ini` 패키지는 표준 `JSON`처럼 `parse`·`stringify`만 내놓고 문자열 ↔ 일반 객체를 바꾼다. 한 번 쓰면 기억난다 |
+| 값을 계산하는 일에 집중한다 | 파일을 디스크에서 직접 읽어 파싱하는 INI 모듈은 파일 시스템이 없는 브라우저에서 못 쓰고, 내용이 다른 출처에서 올 때도 못 쓴다. 파싱만 하고 읽기는 다른 함수와 **조합**하게 둔다 |
+| 함수로 되면 함수로 | 「객체를 만들고 → 파일을 불러들이고 → 전용 메서드로 꺼내는」 상태 있는 객체 인터페이스는 호출자에게 상태 전이 의식을 강요하고, 그 전용 타입을 아는 코드끼리 불필요하게 묶인다 |
+| 배열로 되면 배열로 | 새 자료 구조를 만들기 전에 표준 자료 구조로 충분한지 본다 |
+| 다른 패키지가 쓰는 자료 형식을 따른다 | 그래프를 「노드 → 이웃 배열」로 표현한 코드는 「노드 → {이웃: 가중치}」 형식을 받는 길찾기 패키지(`dijkstrajs`)에 바로 넘길 수 없다. 형식이 제각각이면 조합이 막힌다 |
+
+문제를 탐색하는 단계에서는 구조를 정리하느라 집중을 흩뜨리지 않는다. 동작이 단단해졌다고 느낄 때 한 걸음 물러나 모듈 경계를 다시 잡는다.
 
 ## 지금 의존성을 들일 때
 
