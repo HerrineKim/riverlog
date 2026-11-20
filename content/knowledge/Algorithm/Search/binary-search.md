@@ -4,12 +4,13 @@ concept: "Binary Search"
 summary: "정렬된 데이터에서 탐색 범위를 절반씩 줄여 O(log n)에 원하는 값을 찾는 방법과 그 복잡도 증명, lower bound·upper bound, 경계 조건 실수, 삼분할이 빠르지 않은 이유, 순차 탐색과 어느 쪽을 고를지."
 tags: ["algorithm", "search", "binary-search", "python"]
 source: mixed
-date: "2026-10-14"
-sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+date: "2026-11-20"
+sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://jih3508.tistory.com/320"]
 ---
 
 > 순차 탐색과 고르는 기준은 하버드 CS50(부스트코스) 4강(알고리즘)과 고무오리 CS 스터디의 CS50 정리 노트를 바탕으로 보강했다.
 > 복잡도 증명, lower bound·upper bound, 경계 조건의 영향, 삼분할 비교는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(손코딩) 질문이 묻는 개념으로 보강했다.
+> 삽입 위치와 lower bound의 관계는 「[35. Search Insert Position](https://jih3508.tistory.com/320)」(2026.11) 풀이로 보강했다.
 
 ![순차 탐색과 이분 탐색 비교](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/05-%EC%9D%B4%EB%B6%84-%ED%83%90%EC%83%89-Binary-Search-.assets/binary-and-linear-search-animations.gif)
 
@@ -120,6 +121,8 @@ def upper_bound(a, x):                 # 조건만 <= 로 바꾼다
             hi = mid
     return lo
 ```
+
+**삽입 위치는 lower bound다.** 「정렬을 깨지 않고 x를 넣을 자리」(LeetCode 35 Search Insert Position)는 x 이상인 첫 위치이므로 위 `lower_bound`가 그대로 답이다. 닫힌 구간 `while lo <= hi`로 짜도 같다. `a[mid] < x`면 `lo = mid + 1`, 아니면 `hi = mid - 1`로 줄이면 루프 내내 「`lo` 왼쪽은 모두 x보다 작고 `hi` 오른쪽은 모두 x 이상」이 유지되고, 끝나면 `hi = lo - 1`이 되어 `lo`가 삽입 위치다. 이때 `hi`를 돌려주면 한 칸 왼쪽이 된다.
 
 원하는 수가 여러 번 나오는 배열에서 그 위치를 모두 찾는 문제는 배열이 정렬돼 있으면 `range(lower_bound(a, x), upper_bound(a, x))`로 O(log n + 개수)에 끝난다. 정렬돼 있지 않고 한 번만 찾는다면 처음부터 끝까지 한 번 훑으며 같은 값의 인덱스를 모으는 O(n)이 최선이다(100만 개면 100만 번 비교). 정렬은 O(n log n)이라 더 비싸고 원래 인덱스도 잃는다. 같은 배열에서 여러 값을 반복해 찾는다면 한 번 훑어 값 → 인덱스 목록 해시 맵을 만들어 두면 질의마다 O(1)이다.
 
