@@ -4,11 +4,11 @@ concept: "Prompt Cheat Sheet"
 summary: "목표·맥락·과제·제약·형식·예시를 채우면 프롬프트가 된다. 어떤 LLM에나 통하는 원칙(분명하게, 이유를 붙여, 예시로 보여 주고, 구조를 나누고, 금지 대신 할 일을), 앱에 넣는 프롬프트의 구성 요소, 제로샷·퓨샷·생각의 사슬·자기 성찰 기법, 역할·어조·형식을 골라 끼우는 예시, 글의 AI 티를 줄이는 문체 규칙, 결과를 크게가 아니라 깊게 만드는 야심의 네 방향(속도·고도·깊이·범위)을 한 장으로 정리했다."
 tags: ["ai", "llm", "prompting"]
 source: other
-date: "2026-11-05"
-sources: ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices", "https://web.dev/learn/ai/prompt-engineering", "https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/"]
+date: "2026-11-20"
+sources: ["https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices", "https://web.dev/learn/ai/prompt-engineering", "https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/", "https://github.com/ayghri/i-have-adhd"]
 ---
 
-> SNS에서 돌던 이미지 「ChatGPT Cheat Sheet」를 뼈대로, Anthropic의 [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)로 원칙을 확인하고, 구성 요소와 기법은 web.dev 「[Learn AI](https://web.dev/learn/ai/prompt-engineering)」 강좌의 프롬프트 엔지니어링 모듈로 보강해 재구성한 노트다. 「더 깊게 시키기」는 Felix Rieseberg의 「[How to be more ambitious: A tutorial for humans with models](https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/)」(2026.10)를 바탕으로 했다.
+> SNS에서 돌던 이미지 「ChatGPT Cheat Sheet」를 뼈대로, Anthropic의 [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)로 원칙을 확인하고, 구성 요소와 기법은 web.dev 「[Learn AI](https://web.dev/learn/ai/prompt-engineering)」 강좌의 프롬프트 엔지니어링 모듈로 보강해 재구성한 노트다. 「더 깊게 시키기」는 Felix Rieseberg의 「[How to be more ambitious: A tutorial for humans with models](https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/)」(2026.10)를 바탕으로 했다. 답 형식 규칙은 오픈소스 스킬 「[i-have-adhd](https://github.com/ayghri/i-have-adhd)」를 참고했다.
 
 ## 핵심: 맥락 없는 신입에게 일을 맡기듯
 
@@ -67,6 +67,19 @@ LLM이 쓴 글에는 읽는 사람이 바로 알아채는 버릇이 있다. 영�
 | 다듬기 단계 분리 | 쓰는 프롬프트와 다듬는 프롬프트(스킬)를 나눈다. 다듬기 단계에는 금지 표현 목록과 바꿀 표현을 함께 준다 | 한 번에 다 시킬 때보다 버릇이 덜 남는다 |
 
 금지 표현 목록만 주면 비슷한 다른 상투어로 바꿔 쓰기 쉽다. 위 「금지 대신 할 일을」 원칙대로 **바꿔 쓸 방법**(쉼표·괄호로 잇기, 문장 나누기)까지 적는다. 한국어 글의 문장 규칙은 [[eco-writing-rules|에코의 글쓰기 규칙]]과 [[persuasive-writing|글쓰기 원칙: 구조, 설득, 문장력]]에 있다.
+
+### 한국어 답이 장황하고 읽기 어려울 때
+
+문법은 맞는데 번역투에 군더더기가 많아 읽히지 않는 한국어 출력은 모델 탓만은 아니다. 순서대로 점검한다.
+
+| 순서 | 할 일 |
+| --- | --- |
+| 1. 순정 상태로 비교 | 쌓아 둔 커스텀 지침·하네스·플러그인을 끄고 같은 질문을 다시 던진다. 지침끼리 충돌하거나 지침이 문체를 끌고 가는 경우가 많다 |
+| 2. 공통 규칙만 남긴다 | 공개된 한국어 윤문 규칙이 여럿 있다. 서로 겹치는 핵심만 뽑아 짧은 지침 하나로 만든다. 규칙을 다 합치면 오히려 길고 모순된다 |
+| 3. 단계별로 고치게 한다 | 초안을 먼저 쓰게 한 뒤 단어 → 문장 → 글 구조 → 흐름 순서로 한 단계씩 다시 고치게 한다 |
+| 4. 내 문체를 참고시킨다 | 개인화 설정이나 지침에 내가 쓴 글을 예시로 주면 어휘와 문장 길이가 그쪽으로 끌려온다 |
+
+답의 **형식**을 고정하는 지침도 효과가 크다. 오픈소스 스킬 [i-have-adhd](https://github.com/ayghri/i-have-adhd)는 다음 행동을 첫 줄에, 여러 단계는 번호로, 목록은 5개까지, 인사·요약·맺음말은 빼고, 끝에는 구체적인 다음 행동 하나를 두게 한다. 모델이 바뀌어도 이런 형식 규칙과 프로젝트의 설계 패턴·구조를 문서로 적어 두면 결과의 품질 편차가 줄어든다.
 
 ## 앱에 넣는 프롬프트: 구성 요소
 
@@ -140,7 +153,7 @@ Input: "This is terrible. I want a refund."          Output: { "label": "negativ
 - 규칙에는 이유를 붙이고, 금지보다 할 일을 적는다.
 - 예시는 형식을 맞추는 가장 확실한 방법이다.
 - 역할·어조·형식은 칸을 정해 두고 값만 바꿔 끼운다.
-- 글의 AI 티는 오웰 규칙·ASD-STE100 같은 이름 있는 문체 규칙과 별도 다듬기 단계로 줄인다.
+- 글의 AI 티는 오웰 규칙·ASD-STE100 같은 이름 있는 문체 규칙과 별도 다듬기 단계로 줄인다. 한국어 답이 장황하면 지침을 끄고 비교한 뒤, 겹치는 윤문 규칙만 남기고 단계별로 고치게 한다.
 - 빠르게 하는 데서 멈추지 말고 고도(결과를 맡기기), 깊이(전문가의 도구와 바깥 검증), 범위(여러 분야의 기법)로 요구를 넓힌다.
 - 기법은 제로샷 기준선에서 시작해 퓨샷 → 생각의 사슬 → 자기 성찰 순으로 필요한 만큼만 더한다.
 - AI는 마음을 읽지 못한다. 원하는 것을 말로 꺼내 놓는 만큼 답이 좋아진다.

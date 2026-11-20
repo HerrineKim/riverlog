@@ -1,17 +1,18 @@
 ---
 title: "DevSecOps와 클라우드 보안: 개발 흐름에 보안 넣기, 위협과 대응"
 concept: "DevSecOps"
-summary: "DevSecOps는 보안 검사를 출시 직전의 관문이 아니라 개발·빌드·배포·운영 전 과정에 자동화해 넣는 방식이다. 위협 모델링, 코드·의존성·이미지·IaC 자동 검사, 비밀 관리, 지속 모니터링과 취약점 관리가 핵심이고, 특히 SSH 키·토큰·인증서·자격 증명 같은 비밀은 저장소에 넣지 않고 비밀 관리 도구로 짧게 발급해 쓴다. 클라우드에서 생기는 관리적 위협(남용, 내부자, 섀도 IT, APT)과 기술적 위협(API, 가상화 탈출, 계정 탈취, 유출·손실, DoS), CVE·CCE 점검과 제로데이·원데이·올드데이, 확장성을 기준으로 한 보안 솔루션 배치, 배포 파일 변조형 공급망 공격의 예방과 감염 대응 절차도 다룬다."
+summary: "DevSecOps는 보안 검사를 출시 직전의 관문이 아니라 개발·빌드·배포·운영 전 과정에 자동화해 넣는 방식이다. 위협 모델링, 코드·의존성·이미지·IaC 자동 검사, 비밀 관리, 지속 모니터링과 취약점 관리가 핵심이고, 특히 SSH 키·토큰·인증서·자격 증명 같은 비밀은 저장소에 넣지 않고 비밀 관리 도구로 짧게 발급해 쓴다. 클라우드에서 생기는 관리적 위협(남용, 내부자, 섀도 IT, APT)과 기술적 위협(API, 가상화 탈출, 계정 탈취, 유출·손실, DoS), CVE·CCE 점검과 제로데이·원데이·올드데이, 확장성을 기준으로 한 보안 솔루션 배치, 배포 파일 변조형 공급망 공격과 패키지 레지스트리 악성 버전의 예방과 감염 대응 절차도 다룬다."
 tags: ["devops", "security", "ci-cd", "automation", "cloud"]
 source: other
-date: "2026-11-13"
-sources: ["https://bytebytego.com/guides/what-is-devsecops", "https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms", "https://news.hada.io/weekly/202644", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)", "https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5", "https://xint.io/ko/blog/nginx2root-remote-code-execution", "https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities", "https://www.cyberkendra.com/2026/11/cve-2026-114938-pre-auth-rce-flaw-in-java-17-puts-servers-at-risk.html"]
+date: "2026-11-20"
+sources: ["https://bytebytego.com/guides/what-is-devsecops", "https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms", "https://news.hada.io/weekly/202644", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)", "https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5", "https://xint.io/ko/blog/nginx2root-remote-code-execution", "https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities", "https://www.cyberkendra.com/2026/11/cve-2026-114938-pre-auth-rce-flaw-in-java-17-puts-servers-at-risk.html", "https://www.mstoday.co.kr/news/articleView.html?idxno=200515", "https://github.com/NginxProxyManager/nginx-proxy-manager/releases/tag/v2.17.1"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[What is DevSecOps?](https://bytebytego.com/guides/what-is-devsecops)」, 「[Top 4 Forms of Authentication Mechanisms](https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms)」를 바탕으로 재구성한 노트다.
 > 클라우드의 보안 위협과 대응, 보안 솔루션 배치는 고려사이버대학교 「클라우드 컴퓨팅」(2023-2학기) 강의 내용으로 보강했다. 취약점 대응의 운영 부담은 GeekNews Weekly의 「[취약점은 쏟아지는데, 방어하는 사람은 지쳐갑니다](https://news.hada.io/weekly/202644)」(2026.10)로 보강했다.
 > 「공지를 받고 움직이는 순서」의 사례는 Xint의 「[nginx2root](https://xint.io/ko/blog/nginx2root-remote-code-execution)」(2026.11), Wiz의 「[NGINX HTTP/2 RCE vulnerabilities](https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities)」(2026.11), Cyber Kendra의 「[CVE-2026-114938](https://www.cyberkendra.com/2026/11/cve-2026-114938-pre-auth-rce-flaw-in-java-17-puts-servers-at-risk.html)」(2026.11) 분석으로 보강했다.
 > 공급망 공격 사례와 감염 대응은 「[NIKKE PC launcher compromise](https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5)」(2026.11) 분석 문서로 보강했다.
+> 레지스트리 악성 버전 사례는 MS투데이의 「[MS, AI 개발도구에 악성코드…계정 탈취 우려](https://www.mstoday.co.kr/news/articleView.html?idxno=200515)」(2026.11), 컨테이너 내장 nginx 패치는 Nginx Proxy Manager의 「[v2.17.1 릴리스 노트](https://github.com/NginxProxyManager/nginx-proxy-manager/releases/tag/v2.17.1)」로 보강했다.
 
 ## DevSecOps란
 
@@ -65,6 +66,7 @@ flowchart LR
 - 가능하면 오래 사는 키 대신 **짧게 발급되는 자격 증명**을 쓴다. 예: CI가 클라우드에 접근할 때 저장된 액세스 키 대신 OIDC 연동으로 실행마다 임시 자격 증명을 받는다.
 - 누가 언제 어떤 비밀을 읽었는지 감사 로그를 남긴다.
 - **사람끼리 비밀을 건넬 때도 도구를 쓴다.** API 키를 메신저 DM이나 메일로 보내면 대화 기록에 평문으로 남는다. 1Password 같은 팀용 비밀번호 관리자의 공유 금고를 쓰고, 직접 운영해야 하면 Bitwarden 호환 서버를 셀프 호스팅한다.
+- **어쩔 수 없는 공용 계정은 관리자에 넣고 2단계 인증을 건다.** 외부 서비스의 공용 계정도 TOTP 시드를 비밀번호 관리자에 함께 넣으면 여러 사람이 2단계 인증을 유지한 채 쓸 수 있다. KeePass(`.kdbx`) 파일을 사내 NAS에 두고 나눠 쓰는 방식도 있지만, 파일 하나를 여럿이 동시에 고치면 변경이 덮이거나 파일이 깨질 수 있다. 공유 스프레드시트나 AI 코딩 도구의 프롬프트·설정 파일에 계정 정보를 적는 것은 평문 공개와 같다. 가장 위험한 것은 **2단계 인증을 지원하지 않는 서비스의 공용 계정**이니, 이런 계정은 접근할 사람을 줄이고 비밀번호를 자주 바꾼다.
 
 ### 침해를 전제로 설계한다
 
@@ -142,7 +144,7 @@ AI가 취약점을 찾고 악용하는 비용을 낮추면서, 공격자와 방�
 | 단계 | 할 일 | 놓치기 쉬운 점 |
 | --- | --- | --- |
 | 1. 공지 확인 | 벤더 보안 권고(Oracle의 Critical Patch Update, F5·nginx 보안 공지 등), 국내 공지는 KISA 보호나라의 보안공지, CVE 상세는 cve.org·NVD에서 본다 | 같은 취약점이라도 기관마다 CVSS 버전과 점수가 다를 수 있다. 벡터 문자열로 공격 조건을 읽는다([[security#CVSS 벡터 문자열 읽기\|CVSS 벡터 문자열 읽기]]) |
-| 2. 영향 판단 | 위 표처럼 기능 활성화·버전·플랫폼 조건을 맞춰 본다 | **배포판 패키지는 수정 사항만 백포트하고 원래 버전 번호를 유지하는 경우가 많다.** `nginx -v` 같은 버전 문자열만으로 패치 여부를 판단하지 말고 배포판의 보안 권고와 패키지 변경 기록을 본다 |
+| 2. 영향 판단 | 위 표처럼 기능 활성화·버전·플랫폼 조건을 맞춰 본다 | **배포판 패키지는 수정 사항만 백포트하고 원래 버전 번호를 유지하는 경우가 많다.** `nginx -v` 같은 버전 문자열만으로 패치 여부를 판단하지 말고 배포판의 보안 권고와 패키지 변경 기록을 본다. 호스트에 설치한 서버만 보지 말고 **컨테이너 이미지에 내장된 사본**도 찾는다. 예를 들어 Nginx Proxy Manager는 OpenResty(nginx 기반) 이미지 위에서 돌아서, 호스트 패치와 별개로 수정이 백포트된 이미지 릴리스로 올려야 한다 |
 | 3. 임시 완화 | 패치가 늦으면 취약한 기능을 끈다. 웹 서버라면 HTTP/2를 끄고(`http2 off;`), JVM이라면 문제의 내장 최적화(intrinsic)를 끄는 실행 옵션을 쓰는 식이다. 쓰지 않는 서비스(예: 프린터 탐색 데몬 `cups-browsed`)는 아예 끈다 | 완화책은 **그 기능에 걸린 취약점만** 막는다. 같은 공지에 묶인 다른 CVE(HTTP/3, DNS 리졸버, 메일 프록시 등)는 각각 조건을 따로 확인한다 |
 | 4. 패치 | 수정 버전으로 올린다 | 설정 리로드는 실행 중인 바이너리를 바꾸지 않는다. **프로세스를 재시작**해야 새 바이너리가 올라온다. 리로드 뒤에도 옛 워커가 남아 있지 않은지 확인한다 |
 | 5. 사후 점검 | 패치 전 기간의 로그에서 워커 비정상 종료, 낯선 자식 프로세스 같은 악용 흔적을 찾는다 | 취약한 프로세스 하나가 뚫리면 커널 권한 상승 취약점과 엮여 호스트·컨테이너 탈출로 번질 수 있다 |
@@ -203,12 +205,27 @@ flowchart TB
 4. **기계용 비밀을 교체한다.** API 토큰, SSH 키, 개발 도구 자격 증명을 폐기하고 새로 발급한다(위 「기계가 쓰는 자격 증명」). 지갑은 새 시드로 옮긴다.
 5. **시스템을 복구한다.** 지속성(자동 실행 등록, 레지스트리 키, 심어진 DLL)을 지우거나, 가장 확실하게는 OS를 다시 설치한다. 백신이 놓치는 경우도 있다.
 
+### 패키지 레지스트리에 악성 버전이 올라올 때
+
+배포 CDN 대신 **패키지 레지스트리(npm, PyPI)에 정상 패키지의 악성 버전**이 올라오는 경우도 같다. 2026년 11월 PyPI의 `agent-framework`(Microsoft Agent Framework) 1.26.1·1.26.2가 그런 사례다. 패키지 관리 권한에 낯선 계정이 추가된 뒤 두 버전이 연달아 올라왔고, 격리되기까지 짧은 시간 동안 내려받을 수 있었다.
+
+- **설치만 해도 실행된다.** 악성 코드는 site-packages의 `.pth` 파일에 들어 있었다. 파이썬은 인터프리터가 시작할 때 `.pth` 파일의 `import`로 시작하는 줄을 실행하므로, 그 패키지를 import하지 않아도 **같은 환경에서 파이썬을 실행하기만 하면** 코드가 돈다. npm의 설치 스크립트(→ [[package-managers#공급망 보안 기본값|공급망 보안 기본값]])와 같은 통로다.
+- **노리는 것은 개발 환경의 비밀이다.** 환경 변수, `.env`, 클라우드·GitHub·Docker·npm·pip 자격 증명 파일을 모아 외부 웹훅 주소로 보냈고, 뒤 버전은 CI에서 GitHub Actions OIDC 토큰까지 노렸다.
+
+| 단계 | 할 일 |
+| --- | --- |
+| 평소 | lock 파일로 버전을 고정하고, 막 올라온 버전은 바로 받지 않는다. 공개 후 일정 시간이 지난 버전만 설치하게 하는 설정(pnpm `minimumReleaseAge`, uv `exclude-newer`)을 쓴다. 의존성의 관리자 변경 같은 이상 신호를 알림으로 받는다 |
+| 확인 | 개발 PC·CI·이미지에 악성 버전이 설치됐는지 찾고, 권고문이 알려 준 악성 파일 이름을 검색한다 |
+| 제거 | 악성 버전을 지우고 마지막 정상 버전(이 사례는 1.26.0)으로 고정한다. 오염된 가상 환경·컨테이너는 고치지 말고 새로 만든다 |
+| 교체 | 그 환경에서 읽을 수 있던 클라우드·API·저장소·레지스트리·CI 비밀을 모두 폐기하고 다시 발급한다. 이미 발급된 클라우드 토큰은 폐기 전까지 유효하다 |
+| 추적 | 설치 시점 이후의 클라우드 로그인 기록, 프록시·DNS 로그에서 외부 수집 주소로 나간 트래픽을 확인한다 |
+
 ## 정리
 
 - DevSecOps는 보안 검사를 마지막 관문에서 파이프라인 전체로 옮기고 자동화한다.
 - 설계는 위협 모델링, 코드는 SAST·시크릿 스캔, 빌드는 SCA·이미지 스캔, 배포는 IaC 검사, 운영은 모니터링과 취약점 관리가 맡는다.
 - 기계용 자격 증명(SSH 키, 토큰, 인증서, 접속 정보)은 저장소 밖에서 주입하고, 짧게 발급하고, 유출되면 즉시 교체한다.
-- 공급망 공격은 믿고 받는 파일을 변조한다. 배포하는 쪽은 무결성 검증과 배포 경로 최소 권한으로 막고, 당한 쪽은 증거 보존 → 격리 → 깨끗한 기기에서 비밀번호·세션·토큰 교체 순서로 대응한다.
+- 공급망 공격은 믿고 받는 파일과 패키지를 변조한다. 배포하는 쪽은 무결성 검증과 배포 경로 최소 권한으로 막고, 받는 쪽은 버전 고정과 새 버전 유예로 줄이고, 당한 쪽은 증거 보존 → 격리 → 깨끗한 기기에서 비밀번호·세션·토큰 교체 순서로 대응한다.
 - 클라우드 사고 대부분은 설정 오류와 권한 관리 실수에서 나온다. 관리적 위협과 기술적 위협을 나눠 대응하고, 패치(CVE)와 설정 점검(CCE)을 계속 돌리고, 보안 솔루션은 확장성을 먼저 본다.
 
-관련 노트: [[ci-cd|CI/CD]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]], [[api-security|API 보안 체크리스트]], [[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[aws-cloud-basics|클라우드 기초와 AWS]], [[kubernetes-security|쿠버네티스 보안]], [[aws-vpc-networking|AWS VPC 네트워크 구성]]
+관련 노트: [[ci-cd|CI/CD]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]], [[api-security|API 보안 체크리스트]], [[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[aws-cloud-basics|클라우드 기초와 AWS]], [[kubernetes-security|쿠버네티스 보안]], [[aws-vpc-networking|AWS VPC 네트워크 구성]], [[security-career-paths|보안 직무의 갈래]]

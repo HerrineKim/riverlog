@@ -4,7 +4,7 @@ concept: "Side Project"
 summary: "꾸준히 하나는 굴리기, 내 불편에서 아이디어 찾기, 틈새 겨냥, 작게 시작, 1~2주 단위 기한, 코딩 전 랜딩 페이지로 검증하기까지 사이드 프로젝트를 시작하고 유지하는 원칙. 내가 쓸 것을 내가 만드는 출발점과 불편 일기, MVP·MMP·MLP로 나눈 검증, 빌드 인 퍼블릭까지 다룬다."
 tags: ["career", "growth", "productivity", "side-project"]
 source: other
-date: "2026-11-16"
+date: "2026-11-20"
 sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM", "https://webactually.com/2015/04/17/%ed%95%9c%ea%b3%84%ec%97%90%ec%84%9c-%ec%9d%b4%ec%96%b4%ec%a7%84-%eb%82%98%ec%9d%98-%ec%95%b1%ec%8a%a4%ed%86%a0%ec%96%b4-%ec%84%b1%ea%b3%b5%ea%b3%bc-%ec%8b%a4%ed%8c%a8-%ec%9d%b4%ec%95%bc%ea%b8%b0/", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://techblog.woowahan.com/2590/", "https://wormwlrm.github.io/2019/10/13/Kwakcheolyong-Image-Creator-Development-Story.html", "https://wormwlrm.github.io/2022/05/07/Bamboo-Forest-Slack-App.html", "https://cho.sh/ko/w/5ADC58", "https://api.slack.com/interactivity/handling"]
 ---
 
@@ -107,6 +107,12 @@ flowchart TB
 - 상대 서비스에 도움이 된다는 논리나 무료·오픈소스라는 사실이 상표 문제를 막아 주지 않는다. 큰 회사는 브랜드 보호 업체로 침해를 체계적으로 찾는다.
 - 경고장에는 짧은 대응 기한이 붙는 경우가 많다. 받으면 바로 검토하고, 판단이 필요하면 전문가와 상담한다.
 - 공개 배포 전에 이름을 상표 검색(한국은 KIPRIS, 미국은 USPTO)으로 확인하고, 연동 대상의 브랜드 가이드라인을 읽는다.
+
+### 캐릭터·이미지는 권리를 확인하고 넣는다
+
+- **인기 캐릭터나 남의 이미지를 배포하는 앱에 넣지 않는다.** 권리자의 허락 없이 넣으면 무료 배포여도 저작권·상표권 침해가 되고, 일부 권리자는 무단 사용을 특히 엄격하게 단속한다.
+- 개인 취향의 이미지가 필요하면 배포 파일에는 넣지 않고 **사용자가 자기 이미지를 직접 등록하는 기능**을 둔다.
+- 개발 중에 테스트용으로 넣은 이미지·폰트·음원도 공개 전에 빼거나 라이선스를 확인한다. 저장소 히스토리에 남은 것도 공개 저장소라면 배포한 것과 같다.
 
 ### 회사에 다니면 겸업 규정을 먼저 본다
 
