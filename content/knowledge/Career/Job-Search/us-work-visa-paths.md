@@ -1,11 +1,11 @@
 ---
 title: "한국 개발자가 미국에서 일하는 경로: 비자가 먼저다"
 concept: "US Work Visa"
-summary: "미국 취업의 가장 큰 벽은 영어나 실력이 아니라 취업 비자다. H-1B 추첨의 구조와 2026년부터 바뀐 임금 가중 추첨, 미국 학위 → OPT → H-1B, 캐나다 지사 → L-1 전근, 영주권 같은 현실적인 경로와 지금 할 수 있는 준비를 정리했다."
+summary: "미국 취업의 가장 큰 벽은 영어나 실력이 아니라 취업 비자다. H-1B 추첨의 구조와 2026년부터 바뀐 임금 가중 추첨, 미국 학위 → OPT → H-1B, 캐나다 지사 → L-1 전근 같은 현실적인 경로, 취업 영주권(PERM, EB-2·EB-3, NIW, EB-1C)과 가족 초청의 구조, 지금 할 수 있는 준비를 정리했다."
 tags: ["career", "job-search", "us-career", "visa"]
 source: other
-date: "2026-10-21"
-sources: ["https://velog.io/@diogenes0803/미국-개발자가-알려주는-미국으로-가는-가장-현실적인-방법", "https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations", "https://www.uscis.gov/newsroom/alerts/h-1b-faq", "https://www.gtlaw.com/en/insights/2026/2/uscis-finalizes-wage-weighted-h-1b-cap-selection-rule-effective-feb-27-2026", "https://relocate.me/blog/job-relocation/landing-a-tech-job-abroad-7-simple-tips/", "https://www.ellis.com/resources/h1b-100k-fee-extended-2027"]
+date: "2026-11-21"
+sources: ["https://velog.io/@diogenes0803/미국-개발자가-알려주는-미국으로-가는-가장-현실적인-방법", "https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations", "https://www.uscis.gov/newsroom/alerts/h-1b-faq", "https://www.gtlaw.com/en/insights/2026/2/uscis-finalizes-wage-weighted-h-1b-cap-selection-rule-effective-feb-27-2026", "https://relocate.me/blog/job-relocation/landing-a-tech-job-abroad-7-simple-tips/", "https://www.ellis.com/resources/h1b-100k-fee-extended-2027", "https://www.uscis.gov/green-card/green-card-eligibility/green-card-for-employment-based-immigrants", "https://www.uscis.gov/working-in-the-united-states/permanent-workers/employment-based-immigration-second-preference-eb-2", "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html"]
 ---
 
 > 시애틀의 개발자 Hojune Yoo의 「[미국 개발자가 알려주는 미국으로 가는 가장 현실적인 방법](https://velog.io/@diogenes0803/미국-개발자가-알려주는-미국으로-가는-가장-현실적인-방법)」(2022.06)을 바탕으로, 비자 제도는 USCIS 발표와 이민법 자료로 2026년 기준으로 고쳐 재구성한 노트다. 해외에서 지원하는 요령은 Relocate.me의 「[Landing a (tech) job abroad: 7 simple tips](https://relocate.me/blog/job-relocation/landing-a-tech-job-abroad-7-simple-tips/)」로 보강했다.
@@ -50,6 +50,43 @@ H-1B는 학사 이상 학위(또는 동등 경력)가 필요한 전문직 비자
 
 온라인 석사는 비자를 주지 않는다. 다만 미국 기관의 석사 학위라 H-1B 석사 추가 쿼터 대상이 될 수 있다. 자세한 내용은 [[georgia-tech-omscs|조지아텍 온라인 석사: OMSCS와 OMSA]]에 있다.
 
+## 영주권 경로
+
+비자는 회사에 묶인 신분이라 그동안은 이직과 구직이 모두 제약을 받는다. 영주권(green card)이 목표라면 **가장 확실한 경로를 일찍 정하는 것**이 중요하다. 어느 경로든 서류 접수부터 카드까지 수년이 걸린다.
+
+### 취업 영주권의 단계
+
+```mermaid
+flowchart LR
+  A["PERM 노동허가 (노동부)"] --> B["I-140 이민 청원 (USCIS)"]
+  B --> C["우선일(priority date) 도래 대기"]
+  C --> D["I-485 신분 조정 또는 영사 처리"]
+```
+
+- **PERM**은 「이 자리에 채용할 수 있는 미국인 노동자가 없다」를 회사가 구인 절차로 증명하는 단계다. 같은 직군에서 감원한 회사는 이 증명이 어려워 PERM 진행을 멈추기도 한다. 그래서 레이오프가 잦은 시기에는 회사 규모보다 **실제로 PERM을 진행하고 있는지**를 확인한다.
+- 회사마다 「입사 후 일정 기간 근무한 뒤 진행」 같은 사내 정책이 있다. 오퍼 단계에서 시작 시점과 비용 부담 주체를 물어 둔다.
+
+| 범주 | 대상 | PERM |
+| --- | --- | --- |
+| EB-2 | 석사 이상, 또는 학사 + 해당 분야 5년 이상 경력 | 필요 |
+| EB-2 NIW (국가 이익 면제) | 하는 일이 미국의 국가 이익에 상당한 가치가 있음을 본인이 입증. 고용주 없이 본인이 청원한다 | 면제 |
+| EB-3 | 학사 학위가 필요한 전문직, 2년 이상 경력의 숙련직 | 필요 |
+| EB-1C | 다국적 기업의 관리자·임원. 해외 지사에서 최근 3년 중 1년 이상 관리직으로 일한 뒤 미국 지사로 옮긴 경우 | 면제 |
+
+- 한국 회사의 미국 법인으로 L-1(관리자는 L-1A)을 받아 옮긴 뒤 EB-1C나 PERM으로 영주권을 받는 경로가 많이 쓰인다. 다만 연봉 수준이 미국 테크 기업보다 낮은 경우가 많다.
+- NIW는 논문·특허·수상 같은 근거로 입증하지만 심사가 엄격해 승인을 장담하기 어렵다. 학위를 더 따는 것이 오히려 직무 범위를 좁혀 취업을 어렵게 할 수도 있다.
+
+### 가족 초청
+
+영주권자의 가족은 가족 초청 범주로 신청한다.
+
+| 범주 | 대상 |
+| --- | --- |
+| F2A | 영주권자의 배우자, 21세 미만 미혼 자녀 |
+| F2B | 영주권자의 21세 이상 미혼 자녀 |
+
+대기 기간은 국무부가 매달 내는 [Visa Bulletin](https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html)의 우선일로 정해진다. 범주, 출생 국가, 미국 안에서 신분 조정을 하는지 해외 영사관에서 처리하는지에 따라 몇 년씩 차이가 나므로 계획은 보수적으로 잡는다.
+
 ## 지금 할 수 있는 준비
 
 | 할 일 | 방법 |
@@ -65,6 +102,7 @@ H-1B는 학사 이상 학위(또는 동등 경력)가 필요한 전문직 비자
 - 미국 취업의 첫 관문은 실력이 아니라 비자다.
 - H-1B는 추첨이고, 2026년부터 연봉이 높을수록 유리한 가중 추첨이다. 해외 신규 신청 수수료는 소송 중이라 그때그때 확인한다.
 - 연고가 없다면 미국 학위 → OPT → H-1B, 또는 캐나다 지사 → L-1이 현실적이다.
+- 영주권은 PERM → I-140 → 신분 조정 순서로 수년이 걸린다. PERM을 실제로 진행하는 회사인지, EB-1C·NIW처럼 PERM이 면제되는 길이 있는지 일찍 확인한다.
 - 어느 길이든 실력이 기본이다. 코딩 인터뷰와 LinkedIn을 지금부터 준비한다.
 
 관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[australia-skilled-migration|한국 개발자가 호주에서 일하는 경로: 기술이민 세 갈래]], [[resume-writing|합격하는 영문 레주메 작성법]], [[georgia-tech-omscs|조지아텍 온라인 석사: OMSCS와 OMSA]], [[us-study-funding|미국 유학 학비 지원과 장학금]]
