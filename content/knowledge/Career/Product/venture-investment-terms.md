@@ -1,10 +1,10 @@
 ---
 title: "벤처투자의 논리와 투자계약 조항: 사전동의권, 풋옵션, 연대보증"
 concept: "Venture Investment Terms"
-summary: "VC는 7년 안팎의 펀드 수명과 LP에 대한 의무 안에서 움직인다. 그래서 돈이 급한 회사일수록 투자받기 어렵고, 모든 사업에 VC가 맞지도 않는다. 투자계약에서 창업자가 확인할 조항(사전동의권, 주식매수청구권, 상환권, 리픽싱, 연대보증·위약벌)과 2026년 표준계약서 개정, 자기주식 소각 의무, K-GAAP·K-IFRS 차이, 매각 준비를 정리한다."
+summary: "VC는 7년 안팎의 펀드 수명과 LP에 대한 의무 안에서 움직인다. 그래서 돈이 급한 회사일수록 투자받기 어렵고, 모든 사업에 VC가 맞지도 않는다. 투자계약에서 창업자가 확인할 조항(사전동의권, 주식매수청구권, 상환권, 리픽싱, 연대보증·위약벌)과 2026년 표준계약서 개정, 자기주식 소각 의무, K-GAAP·K-IFRS 차이, 매각 준비, 2021년 과열에서 혹한기로 이어진 투자 사이클을 정리한다."
 tags: ["startup", "investment", "business", "career"]
 source: other
-date: "2026-11-12"
+date: "2026-11-21"
 sources: ["https://outstanding.kr/understandingvc20260720", "https://outstanding.kr/foundersvc20261029", "https://outstanding.kr/vc20260428", "https://outstanding.kr/zero20260224", "https://outstanding.kr/drypowder20260930", "https://outstanding.kr/coldmail20260818", "https://outstanding.kr/codebox20260220", "https://outstanding.kr/founderrisk20260306", "https://outstanding.kr/venturecon20260716", "https://outstanding.kr/newcontract20260824", "https://outstanding.kr/guarantee20260907", "https://outstanding.kr/shareretirement20260401", "https://outstanding.kr/kgaapvskifrs20260303", "https://outstanding.kr/selling20260916"]
 ---
 
@@ -40,6 +40,25 @@ sources: ["https://outstanding.kr/understandingvc20260720", "https://outstanding
 | 드라이파우더(Dry Powder) | 펀드 출자약정액 중 **아직 집행하지 않은 자금**. 잔여금이 많은 조합일수록 새 투자 여력이 있다. 국내 조합 정보는 한국벤처캐피탈협회 전자공시(DIVA)에서 본다 |
 | 콜드메일 | VC는 상시 공모 구조가 아니어서 네트워크가 없으면 대표 메일로 보내게 된다. 읽히기는 하지만 바로 검토로 이어지는 일은 드물다. **소개(레퍼럴)** 경로를 함께 만든다 |
 | IR 피칭의 목표 | 말을 유창하게 하는 것이 아니라 몇 분 안에 사업을 투자자의 언어로 번역해 **다음 미팅을 잡는 것**이다. 자료 구성은 [[investor-ir-deck\|투자자가 보는 IR 자료]]에 있다 |
+
+## 투자 사이클: 2021년 과열과 이후의 혹한기
+
+벤처투자는 금리와 유동성을 따라 크게 출렁인다. 2021~2023년이 대표적인 한 바퀴다.
+
+```mermaid
+timeline
+  title 2021년 과열에서 투자 혹한기까지
+  2021 : 전 세계 벤처투자 6천억 달러대, 한국 벤처투자 약 7.7조 원으로 모두 사상 최대
+       : 8월·11월 한국은행 기준금리 인상
+       : 11월 미 연준 테이퍼링 시작, 나스닥 사상 최고치
+  2022 : 3월 연준 금리 인상 시작, 이후 빠르게 인상
+       : 기술주 급락, 후속 투자 위축
+  2023 : 투자 규모 급감, 투자 혹한기
+```
+
+- 과열기에는 시드·시리즈 A 단계에서도 1,000만 달러 이상을 받는 일이 흔했다. 높은 밸류에이션으로 받은 투자는 다음 라운드에서 그 값을 정당화해야 하는 부담이 된다.
+- **금리 인상 신호가 나왔는데도 돈이 계속 들어오는 시기는 과열의 끝물일 수 있다.** 2021년 하반기에 금리 인상과 테이퍼링이 시작됐지만 투자는 이어졌고, 본격적인 금리 인상과 함께 꺾였다.
+- 그래서 돈은 시장이 좋을 때 넉넉히 구해 두고, 다음 라운드까지 버틸 런웨이를 길게 잡는다. 금리가 자산 가격을 움직이는 원리는 [[asset-pricing-required-return|자산 가격의 형성]]에 있다.
 
 ## 투자계약에서 확인할 조항
 
@@ -96,4 +115,4 @@ sources: ["https://outstanding.kr/understandingvc20260720", "https://outstanding
 - K-IFRS 전환과 자기주식 처리처럼 회계·법 규정이 투자 구조에 영향을 준다.
 - 매각은 위기 때가 아니라 처음부터 준비한다.
 
-관련 노트: [[investor-ir-deck|투자자가 보는 IR 자료]], [[startup-engineering|초기 스타트업과 창업]], [[company-financial-check|비상장 회사 재무제표 찾아보기]], [[stock-options|스톡옵션]]
+관련 노트: [[investor-ir-deck|투자자가 보는 IR 자료]], [[asset-pricing-required-return|자산 가격의 형성]], [[startup-engineering|초기 스타트업과 창업]], [[company-financial-check|비상장 회사 재무제표 찾아보기]], [[stock-options|스톡옵션]]
