@@ -63,8 +63,8 @@ sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/b
 | `/permissions` | 허용·거부 규칙, 자동 모드 거부 기록 |
 | `/sandbox` | bash 샌드박스 켜기 |
 | `/statusline`, `/theme`, `/output-style`, `/color` | 상태줄, 테마, 출력 스타일(Explanatory·Learning), 세션 색 |
-| `/tui [default\|fullscreen]` | 깜빡임 없는 전체 화면 렌더링과 마우스 지원 |
-| `/keybindings`, `/terminal-setup`, `/vim` | 키 재매핑(라이브 리로드), Shift+Enter 줄바꿈 설정, Vim 모드 |
+| `/tui [classic\|fullscreen]` | 렌더러 고르기. `fullscreen`은 깜빡임 없는 전체 화면 렌더링과 마우스 지원, `classic`(v2.1.327 전에는 `default`)은 기존 렌더러 |
+| `/keybindings`, `/terminal-setup` | 키 재매핑(라이브 리로드), Shift+Enter 줄바꿈 설정. Vim 모드는 `/config`의 Editor mode에서 켠다(`/vim` 명령은 v2.1.92에서 없어졌다) |
 | `/voice` | 음성 입력(스페이스바를 누른 채 말하기) |
 | `/import [codex\|gemini\|cursor]` | 다른 에이전트의 설정 가져오기 |
 | `/powerup` | 놓치기 쉬운 기능을 가르치는 대화형 강좌 |
@@ -73,7 +73,8 @@ sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/b
 
 | 명령 | 하는 일 |
 | --- | --- |
-| `/agents`, `/hooks`, `/skills` | 서브에이전트·훅·스킬 관리. `/skills`에서 `t`는 토큰순 정렬 |
+| `/hooks`, `/skills` | 훅 설정 보기, 스킬 목록. `/skills`에서 `t`는 토큰순 정렬 |
+| `/agents` | 서브에이전트는 Claude에게 만들어 달라고 하거나 `.claude/agents/`를 직접 고치라는 안내만 띄운다. 대화형 관리 화면은 v2.1.197까지 있었다 |
 | `/mcp [reconnect\|enable\|disable]` | MCP 서버 상태와 재연결 |
 | `/plugin`, `/reload-plugins`, `/reload-skills` | 플러그인 설치, 재시작 없이 다시 읽기 |
 | `/chrome`, `/ide` | Chrome 확장·IDE 연결 |
@@ -83,7 +84,7 @@ sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/b
 | 명령 | 하는 일 |
 | --- | --- |
 | `/init` | CLAUDE.md 초안. `CLAUDE_CODE_NEW_INIT=1`이면 스킬·훅까지 대화형으로 |
-| `/code-review [low…max\|ultra] [--fix] [--comment]` (`/review`) | diff·PR 리뷰. `ultra`는 클라우드 다중 에이전트 심층 리뷰(`/ultrareview`) |
+| `/code-review [low…max\|ultra] [--fix] [--comment] [--max-findings n]` (`/review`) | diff·PR 리뷰. `ultra`는 클라우드 다중 에이전트 심층 리뷰(`/ultrareview`) |
 | `/security-review` | 보안 리뷰 |
 | `/diff` | 변경 보기 |
 | `/team-onboarding` | 지난 30일 사용 기록으로 온보딩 가이드 생성 |
@@ -110,9 +111,9 @@ sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/b
 | 스킬 | 하는 일 |
 | --- | --- |
 | `loop` | 프롬프트·명령을 주기 실행 |
-| `batch` | 먼저 인터뷰한 뒤 작업을 수십~수천 개 worktree 에이전트로 퍼뜨린다. 대규모 마이그레이션용 |
+| `batch` | 코드베이스를 조사해 작업을 독립된 5~30개 단위로 쪼갠 계획을 보여 주고, 승인하면 단위마다 worktree 백그라운드 서브에이전트를 띄운다. 대규모 마이그레이션용 |
 | `simplify` | 리뷰 에이전트 4개를 병렬로 돌려 재사용·단순화·효율을 정리(버그 탐지는 안 함) |
-| `debug` | 실패한 명령·코드 디버그 |
+| `debug` | 세션 디버그 로그를 켜고 그 로그를 읽어 Claude Code 자체의 문제를 진단 |
 | `run`, `verify` | 실제 앱을 띄워 변경을 확인. 테스트·타입 검사로 대신하지 않는다 |
 | `fewer-permission-prompts` | 기록에서 반복 승인한 읽기 전용 명령을 찾아 allowlist를 추천 |
 | `skill-doctor` | 안 쓰는 스킬과 맥락 비용 보고 |
@@ -127,7 +128,7 @@ sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/b
 | --- | --- | --- |
 | 세션 | `--from-pr <번호\|URL>` | PR에 연결된 세션 재개 |
 | | `--fork-session` | 재개하면서 새 세션 ID로 분기 |
-| | `--remote`, `--teleport` | 웹 세션 만들기, 웹 세션을 로컬로 |
+| | `--cloud`, `--teleport` | 클라우드 세션 만들기(`--remote`는 폐기 예정 별칭), 클라우드 세션을 로컬로 |
 | | `-w, --worktree` | 새 worktree에서 시작 |
 | 모델 | `--model`, `--effort`, `--fallback-model` | |
 | 권한 | `--allowedTools`, `--disallowedTools`, `--tools ""` | 허용·제외, 내장 도구 전부 끄기 |
@@ -140,7 +141,7 @@ sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/b
 | 설정 | `--settings`, `--setting-sources user,project,local` | 한 세션만 덮어쓰기, 읽을 계층 고르기 |
 | 깨끗한 실행 | `--bare` | 로컬 CLAUDE.md·설정·MCP를 찾지 않는다. `--system-prompt`, `--mcp-config`, `--settings`로 명시하면 시작이 최대 10배 빠르다 |
 | | `--safe-mode` | CLAUDE.md·스킬·플러그인·훅·MCP 없이 시작(문제 격리용) |
-| 기타 | `--add-dir`, `--chrome`, `--ide`, `--debug "api,hooks"`, `--bg` | |
+| 기타 | `--add-dir`, `--chrome`, `--ide`, `--debug='api,hooks'`, `--bg` | |
 
 ```bash
 claude -p "summarize this codebase" --output-format=stream-json --verbose --bare
@@ -183,7 +184,7 @@ claude -p "summarize this codebase" --output-format=stream-json --verbose --bare
 | GitHub Actions | `.github/workflows/` | CI 안에서 `@claude` |
 | Chrome | `--chrome`, 확장 | 로그인된 실제 브라우저 조작 |
 | 딥 링크 | `claude-cli://open?repo=…&q=…` | 외부에서 프롬프트를 채워 세션 열기 |
-| 아티팩트 | `/share`, Artifact 도구 | 결과를 비공개 웹 페이지로 게시 |
+| 아티팩트 | Artifact 도구, `/artifacts` | 결과를 비공개 웹 페이지로 게시하고, 내 아티팩트 목록에서 다시 찾는다 |
 | 플러그인 | `/plugin`, 마켓플레이스 | 스킬·에이전트·훅·MCP·LSP를 묶어 배포 |
 | Agent SDK | npm·pip 패키지 | 같은 엔진으로 커스텀 에이전트 |
 

@@ -211,7 +211,7 @@ Claude Code의 동작(시작 모델, 묻지 않고 실행할 것, 읽으면 안 
 | 서브에이전트 | `CLAUDE_CODE_SUBAGENT_MODEL` | 서브에이전트 기본 모델(에이전트 정의의 `model`이 우선, 강제는 `_FORCE`) |
 | | `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS`(20), `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH`(3) | 동시 실행 수, 중첩 깊이 |
 | 추론 | `CLAUDE_CODE_EFFORT_LEVEL` | `/effort`와 `effortLevel`보다 우선 |
-| | `MAX_THINKING_TOKENS` | `0`이면 thinking 끔 |
+| | `MAX_THINKING_TOKENS` | `0`이면 thinking 끔. 늘 추론하는 모델(Opus 5.5·Sonnet 5.5·Haiku 5.5·Fable)에는 효과가 없다 |
 | 맥락 | `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` | 자동 압축 시점(기본 약 95%, 예 `50`) |
 | | `CLAUDE_CODE_DISABLE_1M_CONTEXT`, `DISABLE_AUTO_COMPACT` | |
 | MCP | `MCP_TIMEOUT`, `MCP_TOOL_TIMEOUT`, `MAX_MCP_OUTPUT_TOKENS`(25000) | 시작·실행 시간 제한, 출력 상한 |
