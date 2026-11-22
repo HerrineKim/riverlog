@@ -22,8 +22,11 @@ function subscribe(onChange: () => void) {
   };
 }
 
-/** Three-column dictionary layout whose sidebar can be collapsed; the choice is remembered per browser. */
-export default function EntryLayout({ sidebar, children, toc }: { sidebar: ReactNode; children: ReactNode; toc: ReactNode }) {
+/**
+ * Dictionary layout: a collapsible sidebar (the choice is remembered per browser) beside the page.
+ * The page brings its own TOC column, so this shell can live in a layout shared by every note.
+ */
+export default function EntryLayout({ sidebar, children }: { sidebar: ReactNode; children: ReactNode }) {
   const collapsed = useSyncExternalStore(subscribe, readCollapsed, () => false);
 
   function toggle() {
@@ -36,9 +39,7 @@ export default function EntryLayout({ sidebar, children, toc }: { sidebar: React
   return (
     <div
       className={`mx-auto grid w-full max-w-7xl gap-10 px-4 pt-8 pb-24 sm:px-6 ${
-        collapsed
-          ? "lg:grid-cols-[2rem_minmax(0,1fr)] xl:grid-cols-[2rem_minmax(0,1fr)_13rem]"
-          : "lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[15rem_minmax(0,1fr)_13rem]"
+        collapsed ? "lg:grid-cols-[2rem_minmax(0,1fr)]" : "lg:grid-cols-[15rem_minmax(0,1fr)]"
       }`}
     >
       <aside aria-label="사전 탐색" className="hidden lg:block">
@@ -66,11 +67,7 @@ export default function EntryLayout({ sidebar, children, toc }: { sidebar: React
         </div>
       </aside>
 
-      <main className="min-w-0">{children}</main>
-
-      <div className="hidden xl:block">
-        <div className="sticky top-20">{toc}</div>
-      </div>
+      <div className="min-w-0">{children}</div>
     </div>
   );
 }
