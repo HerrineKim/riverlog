@@ -116,6 +116,24 @@ useEffect(() => {
 }, [])
 ```
 
+정리 함수가 없으면 개발 모드 StrictMode의 마운트 → 언마운트 → 재마운트에서 interval이 **두 개** 돈다. 콜백이 props·state를 읽는 커스텀 훅으로 만들 때는 콜백을 deps에 넣으면 렌더링마다 interval이 다시 걸리므로, **최신 콜백을 `useRef`에 담아 두고 interval은 ref를 통해 부른다.**
+
+```jsx
+function useInterval(callback, delay) {
+  const saved = useRef(callback)
+  useEffect(() => {
+    saved.current = callback // 렌더링마다 최신 콜백으로 바꿔 둔다
+  })
+  useEffect(() => {
+    if (delay == null) return // null이면 멈춤
+    const id = setInterval(() => saved.current(), delay)
+    return () => clearInterval(id)
+  }, [delay])
+}
+```
+
+React 19.2부터는 ref 대신 `useEffectEvent`로 같은 일을 한다([[hooks#useEffectEvent: 반응하지 않을 값 분리|Hooks]]).
+
 정리 함수가 도는 시점은 [[lifecycle|컴포넌트 생명주기]]에 있다.
 
 ## 정리
