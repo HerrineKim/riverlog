@@ -84,11 +84,7 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 
 **기초·품질 속성**
 
-- [System Design Primer 개념 지도](/knowledge/dictionary/backend/architecture/system-design-primer): 설계 절차·확장성·CAP·캐시·DB·통신·보안 및 설계 사례 8개와 객체 설계 예시 6개
-- [시스템 설계: DNS·CDN·LB](/knowledge/dictionary/backend/architecture/system-design-primer-edge-delivery): 트래픽 전달·서비스 발견·에지 캐시
-- [시스템 설계: 통신·보안](/knowledge/dictionary/backend/architecture/system-design-primer-communication-security): HTTP/TCP/RPC/REST와 방어 원칙
-- [시스템 설계 사례 8개](/knowledge/dictionary/backend/architecture/system-design-primer-case-studies): Pastebin·피드·크롤러·캐시·랭킹·AWS 확장
-- [객체 설계 6개와 참고 자료](/knowledge/dictionary/backend/architecture/system-design-primer-ood-resources): OOD 문제·기업 아키텍처·학습 부록
+- [System Design Primer 개념 지도](/knowledge/dictionary/backend/architecture/system-design-primer): Primer의 주제(트레이드오프·DNS·CDN·LB·DB·캐시·비동기·통신·보안)와 설계 사례 8개, 객체 지향 설계 6개를 창고의 개념 노트로 잇는 지도
 - [웹 확장성의 구성 요소: 한 장으로 보는 웹 아키텍처](/knowledge/dictionary/backend/architecture/web-scalability-components): 3-Tier·MSA·확장의 세 축·캐시·메시지 큐
 - [시스템 설계의 품질 속성과 트레이드오프](/knowledge/dictionary/backend/architecture/system-design-fundamentals): 확장성·가용성·신뢰성·성능과 다섯 가지 트레이드오프
 - [시스템 설계의 선택지와 흔한 문제의 해법](/knowledge/dictionary/backend/architecture/system-design-choices): 수직·수평 확장, SQL·NoSQL, 배치·스트림, 일관성 수준 등 양자택일 모음

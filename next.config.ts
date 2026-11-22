@@ -137,6 +137,10 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/backend/architecture/system-design-primer-tradeoffs": "/knowledge/dictionary/backend/architecture/system-design-fundamentals",
   "/knowledge/dictionary/backend/architecture/system-design-primer-caching-async": "/knowledge/dictionary/backend/architecture/caching-strategies",
   "/knowledge/dictionary/life-and-learning/household-tips": "/knowledge/dictionary/life-and-learning",
+  "/knowledge/dictionary/backend/architecture/system-design-primer-edge-delivery": "/knowledge/dictionary/backend/architecture/system-design-primer",
+  "/knowledge/dictionary/backend/architecture/system-design-primer-communication-security": "/knowledge/dictionary/backend/architecture/system-design-primer",
+  "/knowledge/dictionary/backend/architecture/system-design-primer-case-studies": "/knowledge/dictionary/backend/architecture/system-design-primer",
+  "/knowledge/dictionary/backend/architecture/system-design-primer-ood-resources": "/knowledge/dictionary/backend/architecture/system-design-primer",
 };
 
 const nextConfig: NextConfig = {
