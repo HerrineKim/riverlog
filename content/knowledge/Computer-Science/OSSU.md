@@ -24,25 +24,16 @@ flowchart LR
 
 ## 하위 노트
 
-- [OSSU 입문과 도구](Computer-Science/OSSU/ossu-introduction-and-tools.md): 진입 경로·선수 수학·개발 도구
-- [핵심 프로그래밍](Computer-Science/OSSU/ossu-core-programming.md): 설계·언어·타입·테스트
-- [핵심 수학](Computer-Science/OSSU/ossu-core-mathematics.md): 미적분·이산수학·증명
-- [핵심 시스템](Computer-Science/OSSU/ossu-core-systems.md): 컴퓨터 구조·운영체제·네트워크
-- [핵심 이론](Computer-Science/OSSU/ossu-core-theory.md): 알고리즘·계산 복잡도
-- [핵심 보안](Computer-Science/OSSU/ossu-core-security.md): 보안 원리·취약점·안전한 코딩
-- [응용과 윤리](Computer-Science/OSSU/ossu-core-applications-ethics.md): 데이터베이스·ML·그래픽스·사회적 책임
-- [심화 프로그래밍·시스템](Computer-Science/OSSU/ossu-advanced-programming-systems.md): 컴파일러·병렬성·컴퓨터 구조 심화
-- [심화 이론·보안·수학](Computer-Science/OSSU/ossu-advanced-theory-security-math.md): 계산이론·웹 보안·선형대수
-- [최종 프로젝트](Computer-Science/OSSU/ossu-capstone-and-progress.md): 주제 선정·구현·검증·진도 기록
-- [추가 강좌 전체 목록](Computer-Science/OSSU/ossu-additional-courses.md): 분야별 대체·보충 강좌
-- [보충 책과 읽을거리](Computer-Science/OSSU/ossu-additional-readings.md): 분야별 서적·기사
-- [FAQ·이용·비용·커뮤니티](Computer-Science/OSSU/ossu-faq-community.md): 무료 접근의 조건과 공식 지원 채널
+- [OSSU 입문 과정과 이용 안내](Computer-Science/OSSU/ossu-introduction-and-tools.md): 단계 구성·선정 기준·선수 지식, Intro CS 강좌, 수강 순서, 비용과 청강 조건, 도움 요청
+- [OSSU Core CS: 필수 영역과 강좌](Computer-Science/OSSU/ossu-core-cs.md): 프로그래밍·수학·도구·시스템·이론·보안·응용·윤리 영역별 핵심 개념과 강좌 표
+- [OSSU Advanced CS와 최종 프로젝트](Computer-Science/OSSU/ossu-advanced-cs.md): 심화 프로그래밍·시스템·이론·정보보안·수학 선택 강좌, 최종 프로젝트 설계 흐름과 프로젝트형 강좌
+- [OSSU 보충 강좌와 읽을거리](Computer-Science/OSSU/ossu-extras.md): 정규 커리큘럼 밖의 분야별 보충 강좌와 추천 도서
 
 ## 원문 사용 시 주의
 
 - 강의 목록과 기간은 **원문에 제시된 계획치**다. 실제 개설·수강료·평가 접근은 각 제공처에서 확인한다.
-- 특히 [Coursera 관련 OSSU FAQ](https://github.com/ossu/computer-science/blob/8f8272b1d378d31494240aa1d667aa6b045c6552/FAQ.md#are-coursera-courses-free-to-access)는 무료 청강 축소를 설명하므로, 유료화된 강좌는 대체 링크를 우선 확인한다.
+- Coursera는 2025년 7월에 무료 청강을 없앴으므로([OSSU FAQ](https://github.com/ossu/computer-science/blob/8f8272b1d378d31494240aa1d667aa6b045c6552/FAQ.md#are-coursera-courses-free-to-access)), 목록의 Coursera 강좌는 대체 링크를 먼저 확인한다. 자세한 조건은 [[ossu-introduction-and-tools#비용과 접근 조건|비용과 접근 조건]]에 있다.
 - 정규 과목, 심화 선택, 선택형 언어별 보안 과목, 보충 강좌는 구분한다.
 - 이 정리의 원문 기준 커밋은 `8f8272b1d378`이다. [전체 소스 보기](https://github.com/ossu/computer-science/tree/8f8272b1d378d31494240aa1d667aa6b045c6552).
 
-관련 노트: [[ossu-introduction-and-tools|OSSU 입문]], [[ossu-core-systems|핵심 시스템]], [[ossu-core-theory|핵심 알고리즘 이론]]
+관련 노트: [[ossu-introduction-and-tools|OSSU 입문 과정과 이용 안내]], [[ossu-core-cs|OSSU Core CS]], [[ossu-advanced-cs|OSSU Advanced CS와 최종 프로젝트]]

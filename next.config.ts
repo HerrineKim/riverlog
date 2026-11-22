@@ -146,6 +146,18 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/algorithm/javascript-algorithms-strings-search-sorting": "/knowledge/dictionary/algorithm/javascript-algorithms-overview",
   "/knowledge/dictionary/algorithm/javascript-algorithms-traversal-graphs": "/knowledge/dictionary/algorithm/javascript-algorithms-overview",
   "/knowledge/dictionary/algorithm/javascript-algorithms-patterns-applications": "/knowledge/dictionary/algorithm/javascript-algorithms-overview",
+  "/knowledge/dictionary/computer-science/ossu/ossu-core-programming": "/knowledge/dictionary/computer-science/ossu/ossu-core-cs",
+  "/knowledge/dictionary/computer-science/ossu/ossu-core-mathematics": "/knowledge/dictionary/computer-science/ossu/ossu-core-cs",
+  "/knowledge/dictionary/computer-science/ossu/ossu-core-systems": "/knowledge/dictionary/computer-science/ossu/ossu-core-cs",
+  "/knowledge/dictionary/computer-science/ossu/ossu-core-theory": "/knowledge/dictionary/computer-science/ossu/ossu-core-cs",
+  "/knowledge/dictionary/computer-science/ossu/ossu-core-security": "/knowledge/dictionary/computer-science/ossu/ossu-core-cs",
+  "/knowledge/dictionary/computer-science/ossu/ossu-core-applications-ethics": "/knowledge/dictionary/computer-science/ossu/ossu-core-cs",
+  "/knowledge/dictionary/computer-science/ossu/ossu-advanced-programming-systems": "/knowledge/dictionary/computer-science/ossu/ossu-advanced-cs",
+  "/knowledge/dictionary/computer-science/ossu/ossu-advanced-theory-security-math": "/knowledge/dictionary/computer-science/ossu/ossu-advanced-cs",
+  "/knowledge/dictionary/computer-science/ossu/ossu-capstone-and-progress": "/knowledge/dictionary/computer-science/ossu/ossu-advanced-cs",
+  "/knowledge/dictionary/computer-science/ossu/ossu-additional-courses": "/knowledge/dictionary/computer-science/ossu/ossu-extras",
+  "/knowledge/dictionary/computer-science/ossu/ossu-additional-readings": "/knowledge/dictionary/computer-science/ossu/ossu-extras",
+  "/knowledge/dictionary/computer-science/ossu/ossu-faq-community": "/knowledge/dictionary/computer-science/ossu/ossu-introduction-and-tools",
 };
 
 const nextConfig: NextConfig = {

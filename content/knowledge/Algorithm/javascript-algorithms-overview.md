@@ -166,4 +166,4 @@ npm test -- 'LinkedList'
 - 같은 문제를 여러 패러다임으로 푼 항목으로 시간·공간 비용을 비교한다
 - 복잡도는 평균과 최악, 증가율과 실제 수행 시간을 구분해 읽는다
 
-관련 노트: [[big-o|빅오 표기법과 시간 복잡도]], [[data-structures|기초 자료구조]], [[real-world-algorithms|현실 시스템을 움직이는 알고리즘과 자료구조]], [[coding-test|코딩 테스트 접근법]], [[ossu-core-theory|OSSU 알고리즘 이론]]
+관련 노트: [[big-o|빅오 표기법과 시간 복잡도]], [[data-structures|기초 자료구조]], [[real-world-algorithms|현실 시스템을 움직이는 알고리즘과 자료구조]], [[coding-test|코딩 테스트 접근법]], [[ossu-core-cs|OSSU Core CS]]
