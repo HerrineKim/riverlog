@@ -30,7 +30,8 @@ export default function MindMap(props: Props) {
 
   useEffect(() => {
     // Start the three.js chunk now so it downloads alongside the data instead of after it
-    void loadCanvas();
+    // next/dynamic handles a failed load on its own call; this warm-up only needs to stay quiet
+    loadCanvas().catch(() => {});
     const ctrl = new AbortController();
     fetch(GRAPH_URL, { signal: ctrl.signal })
       .then((r) => {

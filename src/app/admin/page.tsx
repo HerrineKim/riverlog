@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import IntentLink from "@/components/IntentLink";
 import LogoutButton from "@/components/admin/LogoutButton";
 import { isAdmin } from "@/lib/admin/auth";
 
@@ -21,10 +22,10 @@ export default async function AdminHome() {
           </Link>
         </li>
         <li>
-          <Link href="/books" className="block rounded-2xl border border-line p-6 transition hover:border-accent">
+          <IntentLink href="/books" className="block rounded-2xl border border-line p-6 transition hover:border-accent">
             <p className="font-semibold text-fg-strong">책장에서 고르기</p>
             <p className="mt-1 text-sm text-muted">책 페이지의 「관리」 상자에서 읽기 상태를 바꾸고 독후감을 쓰거나 고칩니다.</p>
-          </Link>
+          </IntentLink>
         </li>
       </ul>
       <p className="mt-10 text-sm text-muted">저장한 내용은 GitHub 저장소에 커밋되고, 사이트에는 3~4분 뒤 반영됩니다.</p>

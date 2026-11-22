@@ -100,9 +100,10 @@ function MobileMenu({ pathname }: { pathname: string }) {
         <ul>
           {LINKS.map((l) => {
             const active = isActive(l.href, pathname);
+            const L = l.heavy ? IntentLink : Link;
             return (
               <li key={l.href}>
-                <Link
+                <L
                   href={l.href}
                   aria-current={active ? "page" : undefined}
                   onClick={() => setOpen(false)}
@@ -111,7 +112,7 @@ function MobileMenu({ pathname }: { pathname: string }) {
                   }`}
                 >
                   {l.label}
-                </Link>
+                </L>
               </li>
             );
           })}
