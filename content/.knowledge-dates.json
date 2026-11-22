@@ -21,7 +21,7 @@
  },
  "AI-Data/Claude-Code/claude-code-guide.md": {
   "created": "2026-10-12T14:11:17+09:00",
-  "updated": "2026-11-22T20:09:17+09:00"
+  "updated": "2026-11-22T22:31:11+09:00"
  },
  "AI-Data/Claude-Code/claude-code-hooks.md": {
   "created": "2026-10-20T11:44:44+09:00",
@@ -85,11 +85,11 @@
  },
  "AI-Data/ai-delegation-toolkit.md": {
   "created": "2026-10-18T14:04:45+09:00",
-  "updated": "2026-11-22T20:20:04+09:00"
+  "updated": "2026-11-22T22:31:11+09:00"
  },
  "AI-Data/ai-era-developer.md": {
   "created": "2026-10-13T19:47:35+09:00",
-  "updated": "2026-11-22T20:20:04+09:00"
+  "updated": "2026-11-22T22:31:11+09:00"
  },
  "AI-Data/ai-feature-blueprint.md": {
   "created": "2026-10-17T23:13:05+09:00",
@@ -1033,7 +1033,7 @@
  },
  "Career.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-20T23:08:40+09:00"
+  "updated": "2026-11-22T22:31:11+09:00"
  },
  "Career/Job-Search/australia-skilled-migration.md": {
   "created": "2026-11-08T17:29:32+09:00",
@@ -1041,7 +1041,7 @@
  },
  "Career/Job-Search/behavioral-interview-questions.md": {
   "created": "2026-10-12T21:10:41+09:00",
-  "updated": "2026-11-12T12:38:59+09:00"
+  "updated": "2026-11-22T22:31:10+09:00"
  },
  "Career/Job-Search/behavioral-interview-rubrics.md": {
   "created": "2026-10-30T23:43:44+09:00",
@@ -1053,7 +1053,7 @@
  },
  "Career/Job-Search/coding-interview-university.md": {
   "created": "2026-11-15T14:10:50+09:00",
-  "updated": "2026-11-22T20:22:02+09:00"
+  "updated": "2026-11-22T22:31:11+09:00"
  },
  "Career/Job-Search/company-financial-check.md": {
   "created": "2026-10-18T09:38:44+09:00",
@@ -1067,13 +1067,9 @@
   "created": "2026-10-16T13:20:08+09:00",
   "updated": "2026-10-31T13:22:12+09:00"
  },
- "Career/Job-Search/frontend-interview-by-company.md": {
-  "created": "2026-11-12T12:38:59+09:00",
-  "updated": "2026-11-22T20:19:29+09:00"
- },
  "Career/Job-Search/frontend-interview.md": {
   "created": "2026-10-17T18:13:09+09:00",
-  "updated": "2026-11-22T20:19:29+09:00"
+  "updated": "2026-11-22T22:31:10+09:00"
  },
  "Career/Job-Search/interview-attitude.md": {
   "created": "2026-10-16T13:20:09+09:00",
@@ -1093,7 +1089,7 @@
  },
  "Career/Job-Search/tech-interview-prep.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-19T23:08:04+09:00"
+  "updated": "2026-11-22T22:31:10+09:00"
  },
  "Career/Job-Search/us-hiring-process.md": {
   "created": "2026-10-17T18:11:24+09:00",
@@ -1238,6 +1234,10 @@
  "Career/Work/growing-at-work.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-10-31T12:47:35+09:00"
+ },
+ "Career/Work/growing-engineers-with-ai.md": {
+  "created": "2026-11-22T22:31:11+09:00",
+  "updated": "2026-11-22T22:31:11+09:00"
  },
  "Career/Work/kind-engineering.md": {
   "created": "2026-10-15T19:59:20+09:00",
@@ -1573,21 +1573,21 @@
  },
  "Computer-Science/OSSU.md": {
   "created": "2026-11-15T11:58:39+09:00",
-  "updated": "2026-11-22T20:22:02+09:00"
+  "updated": "2026-11-22T22:31:11+09:00"
  },
  "Computer-Science/OSSU/ossu-advanced-cs.md": {
   "created": "2026-11-22T20:22:02+09:00",
-  "updated": "2026-11-22T20:22:02+09:00"
+  "updated": "2026-11-22T22:31:11+09:00"
  },
  "Computer-Science/OSSU/ossu-core-cs.md": {
   "created": "2026-11-22T20:22:02+09:00",
-  "updated": "2026-11-22T20:22:02+09:00"
+  "updated": "2026-11-22T22:31:11+09:00"
  },
  "Computer-Science/OSSU/ossu-extras.md": {
   "created": "2026-11-22T20:22:02+09:00",
-  "updated": "2026-11-22T20:22:02+09:00"
+  "updated": "2026-11-22T22:31:11+09:00"
  },
- "Computer-Science/OSSU/ossu-introduction-and-tools.md": {
+ "Computer-Science/OSSU/ossu-introduction.md": {
   "created": "2026-11-15T11:58:39+09:00",
   "updated": "2026-11-22T20:22:02+09:00"
  },
