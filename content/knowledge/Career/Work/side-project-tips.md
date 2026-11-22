@@ -4,7 +4,7 @@ concept: "Side Project"
 summary: "꾸준히 하나는 굴리기, 내 불편에서 아이디어 찾기, 틈새 겨냥, 작게 시작, 1~2주 단위 기한, 코딩 전 랜딩 페이지로 검증하기까지 사이드 프로젝트를 시작하고 유지하는 원칙. 내가 쓸 것을 내가 만드는 출발점과 불편 일기, MVP·MMP·MLP로 나눈 검증, 빌드 인 퍼블릭까지 다룬다."
 tags: ["career", "growth", "productivity", "side-project"]
 source: other
-date: "2026-11-20"
+date: "2026-11-22"
 sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM", "https://webactually.com/2015/04/17/%ed%95%9c%ea%b3%84%ec%97%90%ec%84%9c-%ec%9d%b4%ec%96%b4%ec%a7%84-%eb%82%98%ec%9d%98-%ec%95%b1%ec%8a%a4%ed%86%a0%ec%96%b4-%ec%84%b1%ea%b3%b5%ea%b3%bc-%ec%8b%a4%ed%8c%a8-%ec%9d%b4%ec%95%bc%ea%b8%b0/", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://techblog.woowahan.com/2590/", "https://wormwlrm.github.io/2019/10/13/Kwakcheolyong-Image-Creator-Development-Story.html", "https://wormwlrm.github.io/2022/05/07/Bamboo-Forest-Slack-App.html", "https://cho.sh/ko/w/5ADC58", "https://api.slack.com/interactivity/handling"]
 ---
 
@@ -149,6 +149,8 @@ AI 코딩 도구로 프로토타입을 만드는 비용이 크게 줄었다. 그
 | 불특정 다수 | 못하던 것을 점점 잘하게 | UI + 로직 + 외부 API (슬랙·캘린더 연동) / 전부 |
 
 내 반복 작업은 대개 UI + 로직으로 풀리고, 주변 사람의 업무 효율화에는 DB나 API가 필요하며, 불특정 다수가 돈을 내려면 전부 필요하다. 프로그램은 입력을 처리해 출력하는 코드이니, **입력·처리·출력에서 사람이 직접 하던 일을 줄일수록** 쓸모가 커진다.
+
+혼자 쓰는 앱이라면 입력 단계를 **LLM에 맡기는 방법**이 연동보다 싸다. 카드사·은행·캘린더 같은 외부 서비스와 하나씩 연동하는 대신, 내보낸 엑셀·CSV 파일이나 자연어 문장을 그대로 넣으면 앱에 붙인 LLM API가 내용을 해석해 항목(가계부 내역, 일정, 메모)으로 등록한다. 형식이 바뀌어도 코드를 고칠 일이 적고, 연동 승인·인증 절차도 필요 없다. 다만 해석 결과는 저장 전에 한 번 확인하는 화면을 두고, 호출마다 비용이 드니 가벼운 모델을 지정한다. 여러 구독 서비스를 짜깁기하던 가계부·일정·메모 같은 개인 요구는 기획·서버 협의·CI/CD 없이 이런 식으로 한 앱에 모을 수 있다.
 
 아이디어는 **불편 일기**로 모은다.
 
