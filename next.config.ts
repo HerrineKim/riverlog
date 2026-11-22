@@ -158,6 +158,7 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/computer-science/ossu/ossu-additional-courses": "/knowledge/dictionary/computer-science/ossu/ossu-extras",
   "/knowledge/dictionary/computer-science/ossu/ossu-additional-readings": "/knowledge/dictionary/computer-science/ossu/ossu-extras",
   "/knowledge/dictionary/computer-science/ossu/ossu-faq-community": "/knowledge/dictionary/computer-science/ossu/ossu-introduction-and-tools",
+  "/knowledge/dictionary/career/job-search/frontend-interview-by-company": "/knowledge/dictionary/career/job-search/frontend-interview",
 };
 
 const nextConfig: NextConfig = {
