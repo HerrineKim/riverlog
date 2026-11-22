@@ -181,4 +181,4 @@ OSSU는 품질은 좋지만 정규 커리큘럼의 선정 기준(상시 수강 �
 
 - [The Linux Command Line](https://linuxcommand.org/tlcl.php): William Shotts
 
-관련 노트: [[ossu-introduction-and-tools|OSSU 입문 과정과 이용 안내]], [[ossu-core-cs|OSSU Core CS]], [[ossu-advanced-cs|OSSU Advanced CS와 최종 프로젝트]]
+관련 노트: [[ossu-introduction|OSSU 입문 과정과 이용 안내]], [[ossu-core-cs|OSSU Core CS]], [[ossu-advanced-cs|OSSU Advanced CS와 최종 프로젝트]]

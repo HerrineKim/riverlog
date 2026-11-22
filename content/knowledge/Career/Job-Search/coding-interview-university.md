@@ -19,7 +19,7 @@ sources: ["https://github.com/jwasham/coding-interview-university"]
 | 대상 | 변수·반복문·함수 정도의 코딩 경험이 있고, 몇 달을 쓸 수 있는 사람 |
 | 범위 | **소프트웨어 엔지니어링** 면접. 대학 CS 과정 전체가 아니라 면접에 충분한 약 75%를 다룬다 |
 | 다루지 않는 것 | JavaScript, HTML·CSS 같은 프론트엔드 기술, SQL. 프론트엔드·풀스택 경로는 [roadmap.sh](https://roadmap.sh/)를 따른다 |
-| 전체 CS 독학 | CIU 자료는 roadmap.sh의 [Computer Science 로드맵](https://roadmap.sh/computer-science)에 합쳐져 있다. 대학 과정 전체를 원하면 [[ossu-introduction-and-tools\|OSSU]]가 맞다 |
+| 전체 CS 독학 | CIU 자료는 roadmap.sh의 [Computer Science 로드맵](https://roadmap.sh/computer-science)에 합쳐져 있다. 대학 과정 전체를 원하면 [[ossu-introduction\|OSSU]]가 맞다 |
 | 필수/선택 경계 | 「Getting the Job」까지가 신입 면접 필수, 그 아래(시스템 설계·추가 학습)는 선택이다 |
 
 ## 전체 흐름
@@ -231,4 +231,4 @@ CIU 저장소에는 이 밖에 MIT·버클리·스탠퍼드 강의 영상 시리
 - 학습 언어와 면접 언어는 가능하면 하나로 맞추고, 책은 기본서 한 권과 면접 대비서 한두 권이면 된다.
 - 면접 직전에는 짧은 복습 영상, 이야기로 준비한 예상 질문 20개, 역질문을 챙긴다. 경력 4년 이상이면 시스템 설계를 더한다.
 
-관련 노트: [[tech-interview-prep|기술 면접 준비]], [[coding-test|코딩 테스트 접근법]], [[coding-interview-rubric|코딩 인터뷰 평가 기준]], [[big-o|빅오 표기법과 시간 복잡도]], [[np-completeness|P, NP, NP-완전과 근사 알고리즘]], [[ossu-introduction-and-tools|OSSU 입문과 도구]]
+관련 노트: [[tech-interview-prep|기술 면접 준비]], [[coding-test|코딩 테스트 접근법]], [[coding-interview-rubric|코딩 인터뷰 평가 기준]], [[big-o|빅오 표기법과 시간 복잡도]], [[np-completeness|P, NP, NP-완전과 근사 알고리즘]], [[ossu-introduction|OSSU 입문과 도구]]

@@ -25,7 +25,7 @@ Core CS는 컴퓨터과학 전공의 **첫 3년에 해당하는 공통 필수 �
 | 응용 | 데이터베이스, 머신러닝, 그래픽스, 소프트웨어 공학 | 6 |
 | 윤리 | 직업 윤리, 지식재산, 프라이버시 | 3 |
 
-아래 표의 기간과 주당 학습량은 OSSU가 적어 둔 계획치다. 실제 개설 여부, 수강료, 과제 채점 접근은 강좌 제공처에서 확인한다(무료 청강 조건은 [[ossu-introduction-and-tools#비용과 접근 조건|비용과 접근 조건]]). 강좌 이름 옆의 alternative는 같은 내용을 다른 경로로 듣는 대체 링크다.
+아래 표의 기간과 주당 학습량은 OSSU가 적어 둔 계획치다. 실제 개설 여부, 수강료, 과제 채점 접근은 강좌 제공처에서 확인한다(무료 청강 조건은 [[ossu-introduction#비용과 접근 조건|비용과 접근 조건]]). 강좌 이름 옆의 alternative는 같은 내용을 다른 경로로 듣는 대체 링크다.
 
 ## Core programming: 프로그래밍
 
@@ -177,4 +177,4 @@ Software Engineering이 규모 있는 프로젝트 경험을 요구하는 이유
 | [Introduction to Intellectual Property](https://www.coursera.org/learn/introduction-intellectual-property) | 4 weeks | 2 hours/week | none |
 | [Data Privacy Fundamentals](https://www.coursera.org/learn/northeastern-data-privacy) | 3 weeks | 3 hours/week | none |
 
-관련 노트: [[ossu-introduction-and-tools|OSSU 입문 과정과 이용 안내]], [[ossu-advanced-cs|OSSU Advanced CS와 최종 프로젝트]], [[ossu-extras|OSSU 보충 강좌와 읽을거리]]
+관련 노트: [[ossu-introduction|OSSU 입문 과정과 이용 안내]], [[ossu-advanced-cs|OSSU Advanced CS와 최종 프로젝트]], [[ossu-extras|OSSU 보충 강좌와 읽을거리]]
