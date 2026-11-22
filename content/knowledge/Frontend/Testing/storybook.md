@@ -131,7 +131,7 @@ export default preview
 
 | 테스트 | 방법 |
 | --- | --- |
-| 렌더링(스모크) | 모든 스토리가 에러 없이 그려지는지. `@storybook/addon-vitest`가 스토리를 Vitest 테스트로 바꿔 실제 브라우저(Vitest 브라우저 모드)에서 돌린다. 과거의 `test-runner`는 지원 종료 예정이다 |
+| 렌더링(스모크) | 모든 스토리가 에러 없이 그려지는지. `@storybook/addon-vitest`가 스토리를 Vitest 테스트로 바꿔 실제 브라우저(Vitest 브라우저 모드)에서 돌린다. Jest·Playwright 기반의 옛 `test-runner`는 이 애드온으로 대체됐고, Vite 기반 프레임워크에는 애드온 쪽을 권장한다 |
 | 상호작용 | 스토리에 `play` 함수를 두고 클릭·입력을 실행한 뒤 단언한다 |
 | 시각 회귀 | 스토리 스크린숏을 기준 이미지와 비교한다(Chromatic 등) |
 | 접근성 | a11y 애드온 검사를 테스트 실패로 연결한다 |

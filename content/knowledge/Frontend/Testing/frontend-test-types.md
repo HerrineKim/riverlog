@@ -146,7 +146,7 @@ test('저장된 토큰이 있으면 로그인 상태다', () => {
 | --- | --- | --- |
 | 목의 과한 기대 | 목은 기대를 **먼저** 선언하고(`expects('save').once().withArgs(user)`) 마지막에 `verify()`한다. 조건을 늘리기 쉬워 구현 세부에 묶인 **깨지기 쉬운 테스트**가 된다. 준비-실행-단언(AAA) 순서도 거스른다 | 스텁 + 필요한 단언 한두 개로 쓴다. 단언이 여러 개 필요하면 테스트를 나눈다 |
 | 부분 대역(partial double) | `vi.spyOn(obj, 'method')`은 기본적으로 **진짜 구현을 호출하면서** 기록만 한다. "호출을 검증"하려는지 "통합 동작을 확인"하려는지가 섞인다 | 의도를 하나로 정한다. 대체하려면 `.mockImplementation()`이나 `.mockReturnValue()`를 붙인다 |
-| 복원 누락 | 바꿔 끼운 메서드를 되돌리지 않으면 **다음 테스트들이 연쇄로 실패**한다. 테스트가 중간에 던지면 끝의 `restore()`까지 가지 못한다 | `afterEach(() => vi.restoreAllMocks())` 또는 설정의 `restoreMocks: true`. 공유 스텁은 `beforeEach`에서 만든다 |
+| 복원 누락 | 바꿔 끼운 메서드를 되돌리지 않으면 **다음 테스트들이 연쇄로 실패**한다. 테스트가 중간에 던지면 끝의 `restore()`까지 가지 못한다 | `afterEach(() => vi.restoreAllMocks())` 또는 설정의 `restoreMocks: true`. 공유 스텁은 `beforeEach`에서 만든다. Vitest 5부터 `clearMocks`가 기본 `true`라 **호출 기록**은 테스트마다 지워지지만, 바꿔 끼운 구현은 그대로 남으므로 복원은 여전히 직접 한다 |
 | 가짜 타이머와 비동기 | 가짜 타이머가 켜져 있으면 `setTimeout`에 기대는 비동기 테스트가 시간 초과로 실패한다 | 필요한 테스트에서만 `vi.useFakeTimers()`, 끝나면 `vi.useRealTimers()` |
 
 ## 구현이 아니라 행위를 검증한다

@@ -110,7 +110,7 @@ describe('수학 함수', () => {
 - `suite`↔`describe`, `test`↔`it`은 같은 역할이다. 차이는 이름보다 단언 스타일에 있다.
 - 스위트는 구조일 뿐 그 자체로 테스트가 아니다.
 - 과거 버그를 막는 회귀 테스트는 이름에 버그 번호를 남기면 추적하기 쉽다. 고치기 **전에** 실패하는 것부터 확인한다.
-- 중첩 규칙은 도구마다 다르다. Node 내장 러너(`node:test`)는 `test()` 안에 `test()`를 넣어 계층을 만든다. Vitest·Jest는 `describe()`로만 중첩하고 `test()` 안의 `test()`는 실행하지 않는다.
+- 중첩 규칙은 도구마다 다르다. Node 내장 러너(`node:test`)는 `test()` 안에 `test()`를 넣어 계층을 만든다. Vitest·Jest는 `describe()`로만 중첩하고, `test()` 안에서 `test()`를 부르면 바깥 테스트가 에러로 실패한다.
 
 각 케이스 안은 **준비(Arrange) → 실행(Act) → 검증(Assert)**으로 나눈다. 이름 짓기와 AAA의 세부 원칙은 [[js-testing-best-practices|JavaScript 테스트 모범 사례]]에 있다.
 
@@ -152,7 +152,7 @@ test('데이터를 받는다', () => {
 | --- | --- | --- |
 | `async`/`await` | `const data = await fetchData(); expect(data).toBe(...)` | **기본.** 실패 경로는 `await expect(fetchData()).rejects.toThrow('error')` |
 | Promise를 `return` | `return fetchData().then(...)` | 러너가 돌려받은 Promise를 기다린다. `return`을 빼먹기 쉽다 |
-| `.resolves` / `.rejects` | `await expect(fetchData()).resolves.toBe(...)` | 값을 꺼내지 않고 바로 단언한다. **`await`(또는 `return`)를 꼭 붙인다** |
+| `.resolves` / `.rejects` | `await expect(fetchData()).resolves.toBe(...)` | 값을 꺼내지 않고 바로 단언한다. **`await`(또는 `return`)를 꼭 붙인다.** Vitest 5부터는 기다리지 않은 `resolves`·`rejects` 단언이 경고가 아니라 테스트 실패다 |
 | `done` 콜백 | `test('...', (done) => { fetchData((d) => { expect(d)…; done() }) })` | 콜백 API용 옛 방식. 단언이 던지면 `done`이 불리지 않아 타임아웃으로 실패하므로 `try/catch`로 `done(error)`를 불러야 한다. Vitest는 지원하지 않으니 Promise로 감싼다 |
 
 `catch` 블록 안에서만 단언하는 테스트는 예외가 **안** 나도 통과해 버린다. `expect.assertions(1)`로 단언이 정확히 몇 번 실행돼야 하는지 못 박거나, `rejects`를 쓴다.

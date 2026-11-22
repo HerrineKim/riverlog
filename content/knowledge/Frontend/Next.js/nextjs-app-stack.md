@@ -174,8 +174,7 @@ export default withMDX(nextConfig)
 | E2E | Playwright, Cypress | `next build && next start`로 띄운 프로덕션 빌드에 돌린다 |
 | 스냅숏 | Jest·Vitest의 `toMatchSnapshot` | 의도치 않은 마크업 변화 감지용. 남발하면 무의미하게 갱신된다 |
 
-- React Testing Library는 화면에 보이는 것으로 요소를 찾는다. 우선순위는 역할(`getByRole`) → 레이블 → 텍스트 → 대체 텍스트 → `data-testid`(최후 수단)다([[a11y-driven-testing|접근성 기반 테스트]]).
-- 쿼리 변형: `getBy`는 반드시 있어야 할 때, `queryBy`는 없을 수도 있을 때(빈 상태·에러 상태가 **없음**을 확인), `findBy`는 비동기로 나타날 때(await), `*AllBy`는 여러 개일 때.
+- React Testing Library는 화면에 보이는 것(역할·레이블·텍스트)으로 요소를 찾고, `data-testid`는 최후 수단이다([[a11y-driven-testing|접근성 기반 테스트]]). 쿼리의 우선순위와 `getBy`·`queryBy`·`findBy` 변형 표는 [[frontend-test-types#도구 고르기|프론트엔드 테스트의 종류]]에 있다.
 - 레이아웃이 테마·다크 모드 Provider로 감싸져 있으면, 테스트마다 반복하지 않도록 **Provider로 감싼 `render`를 `test-utils`에 만들어** RTL의 `render` 대신 내보낸다.
 
 ### 에러 처리

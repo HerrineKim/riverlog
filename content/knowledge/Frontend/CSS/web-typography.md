@@ -63,7 +63,7 @@ sources: ["https://webactually.com/2015/10/19/%eb%b0%98%ec%9d%91%ed%98%95-%ec%9b
 .prose p { text-wrap: pretty; }   /* 마지막 줄 외톨이 단어 방지 */
 ```
 
-`text-wrap: balance`(제목 줄 길이 고르기)는 Baseline 2024다. `pretty`는 Chrome 130·Safari 26부터 지원하고 Firefox는 2026년 10월 기준 지원하지 않는다. 모르는 브라우저는 기본 줄바꿈으로 돌아가므로 점진적 향상으로 그냥 써도 된다.
+`text-wrap: balance`(제목 줄 길이 고르기)는 Baseline 2024다. `pretty`는 Chrome 117·Safari 26부터 지원하고(롱핸드 `text-wrap-style`은 Chrome 130부터) Firefox는 2026년 11월 기준 지원하지 않는다. 모르는 브라우저는 기본 줄바꿈으로 돌아가므로 점진적 향상으로 그냥 써도 된다.
 
 ## 글꼴 지표를 다루는 CSS
 

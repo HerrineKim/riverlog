@@ -1,11 +1,11 @@
 ---
 title: "npm install이 하는 일: 내 컴퓨터와 앱에 생기는 변화"
 concept: "npm install"
-summary: "npm으로 패키지를 설치하면 레지스트리에서 코드를 받아 캐시·node_modules·lock 파일에 쓰고, 설치 스크립트를 내 권한으로 실행하고, 명령을 PATH에 연결한다. 로컬·전역 설치가 컴퓨터의 어디를 바꾸는지, 앱의 코드·번들·배포에 무엇이 들어가는지, 되돌리는 법을 정리한다."
+summary: "npm으로 패키지를 설치하면 레지스트리에서 코드를 받아 캐시·node_modules·lock 파일에 쓰고, 허용한 패키지의 설치 스크립트를 내 권한으로 실행하고, 명령을 PATH에 연결한다. 로컬·전역 설치가 컴퓨터의 어디를 바꾸는지, 앱의 코드·번들·배포에 무엇이 들어가는지, 되돌리는 법을 정리한다."
 tags: ["javascript", "nodejs", "frontend", "tools", "security"]
 source: mixed
 date: "2026-10-30"
-sources: ["https://docs.npmjs.com/cli/v11/commands/npm-install", "https://docs.npmjs.com/cli/v11/configuring-npm/folders", "https://docs.npmjs.com/cli/v11/using-npm/scripts", "https://nodejs.org/api/modules.html#loading-from-node_modules-folders"]
+sources: ["https://docs.npmjs.com/cli/v11/commands/npm-install", "https://docs.npmjs.com/cli/v11/configuring-npm/folders", "https://docs.npmjs.com/cli/v11/using-npm/scripts", "https://docs.npmjs.com/cli/v12/commands/npm-approve-scripts", "https://nodejs.org/api/modules.html#loading-from-node_modules-folders"]
 ---
 
 > npm 공식 문서 「[npm install](https://docs.npmjs.com/cli/v11/commands/npm-install)」, 「[folders](https://docs.npmjs.com/cli/v11/configuring-npm/folders)」, 「[scripts](https://docs.npmjs.com/cli/v11/using-npm/scripts)」와 Node.js 「[Loading from node_modules folders](https://nodejs.org/api/modules.html#loading-from-node_modules-folders)」를 바탕으로 정리한 노트다.
@@ -25,7 +25,7 @@ flowchart TB
   s2 --> s3["3. 검증: tarball의 해시를 lock 파일·레지스트리의 integrity 값과 맞춘다"]
   s3 --> s4["4. 배치: ./node_modules/ 에 풀어 놓는다<br/>겹치는 의존성은 위로 끌어올려(hoisting) 공유한다"]
   s4 --> s5["5. 명령 연결: 패키지가 bin을 선언했으면 node_modules/.bin/ 에 링크를 만든다"]
-  s5 --> s6["6. 설치 스크립트 실행: preinstall·install·postinstall 이 있으면 실행한다"]
+  s5 --> s6["6. 설치 스크립트 실행: 허용한 패키지의 preinstall·install·postinstall 을 실행한다<br/>(npm 11까지는 모든 패키지의 것을 실행했다)"]
   s6 --> s7["7. 기록: package.json 의 dependencies 에 #quot;axios#quot;: #quot;^x.y.z#quot; 를 넣고<br/>package-lock.json 에 실제 설치된 정확한 버전·주소·해시를 쓴다"]
   s7 --> s8["8. 감사: 알려진 취약점을 레지스트리에 물어 요약(npm audit)을 출력한다"]
 ```
@@ -63,15 +63,15 @@ flowchart TB
 
 ### 설치 스크립트: 실제로 코드가 실행된다
 
-패키지의 `package.json`에 `preinstall`·`install`·`postinstall`이 있으면 npm은 설치 중에 그 명령을 **내 사용자 권한으로** 실행한다. 원래 용도는 네이티브 모듈 컴파일(node-gyp), 플랫폼별 바이너리 내려받기 같은 준비 작업이다. 하지만 같은 권한으로 홈 폴더의 파일, SSH 키, `.env`, 토큰을 읽고 네트워크로 보낼 수도 있다. 공급망 공격이 자주 쓰는 통로다.
+패키지의 `package.json`에 `preinstall`·`install`·`postinstall`이 있으면 설치 중에 그 명령이 **내 사용자 권한으로** 실행된다. 원래 용도는 네이티브 모듈 컴파일(node-gyp), 플랫폼별 바이너리 내려받기 같은 준비 작업이다. 하지만 같은 권한으로 홈 폴더의 파일, SSH 키, `.env`, 토큰을 읽고 네트워크로 보낼 수도 있다. 공급망 공격이 자주 쓰는 통로다.
 
 | 대응 | 방법 |
 | --- | --- |
-| 스크립트를 끄고 설치 | `npm install --ignore-scripts`, 또는 `.npmrc`에 `ignore-scripts=true` |
-| 기본으로 막는 매니저 | pnpm 10+, Yarn 4.14+는 의존성 스크립트를 기본 차단하고 허용 목록만 실행한다 |
-| 들이기 전에 확인 | 이름 오타(typosquatting), 주간 다운로드, 관리 상태, 최근 소유자 변경을 본다 |
+| 기본 차단과 허용 목록 | npm 12+(2026.07), pnpm 10+, Yarn 4.14+는 의존성 스크립트를 기본으로 실행하지 않는다. npm은 건너뛴 패키지를 알려 주고, `npm approve-scripts`로 고른 패키지만 `package.json`의 `allowScripts`에 적어 실행한다 |
+| npm 11 이하에서 끄고 설치 | `npm install --ignore-scripts`, 또는 `.npmrc`에 `ignore-scripts=true` |
+| 들이기 전에 확인 | 이름 오타(typosquatting), 주간 다운로드, 관리 상태, 소유자 변경 이력을 본다 |
 
-npm 자체는 여전히 기본으로 스크립트를 실행한다. 매니저별 기본값은 [[package-managers|패키지 매니저]]의 「공급망 보안 기본값」, 깊은 의존성 트리가 왜 위험한지는 [[small-modules|작은 모듈 철학과 npm 의존성]]에 있다.
+허용 목록에 올린 패키지의 스크립트는 여전히 내 권한으로 돈다. 그래서 허용은 네이티브 빌드가 꼭 필요한 패키지로 좁힌다. 매니저별 기본값은 [[package-managers|패키지 매니저]]의 「공급망 보안 기본값」, 깊은 의존성 트리가 왜 위험한지는 [[small-modules|작은 모듈 철학과 npm 의존성]]에 있다.
 
 ## 앱에 생기는 변화
 
@@ -110,7 +110,7 @@ npm 자체는 여전히 기본으로 스크립트를 실행한다. 매니저별 
 
 - 설치는 레지스트리의 코드를 받아 캐시(`~/.npm`)와 프로젝트의 `node_modules`에 두고, `package.json`·lock 파일에 기록하는 일이다.
 - 로컬 설치는 그 프로젝트 폴더만 바꾼다. 전역 설치(`-g`)는 Node 설치 위치에 넣고 명령을 PATH에 올린다.
-- 설치 스크립트는 내 권한으로 실행된다. 모르는 패키지는 `--ignore-scripts`로 받거나 기본 차단 매니저를 쓴다.
+- 설치 스크립트는 내 권한으로 실행된다. npm 12, pnpm 10, Yarn 4.14부터는 허용 목록에 올린 패키지 것만 실행하고, 그보다 옛 npm에서는 `--ignore-scripts`로 받는다.
 - 앱에는 import한 코드만 영향을 준다. 프런트엔드는 번들 크기로, 서버는 배포 크기로 드러나고, 유지보수·라이선스도 함께 들어온다.
 - **패키지 하나를 넣는 것은 남의 코드와 그 의존성 전체를 신뢰하겠다는 결정이다.**
 

@@ -97,7 +97,7 @@ X가 천천히 출발할 때 Y는 빠르게 솟아, 합친 궤적이 호를 그�
 .is-loaded .list-item { opacity: 1; translate: 0; }
 ```
 
-항목 수가 많으면 `--i`를 JS로 넣는다. `sibling-index()` 함수로 순번을 CSS에서 바로 얻는 방법도 Chromium에 들어왔다.
+항목 수가 많으면 `--i`를 JS로 넣는다. `sibling-index()` 함수로 순번을 CSS에서 바로 얻을 수도 있다. Chrome 138·Safari 26.2에 이어 2026년 8월 Firefox 154가 지원해 모든 주요 브라우저에서 쓸 수 있다(Baseline 2026).
 
 ## 60fps를 지키는 구현 규칙
 

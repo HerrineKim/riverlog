@@ -293,7 +293,7 @@ JavaScript 없이 HTML만으로 섀도 루트를 만들 수 있다. 서버 렌�
 
 ## 이름 충돌과 범위 지정 레지스트리
 
-`customElements`는 페이지 전역 레지스트리라 같은 이름을 두 번 `define()`하면 오류가 난다. 두 라이브러리가 같은 태그 이름을 쓰면 충돌한다. **범위 지정 레지스트리**(`new CustomElementRegistry()`를 `attachShadow({ customElementRegistry })`에 넘김)는 정의를 섀도 루트 안으로 한정하지만 아직 Baseline이 아니다. 지금은 태그 이름에 접두사(`acme-rating`)를 붙이는 것이 기본이다.
+`customElements`는 페이지 전역 레지스트리라 같은 이름을 두 번 `define()`하면 오류가 난다. 두 라이브러리가 같은 태그 이름을 쓰면 충돌한다. **범위 지정 레지스트리**(`new CustomElementRegistry()`를 `attachShadow({ customElementRegistry })`에 넘김)는 정의를 섀도 루트 안으로 한정한다. 사파리 26, 크롬·엣지 146, 파이어폭스 159부터 지원해 2026년 10월부터 주요 브라우저 최신 버전에서 모두 쓸 수 있다. 그 이전 브라우저까지 지원해야 하면 태그 이름에 접두사(`acme-rating`)를 붙이는 방법이 여전히 기본이다.
 
 ## 역사: v0에서 v1로
 
