@@ -143,7 +143,7 @@ flowchart LR
 | 와이드 컬럼 | Cassandra, HBase | Keyspaces | Bigtable |
 | 분석 | ClickHouse, Spark | Redshift | BigQuery |
 | 검색 | OpenSearch, Elasticsearch | OpenSearch Service | (마켓플레이스·자체 운영) |
-| 그래프 | Neo4j | Neptune | (마켓플레이스·자체 운영) |
+| 그래프 | Neo4j | Neptune | Spanner Graph |
 
 ## 정리
 

@@ -1,15 +1,16 @@
 ---
 title: "캐시 전략: 계층, 읽기·쓰기 패턴, 교체 정책, 장애 패턴"
 concept: "Caching Strategies"
-summary: "캐시는 요청 경로의 거의 모든 층에 있다. 캐시와 원본을 맞추는 읽기·쓰기 패턴(cache-aside, read-through, write-through, write-around, write-back), 꽉 찼을 때 무엇을 버릴지 정하는 교체 정책(LRU·LFU·FIFO·SLRU·TTL 등), 그리고 캐시가 오히려 DB를 무너뜨리는 네 가지 장애(동시 만료, 관통, 핫 키 만료, 캐시 다운)와 대응을 정리한다."
+summary: "캐시는 요청 경로의 거의 모든 층에 있다. 캐시와 원본을 맞추는 읽기·쓰기 패턴(cache-aside, read-through, refresh-ahead, write-through, write-around, write-back), 꽉 찼을 때 무엇을 버릴지 정하는 교체 정책(LRU·LFU·FIFO·SLRU·TTL 등), 그리고 캐시가 오히려 DB를 무너뜨리는 네 가지 장애(동시 만료, 관통, 핫 키 만료, 캐시 다운)와 대응을 정리한다."
 tags: ["backend", "cache", "architecture", "performance", "database"]
 source: other
-date: "2026-11-01"
-sources: ["https://bytebytego.com/guides/cache-systems-every-developer-should-know", "https://bytebytego.com/guides/learn-cache", "https://bytebytego.com/guides/things-to-consider-when-using-cache", "https://bytebytego.com/guides/top-5-caching-strategies", "https://bytebytego.com/guides/what-are-the-top-caching-strategies", "https://bytebytego.com/guides/most-popular-cache-eviction", "https://bytebytego.com/guides/top-8-cache-eviction-strategies", "https://bytebytego.com/guides/how-can-cache-systems-go-wrong", "https://bytebytego.com/guides/cache-miss-attack", "http://www.slideshare.net/oemebamo/introduction-to-memcached", "https://docs.memcached.org/features/tls/", "https://github.com/karanpratapsingh/system-design"]
+date: "2026-11-15"
+sources: ["https://bytebytego.com/guides/cache-systems-every-developer-should-know", "https://bytebytego.com/guides/learn-cache", "https://bytebytego.com/guides/things-to-consider-when-using-cache", "https://bytebytego.com/guides/top-5-caching-strategies", "https://bytebytego.com/guides/what-are-the-top-caching-strategies", "https://bytebytego.com/guides/most-popular-cache-eviction", "https://bytebytego.com/guides/top-8-cache-eviction-strategies", "https://bytebytego.com/guides/how-can-cache-systems-go-wrong", "https://bytebytego.com/guides/cache-miss-attack", "http://www.slideshare.net/oemebamo/introduction-to-memcached", "https://docs.memcached.org/features/tls/", "https://github.com/karanpratapsingh/system-design", "https://github.com/donnemartin/system-design-primer"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Cache Systems Every Developer Should Know](https://bytebytego.com/guides/cache-systems-every-developer-should-know)」, 「[Things to Consider When Using Cache](https://bytebytego.com/guides/things-to-consider-when-using-cache)」, 「[Top 5 Caching Strategies](https://bytebytego.com/guides/top-5-caching-strategies)」, 「[Top 8 Cache Eviction Strategies](https://bytebytego.com/guides/top-8-cache-eviction-strategies)」, 「[How Can Cache Systems Go Wrong?](https://bytebytego.com/guides/how-can-cache-systems-go-wrong)」, 「[Cache Miss Attack](https://bytebytego.com/guides/cache-miss-attack)」 등을 바탕으로 재구성한 노트다. Memcached의 사용 패턴과 무효화 방식은 「[Introduction to memcached](http://www.slideshare.net/oemebamo/introduction-to-memcached)」로, TLS 지원은 [Memcached 공식 문서](https://docs.memcached.org/features/tls/)로 보강했다.
 > karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 적중과 미스, 차가운 캐시, 캐시를 쓰지 말아야 할 때, 분산 캐시와 전역 캐시, LIFO를 보강했다.
+> Donne Martin의 「[The System Design Primer](https://github.com/donnemartin/system-design-primer)」([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/))의 캐시 항목으로 refresh-ahead를 보강했다.
 
 ## 캐시란
 
@@ -85,6 +86,8 @@ HTTP 캐시는 **읽기 관통(read-through)** 방식이다. 클라이언트는 
 | --- | --- | --- |
 | **Cache-aside** (lazy loading) | 앱이 캐시를 본다 → 없으면 앱이 DB에서 읽고 캐시에 넣는다 | 가장 흔하다. 요청된 것만 캐시된다. 캐시가 죽어도 DB로 동작한다. 첫 요청은 항상 느리다 |
 | **Read-through** | 앱은 캐시만 본다 → 없으면 **캐시가** DB에서 읽어 채운다 | 로딩 로직이 캐시 계층(라이브러리·프록시)에 있다. 앱 코드는 단순하지만 캐시 제품이 그 기능을 지원해야 한다 |
+
+두 패턴 모두 미스가 난 요청이 원본 조회 시간을 그대로 떠안는다. **Refresh-ahead**는 만료가 가까운 키를 요청이 오기 전에 캐시가 미리 다시 읽어 채워 이 지연을 없앤다. 다시 읽힐 키를 잘 맞히는 핫 데이터에는 유리하지만, 잘못 짚으면 쓰이지 않을 값을 계산하느라 원본 부하만 는다.
 
 ### 쓰기
 

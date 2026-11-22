@@ -11,7 +11,7 @@ NestJS는 TypeScript를 기본으로 지원하는 Node.js 서버 애플리케이
 
 > 인프런 「탄탄한 백엔드 NestJS, 기초부터 심화까지」 강의 필기를 바탕으로 재구성한 노트 묶음이다.
 
-2026년 10월 기준 최신은 **NestJS 12**다. 코어 패키지가 ESM으로 배포되고 Node.js 20.19+ 또는 22.12+가 필요하다(CLI는 22.22+·24.15+·26+). 기존 CommonJS 앱도 Node의 `require(esm)` 덕분에 대부분 그대로 동작한다. Module·Controller·Provider·DI와 요청 생명주기 같은 핵심 API는 초기 버전부터 거의 같다. ([마이그레이션 가이드](https://docs.nestjs.com/migration-guide))
+2026년 10월 기준 최신은 **NestJS 12**다. 코어 패키지가 ESM으로 배포되고 Node.js 20.19+ 또는 22.12+가 필요하다(CLI는 22.22.3+·24.15+·26+). 기존 CommonJS 앱도 Node의 `require(esm)` 덕분에 대부분 그대로 동작한다. Module·Controller·Provider·DI와 요청 생명주기 같은 핵심 API는 초기 버전부터 거의 같다. ([마이그레이션 가이드](https://docs.nestjs.com/migration-guide))
 
 HTTP 엔진은 `@nestjs/platform-fastify` 어댑터로 Fastify로 바꿀 수 있다. 이때 `express-basic-auth`처럼 Express 전용 미들웨어는 Fastify용으로 대체해야 한다.
 
