@@ -19,7 +19,7 @@ sources: ["https://github.com/jwasham/coding-interview-university"]
 | 대상 | 변수·반복문·함수 정도의 코딩 경험이 있고, 몇 달을 쓸 수 있는 사람 |
 | 범위 | **소프트웨어 엔지니어링** 면접. 대학 CS 과정 전체가 아니라 면접에 충분한 약 75%를 다룬다 |
 | 다루지 않는 것 | JavaScript, HTML·CSS 같은 프론트엔드 기술, SQL. 프론트엔드·풀스택 경로는 [roadmap.sh](https://roadmap.sh/)를 따른다 |
-| 전체 CS 독학 | CIU 자료는 roadmap.sh의 [Computer Science 로드맵](https://roadmap.sh/computer-science)에 합쳐져 있다. 대학 과정 전체를 원하면 [[ossu-introduction-and-tools\|OSSU]]가 맞다 |
+| 전체 CS 독학 | CIU 자료는 roadmap.sh의 [Computer Science 로드맵](https://roadmap.sh/computer-science)에 합쳐져 있다. 대학 과정 전체를 원하면 [[ossu-introduction\|OSSU]]가 맞다 |
 | 필수/선택 경계 | 「Getting the Job」까지가 신입 면접 필수, 그 아래(시스템 설계·추가 학습)는 선택이다 |
 
 ## 전체 흐름
@@ -147,7 +147,7 @@ CIU는 주제마다 「이 연산을 직접 구현하라」는 목록을 준다.
 | 캐시 | LRU 캐시 구현(해시 맵 + 이중 연결 리스트), CPU 캐시와 메모리 계층 | [[hash-table#해시 맵 + 연결 리스트: LRU·LFU 캐시\|LRU 캐시]], [[memory-hierarchy\|메모리 계층]] |
 | 프로세스·스레드 | 둘의 차이와 각각 가지는 자원(스레드는 스택·PC·레지스터만 따로), 락·뮤텍스·세마포어·모니터, 데드락·라이브락, 인터럽트와 문맥 교환, 페이징·가상 메모리, `fork`의 copy-on-write, Python GIL | [[process-and-thread\|프로세스와 스레드]], [[process-synchronization\|프로세스 동기화]], [[deadlock\|데드락]], [[virtual-memory\|가상 메모리]], [[python-internals\|Python 내부 구조]] |
 | 테스트 | 단위 테스트의 원리, 목 객체, 통합 테스트, 의존성 주입 | [[frontend-test-types\|테스트의 종류와 도구]], [[api-mocking\|API 모킹]], [[component-test-dependencies\|의존성이 있는 컴포넌트 테스트]], [[tdd\|TDD]] |
-| 문자열 탐색 | 무차별 대입, KMP, 보이어-무어, 라빈-카프(롤링 해시), 접미사 배열 개념 | [[kmp-algorithm\|KMP 문자열 검색]], [[javascript-algorithms-strings-search-sorting\|문자열·탐색·정렬 알고리즘]] |
+| 문자열 탐색 | 무차별 대입, KMP, 보이어-무어, 라빈-카프(롤링 해시), 접미사 배열 개념 | [[kmp-algorithm\|KMP 문자열 검색]], [[javascript-algorithms-overview\|JavaScript Algorithms 학습 지도]] |
 | 수 표현 | 부동소수점 표현, 유니코드와 문자 인코딩, 엔디언 | [[floating-point-arithmetic\|부동소수점 연산]], [[data-representation\|데이터 표현]] |
 | 네트워크 | 네트워크·운영 직군이면 반드시 나온다. TCP·UDP, TCP/IP와 OSI, 패킷 전달, HTTP·HTTP/2, TLS·HTTPS, CIDR, 소켓 | [[network-basics\|네트워크 기초]], [[osi-7-layer\|OSI 7계층]], [[transport-layer\|전송 계층]], [[http\|HTTP]], [[https\|HTTPS]] |
 
@@ -219,7 +219,7 @@ CIU는 주제마다 「이 연산을 직접 구현하라」는 목록을 준다.
 | 빠른 계산의 수학 | 카라츠바 곱셈(큰 수 곱셈을 세 번의 절반 크기 곱셈으로, O(n^1.585)), 중국인의 나머지 정리(암호에 쓰인다) | [[number-theory-basics\|정수론 기초]] |
 | 선형 계획법 | 선형 제약 아래 최소 비용·최대 가치, 단체법(simplex) | [[integer-programming\|정수 계획법]] |
 | 계산 기하 | 볼록 껍질(그레이엄 스캔, 자비스 행진) | [[vector-geometry\|벡터 기하]] |
-| 이산수학 | 증명, 집합, 그래프 이론, 확률 | [[ossu-core-mathematics\|OSSU 핵심 수학]] |
+| 이산수학 | 증명, 집합, 그래프 이론, 확률 | [[ossu-core-cs\|OSSU Core CS의 수학 영역]] |
 
 CIU 저장소에는 이 밖에 MIT·버클리·스탠퍼드 강의 영상 시리즈와, GFS·MapReduce·Bigtable·Dynamo·Spanner 같은 고전 분산 시스템 논문 목록이 붙어 있다. 논문 쪽은 [[tech-reading-list|개발자 필독 자료]]와 겹친다.
 
@@ -231,4 +231,4 @@ CIU 저장소에는 이 밖에 MIT·버클리·스탠퍼드 강의 영상 시리
 - 학습 언어와 면접 언어는 가능하면 하나로 맞추고, 책은 기본서 한 권과 면접 대비서 한두 권이면 된다.
 - 면접 직전에는 짧은 복습 영상, 이야기로 준비한 예상 질문 20개, 역질문을 챙긴다. 경력 4년 이상이면 시스템 설계를 더한다.
 
-관련 노트: [[tech-interview-prep|기술 면접 준비]], [[coding-test|코딩 테스트 접근법]], [[coding-interview-rubric|코딩 인터뷰 평가 기준]], [[big-o|빅오 표기법과 시간 복잡도]], [[np-completeness|P, NP, NP-완전과 근사 알고리즘]], [[ossu-introduction-and-tools|OSSU 입문과 도구]]
+관련 노트: [[tech-interview-prep|기술 면접 준비]], [[coding-test|코딩 테스트 접근법]], [[coding-interview-rubric|코딩 인터뷰 평가 기준]], [[big-o|빅오 표기법과 시간 복잡도]], [[np-completeness|P, NP, NP-완전과 근사 알고리즘]], [[ossu-introduction|OSSU 입문과 도구]]

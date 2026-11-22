@@ -126,6 +126,31 @@ async function fileSizes(files) {
 
 `forEach`·`map`·`filter`·`reduce`는 콜백이 반환한 Promise를 기다리지 않는다. 순차가 필요하면 `for...of`, 동시가 필요하면 `map` + `Promise.all`로 바꾼다. 요청 수가 많으면 동시에 너무 많이 보내지 않도록 몇 개씩 끊어서 보낸다.
 
+### 동시 실행 수 제한
+
+파일 수십 개를 올리거나 URL 수백 개를 가져올 때 `Promise.all`로 한꺼번에 시작하면 브라우저의 연결 한도와 서버의 요청 제한에 걸린다. **일꾼(worker) 함수를 `limit`개만 띄우고, 각자 공유 인덱스에서 다음 항목을 꺼내 가게** 하면 항상 최대 `limit`개만 진행된다.
+
+```javascript
+async function mapLimit(items, limit, task) {
+  const results = new Array(items.length)
+  let next = 0
+  async function worker() {
+    while (next < items.length) {
+      const i = next++ // 읽고 올리는 사이에 await가 없어 일꾼끼리 겹치지 않는다
+      try {
+        results[i] = { status: 'fulfilled', value: await task(items[i]) }
+      } catch (reason) {
+        results[i] = { status: 'rejected', reason }
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker))
+  return results
+}
+```
+
+결과를 `allSettled`와 같은 모양으로 항목마다 남기면 하나가 실패해도 나머지가 계속 돌고, 실패한 항목만 골라 재시도할 수 있다.
+
 ## 에러 처리
 
 reject된 Promise를 `await`하면 그 자리에서 에러가 던져진다. 잡는 위치에 따라 네 가지 방법이 있다.

@@ -61,7 +61,7 @@ sources: ["https://x.com/poteto"]
 
 테스트는 **빠르고 결정적**이어야 한다. 루프가 느리거나 같은 코드에서 결과가 오락가락하면, 에이전트는 문제를 고치는 대신 다시 돌려 보는 법을 배운다. 플레이키 테스트의 원인과 처리는 [[test-run-stages|테스트를 돌리는 시점]]에 있다.
 
-프런트엔드에서 에이전트가 브라우저로 직접 확인하게 하는 도구는 [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]]에 있다.
+프런트엔드에서 에이전트가 브라우저로 직접 확인하게 하는 도구는 [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]]에, 화면을 시안과 비교하고 상태를 재현하는 환경은 [[ai-native-frontend|AI 네이티브 프론트엔드 개발]]의 「디자인과 같은 화면 만들기」에 있다. 테스트를 누가 쓰고 고칠 수 있는지의 규칙은 [[ai-coding-guardrails|AI 코딩 실무 가드레일]]의 「테스트는 사람이 쓴다」에 있다.
 
 ## 2. 품질: 엔지니어처럼 일하게 하는 스킬
 
@@ -136,4 +136,4 @@ sources: ["https://x.com/poteto"]
 - 에이전트는 보이는 패턴을 베낀다. 나쁜 패턴은 번지기 전에 린트로 막고 지운다.
 - 지름길이 옳은 길이 되게 코드베이스를 잠그고, 정원사가 계속 가꾼다.
 
-관련 노트: [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]], [[harness-engineering|프롬프트에서 하네스로]], [[claude-code-hooks|Claude Code 훅]], [[loop-engineering|루프 엔지니어링]]
+관련 노트: [[ai-coding-guardrails|AI 코딩 실무 가드레일]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]], [[harness-engineering|프롬프트에서 하네스로]], [[claude-code-hooks|Claude Code 훅]], [[loop-engineering|루프 엔지니어링]], [[personal-agent-harness|내 일을 줄이는 하네스 만들기]], [[ai-native-frontend|AI 네이티브 프론트엔드 개발]]

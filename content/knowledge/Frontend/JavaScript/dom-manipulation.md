@@ -78,6 +78,18 @@ button.matches('.danger')               // 이 요소가 선택자와 일치하�
 card.contains(button)                   // 자손인가(boolean)
 ```
 
+**모양이 같은 두 트리에서 대응하는 노드**를 찾을 때(원본과 `cloneNode(true)` 사본처럼)는 트리 전체를 DFS·BFS로 훑지 않는다. 대상에서 `parentNode`로 루트까지 올라가며 「부모의 몇 번째 자식인가」를 기록하고, 다른 트리의 루트에서 그 경로를 거꾸로 따라 내려간다. 전체 노드 수가 아니라 대상의 깊이와 형제 수만큼만 본다.
+
+```javascript
+function findCounterpart(rootA, rootB, target) {
+  const path = []
+  for (let node = target; node !== rootA; node = node.parentNode) {
+    path.push(Array.prototype.indexOf.call(node.parentNode.childNodes, node))
+  }
+  return path.reduceRight((node, index) => node.childNodes[index], rootB)
+}
+```
+
 ### 표 탐색 속성
 
 표 요소는 편의 속성을 더 가진다.

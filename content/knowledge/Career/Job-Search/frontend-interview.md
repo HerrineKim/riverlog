@@ -1,21 +1,21 @@
 ---
 title: "프론트엔드 면접 유형과 준비법"
 concept: "Front End Interview"
-summary: "프론트엔드 면접은 알고리즘보다 도메인 지식과 실전 구현을 본다. JavaScript 코딩, UI 코딩, 알고리즘, 퀴즈, 프론트엔드 시스템 디자인, 비헤이비어럴 여섯 유형별로 무엇을 보고 어떻게 준비하는지, 유형별 대표 문제, 백엔드 시스템 디자인과의 차이, 시스템 디자인용 RADIO 프레임워크, 토론 라운드 주제, 국내 면접의 진행 형식과 꼬리 질문 사슬, 「아키텍처는 어떻게 고민하나」에 답하는 네 층위, UI 구현 때 짚을 체크리스트를 정리하고 개념은 Frontend 노트로 잇는다."
+summary: "프론트엔드 면접은 알고리즘보다 도메인 지식과 실전 구현을 본다. JavaScript 코딩, UI 코딩, 알고리즘, 퀴즈, 프론트엔드 시스템 디자인, 비헤이비어럴 여섯 유형별로 무엇을 보고 어떻게 준비하는지, 유형별 대표 문제, 백엔드 시스템 디자인과의 차이, 시스템 디자인용 RADIO 프레임워크, 토론 라운드 주제, 국내 면접의 진행 형식과 꼬리 질문 사슬, 리크루터에게 확인할 것과 회사를 가로지르는 면접 패턴(DSA 비중, Vanilla JS 강제, 기존 코드 디버깅, 단계별 확장 문제, 풀스택식 평가, AI 도구 허용), 여러 회사에서 겹치는 단골 문제, 「아키텍처는 어떻게 고민하나」에 답하는 네 층위, UI 구현 때 짚을 체크리스트를 정리하고 개념은 Frontend 노트로 잇는다."
 tags: ["career", "interview", "job-search", "frontend"]
 source: other
 date: "2026-10-17"
-sources: ["https://www.frontendinterviewhandbook.com/kr/introduction", "https://www.frontendinterviewhandbook.com/introduction", "https://www.frontendinterviewhandbook.com/coding/javascript-utility-function", "https://www.frontendinterviewhandbook.com/coding/build-front-end-user-interfaces", "https://www.frontendinterviewhandbook.com/coding/algorithms", "https://www.frontendinterviewhandbook.com/trivia", "https://www.frontendinterviewhandbook.com/front-end-system-design", "https://www.frontendinterviewhandbook.com/front-end-system-design/ui-components", "https://www.frontendinterviewhandbook.com/front-end-system-design/applications", "https://www.frontendinterviewhandbook.com/behavioral", "https://www.frontendinterviewhandbook.com/resume", "https://www.frontendinterviewhandbook.com/blog/front-end-vs-back-end-system-design-interviews", "https://www.frontendinterviewhandbook.com/blog/a-glimpse-into-front-end-interviews", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91", "https://github.com/junh0328/prepare_frontend_interview"]
+sources: ["https://www.frontendinterviewhandbook.com/kr/introduction", "https://www.frontendinterviewhandbook.com/introduction", "https://www.frontendinterviewhandbook.com/coding/javascript-utility-function", "https://www.frontendinterviewhandbook.com/coding/build-front-end-user-interfaces", "https://www.frontendinterviewhandbook.com/coding/algorithms", "https://www.frontendinterviewhandbook.com/trivia", "https://www.frontendinterviewhandbook.com/front-end-system-design", "https://www.frontendinterviewhandbook.com/front-end-system-design/ui-components", "https://www.frontendinterviewhandbook.com/front-end-system-design/applications", "https://www.frontendinterviewhandbook.com/behavioral", "https://www.frontendinterviewhandbook.com/resume", "https://www.frontendinterviewhandbook.com/blog/front-end-vs-back-end-system-design-interviews", "https://www.frontendinterviewhandbook.com/blog/a-glimpse-into-front-end-interviews", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91", "https://github.com/junh0328/prepare_frontend_interview", "https://www.frontendinterviewhandbook.com/company-interview-questions", "https://www.frontendinterviewhandbook.com/companies/adobe-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/airbnb-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/amazon-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/apple-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/atlassian-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/bytedance-tiktok-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/canva-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/coinbase-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/discord-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/doordash-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/dropbox-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/ebay-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/ethos-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/google-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/harvey-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/linkedin-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/lyft-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/meta-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/microsoft-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/mozilla-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/netflix-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/openai-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/oracle-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/palantir-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/pinterest-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/ramp-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/reddit-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/rippling-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/robinhood-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/roblox-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/salesforce-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/shopify-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/squarespace-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/stripe-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/twitter-front-end-interview-questions", "https://www.frontendinterviewhandbook.com/companies/uber-front-end-interview-questions"]
 ---
 
-> Yangshun Tay·GreatFrontEnd의 「[Front End Interview Handbook](https://www.frontendinterviewhandbook.com/introduction)」([한국어판](https://www.frontendinterviewhandbook.com/kr/introduction), 2026.10 갱신)을 바탕으로 재구성한 노트다. 퀴즈 주제 표는 「[프론트엔드 개발자 인터뷰 후기 (면접 질문 정리)](https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91)」를 참고해 보강했다. 페이지 재현 문제는 Tech Interview Handbook의 「[Interview Formats](https://www.techinterviewhandbook.org/interview-formats-top-companies/)」로 보강했다. 프론트엔드·백엔드 시스템 디자인 비교는 핸드북 블로그의 「[Front End vs. Back End System Design Interviews](https://www.frontendinterviewhandbook.com/blog/front-end-vs-back-end-system-design-interviews)」(2021.12), 라운드 구성과 토론 라운드는 「[A Glimpse into Front End Interviews](https://www.frontendinterviewhandbook.com/blog/a-glimpse-into-front-end-interviews)」(2021.08)로 보강했다.
+> Yangshun Tay·GreatFrontEnd의 「[Front End Interview Handbook](https://www.frontendinterviewhandbook.com/introduction)」([한국어판](https://www.frontendinterviewhandbook.com/kr/introduction), 2026.10 갱신)을 바탕으로 재구성한 노트다. 퀴즈 주제 표는 「[프론트엔드 개발자 인터뷰 후기 (면접 질문 정리)](https://velog.io/@tmmoond8/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EA%B0%9C%EB%B0%9C%EC%9E%90-%EC%9D%B8%ED%84%B0%EB%B7%B0-%ED%9B%84%EA%B8%B0-%EB%A9%B4%EC%A0%91-%EC%A7%88%EB%AC%B8-%EC%A0%95%EB%A6%AC-%EC%9E%91%EC%84%B1-%EC%A4%91)」를 참고해 보강했다. 페이지 재현 문제는 Tech Interview Handbook의 「[Interview Formats](https://www.techinterviewhandbook.org/interview-formats-top-companies/)」로 보강했다. 프론트엔드·백엔드 시스템 디자인 비교는 핸드북 블로그의 「[Front End vs. Back End System Design Interviews](https://www.frontendinterviewhandbook.com/blog/front-end-vs-back-end-system-design-interviews)」(2021.12), 라운드 구성과 토론 라운드는 「[A Glimpse into Front End Interviews](https://www.frontendinterviewhandbook.com/blog/a-glimpse-into-front-end-interviews)」(2021.08)로 보강했다. 「회사마다 다른 형식」은 핸드북의 [회사별 면접 질문](https://www.frontendinterviewhandbook.com/company-interview-questions) 페이지(Glassdoor·GreatFrontEnd 커뮤니티의 2023~2026년 후기 모음)로 보강했다.
 > 국내 면접의 진행 형식, 꼬리 질문 사슬, 아키텍처 열린 질문은 junh0328의 「[prepare_frontend_interview](https://github.com/junh0328/prepare_frontend_interview)」 면접 핸드북과 그 안의 실제 질문 목록을 바탕으로 보강했다. 핸드북의 개념 문답은 각 개념 노트에 나눠 흡수했다.
 
 ## 프론트엔드 면접의 특징
 
 프론트엔드 면접은 일반 소프트웨어 엔지니어 면접보다 **알고리즘 비중이 낮고 도메인 지식 비중이 높다.** HTML, CSS, JavaScript를 실제 상황에 적용하는 능력을 본다. LeetCode만으로는 부족하지만, 기본 자료구조·알고리즘은 여전히 나온다.
 
-유형 구성은 업계 표준이 없고 회사마다 조합이 다르다. 퀴즈를 아예 안 보는 회사도, UI 코딩 대신 시스템 디자인을 보는 회사도 있다. 회사 하나의 기술 면접은 보통 3~4세션이고, 대부분 JavaScript 코딩과 웹 기술 토론이며 나머지가 알고리즘이나 비헤이비어럴이다. **역사가 짧은 회사일수록 JavaScript 비중이 크다.** 오래된 회사는 프론트엔드·백엔드를 가리지 않고 일반 소프트웨어 엔지니어로 뽑아 왔기 때문에 알고리즘 비중이 남아 있다. 지원 회사의 후기와 [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]]로 조합을 확인하고 그에 맞춰 비중을 정한다. 회사는 같은 문제를 자주 재사용한다.
+유형 구성은 업계 표준이 없고 회사마다 조합이 다르다. 퀴즈를 아예 안 보는 회사도, UI 코딩 대신 시스템 디자인을 보는 회사도 있다. 회사 하나의 기술 면접은 보통 3~4세션이고, 대부분 JavaScript 코딩과 웹 기술 토론이며 나머지가 알고리즘이나 비헤이비어럴이다. **역사가 짧은 회사일수록 JavaScript 비중이 크다.** 오래된 회사는 프론트엔드·백엔드를 가리지 않고 일반 소프트웨어 엔지니어로 뽑아 왔기 때문에 알고리즘 비중이 남아 있다. 지원 회사의 후기와 아래 「회사마다 다른 형식」으로 조합을 확인하고 그에 맞춰 비중을 정한다. 회사는 같은 문제를 자주 재사용한다.
 
 국내 프론트엔드 기술 면접은 개념 문답의 비중이 크다. 질문 빈도는 대체로 **JavaScript > CS(네트워크·브라우저·운영체제) > React > HTML·CSS** 순이다. 진행 형식은 아래처럼 섞인다.
 
@@ -27,6 +27,62 @@ sources: ["https://www.frontendinterviewhandbook.com/kr/introduction", "https://
 | 의견 묻기 | 정답이 없는 질문으로 문제를 마주했을 때의 사고 과정을 본다. 예: 「브라우저마다 CSS가 다르게 보이면 무엇을 기준으로 삼나」, 「이 프레임워크는 언제까지 쓰일 것 같나」 | 근거와 함께 자기 기준을 말한다([[web-standards-process\|웹 표준과 크로스 브라우징]]) |
 
 한 면접에 프론트엔드가 아닌 리드 개발자(백엔드, 게임 클라이언트 등)가 들어오면 웹 세부보다 일반 CS와 협업 질문이 늘어난다.
+
+## 회사마다 다른 형식
+
+회사별 형식은 **후기에서 모은 관찰**이다. 같은 회사라도 팀, 레벨, 트랙(프론트엔드 vs 풀스택)에 따라 라운드가 다르고, 몇 달 단위로 바뀐다. 리크루터가 말한 형식과 실제 문제가 다른 경우도 흔하다. 그래서 아래 표는 「이 회사는 이걸 낸다」는 정답지가 아니라 **무엇을 확인해야 하는지 알려 주는 지도**다.
+
+리크루터에게 확인할 것은 여섯 가지다.
+
+| 확인할 것 | 이유 |
+| --- | --- |
+| 라운드 이름과 순서 | 「Bug Squash」, 「Decomp」, 「Tech execution」처럼 회사 고유 라운드가 많다. 이름을 알면 형식을 찾아볼 수 있다 |
+| 트랙(프론트엔드 / 풀스택) | Rippling·DoorDash·Ethos·eBay처럼 프론트엔드 직무도 백엔드 지식을 깊게 보는 곳이 있다 |
+| 언어·프레임워크 | Vanilla JS 강제인지, React인지, TypeScript 환경인지 |
+| 코딩 환경 | 공유 에디터, 실행 불가 에디터, 자기 IDE, HackerRank·CodeSignal·CoderPad·Karat |
+| AI 도구 허용 여부 | 같은 회사 안에서도 라운드마다 다르다 |
+| 시스템 디자인의 범위 | 백엔드를 블랙박스로 두라는 면접관도, ID 생성·커서 페이지네이션까지 묻는 면접관도 있다. 프론트엔드·백엔드 깊이를 시작할 때 확인한다 |
+
+전형 단계 전반(리크루터 통화 → 폰 스크린 → 온사이트 → 팀 매칭)은 [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], 진행 형식별 대비는 [[tech-interview-prep#진행 형식별 대비|기술 면접 준비]]에 있다.
+
+### 회사를 가로지르는 패턴
+
+아래 회사 이름은 2023~2026년 후기에서 되풀이해 보고된 예다. 회사별 라운드 구성과 강조점은 팀과 시기에 따라 바뀌므로 싣지 않는다. 초대장과 리크루터 안내가 기준이다.
+
+| 패턴 | 해당 회사 | 대비 |
+| --- | --- | --- |
+| **프론트엔드에도 DSA 라운드** | Google, Meta, Apple, Amazon, Microsoft, Pinterest, Palantir, Salesforce, OpenAI, Roblox, Uber, Oracle, ByteDance | 프론트엔드 직무라도 LeetCode 중간 난이도 이상을 준비한다. 「프론트엔드 문제만 원한다」고 요청해도 뒤 라운드에 알고리즘이 나올 수 있다 |
+| **실무형 UI·JS 중심** | Dropbox, Mozilla, DoorDash, Coinbase, Squarespace, Shopify, Ramp, Reddit, Lyft, Stripe | 컴포넌트·작은 앱을 처음부터 빠르게 만드는 연습 |
+| **Vanilla JS 강제** | Amazon, Atlassian(스크린), Dropbox, Apple(일부), LinkedIn, Reddit, Squarespace, eBay | 프레임워크 없이 DOM을 만들고 붙이고 지우는 연습, `fetch`를 라이브러리 없이 쓰는 연습 |
+| **기존 코드 디버깅·확장·리뷰** | Squarespace, Stripe(Bug Squash), Palantir, Oracle, Ethos, DoorDash, eBay, Apple(Bug Hunt), Coinbase, Harvey, Salesforce, Ramp | 낯선 코드를 읽고 상태 흐름을 추적하는 연습. 마지막에 전체 코드 리뷰를 요구하는 곳도 있다 |
+| **단계별로 커지는 문제** | X(피드), Robinhood(이벤트 이미터), Rippling(잡 보드), Airbnb, Mozilla, Stripe, Uber, Discord | 동작하는 기본형을 먼저 끝내고 확장한다. 레벨이 높을수록 더 많은 단계를 통과해야 한다 |
+| **풀스택식 평가** | Rippling, DoorDash, Ethos, eBay, OpenAI, Canva, Harvey, Stripe, Roblox(일부), Apple(풀스택 팀) | REST vs GraphQL, BFF, DB 선택, 페이지네이션 커서, ID 생성 같은 백엔드 질문에 답할 준비 |
+| **다이어그램 없이 텍스트로 설계** | Palantir(Decomp) | 일반 텍스트 에디터에서 문제를 쪼개고 개념을 정리해 설명하는 연습. 기술 깊이보다 면접관의 틀과 어휘에 맞춰 생각을 풀어 가는지를 본다 |
+| **테스트로 채점** | Coinbase | 면접관 판단이 아니라 숨겨진 테스트 스위트 통과 여부로 채점한다 |
+| **자기 IDE에서 직접 시작** | Discord, Ramp(연습 권장) | 프로젝트 스캐폴딩을 빠르게 하는 연습 |
+| **실행할 수 없는 에디터** | Amazon(사내 일반 에디터), Google(문서), Adobe(손으로 테스트) | 자동완성·문법 강조 없이 쓰고 손으로 예제를 따라가 검증하는 연습 |
+| **AI 도구** | Canva(AI 보조 코딩 라운드), LinkedIn(스태프 루프의 AI 보조 세션), Discord(라운드마다 다름), eBay(면접 중 금지), ByteDance(AI 활용에 관한 질문) | 허용 여부를 라운드마다 확인하고, AI로 코딩하는 방식을 설명할 준비 |
+
+### 여러 회사에서 겹치는 단골 문제
+
+문제 은행은 계속 바뀌지만 문제에 쓰이는 개념은 겹친다. 회사별 기출은 핸드북의 [회사별 페이지](https://www.frontendinterviewhandbook.com/company-interview-questions)에서 본다.
+
+| 문제 | 나온 회사 | 개념 노트 |
+| --- | --- | --- |
+| 디바운스·스로틀 | Google, Meta(스티키 광고), Rippling, LinkedIn, Amazon | [[debounce-throttle\|Debounce와 Throttle]] |
+| `Promise.all`·순차 실행·동시성 제한 | ByteDance, Lyft, Apple, Uber, eBay, Harvey | [[callback-and-promise\|Promise]], [[async-await\|async/await]] |
+| 이벤트 이미터·리스너 저장소 | Meta, Rippling, Robinhood, Airbnb | [[js-design-patterns\|JS 디자인 패턴]] |
+| `Function.prototype.bind`·배열 메서드 폴리필 | ByteDance, Rippling, Adobe, Amazon, Apple | [[functions\|함수와 this]], [[prototype-and-inheritance\|프로토타입]] |
+| `getElementsByClassName` 류 DOM 탐색 | LinkedIn, Dropbox, Amazon, Meta | [[dom-manipulation\|DOM 조작]] |
+| 무한 스크롤·「더 보기」 | Amazon, LinkedIn, Rippling, Google | [[intersection-observer\|Intersection Observer]], [[list-virtualization\|리스트 가상화]] |
+| 자동완성·타입어헤드 | Airbnb, Lyft, Amazon, Meta, X, Google(이모지) | [[debounce-throttle\|Debounce와 Throttle]] |
+| 이미지 캐러셀·슬라이더 | Airbnb, Amazon, DoorDash, Dropbox, Microsoft | [[infinite-carousel\|무한 캐러셀]] |
+| 아코디언·탭·별점·틱택토 | Adobe, Amazon, LinkedIn, Airbnb, Google, Microsoft, X | [[accessible-widgets\|접근 가능한 위젯]] |
+| 스프레드시트와 수식 | Discord, Harvey, Dropbox(설계) | - (셀 입력보다 다른 셀을 참조하는 수식 해석이 핵심이다) |
+| 채팅 앱 설계 | Airbnb, Discord, DoorDash, LinkedIn, Microsoft | [[realtime-chat-app\|실시간 채팅 앱의 데이터 흐름]], [[chat-system-design\|채팅 시스템 설계]] |
+| 데이터 테이블 | Meta, Amazon, Netflix(연습) | [[list-virtualization\|리스트 가상화]] |
+| Jira·칸반 보드 | Atlassian, Oracle, Squarespace, Ethos | - |
+| Google Calendar | Dropbox, Uber, Ramp(캘린더 CRUD) | - |
 
 ## 기본기: 모든 유형의 바탕
 
@@ -179,7 +235,7 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 | 컴포넌트 | 자동완성, 이미지 캐러셀, 드롭다운 메뉴, 모달 대화상자, 리치 텍스트 에디터, 투표 위젯, 데이터 테이블, 툴팁 |
 | 앱 | 뉴스 피드(Facebook), 채팅(Messenger), 핀터레스트형 이미지 피드, 공동 문서 편집(Google Docs), 동영상 스트리밍(Netflix), 음악 스트리밍(Spotify), 디자인 툴(Figma), 화상 회의(Zoom), 숙박 예약(Airbnb), 이커머스(Amazon), 공동 스프레드시트(Google Sheets), 사진 공유(Instagram), 이메일 클라이언트(Outlook) |
 
-회사별로 실제 나온 설계 문제는 [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]]에 모았다.
+여러 회사에서 겹치는 설계 문제는 위의 「여러 회사에서 겹치는 단골 문제」에 모았다.
 
 ### 백엔드 시스템 디자인과 무엇이 같고 다른가
 
@@ -235,8 +291,10 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 
 - 프론트엔드 면접은 도메인 지식과 실전 구현 중심이다. 기본기(CSS 레이아웃, `this`·클로저·Promise, 이벤트 위임)가 모든 유형의 바탕이다.
 - 유형은 JS 코딩, UI 코딩, 알고리즘, 퀴즈, 시스템 디자인, 비헤이비어럴이고 회사마다 조합이 다르니 먼저 조합을 확인한다.
+- 회사별 형식은 후기에서 모은 관찰이고 자주 바뀐다. 라운드 이름, 트랙, 언어, 코딩 환경, AI 허용 여부, 시스템 디자인 범위를 리크루터에게 먼저 확인한다. 빅테크는 프론트엔드에도 DSA를 내고, 실무형 회사는 기존 코드 디버깅·단계별 확장 문제를 쓴다.
+- 단골 문제(디바운스·스로틀, Promise 유틸, 이벤트 이미터, 무한 스크롤, 자동완성, 채팅 앱)는 회사를 가리지 않고 겹친다. 이것부터 처음부터 직접 구현해 본다.
 - JS 코딩은 빨리 끝내고 후속 문제를 받는다. 복잡도와 순수 함수를 챙긴다.
 - UI 코딩은 범위를 먼저 합의하고, 극단적 입력·네트워크·접근성·보안을 짚는다.
 - 시스템 디자인은 RADIO로 대화를 이끌고, 최적화 단계에서 깊이를 보여 준다. 백엔드와 달리 DB·확장·정량 추정보다 렌더링·데이터 가져오기·캐시·컴포넌트 API를 다룬다.
 
-관련 노트: [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]], [[interview-attitude|면접 잘 보는 법]], [[tech-interview-prep|기술 면접 준비]], [[coding-test|코딩 테스트 접근법]], [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[debounce-throttle|Debounce와 Throttle]], [[Accessibility|웹 접근성]], [[web-security|웹 보안: CSRF와 XSS]]
+관련 노트: [[interview-attitude|면접 잘 보는 법]], [[tech-interview-prep|기술 면접 준비]], [[coding-test|코딩 테스트 접근법]], [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[debounce-throttle|Debounce와 Throttle]], [[Accessibility|웹 접근성]], [[web-security|웹 보안: CSRF와 XSS]]
