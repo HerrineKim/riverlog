@@ -133,6 +133,9 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/computer-science/programming-languages/ood-booking-rental-systems": "/knowledge/dictionary/computer-science/programming-languages/ood-interview-approach",
   "/knowledge/dictionary/computer-science/programming-languages/ood-machines-and-games": "/knowledge/dictionary/computer-science/programming-languages/ood-interview-approach",
   "/knowledge/dictionary/computer-science/programming-languages/ood-platform-systems": "/knowledge/dictionary/computer-science/programming-languages/ood-interview-approach",
+  "/knowledge/dictionary/backend/architecture/system-design-primer-requirements": "/knowledge/dictionary/backend/architecture/system-design-fundamentals",
+  "/knowledge/dictionary/backend/architecture/system-design-primer-tradeoffs": "/knowledge/dictionary/backend/architecture/system-design-fundamentals",
+  "/knowledge/dictionary/backend/architecture/system-design-primer-caching-async": "/knowledge/dictionary/backend/architecture/caching-strategies",
 };
 
 const nextConfig: NextConfig = {

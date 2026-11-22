@@ -5,7 +5,7 @@ summary: "Go의 장단점과 The Zen of Go의 원칙, 암묵적으로 구현되�
 tags: ["go", "concurrency", "memory", "backend", "architecture"]
 source: other
 date: "2026-10-21"
-sources: ["https://dave.cheney.net/2020/02/23/the-zen-of-go", "https://tech.ssut.me/goroutine-vs-threads/", "https://hueypark.gitlab.io/post/2018-10-13-go-work-stealing-scheduler/", "https://engineering.linecorp.com/ko/blog/go-gc", "https://github.com/bxcodec/go-clean-arch", "https://go.dev/doc/gc-guide", "https://go.dev/doc/go1.26", "https://go.dev/ref/spec", "https://go.dev/ref/mod", "https://go.dev/doc/tutorial/workspaces", "https://go.dev/blog/swisstable", "https://pkg.go.dev/testing", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/go.md"]
+sources: ["https://dave.cheney.net/2020/02/23/the-zen-of-go", "https://tech.ssut.me/goroutine-vs-threads/", "https://hueypark.gitlab.io/post/2018-10-13-go-work-stealing-scheduler/", "https://engineering.linecorp.com/ko/blog/go-gc", "https://github.com/bxcodec/go-clean-arch", "https://go.dev/doc/gc-guide", "https://go.dev/doc/go1.26", "https://go.dev/doc/go1.27", "https://go.dev/ref/spec", "https://go.dev/ref/mod", "https://go.dev/doc/tutorial/workspaces", "https://go.dev/blog/swisstable", "https://pkg.go.dev/testing", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/go.md"]
 ---
 
 > 「[The Zen of Go](https://dave.cheney.net/2020/02/23/the-zen-of-go)」, 「[고루틴 vs 쓰레드](https://tech.ssut.me/goroutine-vs-threads/)」, 「[Go 작업 훔치기 스케쥴러](https://hueypark.gitlab.io/post/2018-10-13-go-work-stealing-scheduler/)」, 「[Go 언어의 GC에 대해](https://engineering.linecorp.com/ko/blog/go-gc)」, 「[Go Clean Architecture](https://github.com/bxcodec/go-clean-arch)」를 바탕으로, GC 동작과 최신 변경은 Go 공식 GC 가이드와 릴리스 노트로 확인해 재구성한 노트다. 장단점, 타입 시스템, 에러 처리, 빌드·모듈·워크스페이스, 테스트와 벤치마크는 fru1tworld/cs-basic 모의 면접 질문 목록의 Go 질문을 바탕으로 Go 언어 명세와 공식 문서로 확인해 보강했다.
@@ -153,7 +153,7 @@ Sum([]float64{1.5, 2})                  // T는 인자에서 추론된다
 | 메서드 + 타입 집합 | `interface{ ~[]byte; String() string }`처럼 둘을 함께 요구할 수 있다 |
 
 - 유니언이나 `~`가 들어간 인터페이스는 **제약으로만** 쓸 수 있고 일반 변수 타입이 될 수 없다.
-- 메서드는 자기만의 타입 매개변수를 가질 수 없다(타입의 매개변수만 쓴다). 1.24부터 제네릭 타입 별칭을 쓸 수 있다.
+- Go 1.27부터 메서드도 자기만의 타입 매개변수를 선언할 수 있다(`func (s *Store) Get[T any](i int) (T, bool)`). 그 전에는 리시버 타입의 매개변수만 쓸 수 있었다. 다만 인터페이스의 메서드는 타입 매개변수를 선언할 수 없고, 제네릭 메서드로 인터페이스 메서드를 구현할 수도 없다. 1.24부터 제네릭 타입 별칭을 쓸 수 있다.
 - 구현은 같은 메모리 모양(GC shape)끼리 코드를 공유하고 타입 정보를 사전(dictionary)으로 넘기는 방식이라, 포인터 타입끼리는 단형화만큼 빠르지 않을 수 있다. 표준 라이브러리의 `slices`, `maps`, `cmp`가 제네릭으로 만든 도구다. 일반 개념은 [[type-systems|타입 시스템]]의 다형성에 있다.
 
 ## 에러 처리

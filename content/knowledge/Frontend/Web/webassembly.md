@@ -80,7 +80,7 @@ Memory는 JS에서 `new Uint8Array(instance.exports.memory.buffer)`로 들여다
 | --- | --- |
 | Wasm 2.0 | SIMD(128비트 벡터 명령), bulk memory(메모리 복사·채우기), 다중 반환값, 참조 타입(`externref`로 JS 값을 그대로 들고 다님) |
 | Wasm 3.0 (2025.09 완료) | **GC**(구조체·배열 타입), 타입 있는 참조와 `call_ref`, 꼬리 호출, 예외 처리, 64비트 메모리(브라우저는 16GB 상한), 다중 메모리, relaxed SIMD, JS 문자열 내장 함수 |
-| 별도 진행 | 스레드(공유 메모리 + Atomics, [[shared-memory-atomics\|SharedArrayBuffer와 Atomics]]), JSPI(Wasm에서 JS Promise를 동기처럼 기다림), ES 모듈 통합(`import`로 `.wasm` 로드) |
+| 별도 진행 | 스레드(공유 메모리 + Atomics, [[shared-memory-atomics\|SharedArrayBuffer와 Atomics]]), JSPI(Wasm에서 JS Promise를 동기처럼 기다림. 크롬 137, 파이어폭스 153, 사파리 27부터 지원), ES 모듈 통합(`import`로 `.wasm` 로드) |
 
 기능별 브라우저 지원은 webassembly.org의 [기능 표](https://webassembly.org/features/)에서 확인한다. 스레드는 교차 출처 격리(COOP·COEP)가 된 페이지에서만 쓸 수 있다.
 

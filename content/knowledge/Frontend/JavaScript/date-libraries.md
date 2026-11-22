@@ -77,7 +77,7 @@ d.setHours(0, 0, 0, 0)          // 그날 자정으로 맞추기
 
 ## Temporal: 표준 날짜 API
 
-불변 객체 기반의 새 표준 날짜 API **Temporal**이 `Date`를 대체한다. 월이 1부터 시작하고, 타임존(`Temporal.ZonedDateTime`)과 날짜만(`PlainDate`)·시각만(`PlainTime`)을 따로 다룬다. Firefox 139(2025.05), Chrome·Edge 144(2026.01)와 Node.js 26이 기본 탑재했지만, Safari 정식 버전의 지원이 늦어 2026년 10월 MDN 기준 아직 Baseline이 아니다. 모든 브라우저를 지원해야 하면 polyfill(`@js-temporal/polyfill`, `temporal-polyfill`)을 쓰거나 아래 라이브러리를 쓴다.
+불변 객체 기반의 새 표준 날짜 API **Temporal**이 `Date`를 대체한다. 월이 1부터 시작하고, 타임존(`Temporal.ZonedDateTime`)과 날짜만(`PlainDate`)·시각만(`PlainTime`)을 따로 다룬다. Firefox 139(2025.05), Chrome·Edge 144(2026.01)와 Node.js 26이 기본 탑재했지만, Safari는 27.3 베타(2026.11)에서야 지원을 넣어 정식 버전에는 아직 없다. 그래서 2026년 11월 MDN 기준 Baseline이 아니다. 모든 브라우저를 지원해야 하면 polyfill(`@js-temporal/polyfill`, `temporal-polyfill`)을 쓰거나 아래 라이브러리를 쓴다.
 
 ```typescript
 Temporal.Now.plainDateISO().add({ months: 1 }).toString() // '2026-11-13'

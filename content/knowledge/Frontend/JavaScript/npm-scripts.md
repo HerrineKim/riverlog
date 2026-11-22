@@ -54,7 +54,7 @@ sources: ["https://www.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/", "http
 | `prepack`·`postpack` | `npm pack`·`publish`로 tarball을 만들 때 |
 | `preinstall`·`install`·`postinstall` | 패키지가 설치될 때. 네이티브 모듈 빌드에 쓰인다 |
 
-`prepublish`는 `publish`와 `install` 양쪽에서 돌아 혼란을 일으켜 폐기됐고 `prepare`·`prepublishOnly`로 나뉘었다. 의존성의 설치 스크립트는 **공급망 공격 통로**이기도 해서 매니저마다 기본값으로 막는 추세다. 자세한 것은 [[package-managers|패키지 매니저]]의 공급망 보안 절에 있다.
+`prepublish`는 `publish`와 `install` 양쪽에서 돌아 혼란을 일으켜 폐기됐고 `prepare`·`prepublishOnly`로 나뉘었다. 의존성의 설치 스크립트는 **공급망 공격 통로**이기도 해서 npm 12, pnpm 10, Yarn 4.14부터는 허용한 패키지 것만 실행한다. 자세한 것은 [[package-managers|패키지 매니저]]의 공급망 보안 절에 있다.
 
 ## 작업 조합하기
 

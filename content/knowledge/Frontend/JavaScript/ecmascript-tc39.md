@@ -120,8 +120,8 @@ ES2015부터 공식 이름은 연도다. ES6·ES8 같은 판 번호는 관용적
 | 판 | 주요 추가 |
 | --- | --- |
 | ES2023 | `findLast`·`findLastIndex`, 원본을 바꾸지 않는 `toSorted`·`toReversed`·`toSpliced`·`with`, 해시뱅(`#!`) 문법 |
-| ES2024 | `Object.groupBy`·`Map.groupBy`, `Promise.withResolvers`, 정규식 `v` 플래그, 크기 조절 가능한 `ArrayBuffer` |
-| ES2025 | 이터레이터 헬퍼(`iterator.map().filter().take()`), `Set`의 합집합·교집합 메서드, JSON 모듈과 import 속성(`with { type: 'json' }`), 정규식 패턴 수식자(`(?i:abc)`)와 중복 이름 캡처 그룹, `Promise.try`, `Float16Array`, `ArrayBuffer`의 `transfer`, `RegExp.escape` |
+| ES2024 | `Object.groupBy`·`Map.groupBy`, `Promise.withResolvers`, 정규식 `v` 플래그, 크기 조절 가능한 `ArrayBuffer`와 `ArrayBuffer`의 `transfer`, `Atomics.waitAsync`, `isWellFormed`·`toWellFormed` |
+| ES2025 | 이터레이터 헬퍼(`iterator.map().filter().take()`), `Set`의 합집합·교집합 메서드, JSON 모듈과 import 속성(`with { type: 'json' }`), 정규식 패턴 수식자(`(?i:abc)`)와 중복 이름 캡처 그룹, `Promise.try`, `Float16Array`, `RegExp.escape` |
 | ES2026 | `Array.fromAsync`, `Error.isError`, `Math.sumPrecise`, `Uint8Array`의 Base64·hex 변환, 이터레이터 이어 붙이기(`Iterator.concat`), `Map`·`WeakMap`의 `getOrInsert`(Upsert), `JSON.parse` 원문 접근([[json\|JSON]]) |
 
 날짜·시간 API **Temporal**과 `using` 선언(Explicit Resource Management), 이터레이터 `chunks`·`join`·`includes`와 여러 이터레이터를 나란히 도는 `Iterator.zip`, `Atomics.pause`는 Stage 4를 마쳐 ES2027에 실린다. ES2026은 새 문법 없이 내장 함수만 더한 판이다. 정규식 기능 전반은 [[regular-expressions|정규 표현식: 문법·플래그·메서드]]에 있다.

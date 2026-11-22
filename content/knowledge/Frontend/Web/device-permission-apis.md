@@ -74,7 +74,7 @@ async function enableMotion() { // 버튼 클릭 핸들러에서 부른다
 }
 ```
 
-- **iOS Safari는 `requestPermission()`을 사용자 동작 안에서 불러야** 이벤트를 준다. 다른 브라우저에는 이 메서드가 없으므로 기능 감지로 나눈다.
+- **iOS Safari는 `requestPermission()`을 사용자 동작 안에서 불러야** 이벤트를 준다. Chrome도 152부터 이 메서드를 제공하고, Firefox와 데스크톱 Safari에는 없으므로 기능 감지로 나눈다.
 - 보안 컨텍스트에서만 동작한다. 화면 회전 자체를 알고 싶으면 센서가 아니라 `screen.orientation`과 `orientation` 미디어 쿼리를 쓴다.
 - 기기 간 값 차이가 커서, 정밀한 센서 값이 필요하면 Generic Sensor API(`Accelerometer`, `Gyroscope`, Chromium)를 쓴다.
 
@@ -104,7 +104,7 @@ requestAnimationFrame(loop)
 | 부분 | 인터페이스 | 하는 일 | 지원 |
 | --- | --- | --- | --- |
 | 음성 합성(TTS) | `speechSynthesis`, `SpeechSynthesisUtterance` | 글을 읽어 준다. 언어·목소리·속도·높이를 고른다 | 모든 주요 브라우저 |
-| 음성 인식 | `SpeechRecognition` | 마이크 음성을 글로 바꾼다. 중간 결과(`interimResults`)와 연속 모드 | Chrome 139부터 접두사 없이, Safari 14.1부터 `webkitSpeechRecognition`. Firefox는 기본 지원하지 않는다 |
+| 음성 인식 | `SpeechRecognition` | 마이크 음성을 글로 바꾼다. 중간 결과(`interimResults`)와 연속 모드 | Chrome 139부터 접두사 없이, Safari 14.1부터 `webkitSpeechRecognition`. Firefox는 데스크톱 160부터(기기 안 인식만, Android는 지원하지 않는다). Baseline이 아니다 |
 
 ```javascript
 const u = new SpeechSynthesisUtterance('주문이 접수됐다')
@@ -112,7 +112,7 @@ u.lang = 'ko-KR'
 speechSynthesis.speak(u)
 ```
 
-- 인식은 기본적으로 **플랫폼의 서버 음성 인식 서비스**로 소리를 보낸다. Chrome은 기기 안에서 처리하는 옵션(`processLocally`)을 더했다. 민감한 음성을 다루면 어디로 가는지 확인한다.
+- 인식은 기본적으로 **플랫폼의 서버 음성 인식 서비스**로 소리를 보낸다. Chrome은 기기 안에서 처리하는 옵션(`processLocally`)을 더했고, Firefox는 서버 인식 없이 기기 안 인식만 한다. 민감한 음성을 다루면 어디로 가는지 확인한다.
 - 목소리 목록(`speechSynthesis.getVoices()`)은 비동기로 채워지므로 `voiceschanged` 이벤트 뒤에 읽는다.
 
 ## 진동

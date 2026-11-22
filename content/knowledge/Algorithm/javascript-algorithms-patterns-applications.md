@@ -46,9 +46,7 @@ sources: ["https://github.com/trekhleb/javascript-algorithms", "https://github.c
 
 ### Branch & Bound
 
-현재 최선값과 하한·상한을 이용해 후보를 가지치기한다.
-
-대표 예제: .
+백트래킹 탐색 중 지금까지 찾은 최저 비용 해를 기억해 두고, 부분 해의 비용이 그 값을 넘으면 그 가지를 버린다. 상태 공간 트리를 BFS와 DFS를 섞어 훑는 것이 보통이다. 저장소는 이 패러다임에 예제 구현을 연결해 두지 않았다.
 
 
 ## 분야별 기타 구현 전체 목록

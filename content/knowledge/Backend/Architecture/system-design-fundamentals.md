@@ -4,11 +4,11 @@ concept: "System Design Fundamentals"
 summary: "확장성·가용성·신뢰성·성능이라는 네 가지 품질 속성의 뜻과 달성 수단, 설계에서 늘 부딪치는 다섯 가지 트레이드오프, 시스템 설계를 이루는 빌딩 블록, 목표·범위·규모에서 상위 설계·병목까지의 설계 진행 순서와 지연 시간 숫자로 하는 어림셈, 요구 사항에서 이전 계획까지 설계 논의의 체크리스트, 그리고 CAP·BASE·KISS 같은 약어를 한 곳에 정리했다."
 tags: ["backend", "architecture", "scalability", "software-engineering", "design"]
 source: other
-date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-system-designs", "https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide", "https://bytebytego.com/guides/top-5-trade-offs-in-system-designs", "https://bytebytego.com/guides/must-know-system-design-building-blocks", "https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean", "https://learn.microsoft.com/en-us/azure/well-architected/", "https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html", "https://docs.cloud.google.com/architecture/framework", "https://github.com/checkcheckzz/system-design-interview", "https://blog.pramp.com/system-design-interview-process-e91aae2dbe83", "https://blog.pramp.com/how-to-succeed-in-a-system-design-interview-27b35de0df26", "http://www.palantir.com/2011/10/how-to-rock-a-systems-design-interview/", "http://www.hiredintech.com/system-design/the-system-design-process/", "https://aosabook.org/en/v2/distsys.html", "http://everythingisdata.wordpress.com/2009/10/17/numbers-everyone-should-know/", "http://www.slideshare.net/jboner/scalability-availability-stability-patterns"]
+date: "2026-11-15"
+sources: ["https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design", "https://bytebytego.com/guides/system-design-cheat-sheet", "https://bytebytego.com/guides/a-cheat-sheet-for-system-designs", "https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide", "https://bytebytego.com/guides/top-5-trade-offs-in-system-designs", "https://bytebytego.com/guides/must-know-system-design-building-blocks", "https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean", "https://learn.microsoft.com/en-us/azure/well-architected/", "https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://docs.aws.amazon.com/wellarchitected/latest/framework/the-pillars-of-the-framework.html", "https://docs.cloud.google.com/architecture/framework", "https://github.com/checkcheckzz/system-design-interview", "https://blog.pramp.com/system-design-interview-process-e91aae2dbe83", "https://blog.pramp.com/how-to-succeed-in-a-system-design-interview-27b35de0df26", "http://www.palantir.com/2011/10/how-to-rock-a-systems-design-interview/", "http://www.hiredintech.com/system-design/the-system-design-process/", "https://aosabook.org/en/v2/distsys.html", "http://everythingisdata.wordpress.com/2009/10/17/numbers-everyone-should-know/", "http://www.slideshare.net/jboner/scalability-availability-stability-patterns", "https://github.com/donnemartin/system-design-primer"]
 ---
 
-> ByteByteGo의 System Design 101 가이드 「[The Fantastic Four of System Design](https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design)」, 「[System Design Cheat Sheet](https://bytebytego.com/guides/system-design-cheat-sheet)」, 「[A cheat sheet for system designs](https://bytebytego.com/guides/a-cheat-sheet-for-system-designs)」, 「[System Design Blueprint](https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide)」, 「[Top 5 Trade-offs in System Designs](https://bytebytego.com/guides/top-5-trade-offs-in-system-designs)」, 「[Must Know System Design Building Blocks](https://bytebytego.com/guides/must-know-system-design-building-blocks)」, 「[CAP, BASE, SOLID, KISS](https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean)」를 바탕으로 재구성한 노트다. 클라우드 설계의 기둥과 원칙은 Microsoft의 「[Azure Well-Architected Framework](https://learn.microsoft.com/en-us/azure/well-architected/)」, 「[Design principles for Azure applications](https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/)」로 보강했다. KISS와 코드 원칙의 연결은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」을 점검해 보강했다. 설계 진행 순서와 어림셈은 「[checkcheckzz/system-design-interview](https://github.com/checkcheckzz/system-design-interview)」의 팁, Pramp의 「[The Anatomy Of A System Design Interview](https://blog.pramp.com/system-design-interview-process-e91aae2dbe83)」, 「[How to Succeed in a System Design Interview](https://blog.pramp.com/how-to-succeed-in-a-system-design-interview-27b35de0df26)」, Palantir의 「[How to Rock a Systems Design Interview](http://www.palantir.com/2011/10/how-to-rock-a-systems-design-interview/)」, HiredInTech의 「[The System Design Process](http://www.hiredintech.com/system-design/the-system-design-process/)」, 「[Numbers Everyone Should Know](http://everythingisdata.wordpress.com/2009/10/17/numbers-everyone-should-know/)」로, 관리 용이성·비용 속성은 AOSA 2권의 「[Scalable Web Architecture and Distributed Systems](https://aosabook.org/en/v2/distsys.html)」로, 성능 문제와 확장성 문제의 구분은 Jonas Bonér의 「[Scalability, Availability & Stability Patterns](http://www.slideshare.net/jboner/scalability-availability-stability-patterns)」로 보강했다.
+> ByteByteGo의 System Design 101 가이드 「[The Fantastic Four of System Design](https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-design)」, 「[System Design Cheat Sheet](https://bytebytego.com/guides/system-design-cheat-sheet)」, 「[A cheat sheet for system designs](https://bytebytego.com/guides/a-cheat-sheet-for-system-designs)」, 「[System Design Blueprint](https://bytebytego.com/guides/system-design-blueprint-the-ultimate-guide)」, 「[Top 5 Trade-offs in System Designs](https://bytebytego.com/guides/top-5-trade-offs-in-system-designs)」, 「[Must Know System Design Building Blocks](https://bytebytego.com/guides/must-know-system-design-building-blocks)」, 「[CAP, BASE, SOLID, KISS](https://bytebytego.com/guides/cap-base-solid-kiss-what-do-these-acronyms-mean)」를 바탕으로 재구성한 노트다. 클라우드 설계의 기둥과 원칙은 Microsoft의 「[Azure Well-Architected Framework](https://learn.microsoft.com/en-us/azure/well-architected/)」, 「[Design principles for Azure applications](https://learn.microsoft.com/en-us/azure/architecture/guide/design-principles/)」로 보강했다. KISS와 코드 원칙의 연결은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」을 점검해 보강했다. 설계 진행 순서와 어림셈은 「[checkcheckzz/system-design-interview](https://github.com/checkcheckzz/system-design-interview)」의 팁, Pramp의 「[The Anatomy Of A System Design Interview](https://blog.pramp.com/system-design-interview-process-e91aae2dbe83)」, 「[How to Succeed in a System Design Interview](https://blog.pramp.com/how-to-succeed-in-a-system-design-interview-27b35de0df26)」, Palantir의 「[How to Rock a Systems Design Interview](http://www.palantir.com/2011/10/how-to-rock-a-systems-design-interview/)」, HiredInTech의 「[The System Design Process](http://www.hiredintech.com/system-design/the-system-design-process/)」, 「[Numbers Everyone Should Know](http://everythingisdata.wordpress.com/2009/10/17/numbers-everyone-should-know/)」로, 관리 용이성·비용 속성은 AOSA 2권의 「[Scalable Web Architecture and Distributed Systems](https://aosabook.org/en/v2/distsys.html)」로, 성능 문제와 확장성 문제의 구분은 Jonas Bonér의 「[Scalability, Availability & Stability Patterns](http://www.slideshare.net/jboner/scalability-availability-stability-patterns)」로 보강했다. 지연과 처리량의 관계, 가용성 목표의 조건, 용량 추정 식은 Donne Martin의 「[The System Design Primer](https://github.com/donnemartin/system-design-primer)」([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/))로 보강했다.
 
 ## 시스템 설계란
 
@@ -23,7 +23,7 @@ sources: ["https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-de
 | 신뢰성(Reliability) | 장애가 있어도 **올바른 결과**를 꾸준히 내는 능력 | 오류율, 장애 간 평균 시간(MTBF) | 복제, 검증, 멱등성, 재시도, 테스트 |
 | 성능(Performance) | 주어진 자원으로 정해진 속도를 내는 능력 | 지연 시간(p50·p99), 처리량(QPS·TPS) | 캐시, 인덱스, 병렬화, 비동기 처리 |
 
-가용성과 신뢰성은 다르다. **가용성은 응답이 오는지, 신뢰성은 그 응답이 맞는지**를 본다. 가용성을 높인 시스템도 오래된 데이터를 돌려줄 수 있다.
+가용성과 신뢰성은 다르다. **가용성은 응답이 오는지, 신뢰성은 그 응답이 맞는지**를 본다. 가용성을 높인 시스템도 오래된 데이터를 돌려줄 수 있다. 가용성 목표를 숫자로 적을 때는 **측정 창, 예정된 중단을 포함하는지, 끝에서 끝까지 걸친 의존성**을 함께 밝힌다. 같은 99.9%라도 이 조건에 따라 허용되는 중단이 달라진다.
 
 ### 처리량을 높이는 법
 
@@ -37,7 +37,7 @@ sources: ["https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-de
 
 여기에 두 가지를 더 본다. **관리 용이성(Manageability)** 은 운영의 확장성이다. 문제를 얼마나 빨리 진단하고, 얼마나 쉽게 고치고 배포하나로 잰다. **비용(Cost)** 은 장비·라이선스값만이 아니라 만드는 데 드는 개발 시간, 운영 인력, 교육까지 합친 총소유비용(TCO)이다. 서버를 더해 확장성을 얻으면 관리할 서버와 비용이 늘듯, 속성끼리는 자주 부딪친다.
 
-**성능 문제와 확장성 문제는 증상이 다르다.** 사용자 한 명일 때도 느리면 성능 문제이고, 한 명일 때는 빠른데 부하가 몰릴 때만 느려지면 확장성 문제다. 목표는 「받아들일 만한 지연 시간 안에서 최대 처리량」이다.
+**성능 문제와 확장성 문제는 증상이 다르다.** 사용자 한 명일 때도 느리면 성능 문제이고, 한 명일 때는 빠른데 부하가 몰릴 때만 느려지면 확장성 문제다. 목표는 「받아들일 만한 지연 시간 안에서 최대 처리량」이다. 지연 시간(요청 하나가 걸리는 시간)과 처리량은 따로 움직인다. 처리량을 끌어올리면 대기열이 길어져 꼬리 지연(p95·p99)이 나빠질 수 있으므로 평균이 아니라 둘을 함께 잰다. 서버를 더한다고 처리량이 늘 선형으로 느는 것도 아니다.
 
 ## 다섯 가지 트레이드오프
 
@@ -50,6 +50,8 @@ sources: ["https://bytebytego.com/guides/who-are-the-fantastic-four-of-system-de
 | 성능 ↔ 일관성 | 모든 복제본이 같은 값을 갖게 기다리면 느려진다 | 최종 일관성(eventual consistency)으로 충분한 곳을 찾는다 |
 | 보안 ↔ 유연성 | 인증·권한·감사 단계가 늘수록 통합과 변경이 번거롭다 | 데이터 민감도에 비례해 통제를 건다 |
 | 개발 속도 ↔ 품질 | 빨리 내놓으면 테스트·설계가 얕아진다 | 되돌리기 어려운 결정(데이터 모델, 공개 API)에만 시간을 쓴다 |
+
+「최종 일관성으로 충분하다」는 판단이 충돌까지 풀어 주지는 않는다. 같은 데이터를 여러 곳에서 고칠 수 있으면 버전 비교·병합·중복 처리 정책을 따로 정한다. 일관성 모델의 단계는 [[distributed-time-and-failure|분산 시스템의 시간과 장애]]에 있다.
 
 SQL·NoSQL, 배치·스트림, 동기·비동기처럼 기술 선택에서 반복되는 양자택일과 흔한 문제의 처방은 [[system-design-choices|시스템 설계의 선택지와 흔한 문제의 해법]]에 있다.
 
@@ -133,21 +135,22 @@ SQL·NoSQL, 배치·스트림, 동기·비동기처럼 기술 선택에서 반�
 10억 / (30일 × 86,400초) ≈ 초당 약 400 요청 (최대치는 평균의 몇 배로 잡는다)
 ```
 
-어림셈의 재료는 기본 연산의 비용이다. 아래는 Jeff Dean이 정리한 고전적인 수치(2009년 무렵)로, 절대값보다 **자릿수 차이**를 외우는 표다.
+어림셈의 재료는 기본 연산의 비용이다. 절대값보다 **자릿수 차이**를 외운다. 메모리 참조는 약 100ns, 같은 데이터센터 안 왕복은 약 500µs, 디스크 탐색은 약 10ms, 대륙 간 왕복은 약 150ms다. 연산별 전체 표와 연도별 추세는 [[backend-latency-optimization|백엔드 지연 시간 줄이기: 숫자 감각과 기법]]에 있다.
 
-| 연산 | 시간 | 감각 |
-| --- | --- | --- |
-| L1 캐시 참조 | 0.5ns | |
-| 주 메모리 참조 | 100ns | L1의 200배 |
-| 1KB 압축(Zippy, 지금의 Snappy) | 3µs | |
-| 1Gbps 네트워크로 2KB 전송 | 20µs | |
-| 메모리에서 1MB 순차 읽기 | 250µs | |
-| 같은 데이터센터 안 왕복 | 500µs | |
-| 디스크 탐색(seek) | 10ms | 메모리 참조의 10만 배 |
-| 디스크에서 1MB 순차 읽기 | 20ms | |
-| 캘리포니아 → 네덜란드 → 캘리포니아 패킷 | 150ms | 빛의 속도가 정하는 하한 |
+용량은 아래 식으로 어림한다. 결과는 설계안이 감당할 크기를 가늠하는 값이고, 성능은 실제 장비에서 재서 다시 확인한다.
 
-- 지금 하드웨어는 메모리 순차 읽기·네트워크가 이보다 몇 배 빠르고, SSD의 무작위 읽기는 수십~100µs 수준이라 HDD 탐색보다 두 자릿수 빠르다. 그래도 **메모리 < 같은 DC 왕복 < 디스크 < 대륙 간 왕복**의 순서와 무작위 I/O가 순차 I/O보다 훨씬 비싸다는 결론은 그대로다.
+| 추정 | 식 |
+| --- | --- |
+| 평균 RPS | 하루 요청 수 ÷ 86,400 |
+| 피크 RPS | 평균 × 피크 계수. 계수는 근거 있는 부하 가정으로 잡는다 |
+| 저장량 | 기록당 크기 × 하루 생성 건수 × 보관 기간 |
+| 디스크 | 원본 + 색인 + 로그 + 복제·백업 몫 |
+| 캐시 메모리 | 핫 데이터 크기 × 복제 계수 |
+| 대역폭 | 평균 응답 크기 × 초당 요청 수 |
+
+평균 사용자 수와 동시 사용자 수는 다른 숫자이고, 읽기 경로와 쓰기 경로는 따로 센다. 가정이 바뀌면 다시 계산한다.
+
+- 지금 하드웨어는 메모리 순차 읽기·네트워크가 2009년 무렵의 고전적인 수치보다 몇 배 빠르고, SSD의 무작위 읽기는 수십~100µs 수준이라 HDD 탐색보다 두 자릿수 빠르다. 그래도 **메모리 < 같은 DC 왕복 < 디스크 < 대륙 간 왕복**의 순서와 무작위 I/O가 순차 I/O보다 훨씬 비싸다는 결론은 그대로다.
 - OS 수준 비용도 같은 방식으로 어림한다. 시스템 콜은 수십~수백 ns, 컨텍스트 전환은 캐시 오염까지 치면 수 µs~수십 µs, `fork()`는 수십~수백 µs다.
 - 프론트엔드 쪽 수치(네트워크 왕복, 파싱, 프레임 예산)는 [[frontend-latency-numbers|프론트엔드 개발자가 알아야 할 지연 시간 숫자]]에 있다.
 

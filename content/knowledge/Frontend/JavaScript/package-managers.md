@@ -62,7 +62,7 @@ npx eslint .                   # 전역 설치 없이 프로젝트(또는 임시
 | --- | --- | --- | --- |
 | 출발 | 최초의 Node.js 패키지 매니저 | Facebook이 주도해 npm의 속도·일관성·보안 문제를 보완하려고 만듦 | "performant npm". 디스크 효율을 목표로 만든 매니저 |
 | 설치 | Node.js에 기본 포함 | 별도 설치 | 별도 설치 |
-| 특징 | 가장 오래되어 생태계·자료가 가장 많다 | Yarn 2 이후(berry, 현재 4.x)는 Plug'n'Play·제로 인스톨 같은 새 방식을 지원한다. Rust로 다시 쓴 Yarn 6이 프리뷰 단계다([Yarn 6 Preview](https://yarnpkg.dev/blog/2026-01-28-yarn-6-preview/)). 1.x(classic)는 유지보수만 한다 | 패키지를 **전역 저장소에 한 번만 저장**하고 프로젝트에서는 링크로 연결해 디스크와 설치 시간을 아낀다. 모노레포 workspace 지원이 강하다 |
+| 특징 | 가장 오래되어 생태계·자료가 가장 많다 | Yarn 2 이후(berry, 현재 4.x)는 Plug'n'Play·제로 인스톨 같은 새 방식을 지원한다. Rust로 다시 쓴 Yarn 6이 프리뷰 단계다([Yarn 6 Preview](https://yarnpkg.dev/blog/2026-01-28-yarn-6-preview/)). 1.x(classic)는 유지보수만 한다 | 패키지를 **전역 저장소에 한 번만 저장**하고 프로젝트에서는 링크로 연결해 디스크와 설치 시간을 아낀다. 모노레포 workspace 지원이 강하다. Rust로 다시 쓴 pnpm 12가 안정판으로 나와 있지만 npm의 `latest` 태그는 11 계열이다([pnpm 12](https://pnpm.io/blog/releases/12.0)) |
 | lock 파일 | `package-lock.json` | `yarn.lock` | `pnpm-lock.yaml` |
 
 런타임 **Bun**도 npm 호환 패키지 매니저(`bun install`, lock 파일 `bun.lock`)를 내장하고 있어 설치 속도를 앞세운 네 번째 선택지가 됐다.
@@ -78,7 +78,7 @@ pnpm의 `node_modules`는 `package.json`에 적지 않은 패키지에 접근할
 
 ## 매니저와 버전 고정: packageManager와 Corepack
 
-`package.json`의 `packageManager` 필드(`"packageManager": "pnpm@10.x.x"`)에 프로젝트가 쓰는 매니저와 정확한 버전을 적는다. **Corepack**은 이 필드를 읽어 맞는 yarn·pnpm을 자동으로 내려받아 실행하는 도구다. Node.js 16.9~24에는 Corepack이 함께 배포됐지만 **Node.js 25부터는 빠졌다.** 필요하면 `npm install -g corepack`으로 따로 설치하고, CI·Docker 이미지에도 설치 단계를 넣는다.
+`package.json`의 `packageManager` 필드(`"packageManager": "pnpm@11.x.x"`)에 프로젝트가 쓰는 매니저와 정확한 버전을 적는다. **Corepack**은 이 필드를 읽어 맞는 yarn·pnpm을 자동으로 내려받아 실행하는 도구다. Node.js 16.9~24에는 Corepack이 함께 배포됐지만 **Node.js 25부터는 빠졌다.** 필요하면 `npm install -g corepack`으로 따로 설치하고, CI·Docker 이미지에도 설치 단계를 넣는다.
 
 ### Node.js 버전 고정: nvm과 `.nvmrc`
 
@@ -99,13 +99,14 @@ echo "22" > .nvmrc     # 프로젝트 버전 기록 → 이 폴더에서 nvm use
 
 ## 공급망 보안 기본값
 
-npm 패키지 탈취·악성 배포 사고가 잦아지면서, 설치 중에 의존성의 `postinstall` 같은 **라이프사이클 스크립트를 실행하지 않는 것**이 기본값이 되고 있다.
+npm 패키지 탈취·악성 배포 사고가 잦아지면서, 설치 중에 의존성의 `postinstall` 같은 **라이프사이클 스크립트를 실행하지 않는 것**이 세 매니저 모두의 기본값이 됐다.
 
 | 매니저 | 동작 |
 | --- | --- |
-| pnpm 10+ | 의존성 빌드 스크립트를 기본으로 실행하지 않는다. 허용할 패키지만 `onlyBuiltDependencies`에 적는다 |
+| pnpm 10+ | 의존성 빌드 스크립트를 기본으로 실행하지 않는다. 허용할 패키지만 `pnpm-workspace.yaml`의 `allowBuilds`에 `esbuild: true`처럼 적는다(`pnpm approve-builds`가 써 준다). 10의 `onlyBuiltDependencies`는 11에서 제거됐다. 11은 검토하지 않은 빌드 스크립트가 있으면 설치를 실패시키고(`strictDepBuilds`), 게시된 지 하루가 안 된 버전은 고르지 않는다(`minimumReleaseAge` 기본 1440분) |
 | Yarn 4 (4.14+) | `enableScripts` 기본값이 `false`다([4.14 발표](https://bsky.app/profile/yarnpkg.dev/post/3mjoarxwb6k2u), 2026.04) |
-| npm | 기본으로 실행한다. `--ignore-scripts`나 `.npmrc`의 `ignore-scripts=true`로 끈다 |
+| npm 12+ (2026.07) | 의존성의 `preinstall`·`install`·`postinstall`과 암묵적인 node-gyp 빌드를 기본으로 실행하지 않는다. `npm approve-scripts`로 믿는 패키지를 골라 `package.json`의 `allowScripts`에 기록하고 커밋한다. 전역 설치와 `npx`는 `--allow-scripts=<패키지>`로 허용한다. Git·원격 URL 의존성도 `--allow-git`·`--allow-remote`를 주지 않으면 해석하지 않는다([npm v12 변경](https://github.blog/changelog/2026-07-08-npm-install-time-security-and-gat-bypass2fa-deprecation)) |
+| npm 11 이하 | 기본으로 실행한다. `--ignore-scripts`나 `.npmrc`의 `ignore-scripts=true`로 끈다 |
 
 lock 파일을 커밋하고 CI에서는 `npm ci`·`pnpm install --frozen-lockfile`처럼 lock 파일을 바꾸지 않는 명령을 쓰는 것도 같은 맥락이다.
 

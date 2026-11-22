@@ -89,19 +89,18 @@ export class AppService {
 
 ## 코드 스타일 설정
 
-CLI 템플릿에는 린터와 Prettier 설정이 기본 포함되어 있다. NestJS 12의 새 ESM 프로젝트는 **oxlint**를, CommonJS 템플릿은 **ESLint**(flat config, `eslint.config.mjs`)를 쓴다. 필요에 따라 규칙을 조정한다. ([NestJS 마이그레이션 가이드](https://docs.nestjs.com/migration-guide))
+CLI 템플릿에는 린터와 Prettier 설정이 기본 포함되어 있다. NestJS 12의 CLI는 ESM·CommonJS 템플릿 모두 린터로 **oxlint**를 쓰고, 규칙은 `.oxlintrc.json`에 적는다. 필요에 따라 규칙을 조정한다. ([NestJS 마이그레이션 가이드](https://docs.nestjs.com/migration-guide))
 
-```javascript
-// eslint.config.mjs 의 rules 예시
+```json
 {
-  rules: {
-    'no-console': 'warn', // 운영 코드에 console.log가 남지 않도록 경고
-    '@typescript-eslint/no-explicit-any': 'off',
-  },
+  "rules": {
+    "no-console": "warn",
+    "@typescript-eslint/no-explicit-any": "off"
+  }
 }
 ```
 
-과거(ESLint 8 이전)에는 `.eslintrc.js`에 같은 규칙을 적었다.
+`no-console`은 운영 코드에 `console.log`가 남지 않도록 경고한다. NestJS 11까지의 템플릿은 ESLint(flat config, `eslint.config.mjs`)를 썼고, 기존 프로젝트는 그대로 두어도 된다.
 
 ## 핵심 정리
 

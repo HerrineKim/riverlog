@@ -12,7 +12,7 @@ sources: ["https://webactually.com/2011/11/22/%ec%9b%8c%eb%93%9c%ed%94%84%eb%a0%
 
 ## 워드프레스란
 
-워드프레스(WordPress)는 PHP와 MySQL(MariaDB)로 돌아가는 오픈 소스 콘텐츠 관리 시스템(CMS)이다. 2003년 블로그 도구 b2/cafelog를 포크해 시작했고, 지금은 블로그를 넘어 회사 사이트, 쇼핑몰(WooCommerce), 뉴스 사이트까지 만드는 범용 CMS다. 전체 웹사이트의 약 40%, CMS를 쓰는 사이트 가운데서는 약 59%가 워드프레스로 돌아간다([W3Techs](https://w3techs.com/technologies/details/cm-wordpress), 2026년 10월).
+워드프레스(WordPress)는 PHP와 MySQL(MariaDB)로 돌아가는 오픈 소스 콘텐츠 관리 시스템(CMS)이다. 2003년 블로그 도구 b2/cafelog를 포크해 시작했고, 지금은 블로그를 넘어 회사 사이트, 쇼핑몰(WooCommerce), 뉴스 사이트까지 만드는 범용 CMS다. 전체 웹사이트의 38.5%, CMS를 쓰는 사이트 가운데서는 57.4%가 워드프레스로 돌아간다([W3Techs](https://w3techs.com/technologies/details/cm-wordpress), 2026년 11월).
 
 | 구분 | 내용 |
 | --- | --- |

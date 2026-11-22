@@ -96,7 +96,7 @@ flowchart LR
 | 데이터 레이크 | 가공 전 원본을 싸게 쌓는다 | S3 | Data Lake Storage Gen2 | Cloud Storage |
 | 처리 | 정제·변환·집계한다 | EMR, Glue | Azure Databricks, Microsoft Fabric | Dataproc, Dataflow |
 | 웨어하우스 | 분석용으로 구조화해 SQL로 질의한다 | Redshift | Synapse Analytics, Microsoft Fabric | BigQuery |
-| 표현 | 대시보드와 리포트를 만든다 | QuickSight | Power BI | Looker Studio |
+| 표현 | 대시보드와 리포트를 만든다 | Quick Sight(옛 QuickSight, AWS Quick의 BI 기능) | Power BI | Looker Studio |
 
 처리 단계는 비싼 고성능 서버 한 대 대신 평범한 서버 여럿을 묶어(클러스터링) 일을 나눠 맡기고, 몇 대가 고장 나도 나머지가 이어받는 분산 처리다. 마스터가 작업을 나누고 워커가 계산하는 구조라 워커를 늘리면 처리량이 거의 비례해 는다. 클러스터를 필요할 때만 띄웠다 끄면 되므로 클라우드와 잘 맞는다(EMR, Dataproc).
 

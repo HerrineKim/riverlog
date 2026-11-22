@@ -231,7 +231,7 @@ registerRoute(({ request }) => request.destination === 'image',
 | `workbox-build`, 번들러 플러그인 | 자체 빌드 과정에 통합 |
 | `workbox-sw` | 빌드 없이 CDN에서 불러온다 |
 
-npm 모듈을 `import`로 쓰면 배포 전에 번들링한다. 모듈 서비스 워커를 지원하지 않는 브라우저도 있어서다.
+npm 모듈을 `import`로 쓰면 배포 전에 번들링한다. 모듈 서비스 워커(`type: 'module'`)는 파이어폭스가 147(2026년 1월)에야 지원해, 그보다 오래된 브라우저에서는 등록에 실패하기 때문이다.
 
 ### 자산 업데이트 방식
 

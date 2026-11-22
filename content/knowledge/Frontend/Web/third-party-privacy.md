@@ -94,6 +94,7 @@ Permissions-Policy: geolocation=(self "https://maps.example"), camera=(), microp
 - 기능은 쉼표로 나누고, 허용 목록은 괄호로 감싼다. `()`는 모두 금지, `self`는 같은 출처, `*`는 모두 허용. CSP처럼 세미콜론을 쓰지 않는다.
 - **기본 거부 후 필요한 것만 연다.** iframe은 강력한 기능이 기본으로 막혀 있지만 최상위 페이지는 그렇지 않다. 최상위에도 제한적인 정책을 건다.
 - iframe에는 `allow` 속성으로 개별 허용한다: `<iframe src="..." allow="fullscreen">`.
+- `Permissions-Policy` 응답 헤더는 Chromium 계열만 지원한다. 파이어폭스와 사파리는 헤더를 무시하고 iframe의 `allow` 속성만 따르므로, 서드파티 iframe은 `allow`로도 함께 묶는다.
 
 ### CSP Report-Only: 지속 감사
 

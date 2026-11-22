@@ -53,6 +53,4 @@ sources: ["https://github.com/donnemartin/system-design-primer", "https://github
 
 단일 머신에서 시작해 정적 콘텐츠 분리, DB 분리, 읽기 복제, 부하 분산, 오토스케일링으로 확장할 수 있다. 매 단계는 **부하 테스트와 병목 측정**에 근거해 선택한다.
 
-원문에 있는 사용자 수·QPS·용량 수치는 예제 시나리오의 가정이다. 실제 서비스나 클라우드 제품의 현재 성능으로 해석하지 않는다.
-
 관련 노트: [[url-shortener-design|URL 단축 설계]], [[news-feed-design|피드 설계]], [[web-crawler-at-scale|웹 크롤러]], [[cache-cluster-operations|캐시 운영]]

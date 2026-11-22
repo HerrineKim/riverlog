@@ -35,7 +35,7 @@ CSS 함수는 `이름(인자)` 꼴로 값을 계산해 돌려주는 내장 기�
 | `attr(속성명)` | HTML 속성 값을 문자열로 꺼낸다. 속성이 바뀌면 따라 바뀐다 | `a::after { content: " (" attr(href) ")"; }` |
 | `url()` | 이미지·글꼴 같은 리소스를 불러온다. 찾지 못하면 아무것도 그리지 않는다 | `background-image: url(bg.webp)` |
 
-`attr()`은 오랫동안 `content` 속성 안의 문자열로만 쓸 수 있었다. `attr(data-size type(<length>))`처럼 타입을 지정해 아무 속성에나 쓰는 확장 문법은 Chrome 133부터 들어갔고, 모든 주요 브라우저가 지원하지는 않는다. 커스텀 속성의 상속·무효 처리·`@property`는 [[css-color-variables#커스텀 속성이란|커스텀 속성이란]]에 있다.
+`attr()`은 오랫동안 `content` 속성 안의 문자열로만 쓸 수 있었다. `attr(data-size type(<length>))`처럼 타입을 지정해 아무 속성에나 쓰는 확장 문법은 Chrome 133·Firefox 155부터 들어갔고, Safari 정식판은 아직 지원하지 않는다. 커스텀 속성의 상속·무효 처리·`@property`는 [[css-color-variables#커스텀 속성이란|커스텀 속성이란]]에 있다.
 
 ## 산술: calc(), min(), max(), clamp()
 

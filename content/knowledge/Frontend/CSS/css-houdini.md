@@ -108,7 +108,7 @@ Houdini가 꿈꾼 "모든 단계를 개발자에게 연다"는 그대로 이뤄�
 | Houdini로 하려던 일 | 지금의 네이티브 기능 |
 | --- | --- |
 | 스크롤에 묶인 합성 애니메이션(Animation Worklet) | 스크롤 기반 애니메이션 `animation-timeline: scroll()`·`view()`([[css-animation\|CSS 애니메이션]]) |
-| 메이슨리 레이아웃(Layout API) | CSS 그리드 레인(`display: grid-lanes`). Safari 26.4가 먼저 정식 지원하고 Chromium·Firefox는 플래그 뒤에 있다. `@supports (display: grid-lanes)`로 점진적 향상 |
+| 메이슨리 레이아웃(Layout API) | CSS 그리드 레인(`display: grid-lanes`). Safari 26.4가 먼저 정식 지원하고 Chromium·Firefox 정식판에는 아직 없다(Firefox는 Nightly에만 있다). `@supports (display: grid-lanes)`로 점진적 향상 |
 | 커스텀 속성 애니메이션 | `@property`(모든 브라우저) |
 | 툴팁 위치 계산 | 앵커 위치 지정([[popover-anchor-positioning\|팝오버와 앵커 위치 지정]]) |
 

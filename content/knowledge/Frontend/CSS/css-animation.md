@@ -92,7 +92,7 @@ sources: ["https://nanati.me/css-animation-library/", "https://developer.mozilla
 
 실제 물체는 갑자기 서거나 출발하지 않는다. 등장은 `ease-out`, 퇴장은 `ease-in`이 자연스럽다. 개발자 도구의 곡선 편집기로 실시간 조절할 수 있다([[devtools-elements-css|DevTools로 DOM과 CSS 다루기]]). 곡선을 읽는 법, 애니메이션 12원칙, 곡선 경로와 안무는 [[ui-motion-principles|UI 모션 디자인]]에 있다.
 
-스크롤 위치에 맞춰 재생하는 **스크롤 기반 애니메이션**(`animation-timeline: scroll()`/`view()`)과, 페이지·상태 전환을 잇는 **View Transitions API**도 CSS로 다룬다([[view-transitions|View Transitions: 화면 전환 애니메이션]]).
+스크롤 위치에 맞춰 재생하는 **스크롤 기반 애니메이션**(`animation-timeline: scroll()`/`view()`)과, 페이지·상태 전환을 잇는 **View Transitions API**도 CSS로 다룬다([[view-transitions|View Transitions: 화면 전환 애니메이션]]). 스크롤 기반 애니메이션은 Chrome 115·Safari 26에 이어 2026년 10월 Firefox 159가 지원해 모든 주요 브라우저에서 쓸 수 있다(Baseline 2026).
 
 ## 부드럽게 만드는 원칙
 

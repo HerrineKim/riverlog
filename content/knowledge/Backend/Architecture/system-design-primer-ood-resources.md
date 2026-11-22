@@ -1,7 +1,7 @@
 ---
 title: "객체 설계 6개와 시스템 설계 읽을거리"
 concept: "OOD System Design References"
-summary: "OOD 여섯 문제, 추가 시스템 설계 질문, 실전 아키텍처·기업 엔지니어링 자료와 역사적 지연 시간 부록."
+summary: "OOD 여섯 문제, 추가 시스템 설계 질문, 실전 아키텍처·기업 엔지니어링 자료와 단위 환산 부록."
 tags: ["backend", "system-design", "object-oriented-design", "architecture", "reference"]
 source: other
 date: "2026-11-15"
@@ -23,8 +23,6 @@ sources: ["https://github.com/donnemartin/system-design-primer", "https://github
 | 주차장 | 차량·구역·주차 슬롯의 제약 모델링 | [Jupyter notebook](https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/solutions/object_oriented_design/parking_lot/parking_lot.ipynb) |
 | 온라인 채팅 | 사용자·대화방·메시지·상태 관리 | [Jupyter notebook](https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/solutions/object_oriented_design/online_chat/online_chat.ipynb) |
 
-원본의 OOD 항목은 **Under development**로 표시돼 있다. Circular array는 해답이 아니라 기여 요청만 있다.
-
 ## 부록의 계산 기준
 
 | 지표 | 참고할 값 |
@@ -33,7 +31,7 @@ sources: ["https://github.com/donnemartin/system-design-primer", "https://github
 | ns / μs / ms | 1 μs = 1,000 ns; 1 ms = 1,000 μs |
 | 부하 분석 | 메모리·디스크·네트워크·프로세싱 시간을 각각 측정 |
 
-원문의 "Latency Numbers Every Programmer Should Know"는 장치 성능을 비교해 보는 **과거의 교육용 지연 시간 표**다. 최신 SSD·네트워크·CPU의 실제 레이턴시와 동일하다고 가정하지 않는다. [원표와 근거 보기](https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md#latency-numbers-every-programmer-should-know).
+연산별 지연 시간 표와 지금 하드웨어 기준의 보정은 [[backend-latency-optimization|백엔드 지연 시간 줄이기: 숫자 감각과 기법]]에 있다.
 
 ## 추가 시스템 설계 질문 목록
 
@@ -144,11 +142,9 @@ sources: ["https://github.com/donnemartin/system-design-primer", "https://github
 * [Zynga Engineering Blog](https://www.zynga.com/blogs/engineering)
 * [kilimchoi/engineering-blogs](https://github.com/kilimchoi/engineering-blogs)
 
-## 학습 보조자료와 작성 중인 항목
+## 학습 보조자료
 
 - [Anki 카드와 인터랙티브 연습](https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md#anki-flashcards)은 기억 및 반복 문제 풀이에 활용한다.
 - 설계 문제를 모두 암기하기보다, 여러 실제 아키텍처에서 공통되는 병목·트레이드오프를 비교한다.
-- 원본에서 **작성 중**으로 표시한 MapReduce 분산 계산, Consistent hashing, Scatter gather 설명은 완성된 해설로 간주하지 않는다.
-- 오래된 기업 사례·외부 사이트 URL은 역사적인 학습 레퍼런스다. 현행 제품 기능·최신 엔지니어링 환경의 증거로 사용하지 않는다.
 
 관련 노트: [[ood-interview-approach|객체 설계 접근]], [[gof-design-patterns|디자인 패턴]], [[high-traffic-resilience|고트래픽 회복성]]

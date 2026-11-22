@@ -94,7 +94,7 @@ Node에서 실행한 테스트 러너가 실제 브라우저를 띄우고 URL을
 | Playwright | E2E의 기본 선택. Chromium·Firefox·WebKit을 한 API로 조종하고 자동 대기와 병렬 실행을 준다 |
 | Cypress | 테스트 코드가 **브라우저 안에서** 앱과 함께 돈다. 실행 화면·명령 로그·시간 여행 스냅숏을 보며 디버깅하는 대화형 UI가 강점. 기본 Chromium 계열·Firefox, WebKit은 실험적 |
 | WebdriverIO | WebDriver 프로토콜 기반. 실제 기기·클라우드 브라우저 그리드와 잘 맞는다 |
-| Vitest 브라우저 모드 | 단위·컴포넌트 테스트를 실제 브라우저에서 돌린다. 공급자는 `playwright`(병렬 실행 지원, 권장)나 `webdriverio` |
+| Vitest 브라우저 모드 | 단위·컴포넌트 테스트를 실제 브라우저에서 돌린다. 공급자는 `playwright`(병렬 실행 지원, 권장)가 기본 선택이다. `webdriverio` 공급자는 Vitest 5에서 커뮤니티(vitest-community) 관리로 넘어갔다 |
 | Web Test Runner | 브라우저에서 테스트를 돌리는 Modern Web 프로젝트의 러너 |
 
 Vitest 브라우저 모드에서는 `vi.mock`이 동작하지만, **ES 모듈 네임스페이스가 봉인돼 있어** 가져온 모듈에 `vi.spyOn`을 걸 수 없다. 대신 `vi.mock('./module.js', { spy: true })`로 모든 export에 스파이를 건다. `alert`·`confirm`처럼 스레드를 멈추는 대화상자는 목으로 바꿔 둔다.

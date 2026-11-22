@@ -221,7 +221,7 @@ CIU는 주제마다 「이 연산을 직접 구현하라」는 목록을 준다.
 | 계산 기하 | 볼록 껍질(그레이엄 스캔, 자비스 행진) | [[vector-geometry\|벡터 기하]] |
 | 이산수학 | 증명, 집합, 그래프 이론, 확률 | [[ossu-core-mathematics\|OSSU 핵심 수학]] |
 
-이 밖에 원문은 MIT·버클리·스탠퍼드 강의 영상 시리즈와, GFS·MapReduce·Bigtable·Dynamo·Spanner 같은 고전 분산 시스템 논문 목록을 덧붙인다. 논문 쪽은 [[tech-reading-list|개발자 필독 자료]]와 겹친다.
+CIU 저장소에는 이 밖에 MIT·버클리·스탠퍼드 강의 영상 시리즈와, GFS·MapReduce·Bigtable·Dynamo·Spanner 같은 고전 분산 시스템 논문 목록이 붙어 있다. 논문 쪽은 [[tech-reading-list|개발자 필독 자료]]와 겹친다.
 
 ## 정리
 
