@@ -4,7 +4,7 @@ concept: "Claude Code Settings"
 summary: "Claude Code의 settings.json 계층(관리 정책 > CLI > 로컬 > 프로젝트 > 사용자)과 목록 병합 규칙, 전역(~/.claude)과 프로젝트(.claude)에 두는 것, 저장소가 스스로 권한을 올리지 못하게 막는 예외, allow·ask·deny 규칙 문법(경로 접두사, Bash 와일드카드, 복합 명령 분해, 파라미터 매칭), 권한 모드별 세부 동작, 카테고리별 주요 설정 키와 환경변수, 샌드박스·상태줄·MCP·플러그인 거버넌스를 정리했다. 버전에 묶인 값은 v2.1.322(2026-11) 기준이다."
 tags: ["ai", "claude-code", "agentic-coding", "security", "tools"]
 source: other
-date: "2026-11-15"
+date: "2026-11-22"
 sources: ["https://github.com/shanraisshan/claude-code-best-practice/blob/main/best-practice/claude-settings.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/reports/claude-global-vs-project-settings.md", "https://code.claude.com/docs/en/settings", "https://code.claude.com/docs/en/settings-reference", "https://code.claude.com/docs/en/permissions", "https://code.claude.com/docs/en/env-vars"]
 ---
 
@@ -141,6 +141,19 @@ Claude Code의 동작(시작 모델, 묻지 않고 실행할 것, 읽으면 안 
 | `bypassPermissions` | 그래도 루트·홈 삭제(`rm -rf /`, `rm -rf ~`), `requiresUserInteraction` 도구, 명시적 `permissions.ask` 규칙은 묻는다 |
 
 무인 실행용 키: `permissions.denyInsteadOfPrompting`(프롬프트가 뜰 호출을 바로 거부해 턴이 멈추지 않게, v2.1.319+), `permissions.blockWritesOutsideWorkingDirectories`(작업 폴더 밖 쓰기 차단).
+
+### 특정 파일을 읽지 않을 때 점검 순서
+
+에이전트가 「권한이 없다」며 어떤 파일을 읽지 않을 때, 원인은 설정 계층에 있을 수도 있고 모델 쪽 판단일 수도 있다. **새 세션에서도 재현되면 세션 상태 문제가 아니다.** 바깥 층부터 하나씩 지운다.
+
+| 순서 | 볼 곳 | 확인할 것 |
+| --- | --- | --- |
+| 1 | 저장소에 커밋된 `.claude/settings.json`, 개인 `settings.local.json` | `permissions.deny`의 `Read(...)` 패턴이 그 경로에 걸리는지. 배열은 계층끼리 합쳐지므로 다른 계층의 deny도 적용된다 |
+| 2 | 관리 설정(조직 계정, MDM, `managed-settings.json`) | 조직이 내린 deny, `allowManagedPermissionRulesOnly` |
+| 3 | 운영체제 파일 권한 | 소유자·읽기 권한, macOS의 폴더 접근 허용(TCC) |
+| 4 | 모델의 안전 판단 | 셋 다 아니면 모델이 파일 이름이나 내용을 비밀값으로 보고 거부한 것이다 |
+
+4번은 파일 이름·내용에 `token`, `secret`, `key` 같은 단어가 들어가면 생기기 쉽다. 디자인 토큰처럼 비밀값과 무관한 파일도 걸린다. 파일이 무엇이고 왜 읽어야 하는지(비밀값이 아니다, 폐기할 테스트 값이다) 맥락을 주면 읽는 경우가 많고, 그래도 안 되면 그 파일 작업만 사람이 하거나 다른 도구에 맡긴다. 반대로 실제 비밀값 파일이라면 거부가 맞는 동작이니 `deny`로 명시해 두는 편이 낫다.
 
 ## 주요 설정 키
 
