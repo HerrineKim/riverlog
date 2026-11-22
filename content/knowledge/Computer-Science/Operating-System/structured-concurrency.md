@@ -84,7 +84,7 @@ async def main():
 | Python | Trio의 nursery, AnyIO의 task group, 표준 `asyncio.TaskGroup`(3.11+) |
 | Kotlin | 코루틴은 기본이 구조적이다. `coroutineScope`, `supervisorScope` |
 | Swift | `async let`, `withTaskGroup` |
-| Java | 가상 스레드와 함께 쓰는 `StructuredTaskScope` (Java 26 기준 아직 프리뷰 API) |
+| Java | 가상 스레드와 함께 쓰는 `StructuredTaskScope` (Java 27 기준 프리뷰 API다. 정식화는 JEP 543이 JDK 28을 목표로 한다) |
 | Go | 언어 차원 지원은 없다. `errgroup`, `sync.WaitGroup`으로 관례적으로 흉내 낸다 |
 | Rust | `std::thread::scope`(스레드), 비동기에서는 `JoinSet` 등 라이브러리 수준. `JoinSet`은 drop하면 중단만 요청하고 끝나기를 기다리지 않으므로, 스코프를 벗어나기 전에 `join_next()`나 `shutdown().await`로 직접 기다려야 한다 |
 

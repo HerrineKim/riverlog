@@ -5,7 +5,7 @@ summary: "Go의 동시성 도구를 정리한다. 고루틴이 OS 스레드보�
 tags: ["go", "concurrency", "backend"]
 source: other
 date: "2026-10-30"
-sources: ["https://tech.ssut.me/goroutine-vs-threads/", "https://hueypark.gitlab.io/post/2018-10-13-go-work-stealing-scheduler/", "https://go.dev/ref/spec", "https://go.dev/ref/mem", "https://pkg.go.dev/context", "https://pkg.go.dev/sync", "https://go.dev/doc/go1.25", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/go.md"]
+sources: ["https://tech.ssut.me/goroutine-vs-threads/", "https://hueypark.gitlab.io/post/2018-10-13-go-work-stealing-scheduler/", "https://go.dev/ref/spec", "https://go.dev/ref/mem", "https://pkg.go.dev/context", "https://pkg.go.dev/sync", "https://go.dev/doc/go1.25", "https://go.dev/doc/go1.27", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/go.md"]
 ---
 
 > 「[고루틴 vs 쓰레드](https://tech.ssut.me/goroutine-vs-threads/)」, 「[Go 작업 훔치기 스케쥴러](https://hueypark.gitlab.io/post/2018-10-13-go-work-stealing-scheduler/)」와 fru1tworld/cs-basic 모의 면접 질문 목록의 Go 질문을 바탕으로, Go 언어 명세·메모리 모델과 표준 라이브러리 문서로 확인해 재구성한 노트다.
@@ -31,7 +31,7 @@ G(고루틴)·M(OS 스레드)·P(실행 문맥과 로컬 실행 큐) 구조, 로
 - **스피닝 스레드**: 할 일을 찾는 M은 바로 잠들지 않고 잠깐 돌며(spinning) 큐를 살핀다. CPU를 조금 쓰는 대신 OS 스레드를 재우고 깨우는 비용을 줄인다. 동시에 스피닝하는 M은 `GOMAXPROCS`개를 넘지 않는다.
 - **찾는 순서**: 로컬 큐 → 공정성을 위해 가끔 전역 큐 → 넷폴러 → 다른 P에서 절반 훔치기.
 - **전환 지점**: 채널 송수신, 뮤텍스 대기, I/O, `time.Sleep`, `runtime.Gosched()`, 그리고 오래 도는 고루틴에 대한 비동기 선점.
-- `main`이 끝나면 다른 고루틴이 남아 있어도 프로그램이 종료된다. 끝나지 않고 막혀 있는 고루틴은 **고루틴 누수**다. 시작할 때 종료 조건과 종료를 기다릴 방법을 먼저 정한다.
+- `main`이 끝나면 다른 고루틴이 남아 있어도 프로그램이 종료된다. 끝나지 않고 막혀 있는 고루틴은 **고루틴 누수**다. 시작할 때 종료 조건과 종료를 기다릴 방법을 먼저 정한다. Go 1.27부터 `runtime/pprof`의 `goroutineleak` 프로파일(`/debug/pprof/goroutineleak`)이, 다시 풀릴 수 없는 채널·뮤텍스 등에 막힌 고루틴을 찾아 보고한다.
 
 ## 채널
 

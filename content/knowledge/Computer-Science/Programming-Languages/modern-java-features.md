@@ -22,7 +22,7 @@ Java는 6개월마다 새 버전을 내고 2년마다 LTS를 지정한다. 대�
 | 11 (2018) | 9~11의 모듈 시스템, `var`(지역 변수 타입 추론), 불변 컬렉션 팩터리(`List.of`), 표준 `HttpClient`(HTTP/2), `String`의 `isBlank`·`strip`·`lines`. 9부터 기본 GC가 G1 |
 | 17 (2021) | `record`, `sealed` 클래스, `switch` 식, 텍스트 블록(`"""`), `instanceof` 패턴 매칭, JDK 내부 API 강한 캡슐화 |
 | 21 (2023) | 가상 스레드, `switch` 패턴 매칭과 레코드 패턴, Sequenced Collections, 세대별 ZGC |
-| 25 (2025) | `ScopedValue`, 모듈 import 선언, 단순한 소스 파일과 인스턴스 `main`(클래스 선언 없이 실행), 생성자 본문에서 `super()` 앞에 문장 쓰기, 압축 객체 헤더 |
+| 25 (2025) | `ScopedValue`, 모듈 import 선언, 단순한 소스 파일과 인스턴스 `main`(클래스 선언 없이 실행), 생성자 본문에서 `super()` 앞에 문장 쓰기, 압축 객체 헤더(27부터 기본값, JEP 534) |
 
 **Java 8과 1.8은 같은 버전이다.** 8까지는 버전 문자열이 `1.x` 꼴이었고(`java -version`이 `1.8.0_xxx`로 나온다), 9부터 앞의 `1.`을 뗐다(JEP 223). 보안 공지의 영향 버전에 「8」이 있으면 1.8을 쓰는 시스템도 대상이다. 벤더의 정기 보안 패치 공지는 지원 중인 LTS 전체를 영향 버전에 올리는 일이 많으므로, 구버전이라 해당 없다고 짐작하지 말고 목록의 업데이트 번호까지 확인한다.
 
@@ -112,7 +112,7 @@ public non-sealed class Point implements Payment {}   // 여기서부터 다시 
 | `switch` 패턴 | 21 | `case Circle c ->`처럼 타입으로 분기, `case null`, 가드 `when` |
 | 레코드 패턴 | 21 | `case Point(int x, int y) ->`: 레코드를 컴포넌트로 분해, 중첩 가능 |
 | 이름 없는 패턴 | 22 | 쓰지 않는 컴포넌트는 `_`로 버린다 |
-| 기본형 패턴 | 프리뷰 | `case int i when i > 100` 같은 기본형 타입 패턴(Java 23부터 프리뷰, Java 26에서 네 번째 프리뷰, JEP 530) |
+| 기본형 패턴 | 프리뷰 | `case int i when i > 100` 같은 기본형 타입 패턴(Java 23부터 프리뷰, Java 27에서 다섯 번째 프리뷰, JEP 532) |
 
 ```java
 double area(Shape s) {

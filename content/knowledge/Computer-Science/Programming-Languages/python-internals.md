@@ -5,7 +5,7 @@ summary: "Python의 런타임 동작을 정리한다. 이터러블·이터레이
 tags: ["python", "programming-language", "gc", "oop"]
 source: other
 date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Python/README.md", "https://docs.python.org/3/library/gc.html", "https://docs.python.org/3/howto/mro.html", "https://peps.python.org/pep-0442/", "https://peps.python.org/pep-0544/", "https://docs.python.org/3/whatsnew/3.14.html", "https://docs.python.org/3/library/asyncio-task.html", "https://docs.python.org/3/library/concurrent.futures.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/python.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Python/README.md", "https://docs.python.org/3/library/gc.html", "https://docs.python.org/3/howto/mro.html", "https://peps.python.org/pep-0442/", "https://peps.python.org/pep-0544/", "https://docs.python.org/3/whatsnew/3.14.html", "https://docs.python.org/3/whatsnew/3.15.html", "https://docs.python.org/3/library/asyncio-task.html", "https://docs.python.org/3/library/concurrent.futures.html", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/python.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/os.md"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 Python 문서를 바탕으로, Python 공식 문서와 PEP로 확인해 재구성한 노트다. 동시성 도구 비교, asyncio, 성능 최적화, 구현체 비교는 fru1tworld/cs-basic 모의 면접 질문 목록의 Python·운영체제 질문을 바탕으로 보강했다.
@@ -154,7 +154,7 @@ asyncio.run(main(["https://a.com", "https://b.com"]))
 
 | 단계 | 방법 |
 | --- | --- |
-| 측정 | `cProfile`·`pstats`(함수별 시간), `timeit`(작은 코드 비교), `tracemalloc`(메모리), 샘플링 프로파일러 py-spy·Scalene(운영 중인 프로세스) |
+| 측정 | `cProfile`·`pstats`(함수별 시간. 3.15부터 `cProfile`은 `profiling.tracing`의 별칭이다), `timeit`(작은 코드 비교), `tracemalloc`(메모리), 샘플링 프로파일러(운영 중인 프로세스에 PID로 붙는다. 3.15부터 표준 라이브러리의 `profiling.sampling`, 그 전 버전은 py-spy·Scalene) |
 | 알고리즘·자료구조 | 리스트 `in`(O(n)) 대신 `set`·`dict`(O(1)), `collections.deque`로 양끝 삽입, `heapq`, `bisect`. 대부분의 큰 개선이 여기서 나온다 |
 | 내장과 표준 라이브러리 | 파이썬 반복문보다 C로 구현된 `sum`, `map`, `sorted`, `str.join`, `itertools`, 컴프리헨션이 빠르다. 문자열은 `+=` 대신 `"".join()` |
 | 인터프리터 비용 줄이기 | 반복문 안의 속성·전역 조회를 지역 변수로 빼기, `__slots__`로 인스턴스 메모리와 속성 접근 줄이기, `functools.cache`로 메모이제이션 |

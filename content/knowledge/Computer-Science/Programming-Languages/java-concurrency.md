@@ -5,7 +5,7 @@ summary: "Java에서 여러 스레드가 안전하게 협력하는 방법을 정
 tags: ["java", "concurrency", "backend", "jvm"]
 source: other
 date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Java/README.md", "https://github.com/4z7l/tech_interview.zip/blob/main/%EC%A7%81%EB%AC%B4/JAVA.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5BJava%5D%20Intrinsic%20Lock.md", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html", "https://docs.oracle.com/javase/specs/jls/se25/html/jls-17.html", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ThreadPoolExecutor.html", "https://openjdk.org/jeps/444", "https://openjdk.org/jeps/491", "https://openjdk.org/jeps/506", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Java/README.md", "https://github.com/4z7l/tech_interview.zip/blob/main/%EC%A7%81%EB%AC%B4/JAVA.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Language/%5BJava%5D%20Intrinsic%20Lock.md", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ConcurrentHashMap.html", "https://docs.oracle.com/javase/specs/jls/se25/html/jls-17.html", "https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/concurrent/ThreadPoolExecutor.html", "https://openjdk.org/jeps/444", "https://openjdk.org/jeps/491", "https://openjdk.org/jeps/506", "https://openjdk.org/projects/jdk/27/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/etc/java.md"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」, 4z7l의 「[tech_interview.zip](https://github.com/4z7l/tech_interview.zip)」, gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 Java 문서와 fru1tworld/cs-basic 모의 면접 질문 목록을 바탕으로, Java 언어 명세(17장)와 java.util.concurrent 문서, OpenJDK JEP로 확인해 재구성한 노트다.
@@ -172,7 +172,7 @@ Thread.ofVirtual().start(task);
 - **CPU 바운드 작업은 빨라지지 않는다.** 캐리어 수(기본은 코어 수)만큼만 실제로 돈다.
 - **고정(pinning)**: JNI 같은 네이티브 프레임 안에서 블로킹하면 가상 스레드가 캐리어에 묶인다. Java 21~23에서는 `synchronized` 안의 블로킹도 묶였지만 **Java 24(JEP 491)부터 해결**됐다. JFR의 `jdk.VirtualThreadPinned` 이벤트로 찾는다. `-Djdk.tracePinnedThreads`는 Java 21~23에서만 쓸 수 있고 Java 24에서 제거됐다.
 - `ThreadLocal`에 큰 객체를 캐시하던 관용(예: 스레드마다 파서 하나)은 가상 스레드 수만큼 복제되므로 `ScopedValue`나 공유 객체로 바꾼다.
-- 여러 하위 작업을 하나의 단위로 시작·취소·대기하는 구조적 동시성(`StructuredTaskScope`)은 Java 26 기준 아직 프리뷰다(여섯 번째 프리뷰, JEP 525)([[structured-concurrency|구조적 동시성]]).
+- 여러 하위 작업을 하나의 단위로 시작·취소·대기하는 구조적 동시성(`StructuredTaskScope`)은 Java 27 기준 아직 프리뷰다(일곱 번째 프리뷰, JEP 533)([[structured-concurrency|구조적 동시성]]).
 
 이벤트 루프 서버와의 선택은 [[event-loop-server|비동기 서버의 이벤트 루프]]에, Spring에서 켜는 방법은 [[spring-singleton-thread-safety|싱글톤 빈과 스레드 안전성]]에 있다.
 
