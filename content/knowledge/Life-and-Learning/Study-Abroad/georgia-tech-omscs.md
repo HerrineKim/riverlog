@@ -5,7 +5,7 @@ summary: "조지아텍의 온라인 컴퓨터공학 석사(OMSCS)와 분석학 �
 tags: ["learning", "study-abroad", "career", "tips"]
 source: other
 date: "2026-10-20"
-sources: ["https://inner-game.tistory.com/662", "https://omscs.gatech.edu/admission-criteria", "https://omscs.gatech.edu/deadlines-decisions-requirements-and-guidelines", "https://bursar.gatech.edu/student/tuition/fa26/fa26_omscs.pdf", "https://pe.gatech.edu/degrees/analytics", "https://self-taught-programmer.tistory.com/8", "https://tech-millennial.tistory.com/5"]
+sources: ["https://inner-game.tistory.com/662", "https://omscs.gatech.edu/admission-criteria", "https://omscs.gatech.edu/deadlines-decisions-requirements-and-guidelines", "https://bursar.gatech.edu/student/tuition/fa26/fa26_omscs.pdf", "https://bursar.gatech.edu/student/tuition/fa26/fa26_totals_page.pdf", "https://grad.gatech.edu/english-proficiency", "https://pe.gatech.edu/degrees/analytics", "https://self-taught-programmer.tistory.com/8", "https://tech-millennial.tistory.com/5"]
 ---
 
 > InnerGame 블로그의 「[한국에서 미국 조지아텍 대학원 컴퓨터공학 온라인 석사](https://inner-game.tistory.com/662)」(2026.02)를 바탕으로, 입학 요건·학비는 조지아텍 공식 페이지로 확인해 재구성한 노트다. 수업 강도는 self-taught-programmer 블로그의 OMSCS 진행기(2021)와 tech-millennial 블로그의 「비전공자 미국 CS 석사 가능할까?」(2020)로 보강했다.
@@ -20,17 +20,17 @@ OMSCS(Online Master of Science in Computer Science)는 조지아텍(Georgia Inst
 | --- | --- | --- |
 | 분야 | 컴퓨터공학 (ML, 컴퓨팅 시스템, 인터랙티브 인텔리전스 등 전공 분야(specialization) 선택) | 분석학 (Analytical Tools, Business Analytics, Computational Data Analytics 트랙) |
 | 졸업 학점 | 30 | 36 |
-| 학비 | 학점당 227달러 (2026 가을학기) | 학점당 300달러대 |
-| 학기 수업료 외 비용 | 학기마다 온라인 수업료(online learning fee)가 수강 학점에 따라 붙는다 | 같음 |
+| 학비 (2026 가을학기, 학점당) | 조지아주 거주자 227달러, 미국 내 타 주 236달러, **미국 밖 거주자(out of country) 248달러** | 조지아주 거주자 330달러, 타 주 343달러, 미국 밖 거주자 360달러 |
+| 학기 수업료 외 비용 | 학기마다 온라인 수업료(online learning fee)가 붙는다. 4학점 미만이면 212달러, 4학점 이상이면 531달러다 | 같음 |
 
-학비는 학기마다 등록한 과목만큼 낸다. OMSCS는 학점 학비만 따지면 30학점에 약 6,800달러이고, 학기 수업료를 더해도 1만 달러 안팎이다. 정확한 금액은 학기별 [Bursar 고지표](https://bursar.gatech.edu/student/tuition/fa26/fa26_omscs.pdf)에서 확인한다.
+학비는 학기마다 등록한 과목만큼 내고, 입학 때 분류된 거주 구분(주 거주자, 타 주, 미국 밖)에 따라 학점당 금액이 다르다. 한국에서 듣는 OMSCS는 학점 학비만 따지면 30학점에 약 7,400달러이고, 한 학기 한 과목씩 10학기 동안 온라인 수업료를 더해도 1만 달러 안팎이다. 정확한 금액은 학기별 [Bursar 고지표](https://bursar.gatech.edu/student/tuition/fa26/fa26_totals_page.pdf)에서 확인한다.
 
 ## 지원 자격과 마감
 
 | 항목 | 내용 |
 | --- | --- |
 | 학력 | 컴퓨터공학 또는 관련 전공(수학, 컴퓨터·전기공학 등) 학사, 학점 3.0 이상을 선호한다. 그 밖의 지원자는 개별 심사한다. 경력이 학위를 대신하지는 못한다 |
-| 영어 | 국제 지원자는 TOEFL 또는 IELTS Academic 점수를 낸다. 조지아텍 대학원 기본 기준은 TOEFL iBT 90(영역별 19)·IELTS 7.0이며, 과정별로 더 높을 수 있으니 [OMSCS 안내](https://omscs.gatech.edu/prospective-student-faqs)에서 확인한다 |
+| 영어 | 국제 지원자는 TOEFL 또는 IELTS Academic 점수를 낸다. 조지아텍 [대학원 기본 기준](https://grad.gatech.edu/english-proficiency)은 TOEFL iBT 4.5 이상(읽기·듣기·쓰기 4, 말하기 3.5 이상)·IELTS 7.0 이상(읽기·듣기·말하기 6.5, 쓰기 5.5 이상)이다. TOEFL iBT는 2026년 1월 21일 응시분부터 1~6점 척도로 성적이 나오고, 그 전에 받은 0~120점 척도 성적은 90 이상(영역별 19 이상)이 기준이다. 과정별 기준은 더 높을 수 있다. OMSCS 안내는 옛 척도로 TOEFL 100 이상을 요구한다고 적으니 [OMSCS 안내](https://omscs.gatech.edu/prospective-student-faqs)에서 확인한다 |
 | 추천인 | 3명. 학업 능력을 말해 줄 수 있는 교수·상사가 동료보다 낫다 |
 | 서류 | 다닌 모든 학교의 공식 성적표(학위 수여일 표시), 이력서 |
 | 마감 | 가을학기 입학 **3월 1일**, 봄학기 입학 **8월 15일**. 여름 입학은 없다 |
