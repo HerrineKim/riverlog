@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import IntentLink from "@/components/IntentLink";
 import { notFound } from "next/navigation";
 import SiteFooter from "@/components/SiteFooter";
 import { categoryColor, getTag, getTags, getTrail, tagHref, TAGS_BASE } from "@/lib/knowledge";
@@ -27,9 +28,9 @@ export default async function TagPage({ params }: PageProps<"/knowledge/tags/[ta
     <>
       <main className="mx-auto w-full max-w-4xl px-4 pt-12 pb-24 sm:px-6">
         <nav aria-label="경로" className="flex flex-wrap items-center gap-1.5 text-sm text-muted">
-          <Link href="/knowledge/dictionary" className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
+          <IntentLink href="/knowledge/dictionary" className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
             사전
-          </Link>
+          </IntentLink>
           <span aria-hidden>/</span>
           <Link href={TAGS_BASE} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
             태그

@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import IntentLink from "@/components/IntentLink";
 import { notFound } from "next/navigation";
 import Comments from "@/components/Comments";
 import JsonLd from "@/components/JsonLd";
 import Prose from "@/components/Prose";
-import SiteFooter from "@/components/SiteFooter";
 import Toc, { MobileToc } from "@/components/Toc";
-import EntryLayout from "@/components/knowledge/EntryLayout";
-import TreeNav from "@/components/knowledge/TreeNav";
 import { formatDate } from "@/lib/format";
 import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, tagHref, type KNode } from "@/lib/knowledge";
-import { toNav } from "@/lib/knowledge-lite";
 import { extractToc, splitLeadingQuote } from "@/lib/markdown";
 import { articleLd, pageMeta } from "@/lib/seo";
 
@@ -54,26 +51,17 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
   const prev = idx > 0 ? siblings[idx - 1] : undefined;
   const next = idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : undefined;
 
+  // The sidebar comes from (entry)/layout.tsx; this page fills the note and TOC columns
   return (
-    <>
-      <EntryLayout
-        sidebar={
-          <>
-            <Link href={KNOWLEDGE_BASE} className="mb-4 flex items-center gap-2 text-sm text-muted hover:text-accent pointer-coarse:min-h-11">
-              <span aria-hidden>←</span> 사전 전체
-            </Link>
-            <TreeNav tree={toNav(tree)} currentHref={node.href} />
-          </>
-        }
-        toc={<Toc items={toc} />}
-      >
+    <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_13rem]">
+      <main className="min-w-0">
           {doc && <JsonLd data={articleLd(noteSeo(node))} />}
           <nav aria-label="경로" className="text-sm text-muted">
             <ol className="flex flex-wrap items-center gap-1.5">
               <li>
-                <Link href={KNOWLEDGE_BASE} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
+                <IntentLink href={KNOWLEDGE_BASE} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
                   사전
-                </Link>
+                </IntentLink>
               </li>
               {trail.slice(0, -1).map((t) => (
                 <li key={t.id} className="flex items-center gap-1.5">
@@ -176,9 +164,13 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
               {next && <Pager node={next} dir="next" />}
             </nav>
           )}
-      </EntryLayout>
-      <SiteFooter />
-    </>
+      </main>
+      <div className="hidden xl:block">
+        <div className="sticky top-20">
+          <Toc items={toc} />
+        </div>
+      </div>
+    </div>
   );
 }
 

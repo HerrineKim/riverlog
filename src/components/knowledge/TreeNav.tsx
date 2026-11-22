@@ -1,17 +1,30 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import type { NavNode } from "./types";
 
 const isOnPath = (node: NavNode, currentHref?: string) =>
   !!currentHref && (currentHref === node.href || currentHref.startsWith(`${node.href}/`));
 
+/** The pathname in the form hrefs are written in: decoded (Korean slugs) and NFC. */
+function useCurrentHref() {
+  const pathname = usePathname();
+  try {
+    return decodeURIComponent(pathname).normalize("NFC");
+  } catch {
+    return pathname;
+  }
+}
+
 /**
- * Collapsible tree. Branches on the path to `currentHref` start open, and a closed branch renders
- * none of its children, so every note page doesn't carry 800 hidden links.
+ * Collapsible tree. Branches on the path to the current page start open, and a closed branch renders
+ * none of its children, so every note page doesn't carry 800 hidden links. It reads the current page
+ * from the URL because it sits in a layout shared by every note.
  */
-export default function TreeNav({ tree, currentHref }: { tree: NavNode; currentHref?: string }) {
+export default function TreeNav({ tree }: { tree: NavNode }) {
+  const currentHref = useCurrentHref();
   return (
     <nav aria-label="지식 창고 목차" className="text-sm">
       <ul className="space-y-1">

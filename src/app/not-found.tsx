@@ -1,4 +1,5 @@
 import Link from "next/link";
+import IntentLink from "@/components/IntentLink";
 import SiteFooter from "@/components/SiteFooter";
 import { RiverMark } from "@/components/SiteHeader";
 
@@ -17,13 +18,17 @@ export default function NotFound() {
             ["/knowledge/dictionary", "지식 사전"],
             ["/knowledge/tags", "태그"],
             ["/books", "책장"],
-          ].map(([href, label]) => (
-            <li key={href}>
-              <Link href={href} className="flex min-h-11 items-center rounded-lg border border-line px-4 text-fg transition hover:border-accent hover:text-accent">
-                {label}
-              </Link>
-            </li>
-          ))}
+          ].map(([href, label]) => {
+            // Both indexes are 100~200 KB of RSC; prefetch them on intent
+            const L = href === "/knowledge/dictionary" || href === "/books" ? IntentLink : Link;
+            return (
+              <li key={href}>
+                <L href={href} className="flex min-h-11 items-center rounded-lg border border-line px-4 text-fg transition hover:border-accent hover:text-accent">
+                  {label}
+                </L>
+              </li>
+            );
+          })}
         </ul>
       </main>
       <SiteFooter />

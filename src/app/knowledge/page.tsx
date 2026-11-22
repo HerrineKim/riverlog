@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
+import { preload } from "react-dom";
 import MindMap from "@/components/knowledge/MindMap";
+import { GRAPH_URL } from "@/lib/graph-wire";
 import ViewSwitch from "@/components/knowledge/ViewSwitch";
-import { placeGraph } from "@/lib/graph-layout";
-import { packGraph } from "@/lib/graph-wire";
 import { categoryColor, getKnowledgeTree, knowledgeStats } from "@/lib/knowledge";
-import { getGraphData } from "@/lib/knowledge-graph";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
@@ -14,7 +13,8 @@ export const metadata: Metadata = pageMeta({
 });
 
 export default function KnowledgeMapPage() {
-  const data = packGraph(placeGraph(getGraphData()));
+  // Start the map data with the HTML instead of after hydration; MindMap's fetch then reuses this response
+  preload(GRAPH_URL, { as: "fetch", crossOrigin: "anonymous" });
   const stats = knowledgeStats();
   const categories = getKnowledgeTree().children.map((c) => ({
     id: c.id,
@@ -35,7 +35,7 @@ export default function KnowledgeMapPage() {
         <ViewSwitch active="map" />
       </div>
       <div className="relative min-h-0 flex-1 bg-bg-sunken">
-        <MindMap data={data} categories={categories} />
+        <MindMap categories={categories} />
       </div>
     </main>
   );

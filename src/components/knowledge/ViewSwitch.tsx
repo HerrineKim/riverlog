@@ -1,10 +1,14 @@
 import Link from "next/link";
+import IntentLink from "@/components/IntentLink";
 
 type View = "map" | "dictionary" | "tags";
 
 export default function ViewSwitch({ active }: { active: View }) {
-  const item = (key: View, href: string, label: string, icon: React.ReactNode) => (
-    <Link
+  const item = (key: View, href: string, label: string, icon: React.ReactNode) => {
+    // The dictionary index is ~200 KB of RSC; prefetch it on intent, not on every map or tag page view
+    const L = key === "dictionary" ? IntentLink : Link;
+    return (
+    <L
       href={href}
       aria-current={active === key ? "page" : undefined}
       className={`flex min-h-11 items-center gap-1.5 rounded-full px-3 text-sm whitespace-nowrap transition sm:px-3.5 ${
@@ -13,8 +17,9 @@ export default function ViewSwitch({ active }: { active: View }) {
     >
       <span className="hidden sm:inline">{icon}</span>
       {label}
-    </Link>
-  );
+    </L>
+    );
+  };
   return (
     <div className="inline-flex rounded-full border border-line bg-bg-elev p-1">
       {item(
