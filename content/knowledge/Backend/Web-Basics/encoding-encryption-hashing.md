@@ -1,14 +1,15 @@
 ---
 title: "인코딩·암호화·해시·토큰화와 디지털 서명"
 concept: "Encoding vs Encryption"
-summary: "데이터를 바꾸는 네 가지 방법은 목적이 다르다. 인코딩은 형식 변환(키 없음, 보안 아님), 암호화는 키로 기밀성 확보(대칭·비대칭), 해시는 되돌릴 수 없는 지문, 토큰화는 원본을 금고에 두고 의미 없는 대체값을 쓰는 것이다. 해시와 개인키를 엮은 디지털 서명이 위변조와 서명자를 함께 증명한다. 용도별로 쓸 알고리즘(AEAD, HMAC, Argon2id, Ed25519, X25519·ML-KEM)과 nonce 재사용·변조·재전송·타이밍 같은 조합의 함정도 정리한다."
+summary: "데이터를 바꾸는 네 가지 방법은 목적이 다르다. 인코딩은 형식 변환(키 없음, 보안 아님), 암호화는 키로 기밀성 확보(대칭·비대칭, 키 길이, RSA와 디피-헬만 키 교환의 원리), 해시는 되돌릴 수 없는 지문, 토큰화는 원본을 금고에 두고 의미 없는 대체값을 쓰는 것이다. 해시와 개인키를 엮은 디지털 서명이 위변조와 서명자를 함께 증명한다. 용도별로 쓸 알고리즘(AEAD, HMAC, Argon2id, Ed25519, X25519·ML-KEM)과 nonce 재사용·변조·재전송·타이밍 같은 조합의 함정도 정리한다."
 tags: ["security", "cryptography", "backend", "encoding"]
 source: other
 date: "2026-11-02"
-sources: ["https://bytebytego.com/guides/encoding-vs-encryption-vs-tokenization", "https://bytebytego.com/guides/symmetric-encryption-vs-asymmetric-encryption", "https://bytebytego.com/guides/how-digital-signatures-work", "https://gist.github.com/lifthrasiir/84a546e8fa080d843a93", "https://gist.github.com/tqbf/be58d2d39690c3b366ad", "https://gist.github.com/paragonie-scott/e9319254c8ecbad4f227", "http://loup-vaillant.fr/articles/rolling-your-own-crypto", "https://web.archive.org/web/2020/https://www.integralist.co.uk/posts/hashing-and-encryption/", "https://csrc.nist.gov/pubs/fips/203/final"]
+sources: ["https://bytebytego.com/guides/encoding-vs-encryption-vs-tokenization", "https://bytebytego.com/guides/symmetric-encryption-vs-asymmetric-encryption", "https://bytebytego.com/guides/how-digital-signatures-work", "https://gist.github.com/lifthrasiir/84a546e8fa080d843a93", "https://gist.github.com/tqbf/be58d2d39690c3b366ad", "https://gist.github.com/paragonie-scott/e9319254c8ecbad4f227", "http://loup-vaillant.fr/articles/rolling-your-own-crypto", "https://web.archive.org/web/2020/https://www.integralist.co.uk/posts/hashing-and-encryption/", "https://csrc.nist.gov/pubs/fips/203/final", "https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS", "https://www.youtube.com/watch?v=jhXCTbFnK8o"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Encoding vs Encryption vs Tokenization](https://bytebytego.com/guides/encoding-vs-encryption-vs-tokenization)」, 「[Symmetric vs Asymmetric Encryption](https://bytebytego.com/guides/symmetric-encryption-vs-asymmetric-encryption)」, 「[How Digital Signatures Work](https://bytebytego.com/guides/how-digital-signatures-work)」을 바탕으로, 암호 부품의 조합 원칙은 「[고수준에서 암호학 이해하기](https://gist.github.com/lifthrasiir/84a546e8fa080d843a93)」로 보강해 재구성한 노트다. 용도별 선택과 조합의 함정은 Thomas Ptacek의 「[Cryptographic Right Answers](https://gist.github.com/tqbf/be58d2d39690c3b366ad)」, Paragon Initiative의 「[An Open Letter to Developers Everywhere (About Cryptography)](https://gist.github.com/paragonie-scott/e9319254c8ecbad4f227)」, Loup Vaillant의 「[Rolling Your Own Crypto](http://loup-vaillant.fr/articles/rolling-your-own-crypto)」, 명령줄 예시는 Integralist의 「[Hashing, Encryption and Encoding](https://web.archive.org/web/2020/https://www.integralist.co.uk/posts/hashing-and-encryption/)」을 바탕으로 보강하고, 포스트 양자 표준은 NIST [FIPS 203](https://csrc.nist.gov/pubs/fips/203/final)으로 확인했다.
+> 대칭키·공개키 비교와 RSA 키 생성 절차는 GitHub 자료 모음 「[Subjective-studies_OS-CN-DBMS](https://github.com/avgspacelover/Subjective-studies_OS-CN-DBMS)」의 네트워크 면접 정리를, 「키 길이와 전수 조사」·「디피-헬만 키 교환」 절은 CrashCourse의 「Crash Course Computer Science」 강의를 바탕으로 보강했다.
 
 ## 네 가지 변환은 목적이 다르다
 
@@ -26,9 +27,65 @@ sources: ["https://bytebytego.com/guides/encoding-vs-encryption-vs-tokenization"
 
 ## 암호화: 대칭과 비대칭
 
-암호화는 키 하나로 잠그고 여는 **대칭 암호화**(AES, ChaCha20)와, 공개키로 잠그고 개인키로 여는 **비대칭(공개키) 암호화**(RSA, 타원 곡선)로 나뉜다. 대칭키는 빠르지만 키를 건네기 어렵고, 비대칭키는 키 배포 문제를 풀지만 연산이 무겁다. 원리·속도·대표 알고리즘·약점의 비교표는 [[network-security#대칭키·공개키·해시|네트워크 보안]]에 있다.
+암호화는 키 하나로 잠그고 여는 **대칭키 암호**와, 공개키로 잠그고 개인키로 여는 **공개키(비대칭) 암호**로 나뉜다.
+
+| 방식 | 원리 | 속도와 쓰임 | 예 | 약점 |
+| --- | --- | --- | --- | --- |
+| 대칭키(비밀키) | 보내는 쪽과 받는 쪽이 **같은 키** 하나로 암호화·복호화한다 | 빠르다. 대용량 데이터에 맞아 TLS 본문 암호화, 저장 데이터(대량 개인정보) 암호화에 쓴다 | AES, ChaCha20. 과거의 DES는 56비트 키라 깨졌다 | 키를 상대에게 안전하게 건넬 방법이 없고, 상대마다 키가 따로 필요하다(n명이면 n(n-1)/2개). 키를 아는 쪽이 늘수록 유출 위험도 는다 |
+| 공개키(비대칭) | 각자 **공개키와 개인키** 한 쌍을 갖는다. 공개키로 잠근 것은 개인키로만 연다 | 연산이 무겁다. 키 교환, 디지털 서명처럼 작은 데이터에만 쓴다 | RSA, 타원 곡선(ECDH·ECDSA) | 느리다. 받은 공개키가 정말 상대 것인지 확인할 수단(인증서)이 따로 필요하다 |
+
+해시는 키가 없어서 공격자가 내용과 해시를 함께 바꿀 수 있다. 그래서 무결성을 지킬 때는 해시만 보내지 않고 키를 넣은 HMAC이나 디지털 서명과 묶는다(아래 「암호 부품과 조합 원칙」).
 
 실무 시스템은 **둘을 섞는다(하이브리드 암호).** 비대칭 방식으로 대칭 키를 안전하게 합의하고, 실제 데이터는 대칭 키로 암호화한다. TLS가 그렇다 → [[https|HTTPS와 TLS]]. 저장 데이터도 데이터를 데이터 키(대칭)로 암호화하고, 데이터 키를 다시 KMS의 마스터 키로 감싸는 **봉투 암호화(envelope encryption)** 를 쓴다.
+
+### 키 길이와 전수 조사
+
+현대 암호는 알고리즘이 공개돼 있으므로 남는 공격은 키를 맞히는 것이다. 키가 n비트면 가능한 키는 2ⁿ개이고, **1비트 늘 때마다 전수 조사 시간이 두 배**가 된다.
+
+- DES의 56비트 키(약 7.2×10¹⁶개)는 1977년 표준이 될 때는 충분했다. 1998년 약 25만 달러짜리 전용 기계(EFF의 Deep Crack)가 며칠 만에 키를 찾아내면서 안전하지 않게 됐다.
+- AES-128의 2¹²⁸개는 지구의 모든 컴퓨터를 동원해도 전수 조사할 수 없다.
+- AES는 데이터를 16바이트 블록으로 나누고, 키에서 만든 라운드 키로 치환·전치·섞기를 여러 번 되풀이한다(128비트 키는 10라운드, 192비트 12라운드, 256비트 14라운드). 라운드와 키를 무한정 늘리지 않는 것은 **성능과 안전의 균형** 때문이다. 연결 하나 맺는 데 몇 분이 걸리는 암호는 아무도 쓰지 않는다.
+
+### RSA
+
+**RSA**는 큰 수를 소인수분해하기 어렵다는 점에 안전성을 건 공개키 암호다. 키 만들기와 암호화·복호화는 다음 순서다(수학적 근거인 오일러 정리는 [[number-theory-basics|정수론 기초: 소수·최대공약수·합동식]]).
+
+```text
+1. 큰 소수 p, q를 고르고 n = p × q, φ(n) = (p-1)(q-1)을 구한다
+2. φ(n)과 서로소인 e를 고른다 (보통 65537)
+3. e × d ≡ 1 (mod φ(n))인 d를 구한다 (확장 유클리드 호제법)
+4. 공개키 (n, e), 개인키 (n, d). p, q, φ(n)은 버린다
+암호화 c = m^e mod n,  복호화 m = c^d mod n
+
+작은 예: p=3, q=11 → n=33, φ=20, e=3, d=7 (3×7=21≡1)
+  m=4 → c = 4³ mod 33 = 31 → 31⁷ mod 33 = 4
+```
+
+실제 키는 n이 2048비트 이상이다. RSA는 지금 주로 **서명**(인증서)에 쓰이고, TLS 1.3은 RSA로 세션 키를 보내는 키 교환을 없앴다([[web-pki-evolution|웹 PKI의 변천]]).
+
+### 디피-헬만 키 교환
+
+대칭키는 양쪽이 같은 키를 가져야 하는데, 인터넷에서는 키를 미리 건넬 방법이 없고 키를 그냥 보내면 도청당한다. **키 교환**(key exchange)은 키 자체를 보내지 않고 양쪽이 같은 키를 계산해 내게 한다. 바탕은 **일방향 함수**(one-way function), 즉 계산은 쉽지만 거꾸로 풀기는 어려운 함수다. 물감 두 색을 섞기는 쉬워도 섞인 색에서 원래 색을 알아내기 어려운 것과 같다.
+
+디피-헬만(Diffie-Hellman, DH)의 일방향 함수는 **모듈러 거듭제곱**이다. `3⁵ mod 31`은 243을 31로 나눈 나머지 26으로 바로 나오지만, "3을 몇 제곱해 31로 나눴더니 7이 남았다"에서 지수를 찾으려면 하나씩 대입해야 한다(이산 로그 문제). 수가 수백 자리면 사실상 풀 수 없다.
+
+```mermaid
+sequenceDiagram
+  participant A
+  participant C
+  participant E as 도청자
+  Note over A,C: 공개값: 밑 B, 법 M (누구나 안다)
+  Note over A: 비밀 x 선택
+  A->>C: Bˣ mod M 전송
+  Note over C: 비밀 y 선택
+  C->>A: Bʸ mod M 전송
+  Note over A: (Bʸ)ˣ mod M = Bˣʸ mod M
+  Note over C: (Bˣ)ʸ mod M = Bˣʸ mod M
+  Note over A,C: 같은 값이 공유 키
+  Note over E: Bˣ, Bʸ만 봐서는 x, y도 Bˣʸ도 구할 수 없다
+```
+
+이렇게 얻은 공유 키로 AES 같은 대칭 암호를 쓴다. 다만 이 계산만으로는 상대가 누구인지 모르므로 인증서·서명과 함께 쓴다. 세션마다 새 키를 만드는 방식이 주는 전방 비밀성은 [[web-pki-evolution|웹 PKI의 변천]]에 있다.
 
 ## 토큰화
 
