@@ -141,6 +141,11 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/backend/architecture/system-design-primer-communication-security": "/knowledge/dictionary/backend/architecture/system-design-primer",
   "/knowledge/dictionary/backend/architecture/system-design-primer-case-studies": "/knowledge/dictionary/backend/architecture/system-design-primer",
   "/knowledge/dictionary/backend/architecture/system-design-primer-ood-resources": "/knowledge/dictionary/backend/architecture/system-design-primer",
+  "/knowledge/dictionary/algorithm/javascript-algorithms-data-structures": "/knowledge/dictionary/algorithm/javascript-algorithms-overview",
+  "/knowledge/dictionary/algorithm/javascript-algorithms-math-sets": "/knowledge/dictionary/algorithm/javascript-algorithms-overview",
+  "/knowledge/dictionary/algorithm/javascript-algorithms-strings-search-sorting": "/knowledge/dictionary/algorithm/javascript-algorithms-overview",
+  "/knowledge/dictionary/algorithm/javascript-algorithms-traversal-graphs": "/knowledge/dictionary/algorithm/javascript-algorithms-overview",
+  "/knowledge/dictionary/algorithm/javascript-algorithms-patterns-applications": "/knowledge/dictionary/algorithm/javascript-algorithms-overview",
 };
 
 const nextConfig: NextConfig = {

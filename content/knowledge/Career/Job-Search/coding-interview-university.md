@@ -147,7 +147,7 @@ CIU는 주제마다 「이 연산을 직접 구현하라」는 목록을 준다.
 | 캐시 | LRU 캐시 구현(해시 맵 + 이중 연결 리스트), CPU 캐시와 메모리 계층 | [[hash-table#해시 맵 + 연결 리스트: LRU·LFU 캐시\|LRU 캐시]], [[memory-hierarchy\|메모리 계층]] |
 | 프로세스·스레드 | 둘의 차이와 각각 가지는 자원(스레드는 스택·PC·레지스터만 따로), 락·뮤텍스·세마포어·모니터, 데드락·라이브락, 인터럽트와 문맥 교환, 페이징·가상 메모리, `fork`의 copy-on-write, Python GIL | [[process-and-thread\|프로세스와 스레드]], [[process-synchronization\|프로세스 동기화]], [[deadlock\|데드락]], [[virtual-memory\|가상 메모리]], [[python-internals\|Python 내부 구조]] |
 | 테스트 | 단위 테스트의 원리, 목 객체, 통합 테스트, 의존성 주입 | [[frontend-test-types\|테스트의 종류와 도구]], [[api-mocking\|API 모킹]], [[component-test-dependencies\|의존성이 있는 컴포넌트 테스트]], [[tdd\|TDD]] |
-| 문자열 탐색 | 무차별 대입, KMP, 보이어-무어, 라빈-카프(롤링 해시), 접미사 배열 개념 | [[kmp-algorithm\|KMP 문자열 검색]], [[javascript-algorithms-strings-search-sorting\|문자열·탐색·정렬 알고리즘]] |
+| 문자열 탐색 | 무차별 대입, KMP, 보이어-무어, 라빈-카프(롤링 해시), 접미사 배열 개념 | [[kmp-algorithm\|KMP 문자열 검색]], [[javascript-algorithms-overview\|JavaScript Algorithms 학습 지도]] |
 | 수 표현 | 부동소수점 표현, 유니코드와 문자 인코딩, 엔디언 | [[floating-point-arithmetic\|부동소수점 연산]], [[data-representation\|데이터 표현]] |
 | 네트워크 | 네트워크·운영 직군이면 반드시 나온다. TCP·UDP, TCP/IP와 OSI, 패킷 전달, HTTP·HTTP/2, TLS·HTTPS, CIDR, 소켓 | [[network-basics\|네트워크 기초]], [[osi-7-layer\|OSI 7계층]], [[transport-layer\|전송 계층]], [[http\|HTTP]], [[https\|HTTPS]] |
 

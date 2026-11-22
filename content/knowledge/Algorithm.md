@@ -9,12 +9,7 @@ date: "2026-10-13"
 
 알고리즘은 입력을 원하는 출력으로 바꾸는 잘 정의된 계산 절차다. 이 분야는 자료구조·탐색·그래프·설계 기법·정렬을 파이썬 코드와 함께 다룬다. 먼저 복잡도 분석(빅오 표기법)으로 "얼마나 빠른가"를 재는 법을 익히고, 자료구조와 탐색, 설계 패러다임 순서로 보면 흐름이 자연스럽다.
 
-- [JavaScript Algorithms 전체 학습 지도](Algorithm/javascript-algorithms-overview.md): 자료구조 19개와 알고리즘 93개의 구현·설명·테스트 및 설계 패러다임
-- [JavaScript 자료구조 구현 19개](Algorithm/javascript-algorithms-data-structures.md): 연결 리스트·트리·그래프·Bloom Filter·LRU 캐시
-- [JavaScript 수학과 조합 알고리즘](Algorithm/javascript-algorithms-math-sets.md): 수론·점화식·집합·순열·조합 32개
-- [JavaScript 문자열·탐색·정렬](Algorithm/javascript-algorithms-strings-search-sorting.md): 문자열 매칭·탐색·정렬 22개
-- [JavaScript 순회·그래프 알고리즘](Algorithm/javascript-algorithms-traversal-graphs.md): 연결 리스트·트리·그래프 순회와 경로 19개
-- [JavaScript 응용 알고리즘과 설계 패러다임](Algorithm/javascript-algorithms-patterns-applications.md): 그리디·DP·분할 정복, 암호·ML·기타 구현 20개
+- [JavaScript Algorithms 학습 지도](Algorithm/javascript-algorithms-overview.md): 자료구조 19개와 알고리즘 93개 구현 저장소를 주제별로 창고의 개념 노트와 구현 디렉터리에 잇는 지도
 - [빅오 표기법과 시간 복잡도](Algorithm/big-o.md): 알고리즘의 정의, 빅오(O)·빅오메가(Ω)·빅세타(Θ) 표기법, 시간·공간 복잡도
 - [P, NP, NP-완전과 근사 알고리즘](Algorithm/np-completeness.md): 복잡도 클래스와 환원, 대표 NP-완전 문제를 알아보는 법, 근사·의사 다항·FPT 대응
 - [구간 합과 접두사 합](Algorithm/prefix-sum.md): 접두사 합으로 구간 합을 O(1)에 구하기
