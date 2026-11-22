@@ -132,7 +132,7 @@ sources: ["https://www.frontendinterviewhandbook.com/company-interview-questions
 - **전형**: Karat 60분 화상 면접. 처음 10분은 모던 JavaScript 빠른 질문, 나머지 45분은 Vanilla JS·HTML·CSS 코딩 1~2문제(React 없음, 첫 문제를 끝내야 두 번째로 간다). 24시간 안에 재응시할 수 있고 더 나은 결과를 쓴다. 이후 브라우저 코딩 라운드는 React였고 HackerRank 환경이 TypeScript였던 사례가 있다.
 - **퀴즈(자료 없이 말로)**: 배열 메서드(`push`, `pop`, `unshift`), `Promise.any`, 비동기 제너레이터·`await`·`yield`·`for await` 루프·`Promise.resolve`.
 - **UI 코딩(자료 허용)**: HTML·CSS만으로 검색 위젯(높이·너비를 고정값 대신 `em`·`%`로), API에서 할 일을 20개씩 가져와 렌더링(헬퍼 없이 `fetch`, DOM 요소 생성·추가·제거), React 위젯, JS 유틸, 쿠키 동의 배너.
-- **시스템 디자인**: Jira 스프린트 보드(최근 가장 잦다), 성능 벤치마크 유틸.
+- **시스템 디자인**: Jira 스프린트 보드(가장 잦다), 성능 벤치마크 유틸.
 - 모든 레벨에서 Vanilla JS와 프론트엔드 시스템 디자인을 강하게 본다. 문제 은행이 커졌고 유출 문제를 의식하므로 기출만 믿지 않는다. 코드를 쓰며 성능상 어떤 자료구조를 고를지 설명할 준비를 한다.
 
 ### ByteDance·TikTok
@@ -165,7 +165,7 @@ sources: ["https://www.frontendinterviewhandbook.com/company-interview-questions
 
 ### DoorDash
 
-- **전형**: 리크루터 → 테크 스크린(약 1시간, 엔드포인트에서 가져와 보여 주는 작은 UI) → 가상 온사이트 4라운드: 매니저(STAR 행동 + 약간의 도메인), 시스템 디자인, **Onsite feature**(기존 코드에 기능 추가), 도메인 지식(프로젝트 심층 + JS·테스트·최적화 퀴즈). 과제 전형은 최근 보고되지 않는다. 팀이 달라도 문제가 거의 같다.
+- **전형**: 리크루터 → 테크 스크린(약 1시간, 엔드포인트에서 가져와 보여 주는 작은 UI) → 가상 온사이트 4라운드: 매니저(STAR 행동 + 약간의 도메인), 시스템 디자인, **Onsite feature**(기존 코드에 기능 추가), 도메인 지식(프로젝트 심층 + JS·테스트·최적화 퀴즈). 과제 전형은 더는 보고되지 않는다. 팀이 달라도 문제가 거의 같다.
 - **JS 코딩**: 망가진 `fetch` 헬퍼 고치기. 맞아 보이지만 `fetch(...)`의 Promise를 `return`하지 않는 버그를 찾아야 한다.
 - **UI 코딩**: 엔드포인트(강아지 API·Reddit 강아지 피드)에서 이미지를 가져오는 이미지 슬라이더(온사이트에서 좋아요·싫어요와 저장 추가), 변형으로 API의 상품 카드 목록. 데이터 가공 없이 `.map`으로 필드만 꺼내면 된다. 반응형 CSS를 익혀 둔다.
 - **시스템 디자인**: Slack 같은 메시징 제품. Excalidraw에 클라이언트 쪽 상자만 그려진 다이어그램(화살표가 빈 곳을 가리킨다)을 주고 서버·DB 아이콘을 끌어와 **백엔드를 채우게** 한다. REST vs GraphQL, BFF가 필요한지([[bff|BFF]], [[graphql|GraphQL]]), 캐시와 데이터 흐름을 정당화한다. 대안 아키텍처를 2개 이상 내 본다.
