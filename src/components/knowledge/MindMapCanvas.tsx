@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import IntentLink from "@/components/IntentLink";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useSearchOnEnter from "@/hooks/useSearchOnEnter";
 import useTheme from "@/hooks/useTheme";
@@ -141,15 +141,15 @@ export default function MindMapCanvas({
       <div ref={stageRef} className="absolute inset-0" />
       <p className="sr-only">
         3D 마인드맵은 마우스나 터치로 보는 시각화예요. 화면 낭독기나 키보드로는 아래 검색창과 분야 버튼으로 노드를 고르거나,{" "}
-        <Link href="/knowledge/dictionary">계층형 사전</Link>에서 같은 노트를 목록으로 볼 수 있어요.
+        <IntentLink href="/knowledge/dictionary">계층형 사전</IntentLink>에서 같은 노트를 목록으로 볼 수 있어요.
       </p>
       {failed && (
         <div className="absolute inset-0 grid place-items-center p-6 text-center text-sm text-muted">
           <p>
             이 브라우저에서는 3D 마인드맵을 그릴 수 없어요(WebGL 미지원).{" "}
-            <Link href="/knowledge/dictionary" className="text-accent underline">
+            <IntentLink href="/knowledge/dictionary" className="text-accent underline">
               계층형 사전
-            </Link>
+            </IntentLink>
             에서 같은 노트를 볼 수 있어요.
           </p>
         </div>

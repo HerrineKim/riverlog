@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Link from "next/link";
+import IntentLink from "@/components/IntentLink";
 import { useEffect, useState, type ComponentProps, type ReactNode } from "react";
 import { GRAPH_URL, unpackGraph, type PackedGraph } from "@/lib/graph-wire";
 
@@ -51,7 +51,7 @@ export default function MindMap(props: Props) {
     return (
       <Status>
         <span>
-          지도를 불러오지 못했어요. 새로 고치거나 <Link href="/knowledge/dictionary" className="text-accent underline">계층형 사전</Link>에서 같은 노트를 보세요.
+          지도를 불러오지 못했어요. 새로 고치거나 <IntentLink href="/knowledge/dictionary" className="text-accent underline">계층형 사전</IntentLink>에서 같은 노트를 보세요.
         </span>
       </Status>
     );

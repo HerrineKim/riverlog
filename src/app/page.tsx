@@ -4,6 +4,7 @@ import matter from "gray-matter";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import IntentLink from "@/components/IntentLink";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
 import { RiverMark } from "@/components/SiteHeader";
@@ -118,7 +119,7 @@ export default function AboutPage() {
                 <p className="text-lg font-semibold text-fg-strong group-hover:text-accent">3D 마인드맵 <span aria-hidden>→</span></p>
                 <p className="mt-1 text-sm text-muted">개념 사이의 연결을 한눈에 탐색</p>
               </Link>
-              <Link href="/knowledge/dictionary" className="group rounded-2xl border border-line bg-bg-elev p-5 transition hover:border-accent">
+              <IntentLink href="/knowledge/dictionary" className="group rounded-2xl border border-line bg-bg-elev p-5 transition hover:border-accent">
                 <div className="mb-5 space-y-1.5 font-mono text-xs text-muted">
                   <p>Frontend</p>
                   <p className="pl-3">└ React</p>
@@ -126,7 +127,7 @@ export default function AboutPage() {
                 </div>
                 <p className="text-lg font-semibold text-fg-strong group-hover:text-accent">계층형 사전 <span aria-hidden>→</span></p>
                 <p className="mt-1 text-sm text-muted">분야별 목차와 가나다·ABC 색인</p>
-              </Link>
+              </IntentLink>
             </div>
             <ul className="mt-6 flex flex-wrap gap-2">
               {tree.children.map((c) => (

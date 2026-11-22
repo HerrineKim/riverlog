@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import IntentLink from "@/components/IntentLink";
 import { notFound } from "next/navigation";
 import Comments from "@/components/Comments";
 import JsonLd from "@/components/JsonLd";
@@ -59,9 +60,9 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
       <EntryLayout
         sidebar={
           <>
-            <Link href={KNOWLEDGE_BASE} className="mb-4 flex items-center gap-2 text-sm text-muted hover:text-accent pointer-coarse:min-h-11">
+            <IntentLink href={KNOWLEDGE_BASE} className="mb-4 flex items-center gap-2 text-sm text-muted hover:text-accent pointer-coarse:min-h-11">
               <span aria-hidden>←</span> 사전 전체
-            </Link>
+            </IntentLink>
             <TreeNav tree={toNav(tree)} currentHref={node.href} />
           </>
         }
@@ -71,9 +72,9 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
           <nav aria-label="경로" className="text-sm text-muted">
             <ol className="flex flex-wrap items-center gap-1.5">
               <li>
-                <Link href={KNOWLEDGE_BASE} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
+                <IntentLink href={KNOWLEDGE_BASE} className="hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
                   사전
-                </Link>
+                </IntentLink>
               </li>
               {trail.slice(0, -1).map((t) => (
                 <li key={t.id} className="flex items-center gap-1.5">

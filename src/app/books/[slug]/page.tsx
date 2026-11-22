@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import IntentLink from "@/components/IntentLink";
 import { notFound } from "next/navigation";
 import BookCover from "@/components/BookCover";
 import Prose from "@/components/Prose";
@@ -30,9 +30,9 @@ export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
   return (
     <>
       <main className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6 sm:py-20">
-        <Link href="/books" className="text-sm text-muted hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
+        <IntentLink href="/books" className="text-sm text-muted hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
           <span aria-hidden>←</span> 책장
-        </Link>
+        </IntentLink>
         <header className="mt-8 flex gap-6 border-b border-line pb-8">
           <BookCover title={book.title} author={book.author} cover={book.cover} className="w-24 shrink-0 sm:w-32" />
           <div className="min-w-0">
