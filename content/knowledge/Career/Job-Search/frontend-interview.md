@@ -179,7 +179,7 @@ React를 못 쓰게 하는 면접도 있다. 프레임워크 없이 Vanilla JS�
 | 컴포넌트 | 자동완성, 이미지 캐러셀, 드롭다운 메뉴, 모달 대화상자, 리치 텍스트 에디터, 투표 위젯, 데이터 테이블, 툴팁 |
 | 앱 | 뉴스 피드(Facebook), 채팅(Messenger), 핀터레스트형 이미지 피드, 공동 문서 편집(Google Docs), 동영상 스트리밍(Netflix), 음악 스트리밍(Spotify), 디자인 툴(Figma), 화상 회의(Zoom), 숙박 예약(Airbnb), 이커머스(Amazon), 공동 스프레드시트(Google Sheets), 사진 공유(Instagram), 이메일 클라이언트(Outlook) |
 
-회사별로 실제 나온 설계 문제는 [[frontend-interview-by-company|회사별 프론트엔드 면접 형식과 단골 문제]]에 모았다.
+여러 회사에서 겹치는 설계 문제는 [[frontend-interview-by-company#여러 회사에서 겹치는 단골 문제|회사별 프론트엔드 면접 형식과 단골 문제]]에 모았다.
 
 ### 백엔드 시스템 디자인과 무엇이 같고 다른가
 
