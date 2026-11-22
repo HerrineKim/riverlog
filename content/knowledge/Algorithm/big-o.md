@@ -138,16 +138,16 @@ O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!) 순으로 느려�
 | 스택·큐 | O(n) | O(n) | O(1) | O(1) | 맨 위·양 끝만 다룬다 |
 | 연결 리스트(단일·이중) | O(n) | O(n) | O(1) | O(1) | 삽입·삭제 O(1)은 위치를 이미 알 때다. 위치를 찾는 데 O(n) |
 | 해시 테이블 | - | 평균 O(1) | 평균 O(1) | 평균 O(1) | 충돌이 몰리면 O(n) |
-| 이진 탐색 트리 | O(log n) | O(log n) | O(log n) | O(log n) | 정렬된 순서로 넣으면 한쪽으로 기울어 O(n) |
+| 이진 탐색 트리 | 평균 O(log n) | 평균 O(log n) | 평균 O(log n) | 평균 O(log n) | 정렬된 순서로 넣으면 한쪽으로 기울어 O(n) |
 | 균형 트리(레드-블랙, AVL, B-트리) | O(log n) | O(log n) | O(log n) | O(log n) | 최악도 O(log n). DB 인덱스가 B-트리를 쓰는 이유 |
-| 스킵 리스트 | O(log n) | O(log n) | O(log n) | O(log n) | 확률적 구조라 최악은 O(n) |
+| 스킵 리스트 | 기대 O(log n) | 기대 O(log n) | 기대 O(log n) | 기대 O(log n) | 확률적 구조라 최악은 O(n) |
 | 이진 힙 | 최솟값 O(1) | O(n) | O(log n) | 최솟값 O(log n) | - |
 
 공간은 모두 O(n)이다(스킵 리스트는 최악 O(n log n)).
 
 ### 정렬 알고리즘의 복잡도
 
-최선·평균·최악, 추가 공간, 안정성을 한 표로 비교한 것은 [[merge-quick-sort#정렬 알고리즘 비교|병합 정렬과 퀵 정렬]]에 있다. 비교 기반 정렬은 최악 O(n log n)이 하한이고, Python `sorted`, Java 객체 정렬, V8의 `Array.prototype.sort`는 팀소트를 쓴다.
+최선·평균·최악, 추가 공간, 안정성을 한 표로 비교한 것은 [[merge-quick-sort#정렬 알고리즘 비교|병합 정렬과 퀵 정렬]]에 있다. 비교 기반 정렬은 최악의 경우 Ω(n log n)번의 비교가 하한이고, Python `sorted`, Java 객체 정렬, V8의 `Array.prototype.sort`는 팀소트를 쓴다.
 
 ## 공간 복잡도
 
