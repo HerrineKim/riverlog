@@ -1,7 +1,7 @@
 ---
 title: "Claude Code 활용 가이드"
 concept: "Claude Code"
-summary: "채팅형 AI와 무엇이 다른지부터 설치, 질문 → 편집 → 도구 → 맥락 → 자동화로 익숙해지는 순서, 슬래시 명령·단축키, MCP 연결과 범위·추천 서버, Skills와 CLAUDE.md, 팀 설정 공유, 권한 모드와 자동 모드, 여러 계정을 나눠 쓰는 인증 설정, 플랜 한도·API 크레딧·사용량 크레딧으로 나뉜 과금 구조, `claude -p` 자동화, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하는 작업 방식까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
+summary: "채팅형 AI와 무엇이 다른지부터 설치, 질문 → 편집 → 도구 → 맥락 → 자동화로 익숙해지는 순서, 슬래시 명령·단축키, MCP 연결과 범위·응답 크기 한도·추천 서버, Skills와 CLAUDE.md, 팀 설정 공유, 권한 모드와 자동 모드, 여러 계정을 나눠 쓰는 인증 설정, 플랜 한도·API 크레딧·사용량 크레딧으로 나뉜 과금 구조, `claude -p` 자동화, Claude Code에 맞는 프롬프트 습관, 개발 팀장처럼 위임하는 작업 방식까지 Claude Code를 쓰는 데 필요한 요점을 한 장으로 정리."
 tags: ["ai", "llm", "claude-code", "agentic-coding", "prompting", "mcp"]
 source: other
 date: "2026-11-15"
@@ -178,6 +178,17 @@ claude mcp add playwright npx @playwright/mcp@latest
 - 토큰은 커밋하지 말고 환경변수로 펼친다: `"url": "https://mcp.example.com/mcp?token=${MCP_API_TOKEN}"`.
 - 서버 연결 방식은 로컬 프로세스(stdio: `npx`, `python`, 바이너리)와 원격 URL(http) 두 가지다.
 - MCP 도구 설명이 맥락의 일정 비율을 넘으면 Claude Code가 정의를 미뤄 두고 필요할 때 검색해 불러온다(도구 검색). 원리는 [[claude-advanced-tool-use|Claude API 고급 도구 사용]]에 있다.
+
+### MCP 응답이 클 때
+
+Claude Code는 이미지 없는 MCP 도구의 정상 응답이 토큰 한도(기본 25,000)를 넘으면 버리지 않고 파일로 저장한 뒤 대화에는 그 경로만 넣고, 에이전트가 필요할 때 파일을 읽는다. 텍스트 응답은 토큰 수와 상관없이 50,000자를 넘어도 파일로 가고, 이 기준은 `MAX_MCP_OUTPUT_TOKENS`로 바뀌지 않는다. 토큰 한도 자체는 이 환경 변수로 올린다([[claude-code-settings#환경변수|Claude Code 설정과 권한 규칙]]). 오류 응답(`isError: true`)은 약 11,000자를 넘으면 앞뒤 5,000자씩만 남기고 가운데를 버리므로, 잘린 부분은 되찾을 수 없다.
+
+```json
+// ~/.claude/settings.json
+{ "env": { "MAX_MCP_OUTPUT_TOKENS": "100000" } }
+```
+
+### 자주 쓰는 서버
 
 많이 깔아도 매일 쓰는 것은 몇 개뿐이다. 자주 꼽히는 조합은 **조사 → 디버그 → 문서화** 흐름이다.
 
