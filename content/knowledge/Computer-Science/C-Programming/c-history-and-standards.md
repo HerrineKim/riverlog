@@ -89,4 +89,4 @@ C 표준과 POSIX는 다른 층이다. `printf`, `malloc`, `fopen`은 C 표준 �
 - `memset`의 `int` 매개변수는 원형 없던 시절의 기본 인자 승격이 남긴 흔적이다.
 - POSIX는 유닉스 계열 OS의 공통 인터페이스이고, C 표준 라이브러리와는 별개다.
 
-관련 노트: [[c-integer-types|C의 정수 자료형과 형 변환]], [[gcc-compile-and-link|GCC 컴파일과 링크]], [[os-overview|운영체제 개요]], [[c-basics|C 기초: 컴파일, 자료형, 배열과 문자열]]
+관련 노트: [[c-integer-types|C의 정수 자료형과 형 변환]], [[gcc-compile-and-link|GCC 컴파일과 링크]], [[os-overview|운영체제 개요]], [[c-basics|C 기초: 컴파일, 자료형, 배열과 문자열]], [[c-mental-model|고수준 언어에서 C로 내려가기]]

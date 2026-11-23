@@ -11,6 +11,7 @@ C는 메모리를 직접 다루는 언어라서, 주소와 포인터를 이해�
 
 ### 언어 기초
 
+- [고수준 언어에서 C로 내려가기: C의 사고방식](Computer-Science/C-Programming/c-mental-model.md): Java·Python과 다른 점(값 의미, 검사 없는 배열, 수동 메모리, 미정의 동작, 텍스트 치환 매크로)을 한 장으로 묶은 지도와 C가 그렇게 생긴 이유
 - [C 기초: 컴파일, 자료형, 연산자, 제어문, 함수, 배열과 문자열](Computer-Science/C-Programming/c-basics.md): 정보의 표현, 4단계 컴파일 과정, 자료형 크기, 연산자 함정(정수 나눗셈, 증감의 미정의 동작, 단락 평가, 우선순위), 제어문과 함수, 배열, 널 종단 문자열과 ctype.h·string.h 함수의 함정, fgets·strtol
 - [포인터와 메모리](Computer-Science/C-Programming/pointers-and-memory.md): 주소와 포인터, 문자열의 정체, malloc/free와 저장 기간, 스택·힙, 배열과 포인터의 차이, 읽기 전용 리터럴, const 위치, 이중 포인터, 댕글링 포인터, memmove, new/delete 짝
 - [C의 정수 자료형과 형 변환](Computer-Science/C-Programming/c-integer-types.md): 플랫폼별 크기, stdint.h와 size_t, 정수 승격, 부호 확장, 오버플로 미정의 동작, 고정소수점

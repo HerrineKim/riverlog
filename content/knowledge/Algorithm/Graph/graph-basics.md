@@ -5,15 +5,26 @@ summary: "정점과 간선으로 이루어진 그래프의 종류, 사이클 없
 tags: ["algorithm", "graph", "data-structure"]
 source: mixed
 date: "2026-10-30"
-sources: ["https://80000coding.notion.site/125156cf79bb48da82ae1f2ee7896bb8", "https://80000coding.notion.site/2d42782f28464dfa837f0a06cca24379", "https://www.techinterviewhandbook.org/algorithms/graph/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/jwasham/coding-interview-university"]
+sources: ["https://dev.to/vaidehijoshi/a-gentle-introduction-to-graph-theory", "https://80000coding.notion.site/125156cf79bb48da82ae1f2ee7896bb8", "https://80000coding.notion.site/2d42782f28464dfa837f0a06cca24379", "https://www.techinterviewhandbook.org/algorithms/graph/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/jwasham/coding-interview-university"]
 ---
 
+> 수학적 정의와 방향·무방향 간선의 예시는 Vaidehi Joshi의 「[A Gentle Introduction To Graph Theory](https://dev.to/vaidehijoshi/a-gentle-introduction-to-graph-theory)」(BaseCS, 2017.03)를 바탕으로 보강했다.
 > 용어 정리와 그래프·트리 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[자료구조] 그래프(Graph) 개념 정리」, 「그래프 자료구조」를 바탕으로 보강했다.
 > 딕셔너리 인접 리스트, 탐색 기법의 빈도, 「놓치기 쉬운 것」은 Tech Interview Handbook의 「[Graph cheatsheet](https://www.techinterviewhandbook.org/algorithms/graph/)」를 바탕으로 보강했다.
 > 사이클 없는 그래프와 트리의 차이, 밀집·중복 간선의 표현은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 > 그래프 표현 네 가지와 2색 칠하기(이분 그래프 판별)는 jwasham의 「[Coding Interview University](https://github.com/jwasham/coding-interview-university)」(CC-BY-SA-4.0)의 그래프 항목을 바탕으로 보강했다.
 
 그래프(Graph)는 **정점(vertex, node)과** 정점을 잇는 **간선(edge)으로** 이루어진 자료구조다. 간선에 방향이 있으면 **방향(단방향) 그래프**, 없으면 **무방향(양방향) 그래프**다.
+
+그래프는 수학의 **그래프 이론(graph theory)** 에서 온 개념이라 용어도 그대로 쓴다. 수학적으로는 정점 집합 V와 간선 집합 E의 순서쌍 **G = (V, E)** 로 정의한다. 트리와 달리 정점 사이에 순서·루트·계층이 없으므로 V는 순서 없는 집합이다. 정점이 하나뿐인 그래프(singleton graph)도 그래프이고, 정점이 하나도 없는 그래프(null graph)를 허용할지는 교재마다 다르다.
+
+| | 방향 간선 | 무방향 간선 |
+| --- | --- | --- |
+| 수학적 표현 | 순서쌍 (u, v): 출발 u에서 도착 v로만 간다 | 순서 없는 쌍 {u, v}: 양쪽으로 간다 |
+| 예 | 트위터(X) 팔로우: A가 B를 팔로우하면 A → B 간선 하나. 맞팔로우는 방향이 반대인 **별개의 간선**이 하나 더 생기는 것이다 | 페이스북 친구: 요청을 수락해야 관계가 생기고, 생기면 양쪽 모두의 관계다 |
+| 웹 | 한쪽 페이지만 다른 쪽을 링크하는 하이퍼링크 | - |
+
+두 종류의 간선이 섞인 그래프는 **혼합 그래프(mixed graph)** 라 한다.
 
 ```mermaid
 flowchart LR
