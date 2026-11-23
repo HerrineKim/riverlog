@@ -135,4 +135,4 @@ sources: ["https://muchtrans.com/translations/techie-tech-lead-my-5-biggest-mist
 - 매니저는 말의 무게, 공유할 수 없는 정보, 보이지 않는 진척을 안고 일한다. 의견과 결정을 구분하고, 피드백을 미루지 않고, 팀을 대변하고 위로 관리한다.
 - 꺾인 동기를 찾고, 새 역할을 줄 때 내려놓을 일을 정하고, 상위 판단이 필요한 위험은 해결책 없이도 올리게 한다. 평가는 AI로 무엇을 해냈는지, 보상은 공식 기준으로 한다.
 
-관련 노트: [[kind-engineering|친절한 엔지니어링]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[effective-meetings|회의 잘하는 법]], [[collaborative-developer|협업을 잘하는 개발자]], [[engineering-levels|엔지니어 레벨]]
+관련 노트: [[kind-engineering|친절한 엔지니어링]], [[growing-at-work|회사에서 빠르게 성장하는 법]], [[effective-meetings|회의 잘하는 법]], [[collaborative-developer|협업을 잘하는 개발자]], [[engineering-levels|엔지니어 레벨]], [[leadership-principles|리더십 원칙]], [[team-operating-models|팀 운영 모델]]
