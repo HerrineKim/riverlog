@@ -1,11 +1,11 @@
 ---
 title: "보안 시스템 설계: 원칙과 민감 데이터 관리"
 concept: "Secure System Design"
-summary: "보안 설계는 기밀성·무결성·가용성(CIA)을 지키는 일이고, 인증·인가·암호화·네트워크·컨테이너·API·서드파티·감사·사고 대응·재해 복구를 처음부터 기본값으로 넣는 것이다. 웹 앱의 대표 위험은 OWASP Top 10(2025)으로 점검한다. 민감 데이터는 분류하고, 전송·저장 중 암호화하고, 키를 분리 관리하고, 비식별화하고, 최소 권한과 수명 주기로 접근을 좁힌다."
+summary: "보안 설계는 기밀성·무결성·가용성(CIA)을 지키는 일이고, 인증·인가·암호화·네트워크·컨테이너·API·서드파티·감사·사고 대응·재해 복구를 처음부터 기본값으로 넣는 것이다. 웹 앱의 대표 위험은 OWASP Top 10(2025)으로 점검한다. 서명 키 방치·추측 가능한 식별자·외부에 열린 내부 시스템이 겹치면 인증 체계가 통째로 우회되므로 키 교체, 객체 단위 인가, 직무 분리로 막는다. 민감 데이터는 분류하고, 전송·저장 중 암호화하고, 키를 분리 관리하고, 비식별화하고, 최소 권한과 수명 주기로 접근을 좁힌다."
 tags: ["security", "backend", "architecture", "privacy"]
 source: other
 date: "2026-10-21"
-sources: ["https://bytebytego.com/guides/cybersecurity-101-in-one-picture", "https://bytebytego.com/guides/how-do-we-design-a-secure-system", "https://bytebytego.com/guides/how-do-we-manage-sensitive-data-in-a-system", "https://www.nist.gov/cyberframework", "https://owasp.org/www-project-top-ten/", "https://top10.owasp.org/2025/0x00_2025-Introduction/"]
+sources: ["https://bytebytego.com/guides/cybersecurity-101-in-one-picture", "https://bytebytego.com/guides/how-do-we-design-a-secure-system", "https://bytebytego.com/guides/how-do-we-manage-sensitive-data-in-a-system", "https://www.nist.gov/cyberframework", "https://owasp.org/www-project-top-ten/", "https://top10.owasp.org/2025/0x00_2025-Introduction/", "https://api-security.owasp.org/editions/2023/en/0xa1-broken-object-level-authorization", "https://csf.tools/reference/nist-sp-800-53/r5/ac/ac-5/", "https://www.law.go.kr/법령/개인정보보호법"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Cybersecurity 101](https://bytebytego.com/guides/cybersecurity-101-in-one-picture)」, 「[How to Design a Secure System](https://bytebytego.com/guides/how-do-we-design-a-secure-system)」, 「[How do we manage sensitive data in a system?](https://bytebytego.com/guides/how-do-we-manage-sensitive-data-in-a-system)」를 바탕으로 재구성한 노트다. 웹 애플리케이션 위험 순위는 「[OWASP Top 10](https://owasp.org/www-project-top-ten/)」 2025년판 [소개 문서](https://top10.owasp.org/2025/0x00_2025-Introduction/)로 보강했다.
@@ -47,7 +47,7 @@ sources: ["https://bytebytego.com/guides/cybersecurity-101-in-one-picture", "htt
 | 컨테이너 보안 | 최소 이미지, 루트 아닌 사용자, 이미지 서명 | [[devsecops\|DevSecOps]] |
 | API 보안 | 입력 검증, 레이트 리밋, 응답 최소화 | [[api-security\|API 보안 체크리스트]] |
 | 서드파티 관리 | 외부 업체·SDK에 넘기는 데이터와 권한이 최소인가 | |
-| 사고 대응 | 탐지 → 격리 → 복구 → 사후 분석 절차와 연락망이 있나 | |
+| 사고 대응 | 탐지 → 격리 → 복구 → 사후 분석 절차와 연락망이 있나. 유출 통지·신고 절차를 기한 안에 돌릴 수 있나(아래) | [[incident-postmortem\|장애 대응과 포스트모템]] |
 | 재해 복구 | RTO·RPO 목표와 복구 연습 | [[disaster-recovery\|고가용성과 재해 복구 설계]] |
 
 ### OWASP Top 10: 웹 애플리케이션 위험 순위
@@ -73,6 +73,34 @@ OWASP(Open Worldwide Application Security Project) Top 10은 실제 취약점 �
 ### 프레임워크
 
 체크리스트를 조직 단위로 운영할 때는 공개 프레임워크를 뼈대로 쓴다. **NIST CSF 2.0**은 거버넌스(Govern)·식별(Identify)·보호(Protect)·탐지(Detect)·대응(Respond)·복구(Recover)의 여섯 기능으로 나누고, **ISO/IEC 27001**은 정보보호 관리 체계 인증 표준이다.
+
+## 인증 체계가 한꺼번에 무너지는 조합
+
+대규모 계정 유출은 취약점 하나보다 **평범한 관리 실패 몇 개가 겹쳐서** 일어난다. 아래 넷은 각각으로는 사소해 보이지만 함께 있으면 인증 체계 전체가 우회된다.
+
+| 빈틈 | 왜 위험한가 | 대책 |
+| --- | --- | --- |
+| 토큰 **서명 키**가 사람 손에 있고 교체되지 않는다 | 서명 키를 가진 사람은 어떤 사용자의 토큰이든 만들 수 있다. 담당자가 떠난 뒤에도 키가 그대로면 권한은 회수되지 않은 것이다 | 키는 KMS·HSM 안에서 생성하고 꺼낼 수 없게 한다. 접근하던 인력이 바뀌면(퇴사, 전보, 외주 종료) 즉시 교체하고, 평소에도 주기적으로 교체한다. `kid`로 새 키와 옛 키를 함께 검증하는 기간을 두면 무중단으로 바꿀 수 있다([[session-vs-token-auth\|세션 기반 인증과 토큰 기반 인증]]) |
+| **식별자가 추측 가능하다** (1씩 늘어나는 고객 번호) | 번호만 바꿔 넣으면 다른 사람의 자원에 닿는다. 위조한 토큰과 만나면 전체 계정을 차례로 훑을 수 있다 | 외부에 드러나는 ID는 무작위로 예측할 수 없는 값(UUID 등)을 쓴다. 그것만으로는 부족하고, **요청마다 그 사용자가 그 객체에 접근할 권한이 있는지** 검사한다(OWASP API Security Top 10의 1번, 객체 수준 인가 실패). ID 생성 방식은 [[distributed-unique-id\|분산 환경의 고유 ID 생성]]에 있다 |
+| **내부용 시스템이 외부 망에서 열려 있다** | 내부 직원만 쓴다는 가정으로 인증이 느슨한 관리·식별 시스템이 인터넷에서 닿으면 위의 두 빈틈이 바로 악용된다 | 내부 시스템은 사설망·VPN 뒤에 두고, 바깥에서 주기적으로 스캔해 노출 여부를 확인한다 |
+| **대량 조회를 아무도 보지 않는다** | 정상 자격으로 보이는 요청이 평소의 수천 배로 들어와도 알림이 없으면 유출은 몇 달씩 이어진다 | 계정·IP·토큰별 조회량 기준선을 두고 벗어나면 알린다. 내부자 접근 로그를 상시 점검한다 |
+
+### 직무 분리
+
+**직무 분리**(Separation of Duties)는 하나의 중요한 일을 한 사람이 처음부터 끝까지 혼자 끝낼 수 없게 쪼개는 통제다. NIST SP 800-53의 AC-5가 이 통제이고, 최소 권한(AC-6)과 짝을 이룬다.
+
+| 나누는 것 | 예 |
+| --- | --- |
+| 집행 · 승인 · 검증 | 지출을 올리는 사람, 승인하는 사람, 대사·감사하는 사람을 다르게 한다. 한 사람이 셋을 모두 맡으면 기록을 고쳐 가며 오래 숨길 수 있다 |
+| 개발 · 운영 서명 | 개발자 단말에서 운영 환경의 승인·서명 시스템까지 닿는 경로가 있으면 그 단말 하나가 단일 실패점이 된다. 거래 승인, 코드 서명, 배포 승인은 별도 권한과 별도 환경에서 여러 사람의 서명으로 처리한다 |
+| 요청 · 실행 | 운영 DB 변경, 권한 부여는 요청자와 실행자를 나누고 기록을 남긴다 |
+
+- 점검은 **실제 상태**를 본다. 보관 장비가 제자리에 있는지만 세고 그 안의 잔고나 데이터를 조회하지 않으면, 키가 이미 새어 자산이 빠져나간 것을 몇 달 뒤에야 알게 된다.
+- **인수인계 구간이 가장 약하다.** 담당자가 바뀌는 동안에는 낯선 절차를 처음 수행하는 사람이 생긴다. 절차를 문서로 두고, 접속 주소를 북마크나 공식 경로로만 열며, 키와 복구 문구는 어떤 웹 페이지에도 입력하지 않는다.
+
+### 유출 통지 기한
+
+한국의 개인정보 보호법은 유출을 **알게 된 때부터 72시간 이내**에 정보주체에게 알리도록 한다(법 제34조, 시행령 제39조). 유출 규모가 1천 명 이상이거나, 민감정보·고유식별정보가 포함됐거나, 외부의 불법적인 접근으로 유출된 경우에는 같은 72시간 안에 개인정보보호위원회나 한국인터넷진흥원(KISA)에 신고한다(시행령 제40조). 사고가 난 뒤에 절차를 만들면 기한을 지킬 수 없으므로, 누가 판단하고 누가 통지문을 내는지 미리 정해 둔다. 비밀번호 같은 인증정보와 주민등록번호 같은 고유식별정보는 암호화해서 저장하는 것이 법이 정한 안전조치(법 제29조와 「개인정보의 안전성 확보조치 기준」)라서, 평문 저장은 유출과 별개로 위반이 된다.
 
 ## 민감 데이터 관리
 
@@ -120,6 +148,8 @@ OWASP(Open Worldwide Application Security Project) Top 10은 실제 취약점 �
 
 - 보안 설계의 목표는 CIA이고, 인증·인가·암호화·네트워크·컨테이너·API·서드파티·감사·사고 대응·재해 복구를 처음부터 기본값으로 넣는다.
 - 민감 데이터는 분류 → 암호화와 키 분리 → 비식별화 → 최소 권한 → 수명 주기 관리 순으로 다룬다.
-- 키는 데이터와 떨어진 곳에 두고, 가장 중요한 키는 한 사람이 단독으로 쓰지 못하게 한다.
+- 키는 데이터와 떨어진 곳에 두고, 가장 중요한 키는 한 사람이 단독으로 쓰지 못하게 한다. 키에 닿던 사람이 바뀌면 키를 교체한다.
+- 외부에 드러나는 식별자는 추측할 수 없게 만들고, 요청마다 객체 단위로 권한을 검사한다.
+- 집행·승인·검증은 다른 사람이 맡고, 점검은 장비가 아니라 실제 상태를 확인한다.
 
 관련 노트: [[security|정보 시스템 보안]], [[api-security|API 보안 체크리스트]], [[devsecops|DevSecOps]], [[access-control-models|권한 시스템 설계: ACL, RBAC, ABAC]], [[privacy-encryption|프라이버시를 위한 암호화: 전송·저장·종단 간]], [[network-security|네트워크 보안: 방화벽, VPN, 계층별 공격]], [[backend-murphys-law|개발자 머피의 법칙]]

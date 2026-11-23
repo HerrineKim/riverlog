@@ -4,7 +4,7 @@ concept: "Interview Attitude"
 summary: "면접관은 말보다 태도를 먼저 읽는다. 눈 맞춤과 미러링, 일찍 도착하기, 겸손과 감사, 결론부터 짧게 답하기, 이력서 숙지와 모르면 모른다고 하기, 실수를 빨리 인정하기, 압박 면접 대응, 역질문과 감점되는 질문, 감사 메일, 기술 질문 준비, 면접에서 피할 회사를 가려내는 신호까지 면접 전·중·후의 원칙을 정리한다."
 tags: ["career", "interview", "job-search", "communication"]
 source: other
-date: "2026-11-18"
+date: "2026-11-23"
 sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md", "https://www.techinterviewhandbook.org/final-questions/", "https://github.com/viraptor/reverse-interview", "https://github.com/Twipped/InterviewThis", "https://www.educative.io/blog/behavioral-interviews-how-to-prepare-and-ace-interview-questions"]
 ---
 
@@ -87,6 +87,16 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 | 같은 말을 반복하지 않는다 | 강점이라도 질문마다 되풀이하면 질문을 듣지 않는 사람으로 보인다 |
 | 부풀리지 않는다 | 과장한 실력은 다음 질문에서 검증당한다. 어려운 전문 용어를 과시하듯 쓰면, 면접관이 그 분야를 깊이 물을 때 감점이 커진다 |
 | 말과 코딩의 균형 | 말은 잘했는데 간단한 코딩을 지나치게 못하면 크게 감점된다 |
+
+### 질문의 속뜻에 답한다
+
+면접 질문에는 시험 문제 같은 정답이 없다. 면접관이 듣고 싶은 것은 사건의 나열이 아니라 **그 사실을 바라보는 관점, 태도, 가치관**이다. 사실을 정확하게 설명하는 데만 힘을 쏟으면 질문이 담고 있던 걱정에는 답하지 못한다. 아는 것이 많을수록 정확히 설명하려는 욕구가 커서 이 함정에 빠지기 쉽다.
+
+| 질문 | 속뜻 | 피할 답 | 좋은 답의 방향 |
+| --- | --- | --- | --- |
+| 이직이 잦은 이유가 무엇인가 | 우리 회사도 금방 떠나지 않을까 | 회사마다 연봉, 업무, 분위기가 어땠는지 사실을 나열한다. 불안만 키운다 | 과거를 변명하지 않는다. 시행착오로 자신의 강점과 적성을 알게 됐고, 그래서 이 자리에서 오래 기여하려 한다고 말한다 |
+
+까다로운 질문을 받으면 「이 사람은 무엇을 걱정하고 있는가」를 먼저 생각하고, 그 **걱정을 덜어 주는 답**을 한다. 협상과 설득의 질문도 같다.
 
 ### 인맥을 자랑하지 않는다
 

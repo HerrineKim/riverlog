@@ -2,13 +2,13 @@
 title: "스톡옵션: 행사가, 베스팅, 행사와 세금 구조"
 concept: "Stock Option"
 summary: "스톡옵션은 주식이 아니라 정해진 행사가로 주식을 살 수 있는 권리다. 부여 → 베스팅(클리프) → 행사 → 매도의 단계마다 조건과 비용이 붙는다. 세전 차익이 아니라 행사 대금, 세금, 매도 제약까지 반영한 실질 가치로 판단한다. 오퍼는 진입 가치 대비 성장 여지와 베스팅·행사 기간 같은 정책 두 축으로 평가한다. 미국 스타트업의 ISO·NSO, 409A, AMT 함정, 83(b) 선택, 퇴사 후 90일 행사 기간, RSU와 오퍼 때 물을 질문도 정리한다."
-tags: ["career", "job-search"]
+tags: ["career", "job-search", "tax", "finance"]
 source: other
-date: "2026-11-01"
-sources: ["https://outstanding.kr/stockoption20260814", "https://evan-moon.github.io/2021/12/04/what-is-stock-options/", "https://github.com/jlevy/og-equity-compensation", "https://blog.carta.com/equity-101-stock-option-basics/", "https://www.techinterviewhandbook.org/understanding-compensation/"]
+date: "2026-11-23"
+sources: ["https://outstanding.kr/stockoption20260814", "https://evan-moon.github.io/2021/12/04/what-is-stock-options/", "https://github.com/jlevy/og-equity-compensation", "https://blog.carta.com/equity-101-stock-option-basics/", "https://www.techinterviewhandbook.org/understanding-compensation/", "https://zuzu.network/resource/guide/rsu-tax/"]
 ---
 
-> 「[개발자가 알아야 할 스톡옵션의 모든 것](https://evan-moon.github.io/2021/12/04/what-is-stock-options/)」을 바탕으로 한국 제도 기준으로 재구성한 노트다. 세율·비과세 한도 같은 수치는 해마다 바뀌므로 넣지 않았다. 계약 전에 회사와 세무 전문가, 국세청 안내로 확인한다. 미국 스타트업의 지분 보상은 「[The Open Guide to Equity Compensation](https://github.com/jlevy/og-equity-compensation)」과 Carta의 「[Equity 101: Stock Option Basics](https://blog.carta.com/equity-101-stock-option-basics/)」를 바탕으로, 베스팅 일정 유형은 Tech Interview Handbook의 「[Understanding compensation](https://www.techinterviewhandbook.org/understanding-compensation/)」을 바탕으로 더했다. 성장 여지와 정책 두 축으로 오퍼를 평가하는 틀은 SNS에서 돌던 ESOP 오퍼 평가 글을 요약·재구성했다. 국내 행사·매도 통계는 아웃스탠딩의 「[스톡옵션 현금화 엑싯은 언제 이뤄질까](https://outstanding.kr/stockoption20260814)」(2026.08)를 바탕으로 했다.
+> 「[개발자가 알아야 할 스톡옵션의 모든 것](https://evan-moon.github.io/2021/12/04/what-is-stock-options/)」을 바탕으로 한국 제도 기준으로 재구성한 노트다. 세율·비과세 한도 같은 수치는 해마다 바뀌므로 넣지 않았다. 계약 전에 회사와 세무 전문가, 국세청 안내로 확인한다. 미국 스타트업의 지분 보상은 「[The Open Guide to Equity Compensation](https://github.com/jlevy/og-equity-compensation)」과 Carta의 「[Equity 101: Stock Option Basics](https://blog.carta.com/equity-101-stock-option-basics/)」를 바탕으로, 베스팅 일정 유형은 Tech Interview Handbook의 「[Understanding compensation](https://www.techinterviewhandbook.org/understanding-compensation/)」을 바탕으로 더했다. 성장 여지와 정책 두 축으로 오퍼를 평가하는 틀은 SNS에서 돌던 ESOP 오퍼 평가 글을 요약·재구성했다. 국내 행사·매도 통계는 아웃스탠딩의 「[스톡옵션 현금화 엑싯은 언제 이뤄질까](https://outstanding.kr/stockoption20260814)」(2026.08)를 바탕으로 했다. RSU의 과세 시점은 ZUZU의 「[RSU 세금 안내](https://zuzu.network/resource/guide/rsu-tax/)」를 바탕으로 했다.
 
 ## 스톡옵션이란
 
@@ -100,7 +100,28 @@ flowchart LR
 | 반복 부여 | 권리자의 약 1/3이 두 번 이상 받았다 | 한 번의 부여보다 누적 부여 정책을 묻는다 |
 | 수익 | 평가이익 기준 이익 구간은 31.3%, 그중 11배 이상은 15.2% | 대부분은 이익이 나지 않는다. 기대 배수는 보수적으로 잡는다 |
 
-RSU(양도제한조건부주식)는 권리가 아니라 조건이 충족되면 **주식 자체**를 받는다는 점이 다르다. 행사가 납입이 없고 받는 시점의 주가가 과세 기준이 된다.
+## RSU와 주식 성과급
+
+**RSU(Restricted Stock Unit, 양도제한조건부주식)**는 재직 기간이나 성과 목표 같은 조건이 충족되면 **주식 자체를 무상으로** 받는 보상이다. 살 권리를 주는 스톡옵션과 구조가 다르다.
+
+| 구분 | 스톡옵션 | RSU |
+| --- | --- | --- |
+| 받는 것 | 행사가로 주식을 살 권리 | 조건 충족 시 주식 |
+| 내는 돈 | 행사가 × 주식 수 | 없다 |
+| 주가가 떨어졌을 때 | 주가가 행사가 아래면 가치가 없다 | 주가만큼의 가치는 남는다 |
+| 근로소득 과세 시점 | 행사한 때 (행사 시점 주가 − 행사가) | 조건이 충족되어 **주식을 지급받은 날** (그날의 시가 전체) |
+| 과세 시점 선택 | 언제 행사할지 고를 수 있다 | 고를 수 없다. 베스팅 일정대로 과세된다 |
+| 회사가 쓰는 이유 | 현금 없이 성장의 몫을 약속한다 | 주가가 오를수록 보상이 커져 이탈을 막고, 현금 보상 부담을 줄인다 |
+
+### 세금과 현금 흐름
+
+- **지급받은 날의 시가가 근로소득이다.** RSU는 조건이 성취되어 주식을 받을 권리가 확정되는 날(베스팅)에 그날의 주식 시가만큼 근로소득이 생긴 것으로 본다. 부여를 약속받은 날이 아니다. 약속 뒤 주가가 크게 오르면 세금도 그만큼 커진다.
+- 현금 대신 자사주로 받는 **주식 성과급**도 같은 원리로 받는 날의 시가가 근로소득이 된다.
+- 받은 뒤 팔 때는 **매도가 − 지급 당시 시가**가 양도차익이다.
+- **매도 제한이 걸려 있으면 주식을 팔아 세금을 낼 수 없다.** 과세는 지급 시점에 끝나는데 현금은 제한이 풀린 뒤에야 생기므로, 세금 낼 현금을 따로 마련해야 한다. 그사이 주가가 내려가도 이미 낸 근로소득세는 줄지 않는다.
+- 해외 모회사에서 직접 받는 RSU처럼 국내 회사가 원천징수하지 않는 경우에는 받은 사람이 다음 해 5월 종합소득세 신고 때 직접 신고한다.
+
+주식 보상을 제안받으면 수단이 무엇이든 **과세 시점, 매도 제한 기간, 세금 납부 재원** 세 가지를 함께 확인한다.
 
 ## 미국 스타트업의 지분 보상
 
@@ -131,6 +152,7 @@ RSU(양도제한조건부주식)는 권리가 아니라 조건이 충족되면 *
 - 스톡옵션은 주식이 아니라 행사가로 살 권리다.
 - 부여·베스팅·행사·매도 단계마다 조건과 비용이 있다.
 - 세금은 행사와 매도 두 번, 행사 차익은 근로소득으로 합산된다.
+- RSU와 주식 성과급은 주식을 지급받은 날의 시가로 근로소득이 잡힌다. 매도 제한이 있으면 세금 낼 현금을 따로 준비한다.
 - 오퍼는 진입 가치 대비 성장 여지와 직원 친화적 정책 두 축으로 본다. 부여 금액끼리 비교하지 않는다.
 - 숫자는 세후·현금 흐름·유동성까지 넣어 계산한다.
 - 미국 오퍼는 지분율의 분모, 청산 우선권, 퇴사 후 행사 기간, ISO의 AMT를 먼저 확인한다.

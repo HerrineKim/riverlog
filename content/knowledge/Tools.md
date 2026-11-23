@@ -25,6 +25,7 @@ date: "2026-10-14"
 - [개발 도구 지형도와 세상을 바꾼 오픈소스](/knowledge/dictionary/tools/dev-tool-landscape): 범주별 개발 도구 지도, 분야의 판도를 바꾼 오픈소스, 기업이 코드를 공개하는 이유
 - [VS Code 설정과 활용](Tools/vscode.md): settings.json과 설정 동기화, launch.json 디버깅, github.dev, 쓸 만한 확장
 - [구글 검색 연산자](/knowledge/dictionary/tools/google-search-operators): 따옴표·제외·OR 같은 기본 연산자와 site:·intitle:·filetype: 같은 고급 연산자, 사라진 연산자
+- [카카오톡 단체방 관리: 조용히 나가기, 입력창 잠금, 데이터 삭제](/knowledge/dictionary/tools/kakaotalk-group-chat-settings): 조용히 나가기 경로와 예외, 입력창 잠금, 데이터 삭제 두 항목의 범위
 - [개발 환경](Tools/Dev-Environment.md): [Windows 개발 환경](Tools/Dev-Environment/windows-dev-environment.md), [로컬 HTTPS(mkcert)](Tools/Dev-Environment/local-https-mkcert.md), [Java 빌드 도구와 IntelliJ 실행 오류](Tools/Dev-Environment/java-build-tools.md), [pyenv로 Python 환경 잡기](Tools/Dev-Environment/python-pyenv-setup.md)
 - [Jira: 이슈 구성, JQL, 워크플로](/knowledge/dictionary/tools/jira): 이슈 필드와 Epic·Component·Label 구분, JQL 검색, 워크플로·Board·Sprint·스토리 포인트, Bulk Change 같은 실무 팁
 - [GA4 시작하기](/knowledge/dictionary/tools/ga4-setup), [Segment로 사용자 데이터 수집하기](/knowledge/dictionary/tools/segment): 웹 분석 도구 GA4 설정과 Segment로 이벤트 수집·전달하기

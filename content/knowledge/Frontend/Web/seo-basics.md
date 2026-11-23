@@ -80,6 +80,8 @@ Disallow: /admin/
 Sitemap: https://example.com/sitemap.xml
 ```
 
+AI 회사의 크롤러는 학습용과 검색용 토큰이 따로 있어 robots.txt에서 나눠 다룬다. 토큰 목록과 한계는 [[ai-search-optimization|AI 검색 시대의 SEO]]에 있다.
+
 색인됐는지는 구글에서 `site:example.com`으로 검색해 확인한다. 페이지 하나가 구글에 어떻게 보이는지는 Search Console의 **URL 검사 도구**로 본다.
 
 ## 메타 태그
@@ -177,6 +179,7 @@ Google 검색 센터의 SEO 기본 가이드는 순위에 거의 영향이 없�
 | PageRank(링크)가 전부다 | 많은 순위 신호 가운데 하나다 |
 | 중복 콘텐츠는 벌점을 받는다 | 한 사이트 안에서 같은 내용이 여러 URL에 있는 것은 비효율일 뿐 벌점 대상이 아니다. 대표 URL로 301 리다이렉트하거나 canonical을 건다. 남의 글을 베끼는 것은 다른 문제다 |
 | 제목 태그 순서가 순위에 영향을 준다 | 검색 순위에는 상관없다. 순서는 스크린 리더를 위해 지킨다 |
+| AI 검색에 나오려면 `llms.txt`나 AI용 마크업이 필요하다 | Google 검색은 이런 파일을 쓰지 않는다. 생성형 AI 기능에 나오는 조건은 일반 검색과 같다 → [[ai-search-optimization\|AI 검색 시대의 SEO]] |
 | E-E-A-T가 순위 요소다 | 경험·전문성·권위·신뢰는 품질 평가의 관점이지 하나의 순위 신호가 아니다 |
 
 ## 체크리스트
@@ -188,4 +191,4 @@ Google 검색 센터의 SEO 기본 가이드는 순위에 거의 영향이 없�
 - 중복 URL에 canonical이, 옮긴 URL에 301이 있는가
 - 모바일에서 읽을 수 있고 충분히 빠른가
 
-관련 노트: [[semantic-html|시맨틱 HTML과 문서 구조]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[http|HTTP 프로토콜]], [[structured-content|구조화된 콘텐츠와 기계가 읽는 웹]], [[search-engine-basics|검색엔진의 원리]], [[multilingual-pages|다국어 페이지: lang·hreflang과 국제화]], [[web-search-engine|웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리]], [[html-head-metadata|문서 head와 메타데이터]]
+관련 노트: [[ai-search-optimization|AI 검색 시대의 SEO]], [[semantic-html|시맨틱 HTML과 문서 구조]], [[spa-csr-ssr|SPA와 CSR·SSR]], [[web-vitals|웹 성능 지표와 Lighthouse]], [[http|HTTP 프로토콜]], [[structured-content|구조화된 콘텐츠와 기계가 읽는 웹]], [[search-engine-basics|검색엔진의 원리]], [[multilingual-pages|다국어 페이지: lang·hreflang과 국제화]], [[web-search-engine|웹 검색엔진의 동작: 크롤링, 색인, 랭킹, 질의 처리]], [[html-head-metadata|문서 head와 메타데이터]]

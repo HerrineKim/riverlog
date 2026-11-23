@@ -5,7 +5,7 @@ summary: "DevSecOps는 보안 검사를 출시 직전의 관문이 아니라 개
 tags: ["devops", "security", "ci-cd", "automation", "cloud"]
 source: other
 date: "2026-11-20"
-sources: ["https://bytebytego.com/guides/what-is-devsecops", "https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms", "https://news.hada.io/weekly/202644", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)", "https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5", "https://xint.io/ko/blog/nginx2root-remote-code-execution", "https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities", "https://www.cyberkendra.com/2026/11/cve-2026-114938-pre-auth-rce-flaw-in-java-17-puts-servers-at-risk.html", "https://www.mstoday.co.kr/news/articleView.html?idxno=200515", "https://github.com/NginxProxyManager/nginx-proxy-manager/releases/tag/v2.17.1"]
+sources: ["https://bytebytego.com/guides/what-is-devsecops", "https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms", "https://news.hada.io/weekly/202644", "고려사이버대학교 클라우드 컴퓨팅 강의(이찬우 교수, 2023-2학기)", "https://gist.github.com/MotherSphere/d6c049a09ba8ac3085c51ee9df24a4e5", "https://xint.io/ko/blog/nginx2root-remote-code-execution", "https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities", "https://www.cyberkendra.com/2026/11/cve-2026-114938-pre-auth-rce-flaw-in-java-17-puts-servers-at-risk.html", "https://www.mstoday.co.kr/news/articleView.html?idxno=200515", "https://github.com/NginxProxyManager/nginx-proxy-manager/releases/tag/v2.17.1", "https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk", "https://www.dfs.ny.gov/industry-guidance/industry-letters/20260521-guidance-on-measures-reg-entities-should-consider-in-a-hcte", "https://www.php.net/supported-versions.php", "https://nodejs.org/en/about/previous-releases"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[What is DevSecOps?](https://bytebytego.com/guides/what-is-devsecops)」, 「[Top 4 Forms of Authentication Mechanisms](https://bytebytego.com/guides/top-4-forms-of-authentication-mechanisms)」를 바탕으로 재구성한 노트다.
@@ -120,10 +120,32 @@ AI가 취약점을 찾고 악용하는 비용을 낮추면서, 공격자와 방�
 | 대응 | 내용 |
 | --- | --- |
 | 인벤토리 | 서버·컨테이너·구성 요소 버전 목록(SBOM 포함)을 늘 최신으로 둔다. 「어디에 쓰고 있나」에 바로 답할 수 있어야 한다 |
+| 노출 자산 파악 | 인터넷에서 닿는 자산(도메인, IP, 열린 포트, 관리 콘솔, 직원용 원격 접속 시스템)의 목록을 바깥에서 주기적으로 스캔해 맞춰 본다. 쓰지 않는 포트와 서비스는 닫는다. 고객용 서비스만 막고 직원용 시스템을 열어 두면 그쪽이 침투 경로가 된다 |
 | 분류(triage) | 모든 권고를 같은 긴급도로 다루지 않는다. 외부 노출 여부, 실제 악용 확인 여부, 공격 조건이 우리 환경에 맞는지로 순서를 매긴다 |
 | 리허설 | 패치 테스트와 배포 절차를 평소에 연습해 둔다 |
 | 패치 전 완화 | 필요 없는 관리 인터페이스를 닫고, 최소 권한을 적용하고, 망을 나눠 한 곳이 뚫려도 퍼지지 않게 한다 |
 | 점검 창구 | 재부팅이 필요한 패치를 넣을 정기 점검(PM, Preventive Maintenance) 시간을 서비스 담당 조직과 미리 합의해 둔다 |
+
+**순서를 매기는 기준은 넷이다.** 미국 CISA가 연방 기관에 내린 지침(BOD 26-04, 2026년 6월)은 패치 기한을 CVSS 점수 하나가 아니라 네 요소의 조합으로 정한다. 가장 나쁜 조합은 3일 안에 조치하고 침해 여부까지 조사하게 한다.
+
+| 요소 | 질문 |
+| --- | --- |
+| 자산 노출 | 취약한 자산이 인터넷에 공개돼 있는가 |
+| 악용 확인 | 실제 공격에 쓰인 것이 확인된 취약점 목록(KEV, Known Exploited Vulnerabilities)에 올라 있는가 |
+| 자동화 가능성 | 공격의 모든 단계를 자동화할 수 있는가 |
+| 기술적 영향 | 성공하면 자산을 부분적으로 장악하는가, 완전히 장악하는가 |
+
+모든 취약점을 같은 속도로 고칠 수 없으면 **인터넷에 노출된 자산의, 악용이 확인된 취약점부터** 고친다. 공격 코드가 공개되면 자동화된 대량 스캔이 곧 뒤따르므로, 정기 점검 주기만 기다려서는 늦는다. 접근을 좁히던 통제(IP 허용 목록 등)를 불편하다는 이유로 풀 때는 대신할 통제를 먼저 세우고, 조회 범위가 넓은 고권한 계정에는 추가 인증과 이상 행위 모니터링을 건다.
+
+**지원이 끝난 런타임은 패치가 나오지 않는다.** 언어 런타임과 프레임워크에는 지원 기간이 있고, 기간이 끝난(EOL, End of Life) 버전은 취약점이 공개돼도 공식 수정 릴리스를 받지 못한다. 인증 없이 원격에서 코드를 실행할 수 있는 취약점이 공개되면 지원 중인 버전은 수정 릴리스로 올리면 끝나지만, EOL 버전은 버전 계열 자체를 올려야 해서 호환성 검증까지 한꺼번에 떠안는다.
+
+| 런타임 | 지원 정책 |
+| --- | --- |
+| PHP | 버전마다 활성 지원 2년 뒤 보안 수정만 2년, 합쳐서 4년. 버전별 종료일은 php.net의 Supported Versions에 있다 |
+| Node.js | LTS 계열이 약 30개월 동안 중요 수정을 받는다. LTS가 아닌 계열은 운영에 쓰지 않는다. 계열별 종료일은 nodejs.org의 릴리스 표에 있다 |
+
+- 쓰고 있는 런타임·프레임워크·OS의 **종료일을 인벤토리에 함께 적고**, 종료 전에 올리는 일정을 미리 잡는다. 근본 대책은 긴급 패치가 아니라 이 일정 관리다.
+- EOL 버전에서 취약점이 공개됐을 때의 순서는 지원 버전으로 올리기 → 올리기 전 기간의 침해 흔적 점검이다. 당장 못 올리면 취약한 기능을 끄거나 앞단에서 막는 완화책으로 시간을 번다.
 
 **커널 패치의 병목은 배포가 아니라 다운타임이다.** 전체 서버에 패키지 업데이트와 재부팅 명령을 내리는 일은 Ansible 같은 구성 관리 도구로 금방 끝난다. 어려운 것은 커널 교체에 따르는 재부팅과 그동안의 서비스 중단을 서비스 담당 조직과 조율하는 일이다. 중단을 이유로 패치를 미루면 그 기간만큼 알려진 취약점을 안고 운영하게 되므로(위의 올드데이), 취약점이 나올 때마다 일정을 협상하지 말고 정기 점검 창구를 미리 확보해 둔다. RHEL 같은 유료 배포판은 패치 지원을 계약으로 보장받는다는 장점이 있지만, 새 취약점이 계속 나오고 그때마다 재부팅 일정을 잡아야 하는 사정은 같다.
 

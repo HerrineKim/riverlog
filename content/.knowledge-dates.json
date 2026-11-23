@@ -1,7 +1,7 @@
 {
  "AI-Data.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-16T23:09:56+09:00"
+  "updated": "2026-11-24T00:11:33+09:00"
  },
  "AI-Data/Claude-Code.md": {
   "created": "2026-11-15T14:15:31+09:00",
@@ -110,6 +110,10 @@
  "AI-Data/ai-platform-shift.md": {
   "created": "2026-10-18T12:26:21+09:00",
   "updated": "2026-10-31T13:20:54+09:00"
+ },
+ "AI-Data/ai-policy-and-regulation.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
  },
  "AI-Data/ai-slop.md": {
   "created": "2026-11-16T23:09:56+09:00",
@@ -267,6 +271,10 @@
   "created": "2026-10-20T11:39:52+09:00",
   "updated": "2026-11-22T20:20:04+09:00"
  },
+ "AI-Data/physical-ai-world-model.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
  "AI-Data/predictive-vs-generative-ai.md": {
   "created": "2026-10-17T23:13:05+09:00",
   "updated": "2026-10-31T13:39:10+09:00"
@@ -289,7 +297,7 @@
  },
  "AI-Data/responsible-ai-governance.md": {
   "created": "2026-10-17T23:13:05+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "AI-Data/scale-and-intelligence-utility.md": {
   "created": "2026-10-19T15:09:19+09:00",
@@ -381,7 +389,7 @@
  },
  "Algorithm/Graph/graph-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T19:48:28+09:00"
+  "updated": "2026-11-23T00:21:38+09:00"
  },
  "Algorithm/Graph/lowest-common-ancestor.md": {
   "created": "2026-10-30T16:00:02+09:00",
@@ -705,7 +713,7 @@
  },
  "Backend/Architecture/secure-system-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-21T15:52:08+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Backend/Architecture/software-architecture-patterns.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1033,7 +1041,7 @@
  },
  "Career.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-23T11:40:49+09:00"
+  "updated": "2026-11-24T00:11:33+09:00"
  },
  "Career/Job-Search/australia-skilled-migration.md": {
   "created": "2026-11-08T17:29:32+09:00",
@@ -1073,7 +1081,7 @@
  },
  "Career/Job-Search/interview-attitude.md": {
   "created": "2026-10-16T13:20:09+09:00",
-  "updated": "2026-11-18T23:08:34+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Career/Job-Search/job-offer-negotiation.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -1085,11 +1093,11 @@
  },
  "Career/Job-Search/stock-options.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-12T22:09:29+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Career/Job-Search/tech-interview-prep.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-22T22:31:10+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Career/Job-Search/us-hiring-process.md": {
   "created": "2026-10-17T18:11:24+09:00",
@@ -1097,11 +1105,15 @@
  },
  "Career/Job-Search/us-work-visa-paths.md": {
   "created": "2026-10-20T11:04:43+09:00",
-  "updated": "2026-11-22T20:06:20+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Career/Job-Search/web-dev-study-guide.md": {
   "created": "2026-10-13T19:37:05+09:00",
   "updated": "2026-10-30T18:22:33+09:00"
+ },
+ "Career/Job-Search/working-holiday.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
  },
  "Career/Product/agile-sprint.md": {
   "created": "2026-10-13T19:40:33+09:00",
@@ -1139,6 +1151,10 @@
   "created": "2026-10-15T20:07:11+09:00",
   "updated": "2026-11-15T17:12:12+09:00"
  },
+ "Career/Product/management-theory-classics.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
  "Career/Product/practical-empathy.md": {
   "created": "2026-10-13T19:44:39+09:00",
   "updated": "2026-10-31T16:02:04+09:00"
@@ -1170,6 +1186,10 @@
  "Career/Product/startup-engineering.md": {
   "created": "2026-10-21T14:58:22+09:00",
   "updated": "2026-11-15T17:12:12+09:00"
+ },
+ "Career/Product/strategy-frameworks.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
  },
  "Career/Product/technical-debt.md": {
   "created": "2026-10-15T20:07:11+09:00",
@@ -1212,8 +1232,8 @@
   "updated": "2026-11-12T22:10:49+09:00"
  },
  "Career/Work/developer-networking.md": {
-  "created": "2026-11-23T11:40:59+09:00",
-  "updated": "2026-11-23T11:40:59+09:00"
+  "created": "2026-11-23T11:42:40+09:00",
+  "updated": "2026-11-23T11:42:40+09:00"
  },
  "Career/Work/developer-productivity.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -1225,7 +1245,11 @@
  },
  "Career/Work/effective-meetings.md": {
   "created": "2026-10-13T19:40:33+09:00",
-  "updated": "2026-10-31T13:39:03+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
+ },
+ "Career/Work/employee-labor-law.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
  },
  "Career/Work/engineering-levels.md": {
   "created": "2026-10-30T23:43:44+09:00",
@@ -1247,6 +1271,10 @@
   "created": "2026-10-15T19:59:20+09:00",
   "updated": "2026-10-21T14:58:22+09:00"
  },
+ "Career/Work/leadership-principles.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
  "Career/Work/learning-to-code-stages.md": {
   "created": "2026-10-21T14:58:22+09:00",
   "updated": "2026-11-15T20:31:50+09:00"
@@ -1267,6 +1295,14 @@
   "created": "2026-10-14T10:57:29+09:00",
   "updated": "2026-11-15T17:12:12+09:00"
  },
+ "Career/Work/parental-leave-benefits.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
+ "Career/Work/principled-negotiation.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
  "Career/Work/programmer-mindset.md": {
   "created": "2026-10-13T19:46:17+09:00",
   "updated": "2026-10-21T14:58:22+09:00"
@@ -1277,7 +1313,7 @@
  },
  "Career/Work/reputation-building.md": {
   "created": "2026-10-13T19:42:45+09:00",
-  "updated": "2026-11-23T11:40:49+09:00"
+  "updated": "2026-11-23T11:42:40+09:00"
  },
  "Career/Work/security-career-paths.md": {
   "created": "2026-11-20T23:08:40+09:00",
@@ -1295,17 +1331,29 @@
   "created": "2026-10-17T19:04:42+09:00",
   "updated": "2026-11-16T22:31:22+09:00"
  },
+ "Career/Work/team-operating-models.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
  "Career/Work/tech-blogging.md": {
   "created": "2026-10-21T14:58:22+09:00",
   "updated": "2026-11-12T22:12:25+09:00"
  },
  "Career/Work/tech-lead-transition.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-12T22:10:36+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
+ },
+ "Career/Work/trade-secrets-job-change.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
  },
  "Career/Work/work-habits.md": {
   "created": "2026-10-11T23:36:27+09:00",
   "updated": "2026-10-31T13:20:13+09:00"
+ },
+ "Career/Work/workplace-harassment-response.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
  },
  "Career/tech-reading-list.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1317,7 +1365,7 @@
  },
  "Computer-Science/C-Programming.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-11-23T00:21:38+09:00"
  },
  "Computer-Science/C-Programming/c-2d-graphics.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1333,7 +1381,7 @@
  },
  "Computer-Science/C-Programming/c-history-and-standards.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-31T13:02:11+09:00"
+  "updated": "2026-11-23T00:21:38+09:00"
  },
  "Computer-Science/C-Programming/c-integer-types.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1342,6 +1390,10 @@
  "Computer-Science/C-Programming/c-low-level-optimization.md": {
   "created": "2026-10-14T10:57:30+09:00",
   "updated": "2026-11-15T16:52:53+09:00"
+ },
+ "Computer-Science/C-Programming/c-mental-model.md": {
+  "created": "2026-11-23T00:21:38+09:00",
+  "updated": "2026-11-23T00:21:38+09:00"
  },
  "Computer-Science/C-Programming/c-scope-and-linkage.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1369,11 +1421,15 @@
  },
  "Computer-Science/C-Programming/pointers-and-memory.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-23T00:21:38+09:00"
  },
  "Computer-Science/Computer-Architecture.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-11-24T00:11:33+09:00"
+ },
+ "Computer-Science/Computer-Architecture/ai-accelerators.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
  },
  "Computer-Science/Computer-Architecture/basic-computer-design.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -1425,7 +1481,7 @@
  },
  "Computer-Science/Computer-Architecture/memory-hierarchy.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Computer-Science/Computer-Architecture/pipeline-and-parallelism.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1434,6 +1490,10 @@
  "Computer-Science/Computer-Architecture/register-transfer.md": {
   "created": "2026-10-12T12:00:52+09:00",
   "updated": "2026-10-31T16:02:04+09:00"
+ },
+ "Computer-Science/Computer-Architecture/semiconductor-process-yield.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
  },
  "Computer-Science/Database.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1525,7 +1585,7 @@
  },
  "Computer-Science/Network/network-layer.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-23T11:41:09+09:00"
+  "updated": "2026-11-23T11:42:40+09:00"
  },
  "Computer-Science/Network/network-security.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1573,7 +1633,7 @@
  },
  "Computer-Science/Network/wireless-network.md": {
   "created": "2026-10-31T16:02:04+09:00",
-  "updated": "2026-11-22T20:18:14+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Computer-Science/OSSU.md": {
   "created": "2026-11-15T11:58:39+09:00",
@@ -1957,7 +2017,7 @@
  },
  "DevOps/deployment-strategies.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-10-31T18:52:03+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "DevOps/devops-sre-platform-engineering.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1965,11 +2025,11 @@
  },
  "DevOps/devsecops.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-11-20T23:08:40+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "DevOps/disaster-recovery.md": {
   "created": "2026-10-17T19:04:42+09:00",
-  "updated": "2026-11-01T10:16:04+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "DevOps/docker-compose.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -2077,7 +2137,7 @@
  },
  "Frontend.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-20T07:04:51+09:00"
+  "updated": "2026-11-23T12:01:15+09:00"
  },
  "Frontend/Accessibility.md": {
   "created": "2026-10-17T23:13:04+09:00",
@@ -3033,7 +3093,11 @@
  },
  "Frontend/Web.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-30T15:11:13+09:00"
+  "updated": "2026-11-24T00:11:33+09:00"
+ },
+ "Frontend/Web/ai-search-optimization.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
  },
  "Frontend/Web/amp-pages.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -3265,7 +3329,7 @@
  },
  "Frontend/Web/seo-basics.md": {
   "created": "2026-10-13T14:45:25+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Frontend/Web/service-worker-caching.md": {
   "created": "2026-10-17T23:13:04+09:00",
@@ -3301,7 +3365,7 @@
  },
  "Frontend/Web/third-party-privacy.md": {
   "created": "2026-10-17T23:13:04+09:00",
-  "updated": "2026-11-22T20:09:58+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Frontend/Web/ttfb-optimization.md": {
   "created": "2026-10-17T23:13:04+09:00",
@@ -3409,7 +3473,7 @@
  },
  "Life-and-Learning.md": {
   "created": "2026-10-12T12:22:51+09:00",
-  "updated": "2026-11-22T20:18:14+09:00"
+  "updated": "2026-11-24T00:11:33+09:00"
  },
  "Life-and-Learning/English/business-expressions.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -3455,6 +3519,10 @@
   "created": "2026-10-18T09:34:22+09:00",
   "updated": "2026-10-31T13:03:08+09:00"
  },
+ "Life-and-Learning/Writing/korean-spelling-mistakes.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
  "Life-and-Learning/Writing/newsletter-lessons.md": {
   "created": "2026-10-13T10:07:29+09:00",
   "updated": "2026-11-02T10:37:21+09:00"
@@ -3465,31 +3533,283 @@
  },
  "Life-and-Learning/asset-pricing-required-return.md": {
   "created": "2026-10-27T15:02:30+09:00",
-  "updated": "2026-11-21T23:05:47+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
+ },
+ "Life-and-Learning/cognitive-bias-dictionary.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
+ "Life-and-Learning/conflict-and-apology.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
+ "Life-and-Learning/consumer-payment-protections.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
+ "Life-and-Learning/consumer-price-index-basket.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
+ "Life-and-Learning/container-standardization.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
+ "Life-and-Learning/corporate-governance-and-cartel-terms.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
+ "Life-and-Learning/criminal-law-basics.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
+ "Life-and-Learning/debt-collection-and-adjustment.md": {
+  "created": "2026-11-24T00:11:29+09:00",
+  "updated": "2026-11-24T00:11:29+09:00"
+ },
+ "Life-and-Learning/decision-techniques.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/deposit-insurance.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/deposit-savings-returns.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/election-rules-korea.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/emergency-first-response.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/energy-storage-system.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/etf-basics.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/eu-ees-etias.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/financial-income-tax.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/health-insurance-premium.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/home-purchase-checks.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/household-budgeting.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/household-loans.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/housing-lease-deposit-protection.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/housing-lease-renewal.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/housing-subscription.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/housing-tax-basics.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/ima-investment-account.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/income-tax-filing.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/indemnity-medical-insurance.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/inheritance-gift-tax.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/inherited-farmland.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/insurance-contract-checkup.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
  },
  "Life-and-Learning/interest-rate-exchange-rate.md": {
   "created": "2026-11-12T22:08:32+09:00",
-  "updated": "2026-11-12T22:08:32+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
+ },
+ "Life-and-Learning/investing-arithmetic.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
+ },
+ "Life-and-Learning/investment-and-shopping-scams.md": {
+  "created": "2026-11-24T00:11:30+09:00",
+  "updated": "2026-11-24T00:11:30+09:00"
  },
  "Life-and-Learning/jeonse-housing-market.md": {
   "created": "2026-10-27T15:02:30+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-24T00:11:32+09:00"
+ },
+ "Life-and-Learning/jevons-paradox.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/land-transaction-permit.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/learning-and-practice.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/leveraged-inverse-etf.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/liability-and-driver-insurance.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/listening-and-questions.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/macro-policy-concepts.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/medical-care-basics.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
  },
  "Life-and-Learning/memorization.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-22T12:22:16+09:00"
+  "updated": "2026-11-24T00:11:33+09:00"
+ },
+ "Life-and-Learning/mind-management.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/naphtha-cracking-center.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/national-pension-rules.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/nonverbal-and-context-communication.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/online-commerce-ad-regulation.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/overseas-asset-tax.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/overseas-investing-fx.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/personal-security-after-data-breach.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/persuasion-rhetoric.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
  },
  "Life-and-Learning/presentation-design.md": {
   "created": "2026-10-11T22:24:49+09:00",
   "updated": "2026-11-18T23:08:34+09:00"
  },
+ "Life-and-Learning/productivity-techniques.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/reading-statistics-and-arguments.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/real-estate-auction.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/resource-curse-dutch-disease.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/retirement-pension-and-private-pension.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/road-safety-rules.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
  "Life-and-Learning/sponsored-review-rules.md": {
   "created": "2026-11-04T22:33:44+09:00",
-  "updated": "2026-11-04T22:33:44+09:00"
+  "updated": "2026-11-24T00:11:33+09:00"
+ },
+ "Life-and-Learning/stock-market-trading-rules.md": {
+  "created": "2026-11-24T00:11:31+09:00",
+  "updated": "2026-11-24T00:11:31+09:00"
+ },
+ "Life-and-Learning/time-value-of-money.md": {
+  "created": "2026-11-24T00:11:32+09:00",
+  "updated": "2026-11-24T00:11:32+09:00"
+ },
+ "Life-and-Learning/trade-tariff-law.md": {
+  "created": "2026-11-24T00:11:32+09:00",
+  "updated": "2026-11-24T00:11:32+09:00"
+ },
+ "Life-and-Learning/unknown-deposit-account-freeze.md": {
+  "created": "2026-11-24T00:11:32+09:00",
+  "updated": "2026-11-24T00:11:32+09:00"
+ },
+ "Life-and-Learning/valuation-metrics.md": {
+  "created": "2026-11-24T00:11:32+09:00",
+  "updated": "2026-11-24T00:11:32+09:00"
+ },
+ "Life-and-Learning/voice-phishing-response.md": {
+  "created": "2026-11-24T00:11:32+09:00",
+  "updated": "2026-11-24T00:11:32+09:00"
+ },
+ "Life-and-Learning/year-end-tax-settlement.md": {
+  "created": "2026-11-24T00:11:32+09:00",
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Tools.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-20T07:04:51+09:00"
+  "updated": "2026-11-24T00:11:33+09:00"
  },
  "Tools/Blender.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -3682,6 +4002,10 @@
  "Tools/jira.md": {
   "created": "2026-10-13T08:00:18+09:00",
   "updated": "2026-10-31T13:20:54+09:00"
+ },
+ "Tools/kakaotalk-group-chat-settings.md": {
+  "created": "2026-11-24T00:11:32+09:00",
+  "updated": "2026-11-24T00:11:32+09:00"
  },
  "Tools/latex.md": {
   "created": "2026-10-14T10:57:31+09:00",

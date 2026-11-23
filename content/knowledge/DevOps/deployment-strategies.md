@@ -1,11 +1,11 @@
 ---
 title: "배포 전략: 롤링, 블루-그린, 카나리, 섀도, 피처 토글"
 concept: "Deployment Strategy"
-summary: "새 버전을 운영에 올리는 방식을 다운타임·롤백 속도·비용·노출 범위로 비교한다. 한 번에 바꾸는 빅뱅(Recreate), 하나씩 바꾸는 롤링, 환경을 통째로 전환하는 블루-그린, 일부 사용자에게 먼저 여는 카나리, 트래픽 사본으로 검증하는 섀도, 배포와 출시를 떼어 내는 피처 토글과 A/B 테스트를 다룬다."
+summary: "새 버전을 운영에 올리는 방식을 다운타임·롤백 속도·비용·노출 범위로 비교한다. 한 번에 바꾸는 빅뱅(Recreate), 하나씩 바꾸는 롤링, 환경을 통째로 전환하는 블루-그린, 일부 사용자에게 먼저 여는 카나리, 트래픽 사본으로 검증하는 섀도, 배포와 출시를 떼어 내는 피처 토글과 A/B 테스트, 피크 기간 앞에 변경을 막는 변경 동결을 다룬다."
 tags: ["devops", "ci-cd", "kubernetes", "infra"]
 source: other
 date: "2026-10-31"
-sources: ["https://bytebytego.com/guides/how-to-deploy-services", "https://bytebytego.com/guides/kubernetes-deployment-strategies", "https://bytebytego.com/guides/top-5-most-used-deployment-strategies", "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "https://bytebytego.com/guides/possible-experiment-platform-architecture", "https://brunch.co.kr/@springboot/283", "https://sre.google/sre-book/introduction/", "https://dayone.me/1agvzvw"]
+sources: ["https://bytebytego.com/guides/how-to-deploy-services", "https://bytebytego.com/guides/kubernetes-deployment-strategies", "https://bytebytego.com/guides/top-5-most-used-deployment-strategies", "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "https://bytebytego.com/guides/possible-experiment-platform-architecture", "https://brunch.co.kr/@springboot/283", "https://sre.google/sre-book/introduction/", "https://dayone.me/1agvzvw", "https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-change-calendar.html"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Deployment Strategies](https://bytebytego.com/guides/how-to-deploy-services)」, 「[Kubernetes Deployment Strategies](https://bytebytego.com/guides/kubernetes-deployment-strategies)」, 「[Top 5 Most-Used Deployment Strategies](https://bytebytego.com/guides/top-5-most-used-deployment-strategies)」, 「[Possible Experiment Platform Architecture](https://bytebytego.com/guides/possible-experiment-platform-architecture)」를 바탕으로 재구성한 노트다. 「[개발자를 위한 A/B 테스트 해시 샘플링](https://brunch.co.kr/@springboot/283)」의 내용을 더해 보강했다. 컨테이너만으로 하는 블루-그린 구현은 「[본격적으로 쓰는 Docker](https://dayone.me/1agvzvw)」로 보강했다.
@@ -138,6 +138,21 @@ A/B 테스트는 토글 위에서 돌아가는 실험이다. 카나리가 "새 �
 2. 배포: 새 코드로 전부 교체, 데이터 옮기기
 3. 축소: 옛 컬럼을 읽는 코드가 사라진 뒤 옛 컬럼 삭제
 ```
+
+## 변경 동결: 배포하지 않는 기간
+
+**변경 동결**(change freeze)은 정해 둔 기간에 운영 환경의 변경을 막는 것이다. 장애의 큰 원인이 변경이므로, 장애 비용이 가장 큰 시기에는 변경 자체를 줄인다.
+
+| 정할 것 | 내용 |
+| --- | --- |
+| 언제 | 수요가 몰리는 기간(마감일, 결제일, 예매 개시, 대형 프로모션·행사)과 대응 인력이 적은 기간(연휴, 휴가철)의 앞뒤 |
+| 무엇을 | 애플리케이션 배포만이 아니라 인프라·설정 변경, DB 마이그레이션, 의존성·런타임 업그레이드, 인증서 교체까지 포함한다 |
+| 예외 | 장애 수정과 긴급 보안 패치. 평소보다 높은 승인 단계를 거치고, **부하 테스트와 롤백 계획**을 갖춘 것만 넣는다 |
+| 강제 | 달력에 적어 두는 것으로 끝내지 않고 파이프라인이 막게 한다. 예를 들어 AWS Systems Manager Change Calendar는 달력의 이벤트 기간에 자동화 작업과 유지보수 창구가 실행되지 않게 한다 |
+
+- **보안 업그레이드도 변경이다.** 피크 직전에 넣은 보안 패치의 버그나 DB 연동 오류는 평소 트래픽에서는 드러나지 않다가 부하가 오른 날 장애가 된다. 필요한 패치는 피크보다 충분히 앞당겨 넣고, 피크 수준의 부하로 미리 검증한다.
+- 동결은 변경을 없애지 않고 미룬다. 기간이 길수록 해제 직후에 밀린 변경이 한꺼번에 나가 위험이 커지므로, 해제 뒤에는 작게 나눠 차례로 내보낸다.
+- 동결 중에 급한 설정 변경이 필요할 수 있으므로 피처 토글과 설정 롤백 경로는 살려 둔다.
 
 ## 정리
 

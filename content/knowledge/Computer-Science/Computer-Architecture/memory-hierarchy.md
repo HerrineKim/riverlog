@@ -1,11 +1,11 @@
 ---
 title: "메모리 계층 구조"
 concept: "Memory Hierarchy"
-summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 저장 장치를 계층으로 묶는 구조(계층별 지연 시간의 자릿수)와 RAM의 종류(SRAM·DRAM의 셀 구조, DRAM의 행·열 접근 타이밍과 순차 접근이 빠른 이유, NUMA), 칩을 병렬·직렬로 이어 만드는 기억장치 모듈, 하드 디스크·플래시 메모리(셀 원리, NOR·NAND, SSD와 FTL), RAID(작은 쓰기 문제), 연관 메모리."
+summary: "레지스터부터 디스크까지 속도·용량·가격이 다른 저장 장치를 계층으로 묶는 구조(계층별 지연 시간의 자릿수)와 RAM의 종류(SRAM·DRAM의 셀 구조, DRAM의 행·열 접근 타이밍과 순차 접근이 빠른 이유, NUMA), 칩을 병렬·직렬로 이어 만드는 기억장치 모듈, AI 서버의 HBM·SOCAMM·HBF, 하드 디스크·플래시 메모리(셀 원리, NOR·NAND, SSD와 FTL), RAID(작은 쓰기 문제), 연관 메모리."
 tags: ["computer-architecture", "memory", "storage", "raid"]
 source: mixed
 date: "2026-11-02"
-sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/", "https://www.youtube.com/watch?v=m2NfFJEvssY", "https://www.youtube.com/watch?v=lgFmNUG_Atw", "https://www.youtube.com/watch?v=TQCr9RV7twk", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "고려사이버대학교 컴퓨터구조 강의(권오상 교수, 2024-1학기)", "https://github.com/karanpratapsingh/system-design"]
+sources: ["https://riverkim.kr/196", "https://riverkim.kr/197", "https://www.youtube.com/playlist?list=PLc8fQ-m7b1hCHTT7VH2oo0Ng7Et096dYc", "https://bytebytego.com/guides/types-of-memory", "https://bytebytego.com/guides/types-of-memory-and-storage", "https://lwn.net/Articles/250967/", "https://www.youtube.com/watch?v=m2NfFJEvssY", "https://www.youtube.com/watch?v=lgFmNUG_Atw", "https://www.youtube.com/watch?v=TQCr9RV7twk", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/architecture.md", "고려사이버대학교 컴퓨터구조 강의(권오상 교수, 2024-1학기)", "https://github.com/karanpratapsingh/system-design", "https://en.wikipedia.org/wiki/High_Bandwidth_Memory", "https://en.wikipedia.org/wiki/CAMM_(memory_module)", "https://news.skhynix.com/en/hbf-at-fms-2026/"]
 ---
 
 > 노션 정리를 바탕으로, 계층별 역할은 ByteByteGo의 System Design 101 가이드 「[Types of Memory](https://bytebytego.com/guides/types-of-memory)」, 「[Types of Memory and Storage](https://bytebytego.com/guides/types-of-memory-and-storage)」로, SRAM·DRAM의 구조와 DRAM 접근 타이밍·NUMA는 Ulrich Drepper의 「[What every programmer should know about memory, Part 1](https://lwn.net/Articles/250967/)」(2007)로 보강했다.
@@ -181,6 +181,20 @@ CPU는 메모리 채널을 여러 개 두어 대역폭을 더한다. 데스크�
 
 DRAM 칩을 기판에 모아 꽂아 쓰는 형태로 발전해 왔다: SIMM(한쪽 면 접점) → DIMM(양면 독립 접점, SDRAM/DDR 세대) → 노트북용 소형 SO-DIMM. 세대(DDR … DDR5)마다 핀 수와 슬롯이 달라 서로 꽂히지 않는다.
 
+### AI 서버의 메모리: HBM, SOCAMM, HBF
+
+AI 가속기는 연산보다 메모리 대역폭과 용량이 먼저 한계에 닿는다. 그래서 일반 DIMM과 다른 형태의 메모리가 가속기 주변에 층을 이룬다.
+
+| 이름 | 무엇으로 만드나 | 자리 | 상태 (2026년 11월 기준) |
+| --- | --- | --- | --- |
+| **HBM** (High Bandwidth Memory, 고대역폭 메모리) | D램 칩을 수직으로 쌓아 한 패키지로 만들고, 가속기 바로 옆에 넓은 데이터 통로로 붙인다 | GPU·AI 가속기의 작업 메모리. 가중치와 KV 캐시가 올라간다 | JEDEC 표준. HBM4(2,048비트 인터페이스, 스택당 최대 2 TB/s)가 양산 단계이고 HBM3E와 함께 공급된다 |
+| **SOCAMM** (Small Outline Compression Attached Memory Module) | 저전력 D램인 LPDDR5X를 납작한 모듈로 만들어 기판에 눌러 체결한다 | AI 서버의 CPU 쪽 주 메모리. 서버용 DIMM보다 면적과 전력이 작고, 기판에 납땜하는 LPDDR과 달리 교체·증설이 된다 | 2세대 규격인 SOCAMM2가 2026년에 양산에 들어갔다 |
+| **HBF** (High Bandwidth Flash, 고대역폭 플래시) | 낸드 플래시를 HBM처럼 쌓아 가속기에 가깝게 붙인다 | HBM과 SSD 사이의 새 계층. HBM보다 훨씬 큰 용량을 HBM에 가까운 대역폭으로 제공하는 것이 목표다 | 상용 제품은 아직 없다. 2026년 8월에 Open Compute Project(OCP)를 통해 첫 표준 규격이 공개됐다(8단·16단 적층, 최대 512GB, 대역폭 약 0.4~3.0 TB/s 세 등급, UCIe 인터페이스) |
+
+- HBM은 대역폭을 위해 용량과 가격을 내준 메모리다. 모델과 컨텍스트가 커질수록 HBM만으로는 용량이 모자라서, 그 아래에 용량이 큰 계층을 더 두는 **계층형 메모리**가 논의된다. HBF는 그 자리를 노린다.
+- HBF의 재료는 낸드라서 D램보다 쓰기가 느리고 쓰고 지울 수 있는 횟수에 한계가 있다(아래 「플래시 메모리와 SSD」). 그래서 가중치를 올려 두고 주로 읽는 추론 쪽 용도가 먼저 거론된다.
+- 가속기의 종류와 학습·추론의 차이는 [[ai-accelerators|AI 반도체]]에, 이 제품들의 수익성을 좌우하는 수율은 [[semiconductor-process-yield|반도체 공정 용어]]에 있다.
+
 ## 보조 기억 장치
 
 ### 하드 디스크의 구성
@@ -342,4 +356,4 @@ RAID는 디스크 고장에 대비할 뿐 **백업이 아니다.** 실수로 지
 - 플래시는 부동 게이트에 전자를 가둬 저장하고, SSD 컨트롤러의 FTL이 덮어쓰기 불가·블록 단위 삭제·마모를 감춘다.
 - RAID는 스트라이핑(성능), 미러링·패리티(안정성)의 조합이다. 패리티 RAID의 작은 쓰기는 P′ = P ⊕ D ⊕ D′로 4번 접근이 든다.
 
-관련 노트: [[cache-and-virtual-memory|캐시 메모리와 MMU]] (계층 사이를 잇는 캐시와 주소 변환 하드웨어), [[io-organization#시스템 버스|입출력 구조와 시스템 버스]] (CPU와 메모리를 잇는 버스의 대역폭과 타이밍), [[pipeline-and-parallelism#메모리 접근 모델|파이프라인과 병렬 처리]] (UMA·NUMA 메모리 접근 모델), [[disk-scheduling|디스크 관리와 스케줄링]] (운영체제가 디스크 요청을 처리하는 방법)
+관련 노트: [[cache-and-virtual-memory|캐시 메모리와 MMU]] (계층 사이를 잇는 캐시와 주소 변환 하드웨어), [[io-organization#시스템 버스|입출력 구조와 시스템 버스]] (CPU와 메모리를 잇는 버스의 대역폭과 타이밍), [[pipeline-and-parallelism#메모리 접근 모델|파이프라인과 병렬 처리]] (UMA·NUMA 메모리 접근 모델), [[disk-scheduling|디스크 관리와 스케줄링]] (운영체제가 디스크 요청을 처리하는 방법), [[ai-accelerators|AI 반도체]] (HBM을 쓰는 가속기의 종류), [[semiconductor-process-yield|반도체 공정 용어]] (공정 노드 이름과 수율)
