@@ -1,11 +1,11 @@
 ---
 title: "서드파티와 프라이버시: 감사와 Referrer·Permissions 정책"
 concept: "Third-party Privacy"
-summary: "광고·임베드·분석·스크립트·패키지 같은 서드파티는 IP·Referer·쿠키를 받고, 스크립트는 페이지 전체 권한을 가진다. 기술·비기술 감사로 실제 요청을 파악하고, 정적 공유 링크·퍼사드·nocookie 임베드로 줄이며, Referrer-Policy·Permissions-Policy·CSP Report-Only로 범위를 묶는다."
+summary: "광고·임베드·분석·스크립트·패키지 같은 서드파티는 IP·Referer·쿠키를 받고, 스크립트는 페이지 전체 권한을 가진다. 기술·비기술 감사로 실제 요청을 파악하고, 정적 공유 링크·퍼사드·nocookie 임베드로 줄이며, Referrer-Policy·Permissions-Policy·CSP Report-Only로 범위를 묶는다. 동의가 필요한 수집은 쿠키 동의 상태를 스크립트 실행 조건에 연결한다."
 tags: ["privacy", "security", "web", "http", "browser"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/privacy/third-parties", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referrer-Policy", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-GPC"]
+sources: ["https://web.dev/learn/privacy/third-parties", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referrer-Policy", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-GPC", "https://www.cnil.fr/en/cookies-and-advertisements-inserted-between-emails-google-fined-325-million-euros-cnil", "https://www.cnil.fr/en/cookies-placed-without-consent-shein-fined-150-million-euros-cnil"]
 ---
 
 > web.dev의 「[Learn Privacy](https://web.dev/learn/privacy)」 강좌의 서드파티 모듈을 바탕으로, 헤더 기본값과 지원 범위는 MDN으로 확인해 재구성한 노트다.
@@ -108,6 +108,19 @@ Content-Security-Policy-Report-Only: default-src 'self' https://expected.example
 - 모든 응답에 붙이면 보고가 넘치므로 일부 페이지·일부 요청에만 표본으로 붙인다.
 - 실제 차단으로 바꿀 때는 서드파티가 부르는 의존성이 막혀 페이지가 깨질 수 있음을 대비한다.
 
+## 동의 상태를 수집 로직에 잇는다
+
+EU에서는 ePrivacy 지침 제5조 3항에 따라, 서비스 제공에 꼭 필요한 것이 아닌 쿠키와 유사 기술(광고, 분석, 추적)은 **사용자가 동의한 뒤에만** 기기에 저장하거나 읽을 수 있다. 동의의 기준은 GDPR의 것이라, 미리 체크해 둔 상자나 「계속 이용하면 동의」는 유효한 동의가 아니다. 거부도 수락만큼 쉬워야 한다.
+
+제재는 실제로 크다. 프랑스 CNIL은 2025년 9월에 동의 없이 광고 쿠키를 심은 건 등으로 Google에 3억 2,500만 유로, Shein에 1억 5,000만 유로의 과징금을 부과했다.
+
+흔한 실패는 **배너와 수집 코드가 따로 노는 것**이다. 배너에서 거부를 눌러도 태그가 그대로 실행되면 동의를 받지 않은 것과 같다.
+
+- 동의가 필요한 스크립트는 처음부터 싣지 않고, 동의 상태를 확인한 뒤에 넣는다. 태그 관리자를 쓰면 태그의 실행 조건을 동의 상태에 건다.
+- 거부하거나 철회하면 이미 심은 쿠키를 지우고 이후 요청을 멈춘다.
+- 배포 환경에서 **거부를 누른 상태로** 네트워크 패널을 열어 서드파티 요청과 `Set-Cookie`가 나가지 않는지 확인한다. 위 「기술 감사」를 동의 상태별로 한 번씩 돌리는 셈이다.
+- 서버 측 수집(서버에서 광고·분석 API로 보내는 이벤트)에도 같은 동의 상태를 전달한다. 브라우저에서 안 보인다고 동의가 필요 없어지지 않는다.
+
 ## 사용자 신호: Global Privacy Control
 
 **GPC(Global Privacy Control)** 는 "내 정보를 서드파티에 팔거나 공유하지 말라"는 사용자 신호다. 요청 헤더 `Sec-GPC: 1`과 `navigator.globalPrivacyControl`로 전달된다. 일부 브라우저만 지원해 Baseline이 아니다. 과거의 `DNT`(Do Not Track)는 강제력이 없어 사실상 버려졌고, GPC는 일부 지역 법에서 유효한 거부 의사로 다뤄진다는 점이 다르다. 신호가 오면 서드파티 공유를 끄는 서버 로직을 둔다.
@@ -117,6 +130,7 @@ Content-Security-Policy-Report-Only: default-src 'self' https://expected.example
 - 서드파티는 요청마다 IP·Referer·쿠키를 받고, `<script>`로 실리면 페이지 전체 권한을 갖는다.
 - 계약 목록과 실제 네트워크 요청을 대조하는 감사를 배포 환경에서 반복한다.
 - 위젯 대신 링크, iframe 대신 퍼사드, 전체 수집 대신 필요한 질문만.
+- 동의가 필요한 수집은 동의 상태를 실행 조건으로 걸고, 거부 상태에서 요청이 나가지 않는지 확인한다.
 - `Referrer-Policy`는 명시하고, `Permissions-Policy`는 기본 거부, `CSP-Report-Only`로 새 도메인을 감시한다.
 - 브라우저 자체의 차단 정책은 [[browser-tracking-protection|서드파티 쿠키와 브라우저 추적 방지]]에 있다.
 
