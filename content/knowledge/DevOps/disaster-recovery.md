@@ -5,7 +5,7 @@ summary: "데이터센터 하나가 통째로 사라져도 서비스를 이어 �
 tags: ["devops", "infra", "architecture", "database", "monitoring"]
 source: other
 date: "2026-11-01"
-sources: ["https://brunch.co.kr/@chadwick/49", "https://www.kakaocorp.com/page/detail/9843", "https://www.kakaocorp.com/page/detail/11097", "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html", "https://bytebytego.com/guides/cloud-disaster-recovery-strategies", "https://github.com/karanpratapsingh/system-design"]
+sources: ["https://brunch.co.kr/@chadwick/49", "https://www.kakaocorp.com/page/detail/9843", "https://www.kakaocorp.com/page/detail/11097", "https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html", "https://bytebytego.com/guides/cloud-disaster-recovery-strategies", "https://github.com/karanpratapsingh/system-design", "https://csrc.nist.gov/glossary/term/recovery_time_objective", "https://www.cisa.gov/sites/default/files/publications/data_backup_options.pdf"]
 ---
 
 > 채드윅의 「[카카오가 직접 회고한 1015 장애 사태 원인과 대책](https://brunch.co.kr/@chadwick/49)」(2022.12)을 바탕으로, 카카오의 공식 발표([재발 방지 대책](https://www.kakaocorp.com/page/detail/9843), [데이터센터 안산](https://www.kakaocorp.com/page/detail/11097))와 AWS 「[Disaster Recovery of Workloads on AWS](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html)」 백서로 일반화한 노트다. 전략별 RTO·RPO 범위는 ByteByteGo의 System Design 101 가이드 「[Cloud Disaster Recovery Strategies](https://bytebytego.com/guides/cloud-disaster-recovery-strategies)」로 보강했다.
@@ -29,6 +29,21 @@ sources: ["https://brunch.co.kr/@chadwick/49", "https://www.kakaocorp.com/page/d
 | RPO(Recovery Point Objective) | 잃어도 되는 **데이터의 시간 범위** | 백업 주기, 복제를 동기로 할지 비동기로 할지 |
 
 RTO·RPO가 0에 가까울수록 비용과 복잡도는 가파르게 오른다. 그래서 모든 기능에 같은 목표를 주지 않는다. 메시지 전송·로그인·결제처럼 멈추면 안 되는 핵심 기능은 완전 다중화하고, 나머지는 기능별 목표 트래픽과 목표 복구 시간을 따로 정한다.
+
+### 등급은 영향도로 나눈다
+
+시스템이 많으면 하나씩 목표를 정하기 어려우므로 **등급(티어)** 으로 묶고, 등급마다 RTO와 RPO를 숫자로 적어 둔다(예: 최상위 등급은 1시간 이내). 장애 때는 이 등급 순서로 복구한다.
+
+- 등급의 기준은 사용자 수나 트래픽이 아니라 **멈췄을 때의 영향**이다. 트래픽으로 나누면 사용자는 적지만 다른 시스템이 모두 기대는 것(인증, 결제 승인, 공통 코드·기준 정보, 내부 관리 시스템)이 낮은 등급으로 밀려 복구가 늦어진다.
+- 등급을 매길 때는 의존 관계를 함께 본다. 1등급 서비스가 3등급 시스템을 호출하면 그 서비스의 실제 복구 시간은 3등급의 것이다.
+- 등급이 낮아도 **백업은 모든 시스템에** 둔다. 등급이 정하는 것은 대기 환경의 수준이지 백업의 유무가 아니다.
+- 정해 둔 RTO는 훈련으로 재 봐야 숫자가 된다. 재 본 적 없는 RTO는 희망 사항이다.
+
+### 백업의 기본: 3-2-1
+
+**3-2-1 규칙**은 데이터 사본을 **3개** 두고, **2가지 다른 매체**에 나누고, 그중 **1개는 다른 장소**에 두는 것이다. 원격지 사본이 없는 데이터는 그 장소가 사라지면 복구할 방법이 없다. 같은 건물의 다른 층, 같은 랙의 다른 장비는 「다른 장소」가 아니다.
+
+백업과 대기 시스템은 서로를 대신하지 못한다. **백업만 있으면** 데이터는 남지만 그 데이터를 올려 돌릴 서버와 네트워크가 없어 전환할 수 없고, **복제만 있으면** 잘못 지우거나 암호화된 데이터가 그대로 복제된다. 그래서 둘을 함께 둔다.
 
 ## DR 전략 네 가지
 
@@ -98,12 +113,14 @@ flowchart LR
 - **자동 전환은 신중히** 쓴다. 오탐으로 넘어가도 RTO·RPO만큼의 손실이 생기므로, 판단은 사람이 하고 실행은 자동으로 하는 구성이 흔하다.
 - **실환경을 가정한 모의 훈련**을 정기적으로 한다. 액티브-스탠바이의 승격은 해 보기 전까지 몇 분이 걸릴지 아무도 모른다. 전사 단위 시나리오(센터 하나 전체 차단)로 해 봐야 계층 간 빈틈이 드러난다.
 - **백업은 복원해 봐야 백업이다.** 복원을 주기적으로 실행해 시간을 잰다.
+- **시스템 밖의 대체 수단도 준비한다.** 복구가 길어질 때 쓸 수기 접수, 대체 창구, 안내 채널 같은 업무 절차가 사업 연속성 계획(BCP)의 몫이다. 전산이 멈춰도 업무가 완전히 서지 않게 한다.
 - **조직마다 다른 기준을 통일한다.** 계층을 맡은 팀이 각자 다른 일정과 전략으로 이중화하면, 한 팀이 「센터 내 HA」에서 멈춘 곳이 전체의 약점이 된다. 공통 설계 기준을 거버넌스로 강제한다.
 
 ## 정리
 
 - HA는 장비 고장, DR은 사이트 소멸에 대비한다. 둘은 따로 설계한다.
-- RTO·RPO를 기능별로 정하고, 그에 맞춰 백업·파일럿 라이트·웜 스탠바이·액티브-액티브 중에서 고른다.
+- RTO·RPO를 기능별로 정하고, 그에 맞춰 백업·파일럿 라이트·웜 스탠바이·액티브-액티브 중에서 고른다. 등급은 트래픽이 아니라 영향도로 나눈다.
+- 백업은 3-2-1로 두고, 백업과 대기 시스템을 함께 갖춘다.
 - 데이터 복제본은 센터 단위로 나눈다. 복제본 수보다 배치가 중요하다.
 - 모니터링·인증·VPN·배포 도구처럼 복구에 쓰는 도구를 서비스와 같은 수준으로 다중화한다.
 - 전환은 자동화하고, 실제처럼 훈련해서 검증한다. 해 보지 않은 전환은 동작하지 않는다고 가정한다.
