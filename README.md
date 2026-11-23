@@ -4,8 +4,9 @@ River(Hyerin Kim)의 블로그이자 지식 창고. Next.js App Router로 만든
 
 - **About** (`/`): 소개, RSS·LinkedIn·GitHub·메일 링크
 - **Blog** (`/blog`): 마크다운 글, RSS 피드 `/rss.xml`
-- **Knowledge**: 같은 노트를 두 가지 방식으로 탐색
-  - `/knowledge`: 3D 개념 지도 (분야 허브 ↔ 개념 노트, 같은 태그끼리 연결)
+- **Knowledge**: 같은 노트를 여러 방식으로 탐색
+  - `/knowledge`: 개요 (분야별 노트 비중, 분야·주제 바로가기, 최근 정리한 노트, 자주 쓰는 태그)
+  - `/knowledge/map`: 3D 개념 지도 (분야 허브 ↔ 개념 노트, 같은 태그끼리 연결)
   - `/knowledge/dictionary`: 계층형 사전 (분야 → 주제 → 노트, 가나다·ABC 색인, 추가일·수정일 기준 최신순·오래된순, 검색). 노트 페이지에는 목차, 접힌 출처·원본 기록, giscus 댓글이 붙습니다
 - **Books** (`/books`): 책장 목록과 책별 독후감
 - **Portfolio** (`/portfolio`): 회사별 경력과 프로젝트

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import IntentLink from "@/components/IntentLink";
 
-type View = "map" | "dictionary" | "tags";
+type View = "overview" | "dictionary" | "map" | "tags";
 
 export default function ViewSwitch({ active }: { active: View }) {
   const item = (key: View, href: string, label: string, icon: React.ReactNode) => {
@@ -21,11 +21,27 @@ export default function ViewSwitch({ active }: { active: View }) {
     );
   };
   return (
-    <div className="inline-flex rounded-full border border-line bg-bg-elev p-1">
+    <nav aria-label="지식 창고 보기" className="inline-flex rounded-full border border-line bg-bg-elev p-1">
+      {item(
+        "overview",
+        "/knowledge",
+        "개요",
+        <svg aria-hidden viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <path d="M4 7h16M4 12h10M4 17h13" strokeLinecap="round" />
+        </svg>,
+      )}
+      {item(
+        "dictionary",
+        "/knowledge/dictionary",
+        "사전",
+        <svg aria-hidden viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <path d="M4 5h6M4 12h6M4 19h6M14 5h6M16 9h4M16 12h4M14 16h6M16 19h4" strokeLinecap="round" />
+        </svg>,
+      )}
       {item(
         "map",
         "/knowledge/map",
-        "3D 마인드맵",
+        "3D 지도",
         <svg aria-hidden viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8">
           <circle cx="12" cy="12" r="2.5" />
           <circle cx="4.5" cy="6" r="1.8" />
@@ -33,14 +49,6 @@ export default function ViewSwitch({ active }: { active: View }) {
           <circle cx="6" cy="19" r="1.8" />
           <circle cx="18.5" cy="18" r="1.8" />
           <path d="M10 10.5 6 7.2M14 10.5l4-3.3M10.3 13.8 7.2 17.6M13.9 13.6l3.3 3.2" />
-        </svg>,
-      )}
-      {item(
-        "dictionary",
-        "/knowledge/dictionary",
-        "계층형 사전",
-        <svg aria-hidden viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8">
-          <path d="M4 5h6M4 12h6M4 19h6M14 5h6M16 9h4M16 12h4M14 16h6M16 19h4" strokeLinecap="round" />
         </svg>,
       )}
       {item(
@@ -52,6 +60,6 @@ export default function ViewSwitch({ active }: { active: View }) {
           <circle cx="8" cy="8" r="1.5" />
         </svg>,
       )}
-    </div>
+    </nav>
   );
 }
