@@ -4,8 +4,9 @@ River(Hyerin Kim)의 블로그이자 지식 창고. Next.js App Router로 만든
 
 - **About** (`/`): 소개, RSS·LinkedIn·GitHub·메일 링크
 - **Blog** (`/blog`): 마크다운 글, RSS 피드 `/rss.xml`
-- **Knowledge**: 같은 노트를 두 가지 방식으로 탐색
+- **Knowledge**: 같은 노트를 여러 방식으로 탐색
   - `/knowledge`: 3D 개념 지도 (분야 허브 ↔ 개념 노트, 같은 태그끼리 연결)
+  - `/knowledge/overview`: 개요 (분야별 노트 비중, 분야·주제 바로가기, 최근 정리한 노트, 자주 쓰는 태그)
   - `/knowledge/dictionary`: 계층형 사전 (분야 → 주제 → 노트, 가나다·ABC 색인, 추가일·수정일 기준 최신순·오래된순, 검색). 노트 페이지에는 목차, 접힌 출처·원본 기록, giscus 댓글이 붙습니다
 - **Books** (`/books`): 책장 목록과 책별 독후감
 - **Portfolio** (`/portfolio`): 회사별 경력과 프로젝트
@@ -53,6 +54,14 @@ date: "2026-11-01"        # 작성·마지막 보강일
 sources: ["https://..."]  # 원문 URL. 노트 아래 「원본 기록」에 접힌 채로 나옵니다 (http/https만)
 publish: false            # 선택. 넣으면 사이트에 나오지 않습니다
 ---
+```
+
+분야 개요(`Frontend.md`처럼 최상위 폴더와 같은 이름의 파일)에는 읽는 순서를 적을 수 있습니다. 분야 페이지에 단계 카드로, 지식 창고 개요에 「어디서 시작할지」로 나옵니다. `topics`는 그 분야의 주제 폴더 이름이고, 없는 이름은 무시됩니다.
+
+```md
+readingOrder:
+  - { label: "웹 기초", topics: ["Web"] }
+  - { label: "언어", topics: ["JavaScript", "CSS"] }
 ```
 
 - **다이어그램**: 흐름·순서·구성 요소 연결·상태 전이 같은 그림은 ` ```mermaid ` 블록으로 쓰면 사이트가 SVG로 그리고 테마 색을 입힙니다(`flowchart`, `sequenceDiagram`, `stateDiagram-v2`, `timeline`, `quadrantChart`, `gitGraph`). `block-beta`는 렌더링되지 않습니다.

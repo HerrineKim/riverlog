@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { readingOrderOf, type ReadingStep } from "./knowledge-reading-order";
 import { excerptOf } from "./markdown";
 import { cachedRead, isHiddenName, isPublished, KNOWLEDGE_BASE, resolveNote, safeDecode, slugify, stringList } from "./vault";
 
@@ -31,6 +32,7 @@ export type KDoc = {
   tags: string[];
   excerpt: string;
   body: string;
+  readingOrder?: ReadingStep[]; // field overviews only: suggested order of their topics
 };
 
 export type KNode = {
@@ -119,6 +121,7 @@ function readDoc(file: string): KDoc | undefined {
     tags: stringList(data.tags),
     excerpt: data.summary ? String(data.summary) : excerptOf(content),
     body: content,
+    readingOrder: readingOrderOf(data.readingOrder),
   };
 }
 

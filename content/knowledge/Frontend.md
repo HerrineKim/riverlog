@@ -5,6 +5,12 @@ summary: "브라우저와 모바일 화면에서 사용자가 직접 만나는 U
 tags: ["frontend", "html", "css", "javascript", "react"]
 source: mixed
 date: "2026-10-13"
+readingOrder:
+  - { label: "웹 기초", topics: ["Web"] }
+  - { label: "언어", topics: ["JavaScript", "CSS"] }
+  - { label: "라이브러리", topics: ["React", "Next.js"] }
+  - { label: "플랫폼 확장", topics: ["Mobile"] }
+  - { label: "품질(테스트)", topics: ["Testing"] }
 ---
 
 프론트엔드는 사용자가 직접 보고 조작하는 화면을 만드는 분야다. 브라우저가 HTML·CSS·JavaScript를 해석해 화면을 그리는 원리에서 출발해, React 같은 UI 라이브러리로 컴포넌트를 조립하고, Next.js로 렌더링 전략을 고르고, React Native로 모바일 앱까지 확장한다. 이 분야의 노트는 "웹 기초 → 언어 → 라이브러리 → 플랫폼 확장 → 품질(테스트)" 순서로 읽으면 자연스럽다.

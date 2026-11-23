@@ -5,9 +5,14 @@ import { notFound } from "next/navigation";
 import Comments from "@/components/Comments";
 import JsonLd from "@/components/JsonLd";
 import Prose from "@/components/Prose";
-import Toc, { MobileToc } from "@/components/Toc";
+import Toc, { MobileToc, NoteSheet } from "@/components/Toc";
+import NoteConnections from "@/components/knowledge/NoteConnections";
+import ReadingPath from "@/components/knowledge/ReadingPath";
 import { formatDate } from "@/lib/format";
 import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, tagHref, type KNode } from "@/lib/knowledge";
+import { noteConnections } from "@/lib/knowledge-connections";
+import { resolveReadingOrder } from "@/lib/knowledge-reading-order";
+import { getNoteRefs } from "@/lib/knowledge-refs";
 import { extractToc, splitLeadingQuote } from "@/lib/markdown";
 import { articleLd, pageMeta } from "@/lib/seo";
 
@@ -50,6 +55,10 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
   const idx = siblings.findIndex((s) => s.id === node.id);
   const prev = idx > 0 ? siblings[idx - 1] : undefined;
   const next = idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : undefined;
+  const conn = doc ? noteConnections(node.id, getNoteRefs()) : { linked: [], tagged: [] };
+  const hasConn = conn.linked.length + conn.tagged.length > 0;
+  const readingPath = node.depth === 1 && doc?.readingOrder ? resolveReadingOrder(doc.readingOrder, node.children) : [];
+  const sheetLabel = [toc.length >= 2 && "목차", hasConn && "연결된 노트"].filter(Boolean).join(" · ");
 
   // The sidebar comes from (entry)/layout.tsx; this page fills the note and TOC columns
   return (
@@ -101,6 +110,12 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
             )}
           </header>
 
+          {readingPath.length > 0 && (
+            <div className="mt-8">
+              <ReadingPath steps={readingPath} source={`${node.name} 분야 개요의 순서`} />
+            </div>
+          )}
+
           {doc && (
             <article className="mt-8">
               <MobileToc items={toc} className="mb-8 xl:hidden" />
@@ -129,6 +144,11 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
                     </li>
                   ))}
                 </ul>
+              )}
+              {hasConn && (
+                <div className="mt-12">
+                  <NoteConnections {...conn} />
+                </div>
               )}
               {doc.sources.length > 0 && (
                 <details className="group mt-14 rounded-xl border border-line bg-bg-elev text-sm text-muted">
@@ -164,10 +184,21 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
               {next && <Pager node={next} dir="next" />}
             </nav>
           )}
+
+          {sheetLabel && (
+            <NoteSheet items={toc} label={sheetLabel}>
+              {hasConn ? <NoteConnections {...conn} compact /> : null}
+            </NoteSheet>
+          )}
       </main>
       <div className="hidden xl:block">
-        <div className="sticky top-20">
+        <div className="sticky top-20 max-h-[calc(100dvh-6rem)] overflow-y-auto pb-8 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Toc items={toc} />
+          {hasConn && (
+            <div className={toc.length >= 2 ? "mt-8 border-t border-line pt-6" : ""}>
+              <NoteConnections {...conn} compact />
+            </div>
+          )}
         </div>
       </div>
     </div>
