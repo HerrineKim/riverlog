@@ -48,6 +48,7 @@ date: "2026-10-13"
 - [스트리밍 SSR](/knowledge/dictionary/frontend/web/streaming-ssr): Suspense 경계 단위로 HTML을 나눠 보내는 SSR, 선택적 hydration, 상태 코드·버퍼링 제약, React 18 이후의 발전
 - [웹 아키텍처의 다음 전환](/knowledge/dictionary/frontend/web/webs-next-transition): MPA → PEMPA → SPA → PESPA, 코드가 어디에 사는지로 본 아키텍처 변화
 - [SEO 기초](/knowledge/dictionary/frontend/web/seo-basics): 크롤링·색인 흐름, robots.txt와 사이트맵, 메타 태그·canonical, 301·302 리다이렉트, 렌더링 방식
+- [AI 검색 시대의 SEO: 제로클릭, GEO·AEO, 스팸 정책, AI 크롤러](/knowledge/dictionary/frontend/web/ai-search-optimization): 제로클릭, GEO·AEO와 공식 가이드, 스팸 정책, AI 크롤러 토큰, Product 구조화 데이터
 - [다국어 페이지: lang·hreflang과 국제화](/knowledge/dictionary/frontend/web/multilingual-pages): 언어별 URL, Accept-Language와 언어 선택기, lang·dir·translate·hreflang, 문자열 연결 금지·Intl·텍스트 길이·RTL 같은 i18n 주의점
 - [프론트엔드 출시 전 체크리스트](/knowledge/dictionary/frontend/web/frontend-launch-checklist): head·HTML·CSS·이미지·폰트·JS·보안·성능·접근성·SEO 점검표와 자동화
 - [프론트엔드 성능 최적화: 언제, 무엇을](/knowledge/dictionary/frontend/web/frontend-performance-strategy): 측정·p95 기준·트레이드오프, 초기 로딩의 세 원인(대역폭·지연 시간·JS 실행), 실제 성능과 체감 성능, 파생 상태와 리렌더링 범위

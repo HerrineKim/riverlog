@@ -22,5 +22,7 @@ date: "2026-10-14"
 - [부동소수점 오차: 반올림·비교·누적](Computer-Science/Computer-Architecture/floating-point-arithmetic.md): 0.1 + 0.2의 이유, 반올림 모드, ulp와 상대 오차 비교, 흡수·상쇄와 Kahan 합산, decimal 타입
 - [입출력 구조와 시스템 버스](Computer-Science/Computer-Architecture/io-organization.md): 입출력 인터페이스, 인터럽트 우선순위, DMA, 시스템 버스와 버스 중재, 직렬 통신
 - [메모리 계층 구조](Computer-Science/Computer-Architecture/memory-hierarchy.md): 메모리 계층, 주기억·보조기억 장치, RAID
+- [AI 반도체: CPU·GPU·NPU·TPU·DPU와 ASIC·FPGA](Computer-Science/Computer-Architecture/ai-accelerators.md): 프로세서별 역할, ASIC과 FPGA, 학습과 추론의 요구 차이, 온디바이스 AI와 클라우드
+- [반도체 공정 용어: 공정 노드 이름, 옹스트롬, 수율, 공급 계약](Computer-Science/Computer-Architecture/semiconductor-process-yield.md): 공정 노드 이름의 뜻, 옹스트롬 단위, 누적 수율 계산, 할당·LTA·NCNR
 - [캐시 메모리와 MMU](Computer-Science/Computer-Architecture/cache-and-virtual-memory.md): 캐시 매핑과 쓰기 정책, 하드웨어 관점의 MMU(재배치·공유·보호)와 보호 필드
 - [캐시를 고려한 코드](Computer-Science/Computer-Architecture/cache-friendly-code.md): 캐시 라인과 프리페처, 배열 vs 연결 리스트, 넌템포럴 저장, MESI와 거짓 공유, TLB shootdown
