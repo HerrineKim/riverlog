@@ -5,6 +5,7 @@ import SiteFooter from "@/components/SiteFooter";
 import ViewSwitch from "@/components/knowledge/ViewSwitch";
 import { categoryColor, getKnowledgeTree, getTags, knowledgeStats, tagHref } from "@/lib/knowledge";
 import { fieldSummaries, recentNotes, type FieldSummary } from "@/lib/knowledge-overview";
+import { resolveReadingOrder } from "@/lib/knowledge-reading-order";
 import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta({
@@ -23,6 +24,11 @@ export default function KnowledgeOverviewPage() {
   const recent = recentNotes(tree, 7);
   const tags = getTags().slice(0, 10);
   const excerptOf = (id: string) => tree.children.find((c) => c.id === id)?.doc?.excerpt;
+  // Fields that wrote down a reading order get a starting point
+  const starts = tree.children.flatMap((f) => {
+    const steps = f.doc?.readingOrder ? resolveReadingOrder(f.doc.readingOrder, f.children) : [];
+    return steps.length ? [{ field: f, steps }] : [];
+  });
 
   return (
     <>
@@ -117,7 +123,25 @@ export default function KnowledgeOverviewPage() {
             </ol>
           </section>
 
-          <aside aria-labelledby="tags-h" className="min-w-0 flex-[1_1_16rem]">
+          <aside aria-label="더 둘러보기" className="min-w-0 flex-[1_1_16rem]">
+            {starts.length > 0 && (
+              <section aria-labelledby="start-h" className="mb-10">
+                <h2 id="start-h" className="text-sm font-semibold text-muted">
+                  어디서 시작할지 모르겠다면
+                </h2>
+                <ul className="mt-3 space-y-2">
+                  {starts.map(({ field, steps }) => (
+                    <li key={field.id}>
+                      <Link href={field.href} className="block rounded-2xl border border-line bg-bg-elev p-5 transition hover:border-control">
+                        <span className="text-xs text-muted">{field.name} 읽는 순서</span>
+                        <span className="mt-1 block font-semibold leading-snug text-fg-strong">{steps.map((s) => s.label).join(" → ")}</span>
+                        <span className="mt-2 block text-sm text-accent">1단계 {steps[0].label}부터</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
             <h2 id="tags-h" className="text-sm font-semibold text-muted">
               자주 쓰는 태그
             </h2>

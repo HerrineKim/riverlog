@@ -56,6 +56,14 @@ publish: false            # 선택. 넣으면 사이트에 나오지 않습니�
 ---
 ```
 
+분야 개요(`Frontend.md`처럼 최상위 폴더와 같은 이름의 파일)에는 읽는 순서를 적을 수 있습니다. 분야 페이지에 단계 카드로, 지식 창고 개요에 「어디서 시작할지」로 나옵니다. `topics`는 그 분야의 주제 폴더 이름이고, 없는 이름은 무시됩니다.
+
+```md
+readingOrder:
+  - { label: "웹 기초", topics: ["Web"] }
+  - { label: "언어", topics: ["JavaScript", "CSS"] }
+```
+
 - **다이어그램**: 흐름·순서·구성 요소 연결·상태 전이 같은 그림은 ` ```mermaid ` 블록으로 쓰면 사이트가 SVG로 그리고 테마 색을 입힙니다(`flowchart`, `sequenceDiagram`, `stateDiagram-v2`, `timeline`, `quadrantChart`, `gitGraph`). `block-beta`는 렌더링되지 않습니다.
 - **노트 추가·정리**: Claude Code의 `/note` 스킬(`.claude/skills/note/`)이 자료를 노트 형식으로 재구성하고, 기존 노트와의 중복을 병합하고, 인덱스까지 갱신합니다. 쓰는 규칙은 `.claude/skills/note/style.md`에 있습니다.
 - **검사**: `node .claude/skills/note/scripts/check-note.mjs <노트 경로>`로 frontmatter 필수 필드, 파일 이름 중복, 깨진 위키·상대 링크, 인덱스 등록 여부를 확인합니다.

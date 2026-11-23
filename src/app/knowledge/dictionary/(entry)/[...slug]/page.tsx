@@ -7,9 +7,11 @@ import JsonLd from "@/components/JsonLd";
 import Prose from "@/components/Prose";
 import Toc, { MobileToc, NoteSheet } from "@/components/Toc";
 import NoteConnections from "@/components/knowledge/NoteConnections";
+import ReadingPath from "@/components/knowledge/ReadingPath";
 import { formatDate } from "@/lib/format";
 import { categoryColor, getAllNodes, getKnowledgeTree, getNode, getTrail, KNOWLEDGE_BASE, tagHref, type KNode } from "@/lib/knowledge";
 import { noteConnections } from "@/lib/knowledge-connections";
+import { resolveReadingOrder } from "@/lib/knowledge-reading-order";
 import { getNoteRefs } from "@/lib/knowledge-refs";
 import { extractToc, splitLeadingQuote } from "@/lib/markdown";
 import { articleLd, pageMeta } from "@/lib/seo";
@@ -55,6 +57,7 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
   const next = idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : undefined;
   const conn = doc ? noteConnections(node.id, getNoteRefs()) : { linked: [], tagged: [] };
   const hasConn = conn.linked.length + conn.tagged.length > 0;
+  const readingPath = node.depth === 1 && doc?.readingOrder ? resolveReadingOrder(doc.readingOrder, node.children) : [];
   const sheetLabel = [toc.length >= 2 && "목차", hasConn && "연결된 노트"].filter(Boolean).join(" · ");
 
   // The sidebar comes from (entry)/layout.tsx; this page fills the note and TOC columns
@@ -106,6 +109,12 @@ export default async function KnowledgeEntry({ params }: PageProps<"/knowledge/d
               </div>
             )}
           </header>
+
+          {readingPath.length > 0 && (
+            <div className="mt-8">
+              <ReadingPath steps={readingPath} source={`${node.name} 분야 개요의 순서`} />
+            </div>
+          )}
 
           {doc && (
             <article className="mt-8">
