@@ -171,4 +171,4 @@ MIT의 **모럴 머신(Moral Machine)** 은 이 질문을 웹에서 대규모로
 - 신뢰: 과신도 불신도 아닌 보정된 신뢰로 이끈다. 한계를 먼저 말하고, 확신이 낮으면 사람에게 검토를 넘긴다.
 - 처음부터 모든 것을 할 수는 없다. 가장 중요한 영역부터 정하고 출시와 피드백마다 가드레일을 다듬는다.
 
-관련 노트: [[ai-feature-blueprint|AI 기능 기획]], [[ai-ux-patterns|AI 기능의 UX 패턴]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]], [[machine-learning-basics|머신 러닝 기초]], [[classification-metrics|분류 모델 평가 지표]], [[software-testing#AI 소프트웨어 테스트|AI 소프트웨어 테스트]]
+관련 노트: [[ai-policy-and-regulation|AI 정책과 법]], [[ai-feature-blueprint|AI 기능 기획]], [[ai-ux-patterns|AI 기능의 UX 패턴]], [[system-prompt-patterns|시스템 프롬프트 설계 패턴]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편]], [[ai-2027-scenario|AI 2027: 초지능 도래 시나리오와 정렬 문제]], [[machine-learning-basics|머신 러닝 기초]], [[classification-metrics|분류 모델 평가 지표]], [[software-testing#AI 소프트웨어 테스트|AI 소프트웨어 테스트]]
