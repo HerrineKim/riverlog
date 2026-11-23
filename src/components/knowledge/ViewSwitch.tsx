@@ -24,7 +24,7 @@ export default function ViewSwitch({ active }: { active: View }) {
     <div className="inline-flex rounded-full border border-line bg-bg-elev p-1">
       {item(
         "map",
-        "/knowledge",
+        "/knowledge/map",
         "3D 마인드맵",
         <svg aria-hidden viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.8">
           <circle cx="12" cy="12" r="2.5" />
