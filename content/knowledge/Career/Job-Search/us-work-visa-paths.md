@@ -1,11 +1,11 @@
 ---
 title: "한국 개발자가 미국에서 일하는 경로: 비자가 먼저다"
 concept: "US Work Visa"
-summary: "미국 취업의 가장 큰 벽은 영어나 실력이 아니라 취업 비자다. H-1B 추첨의 구조와 2026년부터 바뀐 임금 가중 추첨, 미국 학위 → OPT → H-1B, 캐나다 지사 → L-1 전근 같은 현실적인 경로, 취업 영주권(PERM, EB-2·EB-3, NIW, EB-1C)과 가족 초청의 구조, 지금 할 수 있는 준비를 정리했다."
+summary: "미국 취업의 가장 큰 벽은 영어나 실력이 아니라 취업 비자다. H-1B 추첨의 구조와 2026년부터 바뀐 임금 가중 추첨, 미국 학위 → OPT → H-1B, 캐나다 지사 → L-1 전근 같은 현실적인 경로, 취업 영주권(PERM, EB-2·EB-3, NIW, EB-1C)과 가족 초청의 구조, 출장 때 B-1·ESTA로 할 수 있는 일의 범위, 지금 할 수 있는 준비를 정리했다."
 tags: ["career", "job-search", "us-career", "visa"]
 source: other
-date: "2026-11-21"
-sources: ["https://velog.io/@diogenes0803/미국-개발자가-알려주는-미국으로-가는-가장-현실적인-방법", "https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations", "https://www.uscis.gov/newsroom/alerts/h-1b-faq", "https://www.gtlaw.com/en/insights/2026/2/uscis-finalizes-wage-weighted-h-1b-cap-selection-rule-effective-feb-27-2026", "https://relocate.me/blog/job-relocation/landing-a-tech-job-abroad-7-simple-tips/", "https://www.ellis.com/resources/h1b-100k-fee-extended-2027", "https://www.uscis.gov/green-card/green-card-eligibility/green-card-for-employment-based-immigrants", "https://www.uscis.gov/working-in-the-united-states/permanent-workers/employment-based-immigration-second-preference-eb-2", "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html"]
+date: "2026-11-23"
+sources: ["https://velog.io/@diogenes0803/미국-개발자가-알려주는-미국으로-가는-가장-현실적인-방법", "https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations", "https://www.uscis.gov/newsroom/alerts/h-1b-faq", "https://www.gtlaw.com/en/insights/2026/2/uscis-finalizes-wage-weighted-h-1b-cap-selection-rule-effective-feb-27-2026", "https://relocate.me/blog/job-relocation/landing-a-tech-job-abroad-7-simple-tips/", "https://www.ellis.com/resources/h1b-100k-fee-extended-2027", "https://www.uscis.gov/green-card/green-card-eligibility/green-card-for-employment-based-immigrants", "https://www.uscis.gov/working-in-the-united-states/permanent-workers/employment-based-immigration-second-preference-eb-2", "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html", "https://travel.state.gov/content/travel/en/us-visas/business/b-1-fact-sheet.html", "https://fam.state.gov/fam/09FAM/09FAM040202.html"]
 ---
 
 > 시애틀의 개발자 Hojune Yoo의 「[미국 개발자가 알려주는 미국으로 가는 가장 현실적인 방법](https://velog.io/@diogenes0803/미국-개발자가-알려주는-미국으로-가는-가장-현실적인-방법)」(2022.06)을 바탕으로, 비자 제도는 USCIS 발표와 이민법 자료로 2026년 기준으로 고쳐 재구성한 노트다. 해외에서 지원하는 요령은 Relocate.me의 「[Landing a (tech) job abroad: 7 simple tips](https://relocate.me/blog/job-relocation/landing-a-tech-job-abroad-7-simple-tips/)」로 보강했다.
@@ -87,6 +87,21 @@ flowchart LR
 
 대기 기간은 국무부가 매달 내는 [Visa Bulletin](https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html)의 우선일로 정해진다. 범주, 출생 국가, 미국 안에서 신분 조정을 하는지 해외 영사관에서 처리하는지에 따라 몇 년씩 차이가 나므로 계획은 보수적으로 잡는다.
 
+## 출장과 단기 파견: B-1과 ESTA로 할 수 있는 일
+
+취업 비자 없이 미국에 들어가 일하는 흔한 경우가 출장이다. 단기 상용 비자인 **B-1**과 비자 면제 프로그램의 전자여행허가 **ESTA**는 「일하러 가는」 신분이 아니다. ESTA로 입국하면 B-1과 같은 범위의 활동을 최대 90일 동안 할 수 있을 뿐이다.
+
+| 구분 | 내용 |
+| --- | --- |
+| 허용되는 활동 | 회의·상담, 계약 협상, 컨퍼런스·전시회 참석 같은 상용 활동 |
+| 장비 설치·수리 | 미국 밖 회사에서 구매한 장비를 **설치, 서비스, 수리**하거나 미국 작업자에게 그 방법을 교육하는 것은 허용된다. 조건은 판매 계약서에 판매자가 그 서비스나 교육을 제공하도록 명시돼 있고, 파견되는 사람이 그 계약 이행에 꼭 필요한 고유 지식을 갖추고 있으며, 미국에서 보수를 받지 않는 것이다 |
+| 허용되지 않는 활동 | 미국 고용주를 위해 일하거나 미국에서 보수를 받는 것, 건물·시설을 짓는 **건설·시공 작업 자체** (건설 작업자를 감독하거나 교육하는 일은 예외) |
+
+- 체류 자격이 허용하지 않는 일을 하면 불법 취업으로 단속, 구금, 추방될 수 있고 이후 입국에도 불이익이 남는다. 회사가 관행으로 보냈더라도 **불이익은 개인이 진다.**
+- 출장·파견 전에 실제로 할 일이 무엇인지, 장비 매매 계약서에 설치·교육 조항이 있는지, 보수를 어디서 받는지를 확인하고 이를 보여 주는 회사 서류를 가지고 간다.
+- 현지에서 실제 노동을 하는 장기 파견은 L-1 같은 취업 가능한 비자가 필요하다.
+- 허용 범위는 국무부의 [B-1 안내](https://travel.state.gov/content/travel/en/us-visas/business/b-1-fact-sheet.html)와 외교업무편람 [9 FAM 402.2-5](https://fam.state.gov/fam/09FAM/09FAM040202.html)가 기준이고, 입국 심사는 세관국경보호청(CBP)이 따로 판단한다.
+
 ## 지금 할 수 있는 준비
 
 | 할 일 | 방법 |
@@ -103,6 +118,7 @@ flowchart LR
 - H-1B는 추첨이고, 2026년부터 연봉이 높을수록 유리한 가중 추첨이다. 해외 신규 신청 수수료는 소송 중이라 그때그때 확인한다.
 - 연고가 없다면 미국 학위 → OPT → H-1B, 또는 캐나다 지사 → L-1이 현실적이다.
 - 영주권은 PERM → I-140 → 신분 조정 순서로 수년이 걸린다. PERM을 실제로 진행하는 회사인지, EB-1C·NIW처럼 PERM이 면제되는 길이 있는지 일찍 확인한다.
+- 출장용 B-1과 ESTA는 일하는 신분이 아니다. 실제 업무가 허용 범위 안인지 가기 전에 확인한다.
 - 어느 길이든 실력이 기본이다. 코딩 인터뷰와 LinkedIn을 지금부터 준비한다.
 
-관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[australia-skilled-migration|한국 개발자가 호주에서 일하는 경로: 기술이민 세 갈래]], [[resume-writing|합격하는 영문 레주메 작성법]], [[georgia-tech-omscs|조지아텍 온라인 석사: OMSCS와 OMSA]], [[us-study-funding|미국 유학 학비 지원과 장학금]]
+관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[australia-skilled-migration|한국 개발자가 호주에서 일하는 경로: 기술이민 세 갈래]], [[resume-writing|합격하는 영문 레주메 작성법]], [[georgia-tech-omscs|조지아텍 온라인 석사: OMSCS와 OMSA]], [[us-study-funding|미국 유학 학비 지원과 장학금]], [[working-holiday|워킹홀리데이]]
