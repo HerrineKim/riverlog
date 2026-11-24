@@ -185,4 +185,4 @@ Altair처럼 그래픽 문법을 API로 옮긴 라이브러리의 바탕은 [[da
 - 학습 지도: 「[I want to study Data Science](https://github.com/Team-Neighborhood/I-want-to-study-Data-Science/wiki)」 위키는 데이터 분석가·엔지니어·ML 엔지니어·과학자 직무 구분([[data-job-roles|데이터 직군]])과 Git·리눅스·파이썬·선형대수부터 비전·NLP·추천·MLOps까지의 공부 목록, 데이터셋·포트폴리오 자료를 모아 둔다.
 - 책: 『파이썬 라이브러리를 활용한 데이터 분석』, 『파이썬 데이터 사이언스 핸드북』, 『밑바닥부터 시작하는 데이터 과학』
 
-관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[data-journalism|데이터 저널리즘 실무]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[location-estimation|데이터의 위치 추정]], [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[data-visualization|데이터 시각화]], [[visualization-design-process|시각화 설계 과정]], [[time-series-analysis|시계열 분석]]
+관련 노트: [[jupyter-notebook|Jupyter Notebook]], [[machine-learning-basics|머신 러닝 기초: 네 단계 추상화]], [[location-estimation|데이터의 위치 추정]], [[newspaper-article-scraping|newspaper로 기사 본문 추출하기]], [[data-visualization|데이터 시각화]], [[visualization-design-process|시각화 설계 과정]], [[time-series-analysis|시계열 분석]]

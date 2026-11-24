@@ -90,4 +90,4 @@ flowchart LR
 - 485는 35세 이하 제한이 생겼고, 482는 Skills in Demand로 바뀌어 2년이면 186 영주권을 노릴 수 있다.
 - 숫자(점수 컷, 연봉 기준, 나이)는 매년 바뀌므로 신청 시점에 [호주 내무부](https://immi.homeaffairs.gov.au/)와 전문가에게 확인한다.
 
-관련 노트: [[us-work-visa-paths|한국 개발자가 미국에서 일하는 경로: 비자가 먼저다]], [[resume-writing|합격하는 영문 레주메 작성법]], [[opic|OPIc 공략 전략]]
+관련 노트: [[us-work-visa-paths|한국 개발자가 미국에서 일하는 경로: 비자가 먼저다]], [[resume-writing|합격하는 영문 레주메 작성법]]

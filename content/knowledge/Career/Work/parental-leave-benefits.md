@@ -88,4 +88,4 @@ sources: ["https://www.law.go.kr/법령/근로기준법", "https://www.law.go.kr
 - 육아휴직급여는 30일 이상 휴직해야 생기고, 휴직이 끝난 날부터 12개월 안에 신청하지 않으면 사라진다.
 - 금액과 상한은 고용보험법 시행령으로 정해져 해마다 바뀔 수 있다. 신청 전에 [고용24](https://www.work24.go.kr)의 안내로 확인한다.
 
-관련 노트: [[employee-labor-law|직장인이 알아야 할 노동법]], [[workplace-harassment-response|직장 내 괴롭힘과 조용한 해고 대응]], [[year-end-tax-settlement|연말정산]]
+관련 노트: [[employee-labor-law|직장인이 알아야 할 노동법]], [[workplace-harassment-response|직장 내 괴롭힘과 조용한 해고 대응]]
