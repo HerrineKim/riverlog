@@ -70,7 +70,8 @@ grep -rh "^concept:\|^title:" content/knowledge | grep -i "<키워드>"
 
 ## 2. 위치와 파일 이름 정하기
 
-- 분야(1단계 폴더)는 `Frontend · Backend · Computer-Science · Algorithm · DevOps · AI-Data · Tools · Career · Life-and-Learning` 중 하나다. 새 분야 폴더는 만들지 않는다.
+- 분야(1단계 폴더)는 `Frontend · Backend · Computer-Science · Algorithm · DevOps · AI-Data · Tools · Career` 중 하나다. 새 분야 폴더는 만들지 않는다.
+- 생활·교양 재료(재테크, 세금·연금·보험, 주거, 생활 법률, 건강·안전, 소통, 사고법, 영어, 글쓰기, 유학 등 예전 `Life-and-Learning` 분야)는 지식 창고에 넣지 않는다. 노션의 맞는 문서(💰 재테크 정보, Info의 Tips, Study 아래 묶음 페이지)로 보내고, 사용자에게 그렇게 알린다.
 - 하위 주제 폴더는 기존 것을 먼저 쓴다. 같은 주제 노트가 3편 이상 쌓일 때만 새 폴더를 제안한다.
 - 파일 이름은 영어 kebab-case 슬러그(`loop-engineering.md`). 위키링크가 파일 이름으로 풀리므로 **vault 전체에서 유일**해야 한다:
   `find content -name "<slug>.md"` 결과가 비어 있어야 한다.
