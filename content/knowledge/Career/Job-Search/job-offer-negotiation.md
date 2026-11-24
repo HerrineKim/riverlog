@@ -5,7 +5,7 @@ summary: "취업은 일자리를 얻는 것이 아니라 내 노동을 파는 �
 tags: ["career", "job-search", "communication", "decision-making"]
 source: other
 date: "2026-11-18"
-sources: ["https://medium.com/free-code-camp/ten-rules-for-negotiating-a-job-offer-ee17cccbdab6", "https://github.com/jlevy/og-equity-compensation", "https://www.techinterviewhandbook.org/negotiation/", "https://www.techinterviewhandbook.org/negotiation-rules/", "https://www.techinterviewhandbook.org/understanding-compensation/", "https://www.techinterviewhandbook.org/choosing-between-companies/", "https://media-ai.tistory.com/7", "https://ppss.kr/archives/53935"]
+sources: ["https://medium.com/free-code-camp/ten-rules-for-negotiating-a-job-offer-ee17cccbdab6", "https://github.com/jlevy/og-equity-compensation", "https://www.techinterviewhandbook.org/negotiation/", "https://www.techinterviewhandbook.org/negotiation-rules/", "https://www.techinterviewhandbook.org/understanding-compensation/", "https://www.techinterviewhandbook.org/choosing-between-companies/", "https://media-ai.tistory.com/7", "https://ppss.kr/archives/53935", "https://www.law.go.kr/법령/소득세법시행령/제12조"]
 ---
 
 > Haseeb Qureshi의 「[Ten Rules for Negotiating a Job Offer](https://medium.com/free-code-camp/ten-rules-for-negotiating-a-job-offer-ee17cccbdab6)」(2016)를 바탕으로, 「[The Open Guide to Equity Compensation](https://github.com/jlevy/og-equity-compensation)」의 「Offers and Negotiations」와 Tech Interview Handbook의 「[Negotiation](https://www.techinterviewhandbook.org/negotiation/)」, 「[Negotiation rules](https://www.techinterviewhandbook.org/negotiation-rules/)」, 「[Understanding compensation](https://www.techinterviewhandbook.org/understanding-compensation/)」, 「[Choosing between companies](https://www.techinterviewhandbook.org/choosing-between-companies/)」로 보강해 재구성한 노트다. 팀을 고르는 기준은 앤드류 응의 CS230 강의를 정리한 「[논문 읽기와 ML/DL 커리어 경력에 대한 조언](https://media-ai.tistory.com/7)」으로, 대기업과 스타트업이 기르는 역량은 「[대기업 vs. 스타트업](https://ppss.kr/archives/53935)」으로 더했다.
@@ -28,7 +28,7 @@ sources: ["https://medium.com/free-code-camp/ten-rules-for-negotiating-a-job-off
 | **성과 보너스** | 레벨별 목표 비율 × 개인 성과 × 회사 성과 | 개인 성과 배수는 기대 충족이 100%이고, 최상위 평가는 회사에 따라 200~300%까지 간다 |
 | **지분(Equity)** | 회사 일부의 소유권. 보통 4년에 걸쳐 베스팅된다 | 상장사는 RSU, 비상장 중후기 회사는 스톡옵션이 흔하다. 베스팅 일정·클리프·퇴사 후 행사 기간은 [[stock-options\|스톡옵션]]에 있다. 상장이나 인수 전에는 현금화가 어렵다 |
 | **사이닝 보너스** | 입사 때 한 번 받는 일시금 | **오퍼 단계에서만** 받을 수 있다. 1년 안에 떠나면 비례 반환하는 조항이 흔하니 계약서를 읽는다 |
-| **복리후생** | 현금은 아니지만 지출을 줄여 사실상 보상이 된다 | 식사, 이주 지원금(relocation), 건강·치과 보험, 통근 셔틀. 의료비가 비싼 나라에서는 보험만으로 연 수천 달러 차이가 난다 |
+| **복리후생** | 현금은 아니지만 지출을 줄여 사실상 보상이 된다 | 식사, 이주 지원금(relocation), 건강·치과 보험, 통근 셔틀. 의료비가 비싼 나라에서는 보험만으로 연 수천 달러 차이가 난다. 한국에서는 요건을 갖춘 식대(회사가 식사를 제공하지 않을 때 월 20만 원 이하)와 자가운전보조금(본인 차량을 업무에 쓸 때 월 20만 원 이내) 등이 비과세라 같은 금액이라도 기본급보다 실수령이 크다([소득세법 시행령 제12조](https://www.law.go.kr/법령/소득세법시행령/제12조)). 통신비·주거 지원 같은 그 밖의 지원은 대개 과세 급여지만 지출을 줄여 주므로 연봉이 같은 오퍼를 비교할 때 함께 더한다 |
 
 ```text
 반기 보너스 = 기본급 × 50%(반기) × 레벨 목표 비율 × 개인 성과 배수 × 회사 성과 배수
@@ -117,7 +117,7 @@ flowchart TB
 | **회사 전망** | 지분을 받으면 회사의 앞날이 곧 내 보상이다. 재무 상태 확인은 [[company-financial-check\|비상장 회사 재무제표 찾아보기]]에 있다 |
 | **성장** | 스타트업은 여러 역할을 맡으며 0에서 1을 빠르게 만들지만, 제품이 인프라보다 우선이라 기술적 깊이와 상위 IC 자리(Staff·Principal)가 부족하다. 대기업은 승진 속도와 기대치가 회사마다 다르다. 기르는 역량도 다르다. 이미 있는 수익원을 지키는 대기업은 「돈이 되나」를 정량 근거로 설득해 결재선을 통과하는 보고 역량과, 조직·협력사를 움직이는 관리 역량을 기른다. 새 시장을 찾는 스타트업은 여러 투자자·임원 중 한 명만 설득하면 되는 구조라 「해낼 수 있나」를 보여 주는 자기 확신과 추진력을 기른다. 레벨과 승진 기대 기간은 [[engineering-levels\|엔지니어 레벨]]에 있다 |
 | **문화** | 회사가 내세우는 가치(Google의 엔지니어링 품질과 데이터 기반 결정, Netflix의 「절차보다 사람」과 높은 성과 기준)와 실제 엔지니어링 문화. 아래 체크리스트로 점검한다 |
-| **워라밸** | 주 40시간이 기준이지만 훨씬 더 요구하는 회사도 있다(중국 테크 업계의 「996」, 오전 9시~오후 9시 주 6일). 초과 근무가 무급이면 연봉이 아니라 **시간당 보상**으로 비교한다 |
+| **워라밸** | 주 40시간이 기준이지만 훨씬 더 요구하는 회사도 있다(중국 테크 업계의 「996」, 오전 9시~오후 9시 주 6일). 초과 근무가 무급이면 연봉이 아니라 **시간당 보상**으로 비교한다. 연봉이 같은데 업무량이 두세 배로 늘면 시간당 보상은 그만큼 줄어든다. 그래도 옮긴다면 그 차이를 경력 성장의 대가로 받아들일 수 있는지 따진다 |
 | **이동성** | 해외 오피스, 원격 근무, 사내 전배가 가능한가. 작은 회사는 대개 본사 한 곳뿐이다. 오피스가 여러 대륙에 있는 대기업은 나라를 옮기는 내부 이동이 흔하다 |
 
 ### 건강한 엔지니어링 문화 체크리스트

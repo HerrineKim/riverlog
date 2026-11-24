@@ -5,7 +5,7 @@ summary: "웹 서비스에 AI 기능을 넣기 전에 기회(유스케이스·�
 tags: ["ai", "llm", "product", "architecture", "web"]
 source: other
 date: "2026-10-17"
-sources: ["https://web.dev/learn/ai/welcome", "https://web.dev/learn/ai/introduction", "https://web.dev/learn/ai/use-cases", "https://web.dev/learn/ai/glossary"]
+sources: ["https://web.dev/learn/ai/welcome", "https://web.dev/learn/ai/introduction", "https://web.dev/learn/ai/use-cases", "https://web.dev/learn/ai/glossary", "https://openrouter.ai/docs/quickstart", "https://developers.openai.com/api/docs/guides/prompt-caching"]
 ---
 
 > web.dev의 「[Learn AI](https://web.dev/learn/ai)」 강좌 중 소개·유스케이스 모듈을 바탕으로 재구성한 노트다.
@@ -125,6 +125,15 @@ AI는 불확실성과 위험을 들여온다. 그래서 **결정적(deterministi
 | 운영 비용 | 호출당 비용 × 월 사용량. 프로토타입에서 싸던 기능이 사용자 수천 명에서 비싸진다 |
 
 사용자가 치르는 숨은 비용도 센다. AI는 불확실성과 실수를 들여오고, 클라이언트 AI는 사용자의 대역폭·저장 공간·배터리를 쓴다. 스마트 필터처럼 LLM API 프롬프트 파싱으로 끝나는 기능은 가볍고, 개인화 예약 비서처럼 전용 데이터 파이프라인·예약 API·사람 검토가 필요한 기능은 무겁다. **가치는 높고 마찰은 낮은 것부터** 한다.
+
+프로토타입 단계의 모델 비용은 아래 방법으로 줄인다. 종량 API는 쓰는 만큼 바로 비용이 되므로, 서비스로 내기 전에 요청당 토큰 비용 × 예상 사용량을 먼저 계산해 본다. 개인용으로는 쓸 만해도 이 계산에서 사업성이 없다고 판명되는 경우가 많다.
+
+| 방법 | 내용 | 주의 |
+| --- | --- | --- |
+| 모델 게이트웨이 | [OpenRouter](https://openrouter.ai/docs/quickstart) 같은 게이트웨이는 OpenAI 호환 API 하나와 키 하나로 여러 제공사의 모델을 부른다. 테스트 중 모델을 바꿔 가며 비교하기 쉽다 | 요청이 제3자를 거친다. 모델별 단가와 데이터 정책을 따로 확인한다 |
+| 로컬 LLM | GPU가 있으면 오픈 가중치 모델을 직접 띄워 호출당 비용 없이 반복 실험한다 | 성능이 상용 최상위 모델보다 낮을 수 있고, 하드웨어·전력 비용이 든다 |
+| 프롬프트 캐싱 | 요청마다 같은 앞부분(시스템 프롬프트, 도구 정의, 긴 문서)을 고정해 두면 캐시된 입력 토큰은 할인 단가로 계산된다. OpenAI는 지원 모델에서 기본으로 켜져 있다([Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)) | 앞부분이 조금이라도 달라지면 캐시가 깨진다. 바뀌는 내용은 프롬프트 뒤쪽에 둔다 |
+| 사용자 키(BYOK) | 사용자가 자기 API 키를 넣어 쓰게 해 모델 비용을 사용자에게 넘긴다 | 키 입력이 진입 장벽이 되고, 키를 안전하게 보관·전송해야 한다 |
 
 ### 3. 실패 모드 추정
 
