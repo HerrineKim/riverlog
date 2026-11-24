@@ -1,14 +1,14 @@
 ---
 title: "Claude 스킬 만들기 가이드"
 concept: "Claude Skills"
-summary: "Anthropic의 스킬 제작 가이드 요점: 3단계 프로그레시브 디스클로저, 트리거를 담은 description과 when_to_use, 폴더·이름 규칙, Claude Code 프론트매터 필드 전체, 모노레포에서 스킬을 찾는 규칙, 스킬의 아홉 가지 유형과 gotchas 중심 작성법, 테스트와 증상별 대응, 배포 방식과 팀 공용 스킬 패키지화·사내 마켓플레이스, 실전 패턴 5가지."
+summary: "Anthropic의 스킬 제작 가이드 요점: 3단계 프로그레시브 디스클로저, 트리거를 담은 description과 when_to_use, 폴더·이름 규칙, Claude Code 프론트매터 필드 전체, 모노레포에서 스킬을 찾는 규칙, 스킬의 아홉 가지 유형과 gotchas 중심 작성법, 테스트와 증상별 대응, 스킬 목록을 출처별로 재고 skillOverrides로 줄이는 법, 배포 방식과 팀 공용 스킬 패키지화·사내 마켓플레이스, 실전 패턴 5가지."
 tags: ["ai", "llm", "claude-code", "skills", "mcp", "agent"]
 source: other
-date: "2026-11-18"
-sources: ["https://riverkim.kr/328", "https://agentskills.io/specification", "https://code.claude.com/docs/en/skills", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/best-practice/claude-skills.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/reports/claude-skills-for-larger-mono-repos.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/tips/claude-thariq-tips-17-mar-26.md"]
+date: "2026-11-24"
+sources: ["https://riverkim.kr/328", "https://agentskills.io/specification", "https://code.claude.com/docs/en/skills", "https://code.claude.com/docs/en/mcp", "https://code.claude.com/docs/en/settings-reference", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/best-practice/claude-skills.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/reports/claude-skills-for-larger-mono-repos.md", "https://github.com/shanraisshan/claude-code-best-practice/blob/main/tips/claude-thariq-tips-17-mar-26.md"]
 ---
 
-> baho.dev의 글 「[Anthropic의 스킬 가이드를 읽혔다: 챕터별 핵심 정리](https://baho.dev/blog/anthropic-skill-guide/)」(Jihye Song, 2026.02)를 요약·재구성한 노트다. 원 자료는 Anthropic이 공개한 PDF 「The Complete Guide to Building Skills for Claude」이고, 형식 규칙은 [Agent Skills 명세](https://agentskills.io/specification)와 [Claude Code 스킬 문서](https://code.claude.com/docs/en/skills)로 확인했다. 공식 예제는 [anthropics/skills](https://github.com/anthropics/skills) 저장소에 있다. 프론트매터 필드·모노레포 로딩·스킬 유형은 shanraisshan의 「[claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice)」(MIT, 2026-11 v2.1.325 기준)와 거기 정리된 Thariq(Anthropic)의 스킬 글(2026.03)로 보강했다.
+> baho.dev의 글 「[Anthropic의 스킬 가이드를 읽혔다: 챕터별 핵심 정리](https://baho.dev/blog/anthropic-skill-guide/)」(Jihye Song, 2026.02)를 요약·재구성한 노트다. 원 자료는 Anthropic이 공개한 PDF 「The Complete Guide to Building Skills for Claude」이고, 형식 규칙은 [Agent Skills 명세](https://agentskills.io/specification)와 [Claude Code 스킬 문서](https://code.claude.com/docs/en/skills)로 확인했다. 공식 예제는 [anthropics/skills](https://github.com/anthropics/skills) 저장소에 있다. 프론트매터 필드·모노레포 로딩·스킬 유형은 shanraisshan의 「[claude-code-best-practice](https://github.com/shanraisshan/claude-code-best-practice)」(MIT, 2026-11 v2.1.325 기준)와 거기 정리된 Thariq(Anthropic)의 스킬 글(2026.03)로 보강했다. 스킬 목록 줄이기는 [MCP 문서](https://code.claude.com/docs/en/mcp)와 [설정 레퍼런스](https://code.claude.com/docs/en/settings-reference), 그리고 직접 확인한 동작으로 썼다.
 
 ## 스킬의 구조: 3단계 프로그레시브 디스클로저
 
@@ -45,7 +45,7 @@ description: 프로젝트 관리를 돕는다.
 description: 스프린트 계획을 세우고 태스크를 생성한다. "sprint", "스프린트 계획", "create tickets" 같은 요청에 사용.
 ```
 
-Claude Code에서는 트리거 문구를 `when_to_use` 필드로 따로 적을 수 있다. 스킬 목록에는 `description` 뒤에 `when_to_use`가 붙어 **합쳐서 1,536자**(`skillListingMaxDescChars`)에서 잘린다. 스킬 목록 전체도 맥락의 일정 비율(`skillListingBudgetFraction`, 예 `0.01`) 안에 들어가야 해서, 넘치면 덜 쓰는 스킬은 이름만 남는다. `/context`에서 제외 경고를 보고, `/skills`에서 `t`로 토큰순 정렬하고, `/skill-doctor`로 안 쓰는 스킬과 맥락 비용을 확인한다.
+Claude Code에서는 트리거 문구를 `when_to_use` 필드로 따로 적을 수 있다. 스킬 목록에는 `description` 뒤에 `when_to_use`가 붙어 **합쳐서 1,536자**(`skillListingMaxDescChars`)에서 잘린다. 스킬 목록 전체도 맥락의 일정 비율(`skillListingBudgetFraction`, 예 `0.01`) 안에 들어가야 해서, 넘치면 덜 쓰는 스킬은 이름만 남는다. `/context`에서 제외 경고를 보고, `/skills`에서 `t`로 토큰순 정렬하고, `/skill-doctor`로 안 쓰는 스킬과 맥락 비용을 확인한다. 항목 수를 줄이는 방법은 아래 「스킬 목록 줄이기」에 있다.
 
 ## 폴더와 지시문 규칙
 
@@ -147,6 +147,59 @@ your-skill/
 | 오버트리거 (엉뚱할 때 뜸) | 범위가 너무 넓음 | "이럴 땐 쓰지 마라" 네거티브 트리거 추가 |
 | 지시를 안 따름, 결과가 들쭉날쭉 | 지시가 너무 길거나, 중요한 내용이 중간에 묻혔거나, 모호함 | 핵심 지시를 맨 위로 올리고 `## Critical` 같은 헤더로 강조한다. **중요한 검증은 자연어 대신 스크립트로** 만든다. 스크립트는 매번 같은 결과를 낸다 |
 | 전반적으로 느려짐 | 동시에 켜진 스킬이 20~50개를 넘음 | 관련 스킬을 "팩"으로 묶는다 |
+
+## 스킬 목록 줄이기
+
+스킬 목록은 세션마다 맥락에 실린다. 목록 예산 설정(`skillListingBudgetFraction`, `skillListingMaxDescChars`)은 설명 길이만 줄이고 **이름은 항상 남긴다.** 그래서 항목 수를 줄이려면 설명을 다듬는 것으로는 안 되고, 항목이 들어오는 출처를 걷어야 한다. 목록을 부풀리는 것은 대개 개별 스킬이 아니라 묶음이다.
+
+| 출처 | 목록에 보이는 이름 | 줄이는 법 |
+| --- | --- | --- |
+| 전역·프로젝트 스킬 폴더 | `이름` | 폴더(링크)를 뺀다. 한 번만 쓸 때는 `SKILL.md` 경로를 직접 읽히면 된다 |
+| 플러그인 | `플러그인:스킬` | 플러그인을 끈다(`/plugin`, `enabledPlugins`) |
+| claude.ai에서 동기화된 개인 스킬·플러그인 | `anthropic-skills:이름`, `플러그인:스킬` | claude.ai 설정에서 지우거나 끈다. 전역 스킬을 claude.ai에도 올려 두면 같은 스킬이 두 번 실리므로 사본 쪽을 `skillOverrides`로 숨긴다 |
+| MCP 서버 | `서버:항목` | 서버를 지우거나, 항목별로 `skillOverrides`를 쓴다 |
+
+### 재는 법
+
+```bash
+# 새 세션이 받는 스킬을 출처(접두사)별로 센다
+claude -p "ok" --output-format stream-json --verbose \
+  | jq -r 'select(.type=="system" and .subtype=="init") | .skills[] | if test(":") then split(":")[0] else "(전역)" end' \
+  | sort | uniq -c | sort -rn
+
+# 세션 기록에서 스킬별 호출 횟수를 센다
+find ~/.claude/projects -name '*.jsonl' -print0 \
+  | xargs -0 grep -ohE '"name":"Skill","input":\{"skill":"[^"]+"' | sort | uniq -c | sort -rn
+```
+
+MCP 서버가 올리는 항목은 헤드리스(`-p`) 세션의 init 목록에 잡히지 않는다. 대화형 세션의 `/skills`에서 확인한다.
+
+### skillOverrides로 항목 숨기기
+
+출처를 통째로 걷을 수 없을 때는 `settings.json`의 `skillOverrides`로 항목을 하나씩 뺀다.
+
+```json
+{
+  "skillOverrides": {
+    "front-end-checklist:404-page": "off",
+    "some-long-skill": "name-only"
+  }
+}
+```
+
+- `"off"`는 목록에서 숨기고, `"name-only"`는 설명 없이 이름만 남기고, `"user-invocable-only"`는 `/이름`으로만 부를 수 있게 한다(값 전체는 [[claude-code-settings|Claude Code 설정과 권한 규칙]]). `/skills`에서 Space로 바꾸면 `.claude/settings.local.json`에 같은 형식으로 저장된다.
+- 와일드카드와 접두사 매칭이 없다. 항목이 많으면 이름 목록에서 설정을 생성하는 스크립트를 둔다.
+- claude.ai에서 동기화된 사본(`anthropic-skills:이름`)에도 적용된다. 전역 스킬을 claude.ai에도 올려 쓴다면 사본 쪽 이름을 `"off"`로 두어, claude.ai에서는 그대로 쓰면서 Claude Code 목록의 중복만 없앨 수 있다.
+- MCP 서버가 올린 항목에도 적용된다(문서에는 없고 Claude Code 2.1.331에서 동작을 확인). 서버는 유지한 채 그 서버의 항목만 끄는 서버 단위 설정은 없다. 예를 들어 front-end-checklist MCP 서버는 규칙 386개를 리소스로 내려보내 목록에 `front-end-checklist:<규칙>`이 그만큼 실리는데, 규칙마다 `"off"`를 쓰면 MCP 도구는 그대로 쓰면서 목록에서만 뺄 수 있다.
+
+### 줄일 때 주의할 점
+
+| 함정 | 이유와 대응 |
+| --- | --- |
+| 호출 0회인 스킬을 바로 지운다 | 목록이 예산을 넘으면 설명이 잘려 자동으로 불릴 기회가 없었을 수 있다. 큰 묶음을 먼저 걷고, 2주쯤 뒤 `/skill-doctor`로 다시 판단한다 |
+| 자주 쓰는 스킬에 `disable-model-invocation`을 단다 | "퇴근할게" 같은 자연어 요청으로 자동 호출되던 동작이 사라진다. `/이름`으로만 부르는 스킬에만 쓴다 |
+| 외부에서 받아 오는 스킬의 프론트매터(`paths` 등)를 고친다 | 다시 받을 때 덮어써진다. 링크에서 빼거나 `skillOverrides`를 쓴다 |
+| claude.ai 쪽 정리를 브라우저 자동화에 맡긴다 | Claude in Chrome은 claude.ai의 설정·플러그인 화면을 열지 못한다. 직접 지우거나 끈다 |
 
 ## 배포
 
