@@ -2,13 +2,12 @@ import Link from "next/link";
 import BugReport from "./BugReport";
 import NavLinks from "./NavLinks";
 import ThemeToggle from "./ThemeToggle";
+import { riverMark } from "@/lib/river-mark";
 
 export function RiverMark({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" className={className} fill="none" aria-hidden>
-      <path d="M3 11c4-4 8 4 13 0s9 4 13 0" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-      <path d="M3 18c4-4 8 4 13 0s9 4 13 0" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" opacity=".65" />
-      <path d="M3 25c4-4 8 4 13 0s9 4 13 0" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" opacity=".35" />
+    <svg viewBox="0 0 256 256" className={className} fill="currentColor" aria-hidden>
+      <path d={riverMark.regular} />
     </svg>
   );
 }
