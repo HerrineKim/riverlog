@@ -60,6 +60,7 @@ AI와 데이터는 "데이터와 모델로 더 나은 결과를 만든다"는 �
 - [Claude API 고급 도구 사용: 코드로 호출하기·도구 검색·예시](AI-Data/claude-advanced-tool-use.md): Programmatic Tool Calling, Dynamic Filtering, Tool Search, Tool Use Examples, Claude Code의 MCP 도구 검색
 - [LLM 동작은 왜 날마다 다른가](AI-Data/llm-behavior-variability.md): 가중치 위의 층, MoE·배치 잡음, 2025년 인프라 버그 세 건, seed 없는 결정성, CLI와 SDK의 시스템 프롬프트 차이, 카나리
 - [내 일을 줄이는 하네스 만들기](AI-Data/personal-agent-harness.md): 결과물이 아니라 생성 장치를 만드는 순서, PLAN/PROGRESS·참고 자료 캐시, 서브에이전트 분할, cron + claude -p 이슈 파이프라인, 병목의 이동
+- [검색 증강 생성(RAG): 구성, 검색 품질, 답이 틀릴 때 진단](AI-Data/retrieval-augmented-generation.md): 롱 컨텍스트와 RAG 고르기, 청크·임베딩·벡터 검색, BM25 하이브리드·맥락 붙인 청크·리랭킹, 라우터, 엉뚱한 답의 진단 순서
 - [LLM 위키: LLM이 쓰고 관리하는 지식 창고](AI-Data/llm-wiki.md): RAG 대신 원문을 미리 종합해 쌓는 위키, 원문·위키·스키마 세 층, 입수·질의·점검, index·log 파일, 유사도 검색이 관계형 질문에 약한 이유
 - [에이전트를 믿을 수 있는 환경 만들기](AI-Data/agent-trust-environment.md): 신뢰가 병렬화를 막는 이유, 검증 스킬(CLI + 기능 지도), 교정을 넣는 다섯 층, 번지는 나쁜 패턴과 복제되는 주석, 에이전트 친화 프레임워크와 정원사
 - [멀티 에이전트](AI-Data/multi-agent.md): 여러 AI가 역할을 나눠 일하는 구조, 작동 흐름·구성 요소·주의점, 주요 프레임워크

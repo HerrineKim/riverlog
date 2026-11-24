@@ -4,7 +4,7 @@ concept: "Device Emulation"
 summary: "기기 모드로 뷰포트·DPR·터치·기기 프리셋을, 네트워크 상태 패널로 사용자 에이전트를, 센서 패널로 위치·방향·유휴 상태를, 렌더링 탭으로 다크 모드·모션 감소·인쇄·색각 이상을 흉내 낸다. 흉내로 부족하면 Android 원격 디버깅·WebView 검사·포트 포워딩으로 실기기에서 확인하고, WebAuthn 패널로 가상 인증기를 만든다."
 tags: ["devtools", "debugging", "mobile", "css", "accessibility", "tools"]
 source: other
-date: "2026-10-15"
+date: "2026-11-24"
 sources: ["https://developer.chrome.com/docs/devtools/device-mode", "https://developer.chrome.com/docs/devtools/device-mode/override-user-agent", "https://developer.chrome.com/docs/devtools/sensors", "https://developer.chrome.com/docs/devtools/settings/devices", "https://developer.chrome.com/docs/devtools/settings/locations", "https://developer.chrome.com/docs/devtools/rendering/emulate-css", "https://developer.chrome.com/docs/devtools/rendering/apply-effects", "https://developer.chrome.com/docs/devtools/remote-debugging", "https://developer.chrome.com/docs/devtools/remote-debugging/webviews", "https://developer.chrome.com/docs/devtools/remote-debugging/local-server", "https://developer.chrome.com/docs/devtools/webauthn", "https://developer.chrome.com/docs/devtools/media-panel", "https://developer.chrome.com/docs/devtools/webaudio"]
 ---
 
@@ -116,6 +116,15 @@ CPU만 늦추려면 성능 패널의 캡처 설정, 네트워크만 늦추려면
 | --- | --- |
 | 기기가 안 보인다 | USB 허브 대신 직접 연결, 케이블 재연결(양쪽 화면 잠금 해제), 파일 전송이 되는 케이블인지, Windows는 OEM USB 드라이버 |
 | 허용 프롬프트가 안 뜬다 | 화면 잠금 해제 후 재연결, USB 모드를 PTP로, 개발자 옵션의 USB 디버깅 승인 취소 후 재시도 |
+
+**한 브라우저나 기기에서만 생기는 문제**는 원격 디버깅으로 좁힌다. 예를 들어 모바일 웹 결제에서 은행·카드 앱으로 넘어갔다 돌아온 뒤 화면이 멈추는데 다른 브라우저에서는 정상인 경우다.
+
+1. 재현되는 기기를 연결하고, 앱 전환 직전과 복귀 직후의 Console 오류와 Network 요청을 본다.
+2. 같은 기기의 다른 브라우저와 앱 WebView에서 같은 흐름을 돌려 브라우저 차이인지 확인한다. 최근 업데이트(브라우저, OS) 시점과 증상 시작 시점도 맞춰 본다.
+3. 내 코드 구간에 이상이 없으면 결제 위젯·SDK 쪽 문제로 보고, 로그와 재현 절차를 들고 제공사 개발자 채널에 문의한다.
+4. 원인을 찾는 동안에는 정상 동작하는 경로(다른 브라우저로 열기 등)를 임시 우회로 둔다.
+
+하단 버튼이 제스처 바에 가려지는 문제처럼 Android Chrome의 화면 그리기 방식이 바뀌어 생기는 증상은 [[safe-area-foldable|노치와 폴더블 화면 대응]]에 있다.
 
 `adb forward tcp:9222 localabstract:chrome_devtools_remote`로 기기의 DevTools 프로토콜(CDP) 소켓을 로컬 포트에 연결하면 `http://localhost:9222/json`에서 대상 목록을 보고 자동화 도구를 직접 붙일 수 있다.
 

@@ -83,4 +83,4 @@ LLM 위키는 그래프 DB 없이도 개체 페이지와 링크로 관계를 드
 
 결국 사람은 무엇을 읽을지와 무엇을 물을지를 정하고, 위키를 돌보는 반복 노동은 LLM에 넘기는 구조다.
 
-관련 노트: [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[personal-agent-harness|내 일을 줄이는 하네스 만들기]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[markdown|Markdown 문법]]
+관련 노트: [[retrieval-augmented-generation|검색 증강 생성(RAG)]], [[harness-engineering|프롬프트에서 하네스로: 에이전틱 패턴의 진화]], [[personal-agent-harness|내 일을 줄이는 하네스 만들기]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[markdown|Markdown 문법]]
