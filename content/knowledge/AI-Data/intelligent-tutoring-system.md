@@ -94,4 +94,4 @@ LLM이 나오면서 이 목표는 제품이 됐다. 칸 아카데미의 Khanmigo
 - 숙달 확률이 기준을 넘을 때까지 연습시키고(숙달 학습), 다음 문제를 골라 숙달을 앞당긴다(적응형 순서).
 - 대화는 LLM이 잘하지만, 「이 학생이 무엇을 아는가」를 추적하는 모델이 있어야 튜터가 된다.
 
-관련 노트: [[bayesian-fuzzy-inference|불확실한 지식으로 추론하기: 베이지안 분류기와 퍼지 추론]], [[Recommender-System|추천 시스템]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]], [[memorization|블럭-건물 암기법]]
+관련 노트: [[bayesian-fuzzy-inference|불확실한 지식으로 추론하기: 베이지안 분류기와 퍼지 추론]], [[Recommender-System|추천 시스템]], [[sustainable-learning-loop|개발자의 지속 가능한 학습 루프]]

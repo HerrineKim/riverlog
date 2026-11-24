@@ -340,4 +340,4 @@ DX/플랫폼 성격의 프론트엔드 포지션 공고가 자주 묻는 경험�
 - [ ] 링크한 저장소의 커밋 메시지가 변경 의도를 설명하는가?
 - [ ] 경력 공백에 한 줄 설명이 있는가?
 
-관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[business-expressions|비즈니스 미팅 쿠션 표현]], [[interview-attitude|면접 잘 보는 법]], [[behavioral-interview-questions|인성 면접 준비]], [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]]
+관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[interview-attitude|면접 잘 보는 법]], [[behavioral-interview-questions|인성 면접 준비]], [[cover-letter-writing|자기소개서와 포트폴리오 쓰는 법]]

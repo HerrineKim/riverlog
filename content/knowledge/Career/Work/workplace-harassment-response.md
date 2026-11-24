@@ -102,4 +102,4 @@ flowchart TB
 - 신고를 이유로 한 불리한 처우는 형사처벌 대상이다.
 - 부당한 전보·전직은 3개월 안에 노동위원회에 구제신청을 한다.
 
-관련 노트: [[employee-labor-law|직장인이 알아야 할 노동법]], [[parental-leave-benefits|임신·육아기 근로시간 단축과 육아휴직급여]], [[kind-engineering|친절한 엔지니어링]], [[listening-and-questions|경청과 질문]]
+관련 노트: [[employee-labor-law|직장인이 알아야 할 노동법]], [[parental-leave-benefits|임신·육아기 근로시간 단축과 육아휴직급여]], [[kind-engineering|친절한 엔지니어링]]

@@ -48,7 +48,7 @@ H-1B는 학사 이상 학위(또는 동등 경력)가 필요한 전문직 비자
 
 캐나다 경로는 해외 채용을 활발히 하고 미국 본사와 가까운 캐나다 지사(예: 밴쿠버)를 노리는 것이 일반적이다.
 
-온라인 석사는 비자를 주지 않는다. 다만 미국 기관의 석사 학위라 H-1B 석사 추가 쿼터 대상이 될 수 있다. 자세한 내용은 [[georgia-tech-omscs|조지아텍 온라인 석사: OMSCS와 OMSA]]에 있다.
+온라인 석사는 비자를 주지 않는다. 다만 미국 기관의 석사 학위라 H-1B 석사 추가 쿼터 대상이 될 수 있다.
 
 ## 영주권 경로
 
@@ -121,4 +121,4 @@ flowchart LR
 - 출장용 B-1과 ESTA는 일하는 신분이 아니다. 실제 업무가 허용 범위 안인지 가기 전에 확인한다.
 - 어느 길이든 실력이 기본이다. 코딩 인터뷰와 LinkedIn을 지금부터 준비한다.
 
-관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[australia-skilled-migration|한국 개발자가 호주에서 일하는 경로: 기술이민 세 갈래]], [[resume-writing|합격하는 영문 레주메 작성법]], [[georgia-tech-omscs|조지아텍 온라인 석사: OMSCS와 OMSA]], [[us-study-funding|미국 유학 학비 지원과 장학금]], [[working-holiday|워킹홀리데이]]
+관련 노트: [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], [[australia-skilled-migration|한국 개발자가 호주에서 일하는 경로: 기술이민 세 갈래]], [[resume-writing|합격하는 영문 레주메 작성법]], [[working-holiday|워킹홀리데이]]

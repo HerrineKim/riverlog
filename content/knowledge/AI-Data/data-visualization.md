@@ -360,4 +360,4 @@ ax.axhline(100, color="0.3", linewidth=1)   # 기준선
 - 칠한 면적은 값에 비례시키고, 겹친 점은 투명도·지터·집계로 풀고, 색은 적게, 레이블은 직접 단다.
 - 사람은 첫눈에 요지를 잡고 튀는 속성 하나에 끌리므로, 강조는 하나로 하고 맥락 요소는 옅게 둔다.
 
-관련 노트: [[visualization-design-process|시각화 설계 과정]], [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[location-estimation|데이터의 위치 추정]], [[data-journalism|데이터 저널리즘]], [[jupyter-notebook|Jupyter Notebook]], [[visual-design-tips|개발자를 위한 시각 디자인 요령]], [[presentation-design|발표 자료 디자인]]
+관련 노트: [[visualization-design-process|시각화 설계 과정]], [[python-data-analysis|파이썬 데이터 분석 프로세스]], [[location-estimation|데이터의 위치 추정]], [[jupyter-notebook|Jupyter Notebook]], [[visual-design-tips|개발자를 위한 시각 디자인 요령]]

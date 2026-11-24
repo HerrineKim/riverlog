@@ -134,4 +134,4 @@ sources: ["https://www.law.go.kr/법령/근로기준법", "https://www.law.go.kr
 
 임신기·육아기 근로시간 단축과 육아휴직급여는 [[parental-leave-benefits|임신·육아기 근로시간 단축과 육아휴직급여]]에, 괴롭힘과 부당한 인사에 대한 대응은 [[workplace-harassment-response|직장 내 괴롭힘과 조용한 해고 대응]]에 있다.
 
-관련 노트: [[parental-leave-benefits|임신·육아기 근로시간 단축과 육아휴직급여]], [[workplace-harassment-response|직장 내 괴롭힘과 조용한 해고 대응]], [[trade-secrets-job-change|이직과 영업비밀]], [[company-financial-check|회사 재무 상태 확인하기]], [[sponsored-review-rules|협찬 후기와 원고료]], [[national-pension-rules|국민연금]]
+관련 노트: [[parental-leave-benefits|임신·육아기 근로시간 단축과 육아휴직급여]], [[workplace-harassment-response|직장 내 괴롭힘과 조용한 해고 대응]], [[trade-secrets-job-change|이직과 영업비밀]], [[company-financial-check|회사 재무 상태 확인하기]]

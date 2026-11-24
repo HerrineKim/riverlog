@@ -100,4 +100,4 @@ README는 저장소를 연 사람이 **가장 먼저, 대개 유일하게** 읽�
 - 반복되는 질문은 문서를 고칠 신호다.
 - README는 무엇·왜·설치·사용 예·라이선스를 첫 화면에 담는 입구다. 코드보다 먼저 쓰면 설계 도구가 된다.
 
-관련 노트: [[open-source-maintenance|오픈소스 운영]], [[markdown|마크다운]], [[finding-dev-references|개발 자료 찾는 법]], [[swagger|Swagger]], [[js-comments|JavaScript 주석]], [[eco-writing-rules|에코 글쓰기 규칙]]
+관련 노트: [[open-source-maintenance|오픈소스 운영]], [[markdown|마크다운]], [[finding-dev-references|개발 자료 찾는 법]], [[swagger|Swagger]], [[js-comments|JavaScript 주석]]

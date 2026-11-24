@@ -57,7 +57,6 @@ const CATEGORIES: { id: string; label: string; color: string }[] = [
   { id: "AI-Data", label: "AI & Data", color: "#f87171" },
   { id: "Tools", label: "Tools", color: "#7dd3fc" },
   { id: "Career", label: "Career", color: "#c4b5fd" },
-  { id: "Life-and-Learning", label: "Life & Learning", color: "#cbd5e1" },
 ];
 const CATEGORY_LABELS = Object.fromEntries(CATEGORIES.map((c) => [c.id, c.label]));
 const CATEGORY_COLORS = Object.fromEntries(CATEGORIES.map((c) => [c.id, c.color]));

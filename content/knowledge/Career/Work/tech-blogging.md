@@ -82,4 +82,4 @@ AI 검색이 답변에 인용하는 것은 주로 **구조화된 텍스트**다.
 - 메모가 아니라 완성된 글로, 형식을 정해서 쓴다.
 - 도구는 꾸미기보다 **쓰기·보존이 쉬운 것**을 고른다.
 
-관련 노트: [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[data-job-roles|데이터 직군]], [[sustainable-learning-loop|지속 가능한 학습 루프]], [[persuasive-writing|글쓰기 원칙]], [[newsletter-lessons|뉴스레터 발행 원칙]], [[sponsored-review-rules|협찬 후기와 원고료]]
+관련 노트: [[reputation-building|명성 쌓기와 커뮤니티 기여]], [[data-job-roles|데이터 직군]], [[sustainable-learning-loop|지속 가능한 학습 루프]]
