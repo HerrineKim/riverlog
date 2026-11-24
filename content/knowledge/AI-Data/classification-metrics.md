@@ -1,15 +1,16 @@
 ---
 title: "분류 모델 성능 평가 지표"
 concept: "Classification Metrics"
-summary: "분류 모델은 혼동 행렬의 TP·FP·FN·TN으로 평가한다. 정밀도·재현율이 서로 맞바뀌는 이유, 정확도가 불균형 데이터에서 속이는 이유, 조화평균인 F1 점수, 임계값을 바꿔 그리는 ROC 곡선과 AUC(양성이 드물면 PR AUC), 회귀 지표 MAE·RMSE·MAPE·R²와 문제 유형별 지표 고르기, 객체 탐지의 IoU·PR 곡선·AP·mAP를 정리한다."
+summary: "분류 모델은 정답 레이블과 맞댄 혼동 행렬의 TP·FP·FN·TN으로 평가한다. 레이블이 없으면 오탐률도 잴 수 없다. 정밀도·재현율이 서로 맞바뀌는 이유, 정확도가 불균형 데이터에서 속이는 이유, 조화평균인 F1 점수, 임계값을 바꿔 그리는 ROC 곡선과 AUC(양성이 드물면 PR AUC), 회귀 지표 MAE·RMSE·MAPE·R²와 문제 유형별 지표 고르기, 객체 탐지의 IoU·PR 곡선·AP·mAP를 정리한다."
 tags: ["ai", "machine-learning", "deep-learning", "statistics"]
 source: other
-date: "2026-10-31"
-sources: ["https://80000coding.notion.site/b81217c169c6459ca2684b357afda3bb", "https://github.com/zzsza/Datascience-Interview-Questions", "https://scikit-learn.org/stable/modules/model_evaluation.html"]
+date: "2026-11-24"
+sources: ["https://80000coding.notion.site/b81217c169c6459ca2684b357afda3bb", "https://github.com/zzsza/Datascience-Interview-Questions", "https://scikit-learn.org/stable/modules/model_evaluation.html", "https://developers.google.com/machine-learning/crash-course/classification/thresholding"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「머신러닝 분류 모델의 성능 평가 지표 분석」을 바탕으로 재구성한 노트다.
 > ROC·AUC와 회귀 지표는 zzsza의 「[Datascience Interview Questions](https://github.com/zzsza/Datascience-Interview-Questions)」 머신러닝 질문 목록을 따라 scikit-learn 「[Metrics and scoring](https://scikit-learn.org/stable/modules/model_evaluation.html)」 문서로 보강했다.
+> 정답 레이블과 혼동 행렬의 관계는 Google 「[Thresholds and the confusion matrix](https://developers.google.com/machine-learning/crash-course/classification/thresholding)」(Machine Learning Crash Course)로 보강했다.
 
 ## 혼동 행렬
 
@@ -21,6 +22,16 @@ sources: ["https://80000coding.notion.site/b81217c169c6459ca2684b357afda3bb", "h
 | **예측 음성** | FN (거짓 음성, 2종 오류) | TN (참 음성) |
 
 이름 읽는 법: 뒤 글자(P/N)는 **모델의 예측**, 앞 글자(T/F)는 **그 예측이 맞았는지**다.
+
+### 정답 레이블이 먼저다
+
+혼동 행렬의 T/F는 예측을 **정답 레이블(ground truth)**과 맞대 봐야 정해진다. 정답이 없으면 정밀도, 재현율, 오탐률 어느 것도 계산할 수 없다.
+
+| 상황 | 문제 | 할 일 |
+| --- | --- | --- |
+| 운영 데이터의 오탐 수를 「전에 대략 세어 보니 그 정도」로 말한다 | 추정치는 정답이 아니다. 시스템 기록(예: DB에 남은 오탐 건수)과 실제가 크게 어긋나도 어느 쪽이 맞는지 알 수 없다 | 표본을 뽑아 사람이 판정한 레이블 세트(골든 세트)를 먼저 만들고, 그 표본에서 모델 판정과 시스템 기록을 함께 비교한다 |
+| 모든 샘플이 한 클래스로만 판정된다 | 쓰는 피처가 두 클래스에서 같은 값 분포를 가진다(예: 두 클래스 모두 같은 횟수). 그런 피처로는 어떤 모델도 둘을 가르지 못한다 | 학습 전에 피처의 클래스별 분포부터 그려 본다. 구분력이 없는 피처는 바꾼다 |
+| 레이블을 만들 여력이 없다 | 비지도 이상 탐지는 이상한 후보를 걸러 줄 뿐 정확도를 증명하지 못한다 | 걸러진 후보를 사람이 판정해 레이블을 조금씩 쌓고, 쌓인 레이블로 지표를 잰다 |
 
 ## 정밀도와 재현율
 
