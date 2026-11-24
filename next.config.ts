@@ -54,17 +54,13 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/career/reading/tech-reading-list": "/knowledge/dictionary/career/tech-reading-list",
   "/knowledge/dictionary/tools/jira/issues-and-jql": "/knowledge/dictionary/tools/jira",
   "/knowledge/dictionary/tools/jira/workflow": "/knowledge/dictionary/tools/jira",
-  "/knowledge/dictionary/life-and-learning/journalism/media-industry-2021": "/knowledge/dictionary/life-and-learning/journalism/media-digital-transformation",
   "/knowledge/dictionary/ai-data/vibe-coding-beautiful-ui": "/knowledge/dictionary/ai-data/ai-frontend-design-prompting",
   "/knowledge/dictionary/career/product/product-owner": "/knowledge/dictionary/career/product/product-minded-engineer",
-  "/knowledge/dictionary/life-and-learning/writing/sentence-craft": "/knowledge/dictionary/life-and-learning/writing/persuasive-writing",
   "/knowledge/dictionary/career/work/phone-etiquette": "/knowledge/dictionary/career/work/work-habits",
   "/knowledge/dictionary/ai-data/copilot-leaked-prompt": "/knowledge/dictionary/ai-data/system-prompt-patterns",
   "/knowledge/dictionary/ai-data/chatgpt-prompt-cheat-sheet": "/knowledge/dictionary/ai-data/prompt-cheat-sheet",
   "/knowledge/dictionary/frontend/javascript/date-object": "/knowledge/dictionary/frontend/javascript/date-libraries",
-  "/knowledge/dictionary/life-and-learning/life/marvel-watch-order": "/knowledge/dictionary/life-and-learning",
   "/knowledge/dictionary/backend/database/rdbms-vs-nosql": "/knowledge/dictionary/computer-science/database/database-models",
-  "/knowledge/dictionary/life-and-learning/english/vocabulary": "/knowledge/dictionary/life-and-learning/english/toeic-grammar",
   "/books/computer-architecture": "/books/computer-architecture-book",
   "/knowledge/dictionary/career/product/developer-leadership": "/knowledge/dictionary/career/product/product-minded-engineer",
   "/knowledge/dictionary/frontend/ui-design/product-detail-page": "/knowledge/dictionary/career/product/product-detail-page",
@@ -84,9 +80,6 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/frontend/javascript/frontend-frameworks": "/knowledge/dictionary/frontend/frontend-frameworks",
   "/knowledge/dictionary/frontend/vue/quasar": "/knowledge/dictionary/frontend/quasar",
   "/knowledge/dictionary/frontend/javascript/react-vs-vue": "/knowledge/dictionary/frontend/react-vs-vue",
-  "/knowledge/dictionary/life-and-learning/design/free-fonts": "/knowledge/dictionary/life-and-learning/presentation-design",
-  "/knowledge/dictionary/life-and-learning/learning/memorization": "/knowledge/dictionary/life-and-learning/memorization",
-  "/knowledge/dictionary/life-and-learning/design/presentation-design": "/knowledge/dictionary/life-and-learning/presentation-design",
   "/knowledge/dictionary/tools/blender/basics-isometric-room": "/knowledge/dictionary/tools/blender",
   "/knowledge/dictionary/tools/blender/furniture-modeling": "/knowledge/dictionary/tools/blender",
   "/knowledge/dictionary/tools/blender/material-uv-rigging": "/knowledge/dictionary/tools/blender",
@@ -105,9 +98,6 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/frontend/accessibility/web-accessibility": "/knowledge/dictionary/frontend/accessibility",
   "/knowledge/dictionary/career/job-search/tech-interview-tips": "/knowledge/dictionary/career/job-search/interview-attitude",
   "/knowledge/dictionary/career/job-search/recruiter-outreach-email": "/knowledge/dictionary/career/job-search/resume-writing",
-  "/knowledge/dictionary/life-and-learning/writing/online-writing": "/knowledge/dictionary/life-and-learning/writing/persuasive-writing",
-  "/knowledge/dictionary/life-and-learning/tips/everyday-tech-tips": "/knowledge/dictionary/life-and-learning/life/life-tips",
-  "/knowledge/dictionary/life-and-learning/tips/out-of-print-books": "/knowledge/dictionary/life-and-learning/life/out-of-print-books",
   "/knowledge/dictionary/ai-data/ai-native-engineer": "/knowledge/dictionary/ai-data/ai-accelerated-development",
   "/knowledge/dictionary/ai-data/recommender-system/recsys-case-studies": "/knowledge/dictionary/ai-data/recommender-system",
   "/knowledge/dictionary/backend/nestjs/provider-di": "/knowledge/dictionary/backend/nestjs/module",
@@ -116,9 +106,6 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/backend/architecture/data-flow": "/knowledge/dictionary/backend/architecture/web-scalability-components",
   "/knowledge/dictionary/devops/rds-security-group": "/knowledge/dictionary/devops/aws-cloud-basics",
   "/knowledge/dictionary/frontend/javascript/clear-code-principles": "/knowledge/dictionary/computer-science/programming-languages/clean-code-functions-naming",
-  "/knowledge/dictionary/life-and-learning/us-study-funding": "/knowledge/dictionary/life-and-learning/study-abroad/us-study-funding",
-  "/knowledge/dictionary/life-and-learning/georgia-tech-omscs": "/knowledge/dictionary/life-and-learning/study-abroad/georgia-tech-omscs",
-  "/knowledge/dictionary/life-and-learning/non-cs-masters-path": "/knowledge/dictionary/life-and-learning/study-abroad/non-cs-masters-path",
   "/knowledge/dictionary/ai-data/claude-code-guide": "/knowledge/dictionary/ai-data/claude-code/claude-code-guide",
   "/knowledge/dictionary/ai-data/claude-code-hooks": "/knowledge/dictionary/ai-data/claude-code/claude-code-hooks",
   "/knowledge/dictionary/ai-data/claude-skill-building-guide": "/knowledge/dictionary/ai-data/claude-code/claude-skill-building-guide",
@@ -136,7 +123,6 @@ const movedNotes: Record<string, string> = {
   "/knowledge/dictionary/backend/architecture/system-design-primer-requirements": "/knowledge/dictionary/backend/architecture/system-design-fundamentals",
   "/knowledge/dictionary/backend/architecture/system-design-primer-tradeoffs": "/knowledge/dictionary/backend/architecture/system-design-fundamentals",
   "/knowledge/dictionary/backend/architecture/system-design-primer-caching-async": "/knowledge/dictionary/backend/architecture/caching-strategies",
-  "/knowledge/dictionary/life-and-learning/household-tips": "/knowledge/dictionary/life-and-learning",
   "/knowledge/dictionary/backend/architecture/system-design-primer-edge-delivery": "/knowledge/dictionary/backend/architecture/system-design-primer",
   "/knowledge/dictionary/backend/architecture/system-design-primer-communication-security": "/knowledge/dictionary/backend/architecture/system-design-primer",
   "/knowledge/dictionary/backend/architecture/system-design-primer-case-studies": "/knowledge/dictionary/backend/architecture/system-design-primer",
@@ -167,7 +153,11 @@ const nextConfig: NextConfig = {
   // The repo is public anyway, so shipping source maps costs nothing and makes production errors readable
   productionBrowserSourceMaps: true,
   async redirects() {
-    return Object.entries(movedNotes).map(([source, destination]) => ({ source, destination, permanent: true }));
+    return [
+      ...Object.entries(movedNotes).map(([source, destination]) => ({ source, destination, permanent: true })),
+      // Life & Learning notes left the site (2026-11). Their old URLs land on the dictionary home.
+      { source: "/knowledge/dictionary/life-and-learning/:path*", destination: "/knowledge/dictionary", permanent: true },
+    ];
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
