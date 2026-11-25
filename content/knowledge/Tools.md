@@ -14,6 +14,7 @@ date: "2026-10-14"
 - Code Review: [코드 리뷰 원칙과 체크리스트](/knowledge/dictionary/tools/code-review/principles), [리뷰 코멘트와 PR 소통](/knowledge/dictionary/tools/code-review/review-communication), [코드 리뷰에서 자주 나온 지적](/knowledge/dictionary/tools/code-review/review-patterns), [리팩터링 원칙](/knowledge/dictionary/tools/code-review/refactoring-principles), [Simple Design](/knowledge/dictionary/tools/code-review/simple-design), [불리언 변수 이름 짓기](/knowledge/dictionary/tools/code-review/boolean-naming), [삭제하기 쉬운 코드](/knowledge/dictionary/tools/code-review/easy-to-delete-code)
 - [Git](Tools/Git.md): 버전 관리 기본, 브랜치와 병합, 원격 저장소·미러링, 되돌리기와 이력 다루기, 커밋 컨벤션, GitHub 협업 설정
 - [유의적 버전(SemVer)](/knowledge/dictionary/tools/semantic-versioning): MAJOR.MINOR.PATCH를 올리는 기준, 0.x와 프리릴리스, 버전 비교 순서, npm의 ^·~ 범위
+- [좋은 CLI 설계 원칙](/knowledge/dictionary/tools/cli-design-guidelines): 종료 코드·stdout/stderr·--help·--json/NO_COLOR·표준 플래그, 위험 작업 확인, 시그널, 설정 우선순위, 하위 호환, 에이전트 친화성
 - [Chrome DevTools](Tools/Chrome-DevTools.md): 패널 지도와 명령 메뉴·단축키, DOM·CSS, Console, JavaScript 디버깅, Network, 성능·메모리, Application, 기기 에뮬레이션, AI 지원과 DevTools MCP
 - [팀 JavaScript 프로젝트 기본 규칙](Tools/project-guidelines.md): Git 흐름·커밋 메시지, 환경 변수와 개발 환경 고정, 의존성 점검, 기능 기준 폴더, 스타일 강제, 로깅, API 설계·보안·문서, 접근성, 라이선스 체크리스트
 - [Markdown](/knowledge/dictionary/tools/markdown): 문서 작성용 마크업 문법, Mermaid 다이어그램, markdownlint

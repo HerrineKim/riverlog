@@ -152,4 +152,4 @@ flowchart TB
 
 MCP와 CLI는 경쟁이 아니라 에이전트가 처한 환경에 따라 고르는 두 인터페이스다.
 
-관련 노트: [[claude-code-extensions|커맨드·스킬·서브에이전트 고르기]], [[claude-advanced-tool-use|Claude API 고급 도구 사용]], [[claude-code-guide|Claude Code 활용 가이드]], [[ai-delegation-toolkit|AI에게 일 맡기기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]], [[llm-security-attacks|LLM 보안 공격]]
+관련 노트: [[claude-code-extensions|커맨드·스킬·서브에이전트 고르기]], [[claude-advanced-tool-use|Claude API 고급 도구 사용]], [[claude-code-guide|Claude Code 활용 가이드]], [[ai-delegation-toolkit|AI에게 일 맡기기]], [[claude-skill-building-guide|Claude 스킬 만들기 가이드]], [[devtools-ai-agents|DevTools의 AI 지원과 에이전트용 DevTools(MCP)]], [[llm-security-attacks|LLM 보안 공격]], [[cli-design-guidelines|좋은 CLI 설계 원칙]]
