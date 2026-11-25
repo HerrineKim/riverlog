@@ -51,4 +51,4 @@ date: "2026-10-13"
 - 사업이 기울 때 사재나 고금리 대출을 계속 넣으면 보증금, 권리금, 노후 자금까지 잃는다.
 - 투자자가 처음부터 회수(엑시트) 경로를 계산하듯, 사업·프로젝트도 **시작할 때 언제 어떻게 그만둘지**(손실 한도, 기한, 철수 조건)를 정해 둔다. 철수 계획까지가 계획의 일부다.
 
-관련 노트: [[product-minded-engineer|제품 중심 개발자]], [[effective-meetings|회의 잘하는 법]], [[collaborative-developer|협업을 잘하는 개발자]], [[venture-investment-terms|벤처투자의 논리와 투자계약 조항]]
+관련 노트: [[product-minded-engineer|제품 중심 개발자]], [[effective-meetings|회의 잘하는 법]], [[collaborative-developer|협업을 잘하는 개발자]], [[venture-investment-terms|벤처투자의 논리와 투자계약 조항]], [[picking-battles|싸울 논쟁 고르기]]
