@@ -1,10 +1,10 @@
 ---
 title: "커밋 컨벤션과 자동 검사"
 concept: "Commit Convention"
-summary: "좋은 커밋 메시지의 7가지 규칙(빈 줄, 50/72자, 명령문 제목, 무엇·왜 본문)과 type(scope): subject 형식의 컨벤션, 커밋 템플릿 설정, husky와 commitlint로 규칙을 자동 검사하는 방법."
+summary: "좋은 커밋 메시지의 7가지 규칙(빈 줄, 50/72자, 명령문 제목, 무엇·왜 본문)과 type(scope): subject 형식의 컨벤션, 커밋 템플릿 설정, husky와 commitlint 또는 의존성 없는 셸 스크립트로 규칙을 자동 검사하는 방법."
 tags: ["git", "collaboration", "convention", "automation"]
 source: notion
-date: "2026-11-15"
+date: "2026-11-25"
 sources: ["https://meetup.nhncloud.com/posts/106", "https://cbea.ms/git-commit/", "https://www.conventionalcommits.org/ko/v1.0.0/", "https://commitlint.js.org/", "https://80000coding.notion.site/00bcbffd6fbb4be481abef0925efd267", "https://80000coding.notion.site/eed9ae12cbf24ee58256821ca5c5947c", "https://pre-commit.com/"]
 ---
 
@@ -149,6 +149,44 @@ export default { extends: ['@commitlint/config-conventional'] }
 
 팀 고유 type(이모지 등)을 쓴다면 `rules`에서 `type-enum`이나 정규식 파서를 직접 지정한다.
 
+### 의존성 없이 셸 스크립트로 검사하기
+
+type 목록과 형식만 지키면 되는 팀은 commitlint 없이 정규식 하나로 검사할 수 있다. 패키지를 설치하지 않으므로 Node 프로젝트가 아닌 저장소에도 같은 파일을 그대로 둔다.
+
+```sh
+#!/bin/sh
+# scripts/check-commit-msg.sh <커밋 메시지 파일>
+set -eu
+# git이 지울 빈 줄과 # 주석 줄을 건너뛴 첫 줄을 제목으로 본다.
+SUBJECT="$(grep -v '^#' "$1" | sed -n '/[^[:space:]]/{p;q;}' | tr -d '\r')"
+[ -n "$SUBJECT" ] || { echo "커밋 메시지가 비어 있습니다."; exit 1; }
+
+# git이 만드는 메시지와 fixup·squash 커밋은 그대로 둔다.
+case "$SUBJECT" in
+  "Merge "* | "Revert \""* | "Reapply \""* | "fixup! "* | "squash! "* | "amend! "*) exit 0 ;;
+esac
+
+TYPES='feat|fix|refactor|test|docs|style|perf|build|ci|chore|revert'
+SCOPE='[a-z0-9._/-]+'
+printf '%s\n' "$SUBJECT" | grep -qE "^($TYPES)(\($SCOPE(,$SCOPE)*\))?!?: [^ ].*" && exit 0
+echo "형식이 맞지 않습니다: $SUBJECT (type(scope): 설명)"
+exit 1
+```
+
+```sh
+# .husky/commit-msg: hook과 같은 checkout의 스크립트를 쓴다(worktree에서도 짝이 맞는다).
+sh "$(dirname "$0")/../scripts/check-commit-msg.sh" "$1"
+```
+
+| 정할 것 | 고른 값과 이유 |
+| --- | --- |
+| 통과시킬 자동 메시지 | `Merge …`, `Revert "…"`, `fixup!`·`squash!`·`amend!`. 막으면 `git merge`, `git revert`, `git commit --fixup`이 깨진다 |
+| 여러 scope | `fix(web,demo): …`처럼 쉼표로 잇는다. 조각마다 같은 문자 규칙을 적용해야 `fix(,): …`, `fix(web,): …` 같은 빈 조각이 걸러진다 |
+| 호환되지 않는 변경 | type 뒤에 `!` (`feat(api)!: …`) |
+| 스크립트의 테스트 | 통과·거부 사례를 표로 두고 CI에서 돌린다. 정규식을 넓힐 때는 거부되어야 하는 사례부터 추가한다 |
+
+스쿼시 머지를 쓰면 PR 제목이 커밋 제목이 되므로 **PR 제목도 같은 형식으로** 쓴다. hook은 PR 제목을 보지 못하니, 꼭 지켜야 하면 CI에서 PR 제목을 같은 스크립트로 검사한다.
+
 ### Git hook과 언어 무관한 `pre-commit` 프레임워크
 
 Git hook은 저장소의 `.git/hooks/`에 이벤트 이름(`pre-commit`, `commit-msg`, `pre-push` 등)으로 둔 실행 파일이다. `git init`하면 `*.sample` 예제가 들어 있다. 다만 `.git/` 안은 커밋되지 않아 팀원에게 그대로 공유되지 않으므로, 설정 파일을 저장소에 두고 hook을 설치해 주는 도구를 쓴다. Node 프로젝트는 husky, 언어와 무관하게는 Python으로 만든 **pre-commit**이 대표적이다.
@@ -176,6 +214,6 @@ pre-commit run --all-files  # 전체 파일에 한 번 실행
 - 형식: `type(scope): subject` + 빈 줄 + body + 빈 줄 + footer.
 - 제목은 50자 안팎의 명령문, 본문은 72자 줄 바꿈으로 무엇·왜를 쓴다.
 - 이슈는 `Closes #번호`로 닫는다(기본 브랜치에 들어갈 때 동작).
-- 커밋 템플릿으로 안내하고, husky + commitlint(또는 pre-commit)로 강제한다. 필수 검사는 CI에서도 돌린다.
+- 커밋 템플릿으로 안내하고, husky + commitlint(또는 pre-commit, 의존성 없는 셸 스크립트)로 강제한다. 필수 검사는 CI에서도 돌린다.
 
 관련 노트: [[remote-github|원격 저장소와 GitHub]], [[github-collaboration|GitHub 협업 저장소 설정]], [[principles|코드 리뷰 원칙]], [[ci-cd|CI/CD]], [[commit-message-verbs|영어 커밋 메시지 동사 사전]], [[project-guidelines|팀 JavaScript 프로젝트 기본 규칙]]

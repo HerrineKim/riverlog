@@ -1,10 +1,10 @@
 ---
 title: "GitHub 협업 저장소 설정"
 concept: "Branch Protection"
-summary: "팀 저장소를 처음 세팅할 때 할 일: 협업자·브랜치 보호 규칙·CODEOWNERS·이슈/PR 템플릿(마크다운 템플릿과 YAML 이슈 폼, config.yml)·라벨, 그리고 PR 알림 도구와 기능별 브랜치 습관."
+summary: "팀 저장소를 처음 세팅할 때 할 일: 협업자·브랜치 보호 규칙·CODEOWNERS·이슈/PR 템플릿(마크다운 템플릿과 YAML 이슈 폼, config.yml)·라벨, 여러 저장소의 머지 기준을 같은 파일로 맞춰 두는 방법, 그리고 PR 알림 도구와 기능별 브랜치 습관."
 tags: ["git", "github", "collaboration", "code-review"]
 source: mixed
-date: "2026-10-21"
+date: "2026-11-25"
 sources: ["https://robinpowered.com/blog/best-practice-system-for-organizing-and-tagging-github-issues/", "https://github.com/cheese10yun/github-project-management", "https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-issue-forms"]
 ---
 
@@ -16,12 +16,20 @@ sources: ["https://robinpowered.com/blog/best-practice-system-for-organizing-and
 
 ## 저장소 세팅 체크리스트
 
-1. **Settings → Collaborators**에 팀원 추가
-2. `.github/`에 이슈·PR 템플릿 추가
-3. `.husky/`, `commitlint.config.js`, `.gitmessage.txt`로 커밋 규칙 자동 검사 ([커밋 컨벤션](/knowledge/dictionary/tools/git/commit-convention))
-4. 관련 패키지를 `devDependencies`에 추가해 `npm install`만으로 hook이 설치되게
-5. `CODEOWNERS` 추가
-6. 브랜치 보호 규칙과 라벨 설정
+| 영역 | 할 일 | 강제하는 곳 |
+| --- | --- | --- |
+| 사람 | **Settings → Collaborators**에 팀원 추가, `CODEOWNERS`로 경로별 리뷰어 지정 | 저장소 설정 |
+| 양식 | `.github/`에 이슈·PR 템플릿 추가 | 기본 브랜치의 파일 |
+| 커밋 단계 | `pre-commit`에서 바뀐 파일만 포맷·린트(lint-staged), `commit-msg`에서 메시지 형식 검사 ([커밋 컨벤션](/knowledge/dictionary/tools/git/commit-convention)) | Git hook(건너뛸 수 있다) |
+| 푸시 단계 | `pre-push`에서 테스트·타입 검사·린트 | Git hook(건너뛸 수 있다) |
+| 머지 단계 | 브랜치 보호 규칙: PR 필수, 승인 수, **CI 필수 검사** | 플랫폼(건너뛸 수 없다) |
+| 리뷰 기준 | 어떤 변경에 어떤 테스트가 있어야 하는지 문서로 적는다 ([[principles\|코드 리뷰 원칙과 체크리스트]]) | 리뷰어 |
+| 자동 점검 | 의존성 취약점 알림, 시크릿 검사 ([[devsecops\|DevSecOps]]) | 플랫폼·CI |
+| 분류 | 라벨 세트 | 저장소 설정 |
+
+- hook 도구는 `devDependencies`에 넣어 `npm install`만으로 설치되게 한다(husky의 `prepare` 스크립트).
+- hook은 `--no-verify`로 건너뛸 수 있고 서버에서 하는 머지에는 돌지 않는다. **반드시 지켜야 하는 검사는 CI에 두고 필수 검사로 지정한다.** hook은 그 검사를 미리 돌려 빨리 알려 주는 장치다.
+- 브랜치 보호와 Rulesets는 저장소 **관리자 권한**이 있어야 바꿀 수 있다. 파일로 맞출 수 있는 것(hook, 템플릿, 문서)과 관리자가 설정해야 하는 것을 나눠서 챙긴다.
 
 ### 템플릿 저장소로 시작하기
 
@@ -112,8 +120,31 @@ contact_links:
     about: 사용법 질문은 이슈 대신 여기에
 ```
 
-- **PR 템플릿**은 `.github/pull_request_template.md` 하나가 기본값으로 채워진다. 무엇을 왜 바꿨는지, 관련 이슈(`Closes #42`), 영향 범위(모듈·화면), 테스트 방법, 스크린숏 칸을 둔다. `PULL_REQUEST_TEMPLATE/` 폴더에 여러 개를 두면 자동 선택되지 않고 PR URL에 `?template=이름.md`를 붙여야 한다.
+- **PR 템플릿**은 `.github/pull_request_template.md` 하나가 기본값으로 채워진다. 변경 요약(무엇을 왜), 관련 이슈(`Closes #42`), 검증(실행한 검사와 결과), 리뷰에서 확인할 점, 체크리스트 절을 둔다. 양식은 [[review-communication|리뷰 코멘트와 PR 소통]]의 「PR 템플릿 예시」에 있다. `PULL_REQUEST_TEMPLATE/` 폴더에 여러 개를 두면 자동 선택되지 않고 PR URL에 `?template=이름.md`를 붙여야 한다.
 - 템플릿은 기본 브랜치에 있어야 적용된다. organization의 `.github` 저장소에 두면 템플릿이 없는 모든 저장소의 기본값이 된다.
+
+## 여러 저장소의 기준을 같게 유지하기
+
+한 팀이 저장소를 여러 개 가지면 저장소마다 머지 기준이 조금씩 달라진다. 기준이 다르면 저장소를 옮길 때마다 규칙을 다시 익혀야 하고, 느슨한 저장소가 생긴다. **같아야 하는 것은 같은 파일로 두고, 달라야 하는 것은 이유를 적어 둔다.**
+
+| 구분 | 대상 | 방법 |
+| --- | --- | --- |
+| 바이트까지 같은 파일 | PR 템플릿, 커밋 메시지 검사 스크립트, `commit-msg` hook, 포매터·린터 버전 | 저장소 이름·경로에 기대지 않게 쓴다. 저장소마다 달라지는 값은 파일 안에서 계산한다(`basename "$(pwd)"`) |
+| 구조만 같은 파일 | `pre-push`, CI 워크플로 | 검사 순서와 종류를 맞춘다. 규모가 다른 저장소(모노레포의 경로별 검사 선택)는 따로 둔다 |
+| 저장소마다 다른 것 | 린트 무시 경로, 저장소 전용 검사, 핵심 로직 목록 | 다르게 두되 문서에 이유를 적는다 |
+
+같은지는 눈으로 보지 말고 해시로 확인한다.
+
+```bash
+for repo in app-a app-b app-c; do
+  printf '%s ' "$repo"
+  git -C "$repo" show origin/main:.github/pull_request_template.md | shasum | cut -c1-8
+done
+```
+
+- 템플릿의 체크리스트 문구는 어느 저장소에서나 참인 말로 쓴다. `npm run typecheck`처럼 특정 스크립트 이름을 넣으면 그 스크립트가 없는 저장소에서 틀린 말이 된다. 「변경과 관련된 린트·타입 검사·테스트가 통과한다」처럼 쓴다.
+- 한쪽만 고치면 다시 어긋난다. 공통 파일을 고칠 때는 모든 저장소에 같은 변경을 내고, 파일 머리 주석에 「어느 저장소와 같은 파일인지」를 적어 둔다.
+- 조직 단위로는 `.github` 저장소의 기본 템플릿, 재사용 워크플로(reusable workflow), 조직 Rulesets로 한곳에서 관리할 수 있다.
 
 ## 라벨
 
@@ -154,6 +185,7 @@ npx github-label-sync --access-token <TOKEN> --labels ./labels.json <owner>/<rep
 ## 핵심 정리
 
 - 보호 규칙은 머지 대상 브랜치에: PR 필수, 승인 수, CI 통과, 관리자 우회 금지.
+- hook은 빠른 피드백, CI 필수 검사는 강제 수단이다. 여러 저장소의 공통 파일은 같은 파일로 두고 해시로 확인한다.
 - CODEOWNERS로 리뷰어 자동 지정, 템플릿·라벨로 이슈·PR 형식 통일.
 - 기능 하나 = 브랜치 하나 = PR 하나로 시작해야 부분 머지가 쉽다([[branch|Git 브랜치]]).
 
