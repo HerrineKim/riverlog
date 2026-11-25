@@ -111,4 +111,4 @@ lock 파일로 정확한 버전과 무결성 해시를 고정하는 관행도 �
 - 전이 의존성 하나하나가 신뢰해야 할 관리자다. 계정 탈취·웜 사고가 반복되며 설치 스크립트 차단·신뢰된 게시가 기본값이 되고 있다.
 - 표준 API가 생기면 작은 패키지를 걷어 낸다. 남기는 의존성은 예외 처리가 많은 영역에 집중한다.
 
-관련 노트: [[package-managers|패키지 매니저]], [[semantic-versioning|유의적 버전]], [[es-modules|모듈]], [[node-streams|Node.js 스트림]], [[open-source-maintenance|오픈소스 운영]], [[frontend-dependency|프론트엔드 의존성]]
+관련 노트: [[package-managers|패키지 매니저]], [[semantic-versioning|유의적 버전]], [[es-modules|모듈]], [[node-streams|Node.js 스트림]], [[open-source-maintenance|오픈소스 운영]], [[frontend-dependency|프론트엔드 의존성]], [[npm-package-evaluation|npm 패키지를 고르는 기준]], [[npm-publishing-security|npm 패키지 게시 보안]]
