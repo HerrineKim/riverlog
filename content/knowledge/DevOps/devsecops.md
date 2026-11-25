@@ -250,4 +250,4 @@ flowchart TB
 - 공급망 공격은 믿고 받는 파일과 패키지를 변조한다. 배포하는 쪽은 무결성 검증과 배포 경로 최소 권한으로 막고, 받는 쪽은 버전 고정과 새 버전 유예로 줄이고, 당한 쪽은 증거 보존 → 격리 → 깨끗한 기기에서 비밀번호·세션·토큰 교체 순서로 대응한다.
 - 클라우드 사고 대부분은 설정 오류와 권한 관리 실수에서 나온다. 관리적 위협과 기술적 위협을 나눠 대응하고, 패치(CVE)와 설정 점검(CCE)을 계속 돌리고, 보안 솔루션은 확장성을 먼저 본다.
 
-관련 노트: [[ci-cd|CI/CD]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]], [[api-security|API 보안 체크리스트]], [[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[aws-cloud-basics|클라우드 기초와 AWS]], [[kubernetes-security|쿠버네티스 보안]], [[aws-vpc-networking|AWS VPC 네트워크 구성]], [[security-career-paths|보안 직무의 갈래]]
+관련 노트: [[ci-cd|CI/CD]], [[secure-system-design|보안 시스템 설계: 원칙과 민감 데이터 관리]], [[api-security|API 보안 체크리스트]], [[dockerfile|Dockerfile 작성과 컨테이너의 PID 1]], [[ssh|SSH의 동작: 전송·인증·연결 계층]], [[aws-cloud-basics|클라우드 기초와 AWS]], [[kubernetes-security|쿠버네티스 보안]], [[aws-vpc-networking|AWS VPC 네트워크 구성]], [[security-career-paths|보안 직무의 갈래]], [[secrets-management|시크릿 관리]], [[developer-targeted-social-engineering|개발자를 노리는 사회공학 공격]]
