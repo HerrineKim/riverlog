@@ -80,4 +80,4 @@ LLM은 진화로 생긴 내재 동기·호기심으로 빚어진 동물 지능�
 - 바이브 코딩은 바닥을, 에이전틱 엔지니어링은 품질 기준을 지키며 속도를 올린다.
 - 설계 판단·명세·근본 이해·취향은 사람 몫이고, 이해는 외주할 수 없다.
 
-관련 노트: [[harness-engineering|프롬프트에서 하네스로]], [[ai-era-developer|AI 시대 개발자의 역할]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편]], [[claude-code-design-philosophy|Claude Code의 설계 원칙]], [[llm-wiki|LLM 위키]], [[loop-engineering|루프 엔지니어링]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]]
+관련 노트: [[harness-engineering|프롬프트에서 하네스로]], [[ai-era-developer|AI 시대 개발자의 역할]], [[ai-platform-shift|AI 플랫폼 전환과 일의 재편]], [[claude-code-design-philosophy|Claude Code의 설계 원칙]], [[llm-wiki|LLM 위키]], [[loop-engineering|루프 엔지니어링]], [[ai-accelerated-development|AI로 개발 가속하기: 규칙을 키우는 개발]], [[comprehension-debt|이해 부채와 사고의 외주화]], [[coding-agent-loop|코딩 에이전트의 작동 원리]]
