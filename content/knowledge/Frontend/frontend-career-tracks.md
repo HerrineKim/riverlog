@@ -32,7 +32,7 @@ flowchart TB
 
 ## 바탕: 탁월한 엔지니어의 다섯 역량
 
-마이크로소프트 엔지니어 연구 「What Makes a Great Software Engineer?」(ICSE 2015)에서 추린 역량이다.
+마이크로소프트 엔지니어 연구 「What Makes a Great Software Engineer?」(ICSE 2015)에서 추린 역량이다. 연구의 53가지 특성 전체와 네 영역은 [[great-engineer-traits|뛰어난 엔지니어의 특징]]에 있다.
 
 | 역량 | 뜻 |
 | --- | --- |

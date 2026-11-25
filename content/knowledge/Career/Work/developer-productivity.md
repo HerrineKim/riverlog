@@ -114,4 +114,4 @@ Bell Labs, 3M, HP의 엔지니어 천여 명을 대상으로 한 연구에서, �
 - 팀 속도는 마라톤을 기본으로 하고 스프린트는 짧게, 회복과 함께 쓴다. 기술 부채·느린 테스트·잦은 인력 교체가 장기 속도를 깎는다.
 - 집중은 지키는 것이다. 뽀모도로는 도구일 뿐이니 규칙보다 집중 상태를 기준으로 조정한다.
 
-관련 노트: [[work-habits|업무 습관]], [[growing-at-work|일하면서 성장하기]], [[debugging-mindset|디버깅 사고법]], [[software-complexity|소프트웨어 복잡성]], [[technical-debt|기술 부채]], [[collaborative-developer|협업을 잘하는 개발자]]
+관련 노트: [[work-habits|업무 습관]], [[growing-at-work|일하면서 성장하기]], [[debugging-mindset|디버깅 사고법]], [[software-complexity|소프트웨어 복잡성]], [[technical-debt|기술 부채]], [[collaborative-developer|협업을 잘하는 개발자]], [[great-engineer-traits|뛰어난 엔지니어의 특징]]
