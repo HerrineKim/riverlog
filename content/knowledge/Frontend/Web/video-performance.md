@@ -108,4 +108,4 @@ YouTube·Vimeo 임베드는 영상 전달을 대신해 주지만 플레이어가
 - 눌러서 보는 영상은 `preload="none"` + poster, 화면 밖이면 `loading="lazy"`.
 - poster·첫 프레임은 LCP 후보다. 무거운 임베드는 퍼사드로 늦춘다.
 
-관련 노트: [[lazy-loading|지연 로딩: 이미지·iframe·퍼사드]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[lcp-optimization|LCP 최적화]], [[cls-optimization|CLS 최적화]]
+관련 노트: [[lazy-loading|지연 로딩: 이미지·iframe·퍼사드]], [[responsive-images|반응형 이미지: srcset·sizes와 picture]], [[lcp-optimization|LCP 최적화]], [[cls-optimization|CLS 최적화]], [[http-range-requests|HTTP 범위 요청과 동영상 제공]]
