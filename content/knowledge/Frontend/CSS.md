@@ -52,6 +52,8 @@ CSS(Cascading Style Sheets)는 HTML 요소를 선택해 어떻게 보일지 선�
 - [CSS 목록과 카운터](/knowledge/dictionary/frontend/css/css-lists-counters): list-style, ::marker, @counter-style, counter-reset·counters()
 - [커서와 포인터 입력](/knowledge/dictionary/frontend/css/css-cursor-pointer): cursor·caret-color, pointer·hover 미디어 쿼리, touch-action, pointer-events, 포커스 표시
 
+- [스크롤 기반 애니메이션: animation-timeline과 scroll()·view()](/knowledge/dictionary/frontend/css/scroll-driven-animations): scroll()·view() 타임라인, animation-range 구간 제어, timeline-scope, 컴포지터 스레드 실행과 2026년 브라우저 지원
+
 ## 참고
 
 - [MDN Web Docs](https://developer.mozilla.org/ko/)

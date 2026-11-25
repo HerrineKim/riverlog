@@ -19,6 +19,8 @@ date: "2026-11-15"
 - [프로그래밍 언어 의미론: 구문, 바인딩, 람다 계산, 평가 전략](Computer-Science/Programming-Languages/programming-language-semantics.md): 구문과 의미론, AST, 연산·표시·공리적 의미론, 스코프와 클로저, 알파·베타와 변수 포획, 값·이름·필요·참조·공유에 의한 호출, CPS, Hoare 논리, 위생적 매크로
 - [타입 시스템: 검사, 추론, 다형성, 변성, 건전성](Computer-Science/Programming-Languages/type-systems.md): 정적·동적 검사, 단일화, 곱·합·재귀 타입과 Option·Result, 다형성 세 종류, 명목·구조·덕 타이핑, 변성, 완전성 검사, 진행과 보존
 
+- [Parse, Don't Validate: 검증 대신 파싱으로 타입 안전성 확보하기](Computer-Science/Programming-Languages/parse-dont-validate.md): 산탄총 파싱 피하기, 불변식을 반환 타입에 인코딩, 브랜디드 타입·판별 유니온·Zod 경계 파싱, 비용
+
 ### C++
 
 - [C++ 기초: 문법, 참조자, 클래스, 복사와 이동, 오버로딩](Computer-Science/Programming-Languages/cpp-basics.md): 초기화와 L/R-value, 스트림, 헤더와 네임스페이스, 저장 지정자, switch fallthrough, 참조자, 접근 지정·friend·this, 생성자 종류와 초기화 리스트, static 멤버, RAII, private 생성자·소멸자, 복사 생성자와 복사 대입·깊은 복사·이동·3·5·0의 규칙, 함수·연산자 오버로딩, explicit
