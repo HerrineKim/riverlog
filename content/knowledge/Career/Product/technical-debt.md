@@ -102,4 +102,4 @@ sources: ["https://asana.com/ko/resources/agile", "https://asana.com/ko/resource
 - 이자는 자주 건드리는 곳에서만 붙는다. 핫스팟부터 갚는다.
 - 백로그에 올려 보이게 하고, 매 스프린트 일상적으로 조금씩 갚는다.
 
-관련 노트: [[refactoring-principles|리팩터링 원칙]], [[clean-code-functions-naming|클린 코드: 함수와 이름]], [[backlog-and-estimation|백로그와 추정]], [[scrum-framework|스크럼: 책임·이벤트·산출물]], [[kanban-lean-flow|칸반과 린: 흐름과 낭비]], [[simple-design|Simple Design]], [[ci-cd|CI/CD]]
+관련 노트: [[refactoring-principles|리팩터링 원칙]], [[clean-code-functions-naming|클린 코드: 함수와 이름]], [[backlog-and-estimation|백로그와 추정]], [[scrum-framework|스크럼: 책임·이벤트·산출물]], [[kanban-lean-flow|칸반과 린: 흐름과 낭비]], [[simple-design|Simple Design]], [[ci-cd|CI/CD]], [[planning-debt|기획 부채]]
