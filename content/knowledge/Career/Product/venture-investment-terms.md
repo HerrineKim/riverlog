@@ -115,4 +115,4 @@ timeline
 - K-IFRS 전환과 자기주식 처리처럼 회계·법 규정이 투자 구조에 영향을 준다.
 - 매각은 위기 때가 아니라 처음부터 준비한다.
 
-관련 노트: [[investor-ir-deck|투자자가 보는 IR 자료]], [[startup-engineering|초기 스타트업과 창업]], [[company-financial-check|비상장 회사 재무제표 찾아보기]], [[stock-options|스톡옵션]]
+관련 노트: [[investor-ir-deck|투자자가 보는 IR 자료]], [[startup-engineering|초기 스타트업과 창업]], [[company-financial-check|비상장 회사 재무제표 찾아보기]], [[stock-options|스톡옵션]], [[vc-fund-structure|VC 펀드의 구조]], [[startup-exit-paths|스타트업 엑시트와 좀비 스타트업]], [[default-alive|기본 생존과 낙타형 스타트업]]
