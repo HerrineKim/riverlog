@@ -42,6 +42,8 @@ CSS(Cascading Style Sheets)는 HTML 요소를 선택해 어떻게 보일지 선�
 - [CSS가 동작하는 방식](/knowledge/dictionary/frontend/css/how-css-works): 먼저 익힐 핵심 개념, 캐스케이드 비교 순서, 계산값, 레이아웃이 박스를 배치하는 방식
 - [CSS 실전 팁: 리셋과 작은 패턴](/knowledge/dictionary/frontend/css/css-practical-tips): 최소 리셋과 all: unset, 생성 콘텐츠·선택자 패턴, table-layout: fixed, 높이 펼치기 애니메이션
 - [CSS 함수: calc()·clamp()와 수학 함수](/knowledge/dictionary/frontend/css/css-functions): var·attr·url, calc·min·max·clamp, 삼각·지수·반올림·부호 함수와 지원 범위
+- [CSS 조건부 값과 사용자 정의 함수: if(), @function, 스타일 쿼리](/knowledge/dictionary/frontend/css/css-if-and-functions): if()의 style()·media()·supports(), @function 매개변수·타입·result, 컨테이너 스타일 쿼리, 브라우저 지원과 폴백
+- [CSS Custom Highlight API: DOM을 건드리지 않는 하이라이팅](/knowledge/dictionary/frontend/css/css-custom-highlight-api): Range·Highlight·CSS.highlights·::highlight(), span 감싸기와의 성능 비교, 검색·구문 하이라이팅, 허용 속성과 priority
 - [CSS 배경과 그라디언트](/knowledge/dictionary/frontend/css/css-backgrounds-gradients): background 속성과 여러 겹 배경, linear·radial·conic 그라디언트, in oklch 보간
 - [CSS 테두리와 그림자](/knowledge/dictionary/frontend/css/css-borders-shadows): border-style·radius·border-image, box-shadow·text-shadow·drop-shadow 비교
 - [CSS 시각 효과: 필터, 블렌드 모드, 클리핑, 마스킹](/knowledge/dictionary/frontend/css/css-visual-effects): filter·backdrop-filter, mix-blend-mode·isolation, clip-path 도형, mask, shape-outside

@@ -197,7 +197,7 @@ Content-Type: text/html             ← Headers
 | 텍스트 | `text/html; charset=utf-8`, `text/css`, `text/javascript` | 문서·스타일·스크립트. JavaScript의 공식 타입은 `text/javascript`다 |
 | 애플리케이션 | `application/json`, `application/pdf`, `application/octet-stream` | 형식을 모르는 바이너리는 `application/octet-stream`으로 보내며, 브라우저는 대개 다운로드한다 |
 | 이미지·오디오·비디오 | `image/avif`, `image/webp`, `video/mp4` | 미디어 |
-| 멀티파트 | `multipart/form-data`, `multipart/byteranges` | 폼 파일 업로드, `206 Partial Content`로 여러 범위 보내기 |
+| 멀티파트 | `multipart/form-data`, `multipart/byteranges` | 폼 파일 업로드, `206 Partial Content`로 여러 범위 보내기([[http-range-requests\|HTTP 범위 요청]]) |
 
 - 서버가 타입을 잘못 보내면(스크립트를 `text/plain`으로) 브라우저가 실행을 거부하거나 내용을 보고 추측한다. 이 추측(MIME 스니핑)은 업로드한 파일이 스크립트로 실행되는 공격에 쓰이므로 `X-Content-Type-Options: nosniff`로 끈다.
 - `text/plain`은 「아무 텍스트」가 아니다. 형식이 정해진 텍스트는 그 타입(`text/csv`, `application/json`)으로 보낸다.

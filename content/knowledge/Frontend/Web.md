@@ -91,6 +91,7 @@ date: "2026-10-13"
 - [HTTPS 전환](/knowledge/dictionary/frontend/web/https-migration): DV·OV·EV와 인증서 범위, ACME 자동 갱신, 혼합 콘텐츠·301·HSTS 체크리스트
 - [OAuth 2.0](/knowledge/dictionary/frontend/web/oauth2): 비밀번호 없이 권한을 위임하는 흐름(Authorization Code + PKCE), 토큰, OIDC와의 차이
 - [이전 페이지 URL 알아내기](/knowledge/dictionary/frontend/web/previous-url): document.referrer, 라우터 state, 쿠키·sessionStorage
+- [URL을 상태로 쓰기](/knowledge/dictionary/frontend/web/url-as-state): URL에 둘 상태 판단 기준, 경로·쿼리·해시, 직렬화 규칙, pushState와 replaceState, React Router·Next.js·nuqs
 - [구조화된 콘텐츠와 기계가 읽는 웹](/knowledge/dictionary/frontend/web/structured-content): 음성 비서·검색·AI 답변이 콘텐츠를 합치고 추론하는 방식, 시맨틱 HTML과 schema.org JSON-LD, CMS 콘텐츠 모델
 - [브라우저 안 빌드·프리뷰 환경](/knowledge/dictionary/frontend/web/in-browser-preview-runtime): AI가 만든 화면을 바로 띄우는 런타임, 정책은 API 프록시·화면은 AI, 가상 FS + esbuild-wasm + 패키지 조합 해시 + import map
 - [프론트엔드 웹 개발 용어집](/knowledge/dictionary/frontend/web/web-glossary): API부터 Yarn까지 70여 개 용어를 주제별로 묶고 자세한 노트로 연결

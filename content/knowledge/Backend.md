@@ -46,6 +46,8 @@ date: "2026-10-31"
 - [Express 프로젝트 구조: 3계층, 이벤트, DI, 로더](/knowledge/dictionary/backend/express/express-project-architecture): 라우트·서비스·데이터 접근 계층, 이벤트 발행, 의존성 주입, 로더
 - [Koa: 미들웨어만 남긴 Node.js 웹 프레임워크](/knowledge/dictionary/backend/express/koa): 미들웨어와 ctx만 둔 코어, await next()의 양파 모델, 라우터·바디 파서 붙이기, 컨트롤러 분리
 - [Node.js 런타임과 OS 차이 다루기](/knowledge/dictionary/backend/express/nodejs-runtime): Node.js의 강점, Deno·Bun, cross-env·path
+- [Node.js 메모리 구조와 튜닝](/knowledge/dictionary/backend/express/nodejs-memory-tuning): RSS와 V8 힙, --max-old-space-size·--max-heap-size, 컨테이너 한도, 포인터 압축과 4GB 케이지, OOM 진단
+- [Node.js 권한 모델](/knowledge/dictionary/backend/express/nodejs-permission-model): --permission과 --allow-* 플래그, process.permission.has, 감사 모드, 안전벨트라는 위치와 한계, Deno 비교
 - [Node.js 스트림: 데이터를 조각으로 흘려 처리하기](/knowledge/dictionary/backend/express/node-streams): Readable·Writable·Duplex·Transform, 흐름·일시정지 모드, 백프레셔와 highWaterMark, pipeline, for await
 
 ### NestJS
@@ -149,6 +151,7 @@ RDB와 NoSQL 중 무엇을 고를지는 [데이터베이스 모델](/knowledge/d
 - [이미지·동영상 처리 서버 설계](/knowledge/dictionary/backend/architecture/media-processing-pipeline): 사전 생성과 온디맨드 리사이징, 캐시·CDN, 트랜스코딩 파이프라인
 - [동영상 스트리밍 서비스 설계: Netflix·YouTube](/knowledge/dictionary/backend/architecture/video-streaming-design): 업로드 처리 파이프라인(장면 청크·콘텐츠 검사·트랜스코딩), Open Connect와 ABR, 지역 차단·추천
 - [실시간 공동 편집: OT와 CRDT](/knowledge/dictionary/backend/architecture/collaborative-editing): 연산 단위 전송, OT와 CRDT 비교
+- [Cloudflare Durable Objects와 액터 모델](/knowledge/dictionary/backend/architecture/durable-objects): 전역 유일 이름·전용 SQLite·싱글 스레드 액터, 입력·출력 게이트, WebSocket 하이버네이션, 알람, 한도와 쓰임새
 - [대규모 웹 크롤러 설계](/knowledge/dictionary/backend/architecture/web-crawler-at-scale): 예의 제약, 도메인 샤드 노드, 프런티어
 - [URL 단축기 설계](/knowledge/dictionary/backend/architecture/url-shortener-design): 301·302, 고유 ID+Base62, 캐시 중심 읽기 경로
 - [실시간 트렌딩과 Top-K 집계](/knowledge/dictionary/backend/architecture/trending-topics): 슬라이딩 창 카운터, 3단 분산 집계, MinTopk 최소 후보 집합, 근사 Top-K, 비모수 조기 탐지

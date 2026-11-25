@@ -1,14 +1,14 @@
 ---
 title: "가비지 컬렉션과 메모리 누수"
 concept: "Garbage Collection"
-summary: "JavaScript 엔진은 루트에서 참조를 따라 닿을 수 있는(reachable) 값만 남기고 나머지를 자동으로 회수한다. 루트와 도달 가능성, 서로 참조해도 닿을 수 없으면 지워지는 '섬', 기본 알고리즘 mark-and-sweep과 순환 참조에 약했던 참조 카운팅, 세대별·점진적·병렬·유휴 시간 수집 같은 최적화(V8의 스캐빈지·mark-compact·쓰기 장벽), 그리고 GC가 막지 못하는 누수 패턴(전역, 잊힌 타이머·리스너, 클로저, 떨어져 나간 DOM, 끝없는 캐시)과 WeakMap·WeakRef·FinalizationRegistry를 정리한다."
+summary: "JavaScript 엔진은 루트에서 참조를 따라 닿을 수 있는(reachable) 값만 남기고 나머지를 자동으로 회수한다. 루트와 도달 가능성, 서로 참조해도 닿을 수 없으면 지워지는 '섬', 기본 알고리즘 mark-and-sweep과 순환 참조에 약했던 참조 카운팅, 세대별·점진적·병렬·유휴 시간 수집 같은 최적화(V8의 스캐빈지·mark-compact·쓰기 장벽), 그리고 GC가 막지 못하는 누수 패턴(전역, 잊힌 타이머·리스너, 클로저, 떨어져 나간 DOM, 끝없는 캐시), 컴포넌트 정리 누락의 프레임워크별 해제법과 AbortController, 그리고 WeakMap·WeakRef·FinalizationRegistry를 정리한다."
 tags: ["javascript", "frontend", "memory", "performance", "browser"]
 source: other
 date: "2026-10-21"
-sources: ["https://ko.javascript.info/garbage-collection", "https://ko.javascript.info/weakmap-weakset", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry", "https://v8.dev/blog/trash-talk", "http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management", "https://blog.risingstack.com/node-js-at-scale-node-js-garbage-collection/", "https://medium.com/sessionstack-blog/how-javascript-works-memory-management-how-to-handle-4-common-memory-leaks-3f28b94cfbec", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+sources: ["https://ko.javascript.info/garbage-collection", "https://ko.javascript.info/weakmap-weakset", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Memory_management", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry", "https://v8.dev/blog/trash-talk", "http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection", "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management", "https://blog.risingstack.com/node-js-at-scale-node-js-garbage-collection/", "https://medium.com/sessionstack-blog/how-javascript-works-memory-management-how-to-handle-4-common-memory-leaks-3f28b94cfbec", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://stackinsight.dev/blog/memory-leak-empirical-study"]
 ---
 
-> javascript.info(모던 JavaScript 튜토리얼)의 「가비지 컬렉션」, 「위크맵과 위크셋」 글을 바탕으로, MDN과 V8 블로그로 확인해 재구성한 노트다. V8의 스캐빈지와 쓰기 장벽은 Jay Conrod의 「[A tour of V8: Garbage Collection](http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection)」을 바탕으로 더했다. 클로저가 환경을 나눠 쓰는 누수는 RisingStack의 「[Node.js Garbage Collection Explained](https://blog.risingstack.com/node-js-at-scale-node-js-garbage-collection/)」를 바탕으로 보강했다. 결정 불가능성과 할당 시점 수집, 떨어져 나간 표 셀 누수는 SessionStack의 「[How JavaScript works: memory management + how to handle 4 common memory leaks](https://medium.com/sessionstack-blog/how-javascript-works-memory-management-how-to-handle-4-common-memory-leaks-3f28b94cfbec)」로 보강했다. 언어 일반의 GC 연결은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」을 점검해 보강했다.
+> javascript.info(모던 JavaScript 튜토리얼)의 「가비지 컬렉션」, 「위크맵과 위크셋」 글을 바탕으로, MDN과 V8 블로그로 확인해 재구성한 노트다. V8의 스캐빈지와 쓰기 장벽은 Jay Conrod의 「[A tour of V8: Garbage Collection](http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection)」을 바탕으로 더했다. 클로저가 환경을 나눠 쓰는 누수는 RisingStack의 「[Node.js Garbage Collection Explained](https://blog.risingstack.com/node-js-at-scale-node-js-garbage-collection/)」를 바탕으로 보강했다. 결정 불가능성과 할당 시점 수집, 떨어져 나간 표 셀 누수는 SessionStack의 「[How JavaScript works: memory management + how to handle 4 common memory leaks](https://medium.com/sessionstack-blog/how-javascript-works-memory-management-how-to-handle-4-common-memory-leaks-3f28b94cfbec)」로 보강했다. 언어 일반의 GC 연결은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」을 점검해 보강했다. 컴포넌트의 정리 누락 통계는 Ko-Hsin Liang의 「[Frontend Memory Leaks: A 500-Repository Static Analysis and Five-Scenario Benchmark Study](https://stackinsight.dev/blog/memory-leak-empirical-study)」(2026.02)를 바탕으로 보강했다.
 
 ## 가비지 컬렉션이란
 
@@ -104,6 +104,35 @@ GC는 닿을 수 없는 값만 회수한다. **더 이상 필요 없는데 어�
 | 클로저 | 오래 사는 함수가 큰 배열이 든 바깥 변수를 계속 참조한다 | 필요한 값만 꺼내 두고 큰 참조는 끊는다([[scope-and-closures\|스코프와 클로저]]). 같은 함수에서 만든 클로저끼리 환경을 공유해 생기는 누수는 아래에 있다 |
 | 떨어져 나간 DOM | DOM에서 지운 요소를 JS 변수·배열이 아직 가리킨다(detached node). 자식 노드는 `parentNode`로 부모를 가리키므로, 지운 표의 `<td>` 하나만 잡아도 **표 전체**가 남는다 | 참조를 `null`로 지우거나 WeakMap·WeakRef로 담는다 |
 | 끝없이 자라는 캐시 | 객체를 키로 쓰는 `Map` 캐시에 항목만 쌓인다 | 크기 제한(LRU)을 두거나 `WeakMap`을 쓴다 |
+
+### 컴포넌트의 정리 누락
+
+SPA의 컴포넌트는 마운트와 언마운트를 되풀이한다. **마운트 때 등록한 것을 언마운트 때 풀지 않으면** 등록한 콜백이 컴포넌트의 상태를 클로저로 붙잡아, 화면을 오갈 때마다 같은 크기만큼 쌓인다.
+
+React 210개·Vue 150개·Angular 140개, 모두 500개 공개 저장소를 정적 분석한 연구(2026.02)에서 86%(430개)가 정리 누락 패턴을 하나 이상 가졌다. 유형은 타이머 43.9%, 이벤트 리스너 19.0%, 구독 13.9%, effect 정리 9.3%, `watch` 중지 핸들 7.1%, `requestAnimationFrame` 2.2%, 옵저버 1.4% 순이다. 약 8KB 배열을 잡는 컴포넌트를 100번 마운트·언마운트한 벤치마크에서는 정리를 빠뜨린 쪽이 다섯 시나리오 모두 **사이클당 약 8KB씩 선형으로** 늘었고(합계 약 800KB), 정리한 쪽은 2~3KB에 머물렀다. 정적 분석에는 오탐(언마운트되지 않는 싱글턴, 스스로 완료되는 observable, 짧은 타이머)이 섞여 있으니 수치는 경향으로 읽는다.
+
+| 프레임워크 | 등록 | 해제 |
+| --- | --- | --- |
+| React | `useEffect` 안의 리스너·타이머·구독 | effect가 정리 함수를 반환한다 |
+| Vue 3 | `onMounted`의 리스너·타이머 | `onUnmounted`에서 푼다. `setup()`에서 동기로 만든 `watch`·`watchEffect`는 언마운트 때 자동으로 멈추고, 비동기 콜백 안에서 만든 것만 반환된 stop 함수를 직접 부른다 |
+| Angular | `subscribe`, `Renderer2.listen` | `ngOnDestroy`에서 `unsubscribe()`나 `listen`이 돌려준 해제 함수를 부른다. RxJS는 `takeUntilDestroyed()`(`@angular/core/rxjs-interop`)나 `takeUntil(destroy$)`로 묶는다 |
+| 공통 | `requestAnimationFrame`, `ResizeObserver`·`IntersectionObserver`·`MutationObserver` | `cancelAnimationFrame`, `disconnect()` |
+
+여러 리스너와 요청을 한꺼번에 푸는 가장 짧은 방법은 `AbortController` 하나의 `signal`을 모두에 넘기고 정리 때 `abort()`를 한 번 부르는 것이다.
+
+```javascript
+useEffect(() => {
+  const controller = new AbortController()
+  const { signal } = controller
+  window.addEventListener('resize', onResize, { signal })
+  document.addEventListener('keydown', onKey, { signal })
+  fetch(`/api/items/${id}`, { signal })
+    .then((res) => res.json())
+    .then(setItems)
+    .catch((err) => { if (err.name !== 'AbortError') throw err })
+  return () => controller.abort() // 리스너 해제 + 진행 중인 요청 취소
+}, [id])
+```
 
 ### 클로저끼리 환경을 나눠 쓰는 누수
 

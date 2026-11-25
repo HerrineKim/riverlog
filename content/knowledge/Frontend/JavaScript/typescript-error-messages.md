@@ -120,7 +120,7 @@ JavaScript에서 흔한 `let foo = {}; foo.bar = 1`은 TS2339가 된다. `foo`�
 | `--explainFiles`, `--listFiles` | 어떤 파일이 왜 컴파일 컨텍스트에 들어왔는가 |
 | `--traceResolution` | import 하나를 찾기 위해 어떤 경로를 어떤 순서로 봤는가. TS2307을 추적할 때 |
 | `--showConfig` | `extends`까지 합쳐진 최종 설정 |
-| `--extendedDiagnostics`, `--generateTrace <dir>` | 검사 시간·메모리, 느린 타입의 위치 |
+| `--extendedDiagnostics`, `--generateTrace <dir>` | 검사 시간·메모리, 느린 타입의 위치. 읽는 법과 진단 절차는 [[typescript-performance\|타입스크립트 타입 검사 성능 진단]] |
 
 ## 정리
 

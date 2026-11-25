@@ -89,4 +89,4 @@ h1 { font-size: clamp(2rem, 1rem + 3vw, 3rem); }
 - 유동 글자 크기에는 `vw`에 `rem`을 섞어 확대를 존중한다.
 - 삼각·지수·반올림 함수는 모든 주요 브라우저가 지원한다. `abs()`·`sign()`도 2025년부터 쓸 수 있다.
 
-관련 노트: [[css-basics|CSS 기초: 문법, 적용 방법, 단위]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[transform|transform: 이동·회전·확대·기울이기]], [[css-visual-effects|CSS 시각 효과: 필터, 블렌드 모드, 클리핑, 마스킹]]
+관련 노트: [[css-basics|CSS 기초: 문법, 적용 방법, 단위]], [[css-color-variables|CSS 커스텀 속성으로 색상 체계 짜기]], [[transform|transform: 이동·회전·확대·기울이기]], [[css-visual-effects|CSS 시각 효과: 필터, 블렌드 모드, 클리핑, 마스킹]], [[css-if-and-functions|CSS 조건부 값과 사용자 정의 함수]]

@@ -68,6 +68,8 @@ DevOps는 개발(Development)과 운영(Operations) 사이의 벽을 줄여, 코
 | [DevOps, SRE, 플랫폼 엔지니어링, NoOps와 클라우드 거버넌스](/knowledge/dictionary/devops/devops-sre-platform-engineering) | 협업 문화, SLO·에러 버짓, 내부 플랫폼, 서버리스 지향의 차이, 클라우드 운영 조직 모델(CCoE)과 가드레일 거버넌스 |
 | [플랫폼 엔지니어링: 내부 개발자 플랫폼과 골든 패스](/knowledge/dictionary/devops/platform-engineering) | 개발자를 고객으로 보는 IDP, 다섯 구성 요소와 오케스트레이터, 포털과 플랫폼, 골든 패스 설계, 최소 실행 가능 플랫폼 |
 | [DevSecOps와 클라우드 보안](/knowledge/dictionary/devops/devsecops) | 위협 모델링, 코드·의존성·이미지·IaC 자동 검사, 비밀 관리, 취약점 관리, 클라우드의 관리적·기술적 위협과 CVE·CCE 점검, 보안 솔루션 배치 |
+| [시크릿 관리: 저장소 밖에 두고, 짧게 쓰고, 새면 바로 교체한다](/knowledge/dictionary/devops/secrets-management) | OIDC로 시크릿 없애기, 범위를 좁혀 시크릿 매니저에서 주입, 로컬 `.env` 대안, 시크릿 스캔과 푸시 보호, 교체와 유출 뒤 대응 순서 |
+| [개발자를 노리는 사회공학 공격](/knowledge/dictionary/devops/developer-targeted-social-engineering) | 가짜 채용 코딩 과제(Contagious Interview)·가짜 화상 회의·레지스트리 사칭 피싱, 남이 준 코드를 격리 환경에서 돌리는 법 |
 | [ChatOps: 채팅에서 운영하기](/knowledge/dictionary/devops/chatops) | 채팅방 봇 명령으로 배포·조회·장애 대응, 투명성과 온보딩, 도입 단계, 권한·비밀·알림 피로 |
 
 서비스 전체의 데이터 흐름 속에서 DevOps가 차지하는 자리는 [웹 확장성의 구성 요소](/knowledge/dictionary/backend/architecture/web-scalability-components)에서 함께 볼 수 있다. 모바일 앱의 OTA 배포는 [CodePush](/knowledge/dictionary/frontend/mobile/codepush) 참고.

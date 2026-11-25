@@ -146,7 +146,7 @@ ES 모듈이 정적이라는 성질은 로더가 코드를 실행하기 **전에
 - 진입점 하나에만 `type="module"`을 달면 나머지는 `import`로 따라 들어온다. 모듈 스크립트는 인라인이어도 기본이 `defer`처럼 동작해 항상 완성된 DOM을 보고, `async`를 주면 import가 끝나는 대로 실행된다. 일반 스크립트·`async`·`defer`와의 실행 순서 비교는 [[script-loading|스크립트·스타일 로딩 순서]]에 있다.
 - 같은 `src`의 모듈 스크립트는 여러 번 넣어도 한 번만 실행된다.
 - 모듈은 CORS 규칙을 따른다. 다른 출처에서 모듈을 가져오려면 그 서버가 `Access-Control-Allow-Origin` 헤더를 줘야 하고, HTML을 `file://`로 열면 막힌다. 로컬 서버로 연다.
-- 브라우저는 `'./utils.js'`처럼 **확장자까지 쓴 경로나 URL**만 해석한다. `import { format } from 'date-fns'` 같은 패키지 이름(bare specifier)은 번들러·Vite가 `node_modules`에서 찾아 주거나, `<script type="importmap">`으로 이름과 URL을 직접 짝지어 줘야 한다.
+- 브라우저는 `'./utils.js'`처럼 **확장자까지 쓴 경로나 URL**만 해석한다. `import { format } from 'date-fns'` 같은 패키지 이름(bare specifier)은 번들러·Vite가 `node_modules`에서 찾아 주거나, `<script type="importmap">`으로 이름과 URL을 직접 짝지어 줘야 한다. 임포트 맵의 문법과 번들러 없이 npm 의존성을 쓰는 방법은 [[import-maps|임포트 맵과 번들러 없는 npm 임포트]]에 있다.
 - 과거에는 모듈을 모르는 구형 브라우저를 위해 같은 기능의 번들을 `<script nomodule>`로 함께 넣었다. 모듈을 해석하는 브라우저는 `nomodule`을 건너뛴다.
 
 실제 서비스에서는 대개 번들러가 진입점부터 의존 관계를 따라가 파일을 묶고, 트리 셰이킹·압축·문법 변환을 거친다. 이때 `import`/`export`는 번들러 코드로 바뀐다([[bundlers-and-vite|번들러의 역사와 Vite]]).

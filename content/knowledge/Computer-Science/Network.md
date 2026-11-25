@@ -21,6 +21,7 @@ date: "2026-10-14"
 - [네트워크 보안: 방화벽, VPN, 계층별 공격](Computer-Science/Network/network-security.md): 패킷 필터에서 차세대 방화벽까지, VPN 터널, OSI 계층별 공격과 다층 방어
 - [RFC와 요구 수준 키워드](Computer-Science/Network/rfc-requirement-levels.md): 인터넷 표준 문서 RFC를 읽는 법과 MUST·SHOULD·MAY의 정확한 뜻
 - [HTTP 캐시](Computer-Science/Network/http-cache.md): Cache-Control과 ETag로 응답을 재사용하는 HTTP 캐시, 자산별 캐시 전략
+- [HTTP 범위 요청과 동영상 제공](Computer-Science/Network/http-range-requests.md): Range·Content-Range·Accept-Ranges, 206·416·200이 갈리는 조건, If-Range, multipart/byteranges, video 탐색, CDN·캐시
 - [DNS](Computer-Science/Network/dns.md): 도메인을 IP로 바꾸는 조회 흐름, 레코드 종류, TTL, dns-prefetch·preconnect
 - [이메일 전달 과정: SMTP, IMAP, 발신자 인증](Computer-Science/Network/email-delivery.md): MUA·MTA·MDA와 MX 레코드, SMTP 릴레이, IMAP·POP3, SPF·DKIM·DMARC
 - [CDN](Computer-Science/Network/cdn.md): 엣지 서버에 콘텐츠를 캐시해 가까운 곳에서 응답하는 CDN과 캐시 무효화

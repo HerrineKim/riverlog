@@ -98,4 +98,4 @@ Flux·Redux에서 Context, 서버 상태 라이브러리, 작은 전역 스토�
 - 스토어·atom·proxy는 우열이 아니라 모양의 차이다. 팀과 앱에 맞는 쪽을 고른다.
 - 로컬에서 시작하고 필요할 때만 끌어올린다.
 
-관련 노트: [[state|State]], [[context|Context]], [[redux|Redux와 react-redux]], [[redux-middleware|Redux 미들웨어와 비동기 처리]], [[tanstack-query|TanStack Query(React Query)]], [[react-server-components|React Server Components의 동작 원리]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]]
+관련 노트: [[state|State]], [[context|Context]], [[redux|Redux와 react-redux]], [[redux-middleware|Redux 미들웨어와 비동기 처리]], [[tanstack-query|TanStack Query(React Query)]], [[react-server-components|React Server Components의 동작 원리]], [[frontend-mv-architecture|프론트엔드 MV* 아키텍처의 흐름]], [[url-as-state|URL을 상태로 쓰기]]
