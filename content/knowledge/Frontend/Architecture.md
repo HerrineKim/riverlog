@@ -28,3 +28,5 @@ date: "2026-10-14"
 - [Feature-Sliced Design](Frontend/Architecture/feature-sliced-design.md): 레이어 → 슬라이스 → 세그먼트 3단계 분할, 위 레이어만 아래를 쓰는 규칙, Public API, Next.js와 함께 쓸 때의 충돌, 레이어 경계 찾기와 점진적 도입
 
 관련 주제: 빌드 도구와 폴더를 처음 잡는 과정은 [React](Frontend/React.md), 테스트로 설계를 이끄는 방법은 [Testing](Frontend/Testing.md)에 있다.
+- [마이크로 프론트엔드: 도입 기준, 통합 방식, 트레이드오프](Frontend/Architecture/micro-frontends.md): 모놀리스→모듈러 모놀리스→모노레포→마이크로 프론트엔드 단계, 통합 방식 비교, 분산 모놀리스·공유 의존성 비용, 도입 기준
+- [로컬 우선(Local-First)과 제로 한계 비용 아키텍처](Frontend/Architecture/local-first-zero-cost-architecture.md): IndexedDB·OPFS·CRDT·WebGPU(WebLLM) 조합으로 서버 한계 비용 0에 수렴시키기, 콜드 스타트·기기 제약과 완화 전략
