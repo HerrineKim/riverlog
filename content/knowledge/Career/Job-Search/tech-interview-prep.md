@@ -4,7 +4,7 @@ concept: "Tech Interview"
 summary: "개발자 기술 면접은 코딩, 시스템 디자인, 객체 지향 설계(OOD), 행동(behavioral) 면접으로 나뉜다. 유형별로 무엇을 보는지와 준비 자료, 퀴즈·온라인 코딩 테스트·과제·화상 면접·온사이트 같은 진행 형식별 대비, 면접 언어 고르기, 남은 시간에 맞춘 준비 계획(주제 우선순위, Blind 75·Grind 75), 코딩 인터뷰를 자기소개 → 질문 명확화 → 접근 논의 → 말하며 코딩 → 테스트 → 역질문으로 진행하는 법을 정리하고, 시스템 디자인 면접의 유형과 요구 사항 확인 → 용량 추정 → 상위 설계 → DB 설계 → 인터페이스 설계 → 확장성 → 신뢰성의 7단계를 다룬다."
 tags: ["career", "interview", "job-search", "architecture", "algorithm"]
 source: other
-date: "2026-11-23"
+date: "2026-11-25"
 sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss", "https://gyoogle.dev/blog/", "https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview", "https://jeinalog.tistory.com/30", "https://github.com/donnemartin/system-design-primer", "https://www.techinterviewhandbook.org/software-engineering-interview-guide/", "https://www.techinterviewhandbook.org/coding-interview-prep/", "https://www.techinterviewhandbook.org/coding-interview-study-plan/", "https://www.techinterviewhandbook.org/coding-interview-cheatsheet/", "https://www.techinterviewhandbook.org/best-practice-questions/", "https://www.techinterviewhandbook.org/programming-languages-for-coding-interviews/", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://www.techinterviewhandbook.org/mock-interviews/", "https://www.techinterviewhandbook.org/landscape/", "https://www.techinterviewhandbook.org/system-design/", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://www.reddit.com/r/ExperiencedDevs/comments/q4xj42/best_way_to_learnpracticeprepare_for_system/", "https://github.com/karanpratapsingh/system-design", "https://designed-to-scale.vercel.app/"]
 ---
 
@@ -22,7 +22,7 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 | 시스템 디자인 | 모호한 요구를 구체화하고, 구성 요소를 조립하고, 트레이드오프를 설명하는 힘. 주로 몇 년 차 이상 경력직에게 내고, 인턴에게는 거의 내지 않는다 | 『가상 면접 사례로 배우는 대규모 시스템 설계 기초』 1·2권, 『데이터 중심 애플리케이션 설계』, 설계 사례 강의 |
 | 객체 지향 설계(OOD) | 클래스와 책임을 나누고 관계를 그리는 힘. 주차장, 엘리베이터 같은 문제 | 『헤드 퍼스트 디자인 패턴』, OOD 문제 모음. 풀이 순서와 17개 사례는 [[ood-interview-approach\|객체 지향 설계 면접]], 패턴은 [[gof-design-patterns\|GoF 디자인 패턴]] |
 | 행동(behavioral) | 협업, 갈등, 실패, 주도성에 대한 실제 경험 | STAR 기법(상황 → 과제 → 행동 → 결과)으로 사례를 미리 정리한다. Tech Interview Handbook 같은 공개 자료([[behavioral-interview-questions\|인성 면접 준비]], 평가 기준은 [[behavioral-interview-rubrics\|인성 면접 평가 기준]]) |
-| 모의 면접 | 실전 압박 속에서 말하며 푸는 연습 | 동료와 짝을 지어 번갈아 면접관을 맡거나, 현업 엔지니어와 익명으로 연습하는 플랫폼(interviewing.io 등)을 쓴다. 익명이라 부담이 적고, 끝나면 양쪽이 서로 피드백을 남긴다. 처음이라면 녹화된 모의 면접을 먼저 보며 흐름을 익힌다 |
+| 모의 면접 | 실전 압박 속에서 말하며 푸는 연습 | 동료와 짝을 지어 번갈아 면접관을 맡거나, 현업 엔지니어와 익명으로 연습하는 플랫폼(interviewing.io 등)을 쓴다. 익명이라 부담이 적고, 끝나면 양쪽이 서로 피드백을 남긴다. 처음이라면 녹화된 모의 면접을 먼저 보며 흐름을 익힌다. interviewing.io는 모바일·프론트엔드·엔지니어링 매니저처럼 직군별 모의 면접도 있고, 모의 면접 성적이 좋으면 제휴 회사의 실제 면접을 바로 잡을 수 있다 |
 
 지원은 LinkedIn, Indeed 같은 채용 플랫폼과 회사 채용 페이지, 추천(referral)으로 한다. 빅테크 정규직으로 가는 가장 쉬운 길은 **인턴 전환**이다. 인턴 면접은 보통 2라운드로 정규직(4~5라운드)보다 짧고, 회사는 이미 함께 일해 본 인턴에게 정규직 제안을 주는 것을 위험이 낮은 채용으로 본다. 미국 채용 절차는 [[us-hiring-process|미국 개발자 채용 프로세스와 ATS]], 프론트엔드 면접은 [[frontend-interview|프론트엔드 면접 유형과 준비법]]에 있다.
 
@@ -37,7 +37,7 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 | 과제(take-home) | 드묾 | 항공편 목록 앱, 칸반 보드, 스네이크 게임처럼 큰 결과물로 설계 감각을 본다. 스타트업·작은 회사에 많다 | 동작보다 구조·테스트·README로 판단 과정을 보여 준다 |
 | 화상·전화 면접(phone screen) | 흔함 | Zoom·Meet 등으로 연결해 CoderPad, CodePen(프론트엔드), Google Docs 같은 공유 편집기에서 푼다. **코드를 실행할 수 없는 경우가 많다** | 실행 없이 손으로 예제를 따라가며 검증하는 연습(아래 「코딩 인터뷰 진행 원칙」) |
 | AI 도구를 쓰는 평가·해커톤 | 늘어나는 중 | 회사가 정한 모델만 쓰게 한다. 일부러 성능이 낮은 구형 모델을 주고 다루는 능력을 보기도 한다. 이런 모델은 앞에서 넣은 문서·대화를 금방 잊는다 | 요구 사항·제약·출력 형식을 담은 자세한 프롬프트를 미리 써 두고, 맥락을 매번 명시적으로 다시 넣는다 |
-| 온사이트(final round) | 거의 항상 | 몇 시간 동안 코딩·시스템 디자인·행동 면접을 여러 라운드 연달아 본다. 화이트보드나 본인 노트북을 쓰고, 직원과의 점심이 끼기도 한다 | 노트북을 쓰는 회사라면 편집기·언어 환경을 미리 세팅해 간다 |
+| 온사이트(final round) | 거의 항상 | 몇 시간 동안 코딩·시스템 디자인·행동 면접을 여러 라운드 연달아 본다. 화이트보드나 본인 노트북을 쓰고, 직원과의 점심이 끼기도 한다. 해외 지원자는 회사가 항공·숙박을 대 주기도 한다 | 노트북을 쓰는 회사(비상장·작은 회사에 많다)라면 편집기·언어 환경을 미리 세팅해 간다. 점심은 평가보다 회사 문화를 엿볼 기회로 쓴다 |
 
 온사이트는 회사마다 라운드 구성이 다르지만 다음 꼴이 반복된다. 지원 회사의 후기로 조합을 확인한다.
 
@@ -81,7 +81,8 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 - **최소 30시간, 제대로 하려면 약 100시간**이 든다. 여유가 있으면 **약 3개월, 주 11시간**이 기준이다. 일정은 날짜별 남은 시간으로 쪼개 적되, 지치지 않게 보수적으로 잡는다.
 - 한 주제를 **공부한 직후 그 주제의 문제를 푼다.** 기억에 남고 효율이 좋다. 해설은 정답 코드보다 **접근하는 사고 과정**을 이해한다.
 - 연습할 때부터 아래 「코딩 인터뷰 진행 원칙」의 행동(질문 명확화, 말하며 풀기, 테스트)과 [[coding-test|코딩 테스트 접근법]]의 풀이·최적화 기법을 같이 쓴다. 제출 전에 테스트 케이스를 직접 만들어 따라가 보는 등 실전처럼 푼다.
-- 문제 연습은 LeetCode가 면접에 가장 가깝고, HackerRank·Codeforces는 경시대회 쪽이다.
+- 문제 연습은 LeetCode가 면접에 가장 가깝고, HackerRank·Codeforces는 경시대회 쪽이다. 『코딩 인터뷰 완전 분석』 같은 책을 읽는 것보다 고른 언어로 직접 푸는 시간이 효과가 크다.
+- 답을 외우지 말고 **문제 유형(패턴)**을 익힌다. 투 포인터, 슬라이딩 윈도, BFS·DFS처럼 패턴별로 묶은 강의(Grokking the Coding Interview, AlgoMonster)나 유형별 문제 목록이 이 방식이다.
 
 ### 학습 순서 세 가지
 
@@ -212,7 +213,7 @@ flowchart TB
 
 | 단계 | 방법 |
 | --- | --- |
-| 개념 쌓기 | 설계 강의(Grokking the System Design Interview, Educative의 Scalability & System Design for Developers, AlgoExpert의 SystemsExpert)나 아래 책으로 기초를 잡는다. SystemsExpert는 주니어에게는 맞지만 중·고급 엔지니어에게는 너무 기초적이라는 평이 있다 |
+| 개념 쌓기 | 설계 강의(Grokking the System Design Interview, Educative의 Scalability & System Design for Developers, AlgoExpert의 SystemsExpert)나 아래 책으로 기초를 잡는다. SystemsExpert는 주니어에게는 맞지만 중·고급 엔지니어에게는 너무 기초적이라는 평이 있다. ByteByteGo는 Alex Xu의 책 내용을 바탕으로 YouTube·뉴스피드·채팅 같은 10여 개 사례를 그림과 함께 다루고, Exponent는 질문 데이터베이스와 모의 면접 영상(일부는 DB 스키마·API까지)을 준다. Grokking the Advanced System Design Interview 같은 심화 과정은 아주 높은 레벨이나 전문 직군이 아니면 필요 없다 |
 | 문제 보고 먼저 그려 보기 | 유튜브의 설계 문제·모의 면접 영상(Gaurav Sen 채널 등)을 볼 때 문제만 듣고 **멈춘 뒤** 내 설계를 먼저 스케치하고 나서 풀이를 본다. codemia.io 같은 연습 사이트에서 직접 풀어 본다 |
 | 실전 피드백 | 빅테크 면접관 출신에게 유료 모의 면접을 받으면 어디가 맞고 틀렸는지 솔직한 피드백을 얻는다. 비용이 부담되면 시스템 디자인 라운드가 있는 회사 중 덜 가고 싶은 곳에 먼저 지원해 연습하고 피드백을 청한다 |
 | 연차에 맞추기 | 시니어는 이미 일에서 설계를 하므로 이론을 다 읽기보다 문제를 많이 풀며 말하는 연습을 한다. 주니어는 일에서 설계를 할 기회가 적어 개념 학습에 시간을 따로 써야 한다. 책을 모두 읽으려면 몇 년이 걸리니 45분짜리 면접 형식에 맞춘 연습과 균형을 잡는다 |
