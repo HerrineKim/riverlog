@@ -53,6 +53,8 @@ JavaScript는 브라우저 화면을 동적으로 만들기 위한 언어이며,
 - [Symbol](/knowledge/dictionary/frontend/javascript/js-symbol): 고유한 원시값, 충돌 없는 속성 키, Symbol.for 레지스트리, well-known symbol
 - [이터레이터와 제너레이터](/knowledge/dictionary/frontend/javascript/iterators-and-generators): Symbol.iterator와 next(), function*·yield·yield*, 게으른 수열, 이터레이터 헬퍼, for await
 
+- [자바스크립트의 명시적 리소스 관리: using과 Symbol.dispose](/knowledge/dictionary/frontend/javascript/explicit-resource-management): using·await using 선언, Symbol.dispose·Symbol.asyncDispose 규약, DisposableStack·SuppressedError, 2026년 런타임 지원
+
 ### 프로그래밍 패러다임
 - [객체 지향 프로그래밍과 JavaScript](Frontend/JavaScript/oop-and-javascript.md): 구조체에서 클래스로, 캡슐화·상속·추상화·다형성, 프로토타입·덕 타이핑·일급 함수로 푼 JavaScript의 OOP
 - [함수형 프로그래밍](Frontend/JavaScript/functional-programming.md): 액션·계산·데이터, 카피 온 라이트와 방어적 복사, 계층형 설계와 추상화 벽, 입력→화면 파이프라인, 커링과 부분 적용(partial)
