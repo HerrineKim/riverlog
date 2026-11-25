@@ -94,3 +94,4 @@ date: "2026-10-13"
 - [구조화된 콘텐츠와 기계가 읽는 웹](/knowledge/dictionary/frontend/web/structured-content): 음성 비서·검색·AI 답변이 콘텐츠를 합치고 추론하는 방식, 시맨틱 HTML과 schema.org JSON-LD, CMS 콘텐츠 모델
 - [브라우저 안 빌드·프리뷰 환경](/knowledge/dictionary/frontend/web/in-browser-preview-runtime): AI가 만든 화면을 바로 띄우는 런타임, 정책은 API 프록시·화면은 AI, 가상 FS + esbuild-wasm + 패키지 조합 해시 + import map
 - [프론트엔드 웹 개발 용어집](/knowledge/dictionary/frontend/web/web-glossary): API부터 Yarn까지 70여 개 용어를 주제별로 묶고 자세한 노트로 연결
+- [fetch()와 ReadableStream으로 진행률을 재기 어려운 이유](/knowledge/dictionary/frontend/web/fetch-progress-streams): 응답 압축으로 인한 Content-Length 불일치, 요청 스트림 버퍼링·Safari/Firefox 미지원, XMLHttpRequest·청크 업로드 대안
