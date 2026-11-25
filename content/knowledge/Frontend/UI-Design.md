@@ -32,3 +32,4 @@ UI 디자인 주제는 **화면이 어떻게 보이고 쓰이는가**를 다룬�
 - [UX 라이팅: 원칙, 가이드라인, 체크리스트](Frontend/UI-Design/ux-writing.md): 원칙→가이드라인→체크리스트 문서 구조, 화면 문구를 검토하는 8가지 기준, 다크 패턴과 보이스 톤
 - [디자이너는 어떻게 코드를 배우나](Frontend/UI-Design/designers-learning-code.md): 코드를 배우는 목적은 디자인 재료 이해, 터미널·Git·시맨틱 HTML·CSS 기초, 토큰·컴포넌트 같은 공학 개념
 - [와이어프레임, 목업, 프로토타입: 충실도에 따른 화면 설계 산출물](Frontend/UI-Design/wireframe-mockup-prototype.md): IA에서 프로토타입까지, 와이어프레임 충실도, 프로토타입 유형과 충실도 고르기, 클릭되는 와이어프레임과 도구 기준
+- [토스트(Toast) 컴포넌트 설계: 스택 애니메이션, 스와이프, 접근성](Frontend/UI-Design/toast-notification-design.md): React 트리 밖 명령형 스토어, 중단 가능한 transition 스택, 높이 정렬, 모멘텀 기반 스와이프, 접근성 함정
