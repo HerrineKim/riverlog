@@ -1,14 +1,14 @@
 ---
 title: "SQL 기초"
 concept: "SQL"
-summary: "SQL 명령어 분류(DDL·DQL·DML·DCL·TCL)와 연산자, 테이블 구조 변경과 제약 조건(기본 키·외래 키·CASCADE, 자연 키와 대리 키), 뷰·시퀀스·동의어, 데이터를 생성·조회·수정·삭제하고 조건·정렬·집계·그룹화하는 기본 문법, JOIN 종류(제외 조인, 세미·안티 세미 조인, 비등가 조인, 여러 테이블 잇기, LATERAL·APPLY), WHERE와 HAVING·DISTINCT·CROSS JOIN처럼 헷갈리기 쉬운 지점, 서브쿼리(상관 서브쿼리, EXISTS와 NOT IN의 NULL 함정), 집합 연산(UNION·INTERSECT·EXCEPT), 직원·부서 예제로 보는 쿼리 패턴(셀프 조인, 그룹별 최댓값, 빈 그룹 세기), 저장 프로시저와 PL/SQL(블록, 예외, 커서, BULK COLLECT, 함수·패키지·트리거)."
+summary: "SQL 명령어 분류(DDL·DQL·DML·DCL·TCL)와 연산자, 테이블 구조 변경과 제약 조건(기본 키·외래 키·CASCADE, 자연 키와 대리 키), 뷰·시퀀스·동의어, 데이터를 생성·조회·수정·삭제하고 조건·정렬·집계·그룹화하는 기본 문법, JOIN 종류(제외 조인, 세미·안티 세미 조인, 비등가 조인, 여러 테이블 잇기, LATERAL·APPLY), WHERE와 HAVING·DISTINCT·CROSS JOIN처럼 헷갈리기 쉬운 지점, 서브쿼리(상관 서브쿼리, EXISTS와 NOT IN의 NULL 함정), 집합 연산(UNION·INTERSECT·EXCEPT), 직원·부서 예제로 보는 쿼리 패턴(셀프 조인, 그룹별 최댓값, 빈 그룹 세기, N번째 값, 중복 행 지우기), 대소문자·날짜 조건과 DBMS별 날짜 함수, 저장 프로시저와 PL/SQL(블록, 예외, 커서, BULK COLLECT, 함수·패키지·트리거)."
 tags: ["sql", "database", "mysql", "oracle", "certificate"]
 source: mixed
 date: "2026-11-25"
-sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "Steve Stedman, TSQL JOIN Types Poster (v22.03)", "https://www.jitbit.com/news/181-jitbits-sql-interview-questions/", "https://github.com/swapnakpanda/Infographics", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "고려사이버대학교 데이터베이스시스템 강의(나홍석 교수, 2024-1학기)"]
+sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "Steve Stedman, TSQL JOIN Types Poster (v22.03)", "https://www.jitbit.com/news/181-jitbits-sql-interview-questions/", "https://www.java67.com/2013/04/10-frequently-asked-sql-query-interview-questions-answers-database.html", "https://github.com/swapnakpanda/Infographics", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "고려사이버대학교 데이터베이스시스템 강의(나홍석 교수, 2024-1학기)"]
 ---
 
-> 여러 자료를 종합한 노트에, SQL 다섯 분류는 ByteByteGo의 System Design 101 가이드 「[What is the Best Way to Learn SQL?](https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql)」를, JOIN은 「[How do SQL Joins Work?](https://bytebytego.com/guides/how-do-sql-joins-work)」와 Steve Stedman의 「TSQL JOIN Types」 포스터(v22.03)를, 쿼리 패턴 연습은 Jitbit의 「[SQL Interview Questions](https://www.jitbit.com/news/181-jitbits-sql-interview-questions/)」를 바탕으로 보강했다.
+> 여러 자료를 종합한 노트에, SQL 다섯 분류는 ByteByteGo의 System Design 101 가이드 「[What is the Best Way to Learn SQL?](https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql)」를, JOIN은 「[How do SQL Joins Work?](https://bytebytego.com/guides/how-do-sql-joins-work)」와 Steve Stedman의 「TSQL JOIN Types」 포스터(v22.03)를, 쿼리 패턴 연습은 Jitbit의 「[SQL Interview Questions](https://www.jitbit.com/news/181-jitbits-sql-interview-questions/)」와 Javin Paul의 「[SQL Query Interview Questions](https://www.java67.com/2013/04/10-frequently-asked-sql-query-interview-questions-answers-database.html)」를 바탕으로 보강했다.
 > 제약 조건·자연 키와 대리 키, 구조 변경과 DELETE·TRUNCATE·DROP, 뷰, CSV 가져오기는 「[Frontend_TIL: Constraint 제약조건](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md)」, 「[SQL문](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md)」, 「[CSV 파일로 테이블 생성](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md)」을 바탕으로 보강했다.
 > 「파라미터 바인딩과 Prepared Statement」는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 데이터베이스 문서를 바탕으로 보강했다.
 > 키의 종류와 저장 프로시저는 gyoogle의 「[tech-interview-for-developer](https://github.com/gyoogle/tech-interview-for-developer)」 저장소의 Database 문서를 바탕으로 보강했다.
@@ -275,6 +275,21 @@ SELECT COUNT(*) FROM users_user WHERE phone LIKE '02-%';
 | 술어 | `BETWEEN a AND b`(양 끝 포함), `IN (...)`, `LIKE`, `IS NULL`, `EXISTS`, `ANY`·`SOME`, `ALL`, `UNIQUE` | `= NULL`은 언제나 `UNKNOWN`이라 `IS NULL`로 쓴다. `SOME`은 `ANY`의 다른 이름이다. 서브쿼리 결과에 중복이 없는지 보는 `UNIQUE` 술어는 표준에 있지만 지원하는 DBMS가 드물다 |
 
 `ANY`·`ALL`·`EXISTS`처럼 서브쿼리를 받는 술어의 동작과 NULL 함정은 아래 「서브쿼리」에 있다.
+
+### 대소문자와 날짜 조건
+
+- `LIKE`와 `=`가 대소문자를 구분하는지는 **콜레이션(collation)**이 정한다. MySQL 기본 콜레이션(`utf8mb4_0900_ai_ci`)과 SQL Server 기본 설치는 구분하지 않고, PostgreSQL과 Oracle은 구분한다. 구분하는 DB에서 대소문자 없이 찾으려면 `LOWER(name) LIKE '%joe%'`나 PostgreSQL의 `ILIKE`를 쓴다.
+- 컬럼에 `UPPER()`·`LOWER()`·`YEAR()` 같은 함수를 씌우면 일반 인덱스를 타지 못한다. 자주 쓰면 함수 기반 인덱스를 만들거나 조건을 컬럼 그대로 비교하게 바꾼다([[index-design#인덱스를 못 타게 만드는 조건|인덱스를 못 타게 만드는 조건]]).
+- 날짜 리터럴은 **ISO 형식 `'YYYY-MM-DD'`**로 쓴다. `'01/08/13'`, `'31/12/1975'` 같은 형식은 세션의 언어·날짜 설정에 따라 다르게 읽히거나 오류가 난다.
+- 시각이 있는 컬럼(`DATETIME`, `TIMESTAMP`)에 `BETWEEN '2026-01-01' AND '2026-01-31'`을 쓰면 31일 0시까지만 잡힌다. 기간은 `>= '2026-01-01' AND < '2026-02-01'`처럼 반열린 구간으로 쓴다. 이 꼴은 `YEAR(created_at) = 2026`과 달리 인덱스도 탄다.
+
+날짜 함수는 DBMS마다 이름이 다르다.
+
+| 하는 일 | 표준 | MySQL | PostgreSQL | Oracle | SQL Server |
+| --- | --- | --- | --- | --- | --- |
+| 현재 날짜·시각 | `CURRENT_TIMESTAMP` | `NOW()`, `CURDATE()` | `NOW()`, `CURRENT_DATE` | `SYSDATE`, `CURRENT_DATE` | `GETDATE()`, `SYSDATETIME()` |
+| 연도 뽑기 | `EXTRACT(YEAR FROM d)` | `YEAR(d)`, `EXTRACT` | `EXTRACT` | `EXTRACT` | `YEAR(d)`, `DATEPART(year, d)` |
+| 문자열이 날짜인지 검사 | - | `STR_TO_DATE`가 `NULL`이면 실패 | `to_date`·캐스트 오류로 확인 | `TO_DATE(... DEFAULT NULL ON CONVERSION ERROR)`(12.2+) | `TRY_CONVERT(date, s)`가 `NULL`이면 실패. `ISDATE()`는 언어 설정에 따라 결과가 바뀐다 |
 
 ## 정렬과 개수 제한
 
@@ -545,6 +560,8 @@ Employee(ID, DepartmentID, BossID, Name, Salary)   -- BossID는 같은 Employee�
 | 4. 모든 부서와 인원 수 | `LEFT JOIN` + `COUNT(열)` | `COUNT(*)`는 빈 부서를 1로 센다 |
 | 5. 같은 부서에 상사가 없는 직원 | 조건을 `ON`에 둔 제외 조인 | 조건을 `WHERE`에 두면 결과가 달라진다 |
 | 6. 모든 부서와 급여 합계 | `LEFT JOIN` + `SUM` | 빈 부서의 `SUM`은 0이 아니라 `NULL` |
+| 7. 두 번째로 높은 급여 | N번째 값 | 같은 급여가 여럿이면 「두 번째 행」과 「두 번째 금액」이 다르다 |
+| 8. 중복 행 찾고 하나만 남기기 | `GROUP BY ... HAVING`, `ROW_NUMBER` | 무엇이 같으면 중복인지(키) 먼저 정한다 |
 
 ```sql
 -- 1. 상사보다 많이 받는 직원: 같은 테이블을 두 번 쓴다
@@ -585,6 +602,34 @@ FROM Department d
 LEFT JOIN Employee e ON e.DepartmentID = d.ID
 GROUP BY d.ID, d.Name;
 ```
+
+```sql
+-- 7. 두 번째로 높은 급여 (금액 기준, 동점은 하나로)
+SELECT MAX(Salary) FROM Employee
+WHERE Salary < (SELECT MAX(Salary) FROM Employee);       -- 2위가 없으면 NULL
+
+-- N번째로 일반화: DENSE_RANK는 같은 금액에 같은 순위를 주고 다음 순위를 건너뛰지 않는다
+SELECT DISTINCT Salary
+FROM (SELECT Salary, DENSE_RANK() OVER (ORDER BY Salary DESC) AS rk FROM Employee) t
+WHERE rk = 2;
+
+-- 정렬 후 건너뛰기: LIMIT 1 OFFSET 1 (MySQL·PostgreSQL)
+-- 표준·SQL Server 2012+·Oracle 12c+: OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY
+SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT 1 OFFSET 1;
+
+-- 8. 중복 찾기: 이름이 같은 직원이 둘 이상인 경우
+SELECT Name, COUNT(*) FROM Employee GROUP BY Name HAVING COUNT(*) > 1;
+
+-- 중복 지우기: 키(Name)마다 ID가 가장 작은 행만 남긴다
+DELETE FROM Employee
+WHERE ID IN (SELECT ID
+             FROM (SELECT ID, ROW_NUMBER() OVER (PARTITION BY Name ORDER BY ID) AS rn
+                   FROM Employee) t
+             WHERE rn > 1);
+```
+
+- 7번에서 `RANK`·`DENSE_RANK`·`ROW_NUMBER`는 동점 처리에서 갈린다. 급여가 300, 300, 200이면 `ROW_NUMBER`는 1·2·3, `RANK`는 1·1·3, `DENSE_RANK`는 1·1·2다. 「두 번째로 높은 금액」은 200이므로 `DENSE_RANK`나 `DISTINCT`가 맞다.
+- 8번의 바깥 괄호 한 겹(`FROM (...) t`)은 MySQL이 지우는 테이블을 서브쿼리에서 바로 읽지 못하게 막는 제약(오류 1093)을 피하려고 둔다. Oracle에서는 물리 주소 의사 컬럼 `ROWID`로 `WHERE rowid <> (SELECT MAX(rowid) FROM emp b WHERE b.empno = a.empno)`처럼 쓰기도 한다. 어느 쪽이든 지우기 전에 같은 조건으로 `SELECT`해 지울 행을 먼저 확인하고, 재발을 막으려면 `UNIQUE` 제약을 건다.
 
 - 3·4·6번은 같은 실수에서 갈린다. 「모든 부서」를 물으면 부서 쪽을 왼쪽에 두고 `LEFT JOIN`한다. `COUNT(e.ID)`는 `NULL`을 세지 않고 `COUNT(*)`는 행을 세므로, 짝 없는 행이 1로 잡힌다(「[[#헷갈리기 쉬운 지점|헷갈리기 쉬운 지점]]」).
 - 5번에서 `b.DepartmentID = e.DepartmentID`를 `WHERE`로 옮기면 상사가 없는 행(`b`가 `NULL`)이 걸러져 다른 답이 된다. 외부 조인의 `ON`과 `WHERE` 차이는 위 「[[#짝이 없는 행만: 제외 조인|제외 조인]]」에 있다.
