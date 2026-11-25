@@ -94,6 +94,8 @@ JavaScript는 브라우저 화면을 동적으로 만들기 위한 언어이며,
 - [Babel과 AST 변환](/knowledge/dictionary/frontend/javascript/babel): parse → transform → generate, 플러그인·프리셋 순서, preset-env와 core-js, visitor 패턴, codemod
 - [npm 스크립트로 작업 자동화하기](/knowledge/dictionary/frontend/javascript/npm-scripts): node_modules/.bin과 PATH, pre/post 훅, 인자 전달, 직렬·병렬 조합, node --run, 태스크 러너가 밀려난 이유
 - [작은 모듈 철학과 npm 의존성의 비용](/knowledge/dictionary/frontend/javascript/small-modules): 유닉스 철학과 하이퍼 모듈화 논쟁, left-pad 사건, 공급망 위험, 의존성을 들일 때의 판단 기준
+- [npm 패키지를 고르는 기준](/knowledge/dictionary/frontend/javascript/npm-package-evaluation): 필요성·관리 상태·provenance·설치 스크립트·CI·보안 대응, 다운로드 수 대신 보안 신호와 운영 성숙도로 위험 판단, 대체 패키지 찾기
+- [npm 패키지 게시 보안: 신뢰된 게시, 단계적 게시, 사고 해부](/knowledge/dictionary/frontend/javascript/npm-publishing-security): 신뢰된 게시(OIDC)·provenance·단계적 게시·2FA 우회 토큰 폐지·게시 시점 악성 코드 검사, Axios·TanStack 사고 해부
 
 ## 코딩 스타일
 
