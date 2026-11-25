@@ -41,6 +41,9 @@ React는 사용자 인터페이스를 만들기 위한 JavaScript 라이브러�
 - [SWR로 데이터 가져오기](/knowledge/dictionary/frontend/react/swr): fetcher, mutate 옵션과 optimisticData, SWR 캐시로 로그인 상태 판단·보호된 페이지, useSWRInfinite
 - [TanStack Query(React Query)](/knowledge/dictionary/frontend/react/tanstack-query): QueryClientProvider, query key, useQuery·useMutation, SSR 하이드레이션(dehydrate·HydrationBoundary), v5 변경점
 - [리액트 상태 관리의 흐름과 고르는 기준](/knowledge/dictionary/frontend/react/react-state-management): 상태 종류별 도구, 전역 상태 라이브러리의 네 가지 문제, 스토어·atom·proxy 비교, Flux부터 서버 컴포넌트까지의 흐름
+- [낙관적 UI와 useOptimistic의 한계](/knowledge/dictionary/frontend/react/optimistic-ui): 확정 상태 + 진행 중 변경 모델, 경쟁 상태·깜빡임·재동기화, useOptimistic이 하는 일과 안 하는 일, useActionState 직렬 큐
+- [OpenAPI 스키마로 API 타입·클라이언트 생성하기](/knowledge/dictionary/frontend/react/openapi-typed-client): 계약 드리프트, openapi-typescript·openapi-fetch·openapi-react-query, Hey API·Orval, Zod 런타임 검증, CI 재생성
+- [React 서버 컴포넌트·Server Function 보안](/knowledge/dictionary/frontend/react/react-server-security): React2Shell(CVE-2025-55182)과 후속 RSC 취약점, 패치 버전, Server Function 공개 API 규칙, DAL·taint API
 - [Redux와 react-redux](/knowledge/dictionary/frontend/react/redux): Flux 패턴, store·reducer·dispatch, useSelector·useDispatch, Redux Toolkit
 - [Redux 미들웨어와 비동기 처리](/knowledge/dictionary/frontend/react/redux-middleware): store => next => action 체인, thunk, RTK Query·createAsyncThunk, listener middleware, redux-saga가 남은 자리
 - [use 훅과 리액트 비동기 처리](/knowledge/dictionary/frontend/react/react-use-hook): Promise·Context를 읽는 React 19 API, 캐시된 Promise만 넘기기, 서버 컴포넌트에서 내려받은 Promise 읽기
