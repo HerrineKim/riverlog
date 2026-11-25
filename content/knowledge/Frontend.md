@@ -35,6 +35,7 @@ readingOrder:
 
 - [프론트엔드 개발자의 업무 범위와 역량](Frontend/frontend-developer-role.md): 데이터 흐름으로 본 여섯 업무 영역, 퍼블리셔·백엔드·풀스택과의 경계, 잘하는 프론트엔드 개발자의 조건
 - [프론트엔드 엔지니어의 세 가지 성장 트랙](Frontend/frontend-career-tracks.md): 웹 특화·제품 특화·운영 특화 트랙별 지식과 진로, 탁월한 엔지니어의 다섯 역량, 시니어다운 일하기
+- [디자인 엔지니어: 디자인과 프론트엔드 사이의 역할](Frontend/design-engineer.md): 정의, 하는 일, 핸드오프 대신 함께 다듬기, 디자이너·프론트엔드·프로덕트 엔지니어와의 차이, 필요해지는 신호
 - [UI 엔지니어링의 열두 가지 문제](Frontend/ui-engineering-problems.md): 일관성·반응성·지연·내비게이션·낡은 캐시·엔트로피·우선순위·접근성·국제화·전달·복원력·추상화, 라이브러리 없이 문제를 재현하며 배우기
 - [기술 스택 고르기](Frontend/tech-stack-selection.md): 기술 수용 주기·캐즘·하이프 사이클, 스택을 고르는 다섯 기준, 범주로 트렌드 읽기, 레거시를 대하는 자세
 - [React와 Vue 비교](Frontend/react-vs-vue.md): JSX와 템플릿, 불변 상태와 반응형 상태, v-model의 정체, 생태계 범위와 고르는 기준
