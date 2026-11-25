@@ -35,6 +35,7 @@ JavaScript는 브라우저 화면을 동적으로 만들기 위한 언어이며,
 - [프로토타입과 상속](/knowledge/dictionary/frontend/javascript/prototype-and-inheritance): 클래스와 다른 철학(분류 대 원형), 프로토타입 체인, new가 하는 일, 인스턴스 데이터와 프로토타입 메서드, Object.create, class와의 대응
 - [ECMAScript 표준과 TC39 프로세스](/knowledge/dictionary/frontend/javascript/ecmascript-tc39): ECMA-262와 TC39, Stage 0~4, ES6=ES2015 이름 규칙, ES2022 기능과 이후 판
 - [모듈: export와 import](/knowledge/dictionary/frontend/javascript/es-modules): named export와 default export, export default 논쟁
+- [임포트 맵과 번들러 없는 npm 임포트](/knowledge/dictionary/frontend/javascript/import-maps): imports·scopes·integrity, 여러 맵 병합, 외부 맵 주입 기법, JSPM·Nudeps, CDN의 한계, Node.js 패키지 맵
 - [JavaScript 디자인 패턴: 생성 패턴](/knowledge/dictionary/frontend/javascript/js-design-patterns): 생성자·모듈·싱글톤·프로토타입 패턴과 프로토타입 기반 언어의 차이
 - [자바스크립트에서 타임존 다루기](/knowledge/dictionary/frontend/javascript/timezone): 타임존 ≠ 오프셋, 서머타임, IANA tz database, Date와 서버 간 시간 주고받기, 오프셋 계산의 한계
 - [TypeScript: 개념과 문법 한눈에 보기](/knowledge/dictionary/frontend/javascript/typescript-basics): 슈퍼셋이라는 본질과 타입을 얻기까지의 역사, 실행 환경(TypeScript 7·Node.js 타입 제거), any·unknown·never, 단언·가드·satisfies, type vs interface, 제네릭, 구분된 유니언, 데코레이터, 유틸리티 타입, 익히는 순서
@@ -45,6 +46,7 @@ JavaScript는 브라우저 화면을 동적으로 만들기 위한 언어이며,
 - [TypeScript 프로젝트 설정: tsconfig·모듈 해석·선언 파일](/knowledge/dictionary/frontend/javascript/typescript-project-config): 컴파일 컨텍스트, TypeScript 6·7 기본값과 폐기 옵션, strict 계열, bundler·nodenext 해석, verbatimModuleSyntax, 타입·값 선언 공간, declare·declare global·lib·@types
 - [TypeScript 컴파일러 내부 구조](/knowledge/dictionary/frontend/javascript/typescript-compiler-internals): 스캐너·파서·바인더·체커·이미터, AST와 트리비아, 심볼과 심볼 테이블, 지연 검사와 진단, 소스맵, Go로 옮긴 TypeScript 7
 - [TypeScript 오류 메시지 읽기와 흔한 오류](/knowledge/dictionary/frontend/javascript/typescript-error-messages): 상세 사슬을 아래부터 읽기, 자주 보는 TS 오류 코드의 원인과 해결, 리터럴 넓히기 함정, @ts-expect-error, 진단 플래그
+- [타입스크립트 타입 검사 성능 진단](/knowledge/dictionary/frontend/javascript/typescript-performance): --extendedDiagnostics·--explainFiles·--generateTrace, 비싼 타입 패턴, tsconfig·프로젝트 참조, 모노레포 사례
 - [TypeScript 실용 패턴](/knowledge/dictionary/frontend/javascript/typescript-practical-patterns): 브랜드 타입, enum 대신 as const, Result 반환, 믹스인, 타입 안전 이벤트 이미터, 인스턴스화 표현식
 - [ESLint와 Prettier 설정](Frontend/JavaScript/eslint-prettier.md): 품질은 ESLint, 모양은 Prettier로 역할 나누기, 저장 시 자동 수정 에디터 설정, flat config 읽는 법과 ESLint 10에서 제거된 `.eslintrc`
 - [strict mode(엄격 모드)](/knowledge/dictionary/frontend/javascript/strict-mode): "use strict" 켜는 법, 모듈·class 자동 적용, 암묵적 전역·조용한 실패·this가 바뀌는 동작
@@ -90,6 +92,7 @@ JavaScript는 브라우저 화면을 동적으로 만들기 위한 언어이며,
 - [패키지 매니저: npm, yarn, pnpm](/knowledge/dictionary/frontend/javascript/package-managers): lock 파일의 역할, 매니저 비교와 고르는 기준, packageManager와 Corepack, 설치 스크립트 차단, npm EINTEGRITY 오류 해결
 - [npm install이 하는 일](/knowledge/dictionary/frontend/javascript/what-npm-install-does): 설치 단계(해석·캐시·node_modules·lock 파일·설치 스크립트), 로컬·전역 설치가 바꾸는 위치, 앱 번들·배포에 들어가는 것, 되돌리는 법
 - [번들러의 역사와 Vite](/knowledge/dictionary/frontend/javascript/bundlers-and-vite): CommonJS·AMD·ES 모듈에서 번들러로, esbuild와 Snowpack이 푼 느린 빌드, Vite의 개발·배포 이원 구조
+- [Rust·Go로 다시 쓰는 JS 툴체인](/knowledge/dictionary/frontend/javascript/native-js-toolchain): 네이티브가 빠른 이유, JS 플러그인 호환이라는 대가, Oxlint·Oxfmt·Biome·Rolldown·Rspack·TypeScript 7, Vite+, 옮기는 순서
 - [webpack 동작 원리](/knowledge/dictionary/frontend/javascript/webpack): 의존성 그래프, 로더 적용 순서, Define·Provide 같은 플러그인, shimming, 스코프 호이스팅, HMR, Rollup과 차이
 - [Babel과 AST 변환](/knowledge/dictionary/frontend/javascript/babel): parse → transform → generate, 플러그인·프리셋 순서, preset-env와 core-js, visitor 패턴, codemod
 - [npm 스크립트로 작업 자동화하기](/knowledge/dictionary/frontend/javascript/npm-scripts): node_modules/.bin과 PATH, pre/post 훅, 인자 전달, 직렬·병렬 조합, node --run, 태스크 러너가 밀려난 이유
