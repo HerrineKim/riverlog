@@ -159,4 +159,4 @@ test('서버 오류면 안내 문구를 보여 준다', async () => {
 - MSW 2는 `http.get(url, () => HttpResponse.json(...))`. 브라우저는 `setupWorker`, Node는 `setupServer`.
 - 테스트에서는 기본 핸들러 + `server.use()` 덮어쓰기 + `resetHandlers()`.
 
-관련 노트: [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[storybook|Storybook]], [[pwa-service-worker|서비스 워커]], [[rest-api|REST API]]
+관련 노트: [[frontend-test-types|프론트엔드 테스트의 종류와 도구]], [[component-test-dependencies|의존성이 있는 컴포넌트 테스트하기]], [[storybook|Storybook]], [[pwa-service-worker|서비스 워커]], [[rest-api|REST API]], [[openapi-typed-client|OpenAPI 스키마로 API 타입·클라이언트 생성하기]]
