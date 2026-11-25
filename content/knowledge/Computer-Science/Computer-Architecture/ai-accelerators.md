@@ -94,4 +94,4 @@ AI 산업은 아래에서 위로 다섯 층으로 나눠 볼 수 있다. 어느 
 - 학습은 처리량과 메모리, 추론은 지연과 비용·전력이 기준이라 맞는 칩이 다르다.
 - 온디바이스 AI는 지연·프라이버시·비용을 줄이지만 모델 크기와 전력의 제약을 받는다. 그래서 클라우드와 나눠 쓴다.
 
-관련 노트: [[memory-hierarchy|메모리 계층 구조]], [[pipeline-and-parallelism|파이프라인과 병렬 처리]], [[digital-logic-circuits|디지털 논리 회로와 부품]], [[semiconductor-process-yield|반도체 공정 용어]], [[llm-serving-at-scale|LLM 서빙의 병목]], [[ml-model-serving|머신러닝 모델 서빙]], [[client-side-web-ai|클라이언트 사이드 웹 AI]]
+관련 노트: [[memory-hierarchy|메모리 계층 구조]], [[pipeline-and-parallelism|파이프라인과 병렬 처리]], [[digital-logic-circuits|디지털 논리 회로와 부품]], [[semiconductor-process-yield|반도체 공정 용어]], [[llm-serving-at-scale|LLM 서빙의 병목]], [[ml-model-serving|머신러닝 모델 서빙]], [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[training-vs-inference|딥러닝 학습과 추론]]
