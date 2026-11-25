@@ -88,4 +88,4 @@ MCP 서버를 만든다면 반환 형식을 설명에 명확히 적고 구조화
 - 정의가 비대하면 Tool Search, 중간 결과가 크면 PTC, 웹 잡음은 Dynamic Filtering, 파라미터 오류는 Examples로 친다.
 - PTC의 핵심은 「중간 결과를 모델 밖, 코드 안에 둔다」이고, 이는 서브에이전트로 탐색 잡음을 격리하는 것과 같은 발상이다.
 
-관련 노트: [[harness-engineering|프롬프트에서 하네스로]], [[ai-delegation-toolkit|AI에게 일 맡기기]], [[claude-code-guide|Claude Code 활용 가이드]], [[llm-behavior-variability|LLM 동작은 왜 날마다 다른가]]
+관련 노트: [[harness-engineering|프롬프트에서 하네스로]], [[ai-delegation-toolkit|AI에게 일 맡기기]], [[claude-code-guide|Claude Code 활용 가이드]], [[llm-behavior-variability|LLM 동작은 왜 날마다 다른가]], [[model-context-protocol|MCP의 구조와 CLI와의 선택 기준]], [[token-efficiency|에이전트 토큰 비용 관리]]
