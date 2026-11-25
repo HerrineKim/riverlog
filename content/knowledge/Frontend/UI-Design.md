@@ -26,6 +26,7 @@ UI 디자인 주제는 **화면이 어떻게 보이고 쓰이는가**를 다룬�
 - [인터페이스 심리학: 지각·인지·감정·사회적 반응](Frontend/UI-Design/interface-psychology.md): 밝기와 색상 인코딩, 청킹, 어포던스, 재인과 회상, 초보자·숙련자 경로, 감성 컴퓨팅, 시선과 자기 노출, 불쾌한 골짜기, 설계의 윤리
 - [반응형 UI 패턴: 내비게이션, 캐러셀, 데이터 표](Frontend/UI-Design/responsive-ui-patterns.md): 숨기기 전에 다듬기 → 오버플로 패턴 → 점진적 공개, 캐러셀↔그리드 혼합형, 넘치는 표, 입력 장치를 가정하지 않기
 - [전자상거래 UI 디자인](Frontend/UI-Design/ecommerce-ui.md): 구매 여정의 마찰 제거, 얕은 메뉴·필터·검색, 상품 페이지 첫 화면, 옵션별 선택 UI와 품절 표시, 재고 기반 가격 슬라이더
+- [좋은 검색 UX: 검색 전 화면부터 결과 0건까지](Frontend/UI-Design/search-ux.md): 검색 전 화면, 자동완성(개수·강조·키보드), 오타·동의어, 필터, 결과 0건 복구, 키워드 알림
 - [제스처 기반 인터페이스](Frontend/UI-Design/gesture-interface.md): 대표 제스처, 콘텐츠 중심 화면, 시간·애니메이션 설계, 점진적 힌트, 시스템 제스처 충돌과 버튼 대안
 - [모바일 앱 UI 가이드라인: 한 손 조작, 내비게이션, 버튼, 입력](Frontend/UI-Design/mobile-app-ui-guidelines.md): 보는 영역과 조작 영역, 얕은 내비게이션, 버튼 위계와 레이블, 입력 피드백, 터치 크기
 - [Apple Human Interface Guidelines 요약: 원칙, 레이아웃, 바, 버튼, 알림](Frontend/UI-Design/apple-hig.md): 설계 원칙 여섯 가지, 안전 영역과 44pt, 계정·알림·평가 요청, 브랜딩·색·시작 화면·앱 아이콘, 내비게이션·검색·탭 바와 툴바, 경고창과 버튼 역할, 진행 표시
