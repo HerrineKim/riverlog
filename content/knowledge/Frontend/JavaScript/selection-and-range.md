@@ -189,6 +189,8 @@ CSS.highlights.set('search', new Highlight(...ranges))
 ::highlight(search) { background-color: yellow; color: black; }
 ```
 
+허용되는 CSS 속성, 겹칠 때의 `priority`, 구문 하이라이팅 패턴, span 방식과의 성능 비교는 [[css-custom-highlight-api|CSS Custom Highlight API]]에 있다.
+
 ## 정리
 
 - Range는 「노드 + 오프셋」 경계 두 개다. 요소의 오프셋은 자식 번호, 텍스트의 오프셋은 문자 위치다.
@@ -197,4 +199,4 @@ CSS.highlights.set('search', new Highlight(...ranges))
 - 입력란은 `selectionStart`·`selectionEnd`로 커서를, `setRangeText`로 그 자리 글자를 바꾼다.
 - 칠하기만 할 때는 DOM을 감싸지 말고 Highlight API를 쓴다.
 
-관련 노트: [[dom-manipulation|DOM 조작]], [[form-controls-dom|폼 컨트롤과 포커스 이벤트]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[form-usability|더 나은 폼을 만드는 팁]], [[dom|DOM과 BOM]]
+관련 노트: [[dom-manipulation|DOM 조작]], [[form-controls-dom|폼 컨트롤과 포커스 이벤트]], [[ui-input-events|마우스·포인터·키보드 이벤트]], [[form-usability|더 나은 폼을 만드는 팁]], [[dom|DOM과 BOM]], [[css-custom-highlight-api|CSS Custom Highlight API]]
