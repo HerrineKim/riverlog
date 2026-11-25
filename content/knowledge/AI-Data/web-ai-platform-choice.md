@@ -141,4 +141,4 @@ flowchart TB
 
 플랫폼 선택은 한 번에 끝나지 않는다. 제품과 팀의 AI 성숙도에 맞춰 계속 바꿀 수 있게 만든다.
 
-관련 노트: [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[ai-feature-blueprint|AI 기능 기획]], [[predictive-vs-generative-ai|예측형 AI와 생성형 AI]], [[ai-ux-patterns|AI 기능의 UX 패턴]]
+관련 노트: [[client-side-web-ai|클라이언트 사이드 웹 AI]], [[ai-feature-blueprint|AI 기능 기획]], [[predictive-vs-generative-ai|예측형 AI와 생성형 AI]], [[ai-ux-patterns|AI 기능의 UX 패턴]], [[local-llm|로컬 LLM 실행과 선택 기준]]
