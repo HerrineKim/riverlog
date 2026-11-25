@@ -97,4 +97,4 @@ sources: ["https://www.techinterviewhandbook.org/coding-interview-rubrics/", "ht
 - 최종 결과는 커트라인이 아니라 라운드 전체 신호의 종합이고, 엇갈리면 면접관 논의로 정한다.
 - 면접관은 풀이가 여럿인 질문을 고르고, 힌트로 막힘을 풀어 주며, 신호를 기록하고 바로 피드백을 쓴다.
 
-관련 노트: [[tech-interview-prep|기술 면접 준비: 유형별 대비와 시스템 디자인 7단계]], [[behavioral-interview-rubrics|인성 면접 평가 기준]], [[coding-test|코딩 테스트 접근법]], [[interview-attitude|면접 잘 보는 법: 태도와 답변]], [[frontend-interview|프론트엔드 면접 유형과 준비법]]
+관련 노트: [[tech-interview-prep|기술 면접 준비: 유형별 대비와 시스템 디자인 7단계]], [[behavioral-interview-rubrics|인성 면접 평가 기준]], [[coding-test|코딩 테스트 접근법]], [[interview-attitude|면접 잘 보는 법: 태도와 답변]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[hiring-better-than-you|나보다 나은 사람을 뽑는 법]]
