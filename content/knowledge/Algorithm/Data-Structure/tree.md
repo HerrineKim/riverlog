@@ -4,8 +4,8 @@ concept: "Tree"
 summary: "계층 구조를 표현하는 트리의 용어, 이진 트리의 종류와 배열 표현, 네 가지 순회와 반복 구현, 이진 탐색 트리의 연산·편향·검증, 균형 트리의 종류와 AVL 회전, 레드-블랙 트리가 널리 쓰이는 이유, B 트리와 B+ 트리의 차이."
 tags: ["algorithm", "data-structure", "tree", "binary-search"]
 source: other
-date: "2026-10-30"
-sources: ["https://80000coding.notion.site/23197e31a7274fc5960543cbfbee51b5", "https://80000coding.notion.site/303234d626784a398781d3997f7b1e2d", "https://80000coding.notion.site/a1c81b8e4538437abcb713184174052d", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://zeddios.tistory.com/237", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://www.techinterviewhandbook.org/algorithms/tree/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)"]
+date: "2026-11-26"
+sources: ["https://80000coding.notion.site/23197e31a7274fc5960543cbfbee51b5", "https://80000coding.notion.site/303234d626784a398781d3997f7b1e2d", "https://80000coding.notion.site/a1c81b8e4538437abcb713184174052d", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://zeddios.tistory.com/237", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://www.techinterviewhandbook.org/algorithms/tree/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[자료구조] 트리」, 「이진 트리 (기초)」, 「균형 이진 탐색 트리 AVL」, 「ALV tree 찢어버리기」를 바탕으로 재구성한 노트다.
@@ -14,6 +14,7 @@ sources: ["https://80000coding.notion.site/23197e31a7274fc5960543cbfbee51b5", "h
 > 반복 순회, BST 검증, 트리 문제를 푸는 요령은 Tech Interview Handbook의 「[Tree cheatsheet](https://www.techinterviewhandbook.org/algorithms/tree/)」를 바탕으로 보강했다.
 > BST 삭제의 세 경우, m-원 탐색 트리, 균형 트리의 종류, 레드-블랙 트리와 2-3-4 트리의 대응, B 트리와 B+ 트리는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 > 다차원 탐색 트리(KD·KDB·R 트리)는 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용으로 보강했다.
+> BST에서 k번째 값을 찾는 방법은 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 
 트리(Tree)는 계층 관계를 표현하는 비선형 자료구조다. 노드 하나가 여러 자식을 가지는 1:N 관계가 반복된다. 그래프의 관점에서 보면 **사이클이 없는 연결 그래프**이고, 노드가 n개면 간선은 정확히 n-1개다. 파일 시스템, DOM, 조직도, 힙, 구문 트리가 모두 트리다.
 
@@ -111,7 +112,7 @@ def inorder_iter(root):
 | 자식 하나 | 그 자식을 지운 노드 자리에 올려 부모와 바로 잇는다 |
 | 자식 둘 | 오른쪽 서브트리의 최솟값(중위 후속자)이나 왼쪽 서브트리의 최댓값(중위 선행자)을 찾아 값을 옮겨 오고, 그 후속자 노드를 지운다. 후속자는 왼쪽 자식이 없으므로 앞의 두 경우 중 하나로 끝난다 |
 
-세 연산 모두 루트에서 한 경로만 따라 내려가므로 O(높이)다. 그래서 문제가 BST를 준다면 O(n)보다 빠른, 한 경로만 따라 내려가는 풀이를 기대한다는 뜻이다. 최솟값은 맨 왼쪽, 최댓값은 맨 오른쪽 노드다.
+세 연산 모두 루트에서 한 경로만 따라 내려가므로 O(높이)다. 그래서 문제가 BST를 준다면 O(n)보다 빠른, 한 경로만 따라 내려가는 풀이를 기대한다는 뜻이다. 최솟값은 맨 왼쪽, 최댓값은 맨 오른쪽 노드다. k번째로 작은 값은 중위 순회에서 k번째로 방문하는 노드이고, k번째로 큰 값은 오른쪽 → 노드 → 왼쪽 순서의 역중위 순회로 같은 방법으로 찾는다. k개를 세는 순간 멈추면 O(h + k)다.
 
 높이는 넣는 순서가 정한다. 균형이 잡히면 O(log n)이지만, 1, 2, 3, 4, 5처럼 오름차순으로 넣으면 모든 노드가 오른쪽 자식만 가지는 편향 트리가 되어 O(n)까지 떨어진다. 내림차순이면 왼쪽으로만 뻗고, 지그재그(1, 5, 2, 4, 3)처럼 매번 남은 범위의 끝 값을 넣어도 높이가 n-1이 된다. 무작위 순서로 넣으면 기대 높이는 O(log n)이지만 보장은 없다. 이것이 BST의 한계이고, 균형 트리가 필요한 이유다.
 

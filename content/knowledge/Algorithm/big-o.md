@@ -5,7 +5,7 @@ summary: "입력 크기가 커질 때 알고리즘의 연산량이 어떻게 늘
 tags: ["algorithm", "complexity", "big-o", "big-omega", "big-theta"]
 source: mixed
 date: "2026-11-26"
-sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "http://bigocheatsheet.com/", "https://www.youtube.com/watch?v=rL8X2mlNHPM", "https://www.educative.io/blog/a-big-o-primer-for-beginning-devs", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "고려사이버대학교 알고리즘과 문제해결 강의(김한성 교수, 2023-2학기)"]
+sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "http://bigocheatsheet.com/", "https://www.youtube.com/watch?v=rL8X2mlNHPM", "https://www.educative.io/blog/a-big-o-primer-for-beginning-devs", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "고려사이버대학교 알고리즘과 문제해결 강의(김한성 교수, 2023-2학기)", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
 ---
 
 > 노션 정리를 바탕으로, 자료구조 연산과 정렬 알고리즘의 복잡도 표는 「[Big-O Cheat Sheet](http://bigocheatsheet.com/)」를 바탕으로 보강했다.
@@ -13,6 +13,7 @@ sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "http://b
 > 소문자 o·ω 표기와 공간의 고정·가변 구분은 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기), 「자료구조」(2024-1학기) 강의 내용으로 보강했다.
 > 좋은 알고리즘의 조건은 고려사이버대학교 「알고리즘과 문제해결」(2023-2학기) 강의 내용으로 보강했다.
 > 연산 횟수를 세는 세 단계와 코드 모양으로 복잡도를 짐작하는 요령은 Educative의 「[Big O Notation: A primer for beginning devs](https://www.educative.io/blog/a-big-o-primer-for-beginning-devs)」(2025.03)를 바탕으로 보강했다.
+> 분할 상환과 평균의 구분, 스트리밍 처리의 공간은 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 
 ## 알고리즘이란
 
@@ -176,6 +177,8 @@ O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!) 순으로 느려�
 
 공간은 모두 O(n)이다(스킵 리스트는 최악 O(n log n)).
 
+표의 「분할 상환」과 「평균」은 다른 보장이다. **분할 상환(amortized) O(1)** 은 연산을 여러 번 했을 때 총비용을 횟수로 나누면 상수라는 뜻이고, 어떤 순서로 연산해도 성립한다. 동적 배열은 가득 차면 두 배로 늘리며 O(n) 복사를 하지만, 그 비용이 앞선 n번의 추가에 나뉜다([[data-structures#크기를 늘리면 무슨 일이 생기나|기초 자료구조]]). **평균 O(1)** 은 입력이나 해시값 분포에 대한 기대값이라, 해시 테이블은 키가 한 버킷에 몰리면 연산 하나가 O(n)이 된다. 해시 테이블에서는 리사이즈 비용이 분할 상환으로 나뉘고, 조회 자체는 평균 O(1)이다.
+
 ### 정렬 알고리즘의 복잡도
 
 최선·평균·최악, 추가 공간, 안정성을 한 표로 비교한 것은 [[merge-quick-sort#정렬 알고리즘 비교|병합 정렬과 퀵 정렬]]에 있다. 비교 기반 정렬은 최악의 경우 Ω(n log n)번의 비교가 하한이고, Python `sorted`, Java 객체 정렬, V8의 `Array.prototype.sort`는 팀소트를 쓴다.
@@ -189,6 +192,8 @@ O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!) 순으로 느려�
 - 배열·객체는 원소(키) 개수 n에 대해 O(n)
 
 예를 들어 배열의 합을 변수 하나에 누적하면 O(1) 공간, 각 원소를 두 배로 만든 새 배열을 반환하면 O(n) 공간이다.
+
+데이터가 메모리보다 크면 공간 복잡도가 풀이 가능 여부를 정한다. 모든 값을 해시 맵에 담는 O(n) 풀이 대신, 한 번 훑으며 합계·최댓값·상위 k개(크기 k짜리 힙)만 들고 가는 스트리밍 처리는 O(1)이나 O(k) 공간으로 끝난다.
 
 프로그램이 쓰는 전체 공간은 **고정 공간 + 가변 공간**으로 나눠 볼 수 있다. 고정 공간은 코드, 단순 변수, 상수처럼 입력 크기와 상관없는 부분이고, 가변 공간은 입력 크기에 따라 달라지는 배열·동적 할당·재귀 호출 스택이다. 복잡도 분석은 가변 공간만 본다. 재귀 함수는 따로 배열을 만들지 않아도 **호출 깊이만큼 스택 프레임**을 쓰므로, 깊이 n인 재귀는 O(n) 공간이다.
 
