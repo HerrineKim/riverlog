@@ -4,8 +4,8 @@ concept: "Basic Data Structures"
 summary: "연산의 약속(추상 자료형)과 구현(자료구조)을 나누는 관점, 배열과 realloc 크기 조정 비용, 배열·행렬 문제의 요령(부분 배열과 부분 수열, 인덱스 변환, 전치), 연결 리스트(C 구조체·Kotlin 예제)와 둘 중 고르는 기준, 더미 노드·제자리 뒤집기 같은 연결 리스트 기법, 층을 쌓아 건너뛰는 스킵 리스트, 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 얕은 복사와 깊은 복사."
 tags: ["data-structure", "cs50", "linked-list", "hash-table", "tree", "c"]
 source: notion
-sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/", "https://www.youtube.com/watch?v=DuDz6B4cqVc", "https://www.techinterviewhandbook.org/algorithms/array/", "https://www.techinterviewhandbook.org/algorithms/matrix/", "https://www.techinterviewhandbook.org/algorithms/linked-list/", "https://www.techinterviewhandbook.org/algorithms/trie/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "https://github.com/jwasham/coding-interview-university"]
-date: "2026-10-30"
+sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/", "https://www.youtube.com/watch?v=DuDz6B4cqVc", "https://www.techinterviewhandbook.org/algorithms/array/", "https://www.techinterviewhandbook.org/algorithms/matrix/", "https://www.techinterviewhandbook.org/algorithms/linked-list/", "https://www.techinterviewhandbook.org/algorithms/trie/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "https://github.com/jwasham/coding-interview-university", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
+date: "2026-11-26"
 ---
 
 > 하버드 CS50의 자료구조 강의와 고무오리 CS 스터디의 CS50 정리 노트를 바탕으로 재구성한 노트다. 배열과 연결 리스트 비교는 팔만코딩경(42Seoul 커뮤니티 위키)의 「배열과 리스트 중 어떤 것을 사용해야 할까?」, 「[Push Swap 완전 정복] 00. 문제 분석 - locality.」, 트라이의 삽입·자동 완성은 「ALV tree 찢어버리기」를 바탕으로 보강했다. 언어 라이브러리 속 자료구조는 ByteByteGo의 System Design 101 가이드 「[Java Collection Hierarchy](https://bytebytego.com/guides/java-collection-hierarchy)」, 「[10 Key Data Structures We Use Every Day](https://bytebytego.com/guides/10-key-data-structures-we-use-every-day)」로 보강했다.
@@ -14,6 +14,7 @@ date: "2026-10-30"
 > 스킵 리스트 절은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 > 동적 배열의 늘리기·줄이기 정책은 jwasham의 「[Coding Interview University](https://github.com/jwasham/coding-interview-university)」(CC-BY-SA-4.0)의 벡터 구현 과제를 바탕으로 보강했다.
 > 「추상 자료형(ADT)」 절은 고려사이버대학교 「자료구조」(2024-1학기) 강의 내용을 바탕으로 보강했다.
+> Java 배열의 기본값, 연결 리스트가 쓰이는 곳, 트라이의 래딕스 압축·격자 단어 찾기·최장 공통 접두사는 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 
 자료구조는 데이터를 메모리에 어떻게 배치하고 연결하느냐의 문제다. 배열처럼 연속된 공간을 쓰면 접근은 빠르지만 크기를 바꾸기 어렵고, [[pointers-and-memory|포인터]]로 흩어진 공간을 이으면 크기는 자유롭지만 접근이 느려진다. 예제는 C와 Kotlin으로 든다.
 
@@ -73,6 +74,7 @@ C++·Java는 클래스가 자료와 연산을 한 단위로 묶고 `public`·`pr
 - 배열의 시작 주소(base address)는 첫 번째 원소가 있는 주소다. 인덱스는 시작 주소에서 몇 칸 떨어졌는지를 뜻하는 오프셋이라 `i`번 원소의 주소는 `시작 주소 + i × 원소 크기`로 바로 계산된다. 그래서 **임의 접근(random access)** 이 O(1)이고, 첫 원소의 오프셋이 0이므로 대부분의 언어가 인덱스를 0부터 센다(인덱스 5는 여섯 번째 원소다).
 - 정렬되어 있다면 [[binary-search|이진 탐색]]으로 O(log n)에 찾을 수 있다.
 - C에서 `int arr[10];`처럼 선언한 배열은 한 번 만들면 크기를 바꿀 수 없다. 크기를 키우려면 `malloc`·`realloc`으로 힙에 공간을 잡아야 한다.
+- Java 배열도 크기가 고정이라 늘어나는 목록은 `ArrayList`를 쓴다. `new int[n]`의 칸은 0으로, 객체 배열의 칸은 `null`로 채워진다. C의 지역 배열은 초기화하지 않으면 쓰레기 값이 들어 있다.
 
 ### 크기를 늘리면 무슨 일이 생기나
 
@@ -187,6 +189,8 @@ fun addAfter(prev: Node, value: String) {
 | 중간 삽입·삭제 자체는 포인터 변경만으로 끝난다 | 순서를 지켜 삽입하려 해도 위치를 찾는 탐색 때문에 **O(n)** |
 | | 포인터를 저장할 추가 메모리가 든다 |
 
+연결 리스트는 다른 구조의 부품으로 자주 쓰인다. 스택과 큐 구현, 해시 테이블의 체이닝, 다항식 표현(항마다 계수와 차수를 담은 노드), 메모리 할당기가 빈 블록을 엮어 두는 자유 목록(free list), LRU 캐시의 사용 순서 관리가 그 예다.
+
 ### 배열과 연결 리스트, 언제 무엇을
 
 | 기준 | 배열 | 연결 리스트 |
@@ -275,6 +279,9 @@ Redis 정렬 집합(sorted set)은 p = 1/4, 최대 32레벨인 스킵 리스트�
 - 접두사까지 내려간 뒤 그 아래 서브트리를 훑으면 그 접두사로 시작하는 단어를 모두 얻는다. 검색창 **자동 완성**이 이 원리다.
 - 삽입·탐색·삭제가 모두 단어 길이 m에 비례하는 O(m)이다. 삭제는 끝 표시를 지운 뒤, 자식도 끝 표시도 없어진 노드를 아래에서 위로 거슬러 지운다.
 - 단어 목록을 한 번 트라이로 만들어 두면, 단어 하나를 찾을 때 목록 n개를 모두 비교하는 대신 O(m)이면 된다. 같은 사전으로 질의를 반복하는 문제에서 쓴다.
+- 메모리를 줄이려면 26칸 배열 대신 해시 맵으로 자식을 두거나, 자식이 하나뿐인 노드 사슬을 간선 하나로 합친 **래딕스 트리(압축 트라이)** 를 쓴다. 라우터가 목적지 IP의 최장 프리픽스 일치를 찾을 때도 비트 단위 래딕스 트라이를 쓴다([[network-layer|네트워크 계층 프로토콜]]).
+- 격자에서 여러 단어를 찾는 백트래킹은 단어 목록을 트라이로 만들어 두고 함께 내려가면, 트라이에 없는 접두사에서 바로 가지를 친다. 사전 기반 맞춤법 검사도 같은 방식으로 후보를 좁힌다.
+- 모든 단어를 넣은 뒤 루트에서 자식이 하나이고 끝 표시가 없는 동안 내려간 경로가 **최장 공통 접두사**다.
 - 빈 문자열을 넣으면 루트에 끝 표시가 붙는다. 빈 트라이에서의 탐색과 함께 경계 사례로 확인한다.
 
 ## 스택과 큐

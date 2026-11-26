@@ -4,12 +4,13 @@ concept: "Queue"
 summary: "먼저 넣은 것을 먼저 꺼내는 큐(FIFO)와 양쪽 끝에서 넣고 뺄 수 있는 덱, 스택 두 개로 큐·큐로 스택 만들기, 구현에 따라 달라지는 덱의 임의 접근 비용."
 tags: ["data-structure", "queue", "deque", "python"]
 source: mixed
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/6b362391f808445f8e5f1e1f017c1bfb", "https://bytebytego.com/guides/explaining-the-4-most-commonly-used-types-of-queues-in-a-single-diagram", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+date: "2026-11-26"
+sources: ["https://80000coding.notion.site/6b362391f808445f8e5f1e1f017c1bfb", "https://bytebytego.com/guides/explaining-the-4-most-commonly-used-types-of-queues-in-a-single-diagram", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
 ---
 
 > 원형 버퍼로 덱을 만드는 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[push_swap] Linked List 말고 Circular Queue를 이용하여 Stack을 구현해보자!」를 바탕으로 보강했다. 시스템에서 쓰는 큐의 네 가지 종류는 ByteByteGo의 System Design 101 가이드 「[Explaining the 4 Most Commonly Used Types of Queues](https://bytebytego.com/guides/explaining-the-4-most-commonly-used-types-of-queues-in-a-single-diagram)」로 보강했다.
 > 스택·큐로 서로를 만드는 방법과 덱의 임의 접근 구조는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」 질문이 묻는 개념으로 보강했다.
+> 큐 활용의 버퍼, 이진수 생성, 앞 k개 뒤집기는 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 
 ## 큐 (Queue)
 
@@ -44,7 +45,10 @@ flowchart LR
 ### 활용
 
 - 들어온 순서대로 처리해야 하는 작업(대기열, 프린터 작업, 프로세스 스케줄링)
+- 속도가 다른 두 쪽 사이에서 데이터를 잠시 맡아 두는 버퍼(입출력 버퍼, 파이프, 생산자-소비자)
 - BFS: 가까운 노드부터 차례로 방문
+- 레벨 순서로 만들어 내기: 큐에 `"1"`을 넣고, 하나 꺼낼 때마다 출력한 뒤 그 뒤에 `"0"`, `"1"`을 붙인 두 문자열을 넣으면 1부터 n까지의 이진수가 차례로 나온다. 이진 트리를 BFS로 도는 것과 같다
+- 앞 k개 뒤집기: 앞에서 k개를 꺼내 스택에 쌓았다가 다시 큐 뒤에 넣고, 남은 n - k개를 앞에서 꺼내 뒤에 다시 붙인다. O(n)
 
 ### 스택으로 큐, 큐로 스택 만들기
 

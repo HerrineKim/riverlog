@@ -4,8 +4,11 @@ concept: "DFS"
 summary: "한 갈래를 갈 수 있는 데까지 파고든 뒤 되돌아오는 그래프 탐색으로, 스택이나 재귀로 구현한다."
 tags: ["algorithm", "search", "graph", "dfs", "recursion"]
 source: til
-date: "2026-10-13"
+date: "2026-11-26"
+sources: ["https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
 ---
+
+> 모 정점 찾기는 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 
 DFS(Depth-First Search, 깊이 우선 탐색)는 그래프를 탐색할 때 한 분기를 끝까지 탐색한 뒤에야 다음 분기로 넘어가는 알고리즘이다. 미로에서 한 방향으로 계속 가다가 막히면 가장 가까운 갈림길로 돌아가 아직 안 가 본 길로 다시 들어가는 방식이다. "쭉 내려가고 → 막히면 한 칸 되돌아가고 → 다시 쭉 내려가는" 이 원리를 응용한 것이 **백트래킹**이다.
 
@@ -105,6 +108,7 @@ def dfs_iterative(graph, start):
 - **연결 요소 세기**, 영역(섬) 개수 구하기
 - 방향 그래프의 사이클 판별, 위상 정렬
 - 경로를 따라가며 상태(합계, 선택 목록 등)를 들고 다녀야 하는 문제
+- **모 정점(mother vertex) 찾기**: 방향 그래프에서 모든 정점에 닿을 수 있는 정점을 찾는다. 아직 방문하지 않은 정점마다 DFS를 새로 시작하며 그래프 전체를 훑으면, 마지막으로 DFS를 시작한 정점만 후보로 남는다. 그 정점에서 DFS를 한 번 더 돌려 모든 정점에 닿으면 답이고, 아니면 모 정점이 없다. 전체 O(V + E)다
 
 단, 가중치 없는 그래프의 최단 거리는 DFS로 구하면 모든 경로를 다 봐야 하므로 BFS를 쓴다.
 

@@ -4,14 +4,15 @@ concept: "Hash Table"
 summary: "키를 해시 함수로 배열 인덱스로 바꿔 평균 O(1)에 찾는 해시 테이블의 원리, 해시 함수 설계(나눗셈·곱셈·다항·보편 해싱), 개방 주소법과 분리 연결법의 충돌 해결 비교와 이중 해싱의 약점, 적재율과 리사이즈, Java HashMap·Python dict 같은 실제 구현, 빈도 세기·애너그램 같은 문제 풀이 패턴, 해시 맵과 연결 리스트로 만드는 O(1) LRU·LFU 캐시."
 tags: ["algorithm", "data-structure", "hash-table", "java"]
 source: other
-date: "2026-10-30"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://d2.naver.com/helloworld/831311", "https://www.techinterviewhandbook.org/algorithms/hash-table/", "https://www.techinterviewhandbook.org/algorithms/string/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)"]
+date: "2026-11-26"
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://d2.naver.com/helloworld/831311", "https://www.techinterviewhandbook.org/algorithms/hash-table/", "https://www.techinterviewhandbook.org/algorithms/string/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 자료구조 문서의 Hash Table 절을 바탕으로 재구성하고, 언어별 구현은 각 언어의 공식 문서·소스 기준으로 최신화한 노트다.
 > 「문제 풀이에서 쓰는 패턴」은 Tech Interview Handbook의 「[Hash table cheatsheet](https://www.techinterviewhandbook.org/algorithms/hash-table/)」, 「[String cheatsheet](https://www.techinterviewhandbook.org/algorithms/string/)」의 글자 세기·애너그램 절을 바탕으로 보강했다.
 > 해시 함수 설계 방식, 이중 해싱의 단점과 해결, 언어별 적재율, LRU·LFU 캐시 구현은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 > 적재율별 평균 탐사 횟수는 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용으로 보강했다.
+> 「문제 풀이에서 쓰는 패턴」의 대칭 쌍, 처음 나온 고유 원소, 합집합·교집합은 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 
 ## 해시 테이블이란
 
@@ -138,8 +139,9 @@ flowchart LR
 
 | 패턴 | 내용 |
 | --- | --- |
-| 본 것 기억하기 | 한 번 훑으며 값(또는 `target - 값`)을 넣어 두면 「이전에 나왔나」를 O(1)에 확인한다. 이중 반복문 O(n²)이 O(n)이 된다 |
-| 빈도 세기 | 원소·글자별 개수를 센다(Python `collections.Counter`). 글자 종류가 소문자 26개처럼 고정이면 카운터의 공간은 입력 길이와 무관한 **O(1)** 이다. O(n)이라고 답하는 실수가 잦다 |
+| 본 것 기억하기 | 한 번 훑으며 값(또는 `target - 값`)을 넣어 두면 「이전에 나왔나」를 O(1)에 확인한다. 이중 반복문 O(n²)이 O(n)이 된다. `(a, b)`와 `(b, a)`가 모두 있는 대칭 쌍도 지나온 쌍을 넣어 두고 뒤집은 쌍을 조회해 찾는다 |
+| 빈도 세기 | 원소·글자별 개수를 센다(Python `collections.Counter`). 글자 종류가 소문자 26개처럼 고정이면 카운터의 공간은 입력 길이와 무관한 **O(1)** 이다. O(n)이라고 답하는 실수가 잦다. 「처음으로 한 번만 나온 원소」는 빈도를 센 뒤 원래 순서로 한 번 더 훑어 빈도가 1인 첫 원소를 고른다 |
+| 합집합·교집합 | 한쪽을 해시 셋에 넣고 다른 쪽을 훑으며 조회한다. 길이 n, m이면 O(n + m)이다. 둘 다 정렬해 투 포인터로 훑으면 O(n log n + m log m) |
 | 애너그램 판정 | 두 문자열을 각각 정렬해 비교하면 O(n log n), 글자 빈도를 세어 비교하면 O(n)이다 |
 | 애너그램 묶기 | 정렬한 문자열이나 26칸 빈도 튜플을 키로 써서 같은 키끼리 모은다. 키를 만드는 함수와 묶는 함수를 나누어 생각한다 |
 | 다른 구조와 조합 | 해시 맵은 「어디 있나」만 O(1)로 답한다. 순서가 필요하면 연결 리스트를 붙인다. 아래 LRU·LFU 캐시가 대표 예다 |
