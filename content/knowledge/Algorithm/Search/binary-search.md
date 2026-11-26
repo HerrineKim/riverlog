@@ -4,13 +4,14 @@ concept: "Binary Search"
 summary: "정렬된 데이터에서 탐색 범위를 절반씩 줄여 O(log n)에 원하는 값을 찾는 방법과 그 복잡도 증명, lower bound·upper bound, 경계 조건 실수, 삼분할이 빠르지 않은 이유, 순차 탐색과 어느 쪽을 고를지."
 tags: ["algorithm", "search", "binary-search", "python"]
 source: mixed
-date: "2026-11-20"
-sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://jih3508.tistory.com/320"]
+date: "2026-11-26"
+sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://jih3508.tistory.com/320", "https://cooervo.github.io/Algorithms-DataStructures-BigONotation/"]
 ---
 
 > 순차 탐색과 고르는 기준은 하버드 CS50(부스트코스) 4강(알고리즘)과 고무오리 CS 스터디의 CS50 정리 노트를 바탕으로 보강했다.
 > 복잡도 증명, lower bound·upper bound, 경계 조건의 영향, 삼분할 비교는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(손코딩) 질문이 묻는 개념으로 보강했다.
 > 삽입 위치와 lower bound의 관계는 「[35. Search Insert Position](https://jih3508.tistory.com/320)」(2026.11) 풀이로 보강했다.
+> Java 내장 이분 탐색의 반환값은 cooervo의 「[Big O cheat sheets](https://cooervo.github.io/Algorithms-DataStructures-BigONotation/)」(2015.03)의 탐색 절을 바탕으로 보강했다.
 
 ![순차 탐색과 이분 탐색 비교](/images/til/Algorithm/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EA%B0%9C%EB%85%90/05-%EC%9D%B4%EB%B6%84-%ED%83%90%EC%83%89-Binary-Search-.assets/binary-and-linear-search-animations.gif)
 
@@ -162,6 +163,8 @@ def count_by_range(a, left, right):
 
 print(count_by_range(a, 4, 4))  # 2
 ```
+
+Java는 `Arrays.binarySearch`(배열)와 `Collections.binarySearch`(`List`)를 준다. 원소가 `Comparable`이거나 `Comparator`를 넘겨야 하고, 정렬되지 않은 입력이면 결과가 정의되지 않는다. 찾으면 인덱스를, 못 찾으면 `-(삽입 위치) - 1`을 돌려준다. 「없음」과 「넣을 자리」를 음수 하나에 담은 것이라 `-(결과) - 1`로 되돌리면 `bisect_left`와 같은 위치가 나온다(0번 자리에 넣어야 해도 -1이 되어 0과 겹치지 않는다). 같은 값이 여러 개면 그중 어느 것을 찾을지는 정해져 있지 않다.
 
 ## 파라메트릭 서치 (Parametric Search)
 

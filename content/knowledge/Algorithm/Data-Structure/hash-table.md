@@ -5,7 +5,7 @@ summary: "키를 해시 함수로 배열 인덱스로 바꿔 평균 O(1)에 찾�
 tags: ["algorithm", "data-structure", "hash-table", "java"]
 source: other
 date: "2026-11-26"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://d2.naver.com/helloworld/831311", "https://www.techinterviewhandbook.org/algorithms/hash-table/", "https://www.techinterviewhandbook.org/algorithms/string/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://d2.naver.com/helloworld/831311", "https://www.techinterviewhandbook.org/algorithms/hash-table/", "https://www.techinterviewhandbook.org/algorithms/string/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know", "https://cooervo.github.io/Algorithms-DataStructures-BigONotation/"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 자료구조 문서의 Hash Table 절을 바탕으로 재구성하고, 언어별 구현은 각 언어의 공식 문서·소스 기준으로 최신화한 노트다.
@@ -13,10 +13,13 @@ sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/mai
 > 해시 함수 설계 방식, 이중 해싱의 단점과 해결, 언어별 적재율, LRU·LFU 캐시 구현은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 > 적재율별 평균 탐사 횟수는 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용으로 보강했다.
 > 「문제 풀이에서 쓰는 패턴」의 대칭 쌍, 처음 나온 고유 원소, 합집합·교집합은 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
+> 배열로 만든 사전과의 비교는 cooervo의 「[Big O cheat sheets](https://cooervo.github.io/Algorithms-DataStructures-BigONotation/)」(2015.03)의 사전 구현을 바탕으로 보강했다.
 
 ## 해시 테이블이란
 
 해시 테이블(Hash Table)은 키를 해시 함수에 넣어 나온 값을 배열 인덱스로 쓰는 자료구조다. 키만 알면 그 칸으로 바로 가므로 탐색·삽입·삭제가 **평균 O(1)** 이다. 다른 원소를 밀거나 당길 필요가 없다는 점이 배열·연결 리스트와 다르다.
+
+키로 값을 찾는 구조를 사전(dictionary) 또는 맵(map)이라 한다. 가장 단순한 사전은 (키, 값) 쌍을 배열에 넣어 두고 처음부터 훑는 것이다. 넣기(같은 키가 있으면 값만 바꾼다)·찾기·지우기가 모두 키를 찾는 선형 탐색이라 O(n)이고, 지운 칸을 메우려 뒤 원소를 당기는 비용도 든다. 해시 테이블은 키에서 칸 번호를 바로 계산해 이 탐색을 없앤다.
 
 ```mermaid
 flowchart LR

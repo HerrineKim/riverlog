@@ -4,7 +4,7 @@ concept: "Basic Data Structures"
 summary: "연산의 약속(추상 자료형)과 구현(자료구조)을 나누는 관점, 배열과 realloc 크기 조정 비용, 배열·행렬 문제의 요령(부분 배열과 부분 수열, 인덱스 변환, 전치), 연결 리스트(C 구조체·Kotlin 예제)와 둘 중 고르는 기준, 더미 노드·제자리 뒤집기 같은 연결 리스트 기법, 층을 쌓아 건너뛰는 스킵 리스트, 이진 탐색 트리와 균형, 해시 테이블과 충돌, 트라이, 얕은 복사와 깊은 복사."
 tags: ["data-structure", "cs50", "linked-list", "hash-table", "tree", "c"]
 source: notion
-sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/", "https://www.youtube.com/watch?v=DuDz6B4cqVc", "https://www.techinterviewhandbook.org/algorithms/array/", "https://www.techinterviewhandbook.org/algorithms/matrix/", "https://www.techinterviewhandbook.org/algorithms/linked-list/", "https://www.techinterviewhandbook.org/algorithms/trie/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "https://github.com/jwasham/coding-interview-university", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
+sources: ["https://app.notion.com/p/96b9122486a74f108954fde4677e727d", "https://80000coding.notion.site/61f73841ba3b4800bd68d5bd0a71befc", "https://80000coding.notion.site/f0782ddac1cc4509849dd12b0b34b6d7", "https://80000coding.notion.site/980ca80c25b841d6b3ac3ebc15ef733b", "https://bytebytego.com/guides/java-collection-hierarchy", "https://bytebytego.com/guides/10-key-data-structures-we-use-every-day", "https://visualgo.net", "https://xlinux.nist.gov/dads/", "https://www.youtube.com/watch?v=DuDz6B4cqVc", "https://www.techinterviewhandbook.org/algorithms/array/", "https://www.techinterviewhandbook.org/algorithms/matrix/", "https://www.techinterviewhandbook.org/algorithms/linked-list/", "https://www.techinterviewhandbook.org/algorithms/trie/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "https://github.com/jwasham/coding-interview-university", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know", "https://cooervo.github.io/Algorithms-DataStructures-BigONotation/"]
 date: "2026-11-26"
 ---
 
@@ -15,6 +15,7 @@ date: "2026-11-26"
 > 동적 배열의 늘리기·줄이기 정책은 jwasham의 「[Coding Interview University](https://github.com/jwasham/coding-interview-university)」(CC-BY-SA-4.0)의 벡터 구현 과제를 바탕으로 보강했다.
 > 「추상 자료형(ADT)」 절은 고려사이버대학교 「자료구조」(2024-1학기) 강의 내용을 바탕으로 보강했다.
 > Java 배열의 기본값, 연결 리스트가 쓰이는 곳, 트라이의 래딕스 압축·격자 단어 찾기·최장 공통 접두사는 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
+> 연속 할당 구조와 연결 구조의 구분, 용량과 크기, 스택·큐·리스트를 고르는 기준, 멀티셋은 cooervo의 「[Big O cheat sheets](https://cooervo.github.io/Algorithms-DataStructures-BigONotation/)」(2015.03)의 자료구조 절을 바탕으로 보강했다.
 
 자료구조는 데이터를 메모리에 어떻게 배치하고 연결하느냐의 문제다. 배열처럼 연속된 공간을 쓰면 접근은 빠르지만 크기를 바꾸기 어렵고, [[pointers-and-memory|포인터]]로 흩어진 공간을 이으면 크기는 자유롭지만 접근이 느려진다. 예제는 C와 Kotlin으로 든다.
 
@@ -110,6 +111,8 @@ free(list);
 | 가득 찬 상태에서 추가 | 용량을 **두 배**로 늘려 옮긴다 | 복사 비용 n이 그동안 한 추가 n번에 나뉘어 한 번에 O(1)이 된다. 일정량씩 늘리면 O(n)이 된다 |
 | 삭제로 원소 수가 용량의 **1/4**이 됨 | 용량을 **절반**으로 줄인다 | 1/2에서 줄이면 경계에서 추가·삭제를 번갈아 할 때마다 늘리고 줄이기를 반복(thrashing)한다. 1/4로 여유를 둬야 분할 상환 O(1)이 유지된다 |
 
+늘리는 배수는 2가 아니어도 1보다 크기만 하면 분할 상환 O(1)이다. Java `ArrayList`는 1.5배, CPython `list`는 약 1.125배씩 늘린다. 배수가 작을수록 비어 있는 칸이 적은 대신 재할당이 잦다. 넣을 개수를 미리 알면 처음부터 용량을 잡아 재할당을 없앤다. 이때 **용량(capacity)** 은 잡아 둔 칸 수이고 **크기(size)** 는 실제 원소 수다. Java `new ArrayList<>(100)`은 100칸을 잡을 뿐 원소가 없어 `size()`는 0이고 `get(0)`은 예외를 던진다.
+
 용량이 2n이어도 공간은 O(n)이다. 구현할 연산은 `size`·`capacity`·`is_empty`·`at`(범위 밖이면 오류)·`push`·`insert`(뒤를 오른쪽으로 민다)·`prepend`·`pop`·`delete`(뒤를 왼쪽으로 당긴다)·`remove`(값이 있는 모든 자리 삭제)·`find`(없으면 -1)와 내부용 `resize`다.
 
 ### 배열 문제의 기본 요령
@@ -193,6 +196,8 @@ fun addAfter(prev: Node, value: String) {
 
 ### 배열과 연결 리스트, 언제 무엇을
 
+배열과 연결 리스트의 차이는 자료구조 전체를 두 갈래로 나누는 기준이기도 하다. **연속 할당 구조(contiguous)** 는 메모리 한 덩어리에 원소를 붙여 두는 배열, 행렬, 힙, 개방 주소법 해시 테이블이다. **연결 구조(linked)** 는 따로 할당한 조각을 포인터로 잇는 연결 리스트, 트리, 그래프의 인접 리스트다. 분리 연결법 해시 테이블은 버킷 배열(연속)에 체인(연결)을 단 혼합형이다. 아래 비교는 두 갈래 전체에 그대로 통한다.
+
 | 기준 | 배열 | 연결 리스트 |
 | --- | --- | --- |
 | 인덱스로 접근 | O(1) | O(n) |
@@ -200,6 +205,8 @@ fun addAfter(prev: Node, value: String) {
 | 중간 삽입·삭제 | 뒤 원소를 밀고 당기므로 O(n) | 위치를 알면 O(1) |
 | 값으로 탐색 | O(n), 정렬돼 있으면 O(log n) | O(n) |
 | 캐시 효율 | 연속 메모리라 **지역성(locality)이 높다** | 노드가 흩어져 캐시 미스가 잦다 |
+| 크기 | 처음에 정하거나, 늘릴 때마다 새 공간에 복사한다 | 미리 정할 필요가 없고, 메모리가 남는 한 넘치지 않는다 |
+| 추가 메모리 | 원소만 담는다(동적 배열은 여유 칸) | 노드마다 포인터 공간이 든다 |
 
 임의 접근이 많고 끝에서만 넣고 빼면 배열, 위치를 이미 쥔 상태에서 중간 삽입·삭제가 잦으면 연결 리스트를 쓴다. 실제로는 캐시 효율 때문에 이론상 연결 리스트가 유리한 경우에도 배열이 더 빠른 일이 많아서 기본 선택은 동적 배열이다. 크기 상한이 정해진 양쪽 끝 삽입·삭제는 배열 기반 [[queue-deque|원형 버퍼]]로 해결할 수 있다.
 
@@ -286,7 +293,9 @@ Redis 정렬 집합(sorted set)은 p = 1/4, 최대 32레벨인 스킵 리스트�
 
 ## 스택과 큐
 
-둘 다 연결 리스트 위에 얹을 수 있다. 큐는 머리 노드를 가리키는 포인터를 다음 노드로 옮겨 꺼내고(dequeue), 꼬리에 노드를 이어 넣는다(enqueue). 꼬리 포인터를 따로 두지 않으면 넣을 때마다 끝까지 따라가야 해 O(n)이 된다. 스택은 머리 한쪽에서만 넣고(push) 꺼낸다(pop). LIFO의 스택과 FIFO의 큐는 [[stack|스택]], [[queue-deque|큐와 덱]]에 따로 정리했다.
+둘 다 연결 리스트 위에 얹을 수 있다. 큐는 머리 노드를 가리키는 포인터를 다음 노드로 옮겨 꺼내고(dequeue), 꼬리에 노드를 이어 넣는다(enqueue). 꼬리 포인터를 따로 두지 않으면 넣을 때마다 끝까지 따라가야 해 O(n)이 된다. 마지막 원소를 꺼내 큐가 비면 꼬리 포인터도 비운다. 머리만 비우면 꼬리가 꺼낸 노드를 계속 가리켜 그 노드가 회수되지 않는다(쓸모없어진 참조가 남는 loitering, [[stack|스택]]). 스택은 머리 한쪽에서만 넣고(push) 꺼낸다(pop).
+
+고르는 기준은 꺼내는 순서다. 넣은 순서대로 꺼내면 큐, 넣은 역순으로 꺼내면 스택, 넣은 시점과 상관없이 아무 원소나 꺼내고 꺼낸 뒤에도 남겨 두려면 리스트다. 스택과 큐는 데이터를 오래 보관하는 구조라기보다 처리할 일을 정해진 순서로 넘겨주고 비우는 작업용 구조다. LIFO의 스택과 FIFO의 큐는 [[stack|스택]], [[queue-deque|큐와 덱]]에 따로 정리했다.
 
 ## 얕은 복사와 깊은 복사
 
@@ -329,6 +338,8 @@ flowchart TB
 ```
 
 - 고르는 기준은 이 노트의 복잡도 표와 같다. 인덱스 접근이 많으면 `ArrayList`, 정렬된 순회가 필요하면 `TreeMap`·`TreeSet`, 순서가 상관없으면 `HashMap`·`HashSet`이다.
+- `HashSet`은 중복을 `equals`·`hashCode`로 가리고, `TreeSet`은 `compareTo`(또는 `Comparator`)로 가린다. 두 메서드를 함께 재정의해야 하는 이유는 [[java-language-basics|Java 언어 기본]]에 있다.
+- 중복을 허용하고 원소별 개수를 세는 **멀티셋(multiset, bag)** 은 JDK에 없다. Guava `Multiset`(`HashMultiset`, `TreeMultiset`)이나 Apache Commons Collections `Bag`(`HashBag`, `TreeBag`)을 쓰거나 `Map<E, Integer>`로 센다. Python은 `collections.Counter`, C++은 `std::multiset`(정렬 유지)과 `std::unordered_multiset`이다.
 - `Stack`·`Vector`·`Hashtable`은 초기 버전의 동기화된 클래스라 지금은 `ArrayDeque`, `ArrayList`, `HashMap`(동시성이 필요하면 `ConcurrentHashMap`)을 쓴다.
 - Java 21부터는 처음·끝 원소 접근을 통일한 `SequencedCollection`·`SequencedMap` 인터페이스가 계층에 들어갔다.
 - 변수 타입은 인터페이스(`List<String> list = new ArrayList<>()`)로 선언해 구현을 바꾸기 쉽게 한다.

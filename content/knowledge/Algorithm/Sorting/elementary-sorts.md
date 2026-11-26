@@ -1,16 +1,17 @@
 ---
-title: "기본 정렬: 버블·선택·삽입·셸·계수·기수 정렬"
+title: "기본 정렬: 버블·선택·삽입·셸·계수·기수·버킷 정렬"
 concept: "Elementary Sorts"
-summary: "구현이 단순한 O(n²) 비교 정렬 세 가지와 입력 상태에 따른 실제 속도 비교, 간격을 줄여 가며 삽입 정렬하는 셸 정렬, 비교 없이 정렬하는 계수 정렬·기수 정렬(LSD·MSD)."
+summary: "구현이 단순한 O(n²) 비교 정렬 세 가지와 입력 상태에 따른 실제 속도 비교, 간격을 줄여 가며 삽입 정렬하는 셸 정렬, 비교 없이 정렬하는 계수 정렬·기수 정렬(LSD·MSD), 값의 구간별로 나눠 담는 버킷 정렬."
 tags: ["algorithm", "sorting", "complexity", "python"]
 source: til
-date: "2026-10-14"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)"]
+date: "2026-11-26"
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "https://www.bigocheatsheet.com/"]
 ---
 
 > 기수 정렬 절은 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 알고리즘 문서를 바탕으로 보강했다.
 > 세 O(n²) 정렬의 실제 속도 비교는 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 > 셸 정렬 절은 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용으로 보강했다.
+> 버킷 정렬 절은 Eric Rowell의 「[Big-O Cheat Sheet](https://www.bigocheatsheet.com/)」의 정렬 비교표를 바탕으로 보강했다.
 
 정렬 알고리즘의 성능은 보통 빅오 표기법으로 최선·평균·최악의 경우를 나눠 비교한다. 이 노트의 버블·선택·삽입 정렬은 원리가 단순한 대신 평균 O(n²)이라 데이터가 많으면 느리다. 계수 정렬은 비교 없이 개수를 세서 O(n + k)에, 기수 정렬은 자릿수마다 계수 정렬을 반복해 O(d·(n + b))에 정렬한다.
 
@@ -157,9 +158,32 @@ print(radix_sort_lsd([170, 45, 75, 90, 802, 24, 2, 66]))
 - 비교 정렬의 하한 Ω(n log n)보다 빠를 수 있지만, 자릿수 d가 작고 고정된 키(정수, 같은 길이 문자열)에서만 이득이다. 길이가 제각각이면 짧은 키를 채우는 처리가 필요하다.
 - 음수는 부호를 따로 처리하고, 부동소수점은 비트 표현을 변환해야 한다.
 
+## 버킷 정렬 (Bucket Sort)
+
+값의 범위를 k개 구간(버킷)으로 나눠 각 값을 자기 구간에 담고, 버킷마다 정렬한 뒤 차례로 이어 붙인다. 버킷 사이의 순서는 구간이 정해 주므로 비교는 버킷 안에서만 한다.
+
+```python
+def bucket_sort(arr, k=10):             # 0 이상 1 미만의 실수
+    buckets = [[] for _ in range(k)]
+    for x in arr:
+        buckets[int(x * k)].append(x)   # 값의 구간으로 버킷을 고른다
+    result = []
+    for b in buckets:
+        result.extend(sorted(b))        # 버킷마다 정렬(보통 삽입 정렬)
+    return result
+
+print(bucket_sort([0.42, 0.32, 0.23, 0.52, 0.25, 0.47, 0.51]))
+# [0.23, 0.25, 0.32, 0.42, 0.47, 0.51, 0.52]
+```
+
+- 값이 범위 안에 **고르게 퍼져 있으면** 버킷마다 평균 n/k개가 들어가 평균 O(n + k)다. 버킷 수를 n에 맞추면 O(n)이다.
+- 값이 한 버킷에 몰리면 그 버킷의 정렬이 전체를 차지한다. 버킷 안을 삽입 정렬하면 최악 O(n²)이다.
+- 공간은 O(n + k)이고, 버킷 안 정렬이 안정이면 전체도 안정 정렬이다.
+- 계수 정렬은 버킷 하나가 값 하나를 맡는 경우이고, 기수 정렬은 자릿수를 기준으로 버킷 나누기를 반복하는 것이다.
+
 ## 한눈에 비교
 
-버블·선택·삽입은 O(n²), 셸 정렬은 간격 수열에 따라 O(n^1.5) 안팎, 계수 정렬은 O(n + k), 기수 정렬은 O(d·(n + b))이고, 선택 정렬과 셸 정렬이 불안정 정렬이다.
+버블·선택·삽입은 O(n²), 셸 정렬은 간격 수열에 따라 O(n^1.5) 안팎, 계수 정렬은 O(n + k), 기수 정렬은 O(d·(n + b)), 버킷 정렬은 값이 고르게 퍼졌을 때 평균 O(n + k)이고, 선택 정렬과 셸 정렬이 불안정 정렬이다.
 
 세 O(n²) 정렬은 빅오가 같아도 실제 속도가 다르다. 차이는 비교 횟수, 원소를 옮기는(쓰는) 횟수, 입력의 정렬 정도에 반응하는가에서 나온다. 아래에서 역순쌍(inversion)은 `i < j`인데 `a[i] > a[j]`인 쌍의 수이고, 무작위 입력이면 평균 n²/4개다.
 
@@ -182,5 +206,6 @@ print(radix_sort_lsd([170, 45, 75, 90, 802, 24, 2, 66]))
 - 셸 정렬은 간격을 줄여 가며 삽입 정렬을 반복해 멀리 있는 원소를 빨리 옮긴다. 성능은 간격 수열이 정한다.
 - 값의 범위가 작은 정수라면 계수 정렬이 O(n + k)로 가장 빠르다.
 - 자릿수가 고정된 키는 기수 정렬(LSD)로 자릿수마다 안정 정렬을 반복한다.
+- 값이 범위 안에 고르게 퍼진 실수는 버킷 정렬로 평균 O(n + k)에 정렬한다. 한 버킷에 몰리면 O(n²)이다.
 
 관련 노트: [[big-o|빅오 표기법]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[merge-insertion-sort|병합 삽입 정렬(이진 삽입)]]
