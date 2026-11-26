@@ -617,11 +617,11 @@
  },
  "Backend.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-26T19:03:01+09:00"
+  "updated": "2026-11-26T21:59:29+09:00"
  },
  "Backend/Databases.md": {
   "created": "2026-11-26T19:03:01+09:00",
-  "updated": "2026-11-26T19:03:01+09:00"
+  "updated": "2026-11-26T21:59:29+09:00"
  },
  "Backend/Databases/block-file-object-storage.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -665,7 +665,7 @@
  },
  "Backend/Databases/index-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-26T21:59:31+09:00"
  },
  "Backend/Databases/jpa-persistence-context.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -689,7 +689,7 @@
  },
  "Backend/Databases/sql-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-25T23:02:18+09:00"
+  "updated": "2026-11-26T21:59:48+09:00"
  },
  "Backend/Databases/web-search-engine.md": {
   "created": "2026-10-17T19:04:42+09:00",

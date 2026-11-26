@@ -4,7 +4,7 @@ concept: "Index Design"
 summary: "인덱스는 정렬이다. 카디널리티·분포도와 후보 컬럼 고르기, 복합 인덱스 컬럼 순서, 유니크·외래 키 인덱스, 인덱스를 못 타게 만드는 조건, EXPLAIN 접근 유형과 Oracle 인덱스 스캔 방식, 조인 방식(중첩 루프·해시·정렬 병합)과 조인 순서, ORDER BY·GROUP BY·커버링 인덱스, 빠른 쿼리를 위한 체크리스트, NoSQL의 인덱스와 MongoDB의 ESR 규칙까지 정리했다."
 tags: ["database", "mysql", "sql", "performance", "nosql"]
 source: other
-date: "2026-11-01"
+date: "2026-11-26"
 sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/ko/blog/mysql-workbench-visual-explain-index/", "https://medium.com/watcha/%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%B2%AB%EA%B1%B8%EC%9D%8C-%EB%B3%B4%EB%8B%A4-%EB%B9%A0%EB%A5%B8-%EC%BF%BC%EB%A6%AC%EB%A5%BC-%EC%9C%84%ED%95%9C-7%EA%B0%80%EC%A7%80-%EC%B2%B4%ED%81%AC-%EB%A6%AC%EC%8A%A4%ED%8A%B8-bafec9d2c073", "https://blog.ull.im/engineering/2019/04/05/mongodb-indexing-strategy.html", "https://engineering.linecorp.com/ko/blog/mysql-research-performance-schema-instruments/", "https://www.mongodb.com/docs/manual/tutorial/equality-sort-range-guideline/", "https://dev.mysql.com/doc/refman/8.4/en/descending-indexes.html", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "https://dev.mysql.com/doc/refman/8.4/en/nested-loop-joins.html", "https://dev.mysql.com/doc/refman/8.4/en/hash-joins.html", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "https://github.com/karanpratapsingh/system-design"]
 ---
 
@@ -16,7 +16,7 @@ sources: ["https://jojoldu.tistory.com/243", "https://engineering.linecorp.com/k
 
 ## 인덱스는 정렬이다
 
-인덱스는 지정한 컬럼 값으로 **미리 정렬해 둔 목차**다. 관계형 DB의 기본 인덱스는 B+트리이고, 리프에는 정렬된 키와 실제 행의 위치(InnoDB는 기본 키)가 들어 있다. 자료 구조가 왜 B+트리인지는 [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]]에 있다.
+인덱스는 지정한 컬럼 값으로 **미리 정렬해 둔 목차**다. 관계형 DB의 기본 인덱스는 B+트리이고, 리프에는 정렬된 키와 실제 행의 위치(InnoDB는 기본 키)가 들어 있다. 만들고 지우는 문(`CREATE INDEX`, `DROP INDEX`)은 [[sql-basics#인덱스 만들기와 지우기|SQL 기초]]에 있고, 자료 구조가 왜 B+트리인지는 [[database-internals|DB 내부 구조: 쿼리 실행과 인덱스 자료 구조]]에 있다.
 
 | 작업 | 인덱스의 영향 |
 | --- | --- |
