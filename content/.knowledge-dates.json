@@ -409,7 +409,7 @@
  },
  "Algorithm/Data-Structure/data-structures.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-11-26T19:03:01+09:00"
+  "updated": "2026-11-26T21:07:38+09:00"
  },
  "Algorithm/Data-Structure/disjoint-set.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -417,11 +417,11 @@
  },
  "Algorithm/Data-Structure/hash-table.md": {
   "created": "2026-10-30T15:46:57+09:00",
-  "updated": "2026-11-26T18:55:28+09:00"
+  "updated": "2026-11-26T21:07:38+09:00"
  },
  "Algorithm/Data-Structure/heap-priority-queue.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-26T18:55:28+09:00"
+  "updated": "2026-11-26T21:07:38+09:00"
  },
  "Algorithm/Data-Structure/queue-deque.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -433,11 +433,11 @@
  },
  "Algorithm/Data-Structure/stack.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-26T18:55:28+09:00"
+  "updated": "2026-11-26T21:07:38+09:00"
  },
  "Algorithm/Data-Structure/tree.md": {
   "created": "2026-10-14T10:57:28+09:00",
-  "updated": "2026-11-26T18:55:28+09:00"
+  "updated": "2026-11-26T21:07:38+09:00"
  },
  "Algorithm/Graph.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -557,7 +557,7 @@
  },
  "Algorithm/Search/binary-search.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-20T23:08:40+09:00"
+  "updated": "2026-11-26T21:07:38+09:00"
  },
  "Algorithm/Search/brute-force.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -569,11 +569,11 @@
  },
  "Algorithm/Sorting.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T15:46:43+09:00"
+  "updated": "2026-11-26T21:07:38+09:00"
  },
  "Algorithm/Sorting/elementary-sorts.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-22T20:07:33+09:00"
+  "updated": "2026-11-26T21:07:38+09:00"
  },
  "Algorithm/Sorting/merge-insertion-sort.md": {
   "created": "2026-10-14T10:57:28+09:00",
@@ -581,11 +581,11 @@
  },
  "Algorithm/Sorting/merge-quick-sort.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-22T20:07:33+09:00"
+  "updated": "2026-11-26T21:07:38+09:00"
  },
  "Algorithm/big-o.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-26T18:55:28+09:00"
+  "updated": "2026-11-26T21:07:38+09:00"
  },
  "Algorithm/coding-test.md": {
   "created": "2026-10-12T20:52:25+09:00",
