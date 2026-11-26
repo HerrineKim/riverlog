@@ -5,8 +5,7 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, type MouseEvent, useEffect, useRef, useState } from "react";
 import BookCover from "@/components/BookCover";
 import { adminFetch, DEPLOY_NOTE } from "@/lib/admin/client";
-
-const CATEGORIES = ["개발", "컴퓨터 과학", "커리어·일", "경제·경영", "인문·사회", "자기계발", "소설·문학", "기타"];
+import { CATEGORY_ORDER } from "@/lib/book-categories";
 const STATUSES = [
   ["reading", "읽는 중"],
   ["read", "다 읽음"],
@@ -146,7 +145,7 @@ export default function BookEditor({ slug: initialSlug }: { slug?: string }) {
           <label className="block text-sm text-muted">
             분류
             <select {...bind("category")} className={field}>
-              {[...new Set([...CATEGORIES, form.category])].map((c) => (
+              {[...new Set<string>([...CATEGORY_ORDER, form.category])].map((c) => (
                 <option key={c}>{c}</option>
               ))}
             </select>

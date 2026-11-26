@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import IntentLink from "@/components/IntentLink";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import IntentLink from "@/components/IntentLink";
 import BookCover from "@/components/BookCover";
 import Prose from "@/components/Prose";
 import SiteFooter from "@/components/SiteFooter";
 import BookAdminControls from "@/components/admin/BookAdminControls";
-import { getAllBooks, getBook, STATUS_LABEL } from "@/lib/books";
+import { bookIsIndexable, getAllBooks, getBook, STATUS_LABEL } from "@/lib/books";
 import { formatDate } from "@/lib/format";
 import { pageMeta } from "@/lib/seo";
 
@@ -18,21 +19,35 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/books/[slug]">): Promise<Metadata> {
   const book = getBook((await params).slug);
-  return book
-    ? pageMeta({ title: `${book.title} 독후감`, description: `${book.author}의 『${book.title}』를 읽고 남긴 기록`, path: `/books/${book.slug}` })
-    : {};
+  if (!book) return {};
+  const indexable = bookIsIndexable(book.review);
+  return {
+    ...pageMeta({
+      title: indexable ? `${book.title} 독후감` : book.title,
+      description: indexable
+        ? `${book.author}의 『${book.title}』를 읽고 남긴 기록`
+        : book.status === "want"
+          ? `읽고 싶은 책에 둔 『${book.title}』`
+          : `『${book.title}』`,
+      path: `/books/${book.slug}`,
+    }),
+    // Empty detail pages are thin. The list pages are the indexable catalogs.
+    ...(indexable ? {} : { robots: { index: false, follow: true } }),
+  };
 }
 
 export default async function BookPage({ params }: PageProps<"/books/[slug]">) {
   const book = getBook((await params).slug);
   if (!book) notFound();
+  const want = book.status === "want";
+  const Back = want ? IntentLink : Link;
 
   return (
     <>
       <main className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6 sm:py-20">
-        <IntentLink href="/books" className="text-sm text-muted hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
-          <span aria-hidden>←</span> 책장
-        </IntentLink>
+        <Back href={want ? "/books/want" : "/books"} className="text-sm text-muted hover:text-accent pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center">
+          <span aria-hidden>←</span> {want ? "읽고 싶은 책" : "책장"}
+        </Back>
         <header className="mt-8 flex gap-6 border-b border-line pb-8">
           <BookCover title={book.title} author={book.author} cover={book.cover} className="w-24 shrink-0 sm:w-32" />
           <div className="min-w-0">

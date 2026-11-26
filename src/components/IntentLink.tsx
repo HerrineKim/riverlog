@@ -6,7 +6,7 @@ import { useState, type ComponentProps } from "react";
 /**
  * A Link that prefetches only once the reader shows intent (pointer over it, keyboard focus, or a touch),
  * instead of as soon as it scrolls into view. Use it for links to heavy index pages: /knowledge/dictionary
- * and /books are 100~200 KB of RSC each, and the default prefetch made every page that shows such a link
+ * and /books/want ship a large RSC payload, and the default prefetch made every page that shows such a link
  * download them in the background.
  */
 export default function IntentLink({ onPointerEnter, onFocus, onTouchStart, ...props }: Omit<ComponentProps<typeof Link>, "prefetch">) {

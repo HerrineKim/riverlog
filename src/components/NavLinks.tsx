@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import IntentLink from "./IntentLink";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -9,7 +8,7 @@ const LINKS = [
   { href: "/", label: "About" },
   { href: "/blog", label: "Blog" },
   { href: "/knowledge", label: "Knowledge" },
-  { href: "/books", label: "Books", heavy: true },
+  { href: "/books", label: "Books" },
   { href: "/portfolio", label: "Portfolio" },
 ];
 
@@ -23,10 +22,8 @@ export default function NavLinks() {
       <nav aria-label="주 메뉴" className="hidden items-center gap-1 text-sm sm:flex">
         {LINKS.map((l) => {
           const active = isActive(l.href, pathname);
-          // The shelf is ~100 KB of RSC; prefetch it on intent rather than on every page view
-          const L = l.heavy ? IntentLink : Link;
           return (
-            <L
+            <Link
               key={l.href}
               href={l.href}
               aria-current={active ? "page" : undefined}
@@ -35,7 +32,7 @@ export default function NavLinks() {
               }`}
             >
               {l.label}
-            </L>
+            </Link>
           );
         })}
       </nav>
@@ -100,10 +97,9 @@ function MobileMenu({ pathname }: { pathname: string }) {
         <ul>
           {LINKS.map((l) => {
             const active = isActive(l.href, pathname);
-            const L = l.heavy ? IntentLink : Link;
             return (
               <li key={l.href}>
-                <L
+                <Link
                   href={l.href}
                   aria-current={active ? "page" : undefined}
                   onClick={() => setOpen(false)}
@@ -112,7 +108,7 @@ function MobileMenu({ pathname }: { pathname: string }) {
                   }`}
                 >
                   {l.label}
-                </L>
+                </Link>
               </li>
             );
           })}
