@@ -11,7 +11,7 @@ date: "2026-11-26"
 
 ## 하위 노트
 
-- [SQL 기초](Backend/Databases/sql-basics.md): DDL·DML·DCL, 뷰·시퀀스, 조회·집계·그룹화, 서브쿼리와 NOT IN 함정, 저장 프로시저와 PL/SQL
+- [SQL 기초](Backend/Databases/sql-basics.md): DDL·DML·DCL, 데이터 타입·별칭·조회 결과로 테이블 만들기, 뷰·시퀀스, 조회·집계·그룹화, 서브쿼리와 NOT IN 함정, 저장 프로시저와 PL/SQL
 - [용도별 데이터베이스와 고르는 법](Backend/Databases/database-selection.md): OLTP·OLAP·검색·키-값·문서·그래프·시계열·벡터 DB와 선택 기준
 - [DB 내부 구조: 쿼리 실행과 인덱스 자료 구조](Backend/Databases/database-internals.md): 파서·옵티마이저·실행기·버퍼 관리자, Oracle의 SGA·PGA·백그라운드 프로세스와 테이블스페이스, B+ 트리·LSM 트리
 - [인덱스 설계와 쿼리 튜닝](Backend/Databases/index-design.md): 카디널리티, 복합 인덱스 순서, 인덱스를 못 타는 조건, EXPLAIN
