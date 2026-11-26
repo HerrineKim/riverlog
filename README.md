@@ -8,7 +8,7 @@ River(Hyerin Kim)의 블로그이자 지식 창고. Next.js App Router로 만든
   - `/knowledge`: 3D 개념 지도 (분야 허브 ↔ 개념 노트, 같은 태그끼리 연결)
   - `/knowledge/overview`: 개요 (분야별 노트 비중, 분야·주제 바로가기, 최근 정리한 노트, 자주 쓰는 태그)
   - `/knowledge/dictionary`: 계층형 사전 (분야 → 주제 → 노트, 가나다·ABC 색인, 추가일·수정일 기준 최신순·오래된순, 검색). 노트 페이지에는 목차, 접힌 출처·원본 기록, giscus 댓글이 붙습니다
-- **Books** (`/books`): 책장 목록과 책별 독후감
+- **Books** (`/books`): 다 읽은 책·읽는 중인 책의 책장과 독후감. 읽고 싶은 책은 `/books/want`
 - **Portfolio** (`/portfolio`): 회사별 경력과 프로젝트
 
 처음 방문하면 OS의 라이트·다크 설정을 따르고, 헤더의 버튼으로 바꾼 테마는 브라우저에 기억됩니다.
@@ -71,7 +71,7 @@ readingOrder:
 
 ### 책 / 독후감
 
-`content/books/<slug>.md`: 형식은 `content/_templates/책.md` 참고. 본문이 곧 독후감이고, `pdf: "[[파일.pdf]]"`를 넣으면 책 페이지에 「PDF 보기」 버튼이 생깁니다.
+`content/books/<slug>.md`: 형식은 `content/_templates/책.md` 참고. 읽기 상태와 상관없이 이 폴더에 둡니다. `status`가 `read` 또는 `reading`이면 `/books` 책장에, `want`이면 `/books/want`(읽고 싶은 책)에 나옵니다. 책 주소(`/books/<slug>`)는 상태가 바뀌어도 그대로라 파일을 옮기지 않습니다. 본문이 곧 독후감이고, `pdf: "[[파일.pdf]]"`를 넣으면 책 페이지에 「PDF 보기」 버튼이 생깁니다. 본문이 비어 있는 책 페이지는 사이트맵에 넣지 않고 검색 색인에서도 뺍니다.
 사이트의 책 페이지에서 「독후감 쓰기」를 누르면 GitHub 웹 에디터에서 해당 파일이 열립니다. 새 브랜치로 커밋해 PR을 만들고 머지하면 Vercel이 다시 배포합니다.
 
 ### 포트폴리오

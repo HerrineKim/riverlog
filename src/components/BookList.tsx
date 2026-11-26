@@ -24,13 +24,14 @@ const STATUS: { key: "all" | BookRow["status"]; label: string }[] = [
   { key: "read", label: "다 읽음" },
   { key: "want", label: "안 읽음" },
 ];
+const DEFAULT_STATUSES: BookRow["status"][] = ["reading", "read", "want"];
 const STATUS_STYLE: Record<BookRow["status"], string> = {
   reading: "bg-accent-soft text-accent",
   read: "border border-line text-fg",
   want: "text-muted",
 };
 const STATUS_LABEL: Record<BookRow["status"], string> = { reading: "읽는 중", read: "다 읽음", want: "안 읽음" };
-// The shelf has ~1,900 books; rendering them all at once makes a 1MB page
+// A long shelf still pages; the want-to-read catalog is a separate page
 const PAGE = 60;
 type View = "gallery" | "list";
 const VIEW_KEY = "riverlog:books-view";
@@ -44,9 +45,12 @@ function storedView(): View {
 }
 const noSubscribe = () => () => {};
 
-export default function BookList({ books }: { books: BookRow[] }) {
+export default function BookList({ books, statuses = DEFAULT_STATUSES }: { books: BookRow[]; statuses?: BookRow["status"][] }) {
   // Filters live in the URL, so a filtered shelf can be shared or bookmarked
   const [status, setStatus] = useUrlState("status", "all");
+  const allowed = new Set<string>(statuses);
+  // An old ?status=want link on the shelf no longer matches a chip; show the whole shelf instead
+  const activeStatus = status === "all" || allowed.has(status) ? status : "all";
   const [category, setCategory] = useUrlState("category", "all");
   const [reviewed, setReviewed] = useUrlState("review", "");
   const onlyReviewed = reviewed === "1";
@@ -72,7 +76,7 @@ export default function BookList({ books }: { books: BookRow[] }) {
   const count = (k: string) => (k === "all" ? books.length : books.filter((b) => b.status === k).length);
   const shown = books.filter(
     (b) =>
-      (status === "all" || b.status === status) &&
+      (activeStatus === "all" || b.status === activeStatus) &&
       (category === "all" || b.category === category) &&
       (!onlyReviewed || b.hasReview) &&
       (!q || b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q)),
@@ -95,14 +99,14 @@ export default function BookList({ books }: { books: BookRow[] }) {
         />
       </label>
       <div className="flex flex-wrap items-center gap-2">
-        {STATUS.map((s) => (
+        {STATUS.filter((s) => s.key === "all" || allowed.has(s.key)).map((s) => (
           <button
             key={s.key}
             type="button"
             onClick={() => filter(setStatus)(s.key)}
-            aria-pressed={status === s.key}
+            aria-pressed={activeStatus === s.key}
             className={`min-h-11 rounded-full px-3.5 text-sm transition ${
-              status === s.key ? "bg-accent font-medium text-accent-ink" : "border border-line text-muted hover:text-fg-strong"
+              activeStatus === s.key ? "bg-accent font-medium text-accent-ink" : "border border-line text-muted hover:text-fg-strong"
             }`}
           >
             {s.label} <span className="tabular-nums">{count(s.key)}</span>

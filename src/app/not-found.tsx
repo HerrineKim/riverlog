@@ -19,8 +19,8 @@ export default function NotFound() {
             ["/knowledge/tags", "태그"],
             ["/books", "책장"],
           ].map(([href, label]) => {
-            // Both indexes are 100~200 KB of RSC; prefetch them on intent
-            const L = href === "/knowledge/dictionary" || href === "/books" ? IntentLink : Link;
+            // The dictionary index is a large RSC payload; prefetch it on intent
+            const L = href === "/knowledge/dictionary" ? IntentLink : Link;
             return (
               <li key={href}>
                 <L href={href} className="flex min-h-11 items-center rounded-lg border border-line px-4 text-fg transition hover:border-accent hover:text-accent">

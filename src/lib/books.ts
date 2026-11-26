@@ -1,6 +1,9 @@
+import type { BookStatus } from "./book-categories";
 import { cachedRead, readSection, resolveAttachment, stringList } from "./vault";
 
-export type BookStatus = "read" | "reading" | "want";
+export type { BookStatus } from "./book-categories";
+export { CATEGORY_ORDER, bookIsIndexable, compareCategory, isShelfStatus } from "./book-categories";
+
 export type Book = {
   slug: string;
   title: string;
@@ -18,6 +21,11 @@ export type Book = {
 export const STATUS_LABEL: Record<BookStatus, string> = { reading: "읽는 중", read: "다 읽음", want: "안 읽음" };
 const STATUS_ORDER: BookStatus[] = ["reading", "read", "want"];
 
+/**
+ * Every published card in content/books, whatever its status.
+ * Want-to-read stays in this folder so detail URLs, wikilinks, and the admin editor keep working.
+ * /books and /books/want filter by status.
+ */
 export const getAllBooks = cachedRead((): Book[] => {
   const collator = new Intl.Collator("ko", { numeric: true });
   return readSection("books")

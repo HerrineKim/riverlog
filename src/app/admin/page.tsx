@@ -22,9 +22,15 @@ export default async function AdminHome() {
           </Link>
         </li>
         <li>
-          <IntentLink href="/books" className="block rounded-2xl border border-line p-6 transition hover:border-accent">
+          <Link href="/books" className="block rounded-2xl border border-line p-6 transition hover:border-accent">
             <p className="font-semibold text-fg-strong">책장에서 고르기</p>
-            <p className="mt-1 text-sm text-muted">책 페이지의 「관리」 상자에서 읽기 상태를 바꾸고 독후감을 쓰거나 고칩니다.</p>
+            <p className="mt-1 text-sm text-muted">다 읽은 책과 읽는 중인 책입니다. 「관리」에서 상태와 독후감을 고칩니다.</p>
+          </Link>
+        </li>
+        <li>
+          <IntentLink href="/books/want" className="block rounded-2xl border border-line p-6 transition hover:border-accent">
+            <p className="font-semibold text-fg-strong">읽고 싶은 책에서 고르기</p>
+            <p className="mt-1 text-sm text-muted">아직 안 읽은 책입니다. 책 페이지의 「관리」에서 읽기 상태로 바꾸거나 독후감을 씁니다.</p>
           </IntentLink>
         </li>
       </ul>
