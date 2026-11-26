@@ -4,11 +4,12 @@ concept: "Divide and Conquer"
 summary: "문제를 서로 독립적인 작은 하위 문제로 나누어 재귀적으로 풀고, 그 결과를 합쳐 원래 문제를 해결하는 기법과, 실행 시간을 점화식(반복 대입·추정 후 증명·마스터 정리)으로 구하는 법."
 tags: ["algorithm", "paradigm", "divide-and-conquer", "recursion", "sorting"]
 source: til
-date: "2026-10-13"
-sources: ["고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)"]
+date: "2026-11-26"
+sources: ["고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
 ---
 
 > 「시간 복잡도: 점화식으로 구하기」는 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용으로 보강했다.
+> 「최대 부분 배열 합」은 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 
 분할 정복(Divide and Conquer)은 그대로는 풀기 어려운 문제를 같은 형태의 더 작은 문제로 쪼개 해결하는 방법이다. 대표적인 예로 병합 정렬, 퀵 정렬, 이분 탐색, 거듭제곱 빠르게 계산하기, 고속 푸리에 변환(FFT) 등이 있다.
 
@@ -45,6 +46,21 @@ sources: ["고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교�
 ### 이진 탐색
 
 정렬된 배열을 반으로 나눈 뒤 한쪽만 계속 탐색한다. 하위 문제가 하나뿐인 분할 정복(감소 정복)으로 볼 수 있다. O(log n).
+
+### 최대 부분 배열 합
+
+연속 구간 중 합이 가장 큰 것을 찾는다. 가운데에서 나누면 답은 셋 중 하나다. 왼쪽 절반 안의 구간, 오른쪽 절반 안의 구간, 가운데를 가로지르는 구간이다. 가로지르는 구간은 가운데에서 왼쪽과 오른쪽으로 각각 뻗으며 가장 큰 합을 구해 더하면 되므로 O(n)이다. T(n) = 2T(n/2) + O(n)이라 전체는 O(n log n)이다.
+
+같은 문제를 [[dynamic-programming|동적 계획법]]으로 보면 O(n)에 풀린다(카데인 알고리즘). 「i번째에서 끝나는 최대 합」은 `max(x, 직전에서 끝나는 최대 합 + x)`다. 분할 정복으로 풀 수 있어도 그것이 가장 빠른 풀이는 아닐 수 있다는 예다.
+
+```python
+def max_subarray(nums):            # 카데인 알고리즘, 원소가 하나 이상이라고 가정
+    best = cur = nums[0]
+    for x in nums[1:]:
+        cur = max(x, cur + x)      # 앞 구간을 이어 갈지, x에서 새로 시작할지
+        best = max(best, cur)
+    return best
+```
 
 ### 거듭제곱 빠르게 계산하기
 

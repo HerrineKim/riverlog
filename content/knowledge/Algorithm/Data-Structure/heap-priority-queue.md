@@ -1,16 +1,17 @@
 ---
 title: "힙과 우선순위 큐"
 concept: "Heap"
-summary: "우선순위가 가장 높은 원소를 O(log n)에 넣고 꺼낼 수 있게 해 주는 완전 이진 트리 기반 자료구조, 편향되지 않는 이유와 힙 정렬, 크기 k짜리 힙으로 상위 k개를 O(n log k)에 구하는 방법."
+summary: "우선순위가 가장 높은 원소를 O(log n)에 넣고 꺼낼 수 있게 해 주는 완전 이진 트리 기반 자료구조, 편향되지 않는 이유와 힙 정렬, 크기 k짜리 힙으로 상위 k개를 O(n log k)에 구하는 방법, 힙 두 개로 스트림의 중앙값을 유지하는 방법."
 tags: ["data-structure", "heap", "priority-queue", "python"]
 source: mixed
-date: "2026-10-30"
-sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f", "https://www.techinterviewhandbook.org/algorithms/heap/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md"]
+date: "2026-11-26"
+sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f", "https://www.techinterviewhandbook.org/algorithms/heap/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
 ---
 
 > 구현 방식 비교와 O(n) 힙 만들기는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[자료구조] 우선순위큐와 힙」을 바탕으로 보강했다.
 > 상위 k개를 크기 k짜리 힙으로 구하는 절은 Tech Interview Handbook의 「[Heap cheatsheet](https://www.techinterviewhandbook.org/algorithms/heap/)」를 바탕으로 보강했다.
 > 편향되지 않는 이유와 힙 정렬의 안정성은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
+> 「K개 병합과 스트림의 중앙값」은 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 
 ## 우선순위 큐
 
@@ -253,10 +254,38 @@ def k_largest(nums, k):
 
 `heapq.nlargest(k, nums)`, `heapq.nsmallest(k, nums, key=...)`가 같은 일을 한다. 데이터가 모두 메모리에 있고 k번째 값 하나만 필요하면 퀵 정렬의 분할을 한쪽에만 적용하는 **퀵 셀렉트**가 평균 O(n)으로 더 빠르다([[merge-quick-sort|병합 정렬과 퀵 정렬]]). 「빈도 상위 k개」는 [[hash-table|해시 테이블]]로 빈도를 센 뒤 (빈도, 값) 쌍으로 같은 방법을 쓴다.
 
+## K개 병합과 스트림의 중앙값
+
+여러 줄기로 들어오는 데이터에서 매번 「지금 가장 작은 값」이나 「가운데 값」만 알면 될 때도 힙을 쓴다.
+
+**정렬된 리스트 K개 병합**: 각 리스트의 맨 앞 원소를 (값, 리스트 번호)로 최소 힙에 넣고, 루트를 꺼낼 때마다 그 리스트의 다음 원소를 넣는다. 힙 크기가 K를 넘지 않으므로 전체 원소 N개에 O(N log K)다. 모두 이어 붙여 정렬하는 O(N log N)보다 빠르다. 외부 정렬의 k-way 병합 단계가 같은 방법이다([[merge-quick-sort|병합 정렬과 퀵 정렬]]). 파이썬은 `heapq.merge(*iterables)`가 이 일을 지연 평가로 해 준다.
+
+**스트림의 중앙값**: 작은 절반은 최대 힙, 큰 절반은 최소 힙에 나눠 담고 두 힙의 크기 차를 1 이하로 유지한다. 새 값은 최대 힙에 넣은 뒤 그 루트를 최소 힙으로 옮기고, 최소 힙이 더 커지면 루트 하나를 되돌린다. 삽입은 O(log n), 중앙값은 두 루트만 보면 되므로 O(1)이다. 값이 들어올 때마다 정렬해 두면 삽입마다 O(n)이 든다.
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.low = []    # 작은 절반, 최대 힙(음수로 저장)
+        self.high = []   # 큰 절반, 최소 힙
+
+    def add(self, x):
+        heapq.heappush(self.low, -x)
+        heapq.heappush(self.high, -heapq.heappop(self.low))
+        if len(self.high) > len(self.low):
+            heapq.heappush(self.low, -heapq.heappop(self.high))
+
+    def median(self):
+        if len(self.low) > len(self.high):
+            return -self.low[0]
+        return (-self.low[0] + self.high[0]) / 2
+```
+
 ## 핵심 정리
 
 - 우선순위 큐는 힙으로 구현하며 삽입·삭제 O(log n), 최솟값 확인 O(1)
 - 파이썬 `heapq`는 기본이 최소 힙. 최대 힙은 음수로 바꿔 넣는다(3.14+는 `heappush_max` 등도 가능).
-- 다익스트라 최단 경로, 상위 K개 구하기, 작업 스케줄링 등에 쓰인다.
+- 다익스트라 최단 경로, 상위 K개 구하기, 정렬된 리스트 K개 병합(O(N log K)), 스트림의 중앙값(힙 두 개), 작업 스케줄링 등에 쓰인다.
 
 관련 노트: [[dijkstra|다익스트라]], [[queue-deque|큐와 덱]], [[merge-quick-sort|정렬 알고리즘 비교(힙 정렬)]]

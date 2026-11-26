@@ -4,11 +4,12 @@ concept: "Union Find"
 summary: "원소들이 어떤 집합에 속하는지 관리하며, 두 집합을 합치고 대표를 찾는 연산을 빠르게 처리하는 자료구조."
 tags: ["data-structure", "union-find", "graph", "python"]
 source: mixed
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/9aa736605fcc44eda1eaa95229491751"]
+date: "2026-11-26"
+sources: ["https://80000coding.notion.site/9aa736605fcc44eda1eaa95229491751", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
 ---
 
 > 크기 기반 합치기와 병목 경로 응용은 팔만코딩경(42Seoul 커뮤니티 위키)의 「유니온 파인드와 그 응용」을 바탕으로 보강했다.
+> 「활용: 그룹 묶기와 연결 요소 세기」는 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 
 수학에서 **서로소 집합**은 공통 원소가 없는 집합들을 말한다. 서로소 집합 자료구조는 원소들을 겹치지 않는 부분 집합으로 나눠 관리하며, 두 가지 연산으로 조작한다. 그래서 **Union-Find** 자료구조라고도 부른다.
 
@@ -132,11 +133,23 @@ def union(a, b):
 
 이 문제는 "중량 w로 갈 수 있는가"를 BFS로 확인하며 w를 [[binary-search|파라메트릭 서치]]로 찾는 방법으로도 풀 수 있다.
 
+## 활용: 그룹 묶기와 연결 요소 세기
+
+「같은 무리끼리 묶어라」, 「모두 몇 무리인가」를 묻는 문제는 Union-Find로 푼다. 처음에는 원소 n개가 각자 한 무리이고, 서로 다른 무리를 합칠 때마다 무리 수를 1씩 줄이면 마지막에 남은 수가 연결 요소의 개수다.
+
+| 문제 모양 | 원소 | 합치는 때 |
+| --- | --- | --- |
+| 친구 관계로 이어진 사람·도시 무리 세기 | 정점 번호 | 관계(간선)마다 |
+| 격자의 섬 개수 | 칸 `(r, c)`를 정수 `r × 열 수 + c`로 바꾼 것 | 상하좌우로 이웃한 땅끼리 |
+| 같은 이메일을 가진 계정 병합 | 계정 번호 | 해시 맵에 「이메일 → 처음 본 계정」을 적어 두고, 같은 이메일이 다시 나오면 두 계정을 |
+
+원소가 문자열이나 좌표면 먼저 0부터 시작하는 정수 ID로 바꿔 배열 인덱스로 쓴다. 입력은 1부터 번호를 매기는데 크기 n짜리 배열을 잡는 식의 한 칸 어긋남이 흔한 실수다. 그래프가 고정돼 있고 한 번만 세면 [[bfs|BFS]]·[[dfs|DFS]]로도 O(V + E)에 세지만, 간선이 하나씩 들어오며 그때그때 연결 여부를 물으면 Union-Find가 맞다.
+
 ## 핵심 정리
 
 - Union-Find = 집합 합치기 + 대표 찾기
 - 경로 압축과 랭크 기반 합치기로 거의 상수 시간에 동작
 - 배열 하나에 음수로 크기를 저장하면 union by size와 집합 크기 조회를 함께 얻는다.
-- 무방향 그래프 사이클 판별, 연결 요소 관리, 크루스칼 MST, 병목 경로에 사용
+- 무방향 그래프 사이클 판별, 연결 요소 관리(계정 병합, 섬 개수), 크루스칼 MST, 병목 경로에 사용
 
 관련 노트: [[graph-basics|그래프의 기본]], [[dfs|DFS(방향 그래프 사이클)]], [[greedy|그리디(크루스칼)]], [[minimum-spanning-tree|최소 신장 트리]], [[articulation-point|단절점과 단절선]]

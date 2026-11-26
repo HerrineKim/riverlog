@@ -4,13 +4,14 @@ concept: "Stack"
 summary: "한쪽 끝에서만 넣고 빼는 후입선출(LIFO) 자료구조와 언어별 구현, 다음 큰 원소를 O(n)에 구하는 단조 스택."
 tags: ["data-structure", "stack", "python"]
 source: mixed
-date: "2026-10-30"
-sources: ["https://www.techinterviewhandbook.org/algorithms/stack/", "https://www.techinterviewhandbook.org/algorithms/array/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)"]
+date: "2026-11-26"
+sources: ["https://www.techinterviewhandbook.org/algorithms/stack/", "https://www.techinterviewhandbook.org/algorithms/array/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
 ---
 
 > 언어별 구현과 단조 스택 절은 Tech Interview Handbook의 「[Stack cheatsheet](https://www.techinterviewhandbook.org/algorithms/stack/)」, 「[Array cheatsheet](https://www.techinterviewhandbook.org/algorithms/array/)」(오른쪽부터 훑기)를 바탕으로 보강했다.
 > 수식 표기법과 스택 계산 절은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 > 「배열 구현과 연결 리스트 구현」은 고려사이버대학교 「자료구조」(2024-1학기) 강의 내용으로 보강했다.
+> 언더플로우를 알리는 방법과 배열 하나에 스택 두 개를 두는 방법은 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 
 스택(Stack)은 한쪽 끝(top)에서만 자료를 넣고 뺄 수 있는 선형 자료구조다. 프링글스 통을 떠올리면 쉽다. 맨 위의 과자부터 꺼낼 수 있고, 새 과자는 그 위에 쌓인다. 나중에 들어간 것이 먼저 나오므로 **후입선출(LIFO, Last In First Out)** 구조라고 한다.
 
@@ -23,7 +24,7 @@ sources: ["https://www.techinterviewhandbook.org/algorithms/stack/", "https://ww
 | `peek()` | top 원소를 제거하지 않고 반환 | O(1) |
 | `is_empty()` | 비어 있는지 확인 | O(1) |
 
-비어 있는 스택에서 pop하면 **스택 언더플로우**, 정해진 크기를 넘게 push하면 **스택 오버플로우**가 된다.
+비어 있는 스택에서 pop하면 **스택 언더플로우**, 정해진 크기를 넘게 push하면 **스택 오버플로우**가 된다. 언더플로우는 예외를 던지거나 빈 값(`None`, `Optional`)으로 알린다. `0`이나 `Integer.MIN_VALUE` 같은 보통 값을 돌려주면 실제로 그 값이 들어 있었는지 구분할 수 없다.
 
 ## 배열 구현과 연결 리스트 구현
 
@@ -40,6 +41,8 @@ sources: ["https://www.techinterviewhandbook.org/algorithms/stack/", "https://ww
 | 장단점 | 연속 메모리라 빠르고 단순하다. 최대 크기를 미리 정해야 한다 | 크기 제한이 없다. 노드마다 포인터 공간과 할당 비용이 든다 |
 
 배열 구현에서 오버플로우를 줄이려면 MAX를 넉넉히 잡거나, 찼을 때 배열을 2배로 키워 옮기는 동적 배열로 바꾼다.
+
+**배열 하나에 스택 두 개**를 둘 때는 한 스택은 앞(0번)에서 뒤로, 다른 스택은 끝(n-1번)에서 앞으로 쌓는다. 두 top이 만나야 가득 찬 것이므로, 배열을 반씩 나눠 주는 방식과 달리 한쪽이 덜 쓴 공간을 다른 쪽이 쓸 수 있다.
 
 ## 파이썬 리스트로 구현하기
 
