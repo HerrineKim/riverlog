@@ -1,15 +1,16 @@
 ---
 title: "사이드 프로젝트를 시작하고 끝까지 가는 10가지 팁"
 concept: "Side Project"
-summary: "꾸준히 하나는 굴리기, 내 불편에서 아이디어 찾기, 틈새 겨냥, 작게 시작, 1~2주 단위 기한, 코딩 전 랜딩 페이지로 검증하기까지 사이드 프로젝트를 시작하고 유지하는 원칙. 내가 쓸 것을 내가 만드는 출발점과 불편 일기, MVP·MMP·MLP로 나눈 검증, 빌드 인 퍼블릭까지 다룬다."
+summary: "꾸준히 하나는 굴리기, 내 불편에서 아이디어 찾기, 틈새 겨냥, 작게 시작, 1~2주 단위 기한, 코딩 전 랜딩 페이지로 검증하기까지 사이드 프로젝트를 시작하고 유지하는 원칙. 내가 쓸 것을 내가 만드는 출발점과 불편 일기, MVP·MMP·MLP로 나눈 검증, 빌드 인 퍼블릭, 유료 판매와 무료·광고 배포의 판단, 애드센스 승인 기준까지 다룬다."
 tags: ["career", "growth", "productivity", "side-project"]
 source: other
 date: "2026-11-22"
-sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM", "https://webactually.com/2015/04/17/%ed%95%9c%ea%b3%84%ec%97%90%ec%84%9c-%ec%9d%b4%ec%96%b4%ec%a7%84-%eb%82%98%ec%9d%98-%ec%95%b1%ec%8a%a4%ed%86%a0%ec%96%b4-%ec%84%b1%ea%b3%b5%ea%b3%bc-%ec%8b%a4%ed%8c%a8-%ec%9d%b4%ec%95%bc%ea%b8%b0/", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://techblog.woowahan.com/2590/", "https://wormwlrm.github.io/2019/10/13/Kwakcheolyong-Image-Creator-Development-Story.html", "https://wormwlrm.github.io/2022/05/07/Bamboo-Forest-Slack-App.html", "https://cho.sh/ko/w/5ADC58", "https://api.slack.com/interactivity/handling"]
+sources: ["https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects", "https://www.youtube.com/watch?v=eCAj3mWFpNM", "https://webactually.com/2015/04/17/%ed%95%9c%ea%b3%84%ec%97%90%ec%84%9c-%ec%9d%b4%ec%96%b4%ec%a7%84-%eb%82%98%ec%9d%98-%ec%95%b1%ec%8a%a4%ed%86%a0%ec%96%b4-%ec%84%b1%ea%b3%b5%ea%b3%bc-%ec%8b%a4%ed%8c%a8-%ec%9d%b4%ec%95%bc%ea%b8%b0/", "https://drive.google.com/file/d/1h99VB5Ra5nn78ZpcXzvN8HyJbSmcX-Qn/view", "https://techblog.woowahan.com/2590/", "https://wormwlrm.github.io/2019/10/13/Kwakcheolyong-Image-Creator-Development-Story.html", "https://wormwlrm.github.io/2022/05/07/Bamboo-Forest-Slack-App.html", "https://cho.sh/ko/w/5ADC58", "https://api.slack.com/interactivity/handling", "https://support.google.com/adsense/answer/9724?hl=ko", "https://support.google.com/adsense/answer/76228?hl=ko"]
 ---
 
 > Chris Yang의 「[당신의 사이드 프로젝트를 위한 10가지 팁](https://velog.io/@chris/10-tips-for-starting-and-creating-side-projects)」(2019.08)을 바탕으로 재구성한 노트다. 원 자료는 Traversy Media의 영상 「[10 Tips For Starting & Creating Side Projects](https://www.youtube.com/watch?v=eCAj3mWFpNM)」다. 출시 이후의 원칙은 웹액츄얼리가 번역한 「한계에서 이어진 나의 앱스토어 성공과 실패 이야기」(2015.04)를 바탕으로 덧붙였다.
 > 「내가 쓸 것을 내가 만든다」, MVP·MMP·MLP, 빌드 인 퍼블릭은 배휘동의 발표 자료 「나날이 발전하고픈 개발자를 위한 AI 활용법」(2025.08) 2부를 바탕으로 더했다.
+> 「팔 것인가, 무료로 낼 것인가」의 애드센스 기준은 Google 애드센스 고객센터의 「[애드센스 자격 요건](https://support.google.com/adsense/answer/9724?hl=ko)」과 「[애드센스 계정 설정 완료하기](https://support.google.com/adsense/answer/76228?hl=ko)」로 확인했다.
 > 「만들기에서 운영하기로」는 강대명의 발표 자료 「좋은 개발자가 되기 위해서, 대학생 때 알면 좋은 것들」(GREEDYCON)을 바탕으로 더했다.
 > 업무에서 얻기 어려운 경험, 「빨리 내고 관찰한다」, 「이름과 상표를 먼저 점검한다」는 「[프로젝트가 장난이야?!](https://techblog.woowahan.com/2590/)」, 「[곽철용 짤 생성기, 이렇게 만들어졌습니다](https://wormwlrm.github.io/2019/10/13/Kwakcheolyong-Image-Creator-Development-Story.html)」(2019.10), 「[임금님 귀는 당나귀 귀! 대나무숲 슬랙 앱 만들기](https://wormwlrm.github.io/2022/05/07/Bamboo-Forest-Slack-App.html)」(2022.05), 「[마이크로소프트에게 내용증명 받고 23만 유저 앱 삭제한 건에 대하여](https://cho.sh/ko/w/5ADC58)」를 바탕으로 보강했다.
 
@@ -100,6 +101,23 @@ flowchart TB
 - 다운로드·공유 버튼 같은 핵심 행동에 이벤트 추적을 붙여 얼마나, 언제 쓰이는지 본다.
 - 출시 뒤 실제 사용자가 헤매는 지점을 보고 바로 고친다. 범용 메뉴에 숨긴 기능은 잘 못 찾으므로 명시적인 버튼으로 꺼낸다.
 - 기존 유료 도구가 인원수 과금으로 부담스럽고 요구가 단순하면 **작은 사내 도구를 직접 만드는 것**도 좋은 사이드 프로젝트다. 메신저 봇처럼 플랫폼에 붙는 앱은 응답 시한(예: Slack 상호작용은 3초 안에 확인 응답)을 먼저 확인하고, 무거운 작업 전에 즉시 응답하는 구조로 짠다. 로컬 터널은 개발용으로만 쓰고 운영은 별도 호스팅에 올린다.
+
+### 팔 것인가, 무료로 낼 것인가
+
+팔 수 있는지는 만든 사람이 아니라 시장이 정한다. 내가 느낀 불편을 **남도 돈을 낼 만큼** 느끼는지가 기준이다.
+
+- **가장 빠른 검증은 옆 사람이다.** 같은 일을 하는 동료에게 써 보게 하고 돈을 내고 쓸지 묻는다. 써 보지도 않으려 하면 판매는 이르다.
+- **대상이 좁고 문제가 분명하면 유료**, 대상이 넓고 가볍게 쓰는 도구면 **무료 배포 뒤 광고나 후원**이 맞다.
+- 가격은 비슷한 상품의 크라우드펀딩 가격과 후기에서 가늠한다. 후기에 적힌 불만이 내 제품이 채울 빈자리다.
+
+광고로 수익을 낸다면 Google 애드센스가 흔한 선택이다. 승인 조건은 방문자 수가 아니라 **콘텐츠**다.
+
+| 항목 | 기준 |
+| --- | --- |
+| 자격 | 만 19세 이상, 애드센스 정책을 지키는 자체 콘텐츠, 사이트 HTML을 직접 고칠 수 있는 권한 |
+| 콘텐츠 | 독창적이고 평가할 만큼 양이 있어야 한다. 제작 중이거나 탐색하기 어려운 사이트, 글 없이 이미지만 모인 페이지는 반려되기 쉽다 |
+| 심사 기간 | 대개 며칠, 길면 2~4주 |
+| 그 밖 | 광고를 내기 전에 개인정보처리방침을 준비한다. 지급을 받으려면 신분증 본인 인증을 요구받을 수 있다 |
 
 ### 이름과 상표를 먼저 점검한다
 
@@ -200,6 +218,7 @@ AI 코딩 도구로 프로토타입을 만드는 비용이 크게 줄었다. 그
 - 코딩보다 **랜딩 페이지가 먼저**다. 반응을 보고 만든다.
 - 출시 후에는 기능을 늘리기보다 핵심 하나를 다듬고, 업데이트를 끊지 않는다.
 - 빨리 내고 사용 데이터를 본다. 이름에 남의 상표를 쓰지 않는다.
+- 팔지는 시장이 정한다. 동료에게 돈 내고 쓸지 먼저 묻고, 좁은 대상은 유료, 넓은 대상은 무료와 광고로 간다. 애드센스 승인은 트래픽이 아니라 콘텐츠로 갈린다.
 - 내가 쓸 것을 내가 만든다. 불편 일기로 아이디어를 모으고, 가장 고통스럽고 만들기 쉬운 단계부터.
 - MVP·MMP·MLP를 처음부터 함께: 쓸 만하고, 돈 낼 만하고, 자랑할 만하게.
 - 빌드 인 퍼블릭은 What이 아니라 Why와 How를 공유하고, 유입과 전환으로 성과를 본다.

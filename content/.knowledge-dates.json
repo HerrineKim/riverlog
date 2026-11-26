@@ -269,7 +269,7 @@
  },
  "AI-Data/Harness/token-efficiency.md": {
   "created": "2026-11-25T12:55:52+09:00",
-  "updated": "2026-11-25T12:55:52+09:00"
+  "updated": "2026-11-26T23:03:47+09:00"
  },
  "AI-Data/LLM.md": {
   "created": "2026-11-26T19:03:01+09:00",
@@ -617,11 +617,11 @@
  },
  "Backend.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-26T21:59:29+09:00"
+  "updated": "2026-11-26T22:02:22+09:00"
  },
  "Backend/Databases.md": {
   "created": "2026-11-26T19:03:01+09:00",
-  "updated": "2026-11-26T21:59:29+09:00"
+  "updated": "2026-11-26T22:02:22+09:00"
  },
  "Backend/Databases/block-file-object-storage.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -665,7 +665,7 @@
  },
  "Backend/Databases/index-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-11-26T21:59:31+09:00"
+  "updated": "2026-11-26T22:02:22+09:00"
  },
  "Backend/Databases/jpa-persistence-context.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -689,7 +689,7 @@
  },
  "Backend/Databases/sql-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-26T21:59:48+09:00"
+  "updated": "2026-11-26T22:02:22+09:00"
  },
  "Backend/Databases/web-search-engine.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -1493,7 +1493,7 @@
  },
  "Career/Work/side-project-tips.md": {
   "created": "2026-10-13T19:31:42+09:00",
-  "updated": "2026-11-22T23:05:12+09:00"
+  "updated": "2026-11-26T23:04:23+09:00"
  },
  "Career/Work/software-documentation.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -1697,7 +1697,7 @@
  },
  "Computer-Science/Engineer-Information-Processing/software-engineering.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T19:48:28+09:00"
+  "updated": "2026-11-26T23:03:32+09:00"
  },
  "Computer-Science/Engineer-Information-Processing/software-project-management.md": {
   "created": "2026-11-02T10:37:21+09:00",
@@ -3997,7 +3997,7 @@
  },
  "Tools/tmux.md": {
   "created": "2026-10-14T10:57:31+09:00",
-  "updated": "2026-11-12T12:36:12+09:00"
+  "updated": "2026-11-26T23:04:05+09:00"
  },
  "Tools/vim-and-neovim.md": {
   "created": "2026-10-14T10:57:31+09:00",
