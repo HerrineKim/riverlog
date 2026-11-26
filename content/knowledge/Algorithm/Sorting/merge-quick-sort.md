@@ -1,16 +1,17 @@
 ---
 title: "병합 정렬과 퀵 정렬"
 concept: "Merge Sort"
-summary: "분할 정복으로 평균 O(n log n)에 정렬하는 두 대표 알고리즘과 상향식 병합 정렬, 퀵 셀렉트, 정렬 알고리즘 복잡도·안정성 비교, 언어별 표준 정렬, 메모리보다 큰 데이터의 외부 정렬."
+summary: "분할 정복으로 평균 O(n log n)에 정렬하는 두 대표 알고리즘과 상향식 병합 정렬, 호어·로무토 분할, 퀵 셀렉트, 정렬 알고리즘 복잡도·안정성 비교, 정렬 전에 정할 것, 언어별 표준 정렬, 메모리보다 큰 데이터의 외부 정렬."
 tags: ["algorithm", "sorting", "divide-and-conquer", "python"]
 source: mixed
-date: "2026-10-14"
-sources: ["https://80000coding.notion.site/21cb57a3681b404da4ac8ab0e7289bc0", "https://johngrib.github.io/wiki/algorithm/quick-sort/", "https://v8.dev/blog/array-sort", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+date: "2026-11-26"
+sources: ["https://80000coding.notion.site/21cb57a3681b404da4ac8ab0e7289bc0", "https://johngrib.github.io/wiki/algorithm/quick-sort/", "https://v8.dev/blog/array-sort", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://cooervo.github.io/Algorithms-DataStructures-BigONotation/", "https://www.bigocheatsheet.com/"]
 ---
 
 > 자바 정렬 부분은 팔만코딩경(42Seoul 커뮤니티 위키)의 「[JAVA] Sort 사용 (Arrays, Collections)」을 바탕으로 보강했다.
 > 퀵 정렬의 피벗 선택과 실전 개선은 「[퀵 정렬 (Quick Sort)](https://johngrib.github.io/wiki/algorithm/quick-sort/)」를 바탕으로 보강했다.
 > 상향식 병합 정렬, 퀵 셀렉트, 다른 언어의 표준 정렬, 외부 정렬은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」, 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(손코딩) 질문이 묻는 개념으로 보강했다.
+> 로무토 분할, 정렬 전에 정할 것은 cooervo의 「[Big O cheat sheets](https://cooervo.github.io/Algorithms-DataStructures-BigONotation/)」(2015.03)를, 비교표의 셸·스무스·트리·버킷·큐브 정렬은 Eric Rowell의 「[Big-O Cheat Sheet](https://www.bigocheatsheet.com/)」를 바탕으로 보강했다.
 
 병합 정렬과 퀵 정렬은 모두 분할 정복으로 리스트를 나눠 정렬한다. 차이는 실제 작업이 어디서 일어나느냐다. 병합 정렬은 **합치는 단계**에서, 퀵 정렬은 **나누는 단계**에서 정렬이 이뤄진다.
 
@@ -110,12 +111,42 @@ def quick_sort_inplace(arr, start=0, end=None):
 
 - **평균 O(n log n)**: 피벗이 리스트를 대략 반씩 나눌 때
 - **최악 O(n²)**: 피벗이 매번 최솟값이나 최댓값일 때(예: 이미 정렬된 데이터에서 첫 원소를 피벗으로 고르는 경우). 피벗을 무작위나 중간값으로 고르면 완화된다.
-- 제자리 분할 시 추가 메모리가 적고, 캐시 효율이 좋아 실제로 매우 빠르다.
+- 제자리 분할 시 추가 메모리가 적고, 캐시 효율이 좋아 실제로 매우 빠르다. 잘 구현한 퀵 정렬은 같은 입력에서 병합 정렬·힙 정렬보다 보통 2~3배 빠르다(Skiena, *The Algorithm Design Manual*의 실험).
 - 불안정 정렬
 
 ### 최악을 피하는 실전 개선
 
-퀵 정렬은 1959년 토니 호어(Tony Hoare)가 고안했다. 위의 제자리 분할처럼 양 끝에서 두 포인터가 다가오며 자리가 틀린 원소를 맞바꾸는 방식이 호어 분할 계열이다. 실제 라이브러리 구현은 여기에 몇 가지를 더한다.
+퀵 정렬은 1959년 토니 호어(Tony Hoare)가 고안했다. 위의 제자리 분할처럼 양 끝에서 두 포인터가 다가오며 자리가 틀린 원소를 맞바꾸는 방식이 호어 분할 계열이다. 교재에 자주 나오는 다른 방식은 피벗을 끝으로 보내고 포인터 하나로 왼쪽부터 훑는 **로무토(Lomuto) 분할**이다.
+
+```python
+import random
+
+def lomuto_partition(a, lo, hi):
+    p = random.randint(lo, hi)           # 무작위 피벗을 끝으로 보낸다
+    a[p], a[hi] = a[hi], a[p]
+    store = lo                           # a[lo:store]는 피벗 이하
+    for i in range(lo, hi):
+        if a[i] <= a[hi]:
+            a[i], a[store] = a[store], a[i]
+            store += 1
+    a[store], a[hi] = a[hi], a[store]    # 피벗을 제자리로
+    return store                         # 피벗의 최종 위치
+
+def quick_sort_lomuto(a, lo=0, hi=None):
+    if hi is None:
+        hi = len(a) - 1
+    if lo < hi:
+        p = lomuto_partition(a, lo, hi)
+        quick_sort_lomuto(a, lo, p - 1)
+        quick_sort_lomuto(a, p + 1, hi)
+```
+
+| 분할 | 움직임 | 특징 |
+| --- | --- | --- |
+| 호어 | 두 포인터가 양 끝에서 다가오며 자리가 틀린 쌍을 맞바꾼다 | 교환이 로무토보다 평균 약 3배 적다. 경계 조건이 까다롭다 |
+| 로무토 | 포인터 하나가 훑으며 피벗 이하 값을 앞쪽에 모은다 | 코드가 짧고 피벗의 최종 위치가 바로 나온다. 값이 모두 같으면 매번 한쪽에 몰려 O(n²)이 된다 |
+
+실제 라이브러리 구현은 여기에 몇 가지를 더한다.
 
 | 개선 | 내용 |
 | --- | --- |
@@ -180,12 +211,24 @@ k번째로 큰 값은 `n - k`번째로 작은 값이다. 원소 수가 짝수일
 | 삽입 | O(n) | O(n²) | O(n²) | O(1) | 안정 |
 | 병합 | O(n log n) | O(n log n) | O(n log n) | O(n) | 안정 |
 | 퀵 | O(n log n) | O(n log n) | O(n²) | 평균 O(log n), 최악 O(n) (작은 쪽만 재귀하면 O(log n) 보장) | 불안정 |
+| 셸 | O(n log n) (Knuth 수열) | 간격 수열에 따라 다르다 | O(n^1.5) (Knuth), O(n log² n) (Pratt) | O(1) | 불안정 |
 | 힙 | O(n log n) | O(n log n) | O(n log n) | O(1) | 불안정 |
+| 스무스(Smoothsort) | O(n) | O(n log n) | O(n log n) | O(1) | 불안정 |
+| 트리 정렬 | O(n log n) | O(n log n) | O(n²) (균형 트리면 O(n log n)) | O(n) | 같은 키를 늘 오른쪽에 넣으면 안정 |
 | 팀소트(Timsort) | O(n) | O(n log n) | O(n log n) | O(n) | 안정 |
+| 큐브소트(Cubesort) | O(n) | O(n log n) | O(n log n) | O(n) | 안정 |
 | 계수 | O(n + k) | O(n + k) | O(n + k) | O(n + k) | 안정 |
 | 기수 | O(d·(n + b)) | O(d·(n + b)) | O(d·(n + b)) | O(n + b) | 안정 |
+| 버킷 | O(n + k) | O(n + k) | O(n²) | O(n + k) | 버킷 안 정렬이 안정이면 안정 |
 
-계수 정렬의 k는 값의 범위, 기수 정렬의 d는 자릿수, b는 한 자리가 가질 수 있는 값의 수(기수)다. 비교 기반 정렬은 최악의 경우 Ω(n log n)번의 비교가 필요해 이보다 빠를 수 없다. 계수·기수 정렬은 비교 대신 값의 범위나 자릿수에 기대어 이 하한에 묶이지 않는다.
+계수 정렬의 k는 값의 범위, 기수 정렬의 d는 자릿수, b는 한 자리가 가질 수 있는 값의 수(기수)다. 버킷 정렬의 k는 버킷 수다.
+
+- **셸 정렬**은 간격을 줄여 가며 삽입 정렬을 반복한다. 복잡도가 간격 수열에 달려 있어 한 줄로 적을 수 없다([[elementary-sorts|기본 정렬]]).
+- **스무스 정렬**은 다익스트라(Dijkstra)가 1981년에 낸 힙 정렬의 변형으로, 입력이 정렬돼 있을수록 O(n)에 가까워진다([[heap-priority-queue|힙과 우선순위 큐]]의 「힙 정렬」).
+- **트리 정렬**은 모든 원소를 이진 탐색 트리에 넣고 중위 순회로 꺼낸다. 이미 정렬된 입력을 평범한 BST에 넣으면 트리가 한쪽으로 뻗어 O(n²)이 된다([[tree|트리와 이진 탐색 트리]]).
+- **큐브소트**는 키로 자기 균형 다차원 배열을 쌓는 병렬 정렬이다. 이미 정렬됐거나 역순인 입력은 비교 n번으로 끝난다. 언어 표준 정렬에는 쓰이지 않는다.
+- **버킷 정렬**은 값의 구간별로 나눠 담고 버킷마다 정렬해 이어 붙인다. 값이 고르게 퍼져 있을 때만 선형이다([[elementary-sorts|기본 정렬]]).
+ 비교 기반 정렬은 최악의 경우 Ω(n log n)번의 비교가 필요해 이보다 빠를 수 없다. 계수·기수 정렬은 비교 대신 값의 범위나 자릿수에 기대어 이 하한에 묶이지 않는다.
 
 ## 실전에서는
 
@@ -195,6 +238,15 @@ k번째로 큰 값은 `n - k`번째로 작은 값이다. 원소 수가 짝수일
 students = [("kim", 90), ("lee", 85), ("park", 90)]
 students.sort(key=lambda s: (-s[1], s[0]))  # 점수 내림차순, 이름 오름차순
 ```
+
+정렬을 부르기 전에 정할 것은 네 가지다.
+
+| 정할 것 | 예 | 쓰는 도구 |
+| --- | --- | --- |
+| 방향 | 오름차순·내림차순 | Python `reverse=True`, Java `Comparator.reversed()` |
+| 키 | 이름의 사전순, 필드의 숫자, 날짜·생일 | Python `key=`, Java `Comparable`·`Comparator.comparing` |
+| 같은 키의 순서 | 이름이 같은 사람은 성으로 다시 나눈다 | 튜플 키, `thenComparing`, 안정 정렬로 보조 키부터 정렬하기 |
+| 추가 메모리 | 메모리가 빠듯한 임베디드 환경 | 추가 공간 O(1)인 힙·셸 정렬. 리스트를 제자리에서 바꾸는 `list.sort()`도 팀소트라 내부에 최대 n/2 크기의 임시 공간을 쓴다 |
 
 자바는 대상 타입에 따라 알고리즘이 다르다.
 

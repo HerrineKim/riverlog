@@ -5,13 +5,14 @@ summary: "우선순위가 가장 높은 원소를 O(log n)에 넣고 꺼낼 수 
 tags: ["data-structure", "heap", "priority-queue", "python"]
 source: mixed
 date: "2026-11-26"
-sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f", "https://www.techinterviewhandbook.org/algorithms/heap/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
+sources: ["https://80000coding.notion.site/5d16d36bcf654bdaaf89a83cb4a7151f", "https://www.techinterviewhandbook.org/algorithms/heap/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know", "https://cooervo.github.io/Algorithms-DataStructures-BigONotation/"]
 ---
 
 > 구현 방식 비교와 O(n) 힙 만들기는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[자료구조] 우선순위큐와 힙」을 바탕으로 보강했다.
 > 상위 k개를 크기 k짜리 힙으로 구하는 절은 Tech Interview Handbook의 「[Heap cheatsheet](https://www.techinterviewhandbook.org/algorithms/heap/)」를 바탕으로 보강했다.
 > 편향되지 않는 이유와 힙 정렬의 안정성은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 > 「K개 병합과 스트림의 중앙값」은 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
+> 힙 정렬의 변형인 스무스 정렬은 cooervo의 「[Big O cheat sheets](https://cooervo.github.io/Algorithms-DataStructures-BigONotation/)」(2015.03)의 정렬 비교표를 바탕으로 보강했다.
 
 ## 우선순위 큐
 
@@ -142,6 +143,7 @@ BST는 **값이 위치를 정한다.** 정렬된 순서로 넣으면 새 값이 
 - 시간은 최선·평균·최악 모두 **O(n log n)**, 추가 공간 O(1)인 제자리 정렬이다.
 - **불안정 정렬**이다. 루트와 끝 원소를 맞바꾸는 장거리 교환 때문에 값이 같은 원소의 앞뒤가 바뀔 수 있다.
 - 최악이 보장되는 대신 메모리를 띄엄띄엄 오가 캐시 효율이 낮아, 실제로는 퀵 정렬보다 느리다. 그래서 인트로 정렬이 퀵 정렬의 재귀가 너무 깊어질 때의 대비책으로 쓴다([[merge-quick-sort|병합 정렬과 퀵 정렬]]).
+- **스무스 정렬(smoothsort)** 은 다익스트라(Dijkstra)가 1981년에 낸 변형이다. 이진 힙 하나 대신 크기가 레오나르도 수(1, 1, 3, 5, 9, 15, 25, …, L(k) = L(k-1) + L(k-2) + 1)인 힙 여러 개를 배열에 나란히 둔다. 이미 정렬된 입력에서는 힙을 거의 고치지 않아 O(n)에 가까워지고, 최악은 힙 정렬과 같은 O(n log n)이다. 추가 공간 O(1)인 불안정 정렬이고, 구현이 복잡해 표준 라이브러리에서는 거의 쓰이지 않는다.
 
 ### 배열을 한 번에 힙으로 만들기: O(n)
 
