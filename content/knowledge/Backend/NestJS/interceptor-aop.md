@@ -143,3 +143,5 @@ export class CatsController {
 - 인터셉터 = `intercept(context, next)`에서 `next.handle()`을 감싸는 구조.
 - 전·후 처리가 모두 필요한 횡단 관심사(AOP)에 쓴다.
 - 성공 응답은 인터셉터, 실패 응답은 Exception Filter로 형식을 맞추면 API 응답이 일관된다.
+
+관련 노트: [[express-middleware|Express 미들웨어]], [[exception-filter-pipe|NestJS Exception Filter와 Pipe]], [[controller|NestJS Controller]]

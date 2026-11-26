@@ -91,3 +91,5 @@ DTO 바디 전체는 보통 전역 `ValidationPipe`로 검증한다. 설정과 �
 
 - 예외는 `HttpException` 계열로 던지고, 응답 형식은 `@Catch` 필터 하나로 통일한다.
 - 파이프는 핸들러 직전에 값 변환·검증을 담당하며, 실패하면 핸들러가 아예 실행되지 않는다.
+
+관련 노트: [[dto-validation|NestJS DTO와 Validation]], [[interceptor-aop|NestJS Middleware와 Interceptor(AOP)]], [[controller|NestJS Controller]]

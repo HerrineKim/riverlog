@@ -164,3 +164,5 @@ CIF,    SKI         / FGI = 1(입력 있음)이면 다음 명령 건너뜀
 - 어셈블러는 1st pass에서 심볼 테이블, 2nd pass에서 기계어 번역을 한다.
 - 뺄셈은 CMA + INC + ADD, 곱셈은 시프트 + 덧셈, 루프는 음수 카운터 + ISZ.
 - 서브루틴은 BSA로 복귀 주소를 첫 워드에 저장하고, `BUN 라벨 I`로 돌아온다.
+
+관련 노트: [[basic-computer-design|기본 컴퓨터의 구조와 설계]], [[cpu-instructions|CPU와 명령어 구조]]

@@ -25,4 +25,4 @@ Django는 "배터리 포함(batteries included)"을 내세우는 Python 웹 프�
 | 8 | [User와 인증](Backend/Django/auth-user) | User 모델, 회원가입·로그인 |
 | 9 | [DRF Serializer](Backend/Django/drf-serializer) | JSON API 서버, 중첩 Serializer로 1:N·M:N 표현, api_view |
 
-SQL 자체의 문법은 [SQL 기초](Backend/Database/sql-basics)에서, REST API 설계는 [REST API](Backend/Web-Basics/rest-api)에서 다룬다.
+SQL 자체의 문법은 [SQL 기초](Backend/Databases/sql-basics)에서, REST API 설계는 [REST API](Backend/Web-Basics/rest-api)에서 다룬다.

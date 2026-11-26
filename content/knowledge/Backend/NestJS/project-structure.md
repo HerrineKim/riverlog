@@ -106,3 +106,5 @@ CLI 템플릿에는 린터와 Prettier 설정이 기본 포함되어 있다. Nes
 
 - `main.ts`(실행) → `AppModule`(등록) → `Controller`(라우팅) → `Service`(로직) 순으로 흐른다.
 - 새 기능은 `nest g module/controller/service 이름`으로 같은 구조를 반복해 만든다.
+
+관련 노트: [[module|NestJS Module과 Provider: 의존성 주입과 캡슐화]], [[controller|NestJS Controller]], [[express-project-architecture|Express 프로젝트 구조: 3계층, 이벤트, DI, 로더]]

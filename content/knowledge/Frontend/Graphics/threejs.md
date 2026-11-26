@@ -126,4 +126,4 @@ hero.run = function () {
 - Mesh = Geometry + Material, 애니메이션은 `setAnimationLoop`로 매 프레임 렌더링한다.
 - 복잡한 모델은 외부 툴에서 만들어 불러오고, React에서는 react-three-fiber를 쓴다.
 
-관련 노트: [[webgl-shaders|WebGL과 셰이더]], [[transformation-matrix|변환 행렬]], [[canvas-2d|Canvas 2D]], [[devtools-network|DevTools 네트워크 패널]]
+관련 노트: [[webgl-shaders|WebGL과 셰이더]], [[transformation-matrix|변환 행렬]], [[canvas-2d|Canvas 2D]], [[devtools-network|DevTools 네트워크 패널]], [[html-model-element|HTML model 요소: 브라우저가 직접 그리는 3D]]

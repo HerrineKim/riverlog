@@ -63,4 +63,4 @@ CodePush는 Visual Studio App Center의 서비스로 제공됐고, App Center는
 - 테스트 채널 → 확인 → 운영 승격, 필요하면 점진적 배포와 롤백.
 - App Center는 끝났다. Expo 프로젝트는 EAS Update, 기존 CodePush 앱은 자체 호스팅 서버나 호환 서비스로 옮긴다.
 
-관련 노트: [[react-native-basics|React Native 기초와 스타일링]], [[react-native-practical-tips|React Native 실무 팁]], [[ci-cd|CI/CD]]
+관련 노트: [[react-native-basics|React Native 기초와 스타일링]], [[react-native-practical-tips|React Native 실무 팁]], [[ci-cd|CI/CD]], [[mobile-app-release|모바일 앱 출시 과정]]

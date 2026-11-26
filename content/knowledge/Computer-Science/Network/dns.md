@@ -186,4 +186,4 @@ DNS 라우팅은 **TTL만큼 캐시된다는 한계**가 있다. 장애 조치�
 - A·CNAME 레코드로 도메인을 서버·호스팅에 연결한다.
 - TTL만큼 캐시되므로 변경이 즉시 반영되지 않는다.
 
-관련 노트: [[transport-layer|전송 계층과 UDP]], [[cdn|CDN]], [[http-web-architecture|웹 앱의 요청·응답 구조]], [[url-to-page|URL을 입력하면 일어나는 일]], [[load-balancer|로드 밸런서]]
+관련 노트: [[transport-layer|전송 계층과 UDP]], [[cdn|CDN]], [[http-web-architecture|웹 앱의 요청·응답 구조]], [[url-to-page|URL을 입력하면 일어나는 일]], [[load-balancer|로드 밸런서]], [[email-delivery|이메일 전달 과정: SMTP, IMAP, 발신자 인증]]

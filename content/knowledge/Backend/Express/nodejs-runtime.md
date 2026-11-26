@@ -238,7 +238,7 @@ Deno 2는 `package.json`과 npm 패키지를 그대로 쓸 수 있게 해 Node �
 - 파일 경로는 문자열로 잇지 말고 `path.join`, `path.resolve`로 만들고, 파일 이름은 소문자로 통일한다.
 - Deno·Bun은 권한·웹 표준 API·TypeScript 실행으로 Node의 설계를 다시 짰고, Node도 그 장점을 흡수하고 있다.
 
-관련 노트: [[node-streams|Node.js 스트림]], [[routing-crud|Express 라우팅과 CRUD API]], [[koa|Koa]], [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]], [[windows-dev-environment|Windows 개발 환경: 터미널, Git 설치, 줄바꿈]], [[package-managers|자바스크립트 패키지 매니저: npm, yarn, pnpm]]
+관련 노트: [[node-streams|Node.js 스트림]], [[routing-crud|Express 라우팅과 CRUD API]], [[koa|Koa]], [[event-loop|브라우저에서 JavaScript가 동작하는 원리: 이벤트 루프]], [[windows-dev-environment|Windows 개발 환경: 터미널, Git 설치, 줄바꿈]], [[package-managers|자바스크립트 패키지 매니저: npm, yarn, pnpm]], [[nodejs-permission-model|Node.js 권한 모델]]
 
 참고 자료
 

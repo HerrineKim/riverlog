@@ -177,4 +177,4 @@ flowchart LR
 - 예측형은 직접 학습하고 라벨로 평가한다. 생성형은 기반 모델 위에 프롬프트·컨텍스트를 얹고 평가 기준을 직접 만든다.
 - 두 루프 모두 출시가 끝이 아니다. 드리프트 감시, 로그 기반 개선, 재학습·프롬프트 수정으로 계속 돈다.
 
-관련 노트: [[ai-feature-blueprint|AI 기능 기획]], [[classification-metrics|분류 모델 성능 평가 지표]], [[machine-learning-basics|머신 러닝 기초]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[evaluation-driven-development|평가 주도 개발]]
+관련 노트: [[ai-feature-blueprint|AI 기능 기획]], [[classification-metrics|분류 모델 성능 평가 지표]], [[machine-learning-basics|머신 러닝 기초]], [[how-llm-works|LLM은 무엇을 하고 왜 작동하나]], [[evaluation-driven-development|평가 주도 개발]], [[physical-ai-world-model|피지컬 AI, 월드 모델, 디지털 트윈]]

@@ -186,3 +186,5 @@ setter를 그대로 넘기면 자식이 `setOpen(prev => !prev)`처럼 무엇이
 - props는 부모 → 자식 단방향, 읽기 전용. 바뀌는 값은 state로.
 - props 타입은 TypeScript로, 기본값은 기본 매개변수로 정한다. setter를 넘길 때 타입은 `Dispatch<SetStateAction<T>>`.
 - `ref`도 일반 prop으로 받는다. 새 코드에는 `forwardRef`가 필요 없다.
+
+관련 노트: [[jsx|JSX와 엘리먼트 렌더링]], [[lifecycle|컴포넌트 생명주기]], [[composition|합성: 상속 대신 Composition]]

@@ -101,3 +101,5 @@ app.use(
 - 운영 환경의 문서 경로는 인증으로 보호한다.
 
 참고: [NestJS OpenAPI 문서](https://docs.nestjs.com/openapi/introduction)
+
+관련 노트: [[controller|NestJS Controller]], [[dto-validation|NestJS DTO와 Validation]], [[api-security|API 보안 체크리스트]]

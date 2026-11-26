@@ -112,3 +112,5 @@ export class CatsService {
 - DTO = 요청/응답 데이터의 형태를 정의한 클래스, 검증은 `class-validator` 데코레이터.
 - 전역 `ValidationPipe`가 핸들러 실행 전에 자동 검증하고, 실패 시 400을 돌려준다.
 - `PickType` 등 매핑 타입으로 DTO 중복을 줄인다.
+
+관련 노트: [[exception-filter-pipe|NestJS Exception Filter와 Pipe]], [[controller|NestJS Controller]]

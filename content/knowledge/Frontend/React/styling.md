@@ -294,3 +294,5 @@ export function Button(props: ButtonProps) {
 - 퇴장 애니메이션은 언마운트를 늦춰야 한다. 새 코드는 `@starting-style`이나 `AnimatePresence`에 맡긴다.
 - styled-components/emotion: ``styled.tag`...` ``, props로 동적 스타일, `styled(Comp)`로 확장, `&`로 중첩.
 - 구역 단위로만 styled-component를 만들고 내부는 선택자로 처리하면 관리가 쉽다.
+
+관련 노트: [[css-in-js|CSS-in-JS와 CSS Modules]], [[components-and-props|컴포넌트와 Props]], [[sass|Sass: 파일 구조, 믹스인과 @extend]]

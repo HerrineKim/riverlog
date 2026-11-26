@@ -103,3 +103,5 @@ JSX에서 `null`, `undefined`, `true`, `false`는 아무것도 그리지 않는�
 | 있거나 없거나 | `cond && <A />` (0 주의) |
 | 둘 중 하나 | `cond ? <A /> : <B />` |
 | 아무것도 그리지 않기 | `return null` |
+
+관련 노트: [[components-and-props|컴포넌트와 Props]], [[jsx|JSX와 엘리먼트 렌더링]]

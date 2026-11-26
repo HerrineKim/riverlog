@@ -118,3 +118,5 @@ Context는 값을 깊은 곳까지 **전달**할 뿐, 값을 어떻게 바꾸고
 - `useReducer`와 함께 쓸 때는 state·dispatch를 Context 두 개로 나누고, Provider 밖 사용을 에러로 막는 전용 훅(`useTodoState`, `useTodoDispatch`)을 내보낸다.
 - 얕은 전달은 props, 깊은 전달은 합성 먼저, 여러 곳이 공유하는 값은 Context.
 - 자주 바뀌는 전역 상태는 Zustand·Redux Toolkit 같은 라이브러리로, 서버 데이터는 서버 상태 라이브러리로 나눈다.
+
+관련 노트: [[redux|Redux와 react-redux]], [[re-rendering|리렌더링 원인과 추적]], [[components-and-props|컴포넌트와 Props]]

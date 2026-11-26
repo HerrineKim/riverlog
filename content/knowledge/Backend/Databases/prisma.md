@@ -68,4 +68,4 @@ return { ...item, nextKey: next?.key, prevKey: prev?.key }
 
 > Prisma 7(2025년 11월)부터 `migrate dev`·`db push`가 `prisma generate`를 자동 실행하지 않고, `migrate dev`가 seed도 자동 실행하지 않는다(`prisma db seed`로 따로 실행). DB 연결 설정은 프로젝트 루트의 `prisma.config.ts`로 옮겨졌고 `.env`도 자동으로 읽지 않는다. 클라이언트를 만들 때는 DB별 드라이버 어댑터가 필요하다. 위 커서 쿼리 API는 그대로다. ([Prisma 7 업그레이드 가이드](https://www.prisma.io/docs/orm/more/upgrade-guides/upgrading-versions/upgrading-to-prisma-7))
 
-관련 노트: [SQL 기초](/knowledge/dictionary/backend/database/sql-basics), [NestJS Repository 패턴](/knowledge/dictionary/backend/nestjs/repository-pattern), [[orm-queryset|Django ORM과 QuerySet]]
+관련 노트: [SQL 기초](/knowledge/dictionary/backend/databases/sql-basics), [NestJS Repository 패턴](/knowledge/dictionary/backend/nestjs/repository-pattern), [[orm-queryset|Django ORM과 QuerySet]]

@@ -134,3 +134,5 @@ def index(request): ...
 - 앱별 `urls.py` + `include()`로 분리하고, `app_name`과 `name`으로 주소를 이름 참조한다.
 - 템플릿은 `app/templates/app/` 구조로 이름 공간을 만든다.
 - DB를 바꾼 뒤에는 `redirect`(PRG), 허용 메서드는 `require_*` 데코레이터로 제한한다.
+
+관련 노트: [[getting-started-mtv|Django 시작하기와 MTV 패턴]], [[templates-static|Django Template과 Static 파일]], [[orm-queryset|Django ORM과 QuerySet]]

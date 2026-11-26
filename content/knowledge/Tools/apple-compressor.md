@@ -33,3 +33,5 @@ Compressor는 Apple의 영상 변환·인코딩 앱이다. Final Cut Pro와 함�
 - M1 이상 Mac이면 Compressor의 MPEG-4 프리셋으로 하드웨어 인코딩해 mp4를 빠르게 만든다.
 - 보관·공유용으로 용량만 줄이려면 비트레이트 4,500Kbps에서 시작해 결과를 확인한다.
 - 고해상도·고움직임 영상은 비트레이트를 높여 결과를 확인한다.
+
+관련 노트: [[video-performance|동영상 성능: 형식·poster·자동 재생·임베드]], [[media-processing-pipeline|이미지·동영상 처리 서버 설계]]

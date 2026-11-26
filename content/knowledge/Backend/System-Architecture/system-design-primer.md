@@ -2,7 +2,7 @@
 title: "System Design Primer 개념 지도"
 concept: "System Design Primer"
 summary: "System Design Primer의 주제(트레이드오프, DNS·CDN·로드 밸런서, DB, 캐시, 비동기, 통신, 보안, 설계 사례 8개, 객체 지향 설계 6개)가 창고의 어느 개념 노트에 있는지 잇는 지도."
-tags: ["backend", "system-design", "architecture", "distributed-systems", "learning"]
+tags: ["backend", "system-design", "architecture", "distributed-system", "learning"]
 source: other
 date: "2026-11-15"
 sources: ["https://github.com/donnemartin/system-design-primer", "https://github.com/donnemartin/system-design-primer/blob/ae9bbd7b02d90b9866215de185217d33f39ab733/README.md"]

@@ -4,14 +4,14 @@ concept: "Tools"
 summary: "개발과 협업, 분석, 3D 작업에 쓰는 도구들의 사용법 모음."
 tags: ["tools", "productivity", "collaboration"]
 source: mixed
-date: "2026-10-14"
+date: "2026-11-26"
 ---
 
 이 분야에는 코드를 관리하는 Git과 GitHub 협업 설정, 코드 리뷰, 개발 환경 설정, 브라우저에서 웹 페이지를 검사·디버깅하는 Chrome DevTools부터 문서 작성용 Markdown·LaTeX, 편집기 Vim·VS Code와 터미널 도구 tmux, 팀 업무를 관리하는 Jira, 웹 분석 도구 GA4·Segment, DB 클라이언트, 스프레드시트, 로우 코드 내부 도구 Retool, CMS 워드프레스, 3D 모델링 도구 Blender, 영상 인코딩 도구 Compressor까지 모았다. 각 노트는 "무엇을 왜 쓰는지 → 핵심 사용법 → 실무 팁" 순서로 정리되어 있다.
 
 ## 하위 주제
 
-- Code Review: [코드 리뷰 원칙과 체크리스트](/knowledge/dictionary/tools/code-review/principles), [리뷰 코멘트와 PR 소통](/knowledge/dictionary/tools/code-review/review-communication), [코드 리뷰에서 자주 나온 지적](/knowledge/dictionary/tools/code-review/review-patterns), [리팩터링 원칙](/knowledge/dictionary/tools/code-review/refactoring-principles), [Simple Design](/knowledge/dictionary/tools/code-review/simple-design), [불리언 변수 이름 짓기](/knowledge/dictionary/tools/code-review/boolean-naming), [삭제하기 쉬운 코드](/knowledge/dictionary/tools/code-review/easy-to-delete-code)
+- [Code Review](Tools/Code-Review.md): [코드 리뷰 원칙과 체크리스트](/knowledge/dictionary/tools/code-review/principles), [리뷰 코멘트와 PR 소통](/knowledge/dictionary/tools/code-review/review-communication), [코드 리뷰에서 자주 나온 지적](/knowledge/dictionary/tools/code-review/review-patterns), [리팩터링 원칙](/knowledge/dictionary/tools/code-review/refactoring-principles), [Simple Design](/knowledge/dictionary/tools/code-review/simple-design), [불리언 변수 이름 짓기](/knowledge/dictionary/tools/code-review/boolean-naming), [삭제하기 쉬운 코드](/knowledge/dictionary/tools/code-review/easy-to-delete-code)
 - [Git](Tools/Git.md): 버전 관리 기본, 브랜치와 병합, 원격 저장소·미러링, 되돌리기와 이력 다루기, 커밋 컨벤션, GitHub 협업 설정
 - [유의적 버전(SemVer)](/knowledge/dictionary/tools/semantic-versioning): MAJOR.MINOR.PATCH를 올리는 기준, 0.x와 프리릴리스, 버전 비교 순서, npm의 ^·~ 범위
 - [좋은 CLI 설계 원칙](/knowledge/dictionary/tools/cli-design-guidelines): 종료 코드·stdout/stderr·--help·--json/NO_COLOR·표준 플래그, 위험 작업 확인, 시그널, 설정 우선순위, 하위 호환, 에이전트 친화성

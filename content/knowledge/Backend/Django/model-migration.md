@@ -110,3 +110,5 @@ class ArticleAdmin(admin.ModelAdmin):
 - 모델을 바꾸면 항상 `makemigrations` → `migrate`.
 - `auto_now_add`는 생성 시각, `auto_now`는 수정 시각.
 - 관리자 페이지는 `createsuperuser` → `@admin.register(Model)` + `ModelAdmin` 옵션.
+
+관련 노트: [[relationships|Django 모델 관계 (1:1, 1:N, M:N)]], [[orm-queryset|Django ORM과 QuerySet]], [[getting-started-mtv|Django 시작하기와 MTV 패턴]]
