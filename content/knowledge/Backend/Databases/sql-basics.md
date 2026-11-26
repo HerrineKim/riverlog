@@ -1,11 +1,11 @@
 ---
 title: "SQL 기초"
 concept: "SQL"
-summary: "SQL 명령어 분류(DDL·DQL·DML·DCL·TCL)와 연산자, 테이블 구조 변경과 제약 조건(기본 키·외래 키·CASCADE, 자연 키와 대리 키), 뷰·시퀀스·동의어, 데이터를 생성·조회·수정·삭제하고 조건·정렬·집계·그룹화하는 기본 문법, JOIN 종류(제외 조인, 세미·안티 세미 조인, 비등가 조인, 여러 테이블 잇기, LATERAL·APPLY), WHERE와 HAVING·DISTINCT·CROSS JOIN처럼 헷갈리기 쉬운 지점, 서브쿼리(상관 서브쿼리, EXISTS와 NOT IN의 NULL 함정), 집합 연산(UNION·INTERSECT·EXCEPT), 직원·부서 예제로 보는 쿼리 패턴(셀프 조인, 그룹별 최댓값, 빈 그룹 세기, N번째 값, 중복 행 지우기), 대소문자·날짜 조건과 DBMS별 날짜 함수, 저장 프로시저와 PL/SQL(블록, 예외, 커서, BULK COLLECT, 함수·패키지·트리거)."
+summary: "SQL 명령어 분류(DDL·DQL·DML·DCL·TCL)와 연산자, 테이블 구조 변경과 제약 조건(기본 키·외래 키·CASCADE, 자연 키와 대리 키), 뷰·시퀀스·동의어, 데이터를 생성·조회·수정·삭제하고 조건·정렬·집계·그룹화하는 기본 문법, 열 타입(정수·정확한 소수·CHAR·VARCHAR)과 별칭, 조회 결과로 테이블을 만드는 문, JOIN 종류(제외 조인, 세미·안티 세미 조인, 비등가 조인, 여러 테이블 잇기, LATERAL·APPLY), WHERE와 HAVING·DISTINCT·CROSS JOIN처럼 헷갈리기 쉬운 지점, 서브쿼리(상관 서브쿼리, EXISTS와 NOT IN의 NULL 함정), 집합 연산(UNION·INTERSECT·EXCEPT), 직원·부서 예제로 보는 쿼리 패턴(셀프 조인, 그룹별 최댓값, 빈 그룹 세기, N번째 값, 중복 행 지우기), 대소문자·날짜 조건과 DBMS별 날짜 함수, 저장 프로시저와 PL/SQL(블록, 예외, 커서, BULK COLLECT, 함수·패키지·트리거)."
 tags: ["sql", "database", "mysql", "oracle", "certificate"]
 source: mixed
-date: "2026-11-25"
-sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "Steve Stedman, TSQL JOIN Types Poster (v22.03)", "https://www.jitbit.com/news/181-jitbits-sql-interview-questions/", "https://www.java67.com/2013/04/10-frequently-asked-sql-query-interview-questions-answers-database.html", "https://github.com/swapnakpanda/Infographics", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "고려사이버대학교 데이터베이스시스템 강의(나홍석 교수, 2024-1학기)"]
+date: "2026-11-26"
+sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "https://bytebytego.com/guides/how-do-sql-joins-work", "https://sql-joins.leopard.in.ua/", "Steve Stedman, TSQL JOIN Types Poster (v22.03)", "https://www.jitbit.com/news/181-jitbits-sql-interview-questions/", "https://www.java67.com/2013/04/10-frequently-asked-sql-query-interview-questions-answers-database.html", "https://github.com/swapnakpanda/Infographics", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/Constraint%20%EC%A0%9C%EC%95%BD%EC%A1%B0%EA%B1%B4.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/SQL%EB%AC%B8.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B2%A0%EC%9D%B4%EC%8A%A4/CSV%20%ED%8C%8C%EC%9D%BC%EB%A1%9C%20%ED%85%8C%EC%9D%B4%EB%B8%94%20%EC%83%9D%EC%84%B1.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Database/README.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%5BDB%5D%20Key.md", "https://github.com/gyoogle/tech-interview-for-developer/blob/master/Computer%20Science/Database/%EC%A0%80%EC%9E%A5%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%80%28Stored%20PROCEDURE%29.md", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md", "고려사이버대학교 데이터베이스 설계구축 강의(나홍석 교수, 2023-2학기)", "고려사이버대학교 데이터베이스시스템 강의(나홍석 교수, 2024-1학기)", "https://www.cheat-sheets.org/sites/sql.su/"]
 ---
 
 > 여러 자료를 종합한 노트에, SQL 다섯 분류는 ByteByteGo의 System Design 101 가이드 「[What is the Best Way to Learn SQL?](https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql)」를, JOIN은 「[How do SQL Joins Work?](https://bytebytego.com/guides/how-do-sql-joins-work)」와 Steve Stedman의 「TSQL JOIN Types」 포스터(v22.03)를, 쿼리 패턴 연습은 Jitbit의 「[SQL Interview Questions](https://www.jitbit.com/news/181-jitbits-sql-interview-questions/)」와 Javin Paul의 「[SQL Query Interview Questions](https://www.java67.com/2013/04/10-frequently-asked-sql-query-interview-questions-answers-database.html)」를 바탕으로 보강했다.
@@ -16,6 +16,7 @@ sources: ["https://bytebytego.com/guides/what-is-the-best-way-to-learn-sql", "ht
 > 기본 키 변경, 외래 키의 NULL, 갱신 가능한 뷰, COUNT의 동작은 「[fru1tworld/cs-basic 모의 면접 질문 목록](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/db.md)」의 질문을 실마리로 보강했다.
 > 무결성의 종류와 강화 방법, 컬럼·테이블 제약과 컬럼 추가 규칙은 고려사이버대학교 「데이터베이스 설계구축」(2023-2학기)과 「데이터베이스시스템」(2024-1학기) 강의 내용으로 보강했다.
 > 뷰를 쓰는 이유와 `WITH CHECK OPTION`, 시퀀스·동의어, PL/SQL은 「데이터베이스 설계구축」(2023-2학기), 서브쿼리는 「데이터베이스시스템」(2024-1학기) 강의 내용으로 보강했다.
+> 데이터 타입, 별칭, 인덱스를 만들고 지우는 문, 조회 결과로 테이블을 만드는 문은 Alexander Krassotkin의 「[SQL in one page](https://www.cheat-sheets.org/sites/sql.su/)」(SQL.SU, 2006-2016)를 바탕으로 보강했다.
 
 SQL(Structured Query Language)은 RDBMS에서 데이터를 관리하기 위해 설계된 언어다. ORM을 쓰더라도 실제로 DB에 전달되는 것은 SQL이므로, 기본 문법을 알면 ORM이 만드는 쿼리를 이해하고 문제를 진단할 수 있다.
 
@@ -60,6 +61,17 @@ CREATE TABLE persons (
 );
 ```
 
+`DROP DATABASE cats`는 그 데이터베이스와 안의 테이블을 지운다. `IF EXISTS`를 붙이면 없을 때 오류를 내지 않는다.
+
+| DBMS | 동작 |
+| --- | --- |
+| MySQL | `DROP SCHEMA`와 같다. 그 데이터베이스에만 준 권한은 같이 지워지지 않아 `REVOKE`로 따로 거둔다. 세션의 `TEMPORARY` 테이블은 지우지 않는다 |
+| PostgreSQL | 지금 접속 중인 데이터베이스는 못 지운다. `postgres` 등 다른 DB에 붙어 실행하고, 트랜잭션 안에서는 실행되지 않는다. 다른 세션이 붙어 있으면 실패하며, `DROP DATABASE name WITH (FORCE)`는 끊을 수 있는 연결을 끊는다. 준비된 트랜잭션이나 논리 복제 슬롯·구독이 있으면 `FORCE`로도 실패한다 |
+| SQL Server | 다른 연결이 남아 있으면 실패한다 |
+| Oracle | 스키마가 사용자라, 한 사용자의 객체를 지울 때는 `DROP USER 이름 CASCADE`를 쓴다 |
+
+SQL 표준에는 `DROP DATABASE`가 없다. MySQL은 스키마와 데이터베이스가 같은 말이고, PostgreSQL은 데이터베이스 안에 스키마가 여러 개 있다([[sql-and-relational-algebra#스키마와 인덱스|스키마와 인스턴스]]).
+
 MySQL은 `SHOW TABLES;`(테이블 목록), `DESC persons;`(열 구조), `SELECT DATABASE();`(지금 선택한 DB)로 구조를 확인한다. SQLite CLI에서는 메타 명령을 쓴다.
 
 ```bash
@@ -70,6 +82,24 @@ sqlite> .import users.csv users_user   -- CSV를 테이블로 로드
 ```
 
 MySQL에서 CSV를 넣을 때는 `LOAD DATA LOCAL INFILE 'users.csv' INTO TABLE users_user FIELDS TERMINATED BY ',' IGNORE 1 LINES;`를 쓴다(서버와 클라이언트 모두 `local_infile`을 켜야 한다). MySQL Workbench의 Table Data Import Wizard는 같은 일을 GUI로 하며, 구분자와 열 타입을 지정해 새 테이블을 만들 수도 있다. 엑셀 데이터도 CSV로 내보내면 SQL로 분석할 수 있다.
+
+### 데이터 타입
+
+열을 만들 때 고른 타입이 그 열이 담을 수 있는 값의 범위다. 자주 쓰는 것은 정수, 정확한 소수, 문자열, 날짜다.
+
+| 선언 | 담는 것 |
+| --- | --- |
+| `SMALLINT`, `INTEGER`(`INT`), `BIGINT` | 정수. 크기는 타입 이름이 정한다. 부호 있는 `INT`는 -2147483648~2147483647 |
+| `TINYINT`, `MEDIUMINT` | MySQL의 더 짧은 정수. 부호 있는 `TINYINT`는 -128~127, `UNSIGNED`면 0~255. SQL Server의 `TINYINT`는 0~255만 있고, PostgreSQL에는 `TINYINT`가 없다 |
+| `DECIMAL(p, s)`, `NUMERIC(p, s)` | 정확한 십진수. `p`는 전체 자릿수, `s`는 소수점 아래 자릿수. PostgreSQL·MySQL·SQL Server에서 둘은 동의어다. Oracle은 `NUMBER(p, s)` |
+| `CHAR(n)` | 고정 길이 문자열. 짧으면 공백으로 채운다 |
+| `VARCHAR(n)` | 최대 `n`글자의 가변 길이 문자열. 끝 공백을 유지한다 |
+| `DATE` | 시각 없는 날짜. 길이·형식 인자가 없다 |
+
+- **정수 뒤의 `(n)`은 최대 자릿수가 아니다.** MySQL의 `INT(11)`은 표시 폭(화면에 몇 칸으로 볼지)이고, 저장 범위와는 무관하다. `INT(4)`와 `INT(11)`은 같은 32비트 정수다. 이 표시 폭과 `ZEROFILL`은 MySQL 8.0.17부터 폐기 예고가 붙어, 새로 선언하면 경고가 난다.
+- **금액처럼 십진수로 맞아야 하는 값은 `DECIMAL`에 둔다.** `FLOAT`, `REAL`, `DOUBLE PRECISION`도 소수점을 담지만 2진 부동소수라 `0.1`이 그대로 저장되지 않는다.
+- **`CHAR`와 `VARCHAR`는 끝 공백 처리가 다르다.** MySQL은 `CHAR`를 저장할 때 공백으로 채우고, 꺼낼 때 끝 공백을 지운다(`PAD_CHAR_TO_FULL_LENGTH`를 켜면 유지하지만 이 모드는 폐기 예정이다). `VARCHAR`는 끝 공백을 그대로 둔다. PostgreSQL의 `character(n)`은 공백을 붙여 저장하고 보여 주며, 비교할 때만 끝 공백을 무시한다. `varchar`와 `text`는 끝 공백이 값의 일부다. PostgreSQL에서 길이 없는 `varchar`는 무제한이고, 길이 없는 `char`는 `character(1)`이다. MySQL의 `VARCHAR`는 길이가 필수다. 선언상 최대 65,535자이지만 한 행의 모든 열이 65,535바이트를 나눠 쓰므로, `utf8mb4`면 그보다 짧다. `CHAR`의 최대는 255자다.
+- 날짜 리터럴은 `'YYYY-MM-DD'`로 쓴다(아래 「대소문자와 날짜 조건」). `DATE`에 `yyyymmdd` 같은 형식 인자를 붙이지 않는다.
 
 ### 구조 바꾸기
 
@@ -95,6 +125,31 @@ MySQL의 `utf8`은 3바이트까지만 담는 옛 별칭이라 이모지가 깨�
 | 모든 행 (구조는 유지) | `TRUNCATE TABLE t` | DDL. 테이블을 비우고 새로 만드는 방식이라 빠르고, `AUTO_INCREMENT`도 처음으로 돌아간다. MySQL에서는 롤백되지 않는다 |
 | 테이블 자체 | `DROP TABLE t` | 구조와 데이터를 모두 없앤다 |
 
+### 인덱스 만들기와 지우기
+
+인덱스는 컬럼 값을 정렬해 둔 목차다. 어느 컬럼에 어떤 순서로 걸지는 [[index-design|인덱스 설계와 쿼리 튜닝]]이 다루고, 여기서는 만들고 지우는 문만 둔다. `PRIMARY KEY`와 `UNIQUE` 제약을 걸면 DBMS가 유니크 인덱스를 스스로 만든다(아래 「제약 조건」).
+
+```sql
+CREATE INDEX person_name ON persons (last_name, first_name);
+CREATE UNIQUE INDEX person_email ON persons (email);
+CREATE INDEX person_name_desc ON persons (last_name DESC, first_name);
+```
+
+`CREATE UNIQUE INDEX`는 같은 값을 거부한다. 컬럼 뒤의 `ASC`·`DESC`는 그 컬럼을 인덱스에 오름차순·내림차순으로 넣는다. MySQL은 8.0부터 내림차순을 실제로 저장한다([[index-design#ORDER BY·GROUP BY와 커버링 인덱스|정렬 방향]]).
+
+| DBMS | 지우기 |
+| --- | --- |
+| MySQL | `DROP INDEX person_name ON persons` |
+| PostgreSQL, Oracle | `DROP INDEX person_name` |
+| SQL Server | `DROP INDEX person_name ON persons`. `persons.person_name`처럼 테이블 이름 뒤에 인덱스를 붙이는 옛 문법은 호환용으로만 남아 있다 |
+
+```sql
+-- MySQL: 기본 키 인덱스의 이름은 항상 PRIMARY다. 예약어라 따옴표가 필요하다
+DROP INDEX `PRIMARY` ON persons;
+```
+
+제약 때문에 생긴 인덱스는 `DROP INDEX`만으로 못 지우는 경우가 있다. SQL Server는 `PRIMARY KEY`·`UNIQUE`로 만든 인덱스에 `DROP INDEX`를 거부하고, `ALTER TABLE ... DROP CONSTRAINT`로 지운다.
+
 ### 제약 조건
 
 제약 조건(constraint)은 열에 들어갈 값을 DB가 직접 검사하게 하는 규칙이다. 애플리케이션 코드가 빠뜨려도 잘못된 데이터가 들어가지 않는다.
@@ -108,7 +163,7 @@ MySQL의 `utf8`은 3바이트까지만 담는 옛 별칭이라 이모지가 깨�
 | 참조 무결성(referential) | 외래 키 값은 부모 테이블에 있는 키이거나 NULL이다 | `FOREIGN KEY` |
 | 사용자 정의 무결성 | 업무 규칙(잔액은 한도를 넘지 않는다 등) | `CHECK`, 트리거, 애플리케이션 |
 
-데이터 타입은 도메인 무결성의 가장 기초다. 날짜를 `DATE`로 두면 없는 날짜가 들어올 수 없고, 숫자를 숫자 타입으로 두면 연산과 형식 검사를 DB가 해 준다. 같은 값을 더 적은 바이트로 담는 타입을 고르면(`'100000'`은 문자열 6바이트, 정수 4바이트) 한 페이지에 행이 더 들어가 읽는 페이지 수가 준다.
+데이터 타입은 도메인 무결성의 가장 기초다(목록은 위 「데이터 타입」). 날짜를 `DATE`로 두면 없는 날짜가 들어올 수 없고, 숫자를 숫자 타입으로 두면 연산과 형식 검사를 DB가 해 준다. 같은 값을 더 적은 바이트로 담는 타입을 고르면(`'100000'`은 문자열 6바이트, 정수 4바이트) 한 페이지에 행이 더 들어가 읽는 페이지 수가 준다.
 
 무결성을 어디서 강제하느냐에 따라 장단점이 갈린다.
 
@@ -253,6 +308,44 @@ DELETE FROM users_user WHERE id = 102;
 - 이미 존재하는 PK로 insert하면 `UNIQUE constraint failed`.
 - `UPDATE`·`DELETE`에서 `WHERE`를 빠뜨리면 **모든 행**이 바뀌거나 지워진다.
 
+## 별칭
+
+별칭(alias)은 쿼리 안에서만 쓰는 임시 이름이다. 스키마는 바뀌지 않는다.
+
+```sql
+SELECT last_name AS family_name, first_name AS given_name
+FROM persons AS p
+WHERE p.city = '서울';
+```
+
+| 종류 | 문법 | 쓰는 곳 |
+| --- | --- | --- |
+| 열 별칭 | `salary * 12 AS yearly_pay` | 결과 헤더, 식과 집계의 이름 |
+| 테이블 별칭 | `FROM persons AS p` | 조인·셀프 조인에서 어느 쪽 열인지 가릴 때. 같은 테이블을 두 번 쓰면 필수다 |
+
+- `AS`는 열 별칭에서 생략할 수 있다. 쉼표를 빠뜨리면 `SELECT first_name last_name`이 두 열이 아니라 `first_name`을 `last_name`이라는 별칭으로 읽는다.
+- **테이블 별칭 앞의 `AS`는 Oracle에서 문법 오류다**(`ORA-00933`). `FROM persons p`처럼 이름만 붙이면 MySQL·PostgreSQL·SQL Server·Oracle이 모두 받는다. 열 별칭의 `AS`는 Oracle도 받는다.
+- 별칭을 주면 원래 테이블 이름은 가려진다. PostgreSQL은 `FROM persons p` 뒤의 `persons.id`를 거부하고 `p.id`만 받는다.
+- **열 별칭은 `WHERE`에서 쓸 수 없다.** `WHERE`가 `SELECT` 목록보다 먼저 평가되기 때문이다([[sql-and-relational-algebra#SQL이 실행되는 과정|논리적 평가 순서]]). `ORDER BY`에서는 주요 DBMS가 열 별칭을 받는다. `GROUP BY`·`HAVING`은 다르다. PostgreSQL은 `GROUP BY`만 별칭을 받고 `HAVING`은 식을 다시 적어야 하며, MySQL은 `GROUP BY`와 `HAVING` 모두 받는다. SQL Server는 둘 다 받지 않는다. 이식하려면 식이나 컬럼을 다시 적는다.
+- `FROM (SELECT ...) t`처럼 서브쿼리를 테이블로 쓸 때 MySQL과 SQL Server는 별칭을 요구한다(아래 「서브쿼리」).
+
+## 조회 결과를 테이블로
+
+한 행을 `VALUES`로 넣는 것과 달리, 조회 결과 전체를 다른 테이블로 옮길 수 있다. **이미 있는 테이블에 넣을지, 테이블을 새로 만들지가 갈린다.**
+
+| 목적 | 문법 | 받는 DBMS |
+| --- | --- | --- |
+| 있는 테이블에 행 추가 | `INSERT INTO backup_persons (last_name, city) SELECT last_name, city FROM persons WHERE city = '서울'` | 공통 |
+| 새 테이블을 만들고 채움 | `CREATE TABLE seoul_persons AS SELECT last_name, city FROM persons WHERE city = '서울'` | PostgreSQL, MySQL(`AS`는 생략 가능), Oracle |
+| 새 테이블을 만들고 채움 | `SELECT last_name, city INTO seoul_persons FROM persons WHERE city = '서울'` | SQL Server. PostgreSQL도 받지만 `CREATE TABLE AS`를 권한다 |
+
+- `SELECT ... INTO 새 테이블`은 MySQL에 없다. MySQL의 `INTO`는 변수나 파일로 보내는 문이라 테이블을 만들지 않는다.
+- PostgreSQL에서 테이블을 만드는 `SELECT INTO`는 PL/pgSQL·ECPG 안에서 다른 뜻이다. 그 안에서는 조회 결과를 **변수**에 넣는다. 테이블을 만들 거면 `CREATE TABLE AS`를 쓴다.
+- **인덱스, 기본 키, 트리거는 복사되지 않는다.** 열 이름과 타입, 행만 넘어간다. 행 없이 열만 필요하면 PostgreSQL은 `WITH NO DATA`를 붙인다.
+- MySQL에서 `CREATE TABLE bar (m INT) SELECT n FROM foo`는 선언한 열 `m`이 앞에 오고, `SELECT`의 `n`이 뒤에 붙는다. 같은 자리에 덮어쓰지 않는다.
+- SQL Server의 `SELECT ... INTO`는 테이블을 만든 뒤 행을 넣는다. 넣기가 실패하면 삽입은 롤백되지만 빈 테이블은 남을 수 있어, 통째로 되돌리려면 명시적 트랜잭션으로 감싼다.
+- 다른 데이터베이스로 보낼 때 SQL Server는 `SELECT ... INTO otherdb.dbo.seoul_persons FROM persons`처럼 이름을 세 부분으로 적는다. MySQL은 `CREATE TABLE otherdb.seoul_persons AS SELECT ...`나 `INSERT INTO otherdb.seoul_persons SELECT ...`를 쓴다. `SELECT ... INTO new_table IN 'Backup.db'`는 Microsoft Access(Jet/ACE)의 문법이다. PostgreSQL은 `schema.table`로 같은 데이터베이스의 다른 스키마에는 쓰지만, 그 문법만으로 다른 데이터베이스에 쓰지 못한다.
+
 ## 조건: WHERE
 
 ```sql
@@ -298,6 +391,8 @@ SELECT * FROM users_user ORDER BY age DESC LIMIT 10;
 SELECT * FROM users_user ORDER BY balance ASC, age DESC LIMIT 10;  -- balance 우선, 같으면 age
 SELECT * FROM users_user ORDER BY last_name DESC, first_name DESC LIMIT 1 OFFSET 4; -- 5번째
 ```
+
+`ASC`(오름차순)는 기본값이라 생략해도 된다. `DESC`는 내림차순이다.
 
 ## 집계 함수와 GROUP BY
 
@@ -835,7 +930,7 @@ ps.executeQuery();
 
 ## 핵심 정리
 
-- `INSERT / SELECT / UPDATE / DELETE` + `WHERE`가 CRUD의 전부다.
+- `INSERT / SELECT / UPDATE / DELETE` + `WHERE`가 한 행을 다루는 CRUD다. 결과 집합을 옮길 때는 `INSERT ... SELECT`나 `CREATE TABLE AS SELECT`를 쓴다.
 - `ORDER BY … LIMIT … OFFSET`으로 정렬·페이지네이션, `GROUP BY` + 집계 함수로 요약.
 - 테이블을 옆으로 붙이면 `JOIN`, 결과를 위아래로 합치면 `UNION`·`INTERSECT`·`EXCEPT`. 중복이 상관없으면 `UNION ALL`.
 - 서브쿼리는 `WHERE`(값·목록)·`FROM`(인라인 뷰)·`SELECT`(스칼라)에 들어간다. 부정 조건은 `NOT IN` 대신 `NOT EXISTS`로 쓴다.
