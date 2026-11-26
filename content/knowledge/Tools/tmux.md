@@ -1,14 +1,14 @@
 ---
 title: "tmux: 터미널 멀티플렉서"
 concept: "tmux"
-summary: "터미널 하나에서 여러 세션·창·분할 화면을 다루고, SSH 연결이 끊겨도 작업을 서버에 살려 두는 터미널 멀티플렉서 tmux의 개념과 기본 키, 데스크톱·노트북·NAS 같은 여러 기기를 SSH와 메시 VPN으로 잇는 방법."
-tags: ["tools", "cli", "terminal", "productivity"]
+summary: "터미널 하나에서 여러 세션·창·분할 화면을 다루고, SSH 연결이 끊겨도 작업을 서버에 살려 두는 터미널 멀티플렉서 tmux의 개념과 기본 키, 데스크톱·노트북·NAS 같은 여러 기기를 SSH와 메시 VPN으로 잇는 방법, 코딩 에이전트의 상태를 알아보는 전용 멀티플렉서 herdr."
+tags: ["tools", "cli", "terminal", "productivity", "agentic-coding"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/513a28227b7d4b9ba680d8236f8fb21d", "https://missing.csail.mit.edu/2020/command-line/", "https://github.com/tmux/tmux/wiki/Getting-Started"]
+sources: ["https://80000coding.notion.site/513a28227b7d4b9ba680d8236f8fb21d", "https://missing.csail.mit.edu/2020/command-line/", "https://github.com/tmux/tmux/wiki/Getting-Started", "https://github.com/herdrdev/herdr"]
 ---
 
-> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Terminal Multiplexer(tmux) 짧은 소개」를 바탕으로 재구성한 노트다. 원 자료는 MIT 「[The Missing Semester](https://missing.csail.mit.edu/2020/command-line/)」의 Command-line Environment 강의다.
+> 팔만코딩경(42Seoul 커뮤니티 위키)의 「Terminal Multiplexer(tmux) 짧은 소개」를 바탕으로 재구성한 노트다. 원 자료는 MIT 「[The Missing Semester](https://missing.csail.mit.edu/2020/command-line/)」의 Command-line Environment 강의다. herdr 절은 [herdr 저장소](https://github.com/herdrdev/herdr)의 README로 확인해 더했다.
 
 ## 터미널 멀티플렉서란
 
@@ -70,11 +70,26 @@ set -g base-index 1        # 창 번호를 1부터
 
 어느 방법이든 붙은 뒤에는 tmux 세션 안에서 일한다. 노트북을 닫거나 네트워크가 바뀌어 연결이 끊겨도 작업은 원격 기기에 그대로 남는다. 편집기까지 원격으로 쓰려면 VS Code의 Remote SSH가 같은 연결을 쓴다([[vscode|VS Code 설정과 활용]]).
 
+## 코딩 에이전트용 멀티플렉서: herdr
+
+CLI 코딩 에이전트를 여러 개 동시에 돌리면 tmux 패인마다 어느 에이전트가 일하는 중이고 어느 것이 승인을 기다리는지 일일이 들여다봐야 한다. [herdr](https://github.com/herdrdev/herdr)는 이 문제를 겨냥한 Rust 단일 바이너리 멀티플렉서다. tmux처럼 워크스페이스·탭·패인으로 터미널을 나누고 백그라운드 서버가 터미널을 살려 두지만, 그 안에서 도는 에이전트를 알아본다는 점이 다르다.
+
+| 기능 | 내용 |
+| --- | --- |
+| 떼었다 붙이기 | 클라이언트를 닫거나 SSH가 끊겨도 작업이 계속된다. `ctrl+b q`로 떼고 `herdr`로 다시 붙는다. 서버나 기기를 재시작하면 레이아웃을 복원하고 지원하는 에이전트 세션을 이어 가지만 원래 프로세스가 살아남지는 않는다 |
+| 상태 표시 | 패인마다 에이전트가 작업 중(working), 응답 대기(blocked), 유휴(idle)인지 표시한다. 멈춰서 답을 기다리는 에이전트를 찾아다니지 않아도 된다 |
+| 여러 기기 | 저장해 둔 SSH 기기를 붙여 로컬과 원격 기기의 에이전트 목록을 한 창에서 본다 |
+| 에이전트가 직접 조작 | CLI와 소켓 API로 에이전트가 패인을 만들고, 다른 에이전트를 띄워 일을 맡기고, 그 에이전트가 응답 대기로 바뀔 때까지 기다린다 |
+| 감싸지 않는다 | Claude Code, Codex, Cursor 같은 에이전트를 그대로 실행하고 터미널만 맡는다 |
+
+에이전트 하나를 오래 돌리는 정도면 tmux로 충분하다. 여러 에이전트를 병렬로 굴리며 승인 대기를 놓치는 일이 잦을 때 고려한다. 병렬 작업의 비용과 위험은 [[token-efficiency|에이전트 토큰 비용 관리]]에 있다.
+
 ## 정리
 
 - tmux는 터미널 하나에서 세션·창·패인을 나누고, 세션을 터미널과 떼어 살려 둔다.
 - 원격 서버 작업의 핵심 이점은 연결이 끊겨도 작업과 화면이 남는다는 것이다.
 - 모든 키는 프리픽스(`Ctrl-b`) 다음에 누른다. `d`로 떼고 `tmux attach`로 다시 붙는다.
 - 같은 네트워크의 기기는 SSH로, 밖에서 붙을 때는 메시 VPN 위의 SSH로 잇고, 그 안에서 tmux를 쓴다.
+- 코딩 에이전트를 여럿 병렬로 돌리면 에이전트 상태를 알아보는 herdr 같은 전용 멀티플렉서가 승인 대기를 놓치지 않게 해 준다.
 
 관련 노트: [[vim-and-neovim|Vim과 Neovim]], [[missing-semester|The Missing Semester: CS 교육에서 빠진 도구 학기]]
