@@ -5,10 +5,10 @@ summary: "음성 비서·검색 엔진·AI 답변 엔진은 웹 페이지를 그
 tags: ["web", "seo", "html", "semantic", "content-marketing"]
 source: other
 date: "2026-10-13"
-sources: ["https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/", "https://web.dev/learn/html/inline-text"]
+sources: ["https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/", "https://web.dev/learn/html/inline-text", "https://developers.google.com/search/updates", "https://developers.google.com/search/docs/appearance/structured-data/search-gallery"]
 ---
 
-> 웹액츄얼리가 번역한 앤디 피츠제럴드(Andy Fitzgerald)의 「[로봇과의 대화: 음성 검색과 스마트 에이전트, 구조화된 콘텐츠 사례](https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/)」(2019.06)을 바탕으로 재구성한 노트다. `<data>`·`<time>` 부분은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Other inline text elements」를 바탕으로 보강했다.
+> 웹액츄얼리가 번역한 앤디 피츠제럴드(Andy Fitzgerald)의 「[로봇과의 대화: 음성 검색과 스마트 에이전트, 구조화된 콘텐츠 사례](https://webactually.com/2019/06/18/%eb%a1%9c%eb%b4%87%ea%b3%bc%ec%9d%98-%eb%8c%80%ed%99%94-%ec%9d%8c%ec%84%b1-%ea%b2%80%ec%83%89%ea%b3%bc-%ec%8a%a4%eb%a7%88%ed%8a%b8-%ec%97%90%ec%9d%b4%ec%a0%84%ed%8a%b8-%ea%b5%ac%ec%a1%b0%ed%99%94/)」(2019.06)을 바탕으로 재구성한 노트다. `<data>`·`<time>` 부분은 web.dev의 「[Learn HTML](https://web.dev/learn/html)」 강좌 중 「Other inline text elements」를 바탕으로 보강했다. 리치 결과 종료 연표는 Google 검색 센터의 「[최신 문서 업데이트](https://developers.google.com/search/updates)」로 확인해 보탰다.
 
 ## 왜 기계가 읽는 웹인가
 
@@ -96,7 +96,14 @@ flowchart LR
 - CMS가 그 모델을 강제하게 만든다. 자유 편집기 한 칸에 모든 걸 쓰게 하지 않는다.
 - 템플릿에서 시맨틱 HTML과 JSON-LD를 자동으로 출력한다.
 - Google의 리치 결과 테스트(Rich Results Test)와 Schema Markup Validator로 검증한다.
-- 검색 엔진이 특정 리치 결과 유형을 줄이거나 없애는 일도 있다. 리치 결과는 보너스로 보고, 목표는 **어떤 소비자에게도 정확한 구조**다.
+- 검색 엔진은 특정 리치 결과 유형을 줄이거나 없앤다. 리치 결과는 보너스로 보고, 목표는 **어떤 소비자에게도 정확한 구조**다. 지금 Google이 지원하는 유형은 「[구조화된 데이터 검색 갤러리](https://developers.google.com/search/docs/appearance/structured-data/search-gallery)」에서 확인한다.
+
+| 시기 | Google 검색에서 사라진 리치 결과 |
+| --- | --- |
+| 2023년 8~9월 | HowTo 종료. FAQ는 잘 알려진 정부·보건 사이트로만 좁힘 |
+| 2025년 9월 | 강좌 정보(Course Info), 예상 급여(Estimated Salary), 학습 동영상(Learning Video), 특별 공지(Special Announcement), 차량 목록(Vehicle Listing) |
+| 2026년 1월 | 연습 문제(Practice Problem) |
+| 2026년 5월 7일 | FAQ. 6월에는 FAQ 리치 결과 문서도 내려갔다 |
 
 정보 설계자, 콘텐츠 전략가, 개발자, 경험 디자이너가 함께 해야 하는 일이다. 검색 엔진 최적화 전반은 [[seo-basics|SEO 기초]]에 있다.
 
