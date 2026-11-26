@@ -1,14 +1,14 @@
 ---
 title: "에이전트 토큰 비용 관리"
 concept: "Token Efficiency"
-summary: "토큰 사용량은 많이 쓸수록 좋은 지표가 아니다(토큰맥싱). 코딩 에이전트의 토큰은 대부분 도구 출력, 통째로 읽은 파일, 매 회차 다시 실리는 맥락에서 샌다. 출력 거르기, 필요한 부분만 읽기, 서브에이전트로 격리, 앞부분을 고정한 캐시, 작업에 맞는 모델 라우팅으로 줄이고, 비용은 사용량이 아니라 작업당 비용으로 잰다."
+summary: "토큰 사용량은 많이 쓸수록 좋은 지표가 아니다(토큰맥싱). 코딩 에이전트의 토큰은 대부분 도구 출력, 통째로 읽은 파일, 매 회차 다시 실리는 맥락에서 샌다. 출력 거르기, 필요한 부분만 읽기, 서브에이전트로 격리, 앞부분을 고정한 캐시, 작업에 맞는 모델 라우팅, 급하지 않은 요청의 배치 처리로 줄이고, 비용은 사용량이 아니라 작업당 비용으로 잰다."
 tags: ["ai", "agent", "agentic-coding", "performance", "productivity", "claude-code"]
 source: other
 date: "2026-11-25"
-sources: ["https://blog.pragmaticengineer.com/the-pulse-tokenmaxxing-as-a-weird-new-trend/", "https://github.com/rtk-ai/rtk", "https://code.claude.com/docs/en/costs"]
+sources: ["https://blog.pragmaticengineer.com/the-pulse-tokenmaxxing-as-a-weird-new-trend/", "https://github.com/rtk-ai/rtk", "https://code.claude.com/docs/en/costs", "https://docs.claude.com/en/docs/build-with-claude/batch-processing"]
 ---
 
-> Gergely Orosz(The Pragmatic Engineer)의 「[The Pulse: 'Tokenmaxxing' as a weird new trend](https://blog.pragmaticengineer.com/the-pulse-tokenmaxxing-as-a-weird-new-trend/)」(2026.04)와 Korean FE Article이 소개한 「5가지 도구, 커스텀 훅, 강제 적용으로 Claude Code 토큰 사용량을 90% 이상 줄인 방법」(2026.05), 전종현의 인사이트 #121(2026.07)의 토큰 효율성 논의를 바탕으로, Claude Code 기능은 [공식 비용 관리 문서](https://code.claude.com/docs/en/costs)로 확인해 재구성한 노트다.
+> Gergely Orosz(The Pragmatic Engineer)의 「[The Pulse: 'Tokenmaxxing' as a weird new trend](https://blog.pragmaticengineer.com/the-pulse-tokenmaxxing-as-a-weird-new-trend/)」(2026.04)와 Korean FE Article이 소개한 「5가지 도구, 커스텀 훅, 강제 적용으로 Claude Code 토큰 사용량을 90% 이상 줄인 방법」(2026.05), 전종현의 인사이트 #121(2026.07)의 토큰 효율성 논의를 바탕으로, Claude Code 기능은 [공식 비용 관리 문서](https://code.claude.com/docs/en/costs)로 확인해 재구성한 노트다. 배치 처리는 Anthropic의 「[Batch processing](https://docs.claude.com/en/docs/build-with-claude/batch-processing)」 문서로 확인했다.
 
 ## 토큰 효율이란
 
@@ -87,6 +87,18 @@ sources: ["https://blog.pragmaticengineer.com/the-pulse-tokenmaxxing-as-a-weird-
 
 모델이 쓰는 토큰은 입력보다 단가가 높다. 「설명은 짧게, 바뀐 부분만 보여 줘」처럼 출력 형식을 정하거나, 응답 문체를 간결하게 바꾸는 플러그인(예: Caveman)을 쓴다. 다만 출력을 지나치게 줄이면 사람이 결과를 이해하기 어려워지므로 리뷰에 필요한 설명은 남긴다.
 
+### 7. 급하지 않은 일은 모아서 보낸다(배치)
+
+알림 요약, 메일 분류, 로그 정리처럼 **바로 답이 필요 없는 일**은 건마다 모델을 부르지 않는다. 알림이 올 때마다 API를 부르면 매번 시스템 지시와 예시가 다시 실려 입력 토큰이 건수만큼 불어난다. 일정 시간 동안 쌓아 두었다가 한 번에 정리를 요청하면 공통 지시는 한 번만 실린다.
+
+| 방식 | 언제 | 비용 |
+| --- | --- | --- |
+| 건별 호출 | 사용자가 결과를 기다린다(대화, 실시간 응답) | 건마다 공통 지시가 반복된다 |
+| 모아서 한 요청 | 수십 건을 하나의 요약·분류로 묶어도 된다 | 공통 지시를 한 번만 낸다. 묶음이 너무 크면 품질이 떨어지니 크기를 정한다 |
+| 배치 API | 요청은 따로 처리해야 하지만 결과가 늦어도 된다 | Anthropic Message Batches API는 비동기로 처리하는 대신 비용이 50% 싸다. 대부분 1시간 안에 끝나고 최대 24시간이 걸린다 |
+
+개인 앱이라면 「하루 두 번 모아서 요약」처럼 주기를 먼저 정하고, 급한 건만 따로 바로 보내는 규칙을 둔다.
+
 ## 측정: 사용량이 아니라 작업당 비용
 
 | 지표 | 쓰임 |
@@ -104,6 +116,7 @@ sources: ["https://blog.pragmaticengineer.com/the-pulse-tokenmaxxing-as-a-weird-
 - 토큰은 도구 출력, 통째로 읽은 파일, 매 회차 다시 실리는 상시 맥락, 긴 세션, 과한 병렬에서 샌다.
 - 맥락에 들어가기 전에 거르고, 필요한 부분만 읽고, 작업이 바뀌면 비우고, 큰 탐색은 격리한다.
 - 앞부분을 고정해 캐시를 살리고, 작업 난이도에 맞는 모델로 보낸다.
+- 바로 답이 필요 없는 요청은 모아서 한 번에, 또는 배치 API로 보낸다.
 - 비용은 작업당·결과당으로 재고, 절약 도구의 효과는 내 작업으로 확인한다.
 
 적게 쓰는 것이 목표가 아니라, 쓴 만큼 결과를 내는 것이 목표다.
