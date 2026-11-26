@@ -151,4 +151,4 @@ TLB는 페이지 테이블 항목의 캐시다([[memory-management|메모리 관
 - 스레드별로 자주 쓰는 데이터는 캐시 라인 단위로 떨어뜨려 거짓 공유를 막는다.
 - 복잡도가 같거나 더 나빠 보여도 캐시를 잘 쓰는 쪽이 이기는 경우가 많다. 판단은 측정으로 한다.
 
-관련 노트: [[cache-and-virtual-memory|캐시 메모리와 MMU]], [[memory-hierarchy|메모리 계층 구조]], [[cpu-microarchitecture|현대 CPU의 마이크로아키텍처]], [[pthread-sync-api|POSIX 스레드와 동기화 API]]
+관련 노트: [[cache-and-virtual-memory|캐시 메모리와 MMU]], [[memory-hierarchy|메모리 계층 구조]], [[cpu-microarchitecture|현대 CPU의 마이크로아키텍처]], [[pthread-sync-api|POSIX 스레드와 동기화 API]], [[big-o|빅오 표기법과 시간 복잡도]]
