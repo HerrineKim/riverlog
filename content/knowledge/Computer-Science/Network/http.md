@@ -321,4 +321,4 @@ HTTPS는 HTTP를 TLS로 암호화한 것이다([[https|HTTPS와 TLS]]). 응답 �
 - URI ⊃ URL(위치), URN(이름).
 - HTTP/1.1·HTTP/2는 TCP 위에서, HTTP/3는 UDP 기반 QUIC 위에서 동작한다.
 
-관련 노트: [[https|HTTPS와 TLS]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[rfc-requirement-levels|RFC와 요구 수준 키워드]], [[rest-api|REST API 설계]], [[api-architectural-styles|API 아키텍처 스타일]]
+관련 노트: [[https|HTTPS와 TLS]], [[proxy|프록시: 포워드 프록시와 리버스 프록시]], [[rfc-requirement-levels|RFC와 요구 수준 키워드]], [[rest-api|REST API 설계]], [[api-architectural-styles|API 아키텍처 스타일]], [[fetch-progress-streams|fetch()와 ReadableStream으로 진행률을 재기 어려운 이유]]

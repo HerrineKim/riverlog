@@ -54,4 +54,6 @@ SELECT id, status FROM orders WHERE created_at < '2023-01-01' AND status = 'PEND
 UPDATE orders SET status = 'CANCELLED' WHERE created_at < '2023-01-01' AND status = 'PENDING';
 ```
 
-외부 PC에서 클라우드 DB에 접속이 안 된다면 보안 그룹 설정을 확인한다: [AWS 클라우드 기초의 보안 그룹](/knowledge/dictionary/devops/aws-cloud-basics). SQL 문법은 [SQL 기초](/knowledge/dictionary/backend/database/sql-basics) 참고.
+외부 PC에서 클라우드 DB에 접속이 안 된다면 보안 그룹 설정을 확인한다: [AWS 클라우드 기초의 보안 그룹](/knowledge/dictionary/devops/cloud/aws-cloud-basics). SQL 문법은 [SQL 기초](/knowledge/dictionary/backend/databases/sql-basics) 참고.
+
+관련 노트: [[sql-basics|SQL 기초]], [[google-sheets-vs-excel|Google Sheets vs Excel]]

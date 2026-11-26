@@ -137,3 +137,5 @@ TEMPLATES = [{
 - `{{ }}` 출력, `|` 필터(부족하면 `templatetags`로 직접 등록), `{% %}` 태그, `{# #}` 주석.
 - `base.html` + `{% extends %}` + `{% block %}`으로 중복 레이아웃을 제거한다.
 - 정적 파일은 `{% load static %}` + `{% static %}`, 배포 땐 `collectstatic`.
+
+관련 노트: [[forms-modelform|Django Form과 ModelForm]], [[getting-started-mtv|Django 시작하기와 MTV 패턴]]

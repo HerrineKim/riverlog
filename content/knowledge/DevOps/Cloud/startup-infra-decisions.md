@@ -61,4 +61,4 @@ sources: ["https://cep.dev/posts/every-infrastructure-decision-i-endorse-or-regr
 - 관측 표준(OpenTelemetry), IdP, 의존성 업데이트, 비용 추적은 나중에 들일수록 비싸진다.
 - 관리형 편의 기능은 커스터마이즈가 막히는지 먼저 본다.
 
-관련 노트: [[ci-cd|CI/CD]], [[vm-vs-container|VM과 컨테이너]], [[aws-cloud-basics|AWS 클라우드 기초]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[terraform-workflow|Terraform: 코드로 클라우드 인프라 만들기]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]]
+관련 노트: [[ci-cd|CI/CD]], [[vm-vs-container|VM과 컨테이너]], [[aws-cloud-basics|AWS 클라우드 기초]], [[kubernetes-request-path|쿠버네티스 위 웹 서비스의 요청 경로와 구성 요소]], [[terraform-workflow|Terraform: 코드로 클라우드 인프라 만들기]], [[observability|관측 가능성: 로그, 트레이스, 메트릭]], [[home-server-hosting|가정용 장비로 서비스 호스팅하기: 한계와 무료 클라우드 대안]]

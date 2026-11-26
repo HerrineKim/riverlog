@@ -127,4 +127,4 @@ X가 천천히 출발할 때 Y는 빠르게 솟아, 합친 궤적이 호를 그�
 - 곡선 경로는 축마다 다른 타이밍을 겹치거나 `offset-path`로 만든다.
 - 동시에 움직이는 요소는 두세 개로 줄이고 지연으로 안무한다. `transform`·`opacity`만 움직인다.
 
-관련 노트: [[css-animation|CSS 애니메이션: transition과 @keyframes]], [[color-motion-accessibility|색과 움직임의 접근성]], [[transform|transform: 이동·회전·확대·기울이기]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[browser-rendering|브라우저 렌더링 과정]]
+관련 노트: [[css-animation|CSS 애니메이션: transition과 @keyframes]], [[color-motion-accessibility|색과 움직임의 접근성]], [[transform|transform: 이동·회전·확대·기울이기]], [[view-transitions|View Transitions: 화면 전환 애니메이션]], [[browser-rendering|브라우저 렌더링 과정]], [[toast-notification-design|토스트(Toast) 컴포넌트 설계: 스택 애니메이션, 스와이프, 접근성]]

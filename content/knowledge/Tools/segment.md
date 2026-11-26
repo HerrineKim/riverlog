@@ -112,3 +112,5 @@ GA4 자체 설정은 [[ga4-setup|GA4 시작하기]] 참고.
 - 행동은 Track, 사람은 Identify. 로그인 후 identify로 익명 기록과 합친다.
 - 정확해야 하는 이벤트는 서버에서, 화면 맥락이 필요한 이벤트는 클라이언트에서.
 - 기본은 Cloud Mode, 도구 고유 기능이 필요할 때만 Device Mode.
+
+관련 노트: [[ga4-setup|GA4 시작하기]], [[product-analytics|프로덕트 데이터 분석: 지표, 로그, 실험]]

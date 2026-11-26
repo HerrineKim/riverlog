@@ -80,3 +80,5 @@ app.useStaticAssets(path.join(__dirname, '..', 'uploads'), { prefix: '/media' })
 - `FileInterceptor`↔`@UploadedFile`, `FilesInterceptor`↔`@UploadedFiles`를 짝지어 쓴다.
 
 참고: [NestJS File upload 문서](https://docs.nestjs.com/techniques/file-upload)
+
+관련 노트: [[controller|NestJS Controller]], [[dto-validation|NestJS DTO와 Validation]], [[media-processing-pipeline|이미지·동영상 처리 서버 설계]]

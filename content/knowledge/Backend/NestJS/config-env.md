@@ -65,3 +65,5 @@ MongoDB 연결 준비(패키지 설치, Atlas 접속 문자열, 디버그 로그
 
 - 비밀 값은 `.env`에 두고 `.gitignore`로 커밋을 막는다.
 - `ConfigModule.forRoot({ isGlobal: true })`로 한 번만 로드하고, 다른 모듈 설정은 `*Async` + `ConfigService`로 읽는 것이 안전하다.
+
+관련 노트: [[mongoose-schema|NestJS에서 Mongoose 스키마 정의]], [[module|NestJS Module과 Provider: 의존성 주입과 캡슐화]]

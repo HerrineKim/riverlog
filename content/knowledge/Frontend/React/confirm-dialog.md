@@ -101,3 +101,5 @@ const handleDelete = async () => {
 - 되돌릴 수 없는 동작 앞에는 확인 다이얼로그를 둔다.
 - 위험한 버튼은 outlined, 안전한 버튼은 contained로 시각적 무게를 반대로 준다.
 - 다이얼로그는 `open`/`onClose`/`onConfirm` props를 받는 재사용 컴포넌트로 만든다.
+
+관련 노트: [[form-usability|더 나은 폼을 만드는 팁]], [[react-events|React 이벤트 처리]], [[accessible-forms|접근 가능한 폼과 오류 처리]]

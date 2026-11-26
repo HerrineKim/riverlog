@@ -1,7 +1,7 @@
 ---
 title: "[SSAFYcial] (프론트엔드 직무 뽀개기 - 4편) Next.js...누구세요?"
 date: "2022-11-01"
-description: ""
+description: "Next.js가 어떤 프레임워크이고 프론트엔드 직무에서 어디에 쓰이는지 정리한 직무 뽀개기 4편이다."
 tags: ["SSAFY"]
 ---
 

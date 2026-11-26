@@ -123,3 +123,5 @@ return cat.readOnlyData; // password 제외
 - 응답에서 민감 필드는 virtual 필드나 `select('-field')`로 숨긴다.
 
 참고: [NestJS MongoDB 문서](https://docs.nestjs.com/techniques/mongodb)
+
+관련 노트: [[config-env|NestJS 설정과 환경 변수]], [[mongodb|MongoDB 시작하기와 CRUD]]

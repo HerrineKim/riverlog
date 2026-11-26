@@ -1,7 +1,7 @@
 ---
 title: "(프로젝트 주제 고민하는 FE 개발자를 위한)이색 무료 API 모음집"
 date: "2022-09-29"
-description: ""
+description: "프론트엔드 프로젝트 주제가 안 잡힐 때 쓸 수 있는 이색 무료 API를 모아 둔 글이다."
 tags: ["SSAFY"]
 ---
 

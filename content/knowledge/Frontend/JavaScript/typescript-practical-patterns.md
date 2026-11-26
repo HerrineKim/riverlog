@@ -197,4 +197,4 @@ class StringBox extends Box<string> {} // 상속으로 고정해도 된다
 
 **TypeScript 패턴의 공통점은 「실행 코드는 평범한 JavaScript로 두고, 의도는 타입에만 적는다」는 것이다.**
 
-관련 노트: [[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]], [[typescript-type-operators|TypeScript 타입 연산]], [[typescript-type-compatibility|TypeScript 타입 호환성]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[js-design-patterns|JavaScript 디자인 패턴: 생성 패턴]]
+관련 노트: [[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]], [[typescript-type-operators|TypeScript 타입 연산]], [[typescript-type-compatibility|TypeScript 타입 호환성]], [[typescript-advanced-types|TypeScript로 동적인 코드에 정적 타입 입히기]], [[js-design-patterns|JavaScript 디자인 패턴: 생성 패턴]], [[parse-dont-validate|Parse, Don't Validate: 검증 대신 파싱으로 타입 안전성 확보하기]]

@@ -66,3 +66,5 @@ app.use((err, req, res, next) => {
 - Koa는 `await next()`로 안쪽 미들웨어가 끝난 뒤 후처리까지 하는 양파 모델을 쓴다([[koa|Koa]]).
 
 참고: [Express 미들웨어 작성 가이드](https://expressjs.com/ko/guide/writing-middleware.html)
+
+관련 노트: [[routing-crud|Express 라우팅과 CRUD API]], [[koa|Koa: 미들웨어만 남긴 Node.js 웹 프레임워크]], [[express-project-architecture|Express 프로젝트 구조: 3계층, 이벤트, DI, 로더]]

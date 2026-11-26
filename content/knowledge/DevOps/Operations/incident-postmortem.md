@@ -77,4 +77,4 @@ flowchart LR
 - 전파는 해결만큼 중요하고, 담당을 따로 둔다.
 - 포스트모템의 산출물은 재발 방지·탐지·처리 세 갈래의 검증 가능한 액션 아이템이다.
 
-관련 노트: [[devops-sre-platform-engineering|DevOps, SRE, 플랫폼 엔지니어링]], [[observability|관측 가능성]], [[deployment-strategies|배포 전략]], [[kind-engineering|친절한 엔지니어링]], [[backend-murphys-law|개발자 머피의 법칙]]
+관련 노트: [[devops-sre-platform-engineering|DevOps, SRE, 플랫폼 엔지니어링]], [[observability|관측 가능성]], [[deployment-strategies|배포 전략]], [[kind-engineering|친절한 엔지니어링]], [[backend-murphys-law|개발자 머피의 법칙]], [[chatops|ChatOps: 채팅에서 운영하기]]

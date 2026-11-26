@@ -103,3 +103,5 @@ USE_TZ = True             # 시간대 인식(aware) datetime 사용. DB에는 UT
 
 - `startproject` → `startapp` → `INSTALLED_APPS` 등록 → `runserver`.
 - Model = 데이터, Template = 화면, View = 처리, URLconf = 연결.
+
+관련 노트: [[urls-views|Django URL과 View]], [[templates-static|Django Template과 Static 파일]], [[orm-queryset|Django ORM과 QuerySet]]

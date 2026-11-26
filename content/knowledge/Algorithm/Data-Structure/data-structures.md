@@ -351,3 +351,5 @@ flowchart TB
 
 - [VisuAlgo](https://visualgo.net): 정렬, 연결 리스트, 힙, BST, 그래프 탐색, 최단 경로, 네트워크 플로까지 자료구조·알고리즘의 동작을 애니메이션으로 단계별로 보여 준다.
 - [Dictionary of Algorithms and Data Structures](https://xlinux.nist.gov/dads/): 미국 NIST가 운영하는 알고리즘·자료구조·대표 문제 용어 사전. 용어의 정확한 정의를 찾을 때 쓴다.
+
+관련 노트: [[pointers-and-memory|포인터와 메모리]], [[hash-table|해시 테이블]], [[tree|트리와 이진 탐색 트리]]

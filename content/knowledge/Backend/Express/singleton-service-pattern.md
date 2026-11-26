@@ -83,3 +83,5 @@ router.get('/cats', readAllCat);
 - 라우터 = 경로 매핑, 서비스 = 비즈니스 로직으로 책임을 나눈다.
 - 다음 단계: NestJS의 [[controller|Controller]]와 [[module|Module과 Provider(DI)]]
 - 서비스가 `req`·`res`까지 모르게 나누는 3계층·이벤트·DI 구조는 [[express-project-architecture|Express 프로젝트 구조]]에 있다.
+
+관련 노트: [[express-middleware|Express 미들웨어]], [[express-project-architecture|Express 프로젝트 구조: 3계층, 이벤트, DI, 로더]], [[module|NestJS Module과 Provider: 의존성 주입과 캡슐화]]
