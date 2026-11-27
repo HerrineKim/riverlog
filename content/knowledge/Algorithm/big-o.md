@@ -4,7 +4,7 @@ concept: "Big O"
 summary: "입력 크기가 커질 때 알고리즘의 연산량이 어떻게 늘어나는지를 최고차항으로 표현하는 방법, 연산 횟수를 세고 코드 모양으로 복잡도를 짐작하는 요령, 상한(O)·하한(Ω)·딱 맞는 범위(Θ)의 차이와 최악의 경우를 기준으로 삼는 이유, 입력 크기별 실행 시간, 자료구조 연산의 복잡도."
 tags: ["algorithm", "complexity", "big-o", "big-omega", "big-theta"]
 source: mixed
-date: "2026-11-26"
+date: "2026-11-27"
 sources: ["https://app.notion.com/p/5123d6bb8d37456c9a741fb74e8e87e0", "https://www.bigocheatsheet.com/", "https://cooervo.github.io/Algorithms-DataStructures-BigONotation/", "https://www.youtube.com/watch?v=rL8X2mlNHPM", "https://www.educative.io/blog/a-big-o-primer-for-beginning-devs", "고려사이버대학교 자료구조 강의(나홍석 교수, 2024-1학기)", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "고려사이버대학교 알고리즘과 문제해결 강의(김한성 교수, 2023-2학기)", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know"]
 ---
 
@@ -146,6 +146,8 @@ function addUpToFast(n) {
 
 반복 변수를 1씩 늘리지 않고 두 배씩 키우면 반복 횟수가 log₂ n이 된다. 바깥에 n번 도는 반복을 씌우면 O(n log n)이다.
 
+반복 변수가 3배씩 커지거나, 종료 조건이 제곱이거나, 안쪽 횟수가 바깥 변수에 묶이는 경우를 세는 법은 [[loop-complexity|루프 실행 횟수로 시간 복잡도 세기]]에 있다.
+
 ```javascript
 // O(log n): i가 1, 2, 4, 8, …로 커진다. 0에서 시작하면 0 * 2 = 0이라 끝나지 않는다
 for (let i = 1; i < n; i *= 2) {
@@ -282,4 +284,4 @@ O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ) < O(n!) 순으로 느려�
 - 문제의 N 범위를 보고 허용되는 복잡도를 먼저 정하면 풀이 방향이 좁혀진다.
 - 빅오가 같거나 비슷하면 작은 n의 상수와 메모리 배치가 승부를 가른다. 그때는 잰다.
 
-관련 노트: [[elementary-sorts|기본 정렬]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[binary-search|이분 탐색]], [[coding-test|코딩 테스트 접근법]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]], [[javascript-algorithms-overview|JavaScript 알고리즘 구현 모음]], [[np-completeness|P, NP, NP-완전과 근사 알고리즘]], [[cache-friendly-code|캐시를 고려한 코드]]
+관련 노트: [[elementary-sorts|기본 정렬]], [[merge-quick-sort|병합 정렬과 퀵 정렬]], [[binary-search|이분 탐색]], [[coding-test|코딩 테스트 접근법]], [[loop-complexity|루프 실행 횟수로 시간 복잡도 세기]], [[computational-thinking|컴퓨팅 사고와 개발 실력 늘리는 법]], [[javascript-algorithms-overview|JavaScript 알고리즘 구현 모음]], [[np-completeness|P, NP, NP-완전과 근사 알고리즘]], [[cache-friendly-code|캐시를 고려한 코드]]

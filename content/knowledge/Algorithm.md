@@ -11,6 +11,7 @@ date: "2026-10-13"
 
 - [JavaScript Algorithms 학습 지도](Algorithm/javascript-algorithms-overview.md): 자료구조 19개와 알고리즘 93개 구현 저장소를 주제별로 창고의 개념 노트와 구현 디렉터리에 잇는 지도
 - [빅오 표기법과 시간 복잡도](Algorithm/big-o.md): 알고리즘의 정의, 빅오(O)·빅오메가(Ω)·빅세타(Θ) 표기법, 시간·공간 복잡도
+- [루프 실행 횟수로 시간 복잡도 세기](Algorithm/loop-complexity.md): 곱으로 커지는 변수, 제곱 조건, 삼각합을 다시 곱하지 않기, 기하급수로 늘거나 줄어드는 안쪽 일의 합
 - [P, NP, NP-완전과 근사 알고리즘](Algorithm/np-completeness.md): 복잡도 클래스와 환원, 대표 NP-완전 문제를 알아보는 법, 근사·의사 다항·FPT 대응
 - [구간 합과 접두사 합](Algorithm/prefix-sum.md): 접두사 합으로 구간 합을 O(1)에 구하기, 차분 배열로 구간 갱신을 O(1)에 기록하기
 - [KMP 문자열 검색 알고리즘](Algorithm/kmp-algorithm.md): 실패 함수(pi 배열)로 텍스트 포인터를 되돌리지 않고 O(N + M)에 패턴 찾기
