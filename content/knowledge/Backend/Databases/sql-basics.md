@@ -371,7 +371,7 @@ SELECT COUNT(*) FROM users_user WHERE phone LIKE '02-%';
 
 ### 대소문자와 날짜 조건
 
-- `LIKE`와 `=`가 대소문자를 구분하는지는 **콜레이션(collation)**이 정한다. MySQL 기본 콜레이션(`utf8mb4_0900_ai_ci`)과 SQL Server 기본 설치는 구분하지 않고, PostgreSQL과 Oracle은 구분한다. 구분하는 DB에서 대소문자 없이 찾으려면 `LOWER(name) LIKE '%joe%'`나 PostgreSQL의 `ILIKE`를 쓴다.
+- `LIKE`와 `=`가 대소문자를 구분하는지는 **콜레이션(collation)**이 정한다. MySQL 기본 콜레이션(`utf8mb4_0900_ai_ci`)과 SQL Server 기본 설치는 구분하지 않고, PostgreSQL과 Oracle은 구분한다. 구분하는 DB에서 대소문자 없이 찾으려면 `LOWER(name) LIKE '%joe%'`나 PostgreSQL의 `ILIKE`를 쓴다. 문서 DB에서 대소문자·악센트를 무시하는 비교는 [[mongodb#문자열 비교와 콜레이션|MongoDB]]의 컬렉션 콜레이션으로 지정한다.
 - 컬럼에 `UPPER()`·`LOWER()`·`YEAR()` 같은 함수를 씌우면 일반 인덱스를 타지 못한다. 자주 쓰면 함수 기반 인덱스를 만들거나 조건을 컬럼 그대로 비교하게 바꾼다([[index-design#인덱스를 못 타게 만드는 조건|인덱스를 못 타게 만드는 조건]]).
 - 날짜 리터럴은 **ISO 형식 `'YYYY-MM-DD'`**로 쓴다. `'01/08/13'`, `'31/12/1975'` 같은 형식은 세션의 언어·날짜 설정에 따라 다르게 읽히거나 오류가 난다.
 - 시각이 있는 컬럼(`DATETIME`, `TIMESTAMP`)에 `BETWEEN '2026-01-01' AND '2026-01-31'`을 쓰면 31일 0시까지만 잡힌다. 기간은 `>= '2026-01-01' AND < '2026-02-01'`처럼 반열린 구간으로 쓴다. 이 꼴은 `YEAR(created_at) = 2026`과 달리 인덱스도 탄다.
@@ -937,6 +937,6 @@ ps.executeQuery();
 - 절차형 로직은 PL/SQL 같은 블록으로 쓰되, 행 단위 루프보다 한 문장 SQL과 `BULK COLLECT`·`FORALL`을 먼저 고려한다.
 - 같은 쿼리를 Django ORM으로 쓰는 법은 [[orm-queryset|Django ORM과 QuerySet]]에 대응표로 있다.
 
-관련 노트: [[sql-and-relational-algebra|관계대수와 DB 설계]], [[transaction|트랜잭션과 회복]], [[dbeaver|DBeaver에서 SQL로 데이터 다루기]], [[database-internals|DB 내부 구조]], [[index-design|인덱스 설계와 쿼리 튜닝]], [[distributed-unique-id|분산 고유 ID]]
+관련 노트: [[sql-and-relational-algebra|관계대수와 DB 설계]], [[transaction|트랜잭션과 회복]], [[dbeaver|DBeaver에서 SQL로 데이터 다루기]], [[database-internals|DB 내부 구조]], [[index-design|인덱스 설계와 쿼리 튜닝]], [[distributed-unique-id|분산 고유 ID]], [[mongodb|MongoDB 시작하기와 CRUD]]
 
 참고: [W3Schools SQL](https://www.w3schools.com/sql/)
