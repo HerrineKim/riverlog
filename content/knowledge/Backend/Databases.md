@@ -20,7 +20,7 @@ date: "2026-11-26"
 - [데이터베이스 샤딩](Backend/Databases/database-sharding.md): 샤드 키와 라우팅 방식, 샤딩이 어렵게 만드는 것
 - [분산 환경의 고유 ID 생성](Backend/Databases/distributed-unique-id.md): UUID, Snowflake, DB 자동 증가·세그먼트 방식 비교
 - [JPA와 영속성 컨텍스트](Backend/Databases/jpa-persistence-context.md): 패러다임 불일치, 1차 캐시·변경 감지·쓰기 지연, 지연 로딩과 N+1
-- [MongoDB 시작하기와 CRUD](Backend/Databases/mongodb.md): Atlas 설정, 기본 CRUD, Mongoose
+- [MongoDB 시작하기와 CRUD](Backend/Databases/mongodb.md): 스키마·콜레이션·CRUD·집계, Atlas와 자체 설치 보안, 쓰기 내구성, Mongoose, 샤딩
 - [Prisma: 커서로 이전·다음 항목 찾기와 CLI](Backend/Databases/prisma.md): cursor·skip·take, 자주 쓰는 CLI 명령
 - [Flyway로 DB 마이그레이션 관리하기](Backend/Databases/flyway.md): 버전 붙은 SQL 파일로 스키마 변경 관리
 - [Redis](Backend/Databases/redis.md): 캐시·세션·분산 락·랭킹·큐, 영속성(RDB·AOF)과 복제·센티널·클러스터

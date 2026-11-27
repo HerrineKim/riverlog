@@ -625,7 +625,7 @@
  },
  "Backend/Databases.md": {
   "created": "2026-11-26T19:03:01+09:00",
-  "updated": "2026-11-26T22:02:22+09:00"
+  "updated": "2026-11-27T14:31:33+09:00"
  },
  "Backend/Databases/block-file-object-storage.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -669,7 +669,7 @@
  },
  "Backend/Databases/index-design.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-11-26T22:02:22+09:00"
+  "updated": "2026-11-27T14:31:36+09:00"
  },
  "Backend/Databases/jpa-persistence-context.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -677,7 +677,7 @@
  },
  "Backend/Databases/mongodb.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-27T14:34:21+09:00"
  },
  "Backend/Databases/prisma.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -693,7 +693,7 @@
  },
  "Backend/Databases/sql-basics.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-26T22:02:22+09:00"
+  "updated": "2026-11-27T14:31:35+09:00"
  },
  "Backend/Databases/web-search-engine.md": {
   "created": "2026-10-17T19:04:42+09:00",
@@ -1677,7 +1677,7 @@
  },
  "Computer-Science/Database/database-models.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-16T22:31:22+09:00"
+  "updated": "2026-11-27T14:31:37+09:00"
  },
  "Computer-Science/Database/normalization.md": {
   "created": "2026-10-11T22:24:49+09:00",

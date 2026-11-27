@@ -171,7 +171,7 @@ RDB의 ACID에 대비해 많은 NoSQL이 따르는 성질을 **BASE**라 부른�
 
 - JSON(BSON) 같은 트리 구조 문서를 저장. 문서마다 구조가 달라도 된다.
 - 문서 내부 필드로 검색하기 쉽다.
-- 객체 모양 그대로 저장해 직관적이고 수평 확장이 쉽다. 대신 스키마가 없다는 것이 양날이다. 형식이 문서마다 어긋나도 DB가 막지 않고, 문서 사이의 관계(조인)는 약하다.
+- 객체 모양 그대로 저장해 직관적이고 수평 확장이 쉽다. 대신 스키마가 없다는 것이 양날이다. 형식이 문서마다 어긋나도 DB가 막지 않고, 문서 사이의 관계(조인)는 약하다. 문서로 규칙을 거는 `$jsonSchema`와 문서 크기·배열 한계는 [[mongodb#스키마는 강제되지 않아도 설계한다|MongoDB]]에 있다.
 - 예: MongoDB, Couchbase, CouchDB, Amazon DocumentDB(MongoDB 호환), Google Firestore와 Firebase Realtime Database(모바일·웹 앱이 직접 붙는 실시간 동기화 DB)
 
 ### 키-값형 (Key-Value)
