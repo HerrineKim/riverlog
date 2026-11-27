@@ -4,11 +4,12 @@ concept: "Bit Manipulation"
 summary: "정수의 비트를 직접 다루는 연산자와 관용구. k번째 비트 검사·설정·끄기·뒤집기, 2의 거듭제곱 판별, 최하위 1비트, XOR의 성질, 비트마스크로 집합 표현하기, 언어별 정수 폭과 음수 처리 차이."
 tags: ["algorithm", "binary", "math", "coding-test", "python"]
 source: other
-date: "2026-10-30"
-sources: ["https://www.techinterviewhandbook.org/algorithms/binary/", "https://www.techinterviewhandbook.org/algorithms/string/"]
+date: "2026-11-27"
+sources: ["https://www.techinterviewhandbook.org/algorithms/binary/", "https://www.techinterviewhandbook.org/algorithms/string/", "https://shahjalalshohag.com/blog/equation-list"]
 ---
 
 > Tech Interview Handbook의 「[Binary cheatsheet](https://www.techinterviewhandbook.org/algorithms/binary/)」를 바탕으로 재구성하고, 문자 집합 비트마스크는 「[String cheatsheet](https://www.techinterviewhandbook.org/algorithms/string/)」로 보강한 노트다.
+> 덧셈을 XOR·AND로 나누는 식과 `1`부터 `4k−1`까지의 XOR은 Shahjalal Shohag의 「[A List of Useful Equations in Competitive Programming](https://shahjalalshohag.com/blog/equation-list)」(2022.03)에서 보강했다.
 
 ## 비트 연산이란
 
@@ -45,6 +46,19 @@ XOR는 `a ^ a = 0`, `a ^ 0 = a`이고 교환·결합 법칙이 성립한다. 그
 - **한 번만 나온 수 찾기**: 다른 수가 모두 두 번씩 나오면 전체를 XOR한 값이 답이다. 공간 O(1).
 - **빠진 수 찾기**: 0~n 중 하나가 빠진 배열이면 `0^1^…^n`과 배열 전체를 XOR한 값이 빠진 수다. 합 공식(`n(n+1)/2 - sum`)과 달리 오버플로가 없다.
 - **임시 변수 없는 교환**: `a ^= b; b ^= a; a ^= b`. 다만 `a`와 `b`가 같은 메모리를 가리키면 둘 다 0이 되고, 현대 컴파일러에서는 임시 변수를 쓰는 편이 더 빠르다. 원리를 묻는 질문 외에는 쓰지 않는다.
+
+## 덧셈을 비트로 나누기
+
+XOR은 받아올림 없는 덧셈이다. 받아올림이 AND에서 나오므로 다음이 성립한다.
+
+```text
+a + b = (a ^ b) + 2·(a & b) = (a | b) + (a & b)
+a ^ b = (a | b) − (a & b)
+```
+
+음이 아닌 정수 n에 대해 `n mod 2^i = n & (2^i − 1)`이다. 0부터 세는 k번째 비트(값 `2^k`)가 켜져 있는 것은 `n mod 2^(k+1) ≥ 2^k`와 같다. 쌍의 합이나 부분집합의 합처럼 비트를 직접 보기 어려울 때, 그 합을 2의 거듭제곱으로 나눈 나머지로 해당 비트를 읽는다.
+
+`1 ^ 2 ^ … ^ (4k−1) = 0`이다. 1부터 4개씩 묶으면 각 묶음의 XOR가 0이기 때문이다.
 
 ## 비트마스크로 집합 표현하기
 
@@ -93,4 +107,4 @@ share = letter_mask("apple") & letter_mask("plum") != 0   # True ('p', 'l')
 - 작은 집합은 정수 하나로 표현하고 집합 연산을 비트 연산으로 바꾼다.
 - 정수 폭과 음수 처리는 언어마다 다르니 고정 폭 언어에서는 타입 폭을, 파이썬에서는 마스크를 챙긴다.
 
-관련 노트: [[data-representation|데이터의 표현]], [[c-integer-types|C의 정수 자료형과 형 변환]], [[brute-force|완전 탐색과 백트래킹]], [[number-theory-basics|정수론 기초: 소수·최대공약수·합동식]], [[hash-table|해시 테이블]]
+관련 노트: [[data-representation|데이터의 표현]], [[c-integer-types|C의 정수 자료형과 형 변환]], [[brute-force|완전 탐색과 백트래킹]], [[number-theory-basics|정수론 기초: 소수·최대공약수·합동식]], [[hash-table|해시 테이블]], [[contest-math-identities|대회에 쓰는 수학 항등식]], [[competitive-programming-pitfalls|대회에서 자주 틀리는 구현]]

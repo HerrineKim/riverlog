@@ -4,11 +4,12 @@ concept: "Permutation & Combination"
 summary: "순서를 따지는 순열과 따지지 않는 조합의 공식을 재귀적으로 유도하고, 파스칼 점화식과 이항 정리, 중복 순열·중복 조합, 완전 탐색의 경우의 수 추정과 파이썬 구현을 정리한다."
 tags: ["algorithm", "math", "brute-force", "dynamic-programming", "python"]
 source: other
-date: "2026-10-31"
-sources: ["고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)"]
+date: "2026-11-27"
+sources: ["고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "https://shahjalalshohag.com/blog/equation-list"]
 ---
 
 > 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용을 바탕으로 정리했다.
+> 카탈란·스털링 등 합 공식이 모인 참조표는 Shahjalal Shohag의 「[A List of Useful Equations in Competitive Programming](https://shahjalalshohag.com/blog/equation-list)」(2022.03)을 [[contest-math-identities|대회에 쓰는 수학 항등식]]으로 재구성한 것이다.
 
 [[brute-force|완전 탐색]]을 할지 말지는 "경우가 몇 개인가"에 달려 있다. 그 수를 세는 기본 도구가 순열과 조합이다. 둘의 차이는 하나뿐이다. **뽑은 것의 순서를 구분하면 순열, 구분하지 않으면 조합**이다.
 
@@ -121,5 +122,6 @@ binom_table(5)[5][2]   # 10
 - `C(n, r) = C(n−1, r−1) + C(n−1, r)`는 원소 하나를 넣느냐 마느냐로 나눈 것이고, 파스칼 삼각형과 이항 정리로 이어진다.
 - 중복 순열은 n^r, 중복 조합은 `C(n+r−1, r)`.
 - 경우의 수를 먼저 세어 보면 완전 탐색이 가능한지 바로 판단할 수 있다.
+- 카탈란 수, 스털링 수, 완전순열, 하키 스틱·방데르몽드 같은 합 공식은 [[contest-math-identities|대회에 쓰는 수학 항등식]]에 모아 두었다.
 
-관련 노트: [[brute-force|완전 탐색과 백트래킹]], [[dynamic-programming|동적 계획법]], [[number-theory-basics|정수론 기초]], [[recursion|재귀 함수]], [[big-o|빅오 표기법]]
+관련 노트: [[brute-force|완전 탐색과 백트래킹]], [[dynamic-programming|동적 계획법]], [[number-theory-basics|정수론 기초]], [[recursion|재귀 함수]], [[big-o|빅오 표기법]], [[contest-math-identities|대회에 쓰는 수학 항등식]]

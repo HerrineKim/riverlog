@@ -4,12 +4,13 @@ concept: "Number Theory"
 summary: "알고리즘 문제와 암호에 자주 나오는 정수론을 정리한다. 산술의 기본 정리와 나눗셈 정리, 유클리드 호제법과 베주 항등식(확장 유클리드), 에라토스테네스의 체로 소인수분해, 선형 합동식과 중국인의 나머지 정리, 오일러 피 함수와 페르마의 소정리, 약수 함수와 뫼비우스 함수, 선형 합동 생성기와 자릿수 묶음으로 큰 정수 더하기."
 tags: ["algorithm", "math", "number-theory", "cryptography"]
 source: other
-date: "2026-10-21"
-sources: ["https://www.codechef.com/wiki/tutorial-number-theory/", "https://web.archive.org/web/2019/https://www.codechef.com/wiki/tutorial-number-theory", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md"]
+date: "2026-11-27"
+sources: ["https://www.codechef.com/wiki/tutorial-number-theory/", "https://web.archive.org/web/2019/https://www.codechef.com/wiki/tutorial-number-theory", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md", "https://shahjalalshohag.com/blog/equation-list"]
 ---
 
 > CodeChef의 튜토리얼 「[Basic Number Theory Every Programmer Should Know](https://web.archive.org/web/2019/https://www.codechef.com/wiki/tutorial-number-theory)」를 바탕으로 재구성한 노트다.
 > 선형 합동 생성기와 큰 정수 덧셈은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[기타](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/etc.md)」(손코딩) 질문이 묻는 개념으로 보강했다.
+> 약수 개수·합의 홀짝, 윌슨 정리와 가우스의 일반화, 서로소가 아닐 때의 지수 축약은 Shahjalal Shohag의 「[A List of Useful Equations in Competitive Programming](https://shahjalalshohag.com/blog/equation-list)」(2022.03)에서 이 노트에 해당하는 것만 가져왔다.
 
 ## 정수론이 쓰이는 곳
 
@@ -133,6 +134,8 @@ x = Σ aᵢ·cᵢ·dᵢ  (mod N)
 
 - 모두 **곱셈적 함수**다. 서로소인 a, b에 대해 `f(ab) = f(a)f(b)`.
 - 약수들의 φ를 더하면 n이 된다: `Σ φ(d) = n`(d는 n의 약수). 18의 약수 1, 2, 3, 6, 9, 18에서 1 + 1 + 2 + 2 + 6 + 6 = 18.
+- **약수의 개수가 홀수**인 것은 n이 제곱수인 것과 같다. 약수는 짝을 이루다 제곱근만 한 번 남기 때문이다.
+- **약수의 합이 홀수**인 것은 `n = 2^r · k²`(r ≥ 0, k ≥ 1)일 때뿐이다. 홀수 소인수의 지수가 모두 짝수여야 하고, `σ(2^r) = 2^(r+1)−1`은 언제나 홀수라서 2의 지수는 자유다. 같은 조건은 「n이 제곱수이거나 제곱수의 두 배」와 같다. r이 짝수면 제곱수, 홀수면 제곱수의 두 배다.
 - 1~N의 φ를 모두 구할 때는 체를 쓴다.
 
 ```python
@@ -152,10 +155,16 @@ for i in range(2, n + 1):
 
 여기서 두 가지가 바로 나온다.
 
-- **큰 지수 줄이기**: `a^e ≡ a^(e mod φ(n)) (mod n)` (gcd(a, n) = 1일 때).
+- **큰 지수 줄이기**: `a^e ≡ a^(e mod φ(n)) (mod n)` (gcd(a, n) = 1일 때). 서로소가 아니면 이 식은 그대로 성립하지 않는다. 지수 e가 log₂(m) 이상이면 `a^e ≡ a^{φ(m) + (e mod φ(m))} (mod m)`이다.
 - **소수 법의 역원**: `a⁻¹ ≡ a^(p−2) (mod p)`. 10⁹+7, 998244353 같은 소수를 법으로 쓰는 이유다. p가 소수이고 n < p이면 조합 `nCr mod p`를 팩토리얼과 역원 팩토리얼을 O(n)에 미리 구해 두고 질의마다 O(1)에 답한다. n ≥ p이면 n!이 p의 배수가 되어 역원이 없으므로 뤼카 정리를 쓴다.
 
 RSA는 `n = pq`, `φ(n) = (p−1)(q−1)`에서 `ed ≡ 1 (mod φ(n))`인 e, d를 고르고, 오일러 정리 덕분에 `(m^e)^d ≡ m (mod n)`이 성립하는 구조다. 페르마 소정리의 역은 성립하지 않으므로(카마이클 수) 소수 판정에는 밀러-라빈 같은 확률적 판정법을 쓴다.
+
+**윌슨의 정리:** p가 소수인 것은 `(p−1)! ≡ −1 (mod p)`와 같다. 합성수 n > 4이면 `(n−1)! ≡ 0 (mod n)`이고, n = 4이면 나머지가 2다.
+
+가우스는 이를 m과 서로소인 수 전체의 곱으로 넓혔다. 1 이상 m 이하이면서 m과 서로소인 수를 모두 곱한 값은, m이 4이거나 홀소수의 거듭제곱이거나 그 두 배일 때 −1 (mod m)이고, 그 외에는 1 (mod m)이다. −1이 되는 m이 원시근이 있는 m과 같다.
+
+**뫼비우스 반전:** `g(n) = Σ_{d|n} f(d)`이면 `f(n) = Σ_{d|n} μ(d) · g(n/d)`이고, 반대 방향도 성립한다. `n = Σ_{d|n} φ(d)`와 `φ(n) = Σ_{d|n} μ(d) · n/d`가 이 한 쌍이다.
 
 ## 고정 폭을 넘는 정수: 자릿수 묶음 덧셈
 
@@ -183,4 +192,4 @@ Python `int`, Java `BigInteger`, JavaScript `BigInt` 같은 임의 정밀도 정
 - 선형 합동 생성기는 모듈러 연산으로 난수를 흉내 내며, 시간을 시드로 쓴다. 예측 가능하므로 보안에는 쓰지 않는다.
 - 64비트를 넘는 수는 자릿수를 묶어 배열에 담고 받아올림을 직접 처리한다.
 
-관련 노트: [[recursion|재귀 함수]], [[linear-recurrence|선형 점화식의 일반항]], [[big-o|빅오 표기법과 시간 복잡도]], [[encoding-encryption-hashing|인코딩·암호화·해시·토큰화와 디지털 서명]], [[permutation-combination|순열과 조합]]
+관련 노트: [[recursion|재귀 함수]], [[linear-recurrence|선형 점화식의 일반항]], [[big-o|빅오 표기법과 시간 복잡도]], [[encoding-encryption-hashing|인코딩·암호화·해시·토큰화와 디지털 서명]], [[permutation-combination|순열과 조합]], [[contest-math-identities|대회에 쓰는 수학 항등식]]

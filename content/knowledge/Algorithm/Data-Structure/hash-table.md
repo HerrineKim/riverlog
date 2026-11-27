@@ -4,8 +4,8 @@ concept: "Hash Table"
 summary: "키를 해시 함수로 배열 인덱스로 바꿔 평균 O(1)에 찾는 해시 테이블의 원리, 해시 함수 설계(나눗셈·곱셈·다항·보편 해싱), 개방 주소법과 분리 연결법의 충돌 해결 비교와 이중 해싱의 약점, 적재율과 리사이즈, Java HashMap·Python dict 같은 실제 구현, 빈도 세기·애너그램 같은 문제 풀이 패턴, 해시 맵과 연결 리스트로 만드는 O(1) LRU·LFU 캐시."
 tags: ["algorithm", "data-structure", "hash-table", "java"]
 source: other
-date: "2026-11-26"
-sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://d2.naver.com/helloworld/831311", "https://www.techinterviewhandbook.org/algorithms/hash-table/", "https://www.techinterviewhandbook.org/algorithms/string/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know", "https://cooervo.github.io/Algorithms-DataStructures-BigONotation/"]
+date: "2026-11-27"
+sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/DataStructure/README.md", "https://d2.naver.com/helloworld/831311", "https://www.techinterviewhandbook.org/algorithms/hash-table/", "https://www.techinterviewhandbook.org/algorithms/string/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "고려사이버대학교 컴퓨터 알고리즘 강의(마채원 교수, 2024-2학기)", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know", "https://cooervo.github.io/Algorithms-DataStructures-BigONotation/", "https://codeforces.com/blog/entry/111217"]
 ---
 
 > jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소 자료구조 문서의 Hash Table 절을 바탕으로 재구성하고, 언어별 구현은 각 언어의 공식 문서·소스 기준으로 최신화한 노트다.
@@ -14,6 +14,7 @@ sources: ["https://github.com/jbee37142/Interview_Question_for_Beginner/blob/mai
 > 적재율별 평균 탐사 횟수는 고려사이버대학교 「컴퓨터 알고리즘」(2024-2학기) 강의 내용으로 보강했다.
 > 「문제 풀이에서 쓰는 패턴」의 대칭 쌍, 처음 나온 고유 원소, 합집합·교집합은 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 > 배열로 만든 사전과의 비교는 cooervo의 「[Big O cheat sheets](https://cooervo.github.io/Algorithms-DataStructures-BigONotation/)」(2015.03)의 사전 구현을 바탕으로 보강했다.
+> C++ `unordered_map`이 충돌을 한 버킷에 모으는 입력에 무너지는 점은 Shahjalal Shohag의 「[Common Mistakes in Competitive Programming and How to Avoid Them](https://codeforces.com/blog/entry/111217)」(2023.01)에서 보강했다.
 
 ## 해시 테이블이란
 
@@ -130,7 +131,7 @@ flowchart LR
 | --- | --- | --- |
 | Java `HashMap` | 분리 연결법 | 기본 버킷 16개, 적재율 0.75, 2배 확장. 한 버킷이 8개를 넘으면 레드-블랙 트리로 바꾸고(treeify), 6개 이하로 줄면 다시 연결 리스트로 돌린다. 버킷 수가 64개 미만이면 트리로 바꾸는 대신 먼저 리사이즈한다 |
 | Python `dict` | 개방 주소법(의사 난수 탐사) | 적재율이 **2/3**에 닿으면 확장한다. 인덱스 배열과 원소 배열을 나눈 압축 구조라 메모리가 적고, 3.7부터 **삽입 순서 보존**이 언어 사양이다 |
-| C++ `std::unordered_map` | 분리 연결법 | 표준이 버킷 인터페이스(`bucket_count`, `max_load_factor` 기본 1.0)를 노출해 사실상 체이닝을 강제한다 |
+| C++ `std::unordered_map` | 분리 연결법 | 표준이 버킷 인터페이스(`bucket_count`, `max_load_factor` 기본 1.0)를 노출해 사실상 체이닝을 강제한다. 기본 해시는 정수 키에서 예측할 수 있어, 충돌을 한 버킷에 모은 입력에서 연산이 O(n)이 된다. 대회에서의 대응은 [[competitive-programming-pitfalls\|대회에서 자주 틀리는 구현]] |
 | Go `map` | 개방 주소법(Swiss Table, 1.24부터) | 8칸짜리 그룹의 평균 적재율이 7/8을 넘으면 확장한다. 순회 순서는 일부러 무작위다 |
 | JavaScript `Map` | 명세는 구현을 정하지 않는다. V8은 버킷마다 체인을 두는 결정적 해시 테이블 | **삽입 순서 보존**이 명세다. 키가 문자열·심벌로 바뀌는 `Object`와 달리 아무 값이나 키로 쓰고, 잦은 추가·삭제에 맞는다 |
 
@@ -194,4 +195,4 @@ Java는 `new LinkedHashMap<>(16, 0.75f, true)`(접근 순서 모드)에 `removeE
 - 적재율 임계값에서 2배로 리사이즈해 삽입을 분할 상환 O(1)로 유지한다
 - Java `HashMap`은 체이닝 + 8/6 기준 트리 버킷, Python `dict`·Go `map`은 개방 주소법이다
 
-관련 노트: [[data-structures|기초 자료구조: 배열에서 트라이까지]], [[tree|트리와 이진 탐색 트리]], [[big-o|빅오 표기법]], [[java-idioms|Java 관용구]]
+관련 노트: [[data-structures|기초 자료구조: 배열에서 트라이까지]], [[tree|트리와 이진 탐색 트리]], [[big-o|빅오 표기법]], [[java-idioms|Java 관용구]], [[competitive-programming-pitfalls|대회에서 자주 틀리는 구현]]
