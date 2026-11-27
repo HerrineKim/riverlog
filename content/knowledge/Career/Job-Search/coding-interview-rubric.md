@@ -12,7 +12,7 @@ sources: ["https://www.techinterviewhandbook.org/coding-interview-rubrics/", "ht
 
 ## 코딩 인터뷰 평가 기준이란
 
-코딩 인터뷰 평가 기준(rubric)은 면접관이 지원자의 행동에서 **채용 신호**(hire signal)를 읽어 점수로 바꾸는 틀이다. Google, Amazon, Meta 같은 빅테크는 용어와 가중치만 다를 뿐 거의 같은 네 축을 쓴다. 지원자에게는 「무엇을 보여 줘야 하나」의 목록이고, 면접관에게는 판단을 일관되게 만드는 장치다. 면접 중 지원자가 할 행동은 [[tech-interview-prep#코딩 인터뷰 진행 원칙|기술 면접 준비]]에, 인성 면접의 평가 기준은 [[behavioral-interview-rubrics|인성 면접 평가 기준]]에 있다.
+코딩 인터뷰 평가 기준(rubric)은 면접관이 지원자의 행동에서 **채용 신호**(hire signal)를 읽어 점수로 바꾸는 틀이다. Google, Amazon, Meta 같은 빅테크는 용어와 가중치만 다를 뿐 거의 같은 네 축을 쓴다. 지원자에게는 「무엇을 보여 줘야 하나」의 목록이고, 면접관에게는 판단을 일관되게 만드는 장치다. 면접 중 지원자가 할 행동은 [[tech-interview-prep#코딩 인터뷰 진행 원칙|기술 면접 준비]]에, 연습 때 문제 하나를 72점으로 스스로 채점하는 표는 [[coding-interview-self-rubric|코딩 인터뷰 자기 채점표]]에, 인성 면접의 평가 기준은 [[behavioral-interview-rubrics|인성 면접 평가 기준]]에 있다.
 
 ## 네 가지 평가 축
 
@@ -97,4 +97,4 @@ sources: ["https://www.techinterviewhandbook.org/coding-interview-rubrics/", "ht
 - 최종 결과는 커트라인이 아니라 라운드 전체 신호의 종합이고, 엇갈리면 면접관 논의로 정한다.
 - 면접관은 풀이가 여럿인 질문을 고르고, 힌트로 막힘을 풀어 주며, 신호를 기록하고 바로 피드백을 쓴다.
 
-관련 노트: [[tech-interview-prep|기술 면접 준비: 유형별 대비와 시스템 디자인 7단계]], [[behavioral-interview-rubrics|인성 면접 평가 기준]], [[coding-test|코딩 테스트 접근법]], [[interview-attitude|면접 잘 보는 법: 태도와 답변]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[hiring-better-than-you|나보다 나은 사람을 뽑는 법]]
+관련 노트: [[tech-interview-prep|기술 면접 준비: 유형별 대비와 시스템 디자인 7단계]], [[coding-interview-self-rubric|코딩 인터뷰 자기 채점표]], [[behavioral-interview-rubrics|인성 면접 평가 기준]], [[coding-test|코딩 테스트 접근법]], [[interview-attitude|면접 잘 보는 법: 태도와 답변]], [[frontend-interview|프론트엔드 면접 유형과 준비법]], [[hiring-better-than-you|나보다 나은 사람을 뽑는 법]]

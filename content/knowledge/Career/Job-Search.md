@@ -27,5 +27,6 @@ date: "2026-11-26"
 - [스톡옵션: 행사가, 베스팅, 행사와 세금 구조](Career/Job-Search/stock-options.md): 스톡옵션은 주식이 아니라 정해진 행사가로 주식을 살 수 있는 권리다.
 - [연봉 협상: 오퍼 읽기, 열 가지 원칙, 회사 고르기](Career/Job-Search/job-offer-negotiation.md): 취업은 일자리를 얻는 것이 아니라 내 노동을 파는 거래이고, 협상은 그 거래의 당연한 일부다.
 - [코딩 인터뷰 평가 기준과 면접관 체크리스트](Career/Job-Search/coding-interview-rubric.md): 빅테크의 코딩 인터뷰는 소통, 문제 해결, 기술 역량, 테스트 네 축으로 평가하고 Strong hire부터 Strong no hire까지의 구간으로 점수를 낸다.
+- [코딩 인터뷰 자기 채점표: Inspect, Strategy, Code, Review](Career/Job-Search/coding-interview-self-rubric.md): 문제 하나를 네 단계로 풀고 30개 항목을 더해 72점 만점으로 스스로 채점하는 연습용 표.
 - [인성 면접 평가 기준: 8가지 영역과 레벨별 기대치](Career/Job-Search/behavioral-interview-rubrics.md): 빅테크 인성 면접은 동기, 주도성, 모호함 속 오너십, 끈기, 갈등 해결과 공감, 성장, 소통의 8가지 영역에서 신호를 모으고, 같은 행동이라도 영향 범위(나 혼자, 팀, 여러 팀)로 주니어·시니어·스태프를 가른다.
 - [워킹홀리데이: 협정국, 연령, 체류와 취업 조건](Career/Job-Search/working-holiday.md): 워킹홀리데이는 협정을 맺은 나라의 청년이 상대국에 머물며 관광, 취업, 어학연수를 함께 할 수 있게 하는 제도다.
