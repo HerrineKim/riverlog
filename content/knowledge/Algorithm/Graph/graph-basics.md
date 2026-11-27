@@ -4,8 +4,8 @@ concept: "Graph Representation"
 summary: "정점과 간선으로 이루어진 그래프의 종류, 사이클 없는 그래프와 트리의 차이, 인접 행렬·인접 리스트로 저장하는 방법과 밀집·중복 간선의 처리, 탐색 기법과 놓치기 쉬운 경우."
 tags: ["algorithm", "graph", "data-structure"]
 source: mixed
-date: "2026-10-30"
-sources: ["https://dev.to/vaidehijoshi/a-gentle-introduction-to-graph-theory", "https://80000coding.notion.site/125156cf79bb48da82ae1f2ee7896bb8", "https://80000coding.notion.site/2d42782f28464dfa837f0a06cca24379", "https://www.techinterviewhandbook.org/algorithms/graph/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/jwasham/coding-interview-university"]
+date: "2026-11-27"
+sources: ["https://dev.to/vaidehijoshi/a-gentle-introduction-to-graph-theory", "https://80000coding.notion.site/125156cf79bb48da82ae1f2ee7896bb8", "https://80000coding.notion.site/2d42782f28464dfa837f0a06cca24379", "https://www.techinterviewhandbook.org/algorithms/graph/", "https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md", "https://github.com/jwasham/coding-interview-university", "https://shahjalalshohag.com/blog/equation-list"]
 ---
 
 > 수학적 정의와 방향·무방향 간선의 예시는 Vaidehi Joshi의 「[A Gentle Introduction To Graph Theory](https://dev.to/vaidehijoshi/a-gentle-introduction-to-graph-theory)」(BaseCS, 2017.03)를 바탕으로 보강했다.
@@ -13,6 +13,7 @@ sources: ["https://dev.to/vaidehijoshi/a-gentle-introduction-to-graph-theory", "
 > 딕셔너리 인접 리스트, 탐색 기법의 빈도, 「놓치기 쉬운 것」은 Tech Interview Handbook의 「[Graph cheatsheet](https://www.techinterviewhandbook.org/algorithms/graph/)」를 바탕으로 보강했다.
 > 사이클 없는 그래프와 트리의 차이, 밀집·중복 간선의 표현은 fru1tworld/cs-basic 모의 면접 질문 목록의 「[자료구조](https://github.com/fru1tworld/cs-basic/blob/main/interview/cs/ds.md)」 질문이 묻는 개념으로 보강했다.
 > 그래프 표현 네 가지와 2색 칠하기(이분 그래프 판별)는 jwasham의 「[Coding Interview University](https://github.com/jwasham/coding-interview-university)」(CC-BY-SA-4.0)의 그래프 항목을 바탕으로 보강했다.
+> 차수열이 단순 그래프가 될 조건은 Shahjalal Shohag의 「[A List of Useful Equations in Competitive Programming](https://shahjalalshohag.com/blog/equation-list)」(2022.03)에서 보강했다.
 
 그래프(Graph)는 **정점(vertex, node)과** 정점을 잇는 **간선(edge)으로** 이루어진 자료구조다. 간선에 방향이 있으면 **방향(단방향) 그래프**, 없으면 **무방향(양방향) 그래프**다.
 
@@ -60,6 +61,15 @@ flowchart LR
 | 경로(path)·경로 길이 | 간선으로 이어진 정점의 나열과, 그 경로에 쓰인 간선 수 |
 | 단순 경로(simple path) | 같은 정점을 두 번 지나지 않는 경로 |
 | 사이클(cycle) | 시작과 끝이 같은 단순 경로. 사이클이 없으면 비순환(acyclic) 그래프 |
+
+### 차수열이 단순 그래프가 되는 조건
+
+음이 아닌 정수 `d_1 ≥ d_2 ≥ … ≥ d_n`이 정점 n개인 **단순** 무방향 그래프의 차수가 될 필요충분조건은 다음 두 가지다. 이를 에르되시-갤라이 정리(Erdos-Gallai theorem)라고 한다.
+
+1. 합 `d_1 + … + d_n`이 짝수다. 악수 정리(차수의 합 = 간선 수 × 2) 때문이다.
+2. 모든 k = 1, …, n에 대해 `Σ_{i=1..k} d_i ≤ k(k−1) + Σ_{i=k+1..n} min(d_i, k)`.
+
+합이 짝수인 것만으로는 부족하다. `(3, 3, 0)`은 합이 6으로 짝수지만, 정점이 3개일 때 차수는 최대 2라서 1번 조건의 k = 1에서 이미 실패한다.
 
 ### 그래프와 트리
 
@@ -196,4 +206,4 @@ BFS·DFS·위상 정렬은 모두 O(V + E)다. 가중치·음수 간선·전체 
 - 인접 행렬은 O(V²) 메모리·O(1) 연결 확인, 인접 리스트는 O(V + E) 메모리·빠른 이웃 순회
 - 문제를 보면 먼저 격자형인지, 간선 목록형인지 판단한다.
 
-관련 노트: [[bfs|BFS]], [[dfs|DFS]], [[dijkstra|다익스트라]], [[minimum-spanning-tree|최소 신장 트리]], [[disjoint-set|서로소 집합]], [[articulation-point|단절점과 단절선]], [[euler-circuit|오일러 회로]], [[tree|트리와 이진 탐색 트리]], [[topological-sort|위상 정렬]], [[shortest-path|최단 경로 알고리즘 고르기]]
+관련 노트: [[bfs|BFS]], [[dfs|DFS]], [[dijkstra|다익스트라]], [[minimum-spanning-tree|최소 신장 트리]], [[disjoint-set|서로소 집합]], [[articulation-point|단절점과 단절선]], [[euler-circuit|오일러 회로]], [[tree|트리와 이진 탐색 트리]], [[topological-sort|위상 정렬]], [[shortest-path|최단 경로 알고리즘 고르기]], [[contest-math-identities|대회에 쓰는 수학 항등식]]
