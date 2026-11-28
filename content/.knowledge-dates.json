@@ -145,7 +145,7 @@
  },
  "AI-Data/Claude-Code/claude-code-memory.md": {
   "created": "2026-11-15T14:10:50+09:00",
-  "updated": "2026-11-27T23:09:35+09:00"
+  "updated": "2026-11-27T23:13:03+09:00"
  },
  "AI-Data/Claude-Code/claude-code-settings.md": {
   "created": "2026-11-15T14:10:50+09:00",
@@ -233,7 +233,7 @@
  },
  "AI-Data/Harness/ai-accelerated-development.md": {
   "created": "2026-10-18T12:22:47+09:00",
-  "updated": "2026-11-27T23:09:35+09:00"
+  "updated": "2026-11-27T23:13:03+09:00"
  },
  "AI-Data/Harness/ai-coding-guardrails.md": {
   "created": "2026-10-12T23:56:47+09:00",
@@ -1405,7 +1405,7 @@
  },
  "Career/Work/employee-labor-law.md": {
   "created": "2026-11-24T00:11:29+09:00",
-  "updated": "2026-11-27T23:09:35+09:00"
+  "updated": "2026-11-27T23:13:03+09:00"
  },
  "Career/Work/engineering-levels.md": {
   "created": "2026-10-30T23:43:44+09:00",
@@ -2313,7 +2313,7 @@
  },
  "DevOps/Operations.md": {
   "created": "2026-11-26T19:03:01+09:00",
-  "updated": "2026-11-27T23:09:35+09:00"
+  "updated": "2026-11-27T23:13:03+09:00"
  },
  "DevOps/Operations/chatops.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -2360,8 +2360,8 @@
   "updated": "2026-11-15T16:52:53+09:00"
  },
  "DevOps/Operations/server-migration.md": {
-  "created": "2026-11-27T23:09:35+09:00",
-  "updated": "2026-11-27T23:09:35+09:00"
+  "created": "2026-11-27T23:13:03+09:00",
+  "updated": "2026-11-27T23:13:03+09:00"
  },
  "Frontend.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -3877,11 +3877,11 @@
  },
  "Tools/Git.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-21T14:58:21+09:00"
+  "updated": "2026-11-28T14:14:23+09:00"
  },
  "Tools/Git/branch.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T19:48:28+09:00"
+  "updated": "2026-11-28T14:14:23+09:00"
  },
  "Tools/Git/branching-strategies.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -3909,7 +3909,7 @@
  },
  "Tools/Git/git-internals.md": {
   "created": "2026-10-14T10:57:31+09:00",
-  "updated": "2026-11-02T10:13:09+09:00"
+  "updated": "2026-11-28T14:14:23+09:00"
  },
  "Tools/Git/git-undo-and-rewrite.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -3933,7 +3933,7 @@
  },
  "Tools/Git/merge.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-15T19:48:28+09:00"
+  "updated": "2026-11-28T14:14:23+09:00"
  },
  "Tools/Git/monorepo-vs-polyrepo.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -3941,7 +3941,7 @@
  },
  "Tools/Git/remote-github.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-02T10:37:21+09:00"
+  "updated": "2026-11-28T14:14:23+09:00"
  },
  "Tools/Git/stash-worktree-clean.md": {
   "created": "2026-10-21T14:58:21+09:00",
