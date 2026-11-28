@@ -11,6 +11,7 @@ date: "2026-10-14"
 
 - [운영체제 개요](Computer-Science/Operating-System/os-overview.md): 운영체제의 정의, 목적, 단일형·마이크로·하이브리드 커널, 분류와 대표적인 예
 - [리눅스 배포판과 패키지 관리](Computer-Science/Operating-System/linux-distributions.md): 커널과 배포판, Debian·RHEL 계열과 apt·dnf, CentOS Stream과 Rocky·AlmaLinux
+- [가장 작은 x86 커널: 부팅, Multiboot, VGA 텍스트 출력](Computer-Science/Operating-System/bare-metal-kernel.md): 리셋 벡터부터 1 MiB 적재까지의 부팅 흐름, 리얼·보호·롱 모드, Multiboot 헤더와 진입 시 기계 상태, 어셈블리 진입점과 스택, 0xB8000 VGA 텍스트 버퍼와 volatile, 링커 스크립트, 크로스 컴파일과 QEMU 실행
 - [컴퓨터 시스템 구조와 인터럽트](Computer-Science/Operating-System/system-structure.md): 모드 비트, 타이머, 인터럽트, 시스템 콜, DMA로 본 컴퓨터 시스템 구조와 입출력 계층, 블록·문자·네트워크 장치, 블로킹·논블로킹, 버퍼링·캐싱·스풀링 같은 커널 입출력 서비스
 - [운영체제의 시간과 타이머](Computer-Science/Operating-System/time-and-timers.md): 벽시계·단조·CPU 시간, RTC·TSC, clock_gettime, sleep, alarm과 POSIX 타이머
 - [프로세스와 스레드](Computer-Science/Operating-System/process-and-thread.md): 프로세스의 문맥과 PCB, 문맥 교환, 스케줄러, 스레드와 N:1·1:1·M:N 스레드 모델, 멀티프로세스·멀티스레드 비교, fork·exec·wait, 파이프·FIFO·공유 메모리·메시지 큐 같은 IPC
