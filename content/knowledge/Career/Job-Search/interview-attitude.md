@@ -1,16 +1,17 @@
 ---
 title: "면접 잘 보는 법: 태도와 답변"
 concept: "Interview Attitude"
-summary: "면접관은 말보다 태도를 먼저 읽는다. 눈 맞춤과 미러링, 일찍 도착하기, 겸손과 감사, 결론부터 짧게 답하기, 이력서 숙지와 모르면 모른다고 하기, 실수를 빨리 인정하기, 압박 면접 대응, 역질문과 감점되는 질문, 감사 메일, 기술 질문 준비, 면접에서 피할 회사를 가려내는 신호까지 면접 전·중·후의 원칙을 정리한다."
+summary: "면접관은 말보다 태도를 먼저 읽는다. 눈 맞춤과 미러링, 일찍 도착하기, 겸손과 감사, 결론부터 짧게 답하기, 이력서 숙지와 모르면 모른다고 하기, 실수를 빨리 인정하기, 압박 면접 대응, 역질문과 감점되는 질문, 감사 메일, 기술 질문 준비, 면접에서 피할 회사를 가려내는 신호까지 면접 전·중·후의 원칙을 정리한다. 회사 조사의 범위, 모의 면접, 24시간 안의 감사 메일, 친해진 기분에 털어놓지 않기도 다룬다."
 tags: ["career", "interview", "job-search", "communication"]
 source: other
 date: "2026-11-23"
-sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md", "https://www.techinterviewhandbook.org/final-questions/", "https://github.com/viraptor/reverse-interview", "https://github.com/Twipped/InterviewThis", "https://www.educative.io/blog/behavioral-interviews-how-to-prepare-and-ace-interview-questions"]
+sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zest-cheddar-2c4.notion.site/", "https://80000coding.notion.site/5b68b7d847f24fdbb1afd14be9041dc9", "https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Reverse_Interview/README.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Tip/README.md", "https://github.com/weniv/frontend-developer-guide/blob/main/README.md", "https://www.techinterviewhandbook.org/final-questions/", "https://github.com/viraptor/reverse-interview", "https://github.com/Twipped/InterviewThis", "https://www.educative.io/blog/behavioral-interviews-how-to-prepare-and-ace-interview-questions", "https://grow.google/grow-your-career/articles/interview-tips/", "https://www.reddit.com/r/cscareerquestions/comments/1jov24/heres_how_to_prepare_for_tech_interviews/"]
 ---
 
 > 플라피나의 노션 강의록 「플라피나 면접팁 / 자소서팁」과 「심화편」, 팔만코딩경(42Seoul 커뮤니티 위키)의 「[목요특강] Interviewees are from Mars, Interviewers are from Venus」 강연 정리를 바탕으로 재구성한 노트다. 회사를 면접하는 질문은 freeCodeCamp의 「[How to Interview as a Developer Candidate](https://medium.freecodecamp.com/how-to-interview-as-a-developer-candidate-b666734f12dd)」를 바탕으로 더했다. 현직자 커피챗은 위니브의 「[프론트엔드 개발자 가이드](https://github.com/weniv/frontend-developer-guide)」를 바탕으로 더했다.
 > 「주제별 질문 목록」과 프로젝트 질문·말로 꺼내 보기는 jbee의 「[Interview Question for Beginner](https://github.com/jbee37142/Interview_Question_for_Beginner)」 저장소의 Reverse Interview·Tip 문서를 바탕으로 보강했다. 역질문의 의미와 면접관의 경험을 묻는 질문, 관리자·경영진 대상 질문은 Tech Interview Handbook의 「[Best end of interview questions to ask](https://www.techinterviewhandbook.org/final-questions/)」로 보강했다.
 > 원본 영어 목록인 viraptor의 「[Reverse interview](https://github.com/viraptor/reverse-interview)」에서 번역본에 없던 질문(인프라 코드화, 재해 복구, ADR, 핫스폿, 채용 이유, 런웨이, 계약 조건 등)을 더했다. 운영·온콜과 문화 질문, 스택별 질문 표, 묻는 상대와 시점을 고르는 원칙은 Twipped의 「[InterviewThis](https://github.com/Twipped/InterviewThis)」로 보강했다. 화상·전화 면접 태도는 Educative의 「[Behavioral interviews: How to prepare and ace interview questions](https://www.educative.io/blog/behavioral-interviews-how-to-prepare-and-ace-interview-questions)」로 보강했다.
+> 회사 조사·모의 면접·역질문·감사 메일 보강은 Grow with Google의 「[How to prepare for an interview](https://grow.google/grow-your-career/articles/interview-tips/)」(2025.12)를, 「띄워 줘도 넘어가지 않는다」의 털어놓기 사례는 1,000번 넘게 면접을 본 면접관의 Reddit 글 「[Here's How to Prepare for Tech Interviews](https://www.reddit.com/r/cscareerquestions/comments/1jov24/heres_how_to_prepare_for_tech_interviews/)」(2013.08)를 바탕으로 했다.
 
 ## 면접은 소개팅이다
 
@@ -66,7 +67,9 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 | 외모를 챙긴다 | 머리·옷·향까지 챙기면 자신감이 생기고 긴장이 덜하다 |
 | 보여 줄 물건을 하나 가져간다 | 말로 다 못 하는 것을 보여 준다. 개발자라면 직접 만든 서비스 화면이나 기술 노트 |
 | 현직자와 먼저 커피챗을 한다 | 지인이나 커뮤니티로 닿는 현직자가 있으면 면접 전에 짧게 만난다. 팀의 스택, 면접 방식, 일하는 분위기를 알면 준비 범위가 좁아지고 역질문도 구체적이 된다 |
-| 회사를 미리 공부한다 | 입사 후 하고 싶은 일을 구체적으로 말하려면 필요하다. 「최선을 다하겠습니다」보다 「A나 B를 하고 싶다」가 낫고, 그 업무에 자리가 있으면 채용 가능성도 높아진다 |
+| 회사를 미리 공부한다 | 입사 후 하고 싶은 일을 구체적으로 말하려면 필요하다. 「최선을 다하겠습니다」보다 「A나 B를 하고 싶다」가 낫고, 그 업무에 자리가 있으면 채용 가능성도 높아진다. 홈페이지만 보지 말고 최근 보도자료, 업계 보고서, 공식 SNS, 고객 리뷰까지 훑어 **회사가 지금 무엇에 집중하는지**를 파악한다 |
+| 채용 공고로 나올 질문을 예상한다 | 공고의 담당 업무와 요구 역량에서 이 자리의 성공 기준을 읽고, 그 기준을 묻는 질문을 미리 뽑아 내 경험과 짝짓는다 |
+| 모의 면접을 한다 | 친구·멘토·커리어 상담가와 실전처럼 해 보거나, 답하는 모습을 녹화해 다시 본다. AI 음성 대화로 질문과 꼬리질문을 받으며 연습할 수도 있다. 핵심 메시지는 입에 붙게 하되 외운 티가 나지 않을 때까지 한다 |
 | 코드를 직접 볼 수 있는 링크를 낸다 | 이름 있는 오픈소스 기여는 큰 가점이다. 개인 저장소도 관심사와 코드 스타일을 보여 준다 |
 | 이력서에 쓴 것을 전부 숙지한다 | 내가 쓴 프로젝트·기술에 대한 질문은 바로 답이 나와야 한다. 설계 이유가 기억나지 않으면 이력서 전체의 신뢰가 무너진다 |
 
@@ -106,6 +109,8 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 
 - 면접관이 띄워 주는 말은 함정일 수 있다. 끝까지 겸손하다.
 - **면접 분위기와 합격률은 비례하지 않는다.** 문을 닫고 나올 때까지 방심하지 않는다.
+- **면접관이 친절한 것은 친구가 되려는 게 아니다.** 긴장이 풀려야 실력이 제대로 보이기 때문에 편하게 해 주는 것이다. 잘 통한다는 기분에 비밀을 털어놓듯 말하지 않는다. 「솔직히 하루 대여섯 시간만 일해도 됐어요」, 「면접에서 이런 말 하면 안 되지만, 진짜 문제는 동료였어요」 같은 말은 그대로 감점이 된다. **나쁘게 들릴 것 같으면 실제로 나쁘게 들린다.**
+- 반대로 해도 괜찮은 것도 있다. 모르는 것을 모른다고 하기(지어내는 것보다 낫다), 문제를 제대로 이해했는지 되묻기, 긴장돼서 잠깐 생각을 정리하겠다고 말하기는 감점이 아니다.
 
 ### 실수는 빨리 인정한다
 
@@ -132,6 +137,7 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 - 팀 구성과 남은 개발 일정은 어떻게 되나요?
 - 이 일에서 가장 중요한 것이 무엇이라고 보시나요? 이 자리에 사람을 뽑을 때 어떤 자질을 보시나요?
 - 제가 합류한다면 가장 먼저 풀어 주길 바라는 문제는 무엇인가요?
+- 이 자리에서 첫 90일 동안의 성공은 어떤 모습인가요? 팀이 지금 겪는 가장 큰 과제는 무엇이고, 이 자리가 그 과제를 어떻게 도울 수 있나요?
 - 저는 ○○ 분야 경험이 있습니다(없습니다). 이 자리에서 성공하는 데 그 경험이 얼마나 중요한가요?
 - 합격 가능성을 높이려면 무엇을 더 공부하면 좋을까요?
 
@@ -206,7 +212,7 @@ sources: ["https://www.notion.so/5b1bcb7a87c24ab6b36d87959371ff19", "https://zes
 
 ## 면접 후: 감사 메일
 
-면접이 마음에 들었다면 감사 메일을 보낸다. **잃을 것이 없고 얻을 것은 많다.** 스스로 친절하다고 믿고 싶은 사람은 그 증거를 모으므로, 면접관의 배려를 알아본 메일은 호감으로 남는다. 그 자리에서 떨어져도 다음 기회로 이어질 수 있다.
+면접이 마음에 들었다면 감사 메일을 보낸다. **잃을 것이 없고 얻을 것은 많다.** 대화가 아직 기억에 생생한 **24시간 안에** 보내고, 면접에서 구체적으로 좋았던 점 하나를 짚는다. 면접에서 빠뜨린 중요한 내용이 있으면 짧게 덧붙여도 된다. 면접관의 메일 주소를 모르면 연락하던 리크루터나 인사 담당자에게 전달을 부탁한다. 스스로 친절하다고 믿고 싶은 사람은 그 증거를 모으므로, 면접관의 배려를 알아본 메일은 호감으로 남는다. 그 자리에서 떨어져도 다음 기회로 이어질 수 있다.
 
 ```text
 방금 면접을 본 ○○○입니다. 면접 기회를 주셔서 감사드립니다.
