@@ -1,14 +1,15 @@
 ---
 title: "운영체제의 시간과 타이머"
 concept: "System Clock"
-summary: "운영체제가 다루는 세 가지 시간(벽시계·단조·프로세스 CPU 시간), 이를 재는 하드웨어(RTC·HPET·TSC), POSIX 시계 API, sleep 계열 함수, alarm과 인터벌 타이머를 정리한다. 경과 시간은 단조 시계로 재야 하는 이유가 핵심이다."
+summary: "운영체제가 다루는 세 가지 시간(벽시계·단조·프로세스 CPU 시간), 이를 재는 하드웨어(RTC·HPET·TSC), POSIX 시계 API, sleep 계열 함수, alarm과 인터벌 타이머를 정리한다. 경과 시간은 단조 시계로 재야 하는 이유가 핵심이다. 타이머가 수만~수백만 개일 때 쓰는 자료구조(정렬 리스트, 힙, 해시 타이밍 휠, 계층적 타이밍 휠)와 Kafka·Netty·리눅스 커널의 쓰임도 다룬다."
 tags: ["os", "linux", "system-call", "c", "process"]
 source: other
 date: "2026-10-14"
-sources: ["https://80000coding.notion.site/49da4c70a23844dabc4e6a6ba4aca5f6", "https://man7.org/linux/man-pages/man2/clock_gettime.2.html", "https://man7.org/linux/man-pages/man7/time.7.html"]
+sources: ["https://80000coding.notion.site/49da4c70a23844dabc4e6a6ba4aca5f6", "https://man7.org/linux/man-pages/man2/clock_gettime.2.html", "https://man7.org/linux/man-pages/man7/time.7.html", "https://blog.acolyer.org/2015/11/23/hashed-and-hierarchical-timing-wheels/"]
 ---
 
 > 팔만코딩경(42Seoul 커뮤니티 위키)의 「[운영체제] Time의 종류와 Alarm」을 바탕으로 재구성한 노트다.
+> 타이밍 휠은 Varghese·Lauck의 논문 「Hashed and Hierarchical Timing Wheels」(SOSP 1987)를 요약한 Adrian Colyer의 「[the morning paper](https://blog.acolyer.org/2015/11/23/hashed-and-hierarchical-timing-wheels/)」(2015.11) 글을 바탕으로 보강했다.
 
 ## 세 가지 시간
 
@@ -103,12 +104,62 @@ double ms = (b.tv_sec - a.tv_sec) * 1e3 + (b.tv_nsec - a.tv_nsec) / 1e6;
 
 Linux에는 만료를 fd 읽기로 받는 `timerfd_create`도 있다. 시그널 대신 `epoll`로 다른 I/O와 함께 기다릴 수 있어 이벤트 루프에 잘 맞는다.
 
+## 타이머가 아주 많을 때: 타이밍 휠
+
+서버는 요청마다 타임아웃 타이머를 건다. 연결 수만 개, 대기 중인 요청 수십만 개면 타이머도 그만큼이고, 대부분은 만료되기 전에 취소된다. 그래서 타이머 자료구조는 **시작·중지가 싸고, 틱마다 할 일이 적어야** 한다. Varghese와 Lauck은 1987년 논문에서 방법들을 비교하고 해시 타이밍 휠과 계층적 타이밍 휠을 제안했다.
+
+| 방식 | 시작 | 중지 | 틱마다 | 특징 |
+| --- | --- | --- | --- | --- |
+| 정렬 안 한 리스트 | O(1) | O(1) | O(n) | 틱마다 모든 타이머의 남은 시간을 줄인다 |
+| 만료 시각순 정렬 리스트 | O(n) | O(1) | O(1) | 맨 앞만 보면 된다. 넣을 자리를 찾느라 느리다 |
+| 힙·트리 | O(log n) | O(log n) | O(1) | 범용 런타임의 흔한 선택 |
+| 단순 타이밍 휠 | O(1) | O(1) | O(1) | 최대 대기 시간만큼 칸이 필요하다 |
+| 해시 타이밍 휠 | O(1) | O(1) | 평균 O(1) | 칸 수를 고정하고, 칸 수보다 먼 타이머는 「몇 바퀴 뒤」를 함께 적는다 |
+| 계층적 타이밍 휠 | O(1) | O(1) | 평균 O(1) | 단위가 다른 휠 여러 개. 큰 휠에서 작은 휠로 옮겨 담는다 |
+
+**타이밍 휠**은 시계 문자판 같은 원형 배열이다. 칸 하나가 틱 하나이고, 칸마다 그 시각에 만료될 타이머 목록이 있다. j틱 뒤에 울릴 타이머는 현재 위치에서 j칸 앞 칸의 목록에 넣고, 틱마다 바늘을 한 칸 옮겨 그 칸의 목록을 실행한다. 칸 수가 8인데 20틱 뒤의 타이머를 넣으려면 해시 휠은 칸 위치를 칸 수로 나눈 나머지로 정하고, 그 칸을 몇 번 지나친 뒤에 울릴지(바퀴 수)를 함께 적는다.
+
+```python
+class HashedWheel:
+    """칸 수가 고정된 해시 타이밍 휠 (Varghese·Lauck의 6번 방식)."""
+    def __init__(self, slots=8):
+        self.slots = [[] for _ in range(slots)]
+        self.now = 0                                   # 현재 칸 위치
+
+    def start(self, ticks, callback):                  # ticks(≥1)틱 뒤에 실행
+        n = len(self.slots)
+        rounds = (ticks - 1) // n                      # 그 칸을 몇 번 지나친 뒤인가
+        self.slots[(self.now + ticks) % n].append([rounds, callback])
+
+    def tick(self):                                    # 1틱마다 한 칸 전진
+        self.now = (self.now + 1) % len(self.slots)
+        due, keep = [], []
+        for t in self.slots[self.now]:
+            (due if t[0] == 0 else keep).append(t)
+            t[0] -= 1
+        self.slots[self.now] = keep
+        for _, cb in due:
+            cb()
+```
+
+**계층적 타이밍 휠**은 초 휠(60칸), 분 휠(60칸), 시 휠(24칸), 일 휠(100칸)처럼 단위가 다른 휠을 겹친다. 칸 244개로 초 단위 864만 가지 시각을 표현한다. 11시간 15분 15초 뒤의 타이머는 시 휠의 11칸 앞에 넣어 두고, 시 휠이 그 칸에 오면 분 휠의 15칸 앞으로, 다시 초 휠의 15칸 앞으로 옮긴다. 아래 휠이 한 바퀴 돌 때마다 위 휠이 한 칸 나아간다.
+
+| 쓰는 곳 | 방식 |
+| --- | --- |
+| Kafka | 지연 요청 대기열(purgatory)에 계층적 타이밍 휠을 쓴다. 빈 칸을 하나씩 넘기지 않도록 타이머가 든 칸만 Java `DelayQueue`에 넣어 다음 만료 칸으로 바로 건너뛴다 |
+| Netty | `HashedWheelTimer`가 해시 타이밍 휠이다. 연결별 읽기·쓰기 타임아웃처럼 정밀도가 덜 중요하고 개수가 많은 타이머에 쓴다 |
+| 리눅스 커널 | 저해상도 타이머(`timer_list`)가 계층적 타이밍 휠이다. 4.8부터는 먼 타이머를 아래 휠로 옮기는(cascading) 대신 멀수록 만료 시각을 거칠게 잡는다. 정밀한 고해상도 타이머(`hrtimer`)는 레드-블랙 트리를 쓴다 |
+| 힙을 쓰는 런타임 | Go 런타임(프로세서마다 4진 힙), libuv(Node.js의 이벤트 루프), Java `ScheduledThreadPoolExecutor`는 힙에 타이머를 둔다. 타이머 수가 아주 많지 않으면 힙으로 충분하다 |
+
+타이밍 휠은 틱 단위로 시간을 뭉뚱그리므로 정밀도는 틱 크기만큼이다. 타임아웃처럼 「대략 그때쯤」이면 되는 타이머에 맞고, 정확한 시각이 필요한 타이머는 힙이나 트리로 다룬다.
+
 ## 정리
 
 - 시각은 벽시계, 경과 시간은 단조 시계, CPU 사용량은 프로세스 시계로 잰다.
 - 새 코드는 `clock_gettime`·`clock_nanosleep`을 쓴다. `gettimeofday`·`usleep`은 구식이다.
 - sleep은 최소 시간만 보장한다. 주기 작업은 절대 시각으로 잠든다.
 - 타이머는 `alarm` → `setitimer` → POSIX 타이머·`timerfd` 순으로 기능이 많아진다.
+- 타이머가 아주 많으면 시작·중지가 O(1)인 타이밍 휠을 쓴다. 해시 휠은 바퀴 수를 함께 적고, 계층적 휠은 큰 단위에서 작은 단위로 옮겨 담는다.
 - **"얼마나 걸렸나"를 `Date.now()` 차이로 재는 코드는 시계 조정 한 번에 틀린다.**
 
-관련 노트: [[unix-signals|UNIX 시그널]], [[system-structure|컴퓨터 시스템 구조와 인터럽트]], [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]]
+관련 노트: [[unix-signals|UNIX 시그널]], [[system-structure|컴퓨터 시스템 구조와 인터럽트]], [[calendar-fallacies|달력과 시간에 대한 개발자의 착각]], [[real-world-algorithms|현실 시스템을 움직이는 알고리즘과 자료구조]], [[heap-priority-queue|힙과 우선순위 큐]]

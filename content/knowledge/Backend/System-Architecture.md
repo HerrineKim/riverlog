@@ -53,7 +53,7 @@ date: "2026-11-26"
 - [뉴스 피드 설계: 연결, 활동, 팬아웃](Backend/System-Architecture/news-feed-design.md): 스캐터·개더와 받은편지함 팬아웃, 활동 복제, 집계·중복 제거·점수, 비정규화와 캐시 수명
 - [사진 공유 서비스 설계: 메타데이터, 저장, 샤딩](Backend/System-Architecture/photo-sharing-design.md): 파일과 메타데이터 분리, 테이블 크기 추정, 업로드·읽기 분리, PhotoID 샤딩과 홀짝 티켓 서버
 - [실시간 웹소켓 서버 설계](Backend/System-Architecture/realtime-websocket-server.md): 수만 연결 유지, 메시지 타입 설계, 부하 검증
-- [위치 기반 서비스 설계: 지오해시, 쿼드트리, 지도](Backend/System-Architecture/location-based-service.md): 격자 색인, 지오해시·쿼드트리, 지도 타일
+- [위치 기반 서비스 설계: 지오해시, 쿼드트리, 지도](Backend/System-Architecture/location-based-service.md): 격자 색인, 지오해시·쿼드트리·S2, 레이 캐스팅, 지도 타일
 - [라이브 스트리밍의 구조: 인코딩, 세그먼트, ABR, CDN](Backend/System-Architecture/live-streaming.md): 인코딩·세그먼트·적응형 비트레이트·CDN 전송
 - [이미지·동영상 처리 서버 설계](Backend/System-Architecture/media-processing-pipeline.md): 사전 생성과 온디맨드 리사이징, 캐시·CDN, 트랜스코딩 파이프라인
 - [동영상 스트리밍 서비스 설계: Netflix·YouTube](Backend/System-Architecture/video-streaming-design.md): 업로드 처리 파이프라인(장면 청크·콘텐츠 검사·트랜스코딩), Open Connect와 ABR, 지역 차단·추천
