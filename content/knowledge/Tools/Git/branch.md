@@ -184,4 +184,4 @@ $ git push origin --delete v1.2.0 # 원격 태그 삭제
 - 이동 전에는 untracked/modified 파일이 없는지 확인한다. 작업을 잠시 치울 때는 `stash`, 다른 브랜치를 나란히 열 때는 `worktree`([[stash-worktree-clean|stash, worktree, clean]]).
 - 릴리스는 주석 태그로 표시하고, 태그는 따로 push한다.
 
-관련 노트: [[merge|브랜치 병합]], [[github-collaboration|GitHub 협업 저장소 설정]], [[branching-strategies|브랜치 전략]], [[stash-worktree-clean|작업 중인 변경 다루기: stash, worktree, clean]], [[semantic-versioning|유의적 버전(SemVer)]]
+관련 노트: [[merge|브랜치 병합]], [[git-internals|Git의 내부 구조]], [[github-collaboration|GitHub 협업 저장소 설정]], [[branching-strategies|브랜치 전략]], [[stash-worktree-clean|작업 중인 변경 다루기: stash, worktree, clean]], [[semantic-versioning|유의적 버전(SemVer)]]
