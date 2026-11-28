@@ -401,11 +401,11 @@
  },
  "Algorithm.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-27T15:25:47+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Algorithm/Data-Structure.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Algorithm/Data-Structure/data-structures.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -429,7 +429,7 @@
  },
  "Algorithm/Data-Structure/segment-tree.md": {
   "created": "2026-10-31T13:48:56+09:00",
-  "updated": "2026-10-31T13:48:56+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Algorithm/Data-Structure/stack.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -593,7 +593,7 @@
  },
  "Algorithm/coding-test.md": {
   "created": "2026-10-12T20:52:25+09:00",
-  "updated": "2026-11-27T15:25:47+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Algorithm/competitive-programming-pitfalls.md": {
   "created": "2026-11-27T15:25:47+09:00",
@@ -625,7 +625,11 @@
  },
  "Algorithm/real-world-algorithms.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-22T20:20:26+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
+ },
+ "Algorithm/streaming-sketches.md": {
+  "created": "2026-11-28T17:50:35+09:00",
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Backend.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -845,7 +849,7 @@
  },
  "Backend/System-Architecture.md": {
   "created": "2026-11-26T19:03:01+09:00",
-  "updated": "2026-11-26T19:03:01+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Backend/System-Architecture/access-control-models.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -965,7 +969,7 @@
  },
  "Backend/System-Architecture/location-based-service.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-11-15T19:48:28+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Backend/System-Architecture/media-processing-pipeline.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1161,7 +1165,7 @@
  },
  "Career/Job-Search/behavioral-interview-questions.md": {
   "created": "2026-10-12T21:10:41+09:00",
-  "updated": "2026-11-22T22:31:10+09:00"
+  "updated": "2026-11-28T17:50:36+09:00"
  },
  "Career/Job-Search/behavioral-interview-rubrics.md": {
   "created": "2026-10-30T23:43:44+09:00",
@@ -1197,7 +1201,7 @@
  },
  "Career/Job-Search/interview-attitude.md": {
   "created": "2026-10-16T13:20:09+09:00",
-  "updated": "2026-11-24T11:39:28+09:00"
+  "updated": "2026-11-28T17:50:36+09:00"
  },
  "Career/Job-Search/job-offer-negotiation.md": {
   "created": "2026-10-21T15:52:08+09:00",
@@ -1205,7 +1209,7 @@
  },
  "Career/Job-Search/resume-writing.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-11-24T11:39:28+09:00"
+  "updated": "2026-11-28T17:50:36+09:00"
  },
  "Career/Job-Search/stock-options.md": {
   "created": "2026-10-21T14:58:22+09:00",
@@ -1213,7 +1217,7 @@
  },
  "Career/Job-Search/tech-interview-prep.md": {
   "created": "2026-10-21T14:58:22+09:00",
-  "updated": "2026-11-27T15:41:30+09:00"
+  "updated": "2026-11-28T17:50:36+09:00"
  },
  "Career/Job-Search/us-hiring-process.md": {
   "created": "2026-10-17T18:11:24+09:00",
@@ -1601,7 +1605,7 @@
  },
  "Computer-Science/C-Programming/gcc-compile-and-link.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-10-31T13:04:19+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Computer-Science/C-Programming/makefile.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1849,7 +1853,11 @@
  },
  "Computer-Science/Operating-System.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
+ },
+ "Computer-Science/Operating-System/bare-metal-kernel.md": {
+  "created": "2026-11-28T17:50:35+09:00",
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Computer-Science/Operating-System/bash-scripting.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -1869,7 +1877,7 @@
  },
  "Computer-Science/Operating-System/disk-scheduling.md": {
   "created": "2026-10-12T12:00:52+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Computer-Science/Operating-System/file-system-implementation.md": {
   "created": "2026-10-11T22:24:49+09:00",
@@ -1905,7 +1913,7 @@
  },
  "Computer-Science/Operating-System/os-overview.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-26T19:03:01+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Computer-Science/Operating-System/process-and-thread.md": {
   "created": "2026-10-12T12:00:52+09:00",
@@ -1933,11 +1941,11 @@
  },
  "Computer-Science/Operating-System/system-structure.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-10-31T16:02:04+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Computer-Science/Operating-System/time-and-timers.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-11-15T16:52:53+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Computer-Science/Operating-System/unix-file-io.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1957,7 +1965,7 @@
  },
  "Computer-Science/Programming-Languages.md": {
   "created": "2026-10-14T10:57:30+09:00",
-  "updated": "2026-11-25T12:17:54+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Computer-Science/Programming-Languages/abstract-class-vs-interface.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -1970,6 +1978,10 @@
  "Computer-Science/Programming-Languages/coding-principles.md": {
   "created": "2026-10-21T14:58:21+09:00",
   "updated": "2026-10-31T13:21:34+09:00"
+ },
+ "Computer-Science/Programming-Languages/compiler-architecture.md": {
+  "created": "2026-11-28T17:50:35+09:00",
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Computer-Science/Programming-Languages/cpp-basics.md": {
   "created": "2026-10-14T10:57:30+09:00",
@@ -2017,7 +2029,7 @@
  },
  "Computer-Science/Programming-Languages/how-programs-run.md": {
   "created": "2026-10-21T14:58:21+09:00",
-  "updated": "2026-11-14T22:42:25+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Computer-Science/Programming-Languages/java-coding-convention.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -2965,7 +2977,7 @@
  },
  "Frontend/JavaScript/typescript-compiler-internals.md": {
   "created": "2026-10-30T15:57:24+09:00",
-  "updated": "2026-11-15T20:31:50+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Frontend/JavaScript/typescript-error-messages.md": {
   "created": "2026-10-30T15:57:24+09:00",
@@ -3825,7 +3837,7 @@
  },
  "Tools/Code-Review.md": {
   "created": "2026-11-26T19:03:01+09:00",
-  "updated": "2026-11-26T19:03:01+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Tools/Code-Review/boolean-naming.md": {
   "created": "2026-10-12T23:50:50+09:00",
@@ -3837,7 +3849,7 @@
  },
  "Tools/Code-Review/principles.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-11-25T11:27:26+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Tools/Code-Review/refactoring-principles.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -3845,7 +3857,7 @@
  },
  "Tools/Code-Review/review-communication.md": {
   "created": "2026-10-11T23:36:27+09:00",
-  "updated": "2026-11-25T11:27:26+09:00"
+  "updated": "2026-11-28T17:50:35+09:00"
  },
  "Tools/Code-Review/review-patterns.md": {
   "created": "2026-10-11T23:36:27+09:00",
@@ -3877,11 +3889,11 @@
  },
  "Tools/Git.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-28T14:14:23+09:00"
+  "updated": "2026-11-28T14:15:01+09:00"
  },
  "Tools/Git/branch.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-28T14:14:23+09:00"
+  "updated": "2026-11-28T14:15:01+09:00"
  },
  "Tools/Git/branching-strategies.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -3909,7 +3921,7 @@
  },
  "Tools/Git/git-internals.md": {
   "created": "2026-10-14T10:57:31+09:00",
-  "updated": "2026-11-28T14:14:23+09:00"
+  "updated": "2026-11-28T14:15:01+09:00"
  },
  "Tools/Git/git-undo-and-rewrite.md": {
   "created": "2026-10-12T21:27:28+09:00",
@@ -3933,7 +3945,7 @@
  },
  "Tools/Git/merge.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-28T14:14:23+09:00"
+  "updated": "2026-11-28T14:15:01+09:00"
  },
  "Tools/Git/monorepo-vs-polyrepo.md": {
   "created": "2026-10-21T14:58:21+09:00",
@@ -3941,7 +3953,7 @@
  },
  "Tools/Git/remote-github.md": {
   "created": "2026-10-11T22:24:49+09:00",
-  "updated": "2026-11-28T14:14:23+09:00"
+  "updated": "2026-11-28T14:15:01+09:00"
  },
  "Tools/Git/stash-worktree-clean.md": {
   "created": "2026-10-21T14:58:21+09:00",
