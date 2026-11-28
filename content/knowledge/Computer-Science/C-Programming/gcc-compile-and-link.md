@@ -153,4 +153,4 @@ flowchart TB
 - 정적 라이브러리는 `ar rcs`, 공유 라이브러리는 `-fPIC -shared`로 만든다.
 - 정적 링크는 **의존하는 쪽을 앞에** 둔다. 공유 라이브러리는 실행 시 탐색 경로까지 챙긴다.
 
-관련 노트: [[makefile|Makefile과 make]], [[c-basics|C 기초: 컴파일, 자료형, 배열과 문자열]], [[c-scope-and-linkage|C의 스코프와 링키지]], [[c-history-and-standards|C의 역사와 표준]]
+관련 노트: [[makefile|Makefile과 make]], [[compiler-architecture|컴파일러의 구조]], [[c-basics|C 기초: 컴파일, 자료형, 배열과 문자열]], [[c-scope-and-linkage|C의 스코프와 링키지]], [[c-history-and-standards|C의 역사와 표준]]

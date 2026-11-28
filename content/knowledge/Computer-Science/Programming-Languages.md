@@ -16,6 +16,7 @@ date: "2026-11-15"
 - [프로그래밍 언어의 계보와 선택](Computer-Science/Programming-Languages/programming-language-evolution.md): 언어의 세대 구분, Fortran·LISP부터 Rust·Go·Kotlin까지 이어진 문제의식, 언어별 에너지 효율
 - [프로그래밍 패러다임](Computer-Science/Programming-Languages/programming-paradigms.md): 명령형·선언형·객체 지향·함수형·반응형·관점 지향·제네릭·동시성 프로그래밍 비교
 - [프로그램이 실행되기까지: 컴파일, 바이트코드, 인터프리터, GC](Computer-Science/Programming-Languages/how-programs-run.md): 네이티브 컴파일·VM과 JIT·인터프리터, 실행 파일 적재, Java·Python·Go의 GC, WebAssembly
+- [컴파일러의 구조: 프론트엔드, 최적화기, 백엔드](Computer-Science/Programming-Languages/compiler-architecture.md): IR을 가운데 둔 세 단계와 M+N 구조, clang의 전처리·토큰·AST·의미 분석, LLVM IR(SSA, ptr), opt의 printf → puts와 상수 접기, -O0 optnone 함정, llc의 명령어 선택·레지스터 할당·스케줄링, 분석·합성과 심볼 테이블, 3주소 코드, 활성 레코드
 - [프로그래밍 언어 의미론: 구문, 바인딩, 람다 계산, 평가 전략](Computer-Science/Programming-Languages/programming-language-semantics.md): 구문과 의미론, AST, 연산·표시·공리적 의미론, 스코프와 클로저, 알파·베타와 변수 포획, 값·이름·필요·참조·공유에 의한 호출, CPS, Hoare 논리, 위생적 매크로
 - [타입 시스템: 검사, 추론, 다형성, 변성, 건전성](Computer-Science/Programming-Languages/type-systems.md): 정적·동적 검사, 단일화, 곱·합·재귀 타입과 Option·Result, 다형성 세 종류, 명목·구조·덕 타이핑, 변성, 완전성 검사, 진행과 보존
 
