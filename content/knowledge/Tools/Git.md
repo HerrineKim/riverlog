@@ -17,7 +17,7 @@ Git은 **분산 버전 관리 시스템(DVCS)** 이다. 모든 작업자가 저�
 | 노트 | 내용 |
 | --- | --- |
 | [기본 명령과 파일 상태](/knowledge/dictionary/tools/git/git-basics) | `init`, `add`(`-p`로 일부만), `commit`, `status`, `log`, 커밋 해시와 Working Directory → Staging Area → Repository 흐름 |
-| [내부 구조: 객체와 인덱스](/knowledge/dictionary/tools/git/git-internals) | `.git`의 index와 blob·tree·commit 객체, 내용 기반 해시, 스냅숏 저장 원리 |
+| [내부 구조: 객체, 인덱스, 참조](/knowledge/dictionary/tools/git/git-internals) | `.git`의 index와 blob·tree·commit 객체, 내용 기반 해시, 스냅숏 저장 원리, commit·switch·merge·fetch·push가 그래프를 바꾸는 방식, 충돌의 인덱스 스테이지, bare 저장소 |
 | [브랜치](/knowledge/dictionary/tools/git/branch) | 브랜치·HEAD 개념, `git branch`, `git switch`, 브랜치 이동 시 주의점 |
 | [브랜치 병합](/knowledge/dictionary/tools/git/merge) | Fast-Forward, 3-Way Merge, Merge Conflict 해결, Merge Commit의 함정(부모 순서, `--remerge-diff`) |
 | [원격 저장소와 GitHub](/knowledge/dictionary/tools/git/remote-github) | `remote`(`set-url`, 원격 여러 개), `push`, `pull`, `fetch`, `clone`, `subtree`, 미러링(GitLab → GitHub) |

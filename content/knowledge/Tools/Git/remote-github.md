@@ -213,4 +213,4 @@ $ git submodule deinit libs/lib && git rm libs/lib            # submodule 제거
 
 대용량 저장소를 옮기는 전체 과정은 [GitLab → GitHub 대용량 프로젝트 이동 (lfs, bfg)](https://coding-nurse.tistory.com/431), 기본 흐름은 [Gitlab에서 Github으로 저장소 옮기기](https://jennnn.tistory.com/86)에 잘 정리되어 있다.
 
-관련 노트: [[git-basics|Git 기본 명령과 파일 상태]], [[merge|브랜치 병합]], [[commit-convention|커밋 컨벤션과 자동 검사]], [[git-config-options|자주 쓰는 Git 설정 옵션]], [[large-repo-git-performance|대형 저장소에서 Git 빠르게 쓰기]]
+관련 노트: [[git-basics|Git 기본 명령과 파일 상태]], [[git-internals|Git의 내부 구조]], [[merge|브랜치 병합]], [[commit-convention|커밋 컨벤션과 자동 검사]], [[git-config-options|자주 쓰는 Git 설정 옵션]], [[large-repo-git-performance|대형 저장소에서 Git 빠르게 쓰기]]

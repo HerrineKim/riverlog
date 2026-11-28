@@ -217,4 +217,4 @@ $ git show --remerge-diff <커밋 ID>
 
 > 참고: 병합 대신 `git rebase`로 이력을 일직선으로 만드는 방법은 [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]]에 정리했다.
 
-관련 노트: [[branch|Git 브랜치]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]], [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]], [[branching-strategies|브랜치 전략]]
+관련 노트: [[branch|Git 브랜치]], [[git-internals|Git의 내부 구조]], [[remote-github|원격 저장소와 GitHub]], [[git-config-options|자주 쓰는 Git 설정 옵션]], [[merge-squash-rebase|merge·squash·rebase 언제 쓰나]], [[branching-strategies|브랜치 전략]]
