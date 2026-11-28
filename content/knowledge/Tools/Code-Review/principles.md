@@ -1,6 +1,6 @@
 ---
 title: "코드 리뷰 원칙과 체크리스트"
-concept: "Code Review"
+concept: "Code Review Principles"
 summary: "코드 리뷰를 왜 하는지(품질이 비용을 낮추는 이유, 리뷰의 다섯 가지 효과), 작성자와 리뷰어가 할 일, 자동화할 것과 사람이 볼 것을 나누는 원칙, 리뷰를 빠르게 돌리고 교착을 푸는 운영법, 가독성·부작용·경계 조건·보안·성능·테스트 체크리스트."
 tags: ["code-review", "collaboration", "clean-code", "career"]
 source: notion
