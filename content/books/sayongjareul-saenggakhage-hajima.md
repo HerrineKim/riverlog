@@ -4,6 +4,6 @@ author: "스티브 크룩"
 category: "개발"
 status: "want"
 cover: "https://image.aladin.co.kr/product/4927/43/cover500/8966261213_1.jpg"
-tags: ["컴퓨터", "FE"]
+tags: ["컴퓨터", "FE", "programmingbooks.dev 추천 도서"]
 notionUrl: "https://app.notion.com/p/d22b920a00714edcbafdd9174065e48d"
 ---

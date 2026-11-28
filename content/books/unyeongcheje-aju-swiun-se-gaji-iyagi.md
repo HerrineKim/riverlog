@@ -4,6 +4,6 @@ author: "Andrea C. Arpaci-dusseau, Remzi H. Arpaci-Dusseau"
 category: "컴퓨터 과학"
 status: "want"
 cover: "https://image.aladin.co.kr/product/25327/12/cover500/k172633503_2.jpg"
-tags: ["컴퓨터", "운영체제"]
+tags: ["컴퓨터", "운영체제", "programmingbooks.dev 추천 도서"]
 notionUrl: "https://app.notion.com/p/d22b920a00714edcbafdd9174065e48d"
 ---

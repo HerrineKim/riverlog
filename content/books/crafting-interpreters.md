@@ -4,5 +4,5 @@ author: "로버트 나이스트롬"
 category: "컴퓨터 과학"
 status: "want"
 cover: "https://image.aladin.co.kr/product/32951/45/cover500/k102936141_1.jpg"
-tags: ["컴퓨터", "프로그래밍 언어론"]
+tags: ["컴퓨터", "프로그래밍 언어론", "programmingbooks.dev 추천 도서"]
 ---

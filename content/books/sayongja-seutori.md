@@ -4,5 +4,5 @@ author: "마이크 콘"
 category: "개발"
 status: "want"
 cover: "https://image.aladin.co.kr/product/64/0/cover500/8991268137_1.jpg"
-tags: ["컴퓨터", "교보문고 개발자 추천도서 Top 100"]
+tags: ["컴퓨터", "교보문고 개발자 추천도서 Top 100", "programmingbooks.dev 추천 도서"]
 ---
