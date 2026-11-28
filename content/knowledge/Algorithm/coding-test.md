@@ -1,11 +1,11 @@
 ---
 title: "코딩 테스트 접근법"
 concept: "Coding Test"
-summary: "주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법과 그 방식이 자기기만이 되는 함정, 랜덤 비교 테스트로 반례 찾기, 막혔을 때 접근을 찾는 관점과 이론상 최선 복잡도(BTTC)를 기준으로 시간·공간을 줄이는 최적화 기법, 파이썬·자바스크립트 실전 팁. 대회 레이팅은 기본기를 익힌 뒤의 눈금이고, 면접 준비와 목표가 다르다."
+summary: "대회·코딩 테스트 문제의 형식(입력·출력·제한·예제)과 표준 입출력·함수 구현 두 제출 방식, 채점 결과와 안내 문구 출력 같은 초보 실수, 주석으로 설계하고 테스트 케이스를 먼저 적는 문제 풀이 순서, 출제 빈도별 알고리즘 우선순위, 막혔을 때 풀이를 볼 시점을 정하는 연습법과 그 방식이 자기기만이 되는 함정, 랜덤 비교 테스트로 반례 찾기, 막혔을 때 접근을 찾는 관점과 이론상 최선 복잡도(BTTC)를 기준으로 시간·공간을 줄이는 최적화 기법, 파이썬·자바스크립트 실전 팁. 대회 레이팅은 기본기를 익힌 뒤의 눈금이고, 면접 준비와 목표가 다르다."
 tags: ["coding-test", "algorithm", "python", "javascript", "problem-solving"]
 source: mixed
 date: "2026-11-27"
-sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%99%84%EC%A3%BC%ED%95%98%EC%A7%80%20%EB%AA%BB%ED%95%9C%20%EC%84%A0%EC%88%98.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%B4%EB%A7%98%EB%8C%80%EB%A1%9C%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/3%EC%A7%84%EB%B2%95%20%EB%92%A4%EC%A7%91%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EC%A0%95%EC%88%98%EC%82%AC%EC%9D%B4%EC%9D%98%20%ED%95%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/2016%EB%85%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EA%B0%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EB%8D%94%ED%95%98%EA%B8%B0.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://www.techinterviewhandbook.org/coding-interview-techniques/", "https://www.techinterviewhandbook.org/algorithms/study-cheatsheet/", "https://www.techinterviewhandbook.org/algorithms/math/", "https://www.techinterviewhandbook.org/algorithms/interval/", "https://codeforces.com/blog/entry/98621", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know", "https://shahjalalshohag.com/blog/rating", "https://shahjalalshohag.com/blog/world-finals", "https://shahjalalshohag.com/blog/cp-day", "https://shahjalalshohag.com/blog/comeback"]
+sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.tistory.com/516", "https://80000coding.notion.site/bfd36598b2024bd09ff4528db740e054", "https://80000coding.notion.site/1dbfa6dd227e4749b83ae2cefccdda9f", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EC%99%84%EC%A3%BC%ED%95%98%EC%A7%80%20%EB%AA%BB%ED%95%9C%20%EC%84%A0%EC%88%98.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%AC%B8%EC%9E%90%EC%97%B4%20%EB%82%B4%EB%A7%98%EB%8C%80%EB%A1%9C%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/3%EC%A7%84%EB%B2%95%20%EB%92%A4%EC%A7%91%EA%B8%B0.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EC%A0%95%EC%88%98%EC%82%AC%EC%9D%B4%EC%9D%98%20%ED%95%A9.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/2016%EB%85%84.md", "https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/blob/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98/%EB%91%90%20%EA%B0%9C%20%EB%BD%91%EC%95%84%EC%84%9C%20%EB%8D%94%ED%95%98%EA%B8%B0.md", "https://github.com/jbee37142/Interview_Question_for_Beginner/blob/main/Algorithm/README.md", "https://www.techinterviewhandbook.org/coding-interview-techniques/", "https://www.techinterviewhandbook.org/algorithms/study-cheatsheet/", "https://www.techinterviewhandbook.org/algorithms/math/", "https://www.techinterviewhandbook.org/algorithms/interval/", "https://codeforces.com/blog/entry/98621", "https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know", "https://shahjalalshohag.com/blog/rating", "https://shahjalalshohag.com/blog/world-finals", "https://shahjalalshohag.com/blog/cp-day", "https://shahjalalshohag.com/blog/comeback", "https://www.geeksforgeeks.org/blogs/how-to-begin-with-competitive-programming/"]
 ---
 
 > 반례 찾기와 파이썬 표준 라이브러리 팁 일부는 팔만코딩경(42Seoul 커뮤니티 위키)의 「[Python&C] 맞왜틀 이제 그만, 반례 생성기!」, 「코딩테스트를 위한 python 문법」을 바탕으로 보강했다. 자바스크립트 실전 팁은 「[Frontend_TIL: 알고리즘](https://github.com/AI-Dev-Lex-Kim/Frontend_TIL/tree/master/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98)」의 문제 풀이에서 반복되는 패턴만 뽑아 보강했다.
@@ -14,8 +14,84 @@ sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.ti
 > 「자기기만 피하기」는 Codeforces 블로그의 「[Self-deception: maybe why you're still grey after practicing every day](https://codeforces.com/blog/entry/98621)」(2022.01)와 그 글의 보충 댓글을 바탕으로 보강했다.
 > 「자주 하는 선택」의 단조 스택, 차분 배열, Union-Find 신호는 Aaron Xie의 「[What data structures and algorithms should every programmer know?](https://www.educative.io/blog/what-data-structures-and-algorithms-should-every-programmer-know)」(Educative, 2026.03)를 바탕으로 보강했다.
 > 「대회 레이팅은 기본기 다음의 눈금이다」는 Shahjalal Shohag의 「[Does Rating Matter in Competitive Programming?](https://shahjalalshohag.com/blog/rating)」(2022.02)를 바탕으로, 세트를 먼저 읽고 초반 순위에 그만두지 않는 점은 「[From Out of Top 30 to the ICPC World Finals](https://shahjalalshohag.com/blog/comeback)」(2022.02), 「[Happiness: ICPC World Finals 2021](https://shahjalalshohag.com/blog/world-finals)」(2022.02), 「[Happy Personal Competitive Programming Day](https://shahjalalshohag.com/blog/cp-day)」(2021.10)에서 공통으로 나오는 원칙만 보강했다.
+> 「문제 형식과 채점」은 GeeksforGeeks의 「[How to begin with Competitive Programming?](https://www.geeksforgeeks.org/blogs/how-to-begin-with-competitive-programming/)」(2025.07 갱신)을 바탕으로 보강했다.
 
 코딩 테스트에서 시간이 부족해지는 이유는 대개 설계 없이 코드부터 쓰다가 중간에 방향을 잃기 때문이다. 아래는 문제를 풀 때 따르는 순서와 자주 쓰는 실전 팁이다.
+
+## 문제 형식과 채점
+
+대회와 코딩 테스트의 문제는 모양이 정해져 있다.
+
+| 부분 | 담긴 것 |
+| --- | --- |
+| 문제 설명 | 무엇을 구하는가 |
+| 입력 형식 | 몇 번째 줄에 무엇이 어떤 순서로 오는가. 여러 테스트를 한 번에 주면 첫 줄이 테스트 수 `T`다 |
+| 출력 형식 | 무엇을 어떤 모양으로 내는가. 보통 테스트마다 한 줄 |
+| 제한 | 입력 크기(`1 ≤ n ≤ 10^5`), 값의 범위, 시간·메모리 한도. 허용 복잡도를 여기서 정한다(아래 「입력 크기로 풀이 방향 정하기」) |
+| 예제 입출력 | 형식을 확인하는 작은 예. 통과해도 정답이라는 뜻은 아니다 |
+
+**제출 방식은 두 가지다.**
+
+| 방식 | 하는 일 | 대표 사이트 |
+| --- | --- | --- |
+| 표준 입출력 | 프로그램 전체를 낸다. 표준 입력(stdin)을 직접 읽어 파싱하고 표준 출력(stdout)에 쓴다 | 백준, Codeforces, AtCoder, CodeChef, SPOJ |
+| 함수 구현 | 정해진 함수(`solution`, 클래스 메서드)의 본문만 채워 값을 반환한다. 입출력은 플랫폼이 한다 | 프로그래머스, LeetCode |
+
+Project Euler처럼 코드 없이 답 숫자만 내는 곳도 있다.
+
+표준 입출력 방식에서 여러 테스트를 주는 문제는 이런 모양이다. 테스트마다 배열에서 `x`가 처음 나오는 위치를, 없으면 -1을 출력한다.
+
+```text
+입력            출력
+2               2
+4               4
+1 2 3 4
+3
+5
+10 90 20 30 40
+40
+```
+
+```python
+import sys
+input = sys.stdin.readline
+
+def search(arr, x):
+    for i, v in enumerate(arr):
+        if v == x:
+            return i
+    return -1
+
+t = int(input())
+out = []
+for _ in range(t):
+    n = int(input())
+    arr = list(map(int, input().split()))
+    x = int(input())
+    out.append(str(search(arr, x)))
+print("\n".join(out))
+```
+
+채점기는 예제 말고도 숨은 테스트를 여러 개 돌려 출력을 정답과 비교하고, 결과를 하나로 알려 준다.
+
+| 결과 | 뜻 |
+| --- | --- |
+| AC (Accepted) | 모든 테스트를 통과했다 |
+| WA (Wrong Answer) | 출력이 정답과 다르다 |
+| TLE (Time Limit Exceeded) | 시간 한도를 넘겼다 |
+| MLE (Memory Limit Exceeded) | 메모리 한도를 넘겼다 |
+| RE (Runtime Error) | 실행 중에 비정상 종료했다(배열 범위 밖, 0으로 나누기, 재귀 깊이) |
+| CE (Compilation Error) | 컴파일되지 않았다 |
+
+**출력은 형식 그대로만 낸다.** 처음 틀리는 이유의 상당수가 알고리즘이 아니라 출력이다.
+
+| 실수 | 결과 |
+| --- | --- |
+| `printf("Enter n: ")`, `input("숫자를 입력하세요: ")`처럼 안내 문구를 찍는다 | 채점기는 사람이 아니라 프로그램이 읽는다. 문구가 출력에 섞여 WA다. 파이썬의 `input(prompt)`도 문구를 표준 출력에 쓴다 |
+| 테스트마다 개행을 빠뜨린다 | 답이 한 줄에 붙어 WA다 |
+| 공백·개행 개수가 다르다 | 채점기마다 다르다. 줄 끝 공백 정도는 봐주는 곳이 많지만, 백준은 「출력 형식이 잘못되었습니다」로 따로 알려 준다 |
+| 디버그 출력을 남긴다 | WA이거나, 출력량 때문에 TLE다 |
+| 한 테스트의 입력을 덜 읽고 넘어간다 | 남은 값이 다음 테스트의 입력이 되어 연달아 틀린다([[competitive-programming-pitfalls\|대회에서 자주 틀리는 구현]]) |
 
 ## 문제 풀이 순서
 
@@ -85,7 +161,7 @@ sources: ["https://riverkim.kr/46", "https://riverkim.kr/49", "https://mungto.ti
 
 좋은 연습법은 **자기를 속일 수 없게 만드는 합리적인 방법이면 무엇이든** 된다. 문제 자체에 대한 흥미가 깊으면 거의 어떤 방법도 이 조건을 만족하고, 흥미 없이 취업 같은 외부 동기만 있으면 거의 어떤 방법도 만족하지 못한다. 풀이를 보는 것 자체가 나쁜 것은 아니다. 다만 한동안 풀이 없이 끝까지 풀어 보면 아이디어를 떠올리는 일이 생각보다 가능하다는 것을 알게 된다.
 
-목표 난이도는 회사마다 다르다. 대체로 대형 IT 기업은 프로그래머스 3레벨, 대기업 SI는 2레벨 수준을 기준으로 잡는다. 연습 사이트는 국내 기업 대비로 백준·프로그래머스, 삼성 대비로 SW Expert Academy, 해외 기업 대비로 LeetCode·Codeforces가 대표적이다.
+목표 난이도는 회사마다 다르다. 대체로 대형 IT 기업은 프로그래머스 3레벨, 대기업 SI는 2레벨 수준을 기준으로 잡는다. 연습 사이트는 국내 기업 대비로 백준·프로그래머스, 삼성 대비로 SW Expert Academy, 해외 기업 대비로 LeetCode·Codeforces가 대표적이다. 정기 대회는 Codeforces·AtCoder·CodeChef가 열고, AtCoder Beginner Contest(ABC)는 입문자에게 맞는 난이도다. 문제 은행으로는 SPOJ·HackerEarth·GeeksforGeeks가, 수학 문제를 답만 내는 곳으로는 Project Euler가 있다.
 
 코딩 테스트는 입구일 뿐이다. 프로젝트와 CS 기초 공부를 함께 가져간다.
 
@@ -306,6 +382,7 @@ const [n, m] = input[0].split(' ').map(Number)
 
 ## 핵심 정리
 
+- 입력·출력 형식과 제한부터 읽고, 출력에는 형식에 없는 글자(안내 문구, 디버그)를 한 글자도 넣지 않는다.
 - 주석 설계 → TC 작성 → 구현 → 정리 순서로 푼다.
 - N의 범위에서 허용 복잡도를 역산해 알고리즘을 고른다.
 - 최적화는 이론상 최선 복잡도(BTTC)를 하한으로 잡고, 겹치는 계산 재사용·자료구조 교체·불필요한 작업 제거 순으로 본다.
