@@ -164,4 +164,4 @@ TypeScript 7.0(2026)은 컴파일러를 TypeScript에서 Go로 **옮겨 쓴(port
 
 **타입 검사는 「구문 트리 위에 심볼을 얹고, 필요한 순간에 타입을 계산하는」 일이다.**
 
-관련 노트: [[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]], [[typescript-project-config|TypeScript 프로젝트 설정]], [[typescript-error-messages|TypeScript 오류 메시지 읽기와 흔한 오류]], [[babel|Babel과 AST 변환]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]]
+관련 노트: [[typescript-basics|TypeScript: 개념과 문법 한눈에 보기]], [[typescript-project-config|TypeScript 프로젝트 설정]], [[typescript-error-messages|TypeScript 오류 메시지 읽기와 흔한 오류]], [[babel|Babel과 AST 변환]], [[compiler-architecture|컴파일러의 구조]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]]

@@ -5,12 +5,13 @@ summary: "인성·경험 면접(Behavioral Interview)은 과거 행동으로 일
 tags: ["career", "interview", "job-search", "communication"]
 source: other
 date: "2026-11-01"
-sources: ["https://www.techinterviewhandbook.org/behavioral-interview/", "https://www.techinterviewhandbook.org/behavioral-interview-questions/", "https://www.techinterviewhandbook.org/self-introduction/", "https://leetcode.com/discuss/post/437082/amazon-behavioral-questions-leadership-p-kvhl/", "https://www.amazon.jobs/content/en/our-workplace/leadership-principles", "https://www.indeed.com/career-advice/interviewing/behavioral-interview-questions", "https://www.youtube.com/watch?v=Y1IrwVZO8Bc", "https://www.youtube.com/watch?v=2EbgsRHLF9Y", "https://www.youtube.com/watch?v=zFibXqowGFI", "https://www.educative.io/blog/behavioral-interviews-how-to-prepare-and-ace-interview-questions"]
+sources: ["https://www.techinterviewhandbook.org/behavioral-interview/", "https://www.techinterviewhandbook.org/behavioral-interview-questions/", "https://www.techinterviewhandbook.org/self-introduction/", "https://leetcode.com/discuss/post/437082/amazon-behavioral-questions-leadership-p-kvhl/", "https://www.amazon.jobs/content/en/our-workplace/leadership-principles", "https://www.indeed.com/career-advice/interviewing/behavioral-interview-questions", "https://www.youtube.com/watch?v=Y1IrwVZO8Bc", "https://www.youtube.com/watch?v=2EbgsRHLF9Y", "https://www.youtube.com/watch?v=zFibXqowGFI", "https://www.educative.io/blog/behavioral-interviews-how-to-prepare-and-ace-interview-questions", "https://grow.google/grow-your-career/articles/interview-tips/", "https://www.reddit.com/r/cscareerquestions/comments/1jov24/heres_how_to_prepare_for_tech_interviews/"]
 ---
 
 > Chris Donnelly의 이미지 「The Job Interview Cheat Sheet」를 요약·재구성한 노트다. 준비 순서, STAR(R), 자기소개, 빅테크 단골 질문은 Tech Interview Handbook의 「[Behavioral interviews](https://www.techinterviewhandbook.org/behavioral-interview/)」, 「[The 30 most common behavioral interview questions](https://www.techinterviewhandbook.org/behavioral-interview-questions/)」, 「[Crafting the perfect self introduction](https://www.techinterviewhandbook.org/self-introduction/)」을 바탕으로 보강했다.
 > Amazon 리더십 원칙별 질문은 LeetCode Discuss의 「[Amazon Behavioral questions | Leadership Principles | LP](https://leetcode.com/discuss/post/437082/amazon-behavioral-questions-leadership-p-kvhl/)」(2019.11) 면접 후기 모음을 원칙별로 묶고, 원칙 목록은 [Amazon 공식 페이지](https://www.amazon.jobs/content/en/our-workplace/leadership-principles) 기준으로 맞췄다.
 > 질문 형식, 답이 약해지는 패턴, 역량별 질문과 연습법은 Indeed의 「[10 Behavioral Interview Questions (With Sample Answers)](https://www.indeed.com/career-advice/interviewing/behavioral-interview-questions)」와 글에 실린 영상 세 편(「[The Interview Game](https://www.youtube.com/watch?v=Y1IrwVZO8Bc)」, 「[How to prepare for a behavioral interview](https://www.youtube.com/watch?v=2EbgsRHLF9Y)」, 「[STAR Method](https://www.youtube.com/watch?v=zFibXqowGFI)」), Educative의 「[Behavioral interviews: How to prepare and ace interview questions](https://www.educative.io/blog/behavioral-interviews-how-to-prepare-and-ace-interview-questions)」를 바탕으로 보강했다.
+> 자기소개 분량과 커리어 정체성 문장, 가정 질문의 답하는 법은 Grow with Google의 「[How to prepare for an interview](https://grow.google/grow-your-career/articles/interview-tips/)」(2025.12)를, 잘된 사례와 잘 안된 사례를 고르게 준비하는 법은 Reddit 글 「[Here's How to Prepare for Tech Interviews](https://www.reddit.com/r/cscareerquestions/comments/1jov24/heres_how_to_prepare_for_tech_interviews/)」(2013.08)를 바탕으로 보강했다.
 
 ## 인성·경험 면접이란
 
@@ -103,6 +104,8 @@ STAR는 경험을 묻는 질문에 답을 짜는 틀이다. 질문이 달라도 
 | 리더십 순간 | 멘토링, 팀을 넘는 일을 이끈 것, 팀을 대표한 것, 다른 사람들이 내게 방향을 물은 때 |
 | 배움의 경험 | 성장으로 이어진 실수, 접근을 바꾼 피드백, 압박 속에 익힌 기술 |
 
+**잘된 이야기와 잘 안된 이야기를 고르게** 고른다. 예를 들어 기술 프로젝트에서 잘 풀린 일 3개, 잘 안 풀린 일 3개를 준비한다. 어느 쪽이든 배경(프로젝트, 함께한 사람, 내 역할)부터 깔고, 잘된 이야기는 내 일의 영향(이겼나, 비용을 줄였나)으로, 잘 안된 이야기는 배운 점과 다시 한다면 어떻게 하겠는지로 끝낸다.
+
 사례마다 STAR(R)로 이야기를 짜되, 특히 **Action**을 다듬는다. 연습하다 보면 특정 영역(실수, 리더십 등)에 쓸 사례가 비어 있다는 것도 드러난다.
 
 ### 2. 꼭 나오는 세 질문은 따로 준비한다
@@ -139,7 +142,7 @@ STAR는 경험을 묻는 질문에 답을 짜는 틀이다. 질문이 달라도 
 
 「Tell me about yourself」는 사실상 **「어떻게 이 일을 하게 됐고, 왜 이 일이 맞았고, 그게 이 자리와 어떻게 이어지나」** 라는 질문이다. 지원하는 자리와 무관한 이야기에 시간을 쓰지 않는다.
 
-자기소개는 나를 위한 **엘리베이터 피치(elevator pitch)** 다. 엘리베이터에 함께 탄 짧은 시간에 아이디어를 파는 것처럼, 짧고, 곧바로 요점에 들어가고, 가장 매력적인 것을 앞에 둔다. 길어도 몇 분을 넘기지 않는다. 자기소개는 레주메를 한 번 더 줄인 것이고, 연차가 쌓일수록 학교보다 실무 경험의 비중이 커지므로 커리어 단계마다 다시 쓴다.
+자기소개는 나를 위한 **엘리베이터 피치(elevator pitch)** 다. 엘리베이터에 함께 탄 짧은 시간에 아이디어를 파는 것처럼, 짧고, 곧바로 요점에 들어가고, 가장 매력적인 것을 앞에 둔다. 보통 **30~60초** 분량으로 준비하고, 길어도 몇 분을 넘기지 않는다. 먼저 이 직무와 관련된 내 기술·관심·열정의 조합을 한 문장으로 적어 둔다(Google은 이를 커리어 정체성 문장, Career Identity Statement라 부른다). 엘리베이터 피치는 이 문장을 말로 풀어 전하는 일이고, 문장이 있으면 이야기가 연대기로 새지 않는다. 자기소개는 레주메를 한 번 더 줄인 것이고, 연차가 쌓일수록 학교보다 실무 경험의 비중이 커지므로 커리어 단계마다 다시 쓴다.
 
 | 요소 | 담을 것 |
 | --- | --- |
@@ -225,7 +228,7 @@ STAR는 경험을 묻는 질문에 답을 짜는 틀이다. 질문이 달라도 
 
 ### 가정 질문
 
-현실의 제약을 어떻게 다루는지, 판단의 기준이 무엇인지를 본다. 가정은 분명히 말하고, 비슷한 실제 경험이 있으면 덧붙인다.
+현실의 제약을 어떻게 다루는지, 판단의 기준이 무엇인지를 본다. 가정은 분명히 말하고, 「상황에 따라 다르다」에서 멈추지 말고 **실제로 할 행동**으로 답한다. 성공을 무엇으로 잴지, 어떤 이정표를 둘지, 누가 무엇을 맡을지 정하고 결정마다 이유를 붙인다. 비슷한 실제 경험이 있으면 덧붙이되, 그 경험이 이 가정에 왜 통하는지 연결을 분명히 한다.
 
 | 질문 | 생각할 축 |
 | --- | --- |

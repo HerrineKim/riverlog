@@ -64,7 +64,7 @@ date: "2026-10-31"
 3. VBR(파티션이 없으면 섹터 0)에는 **full bootstrap loader**가 있어, 파일 시스템에서 운영체제 커널의 위치를 찾아 메모리에 올리고 실행한다.
 4. 운영체제가 메모리에 올라와 실행된다.
 
-> 위 흐름은 BIOS + MBR 방식의 고전적인 설명이다. 현재 PC는 BIOS 대신 **UEFI** 펌웨어를 쓰고, 디스크는 GPT로 파티셔닝한다. UEFI는 섹터 0의 코드를 실행하는 대신 **EFI 시스템 파티션(ESP)** 에 있는 부트로더 파일을 찾아 실행한다. "펌웨어 → 부트로더 → 커널"이라는 큰 흐름은 같다. 커널이 올라온 뒤 systemd(PID 1)가 유닛을 띄워 로그인까지 가는 과정은 [[daemon-and-systemd|데몬과 systemd]]에 있다.
+> 위 흐름은 BIOS + MBR 방식의 고전적인 설명이다. 현재 PC는 BIOS 대신 **UEFI** 펌웨어를 쓰고, 디스크는 GPT로 파티셔닝한다. UEFI는 섹터 0의 코드를 실행하는 대신 **EFI 시스템 파티션(ESP)** 에 있는 부트로더 파일을 찾아 실행한다. "펌웨어 → 부트로더 → 커널"이라는 큰 흐름은 같다. CPU가 리셋 벡터에서 깨어나 부트로더가 커널에 제어를 넘기기까지의 레지스터·모드 수준 흐름은 [[bare-metal-kernel|가장 작은 x86 커널]]에 있다. 커널이 올라온 뒤 systemd(PID 1)가 유닛을 띄워 로그인까지 가는 과정은 [[daemon-and-systemd|데몬과 systemd]]에 있다.
 
 ## 접근 시간 (Access Time)
 
@@ -224,4 +224,4 @@ RAID는 전용 컨트롤러 없이 커널의 **md** 드라이버(`mdadm`으로 �
 - SSTF는 기아, SCAN은 대기 시간 불균형, C-SCAN은 균일한 대기, LOOK 계열은 불필요한 끝까지 이동을 없앤다.
 - 스왑 영역은 속도 우선, RAID는 분산(속도)과 중복(신뢰성)으로 디스크 여러 개를 묶는다.
 
-관련 노트: [[file-system-implementation|파일 시스템 구현]], [[virtual-memory|가상 메모리]], [[system-structure#커널 입출력 서브시스템|운영체제의 입출력 시스템]]
+관련 노트: [[file-system-implementation|파일 시스템 구현]], [[bare-metal-kernel|가장 작은 x86 커널]], [[virtual-memory|가상 메모리]], [[system-structure#커널 입출력 서브시스템|운영체제의 입출력 시스템]]

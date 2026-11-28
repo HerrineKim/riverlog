@@ -1,16 +1,16 @@
 ---
 title: "코드 리뷰 원칙과 체크리스트"
-concept: "Code Review"
-summary: "코드 리뷰를 왜 하는지(품질이 비용을 낮추는 이유, 리뷰의 다섯 가지 효과), 작성자와 리뷰어가 할 일, 자동화할 것과 사람이 볼 것을 나누는 원칙, 리뷰를 빠르게 돌리고 교착을 푸는 운영법, 가독성·부작용·경계 조건·보안·성능·테스트 체크리스트."
+concept: "Code Review Principles"
+summary: "코드 리뷰를 왜 하는지(품질이 비용을 낮추는 이유, 리뷰의 다섯 가지 효과), 작성자와 리뷰어가 할 일과 `git diff --staged` 셀프 리뷰, 자동화할 것과 사람이 볼 것을 나누는 원칙, 리뷰를 빠르게 돌리고 교착을 푸는 운영법, 설계·가독성·부작용·경계 조건·보안·성능·테스트 체크리스트와 함수·클래스·파일 크기 경험칙."
 tags: ["code-review", "collaboration", "clean-code", "career"]
 source: notion
 date: "2026-11-25"
-sources: ["https://riverkim.kr/194", "https://riverkim.kr/184", "https://www.youtube.com/watch?v=TAPviNhFuSg", "https://github.com/ryanmcdermott/code-review-tips", "https://engineering.linecorp.com/ko/blog/effective-codereview/", "https://wnsgml972.github.io/devops/2020/05/17/CodeReview1/"]
+sources: ["https://riverkim.kr/194", "https://riverkim.kr/184", "https://www.youtube.com/watch?v=TAPviNhFuSg", "https://github.com/ryanmcdermott/code-review-tips", "https://engineering.linecorp.com/ko/blog/effective-codereview/", "https://wnsgml972.github.io/devops/2020/05/17/CodeReview1/", "https://www.kevinlondon.com/2015/05/05/code-review-best-practices/"]
 ---
 
 코드 리뷰는 내가 쓴 코드의 문제를 혼자서는 다 찾을 수 없기 때문에 하는 일이다. 누구의 코드든 다른 사람의 눈을 거치면 사용자에게 닿기 전에 더 많은 버그를 잡을 수 있다. 완벽한 단 하나의 프로세스는 없으니 팀에 맞는 방식을 찾되, **정기적으로** 하는 것이 가장 중요하다.
 
-> 백명석의 「[한번 듣고 평생 써먹는 코드 리뷰 노하우](https://www.youtube.com/watch?v=TAPviNhFuSg)」(OKKY 세미나, 2022.01) 강연을 함께 정리했다. 체크리스트는 Ryan McDermott의 [code-review-tips](https://github.com/ryanmcdermott/code-review-tips)를 바탕으로 재구성했다. 팀 정착 부분은 「[효과적인 코드 리뷰를 위해서](https://engineering.linecorp.com/ko/blog/effective-codereview/)」, 「[개발자 Code Review 가이드](https://wnsgml972.github.io/devops/2020/05/17/CodeReview1/)」를 바탕으로 보강했다.
+> 백명석의 「[한번 듣고 평생 써먹는 코드 리뷰 노하우](https://www.youtube.com/watch?v=TAPviNhFuSg)」(OKKY 세미나, 2022.01) 강연을 함께 정리했다. 체크리스트는 Ryan McDermott의 [code-review-tips](https://github.com/ryanmcdermott/code-review-tips)를 바탕으로 재구성했다. 팀 정착 부분은 「[효과적인 코드 리뷰를 위해서](https://engineering.linecorp.com/ko/blog/effective-codereview/)」, 「[개발자 Code Review 가이드](https://wnsgml972.github.io/devops/2020/05/17/CodeReview1/)」를 바탕으로 보강했다. 설계 체크리스트, 크기 경험칙, 셀프 리뷰, 테스트 품질 항목은 Kevin London의 「[Code Review Best Practices](https://www.kevinlondon.com/2015/05/05/code-review-best-practices/)」(2015.05)를 바탕으로 보강했다.
 
 ## 왜 코드 리뷰를 하나
 
@@ -42,6 +42,8 @@ sources: ["https://riverkim.kr/194", "https://riverkim.kr/184", "https://www.you
 | 올리기 전에 **스스로 먼저 읽고** 설명이 필요한 곳에 PR 코멘트를 단다 | 예시 코드에 관대하되 다 짜 주지 않는다. 코드 조각 하나가 긴 설명보다 의도를 정확히 전한다 |
 | 리뷰어를 넉넉히 포함한다. 보는 눈이 많을수록 버그를 더 찾고, 작성자도 더 신경 쓴다 | 사람이 아니라 코드에 대해, 친절하게 말한다. 코멘트 쓰는 요령은 [[review-communication\|리뷰 코멘트와 PR 소통]]에 있다 |
 
+**셀프 리뷰는 커밋될 diff로 한다.** 바꾼 파일을 `git add`한 뒤 `git diff --staged`로 커밋될 내용만 읽는다. 남겨 둔 TODO와 주석, 뜻이 흐린 이름, 아래 체크리스트에 걸리는 곳을 먼저 고친다. 내 리뷰를 통과하지 못하는 코드는 남에게 보내지 않는다.
+
 ## 사람이 볼 것과 아닌 것
 
 - **자동화할 수 있는 것은 사람이 보지 않는다.** 포맷, 세미콜론, `let`/`var` 같은 논쟁은 formatter와 linter(ESLint, Prettier)에 맡긴다. 리뷰 시간은 기계가 못 보는 것에 쓴다.
@@ -49,16 +51,32 @@ sources: ["https://riverkim.kr/194", "https://riverkim.kr/184", "https://www.you
 
 ## 체크리스트
 
+### 설계
+
+| 볼 것 | 확인하는 질문 |
+| --- | --- |
+| 단일 책임(SRP) | 클래스나 함수가 하는 일을 설명할 때 「그리고」가 붙는가? 붙으면 추상화 수준이 어긋났을 수 있다. 클래스뿐 아니라 함수에도 적용한다 |
+| 개방·폐쇄(OCP) | 같은 종류(결제 수단, 알림 채널)를 하나 더 추가하면 기존 코드를 몇 군데 고쳐야 하는가? 확장에는 열리고 수정에는 닫혀 있는가 |
+| 중복 | 한 번 복사한 것은 넘어가도, 같은 코드가 세 번째 나오면 공통 부분을 뽑는다([[refactoring-principles\|3의 법칙]]) |
+| 모양(squint test) | 눈을 가늘게 뜨고 글자 대신 코드의 모양만 본다. 깊은 들여쓰기나 다른 곳과 똑같은 모양의 블록이 되풀이되면 구조 문제의 신호다 |
+| 보이스카우트 규칙 | 지저분한 곳에 몇 줄만 더하고 떠나지 않았는가? 손댄 곳은 처음보다 조금 낫게 남긴다. 정리는 동작 변경과 커밋을 나눈다 |
+| 잠재 버그 | 하나 차이 오류(off-by-one)는 없는가? 반복문이 예상한 때에, 그리고 반드시 끝나는가? |
+| 에러 처리 | 필요한 곳에서 에러를 명시적으로 처리하는가? 직접 만든 에러 타입이 있다면 호출하는 쪽이 구분해 처리할 만큼 쓸모 있는가? |
+
 ### 가독성
 
 | 볼 것 | 예 |
 | --- | --- |
 | 오타 | 사소하지만 남으면 검색·이해를 방해한다. 친절하게 수정 제안 |
 | 이름이 의도를 드러내는가 | `u(names)` → `namesToUpperCase(names)` |
+| 이름이 실제로 하는 일과 맞는가 | `get_message_queue_name`이 실제로는 입력에서 HTML을 걸러 낸다면 이름이 틀렸고, 함수가 읽는 사람을 속인다 |
+| 변수 이름이 충분히 구체적인가 | `foo`·`bar`는 쓸모가 없고, `e`보다 `exception`이 낫다. 언어 관례가 허용하는 만큼 길게 쓴다 |
 | 함수가 한 가지 일만 하는가 | "활성 고객 판별"과 "이메일 발송"이 한 함수에 섞여 있으면 분리 |
 | 파일(모듈)이 응집되어 있는가 | 가짜 이름 생성기 파일 안에 DB 조회 함수가 있으면 분리 |
-| 공개 함수에 설명이 있는가 | 라이브러리처럼 쓰일 `export` 함수는 역할·사용법 주석 |
+| 공개 함수에 설명이 있는가 | 라이브러리처럼 쓰일 `export` 함수, 인자가 많아 각 인자의 뜻이 바로 보이지 않는 함수는 역할과 인자를 설명하는 주석(docstring, JSDoc) |
 | 복잡한 로직에 주석이 있는가 | 비트 연산처럼 이름만으로 설명되지 않는 부분은 "왜"를 주석으로 |
+| 주석 처리한 코드가 남았는가 | 지운다. 옛 코드는 Git 기록에 남아 있다 |
+| 읽다가 자주 멈추는가 | 리뷰하면서 해독하려고 여러 번 멈춰야 한다면 그 자체가 가독성 지적이다 |
 
 ```javascript
 // Before: 두 가지 일을 한다
@@ -75,6 +93,17 @@ function emailActiveClients(clients) {
   clients.filter(isActiveClient).forEach(email)
 }
 ```
+
+**크기는 경험칙으로 본다.** 숫자를 넘으면 무조건 나누라는 뜻이 아니라, 나눌 곳이 있는지 들여다볼 신호다. 파일이 커질수록 원하는 코드를 찾기 어려워지고, 큰 클래스는 대개 여러 객체로 나눌 수 있다.
+
+| 대상 | 경험칙 | 자동 검사(기본값) |
+| --- | --- | --- |
+| 함수 | 20줄 안팎. 50줄을 넘으면 나눈다 | ESLint `max-lines-per-function`(50줄), Pylint `max-statements`(문장 50개) |
+| 클래스 | 300줄 아래, 되도록 100줄 아래 | - |
+| 파일 | Python 기준 1000줄 안팎이 상한 | ESLint `max-lines`(300줄), Pylint `max-module-lines`(1000줄) |
+| 인자 | 3개 이하. 넘으면 객체로 묶을 수 있는지 본다 | ESLint `max-params`(3개), Pylint `max-args`·`max-positional-arguments`(5개) |
+
+ESLint의 크기 규칙은 권장 설정(`js.configs.recommended`)에 들어 있지 않아 직접 켜야 하고, Pylint는 기본으로 검사한다. 도구에 맡기면 크기는 [사람이 볼 것](#사람이-볼-것과-아닌-것)에서 빠진다. 함수를 작게 나누는 기준과 인자를 묶는 법은 [[clean-code-functions-naming|클린 코드: 함수와 이름]]에 있다.
 
 ### 부작용
 
@@ -120,7 +149,7 @@ router.post('/transfer-money', (req, res) => {
 
 ### 성능
 
-- **알맞은 자료구조**: 배열을 매번 끝까지 도는 대신 `Set`·`Map`으로 바로 찾을 수 있는지 본다.
+- **알맞은 자료구조**: 배열을 매번 끝까지 도는 대신 `Set`·`Map`으로 바로 찾을 수 있는지 본다. 딕셔너리(객체, `Map`)의 키를 하나씩 돌며 원하는 값을 찾는 코드처럼, 자료구조가 바로 주는 조회를 반복문으로 다시 짜지 않았는지도 본다.
 
 ```javascript
 // Before: O(n) 탐색 + 찾아도 계속 돈다
@@ -142,6 +171,8 @@ const isUserMentioned = (user) => mentionedUsers.has(user)
 - 새 코드에는 테스트가 있어야 한다. 버그 수정이면 **그 버그가 고쳐졌음을 증명하는 테스트**를, 기능 추가면 단위 테스트와 다른 부분과 잘 맞물리는지 보는 통합 테스트를.
 - 함수가 하는 **모든 일**을 테스트하는가? (반환값만 확인하고 콜백 호출은 확인하지 않는 식의 누락)
 - **엣지 케이스**: 날짜에 음수·소수·아주 큰 일수를 더하면?
+- **테스트 자체도 읽는다**: 실패 조건을 다루는가? 읽기 쉬운가? 구현이 조금만 바뀌어도 깨지지 않는가? 너무 크거나 느리지 않은가?
+- **목(mock)이 3개를 넘으면 다시 본다**: 테스트가 너무 넓은 범위를 확인하거나 대상 함수가 너무 크다는 신호다. 단위 테스트보다 통합 테스트로 확인하는 편이 맞을 수도 있다. 목을 쓸 때의 함정은 [[frontend-test-types#쓸 때의 함정|프론트엔드 테스트의 종류와 도구]]에 있다.
 
 **핵심 로직의 테스트 기준은 미리 적어 둔다.** 「테스트가 충분한가」를 PR마다 다투지 않으려면, 어떤 로직이 바뀌면 어떤 테스트가 있어야 머지하는지를 저장소의 리뷰 규칙(README, CONTRIBUTING, AGENTS.md)에 표로 둔다. 표의 행은 저장소마다 다르고, 틀은 같다.
 
@@ -154,7 +185,8 @@ const isUserMentioned = (user) => mentionedUsers.has(user)
 | 바깥으로 쓰는 동작(알림 전송, 외부 API 호출, outbox) | 실패와 재시도, 중복 전송 방지 |
 | 사용자 입력을 받는 경로(폼, 공개 API) | 필수값·형식·길이 검증, 잘못된 요청의 응답 |
 
-- 같은 동작은 **가장 싼 층 하나**에서 확인한다. 커버리지 비율은 기준으로 삼지 않는다. 비율을 채우려는 테스트는 위험을 잡지 못한다.
+- 같은 동작은 **가장 싼 층 하나**에서 확인한다. 기대 동작을 확인할 수 있는 가장 낮은 층이 보통 가장 싸다. Django 테스트 클라이언트처럼 요청부터 응답까지 도는 도구는 쓰기 쉬워서, 무심코 높은 층에 테스트를 쌓다 보면 스위트가 느려진다. 단위 95 : 통합 5 같은 층 비율도 경험칙일 뿐이다([[frontend-test-types#테스트 전략의 모양|테스트 전략의 모양]]).
+- 커버리지 비율은 기준으로 삼지 않는다. 비율을 채우려는 테스트는 위험을 잡지 못한다.
 - 기존 테스트가 이미 같은 실패를 잡으면 새로 쓰지 않고 PR의 검증 절에 그 테스트를 적는다.
 - 테스트를 지우거나 건너뛰게(`skip`, `only`) 해서 통과시키지 않는다.
 - 문서, 문구·스타일만 바꾼 변경, 동작을 바꾸지 않는 리팩터링은 새 테스트 없이 머지할 수 있다. 리팩터링은 기존 테스트가 그대로 통과해야 한다.
@@ -163,7 +195,7 @@ const isUserMentioned = (user) => mentionedUsers.has(user)
 
 - **TODO 주석은 추적한다.** 이슈 트래커에 등록하고 번호를 함께 적어 두어야 언젠가 정리된다.
 - **커밋 메시지는 변경을 정확히 설명한다.** "고침", "하나만 더" 같은 메시지는 나중에 `git blame`으로 찾아왔을 때 아무 도움이 안 된다. 관련 이슈 번호를 함께 적는다. 규칙은 [커밋 컨벤션](/knowledge/dictionary/tools/git/commit-convention) 참고.
-- **코드가 해야 할 일을 하는가.** 너무 당연해서 오히려 잊기 쉽다. 세부 지적에 빠져 요구사항 자체를 확인하지 않는 일이 없도록 한다.
+- **코드가 해야 할 일을 하는가.** 너무 당연해서 오히려 잊기 쉽다. 세부 지적에 빠져 요구사항 자체를 확인하지 않는 일이 없도록 한다. 리뷰를 마칠 때 작업의 근거인 티켓(스토리, 태스크, 버그)의 조건과 하나씩 대조하고, 빠진 조건이 있으면 QA로 넘어가기 전에 돌려보낸다.
 
 ## 더 읽을거리
 
@@ -173,6 +205,7 @@ const isUserMentioned = (user) => mentionedUsers.has(user)
 - [clean-code-javascript](https://github.com/ryanmcdermott/clean-code-javascript), [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
 - [『클린 코드』 4장 주석 정리](https://hirlawldo.tistory.com/135): 주석이 많다고 좋은 코드가 아니다. 이름과 구조로 의도를 드러내고, 그래도 설명이 안 되는 "왜"만 주석으로 남긴다
 - 책: 『클린 코드』, 『리팩터링』, 『클린 아키텍처』, 『오브젝트』, 『함수형 사고』
+- 강연: Sandi Metz의 「[All the Little Things](https://www.youtube.com/watch?v=8bZh5LMaSmE)」(RailsConf 2014)는 조건문 덩어리를 작고 재사용할 수 있는 객체로 리팩터링하는 과정을, Joshua Bloch의 「[How to Design a Good API and Why it Matters](https://www.youtube.com/watch?v=aAb7hSCtvGw)」(Google Tech Talks)는 다른 코드가 쓰기 좋은 인터페이스를 설계하는 원칙을 다룬다
 
 ## 리뷰를 팀에 정착시키기
 
@@ -193,9 +226,9 @@ const isUserMentioned = (user) => mentionedUsers.has(user)
 ## 핵심 정리
 
 - 리뷰는 품질·학습·동기·공동 책임을 얻는 실천이다. 소프트웨어는 품질이 높을수록 변경 비용이 싸다.
-- 작성자가 먼저 읽고 설명해 리뷰어의 시간을 아끼고, 리뷰어는 바로 시작해 하루 안에 끝낸다.
+- 작성자가 먼저 `git diff --staged`로 읽고 설명해 리뷰어의 시간을 아끼고, 리뷰어는 바로 시작해 하루 안에 끝낸다.
 - 스타일은 도구에, 설계는 PR 전에, 리뷰는 기계가 못 보는 것에.
-- 가독성 → 부작용 → 경계 조건 → 보안 → 성능 → 테스트 순으로 훑는다.
+- 설계 → 가독성 → 부작용 → 경계 조건 → 보안 → 성능 → 테스트 순으로 훑는다. 크기 기준은 숫자가 아니라 나눌 곳을 찾는 신호다.
 - 친절하게, 고수준부터, 예시 코드와 함께.
 
-관련 노트: [[tdd|프론트엔드에서의 TDD]], [[web-security|웹 보안]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[kind-engineering|친절한 엔지니어링]], [[pair-programming|페어 프로그래밍]], [[code-readability|가독성을 높이는 전략]]
+관련 노트: [[tdd|프론트엔드에서의 TDD]], [[web-security|웹 보안]], [[review-patterns|코드 리뷰에서 자주 나온 지적]], [[kind-engineering|친절한 엔지니어링]], [[pair-programming|페어 프로그래밍]], [[code-readability|가독성을 높이는 전략]], [[refactoring-principles|리팩터링 원칙]], [[frontend-test-types|프론트엔드 테스트의 종류와 도구]]

@@ -1,16 +1,17 @@
 ---
 title: "위치 기반 서비스 설계: 지오해시, 쿼드트리, 지도"
 concept: "Location-Based Service"
-summary: "'내 주변 식당'은 모든 점과의 거리를 계산하면 느리므로 지도를 격자로 나눠 색인한다. 지오해시는 위경도를 접두사가 같으면 가까운 문자열로 바꿔 DB 색인으로 찾고, 쿼드트리는 밀도에 따라 칸을 쪼갠 메모리 트리로 찾는다. 지도 서비스는 위치 수집, 미리 잘라 둔 타일의 CDN 서빙, 지오코딩과 경로 계산으로 나뉜다."
+summary: "'내 주변 식당'은 모든 점과의 거리를 계산하면 느리므로 지도를 격자로 나눠 색인한다. 지오해시는 위경도를 접두사가 같으면 가까운 문자열로 바꿔 DB 색인으로 찾고, 쿼드트리는 밀도에 따라 칸을 쪼갠 메모리 트리로 찾는다. 지도 서비스는 위치 수집, 미리 잘라 둔 타일의 CDN 서빙, 지오코딩과 경로 계산으로 나뉜다. 점이 배달 구역 같은 다각형 안에 있는지는 레이 캐스팅(교차 횟수의 홀짝)으로 판정한다."
 tags: ["backend", "architecture", "algorithm", "data-structure", "scalability"]
 source: other
 date: "2026-11-02"
-sources: ["https://bytebytego.com/guides/proximity-service", "https://bytebytego.com/guides/quadtree", "https://bytebytego.com/guides/design-google-maps", "https://bytebytego.com/guides/how-do-airtags-work", "https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view", "https://techblog.woowahan.com/2608/", "http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://github.com/karanpratapsingh/system-design"]
+sources: ["https://bytebytego.com/guides/proximity-service", "https://bytebytego.com/guides/quadtree", "https://bytebytego.com/guides/design-google-maps", "https://bytebytego.com/guides/how-do-airtags-work", "https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view", "https://techblog.woowahan.com/2608/", "http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://github.com/karanpratapsingh/system-design", "https://github.com/resumejob/system-design-algorithms"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[Proximity Service](https://bytebytego.com/guides/proximity-service)」, 「[Quadtree](https://bytebytego.com/guides/quadtree)」, 「[Design Google Maps](https://bytebytego.com/guides/design-google-maps)」, 「[How do AirTags work?](https://bytebytego.com/guides/how-do-airtags-work)」, 「[How do Google/Apple Maps blur license plates and human faces on Street View?](https://bytebytego.com/guides/how-do-googleapple-maps-blur-license-plates-and-human-faces-on-street-view)」를 바탕으로 재구성한 노트다. 육각형 격자 거리 근사는 「[배민라이더스 배달 경로와 거리 계산 개발 과정](https://techblog.woowahan.com/2608/)」으로 보강했다. 차량 배차 사례는 High Scalability의 「[How Uber Scales Their Real-Time Market Platform](http://highscalability.com/blog/2015/9/14/how-uber-scales-their-real-time-market-platform.html)」(2015)로 보강했다.
 > Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」의 Uber 풀이로 기사 위치 갱신·전파의 규모 추정을 보강했다.
 > karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 지오해시 길이별 칸 크기와 쓰임, 쿼드트리의 종류와 힐베르트 곡선, 차량 호출의 흐름·데이터 모델·API·경쟁 조건·탄력 요금을 보강했다.
+> 레이 캐스팅 절은 GitHub 저장소 「[system-design-algorithms](https://github.com/resumejob/system-design-algorithms)」의 목록을 따라 더했다.
 
 ## 주변 검색 서비스
 
@@ -87,7 +88,35 @@ flowchart TB
 | 갱신 | 행 하나 수정 | 트리 수정이 까다롭다. 주기적 재구축 |
 | 맞는 곳 | 구현이 단순해야 할 때, 반경 검색 | "가장 가까운 k개" 검색, 밀도 차가 클 때 |
 
-실무에서는 PostGIS·Redis·Elasticsearch의 공간 색인이나 S2(구면 셀)·H3(육각형 격자) 같은 라이브러리를 쓰는 경우가 많다. 원리는 위와 같다.
+실무에서는 PostGIS·Redis·Elasticsearch의 공간 색인이나 S2(구면 셀)·H3(육각형 격자) 같은 라이브러리를 쓰는 경우가 많다. 원리는 위와 같다. S2는 지구를 정육면체 여섯 면에 투영하고 면마다 사분할한 셀에 힐베르트 곡선 순서로 64비트 ID를 매긴다. 임의의 영역을 몇 개의 셀로 덮을 수 있어(region covering), 「이 다각형과 겹치는 셀」을 미리 구해 두고 셀 ID 범위로 찾는다.
+
+## 다각형 안에 있는가: 레이 캐스팅
+
+「이 주소가 배달 가능 구역 안인가」, 「기사가 공항 대기 구역에 들어왔나(지오펜싱)」는 점이 다각형 안에 있는지 묻는 문제(point in polygon)다. **레이 캐스팅(ray casting)**은 점에서 한 방향으로 반직선을 쏴 다각형의 변과 몇 번 만나는지 센다. 홀수면 안, 짝수면 밖이다. 밖에서 들어가려면 경계를 한 번 넘어야 하고, 나올 때 또 한 번 넘기 때문이다(짝홀 규칙, even-odd rule).
+
+```python
+def point_in_polygon(x, y, polygon):
+    """polygon은 꼭짓점 [(x, y), ...] 목록. 경계 위의 점은 어느 쪽으로든 나올 수 있다."""
+    inside = False
+    n = len(polygon)
+    for i in range(n):
+        x1, y1 = polygon[i]
+        x2, y2 = polygon[(i + 1) % n]
+        if (y1 > y) != (y2 > y):                   # 이 변이 점의 수평선을 가로지르나
+            cross_x = x1 + (y - y1) * (x2 - x1) / (y2 - y1)
+            if x < cross_x:                        # 교점이 점의 오른쪽인가
+                inside = not inside
+    return inside
+```
+
+| 주의할 점 | 처리 |
+| --- | --- |
+| 반직선이 꼭짓점을 지난다 | 한 꼭짓점을 두 변이 공유하므로 두 번 세면 홀짝이 틀어진다. 위 코드의 `(y1 > y) != (y2 > y)`처럼 변의 한쪽 끝은 포함하고 다른 끝은 빼는 반열린 비교로 한 번만 센다. 수평인 변은 이 조건에 걸리지 않아 저절로 건너뛴다 |
+| 점이 경계 위에 있다 | 부동소수점 때문에 안·밖이 어느 쪽으로든 나올 수 있다. 경계 포함 여부가 중요하면 변까지의 거리로 따로 판정한다 |
+| 다각형이 자기 자신과 교차한다 | 짝홀 규칙에서는 두 번 겹친 영역이 「밖」이 된다. 감싸는 횟수를 세는 와인딩 넘버(nonzero 규칙)를 쓰면 「안」이 된다 |
+| 위경도를 평면 좌표로 쓴다 | 도시 규모에서는 문제없다. 날짜 변경선(경도 ±180°)을 걸치거나 극에 가까운 다각형은 평면 계산이 틀리므로 구면 기하(S2)나 투영 좌표를 쓴다 |
+
+변이 n개면 점 하나에 O(n)이다. 다각형이 많으면 먼저 경계 사각형(bounding box)이나 R-트리로 후보를 좁히고, 후보에만 레이 캐스팅을 한다. PostGIS의 `ST_Contains`·`ST_Intersects`가 이 일을 공간 인덱스와 함께 해 준다. 같은 구역을 자주 묻는다면 다각형을 S2·H3 셀 집합으로 미리 바꿔 두고 점의 셀 ID만 확인한다.
 
 ## 지도 서비스의 세 부분
 
@@ -208,7 +237,8 @@ flowchart LR
 
 - 주변 검색은 2차원을 색인 가능한 형태로 바꾸는 문제다. 지오해시는 접두사 검색, 쿼드트리는 밀도 적응형 메모리 트리다.
 - 지오해시는 경계 때문에 이웃 칸까지 조회하고, 쿼드트리는 재구축 시간 때문에 순차 배포한다.
+- 점이 다각형 안에 있는지는 반직선과 변의 교차 횟수로 판정한다(홀수면 안). 꼭짓점은 반열린 비교로 한 번만 세고, 후보는 공간 인덱스로 먼저 좁힌다.
 - 지도는 위치 수집(쓰기 폭주), 타일 서빙(정적 + CDN), 경로 계산(그래프 + 교통 예측)으로 나뉜다.
 - 위치 데이터는 민감하다. 오프라인 찾기 네트워크의 종단 간 암호화와 거리 사진 비식별화가 그 예다.
 
-관련 노트: [[cdn|CDN]], [[database-sharding|데이터베이스 샤딩]], [[web-scalability-components|웹 확장성의 구성 요소]], [[block-file-object-storage|블록·파일·오브젝트 스토리지]]
+관련 노트: [[cdn|CDN]], [[database-sharding|데이터베이스 샤딩]], [[web-scalability-components|웹 확장성의 구성 요소]], [[block-file-object-storage|블록·파일·오브젝트 스토리지]], [[real-world-algorithms|현실 시스템을 움직이는 알고리즘과 자료구조]]

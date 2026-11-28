@@ -21,7 +21,8 @@ date: "2026-11-27"
 - [Paradigm](Algorithm/Paradigm.md): 재귀, 분할 정복, 동적 계획법, 그리디, 투 포인터와 슬라이딩 윈도우, 스위핑, 최장 증가 부분 수열
 - [Sorting](Algorithm/Sorting.md): 기본 정렬(버블·선택·삽입·계수), 병합·퀵 정렬, 병합 삽입 정렬(Ford-Johnson)
 - [Math](Algorithm/Math.md): 비트 연산 기법, 선형 점화식의 일반항, 벡터공간, 내적·외적과 거리, 대회에 쓰는 수학 항등식
-- [코딩 테스트 접근법](Algorithm/coding-test.md): 문제를 푸는 순서, 반례 찾기, 실전 팁
+- [코딩 테스트 접근법](Algorithm/coding-test.md): 문제 형식과 채점, 문제를 푸는 순서, 반례 찾기, 실전 팁
 - [대회에서 자주 틀리는 구현](Algorithm/competitive-programming-pitfalls.md): C++에서 곱셈 전에 형을 넓히기, 부호 없는 크기, 컨테이너와 모듈러 연산, 해시 충돌로 나는 시간 초과
-- [현실 시스템을 움직이는 알고리즘과 자료구조](Algorithm/real-world-algorithms.md): 일상 소프트웨어 속 자료구조, 일관된 해싱·블룸 필터·HyperLogLog·토큰 버킷·머클 트리 같은 시스템 설계 알고리즘
+- [현실 시스템을 움직이는 알고리즘과 자료구조](Algorithm/real-world-algorithms.md): 일상 소프트웨어 속 자료구조, 분산·저장·근사 집계·공간·트래픽·동기화로 묶은 시스템 설계 알고리즘 지도, 블룸 필터와 rsync
+- [스트림 근사 집계: HyperLogLog, Count-Min, Lossy Counting, Frugal, AMS](Algorithm/streaming-sketches.md): 한 번만 보고 작은 메모리로 고유 개수·빈도·heavy hitter·분위수·빈도 제곱합을 근사하는 스케치와 오차·병합으로 고르는 법
 - [파싱 알고리즘과 프랫 파서](Algorithm/pratt-parsing.md): 연산자 우선순위와 바인딩 파워로 토큰을 구문 트리로 묶기

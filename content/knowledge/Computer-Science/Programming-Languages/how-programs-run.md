@@ -47,7 +47,7 @@ flowchart LR
 
 *경계는 흐리다. 컴파일과 해석은 언어가 아니라 구현의 성질이고, 한 구현이 인터프리터·바이트코드·JIT를 함께 쓰는 것이 보통이다([[programming-language-semantics|프로그래밍 언어 의미론]]). JavaScript 엔진(V8)은 인터프리터로 시작해 뜨거운 코드를 JIT 컴파일한다([[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]]). CPython도 내부적으로 소스를 바이트코드로 바꾼 뒤 해석한다. "컴파일 언어가 인터프리터 언어보다 빠르다"는 일반론은 맞지만, 언어가 아니라 **구현**의 성질이다.
 
-C 코드가 기계어 실행 파일이 되는 과정(전처리 → 컴파일 → 어셈블 → 링크)은 [[gcc-compile-and-link|GCC 컴파일과 링크]]에 있다.
+C 코드가 기계어 실행 파일이 되는 과정(전처리 → 컴파일 → 어셈블 → 링크)은 [[gcc-compile-and-link|GCC 컴파일과 링크]]에, 컴파일러 안에서 소스가 IR을 거쳐 기계어가 되는 단계는 [[compiler-architecture|컴파일러의 구조]]에 있다.
 
 ## 진입점: 실행은 어디서 시작하나
 
@@ -213,4 +213,4 @@ Wasm은 JavaScript를 대체하지 않는다. DOM 조작과 UI는 여전히 Java
 - GC는 메모리 안전을 주는 대신 CPU·메모리·멈춤 비용을 낸다. Java는 수집기를 골라 쓰고, Python은 참조 카운팅에 순환 수집을 더하고, Go는 동시 수집으로 멈춤을 줄인다.
 - WebAssembly는 네이티브 언어를 브라우저와 엣지에서 돌리는 공통 바이너리 형식이다.
 
-관련 노트: [[gcc-compile-and-link|GCC 컴파일과 링크]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[garbage-collection|가비지 컬렉션과 메모리 누수]], [[process-and-thread|프로세스와 스레드]], [[memory-management|메모리 관리]], [[programming-language-evolution|프로그래밍 언어의 계보와 선택]], [[jvm-internals|JVM 내부 구조]], [[go-language|Go 언어]], [[python-internals|Python 언어 동작]], [[programming-language-semantics|프로그래밍 언어 의미론]]
+관련 노트: [[gcc-compile-and-link|GCC 컴파일과 링크]], [[compiler-architecture|컴파일러의 구조]], [[js-engine-v8|JavaScript는 인터프리터 언어일까, 컴파일 언어일까]], [[garbage-collection|가비지 컬렉션과 메모리 누수]], [[process-and-thread|프로세스와 스레드]], [[memory-management|메모리 관리]], [[programming-language-evolution|프로그래밍 언어의 계보와 선택]], [[jvm-internals|JVM 내부 구조]], [[go-language|Go 언어]], [[python-internals|Python 언어 동작]], [[programming-language-semantics|프로그래밍 언어 의미론]]

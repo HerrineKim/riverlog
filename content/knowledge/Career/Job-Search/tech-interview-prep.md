@@ -1,11 +1,11 @@
 ---
 title: "기술 면접 준비: 유형별 대비와 시스템 디자인 7단계"
 concept: "Tech Interview"
-summary: "개발자 기술 면접은 코딩, 시스템 디자인, 객체 지향 설계(OOD), 행동(behavioral) 면접으로 나뉜다. 유형별로 무엇을 보는지와 준비 자료, 퀴즈·온라인 코딩 테스트·과제·화상 면접·온사이트 같은 진행 형식별 대비, 면접 언어 고르기, 남은 시간에 맞춘 준비 계획(주제 우선순위, Blind 75·Grind 75), 코딩 인터뷰를 자기소개 → 질문 명확화 → 접근 논의 → 말하며 코딩 → 테스트 → 역질문으로 진행하는 법을 정리하고, 시스템 디자인 면접의 유형과 요구 사항 확인 → 용량 추정 → 상위 설계 → DB 설계 → 인터페이스 설계 → 확장성 → 신뢰성의 7단계를 다룬다."
+summary: "개발자 기술 면접은 코딩, 시스템 디자인, 객체 지향 설계(OOD), 행동(behavioral) 면접으로 나뉜다. 유형별로 무엇을 보는지와 준비 자료, 퀴즈·온라인 코딩 테스트·과제·화상 면접·온사이트 같은 진행 형식별 대비, 면접 언어 고르기, 남은 시간에 맞춘 준비 계획(주제 우선순위, Blind 75·Grind 75), 코딩 인터뷰를 자기소개 → 질문 명확화 → 접근 논의 → 말하며 코딩 → 테스트 → 역질문으로 진행하는 법을 정리하고, 시스템 디자인 면접의 유형과 요구 사항 확인 → 용량 추정 → 상위 설계 → DB 설계 → 인터페이스 설계 → 확장성 → 신뢰성의 7단계를 다룬다. 자료구조를 직접 구현하고 비교로 설명하는 준비와, 모른 척 넘어가던 빈칸(비트, 네트워크, SQL, 테스트, 리눅스) 채우기도 다룬다."
 tags: ["career", "interview", "job-search", "architecture", "algorithm"]
 source: other
 date: "2026-11-25"
-sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss", "https://gyoogle.dev/blog/", "https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview", "https://jeinalog.tistory.com/30", "https://github.com/donnemartin/system-design-primer", "https://www.techinterviewhandbook.org/software-engineering-interview-guide/", "https://www.techinterviewhandbook.org/coding-interview-prep/", "https://www.techinterviewhandbook.org/coding-interview-study-plan/", "https://www.techinterviewhandbook.org/coding-interview-cheatsheet/", "https://www.techinterviewhandbook.org/best-practice-questions/", "https://www.techinterviewhandbook.org/programming-languages-for-coding-interviews/", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://www.techinterviewhandbook.org/mock-interviews/", "https://www.techinterviewhandbook.org/landscape/", "https://www.techinterviewhandbook.org/system-design/", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://www.reddit.com/r/ExperiencedDevs/comments/q4xj42/best_way_to_learnpracticeprepare_for_system/", "https://github.com/karanpratapsingh/system-design", "https://designed-to-scale.vercel.app/"]
+sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss", "https://gyoogle.dev/blog/", "https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview", "https://jeinalog.tistory.com/30", "https://github.com/donnemartin/system-design-primer", "https://www.techinterviewhandbook.org/software-engineering-interview-guide/", "https://www.techinterviewhandbook.org/coding-interview-prep/", "https://www.techinterviewhandbook.org/coding-interview-study-plan/", "https://www.techinterviewhandbook.org/coding-interview-cheatsheet/", "https://www.techinterviewhandbook.org/best-practice-questions/", "https://www.techinterviewhandbook.org/programming-languages-for-coding-interviews/", "https://www.techinterviewhandbook.org/interview-formats-top-companies/", "https://www.techinterviewhandbook.org/mock-interviews/", "https://www.techinterviewhandbook.org/landscape/", "https://www.techinterviewhandbook.org/system-design/", "https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448", "https://www.reddit.com/r/ExperiencedDevs/comments/q4xj42/best_way_to_learnpracticeprepare_for_system/", "https://github.com/karanpratapsingh/system-design", "https://designed-to-scale.vercel.app/", "https://www.reddit.com/r/cscareerquestions/comments/1jov24/heres_how_to_prepare_for_tech_interviews/"]
 ---
 
 > ByteByteGo의 System Design 101 가이드 「[How to Ace System Design Interviews](https://bytebytego.com/guides/how-to-ace-system-design-interviews-like-a-boss)」, 「[Recommended Materials for Technical Interviews](https://bytebytego.com/guides/my-recommended-materials-for-cracking-your-next-technical-interview)」를 바탕으로 재구성한 노트다.
@@ -13,6 +13,7 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 > Educative의 「[The complete guide to the System Design Interview](https://grokkingtechinterview.com/the-complete-guide-to-the-system-design-interview-in-2022-e2d30fe22448)」로 면접관이 보는 것, 준비의 세 갈래, 면접의 변천, 답하는 요령, 단골 문제를 보강했다.
 > 시스템 디자인 준비·연습법과 책 목록은 Reddit r/ExperiencedDevs의 「[Best way to learn/practice/prepare for system design interviews](https://www.reddit.com/r/ExperiencedDevs/comments/q4xj42/best_way_to_learnpracticeprepare_for_system/)」 토론을 바탕으로 보강했다.
 > 시스템 디자인 면접의 확장 요구 사항, 추정 질문, 데이터 모델 순서, 병목 체크리스트, 태도는 karanpratapsingh의 「[System Design](https://github.com/karanpratapsingh/system-design)」 강의 저장소를 바탕으로 보강했다.
+> 「자료구조는 직접 구현하고 비교로 설명한다」와 빈칸 채우기는 1,000번 넘게 면접을 본 면접관의 Reddit 글 「[Here's How to Prepare for Tech Interviews](https://www.reddit.com/r/cscareerquestions/comments/1jov24/heres_how_to_prepare_for_tech_interviews/)」(2013.08)를 바탕으로 보강했다.
 
 ## 면접 유형과 준비 자료
 
@@ -111,6 +112,20 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 - **배열·문자열이 가장 많이 나온다.** 다익스트라·플로이드-워셜 같은 고급 그래프 알고리즘은 해외 코딩 인터뷰에서는 드물다. 트리 순회(전위·중위·후위)와 BFS·DFS가 기본이다.
 - **동적 계획법은 투자 대비 효과가 낮아 우선순위가 가장 낮다.** 다만 Google처럼 여전히 내는 회사가 있고, 많은 DP 문제는 재귀·백트래킹으로도 풀린다.
 
+### 자료구조는 직접 구현하고 비교로 설명한다
+
+자료구조는 면접에 두 가지 방식으로 나온다. 코딩 문제에서 **알맞은 것을 알맞은 때에 쓰는지**, 그리고 코드 없이 「Z 상황에서 Y 대신 X를 쓰는 이유」를 묻는 **비교 질문**이다. 둘 다 대비하려면 자료구조마다 세 가지를 준비한다.
+
+| 준비 | 내용 |
+| --- | --- |
+| 연산의 복잡도와 그 이유 | 삽입·삭제·조회의 빅오를 외우지 말고 구조에서 끌어낸다. 해시 테이블은 충돌 해결 방식(체이닝, 개방 주소법)과 분할 상환 O(1)의 뜻까지([[hash-table\|해시 테이블]]) |
+| 직접 구현 | 남이 쓴 코드를 읽기만 하면 아는 것 같은 착각이 남는다. 에디터를 열고 직접 짜 봐야 빈칸이 드러난다 |
+| 실제 쓰임 | 언제 이것이 최선인지 예를 하나씩 든다 |
+
+대상은 배열, 연결 리스트, 스택·큐, 트리(이진 탐색 트리, 레드-블랙 트리 같은 균형 트리), 힙, 해시 테이블, 그래프(방향·무방향·가중치), 트라이다. 삽입 순서나 접근 순서를 기억하는 해시 맵(Java `LinkedHashMap`)은 LRU 캐시 구현 문제로 자주 나온다([[caching-strategies\|캐시 전략]]).
+
+알고리즘은 정렬(비교 정렬과 계수·기수 같은 비비교 정렬), 트리 순회(전위·중위·후위·레벨), BFS·DFS를 직접 구현할 수 있게 한다. BFS와 DFS는 **언제 어느 쪽을 쓰는지**를 설명할 수 있어야 한다. 가중치 없는 최단 경로는 BFS, 경로를 끝까지 따라가 보는 백트래킹은 DFS이고, 공간 전체를 볼 필요가 없을 때 둘의 차이가 커진다. 재귀와 직접 만든 스택·큐 두 방식으로 모두 짜 본다.
+
 ### 문제 목록: Blind 75와 Grind 75
 
 | 목록 | 내용 |
@@ -125,6 +140,16 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 - **자기소개와 역질문**: 거의 모든 면접의 처음과 끝에 들어간다. 약 3시간을 따로 잡아 준비한다([[behavioral-interview-questions#자기소개: 엘리베이터 피치|자기소개]], [[interview-attitude#마지막 역질문|역질문]]).
 - **모의 면접**: 계획의 **60% 정도를 지났을 때** 일정을 잡기 시작한다. 플랫폼은 면접관이 시간대를 미리 열어 두는 방식이라 예약이 필요하다.
 - 시간이 남으면 문제 **패턴**(슬라이딩 윈도우, 투 포인터 등)을 익힌다. 자주 나오는 문제 밖의 낯선 문제도 패턴의 조합으로 풀린다.
+- **모른 척 넘어가던 빈칸을 채운다.** 「이것만은 안 물어봤으면」 싶은 주제를 떠올려 적으면 그게 공부 목록이다. 중요하지 않다고 믿어도 면접관은 중요하다고 볼 수 있다. 막상 해 보면 생각보다 쉽게 채워지는 것이 대부분이다.
+
+| 빈칸 | 최소한 할 수 있어야 하는 것 |
+| --- | --- |
+| 코드 작성 | 경력이 길어도, 아키텍트·관리자 자리라도 면접관과 함께 간단한 코드를 짤 수 있어야 한다. 여기서 무너지는 경력자가 많다 |
+| 비트와 바이트 | 쓰는 언어의 비트 시프트·마스크, 빅·리틀 엔디언. 「정수의 비트 표현이 회문인지 판정하라」 정도는 풀어 본다([[bit-manipulation\|비트 연산 기법]]) |
+| 인터넷의 동작 | 주소창에 URL을 치면 무슨 일이 일어나는지, 소켓, TCP/IP, HTTP, 계층마다 맡는 일([[osi-7-layer\|OSI 7계층]]) |
+| 데이터베이스 | 지원하는 일이 DB를 쓴다면 기본 SQL과 데이터 모델링([[sql-basics\|SQL 기초]]) |
+| 테스트 | 코드를 짜고 테스트를 붙여 본 경험, TDD가 무엇인지 |
+| 리눅스 | 윈도우만 써 왔다면 리눅스를 한동안 써 본다([[linux-commands\|자주 쓰는 리눅스 명령어 지도]]) |
 
 ## 코딩 인터뷰 진행 원칙
 
@@ -156,6 +181,7 @@ sources: ["https://bytebytego.com/guides/how-to-ace-system-design-interviews-lik
 
 - 받은 질문과 내 답을 기록해 둔다. 다음 면접 준비의 재료가 된다.
 - 면접관에게 감사 메일이나 LinkedIn 연결 요청을 보낸다([[interview-attitude#면접 후: 감사 메일|감사 메일 쓰는 법]]).
+- 몇 번은 떨어진다고 전제한다. 면접관도 잘하는 사람과 못하는 사람이 있어서, 좋은 후보가 운 나쁘게 맞지 않는 면접관들을 만나 떨어지기도 한다. 그렇다고 배울 것을 건너뛰지는 말고, 면접을 규칙이 정해진 게임으로 받아들여 연습으로 이긴다.
 - 떨어진 회사에 다시 지원하면 과거 면접 피드백을 면접관이 볼 수 있다. 그때보다 무엇이 나아졌는지 보여 줄 수 있게 원인을 돌아보고 채운다.
 
 ### 자주 나오는 문제
